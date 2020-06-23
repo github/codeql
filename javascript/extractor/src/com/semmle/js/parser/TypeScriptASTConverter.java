@@ -1588,7 +1588,16 @@ public class TypeScriptASTConverter {
   }
 
   private Node convertLiteralType(JsonObject node, SourceLocation loc) throws ParseError {
-    return convertChild(node, "literal");
+    Node literal = convertChild(node, "literal");
+    // Convert a negated literal to a negative number
+    if (literal instanceof UnaryExpression) {
+      UnaryExpression unary = (UnaryExpression) literal;
+      if (unary.getOperator().equals("-") && unary.getArgument() instanceof Literal) {
+        Literal arg = (Literal) unary.getArgument();
+        literal = new Literal(loc, arg.getTokenType(), "-" + arg.getValue());
+      }
+    }
+    return literal;
   }
 
   private Node convertMappedType(JsonObject node, SourceLocation loc) throws ParseError {

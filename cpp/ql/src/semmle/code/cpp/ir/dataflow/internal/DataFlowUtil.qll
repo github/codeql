@@ -54,14 +54,24 @@ class Node extends TIRDataFlowNode {
   /** Gets the argument that defines this `DefinitionByReferenceNode`, if any. */
   Expr asDefiningArgument() { result = this.(DefinitionByReferenceNode).getArgument() }
 
-  /** Gets the parameter corresponding to this node, if any. */
-  Parameter asParameter() { result = this.(ParameterNode).getParameter() }
+  /** Gets the positional parameter corresponding to this node, if any. */
+  Parameter asParameter() { result = this.(ExplicitParameterNode).getParameter() }
 
   /**
    * Gets the variable corresponding to this node, if any. This can be used for
    * modelling flow in and out of global variables.
    */
   Variable asVariable() { result = this.(VariableNode).getVariable() }
+
+  /**
+   * Gets the expression that is partially defined by this node, if any.
+   *
+   * Partial definitions are created for field stores (`x.y = taint();` is a partial
+   * definition of `x`), and for calls that may change the value of an object (so
+   * `x.set(taint())` is a partial definition of `x`, and `transfer(&x, taint())` is
+   * a partial definition of `&x`).
+   */
+  Expr asPartialDefinition() { result = this.(PartialDefinitionNode).getDefinedExpr() }
 
   /**
    * DEPRECATED: See UninitializedNode.
@@ -96,6 +106,9 @@ class Node extends TIRDataFlowNode {
   string toString() { none() } // overridden by subclasses
 }
 
+/**
+ * An instruction, viewed as a node in a data flow graph.
+ */
 class InstructionNode extends Node, TInstructionNode {
   Instruction instr;
 
@@ -143,27 +156,88 @@ class ExprNode extends InstructionNode {
 }
 
 /**
+ * INTERNAL: do not use. Translates a parameter/argument index into a negative
+ * number that denotes the index of its side effect (pointer indirection).
+ */
+bindingset[index]
+int getArgumentPosOfSideEffect(int index) {
+  // -1 -> -2
+  //  0 -> -3
+  //  1 -> -4
+  // ...
+  result = -3 - index
+}
+
+/**
  * The value of a parameter at function entry, viewed as a node in a data
- * flow graph.
+ * flow graph. This includes both explicit parameters such as `x` in `f(x)`
+ * and implicit parameters such as `this` in `x.f()`.
+ *
+ * To match a specific kind of parameter, consider using one of the subclasses
+ * `ExplicitParameterNode`, `ThisParameterNode`, or
+ * `ParameterIndirectionNode`.
  */
 class ParameterNode extends InstructionNode {
-  override InitializeParameterInstruction instr;
+  ParameterNode() {
+    // To avoid making this class abstract, we enumerate its values here
+    instr instanceof InitializeParameterInstruction
+    or
+    instr instanceof InitializeIndirectionInstruction
+  }
 
   /**
-   * Holds if this node is the parameter of `c` at the specified (zero-based)
-   * position. The implicit `this` parameter is considered to have index `-1`.
+   * Holds if this node is the parameter of `f` at the specified position. The
+   * implicit `this` parameter is considered to have position `-1`, and
+   * pointer-indirection parameters are at further negative positions.
    */
-  predicate isParameterOf(Function f, int i) { f.getParameter(i) = instr.getParameter() }
+  predicate isParameterOf(Function f, int pos) { none() } // overridden by subclasses
+}
 
+/** An explicit positional parameter, not including `this` or `...`. */
+private class ExplicitParameterNode extends ParameterNode {
+  override InitializeParameterInstruction instr;
+
+  ExplicitParameterNode() { exists(instr.getParameter()) }
+
+  override predicate isParameterOf(Function f, int pos) {
+    f.getParameter(pos) = instr.getParameter()
+  }
+
+  /** Gets the `Parameter` associated with this node. */
   Parameter getParameter() { result = instr.getParameter() }
 
   override string toString() { result = instr.getParameter().toString() }
 }
 
-private class ThisParameterNode extends InstructionNode {
-  override InitializeThisInstruction instr;
+/** An implicit `this` parameter. */
+class ThisParameterNode extends ParameterNode {
+  override InitializeParameterInstruction instr;
+
+  ThisParameterNode() { instr.getIRVariable() instanceof IRThisVariable }
+
+  override predicate isParameterOf(Function f, int pos) {
+    pos = -1 and instr.getEnclosingFunction() = f
+  }
 
   override string toString() { result = "this" }
+}
+
+/** A synthetic parameter to model the pointed-to object of a pointer parameter. */
+class ParameterIndirectionNode extends ParameterNode {
+  override InitializeIndirectionInstruction instr;
+
+  override predicate isParameterOf(Function f, int pos) {
+    exists(int index |
+      f.getParameter(index) = instr.getParameter()
+      or
+      index = -1 and
+      instr.getIRVariable().(IRThisVariable).getEnclosingFunction() = f
+    |
+      pos = getArgumentPosOfSideEffect(index)
+    )
+  }
+
+  override string toString() { result = "*" + instr.getIRVariable().toString() }
 }
 
 /**
@@ -202,6 +276,67 @@ abstract class PostUpdateNode extends InstructionNode {
    * Gets the node before the state update.
    */
   abstract Node getPreUpdateNode();
+}
+
+/**
+ * The base class for nodes that perform "partial definitions".
+ *
+ * In contrast to a normal "definition", which provides a new value for
+ * something, a partial definition is an expression that may affect a
+ * value, but does not necessarily replace it entirely. For example:
+ * ```
+ * x.y = 1; // a partial definition of the object `x`.
+ * x.y.z = 1; // a partial definition of the object `x.y`.
+ * x.setY(1); // a partial definition of the object `x`.
+ * setY(&x); // a partial definition of the object `x`.
+ * ```
+ */
+abstract private class PartialDefinitionNode extends PostUpdateNode, TInstructionNode {
+  abstract Expr getDefinedExpr();
+}
+
+private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
+  override ChiInstruction instr;
+  FieldAddressInstruction field;
+
+  ExplicitFieldStoreQualifierNode() {
+    not instr.isResultConflated() and
+    exists(StoreInstruction store |
+      instr.getPartial() = store and field = store.getDestinationAddress()
+    )
+  }
+
+  // There might be multiple `ChiInstructions` that has a particular instruction as
+  // the total operand - so this definition gives consistency errors in
+  // DataFlowImplConsistency::Consistency. However, it's not clear what (if any) implications
+  // this consistency failure has.
+  override Node getPreUpdateNode() { result.asInstruction() = instr.getTotal() }
+
+  override Expr getDefinedExpr() {
+    result = field.getObjectAddress().getUnconvertedResultExpression()
+  }
+}
+
+/**
+ * Not every store instruction generates a chi instruction that we can attach a PostUpdateNode to.
+ * For instance, an update to a field of a struct containing only one field. For these cases we
+ * attach the PostUpdateNode to the store instruction. There's no obvious pre update node for this case
+ * (as the entire memory is updated), so `getPreUpdateNode` is implemented as `none()`.
+ */
+private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNode {
+  override StoreInstruction instr;
+  FieldAddressInstruction field;
+
+  ExplicitSingleFieldStoreQualifierNode() {
+    field = instr.getDestinationAddress() and
+    not exists(ChiInstruction chi | chi.getPartial() = instr)
+  }
+
+  override Node getPreUpdateNode() { none() }
+
+  override Expr getDefinedExpr() {
+    result = field.getObjectAddress().getUnconvertedResultExpression()
+  }
 }
 
 /**
@@ -253,6 +388,18 @@ class DefinitionByReferenceNode extends InstructionNode {
 }
 
 /**
+ * A node representing the memory pointed to by a function argument.
+ *
+ * This class exists only in order to override `toString`, which would
+ * otherwise be the default implementation inherited from `InstructionNode`.
+ */
+private class ArgumentIndirectionNode extends InstructionNode {
+  override ReadSideEffectInstruction instr;
+
+  override string toString() { result = "Argument " + instr.getIndex() + " indirection" }
+}
+
+/**
  * A `Node` corresponding to a variable in the program, as opposed to the
  * value of that variable at some particular point. This can be used for
  * modelling flow in and out of global variables.
@@ -288,6 +435,10 @@ class VariableNode extends Node, TVariableNode {
  */
 InstructionNode instructionNode(Instruction instr) { result.getInstruction() = instr }
 
+/**
+ * Gets the `Node` corresponding to a definition by reference of the variable
+ * that is passed as `argument` of a call.
+ */
 DefinitionByReferenceNode definitionByReferenceNode(Expr e) { result.getArgument() = e }
 
 /**
@@ -305,7 +456,7 @@ ExprNode convertedExprNode(Expr e) { result.getConvertedExpr() = e }
 /**
  * Gets the `Node` corresponding to the value of `p` at function entry.
  */
-ParameterNode parameterNode(Parameter p) { result.getParameter() = p }
+ExplicitParameterNode parameterNode(Parameter p) { result.getParameter() = p }
 
 /** Gets the `VariableNode` corresponding to the variable `v`. */
 VariableNode variableNode(Variable v) { result.getVariable() = v }
@@ -334,11 +485,45 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleInstructionLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
 }
 
+pragma[noinline]
+private predicate getFieldSizeOfClass(Class c, Type type, int size) {
+  exists(Field f |
+    f.getDeclaringType() = c and
+    f.getType() = type and
+    type.getSize() = size
+  )
+}
+
 cached
 private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction iTo) {
   iTo.(CopyInstruction).getSourceValue() = iFrom
   or
   iTo.(PhiInstruction).getAnOperand().getDef() = iFrom
+  or
+  // A read side effect is almost never exact since we don't know exactly how
+  // much memory the callee will read.
+  iTo.(ReadSideEffectInstruction).getSideEffectOperand().getAnyDef() = iFrom and
+  not iFrom.isResultConflated()
+  or
+  // Loading a single `int` from an `int *` parameter is not an exact load since
+  // the parameter may point to an entire array rather than a single `int`. The
+  // following rule ensures that any flow going into the
+  // `InitializeIndirectionInstruction`, even if it's for a different array
+  // element, will propagate to a load of the first element.
+  //
+  // Since we're linking `InitializeIndirectionInstruction` and
+  // `LoadInstruction` together directly, this rule will break if there's any
+  // reassignment of the parameter indirection, including a conditional one that
+  // leads to a phi node.
+  exists(InitializeIndirectionInstruction init |
+    iFrom = init and
+    iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = init and
+    // Check that the types match. Otherwise we can get flow from an object to
+    // its fields, which leads to field conflation when there's flow from other
+    // fields to the object elsewhere.
+    init.getParameter().getType().getUnspecifiedType().(DerivedType).getBaseType() =
+      iTo.getResultType().getUnspecifiedType()
+  )
   or
   // Treat all conversions as flow, even conversions between different numeric types.
   iTo.(ConvertInstruction).getUnary() = iFrom
@@ -359,6 +544,32 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   // Flow through the partial operand belongs in the taint-tracking libraries
   // for now.
   iTo.getAnOperand().(ChiTotalOperand).getDef() = iFrom
+  or
+  // Add flow from write side-effects to non-conflated chi instructions through their
+  // partial operands. From there, a `readStep` will find subsequent reads of that field.
+  // Consider the following example:
+  // ```
+  // void setX(Point* p, int new_x) {
+  //   p->x = new_x;
+  // }
+  // ...
+  // setX(&p, taint());
+  // ```
+  // Here, a `WriteSideEffectInstruction` will provide a new definition for `p->x` after the call to
+  // `setX`, which will be melded into `p` through a chi instruction.
+  exists(ChiInstruction chi | chi = iTo |
+    chi.getPartialOperand().getDef() = iFrom.(WriteSideEffectInstruction) and
+    not chi.isResultConflated()
+  )
+  or
+  // Flow from stores to structs with a single field to a load of that field.
+  iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = iFrom and
+  exists(int size, Type type, Class cTo |
+    type = iFrom.getResultType() and
+    cTo = iTo.getResultType() and
+    cTo.getSize() = size and
+    getFieldSizeOfClass(cTo, type, size)
+  )
   or
   // Flow through modeled functions
   modelFlow(iFrom, iTo)

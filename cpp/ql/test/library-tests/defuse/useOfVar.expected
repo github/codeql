@@ -10,9 +10,9 @@
 | addressOf.cpp:31:23:31:23 | i | addressOf.cpp:38:20:38:20 | i |
 | addressOf.cpp:31:23:31:23 | i | addressOf.cpp:40:15:40:15 | i |
 | addressOf.cpp:40:8:40:11 | iref | addressOf.cpp:42:19:42:22 | iref |
+| addressOf.cpp:46:17:46:24 | captured | addressOf.cpp:47:12:47:31 | captured |
 | addressOf.cpp:46:17:46:24 | captured | addressOf.cpp:49:15:49:22 | captured |
 | addressOf.cpp:46:17:46:24 | captured | addressOf.cpp:51:10:51:17 | captured |
-| addressOf.cpp:46:17:46:24 | captured | file://:0:0:0:0 | captured |
 | addressOf.cpp:47:8:47:9 | f1 | addressOf.cpp:48:3:48:4 | f1 |
 | addressOf.cpp:49:8:49:9 | f2 | addressOf.cpp:50:3:50:4 | f2 |
 | addressOf.cpp:55:17:55:17 | i | addressOf.cpp:56:16:56:16 | i |
@@ -23,6 +23,9 @@
 | addressOf.cpp:61:23:61:25 | ptr | addressOf.cpp:62:11:62:13 | ptr |
 | addressOf.cpp:61:23:61:25 | ptr | addressOf.cpp:63:19:63:21 | ptr |
 | addressOf.cpp:61:33:61:35 | ref | addressOf.cpp:63:24:63:26 | ref |
+| addressOf.cpp:70:29:70:31 | obj | addressOf.cpp:71:32:71:34 | obj |
+| addressOf.cpp:76:7:76:7 | x | addressOf.cpp:77:27:77:27 | x |
+| addressOf.cpp:76:7:76:7 | x | addressOf.cpp:77:48:77:48 | x |
 | indirect_use.cpp:19:31:19:32 | ip | indirect_use.cpp:20:14:20:15 | ip |
 | indirect_use.cpp:20:10:20:10 | p | indirect_use.cpp:21:17:21:17 | p |
 | indirect_use.cpp:24:31:24:32 | ip | indirect_use.cpp:25:14:25:15 | ip |

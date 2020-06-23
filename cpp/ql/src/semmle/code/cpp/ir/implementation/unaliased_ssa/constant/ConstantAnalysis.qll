@@ -14,8 +14,7 @@ int getConstantValue(Instruction instr) {
   or
   exists(PhiInstruction phi |
     phi = instr and
-    result = max(Operand op | op = phi.getAnInputOperand() | getConstantValue(op.getDef())) and
-    result = min(Operand op | op = phi.getAnInputOperand() | getConstantValue(op.getDef()))
+    result = unique(Operand op | op = phi.getAnInputOperand() | getConstantValue(op.getDef()))
   )
 }
 

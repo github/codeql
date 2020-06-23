@@ -79,7 +79,7 @@ predicate def_is_open(EssaDefinition def, ControlFlowNode open) {
         passes_open_files(refinement)
     )
     or
-    exists(PyNodeRefinement refinement | refinement = def |
+    exists(EssaNodeRefinement refinement | refinement = def |
         not closes_file(def) and
         not wraps_file(refinement.getDefiningNode(), refinement.getInput()) and
         var_is_open(refinement.getInput(), open)

@@ -151,10 +151,14 @@ private module FStream {
   /**
    * Gets a reference to a method in the `fstream` library.
    */
-  private DataFlow::SourceNode getAnFStreamProperty() {
+  private DataFlow::SourceNode getAnFStreamProperty(boolean writer) {
     exists(DataFlow::SourceNode mod, string readOrWrite, string subMod |
       mod = DataFlow::moduleImport("fstream") and
-      (readOrWrite = "Reader" or readOrWrite = "Writer") and
+      (
+        readOrWrite = "Reader" and writer = false
+        or
+        readOrWrite = "Writer" and writer = true
+      ) and
       (subMod = "File" or subMod = "Dir" or subMod = "Link" or subMod = "Proxy")
     |
       result = mod.getAPropertyRead(readOrWrite) or
@@ -167,7 +171,9 @@ private module FStream {
    * An invocation of a method defined in the `fstream` library.
    */
   private class FStream extends FileSystemAccess, DataFlow::InvokeNode {
-    FStream() { this = getAnFStreamProperty().getAnInvocation() }
+    boolean writer;
+
+    FStream() { this = getAnFStreamProperty(writer).getAnInvocation() }
 
     override DataFlow::Node getAPathArgument() {
       result = getOptionArgument(0, "path")
@@ -175,6 +181,24 @@ private module FStream {
       not exists(getOptionArgument(0, "path")) and
       result = getArgument(0)
     }
+  }
+
+  /**
+   * An invocation of an `fstream` method that writes to a file.
+   */
+  private class FStreamWriter extends FileSystemWriteAccess, FStream {
+    FStreamWriter() { writer = true }
+
+    override DataFlow::Node getADataNode() { none() }
+  }
+
+  /**
+   * An invocation of an `fstream` method that reads a file.
+   */
+  private class FStreamReader extends FileSystemReadAccess, FStream {
+    FStreamReader() { writer = false }
+
+    override DataFlow::Node getADataNode() { none() }
   }
 }
 

@@ -1,6 +1,7 @@
-const jsyaml = require("js-yaml");
+const app = require("express")(),
+  jsyaml = require("js-yaml");
 
-function requestHandler(req, res) {
+app.get("load", function(req, res) {
   let data = jsyaml.safeLoad(req.params.data);
   // ...
-}
+});

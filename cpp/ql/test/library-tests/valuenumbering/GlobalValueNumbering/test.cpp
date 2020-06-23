@@ -1,4 +1,4 @@
-int test00(int p0, int p1) {
+void test00(int p0, int p1) {
   int x, y;
   unsigned char b;
 
@@ -9,7 +9,7 @@ int test00(int p0, int p1) {
 
 int global01 = 1;
 
-int test01(int p0, int p1) {
+void test01(int p0, int p1) {
   int x, y;
   unsigned char b;
 
@@ -22,7 +22,7 @@ int global02 = 2;
 
 void change_global02(); // Just a declaration
 
-int test02(int p0, int p1) {
+void test02(int p0, int p1) {
   int x, y;
   unsigned char b;
 
@@ -36,7 +36,7 @@ int global03 = 3;
 
 void change_global03(); // Just a declaration
 
-int test03(int p0, int p1, int* p2) {
+void test03(int p0, int p1, int* p2) {
   int x, y;
   unsigned char b;
 

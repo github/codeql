@@ -1,3 +1,5 @@
+/** Provides classes and predicates for working with Enterprise Java Beans. */
+
 import java
 import EJBJarXML
 
@@ -322,10 +324,17 @@ class LocalAnnotatedBusinessInterface extends AnnotatedBusinessInterface {
  * Init and create methods for session beans.
  */
 
+/**
+ * A `@javax.ejb.Init` annotation.
+ */
 class InitAnnotation extends Annotation {
   InitAnnotation() { this.getType().hasQualifiedName("javax.ejb", "Init") }
 }
 
+/**
+ * A method annotated with a `@javax.ejb.Init` annotation
+ * that is declared in or inherited by a session EJB.
+ */
 class EjbAnnotatedInitMethod extends Method {
   EjbAnnotatedInitMethod() {
     this.getAnAnnotation() instanceof InitAnnotation and
@@ -333,21 +342,31 @@ class EjbAnnotatedInitMethod extends Method {
   }
 }
 
+/**
+ * A method whose name starts with `ejbCreate` that is
+ * declared in or inherited by a session EJB.
+ */
 class EjbCreateMethod extends Method {
   EjbCreateMethod() {
     this.getName().matches("ejbCreate%") and
     exists(SessionEJB ejb | ejb.inherits(this))
   }
 
+  /** Gets the suffix of the method name without the `ejbCreate` prefix. */
   string getMethodSuffix() { result = this.getName().substring(9, this.getName().length()) }
 }
 
+/**
+ * A method whose name starts with `create` that is
+ * declared in or inherited by a legacy EJB home interface.
+ */
 class EjbInterfaceCreateMethod extends Method {
   EjbInterfaceCreateMethod() {
     this.getName().matches("create%") and
     exists(LegacyEjbHomeInterface i | i.inherits(this))
   }
 
+  /** Gets the suffix of the method name without the `create` prefix. */
   string getMethodSuffix() { result = this.getName().substring(6, this.getName().length()) }
 }
 
@@ -398,6 +417,10 @@ class XmlSpecifiedRemoteInterface extends LegacyEjbRemoteInterface {
     )
   }
 
+  /**
+   * Gets a session EJB specified in the XML deployment descriptor
+   * for this legacy EJB remote interface.
+   */
   SessionEJB getAnEJB() {
     exists(EjbJarXMLFile f, EjbJarSessionElement se |
       se = f.getASessionElement() and
@@ -423,6 +446,7 @@ class AnnotatedRemoteHomeInterface extends LegacyEjbRemoteHomeInterface {
   /** Gets an EJB to which this interface belongs. */
   SessionEJB getAnEJB() { result.getAnAnnotation().(RemoteHomeAnnotation).getANamedType() = this }
 
+  /** Gets a remote interface associated with this legacy remote home interface. */
   Interface getAnAssociatedRemoteInterface() { result = getACreateMethod().getReturnType() }
 }
 
@@ -486,6 +510,7 @@ class AnnotatedLocalHomeInterface extends LegacyEjbLocalHomeInterface {
   /** Gets an EJB to which this interface belongs. */
   SessionEJB getAnEJB() { result.getAnAnnotation().(LocalHomeAnnotation).getANamedType() = this }
 
+  /** Gets a local interface associated with this legacy local home interface. */
   Interface getAnAssociatedLocalInterface() { result = getACreateMethod().getReturnType() }
 }
 
@@ -535,6 +560,7 @@ class RemoteInterface extends Interface {
    */
   Method getARemoteMethod() { this.inherits(result) }
 
+  /** Gets a remote method implementation for this remote interface. */
   Method getARemoteMethodImplementation() {
     result = getARemoteMethodImplementationChecked() or
     result = getARemoteMethodImplementationUnchecked()
@@ -716,127 +742,209 @@ Type inheritsMatchingCreateMethodExceptThrows(StatefulSessionEJB ejb, EjbInterfa
  * Annotations in the `javax.ejb package`.
  */
 
+/**
+ * A `@javax.ejb.AccessTimeout` annotation.
+ */
 class AccessTimeoutAnnotation extends Annotation {
   AccessTimeoutAnnotation() { this.getType().hasQualifiedName("javax.ejb", "AccessTimeout") }
 }
 
+/**
+ * A `@javax.ejb.ActivationConfigProperty` annotation.
+ */
 class ActivationConfigPropertyAnnotation extends Annotation {
   ActivationConfigPropertyAnnotation() {
     this.getType().hasQualifiedName("javax.ejb", "ActivationConfigProperty")
   }
 }
 
+/**
+ * A `@javax.ejb.AfterBegin` annotation.
+ */
 class AfterBeginAnnotation extends Annotation {
   AfterBeginAnnotation() { this.getType().hasQualifiedName("javax.ejb", "AfterBegin") }
 }
 
+/**
+ * A `@javax.ejb.AfterCompletion` annotation.
+ */
 class AfterCompletionAnnotation extends Annotation {
   AfterCompletionAnnotation() { this.getType().hasQualifiedName("javax.ejb", "AfterCompletion") }
 }
 
+/**
+ * A `@javax.ejb.ApplicationException` annotation.
+ */
 class ApplicationExceptionAnnotation extends Annotation {
   ApplicationExceptionAnnotation() {
     this.getType().hasQualifiedName("javax.ejb", "ApplicationException")
   }
 }
 
+/**
+ * A `@javax.ejb.Asynchronous` annotation.
+ */
 class AsynchronousAnnotation extends Annotation {
   AsynchronousAnnotation() { this.getType().hasQualifiedName("javax.ejb", "Asynchronous") }
 }
 
+/**
+ * A `@javax.ejb.BeforeCompletion` annotation.
+ */
 class BeforeCompletionAnnotation extends Annotation {
   BeforeCompletionAnnotation() { this.getType().hasQualifiedName("javax.ejb", "BeforeCompletion") }
 }
 
+/**
+ * A `@javax.ejb.ConcurrencyManagement` annotation.
+ */
 class ConcurrencyManagementAnnotation extends Annotation {
   ConcurrencyManagementAnnotation() {
     this.getType().hasQualifiedName("javax.ejb", "ConcurrencyManagement")
   }
 }
 
+/**
+ * A `@javax.ejb.DependsOn` annotation.
+ */
 class DependsOnAnnotation extends Annotation {
   DependsOnAnnotation() { this.getType().hasQualifiedName("javax.ejb", "DependsOn") }
 }
 
+/**
+ * A `@javax.ejb.EJB` annotation.
+ */
 class EJBAnnotation extends Annotation {
   EJBAnnotation() { this.getType().hasQualifiedName("javax.ejb", "EJB") }
 }
 
+/**
+ * A `@javax.ejb.EJBs` annotation.
+ */
 class EJBsAnnotation extends Annotation {
   EJBsAnnotation() { this.getType().hasQualifiedName("javax.ejb", "EJBs") }
 }
 
-// See above for `@Init`, `@Local`.
+/**
+ * A `@javax.ejb.LocalBean` annotation.
+ */
 class LocalBeanAnnotation extends Annotation {
   LocalBeanAnnotation() { this.getType().hasQualifiedName("javax.ejb", "LocalBean") }
 }
 
-// See above for `@LocalHome`.
+/**
+ * A `@javax.ejb.Lock` annotation.
+ */
 class LockAnnotation extends Annotation {
   LockAnnotation() { this.getType().hasQualifiedName("javax.ejb", "Lock") }
 }
 
+/**
+ * A `@javax.ejb.MessageDriven` annotation.
+ */
 class MessageDrivenAnnotation extends Annotation {
   MessageDrivenAnnotation() { this.getType().hasQualifiedName("javax.ejb", "MessageDriven") }
 }
 
+/**
+ * A `@javax.ejb.PostActivate` annotation.
+ */
 class PostActivateAnnotation extends Annotation {
   PostActivateAnnotation() { this.getType().hasQualifiedName("javax.ejb", "PostActivate") }
 }
 
+/**
+ * A `@javax.ejb.PrePassivate` annotation.
+ */
 class PrePassivateAnnotation extends Annotation {
   PrePassivateAnnotation() { this.getType().hasQualifiedName("javax.ejb", "PrePassivate") }
 }
 
-// See above for `@Remote`, `@RemoteHome`.
+/**
+ * A `@javax.ejb.Remove` annotation.
+ */
 class RemoveAnnotation extends Annotation {
   RemoveAnnotation() { this.getType().hasQualifiedName("javax.ejb", "Remove") }
 }
 
+/**
+ * A `@javax.ejb.Schedule` annotation.
+ */
 class ScheduleAnnotation extends Annotation {
   ScheduleAnnotation() { this.getType().hasQualifiedName("javax.ejb", "Schedule") }
 }
 
+/**
+ * A `@javax.ejb.Schedules` annotation.
+ */
 class SchedulesAnnotation extends Annotation {
   SchedulesAnnotation() { this.getType().hasQualifiedName("javax.ejb", "Schedules") }
 }
 
+/**
+ * A `@javax.ejb.Singleton` annotation.
+ */
 class SingletonAnnotation extends Annotation {
   SingletonAnnotation() { this.getType().hasQualifiedName("javax.ejb", "Singleton") }
 }
 
+/**
+ * A `@javax.ejb.Startup` annotation.
+ */
 class StartupAnnotation extends Annotation {
   StartupAnnotation() { this.getType().hasQualifiedName("javax.ejb", "Startup") }
 }
 
+/**
+ * A `@javax.ejb.Stateful` annotation.
+ */
 class StatefulAnnotation extends Annotation {
   StatefulAnnotation() { this.getType().hasQualifiedName("javax.ejb", "Stateful") }
 }
 
+/**
+ * A `@javax.ejb.StatefulTimeout` annotation.
+ */
 class StatefulTimeoutAnnotation extends Annotation {
   StatefulTimeoutAnnotation() { this.getType().hasQualifiedName("javax.ejb", "StatefulTimeout") }
 }
 
+/**
+ * A `@javax.ejb.Stateless` annotation.
+ */
 class StatelessAnnotation extends Annotation {
   StatelessAnnotation() { this.getType().hasQualifiedName("javax.ejb", "Stateless") }
 }
 
+/**
+ * A `@javax.ejb.Timeout` annotation.
+ */
 class TimeoutAnnotation extends Annotation {
   TimeoutAnnotation() { this.getType().hasQualifiedName("javax.ejb", "Timeout") }
 }
 
+/**
+ * A `@javax.ejb.TransactionAttribute` annotation.
+ */
 class TransactionAttributeAnnotation extends Annotation {
   TransactionAttributeAnnotation() {
     this.getType().hasQualifiedName("javax.ejb", "TransactionAttribute")
   }
 }
 
+/**
+ * A `@javax.ejb.TransactionManagement` annotation.
+ */
 class TransactionManagementAnnotation extends Annotation {
   TransactionManagementAnnotation() {
     this.getType().hasQualifiedName("javax.ejb", "TransactionManagement")
   }
 }
 
+/**
+ * A `@javax.ejb.TransactionAttribute` annotation with the
+ * transaction attribute type set to `REQUIRED`.
+ */
 class RequiredTransactionAttributeAnnotation extends TransactionAttributeAnnotation {
   RequiredTransactionAttributeAnnotation() {
     exists(FieldRead fr |
@@ -847,6 +955,10 @@ class RequiredTransactionAttributeAnnotation extends TransactionAttributeAnnotat
   }
 }
 
+/**
+ * A `@javax.ejb.TransactionAttribute` annotation with the
+ * transaction attribute type set to `REQUIRES_NEW`.
+ */
 class RequiresNewTransactionAttributeAnnotation extends TransactionAttributeAnnotation {
   RequiresNewTransactionAttributeAnnotation() {
     exists(FieldRead fr |
@@ -861,6 +973,9 @@ class RequiresNewTransactionAttributeAnnotation extends TransactionAttributeAnno
  * Convenience methods.
  */
 
+/**
+ * Gets the innermost `@javax.ejb.TransactionAttribute` annotation for method `m`.
+ */
 TransactionAttributeAnnotation getInnermostTransactionAttributeAnnotation(Method m) {
   // A `TransactionAttribute` annotation can either be on the method itself,
   // in which case it supersedes any such annotation on the declaring class...
@@ -876,6 +991,10 @@ TransactionAttributeAnnotation getInnermostTransactionAttributeAnnotation(Method
  * Methods in the `javax.ejb package`.
  */
 
+/**
+ * A method named `setRollbackOnly` declared on the
+ * interface `javax.ejb.EJBContext` or a subtype thereof.
+ */
 class SetRollbackOnlyMethod extends Method {
   SetRollbackOnlyMethod() {
     this.getDeclaringType().getASupertype*().hasQualifiedName("javax.ejb", "EJBContext") and

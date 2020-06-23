@@ -7,4 +7,5 @@
 | tst3.js:1:1:3:2 | define( ...  42;\\n}) | tst3.js:1:8:3:1 | functio ... = 42;\\n} |
 | tst4.js:1:1:11:2 | define( ...   };\\n}) | tst4.js:6:11:11:1 | functio ...    };\\n} |
 | tst.js:1:1:6:2 | define( ...   };\\n}) | tst.js:1:28:6:1 | functio ...    };\\n} |
+| umd.js:4:9:4:43 | define( ... actory) | umd.js:1:18:1:24 | factory |
 | umd.js:4:9:4:43 | define( ... actory) | umd.js:9:9:14:1 | functio ...    };\\n} |

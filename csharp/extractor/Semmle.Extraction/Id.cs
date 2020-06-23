@@ -34,7 +34,7 @@ namespace Semmle.Extraction
 
         public override string ToString() => "*";
 
-        public override bool Equals(object obj) => obj.GetType() == GetType();
+        public override bool Equals(object? obj) => obj?.GetType() == GetType();
 
         public override int GetHashCode() => 0;
 
@@ -87,9 +87,9 @@ namespace Semmle.Extraction
             return TrapBuilder.ToString();
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            if (obj.GetType() != GetType())
+            if (obj is null || obj.GetType() != GetType())
                 return false;
             var id = (Key)obj;
             return TrapBuilder.ToString() == id.TrapBuilder.ToString();
@@ -133,8 +133,9 @@ namespace Semmle.Extraction
 
         public static bool operator !=(Label l1, Label l2) => l1.Value != l2.Value;
 
-        public override bool Equals(object other)
+        public override bool Equals(object? other)
         {
+            if (other is null) return false;
             return GetType() == other.GetType() && ((Label)other).Value == Value;
         }
 

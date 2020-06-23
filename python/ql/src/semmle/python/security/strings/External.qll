@@ -22,6 +22,10 @@ abstract class ExternalStringKind extends StringKind {
         urlsplit(fromnode, tonode) and result.(ExternalUrlSplitResult).getItem() = this
         or
         urlparse(fromnode, tonode) and result.(ExternalUrlParseResult).getItem() = this
+        or
+        parse_qs(fromnode, tonode) and result.(ExternalStringDictKind).getValue() = this
+        or
+        parse_qsl(fromnode, tonode) and result.(SequenceKind).getItem().(SequenceKind).getItem() = this
     }
 }
 
@@ -56,14 +60,14 @@ class ExternalJsonKind extends TaintKind {
     }
 }
 
-/** A kind of "taint", representing a dictionary mapping str->"taint" */
+/** A kind of "taint", representing a dictionary mapping keys to tainted strings. */
 class ExternalStringDictKind extends DictKind {
     ExternalStringDictKind() { this.getValue() instanceof ExternalStringKind }
 }
 
 /**
- * A kind of "taint", representing a dictionary mapping strings to sequences of
- *  tainted strings
+ * A kind of "taint", representing a dictionary mapping keys to sequences of
+ *  tainted strings.
  */
 class ExternalStringSequenceDictKind extends DictKind {
     ExternalStringSequenceDictKind() { this.getValue() instanceof ExternalStringSequenceKind }
@@ -181,16 +185,74 @@ private predicate urlparse(ControlFlowNode fromnode, CallNode tonode) {
     )
 }
 
+private predicate parse_qs(ControlFlowNode fromnode, CallNode tonode) {
+    // This could be implemented as `exists(FunctionValue` without the explicit six part,
+    // but then our tests will need to import +100 modules, so for now this slightly
+    // altered version gets to live on.
+    exists(Value parse_qs |
+        (
+            parse_qs = Value::named("six.moves.urllib.parse.parse_qs")
+            or
+            // Python 2
+            parse_qs = Value::named("urlparse.parse_qs")
+            or
+            // Python 2 deprecated version of `urlparse.parse_qs`
+            parse_qs = Value::named("cgi.parse_qs")
+            or
+            // Python 3
+            parse_qs = Value::named("urllib.parse.parse_qs")
+        ) and
+        tonode = parse_qs.getACall() and
+        (
+            tonode.getArg(0) = fromnode
+            or
+            tonode.getArgByName("qs") = fromnode
+        )
+    )
+}
+
+private predicate parse_qsl(ControlFlowNode fromnode, CallNode tonode) {
+    // This could be implemented as `exists(FunctionValue` without the explicit six part,
+    // but then our tests will need to import +100 modules, so for now this slightly
+    // altered version gets to live on.
+    exists(Value parse_qsl |
+        (
+            parse_qsl = Value::named("six.moves.urllib.parse.parse_qsl")
+            or
+            // Python 2
+            parse_qsl = Value::named("urlparse.parse_qsl")
+            or
+            // Python 2 deprecated version of `urlparse.parse_qsl`
+            parse_qsl = Value::named("cgi.parse_qsl")
+            or
+            // Python 3
+            parse_qsl = Value::named("urllib.parse.parse_qsl")
+        ) and
+        tonode = parse_qsl.getACall() and
+        (
+            tonode.getArg(0) = fromnode
+            or
+            tonode.getArgByName("qs") = fromnode
+        )
+    )
+}
+
 /** A kind of "taint", representing an open file-like object from an external source. */
 class ExternalFileObject extends TaintKind {
-    ExternalFileObject() { this = "file[" + any(ExternalStringKind key) + "]" }
+    ExternalStringKind valueKind;
+
+    ExternalFileObject() { this = "file[" + valueKind + "]" }
 
     /** Gets the taint kind for the contents of this file */
-    TaintKind getValue() { this = "file[" + result + "]" }
+    TaintKind getValue() { result = valueKind }
 
     override TaintKind getTaintOfMethodResult(string name) {
-        name = "read" and result = this.getValue()
+        name in ["read", "readline"] and result = this.getValue()
+        or
+        name = "readlines" and result.(SequenceKind).getItem() = this.getValue()
     }
+
+    override TaintKind getTaintForIteration() { result = this.getValue() }
 }
 
 /**

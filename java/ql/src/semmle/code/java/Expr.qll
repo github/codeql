@@ -305,10 +305,6 @@ class CompileTimeConstantExpr extends Expr {
   /**
    * Gets the integer value of this expression, where possible.
    *
-   * All computations are performed on QL 32-bit `int`s, so no
-   * truncation is performed in the case of overflow within `byte` or `short`:
-   * `((byte)127)+((byte)1)` evaluates to 128 rather than to -128.
-   *
    * Note that this does not handle the following cases:
    *
    * - values of type `long`,
@@ -332,7 +328,10 @@ class CompileTimeConstantExpr extends Expr {
         else
           if cast.getType().hasName("short")
           then result = (val + 32768).bitAnd(65535) - 32768
-          else result = val
+          else
+            if cast.getType().hasName("char")
+            then result = val.bitAnd(65535)
+            else result = val
       )
       or
       result = this.(PlusExpr).getExpr().(CompileTimeConstantExpr).getIntValue()
@@ -413,7 +412,7 @@ class ArrayAccess extends Expr, @arrayaccess {
 /**
  * An array creation expression.
  *
- * For example, an expression such as `new String[3][2]` or
+ * For example, an expression such as `new String[2][3]` or
  * `new String[][] { { "a", "b", "c" } , { "d", "e", "f" } }`.
  *
  * In both examples, `String` is the type name. In the first
@@ -844,6 +843,7 @@ class EqualityTest extends BinaryExpr {
     this instanceof NEExpr
   }
 
+  /** Gets a boolean indicating whether this is `==` (true) or `!=` (false). */
   boolean polarity() {
     result = true and this instanceof EQExpr
     or
@@ -1048,6 +1048,18 @@ class MemberRefExpr extends FunctionalExpr, @memberref {
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "...::..." }
+}
+
+/** A conditional expression or a `switch` expression. */
+class ChooseExpr extends Expr {
+  ChooseExpr() { this instanceof ConditionalExpr or this instanceof SwitchExpr }
+
+  /** Gets a result expression of this `switch` or conditional expression. */
+  Expr getAResultExpr() {
+    result = this.(ConditionalExpr).getTrueExpr() or
+    result = this.(ConditionalExpr).getFalseExpr() or
+    result = this.(SwitchExpr).getAResult()
+  }
 }
 
 /**

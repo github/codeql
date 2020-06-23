@@ -182,7 +182,7 @@ class TranslatedValueCondition extends TranslatedCondition, TTranslatedValueCond
     )
   }
 
-  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag = ValueConditionConditionalBranchTag() and
     operandTag instanceof ConditionOperandTag and
     result = getValueExpr().getResult()

@@ -1,3 +1,7 @@
+/**
+ * Provides classes and predicates for reasoning about definitions and uses of variables.
+ */
+
 import cpp
 private import semmle.code.cpp.controlflow.StackVariableReachability
 private import semmle.code.cpp.dataflow.EscapesTree
@@ -135,6 +139,7 @@ library class DefOrUse extends ControlFlowNodeBase {
   }
 }
 
+/** A definition of a stack variable. */
 library class Def extends DefOrUse {
   Def() { definition(_, this) }
 
@@ -149,6 +154,7 @@ private predicate parameterIsOverwritten(Function f, Parameter p) {
   definitionBarrier(p, _)
 }
 
+/** A definition of a parameter. */
 library class ParameterDef extends DefOrUse {
   ParameterDef() {
     // Optimization: parameters that are not overwritten do not require
@@ -162,6 +168,7 @@ library class ParameterDef extends DefOrUse {
   }
 }
 
+/** A use of a stack variable. */
 library class Use extends DefOrUse {
   Use() { useOfVar(_, this) }
 

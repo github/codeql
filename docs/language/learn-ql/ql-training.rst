@@ -32,7 +32,7 @@ We recommend that you download `CodeQL for Visual Studio Code <https://help.semm
 
    Information
 
-   The presentations listed below are used in CodeQL and variant analysis training sessions run by Semmle engineers. 
+   The presentations listed below are used in CodeQL and variant analysis training sessions run by GitHub engineers. 
    Therefore, be aware that the slides are designed to be presented by an instructor. 
    If you are using the slides without an instructor, please use the additional notes to help guide you through the examples. 
 
@@ -60,5 +60,4 @@ CodeQL and variant analysis for Java
 Further reading
 ~~~~~~~~~~~~~~~
 
-- If you are completely new to CodeQL, look at our introductory topics in :doc:`Learning CodeQL <index>`.
-- To see examples of CodeQL queries that have been used to find security vulnerabilities and bugs in open source software projects, visit the `GitHub Security Lab website <https://securitylab.github.com/research>`__ and the associated `repository <https://github.com/github/security-lab>`__.
+- `GitHub Security Lab <https://securitylab.github.com/research>`__

@@ -1,0 +1,1 @@
+// semmle-extractor-options: --javac-args -cp ${testdir}/../../../../stubs/apache-commons-email-1.6.0:${testdir}/../../../../stubs/javamail-api-1.6.2

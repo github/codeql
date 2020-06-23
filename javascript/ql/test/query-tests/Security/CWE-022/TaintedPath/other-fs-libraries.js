@@ -31,3 +31,11 @@ function getFsModule(special) {
     return require("original-fs");
   }
 }
+
+var util = require("util");
+
+http.createServer(function(req, res) {
+  var path = url.parse(req.url, true).query.path;
+
+  util.promisify(fs.readFileSync)(path); // NOT OK
+});

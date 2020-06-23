@@ -201,3 +201,97 @@ app.get('/some/path', function(req, res) {
 function bad18(p) {
   return p.replace("/../", ""); // NOT OK
 }
+
+function typicalBadHtmlSanitizers(s) {
+	s().replace(/[<>]/g,''); // NOT OK
+	s().replace(/[<>&]/g, ''); // NOT OK
+	s().replace(/[<>"]/g, ''); // NOT OK
+	s().replace(/</g, '').replace(/>/g, ''); // NOT OK
+	s().replace(/</g, '').replace(/>/g, '').replace(/&/g, ''); // NOT OK
+	s().replace(/</g, '').replace(/&/g, '').replace(/>/g, ''); // NOT OK
+	s().replace(/&/g, '').replace(/>/g, '').replace(/</g, ''); // NOT OK
+
+	var s = s().replace(/</g, '');
+	s = s.replace(/>/g, '');  // NOT OK
+	s().replace(/</g, '&lt;').replace(/>/g, '&gt').replace(/&/g, '&amp;').replace(/"/g, '&#34;'); // OK
+	s().replace(/</g, '&lt;').replace(/>/g, '&gt').replace(/&/g, '&amp;').replace(/'/g, '&#39;'); // NOT OK
+
+	s().replace(/</g, '&lt;').replace(/>/g, '&gt').replace(RE, function(match) {/* ... */ }); // OK (probably)
+
+	s().replace(/[<>'"&]/g,''); // OK
+
+	s().replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/&(?![\w\#]+;)/g, '&amp;'); // OK
+
+	s().replace(!encode ? /&(?!#?\w+;)/g : /&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;'); // OK (and not recognized due to the ternary)
+
+	s().replace(/[\\/:\*\?"<>\|]/g, ''); // OK
+
+	s().replace(/[<>]/g,'_'); // OK (but probably unsafe)
+
+	s().replace(/&/g, "&gt;"); // OK
+
+	s().replace(/[\#\%4\/\-\~\>8\_\@0\!\&3\[651d\=e7fA2D\(aFBb]/g, ""); // OK
+
+	s().replace(/[<>]/g,'').replace(/[^a-z]/g, ''); // OK
+
+	s().replace(/[<>]/g,'').replace(/[^abc]/g, ''); // OK
+
+	s().replace(/[<>]/g,'').replace(/[ -~]/g, ''); // OK
+}
+
+function incompleteHtmlAttributeSanitization() {
+	'="' + s().replace(/[<>]/g,'') + '"'; // NOT OK
+	'="' + s().replace(/[<>&]/g, '') + '"'; // NOT OK
+	'="' + s().replace(/[<>"]/g, '') + '"'; // OK (maybe, since the attribute name is unknown)
+	'="' + s().replace(/[<>&"]/g,'') + '"'; // OK
+	'="' + s().replace(/[&"]/g,'') + '"'; // OK
+
+	'="' + s().replace(/[<>&']/g,'') + '"'; // NOT OK
+	"='" + s().replace(/[<>&"]/g,'') + "'"; // OK (but given the context, it is probably not fine)
+	"='" + s().replace(/[<>&']/g,'') + "'"; // NOT OK (but given the context, it is probably fine)
+
+	'onFunkyEvent="' + s().replace(/[<>"]/g, '') + '"'; // NOT OK
+	'<div noise onFunkyEvent="' + s().replace(/[<>"]/g, '') + '"'; // NOT OK
+	'<div noise monday="' + s().replace(/[<>"]/g, '') + '"'; // OK
+	'monday="' + s().replace(/[<>"]/g, '') + '"'; // OK
+}
+
+function multiStepSanitization() {
+	function escapeHTML(value) {
+		return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+	}
+	function attr_str(a) {
+		return ' ' + a.name + '="' + escapeHTML(a.value).replace(/"/g, '&quot;') + '"'; // OK
+	}
+	result += '<' + tag(node) + [].map.call(x, attr_str).join('') + '>';
+}
+
+function moreIncompleteHtmlAttributeSanitization() {
+	'<a' + noise + 'onclick="javascript:document.foo.bar(\'' + s().replace(/[<>"]/g, '') + '\'); return false;">'; // NOT OK
+	'="' + s().replace(/[<>]/g,'').replace(/[^\w ]+/g, '') + '"'; // OK
+	'="' + encodeURIComponent(s().replace(/[<>]/g,'')) + '"'; // OK
+
+	var arr = s().val().trim().replace(/^,|,$/g , '').replace(/^;|;$/g , '').replace(/<|>/g , '');
+	'="' + arr.join(" ") + '"'; // NOT OK
+	var arr2 = s().val().trim().replace(/^,|,$/g , '').replace(/^;|;$/g , '').replace(/<|>/g , '')
+	arr2 = arr2.replace(/"/g,"");
+	'="' + arr2.join(" ") + '"'; // OK
+
+	var x;
+	x = x.replace(/&/g, '&amp;');
+	x = x.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+	'onclick="' + x + '"'; // NOT OK - but not flagged since the `x` replace chain is extended below
+	x = x.replace(/"/g, '&quot;');
+	'onclick="' + x + '"'; // OK
+
+	var y;
+	if (escapeAmpersand) {
+		y = y.replace(/&/g, '&amp;');
+	}
+	y = y.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+	'onclick="' + y + '"'; // NOT OK - but not flagged since the `x` replace chain is extended below
+	if (escapeQuotes) {
+		y = y.replace(/"/g, '&quot;');
+	}
+	'onclick="' + y + '"'; // OK
+}

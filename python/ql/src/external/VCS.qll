@@ -23,7 +23,7 @@ class Commit extends @svnentry {
     string getMessage() { svnentrymsg(this, result) }
 
     string getAnAffectedFilePath(string action) {
-        exists(File rawFile | svnaffectedfiles(this, rawFile, action) | result = rawFile.getName())
+        exists(File rawFile | svnaffectedfiles(this, rawFile, action) | result = rawFile.getAbsolutePath())
     }
 
     string getAnAffectedFilePath() { result = getAnAffectedFilePath(_) }

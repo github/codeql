@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Information written to log files can be of a sensitive nature and give valuable guidance to an attacker or expose sensitive user information. Third-party logging utilities like Log4J and SLF4J are widely used in Java projects. When sensitive information is written to logs without properly set logging levels, it is accessible to potential attackers who can use it to gain access to
+file storage.</p>
+</overview>
+
+<recommendation>
+<p>Do not write secrets into the log files and enforce proper logging level control.</p>
+</recommendation>
+
+<example>
+<p>The following example shows two ways of logging sensitive information. In the 'BAD' case,
+the credentials are simply written to a debug log. In the 'GOOD' case, the credentials are never written to debug logs.</p>
+<sample src="SensitiveInfoLog.java" />
+</example>
+
+<references>
+<li>
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html">OWASP Logging Guide</a>
+</li>
+</references>
+</qhelp>

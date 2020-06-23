@@ -3,6 +3,7 @@
  */
 
 import javascript
+private import internal.StmtContainers
 
 /**
  * A program element corresponding to JavaScript code, such as an expression
@@ -20,8 +21,12 @@ import javascript
  * abs(-42);
  * ```
  */
-class ASTNode extends @ast_node, Locatable {
+class ASTNode extends @ast_node, NodeInStmtContainer {
   override Location getLocation() { hasLocation(this, result) }
+
+  override File getFile() {
+    result = getLocation().getFile() // Specialized for performance reasons
+  }
 
   /** Gets the first token belonging to this element. */
   Token getFirstToken() {
@@ -122,6 +127,42 @@ class ASTNode extends @ast_node, Locatable {
   predicate inExternsFile() { getTopLevel().isExterns() }
 
   /**
+   * Holds if this is an ambient node that is not a `TypeExpr` and is not inside a `.d.ts` file
+   *
+   * Since the overwhelming majority of ambient nodes are `TypeExpr` or inside `.d.ts` files,
+   * we avoid caching them.
+   */
+  cached
+  private predicate isAmbientInternal() {
+    getParent().isAmbientInternal()
+    or
+    not isAmbientTopLevel(getTopLevel()) and
+    (
+      this instanceof ExternalModuleDeclaration
+      or
+      this instanceof GlobalAugmentationDeclaration
+      or
+      this instanceof ExportAsNamespaceDeclaration
+      or
+      this instanceof TypeAliasDeclaration
+      or
+      this instanceof InterfaceDeclaration
+      or
+      hasDeclareKeyword(this)
+      or
+      hasTypeKeyword(this)
+      or
+      // An export such as `export declare function f()` should be seen as ambient.
+      hasDeclareKeyword(this.(ExportNamedDeclaration).getOperand())
+      or
+      exists(Function f |
+        this = f and
+        not f.hasBody()
+      )
+    )
+  }
+
+  /**
    * Holds if this is part of an ambient declaration or type annotation in a TypeScript file.
    *
    * A declaration is ambient if it occurs under a `declare` modifier or is
@@ -130,8 +171,21 @@ class ASTNode extends @ast_node, Locatable {
    * The TypeScript compiler emits no code for ambient declarations, but they
    * can affect name resolution and type checking at compile-time.
    */
-  predicate isAmbient() { getParent().isAmbient() }
+  pragma[inline]
+  predicate isAmbient() {
+    isAmbientInternal()
+    or
+    isAmbientTopLevel(getTopLevel())
+    or
+    this instanceof TypeExpr
+  }
 }
+
+/**
+ * Holds if the given file is a `.d.ts` file.
+ */
+cached
+private predicate isAmbientTopLevel(TopLevel tl) { tl.getFile().getBaseName().matches("%.d.ts") }
 
 /**
  * A toplevel syntactic unit; that is, a stand-alone script, an inline script
@@ -193,11 +247,6 @@ class TopLevel extends @toplevel, StmtContainer {
   override ControlFlowNode getFirstControlFlowNode() { result = getEntry() }
 
   override string toString() { result = "<toplevel>" }
-
-  override predicate isAmbient() {
-    getFile().getFileType().isTypeScript() and
-    getFile().getBaseName().matches("%.d.ts")
-  }
 }
 
 /**
@@ -398,9 +447,9 @@ class StmtContainer extends @stmt_container, ASTNode {
  */
 module AST {
   /**
-   * A program element that evaluates to a value at runtime. This includes expressions,
-   * but also function and class declaration statements, as well as TypeScript
-   * namespace and enum declarations.
+   * A program element that evaluates to a value or destructures a value at runtime.
+   * This includes expressions and destructuring patterns, but also function and
+   * class declaration statements, as well as TypeScript namespace and enum declarations.
    *
    * Examples:
    *

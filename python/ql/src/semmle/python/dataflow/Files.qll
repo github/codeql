@@ -1,5 +1,5 @@
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 
 class OpenFile extends TaintKind {
     OpenFile() { this = "file.open" }
@@ -11,7 +11,7 @@ class OpenFileConfiguration extends TaintTracking::Configuration {
     OpenFileConfiguration() { this = "Open file configuration" }
 
     override predicate isSource(DataFlow::Node src, TaintKind kind) {
-        theOpenFunction().(FunctionObject).getACall() = src.asCfgNode() and
+        src.asCfgNode() = Value::named("open").getACall() and
         kind instanceof OpenFile
     }
 

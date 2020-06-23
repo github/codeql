@@ -24,6 +24,11 @@ class OptionalPropertyName extends string {
 abstract class TypeTrackingPseudoProperty extends string {
   bindingset[this]
   TypeTrackingPseudoProperty() { any() }
+
+  /**
+   * Gets a property name that `this` can be copied to in a `LoadStoreStep(this, result)`.
+   */
+  string getLoadStoreToProp() { none() }
 }
 
 /**
@@ -35,7 +40,10 @@ newtype TStepSummary =
   ReturnStep() or
   StoreStep(PropertyName prop) or
   LoadStep(PropertyName prop) or
-  LoadStoreStep(PropertyName prop)
+  CopyStep(PropertyName prop) or
+  LoadStoreStep(PropertyName fromProp, PropertyName toProp) {
+    exists(TypeTrackingPseudoProperty prop | fromProp = prop and toProp = prop.getLoadStoreToProp())
+  }
 
 /**
  * INTERNAL: Use `TypeTracker` or `TypeBackTracker` instead.
@@ -55,7 +63,11 @@ class StepSummary extends TStepSummary {
     or
     exists(string prop | this = LoadStep(prop) | result = "load " + prop)
     or
-    exists(string prop | this = LoadStoreStep(prop) | result = "in " + prop)
+    exists(string prop | this = CopyStep(prop) | result = "copy " + prop)
+    or
+    exists(string fromProp, string toProp | this = LoadStoreStep(fromProp, toProp) |
+      result = "load " + fromProp + " and store to " + toProp
+    )
   }
 }
 
@@ -98,6 +110,15 @@ module StepSummary {
       or
       basicLoadStep(pred, succ, prop) and
       summary = LoadStep(prop)
+      or
+      any(AdditionalTypeTrackingStep st).storeStep(pred, succ, prop) and
+      summary = StoreStep(prop)
+      or
+      any(AdditionalTypeTrackingStep st).loadStep(pred, succ, prop) and
+      summary = LoadStep(prop)
+      or
+      any(AdditionalTypeTrackingStep st).loadStoreStep(pred, succ, prop) and
+      summary = CopyStep(prop)
     )
     or
     any(AdditionalTypeTrackingStep st).step(pred, succ) and

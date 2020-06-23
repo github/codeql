@@ -47,4 +47,22 @@
   });
 
   sink(arr[0]); // OK - tuple like usage. 
+
+  for (const x of arr) {
+    sink(x); // NOT OK
+  }
+
+  for (const x of Array.from(arr)) {
+    sink(x); // NOT OK
+  }
+
+  for (const x of [...arr]) {
+    sink(x); // NOT OK
+  }
+  
+  var arr7 = [];
+  arr7.push(...arr);
+  for (const x of arr7) {
+    sink(x); // NOT OK
+  }
 });

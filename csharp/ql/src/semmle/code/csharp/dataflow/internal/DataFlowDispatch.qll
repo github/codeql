@@ -118,22 +118,51 @@ private module Cached {
   }
 
   /**
+   * Holds if the set of viable implementations that can be called by `call`
+   * might be improved by knowing the call context. This is the case if the
+   * call is a delegate call, or if the qualifier accesses a parameter of
+   * the enclosing callable `c` (including the implicit `this` parameter).
+   */
+  private predicate mayBenefitFromCallContext(DataFlowCall call, Callable c) {
+    c = call.getEnclosingCallable() and
+    (
+      exists(CallContext cc | exists(viableDelegateCallable(call, cc)) |
+        not cc instanceof EmptyCallContext
+      )
+      or
+      call.(NonDelegateDataFlowCall).getDispatchCall().mayBenefitFromCallContext()
+    )
+  }
+
+  /**
    * Holds if the call context `ctx` reduces the set of viable run-time
    * targets of call `call` in `c`.
    */
   cached
   predicate reducedViableImplInCallContext(DataFlowCall call, DataFlowCallable c, DataFlowCall ctx) {
-    c = viableImpl(ctx) and
-    c = call.getEnclosingCallable() and
-    exists(CallContext cc | exists(viableDelegateCallable(call, cc)) |
-      not cc instanceof EmptyCallContext
+    exists(int tgts, int ctxtgts |
+      mayBenefitFromCallContext(call, c) and
+      c = viableCallable(ctx) and
+      ctxtgts = count(viableImplInCallContext(call, ctx)) and
+      tgts = strictcount(viableImpl(call)) and
+      ctxtgts < tgts
     )
   }
 
+  /**
+   * Gets a viable dispatch target of `call` in the context `ctx`. This is
+   * restricted to those `call`s for which a context might make a difference.
+   */
   private DotNet::Callable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
     exists(ArgumentCallContext cc | result = viableDelegateCallable(call, cc) |
       cc.isArgument(ctx.getExpr(), _)
     )
+    or
+    result =
+      call
+          .(NonDelegateDataFlowCall)
+          .getDispatchCall()
+          .getADynamicTargetInCallContext(ctx.(NonDelegateDataFlowCall).getDispatchCall())
   }
 
   /**
@@ -155,9 +184,10 @@ private module Cached {
   cached
   predicate reducedViableImplInReturn(DataFlowCallable c, DataFlowCall call) {
     exists(int tgts, int ctxtgts |
+      mayBenefitFromCallContext(call, _) and
       c = viableImpl(call) and
-      ctxtgts = strictcount(DataFlowCall ctx | c = viableImplInCallContext(call, ctx)) and
-      tgts = strictcount(DataFlowCall ctx | viableImpl(ctx) = call.getEnclosingCallable()) and
+      ctxtgts = count(DataFlowCall ctx | c = viableImplInCallContext(call, ctx)) and
+      tgts = strictcount(DataFlowCall ctx | viableCallable(ctx) = call.getEnclosingCallable()) and
       ctxtgts < tgts
     )
   }
@@ -278,6 +308,9 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
 
   NonDelegateDataFlowCall() { this = TNonDelegateCall(cfn, dc) }
 
+  /** Gets the underlying call. */
+  DispatchCall getDispatchCall() { result = dc }
+
   override DotNet::Callable getARuntimeTarget() {
     result = getCallableForDataFlow(dc.getADynamicTarget())
   }
@@ -346,11 +379,14 @@ class ImplicitDelegateDataFlowCall extends DelegateDataFlowCall, TImplicitDelega
   /** Gets the number of parameters of the supplied delegate. */
   int getNumberOfDelegateParameters() { result = arg.getDelegateType().getNumberOfParameters() }
 
+  /** Gets the type of the `i`th parameter of the supplied delegate. */
+  Type getDelegateParameterType(int i) { result = arg.getDelegateType().getParameter(i).getType() }
+
   /** Gets the return type of the supplied delegate. */
   Type getDelegateReturnType() { result = arg.getDelegateType().getReturnType() }
 
   override DotNet::Callable getARuntimeTarget(CallContext::CallContext cc) {
-    result = cfn.getElement().(DelegateArgumentToLibraryCallable).getARuntimeTarget(cc)
+    result = arg.getARuntimeTarget(cc)
   }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }

@@ -53,7 +53,11 @@ class TypeTracker extends TTypeTracker {
   TypeTracker append(StepSummary step) {
     step = LevelStep() and result = this
     or
-    step = LoadStoreStep(prop) and result = this
+    exists(string toProp | step = LoadStoreStep(prop, toProp) |
+      result = MkTypeTracker(hasCall, toProp)
+    )
+    or
+    step = CopyStep(prop) and result = this
     or
     step = CallStep() and result = MkTypeTracker(true, prop)
     or
@@ -213,7 +217,11 @@ class TypeBackTracker extends TTypeBackTracker {
   TypeBackTracker prepend(StepSummary step) {
     step = LevelStep() and result = this
     or
-    step = LoadStoreStep(prop) and result = this
+    exists(string fromProp | step = LoadStoreStep(fromProp, prop) |
+      result = MkTypeBackTracker(hasReturn, fromProp)
+    )
+    or
+    step = CopyStep(prop) and result = this
     or
     step = CallStep() and hasReturn = false and result = this
     or
@@ -327,5 +335,20 @@ abstract class AdditionalTypeTrackingStep extends DataFlow::Node {
   /**
    * Holds if type-tracking should step from `pred` to `succ`.
    */
-  abstract predicate step(DataFlow::Node pred, DataFlow::Node succ);
+  predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
+
+  /**
+   * Holds if type-tracking should step from `pred` into the `prop` property of `succ`.
+   */
+  predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) { none() }
+
+  /**
+   * Holds if type-tracking should step from the `prop` property of `pred` to `succ`.
+   */
+  predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
+
+  /**
+   * Holds if type-tracking should step from the `prop` property of `pred` to the same property in `succ`.
+   */
+  predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) { none() }
 }

@@ -75,7 +75,7 @@ abstract class TranslatedVariableInitialization extends TranslatedElement, Initi
     child = getInitialization() and result = getInitializationSuccessor()
   }
 
-  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     hasUninitializedInstruction() and
     tag = InitializerStoreTag() and
     operandTag instanceof AddressOperandTag and
@@ -262,7 +262,7 @@ class TranslatedSimpleDirectInitialization extends TranslatedDirectInitializatio
     child = getInitializer() and result = getInstruction(InitializerStoreTag())
   }
 
-  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag = InitializerStoreTag() and
     (
       operandTag instanceof AddressOperandTag and
@@ -355,14 +355,11 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
     child = getInitializer() and result = getInstruction(InitializerLoadStringTag())
   }
 
-  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag = InitializerLoadStringTag() and
     (
       operandTag instanceof AddressOperandTag and
       result = getInitializer().getResult()
-      or
-      operandTag instanceof LoadOperandTag and
-      result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
     )
     or
     tag = InitializerStoreTag() and
@@ -418,17 +415,6 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
     )
   }
 
-  override int getInstructionResultSize(InstructionTag tag) {
-    exists(int elementCount |
-      zeroInitRange(_, elementCount) and
-      (
-        tag = ZeroPadStringConstantTag() or
-        tag = ZeroPadStringStoreTag()
-      ) and
-      result = elementCount * getElementType().getSize()
-    )
-  }
-
   private Type getElementType() {
     result = getContext().getTargetType().getUnspecifiedType().(ArrayType).getBaseType()
   }
@@ -461,7 +447,9 @@ class TranslatedConstructorInitialization extends TranslatedDirectInitialization
     child = getInitializer() and result = getParent().getChildSuccessor(this)
   }
 
-  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) { none() }
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    none()
+  }
 
   override Instruction getReceiver() { result = getContext().getTargetAddress() }
 }
@@ -508,7 +496,7 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
     resultType = getTypeForGLValue(field.getType())
   }
 
-  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag = getFieldAddressTag() and
     operandTag instanceof UnaryOperandTag and
     result = getParent().(InitializationContext).getTargetAddress()
@@ -599,8 +587,8 @@ class TranslatedFieldValueInitialization extends TranslatedFieldInitialization,
     result = getZeroValue(field.getUnspecifiedType())
   }
 
-  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    result = TranslatedFieldInitialization.super.getInstructionOperand(tag, operandTag)
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    result = TranslatedFieldInitialization.super.getInstructionRegisterOperand(tag, operandTag)
     or
     tag = getFieldDefaultValueStoreTag() and
     (
@@ -656,7 +644,7 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
     kind instanceof GotoEdge
   }
 
-  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag = getElementAddressTag() and
     (
       operandTag instanceof LeftOperandTag and
@@ -773,17 +761,8 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
     result = getZeroValue(getElementType())
   }
 
-  override int getInstructionResultSize(InstructionTag tag) {
-    elementCount > 1 and
-    (
-      tag = getElementDefaultValueTag() or
-      tag = getElementDefaultValueStoreTag()
-    ) and
-    result = elementCount * getElementType().getSize()
-  }
-
-  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    result = TranslatedElementInitialization.super.getInstructionOperand(tag, operandTag)
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    result = TranslatedElementInitialization.super.getInstructionRegisterOperand(tag, operandTag)
     or
     tag = getElementDefaultValueStoreTag() and
     (
@@ -861,7 +840,7 @@ abstract class TranslatedBaseStructorCall extends TranslatedStructorCallFromStru
 
   final override Instruction getReceiver() { result = getInstruction(OnlyInstructionTag()) }
 
-  final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+  final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag = OnlyInstructionTag() and
     operandTag instanceof UnaryOperandTag and
     result = getTranslatedFunction(getFunction()).getInitializeThisInstruction()

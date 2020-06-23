@@ -1,3 +1,7 @@
+/**
+ * Provides classes representing C structure members and C++ non-static member variables.
+ */
+
 import semmle.code.cpp.Variable
 import semmle.code.cpp.Enum
 import semmle.code.cpp.exprs.Access

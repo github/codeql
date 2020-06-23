@@ -8,16 +8,28 @@ private import DataFlowDispatch
  * to the callable. Instance arguments (`this` pointer) are also included.
  */
 class ArgumentNode extends InstructionNode {
-  ArgumentNode() { exists(CallInstruction call | this.getInstruction() = call.getAnArgument()) }
+  ArgumentNode() {
+    exists(CallInstruction call |
+      instr = call.getAnArgument()
+      or
+      instr.(ReadSideEffectInstruction).getPrimaryInstruction() = call
+    )
+  }
 
   /**
    * Holds if this argument occurs at the given position in the given call.
    * The instance argument is considered to have index `-1`.
    */
   predicate argumentOf(DataFlowCall call, int pos) {
-    this.getInstruction() = call.getPositionalArgument(pos)
+    instr = call.getPositionalArgument(pos)
     or
-    this.getInstruction() = call.getThisArgument() and pos = -1
+    instr = call.getThisArgument() and pos = -1
+    or
+    exists(ReadSideEffectInstruction read |
+      read = instr and
+      read.getPrimaryInstruction() = call and
+      pos = getArgumentPosOfSideEffect(read.getIndex())
+    )
   }
 
   /** Gets the call in which this node is an argument. */
@@ -74,7 +86,12 @@ class ReturnValueNode extends ReturnNode {
 class ReturnIndirectionNode extends ReturnNode {
   override ReturnIndirectionInstruction primary;
 
-  override ReturnKind getKind() { result = TIndirectReturnKind(primary.getParameter().getIndex()) }
+  override ReturnKind getKind() {
+    result = TIndirectReturnKind(-1) and
+    primary.isThisIndirection()
+    or
+    result = TIndirectReturnKind(primary.getParameter().getIndex())
+  }
 }
 
 /** A data flow node that represents the output of a call. */
@@ -111,8 +128,13 @@ private class SideEffectOutNode extends OutNode {
  * `kind`.
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
-  result.getCall() = call and
-  result.getReturnKind() = kind
+  // There should be only one `OutNode` for a given `(call, kind)` pair. Showing the optimizer that
+  // this is true helps it make better decisions downstream, especially in virtual dispatch.
+  result =
+    unique(OutNode outNode |
+      outNode.getCall() = call and
+      outNode.getReturnKind() = kind
+    )
 }
 
 /**
@@ -138,12 +160,6 @@ class Content extends TContent {
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
   }
-
-  /** Gets the type of the object containing this content. */
-  abstract Type getContainerType();
-
-  /** Gets the type of this content. */
-  abstract Type getType();
 }
 
 private class FieldContent extends Content, TFieldContent {
@@ -158,26 +174,32 @@ private class FieldContent extends Content, TFieldContent {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
   }
-
-  override Type getContainerType() { result = f.getDeclaringType() }
-
-  override Type getType() { result = f.getType() }
 }
 
 private class CollectionContent extends Content, TCollectionContent {
   override string toString() { result = "collection" }
-
-  override Type getContainerType() { none() }
-
-  override Type getType() { none() }
 }
 
 private class ArrayContent extends Content, TArrayContent {
   override string toString() { result = "array" }
+}
 
-  override Type getContainerType() { none() }
+private predicate storeStepNoChi(Node node1, Content f, PostUpdateNode node2) {
+  exists(FieldAddressInstruction fa, StoreInstruction store |
+    store = node2.asInstruction() and
+    store.getDestinationAddress() = fa and
+    store.getSourceValue() = node1.asInstruction() and
+    f.(FieldContent).getField() = fa.getField()
+  )
+}
 
-  override Type getType() { none() }
+private predicate storeStepChi(Node node1, Content f, PostUpdateNode node2) {
+  exists(FieldAddressInstruction fa, StoreInstruction store |
+    node1.asInstruction() = store and
+    store.getDestinationAddress() = fa and
+    node2.asInstruction().(ChiInstruction).getPartial() = store and
+    f.(FieldContent).getField() = fa.getField()
+  )
 }
 
 /**
@@ -186,7 +208,8 @@ private class ArrayContent extends Content, TArrayContent {
  * value of `node1`.
  */
 predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
-  none() // stub implementation
+  storeStepNoChi(node1, f, node2) or
+  storeStepChi(node1, f, node2)
 }
 
 /**
@@ -195,7 +218,12 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
  * `node2`.
  */
 predicate readStep(Node node1, Content f, Node node2) {
-  none() // stub implementation
+  exists(FieldAddressInstruction fa, LoadInstruction load |
+    load.getSourceAddress() = fa and
+    node1.asInstruction() = load.getSourceValueOperand().getAnyDef() and
+    fa.getField() = f.(FieldContent).getField() and
+    load = node2.asInstruction()
+  )
 }
 
 /**
@@ -270,3 +298,6 @@ predicate isImmutableOrUnobservable(Node n) {
   // complex to model here.
   any()
 }
+
+/** Holds if `n` should be hidden from path explanations. */
+predicate nodeIsHidden(Node n) { none() }

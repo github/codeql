@@ -397,8 +397,6 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    */
   predicate isAbstract() { exists(MethodDeclaration md | this = md.getBody() | md.isAbstract()) }
 
-  override predicate isAmbient() { getParent().isAmbient() or not hasBody() }
-
   /**
    * Holds if this function cannot be invoked using `new` because it
    * is of the given `kind`.

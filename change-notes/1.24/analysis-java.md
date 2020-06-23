@@ -4,7 +4,7 @@ The following changes in version 1.24 affect Java analysis in all applications.
 
 ## General improvements
 
-* Alert suppression can now be done with single-line block comments (`/* ... */`) as well as line comments (`// ...`).
+* You can now suppress alerts using either single-line block comments (`/* ... */`) or line comments (`// ...`).
 * A `Customizations.qll` file has been added to allow customizations of the standard library that apply to all queries.
 
 ## New queries
@@ -21,16 +21,16 @@ The following changes in version 1.24 affect Java analysis in all applications.
 
 | **Query**                    | **Expected impact**    | **Change**                        |
 |------------------------------|------------------------|-----------------------------------|
-| Dereferenced variable may be null (`java/dereferenced-value-may-be-null`) | Fewer false positives | Final fields with a non-null initializer are no longer reported. |
-| Expression always evaluates to the same value (`java/evaluation-to-constant`) | Fewer false positives | Expressions of the form `0 * x` are usually intended and no longer reported. Also left shift of ints by 32 bits and longs by 64 bits are no longer reported as they are not constant, these results are instead reported by the new query `java/lshift-larger-than-type-width`. |
-| Useless null check (`java/useless-null-check`) | More true positives | Useless checks on final fields with a non-null initializer are now reported. |
+| Dereferenced variable may be null (`java/dereferenced-value-may-be-null`) | Fewer false positive results | Final fields with a non-null initializer are no longer reported. |
+| Expression always evaluates to the same value (`java/evaluation-to-constant`) | Fewer false positive results | Expressions of the form `0 * x` are usually intended and no longer reported. Also left shift of ints by 32 bits and longs by 64 bits are no longer reported as they are not constant, these results are instead reported by the new query `java/lshift-larger-than-type-width`. |
+| Useless null check (`java/useless-null-check`) | More true positive results | Useless checks on final fields with a non-null initializer are now reported. |
 
 ## Changes to libraries
 
 * The data-flow library has been improved, which affects and improves most security queries. The improvements are:
-  - Track flow through methods that combine taint tracking with flow through fields.
-  - Track flow through clone-like methods, that is, methods that read contents of a field from a
-    parameter and stores the value in the field of a returned object.
+    - Track flow through methods that combine taint tracking with flow through fields.
+    - Track flow through clone-like methods, that is, methods that read contents of a field from a
+      parameter and stores the value in the field of a returned object.
 * Identification of test classes has been improved. Previously, one of the
   match conditions would classify any class with a name containing the string
   "Test" as a test class, but now this matching has been replaced with one that
@@ -38,6 +38,6 @@ The following changes in version 1.24 affect Java analysis in all applications.
   general file classification mechanism and thus suppression of alerts, and
   also any security queries using taint tracking, as test classes act as
   default barriers stopping taint flow.
-* Parentheses are now no longer modelled directly in the AST, that is, the
+* Parentheses are now no longer modeled directly in the AST, that is, the
   `ParExpr` class is empty. Instead, a parenthesized expression can be
   identified with the `Expr.isParenthesized()` member predicate.

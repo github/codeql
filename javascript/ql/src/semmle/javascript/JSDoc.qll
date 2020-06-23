@@ -191,8 +191,6 @@ class JSDocTypeExpr extends @jsdoc_type_expr, JSDocTypeExprParent, TypeAnnotatio
     )
   }
 
-  override StmtContainer getContainer() { result = getEnclosingStmt().getContainer() }
-
   override Function getEnclosingFunction() { result = getContainer() }
 
   override TopLevel getTopLevel() { result = getEnclosingStmt().getTopLevel() }

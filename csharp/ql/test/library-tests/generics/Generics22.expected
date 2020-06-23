@@ -1,6 +1,0 @@
-| generics.cs:152:14:152:19 | CM1 | Double |
-| generics.cs:152:14:152:19 | CM1 | Int32 |
-| generics.cs:153:11:153:16 | CM2 | Double |
-| generics.cs:153:11:153:16 | CM2 | Int32 |
-| generics.cs:157:23:157:29 | CM3 | Double |
-| generics.cs:157:23:157:29 | CM3 | Double |

@@ -12,12 +12,12 @@ abstract class Assertion extends Locatable {
 }
 
 /**
- * A libc assert, as defined in assert.h. A macro with the head
- * "assert(expr)" that expands to a conditional expression which
- * may terminate the program.
+ * A libc assert, as defined in assert.h. A macro with a head
+ * that matches the prefix "assert(", and expands to a conditional
+ * expression which may terminate the program.
  */
 class LibcAssert extends MacroInvocation, Assertion {
-  LibcAssert() { this.getMacro().getHead() = "assert(expr)" }
+  LibcAssert() { this.getMacro().getHead().matches("assert(%") }
 
   override Expr getAsserted() {
     exists(ConditionalExpr ce | this.getAGeneratedElement() = ce | result = ce.getCondition())

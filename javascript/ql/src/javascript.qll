@@ -12,6 +12,7 @@ import semmle.javascript.Base64
 import semmle.javascript.CFG
 import semmle.javascript.Classes
 import semmle.javascript.Closure
+import semmle.javascript.Collections
 import semmle.javascript.Comments
 import semmle.javascript.Concepts
 import semmle.javascript.Constants
@@ -36,6 +37,7 @@ import semmle.javascript.JsonParsers
 import semmle.javascript.JSX
 import semmle.javascript.Lines
 import semmle.javascript.Locations
+import semmle.javascript.MembershipCandidates
 import semmle.javascript.Modules
 import semmle.javascript.NodeJS
 import semmle.javascript.NPM

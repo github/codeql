@@ -115,3 +115,8 @@ The ``toString()`` predicate
 ----------------------------
 
 All classes except those that extend primitive types, must provide a ``string toString()`` member predicate. The query compiler will complain if you don't. The uniqueness warning, noted above for locations, applies here too.
+
+Further reading
+---------------
+
+- `CodeQL repository <https://github.com/github/codeql>`__

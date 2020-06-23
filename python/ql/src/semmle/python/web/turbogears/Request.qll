@@ -1,5 +1,5 @@
 import python
-import semmle.python.security.strings.Untrusted
+import semmle.python.security.strings.External
 import semmle.python.web.Http
 import TurboGears
 
@@ -22,5 +22,5 @@ class UnvalidatedControllerMethodParameter extends HttpRequestTaintSource {
         )
     }
 
-    override predicate isSourceOf(TaintKind kind) { kind instanceof UntrustedStringKind }
+    override predicate isSourceOf(TaintKind kind) { kind instanceof ExternalStringKind }
 }

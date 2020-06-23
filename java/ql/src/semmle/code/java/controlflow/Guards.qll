@@ -1,3 +1,8 @@
+/**
+ * Provides classes and predicates for reasoning about guards and the control
+ * flow elements controlled by those guards.
+ */
+
 import java
 private import semmle.code.java.controlflow.Dominance
 private import semmle.code.java.controlflow.internal.GuardsLogic

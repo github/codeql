@@ -260,6 +260,23 @@ module ClientRequest {
     }
   }
 
+  /** An expression that is used as a credential in a request. */
+  private class AuthorizationHeader extends CredentialsExpr {
+    AuthorizationHeader() {
+      exists(DataFlow::PropWrite write | write.getPropertyName().regexpMatch("(?i)authorization") |
+        this = write.getRhs().asExpr()
+      )
+      or
+      exists(DataFlow::MethodCallNode call | call.getMethodName() = ["append", "set"] |
+        call.getNumArgument() = 2 and
+        call.getArgument(0).getStringValue().regexpMatch("(?i)authorization") and
+        this = call.getArgument(1).asExpr()
+      )
+    }
+
+    override string getCredentialsKind() { result = "authorization header" }
+  }
+
   /**
    * A model of a URL request made using an implementation of the `fetch` API.
    */
@@ -267,18 +284,14 @@ module ClientRequest {
     DataFlow::Node url;
 
     FetchUrlRequest() {
-      exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
-        (
-          moduleName = "node-fetch" or
-          moduleName = "cross-fetch" or
-          moduleName = "isomorphic-fetch"
-        ) and
-        callee = DataFlow::moduleImport(moduleName) and
+      exists(DataFlow::SourceNode fetch |
+        fetch = DataFlow::moduleImport(["node-fetch", "cross-fetch", "isomorphic-fetch"])
+        or
+        fetch = DataFlow::globalVarRef("fetch") // https://fetch.spec.whatwg.org/#fetch-api
+      |
+        this = fetch.getACall() and
         url = getArgument(0)
       )
-      or
-      this = DataFlow::globalVarRef("fetch").getACall() and
-      url = getArgument(0)
     }
 
     override DataFlow::Node getUrl() { result = url }

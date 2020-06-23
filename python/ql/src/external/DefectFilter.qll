@@ -26,7 +26,7 @@ class DefectResult extends int {
 
     /** Gets the file in which this query result was reported. */
     File getFile() {
-        exists(string path | defectResults(this, _, path, _, _, _, _, _) and result.getName() = path)
+        exists(string path | defectResults(this, _, path, _, _, _, _, _) and result.getAbsolutePath() = path)
     }
 
     /** Gets the file path in which this query result was reported. */
@@ -54,7 +54,7 @@ class DefectResult extends int {
     /** Gets the URL corresponding to the location of this query result. */
     string getURL() {
         result =
-            "file://" + getFile().getName() + ":" + getStartLine() + ":" + getStartColumn() + ":" +
+            "file://" + getFile().getAbsolutePath() + ":" + getStartLine() + ":" + getStartColumn() + ":" +
                 getEndLine() + ":" + getEndColumn()
     }
 }

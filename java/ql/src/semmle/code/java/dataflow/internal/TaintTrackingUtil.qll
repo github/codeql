@@ -296,6 +296,7 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   (
     m.getName() = "concat" or
     m.getName() = "endsWith" or
+    m.getName() = "formatted" or
     m.getName() = "getBytes" or
     m.getName() = "split" or
     m.getName() = "substring" or
@@ -321,7 +322,11 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   )
   or
   m.getDeclaringType().getQualifiedName().matches("%StringWriter") and
-  m.getName() = "toString"
+  (
+    m.getName() = "getBuffer"
+    or
+    m.getName() = "toString"
+  )
   or
   m.getDeclaringType().hasQualifiedName("java.util", "StringTokenizer") and
   m.getName().matches("next%")
@@ -334,7 +339,8 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   or
   (
     m.getDeclaringType().hasQualifiedName("java.lang", "StringBuilder") or
-    m.getDeclaringType().hasQualifiedName("java.lang", "StringBuffer")
+    m.getDeclaringType().hasQualifiedName("java.lang", "StringBuffer") or
+    m.getDeclaringType().hasQualifiedName("java.io", "StringWriter")
   ) and
   (m.getName() = "toString" or m.getName() = "append")
   or
@@ -395,7 +401,7 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
  */
 private predicate taintPreservingArgumentToMethod(Method method) {
   method.getDeclaringType() instanceof TypeString and
-  (method.hasName("format") or method.hasName("join"))
+  (method.hasName("format") or method.hasName("formatted") or method.hasName("join"))
 }
 
 /**
@@ -434,7 +440,15 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
   or
   (
     method.getDeclaringType().hasQualifiedName("java.util", "Base64$Encoder") or
-    method.getDeclaringType().hasQualifiedName("java.util", "Base64$Decoder")
+    method.getDeclaringType().hasQualifiedName("java.util", "Base64$Decoder") or
+    method
+        .getDeclaringType()
+        .getASupertype*()
+        .hasQualifiedName("org.apache.commons.codec", "Encoder") or
+    method
+        .getDeclaringType()
+        .getASupertype*()
+        .hasQualifiedName("org.apache.commons.codec", "Decoder")
   ) and
   (
     method.getName() = "encode" and arg = 0 and method.getNumberOfParameters() = 1
@@ -496,6 +510,10 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
   // Jackson serialization methods that return the serialized data
   method instanceof JacksonWriteValueMethod and
   method.getNumberOfParameters() = 1 and
+  arg = 0
+  or
+  method.getDeclaringType().hasQualifiedName("java.io", "StringWriter") and
+  method.hasName("append") and
   arg = 0
 }
 
@@ -571,9 +589,20 @@ private predicate argToQualifierStep(Expr tracked, Expr sink) {
 private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
   exists(Method write |
     method.overrides*(write) and
-    write.getDeclaringType().hasQualifiedName("java.io", "OutputStream") and
     write.hasName("write") and
-    arg = 0
+    arg = 0 and
+    (
+      write.getDeclaringType().hasQualifiedName("java.io", "OutputStream")
+      or
+      write.getDeclaringType().hasQualifiedName("java.io", "StringWriter")
+    )
+  )
+  or
+  exists(Method append |
+    method.overrides*(append) and
+    append.hasName("append") and
+    arg = 0 and
+    append.getDeclaringType().hasQualifiedName("java.io", "StringWriter")
   )
 }
 

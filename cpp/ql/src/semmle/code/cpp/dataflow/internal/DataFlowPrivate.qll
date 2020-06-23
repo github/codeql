@@ -148,12 +148,6 @@ class Content extends TContent {
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
   }
-
-  /** Gets the type of the object containing this content. */
-  abstract Type getContainerType();
-
-  /** Gets the type of this content. */
-  abstract Type getType();
 }
 
 private class FieldContent extends Content, TFieldContent {
@@ -168,26 +162,14 @@ private class FieldContent extends Content, TFieldContent {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
   }
-
-  override Type getContainerType() { result = f.getDeclaringType() }
-
-  override Type getType() { result = f.getType() }
 }
 
 private class CollectionContent extends Content, TCollectionContent {
   override string toString() { result = "collection" }
-
-  override Type getContainerType() { none() }
-
-  override Type getType() { none() }
 }
 
 private class ArrayContent extends Content, TArrayContent {
   override string toString() { result = "array" }
-
-  override Type getContainerType() { none() }
-
-  override Type getType() { none() }
 }
 
 /**
@@ -311,9 +293,9 @@ predicate isImmutableOrUnobservable(Node n) {
     or
     dt.getBaseType() instanceof RoutineType
   )
-  or
-  // Isn't something we can track
-  n.asExpr() instanceof Call
   // The above list of cases isn't exhaustive, but it narrows down the
   // consistency alerts enough that most of them are interesting.
 }
+
+/** Holds if `n` should be hidden from path explanations. */
+predicate nodeIsHidden(Node n) { none() }

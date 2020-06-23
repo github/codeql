@@ -48,7 +48,9 @@ module CodeInjection {
    * `vm` module.
    */
   class NodeJSVmSink extends Sink, DataFlow::ValueNode {
-    NodeJSVmSink() { exists(NodeJSLib::VmModuleMethodCall call | this = call.getACodeArgument()) }
+    NodeJSVmSink() {
+      exists(NodeJSLib::VmModuleMemberInvocation inv | this = inv.getACodeArgument())
+    }
   }
 
   /**
@@ -114,5 +116,12 @@ module CodeInjection {
         not def instanceof JSXAttribute
       )
     }
+  }
+
+  /**
+   * A code operator of a NoSQL query as a code injection sink.
+   */
+  class NoSQLCodeInjectionSink extends Sink {
+    NoSQLCodeInjectionSink() { any(NoSQL::Query q).getACodeOperator() = this }
   }
 }

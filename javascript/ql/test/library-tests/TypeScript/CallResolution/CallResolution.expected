@@ -4,16 +4,16 @@
 | tst.ts:55:3:55:27 | obj.ove ... od(num) | (x: number): number | 0 |
 | tst.ts:56:3:56:27 | obj.ove ... od(str) | (x: string): string | 1 |
 | tst.ts:57:3:57:26 | obj.ove ... hod([]) | (x: any): any | 2 |
-| tst.ts:58:3:58:36 | obj.gen ... ([num]) | (x: number[]): number | 0 |
-| tst.ts:59:3:59:39 | obj.gen ... : str}) | (x: Box<string>): string | 1 |
+| tst.ts:58:3:58:36 | obj.gen ... ([num]) | (x: number[]): T | 0 |
+| tst.ts:59:3:59:39 | obj.gen ... : str}) | (x: Box<string>): T | 1 |
 | tst.ts:60:3:60:34 | obj.gen ... od(num) | (x: any): any | 2 |
 | tst.ts:64:3:64:23 | obj.sim ... od(str) | (x: string): number | 0 |
 | tst.ts:65:3:65:24 | obj.gen ... od(str) | (x: string): string | 0 |
 | tst.ts:66:3:66:24 | obj.gen ... od(num) | (x: number): number | 0 |
 | tst.ts:67:3:67:27 | obj.ove ... od(num) | (x: number): number | 0 |
 | tst.ts:68:3:68:27 | obj.ove ... od(str) | (x: string): string | 1 |
-| tst.ts:69:3:69:36 | obj.gen ... ([num]) | (x: number[]): number | 0 |
-| tst.ts:70:3:70:39 | obj.gen ... : str}) | (x: Box<string>): string | 1 |
+| tst.ts:69:3:69:36 | obj.gen ... ([num]) | (x: number[]): T | 0 |
+| tst.ts:70:3:70:39 | obj.gen ... : str}) | (x: Box<string>): T | 1 |
 | tst.ts:74:3:74:28 | new Sim ... or(str) | new (x: string): SimpleConstructor | 0 |
 | tst.ts:75:3:75:29 | new Gen ... or(str) | new (x: string): GenericConstructor<string> | 0 |
 | tst.ts:76:3:76:29 | new Gen ... or(num) | new (x: number): GenericConstructor<number> | 0 |

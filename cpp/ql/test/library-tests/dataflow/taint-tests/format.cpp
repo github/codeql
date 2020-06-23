@@ -15,10 +15,14 @@ int vsnprintf(char *s, size_t n, const char *format, va_list arg);
 
 int mysprintf(char *s, size_t n, const char *format, ...)
 {
+	int result;
+
 	va_list args;
 	va_start(args, format);
-		vsnprintf(s, n, format, args);
+		result = vsnprintf(s, n, format, args);
 	va_end(args);
+
+	return result;
 }
 
 int sscanf(const char *s, const char *format, ...);
@@ -131,4 +135,25 @@ void test1()
 		sink(sscanf(string::source(), "%s", &buffer));
 		sink(buffer); // tainted [NOT DETECTED]
 	}
+}
+
+// ----------
+
+size_t strlen(const char *s);
+size_t wcslen(const wchar_t *s);
+
+void test2()
+{
+	char *s = string::source();
+	wchar_t *ws = wstring::source();
+	int i;
+
+	sink(strlen(s));
+	sink(wcslen(ws));
+
+	i = strlen(s) + 1;
+	sink(i);
+
+	sink(s[strlen(s) - 1]); // tainted
+	sink(ws + (wcslen(ws) / 2)); // tainted
 }

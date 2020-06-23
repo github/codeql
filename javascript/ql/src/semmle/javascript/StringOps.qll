@@ -64,10 +64,8 @@ module StringOps {
       Function callee;
 
       IndirectStartsWith() {
-        inner.getEnclosingExpr() = callee.getAReturnedExpr() and
-        this.getACallee() = callee and
-        count(this.getACallee()) = 1 and
-        count(callee.getAReturnedExpr()) = 1 and
+        inner.getEnclosingExpr() = unique(Expr ret | ret = callee.getAReturnedExpr()) and
+        callee = unique(Function f | f = this.getACallee()) and
         not this.isImprecise() and
         inner.getBaseString().getALocalSource().getEnclosingExpr() = callee.getAParameter() and
         inner.getSubstring().getALocalSource().getEnclosingExpr() = callee.getAParameter()
@@ -295,10 +293,8 @@ module StringOps {
       Function callee;
 
       IndirectEndsWith() {
-        inner.getEnclosingExpr() = callee.getAReturnedExpr() and
-        this.getACallee() = callee and
-        count(this.getACallee()) = 1 and
-        count(callee.getAReturnedExpr()) = 1 and
+        inner.getEnclosingExpr() = unique(Expr ret | ret = callee.getAReturnedExpr()) and
+        callee = unique(Function f | f = this.getACallee()) and
         not this.isImprecise() and
         inner.getBaseString().getALocalSource().getEnclosingExpr() = callee.getAParameter() and
         inner.getSubstring().getALocalSource().getEnclosingExpr() = callee.getAParameter()
@@ -632,5 +628,154 @@ module StringOps {
    */
   class HtmlConcatenationLeaf extends ConcatenationLeaf {
     HtmlConcatenationLeaf() { getRoot() instanceof HtmlConcatenationRoot }
+  }
+
+  /**
+   * A data flow node whose boolean value indicates whether a regexp matches a given string.
+   *
+   * For example, the condition of each of the following `if`-statements are `RegExpTest` nodes:
+   * ```js
+   * if (regexp.test(str)) { ... }
+   * if (regexp.exec(str) != null) { ... }
+   * if (str.matches(regexp)) { ... }
+   * ```
+   *
+   * Note that `RegExpTest` represents a boolean-valued expression or one
+   * that is coerced to a boolean, which is not always the same as the call that performs the
+   * regexp-matching. For example, the `exec` call below is not itself a `RegExpTest`,
+   * but the `match` variable in the condition is:
+   * ```js
+   * let match = regexp.exec(str);
+   * if (!match) { ... } // <--- 'match' is the RegExpTest
+   * ```
+   */
+  class RegExpTest extends DataFlow::Node {
+    RegExpTest::Range range;
+
+    RegExpTest() { this = range }
+
+    /**
+     * Gets the AST of the regular expression used in the test, if it can be seen locally.
+     */
+    RegExpTerm getRegExp() {
+      result = getRegExpOperand().getALocalSource().(DataFlow::RegExpCreationNode).getRoot()
+      or
+      result = range.getRegExpOperand(true).asExpr().(StringLiteral).asRegExp()
+    }
+
+    /**
+     * Gets the data flow node corresponding to the regular expression object used in the test.
+     *
+     * In some cases this represents a string value being coerced to a RegExp object.
+     */
+    DataFlow::Node getRegExpOperand() { result = range.getRegExpOperand(_) }
+
+    /**
+     * Gets the data flow node corresponding to the string being tested against the regular expression.
+     */
+    DataFlow::Node getStringOperand() { result = range.getStringOperand() }
+
+    /**
+     * Gets the return value indicating that the string matched the regular expression.
+     *
+     * For example, for `regexp.exec(str) == null`, the polarity is `false`, and for
+     * `regexp.exec(str) != null` the polarity is `true`.
+     */
+    boolean getPolarity() { result = range.getPolarity() }
+  }
+
+  /**
+   * Companion module to the `RegExpTest` class.
+   */
+  module RegExpTest {
+    /**
+     * A data flow node whose boolean value indicates whether a regexp matches a given string.
+     *
+     * This class can be extended to contribute new kinds of `RegExpTest` nodes.
+     */
+    abstract class Range extends DataFlow::Node {
+      /**
+       * Gets the data flow node corresponding to the regular expression object used in the test.
+       */
+      abstract DataFlow::Node getRegExpOperand(boolean coerced);
+
+      /**
+       * Gets the data flow node corresponding to the string being tested against the regular expression.
+       */
+      abstract DataFlow::Node getStringOperand();
+
+      /**
+       * Gets the return value indicating that the string matched the regular expression.
+       */
+      boolean getPolarity() { result = true }
+    }
+
+    private class TestCall extends Range, DataFlow::MethodCallNode {
+      TestCall() { getMethodName() = "test" }
+
+      override DataFlow::Node getRegExpOperand(boolean coerced) {
+        result = getReceiver() and coerced = false
+      }
+
+      override DataFlow::Node getStringOperand() { result = getArgument(0) }
+    }
+
+    private class MatchesCall extends Range, DataFlow::MethodCallNode {
+      MatchesCall() { getMethodName() = "matches" }
+
+      override DataFlow::Node getRegExpOperand(boolean coerced) {
+        result = getArgument(0) and coerced = true
+      }
+
+      override DataFlow::Node getStringOperand() { result = getReceiver() }
+    }
+
+    private class ExecCall extends DataFlow::MethodCallNode {
+      ExecCall() { getMethodName() = "exec" }
+    }
+
+    private predicate isCoercedToBoolean(Expr e) {
+      e = any(ConditionGuardNode guard).getTest()
+      or
+      e = any(LogNotExpr n).getOperand()
+    }
+
+    /**
+     * Holds if `e` evaluating to `polarity` implies that `operand` is not null.
+     */
+    private predicate impliesNotNull(Expr e, Expr operand, boolean polarity) {
+      exists(EqualityTest test, Expr other |
+        e = test and
+        polarity = test.getPolarity().booleanNot() and
+        test.hasOperands(other, operand) and
+        SyntacticConstants::isNullOrUndefined(other) and
+        not (
+          // 'exec() === undefined' doesn't work
+          other instanceof SyntacticConstants::UndefinedConstant and
+          test.isStrict()
+        )
+      )
+      or
+      isCoercedToBoolean(e) and
+      operand = e and
+      polarity = true
+    }
+
+    private class ExecTest extends Range, DataFlow::ValueNode {
+      ExecCall exec;
+      boolean polarity;
+
+      ExecTest() {
+        exists(Expr use | exec.flowsToExpr(use) | impliesNotNull(astNode, use, polarity))
+      }
+
+      override DataFlow::Node getRegExpOperand(boolean coerced) {
+        result = exec.getReceiver() and coerced = false
+      }
+
+      override DataFlow::Node getStringOperand() { result = exec.getArgument(0) }
+
+      override boolean getPolarity() { result = polarity }
+    }
   }
 }

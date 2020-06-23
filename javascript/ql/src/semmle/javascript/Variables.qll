@@ -317,6 +317,24 @@ class LocalVariable extends Variable {
       else result = d.getContainer()
     )
   }
+
+  /**
+   * Gets the location of a declaration of this variable.
+   *
+   * If the variable has one or more declarations, the location of the first declaration is used.
+   * If the variable has no declaration, the entry point of its declaring container is used.
+   */
+  Location getLocation() {
+    result =
+      min(Location loc |
+        loc = getADeclaration().getLocation()
+      |
+        loc order by loc.getStartLine(), loc.getStartColumn()
+      )
+    or
+    not exists(getADeclaration()) and
+    result = getDeclaringContainer().getEntry().getLocation()
+  }
 }
 
 /** A local variable that is not captured. */
@@ -581,9 +599,6 @@ class PropertyPattern extends @property, ASTNode {
 
   /** Gets the object pattern this property pattern belongs to. */
   ObjectPattern getObjectPattern() { properties(this, result, _, _, _) }
-
-  /** Gets the nearest enclosing function or toplevel in which this property pattern occurs. */
-  StmtContainer getContainer() { result = getObjectPattern().getContainer() }
 
   /** Holds if this pattern is impure, that is, if its evaluation could have side effects. */
   predicate isImpure() {

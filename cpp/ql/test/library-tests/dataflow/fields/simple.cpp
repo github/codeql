@@ -25,8 +25,8 @@ public:
 
 void bar(Foo &f)
 {
-    sink(f.a()); // flow (through `f.setA` and `h.setA`)
-    sink(f.b()); // flow (through `g.setB` and `h.setB`)
+    sink(f.a()); //$ast=39:12 $ast=41:12 $ir=39:12 $ir=41:12
+    sink(f.b()); //$ast=40:12 $ast=42:12 $ir=40:12 $ir=42:12
 }
 
 void foo()
@@ -53,4 +53,36 @@ void foo()
     // Nothing should alert
     bar(i);
 }
+
+struct A
+{
+    int i;
+};
+
+void single_field_test()
+{
+    A a;
+    a.i = user_input();
+    A a2 = a;
+    sink(a2.i); //$ast,ir
+}
+
+struct C {
+    int f1;
+};
+
+struct C2
+{
+    C f2;
+
+    int getf2f1() {
+        return f2.f1;
+    }
+
+    void m() {
+        f2.f1 = user_input();
+        sink(getf2f1()); //$ast,ir
+    }
+};
+
 } // namespace Simple

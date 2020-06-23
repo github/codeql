@@ -47,3 +47,4 @@
 | overrides.G2.M<S>(string, S) | overrides.G.M<S>(string, S) | overrides |
 | overrides.G.M<S>(string, S) | overrides.I2<String>.M<S>(string, S) | implements |
 | overrides.H<>.M<S>(TA, S) | overrides.I2<TA>.M<S>(TA, S) | implements |
+| overrides.Outer<>.A10.M<T>(Inner) | overrides.Outer<>.I6.M<T>(Inner) | implements |

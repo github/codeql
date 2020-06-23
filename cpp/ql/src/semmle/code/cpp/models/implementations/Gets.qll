@@ -3,12 +3,13 @@ import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
+import semmle.code.cpp.models.interfaces.FlowSource
 
 /**
  * The standard functions `gets` and `fgets`.
  */
 class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunction, AliasFunction,
-  SideEffectFunction {
+  SideEffectFunction, RemoteFlowFunction {
   GetsFunction() {
     exists(string name | hasGlobalOrStdName(name) |
       name = "gets" or // gets(str)
@@ -42,4 +43,22 @@ class GetsFunction extends DataFlowFunction, TaintFunction, ArrayFunction, Alias
     buffer = true and
     mustWrite = true
   }
+
+  override predicate hasRemoteFlowSource(FunctionOutput output, string description) {
+    output.isParameterDeref(0) and
+    description = "String read by " + this.getName()
+  }
+
+  override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
+    not hasGlobalOrStdName("gets") and
+    bufParam = 0 and
+    countParam = 1
+  }
+
+  override predicate hasArrayWithUnknownSize(int bufParam) {
+    hasGlobalOrStdName("gets") and
+    bufParam = 0
+  }
+
+  override predicate hasArrayOutput(int bufParam) { bufParam = 0 }
 }

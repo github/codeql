@@ -4,8 +4,8 @@
  *              definition.
  * @kind problem
  * @problem.severity error
- * @id js/sanity/non-dominating-ssa-definition
- * @tags sanity
+ * @id js/consistency/non-dominating-ssa-definition
+ * @tags consistency
  */
 
 import javascript

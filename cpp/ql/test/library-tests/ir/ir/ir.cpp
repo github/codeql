@@ -1249,10 +1249,10 @@ char *strcpy(char *destination, const char *source);
 char *strcat(char *destination, const char *source);
 
 void test_strings(char *s1, char *s2) {
-	char buffer[1024] = {0};
+    char buffer[1024] = {0};
 
-	strcpy(buffer, s1);
-	strcat(buffer, s2);
+    strcpy(buffer, s1);
+    strcat(buffer, s2);
 }
 
 struct A {
@@ -1284,6 +1284,42 @@ void test_static_member_functions(int int_arg, A* a_arg) {
     A::static_member_without_def();
 
     getAnInstanceOfA()->static_member_without_def();
+}
+
+int missingReturnValue(bool b, int x) {
+    if (b) {
+        return x;
+    }
+}
+
+void returnVoid(int x, int y) {
+    return IntegerOps(x, y);
+}
+
+void gccBinaryConditional(bool b, int x, long y) {
+    int z = x;
+    z = b ?: x;
+    z = b ?: y;
+    z = x ?: x;
+    z = x ?: y;
+    z = y ?: x;
+    z = y ?: y;
+
+    z = (x && b || y) ?: x;
+}
+
+bool predicateA();
+bool predicateB();
+
+int shortCircuitConditional(int x, int y) {
+    return predicateA() && predicateB() ? x : y;
+}
+
+void *operator new(size_t, void *) noexcept;
+
+void f(int* p)
+{
+  new (p) int;
 }
 
 // semmle-extractor-options: -std=c++17 --clang

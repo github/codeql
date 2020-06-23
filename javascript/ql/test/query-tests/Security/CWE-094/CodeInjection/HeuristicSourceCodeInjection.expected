@@ -1,4 +1,13 @@
 nodes
+| NoSQLCodeInjection.js:18:24:18:31 | req.body |
+| NoSQLCodeInjection.js:18:24:18:31 | req.body |
+| NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name |
+| NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name |
+| NoSQLCodeInjection.js:19:36:19:43 | req.body |
+| NoSQLCodeInjection.js:19:36:19:43 | req.body |
+| NoSQLCodeInjection.js:19:36:19:48 | req.body.name |
 | angularjs.js:10:22:10:29 | location |
 | angularjs.js:10:22:10:29 | location |
 | angularjs.js:10:22:10:36 | location.search |
@@ -71,6 +80,18 @@ nodes
 | express.js:12:8:12:53 | "return ...  + "];" |
 | express.js:12:28:12:46 | req.param("wobble") |
 | express.js:12:28:12:46 | req.param("wobble") |
+| express.js:15:22:15:54 | req.par ... ction") |
+| express.js:15:22:15:54 | req.par ... ction") |
+| express.js:15:22:15:54 | req.par ... ction") |
+| express.js:17:30:17:53 | req.par ... cript") |
+| express.js:17:30:17:53 | req.par ... cript") |
+| express.js:17:30:17:53 | req.par ... cript") |
+| express.js:19:37:19:70 | req.par ... odule") |
+| express.js:19:37:19:70 | req.par ... odule") |
+| express.js:19:37:19:70 | req.par ... odule") |
+| express.js:21:19:21:48 | req.par ... ntext") |
+| express.js:21:19:21:48 | req.par ... ntext") |
+| express.js:21:19:21:48 | req.par ... ntext") |
 | react-native.js:7:7:7:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") |
 | react-native.js:7:17:7:33 | req.param("code") |
@@ -112,6 +133,14 @@ nodes
 | tst.js:26:26:26:53 | locatio ... ring(1) |
 | tst.js:26:26:26:53 | locatio ... ring(1) |
 edges
+| NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:19:36:19:43 | req.body | NoSQLCodeInjection.js:19:36:19:48 | req.body.name |
+| NoSQLCodeInjection.js:19:36:19:43 | req.body | NoSQLCodeInjection.js:19:36:19:48 | req.body.name |
+| NoSQLCodeInjection.js:19:36:19:48 | req.body.name | NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name |
+| NoSQLCodeInjection.js:19:36:19:48 | req.body.name | NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name |
 | angularjs.js:10:22:10:29 | location | angularjs.js:10:22:10:36 | location.search |
 | angularjs.js:10:22:10:29 | location | angularjs.js:10:22:10:36 | location.search |
 | angularjs.js:10:22:10:29 | location | angularjs.js:10:22:10:36 | location.search |
@@ -184,6 +213,10 @@ edges
 | express.js:12:28:12:46 | req.param("wobble") | express.js:12:8:12:53 | "return ...  + "];" |
 | express.js:12:28:12:46 | req.param("wobble") | express.js:12:8:12:53 | "return ...  + "];" |
 | express.js:12:28:12:46 | req.param("wobble") | express.js:12:8:12:53 | "return ...  + "];" |
+| express.js:15:22:15:54 | req.par ... ction") | express.js:15:22:15:54 | req.par ... ction") |
+| express.js:17:30:17:53 | req.par ... cript") | express.js:17:30:17:53 | req.par ... cript") |
+| express.js:19:37:19:70 | req.par ... odule") | express.js:19:37:19:70 | req.par ... odule") |
+| express.js:21:19:21:48 | req.par ... ntext") | express.js:21:19:21:48 | req.par ... ntext") |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:32:8:38 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:32:8:38 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:10:23:10:29 | tainted |

@@ -4,8 +4,8 @@
  *              exactly one SSA variable.
  * @kind problem
  * @problem.severity error
- * @id js/sanity/ambiguous-ssa-definition
- * @tags sanity
+ * @id js/consistency/ambiguous-ssa-definition
+ * @tags consistency
  */
 
 import javascript

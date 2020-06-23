@@ -1,16 +1,27 @@
 import python
 private import Common
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 
 /** An extensible kind of taint representing any kind of string. */
 abstract class StringKind extends TaintKind {
     bindingset[this]
     StringKind() { this = this }
 
+    override TaintKind getTaintOfMethodResult(string name) {
+        name in ["capitalize", "casefold", "center", "expandtabs", "format", "format_map", "ljust",
+                    "lstrip", "lower", "replace", "rjust", "rstrip", "strip", "swapcase", "title", "upper",
+                    "zfill",
+                    /* encode/decode is technically not correct, but close enough */
+                    "encode", "decode"] and
+        result = this
+        or
+        name in ["partition", "rpartition", "rsplit", "split", "splitlines"] and
+        result.(SequenceKind).getItem() = this
+    }
+
     override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
         result = this and
         (
-            str_method_call(fromnode, tonode) or
             slice(fromnode, tonode) or
             tonode.(BinaryExprNode).getAnOperand() = fromnode or
             os_path_join(fromnode, tonode) or
@@ -48,20 +59,6 @@ private class StringEqualitySanitizer extends Sanitizer {
             )
         )
     }
-}
-
-/* tonode = fromnode.xxx() where the call to xxx returns an identical or similar string */
-private predicate str_method_call(ControlFlowNode fromnode, CallNode tonode) {
-    exists(string method_name | tonode.getFunction().(AttrNode).getObject(method_name) = fromnode |
-        method_name = "strip" or
-        method_name = "format" or
-        method_name = "lstrip" or
-        method_name = "rstrip" or
-        method_name = "ljust" or
-        method_name = "rjust" or
-        method_name = "title" or
-        method_name = "capitalize"
-    )
 }
 
 /* tonode = ....format(fromnode) */
@@ -110,7 +107,11 @@ private predicate os_path_join(ControlFlowNode fromnode, CallNode tonode) {
     tonode.getAnArg() = fromnode
 }
 
-/** A kind of "taint", representing a dictionary mapping str->"taint" */
-class StringDictKind extends DictKind {
+/**
+ * A kind of "taint", representing a dictionary mapping str->"taint"
+ *
+ * DEPRECATED: Use `ExternalStringDictKind` instead.
+ */
+deprecated class StringDictKind extends DictKind {
     StringDictKind() { this.getValue() instanceof StringKind }
 }

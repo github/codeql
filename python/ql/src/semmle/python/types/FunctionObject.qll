@@ -135,7 +135,7 @@ class PyFunctionObject extends FunctionObject {
     /** Whether this function is a procedure, that is, it has no explicit return statement and is not a generator function */
     override predicate isProcedure() { this.getFunction().isProcedure() }
 
-    override ClassObject getARaisedType() { scope_raises(result, this.getFunction()) }
+    override ClassObject getARaisedType() { scope_raises_objectapi(result, this.getFunction()) }
 
     override predicate raisesUnknownType() { scope_raises_unknown(this.getFunction()) }
 

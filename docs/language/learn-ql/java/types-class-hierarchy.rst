@@ -114,7 +114,7 @@ To identify these cases, we can create two CodeQL classes that represent, respec
    class CollectionToArrayCall extends MethodAccess {
        CollectionToArrayCall() {
            exists(CollectionToArray m |
-               this.getMethod().getSourceDeclaration().overrides*(m)
+               this.getMethod().getSourceDeclaration().overridesOrInstantiates*(m)
            )
        }
 
@@ -124,7 +124,7 @@ To identify these cases, we can create two CodeQL classes that represent, respec
        }
    }
 
-Notice the use of ``getSourceDeclaration`` and ``overrides`` in the constructor of ``CollectionToArrayCall``: we want to find calls to ``Collection.toArray`` and to any method that overrides it, as well as any parameterized instances of these methods. In our example above, for instance, the call ``l.toArray`` resolves to method ``toArray`` in the raw class ``ArrayList``. Its source declaration is method\ ``toArray`` in the generic class ``ArrayList``, which overrides ``AbstractCollection.toArray``, which in turn overrides ``Collection.toArray``.
+Notice the use of ``getSourceDeclaration`` and ``overridesOrInstantiates`` in the constructor of ``CollectionToArrayCall``: we want to find calls to ``Collection.toArray`` and to any method that overrides it, as well as any parameterized instances of these methods. In our example above, for instance, the call ``l.toArray`` resolves to method ``toArray`` in the raw class ``ArrayList``. Its source declaration is ``toArray`` in the generic class ``ArrayList<T>``, which overrides ``AbstractCollection<T>.toArray``, which in turn overrides ``Collection<T>.toArray``, which is an instantiation of ``Collection.toArray`` (since the type parameter ``T`` in the overridden method belongs to ``ArrayList`` and is an instantiation of the type parameter belonging to ``Collection``).
 
 Using these new classes we can extend our query to exclude calls to ``toArray`` on an argument of type ``A[]`` which are then cast to ``A[]``:
 
@@ -299,6 +299,5 @@ Adding these three improvements, our final query becomes:
 Further reading
 ---------------
 
--  Take a look at some of the other articles in this section: :doc:`Overflow-prone comparisons in Java <expressions-statements>`, :doc:`Navigating the call graph <call-graph>`, :doc:`Annotations in Java <annotations>`, :doc:`Javadoc <javadoc>`, and :doc:`Working with source locations <source-locations>`.
--  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`Classes for working with Java code <ast-class-reference>`.
--  Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
+.. include:: ../../reusables/java-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

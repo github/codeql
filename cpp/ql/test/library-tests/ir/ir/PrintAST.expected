@@ -86,9 +86,9 @@ bad_asts.cpp:
 #   10|           1: [PointerFieldAccess] x
 #   10|               Type = [IntType] int
 #   10|               ValueCategory = prvalue(load)
-#-----|             -1: [ThisExpr] this
-#-----|                 Type = [PointerType] S *
-#-----|                 ValueCategory = prvalue(load)
+#   10|             -1: [ThisExpr] this
+#   10|                 Type = [PointerType] S *
+#   10|                 ValueCategory = prvalue(load)
 #   10|         1: [VariableAccess] y
 #   10|             Type = [IntType] int
 #   10|             ValueCategory = prvalue(load)
@@ -111,9 +111,9 @@ bad_asts.cpp:
 #   10|           1: [PointerFieldAccess] x
 #   10|               Type = [IntType] int
 #   10|               ValueCategory = prvalue(load)
-#-----|             -1: [ThisExpr] this
-#-----|                 Type = [PointerType] S *
-#-----|                 ValueCategory = prvalue(load)
+#   10|             -1: [ThisExpr] this
+#   10|                 Type = [PointerType] S *
+#   10|                 ValueCategory = prvalue(load)
 #   10|         1: [VariableAccess] y
 #   10|             Type = [IntType] int
 #   10|             ValueCategory = prvalue(load)
@@ -219,9 +219,9 @@ bad_asts.cpp:
 #   33|         0: [VariableAccess] x
 #   33|             Type = [IntType] int
 #   33|             ValueCategory = lvalue
-#-----|         1: [ErrorExpr] <error expr>
-#-----|             Type = [ErroneousType] error
-#-----|             ValueCategory = prvalue(load)
+#   33|         1: [ErrorExpr] <error expr>
+#   33|             Type = [ErroneousType] error
+#   33|             ValueCategory = prvalue(load)
 #   34|     3: [ReturnStmt] return ...
 clang.cpp:
 #    5| [TopLevelFunction] int* globalIntAddress()
@@ -234,6 +234,1487 @@ clang.cpp:
 #    6|         0: [VariableAccess] globalInt
 #    6|             Type = [IntType] int
 #    6|             ValueCategory = lvalue
+complex.c:
+#    1| [TopLevelFunction] void complex_literals()
+#    1|   params: 
+#    1|   body: [Block] { ... }
+#    2|     0: [DeclStmt] declaration
+#    2|       0: [VariableDeclarationEntry] definition of cf
+#    2|           Type = [ArithmeticType] _Complex float
+#    2|         init: [Initializer] initializer for cf
+#    2|           expr: [CStyleCast] (_Complex float)...
+#    2|               Conversion = [FloatingPointConversion] floating point conversion
+#    2|               Type = [ArithmeticType] _Complex float
+#    2|               ValueCategory = prvalue
+#    2|             expr: [Literal] 2.0
+#    2|                 Type = [DoubleType] double
+#    2|                 Value = [Literal] 2.0
+#    2|                 ValueCategory = prvalue
+#    3|     1: [ExprStmt] ExprStmt
+#    3|       0: [AssignExpr] ... = ...
+#    3|           Type = [ArithmeticType] _Complex float
+#    3|           ValueCategory = prvalue
+#    3|         0: [VariableAccess] cf
+#    3|             Type = [ArithmeticType] _Complex float
+#    3|             ValueCategory = lvalue
+#    3|         1: [CStyleCast] (_Complex float)...
+#    3|             Conversion = [FloatingPointConversion] floating point conversion
+#    3|             Type = [ArithmeticType] _Complex float
+#    3|             ValueCategory = prvalue
+#    3|           expr: [Literal] 1.0i
+#    3|               Type = [ArithmeticType] _Imaginary float
+#    3|               Value = [Literal] 1.0i
+#    3|               ValueCategory = prvalue
+#    4|     2: [DeclStmt] declaration
+#    4|       0: [VariableDeclarationEntry] definition of cd
+#    4|           Type = [ArithmeticType] _Complex double
+#    4|         init: [Initializer] initializer for cd
+#    4|           expr: [CStyleCast] (_Complex double)...
+#    4|               Conversion = [FloatingPointConversion] floating point conversion
+#    4|               Type = [ArithmeticType] _Complex double
+#    4|               ValueCategory = prvalue
+#    4|             expr: [Literal] 3.0
+#    4|                 Type = [DoubleType] double
+#    4|                 Value = [Literal] 3.0
+#    4|                 ValueCategory = prvalue
+#    5|     3: [ExprStmt] ExprStmt
+#    5|       0: [AssignExpr] ... = ...
+#    5|           Type = [ArithmeticType] _Complex double
+#    5|           ValueCategory = prvalue
+#    5|         0: [VariableAccess] cd
+#    5|             Type = [ArithmeticType] _Complex double
+#    5|             ValueCategory = lvalue
+#    5|         1: [CStyleCast] (_Complex double)...
+#    5|             Conversion = [FloatingPointConversion] floating point conversion
+#    5|             Type = [ArithmeticType] _Complex double
+#    5|             ValueCategory = prvalue
+#    5|           expr: [Literal] 1.0i
+#    5|               Type = [ArithmeticType] _Imaginary float
+#    5|               Value = [Literal] 1.0i
+#    5|               ValueCategory = prvalue
+#    6|     4: [DeclStmt] declaration
+#    6|       0: [VariableDeclarationEntry] definition of cld
+#    6|           Type = [ArithmeticType] _Complex long double
+#    6|         init: [Initializer] initializer for cld
+#    6|           expr: [CStyleCast] (_Complex long double)...
+#    6|               Conversion = [FloatingPointConversion] floating point conversion
+#    6|               Type = [ArithmeticType] _Complex long double
+#    6|               ValueCategory = prvalue
+#    6|             expr: [Literal] 5.0
+#    6|                 Type = [DoubleType] double
+#    6|                 Value = [Literal] 5.0
+#    6|                 ValueCategory = prvalue
+#    7|     5: [ExprStmt] ExprStmt
+#    7|       0: [AssignExpr] ... = ...
+#    7|           Type = [ArithmeticType] _Complex long double
+#    7|           ValueCategory = prvalue
+#    7|         0: [VariableAccess] cld
+#    7|             Type = [ArithmeticType] _Complex long double
+#    7|             ValueCategory = lvalue
+#    7|         1: [CStyleCast] (_Complex long double)...
+#    7|             Conversion = [FloatingPointConversion] floating point conversion
+#    7|             Type = [ArithmeticType] _Complex long double
+#    7|             ValueCategory = prvalue
+#    7|           expr: [Literal] 1.0i
+#    7|               Type = [ArithmeticType] _Imaginary float
+#    7|               Value = [Literal] 1.0i
+#    7|               ValueCategory = prvalue
+#    9|     6: [DeclStmt] declaration
+#    9|       0: [VariableDeclarationEntry] definition of jf
+#    9|           Type = [ArithmeticType] _Imaginary float
+#    9|         init: [Initializer] initializer for jf
+#    9|           expr: [Literal] 1.0i
+#    9|               Type = [ArithmeticType] _Imaginary float
+#    9|               Value = [Literal] 1.0i
+#    9|               ValueCategory = prvalue
+#   10|     7: [DeclStmt] declaration
+#   10|       0: [VariableDeclarationEntry] definition of jd
+#   10|           Type = [ArithmeticType] _Imaginary double
+#   10|         init: [Initializer] initializer for jd
+#   10|           expr: [CStyleCast] (_Imaginary double)...
+#   10|               Conversion = [FloatingPointConversion] floating point conversion
+#   10|               Type = [ArithmeticType] _Imaginary double
+#   10|               ValueCategory = prvalue
+#   10|             expr: [Literal] 1.0i
+#   10|                 Type = [ArithmeticType] _Imaginary float
+#   10|                 Value = [Literal] 1.0i
+#   10|                 ValueCategory = prvalue
+#   11|     8: [DeclStmt] declaration
+#   11|       0: [VariableDeclarationEntry] definition of jld
+#   11|           Type = [ArithmeticType] _Imaginary long double
+#   11|         init: [Initializer] initializer for jld
+#   11|           expr: [CStyleCast] (_Imaginary long double)...
+#   11|               Conversion = [FloatingPointConversion] floating point conversion
+#   11|               Type = [ArithmeticType] _Imaginary long double
+#   11|               ValueCategory = prvalue
+#   11|             expr: [Literal] 1.0i
+#   11|                 Type = [ArithmeticType] _Imaginary float
+#   11|                 Value = [Literal] 1.0i
+#   11|                 ValueCategory = prvalue
+#   12|     9: [ReturnStmt] return ...
+#   14| [TopLevelFunction] void complex_arithmetic()
+#   14|   params: 
+#   14|   body: [Block] { ... }
+#   15|     0: [DeclStmt] declaration
+#   15|       0: [VariableDeclarationEntry] definition of f1
+#   15|           Type = [FloatType] float
+#   15|         init: [Initializer] initializer for f1
+#   15|           expr: [CStyleCast] (float)...
+#   15|               Conversion = [FloatingPointConversion] floating point conversion
+#   15|               Type = [FloatType] float
+#   15|               Value = [CStyleCast] 5.0
+#   15|               ValueCategory = prvalue
+#   15|             expr: [Literal] 5.0
+#   15|                 Type = [DoubleType] double
+#   15|                 Value = [Literal] 5.0
+#   15|                 ValueCategory = prvalue
+#   16|     1: [DeclStmt] declaration
+#   16|       0: [VariableDeclarationEntry] definition of f2
+#   16|           Type = [FloatType] float
+#   16|         init: [Initializer] initializer for f2
+#   16|           expr: [CStyleCast] (float)...
+#   16|               Conversion = [FloatingPointConversion] floating point conversion
+#   16|               Type = [FloatType] float
+#   16|               Value = [CStyleCast] 7.0
+#   16|               ValueCategory = prvalue
+#   16|             expr: [Literal] 7.0
+#   16|                 Type = [DoubleType] double
+#   16|                 Value = [Literal] 7.0
+#   16|                 ValueCategory = prvalue
+#   17|     2: [DeclStmt] declaration
+#   17|       0: [VariableDeclarationEntry] definition of f3
+#   17|           Type = [FloatType] float
+#   18|     3: [DeclStmt] declaration
+#   18|       0: [VariableDeclarationEntry] definition of cf1
+#   18|           Type = [ArithmeticType] _Complex float
+#   18|         init: [Initializer] initializer for cf1
+#   18|           expr: [CStyleCast] (_Complex float)...
+#   18|               Conversion = [FloatingPointConversion] floating point conversion
+#   18|               Type = [ArithmeticType] _Complex float
+#   18|               ValueCategory = prvalue
+#   18|             expr: [Literal] 2.0
+#   18|                 Type = [DoubleType] double
+#   18|                 Value = [Literal] 2.0
+#   18|                 ValueCategory = prvalue
+#   19|     4: [DeclStmt] declaration
+#   19|       0: [VariableDeclarationEntry] definition of cf2
+#   19|           Type = [ArithmeticType] _Complex float
+#   19|         init: [Initializer] initializer for cf2
+#   19|           expr: [CStyleCast] (_Complex float)...
+#   19|               Conversion = [FloatingPointConversion] floating point conversion
+#   19|               Type = [ArithmeticType] _Complex float
+#   19|               ValueCategory = prvalue
+#   19|             expr: [Literal] 1.0i
+#   19|                 Type = [ArithmeticType] _Imaginary float
+#   19|                 Value = [Literal] 1.0i
+#   19|                 ValueCategory = prvalue
+#   20|     5: [DeclStmt] declaration
+#   20|       0: [VariableDeclarationEntry] definition of cf3
+#   20|           Type = [ArithmeticType] _Complex float
+#   21|     6: [DeclStmt] declaration
+#   21|       0: [VariableDeclarationEntry] definition of jf1
+#   21|           Type = [ArithmeticType] _Imaginary float
+#   21|         init: [Initializer] initializer for jf1
+#   21|           expr: [Literal] 1.0i
+#   21|               Type = [ArithmeticType] _Imaginary float
+#   21|               Value = [Literal] 1.0i
+#   21|               ValueCategory = prvalue
+#   22|     7: [DeclStmt] declaration
+#   22|       0: [VariableDeclarationEntry] definition of jf2
+#   22|           Type = [ArithmeticType] _Imaginary float
+#   22|         init: [Initializer] initializer for jf2
+#   22|           expr: [Literal] 1.0i
+#   22|               Type = [ArithmeticType] _Imaginary float
+#   22|               Value = [Literal] 1.0i
+#   22|               ValueCategory = prvalue
+#   23|     8: [DeclStmt] declaration
+#   23|       0: [VariableDeclarationEntry] definition of jf3
+#   23|           Type = [ArithmeticType] _Imaginary float
+#   26|     9: [ExprStmt] ExprStmt
+#   26|       0: [AssignExpr] ... = ...
+#   26|           Type = [ArithmeticType] _Complex float
+#   26|           ValueCategory = prvalue
+#   26|         0: [VariableAccess] cf3
+#   26|             Type = [ArithmeticType] _Complex float
+#   26|             ValueCategory = lvalue
+#   26|         1: [UnaryPlusExpr] + ...
+#   26|             Type = [ArithmeticType] _Complex float
+#   26|             ValueCategory = prvalue
+#   26|           0: [VariableAccess] cf1
+#   26|               Type = [ArithmeticType] _Complex float
+#   26|               ValueCategory = prvalue(load)
+#   27|     10: [ExprStmt] ExprStmt
+#   27|       0: [AssignExpr] ... = ...
+#   27|           Type = [ArithmeticType] _Complex float
+#   27|           ValueCategory = prvalue
+#   27|         0: [VariableAccess] cf3
+#   27|             Type = [ArithmeticType] _Complex float
+#   27|             ValueCategory = lvalue
+#   27|         1: [UnaryMinusExpr] - ...
+#   27|             Type = [ArithmeticType] _Complex float
+#   27|             ValueCategory = prvalue
+#   27|           0: [VariableAccess] cf1
+#   27|               Type = [ArithmeticType] _Complex float
+#   27|               ValueCategory = prvalue(load)
+#   30|     11: [ExprStmt] ExprStmt
+#   30|       0: [AssignExpr] ... = ...
+#   30|           Type = [ArithmeticType] _Complex float
+#   30|           ValueCategory = prvalue
+#   30|         0: [VariableAccess] cf3
+#   30|             Type = [ArithmeticType] _Complex float
+#   30|             ValueCategory = lvalue
+#   30|         1: [AddExpr] ... + ...
+#   30|             Type = [ArithmeticType] _Complex float
+#   30|             ValueCategory = prvalue
+#   30|           0: [VariableAccess] cf1
+#   30|               Type = [ArithmeticType] _Complex float
+#   30|               ValueCategory = prvalue(load)
+#   30|           1: [VariableAccess] cf2
+#   30|               Type = [ArithmeticType] _Complex float
+#   30|               ValueCategory = prvalue(load)
+#   31|     12: [ExprStmt] ExprStmt
+#   31|       0: [AssignExpr] ... = ...
+#   31|           Type = [ArithmeticType] _Complex float
+#   31|           ValueCategory = prvalue
+#   31|         0: [VariableAccess] cf3
+#   31|             Type = [ArithmeticType] _Complex float
+#   31|             ValueCategory = lvalue
+#   31|         1: [SubExpr] ... - ...
+#   31|             Type = [ArithmeticType] _Complex float
+#   31|             ValueCategory = prvalue
+#   31|           0: [VariableAccess] cf1
+#   31|               Type = [ArithmeticType] _Complex float
+#   31|               ValueCategory = prvalue(load)
+#   31|           1: [VariableAccess] cf2
+#   31|               Type = [ArithmeticType] _Complex float
+#   31|               ValueCategory = prvalue(load)
+#   32|     13: [ExprStmt] ExprStmt
+#   32|       0: [AssignExpr] ... = ...
+#   32|           Type = [ArithmeticType] _Complex float
+#   32|           ValueCategory = prvalue
+#   32|         0: [VariableAccess] cf3
+#   32|             Type = [ArithmeticType] _Complex float
+#   32|             ValueCategory = lvalue
+#   32|         1: [MulExpr] ... * ...
+#   32|             Type = [ArithmeticType] _Complex float
+#   32|             ValueCategory = prvalue
+#   32|           0: [VariableAccess] cf1
+#   32|               Type = [ArithmeticType] _Complex float
+#   32|               ValueCategory = prvalue(load)
+#   32|           1: [VariableAccess] cf2
+#   32|               Type = [ArithmeticType] _Complex float
+#   32|               ValueCategory = prvalue(load)
+#   33|     14: [ExprStmt] ExprStmt
+#   33|       0: [AssignExpr] ... = ...
+#   33|           Type = [ArithmeticType] _Complex float
+#   33|           ValueCategory = prvalue
+#   33|         0: [VariableAccess] cf3
+#   33|             Type = [ArithmeticType] _Complex float
+#   33|             ValueCategory = lvalue
+#   33|         1: [DivExpr] ... / ...
+#   33|             Type = [ArithmeticType] _Complex float
+#   33|             ValueCategory = prvalue
+#   33|           0: [VariableAccess] cf1
+#   33|               Type = [ArithmeticType] _Complex float
+#   33|               ValueCategory = prvalue(load)
+#   33|           1: [VariableAccess] cf2
+#   33|               Type = [ArithmeticType] _Complex float
+#   33|               ValueCategory = prvalue(load)
+#   36|     15: [ExprStmt] ExprStmt
+#   36|       0: [AssignExpr] ... = ...
+#   36|           Type = [ArithmeticType] _Imaginary float
+#   36|           ValueCategory = prvalue
+#   36|         0: [VariableAccess] jf3
+#   36|             Type = [ArithmeticType] _Imaginary float
+#   36|             ValueCategory = lvalue
+#   36|         1: [UnaryPlusExpr] + ...
+#   36|             Type = [ArithmeticType] _Imaginary float
+#   36|             ValueCategory = prvalue
+#   36|           0: [VariableAccess] jf1
+#   36|               Type = [ArithmeticType] _Imaginary float
+#   36|               ValueCategory = prvalue(load)
+#   37|     16: [ExprStmt] ExprStmt
+#   37|       0: [AssignExpr] ... = ...
+#   37|           Type = [ArithmeticType] _Imaginary float
+#   37|           ValueCategory = prvalue
+#   37|         0: [VariableAccess] jf3
+#   37|             Type = [ArithmeticType] _Imaginary float
+#   37|             ValueCategory = lvalue
+#   37|         1: [UnaryMinusExpr] - ...
+#   37|             Type = [ArithmeticType] _Imaginary float
+#   37|             ValueCategory = prvalue
+#   37|           0: [VariableAccess] jf1
+#   37|               Type = [ArithmeticType] _Imaginary float
+#   37|               ValueCategory = prvalue(load)
+#   40|     17: [ExprStmt] ExprStmt
+#   40|       0: [AssignExpr] ... = ...
+#   40|           Type = [ArithmeticType] _Imaginary float
+#   40|           ValueCategory = prvalue
+#   40|         0: [VariableAccess] jf3
+#   40|             Type = [ArithmeticType] _Imaginary float
+#   40|             ValueCategory = lvalue
+#   40|         1: [AddExpr] ... + ...
+#   40|             Type = [ArithmeticType] _Imaginary float
+#   40|             ValueCategory = prvalue
+#   40|           0: [VariableAccess] jf1
+#   40|               Type = [ArithmeticType] _Imaginary float
+#   40|               ValueCategory = prvalue(load)
+#   40|           1: [VariableAccess] jf2
+#   40|               Type = [ArithmeticType] _Imaginary float
+#   40|               ValueCategory = prvalue(load)
+#   41|     18: [ExprStmt] ExprStmt
+#   41|       0: [AssignExpr] ... = ...
+#   41|           Type = [ArithmeticType] _Imaginary float
+#   41|           ValueCategory = prvalue
+#   41|         0: [VariableAccess] jf3
+#   41|             Type = [ArithmeticType] _Imaginary float
+#   41|             ValueCategory = lvalue
+#   41|         1: [SubExpr] ... - ...
+#   41|             Type = [ArithmeticType] _Imaginary float
+#   41|             ValueCategory = prvalue
+#   41|           0: [VariableAccess] jf1
+#   41|               Type = [ArithmeticType] _Imaginary float
+#   41|               ValueCategory = prvalue(load)
+#   41|           1: [VariableAccess] jf2
+#   41|               Type = [ArithmeticType] _Imaginary float
+#   41|               ValueCategory = prvalue(load)
+#   42|     19: [ExprStmt] ExprStmt
+#   42|       0: [AssignExpr] ... = ...
+#   42|           Type = [FloatType] float
+#   42|           ValueCategory = prvalue
+#   42|         0: [VariableAccess] f3
+#   42|             Type = [FloatType] float
+#   42|             ValueCategory = lvalue
+#   42|         1: [ImaginaryMulExpr] ... * ...
+#   42|             Type = [FloatType] float
+#   42|             ValueCategory = prvalue
+#   42|           0: [VariableAccess] jf1
+#   42|               Type = [ArithmeticType] _Imaginary float
+#   42|               ValueCategory = prvalue(load)
+#   42|           1: [VariableAccess] jf2
+#   42|               Type = [ArithmeticType] _Imaginary float
+#   42|               ValueCategory = prvalue(load)
+#   43|     20: [ExprStmt] ExprStmt
+#   43|       0: [AssignExpr] ... = ...
+#   43|           Type = [FloatType] float
+#   43|           ValueCategory = prvalue
+#   43|         0: [VariableAccess] f3
+#   43|             Type = [FloatType] float
+#   43|             ValueCategory = lvalue
+#   43|         1: [DivExpr] ... / ...
+#   43|             Type = [FloatType] float
+#   43|             ValueCategory = prvalue
+#   43|           0: [VariableAccess] jf1
+#   43|               Type = [ArithmeticType] _Imaginary float
+#   43|               ValueCategory = prvalue(load)
+#   43|           1: [VariableAccess] jf2
+#   43|               Type = [ArithmeticType] _Imaginary float
+#   43|               ValueCategory = prvalue(load)
+#   46|     21: [ExprStmt] ExprStmt
+#   46|       0: [AssignExpr] ... = ...
+#   46|           Type = [ArithmeticType] _Complex float
+#   46|           ValueCategory = prvalue
+#   46|         0: [VariableAccess] cf3
+#   46|             Type = [ArithmeticType] _Complex float
+#   46|             ValueCategory = lvalue
+#   46|         1: [ImaginaryRealAddExpr] ... + ...
+#   46|             Type = [ArithmeticType] _Complex float
+#   46|             ValueCategory = prvalue
+#   46|           0: [VariableAccess] jf1
+#   46|               Type = [ArithmeticType] _Imaginary float
+#   46|               ValueCategory = prvalue(load)
+#   46|           1: [VariableAccess] f2
+#   46|               Type = [FloatType] float
+#   46|               ValueCategory = prvalue(load)
+#   47|     22: [ExprStmt] ExprStmt
+#   47|       0: [AssignExpr] ... = ...
+#   47|           Type = [ArithmeticType] _Complex float
+#   47|           ValueCategory = prvalue
+#   47|         0: [VariableAccess] cf3
+#   47|             Type = [ArithmeticType] _Complex float
+#   47|             ValueCategory = lvalue
+#   47|         1: [ImaginaryRealSubExpr] ... - ...
+#   47|             Type = [ArithmeticType] _Complex float
+#   47|             ValueCategory = prvalue
+#   47|           0: [VariableAccess] jf1
+#   47|               Type = [ArithmeticType] _Imaginary float
+#   47|               ValueCategory = prvalue(load)
+#   47|           1: [VariableAccess] f2
+#   47|               Type = [FloatType] float
+#   47|               ValueCategory = prvalue(load)
+#   48|     23: [ExprStmt] ExprStmt
+#   48|       0: [AssignExpr] ... = ...
+#   48|           Type = [ArithmeticType] _Imaginary float
+#   48|           ValueCategory = prvalue
+#   48|         0: [VariableAccess] jf3
+#   48|             Type = [ArithmeticType] _Imaginary float
+#   48|             ValueCategory = lvalue
+#   48|         1: [MulExpr] ... * ...
+#   48|             Type = [ArithmeticType] _Imaginary float
+#   48|             ValueCategory = prvalue
+#   48|           0: [VariableAccess] jf1
+#   48|               Type = [ArithmeticType] _Imaginary float
+#   48|               ValueCategory = prvalue(load)
+#   48|           1: [VariableAccess] f2
+#   48|               Type = [FloatType] float
+#   48|               ValueCategory = prvalue(load)
+#   49|     24: [ExprStmt] ExprStmt
+#   49|       0: [AssignExpr] ... = ...
+#   49|           Type = [ArithmeticType] _Imaginary float
+#   49|           ValueCategory = prvalue
+#   49|         0: [VariableAccess] jf3
+#   49|             Type = [ArithmeticType] _Imaginary float
+#   49|             ValueCategory = lvalue
+#   49|         1: [DivExpr] ... / ...
+#   49|             Type = [ArithmeticType] _Imaginary float
+#   49|             ValueCategory = prvalue
+#   49|           0: [VariableAccess] jf1
+#   49|               Type = [ArithmeticType] _Imaginary float
+#   49|               ValueCategory = prvalue(load)
+#   49|           1: [VariableAccess] f2
+#   49|               Type = [FloatType] float
+#   49|               ValueCategory = prvalue(load)
+#   52|     25: [ExprStmt] ExprStmt
+#   52|       0: [AssignExpr] ... = ...
+#   52|           Type = [ArithmeticType] _Complex float
+#   52|           ValueCategory = prvalue
+#   52|         0: [VariableAccess] cf3
+#   52|             Type = [ArithmeticType] _Complex float
+#   52|             ValueCategory = lvalue
+#   52|         1: [RealImaginaryAddExpr] ... + ...
+#   52|             Type = [ArithmeticType] _Complex float
+#   52|             ValueCategory = prvalue
+#   52|           0: [VariableAccess] f1
+#   52|               Type = [FloatType] float
+#   52|               ValueCategory = prvalue(load)
+#   52|           1: [VariableAccess] jf2
+#   52|               Type = [ArithmeticType] _Imaginary float
+#   52|               ValueCategory = prvalue(load)
+#   53|     26: [ExprStmt] ExprStmt
+#   53|       0: [AssignExpr] ... = ...
+#   53|           Type = [ArithmeticType] _Complex float
+#   53|           ValueCategory = prvalue
+#   53|         0: [VariableAccess] cf3
+#   53|             Type = [ArithmeticType] _Complex float
+#   53|             ValueCategory = lvalue
+#   53|         1: [RealImaginarySubExpr] ... - ...
+#   53|             Type = [ArithmeticType] _Complex float
+#   53|             ValueCategory = prvalue
+#   53|           0: [VariableAccess] f1
+#   53|               Type = [FloatType] float
+#   53|               ValueCategory = prvalue(load)
+#   53|           1: [VariableAccess] jf2
+#   53|               Type = [ArithmeticType] _Imaginary float
+#   53|               ValueCategory = prvalue(load)
+#   54|     27: [ExprStmt] ExprStmt
+#   54|       0: [AssignExpr] ... = ...
+#   54|           Type = [ArithmeticType] _Imaginary float
+#   54|           ValueCategory = prvalue
+#   54|         0: [VariableAccess] jf3
+#   54|             Type = [ArithmeticType] _Imaginary float
+#   54|             ValueCategory = lvalue
+#   54|         1: [MulExpr] ... * ...
+#   54|             Type = [ArithmeticType] _Imaginary float
+#   54|             ValueCategory = prvalue
+#   54|           0: [VariableAccess] f1
+#   54|               Type = [FloatType] float
+#   54|               ValueCategory = prvalue(load)
+#   54|           1: [VariableAccess] jf2
+#   54|               Type = [ArithmeticType] _Imaginary float
+#   54|               ValueCategory = prvalue(load)
+#   55|     28: [ExprStmt] ExprStmt
+#   55|       0: [AssignExpr] ... = ...
+#   55|           Type = [ArithmeticType] _Imaginary float
+#   55|           ValueCategory = prvalue
+#   55|         0: [VariableAccess] jf3
+#   55|             Type = [ArithmeticType] _Imaginary float
+#   55|             ValueCategory = lvalue
+#   55|         1: [ImaginaryDivExpr] ... / ...
+#   55|             Type = [ArithmeticType] _Imaginary float
+#   55|             ValueCategory = prvalue
+#   55|           0: [VariableAccess] f1
+#   55|               Type = [FloatType] float
+#   55|               ValueCategory = prvalue(load)
+#   55|           1: [VariableAccess] jf2
+#   55|               Type = [ArithmeticType] _Imaginary float
+#   55|               ValueCategory = prvalue(load)
+#   56|     29: [ReturnStmt] return ...
+#   58| [TopLevelFunction] void complex_conversions()
+#   58|   params: 
+#   58|   body: [Block] { ... }
+#   59|     0: [DeclStmt] declaration
+#   59|       0: [VariableDeclarationEntry] definition of f
+#   59|           Type = [FloatType] float
+#   59|         init: [Initializer] initializer for f
+#   59|           expr: [CStyleCast] (float)...
+#   59|               Conversion = [FloatingPointConversion] floating point conversion
+#   59|               Type = [FloatType] float
+#   59|               Value = [CStyleCast] 2.0
+#   59|               ValueCategory = prvalue
+#   59|             expr: [Literal] 2.0
+#   59|                 Type = [DoubleType] double
+#   59|                 Value = [Literal] 2.0
+#   59|                 ValueCategory = prvalue
+#   60|     1: [DeclStmt] declaration
+#   60|       0: [VariableDeclarationEntry] definition of d
+#   60|           Type = [DoubleType] double
+#   60|         init: [Initializer] initializer for d
+#   60|           expr: [Literal] 3.0
+#   60|               Type = [DoubleType] double
+#   60|               Value = [Literal] 3.0
+#   60|               ValueCategory = prvalue
+#   61|     2: [DeclStmt] declaration
+#   61|       0: [VariableDeclarationEntry] definition of ld
+#   61|           Type = [LongDoubleType] long double
+#   61|         init: [Initializer] initializer for ld
+#   61|           expr: [CStyleCast] (long double)...
+#   61|               Conversion = [FloatingPointConversion] floating point conversion
+#   61|               Type = [LongDoubleType] long double
+#   61|               Value = [CStyleCast] 5.0
+#   61|               ValueCategory = prvalue
+#   61|             expr: [Literal] 5.0
+#   61|                 Type = [DoubleType] double
+#   61|                 Value = [Literal] 5.0
+#   61|                 ValueCategory = prvalue
+#   62|     3: [DeclStmt] declaration
+#   62|       0: [VariableDeclarationEntry] definition of cf
+#   62|           Type = [ArithmeticType] _Complex float
+#   62|         init: [Initializer] initializer for cf
+#   62|           expr: [CStyleCast] (_Complex float)...
+#   62|               Conversion = [FloatingPointConversion] floating point conversion
+#   62|               Type = [ArithmeticType] _Complex float
+#   62|               ValueCategory = prvalue
+#   62|             expr: [Literal] 7.0
+#   62|                 Type = [DoubleType] double
+#   62|                 Value = [Literal] 7.0
+#   62|                 ValueCategory = prvalue
+#   63|     4: [DeclStmt] declaration
+#   63|       0: [VariableDeclarationEntry] definition of cd
+#   63|           Type = [ArithmeticType] _Complex double
+#   63|         init: [Initializer] initializer for cd
+#   63|           expr: [CStyleCast] (_Complex double)...
+#   63|               Conversion = [FloatingPointConversion] floating point conversion
+#   63|               Type = [ArithmeticType] _Complex double
+#   63|               ValueCategory = prvalue
+#   63|             expr: [Literal] 11.0
+#   63|                 Type = [DoubleType] double
+#   63|                 Value = [Literal] 11.0
+#   63|                 ValueCategory = prvalue
+#   64|     5: [DeclStmt] declaration
+#   64|       0: [VariableDeclarationEntry] definition of cld
+#   64|           Type = [ArithmeticType] _Complex long double
+#   64|         init: [Initializer] initializer for cld
+#   64|           expr: [CStyleCast] (_Complex long double)...
+#   64|               Conversion = [FloatingPointConversion] floating point conversion
+#   64|               Type = [ArithmeticType] _Complex long double
+#   64|               ValueCategory = prvalue
+#   64|             expr: [Literal] 13.0
+#   64|                 Type = [DoubleType] double
+#   64|                 Value = [Literal] 13.0
+#   64|                 ValueCategory = prvalue
+#   65|     6: [DeclStmt] declaration
+#   65|       0: [VariableDeclarationEntry] definition of jf
+#   65|           Type = [ArithmeticType] _Imaginary float
+#   65|         init: [Initializer] initializer for jf
+#   65|           expr: [Literal] 1.0i
+#   65|               Type = [ArithmeticType] _Imaginary float
+#   65|               Value = [Literal] 1.0i
+#   65|               ValueCategory = prvalue
+#   66|     7: [DeclStmt] declaration
+#   66|       0: [VariableDeclarationEntry] definition of jd
+#   66|           Type = [ArithmeticType] _Imaginary double
+#   66|         init: [Initializer] initializer for jd
+#   66|           expr: [CStyleCast] (_Imaginary double)...
+#   66|               Conversion = [FloatingPointConversion] floating point conversion
+#   66|               Type = [ArithmeticType] _Imaginary double
+#   66|               ValueCategory = prvalue
+#   66|             expr: [Literal] 1.0i
+#   66|                 Type = [ArithmeticType] _Imaginary float
+#   66|                 Value = [Literal] 1.0i
+#   66|                 ValueCategory = prvalue
+#   67|     8: [DeclStmt] declaration
+#   67|       0: [VariableDeclarationEntry] definition of jld
+#   67|           Type = [ArithmeticType] _Imaginary long double
+#   67|         init: [Initializer] initializer for jld
+#   67|           expr: [CStyleCast] (_Imaginary long double)...
+#   67|               Conversion = [FloatingPointConversion] floating point conversion
+#   67|               Type = [ArithmeticType] _Imaginary long double
+#   67|               ValueCategory = prvalue
+#   67|             expr: [Literal] 1.0i
+#   67|                 Type = [ArithmeticType] _Imaginary float
+#   67|                 Value = [Literal] 1.0i
+#   67|                 ValueCategory = prvalue
+#   70|     9: [ExprStmt] ExprStmt
+#   70|       0: [AssignExpr] ... = ...
+#   70|           Type = [ArithmeticType] _Complex float
+#   70|           ValueCategory = prvalue
+#   70|         0: [VariableAccess] cf
+#   70|             Type = [ArithmeticType] _Complex float
+#   70|             ValueCategory = lvalue
+#   70|         1: [VariableAccess] cf
+#   70|             Type = [ArithmeticType] _Complex float
+#   70|             ValueCategory = prvalue(load)
+#   71|     10: [ExprStmt] ExprStmt
+#   71|       0: [AssignExpr] ... = ...
+#   71|           Type = [ArithmeticType] _Complex float
+#   71|           ValueCategory = prvalue
+#   71|         0: [VariableAccess] cf
+#   71|             Type = [ArithmeticType] _Complex float
+#   71|             ValueCategory = lvalue
+#   71|         1: [CStyleCast] (_Complex float)...
+#   71|             Conversion = [FloatingPointConversion] floating point conversion
+#   71|             Type = [ArithmeticType] _Complex float
+#   71|             ValueCategory = prvalue
+#   71|           expr: [VariableAccess] cd
+#   71|               Type = [ArithmeticType] _Complex double
+#   71|               ValueCategory = prvalue(load)
+#   72|     11: [ExprStmt] ExprStmt
+#   72|       0: [AssignExpr] ... = ...
+#   72|           Type = [ArithmeticType] _Complex float
+#   72|           ValueCategory = prvalue
+#   72|         0: [VariableAccess] cf
+#   72|             Type = [ArithmeticType] _Complex float
+#   72|             ValueCategory = lvalue
+#   72|         1: [CStyleCast] (_Complex float)...
+#   72|             Conversion = [FloatingPointConversion] floating point conversion
+#   72|             Type = [ArithmeticType] _Complex float
+#   72|             ValueCategory = prvalue
+#   72|           expr: [VariableAccess] cld
+#   72|               Type = [ArithmeticType] _Complex long double
+#   72|               ValueCategory = prvalue(load)
+#   73|     12: [ExprStmt] ExprStmt
+#   73|       0: [AssignExpr] ... = ...
+#   73|           Type = [ArithmeticType] _Complex double
+#   73|           ValueCategory = prvalue
+#   73|         0: [VariableAccess] cd
+#   73|             Type = [ArithmeticType] _Complex double
+#   73|             ValueCategory = lvalue
+#   73|         1: [CStyleCast] (_Complex double)...
+#   73|             Conversion = [FloatingPointConversion] floating point conversion
+#   73|             Type = [ArithmeticType] _Complex double
+#   73|             ValueCategory = prvalue
+#   73|           expr: [VariableAccess] cf
+#   73|               Type = [ArithmeticType] _Complex float
+#   73|               ValueCategory = prvalue(load)
+#   74|     13: [ExprStmt] ExprStmt
+#   74|       0: [AssignExpr] ... = ...
+#   74|           Type = [ArithmeticType] _Complex double
+#   74|           ValueCategory = prvalue
+#   74|         0: [VariableAccess] cd
+#   74|             Type = [ArithmeticType] _Complex double
+#   74|             ValueCategory = lvalue
+#   74|         1: [VariableAccess] cd
+#   74|             Type = [ArithmeticType] _Complex double
+#   74|             ValueCategory = prvalue(load)
+#   75|     14: [ExprStmt] ExprStmt
+#   75|       0: [AssignExpr] ... = ...
+#   75|           Type = [ArithmeticType] _Complex double
+#   75|           ValueCategory = prvalue
+#   75|         0: [VariableAccess] cd
+#   75|             Type = [ArithmeticType] _Complex double
+#   75|             ValueCategory = lvalue
+#   75|         1: [CStyleCast] (_Complex double)...
+#   75|             Conversion = [FloatingPointConversion] floating point conversion
+#   75|             Type = [ArithmeticType] _Complex double
+#   75|             ValueCategory = prvalue
+#   75|           expr: [VariableAccess] cld
+#   75|               Type = [ArithmeticType] _Complex long double
+#   75|               ValueCategory = prvalue(load)
+#   76|     15: [ExprStmt] ExprStmt
+#   76|       0: [AssignExpr] ... = ...
+#   76|           Type = [ArithmeticType] _Complex long double
+#   76|           ValueCategory = prvalue
+#   76|         0: [VariableAccess] cld
+#   76|             Type = [ArithmeticType] _Complex long double
+#   76|             ValueCategory = lvalue
+#   76|         1: [CStyleCast] (_Complex long double)...
+#   76|             Conversion = [FloatingPointConversion] floating point conversion
+#   76|             Type = [ArithmeticType] _Complex long double
+#   76|             ValueCategory = prvalue
+#   76|           expr: [VariableAccess] cf
+#   76|               Type = [ArithmeticType] _Complex float
+#   76|               ValueCategory = prvalue(load)
+#   77|     16: [ExprStmt] ExprStmt
+#   77|       0: [AssignExpr] ... = ...
+#   77|           Type = [ArithmeticType] _Complex long double
+#   77|           ValueCategory = prvalue
+#   77|         0: [VariableAccess] cld
+#   77|             Type = [ArithmeticType] _Complex long double
+#   77|             ValueCategory = lvalue
+#   77|         1: [CStyleCast] (_Complex long double)...
+#   77|             Conversion = [FloatingPointConversion] floating point conversion
+#   77|             Type = [ArithmeticType] _Complex long double
+#   77|             ValueCategory = prvalue
+#   77|           expr: [VariableAccess] cd
+#   77|               Type = [ArithmeticType] _Complex double
+#   77|               ValueCategory = prvalue(load)
+#   78|     17: [ExprStmt] ExprStmt
+#   78|       0: [AssignExpr] ... = ...
+#   78|           Type = [ArithmeticType] _Complex long double
+#   78|           ValueCategory = prvalue
+#   78|         0: [VariableAccess] cld
+#   78|             Type = [ArithmeticType] _Complex long double
+#   78|             ValueCategory = lvalue
+#   78|         1: [VariableAccess] cld
+#   78|             Type = [ArithmeticType] _Complex long double
+#   78|             ValueCategory = prvalue(load)
+#   81|     18: [ExprStmt] ExprStmt
+#   81|       0: [AssignExpr] ... = ...
+#   81|           Type = [ArithmeticType] _Complex float
+#   81|           ValueCategory = prvalue
+#   81|         0: [VariableAccess] cf
+#   81|             Type = [ArithmeticType] _Complex float
+#   81|             ValueCategory = lvalue
+#   81|         1: [CStyleCast] (_Complex float)...
+#   81|             Conversion = [FloatingPointConversion] floating point conversion
+#   81|             Type = [ArithmeticType] _Complex float
+#   81|             ValueCategory = prvalue
+#   81|           expr: [VariableAccess] f
+#   81|               Type = [FloatType] float
+#   81|               ValueCategory = prvalue(load)
+#   82|     19: [ExprStmt] ExprStmt
+#   82|       0: [AssignExpr] ... = ...
+#   82|           Type = [ArithmeticType] _Complex float
+#   82|           ValueCategory = prvalue
+#   82|         0: [VariableAccess] cf
+#   82|             Type = [ArithmeticType] _Complex float
+#   82|             ValueCategory = lvalue
+#   82|         1: [CStyleCast] (_Complex float)...
+#   82|             Conversion = [FloatingPointConversion] floating point conversion
+#   82|             Type = [ArithmeticType] _Complex float
+#   82|             ValueCategory = prvalue
+#   82|           expr: [VariableAccess] d
+#   82|               Type = [DoubleType] double
+#   82|               ValueCategory = prvalue(load)
+#   83|     20: [ExprStmt] ExprStmt
+#   83|       0: [AssignExpr] ... = ...
+#   83|           Type = [ArithmeticType] _Complex float
+#   83|           ValueCategory = prvalue
+#   83|         0: [VariableAccess] cf
+#   83|             Type = [ArithmeticType] _Complex float
+#   83|             ValueCategory = lvalue
+#   83|         1: [CStyleCast] (_Complex float)...
+#   83|             Conversion = [FloatingPointConversion] floating point conversion
+#   83|             Type = [ArithmeticType] _Complex float
+#   83|             ValueCategory = prvalue
+#   83|           expr: [VariableAccess] ld
+#   83|               Type = [LongDoubleType] long double
+#   83|               ValueCategory = prvalue(load)
+#   84|     21: [ExprStmt] ExprStmt
+#   84|       0: [AssignExpr] ... = ...
+#   84|           Type = [ArithmeticType] _Complex double
+#   84|           ValueCategory = prvalue
+#   84|         0: [VariableAccess] cd
+#   84|             Type = [ArithmeticType] _Complex double
+#   84|             ValueCategory = lvalue
+#   84|         1: [CStyleCast] (_Complex double)...
+#   84|             Conversion = [FloatingPointConversion] floating point conversion
+#   84|             Type = [ArithmeticType] _Complex double
+#   84|             ValueCategory = prvalue
+#   84|           expr: [VariableAccess] f
+#   84|               Type = [FloatType] float
+#   84|               ValueCategory = prvalue(load)
+#   85|     22: [ExprStmt] ExprStmt
+#   85|       0: [AssignExpr] ... = ...
+#   85|           Type = [ArithmeticType] _Complex double
+#   85|           ValueCategory = prvalue
+#   85|         0: [VariableAccess] cd
+#   85|             Type = [ArithmeticType] _Complex double
+#   85|             ValueCategory = lvalue
+#   85|         1: [CStyleCast] (_Complex double)...
+#   85|             Conversion = [FloatingPointConversion] floating point conversion
+#   85|             Type = [ArithmeticType] _Complex double
+#   85|             ValueCategory = prvalue
+#   85|           expr: [VariableAccess] d
+#   85|               Type = [DoubleType] double
+#   85|               ValueCategory = prvalue(load)
+#   86|     23: [ExprStmt] ExprStmt
+#   86|       0: [AssignExpr] ... = ...
+#   86|           Type = [ArithmeticType] _Complex double
+#   86|           ValueCategory = prvalue
+#   86|         0: [VariableAccess] cd
+#   86|             Type = [ArithmeticType] _Complex double
+#   86|             ValueCategory = lvalue
+#   86|         1: [CStyleCast] (_Complex double)...
+#   86|             Conversion = [FloatingPointConversion] floating point conversion
+#   86|             Type = [ArithmeticType] _Complex double
+#   86|             ValueCategory = prvalue
+#   86|           expr: [VariableAccess] ld
+#   86|               Type = [LongDoubleType] long double
+#   86|               ValueCategory = prvalue(load)
+#   87|     24: [ExprStmt] ExprStmt
+#   87|       0: [AssignExpr] ... = ...
+#   87|           Type = [ArithmeticType] _Complex long double
+#   87|           ValueCategory = prvalue
+#   87|         0: [VariableAccess] cld
+#   87|             Type = [ArithmeticType] _Complex long double
+#   87|             ValueCategory = lvalue
+#   87|         1: [CStyleCast] (_Complex long double)...
+#   87|             Conversion = [FloatingPointConversion] floating point conversion
+#   87|             Type = [ArithmeticType] _Complex long double
+#   87|             ValueCategory = prvalue
+#   87|           expr: [VariableAccess] f
+#   87|               Type = [FloatType] float
+#   87|               ValueCategory = prvalue(load)
+#   88|     25: [ExprStmt] ExprStmt
+#   88|       0: [AssignExpr] ... = ...
+#   88|           Type = [ArithmeticType] _Complex long double
+#   88|           ValueCategory = prvalue
+#   88|         0: [VariableAccess] cld
+#   88|             Type = [ArithmeticType] _Complex long double
+#   88|             ValueCategory = lvalue
+#   88|         1: [CStyleCast] (_Complex long double)...
+#   88|             Conversion = [FloatingPointConversion] floating point conversion
+#   88|             Type = [ArithmeticType] _Complex long double
+#   88|             ValueCategory = prvalue
+#   88|           expr: [VariableAccess] d
+#   88|               Type = [DoubleType] double
+#   88|               ValueCategory = prvalue(load)
+#   89|     26: [ExprStmt] ExprStmt
+#   89|       0: [AssignExpr] ... = ...
+#   89|           Type = [ArithmeticType] _Complex long double
+#   89|           ValueCategory = prvalue
+#   89|         0: [VariableAccess] cld
+#   89|             Type = [ArithmeticType] _Complex long double
+#   89|             ValueCategory = lvalue
+#   89|         1: [CStyleCast] (_Complex long double)...
+#   89|             Conversion = [FloatingPointConversion] floating point conversion
+#   89|             Type = [ArithmeticType] _Complex long double
+#   89|             ValueCategory = prvalue
+#   89|           expr: [VariableAccess] ld
+#   89|               Type = [LongDoubleType] long double
+#   89|               ValueCategory = prvalue(load)
+#   92|     27: [ExprStmt] ExprStmt
+#   92|       0: [AssignExpr] ... = ...
+#   92|           Type = [FloatType] float
+#   92|           ValueCategory = prvalue
+#   92|         0: [VariableAccess] f
+#   92|             Type = [FloatType] float
+#   92|             ValueCategory = lvalue
+#   92|         1: [CStyleCast] (float)...
+#   92|             Conversion = [FloatingPointConversion] floating point conversion
+#   92|             Type = [FloatType] float
+#   92|             ValueCategory = prvalue
+#   92|           expr: [VariableAccess] cf
+#   92|               Type = [ArithmeticType] _Complex float
+#   92|               ValueCategory = prvalue(load)
+#   93|     28: [ExprStmt] ExprStmt
+#   93|       0: [AssignExpr] ... = ...
+#   93|           Type = [FloatType] float
+#   93|           ValueCategory = prvalue
+#   93|         0: [VariableAccess] f
+#   93|             Type = [FloatType] float
+#   93|             ValueCategory = lvalue
+#   93|         1: [CStyleCast] (float)...
+#   93|             Conversion = [FloatingPointConversion] floating point conversion
+#   93|             Type = [FloatType] float
+#   93|             ValueCategory = prvalue
+#   93|           expr: [VariableAccess] cd
+#   93|               Type = [ArithmeticType] _Complex double
+#   93|               ValueCategory = prvalue(load)
+#   94|     29: [ExprStmt] ExprStmt
+#   94|       0: [AssignExpr] ... = ...
+#   94|           Type = [FloatType] float
+#   94|           ValueCategory = prvalue
+#   94|         0: [VariableAccess] f
+#   94|             Type = [FloatType] float
+#   94|             ValueCategory = lvalue
+#   94|         1: [CStyleCast] (float)...
+#   94|             Conversion = [FloatingPointConversion] floating point conversion
+#   94|             Type = [FloatType] float
+#   94|             ValueCategory = prvalue
+#   94|           expr: [VariableAccess] cld
+#   94|               Type = [ArithmeticType] _Complex long double
+#   94|               ValueCategory = prvalue(load)
+#   95|     30: [ExprStmt] ExprStmt
+#   95|       0: [AssignExpr] ... = ...
+#   95|           Type = [DoubleType] double
+#   95|           ValueCategory = prvalue
+#   95|         0: [VariableAccess] d
+#   95|             Type = [DoubleType] double
+#   95|             ValueCategory = lvalue
+#   95|         1: [CStyleCast] (double)...
+#   95|             Conversion = [FloatingPointConversion] floating point conversion
+#   95|             Type = [DoubleType] double
+#   95|             ValueCategory = prvalue
+#   95|           expr: [VariableAccess] cf
+#   95|               Type = [ArithmeticType] _Complex float
+#   95|               ValueCategory = prvalue(load)
+#   96|     31: [ExprStmt] ExprStmt
+#   96|       0: [AssignExpr] ... = ...
+#   96|           Type = [DoubleType] double
+#   96|           ValueCategory = prvalue
+#   96|         0: [VariableAccess] d
+#   96|             Type = [DoubleType] double
+#   96|             ValueCategory = lvalue
+#   96|         1: [CStyleCast] (double)...
+#   96|             Conversion = [FloatingPointConversion] floating point conversion
+#   96|             Type = [DoubleType] double
+#   96|             ValueCategory = prvalue
+#   96|           expr: [VariableAccess] cd
+#   96|               Type = [ArithmeticType] _Complex double
+#   96|               ValueCategory = prvalue(load)
+#   97|     32: [ExprStmt] ExprStmt
+#   97|       0: [AssignExpr] ... = ...
+#   97|           Type = [DoubleType] double
+#   97|           ValueCategory = prvalue
+#   97|         0: [VariableAccess] d
+#   97|             Type = [DoubleType] double
+#   97|             ValueCategory = lvalue
+#   97|         1: [CStyleCast] (double)...
+#   97|             Conversion = [FloatingPointConversion] floating point conversion
+#   97|             Type = [DoubleType] double
+#   97|             ValueCategory = prvalue
+#   97|           expr: [VariableAccess] cld
+#   97|               Type = [ArithmeticType] _Complex long double
+#   97|               ValueCategory = prvalue(load)
+#   98|     33: [ExprStmt] ExprStmt
+#   98|       0: [AssignExpr] ... = ...
+#   98|           Type = [LongDoubleType] long double
+#   98|           ValueCategory = prvalue
+#   98|         0: [VariableAccess] ld
+#   98|             Type = [LongDoubleType] long double
+#   98|             ValueCategory = lvalue
+#   98|         1: [CStyleCast] (long double)...
+#   98|             Conversion = [FloatingPointConversion] floating point conversion
+#   98|             Type = [LongDoubleType] long double
+#   98|             ValueCategory = prvalue
+#   98|           expr: [VariableAccess] cf
+#   98|               Type = [ArithmeticType] _Complex float
+#   98|               ValueCategory = prvalue(load)
+#   99|     34: [ExprStmt] ExprStmt
+#   99|       0: [AssignExpr] ... = ...
+#   99|           Type = [LongDoubleType] long double
+#   99|           ValueCategory = prvalue
+#   99|         0: [VariableAccess] ld
+#   99|             Type = [LongDoubleType] long double
+#   99|             ValueCategory = lvalue
+#   99|         1: [CStyleCast] (long double)...
+#   99|             Conversion = [FloatingPointConversion] floating point conversion
+#   99|             Type = [LongDoubleType] long double
+#   99|             ValueCategory = prvalue
+#   99|           expr: [VariableAccess] cd
+#   99|               Type = [ArithmeticType] _Complex double
+#   99|               ValueCategory = prvalue(load)
+#  100|     35: [ExprStmt] ExprStmt
+#  100|       0: [AssignExpr] ... = ...
+#  100|           Type = [LongDoubleType] long double
+#  100|           ValueCategory = prvalue
+#  100|         0: [VariableAccess] ld
+#  100|             Type = [LongDoubleType] long double
+#  100|             ValueCategory = lvalue
+#  100|         1: [CStyleCast] (long double)...
+#  100|             Conversion = [FloatingPointConversion] floating point conversion
+#  100|             Type = [LongDoubleType] long double
+#  100|             ValueCategory = prvalue
+#  100|           expr: [VariableAccess] cld
+#  100|               Type = [ArithmeticType] _Complex long double
+#  100|               ValueCategory = prvalue(load)
+#  103|     36: [ExprStmt] ExprStmt
+#  103|       0: [AssignExpr] ... = ...
+#  103|           Type = [ArithmeticType] _Complex float
+#  103|           ValueCategory = prvalue
+#  103|         0: [VariableAccess] cf
+#  103|             Type = [ArithmeticType] _Complex float
+#  103|             ValueCategory = lvalue
+#  103|         1: [CStyleCast] (_Complex float)...
+#  103|             Conversion = [FloatingPointConversion] floating point conversion
+#  103|             Type = [ArithmeticType] _Complex float
+#  103|             ValueCategory = prvalue
+#  103|           expr: [VariableAccess] jf
+#  103|               Type = [ArithmeticType] _Imaginary float
+#  103|               ValueCategory = prvalue(load)
+#  104|     37: [ExprStmt] ExprStmt
+#  104|       0: [AssignExpr] ... = ...
+#  104|           Type = [ArithmeticType] _Complex float
+#  104|           ValueCategory = prvalue
+#  104|         0: [VariableAccess] cf
+#  104|             Type = [ArithmeticType] _Complex float
+#  104|             ValueCategory = lvalue
+#  104|         1: [CStyleCast] (_Complex float)...
+#  104|             Conversion = [FloatingPointConversion] floating point conversion
+#  104|             Type = [ArithmeticType] _Complex float
+#  104|             ValueCategory = prvalue
+#  104|           expr: [VariableAccess] jd
+#  104|               Type = [ArithmeticType] _Imaginary double
+#  104|               ValueCategory = prvalue(load)
+#  105|     38: [ExprStmt] ExprStmt
+#  105|       0: [AssignExpr] ... = ...
+#  105|           Type = [ArithmeticType] _Complex float
+#  105|           ValueCategory = prvalue
+#  105|         0: [VariableAccess] cf
+#  105|             Type = [ArithmeticType] _Complex float
+#  105|             ValueCategory = lvalue
+#  105|         1: [CStyleCast] (_Complex float)...
+#  105|             Conversion = [FloatingPointConversion] floating point conversion
+#  105|             Type = [ArithmeticType] _Complex float
+#  105|             ValueCategory = prvalue
+#  105|           expr: [VariableAccess] jld
+#  105|               Type = [ArithmeticType] _Imaginary long double
+#  105|               ValueCategory = prvalue(load)
+#  106|     39: [ExprStmt] ExprStmt
+#  106|       0: [AssignExpr] ... = ...
+#  106|           Type = [ArithmeticType] _Complex double
+#  106|           ValueCategory = prvalue
+#  106|         0: [VariableAccess] cd
+#  106|             Type = [ArithmeticType] _Complex double
+#  106|             ValueCategory = lvalue
+#  106|         1: [CStyleCast] (_Complex double)...
+#  106|             Conversion = [FloatingPointConversion] floating point conversion
+#  106|             Type = [ArithmeticType] _Complex double
+#  106|             ValueCategory = prvalue
+#  106|           expr: [VariableAccess] jf
+#  106|               Type = [ArithmeticType] _Imaginary float
+#  106|               ValueCategory = prvalue(load)
+#  107|     40: [ExprStmt] ExprStmt
+#  107|       0: [AssignExpr] ... = ...
+#  107|           Type = [ArithmeticType] _Complex double
+#  107|           ValueCategory = prvalue
+#  107|         0: [VariableAccess] cd
+#  107|             Type = [ArithmeticType] _Complex double
+#  107|             ValueCategory = lvalue
+#  107|         1: [CStyleCast] (_Complex double)...
+#  107|             Conversion = [FloatingPointConversion] floating point conversion
+#  107|             Type = [ArithmeticType] _Complex double
+#  107|             ValueCategory = prvalue
+#  107|           expr: [VariableAccess] jd
+#  107|               Type = [ArithmeticType] _Imaginary double
+#  107|               ValueCategory = prvalue(load)
+#  108|     41: [ExprStmt] ExprStmt
+#  108|       0: [AssignExpr] ... = ...
+#  108|           Type = [ArithmeticType] _Complex double
+#  108|           ValueCategory = prvalue
+#  108|         0: [VariableAccess] cd
+#  108|             Type = [ArithmeticType] _Complex double
+#  108|             ValueCategory = lvalue
+#  108|         1: [CStyleCast] (_Complex double)...
+#  108|             Conversion = [FloatingPointConversion] floating point conversion
+#  108|             Type = [ArithmeticType] _Complex double
+#  108|             ValueCategory = prvalue
+#  108|           expr: [VariableAccess] jld
+#  108|               Type = [ArithmeticType] _Imaginary long double
+#  108|               ValueCategory = prvalue(load)
+#  109|     42: [ExprStmt] ExprStmt
+#  109|       0: [AssignExpr] ... = ...
+#  109|           Type = [ArithmeticType] _Complex long double
+#  109|           ValueCategory = prvalue
+#  109|         0: [VariableAccess] cld
+#  109|             Type = [ArithmeticType] _Complex long double
+#  109|             ValueCategory = lvalue
+#  109|         1: [CStyleCast] (_Complex long double)...
+#  109|             Conversion = [FloatingPointConversion] floating point conversion
+#  109|             Type = [ArithmeticType] _Complex long double
+#  109|             ValueCategory = prvalue
+#  109|           expr: [VariableAccess] jf
+#  109|               Type = [ArithmeticType] _Imaginary float
+#  109|               ValueCategory = prvalue(load)
+#  110|     43: [ExprStmt] ExprStmt
+#  110|       0: [AssignExpr] ... = ...
+#  110|           Type = [ArithmeticType] _Complex long double
+#  110|           ValueCategory = prvalue
+#  110|         0: [VariableAccess] cld
+#  110|             Type = [ArithmeticType] _Complex long double
+#  110|             ValueCategory = lvalue
+#  110|         1: [CStyleCast] (_Complex long double)...
+#  110|             Conversion = [FloatingPointConversion] floating point conversion
+#  110|             Type = [ArithmeticType] _Complex long double
+#  110|             ValueCategory = prvalue
+#  110|           expr: [VariableAccess] jd
+#  110|               Type = [ArithmeticType] _Imaginary double
+#  110|               ValueCategory = prvalue(load)
+#  111|     44: [ExprStmt] ExprStmt
+#  111|       0: [AssignExpr] ... = ...
+#  111|           Type = [ArithmeticType] _Complex long double
+#  111|           ValueCategory = prvalue
+#  111|         0: [VariableAccess] cld
+#  111|             Type = [ArithmeticType] _Complex long double
+#  111|             ValueCategory = lvalue
+#  111|         1: [CStyleCast] (_Complex long double)...
+#  111|             Conversion = [FloatingPointConversion] floating point conversion
+#  111|             Type = [ArithmeticType] _Complex long double
+#  111|             ValueCategory = prvalue
+#  111|           expr: [VariableAccess] jld
+#  111|               Type = [ArithmeticType] _Imaginary long double
+#  111|               ValueCategory = prvalue(load)
+#  114|     45: [ExprStmt] ExprStmt
+#  114|       0: [AssignExpr] ... = ...
+#  114|           Type = [ArithmeticType] _Imaginary float
+#  114|           ValueCategory = prvalue
+#  114|         0: [VariableAccess] jf
+#  114|             Type = [ArithmeticType] _Imaginary float
+#  114|             ValueCategory = lvalue
+#  114|         1: [CStyleCast] (_Imaginary float)...
+#  114|             Conversion = [FloatingPointConversion] floating point conversion
+#  114|             Type = [ArithmeticType] _Imaginary float
+#  114|             ValueCategory = prvalue
+#  114|           expr: [VariableAccess] cf
+#  114|               Type = [ArithmeticType] _Complex float
+#  114|               ValueCategory = prvalue(load)
+#  115|     46: [ExprStmt] ExprStmt
+#  115|       0: [AssignExpr] ... = ...
+#  115|           Type = [ArithmeticType] _Imaginary float
+#  115|           ValueCategory = prvalue
+#  115|         0: [VariableAccess] jf
+#  115|             Type = [ArithmeticType] _Imaginary float
+#  115|             ValueCategory = lvalue
+#  115|         1: [CStyleCast] (_Imaginary float)...
+#  115|             Conversion = [FloatingPointConversion] floating point conversion
+#  115|             Type = [ArithmeticType] _Imaginary float
+#  115|             ValueCategory = prvalue
+#  115|           expr: [VariableAccess] cd
+#  115|               Type = [ArithmeticType] _Complex double
+#  115|               ValueCategory = prvalue(load)
+#  116|     47: [ExprStmt] ExprStmt
+#  116|       0: [AssignExpr] ... = ...
+#  116|           Type = [ArithmeticType] _Imaginary float
+#  116|           ValueCategory = prvalue
+#  116|         0: [VariableAccess] jf
+#  116|             Type = [ArithmeticType] _Imaginary float
+#  116|             ValueCategory = lvalue
+#  116|         1: [CStyleCast] (_Imaginary float)...
+#  116|             Conversion = [FloatingPointConversion] floating point conversion
+#  116|             Type = [ArithmeticType] _Imaginary float
+#  116|             ValueCategory = prvalue
+#  116|           expr: [VariableAccess] cld
+#  116|               Type = [ArithmeticType] _Complex long double
+#  116|               ValueCategory = prvalue(load)
+#  117|     48: [ExprStmt] ExprStmt
+#  117|       0: [AssignExpr] ... = ...
+#  117|           Type = [ArithmeticType] _Imaginary double
+#  117|           ValueCategory = prvalue
+#  117|         0: [VariableAccess] jd
+#  117|             Type = [ArithmeticType] _Imaginary double
+#  117|             ValueCategory = lvalue
+#  117|         1: [CStyleCast] (_Imaginary double)...
+#  117|             Conversion = [FloatingPointConversion] floating point conversion
+#  117|             Type = [ArithmeticType] _Imaginary double
+#  117|             ValueCategory = prvalue
+#  117|           expr: [VariableAccess] cf
+#  117|               Type = [ArithmeticType] _Complex float
+#  117|               ValueCategory = prvalue(load)
+#  118|     49: [ExprStmt] ExprStmt
+#  118|       0: [AssignExpr] ... = ...
+#  118|           Type = [ArithmeticType] _Imaginary double
+#  118|           ValueCategory = prvalue
+#  118|         0: [VariableAccess] jd
+#  118|             Type = [ArithmeticType] _Imaginary double
+#  118|             ValueCategory = lvalue
+#  118|         1: [CStyleCast] (_Imaginary double)...
+#  118|             Conversion = [FloatingPointConversion] floating point conversion
+#  118|             Type = [ArithmeticType] _Imaginary double
+#  118|             ValueCategory = prvalue
+#  118|           expr: [VariableAccess] cd
+#  118|               Type = [ArithmeticType] _Complex double
+#  118|               ValueCategory = prvalue(load)
+#  119|     50: [ExprStmt] ExprStmt
+#  119|       0: [AssignExpr] ... = ...
+#  119|           Type = [ArithmeticType] _Imaginary double
+#  119|           ValueCategory = prvalue
+#  119|         0: [VariableAccess] jd
+#  119|             Type = [ArithmeticType] _Imaginary double
+#  119|             ValueCategory = lvalue
+#  119|         1: [CStyleCast] (_Imaginary double)...
+#  119|             Conversion = [FloatingPointConversion] floating point conversion
+#  119|             Type = [ArithmeticType] _Imaginary double
+#  119|             ValueCategory = prvalue
+#  119|           expr: [VariableAccess] cld
+#  119|               Type = [ArithmeticType] _Complex long double
+#  119|               ValueCategory = prvalue(load)
+#  120|     51: [ExprStmt] ExprStmt
+#  120|       0: [AssignExpr] ... = ...
+#  120|           Type = [ArithmeticType] _Imaginary long double
+#  120|           ValueCategory = prvalue
+#  120|         0: [VariableAccess] jld
+#  120|             Type = [ArithmeticType] _Imaginary long double
+#  120|             ValueCategory = lvalue
+#  120|         1: [CStyleCast] (_Imaginary long double)...
+#  120|             Conversion = [FloatingPointConversion] floating point conversion
+#  120|             Type = [ArithmeticType] _Imaginary long double
+#  120|             ValueCategory = prvalue
+#  120|           expr: [VariableAccess] cf
+#  120|               Type = [ArithmeticType] _Complex float
+#  120|               ValueCategory = prvalue(load)
+#  121|     52: [ExprStmt] ExprStmt
+#  121|       0: [AssignExpr] ... = ...
+#  121|           Type = [ArithmeticType] _Imaginary long double
+#  121|           ValueCategory = prvalue
+#  121|         0: [VariableAccess] jld
+#  121|             Type = [ArithmeticType] _Imaginary long double
+#  121|             ValueCategory = lvalue
+#  121|         1: [CStyleCast] (_Imaginary long double)...
+#  121|             Conversion = [FloatingPointConversion] floating point conversion
+#  121|             Type = [ArithmeticType] _Imaginary long double
+#  121|             ValueCategory = prvalue
+#  121|           expr: [VariableAccess] cd
+#  121|               Type = [ArithmeticType] _Complex double
+#  121|               ValueCategory = prvalue(load)
+#  122|     53: [ExprStmt] ExprStmt
+#  122|       0: [AssignExpr] ... = ...
+#  122|           Type = [ArithmeticType] _Imaginary long double
+#  122|           ValueCategory = prvalue
+#  122|         0: [VariableAccess] jld
+#  122|             Type = [ArithmeticType] _Imaginary long double
+#  122|             ValueCategory = lvalue
+#  122|         1: [CStyleCast] (_Imaginary long double)...
+#  122|             Conversion = [FloatingPointConversion] floating point conversion
+#  122|             Type = [ArithmeticType] _Imaginary long double
+#  122|             ValueCategory = prvalue
+#  122|           expr: [VariableAccess] cld
+#  122|               Type = [ArithmeticType] _Complex long double
+#  122|               ValueCategory = prvalue(load)
+#  125|     54: [ExprStmt] ExprStmt
+#  125|       0: [AssignExpr] ... = ...
+#  125|           Type = [ArithmeticType] _Imaginary float
+#  125|           ValueCategory = prvalue
+#  125|         0: [VariableAccess] jf
+#  125|             Type = [ArithmeticType] _Imaginary float
+#  125|             ValueCategory = lvalue
+#  125|         1: [CStyleCast] (_Imaginary float)...
+#  125|             Conversion = [FloatingPointConversion] floating point conversion
+#  125|             Type = [ArithmeticType] _Imaginary float
+#  125|             ValueCategory = prvalue
+#  125|           expr: [VariableAccess] f
+#  125|               Type = [FloatType] float
+#  125|               ValueCategory = prvalue(load)
+#  126|     55: [ExprStmt] ExprStmt
+#  126|       0: [AssignExpr] ... = ...
+#  126|           Type = [ArithmeticType] _Imaginary float
+#  126|           ValueCategory = prvalue
+#  126|         0: [VariableAccess] jf
+#  126|             Type = [ArithmeticType] _Imaginary float
+#  126|             ValueCategory = lvalue
+#  126|         1: [CStyleCast] (_Imaginary float)...
+#  126|             Conversion = [FloatingPointConversion] floating point conversion
+#  126|             Type = [ArithmeticType] _Imaginary float
+#  126|             ValueCategory = prvalue
+#  126|           expr: [VariableAccess] d
+#  126|               Type = [DoubleType] double
+#  126|               ValueCategory = prvalue(load)
+#  127|     56: [ExprStmt] ExprStmt
+#  127|       0: [AssignExpr] ... = ...
+#  127|           Type = [ArithmeticType] _Imaginary float
+#  127|           ValueCategory = prvalue
+#  127|         0: [VariableAccess] jf
+#  127|             Type = [ArithmeticType] _Imaginary float
+#  127|             ValueCategory = lvalue
+#  127|         1: [CStyleCast] (_Imaginary float)...
+#  127|             Conversion = [FloatingPointConversion] floating point conversion
+#  127|             Type = [ArithmeticType] _Imaginary float
+#  127|             ValueCategory = prvalue
+#  127|           expr: [VariableAccess] ld
+#  127|               Type = [LongDoubleType] long double
+#  127|               ValueCategory = prvalue(load)
+#  128|     57: [ExprStmt] ExprStmt
+#  128|       0: [AssignExpr] ... = ...
+#  128|           Type = [ArithmeticType] _Imaginary double
+#  128|           ValueCategory = prvalue
+#  128|         0: [VariableAccess] jd
+#  128|             Type = [ArithmeticType] _Imaginary double
+#  128|             ValueCategory = lvalue
+#  128|         1: [CStyleCast] (_Imaginary double)...
+#  128|             Conversion = [FloatingPointConversion] floating point conversion
+#  128|             Type = [ArithmeticType] _Imaginary double
+#  128|             ValueCategory = prvalue
+#  128|           expr: [VariableAccess] f
+#  128|               Type = [FloatType] float
+#  128|               ValueCategory = prvalue(load)
+#  129|     58: [ExprStmt] ExprStmt
+#  129|       0: [AssignExpr] ... = ...
+#  129|           Type = [ArithmeticType] _Imaginary double
+#  129|           ValueCategory = prvalue
+#  129|         0: [VariableAccess] jd
+#  129|             Type = [ArithmeticType] _Imaginary double
+#  129|             ValueCategory = lvalue
+#  129|         1: [CStyleCast] (_Imaginary double)...
+#  129|             Conversion = [FloatingPointConversion] floating point conversion
+#  129|             Type = [ArithmeticType] _Imaginary double
+#  129|             ValueCategory = prvalue
+#  129|           expr: [VariableAccess] d
+#  129|               Type = [DoubleType] double
+#  129|               ValueCategory = prvalue(load)
+#  130|     59: [ExprStmt] ExprStmt
+#  130|       0: [AssignExpr] ... = ...
+#  130|           Type = [ArithmeticType] _Imaginary double
+#  130|           ValueCategory = prvalue
+#  130|         0: [VariableAccess] jd
+#  130|             Type = [ArithmeticType] _Imaginary double
+#  130|             ValueCategory = lvalue
+#  130|         1: [CStyleCast] (_Imaginary double)...
+#  130|             Conversion = [FloatingPointConversion] floating point conversion
+#  130|             Type = [ArithmeticType] _Imaginary double
+#  130|             ValueCategory = prvalue
+#  130|           expr: [VariableAccess] ld
+#  130|               Type = [LongDoubleType] long double
+#  130|               ValueCategory = prvalue(load)
+#  131|     60: [ExprStmt] ExprStmt
+#  131|       0: [AssignExpr] ... = ...
+#  131|           Type = [ArithmeticType] _Imaginary long double
+#  131|           ValueCategory = prvalue
+#  131|         0: [VariableAccess] jld
+#  131|             Type = [ArithmeticType] _Imaginary long double
+#  131|             ValueCategory = lvalue
+#  131|         1: [CStyleCast] (_Imaginary long double)...
+#  131|             Conversion = [FloatingPointConversion] floating point conversion
+#  131|             Type = [ArithmeticType] _Imaginary long double
+#  131|             ValueCategory = prvalue
+#  131|           expr: [VariableAccess] f
+#  131|               Type = [FloatType] float
+#  131|               ValueCategory = prvalue(load)
+#  132|     61: [ExprStmt] ExprStmt
+#  132|       0: [AssignExpr] ... = ...
+#  132|           Type = [ArithmeticType] _Imaginary long double
+#  132|           ValueCategory = prvalue
+#  132|         0: [VariableAccess] jld
+#  132|             Type = [ArithmeticType] _Imaginary long double
+#  132|             ValueCategory = lvalue
+#  132|         1: [CStyleCast] (_Imaginary long double)...
+#  132|             Conversion = [FloatingPointConversion] floating point conversion
+#  132|             Type = [ArithmeticType] _Imaginary long double
+#  132|             ValueCategory = prvalue
+#  132|           expr: [VariableAccess] d
+#  132|               Type = [DoubleType] double
+#  132|               ValueCategory = prvalue(load)
+#  133|     62: [ExprStmt] ExprStmt
+#  133|       0: [AssignExpr] ... = ...
+#  133|           Type = [ArithmeticType] _Imaginary long double
+#  133|           ValueCategory = prvalue
+#  133|         0: [VariableAccess] jld
+#  133|             Type = [ArithmeticType] _Imaginary long double
+#  133|             ValueCategory = lvalue
+#  133|         1: [CStyleCast] (_Imaginary long double)...
+#  133|             Conversion = [FloatingPointConversion] floating point conversion
+#  133|             Type = [ArithmeticType] _Imaginary long double
+#  133|             ValueCategory = prvalue
+#  133|           expr: [VariableAccess] ld
+#  133|               Type = [LongDoubleType] long double
+#  133|               ValueCategory = prvalue(load)
+#  136|     63: [ExprStmt] ExprStmt
+#  136|       0: [AssignExpr] ... = ...
+#  136|           Type = [FloatType] float
+#  136|           ValueCategory = prvalue
+#  136|         0: [VariableAccess] f
+#  136|             Type = [FloatType] float
+#  136|             ValueCategory = lvalue
+#  136|         1: [CStyleCast] (float)...
+#  136|             Conversion = [FloatingPointConversion] floating point conversion
+#  136|             Type = [FloatType] float
+#  136|             ValueCategory = prvalue
+#  136|           expr: [VariableAccess] jf
+#  136|               Type = [ArithmeticType] _Imaginary float
+#  136|               ValueCategory = prvalue(load)
+#  137|     64: [ExprStmt] ExprStmt
+#  137|       0: [AssignExpr] ... = ...
+#  137|           Type = [FloatType] float
+#  137|           ValueCategory = prvalue
+#  137|         0: [VariableAccess] f
+#  137|             Type = [FloatType] float
+#  137|             ValueCategory = lvalue
+#  137|         1: [CStyleCast] (float)...
+#  137|             Conversion = [FloatingPointConversion] floating point conversion
+#  137|             Type = [FloatType] float
+#  137|             ValueCategory = prvalue
+#  137|           expr: [VariableAccess] jd
+#  137|               Type = [ArithmeticType] _Imaginary double
+#  137|               ValueCategory = prvalue(load)
+#  138|     65: [ExprStmt] ExprStmt
+#  138|       0: [AssignExpr] ... = ...
+#  138|           Type = [FloatType] float
+#  138|           ValueCategory = prvalue
+#  138|         0: [VariableAccess] f
+#  138|             Type = [FloatType] float
+#  138|             ValueCategory = lvalue
+#  138|         1: [CStyleCast] (float)...
+#  138|             Conversion = [FloatingPointConversion] floating point conversion
+#  138|             Type = [FloatType] float
+#  138|             ValueCategory = prvalue
+#  138|           expr: [VariableAccess] jld
+#  138|               Type = [ArithmeticType] _Imaginary long double
+#  138|               ValueCategory = prvalue(load)
+#  139|     66: [ExprStmt] ExprStmt
+#  139|       0: [AssignExpr] ... = ...
+#  139|           Type = [DoubleType] double
+#  139|           ValueCategory = prvalue
+#  139|         0: [VariableAccess] d
+#  139|             Type = [DoubleType] double
+#  139|             ValueCategory = lvalue
+#  139|         1: [CStyleCast] (double)...
+#  139|             Conversion = [FloatingPointConversion] floating point conversion
+#  139|             Type = [DoubleType] double
+#  139|             ValueCategory = prvalue
+#  139|           expr: [VariableAccess] jf
+#  139|               Type = [ArithmeticType] _Imaginary float
+#  139|               ValueCategory = prvalue(load)
+#  140|     67: [ExprStmt] ExprStmt
+#  140|       0: [AssignExpr] ... = ...
+#  140|           Type = [DoubleType] double
+#  140|           ValueCategory = prvalue
+#  140|         0: [VariableAccess] d
+#  140|             Type = [DoubleType] double
+#  140|             ValueCategory = lvalue
+#  140|         1: [CStyleCast] (double)...
+#  140|             Conversion = [FloatingPointConversion] floating point conversion
+#  140|             Type = [DoubleType] double
+#  140|             ValueCategory = prvalue
+#  140|           expr: [VariableAccess] jd
+#  140|               Type = [ArithmeticType] _Imaginary double
+#  140|               ValueCategory = prvalue(load)
+#  141|     68: [ExprStmt] ExprStmt
+#  141|       0: [AssignExpr] ... = ...
+#  141|           Type = [DoubleType] double
+#  141|           ValueCategory = prvalue
+#  141|         0: [VariableAccess] d
+#  141|             Type = [DoubleType] double
+#  141|             ValueCategory = lvalue
+#  141|         1: [CStyleCast] (double)...
+#  141|             Conversion = [FloatingPointConversion] floating point conversion
+#  141|             Type = [DoubleType] double
+#  141|             ValueCategory = prvalue
+#  141|           expr: [VariableAccess] jld
+#  141|               Type = [ArithmeticType] _Imaginary long double
+#  141|               ValueCategory = prvalue(load)
+#  142|     69: [ExprStmt] ExprStmt
+#  142|       0: [AssignExpr] ... = ...
+#  142|           Type = [LongDoubleType] long double
+#  142|           ValueCategory = prvalue
+#  142|         0: [VariableAccess] ld
+#  142|             Type = [LongDoubleType] long double
+#  142|             ValueCategory = lvalue
+#  142|         1: [CStyleCast] (long double)...
+#  142|             Conversion = [FloatingPointConversion] floating point conversion
+#  142|             Type = [LongDoubleType] long double
+#  142|             ValueCategory = prvalue
+#  142|           expr: [VariableAccess] jf
+#  142|               Type = [ArithmeticType] _Imaginary float
+#  142|               ValueCategory = prvalue(load)
+#  143|     70: [ExprStmt] ExprStmt
+#  143|       0: [AssignExpr] ... = ...
+#  143|           Type = [LongDoubleType] long double
+#  143|           ValueCategory = prvalue
+#  143|         0: [VariableAccess] ld
+#  143|             Type = [LongDoubleType] long double
+#  143|             ValueCategory = lvalue
+#  143|         1: [CStyleCast] (long double)...
+#  143|             Conversion = [FloatingPointConversion] floating point conversion
+#  143|             Type = [LongDoubleType] long double
+#  143|             ValueCategory = prvalue
+#  143|           expr: [VariableAccess] jd
+#  143|               Type = [ArithmeticType] _Imaginary double
+#  143|               ValueCategory = prvalue(load)
+#  144|     71: [ExprStmt] ExprStmt
+#  144|       0: [AssignExpr] ... = ...
+#  144|           Type = [LongDoubleType] long double
+#  144|           ValueCategory = prvalue
+#  144|         0: [VariableAccess] ld
+#  144|             Type = [LongDoubleType] long double
+#  144|             ValueCategory = lvalue
+#  144|         1: [CStyleCast] (long double)...
+#  144|             Conversion = [FloatingPointConversion] floating point conversion
+#  144|             Type = [LongDoubleType] long double
+#  144|             ValueCategory = prvalue
+#  144|           expr: [VariableAccess] jld
+#  144|               Type = [ArithmeticType] _Imaginary long double
+#  144|               ValueCategory = prvalue(load)
+#  145|     72: [ReturnStmt] return ...
 ir.cpp:
 #    1| [TopLevelFunction] void Constants()
 #    1|   params: 
@@ -4140,9 +5621,9 @@ ir.cpp:
 #  645|         0: [PointerFieldAccess] m_a
 #  645|             Type = [IntType] int
 #  645|             ValueCategory = lvalue
-#-----|           -1: [ThisExpr] this
-#-----|               Type = [PointerType] C *
-#-----|               ValueCategory = prvalue(load)
+#  645|           -1: [ThisExpr] this
+#  645|               Type = [PointerType] C *
+#  645|               ValueCategory = prvalue(load)
 #  645|         1: [Literal] 2
 #  645|             Type = [IntType] int
 #  645|             Value = [Literal] 2
@@ -4192,9 +5673,9 @@ ir.cpp:
 #  649|         1: [PointerFieldAccess] m_a
 #  649|             Type = [IntType] int
 #  649|             ValueCategory = prvalue(load)
-#-----|           -1: [ThisExpr] this
-#-----|               Type = [PointerType] C *
-#-----|               ValueCategory = prvalue(load)
+#  649|           -1: [ThisExpr] this
+#  649|               Type = [PointerType] C *
+#  649|               ValueCategory = prvalue(load)
 #  650|     7: [ReturnStmt] return ...
 #  652| [MemberFunction] void C::MethodCalls()
 #  652|   params: 
@@ -4231,9 +5712,9 @@ ir.cpp:
 #  655|       0: [FunctionCall] call to InstanceMemberFunction
 #  655|           Type = [IntType] int
 #  655|           ValueCategory = prvalue
-#-----|         -1: [ThisExpr] this
-#-----|             Type = [PointerType] C *
-#-----|             ValueCategory = prvalue(load)
+#  655|         -1: [ThisExpr] this
+#  655|             Type = [PointerType] C *
+#  655|             ValueCategory = prvalue(load)
 #  655|         0: [Literal] 2
 #  655|             Type = [IntType] int
 #  655|             Value = [Literal] 2
@@ -4692,27 +6173,27 @@ ir.cpp:
 #  745|         expr: [FunctionCall] call to operator=
 #  745|             Type = [LValueReferenceType] String &
 #  745|             ValueCategory = prvalue
-#-----|           -1: [AddressOfExpr] & ...
-#-----|               Type = [PointerType] String *
-#-----|               ValueCategory = prvalue
-#-----|             0: [PointerFieldAccess] base_s
-#-----|                 Type = [Struct] String
-#-----|                 ValueCategory = lvalue
-#-----|               -1: [ThisExpr] this
-#-----|                   Type = [PointerType] Base *
-#-----|                   ValueCategory = prvalue(load)
+#  745|           -1: [AddressOfExpr] & ...
+#  745|               Type = [PointerType] String *
+#  745|               ValueCategory = prvalue
+#  745|             0: [PointerFieldAccess] base_s
+#  745|                 Type = [Struct] String
+#  745|                 ValueCategory = lvalue
+#  745|               -1: [ThisExpr] this
+#  745|                   Type = [PointerType] Base *
+#  745|                   ValueCategory = prvalue(load)
 #-----|           0: [ReferenceToExpr] (reference to)
 #-----|               Type = [LValueReferenceType] const String &
 #-----|               ValueCategory = prvalue
-#-----|             expr: [ReferenceFieldAccess] base_s
-#-----|                 Type = [Struct] String
-#-----|                 ValueCategory = lvalue
+#  745|             expr: [ReferenceFieldAccess] base_s
+#  745|                 Type = [Struct] String
+#  745|                 ValueCategory = lvalue
 #-----|               -1: [ReferenceDereferenceExpr] (reference dereference)
 #-----|                   Type = [SpecifiedType] const Base
 #-----|                   ValueCategory = lvalue
-#-----|                 expr: [VariableAccess] p#0
-#-----|                     Type = [LValueReferenceType] const Base &
-#-----|                     ValueCategory = prvalue(load)
+#  745|                 expr: [VariableAccess] p#0
+#  745|                     Type = [LValueReferenceType] const Base &
+#  745|                     ValueCategory = prvalue(load)
 #-----|     1: [ReturnStmt] return ...
 #-----|       0: [ReferenceToExpr] (reference to)
 #-----|           Type = [LValueReferenceType] Base &
@@ -4777,28 +6258,28 @@ ir.cpp:
 #-----|               Conversion = [BaseClassConversion] base class conversion
 #-----|               Type = [PointerType] Base *
 #-----|               ValueCategory = prvalue
-#-----|             expr: [ThisExpr] this
-#-----|                 Type = [PointerType] Middle *
-#-----|                 ValueCategory = prvalue(load)
+#  754|             expr: [ThisExpr] this
+#  754|                 Type = [PointerType] Middle *
+#  754|                 ValueCategory = prvalue(load)
 #-----|           0: [ReferenceToExpr] (reference to)
 #-----|               Type = [LValueReferenceType] const Base &
 #-----|               ValueCategory = prvalue
-#-----|             expr: [PointerDereferenceExpr] * ...
-#-----|                 Type = [SpecifiedType] const Base
-#-----|                 ValueCategory = lvalue
+#  754|             expr: [PointerDereferenceExpr] * ...
+#  754|                 Type = [SpecifiedType] const Base
+#  754|                 ValueCategory = lvalue
 #-----|               0: [CStyleCast] (const Base *)...
 #-----|                   Conversion = [BaseClassConversion] base class conversion
 #-----|                   Type = [PointerType] const Base *
 #-----|                   ValueCategory = prvalue
-#-----|                 expr: [AddressOfExpr] & ...
-#-----|                     Type = [PointerType] const Middle *
-#-----|                     ValueCategory = prvalue
+#  754|                 expr: [AddressOfExpr] & ...
+#  754|                     Type = [PointerType] const Middle *
+#  754|                     ValueCategory = prvalue
 #-----|                   0: [ReferenceDereferenceExpr] (reference dereference)
 #-----|                       Type = [SpecifiedType] const Middle
 #-----|                       ValueCategory = lvalue
-#-----|                     expr: [VariableAccess] p#0
-#-----|                         Type = [LValueReferenceType] const Middle &
-#-----|                         ValueCategory = prvalue(load)
+#  754|                     expr: [VariableAccess] p#0
+#  754|                         Type = [LValueReferenceType] const Middle &
+#  754|                         ValueCategory = prvalue(load)
 #-----|     1: [ExprStmt] ExprStmt
 #-----|       0: [ReferenceDereferenceExpr] (reference dereference)
 #-----|           Type = [Struct] String
@@ -4806,27 +6287,27 @@ ir.cpp:
 #  754|         expr: [FunctionCall] call to operator=
 #  754|             Type = [LValueReferenceType] String &
 #  754|             ValueCategory = prvalue
-#-----|           -1: [AddressOfExpr] & ...
-#-----|               Type = [PointerType] String *
-#-----|               ValueCategory = prvalue
-#-----|             0: [PointerFieldAccess] middle_s
-#-----|                 Type = [Struct] String
-#-----|                 ValueCategory = lvalue
-#-----|               -1: [ThisExpr] this
-#-----|                   Type = [PointerType] Middle *
-#-----|                   ValueCategory = prvalue(load)
+#  754|           -1: [AddressOfExpr] & ...
+#  754|               Type = [PointerType] String *
+#  754|               ValueCategory = prvalue
+#  754|             0: [PointerFieldAccess] middle_s
+#  754|                 Type = [Struct] String
+#  754|                 ValueCategory = lvalue
+#  754|               -1: [ThisExpr] this
+#  754|                   Type = [PointerType] Middle *
+#  754|                   ValueCategory = prvalue(load)
 #-----|           0: [ReferenceToExpr] (reference to)
 #-----|               Type = [LValueReferenceType] const String &
 #-----|               ValueCategory = prvalue
-#-----|             expr: [ReferenceFieldAccess] middle_s
-#-----|                 Type = [Struct] String
-#-----|                 ValueCategory = lvalue
+#  754|             expr: [ReferenceFieldAccess] middle_s
+#  754|                 Type = [Struct] String
+#  754|                 ValueCategory = lvalue
 #-----|               -1: [ReferenceDereferenceExpr] (reference dereference)
 #-----|                   Type = [SpecifiedType] const Middle
 #-----|                   ValueCategory = lvalue
-#-----|                 expr: [VariableAccess] p#0
-#-----|                     Type = [LValueReferenceType] const Middle &
-#-----|                     ValueCategory = prvalue(load)
+#  754|                 expr: [VariableAccess] p#0
+#  754|                     Type = [LValueReferenceType] const Middle &
+#  754|                     ValueCategory = prvalue(load)
 #-----|     2: [ReturnStmt] return ...
 #-----|       0: [ReferenceToExpr] (reference to)
 #-----|           Type = [LValueReferenceType] Middle &
@@ -4888,28 +6369,28 @@ ir.cpp:
 #-----|               Conversion = [BaseClassConversion] base class conversion
 #-----|               Type = [PointerType] Middle *
 #-----|               ValueCategory = prvalue
-#-----|             expr: [ThisExpr] this
-#-----|                 Type = [PointerType] Derived *
-#-----|                 ValueCategory = prvalue(load)
+#  763|             expr: [ThisExpr] this
+#  763|                 Type = [PointerType] Derived *
+#  763|                 ValueCategory = prvalue(load)
 #-----|           0: [ReferenceToExpr] (reference to)
 #-----|               Type = [LValueReferenceType] const Middle &
 #-----|               ValueCategory = prvalue
-#-----|             expr: [PointerDereferenceExpr] * ...
-#-----|                 Type = [SpecifiedType] const Middle
-#-----|                 ValueCategory = lvalue
+#  763|             expr: [PointerDereferenceExpr] * ...
+#  763|                 Type = [SpecifiedType] const Middle
+#  763|                 ValueCategory = lvalue
 #-----|               0: [CStyleCast] (const Middle *)...
 #-----|                   Conversion = [BaseClassConversion] base class conversion
 #-----|                   Type = [PointerType] const Middle *
 #-----|                   ValueCategory = prvalue
-#-----|                 expr: [AddressOfExpr] & ...
-#-----|                     Type = [PointerType] const Derived *
-#-----|                     ValueCategory = prvalue
+#  763|                 expr: [AddressOfExpr] & ...
+#  763|                     Type = [PointerType] const Derived *
+#  763|                     ValueCategory = prvalue
 #-----|                   0: [ReferenceDereferenceExpr] (reference dereference)
 #-----|                       Type = [SpecifiedType] const Derived
 #-----|                       ValueCategory = lvalue
-#-----|                     expr: [VariableAccess] p#0
-#-----|                         Type = [LValueReferenceType] const Derived &
-#-----|                         ValueCategory = prvalue(load)
+#  763|                     expr: [VariableAccess] p#0
+#  763|                         Type = [LValueReferenceType] const Derived &
+#  763|                         ValueCategory = prvalue(load)
 #-----|     1: [ExprStmt] ExprStmt
 #-----|       0: [ReferenceDereferenceExpr] (reference dereference)
 #-----|           Type = [Struct] String
@@ -4917,27 +6398,27 @@ ir.cpp:
 #  763|         expr: [FunctionCall] call to operator=
 #  763|             Type = [LValueReferenceType] String &
 #  763|             ValueCategory = prvalue
-#-----|           -1: [AddressOfExpr] & ...
-#-----|               Type = [PointerType] String *
-#-----|               ValueCategory = prvalue
-#-----|             0: [PointerFieldAccess] derived_s
-#-----|                 Type = [Struct] String
-#-----|                 ValueCategory = lvalue
-#-----|               -1: [ThisExpr] this
-#-----|                   Type = [PointerType] Derived *
-#-----|                   ValueCategory = prvalue(load)
+#  763|           -1: [AddressOfExpr] & ...
+#  763|               Type = [PointerType] String *
+#  763|               ValueCategory = prvalue
+#  763|             0: [PointerFieldAccess] derived_s
+#  763|                 Type = [Struct] String
+#  763|                 ValueCategory = lvalue
+#  763|               -1: [ThisExpr] this
+#  763|                   Type = [PointerType] Derived *
+#  763|                   ValueCategory = prvalue(load)
 #-----|           0: [ReferenceToExpr] (reference to)
 #-----|               Type = [LValueReferenceType] const String &
 #-----|               ValueCategory = prvalue
-#-----|             expr: [ReferenceFieldAccess] derived_s
-#-----|                 Type = [Struct] String
-#-----|                 ValueCategory = lvalue
+#  763|             expr: [ReferenceFieldAccess] derived_s
+#  763|                 Type = [Struct] String
+#  763|                 ValueCategory = lvalue
 #-----|               -1: [ReferenceDereferenceExpr] (reference dereference)
 #-----|                   Type = [SpecifiedType] const Derived
 #-----|                   ValueCategory = lvalue
-#-----|                 expr: [VariableAccess] p#0
-#-----|                     Type = [LValueReferenceType] const Derived &
-#-----|                     ValueCategory = prvalue(load)
+#  763|                 expr: [VariableAccess] p#0
+#  763|                     Type = [LValueReferenceType] const Derived &
+#  763|                     ValueCategory = prvalue(load)
 #-----|     2: [ReturnStmt] return ...
 #-----|       0: [ReferenceToExpr] (reference to)
 #-----|           Type = [LValueReferenceType] Derived &
@@ -7052,15 +8533,15 @@ ir.cpp:
 # 1043|                 expr: [ReferenceDereferenceExpr] (reference dereference)
 # 1043|                     Type = [SpecifiedType] const String
 # 1043|                     ValueCategory = lvalue
-#-----|                   expr: [VariableAccess] s
-#-----|                       Type = [LValueReferenceType] const String &
-#-----|                       ValueCategory = prvalue(load)
+# 1043|                   expr: [VariableAccess] s
+# 1043|                       Type = [LValueReferenceType] const String &
+# 1043|                       ValueCategory = prvalue(load)
 #-----|               .x: [ReferenceToExpr] (reference to)
 #-----|                   Type = [LValueReferenceType] int &
 #-----|                   ValueCategory = prvalue
-#-----|                 expr: [VariableAccess] x
-#-----|                     Type = [IntType] int
-#-----|                     ValueCategory = lvalue
+# 1043|                 expr: [VariableAccess] x
+# 1043|                     Type = [IntType] int
+# 1043|                     ValueCategory = lvalue
 # 1044|     3: [ExprStmt] ExprStmt
 # 1044|       0: [FunctionCall] call to operator()
 # 1044|           Type = [PlainCharType] char
@@ -7091,12 +8572,12 @@ ir.cpp:
 # 1045|             0: [ClassAggregateLiteral] {...}
 # 1045|                 Type = [Closure,LocalClass] decltype([...](...){...})
 # 1045|                 ValueCategory = prvalue
-#-----|               .s: [ConstructorCall] call to String
-#-----|                   Type = [VoidType] void
-#-----|                   ValueCategory = prvalue
-#-----|               .x: [VariableAccess] x
-#-----|                   Type = [IntType] int
-#-----|                   ValueCategory = prvalue(load)
+# 1045|               .s: [ConstructorCall] call to String
+# 1045|                   Type = [VoidType] void
+# 1045|                   ValueCategory = prvalue
+# 1045|               .x: [VariableAccess] x
+# 1045|                   Type = [IntType] int
+# 1045|                   ValueCategory = prvalue(load)
 # 1046|     5: [ExprStmt] ExprStmt
 # 1046|       0: [FunctionCall] call to operator()
 # 1046|           Type = [PlainCharType] char
@@ -7166,9 +8647,9 @@ ir.cpp:
 # 1049|             0: [ClassAggregateLiteral] {...}
 # 1049|                 Type = [Closure,LocalClass] decltype([...](...){...})
 # 1049|                 ValueCategory = prvalue
-#-----|               .s: [ConstructorCall] call to String
-#-----|                   Type = [VoidType] void
-#-----|                   ValueCategory = prvalue
+# 1049|               .s: [ConstructorCall] call to String
+# 1049|                   Type = [VoidType] void
+# 1049|                   ValueCategory = prvalue
 # 1050|     9: [ExprStmt] ExprStmt
 # 1050|       0: [FunctionCall] call to operator()
 # 1050|           Type = [PlainCharType] char
@@ -7368,21 +8849,21 @@ ir.cpp:
 # 1043|           -1: [ReferenceDereferenceExpr] (reference dereference)
 # 1043|               Type = [SpecifiedType] const String
 # 1043|               ValueCategory = lvalue
-#-----|             expr: [PointerFieldAccess] s
-#-----|                 Type = [LValueReferenceType] const String &
-#-----|                 ValueCategory = prvalue(load)
-#-----|               -1: [ThisExpr] this
-#-----|                   Type = [PointerType] const lambda [] type at line 1043, col. 21 *
-#-----|                   ValueCategory = prvalue(load)
+# 1043|             expr: [PointerFieldAccess] s
+# 1043|                 Type = [LValueReferenceType] const String &
+# 1043|                 ValueCategory = prvalue(load)
+# 1043|               -1: [ThisExpr] this
+# 1043|                   Type = [PointerType] const lambda [] type at line 1043, col. 21 *
+# 1043|                   ValueCategory = prvalue(load)
 # 1043|         1: [ReferenceDereferenceExpr] (reference dereference)
 # 1043|             Type = [IntType] int
 # 1043|             ValueCategory = prvalue(load)
-#-----|           expr: [PointerFieldAccess] x
-#-----|               Type = [LValueReferenceType] int &
-#-----|               ValueCategory = prvalue(load)
-#-----|             -1: [ThisExpr] this
-#-----|                 Type = [PointerType] const lambda [] type at line 1043, col. 21 *
-#-----|                 ValueCategory = prvalue(load)
+# 1043|           expr: [PointerFieldAccess] x
+# 1043|               Type = [LValueReferenceType] int &
+# 1043|               ValueCategory = prvalue(load)
+# 1043|             -1: [ThisExpr] this
+# 1043|                 Type = [PointerType] const lambda [] type at line 1043, col. 21 *
+# 1043|                 ValueCategory = prvalue(load)
 # 1045| [CopyAssignmentOperator] (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21)& (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21) const&)
 # 1045|   params: 
 #-----|     0: [Parameter] p#0
@@ -7423,18 +8904,18 @@ ir.cpp:
 # 1045|         0: [FunctionCall] call to c_str
 # 1045|             Type = [PointerType] const char *
 # 1045|             ValueCategory = prvalue
-#-----|           -1: [PointerFieldAccess] s
-#-----|               Type = [SpecifiedType] const String
-#-----|               ValueCategory = lvalue
-#-----|             -1: [ThisExpr] this
-#-----|                 Type = [PointerType] const lambda [] type at line 1045, col. 21 *
-#-----|                 ValueCategory = prvalue(load)
-#-----|         1: [PointerFieldAccess] x
-#-----|             Type = [IntType] int
-#-----|             ValueCategory = prvalue(load)
-#-----|           -1: [ThisExpr] this
-#-----|               Type = [PointerType] const lambda [] type at line 1045, col. 21 *
-#-----|               ValueCategory = prvalue(load)
+# 1045|           -1: [PointerFieldAccess] s
+# 1045|               Type = [SpecifiedType] const String
+# 1045|               ValueCategory = lvalue
+# 1045|             -1: [ThisExpr] this
+# 1045|                 Type = [PointerType] const lambda [] type at line 1045, col. 21 *
+# 1045|                 ValueCategory = prvalue(load)
+# 1045|         1: [PointerFieldAccess] x
+# 1045|             Type = [IntType] int
+# 1045|             ValueCategory = prvalue(load)
+# 1045|           -1: [ThisExpr] this
+# 1045|               Type = [PointerType] const lambda [] type at line 1045, col. 21 *
+# 1045|               ValueCategory = prvalue(load)
 # 1047| [CopyAssignmentOperator] (void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30)& (void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30) const&)
 # 1047|   params: 
 #-----|     0: [Parameter] p#0
@@ -7464,12 +8945,12 @@ ir.cpp:
 # 1047|           -1: [ReferenceDereferenceExpr] (reference dereference)
 # 1047|               Type = [SpecifiedType] const String
 # 1047|               ValueCategory = lvalue
-#-----|             expr: [PointerFieldAccess] s
-#-----|                 Type = [LValueReferenceType] const String &
-#-----|                 ValueCategory = prvalue(load)
-#-----|               -1: [ThisExpr] this
-#-----|                   Type = [PointerType] const lambda [] type at line 1047, col. 30 *
-#-----|                   ValueCategory = prvalue(load)
+# 1047|             expr: [PointerFieldAccess] s
+# 1047|                 Type = [LValueReferenceType] const String &
+# 1047|                 ValueCategory = prvalue(load)
+# 1047|               -1: [ThisExpr] this
+# 1047|                   Type = [PointerType] const lambda [] type at line 1047, col. 30 *
+# 1047|                   ValueCategory = prvalue(load)
 # 1047|         1: [Literal] 0
 # 1047|             Type = [IntType] int
 # 1047|             Value = [Literal] 0
@@ -7514,12 +8995,12 @@ ir.cpp:
 # 1049|         0: [FunctionCall] call to c_str
 # 1049|             Type = [PointerType] const char *
 # 1049|             ValueCategory = prvalue
-#-----|           -1: [PointerFieldAccess] s
-#-----|               Type = [SpecifiedType] const String
-#-----|               ValueCategory = lvalue
-#-----|             -1: [ThisExpr] this
-#-----|                 Type = [PointerType] const lambda [] type at line 1049, col. 30 *
-#-----|                 ValueCategory = prvalue(load)
+# 1049|           -1: [PointerFieldAccess] s
+# 1049|               Type = [SpecifiedType] const String
+# 1049|               ValueCategory = lvalue
+# 1049|             -1: [ThisExpr] this
+# 1049|                 Type = [PointerType] const lambda [] type at line 1049, col. 30 *
+# 1049|                 ValueCategory = prvalue(load)
 # 1049|         1: [Literal] 0
 # 1049|             Type = [IntType] int
 # 1049|             Value = [Literal] 0
@@ -7553,18 +9034,18 @@ ir.cpp:
 # 1051|           -1: [ReferenceDereferenceExpr] (reference dereference)
 # 1051|               Type = [SpecifiedType] const String
 # 1051|               ValueCategory = lvalue
-#-----|             expr: [PointerFieldAccess] s
-#-----|                 Type = [LValueReferenceType] const String &
-#-----|                 ValueCategory = prvalue(load)
-#-----|               -1: [ThisExpr] this
-#-----|                   Type = [PointerType] const lambda [] type at line 1051, col. 32 *
-#-----|                   ValueCategory = prvalue(load)
-#-----|         1: [PointerFieldAccess] x
-#-----|             Type = [IntType] int
-#-----|             ValueCategory = prvalue(load)
-#-----|           -1: [ThisExpr] this
-#-----|               Type = [PointerType] const lambda [] type at line 1051, col. 32 *
-#-----|               ValueCategory = prvalue(load)
+# 1051|             expr: [PointerFieldAccess] s
+# 1051|                 Type = [LValueReferenceType] const String &
+# 1051|                 ValueCategory = prvalue(load)
+# 1051|               -1: [ThisExpr] this
+# 1051|                   Type = [PointerType] const lambda [] type at line 1051, col. 32 *
+# 1051|                   ValueCategory = prvalue(load)
+# 1051|         1: [PointerFieldAccess] x
+# 1051|             Type = [IntType] int
+# 1051|             ValueCategory = prvalue(load)
+# 1051|           -1: [ThisExpr] this
+# 1051|               Type = [PointerType] const lambda [] type at line 1051, col. 32 *
+# 1051|               ValueCategory = prvalue(load)
 # 1054| [CopyAssignmentOperator] (void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23)& (void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23) const&)
 # 1054|   params: 
 #-----|     0: [Parameter] p#0
@@ -7594,39 +9075,39 @@ ir.cpp:
 # 1054|           -1: [ReferenceDereferenceExpr] (reference dereference)
 # 1054|               Type = [SpecifiedType] const String
 # 1054|               ValueCategory = lvalue
-#-----|             expr: [PointerFieldAccess] s
-#-----|                 Type = [LValueReferenceType] const String &
-#-----|                 ValueCategory = prvalue(load)
-#-----|               -1: [ThisExpr] this
-#-----|                   Type = [PointerType] const lambda [] type at line 1054, col. 23 *
-#-----|                   ValueCategory = prvalue(load)
+# 1054|             expr: [PointerFieldAccess] s
+# 1054|                 Type = [LValueReferenceType] const String &
+# 1054|                 ValueCategory = prvalue(load)
+# 1054|               -1: [ThisExpr] this
+# 1054|                   Type = [PointerType] const lambda [] type at line 1054, col. 23 *
+# 1054|                   ValueCategory = prvalue(load)
 # 1054|         1: [SubExpr] ... - ...
 # 1054|             Type = [IntType] int
 # 1054|             ValueCategory = prvalue
 # 1054|           0: [AddExpr] ... + ...
 # 1054|               Type = [IntType] int
 # 1054|               ValueCategory = prvalue
-#-----|             0: [PointerFieldAccess] x
-#-----|                 Type = [IntType] int
-#-----|                 ValueCategory = prvalue(load)
-#-----|               -1: [ThisExpr] this
-#-----|                   Type = [PointerType] const lambda [] type at line 1054, col. 23 *
-#-----|                   ValueCategory = prvalue(load)
+# 1054|             0: [PointerFieldAccess] x
+# 1054|                 Type = [IntType] int
+# 1054|                 ValueCategory = prvalue(load)
+# 1054|               -1: [ThisExpr] this
+# 1054|                   Type = [PointerType] const lambda [] type at line 1054, col. 23 *
+# 1054|                   ValueCategory = prvalue(load)
 # 1054|             1: [PointerFieldAccess] i
 # 1054|                 Type = [IntType] int
 # 1054|                 ValueCategory = prvalue(load)
-#-----|               -1: [ThisExpr] this
-#-----|                   Type = [PointerType] const lambda [] type at line 1054, col. 23 *
-#-----|                   ValueCategory = prvalue(load)
+# 1054|               -1: [ThisExpr] this
+# 1054|                   Type = [PointerType] const lambda [] type at line 1054, col. 23 *
+# 1054|                   ValueCategory = prvalue(load)
 # 1054|           1: [ReferenceDereferenceExpr] (reference dereference)
 # 1054|               Type = [IntType] int
 # 1054|               ValueCategory = prvalue(load)
 # 1054|             expr: [PointerFieldAccess] j
 # 1054|                 Type = [LValueReferenceType] int &
 # 1054|                 ValueCategory = prvalue(load)
-#-----|               -1: [ThisExpr] this
-#-----|                   Type = [PointerType] const lambda [] type at line 1054, col. 23 *
-#-----|                   ValueCategory = prvalue(load)
+# 1054|               -1: [ThisExpr] this
+# 1054|                   Type = [PointerType] const lambda [] type at line 1054, col. 23 *
+# 1054|                   ValueCategory = prvalue(load)
 # 1059| [CopyAssignmentOperator] vector<int>& vector<int>::operator=(vector<int> const&)
 # 1059|   params: 
 #-----|     0: [Parameter] p#0
@@ -7694,21 +9175,21 @@ ir.cpp:
 #-----|             Conversion = [GlvalueConversion] glvalue conversion
 #-----|             Type = [SpecifiedType] const iterator
 #-----|             ValueCategory = lvalue
-#-----|           expr: [VariableAccess] (__begin)
-#-----|               Type = [NestedStruct] iterator
-#-----|               ValueCategory = lvalue
-#-----|         0: [VariableAccess] (__end)
-#-----|             Type = [NestedStruct] iterator
-#-----|             ValueCategory = prvalue(load)
+# 1078|           expr: [VariableAccess] (__begin)
+# 1078|               Type = [NestedStruct] iterator
+# 1078|               ValueCategory = lvalue
+# 1078|         0: [VariableAccess] (__end)
+# 1078|             Type = [NestedStruct] iterator
+# 1078|             ValueCategory = prvalue(load)
 # 1078|       3: [ReferenceDereferenceExpr] (reference dereference)
 # 1078|           Type = [NestedStruct] iterator
 # 1078|           ValueCategory = lvalue
 # 1078|         expr: [FunctionCall] call to operator++
 # 1078|             Type = [LValueReferenceType] iterator &
 # 1078|             ValueCategory = prvalue
-#-----|           -1: [VariableAccess] (__begin)
-#-----|               Type = [NestedStruct] iterator
-#-----|               ValueCategory = lvalue
+# 1078|           -1: [VariableAccess] (__begin)
+# 1078|               Type = [NestedStruct] iterator
+# 1078|               ValueCategory = lvalue
 # 1078|       4: [DeclStmt] declaration
 # 1078|       5: [Block] { ... }
 # 1079|         0: [IfStmt] if (...) ... 
@@ -7735,21 +9216,21 @@ ir.cpp:
 #-----|             Conversion = [GlvalueConversion] glvalue conversion
 #-----|             Type = [SpecifiedType] const iterator
 #-----|             ValueCategory = lvalue
-#-----|           expr: [VariableAccess] (__begin)
-#-----|               Type = [NestedStruct] iterator
-#-----|               ValueCategory = lvalue
-#-----|         0: [VariableAccess] (__end)
-#-----|             Type = [NestedStruct] iterator
-#-----|             ValueCategory = prvalue(load)
+# 1084|           expr: [VariableAccess] (__begin)
+# 1084|               Type = [NestedStruct] iterator
+# 1084|               ValueCategory = lvalue
+# 1084|         0: [VariableAccess] (__end)
+# 1084|             Type = [NestedStruct] iterator
+# 1084|             ValueCategory = prvalue(load)
 # 1084|       3: [ReferenceDereferenceExpr] (reference dereference)
 # 1084|           Type = [NestedStruct] iterator
 # 1084|           ValueCategory = lvalue
 # 1084|         expr: [FunctionCall] call to operator++
 # 1084|             Type = [LValueReferenceType] iterator &
 # 1084|             ValueCategory = prvalue
-#-----|           -1: [VariableAccess] (__begin)
-#-----|               Type = [NestedStruct] iterator
-#-----|               ValueCategory = lvalue
+# 1084|           -1: [VariableAccess] (__begin)
+# 1084|               Type = [NestedStruct] iterator
+# 1084|               ValueCategory = lvalue
 # 1084|       4: [DeclStmt] declaration
 # 1084|       5: [Block] { ... }
 # 1085|         0: [IfStmt] if (...) ... 
@@ -8054,10 +9535,10 @@ ir.cpp:
 # 1166|             1: [VariableAccess] vi4
 # 1166|                 Type = [SpecifiedType] __attribute((vector_size(16UL))) int
 # 1166|                 ValueCategory = prvalue(load)
-#-----|             2: [AddExpr] ... + ...
-#-----|                 Type = [IntType] int
-#-----|                 Value = [AddExpr] 3
-#-----|                 ValueCategory = prvalue
+# 1166|             2: [AddExpr] ... + ...
+# 1166|                 Type = [IntType] int
+# 1166|                 Value = [AddExpr] 3
+# 1166|                 ValueCategory = prvalue
 # 1166|               0: [Literal] 3
 # 1166|                   Type = [IntType] int
 # 1166|                   Value = [Literal] 3
@@ -8750,6 +10231,287 @@ ir.cpp:
 # 1286|             Type = [PointerType] A *
 # 1286|             ValueCategory = prvalue
 # 1287|     12: [ReturnStmt] return ...
+# 1289| [TopLevelFunction] int missingReturnValue(bool, int)
+# 1289|   params: 
+# 1289|     0: [Parameter] b
+# 1289|         Type = [BoolType] bool
+# 1289|     1: [Parameter] x
+# 1289|         Type = [IntType] int
+# 1289|   body: [Block] { ... }
+# 1290|     0: [IfStmt] if (...) ... 
+# 1290|       0: [VariableAccess] b
+# 1290|           Type = [BoolType] bool
+# 1290|           ValueCategory = prvalue(load)
+# 1290|       1: [Block] { ... }
+# 1291|         0: [ReturnStmt] return ...
+# 1291|           0: [VariableAccess] x
+# 1291|               Type = [IntType] int
+# 1291|               ValueCategory = prvalue(load)
+# 1293|     1: [ReturnStmt] return ...
+# 1295| [TopLevelFunction] void returnVoid(int, int)
+# 1295|   params: 
+# 1295|     0: [Parameter] x
+# 1295|         Type = [IntType] int
+# 1295|     1: [Parameter] y
+# 1295|         Type = [IntType] int
+# 1295|   body: [Block] { ... }
+# 1296|     0: [ReturnStmt] return ...
+# 1296|       0: [FunctionCall] call to IntegerOps
+# 1296|           Type = [VoidType] void
+# 1296|           ValueCategory = prvalue
+# 1296|         0: [VariableAccess] x
+# 1296|             Type = [IntType] int
+# 1296|             ValueCategory = prvalue(load)
+# 1296|         1: [VariableAccess] y
+# 1296|             Type = [IntType] int
+# 1296|             ValueCategory = prvalue(load)
+# 1299| [TopLevelFunction] void gccBinaryConditional(bool, int, long)
+# 1299|   params: 
+# 1299|     0: [Parameter] b
+# 1299|         Type = [BoolType] bool
+# 1299|     1: [Parameter] x
+# 1299|         Type = [IntType] int
+# 1299|     2: [Parameter] y
+# 1299|         Type = [LongType] long
+# 1299|   body: [Block] { ... }
+# 1300|     0: [DeclStmt] declaration
+# 1300|       0: [VariableDeclarationEntry] definition of z
+# 1300|           Type = [IntType] int
+# 1300|         init: [Initializer] initializer for z
+# 1300|           expr: [VariableAccess] x
+# 1300|               Type = [IntType] int
+# 1300|               ValueCategory = prvalue(load)
+# 1301|     1: [ExprStmt] ExprStmt
+# 1301|       0: [AssignExpr] ... = ...
+# 1301|           Type = [IntType] int
+# 1301|           ValueCategory = lvalue
+# 1301|         0: [VariableAccess] z
+# 1301|             Type = [IntType] int
+# 1301|             ValueCategory = lvalue
+# 1301|         1: [ConditionalExpr] ... ? ... : ...
+# 1301|             Type = [IntType] int
+# 1301|             ValueCategory = prvalue
+# 1301|           0: [VariableAccess] b
+# 1301|               Type = [BoolType] bool
+# 1301|               ValueCategory = prvalue(load)
+# 1301|           1: [VariableAccess] x
+# 1301|               Type = [IntType] int
+# 1301|               ValueCategory = prvalue(load)
+# 1302|     2: [ExprStmt] ExprStmt
+# 1302|       0: [AssignExpr] ... = ...
+# 1302|           Type = [IntType] int
+# 1302|           ValueCategory = lvalue
+# 1302|         0: [VariableAccess] z
+# 1302|             Type = [IntType] int
+# 1302|             ValueCategory = lvalue
+# 1302|         1: [CStyleCast] (int)...
+# 1302|             Conversion = [IntegralConversion] integral conversion
+# 1302|             Type = [IntType] int
+# 1302|             ValueCategory = prvalue
+# 1302|           expr: [ConditionalExpr] ... ? ... : ...
+# 1302|               Type = [LongType] long
+# 1302|               ValueCategory = prvalue
+# 1302|             0: [VariableAccess] b
+# 1302|                 Type = [BoolType] bool
+# 1302|                 ValueCategory = prvalue(load)
+# 1302|             1: [VariableAccess] y
+# 1302|                 Type = [LongType] long
+# 1302|                 ValueCategory = prvalue(load)
+# 1303|     3: [ExprStmt] ExprStmt
+# 1303|       0: [AssignExpr] ... = ...
+# 1303|           Type = [IntType] int
+# 1303|           ValueCategory = lvalue
+# 1303|         0: [VariableAccess] z
+# 1303|             Type = [IntType] int
+# 1303|             ValueCategory = lvalue
+# 1303|         1: [ConditionalExpr] ... ? ... : ...
+# 1303|             Type = [IntType] int
+# 1303|             ValueCategory = prvalue
+# 1303|           0: [CStyleCast] (bool)...
+# 1303|               Conversion = [BoolConversion] conversion to bool
+# 1303|               Type = [BoolType] bool
+# 1303|               ValueCategory = prvalue
+# 1303|             expr: [VariableAccess] x
+# 1303|                 Type = [IntType] int
+# 1303|                 ValueCategory = prvalue(load)
+# 1303|           1: [VariableAccess] x
+# 1303|               Type = [IntType] int
+# 1303|               ValueCategory = prvalue(load)
+# 1304|     4: [ExprStmt] ExprStmt
+# 1304|       0: [AssignExpr] ... = ...
+# 1304|           Type = [IntType] int
+# 1304|           ValueCategory = lvalue
+# 1304|         0: [VariableAccess] z
+# 1304|             Type = [IntType] int
+# 1304|             ValueCategory = lvalue
+# 1304|         1: [CStyleCast] (int)...
+# 1304|             Conversion = [IntegralConversion] integral conversion
+# 1304|             Type = [IntType] int
+# 1304|             ValueCategory = prvalue
+# 1304|           expr: [ConditionalExpr] ... ? ... : ...
+# 1304|               Type = [LongType] long
+# 1304|               ValueCategory = prvalue
+# 1304|             0: [CStyleCast] (bool)...
+# 1304|                 Conversion = [BoolConversion] conversion to bool
+# 1304|                 Type = [BoolType] bool
+# 1304|                 ValueCategory = prvalue
+# 1304|               expr: [VariableAccess] x
+# 1304|                   Type = [IntType] int
+# 1304|                   ValueCategory = prvalue(load)
+# 1304|             1: [VariableAccess] y
+# 1304|                 Type = [LongType] long
+# 1304|                 ValueCategory = prvalue(load)
+# 1305|     5: [ExprStmt] ExprStmt
+# 1305|       0: [AssignExpr] ... = ...
+# 1305|           Type = [IntType] int
+# 1305|           ValueCategory = lvalue
+# 1305|         0: [VariableAccess] z
+# 1305|             Type = [IntType] int
+# 1305|             ValueCategory = lvalue
+# 1305|         1: [CStyleCast] (int)...
+# 1305|             Conversion = [IntegralConversion] integral conversion
+# 1305|             Type = [IntType] int
+# 1305|             ValueCategory = prvalue
+# 1305|           expr: [ConditionalExpr] ... ? ... : ...
+# 1305|               Type = [LongType] long
+# 1305|               ValueCategory = prvalue
+# 1305|             0: [CStyleCast] (bool)...
+# 1305|                 Conversion = [BoolConversion] conversion to bool
+# 1305|                 Type = [BoolType] bool
+# 1305|                 ValueCategory = prvalue
+# 1305|               expr: [VariableAccess] y
+# 1305|                   Type = [LongType] long
+# 1305|                   ValueCategory = prvalue(load)
+# 1305|             1: [CStyleCast] (long)...
+# 1305|                 Conversion = [IntegralConversion] integral conversion
+# 1305|                 Type = [LongType] long
+# 1305|                 ValueCategory = prvalue
+# 1305|               expr: [VariableAccess] x
+# 1305|                   Type = [IntType] int
+# 1305|                   ValueCategory = prvalue(load)
+# 1306|     6: [ExprStmt] ExprStmt
+# 1306|       0: [AssignExpr] ... = ...
+# 1306|           Type = [IntType] int
+# 1306|           ValueCategory = lvalue
+# 1306|         0: [VariableAccess] z
+# 1306|             Type = [IntType] int
+# 1306|             ValueCategory = lvalue
+# 1306|         1: [CStyleCast] (int)...
+# 1306|             Conversion = [IntegralConversion] integral conversion
+# 1306|             Type = [IntType] int
+# 1306|             ValueCategory = prvalue
+# 1306|           expr: [ConditionalExpr] ... ? ... : ...
+# 1306|               Type = [LongType] long
+# 1306|               ValueCategory = prvalue
+# 1306|             0: [CStyleCast] (bool)...
+# 1306|                 Conversion = [BoolConversion] conversion to bool
+# 1306|                 Type = [BoolType] bool
+# 1306|                 ValueCategory = prvalue
+# 1306|               expr: [VariableAccess] y
+# 1306|                   Type = [LongType] long
+# 1306|                   ValueCategory = prvalue(load)
+# 1306|             1: [VariableAccess] y
+# 1306|                 Type = [LongType] long
+# 1306|                 ValueCategory = prvalue(load)
+# 1308|     7: [ExprStmt] ExprStmt
+# 1308|       0: [AssignExpr] ... = ...
+# 1308|           Type = [IntType] int
+# 1308|           ValueCategory = lvalue
+# 1308|         0: [VariableAccess] z
+# 1308|             Type = [IntType] int
+# 1308|             ValueCategory = lvalue
+# 1308|         1: [ConditionalExpr] ... ? ... : ...
+# 1308|             Type = [IntType] int
+# 1308|             ValueCategory = prvalue
+# 1308|           0: [ParenthesisExpr] (...)
+# 1308|               Type = [BoolType] bool
+# 1308|               ValueCategory = prvalue
+# 1308|             expr: [LogicalOrExpr] ... || ...
+# 1308|                 Type = [BoolType] bool
+# 1308|                 ValueCategory = prvalue
+# 1308|               0: [LogicalAndExpr] ... && ...
+# 1308|                   Type = [BoolType] bool
+# 1308|                   ValueCategory = prvalue
+# 1308|                 0: [CStyleCast] (bool)...
+# 1308|                     Conversion = [BoolConversion] conversion to bool
+# 1308|                     Type = [BoolType] bool
+# 1308|                     ValueCategory = prvalue
+# 1308|                   expr: [VariableAccess] x
+# 1308|                       Type = [IntType] int
+# 1308|                       ValueCategory = prvalue(load)
+# 1308|                 1: [VariableAccess] b
+# 1308|                     Type = [BoolType] bool
+# 1308|                     ValueCategory = prvalue(load)
+# 1308|               1: [CStyleCast] (bool)...
+# 1308|                   Conversion = [BoolConversion] conversion to bool
+# 1308|                   Type = [BoolType] bool
+# 1308|                   ValueCategory = prvalue
+# 1308|                 expr: [VariableAccess] y
+# 1308|                     Type = [LongType] long
+# 1308|                     ValueCategory = prvalue(load)
+# 1308|           1: [VariableAccess] x
+# 1308|               Type = [IntType] int
+# 1308|               ValueCategory = prvalue(load)
+# 1309|     8: [ReturnStmt] return ...
+# 1311| [TopLevelFunction] bool predicateA()
+# 1311|   params: 
+# 1312| [TopLevelFunction] bool predicateB()
+# 1312|   params: 
+# 1314| [TopLevelFunction] int shortCircuitConditional(int, int)
+# 1314|   params: 
+# 1314|     0: [Parameter] x
+# 1314|         Type = [IntType] int
+# 1314|     1: [Parameter] y
+# 1314|         Type = [IntType] int
+# 1314|   body: [Block] { ... }
+# 1315|     0: [ReturnStmt] return ...
+# 1315|       0: [ConditionalExpr] ... ? ... : ...
+# 1315|           Type = [IntType] int
+# 1315|           ValueCategory = prvalue
+# 1315|         0: [LogicalAndExpr] ... && ...
+# 1315|             Type = [BoolType] bool
+# 1315|             ValueCategory = prvalue
+# 1315|           0: [FunctionCall] call to predicateA
+# 1315|               Type = [BoolType] bool
+# 1315|               ValueCategory = prvalue
+# 1315|           1: [FunctionCall] call to predicateB
+# 1315|               Type = [BoolType] bool
+# 1315|               ValueCategory = prvalue
+# 1315|         1: [VariableAccess] x
+# 1315|             Type = [IntType] int
+# 1315|             ValueCategory = prvalue(load)
+# 1315|         2: [VariableAccess] y
+# 1315|             Type = [IntType] int
+# 1315|             ValueCategory = prvalue(load)
+# 1318| [Operator,TopLevelFunction] void* operator new(size_t, void*)
+# 1318|   params: 
+# 1318|     0: [Parameter] p#0
+# 1318|         Type = [CTypedefType,Size_t] size_t
+# 1318|     1: [Parameter] p#1
+# 1318|         Type = [VoidPointerType] void *
+# 1320| [TopLevelFunction] void f(int*)
+# 1320|   params: 
+# 1320|     0: [Parameter] p
+# 1320|         Type = [IntPointerType] int *
+# 1321|   body: [Block] { ... }
+# 1322|     0: [ExprStmt] ExprStmt
+# 1322|       0: [NewExpr] new
+# 1322|           Type = [IntPointerType] int *
+# 1322|           ValueCategory = prvalue
+# 1322|         0: [FunctionCall] call to operator new
+# 1322|             Type = [VoidPointerType] void *
+# 1322|             ValueCategory = prvalue
+# 1322|           0: [ErrorExpr] <error expr>
+# 1322|               Type = [LongType] unsigned long
+# 1322|               ValueCategory = prvalue
+# 1322|           1: [CStyleCast] (void *)...
+# 1322|               Conversion = [PointerConversion] pointer conversion
+# 1322|               Type = [VoidPointerType] void *
+# 1322|               ValueCategory = prvalue
+# 1322|             expr: [VariableAccess] p
+# 1322|                 Type = [IntPointerType] int *
+# 1322|                 ValueCategory = prvalue(load)
+# 1323|     1: [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   params: 

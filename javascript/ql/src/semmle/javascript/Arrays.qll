@@ -1,5 +1,6 @@
 import javascript
 private import semmle.javascript.dataflow.InferredTypes
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
 
 /**
  * Classes and predicates for modelling TaintTracking steps for arrays.
@@ -96,10 +97,55 @@ module ArrayTaintTracking {
  * Classes and predicates for modelling data-flow for arrays.
  */
 private module ArrayDataFlow {
+  private import DataFlow::PseudoProperties
+
   /**
-   * Gets a pseudo-field representing an element inside an array.
+   * A step modelling the creation of an Array using the `Array.from(x)` method.
+   * The step copies the elements of the argument (set, array, or iterator elements) into the resulting array.
    */
-  private string arrayElement() { result = "$arrayElement$" }
+  private class ArrayFrom extends DataFlow::AdditionalFlowStep, DataFlow::CallNode {
+    ArrayFrom() { this = DataFlow::globalVarRef("Array").getAMemberCall("from") }
+
+    override predicate loadStoreStep(
+      DataFlow::Node pred, DataFlow::Node succ, string fromProp, string toProp
+    ) {
+      pred = this.getArgument(0) and
+      succ = this and
+      fromProp = arrayLikeElement() and
+      toProp = arrayElement()
+    }
+  }
+
+  /**
+   * A step modelling an array copy where the spread operator is used.
+   * The result is essentially array concatenation.
+   *
+   * Such a step can occur both with the `push` and `unshift` methods, or when creating a new array.
+   */
+  private class ArrayCopySpread extends DataFlow::AdditionalFlowStep {
+    DataFlow::Node spreadArgument; // the spread argument containing the elements to be copied.
+    DataFlow::Node base; // the object where the elements should be copied to.
+
+    ArrayCopySpread() {
+      exists(DataFlow::MethodCallNode mcn | mcn = this |
+        mcn.getMethodName() = ["push", "unshift"] and
+        spreadArgument = mcn.getASpreadArgument() and
+        base = mcn.getReceiver().getALocalSource()
+      )
+      or
+      spreadArgument = this.(DataFlow::ArrayCreationNode).getASpreadArgument() and
+      base = this
+    }
+
+    override predicate loadStoreStep(
+      DataFlow::Node pred, DataFlow::Node succ, string fromProp, string toProp
+    ) {
+      pred = spreadArgument and
+      succ = base and
+      fromProp = arrayLikeElement() and
+      toProp = arrayElement()
+    }
+  }
 
   /**
    * A step for storing an element on an array using `arr.push(e)` or `arr.unshift(e)`.
@@ -110,10 +156,10 @@ private module ArrayDataFlow {
       this.getMethodName() = "unshift"
     }
 
-    override predicate storeStep(DataFlow::Node element, DataFlow::Node obj, string prop) {
+    override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
       prop = arrayElement() and
-      (element = this.getAnArgument() or element = this.getASpreadArgument()) and
-      obj = this.getReceiver().getALocalSource()
+      element = this.getAnArgument() and
+      obj.getAMethodCall() = this
     }
   }
 
@@ -143,10 +189,10 @@ private module ArrayDataFlow {
       element = this
     }
 
-    override predicate storeStep(DataFlow::Node element, DataFlow::Node obj, string prop) {
+    override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
       prop = arrayElement() and
       element = this.(DataFlow::PropWrite).getRhs() and
-      this = obj.(DataFlow::SourceNode).getAPropertyWrite()
+      this = obj.getAPropertyWrite()
     }
   }
 
@@ -177,42 +223,47 @@ private module ArrayDataFlow {
    *
    * And the second parameter in the callback is the array ifself, so there is a `loadStoreStep` from the array to that second parameter.
    */
-  private class ArrayIteration extends DataFlow::AdditionalFlowStep, DataFlow::MethodCallNode {
-    ArrayIteration() {
-      this.getMethodName() = "map" or
-      this.getMethodName() = "forEach"
-    }
-
+  private class ArrayIteration extends PreCallGraphStep {
     override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
-      prop = arrayElement() and
-      obj = this.getReceiver() and
-      element = getCallback(0).getParameter(0)
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = ["map", "forEach"] and
+        prop = arrayElement() and
+        obj = call.getReceiver() and
+        element = call.getCallback(0).getParameter(0)
+      )
     }
 
-    override predicate storeStep(DataFlow::Node element, DataFlow::Node obj, string prop) {
-      this.getMethodName() = "map" and
-      prop = arrayElement() and
-      element = this.getCallback(0).getAReturn() and
-      obj = this
+    override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = "map" and
+        prop = arrayElement() and
+        element = call.getCallback(0).getAReturn() and
+        obj = call
+      )
     }
 
-    override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      prop = arrayElement() and
-      pred = this.getReceiver() and
-      succ = getCallback(0).getParameter(2)
+    override predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = ["map", "forEach"] and
+        prop = arrayElement() and
+        pred = call.getReceiver() and
+        succ = call.getCallback(0).getParameter(2)
+      )
     }
   }
 
   /**
    * A step for creating an array and storing the elements in the array.
    */
-  private class ArrayCreationStep extends DataFlow::AdditionalFlowStep, DataFlow::Node {
-    ArrayCreationStep() { this instanceof DataFlow::ArrayCreationNode }
-
-    override predicate storeStep(DataFlow::Node element, DataFlow::Node obj, string prop) {
-      prop = arrayElement() and
-      element = this.(DataFlow::ArrayCreationNode).getAnElement() and
-      obj = this
+  private class ArrayCreationStep extends DataFlow::AdditionalFlowStep, DataFlow::ArrayCreationNode {
+    override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
+      exists(int i |
+        element = this.getElement(i) and
+        obj = this and
+        if this = any(PromiseAllCreation c).getArrayNode()
+        then prop = arrayElement(i)
+        else prop = arrayElement()
+      )
     }
   }
 
@@ -223,10 +274,10 @@ private module ArrayDataFlow {
   private class ArraySpliceStep extends DataFlow::AdditionalFlowStep, DataFlow::MethodCallNode {
     ArraySpliceStep() { this.getMethodName() = "splice" }
 
-    override predicate storeStep(DataFlow::Node element, DataFlow::Node obj, string prop) {
+    override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
       prop = arrayElement() and
       element = getArgument(2) and
-      obj = this.getReceiver().getALocalSource()
+      this = obj.getAMethodCall()
     }
   }
 
@@ -258,6 +309,19 @@ private module ArrayDataFlow {
       prop = arrayElement() and
       pred = this.getReceiver() and
       succ = this
+    }
+  }
+
+  /**
+   * A step for modelling `for of` iteration on arrays.
+   */
+  private class ForOfStep extends PreCallGraphStep {
+    override predicate loadStep(DataFlow::Node obj, DataFlow::Node e, string prop) {
+      exists(ForOfStmt forOf |
+        obj = forOf.getIterationDomain().flow() and
+        e = DataFlow::lvalueNode(forOf.getLValue()) and
+        prop = arrayElement()
+      )
     }
   }
 }

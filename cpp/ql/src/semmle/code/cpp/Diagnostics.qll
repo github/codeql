@@ -1,3 +1,7 @@
+/**
+ * Provides classes representing warnings generated during compilation.
+ */
+
 import semmle.code.cpp.Location
 
 /** A compiler-generated error, warning or remark. */
@@ -11,6 +15,7 @@ class Diagnostic extends Locatable, @diagnostic {
   /** Gets the error code for this compiler message. */
   string getTag() { diagnostics(underlyingElement(this), _, result, _, _, _) }
 
+  /** Holds if `s` is the error code for this compiler message. */
   predicate hasTag(string s) { this.getTag() = s }
 
   /**

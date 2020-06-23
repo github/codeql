@@ -221,6 +221,5 @@ Currently, ``visibleIn`` only considers single-type imports, but you could exten
 Further reading
 ---------------
 
--  Find out how you can use the location API to define queries on whitespace: :doc:`Working with source locations <source-locations>`.
--  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`Classes for working with Java code <ast-class-reference>`.
--  Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
+.. include:: ../../reusables/java-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

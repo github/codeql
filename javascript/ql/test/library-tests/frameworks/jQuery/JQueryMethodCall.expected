@@ -17,3 +17,15 @@ WARNING: Type JQueryMethodCall has been deprecated and may be removed in future 
 | tst.js:5:1:5:15 | window.jQuery() | $ |
 | tst.js:6:1:6:32 | angular ... .attr() | attr |
 | tst.js:7:1:7:14 | $("<br>", doc) | $ |
+| tst.js:11:1:11:8 | $("foo") | $ |
+| tst.js:11:1:11:15 | $("foo").html() | html |
+| tst.js:12:1:12:8 | $("foo") | $ |
+| tst.js:12:1:12:20 | $("foo").html("foo") | html |
+| tst.js:12:1:12:31 | $("foo" ... query() | isJquery |
+| tst.js:13:1:13:8 | $("foo") | $ |
+| tst.js:13:1:13:17 | $("foo").data({}) | data |
+| tst.js:13:1:13:28 | $("foo" ... query() | isJquery |
+| tst.js:15:1:15:8 | $("foo") | $ |
+| tst.js:15:1:15:20 | $("foo").attr("bar") | attr |
+| tst.js:17:1:17:8 | $.trim() | trim |
+| tst.js:18:1:18:10 | $.ajax({}) | ajax |

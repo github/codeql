@@ -85,7 +85,7 @@ private class ES2015PromiseDefinition extends PromiseDefinition, DataFlow::NewNo
  */
 abstract class PromiseCreationCall extends DataFlow::CallNode {
   /**
-   * Gets the value this promise is resolved with.
+   * Gets a value this promise is resolved with.
    */
   abstract DataFlow::Node getValue();
 }
@@ -94,6 +94,16 @@ abstract class PromiseCreationCall extends DataFlow::CallNode {
  * A promise that is created using a `.resolve()` call.
  */
 abstract class ResolvedPromiseDefinition extends PromiseCreationCall { }
+
+/**
+ * A promise that is created using a `Promise.all(array)` call.
+ */
+abstract class PromiseAllCreation extends PromiseCreationCall {
+  /**
+   * Gets a node for the array of values given to the `Promise.all(array)` call.
+   */
+  abstract DataFlow::Node getArrayNode();
+}
 
 /**
  * A resolved promise created by the standard ECMAScript 2015 `Promise.resolve` function.
@@ -119,6 +129,15 @@ class AggregateES2015PromiseDefinition extends PromiseCreationCall {
   override DataFlow::Node getValue() {
     result = getArgument(0).getALocalSource().(DataFlow::ArrayCreationNode).getAnElement()
   }
+}
+
+/**
+ * An aggregated promise created using `Promise.all()`.
+ */
+class ES2015PromiseAllDefinition extends AggregateES2015PromiseDefinition, PromiseAllCreation {
+  ES2015PromiseAllDefinition() { this.getCalleeName() = "all" }
+
+  override DataFlow::Node getArrayNode() { result = getArgument(0) }
 }
 
 /**
@@ -176,7 +195,7 @@ module PromiseTypeTracking {
       summary = StoreStep(field) and
       step.store(pred, result, field)
       or
-      summary = LoadStoreStep(field) and
+      summary = CopyStep(field) and
       step.loadStore(pred, result, field)
     )
   }
@@ -232,9 +251,9 @@ abstract private class PromiseFlowStep extends DataFlow::AdditionalFlowStep {
   /**
    * Holds if `pred` should be stored in the object `succ` under the property `prop`.
    */
-  predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
+  predicate store(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) { none() }
 
-  final override predicate storeStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+  final override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
     this.store(pred, succ, prop)
   }
 
@@ -245,6 +264,12 @@ abstract private class PromiseFlowStep extends DataFlow::AdditionalFlowStep {
 
   final override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
     this.loadStore(pred, succ, prop)
+  }
+
+  final override predicate loadStoreStep(
+    DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp
+  ) {
+    none()
   }
 }
 
@@ -267,7 +292,7 @@ private module PromiseFlow {
 
     PromiseDefitionStep() { this = promise }
 
-    override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate store(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       prop = valueProp() and
       pred = promise.getResolveParameter().getACall().getArgument(0) and
       succ = this
@@ -296,16 +321,27 @@ private module PromiseFlow {
 
     CreationStep() { this = promise }
 
-    override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate store(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+      not promise instanceof PromiseAllCreation and
       prop = valueProp() and
       pred = promise.getValue() and
+      succ = this
+      or
+      prop = valueProp() and
+      pred = promise.(PromiseAllCreation).getArrayNode() and
       succ = this
     }
 
     override predicate loadStore(DataFlow::Node pred, DataFlow::Node succ, string prop) {
       // Copy the value of a resolved promise to the value of this promise.
+      not promise instanceof PromiseAllCreation and
       prop = valueProp() and
       pred = promise.getValue() and
+      succ = this
+      or
+      promise instanceof PromiseAllCreation and
+      prop = valueProp() and
+      pred = promise.(PromiseAllCreation).getArrayNode() and
       succ = this
     }
   }
@@ -362,7 +398,7 @@ private module PromiseFlow {
       succ = this
     }
 
-    override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate store(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       prop = valueProp() and
       pred = getCallback([0 .. 1]).getAReturn() and
       succ = this
@@ -396,7 +432,7 @@ private module PromiseFlow {
       succ = this
     }
 
-    override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate store(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       prop = errorProp() and
       pred = getCallback(0).getExceptionalReturn() and
       succ = this
@@ -424,7 +460,7 @@ private module PromiseFlow {
       succ = this
     }
 
-    override predicate store(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    override predicate store(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       prop = errorProp() and
       pred = getCallback(0).getExceptionalReturn() and
       succ = this
@@ -440,7 +476,11 @@ predicate promiseTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   pred = succ.(PromiseDefinition).getResolveParameter().getACall().getArgument(0)
   or
   // from `x` to `Promise.resolve(x)`
-  pred = succ.(PromiseCreationCall).getValue()
+  pred = succ.(PromiseCreationCall).getValue() and
+  not succ instanceof PromiseAllCreation
+  or
+  // from `arr` to `Promise.all(arr)`
+  pred = succ.(PromiseAllCreation).getArrayNode()
   or
   exists(DataFlow::MethodCallNode thn | thn.getMethodName() = "then" |
     // from `p` to `x` in `p.then(x => ...)`
@@ -526,6 +566,15 @@ module Bluebird {
     override DataFlow::Node getValue() {
       result = getArgument(0).getALocalSource().(DataFlow::ArrayCreationNode).getAnElement()
     }
+  }
+
+  /**
+   * A promise created using `Promise.all`:
+   */
+  class BluebirdPromiseAllDefinition extends AggregateBluebirdPromiseDefinition, PromiseAllCreation {
+    BluebirdPromiseAllDefinition() { this.getCalleeName() = "all" }
+
+    override DataFlow::Node getArrayNode() { result = getArgument(0) }
   }
 }
 

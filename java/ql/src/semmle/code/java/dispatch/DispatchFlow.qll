@@ -1,3 +1,11 @@
+/**
+ * INTERNAL: This is part of the virtual dispatch computation.
+ *
+ * Provides a strengthening of the virtual dispatch relation using a dedicated
+ * data flow check for lambdas, anonymous classes, and other sufficiently
+ * private classes where all object instantiations are accounted for.
+ */
+
 import java
 private import VirtualDispatch
 private import semmle.code.java.dataflow.internal.BaseSSA
@@ -194,9 +202,7 @@ private predicate flowStep(RelevantNode n1, RelevantNode n2) {
   or
   n2.asExpr().(CastExpr).getExpr() = n1.asExpr()
   or
-  n2.asExpr().(ConditionalExpr).getTrueExpr() = n1.asExpr()
-  or
-  n2.asExpr().(ConditionalExpr).getFalseExpr() = n1.asExpr()
+  n2.asExpr().(ChooseExpr).getAResultExpr() = n1.asExpr()
   or
   n2.asExpr().(AssignExpr).getSource() = n1.asExpr()
   or

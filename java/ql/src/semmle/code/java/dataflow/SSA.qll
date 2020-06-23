@@ -89,6 +89,7 @@ class SsaSourceVariable extends TSsaSourceVariable {
     this = TQualifiedField(result, _, _)
   }
 
+  /** Gets a textual representation of this `SsaSourceVariable`. */
   string toString() {
     exists(LocalScopeVariable v, Callable c | this = TLocalVar(c, v) |
       if c = v.getCallable()
@@ -112,6 +113,7 @@ class SsaSourceVariable extends TSsaSourceVariable {
       )
   }
 
+  /** Gets the source location for this element. */
   Location getLocation() {
     exists(LocalScopeVariable v | this = TLocalVar(_, v) and result = v.getLocation())
     or
@@ -935,8 +937,10 @@ class SsaVariable extends TSsaVariable {
     this = TSsaUntracked(_, result)
   }
 
+  /** Gets a textual representation of this SSA variable. */
   string toString() { none() }
 
+  /** Gets the source location for this element. */
   Location getLocation() { result = getCFGNode().getLocation() }
 
   /** Gets the `BasicBlock` in which this SSA variable is defined. */
@@ -1113,7 +1117,7 @@ class SsaPhiNode extends SsaVariable, TSsaPhiNode {
   }
 }
 
-library class RefTypeCastExpr extends CastExpr {
+private class RefTypeCastExpr extends CastExpr {
   RefTypeCastExpr() { this.getType() instanceof RefType }
 }
 
