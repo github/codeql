@@ -1,0 +1,22 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>It is generally considered bad practice to use the scanf, sscanf, and fscanf functions as they are vulnerable to buffer overflows. This may even be the case if a specfied length 
+is provided with "%s", if the the buffer is dynamic in size.
+It is recommended to use the scanf_s, sscanf_s, and fscanf_s functions instead.</p>
+
+</overview>
+
+<recommendation>
+<p>Use the scanf_s, sscanf_s, or fscanf_s functions instead.</p>
+</recommendation>
+
+<references>
+<li>https://cwe.mitre.org/data/definitions/120</li>
+<!--  LocalWords:  CWE
+ -->
+</references>
+
+</qhelp>
