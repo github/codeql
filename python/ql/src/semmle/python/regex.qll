@@ -622,10 +622,13 @@ abstract class RegexString extends Expr {
         start = 0 and end = this.getText().length()
         or
         exists(int y | this.lastPart(start, y) |
-            this.emptyMatchAtEndGroup(end, y) or
-            this.qualifiedItem(end, y, true) or
-            this.specialCharacter(end, y, "$") or
-            y = end+2 and this.escapingChar(end) and this.getChar(end+1) = "Z"
+            this.emptyMatchAtEndGroup(end, y)
+            or
+            this.qualifiedItem(end, y, true)
+            or
+            this.specialCharacter(end, y, "$")
+            or
+            y = end + 2 and this.escapingChar(end) and this.getChar(end + 1) = "Z"
         )
         or
         exists(int x |
