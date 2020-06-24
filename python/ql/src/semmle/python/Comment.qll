@@ -56,9 +56,17 @@ class CommentBlock extends @py_comment {
     /** The length of this comment block (in comments) */
     int length() { result = max(int i | comment_block_part(this, _, i)) }
 
-    predicate hasLocationInfo(string filepath, int bl, int bc, int el, int ec) {
-        this.(Comment).getLocation().hasLocationInfo(filepath, bl, bc, _, _) and
-        exists(Comment end | end = this.last() | end.getLocation().hasLocationInfo(_, _, _, el, ec))
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+     */
+    predicate hasLocationInfo(
+        string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {        this.(Comment).getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _) and
+        exists(Comment end | end = this.last() | end.getLocation().hasLocationInfo(_, _, _, endline, endcolumn))
     }
 
     predicate contains(Comment c) {

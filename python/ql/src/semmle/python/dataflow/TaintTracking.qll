@@ -378,8 +378,16 @@ abstract class TaintSource extends @py_flow_node {
 
     Location getLocation() { result = this.(ControlFlowNode).getLocation() }
 
-    predicate hasLocationInfo(string fp, int bl, int bc, int el, int ec) {
-        this.getLocation().hasLocationInfo(fp, bl, bc, el, ec)
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+     */
+    predicate hasLocationInfo(
+        string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {        this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
     /** Gets a TaintedNode for this taint source */
@@ -482,8 +490,16 @@ abstract class TaintSink extends @py_flow_node {
 
     Location getLocation() { result = this.(ControlFlowNode).getLocation() }
 
-    predicate hasLocationInfo(string fp, int bl, int bc, int el, int ec) {
-        this.getLocation().hasLocationInfo(fp, bl, bc, el, ec)
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+     */
+    predicate hasLocationInfo(
+        string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {        this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 }
 
