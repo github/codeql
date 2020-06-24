@@ -453,6 +453,13 @@ module OS {
       inp.isParameter(0) and outp.isResult()
     }
   }
+
+  /** The `os.Exit` function, which ends the process. */
+  private class Exit extends Function {
+    Exit() { hasQualifiedName("os", "Exit") }
+
+    override predicate mayReturnNormally() { none() }
+  }
 }
 
 /** Provides models of commonly used functions in the `path` package. */
@@ -785,6 +792,13 @@ module Log {
     }
 
     override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
+  }
+
+  /** A fatal log function, which calls `os.Exit`. */
+  private class FatalLogFunction extends Function {
+    FatalLogFunction() { exists(string fn | fn.matches("Fatal%") | hasQualifiedName("log", fn)) }
+
+    override predicate mayReturnNormally() { none() }
   }
 }
 

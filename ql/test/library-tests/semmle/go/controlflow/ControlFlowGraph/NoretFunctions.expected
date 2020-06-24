@@ -1,0 +1,11 @@
+| file://:0:0:0:0 | Exit | package os |
+| file://:0:0:0:0 | Fatal | package log |
+| file://:0:0:0:0 | Fatalf | package log |
+| file://:0:0:0:0 | Fatalln | package log |
+| noretfunctions.go:8:6:8:12 | isNoRet | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph |
+| noretfunctions.go:20:6:20:22 | noRetUsesLogFatal | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph |
+| noretfunctions.go:24:6:24:23 | noRetUsesLogFatalf | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph |
+| stmts7.go:10:6:10:15 | canRecover | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph |
+| stmts.go:8:6:8:10 | test5 | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph |
+| stmts.go:44:6:44:10 | test6 | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph |
+| stmts.go:110:6:110:10 | test9 | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph |
