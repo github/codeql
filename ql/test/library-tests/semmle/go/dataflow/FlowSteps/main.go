@@ -42,3 +42,11 @@ func test9() []int {
 	copy(s, s4)
 	return s2
 }
+
+func test10(xs []int) (keys int, vals int) {
+	for k, v := range xs {
+		vals += v // taint from `xs`
+		keys += k // no taint from `xs`
+	}
+	return
+}

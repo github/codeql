@@ -111,6 +111,12 @@ predicate fieldReadStep(DataFlow::Node pred, DataFlow::Node succ) {
  */
 predicate elementStep(DataFlow::Node pred, DataFlow::Node succ) {
   succ.(DataFlow::ElementReadNode).getBase() = pred
+  or
+  exists(IR::GetNextEntryInstruction nextEntry |
+    pred.asInstruction() = nextEntry.getDomain() and
+    // only step into the value, not the index
+    succ.asInstruction() = IR::extractTupleElement(nextEntry, 1)
+  )
 }
 
 deprecated predicate arrayStep = elementStep/2;

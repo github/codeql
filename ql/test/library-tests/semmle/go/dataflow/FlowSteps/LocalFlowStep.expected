@@ -87,6 +87,24 @@
 | main.go:40:8:40:23 | call to append | main.go:40:2:40:3 | definition of s2 |
 | main.go:41:2:41:3 | definition of s4 | main.go:42:10:42:11 | s4 |
 | main.go:41:8:41:21 | call to make | main.go:41:2:41:3 | definition of s4 |
+| main.go:46:13:46:14 | argument corresponding to xs | main.go:46:13:46:14 | definition of xs |
+| main.go:46:13:46:14 | definition of xs | main.go:47:20:47:21 | xs |
+| main.go:46:24:46:27 | definition of keys | main.go:47:20:47:20 | keys = phi(def@46:24, def@49:3) |
+| main.go:46:24:46:27 | zero value for keys | main.go:46:24:46:27 | definition of keys |
+| main.go:46:34:46:37 | definition of vals | main.go:47:20:47:20 | vals = phi(def@46:34, def@48:3) |
+| main.go:46:34:46:37 | zero value for vals | main.go:46:34:46:37 | definition of vals |
+| main.go:47:2:50:2 | range statement[0] | main.go:47:6:47:6 | definition of k |
+| main.go:47:2:50:2 | range statement[1] | main.go:47:9:47:9 | definition of v |
+| main.go:47:6:47:6 | definition of k | main.go:49:11:49:11 | k |
+| main.go:47:9:47:9 | definition of v | main.go:48:11:48:11 | v |
+| main.go:47:20:47:20 | keys = phi(def@46:24, def@49:3) | main.go:46:24:46:27 | implicit read of keys |
+| main.go:47:20:47:20 | keys = phi(def@46:24, def@49:3) | main.go:49:3:49:6 | keys |
+| main.go:47:20:47:20 | vals = phi(def@46:34, def@48:3) | main.go:46:34:46:37 | implicit read of vals |
+| main.go:47:20:47:20 | vals = phi(def@46:34, def@48:3) | main.go:48:3:48:6 | vals |
+| main.go:48:3:48:6 | definition of vals | main.go:47:20:47:20 | vals = phi(def@46:34, def@48:3) |
+| main.go:48:3:48:11 | ... += ... | main.go:48:3:48:6 | definition of vals |
+| main.go:49:3:49:6 | definition of keys | main.go:47:20:47:20 | keys = phi(def@46:24, def@49:3) |
+| main.go:49:3:49:11 | ... += ... | main.go:49:3:49:6 | definition of keys |
 | strings.go:8:12:8:12 | argument corresponding to s | strings.go:8:12:8:12 | definition of s |
 | strings.go:8:12:8:12 | definition of s | strings.go:9:24:9:24 | s |
 | strings.go:8:12:8:12 | definition of s | strings.go:10:27:10:27 | s |
