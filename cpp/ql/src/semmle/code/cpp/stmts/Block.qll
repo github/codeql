@@ -1,3 +1,7 @@
+/**
+ * Provides a class to model C/C++ block statements, enclosed by `{` and `}`.
+ */
+
 import semmle.code.cpp.Element
 import semmle.code.cpp.stmts.Stmt
 
