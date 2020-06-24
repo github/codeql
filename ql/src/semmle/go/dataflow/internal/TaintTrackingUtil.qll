@@ -56,7 +56,7 @@ predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   referenceStep(pred, succ) or
   elementWriteStep(pred, succ) or
   fieldReadStep(pred, succ) or
-  arrayStep(pred, succ) or
+  elementStep(pred, succ) or
   tupleStep(pred, succ) or
   stringConcatStep(pred, succ) or
   sliceStep(pred, succ) or
@@ -105,10 +105,15 @@ predicate fieldReadStep(DataFlow::Node pred, DataFlow::Node succ) {
   succ.(DataFlow::FieldReadNode).getBase() = pred
 }
 
-/** Holds if taint flows from `pred` to `succ` via an array index operation. */
-predicate arrayStep(DataFlow::Node pred, DataFlow::Node succ) {
+/**
+ * Holds if taint flows from `pred` to `succ` via an array, map, slice, or string
+ * index operation.
+ */
+predicate elementStep(DataFlow::Node pred, DataFlow::Node succ) {
   succ.(DataFlow::ElementReadNode).getBase() = pred
 }
+
+deprecated predicate arrayStep = elementStep/2;
 
 /** Holds if taint flows from `pred` to `succ` via an extract tuple operation. */
 predicate tupleStep(DataFlow::Node pred, DataFlow::Node succ) {
