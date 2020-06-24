@@ -1,12 +1,14 @@
 package com.semmle.js.extractor;
 
+import java.util.regex.Pattern;
+
 import com.semmle.js.extractor.ExtractorConfig.Platform;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import com.semmle.js.parser.ParseError;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
-import java.util.regex.Pattern;
+
 import net.htmlparser.jericho.Attribute;
 import net.htmlparser.jericho.Attributes;
 import net.htmlparser.jericho.CharacterReference;
@@ -142,6 +144,10 @@ public class HTMLExtractor implements IExtractor {
   private SourceType getScriptSourceType(Element script) {
     String scriptType = getAttributeValueLC(script, "type");
     String scriptLanguage = getAttributeValueLC(script, "language");
+
+    if (scriptLanguage == null) { // Vue templates use 'lang' instead of 'language'.
+      scriptLanguage = getAttributeValueLC(script, "lang");
+    }
 
     // if `type` and `language` are both either missing, contain the
     // string "javascript", or if `type` is the string "text/jsx", this is a plain script
