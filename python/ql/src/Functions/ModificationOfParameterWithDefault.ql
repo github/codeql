@@ -93,23 +93,20 @@ class Mutation extends TaintSink {
     }
 }
 
-/** Copying prevents modification of the default value.
-  * We are using taint tracking to flag if a default value has been modified.
-  * Thus, while copying usually preserves taint, in this case it actually sanitizes,
-  * since modifying a copy of a default value is not a problem. */
+/**
+ * Copying prevents modification of the default value.
+ * We are using taint tracking to flag if a default value has been modified.
+ * Thus, while copying usually preserves taint, in this case it actually sanitizes,
+ * since modifying a copy of a default value is not a problem.
+ */
 class Copying extends Sanitizer {
-    Copying() { this = "Copy sanitizer"}
-
-    override predicate sanitizingDefinition(TaintKind taint, EssaDefinition def) {
-        sanitizesKind(taint) and
-        creates_a_copy(def.(AssignmentDefinition).getValue())
-    }
+    Copying() { this = "Copy sanitizer" }
 
     override predicate sanitizingNode(TaintKind taint, ControlFlowNode node) {
-        sanitizesKind(taint) and
+        sanitizes_kind(taint) and
         creates_a_copy(node)
     }
-    
+
     private predicate creates_a_copy(ControlFlowNode node) {
         node = Value::named("copy.copy").getACall()
         or
@@ -118,7 +115,7 @@ class Copying extends Sanitizer {
         node.(CallNode).getFunction().(AttrNode).getName() = "copy"
     }
 
-    private predicate sanitizesKind(TaintKind taint) {
+    private predicate sanitizes_kind(TaintKind taint) {
         taint instanceof EmptyMutableValue
         or
         taint instanceof NonEmptyMutableValue
@@ -132,18 +129,12 @@ class ModifyingDefaultConfiguration extends TaintTracking::Configuration {
         source instanceof MutableDefaultValue
     }
 
-    override predicate isSink(TaintTracking::Sink sink) {
-        sink instanceof Mutation
-    }
+    override predicate isSink(TaintTracking::Sink sink) { sink instanceof Mutation }
 
-    override predicate isSanitizer(Sanitizer sanitizer) {
-        sanitizer instanceof Copying
-    }
+    override predicate isSanitizer(Sanitizer sanitizer) { sanitizer instanceof Copying }
 }
 
-from
-  ModifyingDefaultConfiguration config,
-  TaintedPathSource src, TaintedPathSink sink
+from ModifyingDefaultConfiguration config, TaintedPathSource src, TaintedPathSink sink
 where config.hasFlowPath(src, sink)
 select sink.getSink(), src, sink, "$@ flows to here and is mutated.", src.getSource(),
     "Default value"
