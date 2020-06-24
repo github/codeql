@@ -184,7 +184,7 @@ namespace Semmle.Autobuild
                 return ret ?? new List<IProjectOrSolution>();
             });
 
-            CodeQLExtractorCSharpRoot = Actions.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_ROOT");
+            CodeQLExtractorLangRoot = Actions.GetEnvironmentVariable($"CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_ROOT");
             SemmleDist = Actions.GetEnvironmentVariable("SEMMLE_DIST");
             SemmlePlatformTools = Actions.GetEnvironmentVariable("SEMMLE_PLATFORM_TOOLS");
 
@@ -194,19 +194,19 @@ namespace Semmle.Autobuild
                 throw new InvalidEnvironmentException("The environment variable CODEQL_JAVA_HOME or SEMMLE_JAVA_HOME has not been set.");
 
             Distribution =
-                CodeQLExtractorCSharpRoot ??
+                CodeQLExtractorLangRoot ??
                 SemmleDist ??
-                throw new InvalidEnvironmentException("The environment variable CODEQL_EXTRACTOR_CSHARP_ROOT or SEMMLE_DIST has not been set.");
+                throw new InvalidEnvironmentException($"The environment variable CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_ROOT or SEMMLE_DIST has not been set.");
 
             TrapDir =
-                Actions.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_TRAP_DIR") ??
+                Actions.GetEnvironmentVariable($"CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_TRAP_DIR") ??
                 Actions.GetEnvironmentVariable("TRAP_FOLDER") ??
-                throw new InvalidEnvironmentException("The environment variable CODEQL_EXTRACTOR_CSHARP_TRAP_DIR or TRAP_FOLDER has not been set.");
+                throw new InvalidEnvironmentException($"The environment variable CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_TRAP_DIR or TRAP_FOLDER has not been set.");
 
             SourceArchiveDir =
-                Actions.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR") ??
+                Actions.GetEnvironmentVariable($"CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_SOURCE_ARCHIVE_DIR") ??
                 Actions.GetEnvironmentVariable("SOURCE_ARCHIVE") ??
-                throw new InvalidEnvironmentException("The environment variable CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR or SOURCE_ARCHIVE has not been set.");
+                throw new InvalidEnvironmentException($"The environment variable CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_SOURCE_ARCHIVE_DIR or SOURCE_ARCHIVE has not been set.");
         }
 
         private string TrapDir { get; }
@@ -397,9 +397,9 @@ namespace Semmle.Autobuild
                 });
 
         /// <summary>
-        /// Value of CODEQL_EXTRACTOR_CSHARP_ROOT environment variable.
+        /// Value of CODEQL_EXTRACTOR_<LANG>_ROOT environment variable.
         /// </summary>
-        private string? CodeQLExtractorCSharpRoot { get; }
+        private string? CodeQLExtractorLangRoot { get; }
 
         /// <summary>
         /// Value of SEMMLE_DIST environment variable.
