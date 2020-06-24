@@ -317,7 +317,7 @@ abstract class PostUpdateNode extends InstructionNode {
  * setY(&x); // a partial definition of the object `x`.
  * ```
  */
-abstract private class PartialDefinitionNode extends PostUpdateNode, TInstructionNode {
+abstract private class PartialDefinitionNode extends PostUpdateNode {
   abstract Expr getDefinedExpr();
 }
 
@@ -332,11 +332,7 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
     )
   }
 
-  // There might be multiple `ChiInstructions` that has a particular instruction as
-  // the total operand - so this definition gives consistency errors in
-  // DataFlowImplConsistency::Consistency. However, it's not clear what (if any) implications
-  // this consistency failure has.
-  override Node getPreUpdateNode() { result.asInstruction() = instr.getTotal() }
+  override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
 
   override Expr getDefinedExpr() {
     result = field.getObjectAddress().getUnconvertedResultExpression()
