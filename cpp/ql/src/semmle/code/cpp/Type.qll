@@ -1,3 +1,7 @@
+/**
+ * Provides a hierarchy of classes for modelling C/C++ types.
+ */
+
 import semmle.code.cpp.Element
 import semmle.code.cpp.Member
 import semmle.code.cpp.Function
@@ -1080,21 +1084,37 @@ class DerivedType extends Type, @derivedtype {
 
   override Type stripType() { result = getBaseType().stripType() }
 
+  /**
+   * Holds if this type has the `__autoreleasing` specifier or if it points to
+   * a type with the `__autoreleasing` specifier.
+   */
   predicate isAutoReleasing() {
     this.hasSpecifier("__autoreleasing") or
     this.(PointerType).getBaseType().hasSpecifier("__autoreleasing")
   }
 
+  /**
+   * Holds if this type has the `__strong` specifier or if it points to
+   * a type with the `__strong` specifier.
+   */
   predicate isStrong() {
     this.hasSpecifier("__strong") or
     this.(PointerType).getBaseType().hasSpecifier("__strong")
   }
 
+  /**
+   * Holds if this type has the `__unsafe_unretained` specifier or if it points
+   * to a type with the `__unsafe_unretained` specifier.
+   */
   predicate isUnsafeRetained() {
     this.hasSpecifier("__unsafe_unretained") or
     this.(PointerType).getBaseType().hasSpecifier("__unsafe_unretained")
   }
 
+  /**
+   * Holds if this type has the `__weak` specifier or if it points to
+   * a type with the `__weak` specifier.
+   */
   predicate isWeak() {
     this.hasSpecifier("__weak") or
     this.(PointerType).getBaseType().hasSpecifier("__weak")
@@ -1316,6 +1336,10 @@ class ArrayType extends DerivedType {
 
   override string getCanonicalQLClass() { result = "ArrayType" }
 
+  /**
+   * Holds if this array is declared to be of a constant size. See
+   * `getArraySize` and `getByteSize` to get the size of the array.
+   */
   predicate hasArraySize() { arraysizes(underlyingElement(this), _, _, _) }
 
   /**
@@ -1568,12 +1592,21 @@ class RoutineType extends Type, @routinetype {
 
   override string getName() { result = "..()(..)" }
 
+  /**
+   * Gets the type of the `n`th parameter to this routine.
+   */
   Type getParameterType(int n) {
     routinetypeargs(underlyingElement(this), n, unresolveElement(result))
   }
 
+  /**
+   * Gets the type of a parameter to this routine.
+   */
   Type getAParameterType() { routinetypeargs(underlyingElement(this), _, unresolveElement(result)) }
 
+  /**
+   * Gets the return type of this routine.
+   */
   Type getReturnType() { routinetypes(underlyingElement(this), unresolveElement(result)) }
 
   override string explain() {
