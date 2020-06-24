@@ -76,7 +76,7 @@ private module Gin {
         or
         // Field reads:
         exists(DataFlow::Field fld |
-          fld.hasQualifiedName(packagePath, typeName, "Accepted") and
+          fld.hasQualifiedName(packagePath, typeName, ["Accepted", "Params"]) and
           this = fld.getARead()
         )
       )
@@ -92,11 +92,6 @@ private module Gin {
         packagePath = "github.com/gin-gonic/gin" and
         typeName = "Params"
       |
-        // Any read of a variable of this type:
-        exists(DataFlow::ReadNode read | read.getType().hasQualifiedName(packagePath, typeName) |
-          this = read
-        )
-        or
         // Method calls:
         exists(DataFlow::MethodCallNode call |
           call.getTarget().hasQualifiedName(packagePath, typeName, ["ByName", "Get"])
@@ -116,11 +111,6 @@ private module Gin {
         packagePath = "github.com/gin-gonic/gin" and
         typeName = "Param"
       |
-        // Any read of a variable of this type:
-        exists(DataFlow::ReadNode read | read.getType().hasQualifiedName(packagePath, typeName) |
-          this = read
-        )
-        or
         // Field reads:
         exists(DataFlow::Field fld | fld.hasQualifiedName(packagePath, typeName, ["Key", "Value"]) |
           this = fld.getARead()

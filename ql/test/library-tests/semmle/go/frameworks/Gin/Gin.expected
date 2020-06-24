@@ -26,22 +26,15 @@
 | Gin.go:123:10:123:23 | call to FullPath |
 | Gin.go:129:10:129:21 | selection of Accepted |
 | Gin.go:133:10:133:19 | selection of Params |
-| Gin.go:134:7:134:9 | val |
-| Gin.go:134:7:134:12 | index expression |
 | Gin.go:134:7:134:18 | selection of Value |
 | Gin.go:139:10:139:19 | selection of Params |
-| Gin.go:139:10:139:22 | index expression |
-| Gin.go:140:7:140:9 | val |
 | Gin.go:140:7:140:15 | selection of Value |
 | Gin.go:143:10:143:19 | selection of Params |
 | Gin.go:143:10:143:34 | call to ByName |
 | Gin.go:147:3:147:34 | ... := ...[0] |
 | Gin.go:147:13:147:22 | selection of Params |
 | Gin.go:153:12:153:21 | selection of Params |
-| Gin.go:153:12:153:24 | index expression |
-| Gin.go:154:10:154:14 | param |
 | Gin.go:154:10:154:18 | selection of Key |
-| Gin.go:155:10:155:14 | param |
 | Gin.go:155:10:155:20 | selection of Value |
 | Gin.go:163:16:163:22 | &... |
 | Gin.go:167:7:167:19 | definition of personPointer |
