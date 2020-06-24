@@ -10,6 +10,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import java.net.Socket;
+import javax.net.SocketFactory;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
@@ -126,7 +127,7 @@ public class UnsafeCertTrustTest {
 		sslEngine.setSSLParameters(sslParameters);
 	}
 
-		/**
+	/**
 	 * Test the endpoint identification of SSL engine is not set
 	 */
 	public void testSSLEngineEndpointIdNotSet() {
@@ -143,11 +144,19 @@ public class UnsafeCertTrustTest {
 		SSLSocket socket = (SSLSocket) socketFactory.createSocket("www.example.com", 443);
 	}
 
+	/**
+	 * Test the endpoint identification of regular socket is not set
+	 */
+	public void testSocketEndpointIdNotSet() {
+		SocketFactory socketFactory = SocketFactory.getDefault();
+		Socket socket = socketFactory.createSocket("www.example.com", 80);
+	}
+
 	// /**
-	//  * Test the enableHostnameVerification of RabbitMQConnectionFactory is not set
-	//  */
+	// * Test the enableHostnameVerification of RabbitMQConnectionFactory is not set
+	// */
 	// public void testEnableHostnameVerificationOfRabbitMQFactoryNotSet() {
-	// 	ConnectionFactory connectionFactory = new ConnectionFactory();
-	// 	connectionFactory.useSslProtocol();
+	// ConnectionFactory connectionFactory = new ConnectionFactory();
+	// connectionFactory.useSslProtocol();
 	// }
 }
