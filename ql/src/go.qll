@@ -26,6 +26,7 @@ import semmle.go.dataflow.GlobalValueNumbering
 import semmle.go.dataflow.SSA
 import semmle.go.dataflow.TaintTracking
 import semmle.go.frameworks.Email
+import semmle.go.frameworks.Glog
 import semmle.go.frameworks.HTTP
 import semmle.go.frameworks.Macaron
 import semmle.go.frameworks.Mux

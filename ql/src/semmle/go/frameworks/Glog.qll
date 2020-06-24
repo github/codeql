@@ -1,25 +1,25 @@
-/** Provides models of commonly used functions in the `github.com/golang/glog` package. */
+/**
+ * Provides models of commonly used functions in the `github.com/golang/glog` and `k8s.io/klog`
+ * packages.
+ */
 
 import go
 
-/** Provides models of commonly used functions in the `github.com/golang/glog` package. */
+/**
+ * Provides models of commonly used functions in the `github.com/golang/glog` packages and its
+ * forks.
+ */
 module Glog {
   private class GlogCall extends LoggerCall::Range, DataFlow::CallNode {
     GlogCall() {
-      exists(string fn |
-        fn.regexpMatch("Error(|f|ln)")
-        or
-        fn.regexpMatch("Exit(|f|ln)")
-        or
-        fn.regexpMatch("Fatal(|f|ln)")
-        or
-        fn.regexpMatch("Info(|f|ln)")
-        or
-        fn.regexpMatch("Warning(|f|ln)")
+      exists(string pkg, Function f, string fn |
+        pkg = package(["github.com/golang/glog", "gopkg.in/glog", "k8s.io/klog"], "") and
+        fn.regexpMatch("(Error|Exit|Fatal|Info|Warning)(|f|ln)") and
+        this = f.getACall()
       |
-        this.getTarget().hasQualifiedName("github.com/golang/glog", fn)
+        f.hasQualifiedName(pkg, fn)
         or
-        this.getTarget().(Method).hasQualifiedName("github.com/golang/glog", "Verbose", fn)
+        f.(Method).hasQualifiedName(pkg, "Verbose", fn)
       )
     }
 
