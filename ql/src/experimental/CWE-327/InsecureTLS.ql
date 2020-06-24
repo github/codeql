@@ -17,8 +17,8 @@ import DataFlow::PathGraph
  */
 predicate isTestFile(DataFlow::Node node) {
   // Exclude results in test files:
-  exists(File fl | fl = node.getRoot().getFile() |
-    fl instanceof TestFile or fl.getPackageName() = "tests"
+  exists(File file | file = node.getRoot().getFile() |
+    file instanceof TestFile or file.getPackageName() = "tests"
   )
 }
 
@@ -49,17 +49,9 @@ class TlsVersionFlowConfig extends TaintTracking::Configuration {
     unsafeTlsVersion(val, _)
   }
 
-  predicate isSink(DataFlow::Node sink, Field f) {
-    f.hasQualifiedName("crypto/tls", "Config", ["MinVersion", "MaxVersion"]) and
-    sink = f.getAWrite().getRhs() and
-    // Exclude writes happening inside a switch statement,
-    // provided the config struct is not declared inside that same statement:
-    not exists(ExpressionSwitchStmt switch |
-      switch.getBody().getAChildStmt().getChild(0) =
-        any(Assignment asign | asign.getRhs() = sink.asExpr())
-      // TODO: make sure that the parent struct of the field is not declared
-      // inside the switch statement.
-    )
+  predicate isSink(DataFlow::Node sink, Field fld) {
+    fld.hasQualifiedName("crypto/tls", "Config", ["MinVersion", "MaxVersion"]) and
+    sink = fld.getAWrite().getRhs()
   }
 
   override predicate isSource(DataFlow::Node source) { isSource(source, _) }

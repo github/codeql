@@ -77,10 +77,6 @@ nodes
 | UnsafeTLS.go:193:21:193:46 | call to InsecureCipherSuites : slice type | semmle.label | call to InsecureCipherSuites : slice type |
 | UnsafeTLS.go:195:40:195:56 | implicit dereference : CipherSuite | semmle.label | implicit dereference : CipherSuite |
 | UnsafeTLS.go:197:25:197:36 | cipherSuites | semmle.label | cipherSuites |
-| UnsafeTLS.go:207:23:207:38 | selection of VersionTLS11 | semmle.label | selection of VersionTLS11 |
-| UnsafeTLS.go:229:23:229:38 | selection of VersionTLS11 | semmle.label | selection of VersionTLS11 |
-| UnsafeTLS.go:238:24:238:39 | selection of VersionTLS10 | semmle.label | selection of VersionTLS10 |
-| UnsafeTLS.go:239:24:239:39 | selection of VersionTLS11 | semmle.label | selection of VersionTLS11 |
 #select
 | UnsafeTLS.go:12:23:12:23 | 0 | UnsafeTLS.go:12:23:12:23 | 0 | UnsafeTLS.go:12:23:12:23 | 0 | Using lowest TLS version for MinVersion. |
 | UnsafeTLS.go:21:16:21:16 | 0 | UnsafeTLS.go:21:16:21:16 | 0 | UnsafeTLS.go:21:16:21:16 | 0 | Using lowest TLS version for MinVersion. |
@@ -108,7 +104,3 @@ nodes
 | UnsafeTLS.go:154:18:156:4 | slice literal | UnsafeTLS.go:155:5:155:45 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:154:18:156:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256. |
 | UnsafeTLS.go:171:25:171:94 | call to append | UnsafeTLS.go:171:53:171:93 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:171:25:171:94 | call to append | Use of an insecure cipher suite: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256. |
 | UnsafeTLS.go:197:25:197:36 | cipherSuites | UnsafeTLS.go:193:21:193:46 | call to InsecureCipherSuites : slice type | UnsafeTLS.go:197:25:197:36 | cipherSuites | Use of an insecure cipher suite from InsecureCipherSuites(). |
-| UnsafeTLS.go:207:23:207:38 | selection of VersionTLS11 | UnsafeTLS.go:207:23:207:38 | selection of VersionTLS11 | UnsafeTLS.go:207:23:207:38 | selection of VersionTLS11 | Using insecure TLS version VersionTLS11 for MaxVersion. |
-| UnsafeTLS.go:229:23:229:38 | selection of VersionTLS11 | UnsafeTLS.go:229:23:229:38 | selection of VersionTLS11 | UnsafeTLS.go:229:23:229:38 | selection of VersionTLS11 | Using insecure TLS version VersionTLS11 for MinVersion. |
-| UnsafeTLS.go:238:24:238:39 | selection of VersionTLS10 | UnsafeTLS.go:238:24:238:39 | selection of VersionTLS10 | UnsafeTLS.go:238:24:238:39 | selection of VersionTLS10 | Using insecure TLS version VersionTLS10 for MinVersion. |
-| UnsafeTLS.go:239:24:239:39 | selection of VersionTLS11 | UnsafeTLS.go:239:24:239:39 | selection of VersionTLS11 | UnsafeTLS.go:239:24:239:39 | selection of VersionTLS11 | Using insecure TLS version VersionTLS11 for MinVersion. |
