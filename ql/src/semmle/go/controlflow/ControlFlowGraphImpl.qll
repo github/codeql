@@ -1761,7 +1761,7 @@ module CFG {
         or
         first = MkImplicitTrue(this)
         or
-        firstNode(this.(TypeSwitchStmt).getChildStmt(1), first)
+        firstNode(this.(TypeSwitchStmt).getTest(), first)
       )
     }
 
@@ -1772,16 +1772,17 @@ module CFG {
       (
         lastNode(this.(ExpressionSwitchStmt).getExpr(), last, cmpl)
         or
-        last = MkImplicitTrue(this) and
-        cmpl = Bool(true)
-        or
-        lastNode(this.(TypeSwitchStmt).getChildStmt(1), last, cmpl)
+        lastNode(this.(TypeSwitchStmt).getTest(), last, cmpl)
       ) and
       (
         not cmpl.isNormal()
         or
         not exists(this.getDefault())
       )
+      or
+      last = MkImplicitTrue(this) and
+      cmpl = Bool(true) and
+      this.getNumCase() = 0
       or
       exists(CaseClause cc, int i, Completion inner |
         cc = this.getCase(i) and lastNode(cc, last, inner)
@@ -1811,13 +1812,13 @@ module CFG {
       (
         firstNode(this.(ExpressionSwitchStmt).getExpr(), succ) or
         succ = MkImplicitTrue(this) or
-        firstNode(this.(TypeSwitchStmt).getChildStmt(1), succ)
+        firstNode(this.(TypeSwitchStmt).getTest(), succ)
       )
       or
       (
         lastNode(this.(ExpressionSwitchStmt).getExpr(), pred, normalCompletion()) or
         pred = MkImplicitTrue(this) or
-        lastNode(this.(TypeSwitchStmt).getChildStmt(1), pred, normalCompletion())
+        lastNode(this.(TypeSwitchStmt).getTest(), pred, normalCompletion())
       ) and
       (
         firstNode(getNonDefaultCase(0), succ)
