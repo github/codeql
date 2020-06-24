@@ -1,3 +1,7 @@
+/**
+ * Provides classes representing Python classes.
+ */
+
 import python
 
 /**
@@ -37,6 +41,7 @@ class ClassExpr extends ClassExpr_ {
         result = this.getStarargs()
     }
 
+    /** Gets a call corresponding to a decorator of this class definition. */
     Call getADecoratorCall() {
         result.getArg(0) = this or
         result.getArg(0) = this.getADecoratorCall()
@@ -114,6 +119,7 @@ class Class extends Class_, Scope, AstNode {
     /** Gets the name used to define this class */
     override string getName() { result = Class_.super.getName() }
 
+    /** Whether this expression may have a side effect (as determined purely from its syntax). */
     predicate hasSideEffects() { any() }
 
     /** Whether this is probably a mixin (has 'mixin' or similar in name or docstring) */
@@ -129,6 +135,7 @@ class Class extends Class_, Scope, AstNode {
 
     override AstNode getAChildNode() { result = this.getAStmt() }
 
+    /** Gets a decorator of this class. */
     Expr getADecorator() { result = this.getParent().getADecorator() }
 
     /** Gets the metaclass expression */
