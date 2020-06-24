@@ -226,10 +226,12 @@ def tuple_call_copy_before_modify(x=[], y=[]):
     t[0].append(42)
     return t[0]
 
-def tuple_unsuccessfully_call_copy_before_modify(x=[], y=[]):
-    t = (x.copy(), y) # Whole tuple tainted here
-    t[0].append(42) # FP here, since we taint both t[0] and t[1]
-    return t[0]
+# The below function is commented out because it acts differently
+# given different versions of Python.
+# def tuple_unsuccessfully_call_copy_before_modify(x=[], y=[]):
+#     t = (x.copy(), y) # Whole tuple tainted here
+#     t[0].append(42) # FP here, since we taint both t[0] and t[1]
+#     return t[0]
 
 def tuple_various_copies_before_modify(x=[], y=[]):
     t = (x.copy(), y + [5])
