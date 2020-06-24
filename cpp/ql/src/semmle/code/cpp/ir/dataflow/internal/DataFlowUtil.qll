@@ -13,6 +13,7 @@ private import semmle.code.cpp.models.interfaces.DataFlow
 
 private newtype TIRDataFlowNode =
   TInstructionNode(Instruction i) or
+  TOperandNode(Operand op) or
   TVariableNode(Variable var)
 
 /**
@@ -36,6 +37,9 @@ class Node extends TIRDataFlowNode {
 
   /** Gets the instruction corresponding to this node, if any. */
   Instruction asInstruction() { result = this.(InstructionNode).getInstruction() }
+
+  /** Gets the operands corresponding to this node, if any. */
+  Operand asOperand() { result = this.(OperandNode).getOperand() }
 
   /**
    * Gets the non-conversion expression corresponding to this node, if any. If
@@ -130,6 +134,28 @@ class InstructionNode extends Node, TInstructionNode {
     // does not use `Instruction.toString` because that's expensive to compute.
     result = this.getInstruction().getOpcode().toString()
   }
+}
+
+/**
+ * An operand, viewed as a node in a data flow graph.
+ */
+class OperandNode extends Node, TOperandNode {
+  Operand op;
+
+  OperandNode() { this = TOperandNode(op) }
+
+  /** Gets the operand corresponding to this node. */
+  Operand getOperand() { result = op }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override Function getFunction() { result = op.getUse().getEnclosingFunction() }
+
+  override Type getType() { result = op.getType() }
+
+  override Location getLocation() { result = op.getLocation() }
+
+  override string toString() { result = this.getOperand().toString() }
 }
 
 /**
