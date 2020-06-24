@@ -77,12 +77,6 @@ class Content extends TContent {
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
   }
-
-  /** Gets the type of the object containing this content. */
-  abstract DataFlowType getContainerType();
-
-  /** Gets the type of this content. */
-  abstract DataFlowType getType();
 }
 
 private class FieldContent extends Content, TFieldContent {
@@ -95,34 +89,18 @@ private class FieldContent extends Content, TFieldContent {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     f.getDeclaration().hasLocationInfo(path, sl, sc, el, ec)
   }
-
-  override DataFlowType getContainerType() { result = f.getDeclaringType() }
-
-  override DataFlowType getType() { result = f.getType() }
 }
 
 private class CollectionContent extends Content, TCollectionContent {
   override string toString() { result = "collection" }
-
-  override DataFlowType getContainerType() { none() }
-
-  override DataFlowType getType() { none() }
 }
 
 private class ArrayContent extends Content, TArrayContent {
   override string toString() { result = "array" }
-
-  override DataFlowType getContainerType() { none() }
-
-  override DataFlowType getType() { none() }
 }
 
 private class PointerContent extends Content, TPointerContent {
   override string toString() { result = "pointer" }
-
-  override DataFlowType getContainerType() { this = TPointerContent(result) }
-
-  override DataFlowType getType() { result = getContainerType().(PointerType).getBaseType() }
 }
 
 /**
