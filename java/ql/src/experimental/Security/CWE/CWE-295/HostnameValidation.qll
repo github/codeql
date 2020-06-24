@@ -108,29 +108,47 @@ private class SSLSessionGetPeerHostMethodAccess extends MethodAccess {
  * A `TaintTracking::Configuration` where the `source` is a parameter.
  * This configuration considers any getter on `SSLSession` as being tainted, but ignores any calls to `SSLSession.getPeerHost`.
  */
-private class ParameterTaintTracking extends TaintTracking::Configuration {
-  ParameterTaintTracking() { this = "ParameterTaintTracking" }
+/*
+ * private class ParameterTaintTracking extends TaintTracking::Configuration {
+ *  ParameterTaintTracking() { this = "ParameterTaintTracking" }
+ */
 
-  override predicate isSource(DataFlow::Node source) { source instanceof DataFlow::ParameterNode }
+/*override */ predicate isSource(DataFlow::Node source) {
+  source instanceof DataFlow::ParameterNode
+}
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof DataFlow::ExprNode }
+/*override */ predicate isSink(DataFlow::Node sink) { sink instanceof DataFlow::ExprNode }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    node1.asExpr().getType() instanceof SSLSession and
-    exists(MethodAccess ma | ma.getMethod().getName().matches("get%") | node2.asExpr() = ma)
-  }
+/*override */ predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+  exists(MethodAccess ma |
+    ma.getMethod().getName().matches("get%") and
+    ma.getMethod().getDeclaringType() instanceof SSLSession and
+    not ma instanceof SSLSessionGetPeerHostMethodAccess
+  |
+    node2.asExpr() = ma and
+    ma.getQualifier() = node1.asExpr()
+  )
+}
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    node.asExpr() instanceof SSLSessionGetPeerHostMethodAccess
+class TaintedQualifierTaintStep extends TaintTracking::AdditionalTaintStep {
+  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
+    isAdditionalTaintStep(node1, node2)
   }
 }
 
+/*
+ * override predicate isSanitizer(DataFlow::Node node) {
+ *    node.asExpr() instanceof SSLSessionGetPeerHostMethodAccess
+ *  }
+ * }
+ */
+
 /** Holds if `e` is derived from `parameter`. This is approximated by checking whether `e` gets tainted by `parameter`. */
 private predicate isDerivedFromParameter(Parameter parameter, Expr e) {
-  exists(ParameterTaintTracking t, DataFlow::ExprNode sink, DataFlow::ParameterNode source |
+  exists(DataFlow::ExprNode sink, DataFlow::ParameterNode source |
     source = DataFlow::parameterNode(parameter) and sink = DataFlow::exprNode(e)
   |
-    t.hasFlow(source, sink)
+    TaintTracking::localTaint(source, sink)
   )
 }
 
