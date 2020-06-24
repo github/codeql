@@ -40,6 +40,7 @@ re.match(b"((a$)|b){4}", b"bbba") # Inspired by FP report here: https://github.c
 re.match(b"((a$).*)", b"a")
 re.match("(\Aab$|\Aba$)$\Z", "ab")
 re.match(b"((a$\Z)|b){4}", b"bbba")
+re.match(b"(a){00}b", b"b")
 
 #Duplicate character in set
 re.compile(b"[AA]")
