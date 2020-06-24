@@ -10,40 +10,64 @@ import semmle.code.cpp.models.interfaces.Taint
  */
 class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffectFunction, TaintFunction {
   MemcpyFunction() {
-    this.hasName("memcpy") or
-    this.hasName("memmove") or
+    // memcpy(dest, src, num)
+    this.hasName("memcpy")
+    or
+    // memmove(dest, src, num)
+    this.hasName("memmove")
+    or
+    // memmove(dest, src, num, remaining)
     this.hasName("__builtin___memcpy_chk")
+    or
+    // bcopy(src, dest, num)
+    this.hasGlobalOrStdName("bcopy")
   }
 
-  override predicate hasArrayInput(int bufParam) { bufParam = 1 }
+  /**
+   * Gets the index of the parameter that is the source buffer for the copy.
+   */
+  int getParamSrc() { if this.hasGlobalOrStdName("bcopy") then result = 0 else result = 1 }
 
-  override predicate hasArrayOutput(int bufParam) { bufParam = 0 }
+  /**
+   * Gets the index of the parameter that is the destination buffer for the
+   * copy.
+   */
+  int getParamDest() { if this.hasGlobalOrStdName("bcopy") then result = 1 else result = 0 }
+
+  /**
+   * Gets the index of the parameter that is the size of the copy (in bytes).
+   */
+  int getParamSize() { result = 2 }
+
+  override predicate hasArrayInput(int bufParam) { bufParam = getParamSrc() }
+
+  override predicate hasArrayOutput(int bufParam) { bufParam = getParamDest() }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameterDeref(1) and
-    output.isParameterDeref(0)
+    input.isParameterDeref(getParamSrc()) and
+    output.isParameterDeref(getParamDest())
     or
-    input.isParameterDeref(1) and
+    input.isParameterDeref(getParamSrc()) and
     output.isReturnValueDeref()
     or
-    input.isParameter(0) and
+    input.isParameter(getParamDest()) and
     output.isReturnValue()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameter(2) and
-    output.isParameterDeref(0)
+    input.isParameter(getParamSize()) and
+    output.isParameterDeref(getParamDest())
     or
-    input.isParameter(2) and
+    input.isParameter(getParamSize()) and
     output.isReturnValueDeref()
   }
 
   override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
     (
-      bufParam = 0 or
-      bufParam = 1
+      bufParam = getParamDest() or
+      bufParam = getParamSrc()
     ) and
-    countParam = 2
+    countParam = getParamSize()
   }
 
   override predicate hasOnlySpecificReadSideEffects() { any() }
@@ -51,18 +75,18 @@ class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffectFunction
   override predicate hasOnlySpecificWriteSideEffects() { any() }
 
   override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
-    i = 0 and buffer = true and mustWrite = true
+    i = getParamDest() and buffer = true and mustWrite = true
   }
 
   override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
-    i = 1 and buffer = true
+    i = getParamSrc() and buffer = true
   }
 
   override ParameterIndex getParameterSizeIndex(ParameterIndex i) {
-    result = 2 and
+    result = getParamSize() and
     (
-      i = 0 or
-      i = 1
+      i = getParamDest() or
+      i = getParamSrc()
     )
   }
 }
