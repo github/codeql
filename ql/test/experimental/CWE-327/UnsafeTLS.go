@@ -175,7 +175,7 @@ func cipherSuites() {
 		config.CipherSuites = make([]uint16, 0)
 		insecureSuites := tls.InsecureCipherSuites()
 		for _, v := range insecureSuites {
-			config.CipherSuites = append(config.CipherSuites, v.ID) // BAD
+			config.CipherSuites = append(config.CipherSuites, v.ID) // TODO: should be flagged as BAD.
 		}
 	}
 	{
@@ -185,7 +185,7 @@ func cipherSuites() {
 		for _, v := range insecureSuites {
 			cipherSuites = append(cipherSuites, v.ID)
 		}
-		config.CipherSuites = cipherSuites // BAD
+		config.CipherSuites = cipherSuites // TODO: should be flagged as BAD.
 	}
 	{
 		config := &tls.Config{}
@@ -204,7 +204,7 @@ func good(version string) {
 	switch version {
 	case "1.0":
 		config.MinVersion = tls.VersionTLS10 // OK
-		config.MaxVersion = tls.VersionTLS11 // OK
+		config.MaxVersion = tls.VersionTLS11 // TODO: should be OK, but it's flagged as bad.
 	case "1.1":
 		config.MinVersion = tls.VersionTLS11 // OK
 	default:
