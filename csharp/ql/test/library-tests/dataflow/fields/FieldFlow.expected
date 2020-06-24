@@ -201,8 +201,7 @@ edges
 | H.cs:131:18:131:18 | access to local variable a [FieldA] : Object | H.cs:131:14:131:19 | call to method Get |
 | H.cs:147:17:147:32 | call to method Through : A | H.cs:148:14:148:14 | access to local variable a |
 | H.cs:147:25:147:31 | object creation of type A : A | H.cs:147:17:147:32 | call to method Through : A |
-| H.cs:155:17:155:23 | object creation of type B : B | H.cs:156:9:156:9 | access to local variable b : B |
-| H.cs:156:9:156:9 | access to local variable b : B | H.cs:157:20:157:20 | access to local variable b : B |
+| H.cs:155:17:155:23 | object creation of type B : B | H.cs:157:20:157:20 | access to local variable b : B |
 | H.cs:157:9:157:9 | [post] access to parameter a [FieldA] : B | H.cs:164:19:164:19 | [post] access to local variable a [FieldA] : B |
 | H.cs:157:20:157:20 | access to local variable b : B | H.cs:157:9:157:9 | [post] access to parameter a [FieldA] : B |
 | H.cs:163:17:163:28 | object creation of type Object : Object | H.cs:164:22:164:22 | access to local variable o : Object |
@@ -472,7 +471,6 @@ nodes
 | H.cs:147:25:147:31 | object creation of type A : A | semmle.label | object creation of type A : A |
 | H.cs:148:14:148:14 | access to local variable a | semmle.label | access to local variable a |
 | H.cs:155:17:155:23 | object creation of type B : B | semmle.label | object creation of type B : B |
-| H.cs:156:9:156:9 | access to local variable b : B | semmle.label | access to local variable b : B |
 | H.cs:157:9:157:9 | [post] access to parameter a [FieldA] : B | semmle.label | [post] access to parameter a [FieldA] : B |
 | H.cs:157:20:157:20 | access to local variable b : B | semmle.label | access to local variable b : B |
 | H.cs:163:17:163:28 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
