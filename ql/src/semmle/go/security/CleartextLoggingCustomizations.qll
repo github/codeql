@@ -148,4 +148,16 @@ module CleartextLogging {
 
     override string describe() { result = "a call to " + name }
   }
+
+  /** The headers of an HTTP request, considered as a source of sensitive information. */
+  private class RequestHeaderSource extends Source {
+    RequestHeaderSource() {
+      exists(Field hdr |
+        hdr.hasQualifiedName("net/http", "Request", "Header") and
+        this = hdr.getARead()
+      )
+    }
+
+    override string describe() { result = "HTTP request headers" }
+  }
 }
