@@ -1087,8 +1087,10 @@ class DerivedType extends Type, @derivedtype {
   /**
    * Holds if this type has the `__autoreleasing` specifier or if it points to
    * a type with the `__autoreleasing` specifier.
+   *
+   * DEPRECATED: use `hasSpecifier` directly instead.
    */
-  predicate isAutoReleasing() {
+  deprecated predicate isAutoReleasing() {
     this.hasSpecifier("__autoreleasing") or
     this.(PointerType).getBaseType().hasSpecifier("__autoreleasing")
   }
@@ -1096,8 +1098,10 @@ class DerivedType extends Type, @derivedtype {
   /**
    * Holds if this type has the `__strong` specifier or if it points to
    * a type with the `__strong` specifier.
+   *
+   * DEPRECATED: use `hasSpecifier` directly instead.
    */
-  predicate isStrong() {
+  deprecated predicate isStrong() {
     this.hasSpecifier("__strong") or
     this.(PointerType).getBaseType().hasSpecifier("__strong")
   }
@@ -1105,8 +1109,10 @@ class DerivedType extends Type, @derivedtype {
   /**
    * Holds if this type has the `__unsafe_unretained` specifier or if it points
    * to a type with the `__unsafe_unretained` specifier.
+   *
+   * DEPRECATED: use `hasSpecifier` directly instead.
    */
-  predicate isUnsafeRetained() {
+  deprecated predicate isUnsafeRetained() {
     this.hasSpecifier("__unsafe_unretained") or
     this.(PointerType).getBaseType().hasSpecifier("__unsafe_unretained")
   }
@@ -1114,8 +1120,10 @@ class DerivedType extends Type, @derivedtype {
   /**
    * Holds if this type has the `__weak` specifier or if it points to
    * a type with the `__weak` specifier.
+   *
+   * DEPRECATED: use `hasSpecifier` directly instead.
    */
-  predicate isWeak() {
+  deprecated predicate isWeak() {
     this.hasSpecifier("__weak") or
     this.(PointerType).getBaseType().hasSpecifier("__weak")
   }
