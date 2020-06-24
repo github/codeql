@@ -1,4 +1,4 @@
-/** Utilities for writing concurrency queries. */
+/** Classes for concurrency queries. */
 
 import csharp
 
@@ -11,7 +11,7 @@ private class WaitCall extends MethodCall {
   Expr getExpr() { result = getArgument(0) }
 }
 
-/** An expression statement to a `Wait` call. */
+/** An expression statement containing a `Wait` call. */
 class WaitStmt extends ExprStmt {
   WaitStmt() { getExpr() instanceof WaitCall }
 
