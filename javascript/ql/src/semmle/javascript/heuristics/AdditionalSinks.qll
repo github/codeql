@@ -17,32 +17,12 @@ private import semmle.javascript.security.dataflow.RegExpInjectionCustomizations
 private import semmle.javascript.security.dataflow.ClientSideUrlRedirectCustomizations
 private import semmle.javascript.security.dataflow.ServerSideUrlRedirectCustomizations
 private import semmle.javascript.security.dataflow.InsecureRandomnessCustomizations
+private import HeuristicSinks as Sinks
 
-/**
- * A heuristic sink for data flow in a security query.
- */
-abstract class HeuristicSink extends DataFlow::Node { }
+class HeuristicSink = Sinks::HeuristicSink;
 
-private class HeuristicCodeInjectionSink extends HeuristicSink, CodeInjection::Sink {
-  HeuristicCodeInjectionSink() {
-    isAssignedTo(this, "$where")
-    or
-    isAssignedToOrConcatenatedWith(this, "(?i)(command|cmd|exec|code|script|program)")
-    or
-    isArgTo(this, "(?i)(eval|run)") // "exec" clashes too often with `RegExp.prototype.exec`
-    or
-    exists(string srcPattern |
-      // function/lambda syntax anywhere
-      srcPattern = "(?s).*function\\s*\\(.*\\).*" or
-      srcPattern = "(?s).*(\\(.*\\)|[A-Za-z_]+)\\s?=>.*"
-    |
-      isConcatenatedWithString(this, srcPattern)
-    )
-    or
-    // dynamic property name
-    isConcatenatedWithStrings("(?is)[a-z]+\\[", this, "(?s)\\].*")
-  }
-}
+private class HeuristicCodeInjectionSink extends Sinks::HeuristicCodeInjectionSink,
+  CodeInjection::Sink { }
 
 private class HeuristicCommandInjectionSink extends HeuristicSink, CommandInjection::Sink {
   HeuristicCommandInjectionSink() {

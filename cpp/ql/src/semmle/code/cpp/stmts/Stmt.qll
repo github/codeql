@@ -1455,7 +1455,7 @@ class SwitchStmt extends ConditionalStmt, @stmt_switch {
   /**
    * Gets the body statement of this 'switch' statement.
    *
-   * In almost all cases the result will be a `BlockStmt`, but there are
+   * In almost all cases the result will be a `Block`, but there are
    * other syntactically valid constructions.
    *
    * For example, for

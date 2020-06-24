@@ -80,9 +80,12 @@ Query modules
 A query module is defined by a ``.ql`` file. It can contain any of the elements listed 
 in :ref:`module-bodies` below. 
 
-The difference is that a query module must have at least one query in its 
-:ref:`namespace <namespaces>`. This is usually a :ref:`select clause <select-clauses>`, 
-but can also be a :ref:`query predicate <query-predicates>`.
+Query modules are slightly different from other modules:
+
+- A query module can't be imported.
+- A query module must have at least one query in its 
+  :ref:`namespace <namespaces>`. This is usually a :ref:`select clause <select-clauses>`, 
+  but can also be a :ref:`query predicate <query-predicates>`.
 
 For example:
 

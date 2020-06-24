@@ -54,7 +54,7 @@ private module Console {
         name = getAStandardLoggerMethodName() or
         name = "assert"
       ) and
-      this = console().getAMethodCall(name)
+      this = console().getAMemberCall(name)
     }
 
     override DataFlow::Node getAMessageComponent() {

@@ -1,8 +1,8 @@
 missingOperand
-| ir.cpp:809:7:809:13 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
-| ir.cpp:810:7:810:26 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
-| ir.cpp:823:7:823:13 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
-| ir.cpp:824:7:824:26 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | IR: HierarchyConversions | void HierarchyConversions() |
+| ir.cpp:809:7:809:13 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | void HierarchyConversions() | void HierarchyConversions() |
+| ir.cpp:810:7:810:26 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | void HierarchyConversions() | void HierarchyConversions() |
+| ir.cpp:823:7:823:13 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | void HierarchyConversions() | void HierarchyConversions() |
+| ir.cpp:824:7:824:26 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | void HierarchyConversions() | void HierarchyConversions() |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
@@ -24,6 +24,7 @@ switchInstructionWithoutDefaultEdge
 notMarkedAsConflated
 wronglyMarkedAsConflated
 invalidOverlap
+nonUniqueEnclosingIRFunction
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType

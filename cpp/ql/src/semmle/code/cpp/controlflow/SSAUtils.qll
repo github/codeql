@@ -1,3 +1,7 @@
+/**
+ * Provides classes and predicates for use in the SSA library.
+ */
+
 import cpp
 import semmle.code.cpp.controlflow.Dominance
 import semmle.code.cpp.controlflow.SSA // must be imported for proper caching of SSAHelper

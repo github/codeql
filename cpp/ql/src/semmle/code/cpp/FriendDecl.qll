@@ -1,3 +1,7 @@
+/**
+ * Provides a class representing C++ `friend` declarations.
+ */
+
 import semmle.code.cpp.Declaration
 private import semmle.code.cpp.internal.ResolveClass
 

@@ -1,0 +1,27 @@
+edges
+| SpelInjection.java:15:22:15:44 | getInputStream(...) : InputStream | SpelInjection.java:23:5:23:14 | expression |
+| SpelInjection.java:27:22:27:44 | getInputStream(...) : InputStream | SpelInjection.java:34:5:34:14 | expression |
+| SpelInjection.java:38:22:38:44 | getInputStream(...) : InputStream | SpelInjection.java:48:5:48:14 | expression |
+| SpelInjection.java:52:22:52:44 | getInputStream(...) : InputStream | SpelInjection.java:59:5:59:14 | expression |
+| SpelInjection.java:63:22:63:44 | getInputStream(...) : InputStream | SpelInjection.java:70:5:70:14 | expression |
+| SpelInjection.java:74:22:74:44 | getInputStream(...) : InputStream | SpelInjection.java:83:5:83:14 | expression |
+nodes
+| SpelInjection.java:15:22:15:44 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SpelInjection.java:23:5:23:14 | expression | semmle.label | expression |
+| SpelInjection.java:27:22:27:44 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SpelInjection.java:34:5:34:14 | expression | semmle.label | expression |
+| SpelInjection.java:38:22:38:44 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SpelInjection.java:48:5:48:14 | expression | semmle.label | expression |
+| SpelInjection.java:52:22:52:44 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SpelInjection.java:59:5:59:14 | expression | semmle.label | expression |
+| SpelInjection.java:63:22:63:44 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SpelInjection.java:70:5:70:14 | expression | semmle.label | expression |
+| SpelInjection.java:74:22:74:44 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| SpelInjection.java:83:5:83:14 | expression | semmle.label | expression |
+#select
+| SpelInjection.java:23:5:23:14 | expression | SpelInjection.java:15:22:15:44 | getInputStream(...) : InputStream | SpelInjection.java:23:5:23:14 | expression | SpEL injection from $@. | SpelInjection.java:15:22:15:44 | getInputStream(...) | this user input |
+| SpelInjection.java:34:5:34:14 | expression | SpelInjection.java:27:22:27:44 | getInputStream(...) : InputStream | SpelInjection.java:34:5:34:14 | expression | SpEL injection from $@. | SpelInjection.java:27:22:27:44 | getInputStream(...) | this user input |
+| SpelInjection.java:48:5:48:14 | expression | SpelInjection.java:38:22:38:44 | getInputStream(...) : InputStream | SpelInjection.java:48:5:48:14 | expression | SpEL injection from $@. | SpelInjection.java:38:22:38:44 | getInputStream(...) | this user input |
+| SpelInjection.java:59:5:59:14 | expression | SpelInjection.java:52:22:52:44 | getInputStream(...) : InputStream | SpelInjection.java:59:5:59:14 | expression | SpEL injection from $@. | SpelInjection.java:52:22:52:44 | getInputStream(...) | this user input |
+| SpelInjection.java:70:5:70:14 | expression | SpelInjection.java:63:22:63:44 | getInputStream(...) : InputStream | SpelInjection.java:70:5:70:14 | expression | SpEL injection from $@. | SpelInjection.java:63:22:63:44 | getInputStream(...) | this user input |
+| SpelInjection.java:83:5:83:14 | expression | SpelInjection.java:74:22:74:44 | getInputStream(...) : InputStream | SpelInjection.java:83:5:83:14 | expression | SpEL injection from $@. | SpelInjection.java:74:22:74:44 | getInputStream(...) | this user input |

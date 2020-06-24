@@ -1,3 +1,7 @@
+/**
+ * Provides classes representing C/C++ enums and enum constants.
+ */
+
 import semmle.code.cpp.Type
 private import semmle.code.cpp.internal.ResolveClass
 
@@ -19,6 +23,17 @@ class Enum extends UserType, IntegralOrEnumType {
   /** Gets an enumerator of this enumeration. */
   EnumConstant getAnEnumConstant() { result.getDeclaringEnum() = this }
 
+  /**
+   * Gets the enumerator of this enumeration that was declared at the zero-based position `index`.
+   * For example, `zero` is at index 2 in the following declaration:
+   * ```
+   * enum ReversedOrder {
+   *   two = 2,
+   *   one = 1,
+   *   zero = 0
+   * };
+   * ```
+   */
   EnumConstant getEnumConstant(int index) {
     enumconstants(unresolveElement(result), underlyingElement(this), index, _, _, _)
   }

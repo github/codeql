@@ -1,9 +1,9 @@
 // Problem version
 public class MagicConstants
 {
-	final static public String IP = "127.0.0.1";
-	final static public int PORT = 8080;
-	final static public String USERNAME = "test";
+	public static final String IP = "127.0.0.1";
+	public static final int PORT = 8080;
+	public static final String USERNAME = "test";
 
 	public void serve(String ip, int port, String user, int timeout) {
 		// ...
@@ -20,17 +20,16 @@ public class MagicConstants
 // Fixed version
 public class MagicConstants
 {
-	final static public String IP = "127.0.0.1";
-	final static public int PORT = 8080;
-	final static public String USERNAME = "test";
-	final static public int TIMEOUT = 60000;  // Magic number is replaced by named constant
+	public static final String IP = "127.0.0.1";
+	public static final int PORT = 8080;
+	public static final String USERNAME = "test";
+	public static final int TIMEOUT = 60000;  // Magic number is replaced by named constant
 
 	public void serve(String ip, int port, String user, int timeout) {
 		// ...
 	}
 
 	public static void main(String[] args) {
-
 		new MagicConstants().serve(IP, PORT, USERNAME, TIMEOUT);  // Use 'TIMEOUT' constant
 	}
 }

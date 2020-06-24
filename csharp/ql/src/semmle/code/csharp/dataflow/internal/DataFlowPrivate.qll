@@ -16,6 +16,42 @@ private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.EntityFramework
 private import semmle.code.csharp.frameworks.NHibernate
 
+abstract class NodeImpl extends Node {
+  /** Do not call: use `getEnclosingCallable()` instead. */
+  abstract DataFlowCallable getEnclosingCallableImpl();
+
+  /** Do not call: use `getType()` instead. */
+  abstract DotNet::Type getTypeImpl();
+
+  /** Do not call: use `getControlFlowNode()` instead. */
+  abstract ControlFlow::Node getControlFlowNodeImpl();
+
+  /** Do not call: use `getLocation()` instead. */
+  abstract Location getLocationImpl();
+
+  /** Do not call: use `toString()` instead. */
+  abstract string toStringImpl();
+}
+
+private class ExprNodeImpl extends ExprNode, NodeImpl {
+  override DataFlowCallable getEnclosingCallableImpl() {
+    result = this.getExpr().getEnclosingCallable()
+  }
+
+  override DotNet::Type getTypeImpl() { result = this.getExpr().getType() }
+
+  override ControlFlow::Nodes::ElementNode getControlFlowNodeImpl() { this = TExprNode(result) }
+
+  override Location getLocationImpl() { result = this.getExpr().getLocation() }
+
+  override string toStringImpl() {
+    result = this.getControlFlowNode().toString()
+    or
+    this = TCilExprNode(_) and
+    result = "CIL expression"
+  }
+}
+
 /** Calculation of the relative order in which `this` references are read. */
 private module ThisFlow {
   private class BasicBlock = ControlFlow::BasicBlock;
@@ -395,6 +431,9 @@ private module Cached {
       )
     } or
     TMallocNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getElement() instanceof ObjectCreation } or
+    TObjectInitializerNode(ControlFlow::Nodes::ElementNode cfn) {
+      cfn.getElement().(ObjectCreation).hasInitializer()
+    } or
     TExprPostUpdateNode(ControlFlow::Nodes::ElementNode cfn) {
       exists(Argument a, Type t |
         a = cfn.getElement() and
@@ -450,6 +489,8 @@ private module Cached {
       n = nodeFrom and
       nodeTo = n.getSuccessor(AccessPath::empty())
     )
+    or
+    nodeTo.(ObjectCreationNode).getPreUpdateNode() = nodeFrom.(ObjectInitializerNode)
   }
 
   /**
@@ -512,6 +553,20 @@ private module Cached {
   }
 
   /**
+   * Holds if values stored inside content `c` are cleared at node `n`. For example,
+   * any value stored inside `f` is cleared at the pre-update node associated with `x`
+   * in `x.f = newValue`.
+   */
+  cached
+  predicate clearsContent(Node n, Content c) {
+    fieldOrPropertyAssign(_, c, _, n.asExpr())
+    or
+    fieldOrPropertyInit(n.(ObjectInitializerNode).getObjectCreation(), c, _)
+    or
+    exists(n.(LibraryCodeNode).getSuccessor(any(AccessPath ap | ap.getHead() = c)))
+  }
+
+  /**
    * Holds if the node `n` is unreachable when the call context is `call`.
    */
   cached
@@ -553,7 +608,7 @@ private module Cached {
 import Cached
 
 /** An SSA definition, viewed as a node in a data flow graph. */
-class SsaDefinitionNode extends Node, TSsaDefinitionNode {
+class SsaDefinitionNode extends NodeImpl, TSsaDefinitionNode {
   Ssa::Definition def;
 
   SsaDefinitionNode() { this = TSsaDefinitionNode(def) }
@@ -561,19 +616,23 @@ class SsaDefinitionNode extends Node, TSsaDefinitionNode {
   /** Gets the underlying SSA definition. */
   Ssa::Definition getDefinition() { result = def }
 
-  override Callable getEnclosingCallable() { result = def.getEnclosingCallable() }
+  override Callable getEnclosingCallableImpl() { result = def.getEnclosingCallable() }
 
-  override Type getType() { result = def.getSourceVariable().getType() }
+  override Type getTypeImpl() { result = def.getSourceVariable().getType() }
 
-  override Location getLocation() { result = def.getLocation() }
+  override ControlFlow::Node getControlFlowNodeImpl() { result = def.getControlFlowNode() }
 
-  override string toString() {
+  override Location getLocationImpl() { result = def.getLocation() }
+
+  override string toStringImpl() {
     not explicitParameterNode(this, _) and
     result = def.toString()
   }
 }
 
 private module ParameterNodes {
+  abstract private class ParameterNodeImpl extends ParameterNode, NodeImpl { }
+
   /**
    * Holds if definition node `node` is an entry definition for parameter `p`.
    */
@@ -585,7 +644,7 @@ private module ParameterNodes {
    * The value of an explicit parameter at function entry, viewed as a node in a data
    * flow graph.
    */
-  class ExplicitParameterNode extends ParameterNode {
+  class ExplicitParameterNode extends ParameterNodeImpl {
     private DotNet::Parameter parameter;
 
     ExplicitParameterNode() {
@@ -597,17 +656,19 @@ private module ParameterNodes {
 
     override predicate isParameterOf(DataFlowCallable c, int i) { c.getParameter(i) = parameter }
 
-    override DotNet::Callable getEnclosingCallable() { result = parameter.getCallable() }
+    override DotNet::Callable getEnclosingCallableImpl() { result = parameter.getCallable() }
 
-    override DotNet::Type getType() { result = parameter.getType() }
+    override DotNet::Type getTypeImpl() { result = parameter.getType() }
 
-    override Location getLocation() { result = parameter.getLocation() }
+    override ControlFlow::Node getControlFlowNodeImpl() { none() }
 
-    override string toString() { result = parameter.toString() }
+    override Location getLocationImpl() { result = parameter.getLocation() }
+
+    override string toStringImpl() { result = parameter.toString() }
   }
 
   /** An implicit instance (`this`) parameter. */
-  class InstanceParameterNode extends ParameterNode, TInstanceParameterNode {
+  class InstanceParameterNode extends ParameterNodeImpl, TInstanceParameterNode {
     private Callable callable;
 
     InstanceParameterNode() { this = TInstanceParameterNode(callable) }
@@ -617,13 +678,15 @@ private module ParameterNodes {
 
     override predicate isParameterOf(DataFlowCallable c, int pos) { callable = c and pos = -1 }
 
-    override Callable getEnclosingCallable() { result = callable }
+    override Callable getEnclosingCallableImpl() { result = callable }
 
-    override Type getType() { result = callable.getDeclaringType() }
+    override Type getTypeImpl() { result = callable.getDeclaringType() }
 
-    override Location getLocation() { result = callable.getLocation() }
+    override ControlFlow::Node getControlFlowNodeImpl() { none() }
 
-    override string toString() { result = "this" }
+    override Location getLocationImpl() { result = callable.getLocation() }
+
+    override string toStringImpl() { result = "this" }
   }
 
   module ImplicitCapturedParameterNodeImpl {
@@ -776,7 +839,7 @@ private module ArgumentNodes {
    * }                                }
    * ```
    */
-  class ImplicitCapturedArgumentNode extends ArgumentNode, TImplicitCapturedArgumentNode {
+  class ImplicitCapturedArgumentNode extends ArgumentNode, NodeImpl, TImplicitCapturedArgumentNode {
     private LocalScopeVariable v;
     private ControlFlow::Nodes::ElementNode cfn;
 
@@ -814,20 +877,22 @@ private module ArgumentNodes {
       )
     }
 
-    override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+    override Callable getEnclosingCallableImpl() { result = cfn.getEnclosingCallable() }
 
-    override Type getType() { result = v.getType() }
+    override Type getTypeImpl() { result = v.getType() }
 
-    override Location getLocation() { result = cfn.getLocation() }
+    override ControlFlow::Node getControlFlowNodeImpl() { none() }
 
-    override string toString() { result = "[implicit argument] " + v }
+    override Location getLocationImpl() { result = cfn.getLocation() }
+
+    override string toStringImpl() { result = "[implicit argument] " + v }
   }
 
   /**
    * A node that corresponds to the value of an object creation (`new C()`) before
    * the constructor has run.
    */
-  class MallocNode extends ArgumentNode, TMallocNode {
+  class MallocNode extends ArgumentNode, NodeImpl, TMallocNode {
     private ControlFlow::Nodes::ElementNode cfn;
 
     MallocNode() { this = TMallocNode(cfn) }
@@ -837,15 +902,15 @@ private module ArgumentNodes {
       pos = -1
     }
 
-    override ControlFlow::Node getControlFlowNode() { result = cfn }
+    override ControlFlow::Node getControlFlowNodeImpl() { result = cfn }
 
-    override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+    override Callable getEnclosingCallableImpl() { result = cfn.getEnclosingCallable() }
 
-    override Type getType() { result = cfn.getElement().(Expr).getType() }
+    override Type getTypeImpl() { result = cfn.getElement().(Expr).getType() }
 
-    override Location getLocation() { result = cfn.getLocation() }
+    override Location getLocationImpl() { result = cfn.getLocation() }
 
-    override string toString() { result = "malloc" }
+    override string toStringImpl() { result = "malloc" }
   }
 
   /**
@@ -858,7 +923,7 @@ private module ArgumentNodes {
    *
    * `x` is an implicit argument of the implicit call to `Foo`.
    */
-  class ImplicitDelegateArgumentNode extends ArgumentNode, TImplicitDelegateArgumentNode {
+  class ImplicitDelegateArgumentNode extends ArgumentNode, NodeImpl, TImplicitDelegateArgumentNode {
     private ControlFlow::Node cfn;
     private int delegateIndex;
     private int parameterIndex;
@@ -874,15 +939,17 @@ private module ArgumentNodes {
       pos = parameterIndex
     }
 
-    override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+    override Callable getEnclosingCallableImpl() { result = cfn.getEnclosingCallable() }
 
-    override Type getType() {
+    override Type getTypeImpl() {
       result = this.getDelegateCall().getDelegateParameterType(parameterIndex)
     }
 
-    override Location getLocation() { result = cfn.getLocation() }
+    override ControlFlow::Node getControlFlowNodeImpl() { none() }
 
-    override string toString() { result = "[implicit argument " + parameterIndex + "] " + cfn }
+    override Location getLocationImpl() { result = cfn.getLocation() }
+
+    override string toStringImpl() { result = "[implicit argument " + parameterIndex + "] " + cfn }
   }
 }
 
@@ -939,7 +1006,7 @@ private module ReturnNodes {
    * `yield return`s as stores into collections, i.e., there is flow from `e`
    * to `yield return e [e]`.
    */
-  class YieldReturnNode extends ReturnNode, PostUpdateNode, TYieldReturnNode {
+  class YieldReturnNode extends ReturnNode, NodeImpl, TYieldReturnNode {
     private ControlFlow::Nodes::ElementNode cfn;
     private YieldReturnStmt yrs;
 
@@ -949,15 +1016,15 @@ private module ReturnNodes {
 
     override YieldReturnKind getKind() { any() }
 
-    override ExprNode getPreUpdateNode() { result.getControlFlowNode() = cfn }
+    override Callable getEnclosingCallableImpl() { result = yrs.getEnclosingCallable() }
 
-    override Callable getEnclosingCallable() { result = yrs.getEnclosingCallable() }
+    override Type getTypeImpl() { result = yrs.getEnclosingCallable().getReturnType() }
 
-    override Type getType() { result = yrs.getEnclosingCallable().getReturnType() }
+    override ControlFlow::Node getControlFlowNodeImpl() { result = cfn }
 
-    override Location getLocation() { result = yrs.getLocation() }
+    override Location getLocationImpl() { result = yrs.getLocation() }
 
-    override string toString() { result = yrs.toString() }
+    override string toStringImpl() { result = yrs.toString() }
   }
 
   /**
@@ -1112,7 +1179,7 @@ private module OutNodes {
    * in a call to a library method. For example, the output from the implicit
    * call to `M` in `new Lazy<int>(M)`.
    */
-  class ImplicitDelegateOutNode extends OutNode, TImplicitDelegateOutNode {
+  class ImplicitDelegateOutNode extends OutNode, NodeImpl, TImplicitDelegateOutNode {
     private ControlFlow::Nodes::ElementNode cfn;
     private ControlFlow::Nodes::ElementNode call;
 
@@ -1128,7 +1195,7 @@ private module OutNodes {
       call.getElement().(Call).getArgument(i) = cfn.getElement()
     }
 
-    override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }
+    override ControlFlow::Nodes::ElementNode getControlFlowNodeImpl() { result = cfn }
 
     override ImplicitDelegateDataFlowCall getCall(ReturnKind kind) {
       result.getNode() = this and
@@ -1141,17 +1208,17 @@ private module OutNodes {
       )
     }
 
-    override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+    override Callable getEnclosingCallableImpl() { result = cfn.getEnclosingCallable() }
 
-    override Type getType() {
+    override Type getTypeImpl() {
       exists(ImplicitDelegateDataFlowCall c | c.getNode() = this |
         result = c.getDelegateReturnType()
       )
     }
 
-    override Location getLocation() { result = cfn.getLocation() }
+    override Location getLocationImpl() { result = cfn.getLocation() }
 
-    override string toString() { result = "[output] " + cfn }
+    override string toStringImpl() { result = "[output] " + cfn }
   }
 }
 
@@ -1320,7 +1387,7 @@ module LibraryFlow {
 }
 
 /** A data-flow node used to model flow through library code. */
-class LibraryCodeNode extends Node, TLibraryCodeNode {
+class LibraryCodeNode extends NodeImpl, TLibraryCodeNode {
   private ControlFlow::Node callCfn;
   private CallableFlowSource source;
   private AccessPath sourceAp;
@@ -1413,22 +1480,29 @@ class LibraryCodeNode extends Node, TLibraryCodeNode {
     )
   }
 
-  override Callable getEnclosingCallable() { result = callCfn.getEnclosingCallable() }
+  override Callable getEnclosingCallableImpl() { result = callCfn.getEnclosingCallable() }
 
   override DataFlowType getTypeBound() {
     preservesValue = true and
     sourceAp = AccessPath::empty() and
     result = this.getPredecessor(_).getTypeBound()
     or
-    result = sourceAp.getHead().getType()
+    exists(FieldOrProperty f |
+      sourceAp.getHead() = f.getContent() and
+      result = Gvn::getGlobalValueNumber(f.getType())
+    )
     or
     preservesValue = false and
     result = this.getSuccessor(_).getTypeBound()
   }
 
-  override Location getLocation() { result = callCfn.getLocation() }
+  override DotNet::Type getTypeImpl() { none() }
 
-  override string toString() { result = "[library code] " + callCfn }
+  override ControlFlow::Node getControlFlowNodeImpl() { result = callCfn }
+
+  override Location getLocationImpl() { result = callCfn.getLocation() }
+
+  override string toStringImpl() { result = "[library code] " + callCfn }
 }
 
 /** A field or a property. */
@@ -1595,25 +1669,68 @@ abstract class PostUpdateNode extends Node {
 
 private module PostUpdateNodes {
   class ObjectCreationNode extends PostUpdateNode, ExprNode, TExprNode {
-    ObjectCreationNode() { exists(ObjectCreation oc | this = TExprNode(oc.getAControlFlowNode())) }
+    private ObjectCreation oc;
 
-    override MallocNode getPreUpdateNode() { this = TExprNode(result.getControlFlowNode()) }
+    ObjectCreationNode() { this = TExprNode(oc.getAControlFlowNode()) }
+
+    override Node getPreUpdateNode() {
+      exists(ControlFlow::Nodes::ElementNode cfn | this = TExprNode(cfn) |
+        result.(ObjectInitializerNode).getControlFlowNode() = cfn
+        or
+        not oc.hasInitializer() and
+        result.(MallocNode).getControlFlowNode() = cfn
+      )
+    }
   }
 
-  class ExprPostUpdateNode extends PostUpdateNode, TExprPostUpdateNode {
+  /**
+   * A node that represents the value of a newly created object after the object
+   * has been created, but before the object initializer has been executed.
+   *
+   * Such a node acts as both a post-update node for the `MallocNode`, as well as
+   * a pre-update node for the `ObjectCreationNode`.
+   */
+  class ObjectInitializerNode extends PostUpdateNode, NodeImpl, TObjectInitializerNode {
+    private ObjectCreation oc;
+    private ControlFlow::Nodes::ElementNode cfn;
+
+    ObjectInitializerNode() {
+      this = TObjectInitializerNode(cfn) and
+      cfn = oc.getAControlFlowNode()
+    }
+
+    /** Gets the object creation to which this initializer node belongs. */
+    ObjectCreation getObjectCreation() { result = oc }
+
+    override MallocNode getPreUpdateNode() { result.getControlFlowNode() = cfn }
+
+    override DataFlowCallable getEnclosingCallableImpl() { result = cfn.getEnclosingCallable() }
+
+    override DotNet::Type getTypeImpl() { result = oc.getType() }
+
+    override ControlFlow::Nodes::ElementNode getControlFlowNodeImpl() { result = cfn }
+
+    override Location getLocationImpl() { result = cfn.getLocation() }
+
+    override string toStringImpl() { result = "[pre-initializer] " + cfn }
+  }
+
+  class ExprPostUpdateNode extends PostUpdateNode, NodeImpl, TExprPostUpdateNode {
     private ControlFlow::Nodes::ElementNode cfn;
 
     ExprPostUpdateNode() { this = TExprPostUpdateNode(cfn) }
 
     override ExprNode getPreUpdateNode() { cfn = result.getControlFlowNode() }
 
-    override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+    override Callable getEnclosingCallableImpl() { result = cfn.getEnclosingCallable() }
 
-    override Type getType() { result = cfn.getElement().(Expr).getType() }
+    override Type getTypeImpl() { result = cfn.getElement().(Expr).getType() }
 
-    override Location getLocation() { result = cfn.getLocation() }
+    override ControlFlow::Node getControlFlowNodeImpl() { none() }
 
-    override string toString() { result = "[post] " + cfn.toString() }
+    override Location getLocationImpl() { result = cfn.getLocation() }
+
+    override string toStringImpl() { result = "[post] " + cfn.toString() }
   }
 }
 
@@ -1679,3 +1796,26 @@ predicate isImmutableOrUnobservable(Node n) { none() }
 
 pragma[inline]
 DataFlowType getErasedRepr(DataFlowType t) { result = t }
+
+/** Holds if `n` should be hidden from path explanations. */
+predicate nodeIsHidden(Node n) {
+  exists(Ssa::Definition def | def = n.(SsaDefinitionNode).getDefinition() |
+    def instanceof Ssa::PseudoDefinition
+    or
+    def instanceof Ssa::ImplicitEntryDefinition
+    or
+    def instanceof Ssa::ImplicitCallDefinition
+  )
+  or
+  n instanceof YieldReturnNode
+  or
+  n instanceof ImplicitCapturedArgumentNode
+  or
+  n instanceof ImplicitDelegateOutNode
+  or
+  n instanceof ImplicitDelegateArgumentNode
+  or
+  n instanceof MallocNode
+  or
+  n instanceof LibraryCodeNode
+}

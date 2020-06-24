@@ -1,12 +1,19 @@
+/**
+ * Provides classes for modelling output to standard output / standard error through various mechanisms such as `printf`, `puts` and `operator<<`.
+ */
+
 import cpp
 import FileWrite
 
 /**
- *  A function call that writes to standard output or standard error
+ * A function call that writes to standard output or standard error.
  */
 class OutputWrite extends Expr {
   OutputWrite() { outputWrite(this, _) }
 
+  /**
+   * Gets a source expression for this output.
+   */
   Expr getASource() { outputWrite(this, result) }
 }
 
@@ -49,7 +56,7 @@ private predicate outputFile(Expr e) {
 }
 
 /**
- * is the function call a write to standard output or standard error from 'source'
+ * Holds if the function call is a write to standard output or standard error from 'source'.
  */
 private predicate outputWrite(Expr write, Expr source) {
   exists(Function f, int arg |

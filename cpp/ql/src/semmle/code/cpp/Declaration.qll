@@ -1,3 +1,7 @@
+/**
+ * Provides classes for working with C and C++ declarations.
+ */
+
 import semmle.code.cpp.Element
 import semmle.code.cpp.Specifier
 import semmle.code.cpp.Namespace

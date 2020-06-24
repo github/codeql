@@ -19,9 +19,9 @@
 | test.cpp:119:9:119:12 | call to lock | lockCall | test.cpp:119:3:119:6 | this |
 | test.cpp:119:9:119:12 | call to lock | mustlockCall | test.cpp:119:3:119:6 | this |
 | test.cpp:120:9:120:14 | call to unlock | unlockCall | test.cpp:120:3:120:6 | this |
-| test.cpp:122:3:122:6 | call to lock | lockCall | file://:0:0:0:0 | this |
-| test.cpp:122:3:122:6 | call to lock | mustlockCall | file://:0:0:0:0 | this |
-| test.cpp:123:3:123:8 | call to unlock | unlockCall | file://:0:0:0:0 | this |
+| test.cpp:122:3:122:6 | call to lock | lockCall | test.cpp:122:3:122:6 | this |
+| test.cpp:122:3:122:6 | call to lock | mustlockCall | test.cpp:122:3:122:6 | this |
+| test.cpp:123:3:123:8 | call to unlock | unlockCall | test.cpp:123:3:123:8 | this |
 | test.cpp:136:10:136:13 | call to lock | lockCall | test.cpp:136:3:136:7 | this8 |
 | test.cpp:136:10:136:13 | call to lock | mustlockCall | test.cpp:136:3:136:7 | this8 |
 | test.cpp:137:10:137:15 | call to unlock | unlockCall | test.cpp:137:3:137:7 | this8 |

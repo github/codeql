@@ -1,7 +1,9 @@
-Abstract syntax tree classes for JavaScript and TypeScript
-==========================================================
+Abstract syntax tree classes for working with JavaScript and TypeScript programs
+================================================================================
 
-CodeQL has a large selection of classes for working with JavaScript and TypeScript statements and expressions.
+CodeQL has a large selection of classes for representing the abstract syntax tree of JavaScript and TypeScript programs.
+
+.. include:: ../../reusables/abstract-syntax-tree.rst
 
 Statement classes
 -----------------

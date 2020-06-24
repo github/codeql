@@ -21,16 +21,16 @@ def unsafe2(request):
 
 
 
-#Simplest and safest approach is to use a white-list
+#Simplest and safest approach is to use an allowlist
 
 @app.route('/some/path/good1')
 def safe1(request):
-    whitelist = [
+    allowlist = [
         "example.com/home",
         "example.com/login",
     ]
     target = request.args.get('target', '')
-    if target in whitelist:
+    if target in allowlist:
         return redirect(target)
 
 #More complex example allowing sub-domains.

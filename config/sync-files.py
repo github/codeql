@@ -59,21 +59,32 @@ def file_checksum(filename):
         return hashlib.sha1(file_handle.read()).hexdigest()
 
 def check_group(group_name, files, master_file_picker, emit_error):
-    checksums = {file_checksum(f) for f in files}
-
-    if len(checksums) == 1:
+    extant_files = [f for f in files if path.isfile(f)]
+    if len(extant_files) == 0:
+        emit_error(__file__, 0, "No files found from group '" + group_name + "'.")
+        emit_error(__file__, 0,
+                "Create one of the following files, and then run this script with "
+                "the --latest switch to sync it to the other file locations.")
+        for filename in files:
+            emit_error(__file__, 0, "    " + filename)
         return
 
-    master_file = master_file_picker(files)
+    checksums = {file_checksum(f) for f in extant_files}
+
+    if len(checksums) == 1 and len(extant_files) == len(files):
+        # All files are present and identical.
+        return
+
+    master_file = master_file_picker(extant_files)
     if master_file is None:
         emit_error(__file__, 0,
                 "Files from group '"+ group_name +"' not in sync.")
         emit_error(__file__, 0,
                 "Run this script with a file-name argument among the "
                 "following to overwrite the remaining files with the contents "
-                "of that file or run with the --latest switch to update each "
+                "of that file, or run with the --latest switch to update each "
                 "group of files from the most recently modified file in the group.")
-        for filename in files:
+        for filename in extant_files:
             emit_error(__file__, 0, "    " + filename)
     else:
         print("  Syncing others from", master_file)
@@ -81,7 +92,8 @@ def check_group(group_name, files, master_file_picker, emit_error):
             if filename == master_file:
                 continue
             print("    " + filename)
-            os.replace(filename, filename + '~')
+            if path.isfile(filename):
+                os.replace(filename, filename + '~')
             shutil.copy(master_file, filename)
         print("  Backups written with '~' appended to file names")
 

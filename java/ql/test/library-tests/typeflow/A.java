@@ -85,4 +85,11 @@ public class A extends ArrayList<Long> {
       empty.put(k, v);
     }
   }
+
+  public void m8(Object[] xs, int i) {
+    if (xs[i] instanceof Integer) {
+      Object n = xs[i];
+      Object r = n;
+    }
+  }
 }
