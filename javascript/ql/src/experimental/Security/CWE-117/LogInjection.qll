@@ -65,8 +65,6 @@ module LogInjection {
    */
   class LoggingCall extends DataFlow::CallNode {
     LoggingCall() {
-      this = any(ConsoleSource console).getAMemberCall(getAStandardLoggerMethodName())
-      or
       exists(DataFlow::SourceNode node, string propName |
         any(ConsoleSource console).getAPropertyRead() = node.getAPropertySource(propName) and
         this = node.getAPropertyRead(propName).getACall()
@@ -88,9 +86,7 @@ module LogInjection {
    */
   class StringReplaceSanitizer extends Sanitizer {
     StringReplaceSanitizer() {
-      exists(string s |
-        this.(StringReplaceCall).replaces(s, "") and s.regexpMatch("\\n")
-      )
+      exists(string s | this.(StringReplaceCall).replaces(s, "") and s.regexpMatch("\\n"))
     }
   }
 
