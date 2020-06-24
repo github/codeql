@@ -155,6 +155,7 @@
 | aliasing.cpp:72:5:72:6 | m1 | AST only |
 | aliasing.cpp:79:6:79:7 | m1 | AST only |
 | aliasing.cpp:86:5:86:6 | m1 | AST only |
+| aliasing.cpp:92:3:92:3 | w | AST only |
 | aliasing.cpp:92:7:92:8 | m1 | AST only |
 | by_reference.cpp:12:8:12:8 | a | AST only |
 | by_reference.cpp:16:11:16:11 | a | AST only |
@@ -177,13 +178,17 @@
 | by_reference.cpp:84:10:84:10 | a | AST only |
 | by_reference.cpp:88:9:88:9 | a | AST only |
 | by_reference.cpp:102:21:102:39 | & ... | AST only |
+| by_reference.cpp:102:22:102:26 | outer | AST only |
 | by_reference.cpp:103:21:103:25 | outer | AST only |
 | by_reference.cpp:103:27:103:35 | inner_ptr | AST only |
 | by_reference.cpp:104:15:104:22 | & ... | AST only |
+| by_reference.cpp:104:16:104:20 | outer | AST only |
 | by_reference.cpp:106:21:106:41 | & ... | AST only |
+| by_reference.cpp:106:22:106:27 | pouter | AST only |
 | by_reference.cpp:107:21:107:26 | pouter | AST only |
 | by_reference.cpp:107:29:107:37 | inner_ptr | AST only |
 | by_reference.cpp:108:15:108:24 | & ... | AST only |
+| by_reference.cpp:108:16:108:21 | pouter | AST only |
 | by_reference.cpp:110:8:110:12 | outer | AST only |
 | by_reference.cpp:110:14:110:25 | inner_nested | AST only |
 | by_reference.cpp:110:27:110:27 | a | AST only |
@@ -200,13 +205,17 @@
 | by_reference.cpp:115:27:115:27 | a | AST only |
 | by_reference.cpp:116:8:116:13 | pouter | AST only |
 | by_reference.cpp:116:16:116:16 | a | AST only |
+| by_reference.cpp:122:21:122:25 | outer | AST only |
 | by_reference.cpp:122:27:122:38 | inner_nested | AST only |
 | by_reference.cpp:123:21:123:36 | * ... | AST only |
 | by_reference.cpp:123:22:123:26 | outer | AST only |
+| by_reference.cpp:124:15:124:19 | outer | AST only |
 | by_reference.cpp:124:21:124:21 | a | AST only |
+| by_reference.cpp:126:21:126:26 | pouter | AST only |
 | by_reference.cpp:126:29:126:40 | inner_nested | AST only |
 | by_reference.cpp:127:21:127:38 | * ... | AST only |
 | by_reference.cpp:127:22:127:27 | pouter | AST only |
+| by_reference.cpp:128:15:128:20 | pouter | AST only |
 | by_reference.cpp:128:23:128:23 | a | AST only |
 | by_reference.cpp:130:8:130:12 | outer | AST only |
 | by_reference.cpp:130:14:130:25 | inner_nested | AST only |
@@ -226,11 +235,23 @@
 | by_reference.cpp:136:16:136:16 | a | AST only |
 | complex.cpp:11:22:11:23 | a_ | AST only |
 | complex.cpp:12:22:12:23 | b_ | AST only |
+| complex.cpp:51:8:51:8 | b | AST only |
+| complex.cpp:51:10:51:14 | inner | AST only |
 | complex.cpp:51:16:51:16 | f | AST only |
+| complex.cpp:52:8:52:8 | b | AST only |
+| complex.cpp:52:10:52:14 | inner | AST only |
 | complex.cpp:52:16:52:16 | f | AST only |
+| complex.cpp:62:3:62:4 | b1 | AST only |
+| complex.cpp:62:6:62:10 | inner | AST only |
 | complex.cpp:62:12:62:12 | f | AST only |
+| complex.cpp:63:3:63:4 | b2 | AST only |
+| complex.cpp:63:6:63:10 | inner | AST only |
 | complex.cpp:63:12:63:12 | f | AST only |
+| complex.cpp:64:3:64:4 | b3 | AST only |
+| complex.cpp:64:6:64:10 | inner | AST only |
 | complex.cpp:64:12:64:12 | f | AST only |
+| complex.cpp:65:3:65:4 | b3 | AST only |
+| complex.cpp:65:6:65:10 | inner | AST only |
 | complex.cpp:65:12:65:12 | f | AST only |
 | complex.cpp:68:7:68:8 | b1 | AST only |
 | complex.cpp:71:7:71:8 | b2 | AST only |
@@ -296,15 +317,9 @@
 | simple.cpp:51:9:51:9 | h | AST only |
 | simple.cpp:54:9:54:9 | i | AST only |
 | simple.cpp:65:7:65:7 | i | AST only |
+| simple.cpp:83:9:83:10 | this | AST only |
 | simple.cpp:83:12:83:13 | f1 | AST only |
 | simple.cpp:84:14:84:20 | this | AST only |
-| simple.cpp:105:14:105:14 | y | AST only |
-| simple.cpp:122:18:122:18 | x | AST only |
-| simple.cpp:136:21:136:28 | & ... | AST only |
-| simple.cpp:143:23:143:30 | & ... | AST only |
-| simple.cpp:144:23:144:30 | & ... | AST only |
-| simple.cpp:167:17:167:17 | f | AST only |
-| simple.cpp:168:12:168:23 | & ... | AST only |
 | struct_init.c:15:8:15:9 | ab | AST only |
 | struct_init.c:15:12:15:12 | a | AST only |
 | struct_init.c:16:8:16:9 | ab | AST only |
@@ -327,5 +342,6 @@
 | struct_init.c:34:14:34:22 | pointerAB | AST only |
 | struct_init.c:34:25:34:25 | b | AST only |
 | struct_init.c:36:10:36:24 | & ... | AST only |
+| struct_init.c:36:11:36:15 | outer | AST only |
 | struct_init.c:46:10:46:14 | outer | AST only |
 | struct_init.c:46:16:46:24 | pointerAB | AST only |

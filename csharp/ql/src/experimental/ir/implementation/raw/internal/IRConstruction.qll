@@ -1,6 +1,8 @@
 import csharp
 import experimental.ir.implementation.raw.IR
 private import experimental.ir.implementation.internal.OperandTag
+private import experimental.ir.implementation.internal.IRFunctionBase
+private import experimental.ir.implementation.internal.TInstruction
 private import experimental.ir.internal.CSharpType
 private import experimental.ir.internal.Overlap
 private import experimental.ir.internal.TempVariableTag
@@ -15,23 +17,40 @@ private import experimental.ir.Util
 private import experimental.ir.internal.IRCSharpLanguage as Language
 
 TranslatedElement getInstructionTranslatedElement(Instruction instruction) {
-  instruction = MkInstruction(result, _)
+  instruction = TRawInstruction(result, _)
 }
 
-InstructionTag getInstructionTag(Instruction instruction) { instruction = MkInstruction(_, result) }
+InstructionTag getInstructionTag(Instruction instruction) {
+  instruction = TRawInstruction(_, result)
+}
 
-import Cached
+pragma[noinline]
+private predicate instructionOrigin(
+  Instruction instruction, TranslatedElement element, InstructionTag tag
+) {
+  element = getInstructionTranslatedElement(instruction) and
+  tag = getInstructionTag(instruction)
+}
 
+class TStageInstruction = TRawInstruction;
+
+/**
+ * Provides the portion of the parameterized IR interface that is used to construct the initial
+ * "raw" stage of the IR. The other stages of the IR do not expose these predicates.
+ */
 cached
-private module Cached {
+module Raw {
+  class InstructionTag1 = TranslatedElement;
+
+  class InstructionTag2 = InstructionTag;
+
   cached
   predicate functionHasIR(Callable callable) { exists(getTranslatedFunction(callable)) }
 
   cached
-  newtype TInstruction =
-    MkInstruction(TranslatedElement element, InstructionTag tag) {
-      element.hasInstruction(_, tag, _)
-    }
+  predicate hasInstruction(TranslatedElement element, InstructionTag tag) {
+    element.hasInstruction(_, tag, _)
+  }
 
   cached
   predicate hasUserVariable(Callable callable, Variable var, CSharpType type) {
@@ -64,16 +83,6 @@ private module Cached {
   }
 
   cached
-  predicate hasModeledMemoryResult(Instruction instruction) { none() }
-
-  cached
-  predicate hasConflatedMemoryResult(Instruction instruction) {
-    instruction instanceof AliasedDefinitionInstruction
-    or
-    instruction.getOpcode() instanceof Opcode::InitializeNonLocal
-  }
-
-  cached
   Expr getInstructionConvertedResultExpression(Instruction instruction) {
     exists(TranslatedExpr translatedExpr |
       translatedExpr = getTranslatedExpr(result) and
@@ -87,6 +96,98 @@ private module Cached {
       translatedExpr = getTranslatedExpr(converted) and
       instruction = translatedExpr.getResult()
     )
+  }
+
+  cached
+  IRVariable getInstructionVariable(Instruction instruction) {
+    exists(TranslatedElement element, InstructionTag tag |
+      element = getInstructionTranslatedElement(instruction) and
+      tag = getInstructionTag(instruction) and
+      (
+        result = element.getInstructionVariable(tag) or
+        result.(IRStringLiteral).getAST() = element.getInstructionStringLiteral(tag)
+      )
+    )
+  }
+
+  cached
+  Field getInstructionField(Instruction instruction) {
+    exists(TranslatedElement element, InstructionTag tag |
+      instructionOrigin(instruction, element, tag) and
+      result = element.getInstructionField(tag)
+    )
+  }
+
+  cached
+  int getInstructionIndex(Instruction instruction) { none() }
+
+  cached
+  Callable getInstructionFunction(Instruction instruction) {
+    result =
+      getInstructionTranslatedElement(instruction)
+          .getInstructionFunction(getInstructionTag(instruction))
+  }
+
+  cached
+  string getInstructionConstantValue(Instruction instruction) {
+    result =
+      getInstructionTranslatedElement(instruction)
+          .getInstructionConstantValue(getInstructionTag(instruction))
+  }
+
+  cached
+  CSharpType getInstructionExceptionType(Instruction instruction) {
+    result =
+      getInstructionTranslatedElement(instruction)
+          .getInstructionExceptionType(getInstructionTag(instruction))
+  }
+
+  cached
+  predicate getInstructionInheritance(Instruction instruction, Class baseClass, Class derivedClass) {
+    getInstructionTranslatedElement(instruction)
+        .getInstructionInheritance(getInstructionTag(instruction), baseClass, derivedClass)
+  }
+
+  cached
+  int getInstructionElementSize(Instruction instruction) {
+    exists(TranslatedElement element, InstructionTag tag |
+      instructionOrigin(instruction, element, tag) and
+      result = element.getInstructionElementSize(tag)
+    )
+  }
+
+  cached
+  Language::BuiltInOperation getInstructionBuiltInOperation(Instruction instr) { none() }
+}
+
+import Cached
+
+cached
+private module Cached {
+  cached
+  Opcode getInstructionOpcode(TRawInstruction instr) {
+    exists(TranslatedElement element, InstructionTag tag |
+      instructionOrigin(instr, element, tag) and
+      element.hasInstruction(result, tag, _)
+    )
+  }
+
+  cached
+  IRFunctionBase getInstructionEnclosingIRFunction(TRawInstruction instr) {
+    result.getFunction() = getInstructionTranslatedElement(instr).getFunction()
+  }
+
+  cached
+  predicate hasInstruction(TRawInstruction instr) { any() }
+
+  cached
+  predicate hasModeledMemoryResult(Instruction instruction) { none() }
+
+  cached
+  predicate hasConflatedMemoryResult(Instruction instruction) {
+    instruction instanceof AliasedDefinitionInstruction
+    or
+    instruction.getOpcode() instanceof Opcode::InitializeNonLocal
   }
 
   cached
@@ -265,87 +366,10 @@ private module Cached {
   }
 
   cached
-  Opcode getInstructionOpcode(Instruction instruction) {
-    getInstructionTranslatedElement(instruction)
-        .hasInstruction(result, getInstructionTag(instruction), _)
-  }
-
-  cached
-  IRFunction getInstructionEnclosingIRFunction(Instruction instruction) {
-    result.getFunction() = getInstructionTranslatedElement(instruction).getFunction()
-  }
-
-  cached
-  IRVariable getInstructionVariable(Instruction instruction) {
-    exists(TranslatedElement element, InstructionTag tag |
-      element = getInstructionTranslatedElement(instruction) and
-      tag = getInstructionTag(instruction) and
-      (
-        result = element.getInstructionVariable(tag) or
-        result.(IRStringLiteral).getAST() = element.getInstructionStringLiteral(tag)
-      )
-    )
-  }
-
-  cached
-  Field getInstructionField(Instruction instruction) {
-    exists(TranslatedElement element, InstructionTag tag |
-      instructionOrigin(instruction, element, tag) and
-      result = element.getInstructionField(tag)
-    )
-  }
-
-  cached
   ArrayAccess getInstructionArrayAccess(Instruction instruction) {
     result =
       getInstructionTranslatedElement(instruction)
           .getInstructionArrayAccess(getInstructionTag(instruction))
-  }
-
-  cached
-  int getInstructionIndex(Instruction instruction) { none() }
-
-  cached
-  Callable getInstructionFunction(Instruction instruction) {
-    result =
-      getInstructionTranslatedElement(instruction)
-          .getInstructionFunction(getInstructionTag(instruction))
-  }
-
-  cached
-  string getInstructionConstantValue(Instruction instruction) {
-    result =
-      getInstructionTranslatedElement(instruction)
-          .getInstructionConstantValue(getInstructionTag(instruction))
-  }
-
-  cached
-  CSharpType getInstructionExceptionType(Instruction instruction) {
-    result =
-      getInstructionTranslatedElement(instruction)
-          .getInstructionExceptionType(getInstructionTag(instruction))
-  }
-
-  cached
-  predicate getInstructionInheritance(Instruction instruction, Class baseClass, Class derivedClass) {
-    getInstructionTranslatedElement(instruction)
-        .getInstructionInheritance(getInstructionTag(instruction), baseClass, derivedClass)
-  }
-
-  pragma[noinline]
-  private predicate instructionOrigin(
-    Instruction instruction, TranslatedElement element, InstructionTag tag
-  ) {
-    element = getInstructionTranslatedElement(instruction) and
-    tag = getInstructionTag(instruction)
-  }
-
-  cached
-  int getInstructionElementSize(Instruction instruction) {
-    exists(TranslatedElement element, InstructionTag tag |
-      instructionOrigin(instruction, element, tag) and
-      result = element.getInstructionElementSize(tag)
-    )
   }
 
   cached
@@ -363,9 +387,6 @@ private module Cached {
       result = element.getPrimaryInstructionForSideEffect(tag)
     )
   }
-
-  cached
-  Language::BuiltInOperation getInstructionBuiltInOperation(Instruction instr) { none() }
 }
 
 import CachedForDebugging

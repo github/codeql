@@ -176,17 +176,50 @@ module CleartextLogging {
 
     override string describe() { result = "process environment" }
 
-    override DataFlow::FlowLabel getLabel() {
-      result.isTaint() or
-      result instanceof PartiallySensitiveMap
-    }
+    override DataFlow::FlowLabel getLabel() { result.isTaint() }
   }
 
   /**
-   * A flow label describing a map that might contain sensitive information in some properties.
-   * Property reads on such maps where the property name is fixed is unlikely to leak sensitive information.
+   * Holds if the edge `pred` -> `succ` should be sanitized for clear-text logging of sensitive information.
    */
-  class PartiallySensitiveMap extends DataFlow::FlowLabel {
-    PartiallySensitiveMap() { this = "PartiallySensitiveMap" }
+  predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
+    succ.(DataFlow::PropRead).getBase() = pred
+  }
+
+  /**
+   * Holds if the edge `src` -> `trg` is an additional taint-step for clear-text logging of sensitive information.
+   */
+  predicate isAdditionalTaintStep(DataFlow::Node src, DataFlow::Node trg) {
+    // A taint propagating data flow edge through objects: a tainted write taints the entire object.
+    exists(DataFlow::PropWrite write |
+      write.getRhs() = src and
+      trg.(DataFlow::SourceNode).flowsTo(write.getBase())
+    )
+    or
+    // A property-copy step,
+    // dst[x] = src[x]
+    // dst[x] = JSON.stringify(src[x])
+    exists(DataFlow::PropWrite write, DataFlow::PropRead read |
+      read = write.getRhs()
+      or
+      exists(DataFlow::MethodCallNode stringify |
+        stringify = write.getRhs() and
+        stringify = DataFlow::globalVarRef("JSON").getAMethodCall("stringify") and
+        stringify.getArgument(0) = read
+      )
+    |
+      not exists(write.getPropertyName()) and
+      not exists(read.getPropertyName()) and
+      src = read.getBase() and
+      trg = write.getBase().getALocalSource()
+    )
+    or
+    // Taint through the arguments object.
+    exists(DataFlow::CallNode call, Function f |
+      src = call.getAnArgument() and
+      f = call.getACallee() and
+      not call.isImprecise() and
+      trg.asExpr() = f.getArgumentsVariable().getAnAccess()
+    )
   }
 }
