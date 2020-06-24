@@ -1,3 +1,7 @@
+/**
+ * Provides classes representing comments in Python.
+ */
+
 import python
 
 /** A source code comment */
@@ -69,12 +73,14 @@ class CommentBlock extends @py_comment {
         exists(Comment end | end = this.last() | end.getLocation().hasLocationInfo(_, _, _, endline, endcolumn))
     }
 
+    /** Holds if this comment block contains `c`. */
     predicate contains(Comment c) {
         comment_block_part(this, c, _)
         or
         this = c
     }
 
+    /** Gets a string representation of this comment block. */
     string getContents() {
         result =
             concat(Comment c, int i |
