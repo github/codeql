@@ -78,4 +78,20 @@ module InsecureRandomness {
   class CryptoKeySink extends Sink {
     CryptoKeySink() { this instanceof CryptographicKey }
   }
+
+  /**
+   * Holds if the step `pred` -> `succ` is an additional taint-step for random values that are not cryptographically secure.
+   */
+  predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    // Assume that all operations on tainted values preserve taint: crypto is hard
+    succ.asExpr().(BinaryExpr).getAnOperand() = pred.asExpr()
+    or
+    succ.asExpr().(UnaryExpr).getOperand() = pred.asExpr()
+    or
+    exists(DataFlow::MethodCallNode mc |
+      mc = DataFlow::globalVarRef("Math").getAMemberCall(_) and
+      pred = mc.getAnArgument() and
+      succ = mc
+    )
+  }
 }

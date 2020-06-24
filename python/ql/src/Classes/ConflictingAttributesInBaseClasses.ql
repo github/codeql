@@ -31,8 +31,8 @@ predicate calls_super(FunctionObject f) {
     )
 }
 
-/** Holds if the given name is white-listed for some reason */
-predicate whitelisted(string name) {
+/** Holds if the given name is allowed for some reason */
+predicate allowed(string name) {
     /*
      * The standard library specifically recommends this :(
      * See https://docs.python.org/3/library/socketserver.html#asynchronous-mixins
@@ -53,7 +53,7 @@ where
     not name.matches("\\_\\_%\\_\\_") and
     not calls_super(o1) and
     not does_nothing(o2) and
-    not whitelisted(name) and
+    not allowed(name) and
     not o1.overrides(o2) and
     not o2.overrides(o1) and
     not c.declaresAttribute(name)

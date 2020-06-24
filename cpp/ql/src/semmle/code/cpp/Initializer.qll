@@ -1,3 +1,7 @@
+/**
+ * Provides the `Initializer` class, representing C/C++ declaration initializers.
+ */
+
 import semmle.code.cpp.controlflow.ControlFlowGraph
 
 /**

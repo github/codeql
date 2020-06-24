@@ -2,7 +2,7 @@ import http from 'http';
 import url from 'url';
 
 var server = http.createServer(function(req, res) {
-    var target = url.parse(request.url, true).query.target;
+    var target = url.parse(req.url, true).query.target;
 
     var subdomain;
     if (target === 'EU') {

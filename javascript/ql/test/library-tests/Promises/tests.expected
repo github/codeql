@@ -1,4 +1,14 @@
 test_ResolvedPromiseDefinition
+| flow2.js:4:2:4:31 | Promise ... lean"]) | flow2.js:4:15:4:20 | source |
+| flow2.js:4:2:4:31 | Promise ... lean"]) | flow2.js:4:23:4:29 | "clean" |
+| flow2.js:10:31:10:60 | Promise ... ource]) | flow2.js:10:44:10:50 | "clean" |
+| flow2.js:10:31:10:60 | Promise ... ource]) | flow2.js:10:53:10:58 | source |
+| flow2.js:14:33:14:79 | Promise ... urce])) | flow2.js:14:49:14:78 | Promise ... ource]) |
+| flow2.js:14:49:14:78 | Promise ... ource]) | flow2.js:14:62:14:68 | "clean" |
+| flow2.js:14:49:14:78 | Promise ... ource]) | flow2.js:14:71:14:76 | source |
+| flow2.js:18:33:18:79 | Promise ... urce)]) | flow2.js:18:46:18:52 | "clean" |
+| flow2.js:18:33:18:79 | Promise ... urce)]) | flow2.js:18:55:18:77 | Promise ... source) |
+| flow2.js:18:55:18:77 | Promise ... source) | flow2.js:18:71:18:76 | source |
 | flow.js:4:11:4:33 | Promise ... source) | flow.js:4:27:4:32 | source |
 | flow.js:20:2:20:24 | Promise ... source) | flow.js:20:18:20:23 | source |
 | flow.js:22:2:22:24 | Promise ... source) | flow.js:22:18:22:23 | source |
@@ -188,6 +198,9 @@ test_PromiseDefinition_getACatchHandler
 | flow.js:119:2:119:48 | new Pro ... "BLA")) | flow.js:119:56:119:68 | x => resolved |
 | promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:23:18:25:3 | (v) =>  ...  v;\\n  } |
 flow
+| flow2.js:2:15:2:22 | "source" | flow2.js:6:8:6:13 | arr[0] |
+| flow2.js:2:15:2:22 | "source" | flow2.js:12:7:12:13 | tainted |
+| flow2.js:2:15:2:22 | "source" | flow2.js:16:7:16:14 | tainted2 |
 | flow.js:2:15:2:22 | "source" | flow.js:5:7:5:14 | await p1 |
 | flow.js:2:15:2:22 | "source" | flow.js:8:7:8:14 | await p2 |
 | flow.js:2:15:2:22 | "source" | flow.js:17:8:17:8 | e |
@@ -220,8 +233,23 @@ flow
 | flow.js:2:15:2:22 | "source" | flow.js:129:69:129:69 | x |
 | flow.js:2:15:2:22 | "source" | flow.js:131:43:131:43 | x |
 exclusiveTaintFlow
+| flow2.js:2:15:2:22 | "source" | flow2.js:20:7:20:14 | tainted3 |
 | interflow.js:3:18:3:25 | "source" | interflow.js:18:10:18:14 | error |
 typetrack
+| flow2.js:4:2:4:31 | Promise ... lean"]) | flow2.js:4:14:4:30 | [source, "clean"] | copy $PromiseResolveField$ |
+| flow2.js:4:2:4:31 | Promise ... lean"]) | flow2.js:4:14:4:30 | [source, "clean"] | store $PromiseResolveField$ |
+| flow2.js:4:39:4:41 | arr | flow2.js:4:2:4:31 | Promise ... lean"]) | load $PromiseResolveField$ |
+| flow2.js:10:25:10:60 | await P ... ource]) | flow2.js:10:31:10:60 | Promise ... ource]) | load $PromiseResolveField$ |
+| flow2.js:10:31:10:60 | Promise ... ource]) | flow2.js:10:43:10:59 | ["clean", source] | copy $PromiseResolveField$ |
+| flow2.js:10:31:10:60 | Promise ... ource]) | flow2.js:10:43:10:59 | ["clean", source] | store $PromiseResolveField$ |
+| flow2.js:14:27:14:79 | await P ... urce])) | flow2.js:14:33:14:79 | Promise ... urce])) | load $PromiseResolveField$ |
+| flow2.js:14:33:14:79 | Promise ... urce])) | flow2.js:14:49:14:78 | Promise ... ource]) | copy $PromiseResolveField$ |
+| flow2.js:14:33:14:79 | Promise ... urce])) | flow2.js:14:49:14:78 | Promise ... ource]) | store $PromiseResolveField$ |
+| flow2.js:14:49:14:78 | Promise ... ource]) | flow2.js:14:61:14:77 | ["clean", source] | copy $PromiseResolveField$ |
+| flow2.js:14:49:14:78 | Promise ... ource]) | flow2.js:14:61:14:77 | ["clean", source] | store $PromiseResolveField$ |
+| flow2.js:18:27:18:79 | await P ... urce)]) | flow2.js:18:33:18:79 | Promise ... urce)]) | load $PromiseResolveField$ |
+| flow2.js:18:33:18:79 | Promise ... urce)]) | flow2.js:18:45:18:78 | ["clean ... ource)] | copy $PromiseResolveField$ |
+| flow2.js:18:33:18:79 | Promise ... urce)]) | flow2.js:18:45:18:78 | ["clean ... ource)] | store $PromiseResolveField$ |
 | flow.js:20:2:20:43 | Promise ... ink(x)) | flow.js:20:36:20:42 | sink(x) | copy $PromiseResolveField$ |
 | flow.js:20:2:20:43 | Promise ... ink(x)) | flow.js:20:36:20:42 | sink(x) | store $PromiseResolveField$ |
 | flow.js:20:31:20:31 | x | flow.js:20:2:20:24 | Promise ... source) | load $PromiseResolveField$ |

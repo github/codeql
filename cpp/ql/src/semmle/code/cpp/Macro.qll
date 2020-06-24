@@ -179,6 +179,11 @@ class MacroInvocation extends MacroAccess {
     result.(Stmt).getGeneratingMacro() = this
   }
 
+  /**
+   * Gets a function that includes an expression that is affected by this macro
+   * invocation. If the macro expansion includes the end of one function and
+   * the beginning of another, this predicate will get both.
+   */
   Function getEnclosingFunction() {
     result = this.getAnAffectedElement().(Expr).getEnclosingFunction()
   }

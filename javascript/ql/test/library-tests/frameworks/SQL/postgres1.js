@@ -36,3 +36,5 @@ module.exports.query = function (text, values, callback) {
   console.log('query:', text, values);
   return pool.query(text, values, callback);
 };
+
+module.exports.pool = pool;

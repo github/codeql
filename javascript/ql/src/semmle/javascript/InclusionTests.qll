@@ -5,7 +5,7 @@
 private import javascript
 
 /**
- * A expression that checks if an element is contained in an array
+ * An expression that checks if an element is contained in an array
  * or is a substring of another string.
  *
  * Examples:
@@ -66,10 +66,8 @@ module InclusionTest {
     Function callee;
 
     IndirectInclusionTest() {
-      inner.getEnclosingExpr() = callee.getAReturnedExpr() and
-      this.getACallee() = callee and
-      count(this.getACallee()) = 1 and
-      count(callee.getAReturnedExpr()) = 1 and
+      inner.getEnclosingExpr() = unique(Expr ret | ret = callee.getAReturnedExpr()) and
+      callee = unique(Function f | f = this.getACallee()) and
       not this.isImprecise() and
       inner.getContainedNode().getALocalSource() = DataFlow::parameterNode(callee.getAParameter()) and
       inner.getContainerNode().getALocalSource() = DataFlow::parameterNode(callee.getAParameter())

@@ -1,3 +1,10 @@
+/**
+ * Provides implementation classes modelling various standard formatting
+ * functions (`printf`, `snprintf` etc).
+ * See `semmle.code.cpp.models.interfaces.FormattingFunction` for usage
+ * information.
+ */
+
 import semmle.code.cpp.models.interfaces.FormattingFunction
 import semmle.code.cpp.models.interfaces.Alias
 
@@ -19,7 +26,7 @@ class Printf extends FormattingFunction, AliasFunction {
 
   override int getFormatParameterIndex() { result = 0 }
 
-  override predicate isWideCharDefault() {
+  deprecated override predicate isWideCharDefault() {
     hasGlobalOrStdName("wprintf") or
     hasGlobalName("wprintf_s")
   }
@@ -47,7 +54,7 @@ class Fprintf extends FormattingFunction {
 
   override int getFormatParameterIndex() { result = 1 }
 
-  override predicate isWideCharDefault() { hasGlobalOrStdName("fwprintf") }
+  deprecated override predicate isWideCharDefault() { hasGlobalOrStdName("fwprintf") }
 
   override int getOutputParameterIndex() { result = 0 }
 }
@@ -70,7 +77,7 @@ class Sprintf extends FormattingFunction {
     not exists(getDefinition().getFile().getRelativePath())
   }
 
-  override predicate isWideCharDefault() {
+  deprecated override predicate isWideCharDefault() {
     getParameter(getFormatParameterIndex())
         .getType()
         .getUnspecifiedType()
@@ -136,7 +143,7 @@ class Snprintf extends FormattingFunction {
     else result = getFirstFormatArgumentIndex() - 1
   }
 
-  override predicate isWideCharDefault() {
+  deprecated override predicate isWideCharDefault() {
     getParameter(getFormatParameterIndex())
         .getType()
         .getUnspecifiedType()
@@ -201,7 +208,7 @@ class StringCchPrintf extends FormattingFunction {
     if getName().matches("%Ex") then result = 5 else result = 2
   }
 
-  override predicate isWideCharDefault() {
+  deprecated override predicate isWideCharDefault() {
     getParameter(getFormatParameterIndex())
         .getType()
         .getUnspecifiedType()

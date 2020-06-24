@@ -1,13 +1,13 @@
-int atoi(const char *nptr);
-char *getenv(const char *name);
-char *strcat(char * s1, const char * s2);
+#include "shared.h"
 
-char *strdup(const char *);
-char *_strdup(const char *);
-char *unmodeled_function(const char *);
 
-void sink(const char *);
-void sink(int);
+
+
+
+
+
+
+
 
 int main(int argc, char *argv[]) {
 
@@ -99,21 +99,53 @@ void test_outparams() {
 }
 
 
-void *memcpy(void *dst, void *src, int size);
 
-struct ContainsArray {
-  int arr[16];
+
+struct XY {
   int x;
+  int y;
 };
 
-void taint_array(ContainsArray *ca, int offset) {
+void taint_y(XY *xyp) {
   int tainted = getenv("VAR")[0];
-  memcpy(ca->arr + offset, &tainted, sizeof(int));
+  xyp->y = tainted;
 }
 
-void test_conflated_fields3(int arbitrary) {
-  ContainsArray ca;
-  ca.x = 0;
-  taint_array(&ca, arbitrary);
-  sink(ca.x); // not tainted [FALSE POSITIVE]
+void test_conflated_fields3() {
+  XY xy;
+  xy.x = 0;
+  taint_y(&xy);
+  sink(xy.x); // not tainted
+}
+
+struct Point {
+  int x;
+  int y;
+
+  void callSink() {
+    sink(this->x); // tainted
+    sink(this->y); // not tainted
+  }
+};
+
+void test_conflated_fields1() {
+  Point p;
+  p.x = getenv("VAR")[0];
+  sink(p.x); // tainted
+  sink(p.y); // not tainted
+  p.callSink();
+}
+
+void taint_x(Point *pp) {
+  pp->x = getenv("VAR")[0];
+}
+
+void y_to_sink(Point *pp) {
+  sink(pp->y); // not tainted
+}
+
+void test_conflated_fields2() {
+  Point p;
+  taint_x(&p);
+  y_to_sink(&p);
 }

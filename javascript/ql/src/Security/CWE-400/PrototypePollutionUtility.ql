@@ -21,11 +21,10 @@ import semmle.javascript.DynamicPropertyAccess
  *
  * We restrict this to parameter nodes to focus on "deep assignment" functions.
  */
-class SplitCall extends MethodCallNode {
+class SplitCall extends StringSplitCall {
   SplitCall() {
-    getMethodName() = "split" and
-    getArgument(0).mayHaveStringValue(".") and
-    getReceiver().getALocalSource() instanceof ParameterNode
+    getSeparator() = "." and
+    getBaseString().getALocalSource() instanceof ParameterNode
   }
 }
 
@@ -450,8 +449,10 @@ class BlacklistInclusionGuard extends DataFlow::LabeledBarrierGuardNode, Inclusi
  */
 class WhitelistInclusionGuard extends DataFlow::LabeledBarrierGuardNode {
   WhitelistInclusionGuard() {
-    this instanceof TaintTracking::PositiveIndexOfSanitizer or
-    this instanceof TaintTracking::InclusionSanitizer
+    this instanceof TaintTracking::PositiveIndexOfSanitizer
+    or
+    this instanceof TaintTracking::MembershipTestSanitizer and
+    not this = any(MembershipCandidate::ObjectPropertyNameMembershipCandidate c).getTest() // handled with more precision in `HasOwnPropertyGuard`
   }
 
   override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {

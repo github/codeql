@@ -31,6 +31,7 @@ typeInferenceMismatch
 | callbacks.js:44:17:44:24 | source() | callbacks.js:41:10:41:10 | x |
 | callbacks.js:50:18:50:25 | source() | callbacks.js:30:29:30:29 | y |
 | callbacks.js:51:18:51:25 | source() | callbacks.js:30:29:30:29 | y |
+| capture-flow.js:9:11:9:18 | source() | capture-flow.js:14:10:14:16 | outer() |
 | captured-sanitizer.js:25:3:25:10 | source() | captured-sanitizer.js:15:10:15:10 | x |
 | closure.js:6:15:6:22 | source() | closure.js:8:8:8:31 | string. ... (taint) |
 | closure.js:6:15:6:22 | source() | closure.js:9:8:9:25 | string.trim(taint) |
@@ -95,6 +96,9 @@ typeInferenceMismatch
 | sanitizer-guards.js:68:11:68:18 | source() | sanitizer-guards.js:75:8:75:8 | x |
 | sanitizer-guards.js:79:11:79:18 | source() | sanitizer-guards.js:81:8:81:8 | x |
 | sanitizer-guards.js:79:11:79:18 | source() | sanitizer-guards.js:84:10:84:10 | x |
+| sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:93:8:93:8 | x |
+| sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:98:7:98:7 | x |
+| sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:104:7:104:7 | x |
 | spread.js:2:15:2:22 | source() | spread.js:4:8:4:19 | { ...taint } |
 | spread.js:2:15:2:22 | source() | spread.js:5:8:5:43 | { f: 'h ... orld' } |
 | spread.js:2:15:2:22 | source() | spread.js:7:8:7:19 | [ ...taint ] |

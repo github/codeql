@@ -1,7 +1,7 @@
 private import cpp
 private import semmle.code.cpp.Print
 private import semmle.code.cpp.ir.implementation.IRType
-private import semmle.code.cpp.ir.implementation.raw.internal.IRConstruction as IRConstruction
+private import semmle.code.cpp.ir.implementation.raw.internal.IRConstruction::Raw as Raw
 
 private int getPointerSize() { result = max(any(NullPointerType t).getSize()) }
 
@@ -143,7 +143,7 @@ private predicate isOpaqueType(Type type) {
 predicate hasOpaqueType(Type tag, int byteSize) {
   isOpaqueType(tag) and byteSize = getTypeSize(tag)
   or
-  tag instanceof UnknownType and IRConstruction::needsUnknownOpaqueType(byteSize)
+  tag instanceof UnknownType and Raw::needsUnknownOpaqueType(byteSize)
 }
 
 /**
@@ -191,7 +191,7 @@ private newtype TCppType =
   TPRValueType(Type type) { exists(getIRTypeForPRValue(type)) } or
   TFunctionGLValueType() or
   TGLValueAddressType(Type type) or
-  TUnknownOpaqueType(int byteSize) { IRConstruction::needsUnknownOpaqueType(byteSize) } or
+  TUnknownOpaqueType(int byteSize) { Raw::needsUnknownOpaqueType(byteSize) } or
   TUnknownType()
 
 /**
@@ -362,7 +362,7 @@ CppType getTypeForPRValueOrUnknown(Type type) {
 /**
  * Gets the `CppType` that represents a glvalue of type `type`.
  */
-CppType getTypeForGLValue(Type type) { result.hasType(type, true) }
+CppGLValueAddressType getTypeForGLValue(Type type) { result.hasType(type, true) }
 
 /**
  * Gets the `CppType` that represents a prvalue of type `int`.

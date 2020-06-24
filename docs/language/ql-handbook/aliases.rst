@@ -42,6 +42,8 @@ of ``OldVersion``, you could deprecate the name ``OldVersion`` as follows::
 That way both names resolve to the same module, but if you use the name ``OldVersion``,
 a deprecation warning is displayed.
 
+.. _type-aliases:
+
 Type aliases
 ============
 

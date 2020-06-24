@@ -1,3 +1,8 @@
+/**
+ * Provides classes and predicates for reasoning about guards and the control
+ * flow elements controlled by those guards.
+ */
+
 import cpp
 import semmle.code.cpp.controlflow.BasicBlocks
 import semmle.code.cpp.controlflow.SSA

@@ -178,9 +178,6 @@ class SwitchStmt extends SelectionStmt, Switch, @switch_stmt {
   /** Gets the default case of this `switch` statement, if any. */
   DefaultCase getDefaultCase() { result = this.getACase() }
 
-  /** Gets a type case of this `switch` statement, if any. */
-  deprecated TypeCase getATypeCase() { result = this.getACase() }
-
   override string toString() { result = "switch (...) {...}" }
 
   /**
@@ -308,73 +305,6 @@ class ConstCase extends CaseStmt, LabeledStmt {
   override string getLabel() { result = p.getValue() }
 
   override string toString() { result = CaseStmt.super.toString() }
-}
-
-/**
- * A type matching case in a `switch` statement, for example `case int i:` on line 3 or
- * `case string s when s.Length > 0:` on line 4 in
- *
- * ```
- * switch(p)
- * {
- *     case int i:
- *     case string s when s.Length > 0:
- *         break;
- *     ...
- * }
- * ```
- */
-deprecated class TypeCase extends CaseStmt {
-  private TypeAccess ta;
-
-  TypeCase() { expr_parent(ta, 1, this) }
-
-  /**
-   * Gets the local variable declaration of this type case, if any. For example,
-   * the local variable declaration of the type case on line 3 is `string s` in
-   *
-   * ```
-   * switch(p) {
-   *   case int i:
-   *   case string s when s.Length>0:
-   *     break;
-   *   case bool _:
-   *     break;
-   *   ...
-   * }
-   * ```
-   */
-  LocalVariableDeclExpr getVariableDeclExpr() { result = this.getPattern() }
-
-  /**
-   * Gets the type access of this case, for example access to `string` or
-   * access to `int` in
-   *
-   * ```
-   * switch(p) {
-   *   case int i:
-   *   case string s when s.Length>0:
-   *     break;
-   *   ...
-   * }
-   * ```
-   */
-  TypeAccess getTypeAccess() { result = ta }
-
-  /**
-   * Gets the type being checked by this case. For example, the type being checked
-   * by the type case on line 3 is `string` in
-   *
-   * ```
-   * switch(p) {
-   *   case int i:
-   *   case string s when s.Length>0:
-   *     break;
-   *   ...
-   * }
-   * ```
-   */
-  Type getCheckedType() { result = this.getTypeAccess().getType() }
 }
 
 /**
@@ -1160,26 +1090,6 @@ class UsingStmt extends Stmt, @using_stmt {
    * ```
    */
   Expr getAnExpr() { none() }
-
-  /**
-   * DEPRECATED: Use UsingBlockStmt.getExpr() instead.
-   * Gets the expression directly used by this `using` statement, if any. For
-   * example, `f` on line 2 in
-   *
-   * ```
-   * var f = File.Open("settings.xml");
-   * using (f) {
-   *   ...
-   * }
-   * ```
-   */
-  deprecated Expr getExpr() { none() }
-
-  /**
-   * DEPRECATED: Use UsingBlockStmt.getBody() instead.
-   * Gets the body of this `using` statement.
-   */
-  deprecated Stmt getBody() { none() }
 }
 
 /**
@@ -1212,7 +1122,7 @@ class UsingBlockStmt extends UsingStmt, @using_block_stmt {
    * }
    * ```
    */
-  override Expr getExpr() { result = this.getChild(0) }
+  Expr getExpr() { result = this.getChild(0) }
 
   override Expr getAnExpr() {
     result = this.getAVariableDeclExpr().getInitializer()
@@ -1221,7 +1131,7 @@ class UsingBlockStmt extends UsingStmt, @using_block_stmt {
   }
 
   /** Gets the body of this `using` statement. */
-  override Stmt getBody() { result.getParent() = this }
+  Stmt getBody() { result.getParent() = this }
 
   override string toString() { result = "using (...) {...}" }
 }

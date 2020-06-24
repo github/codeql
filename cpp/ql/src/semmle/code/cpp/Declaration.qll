@@ -1,3 +1,7 @@
+/**
+ * Provides classes for working with C and C++ declarations.
+ */
+
 import semmle.code.cpp.Element
 import semmle.code.cpp.Specifier
 import semmle.code.cpp.Namespace
@@ -98,7 +102,12 @@ class Declaration extends Locatable, @declaration {
     this.hasQualifiedName(namespaceQualifier, "", baseName)
   }
 
-  override string toString() { result = this.getName() }
+  /**
+   * Gets a description of this `Declaration` for display purposes.
+   */
+  string getDescription() { result = this.getName() }
+
+  final override string toString() { result = this.getDescription() }
 
   /**
    * Gets the name of this declaration.

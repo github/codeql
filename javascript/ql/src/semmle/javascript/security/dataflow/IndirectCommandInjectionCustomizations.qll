@@ -50,11 +50,39 @@ module IndirectCommandInjection {
       // `require('minimist')(...)` => `{ _: [], a: ... b: ... }`
       this = DataFlow::moduleImport("minimist").getACall()
       or
-      // `require('yargs').argv` => `{ _: [], a: ... b: ... }`
-      this = DataFlow::moduleMember("yargs", "argv")
-      or
       // `require('optimist').argv` => `{ _: [], a: ... b: ... }`
       this = DataFlow::moduleMember("optimist", "argv")
+    }
+  }
+
+  /**
+   * Gets an instance of `yargs`.
+   * Either directly imported as a module, or through some chained method call.
+   */
+  private DataFlow::SourceNode yargs() {
+    result = DataFlow::moduleImport("yargs")
+    or
+    // script used to generate list of chained methods: https://gist.github.com/erik-krogh/f8afe952c0577f4b563a993e613269ba
+    exists(string method |
+      not method =
+        // the methods that does not return a chained `yargs` object.
+        ["getContext", "getDemandedOptions", "getDemandedCommands", "getDeprecatedOptions",
+            "_getParseContext", "getOptions", "getGroups", "getStrict", "getStrictCommands",
+            "getExitProcess", "locale", "getUsageInstance", "getCommandInstance"]
+    |
+      result = yargs().getAMethodCall(method)
+    )
+  }
+
+  /**
+   * An array of command line arguments (`argv`) parsed by the `yargs` libary.
+   */
+  class YargsArgv extends Source {
+    YargsArgv() {
+      this = yargs().getAPropertyRead("argv")
+      or
+      this = yargs().getAMethodCall("parse") and
+      this.(DataFlow::MethodCallNode).getNumArgument() = 0
     }
   }
 

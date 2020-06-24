@@ -15,3 +15,19 @@
 | test.py:45 | Attribute() | externally controlled string |
 | test.py:46 | first_name | externally controlled string |
 | test.py:46 | make_response() | flask.Response |
+| test.py:49 | name | externally controlled string |
+| test.py:50 | BinaryExpr | externally controlled string |
+| test.py:50 | make_response() | flask.Response |
+| test.py:50 | name | externally controlled string |
+| test.py:53 | subpath | externally controlled string |
+| test.py:54 | BinaryExpr | externally controlled string |
+| test.py:54 | make_response() | flask.Response |
+| test.py:54 | subpath | externally controlled string |
+| test.py:59 | bar | externally controlled string |
+| test.py:60 | Attribute() | externally controlled string |
+| test.py:60 | bar | externally controlled string |
+| test.py:60 | make_response() | flask.Response |
+| test.py:63 | lang_code | externally controlled string |
+| test.py:64 | Attribute() | externally controlled string |
+| test.py:64 | lang_code | externally controlled string |
+| test.py:64 | make_response() | flask.Response |

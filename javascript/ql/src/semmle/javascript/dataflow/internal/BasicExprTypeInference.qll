@@ -239,39 +239,41 @@ private class AnalyzedBinaryExpr extends DataFlow::AnalyzedValueNode {
 }
 
 /**
- * Gets a primitive type to which the local value of `e` can be coerced.
+ * Gets the `n`th operand of the given `+` or `+=` expression.
  */
-private PrimitiveType getALocalPrimitiveType(Expr e) {
-  result = e.analyze().getALocalValue().toPrimitive().getType()
+pragma[nomagic]
+private DataFlow::AnalyzedValueNode getAddOperand(Expr e, int n) {
+  (e instanceof AddExpr or e instanceof AssignAddExpr) and
+  result = DataFlow::valueNode(e.getChildExpr(n))
 }
 
 /**
- * Holds if `e` may hold a string value.
+ * Gets a primitive type of the `n`th operand of the given `+` or `+=` expression.
  */
-private predicate maybeString(Expr e) { getALocalPrimitiveType(e) = TTString() }
-
-/**
- * Holds if `e` may hold a non-string value.
- */
-private predicate maybeNonString(Expr e) { getALocalPrimitiveType(e) != TTString() }
+pragma[noopt]
+private PrimitiveType getAnAddOperandPrimitiveType(Expr e, int n) {
+  exists(DataFlow::AnalyzedValueNode operand, AbstractValue value, AbstractValue prim |
+    operand = getAddOperand(e, n) and
+    value = operand.getALocalValue() and
+    prim = value.toPrimitive() and
+    result = prim.getType() and
+    result instanceof PrimitiveType
+  )
+}
 
 /**
  * Holds if `e` is a `+` or `+=` expression that could be interpreted as a string append
  * (as opposed to a numeric addition) at runtime.
  */
-private predicate isStringAppend(Expr e) {
-  (e instanceof AddExpr or e instanceof AssignAddExpr) and
-  maybeString(e.getAChildExpr())
-}
+private predicate isStringAppend(Expr e) { getAnAddOperandPrimitiveType(e, _) = TTString() }
 
 /**
  * Holds if `e` is a `+` or `+=` expression that could be interpreted as a numeric addition
  * (as opposed to a string append) at runtime.
  */
 private predicate isAddition(Expr e) {
-  (e instanceof AddExpr or e instanceof AssignAddExpr) and
-  maybeNonString(e.getChildExpr(0)) and
-  maybeNonString(e.getChildExpr(1))
+  getAnAddOperandPrimitiveType(e, 0) != TTString() and
+  getAnAddOperandPrimitiveType(e, 1) != TTString()
 }
 
 /**

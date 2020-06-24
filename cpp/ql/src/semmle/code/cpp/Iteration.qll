@@ -1,3 +1,7 @@
+/**
+ * Provides classes for loop iteration variables.
+ */
+
 import semmle.code.cpp.Variable
 
 /**
@@ -7,14 +11,18 @@ import semmle.code.cpp.Variable
 class LoopCounter extends Variable {
   LoopCounter() { exists(ForStmt f | f.getAnIterationVariable() = this) }
 
-  // Gets an access of this variable within loop `f`.
+  /**
+   *  Gets an access of this variable within loop `f`.
+   */
   VariableAccess getVariableAccessInLoop(ForStmt f) {
     this.getALoop() = f and
     result.getEnclosingStmt().getParent*() = f and
     this = result.getTarget()
   }
 
-  // Gets a loop which uses this variable as its counter.
+  /**
+   * Gets a loop which uses this variable as its counter.
+   */
   ForStmt getALoop() { result.getAnIterationVariable() = this }
 }
 
@@ -25,14 +33,18 @@ class LoopCounter extends Variable {
 class LoopControlVariable extends Variable {
   LoopControlVariable() { this = loopControlVariable(_) }
 
-  // Gets an access of this variable within loop `f`.
+  /**
+   * Gets an access of this variable within loop `f`.
+   */
   VariableAccess getVariableAccessInLoop(ForStmt f) {
     this.getALoop() = f and
     result.getEnclosingStmt().getParent*() = f and
     this = result.getTarget()
   }
 
-  // Gets a loop which uses this variable as its control variable.
+  /**
+   * Gets a loop which uses this variable as its control variable.
+   */
   ForStmt getALoop() { this = loopControlVariable(result) }
 }
 

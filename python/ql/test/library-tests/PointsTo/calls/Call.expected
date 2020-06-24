@@ -1,7 +1,0 @@
-| 19 | ControlFlowNode for f() | Function f |
-| 21 | ControlFlowNode for f() | Function f |
-| 23 | ControlFlowNode for Attribute() | Function f |
-| 24 | ControlFlowNode for Attribute() | Function n |
-| 25 | ControlFlowNode for Attribute() | Function n |
-| 33 | ControlFlowNode for Attribute() | Function foo |
-| 34 | ControlFlowNode for Attribute() | Function foo |

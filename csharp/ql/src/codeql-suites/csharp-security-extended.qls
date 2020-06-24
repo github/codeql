@@ -1,0 +1,6 @@
+- description: Security-extended queries for C#
+- qlpack: codeql-csharp
+- apply: security-extended-selectors.yml
+  from: codeql-suite-helpers
+- apply: codeql-suites/exclude-dependency-queries.yml
+  from: codeql-csharp

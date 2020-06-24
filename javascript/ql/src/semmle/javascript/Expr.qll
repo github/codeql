@@ -108,6 +108,7 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
   int getIntValue() { none() }
 
   /** Gets the constant string value this expression evaluates to, if any. */
+  cached
   string getStringValue() { none() }
 
   /** Holds if this expression is impure, that is, its evaluation could have side effects. */
@@ -1354,6 +1355,11 @@ class EqualityTest extends @equalitytest, Comparison {
     (this instanceof NEqExpr or this instanceof StrictNEqExpr) and
     result = false
   }
+
+  /**
+   * Holds if the equality operator is strict (`===` or `!==`).
+   */
+  predicate isStrict() { this instanceof StrictEqExpr or this instanceof StrictNEqExpr }
 }
 
 /**
@@ -1513,7 +1519,8 @@ class AddExpr extends @addexpr, BinaryExpr {
   override string getOperator() { result = "+" }
 
   override string getStringValue() {
-    result = getLeftOperand().getStringValue() + getRightOperand().getStringValue()
+    result = getLeftOperand().getStringValue() + getRightOperand().getStringValue() and
+    result.length() < 1000 * 1000
   }
 }
 
