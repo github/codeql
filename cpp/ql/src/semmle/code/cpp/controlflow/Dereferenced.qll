@@ -4,45 +4,17 @@
 
 import cpp
 import Nullness
+import semmle.code.cpp.models.interfaces.ArrayFunction
 
 /**
  * Holds if the call `fc` will dereference argument `i`.
  */
 predicate callDereferences(FunctionCall fc, int i) {
-  exists(string name |
-    fc.getTarget().hasGlobalOrStdName(name) and
+  exists(ArrayFunction af |
+    fc.getTarget() = af and
     (
-      name = "bcopy" and i in [0 .. 1]
-      or
-      name = "memcpy" and i in [0 .. 1]
-      or
-      name = "memmove" and i in [0 .. 1]
-      or
-      name = "strcpy" and i in [0 .. 1]
-      or
-      name = "strncpy" and i in [0 .. 1]
-      or
-      name = "strdup" and i = 0
-      or
-      name = "strndup" and i = 0
-      or
-      name = "strlen" and i = 0
-      or
-      name = "printf" and fc.getArgument(i).getType() instanceof PointerType
-      or
-      name = "fprintf" and fc.getArgument(i).getType() instanceof PointerType
-      or
-      name = "sprintf" and fc.getArgument(i).getType() instanceof PointerType
-      or
-      name = "snprintf" and fc.getArgument(i).getType() instanceof PointerType
-      or
-      name = "vprintf" and fc.getArgument(i).getType() instanceof PointerType
-      or
-      name = "vfprintf" and fc.getArgument(i).getType() instanceof PointerType
-      or
-      name = "vsprintf" and fc.getArgument(i).getType() instanceof PointerType
-      or
-      name = "vsnprintf" and fc.getArgument(i).getType() instanceof PointerType
+      af.hasArrayInput(i) or
+      af.hasArrayOutput(i)
     )
   )
 }
