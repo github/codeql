@@ -31,7 +31,7 @@ private Instruction getAnInstructionAtLine(IRFunction irFunc, Language::File fil
 }
 
 /**
- * A single operation in the IR.
+ * A single instruction in the IR.
  */
 class Instruction extends Construction::TStageInstruction {
   Instruction() {
@@ -635,6 +635,14 @@ class NoOpInstruction extends Instruction {
  * This instruction represents the normal (non-exception) return from a function, either from an
  * explicit `return` statement or from control flow reaching the end of the function's body.
  *
+ * Each function has exactly one `ReturnInstruction`. Each `return` statement in a function is
+ * represented as an initialization of the temporary variable that holds the return value, with
+ * control then flowing to the common `ReturnInstruction` for that function. Exception: A function
+ * that never returns will not have a `ReturnInstruction`.
+ *
+ * The `ReturnInstruction` for a function will have a control-flow successor edge to a block
+ * containing the `ExitFunction` instruction for that function.
+ *
  * There are two differet return instructions: `ReturnValueInstruction`, for returning a value from
  * a non-`void`-returning function, and `ReturnVoidInstruction`, for returning from a
  * `void`-returning function.
@@ -669,7 +677,13 @@ class ReturnValueInstruction extends ReturnInstruction {
 }
 
 /**
- * An instruction that returns the value pointed to by a parameter of the function to the caller.
+ * An instruction that represents the use of the value pointed to by a parameter of the function
+ * after the function returns control to its caller.
+ *
+ * This instruction does not itself return control to the caller. It merely represents the potential
+ * for a caller to use the memory pointed to by the parameter sometime after the call returns. This
+ * is the counterpart to the `InitializeIndirection` instruction, which represents the possibility
+ * that the caller initialized the memory pointed to by the parameter before the call.
  */
 class ReturnIndirectionInstruction extends VariableInstruction {
   ReturnIndirectionInstruction() { getOpcode() instanceof Opcode::ReturnIndirection }
@@ -1100,10 +1114,11 @@ class PointerSubInstruction extends PointerOffsetInstruction {
 /**
  * An instruction that computes the difference between two pointers.
  *
- * The result must have an integer type whose size is the same as that of the pointer operands. The
- * result is computed by subtracting the byte address in the right operand from the byte address in
- * the left operand, and dividing by the element size. If the difference in byte addresses is not
- * divisible by the element size, the result is undefined.
+ * Both operands must have the same pointer type. The result must have an integer type whose size is
+ * the same as that of the pointer operands. The result is computed by subtracting the byte address
+ * in the right operand from the byte address in the left operand, and dividing by the element size.
+ * If the difference in byte addresses is not divisible by the element size, the result is
+ * undefined.
  */
 class PointerDiffInstruction extends PointerArithmeticInstruction {
   PointerDiffInstruction() { getOpcode() instanceof Opcode::PointerDiff }
