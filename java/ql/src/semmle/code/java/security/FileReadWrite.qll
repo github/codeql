@@ -20,7 +20,7 @@ private predicate fileRead(VarAccess fileAccess, Expr fileReadingExpr) {
     (
       // Identify all method calls on the `Files` class that imply that we are reading the file
       // represented by the first argument.
-      filesMethod.getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
+      filesMethod.getDeclaringType() instanceof TypeFiles and
       fileAccess = ma.getArgument(0) and
       (
         filesMethod.hasName("readAllBytes") or

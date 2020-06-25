@@ -165,6 +165,11 @@ class TypeFileSystem extends Class {
   TypeFileSystem() { this.hasQualifiedName("java.nio.file", "FileSystem") }
 }
 
+/** The class `java.nio.file.Files`. */
+class TypeFiles extends Class {
+  TypeFiles() { this.hasQualifiedName("java.nio.file", "Files") }
+}
+
 /** The class `java.io.File`. */
 class TypeFile extends Class {
   TypeFile() { this.hasQualifiedName("java.io", "File") }

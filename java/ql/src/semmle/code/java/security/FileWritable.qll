@@ -60,7 +60,7 @@ private EnumConstant getAContainedEnumConstant(Expr enumSetRef) {
  * Gets a `VarAccess` to a `File` that is converted to a `Path` by `pathExpr`.
  */
 private VarAccess getFileForPathConversion(Expr pathExpr) {
-  pathExpr.getType().(RefType).hasQualifiedName("java.nio.file", "Path") and
+  pathExpr.getType() instanceof TypePath and
   (
     // Look for conversion from `File` to `Path` using `file.getPath()`.
     exists(MethodAccess fileToPath |
@@ -74,7 +74,7 @@ private VarAccess getFileForPathConversion(Expr pathExpr) {
     exists(MethodAccess pathsGet, MethodAccess fileGetPath |
       pathsGet = pathExpr and
       pathsGet.getMethod().hasName("get") and
-      pathsGet.getMethod().getDeclaringType().hasQualifiedName("java.nio.file", "Paths") and
+      pathsGet.getMethod().getDeclaringType() instanceof TypePaths and
       fileGetPath = pathsGet.getArgument(0) and
       result = fileGetPath.getQualifier()
     |
@@ -105,7 +105,7 @@ private predicate fileSetWorldWritable(VarAccess fileAccess, Expr setWorldWritab
   exists(MethodAccess setPosixPerms |
     setPosixPerms = setWorldWritable and
     setPosixPerms.getMethod().hasName("setPosixFilePermissions") and
-    setPosixPerms.getMethod().getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
+    setPosixPerms.getMethod().getDeclaringType() instanceof TypeFiles and
     (
       fileAccess = setPosixPerms.getArgument(0)
       or
