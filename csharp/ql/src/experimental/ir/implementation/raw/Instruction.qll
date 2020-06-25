@@ -860,7 +860,7 @@ class StringConstantInstruction extends VariableInstruction {
 }
 
 /**
- * An instruction whose result is computed from two register operands.
+ * An instruction whose result is computed from two operands.
  */
 class BinaryInstruction extends Instruction {
   BinaryInstruction() { getOpcode() instanceof BinaryOpcode }
@@ -905,19 +905,18 @@ class ArithmeticInstruction extends Instruction {
 }
 
 /**
- * An instruction whose result is computed by performing an arithmetic operation on two register
- * operands.
+ * An instruction that performs an arithmetic operation on two numeric operands.
  */
 class BinaryArithmeticInstruction extends ArithmeticInstruction, BinaryInstruction { }
 
 /**
  * An instruction whose result is computed by performing an arithmetic operation on a single
- * register operand.
+ * numeric operand.
  */
 class UnaryArithmeticInstruction extends ArithmeticInstruction, UnaryInstruction { }
 
 /**
- * An instruction that computes the sum of two register operands.
+ * An instruction that computes the sum of two numeric operands.
  *
  * Both operands must have the same numeric type, which will also be the result type. The result of
  * integer overflow is the infinite-precision result modulo 2^n. Floating-point addition is
@@ -928,7 +927,7 @@ class AddInstruction extends BinaryArithmeticInstruction {
 }
 
 /**
- * An instruction that computes the difference of two register operands.
+ * An instruction that computes the difference of two numeric operands.
  *
  * Both operands must have the same numeric type, which will also be the result type. The result of
  * integer overflow is the infinite-precision result modulo 2^n. Floating-point subtraction is performed
@@ -939,7 +938,7 @@ class SubInstruction extends BinaryArithmeticInstruction {
 }
 
 /**
- * An instruction that computes the product of two register operands.
+ * An instruction that computes the product of two numeric operands.
  *
  * Both operands must have the same numeric type, which will also be the result type. The result of
  * integer overflow is the infinite-precision result modulo 2^n. Floating-point multiplication is
@@ -950,7 +949,7 @@ class MulInstruction extends BinaryArithmeticInstruction {
 }
 
 /**
- * An instruction that computes the quotient of two register operands.
+ * An instruction that computes the quotient of two numeric operands.
  *
  * Both operands must have the same numeric type, which will also be the result type. The result of
  * division by zero or integer overflow is undefined. Floating-point division is performed according
@@ -961,7 +960,7 @@ class DivInstruction extends BinaryArithmeticInstruction {
 }
 
 /**
- * An instruction that computes the remainder of two register operands.
+ * An instruction that computes the remainder of two integer operands.
  *
  * Both operands must have the same integer type, which will also be the result type. The result of
  * division by zero or integer overflow is undefined.
@@ -971,7 +970,7 @@ class RemInstruction extends BinaryArithmeticInstruction {
 }
 
 /**
- * An instruction that computes the negation of a single register operand.
+ * An instruction that negates a single numeric operand.
  *
  * The operand must have a numeric type, which will also be the result type. The result of integer
  * negation uses two's complement, and is computed modulo 2^n. The result of floating-point negation
@@ -989,19 +988,17 @@ class BitwiseInstruction extends Instruction {
 }
 
 /**
- * An instruction whose result is computed by performing a bitwise operation on two register
- * operands.
+ * An instruction that performs a bitwise operation on two integer operands.
  */
 class BinaryBitwiseInstruction extends BitwiseInstruction, BinaryInstruction { }
 
 /**
- * An instruction whose result is computed by performing a bitwise operation on a single register
- * operand.
+ * An instruction that performs a bitwise operation on a single integer operand.
  */
 class UnaryBitwiseInstruction extends BitwiseInstruction, UnaryInstruction { }
 
 /**
- * An instruction that computes the bitwise "and" of two register operands.
+ * An instruction that computes the bitwise "and" of two integer operands.
  *
  * Both operands must have the same integer type, which will also be the result type.
  */
@@ -1010,7 +1007,7 @@ class BitAndInstruction extends BinaryBitwiseInstruction {
 }
 
 /**
- * An instruction that computes the bitwise "or" of two register operands.
+ * An instruction that computes the bitwise "or" of two integer operands.
  *
  * Both operands must have the same integer type, which will also be the result type.
  */
@@ -1019,7 +1016,7 @@ class BitOrInstruction extends BinaryBitwiseInstruction {
 }
 
 /**
- * An instruction that computes the bitwise "xor" of two register operands.
+ * An instruction that computes the bitwise "xor" of two integer operands.
  *
  * Both operands must have the same integer type, which will also be the result type.
  */
@@ -1028,8 +1025,8 @@ class BitXorInstruction extends BinaryBitwiseInstruction {
 }
 
 /**
- * An instruction that computes its result by shifting its left operand to the left by the number of
- * bits specified by its right operand.
+ * An instruction that shifts its left operand to the left by the number of bits specified by its
+ * right operand.
  *
  * Both operands must have an integer type. The result has the same type as the left operand. The
  * rightmost bits are zero-filled.
@@ -1039,8 +1036,8 @@ class ShiftLeftInstruction extends BinaryBitwiseInstruction {
 }
 
 /**
- * An instruction that computes its result by shifting its left operand to the right by the number
- * of bits specified by its right operand.
+ * An instruction that shifts its left operand to the right by the number of bits specified by its
+ * right operand.
  *
  * Both operands must have an integer type. The result has the same type as the left operand. If the
  * left operand has an unsigned integer type, the leftmost bits are zero-filled. If the left operand
@@ -1079,7 +1076,7 @@ class PointerOffsetInstruction extends PointerArithmeticInstruction {
 }
 
 /**
- * An instruction that computes its result by adding an integer offset to a pointer.
+ * An instruction that adds an integer offset to a pointer.
  *
  * The result is the byte address computed by adding the value of the right (integer) operand,
  * multiplied by the element size, to the value of the left (pointer) operand. The result of pointer
@@ -1090,7 +1087,7 @@ class PointerAddInstruction extends PointerOffsetInstruction {
 }
 
 /**
- * An instruction that computes its result by subtracting an integer offset from a pointer.
+ * An instruction that subtracts an integer offset from a pointer.
  *
  * The result is the byte address computed by subtracting the value of the right (integer) operand,
  * multiplied by the element size, from the value of the left (pointer) operand. The result of
@@ -1101,7 +1098,7 @@ class PointerSubInstruction extends PointerOffsetInstruction {
 }
 
 /**
- * An instruction that computes the difference between two pointer operands.
+ * An instruction that computes the difference between two pointers.
  *
  * The result must have an integer type whose size is the same as that of the pointer operands. The
  * result is computed by subtracting the byte address in the right operand from the byte address in
@@ -1113,7 +1110,7 @@ class PointerDiffInstruction extends PointerArithmeticInstruction {
 }
 
 /**
- * An instruction whose result is computed from a single register input operand.
+ * An instruction whose result is computed from a single operand.
  */
 class UnaryInstruction extends Instruction {
   UnaryInstruction() { getOpcode() instanceof UnaryOpcode }
@@ -1124,7 +1121,7 @@ class UnaryInstruction extends Instruction {
 }
 
 /**
- * An instruction that converts the value of a register operand to a value of a different type.
+ * An instruction that converts the value of its operand to a value of a different type.
  */
 class ConvertInstruction extends UnaryInstruction {
   ConvertInstruction() { getOpcode() instanceof Opcode::Convert }
