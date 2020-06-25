@@ -27,7 +27,7 @@ module SQL {
 /**
  * Provides classes modelling the (API compatible) `mysql` and `mysql2` packages.
  */
-private module MySql {
+module MySql {
   private DataFlow::SourceNode mysql() { result = DataFlow::moduleImport(["mysql", "mysql2"]) }
 
   private DataFlow::CallNode createPool() { result = mysql().getAMemberCall("createPool") }
@@ -41,7 +41,7 @@ private module MySql {
   }
 
   /** Gets a reference to a MySQL pool. */
-  private DataFlow::SourceNode pool() { result = pool(DataFlow::TypeTracker::end()) }
+  DataFlow::SourceNode pool() { result = pool(DataFlow::TypeTracker::end()) }
 
   /** Gets a call to `mysql.createConnection`. */
   DataFlow::CallNode createConnection() { result = mysql().getAMemberCall("createConnection") }
@@ -53,6 +53,9 @@ private module MySql {
       result = createConnection()
       or
       result = pool().getAMethodCall("getConnection").getABoundCallbackParameter(0, 1)
+      or
+      // byteball/ocore model
+      result.(DataFlow::MethodCallNode).getMethodName() = ["takeConnectionFromPool"]
     )
     or
     exists(DataFlow::TypeTracker t2 | result = connection(t2).track(t2, t))
@@ -67,6 +70,25 @@ private module MySql {
 
     override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
   }
+
+  // class ParameterizedQueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
+  //   // byteball/ocore model
+  //   DataFlow::Node query;
+
+  //   ParameterizedQueryCall() {
+  //     this.getMethodName() = ["addQuery", "query"] and
+  //     query = this.getAnArgument() and
+  //     exists(string s, DataFlow::Node part |
+  //       part.mayHaveStringValue(s) and s.regexpMatch(".*[(=, ]\\?.*")
+  //     |
+  //       // part = query
+  //       // or
+  //       query.asExpr().(AddExpr).getAnOperand+() = part.asExpr()
+  //     )
+  //   }
+
+  //   override DataFlow::Node getAQueryArgument() { result = query }
+  // }
 
   /** An expression that is passed to the `query` method and hence interpreted as SQL. */
   class QueryString extends SQL::SqlString {
