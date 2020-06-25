@@ -1077,7 +1077,14 @@ class PointerArithmeticInstruction extends BinaryInstruction {
   final override string getImmediateString() { result = elementSize.toString() }
 
   /**
-   * Gets the size of the element pointed to by the pointer, in bytes.
+   * Gets the size of the elements pointed to by the pointer operands, in bytes.
+   *
+   * When adding an integer offset to a pointer (`PointerAddInstruction`) or subtracting an integer
+   * offset from a pointer (`PointerSubInstruction`), the integer offset is multiplied by the
+   * element size to compute the actual number of bytes added to or subtracted from the pointer
+   * address. When computing the integer difference between two pointers (`PointerDiffInstruction`),
+   * the result is computed by computing the difference between the two pointer byte addresses, then
+   * dividing that byte count by the element size.
    */
   final int getElementSize() { result = elementSize }
 }
