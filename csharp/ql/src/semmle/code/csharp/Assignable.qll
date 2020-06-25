@@ -55,7 +55,7 @@ private predicate nameOfChild(NameOfExpr noe, Expr child) {
  *
  * For example, the last occurrence of `Length` in
  *
- * ```
+ * ```csharp
  * class C {
  *   int Length;
  *
@@ -89,7 +89,7 @@ class AssignableRead extends AssignableAccess {
    * that can be reached from this read without passing through any other reads,
    * and which is guaranteed to read the same value. Example:
    *
-   * ```
+   * ```csharp
    * int Field;
    *
    * void SetField(int i) {
@@ -131,7 +131,7 @@ class AssignableRead extends AssignableAccess {
  *
  * For example, the last occurrence of `Length` in
  *
- * ```
+ * ```csharp
  * class C {
  *   int Length;
  *
@@ -454,7 +454,7 @@ class AssignableDefinition extends TAssignableDefinition {
    * reads, and which is guaranteed to read the value assigned in this
    * definition. Example:
    *
-   * ```
+   * ```csharp
    * int Field;
    *
    * void SetField(int i) {
@@ -720,7 +720,7 @@ module AssignableDefinitions {
    * An initializer definition for a field or a property, for example
    * line 2 in
    *
-   * ```
+   * ```csharp
    * class C {
    *   int Field = 0;
    * }
