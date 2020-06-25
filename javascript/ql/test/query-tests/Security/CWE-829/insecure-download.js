@@ -48,4 +48,12 @@ function test() {
     nugget("http://example.org/unsafe", {target: "foo.exe"}, () => { }) // NOT OK
 
     nugget("http://example.org/unsafe", {target: "foo.safe"}, () => { }) // OK
+
+    $.get("http://example.org/unsafe.unknown", function( data ) {
+        writeFileAtomic('unsafe.exe', data, {}, function (err) {}); // NOT OK
+    });
+
+    $.get("http://example.org/unsafe.unknown", function( data ) {
+        writeFileAtomic('foo.safe', data, {}, function (err) {}); // OK
+    });
 }

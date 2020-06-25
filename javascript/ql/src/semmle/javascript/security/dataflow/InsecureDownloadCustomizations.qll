@@ -112,4 +112,32 @@ module InsecureDownload {
       result instanceof Label::InsecureURL
     }
   }
+
+  /**
+   * Gets a node for the response from `request`, type-tracked using `t`. 
+   */
+  DataFlow::SourceNode clientRequestResponse(DataFlow::TypeTracker t, ClientRequest request) {
+    t.start() and
+    result = request.getAResponseDataNode()
+    or
+    exists(DataFlow::TypeTracker t2 | result = clientRequestResponse(t2, request).track(t2, t))
+  }
+
+  /**
+   * A url that is downloaded through an insecure connection, where the result ends up being saved to a sensitive location.
+   */
+  class FileWriteSink extends Sink {
+    ClientRequest request;
+    FileSystemWriteAccess write;
+
+    FileWriteSink() {
+      this = request.getUrl() and
+      clientRequestResponse(DataFlow::TypeTracker::end(), request).flowsTo(write.getADataNode())  and
+      hasUnsafeExtension(write.getAPathArgument().getStringValue())
+    }
+
+    override DataFlow::FlowLabel getALabel() { result instanceof Label::InsecureURL }
+
+    override DataFlow::Node getDownloadCall() { result = request }
+  }
 }
