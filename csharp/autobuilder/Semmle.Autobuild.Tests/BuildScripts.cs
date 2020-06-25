@@ -340,10 +340,11 @@ namespace Semmle.Extraction.Tests
             string? nugetRestore = null, string? allSolutions = null,
             string cwd = @"C:\Project")
         {
-            Actions.GetEnvironmentVariable["CODEQL_AUTOBUILDER_CSHARP_NO_INDEXING"] = "false";
-            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
-            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
-            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_ROOT"] = @"C:\codeql\csharp";
+            string codeqlUpperLanguage = lgtmLanguage.ToUpper();
+            Actions.GetEnvironmentVariable[$"CODEQL_AUTOBUILDER_{codeqlUpperLanguage}_NO_INDEXING"] = "false";
+            Actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_TRAP_DIR"] = "";
+            Actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_SOURCE_ARCHIVE_DIR"] = "";
+            Actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_ROOT"] = $@"C:\codeql\{lgtmLanguage}";
             Actions.GetEnvironmentVariable["CODEQL_JAVA_HOME"] = @"C:\codeql\tools\java";
             Actions.GetEnvironmentVariable["SEMMLE_DIST"] = @"C:\odasa";
             Actions.GetEnvironmentVariable["SEMMLE_JAVA_HOME"] = @"C:\odasa\tools\java";

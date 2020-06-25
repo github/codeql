@@ -231,3 +231,41 @@ class FabricV1Commands extends CommandSink {
 
     override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
 }
+
+/**
+ * An extension that propagates taint from the arguments of `fabric.api.execute(func, arg0, arg1, ...)`
+ * to the parameters of `func`, since this will call `func(arg0, arg1, ...)`.
+ */
+class FabricExecuteExtension extends DataFlowExtension::DataFlowNode {
+    CallNode call;
+
+    FabricExecuteExtension() {
+        call = Value::named("fabric.api.execute").getACall() and
+        (
+            this = call.getArg(any(int i | i > 0))
+            or
+            this = call.getArgByName(any(string s | not s = "task"))
+        )
+    }
+
+    override ControlFlowNode getASuccessorNode(TaintKind fromkind, TaintKind tokind) {
+        tokind = fromkind and
+        exists(CallableValue func |
+            (
+                call.getArg(0).pointsTo(func)
+                or
+                call.getArgByName("task").pointsTo(func)
+            ) and
+            exists(int i |
+                // execute(func, arg0, arg1) => func(arg0, arg1)
+                this = call.getArg(i) and
+                result = func.getParameter(i - 1)
+            )
+            or
+            exists(string name |
+                this = call.getArgByName(name) and
+                result = func.getParameterByName(name)
+            )
+        )
+    }
+}

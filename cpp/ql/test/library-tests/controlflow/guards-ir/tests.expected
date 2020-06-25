@@ -551,7 +551,7 @@ irGuardsControl
 | test.c:146:8:146:8 | Load: x | false | 147 | 147 |
 | test.c:152:10:152:10 | Load: x | true | 152 | 152 |
 | test.c:152:15:152:15 | Load: y | true | 152 | 152 |
-| test.cpp:18:8:18:12 | CompareNE: (bool)... | true | 0 | 0 |
+| test.cpp:18:8:18:12 | CompareNE: (bool)... | true | 19 | 19 |
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | false | 34 | 34 |
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | true | 30 | 30 |
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | true | 32 | 32 |
@@ -690,8 +690,8 @@ irGuardsEnsure
 | test.c:109:9:109:14 | CompareEQ: ... == ... | test.c:109:14:109:14 | Constant: 0 | != | test.c:109:9:109:9 | Load: x | 0 | 113 | 113 |
 | test.c:109:19:109:23 | CompareLT: ... < ... | test.c:109:19:109:19 | Load: y | >= | test.c:109:23:109:23 | Constant: (long)... | 0 | 113 | 113 |
 | test.c:109:19:109:23 | CompareLT: ... < ... | test.c:109:23:109:23 | Constant: (long)... | < | test.c:109:19:109:19 | Load: y | 1 | 113 | 113 |
-| test.cpp:18:8:18:12 | CompareNE: (bool)... | test.cpp:18:8:18:10 | Call: call to get | != | test.cpp:18:8:18:12 | Constant: (bool)... | 0 | 0 | 0 |
-| test.cpp:18:8:18:12 | CompareNE: (bool)... | test.cpp:18:8:18:12 | Constant: (bool)... | != | test.cpp:18:8:18:10 | Call: call to get | 0 | 0 | 0 |
+| test.cpp:18:8:18:12 | CompareNE: (bool)... | test.cpp:18:8:18:10 | Call: call to get | != | test.cpp:18:8:18:12 | Constant: (bool)... | 0 | 19 | 19 |
+| test.cpp:18:8:18:12 | CompareNE: (bool)... | test.cpp:18:8:18:12 | Constant: (bool)... | != | test.cpp:18:8:18:10 | Call: call to get | 0 | 19 | 19 |
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:7:31:7 | Load: x | != | test.cpp:31:12:31:13 | Constant: - ... | 0 | 34 | 34 |
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:7:31:7 | Load: x | == | test.cpp:31:12:31:13 | Constant: - ... | 0 | 30 | 30 |
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:7:31:7 | Load: x | == | test.cpp:31:12:31:13 | Constant: - ... | 0 | 32 | 32 |

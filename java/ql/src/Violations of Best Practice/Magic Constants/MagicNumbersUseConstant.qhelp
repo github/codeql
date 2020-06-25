@@ -35,7 +35,7 @@ update if the requirements change, because you have to update the number in only
 </recommendation>
 <example>
 
-<p>The following example shows a magic number <code>internal_port</code>. This should be replaced by  
+<p>The following example shows a magic number <code>internalPort</code>. This should be replaced by  
 the existing named constant, as shown in the fixed version.</p>
 
 <sample src="MagicNumbersUseConstant.java" />

@@ -366,7 +366,7 @@ class FlowThroughFields {
   }
 
   int calledAfterTaint() {
-    sink(field); // tainted [NOT DETECTED with IR]
+    sink(field); // tainted
   }
 
   int taintAndCall() {

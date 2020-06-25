@@ -26,9 +26,9 @@ public:
 
   void func()
   {
-    sink(s1); // $ast $f-:ir
+    sink(s1); // $ast $ir
     sink(s2); // $f-:ast $f-:ir
-    sink(s3); // $ast $f-:ir
+    sink(s3); // $ast $ir
     sink(s4); // $f-:ast $f-:ir
   }
 

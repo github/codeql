@@ -1009,29 +1009,37 @@ ssa.cpp:
 
 #  235| void Constructible::Constructible(int)
 #  235|   Block 0
-#  235|     v235_1(void)                 = EnterFunction          : 
-#  235|     m235_2(unknown)              = AliasedDefinition      : 
-#  235|     m235_3(unknown)              = InitializeNonLocal     : 
-#  235|     m235_4(unknown)              = Chi                    : total:m235_2, partial:m235_3
-#  235|     r235_5(glval<Constructible>) = InitializeThis         : 
-#  235|     r235_6(glval<int>)           = VariableAddress[x]     : 
-#  235|     m235_7(int)                  = InitializeParameter[x] : &:r235_6
-#  235|     v235_8(void)                 = NoOp                   : 
-#  235|     v235_9(void)                 = ReturnVoid             : 
-#  235|     v235_10(void)                = AliasedUse             : m235_3
-#  235|     v235_11(void)                = ExitFunction           : 
+#  235|     v235_1(void)                 = EnterFunction                : 
+#  235|     m235_2(unknown)              = AliasedDefinition            : 
+#  235|     m235_3(unknown)              = InitializeNonLocal           : 
+#  235|     m235_4(unknown)              = Chi                          : total:m235_2, partial:m235_3
+#  235|     r235_5(glval<unknown>)       = VariableAddress[#this]       : 
+#  235|     m235_6(glval<Constructible>) = InitializeParameter[#this]   : &:r235_5
+#  235|     r235_7(glval<Constructible>) = Load                         : &:r235_5, m235_6
+#  235|     m235_8(Constructible)        = InitializeIndirection[#this] : &:r235_7
+#  235|     r235_9(glval<int>)           = VariableAddress[x]           : 
+#  235|     m235_10(int)                 = InitializeParameter[x]       : &:r235_9
+#  235|     v235_11(void)                = NoOp                         : 
+#  235|     v235_12(void)                = ReturnIndirection[#this]     : &:r235_7, m235_8
+#  235|     v235_13(void)                = ReturnVoid                   : 
+#  235|     v235_14(void)                = AliasedUse                   : m235_3
+#  235|     v235_15(void)                = ExitFunction                 : 
 
 #  236| void Constructible::g()
 #  236|   Block 0
-#  236|     v236_1(void)                 = EnterFunction      : 
-#  236|     m236_2(unknown)              = AliasedDefinition  : 
-#  236|     m236_3(unknown)              = InitializeNonLocal : 
-#  236|     m236_4(unknown)              = Chi                : total:m236_2, partial:m236_3
-#  236|     r236_5(glval<Constructible>) = InitializeThis     : 
-#  236|     v236_6(void)                 = NoOp               : 
-#  236|     v236_7(void)                 = ReturnVoid         : 
-#  236|     v236_8(void)                 = AliasedUse         : m236_3
-#  236|     v236_9(void)                 = ExitFunction       : 
+#  236|     v236_1(void)                 = EnterFunction                : 
+#  236|     m236_2(unknown)              = AliasedDefinition            : 
+#  236|     m236_3(unknown)              = InitializeNonLocal           : 
+#  236|     m236_4(unknown)              = Chi                          : total:m236_2, partial:m236_3
+#  236|     r236_5(glval<unknown>)       = VariableAddress[#this]       : 
+#  236|     m236_6(glval<Constructible>) = InitializeParameter[#this]   : &:r236_5
+#  236|     r236_7(glval<Constructible>) = Load                         : &:r236_5, m236_6
+#  236|     m236_8(Constructible)        = InitializeIndirection[#this] : &:r236_7
+#  236|     v236_9(void)                 = NoOp                         : 
+#  236|     v236_10(void)                = ReturnIndirection[#this]     : &:r236_7, m236_8
+#  236|     v236_11(void)                = ReturnVoid                   : 
+#  236|     v236_12(void)                = AliasedUse                   : m236_3
+#  236|     v236_13(void)                = ExitFunction                 : 
 
 #  239| void ExplicitConstructorCalls()
 #  239|   Block 0
@@ -1290,46 +1298,58 @@ ssa.cpp:
 
 #  286| void A::A(int)
 #  286|   Block 0
-#  286|     v286_1(void)       = EnterFunction          : 
-#  286|     m286_2(unknown)    = AliasedDefinition      : 
-#  286|     m286_3(unknown)    = InitializeNonLocal     : 
-#  286|     m286_4(unknown)    = Chi                    : total:m286_2, partial:m286_3
-#  286|     r286_5(glval<A>)   = InitializeThis         : 
-#  286|     r286_6(glval<int>) = VariableAddress[x]     : 
-#  286|     m286_7(int)        = InitializeParameter[x] : &:r286_6
-#  286|     v286_8(void)       = NoOp                   : 
-#  286|     v286_9(void)       = ReturnVoid             : 
-#  286|     v286_10(void)      = AliasedUse             : m286_3
-#  286|     v286_11(void)      = ExitFunction           : 
+#  286|     v286_1(void)           = EnterFunction                : 
+#  286|     m286_2(unknown)        = AliasedDefinition            : 
+#  286|     m286_3(unknown)        = InitializeNonLocal           : 
+#  286|     m286_4(unknown)        = Chi                          : total:m286_2, partial:m286_3
+#  286|     r286_5(glval<unknown>) = VariableAddress[#this]       : 
+#  286|     m286_6(glval<A>)       = InitializeParameter[#this]   : &:r286_5
+#  286|     r286_7(glval<A>)       = Load                         : &:r286_5, m286_6
+#  286|     m286_8(A)              = InitializeIndirection[#this] : &:r286_7
+#  286|     r286_9(glval<int>)     = VariableAddress[x]           : 
+#  286|     m286_10(int)           = InitializeParameter[x]       : &:r286_9
+#  286|     v286_11(void)          = NoOp                         : 
+#  286|     v286_12(void)          = ReturnIndirection[#this]     : &:r286_7, m286_8
+#  286|     v286_13(void)          = ReturnVoid                   : 
+#  286|     v286_14(void)          = AliasedUse                   : m286_3
+#  286|     v286_15(void)          = ExitFunction                 : 
 
 #  287| void A::A(A*)
 #  287|   Block 0
-#  287|     v287_1(void)       = EnterFunction              : 
-#  287|     m287_2(unknown)    = AliasedDefinition          : 
-#  287|     m287_3(unknown)    = InitializeNonLocal         : 
-#  287|     m287_4(unknown)    = Chi                        : total:m287_2, partial:m287_3
-#  287|     r287_5(glval<A>)   = InitializeThis             : 
-#  287|     r287_6(glval<A *>) = VariableAddress[p#0]       : 
-#  287|     m287_7(A *)        = InitializeParameter[p#0]   : &:r287_6
-#  287|     r287_8(A *)        = Load                       : &:r287_6, m287_7
-#  287|     m287_9(unknown)    = InitializeIndirection[p#0] : &:r287_8
-#  287|     v287_10(void)      = NoOp                       : 
-#  287|     v287_11(void)      = ReturnIndirection[p#0]     : &:r287_8, m287_9
-#  287|     v287_12(void)      = ReturnVoid                 : 
-#  287|     v287_13(void)      = AliasedUse                 : m287_3
-#  287|     v287_14(void)      = ExitFunction               : 
+#  287|     v287_1(void)           = EnterFunction                : 
+#  287|     m287_2(unknown)        = AliasedDefinition            : 
+#  287|     m287_3(unknown)        = InitializeNonLocal           : 
+#  287|     m287_4(unknown)        = Chi                          : total:m287_2, partial:m287_3
+#  287|     r287_5(glval<unknown>) = VariableAddress[#this]       : 
+#  287|     m287_6(glval<A>)       = InitializeParameter[#this]   : &:r287_5
+#  287|     r287_7(glval<A>)       = Load                         : &:r287_5, m287_6
+#  287|     m287_8(A)              = InitializeIndirection[#this] : &:r287_7
+#  287|     r287_9(glval<A *>)     = VariableAddress[p#0]         : 
+#  287|     m287_10(A *)           = InitializeParameter[p#0]     : &:r287_9
+#  287|     r287_11(A *)           = Load                         : &:r287_9, m287_10
+#  287|     m287_12(unknown)       = InitializeIndirection[p#0]   : &:r287_11
+#  287|     v287_13(void)          = NoOp                         : 
+#  287|     v287_14(void)          = ReturnIndirection[#this]     : &:r287_7, m287_8
+#  287|     v287_15(void)          = ReturnIndirection[p#0]       : &:r287_11, m287_12
+#  287|     v287_16(void)          = ReturnVoid                   : 
+#  287|     v287_17(void)          = AliasedUse                   : m287_3
+#  287|     v287_18(void)          = ExitFunction                 : 
 
 #  288| void A::A()
 #  288|   Block 0
-#  288|     v288_1(void)     = EnterFunction      : 
-#  288|     m288_2(unknown)  = AliasedDefinition  : 
-#  288|     m288_3(unknown)  = InitializeNonLocal : 
-#  288|     m288_4(unknown)  = Chi                : total:m288_2, partial:m288_3
-#  288|     r288_5(glval<A>) = InitializeThis     : 
-#  288|     v288_6(void)     = NoOp               : 
-#  288|     v288_7(void)     = ReturnVoid         : 
-#  288|     v288_8(void)     = AliasedUse         : m288_3
-#  288|     v288_9(void)     = ExitFunction       : 
+#  288|     v288_1(void)           = EnterFunction                : 
+#  288|     m288_2(unknown)        = AliasedDefinition            : 
+#  288|     m288_3(unknown)        = InitializeNonLocal           : 
+#  288|     m288_4(unknown)        = Chi                          : total:m288_2, partial:m288_3
+#  288|     r288_5(glval<unknown>) = VariableAddress[#this]       : 
+#  288|     m288_6(glval<A>)       = InitializeParameter[#this]   : &:r288_5
+#  288|     r288_7(glval<A>)       = Load                         : &:r288_5, m288_6
+#  288|     m288_8(A)              = InitializeIndirection[#this] : &:r288_7
+#  288|     v288_9(void)           = NoOp                         : 
+#  288|     v288_10(void)          = ReturnIndirection[#this]     : &:r288_7, m288_8
+#  288|     v288_11(void)          = ReturnVoid                   : 
+#  288|     v288_12(void)          = AliasedUse                   : m288_3
+#  288|     v288_13(void)          = ExitFunction                 : 
 
 #  291| Point* NewAliasing(int)
 #  291|   Block 0
@@ -1463,3 +1483,28 @@ ssa.cpp:
 #  301|     v301_14(void)          = ReturnValue                      : &:r301_13, m304_7
 #  301|     v301_15(void)          = AliasedUse                       : ~m303_11
 #  301|     v301_16(void)          = ExitFunction                     : 
+
+#  310| void ThisAliasTest::setX(int)
+#  310|   Block 0
+#  310|     v310_1(void)                 = EnterFunction                : 
+#  310|     m310_2(unknown)              = AliasedDefinition            : 
+#  310|     m310_3(unknown)              = InitializeNonLocal           : 
+#  310|     m310_4(unknown)              = Chi                          : total:m310_2, partial:m310_3
+#  310|     r310_5(glval<unknown>)       = VariableAddress[#this]       : 
+#  310|     m310_6(glval<ThisAliasTest>) = InitializeParameter[#this]   : &:r310_5
+#  310|     r310_7(glval<ThisAliasTest>) = Load                         : &:r310_5, m310_6
+#  310|     m310_8(ThisAliasTest)        = InitializeIndirection[#this] : &:r310_7
+#  310|     r310_9(glval<int>)           = VariableAddress[arg]         : 
+#  310|     m310_10(int)                 = InitializeParameter[arg]     : &:r310_9
+#  311|     r311_1(glval<int>)           = VariableAddress[arg]         : 
+#  311|     r311_2(int)                  = Load                         : &:r311_1, m310_10
+#  311|     r311_3(glval<unknown>)       = VariableAddress[#this]       : 
+#  311|     r311_4(ThisAliasTest *)      = Load                         : &:r311_3, m310_6
+#  311|     r311_5(glval<int>)           = FieldAddress[x]              : r311_4
+#  311|     m311_6(int)                  = Store                        : &:r311_5, r311_2
+#  311|     m311_7(unknown)              = Chi                          : total:m310_8, partial:m311_6
+#  312|     v312_1(void)                 = NoOp                         : 
+#  310|     v310_11(void)                = ReturnIndirection[#this]     : &:r310_7, m311_7
+#  310|     v310_12(void)                = ReturnVoid                   : 
+#  310|     v310_13(void)                = AliasedUse                   : m310_3
+#  310|     v310_14(void)                = ExitFunction                 : 

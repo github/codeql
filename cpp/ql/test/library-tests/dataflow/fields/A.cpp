@@ -53,8 +53,8 @@ public:
   {
     B *b = new B();
     b->set(new C1());
-    sink(b->get());                // $ast $f-:ir
-    sink((new B(new C()))->get()); // $ast $f-:ir
+    sink(b->get());                // $ast $ir=55:12
+    sink((new B(new C()))->get()); // $ast $ir
   }
 
   void f3()
@@ -104,7 +104,7 @@ public:
   {
     if (C1 *c1 = dynamic_cast<C1 *>(c))
     {
-      sink(c1->a); // $ast $f-:ir
+      sink(c1->a); // $ast $ir
     }
     C *cc;
     if (C2 *c2 = dynamic_cast<C2 *>(c))
@@ -129,7 +129,7 @@ public:
   {
     B *b = new B();
     f7(b);
-    sink(b->c); // $ast $f-:ir
+    sink(b->c); // $ast,ir
   }
 
   class D
@@ -149,7 +149,7 @@ public:
   {
     B *b = new B();
     D *d = new D(b, r());
-    sink(d->b);    // $ast=143:25 $ast=150:12 $f-:ir
+    sink(d->b);    // $ast,ir=143:25 $ast,ir=150:12
     sink(d->b->c); // $ast $f-:ir
     sink(b->c);    // $ast,ir
   }

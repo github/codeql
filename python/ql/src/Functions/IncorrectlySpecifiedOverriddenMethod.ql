@@ -4,8 +4,8 @@
  *              the arguments with which it is called, and if it were called, would be likely to cause an error.
  * @kind problem
  * @tags maintainability
- * @problem.severity error
- * @sub-severity low
+ * @problem.severity recommendation
+ * @sub-severity high
  * @precision high
  * @id py/inheritance/incorrect-overridden-signature
  */

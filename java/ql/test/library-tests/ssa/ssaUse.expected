@@ -58,3 +58,17 @@
 | Test.java:27:8:27:16 | i | Test.java:27:19:27:19 | i | SSA phi(i) | Test.java:27:19:27:19 | i |
 | Test.java:27:8:27:16 | i | Test.java:27:19:27:19 | i | SSA phi(i) | Test.java:27:25:27:25 | i |
 | Test.java:27:8:27:16 | i | Test.java:27:19:27:19 | i | SSA phi(i) | Test.java:28:9:28:9 | i |
+| TestInstanceOfPattern.java:3:12:3:21 | obj | TestInstanceOfPattern.java:3:24:9:2 | stmt | SSA init(obj) | TestInstanceOfPattern.java:4:7:4:9 | obj |
+| TestInstanceOfPattern.java:4:22:4:29 | s | TestInstanceOfPattern.java:4:29:4:29 | s | SSA def(s) | TestInstanceOfPattern.java:5:8:5:8 | s |
+| TestInstanceOfPattern.java:7:8:7:8 | this.s | TestInstanceOfPattern.java:7:8:7:8 | s | SSA impl upd[untracked](this.s) | TestInstanceOfPattern.java:7:8:7:8 | s |
+| TestInstanceOfPattern.java:10:13:10:22 | obj | TestInstanceOfPattern.java:10:25:16:2 | stmt | SSA init(obj) | TestInstanceOfPattern.java:11:9:11:11 | obj |
+| TestInstanceOfPattern.java:11:24:11:31 | s | TestInstanceOfPattern.java:11:31:11:31 | s | SSA def(s) | TestInstanceOfPattern.java:14:8:14:8 | s |
+| TestInstanceOfPattern.java:12:8:12:8 | this.s | TestInstanceOfPattern.java:12:8:12:8 | s | SSA impl upd[untracked](this.s) | TestInstanceOfPattern.java:12:8:12:8 | s |
+| TestInstanceOfPattern.java:17:13:17:22 | obj | TestInstanceOfPattern.java:17:25:23:2 | stmt | SSA init(obj) | TestInstanceOfPattern.java:18:7:18:9 | obj |
+| TestInstanceOfPattern.java:18:22:18:29 | s | TestInstanceOfPattern.java:18:29:18:29 | s | SSA def(s) | TestInstanceOfPattern.java:18:34:18:34 | s |
+| TestInstanceOfPattern.java:18:22:18:29 | s | TestInstanceOfPattern.java:18:29:18:29 | s | SSA def(s) | TestInstanceOfPattern.java:19:8:19:8 | s |
+| TestInstanceOfPattern.java:21:8:21:8 | this.s | TestInstanceOfPattern.java:21:8:21:8 | s | SSA impl upd[untracked](this.s) | TestInstanceOfPattern.java:21:8:21:8 | s |
+| TestInstanceOfPattern.java:24:13:24:22 | obj | TestInstanceOfPattern.java:24:25:30:2 | stmt | SSA init(obj) | TestInstanceOfPattern.java:25:7:25:9 | obj |
+| TestInstanceOfPattern.java:25:34:25:34 | this.s | TestInstanceOfPattern.java:24:25:30:2 | stmt | SSA init(this.s) | TestInstanceOfPattern.java:25:34:25:34 | s |
+| TestInstanceOfPattern.java:25:34:25:34 | this.s | TestInstanceOfPattern.java:24:25:30:2 | stmt | SSA init(this.s) | TestInstanceOfPattern.java:26:8:26:8 | s |
+| TestInstanceOfPattern.java:25:34:25:34 | this.s | TestInstanceOfPattern.java:24:25:30:2 | stmt | SSA init(this.s) | TestInstanceOfPattern.java:28:8:28:8 | s |

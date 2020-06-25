@@ -937,27 +937,35 @@ ssa.cpp:
 
 #  235| void Constructible::Constructible(int)
 #  235|   Block 0
-#  235|     v235_1(void)                 = EnterFunction          : 
-#  235|     mu235_2(unknown)             = AliasedDefinition      : 
-#  235|     mu235_3(unknown)             = InitializeNonLocal     : 
-#  235|     r235_4(glval<Constructible>) = InitializeThis         : 
-#  235|     r235_5(glval<int>)           = VariableAddress[x]     : 
-#  235|     m235_6(int)                  = InitializeParameter[x] : &:r235_5
-#  235|     v235_7(void)                 = NoOp                   : 
-#  235|     v235_8(void)                 = ReturnVoid             : 
-#  235|     v235_9(void)                 = AliasedUse             : ~m?
-#  235|     v235_10(void)                = ExitFunction           : 
+#  235|     v235_1(void)                 = EnterFunction                : 
+#  235|     mu235_2(unknown)             = AliasedDefinition            : 
+#  235|     mu235_3(unknown)             = InitializeNonLocal           : 
+#  235|     r235_4(glval<unknown>)       = VariableAddress[#this]       : 
+#  235|     m235_5(glval<Constructible>) = InitializeParameter[#this]   : &:r235_4
+#  235|     r235_6(glval<Constructible>) = Load                         : &:r235_4, m235_5
+#  235|     mu235_7(Constructible)       = InitializeIndirection[#this] : &:r235_6
+#  235|     r235_8(glval<int>)           = VariableAddress[x]           : 
+#  235|     m235_9(int)                  = InitializeParameter[x]       : &:r235_8
+#  235|     v235_10(void)                = NoOp                         : 
+#  235|     v235_11(void)                = ReturnIndirection[#this]     : &:r235_6, ~m?
+#  235|     v235_12(void)                = ReturnVoid                   : 
+#  235|     v235_13(void)                = AliasedUse                   : ~m?
+#  235|     v235_14(void)                = ExitFunction                 : 
 
 #  236| void Constructible::g()
 #  236|   Block 0
-#  236|     v236_1(void)                 = EnterFunction      : 
-#  236|     mu236_2(unknown)             = AliasedDefinition  : 
-#  236|     mu236_3(unknown)             = InitializeNonLocal : 
-#  236|     r236_4(glval<Constructible>) = InitializeThis     : 
-#  236|     v236_5(void)                 = NoOp               : 
-#  236|     v236_6(void)                 = ReturnVoid         : 
-#  236|     v236_7(void)                 = AliasedUse         : ~m?
-#  236|     v236_8(void)                 = ExitFunction       : 
+#  236|     v236_1(void)                 = EnterFunction                : 
+#  236|     mu236_2(unknown)             = AliasedDefinition            : 
+#  236|     mu236_3(unknown)             = InitializeNonLocal           : 
+#  236|     r236_4(glval<unknown>)       = VariableAddress[#this]       : 
+#  236|     m236_5(glval<Constructible>) = InitializeParameter[#this]   : &:r236_4
+#  236|     r236_6(glval<Constructible>) = Load                         : &:r236_4, m236_5
+#  236|     mu236_7(Constructible)       = InitializeIndirection[#this] : &:r236_6
+#  236|     v236_8(void)                 = NoOp                         : 
+#  236|     v236_9(void)                 = ReturnIndirection[#this]     : &:r236_6, ~m?
+#  236|     v236_10(void)                = ReturnVoid                   : 
+#  236|     v236_11(void)                = AliasedUse                   : ~m?
+#  236|     v236_12(void)                = ExitFunction                 : 
 
 #  239| void ExplicitConstructorCalls()
 #  239|   Block 0
@@ -1182,43 +1190,55 @@ ssa.cpp:
 
 #  286| void A::A(int)
 #  286|   Block 0
-#  286|     v286_1(void)       = EnterFunction          : 
-#  286|     mu286_2(unknown)   = AliasedDefinition      : 
-#  286|     mu286_3(unknown)   = InitializeNonLocal     : 
-#  286|     r286_4(glval<A>)   = InitializeThis         : 
-#  286|     r286_5(glval<int>) = VariableAddress[x]     : 
-#  286|     m286_6(int)        = InitializeParameter[x] : &:r286_5
-#  286|     v286_7(void)       = NoOp                   : 
-#  286|     v286_8(void)       = ReturnVoid             : 
-#  286|     v286_9(void)       = AliasedUse             : ~m?
-#  286|     v286_10(void)      = ExitFunction           : 
+#  286|     v286_1(void)           = EnterFunction                : 
+#  286|     mu286_2(unknown)       = AliasedDefinition            : 
+#  286|     mu286_3(unknown)       = InitializeNonLocal           : 
+#  286|     r286_4(glval<unknown>) = VariableAddress[#this]       : 
+#  286|     m286_5(glval<A>)       = InitializeParameter[#this]   : &:r286_4
+#  286|     r286_6(glval<A>)       = Load                         : &:r286_4, m286_5
+#  286|     mu286_7(A)             = InitializeIndirection[#this] : &:r286_6
+#  286|     r286_8(glval<int>)     = VariableAddress[x]           : 
+#  286|     m286_9(int)            = InitializeParameter[x]       : &:r286_8
+#  286|     v286_10(void)          = NoOp                         : 
+#  286|     v286_11(void)          = ReturnIndirection[#this]     : &:r286_6, ~m?
+#  286|     v286_12(void)          = ReturnVoid                   : 
+#  286|     v286_13(void)          = AliasedUse                   : ~m?
+#  286|     v286_14(void)          = ExitFunction                 : 
 
 #  287| void A::A(A*)
 #  287|   Block 0
-#  287|     v287_1(void)       = EnterFunction              : 
-#  287|     mu287_2(unknown)   = AliasedDefinition          : 
-#  287|     mu287_3(unknown)   = InitializeNonLocal         : 
-#  287|     r287_4(glval<A>)   = InitializeThis             : 
-#  287|     r287_5(glval<A *>) = VariableAddress[p#0]       : 
-#  287|     m287_6(A *)        = InitializeParameter[p#0]   : &:r287_5
-#  287|     r287_7(A *)        = Load                       : &:r287_5, m287_6
-#  287|     mu287_8(unknown)   = InitializeIndirection[p#0] : &:r287_7
-#  287|     v287_9(void)       = NoOp                       : 
-#  287|     v287_10(void)      = ReturnIndirection[p#0]     : &:r287_7, ~m?
-#  287|     v287_11(void)      = ReturnVoid                 : 
-#  287|     v287_12(void)      = AliasedUse                 : ~m?
-#  287|     v287_13(void)      = ExitFunction               : 
+#  287|     v287_1(void)           = EnterFunction                : 
+#  287|     mu287_2(unknown)       = AliasedDefinition            : 
+#  287|     mu287_3(unknown)       = InitializeNonLocal           : 
+#  287|     r287_4(glval<unknown>) = VariableAddress[#this]       : 
+#  287|     m287_5(glval<A>)       = InitializeParameter[#this]   : &:r287_4
+#  287|     r287_6(glval<A>)       = Load                         : &:r287_4, m287_5
+#  287|     mu287_7(A)             = InitializeIndirection[#this] : &:r287_6
+#  287|     r287_8(glval<A *>)     = VariableAddress[p#0]         : 
+#  287|     m287_9(A *)            = InitializeParameter[p#0]     : &:r287_8
+#  287|     r287_10(A *)           = Load                         : &:r287_8, m287_9
+#  287|     mu287_11(unknown)      = InitializeIndirection[p#0]   : &:r287_10
+#  287|     v287_12(void)          = NoOp                         : 
+#  287|     v287_13(void)          = ReturnIndirection[#this]     : &:r287_6, ~m?
+#  287|     v287_14(void)          = ReturnIndirection[p#0]       : &:r287_10, ~m?
+#  287|     v287_15(void)          = ReturnVoid                   : 
+#  287|     v287_16(void)          = AliasedUse                   : ~m?
+#  287|     v287_17(void)          = ExitFunction                 : 
 
 #  288| void A::A()
 #  288|   Block 0
-#  288|     v288_1(void)     = EnterFunction      : 
-#  288|     mu288_2(unknown) = AliasedDefinition  : 
-#  288|     mu288_3(unknown) = InitializeNonLocal : 
-#  288|     r288_4(glval<A>) = InitializeThis     : 
-#  288|     v288_5(void)     = NoOp               : 
-#  288|     v288_6(void)     = ReturnVoid         : 
-#  288|     v288_7(void)     = AliasedUse         : ~m?
-#  288|     v288_8(void)     = ExitFunction       : 
+#  288|     v288_1(void)           = EnterFunction                : 
+#  288|     mu288_2(unknown)       = AliasedDefinition            : 
+#  288|     mu288_3(unknown)       = InitializeNonLocal           : 
+#  288|     r288_4(glval<unknown>) = VariableAddress[#this]       : 
+#  288|     m288_5(glval<A>)       = InitializeParameter[#this]   : &:r288_4
+#  288|     r288_6(glval<A>)       = Load                         : &:r288_4, m288_5
+#  288|     mu288_7(A)             = InitializeIndirection[#this] : &:r288_6
+#  288|     v288_8(void)           = NoOp                         : 
+#  288|     v288_9(void)           = ReturnIndirection[#this]     : &:r288_6, ~m?
+#  288|     v288_10(void)          = ReturnVoid                   : 
+#  288|     v288_11(void)          = AliasedUse                   : ~m?
+#  288|     v288_12(void)          = ExitFunction                 : 
 
 #  291| Point* NewAliasing(int)
 #  291|   Block 0
@@ -1333,3 +1353,26 @@ ssa.cpp:
 #  301|     v301_12(void)          = ReturnValue                      : &:r301_11, m304_7
 #  301|     v301_13(void)          = AliasedUse                       : ~m?
 #  301|     v301_14(void)          = ExitFunction                     : 
+
+#  310| void ThisAliasTest::setX(int)
+#  310|   Block 0
+#  310|     v310_1(void)                 = EnterFunction                : 
+#  310|     mu310_2(unknown)             = AliasedDefinition            : 
+#  310|     mu310_3(unknown)             = InitializeNonLocal           : 
+#  310|     r310_4(glval<unknown>)       = VariableAddress[#this]       : 
+#  310|     m310_5(glval<ThisAliasTest>) = InitializeParameter[#this]   : &:r310_4
+#  310|     r310_6(glval<ThisAliasTest>) = Load                         : &:r310_4, m310_5
+#  310|     mu310_7(ThisAliasTest)       = InitializeIndirection[#this] : &:r310_6
+#  310|     r310_8(glval<int>)           = VariableAddress[arg]         : 
+#  310|     m310_9(int)                  = InitializeParameter[arg]     : &:r310_8
+#  311|     r311_1(glval<int>)           = VariableAddress[arg]         : 
+#  311|     r311_2(int)                  = Load                         : &:r311_1, m310_9
+#  311|     r311_3(glval<unknown>)       = VariableAddress[#this]       : 
+#  311|     r311_4(ThisAliasTest *)      = Load                         : &:r311_3, m310_5
+#  311|     r311_5(glval<int>)           = FieldAddress[x]              : r311_4
+#  311|     mu311_6(int)                 = Store                        : &:r311_5, r311_2
+#  312|     v312_1(void)                 = NoOp                         : 
+#  310|     v310_10(void)                = ReturnIndirection[#this]     : &:r310_6, ~m?
+#  310|     v310_11(void)                = ReturnVoid                   : 
+#  310|     v310_12(void)                = AliasedUse                   : ~m?
+#  310|     v310_13(void)                = ExitFunction                 : 

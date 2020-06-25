@@ -1315,4 +1315,11 @@ int shortCircuitConditional(int x, int y) {
     return predicateA() && predicateB() ? x : y;
 }
 
+void *operator new(size_t, void *) noexcept;
+
+void f(int* p)
+{
+  new (p) int;
+}
+
 // semmle-extractor-options: -std=c++17 --clang

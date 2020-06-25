@@ -25,8 +25,8 @@ public:
 
 void bar(Foo &f)
 {
-    sink(f.a()); //$ast=39:12 $ast=41:12 $f-:ir
-    sink(f.b()); //$ast=40:12 $ast=42:12 $f-:ir
+    sink(f.a()); //$ast=39:12 $ast=41:12 $ir=39:12 $ir=41:12
+    sink(f.b()); //$ast=40:12 $ast=42:12 $ir=40:12 $ir=42:12
 }
 
 void foo()
@@ -81,7 +81,7 @@ struct C2
 
     void m() {
         f2.f1 = user_input();
-        sink(getf2f1()); //$ast $f-:ir
+        sink(getf2f1()); //$ast,ir
     }
 };
 

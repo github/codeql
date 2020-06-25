@@ -48,25 +48,25 @@ struct S {
 void test_setDirectly() {
   S s;
   s.setDirectly(user_input());
-  sink(s.getDirectly()); // $ast $f-:ir
+  sink(s.getDirectly()); // $ast $ir
 }
 
 void test_setIndirectly() {
   S s;
   s.setIndirectly(user_input());
-  sink(s.getIndirectly()); // $ast $f-:ir
+  sink(s.getIndirectly()); // $ast $ir
 }
 
 void test_setThroughNonMember() {
   S s;
   s.setThroughNonMember(user_input());
-  sink(s.getThroughNonMember()); // $ast $f-:ir
+  sink(s.getThroughNonMember()); // $ast $ir
 }
 
 void test_nonMemberSetA() {
   S s;
   nonMemberSetA(&s, user_input());
-  sink(nonMemberGetA(&s)); // $ast $f-:ir
+  sink(nonMemberGetA(&s)); // $ast,ir
 }
 
 ////////////////////

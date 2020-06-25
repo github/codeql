@@ -267,6 +267,12 @@ module TaintTracking {
       pred = DataFlow::valueNode(fos.getIterationDomain()) and
       succ = DataFlow::lvalueNode(fos.getLValue())
     )
+    or
+    // taint-tracking rest patterns in l-values. E.g. `const {...spread} = foo()` or `const [...spread] = foo()`.
+    exists(DestructuringPattern pattern |
+      pred = DataFlow::lvalueNode(pattern) and
+      succ = DataFlow::lvalueNode(pattern.getRest())
+    )
   }
 
   /**
@@ -827,6 +833,29 @@ module TaintTracking {
     override predicate appliesTo(Configuration cfg) { any() }
   }
 
+  /** A check of the form `type x === "undefined"`, which sanitized `x` in its "then" branch. */
+  class TypeOfUndefinedSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
+    Expr x;
+    override EqualityTest astNode;
+
+    TypeOfUndefinedSanitizer() {
+      exists(StringLiteral str, TypeofExpr typeof | astNode.hasOperands(str, typeof) |
+        str.getValue() = "undefined" and
+        typeof.getOperand() = x
+      )
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e) {
+      outcome = astNode.getPolarity() and
+      e = x
+    }
+
+    override predicate appliesTo(Configuration cfg) { any() }
+  }
+
+  /** DEPRECATED. This class has been renamed to `MembershipTestSanitizer`. */
+  deprecated class StringInclusionSanitizer = MembershipTestSanitizer;
+
   /**
    * A test of form `x.length === "0"`, preventing `x` from being tainted.
    */
@@ -849,18 +878,19 @@ module TaintTracking {
     override predicate appliesTo(Configuration cfg) { any() }
   }
 
-  /** DEPRECATED. This class has been renamed to `InclusionSanitizer`. */
-  deprecated class StringInclusionSanitizer = InclusionSanitizer;
+  /** DEPRECATED. This class has been renamed to `MembershipTestSanitizer`. */
+  deprecated class InclusionSanitizer = MembershipTestSanitizer;
 
-  /** A check of the form `whitelist.includes(x)` or equivalent, which sanitizes `x` in its "then" branch. */
-  class InclusionSanitizer extends AdditionalSanitizerGuardNode {
-    InclusionTest inclusion;
+  /**
+   * A check of the form `whitelist.includes(x)` or equivalent, which sanitizes `x` in its "then" branch.
+   */
+  class MembershipTestSanitizer extends AdditionalSanitizerGuardNode {
+    MembershipCandidate candidate;
 
-    InclusionSanitizer() { this = inclusion }
+    MembershipTestSanitizer() { this = candidate.getTest() }
 
     override predicate sanitizes(boolean outcome, Expr e) {
-      outcome = inclusion.getPolarity() and
-      e = inclusion.getContainedNode().asExpr()
+      candidate = e.flow() and candidate.getTestPolarity() = outcome
     }
 
     override predicate appliesTo(Configuration cfg) { any() }
@@ -895,8 +925,12 @@ module TaintTracking {
   /** Gets a variable that is defined exactly once. */
   private Variable singleDef() { strictcount(result.getADefinition()) = 1 }
 
-  /** A check of the form `if(x == 'some-constant')`, which sanitizes `x` in its "then" branch. */
-  class ConstantComparison extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
+  /**
+   * A check of the form `if(x == 'some-constant')`, which sanitizes `x` in its "then" branch.
+   *
+   * DEPRECATED: use `MembershipTestSanitizer` instead.
+   */
+  deprecated class ConstantComparison extends SanitizerGuardNode, DataFlow::ValueNode {
     Expr x;
     override EqualityTest astNode;
 
@@ -914,7 +948,10 @@ module TaintTracking {
       outcome = astNode.getPolarity() and x = e
     }
 
-    override predicate appliesTo(Configuration cfg) { any() }
+    /**
+     * Holds if this guard applies to the flow in `cfg`.
+     */
+    predicate appliesTo(Configuration cfg) { any() }
   }
 
   /**

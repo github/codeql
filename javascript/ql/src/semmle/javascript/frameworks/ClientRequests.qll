@@ -260,6 +260,23 @@ module ClientRequest {
     }
   }
 
+  /** An expression that is used as a credential in a request. */
+  private class AuthorizationHeader extends CredentialsExpr {
+    AuthorizationHeader() {
+      exists(DataFlow::PropWrite write | write.getPropertyName().regexpMatch("(?i)authorization") |
+        this = write.getRhs().asExpr()
+      )
+      or
+      exists(DataFlow::MethodCallNode call | call.getMethodName() = ["append", "set"] |
+        call.getNumArgument() = 2 and
+        call.getArgument(0).getStringValue().regexpMatch("(?i)authorization") and
+        this = call.getArgument(1).asExpr()
+      )
+    }
+
+    override string getCredentialsKind() { result = "authorization header" }
+  }
+
   /**
    * A model of a URL request made using an implementation of the `fetch` API.
    */
@@ -267,18 +284,14 @@ module ClientRequest {
     DataFlow::Node url;
 
     FetchUrlRequest() {
-      exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
-        (
-          moduleName = "node-fetch" or
-          moduleName = "cross-fetch" or
-          moduleName = "isomorphic-fetch"
-        ) and
-        callee = DataFlow::moduleImport(moduleName) and
+      exists(DataFlow::SourceNode fetch |
+        fetch = DataFlow::moduleImport(["node-fetch", "cross-fetch", "isomorphic-fetch"])
+        or
+        fetch = DataFlow::globalVarRef("fetch") // https://fetch.spec.whatwg.org/#fetch-api
+      |
+        this = fetch.getACall() and
         url = getArgument(0)
       )
-      or
-      this = DataFlow::globalVarRef("fetch").getACall() and
-      url = getArgument(0)
     }
 
     override DataFlow::Node getUrl() { result = url }
@@ -601,6 +614,47 @@ module ClientRequest {
 
     override DataFlow::Node getUrl() {
       result = getArgument(optionsArg).getALocalSource().getAPropertyWrite("url").getRhs()
+    }
+
+    override DataFlow::Node getHost() { none() }
+
+    override DataFlow::Node getADataNode() { none() }
+  }
+
+  /**
+   * A call to `nugget` that downloads one of more files to a destination determined by an options object given as the second argument.
+   */
+  class Nugget extends ClientRequest::Range, DataFlow::CallNode {
+    Nugget() { this = DataFlow::moduleImport("nugget").getACall() }
+
+    override DataFlow::Node getUrl() { result = getArgument(0) }
+
+    override DataFlow::Node getHost() { none() }
+
+    override DataFlow::Node getADataNode() { none() }
+  }
+
+  /**
+   * A shell execution of `curl` that downloads some file.
+   */
+  class CurlDownload extends ClientRequest::Range {
+    SystemCommandExecution cmd;
+
+    CurlDownload() {
+      this = cmd and
+      (
+        cmd.getACommandArgument().getStringValue() = "curl" or
+        cmd
+            .getACommandArgument()
+            .(StringOps::ConcatenationRoot)
+            .getConstantStringParts()
+            .regexpMatch("curl .*")
+      )
+    }
+
+    override DataFlow::Node getUrl() {
+      result = cmd.getArgumentList().getALocalSource().getAPropertyWrite().getRhs() or
+      result = cmd.getACommandArgument().(StringOps::ConcatenationRoot).getALeaf()
     }
 
     override DataFlow::Node getHost() { none() }

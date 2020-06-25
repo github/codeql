@@ -664,31 +664,40 @@ class TranslatedThisExpr extends TranslatedNonConstantExpr {
   final override TranslatedElement getChild(int id) { none() }
 
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
-    tag = OnlyInstructionTag() and
-    opcode instanceof Opcode::CopyValue and
+    tag = ThisAddressTag() and
+    opcode instanceof Opcode::VariableAddress and
+    resultType = getTypeForGLValue(any(UnknownType t))
+    or
+    tag = ThisLoadTag() and
+    opcode instanceof Opcode::Load and
     resultType = getResultType()
   }
 
-  final override Instruction getResult() { result = getInstruction(OnlyInstructionTag()) }
+  final override Instruction getResult() { result = getInstruction(ThisLoadTag()) }
 
-  final override Instruction getFirstInstruction() { result = getInstruction(OnlyInstructionTag()) }
+  final override Instruction getFirstInstruction() { result = getInstruction(ThisAddressTag()) }
 
   final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     kind instanceof GotoEdge and
-    tag = OnlyInstructionTag() and
+    tag = ThisAddressTag() and
+    result = getInstruction(ThisLoadTag())
+    or
+    kind instanceof GotoEdge and
+    tag = ThisLoadTag() and
     result = getParent().getChildSuccessor(this)
   }
 
   final override Instruction getChildSuccessor(TranslatedElement child) { none() }
 
   final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = OnlyInstructionTag() and
-    operandTag instanceof UnaryOperandTag and
-    result = getInitializeThisInstruction()
+    tag = ThisLoadTag() and
+    operandTag instanceof AddressOperandTag and
+    result = getInstruction(ThisAddressTag())
   }
 
-  private Instruction getInitializeThisInstruction() {
-    result = getTranslatedFunction(expr.getEnclosingFunction()).getInitializeThisInstruction()
+  override IRVariable getInstructionVariable(InstructionTag tag) {
+    tag = ThisAddressTag() and
+    result = this.getEnclosingFunction().getThisVariable()
   }
 }
 
@@ -1689,7 +1698,8 @@ class TranslatedAllocatorCall extends TTranslatedAllocatorCall, TranslatedDirect
     else
       if index = 1 and expr.hasAlignedAllocation()
       then result = getTranslatedExpr(expr.getAlignmentArgument())
-      else result = getTranslatedExpr(expr.getAllocatorCall().getArgument(index))
+      else
+        result = getTranslatedExpr(expr.getAllocatorCall().getArgument(index).getFullyConverted())
   }
 }
 

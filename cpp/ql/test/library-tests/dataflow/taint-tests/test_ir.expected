@@ -1,8 +1,38 @@
+| format.cpp:157:7:157:22 | (int)... | format.cpp:147:12:147:25 | call to source |
+| format.cpp:157:7:157:22 | access to array | format.cpp:147:12:147:25 | call to source |
+| format.cpp:158:7:158:27 | ... + ... | format.cpp:148:16:148:30 | call to source |
 | stl.cpp:71:7:71:7 | (const char *)... | stl.cpp:67:12:67:17 | call to source |
 | stl.cpp:71:7:71:7 | a | stl.cpp:67:12:67:17 | call to source |
+| stl.cpp:142:7:142:8 | cs | stl.cpp:137:19:137:24 | call to source |
+| stl.cpp:142:7:142:8 | cs | stl.cpp:137:19:137:26 | (const char *)... |
+| swap1.cpp:60:12:60:16 | data1 | swap1.cpp:58:15:58:20 | call to source |
+| swap1.cpp:65:12:65:16 | data1 | swap1.cpp:58:15:58:20 | call to source |
+| swap1.cpp:66:12:66:16 | data1 | swap1.cpp:58:15:58:20 | call to source |
+| swap1.cpp:70:13:70:17 | data1 | swap1.cpp:69:16:69:21 | call to source |
+| swap1.cpp:75:13:75:17 | data1 | swap1.cpp:69:16:69:21 | call to source |
+| swap1.cpp:84:12:84:16 | data1 | swap1.cpp:82:15:82:20 | call to source |
+| swap1.cpp:89:12:89:16 | data1 | swap1.cpp:82:15:82:20 | call to source |
+| swap1.cpp:90:12:90:16 | data1 | swap1.cpp:82:15:82:20 | call to source |
+| swap1.cpp:98:20:98:24 | data1 | swap1.cpp:96:23:96:28 | call to source |
+| swap1.cpp:102:18:102:22 | data1 | swap1.cpp:96:23:96:28 | call to source |
+| swap2.cpp:60:12:60:16 | data1 | swap2.cpp:58:15:58:20 | call to source |
+| swap2.cpp:65:12:65:16 | data1 | swap2.cpp:58:15:58:20 | call to source |
+| swap2.cpp:66:12:66:16 | data1 | swap2.cpp:58:15:58:20 | call to source |
+| swap2.cpp:70:13:70:17 | data1 | swap2.cpp:69:16:69:21 | call to source |
+| swap2.cpp:75:13:75:17 | data1 | swap2.cpp:69:16:69:21 | call to source |
+| swap2.cpp:84:12:84:16 | data1 | swap2.cpp:82:15:82:20 | call to source |
+| swap2.cpp:89:12:89:16 | data1 | swap2.cpp:82:15:82:20 | call to source |
+| swap2.cpp:90:12:90:16 | data1 | swap2.cpp:82:15:82:20 | call to source |
+| swap2.cpp:98:20:98:24 | data1 | swap2.cpp:96:23:96:28 | call to source |
+| swap2.cpp:102:18:102:22 | data1 | swap2.cpp:96:23:96:28 | call to source |
 | taint.cpp:8:8:8:13 | clean1 | taint.cpp:4:27:4:33 | source1 |
 | taint.cpp:16:8:16:14 | source1 | taint.cpp:12:22:12:27 | call to source |
 | taint.cpp:17:8:17:16 | ++ ... | taint.cpp:12:22:12:27 | call to source |
+| taint.cpp:89:11:89:11 | b | taint.cpp:71:22:71:27 | call to source |
+| taint.cpp:90:11:90:11 | c | taint.cpp:72:7:72:12 | call to source |
+| taint.cpp:91:11:91:11 | d | taint.cpp:77:7:77:12 | call to source |
+| taint.cpp:93:11:93:11 | b | taint.cpp:71:22:71:27 | call to source |
+| taint.cpp:94:11:94:11 | c | taint.cpp:72:7:72:12 | call to source |
 | taint.cpp:109:7:109:13 | access to array | taint.cpp:105:12:105:17 | call to source |
 | taint.cpp:110:7:110:13 | access to array | taint.cpp:105:12:105:17 | call to source |
 | taint.cpp:111:7:111:13 | access to array | taint.cpp:106:12:106:17 | call to source |
@@ -13,10 +43,15 @@
 | taint.cpp:151:7:151:12 | call to select | taint.cpp:151:20:151:25 | call to source |
 | taint.cpp:167:8:167:13 | call to source | taint.cpp:167:8:167:13 | call to source |
 | taint.cpp:168:8:168:14 | tainted | taint.cpp:164:19:164:24 | call to source |
+| taint.cpp:181:8:181:9 | * ... | taint.cpp:185:11:185:16 | call to source |
 | taint.cpp:210:7:210:7 | x | taint.cpp:207:6:207:11 | call to source |
 | taint.cpp:215:7:215:7 | x | taint.cpp:207:6:207:11 | call to source |
 | taint.cpp:216:7:216:7 | y | taint.cpp:207:6:207:11 | call to source |
+| taint.cpp:229:3:229:6 | t | taint.cpp:223:10:223:15 | call to source |
+| taint.cpp:233:8:233:8 | call to operator() | taint.cpp:223:10:223:15 | call to source |
+| taint.cpp:244:3:244:6 | t | taint.cpp:223:10:223:15 | call to source |
 | taint.cpp:250:8:250:8 | a | taint.cpp:223:10:223:15 | call to source |
+| taint.cpp:256:8:256:8 | (reference dereference) | taint.cpp:223:10:223:15 | call to source |
 | taint.cpp:280:7:280:7 | t | taint.cpp:275:6:275:11 | call to source |
 | taint.cpp:289:7:289:7 | t | taint.cpp:275:6:275:11 | call to source |
 | taint.cpp:290:7:290:7 | x | taint.cpp:275:6:275:11 | call to source |

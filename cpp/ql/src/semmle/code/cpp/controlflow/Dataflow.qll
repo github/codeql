@@ -15,14 +15,25 @@ import Dereferenced
 abstract class DataflowAnnotation extends string {
   DataflowAnnotation() { this = "pointer-null" or this = "pointer-valid" }
 
+  /** Holds if this annotation is the default annotation. */
   abstract predicate isDefault();
 
+  /** Holds if this annotation is generated when analyzing expression `e`. */
   abstract predicate generatedOn(Expr e);
 
+  /**
+   * Holds if this annotation is generated for the variable `v` when
+   * the control-flow edge `(src, dest)` is taken.
+   */
   abstract predicate generatedBy(LocalScopeVariable v, ControlFlowNode src, ControlFlowNode dest);
 
+  /**
+   * Holds if this annotation is removed for the variable `v` when
+   * the control-flow edge `(src, dest)` is taken.
+   */
   abstract predicate killedBy(LocalScopeVariable v, ControlFlowNode src, ControlFlowNode dest);
 
+  /** Holds if expression `e` is given this annotation. */
   predicate marks(Expr e) {
     this.generatedOn(e) and reachable(e)
     or
@@ -31,6 +42,7 @@ abstract class DataflowAnnotation extends string {
     exists(LocalScopeVariable v | this.marks(v, e) and e = v.getAnAccess())
   }
 
+  /** Holds if the variable `v` accessed in control-flow node `n` is given this annotation. */
   predicate marks(LocalScopeVariable v, ControlFlowNode n) {
     v.getAnAccess().getEnclosingFunction().getBlock() = n and
     this.isDefault()
@@ -57,6 +69,10 @@ abstract class DataflowAnnotation extends string {
     )
   }
 
+  /**
+   * Holds if the variable `v` preserves this annotation when the control-flow
+   * edge `(src, dest)` is taken.
+   */
   predicate preservedBy(LocalScopeVariable v, ControlFlowNode src, ControlFlowNode dest) {
     this.marks(v, src) and
     src.getASuccessor() = dest and
@@ -64,6 +80,10 @@ abstract class DataflowAnnotation extends string {
     not v.getAnAssignment() = src
   }
 
+  /**
+   * Holds if the variable `v` is assigned this annotation when `src` is an assignment
+   * expression that assigns to `v` and the control-flow edge `(src, dest)` is taken.
+   */
   predicate assignedBy(LocalScopeVariable v, ControlFlowNode src, ControlFlowNode dest) {
     this.marks(src.(AssignExpr).getRValue()) and
     src = v.getAnAssignment() and

@@ -23,3 +23,7 @@ def sudo(command, shell=True, pty=True, combine_stderr=None, user=None,
     quiet=False, warn_only=False, stdout=None, stderr=None, group=None,
     timeout=None, shell_escape=None, capture_buffer_size=None):
     pass
+
+# https://github.com/fabric/fabric/blob/1.14/fabric/tasks.py#L281
+def execute(task, *args, **kwargs):
+    pass

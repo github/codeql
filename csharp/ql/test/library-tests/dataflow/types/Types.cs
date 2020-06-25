@@ -128,4 +128,28 @@ class Types
     }
 
     static object Through(object x) => x;
+
+    class FieldA
+    {
+        public object Field;
+
+        public virtual void M() { }
+
+        public void CallM() => this.M();
+
+        static void M1(FieldB b, FieldC c)
+        {
+            b.Field = new object();
+            b.CallM(); // no flow
+            c.Field = new object();
+            c.CallM(); // flow
+        }
+    }
+
+    class FieldB : FieldA { }
+
+    class FieldC : FieldA
+    {
+        public override void M() => Sink(this.Field);
+    }
 }

@@ -13,6 +13,8 @@ The following changes in version 1.25 affect C/C++ analysis in all applications.
 
 | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
+| Uncontrolled format string (`cpp/tainted-format-string`) |  | This query is now displayed by default on LGTM. |
+| Uncontrolled format string (through global variable) (`cpp/tainted-format-string-through-global`) |  | This query is now displayed by default on LGTM. |
 
 ## Changes to libraries
 
@@ -41,4 +43,4 @@ The following changes in version 1.25 affect C/C++ analysis in all applications.
   };
   ```
 * The security pack taint tracking library (`semmle.code.cpp.security.TaintTracking`) now considers that equality checks may block the flow of taint.  This results in fewer false positive results from queries that use this library.
-
+* The length of a tainted string (such as the return value of a call to `strlen` or `strftime` with tainted parameters) is no longer itself considered tainted by the `models` library.  This leads to fewer false positive results in queries that use any of our taint libraries.
