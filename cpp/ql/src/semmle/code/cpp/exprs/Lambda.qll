@@ -1,3 +1,7 @@
+/**
+ * Provides classes for modeling lambda expressions and their captures.
+ */
+
 import semmle.code.cpp.exprs.Expr
 import semmle.code.cpp.Class
 

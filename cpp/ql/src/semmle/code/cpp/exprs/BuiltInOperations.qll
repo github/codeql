@@ -1,7 +1,12 @@
+/**
+ * Provides classes for modeling built-in operations.  Built-in operations are
+ * typically compiler specific and are used by libraries and generated code.
+ */
+
 import semmle.code.cpp.exprs.Expr
 
 /**
- * A C/C++ builtin operation. This is the root QL class encompassing
+ * A C/C++ built-in operation. This is the root QL class encompassing
  * built-in functionality.
  */
 class BuiltInOperation extends Expr, @builtin_op {

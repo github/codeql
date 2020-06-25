@@ -1,3 +1,7 @@
+/**
+ * Provides classes modeling C/C++ expressions.
+ */
+
 import semmle.code.cpp.Element
 private import semmle.code.cpp.Enclosing
 private import semmle.code.cpp.internal.ResolveClass

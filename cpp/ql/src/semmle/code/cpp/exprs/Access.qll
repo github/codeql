@@ -1,3 +1,8 @@
+/**
+ * Provides classes for modeling accesses including variable accesses, enum
+ * constant accesses and function accesses.
+ */
+
 import semmle.code.cpp.exprs.Expr
 import semmle.code.cpp.Variable
 import semmle.code.cpp.Enum

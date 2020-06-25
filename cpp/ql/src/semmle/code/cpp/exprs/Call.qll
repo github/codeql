@@ -1,3 +1,9 @@
+/**
+ * Provides classes for modeling call expressions including direct calls to
+ * functions, constructor and destructor calls, and calls made through function
+ * pointers.
+ */
+
 import semmle.code.cpp.exprs.Expr
 import semmle.code.cpp.Function
 private import semmle.code.cpp.dataflow.EscapesTree
