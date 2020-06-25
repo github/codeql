@@ -5,7 +5,7 @@
  * hope to remove the false positive.
  */
 
-import config
+import experimental.dataflow.testConfig
 
 from
   DataFlow::Node source,
