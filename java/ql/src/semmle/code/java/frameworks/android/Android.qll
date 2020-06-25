@@ -32,17 +32,38 @@ class AndroidComponent extends Class {
 /** An Android activity. */
 class AndroidActivity extends AndroidComponent {
   AndroidActivity() { this.getASupertype*().hasQualifiedName("android.app", "Activity") }
+
+  /** Holds if this Android component is configured as `exported` or has intent filters configured without `exported` explicitly disabled in an `AndroidManifest.xml` file. */
+  override predicate isExported() {
+    getAndroidComponentXmlElement().isExported()
+    or
+    not getAndroidComponentXmlElement().isNotExported() and hasIntentFilter()
+  }
 }
 
 /** An Android service. */
 class AndroidService extends AndroidComponent {
   AndroidService() { this.getASupertype*().hasQualifiedName("android.app", "Service") }
+
+  /** Holds if this Android component is configured as `exported` or has intent filters configured without `exported` explicitly disabled in an `AndroidManifest.xml` file. */
+  override predicate isExported() {
+    getAndroidComponentXmlElement().isExported()
+    or
+    not getAndroidComponentXmlElement().isNotExported() and hasIntentFilter()
+  }
 }
 
 /** An Android broadcast receiver. */
 class AndroidBroadcastReceiver extends AndroidComponent {
   AndroidBroadcastReceiver() {
     this.getASupertype*().hasQualifiedName("android.content", "BroadcastReceiver")
+  }
+
+  /** Holds if this Android component is configured as `exported` or has intent filters configured without `exported` explicitly disabled in an `AndroidManifest.xml` file. */
+  override predicate isExported() {
+    getAndroidComponentXmlElement().isExported()
+    or
+    not getAndroidComponentXmlElement().isNotExported() and hasIntentFilter()
   }
 }
 
