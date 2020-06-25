@@ -1,3 +1,7 @@
+/**
+ * Provides classes for modeling variables and their declarations.
+ */
+
 import semmle.code.cpp.Element
 import semmle.code.cpp.exprs.Access
 import semmle.code.cpp.Initializer

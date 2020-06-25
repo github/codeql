@@ -1,3 +1,7 @@
+/**
+ * Provides classes for modeling `union`s.
+ */
+
 import semmle.code.cpp.Type
 import semmle.code.cpp.Struct
 
