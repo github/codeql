@@ -1,5 +1,8 @@
 /**
  * Provides classes representing individual opcodes.
+ *
+ * See ECMA-335 (http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-335.pdf)
+ * pages 32-101 for a detailed explanation of these instructions.
  */
 
 private import CIL
@@ -365,7 +368,7 @@ module Opcodes {
     override string getOpcodeName() { result = "bge" }
   }
 
-  /** A `bne.un` instruction. */
+  /** A `bne.un.s` instruction. */
   class Bne_un_s extends BinaryBranch, @cil_bne_un_s {
     override string getOpcodeName() { result = "bne.un.s" }
   }
@@ -407,7 +410,7 @@ module Opcodes {
 
   /** A `bgt.in.s` instruction. */
   class Bgt_in_s extends BinaryBranch, @cil_bgt_un_s {
-    override string getOpcodeName() { result = "bgt.un.s" }
+    override string getOpcodeName() { result = "bgt.in.s" }
   }
 
   /** A `bge.in.s` instruction. */
@@ -466,7 +469,7 @@ module Opcodes {
 
   /** A `clt.un` instruction. */
   class Clt_un extends ComparisonOperation, @cil_clt_un {
-    override string getOpcodeName() { result = "cgt.un" }
+    override string getOpcodeName() { result = "clt.un" }
   }
 
   /** A `clt` instruction. */
@@ -853,7 +856,7 @@ module Opcodes {
     override Type getType() { result = getAccess() }
   }
 
-  /** An `ldelem_ref` instruction. */
+  /** An `ldelem.ref` instruction. */
   class Ldelem_ref extends ReadArrayElement, @cil_ldelem_ref {
     override string getOpcodeName() { result = "ldelem.ref" }
 
@@ -1206,7 +1209,7 @@ module Opcodes {
     override DoubleType getType() { exists(result) }
   }
 
-  /** A `conv.r8.un` instruction. */
+  /** A `conv.r.un` instruction. */
   class Conv_r_un extends Conversion, @cil_conv_r_un {
     override string getOpcodeName() { result = "conv.r.un" }
 
@@ -1327,7 +1330,7 @@ module Opcodes {
 
   /** An `stind.r8` instruction. */
   class Stind_r8 extends StoreIndirect, @cil_stind_r8 {
-    override string getOpcodeName() { result = "stind.r4" }
+    override string getOpcodeName() { result = "stind.r8" }
   }
 
   /** An `stind.ref` instruction. */

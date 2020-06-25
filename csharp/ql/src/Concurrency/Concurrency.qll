@@ -15,16 +15,16 @@ private class WaitCall extends MethodCall {
 class WaitStmt extends ExprStmt {
   WaitStmt() { getExpr() instanceof WaitCall }
 
-  /** Gets the expression this wait call is waiting on. */
+  /** Gets the expression that this wait call is waiting on. */
   Expr getLock() { result = getExpr().(WaitCall).getExpr() }
 
-  /** Gets the variable this wait call is waiting on, if any. */
+  /** Gets the variable that this wait call is waiting on, if any. */
   Variable getWaitVariable() { result.getAnAccess() = getLock() }
 
   /** Holds if this wait call waits on `this`. */
   predicate isWaitThis() { getLock() instanceof ThisAccess }
 
-  /** Gets the type this wait call waits on, if any. */
+  /** Gets the type that this wait call waits on, if any. */
   Type getWaitTypeObject() { result = getLock().(TypeofExpr).getTypeAccess().getTarget() }
 }
 
@@ -44,7 +44,7 @@ private class SynchronizedMethodAttribute extends Attribute {
 private class SynchronizedMethod extends Method {
   SynchronizedMethod() { getAnAttribute() instanceof SynchronizedMethodAttribute }
 
-  /** Holds if the method locks `this`. */
+  /** Holds if this method locks `this`. */
   predicate isLockThis() { not isStatic() }
 
   /** Gets the type that is locked by this method, if any. */
