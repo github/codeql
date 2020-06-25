@@ -41,12 +41,7 @@ module XSLTInjection {
   }
 
   private predicate etreeXML(ControlFlowNode fromnode, CallNode tonode) {
-    exists(CallNode call, AttrNode atr |
-      atr = etree().getAReference().getASuccessor() and
-      // XML(text, parser=None, base_url=None)
-      atr.getName() = "XML" and
-      atr = call.getFunction()
-    |
+    exists(CallNode call | call.getFunction().(AttrNode).getObject("XML").pointsTo(etree()) |
       call.getArg(0) = fromnode and
       call = tonode
     )
