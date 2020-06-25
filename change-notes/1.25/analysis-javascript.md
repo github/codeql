@@ -98,3 +98,4 @@ The following low-precision queries are no longer run by default on LGTM (their 
   - `ParameterNode.asExpr()` and `.getAstNode()` now gets the parameter's AST node, whereas previously it had no result.
   - `Expr.flow()` now has a more meaningful result for destructuring patterns. Previously this node was disconnected from the data flow graph. Now it represents the values being destructured by the pattern.
 * The global data-flow and taint-tracking libraries now model indirect parameter accesses through the `arguments` object in some cases, which may lead to additional results from some of the security queries, particularly "Prototype pollution in utility function".
+* The predicates `Type.getProperty()` and variants of `Type.getMethod()` have been deprecated due to lack of use-cases. Looking up a named property of a static type is no longer supported, favoring faster extraction times instead.

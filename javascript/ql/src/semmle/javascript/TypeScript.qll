@@ -1649,11 +1649,9 @@ class Type extends @type {
   Type getChild(int i) { type_child(result, this, i) }
 
   /**
-   * Gets the type of the given property of this type.
-   *
-   * Note that this does not account for properties implied by index signatures.
+   * DEPRECATED. Property lookup on types is no longer supported.
    */
-  Type getProperty(string name) { type_property(this, name, result) }
+  deprecated Type getProperty(string name) { none() }
 
   /**
    * Gets the type of the string index signature on this type,
@@ -1758,33 +1756,19 @@ class Type extends @type {
   int getNumConstructorSignature() { result = count(getAConstructorSignature()) }
 
   /**
-   * Gets the last signature of the method of the given name.
-   *
-   * For overloaded methods, this is the most general version of the its
-   * signature, which covers all cases, but with less precision than the
-   * overload signatures.
-   *
-   * Use `getAMethodOverload` to get any of its overload signatures.
+   * DEPRECATED. Method lookup on types is no longer supported.
    */
-  FunctionCallSignatureType getMethod(string name) {
-    result = getProperty(name).getLastFunctionSignature()
-  }
+  deprecated FunctionCallSignatureType getMethod(string name) { none() }
 
   /**
-   * Gets the `n`th overload signature of the given method.
+   * DEPRECATED. Method lookup on types is no longer supported.
    */
-  FunctionCallSignatureType getMethodOverload(string name, int n) {
-    result = getProperty(name).getFunctionSignature(n)
-  }
+  deprecated FunctionCallSignatureType getMethodOverload(string name, int n) { none() }
 
   /**
-   * Gets a signature of the method of the given name.
-   *
-   * Overloaded methods have multiple signatures.
+   * DEPRECATED. Method lookup on types is no longer supported.
    */
-  FunctionCallSignatureType getAMethodOverload(string name) {
-    result = getProperty(name).getAFunctionSignature()
-  }
+  deprecated FunctionCallSignatureType getAMethodOverload(string name) { none() }
 
   /**
    * Repeatedly unfolds union and intersection types and gets any of the underlying types,
@@ -2638,10 +2622,11 @@ private class PromiseTypeName extends TypeName {
       name.matches("%Deferred")
     ) and
     // The `then` method should take a callback, taking an argument of type `T`.
-    exists(TypeReference self | self = getType() |
+    exists(TypeReference self, Type thenMethod | self = getType() |
       self.getNumTypeArgument() = 1 and
-      self
-          .getAMethodOverload("then")
+      type_property(self, "then", thenMethod) and
+      thenMethod
+          .getAFunctionSignature()
           .getParameter(0)
           .unfold()
           .getAFunctionSignature()
