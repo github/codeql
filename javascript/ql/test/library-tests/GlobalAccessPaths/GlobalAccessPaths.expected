@@ -67,10 +67,14 @@ test_getAReferenceTo
 | test.js:56:7:56:12 | random | random |
 | test.js:67:11:67:16 | Object | Object |
 | test.js:67:11:67:23 | Object.freeze | Object.freeze |
+| test.js:67:11:67:32 | Object. ... oo.bar) | foo.bar |
+| test.js:67:11:67:36 | Object. ... ar).baz | foo.bar.baz |
 | test.js:67:25:67:27 | foo | foo |
 | test.js:67:25:67:31 | foo.bar | foo.bar |
 | test.js:68:11:68:16 | Object | Object |
 | test.js:68:11:68:21 | Object.seal | Object.seal |
+| test.js:68:11:68:30 | Object.seal(foo.bar) | foo.bar |
+| test.js:68:11:68:34 | Object. ... ar).baz | foo.bar.baz |
 | test.js:68:23:68:25 | foo | foo |
 | test.js:68:23:68:29 | foo.bar | foo.bar |
 | test.js:69:6:69:15 | O | Object |

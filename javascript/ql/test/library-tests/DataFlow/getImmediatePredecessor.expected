@@ -151,3 +151,4 @@
 | tst.js:111:7:111:9 | v2a | tst.js:111:6:111:38 | v2a |
 | tst.js:111:36:111:38 | o2d | tst.js:111:6:111:32 | [v2a, v ...  = o2c] |
 | tst.js:115:1:115:12 | reflective call | tst.js:115:1:115:12 | Array.call() |
+| tst.js:117:22:117:23 | x1 | tst.js:117:10:117:24 | Object.seal(x1) |
