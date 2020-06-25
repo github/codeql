@@ -59,7 +59,7 @@ class Node extends TIRDataFlowNode {
 
   /**
    * Gets the variable corresponding to this node, if any. This can be used for
-   * modelling flow in and out of global variables.
+   * modeling flow in and out of global variables.
    */
   Variable asVariable() { result = this.(VariableNode).getVariable() }
 
@@ -402,7 +402,7 @@ private class ArgumentIndirectionNode extends InstructionNode {
 /**
  * A `Node` corresponding to a variable in the program, as opposed to the
  * value of that variable at some particular point. This can be used for
- * modelling flow in and out of global variables.
+ * modeling flow in and out of global variables.
  */
 class VariableNode extends Node, TVariableNode {
   Variable v;

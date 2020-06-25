@@ -1,5 +1,5 @@
 /**
- * Provides classes for modelling writing of data to files through various standard mechanisms such as `fprintf`, `fwrite` and `operator<<`.
+ * Provides classes for modeling writing of data to files through various standard mechanisms such as `fprintf`, `fwrite` and `operator<<`.
  */
 
 import cpp
