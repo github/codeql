@@ -2,9 +2,11 @@ import java
 import semmle.code.java.controlflow.Guards
 
 abstract class PathCreation extends Expr {
+  /** Gets an input that is used in the creation of this path. */
   abstract Expr getInput();
 }
 
+/** Models the `java.nio.file.Paths.get` method. */
 class PathsGet extends PathCreation, MethodAccess {
   PathsGet() {
     exists(Method m | m = this.getMethod() |
@@ -16,6 +18,7 @@ class PathsGet extends PathCreation, MethodAccess {
   override Expr getInput() { result = this.getAnArgument() }
 }
 
+/** Models the `java.nio.file.FileSystem.getPath` method. */
 class FileSystemGetPath extends PathCreation, MethodAccess {
   FileSystemGetPath() {
     exists(Method m | m = this.getMethod() |
@@ -27,6 +30,7 @@ class FileSystemGetPath extends PathCreation, MethodAccess {
   override Expr getInput() { result = this.getAnArgument() }
 }
 
+/** Models the `new java.io.File(...)` constructor. */
 class FileCreation extends PathCreation, ClassInstanceExpr {
   FileCreation() { this.getConstructedType() instanceof TypeFile }
 
@@ -37,6 +41,7 @@ class FileCreation extends PathCreation, ClassInstanceExpr {
   }
 }
 
+/** Models the `new java.io.FileWriter(...)` constructor. */
 class FileWriterCreation extends PathCreation, ClassInstanceExpr {
   FileWriterCreation() { this.getConstructedType().getQualifiedName() = "java.io.FileWriter" }
 

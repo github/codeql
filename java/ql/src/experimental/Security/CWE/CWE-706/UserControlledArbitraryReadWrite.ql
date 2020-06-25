@@ -108,6 +108,7 @@ class SensitiveFileOperationSink extends DataFlow::ExprNode {
   }
 }
 
+/** Holds if `node1` is used in the creation of `node2` and not guarded. */
 predicate usedInPathCreation(DataFlow::Node node1, DataFlow::Node node2) {
   exists(Expr e | e = node1.asExpr() |
     e = node2.asExpr().(PathCreation).getInput() and not guarded(e)
