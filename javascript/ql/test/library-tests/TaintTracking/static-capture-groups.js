@@ -8,13 +8,13 @@ function test(x) {
     if (/Foo (.*)/.exec(x)) {
         sink(RegExp.$1); // OK
     } else {
-        sink(RegExp.$1); // NOT OK - previous capture group remains
+        sink(RegExp.$1); // NOT OK [INCONSISTENCY] - previous capture group remains
     }
 
     if (/Hello ([a-zA-Z]+)/.exec(taint)) {
-        sink(RegExp.$1); // OK - capture group is sanitized
+        sink(RegExp.$1); // OK [INCONSISTENCY] - capture group is sanitized
     } else {
-        sink(RegExp.$1); // NOT OK - original capture group possibly remains
+        sink(RegExp.$1); // NOT OK [found but for the wrong reason] - original capture group possibly remains
     }
 
     if (/Hello (.*)/.exec(taint) && something()) {
