@@ -1,4 +1,4 @@
-/** INTERNAL - Methods used for queries relating to the correct invocation of functions. */
+/** INTERNAL - Methods used by queries that test whether functions are invoked correctly.  */
 
 import python
 import Testing.Mox

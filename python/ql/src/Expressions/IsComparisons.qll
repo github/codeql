@@ -1,8 +1,8 @@
-/** INTERNAL - Helper predicates for queries concerning comparison of objects using `is`. */
+/** INTERNAL - Helper predicates for queries that inspect the comparison of objects using `is`. */
 
 import python
 
-/** Holds if `comp` uses `is` or `is not` (represented as `op`) to compare its `left` and `right` arguments. */
+/** Holds if the comparison `comp` uses `is` or `is not` (represented as `op`) to compare its `left` and `right` arguments. */
 predicate comparison_using_is(Compare comp, ControlFlowNode left, Cmpop op, ControlFlowNode right) {
     exists(CompareNode fcomp | fcomp = comp.getAFlowNode() |
         fcomp.operands(left, op, right) and
@@ -41,7 +41,7 @@ predicate invalid_to_use_is_portably(ClassValue c) {
     not probablySingleton(c)
 }
 
-/** Holds if `f` points to either `True`, `False`, or `None`. */
+/** Holds if the control flow node `f` points to either `True`, `False`, or `None`. */
 predicate simple_constant(ControlFlowNode f) {
     exists(Value val | f.pointsTo(val) |
         val = Value::named("True") or val = Value::named("False") or val = Value::named("None")
@@ -102,8 +102,7 @@ private predicate comparison_one_type(Compare comp, Cmpop op, ClassValue cls) {
 }
 
 /**
- * Holds if the comparison `comp` (with operator `op`) is an invalid comparison using `is` or `is not`
- * when applied to instances of the class `cls`.
+* Holds if using `is` or `is not` as the operator `op` in the comparison `comp` would be invalid when applied to the class `cls`.
  */
 predicate invalid_portable_is_comparison(Compare comp, Cmpop op, ClassValue cls) {
     // OK to use 'is' when defining '__eq__'

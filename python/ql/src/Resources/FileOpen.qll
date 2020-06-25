@@ -130,7 +130,7 @@ predicate function_should_close_parameter(Function func) {
     )
 }
 
-/** Holds if `f` opens a file, either directly or indirectly. */
+/** Holds if the function `f` opens a file, either directly or indirectly. */
 predicate function_opens_file(FunctionValue f) {
     f = Value::named("open")
     or
@@ -145,7 +145,7 @@ predicate function_opens_file(FunctionValue f) {
     )
 }
 
-/** Holds if `v` refers to a file opened at `open` which is subsequently returned from a function. */
+/** Holds if the variable `v` refers to a file opened at `open` which is subsequently returned from a function. */
 predicate file_is_returned(EssaVariable v, ControlFlowNode open) {
     exists(NameNode n, Return ret |
         var_is_open(v, open) and

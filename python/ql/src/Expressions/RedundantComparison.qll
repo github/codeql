@@ -1,4 +1,4 @@
-/** Helper functions for queries having to do with redundant comparisons. */
+/** Helper functions for queries that test redundant comparisons. */
 
 import python
 
@@ -11,7 +11,7 @@ class RedundantComparison extends Compare {
         )
     }
 
-    /** Holds if this comparison could be due to a missing `self.`, for example
+    /** Holds if this comparison could be redundant due to a missing `self.`, for example
      * ```python
      * foo == foo
      * ```
