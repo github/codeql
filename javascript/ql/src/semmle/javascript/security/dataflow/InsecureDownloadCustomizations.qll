@@ -40,6 +40,9 @@ module InsecureDownload {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
+  /**
+   * Flow-labels for reasoning about download of sensitive file through insecure connection.
+   */
   module Label {
     /**
      * A flow-label for file URLs that are both sensitive and downloaded over an insecure connection.
@@ -48,6 +51,9 @@ module InsecureDownload {
       SensitiveInsecureURL() { this = "sensitiveInsecure" }
     }
 
+    /**
+     * A flow-label for a URL that is downloaded over an insecure connection.
+     */
     class InsecureURL extends DataFlow::FlowLabel {
       InsecureURL() { this = "insecure" }
     }
@@ -114,7 +120,7 @@ module InsecureDownload {
   }
 
   /**
-   * Gets a node for the response from `request`, type-tracked using `t`. 
+   * Gets a node for the response from `request`, type-tracked using `t`.
    */
   DataFlow::SourceNode clientRequestResponse(DataFlow::TypeTracker t, ClientRequest request) {
     t.start() and
@@ -132,7 +138,7 @@ module InsecureDownload {
 
     FileWriteSink() {
       this = request.getUrl() and
-      clientRequestResponse(DataFlow::TypeTracker::end(), request).flowsTo(write.getADataNode())  and
+      clientRequestResponse(DataFlow::TypeTracker::end(), request).flowsTo(write.getADataNode()) and
       hasUnsafeExtension(write.getAPathArgument().getStringValue())
     }
 
