@@ -1,3 +1,8 @@
+/**
+ * Provides classes for modeling user-defined types such as classes, typedefs
+ * and enums.
+ */
+
 import semmle.code.cpp.Declaration
 import semmle.code.cpp.Type
 import semmle.code.cpp.Member
@@ -84,6 +89,9 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
    * type exactly - but this is not apparent from its subclasses
    */
 
+  /**
+   * Gets a child declaration within this user-defined type.
+   */
   Declaration getADeclaration() { none() }
 
   override string explain() { result = this.getName() }
