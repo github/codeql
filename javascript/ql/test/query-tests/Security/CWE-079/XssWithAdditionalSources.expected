@@ -331,6 +331,8 @@ nodes
 | tst.js:194:54:194:60 | tainted |
 | tst.js:195:45:195:51 | tainted |
 | tst.js:195:45:195:51 | tainted |
+| tst.js:196:49:196:55 | tainted |
+| tst.js:196:49:196:55 | tainted |
 | tst.js:200:9:200:42 | tainted |
 | tst.js:200:19:200:35 | document.location |
 | tst.js:200:19:200:35 | document.location |
@@ -753,6 +755,8 @@ edges
 | tst.js:187:9:187:42 | tainted | tst.js:194:54:194:60 | tainted |
 | tst.js:187:9:187:42 | tainted | tst.js:195:45:195:51 | tainted |
 | tst.js:187:9:187:42 | tainted | tst.js:195:45:195:51 | tainted |
+| tst.js:187:9:187:42 | tainted | tst.js:196:49:196:55 | tainted |
+| tst.js:187:9:187:42 | tainted | tst.js:196:49:196:55 | tainted |
 | tst.js:187:19:187:35 | document.location | tst.js:187:19:187:42 | documen ... .search |
 | tst.js:187:19:187:35 | document.location | tst.js:187:19:187:42 | documen ... .search |
 | tst.js:187:19:187:42 | documen ... .search | tst.js:187:9:187:42 | tainted |
