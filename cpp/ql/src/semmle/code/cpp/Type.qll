@@ -1,5 +1,5 @@
 /**
- * Provides a hierarchy of classes for modelling C/C++ types.
+ * Provides a hierarchy of classes for modeling C/C++ types.
  */
 
 import semmle.code.cpp.Element

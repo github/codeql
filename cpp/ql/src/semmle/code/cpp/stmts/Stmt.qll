@@ -1,5 +1,5 @@
 /**
- * Provides a hierarchy of classes for modelling C/C++ statements.
+ * Provides a hierarchy of classes for modeling C/C++ statements.
  */
 
 import semmle.code.cpp.Element

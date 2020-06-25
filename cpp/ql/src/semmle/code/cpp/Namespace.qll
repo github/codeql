@@ -1,5 +1,5 @@
 /**
- * Provides classes for modelling namespaces, `using` directives and `using` declarations.
+ * Provides classes for modeling namespaces, `using` directives and `using` declarations.
  */
 
 import semmle.code.cpp.Element
