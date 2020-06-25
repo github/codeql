@@ -528,16 +528,16 @@ class ArrayAggregateLiteralNode extends ExprNode {
   }
 }
 
-/**
- * Holds if `node` is printed in the PrintAST output tree and has the property `key` with the
- * value `value`.
- */
+/** Holds if `node` belongs to the output tree, and its property `key` has the given `value`. */
 query predicate nodes(PrintASTNode node, string key, string value) {
   node.shouldPrint() and
   value = node.getProperty(key)
 }
 
-/** Holds if `node` belongs to the output tree, and its property `key` has the given `value`. */
+/**
+ * Holds if `target` is a child of `source` in the AST, and property `key` of the edge has the
+ * given `value`.
+ */
 query predicate edges(PrintASTNode source, PrintASTNode target, string key, string value) {
   exists(int childIndex |
     source.shouldPrint() and
