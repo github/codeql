@@ -3,7 +3,6 @@
  */
 
 import semmle.code.cpp.Location
-import semmle.code.cpp.Member
 import semmle.code.cpp.Class
 import semmle.code.cpp.Parameter
 import semmle.code.cpp.exprs.Call

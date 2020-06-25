@@ -1,6 +1,5 @@
 import semmle.code.cpp.Declaration
 import semmle.code.cpp.Type
-import semmle.code.cpp.Member
 import semmle.code.cpp.Function
 private import semmle.code.cpp.internal.ResolveClass
 
