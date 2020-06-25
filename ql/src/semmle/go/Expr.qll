@@ -156,7 +156,7 @@ class Expr extends @expr, ExprParent {
 class BadExpr extends @badexpr, Expr {
   override string toString() { result = "bad expression" }
 
-  override string describeQlClass() { result = "BadExpr" }
+  override string getAPrimaryQlClass() { result = "BadExpr" }
 }
 
 /**
@@ -183,7 +183,7 @@ class Ident extends @ident, Expr {
 
   override string toString() { result = getName() }
 
-  override string describeQlClass() { result = "Ident" }
+  override string getAPrimaryQlClass() { result = "Ident" }
 }
 
 /**
@@ -198,7 +198,7 @@ class Ident extends @ident, Expr {
 class BlankIdent extends Ident {
   BlankIdent() { getName() = "_" }
 
-  override string describeQlClass() { result = "BlankIdent" }
+  override string getAPrimaryQlClass() { result = "BlankIdent" }
 }
 
 /**
@@ -217,7 +217,7 @@ class Ellipsis extends @ellipsis, Expr {
 
   override string toString() { result = "..." }
 
-  override string describeQlClass() { result = "Ellipsis" }
+  override string getAPrimaryQlClass() { result = "Ellipsis" }
 }
 
 /**
@@ -276,7 +276,7 @@ class BasicLit extends @basiclit, Literal {
  * ```
  */
 class IntLit extends @intlit, BasicLit {
-  override string describeQlClass() { result = "IntLit" }
+  override string getAPrimaryQlClass() { result = "IntLit" }
 }
 
 /**
@@ -289,7 +289,7 @@ class IntLit extends @intlit, BasicLit {
  * ```
  */
 class FloatLit extends @floatlit, BasicLit {
-  override string describeQlClass() { result = "FloatLit" }
+  override string getAPrimaryQlClass() { result = "FloatLit" }
 }
 
 /**
@@ -303,7 +303,7 @@ class FloatLit extends @floatlit, BasicLit {
  * ```
  */
 class ImagLit extends @imaglit, BasicLit {
-  override string describeQlClass() { result = "ImagLit" }
+  override string getAPrimaryQlClass() { result = "ImagLit" }
 }
 
 /**
@@ -327,7 +327,7 @@ class CharLit extends @charlit, BasicLit {
   // compiler is an integer, meaning we would not otherwise have a string value for rune literals
   override string getStringValue() { result = this.getValue() }
 
-  override string describeQlClass() { result = "CharLit" }
+  override string getAPrimaryQlClass() { result = "CharLit" }
 }
 
 class RuneLit = CharLit;
@@ -342,7 +342,7 @@ class RuneLit = CharLit;
  * ```
  */
 class StringLit extends @stringlit, BasicLit {
-  override string describeQlClass() { result = "StringLit" }
+  override string getAPrimaryQlClass() { result = "StringLit" }
 }
 
 /**
@@ -366,7 +366,7 @@ class FuncLit extends @funclit, Literal, StmtParent, FuncDef {
 
   override string toString() { result = "function literal" }
 
-  override string describeQlClass() { result = "FuncLit" }
+  override string getAPrimaryQlClass() { result = "FuncLit" }
 }
 
 /**
@@ -415,7 +415,7 @@ class CompositeLit extends @compositelit, Literal {
 
   override string toString() { result = "composite literal" }
 
-  override string describeQlClass() { result = "CompositeLit" }
+  override string getAPrimaryQlClass() { result = "CompositeLit" }
 }
 
 /**
@@ -440,7 +440,7 @@ class MapLit extends CompositeLit {
 
   override string toString() { result = "map literal" }
 
-  override string describeQlClass() { result = "MapLit" }
+  override string getAPrimaryQlClass() { result = "MapLit" }
 }
 
 /**
@@ -464,7 +464,7 @@ class StructLit extends CompositeLit {
 
   override string toString() { result = "struct literal" }
 
-  override string describeQlClass() { result = "StructLit" }
+  override string getAPrimaryQlClass() { result = "StructLit" }
 }
 
 /**
@@ -512,7 +512,7 @@ class ArrayLit extends ArrayOrSliceLit {
 
   override string toString() { result = "array literal" }
 
-  override string describeQlClass() { result = "ArrayLit" }
+  override string getAPrimaryQlClass() { result = "ArrayLit" }
 }
 
 /**
@@ -533,7 +533,7 @@ class SliceLit extends ArrayOrSliceLit {
 
   override string toString() { result = "slice literal" }
 
-  override string describeQlClass() { result = "SliceLit" }
+  override string getAPrimaryQlClass() { result = "SliceLit" }
 }
 
 /**
@@ -555,7 +555,7 @@ class ParenExpr extends @parenexpr, Expr {
 
   override string toString() { result = "(...)" }
 
-  override string describeQlClass() { result = "ParenExpr" }
+  override string getAPrimaryQlClass() { result = "ParenExpr" }
 }
 
 /**
@@ -587,7 +587,7 @@ class SelectorExpr extends @selectorexpr, Expr {
 
   override string toString() { result = "selection of " + getSelector() }
 
-  override string describeQlClass() { result = "SelectorExpr" }
+  override string getAPrimaryQlClass() { result = "SelectorExpr" }
 }
 
 /**
@@ -610,7 +610,7 @@ class IndexExpr extends @indexexpr, Expr {
 
   override string toString() { result = "index expression" }
 
-  override string describeQlClass() { result = "IndexExpr" }
+  override string getAPrimaryQlClass() { result = "IndexExpr" }
 }
 
 /**
@@ -638,7 +638,7 @@ class SliceExpr extends @sliceexpr, Expr {
 
   override string toString() { result = "slice expression" }
 
-  override string describeQlClass() { result = "SliceExpr" }
+  override string getAPrimaryQlClass() { result = "SliceExpr" }
 }
 
 /**
@@ -663,7 +663,7 @@ class TypeAssertExpr extends @typeassertexpr, Expr {
 
   override string toString() { result = "type assertion" }
 
-  override string describeQlClass() { result = "TypeAssertExpr" }
+  override string getAPrimaryQlClass() { result = "TypeAssertExpr" }
 }
 
 /**
@@ -682,7 +682,7 @@ class TypeAssertExpr extends @typeassertexpr, Expr {
  * ```
  */
 class CallOrConversionExpr extends @callorconversionexpr, Expr {
-  override string describeQlClass() { result = "CallOrConversionExpr" }
+  override string getAPrimaryQlClass() { result = "CallOrConversionExpr" }
 }
 
 /**
@@ -709,7 +709,7 @@ class ConversionExpr extends CallOrConversionExpr {
 
   override string toString() { result = "type conversion" }
 
-  override string describeQlClass() { result = "ConversionExpr" }
+  override string getAPrimaryQlClass() { result = "ConversionExpr" }
 }
 
 /**
@@ -767,7 +767,7 @@ class CallExpr extends CallOrConversionExpr {
     result = "function call"
   }
 
-  override string describeQlClass() { result = "CallExpr" }
+  override string getAPrimaryQlClass() { result = "CallExpr" }
 }
 
 /**
@@ -787,7 +787,7 @@ class StarExpr extends @starexpr, Expr {
 
   override string toString() { result = "star expression" }
 
-  override string describeQlClass() { result = "StarExpr" }
+  override string getAPrimaryQlClass() { result = "StarExpr" }
 }
 
 /**
@@ -811,7 +811,7 @@ class KeyValueExpr extends @keyvalueexpr, Expr {
 
   override string toString() { result = "key-value pair" }
 
-  override string describeQlClass() { result = "KeyValueExpr" }
+  override string getAPrimaryQlClass() { result = "KeyValueExpr" }
 }
 
 /**
@@ -832,7 +832,7 @@ class ArrayTypeExpr extends @arraytypeexpr, TypeExpr {
 
   override string toString() { result = "array type" }
 
-  override string describeQlClass() { result = "ArrayTypeExpr" }
+  override string getAPrimaryQlClass() { result = "ArrayTypeExpr" }
 }
 
 /**
@@ -847,7 +847,7 @@ class ArrayTypeExpr extends @arraytypeexpr, TypeExpr {
 class StructTypeExpr extends @structtypeexpr, TypeExpr, FieldParent {
   override string toString() { result = "struct type" }
 
-  override string describeQlClass() { result = "StructTypeExpr" }
+  override string getAPrimaryQlClass() { result = "StructTypeExpr" }
 }
 
 /**
@@ -883,7 +883,7 @@ class FuncTypeExpr extends @functypeexpr, TypeExpr, ScopeNode, FieldParent {
 
   override string toString() { result = "function type" }
 
-  override string describeQlClass() { result = "FuncTypeExpr" }
+  override string getAPrimaryQlClass() { result = "FuncTypeExpr" }
 }
 
 /**
@@ -907,7 +907,7 @@ class InterfaceTypeExpr extends @interfacetypeexpr, TypeExpr, FieldParent {
 
   override string toString() { result = "interface type" }
 
-  override string describeQlClass() { result = "InterfaceTypeExpr" }
+  override string getAPrimaryQlClass() { result = "InterfaceTypeExpr" }
 }
 
 /**
@@ -934,7 +934,7 @@ class MapTypeExpr extends @maptypeexpr, TypeExpr {
 
   override string toString() { result = "map type" }
 
-  override string describeQlClass() { result = "MapTypeExpr" }
+  override string getAPrimaryQlClass() { result = "MapTypeExpr" }
 }
 
 /**
@@ -1061,7 +1061,7 @@ class BitwiseUnaryExpr extends @bitwiseunaryexpr, BitwiseExpr, UnaryExpr { }
 class PlusExpr extends @plusexpr, ArithmeticUnaryExpr {
   override string getOperator() { result = "+" }
 
-  override string describeQlClass() { result = "PlusExpr" }
+  override string getAPrimaryQlClass() { result = "PlusExpr" }
 }
 
 /**
@@ -1076,7 +1076,7 @@ class PlusExpr extends @plusexpr, ArithmeticUnaryExpr {
 class MinusExpr extends @minusexpr, ArithmeticUnaryExpr {
   override string getOperator() { result = "-" }
 
-  override string describeQlClass() { result = "MinusExpr" }
+  override string getAPrimaryQlClass() { result = "MinusExpr" }
 }
 
 /**
@@ -1091,7 +1091,7 @@ class MinusExpr extends @minusexpr, ArithmeticUnaryExpr {
 class NotExpr extends @notexpr, LogicalUnaryExpr {
   override string getOperator() { result = "!" }
 
-  override string describeQlClass() { result = "NotExpr" }
+  override string getAPrimaryQlClass() { result = "NotExpr" }
 }
 
 /**
@@ -1106,7 +1106,7 @@ class NotExpr extends @notexpr, LogicalUnaryExpr {
 class ComplementExpr extends @complementexpr, BitwiseUnaryExpr {
   override string getOperator() { result = "^" }
 
-  override string describeQlClass() { result = "ComplementExpr" }
+  override string getAPrimaryQlClass() { result = "ComplementExpr" }
 }
 
 /**
@@ -1119,7 +1119,7 @@ class DerefExpr extends @derefexpr, UnaryExpr {
 
   override string getOperator() { result = "*" }
 
-  override string describeQlClass() { result = "DerefExpr" }
+  override string getAPrimaryQlClass() { result = "DerefExpr" }
 }
 
 /**
@@ -1136,7 +1136,7 @@ class AddressExpr extends @addressexpr, UnaryExpr {
 
   override string getOperator() { result = "&" }
 
-  override string describeQlClass() { result = "AddressExpr" }
+  override string getAPrimaryQlClass() { result = "AddressExpr" }
 }
 
 /**
@@ -1153,7 +1153,7 @@ class RecvExpr extends @arrowexpr, UnaryExpr {
 
   override string getOperator() { result = "<-" }
 
-  override string describeQlClass() { result = "RecvExpr" }
+  override string getAPrimaryQlClass() { result = "RecvExpr" }
 }
 
 /**
@@ -1300,7 +1300,7 @@ class RelationalComparisonExpr extends @relationalcomparison, ComparisonExpr {
 class LorExpr extends @lorexpr, LogicalBinaryExpr {
   override string getOperator() { result = "||" }
 
-  override string describeQlClass() { result = "LorExpr" }
+  override string getAPrimaryQlClass() { result = "LorExpr" }
 }
 
 class LogOrExpr = LorExpr;
@@ -1317,7 +1317,7 @@ class LogOrExpr = LorExpr;
 class LandExpr extends @landexpr, LogicalBinaryExpr {
   override string getOperator() { result = "&&" }
 
-  override string describeQlClass() { result = "LandExpr" }
+  override string getAPrimaryQlClass() { result = "LandExpr" }
 }
 
 class LogAndExpr = LandExpr;
@@ -1336,7 +1336,7 @@ class EqlExpr extends @eqlexpr, EqualityTestExpr {
 
   override boolean getPolarity() { result = true }
 
-  override string describeQlClass() { result = "EqlExpr" }
+  override string getAPrimaryQlClass() { result = "EqlExpr" }
 }
 
 class EqExpr = EqlExpr;
@@ -1355,7 +1355,7 @@ class NeqExpr extends @neqexpr, EqualityTestExpr {
 
   override boolean getPolarity() { result = false }
 
-  override string describeQlClass() { result = "NeqExpr" }
+  override string getAPrimaryQlClass() { result = "NeqExpr" }
 }
 
 /**
@@ -1376,7 +1376,7 @@ class LssExpr extends @lssexpr, RelationalComparisonExpr {
 
   override Expr getGreaterOperand() { result = getRightOperand() }
 
-  override string describeQlClass() { result = "LssExpr" }
+  override string getAPrimaryQlClass() { result = "LssExpr" }
 }
 
 class LTExpr = LssExpr;
@@ -1397,7 +1397,7 @@ class LeqExpr extends @leqexpr, RelationalComparisonExpr {
 
   override Expr getGreaterOperand() { result = getRightOperand() }
 
-  override string describeQlClass() { result = "LeqExpr" }
+  override string getAPrimaryQlClass() { result = "LeqExpr" }
 }
 
 class LEExpr = LeqExpr;
@@ -1420,7 +1420,7 @@ class GtrExpr extends @gtrexpr, RelationalComparisonExpr {
 
   override Expr getGreaterOperand() { result = getLeftOperand() }
 
-  override string describeQlClass() { result = "GtrExpr" }
+  override string getAPrimaryQlClass() { result = "GtrExpr" }
 }
 
 class GTExpr = GtrExpr;
@@ -1441,7 +1441,7 @@ class GeqExpr extends @geqexpr, RelationalComparisonExpr {
 
   override Expr getGreaterOperand() { result = getLeftOperand() }
 
-  override string describeQlClass() { result = "GeqExpr" }
+  override string getAPrimaryQlClass() { result = "GeqExpr" }
 }
 
 class GEExpr = GeqExpr;
@@ -1458,7 +1458,7 @@ class GEExpr = GeqExpr;
 class AddExpr extends @addexpr, ArithmeticBinaryExpr {
   override string getOperator() { result = "+" }
 
-  override string describeQlClass() { result = "AddExpr" }
+  override string getAPrimaryQlClass() { result = "AddExpr" }
 }
 
 /**
@@ -1473,7 +1473,7 @@ class AddExpr extends @addexpr, ArithmeticBinaryExpr {
 class SubExpr extends @subexpr, ArithmeticBinaryExpr {
   override string getOperator() { result = "-" }
 
-  override string describeQlClass() { result = "SubExpr" }
+  override string getAPrimaryQlClass() { result = "SubExpr" }
 }
 
 /**
@@ -1488,7 +1488,7 @@ class SubExpr extends @subexpr, ArithmeticBinaryExpr {
 class OrExpr extends @orexpr, BitwiseBinaryExpr {
   override string getOperator() { result = "|" }
 
-  override string describeQlClass() { result = "OrExpr" }
+  override string getAPrimaryQlClass() { result = "OrExpr" }
 }
 
 class BitOrExpr = OrExpr;
@@ -1505,7 +1505,7 @@ class BitOrExpr = OrExpr;
 class XorExpr extends @xorexpr, BitwiseBinaryExpr {
   override string getOperator() { result = "^" }
 
-  override string describeQlClass() { result = "XorExpr" }
+  override string getAPrimaryQlClass() { result = "XorExpr" }
 }
 
 /**
@@ -1520,7 +1520,7 @@ class XorExpr extends @xorexpr, BitwiseBinaryExpr {
 class MulExpr extends @mulexpr, ArithmeticBinaryExpr {
   override string getOperator() { result = "*" }
 
-  override string describeQlClass() { result = "MulExpr" }
+  override string getAPrimaryQlClass() { result = "MulExpr" }
 }
 
 /**
@@ -1537,7 +1537,7 @@ class QuoExpr extends @quoexpr, ArithmeticBinaryExpr {
 
   override string getOperator() { result = "/" }
 
-  override string describeQlClass() { result = "QuoExpr" }
+  override string getAPrimaryQlClass() { result = "QuoExpr" }
 }
 
 class DivExpr = QuoExpr;
@@ -1554,7 +1554,7 @@ class DivExpr = QuoExpr;
 class RemExpr extends @remexpr, ArithmeticBinaryExpr {
   override string getOperator() { result = "%" }
 
-  override string describeQlClass() { result = "RemExpr" }
+  override string getAPrimaryQlClass() { result = "RemExpr" }
 }
 
 class ModExpr = RemExpr;
@@ -1571,7 +1571,7 @@ class ModExpr = RemExpr;
 class ShlExpr extends @shlexpr, ShiftExpr {
   override string getOperator() { result = "<<" }
 
-  override string describeQlClass() { result = "ShlExpr" }
+  override string getAPrimaryQlClass() { result = "ShlExpr" }
 }
 
 class LShiftExpr = ShlExpr;
@@ -1588,7 +1588,7 @@ class LShiftExpr = ShlExpr;
 class ShrExpr extends @shrexpr, ShiftExpr {
   override string getOperator() { result = ">>" }
 
-  override string describeQlClass() { result = "ShrExpr" }
+  override string getAPrimaryQlClass() { result = "ShrExpr" }
 }
 
 class RShiftExpr = ShrExpr;
@@ -1605,7 +1605,7 @@ class RShiftExpr = ShrExpr;
 class AndExpr extends @andexpr, BitwiseBinaryExpr {
   override string getOperator() { result = "&" }
 
-  override string describeQlClass() { result = "AndExpr" }
+  override string getAPrimaryQlClass() { result = "AndExpr" }
 }
 
 class BitAndExpr = AndExpr;
@@ -1622,7 +1622,7 @@ class BitAndExpr = AndExpr;
 class AndNotExpr extends @andnotexpr, BitwiseBinaryExpr {
   override string getOperator() { result = "&^" }
 
-  override string describeQlClass() { result = "AndNotExpr" }
+  override string getAPrimaryQlClass() { result = "AndNotExpr" }
 }
 
 /**
@@ -1650,7 +1650,7 @@ class ChanTypeExpr extends @chantypeexpr, TypeExpr {
 
   override string toString() { result = "channel type" }
 
-  override string describeQlClass() { result = "ChanTypeExpr" }
+  override string getAPrimaryQlClass() { result = "ChanTypeExpr" }
 }
 
 /**
@@ -1665,7 +1665,7 @@ class ChanTypeExpr extends @chantypeexpr, TypeExpr {
 class SendChanTypeExpr extends @sendchantypeexpr, ChanTypeExpr {
   override predicate canSend() { any() }
 
-  override string describeQlClass() { result = "SendChanTypeExpr" }
+  override string getAPrimaryQlClass() { result = "SendChanTypeExpr" }
 }
 
 /**
@@ -1680,7 +1680,7 @@ class SendChanTypeExpr extends @sendchantypeexpr, ChanTypeExpr {
 class RecvChanTypeExpr extends @recvchantypeexpr, ChanTypeExpr {
   override predicate canReceive() { any() }
 
-  override string describeQlClass() { result = "RecvChanTypeExpr" }
+  override string getAPrimaryQlClass() { result = "RecvChanTypeExpr" }
 }
 
 /**
@@ -1697,7 +1697,7 @@ class SendRecvChanTypeExpr extends @sendrcvchantypeexpr, ChanTypeExpr {
 
   override predicate canReceive() { any() }
 
-  override string describeQlClass() { result = "SendRecvChanTypeExpr" }
+  override string getAPrimaryQlClass() { result = "SendRecvChanTypeExpr" }
 }
 
 /**
@@ -1761,7 +1761,7 @@ class PackageName extends Name {
   /** Gets the package this name refers to. */
   override PackageEntity getTarget() { result = target }
 
-  override string describeQlClass() { result = "PackageName" }
+  override string getAPrimaryQlClass() { result = "PackageName" }
 }
 
 /**
@@ -1780,7 +1780,7 @@ class TypeName extends Name {
   /** Gets the type this name refers to. */
   override TypeEntity getTarget() { result = target }
 
-  override string describeQlClass() { result = "TypeName" }
+  override string getAPrimaryQlClass() { result = "TypeName" }
 }
 
 /**
@@ -1800,7 +1800,7 @@ class ValueName extends Name {
   /** Gets the constant, variable or function this name refers to. */
   override ValueEntity getTarget() { result = target }
 
-  override string describeQlClass() { result = "ValueName" }
+  override string getAPrimaryQlClass() { result = "ValueName" }
 }
 
 /**
@@ -1831,7 +1831,7 @@ class ConstantName extends ValueName {
     )
   }
 
-  override string describeQlClass() { result = "ConstantName" }
+  override string getAPrimaryQlClass() { result = "ConstantName" }
 }
 
 /**
@@ -1849,7 +1849,7 @@ class VariableName extends ValueName {
   /** Gets the variable this name refers to. */
   override Variable getTarget() { result = target }
 
-  override string describeQlClass() { result = "VariableName" }
+  override string getAPrimaryQlClass() { result = "VariableName" }
 }
 
 /**
@@ -1867,7 +1867,7 @@ class FunctionName extends ValueName {
   /** Gets the function this name refers to. */
   override Function getTarget() { result = target }
 
-  override string describeQlClass() { result = "FunctionName" }
+  override string getAPrimaryQlClass() { result = "FunctionName" }
 }
 
 /**
@@ -1885,7 +1885,7 @@ class LabelName extends Name {
   /** Gets the label this name refers to. */
   override Label getTarget() { result = target }
 
-  override string describeQlClass() { result = "LabelName" }
+  override string getAPrimaryQlClass() { result = "LabelName" }
 }
 
 /**

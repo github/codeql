@@ -97,7 +97,7 @@ private string qlClass(AstNode el) {
   // This version shows all non-overridden QL classes:
   // result = "[" + concat(el.getAQlClass(), ", ") + "] "
   // Normally we prefer to show just the canonical class:
-  result = "[" + concat(el.describeQlClass(), ", ") + "] "
+  result = "[" + concat(el.getAPrimaryQlClass(), ", ") + "] "
 }
 
 /**
