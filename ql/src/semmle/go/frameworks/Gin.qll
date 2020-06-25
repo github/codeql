@@ -5,18 +5,18 @@
 import go
 
 private module Gin {
+  /** Gets the package name `github.com/gin-gonic/gin`. */
+  private string packagePath() { result = "github.com/gin-gonic/gin" }
+
   /**
    * Data from a `Context` struct, considered as a source of untrusted flow.
    */
   private class GithubComGinGonicGinContextSource extends UntrustedFlowSource::Range {
     GithubComGinGonicGinContextSource() {
-      exists(string packagePath, string typeName |
-        packagePath = "github.com/gin-gonic/gin" and
-        typeName = "Context"
-      |
+      exists(string typeName | typeName = "Context" |
         // Method calls:
         exists(DataFlow::MethodCallNode call, string methodName |
-          call.getTarget().hasQualifiedName(packagePath, typeName, methodName) and
+          call.getTarget().hasQualifiedName(packagePath(), typeName, methodName) and
           (
             methodName = "FullPath"
             or
@@ -76,46 +76,26 @@ private module Gin {
         or
         // Field reads:
         exists(DataFlow::Field fld |
-          fld.hasQualifiedName(packagePath, typeName, ["Accepted", "Params"]) and
+          fld.hasQualifiedName(packagePath(), typeName, ["Accepted", "Params"]) and
           this = fld.getARead()
         )
       )
     }
   }
 
-  /**
-   * Data from a `Params` slice, considered as a source of untrusted flow.
-   */
-  private class GithubComGinGonicGinParamsSource extends UntrustedFlowSource::Range {
-    GithubComGinGonicGinParamsSource() {
-      exists(string packagePath, string typeName |
-        packagePath = "github.com/gin-gonic/gin" and
-        typeName = "Params"
-      |
-        // Method calls:
-        exists(DataFlow::MethodCallNode call |
-          call.getTarget().hasQualifiedName(packagePath, typeName, ["ByName", "Get"])
-        |
-          this = call.getResult(0)
-        )
-      )
+  private class ParamsGet extends TaintTracking::FunctionModel, Method {
+    ParamsGet() { this.hasQualifiedName(packagePath(), "Params", "Get") }
+
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
+      inp.isReceiver() and outp.isResult(0)
     }
   }
 
-  /**
-   * Data from a `Param` struct, considered as a source of untrusted flow.
-   */
-  private class GithubComGinGonicGinParamSource extends UntrustedFlowSource::Range {
-    GithubComGinGonicGinParamSource() {
-      exists(string packagePath, string typeName |
-        packagePath = "github.com/gin-gonic/gin" and
-        typeName = "Param"
-      |
-        // Field reads:
-        exists(DataFlow::Field fld | fld.hasQualifiedName(packagePath, typeName, ["Key", "Value"]) |
-          this = fld.getARead()
-        )
-      )
+  private class ParamsByName extends TaintTracking::FunctionModel, Method {
+    ParamsByName() { this.hasQualifiedName(packagePath(), "Params", "ByName") }
+
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
+      inp.isReceiver() and outp.isResult()
     }
   }
 
@@ -124,12 +104,9 @@ private module Gin {
    */
   private class GithubComGinGonicGinContextBindSource extends UntrustedFlowSource::Range {
     GithubComGinGonicGinContextBindSource() {
-      exists(string packagePath, string typeName |
-        packagePath = "github.com/gin-gonic/gin" and
-        typeName = "Context"
-      |
+      exists(string typeName | typeName = "Context" |
         exists(DataFlow::MethodCallNode call, string methodName |
-          call.getTarget().hasQualifiedName(packagePath, typeName, methodName) and
+          call.getTarget().hasQualifiedName(packagePath(), typeName, methodName) and
           (
             methodName = "BindJSON" or
             methodName = "BindYAML" or
