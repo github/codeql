@@ -106,4 +106,34 @@ predicate isUnlikelySink(DataFlow::Node n) {
   exists(PromiseDefinition p |
     n = [p.getResolveParameter(), p.getRejectParameter()].getACall().getAnArgument()
   )
+  or
+  n instanceof CryptographicKey or
+  exists(DataFlow::CallNode call | n = call.getAnArgument() |
+    exists(string name | name = call.getCalleeName() |
+      name.regexpMatch("(?i).*(escape|validate|sanitize|purify).*") or
+      name =
+        ["indexOf", "hasOwnProperty", "substring", "isDecimal", "decode", "encode", "keys",
+            "values", "forEach", "toString", "slice", "splice", "push", "isArray"]
+    )
+    or
+    exists(DataFlow::SourceNode builtin |
+      builtin = DataFlow::globalVarRef(["Object", "Array", "Number", "String", "Error", "Math"])
+    |
+      builtin.getAMemberCall(_) = call or builtin.getAnInvocation() = call
+    )
+    or
+    any(DataFlow::ArrayCreationNode a).getAMethodCall() = call
+    or
+    call instanceof StringOps::StartsWith
+    or
+    call instanceof StringOps::EndsWith
+    or
+    call instanceof StringOps::RegExpTest
+    or
+    call instanceof EventRegistration
+    or
+    call instanceof EventDispatch
+    or
+    call = any(MembershipCandidate c).getTest()
+  )
 }
