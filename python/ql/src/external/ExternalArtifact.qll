@@ -38,7 +38,8 @@ class ExternalData extends @externalDataElement {
     /** Gets the path of the file this data was loaded from. */
     string getDataPath() { externalData(this, result, _, _) }
 
-    /** Gets the path fo the file this data was loaded from, with its
+    /**
+     * Gets the path of the file this data was loaded from, with its
      * extension replaced by `.ql`.
      */
     string getQueryPath() { result = getDataPath().regexpReplaceAll("\\.[^.]*$", ".ql") }

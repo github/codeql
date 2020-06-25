@@ -1,4 +1,4 @@
-/** Contains the internal IPA type backing the various values tracked by the points-to implementation. */
+/** Contains the internal algebraic datatype backing the various values tracked by the points-to implementation. */
 
 import python
 private import semmle.python.types.Builtins
