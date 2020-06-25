@@ -1,10 +1,10 @@
 /**
- * @name Cross-site scripting through exception
- * @description Inserting data from an exception containing user
- *              input into the DOM may enable cross-site scripting.
+ * @name Exception text reinterpreted as HTML
+ * @description Reinterpreting text from an exception as HTML
+ *              can lead to a cross-site scripting vulnerability.
  * @kind path-problem
- * @problem.severity error
- * @precision medium
+ * @problem.severity warning
+ * @precision high
  * @id js/xss-through-exception
  * @tags security
  *       external/cwe/cwe-079
@@ -18,5 +18,5 @@ import DataFlow::PathGraph
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  sink.getNode().(Xss::Shared::Sink).getVulnerabilityKind() + " vulnerability due to $@.",
-  source.getNode(), "user-provided value"
+  "$@ is reinterpreted as HTML without escaping meta-characters.", source.getNode(),
+  "Exception text"

@@ -146,6 +146,9 @@ class StrCopyBW extends BufferWriteCall {
     )
   }
 
+  /**
+   * Gets the index of the parameter that is the maximum size of the copy (in characters).
+   */
   int getParamSize() {
     exists(TopLevelFunction fn, string name |
       fn = getTarget() and
@@ -161,6 +164,9 @@ class StrCopyBW extends BufferWriteCall {
     )
   }
 
+  /**
+   * Gets the index of the parameter that is the source of the copy.
+   */
   int getParamSrc() {
     exists(TopLevelFunction fn, string name |
       fn = getTarget() and
@@ -194,8 +200,14 @@ class StrCopyBW extends BufferWriteCall {
 class StrCatBW extends BufferWriteCall {
   StrCatBW() { exists(TopLevelFunction fn | fn = getTarget() and fn instanceof StrcatFunction) }
 
+  /**
+   * Gets the index of the parameter that is the maximum size of the copy (in characters).
+   */
   int getParamSize() { if exists(getArgument(2)) then result = 2 else none() }
 
+  /**
+   * Gets the index of the parameter that is the source of the copy.
+   */
   int getParamSrc() { result = 1 }
 
   override Type getBufferType() {
@@ -349,6 +361,9 @@ class SnprintfBW extends BufferWriteCall {
     )
   }
 
+  /**
+   * Gets the index of the parameter that is the size of the destination (in characters).
+   */
   int getParamSize() { result = 1 }
 
   override Type getBufferType() {
@@ -399,6 +414,9 @@ class GetsBW extends BufferWriteCall {
     )
   }
 
+  /**
+   * Gets the index of the parameter that is the maximum number of characters to be read.
+   */
   int getParamSize() { if exists(getArgument(1)) then result = 1 else none() }
 
   override Type getBufferType() { result = this.getTarget().getParameter(0).getUnspecifiedType() }
@@ -434,6 +452,9 @@ class ScanfBW extends BufferWrite {
     )
   }
 
+  /**
+   * Gets the index of the parameter that is the first format argument.
+   */
   int getParamArgs() {
     exists(FunctionCall fc |
       this = fc.getArgument(_) and

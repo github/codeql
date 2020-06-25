@@ -1,3 +1,7 @@
+/**
+ * Provides a hierarchy of classes for modeling C/C++ statements.
+ */
+
 import semmle.code.cpp.Element
 private import semmle.code.cpp.Enclosing
 private import semmle.code.cpp.internal.ResolveClass

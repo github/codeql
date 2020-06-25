@@ -267,6 +267,12 @@ module TaintTracking {
       pred = DataFlow::valueNode(fos.getIterationDomain()) and
       succ = DataFlow::lvalueNode(fos.getLValue())
     )
+    or
+    // taint-tracking rest patterns in l-values. E.g. `const {...spread} = foo()` or `const [...spread] = foo()`.
+    exists(DestructuringPattern pattern |
+      pred = DataFlow::lvalueNode(pattern) and
+      succ = DataFlow::lvalueNode(pattern.getRest())
+    )
   }
 
   /**

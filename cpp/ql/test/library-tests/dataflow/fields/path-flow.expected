@@ -332,48 +332,6 @@ edges
 | simple.cpp:83:9:83:28 | ... = ... | simple.cpp:83:9:83:10 | f2 [post update] [f1] |
 | simple.cpp:83:17:83:26 | call to user_input | simple.cpp:83:9:83:28 | ... = ... |
 | simple.cpp:84:14:84:20 | this [f2, f1] | simple.cpp:84:14:84:20 | call to getf2f1 |
-| simple.cpp:108:30:108:31 | d2 [d1_2, y] | simple.cpp:111:10:111:11 | d2 [d1_2, y] |
-| simple.cpp:111:10:111:11 | d2 [d1_2, y] | simple.cpp:111:13:111:16 | d1_2 [y] |
-| simple.cpp:111:13:111:16 | d1_2 [y] | simple.cpp:111:18:111:18 | y |
-| simple.cpp:114:37:114:38 | d2 [d1_2, y] | simple.cpp:117:10:117:11 | d2 [d1_2, y] |
-| simple.cpp:117:10:117:11 | d2 [d1_2, y] | simple.cpp:117:14:117:17 | d1_2 [y] |
-| simple.cpp:117:14:117:17 | d1_2 [y] | simple.cpp:117:19:117:19 | y |
-| simple.cpp:122:5:122:6 | d3 [post update] [d2_1, d1_1, ... (3)] | simple.cpp:123:24:123:25 | d3 [d2_1, d1_1, ... (3)] |
-| simple.cpp:122:5:122:33 | ... = ... | simple.cpp:122:13:122:16 | d1_1 [post update] [x] |
-| simple.cpp:122:8:122:11 | d2_1 [post update] [d1_1, x] | simple.cpp:122:5:122:6 | d3 [post update] [d2_1, d1_1, ... (3)] |
-| simple.cpp:122:13:122:16 | d1_1 [post update] [x] | simple.cpp:122:8:122:11 | d2_1 [post update] [d1_1, x] |
-| simple.cpp:122:22:122:31 | call to user_input | simple.cpp:122:5:122:33 | ... = ... |
-| simple.cpp:123:24:123:25 | d3 [d2_1, d1_1, ... (3)] | simple.cpp:123:27:123:30 | d2_1 [d1_1, x] |
-| simple.cpp:123:27:123:30 | d2_1 [d1_1, x] | simple.cpp:124:10:124:13 | d2_1 [d1_1, x] |
-| simple.cpp:123:27:123:30 | d2_1 [d1_1, x] | simple.cpp:129:25:129:28 | d2_1 [d1_1, x] |
-| simple.cpp:124:10:124:13 | d2_1 [d1_1, x] | simple.cpp:124:15:124:18 | d1_1 [x] |
-| simple.cpp:124:15:124:18 | d1_1 [x] | simple.cpp:124:20:124:20 | x |
-| simple.cpp:129:25:129:28 | d2_1 [d1_1, x] | simple.cpp:129:30:129:33 | d1_1 [x] |
-| simple.cpp:129:30:129:33 | d1_1 [x] | simple.cpp:130:10:130:12 | pd1 [x] |
-| simple.cpp:130:10:130:12 | pd1 [x] | simple.cpp:130:15:130:15 | x |
-| simple.cpp:136:21:136:28 | ref arg & ... [d1_2, y] | simple.cpp:136:25:136:28 | d2_1 [inner post update] [d1_2, y] |
-| simple.cpp:136:22:136:23 | d3 [post update] [d2_1, d1_2, ... (3)] | simple.cpp:139:10:139:11 | d3 [d2_1, d1_2, ... (3)] |
-| simple.cpp:136:22:136:23 | d3 [post update] [d2_1, d1_2, ... (3)] | simple.cpp:141:17:141:18 | d3 [d2_1, d1_2, ... (3)] |
-| simple.cpp:136:22:136:23 | d3 [post update] [d2_1, d1_2, ... (3)] | simple.cpp:143:24:143:25 | d3 [d2_1, d1_2, ... (3)] |
-| simple.cpp:136:25:136:28 | d2_1 [inner post update] [d1_2, y] | simple.cpp:136:22:136:23 | d3 [post update] [d2_1, d1_2, ... (3)] |
-| simple.cpp:136:31:136:40 | call to user_input | simple.cpp:136:21:136:28 | ref arg & ... [d1_2, y] |
-| simple.cpp:139:10:139:11 | d3 [d2_1, d1_2, ... (3)] | simple.cpp:139:13:139:16 | d2_1 [d1_2, y] |
-| simple.cpp:139:13:139:16 | d2_1 [d1_2, y] | simple.cpp:139:18:139:21 | d1_2 [y] |
-| simple.cpp:139:18:139:21 | d1_2 [y] | simple.cpp:139:23:139:23 | y |
-| simple.cpp:141:17:141:18 | d3 [d2_1, d1_2, ... (3)] | simple.cpp:141:20:141:23 | d2_1 [d1_2, y] |
-| simple.cpp:141:20:141:23 | d2_1 [d1_2, y] | simple.cpp:108:30:108:31 | d2 [d1_2, y] |
-| simple.cpp:143:23:143:30 | & ... [d1_2, y] | simple.cpp:114:37:114:38 | d2 [d1_2, y] |
-| simple.cpp:143:24:143:25 | d3 [d2_1, d1_2, ... (3)] | simple.cpp:143:27:143:30 | d2_1 [d1_2, y] |
-| simple.cpp:143:27:143:30 | d2_1 [d1_2, y] | simple.cpp:143:23:143:30 | & ... [d1_2, y] |
-| simple.cpp:159:20:159:24 | inner [f] | simple.cpp:161:10:161:14 | inner [f] |
-| simple.cpp:161:10:161:14 | inner [f] | simple.cpp:161:17:161:17 | f |
-| simple.cpp:167:5:167:9 | outer [post update] [inner, f] | simple.cpp:168:13:168:17 | outer [inner, f] |
-| simple.cpp:167:5:167:32 | ... = ... | simple.cpp:167:11:167:15 | inner [post update] [f] |
-| simple.cpp:167:11:167:15 | inner [post update] [f] | simple.cpp:167:5:167:9 | outer [post update] [inner, f] |
-| simple.cpp:167:21:167:30 | call to user_input | simple.cpp:167:5:167:32 | ... = ... |
-| simple.cpp:168:12:168:23 | & ... [f] | simple.cpp:159:20:159:24 | inner [f] |
-| simple.cpp:168:13:168:17 | outer [inner, f] | simple.cpp:168:19:168:23 | inner [f] |
-| simple.cpp:168:19:168:23 | inner [f] | simple.cpp:168:12:168:23 | & ... [f] |
 | struct_init.c:14:24:14:25 | ab [a] | struct_init.c:15:8:15:9 | ab [a] |
 | struct_init.c:15:8:15:9 | ab [a] | struct_init.c:15:12:15:12 | a |
 | struct_init.c:20:17:20:36 | {...} [a] | struct_init.c:22:8:22:9 | ab [a] |
@@ -774,51 +732,6 @@ nodes
 | simple.cpp:83:17:83:26 | call to user_input | semmle.label | call to user_input |
 | simple.cpp:84:14:84:20 | call to getf2f1 | semmle.label | call to getf2f1 |
 | simple.cpp:84:14:84:20 | this [f2, f1] | semmle.label | this [f2, f1] |
-| simple.cpp:108:30:108:31 | d2 [d1_2, y] | semmle.label | d2 [d1_2, y] |
-| simple.cpp:111:10:111:11 | d2 [d1_2, y] | semmle.label | d2 [d1_2, y] |
-| simple.cpp:111:13:111:16 | d1_2 [y] | semmle.label | d1_2 [y] |
-| simple.cpp:111:18:111:18 | y | semmle.label | y |
-| simple.cpp:114:37:114:38 | d2 [d1_2, y] | semmle.label | d2 [d1_2, y] |
-| simple.cpp:117:10:117:11 | d2 [d1_2, y] | semmle.label | d2 [d1_2, y] |
-| simple.cpp:117:14:117:17 | d1_2 [y] | semmle.label | d1_2 [y] |
-| simple.cpp:117:19:117:19 | y | semmle.label | y |
-| simple.cpp:122:5:122:6 | d3 [post update] [d2_1, d1_1, ... (3)] | semmle.label | d3 [post update] [d2_1, d1_1, ... (3)] |
-| simple.cpp:122:5:122:33 | ... = ... | semmle.label | ... = ... |
-| simple.cpp:122:8:122:11 | d2_1 [post update] [d1_1, x] | semmle.label | d2_1 [post update] [d1_1, x] |
-| simple.cpp:122:13:122:16 | d1_1 [post update] [x] | semmle.label | d1_1 [post update] [x] |
-| simple.cpp:122:22:122:31 | call to user_input | semmle.label | call to user_input |
-| simple.cpp:123:24:123:25 | d3 [d2_1, d1_1, ... (3)] | semmle.label | d3 [d2_1, d1_1, ... (3)] |
-| simple.cpp:123:27:123:30 | d2_1 [d1_1, x] | semmle.label | d2_1 [d1_1, x] |
-| simple.cpp:124:10:124:13 | d2_1 [d1_1, x] | semmle.label | d2_1 [d1_1, x] |
-| simple.cpp:124:15:124:18 | d1_1 [x] | semmle.label | d1_1 [x] |
-| simple.cpp:124:20:124:20 | x | semmle.label | x |
-| simple.cpp:129:25:129:28 | d2_1 [d1_1, x] | semmle.label | d2_1 [d1_1, x] |
-| simple.cpp:129:30:129:33 | d1_1 [x] | semmle.label | d1_1 [x] |
-| simple.cpp:130:10:130:12 | pd1 [x] | semmle.label | pd1 [x] |
-| simple.cpp:130:15:130:15 | x | semmle.label | x |
-| simple.cpp:136:21:136:28 | ref arg & ... [d1_2, y] | semmle.label | ref arg & ... [d1_2, y] |
-| simple.cpp:136:22:136:23 | d3 [post update] [d2_1, d1_2, ... (3)] | semmle.label | d3 [post update] [d2_1, d1_2, ... (3)] |
-| simple.cpp:136:25:136:28 | d2_1 [inner post update] [d1_2, y] | semmle.label | d2_1 [inner post update] [d1_2, y] |
-| simple.cpp:136:31:136:40 | call to user_input | semmle.label | call to user_input |
-| simple.cpp:139:10:139:11 | d3 [d2_1, d1_2, ... (3)] | semmle.label | d3 [d2_1, d1_2, ... (3)] |
-| simple.cpp:139:13:139:16 | d2_1 [d1_2, y] | semmle.label | d2_1 [d1_2, y] |
-| simple.cpp:139:18:139:21 | d1_2 [y] | semmle.label | d1_2 [y] |
-| simple.cpp:139:23:139:23 | y | semmle.label | y |
-| simple.cpp:141:17:141:18 | d3 [d2_1, d1_2, ... (3)] | semmle.label | d3 [d2_1, d1_2, ... (3)] |
-| simple.cpp:141:20:141:23 | d2_1 [d1_2, y] | semmle.label | d2_1 [d1_2, y] |
-| simple.cpp:143:23:143:30 | & ... [d1_2, y] | semmle.label | & ... [d1_2, y] |
-| simple.cpp:143:24:143:25 | d3 [d2_1, d1_2, ... (3)] | semmle.label | d3 [d2_1, d1_2, ... (3)] |
-| simple.cpp:143:27:143:30 | d2_1 [d1_2, y] | semmle.label | d2_1 [d1_2, y] |
-| simple.cpp:159:20:159:24 | inner [f] | semmle.label | inner [f] |
-| simple.cpp:161:10:161:14 | inner [f] | semmle.label | inner [f] |
-| simple.cpp:161:17:161:17 | f | semmle.label | f |
-| simple.cpp:167:5:167:9 | outer [post update] [inner, f] | semmle.label | outer [post update] [inner, f] |
-| simple.cpp:167:5:167:32 | ... = ... | semmle.label | ... = ... |
-| simple.cpp:167:11:167:15 | inner [post update] [f] | semmle.label | inner [post update] [f] |
-| simple.cpp:167:21:167:30 | call to user_input | semmle.label | call to user_input |
-| simple.cpp:168:12:168:23 | & ... [f] | semmle.label | & ... [f] |
-| simple.cpp:168:13:168:17 | outer [inner, f] | semmle.label | outer [inner, f] |
-| simple.cpp:168:19:168:23 | inner [f] | semmle.label | inner [f] |
 | struct_init.c:14:24:14:25 | ab [a] | semmle.label | ab [a] |
 | struct_init.c:15:8:15:9 | ab [a] | semmle.label | ab [a] |
 | struct_init.c:15:12:15:12 | a | semmle.label | a |
@@ -917,12 +830,6 @@ nodes
 | simple.cpp:29:12:29:12 | call to b | simple.cpp:42:12:42:21 | call to user_input | simple.cpp:29:12:29:12 | call to b | call to b flows from $@ | simple.cpp:42:12:42:21 | call to user_input | call to user_input |
 | simple.cpp:67:13:67:13 | i | simple.cpp:65:11:65:20 | call to user_input | simple.cpp:67:13:67:13 | i | i flows from $@ | simple.cpp:65:11:65:20 | call to user_input | call to user_input |
 | simple.cpp:84:14:84:20 | call to getf2f1 | simple.cpp:83:17:83:26 | call to user_input | simple.cpp:84:14:84:20 | call to getf2f1 | call to getf2f1 flows from $@ | simple.cpp:83:17:83:26 | call to user_input | call to user_input |
-| simple.cpp:111:18:111:18 | y | simple.cpp:136:31:136:40 | call to user_input | simple.cpp:111:18:111:18 | y | y flows from $@ | simple.cpp:136:31:136:40 | call to user_input | call to user_input |
-| simple.cpp:117:19:117:19 | y | simple.cpp:136:31:136:40 | call to user_input | simple.cpp:117:19:117:19 | y | y flows from $@ | simple.cpp:136:31:136:40 | call to user_input | call to user_input |
-| simple.cpp:124:20:124:20 | x | simple.cpp:122:22:122:31 | call to user_input | simple.cpp:124:20:124:20 | x | x flows from $@ | simple.cpp:122:22:122:31 | call to user_input | call to user_input |
-| simple.cpp:130:15:130:15 | x | simple.cpp:122:22:122:31 | call to user_input | simple.cpp:130:15:130:15 | x | x flows from $@ | simple.cpp:122:22:122:31 | call to user_input | call to user_input |
-| simple.cpp:139:23:139:23 | y | simple.cpp:136:31:136:40 | call to user_input | simple.cpp:139:23:139:23 | y | y flows from $@ | simple.cpp:136:31:136:40 | call to user_input | call to user_input |
-| simple.cpp:161:17:161:17 | f | simple.cpp:167:21:167:30 | call to user_input | simple.cpp:161:17:161:17 | f | f flows from $@ | simple.cpp:167:21:167:30 | call to user_input | call to user_input |
 | struct_init.c:15:12:15:12 | a | struct_init.c:20:20:20:29 | call to user_input | struct_init.c:15:12:15:12 | a | a flows from $@ | struct_init.c:20:20:20:29 | call to user_input | call to user_input |
 | struct_init.c:15:12:15:12 | a | struct_init.c:27:7:27:16 | call to user_input | struct_init.c:15:12:15:12 | a | a flows from $@ | struct_init.c:27:7:27:16 | call to user_input | call to user_input |
 | struct_init.c:15:12:15:12 | a | struct_init.c:40:20:40:29 | call to user_input | struct_init.c:15:12:15:12 | a | a flows from $@ | struct_init.c:40:20:40:29 | call to user_input | call to user_input |

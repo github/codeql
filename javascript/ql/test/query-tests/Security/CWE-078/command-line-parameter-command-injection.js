@@ -31,3 +31,44 @@ cp.exec("cmd.sh " + require("get-them-args")().foo); // NOT OK
 cp.exec("cmd.sh " + require("minimist")().foo); // NOT OK
 cp.exec("cmd.sh " + require("yargs").argv.foo); // NOT OK
 cp.exec("cmd.sh " + require("optimist").argv.foo); // NOT OK
+
+(function () {
+	var args = require('yargs') // eslint-disable-line
+		.command('serve [port]', 'start the server', (yargs) => { })
+		.option('verbose', { foo: "bar" })
+		.argv
+
+	cp.exec("cmd.sh " + args); // NOT OK
+
+	cp.exec("cmd.sh " + require("yargs").array("foo").parse().foo); // NOT OK
+});
+
+(function () {
+	const {
+		argv: {
+			...args
+		},
+	} = require('yargs')
+		.usage('Usage: foo bar')
+		.command();
+
+	cp.exec("cmd.sh " + args); // NOT OK
+
+	var tainted1 = require('yargs').argv;
+	var tainted2 = require('yargs').parse()
+	
+	const {taint1: {...taint1rest},taint2: {...taint2rest}} = {
+		taint1: tainted1,
+		taint2: tainted2
+	}
+
+	cp.exec("cmd.sh " + taint1rest); // NOT OK - has flow from tainted1
+	cp.exec("cmd.sh " + taint2rest); // NOT OK - has flow from tianted2
+	
+	var {...taint3} = require('yargs').argv;
+	cp.exec("cmd.sh " + taint3); // NOT OK
+
+	var [...taint4] = require('yargs').argv;
+	cp.exec("cmd.sh " + taint4); // NOT OK
+});
+
