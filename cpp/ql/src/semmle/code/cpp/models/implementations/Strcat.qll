@@ -27,7 +27,7 @@ class StrcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction, Sid
   /**
    * Gets the index of the parameter that is the size of the copy (in characters).
    */
-  int getParamSize() { if exists(getParameter(2)) then result = 2 else none() }
+  int getParamSize() { exists(getParameter(2)) and result = 2 }
 
   /**
    * Gets the index of the parameter that is the source of the copy.
