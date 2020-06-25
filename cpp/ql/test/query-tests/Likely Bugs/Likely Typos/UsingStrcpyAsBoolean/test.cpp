@@ -156,7 +156,7 @@ void NegativeCases()
     {
     }
 
-    if (strcpy_s(szbuf1, 100, "test"))
+    if (strcpy_s(szbuf1, 100, "test")) // [FALSE POSITIVE]
     {
     }
 
