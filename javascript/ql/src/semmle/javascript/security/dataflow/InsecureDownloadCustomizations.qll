@@ -13,7 +13,12 @@ module InsecureDownload {
   /**
    * A data flow source for download of sensitive file through insecure connection.
    */
-  abstract class Source extends DataFlow::Node { }
+  abstract class Source extends DataFlow::Node {
+    /**
+     * Gets a flow-label for this source
+     */
+    abstract DataFlow::FlowLabel getALabel();
+  }
 
   /**
    * A data flow sink for download of sensitive file through insecure connection.
@@ -23,6 +28,11 @@ module InsecureDownload {
      * Gets the call that downloads the sensitive file.
      */
     abstract DataFlow::Node getDownloadCall();
+
+    /**
+     * Gets a flow-label where this sink is vulnerable.
+     */
+    abstract DataFlow::FlowLabel getALabel();
   }
 
   /**
@@ -30,18 +40,38 @@ module InsecureDownload {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
+  module Label {
+    /**
+     * A flow-label for file URLs that are both sensitive and downloaded over an insecure connection.
+     */
+    class SensitiveInsecureURL extends DataFlow::FlowLabel {
+      SensitiveInsecureURL() { this = "sensitiveInsecure" }
+    }
+
+    class InsecureURL extends DataFlow::FlowLabel {
+      InsecureURL() { this = "insecure" }
+    }
+  }
+
   /**
    * A HTTP or FTP URL that refers to a file with a sensitive file extension,
    * seen as a source for download of sensitive file through insecure connection.
    */
   class SensitiveFileUrl extends Source {
+    string str;
+
     SensitiveFileUrl() {
-      exists(string str | str = this.getStringValue() |
-        str.regexpMatch("http://.*|ftp://.*") and
-        exists(string suffix | suffix = unsafeExtension() |
-          str.suffix(str.length() - suffix.length() - 1).toLowerCase() = "." + suffix
-        )
-      )
+      str = this.getStringValue() and
+      str.regexpMatch("http://.*|ftp://.*")
+    }
+
+    override DataFlow::FlowLabel getALabel() {
+      result instanceof Label::InsecureURL
+      or
+      exists(string suffix | suffix = unsafeExtension() |
+        str.suffix(str.length() - suffix.length() - 1).toLowerCase() = "." + suffix
+      ) and
+      result instanceof Label::SensitiveInsecureURL
     }
   }
 
@@ -58,7 +88,7 @@ module InsecureDownload {
 
   /**
    * A url downloaded by a client-request, seen as a sink for download of
-   * sensitive file through insecure connection.a
+   * sensitive file through insecure connection.
    */
   class ClientRequestURL extends Sink {
     ClientRequest request;
@@ -66,5 +96,9 @@ module InsecureDownload {
     ClientRequestURL() { this = request.getUrl() }
 
     override DataFlow::Node getDownloadCall() { result = request }
+
+    override DataFlow::FlowLabel getALabel() {
+      result instanceof Label::SensitiveInsecureURL // TODO: Also non-sensitive.
+    }
   }
 }

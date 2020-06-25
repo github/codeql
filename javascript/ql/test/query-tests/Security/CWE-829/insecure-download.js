@@ -40,3 +40,10 @@ function baz() {
 
     nugget("ftp://example.org/unsafe.APK") // NOT OK
 }
+
+const fs = require("fs");
+var writeFileAtomic = require("write-file-atomic");
+
+function test() {
+    nugget("http://example.org/unsafe", {target: "foo.exe"}, () => { }) // NOT OK
+}

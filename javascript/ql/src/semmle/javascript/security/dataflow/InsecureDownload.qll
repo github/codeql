@@ -20,8 +20,12 @@ module InsecureDownload {
   class Configuration extends DataFlow::Configuration {
     Configuration() { this = "InsecureDownload" }
 
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
+    override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
+      source.(Source).getALabel() = label
+    }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+    override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
+      sink.(Sink).getALabel() = label
+    }
   }
 }
