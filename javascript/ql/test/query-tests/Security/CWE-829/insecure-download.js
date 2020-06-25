@@ -46,4 +46,6 @@ var writeFileAtomic = require("write-file-atomic");
 
 function test() {
     nugget("http://example.org/unsafe", {target: "foo.exe"}, () => { }) // NOT OK
+
+    nugget("http://example.org/unsafe", {target: "foo.safe"}, () => { }) // OK
 }

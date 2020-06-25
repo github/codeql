@@ -68,11 +68,19 @@ module InsecureDownload {
     override DataFlow::FlowLabel getALabel() {
       result instanceof Label::InsecureURL
       or
-      exists(string suffix | suffix = unsafeExtension() |
-        str.suffix(str.length() - suffix.length() - 1).toLowerCase() = "." + suffix
-      ) and
+      hasUnsafeExtension(str) and
       result instanceof Label::SensitiveInsecureURL
     }
+  }
+
+  /**
+   * Holds if `str` is a string that ends with an unsafe file extension.
+   */
+  bindingset[str]
+  predicate hasUnsafeExtension(string str) {
+    exists(string suffix | suffix = unsafeExtension() |
+      str.suffix(str.length() - suffix.length() - 1).toLowerCase() = "." + suffix
+    )
   }
 
   /**
@@ -99,6 +107,9 @@ module InsecureDownload {
 
     override DataFlow::FlowLabel getALabel() {
       result instanceof Label::SensitiveInsecureURL // TODO: Also non-sensitive.
+      or
+      hasUnsafeExtension(request.getASavePath().getStringValue()) and
+      result instanceof Label::InsecureURL
     }
   }
 }
