@@ -49,7 +49,7 @@ class NestedFieldAccess extends FieldAccess {
    * {
    *   float x, y;
    * };
-   * 
+   *
    * struct Line
    * {
    *   Point start, end;
@@ -60,7 +60,7 @@ class NestedFieldAccess extends FieldAccess {
    *   Line myLine;
    *
    *   myLine.start.x = 0.0f;
-   * 
+   *
    *   // ...
    * }
    * ```
