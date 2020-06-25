@@ -67,17 +67,23 @@ class Sprintf extends FormattingFunction {
     this instanceof TopLevelFunction and
     (
       // sprintf(dst, format, args...)
-      hasGlobalOrStdName("sprintf") or
+      hasGlobalOrStdName("sprintf")
+      or
       //  _sprintf_l(dst, format, locale, args...)
-      hasGlobalName("_sprintf_l") or
+      hasGlobalName("_sprintf_l")
+      or
       // __swprintf_l(dst, format, locale, args...)
-      hasGlobalName("__swprintf_l") or
+      hasGlobalName("__swprintf_l")
+      or
       // wsprintf(dst, format, args...)
-      hasGlobalOrStdName("wsprintf") or
+      hasGlobalOrStdName("wsprintf")
+      or
       // g_strdup_printf(format, ...)
-      hasGlobalName("g_strdup_printf") or
+      hasGlobalName("g_strdup_printf")
+      or
       // g_sprintf(dst, format, ...)
-      hasGlobalName("g_sprintf") or
+      hasGlobalName("g_sprintf")
+      or
       // __builtin___sprintf_chk(dst, flag, os, format, ...)
       hasGlobalName("__builtin___sprintf_chk")
     ) and
