@@ -2,12 +2,15 @@ import java
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.dataflow.RemoteFlowSinks
 
-/*
- * Definitions for XSS sinks
+/**
+ * A data flow sink for cross-site scripting (XSS) vulnerabilities.
+ *
+ * Any XSS sink is also a remote flow sink, so this class contributes
+ * to the abstract class `RemoteFlowSink`.
  */
-
-class XssSink extends DataFlow::ExprNode {
+class XssSink extends DataFlow::ExprNode, RemoteFlowSink {
   XssSink() {
     exists(HttpServletResponseSendErrorMethod m, MethodAccess ma |
       ma.getMethod() = m and
