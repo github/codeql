@@ -28,6 +28,7 @@ string getAStandardLoggerMethodName() {
   result = "notice" or
   result = "silly" or
   result = "trace" or
+  result = "verbose" or
   result = "warn"
 }
 
@@ -129,5 +130,32 @@ private module log4js {
     }
 
     override DataFlow::Node getAMessageComponent() { result = getAnArgument() }
+  }
+}
+
+/**
+ * Provides classes for working with [npmlog](https://github.com/npm/npmlog)
+ */
+private module Npmlog {
+  /**
+   * A call to the console logging mechanism.
+   */
+  class Npmlog extends LoggerCall {
+    string name;
+
+    Npmlog() {
+      this = DataFlow::moduleMember("npmlog", name).getACall() and
+      name = getAStandardLoggerMethodName()
+    }
+
+    override DataFlow::Node getAMessageComponent() {
+      (
+        if name = "log"
+        then result = getArgument([1 .. getNumArgument()])
+        else result = getAnArgument()
+      )
+      or
+      result = getASpreadArgument()
+    }
   }
 }
