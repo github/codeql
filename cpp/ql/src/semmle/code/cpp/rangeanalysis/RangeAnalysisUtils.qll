@@ -10,7 +10,7 @@ newtype RelationStrictness =
    */
   Strict() or
   /**
-   * Represents that a relation is 'non-strict' (that is, a `<+` or `>+` relation)
+   * Represents that a relation is 'non-strict' (that is, a `<=` or `>=` relation)
    */
   Nonstrict()
 

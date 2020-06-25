@@ -391,7 +391,7 @@ class ParametersNode extends PrintASTNode, TParametersNode {
   override ASTNode getChild(int childIndex) { result.getAST() = func.getParameter(childIndex) }
 
   /**
-   * Gets the function for which this node represents the parameters.
+   * Gets the `Function` for which this node represents the parameters.
    */
   final Function getFunction() { result = func }
 }
