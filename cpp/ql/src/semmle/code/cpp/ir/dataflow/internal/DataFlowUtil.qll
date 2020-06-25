@@ -521,9 +521,9 @@ private predicate getFieldSizeOfClass(Class c, Type type, int size) {
 
 cached
 private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo) {
-  iTo.(CopyInstruction).getSourceValue() = opFrom.getDef()
+  iTo.(CopyInstruction).getSourceValueOperand() = opFrom and not opFrom.isDefinitionInexact()
   or
-  iTo.(PhiInstruction).getAnInput() = opFrom.getDef()
+  iTo.(PhiInstruction).getAnInputOperand() = opFrom and not opFrom.isDefinitionInexact()
   or
   // A read side effect is almost never exact since we don't know exactly how
   // much memory the callee will read.
@@ -542,7 +542,7 @@ private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo
   // leads to a phi node.
   exists(InitializeIndirectionInstruction init |
     opFrom.getAnyDef() = init and
-    iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = init and
+    iTo.(LoadInstruction).getSourceValueOperand() = opFrom and
     // Check that the types match. Otherwise we can get flow from an object to
     // its fields, which leads to field conflation when there's flow from other
     // fields to the object elsewhere.
@@ -551,11 +551,13 @@ private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo
   )
   or
   // Treat all conversions as flow, even conversions between different numeric types.
-  iTo.(ConvertInstruction).getUnary() = opFrom.getDef()
+  iTo.(ConvertInstruction).getUnaryOperand() = opFrom and not opFrom.isDefinitionInexact()
   or
-  iTo.(CheckedConvertOrNullInstruction).getUnary() = opFrom.getDef()
+  iTo.(CheckedConvertOrNullInstruction).getUnaryOperand() = opFrom and
+  not opFrom.isDefinitionInexact()
   or
-  iTo.(InheritanceConversionInstruction).getUnary() = opFrom.getDef()
+  iTo.(InheritanceConversionInstruction).getUnaryOperand() = opFrom and
+  not opFrom.isDefinitionInexact()
   or
   // A chi instruction represents a point where a new value (the _partial_
   // operand) may overwrite an old value (the _total_ operand), but the alias
