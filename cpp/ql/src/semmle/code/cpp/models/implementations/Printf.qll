@@ -1,5 +1,5 @@
 /**
- * Provides implementation classes modelling various standard formatting
+ * Provides implementation classes modeling various standard formatting
  * functions (`printf`, `snprintf` etc).
  * See `semmle.code.cpp.models.interfaces.FormattingFunction` for usage
  * information.
