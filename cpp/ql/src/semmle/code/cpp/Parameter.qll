@@ -1,3 +1,7 @@
+/**
+ * Provides a class that models parameters to functions.
+ */
+
 import semmle.code.cpp.Location
 import semmle.code.cpp.Declaration
 private import semmle.code.cpp.internal.ResolveClass

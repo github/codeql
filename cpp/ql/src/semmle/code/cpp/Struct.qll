@@ -1,3 +1,7 @@
+/**
+ * Provides classes for modeling `struct`s.
+ */
+
 import semmle.code.cpp.Type
 import semmle.code.cpp.Class
 

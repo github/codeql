@@ -1,3 +1,7 @@
+/**
+ * Provides classes for modeling specifiers and attributes.
+ */
+
 import semmle.code.cpp.Element
 private import semmle.code.cpp.internal.ResolveClass
 

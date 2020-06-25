@@ -1,3 +1,7 @@
+/**
+ * Provides classes for modeling typedefs and type aliases.
+ */
+
 import semmle.code.cpp.Type
 private import semmle.code.cpp.internal.ResolveClass
 
