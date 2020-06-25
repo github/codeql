@@ -376,7 +376,7 @@ private module PromiseFlow {
     // promise.catch()
     exists(DataFlow::MethodCallNode call | call.getMethodName() = "catch" and succ = call |
       prop = valueProp() and
-      pred = call.getReceiver().getALocalSource()
+      pred = call.getReceiver()
       or
       // read the value of a resolved/rejected promise that is returned
       (prop = errorProp() or prop = valueProp()) and
