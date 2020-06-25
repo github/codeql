@@ -1,4 +1,4 @@
-import semmle.code.cpp.rangeanalysis.RangeAnalysis
+import experimental.semmle.code.cpp.rangeanalysis.RangeAnalysis
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.controlflow.IRGuards
 import semmle.code.cpp.ir.ValueNumbering
