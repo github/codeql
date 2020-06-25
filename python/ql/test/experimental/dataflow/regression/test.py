@@ -159,9 +159,9 @@ def test_truth():
     if t:
         SINK(t)
     else:
-        SINK(t)
+        SINK(t) # Regression: FP here
     if not t:
-        SINK(t)
+        SINK(t) # Regression: FP here
     else:
         SINK(t)
 

@@ -4,16 +4,91 @@
 #
 # Functions whose name ends with "_with_local_flow" will also be tested for local flow.
 
-# Uncomment these to test the test code
-# SOURCE = 42
-# def SINK(x):
-#     return 42
+# These are included so that we can easily evaluate the test code
+SOURCE = "source"
+def SINK(x):
+    print(x)
 
 def test_tuple_with_local_flow():
     x = (3, SOURCE)
     y = x[1]
     SINK(y)
 
+# List taken from https://docs.python.org/3/reference/expressions.html
+# 6.2.1. Identifiers (Names)
+def test_names():
+    x = SOURCE
+    SINK(x)
+
+# 6.2.2. Literals
+def test_string_literal():
+    x = "source"
+    SINK(x)
+
+def test_bytes_literal():
+    x = b"source"
+    SINK(x)
+
+def test_integer_literal():
+    x = 42
+    SINK(x)
+
+def test_floatnumber_literal():
+    x = 42.0
+    SINK(x)
+
+def test_imagnumber_literal():
+    x = 42j
+    SINK(x)
+
+# 6.2.3. Parenthesized forms
+def test_parenthesized_form():
+    x = (SOURCE)
+    SINK(x)
+
+# 6.2.5. List displays
+def test_list_display():
+    x = [SOURCE]
+    SINK(x[0])
+
+def test_list_comprehension():
+    x = [SOURCE for y in [3]]
+    SINK(x[0])
+
+def test_nested_list_display():
+    x = [* [SOURCE]]
+    SINK(x[0])
+
+# 6.2.6. Set displays
+def test_set_display():
+    x = {SOURCE}
+    SINK(x.pop())
+
+def test_set_comprehension():
+    x = {SOURCE for y in [3]}
+    SINK(x.pop())
+
+def test_nested_set_display():
+    x = {* {SOURCE}}
+    SINK(x.pop())
+
+# 6.2.7. Dictionary displays
+def test_dict_display():
+    x = {"s": SOURCE}
+    SINK(x["s"])
+
+def test_dict_comprehension():
+    x = {y: SOURCE for y in ["s"]}
+    SINK(x["s"])
+
+def test_nested_dict_display():
+    x = {** {"s": SOURCE}}
+    SINK(x["s"])
+
+# 6.2.8. Generator expressions
+def test_generator():
+    x = (SOURCE for y in [3])
+    SINK([*x][0])
 
 # List taken from https://docs.python.org/3/reference/expressions.html
 # 6. Expressions

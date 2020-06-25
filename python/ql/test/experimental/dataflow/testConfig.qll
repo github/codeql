@@ -9,6 +9,15 @@
  *      SINK(s)
  * ```
  * `SOURCE` will be a source and the second occurance of `s` will be a sink.
+ * 
+ * In order to test literals, alternative sources are defined for each type:
+ * 
+ *  for | use
+ * ----------
+ * string | `"source"`
+ * integer | `42`
+ * float | `42.0`
+ * complex | `42j` (not supported yet)
  */
 
 import experimental.dataflow.DataFlow
@@ -18,6 +27,13 @@ class TestConfiguration extends DataFlow::Configuration {
 
   override predicate isSource(DataFlow::Node node) {
     node.asCfgNode().(NameNode).getId() = "SOURCE"
+    or
+    node.asCfgNode().getNode().(StrConst).getS() = "source"
+    or
+    node.asCfgNode().getNode().(IntegerLiteral).getN() = "42"
+    or
+    node.asCfgNode().getNode().(FloatLiteral).getN() = "42.0"
+    // No support for complex numbers
   }
 
   override predicate isSink(DataFlow::Node node) {
