@@ -29,4 +29,3 @@
 | test.cpp:135:14:135:40 | ... && ... | Return value of strcpy used in a logical operation. |
 | test.cpp:137:14:137:40 | ... == ... | Return value of strcpy used in a logical operation. |
 | test.cpp:139:14:139:40 | ... != ... | Return value of strcpy used in a logical operation. |
-| test.cpp:159:9:159:16 | call to strcpy_s | Return value of strcpy_s used directly in a conditional expression. |
