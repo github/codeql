@@ -5,43 +5,18 @@
 import cpp
 import semmle.code.cpp.ir.dataflow.DataFlow::DataFlow as IR
 import semmle.code.cpp.dataflow.DataFlow::DataFlow as AST
+import Nodes
 
-newtype TNode =
-  TASTNode(AST::Node n) or
-  TIRNode(IR::Node n)
-
-class Node extends TNode {
-  string toString() { none() }
-
-  IR::Node asIR() { none() }
-
-  AST::Node asAST() { none() }
-
-  Location getLocation() { none() }
-}
-
-class ASTNode extends Node, TASTNode {
-  AST::Node n;
-
-  ASTNode() { this = TASTNode(n) }
+class ASTPartialDefNode extends ASTNode {
+  ASTPartialDefNode() { exists(n.asPartialDefinition()) }
 
   override string toString() { result = n.asPartialDefinition().toString() }
-
-  override AST::Node asAST() { result = n }
-
-  override Location getLocation() { result = n.getLocation() }
 }
 
-class IRNode extends Node, TIRNode {
-  IR::Node n;
-
-  IRNode() { this = TIRNode(n) }
+class IRPartialDefNode extends IRNode {
+  IRPartialDefNode() { exists(n.asPartialDefinition()) }
 
   override string toString() { result = n.asPartialDefinition().toString() }
-
-  override IR::Node asIR() { result = n }
-
-  override Location getLocation() { result = n.getLocation() }
 }
 
 from Node node, AST::Node astNode, IR::Node irNode, string msg

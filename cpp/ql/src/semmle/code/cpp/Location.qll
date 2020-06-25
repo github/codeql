@@ -1,3 +1,7 @@
+/**
+ * Provides classes and predicates for locations in the source code.
+ */
+
 import semmle.code.cpp.Element
 import semmle.code.cpp.File
 

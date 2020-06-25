@@ -28,7 +28,8 @@ predicate used_as_regex(Expr s, string mode) {
     /* Call to re.xxx(regex, ... [mode]) */
     exists(CallNode call, string name |
         call.getArg(0).refersTo(_, _, s.getAFlowNode()) and
-        call.getFunction().pointsTo(Module::named("re").attr(name))
+        call.getFunction().pointsTo(Module::named("re").attr(name)) and
+        not name = "escape"
     |
         mode = "None"
         or
@@ -124,16 +125,40 @@ abstract class RegexString extends Expr {
         )
     }
 
+    /** Named unicode characters, eg \N{degree sign} */
+    private predicate escapedName(int start, int end) {
+        this.escapingChar(start) and
+        this.getChar(start + 1) = "N" and
+        this.getChar(start + 2) = "{" and
+        this.getChar(end - 1) = "}" and
+        end > start and
+        not exists(int i | start + 2 < i and i < end - 1 |
+            this.getChar(i) = "}"
+        )
+    }
+
     private predicate escapedCharacter(int start, int end) {
         this.escapingChar(start) and
         not exists(this.getText().substring(start + 1, end + 1).toInt()) and
         (
+            // hex value \xhh
             this.getChar(start + 1) = "x" and end = start + 4
             or
+            // octal value \ooo
             end in [start + 2 .. start + 4] and
             exists(this.getText().substring(start + 1, end).toInt())
             or
-            this.getChar(start + 1) != "x" and end = start + 2
+            // 16-bit hex value \uhhhh
+            this.getChar(start + 1) = "u" and end = start + 6
+            or
+            // 32-bit hex value \Uhhhhhhhh
+            this.getChar(start + 1) = "U" and end = start + 10
+            or
+            escapedName(start, end)
+            or
+            // escape not handled above, update when adding a new case
+            not this.getChar(start + 1) in ["x", "u", "U", "N"] and
+            end = start + 2
         )
     }
 
@@ -472,7 +497,11 @@ abstract class RegexString extends Expr {
             this.getChar(endin) = "}" and
             end > start and
             exists(string multiples | multiples = this.getText().substring(start + 1, endin) |
+                multiples.regexpMatch("0+") and maybe_empty = true
+                or
                 multiples.regexpMatch("0*,[0-9]*") and maybe_empty = true
+                or
+                multiples.regexpMatch("0*[1-9][0-9]*") and maybe_empty = false
                 or
                 multiples.regexpMatch("0*[1-9][0-9]*,[0-9]*") and maybe_empty = false
             ) and
@@ -618,9 +647,13 @@ abstract class RegexString extends Expr {
         start = 0 and end = this.getText().length()
         or
         exists(int y | this.lastPart(start, y) |
-            this.emptyMatchAtEndGroup(end, y) or
-            this.qualifiedItem(end, y, true) or
+            this.emptyMatchAtEndGroup(end, y)
+            or
+            this.qualifiedItem(end, y, true)
+            or
             this.specialCharacter(end, y, "$")
+            or
+            y = end + 2 and this.escapingChar(end) and this.getChar(end + 1) = "Z"
         )
         or
         exists(int x |

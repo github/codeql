@@ -1020,9 +1020,10 @@ ssa.cpp:
 #  235|     r235_9(glval<int>)           = VariableAddress[x]           : 
 #  235|     m235_10(int)                 = InitializeParameter[x]       : &:r235_9
 #  235|     v235_11(void)                = NoOp                         : 
-#  235|     v235_12(void)                = ReturnVoid                   : 
-#  235|     v235_13(void)                = AliasedUse                   : m235_3
-#  235|     v235_14(void)                = ExitFunction                 : 
+#  235|     v235_12(void)                = ReturnIndirection[#this]     : &:r235_7, m235_8
+#  235|     v235_13(void)                = ReturnVoid                   : 
+#  235|     v235_14(void)                = AliasedUse                   : m235_3
+#  235|     v235_15(void)                = ExitFunction                 : 
 
 #  236| void Constructible::g()
 #  236|   Block 0
@@ -1035,9 +1036,10 @@ ssa.cpp:
 #  236|     r236_7(glval<Constructible>) = Load                         : &:r236_5, m236_6
 #  236|     m236_8(Constructible)        = InitializeIndirection[#this] : &:r236_7
 #  236|     v236_9(void)                 = NoOp                         : 
-#  236|     v236_10(void)                = ReturnVoid                   : 
-#  236|     v236_11(void)                = AliasedUse                   : m236_3
-#  236|     v236_12(void)                = ExitFunction                 : 
+#  236|     v236_10(void)                = ReturnIndirection[#this]     : &:r236_7, m236_8
+#  236|     v236_11(void)                = ReturnVoid                   : 
+#  236|     v236_12(void)                = AliasedUse                   : m236_3
+#  236|     v236_13(void)                = ExitFunction                 : 
 
 #  239| void ExplicitConstructorCalls()
 #  239|   Block 0
@@ -1307,9 +1309,10 @@ ssa.cpp:
 #  286|     r286_9(glval<int>)     = VariableAddress[x]           : 
 #  286|     m286_10(int)           = InitializeParameter[x]       : &:r286_9
 #  286|     v286_11(void)          = NoOp                         : 
-#  286|     v286_12(void)          = ReturnVoid                   : 
-#  286|     v286_13(void)          = AliasedUse                   : m286_3
-#  286|     v286_14(void)          = ExitFunction                 : 
+#  286|     v286_12(void)          = ReturnIndirection[#this]     : &:r286_7, m286_8
+#  286|     v286_13(void)          = ReturnVoid                   : 
+#  286|     v286_14(void)          = AliasedUse                   : m286_3
+#  286|     v286_15(void)          = ExitFunction                 : 
 
 #  287| void A::A(A*)
 #  287|   Block 0
@@ -1326,10 +1329,11 @@ ssa.cpp:
 #  287|     r287_11(A *)           = Load                         : &:r287_9, m287_10
 #  287|     m287_12(unknown)       = InitializeIndirection[p#0]   : &:r287_11
 #  287|     v287_13(void)          = NoOp                         : 
-#  287|     v287_14(void)          = ReturnIndirection[p#0]       : &:r287_11, m287_12
-#  287|     v287_15(void)          = ReturnVoid                   : 
-#  287|     v287_16(void)          = AliasedUse                   : m287_3
-#  287|     v287_17(void)          = ExitFunction                 : 
+#  287|     v287_14(void)          = ReturnIndirection[#this]     : &:r287_7, m287_8
+#  287|     v287_15(void)          = ReturnIndirection[p#0]       : &:r287_11, m287_12
+#  287|     v287_16(void)          = ReturnVoid                   : 
+#  287|     v287_17(void)          = AliasedUse                   : m287_3
+#  287|     v287_18(void)          = ExitFunction                 : 
 
 #  288| void A::A()
 #  288|   Block 0
@@ -1342,9 +1346,10 @@ ssa.cpp:
 #  288|     r288_7(glval<A>)       = Load                         : &:r288_5, m288_6
 #  288|     m288_8(A)              = InitializeIndirection[#this] : &:r288_7
 #  288|     v288_9(void)           = NoOp                         : 
-#  288|     v288_10(void)          = ReturnVoid                   : 
-#  288|     v288_11(void)          = AliasedUse                   : m288_3
-#  288|     v288_12(void)          = ExitFunction                 : 
+#  288|     v288_10(void)          = ReturnIndirection[#this]     : &:r288_7, m288_8
+#  288|     v288_11(void)          = ReturnVoid                   : 
+#  288|     v288_12(void)          = AliasedUse                   : m288_3
+#  288|     v288_13(void)          = ExitFunction                 : 
 
 #  291| Point* NewAliasing(int)
 #  291|   Block 0
@@ -1499,6 +1504,7 @@ ssa.cpp:
 #  311|     m311_6(int)                  = Store                        : &:r311_5, r311_2
 #  311|     m311_7(unknown)              = Chi                          : total:m310_8, partial:m311_6
 #  312|     v312_1(void)                 = NoOp                         : 
-#  310|     v310_11(void)                = ReturnVoid                   : 
-#  310|     v310_12(void)                = AliasedUse                   : m310_3
-#  310|     v310_13(void)                = ExitFunction                 : 
+#  310|     v310_11(void)                = ReturnIndirection[#this]     : &:r310_7, m311_7
+#  310|     v310_12(void)                = ReturnVoid                   : 
+#  310|     v310_13(void)                = AliasedUse                   : m310_3
+#  310|     v310_14(void)                = ExitFunction                 : 

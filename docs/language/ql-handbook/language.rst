@@ -410,7 +410,7 @@ A value ``v`` is in a type ``t`` under any of the following conditions:
 
 An ordered tuple *satisfies a predicate* ``p`` under the following circumstances. If ``p`` is not a member predicate, then the tuple satisfies the predicate whenever it directly satisfies the predicate.
 
-Otherwise, the tuple must be the tuple of a fact in the store with predicate ``q``, where ``q`` has the same root definition as ``p``. The first element of the tuple must be in the type before the dot in ``q``, and there must be no other predicate that overrides ``q`` such that this is true (see `Classes <#classes>`__ for details on overriding and root definitions).
+Otherwise, the tuple must be the tuple of a fact in the store with predicate ``q``, where ``q`` shares a root definition with ``p``. The first element of the tuple must be in the type before the dot in ``q``, and there must be no other predicate that overrides ``q`` such that this is true (see `Classes <#classes>`__ for details on overriding and root definitions).
 
 An ordered tuple ``(a0, an)`` satisfies the ``+`` closure of a predicate if there is a sequence of binary tuples ``(a0, a1)``, ``(a1, a2)``, ..., ``(an-1, an)`` that all satisfy the predicate. An ordered tuple ``(a, b)`` satisfies the ``*`` closure of a predicate if it either satisfies the ``+`` closure, or if ``a`` and ``b`` are the same, and if moreover they are in each argument type of the predicate.
 
@@ -1760,7 +1760,8 @@ The following built-in predicates are members of type ``string``:
 | ``trim``             | string      |                  | The result is the receiver with all whitespace removed from the beginning and end of the string.                                                                                                                                                                                                                                                                                       |
 +----------------------+-------------+------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
-Regular expressions are as defined by ``java.util.Pattern`` in Java.
+Regular expressions are as defined by ``java.util.regex.Pattern`` in Java.
+For more information, see the `Java API Documentation <https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/regex/Pattern.html>`__.
 
 Evaluation
 ----------

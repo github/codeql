@@ -11,7 +11,7 @@ class ETXPath(object):
         pass
 
 
-class Xpath(object):
+class XPath(object):
     def __init__(self, path, namespaces=None, extensions=None, regexp=True, smart_strings=True):
         pass
 

@@ -68,7 +68,7 @@
         <p>
 
             The second two examples show safe checks.
-            In <code>safe1</code>, a white-list is used. Although fairly inflexible,
+            In <code>safe1</code>, an allowlist is used. Although fairly inflexible,
             this is easy to get right and is most likely to be safe.
         </p>
         <p>

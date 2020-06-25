@@ -2,7 +2,7 @@
 
 We welcome contributions to our CodeQL libraries and queries. Got an idea for a new check, or how to improve an existing query? Then please go ahead and open a pull request! Contributions to this project are [released](https://help.github.com/articles/github-terms-of-service/#6-contributions-under-repository-license) to the public under the [project's open source license](LICENSE).
 
-There is lots of useful documentation to help you write queries, ranging from information about query file structure to tutorials for specific target languages. For more information on the documentation available, see [Writing CodeQL queries](https://help.semmle.com/QL/learn-ql/writing-queries/writing-queries.html) on [help.semmle.com](https://help.semmle.com).
+There is lots of useful documentation to help you write queries, ranging from information about query file structure to tutorials for specific target languages. For more information on the documentation available, see [CodeQL queries](https://help.semmle.com/QL/learn-ql/writing-queries/writing-queries.html) on [help.semmle.com](https://help.semmle.com).
 
 
 ## Submitting a new experimental query
@@ -32,7 +32,7 @@ If you have an idea for a query that you would like to share with other CodeQL u
 
     For details, see the [guide on query metadata](docs/query-metadata-style-guide.md).
 
-    Make sure the `select` statement is compatible with the query `@kind`. See [Introduction to query files](https://help.semmle.com/QL/learn-ql/writing-queries/introduction-to-queries.html#select-clause) on help.semmle.com.
+    Make sure the `select` statement is compatible with the query `@kind`. See [About CodeQL queries](https://help.semmle.com/QL/learn-ql/writing-queries/introduction-to-queries.html#select-clause) on help.semmle.com.
 
 3. **Formatting**
 
@@ -53,14 +53,6 @@ After the experimental query is merged, we welcome pull requests to improve it. 
 
 ## Using your personal data
 
-If you contribute to this project, we will record your name and email
-address (as provided by you with your contributions) as part of the code
-repositories, which are public. We might also use this information
-to contact you in relation to your contributions, as well as in the
-normal course of software development. We also store records of your
-CLA agreements. Under GDPR legislation, we do this
-on the basis of our legitimate interest in creating the CodeQL product.
+If you contribute to this project, we will record your name and email address (as provided by you with your contributions) as part of the code repositories, which are public. We might also use this information to contact you in relation to your contributions, as well as in the normal course of software development. We also store records of CLA agreements signed in the past, but no longer require contributors to sign a CLA. Under GDPR legislation, we do this on the basis of our legitimate interest in creating the CodeQL product. 
 
-Please do get in touch (privacy@github.com) if you have any questions about
-this or our data protection policies.
-
+Please do get in touch (privacy@github.com) if you have any questions about this or our data protection policies.

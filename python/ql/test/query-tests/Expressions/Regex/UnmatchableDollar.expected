@@ -1,4 +1,4 @@
 | test.py:29:12:29:19 | Str | This regular expression includes an unmatchable dollar at offset 3. |
 | test.py:30:12:30:23 | Str | This regular expression includes an unmatchable dollar at offset 3. |
 | test.py:31:12:31:20 | Str | This regular expression includes an unmatchable dollar at offset 2. |
-| test.py:75:12:75:26 | Str | This regular expression includes an unmatchable dollar at offset 3. |
+| test.py:80:12:80:26 | Str | This regular expression includes an unmatchable dollar at offset 3. |

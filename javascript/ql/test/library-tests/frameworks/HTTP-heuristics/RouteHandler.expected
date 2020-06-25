@@ -15,6 +15,7 @@
 | src/handler-in-property.js:12:18:12:37 | function(req, res){} |
 | src/middleware-attacher-getter.js:4:17:4:36 | function(req, res){} |
 | src/middleware-attacher-getter.js:19:19:19:38 | function(req, res){} |
+| src/middleware-attacher-getter.js:29:32:29:51 | function(req, res){} |
 | src/middleware-attacher.js:3:13:3:32 | function(req, res){} |
 | src/nodejs.js:3:19:3:38 | function(req, res){} |
 | src/nodejs.js:8:14:8:33 | function(req, res){} |

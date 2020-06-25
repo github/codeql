@@ -32,6 +32,8 @@ class CommandInjectionConfiguration extends TaintTracking::Configuration {
 
     override predicate isExtension(TaintTracking::Extension extension) {
         extension instanceof FirstElementFlow
+        or
+        extension instanceof FabricExecuteExtension
     }
 }
 

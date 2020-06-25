@@ -93,4 +93,20 @@ function f18() {
 (function(){
     var crypto = require('crypto');
     crypto.createHmac('sha256', Math.random());
-})()
+})();
+
+(function () {
+    function genRandom() {
+        if (window.crypto && crypto.getRandomValues && !isSafari()) {
+            var a = window.crypto.getRandomValues(new Uint32Array(3)),
+                token = '';
+            for (var i = 0, l = a.length; i < l; i++) {
+                token += a[i].toString(36);
+            }
+            return token;
+        } else {
+            return (Math.random() * new Date().getTime()).toString(36).replace(/\./g, '');
+        }
+    };
+    var secret = genRandom(); // OK - Math.random() is only a fallback.
+})();

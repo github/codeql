@@ -30,37 +30,48 @@ module InsecureRandomness {
     override InvokeExpr astNode;
 
     DefaultSource() {
-      exists(DataFlow::ModuleImportNode mod, string name | mod.getPath() = name |
-        // require("random-number")();
-        name = "random-number" and
-        this = mod.getACall()
+      not this.getContainer() = getASecureRandomGeneratingFunction() and
+      (
+        exists(DataFlow::ModuleImportNode mod, string name | mod.getPath() = name |
+          // require("random-number")();
+          name = "random-number" and
+          this = mod.getACall()
+          or
+          // require("random-int")();
+          name = "random-int" and
+          this = mod.getACall()
+          or
+          // require("random-float")();
+          name = "random-float" and
+          this = mod.getACall()
+          or
+          // require('random-seed').create()();
+          name = "random-seed" and
+          this = mod.getAMemberCall("create").getACall()
+          or
+          // require('unique-random')()();
+          name = "unique-random" and
+          this = mod.getACall().getACall()
+        )
         or
-        // require("random-int")();
-        name = "random-int" and
-        this = mod.getACall()
+        // Math.random()
+        this = DataFlow::globalVarRef("Math").getAMemberCall("random")
         or
-        // require("random-float")();
-        name = "random-float" and
-        this = mod.getACall()
+        // (new require('chance')).<name>()
+        this = DataFlow::moduleImport("chance").getAnInstantiation().getAMemberInvocation(_)
         or
-        // require('random-seed').create()();
-        name = "random-seed" and
-        this = mod.getAMemberCall("create").getACall()
-        or
-        // require('unique-random')()();
-        name = "unique-random" and
-        this = mod.getACall().getACall()
+        // require('crypto').pseudoRandomBytes()
+        this = DataFlow::moduleMember("crypto", "pseudoRandomBytes").getAnInvocation()
       )
-      or
-      // Math.random()
-      this = DataFlow::globalVarRef("Math").getAMemberCall("random")
-      or
-      // (new require('chance')).<name>()
-      this = DataFlow::moduleImport("chance").getAnInstantiation().getAMemberInvocation(_)
-      or
-      // require('crypto').pseudoRandomBytes()
-      this = DataFlow::moduleMember("crypto", "pseudoRandomBytes").getAnInvocation()
     }
+  }
+
+  /**
+   * Gets a container that at some point generates a secure random value.
+   */
+  pragma[noinline]
+  private StmtContainer getASecureRandomGeneratingFunction() {
+    result = randomBufferSource().getContainer()
   }
 
   /**
@@ -77,5 +88,41 @@ module InsecureRandomness {
    */
   class CryptoKeySink extends Sink {
     CryptoKeySink() { this instanceof CryptographicKey }
+  }
+
+  /**
+   * Holds if the step `pred` -> `succ` is an additional taint-step for random values that are not cryptographically secure.
+   */
+  predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    // Assume that all operations on tainted values preserve taint: crypto is hard
+    succ.asExpr().(BinaryExpr).getAnOperand() = pred.asExpr()
+    or
+    succ.asExpr().(UnaryExpr).getOperand() = pred.asExpr()
+    or
+    exists(DataFlow::MethodCallNode mc |
+      mc = DataFlow::globalVarRef("Math").getAMemberCall(_) and
+      pred = mc.getAnArgument() and
+      succ = mc
+    )
+  }
+
+  /**
+   * Gets a Buffer/TypedArray containing cryptographically secure random numbers.
+   */
+  DataFlow::SourceNode randomBufferSource() {
+    result = DataFlow::moduleMember("crypto", ["randomBytes", "randomFillSync"]).getACall()
+    or
+    exists(DataFlow::CallNode call |
+      call = DataFlow::moduleMember("crypto", ["randomFill", "randomFillSync"]) and
+      result = call.getArgument(0).getALocalSource()
+    )
+    or
+    result = DataFlow::globalVarRef("crypto").getAMethodCall("getRandomValues")
+    or
+    result = DataFlow::moduleImport("secure-random").getACall()
+    or
+    result =
+      DataFlow::moduleImport("secure-random")
+          .getAMethodCall(["randomArray", "randomUint8Array", "randomBuffer"])
   }
 }

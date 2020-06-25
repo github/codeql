@@ -110,6 +110,15 @@ module StepSummary {
       or
       basicLoadStep(pred, succ, prop) and
       summary = LoadStep(prop)
+      or
+      any(AdditionalTypeTrackingStep st).storeStep(pred, succ, prop) and
+      summary = StoreStep(prop)
+      or
+      any(AdditionalTypeTrackingStep st).loadStep(pred, succ, prop) and
+      summary = LoadStep(prop)
+      or
+      any(AdditionalTypeTrackingStep st).loadStoreStep(pred, succ, prop) and
+      summary = CopyStep(prop)
     )
     or
     any(AdditionalTypeTrackingStep st).step(pred, succ) and

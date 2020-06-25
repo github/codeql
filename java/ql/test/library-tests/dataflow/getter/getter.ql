@@ -6,5 +6,5 @@ import semmle.code.java.dataflow.internal.DataFlowImplSpecific::Private
 from Node n1, Content f, Node n2
 where
   read(n1, f, n2) or
-  argumentValueFlowsThrough(n1, TContentSome(f), n2)
+  getterStep(n1, f, n2)
 select n1, n2, f

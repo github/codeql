@@ -278,7 +278,7 @@ module InitializerSplitting {
    * A split for non-static member initializers belonging to a given non-static
    * constructor. For example, in
    *
-   * ```
+   * ```csharp
    * class C
    * {
    *     int Field1 = 0;
@@ -301,7 +301,7 @@ module InitializerSplitting {
    * on the two constructors. This is in order to generate CFGs for the two
    * constructors that mimic
    *
-   * ```
+   * ```csharp
    * public C()
    * {
    *     Field1 = 0;
@@ -312,7 +312,7 @@ module InitializerSplitting {
    *
    * and
    *
-   * ```
+   * ```csharp
    * public C()
    * {
    *     Field1 = 0;
@@ -467,7 +467,7 @@ module FinallySplitting {
    * A split for elements belonging to a `finally` block, which determines how to
    * continue execution after leaving the `finally` block. For example, in
    *
-   * ```
+   * ```csharp
    * try
    * {
    *     if (!M())
@@ -599,7 +599,7 @@ module FinallySplitting {
       // If this split is normal, and an outer split can exit based on a inherited
       // completion, we need to exit this split as well. For example, in
       //
-      // ```
+      // ```csharp
       // bool done;
       // try
       // {
@@ -677,7 +677,7 @@ module ExceptionHandlerSplitting {
    * A split for elements belonging to a `catch` clause, which determines the type of
    * exception to handle. For example, in
    *
-   * ```
+   * ```csharp
    * try
    * {
    *     if (M() > 0)
@@ -698,11 +698,11 @@ module ExceptionHandlerSplitting {
    * ```
    *
    * all control flow nodes in
-   * ```
+   * ```csharp
    * catch (ArgumentException e)
    * ```
    * and
-   * ```
+   * ```csharp
    * catch (ArithmeticException e) when (e.Message != null)
    * ```
    * have two splits: one representing the `try` block throwing an `ArgumentException`,
@@ -853,7 +853,7 @@ module BooleanSplitting {
      *
      * For example, in
      *
-     * ```
+     * ```csharp
      * var b = GetB();
      * if (b)
      *     Console.WriteLine("b is true");
@@ -892,7 +892,7 @@ module BooleanSplitting {
    *
    * For example, in
    *
-   * ```
+   * ```csharp
    * var b = GetB();
    * if (b)
    *     Console.WriteLine("b is true");
@@ -969,7 +969,7 @@ module BooleanSplitting {
    * A split for elements that can reach a condition where this split determines
    * the Boolean value that the condition evaluates to. For example, in
    *
-   * ```
+   * ```csharp
    * if (b)
    *     Console.WriteLine("b is true");
    * if (!b)
@@ -1171,7 +1171,7 @@ module LoopUnrollingSplitting {
    * A split for loops where the body is guaranteed to be executed at least once, and
    * can therefore be unrolled in the control flow graph. For example, in
    *
-   * ```
+   * ```csharp
    * void M(string[] args)
    * {
    *     if (args.Length == 0)
@@ -1338,7 +1338,7 @@ predicate succExitSplits(ControlFlowElement pred, Splits predSplits, Callable su
  *
  * For the successor relation
  *
- * ```
+ * ```ql
  * succSplits(ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits, Completion c)
  * ```
  *
