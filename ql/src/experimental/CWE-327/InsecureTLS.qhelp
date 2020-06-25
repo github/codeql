@@ -1,0 +1,47 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+	The TLS (Transport Layer Security) protocol secures communications over the Internet.
+	The protocol allows client/server applications to communicate in a way that is designed
+	to prevent eavesdropping, tampering, or message forgery.
+</p>
+<p>
+	The current latest version is 1.3 (with the 1.2 version still being considered secure).
+	Older versions are not deemed to be secure anymore because of various security vulnerabilities,
+	and tht makes them unfit for use in securing your applications.
+</p>
+<p>
+	Unfortunately, many applications and websites still support deprecated SSL/TLS versions and
+	cipher suites.
+</p>
+</overview>
+<recommendation>
+<p>
+	Only use secure TLS versions (1.3 and 1.2) and avoid using insecure cipher suites
+	(you can see a list here: https://golang.org/src/crypto/tls/cipher_suites.go#L81)
+</p>
+</recommendation>
+<example>
+<p>
+	The following example shows a few ways how an insecure TLS configuration can be created:
+</p>
+<sample src="InsecureTLS.go"/>
+<p>
+	The following example shows how to create a safer TLS configuration:
+</p>
+<sample src="SaferTLS.go"/>
+</example>
+<references>
+<li>
+	Wikipedia:
+	<a href="https://en.wikipedia.org/wiki/Transport_Layer_Security">Transport Layer Security</a>
+</li>
+<li>
+	OWASP:
+	<a href="https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.html">Transport Layer Protection Cheat Sheet</a>
+</li>
+</references>
+</qhelp>
