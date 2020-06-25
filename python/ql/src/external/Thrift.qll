@@ -52,8 +52,8 @@ class ThriftElement extends ExternalData {
         exists(ThriftElement first, ThriftElement last |
             first = this.getChild(min(int l | exists(this.getChild(l)))) and
             last = this.getChild(max(int l | exists(this.getChild(l)))) and
-            first.hasLocationInfo(fp, bl, bc, _, _) and
-            last.hasLocationInfo(fp, _, _, el, ec)
+            first.hasLocationInfo(filepath, startline, startcolumn, _, _) and
+            last.hasLocationInfo(filepath, _, _, endline, endcolumn)
         )
     }
 
