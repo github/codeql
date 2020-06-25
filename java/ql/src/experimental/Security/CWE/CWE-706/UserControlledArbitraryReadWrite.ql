@@ -197,7 +197,8 @@ class TaintedPathConfig extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(Expr e | e = sink.asExpr() | e = any(PathCreation p).getInput() and not guarded(e))
+    exists(TaintedPathSink s | s.getTaintedFile() = sink.asExpr())
+    // sink instanceof TaintedPathSink
   }
 
   override predicate isSanitizer(DataFlow::Node node) {
@@ -207,19 +208,37 @@ class TaintedPathConfig extends TaintTracking::Configuration {
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
     guard instanceof ContainsDotDotSanitizer
   }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    usedInPathCreation(node1, node2)
+  }
 }
 
-class XSSConfig extends TaintTracking2::Configuration {
-  XSSConfig() { this = "XSSConfig" }
+private class TaintedPathSink extends DataFlow::Node {
+  Expr path;
+
+  TaintedPathSink() {
+    exists(Expr e, PathCreation p | e = asExpr() | e = p.getInput() and not guarded(e) and path = p)
+  }
+
+  Expr getTaintedFile() { result = path }
+}
+
+class InformationLeakConfig extends TaintTracking2::Configuration {
+  InformationLeakConfig() { this = "InformationLeakConfig" }
 
   override predicate isSource(DataFlow::Node source) {
-    any() //source.asExpr().getType() instanceof TypePath //any()//source instanceof RemoteFlowSource
+    exists(TaintedPathSink s | s.getTaintedFile() = source.asExpr())
+    //source instanceof TaintedPathSink
+    //any() //source.asExpr().getType() instanceof TypePath //any()//source instanceof RemoteFlowSource
   } //source.asExpr().getFile().getBaseName().matches("GetSkillJsonService.java")}//any()}//source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink instanceof ServiceResponseSink or
-    sink instanceof XssSink or
-    sink instanceof SensitiveFileOperationSink
+    sink instanceof RemoteFlowSink
+    or
+    //sink instanceof ServiceResponseSink or
+    sink instanceof XssSink //or
+    //sink instanceof SensitiveFileOperationSink
   }
 
   override predicate isSanitizer(DataFlow::Node node) {
@@ -227,33 +246,38 @@ class XSSConfig extends TaintTracking2::Configuration {
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    usedInPathCreation(node1, node2)
-    or
+    // none()
+    // usedInPathCreation(node1, node2)
+    //or
     inputStreamReadsFromFile(node1, node2)
     or
-    isFileToPath(node1, node2)
-    or
-    isPathToFile(node1, node2)
-    or
-    readsAllBytesFromPath(node1, node2)
-    or
-    putsValueIntoJsonObject(node1, node2)
-    or
-    putsValueIntoJsonArray(node1, node2)
-    or
+    /*
+     * or
+     *    isFileToPath(node1, node2)
+     *    or
+     *    isPathToFile(node1, node2)
+     *    or
+     *    readsAllBytesFromPath(node1, node2)
+     *    or
+     *    putsValueIntoJsonObject(node1, node2)
+     *    or
+     *    putsValueIntoJsonArray(node1, node2)
+     */
+
     taintedNewFile(node1, node2)
+    /* */
   }
 }
 
 from
   DataFlow::PathNode remoteSource, DataFlow::PathNode taintedFile, DataFlow2::PathNode taintedFile2,
-  DataFlow2::PathNode infoLeak, XSSConfig conf, TaintedPathConfig taintedPathConf, PathCreation p
+  DataFlow2::PathNode infoLeak, InformationLeakConfig infoLeakConf,
+  TaintedPathConfig taintedPathConf //, PathCreation p
 where
   taintedPathConf.hasFlowPath(remoteSource, taintedFile) and
-  taintedFile.getNode().asExpr() = p.getInput() and
-  taintedFile.getNode().asExpr() = taintedFile2.getNode().asExpr() and
+  taintedFile.getNode() = taintedFile2.getNode() and
+  //p = taintedFile2.getNode().asExpr() and
   //TaintTracking::localExprTaint(p, taintedFile2.getNode().asExpr()) and
-  conf.hasFlowPath(taintedFile2, infoLeak)
-select infoLeak.getNode(), taintedFile2, infoLeak,
-  "Sensitive file operation or information leak due to $@.", taintedFile2.getNode(),
-  "user-provided value"
+  infoLeakConf.hasFlowPath(taintedFile2, infoLeak)
+select infoLeak.getNode(), taintedFile2, infoLeak, "Information leak due to $@.",
+  taintedFile2.getNode(), "user-provided value"
