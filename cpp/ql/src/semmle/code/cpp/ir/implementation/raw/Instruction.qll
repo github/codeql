@@ -675,7 +675,7 @@ class ReturnIndirectionInstruction extends VariableInstruction {
   ReturnIndirectionInstruction() { getOpcode() instanceof Opcode::ReturnIndirection }
 
   /**
-   * Gets the operand that provides the value of the pointed-to memory..
+   * Gets the operand that provides the value of the pointed-to memory.
    */
   final SideEffectOperand getSideEffectOperand() { result = getAnOperand() }
 
@@ -812,7 +812,7 @@ class ConditionalBranchInstruction extends Instruction {
  *
  * Each `IRFunction` has exactly one `ExitFunction` instruction, unless the function neither returns
  * nor throws an exception. Control flows to the `ExitFunction` instruction from both normal returns
- * (`ReturnVoid`, `ReturnValue`) and proagated exceptions (`Unwind`). This instruction has no
+ * (`ReturnVoid`, `ReturnValue`) and propagated exceptions (`Unwind`). This instruction has no
  * successors.
  */
 class ExitFunctionInstruction extends Instruction {
