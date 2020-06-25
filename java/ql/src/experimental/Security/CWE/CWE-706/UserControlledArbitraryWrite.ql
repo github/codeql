@@ -1,10 +1,10 @@
 /**
- * @name Disclosure of user-controlled path expression
- * @description Disclosing content from paths influenced by users can allow an attacker to read arbitrary resources.
+ * @name User-controlled content written on user-controlled path expression.
+ * @description Writing user-controlled data to an user-controlled paths can allow an attacker to write arbitrary files.
  * @kind path-problem
  * @problem.severity error
  * @precision medium
- * @id java/tainted-file-read
+ * @id java/tainted-file-write
  * @tags security
  *       external/cwe/cwe-706
  */
@@ -97,7 +97,7 @@ class SensitiveFileOperationSink extends DataFlow::ExprNode {
   }
 }
 
-/**    Holds if `node1` is used in the creation of `node2` and not guarded. */
+/** Holds if `node1` is used in the creation of `node2` and not guarded. */
 predicate usedInPathCreation(DataFlow::Node node1, DataFlow::Node node2) {
   exists(Expr e | e = node1.asExpr() |
     e = node2.asExpr().(PathCreation).getInput() and not guarded(e)
@@ -204,7 +204,7 @@ class InformationLeakConfig extends TaintTracking2::Configuration {
      *         putsValueIntoJsonArray(node1, node2)
      */
 
-    }
+  }
 }
 
 from
