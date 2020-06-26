@@ -139,10 +139,16 @@ class Opcode extends TOpcode {
   predicate hasOperandInternal(OperandTag tag) { none() }
 }
 
+/**
+ * An operation whose result is computed from a single operand.
+ */
 abstract class UnaryOpcode extends Opcode {
   final override predicate hasOperandInternal(OperandTag tag) { tag instanceof UnaryOperandTag }
 }
 
+/**
+ * An operation whose result is computed from two operands.
+ */
 abstract class BinaryOpcode extends Opcode {
   final override predicate hasOperandInternal(OperandTag tag) {
     tag instanceof LeftOperandTag or
@@ -150,42 +156,95 @@ abstract class BinaryOpcode extends Opcode {
   }
 }
 
+/**
+ * An operation that performs a binary arithmetic operation involving at least one pointer
+ * operand.
+ */
 abstract class PointerArithmeticOpcode extends BinaryOpcode { }
 
+/**
+ * An operation that adds or subtracts an integer offset from a pointer.
+ */
 abstract class PointerOffsetOpcode extends PointerArithmeticOpcode { }
 
+/**
+ * An operation that computes the result of an arithmetic operation.
+ */
 abstract class ArithmeticOpcode extends Opcode { }
 
+/**
+ * An operation that performs an arithmetic operation on two numeric operands.
+ */
 abstract class BinaryArithmeticOpcode extends BinaryOpcode, ArithmeticOpcode { }
 
+/**
+ * An operation whose result is computed by performing an arithmetic operation on a single
+ * numeric operand.
+ */
 abstract class UnaryArithmeticOpcode extends UnaryOpcode, ArithmeticOpcode { }
 
+/**
+ * An operation that computes the result of a bitwise operation.
+ */
 abstract class BitwiseOpcode extends Opcode { }
 
+/**
+ * An operation that performs a bitwise operation on two integer operands.
+ */
 abstract class BinaryBitwiseOpcode extends BinaryOpcode, BitwiseOpcode { }
 
+/**
+ * An operation that performs a bitwise operation on a single integer operand.
+ */
 abstract class UnaryBitwiseOpcode extends UnaryOpcode, BitwiseOpcode { }
 
+/**
+ * An operation that compares two numeric operands.
+ */
 abstract class CompareOpcode extends BinaryOpcode { }
 
+/**
+ * An operation that does a relative comparison of two values, such as `<` or `>=`.
+ */
 abstract class RelationalOpcode extends CompareOpcode { }
 
+/**
+ * An operation that returns a copy of its operand.
+ */
 abstract class CopyOpcode extends Opcode { }
 
+/**
+ * An operation that converts from the address of a derived class to the address of a base class.
+ */
 abstract class ConvertToBaseOpcode extends UnaryOpcode { }
 
+/**
+ * An operation that returns control to the caller of the function.
+ */
 abstract class ReturnOpcode extends Opcode { }
 
+/**
+ * An operation that throws an exception.
+ */
 abstract class ThrowOpcode extends Opcode { }
 
+/**
+ * An operation that starts a `catch` handler.
+ */
 abstract class CatchOpcode extends Opcode { }
 
 abstract private class OpcodeWithCondition extends Opcode {
   final override predicate hasOperandInternal(OperandTag tag) { tag instanceof ConditionOperandTag }
 }
 
+/**
+ * An operation representing a built-in operation.
+ */
 abstract class BuiltInOperationOpcode extends Opcode { }
 
+/**
+ * An operation representing a side effect of a function call.
+ */
 abstract class SideEffectOpcode extends Opcode { }
 
 /**
@@ -321,7 +380,8 @@ abstract class OpcodeWithLoad extends IndirectReadOpcode {
 }
 
 /**
- * An opcode that reads from a set of memory locations as a side effect.
+ * An operation representing a read side effect of a function call on a
+ * specific parameter.
  */
 abstract class ReadSideEffectOpcode extends SideEffectOpcode {
   final override predicate hasOperandInternal(OperandTag tag) {
@@ -330,7 +390,8 @@ abstract class ReadSideEffectOpcode extends SideEffectOpcode {
 }
 
 /**
- * An opcode that writes to a set of memory locations as a side effect.
+ * An operation representing a write side effect of a function call on a
+ * specific parameter.
  */
 abstract class WriteSideEffectOpcode extends SideEffectOpcode { }
 

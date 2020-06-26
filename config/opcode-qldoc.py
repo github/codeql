@@ -8,7 +8,8 @@ start_qldoc_re = re.compile(r'^\s*/\*\*')  # Start of a QLDoc comment
 end_qldoc_re = re.compile(r'\*/\s*$')  # End of a QLDoc comment
 blank_qldoc_line_re = re.compile(r'^\s*\*\s*$')  # A line in a QLDoc comment with only the '*'
 instruction_class_re = re.compile(r'^class (?P<name>[A-aa-z0-9]+)Instruction\s')  # Declaration of an `Instruction` class
-opcode_class_re = re.compile(r'^\s*class (?P<name>[A-aa-z0-9]+)\s')  # Declaration of an `Opcode` class
+opcode_base_class_re = re.compile(r'^abstract class (?P<name>[A-aa-z0-9]+)Opcode\s')  # Declaration of an `Opcode` base class
+opcode_class_re = re.compile(r'^  class (?P<name>[A-aa-z0-9]+)\s')  # Declaration of an `Opcode` class
 
 script_dir = path.realpath(path.dirname(__file__))
 instruction_path = path.realpath(path.join(script_dir, '../cpp/ql/src/semmle/code/cpp/ir/implementation/raw/Instruction.qll'))
@@ -63,17 +64,29 @@ with open(opcode_path, 'r', encoding='utf-8') as opcode:
                 if not end_qldoc_re.search(line):
                     in_qldoc = True
             else:
-                opcode_match = opcode_class_re.search(line)
-                if opcode_match:
-                    # Found an `Opcode` that matches a known `Instruction`. Replace the QLDoc with
-                    # a copy of the one from the `Instruction`.
-                    name = opcode_match.group('name')
-                    if instruction_comments.get(name):
+                name_without_suffix = None
+                name = None
+                indent = ''
+                opcode_base_match = opcode_base_class_re.search(line)
+                if opcode_base_match:
+                    name_without_suffix = opcode_base_match.group('name')
+                    name = name_without_suffix + 'Opcode'
+                else:
+                    opcode_match = opcode_class_re.search(line)
+                    if opcode_match:
+                        name_without_suffix = opcode_match.group('name')
+                        name = name_without_suffix
                         # Indent by two additional spaces, since opcodes are declared in the
                         # `Opcode` module.
+                        indent = '  '
+                
+                if name_without_suffix:
+                    # Found an `Opcode` that matches a known `Instruction`. Replace the QLDoc with
+                    # a copy of the one from the `Instruction`.
+                    if instruction_comments.get(name_without_suffix):
                         # Rename `instruction` to `operation`.
-                        qldoc_lines = [('  ' + qldoc_line.replace(' An instruction ', ' An operation '))
-                            for qldoc_line in instruction_comments[name]]
+                        qldoc_lines = [(indent + qldoc_line.replace(' An instruction ', ' An operation '))
+                            for qldoc_line in instruction_comments[name_without_suffix]]
                 output_lines.extend(qldoc_lines)
                 qldoc_lines = []
                 output_lines.append(line)
