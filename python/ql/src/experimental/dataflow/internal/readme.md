@@ -37,7 +37,7 @@ Flow from control flow nodes to SSA variables comes from SSA variable definition
 The global flow should be obtainable from a `PointsTo` analysis. It is specified via `viableCallable` and
 `getAnOutNode`. Consider making `ReturnKind` a singleton IPA type as in java.
 
-Global flow includes local flow within a consistent call context. Thus, for local flow to count as global flow, all relevant node should implement `getEnclosingCallable`.
+Global flow includes local flow within a consistent call context. Thus, for local flow to count as global flow, all relevant nodes should implement `getEnclosingCallable`.
 
 If complicated dispatch needs to be modelled, try using the `[reduced|pruned]viable*` predicates.
 
@@ -108,4 +108,19 @@ Review need for non-empty `isUnreachableInCall`.
 Implement all predicates empty.
 
 # Phase 1, experiments
-Try recovering an existing taint tracking query by implementing sources, sinks, sanitizers, and barriers. 
+Try recovering an existing taint tracking query by implementing sources, sinks, sanitizers, and barriers.
+
+---
+
+# Status
+
+## Achieved
+
+- Simple flow into, out of, and through functions
+
+## TODO
+
+- Consider replacing def-use with def-to-first-use and use-to-next-use in local flow
+- The regression tests track the value of guards in order to eliminate impossible data flow. We currently have regressions because of this. We cannot readily replicate the existing method, as it uses the interdefinedness of data flow and taint tracking (there is a boolean taint kind). C++ does something similar for eliminating impossible control flow, which we might be able to replicate (they infer values of "interesting" control flow nodes, which are those needed to determine values of guards).
+- Flow for some syntactis constructs is done via extra taint steps in the existing implementation, we shoudl find a way to get data flow for it. Much of this should be covered by field flow.
+- A document is being written about proper use of the shared data flow library, this should be adhered to.
