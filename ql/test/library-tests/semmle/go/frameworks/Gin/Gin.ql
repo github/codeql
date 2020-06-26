@@ -1,4 +1,4 @@
 import go
-import experimental.frameworks.Gin
+import semmle.go.frameworks.Gin
 
 select any(UntrustedFlowSource src)

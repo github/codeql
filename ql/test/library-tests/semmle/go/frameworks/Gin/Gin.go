@@ -164,9 +164,19 @@ func ginHandler(ctx *gin.Context) {
 		use(person.Name)
 	}
 	{
+		var personPointer *Person
+		ctx.BindYAML(personPointer)
+		use(personPointer.Name)
+	}
+	{
 		var person Person
 		ctx.BindXML(&person)
 		use(person.Name)
+	}
+	{
+		var personPointer *Person
+		ctx.BindXML(personPointer)
+		use(personPointer.Name)
 	}
 	{
 		var person Person
@@ -174,9 +184,19 @@ func ginHandler(ctx *gin.Context) {
 		use(person.Name)
 	}
 	{
+		var personPointer *Person
+		ctx.BindWith(personPointer, binding.YAML)
+		use(personPointer.Name)
+	}
+	{
 		var person Person
 		ctx.BindUri(&person)
 		use(person.Name)
+	}
+	{
+		var personPointer *Person
+		ctx.BindUri(personPointer)
+		use(personPointer.Name)
 	}
 	{
 		var person Person
@@ -184,9 +204,19 @@ func ginHandler(ctx *gin.Context) {
 		use(person.Name)
 	}
 	{
+		var personPointer *Person
+		ctx.BindQuery(personPointer)
+		use(personPointer.Name)
+	}
+	{
 		var person Person
 		ctx.MustBindWith(&person, binding.YAML)
 		use(person.Name)
+	}
+	{
+		var personPointer *Person
+		ctx.MustBindWith(personPointer, binding.YAML)
+		use(personPointer.Name)
 	}
 	{
 		var person Person
@@ -194,9 +224,19 @@ func ginHandler(ctx *gin.Context) {
 		use(person.Name)
 	}
 	{
+		var personPointer *Person
+		ctx.BindJSON(personPointer)
+		use(personPointer.Name)
+	}
+	{
 		var person Person
 		ctx.Bind(&person)
 		use(person.Name)
+	}
+	{
+		var personPointer *Person
+		ctx.Bind(personPointer)
+		use(personPointer.Name)
 	}
 	{
 		var person Person
@@ -204,9 +244,19 @@ func ginHandler(ctx *gin.Context) {
 		use(person.Name)
 	}
 	{
+		var personPointer *Person
+		ctx.ShouldBind(personPointer)
+		use(personPointer.Name)
+	}
+	{
 		var person Person
 		ctx.ShouldBindBodyWith(&person, binding.YAML)
 		use(person.Name)
+	}
+	{
+		var personPointer *Person
+		ctx.ShouldBindBodyWith(personPointer, binding.YAML)
+		use(personPointer.Name)
 	}
 	{
 		var person Person
@@ -214,9 +264,19 @@ func ginHandler(ctx *gin.Context) {
 		use(person.Name)
 	}
 	{
+		var personPointer *Person
+		ctx.ShouldBindJSON(personPointer)
+		use(personPointer.Name)
+	}
+	{
 		var person Person
 		ctx.ShouldBindQuery(&person)
 		use(person.Name)
+	}
+	{
+		var personPointer *Person
+		ctx.ShouldBindQuery(personPointer)
+		use(personPointer.Name)
 	}
 	{
 		var person Person
@@ -224,9 +284,19 @@ func ginHandler(ctx *gin.Context) {
 		use(person.Name)
 	}
 	{
+		var personPointer *Person
+		ctx.ShouldBindUri(personPointer)
+		use(personPointer.Name)
+	}
+	{
 		var person Person
 		ctx.ShouldBindWith(&person, binding.YAML)
 		use(person.Name)
+	}
+	{
+		var personPointer *Person
+		ctx.ShouldBindWith(personPointer, binding.YAML)
+		use(personPointer.Name)
 	}
 	{
 		var person Person
@@ -234,9 +304,19 @@ func ginHandler(ctx *gin.Context) {
 		use(person.Name)
 	}
 	{
+		var personPointer *Person
+		ctx.ShouldBindXML(personPointer)
+		use(personPointer.Name)
+	}
+	{
 		var person Person
 		ctx.ShouldBindYAML(&person)
 		use(person.Name)
+	}
+	{
+		var personPointer *Person
+		ctx.ShouldBindYAML(personPointer)
+		use(personPointer.Name)
 	}
 	{
 		var person Person
@@ -244,8 +324,18 @@ func ginHandler(ctx *gin.Context) {
 		use(person.Name)
 	}
 	{
+		var personPointer *Person
+		ctx.BindHeader(personPointer)
+		use(personPointer.Name)
+	}
+	{
 		var person Person
 		ctx.ShouldBindHeader(&person)
 		use(person.Name)
+	}
+	{
+		var personPointer *Person
+		ctx.ShouldBindHeader(personPointer)
+		use(personPointer.Name)
 	}
 }
