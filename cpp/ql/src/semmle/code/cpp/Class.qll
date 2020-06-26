@@ -849,9 +849,7 @@ class ClassDerivation extends Locatable, @derivation {
 class LocalClass extends Class {
   LocalClass() { isLocal() }
 
-  override string getAPrimaryQlClass() {
-    not this instanceof LocalStruct and result = "LocalClass"
-  }
+  override string getAPrimaryQlClass() { not this instanceof LocalStruct and result = "LocalClass" }
 
   override Function getEnclosingAccessHolder() { result = this.getEnclosingFunction() }
 }

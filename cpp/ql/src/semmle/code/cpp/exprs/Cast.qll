@@ -289,9 +289,7 @@ class PointerConversion extends Cast {
     isPointerOrNullPointer(getExpr().getUnspecifiedType())
   }
 
-  override string getAPrimaryQlClass() {
-    not exists(qlCast(this)) and result = "PointerConversion"
-  }
+  override string getAPrimaryQlClass() { not exists(qlCast(this)) and result = "PointerConversion" }
 
   override string getSemanticConversionString() { result = "pointer conversion" }
 }
@@ -569,9 +567,7 @@ class PointerToMemberDerivedClassConversion extends Cast {
 class GlvalueConversion extends Cast {
   GlvalueConversion() { conversionkinds(underlyingElement(this), 6) }
 
-  override string getAPrimaryQlClass() {
-    not exists(qlCast(this)) and result = "GlvalueConversion"
-  }
+  override string getAPrimaryQlClass() { not exists(qlCast(this)) and result = "GlvalueConversion" }
 
   override string getSemanticConversionString() { result = "glvalue conversion" }
 }

@@ -43,9 +43,7 @@ class Struct extends Class {
 class LocalStruct extends Struct {
   LocalStruct() { isLocal() }
 
-  override string getAPrimaryQlClass() {
-    not this instanceof LocalUnion and result = "LocalStruct"
-  }
+  override string getAPrimaryQlClass() { not this instanceof LocalUnion and result = "LocalStruct" }
 }
 
 /**
