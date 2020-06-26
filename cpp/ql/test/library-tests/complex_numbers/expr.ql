@@ -1,4 +1,4 @@
 import cpp
 
 from Expr e
-select e, e.getCanonicalQLClass()
+select e, e.getAPrimaryQlClass()

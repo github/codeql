@@ -15,7 +15,7 @@ import semmle.code.cpp.Class
 class LambdaExpression extends Expr, @lambdaexpr {
   override string toString() { result = "[...](...){...}" }
 
-  override string getCanonicalQLClass() { result = "LambdaExpression" }
+  override string getAPrimaryQlClass() { result = "LambdaExpression" }
 
   /**
    * Gets an implicitly or explicitly captured value of this lambda expression.
@@ -75,7 +75,7 @@ class LambdaExpression extends Expr, @lambdaexpr {
 class Closure extends Class {
   Closure() { exists(LambdaExpression e | this = e.getType()) }
 
-  override string getCanonicalQLClass() { result = "Closure" }
+  override string getAPrimaryQlClass() { result = "Closure" }
 
   /** Gets the lambda expression of which this is the type. */
   LambdaExpression getLambdaExpression() { result.getType() = this }
@@ -101,7 +101,7 @@ class Closure extends Class {
 class LambdaCapture extends Locatable, @lambdacapture {
   override string toString() { result = getField().getName() }
 
-  override string getCanonicalQLClass() { result = "LambdaCapture" }
+  override string getAPrimaryQlClass() { result = "LambdaCapture" }
 
   /**
    * Holds if this capture was made implicitly.

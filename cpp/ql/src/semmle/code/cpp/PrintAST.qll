@@ -169,7 +169,7 @@ class PrintASTNode extends TPrintASTNode {
  * Retrieves the canonical QL class(es) for entity `el`
  */
 private string qlClass(ElementBase el) {
-  result = "[" + concat(el.getCanonicalQLClass(), ",") + "] "
+  result = "[" + concat(el.getAPrimaryQlClass(), ",") + "] "
   // Alternative implementation -- do not delete. It is useful for QL class discovery.
   //result = "["+ concat(el.getAQlClass(), ",") + "] "
 }
