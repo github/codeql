@@ -569,19 +569,33 @@ public class AutoBuild {
     }
   };
 
+  class FileExtractors {
+    FileExtractor defaultExtractor;
+    Map<String, FileExtractor> customExtractors = new LinkedHashMap<>();
+    
+    FileExtractors(FileExtractor defaultExtractor) {
+      this.defaultExtractor = defaultExtractor;
+    }
+    
+    public FileExtractor forFile(Path f) {
+      return customExtractors.getOrDefault(FileUtil.extension(f), defaultExtractor);
+    }
+  }
+
   /** Extract all supported candidate files that pass the filters. */
   private void extractSource() throws IOException {
     // default extractor
     FileExtractor defaultExtractor =
         new FileExtractor(mkExtractorConfig(), outputConfig, trapCache);
 
+    FileExtractors extractors = new FileExtractors(defaultExtractor);
+
     // custom extractor for explicitly specified file types
-    Map<String, FileExtractor> customExtractors = new LinkedHashMap<>();
     for (Map.Entry<String, FileType> spec : fileTypes.entrySet()) {
       String extension = spec.getKey();
       String fileType = spec.getValue().name();
       ExtractorConfig extractorConfig = mkExtractorConfig().withFileType(fileType);
-      customExtractors.put(extension, new FileExtractor(extractorConfig, outputConfig, trapCache));
+      extractors.customExtractors.put(extension, new FileExtractor(extractorConfig, outputConfig, trapCache));
     }
 
     Set<Path> filesToExtract = new LinkedHashSet<>();
@@ -610,15 +624,14 @@ public class AutoBuild {
 
     // extract remaining files
     extractFiles(
-        filesToExtract, extractedFiles, defaultExtractor, customExtractors, 
+        filesToExtract, extractedFiles, extractors, 
         f -> !(hasTypeScriptFiles && isFileDerivedFromTypeScriptFile(f, extractedFiles)));
   }
 
   private void extractFiles(
       Set<Path> filesToExtract,
       Set<Path> extractedFiles,
-      FileExtractor defaultExtractor,
-      Map<String, FileExtractor> customExtractors,
+      FileExtractors extractors,
       Predicate<Path> shouldExtract) {
 
     for (Path f : filesToExtract) {
@@ -628,12 +641,7 @@ public class AutoBuild {
         continue;
       }
       extractedFiles.add(f);
-      FileExtractor extractor = defaultExtractor;
-      if (!fileTypes.isEmpty()) {
-        String extension = FileUtil.extension(f);
-        if (customExtractors.containsKey(extension)) extractor = customExtractors.get(extension);
-      }
-      extract(extractor, f, null);
+      extract(extractors.forFile(f), f, null);
     }
   }
 
