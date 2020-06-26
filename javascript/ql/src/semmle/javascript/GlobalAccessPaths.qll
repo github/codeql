@@ -447,7 +447,8 @@ module AccessPath {
           ref.getBasicBlock() = bb and
           // Prunes the accesses where there does not exists a read and write within the same basicblock.
           // This could be more precise, but doing it like this avoids massive joins.
-          hasRead(bb) and hasWrite(bb)
+          hasRead(bb) and
+          hasWrite(bb)
         |
           ref order by any(int i | ref = bb.getNode(i))
         ) and
@@ -455,9 +456,9 @@ module AccessPath {
     }
 
     /**
-     * Holds if there exists an access-path read inside the basic-block `bb`. 
-     * 
-     * INTERNAL: This predicate is only meant to be used inside `rankedAccessPath`. 
+     * Holds if there exists an access-path read inside the basic-block `bb`.
+     *
+     * INTERNAL: This predicate is only meant to be used inside `rankedAccessPath`.
      */
     pragma[noinline]
     private predicate hasRead(ReachableBasicBlock bb) {
@@ -465,9 +466,9 @@ module AccessPath {
     }
 
     /**
-     * Holds if there exists an access-path write inside the basic-block `bb`. 
-     * 
-     * INTERNAL: This predicate is only meant to be used inside `rankedAccessPath`. 
+     * Holds if there exists an access-path write inside the basic-block `bb`.
+     *
+     * INTERNAL: This predicate is only meant to be used inside `rankedAccessPath`.
      */
     pragma[noinline]
     private predicate hasWrite(ReachableBasicBlock bb) {
