@@ -45,7 +45,7 @@ private newtype TOpcode =
   TConvertToDerived() or
   TCheckedConvertOrNull() or
   TCheckedConvertOrThrow() or
-  TDynamicCastToVoid() or
+  TCompleteObjectAddress() or
   TVariableAddress() or
   TFieldAddress() or
   TFunctionAddress() or
@@ -514,8 +514,8 @@ module Opcode {
     final override string toString() { result = "CheckedConvertOrThrow" }
   }
 
-  class DynamicCastToVoid extends UnaryOpcode, TDynamicCastToVoid {
-    final override string toString() { result = "DynamicCastToVoid" }
+  class CompleteObjectAddress extends UnaryOpcode, TCompleteObjectAddress {
+    final override string toString() { result = "CompleteObjectAddress" }
   }
 
   class VariableAddress extends Opcode, TVariableAddress {

@@ -538,6 +538,18 @@ class VariableAddressInstruction extends VariableInstruction {
 }
 
 /**
+ * An instruction that returns the address of a function.
+ *
+ * This instruction returns the address of a function, including non-member functions, static member
+ * functions, and non-static member functions.
+ *
+ * The result has an `IRFunctionAddress` type.
+ */
+class FunctionAddressInstruction extends FunctionInstruction {
+  FunctionAddressInstruction() { getOpcode() instanceof Opcode::FunctionAddress }
+}
+
+/**
  * An instruction that initializes a parameter of the enclosing function with the value of the
  * corresponding argument passed by the caller.
  *
@@ -551,6 +563,16 @@ class InitializeParameterInstruction extends VariableInstruction {
    * Gets the parameter initialized by this instruction.
    */
   final Language::Parameter getParameter() { result = var.(IRUserVariable).getVariable() }
+}
+
+/**
+ * An instruction that initializes all memory that existed before this function was called.
+ *
+ * This instruction provides a definition for memory that, because it was actually allocated and
+ * initialized elsewhere, would not otherwise have a definition in this function.
+ */
+class InitializeNonLocalInstruction extends Instruction {
+  InitializeNonLocalInstruction() { getOpcode() instanceof Opcode::InitializeNonLocal }
 }
 
 /**
@@ -588,6 +610,25 @@ class FieldAddressInstruction extends FieldInstruction {
    * Gets the instruction whose result provides the address of the object containing the field.
    */
   final Instruction getObjectAddress() { result = getObjectAddressOperand().getDef() }
+}
+
+/**
+ * An instruction that computes the address of the first element of a managed array.
+ *
+ * This instruction is used for element access to C# arrays.
+ */
+class ElementsAddressInstruction extends UnaryInstruction {
+  ElementsAddressInstruction() { getOpcode() instanceof Opcode::ElementsAddress }
+
+  /**
+   * Gets the operand that provides the address of the array object.
+   */
+  final UnaryOperand getArrayObjectAddressOperand() { result = getAnOperand() }
+
+  /**
+   * Gets the instruction whose result provides the address of the array object.
+   */
+  final Instruction getArrayObjectAddress() { result = getArrayObjectAddressOperand().getDef() }
 }
 
 /**
@@ -1178,6 +1219,19 @@ class CheckedConvertOrThrowInstruction extends UnaryInstruction {
 }
 
 /**
+ * An instruction that returns the address of the complete object that contains the subobject
+ * pointed to by its operand.
+ *
+ * If the operand holds a null address, the result is a null address.
+ *
+ * This instruction is used to represent `dyanmic_cast<void*>` in C++, which returns the pointer to
+ * the most-derived object.
+ */
+class CompleteObjectAddressInstruction extends UnaryInstruction {
+  CompleteObjectAddressInstruction() { getOpcode() instanceof Opcode::CompleteObjectAddress }
+}
+
+/**
  * An instruction that converts the address of an object to the address of a different subobject of
  * the same object, without any type checking at runtime.
  */
@@ -1453,7 +1507,7 @@ class CallInstruction extends Instruction {
    * Gets the `Function` that the call targets, if this is statically known.
    */
   final Language::Function getStaticCallTarget() {
-    result = getCallTarget().(FunctionInstruction).getFunctionSymbol()
+    result = getCallTarget().(FunctionAddressInstruction).getFunctionSymbol()
   }
 
   /**
@@ -1516,9 +1570,10 @@ class CallSideEffectInstruction extends SideEffectInstruction {
 
 /**
  * An instruction representing the side effect of a function call on any memory
- * that might be read by that call. This instruction is emitted instead of
- * `CallSideEffectInstruction` when it's certain that the call target cannot
- * write to escaped memory.
+ * that might be read by that call.
+ *
+ * This instruction is emitted instead of `CallSideEffectInstruction` when it is certain that the
+ * call target cannot write to escaped memory.
  */
 class CallReadSideEffectInstruction extends SideEffectInstruction {
   CallReadSideEffectInstruction() { getOpcode() instanceof Opcode::CallReadSideEffect }
@@ -1612,6 +1667,7 @@ class SizedBufferMustWriteSideEffectInstruction extends WriteSideEffectInstructi
 
 /**
  * An instruction representing the potential write of an indirect parameter within a function call.
+ *
  * Unlike `IndirectWriteSideEffectInstruction`, the location might not be completely overwritten.
  * written.
  */
@@ -1623,6 +1679,7 @@ class IndirectMayWriteSideEffectInstruction extends WriteSideEffectInstruction {
 
 /**
  * An instruction representing the write of an indirect buffer parameter within a function call.
+ *
  * Unlike `BufferWriteSideEffectInstruction`, the buffer might not be completely overwritten.
  */
 class BufferMayWriteSideEffectInstruction extends WriteSideEffectInstruction {
@@ -1631,6 +1688,7 @@ class BufferMayWriteSideEffectInstruction extends WriteSideEffectInstruction {
 
 /**
  * An instruction representing the write of an indirect buffer parameter within a function call.
+ *
  * Unlike `BufferWriteSideEffectInstruction`, the buffer might not be completely overwritten.
  */
 class SizedBufferMayWriteSideEffectInstruction extends WriteSideEffectInstruction {
@@ -1642,7 +1700,7 @@ class SizedBufferMayWriteSideEffectInstruction extends WriteSideEffectInstructio
 }
 
 /**
- * An instruction representing the initial value of newly allocated memory, e.g. the result of a
+ * An instruction representing the initial value of newly allocated memory, such as the result of a
  * call to `malloc`.
  */
 class InitializeDynamicAllocationInstruction extends SideEffectInstruction {
@@ -1860,17 +1918,20 @@ class ChiInstruction extends Instruction {
 }
 
 /**
- * An instruction representing unreachable code. Inserted in place of the original target
- * instruction of a `ConditionalBranch` or `Switch` instruction where that particular edge is
- * infeasible.
+ * An instruction representing unreachable code.
+ *
+ * This instruction is inserted in place of the original target instruction of a `ConditionalBranch`
+ * or `Switch` instruction where that particular edge is infeasible.
  */
 class UnreachedInstruction extends Instruction {
   UnreachedInstruction() { getOpcode() instanceof Opcode::Unreached }
 }
 
 /**
- * An instruction representing a built-in operation. This is used to represent
- * operations such as access to variable argument lists.
+ * An instruction representing a built-in operation.
+ *
+ * This is used to represent a variety of intrinsic operations provided by the compiler
+ * implementation, such as vector arithmetic.
  */
 class BuiltInOperationInstruction extends Instruction {
   Language::BuiltInOperation operation;
@@ -1891,4 +1952,60 @@ class BuiltInInstruction extends BuiltInOperationInstruction {
   BuiltInInstruction() { getOpcode() instanceof Opcode::BuiltIn }
 
   final override string getImmediateString() { result = getBuiltInOperation().toString() }
+}
+
+/**
+ * An instruction that returns a `va_list` to access the arguments passed to the `...` parameter.
+ *
+ * The operand specifies the address of the `IREllipsisVariable` used to represent the `...`
+ * parameter. The result is a `va_list` that initially refers to the first argument that was passed
+ * to the `...` parameter.
+ */
+class VarArgsStartInstruction extends UnaryInstruction {
+  VarArgsStartInstruction() { getOpcode() instanceof Opcode::VarArgsStart }
+}
+
+/**
+ * An instruction that cleans up a `va_list` after it is no longer in use.
+ *
+ * The operand specifies the address of the `va_list` to clean up. This instruction does not return
+ * a result.
+ */
+class VarArgsEndInstruction extends UnaryInstruction {
+  VarArgsEndInstruction() { getOpcode() instanceof Opcode::VarArgsEnd }
+}
+
+/**
+ * An instruction that returns the address of the argument currently pointed to by a `va_list`.
+ *
+ * The operand is the `va_list` that points to the argument. The result is the address of the
+ * argument.
+ */
+class VarArgInstruction extends UnaryInstruction {
+  VarArgInstruction() { getOpcode() instanceof Opcode::VarArg }
+}
+
+/**
+ * An instruction that modifies a `va_list` to point to the next argument that was passed to the
+ * `...` parameter.
+ *
+ * The operand is the current `va_list`. The result is an updated `va_list` that points to the next
+ * argument of the `...` parameter.
+ */
+class NextVarArgInstruction extends UnaryInstruction {
+  NextVarArgInstruction() { getOpcode() instanceof Opcode::NextVarArg }
+}
+
+/**
+ * An instruction that allocates a new object on the managed heap.
+ *
+ * This instruction is used to represent the allocation of a new object in C# using the `new`
+ * expression. This instruction does not invoke a constructor for the object. Instead, there will be
+ * a subsequent `Call` instruction to invoke the appropriate constructor directory, passing the
+ * result of the `NewObj` as the `this` argument.
+ *
+ * The result is the address of the newly allocated object.
+ */
+class NewObjInstruction extends Instruction {
+  NewObjInstruction() { getOpcode() instanceof Opcode::NewObj }
 }
