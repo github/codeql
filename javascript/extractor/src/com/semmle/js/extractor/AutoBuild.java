@@ -20,6 +20,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -28,6 +29,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.google.gson.Gson;
@@ -536,6 +538,36 @@ public class AutoBuild {
     Files.walkFileTree(externs, visitor);
   }
 
+  /**
+   * Compares files in the order they should be extracted.
+   * <p>
+   * The ordering of tsconfig.json files can affect extraction results. Since we
+   * extract any given source file at most once, and a source file can be included from
+   * multiple tsconfig.json files, we sometimes have to choose arbitrarily which tsconfig.json
+   * to use for a given file (which is based on this ordering).
+   * <p>
+   * We sort them to help ensure reproducible extraction. Additionally, deeply nested files are
+   * preferred over shallow ones to help ensure files are extracted with the most specific
+   * tsconfig.json file.
+   */
+  public static final Comparator<Path> PATH_ORDERING = new Comparator<Path>() {
+    public int compare(Path f1, Path f2) {
+      if (f1.getNameCount() != f2.getNameCount()) {
+        return f2.getNameCount() - f1.getNameCount();
+      }
+      return f1.compareTo(f2);
+    }
+  };
+
+  /**
+   * Like {@link #PATH_ORDERING} but for {@link File} objects.
+   */
+  public static final Comparator<File> FILE_ORDERING = new Comparator<File>() {
+    public int compare(File f1, File f2) {
+      return PATH_ORDERING.compare(f1.toPath(), f2.toPath());
+    }
+  };
+
   /** Extract all supported candidate files that pass the filters. */
   private void extractSource() throws IOException {
     // default extractor
@@ -555,9 +587,17 @@ public class AutoBuild {
     List<Path> tsconfigFiles = new ArrayList<>();
     findFilesToExtract(defaultExtractor, filesToExtract, tsconfigFiles);
 
+    tsconfigFiles = tsconfigFiles.stream()
+         .sorted(PATH_ORDERING)
+         .collect(Collectors.toList());
+
+    filesToExtract = filesToExtract.stream()
+        .sorted(PATH_ORDERING)
+        .collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
+
     DependencyInstallationResult dependencyInstallationResult = DependencyInstallationResult.empty;
-    if (!tsconfigFiles.isEmpty() && this.installDependencies) {
-      dependencyInstallationResult = this.installDependencies(filesToExtract);
+    if (!tsconfigFiles.isEmpty()) {
+      dependencyInstallationResult = this.preparePackagesAndDependencies(filesToExtract);
     }
 
     // extract TypeScript projects and files
@@ -659,7 +699,21 @@ public class AutoBuild {
   }
 
   /**
-   * Installs dependencies for use by the TypeScript type checker.
+   * Gets a relative path from <code>from</code> to <code>to</code> provided
+   * the latter is contained in the former. Otherwise returns <code>null</code>.
+   * @return a path or null
+   */
+  public static Path tryRelativize(Path from, Path to) {
+    Path relative = from.relativize(to);
+    if (relative.startsWith("..") || relative.isAbsolute()) {
+      return null;
+    }
+    return relative;
+  }
+
+  /**
+   * Prepares <tt>package.json</tt> files in a virtual source root, and, if enabled,
+   * installs dependencies for use by the TypeScript type checker.
    * <p>
    * Some packages must be downloaded while others exist within the same repo ("monorepos")
    * but are not in a location where TypeScript would look for it.
@@ -677,13 +731,9 @@ public class AutoBuild {
    * The TypeScript parser wrapper then overrides module resolution so packages can be found
    * under the virtual source root and via that package location mapping.
    */
-  protected DependencyInstallationResult installDependencies(Set<Path> filesToExtract) {
-    if (!verifyYarnInstallation()) {
-      return DependencyInstallationResult.empty;
-    }
-
-    final Path sourceRoot = Paths.get(".").toAbsolutePath();
-    final Path virtualSourceRoot = Paths.get(EnvironmentVariables.getScratchDir()).toAbsolutePath();
+protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> filesToExtract) {
+    final Path sourceRoot = LGTM_SRC;
+    final Path virtualSourceRoot = toRealPath(Paths.get(EnvironmentVariables.getScratchDir()));
 
     // Read all package.json files and index them by name.
     Map<Path, JsonObject> packageJsonFiles = new LinkedHashMap<>();
@@ -697,6 +747,9 @@ public class AutoBuild {
           if (!(json instanceof JsonObject)) continue;
           JsonObject jsonObject = (JsonObject) json;
           file = file.toAbsolutePath();
+          if (tryRelativize(sourceRoot, file) == null) {
+            continue; // Ignore package.json files outside the source root.
+          }
           packageJsonFiles.put(file, jsonObject);
 
           String name = getChildAsString(jsonObject, "name");
@@ -781,33 +834,35 @@ public class AutoBuild {
     }
 
     // Install dependencies
-    for (Path file : packageJsonFiles.keySet()) {
-      Path virtualFile = virtualSourceRoot.resolve(sourceRoot.relativize(file));
-      System.out.println("Installing dependencies from " + virtualFile);
-      ProcessBuilder pb =
-          new ProcessBuilder(
-              Arrays.asList(
-                  "yarn",
-                  "install",
-                  "--non-interactive",
-                  "--ignore-scripts",
-                  "--ignore-platform",
-                  "--ignore-engines",
-                  "--ignore-optional",
-                  "--no-default-rc",
-                  "--no-bin-links",
-                  "--pure-lockfile"));
-      pb.directory(virtualFile.getParent().toFile());
-      pb.redirectOutput(Redirect.INHERIT);
-      pb.redirectError(Redirect.INHERIT);
-      try {
-        pb.start().waitFor(this.installDependenciesTimeout, TimeUnit.MILLISECONDS);
-      } catch (IOException | InterruptedException ex) {
-        throw new ResourceError("Could not install dependencies from " + file, ex);
+    if (this.installDependencies && verifyYarnInstallation()) {
+      for (Path file : packageJsonFiles.keySet()) {
+        Path virtualFile = virtualSourceRoot.resolve(sourceRoot.relativize(file));
+        System.out.println("Installing dependencies from " + virtualFile);
+        ProcessBuilder pb =
+            new ProcessBuilder(
+                Arrays.asList(
+                    "yarn",
+                    "install",
+                    "--non-interactive",
+                    "--ignore-scripts",
+                    "--ignore-platform",
+                    "--ignore-engines",
+                    "--ignore-optional",
+                    "--no-default-rc",
+                    "--no-bin-links",
+                    "--pure-lockfile"));
+        pb.directory(virtualFile.getParent().toFile());
+        pb.redirectOutput(Redirect.INHERIT);
+        pb.redirectError(Redirect.INHERIT);
+        try {
+          pb.start().waitFor(this.installDependenciesTimeout, TimeUnit.MILLISECONDS);
+        } catch (IOException | InterruptedException ex) {
+          throw new ResourceError("Could not install dependencies from " + file, ex);
+        }
       }
     }
 
-    return new DependencyInstallationResult(virtualSourceRoot, packageMainFile, packagesInRepo);
+    return new DependencyInstallationResult(sourceRoot, virtualSourceRoot, packageMainFile, packagesInRepo);
   }
 
   /**
@@ -894,6 +949,16 @@ public class AutoBuild {
       TypeScriptParser tsParser = extractorState.getTypeScriptParser();
       verifyTypeScriptInstallation(extractorState);
 
+      // Collect all files included in a tsconfig.json inclusion pattern.
+      // If a given file is referenced by multiple tsconfig files, we prefer to extract it using
+      // one that includes it rather than just references it.
+      Set<File> explicitlyIncludedFiles = new LinkedHashSet<>();
+      if (tsconfig.size() > 1) { // No prioritization needed if there's only one tsconfig.
+        for (Path projectPath : tsconfig) {
+          explicitlyIncludedFiles.addAll(tsParser.getOwnFiles(projectPath.toFile(), deps));
+        }
+      }
+
       // Extract TypeScript projects
       for (Path projectPath : tsconfig) {
         File projectFile = projectPath.toFile();
@@ -902,19 +967,21 @@ public class AutoBuild {
         logEndProcess(start, "Done opening project " + projectFile);
         // Extract all files belonging to this project which are also matched
         // by our include/exclude filters.
-        List<File> typeScriptFiles = new ArrayList<File>();
-        for (File sourceFile : project.getSourceFiles()) {
+        List<Path> typeScriptFiles = new ArrayList<Path>();
+        for (File sourceFile : project.getAllFiles()) {
           Path sourcePath = sourceFile.toPath();
           if (!files.contains(normalizePath(sourcePath))) continue;
+          if (!project.getOwnFiles().contains(sourceFile) && explicitlyIncludedFiles.contains(sourceFile)) continue;
           if (!FileType.TYPESCRIPT.getExtensions().contains(FileUtil.extension(sourcePath))) {
             // For the time being, skip non-TypeScript files, even if the TypeScript
             // compiler can parse them for us.
             continue;
           }
           if (!extractedFiles.contains(sourcePath)) {
-            typeScriptFiles.add(sourcePath.toFile());
+            typeScriptFiles.add(sourcePath);
           }
         }
+        typeScriptFiles.sort(PATH_ORDERING);
         extractTypeScriptFiles(typeScriptFiles, extractedFiles, extractor, extractorState);
         tsParser.closeProject(projectFile);
       }
@@ -926,11 +993,11 @@ public class AutoBuild {
       }
 
       // Extract remaining TypeScript files.
-      List<File> remainingTypeScriptFiles = new ArrayList<File>();
+      List<Path> remainingTypeScriptFiles = new ArrayList<>();
       for (Path f : files) {
         if (!extractedFiles.contains(f)
             && FileType.forFileExtension(f.toFile()) == FileType.TYPESCRIPT) {
-          remainingTypeScriptFiles.add(f.toFile());
+          remainingTypeScriptFiles.add(f);
         }
       }
       if (!remainingTypeScriptFiles.isEmpty()) {
@@ -1018,15 +1085,18 @@ public class AutoBuild {
   }
 
   public void extractTypeScriptFiles(
-      List<File> files,
+      List<Path> files,
       Set<Path> extractedFiles,
       FileExtractor extractor,
       ExtractorState extractorState) {
-    extractorState.getTypeScriptParser().prepareFiles(files);
-    for (File f : files) {
-      Path path = f.toPath();
+    List<File> list = files
+        .stream()
+        .sorted(PATH_ORDERING)
+        .map(p -> p.toFile()).collect(Collectors.toList());
+    extractorState.getTypeScriptParser().prepareFiles(list);
+    for (Path path : files) {
       extractedFiles.add(path);
-      extract(extractor, f.toPath(), extractorState);
+      extract(extractor, path, extractorState);
     }
   }
 
