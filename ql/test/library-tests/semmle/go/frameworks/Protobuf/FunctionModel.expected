@@ -1,0 +1,4 @@
+| proto.go:27:10:27:21 | reflectedXSS | proto.go:27:10:27:38 | call to GetDescription |
+| proto.go:28:12:28:23 | reflectedXSS | proto.go:28:12:28:35 | call to GetAlerts |
+| proto.go:30:35:30:46 | reflectedXSS | proto.go:30:2:30:47 | ... := ...[0] |
+| proto.go:36:24:36:33 | serialized | proto.go:35:2:35:13 | definition of deserialized |

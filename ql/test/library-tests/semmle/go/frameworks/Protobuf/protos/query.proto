@@ -1,0 +1,23 @@
+syntax = "proto3";
+option go_package = "protos/query";
+
+message Query {
+  string description = 1;
+  string id = 2;
+
+  enum Severity {
+    ERROR = 0;
+    WARNING = 1;
+  }
+
+  message Alert {
+    string msg = 1;
+    int64 loc = 2;
+  }
+
+  repeated Alert alerts = 4;
+}
+
+message QuerySuite {
+  repeated Query queries = 1;
+}
