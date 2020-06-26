@@ -72,7 +72,7 @@ class MemberFunction extends Function {
   }
 
   /**
-   * Gets the type of the `this` parameter associated with this member function.
+   * Gets the type of the `this` parameter associated with this member function, if any.
    */
   Type getTypeOfThis() {
     member_function_this_type(underlyingElement(this), unresolveElement(result))
