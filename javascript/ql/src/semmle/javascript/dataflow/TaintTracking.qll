@@ -743,7 +743,9 @@ module TaintTracking {
     }
 
     pragma[nomagic]
-    private ControlFlowNode getANodeReachingCaptureRefAux(DataFlow::PropRead read, ControlFlowNode mid) {
+    private ControlFlowNode getANodeReachingCaptureRefAux(
+      DataFlow::PropRead read, ControlFlowNode mid
+    ) {
       mid = getANodeReachingCaptureRef(read) and
       result = mid.getAPredecessor()
     }
