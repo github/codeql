@@ -1089,6 +1089,11 @@ module IR {
 
     GetNextEntryInstruction() { this = MkNextNode(rs) }
 
+    /**
+     * Gets the instruction computing the value whose key-value pairs this instruction reads.
+     */
+    Instruction getDomain() { result = evalExprInstruction(rs.getDomain()) }
+
     override ControlFlow::Root getRoot() { result.isRootOf(rs) }
 
     override string toString() { result = "next key-value pair in range" }

@@ -10,6 +10,9 @@
 | main.go:40:15:40:15 | s | main.go:40:8:40:23 | call to append |
 | main.go:40:18:40:19 | s1 | main.go:40:8:40:23 | call to append |
 | main.go:42:10:42:11 | s4 | main.go:38:2:38:2 | definition of s |
+| main.go:47:20:47:21 | next key-value pair in range | main.go:47:2:50:2 | range statement[0] |
+| main.go:47:20:47:21 | next key-value pair in range | main.go:47:2:50:2 | range statement[1] |
+| main.go:47:20:47:21 | xs | main.go:47:2:50:2 | range statement[1] |
 | strings.go:9:24:9:24 | s | strings.go:9:8:9:38 | call to Replace |
 | strings.go:9:32:9:34 | "_" | strings.go:9:8:9:38 | call to Replace |
 | strings.go:10:27:10:27 | s | strings.go:10:8:10:42 | call to ReplaceAll |

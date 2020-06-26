@@ -25,6 +25,28 @@ edges
 | UnsafeTLS.go:171:32:171:50 | selection of CipherSuites : slice type | UnsafeTLS.go:171:25:171:94 | call to append : slice type |
 | UnsafeTLS.go:171:53:171:93 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:171:25:171:94 | call to append |
 | UnsafeTLS.go:171:53:171:93 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:171:25:171:94 | call to append : slice type |
+| UnsafeTLS.go:174:3:174:8 | definition of config [pointer, CipherSuites] | UnsafeTLS.go:175:3:175:8 | config [pointer, CipherSuites] |
+| UnsafeTLS.go:174:3:174:8 | definition of config [pointer, CipherSuites] | UnsafeTLS.go:178:4:178:9 | config [pointer, CipherSuites] |
+| UnsafeTLS.go:174:3:174:8 | definition of config [pointer, CipherSuites] | UnsafeTLS.go:178:33:178:38 | config [pointer, CipherSuites] |
+| UnsafeTLS.go:175:3:175:8 | config [pointer, CipherSuites] | UnsafeTLS.go:175:3:175:8 | implicit dereference [CipherSuites] : slice type |
+| UnsafeTLS.go:175:3:175:8 | implicit dereference [CipherSuites] : slice type | UnsafeTLS.go:174:3:174:8 | definition of config [pointer, CipherSuites] |
+| UnsafeTLS.go:176:21:176:46 | call to InsecureCipherSuites : slice type | UnsafeTLS.go:178:26:178:58 | call to append |
+| UnsafeTLS.go:176:21:176:46 | call to InsecureCipherSuites : slice type | UnsafeTLS.go:178:26:178:58 | call to append : slice type |
+| UnsafeTLS.go:176:21:176:46 | call to InsecureCipherSuites : slice type | UnsafeTLS.go:178:54:178:54 | implicit dereference : CipherSuite |
+| UnsafeTLS.go:178:4:178:9 | config [pointer, CipherSuites] | UnsafeTLS.go:178:4:178:9 | implicit dereference [CipherSuites] : slice type |
+| UnsafeTLS.go:178:4:178:9 | implicit dereference [CipherSuites] : slice type | UnsafeTLS.go:174:3:174:8 | definition of config [pointer, CipherSuites] |
+| UnsafeTLS.go:178:26:178:58 | call to append : slice type | UnsafeTLS.go:178:4:178:9 | implicit dereference [CipherSuites] : slice type |
+| UnsafeTLS.go:178:33:178:38 | config [pointer, CipherSuites] | UnsafeTLS.go:178:33:178:38 | implicit dereference [CipherSuites] : slice type |
+| UnsafeTLS.go:178:33:178:38 | implicit dereference [CipherSuites] : slice type | UnsafeTLS.go:178:33:178:51 | selection of CipherSuites : slice type |
+| UnsafeTLS.go:178:33:178:51 | selection of CipherSuites : slice type | UnsafeTLS.go:178:26:178:58 | call to append |
+| UnsafeTLS.go:178:33:178:51 | selection of CipherSuites : slice type | UnsafeTLS.go:178:26:178:58 | call to append : slice type |
+| UnsafeTLS.go:178:54:178:54 | implicit dereference : CipherSuite | UnsafeTLS.go:178:26:178:58 | call to append |
+| UnsafeTLS.go:178:54:178:54 | implicit dereference : CipherSuite | UnsafeTLS.go:178:26:178:58 | call to append : slice type |
+| UnsafeTLS.go:178:54:178:54 | implicit dereference : CipherSuite | UnsafeTLS.go:178:54:178:54 | implicit dereference : CipherSuite |
+| UnsafeTLS.go:184:21:184:46 | call to InsecureCipherSuites : slice type | UnsafeTLS.go:186:40:186:40 | implicit dereference : CipherSuite |
+| UnsafeTLS.go:184:21:184:46 | call to InsecureCipherSuites : slice type | UnsafeTLS.go:188:25:188:36 | cipherSuites |
+| UnsafeTLS.go:186:40:186:40 | implicit dereference : CipherSuite | UnsafeTLS.go:186:40:186:40 | implicit dereference : CipherSuite |
+| UnsafeTLS.go:186:40:186:40 | implicit dereference : CipherSuite | UnsafeTLS.go:188:25:188:36 | cipherSuites |
 | UnsafeTLS.go:193:21:193:46 | call to InsecureCipherSuites : slice type | UnsafeTLS.go:195:40:195:56 | implicit dereference : CipherSuite |
 | UnsafeTLS.go:193:21:193:46 | call to InsecureCipherSuites : slice type | UnsafeTLS.go:197:25:197:36 | cipherSuites |
 | UnsafeTLS.go:195:40:195:56 | implicit dereference : CipherSuite | UnsafeTLS.go:195:40:195:56 | implicit dereference : CipherSuite |
@@ -74,6 +96,21 @@ nodes
 | UnsafeTLS.go:171:32:171:37 | implicit dereference [CipherSuites] : slice type | semmle.label | implicit dereference [CipherSuites] : slice type |
 | UnsafeTLS.go:171:32:171:50 | selection of CipherSuites : slice type | semmle.label | selection of CipherSuites : slice type |
 | UnsafeTLS.go:171:53:171:93 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | semmle.label | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 |
+| UnsafeTLS.go:174:3:174:8 | definition of config [pointer, CipherSuites] | semmle.label | definition of config [pointer, CipherSuites] |
+| UnsafeTLS.go:175:3:175:8 | config [pointer, CipherSuites] | semmle.label | config [pointer, CipherSuites] |
+| UnsafeTLS.go:175:3:175:8 | implicit dereference [CipherSuites] : slice type | semmle.label | implicit dereference [CipherSuites] : slice type |
+| UnsafeTLS.go:176:21:176:46 | call to InsecureCipherSuites : slice type | semmle.label | call to InsecureCipherSuites : slice type |
+| UnsafeTLS.go:178:4:178:9 | config [pointer, CipherSuites] | semmle.label | config [pointer, CipherSuites] |
+| UnsafeTLS.go:178:4:178:9 | implicit dereference [CipherSuites] : slice type | semmle.label | implicit dereference [CipherSuites] : slice type |
+| UnsafeTLS.go:178:26:178:58 | call to append | semmle.label | call to append |
+| UnsafeTLS.go:178:26:178:58 | call to append : slice type | semmle.label | call to append : slice type |
+| UnsafeTLS.go:178:33:178:38 | config [pointer, CipherSuites] | semmle.label | config [pointer, CipherSuites] |
+| UnsafeTLS.go:178:33:178:38 | implicit dereference [CipherSuites] : slice type | semmle.label | implicit dereference [CipherSuites] : slice type |
+| UnsafeTLS.go:178:33:178:51 | selection of CipherSuites : slice type | semmle.label | selection of CipherSuites : slice type |
+| UnsafeTLS.go:178:54:178:54 | implicit dereference : CipherSuite | semmle.label | implicit dereference : CipherSuite |
+| UnsafeTLS.go:184:21:184:46 | call to InsecureCipherSuites : slice type | semmle.label | call to InsecureCipherSuites : slice type |
+| UnsafeTLS.go:186:40:186:40 | implicit dereference : CipherSuite | semmle.label | implicit dereference : CipherSuite |
+| UnsafeTLS.go:188:25:188:36 | cipherSuites | semmle.label | cipherSuites |
 | UnsafeTLS.go:193:21:193:46 | call to InsecureCipherSuites : slice type | semmle.label | call to InsecureCipherSuites : slice type |
 | UnsafeTLS.go:195:40:195:56 | implicit dereference : CipherSuite | semmle.label | implicit dereference : CipherSuite |
 | UnsafeTLS.go:197:25:197:36 | cipherSuites | semmle.label | cipherSuites |
@@ -103,4 +140,6 @@ nodes
 | UnsafeTLS.go:146:18:148:4 | slice literal | UnsafeTLS.go:147:5:147:47 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:146:18:148:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256. |
 | UnsafeTLS.go:154:18:156:4 | slice literal | UnsafeTLS.go:155:5:155:45 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:154:18:156:4 | slice literal | Use of an insecure cipher suite: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256. |
 | UnsafeTLS.go:171:25:171:94 | call to append | UnsafeTLS.go:171:53:171:93 | selection of TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256 : uint16 | UnsafeTLS.go:171:25:171:94 | call to append | Use of an insecure cipher suite: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256. |
+| UnsafeTLS.go:178:26:178:58 | call to append | UnsafeTLS.go:176:21:176:46 | call to InsecureCipherSuites : slice type | UnsafeTLS.go:178:26:178:58 | call to append | Use of an insecure cipher suite from InsecureCipherSuites(). |
+| UnsafeTLS.go:188:25:188:36 | cipherSuites | UnsafeTLS.go:184:21:184:46 | call to InsecureCipherSuites : slice type | UnsafeTLS.go:188:25:188:36 | cipherSuites | Use of an insecure cipher suite from InsecureCipherSuites(). |
 | UnsafeTLS.go:197:25:197:36 | cipherSuites | UnsafeTLS.go:193:21:193:46 | call to InsecureCipherSuites : slice type | UnsafeTLS.go:197:25:197:36 | cipherSuites | Use of an insecure cipher suite from InsecureCipherSuites(). |
