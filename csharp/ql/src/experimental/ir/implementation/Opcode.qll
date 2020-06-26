@@ -174,15 +174,13 @@ abstract class CopyOpcode extends Opcode { }
 
 abstract class ConvertToBaseOpcode extends UnaryOpcode { }
 
-abstract class MemoryAccessOpcode extends Opcode { }
-
 abstract class ReturnOpcode extends Opcode { }
 
 abstract class ThrowOpcode extends Opcode { }
 
 abstract class CatchOpcode extends Opcode { }
 
-abstract class OpcodeWithCondition extends Opcode {
+abstract private class OpcodeWithCondition extends Opcode {
   final override predicate hasOperandInternal(OperandTag tag) { tag instanceof ConditionOperandTag }
 }
 
@@ -336,6 +334,9 @@ abstract class ReadSideEffectOpcode extends SideEffectOpcode {
  */
 abstract class WriteSideEffectOpcode extends SideEffectOpcode { }
 
+/**
+ * Provides `Opcode`s that specify the operation performed by an `Instruction`.
+ */
 module Opcode {
   class NoOp extends Opcode, TNoOp {
     final override string toString() { result = "NoOp" }
