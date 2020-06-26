@@ -649,7 +649,8 @@ module TaintedPath {
     exists(DataFlow::PropRead read | read = dst |
       src = read.getBase() and
       read.getPropertyName() != "length" and
-      srclabel = dstlabel
+      srclabel = dstlabel and
+      not AccessPath::DominatingPaths::hasDominatingWrite(read)
     )
     or
     // string method calls of interest

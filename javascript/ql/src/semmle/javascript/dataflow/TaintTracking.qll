@@ -260,7 +260,8 @@ module TaintTracking {
     not any(PromiseAllCreation call).getArrayNode() = succ
     or
     // reading from a tainted object yields a tainted result
-    succ.(DataFlow::PropRead).getBase() = pred
+    succ.(DataFlow::PropRead).getBase() = pred and
+    not AccessPath::DominatingPaths::hasDominatingWrite(succ)
     or
     // iterating over a tainted iterator taints the loop variable
     exists(ForOfStmt fos |

@@ -61,6 +61,10 @@ test_getAReferenceTo
 | test.js:39:14:39:16 | foo | foo |
 | test.js:39:14:39:20 | foo.bar | foo.bar |
 | test.js:40:3:40:10 | lazyInit | foo.bar |
+| test.js:44:13:44:18 | Object | Object |
+| test.js:44:13:44:25 | Object.create | Object.create |
+| test.js:50:7:50:12 | random | random |
+| test.js:56:7:56:12 | random | random |
 test_getAnAssignmentTo
 | other_ns.js:4:9:4:16 | NS \|\| {} | NS |
 | other_ns.js:6:12:6:13 | {} | Conflict |
@@ -71,9 +75,15 @@ test_getAnAssignmentTo
 | test.js:30:1:30:28 | functio ... on() {} | globalFunction |
 | test.js:32:1:35:1 | functio ... .baz'\\n} | destruct |
 | test.js:37:1:41:1 | functio ... Init;\\n} | lazy |
+| test.js:43:1:64:1 | functio ... // no\\n} | dominatingWrite |
 test_assignedUnique
 | GlobalClass |
 | destruct |
+| dominatingWrite |
 | f |
 | globalFunction |
 | lazy |
+hasDominatingWrite
+| test.js:48:3:48:11 | obj.prop1 |
+| test.js:57:5:57:13 | obj.prop3 |
+| test.js:62:29:62:37 | obj.prop5 |
