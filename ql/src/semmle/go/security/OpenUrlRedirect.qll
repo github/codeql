@@ -38,9 +38,10 @@ module OpenUrlRedirect {
         w.writesField(v.getAUse(), f, pred) and succ = v.getAUse()
       )
       or
-      // propagate out of most URL fields, but not `Scheme` and `User`
-      exists(Field f |
-        f.hasQualifiedName("net/url", "URL", ["Fragment", "Host", "Path", "RawPath", "RawQuery"])
+      // propagate out of most URL fields, but not `ForceQuery` and `Scheme`
+      exists(Field f, string fn |
+        f.hasQualifiedName("net/url", "URL", fn) and
+        not fn in ["ForceQuery", "Scheme"]
       |
         succ.(Read).readsField(pred, f)
       )
