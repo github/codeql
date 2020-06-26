@@ -53,7 +53,7 @@ class Stmt extends @stmt, ExprParent, StmtParent {
 class BadStmt extends @badstmt, Stmt {
   override string toString() { result = "bad statement" }
 
-  override string describeQlClass() { result = "BadStmt" }
+  override string getAPrimaryQlClass() { result = "BadStmt" }
 }
 
 /**
@@ -75,7 +75,7 @@ class DeclStmt extends @declstmt, Stmt, DeclParent {
 
   override string toString() { result = "declaration statement" }
 
-  override string describeQlClass() { result = "DeclStmt" }
+  override string getAPrimaryQlClass() { result = "DeclStmt" }
 }
 
 /**
@@ -90,7 +90,7 @@ class DeclStmt extends @declstmt, Stmt, DeclParent {
 class EmptyStmt extends @emptystmt, Stmt {
   override string toString() { result = "empty statement" }
 
-  override string describeQlClass() { result = "EmptyStmt" }
+  override string getAPrimaryQlClass() { result = "EmptyStmt" }
 }
 
 /**
@@ -116,7 +116,7 @@ class LabeledStmt extends @labeledstmt, Stmt {
 
   override string toString() { result = "labeled statement" }
 
-  override string describeQlClass() { result = "LabelledStmt" }
+  override string getAPrimaryQlClass() { result = "LabelledStmt" }
 }
 
 /**
@@ -139,7 +139,7 @@ class ExprStmt extends @exprstmt, Stmt {
 
   override string toString() { result = "expression statement" }
 
-  override string describeQlClass() { result = "ExprStmt" }
+  override string getAPrimaryQlClass() { result = "ExprStmt" }
 }
 
 /**
@@ -162,7 +162,7 @@ class SendStmt extends @sendstmt, Stmt {
 
   override string toString() { result = "send statement" }
 
-  override string describeQlClass() { result = "SendStmt" }
+  override string getAPrimaryQlClass() { result = "SendStmt" }
 }
 
 /**
@@ -199,7 +199,7 @@ class IncStmt extends @incstmt, IncDecStmt {
 
   override string toString() { result = "increment statement" }
 
-  override string describeQlClass() { result = "IncStmt" }
+  override string getAPrimaryQlClass() { result = "IncStmt" }
 }
 
 /**
@@ -216,7 +216,7 @@ class DecStmt extends @decstmt, IncDecStmt {
 
   override string toString() { result = "decrement statement" }
 
-  override string describeQlClass() { result = "DecStmt" }
+  override string getAPrimaryQlClass() { result = "DecStmt" }
 }
 
 /**
@@ -287,7 +287,7 @@ class Assignment extends @assignment, Stmt {
  * ```
  */
 class SimpleAssignStmt extends @simpleassignstmt, Assignment {
-  override string describeQlClass() { result = "SimpleAssignStmt" }
+  override string getAPrimaryQlClass() { result = "SimpleAssignStmt" }
 }
 
 /**
@@ -304,7 +304,7 @@ class SimpleAssignStmt extends @simpleassignstmt, Assignment {
 class AssignStmt extends @assignstmt, SimpleAssignStmt {
   override string getOperator() { result = "=" }
 
-  override string describeQlClass() { result = "AssignStmt" }
+  override string getAPrimaryQlClass() { result = "AssignStmt" }
 }
 
 /**
@@ -319,7 +319,7 @@ class AssignStmt extends @assignstmt, SimpleAssignStmt {
 class DefineStmt extends @definestmt, SimpleAssignStmt {
   override string getOperator() { result = ":=" }
 
-  override string describeQlClass() { result = "DefineStmt" }
+  override string getAPrimaryQlClass() { result = "DefineStmt" }
 }
 
 /**
@@ -346,7 +346,7 @@ class CompoundAssignStmt extends @compoundassignstmt, Assignment { }
 class AddAssignStmt extends @addassignstmt, CompoundAssignStmt {
   override string getOperator() { result = "+=" }
 
-  override string describeQlClass() { result = "AddAssignStmt" }
+  override string getAPrimaryQlClass() { result = "AddAssignStmt" }
 }
 
 /**
@@ -361,7 +361,7 @@ class AddAssignStmt extends @addassignstmt, CompoundAssignStmt {
 class SubAssignStmt extends @subassignstmt, CompoundAssignStmt {
   override string getOperator() { result = "-=" }
 
-  override string describeQlClass() { result = "SubAssignStmt" }
+  override string getAPrimaryQlClass() { result = "SubAssignStmt" }
 }
 
 /**
@@ -376,7 +376,7 @@ class SubAssignStmt extends @subassignstmt, CompoundAssignStmt {
 class MulAssignStmt extends @mulassignstmt, CompoundAssignStmt {
   override string getOperator() { result = "*=" }
 
-  override string describeQlClass() { result = "MulAssignStmt" }
+  override string getAPrimaryQlClass() { result = "MulAssignStmt" }
 }
 
 /**
@@ -391,7 +391,7 @@ class MulAssignStmt extends @mulassignstmt, CompoundAssignStmt {
 class QuoAssignStmt extends @quoassignstmt, CompoundAssignStmt {
   override string getOperator() { result = "/=" }
 
-  override string describeQlClass() { result = "QuoAssignStmt" }
+  override string getAPrimaryQlClass() { result = "QuoAssignStmt" }
 }
 
 class DivAssignStmt = QuoAssignStmt;
@@ -408,7 +408,7 @@ class DivAssignStmt = QuoAssignStmt;
 class RemAssignStmt extends @remassignstmt, CompoundAssignStmt {
   override string getOperator() { result = "%=" }
 
-  override string describeQlClass() { result = "RemAssignStmt" }
+  override string getAPrimaryQlClass() { result = "RemAssignStmt" }
 }
 
 class ModAssignStmt = RemAssignStmt;
@@ -425,7 +425,7 @@ class ModAssignStmt = RemAssignStmt;
 class AndAssignStmt extends @andassignstmt, CompoundAssignStmt {
   override string getOperator() { result = "&=" }
 
-  override string describeQlClass() { result = "AndAssignStmt" }
+  override string getAPrimaryQlClass() { result = "AndAssignStmt" }
 }
 
 /**
@@ -440,7 +440,7 @@ class AndAssignStmt extends @andassignstmt, CompoundAssignStmt {
 class OrAssignStmt extends @orassignstmt, CompoundAssignStmt {
   override string getOperator() { result = "|=" }
 
-  override string describeQlClass() { result = "OrAssignStmt" }
+  override string getAPrimaryQlClass() { result = "OrAssignStmt" }
 }
 
 /**
@@ -455,7 +455,7 @@ class OrAssignStmt extends @orassignstmt, CompoundAssignStmt {
 class XorAssignStmt extends @xorassignstmt, CompoundAssignStmt {
   override string getOperator() { result = "^=" }
 
-  override string describeQlClass() { result = "XorAssignStmt" }
+  override string getAPrimaryQlClass() { result = "XorAssignStmt" }
 }
 
 /**
@@ -470,7 +470,7 @@ class XorAssignStmt extends @xorassignstmt, CompoundAssignStmt {
 class ShlAssignStmt extends @shlassignstmt, CompoundAssignStmt {
   override string getOperator() { result = "<<=" }
 
-  override string describeQlClass() { result = "ShlAssignStmt" }
+  override string getAPrimaryQlClass() { result = "ShlAssignStmt" }
 }
 
 class LShiftAssignStmt = ShlAssignStmt;
@@ -487,7 +487,7 @@ class LShiftAssignStmt = ShlAssignStmt;
 class ShrAssignStmt extends @shrassignstmt, CompoundAssignStmt {
   override string getOperator() { result = ">>=" }
 
-  override string describeQlClass() { result = "ShrAssignStmt" }
+  override string getAPrimaryQlClass() { result = "ShrAssignStmt" }
 }
 
 class RShiftAssignStmt = ShrAssignStmt;
@@ -504,7 +504,7 @@ class RShiftAssignStmt = ShrAssignStmt;
 class AndNotAssignStmt extends @andnotassignstmt, CompoundAssignStmt {
   override string getOperator() { result = "&^=" }
 
-  override string describeQlClass() { result = "AndNotAssignStmt" }
+  override string getAPrimaryQlClass() { result = "AndNotAssignStmt" }
 }
 
 /**
@@ -524,7 +524,7 @@ class GoStmt extends @gostmt, Stmt {
 
   override string toString() { result = "go statement" }
 
-  override string describeQlClass() { result = "GoStmt" }
+  override string getAPrimaryQlClass() { result = "GoStmt" }
 }
 
 /**
@@ -544,7 +544,7 @@ class DeferStmt extends @deferstmt, Stmt {
 
   override string toString() { result = "defer statement" }
 
-  override string describeQlClass() { result = "DeferStmt" }
+  override string getAPrimaryQlClass() { result = "DeferStmt" }
 }
 
 /**
@@ -573,7 +573,7 @@ class ReturnStmt extends @returnstmt, Stmt {
 
   override string toString() { result = "return statement" }
 
-  override string describeQlClass() { result = "ReturnStmt" }
+  override string getAPrimaryQlClass() { result = "ReturnStmt" }
 }
 
 /**
@@ -611,7 +611,7 @@ class BranchStmt extends @branchstmt, Stmt {
 class BreakStmt extends @breakstmt, BranchStmt {
   override string toString() { result = "break statement" }
 
-  override string describeQlClass() { result = "BreakStmt" }
+  override string getAPrimaryQlClass() { result = "BreakStmt" }
 }
 
 /**
@@ -627,7 +627,7 @@ class BreakStmt extends @breakstmt, BranchStmt {
 class ContinueStmt extends @continuestmt, BranchStmt {
   override string toString() { result = "continue statement" }
 
-  override string describeQlClass() { result = "ContinueStmt" }
+  override string getAPrimaryQlClass() { result = "ContinueStmt" }
 }
 
 /**
@@ -642,7 +642,7 @@ class ContinueStmt extends @continuestmt, BranchStmt {
 class GotoStmt extends @gotostmt, BranchStmt {
   override string toString() { result = "goto statement" }
 
-  override string describeQlClass() { result = "GotoStmt" }
+  override string getAPrimaryQlClass() { result = "GotoStmt" }
 }
 
 /**
@@ -657,7 +657,7 @@ class GotoStmt extends @gotostmt, BranchStmt {
 class FallthroughStmt extends @fallthroughstmt, BranchStmt {
   override string toString() { result = "fallthrough statement" }
 
-  override string describeQlClass() { result = "FallthroughStmt" }
+  override string getAPrimaryQlClass() { result = "FallthroughStmt" }
 }
 
 /**
@@ -686,7 +686,7 @@ class BlockStmt extends @blockstmt, Stmt, ScopeNode {
 
   override string toString() { result = "block statement" }
 
-  override string describeQlClass() { result = "BlockStmt" }
+  override string getAPrimaryQlClass() { result = "BlockStmt" }
 }
 
 /**
@@ -724,7 +724,7 @@ class IfStmt extends @ifstmt, Stmt, ScopeNode {
 
   override string toString() { result = "if statement" }
 
-  override string describeQlClass() { result = "IfStmt" }
+  override string getAPrimaryQlClass() { result = "IfStmt" }
 }
 
 /**
@@ -770,7 +770,7 @@ class CaseClause extends @caseclause, Stmt, ScopeNode {
 
   override string toString() { result = "case clause" }
 
-  override string describeQlClass() { result = "CaseClause" }
+  override string getAPrimaryQlClass() { result = "CaseClause" }
 }
 
 /**
@@ -857,7 +857,7 @@ class ExpressionSwitchStmt extends @exprswitchstmt, SwitchStmt {
 
   override string toString() { result = "expression-switch statement" }
 
-  override string describeQlClass() { result = "ExpressionSwitchStmt" }
+  override string getAPrimaryQlClass() { result = "ExpressionSwitchStmt" }
 }
 
 /**
@@ -892,7 +892,7 @@ class TypeSwitchStmt extends @typeswitchstmt, SwitchStmt {
 
   override string toString() { result = "type-switch statement" }
 
-  override string describeQlClass() { result = "TypeSwitchStmt" }
+  override string getAPrimaryQlClass() { result = "TypeSwitchStmt" }
 }
 
 /**
@@ -935,7 +935,7 @@ class CommClause extends @commclause, Stmt, ScopeNode {
 
   override string toString() { result = "comm clause" }
 
-  override string describeQlClass() { result = "CommClause" }
+  override string getAPrimaryQlClass() { result = "CommClause" }
 }
 
 /**
@@ -964,7 +964,7 @@ class RecvStmt extends Stmt {
     result = this.(Assignment).getRhs()
   }
 
-  override string describeQlClass() { result = "RecvStmt" }
+  override string getAPrimaryQlClass() { result = "RecvStmt" }
 }
 
 /**
@@ -1026,7 +1026,7 @@ class SelectStmt extends @selectstmt, Stmt {
 
   override string toString() { result = "select statement" }
 
-  override string describeQlClass() { result = "SelectStmt" }
+  override string getAPrimaryQlClass() { result = "SelectStmt" }
 }
 
 /**
@@ -1089,7 +1089,7 @@ class ForStmt extends @forstmt, LoopStmt {
 
   override string toString() { result = "for statement" }
 
-  override string describeQlClass() { result = "ForStmt" }
+  override string getAPrimaryQlClass() { result = "ForStmt" }
 }
 
 /**
@@ -1131,5 +1131,5 @@ class RangeStmt extends @rangestmt, LoopStmt {
 
   override string toString() { result = "range statement" }
 
-  override string describeQlClass() { result = "RangeStmt" }
+  override string getAPrimaryQlClass() { result = "RangeStmt" }
 }

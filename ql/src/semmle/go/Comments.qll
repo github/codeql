@@ -28,7 +28,7 @@ class Comment extends @comment, AstNode {
 
   override string toString() { result = "comment" }
 
-  override string describeQlClass() { result = "Comment" }
+  override string getAPrimaryQlClass() { result = "Comment" }
 }
 
 /**
@@ -62,7 +62,7 @@ class CommentGroup extends @comment_group, AstNode {
 
   override string toString() { result = "comment group" }
 
-  override string describeQlClass() { result = "CommentGroup" }
+  override string getAPrimaryQlClass() { result = "CommentGroup" }
 }
 
 /**
@@ -114,7 +114,7 @@ class DocComment extends CommentGroup {
   /** Gets the program element documented by this comment group. */
   Documentable getDocumentedElement() { result = node }
 
-  override string describeQlClass() { result = "DocComment" }
+  override string getAPrimaryQlClass() { result = "DocComment" }
 }
 
 /**
@@ -127,7 +127,7 @@ class DocComment extends CommentGroup {
  * ```
  */
 class SlashSlashComment extends @slashslashcomment, Comment {
-  override string describeQlClass() { result = "SlashSlashComment" }
+  override string getAPrimaryQlClass() { result = "SlashSlashComment" }
 }
 
 /**
@@ -141,7 +141,7 @@ class SlashSlashComment extends @slashslashcomment, Comment {
  * </pre>
  */
 class SlashStarComment extends @slashstarcomment, Comment {
-  override string describeQlClass() { result = "SlashStarComment" }
+  override string getAPrimaryQlClass() { result = "SlashStarComment" }
 }
 
 /**
@@ -205,5 +205,5 @@ class BuildConstraintComment extends LineComment {
     getText().regexpMatch("\\s*\\+build.*")
   }
 
-  override string describeQlClass() { result = "BuildConstraintComment" }
+  override string getAPrimaryQlClass() { result = "BuildConstraintComment" }
 }

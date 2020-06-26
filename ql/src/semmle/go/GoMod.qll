@@ -13,7 +13,7 @@ class GoModFile extends File {
    */
   GoModModuleLine getModuleDeclaration() { result.getFile() = this }
 
-  override string describeQlClass() { result = "GoModFile" }
+  override string getAPrimaryQlClass() { result = "GoModFile" }
 }
 
 /**
@@ -41,14 +41,14 @@ class GoModExpr extends @modexpr, GoModExprParent {
 
   override string toString() { result = "go.mod expression" }
 
-  override string describeQlClass() { result = "GoModExpr" }
+  override string getAPrimaryQlClass() { result = "GoModExpr" }
 }
 
 /**
  *  A top-level block of comments separate from any rule.
  */
 class GoModCommentBlock extends @modcommentblock, GoModExpr {
-  override string describeQlClass() { result = "GoModCommentBlock" }
+  override string getAPrimaryQlClass() { result = "GoModCommentBlock" }
 }
 
 /**
@@ -93,7 +93,7 @@ class GoModLine extends @modline, GoModExpr {
 
   override string toString() { result = "go.mod line" }
 
-  override string describeQlClass() { result = "GoModLine" }
+  override string getAPrimaryQlClass() { result = "GoModLine" }
 }
 
 /**
@@ -116,7 +116,7 @@ class GoModLineBlock extends @modlineblock, GoModExpr {
 
   override string toString() { result = "go.mod line block" }
 
-  override string describeQlClass() { result = "GoModLineBlock" }
+  override string getAPrimaryQlClass() { result = "GoModLineBlock" }
 }
 
 /**
@@ -132,7 +132,7 @@ class GoModModuleLine extends GoModLine {
 
   override string toString() { result = "go.mod module line" }
 
-  override string describeQlClass() { result = "GoModModuleLine" }
+  override string getAPrimaryQlClass() { result = "GoModModuleLine" }
 }
 
 /**
@@ -146,7 +146,7 @@ class GoModGoLine extends GoModLine {
 
   override string toString() { result = "go.mod go line" }
 
-  override string describeQlClass() { result = "GoModGoLine" }
+  override string getAPrimaryQlClass() { result = "GoModGoLine" }
 }
 
 /**
@@ -163,7 +163,7 @@ class GoModRequireLine extends GoModLine {
 
   override string toString() { result = "go.mod require line" }
 
-  override string describeQlClass() { result = "GoModRequireLine" }
+  override string getAPrimaryQlClass() { result = "GoModRequireLine" }
 }
 
 /**
@@ -181,7 +181,7 @@ class GoModExcludeLine extends GoModLine {
 
   override string toString() { result = "go.mod exclude line" }
 
-  override string describeQlClass() { result = "GoModExcludeLine" }
+  override string getAPrimaryQlClass() { result = "GoModExcludeLine" }
 }
 
 /**
@@ -213,19 +213,19 @@ class GoModReplaceLine extends GoModLine {
 
   override string toString() { result = "go.mod replace line" }
 
-  override string describeQlClass() { result = "GoModReplaceLine" }
+  override string getAPrimaryQlClass() { result = "GoModReplaceLine" }
 }
 
 /** A left parenthesis for a line block. */
 class GoModLParen extends @modlparen, GoModExpr {
   override string toString() { result = "go.mod (" }
 
-  override string describeQlClass() { result = "GoModLParen" }
+  override string getAPrimaryQlClass() { result = "GoModLParen" }
 }
 
 /** A right parenthesis for a line block. */
 class GoModRParen extends @modrparen, GoModExpr {
   override string toString() { result = "go.mod )" }
 
-  override string describeQlClass() { result = "GoModRParen" }
+  override string getAPrimaryQlClass() { result = "GoModRParen" }
 }

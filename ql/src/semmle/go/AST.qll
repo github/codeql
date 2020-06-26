@@ -46,10 +46,16 @@ class AstNode extends @node, Locatable {
   FuncDef getEnclosingFunction() { result = getParent().parentInSameFunction*() }
 
   /**
-   * Describes important CodeQL classes for this node. May
-   * return multiple values.
+   * Gets the name of a primary CodeQL class to which this node belongs.
+   *
+   * For most nodes, this is simply the most precise syntactic category to which they belong;
+   * for example, `AddExpr` is a primary class, but `BinaryExpr` is not.
+   *
+   * For identifiers and selector expressions, the class describing what kind of entity they refer
+   * to (for example `FunctionName` or `TypeName`) is also considered primary. For such nodes,
+   * this predicate has multiple values.
    */
-  string describeQlClass() { result = "???" }
+  string getAPrimaryQlClass() { result = "???" }
 
   override string toString() { result = "AST node" }
 }
