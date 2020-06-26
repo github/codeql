@@ -123,7 +123,7 @@ public class AutoBuildTests {
         public void extractTypeScriptFiles(
             java.util.List<Path> files,
             java.util.Set<Path> extractedFiles,
-            FileExtractor extractor,
+            FileExtractors extractors,
             ExtractorState extractorState) {
           for (Path f : files) {
             actual.add(f.toString());

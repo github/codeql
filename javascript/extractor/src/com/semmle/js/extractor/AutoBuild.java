@@ -569,7 +569,7 @@ public class AutoBuild {
     }
   };
 
-  class FileExtractors {
+  public class FileExtractors {
     FileExtractor defaultExtractor;
     Map<String, FileExtractor> customExtractors = new LinkedHashMap<>();
     
@@ -579,6 +579,10 @@ public class AutoBuild {
     
     public FileExtractor forFile(Path f) {
       return customExtractors.getOrDefault(FileUtil.extension(f), defaultExtractor);
+    }
+    
+    public FileType fileType(Path f) {
+      return forFile(f).getFileType(f.toFile());
     }
   }
 
@@ -614,11 +618,11 @@ public class AutoBuild {
     if (!tsconfigFiles.isEmpty()) {
       dependencyInstallationResult = this.preparePackagesAndDependencies(filesToExtract);
     }
+    Set<Path> extractedFiles = new LinkedHashSet<>();
 
     // extract TypeScript projects and files
-    Set<Path> extractedFiles =
-          extractTypeScript(
-              defaultExtractor, filesToExtract, tsconfigFiles, dependencyInstallationResult);
+    extractTypeScript(filesToExtract, extractedFiles,
+              extractors, tsconfigFiles, dependencyInstallationResult);
 
     boolean hasTypeScriptFiles = extractedFiles.size() > 0;
 
@@ -959,12 +963,11 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
   }
 
   private Set<Path> extractTypeScript(
-      FileExtractor extractor,
       Set<Path> files,
+      Set<Path> extractedFiles,
+      FileExtractors extractors,
       List<Path> tsconfig,
       DependencyInstallationResult deps) {
-    Set<Path> extractedFiles = new LinkedHashSet<>();
-
     if (hasTypeScriptFiles(files) || !tsconfig.isEmpty()) {
       ExtractorState extractorState = new ExtractorState();
       TypeScriptParser tsParser = extractorState.getTypeScriptParser();
@@ -993,7 +996,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
           Path sourcePath = sourceFile.toPath();
           if (!files.contains(normalizePath(sourcePath))) continue;
           if (!project.getOwnFiles().contains(sourceFile) && explicitlyIncludedFiles.contains(sourceFile)) continue;
-          if (!FileType.TYPESCRIPT.getExtensions().contains(FileUtil.extension(sourcePath))) {
+          if (extractors.fileType(sourcePath) != FileType.TYPESCRIPT) {
             // For the time being, skip non-TypeScript files, even if the TypeScript
             // compiler can parse them for us.
             continue;
@@ -1003,7 +1006,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
           }
         }
         typeScriptFiles.sort(PATH_ORDERING);
-        extractTypeScriptFiles(typeScriptFiles, extractedFiles, extractor, extractorState);
+        extractTypeScriptFiles(typeScriptFiles, extractedFiles, extractors, extractorState);
         tsParser.closeProject(projectFile);
       }
 
@@ -1017,12 +1020,12 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       List<Path> remainingTypeScriptFiles = new ArrayList<>();
       for (Path f : files) {
         if (!extractedFiles.contains(f)
-            && FileType.forFileExtension(f.toFile()) == FileType.TYPESCRIPT) {
+            && extractors.fileType(f) == FileType.TYPESCRIPT) {
           remainingTypeScriptFiles.add(f);
         }
       }
       if (!remainingTypeScriptFiles.isEmpty()) {
-        extractTypeScriptFiles(remainingTypeScriptFiles, extractedFiles, extractor, extractorState);
+        extractTypeScriptFiles(remainingTypeScriptFiles, extractedFiles, extractors, extractorState);
       }
 
       // The TypeScript compiler instance is no longer needed.
@@ -1108,7 +1111,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
   public void extractTypeScriptFiles(
       List<Path> files,
       Set<Path> extractedFiles,
-      FileExtractor extractor,
+      FileExtractors extractors,
       ExtractorState extractorState) {
     List<File> list = files
         .stream()
@@ -1117,7 +1120,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
     extractorState.getTypeScriptParser().prepareFiles(list);
     for (Path path : files) {
       extractedFiles.add(path);
-      extract(extractor, path, extractorState);
+      extract(extractors.forFile(path), path, extractorState);
     }
   }
 
