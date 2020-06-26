@@ -74,6 +74,11 @@ class Node extends TIRDataFlowNode {
   Expr asPartialDefinition() { result = this.(PartialDefinitionNode).getDefinedExpr() }
 
   /**
+   * Gets the argument expression that points to this node, if any.
+   */
+  Expr asArgumentIndirection() { result = this.(ArgumentIndirectionNode).getArgument() }
+
+  /**
    * DEPRECATED: See UninitializedNode.
    *
    * Gets the uninitialized local variable corresponding to this node, if
@@ -389,12 +394,11 @@ class DefinitionByReferenceNode extends InstructionNode {
 
 /**
  * A node representing the memory pointed to by a function argument.
- *
- * This class exists only in order to override `toString`, which would
- * otherwise be the default implementation inherited from `InstructionNode`.
  */
-private class ArgumentIndirectionNode extends InstructionNode {
+class ArgumentIndirectionNode extends InstructionNode {
   override ReadSideEffectInstruction instr;
+
+  Expr getArgument() { result = instr.getArgumentDef().getUnconvertedResultExpression() }
 
   override string toString() { result = "Argument " + instr.getIndex() + " indirection" }
 }
