@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -609,7 +610,8 @@ public class AutoBuild {
 
     // extract remaining files
     extractFiles(
-        filesToExtract, extractedFiles, defaultExtractor, customExtractors, hasTypeScriptFiles);
+        filesToExtract, extractedFiles, defaultExtractor, customExtractors, 
+        f -> !(hasTypeScriptFiles && isFileDerivedFromTypeScriptFile(f, extractedFiles)));
   }
 
   private void extractFiles(
@@ -617,12 +619,12 @@ public class AutoBuild {
       Set<Path> extractedFiles,
       FileExtractor defaultExtractor,
       Map<String, FileExtractor> customExtractors,
-      boolean hasTypeScriptFiles) {
+      Predicate<Path> shouldExtract) {
 
     for (Path f : filesToExtract) {
       if (extractedFiles.contains(f))
         continue;
-      if (hasTypeScriptFiles && isFileDerivedFromTypeScriptFile(f, extractedFiles)) {
+      if (!shouldExtract.test(f)) {
         continue;
       }
       extractedFiles.add(f);
