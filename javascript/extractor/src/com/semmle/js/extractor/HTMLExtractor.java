@@ -59,6 +59,7 @@ public class HTMLExtractor implements IExtractor {
 
           Segment content = elt.getContent();
           String source = content.toString();
+          boolean isTypeScript = isTypeScriptTag(elt);
 
           /*
            * Script blocks in XHTML files may wrap (parts of) their code inside CDATA sections.
@@ -81,7 +82,8 @@ public class HTMLExtractor implements IExtractor {
                     textualExtractor,
                     source,
                     contentStart.getRow(),
-                    contentStart.getColumn());
+                    contentStart.getColumn(),
+                    isTypeScript);
           }
         }
       } else {
@@ -103,7 +105,8 @@ public class HTMLExtractor implements IExtractor {
                       textualExtractor,
                       source,
                       valueStart.getRow(),
-                      valueStart.getColumn());
+                      valueStart.getColumn(),
+                      false /* isTypeScript */);
             } else if (source.startsWith("javascript:")) {
               source = source.substring(11);
               snippetLoC =
@@ -114,7 +117,8 @@ public class HTMLExtractor implements IExtractor {
                       textualExtractor,
                       source,
                       valueStart.getRow(),
-                      valueStart.getColumn() + 11);
+                      valueStart.getColumn() + 11,
+                      false /* isTypeScript */);
             }
           }
       }
@@ -143,11 +147,9 @@ public class HTMLExtractor implements IExtractor {
    */
   private SourceType getScriptSourceType(Element script) {
     String scriptType = getAttributeValueLC(script, "type");
-    String scriptLanguage = getAttributeValueLC(script, "language");
+    String scriptLanguage = getScriptLanguage(script);
 
-    if (scriptLanguage == null) { // Vue templates use 'lang' instead of 'language'.
-      scriptLanguage = getAttributeValueLC(script, "lang");
-    }
+    if (isTypeScriptTag(script)) return config.getSourceType();
 
     // if `type` and `language` are both either missing, contain the
     // string "javascript", or if `type` is the string "text/jsx", this is a plain script
@@ -171,6 +173,23 @@ public class HTMLExtractor implements IExtractor {
     return null;
   }
 
+  private String getScriptLanguage(Element script) {
+    String scriptLanguage = getAttributeValueLC(script, "language");
+
+    if (scriptLanguage == null) { // Vue templates use 'lang' instead of 'language'.
+      scriptLanguage = getAttributeValueLC(script, "lang");
+    }
+    return scriptLanguage;
+  }
+
+  private boolean isTypeScriptTag(Element script) {
+    String language = getScriptLanguage(script);
+    if ("ts".equals(language) || "typescript".equals(language)) return true;
+    String type = getAttributeValueLC(script, "type");
+    if (type != null && type.contains("typescript")) return true;
+    return false;
+  }
+
   /**
    * Get the value of attribute <code>attr</code> of element <code>elt</code> in lower case; if the
    * attribute has no value, <code>null</code> is returned.
@@ -187,7 +206,10 @@ public class HTMLExtractor implements IExtractor {
       TextualExtractor textualExtractor,
       String source,
       int line,
-      int column) {
+      int column,
+      boolean isTypeScript) {
+    if (isTypeScript)
+      return null; // not supported right now
     TrapWriter trapwriter = textualExtractor.getTrapwriter();
     LocationManager locationManager = textualExtractor.getLocationManager();
     LocationManager scriptLocationManager =
