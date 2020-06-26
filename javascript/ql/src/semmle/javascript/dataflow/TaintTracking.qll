@@ -737,10 +737,15 @@ module TaintTracking {
       read = getAStaticCaptureRef()
       or
       exists(ControlFlowNode mid |
-        mid = getANodeReachingCaptureRef(read) and
-        not mid = getACaptureSetter(_) and
-        result = mid.getAPredecessor()
+        result = getANodeReachingCaptureRefAux(read, mid) and
+        not mid = getACaptureSetter(_)
       )
+    }
+
+    pragma[nomagic]
+    private ControlFlowNode getANodeReachingCaptureRefAux(DataFlow::PropRead read, ControlFlowNode mid) {
+      mid = getANodeReachingCaptureRef(read) and
+      result = mid.getAPredecessor()
     }
 
     /**
