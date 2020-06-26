@@ -35,6 +35,16 @@ public:
     // No use of `this`, but we still expect to be able to get its type.
     global++;
   }
+
+  float f7() const & {
+    // We expect the type of `this` to be const-qualified.
+    return x;
+  }
+
+  float f8() && {
+    // We expect the type of `this` to be unqualified.
+    return x;
+  }
 };
 
 // We want to test that D* is in the database even when there's no use of it,

@@ -4,6 +4,8 @@ thisExprType
 | test.cpp:21:12:21:12 | this | file://:0:0:0:0 | const C * |
 | test.cpp:26:12:26:12 | this | file://:0:0:0:0 | volatile C * |
 | test.cpp:31:12:31:12 | this | file://:0:0:0:0 | const volatile C * |
+| test.cpp:41:12:41:12 | this | file://:0:0:0:0 | const C * |
+| test.cpp:46:12:46:12 | this | file://:0:0:0:0 | C * |
 #select
 | test.cpp:9:8:9:9 | f1 | file://:0:0:0:0 | C * |
 | test.cpp:14:8:14:9 | f2 | file://:0:0:0:0 | C * |
@@ -11,4 +13,6 @@ thisExprType
 | test.cpp:24:7:24:8 | f4 | file://:0:0:0:0 | volatile C * |
 | test.cpp:29:7:29:8 | f5 | file://:0:0:0:0 | const volatile C * |
 | test.cpp:34:8:34:9 | f6 | file://:0:0:0:0 | C * |
-| test.cpp:43:8:43:8 | f | file://:0:0:0:0 | D * |
+| test.cpp:39:9:39:10 | f7 | file://:0:0:0:0 | const C * |
+| test.cpp:44:9:44:10 | f8 | file://:0:0:0:0 | C * |
+| test.cpp:53:8:53:8 | f | file://:0:0:0:0 | D * |
