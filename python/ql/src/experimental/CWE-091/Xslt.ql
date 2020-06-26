@@ -1,5 +1,5 @@
 /**
- * @name Xslt query built from user-controlled sources
+ * @name XSLT query built from user-controlled sources
  * @description Building a XSLT query from user-controlled sources is vulnerable to insertion of
  *              malicious XSLT code by the user.
  * @kind path-problem
