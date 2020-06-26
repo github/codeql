@@ -31,6 +31,7 @@ import com.google.gson.JsonPrimitive;
 import com.semmle.js.extractor.DependencyInstallationResult;
 import com.semmle.js.extractor.EnvironmentVariables;
 import com.semmle.js.extractor.ExtractionMetrics;
+import com.semmle.js.extractor.VirtualSourceRoot;
 import com.semmle.js.parser.JSParser.Result;
 import com.semmle.ts.extractor.TypeTable;
 import com.semmle.util.data.StringUtil;
@@ -501,8 +502,8 @@ public class TypeScriptParser {
   /**
    * Returns the set of files included by the inclusion pattern in the given tsconfig.json file.
    */
-  public Set<File> getOwnFiles(File tsConfigFile, DependencyInstallationResult deps) {
-    JsonObject request = makeLoadCommand("get-own-files", tsConfigFile, deps);
+  public Set<File> getOwnFiles(File tsConfigFile, DependencyInstallationResult deps, VirtualSourceRoot vroot) {
+    JsonObject request = makeLoadCommand("get-own-files", tsConfigFile, deps, vroot);
     JsonObject response = talkToParserWrapper(request);
     try {
       checkResponseType(response, "file-list");
@@ -521,8 +522,8 @@ public class TypeScriptParser {
    *
    * <p>Only one project should be opened at once.
    */
-  public ParsedProject openProject(File tsConfigFile, DependencyInstallationResult deps) {
-    JsonObject request = makeLoadCommand("open-project", tsConfigFile, deps);
+  public ParsedProject openProject(File tsConfigFile, DependencyInstallationResult deps, VirtualSourceRoot vroot) {
+    JsonObject request = makeLoadCommand("open-project", tsConfigFile, deps, vroot);
     JsonObject response = talkToParserWrapper(request);
     try {
       checkResponseType(response, "project-opened");
@@ -536,18 +537,18 @@ public class TypeScriptParser {
     }
   }
 
-  private JsonObject makeLoadCommand(String command, File tsConfigFile, DependencyInstallationResult deps) {
+  private JsonObject makeLoadCommand(String command, File tsConfigFile, DependencyInstallationResult deps, VirtualSourceRoot vroot) {
     JsonObject request = new JsonObject();
     request.add("command", new JsonPrimitive(command));
     request.add("tsConfig", new JsonPrimitive(tsConfigFile.getPath()));
     request.add("packageEntryPoints", mapToArray(deps.getPackageEntryPoints()));
     request.add("packageJsonFiles", mapToArray(deps.getPackageJsonFiles()));
-    request.add("sourceRoot", deps.getSourceRoot() == null
+    request.add("sourceRoot", vroot.getSourceRoot() == null
         ? JsonNull.INSTANCE
-        : new JsonPrimitive(deps.getSourceRoot().toString()));
-    request.add("virtualSourceRoot", deps.getVirtualSourceRoot() == null
+        : new JsonPrimitive(vroot.getSourceRoot().toString()));
+    request.add("virtualSourceRoot", vroot.getVirtualSourceRoot() == null
         ? JsonNull.INSTANCE
-        : new JsonPrimitive(deps.getVirtualSourceRoot().toString()));
+        : new JsonPrimitive(vroot.getVirtualSourceRoot().toString()));
     return request;
   }
 

@@ -211,6 +211,7 @@ public class AutoBuild {
   private volatile boolean seenCode = false;
   private boolean installDependencies = false;
   private int installDependenciesTimeout;
+  private final VirtualSourceRoot virtualSourceRoot;
 
   /** The default timeout when running <code>yarn</code>, in milliseconds. */
   public static final int INSTALL_DEPENDENCIES_DEFAULT_TIMEOUT = 10 * 60 * 1000; // 10 minutes
@@ -228,6 +229,7 @@ public class AutoBuild {
         Env.systemEnv()
             .getInt(
                 "LGTM_INDEX_TYPESCRIPT_INSTALL_DEPS_TIMEOUT", INSTALL_DEPENDENCIES_DEFAULT_TIMEOUT);
+    this.virtualSourceRoot = new VirtualSourceRoot(LGTM_SRC, toRealPath(Paths.get(EnvironmentVariables.getScratchDir())));
     setupFileTypes();
     setupXmlMode();
     setupMatchers();
@@ -758,7 +760,6 @@ public class AutoBuild {
    */
 protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> filesToExtract) {
     final Path sourceRoot = LGTM_SRC;
-    final Path virtualSourceRoot = toRealPath(Paths.get(EnvironmentVariables.getScratchDir()));
 
     // Read all package.json files and index them by name.
     Map<Path, JsonObject> packageJsonFiles = new LinkedHashMap<>();
@@ -845,8 +846,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
 
     // Write the new package.json files to disk
     for (Path file : packageJsonFiles.keySet()) {
-      Path relativePath = sourceRoot.relativize(file);
-      Path virtualFile = virtualSourceRoot.resolve(relativePath);
+      Path virtualFile = virtualSourceRoot.toVirtualFile(file);
 
       try {
         Files.createDirectories(virtualFile.getParent());
@@ -861,7 +861,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
     // Install dependencies
     if (this.installDependencies && verifyYarnInstallation()) {
       for (Path file : packageJsonFiles.keySet()) {
-        Path virtualFile = virtualSourceRoot.resolve(sourceRoot.relativize(file));
+        Path virtualFile = virtualSourceRoot.toVirtualFile(file);
         System.out.println("Installing dependencies from " + virtualFile);
         ProcessBuilder pb =
             new ProcessBuilder(
@@ -887,7 +887,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       }
     }
 
-    return new DependencyInstallationResult(sourceRoot, virtualSourceRoot, packageMainFile, packagesInRepo);
+    return new DependencyInstallationResult(packageMainFile, packagesInRepo);
   }
 
   /**
@@ -958,6 +958,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
     ExtractorConfig config = new ExtractorConfig(true);
     config = config.withSourceType(getSourceType());
     config = config.withTypeScriptMode(typeScriptMode);
+    config = config.withVirtualSourceRoot(virtualSourceRoot);
     if (defaultEncoding != null) config = config.withDefaultEncoding(defaultEncoding);
     return config;
   }
@@ -979,7 +980,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       Set<File> explicitlyIncludedFiles = new LinkedHashSet<>();
       if (tsconfig.size() > 1) { // No prioritization needed if there's only one tsconfig.
         for (Path projectPath : tsconfig) {
-          explicitlyIncludedFiles.addAll(tsParser.getOwnFiles(projectPath.toFile(), deps));
+          explicitlyIncludedFiles.addAll(tsParser.getOwnFiles(projectPath.toFile(), deps, virtualSourceRoot));
         }
       }
 
@@ -987,7 +988,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       for (Path projectPath : tsconfig) {
         File projectFile = projectPath.toFile();
         long start = logBeginProcess("Opening project " + projectFile);
-        ParsedProject project = tsParser.openProject(projectFile, deps);
+        ParsedProject project = tsParser.openProject(projectFile, deps, virtualSourceRoot);
         logEndProcess(start, "Done opening project " + projectFile);
         // Extract all files belonging to this project which are also matched
         // by our include/exclude filters.

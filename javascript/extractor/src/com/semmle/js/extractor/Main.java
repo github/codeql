@@ -152,7 +152,7 @@ public class Main {
     for (File projectFile : projectFiles) {
 
       long start = verboseLogStartTimer(ap, "Opening project " + projectFile);
-      ParsedProject project = tsParser.openProject(projectFile, DependencyInstallationResult.empty);
+      ParsedProject project = tsParser.openProject(projectFile, DependencyInstallationResult.empty, VirtualSourceRoot.none);
       verboseLogEndTimer(ap, start);
       // Extract all files belonging to this project which are also matched
       // by our include/exclude filters.
