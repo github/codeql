@@ -73,15 +73,28 @@ class Value extends TObject {
      */
     predicate isBuiltin() { this.(ObjectInternal).isBuiltin() }
 
-    predicate hasLocationInfo(string filepath, int bl, int bc, int el, int ec) {
-        this.(ObjectInternal).getOrigin().getLocation().hasLocationInfo(filepath, bl, bc, el, ec)
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+     */
+    predicate hasLocationInfo(
+        string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+        this
+                .(ObjectInternal)
+                .getOrigin()
+                .getLocation()
+                .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
         or
         not exists(this.(ObjectInternal).getOrigin()) and
         filepath = "" and
-        bl = 0 and
-        bc = 0 and
-        el = 0 and
-        ec = 0
+        startline = 0 and
+        startcolumn = 0 and
+        endline = 0 and
+        endcolumn = 0
     }
 
     /**
