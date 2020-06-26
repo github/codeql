@@ -16,14 +16,25 @@ export class VirtualSourceRoot {
     private virtualSourceRoot: string | null,
   ) {}
 
+  private static translate(oldRoot: string, newRoot: string, path: string) {
+    if (!oldRoot || !newRoot) return null;
+    let relative = pathlib.relative(oldRoot, path);
+    if (relative.startsWith('..') || pathlib.isAbsolute(relative)) return null;
+    return pathlib.join(newRoot, relative);
+  }
+
   /**
    * Maps a path under the real source root to the corresponding path in the virtual source root.
    */
   public toVirtualPath(path: string) {
-    if (!this.virtualSourceRoot || !this.sourceRoot) return null;
-    let relative = pathlib.relative(this.sourceRoot, path);
-    if (relative.startsWith('..') || pathlib.isAbsolute(relative)) return null;
-    return pathlib.join(this.virtualSourceRoot, relative);
+    return VirtualSourceRoot.translate(this.sourceRoot, this.virtualSourceRoot, path);
+  }
+
+  /**
+   * Maps a path under the virtual source root to the corresponding path in the real source root.
+   */
+  public fromVirtualPath(path: string) {
+    return VirtualSourceRoot.translate(this.virtualSourceRoot, this.sourceRoot, path);
   }
 
   /**
