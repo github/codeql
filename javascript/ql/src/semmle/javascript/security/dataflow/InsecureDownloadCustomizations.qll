@@ -15,7 +15,7 @@ module InsecureDownload {
    */
   abstract class Source extends DataFlow::Node {
     /**
-     * Gets a flow-label for this source
+     * Gets a flow-label for this source.
      */
     abstract DataFlow::FlowLabel getALabel();
   }
