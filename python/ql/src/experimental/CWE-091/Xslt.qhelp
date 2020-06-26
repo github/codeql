@@ -7,7 +7,7 @@
     </overview>
     <recommendation>
         <p>
-            This vulnerability can be prevented by not allowing untrusted user input to be passed as a XSL stylesheet.
+            This vulnerability can be prevented by not allowing untrusted user input to be passed as an XSL stylesheet.
             If the application logic necessiates processing untrusted XSL stylesheets, the input should be properly filtered and sanitized before use.
         </p>
     </recommendation>

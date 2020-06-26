@@ -41,6 +41,7 @@ module XSLTInjection {
   }
 
   private predicate etreeXML(ControlFlowNode fromnode, CallNode tonode) {
+    // etree.XML("<xmlContent>")
     exists(CallNode call | call.getFunction().(AttrNode).getObject("XML").pointsTo(etree()) |
       call.getArg(0) = fromnode and
       call = tonode
@@ -48,7 +49,7 @@ module XSLTInjection {
   }
 
   private predicate etreeFromString(ControlFlowNode fromnode, CallNode tonode) {
-    // fromstring(text, parser=None)
+    // etree.fromstring(text, parser=None)
     exists(CallNode call | call.getFunction().(AttrNode).getObject("fromstring").pointsTo(etree()) |
       call.getArg(0) = fromnode and
       call = tonode
@@ -56,7 +57,7 @@ module XSLTInjection {
   }
 
   private predicate etreeFromStringList(ControlFlowNode fromnode, CallNode tonode) {
-    // fromstringlist(strings, parser=None)
+    // etree.fromstringlist(strings, parser=None)
     exists(CallNode call |
       call.getFunction().(AttrNode).getObject("fromstringlist").pointsTo(etree())
     |
