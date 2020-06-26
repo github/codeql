@@ -17,3 +17,9 @@
 | tst.js:16:1:16:35 | console ... ", arg) | tst.js:16:32:16:34 | arg |
 | tst.js:19:1:19:18 | log("msg %s", arg) | tst.js:19:5:19:12 | "msg %s" |
 | tst.js:19:1:19:18 | log("msg %s", arg) | tst.js:19:15:19:17 | arg |
+| tst.js:21:1:21:44 | require ... ", arg) | tst.js:21:31:21:38 | "msg %s" |
+| tst.js:21:1:21:44 | require ... ", arg) | tst.js:21:41:21:43 | arg |
+| tst.js:22:1:22:37 | require ... ", arg) | tst.js:22:24:22:31 | "msg %s" |
+| tst.js:22:1:22:37 | require ... ", arg) | tst.js:22:34:22:36 | arg |
+| tst.js:23:1:23:40 | require ... ", arg) | tst.js:23:27:23:34 | "msg %s" |
+| tst.js:23:1:23:40 | require ... ", arg) | tst.js:23:37:23:39 | arg |

@@ -15,6 +15,7 @@
   - [minimongo](https://www.npmjs.com/package/minimongo/)
   - [mssql](https://www.npmjs.com/package/mssql)
   - [mysql](https://www.npmjs.com/package/mysql)
+  - [npmlog](https://www.npmjs.com/package/npmlog)
   - [pg](https://www.npmjs.com/package/pg)
   - [sequelize](https://www.npmjs.com/package/sequelize)
   - [spanner](https://www.npmjs.com/package/spanner)
