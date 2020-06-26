@@ -358,6 +358,17 @@ public class CollectionFlow
         SinkParams(new A[] { other }); // no flow
     }
 
+    public void ListAddClearNoFlow()
+    {
+        var a = new A();
+        var list = new List<A>();
+        list.Add(a);
+        list.Clear();
+        Sink(list[0]); // no flow [FALSE NEGATIVE]
+        SinkListElem(list); // no flow [FALSE NEGATIVE]
+        Sink(ListFirst(list)); // no flow [FALSE NEGATIVE]
+    }
+
     public static void Sink<T>(T t) { }
 
     public static void SinkElem<T>(T[] ts) => Sink(ts[0]);
