@@ -236,7 +236,7 @@ public class ExtractorConfig {
 
   /** The default character encoding to use for parsing source files. */
   private String defaultEncoding;
-  
+
   private VirtualSourceRoot virtualSourceRoot;
 
   public ExtractorConfig(boolean experimental) {
@@ -460,7 +460,7 @@ public class ExtractorConfig {
   public VirtualSourceRoot getVirtualSourceRoot() {
     return virtualSourceRoot;
   }
-  
+
   public ExtractorConfig withVirtualSourceRoot(VirtualSourceRoot virtualSourceRoot) {
     ExtractorConfig res = new ExtractorConfig(this);
     res.virtualSourceRoot = virtualSourceRoot;

@@ -5,7 +5,7 @@ import java.nio.file.Path;
 public class VirtualSourceRoot {
   private Path sourceRoot;
   private Path virtualSourceRoot;
-  
+
   public static final VirtualSourceRoot none = new VirtualSourceRoot(null, null);
 
   public VirtualSourceRoot(Path sourceRoot, Path virtualSourceRoot) {
@@ -33,7 +33,7 @@ public class VirtualSourceRoot {
   public Path getVirtualSourceRoot() {
     return virtualSourceRoot;
   }
-  
+
   private static Path translate(Path oldRoot, Path newRoot, Path file) {
     if (oldRoot == null || newRoot == null) return null;
     Path relative = oldRoot.relativize(file);

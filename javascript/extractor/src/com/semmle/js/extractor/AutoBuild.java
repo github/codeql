@@ -574,15 +574,15 @@ public class AutoBuild {
   public class FileExtractors {
     FileExtractor defaultExtractor;
     Map<String, FileExtractor> customExtractors = new LinkedHashMap<>();
-    
+
     FileExtractors(FileExtractor defaultExtractor) {
       this.defaultExtractor = defaultExtractor;
     }
-    
+
     public FileExtractor forFile(Path f) {
       return customExtractors.getOrDefault(FileUtil.extension(f), defaultExtractor);
     }
-    
+
     public FileType fileType(Path f) {
       return forFile(f).getFileType(f.toFile());
     }
@@ -630,7 +630,7 @@ public class AutoBuild {
 
     // extract remaining files
     extractFiles(
-        filesToExtract, extractedFiles, extractors, 
+        filesToExtract, extractedFiles, extractors,
         f -> !(hasTypeScriptFiles && isFileDerivedFromTypeScriptFile(f, extractedFiles)));
   }
 
