@@ -124,3 +124,6 @@ Try recovering an existing taint tracking query by implementing sources, sinks, 
 - The regression tests track the value of guards in order to eliminate impossible data flow. We currently have regressions because of this. We cannot readily replicate the existing method, as it uses the interdefinedness of data flow and taint tracking (there is a boolean taint kind). C++ does something similar for eliminating impossible control flow, which we might be able to replicate (they infer values of "interesting" control flow nodes, which are those needed to determine values of guards).
 - Flow for some syntactis constructs is done via extra taint steps in the existing implementation, we shoudl find a way to get data flow for it. Much of this should be covered by field flow.
 - A document is being written about proper use of the shared data flow library, this should be adhered to.
+- We seem to get duplicated results for global flow, as well as flow with and without type (so four times the "unique" results).
+- We currently consider control flow nodes like exit nodes for functions, we should probably filter down which ones are of interest.
+- We should probably override ToString for a number of data flow nodes

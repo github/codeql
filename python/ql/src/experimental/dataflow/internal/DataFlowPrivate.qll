@@ -202,6 +202,7 @@ class DataFlowType extends TDataFlowType {
 
 /** A node that performs a type cast. */
 class CastNode extends Node {
+  CastNode() { none() }
 }
 
 /**
@@ -254,6 +255,16 @@ predicate storeStep(Node node1, Content c, Node node2) {
  * Holds if data can flow from `node1` to `node2` via a read of content `c`.
  */
 predicate readStep(Node node1, Content c, Node node2) {
+  none()
+}
+
+/**
+ * Holds if values stored inside content `c` are cleared at node `n`. For example,
+ * any value stored inside `f` is cleared at the pre-update node associated with `x`
+ * in `x.f = newValue`.
+ */
+cached
+predicate clearsContent(Node n, Content c) {
   none()
 }
 

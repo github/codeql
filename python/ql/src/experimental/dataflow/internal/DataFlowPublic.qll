@@ -124,7 +124,7 @@ class ParameterNode extends Node {
  * It is important that all extending classes in scope are disjoint.
  */
 class BarrierGuard extends Expr {
-  /** Holds if this guard validates `e` upon evaluating to `v`. */
+  // /** Holds if this guard validates `e` upon evaluating to `v`. */
   // abstract predicate checks(Expr e, AbstractValue v);
 
   /** Gets a node guarded by this guard. */
