@@ -152,7 +152,7 @@ class PreprocessorIf extends PreprocessorBranch, @ppd_if {
 class PreprocessorIfdef extends PreprocessorBranch, @ppd_ifdef {
   override string toString() { result = "#ifdef " + this.getHead() }
 
-  override string getCanonicalQLClass() { result = "PreprocessorIfdef" }
+  override string getAPrimaryQlClass() { result = "PreprocessorIfdef" }
 }
 
 /**

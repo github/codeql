@@ -513,7 +513,7 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
   /** Gets the function which is being declared or defined. */
   override Function getDeclaration() { result = getFunction() }
 
-  override string getCanonicalQLClass() { result = "FunctionDeclarationEntry" }
+  override string getAPrimaryQlClass() { result = "FunctionDeclarationEntry" }
 
   /** Gets the function which is being declared or defined. */
   Function getFunction() { fun_decls(underlyingElement(this), unresolveElement(result), _, _, _) }
@@ -698,7 +698,7 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
 class TopLevelFunction extends Function {
   TopLevelFunction() { not this.isMember() }
 
-  override string getCanonicalQLClass() { result = "TopLevelFunction" }
+  override string getAPrimaryQlClass() { result = "TopLevelFunction" }
 }
 
 /**
@@ -707,7 +707,7 @@ class TopLevelFunction extends Function {
 class Operator extends Function {
   Operator() { functions(underlyingElement(this), _, 5) }
 
-  override string getCanonicalQLClass() {
+  override string getAPrimaryQlClass() {
     not this instanceof MemberFunction and result = "Operator"
   }
 }
@@ -738,7 +738,7 @@ class TemplateFunction extends Function {
     is_function_template(underlyingElement(this)) and exists(getATemplateArgument())
   }
 
-  override string getCanonicalQLClass() { result = "TemplateFunction" }
+  override string getAPrimaryQlClass() { result = "TemplateFunction" }
 
   /**
    * Gets a compiler-generated instantiation of this function template.
@@ -778,7 +778,7 @@ class FunctionTemplateInstantiation extends Function {
 
   FunctionTemplateInstantiation() { tf.getAnInstantiation() = this }
 
-  override string getCanonicalQLClass() { result = "FunctionTemplateInstantiation" }
+  override string getAPrimaryQlClass() { result = "FunctionTemplateInstantiation" }
 
   /**
    * Gets the function template from which this instantiation was instantiated.
@@ -823,7 +823,7 @@ class FunctionTemplateInstantiation extends Function {
 class FunctionTemplateSpecialization extends Function {
   FunctionTemplateSpecialization() { this.isSpecialization() }
 
-  override string getCanonicalQLClass() { result = "FunctionTemplateSpecialization" }
+  override string getAPrimaryQlClass() { result = "FunctionTemplateSpecialization" }
 
   /**
    * Gets the primary template for the specialization (the function template

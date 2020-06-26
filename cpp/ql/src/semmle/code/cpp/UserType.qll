@@ -24,7 +24,7 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
    */
   override string getName() { usertypes(underlyingElement(this), result, _) }
 
-  override string getCanonicalQLClass() { result = "UserType" }
+  override string getAPrimaryQlClass() { result = "UserType" }
 
   /**
    * Gets the simple name of this type, without any template parameters.  For example
@@ -111,7 +111,7 @@ class TypeDeclarationEntry extends DeclarationEntry, @type_decl {
 
   override string getName() { result = getType().getName() }
 
-  override string getCanonicalQLClass() { result = "TypeDeclarationEntry" }
+  override string getAPrimaryQlClass() { result = "TypeDeclarationEntry" }
 
   /**
    * The type which is being declared or defined.

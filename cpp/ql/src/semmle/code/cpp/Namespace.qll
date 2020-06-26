@@ -131,7 +131,7 @@ class NamespaceDeclarationEntry extends Locatable, @namespace_decl {
    */
   Location getBodyLocation() { namespace_decls(underlyingElement(this), _, _, result) }
 
-  override string getCanonicalQLClass() { result = "NamespaceDeclarationEntry" }
+  override string getAPrimaryQlClass() { result = "NamespaceDeclarationEntry" }
 }
 
 /**
