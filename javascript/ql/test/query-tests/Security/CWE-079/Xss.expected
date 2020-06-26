@@ -331,6 +331,8 @@ nodes
 | tst.js:194:54:194:60 | tainted |
 | tst.js:195:45:195:51 | tainted |
 | tst.js:195:45:195:51 | tainted |
+| tst.js:196:49:196:55 | tainted |
+| tst.js:196:49:196:55 | tainted |
 | tst.js:200:9:200:42 | tainted |
 | tst.js:200:19:200:35 | document.location |
 | tst.js:200:19:200:35 | document.location |
@@ -749,6 +751,8 @@ edges
 | tst.js:187:9:187:42 | tainted | tst.js:194:54:194:60 | tainted |
 | tst.js:187:9:187:42 | tainted | tst.js:195:45:195:51 | tainted |
 | tst.js:187:9:187:42 | tainted | tst.js:195:45:195:51 | tainted |
+| tst.js:187:9:187:42 | tainted | tst.js:196:49:196:55 | tainted |
+| tst.js:187:9:187:42 | tainted | tst.js:196:49:196:55 | tainted |
 | tst.js:187:19:187:35 | document.location | tst.js:187:19:187:42 | documen ... .search |
 | tst.js:187:19:187:35 | document.location | tst.js:187:19:187:42 | documen ... .search |
 | tst.js:187:19:187:42 | documen ... .search | tst.js:187:9:187:42 | tainted |
@@ -925,6 +929,7 @@ edges
 | tst.js:192:33:192:39 | tainted | tst.js:187:19:187:35 | document.location | tst.js:192:33:192:39 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:187:19:187:35 | document.location | user-provided value |
 | tst.js:194:54:194:60 | tainted | tst.js:187:19:187:35 | document.location | tst.js:194:54:194:60 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:187:19:187:35 | document.location | user-provided value |
 | tst.js:195:45:195:51 | tainted | tst.js:187:19:187:35 | document.location | tst.js:195:45:195:51 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:187:19:187:35 | document.location | user-provided value |
+| tst.js:196:49:196:55 | tainted | tst.js:187:19:187:35 | document.location | tst.js:196:49:196:55 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:187:19:187:35 | document.location | user-provided value |
 | tst.js:202:67:202:73 | tainted | tst.js:200:19:200:35 | document.location | tst.js:202:67:202:73 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:200:19:200:35 | document.location | user-provided value |
 | tst.js:203:67:203:73 | tainted | tst.js:200:19:200:35 | document.location | tst.js:203:67:203:73 | tainted | Cross-site scripting vulnerability due to $@. | tst.js:200:19:200:35 | document.location | user-provided value |
 | tst.js:215:28:215:46 | this.state.tainted1 | tst.js:200:19:200:35 | document.location | tst.js:215:28:215:46 | this.state.tainted1 | Cross-site scripting vulnerability due to $@. | tst.js:200:19:200:35 | document.location | user-provided value |

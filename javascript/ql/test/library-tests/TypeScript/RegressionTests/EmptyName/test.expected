@@ -1,10 +1,4 @@
-| Array in global scope |
-| Intl in global scope |
-| Intl.CollatorOptions in global scope |
-| Intl.NumberFormatOptions in global scope |
 | MK in unknown scope |
 | Mapped in library-tests/TypeScript/RegressionTests/EmptyName/test.ts |
-| RegExp in global scope |
-| RegExpMatchArray in global scope |
 | fn in library-tests/TypeScript/RegressionTests/EmptyName/test.ts |
 | library-tests/TypeScript/RegressionTests/EmptyName/test.ts |

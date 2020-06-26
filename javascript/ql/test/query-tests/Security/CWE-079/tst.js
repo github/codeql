@@ -193,7 +193,7 @@ function references() {
 
     document.getElementsByClassName()[0].innerHTML = tainted; // NOT OK
     getElementsByClassName()[0].innerHTML = tainted; // NOT OK
-    getElementsByClassName().item().innerHTML = tainted; // NOT OK, but not supported
+    getElementsByClassName().item().innerHTML = tainted; // NOT OK
 }
 
 function react(){

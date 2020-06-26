@@ -14,3 +14,10 @@ require("winston").createLogger().info("msg %s", arg);
 require("log4js").getLogger().log("msg %s", arg);
 
 console.assert(true, "msg %s", arg);
+
+let log = console.log;
+log("msg %s", arg);
+
+require("npmlog").log("info", "msg %s", arg);
+require("npmlog").info("msg %s", arg);
+require("npmlog").verbose("msg %s", arg);

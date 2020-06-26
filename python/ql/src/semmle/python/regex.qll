@@ -497,7 +497,11 @@ abstract class RegexString extends Expr {
             this.getChar(endin) = "}" and
             end > start and
             exists(string multiples | multiples = this.getText().substring(start + 1, endin) |
+                multiples.regexpMatch("0+") and maybe_empty = true
+                or
                 multiples.regexpMatch("0*,[0-9]*") and maybe_empty = true
+                or
+                multiples.regexpMatch("0*[1-9][0-9]*") and maybe_empty = false
                 or
                 multiples.regexpMatch("0*[1-9][0-9]*,[0-9]*") and maybe_empty = false
             ) and
@@ -643,9 +647,13 @@ abstract class RegexString extends Expr {
         start = 0 and end = this.getText().length()
         or
         exists(int y | this.lastPart(start, y) |
-            this.emptyMatchAtEndGroup(end, y) or
-            this.qualifiedItem(end, y, true) or
+            this.emptyMatchAtEndGroup(end, y)
+            or
+            this.qualifiedItem(end, y, true)
+            or
             this.specialCharacter(end, y, "$")
+            or
+            y = end + 2 and this.escapingChar(end) and this.getChar(end + 1) = "Z"
         )
         or
         exists(int x |

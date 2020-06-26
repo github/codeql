@@ -1,5 +1,5 @@
 /**
- * Provides implementation classes  modelling various methods of deallocation
+ * Provides implementation classes  modeling various methods of deallocation
  * (`free`, `delete` etc). See `semmle.code.cpp.models.interfaces.Deallocation`
  * for usage information.
  */

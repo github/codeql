@@ -17,7 +17,7 @@ class UsingDirective extends Element, @using_directive {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * using System;
    *
    * namespace N {

@@ -15,7 +15,6 @@
 + semmlecode-javascript-queries/NodeJS/DubiousImport.ql: /Frameworks/Node.js
 + semmlecode-javascript-queries/NodeJS/InvalidExport.ql: /Frameworks/Node.js
 + semmlecode-javascript-queries/NodeJS/MissingExports.ql: /Frameworks/Node.js
-+ semmlecode-javascript-queries/NodeJS/UnusedDependency.ql: /Frameworks/Node.js
 + semmlecode-javascript-queries/NodeJS/UnresolvableImport.ql: /Frameworks/Node.js
 + semmlecode-javascript-queries/React/DirectStateMutation.ql: /Frameworks/React
 + semmlecode-javascript-queries/React/InconsistentStateUpdate.ql: /Frameworks/React

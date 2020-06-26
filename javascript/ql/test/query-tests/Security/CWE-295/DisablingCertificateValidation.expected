@@ -1,0 +1,9 @@
+| tst.js:15:3:15:27 | rejectU ... : false | Disabling certificate validation is strongly discouraged. |
+| tst.js:18:1:18:40 | process ... HORIZED | Disabling certificate validation is strongly discouraged. |
+| tst.js:21:3:21:27 | rejectU ... : false | Disabling certificate validation is strongly discouraged. |
+| tst.js:25:3:25:27 | rejectU ... : false | Disabling certificate validation is strongly discouraged. |
+| tst.js:29:3:29:27 | rejectU ... : false | Disabling certificate validation is strongly discouraged. |
+| tst.js:34:3:34:27 | rejectU ... : false | Disabling certificate validation is strongly discouraged. |
+| tst.js:39:2:39:29 | rejectU ... ndirect | Disabling certificate validation is strongly discouraged. |
+| tst.js:45:2:45:28 | rejectU ... !!false | Disabling certificate validation is strongly discouraged. |
+| tst.js:48:2:48:26 | rejectU ... : !true | Disabling certificate validation is strongly discouraged. |

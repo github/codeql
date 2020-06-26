@@ -50,7 +50,7 @@ class NamedElement extends Element, @dotnet_named_element {
    * Gets the fully qualified name of this element, for example the
    * fully qualified name of `M` on line 3 is `N.C.M` in
    *
-   * ```
+   * ```csharp
    * namespace N {
    *   class C {
    *     void M(int i, string s) { }

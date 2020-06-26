@@ -1,3 +1,8 @@
+/**
+ * Provides classes for working with name qualifiers such as the `N::` in
+ * `N::f()`.
+ */
+
 import cpp
 
 /**

@@ -1,3 +1,10 @@
+/**
+ * Provides implementation classes modeling various standard formatting
+ * functions (`printf`, `snprintf` etc).
+ * See `semmle.code.cpp.models.interfaces.FormattingFunction` for usage
+ * information.
+ */
+
 import semmle.code.cpp.models.interfaces.FormattingFunction
 import semmle.code.cpp.models.interfaces.Alias
 
