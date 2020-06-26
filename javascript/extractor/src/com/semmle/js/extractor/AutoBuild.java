@@ -608,6 +608,17 @@ public class AutoBuild {
     boolean hasTypeScriptFiles = extractedFiles.size() > 0;
 
     // extract remaining files
+    extractFiles(
+        filesToExtract, extractedFiles, defaultExtractor, customExtractors, hasTypeScriptFiles);
+  }
+
+  private void extractFiles(
+      Set<Path> filesToExtract,
+      Set<Path> extractedFiles,
+      FileExtractor defaultExtractor,
+      Map<String, FileExtractor> customExtractors,
+      boolean hasTypeScriptFiles) {
+
     for (Path f : filesToExtract) {
       if (extractedFiles.contains(f))
         continue;
