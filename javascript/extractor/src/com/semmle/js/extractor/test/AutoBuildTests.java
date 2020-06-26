@@ -15,6 +15,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -109,11 +110,12 @@ public class AutoBuildTests {
       Set<String> actual = new LinkedHashSet<>();
       new AutoBuild() {
         @Override
-        protected void extract(FileExtractor extractor, Path file, ExtractorState state) {
+        protected CompletableFuture<?> extract(FileExtractor extractor, Path file, ExtractorState state) {
           String extracted = file.toString();
           if (extractor.getConfig().hasFileType())
             extracted += ":" + extractor.getFileType(file.toFile());
           actual.add(extracted);
+          return CompletableFuture.completedFuture(null);
         }
 
         @Override

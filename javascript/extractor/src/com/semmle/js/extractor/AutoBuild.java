@@ -26,6 +26,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -621,6 +622,13 @@ public class AutoBuild {
       dependencyInstallationResult = this.preparePackagesAndDependencies(filesToExtract);
     }
     Set<Path> extractedFiles = new LinkedHashSet<>();
+    
+    // Extract HTML files as they may contain TypeScript
+    CompletableFuture<?> htmlFuture = extractFiles(
+        filesToExtract, extractedFiles, extractors,
+        f -> extractors.fileType(f) == FileType.HTML);
+    
+    htmlFuture.join(); // Wait for HTML extraction to be finished.
 
     // extract TypeScript projects and files
     extractTypeScript(filesToExtract, extractedFiles,
@@ -634,12 +642,13 @@ public class AutoBuild {
         f -> !(hasTypeScriptFiles && isFileDerivedFromTypeScriptFile(f, extractedFiles)));
   }
 
-  private void extractFiles(
+  private CompletableFuture<?> extractFiles(
       Set<Path> filesToExtract,
       Set<Path> extractedFiles,
       FileExtractors extractors,
       Predicate<Path> shouldExtract) {
 
+    List<CompletableFuture<?>> futures = new ArrayList<>();
     for (Path f : filesToExtract) {
       if (extractedFiles.contains(f))
         continue;
@@ -647,8 +656,9 @@ public class AutoBuild {
         continue;
       }
       extractedFiles.add(f);
-      extract(extractors.forFile(f), f, null);
+      futures.add(extract(extractors.forFile(f), f, null));
     }
+    return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
   }
 
   /**
@@ -1164,10 +1174,13 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
    * <p>If the state is {@code null}, the extraction job will be submitted to the {@link
    * #threadPool}, otherwise extraction will happen on the main thread.
    */
-  protected void extract(FileExtractor extractor, Path file, ExtractorState state) {
-    if (state == null && threadPool != null)
-      threadPool.submit(() -> doExtract(extractor, file, state));
-    else doExtract(extractor, file, state);
+  protected CompletableFuture<?> extract(FileExtractor extractor, Path file, ExtractorState state) {
+    if (state == null && threadPool != null) {
+      return CompletableFuture.runAsync(() -> doExtract(extractor, file, state), threadPool);
+    } else {
+      doExtract(extractor, file, state);
+      return CompletableFuture.completedFuture(null);
+    }
   }
 
   private void doExtract(FileExtractor extractor, Path file, ExtractorState state) {
