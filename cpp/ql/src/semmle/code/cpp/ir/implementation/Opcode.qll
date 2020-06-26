@@ -1,3 +1,8 @@
+/**
+ * Provides `Opcode`s that specify the operation performed by an `Instruction`, as well as metadata
+ * about those opcodes, such as operand kinds and memory accesses.
+ */
+
 private import internal.OpcodeImports as Imports
 private import internal.OperandTag
 import Imports::MemoryAccessKind
@@ -87,6 +92,7 @@ private newtype TOpcode =
   TNewObj()
 
 class Opcode extends TOpcode {
+  /** Gets a textual representation of this element. */
   string toString() { result = "UnknownOpcode" }
 
   /**
