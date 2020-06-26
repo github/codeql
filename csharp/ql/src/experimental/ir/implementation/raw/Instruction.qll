@@ -215,6 +215,15 @@ class Instruction extends Construction::TStageInstruction {
     result = Raw::getInstructionUnconvertedResultExpression(this)
   }
 
+  /**
+   * Gets the language-specific type of the result produced by this instruction.
+   *
+   * Most consumers of the IR should use `getResultIRType()` instead. `getResultIRType()` uses a
+   * less complex, language-neutral type system in which all semantically equivalent types share the
+   * same `IRType` instance. For example, in C++, four different `Instruction`s might have three
+   * different values for `getResultLanguageType()`: `unsigned int`, `char32_t`, and `wchar_t`,
+   * whereas all four instructions would have the same value for `getResultIRType()`, `uint4`.
+   */
   final Language::LanguageType getResultLanguageType() {
     result = Construction::getInstructionResultType(this)
   }
@@ -1178,8 +1187,14 @@ class PointerDiffInstruction extends PointerArithmeticInstruction {
 class UnaryInstruction extends Instruction {
   UnaryInstruction() { getOpcode() instanceof UnaryOpcode }
 
+  /**
+   * Gets the sole operand of this instruction.
+   */
   final UnaryOperand getUnaryOperand() { result = getAnOperand() }
 
+  /**
+   * Gets the instruction whose result provides the sole operand of this instruction.
+   */
   final Instruction getUnary() { result = getUnaryOperand().getDef() }
 }
 
@@ -1621,7 +1636,15 @@ class SizedBufferReadSideEffectInstruction extends ReadSideEffectInstruction {
     getOpcode() instanceof Opcode::SizedBufferReadSideEffect
   }
 
-  Instruction getSizeDef() { result = getAnOperand().(BufferSizeOperand).getDef() }
+  /**
+   * Gets the operand that holds the number of bytes read from the buffer.
+   */
+  final BufferSizeOperand getBufferSizeOperand() { result = getAnOperand() }
+
+  /**
+   * Gets the instruction whose result provides the number of bytes read from the buffer.
+   */
+  final Instruction getBufferSize() { result = getBufferSizeOperand().getDef() }
 }
 
 /**
@@ -1631,7 +1654,15 @@ class SizedBufferReadSideEffectInstruction extends ReadSideEffectInstruction {
 class WriteSideEffectInstruction extends SideEffectInstruction, IndexedInstruction {
   WriteSideEffectInstruction() { getOpcode() instanceof WriteSideEffectOpcode }
 
-  Instruction getArgumentDef() { result = getAnOperand().(AddressOperand).getDef() }
+  /**
+   * Get the operand that holds the address of the memory to be written.
+   */
+  final AddressOperand getDestinationAddressOperand() { result = getAnOperand() }
+
+  /**
+   * Gets the instruction whose result provides the address of the memory to be written.
+   */
+  Instruction getDestinationAddress() { result = getDestinationAddressOperand().getDef() }
 }
 
 /**
@@ -1662,7 +1693,15 @@ class SizedBufferMustWriteSideEffectInstruction extends WriteSideEffectInstructi
     getOpcode() instanceof Opcode::SizedBufferMustWriteSideEffect
   }
 
-  Instruction getSizeDef() { result = getAnOperand().(BufferSizeOperand).getDef() }
+  /**
+   * Gets the operand that holds the number of bytes written to the buffer.
+   */
+  final BufferSizeOperand getBufferSizeOperand() { result = getAnOperand() }
+
+  /**
+   * Gets the instruction whose result provides the number of bytes written to the buffer.
+   */
+  final Instruction getBufferSize() { result = getBufferSizeOperand().getDef() }
 }
 
 /**
@@ -1696,7 +1735,15 @@ class SizedBufferMayWriteSideEffectInstruction extends WriteSideEffectInstructio
     getOpcode() instanceof Opcode::SizedBufferMayWriteSideEffect
   }
 
-  Instruction getSizeDef() { result = getAnOperand().(BufferSizeOperand).getDef() }
+  /**
+   * Gets the operand that holds the number of bytes written to the buffer.
+   */
+  final BufferSizeOperand getBufferSizeOperand() { result = getAnOperand() }
+
+  /**
+   * Gets the instruction whose result provides the number of bytes written to the buffer.
+   */
+  final Instruction getBufferSize() { result = getBufferSizeOperand().getDef() }
 }
 
 /**
@@ -1941,6 +1988,10 @@ class BuiltInOperationInstruction extends Instruction {
     operation = Raw::getInstructionBuiltInOperation(this)
   }
 
+  /**
+   * Gets the language-specific `BuildInOperation` object that specifies the operation that is
+   * performed by this instruction.
+   */
   final Language::BuiltInOperation getBuiltInOperation() { result = operation }
 }
 
