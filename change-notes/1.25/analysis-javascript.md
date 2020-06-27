@@ -22,6 +22,7 @@
   - [sqlite](https://www.npmjs.com/package/sqlite)
   - [ssh2-streams](https://www.npmjs.com/package/ssh2-streams)
   - [ssh2](https://www.npmjs.com/package/ssh2)
+  - [vue](https://www.npmjs.com/package/vue)
   - [yargs](https://www.npmjs.com/package/yargs)
   - [webpack-dev-server](https://www.npmjs.com/package/webpack-dev-server)
 
