@@ -49,7 +49,7 @@ class TypeOgnlUtil extends Class {
  */
 predicate ognlSinkMethod(Method m, int index) {
   (
-    m.getDeclaringType() instanceof TypeOgnl and index = 0
+    m.getDeclaringType() instanceof TypeOgnl
     or
     m.getDeclaringType().getAnAncestor*() instanceof TypeNode
   ) and

@@ -27,7 +27,7 @@ and validate the expressions before evaluation.</p>
 </example>
 
 <references>
-<li>OGNL library: <a href="https://github.com/jkuhnert/ognl/">OGNL library</a>.</li>
+<li><a href="https://github.com/jkuhnert/ognl/">OGNL library</a>.</li>
 <li>Struts security: <a href="https://struts.apache.org/security/#proactively-protect-from-ognl-expression-injections-attacks-if-easily-applicable">Proactively protect from OGNL Expression Injections attacks</a>.</li>
 </references>
 </qhelp>
