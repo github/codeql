@@ -162,7 +162,7 @@ private module Npmlog {
 }
 
 /**
- * Provides classes for working with [fancy-log](https://github.com/gulpjs/fancy-log)
+ * Provides classes for working with [fancy-log](https://github.com/gulpjs/fancy-log).
  */
 private module Fancylog {
   /**
