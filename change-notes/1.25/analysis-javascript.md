@@ -6,6 +6,7 @@
   - [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
   - [bluebird](http://bluebirdjs.com/)
   - [express](https://www.npmjs.com/package/express)
+  - [fancy-log](https://www.npmjs.com/package/fancy-log)
   - [fastify](https://www.npmjs.com/package/fastify)
   - [fstream](https://www.npmjs.com/package/fstream)
   - [jGrowl](https://github.com/stanlemon/jGrowl)
