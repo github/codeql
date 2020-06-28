@@ -28,6 +28,17 @@ module DomBasedXss {
       guard instanceof SanitizerGuard
     }
 
+    override predicate isAdditionalStoreStep(
+      DataFlow::Node pred, DataFlow::SourceNode succ, string prop
+    ) {
+      exists(DataFlow::PropRead read |
+        pred = read.getBase() and
+        succ = read and
+        read.getPropertyName() = "hash" and
+        prop = urlSuffixPseudoProperty()
+      )
+    }
+
     override predicate isAdditionalLoadStoreStep(
       DataFlow::Node pred, DataFlow::Node succ, string predProp, string succProp
     ) {

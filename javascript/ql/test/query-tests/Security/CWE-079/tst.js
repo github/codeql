@@ -418,3 +418,7 @@ function test() {
   $('myId').html(target.taint9); // OK
 }
 
+function hash2() {
+  var payload = window.location.hash.substr(1);
+  document.write(payload); // NOT OK
+}
