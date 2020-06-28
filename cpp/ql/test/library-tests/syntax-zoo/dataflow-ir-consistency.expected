@@ -1,32 +1,5 @@
 uniqueEnclosingCallable
 uniqueTypeBound
-| condition_decls.cpp:3:13:3:22 | Arg(0) | Node should have one type bound but has 2. |
-| defconstructornewexpr.cpp:4:2:4:6 | Arg(0) | Node should have one type bound but has 2. |
-| defdestructordeleteexpr.cpp:4:9:4:15 | Arg(0) | Node should have one type bound but has 2. |
-| deleteexpr.cpp:7:9:7:15 | Arg(0) | Node should have one type bound but has 2. |
-| ir.cpp:941:3:941:9 | Arg(0) | Node should have one type bound but has 2. |
-| ir.cpp:943:3:943:11 | Arg(0) | Node should have one type bound but has 2. |
-| ir.cpp:944:3:944:14 | Arg(0) | Node should have one type bound but has 2. |
-| ir.cpp:951:3:951:13 | Arg(0) | Node should have one type bound but has 2. |
-| ir.cpp:952:3:952:12 | Arg(0) | Node should have one type bound but has 2. |
-| ir.cpp:952:3:952:12 | Left | Node should have one type bound but has 2. |
-| ir.cpp:952:3:952:12 | Right | Node should have one type bound but has 2. |
-| ir.cpp:954:3:954:15 | Arg(0) | Node should have one type bound but has 2. |
-| ir.cpp:954:3:954:15 | Left | Node should have one type bound but has 2. |
-| ir.cpp:954:3:954:15 | Right | Node should have one type bound but has 2. |
-| ir.cpp:957:3:957:36 | Arg(0) | Node should have one type bound but has 2. |
-| ir.cpp:957:3:957:36 | Left | Node should have one type bound but has 2. |
-| ir.cpp:957:3:957:36 | Right | Node should have one type bound but has 2. |
-| ir.cpp:958:3:958:24 | Arg(0) | Node should have one type bound but has 2. |
-| ir.cpp:958:3:958:24 | Left | Node should have one type bound but has 2. |
-| ir.cpp:958:3:958:24 | Right | Node should have one type bound but has 2. |
-| newexpr.cpp:8:2:8:20 | Arg(0) | Node should have one type bound but has 2. |
-| ops.cpp:19:15:19:22 | Arg(0) | Node should have one type bound but has 2. |
-| ops.cpp:20:18:20:30 | Arg(0) | Node should have one type bound but has 2. |
-| ops.cpp:21:18:21:34 | Arg(0) | Node should have one type bound but has 2. |
-| ops.cpp:21:18:21:34 | Left | Node should have one type bound but has 2. |
-| ops.cpp:21:18:21:34 | Right | Node should have one type bound but has 2. |
-| ops.cpp:26:31:26:53 | Arg(0) | Node should have one type bound but has 2. |
 uniqueTypeRepr
 uniqueNodeLocation
 | aggregateinitializer.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
