@@ -188,6 +188,7 @@ library class Bytes_ extends @py_Bytes, Expr {
 
 /** INTERNAL: See the class `BytesOrStr` for further information. */
 library class BytesOrStr_ extends @py_Bytes_or_Str {
+    /** Gets a textual representation of this element. */
     string toString() { result = "BytesOrStr" }
 }
 
@@ -233,6 +234,7 @@ library class Class_ extends @py_Class {
 
     ClassExpr getParent() { py_Classes(this, result) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "Class" }
 }
 
@@ -513,6 +515,7 @@ library class Function_ extends @py_Function {
 
     FunctionParent getParent() { py_Functions(this, result) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "Function" }
 }
 
@@ -535,6 +538,7 @@ library class FunctionExpr_ extends @py_FunctionExpr, Expr {
 
 /** INTERNAL: See the class `FunctionParent` for further information. */
 library class FunctionParent_ extends @py_Function_parent {
+    /** Gets a textual representation of this element. */
     string toString() { result = "FunctionParent" }
 }
 
@@ -811,6 +815,7 @@ library class Module_ extends @py_Module {
     /** Gets the kind of this module. */
     string getKind() { py_strs(result, this, 3) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "Module" }
 }
 
@@ -1070,6 +1075,7 @@ library class StringPart_ extends @py_StringPart {
 
     StringPartList getParent() { py_StringParts(this, result, _) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "StringPart" }
 }
 
@@ -1083,6 +1089,7 @@ library class StringPartList_ extends @py_StringPart_list {
     /** Gets the nth item of this implicitly concatenated part list */
     StringPart getItem(int index) { py_StringParts(result, this, index) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "StringPartList" }
 }
 
@@ -1283,6 +1290,7 @@ library class Alias_ extends @py_alias {
 
     AliasList getParent() { py_aliases(this, result, _) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "Alias" }
 }
 
@@ -1296,6 +1304,7 @@ library class AliasList_ extends @py_alias_list {
     /** Gets the nth item of this alias list */
     Alias getItem(int index) { py_aliases(result, this, index) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "AliasList" }
 }
 
@@ -1345,21 +1354,25 @@ library class Arguments_ extends @py_arguments {
 
     ArgumentsParent getParent() { py_arguments(this, result) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "Arguments" }
 }
 
 /** INTERNAL: See the class `ArgumentsParent` for further information. */
 library class ArgumentsParent_ extends @py_arguments_parent {
+    /** Gets a textual representation of this element. */
     string toString() { result = "ArgumentsParent" }
 }
 
 /** INTERNAL: See the class `AstNode` for further information. */
 library class AstNode_ extends @py_ast_node {
+    /** Gets a textual representation of this element. */
     string toString() { result = "AstNode" }
 }
 
 /** INTERNAL: See the class `BoolParent` for further information. */
 library class BoolParent_ extends @py_bool_parent {
+    /** Gets a textual representation of this element. */
     string toString() { result = "BoolParent" }
 }
 
@@ -1367,6 +1380,7 @@ library class BoolParent_ extends @py_bool_parent {
 library class Boolop_ extends @py_boolop {
     BoolExpr getParent() { py_boolops(this, _, result) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "Boolop" }
 }
 
@@ -1374,6 +1388,7 @@ library class Boolop_ extends @py_boolop {
 library class Cmpop_ extends @py_cmpop {
     CmpopList getParent() { py_cmpops(this, _, result, _) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "Cmpop" }
 }
 
@@ -1387,6 +1402,7 @@ library class CmpopList_ extends @py_cmpop_list {
     /** Gets the nth item of this comparison operator list */
     Cmpop getItem(int index) { py_cmpops(result, _, this, index) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "CmpopList" }
 }
 
@@ -1412,6 +1428,7 @@ library class Comprehension_ extends @py_comprehension {
 
     ComprehensionList getParent() { py_comprehensions(this, result, _) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "Comprehension" }
 }
 
@@ -1425,6 +1442,7 @@ library class ComprehensionList_ extends @py_comprehension_list {
     /** Gets the nth item of this comprehension list */
     Comprehension getItem(int index) { py_comprehensions(result, this, index) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "ComprehensionList" }
 }
 
@@ -1432,6 +1450,7 @@ library class ComprehensionList_ extends @py_comprehension_list {
 library class DictItem_ extends @py_dict_item {
     DictItemList getParent() { py_dict_items(this, _, result, _) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "DictItem" }
 }
 
@@ -1445,11 +1464,13 @@ library class DictItemList_ extends @py_dict_item_list {
     /** Gets the nth item of this dict_item list */
     DictItem getItem(int index) { py_dict_items(result, _, this, index) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "DictItemList" }
 }
 
 /** INTERNAL: See the class `DictItemListParent` for further information. */
 library class DictItemListParent_ extends @py_dict_item_list_parent {
+    /** Gets a textual representation of this element. */
     string toString() { result = "DictItemListParent" }
 }
 
@@ -1463,6 +1484,7 @@ library class Expr_ extends @py_expr {
 
     ExprParent getParent() { py_exprs(this, _, result, _) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "Expr" }
 }
 
@@ -1470,11 +1492,13 @@ library class Expr_ extends @py_expr {
 library class ExprContext_ extends @py_expr_context {
     ExprContextParent getParent() { py_expr_contexts(this, _, result) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "ExprContext" }
 }
 
 /** INTERNAL: See the class `ExprContextParent` for further information. */
 library class ExprContextParent_ extends @py_expr_context_parent {
+    /** Gets a textual representation of this element. */
     string toString() { result = "ExprContextParent" }
 }
 
@@ -1488,21 +1512,25 @@ library class ExprList_ extends @py_expr_list {
     /** Gets the nth item of this expression list */
     Expr getItem(int index) { py_exprs(result, _, this, index) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "ExprList" }
 }
 
 /** INTERNAL: See the class `ExprListParent` for further information. */
 library class ExprListParent_ extends @py_expr_list_parent {
+    /** Gets a textual representation of this element. */
     string toString() { result = "ExprListParent" }
 }
 
 /** INTERNAL: See the class `ExprOrStmt` for further information. */
 library class ExprOrStmt_ extends @py_expr_or_stmt {
+    /** Gets a textual representation of this element. */
     string toString() { result = "ExprOrStmt" }
 }
 
 /** INTERNAL: See the class `ExprParent` for further information. */
 library class ExprParent_ extends @py_expr_parent {
+    /** Gets a textual representation of this element. */
     string toString() { result = "ExprParent" }
 }
 
@@ -1522,6 +1550,7 @@ library class Keyword_ extends @py_keyword, DictItem {
 
 /** INTERNAL: See the class `LocationParent` for further information. */
 library class LocationParent_ extends @py_location_parent {
+    /** Gets a textual representation of this element. */
     string toString() { result = "LocationParent" }
 }
 
@@ -1529,16 +1558,19 @@ library class LocationParent_ extends @py_location_parent {
 library class Operator_ extends @py_operator {
     BinaryExpr getParent() { py_operators(this, _, result) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "Operator" }
 }
 
 /** INTERNAL: See the class `Parameter` for further information. */
 library class Parameter_ extends @py_parameter {
+    /** Gets a textual representation of this element. */
     string toString() { result = "Parameter" }
 }
 
 /** INTERNAL: See the class `Scope` for further information. */
 library class Scope_ extends @py_scope {
+    /** Gets a textual representation of this element. */
     string toString() { result = "Scope" }
 }
 
@@ -1549,6 +1581,7 @@ library class Stmt_ extends @py_stmt {
 
     StmtList getParent() { py_stmts(this, _, result, _) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "Stmt" }
 }
 
@@ -1562,11 +1595,13 @@ library class StmtList_ extends @py_stmt_list {
     /** Gets the nth item of this statement list */
     Stmt getItem(int index) { py_stmts(result, _, this, index) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "StmtList" }
 }
 
 /** INTERNAL: See the class `StmtListParent` for further information. */
 library class StmtListParent_ extends @py_stmt_list_parent {
+    /** Gets a textual representation of this element. */
     string toString() { result = "StmtListParent" }
 }
 
@@ -1580,16 +1615,19 @@ library class StringList_ extends @py_str_list {
     /** Gets the nth item of this string list */
     string getItem(int index) { py_strs(result, this, index) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "StringList" }
 }
 
 /** INTERNAL: See the class `StrListParent` for further information. */
 library class StrListParent_ extends @py_str_list_parent {
+    /** Gets a textual representation of this element. */
     string toString() { result = "StrListParent" }
 }
 
 /** INTERNAL: See the class `StrParent` for further information. */
 library class StrParent_ extends @py_str_parent {
+    /** Gets a textual representation of this element. */
     string toString() { result = "StrParent" }
 }
 
@@ -1597,10 +1635,12 @@ library class StrParent_ extends @py_str_parent {
 library class Unaryop_ extends @py_unaryop {
     UnaryExpr getParent() { py_unaryops(this, _, result) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "Unaryop" }
 }
 
 /** INTERNAL: See the class `VariableParent` for further information. */
 library class VariableParent_ extends @py_variable_parent {
+    /** Gets a textual representation of this element. */
     string toString() { result = "VariableParent" }
 }
