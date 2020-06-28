@@ -14,6 +14,7 @@ class Comment extends @py_comment {
 
     Location getLocation() { py_comments(this, _, result) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "Comment " + this.getText() }
 
     /**
@@ -55,6 +56,7 @@ class CommentBlock extends @py_comment {
 
     private Comment last() { comment_block_part(this, result, this.length()) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "Comment block" }
 
     /** The length of this comment block (in comments) */

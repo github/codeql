@@ -17,6 +17,7 @@ class Builtin extends @py_cobject {
         )
     }
 
+    /** Gets a textual representation of this element. */
     string toString() {
         not this = undefinedVariable().asBuiltin() and
         not this = Builtin::unknown() and

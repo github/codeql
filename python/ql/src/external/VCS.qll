@@ -10,6 +10,7 @@ class Commit extends @svnentry {
         )
     }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = this.getRevisionName() }
 
     string getRevisionName() { svnentries(this, result, _, _, _) }
