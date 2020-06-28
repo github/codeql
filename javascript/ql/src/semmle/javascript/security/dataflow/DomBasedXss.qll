@@ -52,13 +52,27 @@ module DomBasedXss {
     }
 
     override predicate isAdditionalLoadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      exists(DataFlow::MethodCallNode call, string name |
-        name = "substr" or name = "substring" or name = "slice"
-      |
-        call.getMethodName() = name and
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = ["substr", "substring", "slice"] and
         not call.getArgument(0).getIntValue() = 0 and
         pred = call.getReceiver() and
         succ = call and
+        prop = urlSuffixPseudoProperty()
+      )
+      or
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = "exec" and pred = call.getArgument(0)
+        or
+        call.getMethodName() = "match" and pred = call.getReceiver()
+      |
+        succ = call and
+        prop = urlSuffixPseudoProperty()
+      )
+      or
+      exists(StringSplitCall split |
+        split.getSeparator() = ["#", "?"] and
+        pred = split.getBaseString() and
+        succ = split.getASubstringRead(1) and
         prop = urlSuffixPseudoProperty()
       )
     }
