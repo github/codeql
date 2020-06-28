@@ -186,19 +186,18 @@ private class ArrayContent extends Content, TArrayContent {
 
 private predicate storeStepNoChi(Node node1, Content f, PostUpdateNode node2) {
   exists(FieldAddressInstruction fa, StoreInstruction store |
-    node2.asInstruction() = store and
-    node1.asOperand() = store.getSourceValueOperand() and
+    store = node2.asInstruction() and
     store.getDestinationAddress() = fa and
+    store.getSourceValue() = node1.asInstruction() and
     f.(FieldContent).getField() = fa.getField()
   )
 }
 
 private predicate storeStepChi(Node node1, Content f, PostUpdateNode node2) {
-  exists(FieldAddressInstruction fa, ChiInstruction chi, StoreInstruction store |
-    node2.asInstruction() = chi and
-    node1.asOperand() = chi.getPartialOperand() and
-    chi.getPartial() = store and
+  exists(FieldAddressInstruction fa, StoreInstruction store |
+    node1.asInstruction() = store and
     store.getDestinationAddress() = fa and
+    node2.asInstruction().(ChiInstruction).getPartial() = store and
     f.(FieldContent).getField() = fa.getField()
   )
 }
@@ -220,10 +219,10 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
  */
 predicate readStep(Node node1, Content f, Node node2) {
   exists(FieldAddressInstruction fa, LoadInstruction load |
-    node2.asInstruction() = load and
-    node1.asOperand() = load.getSourceValueOperand() and
     load.getSourceAddress() = fa and
-    fa.getField() = f.(FieldContent).getField()
+    node1.asInstruction() = load.getSourceValueOperand().getAnyDef() and
+    fa.getField() = f.(FieldContent).getField() and
+    load = node2.asInstruction()
   )
 }
 
