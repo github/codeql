@@ -1,6 +1,6 @@
 /**
  * Provides a predicate for identifying formatting functions like `printf`.
- * 
+ *
  * Consider using the newer model in
  * `semmle.code.cpp.models.interfaces.FormattingFunction` directly instead of
  * this library.
