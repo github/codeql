@@ -757,9 +757,8 @@ module TaintTracking {
     private predicate staticRegExpCaptureStep(DataFlow::Node pred, DataFlow::Node succ) {
       getACaptureSetter(pred) = getANodeReachingCaptureRef(succ)
       or
-      exists(DataFlow::MethodCallNode replace |
-        replace.getMethodName() = "replace" and
-        getANodeReachingCaptureRef(succ) = replace.getCallback(1).getFunction().getEntry() and
+      exists(StringReplaceCall replace |
+        getANodeReachingCaptureRef(succ) = replace.getReplacementCallback().getFunction().getEntry() and
         pred = replace.getReceiver()
       )
     }
