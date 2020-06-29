@@ -19,6 +19,7 @@ abstract class LoggerCall extends DataFlow::CallNode {
  */
 string getAStandardLoggerMethodName() {
   result = "crit" or
+  result = "dir" or
   result = "debug" or
   result = "error" or
   result = "emerg" or
@@ -157,5 +158,22 @@ private module Npmlog {
       or
       result = getASpreadArgument()
     }
+  }
+}
+
+/**
+ * Provides classes for working with [fancy-log](https://github.com/gulpjs/fancy-log).
+ */
+private module Fancylog {
+  /**
+   * A call to the fancy-log logging mechanism.
+   */
+  class Fancylog extends LoggerCall {
+    Fancylog() {
+      this = DataFlow::moduleMember("fancy-log", getAStandardLoggerMethodName()).getACall() or
+      this = DataFlow::moduleImport("fancy-log").getACall()
+    }
+
+    override DataFlow::Node getAMessageComponent() { result = getAnArgument() }
   }
 }
