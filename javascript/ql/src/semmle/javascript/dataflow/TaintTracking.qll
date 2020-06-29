@@ -706,7 +706,7 @@ module TaintTracking {
   }
 
   private module RegExpCaptureSteps {
-    /** Gets a reference to a string derived from the most recent RegExp match, such as `RegExp.$1` */
+    /** Gets a reference to a string derived from the most recent RegExp match, such as `RegExp.$1`. */
     private DataFlow::PropRead getAStaticCaptureRef() {
       result =
         DataFlow::globalVarRef("RegExp")
@@ -752,7 +752,7 @@ module TaintTracking {
 
     /**
      * Holds if there is a step `pred -> succ` from the input of a RegExp match to
-     * a static property of `RegExp` defined.
+     * a static property of `RegExp`.
      */
     private predicate staticRegExpCaptureStep(DataFlow::Node pred, DataFlow::Node succ) {
       getACaptureSetter(pred) = getANodeReachingCaptureRef(succ)
