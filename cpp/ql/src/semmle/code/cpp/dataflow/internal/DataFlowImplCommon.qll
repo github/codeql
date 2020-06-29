@@ -344,7 +344,7 @@ private module Cached {
         mayBenefitFromCallContext(call, c) and
         c = viableCallable(ctx) and
         ctxtgts = count(viableImplInCallContext(call, ctx)) and
-        tgts = strictcount(viableImpl(call)) and
+        tgts = strictcount(viableCallable(call)) and
         ctxtgts < tgts
       )
     }
@@ -369,7 +369,7 @@ private module Cached {
     predicate reducedViableImplInReturn(DataFlowCallable c, DataFlowCall call) {
       exists(int tgts, int ctxtgts |
         mayBenefitFromCallContext(call, _) and
-        c = viableImpl(call) and
+        c = viableCallable(call) and
         ctxtgts = count(DataFlowCall ctx | c = viableImplInCallContext(call, ctx)) and
         tgts = strictcount(DataFlowCall ctx | viableCallable(ctx) = call.getEnclosingCallable()) and
         ctxtgts < tgts
