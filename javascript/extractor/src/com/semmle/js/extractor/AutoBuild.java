@@ -213,6 +213,7 @@ public class AutoBuild {
   private boolean installDependencies = false;
   private int installDependenciesTimeout;
   private final VirtualSourceRoot virtualSourceRoot;
+  private ExtractorState state;
 
   /** The default timeout when running <code>yarn</code>, in milliseconds. */
   public static final int INSTALL_DEPENDENCIES_DEFAULT_TIMEOUT = 10 * 60 * 1000; // 10 minutes
@@ -234,6 +235,7 @@ public class AutoBuild {
     setupFileTypes();
     setupXmlMode();
     setupMatchers();
+    this.state = new ExtractorState();
   }
 
   private String getEnvVar(String envVarName) {
@@ -534,7 +536,7 @@ public class AutoBuild {
           @Override
           public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
               throws IOException {
-            if (".js".equals(FileUtil.extension(file.toString()))) extract(extractor, file, null);
+            if (".js".equals(FileUtil.extension(file.toString()))) extract(extractor, file, true);
             return super.visitFile(file, attrs);
           }
         };
@@ -656,7 +658,7 @@ public class AutoBuild {
         continue;
       }
       extractedFiles.add(f);
-      futures.add(extract(extractors.forFile(f), f, null));
+      futures.add(extract(extractors.forFile(f), f, true));
     }
     return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
   }
@@ -980,9 +982,8 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       List<Path> tsconfig,
       DependencyInstallationResult deps) {
     if (hasTypeScriptFiles(files) || !tsconfig.isEmpty()) {
-      ExtractorState extractorState = new ExtractorState();
-      TypeScriptParser tsParser = extractorState.getTypeScriptParser();
-      verifyTypeScriptInstallation(extractorState);
+      TypeScriptParser tsParser = state.getTypeScriptParser();
+      verifyTypeScriptInstallation(state);
 
       // Collect all files included in a tsconfig.json inclusion pattern.
       // If a given file is referenced by multiple tsconfig files, we prefer to extract it using
@@ -1005,7 +1006,10 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
         List<Path> typeScriptFiles = new ArrayList<Path>();
         for (File sourceFile : project.getAllFiles()) {
           Path sourcePath = sourceFile.toPath();
-          if (!files.contains(normalizePath(sourcePath))) continue;
+          Path normalizedFile = normalizePath(sourcePath);
+          if (!files.contains(normalizedFile) && !state.getSnippets().containsKey(normalizedFile)) {
+            continue;
+          }
           if (!project.getOwnFiles().contains(sourceFile) && explicitlyIncludedFiles.contains(sourceFile)) continue;
           if (extractors.fileType(sourcePath) != FileType.TYPESCRIPT) {
             // For the time being, skip non-TypeScript files, even if the TypeScript
@@ -1017,7 +1021,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
           }
         }
         typeScriptFiles.sort(PATH_ORDERING);
-        extractTypeScriptFiles(typeScriptFiles, extractedFiles, extractors, extractorState);
+        extractTypeScriptFiles(typeScriptFiles, extractedFiles, extractors);
         tsParser.closeProject(projectFile);
       }
 
@@ -1036,7 +1040,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
         }
       }
       if (!remainingTypeScriptFiles.isEmpty()) {
-        extractTypeScriptFiles(remainingTypeScriptFiles, extractedFiles, extractors, extractorState);
+        extractTypeScriptFiles(remainingTypeScriptFiles, extractedFiles, extractors);
       }
 
       // The TypeScript compiler instance is no longer needed.
@@ -1122,16 +1126,15 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
   public void extractTypeScriptFiles(
       List<Path> files,
       Set<Path> extractedFiles,
-      FileExtractors extractors,
-      ExtractorState extractorState) {
+      FileExtractors extractors) {
     List<File> list = files
         .stream()
         .sorted(PATH_ORDERING)
         .map(p -> p.toFile()).collect(Collectors.toList());
-    extractorState.getTypeScriptParser().prepareFiles(list);
+    state.getTypeScriptParser().prepareFiles(list);
     for (Path path : files) {
       extractedFiles.add(path);
-      extract(extractors.forFile(path), path, extractorState);
+      extract(extractors.forFile(path), path, false);
     }
   }
 
@@ -1174,8 +1177,8 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
    * <p>If the state is {@code null}, the extraction job will be submitted to the {@link
    * #threadPool}, otherwise extraction will happen on the main thread.
    */
-  protected CompletableFuture<?> extract(FileExtractor extractor, Path file, ExtractorState state) {
-    if (state == null && threadPool != null) {
+  protected CompletableFuture<?> extract(FileExtractor extractor, Path file, boolean concurrent) {
+    if (concurrent && threadPool != null) {
       return CompletableFuture.runAsync(() -> doExtract(extractor, file, state), threadPool);
     } else {
       doExtract(extractor, file, state);

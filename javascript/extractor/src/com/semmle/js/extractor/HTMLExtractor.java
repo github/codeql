@@ -1,11 +1,13 @@
 package com.semmle.js.extractor;
 
+import java.nio.file.Path;
 import java.util.regex.Pattern;
 
 import com.semmle.js.extractor.ExtractorConfig.Platform;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import com.semmle.js.parser.ParseError;
 import com.semmle.util.data.StringUtil;
+import com.semmle.util.io.WholeIO;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
 
@@ -28,9 +30,11 @@ public class HTMLExtractor implements IExtractor {
           Pattern.CASE_INSENSITIVE);
 
   private final ExtractorConfig config;
+  private final ExtractorState state;
 
-  public HTMLExtractor(ExtractorConfig config) {
+  public HTMLExtractor(ExtractorConfig config, ExtractorState state) {
     this.config = config.withPlatform(Platform.WEB);
+    this.state = state;
   }
 
   @Override
@@ -208,8 +212,25 @@ public class HTMLExtractor implements IExtractor {
       int line,
       int column,
       boolean isTypeScript) {
-    if (isTypeScript)
-      return null; // not supported right now
+    if (isTypeScript) {
+      Path file = textualExtractor.getExtractedFile().toPath();
+      FileSnippet snippet = new FileSnippet(file, line, column, toplevelKind);
+      VirtualSourceRoot vroot = config.getVirtualSourceRoot();
+      // Vue files are special in that they can be imported as modules, and may only contain one <script> tag.
+      // For .vue files we omit the usual snippet decoration to ensure the TypeScript compiler can find it.
+      Path virtualFile =
+          file.getFileName().toString().endsWith(".vue")
+          ? vroot.toVirtualFile(file.resolveSibling(file.getFileName() + ".ts"))
+          : vroot.getVirtualFileForSnippet(snippet, ".ts");
+      if (virtualFile != null) {
+        virtualFile = virtualFile.toAbsolutePath().normalize();
+        synchronized(vroot.getLock()) {
+          new WholeIO().strictwrite(virtualFile, source);
+        }
+        state.getSnippets().put(virtualFile, snippet);
+      }
+      return null; // LoC info is accounted for later
+    }
     TrapWriter trapwriter = textualExtractor.getTrapwriter();
     LocationManager locationManager = textualExtractor.getLocationManager();
     LocationManager scriptLocationManager =
@@ -224,7 +245,8 @@ public class HTMLExtractor implements IExtractor {
               scriptLocationManager,
               source,
               config.getExtractLines(),
-              textualExtractor.getMetrics());
+              textualExtractor.getMetrics(),
+              textualExtractor.getExtractedFile());
       return extractor.extract(tx, source, toplevelKind, scopeManager).snd();
     } catch (ParseError e) {
       e.setPosition(scriptLocationManager.translatePosition(e.getPosition()));

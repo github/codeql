@@ -5,6 +5,7 @@ import java.nio.file.Path;
 public class VirtualSourceRoot {
   private Path sourceRoot;
   private Path virtualSourceRoot;
+  private Object lock = new Object();
 
   public static final VirtualSourceRoot none = new VirtualSourceRoot(null, null);
 
@@ -49,8 +50,26 @@ public class VirtualSourceRoot {
     return translate(virtualSourceRoot, sourceRoot, file);
   }
 
+  public Path getVirtualFileForSnippet(FileSnippet snippet, String extension) {
+    String basename =
+        snippet.getOriginalFile().getFileName()
+            + ".snippet."
+            + snippet.getLine()
+            + "."
+            + snippet.getColumn()
+            + extension;
+    return toVirtualFile(snippet.getOriginalFile().resolveSibling(basename));
+  }
+
   @Override
   public String toString() {
     return "[sourceRoot=" + sourceRoot + ", virtualSourceRoot=" + virtualSourceRoot + "]";
+  }
+
+  /**
+   * Gets the lock to use when writing to the virtual source root in a multi-threaded context.
+   */
+  public Object getLock() {
+    return lock;
   }
 }

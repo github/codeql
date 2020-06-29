@@ -110,7 +110,7 @@ public class AutoBuildTests {
       Set<String> actual = new LinkedHashSet<>();
       new AutoBuild() {
         @Override
-        protected CompletableFuture<?> extract(FileExtractor extractor, Path file, ExtractorState state) {
+        protected CompletableFuture<?> extract(FileExtractor extractor, Path file, boolean concurrent) {
           String extracted = file.toString();
           if (extractor.getConfig().hasFileType())
             extracted += ":" + extractor.getFileType(file.toFile());
@@ -125,8 +125,7 @@ public class AutoBuildTests {
         public void extractTypeScriptFiles(
             java.util.List<Path> files,
             java.util.Set<Path> extractedFiles,
-            FileExtractors extractors,
-            ExtractorState extractorState) {
+            FileExtractors extractors) {
           for (Path f : files) {
             actual.add(f.toString());
           }
