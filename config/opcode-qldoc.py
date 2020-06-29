@@ -4,6 +4,7 @@ import os
 import re
 path = os.path
 
+needs_an_re = re.compile(r'^(?!Unary)[AEIOU]')  # Name requiring "an" instead of "a".
 start_qldoc_re = re.compile(r'^\s*/\*\*')  # Start of a QLDoc comment
 end_qldoc_re = re.compile(r'\*/\s*$')  # End of a QLDoc comment
 blank_qldoc_line_re = re.compile(r'^\s*\*\s*$')  # A line in a QLDoc comment with only the '*'
@@ -84,9 +85,14 @@ with open(opcode_path, 'r', encoding='utf-8') as opcode:
                     # Found an `Opcode` that matches a known `Instruction`. Replace the QLDoc with
                     # a copy of the one from the `Instruction`.
                     if instruction_comments.get(name_without_suffix):
-                        # Rename `instruction` to `operation`.
-                        qldoc_lines = [(indent + qldoc_line.replace(' An instruction ', ' An operation '))
-                            for qldoc_line in instruction_comments[name_without_suffix]]
+                        article = 'an' if needs_an_re.search(name_without_suffix) else 'a'
+                        qldoc_lines = [
+                            indent + '/**\n',
+                            indent + ' * The `Opcode` for ' + article + ' `' + name_without_suffix + 'Instruction`.\n',
+                            indent + ' *\n',
+                            indent + ' * See the `' + name_without_suffix + 'Instruction` documentation for more details.\n',
+                            indent + ' */\n'
+                        ]
                 output_lines.extend(qldoc_lines)
                 qldoc_lines = []
                 output_lines.append(line)

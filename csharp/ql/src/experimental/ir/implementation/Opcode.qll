@@ -146,14 +146,18 @@ class Opcode extends TOpcode {
 }
 
 /**
- * An operation whose result is computed from a single operand.
+ * The `Opcode` for a `UnaryInstruction`.
+ *
+ * See the `UnaryInstruction` documentation for more details.
  */
 abstract class UnaryOpcode extends Opcode {
   final override predicate hasOperandInternal(OperandTag tag) { tag instanceof UnaryOperandTag }
 }
 
 /**
- * An operation whose result is computed from two operands.
+ * The `Opcode` for a `BinaryInstruction`.
+ *
+ * See the `BinaryInstruction` documentation for more details.
  */
 abstract class BinaryOpcode extends Opcode {
   final override predicate hasOperandInternal(OperandTag tag) {
@@ -163,79 +167,107 @@ abstract class BinaryOpcode extends Opcode {
 }
 
 /**
- * An operation that performs a binary arithmetic operation involving at least one pointer
- * operand.
+ * The `Opcode` for a `PointerArithmeticInstruction`.
+ *
+ * See the `PointerArithmeticInstruction` documentation for more details.
  */
 abstract class PointerArithmeticOpcode extends BinaryOpcode { }
 
 /**
- * An operation that adds or subtracts an integer offset from a pointer.
+ * The `Opcode` for a `PointerOffsetInstruction`.
+ *
+ * See the `PointerOffsetInstruction` documentation for more details.
  */
 abstract class PointerOffsetOpcode extends PointerArithmeticOpcode { }
 
 /**
- * An operation that computes the result of an arithmetic operation.
+ * The `Opcode` for an `ArithmeticInstruction`.
+ *
+ * See the `ArithmeticInstruction` documentation for more details.
  */
 abstract class ArithmeticOpcode extends Opcode { }
 
 /**
- * An operation that performs an arithmetic operation on two numeric operands.
+ * The `Opcode` for a `BinaryArithmeticInstruction`.
+ *
+ * See the `BinaryArithmeticInstruction` documentation for more details.
  */
 abstract class BinaryArithmeticOpcode extends BinaryOpcode, ArithmeticOpcode { }
 
 /**
- * An operation whose result is computed by performing an arithmetic operation on a single
- * numeric operand.
+ * The `Opcode` for a `UnaryArithmeticInstruction`.
+ *
+ * See the `UnaryArithmeticInstruction` documentation for more details.
  */
 abstract class UnaryArithmeticOpcode extends UnaryOpcode, ArithmeticOpcode { }
 
 /**
- * An operation that computes the result of a bitwise operation.
+ * The `Opcode` for a `BitwiseInstruction`.
+ *
+ * See the `BitwiseInstruction` documentation for more details.
  */
 abstract class BitwiseOpcode extends Opcode { }
 
 /**
- * An operation that performs a bitwise operation on two integer operands.
+ * The `Opcode` for a `BinaryBitwiseInstruction`.
+ *
+ * See the `BinaryBitwiseInstruction` documentation for more details.
  */
 abstract class BinaryBitwiseOpcode extends BinaryOpcode, BitwiseOpcode { }
 
 /**
- * An operation that performs a bitwise operation on a single integer operand.
+ * The `Opcode` for a `UnaryBitwiseInstruction`.
+ *
+ * See the `UnaryBitwiseInstruction` documentation for more details.
  */
 abstract class UnaryBitwiseOpcode extends UnaryOpcode, BitwiseOpcode { }
 
 /**
- * An operation that compares two numeric operands.
+ * The `Opcode` for a `CompareInstruction`.
+ *
+ * See the `CompareInstruction` documentation for more details.
  */
 abstract class CompareOpcode extends BinaryOpcode { }
 
 /**
- * An operation that does a relative comparison of two values, such as `<` or `>=`.
+ * The `Opcode` for a `RelationalInstruction`.
+ *
+ * See the `RelationalInstruction` documentation for more details.
  */
 abstract class RelationalOpcode extends CompareOpcode { }
 
 /**
- * An operation that returns a copy of its operand.
+ * The `Opcode` for a `CopyInstruction`.
+ *
+ * See the `CopyInstruction` documentation for more details.
  */
 abstract class CopyOpcode extends Opcode { }
 
 /**
- * An operation that converts from the address of a derived class to the address of a base class.
+ * The `Opcode` for a `ConvertToBaseInstruction`.
+ *
+ * See the `ConvertToBaseInstruction` documentation for more details.
  */
 abstract class ConvertToBaseOpcode extends UnaryOpcode { }
 
 /**
- * An operation that returns control to the caller of the function.
+ * The `Opcode` for a `ReturnInstruction`.
+ *
+ * See the `ReturnInstruction` documentation for more details.
  */
 abstract class ReturnOpcode extends Opcode { }
 
 /**
- * An operation that throws an exception.
+ * The `Opcode` for a `ThrowInstruction`.
+ *
+ * See the `ThrowInstruction` documentation for more details.
  */
 abstract class ThrowOpcode extends Opcode { }
 
 /**
- * An operation that starts a `catch` handler.
+ * The `Opcode` for a `CatchInstruction`.
+ *
+ * See the `CatchInstruction` documentation for more details.
  */
 abstract class CatchOpcode extends Opcode { }
 
@@ -244,12 +276,16 @@ abstract private class OpcodeWithCondition extends Opcode {
 }
 
 /**
- * An operation representing a built-in operation.
+ * The `Opcode` for a `BuiltInOperationInstruction`.
+ *
+ * See the `BuiltInOperationInstruction` documentation for more details.
  */
 abstract class BuiltInOperationOpcode extends Opcode { }
 
 /**
- * An operation representing a side effect of a function call.
+ * The `Opcode` for a `SideEffectInstruction`.
+ *
+ * See the `SideEffectInstruction` documentation for more details.
  */
 abstract class SideEffectOpcode extends Opcode { }
 
@@ -386,8 +422,9 @@ abstract class OpcodeWithLoad extends IndirectReadOpcode {
 }
 
 /**
- * An operation representing a read side effect of a function call on a
- * specific parameter.
+ * The `Opcode` for a `ReadSideEffectInstruction`.
+ *
+ * See the `ReadSideEffectInstruction` documentation for more details.
  */
 abstract class ReadSideEffectOpcode extends SideEffectOpcode {
   final override predicate hasOperandInternal(OperandTag tag) {
@@ -396,8 +433,9 @@ abstract class ReadSideEffectOpcode extends SideEffectOpcode {
 }
 
 /**
- * An operation representing a write side effect of a function call on a
- * specific parameter.
+ * The `Opcode` for a `WriteSideEffectInstruction`.
+ *
+ * See the `WriteSideEffectInstruction` documentation for more details.
  */
 abstract class WriteSideEffectOpcode extends SideEffectOpcode { }
 
@@ -406,82 +444,99 @@ abstract class WriteSideEffectOpcode extends SideEffectOpcode { }
  */
 module Opcode {
   /**
-   * An operation that has no effect.
+   * The `Opcode` for a `NoOpInstruction`.
+   *
+   * See the `NoOpInstruction` documentation for more details.
    */
   class NoOp extends Opcode, TNoOp {
     final override string toString() { result = "NoOp" }
   }
 
   /**
-   * An operation that returns an uninitialized value.
+   * The `Opcode` for an `UninitializedInstruction`.
+   *
+   * See the `UninitializedInstruction` documentation for more details.
    */
   class Uninitialized extends IndirectWriteOpcode, TUninitialized {
     final override string toString() { result = "Uninitialized" }
   }
 
   /**
-   * An operation that produces a well-defined but unknown result and has
-   * unknown side effects, including side effects that are not conservatively
-   * modeled in the SSA graph.
+   * The `Opcode` for an `ErrorInstruction`.
+   *
+   * See the `ErrorInstruction` documentation for more details.
    */
   class Error extends Opcode, TError {
     final override string toString() { result = "Error" }
   }
 
   /**
-   * An operation that initializes a parameter of the enclosing function with the value of the
-   * corresponding argument passed by the caller.
+   * The `Opcode` for an `InitializeParameterInstruction`.
+   *
+   * See the `InitializeParameterInstruction` documentation for more details.
    */
   class InitializeParameter extends IndirectWriteOpcode, TInitializeParameter {
     final override string toString() { result = "InitializeParameter" }
   }
 
   /**
-   * An operation that initializes the memory pointed to by a parameter of the enclosing function
-   * with the value of that memory on entry to the function.
+   * The `Opcode` for an `InitializeIndirectionInstruction`.
+   *
+   * See the `InitializeIndirectionInstruction` documentation for more details.
    */
   class InitializeIndirection extends EntireAllocationWriteOpcode, TInitializeIndirection {
     final override string toString() { result = "InitializeIndirection" }
   }
 
   /**
-   * An operation that initializes the `this` pointer parameter of the enclosing function.
+   * The `Opcode` for an `InitializeThisInstruction`.
+   *
+   * See the `InitializeThisInstruction` documentation for more details.
    */
   class InitializeThis extends Opcode, TInitializeThis {
     final override string toString() { result = "InitializeThis" }
   }
 
   /**
-   * An operation representing the entry point to a function.
+   * The `Opcode` for an `EnterFunctionInstruction`.
+   *
+   * See the `EnterFunctionInstruction` documentation for more details.
    */
   class EnterFunction extends Opcode, TEnterFunction {
     final override string toString() { result = "EnterFunction" }
   }
 
   /**
-   * An operation representing the exit point of a function.
+   * The `Opcode` for an `ExitFunctionInstruction`.
+   *
+   * See the `ExitFunctionInstruction` documentation for more details.
    */
   class ExitFunction extends Opcode, TExitFunction {
     final override string toString() { result = "ExitFunction" }
   }
 
   /**
-   * An operation that returns control to the caller of the function, including a return value.
+   * The `Opcode` for a `ReturnValueInstruction`.
+   *
+   * See the `ReturnValueInstruction` documentation for more details.
    */
   class ReturnValue extends ReturnOpcode, OpcodeWithLoad, TReturnValue {
     final override string toString() { result = "ReturnValue" }
   }
 
   /**
-   * An operation that returns control to the caller of the function, without returning a value.
+   * The `Opcode` for a `ReturnVoidInstruction`.
+   *
+   * See the `ReturnVoidInstruction` documentation for more details.
    */
   class ReturnVoid extends ReturnOpcode, TReturnVoid {
     final override string toString() { result = "ReturnVoid" }
   }
 
   /**
-   * An operation that represents the use of the value pointed to by a parameter of the function
-   * after the function returns control to its caller.
+   * The `Opcode` for a `ReturnIndirectionInstruction`.
+   *
+   * See the `ReturnIndirectionInstruction` documentation for more details.
    */
   class ReturnIndirection extends EntireAllocationReadOpcode, TReturnIndirection {
     final override string toString() { result = "ReturnIndirection" }
@@ -492,21 +547,27 @@ module Opcode {
   }
 
   /**
-   * An operation that returns a register result containing a copy of its register operand.
+   * The `Opcode` for a `CopyValueInstruction`.
+   *
+   * See the `CopyValueInstruction` documentation for more details.
    */
   class CopyValue extends UnaryOpcode, CopyOpcode, TCopyValue {
     final override string toString() { result = "CopyValue" }
   }
 
   /**
-   * An operation that returns a register result containing a copy of its memory operand.
+   * The `Opcode` for a `LoadInstruction`.
+   *
+   * See the `LoadInstruction` documentation for more details.
    */
   class Load extends CopyOpcode, OpcodeWithLoad, TLoad {
     final override string toString() { result = "Load" }
   }
 
   /**
-   * An operation that returns a memory result containing a copy of its register operand.
+   * The `Opcode` for a `StoreInstruction`.
+   *
+   * See the `StoreInstruction` documentation for more details.
    */
   class Store extends CopyOpcode, IndirectWriteOpcode, TStore {
     final override string toString() { result = "Store" }
@@ -517,280 +578,342 @@ module Opcode {
   }
 
   /**
-   * An operation that computes the sum of two numeric operands.
+   * The `Opcode` for an `AddInstruction`.
+   *
+   * See the `AddInstruction` documentation for more details.
    */
   class Add extends BinaryArithmeticOpcode, TAdd {
     final override string toString() { result = "Add" }
   }
 
   /**
-   * An operation that computes the difference of two numeric operands.
+   * The `Opcode` for a `SubInstruction`.
+   *
+   * See the `SubInstruction` documentation for more details.
    */
   class Sub extends BinaryArithmeticOpcode, TSub {
     final override string toString() { result = "Sub" }
   }
 
   /**
-   * An operation that computes the product of two numeric operands.
+   * The `Opcode` for a `MulInstruction`.
+   *
+   * See the `MulInstruction` documentation for more details.
    */
   class Mul extends BinaryArithmeticOpcode, TMul {
     final override string toString() { result = "Mul" }
   }
 
   /**
-   * An operation that computes the quotient of two numeric operands.
+   * The `Opcode` for a `DivInstruction`.
+   *
+   * See the `DivInstruction` documentation for more details.
    */
   class Div extends BinaryArithmeticOpcode, TDiv {
     final override string toString() { result = "Div" }
   }
 
   /**
-   * An operation that computes the remainder of two integer operands.
+   * The `Opcode` for a `RemInstruction`.
+   *
+   * See the `RemInstruction` documentation for more details.
    */
   class Rem extends BinaryArithmeticOpcode, TRem {
     final override string toString() { result = "Rem" }
   }
 
   /**
-   * An operation that negates a single numeric operand.
+   * The `Opcode` for a `NegateInstruction`.
+   *
+   * See the `NegateInstruction` documentation for more details.
    */
   class Negate extends UnaryArithmeticOpcode, TNegate {
     final override string toString() { result = "Negate" }
   }
 
   /**
-   * An operation that shifts its left operand to the left by the number of bits specified by its
-   * right operand.
+   * The `Opcode` for a `ShiftLeftInstruction`.
+   *
+   * See the `ShiftLeftInstruction` documentation for more details.
    */
   class ShiftLeft extends BinaryBitwiseOpcode, TShiftLeft {
     final override string toString() { result = "ShiftLeft" }
   }
 
   /**
-   * An operation that shifts its left operand to the right by the number of bits specified by its
-   * right operand.
+   * The `Opcode` for a `ShiftRightInstruction`.
+   *
+   * See the `ShiftRightInstruction` documentation for more details.
    */
   class ShiftRight extends BinaryBitwiseOpcode, TShiftRight {
     final override string toString() { result = "ShiftRight" }
   }
 
   /**
-   * An operation that computes the bitwise "and" of two integer operands.
+   * The `Opcode` for a `BitAndInstruction`.
+   *
+   * See the `BitAndInstruction` documentation for more details.
    */
   class BitAnd extends BinaryBitwiseOpcode, TBitAnd {
     final override string toString() { result = "BitAnd" }
   }
 
   /**
-   * An operation that computes the bitwise "or" of two integer operands.
+   * The `Opcode` for a `BitOrInstruction`.
+   *
+   * See the `BitOrInstruction` documentation for more details.
    */
   class BitOr extends BinaryBitwiseOpcode, TBitOr {
     final override string toString() { result = "BitOr" }
   }
 
   /**
-   * An operation that computes the bitwise "xor" of two integer operands.
+   * The `Opcode` for a `BitXorInstruction`.
+   *
+   * See the `BitXorInstruction` documentation for more details.
    */
   class BitXor extends BinaryBitwiseOpcode, TBitXor {
     final override string toString() { result = "BitXor" }
   }
 
   /**
-   * An operation that computes the bitwise complement of its operand.
+   * The `Opcode` for a `BitComplementInstruction`.
+   *
+   * See the `BitComplementInstruction` documentation for more details.
    */
   class BitComplement extends UnaryBitwiseOpcode, TBitComplement {
     final override string toString() { result = "BitComplement" }
   }
 
   /**
-   * An operation that computes the logical complement of its operand.
+   * The `Opcode` for a `LogicalNotInstruction`.
+   *
+   * See the `LogicalNotInstruction` documentation for more details.
    */
   class LogicalNot extends UnaryOpcode, TLogicalNot {
     final override string toString() { result = "LogicalNot" }
   }
 
   /**
-   * An operation that returns a `true` result if its operands are equal.
+   * The `Opcode` for a `CompareEQInstruction`.
+   *
+   * See the `CompareEQInstruction` documentation for more details.
    */
   class CompareEQ extends CompareOpcode, TCompareEQ {
     final override string toString() { result = "CompareEQ" }
   }
 
   /**
-   * An operation that returns a `true` result if its operands are not equal.
+   * The `Opcode` for a `CompareNEInstruction`.
+   *
+   * See the `CompareNEInstruction` documentation for more details.
    */
   class CompareNE extends CompareOpcode, TCompareNE {
     final override string toString() { result = "CompareNE" }
   }
 
   /**
-   * An operation that returns a `true` result if its left operand is less than its right operand.
+   * The `Opcode` for a `CompareLTInstruction`.
+   *
+   * See the `CompareLTInstruction` documentation for more details.
    */
   class CompareLT extends RelationalOpcode, TCompareLT {
     final override string toString() { result = "CompareLT" }
   }
 
   /**
-   * An operation that returns a `true` result if its left operand is greater than its right operand.
+   * The `Opcode` for a `CompareGTInstruction`.
+   *
+   * See the `CompareGTInstruction` documentation for more details.
    */
   class CompareGT extends RelationalOpcode, TCompareGT {
     final override string toString() { result = "CompareGT" }
   }
 
   /**
-   * An operation that returns a `true` result if its left operand is less than or equal to its
-   * right operand.
+   * The `Opcode` for a `CompareLEInstruction`.
+   *
+   * See the `CompareLEInstruction` documentation for more details.
    */
   class CompareLE extends RelationalOpcode, TCompareLE {
     final override string toString() { result = "CompareLE" }
   }
 
   /**
-   * An operation that returns a `true` result if its left operand is greater than or equal to its
-   * right operand.
+   * The `Opcode` for a `CompareGEInstruction`.
+   *
+   * See the `CompareGEInstruction` documentation for more details.
    */
   class CompareGE extends RelationalOpcode, TCompareGE {
     final override string toString() { result = "CompareGE" }
   }
 
   /**
-   * An operation that adds an integer offset to a pointer.
+   * The `Opcode` for a `PointerAddInstruction`.
+   *
+   * See the `PointerAddInstruction` documentation for more details.
    */
   class PointerAdd extends PointerOffsetOpcode, TPointerAdd {
     final override string toString() { result = "PointerAdd" }
   }
 
   /**
-   * An operation that subtracts an integer offset from a pointer.
+   * The `Opcode` for a `PointerSubInstruction`.
+   *
+   * See the `PointerSubInstruction` documentation for more details.
    */
   class PointerSub extends PointerOffsetOpcode, TPointerSub {
     final override string toString() { result = "PointerSub" }
   }
 
   /**
-   * An operation that computes the difference between two pointers.
+   * The `Opcode` for a `PointerDiffInstruction`.
+   *
+   * See the `PointerDiffInstruction` documentation for more details.
    */
   class PointerDiff extends PointerArithmeticOpcode, TPointerDiff {
     final override string toString() { result = "PointerDiff" }
   }
 
   /**
-   * An operation that converts the value of its operand to a value of a different type.
+   * The `Opcode` for a `ConvertInstruction`.
+   *
+   * See the `ConvertInstruction` documentation for more details.
    */
   class Convert extends UnaryOpcode, TConvert {
     final override string toString() { result = "Convert" }
   }
 
   /**
-   * An operation that converts from the address of a derived class to the address of a direct
-   * non-virtual base class.
+   * The `Opcode` for a `ConvertToNonVirtualBaseInstruction`.
+   *
+   * See the `ConvertToNonVirtualBaseInstruction` documentation for more details.
    */
   class ConvertToNonVirtualBase extends ConvertToBaseOpcode, TConvertToNonVirtualBase {
     final override string toString() { result = "ConvertToNonVirtualBase" }
   }
 
   /**
-   * An operation that converts from the address of a derived class to the address of a virtual base
-   * class.
+   * The `Opcode` for a `ConvertToVirtualBaseInstruction`.
+   *
+   * See the `ConvertToVirtualBaseInstruction` documentation for more details.
    */
   class ConvertToVirtualBase extends ConvertToBaseOpcode, TConvertToVirtualBase {
     final override string toString() { result = "ConvertToVirtualBase" }
   }
 
   /**
-   * An operation that converts from the address of a base class to the address of a direct
-   * non-virtual derived class.
+   * The `Opcode` for a `ConvertToDerivedInstruction`.
+   *
+   * See the `ConvertToDerivedInstruction` documentation for more details.
    */
   class ConvertToDerived extends UnaryOpcode, TConvertToDerived {
     final override string toString() { result = "ConvertToDerived" }
   }
 
   /**
-   * An operation that converts the address of a polymorphic object to the address of a different
-   * subobject of the same polymorphic object, returning a null address if the dynamic type of the
-   * object is not compatible with the result type.
+   * The `Opcode` for a `CheckedConvertOrNullInstruction`.
+   *
+   * See the `CheckedConvertOrNullInstruction` documentation for more details.
    */
   class CheckedConvertOrNull extends UnaryOpcode, TCheckedConvertOrNull {
     final override string toString() { result = "CheckedConvertOrNull" }
   }
 
   /**
-   * An operation that converts the address of a polymorphic object to the address of a different
-   * subobject of the same polymorphic object, throwing an exception if the dynamic type of the object
-   * is not compatible with the result type.
+   * The `Opcode` for a `CheckedConvertOrThrowInstruction`.
+   *
+   * See the `CheckedConvertOrThrowInstruction` documentation for more details.
    */
   class CheckedConvertOrThrow extends UnaryOpcode, TCheckedConvertOrThrow {
     final override string toString() { result = "CheckedConvertOrThrow" }
   }
 
   /**
-   * An operation that returns the address of the complete object that contains the subobject
-   * pointed to by its operand.
+   * The `Opcode` for a `CompleteObjectAddressInstruction`.
+   *
+   * See the `CompleteObjectAddressInstruction` documentation for more details.
    */
   class CompleteObjectAddress extends UnaryOpcode, TCompleteObjectAddress {
     final override string toString() { result = "CompleteObjectAddress" }
   }
 
   /**
-   * An operation that returns the address of a variable.
+   * The `Opcode` for a `VariableAddressInstruction`.
+   *
+   * See the `VariableAddressInstruction` documentation for more details.
    */
   class VariableAddress extends Opcode, TVariableAddress {
     final override string toString() { result = "VariableAddress" }
   }
 
   /**
-   * An operation that computes the address of a non-static field of an object.
+   * The `Opcode` for a `FieldAddressInstruction`.
+   *
+   * See the `FieldAddressInstruction` documentation for more details.
    */
   class FieldAddress extends UnaryOpcode, TFieldAddress {
     final override string toString() { result = "FieldAddress" }
   }
 
   /**
-   * An operation that computes the address of the first element of a managed array.
+   * The `Opcode` for an `ElementsAddressInstruction`.
+   *
+   * See the `ElementsAddressInstruction` documentation for more details.
    */
   class ElementsAddress extends UnaryOpcode, TElementsAddress {
     final override string toString() { result = "ElementsAddress" }
   }
 
   /**
-   * An operation that returns the address of a function.
+   * The `Opcode` for a `FunctionAddressInstruction`.
+   *
+   * See the `FunctionAddressInstruction` documentation for more details.
    */
   class FunctionAddress extends Opcode, TFunctionAddress {
     final override string toString() { result = "FunctionAddress" }
   }
 
   /**
-   * An operation whose result is a constant value.
+   * The `Opcode` for a `ConstantInstruction`.
+   *
+   * See the `ConstantInstruction` documentation for more details.
    */
   class Constant extends Opcode, TConstant {
     final override string toString() { result = "Constant" }
   }
 
   /**
-   * An operation whose result is the address of a string literal.
+   * The `Opcode` for a `StringConstantInstruction`.
+   *
+   * See the `StringConstantInstruction` documentation for more details.
    */
   class StringConstant extends Opcode, TStringConstant {
     final override string toString() { result = "StringConstant" }
   }
 
   /**
-   * An operation that branches to one of two successor instructions based on the value of a Boolean
-   * operand.
+   * The `Opcode` for a `ConditionalBranchInstruction`.
+   *
+   * See the `ConditionalBranchInstruction` documentation for more details.
    */
   class ConditionalBranch extends OpcodeWithCondition, TConditionalBranch {
     final override string toString() { result = "ConditionalBranch" }
   }
 
   /**
-   * An operation that branches to one of multiple successor instructions based on the value of an
-   * integer operand.
+   * The `Opcode` for a `SwitchInstruction`.
+   *
+   * See the `SwitchInstruction` documentation for more details.
    */
   class Switch extends OpcodeWithCondition, TSwitch {
     final override string toString() { result = "Switch" }
   }
 
   /**
-   * An operation that calls a function.
+   * The `Opcode` for a `CallInstruction`.
+   *
+   * See the `CallInstruction` documentation for more details.
    */
   class Call extends Opcode, TCall {
     final override string toString() { result = "Call" }
@@ -801,42 +924,54 @@ module Opcode {
   }
 
   /**
-   * An operation that catches an exception of a specific type.
+   * The `Opcode` for a `CatchByTypeInstruction`.
+   *
+   * See the `CatchByTypeInstruction` documentation for more details.
    */
   class CatchByType extends CatchOpcode, TCatchByType {
     final override string toString() { result = "CatchByType" }
   }
 
   /**
-   * An operation that catches any exception.
+   * The `Opcode` for a `CatchAnyInstruction`.
+   *
+   * See the `CatchAnyInstruction` documentation for more details.
    */
   class CatchAny extends CatchOpcode, TCatchAny {
     final override string toString() { result = "CatchAny" }
   }
 
   /**
-   * An operation that throws a new exception.
+   * The `Opcode` for a `ThrowValueInstruction`.
+   *
+   * See the `ThrowValueInstruction` documentation for more details.
    */
   class ThrowValue extends ThrowOpcode, OpcodeWithLoad, TThrowValue {
     final override string toString() { result = "ThrowValue" }
   }
 
   /**
-   * An operation that re-throws the current exception.
+   * The `Opcode` for a `ReThrowInstruction`.
+   *
+   * See the `ReThrowInstruction` documentation for more details.
    */
   class ReThrow extends ThrowOpcode, TReThrow {
     final override string toString() { result = "ReThrow" }
   }
 
   /**
-   * An operation that exits the current function by propagating an exception.
+   * The `Opcode` for an `UnwindInstruction`.
+   *
+   * See the `UnwindInstruction` documentation for more details.
    */
   class Unwind extends Opcode, TUnwind {
     final override string toString() { result = "Unwind" }
   }
 
   /**
-   * An operation that initializes all escaped memory.
+   * The `Opcode` for an `AliasedDefinitionInstruction`.
+   *
+   * See the `AliasedDefinitionInstruction` documentation for more details.
    */
   class AliasedDefinition extends Opcode, TAliasedDefinition {
     final override string toString() { result = "AliasedDefinition" }
@@ -845,7 +980,9 @@ module Opcode {
   }
 
   /**
-   * An operation that initializes all memory that existed before this function was called.
+   * The `Opcode` for an `InitializeNonLocalInstruction`.
+   *
+   * See the `InitializeNonLocalInstruction` documentation for more details.
    */
   class InitializeNonLocal extends Opcode, TInitializeNonLocal {
     final override string toString() { result = "InitializeNonLocal" }
@@ -856,7 +993,9 @@ module Opcode {
   }
 
   /**
-   * An operation that consumes all escaped memory on exit from the function.
+   * The `Opcode` for an `AliasedUseInstruction`.
+   *
+   * See the `AliasedUseInstruction` documentation for more details.
    */
   class AliasedUse extends Opcode, TAliasedUse {
     final override string toString() { result = "AliasedUse" }
@@ -869,7 +1008,9 @@ module Opcode {
   }
 
   /**
-   * An operation representing the choice of one of multiple input values based on control flow.
+   * The `Opcode` for a `PhiInstruction`.
+   *
+   * See the `PhiInstruction` documentation for more details.
    */
   class Phi extends Opcode, TPhi {
     final override string toString() { result = "Phi" }
@@ -878,45 +1019,54 @@ module Opcode {
   }
 
   /**
-   * An operation representing a built-in operation that does not have a specific opcode. The
-   * actual operation is specified by the `getBuiltInOperation()` predicate.
+   * The `Opcode` for a `BuiltInInstruction`.
+   *
+   * See the `BuiltInInstruction` documentation for more details.
    */
   class BuiltIn extends BuiltInOperationOpcode, TBuiltIn {
     final override string toString() { result = "BuiltIn" }
   }
 
   /**
-   * An operation that returns a `va_list` to access the arguments passed to the `...` parameter.
+   * The `Opcode` for a `VarArgsStartInstruction`.
+   *
+   * See the `VarArgsStartInstruction` documentation for more details.
    */
   class VarArgsStart extends UnaryOpcode, TVarArgsStart {
     final override string toString() { result = "VarArgsStart" }
   }
 
   /**
-   * An operation that cleans up a `va_list` after it is no longer in use.
+   * The `Opcode` for a `VarArgsEndInstruction`.
+   *
+   * See the `VarArgsEndInstruction` documentation for more details.
    */
   class VarArgsEnd extends UnaryOpcode, TVarArgsEnd {
     final override string toString() { result = "VarArgsEnd" }
   }
 
   /**
-   * An operation that returns the address of the argument currently pointed to by a `va_list`.
+   * The `Opcode` for a `VarArgInstruction`.
+   *
+   * See the `VarArgInstruction` documentation for more details.
    */
   class VarArg extends UnaryOpcode, TVarArg {
     final override string toString() { result = "VarArg" }
   }
 
   /**
-   * An operation that modifies a `va_list` to point to the next argument that was passed to the
-   * `...` parameter.
+   * The `Opcode` for a `NextVarArgInstruction`.
+   *
+   * See the `NextVarArgInstruction` documentation for more details.
    */
   class NextVarArg extends UnaryOpcode, TNextVarArg {
     final override string toString() { result = "NextVarArg" }
   }
 
   /**
-   * An operation representing the side effect of a function call on any memory that might be
-   * accessed by that call.
+   * The `Opcode` for a `CallSideEffectInstruction`.
+   *
+   * See the `CallSideEffectInstruction` documentation for more details.
    */
   class CallSideEffect extends WriteSideEffectOpcode, EscapedWriteOpcode, MayWriteOpcode,
     ReadSideEffectOpcode, EscapedReadOpcode, MayReadOpcode, TCallSideEffect {
@@ -924,8 +1074,9 @@ module Opcode {
   }
 
   /**
-   * An operation representing the side effect of a function call on any memory
-   * that might be read by that call.
+   * The `Opcode` for a `CallReadSideEffectInstruction`.
+   *
+   * See the `CallReadSideEffectInstruction` documentation for more details.
    */
   class CallReadSideEffect extends ReadSideEffectOpcode, EscapedReadOpcode, MayReadOpcode,
     TCallReadSideEffect {
@@ -933,7 +1084,9 @@ module Opcode {
   }
 
   /**
-   * An operation representing the read of an indirect parameter within a function call.
+   * The `Opcode` for an `IndirectReadSideEffectInstruction`.
+   *
+   * See the `IndirectReadSideEffectInstruction` documentation for more details.
    */
   class IndirectReadSideEffect extends ReadSideEffectOpcode, IndirectReadOpcode,
     TIndirectReadSideEffect {
@@ -941,7 +1094,9 @@ module Opcode {
   }
 
   /**
-   * An operation representing the write of an indirect parameter within a function call.
+   * The `Opcode` for an `IndirectMustWriteSideEffectInstruction`.
+   *
+   * See the `IndirectMustWriteSideEffectInstruction` documentation for more details.
    */
   class IndirectMustWriteSideEffect extends WriteSideEffectOpcode, IndirectWriteOpcode,
     TIndirectMustWriteSideEffect {
@@ -949,7 +1104,9 @@ module Opcode {
   }
 
   /**
-   * An operation representing the potential write of an indirect parameter within a function call.
+   * The `Opcode` for an `IndirectMayWriteSideEffectInstruction`.
+   *
+   * See the `IndirectMayWriteSideEffectInstruction` documentation for more details.
    */
   class IndirectMayWriteSideEffect extends WriteSideEffectOpcode, IndirectWriteOpcode,
     MayWriteOpcode, TIndirectMayWriteSideEffect {
@@ -957,7 +1114,9 @@ module Opcode {
   }
 
   /**
-   * An operation representing the read of an indirect buffer parameter within a function call.
+   * The `Opcode` for a `BufferReadSideEffectInstruction`.
+   *
+   * See the `BufferReadSideEffectInstruction` documentation for more details.
    */
   class BufferReadSideEffect extends ReadSideEffectOpcode, UnsizedBufferReadOpcode,
     TBufferReadSideEffect {
@@ -965,8 +1124,9 @@ module Opcode {
   }
 
   /**
-   * An operation representing the write of an indirect buffer parameter within a function call. The
-   * entire buffer is overwritten.
+   * The `Opcode` for a `BufferMustWriteSideEffectInstruction`.
+   *
+   * See the `BufferMustWriteSideEffectInstruction` documentation for more details.
    */
   class BufferMustWriteSideEffect extends WriteSideEffectOpcode, UnsizedBufferWriteOpcode,
     TBufferMustWriteSideEffect {
@@ -974,7 +1134,9 @@ module Opcode {
   }
 
   /**
-   * An operation representing the write of an indirect buffer parameter within a function call.
+   * The `Opcode` for a `BufferMayWriteSideEffectInstruction`.
+   *
+   * See the `BufferMayWriteSideEffectInstruction` documentation for more details.
    */
   class BufferMayWriteSideEffect extends WriteSideEffectOpcode, UnsizedBufferWriteOpcode,
     MayWriteOpcode, TBufferMayWriteSideEffect {
@@ -982,7 +1144,9 @@ module Opcode {
   }
 
   /**
-   * An operation representing the read of an indirect buffer parameter within a function call.
+   * The `Opcode` for a `SizedBufferReadSideEffectInstruction`.
+   *
+   * See the `SizedBufferReadSideEffectInstruction` documentation for more details.
    */
   class SizedBufferReadSideEffect extends ReadSideEffectOpcode, SizedBufferReadOpcode,
     TSizedBufferReadSideEffect {
@@ -990,8 +1154,9 @@ module Opcode {
   }
 
   /**
-   * An operation representing the write of an indirect buffer parameter within a function call. The
-   * entire buffer is overwritten.
+   * The `Opcode` for a `SizedBufferMustWriteSideEffectInstruction`.
+   *
+   * See the `SizedBufferMustWriteSideEffectInstruction` documentation for more details.
    */
   class SizedBufferMustWriteSideEffect extends WriteSideEffectOpcode, SizedBufferWriteOpcode,
     TSizedBufferMustWriteSideEffect {
@@ -999,7 +1164,9 @@ module Opcode {
   }
 
   /**
-   * An operation representing the write of an indirect buffer parameter within a function call.
+   * The `Opcode` for a `SizedBufferMayWriteSideEffectInstruction`.
+   *
+   * See the `SizedBufferMayWriteSideEffectInstruction` documentation for more details.
    */
   class SizedBufferMayWriteSideEffect extends WriteSideEffectOpcode, SizedBufferWriteOpcode,
     MayWriteOpcode, TSizedBufferMayWriteSideEffect {
@@ -1007,8 +1174,9 @@ module Opcode {
   }
 
   /**
-   * An operation representing the initial value of newly allocated memory, such as the result of a
-   * call to `malloc`.
+   * The `Opcode` for an `InitializeDynamicAllocationInstruction`.
+   *
+   * See the `InitializeDynamicAllocationInstruction` documentation for more details.
    */
   class InitializeDynamicAllocation extends SideEffectOpcode, EntireAllocationWriteOpcode,
     TInitializeDynamicAllocation {
@@ -1016,8 +1184,9 @@ module Opcode {
   }
 
   /**
-   * An operation representing the effect that a write to a memory may have on potential aliases of
-   * that memory.
+   * The `Opcode` for a `ChiInstruction`.
+   *
+   * See the `ChiInstruction` documentation for more details.
    */
   class Chi extends Opcode, TChi {
     final override string toString() { result = "Chi" }
@@ -1034,7 +1203,9 @@ module Opcode {
   }
 
   /**
-   * An operation representing a GNU or MSVC inline assembly statement.
+   * The `Opcode` for an `InlineAsmInstruction`.
+   *
+   * See the `InlineAsmInstruction` documentation for more details.
    */
   class InlineAsm extends Opcode, EscapedWriteOpcode, MayWriteOpcode, EscapedReadOpcode,
     MayReadOpcode, TInlineAsm {
@@ -1046,14 +1217,18 @@ module Opcode {
   }
 
   /**
-   * An operation representing unreachable code.
+   * The `Opcode` for an `UnreachedInstruction`.
+   *
+   * See the `UnreachedInstruction` documentation for more details.
    */
   class Unreached extends Opcode, TUnreached {
     final override string toString() { result = "Unreached" }
   }
 
   /**
-   * An operation that allocates a new object on the managed heap.
+   * The `Opcode` for a `NewObjInstruction`.
+   *
+   * See the `NewObjInstruction` documentation for more details.
    */
   class NewObj extends Opcode, TNewObj {
     final override string toString() { result = "NewObj" }
