@@ -112,7 +112,7 @@ module InsecureDownload {
     override DataFlow::Node getDownloadCall() { result = request }
 
     override DataFlow::FlowLabel getALabel() {
-      result instanceof Label::SensitiveInsecureURL // TODO: Also non-sensitive.
+      result instanceof Label::SensitiveInsecureURL
       or
       hasUnsafeExtension(request.getASavePath().getStringValue()) and
       result instanceof Label::InsecureURL
