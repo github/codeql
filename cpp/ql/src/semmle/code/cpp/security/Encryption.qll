@@ -1,7 +1,11 @@
-// Common predicates relating to encryption in C and C++
+/**
+ * Provides predicates relating to encryption in C and C++.
+ */
 import cpp
 
-/** A blacklist of algorithms that are known to be insecure */
+/**
+ * Returns an algorithm that is known to be insecure.
+ */
 string algorithmBlacklist() {
   result = "DES" or
   result = "RC2" or
@@ -10,14 +14,19 @@ string algorithmBlacklist() {
   result = "ARCFOUR" // a variant of RC4
 }
 
-// these are only bad if they're being used for encryption, and it's
-// hard to know when that's happening
+/**
+ * Returns the name of a hash algorithm that is insecure if it is being used for
+ * encryption (but it is hard to know when that is happening).
+ */
 string hashAlgorithmBlacklist() {
   result = "SHA1" or
   result = "MD5"
 }
 
-/** A regex for matching strings that look like they contain a blacklisted algorithm */
+/**
+ * Returns a regular expression for matching strings that look like they
+ * contain an algorithm that is known to be insecure.
+ */
 string algorithmBlacklistRegex() {
   result =
     // algorithms usually appear in names surrounded by characters that are not
@@ -31,7 +40,9 @@ string algorithmBlacklistRegex() {
       ")([^a-z].*|$)"
 }
 
-/** A whitelist of algorithms that are known to be secure */
+/**
+ * Returns an algorithms that is known to be secure.
+ */
 string algorithmWhitelist() {
   result = "RSA" or
   result = "SHA256" or
@@ -42,17 +53,20 @@ string algorithmWhitelist() {
   result = "ECIES"
 }
 
-/** A regex for matching strings that look like they contain a whitelisted algorithm */
+/**
+ * Returns a regular expression for matching strings that look like they
+ * contain an algorithm that is known to be secure.
+ */
 string algorithmWhitelistRegex() {
-  // The implementation of this is a duplicate of algorithmBlacklistRegex, as it isn't
-  // possible to have string -> string functions at the moment
+  // The implementation of this is a duplicate of algorithmBlacklistRegex, as
+  // it isn't possible to have string -> string functions at the moment
   // algorithms usually appear in names surrounded by characters that are not
   // alphabetical characters in the same case. This handles the upper and lower
   // case cases
   result = "(^|.*[^A-Z])" + algorithmWhitelist() + "([^A-Z].*|$)"
   or
   // for lowercase, we want to be careful to avoid being confused by camelCase
-  // hence we require two preceding uppercase letters to be sure of a case switch,
-  // or a preceding non-alphabetic character
+  // hence we require two preceding uppercase letters to be sure of a case
+  // switch, or a preceding non-alphabetic character
   result = "(^|.*[A-Z]{2}|.*[^a-zA-Z])" + algorithmWhitelist().toLowerCase() + "([^a-z].*|$)"
 }
