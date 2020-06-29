@@ -1,6 +1,6 @@
 /**
  * Provides classes for modeling C/C++ casts and conversions, as well as some
- * type related operators such as `sizeof` and `alignof`.
+ * type-related operators such as `sizeof` and `alignof`.
  */
 
 import semmle.code.cpp.exprs.Expr
