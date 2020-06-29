@@ -1,5 +1,6 @@
 package com.semmle.js.extractor;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.util.regex.Pattern;
 
@@ -55,7 +56,7 @@ public class HTMLExtractor implements IExtractor {
     for (Element elt : src.getAllElements()) {
       LoCInfo snippetLoC = null;
       if (elt.getName().equals(HTMLElementName.SCRIPT)) {
-        SourceType sourceType = getScriptSourceType(elt);
+        SourceType sourceType = getScriptSourceType(elt, textualExtractor.getExtractedFile());
         if (sourceType != null) {
           // Jericho sometimes misparses empty elements, which will show up as start tags
           // ending in "/"; we manually exclude these cases to avoid spurious syntax errors
@@ -149,18 +150,23 @@ public class HTMLExtractor implements IExtractor {
    * Deduce the {@link SourceType} with which the given <code>script</code> element should be
    * extracted, returning <code>null</code> if it cannot be determined.
    */
-  private SourceType getScriptSourceType(Element script) {
+  private SourceType getScriptSourceType(Element script, File file) {
     String scriptType = getAttributeValueLC(script, "type");
     String scriptLanguage = getScriptLanguage(script);
+    
+    SourceType fallbackSourceType = config.getSourceType();
+    if (file.getName().endsWith(".vue")) {
+      fallbackSourceType = SourceType.MODULE;
+    }
 
-    if (isTypeScriptTag(script)) return config.getSourceType();
+    if (isTypeScriptTag(script)) return fallbackSourceType;
 
     // if `type` and `language` are both either missing, contain the
     // string "javascript", or if `type` is the string "text/jsx", this is a plain script
     if ((scriptType == null || scriptType.contains("javascript") || "text/jsx".equals(scriptType))
         && (scriptLanguage == null || scriptLanguage.contains("javascript")))
       // use default source type
-      return config.getSourceType();
+      return fallbackSourceType;
 
     // if `type` is "text/babel", the source type depends on the `data-plugins` attribute
     if ("text/babel".equals(scriptType)) {
@@ -168,7 +174,7 @@ public class HTMLExtractor implements IExtractor {
       if (plugins != null && plugins.contains("transform-es2015-modules-umd")) {
         return SourceType.MODULE;
       }
-      return config.getSourceType();
+      return fallbackSourceType;
     }
 
     // if `type` is "module", extract as module
@@ -214,7 +220,7 @@ public class HTMLExtractor implements IExtractor {
       boolean isTypeScript) {
     if (isTypeScript) {
       Path file = textualExtractor.getExtractedFile().toPath();
-      FileSnippet snippet = new FileSnippet(file, line, column, toplevelKind);
+      FileSnippet snippet = new FileSnippet(file, line, column, toplevelKind, config.getSourceType());
       VirtualSourceRoot vroot = config.getVirtualSourceRoot();
       // Vue files are special in that they can be imported as modules, and may only contain one <script> tag.
       // For .vue files we omit the usual snippet decoration to ensure the TypeScript compiler can find it.

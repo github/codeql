@@ -25,9 +25,9 @@ public class TypeScriptExtractor implements IExtractor {
     ScopeManager scopeManager =
         new ScopeManager(textualExtractor.getTrapwriter(), ECMAVersion.ECMA2017);
     try {
-      SourceType sourceType = jsExtractor.establishSourceType(source, false);
       FileSnippet snippet = state.getSnippets().get(sourceFile.toPath());
-      int toplevelKind = snippet == null ? 0 : snippet.getTopLevelKind();
+      SourceType sourceType = snippet != null ? snippet.getSourceType() : jsExtractor.establishSourceType(source, false);
+      int toplevelKind = snippet != null ? snippet.getTopLevelKind() : 0;
       return jsExtractor.extract(textualExtractor, source, toplevelKind, scopeManager, sourceType, res).snd();
     } catch (ParseError e) {
       e.setPosition(locationManager.translatePosition(e.getPosition()));

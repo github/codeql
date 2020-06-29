@@ -2,6 +2,8 @@ package com.semmle.js.extractor;
 
 import java.nio.file.Path;
 
+import com.semmle.js.extractor.ExtractorConfig.SourceType;
+
 /**
  * Denotes where a code snippet originated from within a file.
  */
@@ -10,12 +12,14 @@ public class FileSnippet {
   private int line;
   private int column;
   private int topLevelKind;
+  private SourceType sourceType;
 
-  public FileSnippet(Path originalFile, int line, int column, int topLevelKind) {
+  public FileSnippet(Path originalFile, int line, int column, int topLevelKind, SourceType sourceType) {
     this.originalFile = originalFile;
     this.line = line;
     this.column = column;
     this.topLevelKind = topLevelKind;
+    this.sourceType = sourceType;
   }
 
   public Path getOriginalFile() {
@@ -32,5 +36,9 @@ public class FileSnippet {
 
   public int getTopLevelKind() {
     return topLevelKind;
+  }
+
+  public SourceType getSourceType() {
+    return sourceType;
   }
 }
