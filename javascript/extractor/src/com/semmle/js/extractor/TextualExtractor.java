@@ -52,6 +52,13 @@ public class TextualExtractor {
     return extractedFile;
   }
 
+  /**
+   * Returns true if the extracted file and the source location files are different.
+   */
+  public boolean isSnippet() {
+    return !extractedFile.equals(locationManager.getSourceFile());
+  }
+
   public TrapWriter getTrapwriter() {
     return trapwriter;
   }

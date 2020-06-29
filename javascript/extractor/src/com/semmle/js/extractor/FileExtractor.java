@@ -511,7 +511,7 @@ public class FileExtractor {
           new TextualExtractor(
               trapwriter, locationManager, source, config.getExtractLines(), metrics, extractedFile);
       LoCInfo loc = extractor.extract(textualExtractor);
-      int numLines = textualExtractor.getNumLines();
+      int numLines = textualExtractor.isSnippet() ? 0 : textualExtractor.getNumLines();
       int linesOfCode = loc.getLinesOfCode(), linesOfComments = loc.getLinesOfComments();
       trapwriter.addTuple("numlines", fileLabel, numLines, linesOfCode, linesOfComments);
       trapwriter.addTuple("filetype", fileLabel, fileType.toString());
