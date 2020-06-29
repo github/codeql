@@ -27,6 +27,8 @@
 
 * TypeScript 3.9 is now supported.
 
+* TypeScript code embedded in HTML and Vue files is now extracted and analyzed.
+
 * The analysis of sanitizers has improved, leading to more accurate
   results from the security queries.
 
