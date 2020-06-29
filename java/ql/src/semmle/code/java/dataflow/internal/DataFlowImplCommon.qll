@@ -198,16 +198,23 @@ private module Cached {
           compatibleTypes(getErasedNodeTypeBound(p), read.getContainerType())
         )
         or
+        parameterValueFlow0_0(TReadStepTypesNone(), p, node, read)
+      }
+
+      pragma[nomagic]
+      private predicate parameterValueFlow0_0(
+        ReadStepTypesOption mustBeNone, ParameterNode p, Node node, ReadStepTypesOption read
+      ) {
         // flow through: no prior read
         exists(ArgumentNode arg |
-          parameterValueFlowArg(p, arg, TReadStepTypesNone()) and
+          parameterValueFlowArg(p, arg, mustBeNone) and
           argumentValueFlowsThrough(arg, read, node)
         )
         or
         // flow through: no read inside method
         exists(ArgumentNode arg |
           parameterValueFlowArg(p, arg, read) and
-          argumentValueFlowsThrough(arg, TReadStepTypesNone(), node)
+          argumentValueFlowsThrough(arg, mustBeNone, node)
         )
       }
 
