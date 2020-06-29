@@ -147,54 +147,6 @@ private module Cached {
       }
     }
 
-    private module LocalFlowBigStep {
-      private predicate localFlowEntry(Node n) {
-        Cand::cand(_, n) and
-        (
-          n instanceof ParameterNode or
-          n instanceof OutNode or
-          readStep(_, _, n) or
-          n instanceof CastNode
-        )
-      }
-
-      private predicate localFlowExit(Node n) {
-        Cand::cand(_, n) and
-        (
-          n instanceof ArgumentNode
-          or
-          n instanceof ReturnNode
-          or
-          readStep(n, _, _)
-          or
-          n instanceof CastNode
-          or
-          n =
-            any(PostUpdateNode pun | Cand::parameterValueFlowsToPreUpdateCand(_, pun))
-                .getPreUpdateNode()
-        )
-      }
-
-      pragma[nomagic]
-      private predicate localFlowStepPlus(Node node1, Node node2) {
-        localFlowEntry(node1) and
-        simpleLocalFlowStep(node1, node2) and
-        node1 != node2
-        or
-        exists(Node mid |
-          localFlowStepPlus(node1, mid) and
-          simpleLocalFlowStep(mid, node2) and
-          not mid instanceof CastNode
-        )
-      }
-
-      pragma[nomagic]
-      predicate localFlowBigStep(Node node1, Node node2) {
-        localFlowStepPlus(node1, node2) and
-        localFlowExit(node2)
-      }
-    }
-
     /**
      * The final flow-through calculation:
      *
@@ -234,7 +186,7 @@ private module Cached {
         // local flow
         exists(Node mid |
           parameterValueFlow(p, mid, read) and
-          LocalFlowBigStep::localFlowBigStep(mid, node)
+          simpleLocalFlowStep(mid, node)
         )
         or
         // read
