@@ -43,6 +43,11 @@ public class VirtualSourceRoot {
   }
 
   public Path toVirtualFile(Path file) {
+    if (file.startsWith(virtualSourceRoot)) {
+      // 'qltest' creates a virtual source root inside the real source root.
+      // Make sure such files don't appear to be inside the real source root.
+      return null;
+    }
     return translate(sourceRoot, virtualSourceRoot, file);
   }
 

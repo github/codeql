@@ -2,6 +2,8 @@ package com.semmle.js.extractor;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -31,6 +33,8 @@ import com.semmle.util.io.WholeIO;
 import com.semmle.util.language.LegacyLanguage;
 import com.semmle.util.process.ArgsParser;
 import com.semmle.util.process.ArgsParser.FileMode;
+import com.semmle.util.process.Env;
+import com.semmle.util.process.Env.Var;
 import com.semmle.util.trap.TrapWriter;
 
 /** The main entry point of the JavaScript extractor. */
@@ -134,12 +138,6 @@ public class Main {
       return;
     }
 
-    TypeScriptParser tsParser = extractorState.getTypeScriptParser();
-    tsParser.setTypescriptRam(extractorConfig.getTypeScriptRam());
-    if (containsTypeScriptFiles()) {
-      tsParser.verifyInstallation(!ap.has(P_QUIET));
-    }
-
     // Sort files for determinism
     projectFiles = projectFiles.stream()
           .sorted(AutoBuild.FILE_ORDERING)
@@ -149,16 +147,30 @@ public class Main {
         .sorted(AutoBuild.FILE_ORDERING)
         .collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
 
+    // Extract HTML files first, as they may contain embedded TypeScript code
+    for (File file : files) {
+      if (FileType.forFile(file, extractorConfig) == FileType.HTML) {
+        ensureFileIsExtracted(file, ap);
+      }
+    }
+    
+    TypeScriptParser tsParser = extractorState.getTypeScriptParser();
+    tsParser.setTypescriptRam(extractorConfig.getTypeScriptRam());
+    if (containsTypeScriptFiles()) {
+      tsParser.verifyInstallation(!ap.has(P_QUIET));
+    }
+
     for (File projectFile : projectFiles) {
 
       long start = verboseLogStartTimer(ap, "Opening project " + projectFile);
-      ParsedProject project = tsParser.openProject(projectFile, DependencyInstallationResult.empty, VirtualSourceRoot.none);
+      ParsedProject project = tsParser.openProject(projectFile, DependencyInstallationResult.empty, extractorConfig.getVirtualSourceRoot());
       verboseLogEndTimer(ap, start);
       // Extract all files belonging to this project which are also matched
       // by our include/exclude filters.
       List<File> filesToExtract = new ArrayList<>();
       for (File sourceFile : project.getOwnFiles()) {
-        if (files.contains(normalizeFile(sourceFile))
+        File normalizedFile = normalizeFile(sourceFile);
+        if ((files.contains(normalizedFile) || extractorState.getSnippets().containsKey(normalizedFile.toPath()))
             && !extractedFiles.contains(sourceFile.getAbsoluteFile())
             && FileType.TYPESCRIPT.getExtensions().contains(FileUtil.extension(sourceFile))) {
           filesToExtract.add(sourceFile);
@@ -287,8 +299,12 @@ public class Main {
   }
 
   public void collectFiles(ArgsParser ap) {
-    for (File f : ap.getOneOrMoreFiles("files", FileMode.FILE_OR_DIRECTORY_MUST_EXIST))
+    for (File f : getFilesArg(ap))
       collectFiles(f, true);
+  }
+
+  private List<File> getFilesArg(ArgsParser ap) {
+    return ap.getOneOrMoreFiles("files", FileMode.FILE_OR_DIRECTORY_MUST_EXIST);
   }
 
   public void setupMatchers(ArgsParser ap) {
@@ -444,6 +460,21 @@ public class Main {
     if (ap.has(P_TYPESCRIPT)) return TypeScriptMode.BASIC;
     return TypeScriptMode.NONE;
   }
+  
+  private Path inferSourceRoot(ArgsParser ap) {
+    List<File> files = getFilesArg(ap);
+    Path sourceRoot = files.iterator().next().toPath().toAbsolutePath().getParent();
+    for (File file : files) {
+      Path path = file.toPath().toAbsolutePath().getParent();
+      for (int i = 0; i < sourceRoot.getNameCount(); ++i) {
+        if (!(i < path.getNameCount() && path.getName(i).equals(sourceRoot.getName(i)))) {
+          sourceRoot = sourceRoot.subpath(0, i);
+          break;
+        }
+      }
+    }
+    return sourceRoot;
+  }
 
   private ExtractorConfig parseJSOptions(ArgsParser ap) {
     ExtractorConfig cfg =
@@ -466,6 +497,17 @@ public class Main {
                     ? UnitParser.parseOpt(ap.getString(P_TYPESCRIPT_RAM), UnitParser.MEGABYTES)
                     : 0);
     if (ap.has(P_DEFAULT_ENCODING)) cfg = cfg.withDefaultEncoding(ap.getString(P_DEFAULT_ENCODING));
+
+    // Make a usable virtual source root mapping.
+    // The concept of source root and scratch directory do not exist in the legacy extractor,
+    // so we construct these based on what we have.
+    String odasaDbDir = Env.systemEnv().getNonEmpty(Var.ODASA_DB);
+    VirtualSourceRoot virtualSourceRoot =
+        odasaDbDir == null
+            ? VirtualSourceRoot.none
+            : new VirtualSourceRoot(inferSourceRoot(ap), Paths.get(odasaDbDir, "working"));
+    cfg = cfg.withVirtualSourceRoot(virtualSourceRoot);
+
     return cfg;
   }
 

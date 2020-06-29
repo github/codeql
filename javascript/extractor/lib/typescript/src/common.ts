@@ -48,7 +48,7 @@ export class Project {
   public load(): void {
     const { config, host } = this;
     this.program = ts.createProgram(config.fileNames, config.options, host);
-    this.typeTable.setProgram(this.program);
+    this.typeTable.setProgram(this.program, this.virtualSourceRoot);
   }
 
   /**
