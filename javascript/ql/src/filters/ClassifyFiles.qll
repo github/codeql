@@ -80,6 +80,8 @@ predicate classify(File f, string category) {
   or
   // Polymer templates
   exists(HTML::Element elt | elt.getName() = "template" |
-    f = elt.getFile() and category = "template"
+    f = elt.getFile() and
+    category = "template" and
+    not f.getExtension() = "vue"
   )
 }
