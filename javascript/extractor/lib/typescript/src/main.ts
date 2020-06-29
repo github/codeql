@@ -414,7 +414,18 @@ function loadTsConfig(command: LoadCommand): LoadedConfig {
      */
     let parseConfigHost: ts.ParseConfigHost = {
         useCaseSensitiveFileNames: true,
-        readDirectory: ts.sys.readDirectory, // No need to override traversal/glob matching
+        readDirectory: (rootDir, extensions, excludes?, includes?, depth?) => {
+            // Perform the glob matching in both real and virtual source roots.
+            let originalResults = ts.sys.readDirectory(rootDir, extensions, excludes, includes, depth)
+            let virtualDir = virtualSourceRoot.toVirtualPath(rootDir);
+            if (virtualDir == null) {
+                return originalResults;
+            }
+            // Make sure glob matching does not to discover anything in node_modules.
+            let virtualExcludes = [ ...(excludes || []), '**/node_modules/**/*' ];
+            let virtualResults = ts.sys.readDirectory(virtualDir, extensions, virtualExcludes, includes, depth)
+            return [ ...originalResults, ...virtualResults ];
+        },
         fileExists: (path: string) => {
             return ts.sys.fileExists(path)
                 || virtualSourceRoot.toVirtualPathIfFileExists(path) != null
