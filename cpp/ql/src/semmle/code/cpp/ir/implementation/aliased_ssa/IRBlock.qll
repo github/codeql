@@ -20,6 +20,7 @@ private import Cached
  * Most consumers should use the class `IRBlock`.
  */
 class IRBlockBase extends TIRBlock {
+  /** Gets a textual representation of this block. */
   final string toString() { result = getFirstInstruction(this).toString() }
 
   /** Gets the source location of the first non-`Phi` instruction in this block. */
@@ -282,4 +283,4 @@ private module Cached {
     idominance(isEntryBlock/1, blockSuccessor/2)(_, dominator, block)
 }
 
-Instruction getFirstInstruction(TIRBlock block) { block = MkIRBlock(result) }
+private Instruction getFirstInstruction(TIRBlock block) { block = MkIRBlock(result) }

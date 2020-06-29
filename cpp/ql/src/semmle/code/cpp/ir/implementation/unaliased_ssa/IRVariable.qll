@@ -1,3 +1,7 @@
+/**
+ * Provides classes that represent variables accessed by the IR.
+ */
+
 private import internal.IRInternal
 import IRFunction
 private import internal.IRVariableImports as Imports

@@ -1,9 +1,9 @@
 /**
  * Outputs a representation of the IR as a control flow graph.
  *
- * This file contains the actual implementation of `PrintAST.ql`. For test cases and very small
- * databases, `PrintAST.ql` can be run directly to dump the IR for the entire database. For most
- * uses, however, it is better to write a query that imports `PrintAST.qll`, extends
+ * This file contains the actual implementation of `PrintIR.ql`. For test cases and very small
+ * databases, `PrintIR.ql` can be run directly to dump the IR for the entire database. For most
+ * uses, however, it is better to write a query that imports `PrintIR.qll`, extends
  * `PrintIRConfiguration`, and overrides `shouldPrintFunction()` to select a subset of functions to
  * dump.
  */
@@ -19,6 +19,7 @@ private newtype TPrintIRConfiguration = MkPrintIRConfiguration()
  * The query can extend this class to control which functions are printed.
  */
 class PrintIRConfiguration extends TPrintIRConfiguration {
+  /** Gets a textual representation of this configuration. */
   string toString() { result = "PrintIRConfiguration" }
 
   /**

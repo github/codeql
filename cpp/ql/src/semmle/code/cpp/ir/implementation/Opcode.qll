@@ -91,6 +91,9 @@ private newtype TOpcode =
   TUnreached() or
   TNewObj()
 
+/**
+ * An opcode that specifies the operation performed by an `Instruction`.
+ */
 class Opcode extends TOpcode {
   /** Gets a textual representation of this element. */
   string toString() { result = "UnknownOpcode" }
