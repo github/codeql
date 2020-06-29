@@ -1,3 +1,13 @@
+/**
+ * Outputs a representation of the IR as a control flow graph.
+ *
+ * This file contains the actual implementation of `PrintAST.ql`. For test cases and very small
+ * databases, `PrintAST.ql` can be run directly to dump the IR for the entire database. For most
+ * uses, however, it is better to write a query that imports `PrintAST.qll`, extends
+ * `PrintIRConfiguration`, and overrides `shouldPrintFunction()` to select a subset of functions to
+ * dump.
+ */
+
 private import internal.IRInternal
 private import IR
 private import internal.PrintIRImports as Imports
@@ -47,7 +57,7 @@ private newtype TPrintableIRNode =
 /**
  * A node to be emitted in the IR graph.
  */
-abstract class PrintableIRNode extends TPrintableIRNode {
+abstract private class PrintableIRNode extends TPrintableIRNode {
   abstract string toString();
 
   /**
@@ -98,7 +108,7 @@ abstract class PrintableIRNode extends TPrintableIRNode {
 /**
  * An IR graph node representing a `IRFunction` object.
  */
-class PrintableIRFunction extends PrintableIRNode, TPrintableIRFunction {
+private class PrintableIRFunction extends PrintableIRNode, TPrintableIRFunction {
   IRFunction irFunc;
 
   PrintableIRFunction() { this = TPrintableIRFunction(irFunc) }
@@ -129,7 +139,7 @@ class PrintableIRFunction extends PrintableIRNode, TPrintableIRFunction {
 /**
  * An IR graph node representing an `IRBlock` object.
  */
-class PrintableIRBlock extends PrintableIRNode, TPrintableIRBlock {
+private class PrintableIRBlock extends PrintableIRNode, TPrintableIRBlock {
   IRBlock block;
 
   PrintableIRBlock() { this = TPrintableIRBlock(block) }
@@ -161,7 +171,7 @@ class PrintableIRBlock extends PrintableIRNode, TPrintableIRBlock {
 /**
  * An IR graph node representing an `Instruction`.
  */
-class PrintableInstruction extends PrintableIRNode, TPrintableInstruction {
+private class PrintableInstruction extends PrintableIRNode, TPrintableInstruction {
   Instruction instr;
 
   PrintableInstruction() { this = TPrintableInstruction(instr) }
@@ -224,6 +234,9 @@ private string getPaddingString(int n) {
   n > 0 and n <= maxColumnWidth() and result = getPaddingString(n - 1) + " "
 }
 
+/**
+ * Holds if `node` belongs to the output graph, and its property `key` has the given `value`.
+ */
 query predicate nodes(PrintableIRNode node, string key, string value) {
   value = node.getProperty(key)
 }
@@ -237,6 +250,10 @@ private int getSuccessorIndex(IRBlock pred, IRBlock succ) {
     )
 }
 
+/**
+ * Holds if the output graph contains an edge from `pred` to `succ`, and that edge's property `key`
+ * has the given `value`.
+ */
 query predicate edges(PrintableIRBlock pred, PrintableIRBlock succ, string key, string value) {
   exists(EdgeKind kind, IRBlock predBlock, IRBlock succBlock |
     predBlock = pred.getBlock() and
@@ -256,6 +273,9 @@ query predicate edges(PrintableIRBlock pred, PrintableIRBlock succ, string key, 
   )
 }
 
+/**
+ * Holds if `parent` is the parent node of `child` in the output graph.
+ */
 query predicate parents(PrintableIRNode child, PrintableIRNode parent) {
   parent = child.getParent()
 }
