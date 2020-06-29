@@ -90,8 +90,10 @@ class AugAssign extends AugAssign_ {
     /* syntax: Expr += Expr */
     override Expr getASubExpression() { result = this.getOperation() }
 
+    /** Gets the target of this augmented assignment statement. */
     Expr getTarget() { result = this.getOperation().(BinaryExpr).getLeft() }
 
+    /** Gets the value of this augmented assignment statement. */
     Expr getValue() { result = this.getOperation().(BinaryExpr).getRight() }
 
     override Stmt getASubStatement() { none() }
@@ -405,11 +407,13 @@ class TemplateWrite extends TemplateWrite_ {
     override Stmt getASubStatement() { none() }
 }
 
+/** An asynchronous `for` statement, such as `async for varname in Expr: ...` */
 class AsyncFor extends For {
     /* syntax: async for varname in Expr: ... */
     AsyncFor() { this.isAsync() }
 }
 
+/** An asynchronous `with` statement, such as `async with varname as Expr: ...` */
 class AsyncWith extends With {
     /* syntax: async with Expr as varname: ... */
     AsyncWith() { this.isAsync() }
@@ -417,10 +421,11 @@ class AsyncWith extends With {
 
 /** A list of statements */
 class StmtList extends StmtList_ {
-    /** Whether this list of statements contains s */
+    /** Holds if this list of statements contains the AST node `a` */
     predicate contains(AstNode a) {
         exists(Stmt item | item = this.getAnItem() | item = a or item.contains(a))
     }
 
+    /** Gets the last item in this list of statements. */
     Stmt getLastItem() { result = this.getItem(max(int i | exists(this.getItem(i)))) }
 }
