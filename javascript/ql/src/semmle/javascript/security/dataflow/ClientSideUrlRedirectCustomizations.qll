@@ -145,4 +145,17 @@ module ClientSideUrlRedirect {
       )
     }
   }
+  
+  /**
+   * A write of an attribute which may execute JavaScript code or 
+   * exfiltrate data to an attacker controlled site.
+   */
+  class AttributeWriteUrlSink extends ScriptUrlSink, DataFlow::ValueNode {
+    AttributeWriteUrlSink() {
+      exists(DomPropWriteNode pw |
+        pw.interpretsValueAsJavaScript() and
+        this = DataFlow::valueNode(pw.getRhs())
+      )
+    }
+  }
 }
