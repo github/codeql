@@ -298,10 +298,7 @@ private class AndroidIntentExtraSource extends RemoteFlowSource {
   AndroidIntentExtraSource() {
     exists(MethodAccess ma |
       ma instanceof IntentGetExtraMethodAccess and
-      (
-        this.asExpr().(VarAccess).getVariable().getAnAssignedValue() = ma or
-        ma.getQualifier() = this.asExpr()
-      )
+      this.asExpr().(VarAccess).getVariable().getAnAssignedValue() = ma
     )
   }
 
