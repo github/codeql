@@ -1,12 +1,12 @@
 /**
  * Provides classes that describe the Intermediate Representation (IR) of the program.
- * 
+ *
  * The IR is a representation of the semantics of the program, with very little dependence on the
  * syntax that was used to write the program. For example, in C++, the statements `i += 1;`, `i++`,
  * and `++i` all have the same semantic effect, but appear in the AST as three different types of
  * `Expr` node. In the IR, all three statements are broken down into a sequence of fundamental
  * operations similar to:
- * 
+ *
  * ```
  * r1(int*) = VariableAddress[i]  // Compute the address of variable `i`
  * r2(int) = Load &:r1, m0  // Load the value of `i`
@@ -14,12 +14,12 @@
  * r4(int) = Add r2, r3  // Add `1` to the value of `i`
  * r5(int) = Store &r1, r4  // Store the new value back into the variable `i`
  * ```
- * 
+ *
  * This allows IR-based analysis to focus on the fundamental operations, rather than having to be
  * concerned with the various ways of expressing those operations in source code.
- * 
+ *
  * The key classes in the IR are:
- * 
+ *
  * - `IRFunction` - Contains the IR for an entire function definition, including all of that
  *   function's `Instruction`s, `IRBlock`s, and `IRVariables`.
  * - `Instruction` - A single operation in the IR. An instruction specifies the operation to be

@@ -126,7 +126,7 @@ class IRBlock extends IRBlockBase {
   final IRBlock getSuccessor(EdgeKind kind) { blockSuccessor(this, result, kind) }
 
   /**
-   * Gets the block to which control flows directly from this block along a back edge of kind 
+   * Gets the block to which control flows directly from this block along a back edge of kind
    * `kind`.
    */
   final IRBlock getBackEdgeSuccessor(EdgeKind kind) { backEdgeSuccessor(this, result, kind) }
