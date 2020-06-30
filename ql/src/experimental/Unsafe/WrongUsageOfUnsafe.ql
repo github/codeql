@@ -1,6 +1,6 @@
 /**
  * @name Wrong usage of package unsafe
- * @description Casting between variables with different memory sizes can produce reads to
+ * @description Casting between types with different memory sizes can produce reads to
  *              memory locations that are after the target buffer, and/or unexpected values.
  * @kind path-problem
  * @problem.severity error
@@ -26,10 +26,7 @@ class ConversionToUnsafePointer extends ConversionExpr {
   ConversionToUnsafePointer() { getBaseType(getType()) instanceof UnsafePointerType }
 }
 
-/*
- * Type casting through the use of unsafe pointers.
- */
-
+/* Type casting through the use of unsafe pointers.*/
 class UnsafeTypeCastingConf extends TaintTracking::Configuration {
   UnsafeTypeCastingConf() { this = "UnsafeTypeCastingConf" }
 

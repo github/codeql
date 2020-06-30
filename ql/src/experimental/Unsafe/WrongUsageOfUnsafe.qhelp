@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+	The package `unsafe` provides operations that step outside the type safety
+	guarantees normally provided inside Golang programs. This leaves room for
+	errors in the usage of the `unsafe` package that are not caught by the compiler.
+</p>
+<p>
+	One possible error is type casting between types of different sizes, that
+	can result in reads to memory locations that are outside the bounds of
+	the original target buffer, and also unexpected values.
+</p>
+</overview>
+<recommendation>
+<p>
+	The basic recomendation is to avoid usage of the package `unsafe`. If that is
+	not an option, you should always check the size of types you cast your data
+	to/from to make sure they won't result in reading outside of the intended bounds.
+</p>
+</recommendation>
+<example>
+<p>
+	The first example explores a few scenarios of read out of bounds because of an
+	erroneous type casting done with <code>unsafe.Pointer</code>.
+</p>
+<sample src="UnsafeUsageBad.go"/>
+<p>
+	The second example show an example of correct type casting done with <code>unsafe.Pointer</code>.
+</p>
+<sample src="UnsafeUsageOK.go"/>
+</example>
+</qhelp>
