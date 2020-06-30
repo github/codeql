@@ -112,7 +112,7 @@ string getAnInsecureHashAlgorithmName() {
 private string rankedAlgorithmBlacklist(int i) {
   // In this case we know these are being used for encryption, so we want to match
   // weak hash algorithms too.
-  result = rank[i](string s | s = algorithmBlacklist() or s = hashAlgorithmBlacklist())
+  result = rank[i](string s | s = getAnInsecureAlgorithmName() or s = getAnInsecureHashAlgorithmName())
 }
 
 private string algorithmBlacklistString(int i) {
@@ -144,7 +144,7 @@ string getASecureAlgorithmName() {
   result = "ECIES"
 }
 
-private string rankedAlgorithmWhitelist(int i) { result = rank[i](algorithmWhitelist()) }
+private string rankedAlgorithmWhitelist(int i) { result = rank[i](getASecureAlgorithmName()) }
 
 private string algorithmWhitelistString(int i) {
   i = 1 and result = rankedAlgorithmWhitelist(i)
