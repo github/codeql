@@ -464,6 +464,16 @@ module Express {
   }
 
   /**
+   * Gets a reference to the "query" or "params" object from a request-object originating from route-handler `rh`.
+   */
+  DataFlow::SourceNode getAQueryObjectReference(DataFlow::TypeTracker t, RouteHandler rh) {
+    t.startInProp(["params", "query"]) and
+    result = rh.getARequestSource()
+    or
+    exists(DataFlow::TypeTracker t2 | result = getAQueryObjectReference(t2, rh).track(t2, t))
+  }
+
+  /**
    * An access to a user-controlled Express request input.
    */
   class RequestInputAccess extends HTTP::RequestInputAccess {
@@ -471,13 +481,12 @@ module Express {
     string kind;
 
     RequestInputAccess() {
+      kind = "parameter" and
+      this = getAQueryObjectReference(DataFlow::TypeTracker::end(), rh).getAPropertyRead()
+      or
       exists(DataFlow::SourceNode request | request = rh.getARequestSource().ref() |
         kind = "parameter" and
-        (
-          this = request.getAMethodCall("param")
-          or
-          this = request.getAPropertyRead(["params", "query"]).getAPropertyRead()
-        )
+        this = request.getAMethodCall("param")
         or
         // `req.originalUrl`
         kind = "url" and
