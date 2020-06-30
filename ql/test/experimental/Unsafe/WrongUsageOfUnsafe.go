@@ -6,7 +6,6 @@ import (
 )
 
 func main() {}
-
 func good0() {
 	// A harmless piece of data:
 	harmless := [8]byte{'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'}
@@ -14,6 +13,7 @@ func good0() {
 	secret := [9]byte{'s', 'e', 'n', 's', 'i', 't', 'i', 'v', 'e'}
 
 	// Read before secret without overflowing to secret:
+	// NOTE: unsafe.Pointer(&harmless) == unsafe.Pointer(&harmless[0])
 	var leaking = (*[8]byte)(unsafe.Pointer(&harmless)) // OK
 
 	fmt.Println(string((*leaking)[:]))
@@ -24,6 +24,23 @@ func good0() {
 	}
 }
 func good1() {
+	// A harmless piece of data:
+	harmless := [8]byte{'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'}
+	// Something secret:
+	secret := [9]byte{'s', 'e', 'n', 's', 'i', 't', 'i', 'v', 'e'}
+
+	// Read before secret without overflowing to secret:
+	// NOTE: unsafe.Pointer(&harmless) == unsafe.Pointer(&harmless[0])
+	var leaking = (*[8]byte)(unsafe.Pointer(&harmless[0])) // OK
+
+	fmt.Println(string((*leaking)[:]))
+
+	// Avoid optimization:
+	if secret[0] == 123 {
+		fmt.Println("hello world")
+	}
+}
+func good2() {
 	// A harmless piece of data:
 	harmless := uint(123)
 	// Something secret:
@@ -40,7 +57,7 @@ func good1() {
 	}
 }
 
-func bad00() {
+func bad0() {
 	// A harmless piece of data:
 	harmless := [8]byte{'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'}
 	// Something secret:
@@ -58,7 +75,7 @@ func bad00() {
 	}
 }
 
-func bad0() {
+func bad1() {
 	// A harmless piece of data:
 	harmless := [8]byte{'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'}
 	// Something secret:
@@ -78,7 +95,7 @@ func bad0() {
 
 type Harmless [8]byte
 
-func bad1() {
+func bad2() {
 	// A harmless piece of data:
 	harmless := Harmless{'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'}
 	// Something secret:
@@ -95,7 +112,7 @@ func bad1() {
 		fmt.Println("hello world")
 	}
 }
-func bad2() {
+func bad3() {
 	// A harmless piece of data:
 	harmless := [8]string{"A", "A", "A", "A", "A", "A", "A", "A"}
 	// Something secret:
@@ -113,7 +130,7 @@ func bad2() {
 		fmt.Println("hello world")
 	}
 }
-func bad3() {
+func bad4() {
 	type harmlessType struct {
 		Data [8]byte
 	}
@@ -135,7 +152,7 @@ func bad3() {
 		fmt.Println("hello world")
 	}
 }
-func bad4() {
+func bad5() {
 	type harmlessType struct {
 		Data [8]byte
 	}
@@ -157,7 +174,7 @@ func bad4() {
 		fmt.Println("hello world")
 	}
 }
-func bad5() {
+func bad6() {
 	// A harmless piece of data:
 	harmless := [8]byte{'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'}
 	// Something secret:
@@ -183,7 +200,7 @@ func buffer_request(req unsafe.Pointer) [8 + 9]byte {
 	buf = *(*[8 + 9]byte)(req)
 	return buf
 }
-func bad6() {
+func bad7() {
 	// A harmless piece of data:
 	harmless := [1]int64{23}
 	// Something secret:
@@ -202,7 +219,7 @@ func bad6() {
 		fmt.Println("hello world")
 	}
 }
-func bad7() {
+func bad8() {
 	// A harmless piece of data:
 	harmless := int8(123)
 	// Something secret:
@@ -220,7 +237,7 @@ func bad7() {
 		fmt.Println("hello world")
 	}
 }
-func bad8() {
+func bad9() {
 	// A harmless piece of data:
 	harmless := int8(123)
 	// Something secret:
