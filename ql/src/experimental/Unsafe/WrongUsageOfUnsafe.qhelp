@@ -32,4 +32,15 @@
 </p>
 <sample src="UnsafeUsageOK.go"/>
 </example>
+<references>
+<li>
+	<a href="https://medium.com/a-journey-with-go/go-what-is-the-unsafe-package-d2443da36350">Go: What is the Unsafe Package?</a>.
+</li>
+<li>
+	<a href="https://medium.com/a-journey-with-go/go-cast-vs-conversion-by-example-26e0ef3003f0">Go: Cast vs Conversion by Example</a>.
+</li>
+<li>
+	<a href="https://dev.to/jlauinger/exploitation-exercise-with-unsafe-pointer-in-go-information-leak-part-1-1kga">Exploitation Exercise with unsafe.Pointer in Go: Information Leak (Part 1)</a>.
+</li>
+</references>
 </qhelp>
