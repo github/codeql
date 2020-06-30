@@ -169,7 +169,10 @@ class DefaultMutexType extends MutexType {
   }
 }
 
-/** Holds if `arg` is the mutex argument of a call to lock or unlock. */
+/**
+ * Holds if `arg` is the mutex argument of a call to lock or unlock and
+ * `argType` is the type of the mutex.
+ */
 private predicate lockArg(Expr arg, MutexType argType, FunctionCall call) {
   argType = arg.getUnderlyingType().stripType() and
   (
