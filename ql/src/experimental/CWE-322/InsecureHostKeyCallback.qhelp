@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+    The <code>ClientConfig</code> specifying the configuration for establishing a SSH connection has a field <code>HostKeyCallback</code> that must be initialized with a function that validates the host key returned by the server.
+</p>
+
+<p>
+    Not properly verifying the host key returned by a server provides attackers with an opportunity to perform a Machine-in-the-Middle (MitM) attack.
+    A successful attack can compromise the confidentiality and integrity of the information communicated with the server.
+</p>
+
+<p>
+    The <code>ssh</code> package provides the predefined callback <code>InsecureIgnoreHostKey</code> that can be used during development and testing.
+    It accepts any provided host key.
+    This callback, or a semantically similar callback, should not be used in production code. 
+</p>
+</overview>
+
+<recommendation>
+<p>
+The <code>HostKeyCallback</code> field of <code>ClientConfig</code> should be initialized with a function that validates a host key against an allow list.
+If a key is not on a predefined allow list, the connection must be terminated and the failed security operation should be logged.
+</p>
+<p>
+When the allow list contains only a single host key then the function <code>FixedHostKey</code> can be used.
+</p>
+</recommendation>
+
+<example>
+<p>The following example shows the use of <code>InsecureIgnoreHostKey</code> and an insecure host key callback implemention commonly used in non-production code.</p>
+
+<sample src="InsecureHostKeyCallbackExample.go" />
+
+<p>The next example shows a secure implementation using the <code>FixedHostKey</code> that implements an allow-list.</p>
+
+<sample src="SecureHostKeyCallbackExample.go" />
+
+</example>
+
+<references>
+<li>
+  Go Dev:
+  <a href="https://pkg.go.dev/golang.org/x/crypto/ssh?tab=doc">package ssh</a>.
+</li>
+</references>
+</qhelp>

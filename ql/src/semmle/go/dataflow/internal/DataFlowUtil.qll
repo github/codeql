@@ -234,6 +234,11 @@ abstract class FunctionNode extends Node {
    * Gets the dataflow node holding the value of the receiver, if any.
    */
   abstract ReceiverNode getReceiver();
+
+  /**
+   * Gets a value returned by the given function via a return statement or an assignment to a result variable.
+   */
+  abstract ResultNode getAResult();
 }
 
 /** A representation of a function that is declared in the module scope. */
@@ -260,6 +265,10 @@ class GlobalFunctionNode extends FunctionNode, MkGlobalFunctionNode {
   ) {
     func.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
+
+  override ResultNode getAResult() {
+    result.getRoot() = getFunction().(DeclaredFunction).getFuncDecl()
+  }
 }
 
 /** A representation of the function that is defined by a function literal. */
@@ -273,6 +282,8 @@ class FuncLitNode extends FunctionNode, ExprNode {
   override ReceiverNode getReceiver() { none() }
 
   override string toString() { result = "function literal" }
+
+  override ResultNode getAResult() { result.getRoot() = getExpr() }
 }
 
 /** A data flow node that represents a call. */
