@@ -84,7 +84,7 @@ class Call extends Expr, NameQualifiableElement, TCall {
    *   method, and it might not exist.
    * - For a variable call, it never exists.
    */
-  Function getTarget() { none() }
+  Function getTarget() { none() } // overridden in subclasses
 
   override int getPrecedence() { result = 17 }
 

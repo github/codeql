@@ -325,7 +325,7 @@ class ParameterDeclarationEntry extends VariableDeclarationEntry {
  */
 class LocalScopeVariable extends Variable, @localscopevariable {
   /** Gets the function to which this variable belongs. */
-  Function getFunction() { none() }
+  Function getFunction() { none() } // overridden in subclasses
 }
 
 /**

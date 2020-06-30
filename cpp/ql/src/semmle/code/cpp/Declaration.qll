@@ -124,7 +124,7 @@ class Declaration extends Locatable, @declaration {
    * To test whether this declaration has a particular name in the global
    * namespace, use `hasGlobalName`.
    */
-  string getName() { none() }
+  string getName() { none() } // overridden in subclasses
 
   /** Holds if this declaration has the given name. */
   predicate hasName(string name) { name = this.getName() }
@@ -140,7 +140,7 @@ class Declaration extends Locatable, @declaration {
   }
 
   /** Gets a specifier of this declaration. */
-  Specifier getASpecifier() { none() }
+  Specifier getASpecifier() { none() } // overridden in subclasses
 
   /** Holds if this declaration has a specifier with the given name. */
   predicate hasSpecifier(string name) { this.getASpecifier().hasName(name) }
@@ -156,7 +156,7 @@ class Declaration extends Locatable, @declaration {
    * Gets the location of a declaration entry corresponding to this
    * declaration.
    */
-  Location getADeclarationLocation() { none() }
+  Location getADeclarationLocation() { none() } // overridden in subclasses
 
   /**
    * Gets the declaration entry corresponding to this declaration that is a
@@ -165,7 +165,7 @@ class Declaration extends Locatable, @declaration {
   DeclarationEntry getDefinition() { none() }
 
   /** Gets the location of the definition, if any. */
-  Location getDefinitionLocation() { none() }
+  Location getDefinitionLocation() { none() } // overridden in subclasses
 
   /** Holds if the declaration has a definition. */
   predicate hasDefinition() { exists(this.getDefinition()) }
@@ -308,7 +308,7 @@ private class TDeclarationEntry = @var_decl or @type_decl or @fun_decl;
  */
 class DeclarationEntry extends Locatable, TDeclarationEntry {
   /** Gets a specifier associated with this declaration entry. */
-  string getASpecifier() { none() }
+  string getASpecifier() { none() } // overridden in subclasses
 
   /**
    * Gets the name associated with the corresponding definition (where
@@ -331,10 +331,10 @@ class DeclarationEntry extends Locatable, TDeclarationEntry {
    *  `I.getADeclarationEntry()` returns `D`
    *  but `D.getDeclaration()` only returns `C`
    */
-  Declaration getDeclaration() { none() }
+  Declaration getDeclaration() { none() } // overridden in subclasses
 
   /** Gets the name associated with this declaration entry, if any. */
-  string getName() { none() }
+  string getName() { none() } // overridden in subclasses
 
   /**
    * Gets the type associated with this declaration entry.
@@ -343,7 +343,7 @@ class DeclarationEntry extends Locatable, TDeclarationEntry {
    * For function declarations, get the return type of the function.
    * For type declarations, get the type being declared.
    */
-  Type getType() { none() }
+  Type getType() { none() } // overridden in subclasses
 
   /**
    * Gets the type associated with this declaration entry after specifiers
@@ -361,7 +361,7 @@ class DeclarationEntry extends Locatable, TDeclarationEntry {
   predicate hasSpecifier(string specifier) { getASpecifier() = specifier }
 
   /** Holds if this declaration entry is a definition. */
-  predicate isDefinition() { none() }
+  predicate isDefinition() { none() } // overridden in subclasses
 
   override string toString() {
     if isDefinition()
@@ -414,7 +414,7 @@ class AccessHolder extends Declaration, TAccessHolder {
   /**
    * Gets the nearest enclosing `AccessHolder`.
    */
-  AccessHolder getEnclosingAccessHolder() { none() }
+  AccessHolder getEnclosingAccessHolder() { none() } // overridden in subclasses
 
   /**
    * Holds if a base class `base` of `derived` _is accessible at_ `this` (N4140
