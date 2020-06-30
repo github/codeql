@@ -1,3 +1,7 @@
+/**
+ * Provides classes for modeling comparisons such as `==`, `!=` and `<`.
+ */
+
 import semmle.code.cpp.exprs.Expr
 
 /**

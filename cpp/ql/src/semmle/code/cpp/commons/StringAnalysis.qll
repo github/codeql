@@ -1,3 +1,7 @@
+/**
+ * Provides a class for calculating the possible length of string expressions.
+ */
+
 import semmle.code.cpp.exprs.Expr
 import semmle.code.cpp.controlflow.SSA
 

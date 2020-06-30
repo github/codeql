@@ -1,3 +1,8 @@
+/**
+ * Provides classes for modeling logical operations such as `!`, `&&`, `||`, and
+ * the ternary `? :` expression.
+ */
+
 import semmle.code.cpp.exprs.Expr
 
 /**
