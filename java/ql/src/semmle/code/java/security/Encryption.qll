@@ -109,16 +109,17 @@ string getAnInsecureHashAlgorithmName() {
   result = "MD5"
 }
 
-private string rankedAlgorithmBlacklist(int i) {
+private string rankedInsecureAlgorithm(int i) {
   // In this case we know these are being used for encryption, so we want to match
   // weak hash algorithms too.
-  result = rank[i](string s | s = getAnInsecureAlgorithmName() or s = getAnInsecureHashAlgorithmName())
+  result =
+    rank[i](string s | s = getAnInsecureAlgorithmName() or s = getAnInsecureHashAlgorithmName())
 }
 
-private string algorithmBlacklistString(int i) {
-  i = 1 and result = rankedAlgorithmBlacklist(i)
+private string insecureAlgorithmString(int i) {
+  i = 1 and result = rankedInsecureAlgorithm(i)
   or
-  result = rankedAlgorithmBlacklist(i) + "|" + algorithmBlacklistString(i - 1)
+  result = rankedInsecureAlgorithm(i) + "|" + insecureAlgorithmString(i - 1)
 }
 
 /**
@@ -126,8 +127,7 @@ private string algorithmBlacklistString(int i) {
  * contain an algorithm that is known to be insecure.
  */
 string getInsecureAlgorithmRegex() {
-  result =
-    algorithmRegex(algorithmBlacklistString(max(int i | exists(rankedAlgorithmBlacklist(i)))))
+  result = algorithmRegex(insecureAlgorithmString(max(int i | exists(rankedInsecureAlgorithm(i)))))
 }
 
 /**
@@ -144,12 +144,12 @@ string getASecureAlgorithmName() {
   result = "ECIES"
 }
 
-private string rankedAlgorithmWhitelist(int i) { result = rank[i](getASecureAlgorithmName()) }
+private string rankedSecureAlgorithm(int i) { result = rank[i](getASecureAlgorithmName()) }
 
-private string algorithmWhitelistString(int i) {
-  i = 1 and result = rankedAlgorithmWhitelist(i)
+private string secureAlgorithmString(int i) {
+  i = 1 and result = rankedSecureAlgorithm(i)
   or
-  result = rankedAlgorithmWhitelist(i) + "|" + algorithmWhitelistString(i - 1)
+  result = rankedSecureAlgorithm(i) + "|" + secureAlgorithmString(i - 1)
 }
 
 /**
@@ -157,8 +157,7 @@ private string algorithmWhitelistString(int i) {
  * contain an algorithm that is known to be secure.
  */
 string getSecureAlgorithmRegex() {
-  result =
-    algorithmRegex(algorithmWhitelistString(max(int i | exists(rankedAlgorithmWhitelist(i)))))
+  result = algorithmRegex(secureAlgorithmString(max(int i | exists(rankedSecureAlgorithm(i)))))
 }
 
 /**
