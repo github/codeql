@@ -32,6 +32,7 @@ private newtype TIRType =
  * all pointer types map to the same instance of `IRAddressType`.
  */
 class IRType extends TIRType {
+  /** Gets a textual representation of this type. */
   string toString() { none() }
 
   /**
