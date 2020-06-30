@@ -25,9 +25,9 @@ class InsecureAlgoLiteral extends ShortStringLiteral {
     // Algorithm identifiers should be at least two characters.
     getValue().length() > 1 and
     exists(string s | s = getLiteral() |
-      not s.regexpMatch(algorithmWhitelistRegex()) and
+      not s.regexpMatch(getSecureAlgorithmRegex()) and
       // Exclude results covered by another query.
-      not s.regexpMatch(algorithmBlacklistRegex())
+      not s.regexpMatch(getInsecureAlgorithmRegex())
     )
   }
 }
