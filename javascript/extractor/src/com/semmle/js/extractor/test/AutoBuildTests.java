@@ -28,6 +28,7 @@ import com.semmle.js.extractor.DependencyInstallationResult;
 import com.semmle.js.extractor.ExtractorState;
 import com.semmle.js.extractor.FileExtractor;
 import com.semmle.js.extractor.FileExtractor.FileType;
+import com.semmle.js.extractor.VirtualSourceRoot;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.exception.UserError;
 import com.semmle.util.files.FileUtil;
@@ -135,6 +136,11 @@ public class AutoBuildTests {
         protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> filesToExtract) {
           // currently disabled in tests
           return DependencyInstallationResult.empty;
+        }
+
+        @Override
+        protected VirtualSourceRoot makeVirtualSourceRoot() {
+          return VirtualSourceRoot.none; // not used in these tests
         }
 
         @Override

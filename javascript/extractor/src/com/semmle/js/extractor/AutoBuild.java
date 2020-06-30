@@ -231,11 +231,15 @@ public class AutoBuild {
         Env.systemEnv()
             .getInt(
                 "LGTM_INDEX_TYPESCRIPT_INSTALL_DEPS_TIMEOUT", INSTALL_DEPENDENCIES_DEFAULT_TIMEOUT);
-    this.virtualSourceRoot = new VirtualSourceRoot(LGTM_SRC, toRealPath(Paths.get(EnvironmentVariables.getScratchDir())));
+    this.virtualSourceRoot = makeVirtualSourceRoot();
     setupFileTypes();
     setupXmlMode();
     setupMatchers();
     this.state = new ExtractorState();
+  }
+
+  protected VirtualSourceRoot makeVirtualSourceRoot() {
+    return new VirtualSourceRoot(LGTM_SRC, toRealPath(Paths.get(EnvironmentVariables.getScratchDir())));
   }
 
   private String getEnvVar(String envVarName) {
