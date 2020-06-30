@@ -12,7 +12,7 @@
 | functions.cpp:7:8:7:8 | A | Struct | functions.cpp:11:7:11:8 | ag |  |
 | functions.cpp:19:7:19:10 | Name | Class | functions.cpp:19:7:19:7 | operator= |  |
 | functions.cpp:19:7:19:10 | Name | Class | functions.cpp:19:7:19:7 | operator= |  |
-| functions.cpp:23:7:23:11 | Table | Class | functions.cpp:23:7:23:7 | Table | Constructor, CopyConstructor, getAConstructor() |
+| functions.cpp:23:7:23:11 | Table | Class | functions.cpp:23:7:23:7 | Table | Constructor, ConversionConstructor, CopyConstructor, getAConstructor() |
 | functions.cpp:23:7:23:11 | Table | Class | functions.cpp:23:7:23:7 | operator= |  |
 | functions.cpp:23:7:23:11 | Table | Class | functions.cpp:27:3:27:7 | Table | Constructor, getAConstructor() |
 | functions.cpp:23:7:23:11 | Table | Class | functions.cpp:28:3:28:8 | ~Table | Destructor, getDestructor() |
@@ -21,6 +21,6 @@
 | functions.cpp:33:7:33:13 | MyClass | Class | functions.cpp:33:7:33:7 | operator= |  |
 | functions.cpp:33:7:33:13 | MyClass | Class | functions.cpp:36:2:36:8 | MyClass | Constructor, NoArgConstructor, getAConstructor() |
 | functions.cpp:33:7:33:13 | MyClass | Class | functions.cpp:37:2:37:8 | MyClass | Constructor, ConversionConstructor, getAConstructor() |
-| functions.cpp:33:7:33:13 | MyClass | Class | functions.cpp:38:2:38:8 | MyClass | Constructor, CopyConstructor, getAConstructor() |
-| functions.cpp:33:7:33:13 | MyClass | Class | functions.cpp:39:2:39:8 | MyClass | Constructor, MoveConstructor, getAConstructor() |
+| functions.cpp:33:7:33:13 | MyClass | Class | functions.cpp:38:2:38:8 | MyClass | Constructor, ConversionConstructor, CopyConstructor, getAConstructor() |
+| functions.cpp:33:7:33:13 | MyClass | Class | functions.cpp:39:2:39:8 | MyClass | Constructor, ConversionConstructor, MoveConstructor, getAConstructor() |
 | functions.cpp:33:7:33:13 | MyClass | Class | functions.cpp:40:2:40:13 | operator int | ConversionOperator |

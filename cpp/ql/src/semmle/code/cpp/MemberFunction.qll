@@ -220,12 +220,12 @@ abstract class ImplicitConversionFunction extends MemberFunction {
 class ConversionConstructor extends Constructor, ImplicitConversionFunction {
   ConversionConstructor() {
     strictcount(Parameter p | p = getAParameter() and not p.hasInitializer()) = 1 and
-    not hasSpecifier("explicit") and
-    not this instanceof CopyConstructor and
-    not this instanceof MoveConstructor
+    not hasSpecifier("explicit")
   }
 
   override string getCanonicalQLClass() {
+    not this instanceof CopyConstructor and
+    not this instanceof MoveConstructor and
     result = "ConversionConstructor"
   }
 
