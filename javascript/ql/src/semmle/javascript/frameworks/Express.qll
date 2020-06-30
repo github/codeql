@@ -130,6 +130,12 @@ module Express {
         ) and
         t = t2
       )
+      or
+      exists(DataFlow::CallNode call, int i, DataFlow::FunctionNode forwarder | 
+        result.(HTTP::RouteHandlerCandidate).flowsTo(call.getArgument(i)) and
+        call = getARouteHandler(t.continue()) and
+        forwarder.getFunction() = unique(Function f | f = call.getACallee())
+      )
     }
 
     override Expr getServer() { result.(Application).getARouteHandler() = getARouteHandler() }
@@ -766,7 +772,7 @@ module Express {
     /**
      * Gets a `RouteSetup` that was used for setting up a route on this router.
      */
-    private RouteSetup getARouteSetup() { this.flowsTo(result.getReceiver()) }
+    RouteSetup getARouteSetup() { this.flowsTo(result.getReceiver()) }
 
     /**
      * Gets a sub-router registered on this router.
