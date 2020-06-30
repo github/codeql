@@ -15,12 +15,12 @@ import semmle.code.java.frameworks.ApacheHttp
 import semmle.code.java.frameworks.android.XmlParsing
 import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.JaxWS
-import semmle.code.java.frameworks.android.Android
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.frameworks.SpringWeb
 import semmle.code.java.frameworks.Guice
 import semmle.code.java.frameworks.struts.StrutsActions
 import semmle.code.java.frameworks.Thrift
+import semmle.code.java.frameworks.android.Android
 
 /** A data flow source of remote user input. */
 abstract class RemoteFlowSource extends DataFlow::Node {
@@ -272,7 +272,9 @@ class AndroidIntentInput extends DataFlow::Node {
   }
 }
 
-/** Method access to external inputs of `android.content.Intent` object. */
+/**
+ * Method access to external inputs of `android.content.Intent` object
+ */
 class IntentGetExtraMethodAccess extends MethodAccess {
   IntentGetExtraMethodAccess() {
     exists(AndroidComponent ac |
@@ -289,7 +291,9 @@ class IntentGetExtraMethodAccess extends MethodAccess {
   }
 }
 
-/** Android intent extra source. */
+/**
+ * Android intent extra source
+ */
 private class AndroidIntentExtraSource extends RemoteFlowSource {
   AndroidIntentExtraSource() {
     exists(MethodAccess ma |
