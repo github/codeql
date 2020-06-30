@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/github/codeql-go/extractor/dbscheme"
 	"github.com/github/codeql-go/extractor/srcarchive"
@@ -100,32 +101,82 @@ type GoModExprCommentWrapper struct {
 	expr modfile.Expr
 }
 
+func minInt(a int, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func maxInt(a int, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func lexMin(a1 int, a2 int, b1 int, b2 int) (int, int) {
+	if a1 < b1 {
+		return a1, a2
+	} else if a1 > b1 {
+		return b1, b2
+	} else {
+		return a1, minInt(b1, b2)
+	}
+}
+
+func lexMax(a1 int, a2 int, b1 int, b2 int) (int, int) {
+	if a1 < b1 {
+		return b1, b2
+	} else if a1 > b1 {
+		return a1, a2
+	} else {
+		return a1, maxInt(b1, b2)
+	}
+}
+
 func extractGoModComments(tw *trap.Writer, expr modfile.Expr, exprlbl trap.Label) {
+	comments := expr.Comment()
+
+	if len(comments.Before) == 0 && len(comments.Suffix) == 0 && len(comments.After) == 0 {
+		return
+	}
+
 	// extract a pseudo `@commentgroup` for each expr that contains their associated comments
 	grouplbl := tw.Labeler.LocalID(GoModExprCommentWrapper{expr})
 	dbscheme.CommentGroupsTable.Emit(tw, grouplbl)
 	dbscheme.DocCommentsTable.Emit(tw, exprlbl, grouplbl)
 
-	comments := expr.Comment()
+	var allComments []modfile.Comment
+	allComments = append(allComments, comments.Before...)
+	allComments = append(allComments, comments.Suffix...)
+	allComments = append(allComments, comments.After...)
 
+	var startLine, startCol, endLine, endCol int = 0, 0, 0, 0
+	var first bool = true
 	idx := 0
-	for _, comment := range comments.Before {
-		extractGoModComment(tw, comment, grouplbl, idx)
+	for _, comment := range allComments {
+		commentToken := strings.TrimSuffix(comment.Token, "\r")
+		extractGoModComment(tw, comment, commentToken, grouplbl, idx)
 		idx++
+		commentEndCol := comment.Start.LineRune + (len(commentToken) - 1)
+		if first {
+			startLine, startCol, endLine, endCol = comment.Start.Line, comment.Start.LineRune, comment.Start.Line, commentEndCol
+			first = false
+		} else {
+			startLine, startCol = lexMin(comment.Start.Line, comment.Start.LineRune, startLine, startCol)
+			endLine, endCol = lexMax(comment.Start.Line, commentEndCol, endLine, endCol)
+		}
 	}
-	for _, comment := range comments.Suffix {
-		extractGoModComment(tw, comment, grouplbl, idx)
-		idx++
-	}
-	for _, comment := range comments.After {
-		extractGoModComment(tw, comment, grouplbl, idx)
-		idx++
-	}
+
+	extractLocation(tw, grouplbl, startLine, startCol, endLine, endCol)
 }
 
-func extractGoModComment(tw *trap.Writer, comment modfile.Comment, grouplbl trap.Label, idx int) {
-	lbl := tw.Labeler.LocalID(comment)
-	dbscheme.CommentsTable.Emit(tw, lbl, dbscheme.SlashSlashComment.Index(), grouplbl, idx, comment.Token)
 
-	extractLocation(tw, lbl, comment.Start.Line, comment.Start.LineRune, comment.Start.Line, comment.Start.LineRune+len(comment.Token))
+
+func extractGoModComment(tw *trap.Writer, comment modfile.Comment, commentToken string, grouplbl trap.Label, idx int) {
+	lbl := tw.Labeler.LocalID(comment)
+	dbscheme.CommentsTable.Emit(tw, lbl, dbscheme.SlashSlashComment.Index(), grouplbl, idx, commentToken)
+
+	extractLocation(tw, lbl, comment.Start.Line, comment.Start.LineRune, comment.Start.Line, comment.Start.LineRune + (len(commentToken) - 1))
 }
