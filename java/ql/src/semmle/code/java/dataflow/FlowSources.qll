@@ -20,7 +20,6 @@ import semmle.code.java.frameworks.SpringWeb
 import semmle.code.java.frameworks.Guice
 import semmle.code.java.frameworks.struts.StrutsActions
 import semmle.code.java.frameworks.Thrift
-import semmle.code.java.frameworks.android.Android
 
 /** A data flow source of remote user input. */
 abstract class RemoteFlowSource extends DataFlow::Node {
@@ -270,37 +269,4 @@ class AndroidIntentInput extends DataFlow::Node {
       this.asParameter() = m.getParameter(1)
     )
   }
-}
-
-/**
- * Method access to external inputs of `android.content.Intent` object
- */
-class IntentGetExtraMethodAccess extends MethodAccess {
-  IntentGetExtraMethodAccess() {
-    exists(AndroidComponent ac |
-      this.getEnclosingCallable().getDeclaringType() = ac and ac.isExported()
-    ) and
-    (
-      this.getMethod().getName().regexpMatch("get\\w+Extra") and
-      this.getMethod().getDeclaringType() instanceof TypeIntent
-      or
-      this.getMethod().getName().regexpMatch("get\\w+") and
-      this.getQualifier().(MethodAccess).getMethod().hasName("getExtras") and
-      this.getQualifier().(MethodAccess).getMethod().getDeclaringType() instanceof TypeIntent
-    )
-  }
-}
-
-/**
- * Android intent extra source
- */
-private class AndroidIntentExtraSource extends RemoteFlowSource {
-  AndroidIntentExtraSource() {
-    exists(MethodAccess ma |
-      ma instanceof IntentGetExtraMethodAccess and
-      this.asExpr().(VarAccess).getVariable().getAnAssignedValue() = ma
-    )
-  }
-
-  override string getSourceType() { result = "Android intent extra" }
 }

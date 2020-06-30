@@ -137,11 +137,6 @@ class AndroidComponentXmlElement extends XMLElement {
    * Holds if the `android:exported` attribute of this component element is `true`.
    */
   predicate isExported() { getExportedAttributeValue() = "true" }
-
-  /**
-   * Holds if the `android:exported` attribute of this component element is explicitly set to `false`.
-   */
-  predicate isNotExported() { getExportedAttributeValue() = "false" }
 }
 
 /**
