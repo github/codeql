@@ -1,0 +1,1 @@
+| DangerousHttpServer.py:6:11:6:21 | Attribute | http.server is not recommended for production. It only implements basic security checks. |

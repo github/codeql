@@ -1,0 +1,23 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+http.server is not recommended for production, as it only implements basic security checks. Use a production level server implementation for deployment.
+</p>
+</overview>
+
+<recommendation>
+
+</recommendation>
+
+<references>
+
+<li>
+Python Standard Library: <a href="https://docs.python.org/3/library/http.server.html">http.server</a>.
+Issue: <a href="https://bugs.python.org/issue32084">Issue 32084</a>.
+Issue: <a href="https://bugs.python.org/issue26657">Issue 26657</a>.
+</li>
+</references>
+
+</qhelp>
