@@ -222,7 +222,7 @@ private class OutResult extends FunctionOutput, TOutResult {
   }
 }
 
-/** A result position of a function, viewed as an output. */
+/** The receiver of a function, viewed as an output. */
 private class OutReceiver extends FunctionOutput, TOutReceiver {
   override predicate isReceiver() { any() }
 
@@ -242,13 +242,13 @@ private class OutReceiver extends FunctionOutput, TOutReceiver {
   override string toString() { result = "receiver" }
 }
 
-/** A result position of a function, viewed as an output. */
+/** A parameter of a function, viewed as an output. */
 private class OutParameter extends FunctionOutput, TOutParameter {
   int index;
 
   OutParameter() { this = TOutParameter(index) }
 
-  override predicate isParameter(int i) { i = index and i >= 0 }
+  override predicate isParameter(int i) { i = index }
 
   override DataFlow::Node getEntryNode(FuncDef f) {
     // there is no generic way of assigning to a parameter; operations that taint a parameter
