@@ -23,11 +23,7 @@ private predicate catchesEx(TryStmt t, RefType exType) {
   exists(CatchClause cc, LocalVariableDeclExpr v |
     t.getACatchClause() = cc and
     cc.getVariable() = v and
-    v
-        .getType()
-        .(RefType)
-        .getASubtype*()
-        .hasQualifiedName(exType.getPackage().getName(), exType.getName()) //Detect the case that a subclass exception is thrown but its parent class is declared in the catch clause.
+    v.getType().(RefType).getASubtype*() = exType //Detect the case that a subclass exception is thrown but its parent class is declared in the catch clause.
   )
 }
 
@@ -48,8 +44,8 @@ private predicate isServletMethod(Callable c) {
 class UncaughtServletExceptionSink extends DataFlow::ExprNode {
   UncaughtServletExceptionSink() {
     exists(Method m, MethodAccess ma | ma.getMethod() = m |
-    isServletMethod(ma.getEnclosingCallable()) and
-    (
+      isServletMethod(ma.getEnclosingCallable()) and
+      (
         m.getAThrownExceptionType().getASupertype*() instanceof IOException or
         m
             .getAThrownExceptionType()
