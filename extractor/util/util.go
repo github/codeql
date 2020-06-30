@@ -45,8 +45,8 @@ func runGoList(format string, pkgpath string, flags ...string) (string, error) {
 	return strings.TrimSpace(string(out)), nil
 }
 
-// GetModDir gets directory of the module containing the package with path `pkgpath`. It passes the
-// `go list` the flags specified by `flags`.
+// GetModDir gets the absolute directory of the module containing the package with path
+// `pkgpath`. It passes the `go list` the flags specified by `flags`.
 func GetModDir(pkgpath string, flags ...string) string {
 	mod, err := runGoList("{{.Module}}", pkgpath, flags...)
 	if err != nil || mod == "<nil>" {
@@ -67,8 +67,8 @@ func GetModDir(pkgpath string, flags ...string) string {
 	return abs
 }
 
-// GetPkgDir gets directory containing the package with path `pkgpath`. It passes the `go list`
-// command the flags specified by `flags`.
+// GetPkgDir gets the absolute directory containing the package with path `pkgpath`. It passes the
+// `go list` command the flags specified by `flags`.
 func GetPkgDir(pkgpath string, flags ...string) string {
 	pkgDir, err := runGoList("{{.Dir}}", pkgpath, flags...)
 	if err != nil {
