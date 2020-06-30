@@ -63,7 +63,6 @@ predicate castShortArrayToLongerArray(
     (
       arrFrom = getBaseType(castLittle.getOperand().getType())
       or
-      castLittle.getOperand().getChildExpr(0) instanceof IndexExpr and
       arrFrom = castLittle.getOperand().getChildExpr(0).(IndexExpr).getBase().getType()
     ) and
     arrTo.getLength() > 0 and //TODO
@@ -90,10 +89,7 @@ predicate castTypeToArray(DataFlow::PathNode source, DataFlow::PathNode sink, st
     arrTo = getBaseType(castBig.getTypeExpr().getType()) and
     not (typeFrom instanceof ArrayType or typeFrom.getUnderlyingType() instanceof ArrayType) and
     not typeFrom instanceof PointerType and
-    not (
-      castLittle.getOperand().getChildExpr(0) instanceof IndexExpr and
-      castLittle.getOperand().getChildExpr(0).(IndexExpr).getBase().getType() instanceof ArrayType
-    ) and
+    not castLittle.getOperand().getChildExpr(0).(IndexExpr).getBase().getType() instanceof ArrayType and
     typeFrom = getBaseType(castLittle.getOperand().getType()) and
     message =
       "Dangerous type up-casting to [" + arrTo.getLength() + "]" + arrTo.getElementType() + " from "
