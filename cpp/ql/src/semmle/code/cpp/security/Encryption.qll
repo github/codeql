@@ -59,8 +59,6 @@ string getASecureAlgorithmName() {
  * contain an algorithm that is known to be secure.
  */
 string getSecureAlgorithmRegex() {
-  // The implementation of this is a duplicate of getInsecureAlgorithmRegex, as
-  // it isn't possible to have string -> string functions at the moment
   // algorithms usually appear in names surrounded by characters that are not
   // alphabetical characters in the same case. This handles the upper and lower
   // case cases
