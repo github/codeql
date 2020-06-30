@@ -289,7 +289,7 @@ class Declaration extends Locatable, @declaration {
   }
 }
 
-class DeclarationEntryDB = @var_decl or @type_decl or @fun_decl;
+private class TDeclarationEntry = @var_decl or @type_decl or @fun_decl;
 
 /**
  * A C/C++ declaration entry. For example the following code contains five
@@ -306,7 +306,7 @@ class DeclarationEntryDB = @var_decl or @type_decl or @fun_decl;
  * See the comment above `Declaration` for an explanation of the relationship
  * between `Declaration` and `DeclarationEntry`.
  */
-class DeclarationEntry extends Locatable, DeclarationEntryDB {
+class DeclarationEntry extends Locatable, TDeclarationEntry {
   /** Gets a specifier associated with this declaration entry. */
   string getASpecifier() { none() }
 
@@ -373,7 +373,7 @@ class DeclarationEntry extends Locatable, DeclarationEntryDB {
   }
 }
 
-class AccessHolderDB = @function or @usertype;
+private class TAccessHolder = @function or @usertype;
 
 /**
  * A declaration that can potentially have more C++ access rights than its
@@ -396,7 +396,7 @@ class AccessHolderDB = @function or @usertype;
  * the informal phrase "_R_ occurs in a member or friend of class C", where
  * `AccessHolder` corresponds to this _R_.
  */
-class AccessHolder extends Declaration, AccessHolderDB {
+class AccessHolder extends Declaration, TAccessHolder {
   /**
    * Holds if `this` can access private members of class `c`.
    *

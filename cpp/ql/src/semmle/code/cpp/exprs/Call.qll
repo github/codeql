@@ -2,12 +2,12 @@ import semmle.code.cpp.exprs.Expr
 import semmle.code.cpp.Function
 private import semmle.code.cpp.dataflow.EscapesTree
 
-class CallDB = @funbindexpr or @callexpr;
+private class TCall = @funbindexpr or @callexpr;
 
 /**
  * A C/C++ call.
  */
-class Call extends Expr, NameQualifiableElement, CallDB {
+class Call extends Expr, NameQualifiableElement, TCall {
   // `@funbindexpr` (which is the dbscheme type for FunctionCall) is a union type that includes
   // `@routineexpr. This dbscheme type includes accesses to functions that are not necessarily calls to
   // that function. That's why the charpred for `FunctionCall` requires:
