@@ -2168,6 +2168,40 @@ nodes
 | other-fs-libraries.js:40:35:40:38 | path |
 | other-fs-libraries.js:40:35:40:38 | path |
 | other-fs-libraries.js:40:35:40:38 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
 | tainted-access-paths.js:6:7:6:48 | path |
 | tainted-access-paths.js:6:7:6:48 | path |
 | tainted-access-paths.js:6:7:6:48 | path |
@@ -6090,6 +6124,70 @@ edges
 | other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:40:35:40:38 | path |
 | other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:40:35:40:38 | path |
 | other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:40:35:40:38 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
 | other-fs-libraries.js:38:14:38:37 | url.par ... , true) | other-fs-libraries.js:38:14:38:43 | url.par ... ).query |
 | other-fs-libraries.js:38:14:38:37 | url.par ... , true) | other-fs-libraries.js:38:14:38:43 | url.par ... ).query |
 | other-fs-libraries.js:38:14:38:37 | url.par ... , true) | other-fs-libraries.js:38:14:38:43 | url.par ... ).query |
@@ -7470,6 +7568,8 @@ edges
 | other-fs-libraries.js:19:56:19:59 | path | other-fs-libraries.js:9:24:9:30 | req.url | other-fs-libraries.js:19:56:19:59 | path | This path depends on $@. | other-fs-libraries.js:9:24:9:30 | req.url | a user-provided value |
 | other-fs-libraries.js:24:35:24:38 | path | other-fs-libraries.js:9:24:9:30 | req.url | other-fs-libraries.js:24:35:24:38 | path | This path depends on $@. | other-fs-libraries.js:9:24:9:30 | req.url | a user-provided value |
 | other-fs-libraries.js:40:35:40:38 | path | other-fs-libraries.js:38:24:38:30 | req.url | other-fs-libraries.js:40:35:40:38 | path | This path depends on $@. | other-fs-libraries.js:38:24:38:30 | req.url | a user-provided value |
+| other-fs-libraries.js:41:50:41:53 | path | other-fs-libraries.js:38:24:38:30 | req.url | other-fs-libraries.js:41:50:41:53 | path | This path depends on $@. | other-fs-libraries.js:38:24:38:30 | req.url | a user-provided value |
+| other-fs-libraries.js:42:53:42:56 | path | other-fs-libraries.js:38:24:38:30 | req.url | other-fs-libraries.js:42:53:42:56 | path | This path depends on $@. | other-fs-libraries.js:38:24:38:30 | req.url | a user-provided value |
 | tainted-access-paths.js:8:19:8:22 | path | tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:8:19:8:22 | path | This path depends on $@. | tainted-access-paths.js:6:24:6:30 | req.url | a user-provided value |
 | tainted-access-paths.js:12:19:12:25 | obj.sub | tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:12:19:12:25 | obj.sub | This path depends on $@. | tainted-access-paths.js:6:24:6:30 | req.url | a user-provided value |
 | tainted-access-paths.js:26:19:26:26 | obj.sub3 | tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:26:19:26:26 | obj.sub3 | This path depends on $@. | tainted-access-paths.js:6:24:6:30 | req.url | a user-provided value |
