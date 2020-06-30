@@ -70,6 +70,14 @@ class MemberFunction extends Function {
       result = getADeclarationEntry() and result != getDefinition()
     )
   }
+
+  /**
+   * Gets the type of the `this` parameter associated with this member function, if any. Typically,
+   * this will be a `PointerType`, possibly with `const` and/or `volatile` qualifiers.
+   */
+  Type getTypeOfThis() {
+    member_function_this_type(underlyingElement(this), unresolveElement(result))
+  }
 }
 
 /**
