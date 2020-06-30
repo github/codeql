@@ -7,6 +7,7 @@ import semmle.code.java.frameworks.javaee.Persistence
 import semmle.code.java.frameworks.SpringJdbc
 import semmle.code.java.frameworks.MyBatis
 import semmle.code.java.frameworks.Hibernate
+import semmle.code.java.frameworks.jOOQ
 
 /** A sink for database query language injection vulnerabilities. */
 abstract class QueryInjectionSink extends DataFlow::ExprNode { }
@@ -29,6 +30,8 @@ class SqlInjectionSink extends QueryInjectionSink {
       index = 0 and mybatisSqlMethod(m)
       or
       index = 0 and hibernateSqlMethod(m)
+      or
+      index = 0 and jOOQSqlMethod(m)
     )
   }
 }
