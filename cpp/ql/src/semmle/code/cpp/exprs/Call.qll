@@ -2,12 +2,22 @@ import semmle.code.cpp.exprs.Expr
 import semmle.code.cpp.Function
 private import semmle.code.cpp.dataflow.EscapesTree
 
+private class TCall = @funbindexpr or @callexpr;
+
 /**
  * A C/C++ call.
- *
- * This is the abstract root QL class for all types of calls.
  */
-abstract class Call extends Expr, NameQualifiableElement {
+class Call extends Expr, NameQualifiableElement, TCall {
+  // `@funbindexpr` (which is the dbscheme type for FunctionCall) is a union type that includes
+  // `@routineexpr. This dbscheme type includes accesses to functions that are not necessarily calls to
+  // that function. That's why the charpred for `FunctionCall` requires:
+  // ```
+  // iscall(underlyingElement(this), _)
+  // ```
+  // So for the charpred for `Call` we include the requirement that if this is an instance of
+  // `@funbindexpr` it must be a _call_ to the function.
+  Call() { this instanceof @callexpr or iscall(underlyingElement(this), _) }
+
   /**
    * Gets the number of arguments (actual parameters) of this call. The count
    * does _not_ include the qualifier of the call, if any.
@@ -74,7 +84,7 @@ abstract class Call extends Expr, NameQualifiableElement {
    *   method, and it might not exist.
    * - For a variable call, it never exists.
    */
-  abstract Function getTarget();
+  Function getTarget() { none() } // overridden in subclasses
 
   override int getPrecedence() { result = 17 }
 
