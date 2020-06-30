@@ -5,7 +5,7 @@
 import cpp
 
 /**
- * Returns an algorithm that is known to be insecure.
+ * Gets the name of an algorithm that is known to be insecure.
  */
 string getAnInsecureAlgorithmName() {
   result = "DES" or
@@ -16,7 +16,7 @@ string getAnInsecureAlgorithmName() {
 }
 
 /**
- * Returns the name of a hash algorithm that is insecure if it is being used for
+ * Gets the name of a hash algorithm that is insecure if it is being used for
  * encryption (but it is hard to know when that is happening).
  */
 string getAnInsecureHashAlgorithmName() {
@@ -25,7 +25,7 @@ string getAnInsecureHashAlgorithmName() {
 }
 
 /**
- * Returns a regular expression for matching strings that look like they
+ * Gets the regular expression used for matching strings that look like they
  * contain an algorithm that is known to be insecure.
  */
 string getInsecureAlgorithmRegex() {
@@ -42,7 +42,7 @@ string getInsecureAlgorithmRegex() {
 }
 
 /**
- * Returns an algorithms that is known to be secure.
+ * Gets the name of an algorithm that is known to be secure.
  */
 string getASecureAlgorithmName() {
   result = "RSA" or
@@ -55,7 +55,7 @@ string getASecureAlgorithmName() {
 }
 
 /**
- * Returns a regular expression for matching strings that look like they
+ * Gets a regular expression for matching strings that look like they
  * contain an algorithm that is known to be secure.
  */
 string getSecureAlgorithmRegex() {
