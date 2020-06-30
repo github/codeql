@@ -7,7 +7,7 @@
  * void *MyMalloc(size_t size)
  * {
  *   void *ptr = malloc(size);
- * 
+ *
  *   // ... additional logic?
  *
  *   return ptr;
