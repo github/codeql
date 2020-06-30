@@ -10,11 +10,11 @@ class HibernateSession extends RefType {
 }
 
 /**
- * Holds if `m` is a method on `HibernateSession` taking an SQL string as its
- * first argument.
+ * Holds if `m` is a method on `HibernateSession`, or a subclass, taking an SQL
+ * string as its first argument.
  */
 predicate hibernateSqlMethod(Method m) {
-  m.getDeclaringType() instanceof HibernateSession and
+  m.getDeclaringType().getASourceSupertype*() instanceof HibernateSession and
   m.getParameterType(0) instanceof TypeString and
   (
     m.hasName("createQuery") or
