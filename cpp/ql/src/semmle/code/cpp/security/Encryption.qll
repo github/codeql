@@ -59,15 +59,16 @@ string getASecureAlgorithmName() {
  * contain an algorithm that is known to be secure.
  */
 string getSecureAlgorithmRegex() {
-  // algorithms usually appear in names surrounded by characters that are not
-  // alphabetical characters in the same case. This handles the upper and lower
-  // case cases
-  result = "(^|.*[^A-Z])" + getASecureAlgorithmName() + "([^A-Z].*|$)"
-  or
-  // for lowercase, we want to be careful to avoid being confused by camelCase
-  // hence we require two preceding uppercase letters to be sure of a case
-  // switch, or a preceding non-alphabetic character
-  result = "(^|.*[A-Z]{2}|.*[^a-zA-Z])" + getASecureAlgorithmName().toLowerCase() + "([^a-z].*|$)"
+  result =
+    // algorithms usually appear in names surrounded by characters that are not
+    // alphabetical characters in the same case. This handles the upper and lower
+    // case cases
+    "(^|.*[^A-Z])(" + strictconcat(getASecureAlgorithmName(), "|") + ")([^A-Z].*|$)" + "|" +
+      // for lowercase, we want to be careful to avoid being confused by camelCase
+      // hence we require two preceding uppercase letters to be sure of a case
+      // switch, or a preceding non-alphabetic character
+      "(^|.*[A-Z]{2}|.*[^a-zA-Z])(" + strictconcat(getASecureAlgorithmName().toLowerCase(), "|") +
+      ")([^a-z].*|$)"
 }
 
 /**
