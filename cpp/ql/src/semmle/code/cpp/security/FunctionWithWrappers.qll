@@ -1,5 +1,5 @@
 /**
- * Provides predicates for identifying functions which wrap other functions,
+ * Provides predicates for identifying functions that wrap other functions,
  * passing the same arguments from the outer call into the inner call. In the
  * following example `MyMalloc` wraps a call to `malloc`, passing in the `size`
  * parameter:
