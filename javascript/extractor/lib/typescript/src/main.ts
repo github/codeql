@@ -41,16 +41,25 @@ import { Project } from "./common";
 import { TypeTable } from "./type_table";
 import { VirtualSourceRoot } from "./virtual_source_root";
 
+// Remove limit on stack trace depth.
+Error.stackTraceLimit = Infinity;
+
 interface ParseCommand {
     command: "parse";
     filename: string;
 }
-interface OpenProjectCommand {
-    command: "open-project";
+interface LoadCommand {
     tsConfig: string;
+    sourceRoot: string | null;
     virtualSourceRoot: string | null;
     packageEntryPoints: [string, string][];
     packageJsonFiles: [string, string][];
+}
+interface OpenProjectCommand extends LoadCommand {
+    command: "open-project";
+}
+interface GetOwnFilesCommand extends LoadCommand {
+    command: "get-own-files";
 }
 interface CloseProjectCommand {
     command: "close-project";
@@ -72,7 +81,7 @@ interface PrepareFilesCommand {
 interface GetMetadataCommand {
     command: "get-metadata";
 }
-type Command = ParseCommand | OpenProjectCommand | CloseProjectCommand
+type Command = ParseCommand | OpenProjectCommand | GetOwnFilesCommand | CloseProjectCommand
     | GetTypeTableCommand | ResetCommand | QuitCommand | PrepareFilesCommand | GetMetadataCommand;
 
 /** The state to be shared between commands. */
@@ -362,15 +371,22 @@ function parseSingleFile(filename: string): {ast: ts.SourceFile, code: string} {
  */
 const nodeModulesRex = /[/\\]node_modules[/\\]((?:@[\w.-]+[/\\])?\w[\w.-]*)[/\\](.*)/;
 
-function handleOpenProjectCommand(command: OpenProjectCommand) {
-    Error.stackTraceLimit = Infinity;
-    let tsConfigFilename = String(command.tsConfig);
-    let tsConfig = ts.readConfigFile(tsConfigFilename, ts.sys.readFile);
-    let basePath = pathlib.dirname(tsConfigFilename);
+interface LoadedConfig {
+    config: ts.ParsedCommandLine;
+    basePath: string;
+    packageEntryPoints: Map<string, string>;
+    packageJsonFiles: Map<string, string>;
+    virtualSourceRoot: VirtualSourceRoot;
+    ownFiles: string[];
+}
+
+function loadTsConfig(command: LoadCommand): LoadedConfig {
+    let tsConfig = ts.readConfigFile(command.tsConfig, ts.sys.readFile);
+    let basePath = pathlib.dirname(command.tsConfig);
 
     let packageEntryPoints = new Map(command.packageEntryPoints);
     let packageJsonFiles = new Map(command.packageJsonFiles);
-    let virtualSourceRoot = new VirtualSourceRoot(process.cwd(), command.virtualSourceRoot);
+    let virtualSourceRoot = new VirtualSourceRoot(command.sourceRoot, command.virtualSourceRoot);
 
     /**
      * Rewrites path segments of form `node_modules/PACK/suffix` to be relative to
@@ -415,7 +431,29 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
         }
     };
     let config = ts.parseJsonConfigFileContent(tsConfig.config, parseConfigHost, basePath);
-    let project = new Project(tsConfigFilename, config, state.typeTable, packageEntryPoints, virtualSourceRoot);
+
+    let ownFiles = config.fileNames.map(file => pathlib.resolve(file));
+
+    return { config, basePath, packageJsonFiles, packageEntryPoints, virtualSourceRoot, ownFiles };
+}
+
+/**
+ * Returns the list of files included in the given tsconfig.json file's include pattern,
+ * (not including those only references through imports).
+ */
+function handleGetFileListCommand(command: GetOwnFilesCommand) {
+    let { config, ownFiles } = loadTsConfig(command);
+
+    console.log(JSON.stringify({
+        type: "file-list",
+        ownFiles,
+    }));
+}
+
+function handleOpenProjectCommand(command: OpenProjectCommand) {
+    let { config, packageEntryPoints, virtualSourceRoot, basePath, ownFiles } = loadTsConfig(command);
+
+    let project = new Project(command.tsConfig, config, state.typeTable, packageEntryPoints, virtualSourceRoot);
     project.load();
 
     state.project = project;
@@ -587,9 +625,14 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
         return symbol;
     }
 
+    // Unlike in the get-own-files command, this command gets all files we can possibly
+    // extract type information for, including files referenced outside the tsconfig's inclusion pattern.
+    let allFiles = program.getSourceFiles().map(sf => pathlib.resolve(sf.fileName));
+
     console.log(JSON.stringify({
         type: "project-opened",
-        files: program.getSourceFiles().map(sf => pathlib.resolve(sf.fileName)),
+        ownFiles,
+        allFiles,
     }));
 }
 
@@ -685,6 +728,9 @@ function runReadLineInterface() {
         case "open-project":
             handleOpenProjectCommand(req);
             break;
+        case "get-own-files":
+            handleGetFileListCommand(req);
+            break;
         case "close-project":
             handleCloseProjectCommand(req);
             break;
@@ -720,6 +766,7 @@ if (process.argv.length > 2) {
             tsConfig: argument,
             packageEntryPoints: [],
             packageJsonFiles: [],
+            sourceRoot: null,
             virtualSourceRoot: null,
         });
         for (let sf of state.project.program.getSourceFiles()) {

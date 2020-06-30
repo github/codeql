@@ -33,18 +33,27 @@ class ThriftElement extends ExternalData {
 
     private int column() { result = this.getFieldAsInt(6) }
 
-    predicate hasLocationInfo(string fp, int bl, int bc, int el, int ec) {
-        fp = this.getPath() and
-        bl = this.line() and
-        bc = this.column() and
-        el = this.line() and
-        ec = this.column() + this.getValue().length() - 1
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+     */
+    predicate hasLocationInfo(
+        string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+        filepath = this.getPath() and
+        startline = this.line() and
+        startcolumn = this.column() and
+        endline = this.line() and
+        endcolumn = this.column() + this.getValue().length() - 1
         or
         exists(ThriftElement first, ThriftElement last |
             first = this.getChild(min(int l | exists(this.getChild(l)))) and
             last = this.getChild(max(int l | exists(this.getChild(l)))) and
-            first.hasLocationInfo(fp, bl, bc, _, _) and
-            last.hasLocationInfo(fp, _, _, el, ec)
+            first.hasLocationInfo(filepath, startline, startcolumn, _, _) and
+            last.hasLocationInfo(filepath, _, _, endline, endcolumn)
         )
     }
 
@@ -62,11 +71,11 @@ abstract class ThriftNamedElement extends ThriftElement {
         not exists(this.getName()) and result = this.getKind() + " ???"
     }
 
-    override predicate hasLocationInfo(string fp, int bl, int bc, int el, int ec) {
+    override predicate hasLocationInfo(string filepath, int startline, int startcolumn, int endline, int endcolumn) {
         exists(ThriftElement first |
             first = this.getChild(min(int l | exists(this.getChild(l)))) and
-            first.hasLocationInfo(fp, bl, bc, _, _) and
-            this.getNameElement().hasLocationInfo(fp, _, _, el, ec)
+            first.hasLocationInfo(filepath, startline, startcolumn, _, _) and
+            this.getNameElement().hasLocationInfo(filepath, _, _, endline, endcolumn)
         )
     }
 }
@@ -142,9 +151,9 @@ class ThriftFunction extends ThriftNamedElement {
 
     ThriftType getReturnType() { result = this.getChild(1).getChild(0) }
 
-    override predicate hasLocationInfo(string fp, int bl, int bc, int el, int ec) {
-        this.getChild(1).hasLocationInfo(fp, bl, bc, _, _) and
-        this.getChild(2).hasLocationInfo(fp, _, _, el, ec)
+    override predicate hasLocationInfo(string filepath, int startline, int startcolumn, int endline, int endcolumn) {
+        this.getChild(1).hasLocationInfo(filepath, startline, startcolumn, _, _) and
+        this.getChild(2).hasLocationInfo(filepath, _, _, endline, endcolumn)
     }
 
     ThriftService getService() { result.getAFunction() = this }

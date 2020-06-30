@@ -5,7 +5,7 @@
  * a `null` pointer exception (`NullReferenceException`) may be thrown.
  * Example:
  *
- * ```
+ * ```csharp
  * void M(string s) {
  *   if (s != null) {
  *     ...

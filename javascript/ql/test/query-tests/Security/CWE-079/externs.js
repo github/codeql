@@ -25,6 +25,24 @@
 function EventTarget() {}
 
 /**
- * @type {!EventTarget}
+ * Stub for the DOM hierarchy.
+ *
+ * @constructor
+ * @extends {EventTarget}
+ */
+function DomObjectStub() {}
+
+/**
+ * @type {!DomObjectStub}
+ */
+DomObjectStub.prototype.body;
+
+/**
+ * @type {!DomObjectStub}
+ */
+DomObjectStub.prototype.value;
+
+/**
+ * @type {!DomObjectStub}
  */
 var document;

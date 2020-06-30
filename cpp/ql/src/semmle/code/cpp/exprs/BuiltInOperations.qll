@@ -5,7 +5,7 @@ import semmle.code.cpp.exprs.Expr
  * built-in functionality.
  */
 class BuiltInOperation extends Expr, @builtin_op {
-  override string getCanonicalQLClass() { result = "BuiltInOperation" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperation" }
 }
 
 /**
@@ -25,7 +25,7 @@ class VarArgsExpr extends BuiltInOperation, @var_args_expr { }
 class BuiltInVarArgsStart extends BuiltInOperation, @vastartexpr {
   override string toString() { result = "__builtin_va_start" }
 
-  override string getCanonicalQLClass() { result = "BuiltInVarArgsStart" }
+  override string getAPrimaryQlClass() { result = "BuiltInVarArgsStart" }
 
   /**
    * Gets the `va_list` argument.
@@ -50,7 +50,7 @@ class BuiltInVarArgsStart extends BuiltInOperation, @vastartexpr {
 class BuiltInVarArgsEnd extends BuiltInOperation, @vaendexpr {
   override string toString() { result = "__builtin_va_end" }
 
-  override string getCanonicalQLClass() { result = "BuiltInVarArgsEnd" }
+  override string getAPrimaryQlClass() { result = "BuiltInVarArgsEnd" }
 
   /**
    * Gets the `va_list` argument.
@@ -68,7 +68,7 @@ class BuiltInVarArgsEnd extends BuiltInOperation, @vaendexpr {
 class BuiltInVarArg extends BuiltInOperation, @vaargexpr {
   override string toString() { result = "__builtin_va_arg" }
 
-  override string getCanonicalQLClass() { result = "BuiltInVarArg" }
+  override string getAPrimaryQlClass() { result = "BuiltInVarArg" }
 
   /**
    * Gets the `va_list` argument.
@@ -88,7 +88,7 @@ class BuiltInVarArg extends BuiltInOperation, @vaargexpr {
 class BuiltInVarArgCopy extends BuiltInOperation, @vacopyexpr {
   override string toString() { result = "__builtin_va_copy" }
 
-  override string getCanonicalQLClass() { result = "BuiltInVarArgCopy" }
+  override string getAPrimaryQlClass() { result = "BuiltInVarArgCopy" }
 
   /**
    * Gets the destination `va_list` argument.
@@ -110,7 +110,7 @@ class BuiltInVarArgCopy extends BuiltInOperation, @vacopyexpr {
 class BuiltInNoOp extends BuiltInOperation, @noopexpr {
   override string toString() { result = "__noop" }
 
-  override string getCanonicalQLClass() { result = "BuiltInNoOp" }
+  override string getAPrimaryQlClass() { result = "BuiltInNoOp" }
 }
 
 /**
@@ -132,7 +132,7 @@ deprecated class BuiltInOperationOffsetOf = BuiltInOperationBuiltInOffsetOf;
 class BuiltInOperationBuiltInOffsetOf extends BuiltInOperation, @offsetofexpr {
   override string toString() { result = "__builtin_offsetof" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationBuiltInOffsetOf" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationBuiltInOffsetOf" }
 }
 
 /**
@@ -149,7 +149,7 @@ class BuiltInOperationBuiltInOffsetOf extends BuiltInOperation, @offsetofexpr {
 class BuiltInIntAddr extends BuiltInOperation, @intaddrexpr {
   override string toString() { result = "__INTADDR__" }
 
-  override string getCanonicalQLClass() { result = "BuiltInIntAddr" }
+  override string getAPrimaryQlClass() { result = "BuiltInIntAddr" }
 }
 
 /**
@@ -164,7 +164,7 @@ class BuiltInIntAddr extends BuiltInOperation, @intaddrexpr {
 class BuiltInOperationHasAssign extends BuiltInOperation, @hasassignexpr {
   override string toString() { result = "__has_assign" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationHasAssign" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationHasAssign" }
 }
 
 /**
@@ -179,7 +179,7 @@ class BuiltInOperationHasAssign extends BuiltInOperation, @hasassignexpr {
 class BuiltInOperationHasCopy extends BuiltInOperation, @hascopyexpr {
   override string toString() { result = "__has_copy" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationHasCopy" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationHasCopy" }
 }
 
 /**
@@ -195,7 +195,7 @@ class BuiltInOperationHasCopy extends BuiltInOperation, @hascopyexpr {
 class BuiltInOperationHasNoThrowAssign extends BuiltInOperation, @hasnothrowassign {
   override string toString() { result = "__has_nothrow_assign" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationHasNoThrowAssign" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationHasNoThrowAssign" }
 }
 
 /**
@@ -211,7 +211,7 @@ class BuiltInOperationHasNoThrowAssign extends BuiltInOperation, @hasnothrowassi
 class BuiltInOperationHasNoThrowConstructor extends BuiltInOperation, @hasnothrowconstr {
   override string toString() { result = "__has_nothrow_constructor" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationHasNoThrowConstructor" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationHasNoThrowConstructor" }
 }
 
 /**
@@ -226,7 +226,7 @@ class BuiltInOperationHasNoThrowConstructor extends BuiltInOperation, @hasnothro
 class BuiltInOperationHasNoThrowCopy extends BuiltInOperation, @hasnothrowcopy {
   override string toString() { result = "__has_nothrow_copy" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationHasNoThrowCopy" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationHasNoThrowCopy" }
 }
 
 /**
@@ -242,7 +242,7 @@ class BuiltInOperationHasNoThrowCopy extends BuiltInOperation, @hasnothrowcopy {
 class BuiltInOperationHasTrivialAssign extends BuiltInOperation, @hastrivialassign {
   override string toString() { result = "__has_trivial_assign" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationHasTrivialAssign" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationHasTrivialAssign" }
 }
 
 /**
@@ -257,7 +257,7 @@ class BuiltInOperationHasTrivialAssign extends BuiltInOperation, @hastrivialassi
 class BuiltInOperationHasTrivialConstructor extends BuiltInOperation, @hastrivialconstr {
   override string toString() { result = "__has_trivial_constructor" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationHasTrivialConstructor" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationHasTrivialConstructor" }
 }
 
 /**
@@ -272,7 +272,7 @@ class BuiltInOperationHasTrivialConstructor extends BuiltInOperation, @hastrivia
 class BuiltInOperationHasTrivialCopy extends BuiltInOperation, @hastrivialcopy {
   override string toString() { result = "__has_trivial_copy" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationHasTrivialCopy" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationHasTrivialCopy" }
 }
 
 /**
@@ -287,7 +287,7 @@ class BuiltInOperationHasTrivialCopy extends BuiltInOperation, @hastrivialcopy {
 class BuiltInOperationHasTrivialDestructor extends BuiltInOperation, @hastrivialdestructor {
   override string toString() { result = "__has_trivial_destructor" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationHasTrivialDestructor" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationHasTrivialDestructor" }
 }
 
 /**
@@ -302,7 +302,7 @@ class BuiltInOperationHasTrivialDestructor extends BuiltInOperation, @hastrivial
 class BuiltInOperationHasUserDestructor extends BuiltInOperation, @hasuserdestr {
   override string toString() { result = "__has_user_destructor" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationHasUserDestructor" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationHasUserDestructor" }
 }
 
 /**
@@ -320,7 +320,7 @@ class BuiltInOperationHasUserDestructor extends BuiltInOperation, @hasuserdestr 
 class BuiltInOperationHasVirtualDestructor extends BuiltInOperation, @hasvirtualdestr {
   override string toString() { result = "__has_virtual_destructor" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationHasVirtualDestructor" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationHasVirtualDestructor" }
 }
 
 /**
@@ -335,7 +335,7 @@ class BuiltInOperationHasVirtualDestructor extends BuiltInOperation, @hasvirtual
 class BuiltInOperationIsAbstract extends BuiltInOperation, @isabstractexpr {
   override string toString() { result = "__is_abstract" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsAbstract" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsAbstract" }
 }
 
 /**
@@ -350,7 +350,7 @@ class BuiltInOperationIsAbstract extends BuiltInOperation, @isabstractexpr {
 class BuiltInOperationIsBaseOf extends BuiltInOperation, @isbaseofexpr {
   override string toString() { result = "__is_base_of" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsBaseOf" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsBaseOf" }
 }
 
 /**
@@ -365,7 +365,7 @@ class BuiltInOperationIsBaseOf extends BuiltInOperation, @isbaseofexpr {
 class BuiltInOperationIsClass extends BuiltInOperation, @isclassexpr {
   override string toString() { result = "__is_class" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsClass" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsClass" }
 }
 
 /**
@@ -380,7 +380,7 @@ class BuiltInOperationIsClass extends BuiltInOperation, @isclassexpr {
 class BuiltInOperationIsConvertibleTo extends BuiltInOperation, @isconvtoexpr {
   override string toString() { result = "__is_convertible_to" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsConvertibleTo" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsConvertibleTo" }
 }
 
 /**
@@ -395,7 +395,7 @@ class BuiltInOperationIsConvertibleTo extends BuiltInOperation, @isconvtoexpr {
 class BuiltInOperationIsEmpty extends BuiltInOperation, @isemptyexpr {
   override string toString() { result = "__is_empty" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsEmpty" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsEmpty" }
 }
 
 /**
@@ -410,7 +410,7 @@ class BuiltInOperationIsEmpty extends BuiltInOperation, @isemptyexpr {
 class BuiltInOperationIsEnum extends BuiltInOperation, @isenumexpr {
   override string toString() { result = "__is_enum" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsEnum" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsEnum" }
 }
 
 /**
@@ -427,7 +427,7 @@ class BuiltInOperationIsEnum extends BuiltInOperation, @isenumexpr {
 class BuiltInOperationIsPod extends BuiltInOperation, @ispodexpr {
   override string toString() { result = "__is_pod" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsPod" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsPod" }
 }
 
 /**
@@ -442,7 +442,7 @@ class BuiltInOperationIsPod extends BuiltInOperation, @ispodexpr {
 class BuiltInOperationIsPolymorphic extends BuiltInOperation, @ispolyexpr {
   override string toString() { result = "__is_polymorphic" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsPolymorphic" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsPolymorphic" }
 }
 
 /**
@@ -457,7 +457,7 @@ class BuiltInOperationIsPolymorphic extends BuiltInOperation, @ispolyexpr {
 class BuiltInOperationIsUnion extends BuiltInOperation, @isunionexpr {
   override string toString() { result = "__is_union" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsUnion" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsUnion" }
 }
 
 /**
@@ -496,7 +496,7 @@ class BuiltInOperationBuiltInTypesCompatibleP extends BuiltInOperation, @typesco
 class BuiltInOperationBuiltInShuffleVector extends BuiltInOperation, @builtinshufflevector {
   override string toString() { result = "__builtin_shufflevector" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationBuiltInShuffleVector" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationBuiltInShuffleVector" }
 }
 
 /**
@@ -516,7 +516,7 @@ class BuiltInOperationBuiltInShuffleVector extends BuiltInOperation, @builtinshu
 class BuiltInOperationBuiltInConvertVector extends BuiltInOperation, @builtinconvertvector {
   override string toString() { result = "__builtin_convertvector" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationBuiltInConvertVector" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationBuiltInConvertVector" }
 }
 
 /**
@@ -538,7 +538,7 @@ class BuiltInOperationBuiltInAddressOf extends UnaryOperation, BuiltInOperation,
     result = this.getOperand().(ReferenceDereferenceExpr).getChild(0).(Access).getTarget()
   }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationBuiltInAddressOf" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationBuiltInAddressOf" }
 
   override string getOperator() { result = "__builtin_addressof" }
 }
@@ -560,7 +560,7 @@ class BuiltInOperationIsTriviallyConstructible extends BuiltInOperation,
   @istriviallyconstructibleexpr {
   override string toString() { result = "__is_trivially_constructible" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsTriviallyConstructible" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsTriviallyConstructible" }
 }
 
 /**
@@ -577,7 +577,7 @@ class BuiltInOperationIsTriviallyConstructible extends BuiltInOperation,
 class BuiltInOperationIsDestructible extends BuiltInOperation, @isdestructibleexpr {
   override string toString() { result = "__is_destructible" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsDestructible" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsDestructible" }
 }
 
 /**
@@ -594,7 +594,7 @@ class BuiltInOperationIsDestructible extends BuiltInOperation, @isdestructibleex
 class BuiltInOperationIsNothrowDestructible extends BuiltInOperation, @isnothrowdestructibleexpr {
   override string toString() { result = "__is_nothrow_destructible" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsNothrowDestructible" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsNothrowDestructible" }
 }
 
 /**
@@ -610,7 +610,7 @@ class BuiltInOperationIsNothrowDestructible extends BuiltInOperation, @isnothrow
 class BuiltInOperationIsTriviallyDestructible extends BuiltInOperation, @istriviallydestructibleexpr {
   override string toString() { result = "__is_trivially_destructible" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsTriviallyDestructible" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsTriviallyDestructible" }
 }
 
 /**
@@ -629,7 +629,7 @@ class BuiltInOperationIsTriviallyDestructible extends BuiltInOperation, @istrivi
 class BuiltInOperationIsTriviallyAssignable extends BuiltInOperation, @istriviallyassignableexpr {
   override string toString() { result = "__is_trivially_assignable" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsTriviallyAssignable" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsTriviallyAssignable" }
 }
 
 /**
@@ -645,7 +645,7 @@ class BuiltInOperationIsTriviallyAssignable extends BuiltInOperation, @istrivial
 class BuiltInOperationIsNothrowAssignable extends BuiltInOperation, @isnothrowassignableexpr {
   override string toString() { result = "__is_nothrow_assignable" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsNothrowAssignable" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsNothrowAssignable" }
 }
 
 /**
@@ -665,7 +665,7 @@ class BuiltInOperationIsNothrowAssignable extends BuiltInOperation, @isnothrowas
 class BuiltInOperationIsStandardLayout extends BuiltInOperation, @isstandardlayoutexpr {
   override string toString() { result = "__is_standard_layout" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsStandardLayout" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsStandardLayout" }
 }
 
 /**
@@ -679,7 +679,7 @@ class BuiltInOperationIsStandardLayout extends BuiltInOperation, @isstandardlayo
 class BuiltInOperationIsTriviallyCopyable extends BuiltInOperation, @istriviallycopyableexpr {
   override string toString() { result = "__is_trivially_copyable" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsTriviallyCopyable" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsTriviallyCopyable" }
 }
 
 /**
@@ -699,7 +699,7 @@ class BuiltInOperationIsTriviallyCopyable extends BuiltInOperation, @istrivially
 class BuiltInOperationIsLiteralType extends BuiltInOperation, @isliteraltypeexpr {
   override string toString() { result = "__is_literal_type" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsLiteralType" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsLiteralType" }
 }
 
 /**
@@ -717,7 +717,7 @@ class BuiltInOperationHasTrivialMoveConstructor extends BuiltInOperation,
   @hastrivialmoveconstructorexpr {
   override string toString() { result = "__has_trivial_move_constructor" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationHasTrivialMoveConstructor" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationHasTrivialMoveConstructor" }
 }
 
 /**
@@ -735,7 +735,7 @@ class BuiltInOperationHasTrivialMoveConstructor extends BuiltInOperation,
 class BuiltInOperationHasTrivialMoveAssign extends BuiltInOperation, @hastrivialmoveassignexpr {
   override string toString() { result = "__has_trivial_move_assign" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationHasTrivialMoveAssign" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationHasTrivialMoveAssign" }
 }
 
 /**
@@ -751,7 +751,7 @@ class BuiltInOperationHasTrivialMoveAssign extends BuiltInOperation, @hastrivial
 class BuiltInOperationHasNothrowMoveAssign extends BuiltInOperation, @hasnothrowmoveassignexpr {
   override string toString() { result = "__has_nothrow_move_assign" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationHasNothrowMoveAssign" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationHasNothrowMoveAssign" }
 }
 
 /**
@@ -770,7 +770,7 @@ class BuiltInOperationHasNothrowMoveAssign extends BuiltInOperation, @hasnothrow
 class BuiltInOperationIsConstructible extends BuiltInOperation, @isconstructibleexpr {
   override string toString() { result = "__is_constructible" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsConstructible" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsConstructible" }
 }
 
 /**
@@ -786,7 +786,7 @@ class BuiltInOperationIsConstructible extends BuiltInOperation, @isconstructible
 class BuiltInOperationIsNothrowConstructible extends BuiltInOperation, @isnothrowconstructibleexpr {
   override string toString() { result = "__is_nothrow_constructible" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsNothrowConstructible" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsNothrowConstructible" }
 }
 
 /**
@@ -801,7 +801,7 @@ class BuiltInOperationIsNothrowConstructible extends BuiltInOperation, @isnothro
 class BuiltInOperationHasFinalizer extends BuiltInOperation, @hasfinalizerexpr {
   override string toString() { result = "__has_finalizer" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationHasFinalizer" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationHasFinalizer" }
 }
 
 /**
@@ -815,7 +815,7 @@ class BuiltInOperationHasFinalizer extends BuiltInOperation, @hasfinalizerexpr {
 class BuiltInOperationIsDelegate extends BuiltInOperation, @isdelegateexpr {
   override string toString() { result = "__is_delegate" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsDelegate" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsDelegate" }
 }
 
 /**
@@ -828,7 +828,7 @@ class BuiltInOperationIsDelegate extends BuiltInOperation, @isdelegateexpr {
 class BuiltInOperationIsInterfaceClass extends BuiltInOperation, @isinterfaceclassexpr {
   override string toString() { result = "__is_interface_class" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsInterfaceClass" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsInterfaceClass" }
 }
 
 /**
@@ -845,7 +845,7 @@ class BuiltInOperationIsInterfaceClass extends BuiltInOperation, @isinterfacecla
 class BuiltInOperationIsRefArray extends BuiltInOperation, @isrefarrayexpr {
   override string toString() { result = "__is_ref_array" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsRefArray" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsRefArray" }
 }
 
 /**
@@ -862,7 +862,7 @@ class BuiltInOperationIsRefArray extends BuiltInOperation, @isrefarrayexpr {
 class BuiltInOperationIsRefClass extends BuiltInOperation, @isrefclassexpr {
   override string toString() { result = "__is_ref_class" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsRefClass" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsRefClass" }
 }
 
 /**
@@ -880,7 +880,7 @@ class BuiltInOperationIsRefClass extends BuiltInOperation, @isrefclassexpr {
 class BuiltInOperationIsSealed extends BuiltInOperation, @issealedexpr {
   override string toString() { result = "__is_sealed" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsSealed" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsSealed" }
 }
 
 /**
@@ -899,7 +899,7 @@ class BuiltInOperationIsSealed extends BuiltInOperation, @issealedexpr {
 class BuiltInOperationIsSimpleValueClass extends BuiltInOperation, @issimplevalueclassexpr {
   override string toString() { result = "__is_simple_value_class" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsSimpleValueClass" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsSimpleValueClass" }
 }
 
 /**
@@ -916,7 +916,7 @@ class BuiltInOperationIsSimpleValueClass extends BuiltInOperation, @issimplevalu
 class BuiltInOperationIsValueClass extends BuiltInOperation, @isvalueclassexpr {
   override string toString() { result = "__is_value_class" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsValueClass" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsValueClass" }
 }
 
 /**
@@ -934,7 +934,7 @@ class BuiltInOperationIsValueClass extends BuiltInOperation, @isvalueclassexpr {
 class BuiltInOperationIsFinal extends BuiltInOperation, @isfinalexpr {
   override string toString() { result = "__is_final" }
 
-  override string getCanonicalQLClass() { result = "BuiltInOperationIsFinal" }
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsFinal" }
 }
 
 /**
@@ -949,7 +949,7 @@ class BuiltInOperationIsFinal extends BuiltInOperation, @isfinalexpr {
 class BuiltInChooseExpr extends BuiltInOperation, @builtinchooseexpr {
   override string toString() { result = "__builtin_choose_expr" }
 
-  override string getCanonicalQLClass() { result = "BuiltInChooseExpr" }
+  override string getAPrimaryQlClass() { result = "BuiltInChooseExpr" }
 }
 
 /**
@@ -966,7 +966,7 @@ class BuiltInChooseExpr extends BuiltInOperation, @builtinchooseexpr {
 class VectorFillOperation extends UnaryOperation, @vec_fill {
   override string getOperator() { result = "(vector fill)" }
 
-  override string getCanonicalQLClass() { result = "VectorFillOperation" }
+  override string getAPrimaryQlClass() { result = "VectorFillOperation" }
 }
 
 /**
@@ -975,7 +975,7 @@ class VectorFillOperation extends UnaryOperation, @vec_fill {
 class BuiltInComplexOperation extends BuiltInOperation, @builtincomplex {
   override string toString() { result = "__builtin_complex" }
 
-  override string getCanonicalQLClass() { result = "BuiltInComplexOperation" }
+  override string getAPrimaryQlClass() { result = "BuiltInComplexOperation" }
 
   /** Gets the operand corresponding to the real part of the complex number. */
   Expr getRealOperand() { this.hasChild(result, 0) }

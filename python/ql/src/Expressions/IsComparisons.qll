@@ -1,5 +1,8 @@
+/** INTERNAL - Helper predicates for queries that inspect the comparison of objects using `is`. */
+
 import python
 
+/** Holds if the comparison `comp` uses `is` or `is not` (represented as `op`) to compare its `left` and `right` arguments. */
 predicate comparison_using_is(Compare comp, ControlFlowNode left, Cmpop op, ControlFlowNode right) {
     exists(CompareNode fcomp | fcomp = comp.getAFlowNode() |
         fcomp.operands(left, op, right) and
@@ -7,6 +10,7 @@ predicate comparison_using_is(Compare comp, ControlFlowNode left, Cmpop op, Cont
     )
 }
 
+/** Holds if the class `c` overrides the default notion of equality or comparison. */
 predicate overrides_eq_or_cmp(ClassValue c) {
     major_version() = 2 and c.hasAttribute("__eq__")
     or
@@ -19,12 +23,14 @@ predicate overrides_eq_or_cmp(ClassValue c) {
     major_version() = 2 and c.hasAttribute("__cmp__")
 }
 
+/** Holds if the class `cls` is likely to only have a single instance throughout the program. */
 predicate probablySingleton(ClassValue cls) {
     strictcount(Value inst | inst.getClass() = cls) = 1
     or
     cls = Value::named("None").getClass()
 }
 
+/** Holds if using `is` to compare instances of the class `c` is likely to cause unexpected behavior. */
 predicate invalid_to_use_is_portably(ClassValue c) {
     overrides_eq_or_cmp(c) and
     // Exclude type/builtin-function/bool as it is legitimate to compare them using 'is' but they implement __eq__
@@ -35,6 +41,7 @@ predicate invalid_to_use_is_portably(ClassValue c) {
     not probablySingleton(c)
 }
 
+/** Holds if the control flow node `f` points to either `True`, `False`, or `None`. */
 predicate simple_constant(ControlFlowNode f) {
     exists(Value val | f.pointsTo(val) |
         val = Value::named("True") or val = Value::named("False") or val = Value::named("None")
@@ -66,10 +73,12 @@ private predicate universally_interned_value(Expr e) {
     e.(StrConst).getText() = ""
 }
 
+/** Holds if the expression `e` points to an interned constant in CPython. */
 predicate cpython_interned_constant(Expr e) {
     exists(Expr const | e.pointsTo(_, const) | cpython_interned_value(const))
 }
 
+/** Holds if the expression `e` points to a value that can be reasonably expected to be interned across all implementations of Python. */
 predicate universally_interned_constant(Expr e) {
     exists(Expr const | e.pointsTo(_, const) | universally_interned_value(const))
 }
@@ -92,6 +101,9 @@ private predicate comparison_one_type(Compare comp, Cmpop op, ClassValue cls) {
     )
 }
 
+/**
+* Holds if using `is` or `is not` as the operator `op` in the comparison `comp` would be invalid when applied to the class `cls`.
+ */
 predicate invalid_portable_is_comparison(Compare comp, Cmpop op, ClassValue cls) {
     // OK to use 'is' when defining '__eq__'
     not exists(Function eq | eq.getName() = "__eq__" or eq.getName() = "__ne__" |

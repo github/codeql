@@ -431,6 +431,9 @@ private module Cached {
       )
     } or
     TMallocNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getElement() instanceof ObjectCreation } or
+    TObjectInitializerNode(ControlFlow::Nodes::ElementNode cfn) {
+      cfn.getElement().(ObjectCreation).hasInitializer()
+    } or
     TExprPostUpdateNode(ControlFlow::Nodes::ElementNode cfn) {
       exists(Argument a, Type t |
         a = cfn.getElement() and
@@ -486,6 +489,8 @@ private module Cached {
       n = nodeFrom and
       nodeTo = n.getSuccessor(AccessPath::empty())
     )
+    or
+    nodeTo.(ObjectCreationNode).getPreUpdateNode() = nodeFrom.(ObjectInitializerNode)
   }
 
   /**
@@ -545,6 +550,20 @@ private module Cached {
     )
     or
     node1 = node2.(LibraryCodeNode).getPredecessor(any(AccessPath ap | ap.getHead() = c))
+  }
+
+  /**
+   * Holds if values stored inside content `c` are cleared at node `n`. For example,
+   * any value stored inside `f` is cleared at the pre-update node associated with `x`
+   * in `x.f = newValue`.
+   */
+  cached
+  predicate clearsContent(Node n, Content c) {
+    fieldOrPropertyAssign(_, c, _, n.asExpr())
+    or
+    fieldOrPropertyInit(n.(ObjectInitializerNode).getObjectCreation(), c, _)
+    or
+    exists(n.(LibraryCodeNode).getSuccessor(any(AccessPath ap | ap.getHead() = c)))
   }
 
   /**
@@ -1650,9 +1669,50 @@ abstract class PostUpdateNode extends Node {
 
 private module PostUpdateNodes {
   class ObjectCreationNode extends PostUpdateNode, ExprNode, TExprNode {
-    ObjectCreationNode() { exists(ObjectCreation oc | this = TExprNode(oc.getAControlFlowNode())) }
+    private ObjectCreation oc;
 
-    override MallocNode getPreUpdateNode() { this = TExprNode(result.getControlFlowNode()) }
+    ObjectCreationNode() { this = TExprNode(oc.getAControlFlowNode()) }
+
+    override Node getPreUpdateNode() {
+      exists(ControlFlow::Nodes::ElementNode cfn | this = TExprNode(cfn) |
+        result.(ObjectInitializerNode).getControlFlowNode() = cfn
+        or
+        not oc.hasInitializer() and
+        result.(MallocNode).getControlFlowNode() = cfn
+      )
+    }
+  }
+
+  /**
+   * A node that represents the value of a newly created object after the object
+   * has been created, but before the object initializer has been executed.
+   *
+   * Such a node acts as both a post-update node for the `MallocNode`, as well as
+   * a pre-update node for the `ObjectCreationNode`.
+   */
+  class ObjectInitializerNode extends PostUpdateNode, NodeImpl, TObjectInitializerNode {
+    private ObjectCreation oc;
+    private ControlFlow::Nodes::ElementNode cfn;
+
+    ObjectInitializerNode() {
+      this = TObjectInitializerNode(cfn) and
+      cfn = oc.getAControlFlowNode()
+    }
+
+    /** Gets the object creation to which this initializer node belongs. */
+    ObjectCreation getObjectCreation() { result = oc }
+
+    override MallocNode getPreUpdateNode() { result.getControlFlowNode() = cfn }
+
+    override DataFlowCallable getEnclosingCallableImpl() { result = cfn.getEnclosingCallable() }
+
+    override DotNet::Type getTypeImpl() { result = oc.getType() }
+
+    override ControlFlow::Nodes::ElementNode getControlFlowNodeImpl() { result = cfn }
+
+    override Location getLocationImpl() { result = cfn.getLocation() }
+
+    override string toStringImpl() { result = "[pre-initializer] " + cfn }
   }
 
   class ExprPostUpdateNode extends PostUpdateNode, NodeImpl, TExprPostUpdateNode {

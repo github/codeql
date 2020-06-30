@@ -57,7 +57,7 @@ def loop(seq):
         if v:
             use(v)
 
-#This was causing the sanity check to fail, 
+#This was causing the consistency check to fail, 
 def double_attr_check(x, y):
     if x.b == 3:
         return

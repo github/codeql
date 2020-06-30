@@ -212,11 +212,10 @@ module TaintedPath {
     DataFlow::Node output;
 
     PreservingPathCall() {
-      exists(string name | name = "dirname" or name = "toNamespacedPath" |
-        this = NodeJSLib::Path::moduleMember(name).getACall() and
-        input = getAnArgument() and
-        output = this
-      )
+      this =
+        NodeJSLib::Path::moduleMember(["dirname", "toNamespacedPath", "parse", "format"]).getACall() and
+      input = getAnArgument() and
+      output = this
       or
       // non-global replace or replace of something other than /\.\./g, /[/]/g, or /[\.]/g.
       this.getCalleeName() = "replace" and
@@ -650,7 +649,8 @@ module TaintedPath {
     exists(DataFlow::PropRead read | read = dst |
       src = read.getBase() and
       read.getPropertyName() != "length" and
-      srclabel = dstlabel
+      srclabel = dstlabel and
+      not AccessPath::DominatingPaths::hasDominatingWrite(read)
     )
     or
     // string method calls of interest

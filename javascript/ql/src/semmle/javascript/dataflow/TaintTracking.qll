@@ -260,12 +260,19 @@ module TaintTracking {
     not any(PromiseAllCreation call).getArrayNode() = succ
     or
     // reading from a tainted object yields a tainted result
-    succ.(DataFlow::PropRead).getBase() = pred
+    succ.(DataFlow::PropRead).getBase() = pred and
+    not AccessPath::DominatingPaths::hasDominatingWrite(succ)
     or
     // iterating over a tainted iterator taints the loop variable
     exists(ForOfStmt fos |
       pred = DataFlow::valueNode(fos.getIterationDomain()) and
       succ = DataFlow::lvalueNode(fos.getLValue())
+    )
+    or
+    // taint-tracking rest patterns in l-values. E.g. `const {...spread} = foo()` or `const [...spread] = foo()`.
+    exists(DestructuringPattern pattern |
+      pred = DataFlow::lvalueNode(pattern) and
+      succ = DataFlow::lvalueNode(pattern.getRest())
     )
   }
 

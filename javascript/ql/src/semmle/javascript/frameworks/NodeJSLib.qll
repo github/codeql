@@ -5,6 +5,7 @@
 import javascript
 import semmle.javascript.frameworks.HTTP
 import semmle.javascript.security.SensitiveActions
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
 
 module NodeJSLib {
   private GlobalVariable processVariable() { variables(result, "process", any(GlobalScope sc)) }
@@ -608,6 +609,22 @@ module NodeJSLib {
     |
       result = promisify and promisify.getArgument(0).getALocalSource() = callback
     )
+  }
+
+  /**
+   * A call to `util.deprecate`, considered to introduce data flow from its first argument
+   * to its result.
+   */
+  private class UtilDeprecateStep extends PreCallGraphStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::CallNode deprecate |
+        deprecate = DataFlow::moduleMember("util", "deprecate").getACall() or
+        deprecate = DataFlow::moduleImport("util-deprecate").getACall()
+      |
+        pred = deprecate.getArgument(0) and
+        succ = deprecate
+      )
+    }
   }
 
   /**

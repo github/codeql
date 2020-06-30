@@ -1519,7 +1519,8 @@ class AddExpr extends @addexpr, BinaryExpr {
   override string getOperator() { result = "+" }
 
   override string getStringValue() {
-    result = getLeftOperand().getStringValue() + getRightOperand().getStringValue()
+    result = getLeftOperand().getStringValue() + getRightOperand().getStringValue() and
+    result.length() < 1000 * 1000
   }
 }
 

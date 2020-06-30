@@ -25,7 +25,7 @@ import cpp
 class MemberFunction extends Function {
   MemberFunction() { this.isMember() }
 
-  override string getCanonicalQLClass() {
+  override string getAPrimaryQlClass() {
     not this instanceof CopyAssignmentOperator and
     not this instanceof MoveAssignmentOperator and
     result = "MemberFunction"
@@ -93,7 +93,7 @@ class MemberFunction extends Function {
 class VirtualFunction extends MemberFunction {
   VirtualFunction() { this.hasSpecifier("virtual") or purefunctions(underlyingElement(this)) }
 
-  override string getCanonicalQLClass() { result = "VirtualFunction" }
+  override string getAPrimaryQlClass() { result = "VirtualFunction" }
 
   /** Holds if this virtual function is pure. */
   predicate isPure() { this instanceof PureVirtualFunction }
@@ -125,7 +125,7 @@ class VirtualFunction extends MemberFunction {
 class PureVirtualFunction extends VirtualFunction {
   PureVirtualFunction() { purefunctions(underlyingElement(this)) }
 
-  override string getCanonicalQLClass() { result = "PureVirtualFunction" }
+  override string getAPrimaryQlClass() { result = "PureVirtualFunction" }
 }
 
 /**
@@ -147,7 +147,7 @@ class PureVirtualFunction extends VirtualFunction {
 class ConstMemberFunction extends MemberFunction {
   ConstMemberFunction() { this.hasSpecifier("const") }
 
-  override string getCanonicalQLClass() { result = "ConstMemberFunction" }
+  override string getAPrimaryQlClass() { result = "ConstMemberFunction" }
 }
 
 /**
@@ -165,7 +165,7 @@ class ConstMemberFunction extends MemberFunction {
 class Constructor extends MemberFunction {
   Constructor() { functions(underlyingElement(this), _, 2) }
 
-  override string getCanonicalQLClass() { result = "Constructor" }
+  override string getAPrimaryQlClass() { result = "Constructor" }
 
   /**
    * Holds if this constructor serves as a default constructor.
@@ -223,7 +223,7 @@ class ConversionConstructor extends Constructor, ImplicitConversionFunction {
     not hasSpecifier("explicit")
   }
 
-  override string getCanonicalQLClass() {
+  override string getAPrimaryQlClass() {
     not this instanceof CopyConstructor and
     not this instanceof MoveConstructor and
     result = "ConversionConstructor"
@@ -283,7 +283,7 @@ class CopyConstructor extends Constructor {
     not exists(getATemplateArgument())
   }
 
-  override string getCanonicalQLClass() { result = "CopyConstructor" }
+  override string getAPrimaryQlClass() { result = "CopyConstructor" }
 
   /**
    * Holds if we cannot determine that this constructor will become a copy
@@ -340,7 +340,7 @@ class MoveConstructor extends Constructor {
     not exists(getATemplateArgument())
   }
 
-  override string getCanonicalQLClass() { result = "MoveConstructor" }
+  override string getAPrimaryQlClass() { result = "MoveConstructor" }
 
   /**
    * Holds if we cannot determine that this constructor will become a move
@@ -391,7 +391,7 @@ class NoArgConstructor extends Constructor {
 class Destructor extends MemberFunction {
   Destructor() { functions(underlyingElement(this), _, 3) }
 
-  override string getCanonicalQLClass() { result = "Destructor" }
+  override string getAPrimaryQlClass() { result = "Destructor" }
 
   /**
    * Gets a compiler-generated action which destructs a base class or member
@@ -422,7 +422,7 @@ class Destructor extends MemberFunction {
 class ConversionOperator extends MemberFunction, ImplicitConversionFunction {
   ConversionOperator() { functions(underlyingElement(this), _, 4) }
 
-  override string getCanonicalQLClass() { result = "ConversionOperator" }
+  override string getAPrimaryQlClass() { result = "ConversionOperator" }
 
   override Type getSourceType() { result = this.getDeclaringType() }
 
@@ -458,7 +458,7 @@ class CopyAssignmentOperator extends Operator {
     not exists(getATemplateArgument())
   }
 
-  override string getCanonicalQLClass() { result = "CopyAssignmentOperator" }
+  override string getAPrimaryQlClass() { result = "CopyAssignmentOperator" }
 }
 
 /**
@@ -484,5 +484,5 @@ class MoveAssignmentOperator extends Operator {
     not exists(getATemplateArgument())
   }
 
-  override string getCanonicalQLClass() { result = "MoveAssignmentOperator" }
+  override string getAPrimaryQlClass() { result = "MoveAssignmentOperator" }
 }
