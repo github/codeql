@@ -24,6 +24,7 @@ newtype TTaintTrackingContext =
  *    Used to track taint through calls accurately and reasonably efficiently.
  */
 class TaintTrackingContext extends TTaintTrackingContext {
+    /** Gets a textual representation of this element. */
     string toString() {
         this = TNoParam() and result = ""
         or
@@ -66,6 +67,7 @@ private newtype TAttributePath =
  * Used for tracking tainted attributes of objects.
  */
 abstract class AttributePath extends TAttributePath {
+    /** Gets a textual representation of this element. */
     abstract string toString();
 
     abstract string extension();
@@ -126,6 +128,7 @@ newtype TTaintTrackingNode =
  *  Used for context-sensitive path-aware taint-tracking.
  */
 class TaintTrackingNode extends TTaintTrackingNode {
+    /** Gets a textual representation of this element. */
     string toString() {
         if this.getPath() instanceof NoAttribute
         then result = this.getTaintKind().repr()

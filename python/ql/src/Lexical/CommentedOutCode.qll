@@ -175,6 +175,7 @@ class CommentedOutCodeLine extends Comment {
 class CommentedOutCodeBlock extends @py_comment {
     CommentedOutCodeBlock() { commented_out_code_block(this, _) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "Commented out code" }
 
     /** Whether this commented-out code block contains the comment c */

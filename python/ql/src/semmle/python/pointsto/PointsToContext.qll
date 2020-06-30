@@ -129,6 +129,7 @@ module Context {
  *    * All other contexts are call contexts and consist of a pair of call-site and caller context.
  */
 class PointsToContext extends TPointsToContext {
+    /** Gets a textual representation of this element. */
     cached
     string toString() {
         this = TMainContext() and result = "main"

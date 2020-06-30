@@ -139,6 +139,7 @@ class ControlFlowNode extends @py_flow_node {
     /** Gets the syntactic element corresponding to this flow node */
     AstNode getNode() { py_flow_bb_node(this, result, _, _) }
 
+    /** Gets a textual representation of this element. */
     string toString() {
         exists(Scope s | s.getEntryNode() = this | result = "Entry node for " + s.toString())
         or
@@ -1014,6 +1015,7 @@ class BasicBlock extends @py_flow_node {
     /** Gets the nth node in this basic block */
     ControlFlowNode getNode(int n) { py_flow_bb_node(result, _, this, n) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "BasicBlock" }
 
     /** Whether this basic block strictly dominates the other */

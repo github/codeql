@@ -355,6 +355,7 @@ abstract class Sanitizer extends string {
  * class to provide their own sources.
  */
 abstract class TaintSource extends @py_flow_node {
+    /** Gets a textual representation of this element. */
     string toString() { result = "Taint source" }
 
     /**
@@ -478,6 +479,7 @@ private class SequenceExtends extends DataFlowExtension::DataFlowNode {
  * class to provide their own sink nodes.
  */
 abstract class TaintSink extends @py_flow_node {
+    /** Gets a textual representation of this element. */
     string toString() { result = "Taint sink" }
 
     /**
@@ -511,6 +513,7 @@ abstract class TaintSink extends @py_flow_node {
 module DataFlowExtension {
     /** A control flow node that modifies the basic data-flow. */
     abstract class DataFlowNode extends @py_flow_node {
+        /** Gets a textual representation of this element. */
         string toString() { result = "Dataflow extension node" }
 
         /**
@@ -657,6 +660,7 @@ module DataFlow {
 
         abstract EssaVariable asVariable();
 
+        /** Gets a textual representation of this element. */
         abstract string toString();
 
         abstract Scope getScope();
@@ -676,6 +680,7 @@ module DataFlow {
 
         override EssaVariable asVariable() { none() }
 
+        /** Gets a textual representation of this element. */
         override string toString() { result = this.asAstNode().toString() }
 
         override Scope getScope() { result = this.asCfgNode().getScope() }
@@ -690,6 +695,7 @@ module DataFlow {
 
         override EssaVariable asVariable() { this = TEssaNode(result) }
 
+        /** Gets a textual representation of this element. */
         override string toString() { result = this.asVariable().toString() }
 
         override Scope getScope() { result = this.asVariable().getScope() }

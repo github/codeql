@@ -86,6 +86,7 @@ class Object extends @py_object {
     /** INTERNAL -- Do not use */
     Builtin asBuiltin() { result = this }
 
+    /** Gets a textual representation of this element. */
     string toString() {
         not this = undefinedVariable() and
         not this = unknownValue() and

@@ -18,6 +18,7 @@ class ExternalDefect extends @externalDefect {
 
     Location getLocation() { externalDefects(this, _, result, _, _) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = getQueryPath() + ": " + getLocation() + " - " + getMessage() }
 }
 
@@ -28,6 +29,7 @@ class ExternalMetric extends @externalMetric {
 
     Location getLocation() { externalMetrics(this, _, result, _) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = getQueryPath() + ": " + getLocation() + " - " + getValue() }
 }
 

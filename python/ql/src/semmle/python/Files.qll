@@ -393,6 +393,7 @@ class Location extends @location {
         locations_ast(this, _, _, _, _, result)
     }
 
+    /** Gets a textual representation of this element. */
     string toString() {
         result = this.getPath().getAbsolutePath() + ":" + this.getStartLine().toString()
     }
@@ -433,6 +434,7 @@ class Line extends @py_line {
         )
     }
 
+    /** Gets a textual representation of this element. */
     string toString() {
         exists(Module m | py_line_lengths(this, m, _, _) |
             result = m.getFile().getShortName() + ":" + this.getLineNumber().toString()

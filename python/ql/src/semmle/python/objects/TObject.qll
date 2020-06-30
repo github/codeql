@@ -447,6 +447,7 @@ library class ClassDecl extends @py_object {
         this.(ControlFlowNode).getNode() instanceof ClassExpr
     }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "ClassDecl" }
 
     /** Gets the class scope for Python class declarations */
