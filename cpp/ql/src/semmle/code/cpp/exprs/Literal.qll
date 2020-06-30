@@ -3,7 +3,7 @@
  * or `"string"`.
  */
 
- import semmle.code.cpp.exprs.Expr
+import semmle.code.cpp.exprs.Expr
 
 /**
  * A C/C++ literal.
