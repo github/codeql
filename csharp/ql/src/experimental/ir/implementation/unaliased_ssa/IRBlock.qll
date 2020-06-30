@@ -27,6 +27,8 @@ class IRBlockBase extends TIRBlock {
   final Language::Location getLocation() { result = getFirstInstruction().getLocation() }
 
   /**
+   * INTERNAL: Do not use.
+   * 
    * Gets a string that uniquely identifies this block within its enclosing function.
    *
    * This predicate is used by debugging and printing code only.
@@ -34,6 +36,8 @@ class IRBlockBase extends TIRBlock {
   final string getUniqueId() { result = getFirstInstruction(this).getUniqueId() }
 
   /**
+   * INTERNAL: Do not use.
+   * 
    * Gets the zero-based index of the block within its function.
    *
    * This predicate is used by debugging and printing code only.
@@ -67,7 +71,7 @@ class IRBlockBase extends TIRBlock {
   }
 
   /**
-   * Get the instructions in this block, including `Phi` instructions.
+   * Gets an instructions in this block. This includes `Phi` instructions.
    */
   final Instruction getAnInstruction() {
     result = getInstruction(_) or
@@ -111,12 +115,12 @@ class IRBlockBase extends TIRBlock {
  */
 class IRBlock extends IRBlockBase {
   /**
-   * Gets the blocks to which control flows directly from this block.
+   * Gets a block to which control flows directly from this block.
    */
   final IRBlock getASuccessor() { blockSuccessor(this, result) }
 
   /**
-   * Gets the blocks from which control flows directly to this block.
+   * Gets a block from which control flows directly to this block.
    */
   final IRBlock getAPredecessor() { blockSuccessor(result, this) }
 
@@ -156,7 +160,7 @@ class IRBlock extends IRBlockBase {
   final predicate dominates(IRBlock block) { strictlyDominates(block) or this = block }
 
   /**
-   * Gets the set of blocks on the dominance frontier of this block.
+   * Gets a block on the dominance frontier of this block.
    *
    * The dominance frontier of block `A` is the set of blocks `B` such that block `A` does not
    * dominate block `B`, but block `A` does dominate an immediate predecessor of block `B`.
