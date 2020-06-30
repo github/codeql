@@ -330,6 +330,67 @@ private module Cached {
     import Final
   }
 
+  import FlowThrough
+
+  cached
+  private module DispatchWithCallContext {
+    /**
+     * Holds if the call context `ctx` reduces the set of viable run-time
+     * dispatch targets of call `call` in `c`.
+     */
+    cached
+    predicate reducedViableImplInCallContext(DataFlowCall call, DataFlowCallable c, DataFlowCall ctx) {
+      exists(int tgts, int ctxtgts |
+        mayBenefitFromCallContext(call, c) and
+        c = viableCallable(ctx) and
+        ctxtgts = count(viableImplInCallContext(call, ctx)) and
+        tgts = strictcount(viableCallable(call)) and
+        ctxtgts < tgts
+      )
+    }
+
+    /**
+     * Gets a viable run-time dispatch target for the call `call` in the
+     * context `ctx`. This is restricted to those calls for which a context
+     * makes a difference.
+     */
+    cached
+    DataFlowCallable prunedViableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
+      result = viableImplInCallContext(call, ctx) and
+      reducedViableImplInCallContext(call, _, ctx)
+    }
+
+    /**
+     * Holds if flow returning from callable `c` to call `call` might return
+     * further and if this path restricts the set of call sites that can be
+     * returned to.
+     */
+    cached
+    predicate reducedViableImplInReturn(DataFlowCallable c, DataFlowCall call) {
+      exists(int tgts, int ctxtgts |
+        mayBenefitFromCallContext(call, _) and
+        c = viableCallable(call) and
+        ctxtgts = count(DataFlowCall ctx | c = viableImplInCallContext(call, ctx)) and
+        tgts = strictcount(DataFlowCall ctx | viableCallable(ctx) = call.getEnclosingCallable()) and
+        ctxtgts < tgts
+      )
+    }
+
+    /**
+     * Gets a viable run-time dispatch target for the call `call` in the
+     * context `ctx`. This is restricted to those calls and results for which
+     * the return flow from the result to `call` restricts the possible context
+     * `ctx`.
+     */
+    cached
+    DataFlowCallable prunedViableImplInCallContextReverse(DataFlowCall call, DataFlowCall ctx) {
+      result = viableImplInCallContext(call, ctx) and
+      reducedViableImplInReturn(result, call)
+    }
+  }
+
+  import DispatchWithCallContext
+
   /**
    * Holds if `p` can flow to the pre-update node associated with post-update
    * node `n`, in the same callable, using only value-preserving steps.
@@ -370,8 +431,6 @@ private module Cached {
   predicate store(Node node1, TypedContent tc, Node node2, DataFlowType contentType) {
     store(node1, tc.getContent(), node2, contentType, tc.getContainerType())
   }
-
-  import FlowThrough
 
   /**
    * Holds if the call context `call` either improves virtual dispatch in
