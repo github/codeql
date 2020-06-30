@@ -21,18 +21,17 @@ Type getBaseType(Type typ) {
   result = typ
 }
 
-Type getFinalType(Type typ) {
-  result = getFinalType*(typ.getUnderlyingType*())
-  or
-  result = typ
-}
-
+/* A conversion to a `unsafe.Pointer` */
 class ConversionToUnsafePointer extends ConversionExpr {
   ConversionToUnsafePointer() { getBaseType(getType()) instanceof UnsafePointerType }
 }
 
-class ShortToLongerArrayConf extends TaintTracking::Configuration {
-  ShortToLongerArrayConf() { this = "ShortToLongerArrayConf" }
+/*
+ * Type casting through the use of unsafe pointers.
+ */
+
+class UnsafeTypeCastingConf extends TaintTracking::Configuration {
+  UnsafeTypeCastingConf() { this = "UnsafeTypeCastingConf" }
 
   predicate isSource(DataFlow::Node source, ConversionToUnsafePointer conv) {
     source.asExpr() = conv
@@ -48,73 +47,64 @@ class ShortToLongerArrayConf extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
 }
 
+/*
+ * Type casting from a shorter array to a longer array
+ * through the use of unsafe pointers.
+ */
+
 predicate castShortArrayToLongerArray(
   DataFlow::PathNode source, DataFlow::PathNode sink, string message
 ) {
   exists(
-    ShortToLongerArrayConf cfg, ConversionExpr castBig, ConversionToUnsafePointer castLittle,
+    UnsafeTypeCastingConf cfg, ConversionExpr castBig, ConversionToUnsafePointer castLittle,
     ArrayType arrTo, ArrayType arrFrom
   |
     cfg.hasFlowPath(source, sink) and
     cfg.isSource(source.getNode(), castLittle) and
     cfg.isSink(sink.getNode(), castBig) and
-    //castBig.getTypeExpr().getAChildExpr*().getType() instanceof ArrayType and
     arrTo = getBaseType(castBig.getTypeExpr().getType()) and
     arrFrom = getBaseType(castLittle.getOperand().getType()) and
     arrTo.getLength() > 0 and //TODO
     arrTo.getLength() > arrFrom.getLength() and
     message =
       "Dangerous array type casting to [" + arrTo.getLength() + "]" + arrTo.getElementType() +
-        " from [" + arrFrom.getLength() + "]" + arrFrom.getElementType() //and
-    //arrTo.getElementType() instanceof Uint8Type and
-    //arrFrom.getElementType() instanceof Uint8Type
+        " from [" + arrFrom.getLength() + "]" + arrFrom.getElementType()
   )
 }
 
+/*
+ * Type casting from a type to an array
+ * through the use of unsafe pointers.
+ */
+
 predicate castTypeToArray(DataFlow::PathNode source, DataFlow::PathNode sink, string message) {
   exists(
-    ShortToLongerArrayConf cfg, ConversionExpr castBig, ConversionToUnsafePointer castLittle,
+    UnsafeTypeCastingConf cfg, ConversionExpr castBig, ConversionToUnsafePointer castLittle,
     ArrayType arrTo, Type typeFrom
   |
     cfg.hasFlowPath(source, sink) and
     cfg.isSource(source.getNode(), castLittle) and
     cfg.isSink(sink.getNode(), castBig) and
-    //castBig.getTypeExpr().getAChildExpr*().getType() instanceof ArrayType and
     arrTo = getBaseType(castBig.getTypeExpr().getType()) and
     not (typeFrom instanceof ArrayType or typeFrom.getUnderlyingType() instanceof ArrayType) and
     not typeFrom instanceof PointerType and
     typeFrom = getBaseType(castLittle.getOperand().getType()) and
-    //typeFrom = getBaseType(typeFrom) and
     message =
       "Dangerous type up-casting to [" + arrTo.getLength() + "]" + arrTo.getElementType() + " from "
-        + typeFrom //and
-    //arrTo.getElementType() instanceof Uint8Type and
-    //arrFrom.getElementType() instanceof Uint8Type
+        + typeFrom
   )
 }
 
-class NumberCastingFlowConf extends TaintTracking::Configuration {
-  NumberCastingFlowConf() { this = "NumberCastingFlowConf" }
-
-  predicate isSource(DataFlow::Node source, ConversionToUnsafePointer conv) {
-    source.asExpr() = conv
-  }
-
-  predicate isSink(DataFlow::Node sink, ConversionExpr ca) {
-    ca.getOperand().getType() instanceof UnsafePointerType and
-    sink.asExpr() = ca
-  }
-
-  override predicate isSource(DataFlow::Node source) { isSource(source, _) }
-
-  override predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
-}
+/*
+ * Type casting between numeric types that have different bit sizes
+ * through the use of unsafe pointers.
+ */
 
 predicate castDifferentBitSizeNumbers(
   DataFlow::PathNode source, DataFlow::PathNode sink, string message
 ) {
   exists(
-    NumberCastingFlowConf cfg, ConversionExpr castBig, ConversionToUnsafePointer castLittle,
+    UnsafeTypeCastingConf cfg, ConversionExpr castBig, ConversionToUnsafePointer castLittle,
     CustomNumericType numTo, CustomNumericType numFrom
   |
     cfg.hasFlowPath(source, sink) and
@@ -134,6 +124,11 @@ predicate castDifferentBitSizeNumbers(
     message = "Dangerous numeric type casting to " + numTo.getName() + " from " + numFrom.getName()
   )
 }
+
+/*
+ * A numeric type that has size 0 if it is one
+ * of the types that have architecture-specific bit sizes.
+ */
 
 class CustomNumericType extends NumericType {
   CustomNumericType() { this instanceof NumericType }
