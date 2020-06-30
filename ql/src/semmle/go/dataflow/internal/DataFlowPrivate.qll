@@ -142,6 +142,13 @@ predicate readStep(Node node1, Content f, Node node2) {
 }
 
 /**
+ * Holds if values stored inside content `c` are cleared at node `n`.
+ */
+predicate clearsContent(Node n, Content c) {
+  none() // stub implementation
+}
+
+/**
  * Gets a representative (boxed) type for `t` for the purpose of pruning
  * possible flow. A single type is used for all numeric types to account for
  * numeric conversions, and otherwise the erasure is used.
