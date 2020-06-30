@@ -1,0 +1,3 @@
+| test.cpp:45:3:45:7 | call to fputs | This write into file 'file' may contain unencrypted data from $@ | test.cpp:45:9:45:16 | theEmail | this source. |
+| test.cpp:70:32:70:32 | call to operator<< | This write into file 'mystream' may contain unencrypted data from $@ | test.cpp:70:35:70:42 | theEmail | this source. |
+| test.cpp:73:34:73:38 | call to write | This write into file 'mystream' may contain unencrypted data from $@ | test.cpp:73:40:73:47 | theEmail | this source. |

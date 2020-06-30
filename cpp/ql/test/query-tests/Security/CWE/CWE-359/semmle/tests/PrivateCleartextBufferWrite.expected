@@ -1,0 +1,13 @@
+edges
+| test.cpp:54:17:54:20 | argv | test.cpp:58:26:58:30 | input |
+| test.cpp:54:17:54:20 | argv | test.cpp:58:26:58:30 | input |
+| test.cpp:54:17:54:20 | argv | test.cpp:58:26:58:30 | input |
+| test.cpp:54:17:54:20 | argv | test.cpp:58:26:58:30 | input |
+nodes
+| test.cpp:54:17:54:20 | argv | semmle.label | argv |
+| test.cpp:54:17:54:20 | argv | semmle.label | argv |
+| test.cpp:58:26:58:30 | input | semmle.label | input |
+| test.cpp:58:26:58:30 | input | semmle.label | input |
+| test.cpp:58:26:58:30 | input | semmle.label | input |
+#select
+| test.cpp:58:3:58:9 | call to sprintf | test.cpp:54:17:54:20 | argv | test.cpp:58:26:58:30 | input | This write into buffer 'medical' may contain unencrypted data from $@ | test.cpp:54:17:54:20 | argv | user input (argv) |
