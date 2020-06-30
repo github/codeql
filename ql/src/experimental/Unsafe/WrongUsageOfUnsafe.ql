@@ -126,8 +126,8 @@ predicate castDifferentBitSizeNumbers(
 }
 
 /*
- * A numeric type that has size 0 if it is one
- * of the types that have architecture-specific bit sizes.
+ * A numeric type that returns bit size 0 if it is one of the numeric
+ * types that have architecture-specific bit sizes.
  */
 
 class CustomNumericType extends NumericType {
