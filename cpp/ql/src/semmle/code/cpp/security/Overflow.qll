@@ -17,8 +17,8 @@ predicate guardedAbs(Operation e, Expr use) {
 }
 
 /**
- * Gets the result of `BasicBlock.getNode`, but only on a `Stmt` (for
- * performance).
+ * Gets the position of `stmt` in basic block `block` (this is a thin layer
+ * over `BasicBlock.getNode`, intended to improve performance).
  */
 pragma[noinline]
 private int getStmtIndexInBlock(BasicBlock block, Stmt stmt) { block.getNode(result) = stmt }
