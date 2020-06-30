@@ -1,5 +1,13 @@
 /**
+ * @name Wrong usage of package unsafe
+ * @description Casting between variables with different memory sizes can produce reads to
+ *              memory locations that are after the target buffer, and/or unexpected values.
  * @kind path-problem
+ * @problem.severity error
+ * @id go/wrong-usage-of-unsafe
+ * @tags security
+ *       external/cwe/cwe-119
+ *       external/cwe/cwe-126
  */
 
 import go
