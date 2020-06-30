@@ -16,7 +16,7 @@ class Call extends Expr, NameQualifiableElement, TCall {
   // ```
   // So for the charpred for `Call` we include the requirement that if this is an instance of
   // `@funbindexpr` it must be a _call_ to the function.
-  Call() { this instanceof @funbindexpr implies iscall(underlyingElement(this), _) }
+  Call() { this instanceof @callexpr or iscall(underlyingElement(this), _) }
 
   /**
    * Gets the number of arguments (actual parameters) of this call. The count
