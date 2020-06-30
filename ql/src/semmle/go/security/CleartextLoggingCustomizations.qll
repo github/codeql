@@ -85,6 +85,27 @@ module CleartextLogging {
   }
 
   /**
+   * Read of a non-sensitive header, considered as a barrier for clear-text logging.
+   */
+  private class NonSensitiveHeaderGet extends Barrier {
+    NonSensitiveHeaderGet() {
+      exists(string headerName |
+        exists(DataFlow::MethodCallNode c | c = this |
+          c.getTarget().hasQualifiedName("net/http", "Header", "Get") and
+          headerName = c.getArgument(0).getStringValue()
+        )
+        or
+        exists(DataFlow::ElementReadNode e | e = this |
+          e.getBase().getType().hasQualifiedName("net/http", "Header") and
+          headerName = e.getIndex().getStringValue()
+        )
+      |
+        not headerName.toLowerCase() in ["authorization", "cookie"]
+      )
+    }
+  }
+
+  /**
    * A data-flow node that does not contain a clear-text password.
    */
   abstract private class NonCleartextPassword extends DataFlow::Node { }

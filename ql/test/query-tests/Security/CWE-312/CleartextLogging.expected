@@ -1,5 +1,6 @@
 edges
 | klog.go:20:30:20:37 | selection of Header : Header | klog.go:22:15:22:20 | header |
+| klog.go:28:13:28:20 | selection of Header : Header | klog.go:28:13:28:41 | call to Get |
 | passwords.go:8:12:8:12 | definition of x : string | passwords.go:9:14:9:14 | x |
 | passwords.go:30:8:30:15 | password : string | passwords.go:8:12:8:12 | definition of x : string |
 | passwords.go:34:28:34:35 | password : string | passwords.go:34:14:34:35 | ...+... |
@@ -25,6 +26,8 @@ edges
 nodes
 | klog.go:20:30:20:37 | selection of Header : Header | semmle.label | selection of Header : Header |
 | klog.go:22:15:22:20 | header | semmle.label | header |
+| klog.go:28:13:28:20 | selection of Header : Header | semmle.label | selection of Header : Header |
+| klog.go:28:13:28:41 | call to Get | semmle.label | call to Get |
 | main.go:15:14:15:21 | password | semmle.label | password |
 | main.go:17:12:17:19 | password | semmle.label | password |
 | passwords.go:8:12:8:12 | definition of x : string | semmle.label | definition of x : string |
@@ -69,6 +72,7 @@ nodes
 | util.go:16:9:16:18 | selection of password : string | semmle.label | selection of password : string |
 #select
 | klog.go:22:15:22:20 | header | klog.go:20:30:20:37 | selection of Header : Header | klog.go:22:15:22:20 | header | Sensitive data returned by $@ is logged here. | klog.go:20:30:20:37 | selection of Header | HTTP request headers |
+| klog.go:28:13:28:41 | call to Get | klog.go:28:13:28:20 | selection of Header : Header | klog.go:28:13:28:41 | call to Get | Sensitive data returned by $@ is logged here. | klog.go:28:13:28:20 | selection of Header | HTTP request headers |
 | main.go:15:14:15:21 | password | main.go:15:14:15:21 | password | main.go:15:14:15:21 | password | Sensitive data returned by $@ is logged here. | main.go:15:14:15:21 | password | an access to password |
 | main.go:17:12:17:19 | password | main.go:17:12:17:19 | password | main.go:17:12:17:19 | password | Sensitive data returned by $@ is logged here. | main.go:17:12:17:19 | password | an access to password |
 | passwords.go:9:14:9:14 | x | passwords.go:30:8:30:15 | password : string | passwords.go:9:14:9:14 | x | Sensitive data returned by $@ is logged here. | passwords.go:30:8:30:15 | password | an access to password |
