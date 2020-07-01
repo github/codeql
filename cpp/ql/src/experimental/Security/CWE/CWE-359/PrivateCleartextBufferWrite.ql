@@ -13,7 +13,7 @@
 import cpp
 import semmle.code.cpp.security.BufferWrite
 import semmle.code.cpp.security.TaintTracking
-import semmle.code.cpp.security.PrivateData
+import experimental.semmle.code.cpp.security.PrivateData
 import TaintedWithPath
 
 class Configuration extends TaintTrackingConfiguration {

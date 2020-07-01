@@ -11,7 +11,7 @@
  */
 
 import cpp
-import semmle.code.cpp.security.PrivateData
+import experimental.semmle.code.cpp.security.PrivateData
 import semmle.code.cpp.security.FileWrite
 
 from FileWrite w, PrivateDataExpr source, Expr dest
