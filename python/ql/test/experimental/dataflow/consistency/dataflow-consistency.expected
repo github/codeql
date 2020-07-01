@@ -105,8 +105,7 @@ uniqueEnclosingCallable
 | test.py:161:1:161:17 | Exit node for Function test_truth | Node should have one enclosing callable but has 0. |
 | test.py:161:1:161:17 | Exit node for Function test_truth | Node should have one enclosing callable but has 0. |
 | test.py:161:5:161:14 | GSSA Variable test_truth | Node should have one enclosing callable but has 0. |
-uniqueTypeBound
-uniqueTypeRepr
+uniqueType
 uniqueNodeLocation
 missingLocation
 uniqueNodeToString

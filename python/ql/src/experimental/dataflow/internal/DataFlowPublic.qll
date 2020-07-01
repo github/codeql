@@ -55,13 +55,6 @@ class Node extends TNode {
   }
 
   /**
-   * Gets an upper bound on the type of this node.
-   */
-  DataFlowType getTypeBound() {
-    any()
-  }
-
-  /**
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
