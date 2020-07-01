@@ -106,7 +106,7 @@ private module Cached {
 
   /** Gets a viable run-time target for the call `call`. */
   cached
-  DataFlowCallable viableImpl(DataFlowCall call) { result = call.getARuntimeTarget() }
+  DataFlowCallable viableCallable(DataFlowCall call) { result = call.getARuntimeTarget() }
 }
 
 import Cached
@@ -163,8 +163,6 @@ import DispatchImpl
  * `kind`.
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { call = result.getCall(kind) }
-
-predicate viableCallable = viableImpl/1;
 
 /**
  * A return kind. A return kind describes how a value can be returned

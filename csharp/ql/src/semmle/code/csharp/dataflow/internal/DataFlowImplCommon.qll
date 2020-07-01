@@ -22,7 +22,7 @@ private module Cached {
     exists(int i |
       viableParam(call, i, p) and
       arg.argumentOf(call, i) and
-      compatibleTypes(getErasedNodeTypeBound(arg), getErasedNodeTypeBound(p))
+      compatibleTypes(getNodeType(arg), getNodeType(p))
     )
   }
 
@@ -147,54 +147,6 @@ private module Cached {
       }
     }
 
-    private module LocalFlowBigStep {
-      private predicate localFlowEntry(Node n) {
-        Cand::cand(_, n) and
-        (
-          n instanceof ParameterNode or
-          n instanceof OutNode or
-          readStep(_, _, n) or
-          n instanceof CastNode
-        )
-      }
-
-      private predicate localFlowExit(Node n) {
-        Cand::cand(_, n) and
-        (
-          n instanceof ArgumentNode
-          or
-          n instanceof ReturnNode
-          or
-          readStep(n, _, _)
-          or
-          n instanceof CastNode
-          or
-          n =
-            any(PostUpdateNode pun | Cand::parameterValueFlowsToPreUpdateCand(_, pun))
-                .getPreUpdateNode()
-        )
-      }
-
-      pragma[nomagic]
-      private predicate localFlowStepPlus(Node node1, Node node2) {
-        localFlowEntry(node1) and
-        simpleLocalFlowStep(node1, node2) and
-        node1 != node2
-        or
-        exists(Node mid |
-          localFlowStepPlus(node1, mid) and
-          simpleLocalFlowStep(mid, node2) and
-          not mid instanceof CastNode
-        )
-      }
-
-      pragma[nomagic]
-      predicate localFlowBigStep(Node node1, Node node2) {
-        localFlowStepPlus(node1, node2) and
-        localFlowExit(node2)
-      }
-    }
-
     /**
      * The final flow-through calculation:
      *
@@ -218,10 +170,10 @@ private module Cached {
         then
           // normal flow through
           read = TReadStepTypesNone() and
-          compatibleTypes(getErasedNodeTypeBound(p), getErasedNodeTypeBound(node))
+          compatibleTypes(getNodeType(p), getNodeType(node))
           or
           // getter
-          compatibleTypes(read.getContentType(), getErasedNodeTypeBound(node))
+          compatibleTypes(read.getContentType(), getNodeType(node))
         else any()
       }
 
@@ -234,7 +186,7 @@ private module Cached {
         // local flow
         exists(Node mid |
           parameterValueFlow(p, mid, read) and
-          LocalFlowBigStep::localFlowBigStep(mid, node)
+          simpleLocalFlowStep(mid, node)
         )
         or
         // read
@@ -243,19 +195,26 @@ private module Cached {
           readStepWithTypes(mid, read.getContainerType(), read.getContent(), node,
             read.getContentType()) and
           Cand::parameterValueFlowReturnCand(p, _, true) and
-          compatibleTypes(getErasedNodeTypeBound(p), read.getContainerType())
+          compatibleTypes(getNodeType(p), read.getContainerType())
         )
         or
+        parameterValueFlow0_0(TReadStepTypesNone(), p, node, read)
+      }
+
+      pragma[nomagic]
+      private predicate parameterValueFlow0_0(
+        ReadStepTypesOption mustBeNone, ParameterNode p, Node node, ReadStepTypesOption read
+      ) {
         // flow through: no prior read
         exists(ArgumentNode arg |
-          parameterValueFlowArg(p, arg, TReadStepTypesNone()) and
+          parameterValueFlowArg(p, arg, mustBeNone) and
           argumentValueFlowsThrough(arg, read, node)
         )
         or
         // flow through: no read inside method
         exists(ArgumentNode arg |
           parameterValueFlowArg(p, arg, read) and
-          argumentValueFlowsThrough(arg, TReadStepTypesNone(), node)
+          argumentValueFlowsThrough(arg, mustBeNone, node)
         )
       }
 
@@ -292,11 +251,11 @@ private module Cached {
         |
           // normal flow through
           read = TReadStepTypesNone() and
-          compatibleTypes(getErasedNodeTypeBound(arg), getErasedNodeTypeBound(out))
+          compatibleTypes(getNodeType(arg), getNodeType(out))
           or
           // getter
-          compatibleTypes(getErasedNodeTypeBound(arg), read.getContainerType()) and
-          compatibleTypes(read.getContentType(), getErasedNodeTypeBound(out))
+          compatibleTypes(getNodeType(arg), read.getContainerType()) and
+          compatibleTypes(read.getContentType(), getNodeType(out))
         )
       }
 
@@ -405,8 +364,8 @@ private module Cached {
   ) {
     storeStep(node1, c, node2) and
     readStep(_, c, _) and
-    contentType = getErasedNodeTypeBound(node1) and
-    containerType = getErasedNodeTypeBound(node2)
+    contentType = getNodeType(node1) and
+    containerType = getNodeType(node2)
     or
     exists(Node n1, Node n2 |
       n1 = node1.(PostUpdateNode).getPreUpdateNode() and
@@ -415,8 +374,8 @@ private module Cached {
       argumentValueFlowsThrough(n2, TReadStepTypesSome(containerType, c, contentType), n1)
       or
       readStep(n2, c, n1) and
-      contentType = getErasedNodeTypeBound(n1) and
-      containerType = getErasedNodeTypeBound(n2)
+      contentType = getNodeType(n1) and
+      containerType = getNodeType(n2)
     )
   }
 
@@ -507,8 +466,8 @@ private predicate readStepWithTypes(
   Node n1, DataFlowType container, Content c, Node n2, DataFlowType content
 ) {
   readStep(n1, c, n2) and
-  container = getErasedNodeTypeBound(n1) and
-  content = getErasedNodeTypeBound(n2)
+  container = getNodeType(n1) and
+  content = getNodeType(n2)
 }
 
 private newtype TReadStepTypesOption =
@@ -770,9 +729,6 @@ DataFlowCallable resolveCall(DataFlowCall call, CallContext cc) {
   or
   result = viableCallable(call) and cc instanceof CallContextReturn
 }
-
-pragma[noinline]
-DataFlowType getErasedNodeTypeBound(Node n) { result = getErasedRepr(n.getTypeBound()) }
 
 predicate read = readStep/3;
 

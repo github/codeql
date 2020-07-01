@@ -1,8 +1,7 @@
 uniqueEnclosingCallable
 | C.cpp:37:24:37:33 | 0 | Node should have one enclosing callable but has 0. |
 | C.cpp:37:24:37:33 | new | Node should have one enclosing callable but has 0. |
-uniqueTypeBound
-uniqueTypeRepr
+uniqueType
 uniqueNodeLocation
 missingLocation
 uniqueNodeToString
