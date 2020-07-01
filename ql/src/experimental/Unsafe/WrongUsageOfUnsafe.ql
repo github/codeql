@@ -87,7 +87,6 @@ predicate castShortArrayToLongerArray(
             (arrTo.getLength() - arrFromSize) + " bytes)"
       )
     ) and
-    arrTo.getLength() > 0 and //TODO
     arrTo.getLength() > arrFromSize
   )
 }
