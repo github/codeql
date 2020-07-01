@@ -142,10 +142,4 @@ class BarrierGuard extends Expr {
  */
 class Content extends string {
   Content() { this = "Content" }
-
-  /** Gets the type of the object containing this content. */
-  DataFlowType getContainerType() { none() }
-
-  /** Gets the type of this content. */
-  DataFlowType getType() { none() }
 }

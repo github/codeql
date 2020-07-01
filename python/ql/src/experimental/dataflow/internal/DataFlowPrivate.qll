@@ -335,7 +335,7 @@ DataFlowCallable prunedViableImplInCallContext(DataFlowCall call, DataFlowCall c
  */
 predicate isImmutableOrUnobservable(Node n) { none() }
 
-int accessPathLimit() { result = 3 }
+int accessPathLimit() { result = 5 }
 
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) { none() }
