@@ -60,7 +60,7 @@ module AccessPath {
       not this instanceof PropertyProjection and
       not this instanceof Closure::ClosureNamespaceAccess and
       not this = DataFlow::parameterNode(any(ImmediatelyInvokedFunctionExpr iife).getAParameter()) and
-      not this = FlowSteps::IdentityCalls::syntactic(_)
+      not FlowSteps::identityFunctionStep(_, this)
     }
 
     /** Holds if this represents the root of the global access path. */

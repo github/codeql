@@ -199,7 +199,7 @@ module DataFlow {
         not fun.getExit().isJoin() // can only reach exit by the return statement
       )
       or
-      this = FlowSteps::IdentityCalls::syntactic(result)
+      FlowSteps::identityFunctionStep(result, this)
     }
 
     /**

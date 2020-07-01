@@ -404,6 +404,18 @@ private module CachedSteps {
   predicate receiverPropWrite(Function f, string prop, DataFlow::Node rhs) {
     DataFlow::thisNode(f).hasPropertyWrite(prop, rhs)
   }
+
+  /**
+   * A step from `pred` to `succ` through a call to an identity function.
+   */
+  cached
+  predicate identityFunctionStep(DataFlow::Node pred, DataFlow::CallNode succ) {
+    exists(DataFlow::GlobalVarRefNode global |
+      global.getName() = "Object" and
+      succ.(DataFlow::MethodCallNode).calls(global, ["freeze", "seal"]) and
+      pred = succ.getArgument(0)
+    )
+  }
 }
 
 import CachedSteps
@@ -528,20 +540,4 @@ module PathSummary {
    * Gets a summary describing a path with one or more returns, but no calls.
    */
   PathSummary return() { exists(FlowLabel lbl | result = MkPathSummary(true, false, lbl, lbl)) }
-}
-
-/**
- * Provides predicates for reasoning about calls to identity functions.
- */
-module IdentityCalls {
-  /**
-   * Gets an identity call for `input` that can be recognized syntactically.
-   */
-  DataFlow::CallNode syntactic(DataFlow::Node input) {
-    exists(DataFlow::GlobalVarRefNode global |
-      global.getName() = "Object" and
-      result.(DataFlow::MethodCallNode).calls(global, ["freeze", "seal"]) and
-      input = result.getArgument(0)
-    )
-  }
 }
