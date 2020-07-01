@@ -103,7 +103,7 @@ predicate castTypeToArray(DataFlow::PathNode source, DataFlow::PathNode sink, st
     cfg.isSource(source.getNode(), castLittle) and
     cfg.isSink(sink.getNode(), castBig) and
     arrTo = getFinalType(castBig.getType()) and
-    not (typeFrom instanceof ArrayType or typeFrom.getUnderlyingType() instanceof ArrayType) and
+    not typeFrom.getUnderlyingType() instanceof ArrayType and
     not typeFrom instanceof PointerType and
     not castLittle
         .getOperand()

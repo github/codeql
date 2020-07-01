@@ -5,7 +5,7 @@
 <overview>
 <p>
 	The package `unsafe` provides operations that step outside the type safety
-	guarantees normally provided inside Golang programs. This leaves room for
+	guarantees normally provided inside Go programs. This leaves room for
 	errors in the usage of the `unsafe` package that are not caught by the compiler.
 </p>
 <p>
@@ -16,7 +16,7 @@
 </overview>
 <recommendation>
 <p>
-	The basic recomendation is to avoid usage of the package `unsafe`. If that is
+	The basic recommendation is to avoid usage of the package `unsafe`. If that is
 	not an option, you should always check the size of types you cast your data
 	to/from to make sure they won't result in reading outside of the intended bounds.
 </p>
