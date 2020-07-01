@@ -28,7 +28,7 @@ class IRBlockBase extends TIRBlock {
 
   /**
    * INTERNAL: Do not use.
-   * 
+   *
    * Gets a string that uniquely identifies this block within its enclosing function.
    *
    * This predicate is used by debugging and printing code only.
@@ -37,7 +37,7 @@ class IRBlockBase extends TIRBlock {
 
   /**
    * INTERNAL: Do not use.
-   * 
+   *
    * Gets the zero-based index of the block within its function.
    *
    * This predicate is used by debugging and printing code only.
