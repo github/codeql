@@ -1,5 +1,5 @@
 /**
- * Provides implementation classes modelling `memset` and various similar
+ * Provides implementation classes modeling `memset` and various similar
  * functions. See `semmle.code.cpp.models.Models` for usage information.
  */
 

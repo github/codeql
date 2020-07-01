@@ -1,5 +1,5 @@
 /**
- * Provides implementation classes modelling `gets` and various similar
+ * Provides implementation classes modeling `gets` and various similar
  * functions. See `semmle.code.cpp.models.Models` for usage information.
  */
 

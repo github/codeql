@@ -1,5 +1,5 @@
 /**
- * Provides implementation classes modelling `strcat` and various similar functions.
+ * Provides implementation classes modeling `strcat` and various similar functions.
  * See `semmle.code.cpp.models.Models` for usage information.
  */
 
