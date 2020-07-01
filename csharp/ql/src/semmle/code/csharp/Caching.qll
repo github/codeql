@@ -68,7 +68,7 @@ module Stages {
       or
       exists(any(DataFlow::Node n).getType())
       or
-      exists(any(DataFlow::Node n).getTypeBound())
+      exists(any(NodeImpl n).getDataFlowType())
       or
       exists(any(DataFlow::Node n).getLocation())
       or

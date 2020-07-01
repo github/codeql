@@ -1,6 +1,5 @@
 uniqueEnclosingCallable
-uniqueTypeBound
-uniqueTypeRepr
+uniqueType
 uniqueNodeLocation
 | BarrierGuard.cpp:2:11:2:13 | p#0 | Node should have one location but has 6. |
 | acrossLinkTargets.cpp:2:11:2:13 | p#0 | Node should have one location but has 6. |

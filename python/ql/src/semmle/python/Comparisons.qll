@@ -1,3 +1,7 @@
+/**
+ * Provides classes representing comparison operators.
+ */
+
 import python
 
 /** A class representing the six comparison operators, ==, !=, <, <=, > and >=. */
@@ -34,6 +38,7 @@ class CompareOp extends int {
         this = ge() and result = le()
     }
 
+    /** Gets the textual representation of `this`. */
     string repr() {
         this = eq() and result = "=="
         or
@@ -48,6 +53,7 @@ class CompareOp extends int {
         this = ge() and result = ">="
     }
 
+    /** Holds if `op` is the `Cmpop` corresponding to `this`. */
     predicate forOp(Cmpop op) {
         op instanceof Eq and this = eq()
         or
@@ -70,16 +76,22 @@ class CompareOp extends int {
     }
 }
 
+/** The `CompareOp` for "equals". */
 CompareOp eq() { result = 1 }
 
+/** The `CompareOp` for "not equals". */
 CompareOp ne() { result = 2 }
 
+/** The `CompareOp` for "less than". */
 CompareOp lt() { result = 3 }
 
+/** The `CompareOp` for "less than or equal to". */
 CompareOp le() { result = 4 }
 
+/** The `CompareOp` for "greater than". */
 CompareOp gt() { result = 5 }
 
+/** The `CompareOp` for "greater than or equal to". */
 CompareOp ge() { result = 6 }
 
 /* Workaround precision limits in floating point numbers */

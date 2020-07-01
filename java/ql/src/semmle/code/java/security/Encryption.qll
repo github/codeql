@@ -1,3 +1,7 @@
+/**
+ * Provides predicates and classes relating to encryption in Java.
+ */
+
 import java
 
 class SSLClass extends RefType {
@@ -85,8 +89,10 @@ private string algorithmRegex(string algorithmString) {
       "((^|.*[A-Z]{2}|.*[^a-zA-Z])(" + algorithmString.toLowerCase() + ")([^a-z].*|$))"
 }
 
-/** Gets a blacklist of algorithms that are known to be insecure. */
-private string algorithmBlacklist() {
+/**
+ * Gets the name of an algorithm that is known to be insecure.
+ */
+string getAnInsecureAlgorithmName() {
   result = "DES" or
   result = "RC2" or
   result = "RC4" or
@@ -94,32 +100,40 @@ private string algorithmBlacklist() {
   result = "ARCFOUR" // a variant of RC4
 }
 
-// These are only bad if they're being used for encryption.
-private string hashAlgorithmBlacklist() {
+/**
+ * Gets the name of a hash algorithm that is insecure if it is being used for
+ * encryption.
+ */
+string getAnInsecureHashAlgorithmName() {
   result = "SHA1" or
   result = "MD5"
 }
 
-private string rankedAlgorithmBlacklist(int i) {
+private string rankedInsecureAlgorithm(int i) {
   // In this case we know these are being used for encryption, so we want to match
   // weak hash algorithms too.
-  result = rank[i](string s | s = algorithmBlacklist() or s = hashAlgorithmBlacklist())
-}
-
-private string algorithmBlacklistString(int i) {
-  i = 1 and result = rankedAlgorithmBlacklist(i)
-  or
-  result = rankedAlgorithmBlacklist(i) + "|" + algorithmBlacklistString(i - 1)
-}
-
-/** Gets a regex for matching strings that look like they contain a blacklisted algorithm. */
-string algorithmBlacklistRegex() {
   result =
-    algorithmRegex(algorithmBlacklistString(max(int i | exists(rankedAlgorithmBlacklist(i)))))
+    rank[i](string s | s = getAnInsecureAlgorithmName() or s = getAnInsecureHashAlgorithmName())
 }
 
-/** Gets a whitelist of algorithms that are known to be secure. */
-private string algorithmWhitelist() {
+private string insecureAlgorithmString(int i) {
+  i = 1 and result = rankedInsecureAlgorithm(i)
+  or
+  result = rankedInsecureAlgorithm(i) + "|" + insecureAlgorithmString(i - 1)
+}
+
+/**
+ * Gets the regular expression used for matching strings that look like they
+ * contain an algorithm that is known to be insecure.
+ */
+string getInsecureAlgorithmRegex() {
+  result = algorithmRegex(insecureAlgorithmString(max(int i | exists(rankedInsecureAlgorithm(i)))))
+}
+
+/**
+ * Gets the name of an algorithm that is known to be secure.
+ */
+string getASecureAlgorithmName() {
   result = "RSA" or
   result = "SHA256" or
   result = "SHA512" or
@@ -130,19 +144,49 @@ private string algorithmWhitelist() {
   result = "ECIES"
 }
 
-private string rankedAlgorithmWhitelist(int i) { result = rank[i](algorithmWhitelist()) }
+private string rankedSecureAlgorithm(int i) { result = rank[i](getASecureAlgorithmName()) }
 
-private string algorithmWhitelistString(int i) {
-  i = 1 and result = rankedAlgorithmWhitelist(i)
+private string secureAlgorithmString(int i) {
+  i = 1 and result = rankedSecureAlgorithm(i)
   or
-  result = rankedAlgorithmWhitelist(i) + "|" + algorithmWhitelistString(i - 1)
+  result = rankedSecureAlgorithm(i) + "|" + secureAlgorithmString(i - 1)
 }
 
-/** Gets a regex for matching strings that look like they contain a whitelisted algorithm. */
-string algorithmWhitelistRegex() {
-  result =
-    algorithmRegex(algorithmWhitelistString(max(int i | exists(rankedAlgorithmWhitelist(i)))))
+/**
+ * Gets a regular expression for matching strings that look like they
+ * contain an algorithm that is known to be secure.
+ */
+string getSecureAlgorithmRegex() {
+  result = algorithmRegex(secureAlgorithmString(max(int i | exists(rankedSecureAlgorithm(i)))))
 }
+
+/**
+ * DEPRECATED: Terminology has been updated. Use `getAnInsecureAlgorithmName()`
+ * instead.
+ */
+deprecated string algorithmBlacklist() { result = getAnInsecureAlgorithmName() }
+
+/**
+ * DEPRECATED: Terminology has been updated. Use
+ * `getAnInsecureHashAlgorithmName()` instead.
+ */
+deprecated string hashAlgorithmBlacklist() { result = getAnInsecureHashAlgorithmName() }
+
+/**
+ * DEPRECATED: Terminology has been updated. Use `getInsecureAlgorithmRegex()` instead.
+ */
+deprecated string algorithmBlacklistRegex() { result = getInsecureAlgorithmRegex() }
+
+/**
+ * DEPRECATED: Terminology has been updated. Use `getASecureAlgorithmName()`
+ * instead.
+ */
+deprecated string algorithmWhitelist() { result = getASecureAlgorithmName() }
+
+/**
+ * DEPRECATED: Terminology has been updated. Use `getSecureAlgorithmRegex()` instead.
+ */
+deprecated string algorithmWhitelistRegex() { result = getSecureAlgorithmRegex() }
 
 /**
  * Any use of a cryptographic element that specifies an encryption

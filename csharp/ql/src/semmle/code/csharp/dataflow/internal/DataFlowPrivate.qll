@@ -24,6 +24,18 @@ abstract class NodeImpl extends Node {
   /** Do not call: use `getType()` instead. */
   abstract DotNet::Type getTypeImpl();
 
+  /** Gets the type of this node used for type pruning. */
+  cached
+  DataFlowType getDataFlowType() {
+    Stages::DataFlowStage::forceCachingInSameStage() and
+    exists(Type t0 | result = Gvn::getGlobalValueNumber(t0) |
+      t0 = getCSharpType(this.getType())
+      or
+      not exists(getCSharpType(this.getType())) and
+      t0 instanceof ObjectType
+    )
+  }
+
   /** Do not call: use `getControlFlowNode()` instead. */
   abstract ControlFlow::Node getControlFlowNodeImpl();
 
@@ -472,7 +484,7 @@ private predicate arrayStore(Expr e, Expr src, Expr a, boolean postUpdate) {
  */
 private predicate arrayRead(Expr e1, ArrayRead e2) { e1 = e2.getQualifier() }
 
-Type getCSharpType(DotNet::Type t) {
+private Type getCSharpType(DotNet::Type t) {
   result = t
   or
   result.matchesHandle(t)
@@ -1886,7 +1898,7 @@ class LibraryCodeNode extends NodeImpl, TLibraryCodeNode {
 
   override Callable getEnclosingCallableImpl() { result = callCfn.getEnclosingCallable() }
 
-  override DataFlowType getTypeBound() {
+  override DataFlowType getDataFlowType() {
     exists(AccessPath ap |
       state = LibraryFlow::TLibraryCodeNodeAfterReadState(ap) and
       if sinkAp.length() = 0 and state.isLastReadState() and preservesValue = true
@@ -2049,7 +2061,10 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
 
 predicate readStep = readStepImpl/3;
 
-/** Gets a string representation of a type returned by `getErasedRepr`. */
+/** Gets the type of `n` used for type pruning. */
+DataFlowType getNodeType(NodeImpl n) { result = n.getDataFlowType() }
+
+/** Gets a string representation of a `DataFlowType`. */
 string ppReprType(DataFlowType t) { result = t.toString() }
 
 private class DataFlowNullType extends DataFlowType {
@@ -2216,6 +2231,3 @@ int accessPathLimit() { result = 3 }
  * This predicate is only used for consistency checks.
  */
 predicate isImmutableOrUnobservable(Node n) { none() }
-
-pragma[inline]
-DataFlowType getErasedRepr(DataFlowType t) { result = t }

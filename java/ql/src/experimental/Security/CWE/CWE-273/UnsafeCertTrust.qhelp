@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Java offers two mechanisms for SSL authentication - trust manager and hostname verifier. Trust manager validates the peer's certificate chain while hostname verification establishes that the hostname in the URL matches the hostname in the server's identification.</p>
+<p>And when SSLSocket or SSLEngine is created without a valid parameter of setEndpointIdentificationAlgorithm, hostname verification is disabled by default.</p>
+<p>Unsafe implementation of the interface X509TrustManager, HostnameVerifier, and SSLSocket/SSLEngine ignores all SSL certificate validation errors when establishing an HTTPS connection, thereby making the app vulnerable to man-in-the-middle attacks.</p>
+<p>This query checks whether trust manager is set to trust all certificates, the hostname verifier is turned off, or setEndpointIdentificationAlgorithm is missing. The query also covers a special implementation com.rabbitmq.client.ConnectionFactory.</p>
+</overview>
+
+<recommendation>
+<p>Validate SSL certificate in SSL authentication.</p>
+</recommendation>
+
+<example>
+<p>The following two examples show two ways of configuring X509 trust cert manager and hostname verifier. In the 'BAD' case,
+no validation is performed thus any certificate is trusted. In the 'GOOD' case, the proper validation is performed.</p>
+<sample src="UnsafeCertTrust.java" />
+</example>
+
+<references>
+<li>
+<a href="https://cwe.mitre.org/data/definitions/273.html">CWE-273</a>
+</li>
+<li>
+<a href="https://support.google.com/faqs/answer/6346016?hl=en">How to fix apps containing an unsafe implementation of TrustManager</a>
+</li>
+<li>
+<a href="https://github.com/OWASP/owasp-mstg/blob/master/Document/0x05g-Testing-Network-Communication.md">Testing Endpoint Identify Verification (MSTG-NETWORK-3)</a>
+</li>
+<li>
+<a href="https://github.com/advisories/GHSA-xvch-r4wf-h8w9">CVE-2018-17187: Apache Qpid Proton-J transport issue with hostname verification</a>
+</li>
+<li>
+<a href="https://github.com/advisories/GHSA-46j3-r4pj-4835">CVE-2018-8034: Apache Tomcat - host name verification when using TLS with the WebSocket client</a>
+</li>
+<li>
+<a href="https://github.com/advisories/GHSA-w4g2-9hj6-5472">CVE-2018-11087: Pivotal Spring AMQP vulnerability due to lack of hostname validation</a>
+</li>
+<li>
+<a href="https://github.com/advisories/GHSA-m9w8-v359-9ffr">CVE-2018-11775: TLS hostname verification issue when using the Apache ActiveMQ Client</a>
+</li>
+</references>
+</qhelp>

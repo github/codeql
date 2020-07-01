@@ -139,6 +139,7 @@ class ControlFlowNode extends @py_flow_node {
     /** Gets the syntactic element corresponding to this flow node */
     AstNode getNode() { py_flow_bb_node(this, result, _, _) }
 
+    /** Gets a textual representation of this element. */
     string toString() {
         exists(Scope s | s.getEntryNode() = this | result = "Entry node for " + s.toString())
         or
@@ -1014,6 +1015,7 @@ class BasicBlock extends @py_flow_node {
     /** Gets the nth node in this basic block */
     ControlFlowNode getNode(int n) { py_flow_bb_node(result, _, this, n) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "BasicBlock" }
 
     /** Whether this basic block strictly dominates the other */
@@ -1079,9 +1081,17 @@ class BasicBlock extends @py_flow_node {
         this.getASuccessor().reachesExit()
     }
 
-    predicate hasLocationInfo(string file, int line, int col, int endl, int endc) {
-        this.startLocationInfo(file, line, col) and
-        this.endLocationInfo(endl, endc)
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+     */
+    predicate hasLocationInfo(
+        string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {        this.startLocationInfo(filepath, startline, startcolumn) and
+        this.endLocationInfo(endline, endcolumn)
     }
 
     /** Gets a true successor to this basic block */

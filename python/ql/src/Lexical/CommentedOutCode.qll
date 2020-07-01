@@ -175,6 +175,7 @@ class CommentedOutCodeLine extends Comment {
 class CommentedOutCodeBlock extends @py_comment {
     CommentedOutCodeBlock() { commented_out_code_block(this, _) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "Commented out code" }
 
     /** Whether this commented-out code block contains the comment c */
@@ -191,10 +192,19 @@ class CommentedOutCodeBlock extends @py_comment {
     /** The length of this comment block (in comments) */
     int length() { result = count(Comment c | this.contains(c)) }
 
-    predicate hasLocationInfo(string filepath, int bl, int bc, int el, int ec) {
-        this.(Comment).getLocation().hasLocationInfo(filepath, bl, bc, _, _) and
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+     */
+    predicate hasLocationInfo(
+        string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+        this.(Comment).getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _) and
         exists(Comment end | commented_out_code_block(this, end) |
-            end.getLocation().hasLocationInfo(_, _, _, el, ec)
+            end.getLocation().hasLocationInfo(_, _, _, endline, endcolumn)
         )
     }
 

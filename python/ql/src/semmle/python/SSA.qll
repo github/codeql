@@ -76,6 +76,7 @@ class SsaVariable extends @py_ssa_var {
         result = this.getAPhiInput().getAnUltimateDefinition()
     }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "SSA Variable " + this.getId() }
 
     Location getLocation() { result = this.getDefinition().getLocation() }

@@ -7,20 +7,20 @@ import * as ts from "./typescript";
  */
 export class VirtualSourceRoot {
   constructor(
-    private sourceRoot: string,
+    private sourceRoot: string | null,
 
     /**
      * Directory whose folder structure mirrors the real source root, but with `node_modules` installed,
      * or undefined if no virtual source root exists.
      */
-    private virtualSourceRoot: string,
+    private virtualSourceRoot: string | null,
   ) {}
 
   /**
    * Maps a path under the real source root to the corresponding path in the virtual source root.
    */
   public toVirtualPath(path: string) {
-    if (!this.virtualSourceRoot) return null;
+    if (!this.virtualSourceRoot || !this.sourceRoot) return null;
     let relative = pathlib.relative(this.sourceRoot, path);
     if (relative.startsWith('..') || pathlib.isAbsolute(relative)) return null;
     return pathlib.join(this.virtualSourceRoot, relative);

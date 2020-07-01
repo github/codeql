@@ -429,6 +429,30 @@ nodes
 | tst.js:377:16:377:39 | documen ... .search |
 | tst.js:380:18:380:23 | target |
 | tst.js:380:18:380:23 | target |
+| tst.js:387:7:387:39 | target |
+| tst.js:387:16:387:32 | document.location |
+| tst.js:387:16:387:32 | document.location |
+| tst.js:387:16:387:39 | documen ... .search |
+| tst.js:390:18:390:23 | target |
+| tst.js:390:18:390:23 | target |
+| tst.js:392:18:392:23 | target |
+| tst.js:392:18:392:29 | target.taint |
+| tst.js:392:18:392:29 | target.taint |
+| tst.js:397:19:397:35 | document.location |
+| tst.js:397:19:397:35 | document.location |
+| tst.js:397:19:397:42 | documen ... .search |
+| tst.js:398:18:398:30 | target.taint3 |
+| tst.js:398:18:398:30 | target.taint3 |
+| tst.js:403:18:403:23 | target |
+| tst.js:403:18:403:30 | target.taint5 |
+| tst.js:403:18:403:30 | target.taint5 |
+| tst.js:412:18:412:23 | target |
+| tst.js:412:18:412:30 | target.taint7 |
+| tst.js:412:18:412:30 | target.taint7 |
+| tst.js:414:19:414:24 | target |
+| tst.js:414:19:414:31 | target.taint8 |
+| tst.js:415:18:415:30 | target.taint8 |
+| tst.js:415:18:415:30 | target.taint8 |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:10:16:10:18 | loc |
@@ -839,6 +863,29 @@ edges
 | tst.js:377:16:377:32 | document.location | tst.js:377:16:377:39 | documen ... .search |
 | tst.js:377:16:377:32 | document.location | tst.js:377:16:377:39 | documen ... .search |
 | tst.js:377:16:377:39 | documen ... .search | tst.js:377:7:377:39 | target |
+| tst.js:387:7:387:39 | target | tst.js:390:18:390:23 | target |
+| tst.js:387:7:387:39 | target | tst.js:390:18:390:23 | target |
+| tst.js:387:7:387:39 | target | tst.js:392:18:392:23 | target |
+| tst.js:387:7:387:39 | target | tst.js:403:18:403:23 | target |
+| tst.js:387:7:387:39 | target | tst.js:412:18:412:23 | target |
+| tst.js:387:7:387:39 | target | tst.js:414:19:414:24 | target |
+| tst.js:387:16:387:32 | document.location | tst.js:387:16:387:39 | documen ... .search |
+| tst.js:387:16:387:32 | document.location | tst.js:387:16:387:39 | documen ... .search |
+| tst.js:387:16:387:39 | documen ... .search | tst.js:387:7:387:39 | target |
+| tst.js:392:18:392:23 | target | tst.js:392:18:392:29 | target.taint |
+| tst.js:392:18:392:23 | target | tst.js:392:18:392:29 | target.taint |
+| tst.js:397:19:397:35 | document.location | tst.js:397:19:397:42 | documen ... .search |
+| tst.js:397:19:397:35 | document.location | tst.js:397:19:397:42 | documen ... .search |
+| tst.js:397:19:397:42 | documen ... .search | tst.js:398:18:398:30 | target.taint3 |
+| tst.js:397:19:397:42 | documen ... .search | tst.js:398:18:398:30 | target.taint3 |
+| tst.js:403:18:403:23 | target | tst.js:403:18:403:30 | target.taint5 |
+| tst.js:403:18:403:23 | target | tst.js:403:18:403:30 | target.taint5 |
+| tst.js:412:18:412:23 | target | tst.js:412:18:412:30 | target.taint7 |
+| tst.js:412:18:412:23 | target | tst.js:412:18:412:30 | target.taint7 |
+| tst.js:414:19:414:24 | target | tst.js:414:19:414:31 | target.taint8 |
+| tst.js:414:19:414:31 | target.taint8 | tst.js:414:19:414:31 | target.taint8 |
+| tst.js:414:19:414:31 | target.taint8 | tst.js:415:18:415:30 | target.taint8 |
+| tst.js:414:19:414:31 | target.taint8 | tst.js:415:18:415:30 | target.taint8 |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |

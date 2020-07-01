@@ -1,5 +1,6 @@
 import python
 
+/** A string constant that looks like it may be used in string formatting operations. */
 library class PossibleAdvancedFormatString extends StrConst {
     PossibleAdvancedFormatString() { this.getText().matches("%{%}%") }
 
@@ -51,6 +52,7 @@ library class PossibleAdvancedFormatString extends StrConst {
     predicate isExplicitlyNumbered() { exists(this.fieldId(_, _).toInt()) }
 }
 
+/** Holds if the formatting string `fmt` contains a sequence of braces `{` of length `len`, beginning at index `index`. */
 predicate brace_sequence(PossibleAdvancedFormatString fmt, int index, int len) {
     exists(string text | text = fmt.getText() |
         text.charAt(index) = "{" and not text.charAt(index - 1) = "{" and len = 1
@@ -61,10 +63,12 @@ predicate brace_sequence(PossibleAdvancedFormatString fmt, int index, int len) {
     )
 }
 
+/** Holds if index `index` in the format string `fmt` contains an escaped brace `{`. */
 predicate escaped_brace(PossibleAdvancedFormatString fmt, int index) {
     exists(int len | brace_sequence(fmt, index, len) | len % 2 = 0)
 }
 
+/** Holds if index `index` in the format string `fmt` contains a left brace `{` that acts as an escape character. */
 predicate escaping_brace(PossibleAdvancedFormatString fmt, int index) {
     escaped_brace(fmt, index + 1)
 }
@@ -105,15 +109,18 @@ private predicate advanced_format_call(Call format_expr, PossibleAdvancedFormatS
     )
 }
 
+/** A string constant that has the `format` method applied to it. */
 class AdvancedFormatString extends PossibleAdvancedFormatString {
     AdvancedFormatString() { advanced_format_call(_, this, _) }
 }
 
+/** A string formatting operation that uses the `format` method. */
 class AdvancedFormattingCall extends Call {
     AdvancedFormattingCall() { advanced_format_call(this, _, _) }
 
     /** Count of the arguments actually provided */
     int providedArgCount() { advanced_format_call(this, _, result) }
 
+    /** Gets a formatting string for this call. */
     AdvancedFormatString getAFormat() { advanced_format_call(this, result, _) }
 }

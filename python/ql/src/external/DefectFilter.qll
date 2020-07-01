@@ -26,7 +26,9 @@ class DefectResult extends int {
 
     /** Gets the file in which this query result was reported. */
     File getFile() {
-        exists(string path | defectResults(this, _, path, _, _, _, _, _) and result.getAbsolutePath() = path)
+        exists(string path |
+            defectResults(this, _, path, _, _, _, _, _) and result.getAbsolutePath() = path
+        )
     }
 
     /** Gets the file path in which this query result was reported. */
@@ -47,8 +49,17 @@ class DefectResult extends int {
     /** Gets the message associated with this query result. */
     string getMessage() { defectResults(this, _, _, _, _, _, _, result) }
 
-    predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-        defectResults(this, _, path, sl, sc, el, ec, _)
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+     */
+    predicate hasLocationInfo(
+        string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+        defectResults(this, _, filepath, startline, startcolumn, endline, endcolumn, _)
     }
 
     /** Gets the URL corresponding to the location of this query result. */
