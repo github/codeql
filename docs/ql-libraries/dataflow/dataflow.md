@@ -1,6 +1,6 @@
 # Using the shared data-flow library
 
-This document is aimed towards language maintainers and contain implementation
+This document is aimed towards language maintainers and contains implementation
 details that should be mostly irrelevant to query writers.
 
 ## Overview
@@ -40,9 +40,10 @@ module DataFlow {
 The `DataFlowImpl.qll` and `DataFlowCommon.qll` files contain the library code
 that is shared across languages. These contain `Configuration`-specific and
 `Configuration`-independent code, respectively. This organization allows
-multiple copies of the library (for the use case when a query wants to use two
-instances of global data flow and the configuration of one depends on the
-results from the other). Using multiple copies just means duplicating
+multiple copies of the library to exist without duplicating the
+`Configuration`-independent predicates (for the use case when a query wants to
+use two instances of global data flow and the configuration of one depends on
+the results from the other). Using multiple copies just means duplicating
 `DataFlow.qll` and `DataFlowImpl.qll`, for example as:
 
 ```
@@ -52,9 +53,9 @@ dataflow/internal/DataFlowImpl2.qll
 dataflow/internal/DataFlowImpl3.qll
 ```
 
-The `DataFlowImplSpecific.qll` provides all the language-specific classes and
-predicates that the library needs as input and is the topic of the rest of this
-document.
+The file `DataFlowImplSpecific.qll` provides all the language-specific classes
+and predicates that the library needs as input and is the topic of the rest of
+this document.
 
 This file must provide two modules named `Public` and `Private`, which the
 shared library code will import publicly and privately, respectively, thus
@@ -88,7 +89,9 @@ Recommendations:
 * Define `predicate localFlowStep(Node node1, Node node2)` as an alias of
   `simpleLocalFlowStep` and expose it publicly. The reason for this indirection
   is that it gives the option of exposing local flow augmented with field flow.
-  See the C/C++ implementation, which makes use of this feature.
+  See the C/C++ implementation, which makes use of this feature. Another use of
+  this indirection is to hide synthesized local steps that are only relevant
+  for global flow. See the C# implementation for an example of this.
 * Define `predicate localFlow(Node node1, Node node2) { localFlowStep*(node1, node2) }`.
 * Make the local flow step relation in `simpleLocalFlowStep` follow
   def-to-first-use and use-to-next-use steps for SSA variables. Def-use steps
@@ -141,8 +144,9 @@ must be provided.
 First, two types, `DataFlowCall` and `DataFlowCallable`, must be defined. These
 should be aliases for whatever language-specific class represents calls and
 callables (a "callable" is intended as a broad term covering functions,
-methods, constructors, lambdas, etc.). The call-graph should be defined as a
-predicate:
+methods, constructors, lambdas, etc.). It can also be useful to represent
+`DataFlowCall` as an IPA type if implicit calls need to be modelled. The
+call-graph should be defined as a predicate:
 ```ql
 DataFlowCallable viableCallable(DataFlowCall c)
 ```
@@ -182,7 +186,7 @@ corresponding `OutNode`s.
 
 Flow through global variables are called jump-steps, since such flow steps
 essentially jump from one callable to another completely discarding call
-context.
+contexts.
 
 Adding support for this type of flow is done with the following predicate:
 ```ql
@@ -206,10 +210,12 @@ as described above.
 
 The library supports tracking flow through field stores and reads. In order to
 support this, a class `Content` and two predicates
-`storeStep(Node node1, Content f, PostUpdateNode node2)` and
-`readStep(Node node1, Content f, Node node2)` must be defined. Besides this,
-certain nodes must have associated `PostUpdateNode`s. The node associated with
-a `PostUpdateNode` should be defined by `PostUpdateNode::getPreUpdateNode()`.
+`storeStep(Node node1, Content f, Node node2)` and
+`readStep(Node node1, Content f, Node node2)` must be defined. It generally
+makes sense for stores to target `PostUpdateNode`s, but this is not a strict
+requirement. Besides this, certain nodes must have associated
+`PostUpdateNode`s. The node associated with a `PostUpdateNode` should be
+defined by `PostUpdateNode::getPreUpdateNode()`.
 
 `PostUpdateNode`s are generally used when we need two data-flow nodes for a
 single AST element in order to distinguish the value before and after some
@@ -351,22 +357,18 @@ otherwise be equivalent with respect to compatibility can then be represented
 as a single entity (this improves performance). As an example, Java uses erased
 types for this purpose and a single equivalence class for all numeric types.
 
-One also needs to define
+The type of a `Node` is given by the following predicate
 ```
-Type Node::getType()
-Type Node::getTypeBound()
-DataFlowType getErasedRepr(Type t)
+DataFlowType getNodeType(Node n)
+```
+and every `Node` should have a type.
+
+One also needs to define the the string representation of a `DataFlowType`:
+```
 string ppReprType(DataFlowType t)
 ```
-where `Type` can be a language-specific name for the types native to the
-language.  Of the member predicate `Node::getType()` and `Node::getTypeBound()`
-only the latter is used by the library, but the former is usually nice to have
-if it makes sense for the language. The `getErasedRepr` predicate acts as the
-translation between regular types and the type system used for pruning, the
-shared library will use `getErasedRepr(node.getTypeBound())` to get the
-`DataFlowType` for a node. The `ppReprType` predicate is used for printing a
-type in the labels of `PathNode`s, this can be defined as `none()` if type
-pruning is not used.
+The `ppReprType` predicate is used for printing a type in the labels of
+`PathNode`s, this can be defined as `none()` if type pruning is not used.
 
 Finally, one must define `CastNode` as a subclass of `Node` as those nodes
 where types should be checked. Usually this will be things like explicit casts.
@@ -374,7 +376,8 @@ The shared library will also check types at `ParameterNode`s and `OutNode`s
 without needing to include these in `CastNode`.  It is semantically perfectly
 valid to include all nodes in `CastNode`, but this can hurt performance as it
 will reduce the opportunity for the library to compact several local steps into
-one.
+one. It is also perfectly valid to leave `CastNode` as the empty set, and this
+should be the default if type pruning is not used.
 
 ## Virtual dispatch with call context
 
@@ -424,9 +427,9 @@ that can be tracked. This is given by the following predicate:
 ```ql
 int accessPathLimit() { result = 5 }
 ```
-We have traditionally used 5 as a default value here, as we have yet to observe
-the need for this much field nesting. Changing this value has a direct impact
-on performance for large databases.
+We have traditionally used 5 as a default value here, and real examples have
+been observed to require at least this much. Changing this value has a direct
+impact on performance for large databases.
 
 ### Hidden nodes
 
