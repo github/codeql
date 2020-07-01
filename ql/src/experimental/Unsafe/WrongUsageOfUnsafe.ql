@@ -22,7 +22,7 @@ Type getBaseType(Type typ) {
 }
 
 /* A conversion to a `unsafe.Pointer` */
-class ConversionToUnsafePointer extends ConversionExpr {
+class ConversionToUnsafePointer extends DataFlow::TypeCastNode {
   ConversionToUnsafePointer() { getFinalType(getType()) instanceof UnsafePointerType }
 }
 
@@ -30,13 +30,11 @@ class ConversionToUnsafePointer extends ConversionExpr {
 class UnsafeTypeCastingConf extends TaintTracking::Configuration {
   UnsafeTypeCastingConf() { this = "UnsafeTypeCastingConf" }
 
-  predicate isSource(DataFlow::Node source, ConversionToUnsafePointer conv) {
-    source.asExpr() = conv
-  }
+  predicate isSource(DataFlow::Node source, ConversionToUnsafePointer conv) { source = conv }
 
-  predicate isSink(DataFlow::Node sink, ConversionExpr ca) {
+  predicate isSink(DataFlow::Node sink, DataFlow::TypeCastNode ca) {
     ca.getOperand().getType() instanceof UnsafePointerType and
-    sink.asExpr() = ca
+    sink = ca
   }
 
   override predicate isSource(DataFlow::Node source) { isSource(source, _) }
@@ -53,13 +51,13 @@ predicate castShortArrayToLongerArray(
   DataFlow::PathNode source, DataFlow::PathNode sink, string message
 ) {
   exists(
-    UnsafeTypeCastingConf cfg, ConversionExpr castBig, ConversionToUnsafePointer castLittle,
+    UnsafeTypeCastingConf cfg, DataFlow::TypeCastNode castBig, ConversionToUnsafePointer castLittle,
     ArrayType arrTo, ArrayType arrFrom, int arrFromSize
   |
     cfg.hasFlowPath(source, sink) and
     cfg.isSource(source.getNode(), castLittle) and
     cfg.isSink(sink.getNode(), castBig) and
-    arrTo = getFinalType(castBig.getTypeExpr().getType()) and
+    arrTo = getFinalType(castBig.getType()) and
     (
       // Array (whole) to array:
       // The `unsafe.Pointer` expression is on the array
@@ -75,8 +73,8 @@ predicate castShortArrayToLongerArray(
       // (e.g. unsafe.Pointer(&someArray[2])),
       // which will be the starting point in memory for the newly cast
       // variable.
-      exists(IndexExpr indexExpr |
-        indexExpr = castLittle.getOperand().getChildExpr(0) and
+      exists(DataFlow::ElementReadNode indexExpr |
+        indexExpr = castLittle.getOperand().(DataFlow::AddressOperationNode).getOperand() and
         // The `arrFrom` is the base of the index expression:
         arrFrom = indexExpr.getBase().getType() and
         // Calculate the size of the `arrFrom`:
@@ -98,16 +96,22 @@ predicate castShortArrayToLongerArray(
 
 predicate castTypeToArray(DataFlow::PathNode source, DataFlow::PathNode sink, string message) {
   exists(
-    UnsafeTypeCastingConf cfg, ConversionExpr castBig, ConversionToUnsafePointer castLittle,
+    UnsafeTypeCastingConf cfg, DataFlow::TypeCastNode castBig, ConversionToUnsafePointer castLittle,
     ArrayType arrTo, Type typeFrom
   |
     cfg.hasFlowPath(source, sink) and
     cfg.isSource(source.getNode(), castLittle) and
     cfg.isSink(sink.getNode(), castBig) and
-    arrTo = getFinalType(castBig.getTypeExpr().getType()) and
+    arrTo = getFinalType(castBig.getType()) and
     not (typeFrom instanceof ArrayType or typeFrom.getUnderlyingType() instanceof ArrayType) and
     not typeFrom instanceof PointerType and
-    not castLittle.getOperand().getChildExpr(0).(IndexExpr).getBase().getType() instanceof ArrayType and
+    not castLittle
+        .getOperand()
+        .(DataFlow::AddressOperationNode)
+        .getOperand()
+        .(DataFlow::ElementReadNode)
+        .getBase()
+        .getType() instanceof ArrayType and
     typeFrom = getFinalType(castLittle.getOperand().getType()) and
     message = "Dangerous type up-casting to " + arrTo.pp() + " from " + typeFrom
   )
@@ -122,16 +126,18 @@ predicate castDifferentBitSizeNumbers(
   DataFlow::PathNode source, DataFlow::PathNode sink, string message
 ) {
   exists(
-    UnsafeTypeCastingConf cfg, ConversionExpr castBig, ConversionToUnsafePointer castLittle,
+    UnsafeTypeCastingConf cfg, DataFlow::TypeCastNode castBig, ConversionToUnsafePointer castLittle,
     NumericType numTo, NumericType numFrom
   |
     cfg.hasFlowPath(source, sink) and
     cfg.isSource(source.getNode(), castLittle) and
     cfg.isSink(sink.getNode(), castBig) and
-    numTo = getFinalType(castBig.getTypeExpr().getType()) and
+    numTo = getFinalType(castBig.getType()) and
     numFrom = getFinalType(castLittle.getOperand().getType()) and
     // TODO: also consider cast from uint to int?
     getNumericTypeSize(numTo) != getNumericTypeSize(numFrom) and
+    // Exclude casts to UintptrType (which is still a pointer):
+    not numTo instanceof UintptrType and
     message = "Dangerous numeric type casting to " + numTo.getName() + " from " + numFrom.getName()
   )
 }
@@ -142,14 +148,10 @@ predicate castDifferentBitSizeNumbers(
  */
 
 int getNumericTypeSize(NumericType typ) {
-  (
-    // If the numeric types have arch-specific
-    // bit sizes, then set the size to 0 to distinguish
-    // it from others.
-    typ instanceof UintType
-    or
-    typ instanceof IntType
-  ) and
+  // If the numeric types have arch-specific
+  // bit sizes, then set the size to 0 to distinguish
+  // it from others.
+  not exists(typ.getSize()) and
   result = 0
   or
   result = typ.getSize()
