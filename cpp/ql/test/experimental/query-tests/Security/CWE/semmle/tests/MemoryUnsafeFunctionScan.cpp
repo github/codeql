@@ -8,15 +8,15 @@ int fscanf(const char* str, const char* format, ...);
 
 int main(int argc, char** argv) { 
 
-    // BAD, do not use scanf, use scanf_s instead
+    // BAD, do not use scanf without specifying a length first
     char buf1[10];
     scanf("%s", buf1);
 
-    // BAD, do not use sscanf, use sscanf_s instead
+    // GOOD, length is specified
     char buf2[10];
-    sscanf(buf2, "%s");
+    sscanf(buf2, "%9s");
 
-    // BAD, do not use fscanf, use fscanf_s instead
+    // BAD, do not use scanf without specifying a length first
     char file[10];
     fscanf(file, "%s", buf2);
 

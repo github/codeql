@@ -1,0 +1,16 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>It is bad practice to use any of the scanf functions without including a specified length within the format parameter, as it will be vulnerable to buffer overflows.</p>
+
+</overview>
+
+<references>
+<li>https://cwe.mitre.org/data/definitions/120</li>
+<!--  LocalWords:  CWE
+ -->
+</references>
+
+</qhelp>
