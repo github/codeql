@@ -6,6 +6,7 @@
 
 import go
 private import semmle.go.security.SensitiveActions::HeuristicNames
+private import semmle.go.security.SensitiveActions::PasswordHeuristics
 
 /**
  * Provides extension points for customizing the data-flow tracking configuration for reasoning
@@ -67,6 +68,9 @@ module CleartextLogging {
           .(Ident)
           .getName()
           .regexpMatch("(?is).*(messages|strings).*")
+      or
+      // avoid dummy passwords
+      isDummyPassword(this.getStringValue())
     }
   }
 
