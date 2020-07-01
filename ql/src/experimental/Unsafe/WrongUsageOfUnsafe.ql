@@ -26,7 +26,7 @@ class ConversionToUnsafePointer extends ConversionExpr {
   ConversionToUnsafePointer() { getFinalType(getType()) instanceof UnsafePointerType }
 }
 
-/* Type casting through the use of unsafe pointers.*/
+/* Type casting from a `unsafe.Pointer`.*/
 class UnsafeTypeCastingConf extends TaintTracking::Configuration {
   UnsafeTypeCastingConf() { this = "UnsafeTypeCastingConf" }
 
@@ -54,31 +54,41 @@ predicate castShortArrayToLongerArray(
 ) {
   exists(
     UnsafeTypeCastingConf cfg, ConversionExpr castBig, ConversionToUnsafePointer castLittle,
-    ArrayType arrTo, ArrayType arrFrom, int arrFromAvailableSize
+    ArrayType arrTo, ArrayType arrFrom, int arrFromSize
   |
     cfg.hasFlowPath(source, sink) and
     cfg.isSource(source.getNode(), castLittle) and
     cfg.isSink(sink.getNode(), castBig) and
     arrTo = getFinalType(castBig.getTypeExpr().getType()) and
     (
+      // Array (whole) to array:
+      // The `unsafe.Pointer` expression is on the array
+      // (e.g. unsafe.Pointer(&someArray)),
+      // meaning that the pointer points to the start of the array:
       arrFrom = getFinalType(castLittle.getOperand().getType()) and
-      arrFromAvailableSize = arrFrom.getLength() and
-      message =
-        "Dangerous array type casting to [" + arrTo.getLength() + "]" + arrTo.getElementType() +
-          " from [" + arrFrom.getLength() + "]" + arrFrom.getElementType()
+      arrFromSize = arrFrom.getLength() and
+      message = "Dangerous array type casting to " + arrTo.pp() + " from " + arrFrom.pp()
       or
+      // Piece of array (starting from an index), to array:
+      // The `unsafe.Pointer` expression can also point to a specific
+      // element of an array
+      // (e.g. unsafe.Pointer(&someArray[2])),
+      // which will be the starting point in memory for the newly cast
+      // variable.
       exists(IndexExpr indexExpr |
         indexExpr = castLittle.getOperand().getChildExpr(0) and
+        // The `arrFrom` is the base of the index expression:
         arrFrom = indexExpr.getBase().getType() and
-        arrFromAvailableSize = arrFrom.getLength() - indexExpr.getIndex().getIntValue() and
+        // Calculate the size of the `arrFrom`:
+        arrFromSize = arrFrom.getLength() - indexExpr.getIndex().getIntValue() and
         message =
-          "Dangerous array type casting to [" + arrTo.getLength() + "]" + arrTo.getElementType() +
-            " from an index [" + arrFrom.getLength() + "]" + arrFrom.getElementType() + "[" +
-            indexExpr.getIndex().getIntValue() + "]"
+          "Dangerous array type casting to " + arrTo.pp() + " from an index expression " +
+            arrFrom.pp() + "[" + indexExpr.getIndex().getIntValue() + "]" + " (overflowing by " +
+            (arrTo.getLength() - arrFromSize) + " bytes)"
       )
     ) and
     arrTo.getLength() > 0 and //TODO
-    arrTo.getLength() > arrFromAvailableSize
+    arrTo.getLength() > arrFromSize
   )
 }
 
@@ -100,9 +110,7 @@ predicate castTypeToArray(DataFlow::PathNode source, DataFlow::PathNode sink, st
     not typeFrom instanceof PointerType and
     not castLittle.getOperand().getChildExpr(0).(IndexExpr).getBase().getType() instanceof ArrayType and
     typeFrom = getFinalType(castLittle.getOperand().getType()) and
-    message =
-      "Dangerous type up-casting to [" + arrTo.getLength() + "]" + arrTo.getElementType() + " from "
-        + typeFrom
+    message = "Dangerous type up-casting to " + arrTo.pp() + " from " + typeFrom
   )
 }
 
@@ -116,47 +124,36 @@ predicate castDifferentBitSizeNumbers(
 ) {
   exists(
     UnsafeTypeCastingConf cfg, ConversionExpr castBig, ConversionToUnsafePointer castLittle,
-    CustomNumericType numTo, CustomNumericType numFrom
+    NumericType numTo, NumericType numFrom
   |
     cfg.hasFlowPath(source, sink) and
     cfg.isSource(source.getNode(), castLittle) and
     cfg.isSink(sink.getNode(), castBig) and
     numTo = getFinalType(castBig.getTypeExpr().getType()) and
-    (
-      numFrom = getFinalType(castLittle.getOperand().getType()) or
-      numFrom =
-        getFinalType(getFinalType(castLittle.getOperand().getType())
-              .(StructType)
-              .getField(_)
-              .getType())
-    ) and
+    numFrom = getFinalType(castLittle.getOperand().getType()) and
     // TODO: also consider cast from uint to int?
-    numTo.getSize() != numFrom.getSize() and
+    getNumericTypeSize(numTo) != getNumericTypeSize(numFrom) and
     message = "Dangerous numeric type casting to " + numTo.getName() + " from " + numFrom.getName()
   )
 }
 
 /*
- * A numeric type that returns bit size 0 if it is one of the numeric
+ * Returns 0 if the NumericType is one of the numeric
  * types that have architecture-specific bit sizes.
  */
 
-class CustomNumericType extends NumericType {
-  CustomNumericType() { this instanceof NumericType }
-
-  override int getSize() {
-    (
-      // If the numeric types have arch-specific
-      // bit sizes, then set the size to 0 to distinguish
-      // it from others.
-      this instanceof UintType
-      or
-      this instanceof IntType
-    ) and
-    result = 0
+int getNumericTypeSize(NumericType typ) {
+  (
+    // If the numeric types have arch-specific
+    // bit sizes, then set the size to 0 to distinguish
+    // it from others.
+    typ instanceof UintType
     or
-    result = this.(NumericType).getSize()
-  }
+    typ instanceof IntType
+  ) and
+  result = 0
+  or
+  result = typ.getSize()
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, string message
