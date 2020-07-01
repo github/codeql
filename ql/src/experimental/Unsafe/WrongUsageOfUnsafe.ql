@@ -54,22 +54,31 @@ predicate castShortArrayToLongerArray(
 ) {
   exists(
     UnsafeTypeCastingConf cfg, ConversionExpr castBig, ConversionToUnsafePointer castLittle,
-    ArrayType arrTo, ArrayType arrFrom
+    ArrayType arrTo, ArrayType arrFrom, int arrFromAvailableSize
   |
     cfg.hasFlowPath(source, sink) and
     cfg.isSource(source.getNode(), castLittle) and
     cfg.isSink(sink.getNode(), castBig) and
     arrTo = getBaseType(castBig.getTypeExpr().getType()) and
     (
-      arrFrom = getBaseType(castLittle.getOperand().getType())
+      arrFrom = getBaseType(castLittle.getOperand().getType()) and
+      arrFromAvailableSize = arrFrom.getLength() and
+      message =
+        "Dangerous array type casting to [" + arrTo.getLength() + "]" + arrTo.getElementType() +
+          " from [" + arrFrom.getLength() + "]" + arrFrom.getElementType()
       or
-      arrFrom = castLittle.getOperand().getChildExpr(0).(IndexExpr).getBase().getType()
+      exists(IndexExpr indexExpr |
+        indexExpr = castLittle.getOperand().getChildExpr(0) and
+        arrFrom = indexExpr.getBase().getType() and
+        arrFromAvailableSize = arrFrom.getLength() - indexExpr.getIndex().getIntValue() and
+        message =
+          "Dangerous array type casting to [" + arrTo.getLength() + "]" + arrTo.getElementType() +
+            " from an index [" + arrFrom.getLength() + "]" + arrFrom.getElementType() + "[" +
+            indexExpr.getIndex().getIntValue() + "]"
+      )
     ) and
     arrTo.getLength() > 0 and //TODO
-    arrTo.getLength() > arrFrom.getLength() and
-    message =
-      "Dangerous array type casting to [" + arrTo.getLength() + "]" + arrTo.getElementType() +
-        " from [" + arrFrom.getLength() + "]" + arrFrom.getElementType()
+    arrTo.getLength() > arrFromAvailableSize
   )
 }
 

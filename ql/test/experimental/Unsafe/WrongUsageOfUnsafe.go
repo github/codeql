@@ -14,9 +14,9 @@ func good0() {
 
 	// Read before secret without overflowing to secret:
 	// NOTE: unsafe.Pointer(&harmless) == unsafe.Pointer(&harmless[0])
-	var leaking = (*[8]byte)(unsafe.Pointer(&harmless)) // OK
+	var nonLeaking = (*[8]byte)(unsafe.Pointer(&harmless)) // OK
 
-	fmt.Println(string((*leaking)[:]))
+	fmt.Println(string((*nonLeaking)[:]))
 
 	// Avoid optimization:
 	if secret[0] == 123 {
@@ -31,7 +31,28 @@ func good1() {
 
 	// Read before secret without overflowing to secret:
 	// NOTE: unsafe.Pointer(&harmless) == unsafe.Pointer(&harmless[0])
-	var leaking = (*[8]byte)(unsafe.Pointer(&harmless[0])) // OK
+	var nonLeaking = (*[8]byte)(unsafe.Pointer(&harmless[0])) // OK
+
+	fmt.Println(string((*nonLeaking)[:]))
+
+	// Avoid optimization:
+	if secret[0] == 123 {
+		fmt.Println("hello world")
+	}
+}
+func badIndex() {
+	// A harmless piece of data:
+	harmless := [8]byte{'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'}
+	// Something secret:
+	secret := [9]byte{'s', 'e', 'n', 's', 'i', 't', 'i', 'v', 'e'}
+
+	// Read before secret, overflowing into secret.
+	// NOTE: unsafe.Pointer(&harmless) != unsafe.Pointer(&harmless[2])
+	// The new variable `leaking` will contain data starting from
+	// the address of the 3rd element of the `harmless` array,
+	// and continue for 8 bytes, crossing the boundaries of
+	// `harmless` into the memory occupied by `secret`.
+	var leaking = (*[8]byte)(unsafe.Pointer(&harmless[2])) // BAD
 
 	fmt.Println(string((*leaking)[:]))
 
@@ -47,9 +68,9 @@ func good2() {
 	secret := [9]byte{'s', 'e', 'n', 's', 'i', 't', 'i', 'v', 'e'}
 
 	// Read before secret:
-	var leaking = (*int)(unsafe.Pointer(&harmless)) // TODO: is this really OK?
+	var nonLeaking = (*int)(unsafe.Pointer(&harmless)) // TODO: is this really OK?
 
-	fmt.Println(*leaking)
+	fmt.Println(*nonLeaking)
 
 	// Avoid optimization:
 	if secret[0] == 123 {
