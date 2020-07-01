@@ -131,7 +131,7 @@ module Express {
         t = t2
       )
       or
-      exists(DataFlow::CallNode call, int i, DataFlow::FunctionNode forwarder | 
+      exists(DataFlow::CallNode call, int i, DataFlow::FunctionNode forwarder |
         result.(HTTP::RouteHandlerCandidate).flowsTo(call.getArgument(i)) and
         call = getARouteHandler(t.continue()) and
         forwarder.getFunction() = unique(Function f | f = call.getACallee())
