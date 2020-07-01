@@ -142,4 +142,22 @@ predicate modeledTaintStep(DataFlow::Node nodeIn, DataFlow::Node nodeOut) {
     modelMidOut.isParameterDeref(indexMid) and
     modelMidIn.isParameter(indexMid)
   )
+  or
+  // Taint flow from a pointer argument to an output, when the model specifies flow from the deref
+  // to that output, but the deref is not modeled in the IR for the caller.
+  exists(
+    CallInstruction call, ReadSideEffectInstruction read, Function func,
+    FunctionInput modelIn, FunctionOutput modelOut
+  |
+    read.getSideEffectOperand() = callInput(call, modelIn).asOperand() and
+    read.getArgumentDef() = nodeIn.asInstruction() and
+    not read.getSideEffect().isResultModeled() and
+    call.getStaticCallTarget() = func and
+    (
+      func.(DataFlowFunction).hasDataFlow(modelIn, modelOut)
+      or
+      func.(TaintFunction).hasTaintFlow(modelIn, modelOut)
+    ) and
+    nodeOut.asInstruction() = callOutput(call, modelOut)
+  )
 }
