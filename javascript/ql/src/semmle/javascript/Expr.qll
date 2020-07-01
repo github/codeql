@@ -109,7 +109,7 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
 
   /** Gets the constant string value this expression evaluates to, if any. */
   cached
-  string getStringValue() { none() }
+  string getStringValue() { result = getStringValue(this) }
 
   /** Holds if this expression is impure, that is, its evaluation could have side effects. */
   predicate isImpure() { any() }
@@ -423,8 +423,6 @@ class BigIntLiteral extends @bigintliteral, Literal {
  * ```
  */
 class StringLiteral extends @stringliteral, Literal {
-  override string getStringValue() { result = getValue() }
-
   /**
    * Gets the value of this string literal parsed as a regular expression, if possible.
    *
@@ -838,8 +836,6 @@ class SeqExpr extends @seqexpr, Expr {
   Expr getLastOperand() { result = getOperand(getNumOperands() - 1) }
 
   override predicate isImpure() { getAnOperand().isImpure() }
-
-  override string getStringValue() { result = getLastOperand().getStringValue() }
 
   override Expr getUnderlyingValue() { result = getLastOperand().getUnderlyingValue() }
 }
@@ -1517,12 +1513,63 @@ class URShiftExpr extends @urshiftexpr, BinaryExpr {
  */
 class AddExpr extends @addexpr, BinaryExpr {
   override string getOperator() { result = "+" }
-
-  override string getStringValue() {
-    result = getLeftOperand().getStringValue() + getRightOperand().getStringValue() and
-    result.length() < 1000 * 1000
-  }
 }
+
+/**
+ * Gets the string value for the expression `e`.
+ * This string-value is either a constant-string, or the result from a simple string-concatenation.
+ */
+private string getStringValue(Expr e) {
+  result = getConstantString(e)
+  or
+  result = getConcatenatedString(e)
+}
+
+/**
+ * Gets the constant string value for the expression `e`.
+ */
+private string getConstantString(Expr e) {
+  result = getConstantString(e.getUnderlyingValue())
+  or
+  result = e.(StringLiteral).getValue()
+  or
+  exists(TemplateLiteral lit | lit = e |
+    // fold singletons
+    lit.getNumChildExpr() = 0 and
+    result = ""
+    or
+    e.getNumChildExpr() = 1 and
+    result = getConstantString(lit.getElement(0))
+  )
+  or
+  result = e.(TemplateElement).getValue()
+}
+
+/**
+ * Gets the concatenated string for a string-concatenation `add`.
+ * Only has a result if `add` is not itself an operand in another string-concatenation.
+ */
+private string getConcatenatedString(Expr add) {
+  result = getConcatenatedString(add.getUnderlyingValue())
+  or
+  not add = getAnAddOperand(_) and
+  forex(Expr leaf | leaf = getAnAddOperand*(add) and not exists(getAnAddOperand(leaf)) |
+    exists(getConstantString(leaf))
+  ) and
+  result =
+    concat(Expr leaf |
+      leaf = getAnAddOperand*(add)
+    |
+      getConstantString(leaf) order by leaf.getFirstToken().getIndex()
+    ) and
+  result.length() < 1000 * 1000
+}
+
+/**
+ * Gets an operand from `add`.
+ * Is specialized to `AddExpr` such that `getAnAddOperand*(add)` can be used to get a leaf from a string-concatenation transitively.
+ */
+private Expr getAnAddOperand(AddExpr add) { result = add.getAnOperand() }
 
 /**
  * A subtraction expression.
