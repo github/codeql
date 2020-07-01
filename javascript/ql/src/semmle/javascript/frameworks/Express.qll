@@ -466,11 +466,14 @@ module Express {
   /**
    * Gets a reference to the "query" or "params" object from a request-object originating from route-handler `rh`.
    */
-  DataFlow::SourceNode getAQueryObjectReference(DataFlow::TypeTracker t, RouteHandler rh) {
-    t.startInProp(["params", "query"]) and
+  DataFlow::SourceNode getAQueryObjectReference(
+    DataFlow::TypeTracker t, RouteHandler rh, string prop
+  ) {
+    prop = ["params", "query"] and
+    t.startInProp(prop) and
     result = rh.getARequestSource()
     or
-    exists(DataFlow::TypeTracker t2 | result = getAQueryObjectReference(t2, rh).track(t2, t))
+    exists(DataFlow::TypeTracker t2 | result = getAQueryObjectReference(t2, rh, prop).track(t2, t))
   }
 
   /**
@@ -482,7 +485,7 @@ module Express {
 
     RequestInputAccess() {
       kind = "parameter" and
-      this = getAQueryObjectReference(DataFlow::TypeTracker::end(), rh).getAPropertyRead()
+      this = getAQueryObjectReference(DataFlow::TypeTracker::end(), rh, _).getAPropertyRead()
       or
       exists(DataFlow::SourceNode request | request = rh.getARequestSource().ref() |
         kind = "parameter" and
@@ -527,13 +530,11 @@ module Express {
       kind = "parameter" and
       exists(DataFlow::Node request | request = DataFlow::valueNode(rh.getARequestExpr()) |
         this.(DataFlow::MethodCallNode).calls(request, "param")
-        or
-        exists(DataFlow::PropRead base |
-          // `req.query.name`
-          base.accesses(request, "query") and
-          this = base.getAPropertyReference(_)
-        )
       )
+      or
+      // `req.query.name`
+      kind = "parameter" and
+      this = getAQueryObjectReference(DataFlow::TypeTracker::end(), rh, "query").getAPropertyRead()
     }
   }
 
