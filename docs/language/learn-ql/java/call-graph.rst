@@ -144,7 +144,7 @@ A further special case is non-public default constructors: in the singleton patt
 
 ➤ `See this in the query console on LGTM.com <https://lgtm.com/query/673060008/>`__. This change has a large effect on the results for some projects but little effect on the results for others. Use of this pattern varies widely between different projects.
 
-Finally, on many Java projects there are methods that are invoked indirectly by reflection. So, while there are no calls invoking these methods, they are, in fact, used. It is in general very hard to identify such methods. A very common special case, however, is JUnit test methods, which are reflectively invoked by a test runner. The QL Java library has support for recognizing test classes of JUnit and other testing frameworks, which we can employ to filter out methods defined in such classes:
+Finally, on many Java projects there are methods that are invoked indirectly by reflection. So, while there are no calls invoking these methods, they are, in fact, used. It is in general very hard to identify such methods. A very common special case, however, is JUnit test methods, which are reflectively invoked by a test runner. The CodeQL library for Java has support for recognizing test classes of JUnit and other testing frameworks, which we can employ to filter out methods defined in such classes:
 
 .. code-block:: ql
 
