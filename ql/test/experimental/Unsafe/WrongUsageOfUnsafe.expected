@@ -1,55 +1,62 @@
 edges
-| WrongUsageOfUnsafe.go:17:27:17:51 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:17:16:17:52 | type conversion |
-| WrongUsageOfUnsafe.go:34:27:34:54 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:34:16:34:55 | type conversion |
-| WrongUsageOfUnsafe.go:50:23:50:47 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:50:16:50:48 | type conversion |
-| WrongUsageOfUnsafe.go:68:31:68:58 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:68:16:68:59 | type conversion |
-| WrongUsageOfUnsafe.go:86:31:86:55 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:86:16:86:56 | type conversion |
-| WrongUsageOfUnsafe.go:106:31:106:55 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:106:16:106:56 | type conversion |
-| WrongUsageOfUnsafe.go:123:33:123:57 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:123:16:123:58 | type conversion |
-| WrongUsageOfUnsafe.go:146:31:146:55 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:146:16:146:56 | type conversion |
-| WrongUsageOfUnsafe.go:168:31:168:60 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:168:16:168:61 | type conversion |
-| WrongUsageOfUnsafe.go:184:31:184:55 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:193:21:193:23 | definition of req : unsafe.Pointer |
-| WrongUsageOfUnsafe.go:193:21:193:23 | definition of req : unsafe.Pointer | WrongUsageOfUnsafe.go:200:9:200:27 | type conversion |
-| WrongUsageOfUnsafe.go:213:28:213:52 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:213:16:213:53 | type conversion |
-| WrongUsageOfUnsafe.go:231:25:231:49 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:231:16:231:50 | type conversion |
-| WrongUsageOfUnsafe.go:249:23:249:47 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:249:16:249:48 | type conversion |
+| WrongUsageOfUnsafe.go:17:24:17:48 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:17:13:17:49 | type conversion |
+| WrongUsageOfUnsafe.go:34:24:34:51 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:34:13:34:52 | type conversion |
+| WrongUsageOfUnsafe.go:55:24:55:51 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:55:13:55:52 | type conversion |
+| WrongUsageOfUnsafe.go:77:27:77:54 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:77:16:77:55 | type conversion |
+| WrongUsageOfUnsafe.go:93:20:93:44 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:93:13:93:45 | type conversion |
+| WrongUsageOfUnsafe.go:111:31:111:58 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:111:16:111:59 | type conversion |
+| WrongUsageOfUnsafe.go:129:31:129:55 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:129:16:129:56 | type conversion |
+| WrongUsageOfUnsafe.go:149:31:149:55 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:149:16:149:56 | type conversion |
+| WrongUsageOfUnsafe.go:166:33:166:57 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:166:16:166:58 | type conversion |
+| WrongUsageOfUnsafe.go:189:31:189:55 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:189:16:189:56 | type conversion |
+| WrongUsageOfUnsafe.go:211:31:211:60 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:211:16:211:61 | type conversion |
+| WrongUsageOfUnsafe.go:227:31:227:55 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:236:21:236:23 | definition of req : unsafe.Pointer |
+| WrongUsageOfUnsafe.go:236:21:236:23 | definition of req : unsafe.Pointer | WrongUsageOfUnsafe.go:243:9:243:27 | type conversion |
+| WrongUsageOfUnsafe.go:256:28:256:52 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:256:16:256:53 | type conversion |
+| WrongUsageOfUnsafe.go:274:25:274:49 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:274:16:274:50 | type conversion |
+| WrongUsageOfUnsafe.go:292:23:292:47 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:292:16:292:48 | type conversion |
 nodes
-| WrongUsageOfUnsafe.go:17:16:17:52 | type conversion | semmle.label | type conversion |
-| WrongUsageOfUnsafe.go:17:27:17:51 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
-| WrongUsageOfUnsafe.go:34:16:34:55 | type conversion | semmle.label | type conversion |
-| WrongUsageOfUnsafe.go:34:27:34:54 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
-| WrongUsageOfUnsafe.go:50:16:50:48 | type conversion | semmle.label | type conversion |
-| WrongUsageOfUnsafe.go:50:23:50:47 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
-| WrongUsageOfUnsafe.go:68:16:68:59 | type conversion | semmle.label | type conversion |
-| WrongUsageOfUnsafe.go:68:31:68:58 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
-| WrongUsageOfUnsafe.go:86:16:86:56 | type conversion | semmle.label | type conversion |
-| WrongUsageOfUnsafe.go:86:31:86:55 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
-| WrongUsageOfUnsafe.go:106:16:106:56 | type conversion | semmle.label | type conversion |
-| WrongUsageOfUnsafe.go:106:31:106:55 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
-| WrongUsageOfUnsafe.go:123:16:123:58 | type conversion | semmle.label | type conversion |
-| WrongUsageOfUnsafe.go:123:33:123:57 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
-| WrongUsageOfUnsafe.go:146:16:146:56 | type conversion | semmle.label | type conversion |
-| WrongUsageOfUnsafe.go:146:31:146:55 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
-| WrongUsageOfUnsafe.go:168:16:168:61 | type conversion | semmle.label | type conversion |
-| WrongUsageOfUnsafe.go:168:31:168:60 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
-| WrongUsageOfUnsafe.go:184:31:184:55 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
-| WrongUsageOfUnsafe.go:193:21:193:23 | definition of req : unsafe.Pointer | semmle.label | definition of req : unsafe.Pointer |
-| WrongUsageOfUnsafe.go:200:9:200:27 | type conversion | semmle.label | type conversion |
-| WrongUsageOfUnsafe.go:213:16:213:53 | type conversion | semmle.label | type conversion |
-| WrongUsageOfUnsafe.go:213:28:213:52 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
-| WrongUsageOfUnsafe.go:231:16:231:50 | type conversion | semmle.label | type conversion |
-| WrongUsageOfUnsafe.go:231:25:231:49 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
-| WrongUsageOfUnsafe.go:249:16:249:48 | type conversion | semmle.label | type conversion |
-| WrongUsageOfUnsafe.go:249:23:249:47 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
+| WrongUsageOfUnsafe.go:17:13:17:49 | type conversion | semmle.label | type conversion |
+| WrongUsageOfUnsafe.go:17:24:17:48 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
+| WrongUsageOfUnsafe.go:34:13:34:52 | type conversion | semmle.label | type conversion |
+| WrongUsageOfUnsafe.go:34:24:34:51 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
+| WrongUsageOfUnsafe.go:55:13:55:52 | type conversion | semmle.label | type conversion |
+| WrongUsageOfUnsafe.go:55:24:55:51 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
+| WrongUsageOfUnsafe.go:77:16:77:55 | type conversion | semmle.label | type conversion |
+| WrongUsageOfUnsafe.go:77:27:77:54 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
+| WrongUsageOfUnsafe.go:93:13:93:45 | type conversion | semmle.label | type conversion |
+| WrongUsageOfUnsafe.go:93:20:93:44 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
+| WrongUsageOfUnsafe.go:111:16:111:59 | type conversion | semmle.label | type conversion |
+| WrongUsageOfUnsafe.go:111:31:111:58 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
+| WrongUsageOfUnsafe.go:129:16:129:56 | type conversion | semmle.label | type conversion |
+| WrongUsageOfUnsafe.go:129:31:129:55 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
+| WrongUsageOfUnsafe.go:149:16:149:56 | type conversion | semmle.label | type conversion |
+| WrongUsageOfUnsafe.go:149:31:149:55 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
+| WrongUsageOfUnsafe.go:166:16:166:58 | type conversion | semmle.label | type conversion |
+| WrongUsageOfUnsafe.go:166:33:166:57 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
+| WrongUsageOfUnsafe.go:189:16:189:56 | type conversion | semmle.label | type conversion |
+| WrongUsageOfUnsafe.go:189:31:189:55 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
+| WrongUsageOfUnsafe.go:211:16:211:61 | type conversion | semmle.label | type conversion |
+| WrongUsageOfUnsafe.go:211:31:211:60 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
+| WrongUsageOfUnsafe.go:227:31:227:55 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
+| WrongUsageOfUnsafe.go:236:21:236:23 | definition of req : unsafe.Pointer | semmle.label | definition of req : unsafe.Pointer |
+| WrongUsageOfUnsafe.go:243:9:243:27 | type conversion | semmle.label | type conversion |
+| WrongUsageOfUnsafe.go:256:16:256:53 | type conversion | semmle.label | type conversion |
+| WrongUsageOfUnsafe.go:256:28:256:52 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
+| WrongUsageOfUnsafe.go:274:16:274:50 | type conversion | semmle.label | type conversion |
+| WrongUsageOfUnsafe.go:274:25:274:49 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
+| WrongUsageOfUnsafe.go:292:16:292:48 | type conversion | semmle.label | type conversion |
+| WrongUsageOfUnsafe.go:292:23:292:47 | type conversion : unsafe.Pointer | semmle.label | type conversion : unsafe.Pointer |
 #select
-| WrongUsageOfUnsafe.go:68:16:68:59 | type conversion | WrongUsageOfUnsafe.go:68:31:68:58 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:68:16:68:59 | type conversion | $@. | WrongUsageOfUnsafe.go:68:31:68:58 | type conversion | Dangerous array type casting to [17]uint8 from [8]uint8 |
-| WrongUsageOfUnsafe.go:86:16:86:56 | type conversion | WrongUsageOfUnsafe.go:86:31:86:55 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:86:16:86:56 | type conversion | $@. | WrongUsageOfUnsafe.go:86:31:86:55 | type conversion | Dangerous array type casting to [17]uint8 from [8]uint8 |
-| WrongUsageOfUnsafe.go:106:16:106:56 | type conversion | WrongUsageOfUnsafe.go:106:31:106:55 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:106:16:106:56 | type conversion | $@. | WrongUsageOfUnsafe.go:106:31:106:55 | type conversion | Dangerous array type casting to [17]uint8 from [8]uint8 |
-| WrongUsageOfUnsafe.go:123:16:123:58 | type conversion | WrongUsageOfUnsafe.go:123:33:123:57 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:123:16:123:58 | type conversion | $@. | WrongUsageOfUnsafe.go:123:33:123:57 | type conversion | Dangerous array type casting to [17]string from [8]string |
-| WrongUsageOfUnsafe.go:146:16:146:56 | type conversion | WrongUsageOfUnsafe.go:146:31:146:55 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:146:16:146:56 | type conversion | $@. | WrongUsageOfUnsafe.go:146:31:146:55 | type conversion | Dangerous type up-casting to [17]uint8 from harmlessType |
-| WrongUsageOfUnsafe.go:146:16:146:56 | type conversion | WrongUsageOfUnsafe.go:146:31:146:55 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:146:16:146:56 | type conversion | $@. | WrongUsageOfUnsafe.go:146:31:146:55 | type conversion | Dangerous type up-casting to [17]uint8 from struct type |
-| WrongUsageOfUnsafe.go:168:16:168:61 | type conversion | WrongUsageOfUnsafe.go:168:31:168:60 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:168:16:168:61 | type conversion | $@. | WrongUsageOfUnsafe.go:168:31:168:60 | type conversion | Dangerous array type casting to [17]uint8 from [8]uint8 |
-| WrongUsageOfUnsafe.go:200:9:200:27 | type conversion | WrongUsageOfUnsafe.go:184:31:184:55 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:200:9:200:27 | type conversion | $@. | WrongUsageOfUnsafe.go:184:31:184:55 | type conversion | Dangerous array type casting to [17]uint8 from [8]uint8 |
-| WrongUsageOfUnsafe.go:213:16:213:53 | type conversion | WrongUsageOfUnsafe.go:213:28:213:52 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:213:16:213:53 | type conversion | $@. | WrongUsageOfUnsafe.go:213:28:213:52 | type conversion | Dangerous array type casting to [4]int64 from [1]int64 |
-| WrongUsageOfUnsafe.go:231:16:231:50 | type conversion | WrongUsageOfUnsafe.go:231:25:231:49 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:231:16:231:50 | type conversion | $@. | WrongUsageOfUnsafe.go:231:25:231:49 | type conversion | Dangerous numeric type casting to int64 from int8 |
-| WrongUsageOfUnsafe.go:249:16:249:48 | type conversion | WrongUsageOfUnsafe.go:249:23:249:47 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:249:16:249:48 | type conversion | $@. | WrongUsageOfUnsafe.go:249:23:249:47 | type conversion | Dangerous numeric type casting to int from int8 |
+| WrongUsageOfUnsafe.go:77:16:77:55 | type conversion | WrongUsageOfUnsafe.go:77:27:77:54 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:77:16:77:55 | type conversion | $@. | WrongUsageOfUnsafe.go:77:27:77:54 | type conversion | Dangerous array type casting to [8]uint8 from an index [8]uint8[2] |
+| WrongUsageOfUnsafe.go:111:16:111:59 | type conversion | WrongUsageOfUnsafe.go:111:31:111:58 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:111:16:111:59 | type conversion | $@. | WrongUsageOfUnsafe.go:111:31:111:58 | type conversion | Dangerous array type casting to [17]uint8 from an index [8]uint8[0] |
+| WrongUsageOfUnsafe.go:129:16:129:56 | type conversion | WrongUsageOfUnsafe.go:129:31:129:55 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:129:16:129:56 | type conversion | $@. | WrongUsageOfUnsafe.go:129:31:129:55 | type conversion | Dangerous array type casting to [17]uint8 from [8]uint8 |
+| WrongUsageOfUnsafe.go:149:16:149:56 | type conversion | WrongUsageOfUnsafe.go:149:31:149:55 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:149:16:149:56 | type conversion | $@. | WrongUsageOfUnsafe.go:149:31:149:55 | type conversion | Dangerous array type casting to [17]uint8 from [8]uint8 |
+| WrongUsageOfUnsafe.go:166:16:166:58 | type conversion | WrongUsageOfUnsafe.go:166:33:166:57 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:166:16:166:58 | type conversion | $@. | WrongUsageOfUnsafe.go:166:33:166:57 | type conversion | Dangerous array type casting to [17]string from [8]string |
+| WrongUsageOfUnsafe.go:189:16:189:56 | type conversion | WrongUsageOfUnsafe.go:189:31:189:55 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:189:16:189:56 | type conversion | $@. | WrongUsageOfUnsafe.go:189:31:189:55 | type conversion | Dangerous type up-casting to [17]uint8 from harmlessType |
+| WrongUsageOfUnsafe.go:189:16:189:56 | type conversion | WrongUsageOfUnsafe.go:189:31:189:55 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:189:16:189:56 | type conversion | $@. | WrongUsageOfUnsafe.go:189:31:189:55 | type conversion | Dangerous type up-casting to [17]uint8 from struct type |
+| WrongUsageOfUnsafe.go:211:16:211:61 | type conversion | WrongUsageOfUnsafe.go:211:31:211:60 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:211:16:211:61 | type conversion | $@. | WrongUsageOfUnsafe.go:211:31:211:60 | type conversion | Dangerous array type casting to [17]uint8 from [8]uint8 |
+| WrongUsageOfUnsafe.go:243:9:243:27 | type conversion | WrongUsageOfUnsafe.go:227:31:227:55 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:243:9:243:27 | type conversion | $@. | WrongUsageOfUnsafe.go:227:31:227:55 | type conversion | Dangerous array type casting to [17]uint8 from [8]uint8 |
+| WrongUsageOfUnsafe.go:256:16:256:53 | type conversion | WrongUsageOfUnsafe.go:256:28:256:52 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:256:16:256:53 | type conversion | $@. | WrongUsageOfUnsafe.go:256:28:256:52 | type conversion | Dangerous array type casting to [4]int64 from [1]int64 |
+| WrongUsageOfUnsafe.go:274:16:274:50 | type conversion | WrongUsageOfUnsafe.go:274:25:274:49 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:274:16:274:50 | type conversion | $@. | WrongUsageOfUnsafe.go:274:25:274:49 | type conversion | Dangerous numeric type casting to int64 from int8 |
+| WrongUsageOfUnsafe.go:292:16:292:48 | type conversion | WrongUsageOfUnsafe.go:292:23:292:47 | type conversion : unsafe.Pointer | WrongUsageOfUnsafe.go:292:16:292:48 | type conversion | $@. | WrongUsageOfUnsafe.go:292:23:292:47 | type conversion | Dangerous numeric type casting to int from int8 |
