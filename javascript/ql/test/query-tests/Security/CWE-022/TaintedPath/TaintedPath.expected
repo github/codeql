@@ -2168,6 +2168,339 @@ nodes
 | other-fs-libraries.js:40:35:40:38 | path |
 | other-fs-libraries.js:40:35:40:38 | path |
 | other-fs-libraries.js:40:35:40:38 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:42:53:42:56 | path |
+| tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:24:6:30 | req.url |
+| tainted-access-paths.js:6:24:6:30 | req.url |
+| tainted-access-paths.js:6:24:6:30 | req.url |
+| tainted-access-paths.js:6:24:6:30 | req.url |
+| tainted-access-paths.js:6:24:6:30 | req.url |
+| tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:30 | obj.sub4 |
 | tainted-require.js:7:19:7:37 | req.param("module") |
 | tainted-require.js:7:19:7:37 | req.param("module") |
 | tainted-require.js:7:19:7:37 | req.param("module") |
@@ -5791,6 +6124,70 @@ edges
 | other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:40:35:40:38 | path |
 | other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:40:35:40:38 | path |
 | other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:40:35:40:38 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
+| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path |
 | other-fs-libraries.js:38:14:38:37 | url.par ... , true) | other-fs-libraries.js:38:14:38:43 | url.par ... ).query |
 | other-fs-libraries.js:38:14:38:37 | url.par ... , true) | other-fs-libraries.js:38:14:38:43 | url.par ... ).query |
 | other-fs-libraries.js:38:14:38:37 | url.par ... , true) | other-fs-libraries.js:38:14:38:43 | url.par ... ).query |
@@ -5871,6 +6268,406 @@ edges
 | other-fs-libraries.js:38:24:38:30 | req.url | other-fs-libraries.js:38:14:38:37 | url.par ... , true) |
 | other-fs-libraries.js:38:24:38:30 | req.url | other-fs-libraries.js:38:14:38:37 | url.par ... , true) |
 | other-fs-libraries.js:38:24:38:30 | req.url | other-fs-libraries.js:38:14:38:37 | url.par ... , true) |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:10:33:10:36 | path |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) | tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) | tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) | tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) | tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) | tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) | tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) | tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) | tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) | tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) | tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) | tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) | tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) | tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) | tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) | tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:37 | url.par ... , true) | tainted-access-paths.js:6:14:6:43 | url.par ... ).query |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query | tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query | tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query | tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query | tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query | tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query | tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query | tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query | tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query | tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query | tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query | tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query | tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query | tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query | tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query | tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:43 | url.par ... ).query | tainted-access-paths.js:6:14:6:48 | url.par ... ry.path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path | tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path | tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path | tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path | tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path | tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path | tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path | tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path | tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path | tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path | tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path | tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path | tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path | tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path | tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path | tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path | tainted-access-paths.js:6:7:6:48 | path |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:12:19:12:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:26:19:26:21 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:29:21:29:23 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:30:23:30:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:31:23:31:25 | obj |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path | tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path | tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path | tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path | tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path | tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path | tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path | tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path | tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path | tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path | tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path | tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path | tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path | tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path | tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path | tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path | tainted-access-paths.js:10:7:10:36 | obj |
+| tainted-access-paths.js:10:33:10:36 | path | tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:33:10:36 | path | tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:33:10:36 | path | tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:33:10:36 | path | tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:33:10:36 | path | tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:33:10:36 | path | tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:33:10:36 | path | tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:33:10:36 | path | tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:33:10:36 | path | tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:33:10:36 | path | tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:33:10:36 | path | tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:33:10:36 | path | tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:33:10:36 | path | tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:33:10:36 | path | tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:33:10:36 | path | tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:10:33:10:36 | path | tainted-access-paths.js:10:13:10:36 | bla ? s ...  : path |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
+| tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 |
 | tainted-require.js:7:19:7:37 | req.param("module") | tainted-require.js:7:19:7:37 | req.param("module") |
 | tainted-sendFile.js:8:16:8:33 | req.param("gimme") | tainted-sendFile.js:8:16:8:33 | req.param("gimme") |
 | tainted-sendFile.js:10:16:10:33 | req.param("gimme") | tainted-sendFile.js:10:16:10:33 | req.param("gimme") |
@@ -6771,6 +7568,14 @@ edges
 | other-fs-libraries.js:19:56:19:59 | path | other-fs-libraries.js:9:24:9:30 | req.url | other-fs-libraries.js:19:56:19:59 | path | This path depends on $@. | other-fs-libraries.js:9:24:9:30 | req.url | a user-provided value |
 | other-fs-libraries.js:24:35:24:38 | path | other-fs-libraries.js:9:24:9:30 | req.url | other-fs-libraries.js:24:35:24:38 | path | This path depends on $@. | other-fs-libraries.js:9:24:9:30 | req.url | a user-provided value |
 | other-fs-libraries.js:40:35:40:38 | path | other-fs-libraries.js:38:24:38:30 | req.url | other-fs-libraries.js:40:35:40:38 | path | This path depends on $@. | other-fs-libraries.js:38:24:38:30 | req.url | a user-provided value |
+| other-fs-libraries.js:41:50:41:53 | path | other-fs-libraries.js:38:24:38:30 | req.url | other-fs-libraries.js:41:50:41:53 | path | This path depends on $@. | other-fs-libraries.js:38:24:38:30 | req.url | a user-provided value |
+| other-fs-libraries.js:42:53:42:56 | path | other-fs-libraries.js:38:24:38:30 | req.url | other-fs-libraries.js:42:53:42:56 | path | This path depends on $@. | other-fs-libraries.js:38:24:38:30 | req.url | a user-provided value |
+| tainted-access-paths.js:8:19:8:22 | path | tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:8:19:8:22 | path | This path depends on $@. | tainted-access-paths.js:6:24:6:30 | req.url | a user-provided value |
+| tainted-access-paths.js:12:19:12:25 | obj.sub | tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:12:19:12:25 | obj.sub | This path depends on $@. | tainted-access-paths.js:6:24:6:30 | req.url | a user-provided value |
+| tainted-access-paths.js:26:19:26:26 | obj.sub3 | tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:26:19:26:26 | obj.sub3 | This path depends on $@. | tainted-access-paths.js:6:24:6:30 | req.url | a user-provided value |
+| tainted-access-paths.js:29:21:29:28 | obj.sub4 | tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:29:21:29:28 | obj.sub4 | This path depends on $@. | tainted-access-paths.js:6:24:6:30 | req.url | a user-provided value |
+| tainted-access-paths.js:30:23:30:30 | obj.sub4 | tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:30:23:30:30 | obj.sub4 | This path depends on $@. | tainted-access-paths.js:6:24:6:30 | req.url | a user-provided value |
+| tainted-access-paths.js:31:23:31:30 | obj.sub4 | tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:31:23:31:30 | obj.sub4 | This path depends on $@. | tainted-access-paths.js:6:24:6:30 | req.url | a user-provided value |
 | tainted-require.js:7:19:7:37 | req.param("module") | tainted-require.js:7:19:7:37 | req.param("module") | tainted-require.js:7:19:7:37 | req.param("module") | This path depends on $@. | tainted-require.js:7:19:7:37 | req.param("module") | a user-provided value |
 | tainted-sendFile.js:8:16:8:33 | req.param("gimme") | tainted-sendFile.js:8:16:8:33 | req.param("gimme") | tainted-sendFile.js:8:16:8:33 | req.param("gimme") | This path depends on $@. | tainted-sendFile.js:8:16:8:33 | req.param("gimme") | a user-provided value |
 | tainted-sendFile.js:10:16:10:33 | req.param("gimme") | tainted-sendFile.js:10:16:10:33 | req.param("gimme") | tainted-sendFile.js:10:16:10:33 | req.param("gimme") | This path depends on $@. | tainted-sendFile.js:10:16:10:33 | req.param("gimme") | a user-provided value |

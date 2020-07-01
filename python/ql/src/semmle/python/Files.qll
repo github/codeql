@@ -10,8 +10,21 @@ class File extends Container {
     /** DEPRECATED: Use `getAbsolutePath` instead. */
     deprecated string getFullName() { result = this.getAbsolutePath() }
 
-    predicate hasLocationInfo(string filepath, int bl, int bc, int el, int ec) {
-        this.getAbsolutePath() = filepath and bl = 0 and bc = 0 and el = 0 and ec = 0
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+     */
+    predicate hasLocationInfo(
+        string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+        this.getAbsolutePath() = filepath and
+        startline = 0 and
+        startcolumn = 0 and
+        endline = 0 and
+        endcolumn = 0
     }
 
     /** Whether this file is a source code file. */
@@ -79,8 +92,21 @@ class Folder extends Container {
     /** DEPRECATED: Use `getBaseName` instead. */
     deprecated string getSimple() { folders(this, _, result) }
 
-    predicate hasLocationInfo(string filepath, int bl, int bc, int el, int ec) {
-        this.getAbsolutePath() = filepath and bl = 0 and bc = 0 and el = 0 and ec = 0
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+     */
+    predicate hasLocationInfo(
+        string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+        this.getAbsolutePath() = filepath and
+        startline = 0 and
+        startcolumn = 0 and
+        endline = 0 and
+        endcolumn = 0
     }
 
     override string getAbsolutePath() { folders(this, result, _) }
@@ -367,30 +393,48 @@ class Location extends @location {
         locations_ast(this, _, _, _, _, result)
     }
 
+    /** Gets a textual representation of this element. */
     string toString() {
         result = this.getPath().getAbsolutePath() + ":" + this.getStartLine().toString()
     }
 
-    predicate hasLocationInfo(string filepath, int bl, int bc, int el, int ec) {
-        exists(File f | f.getAbsolutePath() = filepath |
-            locations_default(this, f, bl, bc, el, ec)
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+     */
+    predicate hasLocationInfo(
+        string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {        exists(File f | f.getAbsolutePath() = filepath |
+            locations_default(this, f, startline, startcolumn, endline, endcolumn)
             or
-            exists(Module m | m.getFile() = f | locations_ast(this, m, bl, bc, el, ec))
+            exists(Module m | m.getFile() = f | locations_ast(this, m, startline, startcolumn, endline, endcolumn))
         )
     }
 }
 
 /** A non-empty line in the source code */
 class Line extends @py_line {
-    predicate hasLocationInfo(string filepath, int bl, int bc, int el, int ec) {
-        exists(Module m |
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+     */
+    predicate hasLocationInfo(
+        string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {        exists(Module m |
             m.getFile().getAbsolutePath() = filepath and
-            el = bl and
-            bc = 1 and
-            py_line_lengths(this, m, bl, ec)
+            endline = startline and
+            startcolumn = 1 and
+            py_line_lengths(this, m, startline, endcolumn)
         )
     }
 
+    /** Gets a textual representation of this element. */
     string toString() {
         exists(Module m | py_line_lengths(this, m, _, _) |
             result = m.getFile().getShortName() + ":" + this.getLineNumber().toString()

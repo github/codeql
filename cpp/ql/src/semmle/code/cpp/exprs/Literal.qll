@@ -1,3 +1,8 @@
+/**
+ * Provides classes for modeling literals in the source code such as `0`, `'c'`
+ * or `"string"`.
+ */
+
 import semmle.code.cpp.exprs.Expr
 
 /**
@@ -14,7 +19,7 @@ class Literal extends Expr, @literal {
     result = "Unknown literal"
   }
 
-  override string getCanonicalQLClass() { result = "Literal" }
+  override string getAPrimaryQlClass() { result = "Literal" }
 
   override predicate mayBeImpure() { none() }
 
@@ -35,7 +40,7 @@ class Literal extends Expr, @literal {
 class LabelLiteral extends Literal {
   LabelLiteral() { jumpinfo(underlyingElement(this), _, _) }
 
-  override string getCanonicalQLClass() { result = "LabelLiteral" }
+  override string getAPrimaryQlClass() { result = "LabelLiteral" }
 
   /** Gets the corresponding label statement. */
   LabelStmt getLabel() { jumpinfo(underlyingElement(this), _, unresolveElement(result)) }
@@ -93,7 +98,7 @@ abstract class TextLiteral extends Literal {
 class CharLiteral extends TextLiteral {
   CharLiteral() { this.getValueText().regexpMatch("(?s)\\s*L?'.*") }
 
-  override string getCanonicalQLClass() { result = "CharLiteral" }
+  override string getAPrimaryQlClass() { result = "CharLiteral" }
 
   /**
    * Gets the character of this literal. For example `L'a'` has character `"a"`.
@@ -115,7 +120,7 @@ class StringLiteral extends TextLiteral {
     // @aggregateliteral rather than @literal.
   }
 
-  override string getCanonicalQLClass() { result = "StringLiteral" }
+  override string getAPrimaryQlClass() { result = "StringLiteral" }
 }
 
 /**
@@ -128,7 +133,7 @@ class StringLiteral extends TextLiteral {
 class OctalLiteral extends Literal {
   OctalLiteral() { super.getValueText().regexpMatch("\\s*0[0-7]+[uUlL]*\\s*") }
 
-  override string getCanonicalQLClass() { result = "OctalLiteral" }
+  override string getAPrimaryQlClass() { result = "OctalLiteral" }
 }
 
 /**
@@ -140,14 +145,14 @@ class OctalLiteral extends Literal {
 class HexLiteral extends Literal {
   HexLiteral() { super.getValueText().regexpMatch("\\s*0[xX][0-9a-fA-F]+[uUlL]*\\s*") }
 
-  override string getCanonicalQLClass() { result = "HexLiteral" }
+  override string getAPrimaryQlClass() { result = "HexLiteral" }
 }
 
 /**
  * A C/C++ aggregate literal.
  */
 class AggregateLiteral extends Expr, @aggregateliteral {
-  override string getCanonicalQLClass() { result = "AggregateLiteral" }
+  override string getAPrimaryQlClass() { result = "AggregateLiteral" }
 
   /**
    * DEPRECATED: Use ClassAggregateLiteral.getFieldExpr() instead.
@@ -179,7 +184,7 @@ class ClassAggregateLiteral extends AggregateLiteral {
 
   ClassAggregateLiteral() { classType = this.getUnspecifiedType() }
 
-  override string getCanonicalQLClass() { result = "ClassAggregateLiteral" }
+  override string getAPrimaryQlClass() { result = "ClassAggregateLiteral" }
 
   /**
    * Gets the expression within the aggregate literal that is used to initialize
@@ -299,7 +304,7 @@ class ArrayAggregateLiteral extends ArrayOrVectorAggregateLiteral {
 
   ArrayAggregateLiteral() { arrayType = this.getUnspecifiedType() }
 
-  override string getCanonicalQLClass() { result = "ArrayAggregateLiteral" }
+  override string getAPrimaryQlClass() { result = "ArrayAggregateLiteral" }
 
   override int getArraySize() { result = arrayType.getArraySize() }
 
@@ -323,7 +328,7 @@ class VectorAggregateLiteral extends ArrayOrVectorAggregateLiteral {
 
   VectorAggregateLiteral() { vectorType = this.getUnspecifiedType() }
 
-  override string getCanonicalQLClass() { result = "VectorAggregateLiteral" }
+  override string getAPrimaryQlClass() { result = "VectorAggregateLiteral" }
 
   override int getArraySize() { result = vectorType.getNumElements() }
 

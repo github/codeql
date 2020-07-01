@@ -1,6 +1,5 @@
 package com.semmle.js.extractor.test;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
@@ -122,18 +121,18 @@ public class AutoBuildTests {
 
         @Override
         public void extractTypeScriptFiles(
-            java.util.List<File> files,
+            java.util.List<Path> files,
             java.util.Set<Path> extractedFiles,
             FileExtractor extractor,
             ExtractorState extractorState) {
-          for (File f : files) {
+          for (Path f : files) {
             actual.add(f.toString());
           }
         }
 
         @Override
-        protected DependencyInstallationResult installDependencies(Set<Path> filesToExtract) {
-          // never install dependencies during testing
+        protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> filesToExtract) {
+          // currently disabled in tests
           return DependencyInstallationResult.empty;
         }
 

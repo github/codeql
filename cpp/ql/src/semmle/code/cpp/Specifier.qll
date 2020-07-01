@@ -16,7 +16,7 @@ class Specifier extends Element, @specifier {
     result instanceof UnknownDefaultLocation
   }
 
-  override string getCanonicalQLClass() { result = "Specifier" }
+  override string getAPrimaryQlClass() { result = "Specifier" }
 
   /** Gets the name of this specifier. */
   string getName() { specifiers(underlyingElement(this), result) }
@@ -37,7 +37,7 @@ class FunctionSpecifier extends Specifier {
     this.hasName("explicit")
   }
 
-  override string getCanonicalQLClass() { result = "FunctionSpecifier)" }
+  override string getAPrimaryQlClass() { result = "FunctionSpecifier)" }
 }
 
 /**
@@ -53,7 +53,7 @@ class StorageClassSpecifier extends Specifier {
     this.hasName("mutable")
   }
 
-  override string getCanonicalQLClass() { result = "StorageClassSpecifier" }
+  override string getAPrimaryQlClass() { result = "StorageClassSpecifier" }
 }
 
 /**
@@ -108,7 +108,7 @@ class AccessSpecifier extends Specifier {
     )
   }
 
-  override string getCanonicalQLClass() { result = "AccessSpecifier" }
+  override string getAPrimaryQlClass() { result = "AccessSpecifier" }
 }
 
 /**
@@ -238,7 +238,7 @@ class FormatAttribute extends GnuAttribute {
     )
   }
 
-  override string getCanonicalQLClass() { result = "FormatAttribute" }
+  override string getAPrimaryQlClass() { result = "FormatAttribute" }
 }
 
 /**

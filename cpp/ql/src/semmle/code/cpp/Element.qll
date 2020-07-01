@@ -55,12 +55,21 @@ class ElementBase extends @element {
   cached
   string toString() { none() }
 
+  /** DEPRECATED: use `getAPrimaryQlClass` instead. */
+  deprecated string getCanonicalQLClass() { result = this.getAPrimaryQlClass() }
+
   /**
-   * Canonical QL class corresponding to this element.
+   * Gets the name of a primary CodeQL class to which this element belongs.
    *
-   * ElementBase is the root class for this predicate.
+   * For most elements, this is simply the most precise syntactic category to
+   * which they belong; for example, `AddExpr` is a primary class, but
+   * `BinaryOperation` is not.
+   *
+   * This predicate always has a result. If no primary class can be
+   * determined, the result is `"???"`. If multiple primary classes match,
+   * this predicate can have multiple results.
    */
-  string getCanonicalQLClass() { result = "???" }
+  string getAPrimaryQlClass() { result = "???" }
 }
 
 /**
