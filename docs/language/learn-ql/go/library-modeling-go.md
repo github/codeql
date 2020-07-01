@@ -6,7 +6,7 @@ When analyzing a Go program, CodeQL does not examine the source code for externa
 
 To mark a source of data that is controlled by an untrusted user, we create a class extending `UntrustedFlowSource::Range`. Inheritance and the characteristic predicate of the class should be used to specify exactly the dataflow node that introduces the data. Here is a short example from `Mux.qll`.
 
-```go
+```ql
   class RequestVars extends DataFlow::UntrustedFlowSource::Range, DataFlow::CallNode {
     RequestVars() { this.getTarget().hasQualifiedName("github.com/gorilla/mux", "Vars") }
   }
@@ -18,11 +18,23 @@ This has the effect that all calls to [the function `Vars` from the package `mux
 
 By default, it is assumed that all functions in libraries do not have any data flow. To indicate that a particular function does, you need to create a class extending `TaintTracking::FunctionModel` (or `DataFlow::FunctionModel` if the untrusted user data is passed on without being modified).
 
-Inheritance and the characteristic predicate of the class should specify the function and a member predicate is needed with the signature `override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp)` (or `override predicate hasDataFlow(FunctionInput inp, FunctionOutput outp)` if extending `DataFlow::FunctionModel`). The body should constrain `inp` and `outp`. `FunctionOutput` is an abstract representation of the inputs to a function. The options are the receiver (`outp.isReceiver()`), one of the parameters (`outp.isParameter(i)`) or one of the results (`outp.isResult(i)`, or `outp.isResult` if there is only one result). Similarly, `FunctionInput` is an abstract representation of the inputs to a function. The options are the receiver (`inp.isReceiver()`), one of the parameters (`inp.isParameter(i)`) or one of the results (`inp.isResult(i)`, or `inp.isResult` if there is only one result). Note that it may seem strange that the result of a function could be considered as a function input, but it is needed in some cases.  For instance, the function `bufio.NewWriter` returns a writer `bw` that buffers write operations to an underlying writer `w`. If tainted data is written to `bw`, then it makes sense to propagate that taint back to the underlying writer `w`, which can be modeled by saying that `bufio.NewWriter` propagates taint from its result to its first argument.
+Inheritance and the characteristic predicate of the class should specify the function and a member predicate is needed with the signature `override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp)` (or `override predicate hasDataFlow(FunctionInput inp, FunctionOutput outp)` if extending `DataFlow::FunctionModel`). The body should constrain `inp` and `outp`.
+
+`FunctionInput` is an abstract representation of the inputs to a function. The options are:
+* the receiver (`inp.isReceiver()`)
+* one of the parameters (`inp.isParameter(i)`)
+* one of the results (`inp.isResult(i)`, or `inp.isResult` if there is only one result)
+
+Note that it may seem strange that the result of a function could be considered as a function input, but it is needed in some cases.  For instance, the function `bufio.NewWriter` returns a writer `bw` that buffers write operations to an underlying writer `w`. If tainted data is written to `bw`, then it makes sense to propagate that taint back to the underlying writer `w`, which can be modeled by saying that `bufio.NewWriter` propagates taint from its result to its first argument.
+
+Similarly, `FunctionOutput` is an abstract representation of the inputs to a function. The options are:
+* the receiver (`outp.isReceiver()`)
+* one of the parameters (`outp.isParameter(i)`)
+* one of the results (`outp.isResult(i)`, or `outp.isResult` if there is only one result)
 
 Here is an example from `Gin.qll`, slightly modified for brevity.
 
-```go
+```ql
 private class ParamsGet extends TaintTracking::FunctionModel, Method {
   ParamsGet() { this.hasQualifiedName("github.com/gin-gonic/gin", "Params", "Get") }
 
@@ -42,14 +54,14 @@ It is not necessary to indicate that library functions are sanitizers - because 
 
 Data-flow sinks are specified by queries rather than by library models. What library models can do is to indicate when functions belong to special categories of function, which queries can use when specifying sinks. Classes representing these special categories are contained in `ql/src/semmle/go/Concepts.qll`, including ones for logger mechanisms, HTTP response writers, HTTP redirects and marshaling and unmarshaling functions.
 
-Here is a short example from `Stdlib.qll`, slightyly modified for brevity.
+Here is a short example from `Stdlib.qll`, slightly modified for brevity.
 
-```go
+```ql
 private class PrintfCall extends LoggerCall::Range, DataFlow::CallNode {
   PrintfCall() { this.getTarget().hasQualifiedName("fmt", ["Print", "Printf", "Println"]) }
 
-  override DataFlow::Node getAMessageComponent() { result = this.getAnArgument }
+  override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
 }
 ```
 
-This has the effect that any call to `Print`, `Printf` or `Println` in the package `fmt` is recognised as a logger call, and in any query which uses logger calls as a sink then passing tainted data as an argument to `Print`, `Printf` or `Println` will create a result for the query.
+This has the effect that any call to `Print`, `Printf`, or `Println` in the package `fmt` is recognised as a logger call, and in any query which uses logger calls as a sink then passing tainted data as an argument to `Print`, `Printf`, or `Println` will create a result for the query.
