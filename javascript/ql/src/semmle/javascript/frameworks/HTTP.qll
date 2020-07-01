@@ -320,6 +320,20 @@ module HTTP {
         result = this
         or
         exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
+        or
+        // simple callbacks
+        exists(DataFlow::FunctionNode function, Function forwarder, int i, int arg |
+          ref(t.continue()) =
+            DataFlow::parameterNode(forwarder.getParameter(i))
+                .getACall()
+                .getArgument(arg)
+                .getALocalSource() and
+          exists(DataFlow::CallNode forwardingCall |
+            unique(Function f | f = forwardingCall.getACallee()) = forwarder and
+            function = forwardingCall.getCallback(i) and
+            result = function.getParameter(arg)
+          )
+        )
       }
 
       /** Gets a `SourceNode` that refers to this request object. */
