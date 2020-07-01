@@ -111,7 +111,7 @@ module CleartextLogging {
   abstract private class NonCleartextPassword extends DataFlow::Node { }
 
   /**
-   * An struct with a field that may contain password information.
+   * A value assigned to a struct field that may contain password information.
    *
    * This is a source since `log.Print(obj)` will often show the fields of `obj`.
    */
@@ -119,14 +119,12 @@ module CleartextLogging {
     string name;
 
     StructPasswordFieldSource() {
-      exists(Write write, Field f, DataFlow::Node rhs |
-        write.writesField(this.getASuccessor*(), f, rhs)
-      |
+      exists(Write write, Field f | write.writesField(_, f, this) |
         name = f.getName() and
         name.regexpMatch(maybePassword()) and
         not name.regexpMatch(notSensitive()) and
         // avoid safe values assigned to presumably unsafe names
-        not rhs instanceof NonCleartextPassword
+        not this instanceof NonCleartextPassword
       )
     }
 

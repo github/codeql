@@ -44,7 +44,9 @@ module CleartextLogging {
 
     override predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg) {
       // A taint propagating data-flow edge through structs: a tainted write taints the entire struct.
-      exists(Write write | write.writesField(trg.getASuccessor*(), _, src))
+      exists(Write write |
+        write.writesField(trg.(DataFlow::PostUpdateNode).getPreUpdateNode(), _, src)
+      )
       or
       // taint steps that do not include flow through fields
       TaintTracking::localTaintStep(src, trg) and not TaintTracking::fieldReadStep(src, trg)
