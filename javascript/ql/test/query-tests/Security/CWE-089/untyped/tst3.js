@@ -20,3 +20,17 @@ function handler(req, res) {
 }
 
 require('express')().get('/foo', handler);
+
+
+const am = fn => (req, res) => {
+  Promise.resolve(fn(req, res)).catch(console.error);
+};
+
+async function foo() {
+  const callback = async (req, res) => {
+    // BAD: the category might have SQL special characters in it
+    var query1 = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" + req.params.category + "' ORDER BY PRICE";
+    pool.query(query1, [], function(err, results) {});
+  };
+  require('express')().get("/foo", am(callback));
+}

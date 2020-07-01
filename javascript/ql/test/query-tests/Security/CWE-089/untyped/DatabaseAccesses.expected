@@ -35,5 +35,6 @@
 | tst2.js:9:3:9:85 | new sql ...  + "'") |
 | tst3.js:10:3:12:4 | pool.qu ... ts\\n  }) |
 | tst3.js:17:3:19:4 | pool.qu ... ts\\n  }) |
+| tst3.js:33:5:33:53 | pool.qu ... ts) {}) |
 | tst4.js:8:3:8:67 | db.get( ...  + '"') |
 | tst.js:10:3:10:65 | db.get( ...  + '"') |

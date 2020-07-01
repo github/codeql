@@ -162,6 +162,12 @@ nodes
 | tst3.js:9:16:9:34 | req.params.category |
 | tst3.js:10:14:10:19 | query1 |
 | tst3.js:10:14:10:19 | query1 |
+| tst3.js:32:9:32:114 | query1 |
+| tst3.js:32:18:32:114 | "SELECT ...  PRICE" |
+| tst3.js:32:75:32:93 | req.params.category |
+| tst3.js:32:75:32:93 | req.params.category |
+| tst3.js:33:16:33:21 | query1 |
+| tst3.js:33:16:33:21 | query1 |
 | tst4.js:8:10:8:66 | 'SELECT ... d + '"' |
 | tst4.js:8:10:8:66 | 'SELECT ... d + '"' |
 | tst4.js:8:46:8:60 | $routeParams.id |
@@ -410,6 +416,11 @@ edges
 | tst3.js:8:16:9:55 | "SELECT ...  PRICE" | tst3.js:8:7:9:55 | query1 |
 | tst3.js:9:16:9:34 | req.params.category | tst3.js:8:16:9:55 | "SELECT ...  PRICE" |
 | tst3.js:9:16:9:34 | req.params.category | tst3.js:8:16:9:55 | "SELECT ...  PRICE" |
+| tst3.js:32:9:32:114 | query1 | tst3.js:33:16:33:21 | query1 |
+| tst3.js:32:9:32:114 | query1 | tst3.js:33:16:33:21 | query1 |
+| tst3.js:32:18:32:114 | "SELECT ...  PRICE" | tst3.js:32:9:32:114 | query1 |
+| tst3.js:32:75:32:93 | req.params.category | tst3.js:32:18:32:114 | "SELECT ...  PRICE" |
+| tst3.js:32:75:32:93 | req.params.category | tst3.js:32:18:32:114 | "SELECT ...  PRICE" |
 | tst4.js:8:46:8:60 | $routeParams.id | tst4.js:8:10:8:66 | 'SELECT ... d + '"' |
 | tst4.js:8:46:8:60 | $routeParams.id | tst4.js:8:10:8:66 | 'SELECT ... d + '"' |
 | tst4.js:8:46:8:60 | $routeParams.id | tst4.js:8:10:8:66 | 'SELECT ... d + '"' |
@@ -464,5 +475,6 @@ edges
 | socketio.js:11:12:11:53 | `INSERT ... andle}` | socketio.js:10:25:10:30 | handle | socketio.js:11:12:11:53 | `INSERT ... andle}` | This query depends on $@. | socketio.js:10:25:10:30 | handle | a user-provided value |
 | tst2.js:9:27:9:84 | "select ... d + "'" | tst2.js:9:66:9:78 | req.params.id | tst2.js:9:27:9:84 | "select ... d + "'" | This query depends on $@. | tst2.js:9:66:9:78 | req.params.id | a user-provided value |
 | tst3.js:10:14:10:19 | query1 | tst3.js:9:16:9:34 | req.params.category | tst3.js:10:14:10:19 | query1 | This query depends on $@. | tst3.js:9:16:9:34 | req.params.category | a user-provided value |
+| tst3.js:33:16:33:21 | query1 | tst3.js:32:75:32:93 | req.params.category | tst3.js:33:16:33:21 | query1 | This query depends on $@. | tst3.js:32:75:32:93 | req.params.category | a user-provided value |
 | tst4.js:8:10:8:66 | 'SELECT ... d + '"' | tst4.js:8:46:8:60 | $routeParams.id | tst4.js:8:10:8:66 | 'SELECT ... d + '"' | This query depends on $@. | tst4.js:8:46:8:60 | $routeParams.id | a user-provided value |
 | tst.js:10:10:10:64 | 'SELECT ... d + '"' | tst.js:10:46:10:58 | req.params.id | tst.js:10:10:10:64 | 'SELECT ... d + '"' | This query depends on $@. | tst.js:10:46:10:58 | req.params.id | a user-provided value |
