@@ -52,14 +52,6 @@ func getEnvGoVersion() string {
 	return strings.Fields(string(gover))[2]
 }
 
-func fileExists(filename string) bool {
-	_, err := os.Stat(filename)
-	if err != nil && !os.IsNotExist(err) {
-		log.Printf("Unable to stat %s: %s\n", filename, err.Error())
-	}
-	return err == nil
-}
-
 func run(cmd *exec.Cmd) bool {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -80,7 +72,7 @@ func run(cmd *exec.Cmd) bool {
 }
 
 func tryBuild(buildFile, cmd string, args ...string) bool {
-	if fileExists(buildFile) {
+	if util.FileExists(buildFile) {
 		log.Printf("%s found, running %s\n", buildFile, cmd)
 		return run(exec.Command(cmd, args...))
 	}
@@ -162,21 +154,21 @@ func main() {
 	// extraction
 	depMode := GoGetNoModules
 	needGopath := true
-	if fileExists("go.mod") {
+	if util.FileExists("go.mod") {
 		depMode = GoGetWithModules
 		needGopath = false
 		log.Println("Found go.mod, enabling go modules")
-	} else if fileExists("Gopkg.toml") {
+	} else if util.FileExists("Gopkg.toml") {
 		depMode = Dep
 		log.Println("Found Gopkg.toml, using dep instead of go get")
-	} else if fileExists("glide.yaml") {
+	} else if util.FileExists("glide.yaml") {
 		depMode = Glide
 		log.Println("Found glide.yaml, enabling go modules")
 	}
 
 	// if a vendor/modules.txt file exists, we assume that there are vendored Go dependencies, and
 	// skip the dependency installation step and run the extractor with `-mod=vendor`
-	hasVendor := fileExists("vendor/modules.txt")
+	hasVendor := util.FileExists("vendor/modules.txt")
 
 	// if `LGTM_INDEX_NEED_GOPATH` is set, it overrides the value for `needGopath` inferred above
 	if needGopathOverride := os.Getenv("LGTM_INDEX_NEED_GOPATH"); needGopathOverride != "" {
@@ -322,7 +314,7 @@ func main() {
 						}
 					}
 
-					if fileExists("Gopkg.lock") {
+					if util.FileExists("Gopkg.lock") {
 						// if Gopkg.lock exists, don't update it and only vendor dependencies
 						install = exec.Command("dep", "ensure", "-v", "-vendor-only")
 					} else {

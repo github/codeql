@@ -42,6 +42,13 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	}
 	pkgs, err := packages.Load(cfg, patterns...)
 
+	modFlags := make([]string, 0, 1)
+	for _, flag := range buildFlags {
+		if strings.HasPrefix(flag, "-mod=") {
+			modFlags = append(modFlags, flag)
+		}
+	}
+
 	if err != nil {
 		return err
 	}
@@ -52,12 +59,31 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 
 	extractUniverseScope()
 
+	// a map of package path to package root directory (currently the module root or the source directory)
+	pkgRoots := make(map[string]string)
+	// a map of package path to source code directory
+	pkgDirs := make(map[string]string)
+	// root directories of packages that we want to extract
+	wantedRoots := make(map[string]bool)
+
 	// recursively visit all packages in depth-first order;
 	// on the way down, associate each package scope with its corresponding package,
 	// and on the way up extract the package's scope
 	packages.Visit(pkgs, func(pkg *packages.Package) bool {
 		return true
 	}, func(pkg *packages.Package) {
+		if _, ok := pkgRoots[pkg.PkgPath]; !ok {
+			mdir := util.GetModDir(pkg.PkgPath, modFlags...)
+			pdir := util.GetPkgDir(pkg.PkgPath, modFlags...)
+			// GetModDir returns the empty string if the module directory cannot be determined, e.g. if the package
+			// is not using modules. If this is the case, fall back to the package directory
+			if mdir == "" {
+				mdir = pdir
+			}
+			pkgRoots[pkg.PkgPath] = mdir
+			pkgDirs[pkg.PkgPath] = pdir
+		}
+
 		tw, err := trap.NewWriter(pkg.PkgPath, pkg)
 		if err != nil {
 			log.Fatal(err)
@@ -77,6 +103,13 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 			}
 		}
 	})
+
+	for _, pkg := range pkgs {
+		if pkgRoots[pkg.PkgPath] == "" {
+			log.Fatalf("Unable to get a source directory for input package %s.", pkg.PkgPath)
+		}
+		wantedRoots[pkgRoots[pkg.PkgPath]] = true
+	}
 
 	// this sets the number of threads that the Go runtime will spawn; this is separate
 	// from the number of goroutines that the program spawns, which are scheduled into
@@ -110,10 +143,27 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	// don't run into memory issues
 	goroutineSem := newSemaphore(maxgoroutines)
 
+	sep := regexp.QuoteMeta(string(filepath.Separator))
+	// if a path matches this regexp, we don't want to extract this package. Currently, it checks
+	//   - that the path does not contain a `..` segment, and
+	//   - the path does not contain a `vendor` directory.
+	noExtractRe := regexp.MustCompile(`.*(^|` + sep + `)(\.\.|vendor)($|` + sep + `).*`)
+
 	// extract AST information for all packages
-	for _, pkg := range pkgs {
-		extractPackage(pkg, &wg, goroutineSem, fdSem)
-	}
+	packages.Visit(pkgs, func(pkg *packages.Package) bool {
+		return true
+	}, func(pkg *packages.Package) {
+		for root, _ := range wantedRoots {
+			relDir, err := filepath.Rel(root, pkgDirs[pkg.PkgPath])
+			if err != nil || noExtractRe.MatchString(relDir) {
+				// if the path can't be made relative or matches the noExtract regexp skip it
+				continue
+			}
+
+			extractPackage(pkg, &wg, goroutineSem, fdSem)
+			return
+		}
+	})
 
 	wg.Wait()
 
