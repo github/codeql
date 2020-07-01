@@ -280,46 +280,24 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
 }
 
 //--------
-// Fancy dispatch
+// Virtual dispatch with call context
 //--------
 
 /**
- * Holds if the call context `ctx` reduces the set of viable run-time
- * targets of call `call` in `c`.
+ * Gets a viable dispatch target of `call` in the context `ctx`. This is
+ * restricted to those `call`s for which a context might make a difference.
  */
-predicate reducedViableImplInCallContext(DataFlowCall call, DataFlowCallable c, DataFlowCall ctx) {
+DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
   none()
 }
 
 /**
- * Holds if flow returning from callable `c` to call `call` might return
- * further and if this path restricts the set of call sites that can be
- * returned to.
+ * Holds if the set of viable implementations that can be called by `call`
+ * might be improved by knowing the call context. This is the case if the qualifier accesses a parameter of
+ * the enclosing callable `c` (including the implicit `this` parameter).
  */
-predicate reducedViableImplInReturn(DataFlowCallable c, DataFlowCall call) {
+predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) {
   none()
-}
-
-/**
- * Gets a viable run-time target for the call `call` in the context `ctx`.
- * This is restricted to those call nodes and results for which the return
- * flow from the result to `call` restricts the possible context `ctx`.
- */
-DataFlowCallable prunedViableImplInCallContextReverse(DataFlowCall call, DataFlowCall ctx) {
-  none()
-  // result = viableImplInCallContext(call, ctx) and
-  // reducedViableImplInReturn(result, call)
-}
-
-/**
- * Gets a viable run-time target for the call `call` in the context
- * `ctx`. This is restricted to those call nodes for which a context
- * might make a difference.
- */
-DataFlowCallable prunedViableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
-  none()
-  // result = viableImplInCallContext(call, ctx) and
-  // reducedViableImplInCallContext(call, _, ctx)
 }
 
 //--------
