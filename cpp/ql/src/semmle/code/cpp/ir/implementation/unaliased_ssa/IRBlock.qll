@@ -71,7 +71,7 @@ class IRBlockBase extends TIRBlock {
   }
 
   /**
-   * Gets an instructions in this block. This includes `Phi` instructions.
+   * Gets an instruction in this block. This includes `Phi` instructions.
    */
   final Instruction getAnInstruction() {
     result = getInstruction(_) or
