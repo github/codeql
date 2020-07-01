@@ -13,24 +13,44 @@
  */
 
 import cpp
-import semmle.code.cpp.security.Security
+import semmle.code.cpp.ir.dataflow.TaintTracking
+import DataFlow::PathGraph
 import semmle.code.cpp.security.FunctionWithWrappers
-import semmle.code.cpp.security.TaintTracking
-import TaintedWithPath
+import semmle.code.cpp.security.FlowSources
 
-class Configuration extends TaintTrackingConfiguration {
-  override predicate isSink(Element tainted) {
-    exists(PrintfLikeFunction printf | printf.outermostWrapperFunctionCall(tainted, _))
+class UncontrolledFormatStringConfiguration extends TaintTracking::Configuration {
+  UncontrolledFormatStringConfiguration() { this = "UncontrolledFormatStringConfiguration" }
+
+  override predicate isSource(DataFlow::Node node) {
+    node instanceof RemoteFlowSource
+    or
+    // Even locally-sourced format strings can cause crashes or information leaks
+    node instanceof LocalFlowSource
+  }
+
+  override predicate isSink(DataFlow::Node node) {
+    exists(PrintfLikeFunction printf |
+      printf.outermostWrapperFunctionCall(node.asArgumentIndirection(), _)
+      or
+      printf.outermostWrapperFunctionCall(node.asConvertedExpr(), _)
+    )
   }
 }
 
 from
-  PrintfLikeFunction printf, Expr arg, PathNode sourceNode, PathNode sinkNode,
-  string printfFunction, Expr userValue, string cause
+  PrintfLikeFunction printf, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode,
+  string printfFunction, string cause, UncontrolledFormatStringConfiguration conf
 where
-  printf.outermostWrapperFunctionCall(arg, printfFunction) and
-  taintedWithPath(userValue, arg, sourceNode, sinkNode) and
-  isUserInput(userValue, cause)
-select arg, sourceNode, sinkNode,
+  (
+    printf.outermostWrapperFunctionCall(sinkNode.getNode().asArgumentIndirection(), printfFunction) or
+    printf.outermostWrapperFunctionCall(sinkNode.getNode().asConvertedExpr(), printfFunction)
+  ) and
+  (
+    cause = sourceNode.getNode().(RemoteFlowSource).getSourceType()
+    or
+    cause = sourceNode.getNode().(LocalFlowSource).getSourceType()
+  ) and
+  conf.hasFlowPath(sourceNode, sinkNode)
+select sinkNode, sourceNode, sinkNode,
   "The value of this argument may come from $@ and is being used as a formatting argument to " +
-    printfFunction, userValue, cause
+    printfFunction, sourceNode, cause

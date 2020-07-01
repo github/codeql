@@ -1,83 +1,83 @@
 edges
 | funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:17:9:17:10 | (const char *)... |
-| funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:17:9:17:10 | i1 |
+| funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:17:9:17:10 | Argument 0 indirection |
+| funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:57:10:57:14 | access to array |
 | funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:58:9:58:10 | (const char *)... |
-| funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:58:9:58:10 | e1 |
-| funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:17:9:17:10 | (const char *)... |
-| funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:17:9:17:10 | i1 |
-| funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:58:9:58:10 | (const char *)... |
-| funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:58:9:58:10 | e1 |
+| funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:58:9:58:10 | Argument 0 indirection |
+| funcsLocal.c:21:8:21:9 | fread output argument | funcsLocal.c:22:15:22:16 | array to pointer conversion |
 | funcsLocal.c:26:8:26:9 | fgets output argument | funcsLocal.c:27:9:27:10 | (const char *)... |
-| funcsLocal.c:26:8:26:9 | fgets output argument | funcsLocal.c:27:9:27:10 | i3 |
-| funcsLocal.c:26:8:26:9 | i3 | funcsLocal.c:27:9:27:10 | (const char *)... |
-| funcsLocal.c:26:8:26:9 | i3 | funcsLocal.c:27:9:27:10 | i3 |
+| funcsLocal.c:26:8:26:9 | fgets output argument | funcsLocal.c:27:9:27:10 | Argument 0 indirection |
+| funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:31:13:31:17 | Store |
 | funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | (const char *)... |
-| funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | (const char *)... |
-| funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | i4 |
-| funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | i4 |
-| funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | i4 |
 | funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | i4 |
 | funcsLocal.c:31:19:31:21 | fgets output argument | funcsLocal.c:32:9:32:10 | (const char *)... |
-| funcsLocal.c:31:19:31:21 | fgets output argument | funcsLocal.c:32:9:32:10 | i4 |
-| funcsLocal.c:31:19:31:21 | i41 | funcsLocal.c:32:9:32:10 | (const char *)... |
-| funcsLocal.c:31:19:31:21 | i41 | funcsLocal.c:32:9:32:10 | i4 |
+| funcsLocal.c:31:19:31:21 | fgets output argument | funcsLocal.c:32:9:32:10 | Argument 0 indirection |
 | funcsLocal.c:36:7:36:8 | gets output argument | funcsLocal.c:37:9:37:10 | (const char *)... |
-| funcsLocal.c:36:7:36:8 | gets output argument | funcsLocal.c:37:9:37:10 | i5 |
-| funcsLocal.c:36:7:36:8 | i5 | funcsLocal.c:37:9:37:10 | (const char *)... |
-| funcsLocal.c:36:7:36:8 | i5 | funcsLocal.c:37:9:37:10 | i5 |
+| funcsLocal.c:36:7:36:8 | gets output argument | funcsLocal.c:37:9:37:10 | Argument 0 indirection |
+| funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:41:13:41:16 | Store |
 | funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | (const char *)... |
-| funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | (const char *)... |
-| funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | i6 |
-| funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | i6 |
-| funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | i6 |
 | funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | i6 |
 | funcsLocal.c:41:18:41:20 | gets output argument | funcsLocal.c:42:9:42:10 | (const char *)... |
-| funcsLocal.c:41:18:41:20 | gets output argument | funcsLocal.c:42:9:42:10 | i6 |
-| funcsLocal.c:41:18:41:20 | i61 | funcsLocal.c:42:9:42:10 | (const char *)... |
-| funcsLocal.c:41:18:41:20 | i61 | funcsLocal.c:42:9:42:10 | i6 |
+| funcsLocal.c:41:18:41:20 | gets output argument | funcsLocal.c:42:9:42:10 | Argument 0 indirection |
 nodes
+| funcsLocal.c:16:8:16:9 | (void *)... | semmle.label | (void *)... |
+| funcsLocal.c:16:8:16:9 | array to pointer conversion | semmle.label | array to pointer conversion |
+| funcsLocal.c:16:8:16:9 | fread output argument | semmle.label | fread output argument |
 | funcsLocal.c:16:8:16:9 | fread output argument | semmle.label | fread output argument |
 | funcsLocal.c:16:8:16:9 | i1 | semmle.label | i1 |
 | funcsLocal.c:17:9:17:10 | (const char *)... | semmle.label | (const char *)... |
-| funcsLocal.c:17:9:17:10 | (const char *)... | semmle.label | (const char *)... |
-| funcsLocal.c:17:9:17:10 | i1 | semmle.label | i1 |
+| funcsLocal.c:17:9:17:10 | Argument 0 indirection | semmle.label | Argument 0 indirection |
+| funcsLocal.c:21:8:21:9 | (void *)... | semmle.label | (void *)... |
+| funcsLocal.c:21:8:21:9 | array to pointer conversion | semmle.label | array to pointer conversion |
+| funcsLocal.c:21:8:21:9 | fread output argument | semmle.label | fread output argument |
+| funcsLocal.c:21:8:21:9 | i2 | semmle.label | i2 |
+| funcsLocal.c:22:15:22:16 | array to pointer conversion | semmle.label | array to pointer conversion |
+| funcsLocal.c:26:2:26:6 | call to fgets | semmle.label | call to fgets |
+| funcsLocal.c:26:8:26:9 | array to pointer conversion | semmle.label | array to pointer conversion |
+| funcsLocal.c:26:8:26:9 | fgets output argument | semmle.label | fgets output argument |
 | funcsLocal.c:26:8:26:9 | fgets output argument | semmle.label | fgets output argument |
 | funcsLocal.c:26:8:26:9 | i3 | semmle.label | i3 |
 | funcsLocal.c:27:9:27:10 | (const char *)... | semmle.label | (const char *)... |
-| funcsLocal.c:27:9:27:10 | (const char *)... | semmle.label | (const char *)... |
-| funcsLocal.c:27:9:27:10 | i3 | semmle.label | i3 |
+| funcsLocal.c:27:9:27:10 | Argument 0 indirection | semmle.label | Argument 0 indirection |
+| funcsLocal.c:31:13:31:17 | Store | semmle.label | Store |
 | funcsLocal.c:31:13:31:17 | call to fgets | semmle.label | call to fgets |
 | funcsLocal.c:31:13:31:17 | call to fgets | semmle.label | call to fgets |
+| funcsLocal.c:31:19:31:21 | array to pointer conversion | semmle.label | array to pointer conversion |
+| funcsLocal.c:31:19:31:21 | fgets output argument | semmle.label | fgets output argument |
 | funcsLocal.c:31:19:31:21 | fgets output argument | semmle.label | fgets output argument |
 | funcsLocal.c:31:19:31:21 | i41 | semmle.label | i41 |
 | funcsLocal.c:32:9:32:10 | (const char *)... | semmle.label | (const char *)... |
-| funcsLocal.c:32:9:32:10 | (const char *)... | semmle.label | (const char *)... |
+| funcsLocal.c:32:9:32:10 | Argument 0 indirection | semmle.label | Argument 0 indirection |
 | funcsLocal.c:32:9:32:10 | i4 | semmle.label | i4 |
-| funcsLocal.c:32:9:32:10 | i4 | semmle.label | i4 |
-| funcsLocal.c:32:9:32:10 | i4 | semmle.label | i4 |
+| funcsLocal.c:36:2:36:5 | call to gets | semmle.label | call to gets |
+| funcsLocal.c:36:7:36:8 | array to pointer conversion | semmle.label | array to pointer conversion |
+| funcsLocal.c:36:7:36:8 | gets output argument | semmle.label | gets output argument |
 | funcsLocal.c:36:7:36:8 | gets output argument | semmle.label | gets output argument |
 | funcsLocal.c:36:7:36:8 | i5 | semmle.label | i5 |
 | funcsLocal.c:37:9:37:10 | (const char *)... | semmle.label | (const char *)... |
-| funcsLocal.c:37:9:37:10 | (const char *)... | semmle.label | (const char *)... |
-| funcsLocal.c:37:9:37:10 | i5 | semmle.label | i5 |
+| funcsLocal.c:37:9:37:10 | Argument 0 indirection | semmle.label | Argument 0 indirection |
+| funcsLocal.c:41:13:41:16 | Store | semmle.label | Store |
 | funcsLocal.c:41:13:41:16 | call to gets | semmle.label | call to gets |
 | funcsLocal.c:41:13:41:16 | call to gets | semmle.label | call to gets |
+| funcsLocal.c:41:18:41:20 | array to pointer conversion | semmle.label | array to pointer conversion |
+| funcsLocal.c:41:18:41:20 | gets output argument | semmle.label | gets output argument |
 | funcsLocal.c:41:18:41:20 | gets output argument | semmle.label | gets output argument |
 | funcsLocal.c:41:18:41:20 | i61 | semmle.label | i61 |
 | funcsLocal.c:42:9:42:10 | (const char *)... | semmle.label | (const char *)... |
-| funcsLocal.c:42:9:42:10 | (const char *)... | semmle.label | (const char *)... |
+| funcsLocal.c:42:9:42:10 | Argument 0 indirection | semmle.label | Argument 0 indirection |
 | funcsLocal.c:42:9:42:10 | i6 | semmle.label | i6 |
-| funcsLocal.c:42:9:42:10 | i6 | semmle.label | i6 |
-| funcsLocal.c:42:9:42:10 | i6 | semmle.label | i6 |
+| funcsLocal.c:46:2:46:5 | call to gets | semmle.label | call to gets |
+| funcsLocal.c:46:7:46:9 | * ... | semmle.label | * ... |
+| funcsLocal.c:52:8:52:11 | call to gets | semmle.label | call to gets |
+| funcsLocal.c:52:13:52:15 | array to pointer conversion | semmle.label | array to pointer conversion |
+| funcsLocal.c:52:13:52:15 | i81 | semmle.label | i81 |
+| funcsLocal.c:57:10:57:14 | access to array | semmle.label | access to array |
 | funcsLocal.c:58:9:58:10 | (const char *)... | semmle.label | (const char *)... |
-| funcsLocal.c:58:9:58:10 | (const char *)... | semmle.label | (const char *)... |
-| funcsLocal.c:58:9:58:10 | e1 | semmle.label | e1 |
+| funcsLocal.c:58:9:58:10 | Argument 0 indirection | semmle.label | Argument 0 indirection |
 #select
-| funcsLocal.c:17:9:17:10 | i1 | funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:17:9:17:10 | i1 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:16:8:16:9 | i1 | fread |
-| funcsLocal.c:27:9:27:10 | i3 | funcsLocal.c:26:8:26:9 | i3 | funcsLocal.c:27:9:27:10 | i3 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:26:8:26:9 | i3 | fgets |
-| funcsLocal.c:32:9:32:10 | i4 | funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | i4 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:31:13:31:17 | call to fgets | fgets |
-| funcsLocal.c:32:9:32:10 | i4 | funcsLocal.c:31:19:31:21 | i41 | funcsLocal.c:32:9:32:10 | i4 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:31:19:31:21 | i41 | fgets |
-| funcsLocal.c:37:9:37:10 | i5 | funcsLocal.c:36:7:36:8 | i5 | funcsLocal.c:37:9:37:10 | i5 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:36:7:36:8 | i5 | gets |
-| funcsLocal.c:42:9:42:10 | i6 | funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | i6 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:41:13:41:16 | call to gets | gets |
-| funcsLocal.c:42:9:42:10 | i6 | funcsLocal.c:41:18:41:20 | i61 | funcsLocal.c:42:9:42:10 | i6 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:41:18:41:20 | i61 | gets |
-| funcsLocal.c:58:9:58:10 | e1 | funcsLocal.c:16:8:16:9 | i1 | funcsLocal.c:58:9:58:10 | e1 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:16:8:16:9 | i1 | fread |
+| funcsLocal.c:17:9:17:10 | Argument 0 indirection | funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:17:9:17:10 | Argument 0 indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:16:8:16:9 | fread output argument | String read by fread |
+| funcsLocal.c:27:9:27:10 | Argument 0 indirection | funcsLocal.c:26:8:26:9 | fgets output argument | funcsLocal.c:27:9:27:10 | Argument 0 indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:26:8:26:9 | fgets output argument | String read by fgets |
+| funcsLocal.c:32:9:32:10 | Argument 0 indirection | funcsLocal.c:31:19:31:21 | fgets output argument | funcsLocal.c:32:9:32:10 | Argument 0 indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:31:19:31:21 | fgets output argument | String read by fgets |
+| funcsLocal.c:37:9:37:10 | Argument 0 indirection | funcsLocal.c:36:7:36:8 | gets output argument | funcsLocal.c:37:9:37:10 | Argument 0 indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:36:7:36:8 | gets output argument | String read by gets |
+| funcsLocal.c:42:9:42:10 | Argument 0 indirection | funcsLocal.c:41:18:41:20 | gets output argument | funcsLocal.c:42:9:42:10 | Argument 0 indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:41:18:41:20 | gets output argument | String read by gets |
+| funcsLocal.c:58:9:58:10 | Argument 0 indirection | funcsLocal.c:16:8:16:9 | fread output argument | funcsLocal.c:58:9:58:10 | Argument 0 indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format) | funcsLocal.c:16:8:16:9 | fread output argument | String read by fread |
