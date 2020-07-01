@@ -13,17 +13,17 @@
 import go
 import DataFlow::PathGraph
 
+Type getFinalType(Type typ) { result = getBaseType*(typ.getUnderlyingType()).getUnderlyingType() }
+
 Type getBaseType(Type typ) {
-  result =
-    getBaseType*(typ.getUnderlyingType*().(PointerType).getBaseType*().getUnderlyingType*())
-        .getUnderlyingType*()
+  result = getBaseType*(typ.(PointerType).getBaseType*())
   or
   result = typ
 }
 
 /* A conversion to a `unsafe.Pointer` */
 class ConversionToUnsafePointer extends ConversionExpr {
-  ConversionToUnsafePointer() { getBaseType(getType()) instanceof UnsafePointerType }
+  ConversionToUnsafePointer() { getFinalType(getType()) instanceof UnsafePointerType }
 }
 
 /* Type casting through the use of unsafe pointers.*/
@@ -59,9 +59,9 @@ predicate castShortArrayToLongerArray(
     cfg.hasFlowPath(source, sink) and
     cfg.isSource(source.getNode(), castLittle) and
     cfg.isSink(sink.getNode(), castBig) and
-    arrTo = getBaseType(castBig.getTypeExpr().getType()) and
+    arrTo = getFinalType(castBig.getTypeExpr().getType()) and
     (
-      arrFrom = getBaseType(castLittle.getOperand().getType()) and
+      arrFrom = getFinalType(castLittle.getOperand().getType()) and
       arrFromAvailableSize = arrFrom.getLength() and
       message =
         "Dangerous array type casting to [" + arrTo.getLength() + "]" + arrTo.getElementType() +
@@ -95,11 +95,11 @@ predicate castTypeToArray(DataFlow::PathNode source, DataFlow::PathNode sink, st
     cfg.hasFlowPath(source, sink) and
     cfg.isSource(source.getNode(), castLittle) and
     cfg.isSink(sink.getNode(), castBig) and
-    arrTo = getBaseType(castBig.getTypeExpr().getType()) and
+    arrTo = getFinalType(castBig.getTypeExpr().getType()) and
     not (typeFrom instanceof ArrayType or typeFrom.getUnderlyingType() instanceof ArrayType) and
     not typeFrom instanceof PointerType and
     not castLittle.getOperand().getChildExpr(0).(IndexExpr).getBase().getType() instanceof ArrayType and
-    typeFrom = getBaseType(castLittle.getOperand().getType()) and
+    typeFrom = getFinalType(castLittle.getOperand().getType()) and
     message =
       "Dangerous type up-casting to [" + arrTo.getLength() + "]" + arrTo.getElementType() + " from "
         + typeFrom
@@ -121,11 +121,11 @@ predicate castDifferentBitSizeNumbers(
     cfg.hasFlowPath(source, sink) and
     cfg.isSource(source.getNode(), castLittle) and
     cfg.isSink(sink.getNode(), castBig) and
-    numTo = getBaseType(castBig.getTypeExpr().getType()) and
+    numTo = getFinalType(castBig.getTypeExpr().getType()) and
     (
-      numFrom = getBaseType(castLittle.getOperand().getType()) or
+      numFrom = getFinalType(castLittle.getOperand().getType()) or
       numFrom =
-        getBaseType(getBaseType(castLittle.getOperand().getType())
+        getFinalType(getFinalType(castLittle.getOperand().getType())
               .(StructType)
               .getField(_)
               .getType())
