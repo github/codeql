@@ -61,7 +61,7 @@ class SslParametersSetProtocolsSink extends DataFlow::ExprNode {
 }
 
 /**
- * A sink that sets protocol versions fro `SSLSocket`, `SSLServerSocket` and `SSLEngine`,
+ * A sink that sets protocol versions for `SSLSocket`, `SSLServerSocket`, and `SSLEngine`,
  * i.e. `socket.setEnabledProtocols(versions)` or `engine.setEnabledProtocols(versions)`.
  */
 class SetEnabledProtocolsSink extends DataFlow::ExprNode {
