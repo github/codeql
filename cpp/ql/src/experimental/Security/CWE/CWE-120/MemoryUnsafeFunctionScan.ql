@@ -13,14 +13,12 @@
 import cpp
 import semmle.code.cpp.commons.Scanf
 
-
 from FunctionCall call, ScanfFunction sff
 where
-  call.getTarget() = sff
-  and
+  call.getTarget() = sff and
   (
-  call.getArgument(sff.getFormatParameterIndex()).toString().regexpMatch(".*%s.*")
-  or
-  call.getArgument(sff.getFormatParameterIndex()).toString() = (".*%ls.*")
+    call.getArgument(sff.getFormatParameterIndex()).toString().regexpMatch(".*%s.*")
+    or
+    call.getArgument(sff.getFormatParameterIndex()).toString() = (".*%ls.*")
   )
 select call, "Dangerous use of one of the scanf functions"

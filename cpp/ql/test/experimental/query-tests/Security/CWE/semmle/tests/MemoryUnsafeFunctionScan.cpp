@@ -1,12 +1,13 @@
 ///// Library routines /////
 
-int scanf(const char* format, ... );
-int sscanf(const char* str, const char* format, ...);
-int fscanf(const char* str, const char* format, ...);
+int scanf(const char *format, ...);
+int sscanf(const char *str, const char *format, ...);
+int fscanf(const char *str, const char *format, ...);
 
 ///// Test code /////
 
-int main(int argc, char** argv) { 
+int main(int argc, char **argv)
+{
 
     // BAD, do not use scanf without specifying a length first
     char buf1[10];
