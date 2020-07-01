@@ -1,11 +1,13 @@
-Modeling Go libraries for CodeQL
-================================
+Modeling data flow in Go libraries
+==================================
 
 When analyzing a Go program, CodeQL does not examine the source code for
-external packages. To track the flow of untrusted data through them you
-need to create a model of the library. Existing models can be found in
-``ql/src/semmle/go/frameworks/``, and are a good source of examples. You
-should make a new file in that folder, named after the library.
+external packages. To track the flow of untrusted data through a library you
+can create a model of the library.
+
+You can find existing models in the ``ql/src/semmle/go/frameworks/`` folder of the
+`CodeQL for Go repository <https://github.com/github/codeql-go/tree/main/ql/src/semmle/go/frameworks>`__.
+To add a new model, you should make a new file in that folder, named after the library.
 
 Sources
 -------
@@ -29,14 +31,14 @@ treated as sources of untrusted data.
 Flow propagation
 ----------------
 
-By default, it is assumed that all functions in libraries do not have
-any data flow. To indicate that a particular function does, you need to
+By default, we assume that all functions in libraries do not have
+any data flow. To indicate that a particular function does have data flow,
 create a class extending ``TaintTracking::FunctionModel`` (or
 ``DataFlow::FunctionModel`` if the untrusted user data is passed on
 without being modified).
 
 Inheritance and the characteristic predicate of the class should specify
-the function and a member predicate is needed with the signature
+the function. The class should also have a member predicate with the signature
 ``override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp)``
 (or
 ``override predicate hasDataFlow(FunctionInput inp, FunctionOutput outp)``
@@ -60,7 +62,7 @@ to the underlying writer ``w``, which can be modeled by saying that
 argument.
 
 Similarly, ``FunctionOutput`` is an abstract representation of the
-inputs to a function. The options are:
+outputs to a function. The options are:
 
 * the receiver (``outp.isReceiver()``)
 * one of the parameters (``outp.isParameter(i)``)
@@ -81,7 +83,7 @@ Here is an example from ``Gin.qll``, slightly modified for brevity.
 This has the effect that calls to the ``Get`` method with receiver type
 ``Params`` from the ``gin-gonic/gin`` package allow taint to flow from
 the receiver to the first result. In other words, if ``p`` has type
-``Params`` and taint can flow to it then after the line
+``Params`` and taint can flow to it, then after the line
 ``x := p.Get("foo")`` taint can also flow to ``x``.
 
 Sanitizers
@@ -95,11 +97,13 @@ Sinks
 -----
 
 Data-flow sinks are specified by queries rather than by library models.
-What library models can do is to indicate when functions belong to
-special categories of function, which queries can use when specifying
+However, you can use library models to indicate when functions belong to
+special categories. Queries can then use these categories when specifying
 sinks. Classes representing these special categories are contained in
-``ql/src/semmle/go/Concepts.qll``, including ones for logger mechanisms,
-HTTP response writers, HTTP redirects and marshaling and unmarshaling
+``ql/src/semmle/go/Concepts.qll`` in the `CodeQL for Go repository
+<https://github.com/github/codeql-go/blob/main/ql/src/semmle/go/Concepts.qll>`__,
+including classes for logger mechanisms,
+HTTP response writers, HTTP redirects, and marshaling and unmarshaling
 functions.
 
 Here is a short example from ``Stdlib.qll``, slightly modified for
@@ -114,7 +118,6 @@ brevity.
    }
 
 This has the effect that any call to ``Print``, ``Printf``, or
-``Println`` in the package ``fmt`` is recognised as a logger call, and
-in any query which uses logger calls as a sink then passing tainted data
-as an argument to ``Print``, ``Printf``, or ``Println`` will create a
-result for the query.
+``Println`` in the package ``fmt`` is recognized as a logger call.
+Any query that uses logger calls as a sink will then identify when tainted data 
+has been passed as an argument to ``Print``, ``Printf``, or ``Println``.
