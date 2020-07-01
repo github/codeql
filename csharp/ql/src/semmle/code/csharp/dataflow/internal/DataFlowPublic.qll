@@ -43,18 +43,6 @@ class Node extends TNode {
     Stages::DataFlowStage::forceCachingInSameStage() and result = this.(NodeImpl).getTypeImpl()
   }
 
-  /** INTERNAL: Do not use. Gets an upper bound on the type of this node. */
-  cached
-  DataFlowType getTypeBound() {
-    Stages::DataFlowStage::forceCachingInSameStage() and
-    exists(Type t0 | result = Gvn::getGlobalValueNumber(t0) |
-      t0 = getCSharpType(this.getType())
-      or
-      not exists(getCSharpType(this.getType())) and
-      t0 instanceof ObjectType
-    )
-  }
-
   /** Gets the enclosing callable of this node. */
   cached
   final DataFlowCallable getEnclosingCallable() {

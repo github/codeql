@@ -22,7 +22,7 @@ private module Cached {
     exists(int i |
       viableParam(call, i, p) and
       arg.argumentOf(call, i) and
-      compatibleTypes(getErasedNodeTypeBound(arg), getErasedNodeTypeBound(p))
+      compatibleTypes(getNodeType(arg), getNodeType(p))
     )
   }
 
@@ -218,10 +218,10 @@ private module Cached {
         then
           // normal flow through
           read = TReadStepTypesNone() and
-          compatibleTypes(getErasedNodeTypeBound(p), getErasedNodeTypeBound(node))
+          compatibleTypes(getNodeType(p), getNodeType(node))
           or
           // getter
-          compatibleTypes(read.getContentType(), getErasedNodeTypeBound(node))
+          compatibleTypes(read.getContentType(), getNodeType(node))
         else any()
       }
 
@@ -243,7 +243,7 @@ private module Cached {
           readStepWithTypes(mid, read.getContainerType(), read.getContent(), node,
             read.getContentType()) and
           Cand::parameterValueFlowReturnCand(p, _, true) and
-          compatibleTypes(getErasedNodeTypeBound(p), read.getContainerType())
+          compatibleTypes(getNodeType(p), read.getContainerType())
         )
         or
         // flow through: no prior read
@@ -292,11 +292,11 @@ private module Cached {
         |
           // normal flow through
           read = TReadStepTypesNone() and
-          compatibleTypes(getErasedNodeTypeBound(arg), getErasedNodeTypeBound(out))
+          compatibleTypes(getNodeType(arg), getNodeType(out))
           or
           // getter
-          compatibleTypes(getErasedNodeTypeBound(arg), read.getContainerType()) and
-          compatibleTypes(read.getContentType(), getErasedNodeTypeBound(out))
+          compatibleTypes(getNodeType(arg), read.getContainerType()) and
+          compatibleTypes(read.getContentType(), getNodeType(out))
         )
       }
 
@@ -405,8 +405,8 @@ private module Cached {
   ) {
     storeStep(node1, c, node2) and
     readStep(_, c, _) and
-    contentType = getErasedNodeTypeBound(node1) and
-    containerType = getErasedNodeTypeBound(node2)
+    contentType = getNodeType(node1) and
+    containerType = getNodeType(node2)
     or
     exists(Node n1, Node n2 |
       n1 = node1.(PostUpdateNode).getPreUpdateNode() and
@@ -415,8 +415,8 @@ private module Cached {
       argumentValueFlowsThrough(n2, TReadStepTypesSome(containerType, c, contentType), n1)
       or
       readStep(n2, c, n1) and
-      contentType = getErasedNodeTypeBound(n1) and
-      containerType = getErasedNodeTypeBound(n2)
+      contentType = getNodeType(n1) and
+      containerType = getNodeType(n2)
     )
   }
 
@@ -507,8 +507,8 @@ private predicate readStepWithTypes(
   Node n1, DataFlowType container, Content c, Node n2, DataFlowType content
 ) {
   readStep(n1, c, n2) and
-  container = getErasedNodeTypeBound(n1) and
-  content = getErasedNodeTypeBound(n2)
+  container = getNodeType(n1) and
+  content = getNodeType(n2)
 }
 
 private newtype TReadStepTypesOption =
@@ -770,9 +770,6 @@ DataFlowCallable resolveCall(DataFlowCall call, CallContext cc) {
   or
   result = viableCallable(call) and cc instanceof CallContextReturn
 }
-
-pragma[noinline]
-DataFlowType getErasedNodeTypeBound(Node n) { result = getErasedRepr(n.getTypeBound()) }
 
 predicate read = readStep/3;
 

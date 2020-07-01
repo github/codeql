@@ -8,10 +8,7 @@ uniqueEnclosingCallable
 | misc.c:210:24:210:24 | 0 | Node should have one enclosing callable but has 0. |
 | misc.c:210:24:210:28 | ... + ... | Node should have one enclosing callable but has 0. |
 | misc.c:210:28:210:28 | 1 | Node should have one enclosing callable but has 0. |
-uniqueTypeBound
-| cpp17.cpp:15:5:15:45 | call to unknown function | Node should have one type bound but has 0. |
-uniqueTypeRepr
-| cpp17.cpp:15:5:15:45 | call to unknown function | Node should have one type representation but has 0. |
+uniqueType
 uniqueNodeLocation
 | break_labels.c:2:11:2:11 | i | Node should have one location but has 4. |
 | break_labels.c:2:11:2:11 | x | Node should have one location but has 4. |
