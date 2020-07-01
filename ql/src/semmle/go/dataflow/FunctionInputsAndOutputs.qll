@@ -139,13 +139,8 @@ private newtype TFunctionOutput =
     // one among several results
     exists(SignatureType s | exists(s.getResultType(index)))
   } or
-  TOutParameter(int index) {
-    // the receiver parameter
-    index = -1
-    or
-    // another parameter
-    exists(SignatureType s | exists(s.getParameterType(index)))
-  }
+  TOutReceiver() or
+  TOutParameter(int index) { exists(SignatureType s | exists(s.getParameterType(index))) }
 
 /**
  * An abstract representation of an output of a function, which is one of its results
@@ -227,15 +222,33 @@ private class OutResult extends FunctionOutput, TOutResult {
   }
 }
 
-/** A result position of a function, viewed as an output. */
+/** The receiver of a function, viewed as an output. */
+private class OutReceiver extends FunctionOutput, TOutReceiver {
+  override predicate isReceiver() { any() }
+
+  override DataFlow::Node getEntryNode(FuncDef f) {
+    // there is no generic way of assigning to a receiver; operations that taint a receiver
+    // have to be handled on a case-by-case basis
+    none()
+  }
+
+  override DataFlow::Node getExitNode(DataFlow::CallNode c) {
+    exists(DataFlow::Node arg |
+      arg = getArgument(c, -1) and
+      result.(DataFlow::PostUpdateNode).getPreUpdateNode() = arg
+    )
+  }
+
+  override string toString() { result = "receiver" }
+}
+
+/** A parameter of a function, viewed as an output. */
 private class OutParameter extends FunctionOutput, TOutParameter {
   int index;
 
   OutParameter() { this = TOutParameter(index) }
 
-  override predicate isReceiver() { index = -1 }
-
-  override predicate isParameter(int i) { i = index and i >= 0 }
+  override predicate isParameter(int i) { i = index }
 
   override DataFlow::Node getEntryNode(FuncDef f) {
     // there is no generic way of assigning to a parameter; operations that taint a parameter
@@ -250,9 +263,5 @@ private class OutParameter extends FunctionOutput, TOutParameter {
     )
   }
 
-  override string toString() {
-    index = -1 and result = "receiver"
-    or
-    index >= 0 and result = "parameter " + index
-  }
+  override string toString() { result = "parameter " + index }
 }
