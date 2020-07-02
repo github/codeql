@@ -509,6 +509,15 @@ class LocalNamespaceName extends @local_namespace_name, LexicalName {
   /** Gets a use of this namespace in an export. */
   ExportVarAccess getAnExportAccess() { namespacebind(result, this) }
 
+  /**
+   * Gets an access to a type member of this namespace alias,
+   * such as `http.ServerRequest` where `http` is a reference to this namespace.
+   */
+  QualifiedTypeAccess getAMemberAccess(string member) {
+    result.getIdentifier().getName() = member and
+    result.getQualifier() = this.getAnAccess()
+  }
+
   /** Gets an identifier that refers to this namespace name. */
   Identifier getAnAccess() { namespacebind(result, this) }
 
@@ -663,11 +672,48 @@ class TypeAccess extends @typeaccess, TypeExpr, TypeRef {
 
   override predicate hasQualifiedName(string globalName) {
     getTypeName().hasQualifiedName(globalName)
+    or
+    exists(LocalTypeAccess local | local = this |
+      not exists(local.getLocalTypeName()) and // Without a local type name, the type is looked up in the global scope.
+      globalName = local.getName()
+    )
   }
 
   override predicate hasQualifiedName(string moduleName, string exportedName) {
     getTypeName().hasQualifiedName(moduleName, exportedName)
+    or
+    exists(ImportDeclaration imprt, ImportSpecifier spec |
+      moduleName = getImportName(imprt) and
+      spec = imprt.getASpecifier()
+    |
+      spec.getImportedName() = exportedName and
+      this = spec.getLocal().(TypeDecl).getLocalTypeName().getAnAccess()
+      or
+      spec instanceof ImportNamespaceSpecifier and
+      this =
+        spec.getLocal().(LocalNamespaceDecl).getLocalNamespaceName().getAMemberAccess(exportedName)
+    )
+    or
+    exists(ImportEqualsDeclaration imprt |
+      moduleName = getImportName(imprt.getImportedEntity()) and
+      this =
+        imprt.getId().(LocalNamespaceDecl).getLocalNamespaceName().getAMemberAccess(exportedName)
+    )
   }
+}
+
+/**
+ * Gets a suitable name for the library imported by `import`.
+ *
+ * For relative imports, this is the snapshot-relative path to the imported module.
+ * For non-relative imports, it is the import path itself.
+ */
+private string getImportName(Import imprt) {
+  exists(string path | path = imprt.getImportedPath().getValue() |
+    if path.regexpMatch("[./].*")
+    then result = imprt.getImportedModule().getFile().getRelativePath()
+    else result = path
+  )
 }
 
 /** An identifier that is used as part of a type, such as `Date`. */
