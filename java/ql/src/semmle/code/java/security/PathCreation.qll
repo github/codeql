@@ -92,7 +92,44 @@ class PathOfCreation extends PathCreation, MethodAccess {
 
 /** Models the `new java.io.FileWriter(...)` constructor. */
 class FileWriterCreation extends PathCreation, ClassInstanceExpr {
-  FileWriterCreation() { this.getConstructedType().getQualifiedName() = "java.io.FileWriter" }
+  FileWriterCreation() { this.getConstructedType().hasQualifiedName("java.io", "FileWriter") }
+
+  override Expr getInput() {
+    result = this.getAnArgument() and
+    // Relevant arguments are those of type `String`.
+    result.getType() instanceof TypeString
+  }
+}
+
+/** Models the `new java.io.FileReader(...)` constructor. */
+class FileReaderCreation extends PathCreation, ClassInstanceExpr {
+  FileReaderCreation() { this.getConstructedType().hasQualifiedName("java.io", "FileReader") }
+
+  override Expr getInput() {
+    result = this.getAnArgument() and
+    // Relevant arguments are those of type `String`.
+    result.getType() instanceof TypeString
+  }
+}
+
+/** Models the `new java.io.FileInputStream(...)` constructor. */
+class FileInputStreamCreation extends PathCreation, ClassInstanceExpr {
+  FileInputStreamCreation() {
+    this.getConstructedType().hasQualifiedName("java.io", "FileInputStream")
+  }
+
+  override Expr getInput() {
+    result = this.getAnArgument() and
+    // Relevant arguments are those of type `String`.
+    result.getType() instanceof TypeString
+  }
+}
+
+/** Models the `new java.io.FileOutputStream(...)` constructor. */
+class FileOutputStreamCreation extends PathCreation, ClassInstanceExpr {
+  FileOutputStreamCreation() {
+    this.getConstructedType().hasQualifiedName("java.io", "FileOutputStream")
+  }
 
   override Expr getInput() {
     result = this.getAnArgument() and
