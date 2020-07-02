@@ -30,9 +30,9 @@ class UncaughtServletException extends HttpServlet {
     // GOOD
     {
         public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		    String ip = "10.100.10.81";
+            String ip = "10.100.10.81";
             InetAddress addr = InetAddress.getByName(ip); // OK: Hard-coded variable value or system property is not controlled by attacker.
         }
-	}
+    }
 
 }

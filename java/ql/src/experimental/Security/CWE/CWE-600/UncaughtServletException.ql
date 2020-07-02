@@ -36,7 +36,11 @@ private predicate isServletMethod(Callable c) {
     c.getName() = "doGet" or
     c.getName() = "doPost" or
     c.getName() = "doPut" or
-    c.getName() = "doDelete"
+    c.getName() = "doDelete" or
+    c.getName() = "doHead" or
+    c.getName() = "doOptions" or
+    c.getName() = "doTrace" or
+    c.getName() = "service"
   )
 }
 

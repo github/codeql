@@ -22,7 +22,8 @@ class UncaughtServletException extends HttpServlet {
 			InetAddress addr = InetAddress.getByName(ip);
 		} catch (UnknownHostException uhex) {
 			uhex.printStackTrace();
-		}}
+		}
+	}
 
 	public void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String ip = "10.100.10.81";
