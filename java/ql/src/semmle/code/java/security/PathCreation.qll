@@ -46,6 +46,50 @@ class FileCreation extends PathCreation, ClassInstanceExpr {
   }
 }
 
+/** Models the `java.nio.Path.resolveSibling` method. */
+class PathResolveSiblingCreation extends PathCreation, MethodAccess {
+  PathResolveSiblingCreation() {
+    exists(Method m | m = this.getMethod() |
+      m.getDeclaringType() instanceof TypePath and
+      m.getName() = "resolveSibling"
+    )
+  }
+
+  override Expr getInput() {
+    result = this.getAnArgument() and
+    // Relevant arguments are those of type `String`.
+    result.getType() instanceof TypeString
+  }
+}
+
+/** Models the `java.nio.Path.resolve` method. */
+class PathResolveCreation extends PathCreation, MethodAccess {
+  PathResolveCreation() {
+    exists(Method m | m = this.getMethod() |
+      m.getDeclaringType() instanceof TypePath and
+      m.getName() = "resolve"
+    )
+  }
+
+  override Expr getInput() {
+    result = this.getAnArgument() and
+    // Relevant arguments are those of type `String`.
+    result.getType() instanceof TypeString
+  }
+}
+
+/** Models the `java.nio.Path.of` method. */
+class PathOfCreation extends PathCreation, MethodAccess {
+  PathOfCreation() {
+    exists(Method m | m = this.getMethod() |
+      m.getDeclaringType() instanceof TypePath and
+      m.getName() = "of"
+    )
+  }
+
+  override Expr getInput() { result = this.getAnArgument() }
+}
+
 /** Models the `new java.io.FileWriter(...)` constructor. */
 class FileWriterCreation extends PathCreation, ClassInstanceExpr {
   FileWriterCreation() { this.getConstructedType().getQualifiedName() = "java.io.FileWriter" }
