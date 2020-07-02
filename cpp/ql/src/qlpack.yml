@@ -1,5 +1,6 @@
-name: codeql-cpp
+name: codeql-cpp-queries
 version: 0.0.0
-dbscheme: semmlecode.cpp.dbscheme
 suites: codeql-suites
 extractor: cpp
+libraryPathDependencies:
+- codeql-cpp

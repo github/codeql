@@ -1,4 +1,6 @@
 name: codeql-cpp-tests
 version: 0.0.0
-libraryPathDependencies: codeql-cpp
+libraryPathDependencies:
+- codeql-cpp
+- codeql-cpp-queries
 extractor: cpp
