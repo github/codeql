@@ -1546,16 +1546,23 @@ private string getConstantString(Expr e) {
 }
 
 /**
+ * Holds if `add` is a string-concatenation where all the transitive leafs have a constant string value.
+ */
+private predicate hasAllConstantLeafs(AddExpr add) {
+  forex(Expr leaf | leaf = getAnAddOperand*(add) and not exists(getAnAddOperand(leaf)) |
+    exists(getConstantString(leaf))
+  )
+}
+
+/**
  * Gets the concatenated string for a string-concatenation `add`.
- * Only has a result if `add` is not itself an operand in another string-concatenation.
+ * Only has a result if `add` is not itself an operand in another string-concatenation with all constant leafs.
  */
 private string getConcatenatedString(Expr add) {
   result = getConcatenatedString(add.getUnderlyingValue())
   or
-  not add = getAnAddOperand(_) and
-  forex(Expr leaf | leaf = getAnAddOperand*(add) and not exists(getAnAddOperand(leaf)) |
-    exists(getConstantString(leaf))
-  ) and
+  not add = getAnAddOperand(any(AddExpr parent | hasAllConstantLeafs(parent))) and
+  hasAllConstantLeafs(add) and
   result =
     strictconcat(Expr leaf |
       leaf = getAnAddOperand*(add)
