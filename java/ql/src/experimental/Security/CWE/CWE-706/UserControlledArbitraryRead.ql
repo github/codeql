@@ -14,7 +14,7 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.security.XSS
 import DataFlow2::PathGraph
-import PathsCommon
+import semmle.code.java.security.PathCreation
 
 /** The class `org.json.JSONObject`. */
 class TypeJsonObject extends Class {
@@ -137,7 +137,7 @@ class ContainsDotDotSanitizer extends DataFlow::BarrierGuard {
   }
 }
 
-class TaintedPathConfig extends TaintTracking::Configuration {
+class TaintedPathConfig extends TaintTracking2::Configuration {
   TaintedPathConfig() { this = "TaintedPathConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
@@ -208,9 +208,9 @@ class InformationLeakConfig extends TaintTracking2::Configuration {
 }
 
 from
-  DataFlow::PathNode remoteSource, DataFlow::PathNode taintedFile, DataFlow2::PathNode taintedFile2,
-  DataFlow2::PathNode infoLeak, InformationLeakConfig infoLeakConf,
-  TaintedPathConfig taintedPathConf //, PathCreation p
+  DataFlow2::PathNode remoteSource, DataFlow2::PathNode taintedFile,
+  DataFlow2::PathNode taintedFile2, DataFlow2::PathNode infoLeak,
+  InformationLeakConfig infoLeakConf, TaintedPathConfig taintedPathConf
 where
   taintedPathConf.hasFlowPath(remoteSource, taintedFile) and
   taintedFile.getNode() = taintedFile2.getNode() and

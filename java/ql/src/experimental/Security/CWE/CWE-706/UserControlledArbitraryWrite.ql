@@ -137,7 +137,7 @@ class ContainsDotDotSanitizer extends DataFlow::BarrierGuard {
   }
 }
 
-class TaintedPathConfig extends TaintTracking::Configuration {
+class TaintedPathConfig extends TaintTracking2::Configuration {
   TaintedPathConfig() { this = "TaintedPathConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
@@ -173,23 +173,17 @@ private class TaintedPathSink extends DataFlow::Node {
   Expr getTaintedFileInput() { result = taintedInput }
 }
 
-class InformationLeakConfig extends TaintTracking2::Configuration {
-  InformationLeakConfig() { this = "InformationLeakConfig" }
+class UserControlledWriteConfig extends TaintTracking2::Configuration {
+  UserControlledWriteConfig() { this = "UserControlledWriteConfig" }
 
   override predicate isSource(DataFlow::Node source) {
-    source instanceof TaintedPathSink
+    source instanceof RemoteFlowSource
     //exists(TaintedPathSink s | s.getTaintedFile() = source.asExpr())
     //source instanceof TaintedPathSink
     //any() //source.asExpr().getType() instanceof TypePath //any()//source instanceof RemoteFlowSource
   } //source.asExpr().getFile().getBaseName().matches("GetSkillJsonService.java")}//any()}//source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink instanceof RemoteFlowSink
-    or
-    //sink instanceof ServiceResponseSink or
-    sink instanceof XssSink //or
-    // sink instanceof SensitiveFileOperationSink
-  }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof FileWriteSink }
 
   override predicate isSanitizer(DataFlow::Node node) {
     node.getType() instanceof NumericType or node.getType() instanceof BooleanType
@@ -204,18 +198,39 @@ class InformationLeakConfig extends TaintTracking2::Configuration {
      *         putsValueIntoJsonArray(node1, node2)
      */
 
-  }
+    }
+}
+
+/** Holds if `content` is written to `file`. */
+private predicate writesToFile(Expr content, Expr file) {
+  exists(MethodAccess ma |
+    ma.getMethod().hasName("write") and
+    ma.getMethod().getDeclaringType().hasQualifiedName(_, "OutputStream")
+  |
+    derivedFromFile(ma.getQualifier(), file) and ma.getAnArgument() = content
+  )
+}
+
+private predicate derivedFromFile(Expr e, Expr file) {
+  file.getType() instanceof TypeFile and TaintTracking::localExprTaint(file, e) and e.getType().(RefType).hasQualifiedName(_, "FileOutputStream")
+}
+
+class FileWriteSink extends DataFlow::Node {
+  Expr file;
+
+  FileWriteSink() { writesToFile(this.asExpr(), file) }
+
+  Expr getTaintedFile() { result = file }
 }
 
 from
-  DataFlow::PathNode remoteSource, DataFlow::PathNode taintedFile, DataFlow2::PathNode taintedFile2,
-  DataFlow2::PathNode infoLeak, InformationLeakConfig infoLeakConf,
-  TaintedPathConfig taintedPathConf //, PathCreation p
+  DataFlow2::PathNode remoteFileCreationSource, DataFlow2::PathNode remoteContentSource,
+  DataFlow2::PathNode taintedFile, DataFlow2::PathNode infoLeak,
+  UserControlledWriteConfig taintedWriteConf, TaintedPathConfig taintedPathConf
 where
-  taintedPathConf.hasFlowPath(remoteSource, taintedFile) and
-  taintedFile.getNode() = taintedFile2.getNode() and
-  infoLeakConf.hasFlowPath(taintedFile2, infoLeak)
-select infoLeak.getNode(), taintedFile2, infoLeak,
-  "Potential disclosure of arbitrary file due to $@ derived from $@.",
-  taintedFile2.getNode().(TaintedPathSink).getTaintedFileInput(), "user-provided value",
-  remoteSource.getNode(), "a remote source"
+  taintedPathConf.hasFlowPath(remoteFileCreationSource, taintedFile) and
+  taintedWriteConf.hasFlowPath(remoteContentSource, taintedFile)
+select infoLeak.getNode(), taintedFile, infoLeak,
+  "Potential $@ written to $@ file derived from $@.", remoteContentSource,
+  "user-controlled content", taintedFile.getNode().(TaintedPathSink).getTaintedFileInput(),
+  "an user-controlled", remoteFileCreationSource.getNode(), "a remote source"
