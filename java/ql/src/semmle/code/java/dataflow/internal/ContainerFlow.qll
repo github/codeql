@@ -167,12 +167,15 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
   method.getDeclaringType().hasQualifiedName("java.util", "Collections") and
   (
     method
-        .hasName(["singleton", "singletonList", "singletonMap", "enumeration", "list", "max", "min",
-              "asLifoQueue", "checkedCollection", "checkedList", "checkedMap", "checkedSet",
-              "checkedSortedMap", "checkedSortedSet", "synchronizedCollection", "synchronizedList",
-              "synchronizedMap", "synchronizedSet", "synchronizedSortedMap",
-              "synchronizedSortedSet", "unmodifiableCollection", "unmodifiableList",
-              "unmodifiableMap", "unmodifiableSet", "unmodifiableSortedMap", "unmodifiableSortedSet"]) and
+        .hasName(["checkedCollection", "checkedList", "checkedMap", "checkedNavigableMap",
+              "checkedNavigableSet", "checkedSet", "checkedSortedMap", "checkedSortedSet",
+              "enumeration", "list", "max", "min", "singleton", "singletonList", "singletonMap",
+              "synchronizedCollection", "synchronizedList", "synchronizedMap",
+              "synchronizedNavigableMap", "synchronizedNavigableSet", "synchronizedSet",
+              "synchronizedSortedMap", "synchronizedSortedSet", "unmodifiableCollection",
+              "unmodifiableList", "unmodifiableMap", "unmodifiableNavigableMap",
+              "unmodifiableNavigableSet", "unmodifiableSet", "unmodifiableSortedMap",
+              "unmodifiableSortedSet"]) and
     arg = 0
     or
     method.hasName(["nCopies", "singletonMap"]) and arg = 1
