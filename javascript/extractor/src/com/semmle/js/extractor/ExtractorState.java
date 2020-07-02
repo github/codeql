@@ -1,5 +1,8 @@
 package com.semmle.js.extractor;
 
+import java.nio.file.Path;
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.semmle.js.parser.TypeScriptParser;
 
 /**
@@ -17,9 +20,20 @@ import com.semmle.js.parser.TypeScriptParser;
  */
 public class ExtractorState {
   private TypeScriptParser typeScriptParser = new TypeScriptParser();
+  
+  private final ConcurrentHashMap<Path, FileSnippet> snippets = new ConcurrentHashMap<>();
 
   public TypeScriptParser getTypeScriptParser() {
     return typeScriptParser;
+  }
+
+  /**
+   * Returns the mapping that denotes where a snippet file originated from.
+   *
+   * <p>The map is thread-safe and may be mutated by the caller.
+   */
+  public ConcurrentHashMap<Path, FileSnippet> getSnippets() {
+    return snippets;
   }
 
   /**
@@ -28,5 +42,6 @@ public class ExtractorState {
    */
   public void reset() {
     typeScriptParser.reset();
+    snippets.clear();
   }
 }

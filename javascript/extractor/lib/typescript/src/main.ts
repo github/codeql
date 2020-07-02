@@ -414,7 +414,25 @@ function loadTsConfig(command: LoadCommand): LoadedConfig {
      */
     let parseConfigHost: ts.ParseConfigHost = {
         useCaseSensitiveFileNames: true,
-        readDirectory: ts.sys.readDirectory, // No need to override traversal/glob matching
+        readDirectory: (rootDir, extensions, excludes?, includes?, depth?) => {
+            // Perform the glob matching in both real and virtual source roots.
+            let exclusions = excludes == null ? [] : [...excludes];
+            if (virtualSourceRoot.virtualSourceRoot != null) {
+                // qltest puts the virtual source root inside the real source root (.testproj).
+                // Make sure we don't find files inside the virtual source root in this pass.
+                exclusions.push(virtualSourceRoot.virtualSourceRoot);
+            }
+            let originalResults = ts.sys.readDirectory(rootDir, extensions, exclusions, includes, depth)
+            let virtualDir = virtualSourceRoot.toVirtualPath(rootDir);
+            if (virtualDir == null) {
+                return originalResults;
+            }
+            // Make sure glob matching does not to discover anything in node_modules.
+            let virtualExclusions = excludes == null ? [] : [...excludes];
+            virtualExclusions.push('**/node_modules/**/*');
+            let virtualResults = ts.sys.readDirectory(virtualDir, extensions, virtualExclusions, includes, depth)
+            return [ ...originalResults, ...virtualResults ];
+        },
         fileExists: (path: string) => {
             return ts.sys.fileExists(path)
                 || virtualSourceRoot.toVirtualPathIfFileExists(path) != null
