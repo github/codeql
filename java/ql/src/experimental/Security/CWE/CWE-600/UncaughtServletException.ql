@@ -27,11 +27,11 @@ private predicate catchesEx(TryStmt t, RefType exType) {
   )
 }
 
-/** Servlet methods of `javax.servlet.http.HttpServlet`. */
+/** Servlet methods of `javax.servlet.http.Servlet` and subtypes. */
 private predicate isServletMethod(Callable c) {
   c.getDeclaringType() instanceof ServletClass and
   c.getNumberOfParameters() = 2 and
-  c.getParameter(1).getType() instanceof HttpServletResponse and
+  c.getParameter(1).getType() instanceof ServletResponse and
   (
     c.getName() = "doGet" or
     c.getName() = "doPost" or
