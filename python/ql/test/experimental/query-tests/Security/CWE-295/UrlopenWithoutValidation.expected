@@ -1,0 +1,6 @@
+| urlopen.py:4:1:4:62 | ControlFlowNode for Attribute() | This call to urlopen does not provide any certificate validation |
+| urlopen.py:6:1:6:44 | ControlFlowNode for Attribute() | This call to urlopen does not provide any certificate validation |
+| urlopen.py:7:1:7:57 | ControlFlowNode for Attribute() | This call to urlopen does not provide any certificate validation |
+| urlopen.py:12:1:12:42 | ControlFlowNode for urlopen() | This call to urlopen does not provide any certificate validation |
+| urlopen.py:18:5:18:46 | ControlFlowNode for openurl() | This call to urlopen does not provide any certificate validation |
+| urlopen.py:23:5:23:48 | ControlFlowNode for openurl() | This call to urlopen does not provide any certificate validation |

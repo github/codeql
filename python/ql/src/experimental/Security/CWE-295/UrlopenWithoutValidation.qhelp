@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Encryption is key to the security of most, if not all, online communication.
+Using Transport Layer Security (TLS) can ensure that communication cannot be interrupted by an interloper.
+For this reason, is is unwise to disable the verification that TLS provides.
+The <code>urlopen</code> function does not provide verification by default, and must be verified by filling out 
+ <code>cafile</code>, <code>capath</code>, or <code>context</code> (with a verified ssl context) to ensure that verification occurs.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Never use <code>cafile=None</code>, <code>capath=None</code>, or <code>context=None</code> when making a request.
+</p>
+</recommendation>
+
+<example>
+<p>
+The example shows two unsafe calls to <a href="https://semmle.com">semmle.com</a>, followed by various safe alternatives.
+</p>
+
+<sample src="examples/call_urlopen.py" />
+</example>
+
+<references>
+<li>
+Python <code>urllib.request<code> documentation: <a href="https://docs.python.org/3.2/library/urllib.request.html?highlight=urllib">SSL Cert Verification</a>.
+</li>
+</references>
+</qhelp>
+
