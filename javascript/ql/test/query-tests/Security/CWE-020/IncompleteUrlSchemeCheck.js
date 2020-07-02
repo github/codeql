@@ -52,3 +52,56 @@ function test7(url) {
         return "about:blank";
     return url;
 }
+
+function test8(url) {
+    let scheme = goog.uri.utils.getScheme(url);
+	if ("javascript|data".split("|").indexOf(scheme) !== -1) // NOT OK
+        return "about:blank";
+    return url;
+}
+
+function test9(url) {
+    let scheme = goog.uri.utils.getScheme(url);
+	if ("javascript" === scheme || "data" === scheme) // NOT OK
+        return "about:blank";
+    return url;
+}
+
+function test10(url) {
+    let scheme = goog.uri.utils.getScheme(url);
+	if (/^(javascript|data)$/.exec(scheme) !== null) // NOT OK
+        return "about:blank";
+    return url;
+}
+
+function test11(url) {
+    let scheme = goog.uri.utils.getScheme(url);
+	if (/^(javascript|data)$/.exec(scheme) === null) // NOT OK
+		return url;
+	return "about:blank";
+}
+
+
+function test12(url) {
+    let scheme = goog.uri.utils.getScheme(url);
+	if (!/^(javascript|data)$/.exec(scheme)) // NOT OK
+		return url;
+	return "about:blank";
+}
+
+function test13(url) {
+	let scheme = goog.uri.utils.getScheme(url);
+	switch (scheme) {
+    	case "javascript": // NOT OK
+	    case "data":
+		    return "about:blank";
+	    default:
+		    return url;
+	}
+}
+function test14(url) {
+    let scheme = goog.uri.utils.getScheme(url);
+	if (/^(javascript|data)$/.exec(scheme)) // NOT OK
+        return "about:blank";
+    return url;
+}

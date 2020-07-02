@@ -1,3 +1,42 @@
+| arguments.js:1:1:12:2 | (functi ...  3);\\n}) | arguments.js:1:1:12:2 | (functi ...  3);\\n}) |
+| arguments.js:1:1:12:4 | (functi ... );\\n})() | arguments.js:1:1:12:4 | (functi ... );\\n})() |
+| arguments.js:1:2:12:1 | functio ... , 3);\\n} | arguments.js:1:2:12:1 | functio ... , 3);\\n} |
+| arguments.js:2:14:2:14 | f | arguments.js:2:14:2:14 | f |
+| arguments.js:2:16:2:16 | x | arguments.js:2:16:2:16 | x |
+| arguments.js:3:13:3:20 | firstArg | arguments.js:3:13:3:20 | firstArg |
+| arguments.js:3:13:3:24 | firstArg = x | arguments.js:3:13:3:24 | firstArg = x |
+| arguments.js:3:24:3:24 | x | arguments.js:3:24:3:24 | x |
+| arguments.js:4:13:4:24 | alsoFirstArg | arguments.js:4:13:4:24 | alsoFirstArg |
+| arguments.js:4:13:4:39 | alsoFir ... ents[0] | arguments.js:4:13:4:39 | alsoFir ... ents[0] |
+| arguments.js:4:28:4:36 | arguments | arguments.js:4:28:4:36 | arguments |
+| arguments.js:4:28:4:39 | arguments[0] | arguments.js:4:28:4:39 | arguments[0] |
+| arguments.js:4:38:4:38 | 0 | arguments.js:4:38:4:38 | 0 |
+| arguments.js:5:13:5:21 | secondArg | arguments.js:5:13:5:21 | secondArg |
+| arguments.js:5:13:5:36 | secondA ... ents[1] | arguments.js:5:13:5:36 | secondA ... ents[1] |
+| arguments.js:5:25:5:33 | arguments | arguments.js:5:25:5:33 | arguments |
+| arguments.js:5:25:5:36 | arguments[1] | arguments.js:5:25:5:36 | arguments[1] |
+| arguments.js:5:35:5:35 | 1 | arguments.js:5:35:5:35 | 1 |
+| arguments.js:6:13:6:16 | args | arguments.js:6:13:6:16 | args |
+| arguments.js:6:13:6:28 | args = arguments | arguments.js:6:13:6:28 | args = arguments |
+| arguments.js:6:20:6:28 | arguments | arguments.js:6:20:6:28 | arguments |
+| arguments.js:7:13:7:20 | thirdArg | arguments.js:7:13:7:20 | thirdArg |
+| arguments.js:7:13:7:30 | thirdArg = args[2] | arguments.js:7:13:7:30 | thirdArg = args[2] |
+| arguments.js:7:24:7:27 | args | arguments.js:7:24:7:27 | args |
+| arguments.js:7:24:7:30 | args[2] | arguments.js:7:24:7:30 | args[2] |
+| arguments.js:7:29:7:29 | 2 | arguments.js:7:29:7:29 | 2 |
+| arguments.js:8:9:8:17 | arguments | arguments.js:8:9:8:17 | arguments |
+| arguments.js:8:9:8:22 | arguments = {} | arguments.js:8:9:8:22 | arguments = {} |
+| arguments.js:8:21:8:22 | {} | arguments.js:8:21:8:22 | {} |
+| arguments.js:9:13:9:23 | notFirstArg | arguments.js:9:13:9:23 | notFirstArg |
+| arguments.js:9:13:9:38 | notFirs ... ents[0] | arguments.js:9:13:9:38 | notFirs ... ents[0] |
+| arguments.js:9:27:9:35 | arguments | arguments.js:9:27:9:35 | arguments |
+| arguments.js:9:27:9:38 | arguments[0] | arguments.js:9:27:9:38 | arguments[0] |
+| arguments.js:9:37:9:37 | 0 | arguments.js:9:37:9:37 | 0 |
+| arguments.js:11:5:11:5 | f | arguments.js:11:5:11:5 | f |
+| arguments.js:11:5:11:14 | f(1, 2, 3) | arguments.js:11:5:11:14 | f(1, 2, 3) |
+| arguments.js:11:7:11:7 | 1 | arguments.js:11:7:11:7 | 1 |
+| arguments.js:11:10:11:10 | 2 | arguments.js:11:10:11:10 | 2 |
+| arguments.js:11:13:11:13 | 3 | arguments.js:11:13:11:13 | 3 |
 | eval.js:1:10:1:10 | k | eval.js:1:10:1:10 | k |
 | eval.js:2:7:2:7 | x | eval.js:2:7:2:7 | x |
 | eval.js:2:7:2:12 | x = 42 | eval.js:2:7:2:12 | x = 42 |

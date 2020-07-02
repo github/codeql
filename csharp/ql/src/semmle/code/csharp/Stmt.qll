@@ -44,7 +44,7 @@ class Stmt extends ControlFlowElement, @stmt {
 /**
  * A block statement, for example
  *
- * ```
+ * ```csharp
  * {
  *   ...
  * }
@@ -81,7 +81,7 @@ class BlockStmt extends Stmt, @block_stmt {
 /**
  * An expression statement, for example `M1()` on line 5
  *
- * ```
+ * ```csharp
  * class C {
  *   int M1() { ... }
  *
@@ -111,7 +111,7 @@ class SelectionStmt extends Stmt, @cond_stmt {
 /**
  * An `if` statement, for example
  *
- * ```
+ * ```csharp
  * if (x==0) {
  *   ...
  * } else {
@@ -136,7 +136,7 @@ class IfStmt extends SelectionStmt, @if_stmt {
 /**
  * A `switch` statement, for example
  *
- * ```
+ * ```csharp
  * switch (instruction) {
  *   ...
  * }
@@ -152,7 +152,7 @@ class SwitchStmt extends SelectionStmt, Switch, @switch_stmt {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * switch (x) {
    *   case "abc":              // i = 0
    *     return 0;
@@ -178,9 +178,6 @@ class SwitchStmt extends SelectionStmt, Switch, @switch_stmt {
   /** Gets the default case of this `switch` statement, if any. */
   DefaultCase getDefaultCase() { result = this.getACase() }
 
-  /** Gets a type case of this `switch` statement, if any. */
-  deprecated TypeCase getATypeCase() { result = this.getACase() }
-
   override string toString() { result = "switch (...) {...}" }
 
   /**
@@ -188,7 +185,7 @@ class SwitchStmt extends SelectionStmt, Switch, @switch_stmt {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * switch (x) {
    *   case "abc":              // i = 0
    *     return 0;
@@ -271,7 +268,7 @@ class CaseStmt extends Case, @case_stmt {
    * Gets the condition on this case, if any. For example, the type case on line 3
    * has no condition, and the type case on line 4 has condition `s.Length > 0`, in
    *
-   * ```
+   * ```csharp
    * switch(p)
    * {
    *     case int i:
@@ -293,7 +290,7 @@ class CaseStmt extends Case, @case_stmt {
  * A constant case of a `switch` statement, for example `case OpCode.Nop:`
  * on line 2 in
  *
- * ```
+ * ```csharp
  * switch (instruction) {
  *   case OpCode.Nop: ...
  *   default: ...
@@ -311,77 +308,10 @@ class ConstCase extends CaseStmt, LabeledStmt {
 }
 
 /**
- * A type matching case in a `switch` statement, for example `case int i:` on line 3 or
- * `case string s when s.Length > 0:` on line 4 in
- *
- * ```
- * switch(p)
- * {
- *     case int i:
- *     case string s when s.Length > 0:
- *         break;
- *     ...
- * }
- * ```
- */
-deprecated class TypeCase extends CaseStmt {
-  private TypeAccess ta;
-
-  TypeCase() { expr_parent(ta, 1, this) }
-
-  /**
-   * Gets the local variable declaration of this type case, if any. For example,
-   * the local variable declaration of the type case on line 3 is `string s` in
-   *
-   * ```
-   * switch(p) {
-   *   case int i:
-   *   case string s when s.Length>0:
-   *     break;
-   *   case bool _:
-   *     break;
-   *   ...
-   * }
-   * ```
-   */
-  LocalVariableDeclExpr getVariableDeclExpr() { result = this.getPattern() }
-
-  /**
-   * Gets the type access of this case, for example access to `string` or
-   * access to `int` in
-   *
-   * ```
-   * switch(p) {
-   *   case int i:
-   *   case string s when s.Length>0:
-   *     break;
-   *   ...
-   * }
-   * ```
-   */
-  TypeAccess getTypeAccess() { result = ta }
-
-  /**
-   * Gets the type being checked by this case. For example, the type being checked
-   * by the type case on line 3 is `string` in
-   *
-   * ```
-   * switch(p) {
-   *   case int i:
-   *   case string s when s.Length>0:
-   *     break;
-   *   ...
-   * }
-   * ```
-   */
-  Type getCheckedType() { result = this.getTypeAccess().getType() }
-}
-
-/**
  * A default case of a `switch` statement, for example `default:` on
  * line 3 in
  *
- * ```
+ * ```csharp
  * switch (instruction) {
  *   case OpCode.Nop: ...
  *   default: ...
@@ -414,7 +344,7 @@ class LoopStmt extends Stmt, @loop_stmt {
 /**
  * A `while` statement, for example
  *
- * ```
+ * ```csharp
  * while (remaining > 0) {
  *   ...
  * }
@@ -429,7 +359,7 @@ class WhileStmt extends LoopStmt, @while_stmt {
 /**
  * A `do`-`while` statement, for example
  *
- * ```
+ * ```csharp
  * do {
  *   ...
  * }
@@ -445,7 +375,7 @@ class DoStmt extends LoopStmt, @do_stmt {
 /**
  * A `for` loop, for example
  *
- * ```
+ * ```csharp
  * for (int i = 0; i < 10; i++) {
  *   ...
  * }
@@ -457,7 +387,7 @@ class ForStmt extends LoopStmt, @for_stmt {
    *
    * For example, `i = 0` in
    *
-   * ```
+   * ```csharp
    * for (int i = 0; i < 10; i++) {
    *   ...
    * }
@@ -471,7 +401,7 @@ class ForStmt extends LoopStmt, @for_stmt {
    *
    * For example, the second (`n = 1`) initializer is `j = 10` in
    *
-   * ```
+   * ```csharp
    * for (int i = 0, j = 10; i < j; i++) {
    *   ...
    * }
@@ -488,7 +418,7 @@ class ForStmt extends LoopStmt, @for_stmt {
    *
    * For example, `i++` in
    *
-   * ```
+   * ```csharp
    * for (int i = 0; i < 10; i++) {
    *   ...
    * }
@@ -501,7 +431,7 @@ class ForStmt extends LoopStmt, @for_stmt {
    *
    * For example, the second (`n = 1`) update expression is `j--` in
    *
-   * ```
+   * ```csharp
    * for (int i = 0, j = 10; i < j; i++, j--) {
    *   ...
    * }
@@ -515,7 +445,7 @@ class ForStmt extends LoopStmt, @for_stmt {
 /**
  * A `foreach` loop, for example
  *
- * ```
+ * ```csharp
  * foreach (var item in items) {
  *   ...
  * }
@@ -527,7 +457,7 @@ class ForeachStmt extends LoopStmt, @foreach_stmt {
    *
    * For example, `item` in
    *
-   * ```
+   * ```csharp
    * foreach (var item in items) {
    *   ...
    * }
@@ -540,7 +470,7 @@ class ForeachStmt extends LoopStmt, @foreach_stmt {
    *
    * For example, `var item` in
    *
-   * ```
+   * ```csharp
    * foreach (var item in items) {
    *   ...
    * }
@@ -553,7 +483,7 @@ class ForeachStmt extends LoopStmt, @foreach_stmt {
    *
    * For example, `int a` is the 0th local variable declaration in
    *
-   * ```
+   * ```csharp
    * foreach ((int a, int b) in items) {
    *   ...
    * }
@@ -569,7 +499,7 @@ class ForeachStmt extends LoopStmt, @foreach_stmt {
    * Gets the local variable declaration tuple of this `foreach` loop, if any.
    * For example, `(int a, int b)` in
    *
-   * ```
+   * ```csharp
    * foreach ((int a, int b) in items) {
    *   ...
    * }
@@ -582,7 +512,7 @@ class ForeachStmt extends LoopStmt, @foreach_stmt {
    *
    * For example, `a` is the 0th local variable in
    *
-   * ```
+   * ```csharp
    * foreach ((int a, int b) in items) {
    *   ...
    * }
@@ -595,7 +525,7 @@ class ForeachStmt extends LoopStmt, @foreach_stmt {
    *
    * For example, `a` and `b` in
    *
-   * ```
+   * ```csharp
    * foreach ((int a, int b) in items) {
    *   ...
    * }
@@ -608,7 +538,7 @@ class ForeachStmt extends LoopStmt, @foreach_stmt {
    *
    * For example, `int a` and `int b` in
    *
-   * ```
+   * ```csharp
    * foreach ((int a, int b) in items) {
    *   ...
    * }
@@ -623,7 +553,7 @@ class ForeachStmt extends LoopStmt, @foreach_stmt {
    *
    * For example, `items` in
    *
-   * ```
+   * ```csharp
    * foreach (var item in items) {
    *   ...
    * }
@@ -646,7 +576,7 @@ class JumpStmt extends Stmt, @jump_stmt { }
 /**
  * A `break` statement, for example line 4 in
  *
- * ```
+ * ```csharp
  * while (true) {
  *   ...
  *   if (done)
@@ -661,7 +591,7 @@ class BreakStmt extends JumpStmt, @break_stmt {
 /**
  * A `continue` statement, for example line 4 in
  *
- * ```
+ * ```csharp
  * while (true) {
  *   ...
  *   if (!done)
@@ -688,7 +618,7 @@ class GotoStmt extends JumpStmt, @goto_any_stmt {
 /**
  * A `goto` statement that jumps to a labeled statement, for example line 4 in
  *
- * ```
+ * ```csharp
  * while (true) {
  *   ...
  *   if (done)
@@ -714,7 +644,7 @@ class GotoLabelStmt extends GotoStmt, @goto_stmt {
  *
  * For example, line 5 in
  *
- * ```
+ * ```csharp
  * switch (x) {
  *   case 0 :
  *     return 1;
@@ -739,7 +669,7 @@ class GotoCaseStmt extends GotoStmt, @goto_case_stmt {
  *
  * For example, line 5 in
  *
- * ```
+ * ```csharp
  * switch (x) {
  *   case 0 :
  *     return 1;
@@ -759,7 +689,7 @@ class GotoDefaultStmt extends GotoStmt, @goto_default_stmt {
 /**
  * A `throw` statement, for example line 3 in
  *
- * ```
+ * ```csharp
  * void M(string s) {
  *   if (s == null)
  *     throw new ArgumentNullException(nameof(s));
@@ -797,7 +727,7 @@ class ExceptionClass extends Class {
 /**
  * A `return` statement, for example line 2 in
  *
- * ```
+ * ```csharp
  * int M() {
  *   return 0;
  * }
@@ -824,7 +754,7 @@ class YieldStmt extends JumpStmt, @yield_stmt {
 /**
  * A `yield break` statement, for example line 6 in
  *
- * ```
+ * ```csharp
  * IEnumerable<int> DownFrom(int i) {
  *   while (true) {
  *     if (i > 0)
@@ -844,7 +774,7 @@ class YieldBreakStmt extends YieldStmt {
 /**
  * A `yield return` statement, for example line 4 in
  *
- * ```
+ * ```csharp
  * IEnumerable<int> DownFrom(int i) {
  *   while (true) {
  *     if (i > 0)
@@ -864,7 +794,7 @@ class YieldReturnStmt extends YieldStmt {
 /**
  * A `try` statement, for example
  *
- * ```
+ * ```csharp
  * try {
  *   ...
  * }
@@ -970,7 +900,7 @@ class CatchClause extends Stmt, @catch {
    * Gets the type of the exception caught. For example, the type of the exception
    * caught on line 4 is `System.IO.IOException` in
    *
-   * ```
+   * ```csharp
    * try {
    *   ...
    * }
@@ -985,7 +915,7 @@ class CatchClause extends Stmt, @catch {
    * Gets the `catch` filter clause, if any. For example, the filter expression
    * of the catch clause on line 4 is `ex.HResult == 1` in
    *
-   * ```
+   * ```csharp
    * try {
    *   ...
    * }
@@ -1014,7 +944,7 @@ class CatchClause extends Stmt, @catch {
  *
  * For example, the `catch` clause on line 4 in
  *
- * ```
+ * ```csharp
  * try {
  *   ...
  * }
@@ -1042,7 +972,7 @@ class SpecificCatchClause extends CatchClause {
  *
  * For example, the `catch` clause on line 4 in
  *
- * ```
+ * ```csharp
  * try {
  *   ...
  * }
@@ -1060,7 +990,7 @@ class GeneralCatchClause extends CatchClause {
 /**
  * A `checked` statement, for example
  *
- * ```
+ * ```csharp
  * checked {
  *   int i = 2147483647;
  *   i++;
@@ -1077,7 +1007,7 @@ class CheckedStmt extends Stmt, @checked_stmt {
 /**
  * An `unchecked` statement, for example
  *
- * ```
+ * ```csharp
  * unchecked {
  *   int i = 2147483647;
  *   i++;
@@ -1094,7 +1024,7 @@ class UncheckedStmt extends Stmt, @unchecked_stmt {
 /**
  * A `lock` statement, for example
  *
- * ```
+ * ```csharp
  * lock (mutex) {
  *   ...
  * }
@@ -1144,7 +1074,7 @@ class UsingStmt extends Stmt, @using_stmt {
    * expression assigned to a variable, for example `File.Open("settings.xml")`
    * in
    *
-   * ```
+   * ```csharp
    * using (FileStream f = File.Open("settings.xml")) {
    *   ...
    * }
@@ -1153,39 +1083,19 @@ class UsingStmt extends Stmt, @using_stmt {
    * or an expression directly used, for example `File.Open("settings.xml")`
    * in
    *
-   * ```
+   * ```csharp
    * using (File.Open("settings.xml")) {
    *   ...
    * }
    * ```
    */
   Expr getAnExpr() { none() }
-
-  /**
-   * DEPRECATED: Use UsingBlockStmt.getExpr() instead.
-   * Gets the expression directly used by this `using` statement, if any. For
-   * example, `f` on line 2 in
-   *
-   * ```
-   * var f = File.Open("settings.xml");
-   * using (f) {
-   *   ...
-   * }
-   * ```
-   */
-  deprecated Expr getExpr() { none() }
-
-  /**
-   * DEPRECATED: Use UsingBlockStmt.getBody() instead.
-   * Gets the body of this `using` statement.
-   */
-  deprecated Stmt getBody() { none() }
 }
 
 /**
  * A `using` block statement, for example
  *
- * ```
+ * ```csharp
  * using (FileStream f = File.Open("settings.xml")) {
  *   ...
  * }
@@ -1205,14 +1115,14 @@ class UsingBlockStmt extends UsingStmt, @using_block_stmt {
    * Gets the expression directly used by this `using` statement, if any. For
    * example, `f` on line 2 in
    *
-   * ```
+   * ```csharp
    * var f = File.Open("settings.xml");
    * using (f) {
    *   ...
    * }
    * ```
    */
-  override Expr getExpr() { result = this.getChild(0) }
+  Expr getExpr() { result = this.getChild(0) }
 
   override Expr getAnExpr() {
     result = this.getAVariableDeclExpr().getInitializer()
@@ -1221,7 +1131,7 @@ class UsingBlockStmt extends UsingStmt, @using_block_stmt {
   }
 
   /** Gets the body of this `using` statement. */
-  override Stmt getBody() { result.getParent() = this }
+  Stmt getBody() { result.getParent() = this }
 
   override string toString() { result = "using (...) {...}" }
 }
@@ -1229,7 +1139,7 @@ class UsingBlockStmt extends UsingStmt, @using_block_stmt {
 /**
  * A local declaration statement, for example line 2 in
  *
- * ```
+ * ```csharp
  * void M() {
  *   string x = null, y = "";
  * }
@@ -1240,7 +1150,7 @@ class LocalVariableDeclStmt extends Stmt, @decl_stmt {
    * Gets a local variable declaration, for example `x = null` and
    * `y = ""` in
    *
-   * ```
+   * ```csharp
    * void M() {
    *   string x = null, y = "";
    * }
@@ -1252,7 +1162,7 @@ class LocalVariableDeclStmt extends Stmt, @decl_stmt {
    * Gets the `n`th local variable declaration. For example, the second
    * (`n = 1`) declaration is `y = ""` in
    *
-   * ```
+   * ```csharp
    * void M() {
    *   string x = null, y = "";
    * }
@@ -1266,7 +1176,7 @@ class LocalVariableDeclStmt extends Stmt, @decl_stmt {
 /**
  * A local constant declaration statement, for example line 2 in
  *
- * ```
+ * ```csharp
  * void M() {
  *   const int x = 1, y = 2;
  * }
@@ -1276,7 +1186,7 @@ class LocalConstantDeclStmt extends LocalVariableDeclStmt, @const_decl_stmt {
   /**
    * Gets a local constant declaration, for example `x = 1` and `y = 2` in
    *
-   * ```
+   * ```csharp
    * void M() {
    *   const int x = 1, y = 2;
    * }
@@ -1288,7 +1198,7 @@ class LocalConstantDeclStmt extends LocalVariableDeclStmt, @const_decl_stmt {
    * Gets the `n`th local constant declaration. For example, the second
    * (`n = 1`) declaration is `y = 2` in
    *
-   * ```
+   * ```csharp
    * void M() {
    *   const int x = 1, y = 2;
    * }
@@ -1302,7 +1212,7 @@ class LocalConstantDeclStmt extends LocalVariableDeclStmt, @const_decl_stmt {
 /**
  * A `using` declaration statement, for example
  *
- * ```
+ * ```csharp
  * using FileStream f = File.Open("settings.xml");
  * ```
  */
@@ -1323,7 +1233,7 @@ class UsingDeclStmt extends LocalVariableDeclStmt, UsingStmt, @using_decl_stmt {
 /**
  * An empty statement, for example line 2 in
  *
- * ```
+ * ```csharp
  * while (true) do {
  *   ;
  * }
@@ -1336,7 +1246,7 @@ class EmptyStmt extends Stmt, @empty_stmt {
 /**
  * An `unsafe` statement, for example
  *
- * ```
+ * ```csharp
  * unsafe {
  *   var data = new int[10];
  *   fixed (int* p = data) {
@@ -1355,7 +1265,7 @@ class UnsafeStmt extends Stmt, @unsafe_stmt {
 /**
  * A `fixed` statement, for example lines 3--5 in
  *
- * ```
+ * ```csharp
  * unsafe {
  *   var data = new int[10];
  *   fixed (int* p = data) {
@@ -1386,7 +1296,7 @@ class FixedStmt extends Stmt, @fixed_stmt {
 /**
  * A label statement, for example line 7 in
  *
- * ```
+ * ```csharp
  * while (true) {
  *   if (done)
  *     goto exit;
@@ -1409,7 +1319,7 @@ class LabeledStmt extends Stmt, @labeled_stmt {
    *
    * For example, the `return` statement in
    *
-   * ```
+   * ```csharp
    * exit:
    *   return MetadataToken.Zero;
    * ```
@@ -1431,7 +1341,7 @@ class LabeledStmt extends Stmt, @labeled_stmt {
  * A statement defining a local function. For example,
  * the statement on lines 2--4 in
  *
- * ```
+ * ```csharp
  * int Choose(int n, int m) {
  *   int Fac(int x) {
  *     return x > 1 ? x * Fac(x - 1) : 1;

@@ -14,6 +14,8 @@ module XSS {
   import semmle.code.csharp.security.dataflow.flowsinks.Html
   import semmle.code.csharp.security.dataflow.flowsinks.Remote
   import semmle.code.csharp.security.dataflow.flowsources.Remote
+  private import semmle.code.csharp.dataflow.DataFlow2
+  private import semmle.code.csharp.dataflow.TaintTracking2
 
   /**
    * Holds if there is tainted flow from `source` to `sink` that may lead to a
@@ -24,7 +26,7 @@ module XSS {
   predicate xssFlow(XssNode source, XssNode sink, string message) {
     // standard taint-tracking
     exists(
-      TaintTrackingConfiguration c, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
+      TaintTrackingConfiguration c, DataFlow2::PathNode sourceNode, DataFlow2::PathNode sinkNode
     |
       sourceNode = source.asDataFlowNode() and
       sinkNode = sink.asDataFlowNode() and
@@ -46,7 +48,7 @@ module XSS {
 
   module PathGraph {
     query predicate edges(XssNode pred, XssNode succ) {
-      exists(DataFlow::PathNode a, DataFlow::PathNode b | DataFlow::PathGraph::edges(a, b) |
+      exists(DataFlow2::PathNode a, DataFlow2::PathNode b | DataFlow2::PathGraph::edges(a, b) |
         pred.asDataFlowNode() = a and
         succ.asDataFlowNode() = b
       )
@@ -57,7 +59,7 @@ module XSS {
   }
 
   private newtype TXssNode =
-    TXssDataFlowNode(DataFlow::PathNode node) or
+    TXssDataFlowNode(DataFlow2::PathNode node) or
     TXssAspNode(AspInlineMember m)
 
   /**
@@ -73,7 +75,7 @@ module XSS {
     Location getLocation() { none() }
 
     /** Gets the data flow node corresponding to this node, if any. */
-    DataFlow::PathNode asDataFlowNode() { result = this.(XssDataFlowNode).getDataFlowNode() }
+    DataFlow2::PathNode asDataFlowNode() { result = this.(XssDataFlowNode).getDataFlowNode() }
 
     /** Gets the ASP inline code element corresponding to this node, if any. */
     AspInlineMember asAspInlineMember() { result = this.(XssAspNode).getAspInlineMember() }
@@ -81,12 +83,12 @@ module XSS {
 
   /** A data flow node, viewed as an XSS flow node. */
   class XssDataFlowNode extends TXssDataFlowNode, XssNode {
-    DataFlow::PathNode node;
+    DataFlow2::PathNode node;
 
     XssDataFlowNode() { this = TXssDataFlowNode(node) }
 
     /** Gets the data flow node corresponding to this node. */
-    DataFlow::PathNode getDataFlowNode() { result = node }
+    DataFlow2::PathNode getDataFlowNode() { result = node }
 
     override string toString() { result = node.toString() }
 
@@ -130,7 +132,7 @@ module XSS {
   /**
    * A taint-tracking configuration for cross-site scripting (XSS) vulnerabilities.
    */
-  class TaintTrackingConfiguration extends TaintTracking::Configuration {
+  class TaintTrackingConfiguration extends TaintTracking2::Configuration {
     TaintTrackingConfiguration() { this = "XSSDataFlowConfiguration" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }

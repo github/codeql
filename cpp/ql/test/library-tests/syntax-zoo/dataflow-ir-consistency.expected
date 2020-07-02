@@ -1,6 +1,5 @@
 uniqueEnclosingCallable
-uniqueTypeBound
-uniqueTypeRepr
+uniqueType
 uniqueNodeLocation
 | aggregateinitializer.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
 | aggregateinitializer.c:1:6:1:6 | AliasedUse | Node should have one location but has 20. |
@@ -200,7 +199,7 @@ uniqueNodeLocation
 | fieldaccess.cpp:6:6:6:6 | InitializeNonLocal | Node should have one location but has 14. |
 | fieldaccess.cpp:6:6:6:6 | Phi | Node should have one location but has 14. |
 | fieldaccess.cpp:6:6:6:6 | ReturnVoid | Node should have one location but has 14. |
-| file://:0:0:0:0 | InitializeIndirection | Node should have one location but has 0. |
+| file://:0:0:0:0 | *p#2 | Node should have one location but has 0. |
 | file://:0:0:0:0 | Load | Node should have one location but has 0. |
 | file://:0:0:0:0 | ReturnIndirection | Node should have one location but has 0. |
 | file://:0:0:0:0 | VariableAddress | Node should have one location but has 0. |
@@ -635,8 +634,6 @@ uniqueNodeToString
 | duff.c:3:14:3:14 | x | Node should have one toString but has 2. |
 | duff.c:4:13:4:13 | i | Node should have one toString but has 2. |
 | duff.c:4:13:4:13 | x | Node should have one toString but has 2. |
-| ir.cpp:888:6:888:16 | (no string representation) | Node should have one toString but has 0. |
-| misc.c:197:6:197:9 | (no string representation) | Node should have one toString but has 0. |
 | newexpr.cpp:3:9:3:9 | i | Node should have one toString but has 2. |
 | newexpr.cpp:3:9:3:9 | x | Node should have one toString but has 2. |
 | newexpr.cpp:3:16:3:16 | j | Node should have one toString but has 2. |
@@ -654,7 +651,6 @@ uniqueNodeToString
 | switchstmt.c:2:14:2:14 | i | Node should have one toString but has 2. |
 | switchstmt.c:2:14:2:14 | x | Node should have one toString but has 2. |
 missingToString
-| Nodes without toString: 2 |
 parameterCallable
 localFlowIsLocal
 compatibleTypesReflexive
@@ -664,7 +660,7 @@ postIsNotPre
 postHasUniquePre
 | assignexpr.cpp:9:2:9:12 | Store | PostUpdateNode should have one pre-update node but has 0. |
 | bad_asts.cpp:15:10:15:12 | Store | PostUpdateNode should have one pre-update node but has 0. |
-| file://:0:0:0:0 | Store | PostUpdateNode should have one pre-update node but has 0. |
+| cpp11.cpp:65:19:65:45 | Store | PostUpdateNode should have one pre-update node but has 0. |
 | ir.cpp:531:14:531:14 | Store | PostUpdateNode should have one pre-update node but has 0. |
 uniquePostUpdate
 postIsInSameCallable

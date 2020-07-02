@@ -12,3 +12,4 @@
 | A.java:61:11:61:11 | x | Integer | false |
 | A.java:67:22:67:22 | x | Integer | false |
 | A.java:70:23:70:24 | x2 | Integer | false |
+| A.java:92:18:92:18 | n | Integer | false |

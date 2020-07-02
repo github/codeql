@@ -1,12 +1,17 @@
 package com.semmle.js.extractor;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.util.regex.Pattern;
+
 import com.semmle.js.extractor.ExtractorConfig.Platform;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import com.semmle.js.parser.ParseError;
 import com.semmle.util.data.StringUtil;
+import com.semmle.util.io.WholeIO;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
-import java.util.regex.Pattern;
+
 import net.htmlparser.jericho.Attribute;
 import net.htmlparser.jericho.Attributes;
 import net.htmlparser.jericho.CharacterReference;
@@ -26,9 +31,11 @@ public class HTMLExtractor implements IExtractor {
           Pattern.CASE_INSENSITIVE);
 
   private final ExtractorConfig config;
+  private final ExtractorState state;
 
-  public HTMLExtractor(ExtractorConfig config) {
+  public HTMLExtractor(ExtractorConfig config, ExtractorState state) {
     this.config = config.withPlatform(Platform.WEB);
+    this.state = state;
   }
 
   @Override
@@ -49,7 +56,7 @@ public class HTMLExtractor implements IExtractor {
     for (Element elt : src.getAllElements()) {
       LoCInfo snippetLoC = null;
       if (elt.getName().equals(HTMLElementName.SCRIPT)) {
-        SourceType sourceType = getScriptSourceType(elt);
+        SourceType sourceType = getScriptSourceType(elt, textualExtractor.getExtractedFile());
         if (sourceType != null) {
           // Jericho sometimes misparses empty elements, which will show up as start tags
           // ending in "/"; we manually exclude these cases to avoid spurious syntax errors
@@ -57,6 +64,7 @@ public class HTMLExtractor implements IExtractor {
 
           Segment content = elt.getContent();
           String source = content.toString();
+          boolean isTypeScript = isTypeScriptTag(elt);
 
           /*
            * Script blocks in XHTML files may wrap (parts of) their code inside CDATA sections.
@@ -79,7 +87,8 @@ public class HTMLExtractor implements IExtractor {
                     textualExtractor,
                     source,
                     contentStart.getRow(),
-                    contentStart.getColumn());
+                    contentStart.getColumn(),
+                    isTypeScript);
           }
         }
       } else {
@@ -101,7 +110,8 @@ public class HTMLExtractor implements IExtractor {
                       textualExtractor,
                       source,
                       valueStart.getRow(),
-                      valueStart.getColumn());
+                      valueStart.getColumn(),
+                      false /* isTypeScript */);
             } else if (source.startsWith("javascript:")) {
               source = source.substring(11);
               snippetLoC =
@@ -112,7 +122,8 @@ public class HTMLExtractor implements IExtractor {
                       textualExtractor,
                       source,
                       valueStart.getRow(),
-                      valueStart.getColumn() + 11);
+                      valueStart.getColumn() + 11,
+                      false /* isTypeScript */);
             }
           }
       }
@@ -139,16 +150,23 @@ public class HTMLExtractor implements IExtractor {
    * Deduce the {@link SourceType} with which the given <code>script</code> element should be
    * extracted, returning <code>null</code> if it cannot be determined.
    */
-  private SourceType getScriptSourceType(Element script) {
+  private SourceType getScriptSourceType(Element script, File file) {
     String scriptType = getAttributeValueLC(script, "type");
-    String scriptLanguage = getAttributeValueLC(script, "language");
+    String scriptLanguage = getScriptLanguage(script);
+    
+    SourceType fallbackSourceType = config.getSourceType();
+    if (file.getName().endsWith(".vue")) {
+      fallbackSourceType = SourceType.MODULE;
+    }
+
+    if (isTypeScriptTag(script)) return fallbackSourceType;
 
     // if `type` and `language` are both either missing, contain the
     // string "javascript", or if `type` is the string "text/jsx", this is a plain script
     if ((scriptType == null || scriptType.contains("javascript") || "text/jsx".equals(scriptType))
         && (scriptLanguage == null || scriptLanguage.contains("javascript")))
       // use default source type
-      return config.getSourceType();
+      return fallbackSourceType;
 
     // if `type` is "text/babel", the source type depends on the `data-plugins` attribute
     if ("text/babel".equals(scriptType)) {
@@ -156,13 +174,30 @@ public class HTMLExtractor implements IExtractor {
       if (plugins != null && plugins.contains("transform-es2015-modules-umd")) {
         return SourceType.MODULE;
       }
-      return config.getSourceType();
+      return fallbackSourceType;
     }
 
     // if `type` is "module", extract as module
     if ("module".equals(scriptType)) return SourceType.MODULE;
 
     return null;
+  }
+
+  private String getScriptLanguage(Element script) {
+    String scriptLanguage = getAttributeValueLC(script, "language");
+
+    if (scriptLanguage == null) { // Vue templates use 'lang' instead of 'language'.
+      scriptLanguage = getAttributeValueLC(script, "lang");
+    }
+    return scriptLanguage;
+  }
+
+  private boolean isTypeScriptTag(Element script) {
+    String language = getScriptLanguage(script);
+    if ("ts".equals(language) || "typescript".equals(language)) return true;
+    String type = getAttributeValueLC(script, "type");
+    if (type != null && type.contains("typescript")) return true;
+    return false;
   }
 
   /**
@@ -181,7 +216,27 @@ public class HTMLExtractor implements IExtractor {
       TextualExtractor textualExtractor,
       String source,
       int line,
-      int column) {
+      int column,
+      boolean isTypeScript) {
+    if (isTypeScript) {
+      Path file = textualExtractor.getExtractedFile().toPath();
+      FileSnippet snippet = new FileSnippet(file, line, column, toplevelKind, config.getSourceType());
+      VirtualSourceRoot vroot = config.getVirtualSourceRoot();
+      // Vue files are special in that they can be imported as modules, and may only contain one <script> tag.
+      // For .vue files we omit the usual snippet decoration to ensure the TypeScript compiler can find it.
+      Path virtualFile =
+          file.getFileName().toString().endsWith(".vue")
+          ? vroot.toVirtualFile(file.resolveSibling(file.getFileName() + ".ts"))
+          : vroot.getVirtualFileForSnippet(snippet, ".ts");
+      if (virtualFile != null) {
+        virtualFile = virtualFile.toAbsolutePath().normalize();
+        synchronized(vroot.getLock()) {
+          new WholeIO().strictwrite(virtualFile, source);
+        }
+        state.getSnippets().put(virtualFile, snippet);
+      }
+      return null; // LoC info is accounted for later
+    }
     TrapWriter trapwriter = textualExtractor.getTrapwriter();
     LocationManager locationManager = textualExtractor.getLocationManager();
     LocationManager scriptLocationManager =
@@ -196,7 +251,8 @@ public class HTMLExtractor implements IExtractor {
               scriptLocationManager,
               source,
               config.getExtractLines(),
-              textualExtractor.getMetrics());
+              textualExtractor.getMetrics(),
+              textualExtractor.getExtractedFile());
       return extractor.extract(tx, source, toplevelKind, scopeManager).snd();
     } catch (ParseError e) {
       e.setPosition(scriptLocationManager.translatePosition(e.getPosition()));

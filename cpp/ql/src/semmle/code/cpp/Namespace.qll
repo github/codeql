@@ -1,3 +1,7 @@
+/**
+ * Provides classes for modeling namespaces, `using` directives and `using` declarations.
+ */
+
 import semmle.code.cpp.Element
 import semmle.code.cpp.Type
 import semmle.code.cpp.metrics.MetricNamespace
@@ -79,7 +83,10 @@ class Namespace extends NameQualifyingElement, @namespace {
   /** Gets the metric namespace. */
   MetricNamespace getMetrics() { result = this }
 
-  override string toString() { result = this.getQualifiedName() }
+  /** Gets a version of the `QualifiedName` that is more suitable for display purposes. */
+  string getFriendlyName() { result = this.getQualifiedName() }
+
+  final override string toString() { result = getFriendlyName() }
 
   /** Gets a declaration of (part of) this namespace. */
   NamespaceDeclarationEntry getADeclarationEntry() { result.getNamespace() = this }
@@ -104,7 +111,7 @@ class NamespaceDeclarationEntry extends Locatable, @namespace_decl {
     namespace_decls(underlyingElement(this), unresolveElement(result), _, _)
   }
 
-  override string toString() { result = this.getNamespace().toString() }
+  override string toString() { result = this.getNamespace().getFriendlyName() }
 
   /**
    * Gets the location of the token preceding the namespace declaration
@@ -124,7 +131,7 @@ class NamespaceDeclarationEntry extends Locatable, @namespace_decl {
    */
   Location getBodyLocation() { namespace_decls(underlyingElement(this), _, _, result) }
 
-  override string getCanonicalQLClass() { result = "NamespaceDeclarationEntry" }
+  override string getAPrimaryQlClass() { result = "NamespaceDeclarationEntry" }
 }
 
 /**
@@ -150,7 +157,7 @@ class UsingDeclarationEntry extends UsingEntry {
    */
   Declaration getDeclaration() { usings(underlyingElement(this), unresolveElement(result), _) }
 
-  override string toString() { result = "using " + this.getDeclaration().toString() }
+  override string toString() { result = "using " + this.getDeclaration().getDescription() }
 }
 
 /**
@@ -169,7 +176,7 @@ class UsingDirectiveEntry extends UsingEntry {
    */
   Namespace getNamespace() { usings(underlyingElement(this), unresolveElement(result), _) }
 
-  override string toString() { result = "using namespace " + this.getNamespace().toString() }
+  override string toString() { result = "using namespace " + this.getNamespace().getFriendlyName() }
 }
 
 /**
@@ -204,7 +211,7 @@ class GlobalNamespace extends Namespace {
    */
   deprecated string getFullName() { result = this.getName() }
 
-  override string toString() { result = "(global namespace)" }
+  override string getFriendlyName() { result = "(global namespace)" }
 }
 
 /**

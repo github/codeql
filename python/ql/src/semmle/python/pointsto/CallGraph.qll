@@ -28,6 +28,7 @@ private newtype TTInvocation =
  * all calls made to a function for a given context.
  */
 class FunctionInvocation extends TTInvocation {
+    /** Gets a textual representation of this element. */
     string toString() { result = "Invocation" }
 
     FunctionObject getFunction() { this = TInvocation(result, _) }

@@ -44,6 +44,9 @@ module Express {
     isRouter(e, _)
     or
     e.getType().hasUnderlyingType("express", "Router")
+    or
+    // created by `webpack-dev-server`
+    WebpackDevServer::webpackDevServerApp().flowsToExpr(e)
   }
 
   /**
@@ -119,7 +122,14 @@ module Express {
       t.start() and
       result = getARouteHandlerExpr().flow().getALocalSource()
       or
-      exists(DataFlow::TypeBackTracker t2 | result = getARouteHandler(t2).backtrack(t2, t))
+      exists(DataFlow::TypeBackTracker t2, DataFlow::SourceNode succ | succ = getARouteHandler(t2) |
+        result = succ.backtrack(t2, t)
+        or
+        exists(HTTP::RouteHandlerCandidateContainer container |
+          result = container.getRouteHandler(succ)
+        ) and
+        t = t2
+      )
     }
 
     override Expr getServer() { result.(Application).getARouteHandler() = getARouteHandler() }
@@ -895,5 +905,33 @@ module Express {
     }
 
     override DataFlow::ValueNode getARouteHandlerArg() { result = routeHandlerArg }
+  }
+
+  private module WebpackDevServer {
+    /**
+     * Gets a source for the options given to an instantiation of `webpack-dev-server`.
+     */
+    private DataFlow::SourceNode devServerOptions(DataFlow::TypeBackTracker t) {
+      t.start() and
+      result =
+        DataFlow::moduleImport("webpack-dev-server")
+            .getAnInstantiation()
+            .getArgument(1)
+            .getALocalSource()
+      or
+      exists(DataFlow::TypeBackTracker t2 | result = devServerOptions(t2).backtrack(t2, t))
+    }
+
+    /**
+     * Gets an instance of the `express` app created by `webpack-dev-server`.
+     */
+    DataFlow::ParameterNode webpackDevServerApp() {
+      result =
+        devServerOptions(DataFlow::TypeBackTracker::end())
+            .getAPropertyWrite(["after", "before", "setup"])
+            .getRhs()
+            .getAFunctionValue()
+            .getParameter(0)
+    }
   }
 }

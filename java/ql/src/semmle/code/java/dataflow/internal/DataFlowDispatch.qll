@@ -2,14 +2,13 @@ private import java
 private import DataFlowPrivate
 import semmle.code.java.dispatch.VirtualDispatch
 
-cached
 private module DispatchImpl {
   /**
    * Holds if the set of viable implementations that can be called by `ma`
    * might be improved by knowing the call context. This is the case if the
    * qualifier is the `i`th parameter of the enclosing callable `c`.
    */
-  private predicate benefitsFromCallContext(MethodAccess ma, Callable c, int i) {
+  private predicate mayBenefitFromCallContext(MethodAccess ma, Callable c, int i) {
     exists(Parameter p |
       2 <= strictcount(viableImpl(ma)) and
       ma.getQualifier().(VarAccess).getVariable() = p and
@@ -28,7 +27,7 @@ private module DispatchImpl {
   pragma[nomagic]
   private predicate relevantContext(Call ctx, int i) {
     exists(Callable c |
-      benefitsFromCallContext(_, c, i) and
+      mayBenefitFromCallContext(_, c, i) and
       c = viableCallable(ctx)
     )
   }
@@ -54,13 +53,22 @@ private module DispatchImpl {
   }
 
   /**
+   * Holds if the set of viable implementations that can be called by `ma`
+   * might be improved by knowing the call context. This is the case if the
+   * qualifier is a parameter of the enclosing callable `c`.
+   */
+  predicate mayBenefitFromCallContext(MethodAccess ma, Callable c) {
+    mayBenefitFromCallContext(ma, c, _)
+  }
+
+  /**
    * Gets a viable dispatch target of `ma` in the context `ctx`. This is
    * restricted to those `ma`s for which a context might make a difference.
    */
-  private Method viableImplInCallContext(MethodAccess ma, Call ctx) {
+  Method viableImplInCallContext(MethodAccess ma, Call ctx) {
     result = viableImpl(ma) and
     exists(int i, Callable c, Method def, RefType t, boolean exact |
-      benefitsFromCallContext(ma, c, i) and
+      mayBenefitFromCallContext(ma, c, i) and
       c = viableCallable(ctx) and
       contextArgHasType(ctx, i, t, exact) and
       ma.getMethod() = def
@@ -135,57 +143,6 @@ private module DispatchImpl {
         t1 instanceof RefType and t2 instanceof BoundedType
       )
     )
-  }
-
-  /**
-   * Holds if the call context `ctx` reduces the set of viable dispatch
-   * targets of `ma` in `c`.
-   */
-  cached
-  predicate reducedViableImplInCallContext(MethodAccess ma, Callable c, Call ctx) {
-    exists(int tgts, int ctxtgts |
-      benefitsFromCallContext(ma, c, _) and
-      c = viableCallable(ctx) and
-      ctxtgts = count(viableImplInCallContext(ma, ctx)) and
-      tgts = strictcount(viableImpl(ma)) and
-      ctxtgts < tgts
-    )
-  }
-
-  /**
-   * Gets a viable dispatch target of `ma` in the context `ctx`. This is
-   * restricted to those `ma`s for which the context makes a difference.
-   */
-  cached
-  Method prunedViableImplInCallContext(MethodAccess ma, Call ctx) {
-    result = viableImplInCallContext(ma, ctx) and
-    reducedViableImplInCallContext(ma, _, ctx)
-  }
-
-  /**
-   * Holds if flow returning from `m` to `ma` might return further and if
-   * this path restricts the set of call sites that can be returned to.
-   */
-  cached
-  predicate reducedViableImplInReturn(Method m, MethodAccess ma) {
-    exists(int tgts, int ctxtgts |
-      benefitsFromCallContext(ma, _, _) and
-      m = viableImpl(ma) and
-      ctxtgts = count(Call ctx | m = viableImplInCallContext(ma, ctx)) and
-      tgts = strictcount(Call ctx | viableCallable(ctx) = ma.getEnclosingCallable()) and
-      ctxtgts < tgts
-    )
-  }
-
-  /**
-   * Gets a viable dispatch target of `ma` in the context `ctx`. This is
-   * restricted to those `ma`s and results for which the return flow from the
-   * result to `ma` restricts the possible context `ctx`.
-   */
-  cached
-  Method prunedViableImplInCallContextReverse(MethodAccess ma, Call ctx) {
-    result = viableImplInCallContext(ma, ctx) and
-    reducedViableImplInReturn(result, ma)
   }
 }
 

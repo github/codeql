@@ -1,3 +1,16 @@
+| arguments.js:1:2:12:1 | functio ... , 3);\\n} | arguments.js:1:1:12:2 | (functi ...  3);\\n}) |
+| arguments.js:2:5:2:5 | arguments | arguments.js:4:28:4:36 | arguments |
+| arguments.js:2:5:2:5 | arguments | arguments.js:5:25:5:33 | arguments |
+| arguments.js:2:5:2:5 | arguments | arguments.js:6:20:6:28 | arguments |
+| arguments.js:2:5:10:5 | functio ... ;\\n    } | arguments.js:2:14:2:14 | f |
+| arguments.js:2:14:2:14 | f | arguments.js:11:5:11:5 | f |
+| arguments.js:2:16:2:16 | x | arguments.js:2:16:2:16 | x |
+| arguments.js:2:16:2:16 | x | arguments.js:3:24:3:24 | x |
+| arguments.js:6:13:6:28 | args | arguments.js:7:24:7:27 | args |
+| arguments.js:6:20:6:28 | arguments | arguments.js:6:13:6:28 | args |
+| arguments.js:8:9:8:22 | arguments | arguments.js:9:27:9:35 | arguments |
+| arguments.js:8:21:8:22 | {} | arguments.js:8:9:8:22 | arguments |
+| arguments.js:8:21:8:22 | {} | arguments.js:8:9:8:22 | arguments = {} |
 | eval.js:2:7:2:12 | x | eval.js:4:3:4:3 | x |
 | eval.js:2:11:2:12 | 42 | eval.js:2:7:2:12 | x |
 | sources.js:1:6:1:6 | x | sources.js:1:6:1:6 | x |

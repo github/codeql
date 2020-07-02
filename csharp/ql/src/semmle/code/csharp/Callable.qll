@@ -25,12 +25,6 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
   /** Gets the annotated return type of this callable. */
   final AnnotatedType getAnnotatedReturnType() { result.appliesTo(this) }
 
-  /** DEPRECATED: Use `getAnnotatedReturnType().isRef()` instead. */
-  deprecated predicate returnsRef() { this.getAnnotatedReturnType().isRef() }
-
-  /** DEPRECATED: Use `getAnnotatedReturnType().isReadonlyRef()` instead. */
-  deprecated predicate returnsRefReadonly() { this.getAnnotatedReturnType().isReadonlyRef() }
-
   override Callable getSourceDeclaration() { result = Parameterizable.super.getSourceDeclaration() }
 
   /**
@@ -50,7 +44,7 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    * where the same callable is compiled multiple times. For example, if we
    * compile both `A.cs`
    *
-   * ```
+   * ```csharp
    * namespaces N {
    *   public class C {
    *     public int M() => 0;
@@ -60,7 +54,7 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    *
    * and later `B.cs`
    *
-   * ```
+   * ```csharp
    * namespaces N {
    *   public class C {
    *     public int M() { return 1; }
@@ -98,7 +92,7 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    * the case where the same callable is compiled multiple times. For example,
    * if we compile both `A.cs`
    *
-   * ```
+   * ```csharp
    * namespaces N {
    *   public class C {
    *     public int M() { return 0; }
@@ -108,7 +102,7 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    *
    * and later `B.cs`
    *
-   * ```
+   * ```csharp
    * namespaces N {
    *   public class C {
    *     public int M() { return 1; }
@@ -134,7 +128,7 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    * the case where the same callable is compiled multiple times. For example,
    * if we compile both `A.cs`
    *
-   * ```
+   * ```csharp
    * namespaces N {
    *   public class C {
    *     public int M() => 0;
@@ -144,7 +138,7 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    *
    * and later `B.cs`
    *
-   * ```
+   * ```csharp
    * namespaces N {
    *   public class C {
    *     public int M() => 1;
@@ -229,7 +223,7 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
 /**
  * A method, for example
  *
- * ```
+ * ```csharp
  * public override bool Equals(object other) {
  *   ...
  * }
@@ -295,7 +289,7 @@ class Method extends Callable, Virtualizable, Attributable, @method {
 /**
  * An extension method, for example
  *
- * ```
+ * ```csharp
  * static bool IsDefined(this Widget w) {
  *   ...
  * }
@@ -313,7 +307,7 @@ class ExtensionMethod extends Method {
 /**
  * A constructor, for example `public C() { }` on line 2 in
  *
- * ```
+ * ```csharp
  * class C {
  *   public C() { }
  * }
@@ -332,7 +326,7 @@ class Constructor extends DotNet::Constructor, Callable, Member, Attributable, @
    * the initializer of the constructor on line 2 is `this(null)`
    * on line 3 in
    *
-   * ```
+   * ```csharp
    * class C {
    *   public C()
    *     : this(null) { ... }
@@ -367,7 +361,7 @@ class Constructor extends DotNet::Constructor, Callable, Member, Attributable, @
  * A static constructor (as opposed to an instance constructor),
  * for example `static public C() { }` on line 2 in
  *
- * ```
+ * ```csharp
  * class C {
  *   static public C() { }
  * }
@@ -383,7 +377,7 @@ class StaticConstructor extends Constructor {
  * An instance constructor (as opposed to a static constructor),
  * for example `public C() { }` on line 2 in
  *
- * ```
+ * ```csharp
  * class C {
  *   public C() { }
  * }
@@ -396,7 +390,7 @@ class InstanceConstructor extends Constructor {
 /**
  * A destructor, for example `~C() { }` on line 2 in
  *
- * ```
+ * ```csharp
  * class C {
  *   ~C() { }
  * }
@@ -467,7 +461,7 @@ class UnaryOperator extends Operator {
 /**
  * A user-defined plus operator (`+`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator +(Widget w) {
  *   ...
  * }
@@ -482,7 +476,7 @@ class PlusOperator extends UnaryOperator {
 /**
  * A user-defined minus operator (`-`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator -(Widget w) {
  *   ...
  * }
@@ -497,7 +491,7 @@ class MinusOperator extends UnaryOperator {
 /**
  * A user-defined not operator (`!`), for example
  *
- * ```
+ * ```csharp
  * public static bool operator !(Widget w) {
  *   ...
  * }
@@ -512,7 +506,7 @@ class NotOperator extends UnaryOperator {
 /**
  * A user-defined complement operator (`~`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator ~(Widget w) {
  *   ...
  * }
@@ -527,7 +521,7 @@ class ComplementOperator extends UnaryOperator {
 /**
  * A user-defined increment operator (`++`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator ++(Widget w) {
  *   ...
  * }
@@ -542,7 +536,7 @@ class IncrementOperator extends UnaryOperator {
 /**
  * A user-defined decrement operator (`--`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator --(Widget w) {
  *   ...
  * }
@@ -557,7 +551,7 @@ class DecrementOperator extends UnaryOperator {
 /**
  * A user-defined false operator (`false`), for example
  *
- * ```
+ * ```csharp
  * public static bool operator false(Widget w) {
  *   ...
  * }
@@ -572,7 +566,7 @@ class FalseOperator extends UnaryOperator {
 /**
  * A user-defined true operator (`true`), for example
  *
- * ```
+ * ```csharp
  * public static bool operator true(Widget w) {
  *   ...
  * }
@@ -604,7 +598,7 @@ class BinaryOperator extends Operator {
 /**
  * A user-defined addition operator (`+`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator +(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -619,7 +613,7 @@ class AddOperator extends BinaryOperator {
 /**
  * A user-defined subtraction operator (`-`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator -(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -634,7 +628,7 @@ class SubOperator extends BinaryOperator {
 /**
  * A user-defined multiplication operator (`*`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator *(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -649,7 +643,7 @@ class MulOperator extends BinaryOperator {
 /**
  * A user-defined division operator (`/`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator /(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -664,7 +658,7 @@ class DivOperator extends BinaryOperator {
 /**
  * A user-defined remainder operator (`%`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator %(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -679,7 +673,7 @@ class RemOperator extends BinaryOperator {
 /**
  * A user-defined and operator (`&`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator &(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -694,7 +688,7 @@ class AndOperator extends BinaryOperator {
 /**
  * A user-defined or operator (`|`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator |(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -709,7 +703,7 @@ class OrOperator extends BinaryOperator {
 /**
  * A user-defined xor operator (`^`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator ^(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -724,7 +718,7 @@ class XorOperator extends BinaryOperator {
 /**
  * A user-defined left shift operator (`<<`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator <<(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -739,7 +733,7 @@ class LShiftOperator extends BinaryOperator {
 /**
  * A user-defined right shift operator (`>>`), for example
  *
- * ```
+ * ```csharp
  * public static Widget operator >>(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -754,7 +748,7 @@ class RShiftOperator extends BinaryOperator {
 /**
  * A user-defined equals operator (`==`), for example
  *
- * ```
+ * ```csharp
  * public static bool operator ==(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -769,7 +763,7 @@ class EQOperator extends BinaryOperator {
 /**
  * A user-defined not equals operator (`!=`), for example
  *
- * ```
+ * ```csharp
  * public static bool operator !=(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -784,7 +778,7 @@ class NEOperator extends BinaryOperator {
 /**
  * A user-defined lesser than operator (`<`), for example
  *
- * ```
+ * ```csharp
  * public static bool operator <(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -799,7 +793,7 @@ class LTOperator extends BinaryOperator {
 /**
  * A user-defined greater than operator (`>`), for example
  *
- * ```
+ * ```csharp
  * public static bool operator >(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -814,7 +808,7 @@ class GTOperator extends BinaryOperator {
 /**
  * A user-defined less than or equals operator (`<=`), for example
  *
- * ```
+ * ```csharp
  * public static bool operator <=(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -829,7 +823,7 @@ class LEOperator extends BinaryOperator {
 /**
  * A user-defined greater than or equals operator (`>=`), for example
  *
- * ```
+ * ```csharp
  * public static bool operator >=(Widget lhs, Widget rhs) {
  *   ...
  * }
@@ -844,7 +838,7 @@ class GEOperator extends BinaryOperator {
 /**
  * A user-defined conversion operator, for example
  *
- * ```
+ * ```csharp
  * public static implicit operator int(BigInteger i) {
  *   ...
  * }
@@ -866,7 +860,7 @@ class ConversionOperator extends Operator {
 /**
  * A user-defined implicit conversion operator, for example
  *
- * ```
+ * ```csharp
  * public static implicit operator int(BigInteger i) {
  *   ...
  * }
@@ -881,7 +875,7 @@ class ImplicitConversionOperator extends ConversionOperator {
 /**
  * A user-defined explicit conversion operator, for example
  *
- * ```
+ * ```csharp
  * public static explicit operator int(BigInteger i) {
  *   ...
  * }
@@ -897,7 +891,7 @@ class ExplicitConversionOperator extends ConversionOperator {
  * A local function, defined within the scope of another callable.
  * For example, `Fac` on lines 2--4 in
  *
- * ```
+ * ```csharp
  * int Choose(int n, int m) {
  *   int Fac(int x) {
  *     return x > 1 ? x * Fac(x - 1) : 1;

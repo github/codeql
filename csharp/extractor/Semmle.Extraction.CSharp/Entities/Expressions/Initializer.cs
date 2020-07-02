@@ -69,9 +69,18 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                 if (assignment != null)
                 {
-                    var assignmentEntity = new Expression(new ExpressionNodeInfo(cx, init, this, child++).SetKind(ExprKind.SIMPLE_ASSIGN));
-
-                    CreateFromNode(new ExpressionNodeInfo(cx, assignment.Right, assignmentEntity, 0));
+                    var assignmentInfo = new ExpressionNodeInfo(cx, init, this, child++).SetKind(ExprKind.SIMPLE_ASSIGN);
+                    var assignmentEntity = new Expression(assignmentInfo);
+                    var typeInfoRight = cx.GetTypeInfo(assignment.Right);
+                    if (typeInfoRight.Type is null)
+                        // The type may be null for nested initializers such as
+                        // ```csharp
+                        // new ClassWithArrayField() { As = { [0] = a } }
+                        // ```
+                        // In this case we take the type from the assignment
+                        // `As = { [0] = a }` instead
+                        typeInfoRight = assignmentInfo.TypeInfo;
+                    CreateFromNode(new ExpressionNodeInfo(cx, assignment.Right, assignmentEntity, 0, typeInfoRight));
 
                     var target = cx.GetSymbolInfo(assignment.Left);
 

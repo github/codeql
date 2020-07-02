@@ -2,14 +2,8 @@
 |  | cpp_range_based_for | 0 | 1 | file://:0:0:0:0 | (reference dereference) | <none> |
 |  | cpp_range_based_for | 0 | 1 | file://:0:0:0:0 | (reference to) | <none> |
 |  | cpp_range_based_for | 0 | 9 | file://:0:0:0:0 | initializer for (__range) | declaration |
-|  | cpp_range_based_for | 0 | 11 | file://:0:0:0:0 | (__range) | call to begin |
 |  | cpp_range_based_for | 0 | 13 | file://:0:0:0:0 | initializer for (__begin) | (__range) |
-|  | cpp_range_based_for | 0 | 14 | file://:0:0:0:0 | (__range) | call to end |
 |  | cpp_range_based_for | 0 | 16 | file://:0:0:0:0 | initializer for (__end) | (__end) |
-|  | cpp_range_based_for | 0 | 28 | file://:0:0:0:0 | (__begin) | call to operator!= |
-|  | cpp_range_based_for | 0 | 28 | file://:0:0:0:0 | (__begin) | call to operator* |
-|  | cpp_range_based_for | 0 | 28 | file://:0:0:0:0 | (__begin) | call to operator++ |
-|  | cpp_range_based_for | 0 | 28 | file://:0:0:0:0 | (__end) | (__begin) |
 | cpp | CopyConstructorClass | 28 | 1 | cpp.cpp:28:5:28:24 | CopyConstructorClass | <none> |
 | cpp | CopyConstructorClass | 30 | 1 | cpp.cpp:30:5:30:24 | CopyConstructorClass | <none> |
 | cpp | IntVectorIter | 4 | 1 | cpp.cpp:4:7:4:7 | IntVectorIter | <none> |
@@ -37,10 +31,16 @@
 | cpp | cpp_range_based_for | 22 | 7 | cpp.cpp:22:5:23:12 | declaration | vec |
 | cpp | cpp_range_based_for | 22 | 8 | cpp.cpp:22:18:22:20 | vec | initializer for (__range) |
 | cpp | cpp_range_based_for | 22 | 10 | cpp.cpp:22:5:23:12 | declaration | (__range) |
+| cpp | cpp_range_based_for | 22 | 11 | cpp.cpp:22:18:22:18 | (__range) | call to begin |
 | cpp | cpp_range_based_for | 22 | 12 | cpp.cpp:22:18:22:18 | call to begin | initializer for (__begin) |
+| cpp | cpp_range_based_for | 22 | 14 | cpp.cpp:22:18:22:18 | (__range) | call to end |
 | cpp | cpp_range_based_for | 22 | 15 | cpp.cpp:22:18:22:18 | call to end | initializer for (__end) |
 | cpp | cpp_range_based_for | 22 | 28 | cpp.cpp:22:5:23:12 | declaration | (__begin) |
 | cpp | cpp_range_based_for | 22 | 28 | cpp.cpp:22:14:22:14 | initializer for i | ExprStmt |
+| cpp | cpp_range_based_for | 22 | 28 | cpp.cpp:22:18:22:18 | (__begin) | call to operator!= |
+| cpp | cpp_range_based_for | 22 | 28 | cpp.cpp:22:18:22:18 | (__begin) | call to operator* |
+| cpp | cpp_range_based_for | 22 | 28 | cpp.cpp:22:18:22:18 | (__begin) | call to operator++ |
+| cpp | cpp_range_based_for | 22 | 28 | cpp.cpp:22:18:22:18 | (__end) | (__begin) |
 | cpp | cpp_range_based_for | 22 | 28 | cpp.cpp:22:18:22:18 | call to operator!= | <false> return ... |
 | cpp | cpp_range_based_for | 22 | 28 | cpp.cpp:22:18:22:18 | call to operator!= | <true> declaration |
 | cpp | cpp_range_based_for | 22 | 28 | cpp.cpp:22:18:22:18 | call to operator* | initializer for i |

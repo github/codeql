@@ -474,7 +474,8 @@ module Gvn {
         sourceDecl = any(GenericType t).getSourceDeclaration() and
         not sourceDecl instanceof PointerType and
         not sourceDecl instanceof NullableType and
-        not sourceDecl instanceof ArrayType
+        not sourceDecl instanceof ArrayType and
+        not sourceDecl instanceof TupleType
       }
 
     cached
@@ -684,7 +685,7 @@ module Unification {
   private import Cached
 
   /**
-   * Holds if types `t1` and `t2` are unifiable. That is, is it possible to replace
+   * Holds if types `t1` and `t2` are unifiable. That is, it is possible to replace
    * all type parameters in `t1` and `t2` with some (other) types to make the two
    * substituted terms equal.
    *
@@ -721,7 +722,7 @@ module Unification {
   }
 
   /**
-   * Holds if type `t1` subsumes type `t2`. That is, is it possible to replace all
+   * Holds if type `t1` subsumes type `t2`. That is, it is possible to replace all
    * type parameters in `t1` with some (other) types to make the two types equal.
    *
    * The same limitations that apply to the predicate `unifiable()` apply to this

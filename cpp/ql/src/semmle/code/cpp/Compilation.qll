@@ -1,3 +1,7 @@
+/**
+ * Provides a class representing individual compiler invocations that occurred during the build.
+ */
+
 import semmle.code.cpp.File
 
 /*

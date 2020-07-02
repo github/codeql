@@ -322,7 +322,11 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   )
   or
   m.getDeclaringType().getQualifiedName().matches("%StringWriter") and
-  m.getName() = "toString"
+  (
+    m.getName() = "getBuffer"
+    or
+    m.getName() = "toString"
+  )
   or
   m.getDeclaringType().hasQualifiedName("java.util", "StringTokenizer") and
   m.getName().matches("next%")
@@ -335,7 +339,8 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   or
   (
     m.getDeclaringType().hasQualifiedName("java.lang", "StringBuilder") or
-    m.getDeclaringType().hasQualifiedName("java.lang", "StringBuffer")
+    m.getDeclaringType().hasQualifiedName("java.lang", "StringBuffer") or
+    m.getDeclaringType().hasQualifiedName("java.io", "StringWriter")
   ) and
   (m.getName() = "toString" or m.getName() = "append")
   or
@@ -506,6 +511,10 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
   method instanceof JacksonWriteValueMethod and
   method.getNumberOfParameters() = 1 and
   arg = 0
+  or
+  method.getDeclaringType().hasQualifiedName("java.io", "StringWriter") and
+  method.hasName("append") and
+  arg = 0
 }
 
 /**
@@ -580,9 +589,20 @@ private predicate argToQualifierStep(Expr tracked, Expr sink) {
 private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
   exists(Method write |
     method.overrides*(write) and
-    write.getDeclaringType().hasQualifiedName("java.io", "OutputStream") and
     write.hasName("write") and
-    arg = 0
+    arg = 0 and
+    (
+      write.getDeclaringType().hasQualifiedName("java.io", "OutputStream")
+      or
+      write.getDeclaringType().hasQualifiedName("java.io", "StringWriter")
+    )
+  )
+  or
+  exists(Method append |
+    method.overrides*(append) and
+    append.hasName("append") and
+    arg = 0 and
+    append.getDeclaringType().hasQualifiedName("java.io", "StringWriter")
   )
 }
 

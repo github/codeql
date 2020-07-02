@@ -8,10 +8,79 @@ module InstructionConsistency {
   private import Imports::Overlap
   private import internal.IRInternal
 
+  private newtype TOptionalIRFunction =
+    TPresentIRFunction(IRFunction irFunc) or
+    TMissingIRFunction()
+
+  /**
+   * An `IRFunction` that might not exist. This is used so that we can produce consistency failures
+   * for IR that also incorrectly lacks a `getEnclosingIRFunction()`.
+   */
+  abstract private class OptionalIRFunction extends TOptionalIRFunction {
+    abstract string toString();
+
+    abstract Language::Location getLocation();
+  }
+
+  private class PresentIRFunction extends OptionalIRFunction, TPresentIRFunction {
+    private IRFunction irFunc;
+
+    PresentIRFunction() { this = TPresentIRFunction(irFunc) }
+
+    override string toString() {
+      result = concat(Language::getIdentityString(irFunc.getFunction()), "; ")
+    }
+
+    override Language::Location getLocation() {
+      // To avoid an overwhelming number of results when the extractor merges functions with the
+      // same name, just pick a single location.
+      result =
+        rank[1](Language::Location loc | loc = irFunc.getLocation() | loc order by loc.toString())
+    }
+  }
+
+  private class MissingIRFunction extends OptionalIRFunction, TMissingIRFunction {
+    override string toString() { result = "<Missing IRFunction>" }
+
+    override Language::Location getLocation() { result instanceof Language::UnknownDefaultLocation }
+  }
+
+  private OptionalIRFunction getInstructionIRFunction(Instruction instr) {
+    result = TPresentIRFunction(instr.getEnclosingIRFunction())
+    or
+    not exists(instr.getEnclosingIRFunction()) and result = TMissingIRFunction()
+  }
+
+  pragma[inline]
+  private OptionalIRFunction getInstructionIRFunction(Instruction instr, string irFuncText) {
+    result = getInstructionIRFunction(instr) and
+    irFuncText = result.toString()
+  }
+
+  private OptionalIRFunction getOperandIRFunction(Operand operand) {
+    result = TPresentIRFunction(operand.getEnclosingIRFunction())
+    or
+    not exists(operand.getEnclosingIRFunction()) and result = TMissingIRFunction()
+  }
+
+  pragma[inline]
+  private OptionalIRFunction getOperandIRFunction(Operand operand, string irFuncText) {
+    result = getOperandIRFunction(operand) and
+    irFuncText = result.toString()
+  }
+
+  private OptionalIRFunction getBlockIRFunction(IRBlock block) {
+    result = TPresentIRFunction(block.getEnclosingIRFunction())
+    or
+    not exists(block.getEnclosingIRFunction()) and result = TMissingIRFunction()
+  }
+
   /**
    * Holds if instruction `instr` is missing an expected operand with tag `tag`.
    */
-  query predicate missingOperand(Instruction instr, string message, IRFunction func, string funcText) {
+  query predicate missingOperand(
+    Instruction instr, string message, OptionalIRFunction irFunc, string irFuncText
+  ) {
     exists(OperandTag tag |
       instr.getOpcode().hasOperand(tag) and
       not exists(NonPhiOperand operand |
@@ -21,32 +90,39 @@ module InstructionConsistency {
       message =
         "Instruction '" + instr.getOpcode().toString() +
           "' is missing an expected operand with tag '" + tag.toString() + "' in function '$@'." and
-      func = instr.getEnclosingIRFunction() and
-      funcText = Language::getIdentityString(func.getFunction())
+      irFunc = getInstructionIRFunction(instr, irFuncText)
     )
   }
 
   /**
    * Holds if instruction `instr` has an unexpected operand with tag `tag`.
    */
-  query predicate unexpectedOperand(Instruction instr, OperandTag tag) {
-    exists(NonPhiOperand operand |
-      operand = instr.getAnOperand() and
-      operand.getOperandTag() = tag
-    ) and
-    not instr.getOpcode().hasOperand(tag) and
-    not (instr instanceof CallInstruction and tag instanceof ArgumentOperandTag) and
-    not (
-      instr instanceof BuiltInOperationInstruction and tag instanceof PositionalArgumentOperandTag
-    ) and
-    not (instr instanceof InlineAsmInstruction and tag instanceof AsmOperandTag)
+  query predicate unexpectedOperand(
+    Instruction instr, string message, OptionalIRFunction irFunc, string irFuncText
+  ) {
+    exists(OperandTag tag |
+      exists(NonPhiOperand operand |
+        operand = instr.getAnOperand() and
+        operand.getOperandTag() = tag
+      ) and
+      not instr.getOpcode().hasOperand(tag) and
+      not (instr instanceof CallInstruction and tag instanceof ArgumentOperandTag) and
+      not (
+        instr instanceof BuiltInOperationInstruction and tag instanceof PositionalArgumentOperandTag
+      ) and
+      not (instr instanceof InlineAsmInstruction and tag instanceof AsmOperandTag) and
+      message =
+        "Instruction '" + instr.toString() + "' has unexpected operand '" + tag.toString() +
+          "' in function '$@'." and
+      irFunc = getInstructionIRFunction(instr, irFuncText)
+    )
   }
 
   /**
    * Holds if instruction `instr` has multiple operands with tag `tag`.
    */
   query predicate duplicateOperand(
-    Instruction instr, string message, IRFunction func, string funcText
+    Instruction instr, string message, OptionalIRFunction irFunc, string irFuncText
   ) {
     exists(OperandTag tag, int operandCount |
       operandCount =
@@ -58,8 +134,7 @@ module InstructionConsistency {
       message =
         "Instruction has " + operandCount + " operands with tag '" + tag.toString() + "'" +
           " in function '$@'." and
-      func = instr.getEnclosingIRFunction() and
-      funcText = Language::getIdentityString(func.getFunction())
+      irFunc = getInstructionIRFunction(instr, irFuncText)
     )
   }
 
@@ -67,100 +142,136 @@ module InstructionConsistency {
    * Holds if `Phi` instruction `instr` is missing an operand corresponding to
    * the predecessor block `pred`.
    */
-  query predicate missingPhiOperand(PhiInstruction instr, IRBlock pred) {
-    pred = instr.getBlock().getAPredecessor() and
-    not exists(PhiInputOperand operand |
-      operand = instr.getAnOperand() and
-      operand.getPredecessorBlock() = pred
+  query predicate missingPhiOperand(
+    PhiInstruction instr, string message, OptionalIRFunction irFunc, string irFuncText
+  ) {
+    exists(IRBlock pred |
+      pred = instr.getBlock().getAPredecessor() and
+      not exists(PhiInputOperand operand |
+        operand = instr.getAnOperand() and
+        operand.getPredecessorBlock() = pred
+      ) and
+      message =
+        "Instruction '" + instr.toString() + "' is missing an operand for predecessor block '" +
+          pred.toString() + "' in function '$@'." and
+      irFunc = getInstructionIRFunction(instr, irFuncText)
     )
   }
 
-  query predicate missingOperandType(Operand operand, string message) {
-    exists(Language::Function func, Instruction use |
+  query predicate missingOperandType(
+    Operand operand, string message, OptionalIRFunction irFunc, string irFuncText
+  ) {
+    exists(Instruction use |
       not exists(operand.getType()) and
       use = operand.getUse() and
-      func = use.getEnclosingFunction() and
       message =
         "Operand '" + operand.toString() + "' of instruction '" + use.getOpcode().toString() +
-          "' missing type in function '" + Language::getIdentityString(func) + "'."
+          "' is missing a type in function '$@'." and
+      irFunc = getOperandIRFunction(operand, irFuncText)
     )
   }
 
   query predicate duplicateChiOperand(
-    ChiInstruction chi, string message, IRFunction func, string funcText
+    ChiInstruction chi, string message, OptionalIRFunction irFunc, string irFuncText
   ) {
     chi.getTotal() = chi.getPartial() and
     message =
       "Chi instruction for " + chi.getPartial().toString() +
-        " has duplicate operands in function $@" and
-    func = chi.getEnclosingIRFunction() and
-    funcText = Language::getIdentityString(func.getFunction())
+        " has duplicate operands in function '$@'." and
+    irFunc = getInstructionIRFunction(chi, irFuncText)
   }
 
   query predicate sideEffectWithoutPrimary(
-    SideEffectInstruction instr, string message, IRFunction func, string funcText
+    SideEffectInstruction instr, string message, OptionalIRFunction irFunc, string irFuncText
   ) {
     not exists(instr.getPrimaryInstruction()) and
-    message = "Side effect instruction missing primary instruction in function $@" and
-    func = instr.getEnclosingIRFunction() and
-    funcText = Language::getIdentityString(func.getFunction())
+    message =
+      "Side effect instruction '" + instr + "' is missing a primary instruction in function '$@'." and
+    irFunc = getInstructionIRFunction(instr, irFuncText)
   }
 
   /**
    * Holds if an instruction, other than `ExitFunction`, has no successors.
    */
-  query predicate instructionWithoutSuccessor(Instruction instr) {
+  query predicate instructionWithoutSuccessor(
+    Instruction instr, string message, OptionalIRFunction irFunc, string irFuncText
+  ) {
     not exists(instr.getASuccessor()) and
     not instr instanceof ExitFunctionInstruction and
     // Phi instructions aren't linked into the instruction-level flow graph.
     not instr instanceof PhiInstruction and
-    not instr instanceof UnreachedInstruction
+    not instr instanceof UnreachedInstruction and
+    message = "Instruction '" + instr.toString() + "' has no successors in function '$@'." and
+    irFunc = getInstructionIRFunction(instr, irFuncText)
   }
 
   /**
-   * Holds if there are multiple (`n`) edges of kind `kind` from `source`,
-   * where `target` is among the targets of those edges.
+   * Holds if there are multiple edges of the same kind from `source`.
    */
-  query predicate ambiguousSuccessors(Instruction source, EdgeKind kind, int n, Instruction target) {
-    n = strictcount(Instruction t | source.getSuccessor(kind) = t) and
-    n > 1 and
-    source.getSuccessor(kind) = target
+  query predicate ambiguousSuccessors(
+    Instruction source, string message, OptionalIRFunction irFunc, string irFuncText
+  ) {
+    exists(EdgeKind kind, int n |
+      n = strictcount(Instruction t | source.getSuccessor(kind) = t) and
+      n > 1 and
+      message =
+        "Instruction '" + source.toString() + "' has " + n.toString() + " successors of kind '" +
+          kind.toString() + "' in function '$@'." and
+      irFunc = getInstructionIRFunction(source, irFuncText)
+    )
   }
 
   /**
-   * Holds if `instr` in `f` is part of a loop even though the AST of `f`
+   * Holds if `instr` is part of a loop even though the AST of `instr`'s enclosing function
    * contains no element that can cause loops.
    */
-  query predicate unexplainedLoop(Language::Function f, Instruction instr) {
-    exists(IRBlock block |
-      instr.getBlock() = block and
-      block.getEnclosingFunction() = f and
-      block.getASuccessor+() = block
-    ) and
-    not Language::hasPotentialLoop(f)
+  query predicate unexplainedLoop(
+    Instruction instr, string message, OptionalIRFunction irFunc, string irFuncText
+  ) {
+    exists(Language::Function f |
+      exists(IRBlock block |
+        instr.getBlock() = block and
+        block.getEnclosingFunction() = f and
+        block.getASuccessor+() = block
+      ) and
+      not Language::hasPotentialLoop(f) and
+      message =
+        "Instruction '" + instr.toString() + "' is part of an unexplained loop in function '$@'." and
+      irFunc = getInstructionIRFunction(instr, irFuncText)
+    )
   }
 
   /**
    * Holds if a `Phi` instruction is present in a block with fewer than two
    * predecessors.
    */
-  query predicate unnecessaryPhiInstruction(PhiInstruction instr) {
-    count(instr.getBlock().getAPredecessor()) < 2
+  query predicate unnecessaryPhiInstruction(
+    PhiInstruction instr, string message, OptionalIRFunction irFunc, string irFuncText
+  ) {
+    exists(int n |
+      n = count(instr.getBlock().getAPredecessor()) and
+      n < 2 and
+      message =
+        "Instruction '" + instr.toString() + "' is in a block with only " + n.toString() +
+          " predecessors in function '$@'." and
+      irFunc = getInstructionIRFunction(instr, irFuncText)
+    )
   }
 
   /**
    * Holds if a memory operand is connected to a definition with an unmodeled result.
    */
   query predicate memoryOperandDefinitionIsUnmodeled(
-    Instruction instr, string message, IRFunction func, string funcText
+    Instruction instr, string message, OptionalIRFunction irFunc, string irFuncText
   ) {
     exists(MemoryOperand operand, Instruction def |
       operand = instr.getAnOperand() and
       def = operand.getAnyDef() and
       not def.isResultModeled() and
-      message = "Memory operand definition has unmodeled result in function '$@'" and
-      func = instr.getEnclosingIRFunction() and
-      funcText = Language::getIdentityString(func.getFunction())
+      message =
+        "Memory operand definition on instruction '" + instr.toString() +
+          "' has unmodeled result in function '$@'." and
+      irFunc = getInstructionIRFunction(instr, irFuncText)
     )
   }
 
@@ -168,18 +279,37 @@ module InstructionConsistency {
    * Holds if operand `operand` consumes a value that was defined in
    * a different function.
    */
-  query predicate operandAcrossFunctions(Operand operand, Instruction instr, Instruction defInstr) {
-    operand.getUse() = instr and
-    operand.getAnyDef() = defInstr and
-    instr.getEnclosingIRFunction() != defInstr.getEnclosingIRFunction()
+  query predicate operandAcrossFunctions(
+    Operand operand, string message, OptionalIRFunction useIRFunc, string useIRFuncText,
+    OptionalIRFunction defIRFunc, string defIRFuncText
+  ) {
+    exists(Instruction useInstr, Instruction defInstr |
+      operand.getUse() = useInstr and
+      operand.getAnyDef() = defInstr and
+      useIRFunc = getInstructionIRFunction(useInstr, useIRFuncText) and
+      defIRFunc = getInstructionIRFunction(defInstr, defIRFuncText) and
+      useIRFunc != defIRFunc and
+      message =
+        "Operand '" + operand.toString() + "' is used on instruction '" + useInstr.toString() +
+          "' in function '$@', but is defined on instruction '" + defInstr.toString() +
+          "' in function '$@'."
+    )
   }
 
   /**
    * Holds if instruction `instr` is not in exactly one block.
    */
-  query predicate instructionWithoutUniqueBlock(Instruction instr, int blockCount) {
-    blockCount = count(instr.getBlock()) and
-    blockCount != 1
+  query predicate instructionWithoutUniqueBlock(
+    Instruction instr, string message, OptionalIRFunction irFunc, string irFuncText
+  ) {
+    exists(int blockCount |
+      blockCount = count(instr.getBlock()) and
+      blockCount != 1 and
+      message =
+        "Instruction '" + instr.toString() + "' is a member of " + blockCount.toString() +
+          " blocks in function '$@'." and
+      irFunc = getInstructionIRFunction(instr, irFuncText)
+    )
   }
 
   private predicate forwardEdge(IRBlock b1, IRBlock b2) {
@@ -192,10 +322,11 @@ module InstructionConsistency {
    *
    * This check ensures we don't have too _few_ back edges.
    */
-  query predicate containsLoopOfForwardEdges(IRFunction f) {
+  query predicate containsLoopOfForwardEdges(IRFunction f, string message) {
     exists(IRBlock block |
       forwardEdge+(block, block) and
-      block.getEnclosingIRFunction() = f
+      block.getEnclosingIRFunction() = f and
+      message = "Function contains a loop consisting of only forward edges."
     )
   }
 
@@ -207,12 +338,19 @@ module InstructionConsistency {
    *
    * This check ensures we don't have too _many_ back edges.
    */
-  query predicate lostReachability(IRBlock block) {
+  query predicate lostReachability(
+    IRBlock block, string message, OptionalIRFunction irFunc, string irFuncText
+  ) {
     exists(IRFunction f, IRBlock entry |
       entry = f.getEntryBlock() and
       entry.getASuccessor+() = block and
       not forwardEdge+(entry, block) and
-      not Language::hasGoto(f.getFunction())
+      not Language::hasGoto(f.getFunction()) and
+      message =
+        "Block '" + block.toString() +
+          "' is not reachable by traversing only forward edges in function '$@'." and
+      irFunc = TPresentIRFunction(f) and
+      irFuncText = irFunc.toString()
     )
   }
 
@@ -220,16 +358,22 @@ module InstructionConsistency {
    * Holds if the number of back edges differs between the `Instruction` graph
    * and the `IRBlock` graph.
    */
-  query predicate backEdgeCountMismatch(Language::Function f, int fromInstr, int fromBlock) {
-    fromInstr =
-      count(Instruction i1, Instruction i2 |
-        i1.getEnclosingFunction() = f and i1.getBackEdgeSuccessor(_) = i2
-      ) and
-    fromBlock =
-      count(IRBlock b1, IRBlock b2 |
-        b1.getEnclosingFunction() = f and b1.getBackEdgeSuccessor(_) = b2
-      ) and
-    fromInstr != fromBlock
+  query predicate backEdgeCountMismatch(OptionalIRFunction irFunc, string message) {
+    exists(int fromInstr, int fromBlock |
+      fromInstr =
+        count(Instruction i1, Instruction i2 |
+          getInstructionIRFunction(i1) = irFunc and i1.getBackEdgeSuccessor(_) = i2
+        ) and
+      fromBlock =
+        count(IRBlock b1, IRBlock b2 |
+          getBlockIRFunction(b1) = irFunc and b1.getBackEdgeSuccessor(_) = b2
+        ) and
+      fromInstr != fromBlock and
+      message =
+        "The instruction graph for function '" + irFunc.toString() + "' contains " +
+          fromInstr.toString() + " back edges, but the block graph contains " + fromBlock.toString()
+          + " back edges."
+    )
   }
 
   /**
@@ -251,7 +395,7 @@ module InstructionConsistency {
    * Holds if `useOperand` has a definition that does not dominate the use.
    */
   query predicate useNotDominatedByDefinition(
-    Operand useOperand, string message, IRFunction func, string funcText
+    Operand useOperand, string message, OptionalIRFunction irFunc, string irFuncText
   ) {
     exists(IRBlock useBlock, int useIndex, Instruction defInstr, IRBlock defBlock, int defIndex |
       pointOfEvaluation(useOperand, useBlock, useIndex) and
@@ -272,19 +416,17 @@ module InstructionConsistency {
       message =
         "Operand '" + useOperand.toString() +
           "' is not dominated by its definition in function '$@'." and
-      func = useOperand.getEnclosingIRFunction() and
-      funcText = Language::getIdentityString(func.getFunction())
+      irFunc = getOperandIRFunction(useOperand, irFuncText)
     )
   }
 
   query predicate switchInstructionWithoutDefaultEdge(
-    SwitchInstruction switchInstr, string message, IRFunction func, string funcText
+    SwitchInstruction switchInstr, string message, OptionalIRFunction irFunc, string irFuncText
   ) {
     not exists(switchInstr.getDefaultSuccessor()) and
     message =
       "SwitchInstruction " + switchInstr.toString() + " without a DefaultEdge in function '$@'." and
-    func = switchInstr.getEnclosingIRFunction() and
-    funcText = Language::getIdentityString(func.getFunction())
+    irFunc = getInstructionIRFunction(switchInstr, irFuncText)
   }
 
   /**
@@ -305,18 +447,30 @@ module InstructionConsistency {
     instr.getOpcode() instanceof Opcode::InitializeNonLocal
   }
 
-  query predicate notMarkedAsConflated(Instruction instr) {
+  query predicate notMarkedAsConflated(
+    Instruction instr, string message, OptionalIRFunction irFunc, string irFuncText
+  ) {
     shouldBeConflated(instr) and
-    not instr.isResultConflated()
+    not instr.isResultConflated() and
+    message =
+      "Instruction '" + instr.toString() +
+        "' should be marked as having a conflated result in function '$@'." and
+    irFunc = getInstructionIRFunction(instr, irFuncText)
   }
 
-  query predicate wronglyMarkedAsConflated(Instruction instr) {
+  query predicate wronglyMarkedAsConflated(
+    Instruction instr, string message, OptionalIRFunction irFunc, string irFuncText
+  ) {
     instr.isResultConflated() and
-    not shouldBeConflated(instr)
+    not shouldBeConflated(instr) and
+    message =
+      "Instruction '" + instr.toString() +
+        "' should not be marked as having a conflated result in function '$@'." and
+    irFunc = getInstructionIRFunction(instr, irFuncText)
   }
 
   query predicate invalidOverlap(
-    MemoryOperand useOperand, string message, IRFunction func, string funcText
+    MemoryOperand useOperand, string message, OptionalIRFunction irFunc, string irFuncText
   ) {
     exists(Overlap overlap |
       overlap = useOperand.getDefinitionOverlap() and
@@ -324,8 +478,20 @@ module InstructionConsistency {
       message =
         "MemoryOperand '" + useOperand.toString() + "' has a `getDefinitionOverlap()` of '" +
           overlap.toString() + "'." and
-      func = useOperand.getEnclosingIRFunction() and
-      funcText = Language::getIdentityString(func.getFunction())
+      irFunc = getOperandIRFunction(useOperand, irFuncText)
+    )
+  }
+
+  query predicate nonUniqueEnclosingIRFunction(
+    Instruction instr, string message, OptionalIRFunction irFunc, string irFuncText
+  ) {
+    exists(int irFuncCount |
+      irFuncCount = count(instr.getEnclosingIRFunction()) and
+      irFuncCount != 1 and
+      message =
+        "Instruction '" + instr.toString() + "' has " + irFuncCount.toString() +
+          " results for `getEnclosingIRFunction()` in function '$@'." and
+      irFunc = getInstructionIRFunction(instr, irFuncText)
     )
   }
 }

@@ -36,6 +36,7 @@ class Value extends TObject {
         this != ObjectInternal::undefined()
     }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = this.(ObjectInternal).toString() }
 
     /** Gets a `ControlFlowNode` that refers to this object. */
@@ -73,15 +74,28 @@ class Value extends TObject {
      */
     predicate isBuiltin() { this.(ObjectInternal).isBuiltin() }
 
-    predicate hasLocationInfo(string filepath, int bl, int bc, int el, int ec) {
-        this.(ObjectInternal).getOrigin().getLocation().hasLocationInfo(filepath, bl, bc, el, ec)
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+     */
+    predicate hasLocationInfo(
+        string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+        this
+                .(ObjectInternal)
+                .getOrigin()
+                .getLocation()
+                .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
         or
         not exists(this.(ObjectInternal).getOrigin()) and
         filepath = "" and
-        bl = 0 and
-        bc = 0 and
-        el = 0 and
-        ec = 0
+        startline = 0 and
+        startcolumn = 0 and
+        endline = 0 and
+        endcolumn = 0
     }
 
     /**
@@ -518,7 +532,14 @@ class ClassValue extends Value {
     /** Holds if this class is a container(). That is, does it have a __getitem__ method. */
     predicate isContainer() { exists(this.lookup("__getitem__")) }
 
-    /** Holds if this class is probably a sequence. */
+    /**
+     * Holds if this class is a sequence. Mutually exclusive with `isMapping()`.
+     *
+     * Following the definition from
+     * https://docs.python.org/3/glossary.html#term-sequence.
+     * We don't look at the keys accepted by `__getitem__, but default to treating a class
+     * as a sequence (so might treat some mappings as sequences).
+     */
     predicate isSequence() {
         /*
          * To determine whether something is a sequence or a mapping is not entirely clear,
@@ -539,16 +560,26 @@ class ClassValue extends Value {
         or
         major_version() = 3 and this.getASuperType() = Value::named("collections.abc.Sequence")
         or
-        /* Does it have an index or __reversed__ method? */
-        this.isContainer() and
-        (
-            this.hasAttribute("index") or
-            this.hasAttribute("__reversed__")
-        )
+        this.hasAttribute("__getitem__") and
+        this.hasAttribute("__len__") and
+        not this.getASuperType() = ClassValue::dict() and
+        not this.getASuperType() = Value::named("collections.Mapping") and
+        not this.getASuperType() = Value::named("collections.abc.Mapping")
     }
 
-    /** Holds if this class is a mapping. */
+    /**
+     * Holds if this class is a mapping. Mutually exclusive with `isSequence()`.
+     *
+     * Although a class will satisfy the requirement by the definition in
+     * https://docs.python.org/3.8/glossary.html#term-mapping, we don't look at the keys
+     * accepted by `__getitem__, but default to treating a class as a sequence (so might
+     * treat some mappings as sequences).
+     */
     predicate isMapping() {
+        major_version() = 2 and this.getASuperType() = Value::named("collections.Mapping")
+        or
+        major_version() = 3 and this.getASuperType() = Value::named("collections.abc.Mapping")
+        or
         this.hasAttribute("__getitem__") and
         not this.isSequence()
     }
@@ -633,6 +664,10 @@ class ClassValue extends Value {
  * Note that this does not include other callables such as bound-methods.
  */
 abstract class FunctionValue extends CallableValue {
+    /**
+     * Gets the qualified name for this function.
+     * Should return the same name as the `__qualname__` attribute on functions in Python 3.
+     */
     abstract string getQualifiedName();
 
     /** Gets a longer, more descriptive version of toString() */
@@ -862,6 +897,7 @@ class PropertyValue extends Value {
 
 /** A method-resolution-order sequence of classes */
 class MRO extends TClassList {
+    /** Gets a textual representation of this element. */
     string toString() { result = this.(ClassList).toString() }
 
     /** Gets the `n`th class in this MRO */

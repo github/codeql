@@ -10,6 +10,7 @@ private newtype TDefinition =
 
 /** A definition for the purposes of jump-to-definition. */
 class Definition extends TLocalDefinition {
+    /** Gets a textual representation of this element. */
     string toString() { result = "Definition " + this.getAstNode().getLocation().toString() }
 
     AstNode getAstNode() { this = TLocalDefinition(result) }
@@ -467,8 +468,15 @@ Definition getUniqueDefinition(Expr use) {
 
 /** Helper class to get suitable locations for attributes */
 class NiceLocationExpr extends @py_expr {
+    /** Gets a textual representation of this element. */
     string toString() { result = this.(Expr).toString() }
-
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `bc` of line `bl` to
+     * column `ec` of line `el` in file `f`.
+     * For more information, see
+     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+     */
     predicate hasLocationInfo(string f, int bl, int bc, int el, int ec) {
         /* Attribute location for x.y is that of 'y' so that url does not overlap with that of 'x' */
         exists(int abl, int abc | this.(Attribute).getLocation().hasLocationInfo(f, abl, abc, el, ec) |

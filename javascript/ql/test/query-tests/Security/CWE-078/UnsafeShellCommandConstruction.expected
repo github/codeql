@@ -161,9 +161,6 @@ nodes
 | lib/lib.js:268:22:268:24 | obj |
 | lib/lib.js:268:22:268:32 | obj.version |
 | lib/lib.js:268:22:268:32 | obj.version |
-| lib/lib.js:272:22:272:24 | obj |
-| lib/lib.js:272:22:272:32 | obj.version |
-| lib/lib.js:272:22:272:32 | obj.version |
 | lib/lib.js:276:8:276:11 | opts |
 | lib/lib.js:276:8:276:11 | opts |
 | lib/lib.js:277:23:277:26 | opts |
@@ -173,6 +170,12 @@ nodes
 | lib/lib.js:307:39:307:42 | name |
 | lib/lib.js:308:23:308:26 | name |
 | lib/lib.js:308:23:308:26 | name |
+| lib/lib.js:314:40:314:43 | name |
+| lib/lib.js:314:40:314:43 | name |
+| lib/lib.js:315:22:315:25 | name |
+| lib/lib.js:315:22:315:25 | name |
+| lib/lib.js:320:23:320:26 | name |
+| lib/lib.js:320:23:320:26 | name |
 edges
 | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name |
 | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name |
@@ -367,12 +370,8 @@ edges
 | lib/lib.js:257:35:257:38 | name | lib/lib.js:261:30:261:33 | name |
 | lib/lib.js:267:46:267:48 | obj | lib/lib.js:268:22:268:24 | obj |
 | lib/lib.js:267:46:267:48 | obj | lib/lib.js:268:22:268:24 | obj |
-| lib/lib.js:267:46:267:48 | obj | lib/lib.js:272:22:272:24 | obj |
-| lib/lib.js:267:46:267:48 | obj | lib/lib.js:272:22:272:24 | obj |
 | lib/lib.js:268:22:268:24 | obj | lib/lib.js:268:22:268:32 | obj.version |
 | lib/lib.js:268:22:268:24 | obj | lib/lib.js:268:22:268:32 | obj.version |
-| lib/lib.js:272:22:272:24 | obj | lib/lib.js:272:22:272:32 | obj.version |
-| lib/lib.js:272:22:272:24 | obj | lib/lib.js:272:22:272:32 | obj.version |
 | lib/lib.js:276:8:276:11 | opts | lib/lib.js:277:23:277:26 | opts |
 | lib/lib.js:276:8:276:11 | opts | lib/lib.js:277:23:277:26 | opts |
 | lib/lib.js:277:23:277:26 | opts | lib/lib.js:277:23:277:30 | opts.bla |
@@ -381,6 +380,14 @@ edges
 | lib/lib.js:307:39:307:42 | name | lib/lib.js:308:23:308:26 | name |
 | lib/lib.js:307:39:307:42 | name | lib/lib.js:308:23:308:26 | name |
 | lib/lib.js:307:39:307:42 | name | lib/lib.js:308:23:308:26 | name |
+| lib/lib.js:314:40:314:43 | name | lib/lib.js:315:22:315:25 | name |
+| lib/lib.js:314:40:314:43 | name | lib/lib.js:315:22:315:25 | name |
+| lib/lib.js:314:40:314:43 | name | lib/lib.js:315:22:315:25 | name |
+| lib/lib.js:314:40:314:43 | name | lib/lib.js:315:22:315:25 | name |
+| lib/lib.js:314:40:314:43 | name | lib/lib.js:320:23:320:26 | name |
+| lib/lib.js:314:40:314:43 | name | lib/lib.js:320:23:320:26 | name |
+| lib/lib.js:314:40:314:43 | name | lib/lib.js:320:23:320:26 | name |
+| lib/lib.js:314:40:314:43 | name | lib/lib.js:320:23:320:26 | name |
 #select
 | lib/lib2.js:4:10:4:25 | "rm -rf " + name | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name | $@ based on libary input is later used in $@. | lib/lib2.js:4:10:4:25 | "rm -rf " + name | String concatenation | lib/lib2.js:4:2:4:26 | cp.exec ... + name) | shell command |
 | lib/lib2.js:8:10:8:25 | "rm -rf " + name | lib/lib2.js:7:32:7:35 | name | lib/lib2.js:8:22:8:25 | name | $@ based on libary input is later used in $@. | lib/lib2.js:8:10:8:25 | "rm -rf " + name | String concatenation | lib/lib2.js:8:2:8:26 | cp.exec ... + name) | shell command |
@@ -430,6 +437,7 @@ edges
 | lib/lib.js:258:10:258:25 | "rm -rf " + name | lib/lib.js:257:35:257:38 | name | lib/lib.js:258:22:258:25 | name | $@ based on libary input is later used in $@. | lib/lib.js:258:10:258:25 | "rm -rf " + name | String concatenation | lib/lib.js:258:2:258:26 | cp.exec ... + name) | shell command |
 | lib/lib.js:261:11:261:33 | "rm -rf ...  + name | lib/lib.js:257:35:257:38 | name | lib/lib.js:261:30:261:33 | name | $@ based on libary input is later used in $@. | lib/lib.js:261:11:261:33 | "rm -rf ...  + name | String concatenation | lib/lib.js:261:3:261:34 | cp.exec ... + name) | shell command |
 | lib/lib.js:268:10:268:32 | "rm -rf ... version | lib/lib.js:267:46:267:48 | obj | lib/lib.js:268:22:268:32 | obj.version | $@ based on libary input is later used in $@. | lib/lib.js:268:10:268:32 | "rm -rf ... version | String concatenation | lib/lib.js:268:2:268:33 | cp.exec ... ersion) | shell command |
-| lib/lib.js:272:10:272:32 | "rm -rf ... version | lib/lib.js:267:46:267:48 | obj | lib/lib.js:272:22:272:32 | obj.version | $@ based on libary input is later used in $@. | lib/lib.js:272:10:272:32 | "rm -rf ... version | String concatenation | lib/lib.js:272:2:272:33 | cp.exec ... ersion) | shell command |
 | lib/lib.js:277:11:277:30 | "rm -rf " + opts.bla | lib/lib.js:276:8:276:11 | opts | lib/lib.js:277:23:277:30 | opts.bla | $@ based on libary input is later used in $@. | lib/lib.js:277:11:277:30 | "rm -rf " + opts.bla | String concatenation | lib/lib.js:277:3:277:31 | cp.exec ... ts.bla) | shell command |
 | lib/lib.js:308:11:308:26 | "rm -rf " + name | lib/lib.js:307:39:307:42 | name | lib/lib.js:308:23:308:26 | name | $@ based on libary input is later used in $@. | lib/lib.js:308:11:308:26 | "rm -rf " + name | String concatenation | lib/lib.js:308:3:308:27 | cp.exec ... + name) | shell command |
+| lib/lib.js:315:10:315:25 | "rm -rf " + name | lib/lib.js:314:40:314:43 | name | lib/lib.js:315:22:315:25 | name | $@ based on libary input is later used in $@. | lib/lib.js:315:10:315:25 | "rm -rf " + name | String concatenation | lib/lib.js:315:2:315:26 | cp.exec ... + name) | shell command |
+| lib/lib.js:320:11:320:26 | "rm -rf " + name | lib/lib.js:314:40:314:43 | name | lib/lib.js:320:23:320:26 | name | $@ based on libary input is later used in $@. | lib/lib.js:320:11:320:26 | "rm -rf " + name | String concatenation | lib/lib.js:320:3:320:27 | cp.exec ... + name) | shell command |

@@ -76,3 +76,12 @@ initializers
 | csharp6.cs:77:29:77:56 | { ..., ... } | 1 | csharp6.cs:77:44:77:54 | ... = ... |
 | csharp6.cs:78:30:78:59 | { ..., ... } | 0 | csharp6.cs:78:32:78:43 | ... = ... |
 | csharp6.cs:78:30:78:59 | { ..., ... } | 1 | csharp6.cs:78:46:78:57 | ... = ... |
+initializerType
+| csharp6.cs:68:50:68:91 | { ..., ... } | Dictionary<Int32, String> |
+| csharp6.cs:72:9:79:9 | { ..., ... } | Compound |
+| csharp6.cs:73:31:73:72 | { ..., ... } | Dictionary<Int32, String> |
+| csharp6.cs:74:34:74:76 | { ..., ... } | Dictionary<Int32, String> |
+| csharp6.cs:75:26:75:54 | { ..., ... } | String[] |
+| csharp6.cs:76:27:76:56 | { ..., ... } | String[,] |
+| csharp6.cs:77:29:77:56 | { ..., ... } | String[] |
+| csharp6.cs:78:30:78:59 | { ..., ... } | String[,] |

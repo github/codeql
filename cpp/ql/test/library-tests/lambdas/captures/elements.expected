@@ -32,9 +32,13 @@
 | captures.cpp:3:15:3:15 | definition of operator() |
 | captures.cpp:3:15:3:15 | operator() |
 | captures.cpp:3:15:5:5 | { ... } |
+| captures.cpp:4:7:4:7 | (captured this) |
 | captures.cpp:4:7:4:7 | call to a |
+| captures.cpp:4:7:4:7 | this |
 | captures.cpp:4:7:4:15 | ExprStmt |
 | captures.cpp:4:9:4:13 | ... + ... |
+| captures.cpp:4:9:4:13 | this |
+| captures.cpp:4:9:4:13 | x |
 | captures.cpp:4:13:4:13 | 1 |
 | captures.cpp:5:5:5:5 | return ... |
 | captures.cpp:6:3:6:3 | return ... |
@@ -52,6 +56,8 @@
 | captures.cpp:9:5:9:5 | definition of operator= |
 | captures.cpp:9:5:9:5 | operator= |
 | captures.cpp:9:5:11:5 | [...](...){...} |
+| captures.cpp:9:5:11:5 | this |
+| captures.cpp:9:5:11:5 | x |
 | captures.cpp:9:5:11:5 | {...} |
 | captures.cpp:9:5:11:6 | ExprStmt |
 | captures.cpp:9:9:9:9 | definition of operator() |
@@ -59,13 +65,17 @@
 | captures.cpp:9:9:11:5 | { ... } |
 | captures.cpp:10:7:10:7 | (captured this) |
 | captures.cpp:10:7:10:7 | (captured this) |
+| captures.cpp:10:7:10:7 | (captured this) |
 | captures.cpp:10:7:10:7 | call to b |
 | captures.cpp:10:7:10:7 | definition of (captured this) |
+| captures.cpp:10:7:10:7 | this |
 | captures.cpp:10:7:10:15 | ExprStmt |
 | captures.cpp:10:9:10:9 | definition of x |
 | captures.cpp:10:9:10:9 | x |
 | captures.cpp:10:9:10:9 | x |
 | captures.cpp:10:9:10:13 | ... + ... |
+| captures.cpp:10:9:10:13 | this |
+| captures.cpp:10:9:10:13 | x |
 | captures.cpp:10:13:10:13 | 1 |
 | captures.cpp:11:5:11:5 | return ... |
 | captures.cpp:12:3:12:3 | return ... |
@@ -110,6 +120,7 @@
 | captures.cpp:22:8:22:15 | myLambda |
 | captures.cpp:22:18:24:3 | [...](...){...} |
 | captures.cpp:22:18:24:3 | initializer for myLambda |
+| captures.cpp:22:18:24:3 | y |
 | captures.cpp:22:18:24:3 | {...} |
 | captures.cpp:22:19:22:19 | (constructor) |
 | captures.cpp:22:19:22:19 | (constructor) |
@@ -136,6 +147,10 @@
 | captures.cpp:22:40:24:3 | { ... } |
 | captures.cpp:23:5:23:21 | return ... |
 | captures.cpp:23:12:23:16 | ... + ... |
+| captures.cpp:23:12:23:16 | this |
+| captures.cpp:23:12:23:16 | this |
+| captures.cpp:23:12:23:16 | x |
+| captures.cpp:23:12:23:16 | y |
 | captures.cpp:23:12:23:20 | ... + ... |
 | captures.cpp:23:16:23:16 | (reference dereference) |
 | captures.cpp:23:16:23:16 | definition of y |
@@ -191,8 +206,6 @@
 | end_pos.cpp:10:16:10:16 | 1 |
 | end_pos.cpp:12:1:12:1 | return ... |
 | file://:0:0:0:0 |  |
-| file://:0:0:0:0 | (captured this) |
-| file://:0:0:0:0 | (captured this) |
 | file://:0:0:0:0 | (global namespace) |
 | file://:0:0:0:0 | (reference to) |
 | file://:0:0:0:0 | ..()(..) |
@@ -218,8 +231,10 @@
 | file://:0:0:0:0 | const lambda [] type at line 9, col. 5 * |
 | file://:0:0:0:0 | const lambda [] type at line 9, col. 15 |
 | file://:0:0:0:0 | const lambda [] type at line 9, col. 15 & |
+| file://:0:0:0:0 | const lambda [] type at line 9, col. 15 * |
 | file://:0:0:0:0 | const lambda [] type at line 15, col. 5 |
 | file://:0:0:0:0 | const lambda [] type at line 15, col. 5 & |
+| file://:0:0:0:0 | const lambda [] type at line 15, col. 5 * |
 | file://:0:0:0:0 | const lambda [] type at line 22, col. 19 |
 | file://:0:0:0:0 | const lambda [] type at line 22, col. 19 & |
 | file://:0:0:0:0 | const lambda [] type at line 22, col. 19 * |
@@ -264,8 +279,10 @@
 | file://:0:0:0:0 | lambda [] type at line 9, col. 5 * |
 | file://:0:0:0:0 | lambda [] type at line 9, col. 15 & |
 | file://:0:0:0:0 | lambda [] type at line 9, col. 15 && |
+| file://:0:0:0:0 | lambda [] type at line 9, col. 15 * |
 | file://:0:0:0:0 | lambda [] type at line 15, col. 5 & |
 | file://:0:0:0:0 | lambda [] type at line 15, col. 5 && |
+| file://:0:0:0:0 | lambda [] type at line 15, col. 5 * |
 | file://:0:0:0:0 | lambda [] type at line 22, col. 19 & |
 | file://:0:0:0:0 | lambda [] type at line 22, col. 19 && |
 | file://:0:0:0:0 | lambda [] type at line 22, col. 19 * |
@@ -292,17 +309,4 @@
 | file://:0:0:0:0 | p#0 |
 | file://:0:0:0:0 | p#0 |
 | file://:0:0:0:0 | reg_save_area |
-| file://:0:0:0:0 | this |
-| file://:0:0:0:0 | this |
-| file://:0:0:0:0 | this |
-| file://:0:0:0:0 | this |
-| file://:0:0:0:0 | this |
-| file://:0:0:0:0 | this |
-| file://:0:0:0:0 | this |
 | file://:0:0:0:0 | void * |
-| file://:0:0:0:0 | x |
-| file://:0:0:0:0 | x |
-| file://:0:0:0:0 | x |
-| file://:0:0:0:0 | x |
-| file://:0:0:0:0 | y |
-| file://:0:0:0:0 | y |
