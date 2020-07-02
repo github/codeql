@@ -1360,8 +1360,7 @@ expr_cond_guard(
 
 /**
  * The expression used when the guard of `@conditionalexpr`
- * `guard ? true : false` holds. For the two operand form
- * `guard ?: false` consider using `expr_cond_guard` instead.
+ * `guard ? true : false` holds.
  */
 expr_cond_true(
     unique int cond: @conditionalexpr ref,
