@@ -418,3 +418,14 @@ function test() {
   $('myId').html(target.taint9); // OK
 }
 
+function hash2() {
+  var payload = window.location.hash.substr(1);
+  document.write(payload); // NOT OK
+
+  let match = window.location.hash.match(/hello (\w+)/);
+  if (match) {
+    document.write(match[1]); // NOT OK
+  }
+
+  document.write(window.location.hash.split('#')[1]); // NOT OK
+}
