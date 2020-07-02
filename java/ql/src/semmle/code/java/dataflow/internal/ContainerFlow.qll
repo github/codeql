@@ -218,10 +218,17 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
  */
 private predicate argToArgStep(Expr tracked, Expr sink) {
   exists(MethodAccess ma, Method method, int input, int output |
-    taintPreservingArgToArg(method, input, output) and
     ma.getMethod() = method and
     ma.getArgument(input) = tracked and
-    ma.getArgument(output) = sink
+    ma.getArgument(output) = sink and
+    (
+      taintPreservingArgToArg(method, input, output)
+      or
+      method.getDeclaringType().hasQualifiedName("java.util", "Collections") and
+      method.hasName("addAll") and
+      input >= 1 and
+      output = 0
+    )
   )
 }
 
