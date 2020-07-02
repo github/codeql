@@ -19,7 +19,7 @@ type d struct {
 	f string
 }
 
-func test2() int {
+func test2() {
 	x := a{b{0}, c{d{"hi"}}}
 	fmt.Printf("%v", x.f) // prints `0`, not `"hi"`
 }

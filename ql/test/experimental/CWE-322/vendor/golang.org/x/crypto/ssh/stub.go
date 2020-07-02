@@ -9,6 +9,7 @@ package ssh
 
 import (
 	io "io"
+	net "net"
 	time "time"
 )
 
@@ -39,7 +40,7 @@ type Config struct {
 
 func (_ *Config) SetDefaults() {}
 
-type HostKeyCallback func(string, Addr, PublicKey) error
+type HostKeyCallback func(string, net.Addr, PublicKey) error
 
 func InsecureIgnoreHostKey() HostKeyCallback {
 	return nil
