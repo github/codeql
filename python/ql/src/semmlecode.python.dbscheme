@@ -6,7 +6,14 @@
  */
 
 /* This is a dummy line to alter the dbscheme, so we can make a database upgrade
- * 2020-05-04
+ * without actually changing any of the dbscheme predicates. It contains a date
+ * to allow for such updates in the future as well.
+ *
+ * 2020-07-02
+ *
+ * DO NOT remove this comment carelessly, since it can revert the dbscheme back to a
+ * previously seen state (matching a previously seen SHA), which would make the upgrade
+ * mechanism not work properly.
  */
 
  /*
