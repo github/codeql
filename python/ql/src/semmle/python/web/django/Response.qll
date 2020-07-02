@@ -21,11 +21,7 @@ private class DjangoResponseKind extends TaintKind {
 
 /** INTERNAL taint-source used for tracking a django response object. */
 private class DjangoResponseSource extends TaintSource {
-    DjangoResponseSource() {
-        exists(DjangoContentResponseClass cls |
-            cls.getACall() = this
-        )
-    }
+    DjangoResponseSource() { exists(DjangoContentResponseClass cls | cls.getACall() = this) }
 
     override predicate isSourceOf(TaintKind kind) { kind instanceof DjangoResponseKind }
 

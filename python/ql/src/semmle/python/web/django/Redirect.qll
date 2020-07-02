@@ -29,9 +29,7 @@ deprecated class DjangoRedirect = DjangoShortcutsRedirectSink;
  */
 class DjangoRedirectResponseSink extends HttpRedirectTaintSink {
     DjangoRedirectResponseSink() {
-        exists(CallNode call |
-            call = any(DjangoRedirectResponseClass cls).getACall()
-        |
+        exists(CallNode call | call = any(DjangoRedirectResponseClass cls).getACall() |
             this = call.getArg(0)
             or
             this = call.getArgByName("redirect_to")

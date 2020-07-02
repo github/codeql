@@ -51,7 +51,6 @@ class DjangoContentResponseClass extends ClassValue {
     // `django.http.response.HttpResponseNotAllowed` it would make much more sense to add
     // the custom logic in this class (or subclass), than to handle all of it in the sink
     // definition.
-
     /** Gets the `content` argument of a `call` to the constructor */
     ControlFlowNode getContentArg(CallNode call) { none() }
 
@@ -60,7 +59,7 @@ class DjangoContentResponseClass extends ClassValue {
 }
 
 /** A class that is a Django Response, and is vulnerable to XSS. */
-class DjangoXSSVulnerableResponseClass extends DjangoContentResponseClass{
+class DjangoXSSVulnerableResponseClass extends DjangoContentResponseClass {
     DjangoXSSVulnerableResponseClass() {
         // We want to avoid FPs on subclasses that are not exposed to XSS, for example `JsonResponse`.
         // The easiest way is to disregard any subclass that has a special `__init__` method.
