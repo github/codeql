@@ -23,6 +23,18 @@ abstract class NodeImpl extends Node {
   /** Do not call: use `getType()` instead. */
   abstract DotNet::Type getTypeImpl();
 
+  /** Gets the type of this node used for type pruning. */
+  cached
+  DataFlowType getDataFlowType() {
+    Stages::DataFlowStage::forceCachingInSameStage() and
+    exists(Type t0 | result = Gvn::getGlobalValueNumber(t0) |
+      t0 = getCSharpType(this.getType())
+      or
+      not exists(getCSharpType(this.getType())) and
+      t0 instanceof ObjectType
+    )
+  }
+
   /** Do not call: use `getControlFlowNode()` instead. */
   abstract ControlFlow::Node getControlFlowNodeImpl();
 
@@ -373,7 +385,7 @@ private predicate fieldOrPropertyRead(Expr e1, Content c, FieldOrPropertyRead e2
   )
 }
 
-Type getCSharpType(DotNet::Type t) {
+private Type getCSharpType(DotNet::Type t) {
   result = t
   or
   result.matchesHandle(t)
@@ -1406,7 +1418,7 @@ class LibraryCodeNode extends NodeImpl, TLibraryCodeNode {
    * Gets the predecessor of this library-code node. The head of `ap` describes
    * the content that is read from when entering this node (if any).
    */
-  Node getPredecessor(AccessPath ap) {
+  NodeImpl getPredecessor(AccessPath ap) {
     ap = sourceAp and
     (
       // The source is either an argument or a qualifier, for example
@@ -1430,7 +1442,7 @@ class LibraryCodeNode extends NodeImpl, TLibraryCodeNode {
    * Gets the successor of this library-code node. The head of `ap` describes
    * the content that is stored into when leaving this node (if any).
    */
-  Node getSuccessor(AccessPath ap) {
+  NodeImpl getSuccessor(AccessPath ap) {
     ap = sinkAp and
     (
       exists(LibraryFlow::LibrarySinkConfiguration x, Call call, ExprNode e |
@@ -1482,10 +1494,10 @@ class LibraryCodeNode extends NodeImpl, TLibraryCodeNode {
 
   override Callable getEnclosingCallableImpl() { result = callCfn.getEnclosingCallable() }
 
-  override DataFlowType getTypeBound() {
+  override DataFlowType getDataFlowType() {
     preservesValue = true and
     sourceAp = AccessPath::empty() and
-    result = this.getPredecessor(_).getTypeBound()
+    result = this.getPredecessor(_).getDataFlowType()
     or
     exists(FieldOrProperty f |
       sourceAp.getHead() = f.getContent() and
@@ -1493,7 +1505,7 @@ class LibraryCodeNode extends NodeImpl, TLibraryCodeNode {
     )
     or
     preservesValue = false and
-    result = this.getSuccessor(_).getTypeBound()
+    result = this.getSuccessor(_).getDataFlowType()
   }
 
   override DotNet::Type getTypeImpl() { none() }
@@ -1617,7 +1629,10 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
 
 predicate readStep = readStepImpl/3;
 
-/** Gets a string representation of a type returned by `getErasedRepr`. */
+/** Gets the type of `n` used for type pruning. */
+DataFlowType getNodeType(NodeImpl n) { result = n.getDataFlowType() }
+
+/** Gets a string representation of a `DataFlowType`. */
 string ppReprType(DataFlowType t) { result = t.toString() }
 
 private class DataFlowNullType extends DataFlowType {
@@ -1793,9 +1808,6 @@ int accessPathLimit() { result = 3 }
  * This predicate is only used for consistency checks.
  */
 predicate isImmutableOrUnobservable(Node n) { none() }
-
-pragma[inline]
-DataFlowType getErasedRepr(DataFlowType t) { result = t }
 
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) {

@@ -195,6 +195,7 @@ private newtype TIterationDefinition =
  * A definition of a variable in a for loop `for v in ...:`
  */
 deprecated class IterationDefinition extends TIterationDefinition {
+    /** Gets a textual representation of this element. */
     string toString() { result = "IterationDefinition" }
 
     ControlFlowNode getSequence() { this = TIterationDefinition_(_, _, result) }

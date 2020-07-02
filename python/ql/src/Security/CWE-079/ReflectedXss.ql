@@ -28,7 +28,12 @@ class ReflectedXssConfiguration extends TaintTracking::Configuration {
         source instanceof HttpRequestTaintSource
     }
 
-    override predicate isSink(TaintTracking::Sink sink) { sink instanceof HttpResponseTaintSink }
+    override predicate isSink(TaintTracking::Sink sink) {
+        sink instanceof HttpResponseTaintSink and
+        not sink instanceof DjangoResponseContent
+        or
+        sink instanceof DjangoResponseContentXSSVulnerable
+    }
 }
 
 from ReflectedXssConfiguration config, TaintedPathSource src, TaintedPathSink sink

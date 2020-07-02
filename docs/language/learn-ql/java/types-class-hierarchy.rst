@@ -141,7 +141,7 @@ Using these new classes we can extend our query to exclude calls to ``toArray`` 
        not ce.getExpr().(CollectionToArrayCall).getActualReturnType() = target
    select ce, "Potentially problematic array downcast."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/668700471/>`__. Notice that fewer results are found by this improved query.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/3150404889854131463/>`__. Notice that fewer results are found by this improved query.
 
 Example: Finding mismatched contains checks
 -------------------------------------------

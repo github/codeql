@@ -15,6 +15,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -27,6 +28,7 @@ import com.semmle.js.extractor.DependencyInstallationResult;
 import com.semmle.js.extractor.ExtractorState;
 import com.semmle.js.extractor.FileExtractor;
 import com.semmle.js.extractor.FileExtractor.FileType;
+import com.semmle.js.extractor.VirtualSourceRoot;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.exception.UserError;
 import com.semmle.util.files.FileUtil;
@@ -109,11 +111,12 @@ public class AutoBuildTests {
       Set<String> actual = new LinkedHashSet<>();
       new AutoBuild() {
         @Override
-        protected void extract(FileExtractor extractor, Path file, ExtractorState state) {
+        protected CompletableFuture<?> extract(FileExtractor extractor, Path file, boolean concurrent) {
           String extracted = file.toString();
           if (extractor.getConfig().hasFileType())
             extracted += ":" + extractor.getFileType(file.toFile());
           actual.add(extracted);
+          return CompletableFuture.completedFuture(null);
         }
 
         @Override
@@ -123,8 +126,7 @@ public class AutoBuildTests {
         public void extractTypeScriptFiles(
             java.util.List<Path> files,
             java.util.Set<Path> extractedFiles,
-            FileExtractor extractor,
-            ExtractorState extractorState) {
+            FileExtractors extractors) {
           for (Path f : files) {
             actual.add(f.toString());
           }
@@ -134,6 +136,11 @@ public class AutoBuildTests {
         protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> filesToExtract) {
           // currently disabled in tests
           return DependencyInstallationResult.empty;
+        }
+
+        @Override
+        protected VirtualSourceRoot makeVirtualSourceRoot() {
+          return VirtualSourceRoot.none; // not used in these tests
         }
 
         @Override

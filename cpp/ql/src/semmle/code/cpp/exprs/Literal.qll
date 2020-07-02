@@ -1,3 +1,8 @@
+/**
+ * Provides classes for modeling literals in the source code such as `0`, `'c'`
+ * or `"string"`.
+ */
+
 import semmle.code.cpp.exprs.Expr
 
 /**

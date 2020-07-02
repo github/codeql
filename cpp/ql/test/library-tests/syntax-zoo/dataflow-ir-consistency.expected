@@ -1,6 +1,5 @@
 uniqueEnclosingCallable
-uniqueTypeBound
-uniqueTypeRepr
+uniqueType
 uniqueNodeLocation
 | aggregateinitializer.c:1:6:1:6 | AliasedDefinition | Node should have one location but has 20. |
 | aggregateinitializer.c:1:6:1:6 | AliasedUse | Node should have one location but has 20. |

@@ -7,6 +7,7 @@ class Expr extends Expr_, AstNode {
     /** Gets the scope of this expression */
     override Scope getScope() { py_scopes(this, result) }
 
+    /** Gets a textual representation of this element. */
     override string toString() { result = "Expression" }
 
     /** Gets the module in which this expression occurs */
