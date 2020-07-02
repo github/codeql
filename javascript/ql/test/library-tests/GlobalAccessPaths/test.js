@@ -62,3 +62,10 @@ function dominatingWrite() {
   var foo = (obj.prop5 = 2, obj.prop5); // yes
   var bar = (obj.prop6, obj.prop6 = 3); // no
 }
+
+(function(){
+	var v1 = Object.freeze(foo.bar).baz; // foo.baz.baz
+	var v2 = Object.seal(foo.bar).baz; // foo.baz.baz
+	let O = Object;
+	var v3 = O.seal(foo.bar).baz; // not recognized
+});
