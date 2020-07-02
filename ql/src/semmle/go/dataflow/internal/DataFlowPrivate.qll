@@ -148,16 +148,10 @@ predicate clearsContent(Node n, Content c) {
   none() // stub implementation
 }
 
-/**
- * Gets a representative (boxed) type for `t` for the purpose of pruning
- * possible flow. A single type is used for all numeric types to account for
- * numeric conversions, and otherwise the erasure is used.
- */
-DataFlowType getErasedRepr(Type t) {
-  result = t // stub implementation
-}
+/** Gets the type of `n` used for type pruning. */
+DataFlowType getNodeType(Node n) { result = n.getType() }
 
-/** Gets a string representation of a type returned by `getErasedRepr`. */
+/** Gets a string representation of a type returned by `getNodeType()`. */
 string ppReprType(Type t) { result = t.toString() }
 
 /**

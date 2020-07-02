@@ -97,28 +97,13 @@ DataFlowCallable viableCallable(CallExpr ma) {
 }
 
 /**
- * Holds if the call context `ctx` reduces the set of viable dispatch
- * targets of `ma` in `c`.
+ * Holds if the set of viable implementations that can be called by `call`
+ * might be improved by knowing the call context.
  */
-predicate reducedViableImplInCallContext(DataFlowCall ma, DataFlowCallable c, DataFlowCall ctx) {
-  none()
-}
+predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable f) { none() }
 
 /**
- * Gets a viable dispatch target of `ma` in the context `ctx`. This is
- * restricted to those `ma`s for which the context makes a difference.
+ * Gets a viable dispatch target of `call` in the context `ctx`. This is
+ * restricted to those `call`s for which a context might make a difference.
  */
-DataFlowCallable prunedViableImplInCallContext(DataFlowCall ma, DataFlowCall ctx) { none() }
-
-/**
- * Holds if flow returning from `m` to `ma` might return further and if
- * this path restricts the set of call sites that can be returned to.
- */
-predicate reducedViableImplInReturn(DataFlowCallable m, DataFlowCall ma) { none() }
-
-/**
- * Gets a viable dispatch target of `ma` in the context `ctx`. This is
- * restricted to those `ma`s and results for which the return flow from the
- * result to `ma` restricts the possible context `ctx`.
- */
-DataFlowCallable prunedViableImplInCallContextReverse(DataFlowCall ma, DataFlowCall ctx) { none() }
+DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
