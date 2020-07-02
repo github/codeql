@@ -164,6 +164,8 @@ class IRGeneratedVariable extends IRVariable {
   override string getUniqueId() { none() }
 
   /**
+   * INTERNAL: Do not use.
+   *
    * Gets a string containing the source code location of the AST that generated this variable.
    *
    * This is used by debugging and printing code only.
@@ -175,6 +177,8 @@ class IRGeneratedVariable extends IRVariable {
   }
 
   /**
+   * INTERNAL: Do not use.
+   *
    * Gets the string that is combined with the location of the variable to generate the string
    * representation of this variable.
    *

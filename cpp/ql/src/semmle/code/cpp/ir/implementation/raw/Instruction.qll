@@ -1989,7 +1989,7 @@ class BuiltInOperationInstruction extends Instruction {
   }
 
   /**
-   * Gets the language-specific `BuildInOperation` object that specifies the operation that is
+   * Gets the language-specific `BuiltInOperation` object that specifies the operation that is
    * performed by this instruction.
    */
   final Language::BuiltInOperation getBuiltInOperation() { result = operation }
