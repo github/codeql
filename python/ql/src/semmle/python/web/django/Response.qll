@@ -4,6 +4,16 @@ import semmle.python.security.strings.Basic
 private import semmle.python.web.django.Shared
 private import semmle.python.web.Http
 
+/**
+ * DEPRECATED: This class is internal to the django library modeling, and should
+ * never be used by anyone.
+ *
+ * A django.http.response.Response object
+ * This isn't really a "taint", but we use the value tracking machinery to
+ * track the flow of response objects.
+ */
+deprecated class DjangoResponse = DjangoResponseKind;
+
 /** INTERNAL class used for tracking a django response object. */
 private class DjangoResponseKind extends TaintKind {
     DjangoResponseKind() { this = "django.response.HttpResponse" }

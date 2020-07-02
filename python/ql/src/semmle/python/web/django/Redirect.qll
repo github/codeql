@@ -21,6 +21,9 @@ class DjangoShortcutsRedirectSink extends HttpRedirectTaintSink {
     }
 }
 
+/** DEPRECATED: Use `DjangoShortcutsRedirectSink` instead. */
+deprecated class DjangoRedirect = DjangoShortcutsRedirectSink;
+
 /**
  * The URL argument when instantiating a Django Redirect Response.
  */
