@@ -180,6 +180,12 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
     or
     method.hasName(["nCopies", "singletonMap"]) and arg = 1
   )
+  or
+  method.getDeclaringType().hasQualifiedName("java.util", "Arrays") and
+  (
+    method.hasName(["copyOf", "copyOfRange", "deepToString", "spliterator", "stream", "toString"]) and
+    arg = 0
+  )
 }
 
 /**
@@ -194,6 +200,13 @@ private predicate taintPreservingArgToArg(Method method, int input, int output) 
     output = 0
     or
     method.hasName("replaceAll") and input = 2 and output = 0
+  )
+  or
+  method.getDeclaringType().hasQualifiedName("java.util", "Arrays") and
+  (
+    method.hasName(["fill", "parallelPrefix", "parallelSetAll", "setAll"]) and
+    output = 0 and
+    input = method.getNumberOfParameters() - 1
   )
 }
 
