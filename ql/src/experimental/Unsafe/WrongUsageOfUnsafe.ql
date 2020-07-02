@@ -13,7 +13,18 @@
 import go
 import DataFlow::PathGraph
 
+/*
+ * Returns the type after all aliases, named types, and pointer
+ * types have been replaced with the actual underlying type.
+ */
+
 Type getFinalType(Type typ) { result = getBaseType*(typ.getUnderlyingType()).getUnderlyingType() }
+
+/*
+ * Returns the base type of a PointerType;
+ * if the provided type is not a pointer,
+ * then the original type is returned.
+ */
 
 Type getBaseType(Type typ) {
   result = getBaseType*(typ.(PointerType).getBaseType*())
@@ -80,9 +91,9 @@ predicate castShortArrayToLongerArray(
         // Calculate the size of the `arrFrom`:
         arrFromSize = arrFrom.getLength() - indexExpr.getIndex().getIntValue() and
         message =
-          "Dangerous array type casting to " + arrTo.pp() + " from an index expression " +
-            arrFrom.pp() + "[" + indexExpr.getIndex().getIntValue() + "]" + " (overflowing by " +
-            (arrTo.getLength() - arrFromSize) + " bytes)"
+          "Dangerous array type casting to " + arrTo.pp() + " from an index expression (" +
+            arrFrom.pp() + ")[" + indexExpr.getIndex().getIntValue() + "]" +
+            " (the destination type is " + (arrTo.getLength() - arrFromSize) + " elements longer)"
       )
     ) and
     arrTo.getLength() > arrFromSize
