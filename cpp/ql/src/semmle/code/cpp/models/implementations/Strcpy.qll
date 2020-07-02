@@ -1,5 +1,5 @@
 /**
- * Provides implementation classes modelling `strcpy` and various similar
+ * Provides implementation classes modeling `strcpy` and various similar
  * functions. See `semmle.code.cpp.models.Models` for usage information.
  */
 
