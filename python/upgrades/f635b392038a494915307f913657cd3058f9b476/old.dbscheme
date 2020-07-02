@@ -5,17 +5,6 @@
  *      by adding rules to dbscheme.template
  */
 
-/* This is a dummy line to alter the dbscheme, so we can make a database upgrade
- * without actually changing any of the dbscheme predicates. It contains a date
- * to allow for such updates in the future as well.
- *
- * 2020-07-02
- *
- * DO NOT remove this comment carelessly, since it can revert the dbscheme back to a
- * previously seen state (matching a previously seen SHA), which would make the upgrade
- * mechanism not work properly.
- */
-
  /*
  * External artifacts
  */
@@ -137,7 +126,7 @@ containerparent(int parent: @container ref,
                 unique int child: @container ref);
 
 @sourceline = @file | @py_Module | @xmllocatable;
-
+ 
 numlines(int element_id: @sourceline ref,
          int num_lines: int ref,
          int num_code: int ref,
@@ -933,7 +922,7 @@ ext_rettype(int funcid : @py_object ref,
 ext_proptype(int propid : @py_object ref,
              int typeid : @py_object ref);
 
-ext_argreturn(int funcid : @py_object ref,
+ext_argreturn(int funcid : @py_object ref, 
               int arg : int ref);
 
 py_special_objects(unique int obj : @py_cobject ref,
@@ -946,7 +935,7 @@ py_decorated_object(int object : @py_object ref,
 
 @py_source_element = @py_ast_node | @container;
 
-/* XML Files */
+/* XML Files */ 
 
 xmlEncoding  (unique int id: @file ref, varchar(900) encoding: string ref);
 
@@ -954,7 +943,7 @@ xmlDTDs       (unique int id: @xmldtd,
               varchar(900) root: string ref,
               varchar(900) publicId: string ref,
               varchar(900) systemId: string ref,
-              int fileid: @file ref);
+              int fileid: @file ref); 
 
 xmlElements   (unique int id: @xmlelement,
               varchar(900) name: string ref,
@@ -969,7 +958,7 @@ xmlAttrs      (unique int id: @xmlattribute,
               int idx: int ref,
               int fileid: @file ref);
 
-xmlNs         (int id: @xmlnamespace,
+xmlNs         (int id: @xmlnamespace, 
               varchar(900) prefixName: string ref,
               varchar(900) URI: string ref,
               int fileid: @file ref);
@@ -981,7 +970,7 @@ xmlHasNs      (int elementId: @xmlnamespaceable ref,
 xmlComments   (unique int id: @xmlcomment,
               varchar(3600) text: string ref,
               int parentid: @xmlparent ref,
-              int fileid: @file ref);
+              int fileid: @file ref); 
 
 xmlChars      (unique int id: @xmlcharacters,
               varchar(3600) text: string ref,

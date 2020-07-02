@@ -1310,13 +1310,13 @@ library class AliasList_ extends @py_alias_list {
 
 /** INTERNAL: See the class `Arguments` for further information. */
 library class Arguments_ extends @py_arguments {
-    /** Gets the keyword default values of this parameters definition. */
+    /** Gets the keyword-only default values of this parameters definition. */
     ExprList getKwDefaults() { py_expr_lists(result, this, 0) }
 
-    /** Gets the nth keyword default value of this parameters definition. */
+    /** Gets the nth keyword-only default value of this parameters definition. */
     Expr getKwDefault(int index) { result = this.getKwDefaults().getItem(index) }
 
-    /** Gets a keyword default value of this parameters definition. */
+    /** Gets a keyword-only default value of this parameters definition. */
     Expr getAKwDefault() { result = this.getKwDefaults().getAnItem() }
 
     /** Gets the default values of this parameters definition. */
@@ -1343,13 +1343,13 @@ library class Arguments_ extends @py_arguments {
     /** Gets the **kwarg annotation of this parameters definition. */
     Expr getKwargannotation() { py_exprs(result, _, this, 4) }
 
-    /** Gets the kw_annotations of this parameters definition. */
+    /** Gets the keyword-only annotations of this parameters definition. */
     ExprList getKwAnnotations() { py_expr_lists(result, this, 5) }
 
-    /** Gets the nth kw_annotation of this parameters definition. */
+    /** Gets the nth keyword-only annotation of this parameters definition. */
     Expr getKwAnnotation(int index) { result = this.getKwAnnotations().getItem(index) }
 
-    /** Gets a kw_annotation of this parameters definition. */
+    /** Gets a keyword-only annotation of this parameters definition. */
     Expr getAKwAnnotation() { result = this.getKwAnnotations().getAnItem() }
 
     ArgumentsParent getParent() { py_arguments(this, result) }

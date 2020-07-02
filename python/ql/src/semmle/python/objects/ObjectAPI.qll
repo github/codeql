@@ -438,6 +438,7 @@ class CallableValue extends Value {
             exists(int n |
                 call.getArg(n) = result and
                 this.getParameter(n + offset).getId() = name
+                // TODO: and not positional only argument (Python 3.8+)
             )
             or
             called instanceof BoundMethodObjectInternal and
