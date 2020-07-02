@@ -1557,7 +1557,7 @@ private string getConcatenatedString(Expr add) {
     exists(getConstantString(leaf))
   ) and
   result =
-    concat(Expr leaf |
+    strictconcat(Expr leaf |
       leaf = getAnAddOperand*(add)
     |
       getConstantString(leaf) order by leaf.getFirstToken().getIndex()
