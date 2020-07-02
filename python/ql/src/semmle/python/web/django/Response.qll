@@ -65,7 +65,7 @@ class DjangoResponseContentXSSVulnerable extends DjangoResponseContent {
         or
         exists(StringValue s |
             cls.getContentTypeArg(call).pointsTo(s) and
-            s.getText().indexOf("text/html") = 0
+            s.getText().matches("text/html%")
         )
     }
 }
