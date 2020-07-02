@@ -477,6 +477,7 @@ dominance
 | CompileTimeOperators.cs:40:14:40:37 | call to method WriteLine | CompileTimeOperators.cs:28:10:28:10 | exit M |
 | CompileTimeOperators.cs:40:14:40:38 | ...; | CompileTimeOperators.cs:40:32:40:36 | "End" |
 | CompileTimeOperators.cs:40:32:40:36 | "End" | CompileTimeOperators.cs:40:14:40:37 | call to method WriteLine |
+| ConditionalAccess.cs:1:7:1:23 | enter ConditionalAccess | ConditionalAccess.cs:30:32:30:32 | 0 |
 | ConditionalAccess.cs:3:12:3:13 | enter M1 | ConditionalAccess.cs:3:26:3:26 | access to parameter i |
 | ConditionalAccess.cs:3:26:3:26 | access to parameter i | ConditionalAccess.cs:3:12:3:13 | exit M1 |
 | ConditionalAccess.cs:3:26:3:26 | access to parameter i | ConditionalAccess.cs:3:28:3:38 | call to method ToString |
@@ -523,12 +524,26 @@ dominance
 | ConditionalAccess.cs:25:13:25:14 | "" | ConditionalAccess.cs:25:31:25:31 | access to local variable s |
 | ConditionalAccess.cs:25:16:25:32 | call to method CommaJoinWith | ConditionalAccess.cs:25:9:25:32 | ... = ... |
 | ConditionalAccess.cs:25:31:25:31 | access to local variable s | ConditionalAccess.cs:25:16:25:32 | call to method CommaJoinWith |
-| ConditionalAccess.cs:31:26:31:38 | enter CommaJoinWith | ConditionalAccess.cs:31:70:31:71 | access to parameter s1 |
-| ConditionalAccess.cs:31:70:31:71 | access to parameter s1 | ConditionalAccess.cs:31:75:31:78 | ", " |
-| ConditionalAccess.cs:31:70:31:78 | ... + ... | ConditionalAccess.cs:31:82:31:83 | access to parameter s2 |
-| ConditionalAccess.cs:31:70:31:83 | ... + ... | ConditionalAccess.cs:31:26:31:38 | exit CommaJoinWith |
-| ConditionalAccess.cs:31:75:31:78 | ", " | ConditionalAccess.cs:31:70:31:78 | ... + ... |
-| ConditionalAccess.cs:31:82:31:83 | access to parameter s2 | ConditionalAccess.cs:31:70:31:83 | ... + ... |
+| ConditionalAccess.cs:30:10:30:12 | enter Out | ConditionalAccess.cs:30:32:30:32 | 0 |
+| ConditionalAccess.cs:30:28:30:32 | ... = ... | ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess |
+| ConditionalAccess.cs:30:28:30:32 | ... = ... | ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess |
+| ConditionalAccess.cs:30:28:30:32 | ... = ... | ConditionalAccess.cs:30:10:30:12 | exit Out |
+| ConditionalAccess.cs:30:32:30:32 | 0 | ConditionalAccess.cs:30:28:30:32 | ... = ... |
+| ConditionalAccess.cs:30:32:30:32 | 0 | ConditionalAccess.cs:30:28:30:32 | ... = ... |
+| ConditionalAccess.cs:32:10:32:11 | enter M8 | ConditionalAccess.cs:33:5:36:5 | {...} |
+| ConditionalAccess.cs:33:5:36:5 | {...} | ConditionalAccess.cs:34:9:34:14 | ...; |
+| ConditionalAccess.cs:34:9:34:13 | ... = ... | ConditionalAccess.cs:35:9:35:25 | ...; |
+| ConditionalAccess.cs:34:9:34:14 | ...; | ConditionalAccess.cs:34:13:34:13 | 0 |
+| ConditionalAccess.cs:34:13:34:13 | 0 | ConditionalAccess.cs:34:9:34:13 | ... = ... |
+| ConditionalAccess.cs:35:9:35:12 | access to property Prop | ConditionalAccess.cs:32:10:32:11 | exit M8 |
+| ConditionalAccess.cs:35:9:35:12 | this access | ConditionalAccess.cs:35:9:35:12 | access to property Prop |
+| ConditionalAccess.cs:35:9:35:25 | ...; | ConditionalAccess.cs:35:9:35:12 | this access |
+| ConditionalAccess.cs:41:26:41:38 | enter CommaJoinWith | ConditionalAccess.cs:41:70:41:71 | access to parameter s1 |
+| ConditionalAccess.cs:41:70:41:71 | access to parameter s1 | ConditionalAccess.cs:41:75:41:78 | ", " |
+| ConditionalAccess.cs:41:70:41:78 | ... + ... | ConditionalAccess.cs:41:82:41:83 | access to parameter s2 |
+| ConditionalAccess.cs:41:70:41:83 | ... + ... | ConditionalAccess.cs:41:26:41:38 | exit CommaJoinWith |
+| ConditionalAccess.cs:41:75:41:78 | ", " | ConditionalAccess.cs:41:70:41:78 | ... + ... |
+| ConditionalAccess.cs:41:82:41:83 | access to parameter s2 | ConditionalAccess.cs:41:70:41:83 | ... + ... |
 | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:4:5:9:5 | {...} |
 | Conditions.cs:4:5:9:5 | {...} | Conditions.cs:5:9:6:16 | if (...) ... |
 | Conditions.cs:5:9:6:16 | if (...) ... | Conditions.cs:5:13:5:15 | access to parameter inc |
@@ -3532,6 +3547,8 @@ postDominance
 | CompileTimeOperators.cs:40:14:40:37 | call to method WriteLine | CompileTimeOperators.cs:40:32:40:36 | "End" |
 | CompileTimeOperators.cs:40:14:40:38 | ...; | CompileTimeOperators.cs:40:9:40:11 | End: |
 | CompileTimeOperators.cs:40:32:40:36 | "End" | CompileTimeOperators.cs:40:14:40:38 | ...; |
+| ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess | ConditionalAccess.cs:30:28:30:32 | ... = ... |
+| ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess | ConditionalAccess.cs:30:28:30:32 | ... = ... |
 | ConditionalAccess.cs:3:12:3:13 | exit M1 | ConditionalAccess.cs:3:26:3:26 | access to parameter i |
 | ConditionalAccess.cs:3:12:3:13 | exit M1 | ConditionalAccess.cs:3:28:3:38 | call to method ToString |
 | ConditionalAccess.cs:3:12:3:13 | exit M1 | ConditionalAccess.cs:3:40:3:49 | call to method ToLower |
@@ -3578,12 +3595,25 @@ postDominance
 | ConditionalAccess.cs:25:13:25:14 | "" | ConditionalAccess.cs:25:9:25:33 | ...; |
 | ConditionalAccess.cs:25:16:25:32 | call to method CommaJoinWith | ConditionalAccess.cs:25:31:25:31 | access to local variable s |
 | ConditionalAccess.cs:25:31:25:31 | access to local variable s | ConditionalAccess.cs:25:13:25:14 | "" |
-| ConditionalAccess.cs:31:26:31:38 | exit CommaJoinWith | ConditionalAccess.cs:31:70:31:83 | ... + ... |
-| ConditionalAccess.cs:31:70:31:71 | access to parameter s1 | ConditionalAccess.cs:31:26:31:38 | enter CommaJoinWith |
-| ConditionalAccess.cs:31:70:31:78 | ... + ... | ConditionalAccess.cs:31:75:31:78 | ", " |
-| ConditionalAccess.cs:31:70:31:83 | ... + ... | ConditionalAccess.cs:31:82:31:83 | access to parameter s2 |
-| ConditionalAccess.cs:31:75:31:78 | ", " | ConditionalAccess.cs:31:70:31:71 | access to parameter s1 |
-| ConditionalAccess.cs:31:82:31:83 | access to parameter s2 | ConditionalAccess.cs:31:70:31:78 | ... + ... |
+| ConditionalAccess.cs:30:10:30:12 | exit Out | ConditionalAccess.cs:30:28:30:32 | ... = ... |
+| ConditionalAccess.cs:30:28:30:32 | ... = ... | ConditionalAccess.cs:30:32:30:32 | 0 |
+| ConditionalAccess.cs:30:28:30:32 | ... = ... | ConditionalAccess.cs:30:32:30:32 | 0 |
+| ConditionalAccess.cs:30:32:30:32 | 0 | ConditionalAccess.cs:1:7:1:23 | enter ConditionalAccess |
+| ConditionalAccess.cs:30:32:30:32 | 0 | ConditionalAccess.cs:30:10:30:12 | enter Out |
+| ConditionalAccess.cs:32:10:32:11 | exit M8 | ConditionalAccess.cs:35:9:35:12 | access to property Prop |
+| ConditionalAccess.cs:33:5:36:5 | {...} | ConditionalAccess.cs:32:10:32:11 | enter M8 |
+| ConditionalAccess.cs:34:9:34:13 | ... = ... | ConditionalAccess.cs:34:13:34:13 | 0 |
+| ConditionalAccess.cs:34:9:34:14 | ...; | ConditionalAccess.cs:33:5:36:5 | {...} |
+| ConditionalAccess.cs:34:13:34:13 | 0 | ConditionalAccess.cs:34:9:34:14 | ...; |
+| ConditionalAccess.cs:35:9:35:12 | access to property Prop | ConditionalAccess.cs:35:9:35:12 | this access |
+| ConditionalAccess.cs:35:9:35:12 | this access | ConditionalAccess.cs:35:9:35:25 | ...; |
+| ConditionalAccess.cs:35:9:35:25 | ...; | ConditionalAccess.cs:34:9:34:13 | ... = ... |
+| ConditionalAccess.cs:41:26:41:38 | exit CommaJoinWith | ConditionalAccess.cs:41:70:41:83 | ... + ... |
+| ConditionalAccess.cs:41:70:41:71 | access to parameter s1 | ConditionalAccess.cs:41:26:41:38 | enter CommaJoinWith |
+| ConditionalAccess.cs:41:70:41:78 | ... + ... | ConditionalAccess.cs:41:75:41:78 | ", " |
+| ConditionalAccess.cs:41:70:41:83 | ... + ... | ConditionalAccess.cs:41:82:41:83 | access to parameter s2 |
+| ConditionalAccess.cs:41:75:41:78 | ", " | ConditionalAccess.cs:41:70:41:71 | access to parameter s1 |
+| ConditionalAccess.cs:41:82:41:83 | access to parameter s2 | ConditionalAccess.cs:41:70:41:78 | ... + ... |
 | Conditions.cs:3:10:3:19 | exit IncrOrDecr | Conditions.cs:7:14:7:16 | [inc (line 3): true] access to parameter inc |
 | Conditions.cs:3:10:3:19 | exit IncrOrDecr | Conditions.cs:8:13:8:15 | ...-- |
 | Conditions.cs:4:5:9:5 | {...} | Conditions.cs:3:10:3:19 | enter IncrOrDecr |
@@ -6181,6 +6211,9 @@ blockDominance
 | CompileTimeOperators.cs:15:10:15:15 | enter Typeof | CompileTimeOperators.cs:15:10:15:15 | enter Typeof |
 | CompileTimeOperators.cs:20:12:20:17 | enter Nameof | CompileTimeOperators.cs:20:12:20:17 | enter Nameof |
 | CompileTimeOperators.cs:28:10:28:10 | enter M | CompileTimeOperators.cs:28:10:28:10 | enter M |
+| ConditionalAccess.cs:1:7:1:23 | enter ConditionalAccess | ConditionalAccess.cs:1:7:1:23 | enter ConditionalAccess |
+| ConditionalAccess.cs:1:7:1:23 | enter ConditionalAccess | ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess |
+| ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess | ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess |
 | ConditionalAccess.cs:3:12:3:13 | enter M1 | ConditionalAccess.cs:3:12:3:13 | enter M1 |
 | ConditionalAccess.cs:3:12:3:13 | enter M1 | ConditionalAccess.cs:3:12:3:13 | exit M1 |
 | ConditionalAccess.cs:3:12:3:13 | enter M1 | ConditionalAccess.cs:3:28:3:38 | call to method ToString |
@@ -6228,7 +6261,12 @@ blockDominance
 | ConditionalAccess.cs:19:12:19:13 | exit M6 | ConditionalAccess.cs:19:12:19:13 | exit M6 |
 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 |
 | ConditionalAccess.cs:21:10:21:11 | enter M7 | ConditionalAccess.cs:21:10:21:11 | enter M7 |
-| ConditionalAccess.cs:31:26:31:38 | enter CommaJoinWith | ConditionalAccess.cs:31:26:31:38 | enter CommaJoinWith |
+| ConditionalAccess.cs:30:10:30:12 | enter Out | ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess |
+| ConditionalAccess.cs:30:10:30:12 | enter Out | ConditionalAccess.cs:30:10:30:12 | enter Out |
+| ConditionalAccess.cs:30:10:30:12 | enter Out | ConditionalAccess.cs:30:10:30:12 | exit Out |
+| ConditionalAccess.cs:30:10:30:12 | exit Out | ConditionalAccess.cs:30:10:30:12 | exit Out |
+| ConditionalAccess.cs:32:10:32:11 | enter M8 | ConditionalAccess.cs:32:10:32:11 | enter M8 |
+| ConditionalAccess.cs:41:26:41:38 | enter CommaJoinWith | ConditionalAccess.cs:41:26:41:38 | enter CommaJoinWith |
 | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:3:10:3:19 | enter IncrOrDecr |
 | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:3:10:3:19 | exit IncrOrDecr |
 | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:6:13:6:16 | [inc (line 3): true] ...; |
@@ -8347,6 +8385,10 @@ postBlockDominance
 | CompileTimeOperators.cs:15:10:15:15 | enter Typeof | CompileTimeOperators.cs:15:10:15:15 | enter Typeof |
 | CompileTimeOperators.cs:20:12:20:17 | enter Nameof | CompileTimeOperators.cs:20:12:20:17 | enter Nameof |
 | CompileTimeOperators.cs:28:10:28:10 | enter M | CompileTimeOperators.cs:28:10:28:10 | enter M |
+| ConditionalAccess.cs:1:7:1:23 | enter ConditionalAccess | ConditionalAccess.cs:1:7:1:23 | enter ConditionalAccess |
+| ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess | ConditionalAccess.cs:1:7:1:23 | enter ConditionalAccess |
+| ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess | ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess |
+| ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess | ConditionalAccess.cs:30:10:30:12 | enter Out |
 | ConditionalAccess.cs:3:12:3:13 | enter M1 | ConditionalAccess.cs:3:12:3:13 | enter M1 |
 | ConditionalAccess.cs:3:12:3:13 | exit M1 | ConditionalAccess.cs:3:12:3:13 | enter M1 |
 | ConditionalAccess.cs:3:12:3:13 | exit M1 | ConditionalAccess.cs:3:12:3:13 | exit M1 |
@@ -8392,7 +8434,11 @@ postBlockDominance
 | ConditionalAccess.cs:19:12:19:13 | exit M6 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 |
 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 |
 | ConditionalAccess.cs:21:10:21:11 | enter M7 | ConditionalAccess.cs:21:10:21:11 | enter M7 |
-| ConditionalAccess.cs:31:26:31:38 | enter CommaJoinWith | ConditionalAccess.cs:31:26:31:38 | enter CommaJoinWith |
+| ConditionalAccess.cs:30:10:30:12 | enter Out | ConditionalAccess.cs:30:10:30:12 | enter Out |
+| ConditionalAccess.cs:30:10:30:12 | exit Out | ConditionalAccess.cs:30:10:30:12 | enter Out |
+| ConditionalAccess.cs:30:10:30:12 | exit Out | ConditionalAccess.cs:30:10:30:12 | exit Out |
+| ConditionalAccess.cs:32:10:32:11 | enter M8 | ConditionalAccess.cs:32:10:32:11 | enter M8 |
+| ConditionalAccess.cs:41:26:41:38 | enter CommaJoinWith | ConditionalAccess.cs:41:26:41:38 | enter CommaJoinWith |
 | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:3:10:3:19 | enter IncrOrDecr |
 | Conditions.cs:3:10:3:19 | exit IncrOrDecr | Conditions.cs:3:10:3:19 | enter IncrOrDecr |
 | Conditions.cs:3:10:3:19 | exit IncrOrDecr | Conditions.cs:3:10:3:19 | exit IncrOrDecr |
