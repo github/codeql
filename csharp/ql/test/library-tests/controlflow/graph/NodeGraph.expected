@@ -567,8 +567,10 @@
 | ConditionalAccess.cs:34:9:34:14 | ...; | ConditionalAccess.cs:34:13:34:13 | 0 | semmle.label | successor |
 | ConditionalAccess.cs:34:13:34:13 | 0 | ConditionalAccess.cs:34:9:34:13 | ... = ... | semmle.label | successor |
 | ConditionalAccess.cs:35:9:35:12 | access to property Prop | ConditionalAccess.cs:32:10:32:11 | exit M8 | semmle.label | null |
+| ConditionalAccess.cs:35:9:35:12 | access to property Prop | ConditionalAccess.cs:35:14:35:24 | call to method Out | semmle.label | non-null |
 | ConditionalAccess.cs:35:9:35:12 | this access | ConditionalAccess.cs:35:9:35:12 | access to property Prop | semmle.label | successor |
 | ConditionalAccess.cs:35:9:35:25 | ...; | ConditionalAccess.cs:35:9:35:12 | this access | semmle.label | successor |
+| ConditionalAccess.cs:35:14:35:24 | call to method Out | ConditionalAccess.cs:32:10:32:11 | exit M8 | semmle.label | successor |
 | ConditionalAccess.cs:41:26:41:38 | enter CommaJoinWith | ConditionalAccess.cs:41:70:41:71 | access to parameter s1 | semmle.label | successor |
 | ConditionalAccess.cs:41:70:41:71 | access to parameter s1 | ConditionalAccess.cs:41:75:41:78 | ", " | semmle.label | successor |
 | ConditionalAccess.cs:41:70:41:78 | ... + ... | ConditionalAccess.cs:41:82:41:83 | access to parameter s2 | semmle.label | successor |

@@ -536,6 +536,7 @@ dominance
 | ConditionalAccess.cs:34:9:34:14 | ...; | ConditionalAccess.cs:34:13:34:13 | 0 |
 | ConditionalAccess.cs:34:13:34:13 | 0 | ConditionalAccess.cs:34:9:34:13 | ... = ... |
 | ConditionalAccess.cs:35:9:35:12 | access to property Prop | ConditionalAccess.cs:32:10:32:11 | exit M8 |
+| ConditionalAccess.cs:35:9:35:12 | access to property Prop | ConditionalAccess.cs:35:14:35:24 | call to method Out |
 | ConditionalAccess.cs:35:9:35:12 | this access | ConditionalAccess.cs:35:9:35:12 | access to property Prop |
 | ConditionalAccess.cs:35:9:35:25 | ...; | ConditionalAccess.cs:35:9:35:12 | this access |
 | ConditionalAccess.cs:41:26:41:38 | enter CommaJoinWith | ConditionalAccess.cs:41:70:41:71 | access to parameter s1 |
@@ -3601,6 +3602,7 @@ postDominance
 | ConditionalAccess.cs:30:32:30:32 | 0 | ConditionalAccess.cs:1:7:1:23 | enter ConditionalAccess |
 | ConditionalAccess.cs:30:32:30:32 | 0 | ConditionalAccess.cs:30:10:30:12 | enter Out |
 | ConditionalAccess.cs:32:10:32:11 | exit M8 | ConditionalAccess.cs:35:9:35:12 | access to property Prop |
+| ConditionalAccess.cs:32:10:32:11 | exit M8 | ConditionalAccess.cs:35:14:35:24 | call to method Out |
 | ConditionalAccess.cs:33:5:36:5 | {...} | ConditionalAccess.cs:32:10:32:11 | enter M8 |
 | ConditionalAccess.cs:34:9:34:13 | ... = ... | ConditionalAccess.cs:34:13:34:13 | 0 |
 | ConditionalAccess.cs:34:9:34:14 | ...; | ConditionalAccess.cs:33:5:36:5 | {...} |
@@ -6266,6 +6268,10 @@ blockDominance
 | ConditionalAccess.cs:30:10:30:12 | enter Out | ConditionalAccess.cs:30:10:30:12 | exit Out |
 | ConditionalAccess.cs:30:10:30:12 | exit Out | ConditionalAccess.cs:30:10:30:12 | exit Out |
 | ConditionalAccess.cs:32:10:32:11 | enter M8 | ConditionalAccess.cs:32:10:32:11 | enter M8 |
+| ConditionalAccess.cs:32:10:32:11 | enter M8 | ConditionalAccess.cs:32:10:32:11 | exit M8 |
+| ConditionalAccess.cs:32:10:32:11 | enter M8 | ConditionalAccess.cs:35:14:35:24 | call to method Out |
+| ConditionalAccess.cs:32:10:32:11 | exit M8 | ConditionalAccess.cs:32:10:32:11 | exit M8 |
+| ConditionalAccess.cs:35:14:35:24 | call to method Out | ConditionalAccess.cs:35:14:35:24 | call to method Out |
 | ConditionalAccess.cs:41:26:41:38 | enter CommaJoinWith | ConditionalAccess.cs:41:26:41:38 | enter CommaJoinWith |
 | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:3:10:3:19 | enter IncrOrDecr |
 | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:3:10:3:19 | exit IncrOrDecr |
@@ -8438,6 +8444,10 @@ postBlockDominance
 | ConditionalAccess.cs:30:10:30:12 | exit Out | ConditionalAccess.cs:30:10:30:12 | enter Out |
 | ConditionalAccess.cs:30:10:30:12 | exit Out | ConditionalAccess.cs:30:10:30:12 | exit Out |
 | ConditionalAccess.cs:32:10:32:11 | enter M8 | ConditionalAccess.cs:32:10:32:11 | enter M8 |
+| ConditionalAccess.cs:32:10:32:11 | exit M8 | ConditionalAccess.cs:32:10:32:11 | enter M8 |
+| ConditionalAccess.cs:32:10:32:11 | exit M8 | ConditionalAccess.cs:32:10:32:11 | exit M8 |
+| ConditionalAccess.cs:32:10:32:11 | exit M8 | ConditionalAccess.cs:35:14:35:24 | call to method Out |
+| ConditionalAccess.cs:35:14:35:24 | call to method Out | ConditionalAccess.cs:35:14:35:24 | call to method Out |
 | ConditionalAccess.cs:41:26:41:38 | enter CommaJoinWith | ConditionalAccess.cs:41:26:41:38 | enter CommaJoinWith |
 | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:3:10:3:19 | enter IncrOrDecr |
 | Conditions.cs:3:10:3:19 | exit IncrOrDecr | Conditions.cs:3:10:3:19 | enter IncrOrDecr |

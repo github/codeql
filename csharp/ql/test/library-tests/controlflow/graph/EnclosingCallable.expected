@@ -583,6 +583,7 @@ nodeEnclosing
 | ConditionalAccess.cs:35:9:35:12 | access to property Prop | ConditionalAccess.cs:32:10:32:11 | M8 |
 | ConditionalAccess.cs:35:9:35:12 | this access | ConditionalAccess.cs:32:10:32:11 | M8 |
 | ConditionalAccess.cs:35:9:35:25 | ...; | ConditionalAccess.cs:32:10:32:11 | M8 |
+| ConditionalAccess.cs:35:14:35:24 | call to method Out | ConditionalAccess.cs:32:10:32:11 | M8 |
 | ConditionalAccess.cs:41:26:41:38 | enter CommaJoinWith | ConditionalAccess.cs:41:26:41:38 | CommaJoinWith |
 | ConditionalAccess.cs:41:26:41:38 | exit CommaJoinWith | ConditionalAccess.cs:41:26:41:38 | CommaJoinWith |
 | ConditionalAccess.cs:41:70:41:71 | access to parameter s1 | ConditionalAccess.cs:41:26:41:38 | CommaJoinWith |
@@ -3410,6 +3411,8 @@ blockEnclosing
 | ConditionalAccess.cs:30:10:30:12 | enter Out | ConditionalAccess.cs:30:10:30:12 | Out |
 | ConditionalAccess.cs:30:10:30:12 | exit Out | ConditionalAccess.cs:30:10:30:12 | Out |
 | ConditionalAccess.cs:32:10:32:11 | enter M8 | ConditionalAccess.cs:32:10:32:11 | M8 |
+| ConditionalAccess.cs:32:10:32:11 | exit M8 | ConditionalAccess.cs:32:10:32:11 | M8 |
+| ConditionalAccess.cs:35:14:35:24 | call to method Out | ConditionalAccess.cs:32:10:32:11 | M8 |
 | ConditionalAccess.cs:41:26:41:38 | enter CommaJoinWith | ConditionalAccess.cs:41:26:41:38 | CommaJoinWith |
 | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:3:10:3:19 | IncrOrDecr |
 | Conditions.cs:3:10:3:19 | exit IncrOrDecr | Conditions.cs:3:10:3:19 | IncrOrDecr |
