@@ -3,6 +3,13 @@ missingOperand
 | ir.cpp:810:7:810:26 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | void HierarchyConversions() | void HierarchyConversions() |
 | ir.cpp:823:7:823:13 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | void HierarchyConversions() | void HierarchyConversions() |
 | ir.cpp:824:7:824:26 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | void HierarchyConversions() | void HierarchyConversions() |
+| ir.cpp:1301:9:1301:14 | Store: ... ? ... : ... | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | ir.cpp:1299:6:1299:25 | void gccBinaryConditional(bool, int, long) | void gccBinaryConditional(bool, int, long) |
+| ir.cpp:1302:9:1302:14 | Store: ... ? ... : ... | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | ir.cpp:1299:6:1299:25 | void gccBinaryConditional(bool, int, long) | void gccBinaryConditional(bool, int, long) |
+| ir.cpp:1303:9:1303:14 | Store: ... ? ... : ... | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | ir.cpp:1299:6:1299:25 | void gccBinaryConditional(bool, int, long) | void gccBinaryConditional(bool, int, long) |
+| ir.cpp:1304:9:1304:14 | Store: ... ? ... : ... | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | ir.cpp:1299:6:1299:25 | void gccBinaryConditional(bool, int, long) | void gccBinaryConditional(bool, int, long) |
+| ir.cpp:1305:9:1305:14 | Store: ... ? ... : ... | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | ir.cpp:1299:6:1299:25 | void gccBinaryConditional(bool, int, long) | void gccBinaryConditional(bool, int, long) |
+| ir.cpp:1306:9:1306:14 | Store: ... ? ... : ... | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | ir.cpp:1299:6:1299:25 | void gccBinaryConditional(bool, int, long) | void gccBinaryConditional(bool, int, long) |
+| ir.cpp:1308:9:1308:26 | Store: ... ? ... : ... | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | ir.cpp:1299:6:1299:25 | void gccBinaryConditional(bool, int, long) | void gccBinaryConditional(bool, int, long) |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand

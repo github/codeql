@@ -140,6 +140,7 @@
 | test | f_do_while | 34 | 8 | test.c:34:1:34:1 | return ... | f_do_while |
 | test | f_if_quest2 | 14 | 1 | test.c:14:32:18:1 | { ... } | if (...) ...  |
 | test | f_if_quest2 | 14 | 12 | test.c:14:6:14:16 | f_if_quest2 | <none> |
+| test | f_if_quest2 | 15 | 1 | test.c:15:9:15:9 | x | <none> |
 | test | f_if_quest2 | 15 | 2 | test.c:15:5:17:5 | if (...) ...  | ... ? ... : ... |
 | test | f_if_quest2 | 15 | 3 | test.c:15:9:15:14 | ... ? ... : ... | x |
 | test | f_if_quest2 | 15 | 4 | test.c:15:9:15:9 | x | <false> y |

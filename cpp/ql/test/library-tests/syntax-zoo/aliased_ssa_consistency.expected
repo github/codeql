@@ -18,7 +18,18 @@ missingOperand
 | ir.cpp:810:7:810:26 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | void HierarchyConversions() | void HierarchyConversions() |
 | ir.cpp:823:7:823:13 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | void HierarchyConversions() | void HierarchyConversions() |
 | ir.cpp:824:7:824:26 | IndirectMayWriteSideEffect: call to Base | Instruction 'IndirectMayWriteSideEffect' is missing an expected operand with tag 'Address' in function '$@'. | ir.cpp:799:6:799:25 | void HierarchyConversions() | void HierarchyConversions() |
+| misc.c:93:9:93:15 | Store: ... ? ... : ... | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | misc.c:91:6:91:33 | void gnuConditionalOmittedOperand(someStruct*) | void gnuConditionalOmittedOperand(someStruct*) |
+| misc.c:94:9:94:19 | Store: ... ? ... : ... | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | misc.c:91:6:91:33 | void gnuConditionalOmittedOperand(someStruct*) | void gnuConditionalOmittedOperand(someStruct*) |
 | misc.c:125:5:125:11 | CopyValue: (statement expression) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | misc.c:97:6:97:10 | void misc3() | void misc3() |
+| range_analysis.c:366:10:366:15 | Store: ... ? ... : ... | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | range_analysis.c:355:14:355:27 | unsigned int test_ternary01(unsigned int) | unsigned int test_ternary01(unsigned int) |
+| range_analysis.c:367:10:367:17 | Store: ... ? ... : ... | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | range_analysis.c:355:14:355:27 | unsigned int test_ternary01(unsigned int) | unsigned int test_ternary01(unsigned int) |
+| range_analysis.c:368:11:368:13 | Add: ... + ... | Instruction 'Add' is missing an expected operand with tag 'Left' in function '$@'. | range_analysis.c:355:14:355:27 | unsigned int test_ternary01(unsigned int) | unsigned int test_ternary01(unsigned int) |
+| range_analysis.c:369:27:369:29 | Add: ... + ... | Instruction 'Add' is missing an expected operand with tag 'Left' in function '$@'. | range_analysis.c:355:14:355:27 | unsigned int test_ternary01(unsigned int) | unsigned int test_ternary01(unsigned int) |
+| range_analysis.c:370:27:370:29 | Add: ... + ... | Instruction 'Add' is missing an expected operand with tag 'Left' in function '$@'. | range_analysis.c:355:14:355:27 | unsigned int test_ternary01(unsigned int) | unsigned int test_ternary01(unsigned int) |
+| range_analysis.c:371:28:371:30 | Add: ... + ... | Instruction 'Add' is missing an expected operand with tag 'Left' in function '$@'. | range_analysis.c:355:14:355:27 | unsigned int test_ternary01(unsigned int) | unsigned int test_ternary01(unsigned int) |
+| range_analysis.c:385:11:385:15 | Sub: ... - ... | Instruction 'Sub' is missing an expected operand with tag 'Left' in function '$@'. | range_analysis.c:377:14:377:27 | unsigned int test_ternary02(unsigned int) | unsigned int test_ternary02(unsigned int) |
+| range_analysis.c:386:11:386:15 | Sub: ... - ... | Instruction 'Sub' is missing an expected operand with tag 'Left' in function '$@'. | range_analysis.c:377:14:377:27 | unsigned int test_ternary02(unsigned int) | unsigned int test_ternary02(unsigned int) |
+| range_analysis.c:387:27:387:31 | Sub: ... - ... | Instruction 'Sub' is missing an expected operand with tag 'Left' in function '$@'. | range_analysis.c:377:14:377:27 | unsigned int test_ternary02(unsigned int) | unsigned int test_ternary02(unsigned int) |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
@@ -37,6 +48,13 @@ instructionWithoutSuccessor
 | ms_try_mix.cpp:11:12:11:15 | Chi: call to C | Instruction 'Chi: call to C' has no successors in function '$@'. | ms_try_mix.cpp:10:6:10:18 | void ms_except_mix(int) | void ms_except_mix(int) |
 | ms_try_mix.cpp:28:12:28:15 | Chi: call to C | Instruction 'Chi: call to C' has no successors in function '$@'. | ms_try_mix.cpp:27:6:27:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
 | ms_try_mix.cpp:48:10:48:13 | Chi: call to C | Instruction 'Chi: call to C' has no successors in function '$@'. | ms_try_mix.cpp:47:6:47:28 | void ms_empty_finally_at_end() | void ms_empty_finally_at_end() |
+| range_analysis.c:368:11:368:13 | Add: ... + ... | Instruction 'Add: ... + ...' has no successors in function '$@'. | range_analysis.c:355:14:355:27 | unsigned int test_ternary01(unsigned int) | unsigned int test_ternary01(unsigned int) |
+| range_analysis.c:369:10:369:31 | Convert: (int)... | Instruction 'Convert: (int)...' has no successors in function '$@'. | range_analysis.c:355:14:355:27 | unsigned int test_ternary01(unsigned int) | unsigned int test_ternary01(unsigned int) |
+| range_analysis.c:370:10:370:31 | Convert: (int)... | Instruction 'Convert: (int)...' has no successors in function '$@'. | range_analysis.c:355:14:355:27 | unsigned int test_ternary01(unsigned int) | unsigned int test_ternary01(unsigned int) |
+| range_analysis.c:371:10:371:32 | Convert: (int)... | Instruction 'Convert: (int)...' has no successors in function '$@'. | range_analysis.c:355:14:355:27 | unsigned int test_ternary01(unsigned int) | unsigned int test_ternary01(unsigned int) |
+| range_analysis.c:385:11:385:15 | Sub: ... - ... | Instruction 'Sub: ... - ...' has no successors in function '$@'. | range_analysis.c:377:14:377:27 | unsigned int test_ternary02(unsigned int) | unsigned int test_ternary02(unsigned int) |
+| range_analysis.c:386:11:386:15 | Sub: ... - ... | Instruction 'Sub: ... - ...' has no successors in function '$@'. | range_analysis.c:377:14:377:27 | unsigned int test_ternary02(unsigned int) | unsigned int test_ternary02(unsigned int) |
+| range_analysis.c:387:10:387:33 | Convert: (int)... | Instruction 'Convert: (int)...' has no successors in function '$@'. | range_analysis.c:377:14:377:27 | unsigned int test_ternary02(unsigned int) | unsigned int test_ternary02(unsigned int) |
 | stmt_expr.cpp:27:5:27:15 | Store: ... = ... | Instruction 'Store: ... = ...' has no successors in function '$@'. | stmt_expr.cpp:21:6:21:6 | void stmtexpr::g(int) | void stmtexpr::g(int) |
 | vla.c:5:9:5:14 | Uninitialized: definition of matrix | Instruction 'Uninitialized: definition of matrix' has no successors in function '$@'. | vla.c:3:5:3:8 | int main(int, char**) | int main(int, char**) |
 | vla.c:11:6:11:16 | Chi: vla_typedef | Instruction 'Chi: vla_typedef' has no successors in function '$@'. | vla.c:11:6:11:16 | void vla_typedef() | void vla_typedef() |
@@ -86,6 +104,13 @@ ambiguousSuccessors
 | nonmembercallexpr.c:1:6:1:6 | Chi: g | Instruction 'Chi: g' has 2 successors of kind 'Goto' in function '$@'. | nonmembercallexpr.c:1:6:1:6 | void g(); void g())(); void(* g(); void(* g())() | void g(); void g())(); void(* g(); void(* g())() |
 | parameterinitializer.cpp:18:5:18:8 | Chi: main | Instruction 'Chi: main' has 4 successors of kind 'Goto' in function '$@'. | allocators.cpp:14:5:14:8 | int main() | int main() |
 | pmcallexpr.cpp:6:6:6:6 | Chi: f | Instruction 'Chi: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
+| range_analysis.c:368:13:368:13 | Constant: (unsigned int)... | Instruction 'Constant: (unsigned int)...' has 2 successors of kind 'Goto' in function '$@'. | range_analysis.c:355:14:355:27 | unsigned int test_ternary01(unsigned int) | unsigned int test_ternary01(unsigned int) |
+| range_analysis.c:369:29:369:29 | Constant: (unsigned int)... | Instruction 'Constant: (unsigned int)...' has 2 successors of kind 'Goto' in function '$@'. | range_analysis.c:355:14:355:27 | unsigned int test_ternary01(unsigned int) | unsigned int test_ternary01(unsigned int) |
+| range_analysis.c:370:29:370:29 | Constant: (unsigned int)... | Instruction 'Constant: (unsigned int)...' has 2 successors of kind 'Goto' in function '$@'. | range_analysis.c:355:14:355:27 | unsigned int test_ternary01(unsigned int) | unsigned int test_ternary01(unsigned int) |
+| range_analysis.c:371:30:371:30 | Constant: (unsigned int)... | Instruction 'Constant: (unsigned int)...' has 2 successors of kind 'Goto' in function '$@'. | range_analysis.c:355:14:355:27 | unsigned int test_ternary01(unsigned int) | unsigned int test_ternary01(unsigned int) |
+| range_analysis.c:385:13:385:15 | Constant: (unsigned int)... | Instruction 'Constant: (unsigned int)...' has 2 successors of kind 'Goto' in function '$@'. | range_analysis.c:377:14:377:27 | unsigned int test_ternary02(unsigned int) | unsigned int test_ternary02(unsigned int) |
+| range_analysis.c:386:13:386:15 | Constant: (unsigned int)... | Instruction 'Constant: (unsigned int)...' has 2 successors of kind 'Goto' in function '$@'. | range_analysis.c:377:14:377:27 | unsigned int test_ternary02(unsigned int) | unsigned int test_ternary02(unsigned int) |
+| range_analysis.c:387:29:387:31 | Constant: (unsigned int)... | Instruction 'Constant: (unsigned int)...' has 2 successors of kind 'Goto' in function '$@'. | range_analysis.c:377:14:377:27 | unsigned int test_ternary02(unsigned int) | unsigned int test_ternary02(unsigned int) |
 | revsubscriptexpr.c:1:6:1:6 | Chi: g | Instruction 'Chi: g' has 2 successors of kind 'Goto' in function '$@'. | nonmembercallexpr.c:1:6:1:6 | void g(); void g())(); void(* g(); void(* g())() | void g(); void g())(); void(* g(); void(* g())() |
 | staticmembercallexpr.cpp:6:6:6:6 | Chi: f | Instruction 'Chi: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
 | staticmembercallexpr_args.cpp:7:6:7:6 | Chi: f | Instruction 'Chi: f' has 14 successors of kind 'Goto' in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
@@ -108,6 +133,13 @@ containsLoopOfForwardEdges
 lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
+| range_analysis.c:368:10:368:21 | StoreValue | Operand 'StoreValue' is not dominated by its definition in function '$@'. | range_analysis.c:355:14:355:27 | unsigned int test_ternary01(unsigned int) | unsigned int test_ternary01(unsigned int) |
+| range_analysis.c:369:10:369:36 | StoreValue | Operand 'StoreValue' is not dominated by its definition in function '$@'. | range_analysis.c:355:14:355:27 | unsigned int test_ternary01(unsigned int) | unsigned int test_ternary01(unsigned int) |
+| range_analysis.c:370:10:370:38 | StoreValue | Operand 'StoreValue' is not dominated by its definition in function '$@'. | range_analysis.c:355:14:355:27 | unsigned int test_ternary01(unsigned int) | unsigned int test_ternary01(unsigned int) |
+| range_analysis.c:371:10:371:39 | StoreValue | Operand 'StoreValue' is not dominated by its definition in function '$@'. | range_analysis.c:355:14:355:27 | unsigned int test_ternary01(unsigned int) | unsigned int test_ternary01(unsigned int) |
+| range_analysis.c:385:10:385:21 | StoreValue | Operand 'StoreValue' is not dominated by its definition in function '$@'. | range_analysis.c:377:14:377:27 | unsigned int test_ternary02(unsigned int) | unsigned int test_ternary02(unsigned int) |
+| range_analysis.c:386:10:386:21 | StoreValue | Operand 'StoreValue' is not dominated by its definition in function '$@'. | range_analysis.c:377:14:377:27 | unsigned int test_ternary02(unsigned int) | unsigned int test_ternary02(unsigned int) |
+| range_analysis.c:387:10:387:38 | StoreValue | Operand 'StoreValue' is not dominated by its definition in function '$@'. | range_analysis.c:377:14:377:27 | unsigned int test_ternary02(unsigned int) | unsigned int test_ternary02(unsigned int) |
 switchInstructionWithoutDefaultEdge
 notMarkedAsConflated
 wronglyMarkedAsConflated

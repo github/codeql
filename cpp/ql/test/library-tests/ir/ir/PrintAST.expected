@@ -10294,7 +10294,14 @@ ir.cpp:
 # 1301|           0: [VariableAccess] b
 # 1301|               Type = [BoolType] bool
 # 1301|               ValueCategory = prvalue(load)
-# 1301|           1: [VariableAccess] x
+# 1301|           1: [CStyleCast] (int)...
+# 1301|               Conversion = [IntegralConversion] integral conversion
+# 1301|               Type = [IntType] int
+# 1301|               ValueCategory = prvalue
+# 1301|             expr: [VariableAccess] b
+# 1301|                 Type = [BoolType] bool
+# 1301|                 ValueCategory = prvalue(load)
+# 1301|           2: [VariableAccess] x
 # 1301|               Type = [IntType] int
 # 1301|               ValueCategory = prvalue(load)
 # 1302|     2: [ExprStmt] ExprStmt
@@ -10314,7 +10321,14 @@ ir.cpp:
 # 1302|             0: [VariableAccess] b
 # 1302|                 Type = [BoolType] bool
 # 1302|                 ValueCategory = prvalue(load)
-# 1302|             1: [VariableAccess] y
+# 1302|             1: [CStyleCast] (long)...
+# 1302|                 Conversion = [IntegralConversion] integral conversion
+# 1302|                 Type = [LongType] long
+# 1302|                 ValueCategory = prvalue
+# 1302|               expr: [VariableAccess] b
+# 1302|                   Type = [BoolType] bool
+# 1302|                   ValueCategory = prvalue(load)
+# 1302|             2: [VariableAccess] y
 # 1302|                 Type = [LongType] long
 # 1302|                 ValueCategory = prvalue(load)
 # 1303|     3: [ExprStmt] ExprStmt
@@ -10335,6 +10349,9 @@ ir.cpp:
 # 1303|                 Type = [IntType] int
 # 1303|                 ValueCategory = prvalue(load)
 # 1303|           1: [VariableAccess] x
+# 1303|               Type = [IntType] int
+# 1303|               ValueCategory = prvalue(load)
+# 1303|           2: [VariableAccess] x
 # 1303|               Type = [IntType] int
 # 1303|               ValueCategory = prvalue(load)
 # 1304|     4: [ExprStmt] ExprStmt
@@ -10358,7 +10375,14 @@ ir.cpp:
 # 1304|               expr: [VariableAccess] x
 # 1304|                   Type = [IntType] int
 # 1304|                   ValueCategory = prvalue(load)
-# 1304|             1: [VariableAccess] y
+# 1304|             1: [CStyleCast] (long)...
+# 1304|                 Conversion = [IntegralConversion] integral conversion
+# 1304|                 Type = [LongType] long
+# 1304|                 ValueCategory = prvalue
+# 1304|               expr: [VariableAccess] x
+# 1304|                   Type = [IntType] int
+# 1304|                   ValueCategory = prvalue(load)
+# 1304|             2: [VariableAccess] y
 # 1304|                 Type = [LongType] long
 # 1304|                 ValueCategory = prvalue(load)
 # 1305|     5: [ExprStmt] ExprStmt
@@ -10382,7 +10406,10 @@ ir.cpp:
 # 1305|               expr: [VariableAccess] y
 # 1305|                   Type = [LongType] long
 # 1305|                   ValueCategory = prvalue(load)
-# 1305|             1: [CStyleCast] (long)...
+# 1305|             1: [VariableAccess] y
+# 1305|                 Type = [LongType] long
+# 1305|                 ValueCategory = prvalue(load)
+# 1305|             2: [CStyleCast] (long)...
 # 1305|                 Conversion = [IntegralConversion] integral conversion
 # 1305|                 Type = [LongType] long
 # 1305|                 ValueCategory = prvalue
@@ -10411,6 +10438,9 @@ ir.cpp:
 # 1306|                   Type = [LongType] long
 # 1306|                   ValueCategory = prvalue(load)
 # 1306|             1: [VariableAccess] y
+# 1306|                 Type = [LongType] long
+# 1306|                 ValueCategory = prvalue(load)
+# 1306|             2: [VariableAccess] y
 # 1306|                 Type = [LongType] long
 # 1306|                 ValueCategory = prvalue(load)
 # 1308|     7: [ExprStmt] ExprStmt
@@ -10449,7 +10479,37 @@ ir.cpp:
 # 1308|                 expr: [VariableAccess] y
 # 1308|                     Type = [LongType] long
 # 1308|                     ValueCategory = prvalue(load)
-# 1308|           1: [VariableAccess] x
+# 1308|           1: [CStyleCast] (int)...
+# 1308|               Conversion = [IntegralConversion] integral conversion
+# 1308|               Type = [IntType] int
+# 1308|               ValueCategory = prvalue
+# 1308|             expr: [ParenthesisExpr] (...)
+# 1308|                 Type = [BoolType] bool
+# 1308|                 ValueCategory = prvalue
+# 1308|               expr: [LogicalOrExpr] ... || ...
+# 1308|                   Type = [BoolType] bool
+# 1308|                   ValueCategory = prvalue
+# 1308|                 0: [LogicalAndExpr] ... && ...
+# 1308|                     Type = [BoolType] bool
+# 1308|                     ValueCategory = prvalue
+# 1308|                   0: [CStyleCast] (bool)...
+# 1308|                       Conversion = [BoolConversion] conversion to bool
+# 1308|                       Type = [BoolType] bool
+# 1308|                       ValueCategory = prvalue
+# 1308|                     expr: [VariableAccess] x
+# 1308|                         Type = [IntType] int
+# 1308|                         ValueCategory = prvalue(load)
+# 1308|                   1: [VariableAccess] b
+# 1308|                       Type = [BoolType] bool
+# 1308|                       ValueCategory = prvalue(load)
+# 1308|                 1: [CStyleCast] (bool)...
+# 1308|                     Conversion = [BoolConversion] conversion to bool
+# 1308|                     Type = [BoolType] bool
+# 1308|                     ValueCategory = prvalue
+# 1308|                   expr: [VariableAccess] y
+# 1308|                       Type = [LongType] long
+# 1308|                       ValueCategory = prvalue(load)
+# 1308|           2: [VariableAccess] x
 # 1308|               Type = [IntType] int
 # 1308|               ValueCategory = prvalue(load)
 # 1309|     8: [ReturnStmt] return ...
