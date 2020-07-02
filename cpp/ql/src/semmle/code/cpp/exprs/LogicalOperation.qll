@@ -97,11 +97,7 @@ class ConditionalExpr extends Operation, @conditionalexpr {
   override string getAPrimaryQlClass() { result = "ConditionalExpr" }
 
   /** Gets the 'then' expression of this conditional expression. */
-  Expr getThen() {
-    if this.isTwoOperand()
-    then result = this.getCondition()
-    else expr_cond_true(underlyingElement(this), unresolveElement(result))
-  }
+  Expr getThen() { expr_cond_true(underlyingElement(this), unresolveElement(result)) }
 
   /** Gets the 'else' expression of this conditional expression. */
   Expr getElse() { expr_cond_false(underlyingElement(this), unresolveElement(result)) }

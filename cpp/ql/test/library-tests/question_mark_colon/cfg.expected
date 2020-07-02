@@ -21,3 +21,14 @@
 | 7 | 14 | question_mark_colon.c:7:5:7:5 | s | ... = ... |
 | 7 | 15 | question_mark_colon.c:7:5:7:23 | ... = ... | return ... |
 | 8 | 16 | question_mark_colon.c:8:1:8:1 | return ... | g |
+| 13 | 1 | question_mark_colon.c:13:10:18:1 | { ... } | ExprStmt |
+| 13 | 9 | question_mark_colon.c:13:6:13:6 | h | None |
+| 17 | 1 | question_mark_colon.c:17:7:17:7 | (long)... | None |
+| 17 | 1 | question_mark_colon.c:17:7:17:7 | x | None |
+| 17 | 2 | question_mark_colon.c:17:3:17:14 | ExprStmt | ... ? ... : ... |
+| 17 | 3 | question_mark_colon.c:17:7:17:13 | ... ? ... : ... | x |
+| 17 | 4 | question_mark_colon.c:17:7:17:7 | x | y |
+| 17 | 5 | question_mark_colon.c:17:13:17:13 | y | y |
+| 17 | 6 | question_mark_colon.c:17:3:17:3 | y | ... = ... |
+| 17 | 7 | question_mark_colon.c:17:3:17:13 | ... = ... | return ... |
+| 18 | 8 | question_mark_colon.c:18:1:18:1 | return ... | h |
