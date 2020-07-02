@@ -1569,7 +1569,7 @@ private string getConcatenatedString(Expr add) {
  * Gets an operand from `add`.
  * Is specialized to `AddExpr` such that `getAnAddOperand*(add)` can be used to get a leaf from a string-concatenation transitively.
  */
-private Expr getAnAddOperand(AddExpr add) { result = add.getAnOperand() }
+private Expr getAnAddOperand(AddExpr add) { result = add.getAnOperand().getUnderlyingValue() }
 
 /**
  * A subtraction expression.
