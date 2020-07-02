@@ -363,7 +363,7 @@ DataFlowType getNodeType(Node n)
 ```
 and every `Node` should have a type.
 
-One also needs to define the the string representation of a `DataFlowType`:
+One also needs to define the string representation of a `DataFlowType`:
 ```
 string ppReprType(DataFlowType t)
 ```
@@ -472,4 +472,3 @@ The file `dataflow/internal/DataFlowImplConsistency.qll` contains a number of
 consistency checks to verify that the language-specfic parts satisfy the
 invariants that are expected by the shared implementation. Run these queries to
 check for inconsistencies.
-
