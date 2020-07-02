@@ -130,3 +130,9 @@ Try recovering an existing taint tracking query by implementing sources, sinks, 
 - We seem to get duplicated results for global flow, as well as flow with and without type (so four times the "unique" results).
 - We currently consider control flow nodes like exit nodes for functions, we should probably filter down which ones are of interest.
 - We should probably override ToString for a number of data flow nodes.
+- Test flow through classes, constructors and methods.
+- What happens with named arguments? What does C# do?
+- What should the enclosable callable for global variables be? C++ makes it the variable itself, C# seems to not have nodes for these but only for their reads and writes.
+- Is `yield` another return type? If not, how is it handled?
+- Should `OutNode` include magic function calls?
+- Remove local flow to/from global variables
