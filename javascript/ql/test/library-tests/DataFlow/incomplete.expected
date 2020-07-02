@@ -1,10 +1,19 @@
+| arguments.js:1:1:12:4 | exceptional return of (functi ... );\\n})() | call |
+| arguments.js:1:2:12:1 | exceptional return of anonymous function | call |
+| arguments.js:2:5:10:5 | exceptional return of function f | call |
+| arguments.js:2:16:2:16 | x | call |
+| arguments.js:4:28:4:39 | arguments[0] | heap |
+| arguments.js:5:25:5:36 | arguments[1] | heap |
+| arguments.js:7:24:7:30 | args[2] | heap |
+| arguments.js:9:27:9:38 | arguments[0] | heap |
+| arguments.js:11:5:11:14 | exceptional return of f(1, 2, 3) | call |
+| arguments.js:11:5:11:14 | f(1, 2, 3) | call |
 | eval.js:1:1:5:1 | exceptional return of function k | call |
 | eval.js:2:7:2:12 | x | eval |
 | eval.js:3:3:3:6 | eval | global |
 | eval.js:3:3:3:16 | eval("x = 23") | call |
 | eval.js:3:3:3:16 | exceptional return of eval("x = 23") | call |
 | sources.js:1:1:1:12 | exceptional return of new (x => x) | call |
-| sources.js:1:6:1:6 | x | call |
 | sources.js:1:6:1:11 | exceptional return of anonymous function | call |
 | sources.js:3:1:5:6 | exceptional return of (functi ... \\n})(23) | call |
 | sources.js:3:2:5:1 | exceptional return of anonymous function | call |
@@ -20,7 +29,6 @@
 | tst2.ts:8:3:8:5 | A.x | heap |
 | tst2.ts:11:11:11:13 | A.x | heap |
 | tst2.ts:13:26:13:29 | List | global |
-| tst2.ts:13:39:13:38 | args | call |
 | tst2.ts:13:39:13:38 | exceptional return of default constructor of class StringList | call |
 | tst2.ts:13:39:13:38 | exceptional return of super(...args) | call |
 | tst2.ts:13:39:13:38 | super | call |

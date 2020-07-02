@@ -49,3 +49,39 @@ app.get('/echo', function(req, res) {
 	res.setHeader('Content-Length', msg.length);
 	res.end(msg);
 });
+
+app.get('/user/:id', function(req, res) {
+  const url = req.params.id;
+  if (!/["'&<>]/.exec(url)) {
+    res.send(url); // OK
+  }
+});
+
+function escapeHtml1 (str) {
+  if (!/["'&<>]/.exec(str)) {
+      return str;
+  }
+}
+
+app.get('/user/:id', function(req, res) {
+  const url = req.params.id;
+
+  res.send(escapeHtml1(url)); // OK
+});
+
+const matchHtmlRegExp = /["'&<>]/;
+function escapeHtml2 (string) {
+    const str = '' + string;
+    const match = matchHtmlRegExp.exec(str);
+
+    if (!match) {
+        return str;
+    }
+}
+
+app.get('/user/:id', function(req, res) {
+  const url = req.params.id;
+
+  res.send(escapeHtml2(url)); // OK
+});
+

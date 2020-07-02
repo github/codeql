@@ -1,4 +1,5 @@
 test_ModuleImportNode
+| amd1.js:1:25:1:26 | fs | fs | amd1.js:1:25:1:26 | fs | fs |
 | amd1.js:1:25:1:26 | fs | fs | amd1.js:2:3:2:4 | fs | fs |
 | amd2.js:2:12:2:24 | require('fs') | fs | amd2.js:3:3:3:4 | fs | fs |
 | client1.ts:4:28:4:29 | F1 | framework1 | client1.ts:4:28:4:29 | F1 | F1 |

@@ -31,7 +31,7 @@ private class PseudoProperty extends TypeTrackingPseudoProperty {
  * `load`/`store`/`loadStore` can be used in the `CollectionsTypeTracking` module.
  * (Thereby avoiding naming conflicts with a "cousin" `AdditionalFlowStep` implementation.)
  */
-abstract private class CollectionFlowStep extends DataFlow::AdditionalFlowStep {
+abstract class CollectionFlowStep extends DataFlow::AdditionalFlowStep {
   final override predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
 
   final override predicate step(

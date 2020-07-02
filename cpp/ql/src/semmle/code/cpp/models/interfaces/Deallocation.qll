@@ -1,5 +1,5 @@
 /**
- * Provides an abstract class for modelling functions and expressions that
+ * Provides an abstract class for modeling functions and expressions that
  * deallocate memory, such as the standard `free` function.  To use this QL
  * library, create one or more QL classes extending a class here with a
  * characteristic predicate that selects the functions or expressions you are

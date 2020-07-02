@@ -5,20 +5,28 @@
 import javascript
 import semmle.javascript.frameworks.HTTP
 import semmle.javascript.security.SensitiveActions
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
 
 module NodeJSLib {
+  private GlobalVariable processVariable() { variables(result, "process", any(GlobalScope sc)) }
+
+  pragma[nomagic]
+  private GlobalVarAccess processExprInTopLevel(TopLevel tl) {
+    result = processVariable().getAnAccess() and
+    tl = result.getTopLevel()
+  }
+
+  pragma[nomagic]
+  private GlobalVarAccess processExprInNodeModule() {
+    result = processExprInTopLevel(any(NodeModule m))
+  }
+
   /**
    * An access to the global `process` variable in a Node.js module, interpreted as
    * an import of the `process` module.
    */
   private class ImplicitProcessImport extends DataFlow::ModuleImportNode::Range {
-    ImplicitProcessImport() {
-      exists(GlobalVariable process |
-        process.getName() = "process" and
-        this = DataFlow::exprNode(process.getAnAccess())
-      ) and
-      getTopLevel() instanceof NodeModule
-    }
+    ImplicitProcessImport() { this = DataFlow::exprNode(processExprInNodeModule()) }
 
     override string getPath() { result = "process" }
   }
@@ -272,7 +280,7 @@ module NodeJSLib {
     DataFlow::Node tainted;
 
     PathFlowTarget() {
-      exists(string methodName | this = DataFlow::moduleMember("path", methodName).getACall() |
+      exists(string methodName | this = NodeJSLib::Path::moduleMember(methodName).getACall() |
         // getters
         methodName = "basename" and tainted = getArgument(0)
         or
@@ -442,10 +450,7 @@ module NodeJSLib {
 
     private DataFlow::SourceNode fsModule(DataFlow::TypeTracker t) {
       exists(string moduleName |
-        moduleName = "fs" or
-        moduleName = "graceful-fs" or
-        moduleName = "fs-extra" or
-        moduleName = "original-fs"
+        moduleName = ["mz/fs", "original-fs", "fs-extra", "graceful-fs", "fs"]
       |
         result = DataFlow::moduleImport(moduleName)
         or
@@ -454,7 +459,18 @@ module NodeJSLib {
       ) and
       t.start()
       or
-      exists(DataFlow::TypeTracker t2 | result = fsModule(t2).track(t2, t))
+      exists(DataFlow::TypeTracker t2, DataFlow::SourceNode pred | pred = fsModule(t2) |
+        result = pred.track(t2, t)
+        or
+        t.continue() = t2 and
+        exists(DataFlow::CallNode promisifyAllCall |
+          result = promisifyAllCall and
+          pred.flowsTo(promisifyAllCall.getArgument(0)) and
+          promisifyAllCall =
+            [DataFlow::moduleMember("bluebird", "promisifyAll"),
+                DataFlow::moduleImport("util-promisifyall")].getACall()
+        )
+      )
     }
   }
 
@@ -600,10 +616,26 @@ module NodeJSLib {
     result = callback
     or
     exists(DataFlow::CallNode promisify |
-      promisify = DataFlow::moduleMember("util", "promisify").getACall()
+      promisify = DataFlow::moduleMember(["util", "bluebird"], "promisify").getACall()
     |
       result = promisify and promisify.getArgument(0).getALocalSource() = callback
     )
+  }
+
+  /**
+   * A call to `util.deprecate`, considered to introduce data flow from its first argument
+   * to its result.
+   */
+  private class UtilDeprecateStep extends PreCallGraphStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::CallNode deprecate |
+        deprecate = DataFlow::moduleMember("util", "deprecate").getACall() or
+        deprecate = DataFlow::moduleImport("util-deprecate").getACall()
+      |
+        pred = deprecate.getArgument(0) and
+        succ = deprecate
+      )
+    }
   }
 
   /**
@@ -614,6 +646,8 @@ module NodeJSLib {
 
     ChildProcessMethodCall() {
       this = maybePromisified(DataFlow::moduleMember("child_process", methodName)).getACall()
+      or
+      this = DataFlow::moduleMember("mz/child_process", methodName).getACall()
     }
 
     private DataFlow::Node getACommandArgument(boolean shell) {

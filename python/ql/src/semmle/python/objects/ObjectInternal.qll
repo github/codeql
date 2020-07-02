@@ -17,6 +17,7 @@ import semmle.python.objects.Sequences
 import semmle.python.objects.Descriptors
 
 class ObjectInternal extends TObject {
+    /** Gets a textual representation of this element. */
     abstract string toString();
 
     /**

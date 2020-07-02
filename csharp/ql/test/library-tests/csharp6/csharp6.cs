@@ -50,4 +50,34 @@ class TestCSharp6
     int this[int i] => i;
 }
 
-// semmle-extractor-options: /r:System.Linq.dll
+class IndexInitializers
+{
+    class Compound
+    {
+        public Dictionary<int, string> DictionaryField;
+        public Dictionary<int, string> DictionaryProperty { get; set; }
+        public string[] ArrayField;
+        public string[] ArrayProperty { get; set; }
+        public string[,] ArrayField2;
+        public string[,] ArrayProperty2 { get; set; }
+    }
+
+    void Test()
+    {
+        // Collection initializer
+        var dict = new Dictionary<int, string>() { [0] = "Zero", [1] = "One", [2] = "Two" };
+
+        // Indexed initializer
+        var compound = new Compound()
+        {
+            DictionaryField = { [0] = "Zero", [1] = "One", [2] = "Two" },
+            DictionaryProperty = { [3] = "Three", [2] = "Two", [1] = "One" },
+            ArrayField = { [0] = "Zero", [1] = "One" },
+            ArrayField2 = { [0, 1] = "i", [1, 0] = "1" },
+            ArrayProperty = { [1] = "One", [2] = "Two" },
+            ArrayProperty2 = { [0, 1] = "i", [1, 0] = "1" },
+        };
+    }
+}
+
+// semmle-extractor-options: /r:System.Linq.dll /langerversion:6.0

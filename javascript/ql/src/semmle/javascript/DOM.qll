@@ -291,11 +291,27 @@ module DOM {
      */
     abstract class Range extends DataFlow::Node { }
 
+    private string getADomPropertyName() {
+      exists(ExternalInstanceMemberDecl decl |
+        result = decl.getName() and
+        isDomRootType(decl.getDeclaringType().getASupertype*())
+      )
+    }
+
     private class DefaultRange extends Range {
       DefaultRange() {
         this.asExpr().(VarAccess).getVariable() instanceof DOMGlobalVariable
         or
-        this = domValueRef().getAPropertyRead()
+        exists(DataFlow::PropRead read |
+          this = read and
+          read = domValueRef().getAPropertyRead()
+        |
+          not read.mayHavePropertyName(_)
+          or
+          read.mayHavePropertyName(getADomPropertyName())
+          or
+          read.mayHavePropertyName(any(string s | exists(s.toInt())))
+        )
         or
         this = domElementCreationOrQuery()
         or
@@ -323,6 +339,9 @@ module DOM {
   private DataFlow::SourceNode domValueRef(DataFlow::TypeTracker t) {
     t.start() and
     result = domValueSource()
+    or
+    t.start() and
+    result = domValueRef().getAMethodCall(["item", "namedItem"])
     or
     exists(DataFlow::TypeTracker t2 | result = domValueRef(t2).track(t2, t))
   }

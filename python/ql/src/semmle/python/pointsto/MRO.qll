@@ -68,6 +68,7 @@ private ClassObjectInternal sole_base(ClassObjectInternal cls) {
 
 /** A list of classes, used to represent the MRO of a class */
 class ClassList extends TClassList {
+    /** Gets a textual representation of this element. */
     string toString() { result = "[" + this.contents() + "]" }
 
     string contents() {
@@ -243,6 +244,7 @@ private predicate required_list(ClassList head, ClassListList tail) {
 }
 
 private class ClassListList extends TClassListList {
+    /** Gets a textual representation of this element. */
     string toString() { result = "[" + this.contents() + "]" }
 
     string contents() {

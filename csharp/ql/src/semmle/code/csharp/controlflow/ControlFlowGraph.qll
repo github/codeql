@@ -48,7 +48,7 @@ module ControlFlow {
      *
      * Example:
      *
-     * ```
+     * ```csharp
      * int M(string s)
      * {
      *     if (s == null)
@@ -80,7 +80,7 @@ module ControlFlow {
      *
      * Example:
      *
-     * ```
+     * ```csharp
      * int M(string s)
      * {
      *     if (s == null)
@@ -113,7 +113,7 @@ module ControlFlow {
      *
      * Example:
      *
-     * ```
+     * ```csharp
      * int M(string s)
      * {
      *     try
@@ -151,7 +151,7 @@ module ControlFlow {
      *
      * Example:
      *
-     * ```
+     * ```csharp
      * int M(string s)
      * {
      *     try
@@ -201,7 +201,7 @@ module ControlFlow {
      *
      * Example:
      *
-     * ```
+     * ```csharp
      * if (x < 0)
      *     x = -x;
      * ```
@@ -221,7 +221,7 @@ module ControlFlow {
      *
      * Example:
      *
-     * ```
+     * ```csharp
      * if (!(x >= 0))
      *     x = -x;
      * ```
@@ -501,7 +501,7 @@ module ControlFlow {
       private class WriteAccessNoNodeExpr extends WriteAccess, NoNodeExpr {
         WriteAccessNoNodeExpr() {
           // For example a write to a static field, `Foo.Bar = 0`.
-          forall(Expr e | e = this.(QualifiableExpr).getQualifier() | e instanceof NoNodeExpr)
+          forall(Expr e | e = this.getAChildExpr() | e instanceof NoNodeExpr)
         }
       }
 
@@ -553,7 +553,17 @@ module ControlFlow {
        * not evaluated, only the qualifier and the indexer arguments (if any).
        */
       private class QualifiedWriteAccess extends WriteAccess, QualifiableExpr {
-        QualifiedWriteAccess() { this.hasQualifier() }
+        QualifiedWriteAccess() {
+          this.hasQualifier()
+          or
+          // Member initializers like
+          // ```csharp
+          // new Dictionary<int, string>() { [0] = "Zero", [1] = "One", [2] = "Two" }
+          // ```
+          // need special treatment, because the the accesses `[0]`, `[1]`, and `[2]`
+          // have no qualifier.
+          this = any(MemberInitializer mi).getLValue()
+        }
       }
 
       /** A normal or a (potential) dynamic call to an accessor. */
@@ -572,7 +582,7 @@ module ControlFlow {
        * that the accessor is called *after* the assigned value has been evaluated.
        * In the example above, this means we want a CFG that looks like
        *
-       * ```
+       * ```csharp
        * x -> 0 -> set_Prop -> x.Prop = 0
        * ```
        */

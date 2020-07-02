@@ -13,6 +13,7 @@ class Variable extends @py_variable {
     /** Gets the identifier (name) of this variable */
     string getId() { variable(this, _, result) }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "Variable " + this.getId() }
 
     /** Gets an access (load or store) of this variable */

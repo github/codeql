@@ -1,5 +1,5 @@
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import semmle.python.security.strings.Basic
 import semmle.python.web.Http
 import TurboGears
@@ -27,5 +27,5 @@ class ControllerMethodTemplatedReturnValue extends HttpResponseTaintSink {
         )
     }
 
-    override predicate sinks(TaintKind kind) { kind instanceof StringDictKind }
+    override predicate sinks(TaintKind kind) { kind instanceof ExternalStringDictKind }
 }

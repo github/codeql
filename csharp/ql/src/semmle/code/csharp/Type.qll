@@ -96,7 +96,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    * In the following example, only the class `C2` has a parent namespace declaration
    * returned by `getParentNamespaceDeclaration`.
    *
-   * ```
+   * ```csharp
    * class C1 { ... }
    *
    * namespace N {
@@ -140,7 +140,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    *
    * For example, `C` has the methods `A.M1()`, `B.M3()`, and `C.M4()` in
    *
-   * ```
+   * ```csharp
    * class A {
    *   public void M1() { }
    *   private void M2() { }
@@ -165,7 +165,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    * For example, `C` has the callables `A.get_P1`, `A.set_P1`, `A.M2()`, `B.get_P2`,
    * `B.set_P2`, and `C.M3()` in
    *
-   * ```
+   * ```csharp
    * class A {
    *   public int P1 { get; set; }
    *   public virtual int P2 { get; set; }
@@ -194,7 +194,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
    *
    * For example, `C` has the members `A.P1`, `A.M2()`, `B.P2`, and `C.M3()` in
    *
-   * ```
+   * ```csharp
    * class A {
    *   public int P1 { get; set; }
    *   public virtual int P2 { get; set; }
@@ -368,7 +368,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
 /**
  * A nested type, for example `class B` in
  *
- * ```
+ * ```csharp
  * class A {
  *   class B {
  *     ...
@@ -608,7 +608,7 @@ class DecimalType extends SimpleType, @decimal_type {
 /**
  * An `enum`. For example
  *
- * ```
+ * ```csharp
  * enum Parity {
  *   Even,
  *   Odd
@@ -622,7 +622,7 @@ class Enum extends ValueType, @enum_type {
    *
    * For example, the underlying type of `Parity` is `int` in
    *
-   * ```
+   * ```csharp
    * enum Parity : int {
    *   Even,
    *   Odd
@@ -635,11 +635,12 @@ class Enum extends ValueType, @enum_type {
    * Gets an `enum` constant declared in this `enum`, for example `Even`
    * and `Odd` in
    *
-   * ```
+   * ```csharp
    * enum Parity : int {
    *   Even,
    *   Odd
    * }
+   * ```
    */
   EnumConstant getAnEnumConstant() { result.getDeclaringEnum() = this }
 
@@ -652,7 +653,7 @@ class Enum extends ValueType, @enum_type {
 /**
  * A `struct`, for example
  *
- * ```
+ * ```csharp
  * struct S {
  *   ...
  * }
@@ -706,7 +707,7 @@ private predicate isNonOverridden(Member m) { not m.(Virtualizable).isOverridden
 /**
  * A `class`, for example
  *
- * ```
+ * ```csharp
  * class C {
  *   ...
  * }
@@ -719,7 +720,7 @@ class Class extends RefType, @class_type { }
  *
  * For example, the class with fields `X` and `Y` in
  *
- * ```
+ * ```csharp
  * new { X = 0, Y = 0 };
  * ```
  */
@@ -748,7 +749,7 @@ class StringType extends Class {
 /**
  * An `interface`, for example
  *
- * ```
+ * ```csharp
  * interface I {
  *   ...
  * }
@@ -759,7 +760,7 @@ class Interface extends RefType, @interface_type { }
 /**
  * A `delegate` type, for example
  *
- * ```
+ * ```csharp
  * delegate int D(int p);
  * ```
  */
@@ -769,12 +770,6 @@ class DelegateType extends RefType, Parameterizable, @delegate_type {
 
   /** Gets the annotated return type of this delegate. */
   AnnotatedType getAnnotatedReturnType() { result.appliesTo(this) }
-
-  /** Holds if this delegate returns a `ref`. */
-  deprecated predicate returnsRef() { this.getAnnotatedReturnType().isRef() }
-
-  /** Holds if this delegate returns a `ref readonly`. */
-  deprecated predicate returnsRefReadonly() { this.getAnnotatedReturnType().isReadonlyRef() }
 }
 
 /**
@@ -965,7 +960,7 @@ class TypeMention extends @type_mention {
    * Gets the element to which this type mention belongs, if any.
    * For example, `IEnumerable<int>` belongs to parameter `p` in
    *
-   * ```
+   * ```csharp
    * void M(IEnumerable<int> p) { }
    * ```
    */
@@ -975,7 +970,7 @@ class TypeMention extends @type_mention {
    * Gets the parent of this type mention, if any.
    * For example, the parent of `int` is `IEnumerable<int>` in
    *
-   * ```
+   * ```csharp
    * void M(IEnumerable<int> p) {
    *   ...
    * }

@@ -37,6 +37,7 @@ import semmle.javascript.JsonParsers
 import semmle.javascript.JSX
 import semmle.javascript.Lines
 import semmle.javascript.Locations
+import semmle.javascript.MembershipCandidates
 import semmle.javascript.Modules
 import semmle.javascript.NodeJS
 import semmle.javascript.NPM

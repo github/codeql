@@ -53,7 +53,7 @@ class LogicalOrExpr extends BinaryLogicalOperation, @log_or_expr {
 /**
  * A null-coalescing operation, for example `s ?? ""` on line 2 in
  *
- * ```
+ * ```csharp
  * string NonNullOrEmpty(string s) {
  *   return s ?? "";
  * }
@@ -73,7 +73,7 @@ class TernaryLogicalOperation extends LogicalOperation, TernaryOperation, @terna
  * A conditional expression, for example `s != null ? s.Length : -1`
  * on line 2 in
  *
- * ```
+ * ```csharp
  * int LengthOrNegative(string s) {
  *   return s != null ? s.Length : -1;
  * }

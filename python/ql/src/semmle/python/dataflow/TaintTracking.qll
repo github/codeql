@@ -355,6 +355,7 @@ abstract class Sanitizer extends string {
  * class to provide their own sources.
  */
 abstract class TaintSource extends @py_flow_node {
+    /** Gets a textual representation of this element. */
     string toString() { result = "Taint source" }
 
     /**
@@ -378,8 +379,16 @@ abstract class TaintSource extends @py_flow_node {
 
     Location getLocation() { result = this.(ControlFlowNode).getLocation() }
 
-    predicate hasLocationInfo(string fp, int bl, int bc, int el, int ec) {
-        this.getLocation().hasLocationInfo(fp, bl, bc, el, ec)
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+     */
+    predicate hasLocationInfo(
+        string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {        this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
     /** Gets a TaintedNode for this taint source */
@@ -470,6 +479,7 @@ private class SequenceExtends extends DataFlowExtension::DataFlowNode {
  * class to provide their own sink nodes.
  */
 abstract class TaintSink extends @py_flow_node {
+    /** Gets a textual representation of this element. */
     string toString() { result = "Taint sink" }
 
     /**
@@ -482,8 +492,16 @@ abstract class TaintSink extends @py_flow_node {
 
     Location getLocation() { result = this.(ControlFlowNode).getLocation() }
 
-    predicate hasLocationInfo(string fp, int bl, int bc, int el, int ec) {
-        this.getLocation().hasLocationInfo(fp, bl, bc, el, ec)
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+     */
+    predicate hasLocationInfo(
+        string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {        this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 }
 
@@ -495,6 +513,7 @@ abstract class TaintSink extends @py_flow_node {
 module DataFlowExtension {
     /** A control flow node that modifies the basic data-flow. */
     abstract class DataFlowNode extends @py_flow_node {
+        /** Gets a textual representation of this element. */
         string toString() { result = "Dataflow extension node" }
 
         /**
@@ -641,6 +660,7 @@ module DataFlow {
 
         abstract EssaVariable asVariable();
 
+        /** Gets a textual representation of this element. */
         abstract string toString();
 
         abstract Scope getScope();
@@ -660,6 +680,7 @@ module DataFlow {
 
         override EssaVariable asVariable() { none() }
 
+        /** Gets a textual representation of this element. */
         override string toString() { result = this.asAstNode().toString() }
 
         override Scope getScope() { result = this.asCfgNode().getScope() }
@@ -674,6 +695,7 @@ module DataFlow {
 
         override EssaVariable asVariable() { this = TEssaNode(result) }
 
+        /** Gets a textual representation of this element. */
         override string toString() { result = this.asVariable().toString() }
 
         override Scope getScope() { result = this.asVariable().getScope() }

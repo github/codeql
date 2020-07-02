@@ -1,6 +1,4 @@
 /**
- * DEPRECATED.
- *
  * Provides classes representing data flow sources for parameters of public callables.
  */
 
@@ -9,7 +7,7 @@ import csharp
 /**
  * A parameter of a public callable, for example `p` in
  *
- * ```
+ * ```csharp
  * public void M(int p) {
  *   ...
  * }

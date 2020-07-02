@@ -268,6 +268,6 @@ predicate similarScopes(Scope s, Scope other, float percent, string message) {
  * Holds if the line is acceptable as a duplicate.
  * This is true for blocks of import statements.
  */
-predicate whitelistedLineForDuplication(File f, int line) {
+predicate allowlistedLineForDuplication(File f, int line) {
     exists(ImportingStmt i | i.getLocation().getFile() = f and i.getLocation().getStartLine() = line)
 }

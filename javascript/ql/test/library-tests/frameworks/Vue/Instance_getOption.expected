@@ -1,5 +1,6 @@
 | single-component-file-1.vue:0:0:0:0 | single-component-file-1.vue | data | single-component-file-1.vue:6:11:6:45 | functio ...  42 } } |
 | single-file-component-3.vue:0:0:0:0 | single-file-component-3.vue | data | single-file-component-3-script.js:4:8:4:42 | functio ...  42 } } |
+| single-file-component-4.vue:0:0:0:0 | single-file-component-4.vue | render | single-file-component-4.vue:9:13:9:22 | (h) => { } |
 | tst.js:3:1:10:2 | new Vue ... 2\\n\\t}\\n}) | data | tst.js:7:8:9:2 | {\\n\\t\\tdataA: 42\\n\\t} |
 | tst.js:3:1:10:2 | new Vue ... 2\\n\\t}\\n}) | render | tst.js:4:10:6:2 | functio ...  c);\\n\\t} |
 | tst.js:12:1:16:2 | new Vue ... \\t}),\\n}) | data | tst.js:13:8:15:3 | () => ( ...  42\\n\\t}) |

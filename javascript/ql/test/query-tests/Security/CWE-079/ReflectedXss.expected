@@ -19,6 +19,12 @@ nodes
 | ReflectedXssContentTypes.js:70:12:70:34 | "FOO: " ... rams.id |
 | ReflectedXssContentTypes.js:70:22:70:34 | req.params.id |
 | ReflectedXssContentTypes.js:70:22:70:34 | req.params.id |
+| ReflectedXssGood3.js:135:9:135:27 | url |
+| ReflectedXssGood3.js:135:15:135:27 | req.params.id |
+| ReflectedXssGood3.js:135:15:135:27 | req.params.id |
+| ReflectedXssGood3.js:139:12:139:27 | escapeHtml3(url) |
+| ReflectedXssGood3.js:139:12:139:27 | escapeHtml3(url) |
+| ReflectedXssGood3.js:139:24:139:26 | url |
 | etherpad.js:9:5:9:53 | response |
 | etherpad.js:9:16:9:30 | req.query.jsonp |
 | etherpad.js:9:16:9:30 | req.query.jsonp |
@@ -105,6 +111,11 @@ edges
 | ReflectedXssContentTypes.js:70:22:70:34 | req.params.id | ReflectedXssContentTypes.js:70:12:70:34 | "FOO: " ... rams.id |
 | ReflectedXssContentTypes.js:70:22:70:34 | req.params.id | ReflectedXssContentTypes.js:70:12:70:34 | "FOO: " ... rams.id |
 | ReflectedXssContentTypes.js:70:22:70:34 | req.params.id | ReflectedXssContentTypes.js:70:12:70:34 | "FOO: " ... rams.id |
+| ReflectedXssGood3.js:135:9:135:27 | url | ReflectedXssGood3.js:139:24:139:26 | url |
+| ReflectedXssGood3.js:135:15:135:27 | req.params.id | ReflectedXssGood3.js:135:9:135:27 | url |
+| ReflectedXssGood3.js:135:15:135:27 | req.params.id | ReflectedXssGood3.js:135:9:135:27 | url |
+| ReflectedXssGood3.js:139:24:139:26 | url | ReflectedXssGood3.js:139:12:139:27 | escapeHtml3(url) |
+| ReflectedXssGood3.js:139:24:139:26 | url | ReflectedXssGood3.js:139:12:139:27 | escapeHtml3(url) |
 | etherpad.js:9:5:9:53 | response | etherpad.js:11:12:11:19 | response |
 | etherpad.js:9:5:9:53 | response | etherpad.js:11:12:11:19 | response |
 | etherpad.js:9:16:9:30 | req.query.jsonp | etherpad.js:9:16:9:53 | req.que ... e + ")" |
@@ -166,6 +177,7 @@ edges
 | ReflectedXssContentTypes.js:20:14:20:36 | "FOO: " ... rams.id | ReflectedXssContentTypes.js:20:24:20:36 | req.params.id | ReflectedXssContentTypes.js:20:14:20:36 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXssContentTypes.js:20:24:20:36 | req.params.id | user-provided value |
 | ReflectedXssContentTypes.js:39:13:39:35 | "FOO: " ... rams.id | ReflectedXssContentTypes.js:39:23:39:35 | req.params.id | ReflectedXssContentTypes.js:39:13:39:35 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXssContentTypes.js:39:23:39:35 | req.params.id | user-provided value |
 | ReflectedXssContentTypes.js:70:12:70:34 | "FOO: " ... rams.id | ReflectedXssContentTypes.js:70:22:70:34 | req.params.id | ReflectedXssContentTypes.js:70:12:70:34 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXssContentTypes.js:70:22:70:34 | req.params.id | user-provided value |
+| ReflectedXssGood3.js:139:12:139:27 | escapeHtml3(url) | ReflectedXssGood3.js:135:15:135:27 | req.params.id | ReflectedXssGood3.js:139:12:139:27 | escapeHtml3(url) | Cross-site scripting vulnerability due to $@. | ReflectedXssGood3.js:135:15:135:27 | req.params.id | user-provided value |
 | etherpad.js:11:12:11:19 | response | etherpad.js:9:16:9:30 | req.query.jsonp | etherpad.js:11:12:11:19 | response | Cross-site scripting vulnerability due to $@. | etherpad.js:9:16:9:30 | req.query.jsonp | user-provided value |
 | exception-xss.js:190:12:190:24 | req.params.id | exception-xss.js:190:12:190:24 | req.params.id | exception-xss.js:190:12:190:24 | req.params.id | Cross-site scripting vulnerability due to $@. | exception-xss.js:190:12:190:24 | req.params.id | user-provided value |
 | formatting.js:6:14:6:47 | util.fo ... , evil) | formatting.js:4:16:4:29 | req.query.evil | formatting.js:6:14:6:47 | util.fo ... , evil) | Cross-site scripting vulnerability due to $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |

@@ -1,3 +1,11 @@
+/**
+ * Provides queries to pretty-print a C++ AST as a graph.
+ *
+ * By default, this will print the AST for all functions in the database. To change this behavior,
+ * extend `PrintASTConfiguration` and override `shouldPrintFunction` to hold for only the functions
+ * you wish to view the AST for.
+ */
+
 import cpp
 private import semmle.code.cpp.Print
 
@@ -7,6 +15,9 @@ private newtype TPrintASTConfiguration = MkPrintASTConfiguration()
  * The query can extend this class to control which functions are printed.
  */
 class PrintASTConfiguration extends TPrintASTConfiguration {
+  /**
+   * Gets a textual representation of this `PrintASTConfiguration`.
+   */
   string toString() { result = "PrintASTConfiguration" }
 
   /**
@@ -96,6 +107,9 @@ private newtype TPrintASTNode =
  * A node in the output tree.
  */
 class PrintASTNode extends TPrintASTNode {
+  /**
+   * Gets a textual representation of this node in the PrintAST output tree.
+   */
   abstract string toString();
 
   /**
@@ -155,7 +169,7 @@ class PrintASTNode extends TPrintASTNode {
  * Retrieves the canonical QL class(es) for entity `el`
  */
 private string qlClass(ElementBase el) {
-  result = "[" + concat(el.getCanonicalQLClass(), ",") + "] "
+  result = "[" + concat(el.getAPrimaryQlClass(), ",") + "] "
   // Alternative implementation -- do not delete. It is useful for QL class discovery.
   //result = "["+ concat(el.getAQlClass(), ",") + "] "
 }
@@ -208,6 +222,9 @@ class ExprNode extends ASTNode {
     result = expr.getValueCategoryString()
   }
 
+  /**
+   * Gets the value of this expression, if it is a constant.
+   */
   string getValue() { result = expr.getValue() }
 }
 
@@ -373,6 +390,9 @@ class ParametersNode extends PrintASTNode, TParametersNode {
 
   override ASTNode getChild(int childIndex) { result.getAST() = func.getParameter(childIndex) }
 
+  /**
+   * Gets the `Function` for which this node represents the parameters.
+   */
   final Function getFunction() { result = func }
 }
 
@@ -392,6 +412,9 @@ class ConstructorInitializersNode extends PrintASTNode, TConstructorInitializers
     result.getAST() = ctor.getInitializer(childIndex)
   }
 
+  /**
+   * Gets the `Constructor` for which this node represents the initializer list.
+   */
   final Constructor getConstructor() { result = ctor }
 }
 
@@ -411,6 +434,9 @@ class DestructorDestructionsNode extends PrintASTNode, TDestructorDestructionsNo
     result.getAST() = dtor.getDestruction(childIndex)
   }
 
+  /**
+   * Gets the `Destructor` for which this node represents the destruction list.
+   */
   final Destructor getDestructor() { result = dtor }
 }
 
@@ -464,6 +490,9 @@ class FunctionNode extends ASTNode {
     key = "semmle.order" and result = getOrder().toString()
   }
 
+  /**
+   * Gets the `Function` this node represents.
+   */
   final Function getFunction() { result = func }
 }
 
@@ -499,11 +528,16 @@ class ArrayAggregateLiteralNode extends ExprNode {
   }
 }
 
+/** Holds if `node` belongs to the output tree, and its property `key` has the given `value`. */
 query predicate nodes(PrintASTNode node, string key, string value) {
   node.shouldPrint() and
   value = node.getProperty(key)
 }
 
+/**
+ * Holds if `target` is a child of `source` in the AST, and property `key` of the edge has the
+ * given `value`.
+ */
 query predicate edges(PrintASTNode source, PrintASTNode target, string key, string value) {
   exists(int childIndex |
     source.shouldPrint() and
@@ -517,6 +551,7 @@ query predicate edges(PrintASTNode source, PrintASTNode target, string key, stri
   )
 }
 
+/** Holds if property `key` of the graph has the given `value`. */
 query predicate graphProperties(string key, string value) {
   key = "semmle.graphKind" and value = "tree"
 }

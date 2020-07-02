@@ -1,6 +1,6 @@
 import python
 private import Common
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 
 /** An extensible kind of taint representing any kind of string. */
 abstract class StringKind extends TaintKind {
@@ -107,7 +107,11 @@ private predicate os_path_join(ControlFlowNode fromnode, CallNode tonode) {
     tonode.getAnArg() = fromnode
 }
 
-/** A kind of "taint", representing a dictionary mapping str->"taint" */
-class StringDictKind extends DictKind {
+/**
+ * A kind of "taint", representing a dictionary mapping str->"taint"
+ *
+ * DEPRECATED: Use `ExternalStringDictKind` instead.
+ */
+deprecated class StringDictKind extends DictKind {
     StringDictKind() { this.getValue() instanceof StringKind }
 }

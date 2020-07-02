@@ -1,5 +1,5 @@
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 
 private ClassValue theTwistedHttpRequestClass() {
     result = Value::named("twisted.web.http.Request")

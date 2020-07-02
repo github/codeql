@@ -29,6 +29,7 @@ abstract class SsaSourceVariable extends @py_variable {
 
     abstract ControlFlowNode getScopeEntryDefinition();
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "SsaSourceVariable " + this.getName() }
 
     /** Gets a use of this variable, either explicit or implicit. */

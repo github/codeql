@@ -159,7 +159,8 @@ module Cached {
     Stages::DataFlowStage::forceCachingInSameStage() and
     any(LocalTaintExprStepConfiguration x).hasNodePath(nodeFrom, nodeTo)
     or
-    nodeFrom = nodeTo.(YieldReturnNode).getPreUpdateNode()
+    nodeFrom.(DataFlow::ExprNode).getControlFlowNode() =
+      nodeTo.(YieldReturnNode).getControlFlowNode()
     or
     localTaintStepCil(nodeFrom, nodeTo)
     or

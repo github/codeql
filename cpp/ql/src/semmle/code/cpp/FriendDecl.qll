@@ -1,3 +1,7 @@
+/**
+ * Provides a class representing C++ `friend` declarations.
+ */
+
 import semmle.code.cpp.Declaration
 private import semmle.code.cpp.internal.ResolveClass
 
@@ -23,7 +27,7 @@ class FriendDecl extends Declaration, @frienddecl {
    */
   override Location getADeclarationLocation() { result = this.getLocation() }
 
-  override string getCanonicalQLClass() { result = "FriendDecl" }
+  override string getAPrimaryQlClass() { result = "FriendDecl" }
 
   /**
    * Implements the abstract method `Declaration.getDefinitionLocation`. A

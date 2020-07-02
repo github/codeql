@@ -1,3 +1,7 @@
+/**
+ * Provides predicates for identifying function calls that open or close a file.
+ */
+
 import cpp
 
 /**

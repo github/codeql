@@ -1,7 +1,7 @@
 CodeQL library for Java
 =======================
 
-When you're analyzing a Java program in {{ site.data.variables.product.prodname_dotcom }}, you can make use of the large collection of classes in the CodeQL library for Java.
+When you're analyzing a Java program, you can make use of the large collection of classes in the CodeQL library for Java.
 
 About the CodeQL library for Java
 ---------------------------------
@@ -210,7 +210,7 @@ Class ``Variable`` represents a variable `in the Java sense <http://docs.oracle.
 Abstract syntax tree
 --------------------
 
-Classes in this category represent abstract syntax tree (AST) nodes, that is, statements (class ``Stmt``) and expressions (class ``Expr``). For a full list of expression and statement types available in the standard QL library, see :doc:`Classes for working with Java code <ast-class-reference>`.
+Classes in this category represent abstract syntax tree (AST) nodes, that is, statements (class ``Stmt``) and expressions (class ``Expr``). For a full list of expression and statement types available in the standard QL library, see :doc:`Abstract syntax tree classes for working with Java programs <ast-class-reference>`.
 
 Both ``Expr`` and ``Stmt`` provide member predicates for exploring the abstract syntax tree of a program:
 
