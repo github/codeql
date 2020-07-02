@@ -209,9 +209,9 @@ private predicate argToQualifierStep(Expr tracked, Expr sink) {
 /** Access to a method that passes taint from an argument. */
 private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
   exists(Method m, int i |
-    m = sink.(MethodAccess).getMethod() and
+    m = sink.getMethod() and
     taintPreservingArgumentToMethod(m, i) and
-    tracked = sink.(MethodAccess).getArgument(i)
+    tracked = sink.getArgument(i)
   )
 }
 
