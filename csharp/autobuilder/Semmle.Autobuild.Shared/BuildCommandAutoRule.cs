@@ -11,9 +11,9 @@ namespace Semmle.Autobuild.Shared
     /// </summary>
     public class BuildCommandAutoRule : IBuildRule
     {
-        private readonly Func<Autobuilder, Func<IDictionary<string, string>?, BuildScript>, BuildScript> withDotNet;
+        private readonly WithDotNet withDotNet;
 
-        public BuildCommandAutoRule(Func<Autobuilder, Func<IDictionary<string, string>?, BuildScript>, BuildScript> withDotNet)
+        public BuildCommandAutoRule(WithDotNet withDotNet)
         {
             this.withDotNet = withDotNet;
         }
