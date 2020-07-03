@@ -16,7 +16,7 @@ public class LogInjection {
     public String good(@RequestParam(value = "username", defaultValue = "name") String username) {
         username = username.replace("\n", "");
         log.warn("User:'{}'", username);
-        return new String(username);
+        return username;
         // User:'Guest'User:'Admin'
     }
 
@@ -24,7 +24,7 @@ public class LogInjection {
     @GetMapping("/bad")
     public String bad(@RequestParam(value = "username", defaultValue = "name") String username) {
         log.warn("User:'{}'", username);
-        return new String(username);
+        return username;
         // User:'Guest'
         // User:'Admin'
 
