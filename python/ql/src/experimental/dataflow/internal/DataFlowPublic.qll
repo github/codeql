@@ -27,9 +27,7 @@ newtype TNode =
  * (`ExprNode`) or a parameter (`ParameterNode`).
  */
 class Node extends TNode {
-  /**
-   * Get a string representation of this data flow node.
-   */
+/** Gets a textual representation of this element. */
   string toString() { result = "Data flow node" }
 
    /** Gets the scope of this node. */
