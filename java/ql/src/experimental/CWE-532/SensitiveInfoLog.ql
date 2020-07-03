@@ -31,9 +31,10 @@ class CredentialExpr extends Expr {
 class LoggerType extends RefType {
   LoggerType() {
     this.hasQualifiedName("org.apache.log4j", "Category") or //Log4J
-    this.hasQualifiedName("org.apache.logging.log4j", "Logger") or //Log4J 2
+    this.hasQualifiedName("org.apache.logging.log4j", "Logger") or //Log4j 2
     this.hasQualifiedName("org.slf4j", "Logger") or //SLF4j and Gradle Logging
-    this.hasQualifiedName("org.jboss.logging", "BasicLogger") //JBoss Logging
+    this.hasQualifiedName("org.jboss.logging", "Logger") or //JBoss Logging
+    this.hasQualifiedName("org.apache.commons.logging", "Log") //Apache Commons Logging
   }
 }
 
@@ -43,7 +44,8 @@ predicate isSensitiveLoggingSink(DataFlow::Node sink) {
     (
       ma.getMethod().hasName("debug") or
       ma.getMethod().hasName("trace") or
-      ma.getMethod().hasName("debugf")
+      ma.getMethod().hasName("debugf") or
+      ma.getMethod().hasName("debugv")
     ) and //Check low priority log levels which are more likely to be real issues to reduce false positives
     sink.asExpr() = ma.getAnArgument()
   )
