@@ -124,7 +124,7 @@ Try recovering an existing taint tracking query by implementing sources, sinks, 
 
 - Implementation has largely been done by finding a plausibly-sounding predicate in the python library to refer to. We should review that we actually have the intended semantics in all places.
 - Comprehensive testing.
-- The regression tests track the value of guards in order to eliminate impossible data flow. We currently have regressions because of this. We cannot readily replicate the existing method, as it uses the interdefinedness of data flow and taint tracking (there is a boolean taint kind). C++ does something similar for eliminating impossible control flow, which we might be able to replicate (they infer values of "interesting" control flow nodes, which are those needed to determine values of guards).
+- The regression tests track the value of guards in order to eliminate impossible data flow. We currently have regressions because of this. We cannot readily replicate the existing method, as it uses the interdefinedness of data flow and taint tracking (there is a boolean taint kind). C++ [does something similar](https://github.com/github/codeql/blob/master/cpp/ql/src/semmle/code/cpp/controlflow/internal/ConstantExprs.qll#L27-L36) for eliminating impossible control flow, which we might be able to replicate (they infer values of "interesting" control flow nodes, which are those needed to determine values of guards).
 - Flow for some syntactic constructs are done via extra taint steps in the existing implementation, we should find a way to get data flow for it. Some of this should be covered by field flow.
 - A document is being written about proper use of the shared data flow library, this should be adhered to. In particular, we should consider replacing def-use with def-to-first-use and use-to-next-use in local flow.
 - We seem to get duplicated results for global flow, as well as flow with and without type (so four times the "unique" results).
@@ -132,6 +132,7 @@ Try recovering an existing taint tracking query by implementing sources, sinks, 
 - We should probably override ToString for a number of data flow nodes.
 - Test flow through classes, constructors and methods.
 - What happens with named arguments? What does C# do?
-- What should the enclosable callable for global variables be? C++ makes it the variable itself, C# seems to not have nodes for these but only for their reads and writes.
+- What should the enclosable callable for global variables be? C++ [makes it the variable itself](https://github.com/github/codeql/blob/master/cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/DataFlowUtil.qll#L417), C# seems to not have nodes for these but only for their reads and writes.
 - Is `yield` another return type? If not, how is it handled?
 - Should `OutNode` include magic function calls?
+- Consider creating an internal abstract class for nodes as C# does. Among other things, this can help the optimizer by stating that `getEnclosingCallable` [is functional](https://github.com/github/codeql/blob/master/csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowPublic.qll#L62).
