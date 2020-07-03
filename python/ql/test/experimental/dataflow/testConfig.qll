@@ -25,21 +25,21 @@ import experimental.dataflow.DataFlow
 class TestConfiguration extends DataFlow::Configuration {
   TestConfiguration() { this = "TestConfiguration" }
 
-  override predicate isSource(DataFlow::Node node) {
-    node.asCfgNode().(NameNode).getId() = "SOURCE"
+   override predicate isSource(DataFlow::Node node) {
+    node.(DataFlow::CfgNode).getNode().(NameNode).getId() = "SOURCE"
     or
-    node.asCfgNode().getNode().(StrConst).getS() = "source"
+    node.(DataFlow::CfgNode).getNode().getNode().(StrConst).getS() = "source"
     or
-    node.asCfgNode().getNode().(IntegerLiteral).getN() = "42"
+    node.(DataFlow::CfgNode).getNode().getNode().(IntegerLiteral).getN() = "42"
     or
-    node.asCfgNode().getNode().(FloatLiteral).getN() = "42.0"
+    node.(DataFlow::CfgNode).getNode().getNode().(FloatLiteral).getN() = "42.0"
     // No support for complex numbers
   }
 
-  override predicate isSink(DataFlow::Node node) {
+   override predicate isSink(DataFlow::Node node) {
     exists(CallNode call |
-      call.getFunction().(NameNode).getId() = "SINK" and
-      node.asCfgNode() = call.getAnArg()
+      call.getFunction().(NameNode).getId() in ["SINK", "SINK_F"] and
+      node.(DataFlow::CfgNode).getNode() = call.getAnArg()
     )
   }
 }

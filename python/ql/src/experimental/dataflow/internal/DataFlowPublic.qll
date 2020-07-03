@@ -27,34 +27,23 @@ newtype TNode =
  * (`ExprNode`) or a parameter (`ParameterNode`).
  */
 class Node extends TNode {
-
-  /**
-   * Get the underlying SSA variable if this is such a node.
-   */
-  EssaVariable asEssaNode() { this = TEssaNode(result) }
-
-  /**
-   * Get the underlying ControlFlowNode if this is such a node.
-   */
-  ControlFlowNode asCfgNode() { this = TCfgNode(result) }
-
   /**
    * Get a string representation of this data flow node.
    */
-  string toString() {
-    result = this.asEssaNode().toString()
-    or
-    result = this.asCfgNode().toString()
-  }
+  string toString() { result = "Data flow node" }
 
-  /** Gets the enclosing callable of this node. */
+   /** Gets the scope of this node. */
+  Scope getScope() { none() }
+
+   /** Gets the enclosing callable of this node. */
   DataFlowCallable getEnclosingCallable() {
-    result.getScope() = this.asCfgNode().getNode().getScope() // this allows Cfg -> ESSA def
-    or
-    result.getScope() = this.asEssaNode().getScope() // this allows ESSA var -> Cfg use
+    result.getScope() = this.getScope()
   }
 
-  /**
+   /** Gets the location of this node */
+  Location getLocation() { none() }
+
+   /**
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
@@ -64,12 +53,47 @@ class Node extends TNode {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this.asEssaNode().getDefinition().getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    or
-    this.asCfgNode().getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.getLocation()
+        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+}
+
+ class EssaNode extends Node, TEssaNode {
+  EssaVariable var;
+
+   EssaNode() { this = TEssaNode(var) }
+
+   EssaVariable getVar() { result = var }
+
+   /**
+   * Get a string representation of this data flow node.
+   */
+  override string toString() {
+    result = var.toString()
   }
 
+   override Scope getScope() { result = var.getScope() }
 
+   override Location getLocation() { result = var.getDefinition().getLocation() }
+}
+
+ class CfgNode extends Node, TCfgNode {
+  ControlFlowNode node;
+
+   CfgNode() { this = TCfgNode(node) }
+
+   ControlFlowNode getNode() { result = node }
+
+   /**
+   * Get a string representation of this data flow node.
+   */
+  override string toString() {
+    result = node.toString()
+  }
+
+   override Scope getScope() { result = node.getScope() }
+
+   override Location getLocation() { result = node.getLocation() }
 }
 
 /**
@@ -89,22 +113,18 @@ ExprNode exprNode(DataFlowExpr e) { none() }
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends Node {
-  ParameterNode() {
-    this.asEssaNode() instanceof ParameterDefinition
-  }
+class ParameterNode extends EssaNode {
+  ParameterNode() { var instanceof ParameterDefinition }
 
-  /**
+   /**
    * Holds if this node is the parameter of callable `c` at the specified
    * (zero-based) position.
    */
   predicate isParameterOf(DataFlowCallable c, int i) {
-    this.asEssaNode().(ParameterDefinition).getDefiningNode() = c.getParameter(i)
+    var.(ParameterDefinition).getDefiningNode() = c.getParameter(i)
   }
 
-  override DataFlowCallable getEnclosingCallable() {
-    this.isParameterOf(result, _)
-  }
+   override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
 }
 
 /**

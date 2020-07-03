@@ -40,15 +40,15 @@ module EssaFlow {
     //   `x = f(42)`
     //   nodeFrom is `f(42)`, cfg node
     //   nodeTo is `x`, essa var
-    nodeFrom.asCfgNode() = nodeTo.asEssaNode().getDefinition().(AssignmentDefinition).getValue()
+    nodeFrom.(CfgNode).getNode() = nodeTo.(EssaNode).getVar().getDefinition().(AssignmentDefinition).getValue()
     or
     // With definition
     //   `with f(42) as x:`
     //   nodeFrom is `f(42)`, cfg node
     //   nodeTo is `x`, essa var
     exists(With with, ControlFlowNode contextManager, ControlFlowNode var |
-      nodeFrom.asCfgNode() = contextManager and
-      nodeTo.asEssaNode().getDefinition().(WithDefinition).getDefiningNode() = var and
+      nodeFrom.(CfgNode).getNode() = contextManager and
+      nodeTo.(EssaNode).getVar().getDefinition().(WithDefinition).getDefiningNode() = var and
       // see `with_flow`
       with.getContextExpr() = contextManager.getNode() and
       with.getOptionalVars() = var.getNode() and
@@ -60,22 +60,22 @@ module EssaFlow {
     //   `x = f(y)`
     //   nodeFrom is `y` on first line, essa var
     //   nodeTo is `y` on second line, cfg node
-    nodeFrom.asEssaNode().getAUse() = nodeTo.asCfgNode()
+    nodeFrom.(EssaNode).getVar().getAUse() = nodeTo.(CfgNode).getNode()
     or
     // Refinements
     exists(EssaEdgeRefinement r |
-      nodeTo.asEssaNode() = r.getVariable() and
-      nodeFrom.asEssaNode() = r.getInput()
+      nodeTo.(EssaNode).getVar() = r.getVariable() and
+      nodeFrom.(EssaNode).getVar() = r.getInput()
     )
     or
     exists(EssaNodeRefinement r |
-      nodeTo.asEssaNode() = r.getVariable() and
-      nodeFrom.asEssaNode() = r.getInput()
+      nodeTo.(EssaNode).getVar() = r.getVariable() and
+      nodeFrom.(EssaNode).getVar() = r.getInput()
     )
     or
     exists(PhiFunction p |
-      nodeTo.asEssaNode() = p.getVariable() and
-      nodeFrom.asEssaNode() = p.getAnInput()
+      nodeTo.(EssaNode).getVar() = p.getVariable() and
+      nodeFrom.(EssaNode).getVar() = p.getAnInput()
     )
   }
 }
@@ -119,19 +119,19 @@ class DataFlowCall extends CallNode {
 }
 
 /** A data flow node that represents a call argument. */
-class ArgumentNode extends Node {
+class ArgumentNode extends CfgNode {
   ArgumentNode() {
     exists(DataFlowCall call, int pos |
-      this.asCfgNode() = call.getArg(pos)
+      node = call.getArg(pos)
     )
   }
 
-  /** Holds if this argument occurs at the given position in the given call. */
+   /** Holds if this argument occurs at the given position in the given call. */
   predicate argumentOf(DataFlowCall call, int pos) {
-    this.asCfgNode() = call.getArg(pos)
+    node = call.getArg(pos)
   }
 
-  /** Gets the call in which this node is an argument. */
+   /** Gets the call in which this node is an argument. */
   final DataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
@@ -152,31 +152,31 @@ class ReturnKind extends TReturnKind {
 }
 
 /** A data flow node that represents a value returned by a callable. */
-class ReturnNode extends Node {
+class ReturnNode extends CfgNode {
   Return ret;
 
-  // See `TaintTrackingImplementation::returnFlowStep`
+   // See `TaintTrackingImplementation::returnFlowStep`
   ReturnNode() {
-    this.asCfgNode() = ret.getValue().getAFlowNode()
+    node = ret.getValue().getAFlowNode()
   }
 
-  /** Gets the kind of this return node. */
+   /** Gets the kind of this return node. */
   ReturnKind getKind() { result = TNormalReturnKind() }
 
-  override DataFlowCallable getEnclosingCallable() {
+   override DataFlowCallable getEnclosingCallable() {
     result.getScope().getAStmt() = ret // TODO: check nested function definitions
   }
 }
 
 /** A data flow node that represents the output of a call. */
-class OutNode extends Node {
-  OutNode() { this.asCfgNode() instanceof CallNode }
+class OutNode extends CfgNode {
+  OutNode() { node instanceof CallNode }
 
-  /** Gets the underlying call, where this node is a corresponding output of kind `kind`. */
+   /** Gets the underlying call, where this node is a corresponding output of kind `kind`. */
   cached
   DataFlowCall getCall(ReturnKind kind) {
     kind = TNormalReturnKind() and
-    result = this.asCfgNode()
+    result = node
   }
 }
 
@@ -231,13 +231,13 @@ string ppReprType(DataFlowType t) { result = t.toString() }
  * another. Additional steps specified by the configuration are *not*
  * taken into account.
  */
-predicate jumpStep(ExprNode pred, ExprNode succ) {
+predicate jumpStep(Node pred, Node succ) {
   // As we have ESSA variables for global variables,
   // we include ESSA flow steps involving global variables.
   (
-    pred.asEssaNode() instanceof GlobalSsaVariable
+    pred.(EssaNode).getVar() instanceof GlobalSsaVariable
     or
-    succ.asEssaNode() instanceof GlobalSsaVariable
+    succ.(EssaNode).getVar() instanceof GlobalSsaVariable
   ) and
   EssaFlow::essaFlowStep(pred, succ)
 }

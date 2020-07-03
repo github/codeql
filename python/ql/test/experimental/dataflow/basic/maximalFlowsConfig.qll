@@ -10,9 +10,8 @@ class MaximalFlowsConfig extends DataFlow::Configuration {
   override predicate isSource(DataFlow::Node node) {
     node instanceof DataFlow::ParameterNode
     or
-    node = DataFlow::TEssaNode(_) and
-    not exists(DataFlow::Node pred |
-      pred = DataFlow::TEssaNode(_) and
+    node instanceof DataFlow::EssaNode and
+    not exists(DataFlow::EssaNode pred |
       DataFlow::localFlowStep(pred, node)
     )
   }
@@ -20,7 +19,7 @@ class MaximalFlowsConfig extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node node) {
     node instanceof DataFlow::ReturnNode
     or
-    node = DataFlow::TEssaNode(_) and
-    not exists(node.asEssaNode().getASourceUse())
+    node instanceof DataFlow::EssaNode and
+    not exists(node.(DataFlow::EssaNode).getVar().getASourceUse())
   }
 }
