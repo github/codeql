@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Server Side Template Injection is possible when an attacker injects template directive as user input that can execute arbitrary code on the server.</p>
+</overview>
+
+<recommendation>
+<p>Server-side template injection occurs when user-controlled input is embedded into a server-side template, allowing users to inject template directives.</p>
+<p>This allows an attacker to inject malicious template directives and possibly execute arbitrary code on the affected server. </p>
+<p>Some popular and widely used template engines are Smarty, Twig, Jinja2, FreeMarker, Velocity.</p>
+</recommendation>
+
+<references>
+<li>References:<br> 
+<a href="https://portswigger.net/research/server-side-template-injection">
+Server-Side Template Injection</a>.
+<br>
+<a href="https://www.cnblogs.com/Rasang/p/12181654.html">
+Eeample</a>.
+
+</li>
+<!--  LocalWords:  CWE -->
+</references>
+
+</qhelp>
