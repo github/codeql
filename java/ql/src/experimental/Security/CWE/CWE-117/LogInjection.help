@@ -33,11 +33,11 @@ other forms of HTML injection.
 <p>In the example, a username, provided by the user, is logged using `logger.warn` (from `org.slf4j.Logger`). 
 In the first case (`/bad` endpoint), the username is logged without any sanitization.
 If a malicious user provides `Guest'%0AUser:'Admin` as a username parameter, 
-the log entry will be splitted in two different lines, where the first line will be `User:'Guest'`, while the second one will be `User:'Admin'`.
+the log entry will be splitted in two separate lines, where the first line will be `User:'Guest'`, while the second one will be `User:'Admin'`.
 </p>
 <p> In the second case (`/good` endpoint), <code>replace</code> is used to ensure no line endings are present in the user input.
 If a malicious user provides `Guest'%0AUser:'Admin` as a username parameter, 
-the log entry will not be splitted in two different lines, resulting in a single line `User:'Guest'User:'Admin'`.
+the log entry will not be splitted in two separate lines, resulting in a single line `User:'Guest'User:'Admin'`.
 </p>
 
 <sample src="examples/LogInjection.java" />
