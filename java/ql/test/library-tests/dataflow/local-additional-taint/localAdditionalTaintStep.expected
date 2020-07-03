@@ -11,7 +11,6 @@
 | CollectionsTest.java:13:19:13:22 | list | CollectionsTest.java:13:3:13:23 | min(...) |
 | CollectionsTest.java:14:27:14:30 | list | CollectionsTest.java:14:3:14:31 | enumeration(...) |
 | CollectionsTest.java:15:20:15:30 | enumeration | CollectionsTest.java:15:3:15:31 | list(...) |
-| CollectionsTest.java:16:28:16:32 | "key" | CollectionsTest.java:16:3:16:42 | singletonMap(...) |
 | CollectionsTest.java:16:35:16:41 | "value" | CollectionsTest.java:16:3:16:42 | singletonMap(...) |
 | CollectionsTest.java:17:26:17:30 | other | CollectionsTest.java:17:20:17:23 | list [post update] |
 | CollectionsTest.java:18:27:18:32 | "item" | CollectionsTest.java:18:3:18:33 | nCopies(...) |

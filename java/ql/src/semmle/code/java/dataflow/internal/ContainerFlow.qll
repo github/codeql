@@ -169,7 +169,7 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
     method
         .hasName(["checkedCollection", "checkedList", "checkedMap", "checkedNavigableMap",
               "checkedNavigableSet", "checkedSet", "checkedSortedMap", "checkedSortedSet",
-              "enumeration", "list", "max", "min", "singleton", "singletonList", "singletonMap",
+              "enumeration", "list", "max", "min", "singleton", "singletonList",
               "synchronizedCollection", "synchronizedList", "synchronizedMap",
               "synchronizedNavigableMap", "synchronizedNavigableSet", "synchronizedSet",
               "synchronizedSortedMap", "synchronizedSortedSet", "unmodifiableCollection",
