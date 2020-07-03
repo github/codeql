@@ -115,8 +115,8 @@ class ParameterNode extends EssaNode {
   ParameterNode() { var instanceof ParameterDefinition }
 
    /**
-   * Holds if this node is the parameter of callable `c` at the specified
-   * (zero-based) position.
+   * Holds if this node is the parameter of callable `c` at the
+   * (zero-based) index `i`.
    */
   predicate isParameterOf(DataFlowCallable c, int i) {
     var.(ParameterDefinition).getDefiningNode() = c.getParameter(i)
