@@ -10,7 +10,7 @@ private import experimental.dataflow.internal.DataFlowPrivate
 predicate defaultTaintBarrier(DataFlow::Node node) { none() }
 
 /**
- * Holds if the additional step from `src` to `sink` should be included in all
+ * Holds if the additional step from `pred` to `succ` should be included in all
  * global taint flow configurations.
  */
 predicate defaultAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
