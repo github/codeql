@@ -217,18 +217,7 @@ private class RemoteTaintedMethod extends Method {
     this instanceof HttpServletRequestGetRequestURIMethod or
     this instanceof HttpServletRequestGetRequestURLMethod or
     this instanceof HttpServletRequestGetRemoteUserMethod or
-    exists(SpringWebRequest swr |
-      this = swr.getAMethod() |
-      this.hasName("getDescription") or
-      this.hasName("getHeader") or
-      this.hasName("getHeaderNames") or
-      this.hasName("getHeaderValues") or
-      this.hasName("getParameter") or
-      this.hasName("getParameterMap") or
-      this.hasName("getParameterNames") or
-      this.hasName("getParameterValues")
-      // TODO consider getRemoteUser
-    ) or
+    this instanceof SpringWebRequestGetMethod or
     this instanceof SpringRestTemplateResponseEntityMethod or
     this instanceof ServletRequestGetBodyMethod or
     this instanceof CookieGetValueMethod or
@@ -244,6 +233,22 @@ private class RemoteTaintedMethod extends Method {
     this instanceof XmlAttrSetGetMethod or
     // The current URL in a browser may be untrusted or uncontrolled.
     this instanceof WebViewGetUrlMethod
+  }
+}
+
+private class SpringWebRequestGetMethod extends Method {
+  SpringWebRequestGetMethod() {
+    exists(SpringWebRequest swr | this = swr.getAMethod() |
+      this.hasName("getDescription") or
+      this.hasName("getHeader") or
+      this.hasName("getHeaderNames") or
+      this.hasName("getHeaderValues") or
+      this.hasName("getParameter") or
+      this.hasName("getParameterMap") or
+      this.hasName("getParameterNames") or
+      this.hasName("getParameterValues")
+      // TODO consider getRemoteUser
+    )
   }
 }
 
