@@ -60,9 +60,7 @@ class EssaNode extends Node, TEssaNode {
 
   EssaVariable getVar() { result = var }
 
-  /**
-   * Get a string representation of this data flow node.
-   */
+  /** Gets a textual representation of this element. */
   override string toString() { result = var.toString() }
 
   override Scope getScope() { result = var.getScope() }
@@ -77,9 +75,7 @@ class CfgNode extends Node, TCfgNode {
 
   ControlFlowNode getNode() { result = node }
 
-  /**
-   * Get a string representation of this data flow node.
-   */
+  /** Gets a textual representation of this element. */
   override string toString() { result = node.toString() }
 
   override Scope getScope() { result = node.getScope() }

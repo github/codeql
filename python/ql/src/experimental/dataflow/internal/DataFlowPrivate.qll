@@ -134,7 +134,7 @@ private newtype TReturnKind = TNormalReturnKind()
  * from a callable. For Python, this is simply a method return.
  */
 class ReturnKind extends TReturnKind {
-  /** Gets a textual representation of this return kind. */
+  /** Gets a textual representation of this element. */
   string toString() { result = "return" }
 }
 
@@ -173,9 +173,7 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
 newtype TDataFlowType = TAnyFlow()
 
 class DataFlowType extends TDataFlowType {
-  /**
-   * Gets a string representation of the data flow type.
-   */
+  /** Gets a textual representation of this element. */
   string toString() { result = "DataFlowType" }
 }
 
