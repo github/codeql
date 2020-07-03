@@ -90,6 +90,8 @@ module EssaFlow {
  * excludes SSA flow through instance fields.
  */
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
+  not nodeFrom.(EssaNode).getVar() instanceof GlobalSsaVariable and
+  not nodeTo.(EssaNode).getVar() instanceof GlobalSsaVariable and
   EssaFlow::essaFlowStep(nodeFrom, nodeTo)
 }
 

@@ -135,4 +135,3 @@ Try recovering an existing taint tracking query by implementing sources, sinks, 
 - What should the enclosable callable for global variables be? C++ makes it the variable itself, C# seems to not have nodes for these but only for their reads and writes.
 - Is `yield` another return type? If not, how is it handled?
 - Should `OutNode` include magic function calls?
-- Remove local flow to/from global variables
