@@ -222,7 +222,7 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
 DataFlowType getNodeType(Node node) { result = TStringFlow() }
 
 /** Gets a string representation of a type returned by `getErasedRepr`. */
-string ppReprType(DataFlowType t) { result = t.toString() }
+string ppReprType(DataFlowType t) { none() }
 
 //--------
 // Extra flow
