@@ -153,7 +153,7 @@ module ClientSideUrlRedirect {
   class AttributeWriteUrlSink extends ScriptUrlSink, DataFlow::ValueNode {
     AttributeWriteUrlSink() {
       exists(DomPropWriteNode pw |
-        pw.interpretsValueAsJavaScript() and
+        pw.interpretsValueAsJavaScriptUrl() and
         this = DataFlow::valueNode(pw.getRhs())
       )
     }

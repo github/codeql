@@ -121,7 +121,7 @@ class DomPropWriteNode extends Assignment {
   /**
    * Holds if the assigned value is interpreted as JavaScript via javascript: protocol.
    */
-  predicate interpretsValueAsJavaScript() {
+  predicate interpretsValueAsJavaScriptUrl() {
     lhs.getPropertyName() = "action" or
     lhs.getPropertyName() = "formaction" or
     lhs.getPropertyName() = "href" or
