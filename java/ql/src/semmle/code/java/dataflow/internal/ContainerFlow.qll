@@ -180,6 +180,34 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
     or
     method.hasName(["nCopies", "singletonMap"]) and arg = 1
   )
+  or
+  method
+      .getDeclaringType()
+      .getSourceDeclaration()
+      .hasQualifiedName("java.util", ["List", "Map", "Set"]) and
+  method.hasName("copyOf") and
+  arg = 0
+  or
+  method.getDeclaringType().getSourceDeclaration().hasQualifiedName("java.util", "Map") and
+  (
+    method.hasName("of") and
+    arg = any(int i | i in [1 .. 10] | 2 * i - 1)
+    or
+    method.hasName("entry") and
+    arg = 1
+  )
+}
+
+/**
+ * Holds if `method` is a library method that returns tainted data if any
+ * of its arguments are tainted.
+ */
+private predicate taintPreservingArgumentToMethod(Method method) {
+  method.getDeclaringType().getSourceDeclaration().hasQualifiedName("java.util", ["Set", "List"]) and
+  method.hasName("of")
+  or
+  method.getDeclaringType().getSourceDeclaration().hasQualifiedName("java.util", "Map") and
+  method.hasName("ofEntries")
 }
 
 /**
@@ -208,11 +236,13 @@ private predicate argToQualifierStep(Expr tracked, Expr sink) {
 
 /** Access to a method that passes taint from an argument. */
 private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
-  exists(Method m, int i |
-    m = sink.getMethod() and
-    taintPreservingArgumentToMethod(m, i) and
+  exists(int i |
+    taintPreservingArgumentToMethod(sink.getMethod(), i) and
     tracked = sink.getArgument(i)
   )
+  or
+  taintPreservingArgumentToMethod(sink.getMethod()) and
+  tracked = sink.getAnArgument()
 }
 
 /**
