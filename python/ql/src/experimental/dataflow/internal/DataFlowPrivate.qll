@@ -4,11 +4,9 @@ private import DataFlowPublic
 //--------
 // Data flow graph
 //--------
-
 //--------
 // Nodes
 //--------
-
 /**
  * A node associated with an object after an operation that might have
  * changed its state.
@@ -40,7 +38,8 @@ module EssaFlow {
     //   `x = f(42)`
     //   nodeFrom is `f(42)`, cfg node
     //   nodeTo is `x`, essa var
-    nodeFrom.(CfgNode).getNode() = nodeTo.(EssaNode).getVar().getDefinition().(AssignmentDefinition).getValue()
+    nodeFrom.(CfgNode).getNode() =
+      nodeTo.(EssaNode).getVar().getDefinition().(AssignmentDefinition).getValue()
     or
     // With definition
     //   `with f(42) as x:`
@@ -49,7 +48,7 @@ module EssaFlow {
     exists(With with, ControlFlowNode contextManager, ControlFlowNode var |
       nodeFrom.(CfgNode).getNode() = contextManager and
       nodeTo.(EssaNode).getVar().getDefinition().(WithDefinition).getDefiningNode() = var and
-      // see `with_flow`
+      // see `with_flow` in `python/ql/src/semmle/python/dataflow/Implementation.qll`
       with.getContextExpr() = contextManager.getNode() and
       with.getOptionalVars() = var.getNode() and
       contextManager.strictlyDominates(var)
@@ -83,7 +82,6 @@ module EssaFlow {
 //--------
 // Local flow
 //--------
-
 /**
  * This is the local flow predicate that is used as a building block in global
  * data flow. It is a strict subset of the `localFlowStep` predicate, as it
@@ -99,7 +97,6 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
 //--------
 // Global flow
 //--------
-
 /** Represents a callable */
 class DataFlowCallable = CallableValue;
 
@@ -107,40 +104,28 @@ class DataFlowCallable = CallableValue;
 class DataFlowCall extends CallNode {
   DataFlowCallable callable;
 
-  DataFlowCall() {
-    this = callable.getACall()
-  }
+  DataFlowCall() { this = callable.getACall() }
 
   /** Get the callable to which this call goes. */
   DataFlowCallable getCallable() { result = callable }
 
   /** Gets the enclosing callable of this call. */
-  DataFlowCallable getEnclosingCallable() {
-    result.getScope() = this.getNode().getScope()
-  }
+  DataFlowCallable getEnclosingCallable() { result.getScope() = this.getNode().getScope() }
 }
 
 /** A data flow node that represents a call argument. */
 class ArgumentNode extends CfgNode {
-  ArgumentNode() {
-    exists(DataFlowCall call, int pos |
-      node = call.getArg(pos)
-    )
-  }
+  ArgumentNode() { exists(DataFlowCall call, int pos | node = call.getArg(pos)) }
 
-   /** Holds if this argument occurs at the given position in the given call. */
-  predicate argumentOf(DataFlowCall call, int pos) {
-    node = call.getArg(pos)
-  }
+  /** Holds if this argument occurs at the given position in the given call. */
+  predicate argumentOf(DataFlowCall call, int pos) { node = call.getArg(pos) }
 
-   /** Gets the call in which this node is an argument. */
+  /** Gets the call in which this node is an argument. */
   final DataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
 /** Gets a viable run-time target for the call `call`. */
-DataFlowCallable viableCallable(DataFlowCall call) {
-  result = call.getCallable()
-}
+DataFlowCallable viableCallable(DataFlowCall call) { result = call.getCallable() }
 
 private newtype TReturnKind = TNormalReturnKind()
 
@@ -157,15 +142,13 @@ class ReturnKind extends TReturnKind {
 class ReturnNode extends CfgNode {
   Return ret;
 
-   // See `TaintTrackingImplementation::returnFlowStep`
-  ReturnNode() {
-    node = ret.getValue().getAFlowNode()
-  }
+  // See `TaintTrackingImplementation::returnFlowStep`
+  ReturnNode() { node = ret.getValue().getAFlowNode() }
 
-   /** Gets the kind of this return node. */
-  ReturnKind getKind() { result = TNormalReturnKind() }
+  /** Gets the kind of this return node. */
+  ReturnKind getKind() { any() }
 
-   override DataFlowCallable getEnclosingCallable() {
+  override DataFlowCallable getEnclosingCallable() {
     result.getScope().getAStmt() = ret // TODO: check nested function definitions
   }
 }
@@ -173,33 +156,27 @@ class ReturnNode extends CfgNode {
 /** A data flow node that represents the output of a call. */
 class OutNode extends CfgNode {
   OutNode() { node instanceof CallNode }
-
-   /** Gets the underlying call, where this node is a corresponding output of kind `kind`. */
-  cached
-  DataFlowCall getCall(ReturnKind kind) {
-    kind = TNormalReturnKind() and
-    result = node
-  }
 }
 
 /**
  * Gets a node that can read the value returned from `call` with return kind
  * `kind`.
  */
-OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { call = result.getCall(kind) }
+OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
+  call = result.getNode() and
+  kind = TNormalReturnKind()
+}
 
 //--------
 // Type pruning
 //--------
-
-newtype TDataFlowType =
-  TStringFlow()
+newtype TDataFlowType = TAnyFlow()
 
 class DataFlowType extends TDataFlowType {
   /**
    * Gets a string representation of the data flow type.
    */
-   string toString() { result = "DataFlowType" }
+  string toString() { result = "DataFlowType" }
 }
 
 /** A node that performs a type cast. */
@@ -212,14 +189,12 @@ class CastNode extends Node {
  * a node of type `t1` to a node of type `t2`.
  */
 pragma[inline]
-predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
-  any()
-}
+predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
 
 /**
  * Gets the type of `node`.
  */
-DataFlowType getNodeType(Node node) { result = TStringFlow() }
+DataFlowType getNodeType(Node node) { result = TAnyFlow() }
 
 /** Gets a string representation of a type returned by `getErasedRepr`. */
 string ppReprType(DataFlowType t) { none() }
@@ -227,7 +202,6 @@ string ppReprType(DataFlowType t) { none() }
 //--------
 // Extra flow
 //--------
-
 /**
  * Holds if `pred` can flow to `succ`, by jumping from one callable to
  * another. Additional steps specified by the configuration are *not*
@@ -247,21 +221,16 @@ predicate jumpStep(Node pred, Node succ) {
 //--------
 // Field flow
 //--------
-
 /**
  * Holds if data can flow from `node1` to `node2` via an assignment to
  * content `c`.
  */
-predicate storeStep(Node node1, Content c, Node node2) {
-  none()
-}
+predicate storeStep(Node node1, Content c, Node node2) { none() }
 
 /**
  * Holds if data can flow from `node1` to `node2` via a read of content `c`.
  */
-predicate readStep(Node node1, Content c, Node node2) {
-  none()
-}
+predicate readStep(Node node1, Content c, Node node2) { none() }
 
 /**
  * Holds if values stored inside content `c` are cleared at node `n`. For example,
@@ -269,46 +238,35 @@ predicate readStep(Node node1, Content c, Node node2) {
  * in `x.f = newValue`.
  */
 cached
-predicate clearsContent(Node n, Content c) {
-  none()
-}
+predicate clearsContent(Node n, Content c) { none() }
 
 //--------
 // Fancy context-sensitive guards
 //--------
-
 /**
  * Holds if the node `n` is unreachable when the call context is `call`.
  */
-predicate isUnreachableInCall(Node n, DataFlowCall call) {
-  none()
-}
+predicate isUnreachableInCall(Node n, DataFlowCall call) { none() }
 
 //--------
 // Virtual dispatch with call context
 //--------
-
 /**
  * Gets a viable dispatch target of `call` in the context `ctx`. This is
  * restricted to those `call`s for which a context might make a difference.
  */
-DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
-  none()
-}
+DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
 
 /**
  * Holds if the set of viable implementations that can be called by `call`
  * might be improved by knowing the call context. This is the case if the qualifier accesses a parameter of
  * the enclosing callable `c` (including the implicit `this` parameter).
  */
-predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) {
-  none()
-}
+predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) { none() }
 
 //--------
 // Misc
 //--------
-
 /**
  * Holds if `n` does not require a `PostUpdateNode` as it either cannot be
  * modified or its modification cannot be observed, for example if it is a
