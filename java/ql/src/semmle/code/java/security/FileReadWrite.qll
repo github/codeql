@@ -24,7 +24,7 @@ private predicate fileRead(VarAccess fileAccess, Expr fileReadingExpr) {
       fileAccess = ma.getArgument(0) and
       filesMethod
           .hasName(["readAllBytes", "readAllLines", "readString", "lines", "newBufferedReader",
-                "newInputReader", "newByteChannel"])
+                "newInputStream", "newByteChannel"])
     )
   )
   or
