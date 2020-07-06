@@ -325,10 +325,10 @@ private RefType stripType(Type t) {
 }
 
 /**
- * A user data type which may be populated from a HTTP request.
+ * A user data type that may be populated from an HTTP request.
  *
  * This includes types directly referred to as either @ModelAttribute or @RequestBody parameters,
- * or types which are referred to by those types.
+ * or types that are referred to by those types.
  */
 class SpringUntrustedDataType extends RefType {
   SpringUntrustedDataType() {
