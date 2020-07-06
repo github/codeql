@@ -36,21 +36,25 @@ class XssSink extends DataFlow::ExprNode {
     exists(SpringRequestMappingMethod requestMappingMethod, ReturnStmt rs |
       requestMappingMethod = rs.getEnclosingCallable() and
       this.asExpr() = rs.getResult() and
-      (not exists(requestMappingMethod.getProduces()) or requestMappingMethod.getProduces().matches("text/%"))
-      |
+      (
+        not exists(requestMappingMethod.getProduces()) or
+        requestMappingMethod.getProduces().matches("text/%")
+      )
+    |
       // If a Spring request mapping method is either annotated with @ResponseBody (or equivalent),
       // or returns a HttpEntity or sub-type, then the return value of the method is converted into
       // a HTTP reponse using a HttpMessageConverter implementation. The implementation is chosen
       // based on the return type of the method, and the Accept header of the request.
-
+      //
       // By default, the only message converter which produces a response which is vulnerable to
       // XSS is the StringHttpMessageConverter, which "Accept"s all text/* content types, including
       // text/html. Therefore, if a browser request includes "text/html" in the "Accept" header,
       // any String returned will be converted into a text/html response.
-      requestMappingMethod.isResponseBody() and requestMappingMethod.getReturnType() instanceof TypeString
+      requestMappingMethod.isResponseBody() and
+      requestMappingMethod.getReturnType() instanceof TypeString
       or
       exists(Type returnType |
-        // A return type of HttpEntity<T> or ResponseEntity<T> represents a HTTP response with both
+        // A return type of HttpEntity<T> or ResponseEntity<T> represents an HTTP response with both
         // a body and a set of headers. The body is subject to the same HttpMessageConverter
         // process as above.
         returnType = requestMappingMethod.getReturnType() and
@@ -59,7 +63,7 @@ class XssSink extends DataFlow::ExprNode {
           or
           returnType instanceof SpringResponseEntity
         )
-        |
+      |
         // The type argument, representing the type of the body, is type String
         returnType.(ParameterizedClass).getTypeArgument(0) instanceof TypeString
         or
