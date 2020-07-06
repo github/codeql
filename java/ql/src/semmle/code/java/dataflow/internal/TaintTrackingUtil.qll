@@ -377,21 +377,19 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   or
   m = any(ProtobufMessageLite p).getAGetterMethod()
   or
-  exists(SpringUntrustedDataType dt |
-    m.(GetterMethod) = dt.getAMethod()
-  )
+  m instanceof GetterMethod and m.getDeclaringType() instanceof SpringUntrustedDataType
   or
-  exists(SpringHttpEntity sre |
-    m = sre.getAMethod() and
-    m.getName().regexpMatch("getBody|getHeaders")
-  )
+  m.getDeclaringType() instanceof SpringHttpEntity and
+  m.getName().regexpMatch("getBody|getHeaders")
   or
-  exists(SpringHttpHeaders headers |
-    m = headers.getAMethod() |
+  exists(SpringHttpHeaders headers | m = headers.getAMethod() |
     m.getReturnType() instanceof TypeString
     or
-    m.getReturnType().(RefType).getSourceDeclaration().getASourceSupertype*().hasQualifiedName("java.util", "List") and
-    m.getReturnType().(ParameterizedType).getTypeArgument(0) instanceof TypeString
+    exists(ParameterizedType stringlist |
+      m.getReturnType().(RefType).getASupertype*() = stringlist and
+      stringlist.getSourceDeclaration().hasQualifiedName("java.util", "List") and
+      stringlist.getTypeArgument(0) instanceof TypeString
+    )
   )
 }
 
