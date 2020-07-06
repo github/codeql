@@ -207,10 +207,7 @@ class SpringRequestMappingParameter extends Parameter {
     this.getAnAnnotation() instanceof SpringServletInputAnnotation or
     // HttpEntity is like @RequestBody, but with a wrapper including the headers
     // TODO model unwrapping aspects
-    getType()
-        .(RefType)
-        .getAnAncestor()
-        .hasQualifiedName("org.springframework.http", "HttpEntity<T>") or
+    getType().(RefType).getASourceSupertype*() instanceof SpringHttpEntity or
     this
         .getAnAnnotation()
         .getType()
