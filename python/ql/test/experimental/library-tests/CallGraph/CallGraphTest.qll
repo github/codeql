@@ -88,12 +88,12 @@ private newtype TCallGraphResolver =
     TPointsToResolver() or
     TTypeTrackerResolver()
 
-/** Describes a method of for call graph resolution */
+/** Describes a method of call graph resolution */
 abstract class CallGraphResolver extends TCallGraphResolver {
     abstract predicate callEdge(Call call, Function callable);
 
     /**
-     * Annotations show that `call` will call `callable`,
+     * Holds if annotations show that `call` will call `callable`,
      * but our call graph resolver was not able to figure that out
      */
     predicate expectedCallEdgeNotFound(Call call, Function callable) {
@@ -102,7 +102,7 @@ abstract class CallGraphResolver extends TCallGraphResolver {
     }
 
     /**
-     * No annotations show that `call` will call `callable` (where at least one of these are annotated),
+     * Holds if there are no annotations that show that `call` will call `callable` (where at least one of these are annotated),
      * but the call graph resolver claims that `call` will call `callable`
      */
     predicate unexpectedCallEdgeFound(Call call, Function callable, string message) {
@@ -127,6 +127,7 @@ abstract class CallGraphResolver extends TCallGraphResolver {
     string toString() { result = "CallGraphResolver" }
 }
 
+/** A call graph resolver based on the existing points-to analysis */
 class PointsToResolver extends CallGraphResolver, TPointsToResolver {
     override predicate callEdge(Call call, Function callable) {
         exists(PythonFunctionValue func_value |
@@ -137,7 +138,7 @@ class PointsToResolver extends CallGraphResolver, TPointsToResolver {
 
     override string toString() { result = "PointsToResolver" }
 }
-
+/** A call graph resolved based on Type Trackers */
 class TypeTrackerResolver extends CallGraphResolver, TTypeTrackerResolver {
     override predicate callEdge(Call call, Function callable) { none() }
 

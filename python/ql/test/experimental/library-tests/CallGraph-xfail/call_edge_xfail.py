@@ -19,7 +19,7 @@ if len(sys.argv) >= 2 and not sys.argv[1] in ['0', 'False', 'false']:
 else:
     func = xfail_bar
 
-# Correct usage to supres bad annotation errors
+# Correct usage to suppress bad annotation errors
 # calls:xfail_foo calls:xfail_bar
 func()
 # calls:xfail_lambda
