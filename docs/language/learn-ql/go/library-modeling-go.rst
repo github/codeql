@@ -68,7 +68,7 @@ outputs to a function. The options are:
 * one of the parameters (``outp.isParameter(i)``)
 * one of the results (``outp.isResult(i)``, or ``outp.isResult`` if there is only one result)
 
-Here is an example from ``Gin.qll``, slightly modified for brevity.
+Here is an example from ``Gin.qll``, which has been slightly simplified.
 
 .. code-block:: ql
 
@@ -89,8 +89,8 @@ the receiver to the first result. In other words, if ``p`` has type
 Sanitizers
 ----------
 
-It is not necessary to indicate that library functions are sanitizers -
-because their bodies are not analyzed it is assumed that data does not
+It is not necessary to indicate that library functions are sanitizers.
+Their bodies are not analyzed, so it is assumed that data does not
 flow through them.
 
 Sinks
@@ -101,13 +101,12 @@ However, you can use library models to indicate when functions belong to
 special categories. Queries can then use these categories when specifying
 sinks. Classes representing these special categories are contained in
 ``ql/src/semmle/go/Concepts.qll`` in the `CodeQL for Go repository
-<https://github.com/github/codeql-go/blob/main/ql/src/semmle/go/Concepts.qll>`__,
-including classes for logger mechanisms,
+<https://github.com/github/codeql-go/blob/main/ql/src/semmle/go/Concepts.qll>`__.
+``Concepts.qll`` includes classes for logger mechanisms,
 HTTP response writers, HTTP redirects, and marshaling and unmarshaling
 functions.
 
-Here is a short example from ``Stdlib.qll``, slightly modified for
-brevity.
+Here is a short example from ``Stdlib.qll``, which has been slightly simplified.
 
 .. code-block:: ql
 
