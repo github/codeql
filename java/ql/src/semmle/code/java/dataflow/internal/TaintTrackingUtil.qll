@@ -377,19 +377,6 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   or
   m = any(ProtobufMessageLite p).getAGetterMethod()
   or
-  m instanceof MapMethod and
-  (
-    m.getName().regexpMatch("get|entrySet|keySet|values")
-  )
-  or
-  m.getDeclaringType().getSourceDeclaration().getASourceSupertype*().hasQualifiedName("java.util", "List") and
-  (
-    m.getName().regexpMatch("get|toArray|subList|spliterator|set|iterator|listIterator") or
-    (m.getName().regexpMatch("remove") and not m.getReturnType() instanceof BooleanType)
-  )
-  or
-  m instanceof StringReplaceMethod
-  or
   exists(SpringUntrustedDataType dt |
     m.(GetterMethod) = dt.getAMethod()
   )
