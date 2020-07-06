@@ -1,17 +1,25 @@
 import java
 import SpringHttp
 
+/** The class `org.springframework.web.client.RestTemplate`. */
 class SpringRestTemplate extends Class {
-  SpringRestTemplate() { hasQualifiedName("org.springframework.web.client", "RestTemplate") }
+  SpringRestTemplate() { this.hasQualifiedName("org.springframework.web.client", "RestTemplate") }
 }
 
+/**
+ * A method declared in `org.springframework.web.client.RestTemplate` that
+ * returns a `SpringResponseEntity`.
+ */
 class SpringRestTemplateResponseEntityMethod extends Method {
   SpringRestTemplateResponseEntityMethod() {
-    getDeclaringType() instanceof SpringRestTemplate and
-    getReturnType() instanceof SpringResponseEntity
+    this.getDeclaringType() instanceof SpringRestTemplate and
+    this.getReturnType() instanceof SpringResponseEntity
   }
 }
 
+/** The interface `org.springframework.web.reactive.function.client.WebClient`. */
 class SpringWebClient extends Interface {
-  SpringWebClient() { hasQualifiedName("org.springframework.web.reactive.function.client", "WebClient")}
+  SpringWebClient() {
+    this.hasQualifiedName("org.springframework.web.reactive.function.client", "WebClient")
+  }
 }
