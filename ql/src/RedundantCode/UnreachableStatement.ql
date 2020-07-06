@@ -21,6 +21,36 @@ ControlFlow::Node nonGuardPredecessor(ControlFlow::Node nd) {
   )
 }
 
+/**
+ * Matches if `retval` is a constant or a struct composed wholly of constants.
+ */
+predicate isAllowedReturnValue(Expr retval) {
+  retval = Builtin::nil().getAReference()
+  or
+  retval = Builtin::true_().getAReference()
+  or
+  retval = Builtin::false_().getAReference()
+  or
+  retval instanceof BasicLit
+  or
+  // Allow -1 (which parses as unary-minus-of-literal) or !true, but not &somestruct,
+  // for which we would usually prefer `return nil`
+  isAllowedReturnValue(retval.(UnaryExpr).getOperand()) and
+  not retval.getType().getUnderlyingType() instanceof PointerType
+  or
+  // Allow structs composed of allowed values
+  retval instanceof StructLit and
+  forall(Expr element | element = retval.(StructLit).getAnElement() | isAllowedReturnValue(element))
+  or
+  // Allow anything of type `error`, as `abort(); return constructError(...);`
+  // is preferable to insisting on a misleading `return nil` that suggests
+  // successful return:
+  retval.getType().getEntity() = Builtin::error()
+}
+
+/**
+ * Matches if `s` is an allowed unreachable statement.
+ */
 predicate allowlist(Stmt s) {
   // `panic("unreachable")` and similar
   exists(CallExpr ce | ce = s.(ExprStmt).getExpr() or ce = s.(ReturnStmt).getExpr() |
@@ -29,11 +59,7 @@ predicate allowlist(Stmt s) {
   or
   // `return nil` and similar
   exists(ReturnStmt ret | ret = s |
-    forall(Expr retval | retval = ret.getAnExpr() |
-      retval = Builtin::nil().getAReference() or
-      retval instanceof BasicLit or
-      retval.(UnaryExpr).getOperand() instanceof BasicLit
-    )
+    forall(Expr retval | retval = ret.getAnExpr() | isAllowedReturnValue(retval))
   )
   or
   // statements in an `if false { ... }` and similar

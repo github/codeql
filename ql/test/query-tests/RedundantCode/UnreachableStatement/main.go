@@ -1,5 +1,7 @@
 package main
 
+import ("errors")
+
 func unreachable() {}
 
 func reachable() {}
@@ -99,6 +101,60 @@ func test11() {
 	}
 	if true && !false {
 	}
+}
+
+func test12() bool {
+	select {}
+	// Not flagged as this is a primitive return
+	return true
+}
+
+func test13() bool {
+	select {}
+	// Not flagged as this is a primitive return
+	return false
+}
+
+type mystruct struct {
+	x int
+	y bool
+}
+
+func test14() mystruct {
+	select {}
+	// Not flagged as this is a struct literal composed of primitives
+	return mystruct{0, true}
+}
+
+func test15() error {
+	select {}
+	// Not flagged as any expression is acceptable for type `error`
+	return errors.New("unreachable")
+}
+
+func test16() *mystruct {
+	select {}
+	// Flagged, as `return nil` is possible and preferable when the
+	// return site is unreachable.
+	return &mystruct{0, true}
+}
+
+func test17() int {
+	select {}
+	// Flagged, as a nontrivial unreachable return
+	return test10(1)
+}
+
+func test18() bool {
+	select {}
+	// Flagged, as a nontrivial unreachable return
+	return test10(1) == 1
+}
+
+func test19() mystruct {
+	select {}
+	// Flagged, as a nontrivial unreachable return
+	return mystruct{test10(1), test10(2) == 2}
 }
 
 func main() {}
