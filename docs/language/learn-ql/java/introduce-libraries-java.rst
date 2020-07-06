@@ -290,7 +290,7 @@ These annotations are represented by class ``Annotation``. An annotation is simp
        anntp.hasQualifiedName("java.lang", "Deprecated")
    select ann
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/5393027107459215059/`__. Only constructors with the ``@Deprecated`` annotation are reported this time.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/5393027107459215059/>`__. Only constructors with the ``@Deprecated`` annotation are reported this time.
 
 For more information on working with annotations, see the :doc:`article on annotations <annotations>`.
 
