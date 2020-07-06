@@ -138,6 +138,7 @@ class PointsToResolver extends CallGraphResolver, TPointsToResolver {
 
     override string toString() { result = "PointsToResolver" }
 }
+
 /** A call graph resolved based on Type Trackers */
 class TypeTrackerResolver extends CallGraphResolver, TTypeTrackerResolver {
     override predicate callEdge(Call call, Function callable) { none() }
