@@ -37,6 +37,19 @@ namespace IntWrapper
             return *this;
         }
 
+        Class &copy_assign(const Class &that) // copy assignment without the usual signature
+        {
+            auto tmp = that;
+            swap(tmp);
+            return *this;
+        }
+
+        Class &move_assign(Class &&that) // move assignment without the usual signature
+        {
+            swap(that);
+            return *this;
+        }
+
         void swap(Class &that) noexcept
         {
             using std::swap;
