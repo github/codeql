@@ -1,3 +1,8 @@
+/**
+ * Provides classes for working with Spring classes and interfaces from
+ * `org.springframework.http`.
+ */
+
 import java
 
 /** The class `org.springframework.http.HttpEntity` or an instantiation of it. */

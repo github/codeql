@@ -154,12 +154,14 @@ class SpringServletInputAnnotation extends Annotation {
   }
 }
 
+/** An annotation of the type `org.springframework.web.bind.annotation.ModelAttribute`. */
 class SpringModelAttributeAnnotation extends Annotation {
   SpringModelAttributeAnnotation() {
     getType().hasQualifiedName("org.springframework.web.bind.annotation", "ModelAttribute")
   }
 }
 
+/** A parameter of a `SpringRequestMappingMethod`. */
 class SpringRequestMappingParameter extends Parameter {
   SpringRequestMappingParameter() { getCallable() instanceof SpringRequestMappingMethod }
 

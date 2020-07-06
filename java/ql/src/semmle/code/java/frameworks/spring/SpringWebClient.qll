@@ -1,3 +1,7 @@
+/**
+ * Provides classes for working with Spring web clients.
+ */
+
 import java
 import SpringHttp
 
