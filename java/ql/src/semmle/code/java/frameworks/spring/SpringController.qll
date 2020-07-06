@@ -22,9 +22,7 @@ class SpringControllerAnnotation extends AnnotationType {
  * Rest controllers are the same as controllers, but imply the @ResponseBody annotation.
  */
 class SpringRestControllerAnnotation extends SpringControllerAnnotation {
-  SpringRestControllerAnnotation() {
-    hasName("RestController")
-  }
+  SpringRestControllerAnnotation() { hasName("RestController") }
 }
 
 /**
@@ -107,6 +105,7 @@ class SpringResponseBodyAnnotationType extends AnnotationType {
  */
 class SpringRequestMappingMethod extends SpringControllerMethod {
   Annotation requestMappingAnnotation;
+
   SpringRequestMappingMethod() {
     // Any method that declares the @RequestMapping annotation, or overrides a method that declares
     // the annotation. We have to do this explicit check because the @RequestMapping annotation is
@@ -119,13 +118,12 @@ class SpringRequestMappingMethod extends SpringControllerMethod {
   }
 
   /** Gets a request mapping parameter. */
-  SpringRequestMappingParameter getARequestParameter() {
-    result = getAParameter()
-  }
+  SpringRequestMappingParameter getARequestParameter() { result = getAParameter() }
 
   /** Gets the "produces" @RequestMapping annotation value, if present. */
   string getProduces() {
-    result = requestMappingAnnotation.getValue("produces").(CompileTimeConstantExpr).getStringValue()
+    result =
+      requestMappingAnnotation.getValue("produces").(CompileTimeConstantExpr).getStringValue()
   }
 
   /** Holds if this is considered an @ResponseBody method. */
@@ -180,16 +178,28 @@ class SpringRequestMappingParameter extends Parameter {
     getType().(RefType).getAnAncestor().hasQualifiedName("java.time", "ZoneId") or
     getType().(RefType).getAnAncestor().hasQualifiedName("java.io", "OutputStream") or
     getType().(RefType).getAnAncestor().hasQualifiedName("java.io", "Writer") or
-    getType().(RefType).getAnAncestor().hasQualifiedName("org.springframework.web.servlet.mvc.support", "RedirectAttributes") or
+    getType()
+        .(RefType)
+        .getAnAncestor()
+        .hasQualifiedName("org.springframework.web.servlet.mvc.support", "RedirectAttributes") or
     // Also covers BindingResult. Note, you can access the field value through this interface, which should be considered tainted
     getType().(RefType).getAnAncestor().hasQualifiedName("org.springframework.validation", "Errors") or
-    getType().(RefType).getAnAncestor().hasQualifiedName("org.springframework.web.bind.support", "SessionStatus") or
-    getType().(RefType).getAnAncestor().hasQualifiedName("org.springframework.web.util", "UriComponentsBuilder") or
-    getType().(RefType).getAnAncestor().hasQualifiedName("org.springframework.data.domain", "Pageable") or
+    getType()
+        .(RefType)
+        .getAnAncestor()
+        .hasQualifiedName("org.springframework.web.bind.support", "SessionStatus") or
+    getType()
+        .(RefType)
+        .getAnAncestor()
+        .hasQualifiedName("org.springframework.web.util", "UriComponentsBuilder") or
+    getType()
+        .(RefType)
+        .getAnAncestor()
+        .hasQualifiedName("org.springframework.data.domain", "Pageable") or
     this instanceof SpringModel
   }
 
-  predicate isExplicitlyTaintedInput() {
+  private predicate isExplicitlyTaintedInput() {
     // InputStream or Reader parameters allow access to the body of a request
     getType().(RefType).getAnAncestor().hasQualifiedName("java.io", "InputStream") or
     getType().(RefType).getAnAncestor().hasQualifiedName("java.io", "Reader") or
@@ -197,12 +207,21 @@ class SpringRequestMappingParameter extends Parameter {
     this.getAnAnnotation() instanceof SpringServletInputAnnotation or
     // HttpEntity is like @RequestBody, but with a wrapper including the headers
     // TODO model unwrapping aspects
-    getType().(RefType).getAnAncestor().hasQualifiedName("org.springframework.http", "HttpEntity<T>") or
-    this.getAnAnnotation().getType().hasQualifiedName("org.springframework.web.bind.annotation", "RequestAttribute") or
-    this.getAnAnnotation().getType().hasQualifiedName("org.springframework.web.bind.annotation", "SessionAttribute")
+    getType()
+        .(RefType)
+        .getAnAncestor()
+        .hasQualifiedName("org.springframework.http", "HttpEntity<T>") or
+    this
+        .getAnAnnotation()
+        .getType()
+        .hasQualifiedName("org.springframework.web.bind.annotation", "RequestAttribute") or
+    this
+        .getAnAnnotation()
+        .getType()
+        .hasQualifiedName("org.springframework.web.bind.annotation", "SessionAttribute")
   }
 
-  predicate isImplicitRequestParam() {
+  private predicate isImplicitRequestParam() {
     // Any parameter which is not explicitly handled, is consider to be an `@RequestParam`, if
     // it is a simple bean property
     not isNotDirectlyTaintedInput() and
@@ -213,7 +232,7 @@ class SpringRequestMappingParameter extends Parameter {
     )
   }
 
-  predicate isImplicitModelAttribute() {
+  private predicate isImplicitModelAttribute() {
     // Any parameter which is not explicitly handled, is consider to be an `@ModelAttribute`, if
     // it is not an implicit request param
     not isNotDirectlyTaintedInput() and
@@ -229,7 +248,8 @@ class SpringRequestMappingParameter extends Parameter {
 
   /** Holds if the input is tainted */
   predicate isTaintedInput() {
-    isExplicitlyTaintedInput() or
+    isExplicitlyTaintedInput()
+    or
     // Any parameter which is not explicitly identified, is consider to be an `@RequestParam`, if
     // it is a simple bean property) or a @ModelAttribute if not
     not isNotDirectlyTaintedInput()
@@ -316,7 +336,7 @@ class SpringUntrustedDataType extends RefType {
       p.isModelAttribute()
       or
       p.getAnAnnotation().(SpringServletInputAnnotation).getType().hasName("RequestBody")
-      |
+    |
       this.fromSource() and
       this = stripType(p.getType())
     )
