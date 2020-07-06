@@ -1,6 +1,5 @@
 import javascript
 import testUtilities.ConsistencyChecking
-
 import semmle.javascript.security.dataflow.DomBasedXss as DomXss
 import semmle.javascript.security.dataflow.ReflectedXss as ReflectedXss
 import semmle.javascript.security.dataflow.StoredXss as StoredXss
