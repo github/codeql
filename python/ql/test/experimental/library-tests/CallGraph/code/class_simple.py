@@ -1,6 +1,5 @@
 class A(object):
 
-    # name:A.__init__
     def __init__(self, arg):
         print('A.__init__', arg)
         self.arg = arg
@@ -19,7 +18,10 @@ class A(object):
     def some_classmethod(cls):
         print('A.some_classmethod', cls)
 
-# calls:A.__init__
+
+# TODO: Figure out how to annotate class instantiation (and add one here).
+# Current points-to says it's a call to the class (instead of __init__/__new__/metaclass-something).
+# However, current test setup uses "callable" for naming, and expects things to be Function.
 a = A(42)
 
 # calls:A.some_method

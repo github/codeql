@@ -2,12 +2,11 @@ debug_missingAnnotationForCallable
 debug_nonUniqueAnnotationForCallable
 debug_missingAnnotationForCall
 expectedCallEdgeNotFound
-| code/class_simple.py:23:5:23:9 | A() | code/class_simple.py:4:5:4:28 | Function __init__ |
-| code/class_simple.py:26:1:26:15 | Attribute() | code/class_simple.py:9:5:9:26 | Function some_method |
-| code/class_simple.py:28:1:28:21 | Attribute() | code/class_simple.py:14:5:14:28 | Function some_staticmethod |
-| code/class_simple.py:30:1:30:20 | Attribute() | code/class_simple.py:19:5:19:30 | Function some_classmethod |
-| code/class_simple.py:33:1:33:21 | Attribute() | code/class_simple.py:14:5:14:28 | Function some_staticmethod |
-| code/class_simple.py:35:1:35:20 | Attribute() | code/class_simple.py:19:5:19:30 | Function some_classmethod |
+| code/class_simple.py:28:1:28:15 | Attribute() | code/class_simple.py:8:5:8:26 | Function some_method |
+| code/class_simple.py:30:1:30:21 | Attribute() | code/class_simple.py:13:5:13:28 | Function some_staticmethod |
+| code/class_simple.py:32:1:32:20 | Attribute() | code/class_simple.py:18:5:18:30 | Function some_classmethod |
+| code/class_simple.py:35:1:35:21 | Attribute() | code/class_simple.py:13:5:13:28 | Function some_staticmethod |
+| code/class_simple.py:37:1:37:20 | Attribute() | code/class_simple.py:18:5:18:30 | Function some_classmethod |
 | code/runtime_decision.py:21:1:21:6 | func() | code/runtime_decision.py:8:1:8:13 | Function rd_foo |
 | code/runtime_decision.py:21:1:21:6 | func() | code/runtime_decision.py:12:1:12:13 | Function rd_bar |
 | code/runtime_decision.py:30:1:30:7 | func2() | code/runtime_decision.py:8:1:8:13 | Function rd_foo |

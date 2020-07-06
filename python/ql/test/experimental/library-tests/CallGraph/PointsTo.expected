@@ -2,6 +2,5 @@ debug_missingAnnotationForCallable
 debug_nonUniqueAnnotationForCallable
 debug_missingAnnotationForCall
 expectedCallEdgeNotFound
-| code/class_simple.py:23:5:23:9 | A() | code/class_simple.py:4:5:4:28 | Function __init__ |
 | code/underscore_prefix_func_name.py:16:5:16:19 | some_function() | code/underscore_prefix_func_name.py:10:1:10:20 | Function some_function |
 unexpectedCallEdgeFound
