@@ -1,22 +1,22 @@
 import python
 
-/** Gets the comment on the line above for a given `ast_node` */
-Comment comment_for(AstNode ast_node) {
-    exists(int line | line = ast_node.getLocation().getStartLine() - 1 |
+/** Gets the comment on the line above `ast` */
+Comment commentFor(AstNode ast) {
+    exists(int line | line = ast.getLocation().getStartLine() - 1 |
         result
                 .getLocation()
-                .hasLocationInfo(ast_node.getLocation().getFile().getAbsolutePath(), line, _, line, _)
+                .hasLocationInfo(ast.getLocation().getFile().getAbsolutePath(), line, _, line, _)
     )
 }
 
-/** Gets the value from `tag:value` in the comment for `ast_node` */
-string getAnnotation(AstNode ast_node, string tag) {
-    exists(Comment comment, string match, string the_regex |
-        the_regex = "([\\w]+):([\\w.]+)" and
-        comment = comment_for(ast_node) and
-        match = comment.getText().regexpFind(the_regex, _, _) and
-        tag = match.regexpCapture(the_regex, 1) and
-        result = match.regexpCapture(the_regex, 2)
+/** Gets the value from `tag:value` in the comment for `ast` */
+string getAnnotation(AstNode ast, string tag) {
+    exists(Comment comment, string match, string theRegex |
+        theRegex = "([\\w]+):([\\w.]+)" and
+        comment = commentFor(ast) and
+        match = comment.getText().regexpFind(theRegex, _, _) and
+        tag = match.regexpCapture(theRegex, 1) and
+        result = match.regexpCapture(theRegex, 2)
     )
 }
 
@@ -42,7 +42,7 @@ predicate missingAnnotationForCall(string name, Function callable) {
 }
 
 /** There is an obvious problem with the annotation `name` */
-predicate name_in_error_state(string name) {
+predicate nameInErrorState(string name) {
     missingAnnotationForCallable(name, _)
     or
     nonUniqueAnnotationForCallable(name, _)
@@ -52,7 +52,7 @@ predicate name_in_error_state(string name) {
 
 /** Source code has annotation with `name` showing that `call` will call `callable` */
 predicate annotatedCallEdge(string name, Call call, Function callable) {
-    not name_in_error_state(name) and
+    not nameInErrorState(name) and
     call = annotatedCall(name) and
     callable = annotatedCallable(name)
 }
@@ -112,13 +112,13 @@ abstract class CallGraphResolver extends TCallGraphResolver {
             exists(string name |
                 message = "Call resolved to the callable named '" + name + "' but was not annotated as such" and
                 callable = annotatedCallable(name) and
-                not name_in_error_state(name)
+                not nameInErrorState(name)
             )
             or
             exists(string name |
                 message = "Annotated call resolved to unannotated callable" and
                 call = annotatedCall(name) and
-                not name_in_error_state(name) and
+                not nameInErrorState(name) and
                 not exists( | callable = annotatedCallable(_))
             )
         )
@@ -130,9 +130,9 @@ abstract class CallGraphResolver extends TCallGraphResolver {
 /** A call graph resolver based on the existing points-to analysis */
 class PointsToResolver extends CallGraphResolver, TPointsToResolver {
     override predicate callEdge(Call call, Function callable) {
-        exists(PythonFunctionValue func_value |
-            func_value.getScope() = callable and
-            call = func_value.getACall().getNode()
+        exists(PythonFunctionValue funcValue |
+            funcValue.getScope() = callable and
+            call = funcValue.getACall().getNode()
         )
     }
 
