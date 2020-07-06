@@ -31,7 +31,8 @@ If the value for `--max-import-depth` is set so that `import random` will extrac
 ```py
 import random
 if random.random() < 0.5:
-    ...
+    func = foo
 else:
-    ...
+    func = bar
+func()
 ```
