@@ -510,6 +510,37 @@
 | swap1.cpp:113:31:113:39 | ref arg call to move | swap1.cpp:113:41:113:49 | move_from [inner post update] |  |
 | swap1.cpp:113:31:113:51 | call to Class | swap1.cpp:115:10:115:16 | move_to |  |
 | swap1.cpp:113:41:113:49 | move_from | swap1.cpp:113:31:113:39 | call to move |  |
+| swap1.cpp:120:23:120:23 | x | swap1.cpp:122:5:122:5 | x |  |
+| swap1.cpp:120:23:120:23 | x | swap1.cpp:124:10:124:10 | x |  |
+| swap1.cpp:120:23:120:23 | x | swap1.cpp:127:19:127:19 | x |  |
+| swap1.cpp:120:23:120:23 | x | swap1.cpp:130:10:130:10 | x |  |
+| swap1.cpp:121:23:121:23 | y | swap1.cpp:125:10:125:10 | y |  |
+| swap1.cpp:121:23:121:23 | y | swap1.cpp:127:5:127:5 | y |  |
+| swap1.cpp:121:23:121:23 | y | swap1.cpp:129:10:129:10 | y |  |
+| swap1.cpp:122:5:122:5 | x [post update] | swap1.cpp:124:10:124:10 | x |  |
+| swap1.cpp:122:5:122:5 | x [post update] | swap1.cpp:127:19:127:19 | x |  |
+| swap1.cpp:122:5:122:5 | x [post update] | swap1.cpp:130:10:130:10 | x |  |
+| swap1.cpp:122:5:122:22 | ... = ... | swap1.cpp:124:12:124:16 | data1 |  |
+| swap1.cpp:122:5:122:22 | ... = ... | swap1.cpp:130:12:130:16 | data1 |  |
+| swap1.cpp:122:15:122:20 | call to source | swap1.cpp:122:5:122:22 | ... = ... |  |
+| swap1.cpp:127:5:127:5 | ref arg y | swap1.cpp:129:10:129:10 | y |  |
+| swap1.cpp:135:23:135:23 | x | swap1.cpp:137:5:137:5 | x |  |
+| swap1.cpp:135:23:135:23 | x | swap1.cpp:139:10:139:10 | x |  |
+| swap1.cpp:135:23:135:23 | x | swap1.cpp:142:29:142:29 | x |  |
+| swap1.cpp:135:23:135:23 | x | swap1.cpp:145:10:145:10 | x |  |
+| swap1.cpp:136:23:136:23 | y | swap1.cpp:140:10:140:10 | y |  |
+| swap1.cpp:136:23:136:23 | y | swap1.cpp:142:5:142:5 | y |  |
+| swap1.cpp:136:23:136:23 | y | swap1.cpp:144:10:144:10 | y |  |
+| swap1.cpp:137:5:137:5 | x [post update] | swap1.cpp:139:10:139:10 | x |  |
+| swap1.cpp:137:5:137:5 | x [post update] | swap1.cpp:142:29:142:29 | x |  |
+| swap1.cpp:137:5:137:5 | x [post update] | swap1.cpp:145:10:145:10 | x |  |
+| swap1.cpp:137:5:137:22 | ... = ... | swap1.cpp:139:12:139:16 | data1 |  |
+| swap1.cpp:137:5:137:22 | ... = ... | swap1.cpp:145:12:145:16 | data1 |  |
+| swap1.cpp:137:15:137:20 | call to source | swap1.cpp:137:5:137:22 | ... = ... |  |
+| swap1.cpp:142:5:142:5 | ref arg y | swap1.cpp:144:10:144:10 | y |  |
+| swap1.cpp:142:19:142:27 | ref arg call to move | swap1.cpp:142:29:142:29 | x [inner post update] |  |
+| swap1.cpp:142:19:142:27 | ref arg call to move | swap1.cpp:145:10:145:10 | x |  |
+| swap1.cpp:142:29:142:29 | x | swap1.cpp:142:19:142:27 | call to move |  |
 | swap2.cpp:14:17:14:17 | t | swap2.cpp:14:17:14:17 | t |  |
 | swap2.cpp:14:17:14:17 | t | swap2.cpp:14:17:14:17 | t |  |
 | swap2.cpp:14:17:14:17 | t | swap2.cpp:14:56:14:56 | t |  |
@@ -645,6 +676,37 @@
 | swap2.cpp:113:31:113:39 | ref arg call to move | swap2.cpp:113:41:113:49 | move_from [inner post update] |  |
 | swap2.cpp:113:31:113:51 | call to Class | swap2.cpp:115:10:115:16 | move_to |  |
 | swap2.cpp:113:41:113:49 | move_from | swap2.cpp:113:31:113:39 | call to move |  |
+| swap2.cpp:120:23:120:23 | x | swap2.cpp:122:5:122:5 | x |  |
+| swap2.cpp:120:23:120:23 | x | swap2.cpp:124:10:124:10 | x |  |
+| swap2.cpp:120:23:120:23 | x | swap2.cpp:127:19:127:19 | x |  |
+| swap2.cpp:120:23:120:23 | x | swap2.cpp:130:10:130:10 | x |  |
+| swap2.cpp:121:23:121:23 | y | swap2.cpp:125:10:125:10 | y |  |
+| swap2.cpp:121:23:121:23 | y | swap2.cpp:127:5:127:5 | y |  |
+| swap2.cpp:121:23:121:23 | y | swap2.cpp:129:10:129:10 | y |  |
+| swap2.cpp:122:5:122:5 | x [post update] | swap2.cpp:124:10:124:10 | x |  |
+| swap2.cpp:122:5:122:5 | x [post update] | swap2.cpp:127:19:127:19 | x |  |
+| swap2.cpp:122:5:122:5 | x [post update] | swap2.cpp:130:10:130:10 | x |  |
+| swap2.cpp:122:5:122:22 | ... = ... | swap2.cpp:124:12:124:16 | data1 |  |
+| swap2.cpp:122:5:122:22 | ... = ... | swap2.cpp:130:12:130:16 | data1 |  |
+| swap2.cpp:122:15:122:20 | call to source | swap2.cpp:122:5:122:22 | ... = ... |  |
+| swap2.cpp:127:5:127:5 | ref arg y | swap2.cpp:129:10:129:10 | y |  |
+| swap2.cpp:135:23:135:23 | x | swap2.cpp:137:5:137:5 | x |  |
+| swap2.cpp:135:23:135:23 | x | swap2.cpp:139:10:139:10 | x |  |
+| swap2.cpp:135:23:135:23 | x | swap2.cpp:142:29:142:29 | x |  |
+| swap2.cpp:135:23:135:23 | x | swap2.cpp:145:10:145:10 | x |  |
+| swap2.cpp:136:23:136:23 | y | swap2.cpp:140:10:140:10 | y |  |
+| swap2.cpp:136:23:136:23 | y | swap2.cpp:142:5:142:5 | y |  |
+| swap2.cpp:136:23:136:23 | y | swap2.cpp:144:10:144:10 | y |  |
+| swap2.cpp:137:5:137:5 | x [post update] | swap2.cpp:139:10:139:10 | x |  |
+| swap2.cpp:137:5:137:5 | x [post update] | swap2.cpp:142:29:142:29 | x |  |
+| swap2.cpp:137:5:137:5 | x [post update] | swap2.cpp:145:10:145:10 | x |  |
+| swap2.cpp:137:5:137:22 | ... = ... | swap2.cpp:139:12:139:16 | data1 |  |
+| swap2.cpp:137:5:137:22 | ... = ... | swap2.cpp:145:12:145:16 | data1 |  |
+| swap2.cpp:137:15:137:20 | call to source | swap2.cpp:137:5:137:22 | ... = ... |  |
+| swap2.cpp:142:5:142:5 | ref arg y | swap2.cpp:144:10:144:10 | y |  |
+| swap2.cpp:142:19:142:27 | ref arg call to move | swap2.cpp:142:29:142:29 | x [inner post update] |  |
+| swap2.cpp:142:19:142:27 | ref arg call to move | swap2.cpp:145:10:145:10 | x |  |
+| swap2.cpp:142:29:142:29 | x | swap2.cpp:142:19:142:27 | call to move |  |
 | taint.cpp:4:27:4:33 | source1 | taint.cpp:6:13:6:19 | source1 |  |
 | taint.cpp:4:40:4:45 | clean1 | taint.cpp:5:8:5:13 | clean1 |  |
 | taint.cpp:4:40:4:45 | clean1 | taint.cpp:6:3:6:8 | clean1 |  |

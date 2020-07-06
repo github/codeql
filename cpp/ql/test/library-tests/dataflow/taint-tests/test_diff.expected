@@ -45,11 +45,14 @@
 | swap1.cpp:88:13:88:17 | swap1.cpp:81:27:81:28 | AST only |
 | swap1.cpp:102:12:102:16 | swap1.cpp:93:23:93:23 | AST only |
 | swap1.cpp:115:18:115:22 | swap1.cpp:108:23:108:31 | AST only |
+| swap1.cpp:129:12:129:16 | swap1.cpp:120:23:120:23 | AST only |
+| swap1.cpp:144:12:144:16 | swap1.cpp:135:23:135:23 | AST only |
 | swap2.cpp:78:12:78:16 | swap2.cpp:69:23:69:23 | AST only |
-| swap2.cpp:87:13:87:17 | swap2.cpp:82:16:82:21 | AST only |
 | swap2.cpp:88:13:88:17 | swap2.cpp:81:27:81:28 | AST only |
 | swap2.cpp:102:12:102:16 | swap2.cpp:93:23:93:23 | AST only |
 | swap2.cpp:115:18:115:22 | swap2.cpp:108:23:108:31 | AST only |
+| swap2.cpp:129:12:129:16 | swap2.cpp:120:23:120:23 | AST only |
+| swap2.cpp:144:12:144:16 | swap2.cpp:135:23:135:23 | AST only |
 | taint.cpp:41:7:41:13 | taint.cpp:35:12:35:17 | AST only |
 | taint.cpp:42:7:42:13 | taint.cpp:35:12:35:17 | AST only |
 | taint.cpp:43:7:43:13 | taint.cpp:37:22:37:27 | AST only |
