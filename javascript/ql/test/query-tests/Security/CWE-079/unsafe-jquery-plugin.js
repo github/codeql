@@ -152,8 +152,8 @@
 
 	$.fn.my_plugin = function my_plugin(options) {
 		let target = options.target;
-		target === DEFAULTS.target? $(target): $(document).find(target); // NOT OK - but not flagged [INCONSISTENCY]
-		options.target === DEFAULTS.target? $(options.target): $(document).find(options.target); // NOT OK - but not flagged [INCONSISTENCY]
+		target === DEFAULTS.target? $(target): $(document).find(target); // OK
+		options.target === DEFAULTS.target? $(options.target): $(document).find(options.target); // OK
 		options.targets.a === DEFAULTS.target? $(options.target.a): $(document).find(options.target.a); // OK - but still flagged [INCONSISTENCY]
 	}
 
