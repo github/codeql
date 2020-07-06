@@ -19,7 +19,7 @@ class SpringControllerAnnotation extends AnnotationType {
 /**
  * An annotation type that identifies Spring rest controllers.
  *
- * Rest controllers are the same as controllers, but imply the @ResponseBody annotation.
+ * Rest controllers are the same as controllers, but imply the `@ResponseBody` annotation.
  */
 class SpringRestControllerAnnotation extends SpringControllerAnnotation {
   SpringRestControllerAnnotation() { hasName("RestController") }
@@ -78,7 +78,7 @@ class SpringInitBinderMethod extends SpringControllerMethod {
 }
 
 /**
- * An `AnnotationType` which is used to indicate a `RequestMapping`.
+ * An `AnnotationType` that is used to indicate a `RequestMapping`.
  */
 class SpringRequestMappingAnnotationType extends AnnotationType {
   SpringRequestMappingAnnotationType() {
@@ -91,7 +91,7 @@ class SpringRequestMappingAnnotationType extends AnnotationType {
 }
 
 /**
- * An `AnnotationType` which is used to indicate a `ResponseBody`.
+ * An `AnnotationType` that is used to indicate a `ResponseBody`.
  */
 class SpringResponseBodyAnnotationType extends AnnotationType {
   SpringResponseBodyAnnotationType() {
@@ -126,12 +126,10 @@ class SpringRequestMappingMethod extends SpringControllerMethod {
       requestMappingAnnotation.getValue("produces").(CompileTimeConstantExpr).getStringValue()
   }
 
-  /** Holds if this is considered an @ResponseBody method. */
+  /** Holds if this is considered an `@ResponseBody` method. */
   predicate isResponseBody() {
-    getAnAnnotation().getType() instanceof SpringResponseBodyAnnotationType
-    or
-    getDeclaringType().getAnAnnotation().getType() instanceof SpringResponseBodyAnnotationType
-    or
+    getAnAnnotation().getType() instanceof SpringResponseBodyAnnotationType or
+    getDeclaringType().getAnAnnotation().getType() instanceof SpringResponseBodyAnnotationType or
     getDeclaringType() instanceof SpringRestController
   }
 }
@@ -242,13 +240,13 @@ class SpringRequestMappingParameter extends Parameter {
     not isImplicitRequestParam()
   }
 
-  /** Holds if this is an explicit or implicit @ModelAttribute parameter */
+  /** Holds if this is an explicit or implicit `@ModelAttribute` parameter. */
   predicate isModelAttribute() {
     isImplicitModelAttribute() or
     getAnAnnotation() instanceof SpringModelAttributeAnnotation
   }
 
-  /** Holds if the input is tainted */
+  /** Holds if the input is tainted. */
   predicate isTaintedInput() {
     isExplicitlyTaintedInput()
     or
@@ -329,7 +327,7 @@ private RefType stripType(Type t) {
 /**
  * A user data type that may be populated from an HTTP request.
  *
- * This includes types directly referred to as either @ModelAttribute or @RequestBody parameters,
+ * This includes types directly referred to as either `@ModelAttribute` or `@RequestBody` parameters,
  * or types that are referred to by those types.
  */
 class SpringUntrustedDataType extends RefType {
