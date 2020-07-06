@@ -60,6 +60,12 @@ class Expr extends ExprParent, @expr {
   /** Gets the statement containing this expression, if any. */
   Stmt getEnclosingStmt() { statementEnclosingExpr(this, result) }
 
+  /**
+   * Gets a statement that directly or transitively contains this expression, if any.
+   * This is equivalent to `this.getEnclosingStmt().getEnclosingStmt*()`.
+   */
+  Stmt getAnEnclosingStmt() { result = this.getEnclosingStmt().getEnclosingStmt*() }
+
   /** Gets a child of this expression. */
   Expr getAChildExpr() { exprs(result, _, _, this, _) }
 
