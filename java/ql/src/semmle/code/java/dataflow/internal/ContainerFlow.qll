@@ -181,9 +181,10 @@ private predicate qualifierToMethodStep(Expr tracked, MethodAccess sink) {
 
 private predicate qualifierToArgumentStep(Expr tracked, RValue sink) {
   exists(MethodAccess ma |
-    ma.getMethod().(CollectionMethod).hasName("toArray") and
+    // java.util.Vector, java.util.concurrent.BlockingQueue, java.util.Collection
+    ma.getMethod().(CollectionMethod).hasName(["copyInto", "drainTo", "toArray"]) and
     tracked = ma.getQualifier() and
-    sink = ma.getArgument(1)
+    sink = ma.getArgument(0)
   )
 }
 
