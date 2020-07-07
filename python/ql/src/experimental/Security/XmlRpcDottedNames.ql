@@ -3,7 +3,6 @@
  * @description Enabling the allow_dotted_names option allows intruders to access your module’s global variables and may allow intruders to execute arbitrary code on your machine.
  * @kind problem
  * @problem.severity warning
- * @precision medium
  * @id python/xml-rpc-dotted-names
  * @tags reliability
  *       security
