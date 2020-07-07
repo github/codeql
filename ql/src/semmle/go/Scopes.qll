@@ -347,8 +347,25 @@ class Function extends ValueEntity, @functionobject {
     this.(DeclaredFunction).getFuncDecl() = result.getACallee()
   }
 
+  /** Gets the declaration of this function, if any. */
+  FuncDecl getFuncDecl() { none() }
+
   /** Holds if this function has no observable side effects. */
   predicate mayHaveSideEffects() { none() }
+
+  /**
+   * Holds if this function may return without panicking, exiting the process, or looping forever.
+   *
+   * This predicate is an over-approximation: it may hold for functions that can never
+   * return normally, but it never fails to hold for functions that can.
+   *
+   * Note this is declared here and not in `DeclaredFunction` so that library models can override this
+   * by extending `Function` rather than having to remember to extend `DeclaredFunction`.
+   */
+  predicate mayReturnNormally() {
+    not mustPanic() and
+    (ControlFlow::mayReturnNormally(getFuncDecl()) or not exists(getBody()))
+  }
 
   /**
    * Holds if calling this function may cause a runtime panic.
@@ -493,8 +510,7 @@ class Method extends Function {
 
 /** A declared function. */
 class DeclaredFunction extends Function, DeclaredEntity, @declfunctionobject {
-  /** Gets the declaration of this function. */
-  FuncDecl getFuncDecl() { result.getNameExpr() = this.getDeclaration() }
+  override FuncDecl getFuncDecl() { result.getNameExpr() = this.getDeclaration() }
 
   override BlockStmt getBody() { result = getFuncDecl().getBody() }
 

@@ -83,3 +83,13 @@ module TestFile {
     }
   }
 }
+
+/** Provides classes modelling Ginkgo. */
+module Ginkgo {
+  /** The Ginkgo `Fail` function, which always panics. */
+  private class FailFunction extends Function {
+    FailFunction() { hasQualifiedName("github.com/onsi/ginkgo", "Fail") }
+
+    override predicate mustPanic() { any() }
+  }
+}

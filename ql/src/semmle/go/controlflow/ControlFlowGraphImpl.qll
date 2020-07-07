@@ -918,7 +918,7 @@ module CFG {
     }
 
     override Completion getCompletion() {
-      not getTarget().mustPanic() and
+      (not exists(getTarget()) or getTarget().mayReturnNormally()) and
       result = Done()
       or
       (not exists(getTarget()) or getTarget().mayPanic()) and
@@ -1922,6 +1922,17 @@ module CFG {
       or
       result = succ(notDeferSucc+(nd))
     )
+  }
+
+  /**
+   * Holds if the function `f` may return without panicking, exiting the process, or looping forever.
+   *
+   * This is defined conservatively, and so may also hold of a function that in fact
+   * cannot return normally, but never fails to hold of a function that can return normally.
+   */
+  cached
+  predicate mayReturnNormally(ControlFlowTree root) {
+    exists(ControlFlow::Node last, Completion cmpl | lastNode(root, last, cmpl) and cmpl != Panic())
   }
 
   /** Gets a successor of `nd`, that is, a node that is executed after `nd`. */

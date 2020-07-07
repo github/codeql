@@ -259,6 +259,14 @@ module ControlFlow {
    * Gets the exit node of function or file `root`.
    */
   Node exitNode(Root root) { result = MkExitNode(root) }
+
+  /**
+   * Holds if the function `f` may return without panicking, exiting the process, or looping forever.
+   *
+   * This is defined conservatively, and so may also hold of a function that in fact
+   * cannot return normally, but never fails to hold of a function that can return normally.
+   */
+  predicate mayReturnNormally(FuncDecl f) { CFG::mayReturnNormally(f.getBody()) }
 }
 
 class Write = ControlFlow::WriteNode;
