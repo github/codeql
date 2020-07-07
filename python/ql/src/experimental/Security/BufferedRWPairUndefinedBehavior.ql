@@ -3,10 +3,11 @@
  * @description Use of same parameter as reader and writer in BufferedRWPair.
  * @kind problem
  * @problem.severity warning
- * @precision medium
- * @id python/bufferedrwpair-undefined-behavior
+ * @id py/bufferedrwpair-undefined-behavior
  * @tags reliability
  *       security
+ *       external/cwe/cwe-475
+ *       external/cwe/cwe-758
  */
 
 import python
@@ -19,5 +20,5 @@ where
   func.getACall() = call and
   read = call.getArg(0) and
   write = call.getArg(1) and
-  read.getNode().toString() = write.getNode().toString()
-select call, "BufferedRWPair does not attempt to synchronize accesses to its underlying raw streams"
+  read.pointsTo() = write.pointsTo()
+select call, "Using the same reader and writer for BufferedRWPair may cause unexpected behavior"
