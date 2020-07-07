@@ -62,6 +62,8 @@
 | Function | specifiers2pp.cpp:29:7:29:7 | operator= | operator= | extern |
 | Function | specifiers2pp.cpp:29:7:29:7 | operator= | operator= | inline |
 | Function | specifiers2pp.cpp:29:7:29:7 | operator= | operator= | inline |
+| Function | specifiers2pp.cpp:29:7:29:7 | operator= | operator= | is_constexpr |
+| Function | specifiers2pp.cpp:29:7:29:7 | operator= | operator= | is_constexpr |
 | Function | specifiers2pp.cpp:29:7:29:7 | operator= | operator= | public |
 | Function | specifiers2pp.cpp:29:7:29:7 | operator= | operator= | public |
 | Function | specifiers2pp.cpp:33:5:33:18 | fun | fun | public |
@@ -69,6 +71,8 @@
 | Function | specifiers2pp.cpp:35:7:35:7 | operator= | operator= | extern |
 | Function | specifiers2pp.cpp:35:7:35:7 | operator= | operator= | inline |
 | Function | specifiers2pp.cpp:35:7:35:7 | operator= | operator= | inline |
+| Function | specifiers2pp.cpp:35:7:35:7 | operator= | operator= | is_constexpr |
+| Function | specifiers2pp.cpp:35:7:35:7 | operator= | operator= | is_constexpr |
 | Function | specifiers2pp.cpp:35:7:35:7 | operator= | operator= | public |
 | Function | specifiers2pp.cpp:35:7:35:7 | operator= | operator= | public |
 | Function | specifiers2pp.cpp:40:12:40:18 | someFun | someFun | extern |
