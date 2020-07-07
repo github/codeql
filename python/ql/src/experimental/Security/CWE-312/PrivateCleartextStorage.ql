@@ -4,7 +4,6 @@
  *              attacker.
  * @kind path-problem
  * @problem.severity error
- * @precision high
  * @id py/clear-text-storage-private-data
  * @tags security
  *       external/cwe/cwe-312

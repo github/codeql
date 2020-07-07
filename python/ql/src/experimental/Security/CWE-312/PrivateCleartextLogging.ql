@@ -4,7 +4,6 @@
  *              expose it to an attacker.
  * @kind path-problem
  * @problem.severity error
- * @precision high
  * @id py/clear-text-logging-private-data
  * @tags security
  *       external/cwe/cwe-312
