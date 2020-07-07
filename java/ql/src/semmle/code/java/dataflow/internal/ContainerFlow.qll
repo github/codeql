@@ -89,45 +89,89 @@ class ContainerType extends RefType {
 }
 
 private predicate taintPreservingQualifierToMethod(Method m) {
+  // java.util.Map.Entry
   m.getDeclaringType() instanceof EntryType and
-  m.hasName("getValue")
+  m.hasName(["getValue", "setValue"])
   or
+  // java.util.Iterable
   m.getDeclaringType() instanceof IterableType and
-  m.hasName("iterator")
+  m.hasName(["iterator", "spliterator"])
   or
+  // java.util.Iterator
   m.getDeclaringType() instanceof IteratorType and
   m.hasName("next")
   or
+  // java.util.ListIterator
+  m.getDeclaringType() instanceof IteratorType and
+  m.hasName("previous")
+  or
+  // java.util.Enumeration
   m.getDeclaringType() instanceof EnumerationType and
-  m.hasName("nextElement")
+  m.hasName(["asIterator", "nextElement"])
   or
-  m.(MapMethod).hasName("entrySet")
+  // java.util.Map
+  m
+      .(MapMethod)
+      .hasName(["compute", "computeIfAbsent", "computeIfPresent", "entrySet", "get", "getOrDefault",
+            "merge", "putIfAbsent", "remove", "replace", "values"])
   or
-  m.(MapMethod).hasName("get")
+  // java.util.Collection
+  m.(CollectionMethod).hasName(["parallelStream", "stream", "toArray"])
   or
-  m.(MapMethod).hasName("remove")
+  // java.util.List
+  m.(CollectionMethod).hasName(["get", "listIterator", "set", "subList"])
   or
-  m.(MapMethod).hasName("values")
+  m.(CollectionMethod).hasName("remove") and
+  (m.getNumberOfParameters() = 0 or m.getParameterType(0).(PrimitiveType).hasName("int"))
   or
-  m.(CollectionMethod).hasName("toArray")
+  // java.util.Vector
+  m.(CollectionMethod).hasName(["elementAt", "elements", "firstElement", "lastElement"])
   or
-  m.(CollectionMethod).hasName("get")
+  // java.util.Stack
+  m.(CollectionMethod).hasName(["peek", "pop", "push"])
   or
-  m.(CollectionMethod).hasName("remove") and m.getParameterType(0).(PrimitiveType).hasName("int")
+  // java.util.Queue
+  m.(CollectionMethod).hasName(["element", /*"peek", "remove"*/ "poll"])
   or
-  m.(CollectionMethod).hasName("remove") and m.getNumberOfParameters() = 0
+  // java.util.DeQueue
+  m
+      .(CollectionMethod)
+      .hasName(["getFirst", "getLast", "peekFirst", "peekLast", "pollFirst", "pollLast",
+            "removeFirst", "removeLast"])
   or
-  m.(CollectionMethod).hasName("subList")
+  // java.util.concurrent.BlockingQueue
+  m.(CollectionMethod).hasName("take")
   or
-  m.(CollectionMethod).hasName("firstElement")
+  // java.util.concurrent.BlockingDeque
+  m.(CollectionMethod).hasName(["takeFirst", "takeLast"])
   or
-  m.(CollectionMethod).hasName("lastElement")
+  // java.util.SortedSet
+  m.(CollectionMethod).hasName(["first", "headSet", "last", "subSet", "tailSet"])
   or
-  m.(CollectionMethod).hasName("poll")
+  // java.util.NavigableSet
+  m
+      .(CollectionMethod)
+      .hasName(["ceiling", "descendingIterator", "descendingSet", "floor", "higher", "lower"])
   or
-  m.(CollectionMethod).hasName("peek")
+  //java.util.SortedMap
+  m.(MapMethod).hasName(["headMap", "subMap", "tailMap"])
   or
-  m.(CollectionMethod).hasName("element")
+  //java.util.NavigableMap
+  m
+      .(MapMethod)
+      .hasName(["ceilingEntry", "descendingMap", "firstEntry", "floorEntry", "higherEntry",
+            "lastEntry", "lowerEntry", "pollFirstEntry", "pollLastEntry"])
+  or
+  //java.util.Dictionary
+  m
+      .getDeclaringType()
+      .getSourceDeclaration()
+      .getASourceSupertype*()
+      .hasQualifiedName("java.util", "Dictionary") and
+  m.hasName(["elements", "get", "put", "remove"])
+  or
+  // java.util.concurrent.ConcurrentHashMap
+  m.(MapMethod).hasName(["search", "searchEntries", "searchValues"])
 }
 
 private predicate qualifierToMethodStep(Expr tracked, MethodAccess sink) {
