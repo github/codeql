@@ -1,3 +1,20 @@
+| CollectionsTest.java:8:28:8:32 | "one" | CollectionsTest.java:8:3:8:33 | new ..[] { .. } |
+| CollectionsTest.java:8:28:8:32 | "one" | CollectionsTest.java:8:22:8:25 | list [post update] |
+| CollectionsTest.java:9:28:9:32 | "two" | CollectionsTest.java:9:3:9:42 | new ..[] { .. } |
+| CollectionsTest.java:9:28:9:32 | "two" | CollectionsTest.java:9:22:9:25 | list [post update] |
+| CollectionsTest.java:9:35:9:41 | "three" | CollectionsTest.java:9:3:9:42 | new ..[] { .. } |
+| CollectionsTest.java:9:35:9:41 | "three" | CollectionsTest.java:9:22:9:25 | list [post update] |
+| CollectionsTest.java:10:28:10:49 | new String[] | CollectionsTest.java:10:22:10:25 | list [post update] |
+| CollectionsTest.java:10:28:10:49 | {...} | CollectionsTest.java:10:28:10:49 | new String[] |
+| CollectionsTest.java:10:42:10:47 | "four" | CollectionsTest.java:10:28:10:49 | {...} |
+| CollectionsTest.java:12:27:12:30 | list | CollectionsTest.java:12:3:12:45 | checkedList(...) |
+| CollectionsTest.java:13:19:13:22 | list | CollectionsTest.java:13:3:13:23 | min(...) |
+| CollectionsTest.java:14:27:14:30 | list | CollectionsTest.java:14:3:14:31 | enumeration(...) |
+| CollectionsTest.java:15:20:15:30 | enumeration | CollectionsTest.java:15:3:15:31 | list(...) |
+| CollectionsTest.java:16:35:16:41 | "value" | CollectionsTest.java:16:3:16:42 | singletonMap(...) |
+| CollectionsTest.java:17:26:17:30 | other | CollectionsTest.java:17:20:17:23 | list [post update] |
+| CollectionsTest.java:18:27:18:32 | "item" | CollectionsTest.java:18:3:18:33 | nCopies(...) |
+| CollectionsTest.java:19:42:19:50 | "replace" | CollectionsTest.java:19:26:19:29 | list [post update] |
 | Test.java:24:32:24:38 | string2 | Test.java:24:17:24:39 | decode(...) |
 | Test.java:25:46:25:51 | bytes2 | Test.java:25:31:25:52 | encode(...) |
 | Test.java:27:34:27:40 | string2 | Test.java:27:13:27:41 | decode(...) |
