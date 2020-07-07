@@ -2,7 +2,7 @@ Modeling data flow in Go libraries
 ==================================
 
 When analyzing a Go program, CodeQL does not examine the source code for
-external packages. To track the flow of untrusted data through a library you
+external packages. To track the flow of untrusted data through a library, you
 can create a model of the library.
 
 You can find existing models in the ``ql/src/semmle/go/frameworks/`` folder of the
@@ -20,9 +20,9 @@ example from ``Mux.qll``.
 
 .. code-block:: ql
 
-     class RequestVars extends DataFlow::UntrustedFlowSource::Range, DataFlow::CallNode {
-       RequestVars() { this.getTarget().hasQualifiedName("github.com/gorilla/mux", "Vars") }
-     }
+   class RequestVars extends DataFlow::UntrustedFlowSource::Range, DataFlow::CallNode {
+     RequestVars() { this.getTarget().hasQualifiedName("github.com/gorilla/mux", "Vars") }
+   }
 
 This has the effect that all calls to `the function Vars from the
 package mux <http://www.gorillatoolkit.org/pkg/mux#Vars>`__ are
@@ -68,7 +68,7 @@ outputs to a function. The options are:
 * one of the parameters (``outp.isParameter(i)``)
 * one of the results (``outp.isResult(i)``, or ``outp.isResult`` if there is only one result)
 
-Here is an example from ``Gin.qll``, slightly modified for brevity.
+Here is an example from ``Gin.qll``, which has been slightly simplified.
 
 .. code-block:: ql
 
@@ -89,8 +89,8 @@ the receiver to the first result. In other words, if ``p`` has type
 Sanitizers
 ----------
 
-It is not necessary to indicate that library functions are sanitizers -
-because their bodies are not analyzed it is assumed that data does not
+It is not necessary to indicate that library functions are sanitizers.
+Their bodies are not analyzed, so it is assumed that data does not
 flow through them.
 
 Sinks
@@ -101,13 +101,12 @@ However, you can use library models to indicate when functions belong to
 special categories. Queries can then use these categories when specifying
 sinks. Classes representing these special categories are contained in
 ``ql/src/semmle/go/Concepts.qll`` in the `CodeQL for Go repository
-<https://github.com/github/codeql-go/blob/main/ql/src/semmle/go/Concepts.qll>`__,
-including classes for logger mechanisms,
+<https://github.com/github/codeql-go/blob/main/ql/src/semmle/go/Concepts.qll>`__.
+``Concepts.qll`` includes classes for logger mechanisms,
 HTTP response writers, HTTP redirects, and marshaling and unmarshaling
 functions.
 
-Here is a short example from ``Stdlib.qll``, slightly modified for
-brevity.
+Here is a short example from ``Stdlib.qll``, which has been slightly simplified.
 
 .. code-block:: ql
 
