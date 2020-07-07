@@ -22,7 +22,7 @@ Write the function name beginning with an lowercase letter. For example, <code>j
 
 <li>
   Guido van Rossum, Barry Warsaw, Nick Coghlan <em>PEP 8 -- Style Guide for Python Code<em>
-  <a href="https://www.python.org/dev/peps/pep-0008/#function-and-variable-names"</a>
+  <a href="https://www.python.org/dev/peps/pep-0008/#function-and-variable-names">Python Function and Variable Names</a>
 </li>
 
 </references>

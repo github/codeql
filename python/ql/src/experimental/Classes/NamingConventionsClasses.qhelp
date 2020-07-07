@@ -22,7 +22,7 @@ Write the class name beginning with an uppercase letter. For example, <code>clas
 
 <li>
   Guido van Rossum, Barry Warsaw, Nick Coghlan <em>PEP 8 -- Style Guide for Python Code<em>
-  <a href="https://www.python.org/dev/peps/pep-0008/#class-names"</a>
+  <a href="https://www.python.org/dev/peps/pep-0008/#class-names">Python Class Names</a>
 </li>
 
 </references>
