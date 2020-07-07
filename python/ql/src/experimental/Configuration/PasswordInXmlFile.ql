@@ -3,8 +3,7 @@
  * @description Finds passwords in xml files.
  * @kind problem
  * @problem.severity warning
- * @precision medium
- * @id python/password-in-xml-file
+ * @id py/password-in-xml-file
  * @tags security
  *       external/cwe/cwe-13
  *       external/cwe/cwe-256

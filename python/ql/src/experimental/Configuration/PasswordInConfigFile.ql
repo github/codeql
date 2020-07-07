@@ -3,8 +3,7 @@
  * @description Finds passwords in config files.
  * @kind problem
  * @problem.severity warning
- * @precision medium
- * @id python/password-in-config-file
+ * @id py/password-in-config-file
  * @tags security
  *       external/cwe/cwe-13
  *       external/cwe/cwe-256

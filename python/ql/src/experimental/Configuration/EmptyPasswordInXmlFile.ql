@@ -3,8 +3,7 @@
  * @description Finds empty passwords in xml files.
  * @kind problem
  * @problem.severity warning
- * @precision medium
- * @id cs/empty-password-in-xml-file
+ * @id py/empty-password-in-xml-file
  * @tags security
  *       external/cwe/cwe-13
  *       external/cwe/cwe-256
