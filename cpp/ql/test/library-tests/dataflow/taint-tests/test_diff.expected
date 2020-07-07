@@ -5,6 +5,13 @@
 | copyableclass.cpp:65:8:65:9 | copyableclass.cpp:60:40:60:45 | AST only |
 | copyableclass.cpp:66:8:66:9 | copyableclass.cpp:63:24:63:29 | AST only |
 | copyableclass.cpp:67:11:67:11 | copyableclass.cpp:67:13:67:18 | AST only |
+| copyableclass_declonly.cpp:40:8:40:9 | copyableclass_declonly.cpp:34:30:34:35 | AST only |
+| copyableclass_declonly.cpp:41:8:41:9 | copyableclass_declonly.cpp:35:32:35:37 | AST only |
+| copyableclass_declonly.cpp:42:8:42:9 | copyableclass_declonly.cpp:34:30:34:35 | AST only |
+| copyableclass_declonly.cpp:43:8:43:9 | copyableclass_declonly.cpp:38:8:38:13 | AST only |
+| copyableclass_declonly.cpp:65:8:65:9 | copyableclass_declonly.cpp:60:56:60:61 | AST only |
+| copyableclass_declonly.cpp:66:8:66:9 | copyableclass_declonly.cpp:63:32:63:37 | AST only |
+| copyableclass_declonly.cpp:67:11:67:11 | copyableclass_declonly.cpp:67:13:67:18 | AST only |
 | format.cpp:57:8:57:13 | format.cpp:56:36:56:49 | AST only |
 | format.cpp:62:8:62:13 | format.cpp:61:30:61:43 | AST only |
 | format.cpp:67:8:67:13 | format.cpp:66:52:66:65 | AST only |
