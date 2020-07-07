@@ -6,6 +6,7 @@
 
 import go
 private import semmle.go.security.SensitiveActions::HeuristicNames
+private import semmle.go.security.SensitiveActions::PasswordHeuristics
 
 /**
  * Provides extension points for customizing the data-flow tracking configuration for reasoning
@@ -67,6 +68,9 @@ module CleartextLogging {
           .(Ident)
           .getName()
           .regexpMatch("(?is).*(messages|strings).*")
+      or
+      // avoid dummy passwords
+      isDummyPassword(this.getStringValue())
     }
   }
 
@@ -85,12 +89,33 @@ module CleartextLogging {
   }
 
   /**
+   * Read of a non-sensitive header, considered as a barrier for clear-text logging.
+   */
+  private class NonSensitiveHeaderGet extends Barrier {
+    NonSensitiveHeaderGet() {
+      exists(string headerName |
+        exists(DataFlow::MethodCallNode c | c = this |
+          c.getTarget().hasQualifiedName("net/http", "Header", "Get") and
+          headerName = c.getArgument(0).getStringValue()
+        )
+        or
+        exists(DataFlow::ElementReadNode e | e = this |
+          e.getBase().getType().hasQualifiedName("net/http", "Header") and
+          headerName = e.getIndex().getStringValue()
+        )
+      |
+        not headerName.toLowerCase() in ["authorization", "cookie"]
+      )
+    }
+  }
+
+  /**
    * A data-flow node that does not contain a clear-text password.
    */
   abstract private class NonCleartextPassword extends DataFlow::Node { }
 
   /**
-   * An struct with a field that may contain password information.
+   * A value assigned to a struct field that may contain password information.
    *
    * This is a source since `log.Print(obj)` will often show the fields of `obj`.
    */
@@ -98,14 +123,12 @@ module CleartextLogging {
     string name;
 
     StructPasswordFieldSource() {
-      exists(Write write, Field f, DataFlow::Node rhs |
-        write.writesField(this.getASuccessor*(), f, rhs)
-      |
+      exists(Write write, Field f | write.writesField(_, f, this) |
         name = f.getName() and
         name.regexpMatch(maybePassword()) and
         not name.regexpMatch(notSensitive()) and
         // avoid safe values assigned to presumably unsafe names
-        not rhs instanceof NonCleartextPassword
+        not this instanceof NonCleartextPassword
       )
     }
 
@@ -147,5 +170,17 @@ module CleartextLogging {
     }
 
     override string describe() { result = "a call to " + name }
+  }
+
+  /** The headers of an HTTP request, considered as a source of sensitive information. */
+  private class RequestHeaderSource extends Source {
+    RequestHeaderSource() {
+      exists(Field hdr |
+        hdr.hasQualifiedName("net/http", "Request", "Header") and
+        this = hdr.getARead()
+      )
+    }
+
+    override string describe() { result = "HTTP request headers" }
   }
 }

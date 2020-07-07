@@ -55,7 +55,8 @@ module HeuristicNames {
    * that is hashed, encrypted, or a test value, and hence non-sensitive.
    */
   string notSensitive() {
-    result = "(?is).*(test|redact|censor|obfuscate|hash|md5|sha|((?<!un)(en))?(crypt|code)).*"
+    result =
+      "(?is).*(test|redact|censor|obfuscate|hash|md5|(?<!un)mask|sha|((?<!un)(en))?(crypt|code)).*"
   }
 }
 

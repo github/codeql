@@ -19,7 +19,7 @@ func redact(kind, value string) string {
 func test() {
 	name := "user"
 	password := "P@ssw0rd"
-	x := "aaaaa"
+	x := "horsebatterystapleincorrect"
 	var o passStruct
 
 	log.Println(password)        // NOT OK
@@ -47,7 +47,7 @@ func test() {
 	log.Println(obj3) // caught because of the below line
 	obj3.x = password // NOT OK
 
-	fixed_password := "123"
+	fixed_password := "cowbatterystaplecorrect"
 	log.Println(fixed_password) // Probably OK, but caught
 
 	log.Println(IncorrectPasswordError) // OK
@@ -125,6 +125,11 @@ func test() {
 	log.Println(config)          // NOT OK
 	log.Println(config.x)        // NOT OK
 	log.Println(config.y)        // NOT OK
+
+	obj4 := xStruct{
+		x: "aaaaa",
+	}
+	log.Println(obj4) // OK
 }
 
 const password = "horsebatterystaplecorrect"
