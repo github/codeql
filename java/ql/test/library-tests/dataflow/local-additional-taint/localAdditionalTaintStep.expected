@@ -6,10 +6,8 @@
 | ArraysTest.java:8:24:8:30 | "three" | ArraysTest.java:8:3:8:31 | new ..[] { .. } |
 | ArraysTest.java:9:17:9:22 | source | ArraysTest.java:9:3:9:27 | copyOf(...) |
 | ArraysTest.java:10:22:10:27 | source | ArraysTest.java:10:3:10:35 | copyOfRange(...) |
-| ArraysTest.java:11:23:11:28 | source | ArraysTest.java:11:3:11:29 | deepToString(...) |
 | ArraysTest.java:12:22:12:27 | source | ArraysTest.java:12:3:12:28 | spliterator(...) |
 | ArraysTest.java:13:17:13:22 | source | ArraysTest.java:13:3:13:23 | stream(...) |
-| ArraysTest.java:14:19:14:24 | source | ArraysTest.java:14:3:14:25 | toString(...) |
 | ArraysTest.java:15:23:15:29 | "value" | ArraysTest.java:15:15:15:20 | source [post update] |
 | ArraysTest.java:16:30:16:35 | "data" | ArraysTest.java:16:15:16:20 | source [post update] |
 | ArraysTest.java:17:43:17:43 | x | ArraysTest.java:17:43:17:47 | ... + ... |

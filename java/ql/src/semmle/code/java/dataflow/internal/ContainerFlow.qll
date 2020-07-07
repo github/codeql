@@ -183,7 +183,7 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
   or
   method.getDeclaringType().hasQualifiedName("java.util", "Arrays") and
   (
-    method.hasName(["copyOf", "copyOfRange", "deepToString", "spliterator", "stream", "toString"]) and
+    method.hasName(["copyOf", "copyOfRange", "spliterator", "stream"]) and
     arg = 0
   )
 }
