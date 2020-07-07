@@ -4,7 +4,6 @@
  *              to an attacker.
  * @kind path-problem
  * @problem.severity warning
- * @precision medium
  * @id cpp/private-cleartext-storage-buffer
  * @tags security
  *       external/cwe/cwe-312

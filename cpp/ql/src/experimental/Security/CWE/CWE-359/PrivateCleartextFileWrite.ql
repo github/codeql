@@ -4,7 +4,6 @@
  *              to an attacker.
  * @kind problem
  * @problem.severity warning
- * @precision medium
  * @id cpp/private-cleartext-storage-file
  * @tags security
  *       external/cwe/cwe-313

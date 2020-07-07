@@ -51,4 +51,3 @@ class PrivateVariableAccess extends PrivateDataExpr, VariableAccess {
     exists(string s | this.getTarget().getName().toLowerCase() = s | s.matches(privateNames()))
   }
 }
-
