@@ -1368,6 +1368,7 @@ fs.accessSync = function(path, mode) {};
  * @return {fs.ReadStream}
  */
 fs.createReadStream = function(path, options) {};
+fs.createReadStream.on = function(event, callback) { callback(); }
 
 /**
  * @param {(string|Buffer)} path
@@ -1375,6 +1376,7 @@ fs.createReadStream = function(path, options) {};
  * @return {fs.WriteStream}
  */
 fs.createWriteStream = function(path, options) {};
+fs.createWriteStream.on = function(event, callback) { callback(); }
 
 /**
  * @param {number} fd
