@@ -188,19 +188,49 @@ private predicate qualifierToArgumentStep(Expr tracked, RValue sink) {
 }
 
 private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
-  method.(MapMethod).hasName("put") and arg = 1
+  // java.util.Map.Entry
+  method.getDeclaringType() instanceof EntryType and
+  method.hasName("setValue") and
+  arg = 0
+  or
+  // java.util.Map
+  method.(MapMethod).hasName(["merge", "put", "putIfAbsent"]) and arg = 1
+  or
+  method.(MapMethod).hasName("replace") and arg = method.getNumberOfParameters() - 1
   or
   method.(MapMethod).hasName("putAll") and arg = 0
   or
-  method.(CollectionMethod).hasName("add") and arg = method.getNumberOfParameters() - 1
+  // java.util.ListIterator
+  method.getDeclaringType() instanceof IteratorType and
+  method.hasName(["add", "set"]) and
+  arg = 0
   or
-  method.(CollectionMethod).hasName("addAll") and arg = method.getNumberOfParameters() - 1
+  // java.util.Collection
+  method.(CollectionMethod).hasName(["add", "addAll"]) and arg = method.getNumberOfParameters() - 1
   or
-  method.(CollectionMethod).hasName("addElement") and arg = 0
-  or
+  // java.util.List
   method.(CollectionMethod).hasName("set") and arg = 1
   or
+  // java.util.Vector
+  method.(CollectionMethod).hasName(["addElement", "insertElementAt", "setElementAt"]) and arg = 0
+  or
+  // java.util.Stack
+  method.(CollectionMethod).hasName("push") and arg = 0
+  or
+  // java.util.Queue
   method.(CollectionMethod).hasName("offer") and arg = 0
+  or
+  // java.util.Deque
+  method.(CollectionMethod).hasName(["addFirst", "addLast", "offerFirst", "offerLast"]) and arg = 0
+  or
+  // java.util.concurrent.BlockingQueue
+  method.(CollectionMethod).hasName("put") and arg = 0
+  or
+  // java.util.concurrent.TransferQueue
+  method.(CollectionMethod).hasName(["transfer", "tryTransfer"]) and arg = 0
+  or
+  // java.util.concurrent.BlockingDeque
+  method.(CollectionMethod).hasName(["putFirst", "putLast"]) and arg = 0
 }
 
 /**
