@@ -49,8 +49,7 @@ containerparent(int parent: @container ref, unique int child: @container ref);
 
 has_location(unique int locatable: @locatable ref, int location: @location ref);
 
-#keyset[parent, idx]
-comment_groups(unique int id: @comment_group, int parent: @file ref, int idx: int ref);
+comment_groups(unique int id: @comment_group);
 
 comments(unique int id: @comment, int kind: int ref, int parent: @comment_group ref, int idx: int ref, string text: string ref);
 

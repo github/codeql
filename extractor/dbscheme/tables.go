@@ -706,7 +706,9 @@ var HasLocationTable = NewTable("has_location",
 // CommentGroupsTable is the table defining comment group entities
 var CommentGroupsTable = NewTable("comment_groups",
 	EntityColumn(CommentGroupType, "id").Key(),
-)
+	EntityColumn(FileType, "parent"),
+	IntColumn("idx"),
+).KeySet("parent", "idx")
 
 // CommentsTable is the table defining comment entities
 var CommentsTable = NewTable("comments",

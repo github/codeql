@@ -144,7 +144,7 @@ func extractGoModComments(tw *trap.Writer, expr modfile.Expr, exprlbl trap.Label
 
 	// extract a pseudo `@commentgroup` for each expr that contains their associated comments
 	grouplbl := tw.Labeler.LocalID(GoModExprCommentWrapper{expr})
-	dbscheme.CommentGroupsTable.Emit(tw, grouplbl)
+	dbscheme.CommentGroupsTable.Emit(tw, grouplbl, tw.Labeler.FileLabel(), 0)
 	dbscheme.DocCommentsTable.Emit(tw, exprlbl, grouplbl)
 
 	var allComments []modfile.Comment

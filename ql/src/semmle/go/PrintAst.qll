@@ -115,7 +115,11 @@ private AstNode getChildOfKind(AstNode parent, string kind, int i) {
   or
   kind = "spec" and result = parent.(GenDecl).getSpec(i)
   or
-  kind = "field" and fields(result, parent, i)
+  kind = "field" and result = parent.(FieldParent).getField(i)
+  or
+  kind = "commentgroup" and result = parent.(File).getCommentGroup(i)
+  or
+  kind = "comment" and result = parent.(CommentGroup).getComment(i)
 }
 
 /**

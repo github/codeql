@@ -532,8 +532,8 @@ func extractFileNode(tw *trap.Writer, nd *ast.File) {
 		extractDecl(tw, decl, lbl, i)
 	}
 
-	for _, cg := range nd.Comments {
-		extractCommentGroup(tw, cg)
+	for i, cg := range nd.Comments {
+		extractCommentGroup(tw, cg, lbl, i)
 	}
 
 	extractDoc(tw, nd.Doc, lbl)
@@ -548,9 +548,9 @@ func extractDoc(tw *trap.Writer, doc *ast.CommentGroup, elt trap.Label) {
 }
 
 // extractCommentGroup extracts information about a doc comment group
-func extractCommentGroup(tw *trap.Writer, cg *ast.CommentGroup) {
+func extractCommentGroup(tw *trap.Writer, cg *ast.CommentGroup, parent trap.Label, idx int) {
 	lbl := tw.Labeler.LocalID(cg)
-	dbscheme.CommentGroupsTable.Emit(tw, lbl)
+	dbscheme.CommentGroupsTable.Emit(tw, lbl, parent, idx)
 	extractNodeLocation(tw, cg, lbl)
 	for i, c := range cg.List {
 		extractComment(tw, c, lbl, i)
