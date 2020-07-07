@@ -1,0 +1,8 @@
+| 0:condition | question_mark_colon.c:7:9:7:9 | call to f | file://:0:0:0:0 | char * | file://:0:0:0:0 | char * |
+| 0:condition | question_mark_colon.c:17:7:17:7 | x | file://:0:0:0:0 | int | file://:0:0:0:0 | int |
+| 0:condition / 1:then | question_mark_colon.c:6:9:6:9 | call to f | file://:0:0:0:0 | char * | file://:0:0:0:0 | char * |
+| 1:then | question_mark_colon.c:7:15:7:17 | a | file://:0:0:0:0 | char[2] | file://:0:0:0:0 | char * |
+| 1:then | question_mark_colon.c:17:7:17:7 | x | file://:0:0:0:0 | int | file://:0:0:0:0 | long |
+| 2:else | question_mark_colon.c:6:17:6:21 | str | file://:0:0:0:0 | char[4] | file://:0:0:0:0 | char * |
+| 2:else | question_mark_colon.c:7:21:7:23 | b | file://:0:0:0:0 | char[2] | file://:0:0:0:0 | char * |
+| 2:else | question_mark_colon.c:17:13:17:13 | y | file://:0:0:0:0 | long | file://:0:0:0:0 | long |
