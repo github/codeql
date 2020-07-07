@@ -369,25 +369,25 @@ class Location extends @location {
     exists(Module m | locations_ast(this, m, _, _, _, _) | result = m.getPath())
   }
 
-  /** Gets the start line of this location */
+  /** Gets the 1-based line number (inclusive) where this location starts. */
   int getStartLine() {
     locations_default(this, _, result, _, _, _) or
     locations_ast(this, _, result, _, _, _)
   }
 
-  /** Gets the start column of this location */
+  /** Gets the 1-based column number (inclusive) where this location starts. */
   int getStartColumn() {
     locations_default(this, _, _, result, _, _) or
     locations_ast(this, _, _, result, _, _)
   }
 
-  /** Gets the end line of this location */
+  /** Gets the 1-based line number (inclusive) where this location ends. */
   int getEndLine() {
     locations_default(this, _, _, _, result, _) or
     locations_ast(this, _, _, _, result, _)
   }
 
-  /** Gets the end column of this location */
+  /** Gets the 1-based column number (inclusive) where this location ends. */
   int getEndColumn() {
     locations_default(this, _, _, _, _, result) or
     locations_ast(this, _, _, _, _, result)
