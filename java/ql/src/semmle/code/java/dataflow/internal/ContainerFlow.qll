@@ -204,7 +204,7 @@ private predicate taintPreservingArgToArg(Method method, int input, int output) 
   or
   method.getDeclaringType().hasQualifiedName("java.util", "Arrays") and
   (
-    method.hasName(["fill", "parallelPrefix", "parallelSetAll", "setAll"]) and
+    method.hasName("fill") and
     output = 0 and
     input = method.getNumberOfParameters() - 1
   )
