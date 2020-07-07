@@ -3,7 +3,6 @@
  * @description Opening a url without certificate validation can allow man-in-the-middle attacks.
  * @kind problem
  * @problem.severity error
- * @precision medium
  * @id py/urlopen-without-cert-validation
  * @tags security
  *       external/cwe/cwe-295
