@@ -3,7 +3,6 @@
  * @description Use of one of the scanf functions without a specified length.
  * @kind problem
  * @problem.severity warning
- * @precision medium
  * @id cpp/memory-unsafe-function-scan
  * @tags reliability
  *       security

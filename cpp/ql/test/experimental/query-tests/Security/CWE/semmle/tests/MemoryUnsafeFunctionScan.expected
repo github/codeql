@@ -1,2 +1,2 @@
-| MemoryUnsafeFunctionScan.cpp:13:5:13:9 | call to scanf | Dangerous use of one of the scanf functions |
-| MemoryUnsafeFunctionScan.cpp:21:5:21:10 | call to fscanf | Dangerous use of one of the scanf functions |
+| MemoryUnsafeFunctionScan.cpp:14:5:14:9 | call to scanf | Dangerous use of one of the scanf functions |
+| MemoryUnsafeFunctionScan.cpp:22:5:22:10 | call to fscanf | Dangerous use of one of the scanf functions |

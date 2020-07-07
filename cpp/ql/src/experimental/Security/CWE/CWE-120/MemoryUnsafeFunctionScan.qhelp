@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>It is bad practice to use any of the <code>scanf<code> functions without including a specified length within the format parameter, as it will be vulnerable to buffer overflows.</p>
+<p>It is bad practice to use any of the <code>scanf</code> functions without including a specified length within the format parameter, as it will be vulnerable to buffer overflows.</p>
 
 </overview>
 
