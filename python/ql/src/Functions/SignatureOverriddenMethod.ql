@@ -16,20 +16,20 @@ import Expressions.CallArgs
 
 from FunctionValue base, PythonFunctionValue derived
 where
-    not exists(base.getACall()) and
-    not exists(FunctionValue a_derived |
-        a_derived.overrides(base) and
-        exists(a_derived.getACall())
-    ) and
-    not derived.getScope().isSpecialMethod() and
-    derived.getName() != "__init__" and
-    derived.isNormalMethod() and
-    not derived.getScope().isSpecialMethod() and
-    // call to overrides distributed for efficiency
-    (
-        derived.overrides(base) and derived.minParameters() > base.maxParameters()
-        or
-        derived.overrides(base) and derived.maxParameters() < base.minParameters()
-    )
+  not exists(base.getACall()) and
+  not exists(FunctionValue a_derived |
+    a_derived.overrides(base) and
+    exists(a_derived.getACall())
+  ) and
+  not derived.getScope().isSpecialMethod() and
+  derived.getName() != "__init__" and
+  derived.isNormalMethod() and
+  not derived.getScope().isSpecialMethod() and
+  // call to overrides distributed for efficiency
+  (
+    derived.overrides(base) and derived.minParameters() > base.maxParameters()
+    or
+    derived.overrides(base) and derived.maxParameters() < base.minParameters()
+  )
 select derived, "Overriding method '" + derived.getName() + "' has signature mismatch with $@.",
-    base, "overridden method"
+  base, "overridden method"

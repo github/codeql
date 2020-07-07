@@ -14,11 +14,11 @@ private import semmle.python.web.Http
  * The URL argument for a call to the `django.shortcuts.redirect` function.
  */
 class DjangoShortcutsRedirectSink extends HttpRedirectTaintSink {
-    override string toString() { result = "DjangoShortcutsRedirectSink" }
+  override string toString() { result = "DjangoShortcutsRedirectSink" }
 
-    DjangoShortcutsRedirectSink() {
-        this = Value::named("django.shortcuts.redirect").(FunctionValue).getArgumentForCall(_, 0)
-    }
+  DjangoShortcutsRedirectSink() {
+    this = Value::named("django.shortcuts.redirect").(FunctionValue).getArgumentForCall(_, 0)
+  }
 }
 
 /** DEPRECATED: Use `DjangoShortcutsRedirectSink` instead. */
@@ -28,13 +28,13 @@ deprecated class DjangoRedirect = DjangoShortcutsRedirectSink;
  * The URL argument when instantiating a Django Redirect Response.
  */
 class DjangoRedirectResponseSink extends HttpRedirectTaintSink {
-    DjangoRedirectResponseSink() {
-        exists(CallNode call | call = any(DjangoRedirectResponseClass cls).getACall() |
-            this = call.getArg(0)
-            or
-            this = call.getArgByName("redirect_to")
-        )
-    }
+  DjangoRedirectResponseSink() {
+    exists(CallNode call | call = any(DjangoRedirectResponseClass cls).getACall() |
+      this = call.getArg(0)
+      or
+      this = call.getArgByName("redirect_to")
+    )
+  }
 
-    override string toString() { result = "DjangoRedirectResponseSink" }
+  override string toString() { result = "DjangoRedirectResponseSink" }
 }

@@ -13,15 +13,15 @@ import semmle.python.dependencies.Dependencies
  */
 
 abstract class DependencyKind extends string {
-    bindingset[this]
-    DependencyKind() { this = this }
+  bindingset[this]
+  DependencyKind() { this = this }
 
-    /* Tech inventory interface */
-    /**
-     * Identify dependencies associated with this category.
-     * <p>
-     * The source element is the source of the dependency.
-     * </p>
-     */
-    abstract predicate isADependency(AstNode source, Object target);
+  /* Tech inventory interface */
+  /**
+   * Identify dependencies associated with this category.
+   * <p>
+   * The source element is the source of the dependency.
+   * </p>
+   */
+  abstract predicate isADependency(AstNode source, Object target);
 }
