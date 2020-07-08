@@ -720,7 +720,9 @@ private float getLowerBoundsImpl(Expr expr) {
   or
   // Use SSA to get the lower bounds for a variable use.
   exists(RangeSsaDefinition def, StackVariable v | expr = def.getAUse(v) |
-    result = getDefLowerBounds(def, v)
+    result = getDefLowerBounds(def, v) and
+    // Not explicitly modeled by a RangeAnalysisExpr
+    not expr instanceof RangeAnalysisExpr
   )
   or
   // unsigned `&` (tighter bounds may exist)
@@ -893,7 +895,9 @@ private float getUpperBoundsImpl(Expr expr) {
   or
   // Use SSA to get the upper bounds for a variable use.
   exists(RangeSsaDefinition def, StackVariable v | expr = def.getAUse(v) |
-    result = getDefUpperBounds(def, v)
+    result = getDefUpperBounds(def, v) and
+    // Not explicitly modeled by a RangeAnalysisExpr
+    not expr instanceof RangeAnalysisExpr
   )
   or
   // unsigned `&` (tighter bounds may exist)
