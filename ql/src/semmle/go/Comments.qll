@@ -51,6 +51,11 @@ class Comment extends @comment, AstNode {
  * </pre>
  */
 class CommentGroup extends @comment_group, AstNode {
+  /**
+   * Gets the file to which this comment group belongs.
+   */
+  override File getParent() { this = result.getACommentGroup() }
+
   /** Gets the `i`th comment in this group (0-based indexing). */
   Comment getComment(int i) { comments(result, _, this, i, _) }
 

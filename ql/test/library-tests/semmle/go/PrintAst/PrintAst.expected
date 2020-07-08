@@ -1,9 +1,29 @@
 input.go:
 #    0| [File] library-tests/semmle/go/PrintAst/input.go
-#    3|   0: [ImportDecl] import declaration
+#    5|   0: [CommentGroup] comment group
+#    5|     0: [SlashSlashComment] comment
+#    7|   1: [CommentGroup] comment group
+#    7|     0: [SlashSlashComment] comment
+#    9|   2: [DocComment] comment group
+#    9|     0: [SlashSlashComment] comment
+#   17|   3: [CommentGroup] comment group
+#   17|     0: [SlashSlashComment] comment
+#   45|   4: [DocComment] comment group
+#   45|     0: [SlashSlashComment] comment
+#   64|   5: [DocComment] comment group
+#   64|     0: [SlashSlashComment] comment
+#   74|   6: [DocComment] comment group
+#   74|     0: [SlashSlashComment] comment
+#  111|   7: [DocComment] comment group
+#  111|     0: [SlashSlashComment] comment
+#  127|   8: [DocComment] comment group
+#  127|     0: [SlashSlashComment] comment
+#  132|   9: [DocComment] comment group
+#  132|     0: [SlashSlashComment] comment
+#    3|   10: [ImportDecl] import declaration
 #    3|     0: [ImportSpec] import specifier
 #    3|       0: [StringLit] "fmt"
-#   10|   1: [FuncDecl] function declaration
+#   10|   11: [FuncDecl] function declaration
 #   10|     0: [FunctionName, Ident] test5
 #   10|         Type = func(bool) 
 #   10|     1: [FuncTypeExpr] function type
@@ -128,7 +148,7 @@ input.go:
 #   40|         1: [BlockStmt] block statement
 #   41|           0: [GotoStmt] goto statement
 #   41|             0: [Ident, LabelName] outer
-#   46|   2: [FuncDecl] function declaration
+#   46|   12: [FuncDecl] function declaration
 #   46|     0: [FunctionName, Ident] test6
 #   46|         Type = func(chan int, chan float32) 
 #   46|     1: [FuncTypeExpr] function type
@@ -238,7 +258,7 @@ input.go:
 #   58|                   Value = [IntLit] 42
 #   61|       3: [SelectStmt] select statement
 #   61|         0: [BlockStmt] block statement
-#   65|   3: [FuncDecl] function declaration
+#   65|   13: [FuncDecl] function declaration
 #   65|     0: [FunctionName, Ident] test7
 #   65|         Type = func(int) int
 #   65|     1: [FuncTypeExpr] function type
@@ -303,7 +323,7 @@ input.go:
 #   71|         0: [IntLit] 42
 #   71|             Type = int
 #   71|             Value = [IntLit] 42
-#   75|   4: [FuncDecl] function declaration
+#   75|   14: [FuncDecl] function declaration
 #   75|     0: [FunctionName, Ident] test8
 #   75|         Type = func(int) 
 #   75|     1: [FuncTypeExpr] function type
@@ -423,7 +443,7 @@ input.go:
 #  107|             0: [ConstantName, Ident] true
 #  107|                 Type = bool
 #  107|                 Value = [ConstantName, Ident] true
-#  112|   5: [FuncDecl] function declaration
+#  112|   15: [FuncDecl] function declaration
 #  112|     0: [FunctionName, Ident] test9
 #  112|         Type = func(interface {  }) 
 #  112|     1: [FuncTypeExpr] function type
@@ -494,7 +514,7 @@ input.go:
 #  123|                 1: [ConstantName, Ident] false
 #  123|                     Type = bool
 #  123|                     Value = [ConstantName, Ident] false
-#  128|   6: [FuncDecl] function declaration
+#  128|   16: [FuncDecl] function declaration
 #  128|     0: [FunctionName, Ident] test10
 #  128|         Type = func(func() ) 
 #  128|     1: [FuncTypeExpr] function type
@@ -509,7 +529,7 @@ input.go:
 #  129|             Type = ()
 #  129|           0: [Ident, VariableName] f
 #  129|               Type = func() 
-#  133|   7: [FuncDecl] function declaration
+#  133|   17: [FuncDecl] function declaration
 #  133|     0: [FunctionName, Ident] test11
 #  133|         Type = func([]int) 
 #  133|     1: [FuncTypeExpr] function type
@@ -571,24 +591,4 @@ input.go:
 #  145|         0: [Ident, VariableName] xs
 #  145|             Type = []int
 #  145|         1: [BlockStmt] block statement
-#    1|   8: [Ident] main
-#    9| [DocComment] comment group
-#   45| [DocComment] comment group
-#   64| [DocComment] comment group
-#   74| [DocComment] comment group
-#  111| [DocComment] comment group
-#  127| [DocComment] comment group
-#  132| [DocComment] comment group
-#    5| [CommentGroup] comment group
-#    5| [SlashSlashComment] comment
-#    7| [CommentGroup] comment group
-#    7| [SlashSlashComment] comment
-#    9| [SlashSlashComment] comment
-#   17| [CommentGroup] comment group
-#   17| [SlashSlashComment] comment
-#   45| [SlashSlashComment] comment
-#   64| [SlashSlashComment] comment
-#   74| [SlashSlashComment] comment
-#  111| [SlashSlashComment] comment
-#  127| [SlashSlashComment] comment
-#  132| [SlashSlashComment] comment
+#    1|   18: [Ident] main

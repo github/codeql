@@ -208,5 +208,14 @@ class File extends Container, @file, Documentable, ExprParent, GoModExprParent, 
   /** Gets the URL of this file. */
   override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
 
+  /** Gets the `i`th child comment group. */
+  CommentGroup getCommentGroup(int i) { comment_groups(result, this, i) }
+
+  /** Gets a child comment group. */
+  CommentGroup getACommentGroup() { result = getCommentGroup(_) }
+
+  /** Gets the number of child comment groups of this file. */
+  int getNumCommentGroups() { result = count(getACommentGroup()) }
+
   override string getAPrimaryQlClass() { result = "File" }
 }

@@ -20,7 +20,9 @@ class AstNode extends @node, Locatable {
     result = this.(StmtParent).getChildStmt(i) or
     result = this.(DeclParent).getDecl(i) or
     result = this.(GenDecl).getSpec(i) or
-    result = this.(FieldParent).getField(i)
+    result = this.(FieldParent).getField(i) or
+    result = this.(File).getCommentGroup(i) or
+    result = this.(CommentGroup).getComment(i)
   }
 
   /**
