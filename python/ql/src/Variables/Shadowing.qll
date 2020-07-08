@@ -7,8 +7,8 @@ import python
  */
 
 predicate optimizing_parameter(Parameter p) {
-    exists(string name, Name glob | p.getDefault() = glob |
-        glob.getId() = name and
-        p.asName().getId() = name
-    )
+  exists(string name, Name glob | p.getDefault() = glob |
+    glob.getId() = name and
+    p.asName().getId() = name
+  )
 }

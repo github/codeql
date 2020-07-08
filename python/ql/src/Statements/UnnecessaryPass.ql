@@ -13,20 +13,20 @@
 import python
 
 predicate is_doc_string(ExprStmt s) {
-    s.getValue() instanceof Unicode or s.getValue() instanceof Bytes
+  s.getValue() instanceof Unicode or s.getValue() instanceof Bytes
 }
 
 predicate has_doc_string(StmtList stmts) {
-    stmts.getParent() instanceof Scope and
-    is_doc_string(stmts.getItem(0))
+  stmts.getParent() instanceof Scope and
+  is_doc_string(stmts.getItem(0))
 }
 
 from Pass p, StmtList list
 where
-    list.getAnItem() = p and
-    (
-        strictcount(list.getAnItem()) = 2 and not has_doc_string(list)
-        or
-        strictcount(list.getAnItem()) > 2
-    )
+  list.getAnItem() = p and
+  (
+    strictcount(list.getAnItem()) = 2 and not has_doc_string(list)
+    or
+    strictcount(list.getAnItem()) > 2
+  )
 select p, "Unnecessary 'pass' statement."

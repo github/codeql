@@ -196,6 +196,12 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
     method.hasName("entry") and
     arg = 1
   )
+  or
+  method.getDeclaringType().hasQualifiedName("java.util", "Arrays") and
+  (
+    method.hasName(["copyOf", "copyOfRange", "spliterator", "stream"]) and
+    arg = 0
+  )
 }
 
 /**
@@ -223,6 +229,13 @@ private predicate taintPreservingArgToArg(Method method, int input, int output) 
     or
     method.hasName("replaceAll") and input = 2 and output = 0
   )
+  or
+  method.getDeclaringType().hasQualifiedName("java.util", "Arrays") and
+  (
+    method.hasName("fill") and
+    output = 0 and
+    input = method.getNumberOfParameters() - 1
+  )
 }
 
 private predicate argToQualifierStep(Expr tracked, Expr sink) {
@@ -236,9 +249,18 @@ private predicate argToQualifierStep(Expr tracked, Expr sink) {
 
 /** Access to a method that passes taint from an argument. */
 private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
-  exists(int i |
-    taintPreservingArgumentToMethod(sink.getMethod(), i) and
-    tracked = sink.getArgument(i)
+  exists(Method m |
+    m = sink.getMethod() and
+    (
+      exists(int i |
+        taintPreservingArgumentToMethod(m, i) and
+        tracked = sink.getArgument(i)
+      )
+      or
+      m.getDeclaringType().hasQualifiedName("java.util", "Arrays") and
+      m.hasName("asList") and
+      tracked = sink.getAnArgument()
+    )
   )
   or
   taintPreservingArgumentToMethod(sink.getMethod()) and

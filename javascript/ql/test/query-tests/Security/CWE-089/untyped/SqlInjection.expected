@@ -56,6 +56,12 @@ nodes
 | mongodb.js:85:12:85:24 | { tags: tag } |
 | mongodb.js:85:12:85:24 | { tags: tag } |
 | mongodb.js:85:20:85:22 | tag |
+| mongodb.js:106:9:106:18 | query |
+| mongodb.js:106:17:106:18 | {} |
+| mongodb.js:107:17:107:29 | queries.title |
+| mongodb.js:107:17:107:29 | queries.title |
+| mongodb.js:112:14:112:18 | query |
+| mongodb.js:112:14:112:18 | query |
 | mongodb_bodySafe.js:23:11:23:20 | query |
 | mongodb_bodySafe.js:23:19:23:20 | {} |
 | mongodb_bodySafe.js:24:19:24:33 | req.query.title |
@@ -244,6 +250,17 @@ edges
 | mongodb.js:77:22:77:24 | tag | mongodb.js:77:14:77:26 | { tags: tag } |
 | mongodb.js:85:20:85:22 | tag | mongodb.js:85:12:85:24 | { tags: tag } |
 | mongodb.js:85:20:85:22 | tag | mongodb.js:85:12:85:24 | { tags: tag } |
+| mongodb.js:106:9:106:18 | query | mongodb.js:112:14:112:18 | query |
+| mongodb.js:106:9:106:18 | query | mongodb.js:112:14:112:18 | query |
+| mongodb.js:106:17:106:18 | {} | mongodb.js:106:9:106:18 | query |
+| mongodb.js:107:17:107:29 | queries.title | mongodb.js:106:9:106:18 | query |
+| mongodb.js:107:17:107:29 | queries.title | mongodb.js:106:9:106:18 | query |
+| mongodb.js:107:17:107:29 | queries.title | mongodb.js:106:17:106:18 | {} |
+| mongodb.js:107:17:107:29 | queries.title | mongodb.js:106:17:106:18 | {} |
+| mongodb.js:107:17:107:29 | queries.title | mongodb.js:112:14:112:18 | query |
+| mongodb.js:107:17:107:29 | queries.title | mongodb.js:112:14:112:18 | query |
+| mongodb.js:107:17:107:29 | queries.title | mongodb.js:112:14:112:18 | query |
+| mongodb.js:107:17:107:29 | queries.title | mongodb.js:112:14:112:18 | query |
 | mongodb_bodySafe.js:23:11:23:20 | query | mongodb_bodySafe.js:29:16:29:20 | query |
 | mongodb_bodySafe.js:23:11:23:20 | query | mongodb_bodySafe.js:29:16:29:20 | query |
 | mongodb_bodySafe.js:23:19:23:20 | {} | mongodb_bodySafe.js:23:11:23:20 | query |
@@ -428,6 +445,7 @@ edges
 | mongodb.js:65:12:65:16 | query | mongodb.js:60:16:60:30 | req.query.title | mongodb.js:65:12:65:16 | query | This query depends on $@. | mongodb.js:60:16:60:30 | req.query.title | a user-provided value |
 | mongodb.js:77:14:77:26 | { tags: tag } | mongodb.js:70:13:70:25 | req.query.tag | mongodb.js:77:14:77:26 | { tags: tag } | This query depends on $@. | mongodb.js:70:13:70:25 | req.query.tag | a user-provided value |
 | mongodb.js:85:12:85:24 | { tags: tag } | mongodb.js:70:13:70:25 | req.query.tag | mongodb.js:85:12:85:24 | { tags: tag } | This query depends on $@. | mongodb.js:70:13:70:25 | req.query.tag | a user-provided value |
+| mongodb.js:112:14:112:18 | query | mongodb.js:107:17:107:29 | queries.title | mongodb.js:112:14:112:18 | query | This query depends on $@. | mongodb.js:107:17:107:29 | queries.title | a user-provided value |
 | mongodb_bodySafe.js:29:16:29:20 | query | mongodb_bodySafe.js:24:19:24:33 | req.query.title | mongodb_bodySafe.js:29:16:29:20 | query | This query depends on $@. | mongodb_bodySafe.js:24:19:24:33 | req.query.title | a user-provided value |
 | mongoose.js:24:24:24:30 | [query] | mongoose.js:21:19:21:26 | req.body | mongoose.js:24:24:24:30 | [query] | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
 | mongoose.js:27:20:27:24 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:27:20:27:24 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
