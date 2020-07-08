@@ -1,5 +1,7 @@
 package main
 
+// autoformat-ignore (otherwise gofmt will replace CRLF line-endings with LFs under Unix-like environments)
+
 func winMain() {
 	x := 42
 	x = x // lgtm

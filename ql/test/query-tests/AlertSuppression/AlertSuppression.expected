@@ -1,61 +1,61 @@
 | AlertSuppressionExample.go:11:42:11:74 | comment |  lgtm[go/hardcoded-credentials] | lgtm[go/hardcoded-credentials] | AlertSuppressionExample.go:11:1:11:74 | suppression range |
-| tst.go:5:8:5:14 | comment |  lgtm | lgtm | tst.go:5:1:5:14 | suppression range |
-| tst.go:6:8:6:39 | comment |  lgtm[go/redundant-assignment] | lgtm[go/redundant-assignment] | tst.go:6:1:6:39 | suppression range |
-| tst.go:7:8:7:39 | comment |  lgtm[go/redundant-assignment] | lgtm[go/redundant-assignment] | tst.go:7:1:7:39 | suppression range |
-| tst.go:8:8:8:63 | comment |  lgtm[go/redundant-assignment, go/redundant-operation] | lgtm[go/redundant-assignment, go/redundant-operation] | tst.go:8:1:8:63 | suppression range |
-| tst.go:9:8:9:29 | comment |  lgtm[@tag:nullness] | lgtm[@tag:nullness] | tst.go:9:1:9:29 | suppression range |
-| tst.go:10:8:10:53 | comment |  lgtm[@tag:nullness,go/redundant-assignment] | lgtm[@tag:nullness,go/redundant-assignment] | tst.go:10:1:10:53 | suppression range |
-| tst.go:11:8:11:35 | comment |  lgtm[@expires:2017-06-11] | lgtm[@expires:2017-06-11] | tst.go:11:1:11:35 | suppression range |
-| tst.go:12:8:12:70 | comment |  lgtm[go/redundant-operation] because I know better than lgtm | lgtm[go/redundant-operation] | tst.go:12:1:12:70 | suppression range |
-| tst.go:13:8:13:25 | comment |  lgtm: blah blah | lgtm | tst.go:13:1:13:25 | suppression range |
-| tst.go:14:8:14:39 | comment |  lgtm blah blah #falsepositive | lgtm | tst.go:14:1:14:39 | suppression range |
-| tst.go:15:8:15:39 | comment | lgtm  [go/redundant-operation] | lgtm  [go/redundant-operation] | tst.go:15:1:15:39 | suppression range |
-| tst.go:16:8:16:17 | comment |  lgtm  | lgtm | tst.go:16:1:16:17 | suppression range |
-| tst.go:17:8:17:16 | comment |  lgtm[] | lgtm[] | tst.go:17:1:17:16 | suppression range |
-| tst.go:19:8:19:13 | comment | lgtm | lgtm | tst.go:19:1:19:13 | suppression range |
-| tst.go:20:8:20:14 | comment | \tlgtm | lgtm | tst.go:20:1:20:14 | suppression range |
-| tst.go:21:8:21:40 | comment |  lgtm\t[go/redundant-assignment] | lgtm\t[go/redundant-assignment] | tst.go:21:1:21:40 | suppression range |
-| tst.go:24:8:24:19 | comment |  foo; lgtm | lgtm | tst.go:24:1:24:19 | suppression range |
-| tst.go:25:8:25:44 | comment |  foo; lgtm[go/redundant-assignment] | lgtm[go/redundant-assignment] | tst.go:25:1:25:44 | suppression range |
-| tst.go:27:8:27:43 | comment |  foo lgtm[go/redundant-assignment] | lgtm[go/redundant-assignment] | tst.go:27:1:27:43 | suppression range |
-| tst.go:29:8:29:47 | comment |  foo lgtm[go/redundant-assignment] bar | lgtm[go/redundant-assignment] | tst.go:29:1:29:47 | suppression range |
-| tst.go:30:8:30:15 | comment |  LGTM! | LGTM | tst.go:30:1:30:15 | suppression range |
-| tst.go:31:8:31:39 | comment |  LGTM[go/redundant-assignment] | LGTM[go/redundant-assignment] | tst.go:31:1:31:39 | suppression range |
-| tst.go:32:8:32:72 | comment |  lgtm[go/redundant-assignment] and lgtm[go/redundant-operation] | lgtm[go/redundant-assignment] | tst.go:32:1:32:72 | suppression range |
-| tst.go:32:8:32:72 | comment |  lgtm[go/redundant-assignment] and lgtm[go/redundant-operation] | lgtm[go/redundant-operation] | tst.go:32:1:32:72 | suppression range |
-| tst.go:33:8:33:45 | comment |  lgtm[go/redundant-assignment]; lgtm | lgtm | tst.go:33:1:33:45 | suppression range |
-| tst.go:33:8:33:45 | comment |  lgtm[go/redundant-assignment]; lgtm | lgtm[go/redundant-assignment] | tst.go:33:1:33:45 | suppression range |
-| tst.go:34:8:34:19 | comment |  lgtm[]  | lgtm[] | tst.go:34:1:34:19 | suppression range |
-| tst.go:35:8:35:42 | comment |  lgtm[go/redundant-assignment]  | lgtm[go/redundant-assignment] | tst.go:35:1:35:42 | suppression range |
-| tst.go:41:8:41:56 | comment |  lgtm[@tag:nullness,go/redundant-assignment]  | lgtm[@tag:nullness,go/redundant-assignment] | tst.go:41:1:41:56 | suppression range |
-| tst.go:42:8:42:32 | comment |  lgtm[@tag:nullness]  | lgtm[@tag:nullness] | tst.go:42:1:42:32 | suppression range |
-| tstWindows.go:5:8:5:14 | comment |  lgtm | lgtm | tstWindows.go:5:1:5:14 | suppression range |
-| tstWindows.go:6:8:6:39 | comment |  lgtm[go/redundant-assignment] | lgtm[go/redundant-assignment] | tstWindows.go:6:1:6:39 | suppression range |
-| tstWindows.go:7:8:7:39 | comment |  lgtm[go/redundant-assignment] | lgtm[go/redundant-assignment] | tstWindows.go:7:1:7:39 | suppression range |
-| tstWindows.go:8:8:8:63 | comment |  lgtm[go/redundant-assignment, go/redundant-operation] | lgtm[go/redundant-assignment, go/redundant-operation] | tstWindows.go:8:1:8:63 | suppression range |
-| tstWindows.go:9:8:9:29 | comment |  lgtm[@tag:nullness] | lgtm[@tag:nullness] | tstWindows.go:9:1:9:29 | suppression range |
-| tstWindows.go:10:8:10:53 | comment |  lgtm[@tag:nullness,go/redundant-assignment] | lgtm[@tag:nullness,go/redundant-assignment] | tstWindows.go:10:1:10:53 | suppression range |
-| tstWindows.go:11:8:11:35 | comment |  lgtm[@expires:2017-06-11] | lgtm[@expires:2017-06-11] | tstWindows.go:11:1:11:35 | suppression range |
-| tstWindows.go:12:8:12:70 | comment |  lgtm[go/redundant-operation] because I know better than lgtm | lgtm[go/redundant-operation] | tstWindows.go:12:1:12:70 | suppression range |
-| tstWindows.go:13:8:13:25 | comment |  lgtm: blah blah | lgtm | tstWindows.go:13:1:13:25 | suppression range |
-| tstWindows.go:14:8:14:39 | comment |  lgtm blah blah #falsepositive | lgtm | tstWindows.go:14:1:14:39 | suppression range |
-| tstWindows.go:15:8:15:39 | comment | lgtm  [go/redundant-operation] | lgtm  [go/redundant-operation] | tstWindows.go:15:1:15:39 | suppression range |
-| tstWindows.go:16:8:16:17 | comment |  lgtm  | lgtm | tstWindows.go:16:1:16:17 | suppression range |
-| tstWindows.go:17:8:17:16 | comment |  lgtm[] | lgtm[] | tstWindows.go:17:1:17:16 | suppression range |
-| tstWindows.go:19:8:19:13 | comment | lgtm | lgtm | tstWindows.go:19:1:19:13 | suppression range |
-| tstWindows.go:20:8:20:14 | comment | \tlgtm | lgtm | tstWindows.go:20:1:20:14 | suppression range |
-| tstWindows.go:21:8:21:40 | comment |  lgtm\t[go/redundant-assignment] | lgtm\t[go/redundant-assignment] | tstWindows.go:21:1:21:40 | suppression range |
-| tstWindows.go:24:8:24:19 | comment |  foo; lgtm | lgtm | tstWindows.go:24:1:24:19 | suppression range |
-| tstWindows.go:25:8:25:44 | comment |  foo; lgtm[go/redundant-assignment] | lgtm[go/redundant-assignment] | tstWindows.go:25:1:25:44 | suppression range |
-| tstWindows.go:27:8:27:43 | comment |  foo lgtm[go/redundant-assignment] | lgtm[go/redundant-assignment] | tstWindows.go:27:1:27:43 | suppression range |
-| tstWindows.go:29:8:29:47 | comment |  foo lgtm[go/redundant-assignment] bar | lgtm[go/redundant-assignment] | tstWindows.go:29:1:29:47 | suppression range |
-| tstWindows.go:30:8:30:15 | comment |  LGTM! | LGTM | tstWindows.go:30:1:30:15 | suppression range |
-| tstWindows.go:31:8:31:39 | comment |  LGTM[go/redundant-assignment] | LGTM[go/redundant-assignment] | tstWindows.go:31:1:31:39 | suppression range |
-| tstWindows.go:32:8:32:72 | comment |  lgtm[go/redundant-assignment] and lgtm[go/redundant-operation] | lgtm[go/redundant-assignment] | tstWindows.go:32:1:32:72 | suppression range |
-| tstWindows.go:32:8:32:72 | comment |  lgtm[go/redundant-assignment] and lgtm[go/redundant-operation] | lgtm[go/redundant-operation] | tstWindows.go:32:1:32:72 | suppression range |
-| tstWindows.go:33:8:33:45 | comment |  lgtm[go/redundant-assignment]; lgtm | lgtm | tstWindows.go:33:1:33:45 | suppression range |
-| tstWindows.go:33:8:33:45 | comment |  lgtm[go/redundant-assignment]; lgtm | lgtm[go/redundant-assignment] | tstWindows.go:33:1:33:45 | suppression range |
-| tstWindows.go:34:8:34:19 | comment |  lgtm[]  | lgtm[] | tstWindows.go:34:1:34:19 | suppression range |
-| tstWindows.go:35:8:35:42 | comment |  lgtm[go/redundant-assignment]  | lgtm[go/redundant-assignment] | tstWindows.go:35:1:35:42 | suppression range |
-| tstWindows.go:41:8:41:56 | comment |  lgtm[@tag:nullness,go/redundant-assignment]  | lgtm[@tag:nullness,go/redundant-assignment] | tstWindows.go:41:1:41:56 | suppression range |
-| tstWindows.go:42:8:42:32 | comment |  lgtm[@tag:nullness]  | lgtm[@tag:nullness] | tstWindows.go:42:1:42:32 | suppression range |
+| tst.go:7:8:7:14 | comment |  lgtm | lgtm | tst.go:7:1:7:14 | suppression range |
+| tst.go:8:8:8:39 | comment |  lgtm[go/redundant-assignment] | lgtm[go/redundant-assignment] | tst.go:8:1:8:39 | suppression range |
+| tst.go:9:8:9:39 | comment |  lgtm[go/redundant-assignment] | lgtm[go/redundant-assignment] | tst.go:9:1:9:39 | suppression range |
+| tst.go:10:8:10:63 | comment |  lgtm[go/redundant-assignment, go/redundant-operation] | lgtm[go/redundant-assignment, go/redundant-operation] | tst.go:10:1:10:63 | suppression range |
+| tst.go:11:8:11:29 | comment |  lgtm[@tag:nullness] | lgtm[@tag:nullness] | tst.go:11:1:11:29 | suppression range |
+| tst.go:12:8:12:53 | comment |  lgtm[@tag:nullness,go/redundant-assignment] | lgtm[@tag:nullness,go/redundant-assignment] | tst.go:12:1:12:53 | suppression range |
+| tst.go:13:8:13:35 | comment |  lgtm[@expires:2017-06-11] | lgtm[@expires:2017-06-11] | tst.go:13:1:13:35 | suppression range |
+| tst.go:14:8:14:70 | comment |  lgtm[go/redundant-operation] because I know better than lgtm | lgtm[go/redundant-operation] | tst.go:14:1:14:70 | suppression range |
+| tst.go:15:8:15:25 | comment |  lgtm: blah blah | lgtm | tst.go:15:1:15:25 | suppression range |
+| tst.go:16:8:16:39 | comment |  lgtm blah blah #falsepositive | lgtm | tst.go:16:1:16:39 | suppression range |
+| tst.go:17:8:17:39 | comment | lgtm  [go/redundant-operation] | lgtm  [go/redundant-operation] | tst.go:17:1:17:39 | suppression range |
+| tst.go:18:8:18:17 | comment |  lgtm  | lgtm | tst.go:18:1:18:17 | suppression range |
+| tst.go:19:8:19:16 | comment |  lgtm[] | lgtm[] | tst.go:19:1:19:16 | suppression range |
+| tst.go:21:8:21:13 | comment | lgtm | lgtm | tst.go:21:1:21:13 | suppression range |
+| tst.go:22:8:22:14 | comment | \tlgtm | lgtm | tst.go:22:1:22:14 | suppression range |
+| tst.go:23:8:23:40 | comment |  lgtm\t[go/redundant-assignment] | lgtm\t[go/redundant-assignment] | tst.go:23:1:23:40 | suppression range |
+| tst.go:26:8:26:19 | comment |  foo; lgtm | lgtm | tst.go:26:1:26:19 | suppression range |
+| tst.go:27:8:27:44 | comment |  foo; lgtm[go/redundant-assignment] | lgtm[go/redundant-assignment] | tst.go:27:1:27:44 | suppression range |
+| tst.go:29:8:29:43 | comment |  foo lgtm[go/redundant-assignment] | lgtm[go/redundant-assignment] | tst.go:29:1:29:43 | suppression range |
+| tst.go:31:8:31:47 | comment |  foo lgtm[go/redundant-assignment] bar | lgtm[go/redundant-assignment] | tst.go:31:1:31:47 | suppression range |
+| tst.go:32:8:32:15 | comment |  LGTM! | LGTM | tst.go:32:1:32:15 | suppression range |
+| tst.go:33:8:33:39 | comment |  LGTM[go/redundant-assignment] | LGTM[go/redundant-assignment] | tst.go:33:1:33:39 | suppression range |
+| tst.go:34:8:34:72 | comment |  lgtm[go/redundant-assignment] and lgtm[go/redundant-operation] | lgtm[go/redundant-assignment] | tst.go:34:1:34:72 | suppression range |
+| tst.go:34:8:34:72 | comment |  lgtm[go/redundant-assignment] and lgtm[go/redundant-operation] | lgtm[go/redundant-operation] | tst.go:34:1:34:72 | suppression range |
+| tst.go:35:8:35:45 | comment |  lgtm[go/redundant-assignment]; lgtm | lgtm | tst.go:35:1:35:45 | suppression range |
+| tst.go:35:8:35:45 | comment |  lgtm[go/redundant-assignment]; lgtm | lgtm[go/redundant-assignment] | tst.go:35:1:35:45 | suppression range |
+| tst.go:36:8:36:19 | comment |  lgtm[]  | lgtm[] | tst.go:36:1:36:19 | suppression range |
+| tst.go:37:8:37:42 | comment |  lgtm[go/redundant-assignment]  | lgtm[go/redundant-assignment] | tst.go:37:1:37:42 | suppression range |
+| tst.go:43:8:43:56 | comment |  lgtm[@tag:nullness,go/redundant-assignment]  | lgtm[@tag:nullness,go/redundant-assignment] | tst.go:43:1:43:56 | suppression range |
+| tst.go:44:8:44:32 | comment |  lgtm[@tag:nullness]  | lgtm[@tag:nullness] | tst.go:44:1:44:32 | suppression range |
+| tstWindows.go:7:8:7:14 | comment |  lgtm | lgtm | tstWindows.go:7:1:7:14 | suppression range |
+| tstWindows.go:8:8:8:39 | comment |  lgtm[go/redundant-assignment] | lgtm[go/redundant-assignment] | tstWindows.go:8:1:8:39 | suppression range |
+| tstWindows.go:9:8:9:39 | comment |  lgtm[go/redundant-assignment] | lgtm[go/redundant-assignment] | tstWindows.go:9:1:9:39 | suppression range |
+| tstWindows.go:10:8:10:63 | comment |  lgtm[go/redundant-assignment, go/redundant-operation] | lgtm[go/redundant-assignment, go/redundant-operation] | tstWindows.go:10:1:10:63 | suppression range |
+| tstWindows.go:11:8:11:29 | comment |  lgtm[@tag:nullness] | lgtm[@tag:nullness] | tstWindows.go:11:1:11:29 | suppression range |
+| tstWindows.go:12:8:12:53 | comment |  lgtm[@tag:nullness,go/redundant-assignment] | lgtm[@tag:nullness,go/redundant-assignment] | tstWindows.go:12:1:12:53 | suppression range |
+| tstWindows.go:13:8:13:35 | comment |  lgtm[@expires:2017-06-11] | lgtm[@expires:2017-06-11] | tstWindows.go:13:1:13:35 | suppression range |
+| tstWindows.go:14:8:14:70 | comment |  lgtm[go/redundant-operation] because I know better than lgtm | lgtm[go/redundant-operation] | tstWindows.go:14:1:14:70 | suppression range |
+| tstWindows.go:15:8:15:25 | comment |  lgtm: blah blah | lgtm | tstWindows.go:15:1:15:25 | suppression range |
+| tstWindows.go:16:8:16:39 | comment |  lgtm blah blah #falsepositive | lgtm | tstWindows.go:16:1:16:39 | suppression range |
+| tstWindows.go:17:8:17:39 | comment | lgtm  [go/redundant-operation] | lgtm  [go/redundant-operation] | tstWindows.go:17:1:17:39 | suppression range |
+| tstWindows.go:18:8:18:17 | comment |  lgtm  | lgtm | tstWindows.go:18:1:18:17 | suppression range |
+| tstWindows.go:19:8:19:16 | comment |  lgtm[] | lgtm[] | tstWindows.go:19:1:19:16 | suppression range |
+| tstWindows.go:21:8:21:13 | comment | lgtm | lgtm | tstWindows.go:21:1:21:13 | suppression range |
+| tstWindows.go:22:8:22:14 | comment | \tlgtm | lgtm | tstWindows.go:22:1:22:14 | suppression range |
+| tstWindows.go:23:8:23:40 | comment |  lgtm\t[go/redundant-assignment] | lgtm\t[go/redundant-assignment] | tstWindows.go:23:1:23:40 | suppression range |
+| tstWindows.go:26:8:26:19 | comment |  foo; lgtm | lgtm | tstWindows.go:26:1:26:19 | suppression range |
+| tstWindows.go:27:8:27:44 | comment |  foo; lgtm[go/redundant-assignment] | lgtm[go/redundant-assignment] | tstWindows.go:27:1:27:44 | suppression range |
+| tstWindows.go:29:8:29:43 | comment |  foo lgtm[go/redundant-assignment] | lgtm[go/redundant-assignment] | tstWindows.go:29:1:29:43 | suppression range |
+| tstWindows.go:31:8:31:47 | comment |  foo lgtm[go/redundant-assignment] bar | lgtm[go/redundant-assignment] | tstWindows.go:31:1:31:47 | suppression range |
+| tstWindows.go:32:8:32:15 | comment |  LGTM! | LGTM | tstWindows.go:32:1:32:15 | suppression range |
+| tstWindows.go:33:8:33:39 | comment |  LGTM[go/redundant-assignment] | LGTM[go/redundant-assignment] | tstWindows.go:33:1:33:39 | suppression range |
+| tstWindows.go:34:8:34:72 | comment |  lgtm[go/redundant-assignment] and lgtm[go/redundant-operation] | lgtm[go/redundant-assignment] | tstWindows.go:34:1:34:72 | suppression range |
+| tstWindows.go:34:8:34:72 | comment |  lgtm[go/redundant-assignment] and lgtm[go/redundant-operation] | lgtm[go/redundant-operation] | tstWindows.go:34:1:34:72 | suppression range |
+| tstWindows.go:35:8:35:45 | comment |  lgtm[go/redundant-assignment]; lgtm | lgtm | tstWindows.go:35:1:35:45 | suppression range |
+| tstWindows.go:35:8:35:45 | comment |  lgtm[go/redundant-assignment]; lgtm | lgtm[go/redundant-assignment] | tstWindows.go:35:1:35:45 | suppression range |
+| tstWindows.go:36:8:36:19 | comment |  lgtm[]  | lgtm[] | tstWindows.go:36:1:36:19 | suppression range |
+| tstWindows.go:37:8:37:42 | comment |  lgtm[go/redundant-assignment]  | lgtm[go/redundant-assignment] | tstWindows.go:37:1:37:42 | suppression range |
+| tstWindows.go:43:8:43:56 | comment |  lgtm[@tag:nullness,go/redundant-assignment]  | lgtm[@tag:nullness,go/redundant-assignment] | tstWindows.go:43:1:43:56 | suppression range |
+| tstWindows.go:44:8:44:32 | comment |  lgtm[@tag:nullness]  | lgtm[@tag:nullness] | tstWindows.go:44:1:44:32 | suppression range |

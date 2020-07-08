@@ -27,12 +27,14 @@ clean:
 	rm -rf tools/bin tools/linux64 tools/osx64 tools/win64 tools/net tools/opencsv
 	rm -rf $(EXTRACTOR_PACK_OUT) build/stats build/testdb
 
-AUTOFORMAT=-qq -i
+QL_AUTOFORMAT=-qq -i
+GO_AUTOFORMAT=-w # Update files in-place
 
 DATAFLOW_BRANCH=master
 
 autoformat:
-	find ql/src -name *.ql -or -name *.qll | xargs codeql query format $(AUTOFORMAT)
+	find ql/src -name "*.ql" -or -name "*.qll" | xargs codeql query format $(QL_AUTOFORMAT)
+	git ls-files | grep \\.go$ | xargs grep -L "//\s*autoformat-ignore" | xargs gofmt $(GO_AUTOFORMAT)
 
 tools: $(addsuffix $(EXE),$(addprefix tools/bin/,$(BINARIES))) tools/tokenizer.jar
 

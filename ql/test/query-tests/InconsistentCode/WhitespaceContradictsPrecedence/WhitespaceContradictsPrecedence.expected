@@ -1,2 +1,2 @@
-| WhitespaceContradictsPrecedence.go:4:9:4:18 | ...<<... | & is evaluated before <<, but whitespace suggests the opposite. |
-| main.go:12:9:12:16 | ...+... | >> is evaluated before +, but whitespace suggests the opposite. |
+| WhitespaceContradictsPrecedence.go:6:9:6:18 | ...<<... | & is evaluated before <<, but whitespace suggests the opposite. |
+| main.go:14:9:14:16 | ...+... | >> is evaluated before +, but whitespace suggests the opposite. |
