@@ -90,19 +90,10 @@ class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
   predicate isSourceValueEntity(DataFlow::Node source, string suiteName) {
     exists(DataFlow::ValueEntity val |
       val.hasQualifiedName("crypto/tls", suiteName) and
-      (
-        suiteName = "TLS_RSA_WITH_RC4_128_SHA"
-        or
-        suiteName = "TLS_RSA_WITH_AES_128_CBC_SHA256"
-        or
-        suiteName = "TLS_ECDHE_ECDSA_WITH_RC4_128_SHA"
-        or
-        suiteName = "TLS_ECDHE_RSA_WITH_RC4_128_SHA"
-        or
-        suiteName = "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256"
-        or
-        suiteName = "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"
-      )
+      suiteName =
+        ["TLS_RSA_WITH_RC4_128_SHA", "TLS_RSA_WITH_AES_128_CBC_SHA256",
+            "TLS_ECDHE_ECDSA_WITH_RC4_128_SHA", "TLS_ECDHE_RSA_WITH_RC4_128_SHA",
+            "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256", "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"]
     |
       source = val.getARead()
     )
