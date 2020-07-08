@@ -12,6 +12,7 @@
 
 import java
 import ArraySizing
+import semmle.code.java.security.BoundedFlowLib
 import DataFlow::PathGraph
 
 class BoundedFlowSourceConf extends DataFlow::Configuration {
