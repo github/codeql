@@ -8,6 +8,8 @@ private import semmle.code.java.security.Validation
 private import semmle.code.java.frameworks.android.Intent
 private import semmle.code.java.frameworks.Guice
 private import semmle.code.java.frameworks.Protobuf
+private import semmle.code.java.frameworks.spring.SpringController
+private import semmle.code.java.frameworks.spring.SpringHttp
 private import semmle.code.java.Maps
 private import semmle.code.java.dataflow.internal.ContainerFlow
 private import semmle.code.java.frameworks.jackson.JacksonSerializability
@@ -252,6 +254,22 @@ private predicate constructorStep(Expr tracked, ConstructorCall sink) {
     or
     // a custom InputStream that wraps a tainted data source is tainted
     inputStreamWrapper(sink.getConstructor(), argi)
+    or
+    // A SpringHttpEntity is a wrapper around a body and some headers
+    // Track flow through iff body is a String
+    exists(SpringHttpEntity she |
+      sink.getConstructor() = she.getAConstructor() and
+      argi = 0 and
+      tracked.getType() instanceof TypeString
+    )
+    or
+    // A SpringRequestEntity is a wrapper around a body and some headers
+    // Track flow through iff body is a String
+    exists(SpringResponseEntity sre |
+      sink.getConstructor() = sre.getAConstructor() and
+      argi = 0 and
+      tracked.getType() instanceof TypeString
+    )
   )
 }
 
@@ -358,6 +376,21 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   m = any(GuiceProvider gp).getAnOverridingGetMethod()
   or
   m = any(ProtobufMessageLite p).getAGetterMethod()
+  or
+  m instanceof GetterMethod and m.getDeclaringType() instanceof SpringUntrustedDataType
+  or
+  m.getDeclaringType() instanceof SpringHttpEntity and
+  m.getName().regexpMatch("getBody|getHeaders")
+  or
+  exists(SpringHttpHeaders headers | m = headers.getAMethod() |
+    m.getReturnType() instanceof TypeString
+    or
+    exists(ParameterizedType stringlist |
+      m.getReturnType().(RefType).getASupertype*() = stringlist and
+      stringlist.getSourceDeclaration().hasQualifiedName("java.util", "List") and
+      stringlist.getTypeArgument(0) instanceof TypeString
+    )
+  )
 }
 
 private class StringReplaceMethod extends Method {
@@ -392,6 +425,22 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
     taintPreservingArgumentToMethod(ma.getMethod()) and
     tracked = ma.getAnArgument() and
     sink = ma
+  )
+  or
+  exists(Method springResponseEntityOfOk |
+    sink.getMethod() = springResponseEntityOfOk and
+    springResponseEntityOfOk.getDeclaringType() instanceof SpringResponseEntity and
+    springResponseEntityOfOk.getName().regexpMatch("ok|of") and
+    tracked = sink.getArgument(0) and
+    tracked.getType() instanceof TypeString
+  )
+  or
+  exists(Method springResponseEntityBody |
+    sink.getMethod() = springResponseEntityBody and
+    springResponseEntityBody.getDeclaringType() instanceof SpringResponseEntityBodyBuilder and
+    springResponseEntityBody.getName().regexpMatch("body") and
+    tracked = sink.getArgument(0) and
+    tracked.getType() instanceof TypeString
   )
 }
 
