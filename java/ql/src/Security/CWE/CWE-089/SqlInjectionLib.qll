@@ -2,14 +2,12 @@
 
 import semmle.code.java.Expr
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.security.QueryInjection
 import semmle.code.java.frameworks.android.SQLite
 import semmle.code.java.frameworks.javaee.Persistence
 import semmle.code.java.frameworks.SpringJdbc
 import semmle.code.java.frameworks.MyBatis
 import semmle.code.java.frameworks.Hibernate
-
-/** A sink for database query language injection vulnerabilities. */
-abstract class QueryInjectionSink extends DataFlow::ExprNode { }
 
 /** A sink for SQL injection vulnerabilities. */
 class SqlInjectionSink extends QueryInjectionSink {
