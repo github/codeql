@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.controlflow.Guards
-import semmle.code.java.security.PathCreationLib
+import semmle.code.java.security.PathCreation
 
 class PathsGet extends PathCreation, MethodAccess {
   PathsGet() {

@@ -12,7 +12,7 @@
 
 import semmle.code.java.Expr
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.security.SqlInjectionLib
+import semmle.code.java.security.SqlInjection
 import DataFlow::PathGraph
 
 class LocalUserInputToQueryInjectionFlowConfig extends TaintTracking::Configuration {

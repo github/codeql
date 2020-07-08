@@ -12,7 +12,7 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.security.SqlInjectionLib
+import semmle.code.java.security.SqlInjection
 import DataFlow::PathGraph
 
 from QueryInjectionSink query, DataFlow::PathNode source, DataFlow::PathNode sink

@@ -12,7 +12,7 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.security.LdapInjectionLib
+import semmle.code.java.security.LdapInjection
 import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, LdapInjectionFlowConfig conf
