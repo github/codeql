@@ -1,7 +1,7 @@
 import java
-import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.dataflow.DataFlow
 
-class Conf extends TaintTracking::Configuration {
+class Conf extends DataFlow::Configuration {
   Conf() { this = "conf" }
 
   override predicate isSource(DataFlow::Node src) {

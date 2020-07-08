@@ -1,7 +1,7 @@
 import java.util.Objects;
 
 class ObjectsTest {
-	public static void taintSteps() {
+	public static void valueSteps() {
 		sink(Objects.requireNonNull(source()));
 		sink(Objects.requireNonNull(source(), "message"));
 		sink(Objects.requireNonNull(source(), () -> "value1"));
@@ -12,4 +12,3 @@ class ObjectsTest {
 	private static <T> T source() { return null; }
 	private static void sink(Object o) {}
 }
-
