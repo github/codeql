@@ -1,12 +1,13 @@
 import java
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.security.UrlRedirect
 
 /**
- * A URL redirection sink.
+ * A Servlet URL redirection sink.
  */
-class UrlRedirectSink extends DataFlow::ExprNode {
-  UrlRedirectSink() {
+class ServletUrlRedirectSink extends UrlRedirectSink {
+  ServletUrlRedirectSink() {
     exists(MethodAccess ma |
       ma.getMethod() instanceof HttpServletResponseSendRedirectMethod and
       this.asExpr() = ma.getArgument(0)
