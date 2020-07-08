@@ -44,6 +44,7 @@
 
 import cpp
 private import RangeAnalysisUtils
+private import semmle.code.cpp.models.interfaces.RangeAnalysisExpr
 import RangeSSA
 import SimpleRangeAnalysisCached
 private import NanAnalysis
@@ -207,6 +208,9 @@ private predicate analyzableExpr(Expr e) {
     or
     // `>>` by a constant
     exists(e.(RShiftExpr).getRightOperand().getValue())
+    or
+    // A modeled expression for range analysis
+    e instanceof RangeAnalysisExpr
   )
 }
 
@@ -318,6 +322,11 @@ private predicate exprDependsOnDef(Expr e, RangeSsaDefinition srcDef, StackVaria
   )
   or
   e = srcDef.getAUse(srcVar)
+  or
+  // A modeled expression for range analysis
+  exists(RangeAnalysisExpr rae |
+    rae.dependsOnDef(srcDef, srcVar)
+  )
 }
 
 /**
@@ -438,7 +447,7 @@ private float addRoundingDownSmall(float x, float small) {
 /**
  * Gets the truncated lower bounds of the fully converted expression.
  */
-private float getFullyConvertedLowerBounds(Expr expr) {
+float getFullyConvertedLowerBounds(Expr expr) {
   result = getTruncatedLowerBounds(expr.getFullyConverted())
 }
 
@@ -491,7 +500,7 @@ private float getTruncatedLowerBounds(Expr expr) {
 /**
  * Gets the truncated upper bounds of the fully converted expression.
  */
-private float getFullyConvertedUpperBounds(Expr expr) {
+float getFullyConvertedUpperBounds(Expr expr) {
   result = getTruncatedUpperBounds(expr.getFullyConverted())
 }
 
@@ -727,6 +736,12 @@ private float getLowerBoundsImpl(Expr expr) {
     right = rsExpr.getRightOperand().getValue().toInt() and
     result = safeFloor(left / 2.pow(right))
   )
+  or
+  // A modeled expression for range analysis
+  exists(RangeAnalysisExpr rangeAnalysisExpr |
+    rangeAnalysisExpr = expr and
+    result = rangeAnalysisExpr.getLowerBounds()
+  )
 }
 
 /** Only to be called by `getTruncatedUpperBounds`. */
@@ -895,6 +910,12 @@ private float getUpperBoundsImpl(Expr expr) {
     left = getFullyConvertedUpperBounds(rsExpr.getLeftOperand()) and
     right = rsExpr.getRightOperand().getValue().toInt() and
     result = safeFloor(left / 2.pow(right))
+  )
+  or
+  // A modeled expression for range analysis
+  exists(RangeAnalysisExpr rangeAnalysisExpr |
+    rangeAnalysisExpr = expr and
+    result = rangeAnalysisExpr.getUpperBounds()
   )
 }
 
