@@ -6,13 +6,13 @@ function f(str) {
     if (/^[a-z]+$/.test(str)) {}
     if (/^[a-z]+$/.exec(str) != null) {}
     if (/^[a-z]+$/.exec(str)) {}
-    if (str.matches(/^[a-z]+$/)) {}
-    if (str.matches("^[a-z]+$")) {}
+    if (str.match(/^[a-z]+$/)) {}
+    if (str.match("^[a-z]+$")) {}
 
     if (regexp.test(str)) {}
     if (regexp.exec(str) != null) {}
     if (regexp.exec(str)) {}
-    if (str.matches(regexp)) {}
+    if (str.match(regexp)) {}
 
     let match = regexp.exec(str);
     if (match) {}
@@ -30,7 +30,7 @@ function f(str) {
     });
 
     something({
-        someOption: str.matches(regexp)
+        someOption: !!str.match(regexp)
     });
 
     something({
@@ -39,4 +39,13 @@ function f(str) {
 
     if (regexp.exec(str) == undefined) {}
     if (regexp.exec(str) === undefined) {} // not recognized as RegExpTest
+
+    let match2 = str.match(regexp);
+    if (match2) {}
+    if (!match2) {}
 }
+
+function something() {}
+
+f("some string");
+f("someotherstring");

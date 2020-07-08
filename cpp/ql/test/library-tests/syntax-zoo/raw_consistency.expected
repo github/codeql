@@ -160,6 +160,7 @@ backEdgeCountMismatch
 useNotDominatedByDefinition
 | VacuousDestructorCall.cpp:2:29:2:29 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | VacuousDestructorCall.cpp:2:6:2:6 | void CallDestructor<int>(int, int*) | void CallDestructor<int>(int, int*) |
 | misc.c:219:47:219:48 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | misc.c:219:5:219:26 | int assign_designated_init(someStruct*) | int assign_designated_init(someStruct*) |
+| static_init_templates.cpp:15:1:15:18 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | static_init_templates.cpp:15:1:15:18 | void MyClass::MyClass() | void MyClass::MyClass() |
 | try_catch.cpp:21:13:21:24 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | try_catch.cpp:19:6:19:23 | void throw_from_nonstmt(int) | void throw_from_nonstmt(int) |
 | vla.c:3:27:3:30 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | vla.c:3:5:3:8 | int main(int, char**) | int main(int, char**) |
 switchInstructionWithoutDefaultEdge

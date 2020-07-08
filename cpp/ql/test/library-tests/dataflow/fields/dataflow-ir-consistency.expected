@@ -1,6 +1,5 @@
 uniqueEnclosingCallable
-uniqueTypeBound
-uniqueTypeRepr
+uniqueType
 uniqueNodeLocation
 | D.cpp:1:17:1:17 | o | Node should have one location but has 3. |
 | by_reference.cpp:1:17:1:17 | o | Node should have one location but has 3. |
@@ -20,7 +19,7 @@ unreachableNodeCCtx
 localCallNodes
 postIsNotPre
 postHasUniquePre
-| simple.cpp:65:5:65:22 | i | PostUpdateNode should have one pre-update node but has 0. |
+| simple.cpp:65:5:65:22 | Store | PostUpdateNode should have one pre-update node but has 0. |
 uniquePostUpdate
 postIsInSameCallable
 reverseRead

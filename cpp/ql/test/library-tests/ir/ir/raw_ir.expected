@@ -21,10 +21,11 @@ bad_asts.cpp:
 #   10|     r10_9(int)            = Load                         : &:r10_8, ~m?
 #   10|     r10_10(int)           = Add                          : r10_7, r10_9
 #   10|     mu10_11(int)          = Store                        : &:r10_1, r10_10
-#    9|     r9_10(glval<int>)     = VariableAddress[#return]     : 
-#    9|     v9_11(void)           = ReturnValue                  : &:r9_10, ~m?
-#    9|     v9_12(void)           = AliasedUse                   : ~m?
-#    9|     v9_13(void)           = ExitFunction                 : 
+#    9|     v9_10(void)           = ReturnIndirection[#this]     : &:r9_6, ~m?
+#    9|     r9_11(glval<int>)     = VariableAddress[#return]     : 
+#    9|     v9_12(void)           = ReturnValue                  : &:r9_11, ~m?
+#    9|     v9_13(void)           = AliasedUse                   : ~m?
+#    9|     v9_14(void)           = ExitFunction                 : 
 
 #   14| void Bad::CallBadMemberFunction()
 #   14|   Block 0
@@ -58,9 +59,10 @@ bad_asts.cpp:
 #   22|     r22_6(glval<Point>)   = Load                         : &:r22_4, ~m?
 #   22|     mu22_7(Point)         = InitializeIndirection[#this] : &:r22_6
 #   23|     v23_1(void)           = NoOp                         : 
-#   22|     v22_8(void)           = ReturnVoid                   : 
-#   22|     v22_9(void)           = AliasedUse                   : ~m?
-#   22|     v22_10(void)          = ExitFunction                 : 
+#   22|     v22_8(void)           = ReturnIndirection[#this]     : &:r22_6, ~m?
+#   22|     v22_9(void)           = ReturnVoid                   : 
+#   22|     v22_10(void)          = AliasedUse                   : ~m?
+#   22|     v22_11(void)          = ExitFunction                 : 
 
 #   26| void Bad::CallCopyConstructor(Bad::Point const&)
 #   26|   Block 0
@@ -3448,9 +3450,10 @@ ir.cpp:
 #  628|     r628_13(glval<unknown>) = FunctionAddress[~String]     : 
 #  628|     v628_14(void)           = Call                         : func:r628_13, this:r628_12
 #  628|     mu628_15(unknown)       = ^CallSideEffect              : ~m?
-#  628|     v628_16(void)           = ReturnVoid                   : 
-#  628|     v628_17(void)           = AliasedUse                   : ~m?
-#  628|     v628_18(void)           = ExitFunction                 : 
+#  628|     v628_16(void)           = ReturnIndirection[#this]     : &:r628_6, ~m?
+#  628|     v628_17(void)           = ReturnVoid                   : 
+#  628|     v628_18(void)           = AliasedUse                   : ~m?
+#  628|     v628_19(void)           = ExitFunction                 : 
 
 #  630| int C::StaticMemberFunction(int)
 #  630|   Block 0
@@ -3483,10 +3486,11 @@ ir.cpp:
 #  635|     r635_2(glval<int>)     = VariableAddress[x]           : 
 #  635|     r635_3(int)            = Load                         : &:r635_2, ~m?
 #  635|     mu635_4(int)           = Store                        : &:r635_1, r635_3
-#  634|     r634_10(glval<int>)    = VariableAddress[#return]     : 
-#  634|     v634_11(void)          = ReturnValue                  : &:r634_10, ~m?
-#  634|     v634_12(void)          = AliasedUse                   : ~m?
-#  634|     v634_13(void)          = ExitFunction                 : 
+#  634|     v634_10(void)          = ReturnIndirection[#this]     : &:r634_6, ~m?
+#  634|     r634_11(glval<int>)    = VariableAddress[#return]     : 
+#  634|     v634_12(void)          = ReturnValue                  : &:r634_11, ~m?
+#  634|     v634_13(void)          = AliasedUse                   : ~m?
+#  634|     v634_14(void)          = ExitFunction                 : 
 
 #  638| int C::VirtualMemberFunction(int)
 #  638|   Block 0
@@ -3503,10 +3507,11 @@ ir.cpp:
 #  639|     r639_2(glval<int>)     = VariableAddress[x]           : 
 #  639|     r639_3(int)            = Load                         : &:r639_2, ~m?
 #  639|     mu639_4(int)           = Store                        : &:r639_1, r639_3
-#  638|     r638_10(glval<int>)    = VariableAddress[#return]     : 
-#  638|     v638_11(void)          = ReturnValue                  : &:r638_10, ~m?
-#  638|     v638_12(void)          = AliasedUse                   : ~m?
-#  638|     v638_13(void)          = ExitFunction                 : 
+#  638|     v638_10(void)          = ReturnIndirection[#this]     : &:r638_6, ~m?
+#  638|     r638_11(glval<int>)    = VariableAddress[#return]     : 
+#  638|     v638_12(void)          = ReturnValue                  : &:r638_11, ~m?
+#  638|     v638_13(void)          = AliasedUse                   : ~m?
+#  638|     v638_14(void)          = ExitFunction                 : 
 
 #  642| void C::FieldAccess()
 #  642|   Block 0
@@ -3555,9 +3560,10 @@ ir.cpp:
 #  649|     r649_5(glval<int>)     = VariableAddress[x]           : 
 #  649|     mu649_6(int)           = Store                        : &:r649_5, r649_4
 #  650|     v650_1(void)           = NoOp                         : 
-#  642|     v642_8(void)           = ReturnVoid                   : 
-#  642|     v642_9(void)           = AliasedUse                   : ~m?
-#  642|     v642_10(void)          = ExitFunction                 : 
+#  642|     v642_8(void)           = ReturnIndirection[#this]     : &:r642_6, ~m?
+#  642|     v642_9(void)           = ReturnVoid                   : 
+#  642|     v642_10(void)          = AliasedUse                   : ~m?
+#  642|     v642_11(void)          = ExitFunction                 : 
 
 #  652| void C::MethodCalls()
 #  652|   Block 0
@@ -3594,9 +3600,10 @@ ir.cpp:
 #  655|     v655_7(void)           = ^BufferReadSideEffect[-1]               : &:r655_2, ~m?
 #  655|     mu655_8(C)             = ^IndirectMayWriteSideEffect[-1]         : &:r655_2
 #  656|     v656_1(void)           = NoOp                                    : 
-#  652|     v652_8(void)           = ReturnVoid                              : 
-#  652|     v652_9(void)           = AliasedUse                              : ~m?
-#  652|     v652_10(void)          = ExitFunction                            : 
+#  652|     v652_8(void)           = ReturnIndirection[#this]                : &:r652_6, ~m?
+#  652|     v652_9(void)           = ReturnVoid                              : 
+#  652|     v652_10(void)          = AliasedUse                              : ~m?
+#  652|     v652_11(void)          = ExitFunction                            : 
 
 #  658| void C::C()
 #  658|   Block 0
@@ -3631,9 +3638,10 @@ ir.cpp:
 #  662|     v662_8(void)           = ^BufferReadSideEffect[0]        : &:r662_4, ~m?
 #  662|     mu662_9(unknown)       = ^BufferMayWriteSideEffect[0]    : &:r662_4
 #  664|     v664_1(void)           = NoOp                            : 
-#  658|     v658_8(void)           = ReturnVoid                      : 
-#  658|     v658_9(void)           = AliasedUse                      : ~m?
-#  658|     v658_10(void)          = ExitFunction                    : 
+#  658|     v658_8(void)           = ReturnIndirection[#this]        : &:r658_6, ~m?
+#  658|     v658_9(void)           = ReturnVoid                      : 
+#  658|     v658_10(void)          = AliasedUse                      : ~m?
+#  658|     v658_11(void)          = ExitFunction                    : 
 
 #  675| int DerefReference(int&)
 #  675|   Block 0
@@ -4014,11 +4022,12 @@ ir.cpp:
 #-----|     r0_13(glval<Base>)      = CopyValue                       : r0_12
 #-----|     r0_14(Base &)           = CopyValue                       : r0_13
 #-----|     mu0_15(Base &)          = Store                           : &:r0_10, r0_14
+#  745|     v745_20(void)           = ReturnIndirection[#this]        : &:r745_6, ~m?
 #-----|     v0_16(void)             = ReturnIndirection[p#0]          : &:r0_3, ~m?
-#  745|     r745_20(glval<Base &>)  = VariableAddress[#return]        : 
-#  745|     v745_21(void)           = ReturnValue                     : &:r745_20, ~m?
-#  745|     v745_22(void)           = AliasedUse                      : ~m?
-#  745|     v745_23(void)           = ExitFunction                    : 
+#  745|     r745_21(glval<Base &>)  = VariableAddress[#return]        : 
+#  745|     v745_22(void)           = ReturnValue                     : &:r745_21, ~m?
+#  745|     v745_23(void)           = AliasedUse                      : ~m?
+#  745|     v745_24(void)           = ExitFunction                    : 
 
 #  745| void Base::Base(Base const&)
 #  745|   Block 0
@@ -4039,10 +4048,11 @@ ir.cpp:
 #  745|     mu745_11(unknown)      = ^CallSideEffect                 : ~m?
 #  745|     mu745_12(String)       = ^IndirectMayWriteSideEffect[-1] : &:r745_8
 #  745|     v745_13(void)          = NoOp                            : 
+#  745|     v745_14(void)          = ReturnIndirection[#this]        : &:r745_6, ~m?
 #-----|     v0_5(void)             = ReturnIndirection[p#0]          : &:r0_3, ~m?
-#  745|     v745_14(void)          = ReturnVoid                      : 
-#  745|     v745_15(void)          = AliasedUse                      : ~m?
-#  745|     v745_16(void)          = ExitFunction                    : 
+#  745|     v745_15(void)          = ReturnVoid                      : 
+#  745|     v745_16(void)          = AliasedUse                      : ~m?
+#  745|     v745_17(void)          = ExitFunction                    : 
 
 #  748| void Base::Base()
 #  748|   Block 0
@@ -4059,9 +4069,10 @@ ir.cpp:
 #  748|     mu748_11(unknown)      = ^CallSideEffect                 : ~m?
 #  748|     mu748_12(String)       = ^IndirectMayWriteSideEffect[-1] : &:r748_8
 #  749|     v749_1(void)           = NoOp                            : 
-#  748|     v748_13(void)          = ReturnVoid                      : 
-#  748|     v748_14(void)          = AliasedUse                      : ~m?
-#  748|     v748_15(void)          = ExitFunction                    : 
+#  748|     v748_13(void)          = ReturnIndirection[#this]        : &:r748_6, ~m?
+#  748|     v748_14(void)          = ReturnVoid                      : 
+#  748|     v748_15(void)          = AliasedUse                      : ~m?
+#  748|     v748_16(void)          = ExitFunction                    : 
 
 #  750| void Base::~Base()
 #  750|   Block 0
@@ -4077,9 +4088,10 @@ ir.cpp:
 #  751|     r751_3(glval<unknown>) = FunctionAddress[~String]     : 
 #  751|     v751_4(void)           = Call                         : func:r751_3, this:r751_2
 #  751|     mu751_5(unknown)       = ^CallSideEffect              : ~m?
-#  750|     v750_8(void)           = ReturnVoid                   : 
-#  750|     v750_9(void)           = AliasedUse                   : ~m?
-#  750|     v750_10(void)          = ExitFunction                 : 
+#  750|     v750_8(void)           = ReturnIndirection[#this]     : &:r750_6, ~m?
+#  750|     v750_9(void)           = ReturnVoid                   : 
+#  750|     v750_10(void)          = AliasedUse                   : ~m?
+#  750|     v750_11(void)          = ExitFunction                 : 
 
 #  754| Middle& Middle::operator=(Middle const&)
 #  754|   Block 0
@@ -4135,11 +4147,12 @@ ir.cpp:
 #-----|     r0_22(glval<Middle>)     = CopyValue                              : r0_21
 #-----|     r0_23(Middle &)          = CopyValue                              : r0_22
 #-----|     mu0_24(Middle &)         = Store                                  : &:r0_19, r0_23
+#  754|     v754_29(void)            = ReturnIndirection[#this]               : &:r754_6, ~m?
 #-----|     v0_25(void)              = ReturnIndirection[p#0]                 : &:r0_3, ~m?
-#  754|     r754_29(glval<Middle &>) = VariableAddress[#return]               : 
-#  754|     v754_30(void)            = ReturnValue                            : &:r754_29, ~m?
-#  754|     v754_31(void)            = AliasedUse                             : ~m?
-#  754|     v754_32(void)            = ExitFunction                           : 
+#  754|     r754_30(glval<Middle &>) = VariableAddress[#return]               : 
+#  754|     v754_31(void)            = ReturnValue                            : &:r754_30, ~m?
+#  754|     v754_32(void)            = AliasedUse                             : ~m?
+#  754|     v754_33(void)            = ExitFunction                           : 
 
 #  757| void Middle::Middle()
 #  757|   Block 0
@@ -4161,9 +4174,10 @@ ir.cpp:
 #  757|     mu757_16(unknown)       = ^CallSideEffect                        : ~m?
 #  757|     mu757_17(String)        = ^IndirectMayWriteSideEffect[-1]        : &:r757_13
 #  758|     v758_1(void)            = NoOp                                   : 
-#  757|     v757_18(void)           = ReturnVoid                             : 
-#  757|     v757_19(void)           = AliasedUse                             : ~m?
-#  757|     v757_20(void)           = ExitFunction                           : 
+#  757|     v757_18(void)           = ReturnIndirection[#this]               : &:r757_6, ~m?
+#  757|     v757_19(void)           = ReturnVoid                             : 
+#  757|     v757_20(void)           = AliasedUse                             : ~m?
+#  757|     v757_21(void)           = ExitFunction                           : 
 
 #  759| void Middle::~Middle()
 #  759|   Block 0
@@ -4183,9 +4197,10 @@ ir.cpp:
 #  760|     r760_7(glval<unknown>) = FunctionAddress[~Base]                 : 
 #  760|     v760_8(void)           = Call                                   : func:r760_7, this:r760_6
 #  760|     mu760_9(unknown)       = ^CallSideEffect                        : ~m?
-#  759|     v759_8(void)           = ReturnVoid                             : 
-#  759|     v759_9(void)           = AliasedUse                             : ~m?
-#  759|     v759_10(void)          = ExitFunction                           : 
+#  759|     v759_8(void)           = ReturnIndirection[#this]               : &:r759_6, ~m?
+#  759|     v759_9(void)           = ReturnVoid                             : 
+#  759|     v759_10(void)          = AliasedUse                             : ~m?
+#  759|     v759_11(void)          = ExitFunction                           : 
 
 #  763| Derived& Derived::operator=(Derived const&)
 #  763|   Block 0
@@ -4241,11 +4256,12 @@ ir.cpp:
 #-----|     r0_22(glval<Derived>)     = CopyValue                                 : r0_21
 #-----|     r0_23(Derived &)          = CopyValue                                 : r0_22
 #-----|     mu0_24(Derived &)         = Store                                     : &:r0_19, r0_23
+#  763|     v763_29(void)             = ReturnIndirection[#this]                  : &:r763_6, ~m?
 #-----|     v0_25(void)               = ReturnIndirection[p#0]                    : &:r0_3, ~m?
-#  763|     r763_29(glval<Derived &>) = VariableAddress[#return]                  : 
-#  763|     v763_30(void)             = ReturnValue                               : &:r763_29, ~m?
-#  763|     v763_31(void)             = AliasedUse                                : ~m?
-#  763|     v763_32(void)             = ExitFunction                              : 
+#  763|     r763_30(glval<Derived &>) = VariableAddress[#return]                  : 
+#  763|     v763_31(void)             = ReturnValue                               : &:r763_30, ~m?
+#  763|     v763_32(void)             = AliasedUse                                : ~m?
+#  763|     v763_33(void)             = ExitFunction                              : 
 
 #  766| void Derived::Derived()
 #  766|   Block 0
@@ -4267,9 +4283,10 @@ ir.cpp:
 #  766|     mu766_16(unknown)       = ^CallSideEffect                           : ~m?
 #  766|     mu766_17(String)        = ^IndirectMayWriteSideEffect[-1]           : &:r766_13
 #  767|     v767_1(void)            = NoOp                                      : 
-#  766|     v766_18(void)           = ReturnVoid                                : 
-#  766|     v766_19(void)           = AliasedUse                                : ~m?
-#  766|     v766_20(void)           = ExitFunction                              : 
+#  766|     v766_18(void)           = ReturnIndirection[#this]                  : &:r766_6, ~m?
+#  766|     v766_19(void)           = ReturnVoid                                : 
+#  766|     v766_20(void)           = AliasedUse                                : ~m?
+#  766|     v766_21(void)           = ExitFunction                              : 
 
 #  768| void Derived::~Derived()
 #  768|   Block 0
@@ -4289,9 +4306,10 @@ ir.cpp:
 #  769|     r769_7(glval<unknown>)  = FunctionAddress[~Middle]                  : 
 #  769|     v769_8(void)            = Call                                      : func:r769_7, this:r769_6
 #  769|     mu769_9(unknown)        = ^CallSideEffect                           : ~m?
-#  768|     v768_8(void)            = ReturnVoid                                : 
-#  768|     v768_9(void)            = AliasedUse                                : ~m?
-#  768|     v768_10(void)           = ExitFunction                              : 
+#  768|     v768_8(void)            = ReturnIndirection[#this]                  : &:r768_6, ~m?
+#  768|     v768_9(void)            = ReturnVoid                                : 
+#  768|     v768_10(void)           = AliasedUse                                : ~m?
+#  768|     v768_11(void)           = ExitFunction                              : 
 
 #  775| void MiddleVB1::MiddleVB1()
 #  775|   Block 0
@@ -4313,9 +4331,10 @@ ir.cpp:
 #  775|     mu775_16(unknown)         = ^CallSideEffect                           : ~m?
 #  775|     mu775_17(String)          = ^IndirectMayWriteSideEffect[-1]           : &:r775_13
 #  776|     v776_1(void)              = NoOp                                      : 
-#  775|     v775_18(void)             = ReturnVoid                                : 
-#  775|     v775_19(void)             = AliasedUse                                : ~m?
-#  775|     v775_20(void)             = ExitFunction                              : 
+#  775|     v775_18(void)             = ReturnIndirection[#this]                  : &:r775_6, ~m?
+#  775|     v775_19(void)             = ReturnVoid                                : 
+#  775|     v775_20(void)             = AliasedUse                                : ~m?
+#  775|     v775_21(void)             = ExitFunction                              : 
 
 #  777| void MiddleVB1::~MiddleVB1()
 #  777|   Block 0
@@ -4335,9 +4354,10 @@ ir.cpp:
 #  778|     r778_7(glval<unknown>)    = FunctionAddress[~Base]                    : 
 #  778|     v778_8(void)              = Call                                      : func:r778_7, this:r778_6
 #  778|     mu778_9(unknown)          = ^CallSideEffect                           : ~m?
-#  777|     v777_8(void)              = ReturnVoid                                : 
-#  777|     v777_9(void)              = AliasedUse                                : ~m?
-#  777|     v777_10(void)             = ExitFunction                              : 
+#  777|     v777_8(void)              = ReturnIndirection[#this]                  : &:r777_6, ~m?
+#  777|     v777_9(void)              = ReturnVoid                                : 
+#  777|     v777_10(void)             = AliasedUse                                : ~m?
+#  777|     v777_11(void)             = ExitFunction                              : 
 
 #  784| void MiddleVB2::MiddleVB2()
 #  784|   Block 0
@@ -4359,9 +4379,10 @@ ir.cpp:
 #  784|     mu784_16(unknown)         = ^CallSideEffect                           : ~m?
 #  784|     mu784_17(String)          = ^IndirectMayWriteSideEffect[-1]           : &:r784_13
 #  785|     v785_1(void)              = NoOp                                      : 
-#  784|     v784_18(void)             = ReturnVoid                                : 
-#  784|     v784_19(void)             = AliasedUse                                : ~m?
-#  784|     v784_20(void)             = ExitFunction                              : 
+#  784|     v784_18(void)             = ReturnIndirection[#this]                  : &:r784_6, ~m?
+#  784|     v784_19(void)             = ReturnVoid                                : 
+#  784|     v784_20(void)             = AliasedUse                                : ~m?
+#  784|     v784_21(void)             = ExitFunction                              : 
 
 #  786| void MiddleVB2::~MiddleVB2()
 #  786|   Block 0
@@ -4381,9 +4402,10 @@ ir.cpp:
 #  787|     r787_7(glval<unknown>)    = FunctionAddress[~Base]                    : 
 #  787|     v787_8(void)              = Call                                      : func:r787_7, this:r787_6
 #  787|     mu787_9(unknown)          = ^CallSideEffect                           : ~m?
-#  786|     v786_8(void)              = ReturnVoid                                : 
-#  786|     v786_9(void)              = AliasedUse                                : ~m?
-#  786|     v786_10(void)             = ExitFunction                              : 
+#  786|     v786_8(void)              = ReturnIndirection[#this]                  : &:r786_6, ~m?
+#  786|     v786_9(void)              = ReturnVoid                                : 
+#  786|     v786_10(void)             = AliasedUse                                : ~m?
+#  786|     v786_11(void)             = ExitFunction                              : 
 
 #  793| void DerivedVB::DerivedVB()
 #  793|   Block 0
@@ -4415,9 +4437,10 @@ ir.cpp:
 #  793|     mu793_26(unknown)         = ^CallSideEffect                                : ~m?
 #  793|     mu793_27(String)          = ^IndirectMayWriteSideEffect[-1]                : &:r793_23
 #  794|     v794_1(void)              = NoOp                                           : 
-#  793|     v793_28(void)             = ReturnVoid                                     : 
-#  793|     v793_29(void)             = AliasedUse                                     : ~m?
-#  793|     v793_30(void)             = ExitFunction                                   : 
+#  793|     v793_28(void)             = ReturnIndirection[#this]                       : &:r793_6, ~m?
+#  793|     v793_29(void)             = ReturnVoid                                     : 
+#  793|     v793_30(void)             = AliasedUse                                     : ~m?
+#  793|     v793_31(void)             = ExitFunction                                   : 
 
 #  795| void DerivedVB::~DerivedVB()
 #  795|   Block 0
@@ -4445,9 +4468,10 @@ ir.cpp:
 #  796|     r796_15(glval<unknown>)   = FunctionAddress[~Base]                         : 
 #  796|     v796_16(void)             = Call                                           : func:r796_15, this:r796_14
 #  796|     mu796_17(unknown)         = ^CallSideEffect                                : ~m?
-#  795|     v795_8(void)              = ReturnVoid                                     : 
-#  795|     v795_9(void)              = AliasedUse                                     : ~m?
-#  795|     v795_10(void)             = ExitFunction                                   : 
+#  795|     v795_8(void)              = ReturnIndirection[#this]                       : &:r795_6, ~m?
+#  795|     v795_9(void)              = ReturnVoid                                     : 
+#  795|     v795_10(void)             = AliasedUse                                     : ~m?
+#  795|     v795_11(void)             = ExitFunction                                   : 
 
 #  799| void HierarchyConversions()
 #  799|   Block 0
@@ -4751,9 +4775,10 @@ ir.cpp:
 #  842|     r842_6(glval<PolymorphicBase>)  = Load                         : &:r842_4, ~m?
 #  842|     mu842_7(PolymorphicBase)        = InitializeIndirection[#this] : &:r842_6
 #  842|     v842_8(void)                    = NoOp                         : 
-#  842|     v842_9(void)                    = ReturnVoid                   : 
-#  842|     v842_10(void)                   = AliasedUse                   : ~m?
-#  842|     v842_11(void)                   = ExitFunction                 : 
+#  842|     v842_9(void)                    = ReturnIndirection[#this]     : &:r842_6, ~m?
+#  842|     v842_10(void)                   = ReturnVoid                   : 
+#  842|     v842_11(void)                   = AliasedUse                   : ~m?
+#  842|     v842_12(void)                   = ExitFunction                 : 
 
 #  846| void PolymorphicDerived::PolymorphicDerived()
 #  846|   Block 0
@@ -4770,9 +4795,10 @@ ir.cpp:
 #  846|     mu846_11(unknown)                  = ^CallSideEffect                                               : ~m?
 #  846|     mu846_12(PolymorphicBase)          = ^IndirectMayWriteSideEffect[-1]                               : &:r846_8
 #  846|     v846_13(void)                      = NoOp                                                          : 
-#  846|     v846_14(void)                      = ReturnVoid                                                    : 
-#  846|     v846_15(void)                      = AliasedUse                                                    : ~m?
-#  846|     v846_16(void)                      = ExitFunction                                                  : 
+#  846|     v846_14(void)                      = ReturnIndirection[#this]                                      : &:r846_6, ~m?
+#  846|     v846_15(void)                      = ReturnVoid                                                    : 
+#  846|     v846_16(void)                      = AliasedUse                                                    : ~m?
+#  846|     v846_17(void)                      = ExitFunction                                                  : 
 
 #  846| void PolymorphicDerived::~PolymorphicDerived()
 #  846|   Block 0
@@ -4788,9 +4814,10 @@ ir.cpp:
 #  846|     r846_9(glval<unknown>)             = FunctionAddress[~PolymorphicBase]                             : 
 #  846|     v846_10(void)                      = Call                                                          : func:r846_9, this:r846_8
 #  846|     mu846_11(unknown)                  = ^CallSideEffect                                               : ~m?
-#  846|     v846_12(void)                      = ReturnVoid                                                    : 
-#  846|     v846_13(void)                      = AliasedUse                                                    : ~m?
-#  846|     v846_14(void)                      = ExitFunction                                                  : 
+#  846|     v846_12(void)                      = ReturnIndirection[#this]                                      : &:r846_6, ~m?
+#  846|     v846_13(void)                      = ReturnVoid                                                    : 
+#  846|     v846_14(void)                      = AliasedUse                                                    : ~m?
+#  846|     v846_15(void)                      = ExitFunction                                                  : 
 
 #  849| void DynamicCast()
 #  849|   Block 0
@@ -4840,12 +4867,12 @@ ir.cpp:
 #  863|     r863_1(glval<void *>)               = VariableAddress[pv]                 : 
 #  863|     r863_2(glval<PolymorphicBase *>)    = VariableAddress[pb]                 : 
 #  863|     r863_3(PolymorphicBase *)           = Load                                : &:r863_2, ~m?
-#  863|     r863_4(void *)                      = DynamicCastToVoid                   : r863_3
+#  863|     r863_4(void *)                      = CompleteObjectAddress               : r863_3
 #  863|     mu863_5(void *)                     = Store                               : &:r863_1, r863_4
 #  864|     r864_1(glval<void *>)               = VariableAddress[pcv]                : 
 #  864|     r864_2(glval<PolymorphicDerived *>) = VariableAddress[pd]                 : 
 #  864|     r864_3(PolymorphicDerived *)        = Load                                : &:r864_2, ~m?
-#  864|     r864_4(void *)                      = DynamicCastToVoid                   : r864_3
+#  864|     r864_4(void *)                      = CompleteObjectAddress               : r864_3
 #  864|     mu864_5(void *)                     = Store                               : &:r864_1, r864_4
 #  865|     v865_1(void)                        = NoOp                                : 
 #  849|     v849_4(void)                        = ReturnVoid                          : 
@@ -4870,9 +4897,10 @@ ir.cpp:
 #  868|     v868_7(void)           = ^BufferReadSideEffect[0]        : &:r868_3, ~m?
 #  868|     mu868_8(unknown)       = ^BufferMayWriteSideEffect[0]    : &:r868_3
 #  869|     v869_1(void)           = NoOp                            : 
-#  867|     v867_8(void)           = ReturnVoid                      : 
-#  867|     v867_9(void)           = AliasedUse                      : ~m?
-#  867|     v867_10(void)          = ExitFunction                    : 
+#  867|     v867_8(void)           = ReturnIndirection[#this]        : &:r867_6, ~m?
+#  867|     v867_9(void)           = ReturnVoid                      : 
+#  867|     v867_10(void)          = AliasedUse                      : ~m?
+#  867|     v867_11(void)          = ExitFunction                    : 
 
 #  871| void ArrayConversions()
 #  871|   Block 0
@@ -5617,9 +5645,10 @@ ir.cpp:
 # 1038|     r1038_6(glval<decltype([...](...){...})>)  = Load                         : &:r1038_4, ~m?
 # 1038|     mu1038_7(decltype([...](...){...}))        = InitializeIndirection[#this] : &:r1038_6
 # 1038|     v1038_8(void)                              = NoOp                         : 
-# 1038|     v1038_9(void)                              = ReturnVoid                   : 
-# 1038|     v1038_10(void)                             = AliasedUse                   : ~m?
-# 1038|     v1038_11(void)                             = ExitFunction                 : 
+# 1038|     v1038_9(void)                              = ReturnIndirection[#this]     : &:r1038_6, ~m?
+# 1038|     v1038_10(void)                             = ReturnVoid                   : 
+# 1038|     v1038_11(void)                             = AliasedUse                   : ~m?
+# 1038|     v1038_12(void)                             = ExitFunction                 : 
 
 # 1038| void(* (lambda [] type at line 1038, col. 12)::operator void (*)()() const)()
 # 1038|   Block 0
@@ -5633,10 +5662,11 @@ ir.cpp:
 # 1038|     r1038_8(glval<..(*)(..)>)                  = VariableAddress[#return]     : 
 # 1038|     r1038_9(..(*)(..))                         = FunctionAddress[_FUN]        : 
 # 1038|     mu1038_10(..(*)(..))                       = Store                        : &:r1038_8, r1038_9
-# 1038|     r1038_11(glval<..(*)(..)>)                 = VariableAddress[#return]     : 
-# 1038|     v1038_12(void)                             = ReturnValue                  : &:r1038_11, ~m?
-# 1038|     v1038_13(void)                             = AliasedUse                   : ~m?
-# 1038|     v1038_14(void)                             = ExitFunction                 : 
+# 1038|     v1038_11(void)                             = ReturnIndirection[#this]     : &:r1038_6, ~m?
+# 1038|     r1038_12(glval<..(*)(..)>)                 = VariableAddress[#return]     : 
+# 1038|     v1038_13(void)                             = ReturnValue                  : &:r1038_12, ~m?
+# 1038|     v1038_14(void)                             = AliasedUse                   : ~m?
+# 1038|     v1038_15(void)                             = ExitFunction                 : 
 
 # 1040| void Lambda(int, String const&)
 # 1040|   Block 0
@@ -5819,10 +5849,11 @@ ir.cpp:
 # 1041|     r1041_10(glval<char>)                      = VariableAddress[#return]     : 
 # 1041|     r1041_11(char)                             = Constant[65]                 : 
 # 1041|     mu1041_12(char)                            = Store                        : &:r1041_10, r1041_11
-# 1041|     r1041_13(glval<char>)                      = VariableAddress[#return]     : 
-# 1041|     v1041_14(void)                             = ReturnValue                  : &:r1041_13, ~m?
-# 1041|     v1041_15(void)                             = AliasedUse                   : ~m?
-# 1041|     v1041_16(void)                             = ExitFunction                 : 
+# 1041|     v1041_13(void)                             = ReturnIndirection[#this]     : &:r1041_6, ~m?
+# 1041|     r1041_14(glval<char>)                      = VariableAddress[#return]     : 
+# 1041|     v1041_15(void)                             = ReturnValue                  : &:r1041_14, ~m?
+# 1041|     v1041_16(void)                             = AliasedUse                   : ~m?
+# 1041|     v1041_17(void)                             = ExitFunction                 : 
 
 # 1041| char(* (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)::operator char (*)(float)() const)(float)
 # 1041|   Block 0
@@ -5836,10 +5867,11 @@ ir.cpp:
 # 1041|     r1041_8(glval<..(*)(..)>)                  = VariableAddress[#return]     : 
 # 1041|     r1041_9(..(*)(..))                         = FunctionAddress[_FUN]        : 
 # 1041|     mu1041_10(..(*)(..))                       = Store                        : &:r1041_8, r1041_9
-# 1041|     r1041_11(glval<..(*)(..)>)                 = VariableAddress[#return]     : 
-# 1041|     v1041_12(void)                             = ReturnValue                  : &:r1041_11, ~m?
-# 1041|     v1041_13(void)                             = AliasedUse                   : ~m?
-# 1041|     v1041_14(void)                             = ExitFunction                 : 
+# 1041|     v1041_11(void)                             = ReturnIndirection[#this]     : &:r1041_6, ~m?
+# 1041|     r1041_12(glval<..(*)(..)>)                 = VariableAddress[#return]     : 
+# 1041|     v1041_13(void)                             = ReturnValue                  : &:r1041_12, ~m?
+# 1041|     v1041_14(void)                             = AliasedUse                   : ~m?
+# 1041|     v1041_15(void)                             = ExitFunction                 : 
 
 # 1043| char (void Lambda(int, String const&))::(lambda [] type at line 1043, col. 21)::operator()(float) const
 # 1043|   Block 0
@@ -5871,10 +5903,11 @@ ir.cpp:
 # 1043|     r1043_26(glval<char>)                            = PointerAdd[1]                   : r1043_17, r1043_25
 # 1043|     r1043_27(char)                                   = Load                            : &:r1043_26, ~m?
 # 1043|     mu1043_28(char)                                  = Store                           : &:r1043_10, r1043_27
-# 1043|     r1043_29(glval<char>)                            = VariableAddress[#return]        : 
-# 1043|     v1043_30(void)                                   = ReturnValue                     : &:r1043_29, ~m?
-# 1043|     v1043_31(void)                                   = AliasedUse                      : ~m?
-# 1043|     v1043_32(void)                                   = ExitFunction                    : 
+# 1043|     v1043_29(void)                                   = ReturnIndirection[#this]        : &:r1043_6, ~m?
+# 1043|     r1043_30(glval<char>)                            = VariableAddress[#return]        : 
+# 1043|     v1043_31(void)                                   = ReturnValue                     : &:r1043_30, ~m?
+# 1043|     v1043_32(void)                                   = AliasedUse                      : ~m?
+# 1043|     v1043_33(void)                                   = ExitFunction                    : 
 
 # 1045| void (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21)::~<unnamed>()
 # 1045|   Block 0
@@ -5890,9 +5923,10 @@ ir.cpp:
 # 1045|     r1045_9(glval<unknown>)                    = FunctionAddress[~String]     : 
 # 1045|     v1045_10(void)                             = Call                         : func:r1045_9, this:r1045_8
 # 1045|     mu1045_11(unknown)                         = ^CallSideEffect              : ~m?
-# 1045|     v1045_12(void)                             = ReturnVoid                   : 
-# 1045|     v1045_13(void)                             = AliasedUse                   : ~m?
-# 1045|     v1045_14(void)                             = ExitFunction                 : 
+# 1045|     v1045_12(void)                             = ReturnIndirection[#this]     : &:r1045_6, ~m?
+# 1045|     v1045_13(void)                             = ReturnVoid                   : 
+# 1045|     v1045_14(void)                             = AliasedUse                   : ~m?
+# 1045|     v1045_15(void)                             = ExitFunction                 : 
 
 # 1045| char (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21)::operator()(float) const
 # 1045|   Block 0
@@ -5921,10 +5955,11 @@ ir.cpp:
 # 1045|     r1045_23(glval<char>)                            = PointerAdd[1]                   : r1045_15, r1045_22
 # 1045|     r1045_24(char)                                   = Load                            : &:r1045_23, ~m?
 # 1045|     mu1045_25(char)                                  = Store                           : &:r1045_10, r1045_24
-# 1045|     r1045_26(glval<char>)                            = VariableAddress[#return]        : 
-# 1045|     v1045_27(void)                                   = ReturnValue                     : &:r1045_26, ~m?
-# 1045|     v1045_28(void)                                   = AliasedUse                      : ~m?
-# 1045|     v1045_29(void)                                   = ExitFunction                    : 
+# 1045|     v1045_26(void)                                   = ReturnIndirection[#this]        : &:r1045_6, ~m?
+# 1045|     r1045_27(glval<char>)                            = VariableAddress[#return]        : 
+# 1045|     v1045_28(void)                                   = ReturnValue                     : &:r1045_27, ~m?
+# 1045|     v1045_29(void)                                   = AliasedUse                      : ~m?
+# 1045|     v1045_30(void)                                   = ExitFunction                    : 
 
 # 1047| char (void Lambda(int, String const&))::(lambda [] type at line 1047, col. 30)::operator()(float) const
 # 1047|   Block 0
@@ -5952,10 +5987,11 @@ ir.cpp:
 # 1047|     r1047_22(glval<char>)                            = PointerAdd[1]                   : r1047_17, r1047_21
 # 1047|     r1047_23(char)                                   = Load                            : &:r1047_22, ~m?
 # 1047|     mu1047_24(char)                                  = Store                           : &:r1047_10, r1047_23
-# 1047|     r1047_25(glval<char>)                            = VariableAddress[#return]        : 
-# 1047|     v1047_26(void)                                   = ReturnValue                     : &:r1047_25, ~m?
-# 1047|     v1047_27(void)                                   = AliasedUse                      : ~m?
-# 1047|     v1047_28(void)                                   = ExitFunction                    : 
+# 1047|     v1047_25(void)                                   = ReturnIndirection[#this]        : &:r1047_6, ~m?
+# 1047|     r1047_26(glval<char>)                            = VariableAddress[#return]        : 
+# 1047|     v1047_27(void)                                   = ReturnValue                     : &:r1047_26, ~m?
+# 1047|     v1047_28(void)                                   = AliasedUse                      : ~m?
+# 1047|     v1047_29(void)                                   = ExitFunction                    : 
 
 # 1049| void (void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30)::~<unnamed>()
 # 1049|   Block 0
@@ -5971,9 +6007,10 @@ ir.cpp:
 # 1049|     r1049_9(glval<unknown>)                    = FunctionAddress[~String]     : 
 # 1049|     v1049_10(void)                             = Call                         : func:r1049_9, this:r1049_8
 # 1049|     mu1049_11(unknown)                         = ^CallSideEffect              : ~m?
-# 1049|     v1049_12(void)                             = ReturnVoid                   : 
-# 1049|     v1049_13(void)                             = AliasedUse                   : ~m?
-# 1049|     v1049_14(void)                             = ExitFunction                 : 
+# 1049|     v1049_12(void)                             = ReturnIndirection[#this]     : &:r1049_6, ~m?
+# 1049|     v1049_13(void)                             = ReturnVoid                   : 
+# 1049|     v1049_14(void)                             = AliasedUse                   : ~m?
+# 1049|     v1049_15(void)                             = ExitFunction                 : 
 
 # 1049| char (void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30)::operator()(float) const
 # 1049|   Block 0
@@ -5999,10 +6036,11 @@ ir.cpp:
 # 1049|     r1049_20(glval<char>)                            = PointerAdd[1]                   : r1049_15, r1049_19
 # 1049|     r1049_21(char)                                   = Load                            : &:r1049_20, ~m?
 # 1049|     mu1049_22(char)                                  = Store                           : &:r1049_10, r1049_21
-# 1049|     r1049_23(glval<char>)                            = VariableAddress[#return]        : 
-# 1049|     v1049_24(void)                                   = ReturnValue                     : &:r1049_23, ~m?
-# 1049|     v1049_25(void)                                   = AliasedUse                      : ~m?
-# 1049|     v1049_26(void)                                   = ExitFunction                    : 
+# 1049|     v1049_23(void)                                   = ReturnIndirection[#this]        : &:r1049_6, ~m?
+# 1049|     r1049_24(glval<char>)                            = VariableAddress[#return]        : 
+# 1049|     v1049_25(void)                                   = ReturnValue                     : &:r1049_24, ~m?
+# 1049|     v1049_26(void)                                   = AliasedUse                      : ~m?
+# 1049|     v1049_27(void)                                   = ExitFunction                    : 
 
 # 1051| char (void Lambda(int, String const&))::(lambda [] type at line 1051, col. 32)::operator()(float) const
 # 1051|   Block 0
@@ -6033,10 +6071,11 @@ ir.cpp:
 # 1051|     r1051_25(glval<char>)                            = PointerAdd[1]                   : r1051_17, r1051_24
 # 1051|     r1051_26(char)                                   = Load                            : &:r1051_25, ~m?
 # 1051|     mu1051_27(char)                                  = Store                           : &:r1051_10, r1051_26
-# 1051|     r1051_28(glval<char>)                            = VariableAddress[#return]        : 
-# 1051|     v1051_29(void)                                   = ReturnValue                     : &:r1051_28, ~m?
-# 1051|     v1051_30(void)                                   = AliasedUse                      : ~m?
-# 1051|     v1051_31(void)                                   = ExitFunction                    : 
+# 1051|     v1051_28(void)                                   = ReturnIndirection[#this]        : &:r1051_6, ~m?
+# 1051|     r1051_29(glval<char>)                            = VariableAddress[#return]        : 
+# 1051|     v1051_30(void)                                   = ReturnValue                     : &:r1051_29, ~m?
+# 1051|     v1051_31(void)                                   = AliasedUse                      : ~m?
+# 1051|     v1051_32(void)                                   = ExitFunction                    : 
 
 # 1054| char (void Lambda(int, String const&))::(lambda [] type at line 1054, col. 23)::operator()(float) const
 # 1054|   Block 0
@@ -6078,10 +6117,11 @@ ir.cpp:
 # 1054|     r1054_36(glval<char>)                            = PointerAdd[1]                   : r1054_17, r1054_35
 # 1054|     r1054_37(char)                                   = Load                            : &:r1054_36, ~m?
 # 1054|     mu1054_38(char)                                  = Store                           : &:r1054_10, r1054_37
-# 1054|     r1054_39(glval<char>)                            = VariableAddress[#return]        : 
-# 1054|     v1054_40(void)                                   = ReturnValue                     : &:r1054_39, ~m?
-# 1054|     v1054_41(void)                                   = AliasedUse                      : ~m?
-# 1054|     v1054_42(void)                                   = ExitFunction                    : 
+# 1054|     v1054_39(void)                                   = ReturnIndirection[#this]        : &:r1054_6, ~m?
+# 1054|     r1054_40(glval<char>)                            = VariableAddress[#return]        : 
+# 1054|     v1054_41(void)                                   = ReturnValue                     : &:r1054_40, ~m?
+# 1054|     v1054_42(void)                                   = AliasedUse                      : ~m?
+# 1054|     v1054_43(void)                                   = ExitFunction                    : 
 
 # 1077| void RangeBasedFor(vector<int> const&)
 # 1077|   Block 0
@@ -7409,9 +7449,10 @@ perf-regression.cpp:
 #    6|     r6_11(unknown[1073741824])    = Constant[0]                  : 
 #    6|     mu6_12(unknown[1073741824])   = Store                        : &:r6_10, r6_11
 #    6|     v6_13(void)                   = NoOp                         : 
-#    6|     v6_14(void)                   = ReturnVoid                   : 
-#    6|     v6_15(void)                   = AliasedUse                   : ~m?
-#    6|     v6_16(void)                   = ExitFunction                 : 
+#    6|     v6_14(void)                   = ReturnIndirection[#this]     : &:r6_6, ~m?
+#    6|     v6_15(void)                   = ReturnVoid                   : 
+#    6|     v6_16(void)                   = AliasedUse                   : ~m?
+#    6|     v6_17(void)                   = ExitFunction                 : 
 
 #    9| int main()
 #    9|   Block 0

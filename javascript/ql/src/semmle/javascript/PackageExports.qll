@@ -68,4 +68,9 @@ private DataFlow::Node getAnExportFromModule(Module mod) {
   result.analyze().getAValue() = mod.(NodeModule).getAModuleExportsValue()
   or
   exists(ASTNode export | result.getEnclosingExpr() = export | mod.exports(_, export))
+  or
+  exists(ExportDeclaration export |
+    result = export.getSourceNode(_) and
+    mod = export.getTopLevel()
+  )
 }

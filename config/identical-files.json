@@ -1,5 +1,5 @@
 {
-  "DataFlow Java/C++/C#": [
+  "DataFlow Java/C++/C#/Python": [
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl.qll",
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl2.qll",
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImpl3.qll",
@@ -18,15 +18,18 @@
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImpl2.qll",
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImpl3.qll",
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImpl4.qll",
-    "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImpl5.qll"
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImpl5.qll",
+    "python/ql/src/experimental/dataflow/internal/DataFlowImpl.qll",
+    "python/ql/src/experimental/dataflow/internal/DataFlowImpl2.qll"
   ],
-  "DataFlow Java/C++/C# Common": [
+  "DataFlow Java/C++/C#/Python Common": [
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImplCommon.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImplCommon.qll",
     "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/DataFlowImplCommon.qll",
-    "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImplCommon.qll"
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImplCommon.qll",
+    "python/ql/src/experimental/dataflow/internal/DataFlowImplCommon.qll"
   ],
-  "TaintTracking::Configuration Java/C++/C#": [
+  "TaintTracking::Configuration Java/C++/C#/Python": [
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
     "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
@@ -37,13 +40,15 @@
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/tainttracking4/TaintTrackingImpl.qll",
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/tainttracking5/TaintTrackingImpl.qll",
     "java/ql/src/semmle/code/java/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
-    "java/ql/src/semmle/code/java/dataflow/internal/tainttracking2/TaintTrackingImpl.qll"
+    "java/ql/src/semmle/code/java/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
+    "python/ql/src/experimental/dataflow/internal/tainttracking1/TaintTrackingImpl.qll"
   ],
-  "DataFlow Java/C++/C# Consistency checks": [
+  "DataFlow Java/C++/C#/Python Consistency checks": [
     "java/ql/src/semmle/code/java/dataflow/internal/DataFlowImplConsistency.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImplConsistency.qll",
     "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/DataFlowImplConsistency.qll",
-    "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImplConsistency.qll"
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImplConsistency.qll",
+    "python/ql/src/experimental/dataflow/internal/DataFlowImplConsistency.qll"
   ],
   "C++ SubBasicBlocks": [
     "cpp/ql/src/semmle/code/cpp/controlflow/SubBasicBlocks.qll",
@@ -96,9 +101,17 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/UseSoundEscapeAnalysis.qll",
     "csharp/ql/src/experimental/ir/implementation/UseSoundEscapeAnalysis.qll"
   ],
+  "IR IRFunctionBase": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/internal/IRFunctionBase.qll",
+    "csharp/ql/src/experimental/ir/implementation/internal/IRFunctionBase.qll"
+  ],
   "IR Operand Tag": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/internal/OperandTag.qll",
     "csharp/ql/src/experimental/ir/implementation/internal/OperandTag.qll"
+  ],
+  "IR TInstruction":[
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/internal/TInstruction.qll",
+    "csharp/ql/src/experimental/ir/implementation/internal/TInstruction.qll"
   ],
   "IR TIRVariable":[
     "cpp/ql/src/semmle/code/cpp/ir/implementation/internal/TIRVariable.qll",
@@ -176,6 +189,11 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/internal/IRBlockImports.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/IRBlockImports.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/IRBlockImports.qll"
+  ],
+  "C++ IR IRFunctionImports": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/internal/IRFunctionImports.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/IRFunctionImports.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/internal/IRFunctionImports.qll"
   ],
   "C++ IR IRVariableImports": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/internal/IRVariableImports.qll",
@@ -286,6 +304,10 @@
   "C# IR IRBlockImports": [
     "csharp/ql/src/experimental/ir/implementation/raw/internal/IRBlockImports.qll",
     "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/internal/IRBlockImports.qll"
+  ],
+  "C# IR IRFunctionImports": [
+    "csharp/ql/src/experimental/ir/implementation/raw/internal/IRFunctionImports.qll",
+    "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/internal/IRFunctionImports.qll"
   ],
   "C# IR IRVariableImports": [
     "csharp/ql/src/experimental/ir/implementation/raw/internal/IRVariableImports.qll",

@@ -1,5 +1,4 @@
 | Augmentation | defined in augmentation.ts |
-| CollatorOptions | has no definition |
 | ExternalType1 | has no definition |
 | ExternalType2 | has no definition |
 | InternalType | defined in client_esmodule.ts |
@@ -7,9 +6,6 @@
 | LegacySubclass | has no definition |
 | ModernClass | has no definition |
 | ModernSubclass | has no definition |
-| NumberFormatOptions | has no definition |
 | OtherClass | has no definition |
-| RegExp | has no definition |
-| RegExpMatchArray | has no definition |
 | UtilClass | has no definition |
 | UtilExtraClass | has no definition |

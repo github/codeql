@@ -24,6 +24,16 @@ private Element getRealParent(Expr expr) {
   result.(Destructor).getADestruction() = expr
 }
 
+IRUserVariable getIRUserVariable(Function func, Variable var) {
+  result.getVariable() = var and
+  result.getEnclosingFunction() = func
+}
+
+IRTempVariable getIRTempVariable(Locatable ast, TempVariableTag tag) {
+  result.getAST() = ast and
+  result.getTag() = tag
+}
+
 /**
  * Holds if `expr` is a constant of a type that can be replaced directly with
  * its value in the IR. This does not include address constants as we have no
@@ -415,8 +425,11 @@ newtype TTranslatedElement =
   } or
   TTranslatedEllipsisParameter(Function func) { translateFunction(func) and func.isVarargs() } or
   TTranslatedReadEffects(Function func) { translateFunction(func) } or
+  TTranslatedThisReadEffect(Function func) {
+    translateFunction(func) and func.isMember() and not func.isStatic()
+  } or
   // The read side effects in a function's return block
-  TTranslatedReadEffect(Parameter param) {
+  TTranslatedParameterReadEffect(Parameter param) {
     translateFunction(param.getFunction()) and
     exists(Type t | t = param.getUnspecifiedType() |
       t instanceof ArrayType or
@@ -702,12 +715,8 @@ abstract class TranslatedElement extends TTranslatedElement {
   int getInstructionElementSize(InstructionTag tag) { none() }
 
   /**
-   * If the instruction specified by `tag` has a result of type `UnknownType`,
-   * gets the size of the result in bytes. If the result does not have a knonwn
-   * constant size, this predicate does not hold.
+   * Holds if the generated IR refers to an opaque type with size `byteSize`.
    */
-  int getInstructionResultSize(InstructionTag tag) { none() }
-
   predicate needsUnknownOpaqueType(int byteSize) { none() }
 
   /**

@@ -1,3 +1,8 @@
+/**
+ * Provides classes for identifying files that contain test cases. It is often
+ * desirable to exclude these files from analysis.
+ */
+
 import semmle.code.cpp.File
 
 /**

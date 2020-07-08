@@ -86,7 +86,12 @@ class ReturnValueNode extends ReturnNode {
 class ReturnIndirectionNode extends ReturnNode {
   override ReturnIndirectionInstruction primary;
 
-  override ReturnKind getKind() { result = TIndirectReturnKind(primary.getParameter().getIndex()) }
+  override ReturnKind getKind() {
+    result = TIndirectReturnKind(-1) and
+    primary.isThisIndirection()
+    or
+    result = TIndirectReturnKind(primary.getParameter().getIndex())
+  }
 }
 
 /** A data flow node that represents the output of a call. */
@@ -123,8 +128,13 @@ private class SideEffectOutNode extends OutNode {
  * `kind`.
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
-  result.getCall() = call and
-  result.getReturnKind() = kind
+  // There should be only one `OutNode` for a given `(call, kind)` pair. Showing the optimizer that
+  // this is true helps it make better decisions downstream, especially in virtual dispatch.
+  result =
+    unique(OutNode outNode |
+      outNode.getCall() = call and
+      outNode.getReturnKind() = kind
+    )
 }
 
 /**
@@ -150,12 +160,6 @@ class Content extends TContent {
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
   }
-
-  /** Gets the type of the object containing this content. */
-  abstract Type getContainerType();
-
-  /** Gets the type of this content. */
-  abstract Type getType();
 }
 
 private class FieldContent extends Content, TFieldContent {
@@ -170,26 +174,32 @@ private class FieldContent extends Content, TFieldContent {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
   }
-
-  override Type getContainerType() { result = f.getDeclaringType() }
-
-  override Type getType() { result = f.getType() }
 }
 
 private class CollectionContent extends Content, TCollectionContent {
   override string toString() { result = "collection" }
-
-  override Type getContainerType() { none() }
-
-  override Type getType() { none() }
 }
 
 private class ArrayContent extends Content, TArrayContent {
   override string toString() { result = "array" }
+}
 
-  override Type getContainerType() { none() }
+private predicate storeStepNoChi(Node node1, Content f, PostUpdateNode node2) {
+  exists(FieldAddressInstruction fa, StoreInstruction store |
+    store = node2.asInstruction() and
+    store.getDestinationAddress() = fa and
+    store.getSourceValue() = node1.asInstruction() and
+    f.(FieldContent).getField() = fa.getField()
+  )
+}
 
-  override Type getType() { none() }
+private predicate storeStepChi(Node node1, Content f, PostUpdateNode node2) {
+  exists(FieldAddressInstruction fa, StoreInstruction store |
+    node1.asInstruction() = store and
+    store.getDestinationAddress() = fa and
+    node2.asInstruction().(ChiInstruction).getPartial() = store and
+    f.(FieldContent).getField() = fa.getField()
+  )
 }
 
 /**
@@ -197,9 +207,9 @@ private class ArrayContent extends Content, TArrayContent {
  * Thus, `node2` references an object with a field `f` that contains the
  * value of `node1`.
  */
-predicate storeStep(Node node1, Content f, StoreStepNode node2) {
-  node2.getStoredValue() = node1 and
-  f.(FieldContent).getField() = node2.getAField()
+predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
+  storeStepNoChi(node1, f, node2) or
+  storeStepChi(node1, f, node2)
 }
 
 /**
@@ -207,22 +217,29 @@ predicate storeStep(Node node1, Content f, StoreStepNode node2) {
  * Thus, `node1` references an object with a field `f` whose value ends up in
  * `node2`.
  */
-predicate readStep(Node node1, Content f, ReadStepNode node2) {
-  node2.getReadValue() = node1 and
-  f.(FieldContent).getField() = node2.getAField()
+predicate readStep(Node node1, Content f, Node node2) {
+  exists(FieldAddressInstruction fa, LoadInstruction load |
+    load.getSourceAddress() = fa and
+    node1.asInstruction() = load.getSourceValueOperand().getAnyDef() and
+    fa.getField() = f.(FieldContent).getField() and
+    load = node2.asInstruction()
+  )
 }
 
 /**
- * Gets a representative (boxed) type for `t` for the purpose of pruning
- * possible flow. A single type is used for all numeric types to account for
- * numeric conversions, and otherwise the erasure is used.
+ * Holds if values stored inside content `c` are cleared at node `n`.
  */
-Type getErasedRepr(Type t) {
-  suppressUnusedType(t) and
+predicate clearsContent(Node n, Content c) {
+  none() // stub implementation
+}
+
+/** Gets the type of `n` used for type pruning. */
+Type getNodeType(Node n) {
+  suppressUnusedNode(n) and
   result instanceof VoidType // stub implementation
 }
 
-/** Gets a string representation of a type returned by `getErasedRepr`. */
+/** Gets a string representation of a type returned by `getNodeType`. */
 string ppReprType(Type t) { none() } // stub implementation
 
 /**
@@ -234,7 +251,7 @@ predicate compatibleTypes(Type t1, Type t2) {
   any() // stub implementation
 }
 
-private predicate suppressUnusedType(Type t) { any() }
+private predicate suppressUnusedNode(Node n) { any() }
 
 //////////////////////////////////////////////////////////////////////////////
 // Java QL library compatibility wrappers

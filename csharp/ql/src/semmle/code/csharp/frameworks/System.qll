@@ -564,7 +564,7 @@ private EqualsMethod getInheritedEqualsMethod(ValueOrRefType t) { t.hasMethod(re
  *
  * Example:
  *
- * ```
+ * ```csharp
  * abstract class A<T> : IEquatable<T> {
  *   public abstract bool Equals(T other);
  *   public override bool Equals(object other) { return other != null && GetType() == other.GetType() && Equals((T)other); }
@@ -653,7 +653,7 @@ private DisposeMethod getInheritedDisposeMethod(ValueOrRefType t) { t.hasMethod(
  *
  * Example:
  *
- * ```
+ * ```csharp
  * class A : IDisposable {
  *   public void Dispose() { Dispose(true); }
  *   public virtual void Dispose(bool disposing) { ... }

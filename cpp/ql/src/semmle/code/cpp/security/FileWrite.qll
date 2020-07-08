@@ -1,13 +1,23 @@
+/**
+ * Provides classes for modeling writing of data to files through various standard mechanisms such as `fprintf`, `fwrite` and `operator<<`.
+ */
+
 import cpp
 
 /**
- * A function call that writes to a file
+ * A function call that writes to a file.
  */
 class FileWrite extends Expr {
   FileWrite() { fileWrite(this, _, _) }
 
+  /**
+   * Gets a source expression of this write.
+   */
   Expr getASource() { fileWrite(this, result, _) }
 
+  /**
+   * Gets the expression for the object being written to.
+   */
   Expr getDest() { fileWrite(this, _, result) }
 }
 
@@ -44,17 +54,17 @@ class BasicOStreamCall extends FunctionCall {
  */
 abstract class ChainedOutputCall extends BasicOStreamCall {
   /**
-   * The source expression of this output.
+   * Gets the source expression of this output.
    */
   abstract Expr getSource();
 
   /**
-   * The immediate destination expression of this output.
+   * Gets the immediate destination expression of this output.
    */
   abstract Expr getDest();
 
   /**
-   * The destination at the far left-hand end of the output chain.
+   * Gets the destination at the far left-hand end of the output chain.
    */
   Expr getEndDest() {
     // recurse into the destination
@@ -108,7 +118,7 @@ class WriteFunctionCall extends ChainedOutputCall {
 }
 
 /**
- * Whether the function call is a call to &lt;&lt; that eventually starts at the given file stream.
+ * Whether the function call is a call to `operator<<` or a similar function, that eventually starts at the given file stream.
  */
 private predicate fileStreamChain(ChainedOutputCall out, Expr source, Expr dest) {
   source = out.getSource() and

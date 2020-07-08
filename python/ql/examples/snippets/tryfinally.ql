@@ -11,6 +11,6 @@ import python
 
 from Try t
 where
-    exists(t.getFinalbody()) and
-    not exists(t.getAHandler())
+  exists(t.getFinalbody()) and
+  not exists(t.getAHandler())
 select t
