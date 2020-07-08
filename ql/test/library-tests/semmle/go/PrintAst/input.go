@@ -4,6 +4,8 @@ import "fmt"
 
 // NOTE: after auto-formatting this file, make sure to put back the empty statement on line 15 below
 
+// autoformat-ignore (in line with the NOTE above)
+
 // simple statements and for loops
 func test5(b bool) {
 	{

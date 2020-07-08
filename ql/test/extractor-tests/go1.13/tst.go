@@ -1,5 +1,7 @@
 package main
 
+// autoformat-ignore (we intentionally test unusual capitalisations of 0B, 0O and other such prefixes)
+
 const (
 	b1 = 0b1011
 	b2 = 0B1011

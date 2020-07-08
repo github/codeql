@@ -21,7 +21,8 @@ func check2(value int64) {
 }
 
 func check3() {
-	switch { }
+	switch {
+	}
 }
 
 func check4() {

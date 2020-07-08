@@ -1,5 +1,7 @@
 package main
 
+// autoformat-ignore (avoid gofmt changing line-endings, which should be specifically LFs here)
+
 func main() {
 	x := 42
 	x = x // lgtm

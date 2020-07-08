@@ -933,297 +933,297 @@
 | stmts8.go:13:2:13:13 | return statement | stmts8.go:14:1:14:1 | exit |
 | stmts8.go:13:9:13:13 | false | stmts8.go:13:2:13:13 | return statement |
 | stmts.go:0:0:0:0 | entry | stmts.go:3:1:3:12 | skip |
-| stmts.go:3:1:3:12 | skip | stmts.go:8:6:8:10 | skip |
-| stmts.go:8:1:8:1 | entry | stmts.go:8:12:8:12 | argument corresponding to b |
-| stmts.go:8:1:41:1 | function declaration | stmts.go:44:6:44:10 | skip |
-| stmts.go:8:6:8:10 | skip | stmts.go:8:1:41:1 | function declaration |
-| stmts.go:8:12:8:12 | argument corresponding to b | stmts.go:8:12:8:12 | initialization of b |
-| stmts.go:8:12:8:12 | initialization of b | stmts.go:10:7:10:7 | b |
-| stmts.go:10:6:10:7 | !... | stmts.go:10:7:10:7 | !... is false |
-| stmts.go:10:6:10:7 | !... | stmts.go:10:7:10:7 | !... is true |
-| stmts.go:10:7:10:7 | !... is false | stmts.go:13:3:14:3 | skip |
-| stmts.go:10:7:10:7 | !... is true | stmts.go:11:4:11:13 | skip |
-| stmts.go:10:7:10:7 | b | stmts.go:10:6:10:7 | !... |
-| stmts.go:11:4:11:13 | skip | stmts.go:21:6:21:9 | true |
-| stmts.go:13:3:14:3 | skip | stmts.go:15:3:15:3 | skip |
-| stmts.go:15:3:15:3 | skip | stmts.go:18:2:18:12 | selection of Println |
-| stmts.go:18:2:18:12 | selection of Println | stmts.go:18:14:18:17 | "Hi" |
-| stmts.go:18:2:18:18 | call to Println | stmts.go:21:6:21:9 | true |
-| stmts.go:18:2:18:18 | call to Println | stmts.go:41:1:41:1 | exit |
-| stmts.go:18:14:18:17 | "Hi" | stmts.go:18:2:18:18 | call to Println |
-| stmts.go:21:6:21:9 | true | stmts.go:21:9:21:9 | true is true |
-| stmts.go:21:9:21:9 | true is false | stmts.go:37:2:37:2 | skip |
-| stmts.go:21:9:21:9 | true is true | stmts.go:22:7:22:7 | skip |
-| stmts.go:22:7:22:7 | assignment to i | stmts.go:22:15:22:15 | i |
-| stmts.go:22:7:22:7 | skip | stmts.go:22:12:22:12 | 0 |
-| stmts.go:22:12:22:12 | 0 | stmts.go:22:7:22:7 | assignment to i |
-| stmts.go:22:15:22:15 | i | stmts.go:22:19:22:20 | 10 |
-| stmts.go:22:15:22:20 | ...<... | stmts.go:22:20:22:20 | ...<... is false |
-| stmts.go:22:15:22:20 | ...<... | stmts.go:22:20:22:20 | ...<... is true |
-| stmts.go:22:19:22:20 | 10 | stmts.go:22:15:22:20 | ...<... |
-| stmts.go:22:20:22:20 | ...<... is false | stmts.go:21:6:21:9 | true |
-| stmts.go:22:20:22:20 | ...<... is true | stmts.go:23:7:23:7 | skip |
-| stmts.go:22:23:22:23 | i | stmts.go:22:23:22:25 | 1 |
-| stmts.go:22:23:22:25 | 1 | stmts.go:22:23:22:25 | rhs of increment statement |
-| stmts.go:22:23:22:25 | increment statement | stmts.go:22:15:22:15 | i |
-| stmts.go:22:23:22:25 | rhs of increment statement | stmts.go:22:23:22:25 | increment statement |
-| stmts.go:23:7:23:7 | assignment to j | stmts.go:23:19:23:19 | j |
-| stmts.go:23:7:23:7 | skip | stmts.go:23:12:23:12 | i |
-| stmts.go:23:12:23:12 | i | stmts.go:23:16:23:16 | 1 |
-| stmts.go:23:12:23:16 | ...-... | stmts.go:23:7:23:7 | assignment to j |
-| stmts.go:23:16:23:16 | 1 | stmts.go:23:12:23:16 | ...-... |
-| stmts.go:23:19:23:19 | j | stmts.go:23:23:23:23 | 5 |
-| stmts.go:23:19:23:23 | ...>... | stmts.go:23:23:23:23 | ...>... is false |
-| stmts.go:23:19:23:23 | ...>... | stmts.go:23:23:23:23 | ...>... is true |
-| stmts.go:23:23:23:23 | 5 | stmts.go:23:19:23:23 | ...>... |
-| stmts.go:23:23:23:23 | ...>... is false | stmts.go:25:14:25:14 | i |
-| stmts.go:23:23:23:23 | ...>... is true | stmts.go:24:5:24:15 | skip |
-| stmts.go:24:5:24:15 | skip | stmts.go:37:2:37:2 | skip |
-| stmts.go:25:14:25:14 | i | stmts.go:25:18:25:18 | 3 |
-| stmts.go:25:14:25:18 | ...<... | stmts.go:25:18:25:18 | ...<... is false |
-| stmts.go:25:14:25:18 | ...<... | stmts.go:25:18:25:18 | ...<... is true |
-| stmts.go:25:18:25:18 | 3 | stmts.go:25:14:25:18 | ...<... |
-| stmts.go:25:18:25:18 | ...<... is false | stmts.go:27:14:27:14 | i |
-| stmts.go:25:18:25:18 | ...<... is true | stmts.go:26:5:26:9 | skip |
-| stmts.go:26:5:26:9 | skip | stmts.go:21:6:21:9 | true |
-| stmts.go:27:14:27:14 | i | stmts.go:27:19:27:19 | 9 |
-| stmts.go:27:14:27:19 | ...!=... | stmts.go:27:19:27:19 | ...!=... is false |
-| stmts.go:27:14:27:19 | ...!=... | stmts.go:27:19:27:19 | ...!=... is true |
-| stmts.go:27:14:27:19 | ...!=... | stmts.go:41:1:41:1 | exit |
-| stmts.go:27:19:27:19 | 9 | stmts.go:27:14:27:19 | ...!=... |
-| stmts.go:27:19:27:19 | ...!=... is false | stmts.go:29:14:29:14 | i |
-| stmts.go:27:19:27:19 | ...!=... is true | stmts.go:28:5:28:18 | skip |
-| stmts.go:28:5:28:18 | skip | stmts.go:21:6:21:9 | true |
-| stmts.go:29:14:29:14 | i | stmts.go:29:19:29:19 | 4 |
-| stmts.go:29:14:29:19 | ...>=... | stmts.go:29:19:29:19 | ...>=... is false |
-| stmts.go:29:14:29:19 | ...>=... | stmts.go:29:19:29:19 | ...>=... is true |
-| stmts.go:29:19:29:19 | 4 | stmts.go:29:14:29:19 | ...>=... |
-| stmts.go:29:19:29:19 | ...>=... is false | stmts.go:32:5:32:12 | skip |
-| stmts.go:29:19:29:19 | ...>=... is true | stmts.go:30:5:30:14 | skip |
-| stmts.go:30:5:30:14 | skip | stmts.go:21:6:21:9 | true |
-| stmts.go:32:5:32:12 | skip | stmts.go:22:23:22:23 | i |
-| stmts.go:37:2:37:2 | assignment to k | stmts.go:39:3:39:12 | skip |
-| stmts.go:37:2:37:2 | skip | stmts.go:37:7:37:7 | 9 |
-| stmts.go:37:7:37:7 | 9 | stmts.go:37:2:37:2 | assignment to k |
-| stmts.go:38:10:38:10 | k | stmts.go:38:10:38:12 | 1 |
-| stmts.go:38:10:38:12 | 1 | stmts.go:38:10:38:12 | rhs of increment statement |
-| stmts.go:38:10:38:12 | increment statement | stmts.go:39:3:39:12 | skip |
-| stmts.go:38:10:38:12 | rhs of increment statement | stmts.go:38:10:38:12 | increment statement |
-| stmts.go:39:3:39:12 | skip | stmts.go:21:6:21:9 | true |
-| stmts.go:44:1:44:1 | entry | stmts.go:44:12:44:14 | argument corresponding to ch1 |
-| stmts.go:44:1:60:1 | function declaration | stmts.go:63:6:63:10 | skip |
-| stmts.go:44:6:44:10 | skip | stmts.go:44:1:60:1 | function declaration |
-| stmts.go:44:12:44:14 | argument corresponding to ch1 | stmts.go:44:12:44:14 | initialization of ch1 |
-| stmts.go:44:12:44:14 | initialization of ch1 | stmts.go:44:26:44:28 | argument corresponding to ch2 |
-| stmts.go:44:26:44:28 | argument corresponding to ch2 | stmts.go:44:26:44:28 | initialization of ch2 |
-| stmts.go:44:26:44:28 | initialization of ch2 | stmts.go:45:6:45:6 | skip |
-| stmts.go:45:6:45:6 | assignment to a | stmts.go:46:6:46:6 | skip |
-| stmts.go:45:6:45:6 | skip | stmts.go:45:6:45:6 | zero value for a |
-| stmts.go:45:6:45:6 | zero value for a | stmts.go:45:6:45:6 | assignment to a |
-| stmts.go:46:6:46:6 | assignment to w | stmts.go:49:9:49:11 | ch1 |
-| stmts.go:46:6:46:6 | skip | stmts.go:46:6:46:6 | zero value for w |
-| stmts.go:46:6:46:6 | zero value for w | stmts.go:46:6:46:6 | assignment to w |
-| stmts.go:48:2:57:2 | select statement | stmts.go:49:7:49:11 | <-... |
-| stmts.go:48:2:57:2 | select statement | stmts.go:51:17:51:21 | <-... |
-| stmts.go:48:2:57:2 | select statement | stmts.go:55:3:55:13 | selection of Println |
-| stmts.go:48:2:57:2 | select statement | stmts.go:56:7:56:15 | send statement |
-| stmts.go:49:7:49:11 | <-... | stmts.go:50:3:50:13 | selection of Println |
-| stmts.go:49:9:49:11 | ch1 | stmts.go:51:19:51:21 | ch2 |
-| stmts.go:50:3:50:13 | selection of Println | stmts.go:50:15:50:30 | "Heard from ch1" |
-| stmts.go:50:3:50:31 | call to Println | stmts.go:59:2:59:10 | select statement |
-| stmts.go:50:3:50:31 | call to Println | stmts.go:60:1:60:1 | exit |
-| stmts.go:50:15:50:30 | "Heard from ch1" | stmts.go:50:3:50:31 | call to Println |
-| stmts.go:51:7:51:7 | a | stmts.go:51:9:51:9 | 0 |
-| stmts.go:51:7:51:10 | assignment to element | stmts.go:51:7:51:21 | ... = ...[1] |
-| stmts.go:51:7:51:10 | skip | stmts.go:51:13:51:13 | skip |
-| stmts.go:51:7:51:10 | skip | stmts.go:60:1:60:1 | exit |
-| stmts.go:51:7:51:21 | ... = ...[0] | stmts.go:51:7:51:10 | assignment to element |
-| stmts.go:51:7:51:21 | ... = ...[1] | stmts.go:51:13:51:13 | assignment to w |
-| stmts.go:51:9:51:9 | 0 | stmts.go:51:7:51:10 | skip |
-| stmts.go:51:13:51:13 | assignment to w | stmts.go:52:3:52:13 | selection of Println |
-| stmts.go:51:13:51:13 | skip | stmts.go:51:7:51:21 | ... = ...[0] |
-| stmts.go:51:17:51:21 | <-... | stmts.go:51:7:51:7 | a |
-| stmts.go:51:19:51:21 | ch2 | stmts.go:56:7:56:9 | ch1 |
-| stmts.go:52:3:52:13 | selection of Println | stmts.go:52:15:52:15 | a |
-| stmts.go:52:3:52:16 | call to Println | stmts.go:53:3:53:13 | selection of Println |
-| stmts.go:52:3:52:16 | call to Println | stmts.go:60:1:60:1 | exit |
-| stmts.go:52:15:52:15 | a | stmts.go:52:3:52:16 | call to Println |
-| stmts.go:53:3:53:13 | selection of Println | stmts.go:53:15:53:15 | w |
-| stmts.go:53:3:53:16 | call to Println | stmts.go:59:2:59:10 | select statement |
-| stmts.go:53:3:53:16 | call to Println | stmts.go:60:1:60:1 | exit |
-| stmts.go:53:15:53:15 | w | stmts.go:53:3:53:16 | call to Println |
-| stmts.go:55:3:55:13 | selection of Println | stmts.go:55:3:55:15 | call to Println |
-| stmts.go:55:3:55:15 | call to Println | stmts.go:59:2:59:10 | select statement |
-| stmts.go:55:3:55:15 | call to Println | stmts.go:60:1:60:1 | exit |
-| stmts.go:56:2:56:16 | skip | stmts.go:59:2:59:10 | select statement |
-| stmts.go:56:7:56:9 | ch1 | stmts.go:56:14:56:15 | 42 |
-| stmts.go:56:7:56:15 | send statement | stmts.go:56:2:56:16 | skip |
-| stmts.go:56:7:56:15 | send statement | stmts.go:60:1:60:1 | exit |
-| stmts.go:56:14:56:15 | 42 | stmts.go:48:2:57:2 | select statement |
-| stmts.go:63:1:63:1 | entry | stmts.go:63:12:63:12 | argument corresponding to x |
-| stmts.go:63:1:70:1 | function declaration | stmts.go:73:6:73:10 | skip |
-| stmts.go:63:6:63:10 | skip | stmts.go:63:1:70:1 | function declaration |
-| stmts.go:63:12:63:12 | argument corresponding to x | stmts.go:63:12:63:12 | initialization of x |
-| stmts.go:63:12:63:12 | initialization of x | stmts.go:64:5:64:5 | x |
-| stmts.go:64:5:64:5 | x | stmts.go:64:9:64:9 | 0 |
-| stmts.go:64:5:64:9 | ...>... | stmts.go:64:9:64:9 | ...>... is false |
-| stmts.go:64:5:64:9 | ...>... | stmts.go:64:9:64:9 | ...>... is true |
-| stmts.go:64:9:64:9 | 0 | stmts.go:64:5:64:9 | ...>... |
-| stmts.go:64:9:64:9 | ...>... is false | stmts.go:67:9:67:34 | function literal |
-| stmts.go:64:9:64:9 | ...>... is true | stmts.go:65:9:65:33 | function literal |
-| stmts.go:65:3:65:35 | defer statement | stmts.go:69:9:69:10 | 42 |
-| stmts.go:65:9:65:9 | entry | stmts.go:65:18:65:28 | selection of Println |
-| stmts.go:65:9:65:33 | function literal | stmts.go:65:3:65:35 | defer statement |
-| stmts.go:65:9:65:35 | function call | stmts.go:70:1:70:1 | exit |
-| stmts.go:65:18:65:28 | selection of Println | stmts.go:65:30:65:30 | x |
-| stmts.go:65:18:65:31 | call to Println | stmts.go:65:33:65:33 | exit |
-| stmts.go:65:30:65:30 | x | stmts.go:65:18:65:31 | call to Println |
-| stmts.go:67:3:67:36 | defer statement | stmts.go:69:9:69:10 | 42 |
+| stmts.go:3:1:3:12 | skip | stmts.go:10:6:10:10 | skip |
+| stmts.go:10:1:10:1 | entry | stmts.go:10:12:10:12 | argument corresponding to b |
+| stmts.go:10:1:43:1 | function declaration | stmts.go:46:6:46:10 | skip |
+| stmts.go:10:6:10:10 | skip | stmts.go:10:1:43:1 | function declaration |
+| stmts.go:10:12:10:12 | argument corresponding to b | stmts.go:10:12:10:12 | initialization of b |
+| stmts.go:10:12:10:12 | initialization of b | stmts.go:12:7:12:7 | b |
+| stmts.go:12:6:12:7 | !... | stmts.go:12:7:12:7 | !... is false |
+| stmts.go:12:6:12:7 | !... | stmts.go:12:7:12:7 | !... is true |
+| stmts.go:12:7:12:7 | !... is false | stmts.go:15:3:16:3 | skip |
+| stmts.go:12:7:12:7 | !... is true | stmts.go:13:4:13:13 | skip |
+| stmts.go:12:7:12:7 | b | stmts.go:12:6:12:7 | !... |
+| stmts.go:13:4:13:13 | skip | stmts.go:23:6:23:9 | true |
+| stmts.go:15:3:16:3 | skip | stmts.go:17:3:17:3 | skip |
+| stmts.go:17:3:17:3 | skip | stmts.go:20:2:20:12 | selection of Println |
+| stmts.go:20:2:20:12 | selection of Println | stmts.go:20:14:20:17 | "Hi" |
+| stmts.go:20:2:20:18 | call to Println | stmts.go:23:6:23:9 | true |
+| stmts.go:20:2:20:18 | call to Println | stmts.go:43:1:43:1 | exit |
+| stmts.go:20:14:20:17 | "Hi" | stmts.go:20:2:20:18 | call to Println |
+| stmts.go:23:6:23:9 | true | stmts.go:23:9:23:9 | true is true |
+| stmts.go:23:9:23:9 | true is false | stmts.go:39:2:39:2 | skip |
+| stmts.go:23:9:23:9 | true is true | stmts.go:24:7:24:7 | skip |
+| stmts.go:24:7:24:7 | assignment to i | stmts.go:24:15:24:15 | i |
+| stmts.go:24:7:24:7 | skip | stmts.go:24:12:24:12 | 0 |
+| stmts.go:24:12:24:12 | 0 | stmts.go:24:7:24:7 | assignment to i |
+| stmts.go:24:15:24:15 | i | stmts.go:24:19:24:20 | 10 |
+| stmts.go:24:15:24:20 | ...<... | stmts.go:24:20:24:20 | ...<... is false |
+| stmts.go:24:15:24:20 | ...<... | stmts.go:24:20:24:20 | ...<... is true |
+| stmts.go:24:19:24:20 | 10 | stmts.go:24:15:24:20 | ...<... |
+| stmts.go:24:20:24:20 | ...<... is false | stmts.go:23:6:23:9 | true |
+| stmts.go:24:20:24:20 | ...<... is true | stmts.go:25:7:25:7 | skip |
+| stmts.go:24:23:24:23 | i | stmts.go:24:23:24:25 | 1 |
+| stmts.go:24:23:24:25 | 1 | stmts.go:24:23:24:25 | rhs of increment statement |
+| stmts.go:24:23:24:25 | increment statement | stmts.go:24:15:24:15 | i |
+| stmts.go:24:23:24:25 | rhs of increment statement | stmts.go:24:23:24:25 | increment statement |
+| stmts.go:25:7:25:7 | assignment to j | stmts.go:25:19:25:19 | j |
+| stmts.go:25:7:25:7 | skip | stmts.go:25:12:25:12 | i |
+| stmts.go:25:12:25:12 | i | stmts.go:25:16:25:16 | 1 |
+| stmts.go:25:12:25:16 | ...-... | stmts.go:25:7:25:7 | assignment to j |
+| stmts.go:25:16:25:16 | 1 | stmts.go:25:12:25:16 | ...-... |
+| stmts.go:25:19:25:19 | j | stmts.go:25:23:25:23 | 5 |
+| stmts.go:25:19:25:23 | ...>... | stmts.go:25:23:25:23 | ...>... is false |
+| stmts.go:25:19:25:23 | ...>... | stmts.go:25:23:25:23 | ...>... is true |
+| stmts.go:25:23:25:23 | 5 | stmts.go:25:19:25:23 | ...>... |
+| stmts.go:25:23:25:23 | ...>... is false | stmts.go:27:14:27:14 | i |
+| stmts.go:25:23:25:23 | ...>... is true | stmts.go:26:5:26:15 | skip |
+| stmts.go:26:5:26:15 | skip | stmts.go:39:2:39:2 | skip |
+| stmts.go:27:14:27:14 | i | stmts.go:27:18:27:18 | 3 |
+| stmts.go:27:14:27:18 | ...<... | stmts.go:27:18:27:18 | ...<... is false |
+| stmts.go:27:14:27:18 | ...<... | stmts.go:27:18:27:18 | ...<... is true |
+| stmts.go:27:18:27:18 | 3 | stmts.go:27:14:27:18 | ...<... |
+| stmts.go:27:18:27:18 | ...<... is false | stmts.go:29:14:29:14 | i |
+| stmts.go:27:18:27:18 | ...<... is true | stmts.go:28:5:28:9 | skip |
+| stmts.go:28:5:28:9 | skip | stmts.go:23:6:23:9 | true |
+| stmts.go:29:14:29:14 | i | stmts.go:29:19:29:19 | 9 |
+| stmts.go:29:14:29:19 | ...!=... | stmts.go:29:19:29:19 | ...!=... is false |
+| stmts.go:29:14:29:19 | ...!=... | stmts.go:29:19:29:19 | ...!=... is true |
+| stmts.go:29:14:29:19 | ...!=... | stmts.go:43:1:43:1 | exit |
+| stmts.go:29:19:29:19 | 9 | stmts.go:29:14:29:19 | ...!=... |
+| stmts.go:29:19:29:19 | ...!=... is false | stmts.go:31:14:31:14 | i |
+| stmts.go:29:19:29:19 | ...!=... is true | stmts.go:30:5:30:18 | skip |
+| stmts.go:30:5:30:18 | skip | stmts.go:23:6:23:9 | true |
+| stmts.go:31:14:31:14 | i | stmts.go:31:19:31:19 | 4 |
+| stmts.go:31:14:31:19 | ...>=... | stmts.go:31:19:31:19 | ...>=... is false |
+| stmts.go:31:14:31:19 | ...>=... | stmts.go:31:19:31:19 | ...>=... is true |
+| stmts.go:31:19:31:19 | 4 | stmts.go:31:14:31:19 | ...>=... |
+| stmts.go:31:19:31:19 | ...>=... is false | stmts.go:34:5:34:12 | skip |
+| stmts.go:31:19:31:19 | ...>=... is true | stmts.go:32:5:32:14 | skip |
+| stmts.go:32:5:32:14 | skip | stmts.go:23:6:23:9 | true |
+| stmts.go:34:5:34:12 | skip | stmts.go:24:23:24:23 | i |
+| stmts.go:39:2:39:2 | assignment to k | stmts.go:41:3:41:12 | skip |
+| stmts.go:39:2:39:2 | skip | stmts.go:39:7:39:7 | 9 |
+| stmts.go:39:7:39:7 | 9 | stmts.go:39:2:39:2 | assignment to k |
+| stmts.go:40:10:40:10 | k | stmts.go:40:10:40:12 | 1 |
+| stmts.go:40:10:40:12 | 1 | stmts.go:40:10:40:12 | rhs of increment statement |
+| stmts.go:40:10:40:12 | increment statement | stmts.go:41:3:41:12 | skip |
+| stmts.go:40:10:40:12 | rhs of increment statement | stmts.go:40:10:40:12 | increment statement |
+| stmts.go:41:3:41:12 | skip | stmts.go:23:6:23:9 | true |
+| stmts.go:46:1:46:1 | entry | stmts.go:46:12:46:14 | argument corresponding to ch1 |
+| stmts.go:46:1:62:1 | function declaration | stmts.go:65:6:65:10 | skip |
+| stmts.go:46:6:46:10 | skip | stmts.go:46:1:62:1 | function declaration |
+| stmts.go:46:12:46:14 | argument corresponding to ch1 | stmts.go:46:12:46:14 | initialization of ch1 |
+| stmts.go:46:12:46:14 | initialization of ch1 | stmts.go:46:26:46:28 | argument corresponding to ch2 |
+| stmts.go:46:26:46:28 | argument corresponding to ch2 | stmts.go:46:26:46:28 | initialization of ch2 |
+| stmts.go:46:26:46:28 | initialization of ch2 | stmts.go:47:6:47:6 | skip |
+| stmts.go:47:6:47:6 | assignment to a | stmts.go:48:6:48:6 | skip |
+| stmts.go:47:6:47:6 | skip | stmts.go:47:6:47:6 | zero value for a |
+| stmts.go:47:6:47:6 | zero value for a | stmts.go:47:6:47:6 | assignment to a |
+| stmts.go:48:6:48:6 | assignment to w | stmts.go:51:9:51:11 | ch1 |
+| stmts.go:48:6:48:6 | skip | stmts.go:48:6:48:6 | zero value for w |
+| stmts.go:48:6:48:6 | zero value for w | stmts.go:48:6:48:6 | assignment to w |
+| stmts.go:50:2:59:2 | select statement | stmts.go:51:7:51:11 | <-... |
+| stmts.go:50:2:59:2 | select statement | stmts.go:53:17:53:21 | <-... |
+| stmts.go:50:2:59:2 | select statement | stmts.go:57:3:57:13 | selection of Println |
+| stmts.go:50:2:59:2 | select statement | stmts.go:58:7:58:15 | send statement |
+| stmts.go:51:7:51:11 | <-... | stmts.go:52:3:52:13 | selection of Println |
+| stmts.go:51:9:51:11 | ch1 | stmts.go:53:19:53:21 | ch2 |
+| stmts.go:52:3:52:13 | selection of Println | stmts.go:52:15:52:30 | "Heard from ch1" |
+| stmts.go:52:3:52:31 | call to Println | stmts.go:61:2:61:10 | select statement |
+| stmts.go:52:3:52:31 | call to Println | stmts.go:62:1:62:1 | exit |
+| stmts.go:52:15:52:30 | "Heard from ch1" | stmts.go:52:3:52:31 | call to Println |
+| stmts.go:53:7:53:7 | a | stmts.go:53:9:53:9 | 0 |
+| stmts.go:53:7:53:10 | assignment to element | stmts.go:53:7:53:21 | ... = ...[1] |
+| stmts.go:53:7:53:10 | skip | stmts.go:53:13:53:13 | skip |
+| stmts.go:53:7:53:10 | skip | stmts.go:62:1:62:1 | exit |
+| stmts.go:53:7:53:21 | ... = ...[0] | stmts.go:53:7:53:10 | assignment to element |
+| stmts.go:53:7:53:21 | ... = ...[1] | stmts.go:53:13:53:13 | assignment to w |
+| stmts.go:53:9:53:9 | 0 | stmts.go:53:7:53:10 | skip |
+| stmts.go:53:13:53:13 | assignment to w | stmts.go:54:3:54:13 | selection of Println |
+| stmts.go:53:13:53:13 | skip | stmts.go:53:7:53:21 | ... = ...[0] |
+| stmts.go:53:17:53:21 | <-... | stmts.go:53:7:53:7 | a |
+| stmts.go:53:19:53:21 | ch2 | stmts.go:58:7:58:9 | ch1 |
+| stmts.go:54:3:54:13 | selection of Println | stmts.go:54:15:54:15 | a |
+| stmts.go:54:3:54:16 | call to Println | stmts.go:55:3:55:13 | selection of Println |
+| stmts.go:54:3:54:16 | call to Println | stmts.go:62:1:62:1 | exit |
+| stmts.go:54:15:54:15 | a | stmts.go:54:3:54:16 | call to Println |
+| stmts.go:55:3:55:13 | selection of Println | stmts.go:55:15:55:15 | w |
+| stmts.go:55:3:55:16 | call to Println | stmts.go:61:2:61:10 | select statement |
+| stmts.go:55:3:55:16 | call to Println | stmts.go:62:1:62:1 | exit |
+| stmts.go:55:15:55:15 | w | stmts.go:55:3:55:16 | call to Println |
+| stmts.go:57:3:57:13 | selection of Println | stmts.go:57:3:57:15 | call to Println |
+| stmts.go:57:3:57:15 | call to Println | stmts.go:61:2:61:10 | select statement |
+| stmts.go:57:3:57:15 | call to Println | stmts.go:62:1:62:1 | exit |
+| stmts.go:58:2:58:16 | skip | stmts.go:61:2:61:10 | select statement |
+| stmts.go:58:7:58:9 | ch1 | stmts.go:58:14:58:15 | 42 |
+| stmts.go:58:7:58:15 | send statement | stmts.go:58:2:58:16 | skip |
+| stmts.go:58:7:58:15 | send statement | stmts.go:62:1:62:1 | exit |
+| stmts.go:58:14:58:15 | 42 | stmts.go:50:2:59:2 | select statement |
+| stmts.go:65:1:65:1 | entry | stmts.go:65:12:65:12 | argument corresponding to x |
+| stmts.go:65:1:72:1 | function declaration | stmts.go:75:6:75:10 | skip |
+| stmts.go:65:6:65:10 | skip | stmts.go:65:1:72:1 | function declaration |
+| stmts.go:65:12:65:12 | argument corresponding to x | stmts.go:65:12:65:12 | initialization of x |
+| stmts.go:65:12:65:12 | initialization of x | stmts.go:66:5:66:5 | x |
+| stmts.go:66:5:66:5 | x | stmts.go:66:9:66:9 | 0 |
+| stmts.go:66:5:66:9 | ...>... | stmts.go:66:9:66:9 | ...>... is false |
+| stmts.go:66:5:66:9 | ...>... | stmts.go:66:9:66:9 | ...>... is true |
+| stmts.go:66:9:66:9 | 0 | stmts.go:66:5:66:9 | ...>... |
+| stmts.go:66:9:66:9 | ...>... is false | stmts.go:69:9:69:34 | function literal |
+| stmts.go:66:9:66:9 | ...>... is true | stmts.go:67:9:67:33 | function literal |
+| stmts.go:67:3:67:35 | defer statement | stmts.go:71:9:71:10 | 42 |
 | stmts.go:67:9:67:9 | entry | stmts.go:67:18:67:28 | selection of Println |
-| stmts.go:67:9:67:34 | function literal | stmts.go:67:3:67:36 | defer statement |
-| stmts.go:67:9:67:36 | function call | stmts.go:70:1:70:1 | exit |
-| stmts.go:67:18:67:28 | selection of Println | stmts.go:67:31:67:31 | x |
-| stmts.go:67:18:67:32 | call to Println | stmts.go:67:34:67:34 | exit |
-| stmts.go:67:30:67:31 | -... | stmts.go:67:18:67:32 | call to Println |
-| stmts.go:67:31:67:31 | x | stmts.go:67:30:67:31 | -... |
-| stmts.go:69:2:69:10 | return statement | stmts.go:65:9:65:35 | function call |
-| stmts.go:69:2:69:10 | return statement | stmts.go:67:9:67:36 | function call |
-| stmts.go:69:9:69:10 | 42 | stmts.go:69:2:69:10 | return statement |
-| stmts.go:73:1:73:1 | entry | stmts.go:73:12:73:12 | argument corresponding to x |
-| stmts.go:73:1:107:1 | function declaration | stmts.go:110:6:110:10 | skip |
-| stmts.go:73:6:73:10 | skip | stmts.go:73:1:107:1 | function declaration |
-| stmts.go:73:12:73:12 | argument corresponding to x | stmts.go:73:12:73:12 | initialization of x |
-| stmts.go:73:12:73:12 | initialization of x | stmts.go:74:9:74:9 | x |
-| stmts.go:74:9:74:9 | x | stmts.go:77:9:77:9 | skip |
-| stmts.go:77:9:77:9 | assignment to y | stmts.go:77:17:77:17 | y |
-| stmts.go:77:9:77:9 | skip | stmts.go:77:14:77:14 | x |
-| stmts.go:77:14:77:14 | x | stmts.go:77:9:77:9 | assignment to y |
-| stmts.go:77:17:77:17 | y | stmts.go:77:21:77:22 | 19 |
-| stmts.go:77:17:77:22 | ...-... | stmts.go:79:3:79:7 | test5 |
-| stmts.go:77:21:77:22 | 19 | stmts.go:77:17:77:22 | ...-... |
-| stmts.go:79:3:79:7 | test5 | stmts.go:79:9:79:13 | false |
-| stmts.go:79:3:79:14 | call to test5 | stmts.go:107:1:107:1 | exit |
-| stmts.go:79:9:79:13 | false | stmts.go:79:3:79:14 | call to test5 |
-| stmts.go:82:9:82:9 | x | stmts.go:83:7:83:7 | 1 |
-| stmts.go:82:9:82:9 | x | stmts.go:88:9:88:9 | x |
-| stmts.go:83:2:83:8 | skip | stmts.go:88:9:88:9 | x |
-| stmts.go:83:7:83:7 | 1 | stmts.go:83:7:83:7 | case 1 |
-| stmts.go:83:7:83:7 | case 1 | stmts.go:83:2:83:8 | skip |
-| stmts.go:83:7:83:7 | case 1 | stmts.go:84:7:84:7 | 2 |
-| stmts.go:84:7:84:7 | 2 | stmts.go:84:7:84:7 | case 2 |
-| stmts.go:84:7:84:7 | case 2 | stmts.go:84:10:84:10 | 3 |
-| stmts.go:84:7:84:7 | case 2 | stmts.go:85:3:85:7 | test5 |
-| stmts.go:84:10:84:10 | 3 | stmts.go:84:10:84:10 | case 3 |
-| stmts.go:84:10:84:10 | case 3 | stmts.go:85:3:85:7 | test5 |
-| stmts.go:84:10:84:10 | case 3 | stmts.go:88:9:88:9 | x |
-| stmts.go:85:3:85:7 | test5 | stmts.go:85:9:85:12 | true |
-| stmts.go:85:9:85:12 | true | stmts.go:85:3:85:13 | call to test5 |
-| stmts.go:88:9:88:9 | x | stmts.go:89:7:89:7 | 1 |
-| stmts.go:88:9:88:9 | x | stmts.go:96:9:96:9 | x |
-| stmts.go:89:7:89:7 | 1 | stmts.go:89:7:89:7 | case 1 |
-| stmts.go:89:7:89:7 | case 1 | stmts.go:90:3:90:7 | test5 |
-| stmts.go:89:7:89:7 | case 1 | stmts.go:92:7:92:11 | ...-... |
-| stmts.go:90:3:90:7 | test5 | stmts.go:90:9:90:13 | false |
-| stmts.go:90:9:90:13 | false | stmts.go:90:3:90:14 | call to test5 |
-| stmts.go:91:3:91:13 | skip | stmts.go:93:3:93:7 | test5 |
-| stmts.go:92:7:92:11 | ...-... | stmts.go:92:7:92:11 | case ...-... |
-| stmts.go:92:7:92:11 | case ...-... | stmts.go:93:3:93:7 | test5 |
-| stmts.go:92:7:92:11 | case ...-... | stmts.go:96:9:96:9 | x |
-| stmts.go:93:3:93:7 | test5 | stmts.go:93:9:93:12 | true |
-| stmts.go:93:9:93:12 | true | stmts.go:93:3:93:13 | call to test5 |
-| stmts.go:96:9:96:9 | x | stmts.go:98:7:98:7 | 2 |
-| stmts.go:97:2:97:9 | skip | stmts.go:102:2:102:2 | true |
-| stmts.go:98:7:98:7 | 2 | stmts.go:98:7:98:7 | case 2 |
-| stmts.go:98:7:98:7 | case 2 | stmts.go:97:2:97:9 | skip |
-| stmts.go:98:7:98:7 | case 2 | stmts.go:99:3:99:7 | test5 |
-| stmts.go:99:3:99:7 | test5 | stmts.go:99:9:99:12 | true |
-| stmts.go:99:9:99:12 | true | stmts.go:99:3:99:13 | call to test5 |
-| stmts.go:102:2:102:2 | true | stmts.go:105:7:105:10 | true |
-| stmts.go:105:7:105:10 | case true | stmts.go:105:10:105:10 | true is false |
-| stmts.go:105:7:105:10 | case true | stmts.go:105:10:105:10 | true is true |
-| stmts.go:105:7:105:10 | true | stmts.go:105:7:105:10 | case true |
-| stmts.go:105:10:105:10 | true is false | stmts.go:104:3:104:7 | skip |
-| stmts.go:105:10:105:10 | true is true | stmts.go:105:2:105:11 | skip |
-| stmts.go:110:1:110:1 | entry | stmts.go:110:12:110:12 | argument corresponding to x |
-| stmts.go:110:1:123:1 | function declaration | stmts.go:126:6:126:11 | skip |
-| stmts.go:110:6:110:10 | skip | stmts.go:110:1:123:1 | function declaration |
-| stmts.go:110:12:110:12 | argument corresponding to x | stmts.go:110:12:110:12 | initialization of x |
-| stmts.go:110:12:110:12 | initialization of x | stmts.go:111:9:111:9 | skip |
-| stmts.go:111:9:111:9 | assignment to y | stmts.go:112:7:112:11 | case error |
-| stmts.go:111:9:111:9 | assignment to y | stmts.go:119:9:119:9 | skip |
-| stmts.go:111:9:111:9 | skip | stmts.go:111:14:111:14 | x |
-| stmts.go:111:14:111:14 | x | stmts.go:111:14:111:21 | type assertion |
-| stmts.go:111:14:111:21 | type assertion | stmts.go:111:9:111:9 | assignment to y |
-| stmts.go:112:7:112:11 | case error | stmts.go:112:14:112:19 | case string |
-| stmts.go:112:7:112:11 | case error | stmts.go:113:3:113:13 | selection of Println |
-| stmts.go:112:14:112:19 | case string | stmts.go:113:3:113:13 | selection of Println |
-| stmts.go:112:14:112:19 | case string | stmts.go:114:7:114:13 | case float32 |
-| stmts.go:113:3:113:13 | selection of Println | stmts.go:113:15:113:15 | y |
-| stmts.go:113:3:113:16 | call to Println | stmts.go:119:9:119:9 | skip |
-| stmts.go:113:3:113:16 | call to Println | stmts.go:123:1:123:1 | exit |
-| stmts.go:113:15:113:15 | y | stmts.go:113:3:113:16 | call to Println |
-| stmts.go:114:7:114:13 | case float32 | stmts.go:115:3:115:7 | test5 |
-| stmts.go:114:7:114:13 | case float32 | stmts.go:119:9:119:9 | skip |
-| stmts.go:115:3:115:7 | test5 | stmts.go:115:9:115:12 | true |
-| stmts.go:115:3:115:13 | call to test5 | stmts.go:123:1:123:1 | exit |
-| stmts.go:115:9:115:12 | true | stmts.go:115:3:115:13 | call to test5 |
-| stmts.go:116:3:116:7 | test5 | stmts.go:116:9:116:13 | false |
-| stmts.go:116:9:116:13 | false | stmts.go:116:3:116:14 | call to test5 |
-| stmts.go:119:9:119:9 | assignment to y | stmts.go:119:17:119:17 | y |
-| stmts.go:119:9:119:9 | skip | stmts.go:119:14:119:14 | x |
-| stmts.go:119:14:119:14 | x | stmts.go:119:9:119:9 | assignment to y |
-| stmts.go:119:17:119:17 | y | stmts.go:119:17:119:24 | type assertion |
-| stmts.go:119:17:119:24 | type assertion | stmts.go:121:3:121:7 | test5 |
-| stmts.go:121:3:121:7 | test5 | stmts.go:121:9:121:13 | false |
-| stmts.go:121:3:121:14 | call to test5 | stmts.go:123:1:123:1 | exit |
-| stmts.go:121:9:121:13 | false | stmts.go:121:3:121:14 | call to test5 |
-| stmts.go:126:1:126:1 | entry | stmts.go:126:13:126:13 | argument corresponding to f |
-| stmts.go:126:1:128:1 | function declaration | stmts.go:131:6:131:11 | skip |
-| stmts.go:126:6:126:11 | skip | stmts.go:126:1:128:1 | function declaration |
-| stmts.go:126:13:126:13 | argument corresponding to f | stmts.go:126:13:126:13 | initialization of f |
-| stmts.go:126:13:126:13 | initialization of f | stmts.go:127:5:127:5 | f |
-| stmts.go:127:2:127:7 | go statement | stmts.go:128:1:128:1 | exit |
-| stmts.go:127:5:127:5 | f | stmts.go:127:2:127:7 | go statement |
-| stmts.go:131:1:131:1 | entry | stmts.go:131:13:131:14 | argument corresponding to xs |
-| stmts.go:131:1:145:1 | function declaration | stmts.go:0:0:0:0 | exit |
-| stmts.go:131:6:131:11 | skip | stmts.go:131:1:145:1 | function declaration |
-| stmts.go:131:13:131:14 | argument corresponding to xs | stmts.go:131:13:131:14 | initialization of xs |
-| stmts.go:131:13:131:14 | initialization of xs | stmts.go:132:17:132:18 | xs |
-| stmts.go:132:2:137:2 | range statement[0] | stmts.go:132:6:132:6 | assignment to x |
-| stmts.go:132:6:132:6 | assignment to x | stmts.go:133:6:133:6 | x |
-| stmts.go:132:6:132:6 | skip | stmts.go:132:2:137:2 | range statement[0] |
-| stmts.go:132:17:132:18 | next key-value pair in range | stmts.go:132:6:132:6 | skip |
-| stmts.go:132:17:132:18 | next key-value pair in range | stmts.go:139:20:139:21 | xs |
-| stmts.go:132:17:132:18 | xs | stmts.go:132:17:132:18 | next key-value pair in range |
-| stmts.go:133:6:133:6 | x | stmts.go:133:10:133:10 | 5 |
-| stmts.go:133:6:133:10 | ...>... | stmts.go:133:10:133:10 | ...>... is false |
-| stmts.go:133:6:133:10 | ...>... | stmts.go:133:10:133:10 | ...>... is true |
-| stmts.go:133:10:133:10 | 5 | stmts.go:133:6:133:10 | ...>... |
-| stmts.go:133:10:133:10 | ...>... is false | stmts.go:136:3:136:11 | selection of Print |
-| stmts.go:133:10:133:10 | ...>... is true | stmts.go:134:4:134:11 | skip |
-| stmts.go:134:4:134:11 | skip | stmts.go:132:17:132:18 | next key-value pair in range |
-| stmts.go:136:3:136:11 | selection of Print | stmts.go:136:13:136:13 | x |
-| stmts.go:136:3:136:14 | call to Print | stmts.go:132:17:132:18 | next key-value pair in range |
-| stmts.go:136:3:136:14 | call to Print | stmts.go:145:1:145:1 | exit |
-| stmts.go:136:13:136:13 | x | stmts.go:136:3:136:14 | call to Print |
-| stmts.go:139:2:141:2 | range statement[0] | stmts.go:139:2:141:2 | range statement[1] |
-| stmts.go:139:2:141:2 | range statement[1] | stmts.go:139:6:139:6 | assignment to i |
-| stmts.go:139:6:139:6 | assignment to i | stmts.go:139:9:139:9 | assignment to v |
-| stmts.go:139:6:139:6 | skip | stmts.go:139:9:139:9 | skip |
-| stmts.go:139:9:139:9 | assignment to v | stmts.go:140:3:140:11 | selection of Print |
-| stmts.go:139:9:139:9 | skip | stmts.go:139:2:141:2 | range statement[0] |
-| stmts.go:139:20:139:21 | next key-value pair in range | stmts.go:139:6:139:6 | skip |
-| stmts.go:139:20:139:21 | next key-value pair in range | stmts.go:143:12:143:13 | xs |
-| stmts.go:139:20:139:21 | xs | stmts.go:139:20:139:21 | next key-value pair in range |
-| stmts.go:140:3:140:11 | selection of Print | stmts.go:140:13:140:13 | i |
-| stmts.go:140:3:140:17 | call to Print | stmts.go:139:20:139:21 | next key-value pair in range |
-| stmts.go:140:3:140:17 | call to Print | stmts.go:145:1:145:1 | exit |
-| stmts.go:140:13:140:13 | i | stmts.go:140:16:140:16 | v |
-| stmts.go:140:16:140:16 | v | stmts.go:140:3:140:17 | call to Print |
-| stmts.go:143:12:143:13 | next key-value pair in range | stmts.go:143:15:144:2 | skip |
-| stmts.go:143:12:143:13 | next key-value pair in range | stmts.go:145:1:145:1 | exit |
-| stmts.go:143:12:143:13 | xs | stmts.go:143:12:143:13 | next key-value pair in range |
-| stmts.go:143:15:144:2 | skip | stmts.go:143:12:143:13 | next key-value pair in range |
+| stmts.go:67:9:67:33 | function literal | stmts.go:67:3:67:35 | defer statement |
+| stmts.go:67:9:67:35 | function call | stmts.go:72:1:72:1 | exit |
+| stmts.go:67:18:67:28 | selection of Println | stmts.go:67:30:67:30 | x |
+| stmts.go:67:18:67:31 | call to Println | stmts.go:67:33:67:33 | exit |
+| stmts.go:67:30:67:30 | x | stmts.go:67:18:67:31 | call to Println |
+| stmts.go:69:3:69:36 | defer statement | stmts.go:71:9:71:10 | 42 |
+| stmts.go:69:9:69:9 | entry | stmts.go:69:18:69:28 | selection of Println |
+| stmts.go:69:9:69:34 | function literal | stmts.go:69:3:69:36 | defer statement |
+| stmts.go:69:9:69:36 | function call | stmts.go:72:1:72:1 | exit |
+| stmts.go:69:18:69:28 | selection of Println | stmts.go:69:31:69:31 | x |
+| stmts.go:69:18:69:32 | call to Println | stmts.go:69:34:69:34 | exit |
+| stmts.go:69:30:69:31 | -... | stmts.go:69:18:69:32 | call to Println |
+| stmts.go:69:31:69:31 | x | stmts.go:69:30:69:31 | -... |
+| stmts.go:71:2:71:10 | return statement | stmts.go:67:9:67:35 | function call |
+| stmts.go:71:2:71:10 | return statement | stmts.go:69:9:69:36 | function call |
+| stmts.go:71:9:71:10 | 42 | stmts.go:71:2:71:10 | return statement |
+| stmts.go:75:1:75:1 | entry | stmts.go:75:12:75:12 | argument corresponding to x |
+| stmts.go:75:1:109:1 | function declaration | stmts.go:112:6:112:10 | skip |
+| stmts.go:75:6:75:10 | skip | stmts.go:75:1:109:1 | function declaration |
+| stmts.go:75:12:75:12 | argument corresponding to x | stmts.go:75:12:75:12 | initialization of x |
+| stmts.go:75:12:75:12 | initialization of x | stmts.go:76:9:76:9 | x |
+| stmts.go:76:9:76:9 | x | stmts.go:79:9:79:9 | skip |
+| stmts.go:79:9:79:9 | assignment to y | stmts.go:79:17:79:17 | y |
+| stmts.go:79:9:79:9 | skip | stmts.go:79:14:79:14 | x |
+| stmts.go:79:14:79:14 | x | stmts.go:79:9:79:9 | assignment to y |
+| stmts.go:79:17:79:17 | y | stmts.go:79:21:79:22 | 19 |
+| stmts.go:79:17:79:22 | ...-... | stmts.go:81:3:81:7 | test5 |
+| stmts.go:79:21:79:22 | 19 | stmts.go:79:17:79:22 | ...-... |
+| stmts.go:81:3:81:7 | test5 | stmts.go:81:9:81:13 | false |
+| stmts.go:81:3:81:14 | call to test5 | stmts.go:109:1:109:1 | exit |
+| stmts.go:81:9:81:13 | false | stmts.go:81:3:81:14 | call to test5 |
+| stmts.go:84:9:84:9 | x | stmts.go:85:7:85:7 | 1 |
+| stmts.go:84:9:84:9 | x | stmts.go:90:9:90:9 | x |
+| stmts.go:85:2:85:8 | skip | stmts.go:90:9:90:9 | x |
+| stmts.go:85:7:85:7 | 1 | stmts.go:85:7:85:7 | case 1 |
+| stmts.go:85:7:85:7 | case 1 | stmts.go:85:2:85:8 | skip |
+| stmts.go:85:7:85:7 | case 1 | stmts.go:86:7:86:7 | 2 |
+| stmts.go:86:7:86:7 | 2 | stmts.go:86:7:86:7 | case 2 |
+| stmts.go:86:7:86:7 | case 2 | stmts.go:86:10:86:10 | 3 |
+| stmts.go:86:7:86:7 | case 2 | stmts.go:87:3:87:7 | test5 |
+| stmts.go:86:10:86:10 | 3 | stmts.go:86:10:86:10 | case 3 |
+| stmts.go:86:10:86:10 | case 3 | stmts.go:87:3:87:7 | test5 |
+| stmts.go:86:10:86:10 | case 3 | stmts.go:90:9:90:9 | x |
+| stmts.go:87:3:87:7 | test5 | stmts.go:87:9:87:12 | true |
+| stmts.go:87:9:87:12 | true | stmts.go:87:3:87:13 | call to test5 |
+| stmts.go:90:9:90:9 | x | stmts.go:91:7:91:7 | 1 |
+| stmts.go:90:9:90:9 | x | stmts.go:98:9:98:9 | x |
+| stmts.go:91:7:91:7 | 1 | stmts.go:91:7:91:7 | case 1 |
+| stmts.go:91:7:91:7 | case 1 | stmts.go:92:3:92:7 | test5 |
+| stmts.go:91:7:91:7 | case 1 | stmts.go:94:7:94:11 | ...-... |
+| stmts.go:92:3:92:7 | test5 | stmts.go:92:9:92:13 | false |
+| stmts.go:92:9:92:13 | false | stmts.go:92:3:92:14 | call to test5 |
+| stmts.go:93:3:93:13 | skip | stmts.go:95:3:95:7 | test5 |
+| stmts.go:94:7:94:11 | ...-... | stmts.go:94:7:94:11 | case ...-... |
+| stmts.go:94:7:94:11 | case ...-... | stmts.go:95:3:95:7 | test5 |
+| stmts.go:94:7:94:11 | case ...-... | stmts.go:98:9:98:9 | x |
+| stmts.go:95:3:95:7 | test5 | stmts.go:95:9:95:12 | true |
+| stmts.go:95:9:95:12 | true | stmts.go:95:3:95:13 | call to test5 |
+| stmts.go:98:9:98:9 | x | stmts.go:100:7:100:7 | 2 |
+| stmts.go:99:2:99:9 | skip | stmts.go:104:2:104:2 | true |
+| stmts.go:100:7:100:7 | 2 | stmts.go:100:7:100:7 | case 2 |
+| stmts.go:100:7:100:7 | case 2 | stmts.go:99:2:99:9 | skip |
+| stmts.go:100:7:100:7 | case 2 | stmts.go:101:3:101:7 | test5 |
+| stmts.go:101:3:101:7 | test5 | stmts.go:101:9:101:12 | true |
+| stmts.go:101:9:101:12 | true | stmts.go:101:3:101:13 | call to test5 |
+| stmts.go:104:2:104:2 | true | stmts.go:107:7:107:10 | true |
+| stmts.go:107:7:107:10 | case true | stmts.go:107:10:107:10 | true is false |
+| stmts.go:107:7:107:10 | case true | stmts.go:107:10:107:10 | true is true |
+| stmts.go:107:7:107:10 | true | stmts.go:107:7:107:10 | case true |
+| stmts.go:107:10:107:10 | true is false | stmts.go:106:3:106:7 | skip |
+| stmts.go:107:10:107:10 | true is true | stmts.go:107:2:107:11 | skip |
+| stmts.go:112:1:112:1 | entry | stmts.go:112:12:112:12 | argument corresponding to x |
+| stmts.go:112:1:125:1 | function declaration | stmts.go:128:6:128:11 | skip |
+| stmts.go:112:6:112:10 | skip | stmts.go:112:1:125:1 | function declaration |
+| stmts.go:112:12:112:12 | argument corresponding to x | stmts.go:112:12:112:12 | initialization of x |
+| stmts.go:112:12:112:12 | initialization of x | stmts.go:113:9:113:9 | skip |
+| stmts.go:113:9:113:9 | assignment to y | stmts.go:114:7:114:11 | case error |
+| stmts.go:113:9:113:9 | assignment to y | stmts.go:121:9:121:9 | skip |
+| stmts.go:113:9:113:9 | skip | stmts.go:113:14:113:14 | x |
+| stmts.go:113:14:113:14 | x | stmts.go:113:14:113:21 | type assertion |
+| stmts.go:113:14:113:21 | type assertion | stmts.go:113:9:113:9 | assignment to y |
+| stmts.go:114:7:114:11 | case error | stmts.go:114:14:114:19 | case string |
+| stmts.go:114:7:114:11 | case error | stmts.go:115:3:115:13 | selection of Println |
+| stmts.go:114:14:114:19 | case string | stmts.go:115:3:115:13 | selection of Println |
+| stmts.go:114:14:114:19 | case string | stmts.go:116:7:116:13 | case float32 |
+| stmts.go:115:3:115:13 | selection of Println | stmts.go:115:15:115:15 | y |
+| stmts.go:115:3:115:16 | call to Println | stmts.go:121:9:121:9 | skip |
+| stmts.go:115:3:115:16 | call to Println | stmts.go:125:1:125:1 | exit |
+| stmts.go:115:15:115:15 | y | stmts.go:115:3:115:16 | call to Println |
+| stmts.go:116:7:116:13 | case float32 | stmts.go:117:3:117:7 | test5 |
+| stmts.go:116:7:116:13 | case float32 | stmts.go:121:9:121:9 | skip |
+| stmts.go:117:3:117:7 | test5 | stmts.go:117:9:117:12 | true |
+| stmts.go:117:3:117:13 | call to test5 | stmts.go:125:1:125:1 | exit |
+| stmts.go:117:9:117:12 | true | stmts.go:117:3:117:13 | call to test5 |
+| stmts.go:118:3:118:7 | test5 | stmts.go:118:9:118:13 | false |
+| stmts.go:118:9:118:13 | false | stmts.go:118:3:118:14 | call to test5 |
+| stmts.go:121:9:121:9 | assignment to y | stmts.go:121:17:121:17 | y |
+| stmts.go:121:9:121:9 | skip | stmts.go:121:14:121:14 | x |
+| stmts.go:121:14:121:14 | x | stmts.go:121:9:121:9 | assignment to y |
+| stmts.go:121:17:121:17 | y | stmts.go:121:17:121:24 | type assertion |
+| stmts.go:121:17:121:24 | type assertion | stmts.go:123:3:123:7 | test5 |
+| stmts.go:123:3:123:7 | test5 | stmts.go:123:9:123:13 | false |
+| stmts.go:123:3:123:14 | call to test5 | stmts.go:125:1:125:1 | exit |
+| stmts.go:123:9:123:13 | false | stmts.go:123:3:123:14 | call to test5 |
+| stmts.go:128:1:128:1 | entry | stmts.go:128:13:128:13 | argument corresponding to f |
+| stmts.go:128:1:130:1 | function declaration | stmts.go:133:6:133:11 | skip |
+| stmts.go:128:6:128:11 | skip | stmts.go:128:1:130:1 | function declaration |
+| stmts.go:128:13:128:13 | argument corresponding to f | stmts.go:128:13:128:13 | initialization of f |
+| stmts.go:128:13:128:13 | initialization of f | stmts.go:129:5:129:5 | f |
+| stmts.go:129:2:129:7 | go statement | stmts.go:130:1:130:1 | exit |
+| stmts.go:129:5:129:5 | f | stmts.go:129:2:129:7 | go statement |
+| stmts.go:133:1:133:1 | entry | stmts.go:133:13:133:14 | argument corresponding to xs |
+| stmts.go:133:1:147:1 | function declaration | stmts.go:0:0:0:0 | exit |
+| stmts.go:133:6:133:11 | skip | stmts.go:133:1:147:1 | function declaration |
+| stmts.go:133:13:133:14 | argument corresponding to xs | stmts.go:133:13:133:14 | initialization of xs |
+| stmts.go:133:13:133:14 | initialization of xs | stmts.go:134:17:134:18 | xs |
+| stmts.go:134:2:139:2 | range statement[0] | stmts.go:134:6:134:6 | assignment to x |
+| stmts.go:134:6:134:6 | assignment to x | stmts.go:135:6:135:6 | x |
+| stmts.go:134:6:134:6 | skip | stmts.go:134:2:139:2 | range statement[0] |
+| stmts.go:134:17:134:18 | next key-value pair in range | stmts.go:134:6:134:6 | skip |
+| stmts.go:134:17:134:18 | next key-value pair in range | stmts.go:141:20:141:21 | xs |
+| stmts.go:134:17:134:18 | xs | stmts.go:134:17:134:18 | next key-value pair in range |
+| stmts.go:135:6:135:6 | x | stmts.go:135:10:135:10 | 5 |
+| stmts.go:135:6:135:10 | ...>... | stmts.go:135:10:135:10 | ...>... is false |
+| stmts.go:135:6:135:10 | ...>... | stmts.go:135:10:135:10 | ...>... is true |
+| stmts.go:135:10:135:10 | 5 | stmts.go:135:6:135:10 | ...>... |
+| stmts.go:135:10:135:10 | ...>... is false | stmts.go:138:3:138:11 | selection of Print |
+| stmts.go:135:10:135:10 | ...>... is true | stmts.go:136:4:136:11 | skip |
+| stmts.go:136:4:136:11 | skip | stmts.go:134:17:134:18 | next key-value pair in range |
+| stmts.go:138:3:138:11 | selection of Print | stmts.go:138:13:138:13 | x |
+| stmts.go:138:3:138:14 | call to Print | stmts.go:134:17:134:18 | next key-value pair in range |
+| stmts.go:138:3:138:14 | call to Print | stmts.go:147:1:147:1 | exit |
+| stmts.go:138:13:138:13 | x | stmts.go:138:3:138:14 | call to Print |
+| stmts.go:141:2:143:2 | range statement[0] | stmts.go:141:2:143:2 | range statement[1] |
+| stmts.go:141:2:143:2 | range statement[1] | stmts.go:141:6:141:6 | assignment to i |
+| stmts.go:141:6:141:6 | assignment to i | stmts.go:141:9:141:9 | assignment to v |
+| stmts.go:141:6:141:6 | skip | stmts.go:141:9:141:9 | skip |
+| stmts.go:141:9:141:9 | assignment to v | stmts.go:142:3:142:11 | selection of Print |
+| stmts.go:141:9:141:9 | skip | stmts.go:141:2:143:2 | range statement[0] |
+| stmts.go:141:20:141:21 | next key-value pair in range | stmts.go:141:6:141:6 | skip |
+| stmts.go:141:20:141:21 | next key-value pair in range | stmts.go:145:12:145:13 | xs |
+| stmts.go:141:20:141:21 | xs | stmts.go:141:20:141:21 | next key-value pair in range |
+| stmts.go:142:3:142:11 | selection of Print | stmts.go:142:13:142:13 | i |
+| stmts.go:142:3:142:17 | call to Print | stmts.go:141:20:141:21 | next key-value pair in range |
+| stmts.go:142:3:142:17 | call to Print | stmts.go:147:1:147:1 | exit |
+| stmts.go:142:13:142:13 | i | stmts.go:142:16:142:16 | v |
+| stmts.go:142:16:142:16 | v | stmts.go:142:3:142:17 | call to Print |
+| stmts.go:145:12:145:13 | next key-value pair in range | stmts.go:145:15:146:2 | skip |
+| stmts.go:145:12:145:13 | next key-value pair in range | stmts.go:147:1:147:1 | exit |
+| stmts.go:145:12:145:13 | xs | stmts.go:145:12:145:13 | next key-value pair in range |
+| stmts.go:145:15:146:2 | skip | stmts.go:145:12:145:13 | next key-value pair in range |
 | tst.go:0:0:0:0 | entry | tst.go:3:6:3:10 | skip |
 | tst.go:3:1:3:1 | entry | tst.go:3:12:3:12 | argument corresponding to x |
 | tst.go:3:1:12:1 | function declaration | tst.go:14:6:14:11 | skip |
@@ -1278,11 +1278,11 @@
 | tst.go:18:38:18:38 | ...<... is false | tst.go:21:1:21:1 | exit |
 | tst.go:18:38:18:38 | ...<... is true | tst.go:18:2:18:39 | skip |
 | tst.go:23:1:23:1 | entry | tst.go:24:2:24:2 | true |
-| tst.go:23:1:25:1 | function declaration | tst.go:27:6:27:11 | skip |
-| tst.go:23:6:23:11 | skip | tst.go:23:1:25:1 | function declaration |
-| tst.go:24:2:24:2 | true | tst.go:25:1:25:1 | exit |
-| tst.go:27:1:27:1 | entry | tst.go:28:2:28:2 | true |
-| tst.go:27:1:31:1 | function declaration | tst.go:0:0:0:0 | exit |
-| tst.go:27:6:27:11 | skip | tst.go:27:1:31:1 | function declaration |
-| tst.go:28:2:28:2 | true | tst.go:29:2:29:9 | skip |
-| tst.go:29:2:29:9 | skip | tst.go:31:1:31:1 | exit |
+| tst.go:23:1:26:1 | function declaration | tst.go:28:6:28:11 | skip |
+| tst.go:23:6:23:11 | skip | tst.go:23:1:26:1 | function declaration |
+| tst.go:24:2:24:2 | true | tst.go:26:1:26:1 | exit |
+| tst.go:28:1:28:1 | entry | tst.go:29:2:29:2 | true |
+| tst.go:28:1:32:1 | function declaration | tst.go:0:0:0:0 | exit |
+| tst.go:28:6:28:11 | skip | tst.go:28:1:32:1 | function declaration |
+| tst.go:29:2:29:2 | true | tst.go:30:2:30:9 | skip |
+| tst.go:30:2:30:9 | skip | tst.go:32:1:32:1 | exit |

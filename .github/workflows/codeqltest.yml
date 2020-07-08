@@ -33,8 +33,8 @@ jobs:
     - name: Build
       run: env PATH=$PATH:$HOME/codeql make
 
-    - name: Check that all QL code is autoformatted
-      run: env PATH=$PATH:$HOME/codeql make AUTOFORMAT=--check-only autoformat
+    - name: Check that all QL and Go code is autoformatted
+      run: env PATH=$PATH:$HOME/codeql make QL_AUTOFORMAT=--check-only GO_AUTOFORMAT=-d autoformat
 
     - name: Test
       run: env PATH=$PATH:$HOME/codeql make test

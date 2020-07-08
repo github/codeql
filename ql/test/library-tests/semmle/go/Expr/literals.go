@@ -2,6 +2,8 @@ package main
 
 import "fmt"
 
+// autoformat-ignore (we intentionally test unconventional capitalisation of literals like 1E1i)
+
 var intlits = map[string]int{
 	"decimal":     42,
 	"octal":       0600,
