@@ -1,0 +1,179 @@
+edges
+| ArchiveTarTaintTracking.go:148:13:148:23 | call to newSource : interface type | ArchiveTarTaintTracking.go:150:56:150:61 | source : interface type |
+| ArchiveTarTaintTracking.go:150:10:150:62 | call to TaintStepTest_ArchiveTarFileInfoHeader_B0I0O0 : pointer type | ArchiveTarTaintTracking.go:152:8:152:10 | out |
+| ArchiveTarTaintTracking.go:150:56:150:61 | source : interface type | ArchiveTarTaintTracking.go:150:10:150:62 | call to TaintStepTest_ArchiveTarFileInfoHeader_B0I0O0 : pointer type |
+| ArchiveTarTaintTracking.go:156:13:156:23 | call to newSource : interface type | ArchiveTarTaintTracking.go:158:51:158:56 | source : interface type |
+| ArchiveTarTaintTracking.go:158:10:158:57 | call to TaintStepTest_ArchiveTarNewReader_B0I0O0 : pointer type | ArchiveTarTaintTracking.go:160:8:160:10 | out |
+| ArchiveTarTaintTracking.go:158:51:158:56 | source : interface type | ArchiveTarTaintTracking.go:158:10:158:57 | call to TaintStepTest_ArchiveTarNewReader_B0I0O0 : pointer type |
+| ArchiveTarTaintTracking.go:164:13:164:23 | call to newSource : interface type | ArchiveTarTaintTracking.go:166:51:166:56 | source : interface type |
+| ArchiveTarTaintTracking.go:166:10:166:57 | call to TaintStepTest_ArchiveTarNewWriter_B0I0O0 : Writer | ArchiveTarTaintTracking.go:168:8:168:10 | out |
+| ArchiveTarTaintTracking.go:166:51:166:56 | source : interface type | ArchiveTarTaintTracking.go:166:10:166:57 | call to TaintStepTest_ArchiveTarNewWriter_B0I0O0 : Writer |
+| ArchiveTarTaintTracking.go:172:13:172:23 | call to newSource : interface type | ArchiveTarTaintTracking.go:174:56:174:61 | source : interface type |
+| ArchiveTarTaintTracking.go:174:10:174:62 | call to TaintStepTest_ArchiveTarHeaderFileInfo_B0I0O0 : FileInfo | ArchiveTarTaintTracking.go:176:8:176:10 | out |
+| ArchiveTarTaintTracking.go:174:56:174:61 | source : interface type | ArchiveTarTaintTracking.go:174:10:174:62 | call to TaintStepTest_ArchiveTarHeaderFileInfo_B0I0O0 : FileInfo |
+| ArchiveTarTaintTracking.go:180:13:180:23 | call to newSource : interface type | ArchiveTarTaintTracking.go:182:52:182:57 | source : interface type |
+| ArchiveTarTaintTracking.go:182:10:182:58 | call to TaintStepTest_ArchiveTarReaderNext_B0I0O0 : pointer type | ArchiveTarTaintTracking.go:184:8:184:10 | out |
+| ArchiveTarTaintTracking.go:182:52:182:57 | source : interface type | ArchiveTarTaintTracking.go:182:10:182:58 | call to TaintStepTest_ArchiveTarReaderNext_B0I0O0 : pointer type |
+| ArchiveTarTaintTracking.go:188:13:188:23 | call to newSource : interface type | ArchiveTarTaintTracking.go:190:52:190:57 | source : interface type |
+| ArchiveTarTaintTracking.go:190:10:190:58 | call to TaintStepTest_ArchiveTarReaderRead_B0I0O0 : slice type | ArchiveTarTaintTracking.go:192:8:192:10 | out |
+| ArchiveTarTaintTracking.go:190:52:190:57 | source : interface type | ArchiveTarTaintTracking.go:190:10:190:58 | call to TaintStepTest_ArchiveTarReaderRead_B0I0O0 : slice type |
+| ArchiveTarTaintTracking.go:196:13:196:23 | call to newSource : interface type | ArchiveTarTaintTracking.go:198:53:198:58 | source : interface type |
+| ArchiveTarTaintTracking.go:198:10:198:59 | call to TaintStepTest_ArchiveTarWriterWrite_B0I0O0 : Writer | ArchiveTarTaintTracking.go:200:8:200:10 | out |
+| ArchiveTarTaintTracking.go:198:53:198:58 | source : interface type | ArchiveTarTaintTracking.go:198:10:198:59 | call to TaintStepTest_ArchiveTarWriterWrite_B0I0O0 : Writer |
+| ArchiveTarTaintTracking.go:204:13:204:23 | call to newSource : interface type | ArchiveTarTaintTracking.go:206:59:206:64 | source : interface type |
+| ArchiveTarTaintTracking.go:206:10:206:65 | call to TaintStepTest_ArchiveTarWriterWriteHeader_B0I0O0 : Writer | ArchiveTarTaintTracking.go:208:8:208:10 | out |
+| ArchiveTarTaintTracking.go:206:59:206:64 | source : interface type | ArchiveTarTaintTracking.go:206:10:206:65 | call to TaintStepTest_ArchiveTarWriterWriteHeader_B0I0O0 : Writer |
+| ArchiveZipTaintTracking.go:254:13:254:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:256:56:256:61 | source : interface type |
+| ArchiveZipTaintTracking.go:256:10:256:62 | call to TaintStepTest_ArchiveZipFileInfoHeader_B0I0O0 : pointer type | ArchiveZipTaintTracking.go:258:8:258:10 | out |
+| ArchiveZipTaintTracking.go:256:56:256:61 | source : interface type | ArchiveZipTaintTracking.go:256:10:256:62 | call to TaintStepTest_ArchiveZipFileInfoHeader_B0I0O0 : pointer type |
+| ArchiveZipTaintTracking.go:262:13:262:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:264:51:264:56 | source : interface type |
+| ArchiveZipTaintTracking.go:264:10:264:57 | call to TaintStepTest_ArchiveZipNewReader_B0I0O0 : pointer type | ArchiveZipTaintTracking.go:266:8:266:10 | out |
+| ArchiveZipTaintTracking.go:264:51:264:56 | source : interface type | ArchiveZipTaintTracking.go:264:10:264:57 | call to TaintStepTest_ArchiveZipNewReader_B0I0O0 : pointer type |
+| ArchiveZipTaintTracking.go:270:13:270:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:272:51:272:56 | source : interface type |
+| ArchiveZipTaintTracking.go:272:10:272:57 | call to TaintStepTest_ArchiveZipNewWriter_B0I0O0 : Writer | ArchiveZipTaintTracking.go:274:8:274:10 | out |
+| ArchiveZipTaintTracking.go:272:51:272:56 | source : interface type | ArchiveZipTaintTracking.go:272:10:272:57 | call to TaintStepTest_ArchiveZipNewWriter_B0I0O0 : Writer |
+| ArchiveZipTaintTracking.go:278:13:278:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:280:52:280:57 | source : interface type |
+| ArchiveZipTaintTracking.go:280:10:280:58 | call to TaintStepTest_ArchiveZipOpenReader_B0I0O0 : pointer type | ArchiveZipTaintTracking.go:282:8:282:10 | out |
+| ArchiveZipTaintTracking.go:280:52:280:57 | source : interface type | ArchiveZipTaintTracking.go:280:10:280:58 | call to TaintStepTest_ArchiveZipOpenReader_B0I0O0 : pointer type |
+| ArchiveZipTaintTracking.go:286:13:286:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:288:50:288:55 | source : interface type |
+| ArchiveZipTaintTracking.go:288:10:288:56 | call to TaintStepTest_ArchiveZipFileOpen_B0I0O0 : ReadCloser | ArchiveZipTaintTracking.go:290:8:290:10 | out |
+| ArchiveZipTaintTracking.go:288:50:288:55 | source : interface type | ArchiveZipTaintTracking.go:288:10:288:56 | call to TaintStepTest_ArchiveZipFileOpen_B0I0O0 : ReadCloser |
+| ArchiveZipTaintTracking.go:294:13:294:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:296:60:296:65 | source : interface type |
+| ArchiveZipTaintTracking.go:296:10:296:66 | call to TaintStepTest_ArchiveZipFileHeaderFileInfo_B0I0O0 : FileInfo | ArchiveZipTaintTracking.go:298:8:298:10 | out |
+| ArchiveZipTaintTracking.go:296:60:296:65 | source : interface type | ArchiveZipTaintTracking.go:296:10:296:66 | call to TaintStepTest_ArchiveZipFileHeaderFileInfo_B0I0O0 : FileInfo |
+| ArchiveZipTaintTracking.go:302:13:302:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:304:56:304:61 | source : interface type |
+| ArchiveZipTaintTracking.go:304:10:304:62 | call to TaintStepTest_ArchiveZipFileHeaderMode_B0I0O0 : FileMode | ArchiveZipTaintTracking.go:306:8:306:10 | out |
+| ArchiveZipTaintTracking.go:304:56:304:61 | source : interface type | ArchiveZipTaintTracking.go:304:10:304:62 | call to TaintStepTest_ArchiveZipFileHeaderMode_B0I0O0 : FileMode |
+| ArchiveZipTaintTracking.go:310:13:310:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:312:59:312:64 | source : interface type |
+| ArchiveZipTaintTracking.go:312:10:312:65 | call to TaintStepTest_ArchiveZipFileHeaderSetMode_B0I0O0 : FileHeader | ArchiveZipTaintTracking.go:314:8:314:10 | out |
+| ArchiveZipTaintTracking.go:312:59:312:64 | source : interface type | ArchiveZipTaintTracking.go:312:10:312:65 | call to TaintStepTest_ArchiveZipFileHeaderSetMode_B0I0O0 : FileHeader |
+| ArchiveZipTaintTracking.go:318:13:318:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:320:68:320:73 | source : interface type |
+| ArchiveZipTaintTracking.go:320:10:320:74 | call to TaintStepTest_ArchiveZipReaderRegisterDecompressor_B0I0O0 : Reader | ArchiveZipTaintTracking.go:322:8:322:10 | out |
+| ArchiveZipTaintTracking.go:320:68:320:73 | source : interface type | ArchiveZipTaintTracking.go:320:10:320:74 | call to TaintStepTest_ArchiveZipReaderRegisterDecompressor_B0I0O0 : Reader |
+| ArchiveZipTaintTracking.go:326:13:326:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:328:54:328:59 | source : interface type |
+| ArchiveZipTaintTracking.go:328:10:328:60 | call to TaintStepTest_ArchiveZipWriterCreate_B0I0O0 : Writer | ArchiveZipTaintTracking.go:330:8:330:10 | out |
+| ArchiveZipTaintTracking.go:328:54:328:59 | source : interface type | ArchiveZipTaintTracking.go:328:10:328:60 | call to TaintStepTest_ArchiveZipWriterCreate_B0I0O0 : Writer |
+| ArchiveZipTaintTracking.go:334:13:334:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:336:60:336:65 | source : interface type |
+| ArchiveZipTaintTracking.go:336:10:336:66 | call to TaintStepTest_ArchiveZipWriterCreateHeader_B0I0O0 : Writer | ArchiveZipTaintTracking.go:338:8:338:10 | out |
+| ArchiveZipTaintTracking.go:336:60:336:65 | source : interface type | ArchiveZipTaintTracking.go:336:10:336:66 | call to TaintStepTest_ArchiveZipWriterCreateHeader_B0I0O0 : Writer |
+| ArchiveZipTaintTracking.go:342:13:342:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:344:60:344:65 | source : interface type |
+| ArchiveZipTaintTracking.go:344:10:344:66 | call to TaintStepTest_ArchiveZipWriterCreateHeader_B0I1O0 : Writer | ArchiveZipTaintTracking.go:346:8:346:10 | out |
+| ArchiveZipTaintTracking.go:344:60:344:65 | source : interface type | ArchiveZipTaintTracking.go:344:10:344:66 | call to TaintStepTest_ArchiveZipWriterCreateHeader_B0I1O0 : Writer |
+| ArchiveZipTaintTracking.go:350:13:350:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:352:66:352:71 | source : interface type |
+| ArchiveZipTaintTracking.go:352:10:352:72 | call to TaintStepTest_ArchiveZipWriterRegisterCompressor_B0I0O0 : Writer | ArchiveZipTaintTracking.go:354:8:354:10 | out |
+| ArchiveZipTaintTracking.go:352:66:352:71 | source : interface type | ArchiveZipTaintTracking.go:352:10:352:72 | call to TaintStepTest_ArchiveZipWriterRegisterCompressor_B0I0O0 : Writer |
+| ArchiveZipTaintTracking.go:358:13:358:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:360:58:360:63 | source : interface type |
+| ArchiveZipTaintTracking.go:360:10:360:64 | call to TaintStepTest_ArchiveZipWriterSetComment_B0I0O0 : Writer | ArchiveZipTaintTracking.go:362:8:362:10 | out |
+| ArchiveZipTaintTracking.go:360:58:360:63 | source : interface type | ArchiveZipTaintTracking.go:360:10:360:64 | call to TaintStepTest_ArchiveZipWriterSetComment_B0I0O0 : Writer |
+nodes
+| ArchiveTarTaintTracking.go:148:13:148:23 | call to newSource : interface type | semmle.label | call to newSource : interface type |
+| ArchiveTarTaintTracking.go:150:10:150:62 | call to TaintStepTest_ArchiveTarFileInfoHeader_B0I0O0 : pointer type | semmle.label | call to TaintStepTest_ArchiveTarFileInfoHeader_B0I0O0 : pointer type |
+| ArchiveTarTaintTracking.go:150:56:150:61 | source : interface type | semmle.label | source : interface type |
+| ArchiveTarTaintTracking.go:152:8:152:10 | out | semmle.label | out |
+| ArchiveTarTaintTracking.go:156:13:156:23 | call to newSource : interface type | semmle.label | call to newSource : interface type |
+| ArchiveTarTaintTracking.go:158:10:158:57 | call to TaintStepTest_ArchiveTarNewReader_B0I0O0 : pointer type | semmle.label | call to TaintStepTest_ArchiveTarNewReader_B0I0O0 : pointer type |
+| ArchiveTarTaintTracking.go:158:51:158:56 | source : interface type | semmle.label | source : interface type |
+| ArchiveTarTaintTracking.go:160:8:160:10 | out | semmle.label | out |
+| ArchiveTarTaintTracking.go:164:13:164:23 | call to newSource : interface type | semmle.label | call to newSource : interface type |
+| ArchiveTarTaintTracking.go:166:10:166:57 | call to TaintStepTest_ArchiveTarNewWriter_B0I0O0 : Writer | semmle.label | call to TaintStepTest_ArchiveTarNewWriter_B0I0O0 : Writer |
+| ArchiveTarTaintTracking.go:166:51:166:56 | source : interface type | semmle.label | source : interface type |
+| ArchiveTarTaintTracking.go:168:8:168:10 | out | semmle.label | out |
+| ArchiveTarTaintTracking.go:172:13:172:23 | call to newSource : interface type | semmle.label | call to newSource : interface type |
+| ArchiveTarTaintTracking.go:174:10:174:62 | call to TaintStepTest_ArchiveTarHeaderFileInfo_B0I0O0 : FileInfo | semmle.label | call to TaintStepTest_ArchiveTarHeaderFileInfo_B0I0O0 : FileInfo |
+| ArchiveTarTaintTracking.go:174:56:174:61 | source : interface type | semmle.label | source : interface type |
+| ArchiveTarTaintTracking.go:176:8:176:10 | out | semmle.label | out |
+| ArchiveTarTaintTracking.go:180:13:180:23 | call to newSource : interface type | semmle.label | call to newSource : interface type |
+| ArchiveTarTaintTracking.go:182:10:182:58 | call to TaintStepTest_ArchiveTarReaderNext_B0I0O0 : pointer type | semmle.label | call to TaintStepTest_ArchiveTarReaderNext_B0I0O0 : pointer type |
+| ArchiveTarTaintTracking.go:182:52:182:57 | source : interface type | semmle.label | source : interface type |
+| ArchiveTarTaintTracking.go:184:8:184:10 | out | semmle.label | out |
+| ArchiveTarTaintTracking.go:188:13:188:23 | call to newSource : interface type | semmle.label | call to newSource : interface type |
+| ArchiveTarTaintTracking.go:190:10:190:58 | call to TaintStepTest_ArchiveTarReaderRead_B0I0O0 : slice type | semmle.label | call to TaintStepTest_ArchiveTarReaderRead_B0I0O0 : slice type |
+| ArchiveTarTaintTracking.go:190:52:190:57 | source : interface type | semmle.label | source : interface type |
+| ArchiveTarTaintTracking.go:192:8:192:10 | out | semmle.label | out |
+| ArchiveTarTaintTracking.go:196:13:196:23 | call to newSource : interface type | semmle.label | call to newSource : interface type |
+| ArchiveTarTaintTracking.go:198:10:198:59 | call to TaintStepTest_ArchiveTarWriterWrite_B0I0O0 : Writer | semmle.label | call to TaintStepTest_ArchiveTarWriterWrite_B0I0O0 : Writer |
+| ArchiveTarTaintTracking.go:198:53:198:58 | source : interface type | semmle.label | source : interface type |
+| ArchiveTarTaintTracking.go:200:8:200:10 | out | semmle.label | out |
+| ArchiveTarTaintTracking.go:204:13:204:23 | call to newSource : interface type | semmle.label | call to newSource : interface type |
+| ArchiveTarTaintTracking.go:206:10:206:65 | call to TaintStepTest_ArchiveTarWriterWriteHeader_B0I0O0 : Writer | semmle.label | call to TaintStepTest_ArchiveTarWriterWriteHeader_B0I0O0 : Writer |
+| ArchiveTarTaintTracking.go:206:59:206:64 | source : interface type | semmle.label | source : interface type |
+| ArchiveTarTaintTracking.go:208:8:208:10 | out | semmle.label | out |
+| ArchiveZipTaintTracking.go:254:13:254:23 | call to newSource : interface type | semmle.label | call to newSource : interface type |
+| ArchiveZipTaintTracking.go:256:10:256:62 | call to TaintStepTest_ArchiveZipFileInfoHeader_B0I0O0 : pointer type | semmle.label | call to TaintStepTest_ArchiveZipFileInfoHeader_B0I0O0 : pointer type |
+| ArchiveZipTaintTracking.go:256:56:256:61 | source : interface type | semmle.label | source : interface type |
+| ArchiveZipTaintTracking.go:258:8:258:10 | out | semmle.label | out |
+| ArchiveZipTaintTracking.go:262:13:262:23 | call to newSource : interface type | semmle.label | call to newSource : interface type |
+| ArchiveZipTaintTracking.go:264:10:264:57 | call to TaintStepTest_ArchiveZipNewReader_B0I0O0 : pointer type | semmle.label | call to TaintStepTest_ArchiveZipNewReader_B0I0O0 : pointer type |
+| ArchiveZipTaintTracking.go:264:51:264:56 | source : interface type | semmle.label | source : interface type |
+| ArchiveZipTaintTracking.go:266:8:266:10 | out | semmle.label | out |
+| ArchiveZipTaintTracking.go:270:13:270:23 | call to newSource : interface type | semmle.label | call to newSource : interface type |
+| ArchiveZipTaintTracking.go:272:10:272:57 | call to TaintStepTest_ArchiveZipNewWriter_B0I0O0 : Writer | semmle.label | call to TaintStepTest_ArchiveZipNewWriter_B0I0O0 : Writer |
+| ArchiveZipTaintTracking.go:272:51:272:56 | source : interface type | semmle.label | source : interface type |
+| ArchiveZipTaintTracking.go:274:8:274:10 | out | semmle.label | out |
+| ArchiveZipTaintTracking.go:278:13:278:23 | call to newSource : interface type | semmle.label | call to newSource : interface type |
+| ArchiveZipTaintTracking.go:280:10:280:58 | call to TaintStepTest_ArchiveZipOpenReader_B0I0O0 : pointer type | semmle.label | call to TaintStepTest_ArchiveZipOpenReader_B0I0O0 : pointer type |
+| ArchiveZipTaintTracking.go:280:52:280:57 | source : interface type | semmle.label | source : interface type |
+| ArchiveZipTaintTracking.go:282:8:282:10 | out | semmle.label | out |
+| ArchiveZipTaintTracking.go:286:13:286:23 | call to newSource : interface type | semmle.label | call to newSource : interface type |
+| ArchiveZipTaintTracking.go:288:10:288:56 | call to TaintStepTest_ArchiveZipFileOpen_B0I0O0 : ReadCloser | semmle.label | call to TaintStepTest_ArchiveZipFileOpen_B0I0O0 : ReadCloser |
+| ArchiveZipTaintTracking.go:288:50:288:55 | source : interface type | semmle.label | source : interface type |
+| ArchiveZipTaintTracking.go:290:8:290:10 | out | semmle.label | out |
+| ArchiveZipTaintTracking.go:294:13:294:23 | call to newSource : interface type | semmle.label | call to newSource : interface type |
+| ArchiveZipTaintTracking.go:296:10:296:66 | call to TaintStepTest_ArchiveZipFileHeaderFileInfo_B0I0O0 : FileInfo | semmle.label | call to TaintStepTest_ArchiveZipFileHeaderFileInfo_B0I0O0 : FileInfo |
+| ArchiveZipTaintTracking.go:296:60:296:65 | source : interface type | semmle.label | source : interface type |
+| ArchiveZipTaintTracking.go:298:8:298:10 | out | semmle.label | out |
+| ArchiveZipTaintTracking.go:302:13:302:23 | call to newSource : interface type | semmle.label | call to newSource : interface type |
+| ArchiveZipTaintTracking.go:304:10:304:62 | call to TaintStepTest_ArchiveZipFileHeaderMode_B0I0O0 : FileMode | semmle.label | call to TaintStepTest_ArchiveZipFileHeaderMode_B0I0O0 : FileMode |
+| ArchiveZipTaintTracking.go:304:56:304:61 | source : interface type | semmle.label | source : interface type |
+| ArchiveZipTaintTracking.go:306:8:306:10 | out | semmle.label | out |
+| ArchiveZipTaintTracking.go:310:13:310:23 | call to newSource : interface type | semmle.label | call to newSource : interface type |
+| ArchiveZipTaintTracking.go:312:10:312:65 | call to TaintStepTest_ArchiveZipFileHeaderSetMode_B0I0O0 : FileHeader | semmle.label | call to TaintStepTest_ArchiveZipFileHeaderSetMode_B0I0O0 : FileHeader |
+| ArchiveZipTaintTracking.go:312:59:312:64 | source : interface type | semmle.label | source : interface type |
+| ArchiveZipTaintTracking.go:314:8:314:10 | out | semmle.label | out |
+| ArchiveZipTaintTracking.go:318:13:318:23 | call to newSource : interface type | semmle.label | call to newSource : interface type |
+| ArchiveZipTaintTracking.go:320:10:320:74 | call to TaintStepTest_ArchiveZipReaderRegisterDecompressor_B0I0O0 : Reader | semmle.label | call to TaintStepTest_ArchiveZipReaderRegisterDecompressor_B0I0O0 : Reader |
+| ArchiveZipTaintTracking.go:320:68:320:73 | source : interface type | semmle.label | source : interface type |
+| ArchiveZipTaintTracking.go:322:8:322:10 | out | semmle.label | out |
+| ArchiveZipTaintTracking.go:326:13:326:23 | call to newSource : interface type | semmle.label | call to newSource : interface type |
+| ArchiveZipTaintTracking.go:328:10:328:60 | call to TaintStepTest_ArchiveZipWriterCreate_B0I0O0 : Writer | semmle.label | call to TaintStepTest_ArchiveZipWriterCreate_B0I0O0 : Writer |
+| ArchiveZipTaintTracking.go:328:54:328:59 | source : interface type | semmle.label | source : interface type |
+| ArchiveZipTaintTracking.go:330:8:330:10 | out | semmle.label | out |
+| ArchiveZipTaintTracking.go:334:13:334:23 | call to newSource : interface type | semmle.label | call to newSource : interface type |
+| ArchiveZipTaintTracking.go:336:10:336:66 | call to TaintStepTest_ArchiveZipWriterCreateHeader_B0I0O0 : Writer | semmle.label | call to TaintStepTest_ArchiveZipWriterCreateHeader_B0I0O0 : Writer |
+| ArchiveZipTaintTracking.go:336:60:336:65 | source : interface type | semmle.label | source : interface type |
+| ArchiveZipTaintTracking.go:338:8:338:10 | out | semmle.label | out |
+| ArchiveZipTaintTracking.go:342:13:342:23 | call to newSource : interface type | semmle.label | call to newSource : interface type |
+| ArchiveZipTaintTracking.go:344:10:344:66 | call to TaintStepTest_ArchiveZipWriterCreateHeader_B0I1O0 : Writer | semmle.label | call to TaintStepTest_ArchiveZipWriterCreateHeader_B0I1O0 : Writer |
+| ArchiveZipTaintTracking.go:344:60:344:65 | source : interface type | semmle.label | source : interface type |
+| ArchiveZipTaintTracking.go:346:8:346:10 | out | semmle.label | out |
+| ArchiveZipTaintTracking.go:350:13:350:23 | call to newSource : interface type | semmle.label | call to newSource : interface type |
+| ArchiveZipTaintTracking.go:352:10:352:72 | call to TaintStepTest_ArchiveZipWriterRegisterCompressor_B0I0O0 : Writer | semmle.label | call to TaintStepTest_ArchiveZipWriterRegisterCompressor_B0I0O0 : Writer |
+| ArchiveZipTaintTracking.go:352:66:352:71 | source : interface type | semmle.label | source : interface type |
+| ArchiveZipTaintTracking.go:354:8:354:10 | out | semmle.label | out |
+| ArchiveZipTaintTracking.go:358:13:358:23 | call to newSource : interface type | semmle.label | call to newSource : interface type |
+| ArchiveZipTaintTracking.go:360:10:360:64 | call to TaintStepTest_ArchiveZipWriterSetComment_B0I0O0 : Writer | semmle.label | call to TaintStepTest_ArchiveZipWriterSetComment_B0I0O0 : Writer |
+| ArchiveZipTaintTracking.go:360:58:360:63 | source : interface type | semmle.label | source : interface type |
+| ArchiveZipTaintTracking.go:362:8:362:10 | out | semmle.label | out |
+#select
+| ArchiveTarTaintTracking.go:152:8:152:10 | out | ArchiveTarTaintTracking.go:148:13:148:23 | call to newSource : interface type | ArchiveTarTaintTracking.go:152:8:152:10 | out | Flow from $@. | ArchiveTarTaintTracking.go:148:13:148:23 | call to newSource | source |
+| ArchiveTarTaintTracking.go:160:8:160:10 | out | ArchiveTarTaintTracking.go:156:13:156:23 | call to newSource : interface type | ArchiveTarTaintTracking.go:160:8:160:10 | out | Flow from $@. | ArchiveTarTaintTracking.go:156:13:156:23 | call to newSource | source |
+| ArchiveTarTaintTracking.go:168:8:168:10 | out | ArchiveTarTaintTracking.go:164:13:164:23 | call to newSource : interface type | ArchiveTarTaintTracking.go:168:8:168:10 | out | Flow from $@. | ArchiveTarTaintTracking.go:164:13:164:23 | call to newSource | source |
+| ArchiveTarTaintTracking.go:176:8:176:10 | out | ArchiveTarTaintTracking.go:172:13:172:23 | call to newSource : interface type | ArchiveTarTaintTracking.go:176:8:176:10 | out | Flow from $@. | ArchiveTarTaintTracking.go:172:13:172:23 | call to newSource | source |
+| ArchiveTarTaintTracking.go:184:8:184:10 | out | ArchiveTarTaintTracking.go:180:13:180:23 | call to newSource : interface type | ArchiveTarTaintTracking.go:184:8:184:10 | out | Flow from $@. | ArchiveTarTaintTracking.go:180:13:180:23 | call to newSource | source |
+| ArchiveTarTaintTracking.go:192:8:192:10 | out | ArchiveTarTaintTracking.go:188:13:188:23 | call to newSource : interface type | ArchiveTarTaintTracking.go:192:8:192:10 | out | Flow from $@. | ArchiveTarTaintTracking.go:188:13:188:23 | call to newSource | source |
+| ArchiveTarTaintTracking.go:200:8:200:10 | out | ArchiveTarTaintTracking.go:196:13:196:23 | call to newSource : interface type | ArchiveTarTaintTracking.go:200:8:200:10 | out | Flow from $@. | ArchiveTarTaintTracking.go:196:13:196:23 | call to newSource | source |
+| ArchiveTarTaintTracking.go:208:8:208:10 | out | ArchiveTarTaintTracking.go:204:13:204:23 | call to newSource : interface type | ArchiveTarTaintTracking.go:208:8:208:10 | out | Flow from $@. | ArchiveTarTaintTracking.go:204:13:204:23 | call to newSource | source |
+| ArchiveZipTaintTracking.go:258:8:258:10 | out | ArchiveZipTaintTracking.go:254:13:254:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:258:8:258:10 | out | Flow from $@. | ArchiveZipTaintTracking.go:254:13:254:23 | call to newSource | source |
+| ArchiveZipTaintTracking.go:266:8:266:10 | out | ArchiveZipTaintTracking.go:262:13:262:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:266:8:266:10 | out | Flow from $@. | ArchiveZipTaintTracking.go:262:13:262:23 | call to newSource | source |
+| ArchiveZipTaintTracking.go:274:8:274:10 | out | ArchiveZipTaintTracking.go:270:13:270:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:274:8:274:10 | out | Flow from $@. | ArchiveZipTaintTracking.go:270:13:270:23 | call to newSource | source |
+| ArchiveZipTaintTracking.go:282:8:282:10 | out | ArchiveZipTaintTracking.go:278:13:278:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:282:8:282:10 | out | Flow from $@. | ArchiveZipTaintTracking.go:278:13:278:23 | call to newSource | source |
+| ArchiveZipTaintTracking.go:290:8:290:10 | out | ArchiveZipTaintTracking.go:286:13:286:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:290:8:290:10 | out | Flow from $@. | ArchiveZipTaintTracking.go:286:13:286:23 | call to newSource | source |
+| ArchiveZipTaintTracking.go:298:8:298:10 | out | ArchiveZipTaintTracking.go:294:13:294:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:298:8:298:10 | out | Flow from $@. | ArchiveZipTaintTracking.go:294:13:294:23 | call to newSource | source |
+| ArchiveZipTaintTracking.go:306:8:306:10 | out | ArchiveZipTaintTracking.go:302:13:302:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:306:8:306:10 | out | Flow from $@. | ArchiveZipTaintTracking.go:302:13:302:23 | call to newSource | source |
+| ArchiveZipTaintTracking.go:314:8:314:10 | out | ArchiveZipTaintTracking.go:310:13:310:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:314:8:314:10 | out | Flow from $@. | ArchiveZipTaintTracking.go:310:13:310:23 | call to newSource | source |
+| ArchiveZipTaintTracking.go:322:8:322:10 | out | ArchiveZipTaintTracking.go:318:13:318:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:322:8:322:10 | out | Flow from $@. | ArchiveZipTaintTracking.go:318:13:318:23 | call to newSource | source |
+| ArchiveZipTaintTracking.go:330:8:330:10 | out | ArchiveZipTaintTracking.go:326:13:326:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:330:8:330:10 | out | Flow from $@. | ArchiveZipTaintTracking.go:326:13:326:23 | call to newSource | source |
+| ArchiveZipTaintTracking.go:338:8:338:10 | out | ArchiveZipTaintTracking.go:334:13:334:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:338:8:338:10 | out | Flow from $@. | ArchiveZipTaintTracking.go:334:13:334:23 | call to newSource | source |
+| ArchiveZipTaintTracking.go:346:8:346:10 | out | ArchiveZipTaintTracking.go:342:13:342:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:346:8:346:10 | out | Flow from $@. | ArchiveZipTaintTracking.go:342:13:342:23 | call to newSource | source |
+| ArchiveZipTaintTracking.go:354:8:354:10 | out | ArchiveZipTaintTracking.go:350:13:350:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:354:8:354:10 | out | Flow from $@. | ArchiveZipTaintTracking.go:350:13:350:23 | call to newSource | source |
+| ArchiveZipTaintTracking.go:362:8:362:10 | out | ArchiveZipTaintTracking.go:358:13:358:23 | call to newSource : interface type | ArchiveZipTaintTracking.go:362:8:362:10 | out | Flow from $@. | ArchiveZipTaintTracking.go:358:13:358:23 | call to newSource | source |
