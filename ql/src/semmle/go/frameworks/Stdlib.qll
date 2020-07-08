@@ -6,7 +6,11 @@ import go
 
 /** A `String()` method. */
 class StringMethod extends TaintTracking::FunctionModel, Method {
-  StringMethod() { getName() = "String" and getNumParameter() = 0 }
+  StringMethod() {
+    getName() = "String" and
+    getNumParameter() = 0 and
+    getResultType(0) = Builtin::string_().getType()
+  }
 
   override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
     inp.isReceiver() and outp.isResult()
