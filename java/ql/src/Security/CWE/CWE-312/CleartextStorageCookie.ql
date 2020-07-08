@@ -10,7 +10,7 @@
  */
 
 import java
-import SensitiveStorage
+import semmle.code.java.security.SensitiveStorage
 
 from SensitiveSource data, Cookie s, Expr input, Expr store
 where

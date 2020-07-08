@@ -12,7 +12,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.DataFlow2
-import HardcodedCredentials
+import semmle.code.java.security.HardcodedCredentials
 import DataFlow::PathGraph
 
 class HardcodedCredentialSourceCallConfiguration extends DataFlow::Configuration {

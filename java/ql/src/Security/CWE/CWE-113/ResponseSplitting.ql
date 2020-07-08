@@ -11,7 +11,7 @@
  */
 
 import java
-import ResponseSplitting
+import semmle.code.java.security.ResponseSplitting
 import DataFlow::PathGraph
 
 class ResponseSplittingConfig extends TaintTracking::Configuration {

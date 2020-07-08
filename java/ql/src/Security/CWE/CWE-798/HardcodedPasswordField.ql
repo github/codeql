@@ -10,7 +10,7 @@
  */
 
 import java
-import HardcodedCredentials
+import semmle.code.java.security.HardcodedCredentials
 
 from PasswordVariable f, CompileTimeConstantExpr e
 where
