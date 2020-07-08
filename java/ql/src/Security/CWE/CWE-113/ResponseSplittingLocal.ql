@@ -12,7 +12,7 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import ResponseSplitting
+import ServletResponseSplitting
 import DataFlow::PathGraph
 
 class ResponseSplittingLocalConfig extends TaintTracking::Configuration {

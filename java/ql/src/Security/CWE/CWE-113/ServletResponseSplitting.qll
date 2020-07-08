@@ -1,12 +1,13 @@
 import java
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.security.ResponseSplitting
 
 /**
  * Header-splitting sinks. Expressions that end up in an HTTP header.
  */
-class HeaderSplittingSink extends DataFlow::ExprNode {
-  HeaderSplittingSink() {
+class ServletHeaderSplittingSink extends HeaderSplittingSink {
+  ServletHeaderSplittingSink() {
     exists(ResponseAddCookieMethod m, MethodAccess ma |
       ma.getMethod() = m and
       this.getExpr() = ma.getArgument(0)
@@ -30,8 +31,8 @@ class HeaderSplittingSink extends DataFlow::ExprNode {
   }
 }
 
-class WhitelistedSource extends DataFlow::ExprNode {
-  WhitelistedSource() {
+class TrustedServletSource extends TrustedSource {
+  TrustedServletSource() {
     this.asExpr().(MethodAccess).getMethod() instanceof HttpServletRequestGetHeaderMethod or
     this.asExpr().(MethodAccess).getMethod() instanceof CookieGetNameMethod
   }
