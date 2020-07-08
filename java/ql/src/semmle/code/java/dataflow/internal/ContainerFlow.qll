@@ -112,8 +112,8 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   // java.util.Map
   m
       .(MapMethod)
-      .hasName(["compute", "computeIfAbsent", "computeIfPresent", "entrySet", "get", "getOrDefault",
-            "merge", "putIfAbsent", "remove", "replace", "values"])
+      .hasName(["computeIfAbsent", "entrySet", "get", "getOrDefault", "merge", "put", "putIfAbsent",
+            "remove", "replace", "values"])
   or
   // java.util.Collection
   m.(CollectionMethod).hasName(["parallelStream", "stream", "toArray"])
@@ -121,8 +121,7 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   // java.util.List
   m.(CollectionMethod).hasName(["get", "listIterator", "set", "subList"])
   or
-  m.(CollectionMethod).hasName("remove") and
-  (m.getNumberOfParameters() = 0 or m.getParameterType(0).(PrimitiveType).hasName("int"))
+  m.(CollectionMethod).hasName("remove") and m.getParameterType(0).(PrimitiveType).hasName("int")
   or
   // java.util.Vector
   m.(CollectionMethod).hasName(["elementAt", "elements", "firstElement", "lastElement"])
@@ -131,9 +130,11 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   m.(CollectionMethod).hasName(["peek", "pop", "push"])
   or
   // java.util.Queue
-  m.(CollectionMethod).hasName(["element", /*"peek", "remove"*/ "poll"])
+  m.(CollectionMethod).hasName(["element", "poll"])
   or
-  // java.util.DeQueue
+  m.(CollectionMethod).hasName("remove") and m.getNumberOfParameters() = 0
+  or
+  // java.util.Deque
   m
       .(CollectionMethod)
       .hasName(["getFirst", "getLast", "peekFirst", "peekLast", "pollFirst", "pollLast",
@@ -171,7 +172,7 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   m.hasName(["elements", "get", "put", "remove"])
   or
   // java.util.concurrent.ConcurrentHashMap
-  m.(MapMethod).hasName(["search", "searchEntries", "searchValues"])
+  m.(MapMethod).hasName(["elements", "search", "searchEntries", "searchValues"])
 }
 
 private predicate qualifierToMethodStep(Expr tracked, MethodAccess sink) {
@@ -180,9 +181,18 @@ private predicate qualifierToMethodStep(Expr tracked, MethodAccess sink) {
 }
 
 private predicate qualifierToArgumentStep(Expr tracked, RValue sink) {
-  exists(MethodAccess ma |
-    // java.util.Vector, java.util.concurrent.BlockingQueue, java.util.Collection
-    ma.getMethod().(CollectionMethod).hasName(["copyInto", "drainTo", "toArray"]) and
+  exists(MethodAccess ma, CollectionMethod method |
+    method = ma.getMethod() and
+    (
+      // java.util.Vector
+      method.hasName("copyInto")
+      or
+      // java.util.concurrent.BlockingQueue
+      method.hasName("drainTo")
+      or
+      // java.util.Collection
+      method.hasName("toArray") and method.getParameter(0).getType() instanceof Array
+    ) and
     tracked = ma.getQualifier() and
     sink = ma.getArgument(0)
   )
@@ -207,7 +217,9 @@ private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
   arg = 0
   or
   // java.util.Collection
-  method.(CollectionMethod).hasName(["add", "addAll"]) and arg = method.getNumberOfParameters() - 1
+  method.(CollectionMethod).hasName(["add", "addAll"]) and
+  // Refer to the last parameter to also cover List::add(int, E) and List::addAll(int, Collection)
+  arg = method.getNumberOfParameters() - 1
   or
   // java.util.List
   method.(CollectionMethod).hasName("set") and arg = 1
@@ -232,6 +244,15 @@ private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
   or
   // java.util.concurrent.BlockingDeque
   method.(CollectionMethod).hasName(["putFirst", "putLast"]) and arg = 0
+  or
+  //java.util.Dictionary
+  method
+      .getDeclaringType()
+      .getSourceDeclaration()
+      .getASourceSupertype*()
+      .hasQualifiedName("java.util", "Dictionary") and
+  method.hasName("put") and
+  arg = 1
 }
 
 /**
