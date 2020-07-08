@@ -5,7 +5,7 @@
  * This will generate stubs for all the required dependencies as well.
  *
  * Use
- * ```
+ * ```ql
  * select generatedCode()
  * ```
  * to retrieve the generated C# code.

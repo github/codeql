@@ -30,12 +30,17 @@ re.compile(b"abc$ ")
 re.compile(b"abc$ (?s)")
 re.compile(b"\[$]  ")
 
-#Likely false positives for unmatchable dollar
-re.compile(b"[$]  ")
-re.compile(b"\$  ")
-re.compile(b"abc$(?m)")
-re.compile(b"abc$()")
-
+#Not unmatchable dollar
+re.match(b"[$]  ", b"$  ")
+re.match(b"\$  ", b"$  ")
+re.match(b"abc$(?m)", b"abc")
+re.match(b"abc$()", b"abc")
+re.match(b"((a$)|b)*", b"bba")
+re.match(b"((a$)|b){4}", b"bbba") # Inspired by FP report here: https://github.com/github/codeql/issues/2403
+re.match(b"((a$).*)", b"a")
+re.match("(\Aab$|\Aba$)$\Z", "ab")
+re.match(b"((a$\Z)|b){4}", b"bbba")
+re.match(b"(a){00}b", b"b")
 
 #Duplicate character in set
 re.compile(b"[AA]")

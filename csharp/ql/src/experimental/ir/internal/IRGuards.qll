@@ -93,7 +93,7 @@ class GuardCondition extends Expr {
  * implies that the truth of the child expression `part` has truth value `partIsTrue`.
  *
  * For example if the binary operation:
- * ```
+ * ```csharp
  *   x && y
  * ```
  * is true, `x` and `y` must also be true, so `impliesValue(x, true, true)` and
@@ -341,7 +341,7 @@ class IRGuardCondition extends Instruction {
    * predecessors. For example, in the following situation, an inference can be made about the
    * value of `x` at the end of the `if` statement, but there is no block which is controlled by
    * the `if` statement when `x >= y`.
-   * ```
+   * ```csharp
    * if (x < y) {
    *   x = y;
    * }

@@ -20,7 +20,7 @@ class PrintfFormatAttribute extends FormatAttribute {
  * function by its use of the GNU `format` attribute.
  */
 class AttributeFormattingFunction extends FormattingFunction {
-  override string getCanonicalQLClass() { result = "AttributeFormattingFunction" }
+  override string getAPrimaryQlClass() { result = "AttributeFormattingFunction" }
 
   AttributeFormattingFunction() {
     exists(PrintfFormatAttribute printf_attrib |
@@ -73,7 +73,7 @@ predicate variadicFormatter(Function f, int formatParamIndex) {
  * string and a variable number of arguments.
  */
 class UserDefinedFormattingFunction extends FormattingFunction {
-  override string getCanonicalQLClass() { result = "UserDefinedFormattingFunction" }
+  override string getAPrimaryQlClass() { result = "UserDefinedFormattingFunction" }
 
   UserDefinedFormattingFunction() { isVarargs() and callsVariadicFormatter(this, _) }
 
@@ -86,7 +86,7 @@ class UserDefinedFormattingFunction extends FormattingFunction {
 class FormattingFunctionCall extends Expr {
   FormattingFunctionCall() { this.(Call).getTarget() instanceof FormattingFunction }
 
-  override string getCanonicalQLClass() { result = "FormattingFunctionCall" }
+  override string getAPrimaryQlClass() { result = "FormattingFunctionCall" }
 
   /**
    * Gets the formatting function being called.

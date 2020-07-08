@@ -48,7 +48,7 @@ export class Project {
   public load(): void {
     const { config, host } = this;
     this.program = ts.createProgram(config.fileNames, config.options, host);
-    this.typeTable.setProgram(this.program);
+    this.typeTable.setProgram(this.program, this.virtualSourceRoot);
   }
 
   /**
@@ -71,10 +71,19 @@ export class Project {
         redirectedReference: ts.ResolvedProjectReference,
         options: ts.CompilerOptions) {
 
+    let oppositePath =
+      this.virtualSourceRoot.toVirtualPath(containingFile) ||
+      this.virtualSourceRoot.fromVirtualPath(containingFile);
+
     const { host, resolutionCache } = this;
     return moduleNames.map((moduleName) => {
       let redirected = this.redirectModuleName(moduleName, containingFile, options);
       if (redirected != null) return redirected;
+      if (oppositePath != null) {
+        // If the containing file is in the virtual source root, try resolving from the real source root, and vice versa.
+        redirected = ts.resolveModuleName(moduleName, oppositePath, options,  host, resolutionCache).resolvedModule;
+        if (redirected != null) return redirected;
+      }
       return ts.resolveModuleName(moduleName, containingFile, options,  host, resolutionCache).resolvedModule;
     });
   }
@@ -90,15 +99,7 @@ export class Project {
 
     // Get the overridden location of this package, if one exists.
     let packageEntryPoint = this.packageEntryPoints.get(packageName);
-    if (packageEntryPoint == null) {
-      // The package is not overridden, but we have established that it begins with a valid package name.
-      // Do a lookup in the virtual source root (where dependencies are installed) by changing the 'containing file'.
-      let virtualContainingFile = this.virtualSourceRoot.toVirtualPath(containingFile);
-      if (virtualContainingFile != null) {
-        return ts.resolveModuleName(moduleName, virtualContainingFile, options, this.host, this.resolutionCache).resolvedModule;
-      }
-      return null;
-    }
+    if (packageEntryPoint == null) return null;
 
     // If the requested module name is exactly the overridden package name,
     // return the entry point file (it is not necessarily called `index.ts`).

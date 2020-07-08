@@ -6,52 +6,52 @@ import semmle.python.security.injection.Sql
 
 /** A django model class */
 class DjangoModel extends ClassValue {
-    DjangoModel() { Value::named("django.db.models.Model") = this.getASuperType() }
+  DjangoModel() { Value::named("django.db.models.Model") = this.getASuperType() }
 }
 
 /** A "taint" for django database tables */
 class DjangoDbTableObjects extends TaintKind {
-    DjangoDbTableObjects() { this = "django.db.models.Model.objects" }
+  DjangoDbTableObjects() { this = "django.db.models.Model.objects" }
 
-    override TaintKind getTaintOfMethodResult(string name) {
-        result = this and
-        (
-            name = "filter" or
-            name = "exclude" or
-            name = "annotate" or
-            name = "order_by" or
-            name = "reverse" or
-            name = "distinct" or
-            name = "values" or
-            name = "values_list" or
-            name = "dates" or
-            name = "datetimes" or
-            name = "none" or
-            name = "all" or
-            name = "union" or
-            name = "intersection" or
-            name = "difference" or
-            name = "select_related" or
-            name = "prefetch_related" or
-            name = "extra" or
-            name = "defer" or
-            name = "only" or
-            name = "using" or
-            name = "select_for_update" or
-            name = "raw"
-        )
-    }
+  override TaintKind getTaintOfMethodResult(string name) {
+    result = this and
+    (
+      name = "filter" or
+      name = "exclude" or
+      name = "annotate" or
+      name = "order_by" or
+      name = "reverse" or
+      name = "distinct" or
+      name = "values" or
+      name = "values_list" or
+      name = "dates" or
+      name = "datetimes" or
+      name = "none" or
+      name = "all" or
+      name = "union" or
+      name = "intersection" or
+      name = "difference" or
+      name = "select_related" or
+      name = "prefetch_related" or
+      name = "extra" or
+      name = "defer" or
+      name = "only" or
+      name = "using" or
+      name = "select_for_update" or
+      name = "raw"
+    )
+  }
 }
 
 /** Django model objects, which are sources of django database table "taint" */
 class DjangoModelObjects extends TaintSource {
-    DjangoModelObjects() {
-        this.(AttrNode).isLoad() and this.(AttrNode).getObject("objects").pointsTo(any(DjangoModel m))
-    }
+  DjangoModelObjects() {
+    this.(AttrNode).isLoad() and this.(AttrNode).getObject("objects").pointsTo(any(DjangoModel m))
+  }
 
-    override predicate isSourceOf(TaintKind kind) { kind instanceof DjangoDbTableObjects }
+  override predicate isSourceOf(TaintKind kind) { kind instanceof DjangoDbTableObjects }
 
-    override string toString() { result = "django.db.models.Model.objects" }
+  override string toString() { result = "django.db.models.Model.objects" }
 }
 
 /**
@@ -59,16 +59,16 @@ class DjangoModelObjects extends TaintSource {
  * to be sent to the database, which is a security risk.
  */
 class DjangoModelRawCall extends SqlInjectionSink {
-    DjangoModelRawCall() {
-        exists(CallNode raw_call, ControlFlowNode queryset | this = raw_call.getArg(0) |
-            raw_call.getFunction().(AttrNode).getObject("raw") = queryset and
-            any(DjangoDbTableObjects objs).taints(queryset)
-        )
-    }
+  DjangoModelRawCall() {
+    exists(CallNode raw_call, ControlFlowNode queryset | this = raw_call.getArg(0) |
+      raw_call.getFunction().(AttrNode).getObject("raw") = queryset and
+      any(DjangoDbTableObjects objs).taints(queryset)
+    )
+  }
 
-    override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
+  override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
 
-    override string toString() { result = "django.models.QuerySet.raw(sink,...)" }
+  override string toString() { result = "django.models.QuerySet.raw(sink,...)" }
 }
 
 /**
@@ -76,14 +76,14 @@ class DjangoModelRawCall extends SqlInjectionSink {
  * to be sent to the database, which is a security risk.
  */
 class DjangoModelExtraCall extends SqlInjectionSink {
-    DjangoModelExtraCall() {
-        exists(CallNode extra_call, ControlFlowNode queryset | this = extra_call.getArg(0) |
-            extra_call.getFunction().(AttrNode).getObject("extra") = queryset and
-            any(DjangoDbTableObjects objs).taints(queryset)
-        )
-    }
+  DjangoModelExtraCall() {
+    exists(CallNode extra_call, ControlFlowNode queryset | this = extra_call.getArg(0) |
+      extra_call.getFunction().(AttrNode).getObject("extra") = queryset and
+      any(DjangoDbTableObjects objs).taints(queryset)
+    )
+  }
 
-    override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
+  override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
 
-    override string toString() { result = "django.models.QuerySet.extra(sink,...)" }
+  override string toString() { result = "django.models.QuerySet.extra(sink,...)" }
 }

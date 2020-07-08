@@ -1,4 +1,5 @@
 | ReflectedXss.js:8:14:8:45 | "Unknow ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:8:33:8:45 | req.params.id | user-provided value |
+| ReflectedXss.js:17:12:17:39 | "Unknow ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:17:31:17:39 | params.id | user-provided value |
 | ReflectedXssContentTypes.js:10:14:10:36 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXssContentTypes.js:10:24:10:36 | req.params.id | user-provided value |
 | ReflectedXssContentTypes.js:20:14:20:36 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXssContentTypes.js:20:24:20:36 | req.params.id | user-provided value |
 | ReflectedXssContentTypes.js:39:13:39:35 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXssContentTypes.js:39:23:39:35 | req.params.id | user-provided value |

@@ -159,6 +159,57 @@ private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
   method.(CollectionMethod).hasName("offer") and arg = 0
 }
 
+/**
+ * Holds if `method` is a library method that returns tainted data if its
+ * `arg`th argument is tainted.
+ */
+private predicate taintPreservingArgumentToMethod(Method method, int arg) {
+  method.getDeclaringType().hasQualifiedName("java.util", "Collections") and
+  (
+    method
+        .hasName(["checkedCollection", "checkedList", "checkedMap", "checkedNavigableMap",
+              "checkedNavigableSet", "checkedSet", "checkedSortedMap", "checkedSortedSet",
+              "enumeration", "list", "max", "min", "singleton", "singletonList",
+              "synchronizedCollection", "synchronizedList", "synchronizedMap",
+              "synchronizedNavigableMap", "synchronizedNavigableSet", "synchronizedSet",
+              "synchronizedSortedMap", "synchronizedSortedSet", "unmodifiableCollection",
+              "unmodifiableList", "unmodifiableMap", "unmodifiableNavigableMap",
+              "unmodifiableNavigableSet", "unmodifiableSet", "unmodifiableSortedMap",
+              "unmodifiableSortedSet"]) and
+    arg = 0
+    or
+    method.hasName(["nCopies", "singletonMap"]) and arg = 1
+  )
+  or
+  method.getDeclaringType().hasQualifiedName("java.util", "Arrays") and
+  (
+    method.hasName(["copyOf", "copyOfRange", "spliterator", "stream"]) and
+    arg = 0
+  )
+}
+
+/**
+ * Holds if `method` is a library method that writes tainted data to the
+ * `output`th argument if the `input`th argument is tainted.
+ */
+private predicate taintPreservingArgToArg(Method method, int input, int output) {
+  method.getDeclaringType().hasQualifiedName("java.util", "Collections") and
+  (
+    method.hasName(["copy", "fill"]) and
+    input = 1 and
+    output = 0
+    or
+    method.hasName("replaceAll") and input = 2 and output = 0
+  )
+  or
+  method.getDeclaringType().hasQualifiedName("java.util", "Arrays") and
+  (
+    method.hasName("fill") and
+    output = 0 and
+    input = method.getNumberOfParameters() - 1
+  )
+}
+
 private predicate argToQualifierStep(Expr tracked, Expr sink) {
   exists(Method m, int i, MethodAccess ma |
     taintPreservingArgumentToQualifier(m, i) and
@@ -168,13 +219,52 @@ private predicate argToQualifierStep(Expr tracked, Expr sink) {
   )
 }
 
+/** Access to a method that passes taint from an argument. */
+private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
+  exists(Method m |
+    m = sink.getMethod() and
+    (
+      exists(int i |
+        taintPreservingArgumentToMethod(m, i) and
+        tracked = sink.getArgument(i)
+      )
+      or
+      m.getDeclaringType().hasQualifiedName("java.util", "Arrays") and
+      m.hasName("asList") and
+      tracked = sink.getAnArgument()
+    )
+  )
+}
+
+/**
+ * Holds if `tracked` and `sink` are arguments to a method that transfers taint
+ * between arguments.
+ */
+private predicate argToArgStep(Expr tracked, Expr sink) {
+  exists(MethodAccess ma, Method method, int input, int output |
+    ma.getMethod() = method and
+    ma.getArgument(input) = tracked and
+    ma.getArgument(output) = sink and
+    (
+      taintPreservingArgToArg(method, input, output)
+      or
+      method.getDeclaringType().hasQualifiedName("java.util", "Collections") and
+      method.hasName("addAll") and
+      input >= 1 and
+      output = 0
+    )
+  )
+}
+
 /**
  * Holds if the step from `n1` to `n2` is either extracting a value from a
  * container, inserting a value into a container, or transforming one container
  * to another. This is restricted to cases where `n2` is the returned value of
  * a call.
  */
-predicate containerReturnValueStep(Expr n1, Expr n2) { qualifierToMethodStep(n1, n2) }
+predicate containerReturnValueStep(Expr n1, Expr n2) {
+  qualifierToMethodStep(n1, n2) or argToMethodStep(n1, n2)
+}
 
 /**
  * Holds if the step from `n1` to `n2` is either extracting a value from a
@@ -183,7 +273,8 @@ predicate containerReturnValueStep(Expr n1, Expr n2) { qualifierToMethodStep(n1,
  */
 predicate containerUpdateStep(Expr n1, Expr n2) {
   qualifierToArgumentStep(n1, n2) or
-  argToQualifierStep(n1, n2)
+  argToQualifierStep(n1, n2) or
+  argToArgStep(n1, n2)
 }
 
 /**

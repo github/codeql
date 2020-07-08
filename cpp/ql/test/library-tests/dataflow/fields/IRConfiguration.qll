@@ -18,7 +18,7 @@ class Conf extends Configuration {
   override predicate isSink(Node sink) {
     exists(Call c |
       c.getTarget().hasName("sink") and
-      c.getAnArgument() = sink.asExpr()
+      c.getAnArgument() = sink.asConvertedExpr()
     )
   }
 

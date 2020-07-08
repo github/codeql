@@ -1,0 +1,4 @@
+- description: C# queries which overlap with dependency analysis
+- exclude:
+    query path:
+      - Security Features/CWE-937/VulnerablePackage.ql
