@@ -3,6 +3,7 @@
  */
 
 import go
+import semmle.go.frameworks.stdlib.ImportAll
 
 /** A `String()` method. */
 class StringMethod extends TaintTracking::FunctionModel, Method {
