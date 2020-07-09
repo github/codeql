@@ -508,11 +508,11 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFr
  * data flow. It may have less flow than the `localFlowStep` predicate.
  */
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  // Instruction -> Instruction flow
-  simpleInstructionLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
-  or
   // Operand -> Instruction flow
-  simpleOperandLocalFlowStep(nodeFrom.asOperand(), nodeTo.asInstruction())
+  simpleInstructionLocalFlowStep(nodeFrom.asOperand(), nodeTo.asInstruction())
+  or
+  // Instruction -> Operand flow
+  simpleOperandLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asOperand())
 }
 
 pragma[noinline]
@@ -524,26 +524,21 @@ private predicate getFieldSizeOfClass(Class c, Type type, int size) {
   )
 }
 
-private predicate simpleOperandLocalFlowStep(Operand opFrom, Instruction iTo) {
-  // Certain dataflow steps (for instance `PostUpdateNode.getPreUpdateNode()`) generates flow to
-  // operands, so we include dataflow from those operands to the "result" of the instruction (i.e., to
-  // the instruction itself).
-  exists(PostUpdateNode post |
-    opFrom = post.getPreUpdateNode().asOperand() and
-    iTo.getAnOperand() = opFrom
-  )
+cached
+private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {
+  opTo.getAnyDef() = iFrom
 }
 
 cached
-private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction iTo) {
-  iTo.(CopyInstruction).getSourceValue() = iFrom
+private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo) {
+  iTo.(CopyInstruction).getSourceValueOperand() = opFrom and not opFrom.isDefinitionInexact()
   or
-  iTo.(PhiInstruction).getAnOperand().getDef() = iFrom
+  iTo.(PhiInstruction).getAnInputOperand() = opFrom and not opFrom.isDefinitionInexact()
   or
   // A read side effect is almost never exact since we don't know exactly how
   // much memory the callee will read.
-  iTo.(ReadSideEffectInstruction).getSideEffectOperand().getAnyDef() = iFrom and
-  not iFrom.isResultConflated()
+  iTo.(ReadSideEffectInstruction).getSideEffectOperand() = opFrom and
+  not opFrom.getAnyDef().isResultConflated()
   or
   // Loading a single `int` from an `int *` parameter is not an exact load since
   // the parameter may point to an entire array rather than a single `int`. The
@@ -556,8 +551,8 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   // reassignment of the parameter indirection, including a conditional one that
   // leads to a phi node.
   exists(InitializeIndirectionInstruction init |
-    iFrom = init and
-    iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = init and
+    opFrom.getAnyDef() = init and
+    iTo.(LoadInstruction).getSourceValueOperand() = opFrom and
     // Check that the types match. Otherwise we can get flow from an object to
     // its fields, which leads to field conflation when there's flow from other
     // fields to the object elsewhere.
@@ -566,11 +561,13 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   )
   or
   // Treat all conversions as flow, even conversions between different numeric types.
-  iTo.(ConvertInstruction).getUnary() = iFrom
+  iTo.(ConvertInstruction).getUnaryOperand() = opFrom and not opFrom.isDefinitionInexact()
   or
-  iTo.(CheckedConvertOrNullInstruction).getUnary() = iFrom
+  iTo.(CheckedConvertOrNullInstruction).getUnaryOperand() = opFrom and
+  not opFrom.isDefinitionInexact()
   or
-  iTo.(InheritanceConversionInstruction).getUnary() = iFrom
+  iTo.(InheritanceConversionInstruction).getUnaryOperand() = opFrom and
+  not opFrom.isDefinitionInexact()
   or
   // A chi instruction represents a point where a new value (the _partial_
   // operand) may overwrite an old value (the _total_ operand), but the alias
@@ -583,7 +580,7 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   //
   // Flow through the partial operand belongs in the taint-tracking libraries
   // for now.
-  iTo.getAnOperand().(ChiTotalOperand).getDef() = iFrom
+  iTo.getAnOperand().(ChiTotalOperand) = opFrom
   or
   // Add flow from write side-effects to non-conflated chi instructions through their
   // partial operands. From there, a `readStep` will find subsequent reads of that field.
@@ -598,24 +595,25 @@ private predicate simpleInstructionLocalFlowStep(Instruction iFrom, Instruction 
   // Here, a `WriteSideEffectInstruction` will provide a new definition for `p->x` after the call to
   // `setX`, which will be melded into `p` through a chi instruction.
   exists(ChiInstruction chi | chi = iTo |
-    chi.getPartialOperand().getDef() = iFrom.(WriteSideEffectInstruction) and
+    opFrom.getAnyDef() instanceof WriteSideEffectInstruction and
+    chi.getPartialOperand() = opFrom and
     not chi.isResultConflated()
   )
   or
   // Flow from stores to structs with a single field to a load of that field.
-  iTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = iFrom and
+  iTo.(LoadInstruction).getSourceValueOperand() = opFrom and
   exists(int size, Type type, Class cTo |
-    type = iFrom.getResultType() and
+    type = opFrom.getAnyDef().getResultType() and
     cTo = iTo.getResultType() and
     cTo.getSize() = size and
     getFieldSizeOfClass(cTo, type, size)
   )
   or
   // Flow through modeled functions
-  modelFlow(iFrom, iTo)
+  modelFlow(opFrom, iTo)
 }
 
-private predicate modelFlow(Instruction iFrom, Instruction iTo) {
+private predicate modelFlow(Operand opFrom, Instruction iTo) {
   exists(
     CallInstruction call, DataFlowFunction func, FunctionInput modelIn, FunctionOutput modelOut
   |
@@ -640,17 +638,17 @@ private predicate modelFlow(Instruction iFrom, Instruction iTo) {
     (
       exists(int index |
         modelIn.isParameter(index) and
-        iFrom = call.getPositionalArgument(index)
+        opFrom = call.getPositionalArgumentOperand(index)
       )
       or
       exists(int index, ReadSideEffectInstruction read |
         modelIn.isParameterDeref(index) and
         read = getSideEffectFor(call, index) and
-        iFrom = read.getSideEffectOperand().getAnyDef()
+        opFrom = read.getSideEffectOperand()
       )
       or
       modelIn.isQualifierAddress() and
-      iFrom = call.getThisArgument()
+      opFrom = call.getThisArgumentOperand()
       // TODO: add read side effects for qualifiers
     )
   )
