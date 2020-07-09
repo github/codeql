@@ -1,1 +1,1 @@
-//semmle-extractor-options: --javac-args -cp ${testdir}/../../../stubs/apache-commons-codec-1.14
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../../stubs/apache-commons-codec-1.14 -source 14 -target 14
