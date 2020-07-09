@@ -40,9 +40,9 @@ private class ServletHeaderSplittingSink extends HeaderSplittingSink {
   }
 }
 
-/** Servlet sources considered safe regarding header splitting */
-private class ServletSafeHeaderSplittingSource extends SafeHeaderSplittingSource {
-  ServletSafeHeaderSplittingSource() {
+/** Sources of data considered safe to use by header splitting sinks. */
+private class DefaultSafeHeaderSplittingSource extends SafeHeaderSplittingSource {
+  DefaultSafeHeaderSplittingSource() {
     this.asExpr().(MethodAccess).getMethod() instanceof HttpServletRequestGetHeaderMethod or
     this.asExpr().(MethodAccess).getMethod() instanceof CookieGetNameMethod
   }
