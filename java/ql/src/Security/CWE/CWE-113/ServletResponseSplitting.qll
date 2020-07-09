@@ -31,8 +31,8 @@ class ServletHeaderSplittingSink extends HeaderSplittingSink {
   }
 }
 
-class TrustedServletSource extends TrustedSource {
-  TrustedServletSource() {
+class ServletSafeHeaderSplittingSource extends SafeHeaderSplittingSource {
+  ServletSafeHeaderSplittingSource() {
     this.asExpr().(MethodAccess).getMethod() instanceof HttpServletRequestGetHeaderMethod or
     this.asExpr().(MethodAccess).getMethod() instanceof CookieGetNameMethod
   }

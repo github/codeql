@@ -8,4 +8,4 @@ abstract class HeaderSplittingSink extends DataFlow::ExprNode { }
 /**
  * Sources that cannot be used to perform a header splitting attack.
  */
-abstract class TrustedSource extends DataFlow::ExprNode { }
+abstract class SafeHeaderSplittingSource extends DataFlow::ExprNode { }

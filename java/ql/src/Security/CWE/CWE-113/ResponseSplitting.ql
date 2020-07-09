@@ -19,7 +19,7 @@ class ResponseSplittingConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) {
     source instanceof RemoteFlowSource and
-    not source instanceof TrustedSource
+    not source instanceof SafeHeaderSplittingSource
   }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof HeaderSplittingSink }
