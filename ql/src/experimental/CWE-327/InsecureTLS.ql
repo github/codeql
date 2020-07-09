@@ -119,6 +119,15 @@ class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
       sink = fld.getAWrite().getRhs()
     )
   }
+
+  /**
+   * Declare sinks as out-sanitizers in order to avoid producing superfluous paths where a cipher
+   * is written to CipherSuites, then the list is further extended with either safe or tainted
+   * suites.
+   */
+  override predicate isSanitizerOut(DataFlow::Node node) {
+    super.isSanitizerOut(node) or isSink(node)
+  }
 }
 
 /**
