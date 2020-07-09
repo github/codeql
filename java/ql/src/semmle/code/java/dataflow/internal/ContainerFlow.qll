@@ -141,29 +141,34 @@ private predicate taintPreservingQualifierToMethod(Method m) {
             "removeFirst", "removeLast"])
   or
   // java.util.concurrent.BlockingQueue
+  // covered by Queue: poll(long, TimeUnit)
   m.(CollectionMethod).hasName("take")
   or
   // java.util.concurrent.BlockingDeque
+  // covered by Deque: pollFirst(long, TimeUnit), pollLast(long, TimeUnit)
   m.(CollectionMethod).hasName(["takeFirst", "takeLast"])
   or
   // java.util.SortedSet
   m.(CollectionMethod).hasName(["first", "headSet", "last", "subSet", "tailSet"])
   or
   // java.util.NavigableSet
+  // covered by Deque: pollFirst(), pollLast()
+  // covered by SortedSet: headSet(E, boolean), subSet(E, boolean, E, boolean) and tailSet(E, boolean)
   m
       .(CollectionMethod)
       .hasName(["ceiling", "descendingIterator", "descendingSet", "floor", "higher", "lower"])
   or
-  //java.util.SortedMap
+  // java.util.SortedMap
   m.(MapMethod).hasName(["headMap", "subMap", "tailMap"])
   or
-  //java.util.NavigableMap
+  // java.util.NavigableMap
+  // covered by SortedMap: headMap(K, boolean), subMap(K, boolean, K, boolean), tailMap(K, boolean)
   m
       .(MapMethod)
       .hasName(["ceilingEntry", "descendingMap", "firstEntry", "floorEntry", "higherEntry",
             "lastEntry", "lowerEntry", "pollFirstEntry", "pollLastEntry"])
   or
-  //java.util.Dictionary
+  // java.util.Dictionary
   m
       .getDeclaringType()
       .getSourceDeclaration()
@@ -222,6 +227,7 @@ private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
   arg = method.getNumberOfParameters() - 1
   or
   // java.util.List
+  // covered by Collection: add(int, E), addAll(int, Collection<? extends E>)
   method.(CollectionMethod).hasName("set") and arg = 1
   or
   // java.util.Vector
@@ -234,15 +240,18 @@ private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
   method.(CollectionMethod).hasName("offer") and arg = 0
   or
   // java.util.Deque
+  // covered by Stack: push(E)
   method.(CollectionMethod).hasName(["addFirst", "addLast", "offerFirst", "offerLast"]) and arg = 0
   or
   // java.util.concurrent.BlockingQueue
+  // covered by Queue: offer(E, long, TimeUnit)
   method.(CollectionMethod).hasName("put") and arg = 0
   or
   // java.util.concurrent.TransferQueue
   method.(CollectionMethod).hasName(["transfer", "tryTransfer"]) and arg = 0
   or
   // java.util.concurrent.BlockingDeque
+  // covered by Deque: offerFirst(E, long, TimeUnit), offerLast(E, long, TimeUnit)
   method.(CollectionMethod).hasName(["putFirst", "putLast"]) and arg = 0
   or
   //java.util.Dictionary
