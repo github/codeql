@@ -215,6 +215,7 @@ namespace Semmle.Extraction.CSharp
         {
             bool prefixAssembly = true;
             if (named.ContainingAssembly is null) prefixAssembly = false;
+            if (!named.IsAnonymousType) prefixAssembly = false; // Breaks stuff
 
             if (named.IsTupleType)
             {
