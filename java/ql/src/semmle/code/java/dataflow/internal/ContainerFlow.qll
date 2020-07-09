@@ -180,7 +180,7 @@ private predicate qualifierToMethodStep(Expr tracked, MethodAccess sink) {
   tracked = sink.getQualifier()
 }
 
-private predicate qualifierToArgumentStep(Expr tracked, RValue sink) {
+private predicate qualifierToArgumentStep(Expr tracked, Expr sink) {
   exists(MethodAccess ma, CollectionMethod method |
     method = ma.getMethod() and
     (
