@@ -1,5 +1,6 @@
 /** Provides classes to reason about database query language injection vulnerabilities. */
 
+import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.frameworks.Jdbc
 import semmle.code.java.frameworks.android.SQLite
