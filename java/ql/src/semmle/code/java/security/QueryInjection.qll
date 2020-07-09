@@ -1,4 +1,4 @@
-/** Definitions used by the queries for database query injection. */
+/** Provides classes to reason about database query language injection vulnerabilities. */
 
 import java
 import semmle.code.java.dataflow.DataFlow

@@ -1,3 +1,5 @@
+/** Definitions used by the queries for database query injection. */
+
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.QueryInjection
