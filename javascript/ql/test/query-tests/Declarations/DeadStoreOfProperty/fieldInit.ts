@@ -19,13 +19,3 @@ class G {
     this.h = h;
   }
 }
-
-class Foo {
-  static static() {}
-
-  static *foo() {}
-
-  static set() {}
-
-  static static() {}
-}

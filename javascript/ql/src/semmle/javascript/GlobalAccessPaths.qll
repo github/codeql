@@ -440,7 +440,7 @@ module AccessPath {
      *
      * Only has a result if there exists both a read and write of the access-path within `bb`.
      */
-    private ControlFlowNode rankedAccessPath(
+    ControlFlowNode rankedAccessPath(
       ReachableBasicBlock bb, Root root, string path, int ranking, AccessPathKind type
     ) {
       result =

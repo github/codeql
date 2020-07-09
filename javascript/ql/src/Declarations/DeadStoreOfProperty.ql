@@ -13,13 +13,15 @@ import Expressions.DOMProperties
 import DeadStore
 
 /**
- * Holds if `write` writes to property `name` of `base`, and `base` is the only base object of `write`.
+ * Holds if `write` writes to a property of a base, and there is only one base object of `write`.
  */
-predicate unambiguousPropWrite(DataFlow::SourceNode base, string name, DataFlow::PropWrite write) {
-  write = base.getAPropertyWrite(name) and
-  not exists(DataFlow::SourceNode otherBase |
-    otherBase != base and
-    write = otherBase.getAPropertyWrite(name)
+predicate unambiguousPropWrite(DataFlow::PropWrite write) {
+  exists(DataFlow::SourceNode base, string name |
+    write = base.getAPropertyWrite(name) and
+    not exists(DataFlow::SourceNode otherBase |
+      otherBase != base and
+      write = otherBase.getAPropertyWrite(name)
+    )
   )
 }
 
@@ -27,29 +29,48 @@ predicate unambiguousPropWrite(DataFlow::SourceNode base, string name, DataFlow:
  * Holds if `assign1` and `assign2` both assign property `name` of the same object, and `assign2` post-dominates `assign1`.
  */
 predicate postDominatedPropWrite(
-  string name, DataFlow::PropWrite assign1, DataFlow::PropWrite assign2
+  string name, DataFlow::PropWrite assign1, DataFlow::PropWrite assign2, boolean local
 ) {
+  exists(DataFlow::SourceNode base |
+    assign1 = base.getAPropertyWrite(name) and
+    assign2 = base.getAPropertyWrite(name)
+  ) and
   exists(
-    ControlFlowNode write1, ControlFlowNode write2, DataFlow::SourceNode base,
-    ReachableBasicBlock block1, ReachableBasicBlock block2
+    ControlFlowNode write1, ControlFlowNode write2, ReachableBasicBlock block1,
+    ReachableBasicBlock block2
   |
     write1 = assign1.getWriteNode() and
     write2 = assign2.getWriteNode() and
     block1 = write1.getBasicBlock() and
     block2 = write2.getBasicBlock() and
-    unambiguousPropWrite(base, name, assign1) and
-    unambiguousPropWrite(base, name, assign2) and
-    block2.postDominates(block1) and
+    unambiguousPropWrite(assign1) and
+    unambiguousPropWrite(assign2) and
     (
-      block1 = block2
-      implies
-      exists(int i1, int i2 |
-        write1 = block1.getNode(i1) and
-        write2 = block2.getNode(i2) and
-        i1 < i2
-      )
+      block2.strictlyPostDominates(block1) and local = false
+      or
+      block1 = block2 and
+      local = true and
+      getRank(block1, write1, name) < getRank(block2, write2, name)
     )
   )
+}
+
+/**
+ * Gets the rank for the read/write `ref` of a property `name` inside basicblock `bb`.
+ */
+int getRank(ReachableBasicBlock bb, ControlFlowNode ref, string name) {
+  ref =
+    rank[result](ControlFlowNode e |
+      exists(DataFlow::PropWrite write |
+        write.getPropertyName() = name and
+        e = write.getWriteNode() and
+        unambiguousPropWrite(write)
+      )
+      or
+      e.(PropAccess).getPropertyName() = name and e instanceof RValue
+    |
+      e order by any(int i | e = bb.getNode(i))
+    )
 }
 
 /**
@@ -67,8 +88,11 @@ predicate maybeAccessesProperty(Expr e, string name) {
  * Holds if `assign1` and `assign2` both assign property `name`, but `assign1` is dead because of `assign2`.
  */
 predicate isDeadAssignment(string name, DataFlow::PropWrite assign1, DataFlow::PropWrite assign2) {
-  postDominatedPropWrite(name, assign1, assign2) and
-  noPropAccessBetween(name, assign1, assign2) and
+  (
+    noPropAccessBetweenLocal(name, assign1, assign2)
+    or
+    noPropAccessBetweenGlobal(name, assign1, assign2)
+  ) and
   not isDOMProperty(name)
 }
 
@@ -76,58 +100,170 @@ predicate isDeadAssignment(string name, DataFlow::PropWrite assign1, DataFlow::P
  * Holds if `assign` assigns a property `name` that may be accessed somewhere else in the same block,
  * `after` indicates if the access happens before or after the node for `assign`.
  */
-bindingset[name]
-predicate maybeAccessesAssignedPropInBlock(string name, DataFlow::PropWrite assign, boolean after) {
-  exists(ReachableBasicBlock block, int i, int j, Expr e |
-    assign.getWriteNode() = block.getNode(i) and
-    e = block.getNode(j) and
-    maybeAccessesProperty(e, name)
+predicate maybeAccessesAssignedPropInBlock(DataFlow::PropWrite assign, boolean after) {
+  (
+    // early pruning - manual magic
+    after = true and postDominatedPropWrite(_, assign, _, false)
+    or
+    after = false and postDominatedPropWrite(_, _, assign, false)
+  ) and
+  exists(ReachableBasicBlock block, int i, int j, Expr e, string name |
+    i = getRank(block, assign.getWriteNode(), name) and
+    j = getRank(block, e, name) and
+    e instanceof PropAccess and
+    e instanceof RValue
   |
     after = true and i < j
     or
     after = false and j < i
   )
+  or
+  exists(ReachableBasicBlock block | assign.getWriteNode().getBasicBlock() = block |
+    after = true and isBeforeImpure(assign, block)
+    or
+    after = false and isAfterImpure(assign, block)
+  )
 }
 
 /**
- * Holds if `assign1` and `assign2` both assign property `name`, and the assigned property is not accessed between the two assignments.
+ * Holds if a ControlFlowNode `c` is before an impure expression inside `bb`.
  */
-bindingset[name]
-predicate noPropAccessBetween(string name, DataFlow::PropWrite assign1, DataFlow::PropWrite assign2) {
+predicate isBeforeImpure(DataFlow::PropWrite write, ReachableBasicBlock bb) {
+  getANodeAfterWrite(write, bb).(Expr).isImpure()
+}
+
+/**
+ * Gets a ControlFlowNode that comes after `write` inside `bb`.
+ * Stops after finding the first impure expression
+ */
+ControlFlowNode getANodeAfterWrite(DataFlow::PropWrite write, ReachableBasicBlock bb) {
+  // base case
+  result.getBasicBlock() = bb and
+  postDominatedPropWrite(_, write, _, false) and // early pruning - manual magic
+  result = write.getWriteNode().getASuccessor()
+  or
+  // recursive case
+  exists(ControlFlowNode prev | prev = getANodeAfterWrite(write, bb) |
+    not result instanceof BasicBlock and
+    not prev.(Expr).isImpure() and
+    result = prev.getASuccessor()
+  )
+}
+
+/**
+ * Holds if a ControlFlowNode `c` is after an impure expression inside `bb`.
+ */
+predicate isAfterImpure(DataFlow::PropWrite write, ReachableBasicBlock bb) {
+  getANodeBeforeWrite(write, bb).(Expr).isImpure()
+}
+
+/**
+ * Gets a ControlFlowNode that comes before `write` inside `bb`.
+ * Stops after finding the first impure expression.
+ */
+ControlFlowNode getANodeBeforeWrite(DataFlow::PropWrite write, ReachableBasicBlock bb) {
+  // base case
+  result.getBasicBlock() = bb and
+  postDominatedPropWrite(_, _, write, false) and // early pruning - manual magic
+  result = write.getWriteNode().getAPredecessor()
+  or
+  // recursive case
+  exists(ControlFlowNode prev | prev = getANodeBeforeWrite(write, bb) |
+    not prev instanceof BasicBlock and
+    not prev.(Expr).isImpure() and
+    result = prev.getAPredecessor()
+  )
+}
+
+/**
+ * Gets a successor inside `bb` in the control-flow graph that does not pass through an impure expression (except for writes to `name`).
+ * Stops after the first write to `name` that happens after `node`.
+ */
+ControlFlowNode getAPureSuccessor(ControlFlowNode node) {
+  // stop at impure expressions (except writes to `name`)
+  not (
+    maybeAccessesProperty(result, getPropertyWriteName(node)) and
+    not result =
+      any(DataFlow::PropWrite write | write.getPropertyName() = getPropertyWriteName(node))
+          .getWriteNode()
+  ) and
+  (
+    // base case.
+    exists(DataFlow::PropWrite write |
+      node = write.getWriteNode() and
+      result = node.getASuccessor() and
+      // cheap check that there might exist a result we are interrested in,
+      postDominatedPropWrite(_, write, _, true)
+    )
+    or
+    // recursive case
+    exists(ControlFlowNode pred | pred = getAPureSuccessor(node) | result = pred.getASuccessor()) and
+    // stop at basic-block boundaries
+    not result instanceof BasicBlock and
+    // make sure we stop after the first write to `name` that comes after `node`.
+    (
+      not result.getAPredecessor() =
+        any(DataFlow::PropWrite write | write.getPropertyName() = getPropertyWriteName(node))
+            .getWriteNode()
+      or
+      result.getAPredecessor() = node
+    )
+  )
+}
+
+/**
+ * Gets the property name that is written to by the control-flow-node `writeNode`.
+ */
+private string getPropertyWriteName(ControlFlowNode writeNode) {
+  exists(DataFlow::PropWrite write |
+    write.getWriteNode() = writeNode and result = write.getPropertyName()
+  )
+}
+
+/**
+ * Holds if `assign1` and `assign2` are inside the same basicblock and both assign property `name`, and the assigned property is not accessed between the two assignments.
+ */
+predicate noPropAccessBetweenLocal(
+  string name, DataFlow::PropWrite assign1, DataFlow::PropWrite assign2
+) {
+  exists(ControlFlowNode write1, ControlFlowNode write2 |
+    postDominatedPropWrite(name, assign1, assign2, true) and
+    write1 = assign1.getWriteNode() and
+    write2 = assign2.getWriteNode() and
+    getRank(_, write1, name) < getRank(_, write2, name) and
+    write2 = getAPureSuccessor(write1)
+  )
+}
+
+/**
+ * Holds if `assign1` and `assign2` are in different basicblocks and both assign property `name`, and the assigned property is not accessed between the two assignments.
+ *
+ * Much of this predicate is copy-pasted from `noPropAccessBetweenLocal`, but the predicates are separate to avoid join-order issues.
+ */
+pragma[nomagic]
+predicate noPropAccessBetweenGlobal(
+  string name, DataFlow::PropWrite assign1, DataFlow::PropWrite assign2
+) {
   exists(
     ControlFlowNode write1, ControlFlowNode write2, ReachableBasicBlock block1,
     ReachableBasicBlock block2
   |
+    postDominatedPropWrite(name, assign1, assign2, false) and // early pruning
     write1 = assign1.getWriteNode() and
+    not maybeAccessesAssignedPropInBlock(assign1, true) and
     write2 = assign2.getWriteNode() and
+    not maybeAccessesAssignedPropInBlock(assign2, false) and
     write1.getBasicBlock() = block1 and
     write2.getBasicBlock() = block2 and
-    if block1 = block2
-    then
-      // same block: check for access between
-      not exists(int i1, Expr mid, int i2 |
-        write1 = block1.getNode(i1) and
-        write2 = block2.getNode(i2) and
-        mid = block1.getNode([i1 + 1 .. i2 - 1]) and
-        maybeAccessesProperty(mid, name)
-      )
-    else
-      // other block:
-      not (
-        // check for an access after the first write node
-        maybeAccessesAssignedPropInBlock(name, assign1, true)
-        or
-        // check for an access between the two write blocks
-        exists(ReachableBasicBlock mid |
-          block1.getASuccessor+() = mid and
-          mid.getASuccessor+() = block2
-        |
-          maybeAccessesProperty(mid.getANode(), name)
-        )
-        or
-        // check for an access before the second write node
-        maybeAccessesAssignedPropInBlock(name, assign2, false)
-      )
+    not block1 = block2 and
+    // other block:
+    // check for an access between the two write blocks
+    not exists(ReachableBasicBlock mid |
+      block1.getASuccessor+() = mid and
+      mid.getASuccessor+() = block2
+    |
+      maybeAccessesProperty(mid.getANode(), name)
+    )
   )
 }
 
