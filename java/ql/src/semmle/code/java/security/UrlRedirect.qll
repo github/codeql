@@ -7,7 +7,7 @@ import semmle.code.java.frameworks.Servlets
 abstract class UrlRedirectSink extends DataFlow::Node { }
 
 /** A Servlet URL redirection sink. */
-class ServletUrlRedirectSink extends UrlRedirectSink {
+private class ServletUrlRedirectSink extends UrlRedirectSink {
   ServletUrlRedirectSink() {
     exists(MethodAccess ma |
       ma.getMethod() instanceof HttpServletResponseSendRedirectMethod and
