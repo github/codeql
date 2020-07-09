@@ -88,8 +88,8 @@ class ContainerTest {
 		// java.util.Stack
 		sink(stack.peek());
 		sink(stack.pop());
-		stack.push("value"); // not tainted
-		sink(stack.push(source("value")));
+		sink(stack.push("value")); // not tainted
+		sink(new Stack().push(source("value")));
 		mkSink(Stack.class).push(source("value"));
 
 		// java.util.Queue

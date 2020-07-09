@@ -21,7 +21,6 @@
 | ContainterTest.java:34:4:34:24 | vector | ContainterTest.java:86:19:86:40 | mkSink(...) [post update] |
 | ContainterTest.java:35:4:35:22 | stack | ContainterTest.java:89:8:89:19 | peek(...) |
 | ContainterTest.java:35:4:35:22 | stack | ContainterTest.java:90:8:90:18 | pop(...) |
-| ContainterTest.java:35:4:35:22 | stack | ContainterTest.java:92:8:92:34 | push(...) |
 | ContainterTest.java:36:4:36:22 | queue | ContainterTest.java:96:8:96:22 | element(...) |
 | ContainterTest.java:36:4:36:22 | queue | ContainterTest.java:97:8:97:19 | peek(...) |
 | ContainterTest.java:36:4:36:22 | queue | ContainterTest.java:98:8:98:19 | poll(...) |
@@ -104,6 +103,7 @@
 | ContainterTest.java:83:42:83:50 | "element" | ContainterTest.java:83:3:83:22 | mkSink(...) [post update] |
 | ContainterTest.java:84:47:84:55 | "element" | ContainterTest.java:84:3:84:22 | mkSink(...) [post update] |
 | ContainterTest.java:85:44:85:52 | "element" | ContainterTest.java:85:3:85:22 | mkSink(...) [post update] |
+| ContainterTest.java:92:32:92:38 | "value" | ContainterTest.java:92:8:92:40 | push(...) |
 | ContainterTest.java:93:35:93:41 | "value" | ContainterTest.java:93:3:93:21 | mkSink(...) [post update] |
 | ContainterTest.java:100:36:100:44 | "element" | ContainterTest.java:100:3:100:21 | mkSink(...) [post update] |
 | ContainterTest.java:111:39:111:45 | "value" | ContainterTest.java:111:3:111:21 | mkSink(...) [post update] |
