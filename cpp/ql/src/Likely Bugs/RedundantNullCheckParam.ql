@@ -28,21 +28,17 @@ predicate isCheckedInstruction(VariableAccess unchecked, VariableAccess checked)
   blockDominates(checked.getEnclosingBlock(), unchecked.getEnclosingBlock())
 }
 
-pragma[noinline]
 predicate candidateResultUnchecked(VariableAccess unchecked) {
   not isCheckedInstruction(unchecked, _)
 }
 
-pragma[noinline]
-predicate candidateResultChecked(VariableAccess check, EqualityOperation eqop, Parameter param) {
+predicate candidateResultChecked(VariableAccess check, EqualityOperation eqop) {
 //not dereferenced to check against pointer, not its pointed value
   not dereferenced(check) and
 //assert macros are not taken into account
   not check.isInMacroExpansion() and
 // is part of a comarison against some constant NULL
-  eqop.getAnOperand() = check and eqop.getAnOperand() instanceof NullValue and
-// this function parameter is not overwritten
-  count(param.getAnAssignment()) = 0
+  eqop.getAnOperand() = check and eqop.getAnOperand() instanceof NullValue
 }
 
 from VariableAccess unchecked, VariableAccess check, EqualityOperation eqop, Parameter param
@@ -51,9 +47,10 @@ where
   dereferenced(unchecked) and
 // for a function parameter
   unchecked.getTarget() = param and
-  check.getTarget() = param and
+// this function parameter is not overwritten
+  count(param.getAnAssignment()) = 0 and
 // which is once checked
-  candidateResultChecked(check, eqop, param) and
+  candidateResultChecked(check, eqop) and
 // and which has not been checked before in this code path
   candidateResultUnchecked(unchecked)
 select check, "This null check is redundant because the value is $@ ", unchecked, "dereferenced here"
