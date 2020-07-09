@@ -13,11 +13,6 @@
 
 import cpp
 
-predicate blockDominates(Block check, Block access) {
-  check.getLocation().getStartLine() <= access.getLocation().getStartLine() and
-  check.getLocation().getEndLine() >= access.getLocation().getEndLine()
-}
-
 predicate isCheckedInstruction(VariableAccess unchecked, VariableAccess checked) {
   checked =
     any(VariableAccess va |
@@ -25,7 +20,7 @@ predicate isCheckedInstruction(VariableAccess unchecked, VariableAccess checked)
   ) and
 //Simple test if the first access in this code path is dereferenced
   not dereferenced(checked) and
-  blockDominates(checked.getEnclosingBlock(), unchecked.getEnclosingBlock())
+  bbDominates(checked.getBasicBlock(), unchecked.getBasicBlock())
 }
 
 predicate candidateResultUnchecked(VariableAccess unchecked) {
