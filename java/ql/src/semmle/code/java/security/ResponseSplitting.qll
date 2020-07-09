@@ -2,6 +2,7 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.frameworks.JaxWS
 
@@ -9,7 +10,9 @@ import semmle.code.java.frameworks.JaxWS
 abstract class HeaderSplittingSink extends DataFlow::Node { }
 
 /** Sources that cannot be used to perform a header splitting attack. */
-abstract class SafeHeaderSplittingSource extends DataFlow::Node { }
+abstract class SafeHeaderSplittingSource extends DataFlow::Node {
+  SafeHeaderSplittingSource() { this instanceof RemoteFlowSource }
+}
 
 /** Servlet and JaxWS sinks susceptible to header splitting. */
 private class ServletHeaderSplittingSink extends HeaderSplittingSink {
