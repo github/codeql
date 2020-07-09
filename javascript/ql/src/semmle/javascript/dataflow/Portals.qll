@@ -97,6 +97,20 @@ class Portal extends TPortal {
   ReturnPortal getReturn() { result.getBasePortal() = this }
 
   /**
+   * Gets the `i`th base portal of this portal.
+   *
+   * The `0`th base portal is the portal itself, the `n+1`st base portal is the `n`th base portal
+   * of the portal `p` of which this is a member, instance, parameter, or return portal.
+   */
+  cached
+  Portal getBasePortal(int i) {
+    i = 0 and
+    result = this
+    or
+    result = this.(CompoundPortal).getBasePortal().getBasePortal(i - 1)
+  }
+
+  /**
    * Gets a textual representation of this portal.
    *
    * Different portals must have different `toString`s, so the result of
