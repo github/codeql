@@ -181,7 +181,7 @@ private module NpmPackagePortal {
   predicate imports(DataFlow::SourceNode imp, string pkgName) {
     exists(NPMPackage pkg |
       imp = getAModuleImport(pkg, pkgName) and
-      pkg.declaresDependency(pkgName, _)
+      pkgName.regexpMatch("[^./].*")
     )
   }
 
@@ -189,7 +189,7 @@ private module NpmPackagePortal {
   predicate imports(DataFlow::SourceNode imp, string pkgName, string member) {
     exists(NPMPackage pkg |
       imp = getAModuleMemberImport(pkg, pkgName, member) and
-      pkg.declaresDependency(pkgName, _)
+      pkgName.regexpMatch("[^./].*")
     )
   }
 
