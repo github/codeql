@@ -86,7 +86,7 @@ library class Attribute_ extends @py_Attribute, Expr {
 /** INTERNAL: See the class `AugAssign` for further information. */
 library class AugAssign_ extends @py_AugAssign, Stmt {
   /** Gets the operation of this augmented assignment statement. */
-  BinaryExpr getOperation() { py_exprs(result, _, this, 1) }
+    BinaryExpr getOperation() { py_exprs(result, _, this, 1) }
 
   override string toString() { result = "AugAssign" }
 }
