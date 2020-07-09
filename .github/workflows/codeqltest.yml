@@ -34,7 +34,7 @@ jobs:
       run: env PATH=$PATH:$HOME/codeql make
 
     - name: Check that all QL and Go code is autoformatted
-      run: env PATH=$PATH:$HOME/codeql make QL_AUTOFORMAT=--check-only GO_AUTOFORMAT=-d autoformat
+      run: env PATH=$PATH:$HOME/codeql make check-formatting
 
     - name: Test
       run: env PATH=$PATH:$HOME/codeql make test

@@ -10,51 +10,51 @@ func insecureSSHClientConfig() {
 		Auth: []ssh.AuthMethod{nil},
 		HostKeyCallback: ssh.HostKeyCallback(
 			func(hostname string, remote net.Addr, key ssh.PublicKey) error {
-				 return nil
-		}),
-	 }
+				return nil
+			}),
+	}
 }
 
 func insecureSSHClientConfigAlt() {
 	_ = &ssh.ClientConfig{
-		User: "user",
-		Auth: []ssh.AuthMethod{nil},
+		User:            "user",
+		Auth:            []ssh.AuthMethod{nil},
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
-	 }
+	}
 }
 
 func insecureSSHClientConfigLocalFlow() {
 	callback := ssh.HostKeyCallback(
 		func(hostname string, remote net.Addr, key ssh.PublicKey) error {
-			 return nil
-	})
+			return nil
+		})
 
 	_ = &ssh.ClientConfig{
-		User: "user",
-		Auth: []ssh.AuthMethod{nil},
+		User:            "user",
+		Auth:            []ssh.AuthMethod{nil},
 		HostKeyCallback: callback,
-	 }
+	}
 }
 
 func insecureSSHClientConfigLocalFlowAlt() {
-	callback := 
+	callback :=
 		func(hostname string, remote net.Addr, key ssh.PublicKey) error {
-			 return nil
-	};
+			return nil
+		}
 
 	_ = &ssh.ClientConfig{
-		User: "user",
-		Auth: []ssh.AuthMethod{nil},
+		User:            "user",
+		Auth:            []ssh.AuthMethod{nil},
 		HostKeyCallback: ssh.HostKeyCallback(callback),
-	 }
+	}
 }
 
 func potentialInsecureSSHClientConfig(callback ssh.HostKeyCallback) {
 	_ = &ssh.ClientConfig{
-		User: "user",
-		Auth: []ssh.AuthMethod{nil},
+		User:            "user",
+		Auth:            []ssh.AuthMethod{nil},
 		HostKeyCallback: callback,
-	 }
+	}
 }
 
 func main() {
@@ -62,8 +62,8 @@ func main() {
 
 	insecureCallback := ssh.HostKeyCallback(
 		func(hostname string, remote net.Addr, key ssh.PublicKey) error {
-			 return nil
-	})
+			return nil
+		})
 
 	potentialInsecureSSHClientConfig(insecureCallback)
 
@@ -72,8 +72,8 @@ func main() {
 			if hostname == "localhost" {
 				return nil
 			}
-			 return fmt.Errorf("ssh: Unexpected host for key")
-	})
+			return fmt.Errorf("ssh: Unexpected host for key")
+		})
 
 	potentialInsecureSSHClientConfig(potentiallySecureCallback)
 	potentialInsecureSSHClientConfig(ssh.InsecureIgnoreHostKey())

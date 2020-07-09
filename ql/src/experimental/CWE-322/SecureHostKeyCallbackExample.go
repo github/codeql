@@ -12,8 +12,8 @@ func secureHostKeyCallback() {
 	publicKey, _ := ssh.ParsePublicKey(publicKeyBytes)
 
 	_ = &ssh.ClientConfig{
-		User: "username",
-		Auth: []ssh.AuthMethod{nil},
+		User:            "username",
+		Auth:            []ssh.AuthMethod{nil},
 		HostKeyCallback: ssh.FixedHostKey(publicKey),
 	}
 }
