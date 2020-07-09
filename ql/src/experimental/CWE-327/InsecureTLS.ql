@@ -23,59 +23,103 @@ predicate isTestFile(DataFlow::Node node) {
   )
 }
 
-predicate unsafeTlsVersion(int val, string name) {
+predicate isInsecureTlsVersion(int val, string name, string fieldName) {
+  (fieldName = "MinVersion" or fieldName = "MaxVersion") and
   // tls.VersionSSL30
-  val = 768 and name = "VersionSSL30"
-  or
-  // tls.VersionTLS10
-  val = 769 and name = "VersionTLS10"
-  or
-  // tls.VersionTLS11
-  val = 770 and name = "VersionTLS11"
-  or
-  // Zero indicates the lowest available version setting for MinVersion,
-  // or the highest available version setting for MaxVersion.
-  val = 0 and name = ""
+  (
+    val = 768 and name = "VersionSSL30"
+    or
+    // tls.VersionTLS10
+    val = 769 and name = "VersionTLS10"
+    or
+    // tls.VersionTLS11
+    val = 770 and name = "VersionTLS11"
+    or
+    // Zero indicates the lowest available version setting for MinVersion,
+    // or the highest available version setting for MaxVersion.
+    val = 0 and name = "" and fieldName = "MinVersion"
+  )
 }
 
 /**
- * Flow of unsecure TLS versions into a `tls.Config` struct,
- * to the `MinVersion` and `MaxVersion` fields.
+ * Flow of TLS versions into a `tls.Config` struct, to the `MinVersion` and `MaxVersion` fields.
  */
 class TlsVersionFlowConfig extends TaintTracking::Configuration {
   TlsVersionFlowConfig() { this = "TlsVersionFlowConfig" }
 
-  predicate isSource(DataFlow::Node source, int val) {
-    val = source.getIntValue() and
-    unsafeTlsVersion(val, _)
-  }
+  predicate isSource(DataFlow::Node source, int val) { val = source.getIntValue() }
 
-  predicate isSink(DataFlow::Node sink, Field fld) {
+  predicate isSink(DataFlow::Node sink, Field fld, DataFlow::Node base, Write fieldWrite) {
     fld.hasQualifiedName("crypto/tls", "Config", ["MinVersion", "MaxVersion"]) and
-    sink = fld.getAWrite().getRhs()
+    fieldWrite = fld.getAWrite() and
+    fieldWrite.writesField(base, fld, sink)
   }
 
   override predicate isSource(DataFlow::Node source) { isSource(source, _) }
 
-  override predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
+  override predicate isSink(DataFlow::Node sink) { isSink(sink, _, _, _) }
+}
+
+/**
+ * Holds if a secure TLS version may reach `sink`, which writes to `base`.`fld`
+ */
+predicate secureTlsVersionFlowsToSink(DataFlow::PathNode sink, Field fld, DataFlow::Node base) {
+  exists(TlsVersionFlowConfig secureCfg, DataFlow::PathNode source, int version |
+    secureCfg.hasFlowPath(source, sink) and
+    secureCfg.isSink(sink.getNode(), fld, base, _) and
+    secureCfg.isSource(source.getNode(), version) and
+    not isInsecureTlsVersion(version, _, fld.getName())
+  )
+}
+
+/**
+ * Holds if a secure TLS version may reach `baseEntity`.`fld`
+ */
+predicate secureTlsVersionFlowsToEntity(ValueEntity baseEntity, Field fld) {
+  exists(DataFlow::PathNode sink, DataFlow::Node base |
+    secureTlsVersionFlowsToSink(sink, fld, base) and
+    base.(DataFlow::ReadNode).reads(baseEntity)
+  )
+}
+
+/**
+ * Holds if a secure TLS version may reach `base`.`fld`
+ */
+predicate secureTlsVersionFlowsToField(DataFlow::Node base, Field fld) {
+  secureTlsVersionFlowsToSink(_, fld, base)
+  or
+  exists(ValueEntity baseEntity |
+    base.(DataFlow::ReadNode).reads(baseEntity) and
+    secureTlsVersionFlowsToEntity(baseEntity, fld)
+  )
 }
 
 /**
  * Find insecure TLS versions.
  */
-predicate checkTlsVersions(DataFlow::PathNode source, DataFlow::PathNode sink, string message) {
+predicate checkTlsVersions(
+  DataFlow::PathNode source, DataFlow::PathNode sink, string message, DataFlow::Node base
+) {
   exists(TlsVersionFlowConfig cfg, int version, Field fld |
     cfg.hasFlowPath(source, sink) and
     cfg.isSource(source.getNode(), version) and
-    cfg.isSink(sink.getNode(), fld) and
-    // Exclude tls.Config.Max = 0 (which is OK):
-    not (version = 0 and fld.getName() = "MaxVersion")
+    cfg.isSink(sink.getNode(), fld, base, _) and
+    isInsecureTlsVersion(version, _, fld.getName()) and
+    // Exclude cases where a secure TLS version can also flow to the same
+    // sink, or to different sinks that refer to the same base and field,
+    // which suggests a configurable security mode. baseAlias is used because
+    // isSink will return both implicit dereferences and the expression
+    // accessed.
+    not exists(DataFlow::Node baseAlias |
+      cfg.isSink(sink.getNode(), fld, baseAlias, _) and
+      secureTlsVersionFlowsToField(baseAlias, fld)
+    )
   |
     version = 0 and
     message = "Using lowest TLS version for " + fld + "."
     or
     version != 0 and
-    exists(string name | unsafeTlsVersion(version, name) |
+    exists(string name | isInsecureTlsVersion(version, name, _) |
       message = "Using insecure TLS version " + name + " for " + fld + "."
     )
   )
@@ -150,7 +194,7 @@ predicate checkTlsInsecureCipherSuites(
 from DataFlow::PathNode source, DataFlow::PathNode sink, string message
 where
   (
-    checkTlsVersions(source, sink, message) or
+    checkTlsVersions(source, sink, message, _) or
     checkTlsInsecureCipherSuites(source, sink, message)
   ) and
   // Exclude sinks guarded by a feature flag
