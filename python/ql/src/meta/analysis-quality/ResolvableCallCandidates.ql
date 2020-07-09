@@ -1,6 +1,6 @@
 /**
  * @name Resolvable call candidates
- * @description The number (relevant) calls in the program.
+ * @description The number of (relevant) calls in the program.
  * @kind metric
  * @metricType project
  * @metricAggregate sum

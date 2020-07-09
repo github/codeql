@@ -1,6 +1,6 @@
 /**
  * @name Ratio of resolvable call by points-to
- * @description The percentage (relevant) calls that can be resolved to a target.
+ * @description The percentage of (relevant) calls that can be resolved to a target.
  * @kind metric
  * @metricType project
  * @metricAggregate sum min max avg

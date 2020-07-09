@@ -14,7 +14,7 @@ class RelevantCall extends Call {
   RelevantCall() { not this.getLocation().getFile() instanceof IgnoredFile }
 }
 
-/** Provides classes for call-graph resolution by using points-to */
+/** Provides classes for call-graph resolution by using points-to. */
 module PointsTo {
   /** A call that can be resolved by points-to. */
   class ResolvableCall extends RelevantCall {
@@ -22,7 +22,7 @@ module PointsTo {
 
     ResolvableCall() { target.getACall() = this.getAFlowNode() }
 
-    /** Gets a resolved target of this call */
+    /** Gets a resolved target of this call. */
     Value getTarget() { result = target }
   }
 
@@ -56,7 +56,7 @@ module PointsTo {
   }
 
   /**
-   * A call that can be resolved by points-to, where resolved target is not considered relevant.
+   * A call that can be resolved by points-to, where the resolved target is not considered relevant.
    * See `ResolvableCallRelevantTarget` for definition of relevance.
    */
   class ResolvableCallIrrelevantTarget extends ResolvableCall {
