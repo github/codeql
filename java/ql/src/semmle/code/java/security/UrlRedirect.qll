@@ -1,3 +1,5 @@
+/** Provides classes to reason about URL redirect attacks. */
+
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.frameworks.Servlets
 
