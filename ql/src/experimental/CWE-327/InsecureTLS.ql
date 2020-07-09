@@ -11,6 +11,7 @@
 
 import go
 import DataFlow::PathGraph
+import semmle.go.security.InsecureFeatureFlag::InsecureFeatureFlag
 
 /**
  * Check whether the file where the node is located is a test file.
@@ -151,6 +152,12 @@ where
   (
     checkTlsVersions(source, sink, message) or
     checkTlsInsecureCipherSuites(source, sink, message)
+  ) and
+  // Exclude sinks guarded by a feature flag
+  not getAFeatureFlagCheck().dominatesNode(sink.getNode().asInstruction()) and
+  // Exclude results in functions whose name documents the insecurity
+  not exists(FuncDef fn | fn = sink.getNode().asInstruction().getRoot() |
+    isFeatureFlagName(fn.getEnclosingFunction*().getName())
   ) and
   // Exclude results in test code:
   not isTestFile(sink.getNode())
