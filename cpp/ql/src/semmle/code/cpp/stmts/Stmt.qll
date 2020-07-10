@@ -137,12 +137,14 @@ class Stmt extends StmtParent, @stmt {
   predicate isCompilerGenerated() { compgenerated(underlyingElement(this)) }
 }
 
+private class TStmtParent = @stmt or @expr;
+
 /**
  * An element that is the parent of a statement in the C/C++ AST.
  *
  * This is normally a statement, but may be a `StmtExpr`.
  */
-abstract class StmtParent extends ControlFlowNode { }
+class StmtParent extends ControlFlowNode, TStmtParent { }
 
 /**
  * A C/C++ 'expression' statement.
@@ -179,28 +181,32 @@ class ExprStmt extends Stmt, @stmt_expr {
   }
 }
 
+private class TControlStructure = TConditionalStmt or TLoop;
+
 /**
  * A C/C++ control structure, that is, either a conditional statement or
  * a loop.
  */
-abstract class ControlStructure extends Stmt {
+class ControlStructure extends Stmt, TControlStructure {
   /**
    * Gets the controlling expression of this control structure.
    *
    * This is the condition of 'if' statements and loops, and the
    * switched expression for 'switch' statements.
    */
-  abstract Expr getControllingExpr();
+  Expr getControllingExpr() { none() } // overridden by subclasses
 
   /** Gets a child declaration of this scope. */
   Declaration getADeclaration() { none() }
 }
 
+private class TConditionalStmt = @stmt_if or @stmt_constexpr_if or @stmt_while or @stmt_switch;
+
 /**
  * A C/C++ conditional statement, that is, either an 'if' statement or a
  * 'switch' statement.
  */
-abstract class ConditionalStmt extends ControlStructure { }
+class ConditionalStmt extends ControlStructure, TConditionalStmt { }
 
 /**
  * A C/C++ 'if' statement. For example, the `if` statement in the following
@@ -374,16 +380,18 @@ class ConstexprIfStmt extends ConditionalStmt, @stmt_constexpr_if {
   }
 }
 
+private class TLoop = @stmt_while or @stmt_end_test_while or @stmt_range_based_for or @stmt_for;
+
 /**
  * A C/C++ loop, that is, either a 'while' loop, a 'for' loop, or a
  * 'do' loop.
  */
-abstract class Loop extends ControlStructure {
+class Loop extends ControlStructure, TLoop {
   /** Gets the condition expression of this loop. */
-  abstract Expr getCondition();
+  Expr getCondition() { none() } // overridden in subclasses
 
   /** Gets the body statement of this loop. */
-  abstract Stmt getStmt();
+  Stmt getStmt() { none() } // overridden in subclasses
 }
 
 /**
@@ -461,7 +469,7 @@ class WhileStmt extends Loop, @stmt_while {
 /**
  * A C/C++ jump statement.
  */
-abstract class JumpStmt extends Stmt, @jump {
+class JumpStmt extends Stmt, @jump {
   override string getAPrimaryQlClass() { result = "JumpStmt" }
 
   /** Gets the target of this jump statement. */
