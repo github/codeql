@@ -1,16 +1,16 @@
 /**
- * Provides classes modeling security-relevant aspects of the standard libraries.
+ * Provides classes modeling security-relevant aspects of the `archive/tar` package.
  */
 
 import go
 
 /** Provides models of commonly used functions in the `archive/tar` package. */
-module ArchiveTarTaintTracking {
-  private class FunctionTaintTracking extends TaintTracking::FunctionModel {
+module ArchiveTar {
+  private class FunctionModels extends TaintTracking::FunctionModel {
     FunctionInput inp;
     FunctionOutput outp;
 
-    FunctionTaintTracking() {
+    FunctionModels() {
       // signature: func FileInfoHeader(fi os.FileInfo, link string) (*Header, error)
       hasQualifiedName("archive/tar", "FileInfoHeader") and
       (inp.isParameter(0) and outp.isResult(0))
@@ -29,11 +29,11 @@ module ArchiveTarTaintTracking {
     }
   }
 
-  private class MethodAndInterfaceTaintTracking extends TaintTracking::FunctionModel, Method {
+  private class MethodModels extends TaintTracking::FunctionModel, Method {
     FunctionInput inp;
     FunctionOutput outp;
 
-    MethodAndInterfaceTaintTracking() {
+    MethodModels() {
       // Methods:
       // signature: func (*Header).FileInfo() os.FileInfo
       this.(Method).hasQualifiedName("archive/tar", "Header", "FileInfo") and
