@@ -21,20 +21,21 @@ EXTRACTOR_PACK_OUT = build/codeql-extractor-go
 BINARIES = go-extractor go-tokenizer go-autobuilder go-bootstrap go-gen-dbscheme
 
 .PHONY: tools tools-codeql tools-codeql-full clean autoformat \
-	tools-linux64 tools-osx64 tools-win64
+	tools-linux64 tools-osx64 tools-win64 check-formatting
 
 clean:
 	rm -rf tools/bin tools/linux64 tools/osx64 tools/win64 tools/net tools/opencsv
 	rm -rf $(EXTRACTOR_PACK_OUT) build/stats build/testdb
 
-QL_AUTOFORMAT=-qq -i
-GO_AUTOFORMAT=-w # Update files in-place
-
 DATAFLOW_BRANCH=master
 
 autoformat:
-	find ql/src -name "*.ql" -or -name "*.qll" | xargs codeql query format $(QL_AUTOFORMAT)
-	git ls-files | grep \\.go$ | xargs grep -L "//\s*autoformat-ignore" | xargs gofmt $(GO_AUTOFORMAT)
+	find ql/src -name "*.ql" -or -name "*.qll" | xargs codeql query format -qq -i
+	git ls-files | grep \\.go$ | xargs grep -L "//\s*autoformat-ignore" | xargs gofmt -w
+
+check-formatting:
+	find ql/src -name "*.ql" -or -name "*.qll" | xargs codeql query format --check-only
+	test -z "$$(git ls-files | grep \\.go$ | xargs grep -L "//\s*autoformat-ignore" | xargs gofmt -l)"
 
 tools: $(addsuffix $(EXE),$(addprefix tools/bin/,$(BINARIES))) tools/tokenizer.jar
 

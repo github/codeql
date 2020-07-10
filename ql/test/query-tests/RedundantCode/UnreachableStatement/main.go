@@ -1,6 +1,8 @@
 package main
 
-import ("errors")
+import (
+	"errors"
+)
 
 func unreachable() {}
 

@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-type s struct {}
+type s struct{}
 
 func (_ s) String() string {
 	password := "horsebatterystaplecorrect"

@@ -23,8 +23,8 @@ func klogTest() {
 				klog.Info(mask(name, header)) // OK
 			}
 		}
-		klog.Info(r.Header.Get("Accept")) // OK
-		klog.Info(r.Header["Content-Type"]) // OK
+		klog.Info(r.Header.Get("Accept"))        // OK
+		klog.Info(r.Header["Content-Type"])      // OK
 		klog.Info(r.Header.Get("Authorization")) // NOT OK
 	})
 	http.ListenAndServe(":80", nil)

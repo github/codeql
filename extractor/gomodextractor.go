@@ -172,11 +172,9 @@ func extractGoModComments(tw *trap.Writer, expr modfile.Expr, exprlbl trap.Label
 	extractLocation(tw, grouplbl, startLine, startCol, endLine, endCol)
 }
 
-
-
 func extractGoModComment(tw *trap.Writer, comment modfile.Comment, commentToken string, grouplbl trap.Label, idx int) {
 	lbl := tw.Labeler.LocalID(comment)
 	dbscheme.CommentsTable.Emit(tw, lbl, dbscheme.SlashSlashComment.Index(), grouplbl, idx, commentToken)
 
-	extractLocation(tw, lbl, comment.Start.Line, comment.Start.LineRune, comment.Start.Line, comment.Start.LineRune + (len(commentToken) - 1))
+	extractLocation(tw, lbl, comment.Start.Line, comment.Start.LineRune, comment.Start.Line, comment.Start.LineRune+(len(commentToken)-1))
 }
