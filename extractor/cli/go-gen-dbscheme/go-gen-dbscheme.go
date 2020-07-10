@@ -22,10 +22,10 @@ func main() {
 
 	f, err := os.Create(out)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Unable to open file %s for writing.", out)
+		fmt.Fprintf(os.Stderr, "Unable to open file %s for writing.\n", out)
 		os.Exit(1)
 	}
 	dbscheme.PrintDbScheme(f)
 	f.Close()
-	fmt.Printf("Dbscheme written to file %s.", out)
+	fmt.Printf("Dbscheme written to file %s.\n", out)
 }
