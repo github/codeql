@@ -11,6 +11,7 @@ private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.models.interfaces.DataFlow
 
+cached
 private newtype TIRDataFlowNode =
   TInstructionNode(Instruction i) or
   TOperandNode(Operand op) or
@@ -524,7 +525,6 @@ private predicate getFieldSizeOfClass(Class c, Type type, int size) {
   )
 }
 
-cached
 private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {
   opTo.getAnyDef() = iFrom
 }
