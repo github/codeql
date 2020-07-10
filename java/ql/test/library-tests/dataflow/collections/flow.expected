@@ -61,7 +61,6 @@
 | ContainterTest.java:43:4:43:26 | map | ContainterTest.java:162:8:162:21 | entrySet(...) |
 | ContainterTest.java:43:4:43:26 | map | ContainterTest.java:163:8:163:21 | get(...) |
 | ContainterTest.java:43:4:43:26 | map | ContainterTest.java:164:8:164:41 | getOrDefault(...) |
-| ContainterTest.java:43:4:43:26 | map | ContainterTest.java:165:8:165:50 | merge(...) |
 | ContainterTest.java:43:4:43:26 | map | ContainterTest.java:166:8:166:30 | put(...) |
 | ContainterTest.java:43:4:43:26 | map | ContainterTest.java:167:8:167:38 | putIfAbsent(...) |
 | ContainterTest.java:43:4:43:26 | map | ContainterTest.java:168:8:168:27 | remove(...) |

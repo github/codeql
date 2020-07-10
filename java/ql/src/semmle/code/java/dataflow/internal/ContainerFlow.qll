@@ -112,7 +112,7 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   // java.util.Map
   m
       .(MapMethod)
-      .hasName(["computeIfAbsent", "entrySet", "get", "getOrDefault", "merge", "put", "putIfAbsent",
+      .hasName(["computeIfAbsent", "entrySet", "get", "getOrDefault", "put", "putIfAbsent",
             "remove", "replace", "values"])
   or
   // java.util.Collection
