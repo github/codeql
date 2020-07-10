@@ -382,3 +382,50 @@ function test() {
   // OK
   $('myid').html(document.location.href.split("?")[0]);
 }
+
+function test() {
+  var target = document.location.search
+
+  
+  $('myId').html(target); // NOT OK
+
+  $('myId').html(target.taint); // NOT OK
+
+  target.taint2 = 2;
+  $('myId').html(target.taint2); // OK
+
+  target.taint3 = document.location.search;
+  $('myId').html(target.taint3); // NOT OK
+
+  target.sub.taint4 = 2
+  $('myId').html(target.sub.taint4); // OK
+
+  $('myId').html(target.taint5); // NOT OK
+  target.taint5 = "safe";
+
+  target.taint6 = 2;
+  if (random()) {return;}
+  $('myId').html(target.taint6); // OK
+
+  
+  if (random()) {target.taint7 = "safe";}
+  $('myId').html(target.taint7); // NOT OK
+
+  target.taint8 = target.taint8;
+  $('myId').html(target.taint8); // NOT OK
+
+  target.taint9 = (target.taint9 = "safe");
+  $('myId').html(target.taint9); // OK
+}
+
+function hash2() {
+  var payload = window.location.hash.substr(1);
+  document.write(payload); // NOT OK
+
+  let match = window.location.hash.match(/hello (\w+)/);
+  if (match) {
+    document.write(match[1]); // NOT OK
+  }
+
+  document.write(window.location.hash.split('#')[1]); // NOT OK
+}

@@ -25,24 +25,24 @@ import python
  */
 
 ClassValue jinja2EnvironmentOrTemplate() {
-    result = Value::named("jinja2.Environment")
-    or
-    result = Value::named("jinja2.Template")
+  result = Value::named("jinja2.Environment")
+  or
+  result = Value::named("jinja2.Template")
 }
 
 ControlFlowNode getAutoEscapeParameter(CallNode call) { result = call.getArgByName("autoescape") }
 
 from CallNode call
 where
-    call.getFunction().pointsTo(jinja2EnvironmentOrTemplate()) and
-    not exists(call.getNode().getStarargs()) and
-    not exists(call.getNode().getKwargs()) and
-    (
-        not exists(getAutoEscapeParameter(call))
-        or
-        exists(Value isFalse |
-            getAutoEscapeParameter(call).pointsTo(isFalse) and
-            isFalse.getDefiniteBooleanValue() = false
-        )
+  call.getFunction().pointsTo(jinja2EnvironmentOrTemplate()) and
+  not exists(call.getNode().getStarargs()) and
+  not exists(call.getNode().getKwargs()) and
+  (
+    not exists(getAutoEscapeParameter(call))
+    or
+    exists(Value isFalse |
+      getAutoEscapeParameter(call).pointsTo(isFalse) and
+      isFalse.getDefiniteBooleanValue() = false
     )
+  )
 select call, "Using jinja2 templates with autoescape=False can potentially allow XSS attacks."

@@ -15,11 +15,11 @@ import IsComparisons
 
 from Compare comp, Cmpop op, ClassValue c
 where
-    invalid_portable_is_comparison(comp, op, c) and
-    exists(Expr sub | sub = comp.getASubExpression() |
-        cpython_interned_constant(sub) and
-        not universally_interned_constant(sub)
-    )
+  invalid_portable_is_comparison(comp, op, c) and
+  exists(Expr sub | sub = comp.getASubExpression() |
+    cpython_interned_constant(sub) and
+    not universally_interned_constant(sub)
+  )
 select comp,
-    "The result of this comparison with '" + op.getSymbol() +
-        "' may differ between implementations of Python."
+  "The result of this comparison with '" + op.getSymbol() +
+    "' may differ between implementations of Python."

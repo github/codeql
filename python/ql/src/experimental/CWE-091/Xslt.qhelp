@@ -1,0 +1,18 @@
+<!DOCTYPE qhelp SYSTEM "qhelp.dtd">
+<qhelp>
+    <overview>
+        <p>
+            Processing an unvalidated XSL stylesheet can allow an attacker to change the structure and contents of the resultant XML, include arbitrary files from the file system, or execute arbitrary code.
+        </p>
+    </overview>
+    <recommendation>
+        <p>
+            This vulnerability can be prevented by not allowing untrusted user input to be passed as an XSL stylesheet.
+            If the application logic necessiates processing untrusted XSL stylesheets, the input should be properly filtered and sanitized before use.
+        </p>
+    </recommendation>
+    <example>
+        <p>In the example below, the XSL stylesheet is controlled by the user and hence leads to a vulnerability.</p>
+        <sample src="xslt.py" />
+    </example>
+</qhelp>

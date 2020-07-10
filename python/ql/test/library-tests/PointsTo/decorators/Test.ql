@@ -4,7 +4,7 @@ import python
 // version to version, just the end result.
 from NameNode f, Object o, ControlFlowNode x, int line
 where
-    f.refersTo(o, x) and
-    f.getLocation().getFile().getBaseName() = "test.py" and
-    line = f.getLocation().getStartLine()
+  f.refersTo(o, x) and
+  f.getLocation().getFile().getBaseName() = "test.py" and
+  line = f.getLocation().getStartLine()
 select line, f.toString(), o.toString(), x.getLocation().toString()

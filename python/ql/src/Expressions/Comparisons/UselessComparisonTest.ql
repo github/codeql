@@ -21,9 +21,9 @@ import semmle.python.Comparisons
  */
 
 private predicate is_complex(Expr comp) {
-    exists(comp.(Compare).getOp(1))
-    or
-    is_complex(comp.(UnaryExpr).getOperand())
+  exists(comp.(Compare).getOp(1))
+  or
+  is_complex(comp.(UnaryExpr).getOperand())
 }
 
 /**
@@ -31,21 +31,21 @@ private predicate is_complex(Expr comp) {
  * strict and also controls that block.
  */
 private predicate useless_test(Comparison comp, ComparisonControlBlock controls, boolean isTrue) {
-    controls.impliesThat(comp.getBasicBlock(), comp, isTrue) and
-    /* Exclude complex comparisons of form `a < x < y`, as we do not (yet) have perfect flow control for those */
-    not is_complex(controls.getTest().getNode())
+  controls.impliesThat(comp.getBasicBlock(), comp, isTrue) and
+  /* Exclude complex comparisons of form `a < x < y`, as we do not (yet) have perfect flow control for those */
+  not is_complex(controls.getTest().getNode())
 }
 
 private predicate useless_test_ast(AstNode comp, AstNode previous, boolean isTrue) {
-    forex(Comparison compnode, ConditionBlock block |
-        compnode.getNode() = comp and
-        block.getLastNode().getNode() = previous
-    |
-        useless_test(compnode, block, isTrue)
-    )
+  forex(Comparison compnode, ConditionBlock block |
+    compnode.getNode() = comp and
+    block.getLastNode().getNode() = previous
+  |
+    useless_test(compnode, block, isTrue)
+  )
 }
 
 from Expr test, Expr other, boolean isTrue
 where
-    useless_test_ast(test, other, isTrue) and not useless_test_ast(test.getAChildNode+(), other, _)
+  useless_test_ast(test, other, isTrue) and not useless_test_ast(test.getAChildNode+(), other, _)
 select test, "Test is always " + isTrue + ", because of $@", other, "this condition"

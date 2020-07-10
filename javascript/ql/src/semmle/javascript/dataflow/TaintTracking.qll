@@ -260,7 +260,8 @@ module TaintTracking {
     not any(PromiseAllCreation call).getArrayNode() = succ
     or
     // reading from a tainted object yields a tainted result
-    succ.(DataFlow::PropRead).getBase() = pred
+    succ.(DataFlow::PropRead).getBase() = pred and
+    not AccessPath::DominatingPaths::hasDominatingWrite(succ)
     or
     // iterating over a tainted iterator taints the loop variable
     exists(ForOfStmt fos |
@@ -701,6 +702,74 @@ module TaintTracking {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       succ = this and
       this.getAnArgument() = pred
+    }
+  }
+
+  private module RegExpCaptureSteps {
+    /** Gets a reference to a string derived from the most recent RegExp match, such as `RegExp.$1`. */
+    private DataFlow::PropRead getAStaticCaptureRef() {
+      result =
+        DataFlow::globalVarRef("RegExp")
+            .getAPropertyRead(["$" + [1 .. 9], "input", "lastMatch", "leftContext", "rightContext",
+                  "$&", "$^", "$`"])
+    }
+
+    /**
+     * Gets a control-flow node where `input` is used in a RegExp match.
+     */
+    private ControlFlowNode getACaptureSetter(DataFlow::Node input) {
+      exists(DataFlow::MethodCallNode call | result = call.asExpr() |
+        call.getMethodName() = ["search", "replace", "match"] and input = call.getReceiver()
+        or
+        call.getMethodName() = ["test", "exec"] and input = call.getArgument(0)
+      )
+    }
+
+    /**
+     * Gets a control-flow node that can locally reach the given static capture reference
+     * without passing through a capture setter.
+     *
+     * This is essentially an intraprocedural def-use analysis that ignores potential
+     * side effects from calls.
+     */
+    private ControlFlowNode getANodeReachingCaptureRef(DataFlow::PropRead read) {
+      result = read.asExpr() and
+      read = getAStaticCaptureRef()
+      or
+      exists(ControlFlowNode mid |
+        result = getANodeReachingCaptureRefAux(read, mid) and
+        not mid = getACaptureSetter(_)
+      )
+    }
+
+    pragma[nomagic]
+    private ControlFlowNode getANodeReachingCaptureRefAux(
+      DataFlow::PropRead read, ControlFlowNode mid
+    ) {
+      mid = getANodeReachingCaptureRef(read) and
+      result = mid.getAPredecessor()
+    }
+
+    /**
+     * Holds if there is a step `pred -> succ` from the input of a RegExp match to
+     * a static property of `RegExp`.
+     */
+    private predicate staticRegExpCaptureStep(DataFlow::Node pred, DataFlow::Node succ) {
+      getACaptureSetter(pred) = getANodeReachingCaptureRef(succ)
+      or
+      exists(StringReplaceCall replace |
+        getANodeReachingCaptureRef(succ) = replace.getReplacementCallback().getFunction().getEntry() and
+        pred = replace.getReceiver()
+      )
+    }
+
+    private class StaticRegExpCaptureStep extends AdditionalTaintStep {
+      StaticRegExpCaptureStep() { staticRegExpCaptureStep(this, _) }
+
+      override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+        pred = this and
+        staticRegExpCaptureStep(this, succ)
+      }
     }
   }
 

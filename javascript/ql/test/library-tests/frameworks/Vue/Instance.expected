@@ -1,6 +1,8 @@
 | single-component-file-1.vue:0:0:0:0 | single-component-file-1.vue |
 | single-file-component-2.vue:0:0:0:0 | single-file-component-2.vue |
 | single-file-component-3.vue:0:0:0:0 | single-file-component-3.vue |
+| single-file-component-4.vue:0:0:0:0 | single-file-component-4.vue |
+| single-file-component-5.vue:0:0:0:0 | single-file-component-5.vue |
 | tst.js:3:1:10:2 | new Vue ... 2\\n\\t}\\n}) |
 | tst.js:12:1:16:2 | new Vue ... \\t}),\\n}) |
 | tst.js:18:1:27:2 | Vue.com ... }\\n\\t}\\n}) |

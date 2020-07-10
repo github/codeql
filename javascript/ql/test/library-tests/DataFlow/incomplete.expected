@@ -112,3 +112,9 @@
 | tst.js:115:1:115:10 | Array.call | heap |
 | tst.js:115:1:115:12 | Array.call() | call |
 | tst.js:115:1:115:12 | exceptional return of Array.call() | call |
+| tst.js:117:10:117:15 | Object | global |
+| tst.js:117:10:117:20 | Object.seal | global |
+| tst.js:117:10:117:20 | Object.seal | heap |
+| tst.js:117:10:117:24 | Object.seal(x1) | call |
+| tst.js:117:10:117:24 | exceptional return of Object.seal(x1) | call |
+| tst.js:117:22:117:23 | x1 | global |

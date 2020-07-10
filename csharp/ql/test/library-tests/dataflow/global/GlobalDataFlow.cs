@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 /// <summary>
 /// All (tainted) sinks are named `sink[Param|Field|Property]N`, for some N, and all
@@ -229,6 +230,21 @@ public class DataFlow
         Check(nonSink);
         nonSink = notTainted.Select(ReturnCheck3).First();
         Check(nonSink);
+    }
+
+    public async void M3()
+    {
+        // async await, tainted
+        var sink41 = Task.Run(() => "taint source");
+        Check(sink41);
+        var sink42 = await sink41;
+        Check(sink42);
+
+        // async await, not tainted
+        var nonSink0 = Task.Run(() => "");
+        Check(nonSink0);
+        var nonSink1 = await nonSink0;
+        Check(nonSink1);
     }
 
     static void Check<T>(T x) { }

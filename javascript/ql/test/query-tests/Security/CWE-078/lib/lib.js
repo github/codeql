@@ -269,7 +269,7 @@ module.exports.sanitizerProperty = function (obj) {
 
 	obj.version = "";
 
-	cp.exec("rm -rf " + obj.version); // OK - but FP
+	cp.exec("rm -rf " + obj.version); // OK
 }
 
 module.exports.Foo = class Foo {
