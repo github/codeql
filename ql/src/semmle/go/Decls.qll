@@ -371,7 +371,16 @@ class ValueSpec extends @valuespec, Spec {
 }
 
 /**
- * A type declaration specifier.
+ * A type declaration specifier, which is either a type definition or an alias declaration.
+ *
+ * Examples:
+ *
+ * ```
+ * type (
+ *   status int
+ *   intlist = []int
+ * )
+ * ```
  */
 class TypeSpec extends @typespec, Spec {
   /** Gets the identifier denoting the name of the declared type. */
@@ -380,13 +389,37 @@ class TypeSpec extends @typespec, Spec {
   /** Gets the name of the declared type. */
   string getName() { result = getNameExpr().getName() }
 
-  /** Gets the expression denoting the underlying type to which the newly declared type is aliased. */
+  /**
+   * Gets the expression denoting the underlying type to which the newly declared type is bound.
+   */
   Expr getTypeExpr() { result = getChildExpr(1) }
 
   override string toString() { result = "type declaration specifier" }
 
   override string getAPrimaryQlClass() { result = "TypeSpec" }
 }
+
+/**
+ * An alias declaration specifier.
+ *
+ * Examples:
+ *
+ * ```
+ * type intlist = []int
+ * ```
+ */
+class AliasSpec extends @aliasspec, TypeSpec { }
+
+/**
+ * A type definition specifier.
+ *
+ * Examples:
+ *
+ * ```
+ * type status int
+ * ```
+ */
+class TypeDefSpec extends @typedefspec, TypeSpec { }
 
 /**
  * A field declaration, of a struct, a function (in which case this is a parameter or result variable),

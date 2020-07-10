@@ -441,7 +441,13 @@ var ImportSpecType = SpecKind.NewBranch("@importspec")
 var ValueSpecType = SpecKind.NewBranch("@valuespec")
 
 // TypeSpecType is the type of type declaration specification nodes
-var TypeSpecType = SpecKind.NewBranch("@typespec")
+var TypeSpecType = NewUnionType("@typespec")
+
+// TypeDefSpecType is the type of type declaration specification nodes corresponding to type definitions
+var TypeDefSpecType = SpecKind.NewBranch("@typedefspec", TypeSpecType)
+
+// AliasSpecType is the type of type declaration specification nodes corresponding to alias declarations
+var AliasSpecType = SpecKind.NewBranch("@aliasspec", TypeSpecType)
 
 // ObjectType is the type of objects (that is, declared entities)
 var ObjectType = NewPrimaryKeyType("@object")

@@ -317,10 +317,7 @@ case @decl.kind of
 case @spec.kind of
   0 = @importspec
 | 1 = @valuespec
-| 2 = @typedefspec
-| 3 = @aliasspec;
-
-@typespec = @typedefspec | @aliasspec;
+| 2 = @typespec;
 
 case @object.kind of
   0 = @pkgobject
