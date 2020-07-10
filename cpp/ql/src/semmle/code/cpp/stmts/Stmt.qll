@@ -200,7 +200,7 @@ class ControlStructure extends Stmt, TControlStructure {
   Declaration getADeclaration() { none() }
 }
 
-private class TConditionalStmt = @stmt_if or @stmt_constexpr_if or @stmt_while or @stmt_switch;
+private class TConditionalStmt = @stmt_if or @stmt_constexpr_if or @stmt_switch;
 
 /**
  * A C/C++ conditional statement, that is, either an 'if' statement or a
