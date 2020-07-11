@@ -23,40 +23,40 @@
  * @externs
  */
 
-function after(fn, timeout) { fn(); }
+function after(callback, timeout) { if(callback) callback(); }
 
-function afterAll(fn, timeout) { fn(); }
+function afterAll(callback, timeout) { if(callback) callback(); }
 
-function afterEach(fn, timeout) { fn(); }
+function afterEach(callback, timeout) { if(callback) callback(); }
 
-function before(fn, timeout) { fn(); }
+function before(callback, timeout) { if(callback) callback(); }
 
-function beforeAll(fn, timeout) { fn(); }
+function beforeAll(callback, timeout) { if(callback) callback(); }
 
-function beforeEach(fn, timeout) { fn(); }
+function beforeEach(callback, timeout) { if(callback) callback(); }
 
-function describe(name, fn) { fn(); }
-describe.each = function(name, fn, timeout) { fn(); }
-describe.only = function (name, fn) { fn(); }
-describe.only.each = function (name, fn) { fn(); }
-describe.skip = function (name, fn) { fn(); } 
-describe.skip.each = function (name, fn) { fn(); }
+function describe(name, callback) { if(callback) callback(); }
+describe.each = function(name, callback, timeout) { if(callback) callback(); }
+describe.only = function (name, callback) { if(callback) callback(); }
+describe.only.each = function (name, callback) { if(callback) callback(); }
+describe.skip = function (name, callback) { if(callback) callback(); } 
+describe.skip.each = function (name, callback) { if(callback) callback(); }
 
-function test(name, fn, timeout) { fn(); }
-test.each = function (name, fn, timeout) { fn(); }
-test.only = function (name, fn, timeout) { fn(); }
-test.only.each = function (name, fn) { fn(); }
-test.skip = function (name, fn) { fn(); }
-test.skip.each = function (name, fn) { fn(); }
-test.todo = function (name) { fn(); }
+function test(name, callback, timeout) { if(callback) callback(); }
+test.each = function (name, callback, timeout) { if(callback) callback(); }
+test.only = function (name, callback, timeout) { if(callback) callback(); }
+test.only.each = function (name, callback) { if(callback) callback(); }
+test.skip = function (name, callback) { if(callback) callback(); }
+test.skip.each = function (name, callback) { if(callback) callback(); }
+test.todo = function (name) { }
 
-function it(name, fn, timeout) { fn(); }
-it.each = function (name, fn, timeout) { fn(); }
-it.only = function (name, fn, timeout) { fn(); }
-it.only.each = function (name, fn) { fn(); }
-it.skip = function (name, fn) { fn(); }
-it.skip.each = function (name, fn) { fn(); }
-it.todo = function (name) { fn(); }
+function it(name, callback, timeout) { if(callback) callback(); }
+it.each = function (name, callback, timeout) { if(callback) callback(); }
+it.only = function (name, callback, timeout) { if(callback) callback(); }
+it.only.each = function (name, callback) { if(callback) callback(); }
+it.skip = function (name, callback) { if(callback) callback(); }
+it.skip.each = function (name, callback) { if(callback) callback(); }
+it.todo = function (name) { }
 
 function expect(value) { };
 expect.prototype = {
@@ -131,8 +131,8 @@ mockFn.prototype = {
   mockClear: function () { },
   mockReset: function () { },
   mockRestore: function () { },
-  mockImplementation: function (fn) {  fn();},
-  mockImplementationOnce: function (fn) { fn(); },
+  mockImplementation: function (callback) { if(callback) callback(); },
+  mockImplementationOnce: function (callback) { if(callback) callback(); },
   mockName: function (value) { },
   mockReturnThis: function () { },
   mockReturnValue: function (value) { },
