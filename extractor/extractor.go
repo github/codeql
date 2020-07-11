@@ -1149,7 +1149,11 @@ func extractSpec(tw *trap.Writer, spec ast.Spec, parent trap.Label, idx int) {
 		if spec == nil {
 			return
 		}
-		kind = dbscheme.TypeSpecType.Index()
+		if spec.Assign.IsValid() {
+			kind = dbscheme.AliasSpecType.Index()
+		} else {
+			kind = dbscheme.TypeDefSpecType.Index()
+		}
 		extractExpr(tw, spec.Name, lbl, 0)
 		extractExpr(tw, spec.Type, lbl, 1)
 		extractDoc(tw, spec.Doc, lbl)
