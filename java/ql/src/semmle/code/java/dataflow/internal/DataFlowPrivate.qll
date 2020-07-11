@@ -129,15 +129,6 @@ private predicate instanceFieldAssign(Expr src, FieldAccess fa) {
   )
 }
 
-/**
- * Gets an upper bound on the type of `f`.
- */
-private Type getFieldTypeBound(Field f) {
-  fieldTypeFlow(f, result, _)
-  or
-  not fieldTypeFlow(f, _, _) and result = f.getType()
-}
-
 private newtype TContent =
   TFieldContent(InstanceField f) or
   TCollectionContent() or
@@ -154,12 +145,6 @@ class Content extends TContent {
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
   }
-
-  /** Gets the erased type of the object containing this content. */
-  abstract DataFlowType getContainerType();
-
-  /** Gets the erased type of this content. */
-  abstract DataFlowType getType();
 }
 
 private class FieldContent extends Content, TFieldContent {
@@ -174,26 +159,14 @@ private class FieldContent extends Content, TFieldContent {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
   }
-
-  override DataFlowType getContainerType() { result = getErasedRepr(f.getDeclaringType()) }
-
-  override DataFlowType getType() { result = getErasedRepr(getFieldTypeBound(f)) }
 }
 
 private class CollectionContent extends Content, TCollectionContent {
   override string toString() { result = "collection" }
-
-  override DataFlowType getContainerType() { none() }
-
-  override DataFlowType getType() { none() }
 }
 
 private class ArrayContent extends Content, TArrayContent {
   override string toString() { result = "array" }
-
-  override DataFlowType getContainerType() { none() }
-
-  override DataFlowType getType() { none() }
 }
 
 /**
@@ -223,11 +196,20 @@ predicate readStep(Node node1, Content f, Node node2) {
 }
 
 /**
+ * Holds if values stored inside content `c` are cleared at node `n`. For example,
+ * any value stored inside `f` is cleared at the pre-update node associated with `x`
+ * in `x.f = newValue`.
+ */
+predicate clearsContent(Node n, Content c) {
+  n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode()
+}
+
+/**
  * Gets a representative (boxed) type for `t` for the purpose of pruning
  * possible flow. A single type is used for all numeric types to account for
  * numeric conversions, and otherwise the erasure is used.
  */
-DataFlowType getErasedRepr(Type t) {
+private DataFlowType getErasedRepr(Type t) {
   exists(Type e | e = t.getErasure() |
     if e instanceof NumericOrCharType
     then result.(BoxedType).getPrimitiveType().getName() = "double"
@@ -239,6 +221,9 @@ DataFlowType getErasedRepr(Type t) {
   or
   t instanceof NullType and result instanceof TypeObject
 }
+
+pragma[noinline]
+DataFlowType getNodeType(Node n) { result = getErasedRepr(n.getTypeBound()) }
 
 /** Gets a string representation of a type returned by `getErasedRepr`. */
 string ppReprType(Type t) {

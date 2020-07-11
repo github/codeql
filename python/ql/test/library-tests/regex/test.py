@@ -62,3 +62,7 @@ re.compile(r'(?:(?P<n1>^(?:|x)))')
 re.compile(r"\[(?P<txt>[^[]*)\]\((?P<uri>[^)]*)")
 
 re.compile("", re.M) # ODASA-8056
+
+# FP reported in https://github.com/github/codeql/issues/3712
+# This does not define a regex (but could be used by other code to do so)
+escaped = re.escape("https://www.humblebundle.com/home/library")

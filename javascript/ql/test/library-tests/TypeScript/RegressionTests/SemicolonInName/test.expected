@@ -1,4 +1,2 @@
 | Bar.Foo in global scope | Bar in global scope |
-| Intl.CollatorOptions in global scope | Intl in global scope |
-| Intl.NumberFormatOptions in global scope | Intl in global scope |
 | fn in library-tests/TypeScript/RegressionTests/SemicolonInName/test.ts | library-tests/TypeScript/RegressionTests/SemicolonInName/test.ts |

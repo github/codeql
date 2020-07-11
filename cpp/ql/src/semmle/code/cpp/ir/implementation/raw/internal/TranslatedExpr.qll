@@ -1011,7 +1011,7 @@ class TranslatedDynamicCast extends TranslatedSingleInstructionConversion {
       if resultType instanceof PointerType
       then
         if resultType.(PointerType).getBaseType() instanceof VoidType
-        then result instanceof Opcode::DynamicCastToVoid
+        then result instanceof Opcode::CompleteObjectAddress
         else result instanceof Opcode::CheckedConvertOrNull
       else result instanceof Opcode::CheckedConvertOrThrow
     )

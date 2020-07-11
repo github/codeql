@@ -1,11 +1,11 @@
 /**
  * File that provides the desugaring of a `lock` stmt.
  * The statement:
- *    ```
+ *    ```csharp
  *      lock (anExpr) ...
  *    ```
  * gets desugared to:
- *    ```
+ *    ```csharp
  *      SomeRefType lockedVar = anExpr;
  *      bool __lockWasTaken = false;
  *      try {

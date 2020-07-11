@@ -5,82 +5,85 @@ private import semmle.python.web.django.Shared
 private import semmle.python.web.Http
 
 /**
+ * DEPRECATED: This class is internal to the django library modeling, and should
+ * never be used by anyone.
+ *
  * A django.http.response.Response object
  * This isn't really a "taint", but we use the value tracking machinery to
  * track the flow of response objects.
  */
-class DjangoResponse extends TaintKind {
-    DjangoResponse() { this = "django.response.HttpResponse" }
+deprecated class DjangoResponse = DjangoResponseKind;
+
+/** INTERNAL class used for tracking a django response object. */
+private class DjangoResponseKind extends TaintKind {
+  DjangoResponseKind() { this = "django.response.HttpResponse" }
 }
 
-private ClassValue theDjangoHttpResponseClass() {
-    (
-        // version 1.x
-        result = Value::named("django.http.response.HttpResponse")
-        or
-        // version 2.x
-        // https://docs.djangoproject.com/en/2.2/ref/request-response/#httpresponse-objects
-        result = Value::named("django.http.HttpResponse")
-    ) and
-    // TODO: does this do anything? when could they be the same???
-    not result = theDjangoHttpRedirectClass()
-}
-
-/** internal class used for tracking a django response. */
+/** INTERNAL taint-source used for tracking a django response object. */
 private class DjangoResponseSource extends TaintSource {
-    DjangoResponseSource() {
-        exists(ClassValue cls |
-            cls.getASuperType() = theDjangoHttpResponseClass() and
-            cls.getACall() = this
-        )
-    }
+  DjangoResponseSource() { exists(DjangoContentResponseClass cls | cls.getACall() = this) }
 
-    override predicate isSourceOf(TaintKind kind) { kind instanceof DjangoResponse }
+  override predicate isSourceOf(TaintKind kind) { kind instanceof DjangoResponseKind }
 
-    override string toString() { result = "django.http.response.HttpResponse" }
+  override string toString() { result = "django.http.response.HttpResponse" }
 }
 
 /** A write to a django response, which is vulnerable to external data (xss) */
 class DjangoResponseWrite extends HttpResponseTaintSink {
-    DjangoResponseWrite() {
-        exists(AttrNode meth, CallNode call |
-            call.getFunction() = meth and
-            any(DjangoResponse response).taints(meth.getObject("write")) and
-            this = call.getArg(0)
-        )
-    }
+  DjangoResponseWrite() {
+    exists(AttrNode meth, CallNode call |
+      call.getFunction() = meth and
+      any(DjangoResponseKind response).taints(meth.getObject("write")) and
+      this = call.getArg(0)
+    )
+  }
 
-    override predicate sinks(TaintKind kind) { kind instanceof StringKind }
+  override predicate sinks(TaintKind kind) { kind instanceof StringKind }
 
-    override string toString() { result = "django.Response.write(...)" }
+  override string toString() { result = "django.Response.write(...)" }
 }
 
-/** An argument to initialization of a django response, which is vulnerable to external data (xss) */
+/**
+ * An argument to initialization of a django response.
+ */
 class DjangoResponseContent extends HttpResponseTaintSink {
-    DjangoResponseContent() {
-        exists(CallNode call, ClassValue cls |
-            cls.getASuperType() = theDjangoHttpResponseClass() and
-            call.getFunction().pointsTo(cls)
-        |
-            call.getArg(0) = this
-            or
-            call.getArgByName("content") = this
-        )
-    }
+  DjangoContentResponseClass cls;
+  CallNode call;
 
-    override predicate sinks(TaintKind kind) { kind instanceof StringKind }
+  DjangoResponseContent() {
+    call = cls.getACall() and
+    this = cls.getContentArg(call)
+  }
 
-    override string toString() { result = "django.Response(...)" }
+  override predicate sinks(TaintKind kind) { kind instanceof StringKind }
+
+  override string toString() { result = "django.Response(...)" }
+}
+
+/**
+ * An argument to initialization of a django response, which is vulnerable to external data (XSS).
+ */
+class DjangoResponseContentXSSVulnerable extends DjangoResponseContent {
+  override DjangoXSSVulnerableResponseClass cls;
+
+  DjangoResponseContentXSSVulnerable() {
+    not exists(cls.getContentTypeArg(call))
+    or
+    exists(StringValue s |
+      cls.getContentTypeArg(call).pointsTo(s) and
+      s.getText().matches("text/html%")
+    )
+  }
 }
 
 class DjangoCookieSet extends CookieSet, CallNode {
-    DjangoCookieSet() {
-        any(DjangoResponse r).taints(this.getFunction().(AttrNode).getObject("set_cookie"))
-    }
+  DjangoCookieSet() {
+    any(DjangoResponseKind r).taints(this.getFunction().(AttrNode).getObject("set_cookie"))
+  }
 
-    override string toString() { result = CallNode.super.toString() }
+  override string toString() { result = CallNode.super.toString() }
 
-    override ControlFlowNode getKey() { result = this.getArg(0) }
+  override ControlFlowNode getKey() { result = this.getArg(0) }
 
-    override ControlFlowNode getValue() { result = this.getArg(1) }
+  override ControlFlowNode getValue() { result = this.getArg(1) }
 }

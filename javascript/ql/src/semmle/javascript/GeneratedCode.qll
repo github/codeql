@@ -164,7 +164,10 @@ private int countStartingHtmlElements(File f, int l) {
 /**
  * Holds if the base name of `f` is a number followed by a single extension.
  */
-predicate isGeneratedFileName(File f) { f.getStem().regexpMatch("[0-9]+") }
+predicate isGeneratedFileName(File f) {
+  f.getStem().regexpMatch("[0-9]+") and
+  not f.getExtension() = "vue"
+}
 
 /**
  * Holds if `tl` looks like it contains generated code.

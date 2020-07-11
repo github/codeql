@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI.WebControls;
 
@@ -46,7 +45,7 @@ namespace System.Runtime.Serialization
 /// </summary>
 public class LocalDataFlow
 {
-    public async void M(bool b)
+    public void M(bool b)
     {
         // Assignment, tainted
         var sink0 = "taint source";
@@ -270,18 +269,6 @@ public class LocalDataFlow
         nonSink0 = nonTaintedTextBox.Text;
         Check(nonSink0);
 
-        // async await, tainted
-        var sink67 = Task.Run(() => "taint source");
-        Check(sink67);
-        var sink68 = await sink67;
-        Check(sink68);
-
-        // async await, not tainted
-        var nonSink21 = Task.Run(() => "");
-        Check(nonSink21);
-        nonSink0 = await nonSink21;
-        Check(nonSink0);
-
         // Interpolated string, tainted
         var sink69 = $"test {sink1}";
         Check(sink69);
@@ -366,7 +353,7 @@ public class LocalDataFlow
         using (x1 = x) { }
 
         IEnumerable<object> os2;
-        foreach(var o in os2 = os) { }
+        foreach (var o in os2 = os) { }
     }
 
     public static implicit operator LocalDataFlow(string[] args) => null;

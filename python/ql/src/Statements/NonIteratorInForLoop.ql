@@ -15,11 +15,11 @@ import python
 
 from For loop, ControlFlowNode iter, Value v, ClassValue t, ControlFlowNode origin
 where
-    loop.getIter().getAFlowNode() = iter and
-    iter.pointsTo(_, v, origin) and
-    v.getClass() = t and
-    not t.isIterable() and
-    not t.failedInference(_) and
-    not v = Value::named("None") and
-    not t.isDescriptorType()
+  loop.getIter().getAFlowNode() = iter and
+  iter.pointsTo(_, v, origin) and
+  v.getClass() = t and
+  not t.isIterable() and
+  not t.failedInference(_) and
+  not v = Value::named("None") and
+  not t.isDescriptorType()
 select loop, "$@ of class '$@' may be used in for-loop.", origin, "Non-iterable", t, t.getName()

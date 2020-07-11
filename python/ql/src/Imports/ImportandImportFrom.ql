@@ -12,12 +12,12 @@
 import python
 
 predicate import_and_import_from(Import i1, Import i2, Module m) {
-    i1.getEnclosingModule() = i2.getEnclosingModule() and
-    exists(ImportExpr e1, ImportExpr e2, ImportMember im |
-        e1 = i1.getAName().getValue() and im = i2.getAName().getValue() and e2 = im.getModule()
-    |
-        e1.getName() = m.getName() and e2.getName() = m.getName()
-    )
+  i1.getEnclosingModule() = i2.getEnclosingModule() and
+  exists(ImportExpr e1, ImportExpr e2, ImportMember im |
+    e1 = i1.getAName().getValue() and im = i2.getAName().getValue() and e2 = im.getModule()
+  |
+    e1.getName() = m.getName() and e2.getName() = m.getName()
+  )
 }
 
 from Stmt i1, Stmt i2, Module m

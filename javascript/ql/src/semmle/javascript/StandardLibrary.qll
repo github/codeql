@@ -122,6 +122,11 @@ class StringReplaceCall extends DataFlow::MethodCallNode {
   DataFlow::Node getRawReplacement() { result = getArgument(1) }
 
   /**
+   * Gets a function flowing into the second argument of this call to `replace`.
+   */
+  DataFlow::FunctionNode getReplacementCallback() { result = getCallback(1) }
+
+  /**
    * Holds if this is a global replacement, that is, the first argument is a regular expression
    * with the `g` flag.
    */

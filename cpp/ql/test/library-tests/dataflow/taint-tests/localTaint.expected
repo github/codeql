@@ -1,3 +1,120 @@
+| copyableclass.cpp:8:2:8:16 | this | copyableclass.cpp:8:28:8:32 | constructor init of field v [pre-this] |  |
+| copyableclass.cpp:8:22:8:23 | _v | copyableclass.cpp:8:30:8:31 | _v |  |
+| copyableclass.cpp:8:30:8:31 | _v | copyableclass.cpp:8:28:8:32 | constructor init of field v | TAINT |
+| copyableclass.cpp:9:2:9:16 | this | copyableclass.cpp:9:50:9:59 | constructor init of field v [pre-this] |  |
+| copyableclass.cpp:9:41:9:45 | other | copyableclass.cpp:9:52:9:56 | other |  |
+| copyableclass.cpp:9:58:9:58 | v | copyableclass.cpp:9:50:9:59 | constructor init of field v | TAINT |
+| copyableclass.cpp:9:58:9:58 | v | copyableclass.cpp:9:58:9:58 | v |  |
+| copyableclass.cpp:10:19:10:27 | this | copyableclass.cpp:11:3:11:3 | this |  |
+| copyableclass.cpp:10:52:10:56 | other | copyableclass.cpp:11:7:11:11 | other |  |
+| copyableclass.cpp:11:3:11:3 | this | copyableclass.cpp:12:11:12:14 | this |  |
+| copyableclass.cpp:11:3:11:3 | this [post update] | copyableclass.cpp:12:11:12:14 | this |  |
+| copyableclass.cpp:11:13:11:13 | v | copyableclass.cpp:11:3:11:13 | ... = ... |  |
+| copyableclass.cpp:12:11:12:14 | this | copyableclass.cpp:12:10:12:14 | * ... | TAINT |
+| copyableclass.cpp:21:22:21:22 | 1 | copyableclass.cpp:21:22:21:23 | call to MyCopyableClass | TAINT |
+| copyableclass.cpp:21:22:21:23 | call to MyCopyableClass | copyableclass.cpp:23:22:23:23 | s1 |  |
+| copyableclass.cpp:21:22:21:23 | call to MyCopyableClass | copyableclass.cpp:27:8:27:9 | s1 |  |
+| copyableclass.cpp:22:23:22:24 | call to MyCopyableClass | copyableclass.cpp:28:8:28:9 | s2 |  |
+| copyableclass.cpp:22:24:22:24 | 1 | copyableclass.cpp:22:23:22:24 | call to MyCopyableClass | TAINT |
+| copyableclass.cpp:23:22:23:23 | s1 | copyableclass.cpp:23:22:23:24 | call to MyCopyableClass |  |
+| copyableclass.cpp:23:22:23:24 | call to MyCopyableClass | copyableclass.cpp:29:8:29:9 | s3 |  |
+| copyableclass.cpp:24:19:24:20 | call to MyCopyableClass | copyableclass.cpp:25:3:25:4 | s4 |  |
+| copyableclass.cpp:24:19:24:20 | call to MyCopyableClass | copyableclass.cpp:30:8:30:9 | s4 |  |
+| copyableclass.cpp:25:3:25:4 | ref arg s4 | copyableclass.cpp:30:8:30:9 | s4 |  |
+| copyableclass.cpp:25:8:25:8 | 1 | copyableclass.cpp:25:8:25:8 | call to MyCopyableClass | TAINT |
+| copyableclass.cpp:25:8:25:8 | call to MyCopyableClass | copyableclass.cpp:25:3:25:4 | ref arg s4 | TAINT |
+| copyableclass.cpp:25:8:25:8 | call to MyCopyableClass | copyableclass.cpp:25:6:25:6 | call to operator= | TAINT |
+| copyableclass.cpp:34:22:34:27 | call to source | copyableclass.cpp:34:22:34:30 | call to MyCopyableClass | TAINT |
+| copyableclass.cpp:34:22:34:30 | call to MyCopyableClass | copyableclass.cpp:36:22:36:23 | s1 |  |
+| copyableclass.cpp:34:22:34:30 | call to MyCopyableClass | copyableclass.cpp:40:8:40:9 | s1 |  |
+| copyableclass.cpp:35:23:35:31 | call to MyCopyableClass | copyableclass.cpp:41:8:41:9 | s2 |  |
+| copyableclass.cpp:35:24:35:29 | call to source | copyableclass.cpp:35:23:35:31 | call to MyCopyableClass | TAINT |
+| copyableclass.cpp:36:22:36:23 | s1 | copyableclass.cpp:36:22:36:24 | call to MyCopyableClass |  |
+| copyableclass.cpp:36:22:36:24 | call to MyCopyableClass | copyableclass.cpp:42:8:42:9 | s3 |  |
+| copyableclass.cpp:37:19:37:20 | call to MyCopyableClass | copyableclass.cpp:38:3:38:4 | s4 |  |
+| copyableclass.cpp:37:19:37:20 | call to MyCopyableClass | copyableclass.cpp:43:8:43:9 | s4 |  |
+| copyableclass.cpp:38:3:38:4 | ref arg s4 | copyableclass.cpp:43:8:43:9 | s4 |  |
+| copyableclass.cpp:38:8:38:13 | call to source | copyableclass.cpp:38:8:38:15 | call to MyCopyableClass | TAINT |
+| copyableclass.cpp:38:8:38:15 | call to MyCopyableClass | copyableclass.cpp:38:3:38:4 | ref arg s4 | TAINT |
+| copyableclass.cpp:38:8:38:15 | call to MyCopyableClass | copyableclass.cpp:38:6:38:6 | call to operator= | TAINT |
+| copyableclass.cpp:47:19:47:20 | call to MyCopyableClass | copyableclass.cpp:48:24:48:25 | s1 |  |
+| copyableclass.cpp:47:19:47:20 | call to MyCopyableClass | copyableclass.cpp:49:22:49:23 | s1 |  |
+| copyableclass.cpp:47:19:47:20 | call to MyCopyableClass | copyableclass.cpp:51:8:51:9 | s1 |  |
+| copyableclass.cpp:47:19:47:20 | call to MyCopyableClass | copyableclass.cpp:53:8:53:9 | s1 |  |
+| copyableclass.cpp:48:23:48:25 | call to MyCopyableClass | copyableclass.cpp:54:8:54:9 | s2 |  |
+| copyableclass.cpp:48:24:48:25 | s1 | copyableclass.cpp:48:23:48:25 | call to MyCopyableClass |  |
+| copyableclass.cpp:49:22:49:23 | s1 | copyableclass.cpp:49:22:49:24 | call to MyCopyableClass |  |
+| copyableclass.cpp:49:22:49:24 | call to MyCopyableClass | copyableclass.cpp:55:8:55:9 | s3 |  |
+| copyableclass.cpp:50:19:50:20 | call to MyCopyableClass | copyableclass.cpp:51:3:51:4 | s4 |  |
+| copyableclass.cpp:50:19:50:20 | call to MyCopyableClass | copyableclass.cpp:56:8:56:9 | s4 |  |
+| copyableclass.cpp:51:3:51:4 | ref arg s4 | copyableclass.cpp:56:8:56:9 | s4 |  |
+| copyableclass.cpp:51:8:51:9 | s1 | copyableclass.cpp:51:3:51:4 | ref arg s4 | TAINT |
+| copyableclass.cpp:51:8:51:9 | s1 | copyableclass.cpp:51:6:51:6 | call to operator= | TAINT |
+| copyableclass.cpp:60:23:60:48 | call to MyCopyableClass | copyableclass.cpp:65:8:65:9 | s1 |  |
+| copyableclass.cpp:60:40:60:45 | call to source | copyableclass.cpp:60:23:60:48 | call to MyCopyableClass | TAINT |
+| copyableclass.cpp:61:19:61:20 | call to MyCopyableClass | copyableclass.cpp:63:3:63:4 | s2 |  |
+| copyableclass.cpp:61:19:61:20 | call to MyCopyableClass | copyableclass.cpp:66:8:66:9 | s2 |  |
+| copyableclass.cpp:62:19:62:20 | call to MyCopyableClass | copyableclass.cpp:67:8:67:9 | s3 |  |
+| copyableclass.cpp:63:3:63:4 | ref arg s2 | copyableclass.cpp:66:8:66:9 | s2 |  |
+| copyableclass.cpp:63:8:63:32 | call to MyCopyableClass | copyableclass.cpp:63:3:63:4 | ref arg s2 | TAINT |
+| copyableclass.cpp:63:8:63:32 | call to MyCopyableClass | copyableclass.cpp:63:6:63:6 | call to operator= | TAINT |
+| copyableclass.cpp:63:24:63:29 | call to source | copyableclass.cpp:63:8:63:32 | call to MyCopyableClass | TAINT |
+| copyableclass.cpp:67:13:67:18 | call to source | copyableclass.cpp:67:13:67:20 | call to MyCopyableClass | TAINT |
+| copyableclass.cpp:67:13:67:20 | call to MyCopyableClass | copyableclass.cpp:67:8:67:9 | ref arg s3 | TAINT |
+| copyableclass.cpp:67:13:67:20 | call to MyCopyableClass | copyableclass.cpp:67:11:67:11 | call to operator= | TAINT |
+| copyableclass_declonly.cpp:21:30:21:30 | 1 | copyableclass_declonly.cpp:21:30:21:31 | call to MyCopyableClassDeclOnly | TAINT |
+| copyableclass_declonly.cpp:21:30:21:31 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:23:30:23:31 | s1 |  |
+| copyableclass_declonly.cpp:21:30:21:31 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:27:8:27:9 | s1 |  |
+| copyableclass_declonly.cpp:22:31:22:32 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:28:8:28:9 | s2 |  |
+| copyableclass_declonly.cpp:22:32:22:32 | 1 | copyableclass_declonly.cpp:22:31:22:32 | call to MyCopyableClassDeclOnly | TAINT |
+| copyableclass_declonly.cpp:23:30:23:31 | s1 | copyableclass_declonly.cpp:23:30:23:32 | call to MyCopyableClassDeclOnly |  |
+| copyableclass_declonly.cpp:23:30:23:32 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:29:8:29:9 | s3 |  |
+| copyableclass_declonly.cpp:24:27:24:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:25:3:25:4 | s4 |  |
+| copyableclass_declonly.cpp:24:27:24:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:30:8:30:9 | s4 |  |
+| copyableclass_declonly.cpp:25:3:25:4 | ref arg s4 | copyableclass_declonly.cpp:30:8:30:9 | s4 |  |
+| copyableclass_declonly.cpp:25:8:25:8 | 1 | copyableclass_declonly.cpp:25:8:25:8 | call to MyCopyableClassDeclOnly | TAINT |
+| copyableclass_declonly.cpp:25:8:25:8 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:25:3:25:4 | ref arg s4 | TAINT |
+| copyableclass_declonly.cpp:25:8:25:8 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:25:6:25:6 | call to operator= | TAINT |
+| copyableclass_declonly.cpp:34:30:34:35 | call to source | copyableclass_declonly.cpp:34:30:34:38 | call to MyCopyableClassDeclOnly | TAINT |
+| copyableclass_declonly.cpp:34:30:34:38 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:36:30:36:31 | s1 |  |
+| copyableclass_declonly.cpp:34:30:34:38 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:40:8:40:9 | s1 |  |
+| copyableclass_declonly.cpp:35:31:35:39 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:41:8:41:9 | s2 |  |
+| copyableclass_declonly.cpp:35:32:35:37 | call to source | copyableclass_declonly.cpp:35:31:35:39 | call to MyCopyableClassDeclOnly | TAINT |
+| copyableclass_declonly.cpp:36:30:36:31 | s1 | copyableclass_declonly.cpp:36:30:36:32 | call to MyCopyableClassDeclOnly |  |
+| copyableclass_declonly.cpp:36:30:36:32 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:42:8:42:9 | s3 |  |
+| copyableclass_declonly.cpp:37:27:37:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:38:3:38:4 | s4 |  |
+| copyableclass_declonly.cpp:37:27:37:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:43:8:43:9 | s4 |  |
+| copyableclass_declonly.cpp:38:3:38:4 | ref arg s4 | copyableclass_declonly.cpp:43:8:43:9 | s4 |  |
+| copyableclass_declonly.cpp:38:8:38:13 | call to source | copyableclass_declonly.cpp:38:8:38:15 | call to MyCopyableClassDeclOnly | TAINT |
+| copyableclass_declonly.cpp:38:8:38:15 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:38:3:38:4 | ref arg s4 | TAINT |
+| copyableclass_declonly.cpp:38:8:38:15 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:38:6:38:6 | call to operator= | TAINT |
+| copyableclass_declonly.cpp:47:27:47:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:48:32:48:33 | s1 |  |
+| copyableclass_declonly.cpp:47:27:47:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:49:30:49:31 | s1 |  |
+| copyableclass_declonly.cpp:47:27:47:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:51:8:51:9 | s1 |  |
+| copyableclass_declonly.cpp:47:27:47:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:53:8:53:9 | s1 |  |
+| copyableclass_declonly.cpp:48:31:48:33 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:54:8:54:9 | s2 |  |
+| copyableclass_declonly.cpp:48:32:48:33 | s1 | copyableclass_declonly.cpp:48:31:48:33 | call to MyCopyableClassDeclOnly |  |
+| copyableclass_declonly.cpp:49:30:49:31 | s1 | copyableclass_declonly.cpp:49:30:49:32 | call to MyCopyableClassDeclOnly |  |
+| copyableclass_declonly.cpp:49:30:49:32 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:55:8:55:9 | s3 |  |
+| copyableclass_declonly.cpp:50:27:50:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:51:3:51:4 | s4 |  |
+| copyableclass_declonly.cpp:50:27:50:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:56:8:56:9 | s4 |  |
+| copyableclass_declonly.cpp:51:3:51:4 | ref arg s4 | copyableclass_declonly.cpp:56:8:56:9 | s4 |  |
+| copyableclass_declonly.cpp:51:8:51:9 | s1 | copyableclass_declonly.cpp:51:3:51:4 | ref arg s4 | TAINT |
+| copyableclass_declonly.cpp:51:8:51:9 | s1 | copyableclass_declonly.cpp:51:6:51:6 | call to operator= | TAINT |
+| copyableclass_declonly.cpp:60:31:60:64 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:65:8:65:9 | s1 |  |
+| copyableclass_declonly.cpp:60:56:60:61 | call to source | copyableclass_declonly.cpp:60:31:60:64 | call to MyCopyableClassDeclOnly | TAINT |
+| copyableclass_declonly.cpp:61:27:61:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:63:3:63:4 | s2 |  |
+| copyableclass_declonly.cpp:61:27:61:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:66:8:66:9 | s2 |  |
+| copyableclass_declonly.cpp:62:27:62:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:67:8:67:9 | s3 |  |
+| copyableclass_declonly.cpp:63:3:63:4 | ref arg s2 | copyableclass_declonly.cpp:66:8:66:9 | s2 |  |
+| copyableclass_declonly.cpp:63:8:63:40 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:63:3:63:4 | ref arg s2 | TAINT |
+| copyableclass_declonly.cpp:63:8:63:40 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:63:6:63:6 | call to operator= | TAINT |
+| copyableclass_declonly.cpp:63:32:63:37 | call to source | copyableclass_declonly.cpp:63:8:63:40 | call to MyCopyableClassDeclOnly | TAINT |
+| copyableclass_declonly.cpp:67:13:67:18 | call to source | copyableclass_declonly.cpp:67:13:67:20 | call to MyCopyableClassDeclOnly | TAINT |
+| copyableclass_declonly.cpp:67:13:67:20 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:67:8:67:9 | ref arg s3 | TAINT |
+| copyableclass_declonly.cpp:67:13:67:20 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:67:11:67:11 | call to operator= | TAINT |
+| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
+| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
@@ -131,6 +248,64 @@
 | format.cpp:158:13:158:18 | call to wcslen | format.cpp:158:13:158:26 | ... / ... | TAINT |
 | format.cpp:158:13:158:26 | ... / ... | format.cpp:158:7:158:27 | ... + ... | TAINT |
 | format.cpp:158:26:158:26 | 2 | format.cpp:158:13:158:26 | ... / ... | TAINT |
+| movableclass.cpp:8:2:8:15 | this | movableclass.cpp:8:27:8:31 | constructor init of field v [pre-this] |  |
+| movableclass.cpp:8:21:8:22 | _v | movableclass.cpp:8:29:8:30 | _v |  |
+| movableclass.cpp:8:29:8:30 | _v | movableclass.cpp:8:27:8:31 | constructor init of field v | TAINT |
+| movableclass.cpp:9:2:9:15 | this | movableclass.cpp:10:3:10:3 | this |  |
+| movableclass.cpp:9:34:9:38 | other | movableclass.cpp:9:34:9:38 | other |  |
+| movableclass.cpp:9:34:9:38 | other | movableclass.cpp:10:7:10:11 | other |  |
+| movableclass.cpp:9:34:9:38 | other | movableclass.cpp:11:3:11:7 | other |  |
+| movableclass.cpp:10:13:10:13 | v | movableclass.cpp:10:3:10:13 | ... = ... |  |
+| movableclass.cpp:11:3:11:7 | other [post update] | movableclass.cpp:9:34:9:38 | other |  |
+| movableclass.cpp:11:13:11:13 | 0 | movableclass.cpp:11:3:11:13 | ... = ... |  |
+| movableclass.cpp:13:18:13:26 | this | movableclass.cpp:14:3:14:3 | this |  |
+| movableclass.cpp:13:45:13:49 | other | movableclass.cpp:13:45:13:49 | other |  |
+| movableclass.cpp:13:45:13:49 | other | movableclass.cpp:14:7:14:11 | other |  |
+| movableclass.cpp:13:45:13:49 | other | movableclass.cpp:15:3:15:7 | other |  |
+| movableclass.cpp:14:3:14:3 | this | movableclass.cpp:16:11:16:14 | this |  |
+| movableclass.cpp:14:3:14:3 | this [post update] | movableclass.cpp:16:11:16:14 | this |  |
+| movableclass.cpp:14:13:14:13 | v | movableclass.cpp:14:3:14:13 | ... = ... |  |
+| movableclass.cpp:15:3:15:7 | other [post update] | movableclass.cpp:13:45:13:49 | other |  |
+| movableclass.cpp:15:13:15:13 | 0 | movableclass.cpp:15:3:15:13 | ... = ... |  |
+| movableclass.cpp:16:11:16:14 | this | movableclass.cpp:16:10:16:14 | * ... | TAINT |
+| movableclass.cpp:22:57:22:57 | 1 | movableclass.cpp:22:42:22:58 | call to MyMovableClass | TAINT |
+| movableclass.cpp:23:55:23:60 | call to source | movableclass.cpp:23:40:23:63 | call to MyMovableClass | TAINT |
+| movableclass.cpp:28:21:28:21 | 1 | movableclass.cpp:28:21:28:22 | call to MyMovableClass | TAINT |
+| movableclass.cpp:28:21:28:22 | call to MyMovableClass | movableclass.cpp:33:8:33:9 | s1 |  |
+| movableclass.cpp:29:22:29:23 | call to MyMovableClass | movableclass.cpp:34:8:34:9 | s2 |  |
+| movableclass.cpp:29:23:29:23 | 1 | movableclass.cpp:29:22:29:23 | call to MyMovableClass | TAINT |
+| movableclass.cpp:30:18:30:19 | call to MyMovableClass | movableclass.cpp:31:3:31:4 | s3 |  |
+| movableclass.cpp:30:18:30:19 | call to MyMovableClass | movableclass.cpp:35:8:35:9 | s3 |  |
+| movableclass.cpp:31:3:31:4 | ref arg s3 | movableclass.cpp:35:8:35:9 | s3 |  |
+| movableclass.cpp:31:8:31:8 | 1 | movableclass.cpp:31:8:31:8 | call to MyMovableClass | TAINT |
+| movableclass.cpp:31:8:31:8 | call to MyMovableClass | movableclass.cpp:31:3:31:4 | ref arg s3 | TAINT |
+| movableclass.cpp:31:8:31:8 | call to MyMovableClass | movableclass.cpp:31:6:31:6 | call to operator= | TAINT |
+| movableclass.cpp:39:21:39:26 | call to source | movableclass.cpp:39:21:39:29 | call to MyMovableClass | TAINT |
+| movableclass.cpp:39:21:39:29 | call to MyMovableClass | movableclass.cpp:44:8:44:9 | s1 |  |
+| movableclass.cpp:40:22:40:30 | call to MyMovableClass | movableclass.cpp:45:8:45:9 | s2 |  |
+| movableclass.cpp:40:23:40:28 | call to source | movableclass.cpp:40:22:40:30 | call to MyMovableClass | TAINT |
+| movableclass.cpp:41:18:41:19 | call to MyMovableClass | movableclass.cpp:42:3:42:4 | s3 |  |
+| movableclass.cpp:41:18:41:19 | call to MyMovableClass | movableclass.cpp:46:8:46:9 | s3 |  |
+| movableclass.cpp:42:3:42:4 | ref arg s3 | movableclass.cpp:46:8:46:9 | s3 |  |
+| movableclass.cpp:42:8:42:13 | call to source | movableclass.cpp:42:8:42:15 | call to MyMovableClass | TAINT |
+| movableclass.cpp:42:8:42:15 | call to MyMovableClass | movableclass.cpp:42:3:42:4 | ref arg s3 | TAINT |
+| movableclass.cpp:42:8:42:15 | call to MyMovableClass | movableclass.cpp:42:6:42:6 | call to operator= | TAINT |
+| movableclass.cpp:50:22:50:46 | call to MyMovableClass | movableclass.cpp:54:8:54:9 | s1 |  |
+| movableclass.cpp:50:38:50:43 | call to source | movableclass.cpp:50:22:50:46 | call to MyMovableClass | TAINT |
+| movableclass.cpp:51:18:51:19 | call to MyMovableClass | movableclass.cpp:52:3:52:4 | s2 |  |
+| movableclass.cpp:51:18:51:19 | call to MyMovableClass | movableclass.cpp:55:8:55:9 | s2 |  |
+| movableclass.cpp:52:3:52:4 | ref arg s2 | movableclass.cpp:55:8:55:9 | s2 |  |
+| movableclass.cpp:52:8:52:31 | call to MyMovableClass | movableclass.cpp:52:3:52:4 | ref arg s2 | TAINT |
+| movableclass.cpp:52:8:52:31 | call to MyMovableClass | movableclass.cpp:52:6:52:6 | call to operator= | TAINT |
+| movableclass.cpp:52:23:52:28 | call to source | movableclass.cpp:52:8:52:31 | call to MyMovableClass | TAINT |
+| movableclass.cpp:59:21:59:32 | call to getUnTainted | movableclass.cpp:59:21:59:35 | call to MyMovableClass |  |
+| movableclass.cpp:59:21:59:35 | call to MyMovableClass | movableclass.cpp:63:8:63:9 | s1 |  |
+| movableclass.cpp:60:21:60:30 | call to getTainted | movableclass.cpp:60:21:60:33 | call to MyMovableClass |  |
+| movableclass.cpp:60:21:60:33 | call to MyMovableClass | movableclass.cpp:64:8:64:9 | s2 |  |
+| movableclass.cpp:61:18:61:19 | call to MyMovableClass | movableclass.cpp:65:8:65:9 | s3 |  |
+| movableclass.cpp:65:13:65:18 | call to source | movableclass.cpp:65:13:65:20 | call to MyMovableClass | TAINT |
+| movableclass.cpp:65:13:65:20 | call to MyMovableClass | movableclass.cpp:65:8:65:9 | ref arg s3 | TAINT |
+| movableclass.cpp:65:13:65:20 | call to MyMovableClass | movableclass.cpp:65:11:65:11 | call to operator= | TAINT |
 | stl.cpp:67:12:67:17 | call to source | stl.cpp:71:7:71:7 | a |  |
 | stl.cpp:68:16:68:20 | 123 | stl.cpp:68:16:68:21 | call to basic_string | TAINT |
 | stl.cpp:68:16:68:21 | call to basic_string | stl.cpp:72:7:72:7 | b |  |
@@ -188,6 +363,401 @@
 | stl.cpp:131:15:131:24 | call to user_input | stl.cpp:131:15:131:27 | call to basic_string | TAINT |
 | stl.cpp:131:15:131:27 | call to basic_string | stl.cpp:132:7:132:11 | path3 |  |
 | stl.cpp:132:7:132:11 | path3 | stl.cpp:132:13:132:17 | call to c_str | TAINT |
+| stl.cpp:137:19:137:24 | call to source | stl.cpp:140:17:140:18 | cs |  |
+| stl.cpp:137:19:137:24 | call to source | stl.cpp:142:7:142:8 | cs |  |
+| stl.cpp:140:17:140:18 | cs | stl.cpp:140:17:140:19 | call to basic_string | TAINT |
+| stl.cpp:140:17:140:19 | call to basic_string | stl.cpp:143:7:143:8 | ss |  |
+| stl.cpp:148:19:148:24 | call to source | stl.cpp:151:17:151:18 | cs |  |
+| stl.cpp:151:17:151:18 | cs | stl.cpp:151:17:151:19 | call to basic_string | TAINT |
+| stl.cpp:151:17:151:19 | call to basic_string | stl.cpp:154:7:154:8 | ss |  |
+| stl.cpp:151:17:151:19 | call to basic_string | stl.cpp:157:7:157:8 | ss |  |
+| stl.cpp:154:7:154:8 | ss | stl.cpp:154:10:154:14 | call to c_str | TAINT |
+| stl.cpp:154:10:154:14 | call to c_str | stl.cpp:154:2:154:16 | ... = ... |  |
+| stl.cpp:154:10:154:14 | call to c_str | stl.cpp:156:7:156:8 | cs |  |
+| stl.cpp:163:18:163:24 | hello | stl.cpp:163:18:163:25 | call to basic_string | TAINT |
+| stl.cpp:163:18:163:25 | call to basic_string | stl.cpp:168:8:168:9 | s1 |  |
+| stl.cpp:164:19:164:26 | call to basic_string | stl.cpp:169:8:169:9 | s2 |  |
+| stl.cpp:164:20:164:26 | hello | stl.cpp:164:19:164:26 | call to basic_string | TAINT |
+| stl.cpp:166:8:166:14 | call to basic_string | stl.cpp:166:3:166:14 | ... = ... |  |
+| stl.cpp:166:8:166:14 | call to basic_string | stl.cpp:170:8:170:9 | s3 |  |
+| stl.cpp:166:8:166:14 | hello | stl.cpp:166:8:166:14 | call to basic_string | TAINT |
+| stl.cpp:174:18:174:23 | call to source | stl.cpp:174:18:174:26 | call to basic_string | TAINT |
+| stl.cpp:174:18:174:26 | call to basic_string | stl.cpp:179:8:179:9 | s1 |  |
+| stl.cpp:175:19:175:27 | call to basic_string | stl.cpp:180:8:180:9 | s2 |  |
+| stl.cpp:175:20:175:25 | call to source | stl.cpp:175:19:175:27 | call to basic_string | TAINT |
+| stl.cpp:177:8:177:13 | call to source | stl.cpp:177:8:177:15 | call to basic_string | TAINT |
+| stl.cpp:177:8:177:15 | call to basic_string | stl.cpp:177:3:177:15 | ... = ... |  |
+| stl.cpp:177:8:177:15 | call to basic_string | stl.cpp:181:8:181:9 | s3 |  |
+| stl.cpp:185:15:185:16 | call to basic_string | stl.cpp:186:20:186:21 | s1 |  |
+| stl.cpp:185:15:185:16 | call to basic_string | stl.cpp:188:8:188:9 | s1 |  |
+| stl.cpp:185:15:185:16 | call to basic_string | stl.cpp:190:8:190:9 | s1 |  |
+| stl.cpp:186:20:186:21 | s1 | stl.cpp:191:8:191:9 | s2 |  |
+| stl.cpp:188:8:188:9 | s1 | stl.cpp:188:3:188:9 | ... = ... |  |
+| stl.cpp:188:8:188:9 | s1 | stl.cpp:192:8:192:9 | s3 |  |
+| stl.cpp:196:19:196:40 | call to basic_string | stl.cpp:200:8:200:9 | s1 |  |
+| stl.cpp:196:32:196:37 | call to source | stl.cpp:196:19:196:40 | call to basic_string | TAINT |
+| stl.cpp:198:8:198:28 | call to basic_string | stl.cpp:198:3:198:28 | ... = ... |  |
+| stl.cpp:198:8:198:28 | call to basic_string | stl.cpp:201:8:201:9 | s2 |  |
+| stl.cpp:198:20:198:25 | call to source | stl.cpp:198:8:198:28 | call to basic_string | TAINT |
+| structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
+| structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
+| structlikeclass.cpp:5:7:5:7 | this | structlikeclass.cpp:5:7:5:7 | constructor init of field v [pre-this] |  |
+| structlikeclass.cpp:5:7:5:7 | this | structlikeclass.cpp:5:7:5:7 | constructor init of field v [pre-this] |  |
+| structlikeclass.cpp:8:2:8:16 | this | structlikeclass.cpp:8:28:8:32 | constructor init of field v [pre-this] |  |
+| structlikeclass.cpp:8:22:8:23 | _v | structlikeclass.cpp:8:30:8:31 | _v |  |
+| structlikeclass.cpp:8:30:8:31 | _v | structlikeclass.cpp:8:28:8:32 | constructor init of field v | TAINT |
+| structlikeclass.cpp:16:22:16:22 | 1 | structlikeclass.cpp:16:22:16:23 | call to StructLikeClass | TAINT |
+| structlikeclass.cpp:16:22:16:23 | call to StructLikeClass | structlikeclass.cpp:18:22:18:23 | s1 |  |
+| structlikeclass.cpp:16:22:16:23 | call to StructLikeClass | structlikeclass.cpp:22:8:22:9 | s1 |  |
+| structlikeclass.cpp:17:23:17:24 | call to StructLikeClass | structlikeclass.cpp:23:8:23:9 | s2 |  |
+| structlikeclass.cpp:17:24:17:24 | 1 | structlikeclass.cpp:17:23:17:24 | call to StructLikeClass | TAINT |
+| structlikeclass.cpp:18:22:18:23 | s1 | structlikeclass.cpp:24:8:24:9 | s3 |  |
+| structlikeclass.cpp:20:8:20:8 | 1 | structlikeclass.cpp:20:8:20:8 | call to StructLikeClass | TAINT |
+| structlikeclass.cpp:20:8:20:8 | call to StructLikeClass | structlikeclass.cpp:20:3:20:8 | ... = ... |  |
+| structlikeclass.cpp:20:8:20:8 | call to StructLikeClass | structlikeclass.cpp:25:8:25:9 | s4 |  |
+| structlikeclass.cpp:29:22:29:27 | call to source | structlikeclass.cpp:29:22:29:30 | call to StructLikeClass | TAINT |
+| structlikeclass.cpp:29:22:29:30 | call to StructLikeClass | structlikeclass.cpp:31:22:31:23 | s1 |  |
+| structlikeclass.cpp:29:22:29:30 | call to StructLikeClass | structlikeclass.cpp:35:8:35:9 | s1 |  |
+| structlikeclass.cpp:30:23:30:31 | call to StructLikeClass | structlikeclass.cpp:36:8:36:9 | s2 |  |
+| structlikeclass.cpp:30:24:30:29 | call to source | structlikeclass.cpp:30:23:30:31 | call to StructLikeClass | TAINT |
+| structlikeclass.cpp:31:22:31:23 | s1 | structlikeclass.cpp:37:8:37:9 | s3 |  |
+| structlikeclass.cpp:33:8:33:13 | call to source | structlikeclass.cpp:33:8:33:15 | call to StructLikeClass | TAINT |
+| structlikeclass.cpp:33:8:33:15 | call to StructLikeClass | structlikeclass.cpp:33:3:33:15 | ... = ... |  |
+| structlikeclass.cpp:33:8:33:15 | call to StructLikeClass | structlikeclass.cpp:38:8:38:9 | s4 |  |
+| structlikeclass.cpp:42:19:42:20 | call to StructLikeClass | structlikeclass.cpp:43:24:43:25 | s1 |  |
+| structlikeclass.cpp:42:19:42:20 | call to StructLikeClass | structlikeclass.cpp:44:22:44:23 | s1 |  |
+| structlikeclass.cpp:42:19:42:20 | call to StructLikeClass | structlikeclass.cpp:46:8:46:9 | s1 |  |
+| structlikeclass.cpp:42:19:42:20 | call to StructLikeClass | structlikeclass.cpp:48:8:48:9 | s1 |  |
+| structlikeclass.cpp:43:24:43:25 | s1 | structlikeclass.cpp:49:8:49:9 | s2 |  |
+| structlikeclass.cpp:44:22:44:23 | s1 | structlikeclass.cpp:50:8:50:9 | s3 |  |
+| structlikeclass.cpp:46:8:46:9 | s1 | structlikeclass.cpp:46:3:46:9 | ... = ... |  |
+| structlikeclass.cpp:46:8:46:9 | s1 | structlikeclass.cpp:51:8:51:9 | s4 |  |
+| structlikeclass.cpp:55:23:55:48 | call to StructLikeClass | structlikeclass.cpp:60:8:60:9 | s1 |  |
+| structlikeclass.cpp:55:40:55:45 | call to source | structlikeclass.cpp:55:23:55:48 | call to StructLikeClass | TAINT |
+| structlikeclass.cpp:58:8:58:32 | call to StructLikeClass | structlikeclass.cpp:58:3:58:32 | ... = ... |  |
+| structlikeclass.cpp:58:8:58:32 | call to StructLikeClass | structlikeclass.cpp:61:8:61:9 | s2 |  |
+| structlikeclass.cpp:58:24:58:29 | call to source | structlikeclass.cpp:58:8:58:32 | call to StructLikeClass | TAINT |
+| structlikeclass.cpp:62:13:62:18 | call to source | structlikeclass.cpp:62:13:62:20 | call to StructLikeClass | TAINT |
+| structlikeclass.cpp:62:13:62:20 | call to StructLikeClass | structlikeclass.cpp:62:8:62:20 | ... = ... |  |
+| swap1.cpp:14:17:14:17 | t | swap1.cpp:14:17:14:17 | t |  |
+| swap1.cpp:14:17:14:17 | t | swap1.cpp:14:17:14:17 | t |  |
+| swap1.cpp:14:17:14:17 | t | swap1.cpp:14:56:14:56 | t |  |
+| swap1.cpp:14:17:14:17 | t | swap1.cpp:14:56:14:56 | t |  |
+| swap1.cpp:24:9:24:13 | this | swap1.cpp:24:31:24:34 | this |  |
+| swap1.cpp:24:23:24:26 | that | swap1.cpp:24:23:24:26 | that |  |
+| swap1.cpp:24:23:24:26 | that | swap1.cpp:24:36:24:39 | that |  |
+| swap1.cpp:24:36:24:39 | ref arg that | swap1.cpp:24:23:24:26 | that |  |
+| swap1.cpp:25:9:25:13 | this | swap1.cpp:25:36:25:52 | constructor init of field data1 [pre-this] |  |
+| swap1.cpp:25:28:25:31 | that | swap1.cpp:25:42:25:45 | that |  |
+| swap1.cpp:25:47:25:51 | data1 | swap1.cpp:25:36:25:52 | constructor init of field data1 | TAINT |
+| swap1.cpp:25:47:25:51 | data1 | swap1.cpp:25:47:25:51 | data1 |  |
+| swap1.cpp:27:16:27:24 | this | swap1.cpp:30:13:30:16 | this |  |
+| swap1.cpp:27:39:27:42 | that | swap1.cpp:29:24:29:27 | that |  |
+| swap1.cpp:29:23:29:27 | call to Class | swap1.cpp:30:18:30:20 | tmp |  |
+| swap1.cpp:29:24:29:27 | that | swap1.cpp:29:23:29:27 | call to Class |  |
+| swap1.cpp:30:13:30:16 | ref arg this | swap1.cpp:31:21:31:24 | this |  |
+| swap1.cpp:30:13:30:16 | this | swap1.cpp:31:21:31:24 | this |  |
+| swap1.cpp:31:21:31:24 | this | swap1.cpp:31:20:31:24 | * ... | TAINT |
+| swap1.cpp:34:16:34:24 | this | swap1.cpp:36:13:36:16 | this |  |
+| swap1.cpp:34:34:34:37 | that | swap1.cpp:34:34:34:37 | that |  |
+| swap1.cpp:34:34:34:37 | that | swap1.cpp:36:18:36:21 | that |  |
+| swap1.cpp:36:13:36:16 | ref arg this | swap1.cpp:37:21:37:24 | this |  |
+| swap1.cpp:36:13:36:16 | this | swap1.cpp:37:21:37:24 | this |  |
+| swap1.cpp:36:18:36:21 | ref arg that | swap1.cpp:34:34:34:37 | that |  |
+| swap1.cpp:37:21:37:24 | this | swap1.cpp:37:20:37:24 | * ... | TAINT |
+| swap1.cpp:40:16:40:26 | this | swap1.cpp:43:13:43:16 | this |  |
+| swap1.cpp:40:41:40:44 | that | swap1.cpp:42:24:42:27 | that |  |
+| swap1.cpp:42:23:42:27 | call to Class | swap1.cpp:43:18:43:20 | tmp |  |
+| swap1.cpp:42:24:42:27 | that | swap1.cpp:42:23:42:27 | call to Class |  |
+| swap1.cpp:43:13:43:16 | ref arg this | swap1.cpp:44:21:44:24 | this |  |
+| swap1.cpp:43:13:43:16 | this | swap1.cpp:44:21:44:24 | this |  |
+| swap1.cpp:44:21:44:24 | this | swap1.cpp:44:20:44:24 | * ... | TAINT |
+| swap1.cpp:47:16:47:26 | this | swap1.cpp:49:13:49:16 | this |  |
+| swap1.cpp:47:36:47:39 | that | swap1.cpp:47:36:47:39 | that |  |
+| swap1.cpp:47:36:47:39 | that | swap1.cpp:49:18:49:21 | that |  |
+| swap1.cpp:49:13:49:16 | ref arg this | swap1.cpp:50:21:50:24 | this |  |
+| swap1.cpp:49:13:49:16 | this | swap1.cpp:50:21:50:24 | this |  |
+| swap1.cpp:49:18:49:21 | ref arg that | swap1.cpp:47:36:47:39 | that |  |
+| swap1.cpp:50:21:50:24 | this | swap1.cpp:50:20:50:24 | * ... | TAINT |
+| swap1.cpp:53:14:53:17 | this | swap1.cpp:56:18:56:22 | this |  |
+| swap1.cpp:53:26:53:29 | that | swap1.cpp:53:26:53:29 | that |  |
+| swap1.cpp:53:26:53:29 | that | swap1.cpp:56:25:56:28 | that |  |
+| swap1.cpp:56:18:56:22 | data1 | swap1.cpp:56:30:56:34 | ref arg data1 |  |
+| swap1.cpp:56:25:56:28 | that | swap1.cpp:56:18:56:22 | ref arg data1 |  |
+| swap1.cpp:56:25:56:28 | that [post update] | swap1.cpp:53:26:53:29 | that |  |
+| swap1.cpp:56:30:56:34 | data1 | swap1.cpp:56:18:56:22 | ref arg data1 |  |
+| swap1.cpp:61:22:61:22 | x | swap1.cpp:61:22:61:22 | x |  |
+| swap1.cpp:61:22:61:22 | x | swap1.cpp:63:9:63:9 | x |  |
+| swap1.cpp:61:22:61:22 | x | swap2.cpp:61:22:61:22 | x |  |
+| swap1.cpp:61:22:61:22 | x | swap2.cpp:63:9:63:9 | x |  |
+| swap1.cpp:61:32:61:32 | y | swap1.cpp:61:32:61:32 | y |  |
+| swap1.cpp:61:32:61:32 | y | swap1.cpp:63:16:63:16 | y |  |
+| swap1.cpp:61:32:61:32 | y | swap2.cpp:61:32:61:32 | y |  |
+| swap1.cpp:61:32:61:32 | y | swap2.cpp:63:16:63:16 | y |  |
+| swap1.cpp:63:9:63:9 | ref arg x | swap1.cpp:61:22:61:22 | x |  |
+| swap1.cpp:63:9:63:9 | ref arg x | swap2.cpp:61:22:61:22 | x |  |
+| swap1.cpp:63:16:63:16 | ref arg y | swap1.cpp:61:32:61:32 | y |  |
+| swap1.cpp:63:16:63:16 | ref arg y | swap2.cpp:61:32:61:32 | y |  |
+| swap1.cpp:69:23:69:23 | x | swap1.cpp:71:5:71:5 | x |  |
+| swap1.cpp:69:23:69:23 | x | swap1.cpp:73:10:73:10 | x |  |
+| swap1.cpp:69:23:69:23 | x | swap1.cpp:76:9:76:9 | x |  |
+| swap1.cpp:69:23:69:23 | x | swap1.cpp:79:10:79:10 | x |  |
+| swap1.cpp:70:23:70:23 | y | swap1.cpp:74:10:74:10 | y |  |
+| swap1.cpp:70:23:70:23 | y | swap1.cpp:76:5:76:5 | y |  |
+| swap1.cpp:70:23:70:23 | y | swap1.cpp:78:10:78:10 | y |  |
+| swap1.cpp:71:5:71:5 | x [post update] | swap1.cpp:73:10:73:10 | x |  |
+| swap1.cpp:71:5:71:5 | x [post update] | swap1.cpp:76:9:76:9 | x |  |
+| swap1.cpp:71:5:71:5 | x [post update] | swap1.cpp:79:10:79:10 | x |  |
+| swap1.cpp:71:5:71:22 | ... = ... | swap1.cpp:73:12:73:16 | data1 |  |
+| swap1.cpp:71:5:71:22 | ... = ... | swap1.cpp:79:12:79:16 | data1 |  |
+| swap1.cpp:71:15:71:20 | call to source | swap1.cpp:71:5:71:22 | ... = ... |  |
+| swap1.cpp:76:5:76:5 | ref arg y | swap1.cpp:78:10:78:10 | y |  |
+| swap1.cpp:76:9:76:9 | x | swap1.cpp:76:5:76:5 | ref arg y | TAINT |
+| swap1.cpp:76:9:76:9 | x | swap1.cpp:76:7:76:7 | call to operator= | TAINT |
+| swap1.cpp:81:23:81:24 | z1 | swap1.cpp:82:5:82:6 | z1 |  |
+| swap1.cpp:81:23:81:24 | z1 | swap1.cpp:83:10:83:11 | z1 |  |
+| swap1.cpp:81:23:81:24 | z1 | swap1.cpp:85:10:85:11 | z1 |  |
+| swap1.cpp:81:23:81:24 | z1 | swap1.cpp:88:10:88:11 | z1 |  |
+| swap1.cpp:81:27:81:28 | z2 | swap1.cpp:85:14:85:15 | z2 |  |
+| swap1.cpp:81:27:81:28 | z2 | swap1.cpp:87:10:87:11 | z2 |  |
+| swap1.cpp:82:5:82:6 | z1 [post update] | swap1.cpp:83:10:83:11 | z1 |  |
+| swap1.cpp:82:5:82:6 | z1 [post update] | swap1.cpp:85:10:85:11 | z1 |  |
+| swap1.cpp:82:5:82:6 | z1 [post update] | swap1.cpp:88:10:88:11 | z1 |  |
+| swap1.cpp:82:5:82:23 | ... = ... | swap1.cpp:83:13:83:17 | data1 |  |
+| swap1.cpp:82:5:82:23 | ... = ... | swap1.cpp:88:13:88:17 | data1 |  |
+| swap1.cpp:82:16:82:21 | call to source | swap1.cpp:82:5:82:23 | ... = ... |  |
+| swap1.cpp:85:10:85:11 | ref arg z1 | swap1.cpp:88:10:88:11 | z1 |  |
+| swap1.cpp:85:14:85:15 | ref arg z2 | swap1.cpp:87:10:87:11 | z2 |  |
+| swap1.cpp:93:23:93:23 | x | swap1.cpp:95:5:95:5 | x |  |
+| swap1.cpp:93:23:93:23 | x | swap1.cpp:97:10:97:10 | x |  |
+| swap1.cpp:93:23:93:23 | x | swap1.cpp:100:19:100:19 | x |  |
+| swap1.cpp:93:23:93:23 | x | swap1.cpp:103:10:103:10 | x |  |
+| swap1.cpp:94:23:94:23 | y | swap1.cpp:98:10:98:10 | y |  |
+| swap1.cpp:94:23:94:23 | y | swap1.cpp:100:5:100:5 | y |  |
+| swap1.cpp:94:23:94:23 | y | swap1.cpp:102:10:102:10 | y |  |
+| swap1.cpp:95:5:95:5 | x [post update] | swap1.cpp:97:10:97:10 | x |  |
+| swap1.cpp:95:5:95:5 | x [post update] | swap1.cpp:100:19:100:19 | x |  |
+| swap1.cpp:95:5:95:5 | x [post update] | swap1.cpp:103:10:103:10 | x |  |
+| swap1.cpp:95:5:95:22 | ... = ... | swap1.cpp:97:12:97:16 | data1 |  |
+| swap1.cpp:95:5:95:22 | ... = ... | swap1.cpp:103:12:103:16 | data1 |  |
+| swap1.cpp:95:15:95:20 | call to source | swap1.cpp:95:5:95:22 | ... = ... |  |
+| swap1.cpp:100:5:100:5 | ref arg y | swap1.cpp:102:10:102:10 | y |  |
+| swap1.cpp:100:9:100:17 | call to move | swap1.cpp:100:5:100:5 | ref arg y | TAINT |
+| swap1.cpp:100:9:100:17 | call to move | swap1.cpp:100:7:100:7 | call to operator= | TAINT |
+| swap1.cpp:100:9:100:17 | ref arg call to move | swap1.cpp:100:19:100:19 | x [inner post update] |  |
+| swap1.cpp:100:9:100:17 | ref arg call to move | swap1.cpp:103:10:103:10 | x |  |
+| swap1.cpp:100:19:100:19 | x | swap1.cpp:100:5:100:5 | ref arg y | TAINT |
+| swap1.cpp:100:19:100:19 | x | swap1.cpp:100:7:100:7 | call to operator= | TAINT |
+| swap1.cpp:100:19:100:19 | x | swap1.cpp:100:9:100:17 | call to move |  |
+| swap1.cpp:108:23:108:31 | move_from | swap1.cpp:109:5:109:13 | move_from |  |
+| swap1.cpp:108:23:108:31 | move_from | swap1.cpp:111:10:111:18 | move_from |  |
+| swap1.cpp:108:23:108:31 | move_from | swap1.cpp:113:41:113:49 | move_from |  |
+| swap1.cpp:109:5:109:13 | move_from [post update] | swap1.cpp:111:10:111:18 | move_from |  |
+| swap1.cpp:109:5:109:13 | move_from [post update] | swap1.cpp:113:41:113:49 | move_from |  |
+| swap1.cpp:109:5:109:30 | ... = ... | swap1.cpp:111:20:111:24 | data1 |  |
+| swap1.cpp:109:5:109:30 | ... = ... | swap1.cpp:115:18:115:22 | data1 |  |
+| swap1.cpp:109:23:109:28 | call to source | swap1.cpp:109:5:109:30 | ... = ... |  |
+| swap1.cpp:113:31:113:39 | call to move | swap1.cpp:113:31:113:51 | call to Class |  |
+| swap1.cpp:113:31:113:39 | ref arg call to move | swap1.cpp:113:41:113:49 | move_from [inner post update] |  |
+| swap1.cpp:113:31:113:51 | call to Class | swap1.cpp:115:10:115:16 | move_to |  |
+| swap1.cpp:113:41:113:49 | move_from | swap1.cpp:113:31:113:39 | call to move |  |
+| swap1.cpp:120:23:120:23 | x | swap1.cpp:122:5:122:5 | x |  |
+| swap1.cpp:120:23:120:23 | x | swap1.cpp:124:10:124:10 | x |  |
+| swap1.cpp:120:23:120:23 | x | swap1.cpp:127:19:127:19 | x |  |
+| swap1.cpp:120:23:120:23 | x | swap1.cpp:130:10:130:10 | x |  |
+| swap1.cpp:121:23:121:23 | y | swap1.cpp:125:10:125:10 | y |  |
+| swap1.cpp:121:23:121:23 | y | swap1.cpp:127:5:127:5 | y |  |
+| swap1.cpp:121:23:121:23 | y | swap1.cpp:129:10:129:10 | y |  |
+| swap1.cpp:122:5:122:5 | x [post update] | swap1.cpp:124:10:124:10 | x |  |
+| swap1.cpp:122:5:122:5 | x [post update] | swap1.cpp:127:19:127:19 | x |  |
+| swap1.cpp:122:5:122:5 | x [post update] | swap1.cpp:130:10:130:10 | x |  |
+| swap1.cpp:122:5:122:22 | ... = ... | swap1.cpp:124:12:124:16 | data1 |  |
+| swap1.cpp:122:5:122:22 | ... = ... | swap1.cpp:130:12:130:16 | data1 |  |
+| swap1.cpp:122:15:122:20 | call to source | swap1.cpp:122:5:122:22 | ... = ... |  |
+| swap1.cpp:127:5:127:5 | ref arg y | swap1.cpp:129:10:129:10 | y |  |
+| swap1.cpp:135:23:135:23 | x | swap1.cpp:137:5:137:5 | x |  |
+| swap1.cpp:135:23:135:23 | x | swap1.cpp:139:10:139:10 | x |  |
+| swap1.cpp:135:23:135:23 | x | swap1.cpp:142:29:142:29 | x |  |
+| swap1.cpp:135:23:135:23 | x | swap1.cpp:145:10:145:10 | x |  |
+| swap1.cpp:136:23:136:23 | y | swap1.cpp:140:10:140:10 | y |  |
+| swap1.cpp:136:23:136:23 | y | swap1.cpp:142:5:142:5 | y |  |
+| swap1.cpp:136:23:136:23 | y | swap1.cpp:144:10:144:10 | y |  |
+| swap1.cpp:137:5:137:5 | x [post update] | swap1.cpp:139:10:139:10 | x |  |
+| swap1.cpp:137:5:137:5 | x [post update] | swap1.cpp:142:29:142:29 | x |  |
+| swap1.cpp:137:5:137:5 | x [post update] | swap1.cpp:145:10:145:10 | x |  |
+| swap1.cpp:137:5:137:22 | ... = ... | swap1.cpp:139:12:139:16 | data1 |  |
+| swap1.cpp:137:5:137:22 | ... = ... | swap1.cpp:145:12:145:16 | data1 |  |
+| swap1.cpp:137:15:137:20 | call to source | swap1.cpp:137:5:137:22 | ... = ... |  |
+| swap1.cpp:142:5:142:5 | ref arg y | swap1.cpp:144:10:144:10 | y |  |
+| swap1.cpp:142:19:142:27 | ref arg call to move | swap1.cpp:142:29:142:29 | x [inner post update] |  |
+| swap1.cpp:142:19:142:27 | ref arg call to move | swap1.cpp:145:10:145:10 | x |  |
+| swap1.cpp:142:29:142:29 | x | swap1.cpp:142:19:142:27 | call to move |  |
+| swap2.cpp:14:17:14:17 | t | swap2.cpp:14:17:14:17 | t |  |
+| swap2.cpp:14:17:14:17 | t | swap2.cpp:14:17:14:17 | t |  |
+| swap2.cpp:14:17:14:17 | t | swap2.cpp:14:56:14:56 | t |  |
+| swap2.cpp:14:17:14:17 | t | swap2.cpp:14:56:14:56 | t |  |
+| swap2.cpp:24:9:24:13 | this | swap2.cpp:24:31:24:34 | this |  |
+| swap2.cpp:24:23:24:26 | that | swap2.cpp:24:23:24:26 | that |  |
+| swap2.cpp:24:23:24:26 | that | swap2.cpp:24:36:24:39 | that |  |
+| swap2.cpp:24:36:24:39 | ref arg that | swap2.cpp:24:23:24:26 | that |  |
+| swap2.cpp:25:9:25:13 | this | swap2.cpp:25:36:25:52 | constructor init of field data1 [pre-this] |  |
+| swap2.cpp:25:28:25:31 | that | swap2.cpp:25:42:25:45 | that |  |
+| swap2.cpp:25:28:25:31 | that | swap2.cpp:25:61:25:64 | that |  |
+| swap2.cpp:25:36:25:52 | constructor init of field data1 [post-this] | swap2.cpp:25:55:25:71 | constructor init of field data2 [pre-this] |  |
+| swap2.cpp:25:36:25:52 | constructor init of field data1 [pre-this] | swap2.cpp:25:55:25:71 | constructor init of field data2 [pre-this] |  |
+| swap2.cpp:25:47:25:51 | data1 | swap2.cpp:25:36:25:52 | constructor init of field data1 | TAINT |
+| swap2.cpp:25:47:25:51 | data1 | swap2.cpp:25:47:25:51 | data1 |  |
+| swap2.cpp:25:66:25:70 | data2 | swap2.cpp:25:55:25:71 | constructor init of field data2 | TAINT |
+| swap2.cpp:25:66:25:70 | data2 | swap2.cpp:25:66:25:70 | data2 |  |
+| swap2.cpp:27:16:27:24 | this | swap2.cpp:30:13:30:16 | this |  |
+| swap2.cpp:27:39:27:42 | that | swap2.cpp:29:24:29:27 | that |  |
+| swap2.cpp:29:23:29:27 | call to Class | swap2.cpp:30:18:30:20 | tmp |  |
+| swap2.cpp:29:24:29:27 | that | swap2.cpp:29:23:29:27 | call to Class |  |
+| swap2.cpp:30:13:30:16 | ref arg this | swap2.cpp:31:21:31:24 | this |  |
+| swap2.cpp:30:13:30:16 | this | swap2.cpp:31:21:31:24 | this |  |
+| swap2.cpp:31:21:31:24 | this | swap2.cpp:31:20:31:24 | * ... | TAINT |
+| swap2.cpp:34:16:34:24 | this | swap2.cpp:36:13:36:16 | this |  |
+| swap2.cpp:34:34:34:37 | that | swap2.cpp:34:34:34:37 | that |  |
+| swap2.cpp:34:34:34:37 | that | swap2.cpp:36:18:36:21 | that |  |
+| swap2.cpp:36:13:36:16 | ref arg this | swap2.cpp:37:21:37:24 | this |  |
+| swap2.cpp:36:13:36:16 | this | swap2.cpp:37:21:37:24 | this |  |
+| swap2.cpp:36:18:36:21 | ref arg that | swap2.cpp:34:34:34:37 | that |  |
+| swap2.cpp:37:21:37:24 | this | swap2.cpp:37:20:37:24 | * ... | TAINT |
+| swap2.cpp:40:16:40:26 | this | swap2.cpp:43:13:43:16 | this |  |
+| swap2.cpp:40:41:40:44 | that | swap2.cpp:42:24:42:27 | that |  |
+| swap2.cpp:42:23:42:27 | call to Class | swap2.cpp:43:18:43:20 | tmp |  |
+| swap2.cpp:42:24:42:27 | that | swap2.cpp:42:23:42:27 | call to Class |  |
+| swap2.cpp:43:13:43:16 | ref arg this | swap2.cpp:44:21:44:24 | this |  |
+| swap2.cpp:43:13:43:16 | this | swap2.cpp:44:21:44:24 | this |  |
+| swap2.cpp:44:21:44:24 | this | swap2.cpp:44:20:44:24 | * ... | TAINT |
+| swap2.cpp:47:16:47:26 | this | swap2.cpp:49:13:49:16 | this |  |
+| swap2.cpp:47:36:47:39 | that | swap2.cpp:47:36:47:39 | that |  |
+| swap2.cpp:47:36:47:39 | that | swap2.cpp:49:18:49:21 | that |  |
+| swap2.cpp:49:13:49:16 | ref arg this | swap2.cpp:50:21:50:24 | this |  |
+| swap2.cpp:49:13:49:16 | this | swap2.cpp:50:21:50:24 | this |  |
+| swap2.cpp:49:18:49:21 | ref arg that | swap2.cpp:47:36:47:39 | that |  |
+| swap2.cpp:50:21:50:24 | this | swap2.cpp:50:20:50:24 | * ... | TAINT |
+| swap2.cpp:53:14:53:17 | this | swap2.cpp:56:18:56:22 | this |  |
+| swap2.cpp:53:26:53:29 | that | swap2.cpp:53:26:53:29 | that |  |
+| swap2.cpp:53:26:53:29 | that | swap2.cpp:56:25:56:28 | that |  |
+| swap2.cpp:53:26:53:29 | that | swap2.cpp:56:50:56:53 | that |  |
+| swap2.cpp:56:18:56:22 | data1 | swap2.cpp:56:30:56:34 | ref arg data1 |  |
+| swap2.cpp:56:18:56:22 | this | swap2.cpp:56:43:56:47 | this |  |
+| swap2.cpp:56:18:56:22 | this [post update] | swap2.cpp:56:43:56:47 | this |  |
+| swap2.cpp:56:25:56:28 | that | swap2.cpp:56:18:56:22 | ref arg data1 |  |
+| swap2.cpp:56:25:56:28 | that [post update] | swap2.cpp:53:26:53:29 | that |  |
+| swap2.cpp:56:25:56:28 | that [post update] | swap2.cpp:56:50:56:53 | that |  |
+| swap2.cpp:56:30:56:34 | data1 | swap2.cpp:56:18:56:22 | ref arg data1 |  |
+| swap2.cpp:56:43:56:47 | data2 | swap2.cpp:56:55:56:59 | ref arg data2 |  |
+| swap2.cpp:56:50:56:53 | that | swap2.cpp:56:43:56:47 | ref arg data2 |  |
+| swap2.cpp:56:50:56:53 | that [post update] | swap2.cpp:53:26:53:29 | that |  |
+| swap2.cpp:56:55:56:59 | data2 | swap2.cpp:56:43:56:47 | ref arg data2 |  |
+| swap2.cpp:61:22:61:22 | x | swap1.cpp:61:22:61:22 | x |  |
+| swap2.cpp:61:22:61:22 | x | swap1.cpp:63:9:63:9 | x |  |
+| swap2.cpp:61:22:61:22 | x | swap2.cpp:61:22:61:22 | x |  |
+| swap2.cpp:61:22:61:22 | x | swap2.cpp:63:9:63:9 | x |  |
+| swap2.cpp:61:32:61:32 | y | swap1.cpp:61:32:61:32 | y |  |
+| swap2.cpp:61:32:61:32 | y | swap1.cpp:63:16:63:16 | y |  |
+| swap2.cpp:61:32:61:32 | y | swap2.cpp:61:32:61:32 | y |  |
+| swap2.cpp:61:32:61:32 | y | swap2.cpp:63:16:63:16 | y |  |
+| swap2.cpp:63:9:63:9 | ref arg x | swap1.cpp:61:22:61:22 | x |  |
+| swap2.cpp:63:9:63:9 | ref arg x | swap2.cpp:61:22:61:22 | x |  |
+| swap2.cpp:63:16:63:16 | ref arg y | swap1.cpp:61:32:61:32 | y |  |
+| swap2.cpp:63:16:63:16 | ref arg y | swap2.cpp:61:32:61:32 | y |  |
+| swap2.cpp:69:23:69:23 | x | swap2.cpp:71:5:71:5 | x |  |
+| swap2.cpp:69:23:69:23 | x | swap2.cpp:73:10:73:10 | x |  |
+| swap2.cpp:69:23:69:23 | x | swap2.cpp:76:9:76:9 | x |  |
+| swap2.cpp:69:23:69:23 | x | swap2.cpp:79:10:79:10 | x |  |
+| swap2.cpp:70:23:70:23 | y | swap2.cpp:74:10:74:10 | y |  |
+| swap2.cpp:70:23:70:23 | y | swap2.cpp:76:5:76:5 | y |  |
+| swap2.cpp:70:23:70:23 | y | swap2.cpp:78:10:78:10 | y |  |
+| swap2.cpp:71:5:71:5 | x [post update] | swap2.cpp:73:10:73:10 | x |  |
+| swap2.cpp:71:5:71:5 | x [post update] | swap2.cpp:76:9:76:9 | x |  |
+| swap2.cpp:71:5:71:5 | x [post update] | swap2.cpp:79:10:79:10 | x |  |
+| swap2.cpp:71:5:71:22 | ... = ... | swap2.cpp:73:12:73:16 | data1 |  |
+| swap2.cpp:71:5:71:22 | ... = ... | swap2.cpp:79:12:79:16 | data1 |  |
+| swap2.cpp:71:15:71:20 | call to source | swap2.cpp:71:5:71:22 | ... = ... |  |
+| swap2.cpp:76:5:76:5 | ref arg y | swap2.cpp:78:10:78:10 | y |  |
+| swap2.cpp:76:9:76:9 | x | swap2.cpp:76:5:76:5 | ref arg y | TAINT |
+| swap2.cpp:76:9:76:9 | x | swap2.cpp:76:7:76:7 | call to operator= | TAINT |
+| swap2.cpp:81:23:81:24 | z1 | swap2.cpp:82:5:82:6 | z1 |  |
+| swap2.cpp:81:23:81:24 | z1 | swap2.cpp:83:10:83:11 | z1 |  |
+| swap2.cpp:81:23:81:24 | z1 | swap2.cpp:85:10:85:11 | z1 |  |
+| swap2.cpp:81:23:81:24 | z1 | swap2.cpp:88:10:88:11 | z1 |  |
+| swap2.cpp:81:27:81:28 | z2 | swap2.cpp:85:14:85:15 | z2 |  |
+| swap2.cpp:81:27:81:28 | z2 | swap2.cpp:87:10:87:11 | z2 |  |
+| swap2.cpp:82:5:82:6 | z1 [post update] | swap2.cpp:83:10:83:11 | z1 |  |
+| swap2.cpp:82:5:82:6 | z1 [post update] | swap2.cpp:85:10:85:11 | z1 |  |
+| swap2.cpp:82:5:82:6 | z1 [post update] | swap2.cpp:88:10:88:11 | z1 |  |
+| swap2.cpp:82:5:82:23 | ... = ... | swap2.cpp:83:13:83:17 | data1 |  |
+| swap2.cpp:82:5:82:23 | ... = ... | swap2.cpp:88:13:88:17 | data1 |  |
+| swap2.cpp:82:16:82:21 | call to source | swap2.cpp:82:5:82:23 | ... = ... |  |
+| swap2.cpp:85:10:85:11 | ref arg z1 | swap2.cpp:88:10:88:11 | z1 |  |
+| swap2.cpp:85:14:85:15 | ref arg z2 | swap2.cpp:87:10:87:11 | z2 |  |
+| swap2.cpp:93:23:93:23 | x | swap2.cpp:95:5:95:5 | x |  |
+| swap2.cpp:93:23:93:23 | x | swap2.cpp:97:10:97:10 | x |  |
+| swap2.cpp:93:23:93:23 | x | swap2.cpp:100:19:100:19 | x |  |
+| swap2.cpp:93:23:93:23 | x | swap2.cpp:103:10:103:10 | x |  |
+| swap2.cpp:94:23:94:23 | y | swap2.cpp:98:10:98:10 | y |  |
+| swap2.cpp:94:23:94:23 | y | swap2.cpp:100:5:100:5 | y |  |
+| swap2.cpp:94:23:94:23 | y | swap2.cpp:102:10:102:10 | y |  |
+| swap2.cpp:95:5:95:5 | x [post update] | swap2.cpp:97:10:97:10 | x |  |
+| swap2.cpp:95:5:95:5 | x [post update] | swap2.cpp:100:19:100:19 | x |  |
+| swap2.cpp:95:5:95:5 | x [post update] | swap2.cpp:103:10:103:10 | x |  |
+| swap2.cpp:95:5:95:22 | ... = ... | swap2.cpp:97:12:97:16 | data1 |  |
+| swap2.cpp:95:5:95:22 | ... = ... | swap2.cpp:103:12:103:16 | data1 |  |
+| swap2.cpp:95:15:95:20 | call to source | swap2.cpp:95:5:95:22 | ... = ... |  |
+| swap2.cpp:100:5:100:5 | ref arg y | swap2.cpp:102:10:102:10 | y |  |
+| swap2.cpp:100:9:100:17 | call to move | swap2.cpp:100:5:100:5 | ref arg y | TAINT |
+| swap2.cpp:100:9:100:17 | call to move | swap2.cpp:100:7:100:7 | call to operator= | TAINT |
+| swap2.cpp:100:9:100:17 | ref arg call to move | swap2.cpp:100:19:100:19 | x [inner post update] |  |
+| swap2.cpp:100:9:100:17 | ref arg call to move | swap2.cpp:103:10:103:10 | x |  |
+| swap2.cpp:100:19:100:19 | x | swap2.cpp:100:5:100:5 | ref arg y | TAINT |
+| swap2.cpp:100:19:100:19 | x | swap2.cpp:100:7:100:7 | call to operator= | TAINT |
+| swap2.cpp:100:19:100:19 | x | swap2.cpp:100:9:100:17 | call to move |  |
+| swap2.cpp:108:23:108:31 | move_from | swap2.cpp:109:5:109:13 | move_from |  |
+| swap2.cpp:108:23:108:31 | move_from | swap2.cpp:111:10:111:18 | move_from |  |
+| swap2.cpp:108:23:108:31 | move_from | swap2.cpp:113:41:113:49 | move_from |  |
+| swap2.cpp:109:5:109:13 | move_from [post update] | swap2.cpp:111:10:111:18 | move_from |  |
+| swap2.cpp:109:5:109:13 | move_from [post update] | swap2.cpp:113:41:113:49 | move_from |  |
+| swap2.cpp:109:5:109:30 | ... = ... | swap2.cpp:111:20:111:24 | data1 |  |
+| swap2.cpp:109:5:109:30 | ... = ... | swap2.cpp:115:18:115:22 | data1 |  |
+| swap2.cpp:109:23:109:28 | call to source | swap2.cpp:109:5:109:30 | ... = ... |  |
+| swap2.cpp:113:31:113:39 | call to move | swap2.cpp:113:31:113:51 | call to Class |  |
+| swap2.cpp:113:31:113:39 | ref arg call to move | swap2.cpp:113:41:113:49 | move_from [inner post update] |  |
+| swap2.cpp:113:31:113:51 | call to Class | swap2.cpp:115:10:115:16 | move_to |  |
+| swap2.cpp:113:41:113:49 | move_from | swap2.cpp:113:31:113:39 | call to move |  |
+| swap2.cpp:120:23:120:23 | x | swap2.cpp:122:5:122:5 | x |  |
+| swap2.cpp:120:23:120:23 | x | swap2.cpp:124:10:124:10 | x |  |
+| swap2.cpp:120:23:120:23 | x | swap2.cpp:127:19:127:19 | x |  |
+| swap2.cpp:120:23:120:23 | x | swap2.cpp:130:10:130:10 | x |  |
+| swap2.cpp:121:23:121:23 | y | swap2.cpp:125:10:125:10 | y |  |
+| swap2.cpp:121:23:121:23 | y | swap2.cpp:127:5:127:5 | y |  |
+| swap2.cpp:121:23:121:23 | y | swap2.cpp:129:10:129:10 | y |  |
+| swap2.cpp:122:5:122:5 | x [post update] | swap2.cpp:124:10:124:10 | x |  |
+| swap2.cpp:122:5:122:5 | x [post update] | swap2.cpp:127:19:127:19 | x |  |
+| swap2.cpp:122:5:122:5 | x [post update] | swap2.cpp:130:10:130:10 | x |  |
+| swap2.cpp:122:5:122:22 | ... = ... | swap2.cpp:124:12:124:16 | data1 |  |
+| swap2.cpp:122:5:122:22 | ... = ... | swap2.cpp:130:12:130:16 | data1 |  |
+| swap2.cpp:122:15:122:20 | call to source | swap2.cpp:122:5:122:22 | ... = ... |  |
+| swap2.cpp:127:5:127:5 | ref arg y | swap2.cpp:129:10:129:10 | y |  |
+| swap2.cpp:135:23:135:23 | x | swap2.cpp:137:5:137:5 | x |  |
+| swap2.cpp:135:23:135:23 | x | swap2.cpp:139:10:139:10 | x |  |
+| swap2.cpp:135:23:135:23 | x | swap2.cpp:142:29:142:29 | x |  |
+| swap2.cpp:135:23:135:23 | x | swap2.cpp:145:10:145:10 | x |  |
+| swap2.cpp:136:23:136:23 | y | swap2.cpp:140:10:140:10 | y |  |
+| swap2.cpp:136:23:136:23 | y | swap2.cpp:142:5:142:5 | y |  |
+| swap2.cpp:136:23:136:23 | y | swap2.cpp:144:10:144:10 | y |  |
+| swap2.cpp:137:5:137:5 | x [post update] | swap2.cpp:139:10:139:10 | x |  |
+| swap2.cpp:137:5:137:5 | x [post update] | swap2.cpp:142:29:142:29 | x |  |
+| swap2.cpp:137:5:137:5 | x [post update] | swap2.cpp:145:10:145:10 | x |  |
+| swap2.cpp:137:5:137:22 | ... = ... | swap2.cpp:139:12:139:16 | data1 |  |
+| swap2.cpp:137:5:137:22 | ... = ... | swap2.cpp:145:12:145:16 | data1 |  |
+| swap2.cpp:137:15:137:20 | call to source | swap2.cpp:137:5:137:22 | ... = ... |  |
+| swap2.cpp:142:5:142:5 | ref arg y | swap2.cpp:144:10:144:10 | y |  |
+| swap2.cpp:142:19:142:27 | ref arg call to move | swap2.cpp:142:29:142:29 | x [inner post update] |  |
+| swap2.cpp:142:19:142:27 | ref arg call to move | swap2.cpp:145:10:145:10 | x |  |
+| swap2.cpp:142:29:142:29 | x | swap2.cpp:142:19:142:27 | call to move |  |
 | taint.cpp:4:27:4:33 | source1 | taint.cpp:6:13:6:19 | source1 |  |
 | taint.cpp:4:40:4:45 | clean1 | taint.cpp:5:8:5:13 | clean1 |  |
 | taint.cpp:4:40:4:45 | clean1 | taint.cpp:6:3:6:8 | clean1 |  |
@@ -537,17 +1107,20 @@
 | taint.cpp:390:6:390:11 | call to wcsdup | taint.cpp:390:2:390:28 | ... = ... |  |
 | taint.cpp:390:6:390:11 | call to wcsdup | taint.cpp:392:7:392:7 | b |  |
 | taint.cpp:390:13:390:27 | hello, world | taint.cpp:390:6:390:11 | call to wcsdup | TAINT |
+| taint.cpp:417:13:417:13 | 0 | taint.cpp:417:13:417:14 | call to MyClass2 | TAINT |
 | taint.cpp:417:13:417:14 | call to MyClass2 | taint.cpp:420:7:420:7 | a |  |
 | taint.cpp:417:13:417:14 | call to MyClass2 | taint.cpp:421:7:421:7 | a |  |
 | taint.cpp:417:13:417:14 | call to MyClass2 | taint.cpp:422:2:422:2 | a |  |
 | taint.cpp:417:13:417:14 | call to MyClass2 | taint.cpp:423:7:423:7 | a |  |
 | taint.cpp:417:13:417:14 | call to MyClass2 | taint.cpp:424:7:424:7 | a |  |
+| taint.cpp:417:19:417:19 | 0 | taint.cpp:417:19:417:20 | call to MyClass2 | TAINT |
 | taint.cpp:417:19:417:20 | call to MyClass2 | taint.cpp:426:7:426:7 | b |  |
 | taint.cpp:417:19:417:20 | call to MyClass2 | taint.cpp:427:7:427:7 | b |  |
 | taint.cpp:417:19:417:20 | call to MyClass2 | taint.cpp:428:2:428:2 | b |  |
 | taint.cpp:417:19:417:20 | call to MyClass2 | taint.cpp:429:7:429:7 | b |  |
 | taint.cpp:417:19:417:20 | call to MyClass2 | taint.cpp:430:7:430:7 | b |  |
 | taint.cpp:417:19:417:20 | call to MyClass2 | taint.cpp:431:7:431:7 | b |  |
+| taint.cpp:418:13:418:14 |  | taint.cpp:418:13:418:15 | call to MyClass3 | TAINT |
 | taint.cpp:418:13:418:15 | call to MyClass3 | taint.cpp:443:7:443:7 | d |  |
 | taint.cpp:418:13:418:15 | call to MyClass3 | taint.cpp:444:7:444:7 | d |  |
 | taint.cpp:418:13:418:15 | call to MyClass3 | taint.cpp:445:2:445:2 | d |  |
@@ -575,6 +1148,7 @@
 | taint.cpp:433:6:433:20 | new | taint.cpp:438:7:438:7 | c |  |
 | taint.cpp:433:6:433:20 | new | taint.cpp:439:7:439:7 | c |  |
 | taint.cpp:433:6:433:20 | new | taint.cpp:441:9:441:9 | c |  |
+| taint.cpp:433:19:433:19 | 0 | taint.cpp:433:6:433:20 | call to MyClass2 | TAINT |
 | taint.cpp:435:7:435:7 | ref arg c | taint.cpp:436:7:436:7 | c |  |
 | taint.cpp:435:7:435:7 | ref arg c | taint.cpp:437:2:437:2 | c |  |
 | taint.cpp:435:7:435:7 | ref arg c | taint.cpp:438:7:438:7 | c |  |

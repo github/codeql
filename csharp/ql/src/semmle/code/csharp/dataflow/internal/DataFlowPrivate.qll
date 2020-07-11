@@ -23,6 +23,18 @@ abstract class NodeImpl extends Node {
   /** Do not call: use `getType()` instead. */
   abstract DotNet::Type getTypeImpl();
 
+  /** Gets the type of this node used for type pruning. */
+  cached
+  DataFlowType getDataFlowType() {
+    Stages::DataFlowStage::forceCachingInSameStage() and
+    exists(Type t0 | result = Gvn::getGlobalValueNumber(t0) |
+      t0 = getCSharpType(this.getType())
+      or
+      not exists(getCSharpType(this.getType())) and
+      t0 instanceof ObjectType
+    )
+  }
+
   /** Do not call: use `getControlFlowNode()` instead. */
   abstract ControlFlow::Node getControlFlowNodeImpl();
 
@@ -373,7 +385,7 @@ private predicate fieldOrPropertyRead(Expr e1, Content c, FieldOrPropertyRead e2
   )
 }
 
-Type getCSharpType(DotNet::Type t) {
+private Type getCSharpType(DotNet::Type t) {
   result = t
   or
   result.matchesHandle(t)
@@ -431,6 +443,9 @@ private module Cached {
       )
     } or
     TMallocNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getElement() instanceof ObjectCreation } or
+    TObjectInitializerNode(ControlFlow::Nodes::ElementNode cfn) {
+      cfn.getElement().(ObjectCreation).hasInitializer()
+    } or
     TExprPostUpdateNode(ControlFlow::Nodes::ElementNode cfn) {
       exists(Argument a, Type t |
         a = cfn.getElement() and
@@ -486,6 +501,8 @@ private module Cached {
       n = nodeFrom and
       nodeTo = n.getSuccessor(AccessPath::empty())
     )
+    or
+    nodeTo.(ObjectCreationNode).getPreUpdateNode() = nodeFrom.(ObjectInitializerNode)
   }
 
   /**
@@ -545,6 +562,20 @@ private module Cached {
     )
     or
     node1 = node2.(LibraryCodeNode).getPredecessor(any(AccessPath ap | ap.getHead() = c))
+  }
+
+  /**
+   * Holds if values stored inside content `c` are cleared at node `n`. For example,
+   * any value stored inside `f` is cleared at the pre-update node associated with `x`
+   * in `x.f = newValue`.
+   */
+  cached
+  predicate clearsContent(Node n, Content c) {
+    fieldOrPropertyAssign(_, c, _, n.asExpr())
+    or
+    fieldOrPropertyInit(n.(ObjectInitializerNode).getObjectCreation(), c, _)
+    or
+    exists(n.(LibraryCodeNode).getSuccessor(any(AccessPath ap | ap.getHead() = c)))
   }
 
   /**
@@ -1387,7 +1418,7 @@ class LibraryCodeNode extends NodeImpl, TLibraryCodeNode {
    * Gets the predecessor of this library-code node. The head of `ap` describes
    * the content that is read from when entering this node (if any).
    */
-  Node getPredecessor(AccessPath ap) {
+  NodeImpl getPredecessor(AccessPath ap) {
     ap = sourceAp and
     (
       // The source is either an argument or a qualifier, for example
@@ -1411,7 +1442,7 @@ class LibraryCodeNode extends NodeImpl, TLibraryCodeNode {
    * Gets the successor of this library-code node. The head of `ap` describes
    * the content that is stored into when leaving this node (if any).
    */
-  Node getSuccessor(AccessPath ap) {
+  NodeImpl getSuccessor(AccessPath ap) {
     ap = sinkAp and
     (
       exists(LibraryFlow::LibrarySinkConfiguration x, Call call, ExprNode e |
@@ -1463,15 +1494,18 @@ class LibraryCodeNode extends NodeImpl, TLibraryCodeNode {
 
   override Callable getEnclosingCallableImpl() { result = callCfn.getEnclosingCallable() }
 
-  override DataFlowType getTypeBound() {
+  override DataFlowType getDataFlowType() {
     preservesValue = true and
     sourceAp = AccessPath::empty() and
-    result = this.getPredecessor(_).getTypeBound()
+    result = this.getPredecessor(_).getDataFlowType()
     or
-    result = sourceAp.getHead().getType()
+    exists(FieldOrProperty f |
+      sourceAp.getHead() = f.getContent() and
+      result = Gvn::getGlobalValueNumber(f.getType())
+    )
     or
     preservesValue = false and
-    result = this.getSuccessor(_).getTypeBound()
+    result = this.getSuccessor(_).getDataFlowType()
   }
 
   override DotNet::Type getTypeImpl() { none() }
@@ -1595,7 +1629,10 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
 
 predicate readStep = readStepImpl/3;
 
-/** Gets a string representation of a type returned by `getErasedRepr`. */
+/** Gets the type of `n` used for type pruning. */
+DataFlowType getNodeType(NodeImpl n) { result = n.getDataFlowType() }
+
+/** Gets a string representation of a `DataFlowType`. */
 string ppReprType(DataFlowType t) { result = t.toString() }
 
 private class DataFlowNullType extends DataFlowType {
@@ -1647,9 +1684,50 @@ abstract class PostUpdateNode extends Node {
 
 private module PostUpdateNodes {
   class ObjectCreationNode extends PostUpdateNode, ExprNode, TExprNode {
-    ObjectCreationNode() { exists(ObjectCreation oc | this = TExprNode(oc.getAControlFlowNode())) }
+    private ObjectCreation oc;
 
-    override MallocNode getPreUpdateNode() { this = TExprNode(result.getControlFlowNode()) }
+    ObjectCreationNode() { this = TExprNode(oc.getAControlFlowNode()) }
+
+    override Node getPreUpdateNode() {
+      exists(ControlFlow::Nodes::ElementNode cfn | this = TExprNode(cfn) |
+        result.(ObjectInitializerNode).getControlFlowNode() = cfn
+        or
+        not oc.hasInitializer() and
+        result.(MallocNode).getControlFlowNode() = cfn
+      )
+    }
+  }
+
+  /**
+   * A node that represents the value of a newly created object after the object
+   * has been created, but before the object initializer has been executed.
+   *
+   * Such a node acts as both a post-update node for the `MallocNode`, as well as
+   * a pre-update node for the `ObjectCreationNode`.
+   */
+  class ObjectInitializerNode extends PostUpdateNode, NodeImpl, TObjectInitializerNode {
+    private ObjectCreation oc;
+    private ControlFlow::Nodes::ElementNode cfn;
+
+    ObjectInitializerNode() {
+      this = TObjectInitializerNode(cfn) and
+      cfn = oc.getAControlFlowNode()
+    }
+
+    /** Gets the object creation to which this initializer node belongs. */
+    ObjectCreation getObjectCreation() { result = oc }
+
+    override MallocNode getPreUpdateNode() { result.getControlFlowNode() = cfn }
+
+    override DataFlowCallable getEnclosingCallableImpl() { result = cfn.getEnclosingCallable() }
+
+    override DotNet::Type getTypeImpl() { result = oc.getType() }
+
+    override ControlFlow::Nodes::ElementNode getControlFlowNodeImpl() { result = cfn }
+
+    override Location getLocationImpl() { result = cfn.getLocation() }
+
+    override string toStringImpl() { result = "[pre-initializer] " + cfn }
   }
 
   class ExprPostUpdateNode extends PostUpdateNode, NodeImpl, TExprPostUpdateNode {
@@ -1730,9 +1808,6 @@ int accessPathLimit() { result = 3 }
  * This predicate is only used for consistency checks.
  */
 predicate isImmutableOrUnobservable(Node n) { none() }
-
-pragma[inline]
-DataFlowType getErasedRepr(DataFlowType t) { result = t }
 
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) {

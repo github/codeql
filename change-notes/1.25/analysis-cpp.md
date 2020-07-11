@@ -13,6 +13,8 @@ The following changes in version 1.25 affect C/C++ analysis in all applications.
 
 | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
+| Uncontrolled format string (`cpp/tainted-format-string`) |  | This query is now displayed by default on LGTM. |
+| Uncontrolled format string (through global variable) (`cpp/tainted-format-string-through-global`) |  | This query is now displayed by default on LGTM. |
 
 ## Changes to libraries
 
