@@ -130,3 +130,59 @@ class WebListenerClass extends WebXMLElement {
    */
   Class getClass() { result.getQualifiedName() = getValue() }
 }
+
+/**
+ * A `<security-constraint>` element in a `web.xml` file.
+ */
+class SecurityConstraint extends WebXMLElement {
+  SecurityConstraint() { getName() = "security-constraint" }
+
+  XMLElement getAuthConstraint() { result = getAChild("auth-constraint") }
+}
+
+/**
+ * A `<web-resource-collection>` element in a `web.xml` file,
+ * nested under a `<security-constraint>` element.
+ */
+class WebResourceCollectionClass extends WebXMLElement {
+  WebResourceCollectionClass() {
+    getName() = "web-resource-collection" and
+    getParent() instanceof SecurityConstraint
+  }
+
+  Class getClass() { result.getQualifiedName() = getValue() }
+
+  /**Gets the security constraint to which this belongs */
+  SecurityConstraint getDeclaringConstraint() { result = getParent() }
+
+  /** Returns all HTTP methods listed in this collection */
+  string getHTTPMethods() {
+    exists(HttpMethodAttribute a | this = a.getParent() | result = a.getValue())
+  }
+}
+
+/**
+ * A `<auth-constraint>` element in a `web.xml` file,
+ * nested under a `<security-constraint>` element.
+ */
+class AuthConstraintClass extends WebXMLElement {
+  AuthConstraintClass() {
+    getName() = "auth-constraint" and
+    getParent() instanceof SecurityConstraint
+  }
+
+  Class getClass() { result.getQualifiedName() = getValue() }
+}
+
+/**
+ * A `<http-method>` attribute in a `web.xml` file,
+ * nested under a `<web-resource-collection>` element.
+ */
+class HttpMethodAttribute extends WebXMLElement {
+  HttpMethodAttribute() {
+    getName() = "http-method" and
+    getParent() instanceof WebResourceCollectionClass
+  }
+
+  Class getClass() { result.getQualifiedName() = getValue() }
+}

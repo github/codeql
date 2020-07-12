@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+
+  <!-- Locale Filter -->
+  <filter>
+    <filter-name>LocaleFilter</filter-name>
+    <filter-class>io.apiman.common.servlet.LocaleFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>LocaleFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- CORS Filter -->
+  <filter>
+    <filter-name>CorsFilter</filter-name>
+    <filter-class>io.apiman.common.servlet.ApimanCorsFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>CorsFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- Disable Caching Filter -->
+  <filter>
+    <filter-name>NoCacheFilter</filter-name>
+    <filter-class>io.apiman.common.servlet.DisableCachingFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>NoCacheFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- Security Context Filter -->
+  <filter>
+    <filter-name>SecurityContext</filter-name>
+    <filter-class>io.apiman.manager.api.security.impl.DefaultSecurityContextFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>SecurityContext</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- Transaction Watchdog -->
+  <filter>
+    <filter-name>TransactionWatchdog</filter-name>
+    <filter-class>io.apiman.manager.api.war.TransactionWatchdogFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>TransactionWatchdog</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- Root Resource Filter -->
+  <filter>
+    <filter-name>RootResourceFilter</filter-name>
+    <filter-class>io.apiman.common.servlet.RootResourceFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>RootResourceFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- Bootstrapper -->
+  <servlet>
+    <servlet-name>BootstrapperServlet</servlet-name>
+    <servlet-class>io.apiman.manager.api.war.WarApiManagerBootstrapperServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>apiman</web-resource-name>
+      <url-pattern>/actions/*</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+      <http-method>PUT</http-method>
+      <http-method>DELETE</http-method>
+      <http-method>HEAD</http-method>
+    </web-resource-collection>
+    <web-resource-collection>
+      <web-resource-name>apiman</web-resource-name>
+      <url-pattern>/system/*</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+      <http-method>PUT</http-method>
+      <http-method>DELETE</http-method>
+      <http-method>HEAD</http-method>
+    </web-resource-collection>
+    <web-resource-collection>
+      <web-resource-name>apiman</web-resource-name>
+      <url-pattern>/currentuser/*</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+      <http-method>PUT</http-method>
+      <http-method>DELETE</http-method>
+      <http-method>HEAD</http-method>
+    </web-resource-collection>
+    <web-resource-collection>
+      <web-resource-name>apiman</web-resource-name>
+      <url-pattern>/gateways/*</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+      <http-method>PUT</http-method>
+      <http-method>DELETE</http-method>
+      <http-method>HEAD</http-method>
+    </web-resource-collection>
+    <web-resource-collection>
+      <web-resource-name>apiman</web-resource-name>
+      <url-pattern>/organizations/*</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+      <http-method>PUT</http-method>
+      <http-method>DELETE</http-method>
+      <http-method>HEAD</http-method>
+    </web-resource-collection>
+    <web-resource-collection>
+      <web-resource-name>apiman</web-resource-name>
+      <url-pattern>/permissions/*</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+      <http-method>PUT</http-method>
+      <http-method>DELETE</http-method>
+      <http-method>HEAD</http-method>
+    </web-resource-collection>
+    <web-resource-collection>
+      <web-resource-name>apiman</web-resource-name>
+      <url-pattern>/plugins/*</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+      <http-method>PUT</http-method>
+      <http-method>DELETE</http-method>
+      <http-method>HEAD</http-method>
+    </web-resource-collection>
+    <web-resource-collection>
+      <web-resource-name>apiman</web-resource-name>
+      <url-pattern>/policyDefs/*</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+      <http-method>PUT</http-method>
+      <http-method>DELETE</http-method>
+      <http-method>HEAD</http-method>
+    </web-resource-collection>
+    <web-resource-collection>
+      <web-resource-name>apiman</web-resource-name>
+      <url-pattern>/roles/*</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+      <http-method>PUT</http-method>
+      <http-method>DELETE</http-method>
+      <http-method>HEAD</http-method>
+    </web-resource-collection>
+    <web-resource-collection>
+      <web-resource-name>apiman</web-resource-name>
+      <url-pattern>/search/*</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+      <http-method>DELETE</http-method>
+      <http-method>HEAD</http-method>
+    </web-resource-collection>
+    <web-resource-collection>
+      <web-resource-name>apiman</web-resource-name>
+      <url-pattern>/users/*</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+      <http-method>PUT</http-method>
+      <http-method>DELETE</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>apiuser</role-name>
+    </auth-constraint>
+  </security-constraint>
+  <login-config>
+    <auth-method>BASIC</auth-method>
+    <realm-name>apiman</realm-name>
+  </login-config>
+  <security-role>
+    <role-name>apiuser</role-name>
+  </security-role>
+
+</web-app>
