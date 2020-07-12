@@ -20,20 +20,10 @@ where
   http_string.getText().matches("https://%") and
   (
     not exists(Value verify |
-      call.getArgByName("cafile").pointsTo() = verify
-      or
-      call.getArgByName("capath").pointsTo() = verify
-      or
-      call.getArgByName("context").pointsTo() = verify
+      verify = call.getArgByName(["cafile", "capath", "context"]).pointsTo()
     )
     or
-    (
-      call.getArgByName("cafile").pointsTo() = empty
-      or
-      call.getArgByName("capath").pointsTo() = empty
-      or
-      call.getArgByName("context").pointsTo() = empty
-    ) and
+    empty = call.getArgByName(["cafile", "capath", "context"]).pointsTo() and
     empty = Value::none_()
   )
 select call, "This call to urlopen does not provide any certificate validation"
