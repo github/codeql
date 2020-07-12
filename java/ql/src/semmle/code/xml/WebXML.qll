@@ -152,11 +152,11 @@ class WebResourceCollectionClass extends WebXMLElement {
 
   Class getClass() { result.getQualifiedName() = getValue() }
 
-  /**Gets the security constraint to which this belongs */
+  /** Gets the security constraint to which this belongs */
   SecurityConstraint getDeclaringConstraint() { result = getParent() }
 
   /** Returns all HTTP methods listed in this collection */
-  string getHTTPMethods() {
+  string getAHTTPMethodValue() {
     exists(HttpMethodAttribute a | this = a.getParent() | result = a.getValue())
   }
 }

@@ -1,0 +1,20 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>An authentication check on a few HTTP verbs(or methods) and not others may allow an attacker to bypass the authentication by tampering the HTTP verb.</p>
+  </overview>
+
+  <recommendation>
+    <p>Apply the `auth-constraint` to all valid `http-methods`.</p>
+  </recommendation>
+
+  <example>
+    <p>Consider the example below, the constraint applies to HTTP `GET`, `POST` and `PUT` methods but not for `HEAD` method. This results in an authentication bypass.</p>
+    <sample src="plutoRceBad.xml" />
+  </example>
+  <example>
+    <p>This can be corrected easily by including other HTTP methods in the list.</p>
+    <sample src="plutoRceGood.xml" />
+  </example>
+</qhelp>

@@ -6,6 +6,7 @@ class ValidHTTPMethods extends string {
     this = "OPTIONS" or
     this = "GET" or
     this = "HEAD" or
+    this = "PATCH" or
     this = "POST" or
     this = "PUT" or
     this = "DELETE" or
@@ -19,7 +20,7 @@ where
   // get all instances where
   // the parent security-constraint declares an auth-constraint
   exists(c.getDeclaringConstraint().getAuthConstraint()) and
-  // there is atleast one valid HTTP method which is not included
-  not forex( | m = c.getHTTPMethods())
+  // there is at least one valid HTTP method which is not included
+  not forex( | m = c.getAHTTPMethodValue())
 select c, "Auth constraint applied to $@ does not check for $@ verb", c, "web resource collection",
   m, m
