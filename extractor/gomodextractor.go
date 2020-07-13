@@ -51,15 +51,27 @@ func extractGoMod(path string) error {
 	return nil
 }
 
-func extractGoModFile(tw *trap.Writer, file *modfile.FileSyntax) {
-	for idx, stmt := range file.Stmt {
-		extractGoModExpr(tw, stmt, tw.Labeler.FileLabel(), idx)
-	}
-
-	extractGoModComments(tw, file, tw.Labeler.FileLabel())
+type commentGroupIdxAllocator struct {
+	nextIdx int
 }
 
-func extractGoModExpr(tw *trap.Writer, expr modfile.Expr, parent trap.Label, idx int) {
+func (cgIdxAlloc *commentGroupIdxAllocator) nextCgIdx() int {
+	ret := cgIdxAlloc.nextIdx
+	cgIdxAlloc.nextIdx++
+	return ret
+}
+
+func extractGoModFile(tw *trap.Writer, file *modfile.FileSyntax) {
+	cgIdxAlloc := commentGroupIdxAllocator{0}
+
+	for idx, stmt := range file.Stmt {
+		extractGoModExpr(tw, stmt, tw.Labeler.FileLabel(), idx, &cgIdxAlloc)
+	}
+
+	extractGoModComments(tw, file, tw.Labeler.FileLabel(), &cgIdxAlloc)
+}
+
+func extractGoModExpr(tw *trap.Writer, expr modfile.Expr, parent trap.Label, idx int, cgIdxAlloc *commentGroupIdxAllocator) {
 	lbl := tw.Labeler.LocalID(expr)
 
 	var kind int
@@ -80,18 +92,18 @@ func extractGoModExpr(tw *trap.Writer, expr modfile.Expr, parent trap.Label, idx
 		for idx, tok := range expr.Token {
 			dbscheme.ModTokensTable.Emit(tw, tok, lbl, idx)
 		}
-		extractGoModExpr(tw, &expr.LParen, lbl, 0)
+		extractGoModExpr(tw, &expr.LParen, lbl, 0, cgIdxAlloc)
 		for idx, line := range expr.Line {
-			extractGoModExpr(tw, line, lbl, idx+1)
+			extractGoModExpr(tw, line, lbl, idx+1, cgIdxAlloc)
 		}
-		extractGoModExpr(tw, &expr.RParen, lbl, len(expr.Line)+1)
+		extractGoModExpr(tw, &expr.RParen, lbl, len(expr.Line)+1, cgIdxAlloc)
 	default:
 		log.Fatalf("unknown go.mod expression of type %T", expr)
 	}
 
 	dbscheme.ModExprsTable.Emit(tw, lbl, kind, parent, idx)
 
-	extractGoModComments(tw, expr, lbl)
+	extractGoModComments(tw, expr, lbl, cgIdxAlloc)
 
 	start, end := expr.Span()
 	extractLocation(tw, lbl, start.Line, start.LineRune, end.Line, end.LineRune)
@@ -135,7 +147,7 @@ func lexMax(a1 int, a2 int, b1 int, b2 int) (int, int) {
 	}
 }
 
-func extractGoModComments(tw *trap.Writer, expr modfile.Expr, exprlbl trap.Label) {
+func extractGoModComments(tw *trap.Writer, expr modfile.Expr, exprlbl trap.Label, cgIdxAlloc *commentGroupIdxAllocator) {
 	comments := expr.Comment()
 
 	if len(comments.Before) == 0 && len(comments.Suffix) == 0 && len(comments.After) == 0 {
@@ -144,7 +156,7 @@ func extractGoModComments(tw *trap.Writer, expr modfile.Expr, exprlbl trap.Label
 
 	// extract a pseudo `@commentgroup` for each expr that contains their associated comments
 	grouplbl := tw.Labeler.LocalID(GoModExprCommentWrapper{expr})
-	dbscheme.CommentGroupsTable.Emit(tw, grouplbl, tw.Labeler.FileLabel(), 0)
+	dbscheme.CommentGroupsTable.Emit(tw, grouplbl, tw.Labeler.FileLabel(), cgIdxAlloc.nextCgIdx())
 	dbscheme.DocCommentsTable.Emit(tw, exprlbl, grouplbl)
 
 	var allComments []modfile.Comment
