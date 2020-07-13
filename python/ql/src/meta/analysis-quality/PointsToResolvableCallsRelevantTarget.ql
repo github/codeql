@@ -1,6 +1,6 @@
 /**
  * @name Resolvable calls by points-to, to relevant target
- * @description The number of (relevant) calls that could be resolved to its target that is relevant.
+ * @description The number of (relevant) calls that could be resolved to a target that is relevant.
  * @kind metric
  * @metricType project
  * @metricAggregate sum

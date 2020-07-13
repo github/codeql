@@ -57,7 +57,7 @@ module PointsTo {
 
   /**
    * A call that can be resolved by points-to, where the resolved target is not considered relevant.
-   * See `ResolvableCallRelevantTarget` for definition of relevance.
+   * See `ResolvableCallRelevantTarget` for the definition of relevance.
    */
   class ResolvableCallIrrelevantTarget extends ResolvableCall {
     ResolvableCallIrrelevantTarget() { not this instanceof ResolvableCallRelevantTarget }

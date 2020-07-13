@@ -1,5 +1,5 @@
 /**
- * Helpers to generating meta metrics, that is, metrics about the CodeQL analysis and extractor.
+ * Helpers for generating meta metrics, that is, metrics about the CodeQL analysis and extractor.
  */
 
 import python
