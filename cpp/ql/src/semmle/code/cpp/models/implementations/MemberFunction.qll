@@ -7,9 +7,18 @@ import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Taint
 
 /**
- * Model for C++ conversion constructors.
+ * Model for C++ conversion constructors. As of C++11 this does not correspond
+ * perfectly with the language definition of a converting constructor, however,
+ * it does correspond with the constructors we are confident taint should flow
+ * through.
  */
-class ConversionConstructorModel extends ConversionConstructor, TaintFunction {
+class ConversionConstructorModel extends Constructor, TaintFunction {
+  ConversionConstructorModel()
+  {
+    strictcount(Parameter p | p = getAParameter() and not p.hasInitializer()) = 1 and
+    not hasSpecifier("explicit")
+  }
+
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from the first constructor argument to the returned object
     input.isParameter(0) and
