@@ -4,12 +4,10 @@
  *              unauthorized persons.
  * @kind path-problem
  * @problem.severity error
- * @precision high
- * @id cpp/exposure-of-sensitive-information
+ * @id cpp/private-cleartext-write
  * @tags security
  *       external/cwe/cwe-359
  */
-
 
 import cpp
 import experimental.semmle.code.cpp.security.PrivateCleartextWrite

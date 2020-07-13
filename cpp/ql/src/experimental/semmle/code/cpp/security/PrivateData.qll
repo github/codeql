@@ -19,7 +19,7 @@ private string privateNames() {
   // Contact information, such as home addresses and telephone numbers
   result = "%postcode%" or
   result = "%zipcode%" or
-  result = "%telephone%" or
+  // result = "%telephone%" or
   // Geographic location - where the user is (or was)
   result = "%latitude%" or
   result = "%longitude%" or
@@ -28,8 +28,8 @@ private string privateNames() {
   result = "%salary%" or
   result = "%bankaccount%" or
   // Communications - e-mail addresses, private e-mail messages, SMS text messages, chat logs, etc.
-  result = "%email%" or
-  result = "%mobile%" or
+  // result = "%email%" or
+  // result = "%mobile%" or
   result = "%employer%" or
   // Health - medical conditions, insurance status, prescription records
   result = "%medical%"

@@ -43,14 +43,14 @@ char *func(char *buffer) {
 
 // test for CleartextFileWrite
 void file() {
-  char *theEmail = "cleartext email!";
+  char *theZipcode = "cleartext zipcode!";
   FILE *file;
 
-  // BAD: write email to file in cleartext
-  fputs(theEmail, file);
+  // BAD: write zipcode to file in cleartext
+  fputs(theZipcode, file);
 
   // GOOD: encrypt first
-  char *encrypted = encrypt(theEmail);
+  char *encrypted = encrypt(theZipcode);
   fwrite(encrypted, sizeof(encrypted), 1, file);
 }
 
@@ -80,17 +80,17 @@ int main(int argc, char** argv) {
 
 // test for CleartextFileWrite
 void stream() {
-  char *theEmail = "cleartext email!";
+  char *theZipcode = "cleartext zipcode!";
   ofstream mystream;
 
-  // BAD: write email to file in cleartext
-  mystream << "the email is: " << theEmail;
+  // BAD: write zipcode to file in cleartext
+  mystream << "the zipcode is: " << theZipcode;
 
-  // BAD: write email to file in cleartext
-  (mystream << "the email is: ").write(theEmail, strlen(theEmail));
+  // BAD: write zipcode to file in cleartext
+  (mystream << "the zipcode is: ").write(theZipcode, strlen(theZipcode));
 
   // GOOD: encrypt first
-  char *encrypted = encrypt(theEmail);
-  mystream << "the email is: " << encrypted;
-  (mystream << "the email is: ").write(encrypted, strlen(encrypted));
+  char *encrypted = encrypt(theZipcode);
+  mystream << "the zipcode is: " << encrypted;
+  (mystream << "the zipcode is: ").write(encrypted, strlen(encrypted));
 }
