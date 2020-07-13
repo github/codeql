@@ -128,7 +128,6 @@ class CSVExporter(Exporter):
         with open(outfile_path, 'w', newline='') as csv_file:
             writer = None
             for (call, callable) in recorded_calls:
-
                 data = {
                     **Exporter.dataclass_to_dict(call),
                     **Exporter.dataclass_to_dict(callable)
