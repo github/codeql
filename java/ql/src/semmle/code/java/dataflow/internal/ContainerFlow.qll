@@ -270,9 +270,6 @@ private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
  * `arg`th argument is tainted.
  */
 private predicate taintPreservingArgumentToMethod(Method method, int arg) {
-  // java.util.Stack
-  method.(CollectionMethod).hasName("push") and arg = 0
-  or
   method.getDeclaringType().hasQualifiedName("java.util", "Collections") and
   (
     method
