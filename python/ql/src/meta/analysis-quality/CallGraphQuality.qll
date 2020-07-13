@@ -15,7 +15,7 @@ class RelevantCall extends Call {
 }
 
 /** Provides classes for call-graph resolution by using points-to. */
-module PointsTo {
+module PointsToBasedCallGraph {
   /** A call that can be resolved by points-to. */
   class ResolvableCall extends RelevantCall {
     Value target;

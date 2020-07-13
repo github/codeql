@@ -11,4 +11,5 @@
 import python
 import CallGraphQuality
 
-select projectRoot(), 100.0 * count(PointsTo::ResolvableCall call) / count(RelevantCall call).(float)
+select projectRoot(),
+  100.0 * count(PointsToBasedCallGraph::ResolvableCall call) / count(RelevantCall call).(float)
