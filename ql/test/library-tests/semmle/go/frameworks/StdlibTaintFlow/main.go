@@ -1,10 +1,10 @@
 package main
 
 func main()              {}
-func sink(v interface{}) {}
+func sink(id int, v interface{}) {}
 
 func link(from interface{}, into interface{}) {}
 
-func newSource() interface{} {
+func newSource(id int) interface{} {
 	return nil
 }
