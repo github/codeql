@@ -49,7 +49,11 @@ class Function extends Function_, Scope, AstNode {
     string getArgName(int index) { result = this.getArg(index).(Name).getId() }
 
     Parameter getArgByName(string name) {
-        result = this.getAnArg() and
+        (
+            result = this.getAnArg()
+            or
+            result = this.getAKeywordOnlyArg()
+        ) and
         result.(Name).getId() = name
     }
 
@@ -90,7 +94,7 @@ class Function extends Function_, Scope, AstNode {
     int getPositionalParameterCount() { result = count(this.getAnArg()) }
 
     /** Gets the number of keyword-only parameters */
-    int getKeywordOnlyParameterCount() { result = count(this.getAKwonlyarg()) }
+    int getKeywordOnlyParameterCount() { result = count(this.getAKeywordOnlyArg()) }
 
     /** Whether this function accepts a variable number of arguments. That is, whether it has a starred (*arg) parameter. */
     predicate hasVarArg() { exists(this.getVararg()) }
@@ -102,6 +106,7 @@ class Function extends Function_, Scope, AstNode {
         result = this.getAStmt() or
         result = this.getAnArg() or
         result = this.getVararg() or
+        result = this.getAKeywordOnlyArg() or
         result = this.getKwarg()
     }
 
@@ -185,6 +190,8 @@ class Parameter extends Parameter_ {
             f.getVararg() = this
             or
             f.getKwarg() = this
+            or
+            f.getAKeywordOnlyArg() = this
         )
     }
 
@@ -202,19 +209,31 @@ class Parameter extends Parameter_ {
 
     /** Gets the expression for the default value of this parameter */
     Expr getDefault() {
-        exists(Function f, int n, int c, int d, Arguments args | args = f.getDefinition().getArgs() |
-            f.getArg(n) = this and
-            c = count(f.getAnArg()) and
-            d = count(args.getADefault()) and
-            result = args.getDefault(d - c + n)
+        exists(Function f, int i, Arguments args | args = f.getDefinition().getArgs() |
+            // positional (normal)
+            f.getArg(i) = this and
+            result = args.getDefault(i)
+        )
+        or
+        exists(Function f, int i, Arguments args | args = f.getDefinition().getArgs() |
+            // keyword-only
+            f.getKeywordOnlyArg(i) = this and
+            result = args.getKwDefault(i)
         )
     }
 
     /** Gets the annotation expression of this parameter */
     Expr getAnnotation() {
-        exists(Function f, int n, Arguments args | args = f.getDefinition().getArgs() |
-            f.getArg(n) = this and
-            result = args.getAnnotation(n)
+        exists(Function f, int i, Arguments args | args = f.getDefinition().getArgs() |
+            // positional (normal)
+            f.getArg(i) = this and
+            result = args.getAnnotation(i)
+        )
+        or
+        exists(Function f, int i, Arguments args | args = f.getDefinition().getArgs() |
+            // keyword-only
+            f.getKeywordOnlyArg(i) = this and
+            result = args.getKwAnnotation(i)
         )
         or
         exists(Function f, Arguments args | args = f.getDefinition().getArgs() |
@@ -228,7 +247,10 @@ class Parameter extends Parameter_ {
 
     Variable getVariable() { result.getAnAccess() = this.asName() }
 
-    /** Gets the position of this parameter */
+    /**
+     * Gets the position of this parameter (if any).
+     * No result if this is a "varargs", "kwargs", or keyword-only parameter.
+     */
     int getPosition() { exists(Function f | f.getArg(result) = this) }
 
     /** Gets the name of this parameter */
@@ -243,13 +265,13 @@ class Parameter extends Parameter_ {
     }
 
     /**
-     * Holds if this parameter is a 'varargs' parameter.
+     * Holds if this parameter is a "varargs" parameter.
      * The `varargs` in `f(a, b, *varargs)`.
      */
     predicate isVarargs() { exists(Function func | func.getVararg() = this) }
 
     /**
-     * Holds if this parameter is a 'kwargs' parameter.
+     * Holds if this parameter is a "kwargs" parameter.
      * The `kwargs` in `f(a, b, **kwargs)`.
      */
     predicate isKwargs() { exists(Function func | func.getKwarg() = this) }
@@ -258,7 +280,8 @@ class Parameter extends Parameter_ {
 /** An expression that generates a callable object, either a function expression or a lambda */
 abstract class CallableExpr extends Expr {
     /**
-     * Gets the parameters of this callable.
+     * Gets The default values and annotations (type-hints) for the arguments of this callable.
+     *
      * This predicate is called getArgs(), rather than getParameters() for compatibility with Python's AST module.
      */
     abstract Arguments getArgs();
@@ -295,7 +318,7 @@ class FunctionExpr extends FunctionExpr_, CallableExpr {
     override Arguments getArgs() { result = FunctionExpr_.super.getArgs() }
 }
 
-/** A lambda expression, such as lambda x:x*x */
+/** A lambda expression, such as `lambda x: x+1` */
 class Lambda extends Lambda_, CallableExpr {
     /** Gets the expression to the right of the colon in this lambda expression */
     Expr getExpression() {
@@ -314,13 +337,36 @@ class Lambda extends Lambda_, CallableExpr {
     override Arguments getArgs() { result = Lambda_.super.getArgs() }
 }
 
-/** The arguments in a function definition */
+/**
+ * The default values and annotations (type hints) for the arguments in a function definition.
+ *
+ * Annotations (PEP 3107) is a general mechanism for providing annotations for a function,
+ * that is generally only used for type hints today (PEP 484).
+ */
 class Arguments extends Arguments_ {
+
     Expr getASubExpression() {
+        result = this.getADefault() or
         result = this.getAKwDefault() or
+        //
         result = this.getAnAnnotation() or
-        result = this.getKwargannotation() or
         result = this.getVarargannotation() or
-        result = this.getADefault()
+        result = this.getAKwAnnotation() or
+        result = this.getKwargannotation()
     }
+
+    // The following 4 methods are overwritten to provide better QLdoc. Since the
+    // Arguments_ is auto-generated, we can't change the poor auto-generated docs there :(
+
+    /** Gets the default value for the `index`'th positional parameter. */
+    override Expr getDefault(int index) { result = super.getDefault(index) }
+
+    /** Gets the default value for the `index`'th keyword-only parameter. */
+    override Expr getKwDefault(int index) { result = super.getKwDefault(index) }
+
+    /** Gets the annotation for the `index`'th positional parameter. */
+    override Expr getAnnotation(int index) { result = super.getAnnotation(index) }
+
+    /** Gets the annotation for the `index`'th keyword-only parameter. */
+    override Expr getKwAnnotation(int index) { result = super.getKwAnnotation(index) }
 }

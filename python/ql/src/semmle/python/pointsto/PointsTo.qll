@@ -9,6 +9,7 @@ private import semmle.python.types.Extensions
 
 /* Use this version for speed */
 library class CfgOrigin extends @py_object {
+    /** Gets a textual representation of this element. */
     string toString() {
         /* Not to be displayed */
         result = "CfgOrigin"

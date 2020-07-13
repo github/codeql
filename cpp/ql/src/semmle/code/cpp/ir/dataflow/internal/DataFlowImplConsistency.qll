@@ -37,21 +37,12 @@ module Consistency {
     )
   }
 
-  query predicate uniqueTypeBound(Node n, string msg) {
+  query predicate uniqueType(Node n, string msg) {
     exists(int c |
       n instanceof RelevantNode and
-      c = count(n.getTypeBound()) and
+      c = count(getNodeType(n)) and
       c != 1 and
-      msg = "Node should have one type bound but has " + c + "."
-    )
-  }
-
-  query predicate uniqueTypeRepr(Node n, string msg) {
-    exists(int c |
-      n instanceof RelevantNode and
-      c = count(getErasedRepr(n.getTypeBound())) and
-      c != 1 and
-      msg = "Node should have one type representation but has " + c + "."
+      msg = "Node should have one type but has " + c + "."
     )
   }
 
@@ -104,7 +95,7 @@ module Consistency {
     msg = "Local flow step does not preserve enclosing callable."
   }
 
-  private DataFlowType typeRepr() { result = getErasedRepr(any(Node n).getTypeBound()) }
+  private DataFlowType typeRepr() { result = getNodeType(_) }
 
   query predicate compatibleTypesReflexive(DataFlowType t, string msg) {
     t = typeRepr() and

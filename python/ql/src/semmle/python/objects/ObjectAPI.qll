@@ -36,6 +36,7 @@ class Value extends TObject {
         this != ObjectInternal::undefined()
     }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = this.(ObjectInternal).toString() }
 
     /** Gets a `ControlFlowNode` that refers to this object. */
@@ -437,6 +438,7 @@ class CallableValue extends Value {
             exists(int n |
                 call.getArg(n) = result and
                 this.getParameter(n + offset).getId() = name
+                // TODO: and not positional only argument (Python 3.8+)
             )
             or
             called instanceof BoundMethodObjectInternal and
@@ -895,6 +897,7 @@ class PropertyValue extends Value {
 
 /** A method-resolution-order sequence of classes */
 class MRO extends TClassList {
+    /** Gets a textual representation of this element. */
     string toString() { result = this.(ClassList).toString() }
 
     /** Gets the `n`th class in this MRO */

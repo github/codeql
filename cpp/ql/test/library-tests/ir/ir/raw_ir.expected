@@ -4867,12 +4867,12 @@ ir.cpp:
 #  863|     r863_1(glval<void *>)               = VariableAddress[pv]                 : 
 #  863|     r863_2(glval<PolymorphicBase *>)    = VariableAddress[pb]                 : 
 #  863|     r863_3(PolymorphicBase *)           = Load                                : &:r863_2, ~m?
-#  863|     r863_4(void *)                      = DynamicCastToVoid                   : r863_3
+#  863|     r863_4(void *)                      = CompleteObjectAddress               : r863_3
 #  863|     mu863_5(void *)                     = Store                               : &:r863_1, r863_4
 #  864|     r864_1(glval<void *>)               = VariableAddress[pcv]                : 
 #  864|     r864_2(glval<PolymorphicDerived *>) = VariableAddress[pd]                 : 
 #  864|     r864_3(PolymorphicDerived *)        = Load                                : &:r864_2, ~m?
-#  864|     r864_4(void *)                      = DynamicCastToVoid                   : r864_3
+#  864|     r864_4(void *)                      = CompleteObjectAddress               : r864_3
 #  864|     mu864_5(void *)                     = Store                               : &:r864_1, r864_4
 #  865|     v865_1(void)                        = NoOp                                : 
 #  849|     v849_4(void)                        = ReturnVoid                          : 

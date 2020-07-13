@@ -63,6 +63,7 @@ class UntrustedCookie extends TaintKind {
 }
 
 abstract class CookieOperation extends @py_flow_node {
+    /** Gets a textual representation of this element. */
     abstract string toString();
 
     abstract ControlFlowNode getKey();

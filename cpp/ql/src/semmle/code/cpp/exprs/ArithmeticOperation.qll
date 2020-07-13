@@ -1,3 +1,8 @@
+/**
+ * Provides classes for modeling arithmetic operations such as `+`, `-`, `*`
+ * and `++`.
+ */
+
 import semmle.code.cpp.exprs.Expr
 
 /**

@@ -24,6 +24,7 @@ class EssaVariable extends TEssaDefinition {
     /** Gets the name of this variable. */
     string getName() { result = this.getSourceVariable().getName() }
 
+    /** Gets a textual representation of this element. */
     string toString() { result = "SSA variable " + this.getName() }
 
     /**
@@ -131,6 +132,7 @@ private newtype TEssaDefinition =
  * and exactly one variable for each definition.
  */
 abstract class EssaDefinition extends TEssaDefinition {
+    /** Gets a textual representation of this element. */
     string toString() { result = "EssaDefinition" }
 
     /** Gets the source variable for which this a definition, either explicit or implicit. */

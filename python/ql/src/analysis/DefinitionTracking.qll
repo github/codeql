@@ -10,6 +10,7 @@ private newtype TDefinition =
 
 /** A definition for the purposes of jump-to-definition. */
 class Definition extends TLocalDefinition {
+    /** Gets a textual representation of this element. */
     string toString() { result = "Definition " + this.getAstNode().getLocation().toString() }
 
     AstNode getAstNode() { this = TLocalDefinition(result) }
@@ -467,6 +468,7 @@ Definition getUniqueDefinition(Expr use) {
 
 /** Helper class to get suitable locations for attributes */
 class NiceLocationExpr extends @py_expr {
+    /** Gets a textual representation of this element. */
     string toString() { result = this.(Expr).toString() }
     /**
      * Holds if this element is at the specified location.

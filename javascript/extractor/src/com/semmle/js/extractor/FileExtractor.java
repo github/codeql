@@ -1,5 +1,17 @@
 package com.semmle.js.extractor;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.regex.Pattern;
+
 import com.semmle.js.extractor.ExtractionMetrics.ExtractionPhase;
 import com.semmle.js.extractor.trapcache.CachingTrapWriter;
 import com.semmle.js.extractor.trapcache.ITrapCache;
@@ -10,16 +22,6 @@ import com.semmle.util.files.FileUtil;
 import com.semmle.util.io.WholeIO;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.regex.Pattern;
 
 /**
  * The file extractor extracts a single file and handles source archive population and TRAP caching;
@@ -47,7 +49,7 @@ public class FileExtractor {
     HTML(".htm", ".html", ".xhtm", ".xhtml", ".vue") {
       @Override
       public IExtractor mkExtractor(ExtractorConfig config, ExtractorState state) {
-        return new HTMLExtractor(config);
+        return new HTMLExtractor(config, state);
       }
 
       @Override
@@ -293,7 +295,7 @@ public class FileExtractor {
 
       @Override
       public IExtractor mkExtractor(ExtractorConfig config, ExtractorState state) {
-        return new TypeScriptExtractor(config, state.getTypeScriptParser());
+        return new TypeScriptExtractor(config, state);
       }
 
       @Override
@@ -398,6 +400,10 @@ public class FileExtractor {
 
   /** @return the number of lines of code extracted, or {@code null} if the file was cached */
   public Integer extract(File f, ExtractorState state) throws IOException {
+    FileSnippet snippet = state.getSnippets().get(f.toPath());
+    if (snippet != null) {
+      return this.extractSnippet(f.toPath(), snippet, state);
+    }
 
     // populate source archive
     String source = new WholeIO(config.getDefaultEncoding()).strictread(f);
@@ -412,6 +418,25 @@ public class FileExtractor {
 
     // now extract the contents
     return extractContents(f, fileLabel, source, locationManager, state);
+  }
+
+  /**
+   * Extract the contents of a file that is a snippet from another file.
+   *
+   * <p>A trap file will be derived from the snippet file, but its file label, source locations, and
+   * source archive entry are based on the original file.
+   */
+  private Integer extractSnippet(Path file, FileSnippet origin, ExtractorState state) throws IOException {
+    TrapWriter trapwriter = outputConfig.getTrapWriterFactory().mkTrapWriter(file.toFile());
+
+    File originalFile = origin.getOriginalFile().toFile();
+    Label fileLabel = trapwriter.populateFile(originalFile);
+    LocationManager locationManager = new LocationManager(originalFile, trapwriter, fileLabel);
+    locationManager.setStart(origin.getLine(), origin.getColumn());
+
+    String source = new WholeIO(config.getDefaultEncoding()).strictread(file);
+
+    return extractContents(file.toFile(), fileLabel, source, locationManager, state);
   }
 
   /**
@@ -436,20 +461,20 @@ public class FileExtractor {
    * obviously, no caching is done in that scenario.
    */
   private Integer extractContents(
-      File f, Label fileLabel, String source, LocationManager locationManager, ExtractorState state)
+      File extractedFile, Label fileLabel, String source, LocationManager locationManager, ExtractorState state)
       throws IOException {
     ExtractionMetrics metrics = new ExtractionMetrics();
     metrics.startPhase(ExtractionPhase.FileExtractor_extractContents);
     metrics.setLength(source.length());
     metrics.setFileLabel(fileLabel);
     TrapWriter trapwriter = locationManager.getTrapWriter();
-    FileType fileType = getFileType(f);
+    FileType fileType = getFileType(extractedFile);
 
     File cacheFile = null, // the cache file for this extraction
         resultFile = null; // the final result TRAP file for this extraction
 
     if (bumpIdCounter(trapwriter)) {
-      resultFile = outputConfig.getTrapWriterFactory().getTrapFileFor(f);
+      resultFile = outputConfig.getTrapWriterFactory().getTrapFileFor(extractedFile);
     }
     // check whether we can perform caching
     if (resultFile != null && fileType.isTrapCachingAllowed()) {
@@ -475,7 +500,7 @@ public class FileExtractor {
       trapwriter = new CachingTrapWriter(cacheFile, resultFile);
       bumpIdCounter(trapwriter);
       // re-initialise the location manager, since it keeps a reference to the TRAP writer
-      locationManager = new LocationManager(f, trapwriter, locationManager.getFileLabel());
+      locationManager = new LocationManager(extractedFile, trapwriter, locationManager.getFileLabel());
     }
 
     // now do the extraction itself
@@ -484,9 +509,9 @@ public class FileExtractor {
       IExtractor extractor = fileType.mkExtractor(config, state);
       TextualExtractor textualExtractor =
           new TextualExtractor(
-              trapwriter, locationManager, source, config.getExtractLines(), metrics);
+              trapwriter, locationManager, source, config.getExtractLines(), metrics, extractedFile);
       LoCInfo loc = extractor.extract(textualExtractor);
-      int numLines = textualExtractor.getNumLines();
+      int numLines = textualExtractor.isSnippet() ? 0 : textualExtractor.getNumLines();
       int linesOfCode = loc.getLinesOfCode(), linesOfComments = loc.getLinesOfComments();
       trapwriter.addTuple("numlines", fileLabel, numLines, linesOfCode, linesOfComments);
       trapwriter.addTuple("filetype", fileLabel, fileType.toString());

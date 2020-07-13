@@ -1,4 +1,5 @@
 import * as ts from "./typescript";
+import { VirtualSourceRoot } from "./virtual_source_root";
 
 interface AugmentedSymbol extends ts.Symbol {
   parent?: AugmentedSymbol;
@@ -379,12 +380,15 @@ export class TypeTable {
    */
   public restrictedExpansion = false;
 
+  private virtualSourceRoot: VirtualSourceRoot;
+
   /**
    * Called when a new compiler instance has started.
    */
-  public setProgram(program: ts.Program) {
+  public setProgram(program: ts.Program, virtualSourceRoot: VirtualSourceRoot) {
     this.typeChecker = program.getTypeChecker();
     this.arbitraryAstNode = program.getSourceFiles()[0];
+    this.virtualSourceRoot = virtualSourceRoot;
   }
 
   /**
@@ -703,12 +707,19 @@ export class TypeTable {
   private getSymbolString(symbol: AugmentedSymbol): string {
     let parent = symbol.parent;
     if (parent == null || parent.escapedName === ts.InternalSymbolName.Global) {
-      return "root;" + this.getSymbolDeclarationString(symbol) + ";;" + symbol.name;
+      return "root;" + this.getSymbolDeclarationString(symbol) + ";;" + this.rewriteSymbolName(symbol);
     } else if (parent.exports != null && parent.exports.get(symbol.escapedName) === symbol) {
-      return "member;;" + this.getSymbolId(parent) + ";" + symbol.name;
+      return "member;;" + this.getSymbolId(parent) + ";" + this.rewriteSymbolName(symbol);
     } else {
-      return "other;" + this.getSymbolDeclarationString(symbol) + ";" + this.getSymbolId(parent) + ";" + symbol.name;
+      return "other;" + this.getSymbolDeclarationString(symbol) + ";" + this.getSymbolId(parent) + ";" + this.rewriteSymbolName(symbol);
     }
+  }
+
+  private rewriteSymbolName(symbol: AugmentedSymbol) {
+    let { virtualSourceRoot, sourceRoot } = this.virtualSourceRoot;
+    let { name } = symbol;
+    if (virtualSourceRoot == null || sourceRoot == null) return name;
+    return name.replace(virtualSourceRoot, sourceRoot);
   }
 
   /**
