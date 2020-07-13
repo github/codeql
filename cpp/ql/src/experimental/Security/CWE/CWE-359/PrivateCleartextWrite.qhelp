@@ -3,13 +3,13 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>Private data that is stored unencrypted is accessible to an attacker who gains access to the
+<p>Private data that is stored in a file or buffer unencrypted is accessible to an attacker who gains access to the
 storage.</p>
 
 </overview>
 <recommendation>
 
-<p>Ensure that private data is always encrypted before being stored, especially before writing to a file.
+<p>Ensure that private data is always encrypted before being stored.
 It may be wise to encrypt information before it is put into a buffer that may be readable in memory.</p>
 
 <p>In general, decrypt private data only at the point where it is necessary for it to be used in

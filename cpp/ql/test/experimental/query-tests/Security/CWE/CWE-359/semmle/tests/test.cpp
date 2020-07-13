@@ -34,7 +34,12 @@ namespace std
 
 using namespace std;
 
-char *encrypt(char *buffer);
+char *encrypt(char *buffer) {
+  return buffer;
+}
+char *func(char *buffer) {
+  return buffer;
+}
 
 // test for CleartextFileWrite
 void file() {
@@ -51,14 +56,26 @@ void file() {
 
 // test for CleartextBufferWrite
 int main(int argc, char** argv) {
-  char *input = argv[2];
-  char *medical;
+  char *medical = "medical";
+  char *buff1;
+  char *buff2;
+  char *buff3;
+  char *buff4;
 
   // BAD: write medical to buffer in cleartext
-  sprintf(medical, "%s", input);
+  sprintf(buff1, "%s", medical);
 
+  // BAD: write medical to buffer in cleartext
+  char *temp = medical;
+  sprintf(buff2, "%s", temp);
+
+  // BAD: write medical to buffer in cleartext
+  char *buff5 = func(medical);
+  sprintf(buff3, "%s", buff5);
+
+  char *buff6 = encrypt(medical);
   // GOOD: encrypt first
-  sprintf(medical, "%s", encrypt(input)); 
+  sprintf(buff4, "%s", buff6); 
 }
 
 // test for CleartextFileWrite

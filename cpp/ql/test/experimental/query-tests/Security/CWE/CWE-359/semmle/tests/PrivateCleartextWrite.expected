@@ -1,0 +1,6 @@
+| test.cpp:50:9:50:16 | theEmail | This write may contain unencrypted data |
+| test.cpp:66:24:66:30 | medical | This write may contain unencrypted data |
+| test.cpp:70:24:70:27 | temp | This write may contain unencrypted data |
+| test.cpp:74:24:74:28 | buff5 | This write may contain unencrypted data |
+| test.cpp:87:35:87:42 | theEmail | This write may contain unencrypted data |
+| test.cpp:90:40:90:47 | theEmail | This write may contain unencrypted data |
