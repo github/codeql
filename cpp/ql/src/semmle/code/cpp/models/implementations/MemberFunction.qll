@@ -13,8 +13,7 @@ import semmle.code.cpp.models.interfaces.Taint
  * through.
  */
 class ConversionConstructorModel extends Constructor, TaintFunction {
-  ConversionConstructorModel()
-  {
+  ConversionConstructorModel() {
     strictcount(Parameter p | p = getAParameter() and not p.hasInitializer()) = 1 and
     not hasSpecifier("explicit")
   }
