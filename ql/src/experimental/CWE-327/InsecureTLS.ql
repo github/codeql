@@ -120,43 +120,51 @@ class TlsVersionFlowConfig extends TaintTracking::Configuration {
 }
 
 /**
- * Holds if a secure TLS version may reach `sink`, which writes to `base`.`fld`
+ * Holds if `config` exhibits a secure TLS version flowing from `source` to `sink`, which flows into `fld`.
  */
-predicate secureTlsVersionFlowsToSink(DataFlow::PathNode sink, Field fld, DataFlow::Node base) {
-  exists(TlsVersionFlowConfig secureCfg, DataFlow::PathNode source, int version |
-    secureCfg.hasFlowPath(source, sink) and
-    secureCfg.isSink(sink.getNode(), fld, base, _) and
-    secureCfg.isSource(source.getNode(), version) and
+predicate secureTlsVersionFlow(
+  TlsVersionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink, Field fld
+) {
+  exists(int version |
+    config.hasFlowPath(source, sink) and
+    config.isSource(source.getNode(), version) and
     not isInsecureTlsVersion(version, _, fld.getName())
   )
 }
 
 /**
- * Holds if a secure TLS version may reach `baseEntity`.`fld`
+ * Holds if a secure TLS version reaches `sink`, which flows into `fld`.
  */
-predicate secureTlsVersionFlowsToEntity(ValueEntity baseEntity, Field fld) {
-  exists(DataFlow::PathNode sink, DataFlow::Node base |
-    secureTlsVersionFlowsToSink(sink, fld, base) and
-    base.(DataFlow::ReadNode).reads(baseEntity)
-  )
+predicate secureTlsVersionFlowsToSink(DataFlow::PathNode sink, Field fld) {
+  secureTlsVersionFlow(_, _, sink, fld)
 }
 
 /**
  * Holds if a secure TLS version may reach `base`.`fld`
  */
-predicate secureTlsVersionFlowsToField(DataFlow::Node base, Field fld) {
-  secureTlsVersionFlowsToSink(_, fld, base)
-  or
-  exists(ValueEntity baseEntity |
-    base.(DataFlow::ReadNode).reads(baseEntity) and
-    secureTlsVersionFlowsToEntity(baseEntity, fld)
+predicate secureTlsVersionFlowsToField(SsaWithFields accessPath, Field fld) {
+  exists(
+    TlsVersionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink,
+    DataFlow::Node base
+  |
+    secureTlsVersionFlow(config, source, sink, fld) and
+    config.isSink(sink.getNode(), fld, base, _) and
+    accessPath.getAUse() = base
   )
+}
+
+/**
+ * Returns `node` or an implicit-deref node referring to it
+ */
+DataFlow::Node nodeOrDeref(DataFlow::Node node) {
+  result = node or
+  result.asInstruction() = IR::implicitDerefInstruction(node.asExpr())
 }
 
 /**
  * Find insecure TLS versions.
  */
-predicate checkTlsVersions(
+query predicate checkTlsVersions(
   DataFlow::PathNode source, DataFlow::PathNode sink, string message, DataFlow::Node base
 ) {
   exists(TlsVersionFlowConfig cfg, int version, Field fld |
@@ -167,12 +175,13 @@ predicate checkTlsVersions(
     not nodeSuggestsOldVersion(base.asExpr().getParent*()) and
     // Exclude cases where a secure TLS version can also flow to the same
     // sink, or to different sinks that refer to the same base and field,
-    // which suggests a configurable security mode. baseAlias is used because
-    // isSink will return both implicit dereferences and the expression
-    // accessed.
-    not exists(DataFlow::Node baseAlias |
-      cfg.isSink(sink.getNode(), fld, baseAlias, _) and
-      secureTlsVersionFlowsToField(baseAlias, fld)
+    // which suggests a configurable security mode.
+    not secureTlsVersionFlowsToSink(sink, fld) and
+    not exists(SsaWithFields insecureAccessPath, SsaWithFields secureAccessPath |
+      nodeOrDeref(insecureAccessPath.getAUse()) = base and
+      secureAccessPath = insecureAccessPath.similar()
+    |
+      secureTlsVersionFlowsToField(secureAccessPath, fld)
     )
   |
     version = 0 and
