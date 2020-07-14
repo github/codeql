@@ -1,23 +1,23 @@
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.TaintTracking
 import semmle.python.web.Http
 import semmle.python.security.strings.Basic
 import Twisted
 import Request
 
 class TwistedResponse extends HttpResponseTaintSink {
-    TwistedResponse() {
-        exists(PythonFunctionValue func, string name |
-            isKnownRequestHandlerMethodName(name) and
-            name = func.getName() and
-            func = getTwistedRequestHandlerMethod(name) and
-            this = func.getAReturnedNode()
-        )
-    }
+  TwistedResponse() {
+    exists(PythonFunctionValue func, string name |
+      isKnownRequestHandlerMethodName(name) and
+      name = func.getName() and
+      func = getTwistedRequestHandlerMethod(name) and
+      this = func.getAReturnedNode()
+    )
+  }
 
-    override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
+  override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
 
-    override string toString() { result = "Twisted response" }
+  override string toString() { result = "Twisted response" }
 }
 
 /**
@@ -26,20 +26,20 @@ class TwistedResponse extends HttpResponseTaintSink {
  * request.
  */
 class TwistedRequestSetter extends HttpResponseTaintSink {
-    TwistedRequestSetter() {
-        exists(CallNode call, ControlFlowNode node, string name |
-            (
-                name = "setHeader" or
-                name = "addCookie" or
-                name = "write"
-            ) and
-            any(TwistedRequest t).taints(node) and
-            node = call.getFunction().(AttrNode).getObject(name) and
-            this = call.getAnArg()
-        )
-    }
+  TwistedRequestSetter() {
+    exists(CallNode call, ControlFlowNode node, string name |
+      (
+        name = "setHeader" or
+        name = "addCookie" or
+        name = "write"
+      ) and
+      any(TwistedRequest t).taints(node) and
+      node = call.getFunction().(AttrNode).getObject(name) and
+      this = call.getAnArg()
+    )
+  }
 
-    override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
+  override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
 
-    override string toString() { result = "Twisted request setter" }
+  override string toString() { result = "Twisted request setter" }
 }

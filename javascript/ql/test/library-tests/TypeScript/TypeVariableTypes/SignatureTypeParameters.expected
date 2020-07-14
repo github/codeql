@@ -2,18 +2,6 @@
 | <E>(x: () => E): E | 1 | 0 | E | no bound |
 | <E>(x: E[] \| (() => E)): E | 1 | 0 | E | no bound |
 | <E>(x: E[]): E | 1 | 0 | E | no bound |
-| <S extends E>(callbackfn: (value: E, index: number, array: E[]) => va... | 1 | 0 | S | no bound |
-| <S extends T \| S>(callbackfn: (value: T \| S, index: number, array: (T... | 1 | 0 | S | no bound |
-| <S extends T>(callbackfn: (value: T, index: number, array: T[]) => va... | 1 | 0 | S | no bound |
-| <S extends any>(callbackfn: (value: any, index: number, array: any[])... | 1 | 0 | S | any |
 | <S extends any[]>(x: S, y: T[]): S | 1 | 0 | S | any[] |
 | <S>(x: S, y: S): S | 1 | 0 | S | no bound |
 | <S>(x: S, y: T): [S, T] | 1 | 0 | S | no bound |
-| <U>(callbackfn: (previousValue: U, currentValue: E, currentIndex: num... | 1 | 0 | U | no bound |
-| <U>(callbackfn: (previousValue: U, currentValue: T \| S, currentIndex:... | 1 | 0 | U | no bound |
-| <U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: num... | 1 | 0 | U | no bound |
-| <U>(callbackfn: (previousValue: U, currentValue: any, currentIndex: n... | 1 | 0 | U | no bound |
-| <U>(callbackfn: (value: E, index: number, array: E[]) => U, thisArg?:... | 1 | 0 | U | no bound |
-| <U>(callbackfn: (value: T \| S, index: number, array: (T \| S)[]) => U,... | 1 | 0 | U | no bound |
-| <U>(callbackfn: (value: T, index: number, array: T[]) => U, thisArg?:... | 1 | 0 | U | no bound |
-| <U>(callbackfn: (value: any, index: number, array: any[]) => U, thisA... | 1 | 0 | U | no bound |

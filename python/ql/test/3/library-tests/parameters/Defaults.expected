@@ -1,0 +1,6 @@
+| keyword_only | test.py:9:25:9:26 | UnaryExpr |
+| keyword_w_default | test.py:29:32:29:35 | None |
+| normal | test.py:7:19:7:20 | UnaryExpr |
+| pos_only | test.py:5:21:5:22 | UnaryExpr |
+| pos_w_default | test.py:25:28:25:31 | None |
+| pos_w_default2 | test.py:26:20:26:23 | None |

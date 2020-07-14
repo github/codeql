@@ -6,9 +6,11 @@
 
 import javascript
 import semmle.javascript.security.dataflow.RemoteFlowSources
-import UrlConcatenation
+private import UrlConcatenation
 
 module ClientSideUrlRedirect {
+  private import Xss::DomBasedXss as DomBasedXss
+
   /**
    * A data flow source for unvalidated URL redirect vulnerabilities.
    */
@@ -52,7 +54,7 @@ module ClientSideUrlRedirect {
       mce = queryAccess.asExpr() and mce.calls(nd.asExpr(), methodName)
     |
       methodName = "split" and
-      // exclude `location.href.split('?')[0]`, which can never refer to the query string
+      // exclude all splits where only the prefix is accessed, which is safe for url-redirects.
       not exists(PropAccess pacc | mce = pacc.getBase() | pacc.getPropertyName() = "0")
       or
       (methodName = "substring" or methodName = "substr" or methodName = "slice") and
@@ -67,6 +69,11 @@ module ClientSideUrlRedirect {
       nd.asExpr() = mce.getArgument(0)
     )
   }
+
+  /**
+   * A sanitizer that reads the first part a location split by "?", e.g. `location.href.split('?')[0]`.
+   */
+  class QueryPrefixSanitizer extends Sanitizer, DomBasedXss::QueryPrefixSanitizer { }
 
   /**
    * A sink which is used to set the window location.

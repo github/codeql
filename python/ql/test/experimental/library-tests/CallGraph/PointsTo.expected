@@ -1,0 +1,6 @@
+debug_missingAnnotationForCallable
+debug_nonUniqueAnnotationForCallable
+debug_missingAnnotationForCall
+expectedCallEdgeNotFound
+| code/underscore_prefix_func_name.py:16:5:16:19 | some_function() | code/underscore_prefix_func_name.py:10:1:10:20 | Function some_function |
+unexpectedCallEdgeFound

@@ -11,6 +11,6 @@ import python
 
 from ExceptStmt ex, ClassValue cls
 where
-    cls.getName() = "MyExceptionClass" and
-    ex.getType().pointsTo(cls)
+  cls.getName() = "MyExceptionClass" and
+  ex.getType().pointsTo(cls)
 select ex

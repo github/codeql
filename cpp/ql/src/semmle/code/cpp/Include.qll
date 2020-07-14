@@ -1,3 +1,8 @@
+/**
+ * Provides classes representing C/C++ `#include`, `#include_next`, and `#import` preprocessor
+ * directives.
+ */
+
 import semmle.code.cpp.Preprocessor
 
 /**

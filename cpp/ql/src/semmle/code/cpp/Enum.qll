@@ -1,3 +1,7 @@
+/**
+ * Provides classes representing C/C++ enums and enum constants.
+ */
+
 import semmle.code.cpp.Type
 private import semmle.code.cpp.internal.ResolveClass
 
@@ -19,11 +23,22 @@ class Enum extends UserType, IntegralOrEnumType {
   /** Gets an enumerator of this enumeration. */
   EnumConstant getAnEnumConstant() { result.getDeclaringEnum() = this }
 
+  /**
+   * Gets the enumerator of this enumeration that was declared at the zero-based position `index`.
+   * For example, `zero` is at index 2 in the following declaration:
+   * ```
+   * enum ReversedOrder {
+   *   two = 2,
+   *   one = 1,
+   *   zero = 0
+   * };
+   * ```
+   */
   EnumConstant getEnumConstant(int index) {
     enumconstants(unresolveElement(result), underlyingElement(this), index, _, _, _)
   }
 
-  override string getCanonicalQLClass() { result = "Enum" }
+  override string getAPrimaryQlClass() { result = "Enum" }
 
   /**
    * Gets a descriptive string for the enum. This method is only intended to
@@ -72,7 +87,7 @@ class Enum extends UserType, IntegralOrEnumType {
 class LocalEnum extends Enum {
   LocalEnum() { isLocal() }
 
-  override string getCanonicalQLClass() { result = "LocalEnum" }
+  override string getAPrimaryQlClass() { result = "LocalEnum" }
 }
 
 /**
@@ -90,7 +105,7 @@ class LocalEnum extends Enum {
 class NestedEnum extends Enum {
   NestedEnum() { this.isMember() }
 
-  override string getCanonicalQLClass() { result = "NestedEnum" }
+  override string getAPrimaryQlClass() { result = "NestedEnum" }
 
   /** Holds if this member is private. */
   predicate isPrivate() { this.hasSpecifier("private") }
@@ -115,7 +130,7 @@ class NestedEnum extends Enum {
 class ScopedEnum extends Enum {
   ScopedEnum() { usertypes(underlyingElement(this), _, 13) }
 
-  override string getCanonicalQLClass() { result = "ScopedEnum" }
+  override string getAPrimaryQlClass() { result = "ScopedEnum" }
 }
 
 /**
@@ -138,7 +153,7 @@ class EnumConstant extends Declaration, @enumconstant {
     enumconstants(underlyingElement(this), unresolveElement(result), _, _, _, _)
   }
 
-  override string getCanonicalQLClass() { result = "EnumConstant" }
+  override string getAPrimaryQlClass() { result = "EnumConstant" }
 
   override Class getDeclaringType() { result = this.getDeclaringEnum().getDeclaringType() }
 

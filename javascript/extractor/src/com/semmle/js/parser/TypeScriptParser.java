@@ -15,8 +15,10 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import com.google.gson.JsonArray;
@@ -29,6 +31,7 @@ import com.google.gson.JsonPrimitive;
 import com.semmle.js.extractor.DependencyInstallationResult;
 import com.semmle.js.extractor.EnvironmentVariables;
 import com.semmle.js.extractor.ExtractionMetrics;
+import com.semmle.js.extractor.VirtualSourceRoot;
 import com.semmle.js.parser.JSParser.Result;
 import com.semmle.ts.extractor.TypeTable;
 import com.semmle.util.data.StringUtil;
@@ -85,6 +88,12 @@ public class TypeScriptParser {
    * TypeScript installation, in milliseconds. Default is 10000.
    */
   public static final String TYPESCRIPT_TIMEOUT_VAR = "SEMMLE_TYPESCRIPT_TIMEOUT";
+
+  /**
+   * An environment variable that can be set to specify a number of retries when verifying
+   * the TypeScript installation. Default is 3.
+   */
+  public static final String TYPESCRIPT_RETRIES_VAR = "SEMMLE_TYPESCRIPT_RETRIES";
 
   /**
    * An environment variable (without the <tt>SEMMLE_</tt> or <tt>LGTM_</tt> prefix), that can be
@@ -179,9 +188,6 @@ public class TypeScriptParser {
   public String verifyNodeInstallation() {
     if (nodeJsVersionString != null) return nodeJsVersionString;
 
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-    ByteArrayOutputStream err = new ByteArrayOutputStream();
-
     // Determine where to find the Node.js runtime.
     String explicitNodeJsRuntime = Env.systemEnv().get(TYPESCRIPT_NODE_RUNTIME_VAR);
     if (explicitNodeJsRuntime != null) {
@@ -198,12 +204,41 @@ public class TypeScriptParser {
       nodeJsRuntimeExtraArgs = Arrays.asList(extraArgs.split("\\s+"));
     }
 
+    // Run 'node --version' with a timeout, and retry a few times if it times out.
+    // If the Java process is suspended we may get a spurious timeout, and we want to
+    // support long suspensions in cloud environments. Instead of setting a huge timeout,
+    // retrying guarantees we can survive arbitrary suspensions as long as they don't happen
+    // too many times in rapid succession.
+    int timeout = Env.systemEnv().getInt(TYPESCRIPT_TIMEOUT_VAR, 10000);
+    int numRetries = Env.systemEnv().getInt(TYPESCRIPT_RETRIES_VAR, 3);
+    for (int i = 0; i < numRetries - 1; ++i) {
+      try {
+        return startNodeAndGetVersion(timeout);
+      } catch (InterruptedError e) {
+        Exceptions.ignore(e, "We will retry the call that caused this exception.");
+        System.err.println("Starting Node.js seems to take a long time. Retrying.");
+      }
+    }
+    try {
+      return startNodeAndGetVersion(timeout);
+    } catch (InterruptedError e) {
+      Exceptions.ignore(e, "Exception details are not important.");
+      throw new CatastrophicError(
+          "Could not start Node.js (timed out after " + (timeout / 1000) + "s and " + numRetries + " attempts");
+    }
+  }
+
+  /**
+   * Checks that Node.js is installed and can be run and returns its version string.
+   */
+  private String startNodeAndGetVersion(int timeout) throws InterruptedError {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    ByteArrayOutputStream err = new ByteArrayOutputStream();
     Builder b =
         new Builder(
             getNodeJsRuntimeInvocation("--version"), out, err, getParserWrapper().getParentFile());
     b.expectFailure(); // We want to do our own logging in case of an error.
 
-    int timeout = Env.systemEnv().getInt(TYPESCRIPT_TIMEOUT_VAR, 10000);
     try {
       int r = b.execute(timeout);
       String stdout = new String(out.toByteArray());
@@ -213,10 +248,6 @@ public class TypeScriptParser {
             "Could not start Node.js. It is required for TypeScript extraction.\n" + stderr);
       }
       return nodeJsVersionString = stdout;
-    } catch (InterruptedError e) {
-      Exceptions.ignore(e, "Exception details are not important.");
-      throw new CatastrophicError(
-          "Could not start Node.js (timed out after " + (timeout / 1000) + "s).");
     } catch (ResourceError e) {
       // In case 'node' is not found, the process builder converts the IOException
       // into a ResourceError.
@@ -460,6 +491,29 @@ public class TypeScriptParser {
     return result;
   }
 
+  private static Set<File> getFilesFromJsonArray(JsonArray array) {
+    Set<File> files = new LinkedHashSet<>();
+    for (JsonElement elm : array) {
+      files.add(new File(elm.getAsString()));
+    }
+    return files;
+  }
+
+  /**
+   * Returns the set of files included by the inclusion pattern in the given tsconfig.json file.
+   */
+  public Set<File> getOwnFiles(File tsConfigFile, DependencyInstallationResult deps, VirtualSourceRoot vroot) {
+    JsonObject request = makeLoadCommand("get-own-files", tsConfigFile, deps, vroot);
+    JsonObject response = talkToParserWrapper(request);
+    try {
+      checkResponseType(response, "file-list");
+      return getFilesFromJsonArray(response.get("ownFiles").getAsJsonArray());
+    } catch (IllegalStateException e) {
+      throw new CatastrophicError(
+          "TypeScript parser wrapper sent unexpected response: " + response, e);
+    }
+  }
+
   /**
    * Opens a new project based on a tsconfig.json file. The compiler will analyze all files in the
    * project.
@@ -468,28 +522,34 @@ public class TypeScriptParser {
    *
    * <p>Only one project should be opened at once.
    */
-  public ParsedProject openProject(File tsConfigFile, DependencyInstallationResult deps) {
-    JsonObject request = new JsonObject();
-    request.add("command", new JsonPrimitive("open-project"));
-    request.add("tsConfig", new JsonPrimitive(tsConfigFile.getPath()));
-    request.add("packageEntryPoints", mapToArray(deps.getPackageEntryPoints()));
-    request.add("packageJsonFiles", mapToArray(deps.getPackageJsonFiles()));
-    request.add("virtualSourceRoot", deps.getVirtualSourceRoot() == null
-        ? JsonNull.INSTANCE
-        : new JsonPrimitive(deps.getVirtualSourceRoot().toString()));
+  public ParsedProject openProject(File tsConfigFile, DependencyInstallationResult deps, VirtualSourceRoot vroot) {
+    JsonObject request = makeLoadCommand("open-project", tsConfigFile, deps, vroot);
     JsonObject response = talkToParserWrapper(request);
     try {
       checkResponseType(response, "project-opened");
-      ParsedProject project = new ParsedProject(tsConfigFile);
-      JsonArray filesJson = response.get("files").getAsJsonArray();
-      for (JsonElement elm : filesJson) {
-        project.addSourceFile(new File(elm.getAsString()));
-      }
+      ParsedProject project = new ParsedProject(tsConfigFile,
+          getFilesFromJsonArray(response.get("ownFiles").getAsJsonArray()),
+          getFilesFromJsonArray(response.get("allFiles").getAsJsonArray()));
       return project;
     } catch (IllegalStateException e) {
       throw new CatastrophicError(
           "TypeScript parser wrapper sent unexpected response: " + response, e);
     }
+  }
+
+  private JsonObject makeLoadCommand(String command, File tsConfigFile, DependencyInstallationResult deps, VirtualSourceRoot vroot) {
+    JsonObject request = new JsonObject();
+    request.add("command", new JsonPrimitive(command));
+    request.add("tsConfig", new JsonPrimitive(tsConfigFile.getPath()));
+    request.add("packageEntryPoints", mapToArray(deps.getPackageEntryPoints()));
+    request.add("packageJsonFiles", mapToArray(deps.getPackageJsonFiles()));
+    request.add("sourceRoot", vroot.getSourceRoot() == null
+        ? JsonNull.INSTANCE
+        : new JsonPrimitive(vroot.getSourceRoot().toString()));
+    request.add("virtualSourceRoot", vroot.getVirtualSourceRoot() == null
+        ? JsonNull.INSTANCE
+        : new JsonPrimitive(vroot.getVirtualSourceRoot().toString()));
+    return request;
   }
 
   /**

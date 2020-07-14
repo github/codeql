@@ -48,7 +48,7 @@ module ControlFlow {
      *
      * Example:
      *
-     * ```
+     * ```csharp
      * int M(string s)
      * {
      *     if (s == null)
@@ -80,7 +80,7 @@ module ControlFlow {
      *
      * Example:
      *
-     * ```
+     * ```csharp
      * int M(string s)
      * {
      *     if (s == null)
@@ -113,7 +113,7 @@ module ControlFlow {
      *
      * Example:
      *
-     * ```
+     * ```csharp
      * int M(string s)
      * {
      *     try
@@ -151,7 +151,7 @@ module ControlFlow {
      *
      * Example:
      *
-     * ```
+     * ```csharp
      * int M(string s)
      * {
      *     try
@@ -201,7 +201,7 @@ module ControlFlow {
      *
      * Example:
      *
-     * ```
+     * ```csharp
      * if (x < 0)
      *     x = -x;
      * ```
@@ -221,7 +221,7 @@ module ControlFlow {
      *
      * Example:
      *
-     * ```
+     * ```csharp
      * if (!(x >= 0))
      *     x = -x;
      * ```
@@ -501,7 +501,7 @@ module ControlFlow {
       private class WriteAccessNoNodeExpr extends WriteAccess, NoNodeExpr {
         WriteAccessNoNodeExpr() {
           // For example a write to a static field, `Foo.Bar = 0`.
-          forall(Expr e | e = this.(QualifiableExpr).getQualifier() | e instanceof NoNodeExpr)
+          forall(Expr e | e = this.getAChildExpr() | e instanceof NoNodeExpr)
         }
       }
 
@@ -517,7 +517,6 @@ module ControlFlow {
         e =
           any(QualifiableExpr qe |
             not qe instanceof ExtensionMethodCall and
-            not qe.isConditional() and
             result = qe.getChild(i)
           )
         or
@@ -553,7 +552,17 @@ module ControlFlow {
        * not evaluated, only the qualifier and the indexer arguments (if any).
        */
       private class QualifiedWriteAccess extends WriteAccess, QualifiableExpr {
-        QualifiedWriteAccess() { this.hasQualifier() }
+        QualifiedWriteAccess() {
+          this.hasQualifier()
+          or
+          // Member initializers like
+          // ```csharp
+          // new Dictionary<int, string>() { [0] = "Zero", [1] = "One", [2] = "Two" }
+          // ```
+          // need special treatment, because the the accesses `[0]`, `[1]`, and `[2]`
+          // have no qualifier.
+          this = any(MemberInitializer mi).getLValue()
+        }
       }
 
       /** A normal or a (potential) dynamic call to an accessor. */
@@ -572,7 +581,7 @@ module ControlFlow {
        * that the accessor is called *after* the assigned value has been evaluated.
        * In the example above, this means we want a CFG that looks like
        *
-       * ```
+       * ```csharp
        * x -> 0 -> set_Prop -> x.Prop = 0
        * ```
        */
@@ -646,7 +655,7 @@ module ControlFlow {
         cfe =
           any(AssignOperationWithExpandedAssignment a | result = first(a.getExpandedAssignment()))
         or
-        cfe = any(ConditionallyQualifiedExpr cqe | result = first(cqe.getChildExpr(-1)))
+        cfe = any(ConditionallyQualifiedExpr cqe | result = first(getExprChildElement(cqe, 0)))
         or
         cfe =
           any(ArrayCreation ac |
@@ -872,7 +881,7 @@ module ControlFlow {
             c = getValidSelfCompletion(result)
             or
             // Qualifier exits with a `null` completion
-            result = cqe.getChildExpr(-1) and
+            result = getExprChildElement(cqe, 0) and
             c = TRec(TLastRecSpecificCompletion(any(NullnessCompletion nc | nc.isNull())))
           )
         or
@@ -1444,16 +1453,16 @@ module ControlFlow {
         )
         or
         exists(ConditionallyQualifiedExpr parent, int i |
-          cfe = last(parent.getChildExpr(i), c) and
+          cfe = last(getExprChildElement(parent, i), c) and
           c instanceof NormalCompletion and
-          not c.(NullnessCompletion).isNull()
+          if i = 0 then c.(NullnessCompletion).isNonNull() else any()
         |
           // Post-order: flow from last element of last child to element itself
-          i = max(int j | exists(parent.getChildExpr(j))) and
+          i = max(int j | exists(getExprChildElement(parent, j))) and
           result = parent
           or
           // Standard left-to-right evaluation
-          result = first(parent.getChildExpr(i + 1))
+          result = first(getExprChildElement(parent, i + 1))
         )
         or
         // Post-order: flow from last element of thrown expression to expression itself

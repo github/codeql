@@ -56,7 +56,7 @@ class ValueNumber extends TValueNumber {
     or
     this instanceof TInitializeParameterValueNumber and result = "InitializeParameter"
     or
-    this instanceof TInitializeThisValueNumber and result = "InitializeThis"
+    this instanceof TConstantValueNumber and result = "Constant"
     or
     this instanceof TStringConstantValueNumber and result = "StringConstant"
     or

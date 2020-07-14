@@ -259,8 +259,8 @@ which defines the simplest possible taint kind class, ``HardcodedValue``, and cu
 Further reading
 ---------------
 
-- ":doc:`Pointer analysis and type inference in Python <pointsto-type-infer>`"
-- ":doc:`Analyzing control flow in Python <control-flow>`"
-- ":doc:`Analyzing data flow and tracking tainted data in Python <taint-tracking>`"
+- `Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-paths.html>`__
 
-.. include:: ../../reusables/python-other-resources.rst
+.. include:: ../../reusables/python-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst
+

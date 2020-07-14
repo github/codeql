@@ -27,11 +27,10 @@ class DangerousScheme extends string {
 /** Returns a node that refers to the scheme of `url`. */
 DataFlow::SourceNode schemeOf(DataFlow::Node url) {
   // url.split(":")[0]
-  exists(DataFlow::MethodCallNode split |
-    split.getMethodName() = "split" and
-    split.getArgument(0).getStringValue() = ":" and
-    result = split.getAPropertyRead("0") and
-    url = split.getReceiver()
+  exists(StringSplitCall split |
+    split.getSeparator() = ":" and
+    result = split.getASubstringRead(0) and
+    url = split.getBaseString()
   )
   or
   // url.getScheme(), url.getProtocol(), getScheme(url), getProtocol(url)
@@ -62,18 +61,14 @@ DataFlow::Node schemeCheck(DataFlow::Node nd, DangerousScheme scheme) {
     sw.getSubstring().mayHaveStringValue(scheme)
   )
   or
-  // check of the form `array.includes(getScheme(nd))`
-  exists(InclusionTest test, DataFlow::ArrayCreationNode array | test = result |
-    schemeOf(nd).flowsTo(test.getContainedNode()) and
-    array.flowsTo(test.getContainerNode()) and
-    array.getAnElement().mayHaveStringValue(scheme.getWithOrWithoutColon())
-  )
-  or
-  // check of the form `getScheme(nd) === scheme`
-  exists(EqualityTest test, Expr op1, Expr op2 | test.flow() = result |
-    test.hasOperands(op1, op2) and
-    schemeOf(nd).flowsToExpr(op1) and
-    op2.mayHaveStringValue(scheme.getWithOrWithoutColon())
+  exists(MembershipCandidate candidate |
+    result = candidate.getTest()
+    or
+    // fall back to the candidate if the test itself is implicit
+    not exists(candidate.getTest()) and result = candidate
+  |
+    candidate.getAMemberString() = scheme.getWithOrWithoutColon() and
+    schemeOf(nd).flowsTo(candidate)
   )
   or
   // propagate through trimming, case conversion, and regexp replace

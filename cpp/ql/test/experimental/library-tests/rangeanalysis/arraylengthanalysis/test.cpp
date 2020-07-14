@@ -88,3 +88,8 @@ void test2(unsigned int count, bool b) {
   a = (int*) malloc(sizeof(int) * (1024 - count));
   sink(a); // none, as the size expression is too complicated
 }
+
+void test3(unsigned int object) {
+  unsigned int* ptr = &object;
+  sink(ptr); // TODO, none, but should be (Zero, 1, Zero, 0)
+}

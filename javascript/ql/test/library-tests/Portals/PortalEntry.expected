@@ -707,16 +707,24 @@
 | (member x (parameter 0 (member foo (root https://www.npmjs.com/package/m2)))) | src/m3/tst2.js:5:10:5:10 | o | false |
 | (member y (member x (parameter 0 (member foo (root https://www.npmjs.com/package/m2))))) | src/m3/tst2.js:3:6:3:8 | "?" | false |
 | (member z (parameter 0 (member foo (root https://www.npmjs.com/package/m2)))) | src/m2/main.js:3:9:3:12 | "hi" | true |
+| (parameter 0 (member String (global))) | src/m5/index.js:5:33:5:50 | fs.readFileSync(f) | true |
 | (parameter 0 (member default (root https://www.npmjs.com/package/m2))) | src/m3/tst3.js:4:7:4:10 | "me" | false |
 | (parameter 0 (member default (root https://www.npmjs.com/package/m2))) | src/m3/tst3.js:5:7:5:10 | "me" | false |
+| (parameter 0 (member encode (root https://www.npmjs.com/package/base-64/base64.js))) | src/m5/index.js:5:26:5:51 | String( ... ync(f)) | false |
 | (parameter 0 (member foo (root https://www.npmjs.com/package/m2))) | src/m3/tst2.js:5:5:5:12 | { x: o } | false |
+| (parameter 0 (member log (member console (global)))) | src/m2/main.js:2:15:2:19 | p.x.y | true |
+| (parameter 0 (member log (member console (global)))) | src/m2/main.js:12:17:12:35 | x + " " + this.name | true |
+| (parameter 0 (member log (member console (global)))) | src/m3/index.js:3:43:3:61 | m1("Hello, world!") | true |
 | (parameter 0 (member m (instance (member default (root https://www.npmjs.com/package/m2))))) | src/m3/tst3.js:4:15:4:18 | "hi" | false |
+| (parameter 0 (member m (instance (member default (root https://www.npmjs.com/package/m2))))) | src/m3/tst3.js:4:15:4:18 | "hi" | true |
 | (parameter 0 (member m (instance (root https://www.npmjs.com/package/m2)))) | src/m3/tst3.js:4:15:4:18 | "hi" | false |
 | (parameter 0 (member m (member default (root https://www.npmjs.com/package/m2)))) | src/m3/tst3.js:2:5:2:8 | "hi" | false |
 | (parameter 0 (member m (return (member default (root https://www.npmjs.com/package/m2))))) | src/m3/tst3.js:4:15:4:18 | "hi" | false |
 | (parameter 0 (member m (return (root https://www.npmjs.com/package/m2)))) | src/m3/tst3.js:4:15:4:18 | "hi" | false |
 | (parameter 0 (member m (root https://www.npmjs.com/package/m2))) | src/m3/tst3.js:2:5:2:8 | "hi" | false |
+| (parameter 0 (member readFileSync (root https://www.npmjs.com/package/fs))) | src/m5/index.js:5:49:5:49 | f | false |
 | (parameter 0 (member s (instance (member default (root https://www.npmjs.com/package/m2))))) | src/m3/tst3.js:5:15:5:21 | "there" | false |
+| (parameter 0 (member s (instance (member default (root https://www.npmjs.com/package/m2))))) | src/m3/tst3.js:5:15:5:21 | "there" | true |
 | (parameter 0 (member s (instance (root https://www.npmjs.com/package/m2)))) | src/m3/tst3.js:5:15:5:21 | "there" | false |
 | (parameter 0 (member s (member default (root https://www.npmjs.com/package/m2)))) | src/m3/tst3.js:3:5:3:11 | "there" | false |
 | (parameter 0 (member s (return (member default (root https://www.npmjs.com/package/m2))))) | src/m3/tst3.js:5:15:5:21 | "there" | false |

@@ -36,7 +36,7 @@ Section-level elements are used to group the information within the query help f
 3.  `example`—an example of code showing the problem. Where possible, this section should also include a solution to the issue.
 4.  `references`—relevant references, such as authoritative sources on language semantics and best practice. 
 
-For further information about the other section-level, block, list and table elements supported by query help files, see the [Query help reference](https://help.semmle.com/QL/learn-ql/ql/writing-queries/query-help.html) on help.semmle.com.
+For further information about the other section-level, block, list and table elements supported by query help files, see [Query help files](https://help.semmle.com/QL/learn-ql/ql/writing-queries/query-help.html) on help.semmle.com.
 
 
 ## English style

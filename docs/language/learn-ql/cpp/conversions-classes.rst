@@ -223,8 +223,5 @@ There is a similar built-in `query <https://lgtm.com/rules/2158670642/>`__ on LG
 Further reading
 ---------------
 
--  Explore other ways of querying classes using examples from the `C/C++ cookbook <https://help.semmle.com/wiki/label/CBCPP/class>`__.
--  Take a look at the :doc:`Analyzing data flow in C and C++ <dataflow>` tutorial.
--  Try the worked examples in the following topics: :doc:`Refining a query to account for edge cases <private-field-initialization>`, and :doc:`Detecting a potential buffer overflow <zero-space-terminator>`.
--  Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.
+.. include:: ../../reusables/cpp-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

@@ -1,3 +1,7 @@
+/**
+ * Provides predicates for finding the smallest element that encloses an expression or statement.
+ */
+
 import cpp
 
 /**

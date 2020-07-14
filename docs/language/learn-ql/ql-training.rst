@@ -60,5 +60,4 @@ CodeQL and variant analysis for Java
 Further reading
 ~~~~~~~~~~~~~~~
 
-- If you are completely new to CodeQL, look at our introductory topics in :doc:`Learning CodeQL <index>`.
-- To see examples of CodeQL queries that have been used to find security vulnerabilities and bugs in open source software projects, visit the `GitHub Security Lab website <https://securitylab.github.com/research>`__ and the associated `repository <https://github.com/github/security-lab>`__.
+- `GitHub Security Lab <https://securitylab.github.com/research>`__

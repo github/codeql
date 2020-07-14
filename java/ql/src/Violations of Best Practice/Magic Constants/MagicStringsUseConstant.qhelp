@@ -35,7 +35,7 @@ update if the requirements change, because you have to update the string in only
 </recommendation>
 <example>
 
-<p>The following example shows a magic string <code>internal_ip</code>. This should be replaced by  
+<p>The following example shows a magic string <code>internalIp</code>. This should be replaced by  
 the existing named constant, as shown in the fixed version.</p>
 
 <sample src="MagicStringsUseConstant.java" />

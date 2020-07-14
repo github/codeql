@@ -6,7 +6,7 @@
  * @id js/too-many-parameters
  * @tags testability
  *       readability
- * @precision high
+ * @precision low
  */
 
 import javascript

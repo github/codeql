@@ -438,7 +438,10 @@ private predicate barrierGuardBlocksNode(BarrierGuardNode guard, DataFlow::Node 
   barrierGuardIsRelevant(guard) and
   exists(AccessPath p, BasicBlock bb, ConditionGuardNode cond, boolean outcome |
     nd = DataFlow::valueNode(p.getAnInstanceIn(bb)) and
-    guard.getEnclosingExpr() = cond.getTest() and
+    (
+      guard.getEnclosingExpr() = cond.getTest() or
+      guard = cond.getTest().flow().getImmediatePredecessor+()
+    ) and
     outcome = cond.getOutcome() and
     barrierGuardBlocksAccessPath(guard, outcome, p, label) and
     cond.dominates(bb)
@@ -608,6 +611,16 @@ module PseudoProperties {
   string arrayElement() { result = pseudoProperty("arrayElement") }
 
   /**
+   * Gets a pseudo-property for the location of the `i`th element in an `Array`.
+   */
+  bindingset[i]
+  string arrayElement(int i) {
+    i < 5 and result = i.toString()
+    or
+    result = arrayElement()
+  }
+
+  /**
    * Gets a pseudo-property for the location of elements in some array-like object. (Set, Array, or Iterator).
    */
   string arrayLikeElement() { result = [setElement(), iteratorElement(), arrayElement()] }
@@ -724,21 +737,6 @@ private predicate basicFlowStepNoBarrier(
   // Flow out of function
   returnStep(pred, succ) and
   summary = PathSummary::return()
-}
-
-/**
- * Holds if there is a flow step from `pred` to `succ` described by `summary`
- * under configuration `cfg`.
- *
- * Summary steps through function calls are not taken into account.
- */
-private predicate basicFlowStep(
-  DataFlow::Node pred, DataFlow::Node succ, PathSummary summary, DataFlow::Configuration cfg
-) {
-  basicFlowStepNoBarrier(pred, succ, summary, cfg) and
-  isRelevant(pred, cfg) and
-  not isLabeledBarrierEdge(cfg, pred, succ, summary.getStartLabel()) and
-  not isBarrierEdge(cfg, pred, succ)
 }
 
 /**
@@ -926,10 +924,10 @@ private predicate callInputStep(
     argumentPassing(invk, pred, f, succ)
     or
     isRelevant(pred, cfg) and
-    exists(SsaDefinition prevDef, SsaDefinition def |
-      pred = DataFlow::ssaDefinitionNode(prevDef) and
+    exists(LocalVariable variable, SsaDefinition def |
+      pred = DataFlow::capturedVariableNode(variable) and
       calls(invk, f) and
-      captures(f, prevDef, def) and
+      captures(f, variable, def) and
       succ = DataFlow::ssaDefinitionNode(def)
     )
   ) and
@@ -1339,7 +1337,8 @@ private predicate flowStep(
   DataFlow::Node pred, DataFlow::Configuration cfg, DataFlow::Node succ, PathSummary summary
 ) {
   (
-    basicFlowStep(pred, succ, summary, cfg)
+    basicFlowStepNoBarrier(pred, succ, summary, cfg) and
+    isRelevant(pred, cfg)
     or
     // Flow through a function that returns a value that depends on one of its arguments
     // or a captured variable
@@ -1614,6 +1613,9 @@ class MidPathNode extends PathNode, MkMidNode {
     // Skip phi, refinement, and capture nodes
     nd.(DataFlow::SsaDefinitionNode).getSsaVariable().getDefinition() instanceof
       SsaImplicitDefinition
+    or
+    // Skip SSA definition of parameter as its location coincides with the parameter node
+    nd = DataFlow::ssaDefinitionNode(SSA::definition(any(SimpleParameter p)))
     or
     // Skip to the top of big left-leaning string concatenation trees.
     nd = any(AddExpr add).flow() and

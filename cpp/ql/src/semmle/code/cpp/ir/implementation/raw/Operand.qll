@@ -1,3 +1,7 @@
+/**
+ * Provides classes that represent the input values of IR instructions.
+ */
+
 private import internal.IRInternal
 private import Instruction
 private import IRBlock
@@ -14,16 +18,8 @@ private newtype TOperand =
     not Construction::isInCycle(useInstr) and
     strictcount(Construction::getRegisterOperandDefinition(useInstr, tag)) = 1
   } or
-  TNonPhiMemoryOperand(
-    Instruction useInstr, MemoryOperandTag tag, Instruction defInstr, Overlap overlap
-  ) {
-    defInstr = Construction::getMemoryOperandDefinition(useInstr, tag, overlap) and
-    not Construction::isInCycle(useInstr) and
-    (
-      strictcount(Construction::getMemoryOperandDefinition(useInstr, tag, _)) = 1
-      or
-      tag instanceof UnmodeledUseOperandTag
-    )
+  TNonPhiMemoryOperand(Instruction useInstr, MemoryOperandTag tag) {
+    useInstr.getOpcode().hasOperand(tag)
   } or
   TPhiOperand(
     PhiInstruction useInstr, Instruction defInstr, IRBlock predecessorBlock, Overlap overlap
@@ -32,13 +28,71 @@ private newtype TOperand =
   }
 
 /**
+ * Base class for all register operands. This is a placeholder for the IPA union type that we will
+ * eventually use for this purpose.
+ */
+private class RegisterOperandBase extends TRegisterOperand {
+  /** Gets a textual representation of this element. */
+  abstract string toString();
+}
+
+/**
+ * Returns the register operand with the specified parameters.
+ */
+private RegisterOperandBase registerOperand(
+  Instruction useInstr, RegisterOperandTag tag, Instruction defInstr
+) {
+  result = TRegisterOperand(useInstr, tag, defInstr)
+}
+
+/**
+ * Base class for all non-Phi memory operands. This is a placeholder for the IPA union type that we
+ * will eventually use for this purpose.
+ */
+private class NonPhiMemoryOperandBase extends TNonPhiMemoryOperand {
+  /** Gets a textual representation of this element. */
+  abstract string toString();
+}
+
+/**
+ * Returns the non-Phi memory operand with the specified parameters.
+ */
+private NonPhiMemoryOperandBase nonPhiMemoryOperand(Instruction useInstr, MemoryOperandTag tag) {
+  result = TNonPhiMemoryOperand(useInstr, tag)
+}
+
+/**
+ * Base class for all Phi operands. This is a placeholder for the IPA union type that we will
+ * eventually use for this purpose.
+ */
+private class PhiOperandBase extends TPhiOperand {
+  abstract string toString();
+}
+
+/**
+ * Returns the Phi operand with the specified parameters.
+ */
+private PhiOperandBase phiOperand(
+  Instruction useInstr, Instruction defInstr, IRBlock predecessorBlock, Overlap overlap
+) {
+  result = TPhiOperand(useInstr, defInstr, predecessorBlock, overlap)
+}
+
+/**
  * A source operand of an `Instruction`. The operand represents a value consumed by the instruction.
  */
 class Operand extends TOperand {
+  /** Gets a textual representation of this element. */
   string toString() { result = "Operand" }
 
+  /**
+   * Gets the location of the source code for this operand.
+   */
   final Language::Location getLocation() { result = getUse().getLocation() }
 
+  /**
+   * Gets the function that contains this operand.
+   */
   final IRFunction getEnclosingIRFunction() { result = getUse().getEnclosingIRFunction() }
 
   /**
@@ -104,7 +158,17 @@ class Operand extends TOperand {
    * For example: `this:r3_5`
    */
   final string getDumpString() {
-    result = getDumpLabel() + getInexactSpecifier() + getAnyDef().getResultId()
+    result = getDumpLabel() + getInexactSpecifier() + getDefinitionId()
+  }
+
+  /**
+   * Gets a string containing the identifier of the definition of this use, or `m?` if the
+   * definition is not modeled in SSA.
+   */
+  private string getDefinitionId() {
+    result = getAnyDef().getResultId()
+    or
+    not exists(getAnyDef()) and result = "m?"
   }
 
   /**
@@ -169,8 +233,8 @@ class Operand extends TOperand {
  */
 class MemoryOperand extends Operand {
   MemoryOperand() {
-    this = TNonPhiMemoryOperand(_, _, _, _) or
-    this = TPhiOperand(_, _, _, _)
+    this instanceof NonPhiMemoryOperandBase or
+    this instanceof PhiOperandBase
   }
 
   /**
@@ -204,30 +268,37 @@ class MemoryOperand extends Operand {
  */
 class NonPhiOperand extends Operand {
   Instruction useInstr;
-  Instruction defInstr;
   OperandTag tag;
 
   NonPhiOperand() {
-    this = TRegisterOperand(useInstr, tag, defInstr) or
-    this = TNonPhiMemoryOperand(useInstr, tag, defInstr, _)
+    this = registerOperand(useInstr, tag, _) or
+    this = nonPhiMemoryOperand(useInstr, tag)
   }
 
   final override Instruction getUse() { result = useInstr }
-
-  final override Instruction getAnyDef() { result = defInstr }
 
   final override string getDumpLabel() { result = tag.getLabel() }
 
   final override int getDumpSortOrder() { result = tag.getSortOrder() }
 
+  /**
+   * Gets the `OperandTag` that specifies how this operand is used by its `Instruction`.
+   */
   final OperandTag getOperandTag() { result = tag }
 }
 
 /**
  * An operand that consumes a register (non-memory) result.
  */
-class RegisterOperand extends NonPhiOperand, TRegisterOperand {
+class RegisterOperand extends NonPhiOperand, RegisterOperandBase {
   override RegisterOperandTag tag;
+  Instruction defInstr;
+
+  RegisterOperand() { this = registerOperand(useInstr, tag, defInstr) }
+
+  final override string toString() { result = tag.toString() }
+
+  final override Instruction getAnyDef() { result = defInstr }
 
   final override Overlap getDefinitionOverlap() {
     // All register results overlap exactly with their uses.
@@ -235,15 +306,33 @@ class RegisterOperand extends NonPhiOperand, TRegisterOperand {
   }
 }
 
-class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand, TNonPhiMemoryOperand {
+/**
+ * A memory operand other than the operand of a `Phi` instruction.
+ */
+class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand, NonPhiMemoryOperandBase {
   override MemoryOperandTag tag;
-  Overlap overlap;
 
-  NonPhiMemoryOperand() { this = TNonPhiMemoryOperand(useInstr, tag, defInstr, overlap) }
+  NonPhiMemoryOperand() { this = nonPhiMemoryOperand(useInstr, tag) }
 
-  final override Overlap getDefinitionOverlap() { result = overlap }
+  final override string toString() { result = tag.toString() }
+
+  final override Instruction getAnyDef() {
+    result = unique(Instruction defInstr | hasDefinition(defInstr, _))
+  }
+
+  final override Overlap getDefinitionOverlap() { hasDefinition(_, result) }
+
+  pragma[noinline]
+  private predicate hasDefinition(Instruction defInstr, Overlap overlap) {
+    defInstr = Construction::getMemoryOperandDefinition(useInstr, tag, overlap) and
+    not Construction::isInCycle(useInstr) and
+    strictcount(Construction::getMemoryOperandDefinition(useInstr, tag, _)) = 1
+  }
 }
 
+/**
+ * A memory operand whose type may be different from the type of the result of its definition.
+ */
 class TypedOperand extends NonPhiMemoryOperand {
   override TypedOperandTag tag;
 
@@ -258,8 +347,6 @@ class TypedOperand extends NonPhiMemoryOperand {
  */
 class AddressOperand extends RegisterOperand {
   override AddressOperandTag tag;
-
-  override string toString() { result = "Address" }
 }
 
 /**
@@ -268,8 +355,6 @@ class AddressOperand extends RegisterOperand {
  */
 class BufferSizeOperand extends RegisterOperand {
   override BufferSizeOperandTag tag;
-
-  override string toString() { result = "BufferSize" }
 }
 
 /**
@@ -278,8 +363,6 @@ class BufferSizeOperand extends RegisterOperand {
  */
 class LoadOperand extends TypedOperand {
   override LoadOperandTag tag;
-
-  override string toString() { result = "Load" }
 }
 
 /**
@@ -287,8 +370,6 @@ class LoadOperand extends TypedOperand {
  */
 class StoreValueOperand extends RegisterOperand {
   override StoreValueOperandTag tag;
-
-  override string toString() { result = "StoreValue" }
 }
 
 /**
@@ -296,8 +377,6 @@ class StoreValueOperand extends RegisterOperand {
  */
 class UnaryOperand extends RegisterOperand {
   override UnaryOperandTag tag;
-
-  override string toString() { result = "Unary" }
 }
 
 /**
@@ -305,8 +384,6 @@ class UnaryOperand extends RegisterOperand {
  */
 class LeftOperand extends RegisterOperand {
   override LeftOperandTag tag;
-
-  override string toString() { result = "Left" }
 }
 
 /**
@@ -314,8 +391,6 @@ class LeftOperand extends RegisterOperand {
  */
 class RightOperand extends RegisterOperand {
   override RightOperandTag tag;
-
-  override string toString() { result = "Right" }
 }
 
 /**
@@ -323,18 +398,6 @@ class RightOperand extends RegisterOperand {
  */
 class ConditionOperand extends RegisterOperand {
   override ConditionOperandTag tag;
-
-  override string toString() { result = "Condition" }
-}
-
-/**
- * An operand of the special `UnmodeledUse` instruction, representing a value
- * whose set of uses is unknown.
- */
-class UnmodeledUseOperand extends NonPhiMemoryOperand {
-  override UnmodeledUseOperandTag tag;
-
-  override string toString() { result = "UnmodeledUse" }
 }
 
 /**
@@ -342,8 +405,6 @@ class UnmodeledUseOperand extends NonPhiMemoryOperand {
  */
 class CallTargetOperand extends RegisterOperand {
   override CallTargetOperandTag tag;
-
-  override string toString() { result = "CallTarget" }
 }
 
 /**
@@ -361,8 +422,6 @@ class ArgumentOperand extends RegisterOperand {
  */
 class ThisArgumentOperand extends ArgumentOperand {
   override ThisArgumentOperandTag tag;
-
-  override string toString() { result = "ThisArgument" }
 }
 
 /**
@@ -370,34 +429,30 @@ class ThisArgumentOperand extends ArgumentOperand {
  */
 class PositionalArgumentOperand extends ArgumentOperand {
   override PositionalArgumentOperandTag tag;
-  int argIndex;
-
-  PositionalArgumentOperand() { argIndex = tag.getArgIndex() }
-
-  override string toString() { result = "Arg(" + argIndex + ")" }
 
   /**
    * Gets the zero-based index of the argument.
    */
-  final int getIndex() { result = argIndex }
+  final int getIndex() { result = tag.getArgIndex() }
 }
 
+/**
+ * An operand representing memory read as a side effect of evaluating another instruction.
+ */
 class SideEffectOperand extends TypedOperand {
   override SideEffectOperandTag tag;
-
-  override string toString() { result = "SideEffect" }
 }
 
 /**
  * An operand of a `PhiInstruction`.
  */
-class PhiInputOperand extends MemoryOperand, TPhiOperand {
+class PhiInputOperand extends MemoryOperand, PhiOperandBase {
   PhiInstruction useInstr;
   Instruction defInstr;
   IRBlock predecessorBlock;
   Overlap overlap;
 
-  PhiInputOperand() { this = TPhiOperand(useInstr, defInstr, predecessorBlock, overlap) }
+  PhiInputOperand() { this = phiOperand(useInstr, defInstr, predecessorBlock, overlap) }
 
   override string toString() { result = "Phi" }
 
@@ -427,8 +482,6 @@ class PhiInputOperand extends MemoryOperand, TPhiOperand {
 class ChiTotalOperand extends NonPhiMemoryOperand {
   override ChiTotalOperandTag tag;
 
-  override string toString() { result = "ChiTotal" }
-
   final override MemoryAccessKind getMemoryAccess() { result instanceof ChiTotalMemoryAccess }
 }
 
@@ -437,8 +490,6 @@ class ChiTotalOperand extends NonPhiMemoryOperand {
  */
 class ChiPartialOperand extends NonPhiMemoryOperand {
   override ChiPartialOperandTag tag;
-
-  override string toString() { result = "ChiPartial" }
 
   final override MemoryAccessKind getMemoryAccess() { result instanceof ChiPartialMemoryAccess }
 }

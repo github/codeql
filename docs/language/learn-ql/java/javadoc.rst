@@ -147,7 +147,7 @@ Now we can write a query for finding all callables ``c`` and ``@throws`` tags ``
        not mayThrow(c, exn)
    select tt, "Spurious @throws tag."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505752646058/>`__. This finds several results in the LGTM.com demo projects.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1258570917227966396/>`__. This finds several results in the LGTM.com demo projects.
 
 Improvements
 ~~~~~~~~~~~~
@@ -214,13 +214,12 @@ The first case can be covered by changing ``getDocumentedException`` to use the 
        (result.hasName(tt.getExceptionName()) and visibleIn(tt.getFile(), result))
    }
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505751136101/>`__. This finds many fewer, more interesting results in the LGTM.com demo projects.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/8016848987103345329/>`__. This finds many fewer, more interesting results in the LGTM.com demo projects.
 
 Currently, ``visibleIn`` only considers single-type imports, but you could extend it with support for other kinds of imports.
 
 Further reading
 ---------------
 
--  Find out how you can use the location API to define queries on whitespace: :doc:`Working with source locations <source-locations>`.
--  Find out how specific classes in the AST are represented in the standard library for Java: :doc:`Classes for working with Java code <ast-class-reference>`.
--  Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
+.. include:: ../../reusables/java-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

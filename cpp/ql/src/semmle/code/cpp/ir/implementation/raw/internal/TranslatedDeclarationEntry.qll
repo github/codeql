@@ -181,14 +181,11 @@ class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclaratio
     tag = DynamicInitializationFlagConstantTag() and result = "1"
   }
 
-  final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+  final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag = DynamicInitializationFlagLoadTag() and
     (
       operandTag instanceof AddressOperandTag and
       result = getInstruction(DynamicInitializationFlagAddressTag())
-      or
-      operandTag instanceof LoadOperandTag and
-      result = getTranslatedFunction(var.getFunction()).getUnmodeledDefinitionInstruction()
     )
     or
     tag = DynamicInitializationConditionalBranchTag() and

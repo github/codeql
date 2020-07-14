@@ -1,7 +1,7 @@
 private import cpp
 private import semmle.code.cpp.Print
 private import semmle.code.cpp.ir.implementation.IRType
-private import semmle.code.cpp.ir.implementation.raw.internal.IRConstruction as IRConstruction
+private import semmle.code.cpp.ir.implementation.raw.internal.IRConstruction::Raw as Raw
 
 private int getPointerSize() { result = max(any(NullPointerType t).getSize()) }
 
@@ -143,7 +143,7 @@ private predicate isOpaqueType(Type type) {
 predicate hasOpaqueType(Type tag, int byteSize) {
   isOpaqueType(tag) and byteSize = getTypeSize(tag)
   or
-  tag instanceof UnknownType and IRConstruction::needsUnknownOpaqueType(byteSize)
+  tag instanceof UnknownType and Raw::needsUnknownOpaqueType(byteSize)
 }
 
 /**
@@ -191,7 +191,7 @@ private newtype TCppType =
   TPRValueType(Type type) { exists(getIRTypeForPRValue(type)) } or
   TFunctionGLValueType() or
   TGLValueAddressType(Type type) or
-  TUnknownOpaqueType(int byteSize) { IRConstruction::needsUnknownOpaqueType(byteSize) } or
+  TUnknownOpaqueType(int byteSize) { Raw::needsUnknownOpaqueType(byteSize) } or
   TUnknownType()
 
 /**
@@ -203,6 +203,7 @@ private newtype TCppType =
  *   of a `VariableAddress` where the variable is of reference type)
  */
 class CppType extends TCppType {
+  /** Gets a textual representation of this type. */
   string toString() { none() }
 
   /** Gets a string used in IR dumps */
@@ -224,6 +225,10 @@ class CppType extends TCppType {
    */
   predicate hasType(Type type, boolean isGLValue) { none() }
 
+  /**
+   * Holds if this type represents the C++ type `type`. If `isGLValue` is `true`, then this type
+   * represents a glvalue of type `type`. Otherwise, it represents a prvalue of type `type`.
+   */
   final predicate hasUnspecifiedType(Type type, boolean isGLValue) {
     exists(Type specifiedType |
       hasType(specifiedType, isGLValue) and
@@ -357,7 +362,7 @@ CppType getTypeForPRValueOrUnknown(Type type) {
 /**
  * Gets the `CppType` that represents a glvalue of type `type`.
  */
-CppType getTypeForGLValue(Type type) { result.hasType(type, true) }
+CppGLValueAddressType getTypeForGLValue(Type type) { result.hasType(type, true) }
 
 /**
  * Gets the `CppType` that represents a prvalue of type `int`.
@@ -539,7 +544,10 @@ string getOpaqueTagIdentityString(Type tag) {
   result = getTypeIdentityString(tag)
 }
 
-module LanguageTypeSanity {
+module LanguageTypeConsistency {
+  /**
+   * Consistency query to detect C++ `Type` objects which have no corresponding `CppType` object.
+   */
   query predicate missingCppType(Type type, string message) {
     not exists(getTypeForPRValue(type)) and
     exists(type.getSize()) and

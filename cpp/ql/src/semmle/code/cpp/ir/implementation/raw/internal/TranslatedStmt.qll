@@ -713,7 +713,7 @@ class TranslatedSwitchStmt extends TranslatedStmt {
     resultType = getVoidType()
   }
 
-  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag = SwitchBranchTag() and
     operandTag instanceof ConditionOperandTag and
     result = getExpr().getResult()
@@ -759,11 +759,7 @@ class TranslatedAsmStmt extends TranslatedStmt {
     resultType = getUnknownType()
   }
 
-  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = AsmTag() and
-    operandTag instanceof SideEffectOperandTag and
-    result = getTranslatedFunction(stmt.getEnclosingFunction()).getUnmodeledDefinitionInstruction()
-    or
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     exists(int index |
       tag = AsmTag() and
       operandTag = asmOperand(index) and
@@ -771,7 +767,9 @@ class TranslatedAsmStmt extends TranslatedStmt {
     )
   }
 
-  final override CppType getInstructionOperandType(InstructionTag tag, TypedOperandTag operandTag) {
+  final override CppType getInstructionMemoryOperandType(
+    InstructionTag tag, TypedOperandTag operandTag
+  ) {
     tag = AsmTag() and
     operandTag instanceof SideEffectOperandTag and
     result = getUnknownType()

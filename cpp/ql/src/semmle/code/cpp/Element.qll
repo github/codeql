@@ -1,3 +1,8 @@
+/**
+ * Provides the `Element` class, which is the base class for all classes representing C or C++
+ * program elements.
+ */
+
 import semmle.code.cpp.Location
 private import semmle.code.cpp.Enclosing
 private import semmle.code.cpp.internal.ResolveClass
@@ -50,12 +55,21 @@ class ElementBase extends @element {
   cached
   string toString() { none() }
 
+  /** DEPRECATED: use `getAPrimaryQlClass` instead. */
+  deprecated string getCanonicalQLClass() { result = this.getAPrimaryQlClass() }
+
   /**
-   * Canonical QL class corresponding to this element.
+   * Gets the name of a primary CodeQL class to which this element belongs.
    *
-   * ElementBase is the root class for this predicate.
+   * For most elements, this is simply the most precise syntactic category to
+   * which they belong; for example, `AddExpr` is a primary class, but
+   * `BinaryOperation` is not.
+   *
+   * This predicate always has a result. If no primary class can be
+   * determined, the result is `"???"`. If multiple primary classes match,
+   * this predicate can have multiple results.
    */
-  string getCanonicalQLClass() { result = "???" }
+  string getAPrimaryQlClass() { result = "???" }
 }
 
 /**
@@ -261,8 +275,14 @@ private predicate isFromUninstantiatedTemplateRec(Element e, Element template) {
 class StaticAssert extends Locatable, @static_assert {
   override string toString() { result = "static_assert(..., \"" + getMessage() + "\")" }
 
+  /**
+   * Gets the expression which this static assertion ensures is true.
+   */
   Expr getCondition() { static_asserts(underlyingElement(this), unresolveElement(result), _, _) }
 
+  /**
+   * Gets the message which will be reported by the compiler if this static assertion fails.
+   */
   string getMessage() { static_asserts(underlyingElement(this), _, result, _) }
 
   override Location getLocation() { static_asserts(underlyingElement(this), _, _, result) }

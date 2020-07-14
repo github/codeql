@@ -72,9 +72,7 @@ private predicate privateParamArg(Parameter p, Argument arg) {
  * necessarily functionally determined by `n2`.
  */
 private predicate joinStep0(TypeFlowNode n1, TypeFlowNode n2) {
-  n2.asExpr().(ConditionalExpr).getTrueExpr() = n1.asExpr()
-  or
-  n2.asExpr().(ConditionalExpr).getFalseExpr() = n1.asExpr()
+  n2.asExpr().(ChooseExpr).getAResultExpr() = n1.asExpr()
   or
   exists(Field f, Expr e |
     f = n2.asField() and
@@ -226,9 +224,8 @@ private predicate upcastCand(TypeFlowNode n, RefType t, RefType t1, RefType t2) 
     or
     exists(Parameter p | privateParamArg(p, n.asExpr()) and t2 = p.getType().getErasure())
     or
-    exists(ConditionalExpr cond |
-      cond.getTrueExpr() = n.asExpr() or cond.getFalseExpr() = n.asExpr()
-    |
+    exists(ChooseExpr cond |
+      cond.getAResultExpr() = n.asExpr() and
       t2 = cond.getType().getErasure()
     )
   )
@@ -309,6 +306,21 @@ private predicate instanceOfGuarded(VarAccess va, RefType t) {
 }
 
 /**
+ * Holds if `aa` is an access to a value that is guarded by `instanceof t`.
+ */
+predicate arrayInstanceOfGuarded(ArrayAccess aa, RefType t) {
+  exists(InstanceOfExpr ioe, BaseSsaVariable v1, BaseSsaVariable v2, ArrayAccess aa1 |
+    ioe.getExpr() = aa1 and
+    t = ioe.getTypeName().getType() and
+    aa1.getArray() = v1.getAUse() and
+    aa1.getIndexExpr() = v2.getAUse() and
+    aa.getArray() = v1.getAUse() and
+    aa.getIndexExpr() = v2.getAUse() and
+    guardControls_v1(ioe, aa.getBasicBlock(), true)
+  )
+}
+
+/**
  * Holds if `n` has type `t` and this information is discarded, such that `t`
  * might be a better type bound for nodes where `n` flows to.
  */
@@ -318,6 +330,7 @@ private predicate typeFlowBase(TypeFlowNode n, RefType t) {
     upcastEnhancedForStmt(n.asSsa(), srctype) or
     downcastSuccessor(n.asExpr(), srctype) or
     instanceOfGuarded(n.asExpr(), srctype) or
+    arrayInstanceOfGuarded(n.asExpr(), srctype) or
     n.asExpr().(FunctionalExpr).getConstructedType() = srctype
   |
     t = srctype.(BoundedType).getAnUltimateUpperBoundType()

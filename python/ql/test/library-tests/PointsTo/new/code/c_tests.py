@@ -95,7 +95,7 @@ def h():
     if not x:
         pass
 
-def complex_test(x): # Was failing sanity check.
+def complex_test(x): # Was failing consistency check.
     if not (foo(x) and bar(x)):
         use(x)
     pass

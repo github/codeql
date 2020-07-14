@@ -405,7 +405,7 @@ private module ControlFlowGraphImpl {
    * Expressions and statements with CFG edges in post-order AST traversal.
    *
    * This includes most expressions, except those that initiate or propagate branching control
-   * flow (`LogicExpr`, `ConditionalExpr`), and parentheses, which aren't in the CFG.
+   * flow (`LogicExpr`, `ConditionalExpr`).
    * Only a few statements are included; those with specific side-effects
    * occurring after the evaluation of their children, that is, `Call`, `ReturnStmt`,
    * and `ThrowStmt`. CFG nodes without child nodes in the CFG that may complete
@@ -429,9 +429,10 @@ private module ControlFlowGraphImpl {
       or
       this instanceof CastExpr
       or
-      this instanceof InstanceOfExpr
+      this instanceof InstanceOfExpr and not this.(InstanceOfExpr).isPattern()
       or
-      this instanceof LocalVariableDeclExpr
+      this instanceof LocalVariableDeclExpr and
+      not this = any(InstanceOfExpr ioe).getLocalVariableDeclExpr()
       or
       this instanceof RValue
       or
@@ -573,12 +574,16 @@ private module ControlFlowGraphImpl {
     or
     result = first(n.(PostOrderNode).firstChild())
     or
+    result = first(n.(InstanceOfExpr).getExpr())
+    or
     result = first(n.(SynchronizedStmt).getExpr())
     or
     result = n and
     n instanceof Stmt and
     not n instanceof PostOrderNode and
     not n instanceof SynchronizedStmt
+    or
+    result = n and n instanceof SwitchExpr
   }
 
   /**
@@ -703,6 +708,12 @@ private module ControlFlowGraphImpl {
     exists(ConditionalExpr condexpr | condexpr = n |
       last(condexpr.getFalseExpr(), last, completion) or
       last(condexpr.getTrueExpr(), last, completion)
+    )
+    or
+    exists(InstanceOfExpr ioe | ioe.isPattern() and ioe = n |
+      last = n and completion = basicBooleanCompletion(false)
+      or
+      last = ioe.getLocalVariableDeclExpr() and completion = basicBooleanCompletion(true)
     )
     or
     // The last node of a node executed in post-order is the node itself.
@@ -912,6 +923,14 @@ private module ControlFlowGraphImpl {
       last(e.getCondition(), n, completion) and
       completion = BooleanCompletion(false, _) and
       result = first(e.getFalseExpr())
+    )
+    or
+    exists(InstanceOfExpr ioe | ioe.isPattern() |
+      last(ioe.getExpr(), n, completion) and completion = NormalCompletion() and result = ioe
+      or
+      n = ioe and
+      result = ioe.getLocalVariableDeclExpr() and
+      completion = basicBooleanCompletion(true)
     )
     or
     // In other expressions control flows from left to right and ends in the node itself.

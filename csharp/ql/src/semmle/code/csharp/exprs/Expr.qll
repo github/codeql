@@ -125,7 +125,7 @@ class LocalVariableDeclExpr extends Expr, @local_var_decl_expr {
   /**
    * Gets the local variable being declared, if any. The only case where
    * no variable is declared is when a discard symbol is used, for example
-   * ```
+   * ```csharp
    * if (int.TryParse(s, out var _))
    *     ...
    * ```
@@ -237,7 +237,7 @@ class TernaryOperation extends Operation, @ternary_op { }
 /**
  * A parenthesized expression, for example `(2 + 3)` in
  *
- * ```
+ * ```csharp
  * 4 * (2 + 3)
  * ```
  */
@@ -291,7 +291,7 @@ private predicate hasChildPattern(ControlFlowElement pm, Expr child) {
 /**
  * A pattern expression, for example `(_, false)` in
  *
- * ```
+ * ```csharp
  * (a,b) switch {
  *     (_, false) => true,
  *     _ => false
@@ -308,7 +308,7 @@ class PatternExpr extends Expr {
    * (transitively). For example, `_`, `false`, and `(_, false)` belong to the
    * pattern match `(_, false) => true` in
    *
-   * ```
+   * ```csharp
    * (a,b) switch {
    *     (_, false) => true,
    *     _ => false
@@ -441,65 +441,6 @@ class IsExpr extends Expr, PatternMatch, @is_expr {
   override string toString() { result = "... is ..." }
 }
 
-/** An `is` type expression, for example, `x is string` or `x is string s`. */
-deprecated class IsTypeExpr extends IsExpr {
-  TypeAccess typeAccess;
-
-  IsTypeExpr() { typeAccess = this.getChild(1) }
-
-  /**
-   * Gets the type being accessed in this `is` expression, for example `string`
-   * in `x is string`.
-   */
-  Type getCheckedType() { result = typeAccess.getTarget() }
-
-  /**
-   * Gets the type access in this `is` expression, for example `string` in
-   * `x is string`.
-   */
-  TypeAccess getTypeAccess() { result = typeAccess }
-}
-
-/** An `is` pattern expression, for example `x is string s`. */
-deprecated class IsPatternExpr extends IsExpr {
-  LocalVariableDeclExpr typeDecl;
-
-  IsPatternExpr() { typeDecl = this.getChild(2) }
-
-  /**
-   * Gets the local variable declaration in this `is` pattern expression.
-   * For example `string s` in `x is string s`.
-   */
-  LocalVariableDeclExpr getVariableDeclExpr() { result = typeDecl }
-
-  /**
-   * Gets the type being accessed in this `is` expression, for example `string`
-   * in `x is string`.
-   */
-  Type getCheckedType() { result = getTypeAccess().getTarget() }
-
-  /**
-   * Gets the type access in this `is` expression, for example `string` in
-   * `x is string`.
-   */
-  TypeAccess getTypeAccess() { result = this.getChild(1) }
-}
-
-/**
- * An `is` constant expression, for example `x is 5`.
- */
-deprecated class IsConstantExpr extends IsExpr {
-  ConstantPatternExpr constant;
-
-  IsConstantExpr() { constant = this.getPattern() }
-
-  /** Gets the constant expression, for example `5` in `x is 5`. */
-  Expr getConstant() { result = constant }
-
-  /** Gets the value of the constant, for example 5 in `x is 5`. */
-  string getConstantValue() { result = constant.getValue() }
-}
-
 /** A `switch` expression or statement. */
 class Switch extends ControlFlowElement, @switch {
   /** Gets the `i`th case of this `switch`. */
@@ -517,7 +458,7 @@ class Switch extends ControlFlowElement, @switch {
 
 /**
  * A `switch` expression, for example
- * ```
+ * ```csharp
  * (a,b) switch {
  *     (false, false) => true,
  *     _ => false
@@ -603,7 +544,7 @@ class Cast extends Expr {
  * An implicit cast. For example, the implicit cast from `string` to `object`
  * on line 3 in
  *
- * ```
+ * ```csharp
  * class C {
  *   void M1(object o) { }
  *   void M2(string s) => M1(s);
@@ -618,7 +559,7 @@ class ImplicitCast extends Cast {
  * An explicit cast. For example, the explicit cast from `object` to `string`
  * on line 2 in
  *
- * ```
+ * ```csharp
  * class C {
  *   string M1(object o) => (string) o;
  * }
@@ -689,7 +630,7 @@ class SizeofExpr extends UnaryOperation, @sizeof_expr {
  * A pointer indirection operation, for example `*pn` on line 7,
  * `pa->M()` on line 13, and `cp[1]` on line 18 in
  *
- * ```
+ * ```csharp
  * struct A {
  *   public void M() { }
  *
@@ -726,7 +667,7 @@ class PointerIndirectionExpr extends UnaryOperation, @pointer_indirection_expr {
 /**
  * An address-of expression, for example `&n` on line 4 in
  *
- * ```
+ * ```csharp
  * class A {
  *   unsafe int DirectDerefence() {
  *     int n = 10;
@@ -753,7 +694,7 @@ class AwaitExpr extends Expr, @await_expr {
 /**
  * A `nameof` expression, for example `nameof(s)` on line 3 in
  *
- * ```
+ * ```csharp
  * void M(string s) {
  *   if (s == null)
  *     throw new ArgumentNullException(nameof(s));
@@ -774,7 +715,7 @@ class NameOfExpr extends Expr, @nameof_expr {
 /**
  * An interpolated string, for example `$"Hello, {name}!"` on line 2 in
  *
- * ```
+ * ```csharp
  * void Hello(string name) {
  *   Console.WriteLine($"Hello, {name}!");
  * }
@@ -922,8 +863,8 @@ private Expr getAnAssignOrForeachChild() {
  * An expression representing a tuple, for example
  * `(1, 2)` on line 2 or `(var x, var y)` on line 5 in
  *
- * ```
- * class {
+ * ```csharp
+ * class C {
  *   (int, int) F() => (1, 2);
  *
  *   void M() {
@@ -948,7 +889,7 @@ class TupleExpr extends Expr, @tuple_expr {
 /**
  * A reference expression, for example `ref a[i]` on line 2 in
  *
- * ```
+ * ```csharp
  * ref int GetElement(int[] a, int i) {
  *   return ref a[i];
  * }
@@ -966,7 +907,7 @@ class RefExpr extends Expr, @ref_expr {
 /**
  * A discard expression, for example `_` in
  *
- * ```
+ * ```csharp
  * (var name, _, _) = GetDetails();
  * ```
  */
@@ -980,7 +921,7 @@ private class UnknownExpr extends Expr, @unknown_expr {
 
 /**
  * A range expression, used to create a `System.Range`. For example
- * ```
+ * ```csharp
  * 1..3
  * 1..^1
  * 3..
@@ -1014,7 +955,7 @@ class IndexExpr extends Expr, @index_expr {
 
 /**
  * A nullable warning suppression expression, for example `x!` in
- * ```
+ * ```csharp
  * string GetName()
  * {
  *     string? x = ...;

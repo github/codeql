@@ -11,8 +11,11 @@
 | addressOf.cpp:38:20:38:20 | i | non-const address |
 | addressOf.cpp:40:15:40:15 | i | non-const address |
 | addressOf.cpp:42:19:42:22 | iref | non-const address |
+| addressOf.cpp:47:12:47:31 | captured | non-const address |
+| addressOf.cpp:47:19:47:28 | captured |  |
 | addressOf.cpp:48:3:48:4 | f1 | const address |
 | addressOf.cpp:49:15:49:22 | captured | non-const address |
+| addressOf.cpp:49:27:49:36 | captured |  |
 | addressOf.cpp:50:3:50:4 | f2 | const address |
 | addressOf.cpp:51:10:51:17 | captured |  |
 | addressOf.cpp:56:16:56:16 | i |  |
@@ -25,9 +28,10 @@
 | addressOf.cpp:62:11:62:13 | ptr |  |
 | addressOf.cpp:63:19:63:21 | ptr |  |
 | addressOf.cpp:63:24:63:26 | ref | non-const address |
-| file://:0:0:0:0 | captured |  |
-| file://:0:0:0:0 | captured |  |
-| file://:0:0:0:0 | captured | non-const address |
+| addressOf.cpp:71:32:71:34 | obj |  |
+| addressOf.cpp:71:32:71:34 | obj |  |
+| addressOf.cpp:77:27:77:27 | x | non-const address |
+| addressOf.cpp:77:48:77:48 | x |  |
 | indirect_use.cpp:17:32:17:43 | globalIntPtr | non-const address |
 | indirect_use.cpp:20:14:20:15 | ip |  |
 | indirect_use.cpp:21:17:21:17 | p |  |

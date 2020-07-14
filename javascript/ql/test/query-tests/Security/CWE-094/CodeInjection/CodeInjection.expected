@@ -1,4 +1,13 @@
 nodes
+| NoSQLCodeInjection.js:18:24:18:31 | req.body |
+| NoSQLCodeInjection.js:18:24:18:31 | req.body |
+| NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name |
+| NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name |
+| NoSQLCodeInjection.js:19:36:19:43 | req.body |
+| NoSQLCodeInjection.js:19:36:19:43 | req.body |
+| NoSQLCodeInjection.js:19:36:19:48 | req.body.name |
 | angularjs.js:10:22:10:29 | location |
 | angularjs.js:10:22:10:29 | location |
 | angularjs.js:10:22:10:36 | location.search |
@@ -55,6 +64,21 @@ nodes
 | angularjs.js:53:32:53:39 | location |
 | angularjs.js:53:32:53:46 | location.search |
 | angularjs.js:53:32:53:46 | location.search |
+| bad-code-sanitization.js:54:14:54:67 | `(funct ... "))}))` |
+| bad-code-sanitization.js:54:14:54:67 | `(funct ... "))}))` |
+| bad-code-sanitization.js:54:29:54:63 | JSON.st ... bble")) |
+| bad-code-sanitization.js:54:44:54:62 | req.param("wobble") |
+| bad-code-sanitization.js:54:44:54:62 | req.param("wobble") |
+| bad-code-sanitization.js:56:7:56:47 | taint |
+| bad-code-sanitization.js:56:15:56:36 | [req.bo ...  "foo"] |
+| bad-code-sanitization.js:56:15:56:47 | [req.bo ... n("\\n") |
+| bad-code-sanitization.js:56:16:56:23 | req.body |
+| bad-code-sanitization.js:56:16:56:23 | req.body |
+| bad-code-sanitization.js:56:16:56:28 | req.body.name |
+| bad-code-sanitization.js:58:14:58:53 | `(funct ... nt)}))` |
+| bad-code-sanitization.js:58:14:58:53 | `(funct ... nt)}))` |
+| bad-code-sanitization.js:58:29:58:49 | JSON.st ... (taint) |
+| bad-code-sanitization.js:58:44:58:48 | taint |
 | express.js:7:24:7:69 | "return ...  + "];" |
 | express.js:7:24:7:69 | "return ...  + "];" |
 | express.js:7:44:7:62 | req.param("wobble") |
@@ -67,6 +91,18 @@ nodes
 | express.js:12:8:12:53 | "return ...  + "];" |
 | express.js:12:28:12:46 | req.param("wobble") |
 | express.js:12:28:12:46 | req.param("wobble") |
+| express.js:15:22:15:54 | req.par ... ction") |
+| express.js:15:22:15:54 | req.par ... ction") |
+| express.js:15:22:15:54 | req.par ... ction") |
+| express.js:17:30:17:53 | req.par ... cript") |
+| express.js:17:30:17:53 | req.par ... cript") |
+| express.js:17:30:17:53 | req.par ... cript") |
+| express.js:19:37:19:70 | req.par ... odule") |
+| express.js:19:37:19:70 | req.par ... odule") |
+| express.js:19:37:19:70 | req.par ... odule") |
+| express.js:21:19:21:48 | req.par ... ntext") |
+| express.js:21:19:21:48 | req.par ... ntext") |
+| express.js:21:19:21:48 | req.par ... ntext") |
 | react-native.js:7:7:7:33 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") |
 | react-native.js:7:17:7:33 | req.param("code") |
@@ -108,6 +144,14 @@ nodes
 | tst.js:26:26:26:53 | locatio ... ring(1) |
 | tst.js:26:26:26:53 | locatio ... ring(1) |
 edges
+| NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
+| NoSQLCodeInjection.js:19:36:19:43 | req.body | NoSQLCodeInjection.js:19:36:19:48 | req.body.name |
+| NoSQLCodeInjection.js:19:36:19:43 | req.body | NoSQLCodeInjection.js:19:36:19:48 | req.body.name |
+| NoSQLCodeInjection.js:19:36:19:48 | req.body.name | NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name |
+| NoSQLCodeInjection.js:19:36:19:48 | req.body.name | NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name |
 | angularjs.js:10:22:10:29 | location | angularjs.js:10:22:10:36 | location.search |
 | angularjs.js:10:22:10:29 | location | angularjs.js:10:22:10:36 | location.search |
 | angularjs.js:10:22:10:29 | location | angularjs.js:10:22:10:36 | location.search |
@@ -164,6 +208,19 @@ edges
 | angularjs.js:53:32:53:39 | location | angularjs.js:53:32:53:46 | location.search |
 | angularjs.js:53:32:53:39 | location | angularjs.js:53:32:53:46 | location.search |
 | angularjs.js:53:32:53:39 | location | angularjs.js:53:32:53:46 | location.search |
+| bad-code-sanitization.js:54:29:54:63 | JSON.st ... bble")) | bad-code-sanitization.js:54:14:54:67 | `(funct ... "))}))` |
+| bad-code-sanitization.js:54:29:54:63 | JSON.st ... bble")) | bad-code-sanitization.js:54:14:54:67 | `(funct ... "))}))` |
+| bad-code-sanitization.js:54:44:54:62 | req.param("wobble") | bad-code-sanitization.js:54:29:54:63 | JSON.st ... bble")) |
+| bad-code-sanitization.js:54:44:54:62 | req.param("wobble") | bad-code-sanitization.js:54:29:54:63 | JSON.st ... bble")) |
+| bad-code-sanitization.js:56:7:56:47 | taint | bad-code-sanitization.js:58:44:58:48 | taint |
+| bad-code-sanitization.js:56:15:56:36 | [req.bo ...  "foo"] | bad-code-sanitization.js:56:15:56:47 | [req.bo ... n("\\n") |
+| bad-code-sanitization.js:56:15:56:47 | [req.bo ... n("\\n") | bad-code-sanitization.js:56:7:56:47 | taint |
+| bad-code-sanitization.js:56:16:56:23 | req.body | bad-code-sanitization.js:56:16:56:28 | req.body.name |
+| bad-code-sanitization.js:56:16:56:23 | req.body | bad-code-sanitization.js:56:16:56:28 | req.body.name |
+| bad-code-sanitization.js:56:16:56:28 | req.body.name | bad-code-sanitization.js:56:15:56:36 | [req.bo ...  "foo"] |
+| bad-code-sanitization.js:58:29:58:49 | JSON.st ... (taint) | bad-code-sanitization.js:58:14:58:53 | `(funct ... nt)}))` |
+| bad-code-sanitization.js:58:29:58:49 | JSON.st ... (taint) | bad-code-sanitization.js:58:14:58:53 | `(funct ... nt)}))` |
+| bad-code-sanitization.js:58:44:58:48 | taint | bad-code-sanitization.js:58:29:58:49 | JSON.st ... (taint) |
 | express.js:7:44:7:62 | req.param("wobble") | express.js:7:24:7:69 | "return ...  + "];" |
 | express.js:7:44:7:62 | req.param("wobble") | express.js:7:24:7:69 | "return ...  + "];" |
 | express.js:7:44:7:62 | req.param("wobble") | express.js:7:24:7:69 | "return ...  + "];" |
@@ -176,6 +233,10 @@ edges
 | express.js:12:28:12:46 | req.param("wobble") | express.js:12:8:12:53 | "return ...  + "];" |
 | express.js:12:28:12:46 | req.param("wobble") | express.js:12:8:12:53 | "return ...  + "];" |
 | express.js:12:28:12:46 | req.param("wobble") | express.js:12:8:12:53 | "return ...  + "];" |
+| express.js:15:22:15:54 | req.par ... ction") | express.js:15:22:15:54 | req.par ... ction") |
+| express.js:17:30:17:53 | req.par ... cript") | express.js:17:30:17:53 | req.par ... cript") |
+| express.js:19:37:19:70 | req.par ... odule") | express.js:19:37:19:70 | req.par ... odule") |
+| express.js:21:19:21:48 | req.par ... ntext") | express.js:21:19:21:48 | req.par ... ntext") |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:32:8:38 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:32:8:38 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:10:23:10:29 | tainted |
@@ -212,6 +273,8 @@ edges
 | tst.js:26:26:26:40 | location.search | tst.js:26:26:26:53 | locatio ... ring(1) |
 | tst.js:26:26:26:40 | location.search | tst.js:26:26:26:53 | locatio ... ring(1) |
 #select
+| NoSQLCodeInjection.js:18:24:18:37 | req.body.query | NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query | $@ flows to here and is interpreted as code. | NoSQLCodeInjection.js:18:24:18:31 | req.body | User-provided value |
+| NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name | NoSQLCodeInjection.js:19:36:19:43 | req.body | NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name | $@ flows to here and is interpreted as code. | NoSQLCodeInjection.js:19:36:19:43 | req.body | User-provided value |
 | angularjs.js:10:22:10:36 | location.search | angularjs.js:10:22:10:29 | location | angularjs.js:10:22:10:36 | location.search | $@ flows to here and is interpreted as code. | angularjs.js:10:22:10:29 | location | User-provided value |
 | angularjs.js:13:23:13:37 | location.search | angularjs.js:13:23:13:30 | location | angularjs.js:13:23:13:37 | location.search | $@ flows to here and is interpreted as code. | angularjs.js:13:23:13:30 | location | User-provided value |
 | angularjs.js:16:28:16:42 | location.search | angularjs.js:16:28:16:35 | location | angularjs.js:16:28:16:42 | location.search | $@ flows to here and is interpreted as code. | angularjs.js:16:28:16:35 | location | User-provided value |
@@ -226,9 +289,15 @@ edges
 | angularjs.js:47:16:47:30 | location.search | angularjs.js:47:16:47:23 | location | angularjs.js:47:16:47:30 | location.search | $@ flows to here and is interpreted as code. | angularjs.js:47:16:47:23 | location | User-provided value |
 | angularjs.js:50:22:50:36 | location.search | angularjs.js:50:22:50:29 | location | angularjs.js:50:22:50:36 | location.search | $@ flows to here and is interpreted as code. | angularjs.js:50:22:50:29 | location | User-provided value |
 | angularjs.js:53:32:53:46 | location.search | angularjs.js:53:32:53:39 | location | angularjs.js:53:32:53:46 | location.search | $@ flows to here and is interpreted as code. | angularjs.js:53:32:53:39 | location | User-provided value |
+| bad-code-sanitization.js:54:14:54:67 | `(funct ... "))}))` | bad-code-sanitization.js:54:44:54:62 | req.param("wobble") | bad-code-sanitization.js:54:14:54:67 | `(funct ... "))}))` | $@ flows to here and is interpreted as code. | bad-code-sanitization.js:54:44:54:62 | req.param("wobble") | User-provided value |
+| bad-code-sanitization.js:58:14:58:53 | `(funct ... nt)}))` | bad-code-sanitization.js:56:16:56:23 | req.body | bad-code-sanitization.js:58:14:58:53 | `(funct ... nt)}))` | $@ flows to here and is interpreted as code. | bad-code-sanitization.js:56:16:56:23 | req.body | User-provided value |
 | express.js:7:24:7:69 | "return ...  + "];" | express.js:7:44:7:62 | req.param("wobble") | express.js:7:24:7:69 | "return ...  + "];" | $@ flows to here and is interpreted as code. | express.js:7:44:7:62 | req.param("wobble") | User-provided value |
 | express.js:9:34:9:79 | "return ...  + "];" | express.js:9:54:9:72 | req.param("wobble") | express.js:9:34:9:79 | "return ...  + "];" | $@ flows to here and is interpreted as code. | express.js:9:54:9:72 | req.param("wobble") | User-provided value |
 | express.js:12:8:12:53 | "return ...  + "];" | express.js:12:28:12:46 | req.param("wobble") | express.js:12:8:12:53 | "return ...  + "];" | $@ flows to here and is interpreted as code. | express.js:12:28:12:46 | req.param("wobble") | User-provided value |
+| express.js:15:22:15:54 | req.par ... ction") | express.js:15:22:15:54 | req.par ... ction") | express.js:15:22:15:54 | req.par ... ction") | $@ flows to here and is interpreted as code. | express.js:15:22:15:54 | req.par ... ction") | User-provided value |
+| express.js:17:30:17:53 | req.par ... cript") | express.js:17:30:17:53 | req.par ... cript") | express.js:17:30:17:53 | req.par ... cript") | $@ flows to here and is interpreted as code. | express.js:17:30:17:53 | req.par ... cript") | User-provided value |
+| express.js:19:37:19:70 | req.par ... odule") | express.js:19:37:19:70 | req.par ... odule") | express.js:19:37:19:70 | req.par ... odule") | $@ flows to here and is interpreted as code. | express.js:19:37:19:70 | req.par ... odule") | User-provided value |
+| express.js:21:19:21:48 | req.par ... ntext") | express.js:21:19:21:48 | req.par ... ntext") | express.js:21:19:21:48 | req.par ... ntext") | $@ flows to here and is interpreted as code. | express.js:21:19:21:48 | req.par ... ntext") | User-provided value |
 | react-native.js:8:32:8:38 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:8:32:8:38 | tainted | $@ flows to here and is interpreted as code. | react-native.js:7:17:7:33 | req.param("code") | User-provided value |
 | react-native.js:10:23:10:29 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:10:23:10:29 | tainted | $@ flows to here and is interpreted as code. | react-native.js:7:17:7:33 | req.param("code") | User-provided value |
 | tst.js:2:6:2:83 | documen ... t=")+8) | tst.js:2:6:2:22 | document.location | tst.js:2:6:2:83 | documen ... t=")+8) | $@ flows to here and is interpreted as code. | tst.js:2:6:2:22 | document.location | User-provided value |

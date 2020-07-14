@@ -196,16 +196,17 @@ private predicate operandReturned(Operand operand, IntValue bitOffset) {
   bitOffset = Ints::unknown()
 }
 
-private predicate isArgumentForParameter(CallInstruction ci, Operand operand, Instruction init) {
+private predicate isArgumentForParameter(
+  CallInstruction ci, Operand operand, InitializeParameterInstruction init
+) {
   exists(Language::Function f |
     ci = operand.getUse() and
     f = ci.getStaticCallTarget() and
     (
-      init.(InitializeParameterInstruction).getParameter() =
-        f.getParameter(operand.(PositionalArgumentOperand).getIndex())
+      init.getParameter() = f.getParameter(operand.(PositionalArgumentOperand).getIndex())
       or
-      init instanceof InitializeThisInstruction and
-      init.getEnclosingFunction() = f and
+      init.getIRVariable() instanceof IRThisVariable and
+      unique( | | init.getEnclosingFunction()) = f and
       operand instanceof ThisArgumentOperand
     ) and
     not Language::isFunctionVirtual(f) and
@@ -247,6 +248,10 @@ private predicate resultMayReachReturn(Instruction instr) { operandMayReachRetur
 private predicate resultEscapesNonReturn(Instruction instr) {
   // The result escapes if it has at least one use that escapes.
   operandEscapesNonReturn(instr.getAUse())
+  or
+  // The result also escapes if it is not modeled in SSA, because we do not know where it might be
+  // used.
+  not instr.isResultModeled()
 }
 
 /**

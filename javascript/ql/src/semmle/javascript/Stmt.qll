@@ -18,9 +18,6 @@ import javascript
  * ```
  */
 class Stmt extends @stmt, ExprOrStmt, Documentable {
-  /** Gets the statement container (toplevel, function or namespace) to which this statement belongs. */
-  override StmtContainer getContainer() { stmtContainers(this, result) }
-
   /** Holds if this statement has an implicitly inserted semicolon. */
   predicate hasSemicolonInserted() {
     isSubjectToSemicolonInsertion() and

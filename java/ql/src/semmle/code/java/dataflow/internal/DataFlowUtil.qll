@@ -397,11 +397,22 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   or
   node2.asExpr().(CastExpr).getExpr() = node1.asExpr()
   or
-  node2.asExpr().(ConditionalExpr).getTrueExpr() = node1.asExpr()
-  or
-  node2.asExpr().(ConditionalExpr).getFalseExpr() = node1.asExpr()
+  node2.asExpr().(ChooseExpr).getAResultExpr() = node1.asExpr()
   or
   node2.asExpr().(AssignExpr).getSource() = node1.asExpr()
+  or
+  exists(MethodAccess ma, Method m |
+    ma = node2.asExpr() and
+    m = ma.getMethod() and
+    m.getDeclaringType().hasQualifiedName("java.util", "Objects") and
+    (
+      m.hasName(["requireNonNull", "requireNonNullElseGet"]) and node1.asExpr() = ma.getArgument(0)
+      or
+      m.hasName("requireNonNullElse") and node1.asExpr() = ma.getAnArgument()
+      or
+      m.hasName("toString") and node1.asExpr() = ma.getArgument(1)
+    )
+  )
 }
 
 /**

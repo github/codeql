@@ -13,4 +13,3 @@
 | IMulti | IGenericBase |
 | IStringSub | IGenericBase |
 | ISub | IBase |
-| RegExpMatchArray | Array |

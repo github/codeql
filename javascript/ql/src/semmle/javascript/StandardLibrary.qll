@@ -122,6 +122,11 @@ class StringReplaceCall extends DataFlow::MethodCallNode {
   DataFlow::Node getRawReplacement() { result = getArgument(1) }
 
   /**
+   * Gets a function flowing into the second argument of this call to `replace`.
+   */
+  DataFlow::FunctionNode getReplacementCallback() { result = getCallback(1) }
+
+  /**
    * Holds if this is a global replacement, that is, the first argument is a regular expression
    * with the `g` flag.
    */
@@ -145,4 +150,38 @@ class StringReplaceCall extends DataFlow::MethodCallNode {
       map.hasPropertyWrite(old, any(DataFlow::Node repl | repl.getStringValue() = new))
     )
   }
+}
+
+/**
+ * A call to `String.prototype.split`.
+ *
+ * We heuristically include any call to a method called `split`, provided it either
+ * has one or two arguments, or local data flow suggests that the receiver may be a string.
+ */
+class StringSplitCall extends DataFlow::MethodCallNode {
+  StringSplitCall() {
+    this.getMethodName() = "split" and
+    (getNumArgument() = [1, 2] or getReceiver().mayHaveStringValue(_))
+  }
+
+  /**
+   * Gets a string that determines where the string is split.
+   */
+  string getSeparator() {
+    getArgument(0).mayHaveStringValue(result)
+    or
+    result =
+      getArgument(0).getALocalSource().(DataFlow::RegExpCreationNode).getRoot().getAMatchedString()
+  }
+
+  /**
+   * Gets the DataFlow::Node for the base string that is split.
+   */
+  DataFlow::Node getBaseString() { result = getReceiver() }
+
+  /**
+   * Gets a read of the `i`th element from the split string.
+   */
+  bindingset[i]
+  DataFlow::Node getASubstringRead(int i) { result = getAPropertyRead(i.toString()) }
 }

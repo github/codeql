@@ -8,7 +8,7 @@
  * @tags reliability
  *       maintainability
  *       frameworks/node.js
- * @precision medium
+ * @precision low
  */
 
 import javascript

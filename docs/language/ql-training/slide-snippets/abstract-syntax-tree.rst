@@ -39,9 +39,9 @@ The basic representation of an analyzed program is an *abstract syntax tree (AST
 
   The following topics contain overviews of the important AST classes and CodeQL libraries for C/C++, C#, and Java: 
   
-  - `Introducing the C/C++ libraries <https://help.semmle.com/QL/learn-ql/cpp/introduce-libraries-cpp.html>`__ 
-  - `Introducing the C# libraries <https://help.semmle.com/QL/learn-ql/csharp/introduce-libraries-csharp.html>`__
-  - `Introducing the Java libraries <https://help.semmle.com/QL/learn-ql/java/introduce-libraries-java.html>`__  
+  - `CodeQL library for C/C++ <https://help.semmle.com/QL/learn-ql/cpp/introduce-libraries-cpp.html>`__ 
+  - `CodeQL library for C# <https://help.semmle.com/QL/learn-ql/csharp/introduce-libraries-csharp.html>`__
+  - `CodeQL library for Java <https://help.semmle.com/QL/learn-ql/java/introduce-libraries-java.html>`__  
 
 
 Database representations of ASTs

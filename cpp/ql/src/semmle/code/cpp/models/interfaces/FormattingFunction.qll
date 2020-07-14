@@ -1,6 +1,6 @@
 /**
  * Provides a class for modeling `printf`-style formatting functions. To use
- * this QL library, create a QL class extending `DataFlowFunction` with a
+ * this QL library, create a QL class extending `FormattingFunction` with a
  * characteristic predicate that selects the function or set of functions you
  * are modeling. Within that class, override the predicates provided by
  * `FormattingFunction` to match the flow within that function.
@@ -44,7 +44,7 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
   /** Gets the position at which the format parameter occurs. */
   abstract int getFormatParameterIndex();
 
-  override string getCanonicalQLClass() { result = "FormattingFunction" }
+  override string getAPrimaryQlClass() { result = "FormattingFunction" }
 
   /**
    * Holds if this `FormattingFunction` is in a context that supports

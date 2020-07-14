@@ -30,6 +30,26 @@ class DispatchCall extends Internal::TDispatchCall {
 
   /** Gets a dynamic (run-time) target of this call, if any. */
   RuntimeCallable getADynamicTarget() { result = Internal::getADynamicTarget(this) }
+
+  /**
+   * Holds if a call context may limit the set of viable source declaration
+   * run-time targets of this call.
+   *
+   * This is the case if the qualifier is either a `this` access or a parameter
+   * access, as the corresponding qualifier/argument in the call context may
+   * have a more precise type.
+   */
+  predicate mayBenefitFromCallContext() { Internal::mayBenefitFromCallContext(this) }
+
+  /**
+   * Gets a dynamic (run-time) target of this call in call context `ctx`, if any.
+   *
+   * This predicate is restricted to calls for which `mayBenefitFromCallContext()`
+   * holds.
+   */
+  RuntimeCallable getADynamicTargetInCallContext(DispatchCall ctx) {
+    result = Internal::getADynamicTargetInCallContext(this, ctx)
+  }
 }
 
 /** Internal implementation details. */
@@ -40,6 +60,7 @@ private module Internal {
   private import semmle.code.csharp.dataflow.internal.Steps
   private import semmle.code.csharp.frameworks.System
   private import semmle.code.csharp.frameworks.system.Reflection
+  private import semmle.code.csharp.dataflow.internal.BaseSSA
 
   cached
   private module Cached {
@@ -89,6 +110,16 @@ private module Internal {
     cached
     RuntimeCallable getADynamicTarget(DispatchCall dc) {
       result = dc.(DispatchCallImpl).getADynamicTarget()
+    }
+
+    cached
+    predicate mayBenefitFromCallContext(DispatchMethodOrAccessorCall dc) {
+      dc.mayBenefitFromCallContext(_, _)
+    }
+
+    cached
+    RuntimeCallable getADynamicTargetInCallContext(DispatchMethodOrAccessorCall dc, DispatchCall ctx) {
+      result = dc.getADynamicTargetInCallContext(ctx)
     }
   }
 
@@ -190,6 +221,17 @@ private module Internal {
     abstract RuntimeCallable getADynamicTarget();
   }
 
+  /** A non-constructed overridable callable. */
+  private class NonConstructedOverridableCallable extends OverridableCallable {
+    NonConstructedOverridableCallable() { not this instanceof ConstructedMethod }
+
+    OverridableCallable getAConstructingCallableOrSelf() {
+      result = this
+      or
+      result = this.(UnboundGenericMethod).getAConstructedGeneric()
+    }
+  }
+
   pragma[noinline]
   private predicate hasOverrider(OverridableCallable oc, ValueOrRefType t) {
     exists(oc.getAnOverrider(t))
@@ -223,12 +265,13 @@ private module Internal {
   private predicate hasQualifierTypeOverridden0(ValueOrRefType t, DispatchMethodOrAccessorCall call) {
     hasOverrider(_, t) and
     (
-      exists(Type t0 | t0 = getAPossibleType(call.getQualifier(), false) |
-        t = t0
+      exists(Type t0, Type t1 |
+        t0 = getAPossibleType(call.getQualifier(), false) and
+        t1 = [t0, t0.(Unification::UnconstrainedTypeParameter).getAnUltimatelySuppliedType()]
+      |
+        t = t1
         or
-        Unification::subsumes(t0, t)
-        or
-        t = t0.(Unification::UnconstrainedTypeParameter).getAnUltimatelySuppliedType()
+        Unification::subsumes(t1, t)
       )
       or
       constrainedTypeParameterQualifierTypeSubsumes(t,
@@ -249,14 +292,256 @@ private module Internal {
 
   abstract private class DispatchMethodOrAccessorCall extends DispatchCallImpl {
     pragma[nomagic]
-    predicate hasQualifierTypeInherited(SourceDeclarationType t) {
-      t = getAPossibleType(this.getQualifier(), _).getSourceDeclaration()
-    }
+    predicate hasQualifierTypeInherited(Type t) { t = getAPossibleType(this.getQualifier(), _) }
 
     pragma[nomagic]
     predicate hasQualifierTypeOverridden(ValueOrRefType t, OverridableCallable c) {
       hasQualifierTypeOverridden0(t, this) and
       hasCallable(any(OverridableCallable oc | hasQualifierTypeOverridden1(oc, this)), t, c)
+    }
+
+    /**
+     * Holds if a call context may limit the set of viable source declaration
+     * run-time targets of this call.
+     *
+     * This is the case if the qualifier is either a `this` access or a parameter
+     * access, as the corresponding qualifier/argument in the call context may
+     * have a more precise type.
+     */
+    predicate mayBenefitFromCallContext(Callable c, int i) {
+      1 < strictcount(this.getADynamicTarget().getSourceDeclaration()) and
+      c = this.getCall().getEnclosingCallable().getSourceDeclaration() and
+      (
+        exists(AssignableDefinitions::ImplicitParameterDefinition pdef, Parameter p |
+          this.getQualifier() = BaseSsa::getARead(pdef, p) and
+          p.getPosition() = i and
+          c.getAParameter() = p and
+          not p.isParams()
+        )
+        or
+        i = -1 and
+        this.getQualifier() instanceof ThisAccess
+      )
+    }
+
+    /**
+     * Holds if the call `ctx` might act as a context that improves the set of
+     * dispatch targets of this call, depending on the type of the `i`th argument
+     * of `ctx`.
+     */
+    pragma[nomagic]
+    private predicate relevantContext(DispatchCall ctx, int i) {
+      this.mayBenefitFromCallContext(ctx.getADynamicTarget().getSourceDeclaration(), i)
+    }
+
+    /**
+     * Holds if the argument of `ctx`, which is passed for the parameter that is
+     * accessed in the qualifier of this call, has type `t` and `ctx` is a relevant
+     * call context.
+     */
+    private predicate contextArgHasType(DispatchCall ctx, Type t, boolean isExact) {
+      exists(Expr arg, int i |
+        this.relevantContext(ctx, i) and
+        t = getAPossibleType(arg, isExact)
+      |
+        ctx.getArgument(i) = arg
+        or
+        ctx.getQualifier() = arg and
+        i = -1
+      )
+    }
+
+    pragma[nomagic]
+    private Callable getASubsumedStaticTarget0(Type t) {
+      exists(Callable staticTarget, Type declType |
+        staticTarget = this.getAStaticTarget() and
+        declType = staticTarget.getDeclaringType() and
+        result = staticTarget.getSourceDeclaration() and
+        Unification::subsumes(declType, t)
+      )
+    }
+
+    /**
+     * Gets a callable whose source declaration matches the source declaration of
+     * some static target `target`, and whose declaring type is subsumed by the
+     * declaring type of `target`.
+     */
+    pragma[nomagic]
+    private Callable getASubsumedStaticTarget() {
+      result = this.getAStaticTarget()
+      or
+      result.getSourceDeclaration() = this.getASubsumedStaticTarget0(result.getDeclaringType())
+    }
+
+    /**
+     * Gets a callable inherited by (or defined in) the qualifier type of this
+     * call that overrides (or equals) a static target of this call.
+     *
+     * Example:
+     *
+     * ```csharp
+     * class A
+     * {
+     *     public virtual void M() { }
+     * }
+     *
+     * class B : A
+     * {
+     *     public override void M() { }
+     * }
+     *
+     * class C : B { }
+     *
+     * class D
+     * {
+     *     void CallM()
+     *     {
+     *         A x = new A();
+     *         x.M();
+     *         x = new B();
+     *         x.M();
+     *         x = new C();
+     *         x.M();
+     *     }
+     * }
+     * ```
+     *
+     * The static target is `A.M` in all three calls on lines 14, 16, and 18,
+     * but the methods inherited by the actual qualifier types are `A.M`,
+     * `B.M`, and `B.M`, respectively.
+     */
+    private RuntimeCallable getAViableInherited() {
+      exists(NonConstructedOverridableCallable c, Type t | this.hasQualifierTypeInherited(t) |
+        this.getASubsumedStaticTarget() = c.getAConstructingCallableOrSelf() and
+        result = c.getInherited(t)
+        or
+        t instanceof TypeParameter and
+        this.getAStaticTarget() = c.getAConstructingCallableOrSelf() and
+        result = c
+      )
+    }
+
+    /**
+     * Gets a callable that is defined in a subtype of the qualifier type of this
+     * call, and which overrides a static target of this call.
+     *
+     * Example:
+     *
+     * ```csharp
+     * class A
+     * {
+     *     public virtual void M() { }
+     * }
+     *
+     * class B : A
+     * {
+     *     public override void M() { }
+     * }
+     *
+     * class C : B
+     * {
+     *     public override void M() { }
+     * }
+     *
+     * class D
+     * {
+     *     void CallM()
+     *     {
+     *         A x = new A();
+     *         x.M();
+     *         x = new B();
+     *         x.M();
+     *         x = new C();
+     *         x.M();
+     *     }
+     * }
+     * ```
+     *
+     * The static target is `A.M` in all three calls on lines 16, 18, and 20,
+     * but the methods overriding the static targets in subtypes of the actual
+     * qualifier types are `B.M` and `C.M`, `C.M`, and none, respectively.
+     */
+    private RuntimeCallable getAViableOverrider() {
+      exists(ValueOrRefType t, NonConstructedOverridableCallable c |
+        this.hasQualifierTypeOverridden(t, c.getAConstructingCallableOrSelf()) and
+        result = c.getAnOverrider(t)
+      )
+    }
+
+    override RuntimeCallable getADynamicTarget() {
+      result = getAViableInherited()
+      or
+      result = getAViableOverrider()
+      or
+      // Simple case: target method cannot be overridden
+      result = getAStaticTarget() and
+      not result instanceof OverridableCallable
+    }
+
+    pragma[nomagic]
+    private RuntimeCallable getAViableInheritedInCallContext0(ValueOrRefType t) {
+      this.contextArgHasType(_, t, _) and
+      result = this.getADynamicTarget()
+    }
+
+    pragma[nomagic]
+    private RuntimeCallable getAViableInheritedInCallContext1(
+      NonConstructedOverridableCallable c, ValueOrRefType t
+    ) {
+      result = this.getAViableInheritedInCallContext0(t) and
+      result = c.getInherited(t)
+    }
+
+    pragma[nomagic]
+    private RuntimeCallable getAViableInheritedInCallContext(DispatchCall ctx) {
+      exists(Type t, NonConstructedOverridableCallable c | this.contextArgHasType(ctx, t, _) |
+        this.getASubsumedStaticTarget() = c.getAConstructingCallableOrSelf() and
+        result = this.getAViableInheritedInCallContext1(c, t)
+        or
+        t instanceof TypeParameter and
+        this.getAStaticTarget() = c.getAConstructingCallableOrSelf() and
+        result = c
+      )
+    }
+
+    pragma[nomagic]
+    private RuntimeCallable getAViableOverriderInCallContext0(
+      NonConstructedOverridableCallable c, ValueOrRefType t
+    ) {
+      result = this.getAViableOverrider() and
+      this.contextArgHasType(_, _, false) and
+      result = c.getAnOverrider(t)
+    }
+
+    pragma[nomagic]
+    private RuntimeCallable getAViableOverriderInCallContext1(
+      NonConstructedOverridableCallable c, DispatchCall ctx
+    ) {
+      exists(ValueOrRefType t |
+        result = this.getAViableOverriderInCallContext0(c, t) and
+        exists(Type t0, Type t1 |
+          this.contextArgHasType(ctx, t0, false) and
+          t1 = [t0, t0.(Unification::UnconstrainedTypeParameter).getAnUltimatelySuppliedType()]
+        |
+          t = t1
+          or
+          Unification::subsumes(t1, t)
+        )
+      )
+    }
+
+    pragma[nomagic]
+    private RuntimeCallable getAViableOverriderInCallContext(DispatchCall ctx) {
+      exists(NonConstructedOverridableCallable c |
+        result = this.getAViableOverriderInCallContext1(c, ctx) and
+        this.getAStaticTarget() = c.getAConstructingCallableOrSelf()
+      )
+    }
+
+    RuntimeCallable getADynamicTargetInCallContext(DispatchCall ctx) {
+      result = this.getAViableInheritedInCallContext(ctx)
+      or
+      result = this.getAViableOverriderInCallContext(ctx)
     }
   }
 
@@ -386,6 +671,8 @@ private module Internal {
               .getQualifier()
         or
         this = any(DispatchCallImpl c).getQualifier()
+        or
+        this = any(DispatchCallImpl c).getArgument(_)
       }
 
       Source getASource() { stepTC(this, result) }
@@ -430,108 +717,7 @@ private module Internal {
     override Expr getQualifier() { result = getCall().getQualifier() }
 
     override Method getAStaticTarget() { result = getCall().getTarget() }
-
-    override RuntimeMethod getADynamicTarget() {
-      result = getViableInherited()
-      or
-      result = getAViableOverrider()
-      or
-      // Simple case: target method cannot be overridden
-      result = getAStaticTarget() and
-      not result instanceof OverridableMethod
-    }
-
-    /**
-     * Gets the (unique) instance method inherited by (or defined in) the
-     * qualifier type of this call that overrides (or equals) the static
-     * target of this call.
-     *
-     * Example:
-     *
-     * ```
-     * class A {
-     *   public virtual void M() { }
-     * }
-     *
-     * class B : A {
-     *   public override void M() { }
-     * }
-     *
-     * class C : B { }
-     *
-     * class D {
-     *   void CallM() {
-     *     A x = new A();
-     *     x.M();
-     *     x = new B();
-     *     x.M();
-     *     x = new C();
-     *     x.M();
-     *   }
-     * }
-     * ```
-     *
-     * The static target is `A.M` in all three calls on lines 14, 16, and 18,
-     * but the methods inherited by the actual qualifier types are `A.M`,
-     * `B.M`, and `B.M`, respectively.
-     */
-    private RuntimeInstanceMethod getViableInherited() {
-      exists(NonConstructedOverridableMethod m, SourceDeclarationType t |
-        this.getAStaticTarget() = m.getAConstructingMethodOrSelf() and
-        this.hasQualifierTypeInherited(t)
-      |
-        result = m.getInherited(t)
-        or
-        t instanceof TypeParameter and
-        result = m
-      )
-    }
-
-    /**
-     * Gets an instance method that is defined in a subtype of the qualifier
-     * type of this call, and which overrides the static target of this call.
-     *
-     * Example:
-     *
-     * ```
-     * class A {
-     *   public virtual void M() { }
-     * }
-     *
-     * class B : A {
-     *   public override void M() { }
-     * }
-     *
-     * class C : B {
-     *   public override void M() { }
-     * }
-     *
-     * class D {
-     *   void CallM() {
-     *     A x = new A();
-     *     x.M();
-     *     x = new B();
-     *     x.M();
-     *     x = new C();
-     *     x.M();
-     *   }
-     * }
-     * ```
-     *
-     * The static target is `A.M` in all three calls on lines 16, 18, and 20,
-     * but the methods overriding the static targets in subtypes of the actual
-     * qualifier types are `B.M` and `C.M`, `C.M`, and none, respectively.
-     */
-    private RuntimeInstanceMethod getAViableOverrider() {
-      exists(ValueOrRefType t, NonConstructedOverridableMethod m |
-        this.hasQualifierTypeOverridden(t, m.getAConstructingMethodOrSelf()) and
-        result = m.getAnOverrider(t)
-      )
-    }
   }
-
-  /** A non-constructed overridable method. */
-  private class NonConstructedOverridableMethod extends OverridableMethod, NonConstructedMethod { }
 
   /**
    * A call to an accessor.
@@ -549,7 +735,7 @@ private module Internal {
     override Accessor getAStaticTarget() { result = getCall().getTarget() }
 
     override RuntimeAccessor getADynamicTarget() {
-      result = getADynamicTargetCandidate() and
+      result = DispatchMethodOrAccessorCall.super.getADynamicTarget() and
       // Calls to accessors may have `dynamic` expression arguments,
       // so we need to check that the types match
       forall(Type argumentType, int i | hasDynamicArg(i, argumentType) |
@@ -557,106 +743,11 @@ private module Internal {
       )
     }
 
-    private RuntimeAccessor getADynamicTargetCandidate() {
-      result = getViableInherited()
-      or
-      result = getAViableOverrider()
-      or
-      // Simple case: target accessor cannot be overridden
-      result = getAStaticTarget() and
-      not result instanceof OverridableAccessor
-    }
-
     private predicate hasDynamicArg(int i, Type argumentType) {
       exists(Expr argument |
         argument = getArgument(i) and
         argument.stripImplicitCasts().getType() instanceof DynamicType and
         argumentType = getAPossibleType(argument, _)
-      )
-    }
-
-    /**
-     * Gets the (unique) accessor inherited by (or defined in) the qualifier
-     * type of this call that overrides (or equals) the static target of this
-     * call.
-     *
-     * Example:
-     *
-     * ```
-     * class A {
-     *   public virtual int P { get => 0; }
-     * }
-     *
-     * class B : A {
-     *   public override int P { get => 1; }
-     * }
-     *
-     * class C : B { }
-     *
-     * class D {
-     *   void CallM() {
-     *     A x = new A();
-     *     x.P;
-     *     x = new B();
-     *     x.P;
-     *     x = new C();
-     *     x.P;
-     *   }
-     * }
-     * ```
-     *
-     * The static target is `A.get_P` in all three calls on lines 14, 16, and 18,
-     * but the accessors inherited by the actual qualifier types are `A.get_P`,
-     * `B.get_P`, and `B.get_P`, respectively.
-     */
-    private RuntimeAccessor getViableInherited() {
-      exists(OverridableAccessor a, SourceDeclarationType t |
-        this.getAStaticTarget() = a and
-        this.hasQualifierTypeInherited(t) and
-        result = a.getInherited(t)
-      )
-    }
-
-    /**
-     * Gets an accessor that is defined in a subtype of the qualifier type of
-     * this call, and which overrides the static target of this call.
-     *
-     * Example:
-     *
-     * ```
-     * class A {
-     *   public virtual int P { get => 0; }
-     * }
-     *
-     * class B : A {
-     *   public override int P { get => 1; }
-     * }
-     *
-     * class C : B {
-     *   public override int P { get => 2; }
-     * }
-     *
-     * class D {
-     *   void CallM() {
-     *     A x = new A();
-     *     x.P;
-     *     x = new B();
-     *     x.P;
-     *     x = new C();
-     *     x.P;
-     *   }
-     * }
-     * ```
-     *
-     * The static target is `A.get_P` in all three calls on lines 16, 18, and 20,
-     * but the accessors overriding the static targets in subtypes of the actual
-     * qualifier types are `B.get_P` and `C.get_P`, `C.get_P`, and none,
-     * respectively.
-     */
-    private RuntimeAccessor getAViableOverrider() {
-      exists(ValueOrRefType t, OverridableAccessor a |
-        this.hasQualifierTypeOverridden(t, a) and
-        result = a.getAnOverrider(t)
       )
     }
   }
@@ -686,22 +777,25 @@ private module Internal {
      * For reflection/dynamic calls, unless the type of the qualifier is exact,
      * all subtypes of the qualifier type must be considered relevant. Example:
      *
-     * ```
-     * class A {
-     *   public void M() { Console.WriteLine("A"); }
+     * ```csharp
+     * class A
+     * {
+     *     public void M() { Console.WriteLine("A"); }
      * }
      *
-     * class B : A {
-     *   new public void M() { Console.WriteLine("B"); }
+     * class B : A
+     * {
+     *     new public void M() { Console.WriteLine("B"); }
      * }
      *
-     * class C {
-     *   void InvokeMDyn(A x) { ((dynamic) x).M(); }
+     * class C
+     * {
+     *     void InvokeMDyn(A x) { ((dynamic) x).M(); }
      *
-     *   void CallM() {
-     *     InvokeMDyn(new A()); // prints "A"
-     *     InvokeMDyn(new B()); // prints "B"
-     *   }
+     *     void CallM() {
+     *         InvokeMDyn(new A()); // prints "A"
+     *         InvokeMDyn(new B()); // prints "B"
+     *     }
      * }
      * ```
      *

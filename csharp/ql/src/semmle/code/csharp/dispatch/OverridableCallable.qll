@@ -38,7 +38,7 @@ class OverridableCallable extends Callable {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * interface I { void M(); }
    *
    * class A { public void M() { } }
@@ -76,7 +76,7 @@ class OverridableCallable extends Callable {
    *
    * Note that this is generally *not* equivalent with
    *
-   * ```
+   * ```ql
    * result = getAnImplementor()
    * or
    * result = getAnImplementor().(OverridableCallable).getAnOverrider+()`
@@ -84,7 +84,7 @@ class OverridableCallable extends Callable {
    *
    * as the example below illustrates:
    *
-   * ```
+   * ```csharp
    * interface I { void M(); }
    *
    * class A { public virtual void M() { } }
@@ -118,7 +118,7 @@ class OverridableCallable extends Callable {
    *
    * Example:
    *
-   * ```
+   * ```csharp
    * class C1 { public virtual void M() { } }
    *
    * class C2 : C1 { public override void M() { } }
@@ -134,10 +134,9 @@ class OverridableCallable extends Callable {
    * - `C2.M = C2.M.getInherited(C2)`, and
    * - `C2.M = C2.M.getInherited(C3)`.
    */
-  Callable getInherited(SourceDeclarationType t) {
-    exists(Callable sourceDecl | result = this.getInherited2(t, sourceDecl) |
-      hasSourceDeclarationCallable(t, sourceDecl)
-    )
+  Callable getInherited(ValueOrRefType t) {
+    result = this.getInherited1(t) and
+    t.hasCallable(result)
   }
 
   private Callable getInherited0(ValueOrRefType t) {
@@ -150,19 +149,11 @@ class OverridableCallable extends Callable {
     exists(ValueOrRefType mid | result = this.getInherited0(mid) | t = mid.getASubType())
   }
 
-  private Callable getInherited1(SourceDeclarationType t) {
-    exists(ValueOrRefType t0 | result = getInherited0(t0) | t = t0.getSourceDeclaration())
+  private Callable getInherited1(ValueOrRefType t) {
+    result = getInherited0(t)
     or
     // An interface implementation
-    exists(ValueOrRefType s |
-      result = getAnImplementorSubType(s) and
-      t = s.getSourceDeclaration()
-    )
-  }
-
-  private Callable getInherited2(SourceDeclarationType t, Callable sourceDecl) {
-    result = this.getInherited1(t) and
-    sourceDecl = result.getSourceDeclaration()
+    result = getAnImplementorSubType(t)
   }
 
   pragma[noinline]
@@ -218,11 +209,6 @@ class OverridableCallable extends Callable {
   }
 }
 
-pragma[noinline]
-private predicate hasSourceDeclarationCallable(ValueOrRefType t, Callable sourceDecl) {
-  exists(Callable c | t.hasCallable(c) | sourceDecl = c.getSourceDeclaration())
-}
-
 /** An overridable method. */
 class OverridableMethod extends Method, OverridableCallable {
   override Method getAnOverrider() { result = Method.super.getAnOverrider() }
@@ -231,7 +217,7 @@ class OverridableMethod extends Method, OverridableCallable {
 
   override Method getAnUltimateImplementor() { result = Method.super.getAnUltimateImplementor() }
 
-  override Method getInherited(SourceDeclarationType t) {
+  override Method getInherited(ValueOrRefType t) {
     result = OverridableCallable.super.getInherited(t)
   }
 
@@ -278,7 +264,7 @@ class OverridableAccessor extends Accessor, OverridableCallable {
     )
   }
 
-  override Accessor getInherited(SourceDeclarationType t) {
+  override Accessor getInherited(ValueOrRefType t) {
     result = OverridableCallable.super.getInherited(t)
   }
 

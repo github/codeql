@@ -1,13 +1,13 @@
 uniqueEnclosingCallable
-uniqueTypeBound
-uniqueTypeRepr
+uniqueType
 uniqueNodeLocation
-| D.cpp:1:17:1:17 | o | Node should have one location but has 2. |
-| by_reference.cpp:1:17:1:17 | o | Node should have one location but has 2. |
+| D.cpp:1:17:1:17 | o | Node should have one location but has 3. |
+| by_reference.cpp:1:17:1:17 | o | Node should have one location but has 3. |
 | file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
 | file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
 | file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
 | file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
+| qualifiers.cpp:1:17:1:17 | o | Node should have one location but has 3. |
 missingLocation
 | Nodes without location: 4 |
 uniqueNodeToString

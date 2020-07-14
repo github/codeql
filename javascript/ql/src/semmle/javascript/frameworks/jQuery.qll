@@ -590,7 +590,7 @@ module JQuery {
       // Handle basic dynamic method dispatch (e.g. `$element[html ? 'html' : 'text'](content)`)
       exists(DataFlow::PropRead read | read = this.getCalleeNode() |
         read.getBase().getALocalSource() = [dollar(), objectRef()] and
-        read.getPropertyNameExpr().flow().mayHaveStringValue(name)
+        read.mayHavePropertyName(name)
       )
       or
       // Handle contributed JQuery objects that aren't source nodes (usually parameter uses)
@@ -654,10 +654,7 @@ module JQuery {
         )
       ) and
       plugin = write.getRhs() and
-      (
-        pluginName = write.getPropertyName() or
-        write.getPropertyNameExpr().flow().mayHaveStringValue(pluginName)
-      )
+      write.mayHavePropertyName(pluginName)
     )
   }
 

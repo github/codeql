@@ -1,13 +1,6 @@
 uniqueEnclosingCallable
-uniqueTypeBound
-uniqueTypeRepr
+uniqueType
 uniqueNodeLocation
-| dispatch.cpp:60:18:60:29 | call to Bottom | Node should have one location but has 2. |
-| dispatch.cpp:61:18:61:29 | call to Middle | Node should have one location but has 2. |
-| dispatch.cpp:65:10:65:21 | call to Bottom | Node should have one location but has 2. |
-| file://:0:0:0:0 | call to Bottom | Node should have one location but has 2. |
-| file://:0:0:0:0 | call to Bottom | Node should have one location but has 2. |
-| file://:0:0:0:0 | call to Middle | Node should have one location but has 2. |
 missingLocation
 uniqueNodeToString
 missingToString
@@ -23,9 +16,9 @@ postIsInSameCallable
 reverseRead
 storeIsPostUpdate
 argHasPostUpdate
-| dispatch.cpp:78:23:78:39 | * ... | ArgumentNode is missing PostUpdateNode. |
 | lambdas.cpp:18:7:18:7 | a | ArgumentNode is missing PostUpdateNode. |
 | lambdas.cpp:25:2:25:2 | b | ArgumentNode is missing PostUpdateNode. |
 | lambdas.cpp:32:2:32:2 | c | ArgumentNode is missing PostUpdateNode. |
 | lambdas.cpp:38:2:38:2 | d | ArgumentNode is missing PostUpdateNode. |
 | lambdas.cpp:45:2:45:2 | e | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:67:29:67:35 | source1 | ArgumentNode is missing PostUpdateNode. |

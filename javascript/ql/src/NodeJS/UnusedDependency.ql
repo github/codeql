@@ -3,11 +3,11 @@
  * @description If unnecessary package dependencies are included in package.json, the
  *              package will become harder to install.
  * @kind problem
- * @problem.severity warning
+ * @problem.severity recommendation
  * @id js/node/unused-npm-dependency
  * @tags maintainability
  *       frameworks/node.js
- * @precision medium
+ * @precision low
  */
 
 import javascript

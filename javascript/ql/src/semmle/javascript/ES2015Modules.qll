@@ -53,7 +53,7 @@ class ES2015Module extends Module {
 class ImportDeclaration extends Stmt, Import, @importdeclaration {
   override ES2015Module getEnclosingModule() { result = getTopLevel() }
 
-  override PathExprInModule getImportedPath() { result = getChildExpr(-1) }
+  override PathExpr getImportedPath() { result = getChildExpr(-1) }
 
   /** Gets the `i`th import specifier of this import declaration. */
   ImportSpecifier getSpecifier(int i) { result = getChildExpr(i) }
@@ -82,7 +82,7 @@ class ImportDeclaration extends Stmt, Import, @importdeclaration {
 }
 
 /** A literal path expression appearing in an `import` declaration. */
-private class LiteralImportPath extends PathExprInModule, ConstantString {
+private class LiteralImportPath extends PathExpr, ConstantString {
   LiteralImportPath() { exists(ImportDeclaration req | this = req.getChildExpr(-1)) }
 
   override string getValue() { result = getStringValue() }
@@ -622,7 +622,7 @@ abstract class ReExportDeclaration extends ExportDeclaration {
 }
 
 /** A literal path expression appearing in a re-export declaration. */
-private class LiteralReExportPath extends PathExprInModule, ConstantString {
+private class LiteralReExportPath extends PathExpr, ConstantString {
   LiteralReExportPath() { exists(ReExportDeclaration bred | this = bred.getImportedPath()) }
 
   override string getValue() { result = getStringValue() }
