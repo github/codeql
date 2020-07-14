@@ -14,6 +14,17 @@ import DataFlow::PathGraph
 import semmle.go.security.InsecureFeatureFlag::InsecureFeatureFlag
 
 /**
+ * Holds if `name` suggests an old or legacy version.
+ *
+ * We accept 'intermediate' because it appears to be common for TLS users
+ * to define three profiles: modern, intermediate, legacy/old, perhaps based
+ * on https://wiki.mozilla.org/Security/Server_Side_TLS (though note the
+ * 'intermediate' used there would now pass muster according to this query)
+ */
+bindingset[name]
+predicate isOldVersionName(string name) { name.regexpMatch("(?i).*(old|intermediate|legacy).*") }
+
+/**
  * Check whether the file where the node is located is a test file.
  */
 predicate isTestFile(DataFlow::Node node) {
@@ -39,6 +50,37 @@ predicate isInsecureTlsVersion(int val, string name, string fieldName) {
     // or the highest available version setting for MaxVersion.
     val = 0 and name = "" and fieldName = "MinVersion"
   )
+}
+
+/**
+ * Holds of string literals or named constants matching `isOldVersionName`
+ */
+predicate exprSuggestsOldVersion(Expr node) {
+  isOldVersionName(node.getStringValue()) or
+  isOldVersionName(node.(Name).getTarget().getName())
+}
+
+/**
+ * Holds if `node` suggests an old TLS version according to `isOldVersionName`
+ */
+predicate nodeSuggestsOldVersion(AstNode node) {
+  // Map literal old: value or "old": value
+  exprSuggestsOldVersion(node.(KeyValueExpr).getKey())
+  or
+  // Variable initialisation old := value
+  exists(ValueSpec valueSpec, int childIdx | isOldVersionName(valueSpec.getName(childIdx)) |
+    node = valueSpec.getInit(childIdx)
+  )
+  or
+  // Assignment old = value
+  exists(Assignment assignment, int childIdx |
+    isOldVersionName(assignment.getLhs(childIdx).(Ident).getName())
+  |
+    node = assignment.getRhs(childIdx)
+  )
+  or
+  // Case clause 'case old:' or 'case "old":'
+  exprSuggestsOldVersion(node.(CaseClause).getAnExpr())
 }
 
 /**
@@ -105,6 +147,7 @@ predicate checkTlsVersions(
     cfg.isSource(source.getNode(), version) and
     cfg.isSink(sink.getNode(), fld, base, _) and
     isInsecureTlsVersion(version, _, fld.getName()) and
+    not nodeSuggestsOldVersion(base.asExpr().getParent*()) and
     // Exclude cases where a secure TLS version can also flow to the same
     // sink, or to different sinks that refer to the same base and field,
     // which suggests a configurable security mode. baseAlias is used because
@@ -140,7 +183,8 @@ class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
             "TLS_ECDHE_ECDSA_WITH_RC4_128_SHA", "TLS_ECDHE_RSA_WITH_RC4_128_SHA",
             "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256", "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"]
     |
-      source = val.getARead()
+      source = val.getARead() and
+      not nodeSuggestsOldVersion(source.asExpr().getParent*())
     )
   }
 
@@ -159,11 +203,14 @@ class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
     isSourceValueEntity(source, _)
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(DataFlow::Field fld | fld.hasQualifiedName("crypto/tls", "Config", "CipherSuites") |
-      sink = fld.getAWrite().getRhs()
-    )
+  predicate isSink(DataFlow::Node sink, Field fld, DataFlow::Node base, Write fieldWrite) {
+    fld.hasQualifiedName("crypto/tls", "Config", "CipherSuites") and
+    fieldWrite = fld.getAWrite() and
+    fieldWrite.writesField(base, fld, sink) and
+    not nodeSuggestsOldVersion(base.asExpr().getParent*())
   }
+
+  override predicate isSink(DataFlow::Node sink) { isSink(sink, _, _, _) }
 
   /**
    * Declare sinks as out-sanitizers in order to avoid producing superfluous paths where a cipher
@@ -201,7 +248,8 @@ where
   not getAFeatureFlagCheck().dominatesNode(sink.getNode().asInstruction()) and
   // Exclude results in functions whose name documents the insecurity
   not exists(FuncDef fn | fn = sink.getNode().asInstruction().getRoot() |
-    isFeatureFlagName(fn.getEnclosingFunction*().getName())
+    isFeatureFlagName(fn.getEnclosingFunction*().getName()) or
+    isOldVersionName(fn.getEnclosingFunction*().getName())
   ) and
   // Exclude results in test code:
   not isTestFile(sink.getNode())
