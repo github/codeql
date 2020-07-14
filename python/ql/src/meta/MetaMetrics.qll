@@ -3,7 +3,6 @@
  */
 
 import python
-
 private import semmle.python.filters.GeneratedCode
 private import semmle.python.filters.Tests
 
