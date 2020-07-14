@@ -18,12 +18,12 @@ class RelevantCall extends Call {
 module PointsToBasedCallGraph {
   /** A call that can be resolved by points-to. */
   class ResolvableCall extends RelevantCall {
-    Value target;
+    Value callee;
 
-    ResolvableCall() { target.getACall() = this.getAFlowNode() }
+    ResolvableCall() { callee.getACall() = this.getAFlowNode() }
 
-    /** Gets a resolved target of this call. */
-    Value getTarget() { result = target }
+    /** Gets a resolved callee of this call. */
+    Value getCallee() { result = callee }
   }
 
   /** A call that cannot be resolved by points-to. */
@@ -32,20 +32,20 @@ module PointsToBasedCallGraph {
   }
 
   /**
-   * A call that can be resolved by points-to, where the resolved target is relevant.
-   * Relevant targets include:
+   * A call that can be resolved by points-to, where the resolved callee is relevant.
+   * Relevant callees include:
    * - builtins
    * - standard library
    * - source code of the project
    */
-  class ResolvableCallRelevantTarget extends ResolvableCall {
-    ResolvableCallRelevantTarget() {
-      target.isBuiltin()
+  class ResolvableCallRelevantCallee extends ResolvableCall {
+    ResolvableCallRelevantCallee() {
+      callee.isBuiltin()
       or
       exists(File file |
-        file = target.(CallableValue).getScope().getLocation().getFile()
+        file = callee.(CallableValue).getScope().getLocation().getFile()
         or
-        file = target.(ClassValue).getScope().getLocation().getFile()
+        file = callee.(ClassValue).getScope().getLocation().getFile()
       |
         file.inStdlib()
         or
@@ -56,10 +56,10 @@ module PointsToBasedCallGraph {
   }
 
   /**
-   * A call that can be resolved by points-to, where the resolved target is not considered relevant.
-   * See `ResolvableCallRelevantTarget` for the definition of relevance.
+   * A call that can be resolved by points-to, where the resolved callee is not considered relevant.
+   * See `ResolvableCallRelevantCallee` for the definition of relevance.
    */
-  class ResolvableCallIrrelevantTarget extends ResolvableCall {
-    ResolvableCallIrrelevantTarget() { not this instanceof ResolvableCallRelevantTarget }
+  class ResolvableCallIrrelevantCallee extends ResolvableCall {
+    ResolvableCallIrrelevantCallee() { not this instanceof ResolvableCallRelevantCallee }
   }
 }
