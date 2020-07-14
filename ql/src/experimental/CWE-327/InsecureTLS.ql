@@ -84,12 +84,29 @@ predicate nodeSuggestsOldVersion(AstNode node) {
 }
 
 /**
+ * Holds if `node` refers to a value returned alongside a non-nil error value.
+ *
+ * For example, `0` in `func tryGetInt() (int, error) { return 0, errors.New("no good") }`
+ */
+predicate isReturnedWithError(DataFlow::Node node) {
+  exists(ReturnStmt ret |
+    ret.getExpr(0) = node.asExpr() and
+    ret.getNumExpr() = 2 and
+    ret.getExpr(1).getType().implements(Builtin::error().getType().getUnderlyingType()) and
+    ret.getExpr(1) != Builtin::nil().getAReference()
+  )
+}
+
+/**
  * Flow of TLS versions into a `tls.Config` struct, to the `MinVersion` and `MaxVersion` fields.
  */
 class TlsVersionFlowConfig extends TaintTracking::Configuration {
   TlsVersionFlowConfig() { this = "TlsVersionFlowConfig" }
 
-  predicate isSource(DataFlow::Node source, int val) { val = source.getIntValue() }
+  predicate isSource(DataFlow::Node source, int val) {
+    val = source.getIntValue() and
+    not isReturnedWithError(source)
+  }
 
   predicate isSink(DataFlow::Node sink, Field fld, DataFlow::Node base, Write fieldWrite) {
     fld.hasQualifiedName("crypto/tls", "Config", ["MinVersion", "MaxVersion"]) and
