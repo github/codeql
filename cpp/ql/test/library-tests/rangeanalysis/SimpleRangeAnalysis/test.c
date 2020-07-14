@@ -424,3 +424,42 @@ void test17() {
   i = 20 + (j -= 10);
   out(i); // 60 [BUG: the analysis thinks it's 2^-31 .. 2^31-1]
 }
+
+// Tests for unsigned multiplication.
+int test_unsigned_mult01(unsigned int a, unsigned b) {
+  int total = 0;
+
+  if (3 <= a && a <= 11 && 5 <= b && b <= 23) {
+    int r = a*b;  // 15 .. 253
+    total += r;11*
+  }
+  if (3 <= a && a <= 11 && 0 <= b && b <= 23) {
+    int r = a*b;  // 0 .. 253
+    total += r;
+  }
+  if (3 <= a && a <= 11 && 13 <= b && b <= 23) {
+    int r = a*b;  // 39 .. 253
+    total += r;
+  }
+
+  return total;
+}
+
+int test_unsigned_mult02(unsigned b) {
+  int total = 0;
+
+  if (5 <= b && b <= 23) {
+    int r = 11*b;  // 55 .. 253
+    total += r;
+  }
+  if (0 <= b && b <= 23) {
+    int r = 11*b;  // 0 .. 253
+    total += r;
+  }
+  if (13 <= b && b <= 23) {
+    int r = 11*b;  // 143 .. 253
+    total += r;
+  }
+
+  return total;
+}
