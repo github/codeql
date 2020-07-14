@@ -431,7 +431,7 @@ int test_unsigned_mult01(unsigned int a, unsigned b) {
 
   if (3 <= a && a <= 11 && 5 <= b && b <= 23) {
     int r = a*b;  // 15 .. 253
-    total += r;11*
+    total += r;
   }
   if (3 <= a && a <= 11 && 0 <= b && b <= 23) {
     int r = a*b;  // 0 .. 253
