@@ -16,23 +16,23 @@ class RecordedCall extends XMLElement {
         result.getLocation().hasLocationInfo(this.call_filename(), this.call_linenum(), _, _, _)
     }
 
-    string callable_filename() { result = this.getAttributeValue("callable_filename") }
+    string callee_filename() { result = this.getAttributeValue("callee_filename") }
 
-    int callable_linenum() { result = this.getAttributeValue("callable_linenum").toInt() }
+    int callee_linenum() { result = this.getAttributeValue("callee_linenum").toInt() }
 
-    string callable_funcname() { result = this.getAttributeValue("callable_funcname") }
+    string callee_funcname() { result = this.getAttributeValue("callee_funcname") }
 
-    Function getCallable() {
-        result.getLocation().hasLocationInfo(this.callable_filename(), this.callable_linenum(), _, _, _)
+    Function getCallee() {
+        result.getLocation().hasLocationInfo(this.callee_filename(), this.callee_linenum(), _, _, _)
     }
 }
 
 /**
- * Class of recorded calls where we can uniquely identify both the `call` and the `callable`.
+ * Class of recorded calls where we can uniquely identify both the `call` and the `callee`.
  */
 class ValidRecordedCall extends RecordedCall {
     ValidRecordedCall() {
         strictcount(this.getCall()) = 1 and
-        strictcount(this.getCallable()) = 1
+        strictcount(this.getCallee()) = 1
     }
 }

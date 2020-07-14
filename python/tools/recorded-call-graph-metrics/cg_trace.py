@@ -2,7 +2,7 @@
 
 """Call Graph tracing.
 
-Execute a python program and for each call being made, record the call and callable. This
+Execute a python program and for each call being made, record the call and callee. This
 allows us to compare call graph resolution from static analysis with actual data -- that
 is, can we statically determine the target of each actual call correctly.
 
@@ -37,7 +37,7 @@ import xml.etree.ElementTree as ET
 
 @dataclasses.dataclass(frozen=True)
 class Call():
-    """A call to a callable
+    """A call
     """
     filename: str
     linenum: int
@@ -59,12 +59,11 @@ class Call():
 
 
 @dataclasses.dataclass(frozen=True)
-class Callable():
-    """A callable (Function/Lambda) should (hopefully) be uniquely identified by its name and
-    location (filename+line number)
+class Callee():
+    """A callee (Function/Lambda/???)
 
-    TODO: Callable is maybe not a good name, since classes with __call__ will return true
-          for the python code `callable(cls)` -- will have to consider how __call__ is handled
+    should (hopefully) be uniquely identified by its name and location (filename+line
+    number)
     """
     funcname: str
     filename: str
@@ -97,10 +96,10 @@ class CallGraphTracer(bdb.Bdb):
 
     def user_call(self, frame, argument_list):
         call = Call.from_frame(frame.f_back, self)
-        callable = Callable.from_frame(frame, self)
+        callee = Callee.from_frame(frame, self)
 
-        # _print(f'{call}  -> {callable}')
-        self.recorded_calls.add((call, callable))
+        # _print(f'{call}  -> {callee}')
+        self.recorded_calls.add((call, callee))
 
 
 ################################################################################
@@ -127,10 +126,10 @@ class CSVExporter(Exporter):
     def export(recorded_calls, outfile_path):
         with open(outfile_path, 'w', newline='') as csv_file:
             writer = None
-            for (call, callable) in recorded_calls:
+            for (call, callee) in recorded_calls:
                 data = {
                     **Exporter.dataclass_to_dict(call),
-                    **Exporter.dataclass_to_dict(callable)
+                    **Exporter.dataclass_to_dict(callee)
                 }
 
                 if writer is None:
@@ -152,10 +151,10 @@ class XMLExporter(Exporter):
 
         root = ET.Element('root')
 
-        for (call, callable) in recorded_calls:
+        for (call, callee) in recorded_calls:
             data = {
                 **Exporter.dataclass_to_dict(call),
-                **Exporter.dataclass_to_dict(callable)
+                **Exporter.dataclass_to_dict(callee)
             }
 
             rc = ET.SubElement(root, 'recorded_call')
@@ -216,8 +215,8 @@ if __name__ == "__main__":
     elif opts.xml:
         XMLExporter.export(cgt.recorded_calls, opts.xml)
     else:
-        for (call, callable) in cgt.recorded_calls:
-            print(f'{call}  -> {callable}')
+        for (call, callee) in cgt.recorded_calls:
+            print(f'{call}  -> {callee}')
 
     print('--- captured stdout ---')
     print(captured_stdout.getvalue(), end='')

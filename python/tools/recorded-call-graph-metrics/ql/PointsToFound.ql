@@ -1,9 +1,9 @@
 import RecordedCalls
 
-from ValidRecordedCall rc, Call call, Function callable, CallableValue callableValue
+from ValidRecordedCall rc, Call call, Function callee, CallableValue calleeValue
 where
     call = rc.getCall() and
-    callable = rc.getCallable() and
-    callableValue.getScope() = callable and
-    callableValue.getACall() = call.getAFlowNode()
-select call, "-->", callable
+    callee = rc.getCallee() and
+    calleeValue.getScope() = callee and
+    calleeValue.getACall() = call.getAFlowNode()
+select call, "-->", callee
