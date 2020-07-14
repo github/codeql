@@ -124,18 +124,18 @@ edges
 | F.cs:10:17:10:28 | object creation of type Object : Object | F.cs:11:24:11:24 | access to local variable o : Object |
 | F.cs:10:17:10:28 | object creation of type Object : Object | F.cs:15:26:15:26 | access to local variable o : Object |
 | F.cs:10:17:10:28 | object creation of type Object : Object | F.cs:19:32:19:32 | access to local variable o : Object |
+| F.cs:10:17:10:28 | object creation of type Object : Object | F.cs:23:32:23:32 | access to local variable o : Object |
 | F.cs:11:17:11:31 | call to method Create [Field1] : Object | F.cs:12:14:12:14 | access to local variable f [Field1] : Object |
 | F.cs:11:24:11:24 | access to local variable o : Object | F.cs:11:17:11:31 | call to method Create [Field1] : Object |
 | F.cs:12:14:12:14 | access to local variable f [Field1] : Object | F.cs:12:14:12:21 | access to field Field1 |
 | F.cs:15:13:15:27 | call to method Create [Field2] : Object | F.cs:17:14:17:14 | access to local variable f [Field2] : Object |
 | F.cs:15:26:15:26 | access to local variable o : Object | F.cs:15:13:15:27 | call to method Create [Field2] : Object |
 | F.cs:17:14:17:14 | access to local variable f [Field2] : Object | F.cs:17:14:17:21 | access to field Field2 |
-| F.cs:19:13:19:34 | object creation of type F [Field1] : Object | F.cs:20:14:20:14 | access to local variable f [Field1] : Object |
-| F.cs:19:32:19:32 | access to local variable o : Object | F.cs:19:13:19:34 | object creation of type F [Field1] : Object |
-| F.cs:19:32:19:32 | access to local variable o : Object | F.cs:23:32:23:32 | access to local variable o : Object |
+| F.cs:19:21:19:34 | { ..., ... } [Field1] : Object | F.cs:20:14:20:14 | access to local variable f [Field1] : Object |
+| F.cs:19:32:19:32 | access to local variable o : Object | F.cs:19:21:19:34 | { ..., ... } [Field1] : Object |
 | F.cs:20:14:20:14 | access to local variable f [Field1] : Object | F.cs:20:14:20:21 | access to field Field1 |
-| F.cs:23:13:23:34 | object creation of type F [Field2] : Object | F.cs:25:14:25:14 | access to local variable f [Field2] : Object |
-| F.cs:23:32:23:32 | access to local variable o : Object | F.cs:23:13:23:34 | object creation of type F [Field2] : Object |
+| F.cs:23:21:23:34 | { ..., ... } [Field2] : Object | F.cs:25:14:25:14 | access to local variable f [Field2] : Object |
+| F.cs:23:32:23:32 | access to local variable o : Object | F.cs:23:21:23:34 | { ..., ... } [Field2] : Object |
 | F.cs:25:14:25:14 | access to local variable f [Field2] : Object | F.cs:25:14:25:21 | access to field Field2 |
 | G.cs:7:18:7:27 | object creation of type Elem : Elem | G.cs:9:23:9:23 | access to local variable e : Elem |
 | G.cs:9:9:9:9 | [post] access to local variable b [Box1, Elem] | G.cs:10:18:10:18 | access to local variable b [Box1, Elem] |
@@ -390,11 +390,11 @@ nodes
 | F.cs:15:26:15:26 | access to local variable o : Object | semmle.label | access to local variable o : Object |
 | F.cs:17:14:17:14 | access to local variable f [Field2] : Object | semmle.label | access to local variable f [Field2] : Object |
 | F.cs:17:14:17:21 | access to field Field2 | semmle.label | access to field Field2 |
-| F.cs:19:13:19:34 | object creation of type F [Field1] : Object | semmle.label | object creation of type F [Field1] : Object |
+| F.cs:19:21:19:34 | { ..., ... } [Field1] : Object | semmle.label | { ..., ... } [Field1] : Object |
 | F.cs:19:32:19:32 | access to local variable o : Object | semmle.label | access to local variable o : Object |
 | F.cs:20:14:20:14 | access to local variable f [Field1] : Object | semmle.label | access to local variable f [Field1] : Object |
 | F.cs:20:14:20:21 | access to field Field1 | semmle.label | access to field Field1 |
-| F.cs:23:13:23:34 | object creation of type F [Field2] : Object | semmle.label | object creation of type F [Field2] : Object |
+| F.cs:23:21:23:34 | { ..., ... } [Field2] : Object | semmle.label | { ..., ... } [Field2] : Object |
 | F.cs:23:32:23:32 | access to local variable o : Object | semmle.label | access to local variable o : Object |
 | F.cs:25:14:25:14 | access to local variable f [Field2] : Object | semmle.label | access to local variable f [Field2] : Object |
 | F.cs:25:14:25:21 | access to field Field2 | semmle.label | access to field Field2 |
