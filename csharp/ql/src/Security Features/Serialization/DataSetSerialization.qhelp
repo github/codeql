@@ -1,0 +1,20 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The <code>DataSet</code> and <code>DataTable</code> types are legacy .NET components that allow representing data sets as managed objects.<p>
+
+
+</overview>
+<recommendation>
+
+<p>Please review the <a href="https://go.microsoft.com/fwlink/?linkid=2132227">DataSet and DataTable security guidance</a> before makign use of these types for serialization.</p>
+
+</recommendation>
+<references>
+
+<li>Microsoft Docs<a href="https://go.microsoft.com/fwlink/?linkid=2132227">DataSet and DataTable security guidance</a>.</li>
+
+</references>
+</qhelp>
