@@ -78,8 +78,9 @@ private predicate callsVariadicFormatterOutput(Function f, int outputParamIndex)
 }
 
 /**
- * Holds if `f` is a function such as `vprintf` that writes formatted
- * output to buffer given as a parameter at index `outputParamIndex`, if any.
+ * Holds if `f` is a function such as `vprintf` that takes variable argument list
+ * of type `va_arg` and writes formatted output to a buffer given as a parameter at
+ * index `outputParamIndex`, if any.
  */
 private predicate variadicFormatterOutput(Function f, int outputParamIndex) {
   primitiveVariadicFormatterOutput(f, outputParamIndex)
