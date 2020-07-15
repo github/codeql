@@ -34,6 +34,9 @@ predicate isTestFile(DataFlow::Node node) {
   )
 }
 
+/**
+ * Holds if it is insecure to assign TLS version `val` named `named` to `tls.Config` field `fieldName`
+ */
 predicate isInsecureTlsVersion(int val, string name, string fieldName) {
   (fieldName = "MinVersion" or fieldName = "MaxVersion") and
   // tls.VersionSSL30
@@ -103,11 +106,17 @@ predicate isReturnedWithError(DataFlow::Node node) {
 class TlsVersionFlowConfig extends TaintTracking::Configuration {
   TlsVersionFlowConfig() { this = "TlsVersionFlowConfig" }
 
+  /**
+   * Holds if `source` is a TLS version source yielding value `val`.
+   */
   predicate isSource(DataFlow::Node source, int val) {
     val = source.getIntValue() and
     not isReturnedWithError(source)
   }
 
+  /**
+   * Holds if `fieldWrite` writes `sink` to `base`.`fld`, where `fld` is a TLS version field.
+   */
   predicate isSink(DataFlow::Node sink, Field fld, DataFlow::Node base, Write fieldWrite) {
     fld.hasQualifiedName("crypto/tls", "Config", ["MinVersion", "MaxVersion"]) and
     fieldWrite = fld.getAWrite() and
@@ -162,9 +171,13 @@ DataFlow::Node nodeOrDeref(DataFlow::Node node) {
 }
 
 /**
- * Find insecure TLS versions.
+ * Holds if an insecure TLS version flows from `source` to `sink`, which is in turn written
+ * to a field of `base`. `message` describes the specific problem found.
+ *
+ * Contexts suggesting an intentionally insecure or legacy configuration are excluded (see
+ * `nodeSuggestsOldVersion`), as are fields that may conditionally receive a modern TLS version.
  */
-query predicate checkTlsVersions(
+predicate isInsecureTlsVersionFlow(
   DataFlow::PathNode source, DataFlow::PathNode sink, string message, DataFlow::Node base
 ) {
   exists(TlsVersionFlowConfig cfg, int version, Field fld |
@@ -201,6 +214,9 @@ query predicate checkTlsVersions(
 class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
   TlsInsecureCipherSuitesFlowConfig() { this = "TlsInsecureCipherSuitesFlowConfig" }
 
+  /**
+   * Holds if `source` reads an insecure TLS cipher suite named `suiteName`.
+   */
   predicate isSourceValueEntity(DataFlow::Node source, string suiteName) {
     exists(DataFlow::ValueEntity val |
       val.hasQualifiedName("crypto/tls", suiteName) and
@@ -214,6 +230,9 @@ class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
     )
   }
 
+  /**
+   * Holds if `source` represents the result of `tls.InsecureCipherSuites()`.
+   */
   predicate isSourceInsecureCipherSuites(DataFlow::Node source) {
     exists(Function insecureCipherSuites |
       insecureCipherSuites.hasQualifiedName("crypto/tls", "InsecureCipherSuites")
@@ -229,6 +248,10 @@ class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
     isSourceValueEntity(source, _)
   }
 
+  /**
+   * Holds if `fieldWrite` writes `sink` to `base`.`fld`, and `fld` is `tls.Config.CipherSuites`,
+   * and no parent of `base` is named suggesting an intentionally insecure configuration.
+   */
   predicate isSink(DataFlow::Node sink, Field fld, DataFlow::Node base, Write fieldWrite) {
     fld.hasQualifiedName("crypto/tls", "Config", "CipherSuites") and
     fieldWrite = fld.getAWrite() and
@@ -249,11 +272,11 @@ class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
 }
 
 /**
- * Find insecure TLS cipher suites.
+ * Holds if an insecure TLS cipher suite flows from `source` to `sink`, where `sink`
+ * is written to the CipherSuites list of a `tls.Config` instance. `message` describes
+ * the exact problem found.
  */
-predicate checkTlsInsecureCipherSuites(
-  DataFlow::PathNode source, DataFlow::PathNode sink, string message
-) {
+predicate isInsecureTlsCipherFlow(DataFlow::PathNode source, DataFlow::PathNode sink, string message) {
   exists(TlsInsecureCipherSuitesFlowConfig cfg | cfg.hasFlowPath(source, sink) |
     exists(string name | cfg.isSourceValueEntity(source.getNode(), name) |
       message = "Use of an insecure cipher suite: " + name + "."
@@ -267,12 +290,12 @@ predicate checkTlsInsecureCipherSuites(
 from DataFlow::PathNode source, DataFlow::PathNode sink, string message
 where
   (
-    checkTlsVersions(source, sink, message, _) or
-    checkTlsInsecureCipherSuites(source, sink, message)
+    isInsecureTlsVersionFlow(source, sink, message, _) or
+    isInsecureTlsCipherFlow(source, sink, message)
   ) and
   // Exclude sinks guarded by a feature flag
   not getAFeatureFlagCheck().dominatesNode(sink.getNode().asInstruction()) and
-  // Exclude results in functions whose name documents the insecurity
+  // Exclude results in functions whose name documents insecurity
   not exists(FuncDef fn | fn = sink.getNode().asInstruction().getRoot() |
     isFeatureFlagName(fn.getEnclosingFunction*().getName()) or
     isOldVersionName(fn.getEnclosingFunction*().getName())
