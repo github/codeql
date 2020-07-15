@@ -116,6 +116,39 @@ module InsecureFeatureFlag {
   }
 
   /**
+   * Holds of string literals or named values matching `flagKind` and their fields.
+   */
+  predicate exprIsFlag(Expr node, FlagKind flagKind) {
+    node.getStringValue() = flagKind.getAFlagName() or
+    node.(Name).getTarget().getName() = flagKind.getAFlagName() or
+    exprIsFlag(node.(SelectorExpr).getBase(), flagKind) or
+    exprIsFlag(node.(SelectorExpr).getSelector(), flagKind)
+  }
+
+  /**
+   * Holds if `node` suggests an old TLS version according to `flagKind`.
+   */
+  predicate astNodeIsFlag(AstNode node, FlagKind flagKind) {
+    // Map literal flag: value or "flag": value
+    exprIsFlag(node.(KeyValueExpr).getKey(), flagKind)
+    or
+    // Variable initialisation flag := value
+    exists(ValueSpec valueSpec, int childIdx |
+      valueSpec.getName(childIdx) = flagKind.getAFlagName()
+    |
+      node = valueSpec.getInit(childIdx)
+    )
+    or
+    // Assignment flag = value
+    exists(Assignment assignment, int childIdx | exprIsFlag(assignment.getLhs(childIdx), flagKind) |
+      node = assignment.getRhs(childIdx)
+    )
+    or
+    // Case clause 'case flag:' or 'case "flag":'
+    exprIsFlag(node.(CaseClause).getAnExpr(), flagKind)
+  }
+
+  /**
    * Gets a control-flow node that represents a (likely) feature-flag check for certificate checking.
    */
   ControlFlow::ConditionGuardNode getAFeatureFlagCheck() {

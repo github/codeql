@@ -46,37 +46,6 @@ predicate isInsecureTlsVersion(int val, string name, string fieldName) {
 }
 
 /**
- * Holds of string literals or named constants matching `isLegacyFlagName`
- */
-predicate exprSuggestsOldVersion(Expr node) {
-  isLegacyFlagName(node.getStringValue()) or
-  isLegacyFlagName(node.(Name).getTarget().getName())
-}
-
-/**
- * Holds if `node` suggests an old TLS version according to `isLegacyFlagName`
- */
-predicate nodeSuggestsOldVersion(AstNode node) {
-  // Map literal old: value or "old": value
-  exprSuggestsOldVersion(node.(KeyValueExpr).getKey())
-  or
-  // Variable initialisation old := value
-  exists(ValueSpec valueSpec, int childIdx | isLegacyFlagName(valueSpec.getName(childIdx)) |
-    node = valueSpec.getInit(childIdx)
-  )
-  or
-  // Assignment old = value
-  exists(Assignment assignment, int childIdx |
-    isLegacyFlagName(assignment.getLhs(childIdx).(Ident).getName())
-  |
-    node = assignment.getRhs(childIdx)
-  )
-  or
-  // Case clause 'case old:' or 'case "old":'
-  exprSuggestsOldVersion(node.(CaseClause).getAnExpr())
-}
-
-/**
  * Holds if `node` refers to a value returned alongside a non-nil error value.
  *
  * For example, `0` in `func tryGetInt() (int, error) { return 0, errors.New("no good") }`
@@ -163,9 +132,6 @@ DataFlow::Node nodeOrDeref(DataFlow::Node node) {
 /**
  * Holds if an insecure TLS version flows from `source` to `sink`, which is in turn written
  * to a field of `base`. `message` describes the specific problem found.
- *
- * Contexts suggesting an intentionally insecure or legacy configuration are excluded (see
- * `nodeSuggestsOldVersion`), as are fields that may conditionally receive a modern TLS version.
  */
 predicate isInsecureTlsVersionFlow(
   DataFlow::PathNode source, DataFlow::PathNode sink, string message, DataFlow::Node base
@@ -175,7 +141,6 @@ predicate isInsecureTlsVersionFlow(
     cfg.isSource(source.getNode(), version) and
     cfg.isSink(sink.getNode(), fld, base, _) and
     isInsecureTlsVersion(version, _, fld.getName()) and
-    not nodeSuggestsOldVersion(base.asExpr().getParent*()) and
     // Exclude cases where a secure TLS version can also flow to the same
     // sink, or to different sinks that refer to the same base and field,
     // which suggests a configurable security mode.
@@ -215,8 +180,7 @@ class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
             "TLS_ECDHE_ECDSA_WITH_RC4_128_SHA", "TLS_ECDHE_RSA_WITH_RC4_128_SHA",
             "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256", "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"]
     |
-      source = val.getARead() and
-      not nodeSuggestsOldVersion(source.asExpr().getParent*())
+      source = val.getARead()
     )
   }
 
@@ -239,14 +203,12 @@ class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
   }
 
   /**
-   * Holds if `fieldWrite` writes `sink` to `base`.`fld`, and `fld` is `tls.Config.CipherSuites`,
-   * and no parent of `base` is named suggesting an intentionally insecure configuration.
+   * Holds if `fieldWrite` writes `sink` to `base`.`fld`, and `fld` is `tls.Config.CipherSuites`.
    */
   predicate isSink(DataFlow::Node sink, Field fld, DataFlow::Node base, Write fieldWrite) {
     fld.hasQualifiedName("crypto/tls", "Config", "CipherSuites") and
     fieldWrite = fld.getAWrite() and
-    fieldWrite.writesField(base, fld, sink) and
-    not nodeSuggestsOldVersion(base.asExpr().getParent*())
+    fieldWrite.writesField(base, fld, sink)
   }
 
   override predicate isSink(DataFlow::Node sink) { isSink(sink, _, _, _) }
@@ -283,9 +245,11 @@ where
     isInsecureTlsVersionFlow(source, sink, message, _) or
     isInsecureTlsCipherFlow(source, sink, message)
   ) and
-  // Exclude sinks guarded by a feature flag
-  not getAFeatureFlagCheck().dominatesNode(sink.getNode().asInstruction()) and
-  not getALegacyVersionCheck().dominatesNode(sink.getNode().asInstruction()) and
+  // Exclude sources or sinks guarded by a feature or legacy flag
+  not [getAFeatureFlagCheck(), getALegacyVersionCheck()]
+      .dominatesNode([source, sink].getNode().asInstruction()) and
+  // Exclude sources or sinks that occur lexically within a block related to a feature or legacy flag
+  not astNodeIsFlag([source, sink].getNode().asExpr().getParent*(), [featureFlag(), legacyFlag()]) and
   // Exclude results in functions whose name documents insecurity
   not exists(FuncDef fn | fn = sink.getNode().asInstruction().getRoot() |
     isFeatureFlagName(fn.getEnclosingFunction*().getName()) or
