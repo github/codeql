@@ -14,25 +14,78 @@ module InsecureFeatureFlag {
     name.regexpMatch("(?i).*(secure|selfCert|selfSign|validat|verif|trust|(en|dis)able).*")
   }
 
-  /** Gets a global value number representing a (likely) feature flag for certificate checking. */
-  GVN getAFeatureFlag() {
+  /**
+   * Holds if `name` suggests an old or legacy version.
+   *
+   * We accept 'intermediate' because it appears to be common for TLS users
+   * to define three profiles: modern, intermediate, legacy/old, perhaps based
+   * on https://wiki.mozilla.org/Security/Server_Side_TLS (though note the
+   * 'intermediate' used there would now pass muster according to this query)
+   */
+  bindingset[name]
+  predicate isLegacyFlagName(string name) { name.regexpMatch("(?i).*(old|intermediate|legacy).*") }
+
+  /**
+   * A kind of flag that may indicate security expectations regarding the code it guards.
+   */
+  abstract class FlagKind extends string {
+    FlagKind() { this = "feature" or this = "legacy" }
+
+    /**
+     * Returns a flag name of this type.
+     */
+    abstract string getAFlagName();
+  }
+
+  /**
+   * Flags suggesting an optional feature, perhaps deliberately insecure.
+   */
+  class FeatureFlag extends FlagKind {
+    FeatureFlag() { this = "feature" }
+
+    bindingset[result]
+    override string getAFlagName() { isFeatureFlagName(result) }
+  }
+
+  /**
+   * Flags suggesting an optional feature, perhaps deliberately insecure.
+   */
+  string featureFlag() { result = "feature" }
+
+  /**
+   * Flags suggesting support for an old or legacy feature.
+   */
+  class LegacyFlag extends FlagKind {
+    LegacyFlag() { this = "legacy" }
+
+    bindingset[result]
+    override string getAFlagName() { isLegacyFlagName(result) }
+  }
+
+  /**
+   * Flags suggesting support for an old or legacy feature.
+   */
+  string legacyFlag() { result = "legacy" }
+
+  /** Gets a global value number representing a (likely) security flag. */
+  GVN getAFlag(FlagKind flagKind) {
     // a call like `cfg.disableVerification()`
-    exists(DataFlow::CallNode c | isFeatureFlagName(c.getTarget().getName()) |
+    exists(DataFlow::CallNode c | c.getTarget().getName() = flagKind.getAFlagName() |
       result = globalValueNumber(c)
     )
     or
     // a variable or field like `insecure`
-    exists(ValueEntity flag | isFeatureFlagName(flag.getName()) |
+    exists(ValueEntity flag | flag.getName() = flagKind.getAFlagName() |
       result = globalValueNumber(flag.getARead())
     )
     or
     // a string constant such as `"insecure"` or `"skipVerification"`
-    exists(DataFlow::Node const | isFeatureFlagName(const.getStringValue()) |
+    exists(DataFlow::Node const | const.getStringValue() = flagKind.getAFlagName() |
       result = globalValueNumber(const)
     )
     or
     // track feature flags through various operations
-    exists(DataFlow::Node flag | flag = getAFeatureFlag().getANode() |
+    exists(DataFlow::Node flag | flag = getAFlag(flagKind).getANode() |
       // tuple destructurings
       result = globalValueNumber(DataFlow::extractTupleElement(flag, _))
       or
@@ -66,6 +119,13 @@ module InsecureFeatureFlag {
    * Gets a control-flow node that represents a (likely) feature-flag check for certificate checking.
    */
   ControlFlow::ConditionGuardNode getAFeatureFlagCheck() {
-    result.ensures(getAFeatureFlag().getANode(), _)
+    result.ensures(getAFlag(featureFlag()).getANode(), _)
+  }
+
+  /**
+   * Gets a control-flow node that represents a (likely) feature-flag check for certificate checking.
+   */
+  ControlFlow::ConditionGuardNode getALegacyVersionCheck() {
+    result.ensures(getAFlag(legacyFlag()).getANode(), _)
   }
 }

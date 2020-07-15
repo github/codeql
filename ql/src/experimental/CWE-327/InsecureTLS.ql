@@ -4,6 +4,7 @@
  *              man-in-the-middle and other attacks.
  * @kind path-problem
  * @problem.severity warning
+ * @precision very-high
  * @id go/insecure-tls
  * @tags security
  *       external/cwe/cwe-327
@@ -12,17 +13,6 @@
 import go
 import DataFlow::PathGraph
 import semmle.go.security.InsecureFeatureFlag::InsecureFeatureFlag
-
-/**
- * Holds if `name` suggests an old or legacy version.
- *
- * We accept 'intermediate' because it appears to be common for TLS users
- * to define three profiles: modern, intermediate, legacy/old, perhaps based
- * on https://wiki.mozilla.org/Security/Server_Side_TLS (though note the
- * 'intermediate' used there would now pass muster according to this query)
- */
-bindingset[name]
-predicate isOldVersionName(string name) { name.regexpMatch("(?i).*(old|intermediate|legacy).*") }
 
 /**
  * Check whether the file where the node is located is a test file.
@@ -56,28 +46,28 @@ predicate isInsecureTlsVersion(int val, string name, string fieldName) {
 }
 
 /**
- * Holds of string literals or named constants matching `isOldVersionName`
+ * Holds of string literals or named constants matching `isLegacyFlagName`
  */
 predicate exprSuggestsOldVersion(Expr node) {
-  isOldVersionName(node.getStringValue()) or
-  isOldVersionName(node.(Name).getTarget().getName())
+  isLegacyFlagName(node.getStringValue()) or
+  isLegacyFlagName(node.(Name).getTarget().getName())
 }
 
 /**
- * Holds if `node` suggests an old TLS version according to `isOldVersionName`
+ * Holds if `node` suggests an old TLS version according to `isLegacyFlagName`
  */
 predicate nodeSuggestsOldVersion(AstNode node) {
   // Map literal old: value or "old": value
   exprSuggestsOldVersion(node.(KeyValueExpr).getKey())
   or
   // Variable initialisation old := value
-  exists(ValueSpec valueSpec, int childIdx | isOldVersionName(valueSpec.getName(childIdx)) |
+  exists(ValueSpec valueSpec, int childIdx | isLegacyFlagName(valueSpec.getName(childIdx)) |
     node = valueSpec.getInit(childIdx)
   )
   or
   // Assignment old = value
   exists(Assignment assignment, int childIdx |
-    isOldVersionName(assignment.getLhs(childIdx).(Ident).getName())
+    isLegacyFlagName(assignment.getLhs(childIdx).(Ident).getName())
   |
     node = assignment.getRhs(childIdx)
   )
@@ -295,10 +285,11 @@ where
   ) and
   // Exclude sinks guarded by a feature flag
   not getAFeatureFlagCheck().dominatesNode(sink.getNode().asInstruction()) and
+  not getALegacyVersionCheck().dominatesNode(sink.getNode().asInstruction()) and
   // Exclude results in functions whose name documents insecurity
   not exists(FuncDef fn | fn = sink.getNode().asInstruction().getRoot() |
     isFeatureFlagName(fn.getEnclosingFunction*().getName()) or
-    isOldVersionName(fn.getEnclosingFunction*().getName())
+    isLegacyFlagName(fn.getEnclosingFunction*().getName())
   ) and
   // Exclude results in test code:
   not isTestFile(sink.getNode())
