@@ -29,7 +29,7 @@ import os
 import dis
 import dataclasses
 import csv
-import xml.etree.ElementTree as etree
+from lxml import etree
 
 # Copy-Paste and uncomment for interactive ipython sessions
 # import IPython; IPython.embed(); sys.exit()
@@ -177,11 +177,12 @@ class XMLExporter(Exporter):
             }
 
             rc = etree.SubElement(root, 'recorded_call')
-            # this xml library only supports serializing attributes that have string values
-            rc.attrib = {k: str(v) for k, v in data.items()}
+            for k, v in data.items():
+                # xml library only supports serializing attributes that have string values
+                rc.set(k, str(v))
 
         tree = etree.ElementTree(root)
-        tree.write(outfile_path, encoding='utf-8')
+        tree.write(outfile_path, encoding='utf-8', pretty_print=True)
 
 
 ################################################################################
