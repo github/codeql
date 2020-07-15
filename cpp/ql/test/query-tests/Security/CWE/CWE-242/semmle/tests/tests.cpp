@@ -305,6 +305,6 @@ namespace custom_sprintf_impl {
 	void regression_test1()
 	{
 		char buffer8[8];
-		sprintf(buffer8, "12345678"); // BAD: potential buffer overflow [NOT DETECTED]
+		sprintf(buffer8, "12345678"); // BAD: potential buffer overflow
 	}
 }

@@ -49,12 +49,43 @@ predicate primitiveVariadicFormatter(TopLevelFunction f, int formatParamIndex) {
   )
 }
 
+/**
+ * A standard function such as `vsprintf` that has an output parameter
+ * and a variable argument list of type `va_arg`.
+ */
+private predicate primitiveVariadicFormatterOutput(TopLevelFunction f, int outputParamIndex) {
+  // note: this might look like the regular expression in `primitiveVariadicFormatter`, but
+  // there is one important difference: the [fs] part is not optional, as these classify
+  // the `printf` variants that write to a buffer.
+  // Conveniently, these buffer parameters are all at index 0.
+  f.getName().regexpMatch("_?_?va?[fs]n?w?printf(_s)?(_p)?(_l)?") and outputParamIndex = 0
+}
+
 private predicate callsVariadicFormatter(Function f, int formatParamIndex) {
   exists(FunctionCall fc, int i |
     variadicFormatter(fc.getTarget(), i) and
     fc.getEnclosingFunction() = f and
     fc.getArgument(i) = f.getParameter(formatParamIndex).getAnAccess()
   )
+}
+
+private predicate callsVariadicFormatterOutput(Function f, int outputParamIndex) {
+  exists(FunctionCall fc, int i |
+    fc.getEnclosingFunction() = f and
+    variadicFormatterOutput(fc.getTarget(), i) and
+    fc.getArgument(i) = f.getParameter(outputParamIndex).getAnAccess()
+  )
+}
+
+/**
+ * Holds if `f` is a function such as `vprintf` that writes formatted
+ * output to buffer given as a parameter at index `outputParamIndex`, if any.
+ */
+private predicate variadicFormatterOutput(Function f, int outputParamIndex) {
+  primitiveVariadicFormatterOutput(f, outputParamIndex)
+  or
+  not f.isVarargs() and
+  callsVariadicFormatterOutput(f, outputParamIndex)
 }
 
 /**
@@ -78,6 +109,8 @@ class UserDefinedFormattingFunction extends FormattingFunction {
   UserDefinedFormattingFunction() { isVarargs() and callsVariadicFormatter(this, _) }
 
   override int getFormatParameterIndex() { callsVariadicFormatter(this, result) }
+
+  override int getOutputParameterIndex() { callsVariadicFormatterOutput(this, result) }
 }
 
 /**
