@@ -35,6 +35,25 @@ import xml.etree.ElementTree as ET
 # import IPython; IPython.embed(); sys.exit()
 
 
+_canonic_filename_cache = dict()
+def canonic_filename(filename):
+    """Return canonical form of filename. (same as Bdb.canonic)
+
+    For real filenames, the canonical form is a case-normalized (on
+    case insensitive filesystems) absolute path.  'Filenames' with
+    angle brackets, such as "<stdin>", generated in interactive
+    mode, are returned unchanged.
+    """
+    if filename == "<" + filename[1:-1] + ">":
+        return filename
+    canonic = _canonic_filename_cache.get(filename)
+    if not canonic:
+        canonic = os.path.abspath(filename)
+        canonic = os.path.normcase(canonic)
+        _canonic_filename_cache[filename] = canonic
+    return canonic
+
+
 @dataclasses.dataclass(frozen=True)
 class Call():
     """A call
@@ -44,7 +63,7 @@ class Call():
     inst_index: int
 
     @classmethod
-    def from_frame(cls, frame, debugger: bdb.Bdb):
+    def from_frame(cls, frame):
         code = frame.f_code
 
         # Uncomment to see the bytecode
@@ -52,7 +71,7 @@ class Call():
         # print(b.dis(), file=sys.__stderr__)
 
         return cls(
-            filename = debugger.canonic(code.co_filename),
+            filename = canonic_filename(code.co_filename),
             linenum = frame.f_lineno,
             inst_index = frame.f_lasti,
         )
@@ -70,11 +89,11 @@ class Callee():
     linenum: int
 
     @classmethod
-    def from_frame(cls, frame, debugger: bdb.Bdb):
+    def from_frame(cls, frame):
         code = frame.f_code
         return cls(
             funcname = code.co_name,
-            filename = debugger.canonic(code.co_filename),
+            filename = canonic_filename(code.co_filename),
             linenum = frame.f_lineno,
         )
 
@@ -95,8 +114,8 @@ class CallGraphTracer(bdb.Bdb):
         super().__init__()
 
     def user_call(self, frame, argument_list):
-        call = Call.from_frame(frame.f_back, self)
-        callee = Callee.from_frame(frame, self)
+        call = Call.from_frame(frame.f_back)
+        callee = Callee.from_frame(frame)
 
         # _print(f'{call}  -> {callee}')
         self.recorded_calls.add((call, callee))
