@@ -22,6 +22,7 @@
 | format.cpp:100:8:100:13 | buffer | format.cpp:99:30:99:43 | call to source |
 | format.cpp:105:8:105:13 | buffer | format.cpp:104:31:104:45 | call to source |
 | format.cpp:110:8:110:14 | wbuffer | format.cpp:109:38:109:52 | call to source |
+| format.cpp:115:8:115:13 | buffer | format.cpp:114:37:114:50 | call to source |
 | format.cpp:157:7:157:22 | access to array | format.cpp:147:12:147:25 | call to source |
 | format.cpp:158:7:158:27 | ... + ... | format.cpp:148:16:148:30 | call to source |
 | movableclass.cpp:44:8:44:9 | s1 | movableclass.cpp:39:21:39:26 | call to source |
