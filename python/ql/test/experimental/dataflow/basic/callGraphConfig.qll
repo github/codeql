@@ -1,7 +1,7 @@
 import experimental.dataflow.DataFlow
 
 /**
- * A configuration to find the call graph edges. 
+ * A configuration to find the call graph edges.
  */
 class CallGraphConfig extends DataFlow::Configuration {
   CallGraphConfig() { this = "CallGraphConfig" }

@@ -16,8 +16,8 @@ import python
 
 from Compare comparison, Expr left, Expr right
 where
-    comparison.compares(left, _, right) and
-    left.isConstant() and
-    right.isConstant() and
-    not exists(Assert a | a.getTest() = comparison)
+  comparison.compares(left, _, right) and
+  left.isConstant() and
+  right.isConstant() and
+  not exists(Assert a | a.getTest() = comparison)
 select comparison, "Comparison of constants; use 'True' or 'False' instead."

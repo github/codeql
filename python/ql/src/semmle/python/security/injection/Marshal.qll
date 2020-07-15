@@ -18,14 +18,14 @@ private FunctionObject marshalLoads() { result = ModuleObject::named("marshal").
  * The `vuln` in `marshal.loads(vuln)`.
  */
 class UnmarshalingNode extends DeserializationSink {
-    override string toString() { result = "unmarshaling vulnerability" }
+  override string toString() { result = "unmarshaling vulnerability" }
 
-    UnmarshalingNode() {
-        exists(CallNode call |
-            marshalLoads().getACall() = call and
-            call.getAnArg() = this
-        )
-    }
+  UnmarshalingNode() {
+    exists(CallNode call |
+      marshalLoads().getACall() = call and
+      call.getAnArg() = this
+    )
+  }
 
-    override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
+  override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
 }

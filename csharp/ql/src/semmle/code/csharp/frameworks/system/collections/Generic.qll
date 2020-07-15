@@ -136,3 +136,16 @@ class SystemCollectionsGenericICollectionInterface extends SystemCollectionsGene
   /** Gets the `Add` method. */
   Method getAddMethod() { result = this.getAMethod("Add") }
 }
+
+/** The `System.Collections.Generic.IList<>` interface. */
+class SystemCollectionsGenericIListInterface extends SystemCollectionsGenericUnboundGenericInterface {
+  SystemCollectionsGenericIListInterface() { this.hasName("IList<>") }
+}
+
+/** The `System.Collections.Generic.IDictionary<T>` interface. */
+class SystemCollectionsGenericIDictionaryInterface extends SystemCollectionsGenericUnboundGenericInterface {
+  SystemCollectionsGenericIDictionaryInterface() {
+    this.hasName("IDictionary<,>") and
+    this.getNumberOfTypeParameters() = 2
+  }
+}

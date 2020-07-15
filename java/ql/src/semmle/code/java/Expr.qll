@@ -1243,7 +1243,7 @@ class VariableAssign extends VariableUpdate {
   }
 
   /**
-   * Gets the source of this assignment, if any.
+   * Gets the source (right-hand side) of this assignment, if any.
    *
    * An initialization in a `CatchClause` or `EnhancedForStmt` is implicit and
    * does not have a source.
