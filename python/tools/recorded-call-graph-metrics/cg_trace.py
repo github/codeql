@@ -54,7 +54,7 @@ def canonic_filename(filename):
     return canonic
 
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass(frozen=True, eq=True, order=True)
 class Call():
     """A call
     """
@@ -77,16 +77,16 @@ class Call():
         )
 
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass(frozen=True, eq=True, order=True)
 class Callee():
     """A callee (Function/Lambda/???)
 
     should (hopefully) be uniquely identified by its name and location (filename+line
     number)
     """
-    funcname: str
     filename: str
     linenum: int
+    funcname: str
 
     @classmethod
     def from_frame(cls, frame):
@@ -145,7 +145,7 @@ class CSVExporter(Exporter):
     def export(recorded_calls, outfile_path):
         with open(outfile_path, 'w', newline='') as csv_file:
             writer = None
-            for (call, callee) in recorded_calls:
+            for (call, callee) in sorted(recorded_calls):
                 data = {
                     **Exporter.dataclass_to_dict(call),
                     **Exporter.dataclass_to_dict(callee)
@@ -170,7 +170,7 @@ class XMLExporter(Exporter):
 
         root = ET.Element('root')
 
-        for (call, callee) in recorded_calls:
+        for (call, callee) in sorted(recorded_calls):
             data = {
                 **Exporter.dataclass_to_dict(call),
                 **Exporter.dataclass_to_dict(callee)
@@ -234,7 +234,7 @@ if __name__ == "__main__":
     elif opts.xml:
         XMLExporter.export(cgt.recorded_calls, opts.xml)
     else:
-        for (call, callee) in cgt.recorded_calls:
+        for (call, callee) in sorted(cgt.recorded_calls):
             print(f'{call}  -> {callee}')
 
     print('--- captured stdout ---')
