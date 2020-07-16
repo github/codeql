@@ -5,11 +5,11 @@ set -x
 
 DB="cg-trace-example-db"
 SRC="example/"
-XMLDIR="$SRC"
+XMLDIR="example-traces/"
 PYTHON_EXTRACTOR=$(codeql resolve extractor --language=python)
 
 
-./cg_trace.py --xml example/simple.xml example/simple.py
+./cg_trace.py --xml "$XMLDIR"/simple.xml example/simple.py
 
 rm -rf "$DB"
 
