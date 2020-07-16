@@ -1,6 +1,6 @@
 /**
- * @name Use of constant `state` value in Oauth2 URL.
- * @description Using a constant value for the `state` in the oauth2 URL makes the application
+ * @name Use of constant `state` value in OAuth 2.0 URL.
+ * @description Using a constant value for the `state` in the OAuth 2.0 URL makes the application
  *              susceptible to CSRF attacks.
  * @kind path-problem
  * @problem.severity error
@@ -14,7 +14,7 @@ import DataFlow::PathGraph
 
 /**
  * A method that creates a new URL that will send the user
- * to the oauth2 authorization dialog of the provider.
+ * to the OAuth 2.0 authorization dialog of the provider.
  */
 class AuthCodeURL extends Method {
   AuthCodeURL() { this.hasQualifiedName("golang.org/x/oauth2", "Config", "AuthCodeURL") }

@@ -4,8 +4,8 @@
 <qhelp>
     <overview>
         <p>
-            Oauth2 clients must implement CSRF protection for the redirection URI, which is typically accomplished by including a "state" value that binds the request to
-            the user's authenticated state. The Go Oauth2 library allows to specify a "state" value which is then included in the auth code URL, and then provided back by the remote authentication server in the redirect callback, from where it must be validated; failure to do so makes the client susceptible to an CSRF attack.
+            OAuth 2.0 clients must implement CSRF protection for the redirection URI, which is typically accomplished by including a "state" value that binds the request to
+            the user's authenticated state. The Go OAuth 2.0 library allows to specify a "state" value which is then included in the auth code URL, and then provided back by the remote authentication server in the redirect callback, from where it must be validated; failure to do so makes the client susceptible to an CSRF attack.
         </p>
     </overview>
     <recommendation>
