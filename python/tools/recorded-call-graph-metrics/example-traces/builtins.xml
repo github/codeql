@@ -1,0 +1,6 @@
+<root>
+  <recorded_call call_filename="/home/rasmus/code/ql/python/tools/recorded-call-graph-metrics/example/builtins.py" call_linenum="1" call_inst_index="4" externalcallee_module="builtins" externalcallee_qualname="print" externalcallee_is_builtin="True"/>
+  <recorded_call call_filename="/home/rasmus/code/ql/python/tools/recorded-call-graph-metrics/example/builtins.py" call_linenum="2" call_inst_index="12" externalcallee_module="builtins" externalcallee_qualname="len" externalcallee_is_builtin="True"/>
+  <recorded_call call_filename="/home/rasmus/code/ql/python/tools/recorded-call-graph-metrics/example/builtins.py" call_linenum="4" call_inst_index="28" externalcallee_module="None" externalcallee_qualname="list.append" externalcallee_is_builtin="True"/>
+  <recorded_call call_filename="/home/rasmus/code/ql/python/tools/recorded-call-graph-metrics/example/builtins.py" call_linenum="7" call_inst_index="44" externalcallee_module="sys" externalcallee_qualname="getdefaultencoding" externalcallee_is_builtin="True"/>
+</root>

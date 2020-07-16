@@ -1,9 +1,19 @@
 import RecordedCalls
 
-from ValidRecordedCall rc, Call call, Function callee, CallableValue calleeValue
+import semmle.python.objects.Callables
+
+from ValidRecordedCall rc, Call call, Value calleeValue
 where
   call = rc.getCall() and
-  callee = rc.getCallee() and
-  calleeValue.getScope() = callee and
-  calleeValue.getACall() = call.getAFlowNode()
-select call, "-->", callee
+  calleeValue.getACall() = call.getAFlowNode() and
+  (
+    rc instanceof RecordedPythonCall and
+    calleeValue.(PythonFunctionValue).getScope() = rc.(RecordedPythonCall).getCallee()
+    or
+    rc instanceof RecordedBuiltinCall and
+    calleeValue.(BuiltinFunctionObjectInternal).getBuiltin() = rc.(RecordedBuiltinCall).getCallee()
+    or
+    rc instanceof RecordedBuiltinCall and
+    calleeValue.(BuiltinMethodObjectInternal).getBuiltin() = rc.(RecordedBuiltinCall).getCallee()
+  )
+select call, "-->", calleeValue

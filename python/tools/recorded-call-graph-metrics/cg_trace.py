@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 """Call Graph tracing.
 
 Execute a python program and for each call being made, record the call and callee. This
@@ -30,10 +29,14 @@ import dis
 import dataclasses
 import csv
 from lxml import etree
+from typing import Optional
 
-# Copy-Paste and uncomment for interactive ipython sessions
-# import IPython; IPython.embed(); sys.exit()
+# copy-paste For interactive ipython sessions
+# import IPython; sys.stdout = sys.__stdout__; IPython.embed(); sys.exit()
 
+def debug_print(*args, **kwargs):
+    # print(*args, **kwargs, file=sys.__stderr__)
+    pass
 
 _canonic_filename_cache = dict()
 def canonic_filename(filename):
@@ -67,8 +70,8 @@ class Call():
         code = frame.f_code
 
         # Uncomment to see the bytecode
-        # b = dis.Bytecode(frame.f_code, current_offset=frame.f_lasti)
-        # print(b.dis(), file=sys.__stderr__)
+        b = dis.Bytecode(frame.f_code, current_offset=frame.f_lasti)
+        debug_print(b.dis())
 
         return cls(
             filename = canonic_filename(code.co_filename),
@@ -77,8 +80,53 @@ class Call():
         )
 
 
+def better_compare_for_dataclass(cls):
+    """When dataclass is used with `order=True`, the comparison methods is only implemented for
+    objects of the same class. This decorator extends the functionality to compare class
+    name if used against other objects.
+    """
+    for op in ['__lt__', '__le__', '__gt__', '__ge__',]:
+        old = getattr(cls, op)
+        def new(self, other):
+            if type(self) == type(other):
+                return old(self, other)
+            return getattr(str, op)(self.__class__.__name__, other.__class__.__name__)
+        setattr(cls, op, new)
+    return cls
+
 @dataclasses.dataclass(frozen=True, eq=True, order=True)
-class Callee():
+class Callee:
+    pass
+
+
+BUILTIN_FUNCTION_OR_METHOD = type(print)
+
+
+@better_compare_for_dataclass
+@dataclasses.dataclass(frozen=True, eq=True, order=True)
+class ExternalCallee(Callee):
+    # Some bound methods might not have __module__ attribute: for example,
+    # `list().append.__module__ is None`
+    module: Optional[str]
+    qualname: str
+    #
+    is_builtin: bool
+
+    @classmethod
+    def from_arg(cls, func):
+        # if func.__name__ == "append":
+            # import IPython; sys.stdout = sys.__stdout__; IPython.embed(); sys.exit()
+
+        return cls(
+            module=func.__module__,
+            qualname=func.__qualname__,
+            is_builtin=type(func) == BUILTIN_FUNCTION_OR_METHOD
+        )
+
+
+@better_compare_for_dataclass
+@dataclasses.dataclass(frozen=True, eq=True, order=True)
+class PythonCallee(Callee):
     """A callee (Function/Lambda/???)
 
     should (hopefully) be uniquely identified by its name and location (filename+line
@@ -92,32 +140,84 @@ class Callee():
     def from_frame(cls, frame):
         code = frame.f_code
         return cls(
-            funcname = code.co_name,
             filename = canonic_filename(code.co_filename),
             linenum = frame.f_lineno,
+            funcname = code.co_name,
         )
 
 
-class CallGraphTracer(bdb.Bdb):
+class CallGraphTracer:
     """Tracer that records calls being made
 
     It would seem obvious that this should have extended `trace` library
-    (https://docs.python.org/3/library/trace.html), but that part is not extensible --
-    however, the basic debugger (bdb) is, and provides maybe a bit more help than just
-    using `sys.settrace` directly.
+    (https://docs.python.org/3/library/trace.html), but that part is not extensible.
+
+    You might think that we can just use `sys.settrace`
+    (https://docs.python.org/3.8/library/sys.html#sys.settrace) like the basic debugger
+    (bdb) does, but that isn't invoked on calls to C code, which we need in general, and
+    need for handling builtins specifically.
+
+    Luckily, `sys.setprofile`
+    (https://docs.python.org/3.8/library/sys.html#sys.setprofile) provides all that we
+    need. You might be scared by reading the following bit of the documentation
+
+    > The function is thread-specific, but there is no way for the profiler to know about
+    > context switches between threads, so it does not make sense to use this in the
+    > presence of multiple threads.
+
+    but that is to be understood in the context of making a profiler (you can't reliably
+    measure function execution time if you don't know about context switches). For our
+    use-case, this is not a problem.
     """
 
     recorded_calls: set
 
     def __init__(self):
         self.recorded_calls = set()
-        super().__init__()
 
-    def user_call(self, frame, argument_list):
-        call = Call.from_frame(frame.f_back)
-        callee = Callee.from_frame(frame)
+    def run(self, code, globals, locals):
+        self.exec_call_seen = False
+        self.ignore_rest = False
+        try:
+            sys.setprofile(cgt.profilefunc)
+            exec(code, globals, locals)
+        # TODO: exception handling?
+        finally:
+            sys.setprofile(None)
 
-        # _print(f'{call}  -> {callee}')
+    def profilefunc(self, frame, event, arg):
+        # ignore everything until the first call, since that is `exec` from the `run` method above
+        if not self.exec_call_seen:
+            if event == "call":
+                self.exec_call_seen = True
+            return
+
+        # if we're going out of the exec, we should ignore anything else (for example the
+        # call to `sys.setprofile(None)`)
+        if event == "c_return":
+            if arg == exec and frame.f_code.co_filename == __file__:
+                self.ignore_rest = True
+
+        if self.ignore_rest:
+            return
+
+        if event not in ["call", "c_call"]:
+            return
+
+        debug_print(f"profilefunc {event=}")
+        if event == "call":
+            # in call, the `frame` argument is new the frame for entering the callee
+            call = Call.from_frame(frame.f_back)
+            callee = PythonCallee.from_frame(frame)
+
+        if event == "c_call":
+            # in c_call, the `frame` argument is frame where the call happens, and the `arg` argument
+            # is the C function object.
+            call = Call.from_frame(frame)
+            callee = ExternalCallee.from_arg(arg)
+
+        debug_print(f'{call} --> {callee}')
+        debug_print('\n'*5)
         self.recorded_calls.add((call, callee))
 
 
@@ -191,8 +291,6 @@ class XMLExporter(Exporter):
 
 
 if __name__ == "__main__":
-
-
     parser = argparse.ArgumentParser()
 
 
@@ -236,7 +334,7 @@ if __name__ == "__main__":
         XMLExporter.export(cgt.recorded_calls, opts.xml)
     else:
         for (call, callee) in sorted(cgt.recorded_calls):
-            print(f'{call}  -> {callee}')
+            print(f'{call} --> {callee}')
 
     print('--- captured stdout ---')
     print(captured_stdout.getvalue(), end='')
