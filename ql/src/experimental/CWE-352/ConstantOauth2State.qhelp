@@ -10,7 +10,7 @@
     </overview>
     <recommendation>
         <p>
-            Always include a unique, non-guessable <code>state</code> value to the <code>AuthCodeURL</code> that is also bound to the user's authenticated state, and then validated in the redirect callback.
+            Always include a unique, non-guessable <code>state</code> value (provided to the call to <code>AuthCodeURL</code> function) that is also bound to the user's authenticated state with each authentication request, and then validated in the redirect callback.
         </p>
     </recommendation>
     <example>
