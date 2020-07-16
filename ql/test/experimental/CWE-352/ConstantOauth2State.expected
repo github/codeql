@@ -1,0 +1,19 @@
+edges
+| ConstantOauth2State.go:15:26:15:32 | "state" : string literal | ConstantOauth2State.go:45:26:45:41 | stateStringConst |
+| ConstantOauth2State.go:17:22:17:28 | "state" : string | ConstantOauth2State.go:60:26:60:39 | stateStringVar |
+| ConstantOauth2State.go:75:11:75:25 | call to newFixedState : string | ConstantOauth2State.go:76:26:76:30 | state |
+| ConstantOauth2State.go:81:9:81:15 | "state" : string | ConstantOauth2State.go:75:11:75:25 | call to newFixedState : string |
+nodes
+| ConstantOauth2State.go:15:26:15:32 | "state" : string literal | semmle.label | "state" : string literal |
+| ConstantOauth2State.go:17:22:17:28 | "state" : string | semmle.label | "state" : string |
+| ConstantOauth2State.go:30:26:30:32 | "state" | semmle.label | "state" |
+| ConstantOauth2State.go:45:26:45:41 | stateStringConst | semmle.label | stateStringConst |
+| ConstantOauth2State.go:60:26:60:39 | stateStringVar | semmle.label | stateStringVar |
+| ConstantOauth2State.go:75:11:75:25 | call to newFixedState : string | semmle.label | call to newFixedState : string |
+| ConstantOauth2State.go:76:26:76:30 | state | semmle.label | state |
+| ConstantOauth2State.go:81:9:81:15 | "state" : string | semmle.label | "state" : string |
+#select
+| ConstantOauth2State.go:30:26:30:32 | "state" | ConstantOauth2State.go:30:26:30:32 | "state" | ConstantOauth2State.go:30:26:30:32 | "state" | Using a constant $@ to create oauth2 URLs. | ConstantOauth2State.go:30:26:30:32 | "state" | state string |
+| ConstantOauth2State.go:45:26:45:41 | stateStringConst | ConstantOauth2State.go:15:26:15:32 | "state" : string literal | ConstantOauth2State.go:45:26:45:41 | stateStringConst | Using a constant $@ to create oauth2 URLs. | ConstantOauth2State.go:15:26:15:32 | "state" | state string |
+| ConstantOauth2State.go:60:26:60:39 | stateStringVar | ConstantOauth2State.go:17:22:17:28 | "state" : string | ConstantOauth2State.go:60:26:60:39 | stateStringVar | Using a constant $@ to create oauth2 URLs. | ConstantOauth2State.go:17:22:17:28 | "state" | state string |
+| ConstantOauth2State.go:76:26:76:30 | state | ConstantOauth2State.go:81:9:81:15 | "state" : string | ConstantOauth2State.go:76:26:76:30 | state | Using a constant $@ to create oauth2 URLs. | ConstantOauth2State.go:81:9:81:15 | "state" | state string |

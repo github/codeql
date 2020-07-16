@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+    <overview>
+        <p>
+            Oauth2 clients must implement CSRF protection for the redirection URI, which is typically accomplished by including a "state" value that binds the request to
+            the user's authenticated state. The Go Oauth2 library allows to specify a "state" value which is then included in the auth code URL, and then provided back by the remote authentication server in the redirect callback, from where it must be validated; failure to do so makes the client susceptible to an CSRF attack.
+        </p>
+    </overview>
+    <recommendation>
+        <p>
+            Always include a unique, non-guessable <code>state</code> value to the <code>AuthCodeURL</code> that is also bound to the user's authenticated state, and then validated in the redirect callback.
+        </p>
+    </recommendation>
+    <example>
+        <p>
+            The first example shows you the use of a constant state (bad).
+        </p>
+        <sample src="ConstantOauth2StateBad.go" />
+        <p>
+            The second example shows a better implementation idea.
+        </p>
+        <sample src="ConstantOauth2StateBetter.go" />
+    </example>
+</qhelp>
