@@ -131,3 +131,74 @@ void test_strings2()
 	string path3(user_input());
 	sink(path3.c_str(), "r"); // tainted
 }
+
+void test_string3()
+{
+	const char *cs = source();
+
+	// convert char * -> std::string
+	std::string ss(cs);
+
+	sink(cs); // tainted
+	sink(ss); // tainted
+}
+
+void test_string4()
+{
+	const char *cs = source();
+
+	// convert char * -> std::string
+	std::string ss(cs);
+
+	// convert back std::string -> char *
+	cs = ss.c_str();
+
+	sink(cs); // tainted
+	sink(ss); // tainted
+}
+
+void test_string_constructors_assignments()
+{
+	{
+		std::string s1("hello");
+		std::string s2 = "hello";
+		std::string s3;
+		s3 = "hello";
+
+		sink(s1);
+		sink(s2);
+		sink(s3);
+	}
+
+	{
+		std::string s1(source());
+		std::string s2 = source();
+		std::string s3;
+		s3 = source();
+
+		sink(s1); // tainted
+		sink(s2); // tainted
+		sink(s3); // tainted
+	}
+
+	{
+		std::string s1;
+		std::string s2 = s1;
+		std::string s3;
+		s3 = s1;
+
+		sink(s1);
+		sink(s2);
+		sink(s3);
+	}
+
+	{
+		std::string s1 = std::string(source());
+		std::string s2;
+		s2 = std::string(source());
+
+		sink(s1); // tainted
+		sink(s2); // tainted
+	}
+}
+

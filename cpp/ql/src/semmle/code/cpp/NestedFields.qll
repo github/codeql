@@ -1,3 +1,8 @@
+/**
+ * Provides a class for reasoning about nested field accesses, for example
+ * the access `myLine.start.x`.
+ */
+
 import cpp
 
 /**
@@ -25,7 +30,7 @@ private Expr getUltimateQualifier(FieldAccess fa) {
 }
 
 /**
- * Accesses to nested fields.
+ * A nested field access, for example the access `myLine.start.x`.
  */
 class NestedFieldAccess extends FieldAccess {
   Expr ultimateQualifier;
@@ -35,6 +40,30 @@ class NestedFieldAccess extends FieldAccess {
     getTarget() = getANestedField(ultimateQualifier.getType().stripType())
   }
 
-  /** Gets the ultimate qualifier of this nested field access. */
+  /**
+   * Gets the outermost qualifier of this nested field access. In the
+   * following example, the access to `myLine.start.x` has outermost qualifier
+   * `myLine`:
+   * ```
+   * struct Point
+   * {
+   *   float x, y;
+   * };
+   *
+   * struct Line
+   * {
+   *   Point start, end;
+   * };
+   *
+   * void init()
+   * {
+   *   Line myLine;
+   *
+   *   myLine.start.x = 0.0f;
+   *
+   *   // ...
+   * }
+   * ```
+   */
   Expr getUltimateQualifier() { result = ultimateQualifier }
 }

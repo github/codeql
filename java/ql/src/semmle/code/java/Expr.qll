@@ -60,6 +60,12 @@ class Expr extends ExprParent, @expr {
   /** Gets the statement containing this expression, if any. */
   Stmt getEnclosingStmt() { statementEnclosingExpr(this, result) }
 
+  /**
+   * Gets a statement that directly or transitively contains this expression, if any.
+   * This is equivalent to `this.getEnclosingStmt().getEnclosingStmt*()`.
+   */
+  Stmt getAnEnclosingStmt() { result = this.getEnclosingStmt().getEnclosingStmt*() }
+
   /** Gets a child of this expression. */
   Expr getAChildExpr() { exprs(result, _, _, this, _) }
 
@@ -305,10 +311,6 @@ class CompileTimeConstantExpr extends Expr {
   /**
    * Gets the integer value of this expression, where possible.
    *
-   * All computations are performed on QL 32-bit `int`s, so no
-   * truncation is performed in the case of overflow within `byte` or `short`:
-   * `((byte)127)+((byte)1)` evaluates to 128 rather than to -128.
-   *
    * Note that this does not handle the following cases:
    *
    * - values of type `long`,
@@ -332,7 +334,10 @@ class CompileTimeConstantExpr extends Expr {
         else
           if cast.getType().hasName("short")
           then result = (val + 32768).bitAnd(65535) - 32768
-          else result = val
+          else
+            if cast.getType().hasName("char")
+            then result = val.bitAnd(65535)
+            else result = val
       )
       or
       result = this.(PlusExpr).getExpr().(CompileTimeConstantExpr).getIntValue()
@@ -1238,7 +1243,7 @@ class VariableAssign extends VariableUpdate {
   }
 
   /**
-   * Gets the source of this assignment, if any.
+   * Gets the source (right-hand side) of this assignment, if any.
    *
    * An initialization in a `CatchClause` or `EnhancedForStmt` is implicit and
    * does not have a source.

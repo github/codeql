@@ -163,3 +163,78 @@
 	var basicAuth = require('express-basic-auth');
 	basicAuth({users: { [adminName]: 'change_me' }});  // OK
 })();
+
+(async function () {
+    const base64 = require('base-64');
+    const fetch = require("node-fetch");
+
+    const USER = 'sdsdag';
+    const PASS = 'sdsdag';
+    const AUTH = base64.encode(`${USER}:${PASS}`);
+
+    const rsp = await fetch(ENDPOINT, {
+        method: 'get',
+        headers: new fetch.Headers({
+            "Authorization": `Basic ${AUTH}`,
+            "Content-Type": 'application/json'
+        })
+    });
+
+    fetch(ENDPOINT, {
+        method: 'post',
+        body: JSON.stringify(body),
+        headers: {
+            "Content-Type": 'application/json',
+            "Authorization": `Basic ${AUTH}`
+        },
+    })
+
+    var headers = new fetch.Headers({
+        "Content-Type": 'application/json'
+    });
+    headers.append("Authorization", `Basic ${AUTH}`)
+    fetch(ENDPOINT, {
+        method: 'get',
+        headers: headers
+    });
+
+    var headers2 = new fetch.Headers({
+        "Content-Type": 'application/json'
+    });
+    headers2.set("Authorization", `Basic ${AUTH}`)
+    fetch(ENDPOINT, {
+        method: 'get',
+        headers: headers2
+    });
+});
+
+(function () {
+    const base64 = require('base-64');
+
+    const USER = 'sdsdag';
+    const PASS = 'sdsdag';
+    const AUTH = base64.encode(`${USER}:${PASS}`);
+
+    // browser API
+    var headers = new Headers();
+    headers.append("Content-Type", 'application/json');
+    headers.append("Authorization", `Basic ${AUTH}`);
+    fetch(ENDPOINT, {
+        method: 'get',
+        headers: headers
+    });
+});
+
+(async function () {
+    import fetch from 'node-fetch';
+
+    const username = 'sdsdag';
+    const password = config.get('some_actually_secrect_password');
+    const response = await fetch(ENDPOINT, {
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Basic ' + Buffer.from(username + ':' + password).toString('base64'),
+      },
+    });
+})

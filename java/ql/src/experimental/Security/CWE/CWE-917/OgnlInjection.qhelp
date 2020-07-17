@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Object-Graph Navigation Language (OGNL) is an open-source Expression Language (EL) for Java. Due
+to its ability to create or change executable code, OGNL is capable of introducing critical
+security flaws to any application that uses it. Evaluation of unvalidated expressions can let
+attacker to modify Java objects' properties or execute arbitrary code.</p>
+</overview>
+
+<recommendation>
+<p>The general recommendation is to not evaluate untrusted ONGL expressions. If user provided OGNL
+expressions must be evaluated, do this in sandbox (add `-Dognl.security.manager` to JVM arguments)
+and validate the expressions before evaluation.</p>
+</recommendation>
+
+<example>
+<p>In the following examples, the code accepts an OGNL expression from the user and evaluates it.
+</p>
+
+<p>In the first example, the user provided OGNL expression is parsed and evaluated.</p>
+
+<p>The second example validates the expression and evaluates it inside the sandbox.</p>
+
+<sample src="OgnlInjection.java" />
+</example>
+
+<references>
+<li><a href="https://github.com/jkuhnert/ognl/">OGNL library</a>.</li>
+<li>Struts security: <a href="https://struts.apache.org/security/#proactively-protect-from-ognl-expression-injections-attacks-if-easily-applicable">Proactively protect from OGNL Expression Injections attacks</a>.</li>
+</references>
+</qhelp>

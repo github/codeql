@@ -1,6 +1,65 @@
+| ArraysTest.java:7:17:7:21 | "one" | ArraysTest.java:7:3:7:22 | asList(...) |
+| ArraysTest.java:7:17:7:21 | "one" | ArraysTest.java:7:3:7:22 | new ..[] { .. } |
+| ArraysTest.java:8:17:8:21 | "two" | ArraysTest.java:8:3:8:31 | asList(...) |
+| ArraysTest.java:8:17:8:21 | "two" | ArraysTest.java:8:3:8:31 | new ..[] { .. } |
+| ArraysTest.java:8:24:8:30 | "three" | ArraysTest.java:8:3:8:31 | asList(...) |
+| ArraysTest.java:8:24:8:30 | "three" | ArraysTest.java:8:3:8:31 | new ..[] { .. } |
+| ArraysTest.java:9:17:9:22 | source | ArraysTest.java:9:3:9:27 | copyOf(...) |
+| ArraysTest.java:10:22:10:27 | source | ArraysTest.java:10:3:10:35 | copyOfRange(...) |
+| ArraysTest.java:12:22:12:27 | source | ArraysTest.java:12:3:12:28 | spliterator(...) |
+| ArraysTest.java:13:17:13:22 | source | ArraysTest.java:13:3:13:23 | stream(...) |
+| ArraysTest.java:15:23:15:29 | "value" | ArraysTest.java:15:15:15:20 | source [post update] |
+| ArraysTest.java:16:30:16:35 | "data" | ArraysTest.java:16:15:16:20 | source [post update] |
+| ArraysTest.java:17:43:17:43 | x | ArraysTest.java:17:43:17:47 | ... + ... |
+| ArraysTest.java:17:47:17:47 | y | ArraysTest.java:17:43:17:47 | ... + ... |
+| ArraysTest.java:18:50:18:50 | x | ArraysTest.java:18:50:18:54 | ... + ... |
+| ArraysTest.java:18:54:18:54 | y | ArraysTest.java:18:50:18:54 | ... + ... |
+| ArraysTest.java:19:38:19:44 | Integer | ArraysTest.java:19:38:19:56 | toString(...) |
+| ArraysTest.java:19:55:19:55 | x | ArraysTest.java:19:38:19:56 | toString(...) |
+| ArraysTest.java:20:30:20:36 | Integer | ArraysTest.java:20:30:20:48 | toString(...) |
+| ArraysTest.java:20:47:20:47 | x | ArraysTest.java:20:30:20:48 | toString(...) |
+| CollectionsTest.java:10:28:10:32 | "one" | CollectionsTest.java:10:3:10:33 | new ..[] { .. } |
+| CollectionsTest.java:10:28:10:32 | "one" | CollectionsTest.java:10:22:10:25 | list [post update] |
+| CollectionsTest.java:11:28:11:32 | "two" | CollectionsTest.java:11:3:11:42 | new ..[] { .. } |
+| CollectionsTest.java:11:28:11:32 | "two" | CollectionsTest.java:11:22:11:25 | list [post update] |
+| CollectionsTest.java:11:35:11:41 | "three" | CollectionsTest.java:11:3:11:42 | new ..[] { .. } |
+| CollectionsTest.java:11:35:11:41 | "three" | CollectionsTest.java:11:22:11:25 | list [post update] |
+| CollectionsTest.java:12:28:12:49 | new String[] | CollectionsTest.java:12:22:12:25 | list [post update] |
+| CollectionsTest.java:12:28:12:49 | {...} | CollectionsTest.java:12:28:12:49 | new String[] |
+| CollectionsTest.java:12:42:12:47 | "four" | CollectionsTest.java:12:28:12:49 | {...} |
+| CollectionsTest.java:14:27:14:30 | list | CollectionsTest.java:14:3:14:45 | checkedList(...) |
+| CollectionsTest.java:15:19:15:22 | list | CollectionsTest.java:15:3:15:23 | min(...) |
+| CollectionsTest.java:16:27:16:30 | list | CollectionsTest.java:16:3:16:31 | enumeration(...) |
+| CollectionsTest.java:17:20:17:30 | enumeration | CollectionsTest.java:17:3:17:31 | list(...) |
+| CollectionsTest.java:18:35:18:41 | "value" | CollectionsTest.java:18:3:18:42 | singletonMap(...) |
+| CollectionsTest.java:19:26:19:30 | other | CollectionsTest.java:19:20:19:23 | list [post update] |
+| CollectionsTest.java:20:27:20:32 | "item" | CollectionsTest.java:20:3:20:33 | nCopies(...) |
+| CollectionsTest.java:21:42:21:50 | "replace" | CollectionsTest.java:21:26:21:29 | list [post update] |
+| CollectionsTest.java:24:21:24:23 | "a" | CollectionsTest.java:24:3:24:24 | of(...) |
+| CollectionsTest.java:25:11:25:13 | "b" | CollectionsTest.java:25:3:25:19 | of(...) |
+| CollectionsTest.java:25:16:25:18 | "c" | CollectionsTest.java:25:3:25:19 | of(...) |
+| CollectionsTest.java:26:25:26:28 | list | CollectionsTest.java:26:3:26:29 | copyOf(...) |
+| CollectionsTest.java:28:10:28:12 | "d" | CollectionsTest.java:28:3:28:13 | of(...) |
+| CollectionsTest.java:29:10:29:12 | "e" | CollectionsTest.java:29:3:29:19 | of(...) |
+| CollectionsTest.java:29:16:29:18 | "f" | CollectionsTest.java:29:3:29:19 | of(...) |
+| CollectionsTest.java:30:14:30:17 | list | CollectionsTest.java:30:3:30:18 | copyOf(...) |
+| CollectionsTest.java:32:15:32:17 | "v" | CollectionsTest.java:32:3:32:18 | of(...) |
+| CollectionsTest.java:33:16:33:19 | "v1" | CollectionsTest.java:33:3:33:32 | of(...) |
+| CollectionsTest.java:33:28:33:31 | "v2" | CollectionsTest.java:33:3:33:32 | of(...) |
+| CollectionsTest.java:34:14:34:16 | map | CollectionsTest.java:34:3:34:17 | copyOf(...) |
+| CollectionsTest.java:36:17:36:37 | entry(...) | CollectionsTest.java:36:3:36:38 | new ..[] { .. } |
+| CollectionsTest.java:36:17:36:37 | entry(...) | CollectionsTest.java:36:3:36:38 | ofEntries(...) |
+| CollectionsTest.java:36:33:36:36 | "v3" | CollectionsTest.java:36:17:36:37 | entry(...) |
+| CollectionsTest.java:37:17:37:37 | entry(...) | CollectionsTest.java:37:3:37:61 | new ..[] { .. } |
+| CollectionsTest.java:37:17:37:37 | entry(...) | CollectionsTest.java:37:3:37:61 | ofEntries(...) |
+| CollectionsTest.java:37:33:37:36 | "v4" | CollectionsTest.java:37:17:37:37 | entry(...) |
+| CollectionsTest.java:37:40:37:60 | entry(...) | CollectionsTest.java:37:3:37:61 | new ..[] { .. } |
+| CollectionsTest.java:37:40:37:60 | entry(...) | CollectionsTest.java:37:3:37:61 | ofEntries(...) |
+| CollectionsTest.java:37:56:37:59 | "v5" | CollectionsTest.java:37:40:37:60 | entry(...) |
 | Test.java:24:32:24:38 | string2 | Test.java:24:17:24:39 | decode(...) |
 | Test.java:25:46:25:51 | bytes2 | Test.java:25:31:25:52 | encode(...) |
 | Test.java:27:34:27:40 | string2 | Test.java:27:13:27:41 | decode(...) |
 | Test.java:28:34:28:40 | string2 | Test.java:28:13:28:41 | encode(...) |
 | Test.java:30:30:30:35 | bytes2 | Test.java:30:12:30:36 | encode(...) |
 | Test.java:31:30:31:35 | bytes2 | Test.java:31:12:31:36 | decode(...) |
+| Test.java:33:18:33:21 | date | Test.java:33:18:33:29 | clone(...) |

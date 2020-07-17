@@ -1,3 +1,7 @@
+/**
+ * Provides classes for modeling `struct`s.
+ */
+
 import semmle.code.cpp.Type
 import semmle.code.cpp.Class
 
@@ -18,7 +22,7 @@ import semmle.code.cpp.Class
 class Struct extends Class {
   Struct() { usertypes(underlyingElement(this), _, 1) or usertypes(underlyingElement(this), _, 3) }
 
-  override string getCanonicalQLClass() { result = "Struct" }
+  override string getAPrimaryQlClass() { result = "Struct" }
 
   override string explain() { result = "struct " + this.getName() }
 
@@ -39,9 +43,7 @@ class Struct extends Class {
 class LocalStruct extends Struct {
   LocalStruct() { isLocal() }
 
-  override string getCanonicalQLClass() {
-    not this instanceof LocalUnion and result = "LocalStruct"
-  }
+  override string getAPrimaryQlClass() { not this instanceof LocalUnion and result = "LocalStruct" }
 }
 
 /**
@@ -58,7 +60,7 @@ class LocalStruct extends Struct {
 class NestedStruct extends Struct {
   NestedStruct() { this.isMember() }
 
-  override string getCanonicalQLClass() {
+  override string getAPrimaryQlClass() {
     not this instanceof NestedUnion and result = "NestedStruct"
   }
 

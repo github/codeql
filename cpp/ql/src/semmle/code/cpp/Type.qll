@@ -1,5 +1,8 @@
+/**
+ * Provides a hierarchy of classes for modeling C/C++ types.
+ */
+
 import semmle.code.cpp.Element
-import semmle.code.cpp.Member
 import semmle.code.cpp.Function
 private import semmle.code.cpp.internal.ResolveClass
 
@@ -322,7 +325,7 @@ class BuiltInType extends Type, @builtintype {
 class ErroneousType extends BuiltInType {
   ErroneousType() { builtintypes(underlyingElement(this), _, 1, _, _, _) }
 
-  override string getCanonicalQLClass() { result = "ErroneousType" }
+  override string getAPrimaryQlClass() { result = "ErroneousType" }
 }
 
 /**
@@ -342,7 +345,7 @@ class ErroneousType extends BuiltInType {
 class UnknownType extends BuiltInType {
   UnknownType() { builtintypes(underlyingElement(this), _, 2, _, _, _) }
 
-  override string getCanonicalQLClass() { result = "UnknownType" }
+  override string getAPrimaryQlClass() { result = "UnknownType" }
 }
 
 private predicate isArithmeticType(@builtintype type, int kind) {
@@ -361,7 +364,7 @@ private predicate isArithmeticType(@builtintype type, int kind) {
 class ArithmeticType extends BuiltInType {
   ArithmeticType() { isArithmeticType(underlyingElement(this), _) }
 
-  override string getCanonicalQLClass() { result = "ArithmeticType" }
+  override string getAPrimaryQlClass() { result = "ArithmeticType" }
 }
 
 private predicate isIntegralType(@builtintype type, int kind) {
@@ -561,7 +564,7 @@ class IntegralType extends ArithmeticType, IntegralOrEnumType {
 class BoolType extends IntegralType {
   BoolType() { builtintypes(underlyingElement(this), _, 4, _, _, _) }
 
-  override string getCanonicalQLClass() { result = "BoolType" }
+  override string getAPrimaryQlClass() { result = "BoolType" }
 }
 
 /**
@@ -586,7 +589,7 @@ abstract class CharType extends IntegralType { }
 class PlainCharType extends CharType {
   PlainCharType() { builtintypes(underlyingElement(this), _, 5, _, _, _) }
 
-  override string getCanonicalQLClass() { result = "PlainCharType" }
+  override string getAPrimaryQlClass() { result = "PlainCharType" }
 }
 
 /**
@@ -599,7 +602,7 @@ class PlainCharType extends CharType {
 class UnsignedCharType extends CharType {
   UnsignedCharType() { builtintypes(underlyingElement(this), _, 6, _, _, _) }
 
-  override string getCanonicalQLClass() { result = "UnsignedCharType" }
+  override string getAPrimaryQlClass() { result = "UnsignedCharType" }
 }
 
 /**
@@ -612,7 +615,7 @@ class UnsignedCharType extends CharType {
 class SignedCharType extends CharType {
   SignedCharType() { builtintypes(underlyingElement(this), _, 7, _, _, _) }
 
-  override string getCanonicalQLClass() { result = "SignedCharType" }
+  override string getAPrimaryQlClass() { result = "SignedCharType" }
 }
 
 /**
@@ -629,7 +632,7 @@ class ShortType extends IntegralType {
     builtintypes(underlyingElement(this), _, 10, _, _, _)
   }
 
-  override string getCanonicalQLClass() { result = "ShortType" }
+  override string getAPrimaryQlClass() { result = "ShortType" }
 }
 
 /**
@@ -646,7 +649,7 @@ class IntType extends IntegralType {
     builtintypes(underlyingElement(this), _, 13, _, _, _)
   }
 
-  override string getCanonicalQLClass() { result = "IntType" }
+  override string getAPrimaryQlClass() { result = "IntType" }
 }
 
 /**
@@ -663,7 +666,7 @@ class LongType extends IntegralType {
     builtintypes(underlyingElement(this), _, 16, _, _, _)
   }
 
-  override string getCanonicalQLClass() { result = "LongType" }
+  override string getAPrimaryQlClass() { result = "LongType" }
 }
 
 /**
@@ -680,7 +683,7 @@ class LongLongType extends IntegralType {
     builtintypes(underlyingElement(this), _, 19, _, _, _)
   }
 
-  override string getCanonicalQLClass() { result = "LongLongType" }
+  override string getAPrimaryQlClass() { result = "LongLongType" }
 }
 
 /**
@@ -698,7 +701,7 @@ class Int128Type extends IntegralType {
     builtintypes(underlyingElement(this), _, 37, _, _, _)
   }
 
-  override string getCanonicalQLClass() { result = "Int128Type" }
+  override string getAPrimaryQlClass() { result = "Int128Type" }
 }
 
 private newtype TTypeDomain =
@@ -894,7 +897,7 @@ class DecimalFloatingPointType extends FloatingPointType {
 class FloatType extends RealNumberType, BinaryFloatingPointType {
   FloatType() { builtintypes(underlyingElement(this), _, 24, _, _, _) }
 
-  override string getCanonicalQLClass() { result = "FloatType" }
+  override string getAPrimaryQlClass() { result = "FloatType" }
 }
 
 /**
@@ -906,7 +909,7 @@ class FloatType extends RealNumberType, BinaryFloatingPointType {
 class DoubleType extends RealNumberType, BinaryFloatingPointType {
   DoubleType() { builtintypes(underlyingElement(this), _, 25, _, _, _) }
 
-  override string getCanonicalQLClass() { result = "DoubleType" }
+  override string getAPrimaryQlClass() { result = "DoubleType" }
 }
 
 /**
@@ -918,7 +921,7 @@ class DoubleType extends RealNumberType, BinaryFloatingPointType {
 class LongDoubleType extends RealNumberType, BinaryFloatingPointType {
   LongDoubleType() { builtintypes(underlyingElement(this), _, 26, _, _, _) }
 
-  override string getCanonicalQLClass() { result = "LongDoubleType" }
+  override string getAPrimaryQlClass() { result = "LongDoubleType" }
 }
 
 /**
@@ -930,7 +933,7 @@ class LongDoubleType extends RealNumberType, BinaryFloatingPointType {
 class Float128Type extends RealNumberType, BinaryFloatingPointType {
   Float128Type() { builtintypes(underlyingElement(this), _, 38, _, _, _) }
 
-  override string getCanonicalQLClass() { result = "Float128Type" }
+  override string getAPrimaryQlClass() { result = "Float128Type" }
 }
 
 /**
@@ -942,7 +945,7 @@ class Float128Type extends RealNumberType, BinaryFloatingPointType {
 class Decimal32Type extends RealNumberType, DecimalFloatingPointType {
   Decimal32Type() { builtintypes(underlyingElement(this), _, 40, _, _, _) }
 
-  override string getCanonicalQLClass() { result = "Decimal32Type" }
+  override string getAPrimaryQlClass() { result = "Decimal32Type" }
 }
 
 /**
@@ -954,7 +957,7 @@ class Decimal32Type extends RealNumberType, DecimalFloatingPointType {
 class Decimal64Type extends RealNumberType, DecimalFloatingPointType {
   Decimal64Type() { builtintypes(underlyingElement(this), _, 41, _, _, _) }
 
-  override string getCanonicalQLClass() { result = "Decimal64Type" }
+  override string getAPrimaryQlClass() { result = "Decimal64Type" }
 }
 
 /**
@@ -966,7 +969,7 @@ class Decimal64Type extends RealNumberType, DecimalFloatingPointType {
 class Decimal128Type extends RealNumberType, DecimalFloatingPointType {
   Decimal128Type() { builtintypes(underlyingElement(this), _, 42, _, _, _) }
 
-  override string getCanonicalQLClass() { result = "Decimal128Type" }
+  override string getAPrimaryQlClass() { result = "Decimal128Type" }
 }
 
 /**
@@ -978,7 +981,7 @@ class Decimal128Type extends RealNumberType, DecimalFloatingPointType {
 class VoidType extends BuiltInType {
   VoidType() { builtintypes(underlyingElement(this), _, 3, _, _, _) }
 
-  override string getCanonicalQLClass() { result = "VoidType" }
+  override string getAPrimaryQlClass() { result = "VoidType" }
 }
 
 /**
@@ -994,7 +997,7 @@ class VoidType extends BuiltInType {
 class WideCharType extends IntegralType {
   WideCharType() { builtintypes(underlyingElement(this), _, 33, _, _, _) }
 
-  override string getCanonicalQLClass() { result = "WideCharType" }
+  override string getAPrimaryQlClass() { result = "WideCharType" }
 }
 
 /**
@@ -1006,7 +1009,7 @@ class WideCharType extends IntegralType {
 class Char8Type extends IntegralType {
   Char8Type() { builtintypes(underlyingElement(this), _, 51, _, _, _) }
 
-  override string getCanonicalQLClass() { result = "Char8Type" }
+  override string getAPrimaryQlClass() { result = "Char8Type" }
 }
 
 /**
@@ -1018,7 +1021,7 @@ class Char8Type extends IntegralType {
 class Char16Type extends IntegralType {
   Char16Type() { builtintypes(underlyingElement(this), _, 43, _, _, _) }
 
-  override string getCanonicalQLClass() { result = "Char16Type" }
+  override string getAPrimaryQlClass() { result = "Char16Type" }
 }
 
 /**
@@ -1030,7 +1033,7 @@ class Char16Type extends IntegralType {
 class Char32Type extends IntegralType {
   Char32Type() { builtintypes(underlyingElement(this), _, 44, _, _, _) }
 
-  override string getCanonicalQLClass() { result = "Char32Type" }
+  override string getAPrimaryQlClass() { result = "Char32Type" }
 }
 
 /**
@@ -1045,7 +1048,7 @@ class Char32Type extends IntegralType {
 class NullPointerType extends BuiltInType {
   NullPointerType() { builtintypes(underlyingElement(this), _, 34, _, _, _) }
 
-  override string getCanonicalQLClass() { result = "NullPointerType" }
+  override string getAPrimaryQlClass() { result = "NullPointerType" }
 }
 
 /**
@@ -1080,22 +1083,46 @@ class DerivedType extends Type, @derivedtype {
 
   override Type stripType() { result = getBaseType().stripType() }
 
-  predicate isAutoReleasing() {
+  /**
+   * Holds if this type has the `__autoreleasing` specifier or if it points to
+   * a type with the `__autoreleasing` specifier.
+   *
+   * DEPRECATED: use `hasSpecifier` directly instead.
+   */
+  deprecated predicate isAutoReleasing() {
     this.hasSpecifier("__autoreleasing") or
     this.(PointerType).getBaseType().hasSpecifier("__autoreleasing")
   }
 
-  predicate isStrong() {
+  /**
+   * Holds if this type has the `__strong` specifier or if it points to
+   * a type with the `__strong` specifier.
+   *
+   * DEPRECATED: use `hasSpecifier` directly instead.
+   */
+  deprecated predicate isStrong() {
     this.hasSpecifier("__strong") or
     this.(PointerType).getBaseType().hasSpecifier("__strong")
   }
 
-  predicate isUnsafeRetained() {
+  /**
+   * Holds if this type has the `__unsafe_unretained` specifier or if it points
+   * to a type with the `__unsafe_unretained` specifier.
+   *
+   * DEPRECATED: use `hasSpecifier` directly instead.
+   */
+  deprecated predicate isUnsafeRetained() {
     this.hasSpecifier("__unsafe_unretained") or
     this.(PointerType).getBaseType().hasSpecifier("__unsafe_unretained")
   }
 
-  predicate isWeak() {
+  /**
+   * Holds if this type has the `__weak` specifier or if it points to
+   * a type with the `__weak` specifier.
+   *
+   * DEPRECATED: use `hasSpecifier` directly instead.
+   */
+  deprecated predicate isWeak() {
     this.hasSpecifier("__weak") or
     this.(PointerType).getBaseType().hasSpecifier("__weak")
   }
@@ -1109,7 +1136,7 @@ class DerivedType extends Type, @derivedtype {
  * ```
  */
 class Decltype extends Type, @decltype {
-  override string getCanonicalQLClass() { result = "Decltype" }
+  override string getAPrimaryQlClass() { result = "Decltype" }
 
   /**
    * The expression whose type is being obtained by this decltype.
@@ -1182,7 +1209,7 @@ class Decltype extends Type, @decltype {
 class PointerType extends DerivedType {
   PointerType() { derivedtypes(underlyingElement(this), _, 1, _) }
 
-  override string getCanonicalQLClass() { result = "PointerType" }
+  override string getAPrimaryQlClass() { result = "PointerType" }
 
   override int getPointerIndirectionLevel() {
     result = 1 + this.getBaseType().getPointerIndirectionLevel()
@@ -1208,7 +1235,7 @@ class ReferenceType extends DerivedType {
     derivedtypes(underlyingElement(this), _, 2, _) or derivedtypes(underlyingElement(this), _, 8, _)
   }
 
-  override string getCanonicalQLClass() { result = "ReferenceType" }
+  override string getAPrimaryQlClass() { result = "ReferenceType" }
 
   override int getPointerIndirectionLevel() { result = getBaseType().getPointerIndirectionLevel() }
 
@@ -1235,7 +1262,7 @@ class ReferenceType extends DerivedType {
 class LValueReferenceType extends ReferenceType {
   LValueReferenceType() { derivedtypes(underlyingElement(this), _, 2, _) }
 
-  override string getCanonicalQLClass() { result = "LValueReferenceType" }
+  override string getAPrimaryQlClass() { result = "LValueReferenceType" }
 }
 
 /**
@@ -1251,7 +1278,7 @@ class LValueReferenceType extends ReferenceType {
 class RValueReferenceType extends ReferenceType {
   RValueReferenceType() { derivedtypes(underlyingElement(this), _, 8, _) }
 
-  override string getCanonicalQLClass() { result = "RValueReferenceType" }
+  override string getAPrimaryQlClass() { result = "RValueReferenceType" }
 
   override string explain() { result = "rvalue " + super.explain() }
 }
@@ -1266,7 +1293,7 @@ class RValueReferenceType extends ReferenceType {
 class SpecifiedType extends DerivedType {
   SpecifiedType() { derivedtypes(underlyingElement(this), _, 3, _) }
 
-  override string getCanonicalQLClass() { result = "SpecifiedType" }
+  override string getAPrimaryQlClass() { result = "SpecifiedType" }
 
   override int getSize() { result = this.getBaseType().getSize() }
 
@@ -1314,8 +1341,12 @@ class SpecifiedType extends DerivedType {
 class ArrayType extends DerivedType {
   ArrayType() { derivedtypes(underlyingElement(this), _, 4, _) }
 
-  override string getCanonicalQLClass() { result = "ArrayType" }
+  override string getAPrimaryQlClass() { result = "ArrayType" }
 
+  /**
+   * Holds if this array is declared to be of a constant size. See
+   * `getArraySize` and `getByteSize` to get the size of the array.
+   */
   predicate hasArraySize() { arraysizes(underlyingElement(this), _, _, _) }
 
   /**
@@ -1381,7 +1412,7 @@ class GNUVectorType extends DerivedType {
    */
   int getNumElements() { arraysizes(underlyingElement(this), result, _, _) }
 
-  override string getCanonicalQLClass() { result = "GNUVectorType" }
+  override string getAPrimaryQlClass() { result = "GNUVectorType" }
 
   /**
    * Gets the size, in bytes, of this vector type.
@@ -1412,7 +1443,7 @@ class GNUVectorType extends DerivedType {
 class FunctionPointerType extends FunctionPointerIshType {
   FunctionPointerType() { derivedtypes(underlyingElement(this), _, 6, _) }
 
-  override string getCanonicalQLClass() { result = "FunctionPointerType" }
+  override string getAPrimaryQlClass() { result = "FunctionPointerType" }
 
   override int getPointerIndirectionLevel() { result = 1 }
 
@@ -1430,7 +1461,7 @@ class FunctionPointerType extends FunctionPointerIshType {
 class FunctionReferenceType extends FunctionPointerIshType {
   FunctionReferenceType() { derivedtypes(underlyingElement(this), _, 7, _) }
 
-  override string getCanonicalQLClass() { result = "FunctionReferenceType" }
+  override string getAPrimaryQlClass() { result = "FunctionReferenceType" }
 
   override int getPointerIndirectionLevel() { result = getBaseType().getPointerIndirectionLevel() }
 
@@ -1519,7 +1550,7 @@ class PointerToMemberType extends Type, @ptrtomember {
   /** a printable representation of this named element */
   override string toString() { result = this.getName() }
 
-  override string getCanonicalQLClass() { result = "PointerToMemberType" }
+  override string getAPrimaryQlClass() { result = "PointerToMemberType" }
 
   /** the name of this type */
   override string getName() { result = "..:: *" }
@@ -1564,16 +1595,25 @@ class RoutineType extends Type, @routinetype {
   /** a printable representation of this named element */
   override string toString() { result = this.getName() }
 
-  override string getCanonicalQLClass() { result = "RoutineType" }
+  override string getAPrimaryQlClass() { result = "RoutineType" }
 
   override string getName() { result = "..()(..)" }
 
+  /**
+   * Gets the type of the `n`th parameter to this routine.
+   */
   Type getParameterType(int n) {
     routinetypeargs(underlyingElement(this), n, unresolveElement(result))
   }
 
+  /**
+   * Gets the type of a parameter to this routine.
+   */
   Type getAParameterType() { routinetypeargs(underlyingElement(this), _, unresolveElement(result)) }
 
+  /**
+   * Gets the return type of this routine.
+   */
   Type getReturnType() { routinetypes(underlyingElement(this), unresolveElement(result)) }
 
   override string explain() {
@@ -1632,7 +1672,7 @@ class TemplateParameter extends UserType {
     usertypes(underlyingElement(this), _, 7) or usertypes(underlyingElement(this), _, 8)
   }
 
-  override string getCanonicalQLClass() { result = "TemplateParameter" }
+  override string getAPrimaryQlClass() { result = "TemplateParameter" }
 
   override predicate involvesTemplateParameter() { any() }
 }
@@ -1650,7 +1690,7 @@ class TemplateParameter extends UserType {
 class TemplateTemplateParameter extends TemplateParameter {
   TemplateTemplateParameter() { usertypes(underlyingElement(this), _, 8) }
 
-  override string getCanonicalQLClass() { result = "TemplateTemplateParameter" }
+  override string getAPrimaryQlClass() { result = "TemplateTemplateParameter" }
 }
 
 /**
@@ -1662,7 +1702,7 @@ class TemplateTemplateParameter extends TemplateParameter {
 class AutoType extends TemplateParameter {
   AutoType() { usertypes(underlyingElement(this), "auto", 7) }
 
-  override string getCanonicalQLClass() { result = "AutoType" }
+  override string getAPrimaryQlClass() { result = "AutoType" }
 
   override Location getLocation() {
     suppressUnusedThis(this) and
@@ -1698,7 +1738,7 @@ private predicate suppressUnusedThis(Type t) { any() }
 class TypeMention extends Locatable, @type_mention {
   override string toString() { result = "type mention" }
 
-  override string getCanonicalQLClass() { result = "TypeMention" }
+  override string getAPrimaryQlClass() { result = "TypeMention" }
 
   /**
    * Gets the type being referenced by this type mention.

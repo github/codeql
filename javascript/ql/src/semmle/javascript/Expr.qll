@@ -1355,6 +1355,11 @@ class EqualityTest extends @equalitytest, Comparison {
     (this instanceof NEqExpr or this instanceof StrictNEqExpr) and
     result = false
   }
+
+  /**
+   * Holds if the equality operator is strict (`===` or `!==`).
+   */
+  predicate isStrict() { this instanceof StrictEqExpr or this instanceof StrictNEqExpr }
 }
 
 /**
@@ -1514,7 +1519,8 @@ class AddExpr extends @addexpr, BinaryExpr {
   override string getOperator() { result = "+" }
 
   override string getStringValue() {
-    result = getLeftOperand().getStringValue() + getRightOperand().getStringValue()
+    result = getLeftOperand().getStringValue() + getRightOperand().getStringValue() and
+    result.length() < 1000 * 1000
   }
 }
 

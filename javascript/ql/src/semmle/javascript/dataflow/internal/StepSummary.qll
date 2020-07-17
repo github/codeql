@@ -110,6 +110,15 @@ module StepSummary {
       or
       basicLoadStep(pred, succ, prop) and
       summary = LoadStep(prop)
+      or
+      any(AdditionalTypeTrackingStep st).storeStep(pred, succ, prop) and
+      summary = StoreStep(prop)
+      or
+      any(AdditionalTypeTrackingStep st).loadStep(pred, succ, prop) and
+      summary = LoadStep(prop)
+      or
+      any(AdditionalTypeTrackingStep st).loadStoreStep(pred, succ, prop) and
+      summary = CopyStep(prop)
     )
     or
     any(AdditionalTypeTrackingStep st).step(pred, succ) and
@@ -143,9 +152,6 @@ module StepSummary {
       summary = LoadStep(name) and
       name != ""
     )
-    or
-    // Step in/out of a promise
-    succ = PromiseTypeTracking::promiseStep(pred, summary)
     or
     // Summarize calls with flow directly from a parameter to a return.
     exists(DataFlow::ParameterNode param, DataFlow::FunctionNode fun |

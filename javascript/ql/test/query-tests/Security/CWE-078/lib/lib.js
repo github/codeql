@@ -269,7 +269,7 @@ module.exports.sanitizerProperty = function (obj) {
 
 	obj.version = "";
 
-	cp.exec("rm -rf " + obj.version); // OK - but FP
+	cp.exec("rm -rf " + obj.version); // OK
 }
 
 module.exports.Foo = class Foo {
@@ -309,4 +309,14 @@ module.exports.sanitizer2 = function (name) {
 
   var sanitized = sanitizeShellString(name);
   cp.exec("rm -rf " + sanitized); // OK
+}
+
+module.exports.typeofcheck = function (name) {
+	cp.exec("rm -rf " + name); // NOT OK
+	
+	if (typeof name === "undefined") {
+		cp.exec("rm -rf " + name); // OK
+	} else {
+		cp.exec("rm -rf " + name); // NOT OK
+	}
 }

@@ -1,3 +1,7 @@
+/**
+ * Provides classes for modeling namespaces, `using` directives and `using` declarations.
+ */
+
 import semmle.code.cpp.Element
 import semmle.code.cpp.Type
 import semmle.code.cpp.metrics.MetricNamespace
@@ -127,7 +131,7 @@ class NamespaceDeclarationEntry extends Locatable, @namespace_decl {
    */
   Location getBodyLocation() { namespace_decls(underlyingElement(this), _, _, result) }
 
-  override string getCanonicalQLClass() { result = "NamespaceDeclarationEntry" }
+  override string getAPrimaryQlClass() { result = "NamespaceDeclarationEntry" }
 }
 
 /**

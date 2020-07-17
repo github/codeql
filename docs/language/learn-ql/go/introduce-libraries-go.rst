@@ -99,9 +99,8 @@ The most important subclasses of `AstNode
 statements and expressions, respectively. This section briefly discusses some of their more
 important subclasses and predicates. For a full reference of all the subclasses of `Stmt
 <https://help.semmle.com/qldoc/go/semmle/go/Stmt.qll/type.Stmt$Stmt.html>`__ and `Expr
-<https://help.semmle.com/qldoc/go/semmle/go/Expr.qll/type.Expr$Expr.html>`__ and their API, see
-`Stmt.qll <https://help.semmle.com/qldoc/go/semmle/go/Stmt.qll/module.Stmt.html>`__ and `Expr.qll
-<https://help.semmle.com/qldoc/go/semmle/go/Expr.qll/module.Expr.html>`__.
+<https://help.semmle.com/qldoc/go/semmle/go/Expr.qll/type.Expr$Expr.html>`__, see
+:doc:`Abstract syntax tree classes for Go <ast-class-reference>`.
 
 Statements
 ~~~~~~~~~~

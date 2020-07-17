@@ -1,3 +1,8 @@
+/**
+ * Provides implementation classes modeling `strcat` and various similar functions.
+ * See `semmle.code.cpp.models.Models` for usage information.
+ */
+
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Taint
@@ -18,6 +23,21 @@ class StrcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction, Sid
       name = "_mbsncat_l" // _mbsncat_l(dst, src, max_amount, locale)
     )
   }
+
+  /**
+   * Gets the index of the parameter that is the size of the copy (in characters).
+   */
+  int getParamSize() { exists(getParameter(2)) and result = 2 }
+
+  /**
+   * Gets the index of the parameter that is the source of the copy.
+   */
+  int getParamSrc() { result = 1 }
+
+  /**
+   * Gets the index of the parameter that is the destination to be appended to.
+   */
+  int getParamDest() { result = 0 }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input.isParameter(0) and

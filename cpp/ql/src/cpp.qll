@@ -32,6 +32,7 @@ import semmle.code.cpp.Enum
 import semmle.code.cpp.Member
 import semmle.code.cpp.Field
 import semmle.code.cpp.Function
+import semmle.code.cpp.MemberFunction
 import semmle.code.cpp.Parameter
 import semmle.code.cpp.Variable
 import semmle.code.cpp.Initializer

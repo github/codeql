@@ -176,13 +176,18 @@ class WebPageWriteLiteralToSink extends HtmlSink {
 abstract class AspNetCoreHtmlSink extends HtmlSink { }
 
 /**
- * An expression that is used as an argument to `HtmlHelper.Raw`, typically in
+ * An expression that is used as an argument to `IHtmlHelper.Raw`, typically in
  * a `.cshtml` file.
  */
 class MicrosoftAspNetCoreMvcHtmlHelperRawSink extends AspNetCoreHtmlSink {
   MicrosoftAspNetCoreMvcHtmlHelperRawSink() {
-    this.getExpr() =
-      any(MicrosoftAspNetCoreMvcHtmlHelperClass h).getRawMethod().getACall().getAnArgument()
+    exists(Call c, Callable target |
+      c.getTarget() = target and
+      target.hasName("Raw") and
+      target.getDeclaringType().getABaseType*() instanceof
+        MicrosoftAspNetCoreMvcRenderingIHtmlHelperInterface and
+      this.getExpr() = c.getAnArgument()
+    )
   }
 }
 

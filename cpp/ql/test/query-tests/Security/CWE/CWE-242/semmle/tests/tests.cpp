@@ -289,3 +289,22 @@ void test5(va_list args, float f)
 	vsprintf(buffer4, "123", args); // GOOD
 	vsprintf(buffer4, "1234", args); // BAD: buffer overflow [NOT DETECTED]
 }
+
+namespace custom_sprintf_impl {
+	int sprintf(char *buf, const char *format, ...)
+	{
+		__builtin_va_list args;
+		int i;
+
+		__builtin_va_start(args, format);
+		i = vsprintf(buf, format, args);
+		__builtin_va_end(args);
+		return i;
+	}
+
+	void regression_test1()
+	{
+		char buffer8[8];
+		sprintf(buffer8, "12345678"); // BAD: potential buffer overflow
+	}
+}

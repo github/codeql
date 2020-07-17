@@ -35,23 +35,11 @@ module CleartextLogging {
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Barrier }
 
     override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
-      succ.(DataFlow::PropRead).getBase() = pred
+      CleartextLogging::isSanitizerEdge(pred, succ)
     }
 
     override predicate isAdditionalTaintStep(DataFlow::Node src, DataFlow::Node trg) {
-      // A taint propagating data flow edge through objects: a tainted write taints the entire object.
-      exists(DataFlow::PropWrite write |
-        write.getRhs() = src and
-        trg.(DataFlow::SourceNode).flowsTo(write.getBase())
-      )
-      or
-      // Taint through the arguments object.
-      exists(DataFlow::CallNode call, Function f |
-        src = call.getAnArgument() and
-        f = call.getACallee() and
-        not call.isImprecise() and
-        trg.asExpr() = f.getArgumentsVariable().getAnAccess()
-      )
+      CleartextLogging::isAdditionalTaintStep(src, trg)
     }
   }
 }

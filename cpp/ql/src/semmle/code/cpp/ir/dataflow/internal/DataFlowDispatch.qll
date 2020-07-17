@@ -82,45 +82,43 @@ private module VirtualDispatch {
         exists(LoadInstruction load, GlobalOrNamespaceVariable var |
           var = src.asVariable() and
           other.asInstruction() = load and
+          addressOfGlobal(load.getSourceAddress(), var) and
           // The `allowFromArg` concept doesn't play a role when `src` is a
           // global variable, so we just set it to a single arbitrary value for
           // performance.
           allowFromArg = true
-        |
-          // Load directly from the global variable
-          load.getSourceAddress().(VariableAddressInstruction).getASTVariable() = var
-          or
-          // Load from a field on a global union
-          exists(FieldAddressInstruction fa |
-            fa = load.getSourceAddress() and
-            fa.getObjectAddress().(VariableAddressInstruction).getASTVariable() = var and
-            fa.getField().getDeclaringType() instanceof Union
-          )
         )
         or
-        // Flow from store to global variable. These cases are similar to the
-        // above but have `StoreInstruction` instead of `LoadInstruction` and
-        // have the roles swapped between `other` and `src`.
+        // Flow from store to global variable.
         exists(StoreInstruction store, GlobalOrNamespaceVariable var |
           var = other.asVariable() and
           store = src.asInstruction() and
+          storeIntoGlobal(store, var) and
           // Setting `allowFromArg` to `true` like in the base case means we
           // treat a store to a global variable like the dispatch itself: flow
           // may come from anywhere.
           allowFromArg = true
-        |
-          // Store directly to the global variable
-          store.getDestinationAddress().(VariableAddressInstruction).getASTVariable() = var
-          or
-          // Store to a field on a global union
-          exists(FieldAddressInstruction fa |
-            fa = store.getDestinationAddress() and
-            fa.getObjectAddress().(VariableAddressInstruction).getASTVariable() = var and
-            fa.getField().getDeclaringType() instanceof Union
-          )
         )
       )
     }
+  }
+
+  pragma[noinline]
+  private predicate storeIntoGlobal(StoreInstruction store, GlobalOrNamespaceVariable var) {
+    addressOfGlobal(store.getDestinationAddress(), var)
+  }
+
+  /** Holds if `addressInstr` is an instruction that produces the address of `var`. */
+  private predicate addressOfGlobal(Instruction addressInstr, GlobalOrNamespaceVariable var) {
+    // Access directly to the global variable
+    addressInstr.(VariableAddressInstruction).getASTVariable() = var
+    or
+    // Access to a field on a global union
+    exists(FieldAddressInstruction fa |
+      fa = addressInstr and
+      fa.getObjectAddress().(VariableAddressInstruction).getASTVariable() = var and
+      fa.getField().getDeclaringType() instanceof Union
+    )
   }
 
   /**
@@ -228,28 +226,13 @@ private predicate functionSignature(Function f, string qualifiedName, int nparam
 }
 
 /**
- * Holds if the call context `ctx` reduces the set of viable dispatch
- * targets of `ma` in `c`.
+ * Holds if the set of viable implementations that can be called by `call`
+ * might be improved by knowing the call context.
  */
-predicate reducedViableImplInCallContext(CallInstruction call, Function f, CallInstruction ctx) {
-  none()
-}
+predicate mayBenefitFromCallContext(CallInstruction call, Function f) { none() }
 
 /**
- * Gets a viable dispatch target of `ma` in the context `ctx`. This is
- * restricted to those `ma`s for which the context makes a difference.
+ * Gets a viable dispatch target of `call` in the context `ctx`. This is
+ * restricted to those `call`s for which a context might make a difference.
  */
-Function prunedViableImplInCallContext(CallInstruction call, CallInstruction ctx) { none() }
-
-/**
- * Holds if flow returning from `m` to `ma` might return further and if
- * this path restricts the set of call sites that can be returned to.
- */
-predicate reducedViableImplInReturn(Function f, CallInstruction call) { none() }
-
-/**
- * Gets a viable dispatch target of `ma` in the context `ctx`. This is
- * restricted to those `ma`s and results for which the return flow from the
- * result to `ma` restricts the possible context `ctx`.
- */
-Function prunedViableImplInCallContextReverse(CallInstruction call, CallInstruction ctx) { none() }
+Function viableImplInCallContext(CallInstruction call, CallInstruction ctx) { none() }

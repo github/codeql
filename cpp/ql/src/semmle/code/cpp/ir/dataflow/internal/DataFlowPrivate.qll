@@ -8,16 +8,28 @@ private import DataFlowDispatch
  * to the callable. Instance arguments (`this` pointer) are also included.
  */
 class ArgumentNode extends InstructionNode {
-  ArgumentNode() { exists(CallInstruction call | this.getInstruction() = call.getAnArgument()) }
+  ArgumentNode() {
+    exists(CallInstruction call |
+      instr = call.getAnArgument()
+      or
+      instr.(ReadSideEffectInstruction).getPrimaryInstruction() = call
+    )
+  }
 
   /**
    * Holds if this argument occurs at the given position in the given call.
    * The instance argument is considered to have index `-1`.
    */
   predicate argumentOf(DataFlowCall call, int pos) {
-    this.getInstruction() = call.getPositionalArgument(pos)
+    instr = call.getPositionalArgument(pos)
     or
-    this.getInstruction() = call.getThisArgument() and pos = -1
+    instr = call.getThisArgument() and pos = -1
+    or
+    exists(ReadSideEffectInstruction read |
+      read = instr and
+      read.getPrimaryInstruction() = call and
+      pos = getArgumentPosOfSideEffect(read.getIndex())
+    )
   }
 
   /** Gets the call in which this node is an argument. */
@@ -74,7 +86,12 @@ class ReturnValueNode extends ReturnNode {
 class ReturnIndirectionNode extends ReturnNode {
   override ReturnIndirectionInstruction primary;
 
-  override ReturnKind getKind() { result = TIndirectReturnKind(primary.getParameter().getIndex()) }
+  override ReturnKind getKind() {
+    result = TIndirectReturnKind(-1) and
+    primary.isThisIndirection()
+    or
+    result = TIndirectReturnKind(primary.getParameter().getIndex())
+  }
 }
 
 /** A data flow node that represents the output of a call. */
@@ -111,8 +128,13 @@ private class SideEffectOutNode extends OutNode {
  * `kind`.
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
-  result.getCall() = call and
-  result.getReturnKind() = kind
+  // There should be only one `OutNode` for a given `(call, kind)` pair. Showing the optimizer that
+  // this is true helps it make better decisions downstream, especially in virtual dispatch.
+  result =
+    unique(OutNode outNode |
+      outNode.getCall() = call and
+      outNode.getReturnKind() = kind
+    )
 }
 
 /**
@@ -138,12 +160,6 @@ class Content extends TContent {
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
   }
-
-  /** Gets the type of the object containing this content. */
-  abstract Type getContainerType();
-
-  /** Gets the type of this content. */
-  abstract Type getType();
 }
 
 private class FieldContent extends Content, TFieldContent {
@@ -158,26 +174,14 @@ private class FieldContent extends Content, TFieldContent {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
   }
-
-  override Type getContainerType() { result = f.getDeclaringType() }
-
-  override Type getType() { result = f.getType() }
 }
 
 private class CollectionContent extends Content, TCollectionContent {
   override string toString() { result = "collection" }
-
-  override Type getContainerType() { none() }
-
-  override Type getType() { none() }
 }
 
 private class ArrayContent extends Content, TArrayContent {
   override string toString() { result = "array" }
-
-  override Type getContainerType() { none() }
-
-  override Type getType() { none() }
 }
 
 private predicate storeStepNoChi(Node node1, Content f, PostUpdateNode node2) {
@@ -223,28 +227,31 @@ predicate readStep(Node node1, Content f, Node node2) {
 }
 
 /**
- * Gets a representative (boxed) type for `t` for the purpose of pruning
- * possible flow. A single type is used for all numeric types to account for
- * numeric conversions, and otherwise the erasure is used.
+ * Holds if values stored inside content `c` are cleared at node `n`.
  */
-Type getErasedRepr(Type t) {
-  suppressUnusedType(t) and
-  result instanceof VoidType // stub implementation
+predicate clearsContent(Node n, Content c) {
+  none() // stub implementation
 }
 
-/** Gets a string representation of a type returned by `getErasedRepr`. */
-string ppReprType(Type t) { none() } // stub implementation
+/** Gets the type of `n` used for type pruning. */
+IRType getNodeType(Node n) {
+  suppressUnusedNode(n) and
+  result instanceof IRVoidType // stub implementation
+}
+
+/** Gets a string representation of a type returned by `getNodeType`. */
+string ppReprType(IRType t) { none() } // stub implementation
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
 pragma[inline]
-predicate compatibleTypes(Type t1, Type t2) {
+predicate compatibleTypes(IRType t1, IRType t2) {
   any() // stub implementation
 }
 
-private predicate suppressUnusedType(Type t) { any() }
+private predicate suppressUnusedNode(Node n) { any() }
 
 //////////////////////////////////////////////////////////////////////////////
 // Java QL library compatibility wrappers
@@ -264,7 +271,7 @@ class DataFlowCallable = Declaration;
 
 class DataFlowExpr = Expr;
 
-class DataFlowType = Type;
+class DataFlowType = IRType;
 
 /** A function call relevant for data flow. */
 class DataFlowCall extends CallInstruction {
@@ -294,3 +301,6 @@ predicate isImmutableOrUnobservable(Node n) {
   // complex to model here.
   any()
 }
+
+/** Holds if `n` should be hidden from path explanations. */
+predicate nodeIsHidden(Node n) { n instanceof OperandNode }

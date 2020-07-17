@@ -1,20 +1,5 @@
-| (T \| ConcatArray<T>)[] | `T \| ConcatArray<T>` |
-| (number \| ConcatArray<number>)[] | `number \| ConcatArray<number>` |
-| (number[] \| ConcatArray<number[]>)[] | `number[] \| ConcatArray<number[]>` |
-| (string \| number \| ConcatArray<string \| number>)[] | `string \| number \| ConcatArray<string \| number>` |
-| (string \| number)[] | `string \| number` |
-| ConcatArray<T>[] | `ConcatArray<T>` |
-| ConcatArray<number>[] | `ConcatArray<number>` |
-| ConcatArray<number[]>[] | `ConcatArray<number[]>` |
-| ConcatArray<string \| number>[] | `ConcatArray<string \| number>` |
-| S[] | `S` |
-| T[] | `T` |
-| U[] | `U` |
 | [number, string] | `string \| number` |
-| any[] | `any` |
 | number[] | `number` |
-| number[][] | `number[]` |
 | readonly T[] | `T` |
 | readonly number[] | `number` |
 | readonly number[][] | `number[]` |
-| string[] | `string` |

@@ -5,14 +5,14 @@ import semmle.python.web.Http
 import semmle.python.web.cherrypy.General
 
 class CherryPyExposedFunctionResult extends HttpResponseTaintSink {
-    CherryPyExposedFunctionResult() {
-        exists(Return ret |
-            ret.getScope() instanceof CherryPyExposedFunction and
-            ret.getValue().getAFlowNode() = this
-        )
-    }
+  CherryPyExposedFunctionResult() {
+    exists(Return ret |
+      ret.getScope() instanceof CherryPyExposedFunction and
+      ret.getValue().getAFlowNode() = this
+    )
+  }
 
-    override predicate sinks(TaintKind kind) { kind instanceof StringKind }
+  override predicate sinks(TaintKind kind) { kind instanceof StringKind }
 
-    override string toString() { result = "cherrypy handler function result" }
+  override string toString() { result = "cherrypy handler function result" }
 }
