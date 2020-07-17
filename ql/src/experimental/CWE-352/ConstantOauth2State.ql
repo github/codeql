@@ -58,7 +58,7 @@ class FlowToPrint extends DataFlow::Configuration {
 }
 
 /** Holds if the provided CallNode's result flows to a Printer call as argument. */
-predicate flowsToPrinter(DataFlow::CallNode authCodeURLCall) {
+predicate resultFlowsToPrinter(DataFlow::CallNode authCodeURLCall) {
   exists(FlowToPrint cfg, DataFlow::PathNode source, DataFlow::PathNode sink |
     cfg.hasFlowPath(source, sink) and
     cfg.isSource(source.getNode(), authCodeURLCall)
@@ -78,6 +78,17 @@ predicate rootContainsCallToStdinScanner(DataFlow::CallNode authCodeURLCall) {
   )
 }
 
+/**
+ * Holds if the authCodeURLCall seems to be done within a terminal
+ * because there are calls to a Printer (fmt.Println and similar),
+ * and a call to a Scanner (fmt.Scan and similar),
+ * all of which are typically done within a terminal session.
+ */
+predicate seemsLikeDoneWithinATerminal(DataFlow::CallNode authCodeURLCall) {
+  resultFlowsToPrinter(authCodeURLCall) and
+  rootContainsCallToStdinScanner(authCodeURLCall)
+}
+
 from
   ConstantStateFlowConf cfg, DataFlow::PathNode source, DataFlow::PathNode sink,
   DataFlow::CallNode sinkCall
@@ -85,9 +96,6 @@ where
   cfg.hasFlowPath(source, sink) and
   cfg.isSink(sink.getNode(), sinkCall) and
   // Exclude cases that seem to be oauth flows done from within a terminal:
-  not (
-    flowsToPrinter(sinkCall) and
-    rootContainsCallToStdinScanner(sinkCall)
-  )
+  not seemsLikeDoneWithinATerminal(sinkCall)
 select sink.getNode(), source, sink, "Using a constant $@ to create oauth2 URLs.", source.getNode(),
   "state string"

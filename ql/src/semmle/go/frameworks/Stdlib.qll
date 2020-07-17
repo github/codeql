@@ -154,6 +154,10 @@ module Fmt {
   class FScannerCall extends DataFlow::CallNode {
     FScannerCall() { this.getTarget() instanceof FScanner }
 
+    /**
+     * Returns the node corresponding to the io.Reader
+     * argument provided in the call.
+     */
     DataFlow::Node getReader() { result = this.getArgument(0) }
   }
 }
