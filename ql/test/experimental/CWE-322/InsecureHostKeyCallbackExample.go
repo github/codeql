@@ -8,7 +8,7 @@ func insecureSSHClientConfig() {
 	_ = &ssh.ClientConfig{
 		User: "user",
 		Auth: []ssh.AuthMethod{nil},
-		HostKeyCallback: ssh.HostKeyCallback(
+		HostKeyCallback: ssh.HostKeyCallback( // BAD
 			func(hostname string, remote net.Addr, key ssh.PublicKey) error {
 				return nil
 			}),
@@ -19,7 +19,7 @@ func insecureSSHClientConfigAlt() {
 	_ = &ssh.ClientConfig{
 		User:            "user",
 		Auth:            []ssh.AuthMethod{nil},
-		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+		HostKeyCallback: ssh.InsecureIgnoreHostKey(), // BAD
 	}
 }
 
@@ -32,7 +32,7 @@ func insecureSSHClientConfigLocalFlow() {
 	_ = &ssh.ClientConfig{
 		User:            "user",
 		Auth:            []ssh.AuthMethod{nil},
-		HostKeyCallback: callback,
+		HostKeyCallback: callback, // BAD
 	}
 }
 
@@ -45,15 +45,33 @@ func insecureSSHClientConfigLocalFlowAlt() {
 	_ = &ssh.ClientConfig{
 		User:            "user",
 		Auth:            []ssh.AuthMethod{nil},
-		HostKeyCallback: ssh.HostKeyCallback(callback),
+		HostKeyCallback: ssh.HostKeyCallback(callback), // BAD
 	}
 }
 
+// Check that insecure and secure functions flowing together to the same
+// sink is not flagged (we assume this is configurable security)
 func potentialInsecureSSHClientConfig(callback ssh.HostKeyCallback) {
 	_ = &ssh.ClientConfig{
 		User:            "user",
 		Auth:            []ssh.AuthMethod{nil},
-		HostKeyCallback: callback,
+		HostKeyCallback: callback, // OK
+	}
+}
+
+// Check that insecure and secure functions flowing to different writes to
+// the same objects are not flagged (we assume this is configurable security)
+func potentialInsecureSSHClientConfigTwoWrites(callback ssh.HostKeyCallback) {
+	config := &ssh.ClientConfig{
+		User:            "user",
+		Auth:            []ssh.AuthMethod{nil},
+		HostKeyCallback: nil,
+	}
+
+	if callback == nil {
+		config.HostKeyCallback = ssh.InsecureIgnoreHostKey() // OK
+	} else {
+		config.HostKeyCallback = callback
 	}
 }
 
@@ -77,4 +95,6 @@ func main() {
 
 	potentialInsecureSSHClientConfig(potentiallySecureCallback)
 	potentialInsecureSSHClientConfig(ssh.InsecureIgnoreHostKey())
+
+	potentialInsecureSSHClientConfigTwoWrites(potentiallySecureCallback)
 }
