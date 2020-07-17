@@ -115,7 +115,10 @@ for lang in languages:
             shell=True, capture_output=True, text=True)
 
         if queries_subp.returncode != 0:
-            print("Couldn't find query pack '%s' for language '%s'. Do you have the right repositories in the right places (search path: '%s')?" % (pack, lang, codeql_search_path)) 
+            print(
+                "Warning: couldn't find query pack '%s' for language '%s'. Do you have the right repositories in the right places (search path: '%s')?" % (pack, lang, codeql_search_path),
+                file=sys.stderr
+            ) 
             continue
 
         # Investigate metadata for every query by using 'codeql resolve metadata'
