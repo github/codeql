@@ -18,19 +18,18 @@ of the github/codeql clone.
 languages = [ "cpp", "csharp", "go", "java", "javascript", "python"]
 packs = [ "code-scanning", "security-and-quality", "security-extended" ]
 
-# Define CodeQL search path so it'll find the CodeQL repositories in:
-#  - current working directory
+# Define CodeQL search path so it'll find the CodeQL repositories:
+#  - anywhere in the current Git clone (including current working directory)
 #  - the 'codeql' subdirectory of the cwd
 #
 # (and assumes the codeql-go repo is in a similar location)
-codeql_search_path = ".:../codeql-go:codeql:codeql-go"
+codeql_search_path = ".:../codeql-go:codeql:codeql-go"   # will be extended further down
 
 
 def prefix_repo_nwo(filename):
     """
     Replaces an absolute path prefix with a GitHub repository name with owner (NWO).
-    This function relies on `git` being available and will do a hard sys.exit(1) with
-    error message if it's not.
+    This function relies on `git` being available.
 
     For example:
         /home/alice/git/ql/java/ql/src/MyQuery.ql  
@@ -45,11 +44,6 @@ def prefix_repo_nwo(filename):
     same as the input value: the whole path.
     """
     dirname = os.path.dirname(filename)
-
-    git_version = subprocess.run("git --version", shell=True, capture_output=True, text=True)
-    if (git_version.returncode != 0):
-        print("Error: your system doesn't have 'git'. Aborting.", file=sys.stderr)
-        sys.exit(1)
 
     git_toplevel_dir_subp = subprocess.run(
         "git -C '%s' rev-parse --show-toplevel"  % dirname,
@@ -81,6 +75,20 @@ def single_spaces(input):
     some metadata strings to contain newlines and spaces without a good reason.
     """
     return " ".join(input.split())
+
+# Check for `git`
+git_version = subprocess.run("git --version", shell=True, capture_output=True, text=True)
+if (git_version.returncode != 0):
+    print("Error: your system doesn't have 'git'. Aborting.", file=sys.stderr)
+    sys.exit(1)
+
+# Extend CodeQL search path by detecting root of the current Git repo (if any). This means that you
+# can run this script from any location within the CodeQL git repository.
+git_toplevel_dir = subprocess.run("git rev-parse --show-toplevel", shell=True, capture_output=True, text=True)
+if git_toplevel_dir.returncode == 0:
+    # Current working directory is in a Git repo. It might be the CodeQL repo. Add it to the search path.
+    git_toplevel_dir = git_toplevel_dir.stdout.strip()
+    codeql_search_path += ":" + git_toplevel_dir + ":" + git_toplevel_dir + "../codeql-go"
 
 # Create CSV writer and write CSV header to stdout
 csvwriter = csv.writer(sys.stdout)
