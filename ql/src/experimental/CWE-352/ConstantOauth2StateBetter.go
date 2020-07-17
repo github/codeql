@@ -27,7 +27,8 @@ func betterWithVariableStateReturned(w http.ResponseWriter) {
 func generateStateOauthCookie(w http.ResponseWriter) string {
 	b := make([]byte, 128)
 	rand.Read(b)
-	// TODO: save the state string to cookies or HTML storage.
+	// TODO: save the state string to cookies or HTML storage,
+	// and bind it to the authenticated status of the user.
 	state := base64.URLEncoding.EncodeToString(b)
 
 	return state

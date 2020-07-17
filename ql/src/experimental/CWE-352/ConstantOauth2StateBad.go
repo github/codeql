@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"golang.org/x/oauth2"
 )
 
@@ -21,7 +19,6 @@ func badWithStringLiteralState() {
 		},
 	}
 
-	url := conf.AuthCodeURL(stateStringVar, oauth2.AccessTypeOffline)
-	fmt.Printf("Visit the URL for the auth dialog: %v", url)
+	url := conf.AuthCodeURL(stateStringVar)
 	// ...
 }
