@@ -40,7 +40,10 @@ After following setup instructions below, run the `recreate-db.sh` script to cre
           "editor.codeActionsOnSave": {
               "source.organizeImports": true
           }
-      }
+      },
+      "python.autoComplete.extraPaths": [
+          "src"
+      ]
   }
   ```
 

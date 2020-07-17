@@ -2,6 +2,6 @@
 cg-trace-example-db/
 
 # Artifact from building `pip install -e .`
-cg_trace.egg-info/
+src/cg_trace.egg-info/
 
 venv/

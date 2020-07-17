@@ -1,16 +1,14 @@
 from setuptools import find_packages, setup
 
-from cg_trace import MIN_PYTHON_VERSION_FORMATTED, __version__
-
-# TODO: There was some benefit of structuring your code as `src/yourpackage/code.py`
-# instead of `yourpackage/code.py` concerning imports, but I don't recall the details
+# using src/ folder as recommended in: https://blog.ionelmc.ro/2014/05/25/python-packaging/
 
 setup(
     name="cg_trace",
-    version=__version__,
+    version="0.0.1",
     description="Call graph tracing",
-    packages=find_packages(),
+    packages=find_packages("src"),
+    package_dir={"": "src"},
     install_requires=["lxml"],
     entry_points={"console_scripts": ["cg-trace = cg_trace.main:main"]},
-    python_requires=">={}".format(MIN_PYTHON_VERSION_FORMATTED),
+    python_requires=">=3.6",
 )
