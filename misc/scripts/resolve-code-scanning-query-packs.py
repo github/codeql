@@ -78,6 +78,13 @@ def single_spaces(input):
     """
     return " ".join(input.split())
 
+def get_query_metadata(key, metadata, queryfile):
+    """Returns query metadata or prints a warning to stderr if a particular piece of metadata is not available."""
+    if key in metadata: return single_spaces(metadata[key])
+    query_id = metadata['id'] if 'id' in metadata else 'unknown'
+    print("Warning: no '%s' metadata for query with ID '%s' (%s)" % (key, query_id, queryfile), file=sys.stderr)
+    return ""
+
 # Check for `git`
 git_version = subprocess.run("git --version", shell=True, capture_output=True, text=True)
 if (git_version.returncode != 0):
@@ -125,8 +132,12 @@ for lang in languages:
 
             # Python's CSV writer will automatically quote fields if necessary
             csvwriter.writerow([
-                queryfile_nwo, pack, single_spaces(meta['name']), meta['id'],
-                meta["kind"], meta["problem.severity"], meta["precision"],
-                single_spaces(meta["tags"])
+                queryfile_nwo, pack, 
+                get_query_metadata('name', meta, queryfile_nwo),
+                get_query_metadata('id', meta, queryfile_nwo),
+                get_query_metadata('kind', meta, queryfile_nwo),
+                get_query_metadata('problem.severity', meta, queryfile_nwo),
+                get_query_metadata('precision', meta, queryfile_nwo),
+                get_query_metadata('tags', meta, queryfile_nwo)
             ])
             
