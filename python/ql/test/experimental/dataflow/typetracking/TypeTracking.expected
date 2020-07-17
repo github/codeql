@@ -1,0 +1,6 @@
+| test.py:1:1:1:18 | Exit node for Function get_tracked | type tracker without call steps |
+| test.py:2:9:2:15 | ControlFlowNode for tracked | type tracker without call steps |
+| test.py:3:12:3:12 | ControlFlowNode for x | type tracker without call steps |
+| test.py:16:9:16:15 | ControlFlowNode for tracked | type tracker without call steps |
+| test.py:17:5:17:18 | SSA variable x | type tracker without call steps |
+| test.py:17:17:17:17 | ControlFlowNode for x | type tracker without call steps |
