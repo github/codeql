@@ -1,33 +1,7 @@
-#!/usr/bin/env python3
-"""Call Graph tracing.
-
-Execute a python program and for each call being made, record the call and callee. This
-allows us to compare call graph resolution from static analysis with actual data -- that
-is, can we statically determine the target of each actual call correctly.
-
-If there is 100% code coverage from the Python execution, it would also be possible to
-look at the precision of the call graph resolutions -- that is, do we expect a function to
-be able to be called in a place where it is not? Currently not something we're looking at.
-"""
-
-# read: https://eli.thegreenplace.net/2012/03/23/python-internals-how-callables-work/
-
-# TODO: Know that a call to a C-function was made. See
-# https://docs.python.org/3/library/bdb.html#bdb.Bdb.trace_dispatch. Maybe use `lxml` as
-# test
-
-# For inspiration, look at these projects:
-# - https://github.com/joerick/pyinstrument (capture call-stack every <n> ms for profiling)
-# - https://github.com/gak/pycallgraph (display call-graph with graphviz after python execution)
-
-import argparse
-from io import StringIO
-import sys
-import os
-import dis
 import dataclasses
-import csv
-from lxml import etree
+import dis
+import os
+import sys
 from typing import Optional
 
 # copy-paste For interactive ipython sessions
@@ -126,9 +100,6 @@ class ExternalCallee(Callee):
 
     @classmethod
     def from_arg(cls, func):
-        # if func.__name__ == "append":
-        # import IPython; sys.stdout = sys.__stdout__; IPython.embed(); sys.exit()
-
         return cls(
             module=func.__module__,
             qualname=func.__qualname__,
@@ -192,7 +163,7 @@ class CallGraphTracer:
         self.exec_call_seen = False
         self.ignore_rest = False
         try:
-            sys.setprofile(cgt.profilefunc)
+            sys.setprofile(self.profilefunc)
             exec(code, globals, locals)
         # TODO: exception handling?
         finally:
@@ -233,118 +204,3 @@ class CallGraphTracer:
         debug_print(f"{call} --> {callee}")
         debug_print("\n" * 5)
         self.recorded_calls.add((call, callee))
-
-
-################################################################################
-# Export
-################################################################################
-
-
-class Exporter:
-    @staticmethod
-    def export(recorded_calls, outfile_path):
-        raise NotImplementedError()
-
-    @staticmethod
-    def dataclass_to_dict(obj):
-        d = dataclasses.asdict(obj)
-        prefix = obj.__class__.__name__.lower()
-        return {f"{prefix}_{key}": val for (key, val) in d.items()}
-
-
-class CSVExporter(Exporter):
-    @staticmethod
-    def export(recorded_calls, outfile_path):
-        with open(outfile_path, "w", newline="") as csv_file:
-            writer = None
-            for (call, callee) in sorted(recorded_calls):
-                data = {
-                    **Exporter.dataclass_to_dict(call),
-                    **Exporter.dataclass_to_dict(callee),
-                }
-
-                if writer is None:
-                    writer = csv.DictWriter(csv_file, fieldnames=data.keys())
-                    writer.writeheader()
-
-                writer.writerow(data)
-
-        print(f"output written to {outfile_path}")
-
-        # embed(); sys.exit()
-
-
-class XMLExporter(Exporter):
-    @staticmethod
-    def export(recorded_calls, outfile_path):
-
-        root = etree.Element("root")
-
-        for (call, callee) in sorted(recorded_calls):
-            data = {
-                **Exporter.dataclass_to_dict(call),
-                **Exporter.dataclass_to_dict(callee),
-            }
-
-            rc = etree.SubElement(root, "recorded_call")
-            for k, v in data.items():
-                # xml library only supports serializing attributes that have string values
-                rc.set(k, str(v))
-
-        tree = etree.ElementTree(root)
-        tree.write(outfile_path, encoding="utf-8", pretty_print=True)
-
-
-################################################################################
-# __main__
-################################################################################
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument("--csv")
-    parser.add_argument("--xml")
-
-    parser.add_argument("progname", help="file to run as main program")
-    parser.add_argument(
-        "arguments", nargs=argparse.REMAINDER, help="arguments to the program"
-    )
-
-    opts = parser.parse_args()
-
-    # These details of setting up the program to be run is very much inspired by `trace`
-    # from the standard library
-    sys.argv = [opts.progname, *opts.arguments]
-    sys.path[0] = os.path.dirname(opts.progname)
-
-    with open(opts.progname) as fp:
-        code = compile(fp.read(), opts.progname, "exec")
-
-    # try to emulate __main__ namespace as much as possible
-    globs = {
-        "__file__": opts.progname,
-        "__name__": "__main__",
-        "__package__": None,
-        "__cached__": None,
-    }
-
-    real_stdout = sys.stdout
-    real_stderr = sys.stderr
-    captured_stdout = StringIO()
-
-    sys.stdout = captured_stdout
-    cgt = CallGraphTracer()
-    cgt.run(code, globs, globs)
-    sys.stdout = real_stdout
-
-    if opts.csv:
-        CSVExporter.export(cgt.recorded_calls, opts.csv)
-    elif opts.xml:
-        XMLExporter.export(cgt.recorded_calls, opts.xml)
-    else:
-        for (call, callee) in sorted(cgt.recorded_calls):
-            print(f"{call} --> {callee}")
-
-    print("--- captured stdout ---")
-    print(captured_stdout.getvalue(), end="")

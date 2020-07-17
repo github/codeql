@@ -3,14 +3,19 @@
 set -e
 set -x
 
+if ! pip show cg_trace; then
+    echo "You need to follow setup instructions in README"
+    exit 1
+fi
+
 DB="cg-trace-example-db"
 SRC="example/"
 XMLDIR="example-traces/"
 PYTHON_EXTRACTOR=$(codeql resolve extractor --language=python)
 
 
-./cg_trace.py --xml "$XMLDIR"/simple.xml example/simple.py
-./cg_trace.py --xml "$XMLDIR"/builtins.xml example/builtins.py
+cg-trace --xml "$XMLDIR"/simple.xml example/simple.py
+cg-trace --xml "$XMLDIR"/builtins.xml example/builtins.py
 
 rm -rf "$DB"
 
