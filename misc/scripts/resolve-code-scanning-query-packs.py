@@ -9,9 +9,11 @@ This script collects CodeQL queries that are part of code scanning query packs
 and prints CSV data to stdout that describes which packs contain which queries.
 
 Errors are printed to stderr. This script requires that 'git' and 'codeql' commands
-are on the PATH, and should be run either from within a clone of github/codeql,
-or in the parent directory thereof. It expects a directory 'codeql-go' as a sibling
-of the github/codeql clone.
+are on the PATH. It'll try to automatically set the CodeQL search path correctly,
+as long as you run the script from one of the following locations:
+ - anywhere from within a clone of the CodeQL Git repo
+ - from the parent directory of a clone of the CodeQL Git repo (assuming 'codeql' 
+   and 'codeql-go' directories both exist)
 """
 
 # Define which languages and query packs to consider
