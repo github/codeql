@@ -3,6 +3,7 @@ import dis
 import logging
 import os
 import sys
+from types import FrameType
 from typing import Optional
 
 LOGGER = logging.getLogger(__name__)
@@ -43,7 +44,7 @@ class Call:
     inst_index: int
 
     @classmethod
-    def from_frame(cls, frame):
+    def from_frame(cls, frame: FrameType):
         code = frame.f_code
 
         b = dis.Bytecode(frame.f_code, current_offset=frame.f_lasti)
@@ -119,7 +120,7 @@ class PythonCallee(Callee):
     funcname: str
 
     @classmethod
-    def from_frame(cls, frame):
+    def from_frame(cls, frame: FrameType):
         code = frame.f_code
         return cls(
             filename=canonic_filename(code.co_filename),
@@ -167,7 +168,7 @@ class CallGraphTracer:
         finally:
             sys.setprofile(None)
 
-    def profilefunc(self, frame, event, arg):
+    def profilefunc(self, frame: FrameType, event: str, arg):
         # ignore everything until the first call, since that is `exec` from the `run`
         # method above
         if not self.exec_call_seen:
