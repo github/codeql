@@ -7,8 +7,11 @@ import semmle.code.java.controlflow.Guards
 
 /** Models the creation of a path. */
 abstract class PathCreation extends Expr {
-  /** Gets an input that is used in the creation of this path. */
-  abstract Expr getInput();
+  /**
+   * Gets an input that is used in the creation of this path.
+   * This excludes inputs of type `File` and `Path`.
+   */
+  abstract Expr getAnInput();
 }
 
 /** Models the `java.nio.file.Paths.get` method. */
@@ -20,7 +23,7 @@ class PathsGet extends PathCreation, MethodAccess {
     )
   }
 
-  override Expr getInput() { result = this.getAnArgument() }
+  override Expr getAnInput() { result = this.getAnArgument() }
 }
 
 /** Models the `java.nio.file.FileSystem.getPath` method. */
@@ -32,14 +35,14 @@ class FileSystemGetPath extends PathCreation, MethodAccess {
     )
   }
 
-  override Expr getInput() { result = this.getAnArgument() }
+  override Expr getAnInput() { result = this.getAnArgument() }
 }
 
 /** Models the `new java.io.File(...)` constructor. */
 class FileCreation extends PathCreation, ClassInstanceExpr {
   FileCreation() { this.getConstructedType() instanceof TypeFile }
 
-  override Expr getInput() {
+  override Expr getAnInput() {
     result = this.getAnArgument() and
     // Relevant arguments include those that are not a `File`.
     not result.getType() instanceof TypeFile
@@ -55,7 +58,7 @@ class PathResolveSiblingCreation extends PathCreation, MethodAccess {
     )
   }
 
-  override Expr getInput() {
+  override Expr getAnInput() {
     result = this.getAnArgument() and
     // Relevant arguments are those of type `String`.
     result.getType() instanceof TypeString
@@ -71,7 +74,7 @@ class PathResolveCreation extends PathCreation, MethodAccess {
     )
   }
 
-  override Expr getInput() {
+  override Expr getAnInput() {
     result = this.getAnArgument() and
     // Relevant arguments are those of type `String`.
     result.getType() instanceof TypeString
@@ -87,14 +90,14 @@ class PathOfCreation extends PathCreation, MethodAccess {
     )
   }
 
-  override Expr getInput() { result = this.getAnArgument() }
+  override Expr getAnInput() { result = this.getAnArgument() }
 }
 
 /** Models the `new java.io.FileWriter(...)` constructor. */
 class FileWriterCreation extends PathCreation, ClassInstanceExpr {
   FileWriterCreation() { this.getConstructedType().hasQualifiedName("java.io", "FileWriter") }
 
-  override Expr getInput() {
+  override Expr getAnInput() {
     result = this.getAnArgument() and
     // Relevant arguments are those of type `String`.
     result.getType() instanceof TypeString
@@ -105,7 +108,7 @@ class FileWriterCreation extends PathCreation, ClassInstanceExpr {
 class FileReaderCreation extends PathCreation, ClassInstanceExpr {
   FileReaderCreation() { this.getConstructedType().hasQualifiedName("java.io", "FileReader") }
 
-  override Expr getInput() {
+  override Expr getAnInput() {
     result = this.getAnArgument() and
     // Relevant arguments are those of type `String`.
     result.getType() instanceof TypeString
@@ -118,7 +121,7 @@ class FileInputStreamCreation extends PathCreation, ClassInstanceExpr {
     this.getConstructedType().hasQualifiedName("java.io", "FileInputStream")
   }
 
-  override Expr getInput() {
+  override Expr getAnInput() {
     result = this.getAnArgument() and
     // Relevant arguments are those of type `String`.
     result.getType() instanceof TypeString
@@ -131,7 +134,7 @@ class FileOutputStreamCreation extends PathCreation, ClassInstanceExpr {
     this.getConstructedType().hasQualifiedName("java.io", "FileOutputStream")
   }
 
-  override Expr getInput() {
+  override Expr getAnInput() {
     result = this.getAnArgument() and
     // Relevant arguments are those of type `String`.
     result.getType() instanceof TypeString
@@ -154,7 +157,7 @@ private predicate inWeakCheck(Expr e) {
 // Ignore cases where the variable has been checked somehow,
 // but allow some particularly obviously bad cases.
 predicate guarded(VarAccess e) {
-  exists(PathCreation p | e = p.getInput()) and
+  exists(PathCreation p | e = p.getAnInput()) and
   exists(ConditionBlock cb, Expr c |
     cb.getCondition().getAChildExpr*() = c and
     c = e.getVariable().getAnAccess() and

@@ -22,7 +22,7 @@ class TaintedPathLocalConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
-  override predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(PathCreation p).getInput() }
+  override predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(PathCreation p).getAnInput() }
 }
 
 from
@@ -30,7 +30,7 @@ from
   TaintedPathLocalConfig conf
 where
   e = sink.getNode().asExpr() and
-  e = p.getInput() and
+  e = p.getAnInput() and
   conf.hasFlowPath(source, sink) and
   not guarded(e)
 select p, source, sink, "$@ flows to here and is used in a path.", source.getNode(),
