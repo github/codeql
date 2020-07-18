@@ -1,3 +1,4 @@
+import logging
 import os
 import sys
 from io import StringIO
@@ -24,6 +25,8 @@ def record_calls(code, globals):
 
 
 def main(args=None) -> int:
+    logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+
     if args is None:
         # first element in argv is program name
         args = sys.argv[1:]
@@ -53,6 +56,7 @@ def main(args=None) -> int:
     elif opts.xml:
         XMLExporter.export(recorded_calls, opts.xml)
     else:
+        print("Recorded calls:")
         for (call, callee) in recorded_calls:
             print(f"{call} --> {callee}")
 

@@ -1,16 +1,15 @@
 import dataclasses
 import dis
+import logging
 import os
 import sys
 from typing import Optional
 
+LOGGER = logging.getLogger(__name__)
+
+
 # copy-paste For interactive ipython sessions
 # import IPython; sys.stdout = sys.__stdout__; IPython.embed(); sys.exit()
-
-
-def debug_print(*args, **kwargs):
-    # print(*args, **kwargs, file=sys.__stderr__)
-    pass
 
 
 _canonic_filename_cache = dict()
@@ -47,9 +46,8 @@ class Call:
     def from_frame(cls, frame):
         code = frame.f_code
 
-        # Uncomment to see the bytecode
         b = dis.Bytecode(frame.f_code, current_offset=frame.f_lasti)
-        debug_print(b.dis())
+        LOGGER.debug(f"bytecode: \n{b.dis()}")
 
         return cls(
             filename=canonic_filename(code.co_filename),
@@ -189,7 +187,7 @@ class CallGraphTracer:
         if event not in ["call", "c_call"]:
             return
 
-        debug_print(f"profilefunc {event=}")
+        LOGGER.debug(f"profilefunc {event=}")
         if event == "call":
             # in call, the `frame` argument is new the frame for entering the callee
             call = Call.from_frame(frame.f_back)
@@ -201,6 +199,5 @@ class CallGraphTracer:
             call = Call.from_frame(frame)
             callee = ExternalCallee.from_arg(arg)
 
-        debug_print(f"{call} --> {callee}")
-        debug_print("\n" * 5)
+        LOGGER.debug(f"{call} --> {callee}")
         self.recorded_calls.add((call, callee))
