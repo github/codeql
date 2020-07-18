@@ -19,7 +19,7 @@ After following setup instructions below, run the `recreate-db.sh` script to cre
 
 ## Setup
 
-1. Ensure you have at least Python 3.6
+1. Ensure you have at least Python 3.7
 
 2. Create virtual environment `python3 -m venv venv` and activate it
 

@@ -10,5 +10,5 @@ setup(
     package_dir={"": "src"},
     install_requires=["lxml"],
     entry_points={"console_scripts": ["cg-trace = cg_trace.main:main"]},
-    python_requires=">=3.6",
+    python_requires=">=3.7",
 )
