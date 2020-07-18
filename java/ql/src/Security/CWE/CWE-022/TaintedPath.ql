@@ -16,6 +16,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.PathCreation
 import DataFlow::PathGraph
+import TaintedPathCommon
 
 class ContainsDotDotSanitizer extends DataFlow::BarrierGuard {
   ContainsDotDotSanitizer() {

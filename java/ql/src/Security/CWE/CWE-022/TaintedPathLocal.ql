@@ -16,13 +16,16 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.PathCreation
 import DataFlow::PathGraph
+import TaintedPathCommon
 
 class TaintedPathLocalConfig extends TaintTracking::Configuration {
   TaintedPathLocalConfig() { this = "TaintedPathLocalConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
-  override predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(PathCreation p).getAnInput() }
+  override predicate isSink(DataFlow::Node sink) {
+    sink.asExpr() = any(PathCreation p).getAnInput()
+  }
 }
 
 from
