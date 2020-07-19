@@ -164,9 +164,10 @@ class CallGraphTracer:
         try:
             sys.setprofile(self.profilefunc)
             exec(code, globals, locals)
-        # TODO: exception handling?
-        finally:
             sys.setprofile(None)
+        except Exception:
+            sys.setprofile(None)
+            LOGGER.info("Exception occurred while running program:", exc_info=True)
 
     def profilefunc(self, frame: FrameType, event: str, arg):
         # ignore everything until the first call, since that is `exec` from the `run`
