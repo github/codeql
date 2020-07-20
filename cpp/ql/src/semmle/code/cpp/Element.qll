@@ -197,8 +197,7 @@ class Element extends ElementBase {
     initialisers(underlyingElement(this), unresolveElement(result), _, _) or
     exprconv(unresolveElement(result), underlyingElement(this)) or
     param_decl_bind(underlyingElement(this), _, unresolveElement(result)) or
-    using_container(unresolveElement(result), underlyingElement(this)) or
-    static_asserts(unresolveElement(this), _, _, _, underlyingElement(result))
+    using_container(unresolveElement(result), underlyingElement(this))
   }
 
   /** Gets the closest `Element` enclosing this one. */
@@ -279,12 +278,12 @@ class StaticAssert extends Locatable, @static_assert {
   /**
    * Gets the expression which this static assertion ensures is true.
    */
-  Expr getCondition() { static_asserts(underlyingElement(this), unresolveElement(result), _, _, _) }
+  Expr getCondition() { static_asserts(underlyingElement(this), unresolveElement(result), _, _) }
 
   /**
    * Gets the message which will be reported by the compiler if this static assertion fails.
    */
-  string getMessage() { static_asserts(underlyingElement(this), _, result, _, _) }
+  string getMessage() { static_asserts(underlyingElement(this), _, result, _) }
 
-  override Location getLocation() { static_asserts(underlyingElement(this), _, _, result, _) }
+  override Location getLocation() { static_asserts(underlyingElement(this), _, _, result) }
 }

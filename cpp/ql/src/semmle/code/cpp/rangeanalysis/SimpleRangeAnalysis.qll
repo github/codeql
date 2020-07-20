@@ -724,7 +724,7 @@ private float getLowerBoundsImpl(Expr expr) {
   exists(RShiftExpr rsExpr, float left, int right |
     rsExpr = expr and
     left = getFullyConvertedLowerBounds(rsExpr.getLeftOperand()) and
-    right = rsExpr.getRightOperand().getFullyConverted().getValue().toInt() and
+    right = rsExpr.getRightOperand().getValue().toInt() and
     result = safeFloor(left / 2.pow(right))
   )
 }
@@ -893,7 +893,7 @@ private float getUpperBoundsImpl(Expr expr) {
   exists(RShiftExpr rsExpr, float left, int right |
     rsExpr = expr and
     left = getFullyConvertedUpperBounds(rsExpr.getLeftOperand()) and
-    right = rsExpr.getRightOperand().getFullyConverted().getValue().toInt() and
+    right = rsExpr.getRightOperand().getValue().toInt() and
     result = safeFloor(left / 2.pow(right))
   )
 }

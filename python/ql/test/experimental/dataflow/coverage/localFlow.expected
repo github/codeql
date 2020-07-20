@@ -1,7 +1,0 @@
-| test.py:13:5:13:5 | SSA variable x | test.py:12:1:12:33 | Exit node for Function test_tuple_with_local_flow |
-| test.py:13:5:13:5 | SSA variable x | test.py:14:9:14:9 | ControlFlowNode for x |
-| test.py:13:10:13:18 | ControlFlowNode for Tuple | test.py:13:5:13:5 | SSA variable x |
-| test.py:14:5:14:5 | SSA variable y | test.py:15:5:15:11 | SSA variable y |
-| test.py:14:5:14:5 | SSA variable y | test.py:15:10:15:10 | ControlFlowNode for y |
-| test.py:14:9:14:12 | ControlFlowNode for Subscript | test.py:14:5:14:5 | SSA variable y |
-| test.py:15:5:15:11 | SSA variable y | test.py:12:1:12:33 | Exit node for Function test_tuple_with_local_flow |

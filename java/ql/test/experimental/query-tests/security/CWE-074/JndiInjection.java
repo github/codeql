@@ -20,13 +20,9 @@ import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.ContextMapper;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.NameClassPairCallbackHandler;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestMapping;
 
-@Controller
 public class JndiInjection {
-  @RequestMapping
   public void testInitialContextBad1(@RequestParam String nameStr) throws NamingException {
     Name name = new CompositeName(nameStr);
     InitialContext ctx = new InitialContext();
@@ -46,7 +42,6 @@ public class JndiInjection {
     ctx.listBindings(name);
   }
 
-  @RequestMapping
   public void testInitialDirContextBad1(@RequestParam String nameStr) throws NamingException {
     Name name = new CompoundName(nameStr, new Properties());
     InitialDirContext ctx = new InitialDirContext();
@@ -64,7 +59,6 @@ public class JndiInjection {
     ctx.listBindings(name);
   }
 
-  @RequestMapping
   public void testInitialLdapContextBad1(@RequestParam String nameStr) throws NamingException {
     Name name = new CompositeName(nameStr);
     InitialLdapContext ctx = new InitialLdapContext();
@@ -82,7 +76,6 @@ public class JndiInjection {
     ctx.listBindings(name);
   }
 
-  @RequestMapping
   public void testSpringJndiTemplateBad1(@RequestParam String nameStr) throws NamingException {
     JndiTemplate ctx = new JndiTemplate();
 
@@ -90,7 +83,6 @@ public class JndiInjection {
     ctx.lookup(nameStr, null);
   }
 
-  @RequestMapping
   public void testSpringLdapTemplateBad1(@RequestParam String nameStr) throws NamingException {
     LdapTemplate ctx = new LdapTemplate();
     Name name = new CompositeName(nameStr);
@@ -111,7 +103,6 @@ public class JndiInjection {
     ctx.searchForObject(nameStr, "", (ContextMapper) new Object());
   }
 
-  @RequestMapping
   public void testShiroJndiTemplateBad1(@RequestParam String nameStr) throws NamingException {
     org.apache.shiro.jndi.JndiTemplate ctx = new org.apache.shiro.jndi.JndiTemplate();
 
@@ -119,7 +110,6 @@ public class JndiInjection {
     ctx.lookup(nameStr, null);
   }
 
-  @RequestMapping
   public void testJMXServiceUrlBad1(@RequestParam String urlStr) throws IOException {
     JMXConnectorFactory.connect(new JMXServiceURL(urlStr));
 
@@ -128,7 +118,6 @@ public class JndiInjection {
     connector.connect();
   }
 
-  @RequestMapping
   public void testEnvBad1(@RequestParam String urlStr) throws NamingException {
     Hashtable<String, String> env = new Hashtable<String, String>();
     env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.rmi.registry.RegistryContextFactory");
@@ -136,7 +125,6 @@ public class JndiInjection {
     new InitialContext(env);
   }
 
-  @RequestMapping
   public void testEnvBad2(@RequestParam String urlStr) throws NamingException {
     Hashtable<String, String> env = new Hashtable<String, String>();
     env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.rmi.registry.RegistryContextFactory");
@@ -144,7 +132,6 @@ public class JndiInjection {
     new InitialDirContext(env);
   }
 
-  @RequestMapping
   public void testSpringJndiTemplatePropertiesBad1(@RequestParam String urlStr) throws NamingException {
     Properties props = new Properties();
     props.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.rmi.registry.RegistryContextFactory");
@@ -152,7 +139,6 @@ public class JndiInjection {
     new JndiTemplate(props);
   }
 
-  @RequestMapping
   public void testSpringJndiTemplatePropertiesBad2(@RequestParam String urlStr) throws NamingException {
     Properties props = new Properties();
     props.setProperty(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.rmi.registry.RegistryContextFactory");
@@ -160,7 +146,6 @@ public class JndiInjection {
     new JndiTemplate(props);
   }
 
-  @RequestMapping
   public void testSpringJndiTemplatePropertiesBad3(@RequestParam String urlStr) throws NamingException {
     Properties props = new Properties();
     props.setProperty(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.rmi.registry.RegistryContextFactory");
@@ -169,7 +154,6 @@ public class JndiInjection {
     template.setEnvironment(props);
   }
 
-  @RequestMapping
   public void testSpringLdapTemplateOk1(@RequestParam String nameStr) throws NamingException {
     LdapTemplate ctx = new LdapTemplate();
 
@@ -191,7 +175,6 @@ public class JndiInjection {
     ctx.searchForObject(nameStr, "", new SearchControls(), (ContextMapper) new Object());
   }
 
-  @RequestMapping
   public void testEnvOk1(@RequestParam String urlStr) throws NamingException {
     Hashtable<String, String> env = new Hashtable<String, String>();
     env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.rmi.registry.RegistryContextFactory");
@@ -199,7 +182,6 @@ public class JndiInjection {
     new InitialContext(env);
   }
 
-  @RequestMapping
   public void testEnvOk2(@RequestParam String urlStr) throws NamingException {
     Hashtable<String, String> env = new Hashtable<String, String>();
     env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.rmi.registry.RegistryContextFactory");

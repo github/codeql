@@ -469,7 +469,7 @@ module SignAnalysisCached {
     not exists(certainInstructionSign(i)) and
     not (
       result = TNeg() and
-      i.getResultIRType().(IRIntegerType).isUnsigned()
+      i.getResultType().(IntegralType).isUnsigned()
     ) and
     (
       unknownSign(i)
@@ -477,13 +477,9 @@ module SignAnalysisCached {
       exists(ConvertInstruction ci, Instruction prior, boolean fromSigned, boolean toSigned |
         i = ci and
         prior = ci.getUnary() and
+        (if ci.getResultType().(IntegralType).isSigned() then toSigned = true else toSigned = false) and
         (
-          if ci.getResultIRType().(IRIntegerType).isSigned()
-          then toSigned = true
-          else toSigned = false
-        ) and
-        (
-          if prior.getResultIRType().(IRIntegerType).isSigned()
+          if prior.getResultType().(IntegralType).isSigned()
           then fromSigned = true
           else fromSigned = false
         ) and
@@ -516,11 +512,11 @@ module SignAnalysisCached {
         i instanceof ShiftLeftInstruction and result = s1.lshift(s2)
         or
         i instanceof ShiftRightInstruction and
-        i.getResultIRType().(IRIntegerType).isSigned() and
+        i.getResultType().(IntegralType).isSigned() and
         result = s1.rshift(s2)
         or
         i instanceof ShiftRightInstruction and
-        not i.getResultIRType().(IRIntegerType).isSigned() and
+        not i.getResultType().(IntegralType).isSigned() and
         result = s1.urshift(s2)
       )
       or

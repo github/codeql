@@ -1,17 +1,13 @@
 private import csharp
 private import TaintTrackingPublic
-private import DataFlowImplCommon
-private import semmle.code.csharp.Caching
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.ControlFlowReachability
 private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.commons.ComparisonTest
+private import semmle.code.csharp.frameworks.JsonNET
 private import cil
 private import dotnet
-// import `TaintedMember` definitions from other files to avoid potential reevaluation
-private import semmle.code.csharp.frameworks.JsonNET
-private import semmle.code.csharp.frameworks.WCF
 
 /**
  * Holds if `node` should be a barrier in all global taint flow configurations
@@ -19,7 +15,15 @@ private import semmle.code.csharp.frameworks.WCF
  */
 predicate defaultTaintBarrier(DataFlow::Node node) { none() }
 
-deprecated predicate localAdditionalTaintStep = defaultAdditionalTaintStep/2;
+/**
+ * Holds if the additional step from `src` to `sink` should be included in all
+ * global taint flow configurations.
+ */
+predicate defaultAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  localAdditionalTaintStep(pred, succ)
+  or
+  succ = pred.(DataFlow::NonLocalJumpNode).getAJumpSuccessor(false)
+}
 
 private CIL::DataFlowNode asCilDataFlowNode(DataFlow::Node node) {
   result = node.asParameter() or
@@ -30,6 +34,9 @@ private predicate localTaintStepCil(DataFlow::Node nodeFrom, DataFlow::Node node
   asCilDataFlowNode(nodeFrom).getALocalFlowSucc(asCilDataFlowNode(nodeTo), any(CIL::Tainted t))
 }
 
+/** Gets the qualifier of element access `ea`. */
+private Expr getElementAccessQualifier(ElementAccess ea) { result = ea.getQualifier() }
+
 private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityConfiguration {
   LocalTaintExprStepConfiguration() { this = "LocalTaintExprStepConfiguration" }
 
@@ -38,6 +45,28 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
   ) {
     exactScope = false and
     (
+      // Taint from assigned value to element qualifier (`x[i] = 0`)
+      exists(AssignExpr ae |
+        e1 = ae.getRValue() and
+        e2.(AssignableRead) = getElementAccessQualifier+(ae.getLValue()) and
+        scope = ae and
+        isSuccessor = false
+      )
+      or
+      // Taint from array initializer
+      e1 = e2.(ArrayCreation).getInitializer().getAnElement() and
+      scope = e2 and
+      isSuccessor = false
+      or
+      // Taint from object initializer
+      exists(ElementInitializer ei |
+        ei = e2.(ObjectCreation).getInitializer().(CollectionInitializer).getAnElementInitializer() and
+        e1 = ei.getArgument(ei.getNumberOfArguments() - 1) and // assume the last argument is the value (i.e., not a key)
+        scope = e2 and
+        isSuccessor = false
+      )
+      or
+      // Taint from element qualifier
       e1 = e2.(ElementAccess).getQualifier() and
       scope = e2 and
       isSuccessor = true
@@ -97,77 +126,61 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
         )
     )
   }
-}
 
-private predicate localTaintStepCommon(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  Stages::DataFlowStage::forceCachingInSameStage() and
-  any(LocalTaintExprStepConfiguration x).hasNodePath(nodeFrom, nodeTo)
-  or
-  localTaintStepCil(nodeFrom, nodeTo)
+  override predicate candidateDef(
+    Expr e, AssignableDefinition defTo, ControlFlowElement scope, boolean exactScope,
+    boolean isSuccessor
+  ) {
+    // Taint from `foreach` expression
+    exists(ForeachStmt fs |
+      e = fs.getIterableExpr() and
+      defTo.(AssignableDefinitions::LocalVariableDefinition).getDeclaration() =
+        fs.getVariableDeclExpr() and
+      isSuccessor = true
+    |
+      scope = fs and
+      exactScope = true
+      or
+      scope = fs.getIterableExpr() and
+      exactScope = false
+      or
+      scope = fs.getVariableDeclExpr() and
+      exactScope = false
+    )
+  }
 }
 
 cached
-private module Cached {
-  private import LibraryFlow
+module Cached {
+  private import semmle.code.csharp.Caching
 
-  /**
-   * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
-   * (intra-procedural) step.
-   */
   cached
-  predicate localTaintStepImpl(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    // Ordinary data flow
-    DataFlow::localFlowStep(nodeFrom, nodeTo)
+  predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    Stages::DataFlowStage::forceCachingInSameStage() and
+    any(LocalTaintExprStepConfiguration x).hasNodePath(nodeFrom, nodeTo)
     or
-    localTaintStepCommon(nodeFrom, nodeTo)
+    nodeFrom.(DataFlow::ExprNode).getControlFlowNode() =
+      nodeTo.(YieldReturnNode).getControlFlowNode()
     or
-    not LocalFlow::excludeFromExposedRelations(nodeFrom) and
-    not LocalFlow::excludeFromExposedRelations(nodeTo) and
-    (
-      // Simple flow through library code is included in the exposed local
-      // step relation, even though flow is technically inter-procedural
-      LibraryFlow::localStepLibrary(nodeFrom, nodeTo, false)
-      or
-      // Taint collection by adding a tainted element
-      exists(DataFlow::ElementContent c |
-        storeStep(nodeFrom, c, nodeTo)
-        or
-        setterLibrary(nodeFrom, c, nodeTo, false)
-      )
-      or
-      exists(DataFlow::Content c |
-        readStep(nodeFrom, c, nodeTo)
-        or
-        getterLibrary(nodeFrom, c, nodeTo, false)
-      |
-        // Taint members
-        c = any(TaintedMember m).(FieldOrProperty).getContent()
-        or
-        // Read from a tainted collection
-        c = TElementContent()
-      )
-    )
-  }
-
-  /**
-   * Holds if the additional step from `nodeFrom` to `nodeTo` should be included
-   * in all global taint flow configurations.
-   */
-  cached
-  predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    localTaintStepCommon(nodeFrom, nodeTo)
+    localTaintStepCil(nodeFrom, nodeTo)
     or
     // Taint members
-    readStep(nodeFrom, any(TaintedMember m).(FieldOrProperty).getContent(), nodeTo)
+    exists(Access access |
+      access = nodeTo.asExpr() and
+      access.getTarget() instanceof TaintedMember
+    |
+      access.(FieldRead).getQualifier() = nodeFrom.asExpr()
+      or
+      access.(PropertyRead).getQualifier() = nodeFrom.asExpr()
+    )
     or
-    // Although flow through collections is modelled precisely using stores/reads, we still
-    // allow flow out of a _tainted_ collection. This is needed in order to support taint-
-    // tracking configurations where the source is a collection
-    readStep(nodeFrom, TElementContent(), nodeTo)
-    or
-    LibraryFlow::localStepLibrary(nodeFrom, nodeTo, false)
-    or
-    nodeTo = nodeFrom.(DataFlow::NonLocalJumpNode).getAJumpSuccessor(false)
+    exists(LibraryCodeNode n | not n.preservesValue() |
+      n = nodeTo and
+      nodeFrom = n.getPredecessor(AccessPath::empty())
+      or
+      n = nodeFrom and
+      nodeTo = n.getSuccessor(AccessPath::empty())
+    )
   }
 }
 

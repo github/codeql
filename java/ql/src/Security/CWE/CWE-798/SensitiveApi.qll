@@ -129,8 +129,7 @@ private predicate javaApiCallablePasswordParam(string s) {
   s = "sun.tools.jconsole.ProxyClient;ProxyClient(String, int, String, String);3" or
   s = "sun.tools.jconsole.ProxyClient;getProxyClient(String, int, String, String);3" or
   s = "sun.tools.jconsole.ProxyClient;getProxyClient(String, String, String);2" or
-  s = "sun.tools.jconsole.ProxyClient;getCacheKey(String, int, String, String);3" or
-  s = "com.amazonaws.auth.BasicAWSCredentials;BasicAWSCredentials(String, String);1"
+  s = "sun.tools.jconsole.ProxyClient;getCacheKey(String, int, String, String);3"
 }
 
 /**
@@ -201,8 +200,7 @@ private predicate javaApiCallableUsernameParam(string s) {
   s = "sun.tools.jconsole.ProxyClient;getProxyClient(String, String, String);1" or
   s = "sun.tools.jconsole.ProxyClient;getConnectionName(String, String);1" or
   s = "sun.tools.jconsole.ProxyClient;getProxyClient(String, int, String, String);2" or
-  s = "sun.tools.jconsole.ProxyClient;getConnectionName(String, int, String);2" or
-  s = "com.amazonaws.auth.BasicAWSCredentials;BasicAWSCredentials(String, String);0"
+  s = "sun.tools.jconsole.ProxyClient;getConnectionName(String, int, String);2"
 }
 
 /**

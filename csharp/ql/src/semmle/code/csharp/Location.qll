@@ -38,16 +38,16 @@ class Location extends @location {
   /** Gets a textual representation of this location. */
   string toString() { none() }
 
-  /** Gets the 1-based line number (inclusive) where this location starts. */
+  /** Gets the start line of this location. */
   final int getStartLine() { this.hasLocationInfo(_, result, _, _, _) }
 
-  /** Gets the 1-based line number (inclusive) where this location ends. */
+  /** Gets the end line of this location. */
   final int getEndLine() { this.hasLocationInfo(_, _, _, result, _) }
 
-  /** Gets the 1-based column number (inclusive) where this location starts. */
+  /** Gets the start column of this location. */
   final int getStartColumn() { this.hasLocationInfo(_, _, result, _, _) }
 
-  /** Gets the 1-based column number (inclusive) where this location ends. */
+  /** Gets the end column of this location. */
   final int getEndColumn() { this.hasLocationInfo(_, _, _, _, result) }
 }
 

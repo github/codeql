@@ -34,8 +34,7 @@ module ServerSideUrlRedirect {
     }
 
     override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
-      guard instanceof LocalUrlSanitizingGuard or
-      guard instanceof HostnameSanitizerGuard
+      guard instanceof LocalUrlSanitizingGuard
     }
   }
 }

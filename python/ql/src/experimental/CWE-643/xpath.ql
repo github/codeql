@@ -12,7 +12,6 @@
 
 import python
 import semmle.python.security.Paths
-import semmle.python.security.strings.Untrusted
 /* Sources */
 import semmle.python.web.HttpRequest
 /* Sinks */

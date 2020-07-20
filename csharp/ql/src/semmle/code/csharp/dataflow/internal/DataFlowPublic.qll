@@ -165,7 +165,15 @@ AssignableDefinitionNode assignableDefinitionNode(AssignableDefinition def) {
   result.getDefinition() = def
 }
 
-predicate localFlowStep = localFlowStepImpl/2;
+/**
+ * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
+ * (intra-procedural) step.
+ */
+predicate localFlowStep(Node nodeFrom, Node nodeTo) {
+  simpleLocalFlowStep(nodeFrom, nodeTo)
+  or
+  extendedLocalFlowStep(nodeFrom, nodeTo)
+}
 
 /**
  * Holds if data flows from `source` to `sink` in zero or more local
@@ -211,8 +219,7 @@ class BarrierGuard extends Guard {
 }
 
 /**
- * A reference contained in an object. This is either a field, a property,
- * or an element in a collection.
+ * A reference contained in an object. This is either a field or a property.
  */
 class Content extends TContent {
   /** Gets a textual representation of this content. */
@@ -266,11 +273,4 @@ class PropertyContent extends Content, TPropertyContent {
   }
 
   deprecated override DataFlowType getType() { result = Gvn::getGlobalValueNumber(p.getType()) }
-}
-
-/** A reference to an element in a collection. */
-class ElementContent extends Content, TElementContent {
-  override string toString() { result = "[]" }
-
-  override Location getLocation() { result instanceof EmptyLocation }
 }

@@ -45,7 +45,6 @@ public class LibraryTypeDataFlow
         ieint.Select(x => x);
         List<int> list = null;
         list.Find(x => x > 0);
-        list.Insert(0, 0);
         Stack<int> stack = null;
         stack.Peek();
         ArrayList al = null;
@@ -84,8 +83,6 @@ public class LibraryTypeDataFlow
         Path.GetPathRoot("");
         HttpContextBase context = null;
         string name = context.Request.QueryString["name"];
-
-        var dict = new Dictionary<string, int>() { {"abc", 0 } };
     }
 
     [DataContract]

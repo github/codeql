@@ -13,7 +13,6 @@ import DefinitionTracking
 external string selectedSourceFile();
 
 from NiceLocationExpr use, Definition defn, string kind
-where
-  defn = definitionOf(use, kind) and
-  defn.getLocation().getFile() = getEncodedFile(selectedSourceFile())
+where defn = definitionOf(use, kind)
+and defn.getLocation().getFile() = getEncodedFile(selectedSourceFile())
 select use, defn, kind

@@ -5,7 +5,7 @@
 import csharp
 import DataFlow::PathGraph
 
-class Conf extends DataFlow::Configuration {
+class Conf extends TaintTracking::Configuration {
   Conf() { this = "ArrayFlowConf" }
 
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ObjectCreation }

@@ -19,9 +19,9 @@ import semmle.python.dependencies.TechInventory
 
 from File sourceFile, string entity
 where
-  exists(PackageObject package, AstNode src |
-    dependency(src, package) and
-    src.getLocation().getFile() = sourceFile and
-    entity = munge(sourceFile, package)
-  )
+    exists(PackageObject package, AstNode src |
+        dependency(src, package) and
+        src.getLocation().getFile() = sourceFile and
+        entity = munge(sourceFile, package)
+    )
 select entity, sourceFile
