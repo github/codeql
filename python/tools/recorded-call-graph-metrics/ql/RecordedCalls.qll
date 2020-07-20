@@ -1,66 +1,72 @@
 import python
-
 import semmle.python.types.Builtins
+import semmle.python.objects.Callables
 
-class RecordedCall extends XMLElement {
-  RecordedCall() { this.hasName("recorded_call") }
-
-  string call_filename() { result = this.getAttributeValue("call_filename") }
-
-  int call_linenum() { result = this.getAttributeValue("call_linenum").toInt() }
-
-  int call_inst_index() { result = this.getAttributeValue("call_inst_index").toInt() }
+class XMLRecordedCall extends XMLElement {
+  XMLRecordedCall() { this.hasName("recorded_call") }
 
   Call getCall() {
-    // TODO: handle calls spanning multiple lines
-    result.getLocation().hasLocationInfo(this.call_filename(), this.call_linenum(), _, _, _)
+    result = this.getXMLCall().getCall()
+  }
+
+  XMLCall getXMLCall() { result.getParent() = this }
+
+  XMLCallee getXMLCallee() { result.getParent() = this }
+}
+
+class XMLCall extends XMLElement {
+  XMLCall() { this.hasName("Call") }
+
+  string get_filename_data() { result = this.getAChild("filename").getTextValue() }
+
+  int get_linenum_data() { result = this.getAChild("linenum").getTextValue().toInt() }
+
+  int get_inst_index_data() { result = this.getAChild("inst_index").getTextValue().toInt() }
+
+  Call getCall() {
+    // TODO: do we handle calls spanning multiple lines?
+    result.getLocation().hasLocationInfo(this.get_filename_data(), this.get_linenum_data(), _, _, _)
   }
 }
 
-class RecordedPythonCall extends RecordedCall {
-  RecordedPythonCall() {
-    this.hasAttribute("pythoncallee_filename") and
-    this.hasAttribute("pythoncallee_linenum") and
-    this.hasAttribute("pythoncallee_funcname")
-  }
+abstract class XMLCallee extends XMLElement { }
 
-  string pythoncallee_filename() { result = this.getAttributeValue("pythoncallee_filename") }
+class XMLPythonCallee extends XMLCallee {
+  XMLPythonCallee() { this.hasName("PythonCallee") }
 
-  int pythoncallee_linenum() { result = this.getAttributeValue("pythoncallee_linenum").toInt() }
+  string get_filename_data() { result = this.getAChild("filename").getTextValue() }
 
-  string pythoncallee_funcname() { result = this.getAttributeValue("pythoncallee_funcname") }
+  int get_linenum_data() { result = this.getAChild("linenum").getTextValue().toInt() }
+
+  string get_funcname_data() { result = this.getAChild("funcname").getTextValue() }
 
   Function getCallee() {
-    result.getLocation().hasLocationInfo(this.pythoncallee_filename(), this.pythoncallee_linenum(), _, _, _)
+    result.getLocation().hasLocationInfo(this.get_filename_data(), this.get_linenum_data(), _, _, _)
   }
 }
 
-class RecordedBuiltinCall extends RecordedCall {
-  RecordedBuiltinCall() {
-    this.hasAttribute("externalcallee_module") and
-    this.hasAttribute("externalcallee_qualname") and
-    this.getAttributeValue("externalcallee_is_builtin") = "True"
-  }
+class XMLExternalCallee extends XMLCallee {
+  XMLExternalCallee() { this.hasName("ExternalCallee") }
 
-  string externalcallee_module() { result = this.getAttributeValue("externalcallee_module") }
+  string get_module_data() { result = this.getAChild("module").getTextValue() }
 
-  string externalcallee_qualname() { result = this.getAttributeValue("externalcallee_qualname") }
+  string get_qualname_data() { result = this.getAChild("qualname").getTextValue() }
 
   Builtin getCallee() {
     exists(Builtin mod |
-      not externalcallee_module() = "None" and
+      not this.get_module_data() = "None" and
       mod.isModule() and
-      mod.getName() = this.externalcallee_module()
+      mod.getName() = this.get_module_data()
       or
-      externalcallee_module() = "None" and
+      this.get_module_data() = "None" and
       mod = Builtin::builtinModule()
     |
-      result = traverse_qualname(mod, this.externalcallee_qualname())
+      result = traverse_qualname(mod, this.get_qualname_data())
     )
   }
 }
 
-Builtin traverse_qualname(Builtin parent, string qualname) {
+private Builtin traverse_qualname(Builtin parent, string qualname) {
   not qualname = "__objclass__" and
   not qualname.matches("%.%") and
   result = parent.getMember(qualname)
@@ -74,17 +80,48 @@ Builtin traverse_qualname(Builtin parent, string qualname) {
   )
 }
 
-
 /**
  * Class of recorded calls where we can uniquely identify both the `call` and the `callee`.
  */
-class ValidRecordedCall extends RecordedCall {
+class ValidRecordedCall extends XMLRecordedCall {
   ValidRecordedCall() {
     strictcount(this.getCall()) = 1 and
     (
-      strictcount(this.(RecordedPythonCall).getCall()) = 1
+      strictcount(this.getXMLCallee().(XMLPythonCallee).getCallee()) = 1
       or
-      strictcount(this.(RecordedBuiltinCall).getCall()) = 1
+      strictcount(this.getXMLCallee().(XMLExternalCallee).getCallee()) = 1
     )
+  }
+}
+
+class InvalidRecordedCall extends XMLRecordedCall {
+  InvalidRecordedCall() { not this instanceof ValidRecordedCall }
+}
+
+module PointsToBasedCallGraph {
+  class ResolvableRecordedCall extends ValidRecordedCall {
+    Value calleeValue;
+
+    ResolvableRecordedCall() {
+      exists(Call call, XMLCallee xmlCallee |
+        call = this.getCall() and
+        calleeValue.getACall() = call.getAFlowNode() and
+        xmlCallee = this.getXMLCallee() and
+        (
+          xmlCallee instanceof XMLPythonCallee and
+          calleeValue.(PythonFunctionValue).getScope() = xmlCallee.(XMLPythonCallee).getCallee()
+          or
+          xmlCallee instanceof XMLExternalCallee and
+          calleeValue.(BuiltinFunctionObjectInternal).getBuiltin() =
+            xmlCallee.(XMLExternalCallee).getCallee()
+          or
+          xmlCallee instanceof XMLExternalCallee and
+          calleeValue.(BuiltinMethodObjectInternal).getBuiltin() =
+            xmlCallee.(XMLExternalCallee).getCallee()
+        )
+      )
+    }
+
+    Value getCalleeValue() { result = calleeValue }
   }
 }
