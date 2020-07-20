@@ -8,11 +8,9 @@
  */
 
 import go
+import ideContextual
 
 external string selectedSourceFile();
-
-cached
-File getEncodedFile(string name) { result.getAbsolutePath().replaceAll(":", "_") = name }
 
 from Ident def, Ident use, Entity e
 where use.uses(e) and def.declares(e) and use.getFile() = getEncodedFile(selectedSourceFile())
