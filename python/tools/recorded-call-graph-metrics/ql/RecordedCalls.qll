@@ -1,13 +1,12 @@
 import python
 import semmle.python.types.Builtins
 import semmle.python.objects.Callables
+import BytecodeExpr
 
 class XMLRecordedCall extends XMLElement {
   XMLRecordedCall() { this.hasName("recorded_call") }
 
-  Call getCall() {
-    result = this.getXMLCall().getCall()
-  }
+  Call getCall() { result = this.getXMLCall().getCall() }
 
   XMLCall getXMLCall() { result.getParent() = this }
 
@@ -25,7 +24,28 @@ class XMLCall extends XMLElement {
 
   Call getCall() {
     // TODO: do we handle calls spanning multiple lines?
-    result.getLocation().hasLocationInfo(this.get_filename_data(), this.get_linenum_data(), _, _, _)
+    this.matchBytecodeExpr(result, this.getAChild("bytecode_expr").getAChild())
+  }
+
+  private predicate matchBytecodeExpr(Expr expr, XMLBytecodeExpr bytecode) {
+    exists(Call parent_call, XMLBytecodeCall parent_bytecode_call |
+      parent_call
+          .getLocation()
+          .hasLocationInfo(this.get_filename_data(), this.get_linenum_data(), _, _, _) and
+      parent_call.getAChildNode*() = expr and
+      parent_bytecode_call.getParent() = this.getAChild("bytecode_expr") and
+      parent_bytecode_call.getAChild*() = bytecode
+    ) and
+    (
+      expr.(Name).getId() = bytecode.(XMLBytecodeVariableName).get_name_data()
+      or
+      expr.(Attribute).getName() = bytecode.(XMLBytecodeAttribute).get_attr_name_data() and
+      matchBytecodeExpr(expr.(Attribute).getObject(),
+        bytecode.(XMLBytecodeAttribute).get_object_data())
+      or
+      matchBytecodeExpr(expr.(Call).getFunc(),
+        bytecode.(XMLBytecodeCall).get_function_data())
+    )
   }
 }
 
