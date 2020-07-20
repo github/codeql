@@ -6,7 +6,7 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.frameworks.JaxWS
 
-/** A sink that is vulnerable to a HTTP header splitting attack. */
+/** A sink that is vulnerable to an HTTP header splitting attack. */
 abstract class HeaderSplittingSink extends DataFlow::Node { }
 
 /** A source that introduces data considered safe to use by a header splitting source. */
@@ -14,7 +14,7 @@ abstract class SafeHeaderSplittingSource extends DataFlow::Node {
   SafeHeaderSplittingSource() { this instanceof RemoteFlowSource }
 }
 
-/** A sink that identifies a Java Servlet or JaxWs method that is vulnerable to a HTTP header splitting attack. */
+/** A sink that identifies a Java Servlet or JaxWs method that is vulnerable to an HTTP header splitting attack. */
 private class ServletHeaderSplittingSink extends HeaderSplittingSink {
   ServletHeaderSplittingSink() {
     exists(ResponseAddCookieMethod m, MethodAccess ma |
