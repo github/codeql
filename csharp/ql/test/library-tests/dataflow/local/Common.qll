@@ -12,5 +12,10 @@ class MyFlowSource extends DataFlow::Node {
     )
     or
     this.asParameter().hasName("tainted")
+    or
+    exists(MyFlowSource mid, DataFlow::ExprNode e |
+      TaintTracking::localTaintStep+(mid, e) and
+      e.getExpr() = this.asExpr().(ArrayCreation).getInitializer().getAnElement()
+    )
   }
 }

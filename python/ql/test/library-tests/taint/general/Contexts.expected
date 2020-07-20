@@ -1,5 +1,5 @@
 WARNING: Type CallContext has been deprecated and may be removed in future (Contexts.ql:5,6-17)
-WARNING: Type CallContext has been deprecated and may be removed in future (Contexts.ql:7,12-23)
+WARNING: Type CallContext has been deprecated and may be removed in future (Contexts.ql:7,10-21)
 | assignment.py:1 | p0 = simple.test | Function test |
 | assignment.py:1 | p1 = simple.test | Function test |
 | assignment.py:1 | p2 = simple.test | Function test |

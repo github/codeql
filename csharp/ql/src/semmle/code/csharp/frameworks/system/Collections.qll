@@ -52,3 +52,13 @@ class SystemCollectionsIEnumeratorInterface extends SystemCollectionsInterface {
 class SystemCollectionsICollectionInterface extends SystemCollectionsInterface {
   SystemCollectionsICollectionInterface() { this.hasName("ICollection") }
 }
+
+/** The `System.Collections.IList` interface. */
+class SystemCollectionsIListInterface extends SystemCollectionsInterface {
+  SystemCollectionsIListInterface() { this.hasName("IList") }
+}
+
+/** The `System.Collections.IDictionary` interface. */
+class SystemCollectionsIDictionaryInterface extends SystemCollectionsInterface {
+  SystemCollectionsIDictionaryInterface() { this.hasName("IDictionary") }
+}

@@ -152,6 +152,12 @@ class IRIntegerType extends IRNumericType {
     this = TIRSignedIntegerType(byteSize) or
     this = TIRUnsignedIntegerType(byteSize)
   }
+
+  /** Holds if this integer type is signed. */
+  predicate isSigned() { none() }
+
+  /** Holds if this integer type is unsigned. */
+  predicate isUnsigned() { none() }
   // Don't override `getByteSize()` here. The optimizer seems to generate better code when this is
   // overridden only in the leaf classes.
 }
@@ -169,6 +175,8 @@ class IRSignedIntegerType extends IRIntegerType, TIRSignedIntegerType {
 
   pragma[noinline]
   final override int getByteSize() { result = byteSize }
+
+  override predicate isSigned() { any() }
 }
 
 /**
@@ -184,6 +192,8 @@ class IRUnsignedIntegerType extends IRIntegerType, TIRUnsignedIntegerType {
 
   pragma[noinline]
   final override int getByteSize() { result = byteSize }
+
+  override predicate isUnsigned() { any() }
 }
 
 /**

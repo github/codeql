@@ -15,18 +15,19 @@ import python
  * including the body (if any), as opposed to the location of its name only.
  */
 class RangeFunction extends Function {
-    /**
-     * Holds if this element is at the specified location.
-     * The location spans column `startcolumn` of line `startline` to
-     * column `endcolumn` of line `endline` in file `filepath`.
-     * For more information, see
-     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
-     */
-    predicate hasLocationInfo(
-        string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {        super.getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _) and
-        this.getBody().getLastItem().getLocation().hasLocationInfo(filepath, _, _, endline, endcolumn)
-    }
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    super.getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _) and
+    this.getBody().getLastItem().getLocation().hasLocationInfo(filepath, _, _, endline, endcolumn)
+  }
 }
 
 /**
@@ -34,16 +35,17 @@ class RangeFunction extends Function {
  * including the body (if any), as opposed to the location of its name only.
  */
 class RangeClass extends Class {
-    /**
-     * Holds if this element is at the specified location.
-     * The location spans column `startcolumn` of line `startline` to
-     * column `endcolumn` of line `endline` in file `filepath`.
-     * For more information, see
-     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
-     */
-    predicate hasLocationInfo(
-        string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {        super.getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _) and
-        this.getBody().getLastItem().getLocation().hasLocationInfo(filepath, _, _, endline, endcolumn)
-    }
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    super.getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _) and
+    this.getBody().getLastItem().getLocation().hasLocationInfo(filepath, _, _, endline, endcolumn)
+  }
 }

@@ -14,6 +14,6 @@ import python
 
 from ClassObject sub, ClassObject base
 where
-    base.getName() = "MyClass" and
-    sub.getABaseType() = base
+  base.getName() = "MyClass" and
+  sub.getABaseType() = base
 select sub
