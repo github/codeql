@@ -1,3 +1,34 @@
+other.go:
+#    0| [File] library-tests/semmle/go/PrintAst/other.go
+#    3|   0: [FuncDecl] function declaration
+#    3|     0: [FunctionName, Ident] main
+#    3|         Type = func() 
+#    3|     1: [FuncTypeExpr] function type
+#    3|     2: [BlockStmt] block statement
+#    5|   1: [FuncDecl] function declaration
+#    5|     0: [FunctionName, Ident] f
+#    5|         Type = func() 
+#    5|     1: [FuncTypeExpr] function type
+#    5|     2: [BlockStmt] block statement
+#    6|   2: [FuncDecl] function declaration
+#    6|     0: [FunctionName, Ident] g
+#    6|         Type = func() 
+#    6|     1: [FuncTypeExpr] function type
+#    6|     2: [BlockStmt] block statement
+#    8|   3: [VarDecl] variable declaration
+#    8|     0: [ValueSpec] value declaration specifier
+#    8|       0: [Ident, VariableName] x
+#    8|           Type = int
+#    8|       1: [Ident, TypeName] int
+#    8|           Type = int
+#    8|       2: [IntLit] 0
+#    8|           Type = int
+#    8|           Value = [IntLit] 0
+#    1|   4: [Ident] main
+go.mod:
+#    0| [GoModFile] library-tests/semmle/go/PrintAst/go.mod
+#    1|   0: [GoModModuleLine] go.mod module line
+#    3|   1: [GoModGoLine] go.mod go line
 input.go:
 #    0| [File] library-tests/semmle/go/PrintAst/input.go
 #    5|   0: [CommentGroup] comment group

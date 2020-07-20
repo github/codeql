@@ -13,4 +13,6 @@ import PrintAst
  */
 class Cfg extends PrintAstConfiguration {
   override predicate shouldPrintFunction(FuncDef func) { any() }
+
+  override predicate shouldPrintFile(File file) { any() }
 }

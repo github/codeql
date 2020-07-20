@@ -5,7 +5,11 @@
 import go
 
 /**
- * Hook to customize the functions printed by this module.
+ * Hook to customize the files and functions printed by this module.
+ *
+ * For an AstNode to be printed, it always requires `shouldPrintFile(f)` to hold
+ * for its containing file `f`, and additionally requires `shouldPrintFunction(fun)`
+ * if it is, or falls within, function `fun`.
  */
 class PrintAstConfiguration extends string {
   /**
@@ -18,10 +22,25 @@ class PrintAstConfiguration extends string {
    * functions.
    */
   predicate shouldPrintFunction(FuncDef func) { any() }
+
+  /**
+   * Holds if the AST for `file` should be printed. By default, holds for all
+   * files.
+   */
+  predicate shouldPrintFile(File file) { any() }
 }
 
 private predicate shouldPrintFunction(FuncDef func) {
   exists(PrintAstConfiguration config | config.shouldPrintFunction(func))
+}
+
+private predicate shouldPrintFile(File file) {
+  exists(PrintAstConfiguration config | config.shouldPrintFile(file))
+}
+
+private FuncDef getEnclosingFunction(AstNode n) {
+  result = n or
+  result = n.getEnclosingFunction()
 }
 
 /**
@@ -29,8 +48,8 @@ private predicate shouldPrintFunction(FuncDef func) {
  */
 private newtype TPrintAstNode =
   TAstNode(AstNode ast) {
-    // Do print ast nodes without an enclosing function, e.g. file headers
-    forall(FuncDef f | f = ast.getEnclosingFunction() | shouldPrintFunction(f))
+    shouldPrintFile(ast.getFile()) and
+    forall(FuncDef f | f = getEnclosingFunction(ast) | shouldPrintFunction(f))
   }
 
 /**

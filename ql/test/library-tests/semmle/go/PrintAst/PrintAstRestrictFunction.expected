@@ -1,0 +1,47 @@
+other.go:
+#    0| [File] library-tests/semmle/go/PrintAst/other.go
+#    6|   2: [FuncDecl] function declaration
+#    6|     0: [FunctionName, Ident] g
+#    6|         Type = func() 
+#    6|     1: [FuncTypeExpr] function type
+#    6|     2: [BlockStmt] block statement
+#    8|   3: [VarDecl] variable declaration
+#    8|     0: [ValueSpec] value declaration specifier
+#    8|       0: [Ident, VariableName] x
+#    8|           Type = int
+#    8|       1: [Ident, TypeName] int
+#    8|           Type = int
+#    8|       2: [IntLit] 0
+#    8|           Type = int
+#    8|           Value = [IntLit] 0
+#    1|   4: [Ident] main
+go.mod:
+#    0| [GoModFile] library-tests/semmle/go/PrintAst/go.mod
+#    1|   0: [GoModModuleLine] go.mod module line
+#    3|   1: [GoModGoLine] go.mod go line
+input.go:
+#    0| [File] library-tests/semmle/go/PrintAst/input.go
+#    5|   0: [CommentGroup] comment group
+#    5|     0: [SlashSlashComment] comment
+#    7|   1: [CommentGroup] comment group
+#    7|     0: [SlashSlashComment] comment
+#    9|   2: [DocComment] comment group
+#    9|     0: [SlashSlashComment] comment
+#   17|   3: [CommentGroup] comment group
+#   17|     0: [SlashSlashComment] comment
+#   45|   4: [DocComment] comment group
+#   45|     0: [SlashSlashComment] comment
+#   64|   5: [DocComment] comment group
+#   64|     0: [SlashSlashComment] comment
+#   74|   6: [DocComment] comment group
+#   74|     0: [SlashSlashComment] comment
+#  111|   7: [DocComment] comment group
+#  111|     0: [SlashSlashComment] comment
+#  127|   8: [DocComment] comment group
+#  127|     0: [SlashSlashComment] comment
+#  132|   9: [DocComment] comment group
+#  132|     0: [SlashSlashComment] comment
+#    3|   10: [ImportDecl] import declaration
+#    3|     0: [ImportSpec] import specifier
+#    3|       0: [StringLit] "fmt"
+#    1|   18: [Ident] main
