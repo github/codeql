@@ -1,14 +1,20 @@
-import csharp
+/**
+ * Provides classes for `DataSet` or `DataTable` deserialization queries.
+ *
+ * Please visit https://go.microsoft.com/fwlink/?linkid=2132227 for details.
+ */
+ 
+ import csharp
 
 /**
- * Abstract class thats depnds or inherits from DataSet and DataTable types.
- **/
+ * Abstract class that depends or inherits from `DataSet` or `DataTable` types.
+ */
 abstract class DataSetOrTableRelatedClass extends Class {
 }
 
 /**
- * Gets the DataSet and DataTable types, or types derived from them.
- **/
+ * `DataSet`, `DataTable` types, or any types derived from them.
+ */
 class DataSetOrTable extends DataSetOrTableRelatedClass {
   DataSetOrTable() {
     this.getABaseType*().getQualifiedName().matches("System.Data.DataTable") or
@@ -19,7 +25,7 @@ class DataSetOrTable extends DataSetOrTableRelatedClass {
 }
 
 /**
- * Gets a class that include a property or generic of type DataSet and DataTable
+ * A Class that include a property or generic collection of type `DataSet` and `DataTable`
  */
 class ClassWithDataSetOrTableMember extends DataSetOrTableRelatedClass {
   ClassWithDataSetOrTableMember() {
@@ -57,6 +63,9 @@ class SerializableClass extends Class {
   }
 }
 
+/**
+ * Holds if the serializable class `c` has a property or field `m` that is of `DataSet` or `DataTable` related type
+ */
 predicate isClassUnsafeXmlSerializerImplementation( SerializableClass c, Member m) {
   exists( Property p |
     m = p |
@@ -70,7 +79,7 @@ predicate isClassUnsafeXmlSerializerImplementation( SerializableClass c, Member 
 }
 
 /**
- * It is unsafe to serilize DataSet and DataTable related types
+ * Serializable class that has a property or field that is of `DataSet` or `DataTable` related type
  */
 class UnsafeXmlSerializerImplementation extends SerializableClass {
   UnsafeXmlSerializerImplementation() {
@@ -98,7 +107,7 @@ class UnsafeXmlReadMethod extends Method {
 }
 
 /**
- * MethodCal that may be unsafe when used to serialize DataSet and DataTable related types
+ * MethodCall that may be unsafe when used to serialize DataSet and DataTable related types
  */
 class UnsafeXmlReadMethodCall extends MethodCall {
   UnsafeXmlReadMethodCall() {
