@@ -35,6 +35,40 @@ class AstNode extends @node, Locatable {
    */
   int getNumChild() { result = count(getAChild()) }
 
+  /**
+   * Gets a child with the given index and of the given kind, if one exists.
+   * Note that a given parent can have multiple children with the same index but differing kind.
+   */
+  private AstNode getChildOfKind(string kind, int i) {
+    kind = "expr" and result = this.(ExprParent).getChildExpr(i)
+    or
+    kind = "gomodexpr" and result = this.(GoModExprParent).getChildGoModExpr(i)
+    or
+    kind = "stmt" and result = this.(StmtParent).getChildStmt(i)
+    or
+    kind = "decl" and result = this.(DeclParent).getDecl(i)
+    or
+    kind = "spec" and result = this.(GenDecl).getSpec(i)
+    or
+    kind = "field" and result = this.(FieldParent).getField(i)
+    or
+    kind = "commentgroup" and result = this.(File).getCommentGroup(i)
+    or
+    kind = "comment" and result = this.(CommentGroup).getComment(i)
+  }
+
+  /**
+   * Get an AstNode child, ordered by child kind and then by index.
+   */
+  AstNode getUniquelyNumberedChild(int index) {
+    result =
+      rank[index + 1](AstNode child, string kind, int i |
+        child = getChildOfKind(kind, i)
+      |
+        child order by kind, i
+      )
+  }
+
   /** Gets the parent node of this AST node, if any. */
   AstNode getParent() { this = result.getAChild() }
 

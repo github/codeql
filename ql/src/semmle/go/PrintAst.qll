@@ -101,40 +101,6 @@ private string qlClass(AstNode el) {
 }
 
 /**
- * Gets a child with the given index and of the given kind, if one exists.
- * Note that a given parent can have multiple children with the same index but differing kind.
- */
-private AstNode getChildOfKind(AstNode parent, string kind, int i) {
-  kind = "expr" and result = parent.(ExprParent).getChildExpr(i)
-  or
-  kind = "gomodexpr" and result = parent.(GoModExprParent).getChildGoModExpr(i)
-  or
-  kind = "stmt" and result = parent.(StmtParent).getChildStmt(i)
-  or
-  kind = "decl" and result = parent.(DeclParent).getDecl(i)
-  or
-  kind = "spec" and result = parent.(GenDecl).getSpec(i)
-  or
-  kind = "field" and result = parent.(FieldParent).getField(i)
-  or
-  kind = "commentgroup" and result = parent.(File).getCommentGroup(i)
-  or
-  kind = "comment" and result = parent.(CommentGroup).getComment(i)
-}
-
-/**
- * Get an AstNode child, ordered by child kind and then by index
- */
-private AstNode getUniquelyNumberedChild(AstNode node, int index) {
-  result =
-    rank[index + 1](AstNode child, string kind, int i |
-      child = getChildOfKind(node, kind, i)
-    |
-      child order by kind, i
-    )
-}
-
-/**
  * A graph node representing a real AST node.
  */
 class BaseAstNode extends PrintAstNode, TAstNode {
@@ -147,7 +113,7 @@ class BaseAstNode extends PrintAstNode, TAstNode {
     // nodes have multiple different types of child (e.g. a File has a
     // child expression, the package name, and child declarations whose
     // indices may clash), so we renumber them:
-    result = TAstNode(getUniquelyNumberedChild(ast, childIndex))
+    result = TAstNode(ast.getUniquelyNumberedChild(childIndex))
   }
 
   override string toString() { result = qlClass(ast) + ast }
