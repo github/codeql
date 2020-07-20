@@ -10,7 +10,7 @@ fi
 
 DB="cg-trace-example-db"
 SRC="example/"
-XMLDIR="example-traces/"
+XMLDIR="example-traces"
 PYTHON_EXTRACTOR=$(codeql resolve extractor --language=python)
 
 
