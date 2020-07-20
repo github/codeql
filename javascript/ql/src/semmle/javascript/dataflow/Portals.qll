@@ -15,7 +15,6 @@
 import javascript
 
 private newtype TPortal =
-  MkGlobalObjectPortal() or
   MkNpmPackagePortal(string pkgName) {
     NpmPackagePortal::imports(_, pkgName) or
     NpmPackagePortal::imports(_, pkgName, _) or
@@ -98,20 +97,6 @@ class Portal extends TPortal {
   ReturnPortal getReturn() { result.getBasePortal() = this }
 
   /**
-   * Gets the `i`th base portal of this portal.
-   *
-   * The `0`th base portal is the portal itself, the `n+1`st base portal is the `n`th base portal
-   * of the portal `p` of which this is a member, instance, parameter, or return portal.
-   */
-  cached
-  Portal getBasePortal(int i) {
-    i = 0 and
-    result = this
-    or
-    result = this.(CompoundPortal).getBasePortal().getBasePortal(i - 1)
-  }
-
-  /**
    * Gets a textual representation of this portal.
    *
    * Different portals must have different `toString`s, so the result of
@@ -128,22 +113,6 @@ class Portal extends TPortal {
    */
   cached
   abstract int depth();
-}
-
-/**
- * A portal representing the global object.
- */
-private class GlobalObjectPortal extends Portal, MkGlobalObjectPortal {
-  override DataFlow::SourceNode getAnExitNode(boolean isRemote) {
-    result = DataFlow::globalObjectRef() and
-    isRemote = true
-  }
-
-  override DataFlow::Node getAnEntryNode(boolean escapes) { none() }
-
-  override string toString() { result = "(global)" }
-
-  override int depth() { result = 1 }
 }
 
 /**
@@ -198,7 +167,7 @@ private module NpmPackagePortal {
   predicate imports(DataFlow::SourceNode imp, string pkgName) {
     exists(NPMPackage pkg |
       imp = getAModuleImport(pkg, pkgName) and
-      pkgName.regexpMatch("[^./].*")
+      pkg.declaresDependency(pkgName, _)
     )
   }
 
@@ -206,7 +175,7 @@ private module NpmPackagePortal {
   predicate imports(DataFlow::SourceNode imp, string pkgName, string member) {
     exists(NPMPackage pkg |
       imp = getAModuleMemberImport(pkg, pkgName, member) and
-      pkgName.regexpMatch("[^./].*")
+      pkg.declaresDependency(pkgName, _)
     )
   }
 
@@ -306,11 +275,6 @@ private module MemberPortal {
       base = MkNpmPackagePortal(pkg) and
       isRemote = false
     )
-    or
-    // global variable reads are a kind of property read
-    base instanceof GlobalObjectPortal and
-    read = DataFlow::globalVarRef(prop) and
-    isRemote = true
   }
 
   /** Holds if the main module of `pkgName` exports `rhs` under the name `prop`. */
@@ -336,14 +300,6 @@ private module MemberPortal {
       base = MkNpmPackagePortal(pkgName) and
       escapes = true
     )
-    or
-    // global variable writes are a kind of property write
-    base instanceof GlobalObjectPortal and
-    exists(AssignExpr assgn |
-      assgn.getLhs() = DataFlow::globalVarRef(prop).asExpr() and
-      rhs = assgn.getRhs().flow()
-    ) and
-    escapes = true
   }
 }
 

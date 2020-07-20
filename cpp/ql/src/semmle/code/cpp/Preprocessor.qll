@@ -33,13 +33,11 @@ class PreprocessorDirective extends Locatable, @preprocdirect {
   }
 }
 
-private class TPreprocessorBranchDirective = @ppd_branch or @ppd_else or @ppd_endif;
-
 /**
  * A C/C++ preprocessor branch related directive: `#if`, `#ifdef`,
  * `#ifndef`, `#elif`, `#else` or `#endif`.
  */
-class PreprocessorBranchDirective extends PreprocessorDirective, TPreprocessorBranchDirective {
+abstract class PreprocessorBranchDirective extends PreprocessorDirective {
   /**
    * Gets the `#if`, `#ifdef` or `#ifndef` directive which matches this
    * branching directive.

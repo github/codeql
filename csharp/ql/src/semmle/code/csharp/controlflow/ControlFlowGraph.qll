@@ -517,6 +517,7 @@ module ControlFlow {
         e =
           any(QualifiableExpr qe |
             not qe instanceof ExtensionMethodCall and
+            not qe.isConditional() and
             result = qe.getChild(i)
           )
         or
@@ -655,7 +656,7 @@ module ControlFlow {
         cfe =
           any(AssignOperationWithExpandedAssignment a | result = first(a.getExpandedAssignment()))
         or
-        cfe = any(ConditionallyQualifiedExpr cqe | result = first(getExprChildElement(cqe, 0)))
+        cfe = any(ConditionallyQualifiedExpr cqe | result = first(cqe.getChildExpr(-1)))
         or
         cfe =
           any(ArrayCreation ac |
@@ -881,7 +882,7 @@ module ControlFlow {
             c = getValidSelfCompletion(result)
             or
             // Qualifier exits with a `null` completion
-            result = getExprChildElement(cqe, 0) and
+            result = cqe.getChildExpr(-1) and
             c = TRec(TLastRecSpecificCompletion(any(NullnessCompletion nc | nc.isNull())))
           )
         or
@@ -1453,16 +1454,16 @@ module ControlFlow {
         )
         or
         exists(ConditionallyQualifiedExpr parent, int i |
-          cfe = last(getExprChildElement(parent, i), c) and
+          cfe = last(parent.getChildExpr(i), c) and
           c instanceof NormalCompletion and
-          if i = 0 then c.(NullnessCompletion).isNonNull() else any()
+          not c.(NullnessCompletion).isNull()
         |
           // Post-order: flow from last element of last child to element itself
-          i = max(int j | exists(getExprChildElement(parent, j))) and
+          i = max(int j | exists(parent.getChildExpr(j))) and
           result = parent
           or
           // Standard left-to-right evaluation
-          result = first(getExprChildElement(parent, i + 1))
+          result = first(parent.getChildExpr(i + 1))
         )
         or
         // Post-order: flow from last element of thrown expression to expression itself

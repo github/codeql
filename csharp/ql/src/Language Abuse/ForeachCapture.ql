@@ -75,13 +75,15 @@ Element getAssignmentTarget(Expr e) {
 Element getCollectionAssignmentTarget(Expr e) {
   // Store into collection via method
   exists(
-    MethodCall mc, Method m, LibraryTypeDataFlow ltdf, CallableFlowSource source,
-    CallableFlowSink sink
+    MethodCall mc, Method m, IEnumerableFlow ief, CallableFlowSourceArg source,
+    CallableFlowSinkQualifier sink, int i
   |
+    mc.getQualifier() = result.(Variable).getAnAccess() and
+    ief = mc.getQualifier().getType().getSourceDeclaration() and
     m = mc.getTarget().getSourceDeclaration() and
-    ltdf.callableFlow(source, AccessPath::empty(), sink, AccessPath::element(), m, _) and
-    e = source.getSource(mc) and
-    result.(Variable).getAnAccess() = sink.getSink(mc)
+    ief.callableFlow(source, sink, m, _) and
+    source.getArgumentIndex() = i and
+    e = mc.getArgument(i)
   )
   or
   // Array initializer

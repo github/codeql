@@ -58,7 +58,7 @@ module Stages {
 
     cached
     private predicate forceCachingInSameStageRev() {
-      defaultAdditionalTaintStep(_, _)
+      localAdditionalTaintStep(_, _)
       or
       any(ArgumentNode n).argumentOf(_, _)
       or

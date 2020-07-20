@@ -59,8 +59,6 @@
 | CompileTimeOperators.cs:15:10:15:15 | enter Typeof | CompileTimeOperators.cs:15:10:15:15 | exit Typeof | 5 |
 | CompileTimeOperators.cs:20:12:20:17 | enter Nameof | CompileTimeOperators.cs:20:12:20:17 | exit Nameof | 5 |
 | CompileTimeOperators.cs:28:10:28:10 | enter M | CompileTimeOperators.cs:28:10:28:10 | exit M | 14 |
-| ConditionalAccess.cs:1:7:1:23 | enter ConditionalAccess | ConditionalAccess.cs:30:28:30:32 | ... = ... | 3 |
-| ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess | ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess | 1 |
 | ConditionalAccess.cs:3:12:3:13 | enter M1 | ConditionalAccess.cs:3:26:3:26 | access to parameter i | 2 |
 | ConditionalAccess.cs:3:12:3:13 | exit M1 | ConditionalAccess.cs:3:12:3:13 | exit M1 | 1 |
 | ConditionalAccess.cs:3:28:3:38 | call to method ToString | ConditionalAccess.cs:3:28:3:38 | call to method ToString | 1 |
@@ -86,12 +84,7 @@
 | ConditionalAccess.cs:19:12:19:13 | exit M6 | ConditionalAccess.cs:19:12:19:13 | exit M6 | 1 |
 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 | ConditionalAccess.cs:19:43:19:60 | call to method CommaJoinWith | 2 |
 | ConditionalAccess.cs:21:10:21:11 | enter M7 | ConditionalAccess.cs:21:10:21:11 | exit M7 | 17 |
-| ConditionalAccess.cs:30:10:30:12 | enter Out | ConditionalAccess.cs:30:28:30:32 | ... = ... | 3 |
-| ConditionalAccess.cs:30:10:30:12 | exit Out | ConditionalAccess.cs:30:10:30:12 | exit Out | 1 |
-| ConditionalAccess.cs:32:10:32:11 | enter M8 | ConditionalAccess.cs:35:9:35:12 | access to property Prop | 8 |
-| ConditionalAccess.cs:32:10:32:11 | exit M8 | ConditionalAccess.cs:32:10:32:11 | exit M8 | 1 |
-| ConditionalAccess.cs:35:14:35:24 | call to method Out | ConditionalAccess.cs:35:14:35:24 | call to method Out | 1 |
-| ConditionalAccess.cs:41:26:41:38 | enter CommaJoinWith | ConditionalAccess.cs:41:26:41:38 | exit CommaJoinWith | 7 |
+| ConditionalAccess.cs:31:26:31:38 | enter CommaJoinWith | ConditionalAccess.cs:31:26:31:38 | exit CommaJoinWith | 7 |
 | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:5:13:5:15 | access to parameter inc | 4 |
 | Conditions.cs:3:10:3:19 | exit IncrOrDecr | Conditions.cs:3:10:3:19 | exit IncrOrDecr | 1 |
 | Conditions.cs:6:13:6:16 | [inc (line 3): true] ...; | Conditions.cs:7:14:7:16 | [inc (line 3): true] access to parameter inc | 6 |

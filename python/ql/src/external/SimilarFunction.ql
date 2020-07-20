@@ -21,10 +21,10 @@ predicate relevant(Function m) { m.getMetrics().getNumberOfLinesOfCode() > 10 }
 
 from Function m, Function other, string message, int percent
 where
-  similarScopes(m, other, percent, message) and
-  relevant(m) and
-  percent > 95.0 and
-  not duplicateScopes(m, other, _, _) and
-  not duplicateScopes(m.getEnclosingModule(), other.getEnclosingModule(), _, _) and
-  not duplicateScopes(m.getScope(), other.getScope(), _, _)
+    similarScopes(m, other, percent, message) and
+    relevant(m) and
+    percent > 95.0 and
+    not duplicateScopes(m, other, _, _) and
+    not duplicateScopes(m.getEnclosingModule(), other.getEnclosingModule(), _, _) and
+    not duplicateScopes(m.getScope(), other.getScope(), _, _)
 select m, message, other, other.getName()

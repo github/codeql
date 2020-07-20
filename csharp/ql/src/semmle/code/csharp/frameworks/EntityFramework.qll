@@ -111,12 +111,12 @@ module EntityFramework {
       c = this.getAConstructor() and
       source.(CallableFlowSourceArg).getArgumentIndex() = 0 and
       sink instanceof CallableFlowSinkReturn and
-      preservesValue = false
+      preservesValue = true
       or
       c = this.getAConversionTo() and
       source.(CallableFlowSourceArg).getArgumentIndex() = 0 and
       sink instanceof CallableFlowSinkReturn and
-      preservesValue = false
+      preservesValue = true
     }
 
     ConversionOperator getAConversionTo() {

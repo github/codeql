@@ -16,6 +16,3 @@
       - warning
 - exclude:
     deprecated: //
-- exclude:
-    query path: /^experimental\/.*/
-

@@ -1,12 +1,16 @@
 edges
-| SqlInjection.cs:38:21:38:35 | access to field categoryTextBox : TextBox | SqlInjection.cs:39:50:39:55 | access to local variable query1 |
-| SqlInjection.cs:73:33:73:47 | access to field categoryTextBox : TextBox | SqlInjection.cs:74:56:74:61 | access to local variable query1 |
-| SqlInjection.cs:73:33:73:47 | access to field categoryTextBox : TextBox | SqlInjection.cs:75:55:75:60 | access to local variable query1 |
+| SqlInjection.cs:38:21:38:35 | access to field categoryTextBox : TextBox | SqlInjection.cs:38:21:38:40 | access to property Text : String |
+| SqlInjection.cs:38:21:38:40 | access to property Text : String | SqlInjection.cs:39:50:39:55 | access to local variable query1 |
+| SqlInjection.cs:73:33:73:47 | access to field categoryTextBox : TextBox | SqlInjection.cs:73:33:73:52 | access to property Text : String |
+| SqlInjection.cs:73:33:73:52 | access to property Text : String | SqlInjection.cs:74:56:74:61 | access to local variable query1 |
+| SqlInjection.cs:73:33:73:52 | access to property Text : String | SqlInjection.cs:75:55:75:60 | access to local variable query1 |
 | SqlInjection.cs:87:21:87:29 | access to property Text : String | SqlInjection.cs:88:50:88:55 | access to local variable query1 |
 nodes
 | SqlInjection.cs:38:21:38:35 | access to field categoryTextBox : TextBox | semmle.label | access to field categoryTextBox : TextBox |
+| SqlInjection.cs:38:21:38:40 | access to property Text : String | semmle.label | access to property Text : String |
 | SqlInjection.cs:39:50:39:55 | access to local variable query1 | semmle.label | access to local variable query1 |
 | SqlInjection.cs:73:33:73:47 | access to field categoryTextBox : TextBox | semmle.label | access to field categoryTextBox : TextBox |
+| SqlInjection.cs:73:33:73:52 | access to property Text : String | semmle.label | access to property Text : String |
 | SqlInjection.cs:74:56:74:61 | access to local variable query1 | semmle.label | access to local variable query1 |
 | SqlInjection.cs:75:55:75:60 | access to local variable query1 | semmle.label | access to local variable query1 |
 | SqlInjection.cs:87:21:87:29 | access to property Text : String | semmle.label | access to property Text : String |

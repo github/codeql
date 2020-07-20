@@ -29,10 +29,8 @@ class Assignable extends Declaration, @assignable {
  * An assignable that is also a member. Either a field (`Field`), a
  * property (`Property`), an indexer (`Indexer`), or an event (`Event`).
  */
-class AssignableMember extends Member, Assignable, Attributable {
+class AssignableMember extends Member, Assignable {
   override AssignableMemberAccess getAnAccess() { result = Assignable.super.getAnAccess() }
-
-  override string toString() { result = Assignable.super.toString() }
 }
 
 /**

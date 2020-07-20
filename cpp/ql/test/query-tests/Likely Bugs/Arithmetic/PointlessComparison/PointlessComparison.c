@@ -365,7 +365,7 @@ int callCommand(void)
   return 0;
 }
 
-void shifts(void)
+int shifts(void)
 {
 	unsigned int x = 3;
 
@@ -374,21 +374,11 @@ void shifts(void)
 	if (x >> 1 == 1) {} // always true [NOT DETECTED]
 }
 
-void bitwise_ands()
+int bitwise_ands()
 {
 	unsigned int x = 0xFF;
 
 	if ((x & 2) >= 1) {}
 	if ((x & 2) >= 2) {}
 	if ((x & 2) >= 3) {} // always false
-}
-
-void unsigned_mult(unsigned int x, unsigned int y) {
-  if(x < 13 && y < 35) {
-      if(x * y > 1024) {} // always false [NOT DETECTED]
-      if(x * y < 204) {}
-      if(x >= 3 && y >= 2) {
-        if(x * y < 5) {} // always false [NOT DETECTED]
-      }
-  }
 }

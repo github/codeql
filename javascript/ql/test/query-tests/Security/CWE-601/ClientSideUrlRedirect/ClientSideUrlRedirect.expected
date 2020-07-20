@@ -1,23 +1,4 @@
 nodes
-| sanitizer.js:2:9:2:25 | url |
-| sanitizer.js:2:15:2:25 | window.name |
-| sanitizer.js:2:15:2:25 | window.name |
-| sanitizer.js:4:27:4:29 | url |
-| sanitizer.js:4:27:4:29 | url |
-| sanitizer.js:16:27:16:29 | url |
-| sanitizer.js:16:27:16:29 | url |
-| sanitizer.js:19:27:19:29 | url |
-| sanitizer.js:19:27:19:29 | url |
-| sanitizer.js:22:27:22:29 | url |
-| sanitizer.js:22:27:22:29 | url |
-| sanitizer.js:25:27:25:29 | url |
-| sanitizer.js:25:27:25:29 | url |
-| sanitizer.js:28:27:28:29 | url |
-| sanitizer.js:28:27:28:29 | url |
-| sanitizer.js:31:27:31:29 | url |
-| sanitizer.js:31:27:31:29 | url |
-| sanitizer.js:37:27:37:29 | url |
-| sanitizer.js:37:27:37:29 | url |
 | tst2.js:2:7:2:33 | href |
 | tst2.js:2:7:2:33 | href |
 | tst2.js:2:14:2:28 | window.location |
@@ -99,24 +80,6 @@ nodes
 | tst.js:6:34:6:50 | document.location |
 | tst.js:6:34:6:55 | documen ... on.href |
 edges
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:4:27:4:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:4:27:4:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:16:27:16:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:16:27:16:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:19:27:19:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:19:27:19:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:22:27:22:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:22:27:22:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:25:27:25:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:25:27:25:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:28:27:28:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:28:27:28:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:31:27:31:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:31:27:31:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:37:27:37:29 | url |
-| sanitizer.js:2:9:2:25 | url | sanitizer.js:37:27:37:29 | url |
-| sanitizer.js:2:15:2:25 | window.name | sanitizer.js:2:9:2:25 | url |
-| sanitizer.js:2:15:2:25 | window.name | sanitizer.js:2:9:2:25 | url |
 | tst2.js:2:7:2:33 | href | tst2.js:4:21:4:24 | href |
 | tst2.js:2:7:2:33 | href | tst2.js:4:21:4:24 | href |
 | tst2.js:2:14:2:28 | window.location | tst2.js:2:14:2:33 | window.location.href |
@@ -192,14 +155,6 @@ edges
 | tst.js:6:34:6:50 | document.location | tst.js:6:34:6:55 | documen ... on.href |
 | tst.js:6:34:6:55 | documen ... on.href | tst.js:6:20:6:56 | indirec ... n.href) |
 #select
-| sanitizer.js:4:27:4:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:4:27:4:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
-| sanitizer.js:16:27:16:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:16:27:16:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
-| sanitizer.js:19:27:19:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:19:27:19:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
-| sanitizer.js:22:27:22:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:22:27:22:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
-| sanitizer.js:25:27:25:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:25:27:25:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
-| sanitizer.js:28:27:28:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:28:27:28:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
-| sanitizer.js:31:27:31:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:31:27:31:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
-| sanitizer.js:37:27:37:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:37:27:37:29 | url | Untrusted URL redirection due to $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
 | tst2.js:4:21:4:55 | href.su ... '?')+1) | tst2.js:2:14:2:28 | window.location | tst2.js:4:21:4:55 | href.su ... '?')+1) | Untrusted URL redirection due to $@. | tst2.js:2:14:2:28 | window.location | user-provided value |
 | tst6.js:4:21:4:28 | redirect | tst6.js:2:18:2:45 | $locati ... irect') | tst6.js:4:21:4:28 | redirect | Untrusted URL redirection due to $@. | tst6.js:2:18:2:45 | $locati ... irect') | user-provided value |
 | tst6.js:6:17:6:24 | redirect | tst6.js:2:18:2:45 | $locati ... irect') | tst6.js:6:17:6:24 | redirect | Untrusted URL redirection due to $@. | tst6.js:2:18:2:45 | $locati ... irect') | user-provided value |

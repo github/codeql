@@ -508,8 +508,7 @@ static_asserts(
     unique int id: @static_assert,
     int condition : @expr ref,
     string message : string ref,
-    int location: @location_default ref,
-    int enclosing : @element ref
+    int location: @location_default ref
 );
 
 // each function has an ordered list of parameters

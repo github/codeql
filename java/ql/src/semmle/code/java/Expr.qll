@@ -60,12 +60,6 @@ class Expr extends ExprParent, @expr {
   /** Gets the statement containing this expression, if any. */
   Stmt getEnclosingStmt() { statementEnclosingExpr(this, result) }
 
-  /**
-   * Gets a statement that directly or transitively contains this expression, if any.
-   * This is equivalent to `this.getEnclosingStmt().getEnclosingStmt*()`.
-   */
-  Stmt getAnEnclosingStmt() { result = this.getEnclosingStmt().getEnclosingStmt*() }
-
   /** Gets a child of this expression. */
   Expr getAChildExpr() { exprs(result, _, _, this, _) }
 
@@ -1243,7 +1237,7 @@ class VariableAssign extends VariableUpdate {
   }
 
   /**
-   * Gets the source (right-hand side) of this assignment, if any.
+   * Gets the source of this assignment, if any.
    *
    * An initialization in a `CatchClause` or `EnhancedForStmt` is implicit and
    * does not have a source.

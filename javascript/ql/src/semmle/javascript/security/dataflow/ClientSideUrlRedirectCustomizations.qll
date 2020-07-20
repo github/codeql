@@ -6,7 +6,7 @@
 
 import javascript
 import semmle.javascript.security.dataflow.RemoteFlowSources
-private import UrlConcatenation
+import UrlConcatenation
 
 module ClientSideUrlRedirect {
   private import Xss::DomBasedXss as DomBasedXss

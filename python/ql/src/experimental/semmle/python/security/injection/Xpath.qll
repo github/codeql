@@ -22,14 +22,14 @@ module XpathInjection {
   abstract class XpathInjectionSink extends TaintSink { }
 
   /**
-   * A Sink representing an argument to the `etree.XPath` call.
+   * A Sink representing an argument to the `etree.Xpath` call.
    *
    *    from lxml import etree
    *    root = etree.XML("<xmlContent>")
    *    find_text = etree.XPath("`sink`")
    */
   private class EtreeXpathArgument extends XpathInjectionSink {
-    override string toString() { result = "lxml.etree.XPath" }
+    override string toString() { result = "lxml.etree.Xpath" }
 
     EtreeXpathArgument() {
       exists(CallNode call | call.getFunction().(AttrNode).getObject("XPath").pointsTo(etree()) |

@@ -1,6 +1,0 @@
-| test.py:20:9:20:14 | ControlFlowNode for SOURCE | test.py:21:10:21:10 | ControlFlowNode for x |
-| test.py:25:9:25:16 | ControlFlowNode for Str | test.py:26:10:26:10 | ControlFlowNode for x |
-| test.py:29:9:29:17 | ControlFlowNode for Str | test.py:30:10:30:10 | ControlFlowNode for x |
-| test.py:33:9:33:10 | ControlFlowNode for IntegerLiteral | test.py:34:10:34:10 | ControlFlowNode for x |
-| test.py:37:9:37:12 | ControlFlowNode for FloatLiteral | test.py:38:10:38:10 | ControlFlowNode for x |
-| test.py:46:10:46:15 | ControlFlowNode for SOURCE | test.py:47:10:47:10 | ControlFlowNode for x |

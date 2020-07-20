@@ -21,6 +21,4 @@
     - security
 - exclude:
     deprecated: //
-- exclude:
-    query path: /^experimental\/.*/
 

@@ -13,7 +13,6 @@ private import semmle.code.cpp.models.interfaces.DataFlow
 
 private newtype TIRDataFlowNode =
   TInstructionNode(Instruction i) or
-  TOperandNode(Operand op) or
   TVariableNode(Variable var)
 
 /**
@@ -33,13 +32,10 @@ class Node extends TIRDataFlowNode {
   Function getFunction() { none() } // overridden in subclasses
 
   /** Gets the type of this node. */
-  IRType getType() { none() } // overridden in subclasses
+  Type getType() { none() } // overridden in subclasses
 
   /** Gets the instruction corresponding to this node, if any. */
   Instruction asInstruction() { result = this.(InstructionNode).getInstruction() }
-
-  /** Gets the operands corresponding to this node, if any. */
-  Operand asOperand() { result = this.(OperandNode).getOperand() }
 
   /**
    * Gets the non-conversion expression corresponding to this node, if any. If
@@ -88,7 +84,7 @@ class Node extends TIRDataFlowNode {
   /**
    * Gets an upper bound on the type of this node.
    */
-  IRType getTypeBound() { result = getType() }
+  Type getTypeBound() { result = getType() }
 
   /** Gets the location of this element. */
   Location getLocation() { none() } // overridden by subclasses
@@ -125,7 +121,7 @@ class InstructionNode extends Node, TInstructionNode {
 
   override Function getFunction() { result = instr.getEnclosingFunction() }
 
-  override IRType getType() { result = instr.getResultIRType() }
+  override Type getType() { result = instr.getResultType() }
 
   override Location getLocation() { result = instr.getLocation() }
 
@@ -134,28 +130,6 @@ class InstructionNode extends Node, TInstructionNode {
     // does not use `Instruction.toString` because that's expensive to compute.
     result = this.getInstruction().getOpcode().toString()
   }
-}
-
-/**
- * An operand, viewed as a node in a data flow graph.
- */
-class OperandNode extends Node, TOperandNode {
-  Operand op;
-
-  OperandNode() { this = TOperandNode(op) }
-
-  /** Gets the operand corresponding to this node. */
-  Operand getOperand() { result = op }
-
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
-
-  override Function getFunction() { result = op.getUse().getEnclosingFunction() }
-
-  override IRType getType() { result = op.getIRType() }
-
-  override Location getLocation() { result = op.getLocation() }
-
-  override string toString() { result = this.getOperand().toString() }
 }
 
 /**
@@ -317,7 +291,7 @@ abstract class PostUpdateNode extends InstructionNode {
  * setY(&x); // a partial definition of the object `x`.
  * ```
  */
-abstract private class PartialDefinitionNode extends PostUpdateNode {
+abstract private class PartialDefinitionNode extends PostUpdateNode, TInstructionNode {
   abstract Expr getDefinedExpr();
 }
 
@@ -332,11 +306,11 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
     )
   }
 
-  // By using an operand as the result of this predicate we avoid the dataflow inconsistency errors
-  // caused by having multiple nodes sharing the same pre update node. This inconsistency error can cause
-  // a tuple explosion in the big step dataflow relation since it can make many nodes be the entry node
-  // into a big step.
-  override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
+  // There might be multiple `ChiInstructions` that has a particular instruction as
+  // the total operand - so this definition gives consistency errors in
+  // DataFlowImplConsistency::Consistency. However, it's not clear what (if any) implications
+  // this consistency failure has.
+  override Node getPreUpdateNode() { result.asInstruction() = instr.getTotal() }
 
   override Expr getDefinedExpr() {
     result = field.getObjectAddress().getUnconvertedResultExpression()
@@ -449,7 +423,7 @@ class VariableNode extends Node, TVariableNode {
     result = v
   }
 
-  override IRType getType() { result.getCanonicalLanguageType().hasUnspecifiedType(v.getType(), _) }
+  override Type getType() { result = v.getType() }
 
   override Location getLocation() { result = v.getLocation() }
 
@@ -508,11 +482,7 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFr
  * data flow. It may have less flow than the `localFlowStep` predicate.
  */
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  // Instruction -> Instruction flow
   simpleInstructionLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
-  or
-  // Operand -> Instruction flow
-  simpleOperandLocalFlowStep(nodeFrom.asOperand(), nodeTo.asInstruction())
 }
 
 pragma[noinline]
@@ -521,16 +491,6 @@ private predicate getFieldSizeOfClass(Class c, Type type, int size) {
     f.getDeclaringType() = c and
     f.getType() = type and
     type.getSize() = size
-  )
-}
-
-private predicate simpleOperandLocalFlowStep(Operand opFrom, Instruction iTo) {
-  // Certain dataflow steps (for instance `PostUpdateNode.getPreUpdateNode()`) generates flow to
-  // operands, so we include dataflow from those operands to the "result" of the instruction (i.e., to
-  // the instruction itself).
-  exists(PostUpdateNode post |
-    opFrom = post.getPreUpdateNode().asOperand() and
-    iTo.getAnOperand() = opFrom
   )
 }
 

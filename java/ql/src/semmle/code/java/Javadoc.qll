@@ -79,7 +79,7 @@ abstract class JavadocElement extends @javadocElement, Top {
   abstract string getText();
 }
 
-/** A Javadoc block tag. This does not include inline tags. */
+/** A Javadoc tag. */
 class JavadocTag extends JavadocElement, JavadocParent, @javadocTag {
   /** Gets the name of this Javadoc tag. */
   string getTagName() { javadocTag(this, result, _, _) }

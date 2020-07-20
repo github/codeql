@@ -9,9 +9,9 @@ private predicate fileRead(VarAccess fileAccess, Expr fileReadingExpr) {
     cie = fileReadingExpr and
     cie.getArgument(0) = fileAccess
   |
-    cie
-        .getConstructedType()
-        .hasQualifiedName("java.io", ["RandomAccessFile", "FileReader", "FileInputStream"])
+    cie.getConstructedType().hasQualifiedName("java.io", "RandomAccessFile") or
+    cie.getConstructedType().hasQualifiedName("java.io", "FileReader") or
+    cie.getConstructedType().hasQualifiedName("java.io", "FileInputStream")
   )
   or
   exists(MethodAccess ma, Method filesMethod |
@@ -22,9 +22,13 @@ private predicate fileRead(VarAccess fileAccess, Expr fileReadingExpr) {
       // represented by the first argument.
       filesMethod.getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
       fileAccess = ma.getArgument(0) and
-      filesMethod
-          .hasName(["readAllBytes", "readAllLines", "readString", "lines", "newBufferedReader",
-                "newInputStream", "newByteChannel"])
+      (
+        filesMethod.hasName("readAllBytes") or
+        filesMethod.hasName("readAllLines") or
+        filesMethod.hasName("newBufferedReader") or
+        filesMethod.hasName("newInputReader") or
+        filesMethod.hasName("newByteChannel")
+      )
     )
   )
   or

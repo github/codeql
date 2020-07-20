@@ -86,15 +86,15 @@ predicate backEdge(PhiInstruction phi, PhiInputOperand op) {
  * range analysis.
  */
 pragma[inline]
-private predicate safeCast(IRIntegerType fromtyp, IRIntegerType totyp) {
-  fromtyp.getByteSize() < totyp.getByteSize() and
+private predicate safeCast(IntegralType fromtyp, IntegralType totyp) {
+  fromtyp.getSize() < totyp.getSize() and
   (
     fromtyp.isUnsigned()
     or
     totyp.isSigned()
   )
   or
-  fromtyp.getByteSize() <= totyp.getByteSize() and
+  fromtyp.getSize() <= totyp.getSize() and
   (
     fromtyp.isSigned() and
     totyp.isSigned()
@@ -109,8 +109,8 @@ private predicate safeCast(IRIntegerType fromtyp, IRIntegerType totyp) {
  */
 class PtrToPtrCastInstruction extends ConvertInstruction {
   PtrToPtrCastInstruction() {
-    getResultIRType() instanceof IRAddressType and
-    getUnary().getResultIRType() instanceof IRAddressType
+    getResultType() instanceof PointerType and
+    getUnary().getResultType() instanceof PointerType
   }
 }
 
@@ -119,7 +119,7 @@ class PtrToPtrCastInstruction extends ConvertInstruction {
  * that cannot overflow or underflow.
  */
 class SafeIntCastInstruction extends ConvertInstruction {
-  SafeIntCastInstruction() { safeCast(getUnary().getResultIRType(), getResultIRType()) }
+  SafeIntCastInstruction() { safeCast(getUnary().getResultType(), getResultType()) }
 }
 
 /**
