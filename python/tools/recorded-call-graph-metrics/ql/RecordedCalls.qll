@@ -11,6 +11,19 @@ class XMLRecordedCall extends XMLElement {
   XMLCall getXMLCall() { result.getParent() = this }
 
   XMLCallee getXMLCallee() { result.getParent() = this }
+
+  /** Get a different `XMLRecordedCall` with the same result-set for `getCall`. */
+  XMLRecordedCall getOtherWithSameSetOfCalls() {
+    // `rc` is for a different bytecode instruction on same line
+    not result.getXMLCall().get_inst_index_data() = this.getXMLCall().get_inst_index_data() and
+    result.getXMLCall().get_filename_data() = this.getXMLCall().get_filename_data() and
+    result.getXMLCall().get_linenum_data() = this.getXMLCall().get_linenum_data() and
+    // set of calls is equal
+    // 1. this.getCall() issubset result.getCall()
+    not exists(Call call | call = this.getCall() | not result.getCall() = call) and
+    // 2. result.getCall() issubset this.getCall()
+    not exists(Call call | call = result.getCall() | not this.getCall() = call)
+  }
 }
 
 class XMLCall extends XMLElement {
@@ -43,8 +56,7 @@ class XMLCall extends XMLElement {
       matchBytecodeExpr(expr.(Attribute).getObject(),
         bytecode.(XMLBytecodeAttribute).get_object_data())
       or
-      matchBytecodeExpr(expr.(Call).getFunc(),
-        bytecode.(XMLBytecodeCall).get_function_data())
+      matchBytecodeExpr(expr.(Call).getFunc(), bytecode.(XMLBytecodeCall).get_function_data())
     )
   }
 }
@@ -110,6 +122,25 @@ class ValidRecordedCall extends XMLRecordedCall {
       strictcount(this.getXMLCallee().(XMLPythonCallee).getCallee()) = 1
       or
       strictcount(this.getXMLCallee().(XMLExternalCallee).getCallee()) = 1
+    )
+    or
+    // Handle case where the same function is called multiple times in one line, for
+    // example `func(); func()`. This only works if:
+    // - all the callees for these calls is the same
+    // - all these calls were recorded
+    //
+    // without this `strictcount`, in the case `func(); func(); func()`, if 1 of the calls
+    // is not recorded, we woulld still mark the other two recorded calls as valid
+    // (which is not following the rules above). + 1 to count `this` as well.
+    strictcount(this.getCall()) = strictcount(this.getOtherWithSameSetOfCalls()) + 1 and
+    forex(XMLRecordedCall rc |
+      rc = this.getOtherWithSameSetOfCalls()
+    |
+      unique(Function f | f = this.getXMLCallee().(XMLPythonCallee).getCallee()) =
+        unique(Function f | f = rc.getXMLCallee().(XMLPythonCallee).getCallee())
+      or
+      unique(Builtin b | b = this.getXMLCallee().(XMLExternalCallee).getCallee()) =
+        unique(Builtin b | b = rc.getXMLCallee().(XMLExternalCallee).getCallee())
     )
   }
 }
