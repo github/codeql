@@ -1,57 +1,40 @@
-import csv
 import dataclasses
+from typing import Dict
 
 from lxml import etree
 
 
-class Exporter:
+def dataclass_to_xml(obj, parent):
+    obj_elem = etree.SubElement(parent, obj.__class__.__name__)
+    for field in dataclasses.fields(obj):
+        field_elem = etree.SubElement(obj_elem, field.name)
+        value = getattr(obj, field.name)
+        if isinstance(value, (str, int)) or value is None:
+            field_elem.text = str(value)
+        elif dataclasses.is_dataclass(value):
+            dataclass_to_xml(value, field_elem)
+        else:
+            raise ValueError(
+                f"Can't export key {field.name!r} with value {value!r} (type {type(value)}"
+            )
+
+
+class XMLExporter:
     @staticmethod
-    def export(recorded_calls, outfile_path):
-        raise NotImplementedError()
-
-    @staticmethod
-    def dataclass_to_dict(obj):
-        d = dataclasses.asdict(obj)
-        prefix = obj.__class__.__name__.lower()
-        return {f"{prefix}_{key}": val for (key, val) in d.items()}
-
-
-class CSVExporter(Exporter):
-    @staticmethod
-    def export(recorded_calls, outfile_path):
-        with open(outfile_path, "w", newline="") as csv_file:
-            writer = None
-            for (call, callee) in sorted(recorded_calls):
-                data = {
-                    **Exporter.dataclass_to_dict(call),
-                    **Exporter.dataclass_to_dict(callee),
-                }
-
-                if writer is None:
-                    writer = csv.DictWriter(csv_file, fieldnames=data.keys())
-                    writer.writeheader()
-
-                writer.writerow(data)
-
-        print(f"output written to {outfile_path}")
-
-
-class XMLExporter(Exporter):
-    @staticmethod
-    def export(recorded_calls, outfile_path):
+    def export(outfile_path, recorded_calls, info: Dict[str, str]):
 
         root = etree.Element("root")
 
-        for (call, callee) in sorted(recorded_calls):
-            data = {
-                **Exporter.dataclass_to_dict(call),
-                **Exporter.dataclass_to_dict(callee),
-            }
+        info_elem = etree.SubElement(root, "info")
+        for k, v in info.items():
+            etree.SubElement(info_elem, k).text = v
 
-            rc = etree.SubElement(root, "recorded_call")
-            for k, v in data.items():
-                # xml library only supports serializing attributes that have string values
-                rc.set(k, str(v))
+        rcs = etree.SubElement(root, "recorded_calls")
+
+        for (call, callee) in sorted(recorded_calls):
+            rc = etree.SubElement(rcs, "recorded_call")
+            dataclass_to_xml(call, rc)
+            dataclass_to_xml(callee, rc)
 
         tree = etree.ElementTree(root)
         tree.write(outfile_path, encoding="utf-8", pretty_print=True)

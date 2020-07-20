@@ -1,6 +1,6 @@
 import sys
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"  # remember to update setup.py
 
 # Since the virtual machine opcodes changed in 3.6, not going to attempt to support
 # anything before that. Using dataclasses, which is a new feature in Python 3.7

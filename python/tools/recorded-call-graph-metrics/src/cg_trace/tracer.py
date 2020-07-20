@@ -1,10 +1,11 @@
 import dataclasses
-import dis
 import logging
 import os
 import sys
 from types import FrameType
 from typing import Optional
+
+from cg_trace.bytecode_reconstructor import BytecodeExpr, expr_from_frame
 
 LOGGER = logging.getLogger(__name__)
 
@@ -42,18 +43,26 @@ class Call:
     filename: str
     linenum: int
     inst_index: int
+    bytecode_expr: BytecodeExpr
+
+    def __str__(self):
+        d = dataclasses.asdict(self)
+        del d["bytecode_expr"]
+        normal_fields = ", ".join(f"{k}={v!r}" for k, v in d.items())
+
+        return f"{type(self).__name__}({normal_fields}, bytecode_expr≈{repr(str(self.bytecode_expr))})"
 
     @classmethod
     def from_frame(cls, frame: FrameType):
         code = frame.f_code
 
-        b = dis.Bytecode(frame.f_code, current_offset=frame.f_lasti)
-        LOGGER.debug(f"bytecode: \n{b.dis()}")
+        bytecode_expr = expr_from_frame(frame)
 
         return cls(
             filename=canonic_filename(code.co_filename),
             linenum=frame.f_lineno,
             inst_index=frame.f_lasti,
+            bytecode_expr=bytecode_expr,
         )
 
 
@@ -165,9 +174,11 @@ class CallGraphTracer:
             sys.setprofile(self.profilefunc)
             exec(code, globals, locals)
             sys.setprofile(None)
+            return "completed"
         except Exception:
             sys.setprofile(None)
             LOGGER.info("Exception occurred while running program:", exc_info=True)
+            return "exception occurred"
 
     def profilefunc(self, frame: FrameType, event: str, arg):
         # ignore everything until the first call, since that is `exec` from the `run`
@@ -191,6 +202,7 @@ class CallGraphTracer:
 
         LOGGER.debug(f"profilefunc {event=}")
         if event == "call":
+            assert frame.f_back is not None
             # in call, the `frame` argument is new the frame for entering the callee
             call = Call.from_frame(frame.f_back)
             callee = PythonCallee.from_frame(frame)

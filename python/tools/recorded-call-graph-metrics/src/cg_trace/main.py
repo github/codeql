@@ -1,10 +1,12 @@
 import logging
 import os
 import sys
+import time
+from datetime import datetime
 from io import StringIO
 
-from cg_trace import cmdline, tracer
-from cg_trace.exporter import CSVExporter, XMLExporter
+from cg_trace import __version__, cmdline, tracer
+from cg_trace.exporter import XMLExporter
 
 
 def record_calls(code, globals):
@@ -17,15 +19,19 @@ def record_calls(code, globals):
     sys.stderr = captured_stderr
 
     cgt = tracer.CallGraphTracer()
-    cgt.run(code, globals, globals)
+    exit_status = cgt.run(code, globals, globals)
     sys.stdout = real_stdout
     sys.stderr = real_stderr
 
-    return sorted(cgt.recorded_calls), captured_stdout, captured_stderr
+    return sorted(cgt.recorded_calls), captured_stdout, captured_stderr, exit_status
 
 
 def main(args=None) -> int:
-    logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+    logging.basicConfig(stream=sys.stderr, level=logging.INFO)
+
+    from . import bytecode_reconstructor
+
+    logging.getLogger(bytecode_reconstructor.__name__).setLevel(logging.INFO)
 
     if args is None:
         # first element in argv is program name
@@ -49,14 +55,27 @@ def main(args=None) -> int:
         "__cached__": None,
     }
 
-    recorded_calls, captured_stdout, captured_stderr = record_calls(code, globs)
+    start = time.time()
+    recorded_calls, captured_stdout, captured_stderr, exit_status = record_calls(
+        code, globs
+    )
+    end = time.time()
+    elapsed_formatted = f"{end-start:.2f} seconds"
 
-    if opts.csv:
-        CSVExporter.export(recorded_calls, opts.csv)
-    elif opts.xml:
-        XMLExporter.export(recorded_calls, opts.xml)
+    if opts.xml:
+        XMLExporter.export(
+            opts.xml,
+            recorded_calls,
+            info={
+                "cg_trace_version": __version__,
+                "args": " ".join(args),
+                "exit_status": exit_status,
+                "elapsed": elapsed_formatted,
+                "utctimestamp": datetime.utcnow().replace(microsecond=0).isoformat(),
+            },
+        )
     else:
-        print("Recorded calls:")
+        print(f"--- Recorded calls (in {elapsed_formatted}) ---")
         for (call, callee) in recorded_calls:
             print(f"{call} --> {callee}")
 

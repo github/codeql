@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="cg_trace",
-    version="0.0.1",
+    version="0.0.2",  # Remember to update src/cg_trace/__init__.py
     description="Call graph tracing",
     packages=find_packages("src"),
     package_dir={"": "src"},
