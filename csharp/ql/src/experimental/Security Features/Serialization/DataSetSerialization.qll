@@ -79,7 +79,7 @@ class UnsafeXmlSerializerImplementation extends SerializableClass {
 }
 
 /**
- * Method that may be unsafe when used to serialize DataSet and DataTable related types
+ * Method that may be unsafe when used to deserialize DataSet and DataTable related types
  */
 class UnsafeXmlReadMethod extends Method {
   UnsafeXmlReadMethod() {
@@ -91,8 +91,7 @@ class UnsafeXmlReadMethod extends Method {
       this.getName().matches("ReadXml%") and
       exists( Class c |
         c.getAMethod() = this |
-        c.getABaseType*() instanceof DataSetOrTableRelatedClass or
-        c.getABaseType*() instanceof DataSetOrTableRelatedClass
+        c.getABaseType*() instanceof DataSetOrTableRelatedClass 
       )
     )
   }
