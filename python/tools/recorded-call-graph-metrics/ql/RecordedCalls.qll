@@ -24,6 +24,10 @@ class XMLRecordedCall extends XMLElement {
     // 2. result.getCall() issubset this.getCall()
     not exists(Call call | call = result.getCall() | not this.getCall() = call)
   }
+
+  override string toString() {
+    result = this.getName() + " (<..>/" + this.getXMLCall().get_filename_data().regexpCapture(".*/([^/]+)$", 1) + ":" + this.getXMLCall().get_linenum_data() + ")"
+  }
 }
 
 class XMLCall extends XMLElement {
@@ -74,6 +78,10 @@ class XMLPythonCallee extends XMLCallee {
 
   Function getCallee() {
     result.getLocation().hasLocationInfo(this.get_filename_data(), this.get_linenum_data(), _, _, _)
+    or
+    // if function has decorator, the call will be recorded going to the first
+    result.getADecorator().getLocation().hasLocationInfo(this.get_filename_data(), this.get_linenum_data(), _, _, _)
+
   }
 }
 

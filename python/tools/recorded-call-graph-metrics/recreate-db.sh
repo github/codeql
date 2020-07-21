@@ -17,6 +17,7 @@ PYTHON_EXTRACTOR=$(codeql resolve extractor --language=python)
 cg-trace --xml "$XMLDIR"/simple.xml example/simple.py
 cg-trace --xml "$XMLDIR"/builtins.xml example/builtins.py
 cg-trace --xml "$XMLDIR"/multiple-on-one-line.xml example/multiple-on-one-line.py
+cg-trace --xml "$XMLDIR"/class-simple.xml example/class-simple.py
 
 
 rm -rf "$DB"
