@@ -55,6 +55,19 @@ class BytecodeSubscript(BytecodeExpr):
 
 
 @dataclasses.dataclass(frozen=True, eq=True, order=True)
+class BytecodeTuple(BytecodeExpr):
+    elements: List[BytecodeExpr]
+
+    def __str__(self):
+        elements_formatted = (
+            ", ".join(str(e) for e in self.elements)
+            if len(self.elements) > 1
+            else f"{self.elements[0]},"
+        )
+        return f"({elements_formatted})"
+
+
+@dataclasses.dataclass(frozen=True, eq=True, order=True)
 class BytecodeCall(BytecodeExpr):
     function: BytecodeExpr
 
@@ -160,6 +173,14 @@ def expr_from_instruction(instructions: List[Instruction], index: int) -> Byteco
         key_expr = expr_that_added_elem_to_stack(instructions, index - 1, 0)
         obj_expr = expr_that_added_elem_to_stack(instructions, index - 1, 1)
         return BytecodeSubscript(key=key_expr, object=obj_expr)
+
+    elif inst.opname in ["BUILD_TUPLE"]:
+        elements = []
+        for i in range(inst.arg):
+            element_expr = expr_that_added_elem_to_stack(instructions, index - 1, i)
+            elements.append(element_expr)
+        elements.reverse()
+        return BytecodeTuple(elements=elements)
 
     # https://docs.python.org/3/library/dis.html#opcode-CALL_FUNCTION
     elif inst.opname in [
