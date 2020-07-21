@@ -113,10 +113,10 @@ private Builtin traverse_qualname(Builtin parent, string qualname) {
 }
 
 /**
- * Class of recorded calls where we can uniquely identify both the `call` and the `callee`.
+ * Class of recorded calls where we can identify both the `call` and the `callee`.
  */
-class ValidRecordedCall extends XMLRecordedCall {
-  ValidRecordedCall() {
+class IdentifiedRecordedCall extends XMLRecordedCall {
+  IdentifiedRecordedCall() {
     strictcount(this.getCall()) = 1 and
     (
       strictcount(this.getXMLCallee().(XMLPythonCallee).getCallee()) = 1
@@ -145,12 +145,12 @@ class ValidRecordedCall extends XMLRecordedCall {
   }
 }
 
-class InvalidRecordedCall extends XMLRecordedCall {
-  InvalidRecordedCall() { not this instanceof ValidRecordedCall }
+class UnidentifiedRecordedCall extends XMLRecordedCall {
+  UnidentifiedRecordedCall() { not this instanceof IdentifiedRecordedCall }
 }
 
 module PointsToBasedCallGraph {
-  class ResolvableRecordedCall extends ValidRecordedCall {
+  class ResolvableRecordedCall extends IdentifiedRecordedCall {
     Value calleeValue;
 
     ResolvableRecordedCall() {
