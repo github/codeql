@@ -51,7 +51,7 @@ class BytecodeUnknown(BytecodeExpr):
         return f"<{self.opname}>"
 
 
-def find_inst_that_added_elem_to_stack(
+def expr_that_added_elem_to_stack(
     instructions: List[Instruction], start_index: int, stack_pos: int
 ):
     """Backwards traverse instructions
@@ -69,7 +69,8 @@ def find_inst_that_added_elem_to_stack(
     We can look for the function that is called by invoking this function with
     `start_index = 1` and `stack_pos = 1`. It will see that `LOAD_CONST` added the top
     element to the stack, and find that `LOAD_GLOBAL` was the instruction to add element
-    in stack position 1 to the stack -- so the index 0 is returned.
+    in stack position 1 to the stack -- so `expr_from_instruction(instructions, 0)` is
+    returned.
 
     It is assumed that if `stack_pos == 0` then the instruction you are looking for is
     the one at `instructions[start_index]`. This might not hold, in case of using `NOP`
@@ -80,11 +81,16 @@ def find_inst_that_added_elem_to_stack(
     for inst in reversed(instructions[: start_index + 1]):
         if stack_pos == 0:
             LOGGER.debug(f"Found it: {inst}")
-            return instructions.index(inst)
-        LOGGER.debug(f"Skipping {inst}")
+            found_index = instructions.index(inst)
+            break
+        old = stack_pos
         stack_pos -= dis.stack_effect(inst.opcode, inst.arg)
+        new = stack_pos
+        LOGGER.debug(f"Skipping ({old} -> {new}) {inst}")
+    else:
+        raise Exception("inst_index_for_stack_diff failed")
 
-    raise Exception("inst_index_for_stack_diff failed")
+    return expr_from_instruction(instructions, found_index)
 
 
 def expr_from_instruction(instructions: List[Instruction], index: int) -> BytecodeExpr:
@@ -99,8 +105,7 @@ def expr_from_instruction(instructions: List[Instruction], index: int) -> Byteco
     # https://docs.python.org/3/library/dis.html#opcode-LOAD_ATTR
     elif inst.opname in ["LOAD_METHOD", "LOAD_ATTR"]:
         attr_name = inst.argval
-        obj_index = find_inst_that_added_elem_to_stack(instructions, index - 1, 0)
-        obj_expr = expr_from_instruction(instructions, obj_index)
+        obj_expr = expr_that_added_elem_to_stack(instructions, index - 1, 0)
         return BytecodeAttribute(attr_name=attr_name, object=obj_expr)
 
     # https://docs.python.org/3/library/dis.html#opcode-CALL_FUNCTION
@@ -112,10 +117,9 @@ def expr_from_instruction(instructions: List[Instruction], index: int) -> Byteco
         elif inst.opname == "CALL_FUNCTION_KW":
             num_stack_elems = inst.arg + 1
 
-        func_index = find_inst_that_added_elem_to_stack(
+        func_expr = expr_that_added_elem_to_stack(
             instructions, index - 1, num_stack_elems
         )
-        func_expr = expr_from_instruction(instructions, func_index)
         return BytecodeCall(function=func_expr)
 
     else:
