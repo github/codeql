@@ -3,7 +3,7 @@ import dis
 import logging
 from dis import Instruction
 from types import FrameType
-from typing import List
+from typing import Any, List
 
 LOGGER = logging.getLogger(__name__)
 
@@ -16,6 +16,16 @@ LOGGER = logging.getLogger(__name__)
 class BytecodeExpr:
     """An expression reconstructed from Python bytecode
     """
+
+
+@dataclasses.dataclass(frozen=True, eq=True, order=True)
+class BytecodeConst(BytecodeExpr):
+    """FOR LOAD_CONST"""
+
+    value: Any
+
+    def __str__(self):
+        return repr(self.value)
 
 
 @dataclasses.dataclass(frozen=True, eq=True, order=True)
@@ -49,6 +59,16 @@ class BytecodeUnknown(BytecodeExpr):
 
     def __str__(self):
         return f"<{self.opname}>"
+
+
+@dataclasses.dataclass(frozen=True, eq=True, order=True)
+class BytecodeMakeFunction(BytecodeExpr):
+    """For MAKE_FUNCTION opcode"""
+
+    qualified_name: BytecodeExpr
+
+    def __str__(self):
+        return f"<MAKE_FUNCTION>(qualified_name={self.qualified_name})>"
 
 
 def expr_that_added_elem_to_stack(
@@ -101,6 +121,9 @@ def expr_from_instruction(instructions: List[Instruction], index: int) -> Byteco
     if inst.opname in ["LOAD_GLOBAL", "LOAD_FAST", "LOAD_NAME"]:
         return BytecodeVariableName(inst.argval)
 
+    elif inst.opname in ["LOAD_CONST"]:
+        return BytecodeConst(inst.argval)
+
     # https://docs.python.org/3/library/dis.html#opcode-LOAD_METHOD
     # https://docs.python.org/3/library/dis.html#opcode-LOAD_ATTR
     elif inst.opname in ["LOAD_METHOD", "LOAD_ATTR"]:
@@ -122,11 +145,16 @@ def expr_from_instruction(instructions: List[Instruction], index: int) -> Byteco
         )
         return BytecodeCall(function=func_expr)
 
-    else:
-        # LOAD_BUILD_CLASS is included here intentionally for now, since I don't really
-        # know what to do about it.
+    elif inst.opname in ["MAKE_FUNCTION"]:
+        name_expr = expr_that_added_elem_to_stack(instructions, index - 1, 0)
+        assert isinstance(name_expr, BytecodeConst)
+        return BytecodeMakeFunction(qualified_name=name_expr)
+
+    # LOAD_BUILD_CLASS is included here intentionally for now, since I don't really
+    # know what to do about it.
+    if inst.opname not in ["LOAD_BUILD_CLASS"]:
         LOGGER.warning(f"Don't know how to handle this type of instruction: {inst}")
-        return BytecodeUnknown(inst.opname)
+    return BytecodeUnknown(inst.opname)
 
 
 def expr_from_frame(frame: FrameType) -> BytecodeExpr:
