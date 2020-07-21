@@ -77,6 +77,14 @@ class XMLCall extends XMLElement {
         bytecode.(XMLBytecodeAttribute).get_object_data())
       or
       matchBytecodeExpr(expr.(Call).getFunc(), bytecode.(XMLBytecodeCall).get_function_data())
+      // I experimented with allowing partial matches with
+      // ```
+      // or
+      // bytecode instanceof XMLBytecodeUnknown
+      // ```
+      // but that only gave 1% improvement for Identified calls with approx 4200 calls
+      // in total (only supporting BytecodeVariableName/BytecodeAttribute/BytecodeCall).
+      // Since it's a potential performance problem, I did not enable.
     )
   }
 }
