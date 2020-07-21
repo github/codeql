@@ -6,6 +6,7 @@ from types import FrameType
 from typing import Any, Optional, Tuple
 
 from cg_trace.bytecode_reconstructor import BytecodeExpr, expr_from_frame
+from cg_trace.utils import better_compare_for_dataclass
 
 LOGGER = logging.getLogger(__name__)
 
@@ -73,28 +74,6 @@ class Call:
             frame.f_lineno,
             frame.f_lasti,
         )
-
-
-def better_compare_for_dataclass(cls):
-    """When dataclass is used with `order=True`, the comparison methods is only implemented for
-    objects of the same class. This decorator extends the functionality to compare class
-    name if used against other objects.
-    """
-    for op in [
-        "__lt__",
-        "__le__",
-        "__gt__",
-        "__ge__",
-    ]:
-        old = getattr(cls, op)
-
-        def new(self, other):
-            if type(self) == type(other):
-                return old(self, other)
-            return getattr(str, op)(self.__class__.__name__, other.__class__.__name__)
-
-        setattr(cls, op, new)
-    return cls
 
 
 @dataclasses.dataclass(frozen=True, eq=True, order=True)
