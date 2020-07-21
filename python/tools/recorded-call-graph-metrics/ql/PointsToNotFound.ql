@@ -1,5 +1,5 @@
 import RecordedCalls
 
-from ValidRecordedCall rc
+from IdentifiedRecordedCall rc
 where not rc instanceof PointsToBasedCallGraph::ResolvableRecordedCall
 select rc

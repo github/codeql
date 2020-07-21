@@ -10,6 +10,10 @@ class XMLRecordedCall extends XMLElement {
 
   XMLCall getXMLCall() { result.getParent() = this }
 
+  Function getPythonCallee() { result = this.getXMLCallee().(XMLPythonCallee).getCallee() }
+
+  Builtin getBuiltinCallee() { result = this.getXMLCallee().(XMLExternalCallee).getCallee() }
+
   XMLCallee getXMLCallee() { result.getParent() = this }
 
   /** Get a different `XMLRecordedCall` with the same result-set for `getCall`. */
@@ -26,7 +30,10 @@ class XMLRecordedCall extends XMLElement {
   }
 
   override string toString() {
-    result = this.getName() + " (<..>/" + this.getXMLCall().get_filename_data().regexpCapture(".*/([^/]+)$", 1) + ":" + this.getXMLCall().get_linenum_data() + ")"
+    result =
+      this.getName() + ":  <..>/" +
+        this.getXMLCall().get_filename_data().regexpCapture(".*/([^/]+)$", 1) + ":" +
+        this.getXMLCall().get_linenum_data()
   }
 }
 
@@ -80,8 +87,10 @@ class XMLPythonCallee extends XMLCallee {
     result.getLocation().hasLocationInfo(this.get_filename_data(), this.get_linenum_data(), _, _, _)
     or
     // if function has decorator, the call will be recorded going to the first
-    result.getADecorator().getLocation().hasLocationInfo(this.get_filename_data(), this.get_linenum_data(), _, _, _)
-
+    result
+        .getADecorator()
+        .getLocation()
+        .hasLocationInfo(this.get_filename_data(), this.get_linenum_data(), _, _, _)
   }
 }
 
@@ -127,9 +136,9 @@ class IdentifiedRecordedCall extends XMLRecordedCall {
   IdentifiedRecordedCall() {
     strictcount(this.getCall()) = 1 and
     (
-      strictcount(this.getXMLCallee().(XMLPythonCallee).getCallee()) = 1
+      strictcount(this.getPythonCallee()) = 1
       or
-      strictcount(this.getXMLCallee().(XMLExternalCallee).getCallee()) = 1
+      strictcount(this.getBuiltinCallee()) = 1
     )
     or
     // Handle case where the same function is called multiple times in one line, for
@@ -141,14 +150,26 @@ class IdentifiedRecordedCall extends XMLRecordedCall {
     // is not recorded, we woulld still mark the other two recorded calls as valid
     // (which is not following the rules above). + 1 to count `this` as well.
     strictcount(this.getCall()) = strictcount(this.getOtherWithSameSetOfCalls()) + 1 and
-    forex(XMLRecordedCall rc |
-      rc = this.getOtherWithSameSetOfCalls()
-    |
-      unique(Function f | f = this.getXMLCallee().(XMLPythonCallee).getCallee()) =
-        unique(Function f | f = rc.getXMLCallee().(XMLPythonCallee).getCallee())
+    forex(XMLRecordedCall rc | rc = this.getOtherWithSameSetOfCalls() |
+      unique(Function f | f = this.getPythonCallee()) =
+        unique(Function f | f = rc.getPythonCallee())
       or
-      unique(Builtin b | b = this.getXMLCallee().(XMLExternalCallee).getCallee()) =
-        unique(Builtin b | b = rc.getXMLCallee().(XMLExternalCallee).getCallee())
+      unique(Builtin b | b = this.getBuiltinCallee()) =
+        unique(Builtin b | b = rc.getBuiltinCallee())
+    )
+  }
+
+  override string toString() {
+    exists(string callee_str |
+      exists(Function callee | callee = this.getPythonCallee() |
+        callee_str =
+          callee.toString() + " (<..>/" + callee.getLocation().getFile().getRelativePath() + ":" +
+            callee.getLocation().getStartLine() + ")"
+      )
+      or
+      callee_str = this.getBuiltinCallee().toString()
+    |
+      result = super.toString() + " --> " + callee_str
     )
   }
 }
