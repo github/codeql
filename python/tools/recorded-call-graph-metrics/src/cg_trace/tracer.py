@@ -207,14 +207,16 @@ class CallGraphTracer:
         if event == "call":
             assert frame.f_back is not None
             # in call, the `frame` argument is new the frame for entering the callee
-            call = Call.from_frame(frame.f_back)
             callee = PythonCallee.from_frame(frame)
+            LOGGER.debug(f"callee={callee}")
+            call = Call.from_frame(frame.f_back)
 
         if event == "c_call":
             # in c_call, the `frame` argument is frame where the call happens, and the
             # `arg` argument is the C function object.
-            call = Call.from_frame(frame)
             callee = ExternalCallee.from_arg(arg)
+            LOGGER.debug(f"callee={callee}")
+            call = Call.from_frame(frame)
 
         LOGGER.debug(f"{call} --> {callee}")
         self.recorded_calls.add((call, callee))
