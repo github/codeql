@@ -30,10 +30,19 @@ class XMLRecordedCall extends XMLElement {
   }
 
   override string toString() {
-    result =
-      this.getName() + ":  <..>/" +
-        this.getXMLCall().get_filename_data().regexpCapture(".*/([^/]+)$", 1) + ":" +
-        this.getXMLCall().get_linenum_data()
+    exists(string path |
+      path =
+        any(File file | file.getAbsolutePath() = this.getXMLCall().get_filename_data())
+            .getRelativePath()
+      or
+      not exists(File file |
+        file.getAbsolutePath() = this.getXMLCall().get_filename_data() and
+        exists(file.getRelativePath())
+      ) and
+      path = this.getXMLCall().get_filename_data()
+    |
+      result = this.getName() + ": " + path + ":" + this.getXMLCall().get_linenum_data()
+    )
   }
 }
 
@@ -161,10 +170,15 @@ class IdentifiedRecordedCall extends XMLRecordedCall {
 
   override string toString() {
     exists(string callee_str |
-      exists(Function callee | callee = this.getPythonCallee() |
+      exists(Function callee, string path | callee = this.getPythonCallee() |
+        (
+          path = callee.getLocation().getFile().getRelativePath()
+          or
+          not exists(callee.getLocation().getFile().getRelativePath()) and
+          path = callee.getLocation().getFile().getAbsolutePath()
+        ) and
         callee_str =
-          callee.toString() + " (<..>/" + callee.getLocation().getFile().getRelativePath() + ":" +
-            callee.getLocation().getStartLine() + ")"
+          callee.toString() + " (" + path + ":" + callee.getLocation().getStartLine() + ")"
       )
       or
       callee_str = this.getBuiltinCallee().toString()
