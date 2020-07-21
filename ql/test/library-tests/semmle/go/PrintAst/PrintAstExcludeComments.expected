@@ -1,0 +1,605 @@
+other.go:
+#    0| [File] library-tests/semmle/go/PrintAst/other.go
+#    3|   0: [FuncDecl] function declaration
+#    3|     0: [FunctionName, Ident] main
+#    3|         Type = func() 
+#    3|     1: [FuncTypeExpr] function type
+#    3|     2: [BlockStmt] block statement
+#    5|   1: [FuncDecl] function declaration
+#    5|     0: [FunctionName, Ident] f
+#    5|         Type = func() 
+#    5|     1: [FuncTypeExpr] function type
+#    5|     2: [BlockStmt] block statement
+#    6|   2: [FuncDecl] function declaration
+#    6|     0: [FunctionName, Ident] g
+#    6|         Type = func() 
+#    6|     1: [FuncTypeExpr] function type
+#    6|     2: [BlockStmt] block statement
+#    8|   3: [VarDecl] variable declaration
+#    8|     0: [ValueSpec] value declaration specifier
+#    8|       0: [Ident, VariableName] x
+#    8|           Type = int
+#    8|       1: [Ident, TypeName] int
+#    8|           Type = int
+#    8|       2: [IntLit] 0
+#    8|           Type = int
+#    8|           Value = [IntLit] 0
+#    1|   4: [Ident] main
+go.mod:
+#    0| [GoModFile] library-tests/semmle/go/PrintAst/go.mod
+#    1|   0: [GoModModuleLine] go.mod module line
+#    3|   1: [GoModGoLine] go.mod go line
+input.go:
+#    0| [File] library-tests/semmle/go/PrintAst/input.go
+#    3|   10: [ImportDecl] import declaration
+#    3|     0: [ImportSpec] import specifier
+#    3|       0: [StringLit] "fmt"
+#   10|   11: [FuncDecl] function declaration
+#   10|     0: [FunctionName, Ident] test5
+#   10|         Type = func(bool) 
+#   10|     1: [FuncTypeExpr] function type
+#   10|       0: [ParameterDecl] parameter declaration
+#   10|         0: [Ident, TypeName] bool
+#   10|             Type = bool
+#   10|         1: [Ident, VariableName] b
+#   10|             Type = bool
+#   10|     2: [BlockStmt] block statement
+#   11|       0: [BlockStmt] block statement
+#   12|         0: [IfStmt] if statement
+#   12|           0: [NotExpr] !...
+#   12|               Type = bool
+#   12|             0: [Ident, VariableName] b
+#   12|                 Type = bool
+#   12|           1: [BlockStmt] block statement
+#   13|             0: [GotoStmt] goto statement
+#   13|               0: [Ident, LabelName] outer
+#   15|         1: [BlockStmt] block statement
+#   17|         2: [EmptyStmt] empty statement
+#   20|       1: [ExprStmt] expression statement
+#   20|         0: [CallExpr] call to Println
+#   20|             Type = (int, error)
+#   20|           0: [FunctionName, SelectorExpr] selection of Println
+#   20|               Type = func([]interface {  }) int, error
+#   20|             0: [Ident, PackageName] fmt
+#   20|             1: [FunctionName, Ident] Println
+#   20|                 Type = func([]interface {  }) int, error
+#   20|           1: [StringLit] "Hi"
+#   20|               Type = string
+#   20|               Value = [StringLit] Hi
+#   22|       2: [LabelledStmt] labeled statement
+#   22|         0: [Ident, LabelName] outer
+#   23|         1: [ForStmt] for statement
+#   23|           0: [ConstantName, Ident] true
+#   23|               Type = bool literal
+#   23|               Value = [ConstantName, Ident] true
+#   23|           1: [BlockStmt] block statement
+#   24|             0: [ForStmt] for statement
+#   24|               0: [LssExpr] ...<...
+#   24|                   Type = bool literal
+#   24|                 0: [Ident, VariableName] i
+#   24|                     Type = int
+#   24|                 1: [IntLit] 10
+#   24|                     Type = int
+#   24|                     Value = [IntLit] 10
+#   24|               1: [DefineStmt] ... := ...
+#   24|                 0: [Ident, VariableName] i
+#   24|                     Type = int
+#   24|                 1: [IntLit] 0
+#   24|                     Type = int
+#   24|                     Value = [IntLit] 0
+#   24|               2: [IncStmt] increment statement
+#   24|                 0: [Ident, VariableName] i
+#   24|                     Type = int
+#   24|               3: [BlockStmt] block statement
+#   25|                 0: [IfStmt] if statement
+#   25|                   0: [GtrExpr] ...>...
+#   25|                       Type = bool literal
+#   25|                     0: [Ident, VariableName] j
+#   25|                         Type = int
+#   25|                     1: [IntLit] 5
+#   25|                         Type = int
+#   25|                         Value = [IntLit] 5
+#   25|                   1: [DefineStmt] ... := ...
+#   25|                     0: [Ident, VariableName] j
+#   25|                         Type = int
+#   25|                     1: [SubExpr] ...-...
+#   25|                         Type = int
+#   25|                       0: [Ident, VariableName] i
+#   25|                           Type = int
+#   25|                       1: [IntLit] 1
+#   25|                           Type = int
+#   25|                           Value = [IntLit] 1
+#   25|                   2: [BlockStmt] block statement
+#   26|                     0: [BreakStmt] break statement
+#   26|                       0: [Ident, LabelName] outer
+#   27|                   3: [IfStmt] if statement
+#   27|                     0: [LssExpr] ...<...
+#   27|                         Type = bool literal
+#   27|                       0: [Ident, VariableName] i
+#   27|                           Type = int
+#   27|                       1: [IntLit] 3
+#   27|                           Type = int
+#   27|                           Value = [IntLit] 3
+#   27|                     1: [BlockStmt] block statement
+#   28|                       0: [BreakStmt] break statement
+#   29|                     2: [IfStmt] if statement
+#   29|                       0: [NeqExpr] ...!=...
+#   29|                           Type = bool literal
+#   29|                         0: [Ident, VariableName] i
+#   29|                             Type = int
+#   29|                         1: [IntLit] 9
+#   29|                             Type = int
+#   29|                             Value = [IntLit] 9
+#   29|                       1: [BlockStmt] block statement
+#   30|                         0: [ContinueStmt] continue statement
+#   30|                           0: [Ident, LabelName] outer
+#   31|                       2: [IfStmt] if statement
+#   31|                         0: [GeqExpr] ...>=...
+#   31|                             Type = bool literal
+#   31|                           0: [Ident, VariableName] i
+#   31|                               Type = int
+#   31|                           1: [IntLit] 4
+#   31|                               Type = int
+#   31|                               Value = [IntLit] 4
+#   31|                         1: [BlockStmt] block statement
+#   32|                           0: [GotoStmt] goto statement
+#   32|                             0: [Ident, LabelName] outer
+#   33|                         2: [BlockStmt] block statement
+#   34|                           0: [ContinueStmt] continue statement
+#   39|       3: [DefineStmt] ... := ...
+#   39|         0: [Ident, VariableName] k
+#   39|             Type = int
+#   39|         1: [IntLit] 9
+#   39|             Type = int
+#   39|             Value = [IntLit] 9
+#   40|       4: [ForStmt] for statement
+#   40|         0: [IncStmt] increment statement
+#   40|           0: [Ident, VariableName] k
+#   40|               Type = int
+#   40|         1: [BlockStmt] block statement
+#   41|           0: [GotoStmt] goto statement
+#   41|             0: [Ident, LabelName] outer
+#   46|   12: [FuncDecl] function declaration
+#   46|     0: [FunctionName, Ident] test6
+#   46|         Type = func(chan int, chan float32) 
+#   46|     1: [FuncTypeExpr] function type
+#   46|       0: [ParameterDecl] parameter declaration
+#   46|         0: [SendRecvChanTypeExpr] channel type
+#   46|             Type = chan int
+#   46|           0: [Ident, TypeName] int
+#   46|               Type = int
+#   46|         1: [Ident, VariableName] ch1
+#   46|             Type = chan int
+#   46|       1: [ParameterDecl] parameter declaration
+#   46|         0: [SendRecvChanTypeExpr] channel type
+#   46|             Type = chan float32
+#   46|           0: [Ident, TypeName] float32
+#   46|               Type = float32
+#   46|         1: [Ident, VariableName] ch2
+#   46|             Type = chan float32
+#   46|     2: [BlockStmt] block statement
+#   47|       0: [DeclStmt] declaration statement
+#   47|         0: [VarDecl] variable declaration
+#   47|           0: [ValueSpec] value declaration specifier
+#   47|             0: [Ident, VariableName] a
+#   47|                 Type = [1]float32
+#   47|             1: [ArrayTypeExpr] array type
+#   47|                 Type = [1]float32
+#   47|               0: [IntLit] 1
+#   47|                   Type = int literal
+#   47|                   Value = [IntLit] 1
+#   47|               1: [Ident, TypeName] float32
+#   47|                   Type = float32
+#   48|       1: [DeclStmt] declaration statement
+#   48|         0: [VarDecl] variable declaration
+#   48|           0: [ValueSpec] value declaration specifier
+#   48|             0: [Ident, VariableName] w
+#   48|                 Type = bool
+#   48|             1: [Ident, TypeName] bool
+#   48|                 Type = bool
+#   50|       2: [SelectStmt] select statement
+#   50|         0: [BlockStmt] block statement
+#   51|           0: [CommClause] comm clause
+#   51|             0: [ExprStmt, RecvStmt] expression statement
+#   51|               0: [RecvExpr] <-...
+#   51|                   Type = int
+#   51|                 0: [Ident, VariableName] ch1
+#   51|                     Type = chan int
+#   52|             1: [ExprStmt] expression statement
+#   52|               0: [CallExpr] call to Println
+#   52|                   Type = (int, error)
+#   52|                 0: [FunctionName, SelectorExpr] selection of Println
+#   52|                     Type = func([]interface {  }) int, error
+#   52|                   0: [Ident, PackageName] fmt
+#   52|                   1: [FunctionName, Ident] Println
+#   52|                       Type = func([]interface {  }) int, error
+#   52|                 1: [StringLit] "Heard from ch1"
+#   52|                     Type = string
+#   52|                     Value = [StringLit] Heard from ch1
+#   53|           1: [CommClause] comm clause
+#   53|             0: [AssignStmt, RecvStmt] ... = ...
+#   53|               0: [Ident, VariableName] w
+#   53|                   Type = bool
+#   53|               1: [IndexExpr] index expression
+#   53|                   Type = float32
+#   53|                 0: [Ident, VariableName] a
+#   53|                     Type = [1]float32
+#   53|                 1: [IntLit] 0
+#   53|                     Type = int
+#   53|                     Value = [IntLit] 0
+#   53|               2: [RecvExpr] <-...
+#   53|                   Type = (float32, bool)
+#   53|                 0: [Ident, VariableName] ch2
+#   53|                     Type = chan float32
+#   54|             1: [ExprStmt] expression statement
+#   54|               0: [CallExpr] call to Println
+#   54|                   Type = (int, error)
+#   54|                 0: [FunctionName, SelectorExpr] selection of Println
+#   54|                     Type = func([]interface {  }) int, error
+#   54|                   0: [Ident, PackageName] fmt
+#   54|                   1: [FunctionName, Ident] Println
+#   54|                       Type = func([]interface {  }) int, error
+#   54|                 1: [Ident, VariableName] a
+#   54|                     Type = [1]float32
+#   55|             2: [ExprStmt] expression statement
+#   55|               0: [CallExpr] call to Println
+#   55|                   Type = (int, error)
+#   55|                 0: [FunctionName, SelectorExpr] selection of Println
+#   55|                     Type = func([]interface {  }) int, error
+#   55|                   0: [Ident, PackageName] fmt
+#   55|                   1: [FunctionName, Ident] Println
+#   55|                       Type = func([]interface {  }) int, error
+#   55|                 1: [Ident, VariableName] w
+#   55|                     Type = bool
+#   56|           2: [CommClause] comm clause
+#   57|             0: [ExprStmt] expression statement
+#   57|               0: [CallExpr] call to Println
+#   57|                   Type = (int, error)
+#   57|                 0: [FunctionName, SelectorExpr] selection of Println
+#   57|                     Type = func([]interface {  }) int, error
+#   57|                   0: [Ident, PackageName] fmt
+#   57|                   1: [FunctionName, Ident] Println
+#   57|                       Type = func([]interface {  }) int, error
+#   58|           3: [CommClause] comm clause
+#   58|             0: [SendStmt] send statement
+#   58|               0: [Ident, VariableName] ch1
+#   58|                   Type = chan int
+#   58|               1: [IntLit] 42
+#   58|                   Type = int
+#   58|                   Value = [IntLit] 42
+#   61|       3: [SelectStmt] select statement
+#   61|         0: [BlockStmt] block statement
+#   65|   13: [FuncDecl] function declaration
+#   65|     0: [FunctionName, Ident] test7
+#   65|         Type = func(int) int
+#   65|     1: [FuncTypeExpr] function type
+#   65|       0: [ParameterDecl] parameter declaration
+#   65|         0: [Ident, TypeName] int
+#   65|             Type = int
+#   65|         1: [Ident, VariableName] x
+#   65|             Type = int
+#   65|       1: [ResultVariableDecl] result variable declaration
+#   65|         0: [Ident, TypeName] int
+#   65|             Type = int
+#   65|     2: [BlockStmt] block statement
+#   66|       0: [IfStmt] if statement
+#   66|         0: [GtrExpr] ...>...
+#   66|             Type = bool literal
+#   66|           0: [Ident, VariableName] x
+#   66|               Type = int
+#   66|           1: [IntLit] 0
+#   66|               Type = int
+#   66|               Value = [IntLit] 0
+#   66|         1: [BlockStmt] block statement
+#   67|           0: [DeferStmt] defer statement
+#   67|             0: [CallExpr] function call
+#   67|                 Type = ()
+#   67|               0: [FuncLit] function literal
+#   67|                   Type = func() 
+#   67|                 0: [FuncTypeExpr] function type
+#   67|                     Type = func() 
+#   67|                 1: [BlockStmt] block statement
+#   67|                   0: [ExprStmt] expression statement
+#   67|                     0: [CallExpr] call to Println
+#   67|                         Type = (int, error)
+#   67|                       0: [FunctionName, SelectorExpr] selection of Println
+#   67|                           Type = func([]interface {  }) int, error
+#   67|                         0: [Ident, PackageName] fmt
+#   67|                         1: [FunctionName, Ident] Println
+#   67|                             Type = func([]interface {  }) int, error
+#   67|                       1: [Ident, VariableName] x
+#   67|                           Type = int
+#   68|         2: [BlockStmt] block statement
+#   69|           0: [DeferStmt] defer statement
+#   69|             0: [CallExpr] function call
+#   69|                 Type = ()
+#   69|               0: [FuncLit] function literal
+#   69|                   Type = func() 
+#   69|                 0: [FuncTypeExpr] function type
+#   69|                     Type = func() 
+#   69|                 1: [BlockStmt] block statement
+#   69|                   0: [ExprStmt] expression statement
+#   69|                     0: [CallExpr] call to Println
+#   69|                         Type = (int, error)
+#   69|                       0: [FunctionName, SelectorExpr] selection of Println
+#   69|                           Type = func([]interface {  }) int, error
+#   69|                         0: [Ident, PackageName] fmt
+#   69|                         1: [FunctionName, Ident] Println
+#   69|                             Type = func([]interface {  }) int, error
+#   69|                       1: [MinusExpr] -...
+#   69|                           Type = int
+#   69|                         0: [Ident, VariableName] x
+#   69|                             Type = int
+#   71|       1: [ReturnStmt] return statement
+#   71|         0: [IntLit] 42
+#   71|             Type = int
+#   71|             Value = [IntLit] 42
+#   75|   14: [FuncDecl] function declaration
+#   75|     0: [FunctionName, Ident] test8
+#   75|         Type = func(int) 
+#   75|     1: [FuncTypeExpr] function type
+#   75|       0: [ParameterDecl] parameter declaration
+#   75|         0: [Ident, TypeName] int
+#   75|             Type = int
+#   75|         1: [Ident, VariableName] x
+#   75|             Type = int
+#   75|     2: [BlockStmt] block statement
+#   76|       0: [ExpressionSwitchStmt] expression-switch statement
+#   76|         0: [Ident, VariableName] x
+#   76|             Type = int
+#   76|         1: [BlockStmt] block statement
+#   79|       1: [ExpressionSwitchStmt] expression-switch statement
+#   79|         0: [SubExpr] ...-...
+#   79|             Type = int
+#   79|           0: [Ident, VariableName] y
+#   79|               Type = int
+#   79|           1: [IntLit] 19
+#   79|               Type = int
+#   79|               Value = [IntLit] 19
+#   79|         1: [DefineStmt] ... := ...
+#   79|           0: [Ident, VariableName] y
+#   79|               Type = int
+#   79|           1: [Ident, VariableName] x
+#   79|               Type = int
+#   79|         2: [BlockStmt] block statement
+#   80|           0: [CaseClause] case clause
+#   81|             0: [ExprStmt] expression statement
+#   81|               0: [CallExpr] call to test5
+#   81|                   Type = ()
+#   81|                 0: [FunctionName, Ident] test5
+#   81|                     Type = func(bool) 
+#   81|                 1: [ConstantName, Ident] false
+#   81|                     Type = bool
+#   81|                     Value = [ConstantName, Ident] false
+#   84|       2: [ExpressionSwitchStmt] expression-switch statement
+#   84|         0: [Ident, VariableName] x
+#   84|             Type = int
+#   84|         1: [BlockStmt] block statement
+#   85|           0: [CaseClause] case clause
+#   85|             0: [IntLit] 1
+#   85|                 Type = int
+#   85|                 Value = [IntLit] 1
+#   86|           1: [CaseClause] case clause
+#   86|             0: [IntLit] 3
+#   86|                 Type = int
+#   86|                 Value = [IntLit] 3
+#   86|             1: [IntLit] 2
+#   86|                 Type = int
+#   86|                 Value = [IntLit] 2
+#   87|             2: [ExprStmt] expression statement
+#   87|               0: [CallExpr] call to test5
+#   87|                   Type = ()
+#   87|                 0: [FunctionName, Ident] test5
+#   87|                     Type = func(bool) 
+#   87|                 1: [ConstantName, Ident] true
+#   87|                     Type = bool
+#   87|                     Value = [ConstantName, Ident] true
+#   90|       3: [ExpressionSwitchStmt] expression-switch statement
+#   90|         0: [Ident, VariableName] x
+#   90|             Type = int
+#   90|         1: [BlockStmt] block statement
+#   91|           0: [CaseClause] case clause
+#   91|             0: [IntLit] 1
+#   91|                 Type = int
+#   91|                 Value = [IntLit] 1
+#   92|             1: [ExprStmt] expression statement
+#   92|               0: [CallExpr] call to test5
+#   92|                   Type = ()
+#   92|                 0: [FunctionName, Ident] test5
+#   92|                     Type = func(bool) 
+#   92|                 1: [ConstantName, Ident] false
+#   92|                     Type = bool
+#   92|                     Value = [ConstantName, Ident] false
+#   93|             2: [FallthroughStmt] fallthrough statement
+#   94|           1: [CaseClause] case clause
+#   94|             0: [SubExpr] ...-...
+#   94|                 Type = int
+#   94|                 Value = [SubExpr] -3
+#   94|               0: [IntLit] 2
+#   94|                   Type = int literal
+#   94|                   Value = [IntLit] 2
+#   94|               1: [IntLit] 5
+#   94|                   Type = int literal
+#   94|                   Value = [IntLit] 5
+#   95|             1: [ExprStmt] expression statement
+#   95|               0: [CallExpr] call to test5
+#   95|                   Type = ()
+#   95|                 0: [FunctionName, Ident] test5
+#   95|                     Type = func(bool) 
+#   95|                 1: [ConstantName, Ident] true
+#   95|                     Type = bool
+#   95|                     Value = [ConstantName, Ident] true
+#   98|       4: [ExpressionSwitchStmt] expression-switch statement
+#   98|         0: [Ident, VariableName] x
+#   98|             Type = int
+#   98|         1: [BlockStmt] block statement
+#   99|           0: [CaseClause] case clause
+#  100|           1: [CaseClause] case clause
+#  100|             0: [IntLit] 2
+#  100|                 Type = int
+#  100|                 Value = [IntLit] 2
+#  101|             1: [ExprStmt] expression statement
+#  101|               0: [CallExpr] call to test5
+#  101|                   Type = ()
+#  101|                 0: [FunctionName, Ident] test5
+#  101|                     Type = func(bool) 
+#  101|                 1: [ConstantName, Ident] true
+#  101|                     Type = bool
+#  101|                     Value = [ConstantName, Ident] true
+#  104|       5: [ExpressionSwitchStmt] expression-switch statement
+#  104|         0: [BlockStmt] block statement
+#  105|           0: [CaseClause] case clause
+#  106|             0: [BreakStmt] break statement
+#  107|           1: [CaseClause] case clause
+#  107|             0: [ConstantName, Ident] true
+#  107|                 Type = bool
+#  107|                 Value = [ConstantName, Ident] true
+#  112|   15: [FuncDecl] function declaration
+#  112|     0: [FunctionName, Ident] test9
+#  112|         Type = func(interface {  }) 
+#  112|     1: [FuncTypeExpr] function type
+#  112|       0: [ParameterDecl] parameter declaration
+#  112|         0: [InterfaceTypeExpr] interface type
+#  112|             Type = interface {  }
+#  112|         1: [Ident, VariableName] x
+#  112|             Type = interface {  }
+#  112|     2: [BlockStmt] block statement
+#  113|       0: [TypeSwitchStmt] type-switch statement
+#  113|         0: [DefineStmt] ... := ...
+#  113|           0: [Ident] y
+#  113|           1: [TypeAssertExpr] type assertion
+#  113|             0: [Ident, VariableName] x
+#  113|                 Type = interface {  }
+#  113|         1: [BlockStmt] block statement
+#  114|           0: [CaseClause] case clause
+#  114|             0: [Ident, TypeName] string
+#  114|                 Type = string
+#  114|             1: [Ident, TypeName] error
+#  114|                 Type = error
+#  115|             2: [ExprStmt] expression statement
+#  115|               0: [CallExpr] call to Println
+#  115|                   Type = (int, error)
+#  115|                 0: [FunctionName, SelectorExpr] selection of Println
+#  115|                     Type = func([]interface {  }) int, error
+#  115|                   0: [Ident, PackageName] fmt
+#  115|                   1: [FunctionName, Ident] Println
+#  115|                       Type = func([]interface {  }) int, error
+#  115|                 1: [Ident, VariableName] y
+#  115|                     Type = interface {  }
+#  116|           1: [CaseClause] case clause
+#  116|             0: [Ident, TypeName] float32
+#  116|                 Type = float32
+#  117|             1: [ExprStmt] expression statement
+#  117|               0: [CallExpr] call to test5
+#  117|                   Type = ()
+#  117|                 0: [FunctionName, Ident] test5
+#  117|                     Type = func(bool) 
+#  117|                 1: [ConstantName, Ident] true
+#  117|                     Type = bool
+#  117|                     Value = [ConstantName, Ident] true
+#  118|             2: [ExprStmt] expression statement
+#  118|               0: [CallExpr] call to test5
+#  118|                   Type = ()
+#  118|                 0: [FunctionName, Ident] test5
+#  118|                     Type = func(bool) 
+#  118|                 1: [ConstantName, Ident] false
+#  118|                     Type = bool
+#  118|                     Value = [ConstantName, Ident] false
+#  121|       1: [TypeSwitchStmt] type-switch statement
+#  121|         0: [DefineStmt] ... := ...
+#  121|           0: [Ident, VariableName] y
+#  121|               Type = interface {  }
+#  121|           1: [Ident, VariableName] x
+#  121|               Type = interface {  }
+#  121|         1: [ExprStmt] expression statement
+#  121|           0: [TypeAssertExpr] type assertion
+#  121|             0: [Ident, VariableName] y
+#  121|                 Type = interface {  }
+#  121|         2: [BlockStmt] block statement
+#  122|           0: [CaseClause] case clause
+#  123|             0: [ExprStmt] expression statement
+#  123|               0: [CallExpr] call to test5
+#  123|                   Type = ()
+#  123|                 0: [FunctionName, Ident] test5
+#  123|                     Type = func(bool) 
+#  123|                 1: [ConstantName, Ident] false
+#  123|                     Type = bool
+#  123|                     Value = [ConstantName, Ident] false
+#  128|   16: [FuncDecl] function declaration
+#  128|     0: [FunctionName, Ident] test10
+#  128|         Type = func(func() ) 
+#  128|     1: [FuncTypeExpr] function type
+#  128|       0: [ParameterDecl] parameter declaration
+#  128|         0: [FuncTypeExpr] function type
+#  128|             Type = func() 
+#  128|         1: [Ident, VariableName] f
+#  128|             Type = func() 
+#  128|     2: [BlockStmt] block statement
+#  129|       0: [GoStmt] go statement
+#  129|         0: [CallExpr] call to f
+#  129|             Type = ()
+#  129|           0: [Ident, VariableName] f
+#  129|               Type = func() 
+#  133|   17: [FuncDecl] function declaration
+#  133|     0: [FunctionName, Ident] test11
+#  133|         Type = func([]int) 
+#  133|     1: [FuncTypeExpr] function type
+#  133|       0: [ParameterDecl] parameter declaration
+#  133|         0: [ArrayTypeExpr] array type
+#  133|             Type = []int
+#  133|           0: [Ident, TypeName] int
+#  133|               Type = int
+#  133|         1: [Ident, VariableName] xs
+#  133|             Type = []int
+#  133|     2: [BlockStmt] block statement
+#  134|       0: [RangeStmt] range statement
+#  134|         0: [Ident, VariableName] x
+#  134|             Type = int
+#  134|         1: [Ident, VariableName] xs
+#  134|             Type = []int
+#  134|         2: [BlockStmt] block statement
+#  135|           0: [IfStmt] if statement
+#  135|             0: [GtrExpr] ...>...
+#  135|                 Type = bool literal
+#  135|               0: [Ident, VariableName] x
+#  135|                   Type = int
+#  135|               1: [IntLit] 5
+#  135|                   Type = int
+#  135|                   Value = [IntLit] 5
+#  135|             1: [BlockStmt] block statement
+#  136|               0: [ContinueStmt] continue statement
+#  138|           1: [ExprStmt] expression statement
+#  138|             0: [CallExpr] call to Print
+#  138|                 Type = (int, error)
+#  138|               0: [FunctionName, SelectorExpr] selection of Print
+#  138|                   Type = func([]interface {  }) int, error
+#  138|                 0: [Ident, PackageName] fmt
+#  138|                 1: [FunctionName, Ident] Print
+#  138|                     Type = func([]interface {  }) int, error
+#  138|               1: [Ident, VariableName] x
+#  138|                   Type = int
+#  141|       1: [RangeStmt] range statement
+#  141|         0: [Ident, VariableName] i
+#  141|             Type = int
+#  141|         1: [Ident, VariableName] v
+#  141|             Type = int
+#  141|         2: [Ident, VariableName] xs
+#  141|             Type = []int
+#  141|         3: [BlockStmt] block statement
+#  142|           0: [ExprStmt] expression statement
+#  142|             0: [CallExpr] call to Print
+#  142|                 Type = (int, error)
+#  142|               0: [FunctionName, SelectorExpr] selection of Print
+#  142|                   Type = func([]interface {  }) int, error
+#  142|                 0: [Ident, PackageName] fmt
+#  142|                 1: [FunctionName, Ident] Print
+#  142|                     Type = func([]interface {  }) int, error
+#  142|               1: [Ident, VariableName] i
+#  142|                   Type = int
+#  142|               2: [Ident, VariableName] v
+#  142|                   Type = int
+#  145|       2: [RangeStmt] range statement
+#  145|         0: [Ident, VariableName] xs
+#  145|             Type = []int
+#  145|         1: [BlockStmt] block statement
+#    1|   18: [Ident] main

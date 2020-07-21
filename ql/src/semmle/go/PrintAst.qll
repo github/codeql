@@ -9,7 +9,7 @@ import go
  *
  * For an AstNode to be printed, it always requires `shouldPrintFile(f)` to hold
  * for its containing file `f`, and additionally requires `shouldPrintFunction(fun)`
- * if it is, or falls within, function `fun`.
+ * to hold if it is, or is a child of, function `fun`.
  */
 class PrintAstConfiguration extends string {
   /**
@@ -28,6 +28,12 @@ class PrintAstConfiguration extends string {
    * files.
    */
   predicate shouldPrintFile(File file) { any() }
+
+  /**
+   * Holds if the AST for `file` should include comments. By default, holds for all
+   * files.
+   */
+  predicate shouldPrintComments(File file) { any() }
 }
 
 private predicate shouldPrintFunction(FuncDef func) {
@@ -36,6 +42,10 @@ private predicate shouldPrintFunction(FuncDef func) {
 
 private predicate shouldPrintFile(File file) {
   exists(PrintAstConfiguration config | config.shouldPrintFile(file))
+}
+
+private predicate shouldPrintComments(File file) {
+  exists(PrintAstConfiguration config | config.shouldPrintComments(file))
 }
 
 private FuncDef getEnclosingFunction(AstNode n) {
@@ -49,7 +59,13 @@ private FuncDef getEnclosingFunction(AstNode n) {
 private newtype TPrintAstNode =
   TAstNode(AstNode ast) {
     shouldPrintFile(ast.getFile()) and
-    forall(FuncDef f | f = getEnclosingFunction(ast) | shouldPrintFunction(f))
+    // Do print ast nodes without an enclosing function, e.g. file headers, that are not otherwise excluded
+    forall(FuncDef f | f = getEnclosingFunction(ast) | shouldPrintFunction(f)) and
+    (
+      shouldPrintComments(ast.getFile())
+      or
+      not ast instanceof Comment and not ast instanceof CommentGroup
+    )
   }
 
 /**
