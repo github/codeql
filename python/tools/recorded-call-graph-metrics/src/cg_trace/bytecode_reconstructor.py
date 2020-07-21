@@ -46,6 +46,15 @@ class BytecodeAttribute(BytecodeExpr):
 
 
 @dataclasses.dataclass(frozen=True, eq=True, order=True)
+class BytecodeSubscript(BytecodeExpr):
+    key: BytecodeExpr
+    object: BytecodeExpr
+
+    def __str__(self):
+        return f"{self.object}[{self.key}]"
+
+
+@dataclasses.dataclass(frozen=True, eq=True, order=True)
 class BytecodeCall(BytecodeExpr):
     function: BytecodeExpr
 
@@ -146,6 +155,11 @@ def expr_from_instruction(instructions: List[Instruction], index: int) -> Byteco
         attr_name = inst.argval
         obj_expr = expr_that_added_elem_to_stack(instructions, index - 1, 0)
         return BytecodeAttribute(attr_name=attr_name, object=obj_expr)
+
+    elif inst.opname in ["BINARY_SUBSCR"]:
+        key_expr = expr_that_added_elem_to_stack(instructions, index - 1, 0)
+        obj_expr = expr_that_added_elem_to_stack(instructions, index - 1, 1)
+        return BytecodeSubscript(key=key_expr, object=obj_expr)
 
     # https://docs.python.org/3/library/dis.html#opcode-CALL_FUNCTION
     elif inst.opname in ["CALL_FUNCTION", "CALL_METHOD", "CALL_FUNCTION_KW"]:
