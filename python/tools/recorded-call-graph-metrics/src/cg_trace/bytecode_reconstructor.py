@@ -71,6 +71,14 @@ class BytecodeMakeFunction(BytecodeExpr):
         return f"<MAKE_FUNCTION>(qualified_name={self.qualified_name})>"
 
 
+@dataclasses.dataclass(frozen=True, eq=True, order=True)
+class SomethingInvolvingScaryBytecodeJump(BytecodeExpr):
+    opname: str
+
+    def __str__(self):
+        return "<SomethingInvolvingScaryBytecodeJump>"
+
+
 def expr_that_added_elem_to_stack(
     instructions: List[Instruction], start_index: int, stack_pos: int
 ):
@@ -95,10 +103,18 @@ def expr_that_added_elem_to_stack(
     It is assumed that if `stack_pos == 0` then the instruction you are looking for is
     the one at `instructions[start_index]`. This might not hold, in case of using `NOP`
     instructions.
+
+    If any jump instruction is found, `SomethingInvolvingScaryBytecodeJump` is returned
+    immediately. (since correctly process the bytecode when faced with jumps is not as
+    straight forward).
     """
     LOGGER.debug(f"find_inst_that_added_elem_to_stack {start_index=} {stack_pos=}")
     assert stack_pos >= 0
     for inst in reversed(instructions[: start_index + 1]):
+        # Return immediately if faced with a jump
+        if inst.opcode in dis.hasjabs or inst.opcode in dis.hasjrel:
+            return SomethingInvolvingScaryBytecodeJump(inst.opname)
+
         if stack_pos == 0:
             LOGGER.debug(f"Found it: {inst}")
             found_index = instructions.index(inst)
