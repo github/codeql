@@ -162,13 +162,23 @@ def expr_from_instruction(instructions: List[Instruction], index: int) -> Byteco
         return BytecodeSubscript(key=key_expr, object=obj_expr)
 
     # https://docs.python.org/3/library/dis.html#opcode-CALL_FUNCTION
-    elif inst.opname in ["CALL_FUNCTION", "CALL_METHOD", "CALL_FUNCTION_KW"]:
+    elif inst.opname in [
+        "CALL_FUNCTION",
+        "CALL_METHOD",
+        "CALL_FUNCTION_KW",
+        "CALL_FUNCTION_EX",
+    ]:
         assert index > 0
         assert isinstance(inst.arg, int)
         if inst.opname in ["CALL_FUNCTION", "CALL_METHOD"]:
             num_stack_elems = inst.arg
         elif inst.opname == "CALL_FUNCTION_KW":
             num_stack_elems = inst.arg + 1
+        elif inst.opname == "CALL_FUNCTION_EX":
+            # top of stack _can_ be keyword argument dictionary (indicated by lowest bit
+            # set), always followed by the positional arguments (also if there are not
+            # any).
+            num_stack_elems = (1 if inst.arg & 1 == 1 else 0) + 1
 
         func_expr = expr_that_added_elem_to_stack(
             instructions, index - 1, num_stack_elems
