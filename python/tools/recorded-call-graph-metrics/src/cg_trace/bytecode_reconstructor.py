@@ -180,10 +180,18 @@ def expr_from_instruction(instructions: List[Instruction], index: int) -> Byteco
         assert isinstance(name_expr, BytecodeConst)
         return BytecodeMakeFunction(qualified_name=name_expr)
 
-    # LOAD_BUILD_CLASS is included here intentionally for now, since I don't really
-    # know what to do about it.
-    if inst.opname not in ["LOAD_BUILD_CLASS"]:
+    # Special cases ignored for now:
+    #
+    # - LOAD_BUILD_CLASS: Called when constructing a class.
+    # - IMPORT_NAME: Observed to result in a call to filename='<frozen
+    #   importlib._bootstrap>', linenum=389, funcname='parent'
+    if inst.opname not in ["LOAD_BUILD_CLASS", "IMPORT_NAME"]:
         LOGGER.warning(f"Don't know how to handle this type of instruction: {inst}")
+        # Uncomment to stop execution when encountering non-ignored unknown instruction
+        # class MyBytecodeException(BaseException):
+        #     pass
+        #
+        # raise MyBytecodeException()
     return BytecodeUnknown(inst.opname)
 
 
