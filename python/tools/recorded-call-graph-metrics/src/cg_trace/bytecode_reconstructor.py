@@ -176,7 +176,9 @@ def expr_from_instruction(instructions: List[Instruction], index: int) -> Byteco
 def expr_from_frame(frame: FrameType) -> BytecodeExpr:
     bytecode = dis.Bytecode(frame.f_code, current_offset=frame.f_lasti)
 
-    LOGGER.debug(f"bytecode: \n{bytecode.dis()}")
+    LOGGER.debug(
+        f"{frame.f_code.co_filename}:{frame.f_lineno}: bytecode: \n{bytecode.dis()}"
+    )
 
     instructions = list(iter(bytecode))
     last_instruction_index = [inst.offset for inst in instructions].index(frame.f_lasti)

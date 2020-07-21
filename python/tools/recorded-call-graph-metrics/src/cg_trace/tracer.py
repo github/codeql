@@ -50,7 +50,7 @@ class Call:
         del d["bytecode_expr"]
         normal_fields = ", ".join(f"{k}={v!r}" for k, v in d.items())
 
-        return f"{type(self).__name__}({normal_fields}, bytecode_expr≈{repr(str(self.bytecode_expr))})"
+        return f"{type(self).__name__}({normal_fields}, bytecode_expr≈{str(self.bytecode_expr)})"
 
     @classmethod
     def from_frame(cls, frame: FrameType):
