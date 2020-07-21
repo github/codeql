@@ -21,7 +21,7 @@ class PrintAstConfiguration extends string {
    * Holds if the AST for `func` should be printed. By default, holds for all
    * functions.
    */
-  predicate shouldPrintFunction(FuncDef func) { any() }
+  predicate shouldPrintFunction(FuncDecl func) { any() }
 
   /**
    * Holds if the AST for `file` should be printed. By default, holds for all
@@ -48,10 +48,7 @@ private predicate shouldPrintComments(File file) {
   exists(PrintAstConfiguration config | config.shouldPrintComments(file))
 }
 
-private FuncDef getEnclosingFunction(AstNode n) {
-  result = n or
-  result = n.getEnclosingFunction()
-}
+private FuncDecl getEnclosingFunctionDecl(AstNode n) { result = n.getParent*() }
 
 /**
  * An AST node that should be printed.
@@ -60,7 +57,7 @@ private newtype TPrintAstNode =
   TAstNode(AstNode ast) {
     shouldPrintFile(ast.getFile()) and
     // Do print ast nodes without an enclosing function, e.g. file headers, that are not otherwise excluded
-    forall(FuncDef f | f = getEnclosingFunction(ast) | shouldPrintFunction(f)) and
+    forall(FuncDecl f | f = getEnclosingFunctionDecl(ast) | shouldPrintFunction(f)) and
     (
       shouldPrintComments(ast.getFile())
       or

@@ -1,10 +1,30 @@
 other.go:
 #    0| [File] library-tests/semmle/go/PrintAst/other.go
-#    6|   2: [FuncDecl] function declaration
-#    6|     0: [FunctionName, Ident] g
-#    6|         Type = func() 
-#    6|     1: [FuncTypeExpr] function type
-#    6|     2: [BlockStmt] block statement
+#    8|   3: [FuncDecl] function declaration
+#    8|     0: [FunctionName, Ident] hasNested
+#    8|         Type = func() 
+#    8|     1: [FuncTypeExpr] function type
+#    8|     2: [BlockStmt] block statement
+#   10|       0: [DefineStmt] ... := ...
+#   10|         0: [Ident, VariableName] myNested
+#   10|             Type = func() int
+#   10|         1: [FuncLit] function literal
+#   10|             Type = func() int
+#   10|           0: [FuncTypeExpr] function type
+#   10|               Type = func() int
+#   10|             0: [ResultVariableDecl] result variable declaration
+#   10|               0: [Ident, TypeName] int
+#   10|                   Type = int
+#   10|           1: [BlockStmt] block statement
+#   10|             0: [ReturnStmt] return statement
+#   10|               0: [IntLit] 1
+#   10|                   Type = int
+#   10|                   Value = [IntLit] 1
+#   11|       1: [ExprStmt] expression statement
+#   11|         0: [CallExpr] call to myNested
+#   11|             Type = int
+#   11|           0: [Ident, VariableName] myNested
+#   11|               Type = func() int
 #   15|   4: [VarDecl] variable declaration
 #   15|     0: [ValueSpec] value declaration specifier
 #   15|       0: [Ident, VariableName] x

@@ -20,7 +20,7 @@ external string selectedSourceFile();
  * Hook to customize the functions printed by this query.
  */
 class Cfg extends PrintAstConfiguration {
-  override predicate shouldPrintFunction(FuncDef func) { shouldPrintFile(func.getFile()) }
+  override predicate shouldPrintFunction(FuncDecl func) { shouldPrintFile(func.getFile()) }
 
   override predicate shouldPrintFile(File file) { file = getEncodedFile(selectedSourceFile()) }
 
