@@ -15,6 +15,8 @@ import semmle.python.security.Paths
 import semmle.python.web.HttpRequest
 /* Sinks */
 import experimental.semmle.python.templates.Ssti
+/* Flow */
+import semmle.python.security.strings.Untrusted
 
 class TemplateInjectionConfiguration extends TaintTracking::Configuration {
   TemplateInjectionConfiguration() { this = "Template injection configuration" }
