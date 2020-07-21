@@ -10,4 +10,4 @@ urlpatterns = [
 def trender(request):
     template = request.GET['template']
     compiled = TRender(template)
-    return HttpResponse(compiled])
+    return HttpResponse(compiled)
