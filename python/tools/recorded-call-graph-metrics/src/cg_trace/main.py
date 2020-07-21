@@ -41,19 +41,34 @@ def main(args=None) -> int:
 
     # These details of setting up the program to be run is very much inspired by `trace`
     # from the standard library
-    sys.argv = [opts.progname, *opts.arguments]
-    sys.path[0] = os.path.dirname(opts.progname)
+    if opts.module:
+        import runpy
 
-    with open(opts.progname) as fp:
-        code = compile(fp.read(), opts.progname, "exec")
+        module_name = opts.progname
+        _mod_name, mod_spec, code = runpy._get_module_details(module_name)
+        sys.argv = [code.co_filename, *opts.arguments]
+        globs = {
+            "__name__": "__main__",
+            "__file__": code.co_filename,
+            "__package__": mod_spec.parent,
+            "__loader__": mod_spec.loader,
+            "__spec__": mod_spec,
+            "__cached__": None,
+        }
+    else:
+        sys.argv = [opts.progname, *opts.arguments]
+        sys.path[0] = os.path.dirname(opts.progname)
 
-    # try to emulate __main__ namespace as much as possible
-    globs = {
-        "__file__": opts.progname,
-        "__name__": "__main__",
-        "__package__": None,
-        "__cached__": None,
-    }
+        with open(opts.progname) as fp:
+            code = compile(fp.read(), opts.progname, "exec")
+
+        # try to emulate __main__ namespace as much as possible
+        globs = {
+            "__file__": opts.progname,
+            "__name__": "__main__",
+            "__package__": None,
+            "__cached__": None,
+        }
 
     start = time.time()
     recorded_calls, captured_stdout, captured_stderr, exit_status = record_calls(
