@@ -10,6 +10,9 @@ import semmle.code.java.frameworks.ApacheLdap
 /** A data flow sink for unvalidated user input that is used to construct LDAP queries. */
 abstract class LdapInjectionSink extends DataFlow::Node { }
 
+/** A class that identifies sanitizers that prevent LDAP injection attacks. */
+abstract class LdapInjectionSanitizer extends DataFlow::Node { }
+
 private predicate jndiLdapInjectionSinkMethod(Method m, int index) {
   m.getDeclaringType().getAnAncestor() instanceof TypeDirContext and
   m.hasName("search") and
@@ -104,4 +107,14 @@ private class ApacheLdapInjectionSink extends LdapInjectionSink {
       apacheLdapInjectionSinkMethod(m, index)
     )
   }
+}
+
+/** A sanitizer that clears the taint on primitive types. */
+private class PrimitiveTypeLdapSanitizer extends LdapInjectionSanitizer {
+  PrimitiveTypeLdapSanitizer() { this.getType() instanceof PrimitiveType }
+}
+
+/** A sanitizer that clears the taint on boxed primitive types. */
+private class BoxedTypeLdapSanitizer extends LdapInjectionSanitizer {
+  BoxedTypeLdapSanitizer() { this.getType() instanceof BoxedType }
 }

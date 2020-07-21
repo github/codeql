@@ -13,9 +13,7 @@ class LdapInjectionFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof LdapInjectionSink }
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
-  }
+  override predicate isSanitizer(DataFlow::Node node) { node instanceof LdapInjectionSanitizer }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     ldapNameStep(node1, node2) or
