@@ -143,7 +143,7 @@ def expr_from_instruction(instructions: List[Instruction], index: int) -> Byteco
 
     LOGGER.debug(f"expr_from_instruction: {inst} {index=}")
 
-    if inst.opname in ["LOAD_GLOBAL", "LOAD_FAST", "LOAD_NAME"]:
+    if inst.opname in ["LOAD_GLOBAL", "LOAD_FAST", "LOAD_NAME", "LOAD_DEREF"]:
         return BytecodeVariableName(inst.argval)
 
     elif inst.opname in ["LOAD_CONST"]:
