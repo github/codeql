@@ -94,7 +94,7 @@ module Fmt {
   }
 
   /** The `Print` function or one of its variants. */
-  private class Printer extends Function {
+  class Printer extends Function {
     Printer() { this.hasQualifiedName("fmt", ["Print", "Printf", "Println"]) }
   }
 
@@ -130,6 +130,35 @@ module Fmt {
       input.isParameter(0) and
       exists(int i | if getName() = "Sscanf" then i > 1 else i > 0 | output.isParameter(i))
     }
+  }
+
+  /** The `Scan` function or one of its variants, all of which read from os.Stdin */
+  class Scanner extends Function {
+    Scanner() { this.hasQualifiedName("fmt", ["Scan", "Scanf", "Scanln"]) }
+  }
+
+  /** A call to a `Scanner`. */
+  class ScannerCall extends DataFlow::CallNode {
+    ScannerCall() { this.getTarget() instanceof Scanner }
+  }
+
+  /**
+   * The `Fscan` function or one of its variants,
+   * all of which read from a specified io.Reader
+   */
+  class FScanner extends Function {
+    FScanner() { this.hasQualifiedName("fmt", ["Fscan", "Fscanf", "Fscanln"]) }
+  }
+
+  /** A call to a `FScanner`. */
+  class FScannerCall extends DataFlow::CallNode {
+    FScannerCall() { this.getTarget() instanceof FScanner }
+
+    /**
+     * Returns the node corresponding to the io.Reader
+     * argument provided in the call.
+     */
+    DataFlow::Node getReader() { result = this.getArgument(0) }
   }
 }
 
