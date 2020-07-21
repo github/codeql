@@ -180,12 +180,15 @@ def expr_from_instruction(instructions: List[Instruction], index: int) -> Byteco
         assert isinstance(name_expr, BytecodeConst)
         return BytecodeMakeFunction(qualified_name=name_expr)
 
+    # TODO: handle with statements (https://docs.python.org/3/library/dis.html#opcode-SETUP_WITH)
+    WITH_OPNAMES = ["SETUP_WITH", "WITH_CLEANUP_START", "WITH_CLEANUP_FINISH"]
+
     # Special cases ignored for now:
     #
     # - LOAD_BUILD_CLASS: Called when constructing a class.
     # - IMPORT_NAME: Observed to result in a call to filename='<frozen
     #   importlib._bootstrap>', linenum=389, funcname='parent'
-    if inst.opname not in ["LOAD_BUILD_CLASS", "IMPORT_NAME"]:
+    if inst.opname not in ["LOAD_BUILD_CLASS", "IMPORT_NAME"] + WITH_OPNAMES:
         LOGGER.warning(f"Don't know how to handle this type of instruction: {inst}")
         # Uncomment to stop execution when encountering non-ignored unknown instruction
         # class MyBytecodeException(BaseException):
