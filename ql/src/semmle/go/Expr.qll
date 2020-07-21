@@ -884,6 +884,13 @@ class FuncTypeExpr extends @functypeexpr, TypeExpr, ScopeNode, FieldParent {
   override string toString() { result = "function type" }
 
   override string getAPrimaryQlClass() { result = "FuncTypeExpr" }
+
+  /** Gets the `i`th child of this node, parameters first followed by results. */
+  override AstNode getUniquelyNumberedChild(int i) {
+    if i < getNumParameter()
+    then result = getParameterDecl(i)
+    else result = getResultDecl(i - getNumParameter())
+  }
 }
 
 /**

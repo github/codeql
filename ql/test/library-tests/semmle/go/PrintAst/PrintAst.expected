@@ -262,13 +262,13 @@ input.go:
 #   65|     0: [FunctionName, Ident] test7
 #   65|         Type = func(int) int
 #   65|     1: [FuncTypeExpr] function type
-#   65|       0: [ResultVariableDecl] result variable declaration
-#   65|         0: [Ident, TypeName] int
-#   65|             Type = int
-#   65|       1: [ParameterDecl] parameter declaration
+#   65|       0: [ParameterDecl] parameter declaration
 #   65|         0: [Ident, TypeName] int
 #   65|             Type = int
 #   65|         1: [Ident, VariableName] x
+#   65|             Type = int
+#   65|       1: [ResultVariableDecl] result variable declaration
+#   65|         0: [Ident, TypeName] int
 #   65|             Type = int
 #   65|     2: [BlockStmt] block statement
 #   66|       0: [IfStmt] if statement
