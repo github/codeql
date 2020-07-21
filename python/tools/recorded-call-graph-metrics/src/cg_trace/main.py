@@ -1,3 +1,4 @@
+import itertools
 import logging
 import os
 import sys
@@ -23,15 +24,18 @@ def record_calls(code, globals):
     sys.stdout = real_stdout
     sys.stderr = real_stderr
 
-    return sorted(cgt.recorded_calls), captured_stdout, captured_stderr, exit_status
+    all_calls_sorted = sorted(
+        itertools.chain(cgt.python_calls.values(), cgt.external_calls.values())
+    )
+
+    return all_calls_sorted, captured_stdout, captured_stderr, exit_status
 
 
 def main(args=None) -> int:
-    logging.basicConfig(stream=sys.stderr, level=logging.INFO)
+    logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
-    from . import bytecode_reconstructor
-
-    logging.getLogger(bytecode_reconstructor.__name__).setLevel(logging.INFO)
+    # from . import bytecode_reconstructor
+    # logging.getLogger(bytecode_reconstructor.__name__).setLevel(logging.INFO)
 
     if args is None:
         # first element in argv is program name

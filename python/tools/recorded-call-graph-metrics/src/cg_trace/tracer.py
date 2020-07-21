@@ -3,7 +3,7 @@ import logging
 import os
 import sys
 from types import FrameType
-from typing import Optional
+from typing import Any, Optional, Tuple
 
 from cg_trace.bytecode_reconstructor import BytecodeExpr, expr_from_frame
 
@@ -63,6 +63,15 @@ class Call:
             linenum=frame.f_lineno,
             inst_index=frame.f_lasti,
             bytecode_expr=bytecode_expr,
+        )
+
+    @staticmethod
+    def hash_key(frame: FrameType) -> Tuple[str, int, int]:
+        code = frame.f_code
+        return (
+            canonic_filename(code.co_filename),
+            frame.f_lineno,
+            frame.f_lasti,
         )
 
 
@@ -162,10 +171,11 @@ class CallGraphTracer:
     use-case, this is not a problem.
     """
 
-    recorded_calls: set
-
     def __init__(self):
-        self.recorded_calls = set()
+        # Performing `Call.from_frame` can be expensive, so we cache (call, callee)
+        # pairs we have already seen to avoid double procressing.
+        self.python_calls = dict()
+        self.external_calls = dict()
 
     def run(self, code, globals, locals):
         self.exec_call_seen = False
@@ -205,18 +215,35 @@ class CallGraphTracer:
 
         LOGGER.debug(f"profilefunc {event=}")
         if event == "call":
-            assert frame.f_back is not None
             # in call, the `frame` argument is new the frame for entering the callee
+            assert frame.f_back is not None
+
             callee = PythonCallee.from_frame(frame)
+
+            key = (Call.hash_key(frame.f_back), callee)
+            if key in self.python_calls:
+                LOGGER.debug(f"ignoring already seen call {key[0]} --> {callee}")
+                return
+
             LOGGER.debug(f"callee={callee}")
             call = Call.from_frame(frame.f_back)
+
+            self.python_calls[key] = (call, callee)
 
         if event == "c_call":
             # in c_call, the `frame` argument is frame where the call happens, and the
             # `arg` argument is the C function object.
+
             callee = ExternalCallee.from_arg(arg)
+
+            key = (Call.hash_key(frame), callee)
+            if key in self.external_calls:
+                LOGGER.debug(f"ignoring already seen call {key[0]} --> {callee}")
+                return
+
             LOGGER.debug(f"callee={callee}")
             call = Call.from_frame(frame)
 
+            self.external_calls[key] = (call, callee)
+
         LOGGER.debug(f"{call} --> {callee}")
-        self.recorded_calls.add((call, callee))
