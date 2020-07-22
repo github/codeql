@@ -181,6 +181,19 @@ class ExprNode extends BaseAstNode {
 class FileNode extends BaseAstNode {
   override File ast;
 
+  private string getRelativePath() { result = ast.getRelativePath() }
+
+  private int getSortOrder() {
+    rank[result](FileNode fn | any() | fn order by fn.getRelativePath()) = this
+  }
+
+  override string getProperty(string key) {
+    result = super.getProperty(key)
+    or
+    key = "semmle.order" and
+    result = getSortOrder().toString()
+  }
+
   /**
    * Gets the string representation of this File. Note explicitly using a relative path
    * like this rather than absolute as per default for the File class is a workaround for

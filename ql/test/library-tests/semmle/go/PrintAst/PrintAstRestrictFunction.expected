@@ -1,20 +1,3 @@
-other.go:
-#    0| [File] library-tests/semmle/go/PrintAst/other.go
-#    6|   2: [FuncDecl] function declaration
-#    6|     0: [FunctionName, Ident] g
-#    6|         Type = func() 
-#    6|     1: [FuncTypeExpr] function type
-#    6|     2: [BlockStmt] block statement
-#   15|   4: [VarDecl] variable declaration
-#   15|     0: [ValueSpec] value declaration specifier
-#   15|       0: [Ident, VariableName] x
-#   15|           Type = int
-#   15|       1: [Ident, TypeName] int
-#   15|           Type = int
-#   15|       2: [IntLit] 0
-#   15|           Type = int
-#   15|           Value = [IntLit] 0
-#    1|   5: [Ident] main
 go.mod:
 #    0| [GoModFile] library-tests/semmle/go/PrintAst/go.mod
 #    1|   0: [GoModModuleLine] go.mod module line
@@ -45,3 +28,20 @@ input.go:
 #    3|     0: [ImportSpec] import specifier
 #    3|       0: [StringLit] "fmt"
 #    1|   18: [Ident] main
+other.go:
+#    0| [File] library-tests/semmle/go/PrintAst/other.go
+#    6|   2: [FuncDecl] function declaration
+#    6|     0: [FunctionName, Ident] g
+#    6|         Type = func() 
+#    6|     1: [FuncTypeExpr] function type
+#    6|     2: [BlockStmt] block statement
+#   15|   4: [VarDecl] variable declaration
+#   15|     0: [ValueSpec] value declaration specifier
+#   15|       0: [Ident, VariableName] x
+#   15|           Type = int
+#   15|       1: [Ident, TypeName] int
+#   15|           Type = int
+#   15|       2: [IntLit] 0
+#   15|           Type = int
+#   15|           Value = [IntLit] 0
+#    1|   5: [Ident] main
