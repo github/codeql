@@ -1,6 +1,5 @@
 import RecordedCalls
 
-
 from string text, float number, float ratio, int i
 where
   exists(int all_rcs | all_rcs = count(XMLRecordedCall rc) and ratio = number / all_rcs |
