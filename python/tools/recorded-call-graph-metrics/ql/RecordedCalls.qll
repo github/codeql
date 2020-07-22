@@ -3,30 +3,35 @@ import semmle.python.types.Builtins
 import semmle.python.objects.Callables
 import BytecodeExpr
 
+/** The XML data for a recorded call (includes all data). */
 class XMLRecordedCall extends XMLElement {
   XMLRecordedCall() { this.hasName("recorded_call") }
 
-  Call getCall() { result = this.getXMLCall().getCall() }
-
+  /** Gets the XML data for the call. */
   XMLCall getXMLCall() { result.getParent() = this }
 
-  Function getPythonCallee() { result = this.getXMLCallee().(XMLPythonCallee).getCallee() }
+  /** Gets a call matching the recorded information. */
+  Call getACall() { result = this.getXMLCall().getACall() }
 
-  Builtin getBuiltinCallee() { result = this.getXMLCallee().(XMLExternalCallee).getCallee() }
-
+  /** Gets the XML data for the callee. */
   XMLCallee getXMLCallee() { result.getParent() = this }
 
-  /** Get a different `XMLRecordedCall` with the same result-set for `getCall`. */
+  /** Gets a python function matching the recorded information of the callee. */
+  Function getAPythonCallee() { result = this.getXMLCallee().(XMLPythonCallee).getACallee() }
+
+  /** Gets a builtin function matching the recorded information of the callee. */
+  Builtin getABuiltinCallee() { result = this.getXMLCallee().(XMLExternalCallee).getACallee() }
+
+  /** Get a different `XMLRecordedCall` with the same result-set for `getACall`. */
   XMLRecordedCall getOtherWithSameSetOfCalls() {
     // `rc` is for a different bytecode instruction on same line
     not result.getXMLCall().get_inst_index_data() = this.getXMLCall().get_inst_index_data() and
     result.getXMLCall().get_filename_data() = this.getXMLCall().get_filename_data() and
     result.getXMLCall().get_linenum_data() = this.getXMLCall().get_linenum_data() and
-    // set of calls is equal
-    // 1. this.getCall() issubset result.getCall()
-    not exists(Call call | call = this.getCall() | not result.getCall() = call) and
-    // 2. result.getCall() issubset this.getCall()
-    not exists(Call call | call = result.getCall() | not this.getCall() = call)
+    // set of calls are equal
+    forall(Call call | call = this.getACall() or call = result.getACall() |
+      call = this.getACall() and call = result.getACall()
+    )
   }
 
   override string toString() {
@@ -46,6 +51,7 @@ class XMLRecordedCall extends XMLElement {
   }
 }
 
+/** The XML data for the call part a recorded call. */
 class XMLCall extends XMLElement {
   XMLCall() { this.hasName("Call") }
 
@@ -55,11 +61,13 @@ class XMLCall extends XMLElement {
 
   int get_inst_index_data() { result = this.getAChild("inst_index").getTextValue().toInt() }
 
-  Call getCall() {
+  /** Gets a call that matches the recorded information. */
+  Call getACall() {
     // TODO: do we handle calls spanning multiple lines?
     this.matchBytecodeExpr(result, this.getAChild("bytecode_expr").getAChild())
   }
 
+  /** Holds if `expr` can be fully matched with `bytecode`. */
   private predicate matchBytecodeExpr(Expr expr, XMLBytecodeExpr bytecode) {
     exists(Call parent_call, XMLBytecodeCall parent_bytecode_call |
       parent_call
@@ -77,6 +85,7 @@ class XMLCall extends XMLElement {
         bytecode.(XMLBytecodeAttribute).get_object_data())
       or
       matchBytecodeExpr(expr.(Call).getFunc(), bytecode.(XMLBytecodeCall).get_function_data())
+      //
       // I considered allowing a partial match as well. That is, if the bytecode
       // expression information only tells us `<unknown>.foo()`, and we find an AST
       // expression that matches on `.foo()`, that is good enough.
@@ -92,8 +101,10 @@ class XMLCall extends XMLElement {
   }
 }
 
+/** The XML data for the callee part a recorded call. */
 abstract class XMLCallee extends XMLElement { }
 
+/** The XML data for the callee part a recorded call, when the callee is a Python function. */
 class XMLPythonCallee extends XMLCallee {
   XMLPythonCallee() { this.hasName("PythonCallee") }
 
@@ -103,7 +114,7 @@ class XMLPythonCallee extends XMLCallee {
 
   string get_funcname_data() { result = this.getAChild("funcname").getTextValue() }
 
-  Function getCallee() {
+  Function getACallee() {
     result.getLocation().hasLocationInfo(this.get_filename_data(), this.get_linenum_data(), _, _, _)
     or
     // if function has decorator, the call will be recorded going to the first
@@ -114,6 +125,7 @@ class XMLPythonCallee extends XMLCallee {
   }
 }
 
+/** The XML data for the callee part a recorded call, when the callee is a C function or builtin. */
 class XMLExternalCallee extends XMLCallee {
   XMLExternalCallee() { this.hasName("ExternalCallee") }
 
@@ -121,7 +133,7 @@ class XMLExternalCallee extends XMLCallee {
 
   string get_qualname_data() { result = this.getAChild("qualname").getTextValue() }
 
-  Builtin getCallee() {
+  Builtin getACallee() {
     exists(Builtin mod |
       not this.get_module_data() = "None" and
       mod.isModule() and
@@ -135,6 +147,10 @@ class XMLExternalCallee extends XMLCallee {
   }
 }
 
+/**
+ * Helper predicate. If parent = `builtins` and qualname = `list.append`, it will
+ * return the result of `builtins.list.append`.class
+ */
 private Builtin traverse_qualname(Builtin parent, string qualname) {
   not qualname = "__objclass__" and
   not qualname.matches("%.%") and
@@ -150,15 +166,15 @@ private Builtin traverse_qualname(Builtin parent, string qualname) {
 }
 
 /**
- * Class of recorded calls where we can identify both the `call` and the `callee`.
+ * Class of recorded calls where we can identify both the `call` and the `callee` uniquely.
  */
 class IdentifiedRecordedCall extends XMLRecordedCall {
   IdentifiedRecordedCall() {
-    strictcount(this.getCall()) = 1 and
+    strictcount(this.getACall()) = 1 and
     (
-      strictcount(this.getPythonCallee()) = 1
+      strictcount(this.getAPythonCallee()) = 1
       or
-      strictcount(this.getBuiltinCallee()) = 1
+      strictcount(this.getABuiltinCallee()) = 1
     )
     or
     // Handle case where the same function is called multiple times in one line, for
@@ -169,19 +185,19 @@ class IdentifiedRecordedCall extends XMLRecordedCall {
     // without this `strictcount`, in the case `func(); func(); func()`, if 1 of the calls
     // is not recorded, we woulld still mark the other two recorded calls as valid
     // (which is not following the rules above). + 1 to count `this` as well.
-    strictcount(this.getCall()) = strictcount(this.getOtherWithSameSetOfCalls()) + 1 and
+    strictcount(this.getACall()) = strictcount(this.getOtherWithSameSetOfCalls()) + 1 and
     forex(XMLRecordedCall rc | rc = this.getOtherWithSameSetOfCalls() |
-      unique(Function f | f = this.getPythonCallee()) =
-        unique(Function f | f = rc.getPythonCallee())
+      unique(Function f | f = this.getAPythonCallee()) =
+        unique(Function f | f = rc.getAPythonCallee())
       or
-      unique(Builtin b | b = this.getBuiltinCallee()) =
-        unique(Builtin b | b = rc.getBuiltinCallee())
+      unique(Builtin b | b = this.getABuiltinCallee()) =
+        unique(Builtin b | b = rc.getABuiltinCallee())
     )
   }
 
   override string toString() {
     exists(string callee_str |
-      exists(Function callee, string path | callee = this.getPythonCallee() |
+      exists(Function callee, string path | callee = this.getAPythonCallee() |
         (
           path = callee.getLocation().getFile().getRelativePath()
           or
@@ -192,13 +208,16 @@ class IdentifiedRecordedCall extends XMLRecordedCall {
           callee.toString() + " (" + path + ":" + callee.getLocation().getStartLine() + ")"
       )
       or
-      callee_str = this.getBuiltinCallee().toString()
+      callee_str = this.getABuiltinCallee().toString()
     |
       result = super.toString() + " --> " + callee_str
     )
   }
 }
 
+/**
+ * Class of recorded calls where we cannot identify both the `call` and the `callee` uniquely.
+ */
 class UnidentifiedRecordedCall extends XMLRecordedCall {
   UnidentifiedRecordedCall() { not this instanceof IdentifiedRecordedCall }
 }
@@ -216,26 +235,28 @@ class IgnoredRecordedCall extends XMLRecordedCall {
   }
 }
 
+/** Provides classes for call-graph resolution by using points-to. */
 module PointsToBasedCallGraph {
+  /** An IdentifiedRecordedCall that can be resolved with points-to */
   class ResolvableRecordedCall extends IdentifiedRecordedCall {
     Value calleeValue;
 
     ResolvableRecordedCall() {
       exists(Call call, XMLCallee xmlCallee |
-        call = this.getCall() and
+        call = this.getACall() and
         calleeValue.getACall() = call.getAFlowNode() and
         xmlCallee = this.getXMLCallee() and
         (
           xmlCallee instanceof XMLPythonCallee and
-          calleeValue.(PythonFunctionValue).getScope() = xmlCallee.(XMLPythonCallee).getCallee()
+          calleeValue.(PythonFunctionValue).getScope() = xmlCallee.(XMLPythonCallee).getACallee()
           or
           xmlCallee instanceof XMLExternalCallee and
           calleeValue.(BuiltinFunctionObjectInternal).getBuiltin() =
-            xmlCallee.(XMLExternalCallee).getCallee()
+            xmlCallee.(XMLExternalCallee).getACallee()
           or
           xmlCallee instanceof XMLExternalCallee and
           calleeValue.(BuiltinMethodObjectInternal).getBuiltin() =
-            xmlCallee.(XMLExternalCallee).getCallee()
+            xmlCallee.(XMLExternalCallee).getACallee()
         )
       )
     }
