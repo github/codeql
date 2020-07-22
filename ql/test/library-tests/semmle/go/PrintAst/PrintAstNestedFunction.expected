@@ -1,0 +1,67 @@
+go.mod:
+#    0| [GoModFile] library-tests/semmle/go/PrintAst/go.mod
+#    1|   0: [GoModModuleLine] go.mod module line
+#    3|   1: [GoModGoLine] go.mod go line
+input.go:
+#    0| [File] library-tests/semmle/go/PrintAst/input.go
+#    5|   0: [CommentGroup] comment group
+#    5|     0: [SlashSlashComment] comment
+#    7|   1: [CommentGroup] comment group
+#    7|     0: [SlashSlashComment] comment
+#    9|   2: [DocComment] comment group
+#    9|     0: [SlashSlashComment] comment
+#   17|   3: [CommentGroup] comment group
+#   17|     0: [SlashSlashComment] comment
+#   45|   4: [DocComment] comment group
+#   45|     0: [SlashSlashComment] comment
+#   64|   5: [DocComment] comment group
+#   64|     0: [SlashSlashComment] comment
+#   74|   6: [DocComment] comment group
+#   74|     0: [SlashSlashComment] comment
+#  111|   7: [DocComment] comment group
+#  111|     0: [SlashSlashComment] comment
+#  127|   8: [DocComment] comment group
+#  127|     0: [SlashSlashComment] comment
+#  132|   9: [DocComment] comment group
+#  132|     0: [SlashSlashComment] comment
+#    3|   10: [ImportDecl] import declaration
+#    3|     0: [ImportSpec] import specifier
+#    3|       0: [StringLit] "fmt"
+#    1|   18: [Ident] main
+other.go:
+#    0| [File] library-tests/semmle/go/PrintAst/other.go
+#    8|   3: [FuncDecl] function declaration
+#    8|     0: [FunctionName, Ident] hasNested
+#    8|         Type = func() 
+#    8|     1: [FuncTypeExpr] function type
+#    8|     2: [BlockStmt] block statement
+#   10|       0: [DefineStmt] ... := ...
+#   10|         0: [Ident, VariableName] myNested
+#   10|             Type = func() int
+#   10|         1: [FuncLit] function literal
+#   10|             Type = func() int
+#   10|           0: [FuncTypeExpr] function type
+#   10|               Type = func() int
+#   10|             0: [ResultVariableDecl] result variable declaration
+#   10|               0: [Ident, TypeName] int
+#   10|                   Type = int
+#   10|           1: [BlockStmt] block statement
+#   10|             0: [ReturnStmt] return statement
+#   10|               0: [IntLit] 1
+#   10|                   Type = int
+#   10|                   Value = [IntLit] 1
+#   11|       1: [ExprStmt] expression statement
+#   11|         0: [CallExpr] call to myNested
+#   11|             Type = int
+#   11|           0: [Ident, VariableName] myNested
+#   11|               Type = func() int
+#   15|   4: [VarDecl] variable declaration
+#   15|     0: [ValueSpec] value declaration specifier
+#   15|       0: [Ident, VariableName] x
+#   15|           Type = int
+#   15|       1: [Ident, TypeName] int
+#   15|           Type = int
+#   15|       2: [IntLit] 0
+#   15|           Type = int
+#   15|           Value = [IntLit] 0
+#    1|   5: [Ident] main

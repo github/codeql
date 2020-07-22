@@ -4,26 +4,6 @@ go.mod:
 #    3|   1: [GoModGoLine] go.mod go line
 input.go:
 #    0| [File] library-tests/semmle/go/PrintAst/input.go
-#    5|   0: [CommentGroup] comment group
-#    5|     0: [SlashSlashComment] comment
-#    7|   1: [CommentGroup] comment group
-#    7|     0: [SlashSlashComment] comment
-#    9|   2: [DocComment] comment group
-#    9|     0: [SlashSlashComment] comment
-#   17|   3: [CommentGroup] comment group
-#   17|     0: [SlashSlashComment] comment
-#   45|   4: [DocComment] comment group
-#   45|     0: [SlashSlashComment] comment
-#   64|   5: [DocComment] comment group
-#   64|     0: [SlashSlashComment] comment
-#   74|   6: [DocComment] comment group
-#   74|     0: [SlashSlashComment] comment
-#  111|   7: [DocComment] comment group
-#  111|     0: [SlashSlashComment] comment
-#  127|   8: [DocComment] comment group
-#  127|     0: [SlashSlashComment] comment
-#  132|   9: [DocComment] comment group
-#  132|     0: [SlashSlashComment] comment
 #    3|   10: [ImportDecl] import declaration
 #    3|     0: [ImportSpec] import specifier
 #    3|       0: [StringLit] "fmt"

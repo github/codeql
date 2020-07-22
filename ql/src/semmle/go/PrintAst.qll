@@ -5,7 +5,11 @@
 import go
 
 /**
- * Hook to customize the functions printed by this module.
+ * Hook to customize the files and functions printed by this module.
+ *
+ * For an AstNode to be printed, it always requires `shouldPrintFile(f)` to hold
+ * for its containing file `f`, and additionally requires `shouldPrintFunction(fun)`
+ * to hold if it is, or is a child of, function `fun`.
  */
 class PrintAstConfiguration extends string {
   /**
@@ -17,20 +21,48 @@ class PrintAstConfiguration extends string {
    * Holds if the AST for `func` should be printed. By default, holds for all
    * functions.
    */
-  predicate shouldPrintFunction(FuncDef func) { any() }
+  predicate shouldPrintFunction(FuncDecl func) { any() }
+
+  /**
+   * Holds if the AST for `file` should be printed. By default, holds for all
+   * files.
+   */
+  predicate shouldPrintFile(File file) { any() }
+
+  /**
+   * Holds if the AST for `file` should include comments. By default, holds for all
+   * files.
+   */
+  predicate shouldPrintComments(File file) { any() }
 }
 
 private predicate shouldPrintFunction(FuncDef func) {
   exists(PrintAstConfiguration config | config.shouldPrintFunction(func))
 }
 
+private predicate shouldPrintFile(File file) {
+  exists(PrintAstConfiguration config | config.shouldPrintFile(file))
+}
+
+private predicate shouldPrintComments(File file) {
+  exists(PrintAstConfiguration config | config.shouldPrintComments(file))
+}
+
+private FuncDecl getEnclosingFunctionDecl(AstNode n) { result = n.getParent*() }
+
 /**
  * An AST node that should be printed.
  */
 private newtype TPrintAstNode =
   TAstNode(AstNode ast) {
-    // Do print ast nodes without an enclosing function, e.g. file headers
-    forall(FuncDef f | f = ast.getEnclosingFunction() | shouldPrintFunction(f))
+    shouldPrintFile(ast.getFile()) and
+    // Do print ast nodes without an enclosing function, e.g. file headers, that are not otherwise excluded
+    forall(FuncDecl f | f = getEnclosingFunctionDecl(ast) | shouldPrintFunction(f)) and
+    (
+      shouldPrintComments(ast.getFile())
+      or
+      not ast instanceof Comment and not ast instanceof CommentGroup
+    )
   }
 
 /**
@@ -148,6 +180,19 @@ class ExprNode extends BaseAstNode {
  */
 class FileNode extends BaseAstNode {
   override File ast;
+
+  private string getRelativePath() { result = ast.getRelativePath() }
+
+  private int getSortOrder() {
+    rank[result](FileNode fn | any() | fn order by fn.getRelativePath()) = this
+  }
+
+  override string getProperty(string key) {
+    result = super.getProperty(key)
+    or
+    key = "semmle.order" and
+    result = getSortOrder().toString()
+  }
 
   /**
    * Gets the string representation of this File. Note explicitly using a relative path

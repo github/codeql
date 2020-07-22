@@ -12,5 +12,9 @@ import PrintAst
  * Hook to customize the functions printed by this query.
  */
 class Cfg extends PrintAstConfiguration {
-  override predicate shouldPrintFunction(FuncDef func) { any() }
+  override predicate shouldPrintFunction(FuncDecl func) { any() }
+
+  override predicate shouldPrintFile(File file) { any() }
+
+  override predicate shouldPrintComments(File file) { any() }
 }
