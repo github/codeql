@@ -11,6 +11,10 @@ def dataclass_to_xml(obj, parent):
         value = getattr(obj, field.name)
         if isinstance(value, (str, int)) or value is None:
             field_elem.text = str(value)
+        elif isinstance(value, list):
+            for list_elem in value:
+                assert dataclasses.is_dataclass(list_elem)
+                dataclass_to_xml(list_elem, field_elem)
         elif dataclasses.is_dataclass(value):
             dataclass_to_xml(value, field_elem)
         else:
