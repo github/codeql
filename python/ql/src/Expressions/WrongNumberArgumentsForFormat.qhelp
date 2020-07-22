@@ -15,7 +15,7 @@ arguments on the right hand side of the expression. Otherwise, a <code>TypeError
 </p></recommendation>
 <example>
 <p>In the following example the right hand side of the formatting operation can be of length 2, which does not match the format string.</p>
-</p><sample src="WrongNumberArgumentsForFormat.py" />
+<sample src="WrongNumberArgumentsForFormat.py" />
 
 </example>
 <references>
