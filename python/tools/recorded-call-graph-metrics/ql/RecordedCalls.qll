@@ -200,6 +200,19 @@ class UnidentifiedRecordedCall extends XMLRecordedCall {
   UnidentifiedRecordedCall() { not this instanceof IdentifiedRecordedCall }
 }
 
+/**
+ * Recorded calls made from outside project folder, that can be ignored when evaluating
+ * call-graph quality.
+ */
+class IgnoredRecordedCall extends XMLRecordedCall {
+  IgnoredRecordedCall() {
+    not exists(
+      any(File file | file.getAbsolutePath() = this.getXMLCall().get_filename_data())
+          .getRelativePath()
+    )
+  }
+}
+
 module PointsToBasedCallGraph {
   class ResolvableRecordedCall extends IdentifiedRecordedCall {
     Value calleeValue;
