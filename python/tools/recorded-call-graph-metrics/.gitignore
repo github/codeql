@@ -1,8 +1,9 @@
 # Example DB
 cg-trace-example-db/
 
-# Examples traces should be ignored in general
-example-traces/
+# Tests artifacts
+tests/python-traces/
+tests/cg-trace-test-db
 
 # Artifact from building `pip install -e .`
 src/cg_trace.egg-info/

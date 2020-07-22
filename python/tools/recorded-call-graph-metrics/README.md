@@ -4,17 +4,15 @@ also known as _call graph tracing_.
 
 Execute a python program and for each call being made, record the call and callee. This allows us to compare call graph resolution from static analysis with actual data -- that is, can we statically determine the target of each actual call correctly.
 
-This is still in the early stages, and currently only supports a very minimal working example (to show that this approach might work).
-
-The next hurdle is being able to handle multiple calls on the same line, such as
-
-- `foo(); bar()`
-- `foo(bar())`
-- `foo().bar()`
-
 ## How do I give it a spin?
 
-After following setup instructions below, run the `recreate-db.sh` script to create the database `cg-trace-example-db`. Then run the queries inside the `ql/` directory.
+After following setup instructions below, you should be able to reproduce the example trace by running
+
+```
+cg-trace --xml example/simple.xml example/simple.py
+```
+
+You can also run traces for all tests and build a database by running `tests/create-test-db.sh`. Then run the queries inside the `ql/` directory.
 
 
 ## Setup
