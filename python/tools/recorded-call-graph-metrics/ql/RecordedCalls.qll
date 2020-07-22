@@ -77,14 +77,17 @@ class XMLCall extends XMLElement {
         bytecode.(XMLBytecodeAttribute).get_object_data())
       or
       matchBytecodeExpr(expr.(Call).getFunc(), bytecode.(XMLBytecodeCall).get_function_data())
-      // I experimented with allowing partial matches with
-      // ```
-      // or
-      // bytecode instanceof XMLBytecodeUnknown
-      // ```
-      // but that only gave 1% improvement for Identified calls with approx 4200 calls
-      // in total (only supporting BytecodeVariableName/BytecodeAttribute/BytecodeCall).
-      // Since it's a potential performance problem, I did not enable.
+      // I considered allowing a partial match as well. That is, if the bytecode
+      // expression information only tells us `<unknown>.foo()`, and we find an AST
+      // expression that matches on `.foo()`, that is good enough.
+      //
+      // However, we cannot assume that all calls are recorded (such as `range(10)`),
+      // and we cannot assume that for all recorded calls there exists a corresponding
+      // AST call (such as for list-comprehensions).
+      //
+      // So allowing partial matches is not safe, since we might end up matching a
+      // recorded call not in the AST together with an unrecorded call visible in the
+      // AST.
     )
   }
 }
