@@ -10,9 +10,10 @@ import semmle.code.java.frameworks.ApacheLdap
 /** A data flow sink for unvalidated user input that is used to construct LDAP queries. */
 abstract class LdapInjectionSink extends DataFlow::Node { }
 
-/** A class that identifies sanitizers that prevent LDAP injection attacks. */
+/** A sanitizer that prevents LDAP injection attacks. */
 abstract class LdapInjectionSanitizer extends DataFlow::Node { }
 
+/** Holds if the JNDI method parameter at index is susceptible to a LDAP injection attack. */
 private predicate jndiLdapInjectionSinkMethod(Method m, int index) {
   m.getDeclaringType().getAnAncestor() instanceof TypeDirContext and
   m.hasName("search") and
@@ -33,6 +34,7 @@ private class JndiLdapInjectionSink extends LdapInjectionSink {
   }
 }
 
+/** Holds if the UnboundID method parameter at `index` is susceptible to a LDAP injection attack. */
 private predicate unboundIdLdapInjectionSinkMethod(Method m, int index) {
   exists(Parameter param | m.getParameter(index) = param and not param.isVarargs() |
     m instanceof MethodUnboundIdLDAPConnectionSearch or
@@ -55,6 +57,7 @@ private class UnboundedIdLdapInjectionSink extends LdapInjectionSink {
   }
 }
 
+/** Holds if the Spring method parameter at `index` is susceptible to a LDAP injection attack. */
 private predicate springLdapInjectionSinkMethod(Method m, int index) {
   // LdapTemplate.authenticate, LdapTemplate.find* or LdapTemplate.search* method
   (
@@ -91,6 +94,7 @@ private class SpringLdapInjectionSink extends LdapInjectionSink {
   }
 }
 
+/** Holds if the Apache LDAP API method parameter at `index` is susceptible to a LDAP injection attack. */
 private predicate apacheLdapInjectionSinkMethod(Method m, int index) {
   exists(Parameter param | m.getParameter(index) = param and not param.isVarargs() |
     m.getDeclaringType().getAnAncestor() instanceof TypeApacheLdapConnection and
@@ -405,6 +409,7 @@ private predicate apacheLdapDnGetStep(DataFlow::ExprNode n1, DataFlow::ExprNode 
   )
 }
 
+/** A set of additional taint steps to consider when taint tracking LDAP related data flows. */
 class LdapInjectionAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
     ldapNameStep(node1, node2) or
