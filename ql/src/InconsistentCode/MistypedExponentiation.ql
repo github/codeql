@@ -4,6 +4,7 @@
  * @kind problem
  * @problem.severity warning
  * @id go/mistyped-exponentiation
+ * @tags correctness
  * @precision high
  */
 
