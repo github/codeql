@@ -17,7 +17,7 @@ Value theJinja2FromStringValue() { result = Value::named("jinja2.from_string") }
  *  template = Template(`sink`)
  */
 class Jinja2TemplateSink extends SSTISink {
-  override string toString() { result = "argument to Jinja2.template()" }
+  override string toString() { result = "argument to jinja2.Template()" }
 
   Jinja2TemplateSink() {
     exists(CallNode call |
@@ -30,13 +30,13 @@ class Jinja2TemplateSink extends SSTISink {
 }
 
 /**
- * Sink representing the `jinja2.Template` class instantiation argument.
+ * Sink representing the `jinja2.from_string` function call argument.
  *
- *  from jinja2 import Template
- *  template = Template(`sink`)
+ *  from jinja2 import from_string
+ *  template = from_string(`sink`)
  */
 class Jinja2FromStringSink extends SSTISink {
-  override string toString() { result = "argument to Jinja2.from_string()" }
+  override string toString() { result = "argument to jinja2.from_string()" }
 
   Jinja2FromStringSink() {
     exists(CallNode call |

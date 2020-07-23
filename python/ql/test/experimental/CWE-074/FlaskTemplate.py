@@ -12,7 +12,7 @@ def home():
 
 
 @app.route("/a")
-def home(): 
+def a(): 
     import flask   
     return flask.render_template_string(request.args.get('template'))
     

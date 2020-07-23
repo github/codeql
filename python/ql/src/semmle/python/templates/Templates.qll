@@ -1,5 +1,4 @@
 import python
-import semmle.python.dataflow.TaintTracking
 
 abstract class Template extends Module { }
 

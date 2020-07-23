@@ -17,7 +17,7 @@ ClassValue theCheetahTemplateClass() { result = Value::named("Cheetah.Template.T
  *    contents = 'Hello World!'
  *  t3 = Template3("sink")
  *
- * This should also detect cases of the following type :
+ * This will also detect cases of the following type :
  *
  *  from Cheetah.Template import Template
  *  t3 = Template("sink")

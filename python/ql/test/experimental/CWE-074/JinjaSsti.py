@@ -4,7 +4,7 @@ from jinja2 import Template as Jinja2_Template
 from jinja2 import Environment, DictLoader, escape
 
 
-def j(request):
+def a(request):
     # Load the template
     template = request.GET['template']
     t = Jinja2_Template(template)
@@ -13,7 +13,7 @@ def j(request):
     html = t.render(name=escape(name))
     return HttpResponse(html)
 
-def j2(request):
+def b(request):
     import jinja2
     # Load the template
     template = request.GET['template']
@@ -25,6 +25,6 @@ def j2(request):
 
 
 urlpatterns = [
-    path('', jinja),
-    path('', jinja2)
+    path('a', a),
+    path('b', b)
 ]
