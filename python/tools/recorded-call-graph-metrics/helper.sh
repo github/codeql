@@ -50,7 +50,7 @@ repo() {
     for project in $@; do
         check_project_exists $project
 
-        echo "Cloning repo for $project"
+        echo "Cloning repo for '$project'"
 
         REPO_DIR=$(repo_dir $project)
 
@@ -75,7 +75,7 @@ setup() {
     for project in $@; do
         check_project_exists $project
 
-        echo "Setting up $project"
+        echo "Setting up '$project'"
 
         python3 -m venv $(venv_dir $project)
         source $(venv_dir $project)/bin/activate
@@ -99,7 +99,7 @@ trace() {
     for project in $@; do
         check_project_exists $project
 
-        echo "Tracing '$project"
+        echo "Tracing '$project'"
 
         source $(venv_dir $project)/bin/activate
 
@@ -118,7 +118,7 @@ db() {
     for project in $@; do
         check_project_exists $project
 
-        echo "Creating CodeQL database for '$project"
+        echo "Creating CodeQL database for '$project'"
 
         DB=$(db_path $project)
         SRC=$(repo_dir $project)
