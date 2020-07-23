@@ -518,7 +518,8 @@ module AccessPath {
         rank[ranking](ControlFlowNode ref |
           ref = getAccessTo(root, path, _) and
           ref.getBasicBlock() = bb and
-          // Prunes the accesses where there does not exists a read and write within the same basicblock.
+          // Prunes the accesses where there does not exist a read and write within the same
+          // basic block.
           // This could be more precise, but doing it like this avoids massive joins.
           hasRead(bb) and
           hasWrite(bb)
