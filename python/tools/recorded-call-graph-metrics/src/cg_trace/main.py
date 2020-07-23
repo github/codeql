@@ -31,8 +31,18 @@ def record_calls(code, globals):
     return all_calls_sorted, captured_stdout, captured_stderr, exit_status
 
 
+def setup_logging():
+    # code we run can also set up logging, so we need to set the level directly on our
+    # own pacakge
+    sh = logging.StreamHandler(stream=sys.stderr)
+
+    pkg_logger = logging.getLogger("cg_trace")
+    pkg_logger.addHandler(sh)
+    pkg_logger.setLevel(logging.INFO)
+
+
 def main(args=None) -> int:
-    logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+    setup_logging()
 
     # from . import bytecode_reconstructor
     # logging.getLogger(bytecode_reconstructor.__name__).setLevel(logging.INFO)
