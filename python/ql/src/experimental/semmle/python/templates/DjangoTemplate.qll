@@ -24,13 +24,12 @@ class DjangoTemplateTemplateSink extends SSTISink {
 
   override predicate sinks(TaintKind kind) { kind instanceof ExternalStringKind }
 }
-
-// TODO
-/**
- * Sinks representng the django.template.Template class instantiation.
- *
- *  from django.template import engines
- *
- *  django_engine = engines["django"]
- *  template = django_engine.from_string(`sink`)
- */
+// TODO (intentionally commented out QLDoc, since qlformat will delete those lines otherwise)
+// /**
+//  * Sinks representng the django.template.Template class instantiation.
+//  *
+//  *  from django.template import engines
+//  *
+//  *  django_engine = engines["django"]
+//  *  template = django_engine.from_string(`sink`)
+//  */
