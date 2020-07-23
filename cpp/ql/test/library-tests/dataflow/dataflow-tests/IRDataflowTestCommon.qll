@@ -10,7 +10,7 @@ import semmle.code.cpp.ir.IR
 class TestBarrierGuard extends DataFlow::BarrierGuard {
   TestBarrierGuard() { this.(CallInstruction).getStaticCallTarget().getName() = "guarded" }
 
-  override predicate checks(Instruction checked, boolean isTrue) {
+  override predicate checksInstr(Instruction checked, boolean isTrue) {
     checked = this.(CallInstruction).getPositionalArgument(0) and
     isTrue = true
   }
