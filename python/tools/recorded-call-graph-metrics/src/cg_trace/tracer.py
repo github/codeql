@@ -85,7 +85,7 @@ BUILTIN_FUNCTION_OR_METHOD = type(print)
 
 
 @better_compare_for_dataclass
-@dataclasses.dataclass(frozen=True, eq=True, order=True)
+@dataclasses.dataclass(frozen=True, eq=True)
 class ExternalCallee(Callee):
     # Some bound methods might not have __module__ attribute: for example,
     # `list().append.__module__ is None`
@@ -101,6 +101,35 @@ class ExternalCallee(Callee):
             qualname=func.__qualname__,
             is_builtin=type(func) == BUILTIN_FUNCTION_OR_METHOD,
         )
+
+    def __lt__(self, other):
+        if not isinstance(other, ExternalCallee):
+            raise TypeError()
+
+        for field in dataclasses.fields(self):
+            s_a = getattr(self, field.name)
+            o_a = getattr(other, field.name)
+
+            # `None < None` gives TypeError
+            if s_a is None and o_a is None:
+                return False
+
+            if type(s_a) != type(o_a):
+                return type(s_a).__name__ < type(o_a).__name__
+
+            if not s_a < o_a:
+                return False
+
+        return True
+
+    def __gt__(self, other):
+        return other < self
+
+    def __ge__(self, other):
+        return self > other or self == other
+
+    def __le__(self, other):
+        return self < other or self == other
 
 
 @better_compare_for_dataclass
