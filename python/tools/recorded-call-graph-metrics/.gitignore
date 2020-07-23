@@ -8,4 +8,6 @@ tests/cg-trace-test-db
 # Artifact from building `pip install -e .`
 src/cg_trace.egg-info/
 
+projects/
+
 venv/
