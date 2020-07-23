@@ -6,7 +6,7 @@ import time
 from datetime import datetime
 from io import StringIO
 
-from cg_trace import __version__, cmdline, tracer
+from cg_trace import __version__, cmdline, settings, tracer
 from cg_trace.exporter import XMLExporter
 
 
@@ -31,18 +31,17 @@ def record_calls(code, globals):
     return all_calls_sorted, captured_stdout, captured_stderr, exit_status
 
 
-def setup_logging():
+def setup_logging(debug):
     # code we run can also set up logging, so we need to set the level directly on our
     # own pacakge
     sh = logging.StreamHandler(stream=sys.stderr)
 
     pkg_logger = logging.getLogger("cg_trace")
     pkg_logger.addHandler(sh)
-    pkg_logger.setLevel(logging.INFO)
+    pkg_logger.setLevel(logging.CRITICAL if debug else logging.INFO)
 
 
 def main(args=None) -> int:
-    setup_logging()
 
     # from . import bytecode_reconstructor
     # logging.getLogger(bytecode_reconstructor.__name__).setLevel(logging.INFO)
@@ -52,6 +51,9 @@ def main(args=None) -> int:
         args = sys.argv[1:]
 
     opts = cmdline.parse(args)
+
+    settings.DEBUG = opts.debug
+    setup_logging(opts.debug)
 
     # These details of setting up the program to be run is very much inspired by `trace`
     # from the standard library

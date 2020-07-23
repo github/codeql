@@ -6,6 +6,7 @@ from types import FrameType
 from typing import Any, Optional, Tuple
 
 from cg_trace.bytecode_reconstructor import BytecodeExpr, expr_from_frame
+from cg_trace.settings import DEBUG
 from cg_trace.utils import better_compare_for_dataclass
 
 LOGGER = logging.getLogger(__name__)
@@ -233,7 +234,8 @@ class CallGraphTracer:
         if event not in ["call", "c_call"]:
             return
 
-        LOGGER.debug(f"profilefunc event={event}")
+        if DEBUG:
+            LOGGER.debug(f"profilefunc event={event}")
         if event == "call":
             # in call, the `frame` argument is new the frame for entering the callee
             assert frame.f_back is not None
@@ -242,10 +244,12 @@ class CallGraphTracer:
 
             key = (Call.hash_key(frame.f_back), callee)
             if key in self.python_calls:
-                LOGGER.debug(f"ignoring already seen call {key[0]} --> {callee}")
+                if DEBUG:
+                    LOGGER.debug(f"ignoring already seen call {key[0]} --> {callee}")
                 return
 
-            LOGGER.debug(f"callee={callee}")
+            if DEBUG:
+                LOGGER.debug(f"callee={callee}")
             call = Call.from_frame(frame.f_back)
 
             self.python_calls[key] = (call, callee)
@@ -258,12 +262,15 @@ class CallGraphTracer:
 
             key = (Call.hash_key(frame), callee)
             if key in self.external_calls:
-                LOGGER.debug(f"ignoring already seen call {key[0]} --> {callee}")
+                if DEBUG:
+                    LOGGER.debug(f"ignoring already seen call {key[0]} --> {callee}")
                 return
 
-            LOGGER.debug(f"callee={callee}")
+            if DEBUG:
+                LOGGER.debug(f"callee={callee}")
             call = Call.from_frame(frame)
 
             self.external_calls[key] = (call, callee)
 
-        LOGGER.debug(f"{call} --> {callee}")
+        if DEBUG:
+            LOGGER.debug(f"{call} --> {callee}")

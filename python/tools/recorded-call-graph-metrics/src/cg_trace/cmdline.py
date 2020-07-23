@@ -4,6 +4,10 @@ import argparse
 def parse(args):
     parser = argparse.ArgumentParser()
 
+    parser.add_argument(
+        "--debug", action="store_true", default=False, help="Enable debug logging"
+    )
+
     parser.add_argument("--xml")
 
     parser.add_argument(

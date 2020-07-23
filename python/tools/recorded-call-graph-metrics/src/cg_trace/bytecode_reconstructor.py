@@ -5,6 +5,7 @@ from dis import Instruction
 from types import FrameType
 from typing import Any, List
 
+from cg_trace.settings import DEBUG, FAIL_ON_UNKNOWN_BYTECODE
 from cg_trace.utils import better_compare_for_dataclass
 
 LOGGER = logging.getLogger(__name__)
@@ -155,9 +156,10 @@ def expr_that_added_elem_to_stack(
     immediately. (since correctly process the bytecode when faced with jumps is not as
     straight forward).
     """
-    LOGGER.debug(
-        f"find_inst_that_added_elem_to_stack start_index={start_index} stack_pos={stack_pos}"
-    )
+    if DEBUG:
+        LOGGER.debug(
+            f"find_inst_that_added_elem_to_stack start_index={start_index} stack_pos={stack_pos}"
+        )
     assert stack_pos >= 0
     for inst in reversed(instructions[: start_index + 1]):
         # Return immediately if faced with a jump
@@ -165,13 +167,15 @@ def expr_that_added_elem_to_stack(
             return SomethingInvolvingScaryBytecodeJump(inst.opname)
 
         if stack_pos == 0:
-            LOGGER.debug(f"Found it: {inst}")
+            if DEBUG:
+                LOGGER.debug(f"Found it: {inst}")
             found_index = instructions.index(inst)
             break
         old = stack_pos
         stack_pos -= dis.stack_effect(inst.opcode, inst.arg)
         new = stack_pos
-        LOGGER.debug(f"Skipping ({old} -> {new}) {inst}")
+        if DEBUG:
+            LOGGER.debug(f"Skipping ({old} -> {new}) {inst}")
     else:
         raise Exception("inst_index_for_stack_diff failed")
 
@@ -181,7 +185,8 @@ def expr_that_added_elem_to_stack(
 def expr_from_instruction(instructions: List[Instruction], index: int) -> BytecodeExpr:
     inst = instructions[index]
 
-    LOGGER.debug(f"expr_from_instruction: {inst} index={index}")
+    if DEBUG:
+        LOGGER.debug(f"expr_from_instruction: {inst} index={index}")
 
     if inst.opname in ["LOAD_GLOBAL", "LOAD_FAST", "LOAD_NAME", "LOAD_DEREF"]:
         return BytecodeVariableName(inst.argval)
@@ -247,24 +252,23 @@ def expr_from_instruction(instructions: List[Instruction], index: int) -> Byteco
     # - LOAD_BUILD_CLASS: Called when constructing a class.
     # - IMPORT_NAME: Observed to result in a call to filename='<frozen
     #   importlib._bootstrap>', linenum=389, funcname='parent'
-    if inst.opname not in ["LOAD_BUILD_CLASS", "IMPORT_NAME"] + WITH_OPNAMES:
-        LOGGER.warning(
-            f"Don't know how to handle this type of instruction: {inst.opname}"
-        )
-        # Uncomment to stop execution when encountering non-ignored unknown instruction
-        # class MyBytecodeException(BaseException):
-        #     pass
-        #
-        # raise MyBytecodeException()
+    if FAIL_ON_UNKNOWN_BYTECODE:
+        if inst.opname not in ["LOAD_BUILD_CLASS", "IMPORT_NAME"] + WITH_OPNAMES:
+            LOGGER.warning(
+                f"Don't know how to handle this type of instruction: {inst.opname}"
+            )
+            raise BaseException()
+
     return BytecodeUnknown(inst.opname)
 
 
 def expr_from_frame(frame: FrameType) -> BytecodeExpr:
     bytecode = dis.Bytecode(frame.f_code, current_offset=frame.f_lasti)
 
-    LOGGER.debug(
-        f"{frame.f_code.co_filename}:{frame.f_lineno}: bytecode: \n{bytecode.dis()}"
-    )
+    if DEBUG:
+        LOGGER.debug(
+            f"{frame.f_code.co_filename}:{frame.f_lineno}: bytecode: \n{bytecode.dis()}"
+        )
 
     instructions = list(iter(bytecode))
     last_instruction_index = [inst.offset for inst in instructions].index(frame.f_lasti)
