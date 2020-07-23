@@ -1,21 +1,22 @@
 other.go:
 #    0| [File] library-tests/semmle/go/PrintAst/other.go
-#    3|   0: [FuncDecl] function declaration
+#    1|   package: [Ident] main
+#    3|   1: [FuncDecl] function declaration
 #    3|     0: [FunctionName, Ident] main
 #    3|         Type = func() 
 #    3|     1: [FuncTypeExpr] function type
 #    3|     2: [BlockStmt] block statement
-#    5|   1: [FuncDecl] function declaration
+#    5|   2: [FuncDecl] function declaration
 #    5|     0: [FunctionName, Ident] f
 #    5|         Type = func() 
 #    5|     1: [FuncTypeExpr] function type
 #    5|     2: [BlockStmt] block statement
-#    6|   2: [FuncDecl] function declaration
+#    6|   3: [FuncDecl] function declaration
 #    6|     0: [FunctionName, Ident] g
 #    6|         Type = func() 
 #    6|     1: [FuncTypeExpr] function type
 #    6|     2: [BlockStmt] block statement
-#    8|   3: [FuncDecl] function declaration
+#    8|   4: [FuncDecl] function declaration
 #    8|     0: [FunctionName, Ident] hasNested
 #    8|         Type = func() 
 #    8|     1: [FuncTypeExpr] function type
@@ -40,7 +41,7 @@ other.go:
 #   11|             Type = int
 #   11|           0: [Ident, VariableName] myNested
 #   11|               Type = func() int
-#   15|   4: [VarDecl] variable declaration
+#   15|   5: [VarDecl] variable declaration
 #   15|     0: [ValueSpec] value declaration specifier
 #   15|       0: [Ident, VariableName] x
 #   15|           Type = int
@@ -49,4 +50,3 @@ other.go:
 #   15|       2: [IntLit] 0
 #   15|           Type = int
 #   15|           Value = [IntLit] 0
-#    1|   5: [Ident] main
