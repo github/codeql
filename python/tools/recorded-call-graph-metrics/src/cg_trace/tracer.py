@@ -36,6 +36,9 @@ def canonic_filename(filename):
     return canonic
 
 
+_call_cache = dict()
+
+
 @dataclasses.dataclass(frozen=True, eq=True, order=True)
 class Call:
     """A call
@@ -55,16 +58,25 @@ class Call:
 
     @classmethod
     def from_frame(cls, frame: FrameType):
+        global _call_cache
+        key = cls.hash_key(frame)
+        if key in _call_cache:
+            return _call_cache[key]
+
         code = frame.f_code
 
         bytecode_expr = expr_from_frame(frame)
 
-        return cls(
+        call = cls(
             filename=canonic_filename(code.co_filename),
             linenum=frame.f_lineno,
             inst_index=frame.f_lasti,
             bytecode_expr=bytecode_expr,
         )
+
+        _call_cache[key] = call
+
+        return call
 
     @staticmethod
     def hash_key(frame: FrameType) -> Tuple[str, int, int]:
