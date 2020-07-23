@@ -186,8 +186,8 @@ def expr_from_instruction(instructions: List[Instruction], index: int) -> Byteco
     if inst.opname in ["LOAD_GLOBAL", "LOAD_FAST", "LOAD_NAME", "LOAD_DEREF"]:
         return BytecodeVariableName(inst.argval)
 
-    elif inst.opname in ["LOAD_CONST"]:
-        return BytecodeConst(inst.argval)
+    # elif inst.opname in ["LOAD_CONST"]:
+    #     return BytecodeConst(inst.argval)
 
     # https://docs.python.org/3/library/dis.html#opcode-LOAD_METHOD
     # https://docs.python.org/3/library/dis.html#opcode-LOAD_ATTR
@@ -196,19 +196,19 @@ def expr_from_instruction(instructions: List[Instruction], index: int) -> Byteco
         obj_expr = expr_that_added_elem_to_stack(instructions, index - 1, 0)
         return BytecodeAttribute(attr_name=attr_name, object=obj_expr)
 
-    elif inst.opname in ["BINARY_SUBSCR"]:
-        key_expr = expr_that_added_elem_to_stack(instructions, index - 1, 0)
-        obj_expr = expr_that_added_elem_to_stack(instructions, index - 1, 1)
-        return BytecodeSubscript(key=key_expr, object=obj_expr)
+    # elif inst.opname in ["BINARY_SUBSCR"]:
+    #     key_expr = expr_that_added_elem_to_stack(instructions, index - 1, 0)
+    #     obj_expr = expr_that_added_elem_to_stack(instructions, index - 1, 1)
+    #     return BytecodeSubscript(key=key_expr, object=obj_expr)
 
-    elif inst.opname in ["BUILD_TUPLE", "BUILD_LIST"]:
-        elements = []
-        for i in range(inst.arg):
-            element_expr = expr_that_added_elem_to_stack(instructions, index - 1, i)
-            elements.append(element_expr)
-        elements.reverse()
-        klass = {"BUILD_TUPLE": BytecodeTuple, "BUILD_LIST": BytecodeList}[inst.opname]
-        return klass(elements=elements)
+    # elif inst.opname in ["BUILD_TUPLE", "BUILD_LIST"]:
+    #     elements = []
+    #     for i in range(inst.arg):
+    #         element_expr = expr_that_added_elem_to_stack(instructions, index - 1, i)
+    #         elements.append(element_expr)
+    #     elements.reverse()
+    #     klass = {"BUILD_TUPLE": BytecodeTuple, "BUILD_LIST": BytecodeList}[inst.opname]
+    #     return klass(elements=elements)
 
     # https://docs.python.org/3/library/dis.html#opcode-CALL_FUNCTION
     elif inst.opname in [
@@ -234,10 +234,10 @@ def expr_from_instruction(instructions: List[Instruction], index: int) -> Byteco
         )
         return BytecodeCall(function=func_expr)
 
-    elif inst.opname in ["MAKE_FUNCTION"]:
-        name_expr = expr_that_added_elem_to_stack(instructions, index - 1, 0)
-        assert isinstance(name_expr, BytecodeConst)
-        return BytecodeMakeFunction(qualified_name=name_expr)
+    # elif inst.opname in ["MAKE_FUNCTION"]:
+    #     name_expr = expr_that_added_elem_to_stack(instructions, index - 1, 0)
+    #     assert isinstance(name_expr, BytecodeConst)
+    #     return BytecodeMakeFunction(qualified_name=name_expr)
 
     # TODO: handle with statements (https://docs.python.org/3/library/dis.html#opcode-SETUP_WITH)
     WITH_OPNAMES = ["SETUP_WITH", "WITH_CLEANUP_START", "WITH_CLEANUP_FINISH"]
@@ -248,7 +248,9 @@ def expr_from_instruction(instructions: List[Instruction], index: int) -> Byteco
     # - IMPORT_NAME: Observed to result in a call to filename='<frozen
     #   importlib._bootstrap>', linenum=389, funcname='parent'
     if inst.opname not in ["LOAD_BUILD_CLASS", "IMPORT_NAME"] + WITH_OPNAMES:
-        LOGGER.warning(f"Don't know how to handle this type of instruction: {inst}")
+        LOGGER.warning(
+            f"Don't know how to handle this type of instruction: {inst.opname}"
+        )
         # Uncomment to stop execution when encountering non-ignored unknown instruction
         # class MyBytecodeException(BaseException):
         #     pass
