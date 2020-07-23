@@ -129,6 +129,84 @@ module AccessPath {
   cached
   private module Impl {
     /**
+     * Holds if `ref` directly refers to the one-step global access path `path`.
+     *
+     * This predicate is mostly for internal use; most clients should use `getAReferenceTo`
+     * instead.
+     */
+    cached
+    predicate globalRef(DataFlow::Node ref, string path) {
+      ref.accessesGlobal(path) and
+      path != "undefined"
+      or
+      path = ref.(Closure::ClosureNamespaceAccess).getClosureNamespace()
+    }
+
+    /**
+     * Holds if `succ` refers to the same access path as `pred`.
+     *
+     * This predicate is mostly for internal use.
+     */
+    cached
+    predicate ref2ref(DataFlow::Node pred, DataFlow::Node succ) {
+      pred = succ.getImmediatePredecessor()
+      or
+      exists(EffectivelyConstantVariable var |
+        var.isCaptured() and
+        pred = var.getValue() and
+        succ = var.getAnAccess().flow()
+      )
+      or
+      // Treat 'e || {}' as having the same name as 'e'
+      exists(LogOrExpr e | succ.asExpr() = e |
+        e.getRightOperand().(ObjectExpr).getNumProperty() = 0 and
+        pred = e.getLeftOperand().flow()
+      )
+      or
+      // Treat 'e && e.f' as having the same name as 'e.f'
+      exists(LogAndExpr e, Expr lhs, PropAccess rhs | succ.asExpr() = e |
+        lhs = e.getLeftOperand() and
+        rhs = e.getRightOperand() and
+        (
+          exists(Variable v |
+            lhs = v.getAnAccess() and
+            rhs.getBase() = v.getAnAccess()
+          )
+          or
+          exists(string name |
+            lhs.(PropAccess).getQualifiedName() = name and
+            rhs.getBase().(PropAccess).getQualifiedName() = name
+          )
+        ) and
+        pred = rhs.flow()
+      )
+    }
+
+    /**
+     * Holds if `succ` refers to the same access path as `pred`, but with `step` appended.
+     *
+     * This predicate is mostly for internal use.
+     */
+    cached
+    predicate ref2ref(DataFlow::Node pred, DataFlow::Node succ, string step) {
+      not succ.accessesGlobal(_) and
+      exists(DataFlow::PropRead prop | succ = prop |
+        pred = prop.getBase() and
+        step = prop.getPropertyName()
+        or
+        isLikelyDynamicArrayAccess(prop) and
+        pred = prop.getBase() and
+        step = "[number]"
+      )
+      or
+      exists(PropertyProjection proj | succ = proj |
+        proj.isSingletonProjection() and
+        pred = proj.getObject() and
+        step = proj.getASelector().getStringValue()
+      )
+    }
+
+    /**
      * Gets the access path relative to `root` referred to by `node`.
      *
      * This holds for direct references as well as for aliases
@@ -148,58 +226,16 @@ module AccessPath {
       not root.isGlobal() and
       result = ""
       or
-      result = fromReference(node.getImmediatePredecessor(), root)
+      root.isGlobal() and
+      globalRef(node, result)
       or
-      exists(EffectivelyConstantVariable var |
-        var.isCaptured() and
-        node.asExpr() = var.getAnAccess() and
-        result = fromReference(var.getValue(), root)
+      exists(DataFlow::Node pred |
+        ref2ref(pred, node) and
+        result = fromReference(pred, root)
       )
       or
-      node.accessesGlobal(result) and
-      result != "undefined" and
-      root.isGlobal()
-      or
-      not node.accessesGlobal(_) and
-      exists(DataFlow::PropRead prop | node = prop |
-        result = join(fromReference(prop.getBase(), root), prop.getPropertyName())
-        or
-        isLikelyDynamicArrayAccess(prop) and
-        result = join(fromReference(prop.getBase(), root), "[number]")
-      )
-      or
-      exists(Closure::ClosureNamespaceAccess acc | node = acc |
-        result = acc.getClosureNamespace() and
-        root.isGlobal()
-      )
-      or
-      exists(PropertyProjection proj | node = proj |
-        proj.isSingletonProjection() and
-        result = join(fromReference(proj.getObject(), root), proj.getASelector().getStringValue())
-      )
-      or
-      // Treat 'e || {}' as having the same name as 'e'
-      exists(LogOrExpr e | node.asExpr() = e |
-        e.getRightOperand().(ObjectExpr).getNumProperty() = 0 and
-        result = fromReference(e.getLeftOperand().flow(), root)
-      )
-      or
-      // Treat 'e && e.f' as having the same name as 'e.f'
-      exists(LogAndExpr e, Expr lhs, PropAccess rhs | node.asExpr() = e |
-        lhs = e.getLeftOperand() and
-        rhs = e.getRightOperand() and
-        (
-          exists(Variable v |
-            lhs = v.getAnAccess() and
-            rhs.getBase() = v.getAnAccess()
-          )
-          or
-          exists(string name |
-            lhs.(PropAccess).getQualifiedName() = name and
-            rhs.getBase().(PropAccess).getQualifiedName() = name
-          )
-        ) and
-        result = fromReference(rhs.flow(), root)
+      exists(DataFlow::Node pred, string step |
+        ref2ref(pred, node, step) and result = join(fromReference(pred, root), step)
       )
     }
 
@@ -239,6 +275,60 @@ module AccessPath {
     }
 
     /**
+     * Holds if `rhs` is directly assigned to the one-step global access path `path`.
+     *
+     * This predicate is mostly for internal use; most clients should use `getAnAssignmentTo`
+     * instead.
+     */
+    cached
+    predicate globalRhs(DataFlow::Node rhs, string path) {
+      exists(GlobalVariable var |
+        rhs = var.getAnAssignedExpr().flow() and
+        path = var.getName()
+      )
+      or
+      exists(FunctionDeclStmt fun |
+        rhs = DataFlow::valueNode(fun) and
+        path = fun.getId().(GlobalVarDecl).getName()
+      )
+      or
+      exists(ClassDeclStmt cls |
+        rhs = DataFlow::valueNode(cls) and
+        path = cls.getIdentifier().(GlobalVarDecl).getName()
+      )
+      or
+      exists(EnumDeclaration decl |
+        rhs = DataFlow::valueNode(decl) and
+        path = decl.getIdentifier().(GlobalVarDecl).getName()
+      )
+      or
+      exists(NamespaceDeclaration decl |
+        rhs = DataFlow::valueNode(decl) and
+        path = decl.getId().(GlobalVarDecl).getName()
+      )
+    }
+
+    /**
+     * Holds if `rhs` is assigned to the access path `ref` refers to, but with `step` appended.
+     *
+     * This predicate is mostly for internal use.
+     */
+    cached
+    predicate ref2rhs(DataFlow::Node ref, DataFlow::Node rhs, string step) {
+      any(DataFlow::PropWrite pw).writes(ref, step, rhs)
+    }
+
+    /**
+     * Holds if `succ` is assigned to the same access path as `pred`, but with `step` appended.
+     *
+     * This predicate is mostly for internal use.
+     */
+    cached
+    predicate rhs2rhs(DataFlow::Node pred, DataFlow::Node succ, string step) {
+      any(DataFlow::PropWrite pw).writes(pred, step, succ)
+    }
+
+    /**
      * Gets the access path relative to `root`, which `node` is being assigned to, if any.
      *
      * Only holds for the immediate right-hand side of an assignment or property, not
@@ -256,43 +346,15 @@ module AccessPath {
      */
     cached
     string fromRhs(DataFlow::Node node, Root root) {
-      exists(DataFlow::PropWrite write, string baseName |
-        node = write.getRhs() and
-        result = join(baseName, write.getPropertyName())
-      |
-        baseName = fromReference(write.getBase(), root)
+      globalRhs(node, result) and
+      root.isGlobal()
+      or
+      exists(DataFlow::Node pred, string step |
+        ref2rhs(pred, node, step) and
+        result = join(fromReference(pred, root), step)
         or
-        baseName = fromRhs(write.getBase(), root)
-      )
-      or
-      exists(GlobalVariable var |
-        node = var.getAnAssignedExpr().flow() and
-        result = var.getName() and
-        root.isGlobal()
-      )
-      or
-      exists(FunctionDeclStmt fun |
-        node = DataFlow::valueNode(fun) and
-        result = fun.getId().(GlobalVarDecl).getName() and
-        root.isGlobal()
-      )
-      or
-      exists(ClassDeclStmt cls |
-        node = DataFlow::valueNode(cls) and
-        result = cls.getIdentifier().(GlobalVarDecl).getName() and
-        root.isGlobal()
-      )
-      or
-      exists(EnumDeclaration decl |
-        node = DataFlow::valueNode(decl) and
-        result = decl.getIdentifier().(GlobalVarDecl).getName() and
-        root.isGlobal()
-      )
-      or
-      exists(NamespaceDeclaration decl |
-        node = DataFlow::valueNode(decl) and
-        result = decl.getId().(GlobalVarDecl).getName() and
-        root.isGlobal()
+        rhs2rhs(pred, node, step) and
+        result = join(fromRhs(pred, root), step)
       )
     }
   }
