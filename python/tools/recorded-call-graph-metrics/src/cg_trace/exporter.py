@@ -42,3 +42,5 @@ class XMLExporter:
 
         tree = etree.ElementTree(root)
         tree.write(outfile_path, encoding="utf-8", pretty_print=True)
+
+        print(f"Wrote {len(recorded_calls)} recorded calls to {outfile_path}")
