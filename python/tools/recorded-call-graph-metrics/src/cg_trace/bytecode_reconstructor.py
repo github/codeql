@@ -155,7 +155,9 @@ def expr_that_added_elem_to_stack(
     immediately. (since correctly process the bytecode when faced with jumps is not as
     straight forward).
     """
-    LOGGER.debug(f"find_inst_that_added_elem_to_stack {start_index=} {stack_pos=}")
+    LOGGER.debug(
+        f"find_inst_that_added_elem_to_stack start_index={start_index} stack_pos={stack_pos}"
+    )
     assert stack_pos >= 0
     for inst in reversed(instructions[: start_index + 1]):
         # Return immediately if faced with a jump
@@ -179,7 +181,7 @@ def expr_that_added_elem_to_stack(
 def expr_from_instruction(instructions: List[Instruction], index: int) -> BytecodeExpr:
     inst = instructions[index]
 
-    LOGGER.debug(f"expr_from_instruction: {inst} {index=}")
+    LOGGER.debug(f"expr_from_instruction: {inst} index={index}")
 
     if inst.opname in ["LOAD_GLOBAL", "LOAD_FAST", "LOAD_NAME", "LOAD_DEREF"]:
         return BytecodeVariableName(inst.argval)

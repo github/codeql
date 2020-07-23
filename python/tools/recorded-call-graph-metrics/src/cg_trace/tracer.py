@@ -192,7 +192,7 @@ class CallGraphTracer:
         if event not in ["call", "c_call"]:
             return
 
-        LOGGER.debug(f"profilefunc {event=}")
+        LOGGER.debug(f"profilefunc event={event}")
         if event == "call":
             # in call, the `frame` argument is new the frame for entering the callee
             assert frame.f_back is not None
