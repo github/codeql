@@ -10,7 +10,7 @@ Number of calls recorded vary a little from run to run. I have not been able to 
 
 ## Running against real projects
 
-Currently it's possible to gather metrics from traced runs against two projects (defined in [projects.json](./projects.json)): `youtube-dl` and `wcwidth`.
+Currently it's possible to gather metrics from traced runs of the standard test suite of a few projects (defined in [projects.json](./projects.json)): `youtube-dl`, `wcwidth`, and `flask`.
 
 To run against all projects, use
 
@@ -21,6 +21,25 @@ $ ./helper.sh all $(./helper.sh projects)
 To view the results, use
 ```
 $ head -n 100 projects/*/Metrics.txt
+```
+
+### Expanding set of projects
+
+It should be fairly straight forward to expand the set of projects. Most projects use `tox` for running their tests against multiple python versions. I didn't look into any kind of integration, but have manually picked out the instructions required to get going.
+
+As an example, compare the [`tox.ini`](https://github.com/pallets/flask/blob/21c3df31de4bc2f838c945bd37d185210d9bab1a/tox.ini) file from flask with the configuration
+
+```json
+    "flask": {
+        "repo": "https://github.com/pallets/flask.git",
+        "sha": "21c3df31de4bc2f838c945bd37d185210d9bab1a",
+        "module_command": "pytest -c /dev/null tests examples",
+        "setup": [
+            "pip install -r requirements/tests.txt",
+            "pip install -q -e examples/tutorial[test]",
+            "pip install -q -e examples/javascript[test]"
+        ]
+    }
 ```
 
 ## Local development
