@@ -248,7 +248,14 @@ module PointsToBasedCallGraph {
         xmlCallee = this.getXMLCallee() and
         (
           xmlCallee instanceof XMLPythonCallee and
-          calleeValue.(PythonFunctionValue).getScope() = xmlCallee.(XMLPythonCallee).getACallee()
+          (
+            // normal function
+            calleeValue.(PythonFunctionValue).getScope() = xmlCallee.(XMLPythonCallee).getACallee()
+            or
+            // class instantiation -- points-to says the call goes to the class
+            calleeValue.(ClassValue).lookup("__init__").(PythonFunctionValue).getScope() =
+              xmlCallee.(XMLPythonCallee).getACallee()
+          )
           or
           xmlCallee instanceof XMLExternalCallee and
           calleeValue.(BuiltinFunctionObjectInternal).getBuiltin() =
