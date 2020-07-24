@@ -1,4 +1,5 @@
 import dataclasses
+import inspect
 import logging
 import os
 import sys
@@ -104,6 +105,9 @@ _unknown_module_fixup_cache = dict()
 def _unkown_module_fixup(func):
     # TODO: Doesn't work for everything (for example: `OrderedDict.fromkeys`, `object.__new__`)
 
+    # TODO: Can make this logic easier by using `func.__self__`. For `f = dict().get`, `f.__self__.__class__ == dict`
+    # and `dict.__new__.__self__ = dict`
+
     module = func.__module__
     qualname = func.__qualname__
     cls_name, method_name = qualname.split(".")
@@ -114,12 +118,20 @@ def _unkown_module_fixup(func):
 
     matching_classes = list()
     for klass in object.__subclasses__():
-        # type(dict.get) == METHOD_DESCRIPTOR_TYPE
-        # type(dict.__new__) == BUILTIN_FUNCTION_OR_METHOD
-        if klass.__qualname__ == cls_name and type(
-            getattr(klass, method_name, None)
-        ) in [BUILTIN_FUNCTION_OR_METHOD, METHOD_DESCRIPTOR_TYPE]:
-            matching_classes.append(klass)
+
+        if inspect.isabstract(klass):
+            continue
+
+        try:
+            # type(dict.get) == METHOD_DESCRIPTOR_TYPE
+            # type(dict.__new__) == BUILTIN_FUNCTION_OR_METHOD
+            if klass.__qualname__ == cls_name and type(
+                getattr(klass, method_name, None)
+            ) in [BUILTIN_FUNCTION_OR_METHOD, METHOD_DESCRIPTOR_TYPE]:
+                matching_classes.append(klass)
+        # For flask, observed to give `ValueError: Namespace class is abstract`, even with the isabstract above
+        except ValueError:
+            pass
 
     if len(matching_classes) == 1:
         klass = matching_classes[0]
