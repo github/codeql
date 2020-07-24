@@ -183,6 +183,9 @@ all() {
 
 
 COMMAND=${1:-"help"}
-shift
+
+if [[ $# -ge 2 ]]; then
+    shift
+fi
 
 $COMMAND $@
