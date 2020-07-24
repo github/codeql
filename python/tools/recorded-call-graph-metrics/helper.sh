@@ -5,22 +5,28 @@ set -Eeuo pipefail # see https://vaneyckt.io/posts/safer_bash_scripts_with_set_e
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 PROJECTS_FILE="$SCRIPTDIR/projects.json"
 
-PROJECT_BASE_DIR="$SCRIPTDIR/projects"
+METRICS_QUERY="ql/query/Metrics.ql"
+
+PROJECTS_BASE_DIR="$SCRIPTDIR/projects"
 
 repo_dir() {
-    echo "$PROJECT_BASE_DIR/$1/repo"
+    echo "$PROJECTS_BASE_DIR/$1/repo"
 }
 
 venv_dir() {
-    echo "$PROJECT_BASE_DIR/$1/venv"
+    echo "$PROJECTS_BASE_DIR/$1/venv"
 }
 
 trace_dir() {
-    echo "$PROJECT_BASE_DIR/$1/traces"
+    echo "$PROJECTS_BASE_DIR/$1/traces"
 }
 
 db_path() {
-    echo "$PROJECT_BASE_DIR/$1/$1-db"
+    echo "$PROJECTS_BASE_DIR/$1/$1-db"
+}
+
+query_result_base_path() {
+    echo "$PROJECTS_BASE_DIR/$1/$2"
 }
 
 help() {
@@ -31,6 +37,7 @@ $0 repo <projects>      Fetch repo for projects
 $0 setup <projects>     Perform setup steps for projects (install dependencies)
 $0 trace <projects>     Trace projects
 $0 db <projects>        Build databases for projects
+$0 metrics <projects>   Run $METRICS_QUERY on projects
 $0 all <projects>       Perform all the above steps for projects
 """
 }
@@ -146,6 +153,22 @@ db() {
     done
 }
 
+metrics() {
+    for project in $@; do
+        check_project_exists $project
+
+        echo "Running $METRICS_QUERY on '$project'"
+
+        RESULTS_BASE=$(query_result_base_path $project Metrics)
+        DB=$(db_path $project)
+
+        codeql query run "$SCRIPTDIR/$METRICS_QUERY" --database "$DB" --output "${RESULTS_BASE}.bqrs"
+        codeql bqrs decode "${RESULTS_BASE}.bqrs" --format text --output "${RESULTS_BASE}.txt"
+
+        echo "Results available in '${RESULTS_BASE}.txt'"
+    done
+}
+
 all() {
     for project in $@; do
         check_project_exists $project
@@ -154,6 +177,7 @@ all() {
         setup $project
         trace $project
         db $project
+        metrics $project
     done
 }
 
