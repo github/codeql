@@ -135,12 +135,8 @@ class XMLExternalCallee extends XMLCallee {
 
   Builtin getACallee() {
     exists(Builtin mod |
-      not this.get_module_data() = "None" and
       mod.isModule() and
       mod.getName() = this.get_module_data()
-      or
-      this.get_module_data() = "None" and
-      mod = Builtin::builtinModule()
     |
       result = traverse_qualname(mod, this.get_qualname_data())
     )

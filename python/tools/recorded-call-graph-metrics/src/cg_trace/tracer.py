@@ -95,6 +95,41 @@ class Callee:
 
 
 BUILTIN_FUNCTION_OR_METHOD = type(print)
+METHOD_DESCRIPTOR_TYPE = type(dict.get)
+
+
+_unknown_module_fixup_cache = dict()
+
+
+def _unkown_module_fixup(func):
+    # TODO: Doesn't work for everything (for example: `OrderedDict.fromkeys`, `object.__new__`)
+
+    module = func.__module__
+    qualname = func.__qualname__
+    cls_name, method_name = qualname.split(".")
+
+    key = (module, qualname)
+    if key in _unknown_module_fixup_cache:
+        return _unknown_module_fixup_cache[key]
+
+    matching_classes = list()
+    for klass in object.__subclasses__():
+        # type(dict.get) == METHOD_DESCRIPTOR_TYPE
+        # type(dict.__new__) == BUILTIN_FUNCTION_OR_METHOD
+        if klass.__qualname__ == cls_name and type(
+            getattr(klass, method_name, None)
+        ) in [BUILTIN_FUNCTION_OR_METHOD, METHOD_DESCRIPTOR_TYPE]:
+            matching_classes.append(klass)
+
+    if len(matching_classes) == 1:
+        klass = matching_classes[0]
+        ret = klass.__module__
+    else:
+        if DEBUG:
+            LOGGER.debug(f"Found more than one matching class for {module} {qualname}")
+        ret = None
+    _unknown_module_fixup_cache[key] = ret
+    return ret
 
 
 @better_compare_for_dataclass
@@ -109,9 +144,19 @@ class ExternalCallee(Callee):
 
     @classmethod
     def from_arg(cls, func):
+        # builtin bound methods seems to always return `None` for __module__, but we
+        # might be able to recover the lost information by looking through all classes.
+        # For example, `dict().get.__module__ is None` and `dict().get.__qualname__ ==
+        # "dict.get"`
+
+        module = func.__module__
+        qualname = func.__qualname__
+        if module is None and qualname.count(".") == 1:
+            module = _unkown_module_fixup(func)
+
         return cls(
-            module=func.__module__,
-            qualname=func.__qualname__,
+            module=module,
+            qualname=qualname,
             is_builtin=type(func) == BUILTIN_FUNCTION_OR_METHOD,
         )
 
