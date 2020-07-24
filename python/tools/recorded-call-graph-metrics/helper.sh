@@ -80,6 +80,7 @@ setup() {
         python3 -m venv $(venv_dir $project)
         source $(venv_dir $project)/bin/activate
 
+        cd $(repo_dir $project)
         pip install -e "$SCRIPTDIR"
 
         IFS=$'\n'
@@ -106,11 +107,15 @@ trace() {
         REPO_DIR=$(repo_dir $project)
         cd "$REPO_DIR"
 
+        rm -rf $(trace_dir $project)
         mkdir -p $(trace_dir $project)
 
         MODULE_COMMAND=$(jq -r ".\"$project\".module_command" $PROJECTS_FILE)
 
         cg-trace --xml $(trace_dir $project)/trace.xml --module $MODULE_COMMAND
+
+        # deactivate venv again
+        deactivate
     done
 }
 
