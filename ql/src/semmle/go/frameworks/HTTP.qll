@@ -242,7 +242,7 @@ private module GoRestfulHttp {
   private class GoRestfulSourceMethod extends Method {
     GoRestfulSourceMethod() {
       this
-          .hasQualifiedName("github.com/emicklei/go-restful", "Request",
+          .hasQualifiedName(package("github.com/emicklei/go-restful", ""), "Request",
             ["QueryParameters", "QueryParameter", "BodyParameter", "HeaderParameter",
                 "PathParameter", "PathParameters"])
     }
