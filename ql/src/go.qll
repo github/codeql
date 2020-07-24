@@ -26,6 +26,7 @@ import semmle.go.dataflow.GlobalValueNumbering
 import semmle.go.dataflow.SSA
 import semmle.go.dataflow.TaintTracking
 import semmle.go.frameworks.Email
+import semmle.go.frameworks.Encoding
 import semmle.go.frameworks.Glog
 import semmle.go.frameworks.HTTP
 import semmle.go.frameworks.Macaron
@@ -37,7 +38,4 @@ import semmle.go.frameworks.SystemCommandExecutors
 import semmle.go.frameworks.Testing
 import semmle.go.frameworks.WebSocket
 import semmle.go.frameworks.XPath
-import semmle.go.frameworks.thirdpartlib.HTTP
-import semmle.go.frameworks.thirdpartlib.SQL
-import semmle.go.frameworks.thirdpartlib.Encoding
 import semmle.go.security.FlowSources
