@@ -1,0 +1,13 @@
+edges
+| UnsecureBasicAuth.java:41:19:41:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | UnsecureBasicAuth.java:46:3:46:6 | conn |
+| UnsecureBasicAuth.java:41:19:41:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | UnsecureBasicAuth.java:47:3:47:6 | conn |
+| UnsecureBasicAuth.java:41:19:41:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | UnsecureBasicAuth.java:48:3:48:6 | conn |
+nodes
+| UnsecureBasicAuth.java:41:19:41:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | semmle.label | "http://www.example.com/rest/getuser.do?uid=abcdx" : String |
+| UnsecureBasicAuth.java:46:3:46:6 | conn | semmle.label | conn |
+| UnsecureBasicAuth.java:47:3:47:6 | conn | semmle.label | conn |
+| UnsecureBasicAuth.java:48:3:48:6 | conn | semmle.label | conn |
+#select
+| UnsecureBasicAuth.java:24:3:24:59 | addHeader(...) | Unsafe basic authentication |
+| UnsecureBasicAuth.java:34:3:34:108 | setHeader(...) | Unsafe basic authentication |
+| UnsecureBasicAuth.java:48:3:48:63 | setRequestProperty(...) | Unsafe basic authentication |
