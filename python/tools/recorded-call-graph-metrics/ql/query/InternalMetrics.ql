@@ -3,7 +3,7 @@
  * See Metrics.ql for call-graph quality metrics.
  */
 
-import RecordedCalls
+import lib.RecordedCalls
 
 from string text, float number, float ratio
 where

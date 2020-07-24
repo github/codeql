@@ -1,4 +1,4 @@
-import RecordedCalls
+import lib.RecordedCalls
 
 from IdentifiedRecordedCall rc
 where not rc instanceof PointsToBasedCallGraph::ResolvableRecordedCall

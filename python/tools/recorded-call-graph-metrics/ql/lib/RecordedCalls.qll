@@ -1,7 +1,7 @@
 import python
 import semmle.python.types.Builtins
 import semmle.python.objects.Callables
-import BytecodeExpr
+import lib.BytecodeExpr
 
 /** The XML data for a recorded call (includes all data). */
 class XMLRecordedCall extends XMLElement {
