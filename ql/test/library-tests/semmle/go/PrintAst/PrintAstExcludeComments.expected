@@ -4,10 +4,11 @@ go.mod:
 #    3|   1: [GoModGoLine] go.mod go line
 input.go:
 #    0| [File] library-tests/semmle/go/PrintAst/input.go
-#    3|   10: [ImportDecl] import declaration
+#    1|   package: [Ident] main
+#    3|   1: [ImportDecl] import declaration
 #    3|     0: [ImportSpec] import specifier
 #    3|       0: [StringLit] "fmt"
-#   10|   11: [FuncDecl] function declaration
+#   10|   2: [FuncDecl] function declaration
 #   10|     0: [FunctionName, Ident] test5
 #   10|         Type = func(bool) 
 #   10|     1: [FuncTypeExpr] function type
@@ -132,7 +133,7 @@ input.go:
 #   40|         1: [BlockStmt] block statement
 #   41|           0: [GotoStmt] goto statement
 #   41|             0: [Ident, LabelName] outer
-#   46|   12: [FuncDecl] function declaration
+#   46|   3: [FuncDecl] function declaration
 #   46|     0: [FunctionName, Ident] test6
 #   46|         Type = func(chan int, chan float32) 
 #   46|     1: [FuncTypeExpr] function type
@@ -242,7 +243,7 @@ input.go:
 #   58|                   Value = [IntLit] 42
 #   61|       3: [SelectStmt] select statement
 #   61|         0: [BlockStmt] block statement
-#   65|   13: [FuncDecl] function declaration
+#   65|   4: [FuncDecl] function declaration
 #   65|     0: [FunctionName, Ident] test7
 #   65|         Type = func(int) int
 #   65|     1: [FuncTypeExpr] function type
@@ -307,7 +308,7 @@ input.go:
 #   71|         0: [IntLit] 42
 #   71|             Type = int
 #   71|             Value = [IntLit] 42
-#   75|   14: [FuncDecl] function declaration
+#   75|   5: [FuncDecl] function declaration
 #   75|     0: [FunctionName, Ident] test8
 #   75|         Type = func(int) 
 #   75|     1: [FuncTypeExpr] function type
@@ -427,7 +428,7 @@ input.go:
 #  107|             0: [ConstantName, Ident] true
 #  107|                 Type = bool
 #  107|                 Value = [ConstantName, Ident] true
-#  112|   15: [FuncDecl] function declaration
+#  112|   6: [FuncDecl] function declaration
 #  112|     0: [FunctionName, Ident] test9
 #  112|         Type = func(interface {  }) 
 #  112|     1: [FuncTypeExpr] function type
@@ -498,7 +499,7 @@ input.go:
 #  123|                 1: [ConstantName, Ident] false
 #  123|                     Type = bool
 #  123|                     Value = [ConstantName, Ident] false
-#  128|   16: [FuncDecl] function declaration
+#  128|   7: [FuncDecl] function declaration
 #  128|     0: [FunctionName, Ident] test10
 #  128|         Type = func(func() ) 
 #  128|     1: [FuncTypeExpr] function type
@@ -513,7 +514,7 @@ input.go:
 #  129|             Type = ()
 #  129|           0: [Ident, VariableName] f
 #  129|               Type = func() 
-#  133|   17: [FuncDecl] function declaration
+#  133|   8: [FuncDecl] function declaration
 #  133|     0: [FunctionName, Ident] test11
 #  133|         Type = func([]int) 
 #  133|     1: [FuncTypeExpr] function type
@@ -575,25 +576,25 @@ input.go:
 #  145|         0: [Ident, VariableName] xs
 #  145|             Type = []int
 #  145|         1: [BlockStmt] block statement
-#    1|   18: [Ident] main
 other.go:
 #    0| [File] library-tests/semmle/go/PrintAst/other.go
-#    3|   0: [FuncDecl] function declaration
+#    1|   package: [Ident] main
+#    3|   1: [FuncDecl] function declaration
 #    3|     0: [FunctionName, Ident] main
 #    3|         Type = func() 
 #    3|     1: [FuncTypeExpr] function type
 #    3|     2: [BlockStmt] block statement
-#    5|   1: [FuncDecl] function declaration
+#    5|   2: [FuncDecl] function declaration
 #    5|     0: [FunctionName, Ident] f
 #    5|         Type = func() 
 #    5|     1: [FuncTypeExpr] function type
 #    5|     2: [BlockStmt] block statement
-#    6|   2: [FuncDecl] function declaration
+#    6|   3: [FuncDecl] function declaration
 #    6|     0: [FunctionName, Ident] g
 #    6|         Type = func() 
 #    6|     1: [FuncTypeExpr] function type
 #    6|     2: [BlockStmt] block statement
-#    8|   3: [FuncDecl] function declaration
+#    8|   4: [FuncDecl] function declaration
 #    8|     0: [FunctionName, Ident] hasNested
 #    8|         Type = func() 
 #    8|     1: [FuncTypeExpr] function type
@@ -618,7 +619,7 @@ other.go:
 #   11|             Type = int
 #   11|           0: [Ident, VariableName] myNested
 #   11|               Type = func() int
-#   15|   4: [VarDecl] variable declaration
+#   15|   5: [VarDecl] variable declaration
 #   15|     0: [ValueSpec] value declaration specifier
 #   15|       0: [Ident, VariableName] x
 #   15|           Type = int
@@ -627,4 +628,3 @@ other.go:
 #   15|       2: [IntLit] 0
 #   15|           Type = int
 #   15|           Value = [IntLit] 0
-#    1|   5: [Ident] main

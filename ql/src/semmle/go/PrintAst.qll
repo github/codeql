@@ -195,6 +195,47 @@ class FileNode extends BaseAstNode {
   }
 
   /**
+   * Gets a child of this node, renumbering `packageNode`, our parent's
+   * `oldPackageIndex`th child, as the first child and moving others accordingly.
+   */
+  private BaseAstNode getChildPackageFirst(
+    int childIndex, BaseAstNode packageNode, int oldPackageIndex
+  ) {
+    super.getChild(oldPackageIndex) = packageNode and
+    (
+      childIndex = 0 and result = packageNode
+      or
+      result =
+        rank[childIndex](BaseAstNode node, int i |
+          node = super.getChild(i) and i != oldPackageIndex
+        |
+          node order by i
+        )
+    )
+  }
+
+  /**
+   * Gets a child of this node, moving the package-name expression to the front
+   * of the list if one exists.
+   */
+  override BaseAstNode getChild(int childIndex) {
+    if exists(ast.getPackageNameExpr())
+    then result = getChildPackageFirst(childIndex, TAstNode(ast.getPackageNameExpr()), _)
+    else result = super.getChild(childIndex)
+  }
+
+  /**
+   * Gets the label for the edge from this node to the specified child. The package name
+   * expression is named 'package'; others are numbered as per our parent's implementation
+   * of this method.
+   */
+  override string getChildEdgeLabel(int childIndex) {
+    if getChild(childIndex) = TAstNode(ast.getPackageNameExpr())
+    then result = "package"
+    else result = super.getChildEdgeLabel(childIndex)
+  }
+
+  /**
    * Gets the string representation of this File. Note explicitly using a relative path
    * like this rather than absolute as per default for the File class is a workaround for
    * a bug with codeql run test, which should replace absolute paths but currently does not.

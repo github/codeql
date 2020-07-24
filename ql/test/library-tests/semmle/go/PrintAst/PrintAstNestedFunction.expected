@@ -4,33 +4,34 @@ go.mod:
 #    3|   1: [GoModGoLine] go.mod go line
 input.go:
 #    0| [File] library-tests/semmle/go/PrintAst/input.go
-#    5|   0: [CommentGroup] comment group
+#    1|   package: [Ident] main
+#    5|   1: [CommentGroup] comment group
 #    5|     0: [SlashSlashComment] comment
-#    7|   1: [CommentGroup] comment group
+#    7|   2: [CommentGroup] comment group
 #    7|     0: [SlashSlashComment] comment
-#    9|   2: [DocComment] comment group
+#    9|   3: [DocComment] comment group
 #    9|     0: [SlashSlashComment] comment
-#   17|   3: [CommentGroup] comment group
+#   17|   4: [CommentGroup] comment group
 #   17|     0: [SlashSlashComment] comment
-#   45|   4: [DocComment] comment group
+#   45|   5: [DocComment] comment group
 #   45|     0: [SlashSlashComment] comment
-#   64|   5: [DocComment] comment group
+#   64|   6: [DocComment] comment group
 #   64|     0: [SlashSlashComment] comment
-#   74|   6: [DocComment] comment group
+#   74|   7: [DocComment] comment group
 #   74|     0: [SlashSlashComment] comment
-#  111|   7: [DocComment] comment group
+#  111|   8: [DocComment] comment group
 #  111|     0: [SlashSlashComment] comment
-#  127|   8: [DocComment] comment group
+#  127|   9: [DocComment] comment group
 #  127|     0: [SlashSlashComment] comment
-#  132|   9: [DocComment] comment group
+#  132|   10: [DocComment] comment group
 #  132|     0: [SlashSlashComment] comment
-#    3|   10: [ImportDecl] import declaration
+#    3|   11: [ImportDecl] import declaration
 #    3|     0: [ImportSpec] import specifier
 #    3|       0: [StringLit] "fmt"
-#    1|   18: [Ident] main
 other.go:
 #    0| [File] library-tests/semmle/go/PrintAst/other.go
-#    8|   3: [FuncDecl] function declaration
+#    1|   package: [Ident] main
+#    8|   1: [FuncDecl] function declaration
 #    8|     0: [FunctionName, Ident] hasNested
 #    8|         Type = func() 
 #    8|     1: [FuncTypeExpr] function type
@@ -55,7 +56,7 @@ other.go:
 #   11|             Type = int
 #   11|           0: [Ident, VariableName] myNested
 #   11|               Type = func() int
-#   15|   4: [VarDecl] variable declaration
+#   15|   2: [VarDecl] variable declaration
 #   15|     0: [ValueSpec] value declaration specifier
 #   15|       0: [Ident, VariableName] x
 #   15|           Type = int
@@ -64,4 +65,3 @@ other.go:
 #   15|       2: [IntLit] 0
 #   15|           Type = int
 #   15|           Value = [IntLit] 0
-#    1|   5: [Ident] main
