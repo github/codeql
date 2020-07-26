@@ -1,0 +1,59 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Incorrect usage of crypto algorithms or usage of weak algorithms could let attacker to decrypt encrypted data via chosen plaintext attack.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Avoid using known weak algorithms like any symmetric algorithms with ECB encryption mode. 
+Do not use static initial vector (IV) for CTR and OFB modes, because static IV turns them to ECB.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows a simple web-service, which could be used for data encrytion and decryption.
+But encryption routines has two defects (depends on VULN env state):
+1) Encryption with AES128-ECB runs on ECB mode, which is known to be vulnerable to CPA (chosen plaintext attack);
+CPA allows attacker to decrypt ecnrypted data without key. 
+2) Static IV for several modes (counter mode and output feedback mode) of block cipher algorithms could also let attacker to perform CPA.  
+
+Both of defects above could let attacker to perform chosen plaintext attack. 
+As stated above, CPA lets attacker to decrypt or encrypt arbitary data, 
+which potentialy could be used by attackers for leaking sensitive information, 
+which were encrypted and were restricted for attackers access.
+</p>
+
+<sample src="examples/BrokenSymmetricCrypto.js.js" />
+</example>
+
+<example>
+<p>
+The example below provides an example of how to properly use AES256-CBC with non-static IV. 
+Instead of using static IV, one should generate random IV (for example, per request) and add it to response.
+</p>
+
+<sample src="examples/BrokenSymmetricCryptoSafe.js.js" />
+</example>
+
+<references>
+<li>
+OWASP classification:
+<a href="https://owasp.org/www-community/vulnerabilities/Using_a_broken_or_risky_cryptographic_algorithm">OWASP Broken or risky cryptography</a>.
+</li>
+<li>
+Chosen plaintext attack: 
+<a href="https://en.wikipedia.org/wiki/Chosen-plaintext_attack">CPA(Chosen plaintext attack)</a>.
+</li>
+<li>
+OWASP Crypto Cheatsheet: 
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html">OWASP Crypto Cheatsheet</a>.
+</li>
+</references>
+</qhelp>
