@@ -8,7 +8,7 @@ This makes it easier for an attacker to intercept.</p>
 </overview>
 <recommendation>
 
-<p>Always set the `secure` flag to `true` on a cookie before adding it
+<p>Always set the <code>secure<code> flag to `true` on a cookie before adding it
 to an HTTP response (if the default value is `false`).</p>
 
 </recommendation>
