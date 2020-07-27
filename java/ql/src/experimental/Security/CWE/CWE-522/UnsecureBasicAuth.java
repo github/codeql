@@ -1,15 +1,15 @@
 public class UnsecureBasicAuth {
   /**
-   *Test basic authentication with Apache HTTP request.
+   * Test basic authentication with Apache HTTP request.
    */	
   public void testApacheHttpRequest(String username, String password) {
   {
-    // BAD: Use HTTP with basic authentication
+    // BAD: basic authentication over HTTP
     String url = "http://www.example.com/rest/getuser.do?uid=abcdx";
   }
 
   {
-    // GOOD: Use HTTPS with basic authentication
+    // GOOD: basic authentication over HTTPS
     String url = "https://www.example.com/rest/getuser.do?uid=abcdx";
   }
 
@@ -29,12 +29,12 @@ public class UnsecureBasicAuth {
    */
   public void testHttpUrlConnection(String username, String password) {
   {
-    // BAD: Use HTTP with basic authentication
+    // BAD: basic authentication over HTTP
     String urlStr = "http://www.example.com/rest/getuser.do?uid=abcdx";
   }
 
   {
-    // GOOD: Use HTTPS with basic authentication
+    // GOOD: basic authentication over HTTPS
     String urlStr = "https://www.example.com/rest/getuser.do?uid=abcdx";
   }
 

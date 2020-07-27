@@ -61,11 +61,18 @@ public class BasicHttpRequest extends AbstractHttpMessage implements HttpRequest
     }
 
     public ProtocolVersion getProtocolVersion() {
-        return null;
+    return null;
     }
 
     public RequestLine getRequestLine() {
         return null;
     }
 
+    // Add method from `org.apache.http.HttpMessage`
+    public void addHeader(String name, String value) {
+    }
+    
+    // Add method from `org.apache.http.HttpMessage`
+    public void setHeader(String name, String value) {
+    }
 }

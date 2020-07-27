@@ -1,6 +1,6 @@
 /**
  * @name Unsecure basic authentication
- * @description Basic authentication only obfuscates username/password in Base64 encoding, which can be easily recognized and reversed. Transmission of sensitive information not in HTTPS is vulnerable to packet sniffing.
+ * @description Basic authentication only obfuscates username/password in Base64 encoding, which can be easily recognized and reversed. Transmission of sensitive information not over HTTPS is vulnerable to packet sniffing.
  * @kind problem
  * @id java/unsecure-basic-auth
  * @tags security
@@ -14,23 +14,27 @@ import semmle.code.java.dataflow.TaintTracking
 import DataFlow::PathGraph
 
 /**
- * The Java class `org.apache.http.message.AbstractHttpMessage`. Popular subclasses include `HttpGet`, `HttpPost`, and `HttpPut`.
+ * The Java class `org.apache.http.client.methods.HttpRequestBase`. Popular subclasses include `HttpGet`, `HttpPost`, and `HttpPut`.
+ * And the Java class `org.apache.http.message.BasicHttpRequest`.
  */
 class ApacheHttpRequest extends RefType {
-  ApacheHttpRequest() { hasQualifiedName("org.apache.http.message", "AbstractHttpMessage") }
+  ApacheHttpRequest() {
+    hasQualifiedName("org.apache.http.client.methods", "HttpRequestBase") or
+    hasQualifiedName("org.apache.http.message", "BasicHttpRequest")
+  }
 }
 
 /**
- * Class of Java URL constructor
+ * Class of Java URL constructor.
  */
 class URLConstructor extends ClassInstanceExpr {
   URLConstructor() { this.getConstructor().getDeclaringType() instanceof TypeUrl }
 
   Expr stringArg() {
-    // Query only in URL's that were constructed by calling the single parameter string constructor.
-    this.getConstructor().getNumberOfParameters() = 1 and
+    // URLs constructed with any of the four string constructors below:
+    // URL(String spec), URL(String protocol, String host, int port, String file), URL(String protocol, String host, int port, String file, URLStreamHandler handler), URL(String protocol, String host, String file)
     this.getConstructor().getParameter(0).getType() instanceof TypeString and
-    result = this.getArgument(0)
+    result = this.getArgument(0) // First argument contains the protocol part.
   }
 }
 
@@ -42,12 +46,14 @@ class TypeHttpUrlConnection extends RefType {
 }
 
 /**
- * String of HTTP URLs not in private domains
+ * String of HTTP URLs not in private domains.
  */
 class HttpString extends StringLiteral {
   HttpString() {
     // Match URLs with the HTTP protocol and without private IP addresses to reduce false positives.
     exists(string s | this.getRepresentedString() = s |
+      s = "http"
+      or
       s.matches("http://%") and
       not s.matches("%/localhost%") and
       not s.matches("%/127.0.0.1%") and
@@ -59,21 +65,36 @@ class HttpString extends StringLiteral {
 }
 
 /**
- * String concatenated with `HttpString`
+ * String concatenated with `HttpString`.
  */
 predicate builtFromHttpStringConcat(Expr expr) {
   expr instanceof HttpString
   or
-  exists(AddExpr concatExpr | concatExpr = expr |
-    builtFromHttpStringConcat(concatExpr.getLeftOperand())
-  )
-  or
-  exists(AddExpr concatExpr | concatExpr = expr |
-    exists(Expr arg | arg = concatExpr.getLeftOperand() | arg instanceof HttpString)
-  )
+  builtFromHttpStringConcat(expr.(AddExpr).getLeftOperand())
   or
   exists(Expr other | builtFromHttpStringConcat(other) |
     exists(Variable var | var.getAnAssignedValue() = other and var.getAnAccess() = expr)
+  )
+  or
+  exists(Expr other | builtFromHttpStringConcat(other) |
+    exists(ConstructorCall cc |
+      (
+        cc.getConstructedType().hasQualifiedName("org.apache.http.message", "BasicRequestLine") and
+        cc.getArgument(1) = other // BasicRequestLine(String method, String uri, ProtocolVersion version)
+        or
+        cc.getConstructedType().hasQualifiedName("java.net", "URI") and
+        cc.getArgument(0) = other // URI(String str) or URI(String scheme, ...)
+      ) and
+      (
+        cc = expr
+        or
+        exists(Variable var, VariableAssign va |
+          var.getAnAccess() = expr and
+          va.getDestVar() = var and
+          va.getSource() = cc
+        )
+      )
+    )
   )
 }
 
@@ -100,11 +121,11 @@ class AddBasicAuthHeaderMethodAccess extends MethodAccess {
       )
     ) and
     exists(VarAccess request, VariableAssign va, ConstructorCall cc, Expr arg0 |
-      this.getQualifier() = request and //Check the method invocation with the pattern post.addHeader("Authorization", "Basic " + authStringEnc)
+      this.getQualifier() = request and // Constructor call like HttpPost post = new HttpPost("http://www.example.com/rest/endpoint.do"); and BasicHttpRequest post = new BasicHttpRequest("POST", uriStr);
       va.getDestVar() = request.getVariable() and
       va.getSource() = cc and
-      cc.getArgument(0) = arg0 and
-      builtFromHttpStringConcat(arg0) // Check url string
+      cc.getAnArgument() = arg0 and
+      builtFromHttpStringConcat(arg0)
     )
   }
 }
@@ -118,7 +139,7 @@ class HttpURLOpenMethod extends Method {
 }
 
 /**
- * Tracks the flow of data from parameter of URL constructor to the url instance
+ * Tracks the flow of data from parameter of URL constructor to the url instance.
  */
 class URLConstructorTaintStep extends TaintTracking::AdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
@@ -130,7 +151,7 @@ class URLConstructorTaintStep extends TaintTracking::AdditionalTaintStep {
 }
 
 /**
- * Tracks the flow of data from `openConnection` method to the connection object
+ * Tracks the flow of data from `openConnection` method to the connection object.
  */
 class OpenHttpURLTaintStep extends TaintTracking::AdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
@@ -160,7 +181,7 @@ class HttpStringToHttpURLOpenMethodFlowConfig extends TaintTracking::Configurati
 
   override predicate isSink(DataFlow::Node sink) {
     sink.asExpr().(VarAccess).getVariable().getType() instanceof TypeUrlConnection or
-    sink.asExpr().(VarAccess).getVariable().getType() instanceof TypeHttpUrlConnection // Somehow TypeHttpUrlConnection isn't instance of TypeUrlConnection
+    sink.asExpr().(VarAccess).getVariable().getType() instanceof TypeHttpUrlConnection // TypeHttpUrlConnection isn't instance of TypeUrlConnection
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
@@ -210,4 +231,4 @@ from MethodAccess ma
 where
   ma instanceof AddBasicAuthHeaderMethodAccess or
   ma instanceof SetBasicAuthPropertyMethodAccess
-select ma, "Unsafe basic authentication"
+select ma, "Insecure basic authentication"

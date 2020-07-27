@@ -1,13 +1,16 @@
 edges
-| UnsecureBasicAuth.java:41:19:41:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | UnsecureBasicAuth.java:46:3:46:6 | conn |
-| UnsecureBasicAuth.java:41:19:41:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | UnsecureBasicAuth.java:47:3:47:6 | conn |
-| UnsecureBasicAuth.java:41:19:41:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | UnsecureBasicAuth.java:48:3:48:6 | conn |
+| UnsecureBasicAuth.java:94:19:94:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | UnsecureBasicAuth.java:99:3:99:6 | conn |
+| UnsecureBasicAuth.java:94:19:94:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | UnsecureBasicAuth.java:100:3:100:6 | conn |
+| UnsecureBasicAuth.java:94:19:94:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | UnsecureBasicAuth.java:101:3:101:6 | conn |
 nodes
-| UnsecureBasicAuth.java:41:19:41:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | semmle.label | "http://www.example.com/rest/getuser.do?uid=abcdx" : String |
-| UnsecureBasicAuth.java:46:3:46:6 | conn | semmle.label | conn |
-| UnsecureBasicAuth.java:47:3:47:6 | conn | semmle.label | conn |
-| UnsecureBasicAuth.java:48:3:48:6 | conn | semmle.label | conn |
+| UnsecureBasicAuth.java:94:19:94:68 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | semmle.label | "http://www.example.com/rest/getuser.do?uid=abcdx" : String |
+| UnsecureBasicAuth.java:99:3:99:6 | conn | semmle.label | conn |
+| UnsecureBasicAuth.java:100:3:100:6 | conn | semmle.label | conn |
+| UnsecureBasicAuth.java:101:3:101:6 | conn | semmle.label | conn |
 #select
-| UnsecureBasicAuth.java:24:3:24:59 | addHeader(...) | Unsafe basic authentication |
-| UnsecureBasicAuth.java:34:3:34:108 | setHeader(...) | Unsafe basic authentication |
-| UnsecureBasicAuth.java:48:3:48:63 | setRequestProperty(...) | Unsafe basic authentication |
+| UnsecureBasicAuth.java:28:3:28:59 | addHeader(...) | Insecure basic authentication |
+| UnsecureBasicAuth.java:38:3:38:108 | setHeader(...) | Insecure basic authentication |
+| UnsecureBasicAuth.java:54:3:54:59 | addHeader(...) | Insecure basic authentication |
+| UnsecureBasicAuth.java:70:3:70:59 | addHeader(...) | Insecure basic authentication |
+| UnsecureBasicAuth.java:87:3:87:59 | addHeader(...) | Insecure basic authentication |
+| UnsecureBasicAuth.java:101:3:101:63 | setRequestProperty(...) | Insecure basic authentication |

@@ -1,7 +1,7 @@
 /*
- * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/client/methods/HttpRequestBase.java $
- * $Revision: 674186 $
- * $Date: 2008-07-05 05:18:54 -0700 (Sat, 05 Jul 2008) $
+ * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/message/BasicRequestLine.java $
+ * $Revision: 604625 $
+ * $Date: 2007-12-16 06:11:11 -0800 (Sun, 16 Dec 2007) $
  *
  * ====================================================================
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -28,63 +28,45 @@
  * <http://www.apache.org/>.
  *
  */
-package org.apache.http.client.methods;
-
-import java.io.IOException;
-import java.net.URI;
-
-import org.apache.http.message.AbstractHttpMessage;
+package org.apache.http.message;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.RequestLine;
 
 /**
- * Basic implementation of an HTTP request that can be modified.
+ * The first line of an {@link org.apache.http.HttpRequest HttpRequest}.
+ * It contains the method, URI, and HTTP version of the request.
+ * For details, see RFC 2616.
  *
  * @author <a href="mailto:oleg at ural.ru">Oleg Kalnichevski</a>
  *
- * @version $Revision: 674186 $
+ *
+ * <!-- empty lines above to avoid 'svn diff' context problems -->
+ * @version $Revision: 604625 $
  * 
  * @since 4.0
  *
- * @deprecated Please use {@link java.net.URL#openConnection} instead. Please
- *             visit <a href=
- *             "http://android-developers.blogspot.com/2011/09/androids-http-clients.html">this
- *             webpage</a> for further details.
+ * @deprecated Please use {@link java.net.URL#openConnection} instead.
+ *     Please visit <a href="http://android-developers.blogspot.com/2011/09/androids-http-clients.html">this webpage</a>
+ *     for further details.
  */
 @Deprecated
-public abstract class HttpRequestBase extends AbstractHttpMessage {
-    public HttpRequestBase() {
+public class BasicRequestLine implements RequestLine, Cloneable {
+    public BasicRequestLine(final String method, final String uri, final ProtocolVersion version) {
     }
 
-    public abstract String getMethod();
+    public String getMethod() {
+    return null;
+    }
 
     public ProtocolVersion getProtocolVersion() {
         return null;
     }
 
-    public URI getURI() {
+    public String getUri() {
         return null;
     }
 
-    public RequestLine getRequestLine() {
+    public String toString() {
         return null;
-    }
-
-    public void setURI(final URI uri) {
-    }
-
-    public void abort() {
-    }
-
-    public boolean isAborted() {
-        return false;
-    }
-
-    // Add method from `org.apache.http.HttpMessage`
-    public void addHeader(String name, String value) {
-    }
-
-    // Add method from `org.apache.http.HttpMessage`
-    public void setHeader(String name, String value) {
-    }
+    }    
 }
