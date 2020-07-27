@@ -5,6 +5,10 @@ import (
 	"os/exec"
 )
 
+type myObject struct {
+	cmd string
+}
+
 func requestHandler(request *restful.Request, response *restful.Response) {
 	exec.Command(request.QueryParameters("xyz")[0]) // BAD
 	exec.Command(request.QueryParameter("xyz"))     // BAD
@@ -13,4 +17,7 @@ func requestHandler(request *restful.Request, response *restful.Response) {
 	exec.Command(request.HeaderParameter("xyz"))  // BAD
 	exec.Command(request.PathParameter("xyz"))    // BAD
 	exec.Command(request.PathParameters()["xyz"]) // BAD
+	obj := myObject{}
+	request.ReadEntity(&obj)
+	exec.Command(obj.cmd) // BAD
 }

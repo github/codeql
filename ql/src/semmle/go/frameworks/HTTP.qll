@@ -254,4 +254,19 @@ private module GoRestfulHttp {
   private class GoRestfulSource extends UntrustedFlowSource::Range {
     GoRestfulSource() { this = any(GoRestfulSourceMethod g).getACall() }
   }
+
+  /**
+   * A model of go-restful's `Request.ReadEntity` method as a source of user-controlled data.
+   */
+  private class GoRestfulReadEntitySource extends UntrustedFlowSource::Range {
+    GoRestfulReadEntitySource() {
+      exists(DataFlow::MethodCallNode call |
+        call
+            .getTarget()
+            .hasQualifiedName(package("github.com/emicklei/go-restful", ""), "Request", "ReadEntity")
+      |
+        this = any(FunctionOutput output | output.isParameter(0)).getExitNode(call)
+      )
+    }
+  }
 }
