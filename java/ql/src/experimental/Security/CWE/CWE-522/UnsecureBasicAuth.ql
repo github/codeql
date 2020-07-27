@@ -99,6 +99,26 @@ predicate builtFromHttpStringConcat(Expr expr) {
 }
 
 /**
+ * String pattern of basic authentication.
+ */
+class BasicAuthString extends StringLiteral {
+  BasicAuthString() { exists(string s | this.getRepresentedString() = s | s.matches("Basic %")) }
+}
+
+/**
+ * String concatenated with `BasicAuthString`.
+ */
+predicate builtFromBasicAuthStringConcat(Expr expr) {
+  expr instanceof BasicAuthString
+  or
+  builtFromBasicAuthStringConcat(expr.(AddExpr).getLeftOperand())
+  or
+  exists(Expr other | builtFromBasicAuthStringConcat(other) |
+    exists(Variable var | var.getAnAssignedValue() = other and var.getAnAccess() = expr)
+  )
+}
+
+/**
  * The methods `addHeader()` and `setHeader` declared in ApacheHttpRequest invoked for basic authentication.
  */
 class AddBasicAuthHeaderMethodAccess extends MethodAccess {
@@ -106,20 +126,7 @@ class AddBasicAuthHeaderMethodAccess extends MethodAccess {
     this.getMethod().getDeclaringType() instanceof ApacheHttpRequest and
     (this.getMethod().hasName("addHeader") or this.getMethod().hasName("setHeader")) and
     this.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "Authorization" and
-    exists(Expr arg1 |
-      arg1 = this.getArgument(1) and //Check three patterns
-      (
-        arg1 //String authStringEnc = "Basic ...."; post.addHeader("Authorization", authStringEnc)
-            .(VarAccess)
-            .getVariable()
-            .getAnAssignedValue()
-            .(StringLiteral)
-            .getRepresentedString()
-            .matches("Basic %") or
-        arg1.(CompileTimeConstantExpr).getStringValue().matches("Basic %") or //post.addHeader("Authorization", "Basic ....")
-        arg1.(AddExpr).getLeftOperand().(StringLiteral).getRepresentedString().matches("Basic %") //post.addHeader("Authorization", "Basic "+authStringEnc)
-      )
-    ) and
+    builtFromBasicAuthStringConcat(this.getArgument(1)) and
     exists(VarAccess request, VariableAssign va, ConstructorCall cc, Expr arg0 |
       this.getQualifier() = request and // Constructor call like HttpPost post = new HttpPost("http://www.example.com/rest/endpoint.do"); and BasicHttpRequest post = new BasicHttpRequest("POST", uriStr);
       va.getDestVar() = request.getVariable() and
@@ -204,20 +211,7 @@ class SetBasicAuthPropertyMethodAccess extends MethodAccess {
     this.getMethod().getDeclaringType() instanceof TypeUrlConnection and
     this.getMethod().hasName("setRequestProperty") and
     this.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "Authorization" and
-    exists(Expr arg1 |
-      arg1 = this.getArgument(1) and //Check three patterns
-      (
-        arg1 //String authStringEnc = "Basic ...."; conn.setRequestProperty("Authorization", authStringEnc)
-            .(VarAccess)
-            .getVariable()
-            .getAnAssignedValue()
-            .(StringLiteral)
-            .getRepresentedString()
-            .matches("Basic %") or
-        arg1.(CompileTimeConstantExpr).getStringValue().matches("Basic %") or //conn.setRequestProperty("Authorization", "Basic ....")
-        arg1.(AddExpr).getLeftOperand().(StringLiteral).getRepresentedString().matches("Basic %") //conn.setRequestProperty("Authorization", "Basic "+authStringEnc)
-      )
-    ) and
+    builtFromBasicAuthStringConcat(this.getArgument(1)) and
     exists(VarAccess conn, DataFlow::PathNode source, DataFlow::PathNode sink, HttpString s |
       this.getQualifier() = conn and //HttpURLConnection conn = (HttpURLConnection) url.openConnection();
       source.getNode().asExpr() = s and
