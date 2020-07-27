@@ -6,7 +6,7 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/inefficient-containskey
- * @tag maintainability efficiency
+ * @tags maintainability efficiency
  */
 
 import csharp
