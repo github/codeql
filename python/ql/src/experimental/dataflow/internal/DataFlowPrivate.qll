@@ -97,8 +97,64 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
 //--------
 // Global flow
 //--------
+/**
+ * IPA type for DataFlowCallable.
+ * A callable is either a callable value or a class.
+ */
+newtype TDataFlowCallable =
+  TCallableValue(CallableValue callable) or
+  TClassValue(ClassValue c)
+
 /** Represents a callable */
-class DataFlowCallable = CallableValue;
+abstract class DataFlowCallable extends TDataFlowCallable {
+  /** Gets a textual representation of this element. */
+  abstract string toString();
+
+  /** Gets a call to this callable. */
+  abstract CallNode getACall();
+
+  /** Gets the scope of this callable */
+  abstract Scope getScope();
+
+  /** Gets the specified parameter of this callable */
+  abstract NameNode getParameter(int n);
+
+  /** Gets the name of this callable. */
+  abstract string getName();
+}
+
+class DataFlowCallableValue extends DataFlowCallable, TCallableValue {
+  CallableValue callable;
+
+  DataFlowCallableValue() { this = TCallableValue(callable) }
+
+  override string toString() { result = callable.toString() }
+
+  override CallNode getACall() { result = callable.getACall() }
+
+  override Scope getScope() { result = callable.getScope() }
+
+  override NameNode getParameter(int n) { result = callable.getParameter(n) }
+
+  override string getName() { result = callable.getName() }
+}
+
+class DataFlowClassValue extends DataFlowCallable, TClassValue {
+  ClassValue c;
+
+  DataFlowClassValue() { this = TClassValue(c) }
+
+  override string toString() { result = c.toString() }
+
+  override CallNode getACall() { result = c.getACall() }
+
+  override Scope getScope() { result = c.getScope() }
+
+  override NameNode getParameter(int n) { result.getNode() = c.getScope().getInitMethod().getArg(n+1).asName() }
+
+  override string getName() { result = c.getName() }
+}
+
 
 /** Represents a call to a callable */
 class DataFlowCall extends CallNode {
