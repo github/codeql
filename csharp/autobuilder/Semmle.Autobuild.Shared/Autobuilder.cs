@@ -20,6 +20,12 @@ namespace Semmle.Autobuild.Shared
     }
 
     /// <summary>
+    /// A delegate used to wrap a build script in an environment where an appropriate
+    /// version of .NET Core is automatically installed.
+    /// </summary>
+    public delegate BuildScript WithDotNet(Autobuilder builder, Func<IDictionary<string, string>?, BuildScript> f);
+
+    /// <summary>
     /// Exception indicating that environment variables are missing or invalid.
     /// </summary>
     public class InvalidEnvironmentException : Exception
