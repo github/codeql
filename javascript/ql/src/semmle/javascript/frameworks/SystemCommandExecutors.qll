@@ -32,6 +32,12 @@ private class SystemCommandExecutors extends SystemCommandExecution, DataFlow::I
           (method = "command" or method = "commandSync")
         ) and
         cmdArg = 0
+        or
+        mod = "execa" and
+        method = "node" and
+        cmdArg = 0 and
+        optionsArg = 1 and
+        shell = false
       |
         callee = DataFlow::moduleMember(mod, method) and
         sync = getSync(method)

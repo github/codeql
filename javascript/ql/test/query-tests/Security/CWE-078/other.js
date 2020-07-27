@@ -24,4 +24,6 @@ var server = http.createServer(function(req, res) {
 
     const SSH2Stream = require("ssh2-streams").SSH2Stream;
     new SSH2Stream().exec(false, cmd); // NOT OK
+
+    require("execa").node(cmd); // NOT OK
 });
