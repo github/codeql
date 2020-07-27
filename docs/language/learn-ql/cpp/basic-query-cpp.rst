@@ -36,8 +36,8 @@ Running the query
       import cpp
 
       from IfStmt ifstmt, Block block
-      where ifstmt.getThen() = block
-        and block.getNumStmt() = 0
+      where ifstmt.getThen() = block and
+        block.getNumStmt() = 0
       select ifstmt, "This 'if' statement is redundant."
 
    LGTM checks whether your query compiles and, if all is well, the **Run** button changes to green to indicate that you can go ahead and run the query.
@@ -57,13 +57,13 @@ Running the query
 
    The query will take a few moments to return results. When the query completes, the results are displayed below the project name. The query results are listed in two columns, corresponding to the two expressions in the ``select`` clause of the query. The first column corresponds to the expression ``ifstmt`` and is linked to the location in the source code of the project where ``ifstmt`` occurs. The second column is the alert message.
 
-   ➤ `Example query results <https://lgtm.com/query/1505896936425/>`__
+   ➤ `Example query results <https://lgtm.com/query/4242591143131494898/>`__
 
    .. pull-quote::
 
       Note
 
-      An arrow (˅) at the bottom of the table indicates that more results are available. Click the arrow to display more results.
+      An ellipsis (…) at the bottom of the table indicates that the entire list is not displayed–click it to show more results.
 
 #. If any matching code is found, click a link in the ``ifstmt`` column to view the ``if`` statement in the code viewer.
 
@@ -136,7 +136,7 @@ To exclude ``if`` statements that have an ``else`` branch:
 
    There are now fewer results because ``if`` statements with an ``else`` branch are no longer reported.
 
-➤ `See this in the query console <https://lgtm.com/query/1505895837823/>`__
+➤ `See this in the query console <https://lgtm.com/query/1899933116489579248/>`__
 
 Further reading
 ---------------
