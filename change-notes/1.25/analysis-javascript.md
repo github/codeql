@@ -9,6 +9,7 @@
   - [execa](https://www.npmjs.com/package/execa)
   - [fancy-log](https://www.npmjs.com/package/fancy-log)
   - [fastify](https://www.npmjs.com/package/fastify)
+  - [foreground-child](https://www.npmjs.com/package/foreground-child)
   - [fstream](https://www.npmjs.com/package/fstream)
   - [jGrowl](https://github.com/stanlemon/jGrowl)
   - [jQuery](https://jquery.com/)

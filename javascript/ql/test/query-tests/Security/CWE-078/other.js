@@ -26,4 +26,6 @@ var server = http.createServer(function(req, res) {
     new SSH2Stream().exec(false, cmd); // NOT OK
 
     require("execa").node(cmd); // NOT OK
+
+    require("foreground-child")(cmd); // NOT OK
 });

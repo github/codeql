@@ -65,6 +65,12 @@ private class SystemCommandExecutors extends SystemCommandExecution, DataFlow::I
     |
       this = callee.getACall()
     )
+    or
+    this = DataFlow::moduleImport("foreground-child").getACall() and
+    cmdArg = 0 and
+    optionsArg = 1 and
+    shell = false and
+    sync = true
   }
 
   override DataFlow::Node getACommandArgument() { result = getArgument(cmdArg) }

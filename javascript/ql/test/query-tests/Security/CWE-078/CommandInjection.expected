@@ -111,6 +111,8 @@ nodes
 | other.js:26:34:26:36 | cmd |
 | other.js:28:27:28:29 | cmd |
 | other.js:28:27:28:29 | cmd |
+| other.js:30:33:30:35 | cmd |
+| other.js:30:33:30:35 | cmd |
 | third-party-command-injection.js:5:20:5:26 | command |
 | third-party-command-injection.js:5:20:5:26 | command |
 | third-party-command-injection.js:6:21:6:27 | command |
@@ -217,6 +219,8 @@ edges
 | other.js:5:9:5:49 | cmd | other.js:26:34:26:36 | cmd |
 | other.js:5:9:5:49 | cmd | other.js:28:27:28:29 | cmd |
 | other.js:5:9:5:49 | cmd | other.js:28:27:28:29 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:30:33:30:35 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:30:33:30:35 | cmd |
 | other.js:5:15:5:38 | url.par ... , true) | other.js:5:15:5:44 | url.par ... ).query |
 | other.js:5:15:5:44 | url.par ... ).query | other.js:5:15:5:49 | url.par ... ry.path |
 | other.js:5:15:5:49 | url.par ... ry.path | other.js:5:9:5:49 | cmd |
@@ -266,4 +270,5 @@ edges
 | other.js:23:28:23:30 | cmd | other.js:5:25:5:31 | req.url | other.js:23:28:23:30 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
 | other.js:26:34:26:36 | cmd | other.js:5:25:5:31 | req.url | other.js:26:34:26:36 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
 | other.js:28:27:28:29 | cmd | other.js:5:25:5:31 | req.url | other.js:28:27:28:29 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:30:33:30:35 | cmd | other.js:5:25:5:31 | req.url | other.js:30:33:30:35 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
 | third-party-command-injection.js:6:21:6:27 | command | third-party-command-injection.js:5:20:5:26 | command | third-party-command-injection.js:6:21:6:27 | command | This command depends on $@. | third-party-command-injection.js:5:20:5:26 | command | a server-provided value |
