@@ -135,3 +135,15 @@ private class RemoteCommandExecutor extends SystemCommandExecution, DataFlow::In
 
   override DataFlow::Node getOptionsArg() { none() }
 }
+
+private class Opener extends SystemCommandExecution, DataFlow::InvokeNode {
+  Opener() { this = DataFlow::moduleImport("opener").getACall() }
+
+  override DataFlow::Node getACommandArgument() { result = getOptionArgument(1, "command") }
+
+  override predicate isShellInterpreted(DataFlow::Node arg) { none() }
+
+  override predicate isSync() { none() }
+
+  override DataFlow::Node getOptionsArg() { none() }
+}
