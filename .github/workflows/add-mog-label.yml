@@ -1,0 +1,22 @@
+name: "Add Merge on Green Label"
+
+on:
+  issue_comment:
+    types: [created, edited]
+
+jobs:
+  addMogLabel:
+    runs-on: ubuntu-latest
+    if:
+      ${{ github.event.issue.pull_request && contains(github.event.comment.body, 'mog') }}
+    steps:
+      - name: Add label using Request Action
+        uses: octokit/request-action@v2.x
+        with:
+          route: POST /repos/:repository/issues/:issue_number/labels
+          repository: ${{ github.repository }}
+          issue_number: ${{ github.event.issue.number }}
+          labels: |
+            - "merge-on-green"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
