@@ -331,16 +331,16 @@ func cipherSuites() {
 	{
 		config := &tls.Config{}
 		config.CipherSuites = make([]uint16, 0)
-		insecureSuites := tls.InsecureCipherSuites()
-		for _, v := range insecureSuites {
+		suites := tls.InsecureCipherSuites()
+		for _, v := range suites {
 			config.CipherSuites = append(config.CipherSuites, v.ID) // BAD
 		}
 	}
 	{
 		config := &tls.Config{}
 		cipherSuites := make([]uint16, 0)
-		insecureSuites := tls.InsecureCipherSuites()
-		for _, v := range insecureSuites {
+		suites := tls.InsecureCipherSuites()
+		for _, v := range suites {
 			cipherSuites = append(cipherSuites, v.ID)
 		}
 		config.CipherSuites = cipherSuites // BAD
@@ -348,9 +348,9 @@ func cipherSuites() {
 	{
 		config := &tls.Config{}
 		cipherSuites := make([]uint16, 0)
-		insecureSuites := tls.InsecureCipherSuites()
-		for i := range insecureSuites {
-			cipherSuites = append(cipherSuites, insecureSuites[i].ID)
+		suites := tls.InsecureCipherSuites()
+		for i := range suites {
+			cipherSuites = append(cipherSuites, suites[i].ID)
 		}
 		config.CipherSuites = cipherSuites // BAD
 	}
