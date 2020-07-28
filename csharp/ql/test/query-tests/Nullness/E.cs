@@ -385,6 +385,18 @@ public class E
             return true;
         return e1.Long == e2.Long; // GOOD (false positive)
     }
+
+    int Ex38(int? i)
+    {
+        i ??= 0;
+        return i.Value; // GOOD (false positive)
+    }
+
+    System.Drawing.Color Ex39(System.Drawing.Color? color)
+    {
+        color ??= System.Drawing.Color.White;
+        return color.Value; // GOOD (false positive)
+    }
 }
 
 public static class Extensions
@@ -393,4 +405,4 @@ public static class Extensions
     public static int M2(this string s) => s.Length;
 }
 
-// semmle-extractor-options: /r:System.Linq.dll
+// semmle-extractor-options: /r:System.Linq.dll /r:System.Drawing.Primitives.dll
