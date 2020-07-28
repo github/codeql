@@ -1115,12 +1115,14 @@
 | E.cs:176:13:176:14 | access to local variable b2 | true | E.cs:175:19:175:42 | ... ? ... : ... | true |
 | E.cs:176:13:176:22 | ... == ... | false | E.cs:176:13:176:14 | (...) ... | non-null |
 | E.cs:176:13:176:22 | ... == ... | true | E.cs:176:13:176:14 | (...) ... | null |
+| E.cs:176:13:176:22 | ... == ... | true | E.cs:176:19:176:22 | null | non-null |
 | E.cs:180:13:180:23 | ... == ... | false | E.cs:180:13:180:15 | access to parameter obj | non-null |
 | E.cs:180:13:180:23 | ... == ... | true | E.cs:180:13:180:15 | access to parameter obj | null |
 | E.cs:184:13:184:14 | (...) ... | non-null | E.cs:184:13:184:14 | access to parameter b1 | non-null |
 | E.cs:184:13:184:14 | (...) ... | null | E.cs:184:13:184:14 | access to parameter b1 | null |
 | E.cs:184:13:184:22 | ... == ... | false | E.cs:184:13:184:14 | (...) ... | non-null |
 | E.cs:184:13:184:22 | ... == ... | true | E.cs:184:13:184:14 | (...) ... | null |
+| E.cs:184:13:184:22 | ... == ... | true | E.cs:184:19:184:22 | null | non-null |
 | E.cs:193:19:193:29 | call to method ToString | non-null | E.cs:193:17:193:17 | access to parameter o | non-null |
 | E.cs:198:17:198:29 | ... ? ... : ... | non-null | E.cs:198:17:198:17 | access to parameter b | false |
 | E.cs:198:17:198:29 | ... ? ... : ... | non-null | E.cs:198:28:198:29 | "" | non-null |

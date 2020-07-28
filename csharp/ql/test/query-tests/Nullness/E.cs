@@ -389,13 +389,13 @@ public class E
     int Ex38(int? i)
     {
         i ??= 0;
-        return i.Value; // GOOD (false positive)
+        return i.Value; // GOOD
     }
 
     System.Drawing.Color Ex39(System.Drawing.Color? color)
     {
         color ??= System.Drawing.Color.White;
-        return color.Value; // GOOD (false positive)
+        return color.Value; // GOOD
     }
 }
 

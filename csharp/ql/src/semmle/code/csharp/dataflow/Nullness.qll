@@ -231,6 +231,7 @@ private predicate defMaybeNull(Ssa::Definition def, string msg, Element reason) 
   exists(Dereference d | dereferenceAt(_, _, def, d) |
     d.hasNullableType() and
     not def instanceof Ssa::PseudoDefinition and
+    not nonNullDef(def) and
     reason = def.getSourceVariable().getAssignable() and
     msg = "because it has a nullable type"
   )

@@ -219,10 +219,12 @@
 | E.cs:175:19:175:29 | ... == ... | E.cs:175:19:175:21 | access to parameter obj | true | true |
 | E.cs:176:13:176:22 | ... == ... | E.cs:176:13:176:14 | (...) ... | false | false |
 | E.cs:176:13:176:22 | ... == ... | E.cs:176:13:176:14 | (...) ... | true | true |
+| E.cs:176:13:176:22 | ... == ... | E.cs:176:19:176:22 | null | true | false |
 | E.cs:180:13:180:23 | ... == ... | E.cs:180:13:180:15 | access to parameter obj | false | false |
 | E.cs:180:13:180:23 | ... == ... | E.cs:180:13:180:15 | access to parameter obj | true | true |
 | E.cs:184:13:184:22 | ... == ... | E.cs:184:13:184:14 | (...) ... | false | false |
 | E.cs:184:13:184:22 | ... == ... | E.cs:184:13:184:14 | (...) ... | true | true |
+| E.cs:184:13:184:22 | ... == ... | E.cs:184:19:184:22 | null | true | false |
 | E.cs:193:17:193:17 | access to parameter o | E.cs:193:17:193:17 | access to parameter o | non-null | false |
 | E.cs:193:17:193:17 | access to parameter o | E.cs:193:17:193:17 | access to parameter o | null | true |
 | E.cs:208:13:208:23 | ... is ... | E.cs:208:13:208:13 | access to parameter s | false | true |
