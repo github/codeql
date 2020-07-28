@@ -1,4 +1,4 @@
-public class UnsecureBasicAuth {
+public class InsecureBasicAuth {
   /**
    * Test basic authentication with Apache HTTP request.
    */	

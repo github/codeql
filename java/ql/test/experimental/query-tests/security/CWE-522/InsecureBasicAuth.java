@@ -11,7 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.URLConnection;
 import java.util.Base64;
 
-public class UnsecureBasicAuth {
+public class InsecureBasicAuth {
 	/**
 	 * Test basic authentication with Apache HTTP POST request using string constructor.
 	 */

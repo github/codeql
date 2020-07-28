@@ -1,8 +1,8 @@
 /**
- * @name Unsecure basic authentication
+ * @name Insecure basic authentication
  * @description Basic authentication only obfuscates username/password in Base64 encoding, which can be easily recognized and reversed. Transmission of sensitive information not over HTTPS is vulnerable to packet sniffing.
  * @kind problem
- * @id java/unsecure-basic-auth
+ * @id java/insecure-basic-auth
  * @tags security
  *       external/cwe-522
  *       external/cwe-319
@@ -181,7 +181,7 @@ class OpenHttpURLTaintStep extends TaintTracking::AdditionalTaintStep {
 
 class HttpStringToHttpURLOpenMethodFlowConfig extends TaintTracking::Configuration {
   HttpStringToHttpURLOpenMethodFlowConfig() {
-    this = "UnsecureBasicAuth::HttpStringToHttpURLOpenMethodFlowConfig"
+    this = "InsecureBasicAuth::HttpStringToHttpURLOpenMethodFlowConfig"
   }
 
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof HttpString }

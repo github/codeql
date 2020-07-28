@@ -11,7 +11,7 @@
 
   <example>
     <p>The following example shows two ways of using basic authentication. In the 'BAD' case, the credentials are transmitted over HTTP. In the 'GOOD' case, the credentials are transmitted over HTTPS.</p>
-    <sample src="UnsecureBasicAuth.java" />
+    <sample src="InsecureBasicAuth.java" />
   </example>
 
   <references>
