@@ -185,7 +185,6 @@ class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
   }
 
   override predicate isSource(DataFlow::Node source) {
-    // TODO: source can also be result of tls.InsecureCipherSuites()[0].ID
     isSourceInsecureCipherSuites(source)
     or
     isSourceValueEntity(source, _)
