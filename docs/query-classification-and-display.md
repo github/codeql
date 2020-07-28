@@ -52,10 +52,10 @@ These categories may change in the future.
 
 For precision, we have the following categories:
 
-- Very-high
-- High
-- Medium
-- Low
+- very-high
+- high
+- medium
+- low
 
 As [usual](https://en.wikipedia.org/wiki/Precision_and_recall),
 precision is defined as the percentage of query results that are true
@@ -79,7 +79,7 @@ in.
 
 The following queries are run:
 
-Precision:     | Very high | High    | Medium  | Low
+Precision:     | very-high | high    | medium  | low
 ---------------|-----------|---------|---------|----
 Error          | **Yes**   | **Yes** | **Yes** | No
 Warning        | **Yes**   | **Yes** | **Yes** | No
@@ -87,7 +87,7 @@ Recommendation | **Yes**   | **Yes** | No      | No
 
 The following queries have their results displayed by default:
 
-Precision:     | Very high | High    | Medium | Low
+Precision:     | very-high | high    | medium | low
 ---------------|-----------|---------|--------|----
 Error          | **Yes**   | **Yes** | No     | No
 Warning        | **Yes**   | **Yes** | No     | No
