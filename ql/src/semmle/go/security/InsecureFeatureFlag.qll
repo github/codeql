@@ -116,7 +116,7 @@ module InsecureFeatureFlag {
   }
 
   /**
-   * Holds of string literals or named values matching `flagKind` and their fields.
+   * Holds for string literals or named values matching `flagKind` and their fields.
    */
   predicate exprIsFlag(Expr node, FlagKind flagKind) {
     node.getStringValue() = flagKind.getAFlagName() or
