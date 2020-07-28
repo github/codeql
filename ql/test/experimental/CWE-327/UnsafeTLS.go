@@ -114,13 +114,13 @@ func minMaxTlsVersion() {
 	}
 	if insecureFlag {
 		config := &tls.Config{
-			MinVersion: 0, // EXCUSED (guarded by a flag suggesting deliberate insecurity)
+			MinVersion: 0, // OK (guarded by a flag suggesting deliberate insecurity)
 		}
 		_ = config
 	}
 	if oldVersionFlag {
 		config := &tls.Config{
-			MinVersion: 0, // EXCUSED (guarded by a flag suggesting deliberate legacy support)
+			MinVersion: 0, // OK (guarded by a flag suggesting deliberate legacy support)
 		}
 		_ = config
 	}
@@ -130,7 +130,7 @@ func minMaxTlsVersion() {
 		if unknown {
 			version = tls.VersionTLS13
 		} else {
-			version = tls.VersionSSL30 // EXCUSED (flows together with a modern version, suggesting configurable security)
+			version = tls.VersionSSL30 // OK (flows together with a modern version, suggesting configurable security)
 		}
 		config := &tls.Config{
 			MinVersion: version,
@@ -143,7 +143,7 @@ func minMaxTlsVersion() {
 		if unknown {
 			config.MinVersion = tls.VersionTLS13
 		} else {
-			config.MinVersion = tls.VersionSSL30 // EXCUSED (flows together with a modern version, suggesting configurable security)
+			config.MinVersion = tls.VersionSSL30 // OK (flows together with a modern version, suggesting configurable security)
 		}
 		_ = config
 	}
@@ -153,34 +153,34 @@ func minMaxTlsVersion() {
 		if unknown {
 			config.MinVersion = tls.VersionTLS13
 		} else {
-			config.MinVersion = tls.VersionSSL30 // EXCUSED (flows together with a modern version, suggesting configurable security)
+			config.MinVersion = tls.VersionSSL30 // OK (flows together with a modern version, suggesting configurable security)
 		}
 		_ = config
 	}
 	///
 	{
 		insecureConfig := &tls.Config{
-			MinVersion: 0, // EXCUSED (var name suggests deliberate insecurity)
+			MinVersion: 0, // OK (var name suggests deliberate insecurity)
 		}
 		_ = insecureConfig
 	}
 	///
 	{
 		legacyConfig := &tls.Config{
-			MinVersion: 0, // EXCUSED (var name suggests deliberate legacy support)
+			MinVersion: 0, // OK (var name suggests deliberate legacy support)
 		}
 		_ = legacyConfig
 	}
 	///
 	{
 		var insecureConfig tls.Config
-		insecureConfig.MinVersion = 0 // EXCUSED (var name suggests deliberate insecurity)
+		insecureConfig.MinVersion = 0 // OK (var name suggests deliberate insecurity)
 		_ = insecureConfig
 	}
 	///
 	{
 		var legacyConfig tls.Config
-		legacyConfig.MinVersion = 0 // EXCUSED (var name suggests deliberate legacy support)
+		legacyConfig.MinVersion = 0 // OK (var name suggests deliberate legacy support)
 		_ = legacyConfig
 	}
 	///
@@ -188,12 +188,12 @@ func minMaxTlsVersion() {
 		switch unknown {
 		case oldVersionFlag:
 			config := &tls.Config{
-				MinVersion: 0, // EXCUSED (switch-case name suggests legacy support)
+				MinVersion: 0, // OK (switch-case name suggests legacy support)
 			}
 			_ = config
 		case insecureFlag:
 			config := &tls.Config{
-				MinVersion: 0, // EXCUSED (switch-case name suggests insecurity)
+				MinVersion: 0, // OK (switch-case name suggests insecurity)
 			}
 			_ = config
 		default:
@@ -206,12 +206,12 @@ func minMaxTlsVersion() {
 		switch os.Args[0] {
 		case "oldVersionFlag":
 			config := &tls.Config{
-				MinVersion: 0, // EXCUSED (switch-case name suggests legacy support)
+				MinVersion: 0, // OK (switch-case name suggests legacy support)
 			}
 			_ = config
 		case "insecureFlag":
 			config := &tls.Config{
-				MinVersion: 0, // EXCUSED (switch-case name suggests insecurity)
+				MinVersion: 0, // OK (switch-case name suggests insecurity)
 			}
 			_ = config
 		default:
@@ -224,7 +224,7 @@ func minMaxTlsVersion() {
 	///
 	if insecureFunc() {
 		config := &tls.Config{
-			MinVersion: 0, // EXCUSED (guarded by function call suggesting deliberate insecurity)
+			MinVersion: 0, // OK (guarded by function call suggesting deliberate insecurity)
 		}
 		_ = config
 	}
@@ -233,21 +233,21 @@ func minMaxTlsVersion() {
 	isInsecurePtr := &isInsecure
 	if *isInsecurePtr {
 		config := &tls.Config{
-			MinVersion: 0, // EXCUSED (guarded by pointer deref suggesting deliberate insecurity)
+			MinVersion: 0, // OK (guarded by pointer deref suggesting deliberate insecurity)
 		}
 		_ = config
 	}
 	///
 	if os.Getenv("DISABLE_TLS_VERIFICATION") == "true" {
 		config := &tls.Config{
-			MinVersion: 0, // EXCUSED (guarded by environment variable)
+			MinVersion: 0, // OK (guarded by environment variable)
 		}
 		_ = config
 	}
 	///
 	if isInsecure == true {
 		config := &tls.Config{
-			MinVersion: 0, // EXCUSED (guarded by comparison)
+			MinVersion: 0, // OK (guarded by comparison)
 		}
 		_ = config
 	}
@@ -368,7 +368,7 @@ func cipherSuites() {
 	if insecureFlag {
 		config := &tls.Config{
 			CipherSuites: []uint16{
-				tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // EXCUSED (guarded by a flag suggesting deliberate insecurity)
+				tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // OK (guarded by a flag suggesting deliberate insecurity)
 			},
 		}
 		_ = config
@@ -376,7 +376,7 @@ func cipherSuites() {
 	if oldVersionFlag {
 		config := &tls.Config{
 			CipherSuites: []uint16{
-				tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // EXCUSED (guarded by a flag suggesting deliberate legacy support)
+				tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // OK (guarded by a flag suggesting deliberate legacy support)
 			},
 		}
 		_ = config
@@ -384,7 +384,7 @@ func cipherSuites() {
 	{
 		insecureConfig := &tls.Config{
 			CipherSuites: []uint16{
-				tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // EXCUSED (var name suggests deliberate insecurity)
+				tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // OK (var name suggests deliberate insecurity)
 			},
 		}
 		_ = insecureConfig
@@ -392,7 +392,7 @@ func cipherSuites() {
 	{
 		legacyConfig := &tls.Config{
 			CipherSuites: []uint16{
-				tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // EXCUSED (var name suggests deliberate legacy support)
+				tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // OK (var name suggests deliberate legacy support)
 			},
 		}
 		_ = legacyConfig
@@ -400,14 +400,14 @@ func cipherSuites() {
 	{
 		var insecureConfig tls.Config
 		insecureConfig.CipherSuites = []uint16{
-			tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // EXCUSED (var name suggests deliberate insecurity)
+			tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // OK (var name suggests deliberate insecurity)
 		}
 		_ = insecureConfig
 	}
 	{
 		var legacyConfig tls.Config
 		legacyConfig.CipherSuites = []uint16{
-			tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // EXCUSED (var name suggests deliberate legacy support)
+			tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // OK (var name suggests deliberate legacy support)
 		}
 		_ = legacyConfig
 	}
@@ -416,14 +416,14 @@ func cipherSuites() {
 		case oldVersionFlag:
 			config := &tls.Config{
 				CipherSuites: []uint16{
-					tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // EXCUSED (switch-case name suggests legacy support)
+					tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // OK (switch-case name suggests legacy support)
 				},
 			}
 			_ = config
 		case insecureFlag:
 			config := &tls.Config{
 				CipherSuites: []uint16{
-					tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // EXCUSED (switch-case name suggests insecurity)
+					tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // OK (switch-case name suggests insecurity)
 				},
 			}
 			_ = config
@@ -440,14 +440,14 @@ func cipherSuites() {
 		case "oldVersionFlag":
 			config := &tls.Config{
 				CipherSuites: []uint16{
-					tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // EXCUSED (switch-case name suggests legacy support)
+					tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // OK (switch-case name suggests legacy support)
 				},
 			}
 			_ = config
 		case "insecureFlag":
 			config := &tls.Config{
 				CipherSuites: []uint16{
-					tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // EXCUSED (switch-case name suggests insecurity)
+					tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // OK (switch-case name suggests insecurity)
 				},
 			}
 			_ = config
