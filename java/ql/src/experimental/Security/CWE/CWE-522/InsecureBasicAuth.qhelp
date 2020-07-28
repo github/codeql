@@ -2,7 +2,7 @@
 <qhelp>
 
   <overview>
-    <p>Basic authentication only obfuscates username/password in Base64 encoding, which can be easily recognized and reversed, thus it cannot be transmitted over the cleartext HTTP channel. Transmission of sensitive information not in HTTPS is vulnerable to packet sniffing.</p>
+    <p>Basic authentication only obfuscates username/password in Base64 encoding, which can be easily recognized and reversed, thus it must not be transmitted over the cleartext HTTP channel. Transmission of sensitive information not in HTTPS is vulnerable to packet sniffing.</p>
   </overview>
 
   <recommendation>

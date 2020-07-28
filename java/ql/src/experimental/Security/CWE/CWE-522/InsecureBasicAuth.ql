@@ -1,7 +1,7 @@
 /**
  * @name Insecure basic authentication
  * @description Basic authentication only obfuscates username/password in Base64 encoding, which can be easily recognized and reversed. Transmission of sensitive information not over HTTPS is vulnerable to packet sniffing.
- * @kind problem
+ * @kind path-problem
  * @id java/insecure-basic-auth
  * @tags security
  *       external/cwe-522
@@ -19,8 +19,10 @@ import DataFlow::PathGraph
  */
 class ApacheHttpRequest extends RefType {
   ApacheHttpRequest() {
-    hasQualifiedName("org.apache.http.client.methods", "HttpRequestBase") or
-    hasQualifiedName("org.apache.http.message", "BasicHttpRequest")
+    this
+        .getASourceSupertype*()
+        .hasQualifiedName("org.apache.http.client.methods", "HttpRequestBase") or
+    this.getASourceSupertype*().hasQualifiedName("org.apache.http.message", "BasicHttpRequest")
   }
 }
 
@@ -42,7 +44,9 @@ class URLConstructor extends ClassInstanceExpr {
  * The type `java.net.URLConnection`.
  */
 class TypeHttpUrlConnection extends RefType {
-  TypeHttpUrlConnection() { hasQualifiedName("java.net", "HttpURLConnection") }
+  TypeHttpUrlConnection() {
+    this.getASourceSupertype*().hasQualifiedName("java.net", "HttpURLConnection")
+  }
 }
 
 /**
@@ -118,25 +122,6 @@ predicate builtFromBasicAuthStringConcat(Expr expr) {
   )
 }
 
-/**
- * The methods `addHeader()` and `setHeader` declared in ApacheHttpRequest invoked for basic authentication.
- */
-class AddBasicAuthHeaderMethodAccess extends MethodAccess {
-  AddBasicAuthHeaderMethodAccess() {
-    this.getMethod().getDeclaringType() instanceof ApacheHttpRequest and
-    (this.getMethod().hasName("addHeader") or this.getMethod().hasName("setHeader")) and
-    this.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "Authorization" and
-    builtFromBasicAuthStringConcat(this.getArgument(1)) and
-    exists(VarAccess request, VariableAssign va, ConstructorCall cc, Expr arg0 |
-      this.getQualifier() = request and // Constructor call like HttpPost post = new HttpPost("http://www.example.com/rest/endpoint.do"); and BasicHttpRequest post = new BasicHttpRequest("POST", uriStr);
-      va.getDestVar() = request.getVariable() and
-      va.getSource() = cc and
-      cc.getAnArgument() = arg0 and
-      builtFromHttpStringConcat(arg0)
-    )
-  }
-}
-
 /** The `openConnection` method of Java URL. Not to include `openStream` since it won't be used in this query. */
 class HttpURLOpenMethod extends Method {
   HttpURLOpenMethod() {
@@ -145,84 +130,47 @@ class HttpURLOpenMethod extends Method {
   }
 }
 
-/**
- * Tracks the flow of data from parameter of URL constructor to the url instance.
- */
-class URLConstructorTaintStep extends TaintTracking::AdditionalTaintStep {
-  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(URLConstructor u |
-      node1.asExpr() = u.stringArg() and
-      node2.asExpr() = u
-    )
-  }
-}
+class BasicAuthFlowConfig extends TaintTracking::Configuration {
+  BasicAuthFlowConfig() { this = "InsecureBasicAuth::BasicAuthFlowConfig" }
 
-/**
- * Tracks the flow of data from `openConnection` method to the connection object.
- */
-class OpenHttpURLTaintStep extends TaintTracking::AdditionalTaintStep {
-  override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(MethodAccess ma, VariableAssign va |
-      ma.getMethod() instanceof HttpURLOpenMethod and
-      ma.getQualifier() = node1.asExpr() and
+  override predicate isSource(DataFlow::Node src) {
+    exists(ConstructorCall cc |
       (
-        ma = va.getSource()
-        or
-        exists(CastExpr ce |
-          ce.getExpr() = ma and
-          ce = va.getSource() and
-          ce.getControlFlowNode().getASuccessor() = va //With a type cast like HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        cc.getConstructedType() instanceof ApacheHttpRequest and
+        cc = src.asExpr() and
+        builtFromHttpStringConcat(cc.getAnArgument())
+      )
+    )
+    or
+    exists(MethodAccess ma |
+      ma.getMethod() instanceof HttpURLOpenMethod and
+      ma = src.asExpr() and
+      (
+        builtFromHttpStringConcat(ma.getQualifier().(URLConstructor).stringArg()) or
+        exists(URLConstructor uc, VarAccess va |
+          uc = va.getVariable().getAnAssignedValue() and
+          ma.getQualifier() = va and
+          builtFromHttpStringConcat(uc.stringArg())
         )
-      ) and
-      node2.asExpr() = va.getDestVar().getAnAccess()
+      )
     )
   }
-}
-
-class HttpStringToHttpURLOpenMethodFlowConfig extends TaintTracking::Configuration {
-  HttpStringToHttpURLOpenMethodFlowConfig() {
-    this = "InsecureBasicAuth::HttpStringToHttpURLOpenMethodFlowConfig"
-  }
-
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof HttpString }
 
   override predicate isSink(DataFlow::Node sink) {
-    sink.asExpr().(VarAccess).getVariable().getType() instanceof TypeUrlConnection or
-    sink.asExpr().(VarAccess).getVariable().getType() instanceof TypeHttpUrlConnection // TypeHttpUrlConnection isn't instance of TypeUrlConnection
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(DataFlow::Node nodem |
-      any(URLConstructorTaintStep uts).step(node1, nodem) and
-      any(OpenHttpURLTaintStep ots).step(nodem, node2)
-    )
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
-  }
-}
-
-/**
- * The method `setRequestProperty()` declared in URL Connection invoked for basic authentication.
- */
-class SetBasicAuthPropertyMethodAccess extends MethodAccess {
-  SetBasicAuthPropertyMethodAccess() {
-    this.getMethod().getDeclaringType() instanceof TypeUrlConnection and
-    this.getMethod().hasName("setRequestProperty") and
-    this.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "Authorization" and
-    builtFromBasicAuthStringConcat(this.getArgument(1)) and
-    exists(VarAccess conn, DataFlow::PathNode source, DataFlow::PathNode sink, HttpString s |
-      this.getQualifier() = conn and //HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-      source.getNode().asExpr() = s and
-      sink.getNode().asExpr() = conn.getVariable().getAnAccess() and
-      any(HttpStringToHttpURLOpenMethodFlowConfig c).hasFlowPath(source, sink)
+    exists(MethodAccess ma |
+      sink.asExpr() = ma.getQualifier() and
+      (
+        ma.getMethod().hasName("addHeader") or
+        ma.getMethod().hasName("setHeader") or
+        ma.getMethod().hasName("setRequestProperty")
+      ) and
+      ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "Authorization" and
+      builtFromBasicAuthStringConcat(ma.getArgument(1))
     )
   }
 }
 
-from MethodAccess ma
-where
-  ma instanceof AddBasicAuthHeaderMethodAccess or
-  ma instanceof SetBasicAuthPropertyMethodAccess
-select ma, "Insecure basic authentication"
+from DataFlow::PathNode source, DataFlow::PathNode sink, BasicAuthFlowConfig config
+where config.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "Insecure basic authentication from $@.", source.getNode(),
+  "this user input"
