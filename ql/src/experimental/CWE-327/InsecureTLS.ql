@@ -239,8 +239,8 @@ where
   // Exclude sources or sinks that occur lexically within a block related to a feature or legacy flag
   not astNodeIsFlag([source, sink].getNode().asExpr().getParent*(), [featureFlag(), legacyFlag()]) and
   // Exclude results in functions whose name documents insecurity
-  not exists(FuncDef fn | fn = sink.getNode().asInstruction().getRoot() |
-    isFeatureFlagName(fn.getEnclosingFunction*().getName()) or
-    isLegacyFlagName(fn.getEnclosingFunction*().getName())
+  not exists(FuncDef fn | fn = sink.getNode().getRoot().getEnclosingFunction*() |
+    isFeatureFlagName(fn.getName()) or
+    isLegacyFlagName(fn.getName())
   )
 select sink.getNode(), source, sink, message
