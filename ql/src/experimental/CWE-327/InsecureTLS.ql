@@ -233,13 +233,14 @@ where
     isInsecureTlsCipherFlow(source, sink, message)
   ) and
   // Exclude sources or sinks guarded by a feature or legacy flag
-  not [getAFeatureFlagCheck(), getALegacyVersionCheck()]
+  not [getASecurityFeatureFlagCheck(), getALegacyTlsVersionCheck()]
       .dominatesNode([source, sink].getNode().asInstruction()) and
   // Exclude sources or sinks that occur lexically within a block related to a feature or legacy flag
-  not astNodeIsFlag([source, sink].getNode().asExpr().getParent*(), [featureFlag(), legacyFlag()]) and
+  not astNodeIsFlag([source, sink].getNode().asExpr().getParent*(),
+    [securityFeatureFlag(), legacyTlsVersionFlag()]) and
   // Exclude results in functions whose name documents insecurity
   not exists(FuncDef fn | fn = sink.getNode().getRoot().getEnclosingFunction*() |
-    isFeatureFlagName(fn.getName()) or
-    isLegacyFlagName(fn.getName())
+    isSecurityFlagName(fn.getName()) or
+    isLegacyTlsFlagName(fn.getName())
   )
 select sink.getNode(), source, sink, message

@@ -36,20 +36,29 @@ predicate becomesPartOf(DataFlow::Node part, DataFlow::Node whole) {
   exists(Write w | w.writesField(whole.(DataFlow::PostUpdateNode).getPreUpdateNode(), _, part))
 }
 
+/**
+ * Holds if `name` is (likely to be) a general security flag or one specifically controlling
+ * an insecure certificate setup.
+ */
+bindingset[name]
+predicate isSecurityOrCertificateConfigFlag(string name) {
+  isSecurityFlagName(name) or isCertificateFlagName(name)
+}
+
 from Write w, DataFlow::Node base, Field f, DataFlow::Node rhs
 where
   w.writesField(base, f, rhs) and
   f.hasQualifiedName("crypto/tls", "Config", "InsecureSkipVerify") and
   rhs.getBoolValue() = true and
   // exclude writes guarded by a feature flag
-  not getAFeatureFlagCheck().dominatesNode(w) and
+  not [getASecurityFeatureFlagCheck(), getAnInsecureCertificateCheck()].dominatesNode(w) and
   // exclude results in functions whose name documents the insecurity
   not exists(FuncDef fn | fn = w.getRoot() |
-    isFeatureFlagName(fn.getEnclosingFunction*().getName())
+    isSecurityOrCertificateConfigFlag(fn.getEnclosingFunction*().getName())
   ) and
   // exclude results that flow into a field/variable whose name documents the insecurity
   not exists(ValueEntity e, DataFlow::Node init |
-    isFeatureFlagName(e.getName()) and
+    isSecurityOrCertificateConfigFlag(e.getName()) and
     any(Write w2).writes(e, init) and
     becomesPartOf*(base, init)
   ) and

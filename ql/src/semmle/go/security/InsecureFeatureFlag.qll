@@ -6,16 +6,22 @@ import go
 
 module InsecureFeatureFlag {
   /**
+   * Holds if `name` may be the name of a feature flag that controls a security feature.
+   */
+  bindingset[name]
+  predicate isSecurityFlagName(string name) { name.regexpMatch("(?i).*(secure|(en|dis)able).*") }
+
+  /**
    * Holds if `name` may be the name of a feature flag that controls whether certificate checking is
    * enabled.
    */
   bindingset[name]
-  predicate isFeatureFlagName(string name) {
-    name.regexpMatch("(?i).*(secure|selfCert|selfSign|validat|verif|trust|(en|dis)able).*")
+  predicate isCertificateFlagName(string name) {
+    name.regexpMatch("(?i).*(selfCert|selfSign|validat|verif|trust).*")
   }
 
   /**
-   * Holds if `name` suggests an old or legacy version.
+   * Holds if `name` suggests an old or legacy version of TLS.
    *
    * We accept 'intermediate' because it appears to be common for TLS users
    * to define three profiles: modern, intermediate, legacy/old, perhaps based
@@ -23,13 +29,17 @@ module InsecureFeatureFlag {
    * 'intermediate' used there would now pass muster according to this query)
    */
   bindingset[name]
-  predicate isLegacyFlagName(string name) { name.regexpMatch("(?i).*(old|intermediate|legacy).*") }
+  predicate isLegacyTlsFlagName(string name) {
+    name.regexpMatch("(?i).*(old|intermediate|legacy).*")
+  }
 
   /**
    * A kind of flag that may indicate security expectations regarding the code it guards.
    */
   abstract class FlagKind extends string {
-    FlagKind() { this = "feature" or this = "legacy" }
+    FlagKind() {
+      this = "securityFeature" or this = "legacyTlsVersion" or this = "insecureCertificate"
+    }
 
     /**
      * Returns a flag name of this type.
@@ -40,32 +50,47 @@ module InsecureFeatureFlag {
   /**
    * Flags suggesting an optional feature, perhaps deliberately insecure.
    */
-  class FeatureFlag extends FlagKind {
-    FeatureFlag() { this = "feature" }
+  class SecurityFeatureFlag extends FlagKind {
+    SecurityFeatureFlag() { this = "securityFeature" }
 
     bindingset[result]
-    override string getAFlagName() { isFeatureFlagName(result) }
+    override string getAFlagName() { isSecurityFlagName(result) }
   }
 
   /**
    * Flags suggesting an optional feature, perhaps deliberately insecure.
    */
-  string featureFlag() { result = "feature" }
+  string securityFeatureFlag() { result = "securityFeature" }
 
   /**
-   * Flags suggesting support for an old or legacy feature.
+   * Flags suggesting support for an old or legacy TLS version.
    */
-  class LegacyFlag extends FlagKind {
-    LegacyFlag() { this = "legacy" }
+  class LegacyTlsVersionFlag extends FlagKind {
+    LegacyTlsVersionFlag() { this = "legacyTlsVersion" }
 
     bindingset[result]
-    override string getAFlagName() { isLegacyFlagName(result) }
+    override string getAFlagName() { isLegacyTlsFlagName(result) }
+  }
+
+  /**
+   * Flags suggesting support for an old or legacy TLS version.
+   */
+  string legacyTlsVersionFlag() { result = "legacyTlsVersion" }
+
+  /**
+   * Flags suggesting a deliberately insecure certificate setup.
+   */
+  class InsecureCertificateFlag extends FlagKind {
+    InsecureCertificateFlag() { this = "insecureCertificate" }
+
+    bindingset[result]
+    override string getAFlagName() { isCertificateFlagName(result) }
   }
 
   /**
    * Flags suggesting support for an old or legacy feature.
    */
-  string legacyFlag() { result = "legacy" }
+  string insecureCertificateFlag() { result = "insecureCertificate" }
 
   /** Gets a global value number representing a (likely) security flag. */
   GVN getAFlag(FlagKind flagKind) {
@@ -149,16 +174,23 @@ module InsecureFeatureFlag {
   }
 
   /**
-   * Gets a control-flow node that represents a (likely) feature-flag check for certificate checking.
+   * Gets a control-flow node that represents a (likely) security feature-flag check
    */
-  ControlFlow::ConditionGuardNode getAFeatureFlagCheck() {
-    result.ensures(getAFlag(featureFlag()).getANode(), _)
+  ControlFlow::ConditionGuardNode getASecurityFeatureFlagCheck() {
+    result.ensures(getAFlag(securityFeatureFlag()).getANode(), _)
   }
 
   /**
-   * Gets a control-flow node that represents a (likely) feature-flag check for certificate checking.
+   * Gets a control-flow node that represents a (likely) flag controlling TLS version selection.
    */
-  ControlFlow::ConditionGuardNode getALegacyVersionCheck() {
-    result.ensures(getAFlag(legacyFlag()).getANode(), _)
+  ControlFlow::ConditionGuardNode getALegacyTlsVersionCheck() {
+    result.ensures(getAFlag(legacyTlsVersionFlag()).getANode(), _)
+  }
+
+  /**
+   * Gets a control-flow node that represents a (likely) flag controlling an insecure certificate setup.
+   */
+  ControlFlow::ConditionGuardNode getAnInsecureCertificateCheck() {
+    result.ensures(getAFlag(insecureCertificateFlag()).getANode(), _)
   }
 }
