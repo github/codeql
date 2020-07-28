@@ -15,16 +15,6 @@ import DataFlow::PathGraph
 import semmle.go.security.InsecureFeatureFlag::InsecureFeatureFlag
 
 /**
- * Check whether the file where the node is located is a test file.
- */
-predicate isTestFile(DataFlow::Node node) {
-  // Exclude results in test files:
-  exists(File file | file = node.getRoot().getFile() |
-    file instanceof TestFile or file.getPackageName() = "tests"
-  )
-}
-
-/**
  * Holds if it is insecure to assign TLS version `val` named `named` to `tls.Config` field `fieldName`
  */
 predicate isInsecureTlsVersion(int val, string name, string fieldName) {
@@ -252,7 +242,5 @@ where
   not exists(FuncDef fn | fn = sink.getNode().asInstruction().getRoot() |
     isFeatureFlagName(fn.getEnclosingFunction*().getName()) or
     isLegacyFlagName(fn.getEnclosingFunction*().getName())
-  ) and
-  // Exclude results in test code:
-  not isTestFile(sink.getNode())
+  )
 select sink.getNode(), source, sink, message
