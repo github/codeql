@@ -223,7 +223,7 @@ predicate isInsecureTlsCipherFlow(DataFlow::PathNode source, DataFlow::PathNode 
     )
     or
     cfg.isSourceInsecureCipherSuites(source.getNode()) and
-    message = "Use of an insecure cipher suite from InsecureCipherSuites()."
+    message = "Use of an insecure cipher suite."
   )
 }
 
