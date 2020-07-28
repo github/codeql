@@ -5,6 +5,13 @@
 | copyableclass.cpp:65:8:65:9 | s1 | copyableclass.cpp:60:40:60:45 | call to source |
 | copyableclass.cpp:66:8:66:9 | s2 | copyableclass.cpp:63:24:63:29 | call to source |
 | copyableclass.cpp:67:11:67:11 | call to operator= | copyableclass.cpp:67:13:67:18 | call to source |
+| copyableclass_declonly.cpp:40:8:40:9 | s1 | copyableclass_declonly.cpp:34:30:34:35 | call to source |
+| copyableclass_declonly.cpp:41:8:41:9 | s2 | copyableclass_declonly.cpp:35:32:35:37 | call to source |
+| copyableclass_declonly.cpp:42:8:42:9 | s3 | copyableclass_declonly.cpp:34:30:34:35 | call to source |
+| copyableclass_declonly.cpp:43:8:43:9 | s4 | copyableclass_declonly.cpp:38:8:38:13 | call to source |
+| copyableclass_declonly.cpp:65:8:65:9 | s1 | copyableclass_declonly.cpp:60:56:60:61 | call to source |
+| copyableclass_declonly.cpp:66:8:66:9 | s2 | copyableclass_declonly.cpp:63:32:63:37 | call to source |
+| copyableclass_declonly.cpp:67:11:67:11 | call to operator= | copyableclass_declonly.cpp:67:13:67:18 | call to source |
 | format.cpp:57:8:57:13 | buffer | format.cpp:56:36:56:49 | call to source |
 | format.cpp:62:8:62:13 | buffer | format.cpp:61:30:61:43 | call to source |
 | format.cpp:67:8:67:13 | buffer | format.cpp:66:52:66:65 | call to source |
@@ -15,6 +22,7 @@
 | format.cpp:100:8:100:13 | buffer | format.cpp:99:30:99:43 | call to source |
 | format.cpp:105:8:105:13 | buffer | format.cpp:104:31:104:45 | call to source |
 | format.cpp:110:8:110:14 | wbuffer | format.cpp:109:38:109:52 | call to source |
+| format.cpp:115:8:115:13 | buffer | format.cpp:114:37:114:50 | call to source |
 | format.cpp:157:7:157:22 | access to array | format.cpp:147:12:147:25 | call to source |
 | format.cpp:158:7:158:27 | ... + ... | format.cpp:148:16:148:30 | call to source |
 | movableclass.cpp:44:8:44:9 | s1 | movableclass.cpp:39:21:39:26 | call to source |
@@ -46,36 +54,51 @@
 | structlikeclass.cpp:60:8:60:9 | s1 | structlikeclass.cpp:55:40:55:45 | call to source |
 | structlikeclass.cpp:61:8:61:9 | s2 | structlikeclass.cpp:58:24:58:29 | call to source |
 | structlikeclass.cpp:62:8:62:20 | ... = ... | structlikeclass.cpp:62:13:62:18 | call to source |
-| swap1.cpp:60:12:60:16 | data1 | swap1.cpp:58:15:58:20 | call to source |
-| swap1.cpp:65:12:65:16 | data1 | swap1.cpp:56:23:56:23 | x |
-| swap1.cpp:65:12:65:16 | data1 | swap1.cpp:58:15:58:20 | call to source |
-| swap1.cpp:66:12:66:16 | data1 | swap1.cpp:58:15:58:20 | call to source |
-| swap1.cpp:70:13:70:17 | data1 | swap1.cpp:69:16:69:21 | call to source |
-| swap1.cpp:74:13:74:17 | data1 | swap1.cpp:69:16:69:21 | call to source |
-| swap1.cpp:75:13:75:17 | data1 | swap1.cpp:68:27:68:28 | z2 |
-| swap1.cpp:75:13:75:17 | data1 | swap1.cpp:69:16:69:21 | call to source |
-| swap1.cpp:84:12:84:16 | data1 | swap1.cpp:82:15:82:20 | call to source |
-| swap1.cpp:89:12:89:16 | data1 | swap1.cpp:80:23:80:23 | x |
-| swap1.cpp:89:12:89:16 | data1 | swap1.cpp:82:15:82:20 | call to source |
-| swap1.cpp:90:12:90:16 | data1 | swap1.cpp:82:15:82:20 | call to source |
-| swap1.cpp:98:20:98:24 | data1 | swap1.cpp:96:23:96:28 | call to source |
-| swap1.cpp:102:18:102:22 | data1 | swap1.cpp:95:23:95:31 | move_from |
-| swap1.cpp:102:18:102:22 | data1 | swap1.cpp:96:23:96:28 | call to source |
-| swap2.cpp:60:12:60:16 | data1 | swap2.cpp:58:15:58:20 | call to source |
-| swap2.cpp:65:12:65:16 | data1 | swap2.cpp:56:23:56:23 | x |
-| swap2.cpp:65:12:65:16 | data1 | swap2.cpp:58:15:58:20 | call to source |
-| swap2.cpp:66:12:66:16 | data1 | swap2.cpp:58:15:58:20 | call to source |
-| swap2.cpp:70:13:70:17 | data1 | swap2.cpp:69:16:69:21 | call to source |
-| swap2.cpp:74:13:74:17 | data1 | swap2.cpp:69:16:69:21 | call to source |
-| swap2.cpp:75:13:75:17 | data1 | swap2.cpp:68:27:68:28 | z2 |
-| swap2.cpp:75:13:75:17 | data1 | swap2.cpp:69:16:69:21 | call to source |
-| swap2.cpp:84:12:84:16 | data1 | swap2.cpp:82:15:82:20 | call to source |
-| swap2.cpp:89:12:89:16 | data1 | swap2.cpp:80:23:80:23 | x |
-| swap2.cpp:89:12:89:16 | data1 | swap2.cpp:82:15:82:20 | call to source |
-| swap2.cpp:90:12:90:16 | data1 | swap2.cpp:82:15:82:20 | call to source |
-| swap2.cpp:98:20:98:24 | data1 | swap2.cpp:96:23:96:28 | call to source |
-| swap2.cpp:102:18:102:22 | data1 | swap2.cpp:95:23:95:31 | move_from |
-| swap2.cpp:102:18:102:22 | data1 | swap2.cpp:96:23:96:28 | call to source |
+| swap1.cpp:73:12:73:16 | data1 | swap1.cpp:71:15:71:20 | call to source |
+| swap1.cpp:78:12:78:16 | data1 | swap1.cpp:69:23:69:23 | x |
+| swap1.cpp:78:12:78:16 | data1 | swap1.cpp:71:15:71:20 | call to source |
+| swap1.cpp:79:12:79:16 | data1 | swap1.cpp:71:15:71:20 | call to source |
+| swap1.cpp:83:13:83:17 | data1 | swap1.cpp:82:16:82:21 | call to source |
+| swap1.cpp:87:13:87:17 | data1 | swap1.cpp:82:16:82:21 | call to source |
+| swap1.cpp:88:13:88:17 | data1 | swap1.cpp:81:27:81:28 | z2 |
+| swap1.cpp:88:13:88:17 | data1 | swap1.cpp:82:16:82:21 | call to source |
+| swap1.cpp:97:12:97:16 | data1 | swap1.cpp:95:15:95:20 | call to source |
+| swap1.cpp:102:12:102:16 | data1 | swap1.cpp:93:23:93:23 | x |
+| swap1.cpp:102:12:102:16 | data1 | swap1.cpp:95:15:95:20 | call to source |
+| swap1.cpp:103:12:103:16 | data1 | swap1.cpp:95:15:95:20 | call to source |
+| swap1.cpp:111:20:111:24 | data1 | swap1.cpp:109:23:109:28 | call to source |
+| swap1.cpp:115:18:115:22 | data1 | swap1.cpp:108:23:108:31 | move_from |
+| swap1.cpp:115:18:115:22 | data1 | swap1.cpp:109:23:109:28 | call to source |
+| swap1.cpp:124:12:124:16 | data1 | swap1.cpp:122:15:122:20 | call to source |
+| swap1.cpp:129:12:129:16 | data1 | swap1.cpp:120:23:120:23 | x |
+| swap1.cpp:129:12:129:16 | data1 | swap1.cpp:122:15:122:20 | call to source |
+| swap1.cpp:130:12:130:16 | data1 | swap1.cpp:122:15:122:20 | call to source |
+| swap1.cpp:139:12:139:16 | data1 | swap1.cpp:137:15:137:20 | call to source |
+| swap1.cpp:144:12:144:16 | data1 | swap1.cpp:135:23:135:23 | x |
+| swap1.cpp:144:12:144:16 | data1 | swap1.cpp:137:15:137:20 | call to source |
+| swap1.cpp:145:12:145:16 | data1 | swap1.cpp:137:15:137:20 | call to source |
+| swap2.cpp:73:12:73:16 | data1 | swap2.cpp:71:15:71:20 | call to source |
+| swap2.cpp:78:12:78:16 | data1 | swap2.cpp:69:23:69:23 | x |
+| swap2.cpp:78:12:78:16 | data1 | swap2.cpp:71:15:71:20 | call to source |
+| swap2.cpp:79:12:79:16 | data1 | swap2.cpp:71:15:71:20 | call to source |
+| swap2.cpp:83:13:83:17 | data1 | swap2.cpp:82:16:82:21 | call to source |
+| swap2.cpp:88:13:88:17 | data1 | swap2.cpp:81:27:81:28 | z2 |
+| swap2.cpp:88:13:88:17 | data1 | swap2.cpp:82:16:82:21 | call to source |
+| swap2.cpp:97:12:97:16 | data1 | swap2.cpp:95:15:95:20 | call to source |
+| swap2.cpp:102:12:102:16 | data1 | swap2.cpp:93:23:93:23 | x |
+| swap2.cpp:102:12:102:16 | data1 | swap2.cpp:95:15:95:20 | call to source |
+| swap2.cpp:103:12:103:16 | data1 | swap2.cpp:95:15:95:20 | call to source |
+| swap2.cpp:111:20:111:24 | data1 | swap2.cpp:109:23:109:28 | call to source |
+| swap2.cpp:115:18:115:22 | data1 | swap2.cpp:108:23:108:31 | move_from |
+| swap2.cpp:115:18:115:22 | data1 | swap2.cpp:109:23:109:28 | call to source |
+| swap2.cpp:124:12:124:16 | data1 | swap2.cpp:122:15:122:20 | call to source |
+| swap2.cpp:129:12:129:16 | data1 | swap2.cpp:120:23:120:23 | x |
+| swap2.cpp:129:12:129:16 | data1 | swap2.cpp:122:15:122:20 | call to source |
+| swap2.cpp:130:12:130:16 | data1 | swap2.cpp:122:15:122:20 | call to source |
+| swap2.cpp:139:12:139:16 | data1 | swap2.cpp:137:15:137:20 | call to source |
+| swap2.cpp:144:12:144:16 | data1 | swap2.cpp:135:23:135:23 | x |
+| swap2.cpp:144:12:144:16 | data1 | swap2.cpp:137:15:137:20 | call to source |
+| swap2.cpp:145:12:145:16 | data1 | swap2.cpp:137:15:137:20 | call to source |
 | taint.cpp:8:8:8:13 | clean1 | taint.cpp:4:27:4:33 | source1 |
 | taint.cpp:16:8:16:14 | source1 | taint.cpp:12:22:12:27 | call to source |
 | taint.cpp:17:8:17:16 | ++ ... | taint.cpp:12:22:12:27 | call to source |

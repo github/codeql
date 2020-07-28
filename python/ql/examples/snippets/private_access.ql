@@ -9,12 +9,12 @@
 import python
 
 predicate is_private(Attribute a) {
-    a.getName().matches("\\_%") and
-    not a.getName().matches("\\_\\_%\\_\\_")
+  a.getName().matches("\\_%") and
+  not a.getName().matches("\\_\\_%\\_\\_")
 }
 
 from Attribute access
 where
-    is_private(access) and
-    not access.getObject().(Name).getId() = "self"
+  is_private(access) and
+  not access.getObject().(Name).getId() = "self"
 select access

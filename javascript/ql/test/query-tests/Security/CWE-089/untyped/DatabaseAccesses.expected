@@ -11,6 +11,8 @@
 | mongodb.js:65:3:65:17 | doc.find(query) |
 | mongodb.js:73:5:77:27 | client\\n ...  tag }) |
 | mongodb.js:81:3:85:25 | importe ...  tag }) |
+| mongodb.js:98:5:98:19 | doc.find(query) |
+| mongodb.js:112:5:112:19 | doc.find(query) |
 | mongodb_bodySafe.js:18:7:18:21 | doc.find(query) |
 | mongodb_bodySafe.js:29:7:29:21 | doc.find(query) |
 | mongoose.js:63:2:63:34 | Documen ... then(X) |
