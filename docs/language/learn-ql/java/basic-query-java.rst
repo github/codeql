@@ -1,5 +1,5 @@
-Basic query for C and C++ code
-==============================
+Basic query for Java code
+=========================
 
 Learn to write and run a simple CodeQL query using LGTM.
 
@@ -8,7 +8,7 @@ About the query
 
 The query we're going to run performs a basic search of the code for ``if`` statements that are redundant, in the sense that they have an empty then branch. For example, code such as:
 
-.. code-block:: cpp
+.. code-block:: java
 
    if (error) { }
 
@@ -27,18 +27,18 @@ Running the query
 
       Note
 
-      Alternatively, you can go straight to the query console by clicking **Query console** (at the top of any page), selecting **C/C++** from the **Language** drop-down list, then choosing one or more projects to query from those displayed in the **Project** drop-down list.
+      Alternatively, you can go straight to the query console by clicking **Query console** (at the top of any page), selecting **Java** from the **Language** drop-down list, then choosing one or more projects to query from those displayed in the **Project** drop-down list.
 
 #. Copy the following query into the text box in the query console:
 
    .. code-block:: ql
 
-      import cpp
+      import java
 
       from IfStmt ifstmt, Block block
       where ifstmt.getThen() = block and
         block.getNumStmt() = 0
-      select ifstmt, "This 'if' statement is redundant."
+      select ifstmt, "This 'if' statement is redundant." 
 
    LGTM checks whether your query compiles and, if all is well, the **Run** button changes to green to indicate that you can go ahead and run the query.
 
@@ -57,7 +57,7 @@ Running the query
 
    The query will take a few moments to return results. When the query completes, the results are displayed below the project name. The query results are listed in two columns, corresponding to the two expressions in the ``select`` clause of the query. The first column corresponds to the expression ``ifstmt`` and is linked to the location in the source code of the project where ``ifstmt`` occurs. The second column is the alert message.
 
-   ➤ `Example query results <https://lgtm.com/query/4242591143131494898/>`__
+   ➤ `Example query results <https://lgtm.com/query/3235645104630320782/>`__
 
    .. pull-quote::
 
@@ -77,12 +77,12 @@ After the initial ``import`` statement, this simple query comprises three parts 
 +---------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------+
 | Query part                                                    | Purpose                                                                                                           | Details                                                                                                                |
 +===============================================================+===================================================================================================================+========================================================================================================================+
-| ``import cpp``                                                | Imports the standard CodeQL libraries for C/C++.                                                                  | Every query begins with one or more ``import`` statements.                                                             |
+| ``import java``                                               | Imports the standard CodeQL libraries for Java.                                                                   | Every query begins with one or more ``import`` statements.                                                             |
 +---------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------+
 | ``from IfStmt ifstmt, Block block``                           | Defines the variables for the query.                                                                              | We use:                                                                                                                |
 |                                                               | Declarations are of the form:                                                                                     |                                                                                                                        |
 |                                                               | ``<type> <variable name>``                                                                                        | - an ``IfStmt`` variable for ``if`` statements                                                                         |
-|                                                               |                                                                                                                   | - a ``Block`` variable for the statement block                                                                         |
+|                                                               |                                                                                                                   | - a ``Block`` variable for the then block                                                                              |
 +---------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------+
 | ``where ifstmt.getThen() = block and block.getNumStmt() = 0`` | Defines a condition on the variables.                                                                             | ``ifstmt.getThen() = block`` relates the two variables. The block must be the ``then`` branch of the ``if`` statement. |
 |                                                               |                                                                                                                   |                                                                                                                        |
@@ -104,25 +104,25 @@ Remove false positive results
 
 Browsing the results of our basic query shows that it could be improved. Among the results you are likely to find examples of ``if`` statements with an ``else`` branch, where an empty ``then`` branch does serve a purpose. For example:
 
-.. code-block:: cpp
+.. code-block:: java
 
    if (...) {
-     ...
+   ...
    } else if (!strcmp(option, "-verbose") {
-     // nothing to do - handled earlier
+   // nothing to do - handled earlier
    } else {
-     error("unrecognized option");
+   error("unrecognized option");
    }
 
 In this case, identifying the ``if`` statement with the empty ``then`` branch as redundant is a false positive. One solution to this is to modify the query to ignore empty ``then`` branches if the ``if`` statement has an ``else`` branch.
 
 To exclude ``if`` statements that have an ``else`` branch:
 
-#. Extend the ``where`` clause to include the following extra condition:
+#. Extend the where clause to include the following extra condition:
 
    .. code-block:: ql
 
-      and not ifstmt.hasElse()
+      and not exists(ifstmt.getElse())
 
    The ``where`` clause is now:
 
@@ -130,16 +130,16 @@ To exclude ``if`` statements that have an ``else`` branch:
 
       where ifstmt.getThen() = block and
         block.getNumStmt() = 0 and
-        not ifstmt.hasElse()
+        not exists(ifstmt.getElse())
 
 #. Click **Run**.
 
-   There are now fewer results because ``if`` statements with an ``else`` branch are no longer reported.
+   There are now fewer results because ``if`` statements with an ``else`` branch are no longer included.
 
-➤ `See this in the query console <https://lgtm.com/query/1899933116489579248/>`__
+➤ `See this in the query console <https://lgtm.com/query/6382189874776576029/>`__
 
 Further reading
 ---------------
 
-.. include:: ../../reusables/cpp-further-reading.rst
+.. include:: ../../reusables/java-further-reading.rst
 .. include:: ../../reusables/codeql-ref-tools-further-reading.rst
