@@ -44,7 +44,7 @@ Running the query
 
 #. Click **Run**.
 
-   The name of project you are querying, and the ID of the most recently analyzed commit to the project, are listed below the query box. To the right of this is an icon that indicates the progress of the query operation:
+   The name of the project you are querying, and the ID of the most recently analyzed commit to the project, are listed below the query box. To the right of this is an icon that indicates the progress of the query operation:
 
    .. image:: ../../images/query-progress.png
        :align: center
