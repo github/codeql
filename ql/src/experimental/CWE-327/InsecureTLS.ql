@@ -78,7 +78,6 @@ class TlsVersionFlowConfig extends TaintTracking::Configuration {
    */
   predicate isSink(DataFlow::Node sink, Field fld, DataFlow::Node base, Write fieldWrite) {
     fld.hasQualifiedName("crypto/tls", "Config", ["MinVersion", "MaxVersion"]) and
-    fieldWrite = fld.getAWrite() and
     fieldWrite.writesField(base, fld, sink)
   }
 
@@ -207,7 +206,6 @@ class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
    */
   predicate isSink(DataFlow::Node sink, Field fld, DataFlow::Node base, Write fieldWrite) {
     fld.hasQualifiedName("crypto/tls", "Config", "CipherSuites") and
-    fieldWrite = fld.getAWrite() and
     fieldWrite.writesField(base, fld, sink)
   }
 
