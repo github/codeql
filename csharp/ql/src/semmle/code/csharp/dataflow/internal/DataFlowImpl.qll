@@ -1548,10 +1548,8 @@ abstract private class AccessPathApprox extends TAccessPathApprox {
 
   abstract AccessPathFront getFront();
 
-  /**
-   * Holds if this access path has `head` at the front and may be followed by `tail`.
-   */
-  abstract predicate pop(TypedContent head, AccessPathApprox tail);
+  /** Gets the access path obtained by popping `head` from this path, if any. */
+  abstract AccessPathApprox pop(TypedContent head);
 }
 
 private class AccessPathApproxNil extends AccessPathApprox, TNil {
@@ -1569,7 +1567,7 @@ private class AccessPathApproxNil extends AccessPathApprox, TNil {
 
   override AccessPathFront getFront() { result = TFrontNil(t) }
 
-  override predicate pop(TypedContent head, AccessPathApprox tail) { none() }
+  override AccessPathApprox pop(TypedContent head) { none() }
 }
 
 abstract private class AccessPathApproxCons extends AccessPathApprox { }
@@ -1593,7 +1591,7 @@ private class AccessPathApproxConsNil extends AccessPathApproxCons, TConsNil {
 
   override AccessPathFront getFront() { result = TFrontHead(tc) }
 
-  override predicate pop(TypedContent head, AccessPathApprox tail) { head = tc and tail = TNil(t) }
+  override AccessPathApprox pop(TypedContent head) { head = tc and result = TNil(t) }
 }
 
 private class AccessPathApproxConsCons extends AccessPathApproxCons, TConsCons {
@@ -1617,19 +1615,19 @@ private class AccessPathApproxConsCons extends AccessPathApproxCons, TConsCons {
 
   override AccessPathFront getFront() { result = TFrontHead(tc1) }
 
-  override predicate pop(TypedContent head, AccessPathApprox tail) {
+  override AccessPathApprox pop(TypedContent head) {
     head = tc1 and
     (
-      tail = TConsCons(tc2, _, len - 1)
+      result = TConsCons(tc2, _, len - 1)
       or
       len = 2 and
-      tail = TConsNil(tc2, _)
+      result = TConsNil(tc2, _)
     )
   }
 }
 
 /** Gets the access path obtained by popping `tc` from `ap`, if any. */
-private AccessPathApprox pop(TypedContent tc, AccessPathApprox apa) { apa.pop(tc, result) }
+private AccessPathApprox pop(TypedContent tc, AccessPathApprox apa) { result = apa.pop(tc) }
 
 /** Gets the access path obtained by pushing `tc` onto `ap`. */
 private AccessPathApprox push(TypedContent tc, AccessPathApprox apa) { apa = pop(tc, result) }
@@ -2053,15 +2051,17 @@ private predicate parameterFlow(
   c = p.getEnclosingCallable()
 }
 
+private predicate parameterMayFlowThrough(ParameterNode p, AccessPathApprox apa) {
+  exists(ReturnNodeExt ret, Configuration config, AccessPathApprox apa0 |
+    parameterFlow(p, apa, ret.getEnclosingCallable(), config) and
+    flow(ret, true, TAccessPathApproxSome(_), apa0, config) and
+    flowFwd(ret, any(CallContextCall ccc), TAccessPathApproxSome(apa), _, apa0, config)
+  )
+}
+
 private newtype TSummaryCtx =
   TSummaryCtxNone() or
-  TSummaryCtxSome(ParameterNode p, AccessPathApprox apa) {
-    exists(ReturnNodeExt ret, Configuration config, AccessPathApprox apa0 |
-      parameterFlow(p, apa, ret.getEnclosingCallable(), config) and
-      flow(ret, true, TAccessPathApproxSome(_), apa0, config) and
-      flowFwd(ret, any(CallContextCall ccc), TAccessPathApproxSome(apa), _, apa0, config)
-    )
-  }
+  TSummaryCtxSome(ParameterNode p, AccessPath ap) { parameterMayFlowThrough(p, ap.getApprox()) }
 
 /**
  * A context for generating flow summaries. This represents flow entry through
@@ -2081,13 +2081,13 @@ private class SummaryCtxNone extends SummaryCtx, TSummaryCtxNone {
 /** A summary context from which a flow summary can be generated. */
 private class SummaryCtxSome extends SummaryCtx, TSummaryCtxSome {
   private ParameterNode p;
-  private AccessPathApprox apa;
+  private AccessPath ap;
 
-  SummaryCtxSome() { this = TSummaryCtxSome(p, apa) }
+  SummaryCtxSome() { this = TSummaryCtxSome(p, ap) }
 
   int getParameterPos() { p.isParameterOf(_, result) }
 
-  override string toString() { result = p + ": " + apa }
+  override string toString() { result = p + ": " + ap }
 
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -2096,18 +2096,26 @@ private class SummaryCtxSome extends SummaryCtx, TSummaryCtxSome {
   }
 }
 
+private newtype TAccessPath =
+  TAccessPathNil(DataFlowType t) or
+  TAccessPathCons(TypedContent head, AccessPath tail) { pathStoreStep(_, _, tail, _, head, _) }
+
 private newtype TPathNode =
-  TPathNodeMid(Node node, CallContext cc, SummaryCtx sc, AccessPathApprox apa, Configuration config) {
+  TPathNodeMid(
+    Node node, CallContext cc, SummaryCtx sc, AccessPath ap, AccessPathApprox apa,
+    Configuration config
+  ) {
     // A PathNode is introduced by a source ...
     flow(node, config) and
     config.isSource(node) and
     cc instanceof CallContextAny and
     sc instanceof SummaryCtxNone and
+    ap = TAccessPathNil(getNodeType(node)) and
     apa = TNil(getNodeType(node))
     or
     // ... or a step from an existing PathNode to another node.
     exists(PathNodeMid mid |
-      pathStep(mid, node, cc, sc, apa) and
+      pathStep(mid, node, cc, sc, ap, apa) and
       config = mid.getConfiguration() and
       flow(node, _, _, apa, unbind(config))
     )
@@ -2121,11 +2129,103 @@ private newtype TPathNode =
       or
       // ... or a sink that can be reached from a source
       exists(PathNodeMid mid |
-        pathStep(mid, node, _, _, any(AccessPathApproxNil nil)) and
+        pathStep(mid, node, _, _, _, TNil(_)) and
         config = unbind(mid.getConfiguration())
       )
     )
   }
+
+/**
+ * A list of `TypedContent`s followed by a `DataFlowType`. If data flows from a
+ * source to a given node with a given `AccessPath`, this indicates the sequence
+ * of dereference operations needed to get from the value in the node to the
+ * tracked object. The final type indicates the type of the tracked object.
+ */
+abstract private class AccessPath extends TAccessPath {
+  /** Gets the type of this access path. */
+  abstract DataFlowType getType();
+
+  /** Gets the head of this access path, if any. */
+  abstract TypedContent getHead();
+
+  /** Gets the tail of this access path, if any. */
+  abstract AccessPath getTail();
+
+  /** Gets the front of this access path. */
+  abstract AccessPathFront getFront();
+
+  /** Gets the approximation of this access path. */
+  abstract AccessPathApprox getApprox();
+
+  /** Gets the length of this access path. */
+  abstract int length();
+
+  /** Gets a textual representation of this access path. */
+  abstract string toString();
+
+  /** Gets the access path obtained by popping `tc` from this access path, if any. */
+  final AccessPath pop(TypedContent tc) {
+    result = this.getTail() and
+    tc = this.getHead()
+  }
+
+  /** Gets the access path obtained by pushing `tc` onto this access path. */
+  final AccessPath push(TypedContent tc) { this = result.pop(tc) }
+}
+
+private class AccessPathNil extends AccessPath, TAccessPathNil {
+  private DataFlowType t;
+
+  AccessPathNil() { this = TAccessPathNil(t) }
+
+  override DataFlowType getType() { result = t }
+
+  override TypedContent getHead() { none() }
+
+  override AccessPath getTail() { none() }
+
+  override AccessPathFrontNil getFront() { result = TFrontNil(t) }
+
+  override AccessPathApproxNil getApprox() { result = TNil(t) }
+
+  override int length() { result = 0 }
+
+  override string toString() { result = concat(": " + ppReprType(t)) }
+}
+
+private class AccessPathCons extends AccessPath, TAccessPathCons {
+  private TypedContent head;
+  private AccessPath tail;
+
+  AccessPathCons() { this = TAccessPathCons(head, tail) }
+
+  override DataFlowType getType() { result = tail.getType() }
+
+  override TypedContent getHead() { result = head }
+
+  override AccessPath getTail() { result = tail }
+
+  override AccessPathFrontHead getFront() { result = TFrontHead(head) }
+
+  override AccessPathApproxCons getApprox() {
+    result = TConsNil(head, tail.(AccessPathNil).getType())
+    or
+    result = TConsCons(head, tail.getHead(), this.length())
+  }
+
+  override int length() { result = 1 + tail.length() }
+
+  private string toStringImpl() {
+    tail = TAccessPathNil(_) and
+    result = head.toString()
+    or
+    result = head + ", " + tail.(AccessPathCons).toStringImpl()
+  }
+
+  override string toString() {
+    result = "[" + this.toStringImpl() + "]" + concat(" : " + ppReprType(this.getType()))
+  }
+}
 
 /**
  * A `Node` augmented with a call context (except for sinks), an access path, and a configuration.
@@ -2239,10 +2339,11 @@ private class PathNodeMid extends PathNodeImpl, TPathNodeMid {
   Node node;
   CallContext cc;
   SummaryCtx sc;
+  AccessPath ap;
   AccessPathApprox apa;
   Configuration config;
 
-  PathNodeMid() { this = TPathNodeMid(node, cc, sc, apa, config) }
+  PathNodeMid() { this = TPathNodeMid(node, cc, sc, ap, apa, config) }
 
   override Node getNode() { result = node }
 
@@ -2250,12 +2351,15 @@ private class PathNodeMid extends PathNodeImpl, TPathNodeMid {
 
   SummaryCtx getSummaryCtx() { result = sc }
 
-  AccessPathApprox getAp() { result = apa }
+  AccessPath getAp() { result = ap }
+
+  AccessPathApprox getApa() { result = apa }
 
   override Configuration getConfiguration() { result = config }
 
   private PathNodeMid getSuccMid() {
-    pathStep(this, result.getNode(), result.getCallContext(), result.getSummaryCtx(), result.getAp()) and
+    pathStep(this, result.getNode(), result.getCallContext(), result.getSummaryCtx(),
+      result.getAp(), _) and
     result.getConfiguration() = unbind(this.getConfiguration())
   }
 
@@ -2267,7 +2371,7 @@ private class PathNodeMid extends PathNodeImpl, TPathNodeMid {
     exists(PathNodeMid mid, PathNodeSink sink |
       mid = getSuccMid() and
       mid.getNode() = sink.getNode() and
-      mid.getAp() instanceof AccessPathApproxNil and
+      mid.getApa() instanceof AccessPathApproxNil and
       sink.getConfiguration() = unbind(mid.getConfiguration()) and
       result = sink
     )
@@ -2306,45 +2410,75 @@ private class PathNodeSink extends PathNodeImpl, TPathNodeSink {
  * a callable is recorded by `cc`.
  */
 private predicate pathStep(
-  PathNodeMid mid, Node node, CallContext cc, SummaryCtx sc, AccessPathApprox apa
+  PathNodeMid mid, Node node, CallContext cc, SummaryCtx sc, AccessPath ap, AccessPathApprox apa
 ) {
-  exists(AccessPathApprox apa0, Node midnode, Configuration conf, LocalCallContext localCC |
+  pathStepSameAp(mid, node, cc, sc) and
+  ap = mid.getAp() and
+  apa = mid.getApa()
+  or
+  exists(DataFlowType t |
+    pathStepEmptyAp(mid, node, cc, sc, t) and
+    ap = TAccessPathNil(t) and
+    apa = TNil(t)
+  )
+  or
+  exists(TypedContent tc, AccessPathApprox apa0 |
+    pathStoreStep(mid, node, ap.pop(tc), apa0, tc, cc) and
+    // Same as `apa = ap.getApprox()`, but avoids mutual recursion
+    apa0 = apa.pop(tc)
+  ) and
+  sc = mid.getSummaryCtx()
+  or
+  exists(TypedContent tc | pathReadStep(mid, node, ap.push(tc), tc, cc)) and
+  sc = mid.getSummaryCtx() and
+  // Here the approximation cannot be created from the approximation before
+  // the read, so we must use `getApprox()`
+  apa = ap.getApprox()
+  or
+  pathThroughCallable(mid, node, cc, ap, apa) and
+  sc = mid.getSummaryCtx()
+}
+
+pragma[noinline]
+private predicate pathStepEmptyAp(
+  PathNodeMid mid, Node node, CallContext cc, SummaryCtx sc, DataFlowType t
+) {
+  exists(Node midnode, Configuration conf, LocalCallContext localCC, AccessPathFront apf |
     midnode = mid.getNode() and
     conf = mid.getConfiguration() and
     cc = mid.getCallContext() and
     sc = mid.getSummaryCtx() and
     localCC = getLocalCallContext(cc, midnode.getEnclosingCallable()) and
-    apa0 = mid.getAp()
-  |
-    localFlowBigStep(midnode, node, true, _, conf, localCC) and
-    apa = apa0
-    or
-    localFlowBigStep(midnode, node, false, apa.getFront(), conf, localCC) and
-    apa0 instanceof AccessPathApproxNil
+    mid.getAp() = TAccessPathNil(_) and
+    localFlowBigStep(midnode, node, false, apf, conf, localCC) and
+    apf.getType() = t
   )
-  or
-  jumpStep(mid.getNode(), node, mid.getConfiguration()) and
-  cc instanceof CallContextAny and
-  sc instanceof SummaryCtxNone and
-  apa = mid.getAp()
   or
   additionalJumpStep(mid.getNode(), node, mid.getConfiguration()) and
   cc instanceof CallContextAny and
   sc instanceof SummaryCtxNone and
-  mid.getAp() instanceof AccessPathApproxNil and
-  apa = TNil(getNodeType(node))
+  mid.getAp() = TAccessPathNil(_) and
+  t = getNodeType(node)
+}
+
+pragma[noinline]
+private predicate pathStepSameAp(PathNodeMid mid, Node node, CallContext cc, SummaryCtx sc) {
+  exists(Node midnode, Configuration conf, LocalCallContext localCC |
+    midnode = mid.getNode() and
+    conf = mid.getConfiguration() and
+    cc = mid.getCallContext() and
+    sc = mid.getSummaryCtx() and
+    localCC = getLocalCallContext(cc, midnode.getEnclosingCallable()) and
+    localFlowBigStep(midnode, node, true, _, conf, localCC)
+  )
   or
-  exists(TypedContent tc | pathStoreStep(mid, node, pop(tc, apa), tc, cc)) and
-  sc = mid.getSummaryCtx()
+  jumpStep(mid.getNode(), node, mid.getConfiguration()) and
+  cc instanceof CallContextAny and
+  sc instanceof SummaryCtxNone
   or
-  exists(TypedContent tc | pathReadStep(mid, node, push(tc, apa), tc, cc)) and
-  sc = mid.getSummaryCtx()
+  pathIntoCallable(mid, node, _, cc, sc, _)
   or
-  pathIntoCallable(mid, node, _, cc, sc, _) and apa = mid.getAp()
-  or
-  pathOutOfCallable(mid, node, cc) and apa = mid.getAp() and sc instanceof SummaryCtxNone
-  or
-  pathThroughCallable(mid, node, cc, apa) and sc = mid.getSummaryCtx()
+  pathOutOfCallable(mid, node, cc) and sc instanceof SummaryCtxNone
 }
 
 pragma[nomagic]
@@ -2355,9 +2489,9 @@ private predicate readCand(Node node1, TypedContent tc, Node node2, Configuratio
 
 pragma[nomagic]
 private predicate pathReadStep(
-  PathNodeMid mid, Node node, AccessPathApprox apa0, TypedContent tc, CallContext cc
+  PathNodeMid mid, Node node, AccessPath ap0, TypedContent tc, CallContext cc
 ) {
-  apa0 = mid.getAp() and
+  ap0 = mid.getAp() and
   readCand(mid.getNode(), tc, node, mid.getConfiguration()) and
   cc = mid.getCallContext()
 }
@@ -2370,9 +2504,10 @@ private predicate storeCand(Node node1, TypedContent tc, Node node2, Configurati
 
 pragma[nomagic]
 private predicate pathStoreStep(
-  PathNodeMid mid, Node node, AccessPathApprox apa0, TypedContent tc, CallContext cc
+  PathNodeMid mid, Node node, AccessPath ap0, AccessPathApprox apa0, TypedContent tc, CallContext cc
 ) {
-  apa0 = mid.getAp() and
+  ap0 = mid.getAp() and
+  apa0 = mid.getApa() and
   storeCand(mid.getNode(), tc, node, mid.getConfiguration()) and
   cc = mid.getCallContext()
 }
@@ -2384,7 +2519,7 @@ private predicate pathOutOfCallable0(
   pos = getReturnPosition(mid.getNode()) and
   innercc = mid.getCallContext() and
   innercc instanceof CallContextNoCall and
-  apa = mid.getAp() and
+  apa = mid.getApa() and
   config = mid.getConfiguration()
 }
 
@@ -2418,8 +2553,7 @@ private Node getAnOutNodeFlow(
 pragma[noinline]
 private predicate pathOutOfCallable(PathNodeMid mid, Node out, CallContext cc) {
   exists(ReturnKindExt kind, DataFlowCall call, AccessPathApprox apa, Configuration config |
-    pathOutOfCallable1(mid, call, kind, cc, apa, config)
-  |
+    pathOutOfCallable1(mid, call, kind, cc, apa, config) and
     out = getAnOutNodeFlow(kind, call, apa, config)
   )
 }
@@ -2429,13 +2563,14 @@ private predicate pathOutOfCallable(PathNodeMid mid, Node out, CallContext cc) {
  */
 pragma[noinline]
 private predicate pathIntoArg(
-  PathNodeMid mid, int i, CallContext cc, DataFlowCall call, AccessPathApprox apa
+  PathNodeMid mid, int i, CallContext cc, DataFlowCall call, AccessPath ap, AccessPathApprox apa
 ) {
   exists(ArgumentNode arg |
     arg = mid.getNode() and
     cc = mid.getCallContext() and
     arg.argumentOf(call, i) and
-    apa = mid.getAp()
+    ap = mid.getAp() and
+    apa = mid.getApa()
   )
 }
 
@@ -2452,11 +2587,36 @@ private predicate parameterCand(
 pragma[nomagic]
 private predicate pathIntoCallable0(
   PathNodeMid mid, DataFlowCallable callable, int i, CallContext outercc, DataFlowCall call,
-  AccessPathApprox apa
+  AccessPath ap, AccessPathApprox apa
 ) {
-  pathIntoArg(mid, i, outercc, call, apa) and
+  pathIntoArg(mid, i, outercc, call, ap, apa) and
   callable = resolveCall(call, outercc) and
   parameterCand(callable, any(int j | j <= i and j >= i), apa, mid.getConfiguration())
+}
+
+pragma[nomagic]
+private predicate pathIntoCallable1(
+  PathNodeMid mid, ParameterNode p, AccessPath ap, AccessPathApprox apa, CallContext outercc,
+  CallContextCall innercc, DataFlowCall call
+) {
+  exists(int i, DataFlowCallable callable |
+    pathIntoCallable0(mid, callable, i, outercc, call, ap, apa) and
+    p.isParameterOf(callable, i) and
+    if recordDataFlowCallSite(call, callable)
+    then innercc = TSpecificCall(call)
+    else innercc = TSomeCall()
+  )
+}
+
+pragma[nomagic]
+private predicate pathIntoCallable1MayFlowThrough(
+  PathNodeMid mid, ParameterNode p, AccessPath ap, CallContext outercc, CallContextCall innercc,
+  DataFlowCall call
+) {
+  exists(AccessPathApprox apa |
+    pathIntoCallable1(mid, p, ap, apa, outercc, innercc, call) and
+    parameterMayFlowThrough(p, apa)
+  )
 }
 
 /**
@@ -2468,26 +2628,22 @@ private predicate pathIntoCallable(
   PathNodeMid mid, ParameterNode p, CallContext outercc, CallContextCall innercc, SummaryCtx sc,
   DataFlowCall call
 ) {
-  exists(int i, DataFlowCallable callable, AccessPathApprox apa |
-    pathIntoCallable0(mid, callable, i, outercc, call, apa) and
-    p.isParameterOf(callable, i) and
-    (
-      sc = TSummaryCtxSome(p, apa)
-      or
-      not exists(TSummaryCtxSome(p, apa)) and
-      sc = TSummaryCtxNone()
-    )
-  |
-    if recordDataFlowCallSite(call, callable)
-    then innercc = TSpecificCall(call)
-    else innercc = TSomeCall()
+  exists(AccessPath ap |
+    pathIntoCallable1MayFlowThrough(mid, p, ap, outercc, innercc, call) and
+    sc = TSummaryCtxSome(p, ap)
+  )
+  or
+  exists(AccessPathApprox apa |
+    pathIntoCallable1(mid, p, _, apa, outercc, innercc, call) and
+    not parameterMayFlowThrough(p, apa) and
+    sc = TSummaryCtxNone()
   )
 }
 
 /** Holds if data may flow from a parameter given by `sc` to a return of kind `kind`. */
 pragma[nomagic]
 private predicate paramFlowsThrough(
-  ReturnKindExt kind, CallContextCall cc, SummaryCtxSome sc, AccessPathApprox apa,
+  ReturnKindExt kind, CallContextCall cc, SummaryCtxSome sc, AccessPath ap, AccessPathApprox apa,
   Configuration config
 ) {
   exists(PathNodeMid mid, ReturnNodeExt ret, int pos |
@@ -2496,7 +2652,8 @@ private predicate paramFlowsThrough(
     cc = mid.getCallContext() and
     sc = mid.getSummaryCtx() and
     config = mid.getConfiguration() and
-    apa = mid.getAp() and
+    ap = mid.getAp() and
+    apa = mid.getApa() and
     pos = sc.getParameterPos() and
     not kind.(ParamUpdateReturnKind).getPosition() = pos
   )
@@ -2504,11 +2661,12 @@ private predicate paramFlowsThrough(
 
 pragma[nomagic]
 private predicate pathThroughCallable0(
-  DataFlowCall call, PathNodeMid mid, ReturnKindExt kind, CallContext cc, AccessPathApprox apa
+  DataFlowCall call, PathNodeMid mid, ReturnKindExt kind, CallContext cc, AccessPath ap,
+  AccessPathApprox apa
 ) {
   exists(CallContext innercc, SummaryCtx sc |
     pathIntoCallable(mid, _, cc, innercc, sc, call) and
-    paramFlowsThrough(kind, innercc, sc, apa, unbind(mid.getConfiguration()))
+    paramFlowsThrough(kind, innercc, sc, ap, apa, unbind(mid.getConfiguration()))
   )
 }
 
@@ -2518,11 +2676,11 @@ private predicate pathThroughCallable0(
  */
 pragma[noinline]
 private predicate pathThroughCallable(
-  PathNodeMid mid, Node out, CallContext cc, AccessPathApprox apa
+  PathNodeMid mid, Node out, CallContext cc, AccessPath ap, AccessPathApprox apa
 ) {
   exists(DataFlowCall call, ReturnKindExt kind |
-    pathThroughCallable0(call, mid, kind, cc, apa) and
-    out = getAnOutNodeFlow(kind, call, apa, mid.getConfiguration())
+    pathThroughCallable0(call, mid, kind, cc, ap, apa) and
+    out = getAnOutNodeFlow(kind, call, apa, unbind(mid.getConfiguration()))
   )
 }
 
