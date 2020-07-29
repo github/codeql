@@ -13,6 +13,7 @@
 import java
 import ArraySizing
 import BoundingChecks
+import semmle.code.java.security.BoundedFlow
 import DataFlow::PathGraph
 
 class BoundedFlowSourceConf extends DataFlow::Configuration {
