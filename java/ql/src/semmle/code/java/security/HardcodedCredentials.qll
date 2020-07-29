@@ -1,5 +1,5 @@
 import java
-import SensitiveApi
+import CredentialReceivingApi
 
 /**
  * An array creation expression of type `byte[]` with
