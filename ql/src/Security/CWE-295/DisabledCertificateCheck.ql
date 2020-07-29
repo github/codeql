@@ -37,12 +37,21 @@ predicate becomesPartOf(DataFlow::Node part, DataFlow::Node whole) {
 }
 
 /**
+ * Returns flag kinds relevant to this query: a generic security feature flag, or one
+ * specifically controlling insecure certificate configuration.
+ */
+FlagKind securityOrTlsVersionFlag() {
+  result = any(SecurityFeatureFlag f) or
+  result = any(InsecureCertificateFlag f)
+}
+
+/**
  * Holds if `name` is (likely to be) a general security flag or one specifically controlling
  * an insecure certificate setup.
  */
 bindingset[name]
 predicate isSecurityOrCertificateConfigFlag(string name) {
-  isSecurityFlagName(name) or isCertificateFlagName(name)
+  name = securityOrTlsVersionFlag().getAFlagName()
 }
 
 from Write w, DataFlow::Node base, Field f, DataFlow::Node rhs

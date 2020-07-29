@@ -226,6 +226,15 @@ predicate isInsecureTlsCipherFlow(DataFlow::PathNode source, DataFlow::PathNode 
   )
 }
 
+/**
+ * Returns flag kinds relevant to this query: a generic security feature flag, or one
+ * specifically controlling TLS version selection.
+ */
+FlagKind securityOrTlsVersionFlag() {
+  result = any(SecurityFeatureFlag f) or
+  result = any(LegacyTlsVersionFlag f)
+}
+
 from DataFlow::PathNode source, DataFlow::PathNode sink, string message
 where
   (
@@ -236,11 +245,9 @@ where
   not [getASecurityFeatureFlagCheck(), getALegacyTlsVersionCheck()]
       .dominatesNode([source, sink].getNode().asInstruction()) and
   // Exclude sources or sinks that occur lexically within a block related to a feature or legacy flag
-  not astNodeIsFlag([source, sink].getNode().asExpr().getParent*(),
-    [securityFeatureFlag(), legacyTlsVersionFlag()]) and
+  not astNodeIsFlag([source, sink].getNode().asExpr().getParent*(), securityOrTlsVersionFlag()) and
   // Exclude results in functions whose name documents insecurity
   not exists(FuncDef fn | fn = sink.getNode().getRoot().getEnclosingFunction*() |
-    isSecurityFlagName(fn.getName()) or
-    isLegacyTlsFlagName(fn.getName())
+    fn.getName() = securityOrTlsVersionFlag().getAFlagName()
   )
 select sink.getNode(), source, sink, message
