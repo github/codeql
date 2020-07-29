@@ -37,6 +37,25 @@ predicate becomesPartOf(DataFlow::Node part, DataFlow::Node whole) {
 }
 
 /**
+ * Flags suggesting a deliberately insecure certificate setup.
+ */
+class InsecureCertificateFlag extends FlagKind {
+  InsecureCertificateFlag() { this = "insecureCertificate" }
+
+  bindingset[result]
+  override string getAFlagName() {
+    result.regexpMatch("(?i).*(selfCert|selfSign|validat|verif|trust).*")
+  }
+}
+
+/**
+ * Gets a control-flow node that represents a (likely) flag controlling an insecure certificate setup.
+ */
+ControlFlow::ConditionGuardNode getAnInsecureCertificateCheck() {
+  result.ensures(getAFlag(any(InsecureCertificateFlag f)).getANode(), _)
+}
+
+/**
  * Returns flag kinds relevant to this query: a generic security feature flag, or one
  * specifically controlling insecure certificate configuration.
  */

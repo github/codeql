@@ -227,6 +227,28 @@ predicate isInsecureTlsCipherFlow(DataFlow::PathNode source, DataFlow::PathNode 
 }
 
 /**
+ * Flags suggesting support for an old or legacy TLS version.
+ *
+ * We accept 'intermediate' because it appears to be common for TLS users
+ * to define three profiles: modern, intermediate, legacy/old, perhaps based
+ * on https://wiki.mozilla.org/Security/Server_Side_TLS (though note the
+ * 'intermediate' used there would now pass muster according to this query)
+ */
+class LegacyTlsVersionFlag extends FlagKind {
+  LegacyTlsVersionFlag() { this = "legacyTlsVersion" }
+
+  bindingset[result]
+  override string getAFlagName() { result.regexpMatch("(?i).*(old|intermediate|legacy).*") }
+}
+
+/**
+ * Gets a control-flow node that represents a (likely) flag controlling TLS version selection.
+ */
+ControlFlow::ConditionGuardNode getALegacyTlsVersionCheck() {
+  result.ensures(getAFlag(any(LegacyTlsVersionFlag f)).getANode(), _)
+}
+
+/**
  * Returns flag kinds relevant to this query: a generic security feature flag, or one
  * specifically controlling TLS version selection.
  */

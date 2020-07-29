@@ -28,33 +28,6 @@ module InsecureFeatureFlag {
     override string getAFlagName() { result.regexpMatch("(?i).*(secure|(en|dis)able).*") }
   }
 
-  /**
-   * Flags suggesting support for an old or legacy TLS version.
-   *
-   * We accept 'intermediate' because it appears to be common for TLS users
-   * to define three profiles: modern, intermediate, legacy/old, perhaps based
-   * on https://wiki.mozilla.org/Security/Server_Side_TLS (though note the
-   * 'intermediate' used there would now pass muster according to this query)
-   */
-  class LegacyTlsVersionFlag extends FlagKind {
-    LegacyTlsVersionFlag() { this = "legacyTlsVersion" }
-
-    bindingset[result]
-    override string getAFlagName() { result.regexpMatch("(?i).*(old|intermediate|legacy).*") }
-  }
-
-  /**
-   * Flags suggesting a deliberately insecure certificate setup.
-   */
-  class InsecureCertificateFlag extends FlagKind {
-    InsecureCertificateFlag() { this = "insecureCertificate" }
-
-    bindingset[result]
-    override string getAFlagName() {
-      result.regexpMatch("(?i).*(selfCert|selfSign|validat|verif|trust).*")
-    }
-  }
-
   /** Gets a global value number representing a (likely) security flag. */
   GVN getAFlag(FlagKind flagKind) {
     // a call like `cfg.disableVerification()`
@@ -141,19 +114,5 @@ module InsecureFeatureFlag {
    */
   ControlFlow::ConditionGuardNode getASecurityFeatureFlagCheck() {
     result.ensures(getAFlag(any(SecurityFeatureFlag f)).getANode(), _)
-  }
-
-  /**
-   * Gets a control-flow node that represents a (likely) flag controlling TLS version selection.
-   */
-  ControlFlow::ConditionGuardNode getALegacyTlsVersionCheck() {
-    result.ensures(getAFlag(any(LegacyTlsVersionFlag f)).getANode(), _)
-  }
-
-  /**
-   * Gets a control-flow node that represents a (likely) flag controlling an insecure certificate setup.
-   */
-  ControlFlow::ConditionGuardNode getAnInsecureCertificateCheck() {
-    result.ensures(getAFlag(any(InsecureCertificateFlag f)).getANode(), _)
   }
 }
