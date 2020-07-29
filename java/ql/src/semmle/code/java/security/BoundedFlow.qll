@@ -1,6 +1,5 @@
 /**
- * Provides classes and predicates for determining upper and lower bounds on a value determined by bounding checks that
- * have been made on dominant paths.
+ * Provides classes representing data flow that has an upper or lower bound.
  */
 
 import java
