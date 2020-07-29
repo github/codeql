@@ -1,4 +1,15 @@
-# These are included so that we can easily evaluate the test code
+# User-defined methods, both instance methods and class methods, can be called in many non-standard ways
+# i.e. differently from simply `c.f()` or `C.f()`. For example, a user-defined `__await__` function will
+# be called by the syntactic constru
+# This should cover all the class calls that we hope to support. It is based on https://docs.python.org/3/reference/datamodel.html.
+#
+# Intended sources should be the variable `SOURCE` and intended sinks should be.
+# arguments to the function `SINK` (see python/ql/test/experimental/dataflow/testConfig.qll).
+#
+# Functions whose name ends with "_with_local_flow" will also be tested for local flow.
+
+
+# These are included so that we can easily evaluate the test code.
 SOURCE = "source"
 def SINK(x):
     print(x)
@@ -17,17 +28,26 @@ SINK(f(SOURCE, 3))
 # An instance method object combines a class, a class instance and any callable object (normally a user-defined function).
 class C(object):
 
-    def method(self, a, cls):
+    def method(self, x, cls):
         assert cls is self.__class__
-        return a
+        return x
 
     @classmethod
-    def classmethod(cls, a):
-        return a
+    def classmethod(cls, x):
+        return x
 
     @staticmethod
-    def staticmethod():
-        return a
+    def staticmethod(x):
+        return x
+
+    def gen(self, x, count):
+      n = count
+      while n > 0:
+        yield x
+        n -= 1
+
+    async def coro(self, x):
+      return x
 
 c = C()
 
@@ -50,9 +70,39 @@ SINK(c_func_obj(C, SOURCE)) # Path not found
 
 # Generator functions
 # A function or method which uses the yield statement (see section The yield statement) is called a generator function. Such a function, when called, always returns an iterator object which can be used to execute the body of the function: calling the iterator’s iterator.__next__() method will cause the function to execute until it provides a value using the yield statement. When the function executes a return statement or falls off the end, a StopIteration exception is raised and the iterator will have reached the end of the set of values to be returned.
+def gen(x, count):
+  n = count
+  while n > 0:
+    yield x
+    n -= 1
+
+iter = gen(SOURCE, 1)
+SINK(iter.__next__()) # Returns SOURCE, path not found
+SINK(iter.__next__()) # throws StopIteration
+
+oiter = c.gen(SOURCE, 1)
+SINK(oiter.__next__())
+SINK(oiter.__next__())
 
 # Coroutine functions
 # A function or method which is defined using async def is called a coroutine function. Such a function, when called, returns a coroutine object. It may contain await expressions, as well as async with and async for statements. See also the Coroutine Objects section.
+async def coro(x):
+  return x
+
+import asyncio
+SINK(asyncio.run(coro(SOURCE)))
+SINK(asyncio.run(c.coro(SOURCE)))
+
+class A:
+
+  def __await__(self, x):
+    yield x
+
+async def agen(x):
+  a = A()
+  return await a(SOURCE)
+
+SINK(asyncio.run(agen(SOURCE))) # fails with TypeError: 'A' object is not callable (possible query?)
 
 # Asynchronous generator functions
 # A function or method which is defined using async def and which uses the yield statement is called a asynchronous generator function. Such a function, when called, returns an asynchronous iterator object which can be used in an async for statement to execute the body of the function.
