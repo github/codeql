@@ -107,7 +107,7 @@ class UnsafeXmlReadMethod extends Method {
 }
 
 /**
- * MethodCall that may be unsafe when used to serialize DataSet and DataTable related types
+ * MethodCall that may be unsafe when used to deserialize DataSet and DataTable related types
  */
 class UnsafeXmlReadMethodCall extends MethodCall {
   UnsafeXmlReadMethodCall() {
