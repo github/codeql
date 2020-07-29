@@ -1,8 +1,12 @@
 package main
 
-import "net"
-import "fmt"
-import "golang.org/x/crypto/ssh"
+import (
+	"fmt"
+	"net"
+
+	"golang.org/x/crypto/ssh"
+	"golang.org/x/crypto/ssh/knownhosts"
+)
 
 func insecureSSHClientConfig() {
 	_ = &ssh.ClientConfig{
@@ -71,6 +75,23 @@ func potentialInsecureSSHClientConfigTwoWrites(callback ssh.HostKeyCallback) {
 	if callback == nil {
 		config.HostKeyCallback = ssh.InsecureIgnoreHostKey() // OK
 	} else {
+		config.HostKeyCallback = callback
+	}
+}
+
+// Check that insecure and secure functions flowing to different writes to
+// the same objects are not flagged (we assume this is configurable security)
+func potentialInsecureSSHClientConfigUsingKnownHosts(x bool) {
+	config := &ssh.ClientConfig{
+		User:            "user",
+		Auth:            []ssh.AuthMethod{nil},
+		HostKeyCallback: nil,
+	}
+
+	if x {
+		config.HostKeyCallback = ssh.InsecureIgnoreHostKey() // OK
+	} else {
+		callback, err := knownhosts.New("somefile")
 		config.HostKeyCallback = callback
 	}
 }
