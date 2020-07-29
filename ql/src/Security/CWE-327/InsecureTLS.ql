@@ -36,6 +36,14 @@ predicate isInsecureTlsVersion(int val, string name, string fieldName) {
 }
 
 /**
+ * Returns integers that may represent a TLS version.
+ *
+ * Integer values corresponding to versions are defined at https://golang.org/pkg/crypto/tls/#pkg-constants
+ * Zero means the default version; at the time of writing, TLS 1.0.
+ */
+int getATlsVersion() { result in [768, 769, 770, 771, 772, 0] }
+
+/**
  * Holds if `node` refers to a value returned alongside a non-nil error value.
  *
  * For example, `0` in `func tryGetInt() (int, error) { return 0, errors.New("no good") }`
@@ -60,6 +68,7 @@ class TlsVersionFlowConfig extends TaintTracking::Configuration {
    */
   predicate isSource(DataFlow::Node source, int val) {
     val = source.getIntValue() and
+    val = getATlsVersion() and
     not isReturnedWithError(source)
   }
 
