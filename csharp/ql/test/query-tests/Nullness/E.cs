@@ -409,7 +409,7 @@ public class E
     {
         int? i = 1;
         i ??= null;
-        return i.Value; // GOOD (false positive)
+        return i.Value; // GOOD
     }
 }
 
