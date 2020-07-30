@@ -38,10 +38,8 @@ class ECBUsageSink extends BrokenSymmetricCryptoSink {
 
 class ConstIVSink extends BrokenSymmetricCryptoSink {
   ConstIVSink() {
-    exists(MethodCallNode call, BasicBlock createCihperBlock, BasicBlock ivBlock, string alg |
+    exists(MethodCallNode call, string alg |
       call = moduleImport("crypto").getAMethodCall("createCipheriv") and
-      createCihperBlock = call.getArgument(2).getBasicBlock() and
-      ivBlock = call.getArgument(2).getALocalSource().getBasicBlock() and
       alg = call.getArgument(0).getStringValue()
     |
       call.getContainer() != call.getArgument(2).getALocalSource().getContainer() and
