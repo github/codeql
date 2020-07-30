@@ -16,7 +16,7 @@ def SINK(x):
 def test_tuple_with_local_flow():
     x = (3, SOURCE)
     y = x[1]
-    SINK(y)
+    SINK(y) # Flow missing
 
 # 6.2.1. Identifiers (Names)
 def test_names():
@@ -42,56 +42,56 @@ def test_floatnumber_literal():
 
 def test_imagnumber_literal():
     x = 42j
-    SINK(x)
+    SINK(x) # Flow missing
 
 # 6.2.3. Parenthesized forms
 def test_parenthesized_form():
     x = (SOURCE)
-    SINK(x)
+    SINK(x) # Flow missing
 
 # 6.2.5. List displays
 def test_list_display():
     x = [SOURCE]
-    SINK(x[0])
+    SINK(x[0]) # Flow missing
 
 def test_list_comprehension():
     x = [SOURCE for y in [3]]
-    SINK(x[0])
+    SINK(x[0]) # Flow missing
 
 def test_nested_list_display():
     x = [* [SOURCE]]
-    SINK(x[0])
+    SINK(x[0]) # Flow missing
 
 # 6.2.6. Set displays
 def test_set_display():
     x = {SOURCE}
-    SINK(x.pop())
+    SINK(x.pop()) # Flow missing
 
 def test_set_comprehension():
     x = {SOURCE for y in [3]}
-    SINK(x.pop())
+    SINK(x.pop()) # Flow missing
 
 def test_nested_set_display():
     x = {* {SOURCE}}
-    SINK(x.pop())
+    SINK(x.pop()) # Flow missing
 
 # 6.2.7. Dictionary displays
 def test_dict_display():
     x = {"s": SOURCE}
-    SINK(x["s"])
+    SINK(x["s"]) # Flow missing
 
 def test_dict_comprehension():
     x = {y: SOURCE for y in ["s"]}
-    SINK(x["s"])
+    SINK(x["s"]) # Flow missing
 
 def test_nested_dict_display():
     x = {** {"s": SOURCE}}
-    SINK(x["s"])
+    SINK(x["s"]) # Flow missing
 
 # 6.2.8. Generator expressions
 def test_generator():
     x = (SOURCE for y in [3])
-    SINK([*x][0])
+    SINK([*x][0]) # Flow missing
 
 # 6.2.9. Yield expressions
 def gen(x):
@@ -99,24 +99,24 @@ def gen(x):
 
 def test_yield():
     g = gen(SOURCE)
-    SINK(next(g))
+    SINK(next(g)) # Flow missing
 
 def gen_from(x):
     yield from gen(x)
 
 def test_yield_from():
     g = gen_from(SOURCE)
-    SINK(next(g))
+    SINK(next(g)) # Flow missing
 
 # a statement rather than an expression, but related to generators
 def test_for():
     for x in gen(SOURCE):
-        SINK(x)
+        SINK(x) # Flow missing
 
 # 6.2.9.1. Generator-iterator methods
 def test___next__():
     g = gen(SOURCE)
-    SINK(g.__next__())
+    SINK(g.__next__()) # Flow missing
 
 def gen2(x):
     m = yield x # argument of `send` has to flow to value of `yield x` (and so to `m`)
@@ -125,7 +125,7 @@ def gen2(x):
 def test_send():
     g = gen2(3)
     n = next(g)
-    SINK(g.send(SOURCE))
+    SINK(g.send(SOURCE)) # Flow missing
 
 def gen_ex(x):
     try:
@@ -136,7 +136,7 @@ def gen_ex(x):
 def test_throw():
     g = gen_ex(SOURCE)
     n = next(g)
-    SINK(g.throw(TypeError))
+    SINK(g.throw(TypeError)) # Flow missing
 
 # no `test_close` as `close` involves no data flow
 
@@ -153,7 +153,7 @@ def runa(a):
 
 async def atest___anext__():
     g = agen(SOURCE)
-    SINK(await g.__anext__())
+    SINK(await g.__anext__()) # Flow missing
 
 def test___anext__():
     runa(atest___anext__())
@@ -165,7 +165,7 @@ async def agen2(x):
 async def atest_asend():
     g = agen2(3)
     n = await g.__anext__()
-    SINK(await g.asend(SOURCE))
+    SINK(await g.asend(SOURCE)) # Flow missing
 
 def test_asend():
     runa(atest_asend())
@@ -179,7 +179,7 @@ async def agen_ex(x):
 async def atest_athrow():
     g = agen_ex(SOURCE)
     n = await g.__anext__()
-    SINK(await g.athrow(TypeError))
+    SINK(await g.athrow(TypeError)) # Flow missing
 
 def test_athrow():
     runa(atest_athrow())
@@ -189,23 +189,23 @@ class C:
     a = SOURCE
 
 def test_attribute_reference():
-    SINK(C.a)
+    SINK(C.a) # Flow missing
 
 # overriding __getattr__ should be tested by the class coverage tests
 
 # 6.3.2. Subscriptions
 # This does not constitute dataflow (but could be taint flow)
 def example_subscription_string():
-    SINK("source"[0])
+    SINK("source"[0]) # Flow not expected
 
 def test_subscription_tuple():
-    SINK((SOURCE,)[0])
+    SINK((SOURCE,)[0]) # Flow missing
 
 def test_subscription_list():
-    SINK([SOURCE][0])
+    SINK([SOURCE][0]) # Flow missing
 
 def test_subscription_mapping():
-    SINK({"s":SOURCE}["s"])
+    SINK({"s":SOURCE}["s"]) # Flow missing
 
 # overriding __getitem__ should be tested by the class coverage tests
 
@@ -214,7 +214,7 @@ l = [SOURCE]
 
 def test_slicing():
     s = l[0:1:1]
-    SINK(s[0])
+    SINK(s[0]) # Flow missing
 
 # The grammar seems to allow `l[0:1:1, 0:1]`, but the interpreter does not like it
 
@@ -226,25 +226,25 @@ def test_call_positional():
     SINK(f(3, SOURCE))
 
 def test_call_keyword():
-    SINK(f(3, b=SOURCE))
+    SINK(f(3, b=SOURCE)) # Flow missing
 
 def test_call_unpack_iterable():
-    SINK(f(3, *[SOURCE]))
+    SINK(f(3, *[SOURCE])) # Flow missing
 
 def test_call_unpack_mapping():
-    SINK(f(3, **{"b": SOURCE}))
+    SINK(f(3, **{"b": SOURCE})) # Flow missing
 
 def f_extra_pos(a, *b):
     return b[0]
 
 def test_call_extra_pos():
-    SINK(f_extra_pos(3, SOURCE))
+    SINK(f_extra_pos(3, SOURCE)) # Flow missing
 
 def f_extra_keyword(a, **b):
     return b["b"]
 
 def test_call_extra_keyword():
-    SINK(f_extra_keyword(3, b=SOURCE))
+    SINK(f_extra_keyword(3, b=SOURCE)) # Flow missing
 
 # return the name of the first extra keyword argument
 def f_extra_keyword_flow(**a):
@@ -252,27 +252,29 @@ def f_extra_keyword_flow(**a):
 
 # call the function with our source as the name of the keyword arguemnt
 def test_call_extra_keyword_flow():
-    SINK(f_extra_keyword_flow(**{SOURCE: None}))
+    SINK(f_extra_keyword_flow(**{SOURCE: None})) # Flow missing
 
 # 6.12. Assignment expressions
 def test_assignment_expression():
     x = 3
-    SINK(x := SOURCE)
+    SINK(x := SOURCE) # Flow missing
 
 # 6.13. Conditional expressions
 def test_conditional_true():
-    SINK(SOURCE if True else 3)
+    SINK(SOURCE if True else 3) # Flow missing
 
 def test_conditional_false():
-    SINK(3 if False else SOURCE)
+    SINK(3 if False else SOURCE) # Flow missing
 
+# Condition is evaluated first, so x is SOURCE once chosen
 def test_conditional_evaluation_true():
     x = 3
-    SINK(x if (SOURCE == (x := SOURCE)) else 3) # Condition is evaluated first, so x is SOURCE once chosen
+    SINK(x if (SOURCE == (x := SOURCE)) else 3) # Flow missing
 
+# Condition is evaluated first, so x is SOURCE once chosen
 def test_conditional_evaluation_false():
     x = 3
-    SINK(3 if (3 == (x := SOURCE)) else x) # Condition is evaluated first, so x is SOURCE once chosen
+    SINK(3 if (3 == (x := SOURCE)) else x) # Flow missing
 
 # 6.14. Lambdas
 def test_lambda():
