@@ -40,18 +40,18 @@ class ConstIVSink extends BrokenSymmetricCryptoSink {
   ConstIVSink() {
     exists(MethodCallNode call, BasicBlock createCihperBlock, BasicBlock ivBlock, string alg |
       call = moduleImport("crypto").getAMethodCall("createCipheriv") and
-      createCihperBlock = call.(InvokeNode).getArgument(2).getBasicBlock() and
-      ivBlock = call.(InvokeNode).getArgument(2).getALocalSource().getBasicBlock() and
-      alg = call.(InvokeNode).getArgument(0).getStringValue()
+      createCihperBlock = call.getArgument(2).getBasicBlock() and
+      ivBlock = call.getArgument(2).getALocalSource().getBasicBlock() and
+      alg = call.getArgument(0).getStringValue()
     |
-      createCihperBlock.length() != ivBlock.length() and
+      call.getContainer() != call.getArgument(2).getALocalSource().getContainer() and
       alg.matches(["%aes-___-ofb%", "%aes-___-ctr%"]) and
-      this = call.(CallNode).getAMethodCall("update").getArgument(0)
+      this = call.getAMethodCall("update").getArgument(0)
     )
     or
     exists(MethodCallNode call | call = moduleImport("crypto").getAMethodCall("createCipheriv") |
       call.getNumArgument() < 3 and
-      this = call.(CallNode).getAMethodCall("update").getArgument(0)
+      this = call.getAMethodCall("update").getArgument(0)
     )
   }
 }
