@@ -31,7 +31,7 @@ class ECBUsageSink extends BrokenSymmetricCryptoSink {
       alg = call.getArgument(0).getStringValue()
     |
       alg.matches(["%aes-___-ecb%", "%des-____-ecb%"]) and
-      this = call.(CallNode).getAMethodCall("update").getArgument(0)
+      this = call.getAMethodCall("update").getArgument(0)
     )
   }
 }
