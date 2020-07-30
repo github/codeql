@@ -17,10 +17,8 @@ abstract class DataSetOrTableRelatedClass extends Class {
  */
 class DataSetOrTable extends DataSetOrTableRelatedClass {
   DataSetOrTable() {
-    this.getABaseType*().getQualifiedName().matches("System.Data.DataTable") or
-    this.getABaseType*().getQualifiedName().matches("System.Data.DataSet") or
-    this.getQualifiedName().matches("System.Data.DataTable") or
-    this.getQualifiedName().matches("System.Data.DataSet")
+    this.getABaseType*().getQualifiedName() = "System.Data.DataTable" or
+    this.getABaseType*().getQualifiedName() = "System.Data.DataSet"
   }
 }
 
@@ -32,11 +30,8 @@ class ClassWithDataSetOrTableMember extends DataSetOrTableRelatedClass {
     exists( Property p |
       p = this.getAProperty() |
       p.getType() instanceof DataSetOrTable
-    ) or exists ( AssignableMember am |
-      am = this.getAField() or
-      am = this.getAMember() |
-      am.getType() instanceof DataSetOrTable
-    ) or exists( Property p |
+    ) or this.getAMember().(AssignableMember).getType() instanceof DataSetOrTable
+    or exists( Property p |
       p = this.getAProperty() |
       p.getType() instanceof DataSetOrTable or
       p.getType().(ConstructedGeneric).getATypeArgument() instanceof DataSetOrTable 
@@ -50,12 +45,12 @@ class ClassWithDataSetOrTableMember extends DataSetOrTableRelatedClass {
 class SerializableClass extends Class {
   SerializableClass() {
     (
-      this.getABaseType*().getQualifiedName().matches("System.Xml.Serialization.XmlSerializer") or
-      this.getABaseInterface*().getQualifiedName().matches("System.Runtime.Serialization.ISerializable") or
-      this.getABaseType*().getQualifiedName().matches("System.Runtime.Serialization.XmlObjectSerializer") or
-      this.getABaseInterface*().getQualifiedName().matches("System.Runtime.Serialization.ISerializationSurrogateProvider") or
-      this.getABaseType*().getQualifiedName().matches("System.Runtime.Serialization.XmlSerializableServices") or
-      this.getABaseInterface*().getQualifiedName().matches("System.Xml.Serialization.IXmlSerializable")
+      this.getABaseType*().getQualifiedName() = "System.Xml.Serialization.XmlSerializer" or
+      this.getABaseInterface*().getQualifiedName() = "System.Runtime.Serialization.ISerializable" or
+      this.getABaseType*().getQualifiedName() = "System.Runtime.Serialization.XmlObjectSerializer" or
+      this.getABaseInterface*().getQualifiedName() = "System.Runtime.Serialization.ISerializationSurrogateProvider" or
+      this.getABaseType*().getQualifiedName() = "System.Runtime.Serialization.XmlSerializableServices" or
+      this.getABaseInterface*().getQualifiedName() = "System.Xml.Serialization.IXmlSerializable"
     ) or exists( Attribute a |
       a = this.getAnAttribute() |
       a.getType().getQualifiedName().toString() = "System.SerializableAttribute"

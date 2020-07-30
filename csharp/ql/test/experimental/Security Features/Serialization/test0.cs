@@ -10,9 +10,9 @@ using System.Collections.Generic;
 
 namespace DataSetSerializationTest
 {
-    public class DerivesFromDeprecatedType1 : XmlSerializer // bug
+    public class DerivesFromDeprecatedType1 : XmlSerializer // warning:DefiningDatasetRelatedType.ql
     {
-        public DataSet MyDataSet { get; set; }  // bug
+        public DataSet MyDataSet { get; set; }  // bug:DefiningPotentiallyUnsafeXmlSerializer.ql
 
         public DerivesFromDeprecatedType1()
         {
@@ -56,9 +56,9 @@ namespace DataSetSerializationTest
     */
 
     [Serializable()]
-    public class AttributeSerializer01  // bug
+    public class AttributeSerializer01  // warning:DefiningDatasetRelatedType.ql
     {
-        private DataSet MyDataSet;  // bug
+        private DataSet MyDataSet;  // bug:DefiningPotentiallyUnsafeXmlSerializer.ql
 
         AttributeSerializer01()
         {
@@ -85,15 +85,15 @@ namespace DataSetSerializationTest
             {
                 DataTable newTable = new DataTable();
                 System.Xml.XmlTextReader reader = new System.Xml.XmlTextReader(fs);
-                newTable.ReadXmlSchema(reader); //bug
+                newTable.ReadXmlSchema(reader); //bug:XmlDeserializationWithDataSet.ql
             }
         }
 
         static void Main(string[] args)
         {
 
-            XmlSerializer x = new XmlSerializer(typeof(DataSet));   // bug
-            XmlSerializer y = new XmlSerializer(typeof(AttributeSerializer01)); //bug
+            XmlSerializer x = new XmlSerializer(typeof(DataSet));   // bug:UnsafeTypeUsedDataContractSerializer.ql
+            XmlSerializer y = new XmlSerializer(typeof(AttributeSerializer01)); //bug:UnsafeTypeUsedDataContractSerializer.ql
 
             Console.WriteLine("Hello World!");
         }

@@ -3,7 +3,7 @@
  * @description Unsafe type is used in data contract serializer. Please visit https://go.microsoft.com/fwlink/?linkid=2132227 for details."
  * @kind problem
  * @problem.severity error
- * @precision high
+ * @precision medium
  * @id cs/dataset-serialization/unsafe-type-used-data-contract-serializer
  * @tags security
  */
@@ -11,16 +11,11 @@
 import csharp
 import DataSetSerialization
 
-predicate isClassDependingOnDataSetOrTable( Class c ) {
-  c instanceof DataSetOrTableRelatedClass
-}
-
-predicate xmlSerializerConstructorTypeParameter (Expr e) {
+predicate xmlSerializerConstructorArgument (Expr e) {
   exists (ObjectCreation oc, Constructor c |
     e = oc.getArgument(0) |
     c = oc.getTarget() and
     ( 
-      c.getDeclaringType().hasQualifiedName("System.Xml.Serialization.XmlSerializer") or
       c.getDeclaringType().getABaseType*().hasQualifiedName("System.Xml.Serialization.XmlSerializer")
     )
   )
@@ -30,9 +25,9 @@ predicate unsafeDataContractTypeCreation (Expr e) {
   exists(MethodCall gt | 
     gt.getTarget().getName() = "GetType" and
     e = gt and
-    isClassDependingOnDataSetOrTable(gt.getQualifier().getType())
+    gt.getQualifier().getType() instanceof DataSetOrTableRelatedClass
   ) or
-  isClassDependingOnDataSetOrTable(e.(TypeofExpr).getTypeAccess().getTarget())
+  e.(TypeofExpr).getTypeAccess().getTarget() instanceof DataSetOrTableRelatedClass
 }
 
 class Conf extends DataFlow::Configuration {
@@ -45,7 +40,7 @@ class Conf extends DataFlow::Configuration {
     }
   
   override predicate isSink(DataFlow::Node node) {
-      xmlSerializerConstructorTypeParameter (node.asExpr())
+      xmlSerializerConstructorArgument (node.asExpr())
     }
 }
 
