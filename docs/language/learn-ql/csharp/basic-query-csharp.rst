@@ -106,12 +106,17 @@ Browsing the results of our basic query shows that it could be improved. Among t
 
 .. code-block:: csharp
 
-   if (...) {
-     ...
-   } else if (string.Compare(option, "-verbose")==0) {
-     // nothing to do - handled earlier
-   } else {
-     error("unrecognized option");
+   if (...)
+   {
+       ...
+   }
+   else if (option == "-verbose")
+   {
+       // nothing to do - handled earlier
+   }
+   else
+   {
+       error("unrecognized option");
    }
 
 In this case, identifying the ``if`` statement with the empty ``then`` branch as redundant is a false positive. One solution to this is to modify the query to ignore empty ``then`` branches if the ``if`` statement has an ``else`` branch.
