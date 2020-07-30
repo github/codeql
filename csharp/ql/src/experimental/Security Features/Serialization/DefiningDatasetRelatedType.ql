@@ -12,4 +12,5 @@ import DataSetSerialization
 
 from DataSetOrTableRelatedClass dstc
 where dstc.fromSource()
-select dstc, "Defining a class that inherits or has a property derived from the obsolete DataSet or DataTable types. Please visit https://go.microsoft.com/fwlink/?linkid=2132227 for details."
+select dstc,
+  "Defining a class that inherits or has a property derived from the obsolete DataSet or DataTable types. Please visit https://go.microsoft.com/fwlink/?linkid=2132227 for details."
