@@ -43,7 +43,7 @@ public class InsecureBasicAuth {
 	 */
 	public void testApacheHttpRequest3(String username, String password) {
 		String uriStr = "http://www.example.com/rest/getuser.do?uid=abcdx";
-		HttpRequestBase post = new HttpPost(new URI(uriStr));
+		HttpRequestBase post = new HttpPost(URI.create(uriStr));
 		post.setHeader("Accept", "application/json");
 		post.setHeader("Content-type", "application/json");
 		
@@ -88,7 +88,7 @@ public class InsecureBasicAuth {
 	}
 
 	/**
-	 * Test basic authentication with Java HTTP URL connection.
+	 * Test basic authentication with Java HTTP URL connection using the `URL(String spec)` constructor.
 	 */
 	public void testHttpUrlConnection(String username, String password) {
 		String urlStr = "http://www.example.com/rest/getuser.do?uid=abcdx";
@@ -96,6 +96,36 @@ public class InsecureBasicAuth {
 		String encoding = Base64.getEncoder().encodeToString(authString.getBytes("UTF-8"));
 		URL url = new URL(urlStr);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestMethod("POST");
+		conn.setDoOutput(true);
+		conn.setRequestProperty("Authorization", "Basic " + encoding);
+	}
+
+	/**
+	 * Test basic authentication with Java HTTP URL connection using the `URL(String protocol, String host, String file)` constructor.
+	 */
+	public void testHttpUrlConnection2(String username, String password) {
+		String host = "www.example.com";
+		String path = "/rest/getuser.do?uid=abcdx";
+		String protocol = "http";
+		String authString = username + ":" + password;
+		String encoding = Base64.getEncoder().encodeToString(authString.getBytes("UTF-8"));
+		URL url = new URL(protocol, host, path);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestMethod("POST");
+		conn.setDoOutput(true);
+		conn.setRequestProperty("Authorization", "Basic " + encoding);
+	}
+
+	/**
+	 * Test basic authentication with Java HTTP URL connection using a constructor with private URL.
+	 */
+	public void testHttpUrlConnection3(String username, String password) {
+		String host = "localhost";
+		String urlStr = "http://"+host+"/rest/getuser.do?uid=abcdx";
+		String authString = username + ":" + password;
+		String encoding = Base64.getEncoder().encodeToString(authString.getBytes("UTF-8"));
+		HttpURLConnection conn = (HttpURLConnection) new URL("http://"+host+"/rest/getuser.do?uid=abcdx").openConnection();
 		conn.setRequestMethod("POST");
 		conn.setDoOutput(true);
 		conn.setRequestProperty("Authorization", "Basic " + encoding);
