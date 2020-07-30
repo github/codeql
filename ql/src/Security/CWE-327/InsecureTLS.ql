@@ -261,7 +261,7 @@ class LegacyTlsVersionFlag extends FlagKind {
  * Gets a control-flow node that represents a (likely) flag controlling TLS version selection.
  */
 ControlFlow::ConditionGuardNode getALegacyTlsVersionCheck() {
-  result.ensures(getAFlag(any(LegacyTlsVersionFlag f)).getANode(), _)
+  result.ensures(any(LegacyTlsVersionFlag f).getAFlag().getANode(), _)
 }
 
 /**

@@ -52,7 +52,7 @@ class InsecureCertificateFlag extends FlagKind {
  * Gets a control-flow node that represents a (likely) flag controlling an insecure certificate setup.
  */
 ControlFlow::ConditionGuardNode getAnInsecureCertificateCheck() {
-  result.ensures(getAFlag(any(InsecureCertificateFlag f)).getANode(), _)
+  result.ensures(any(InsecureCertificateFlag f).getAFlag().getANode(), _)
 }
 
 /**
