@@ -738,7 +738,16 @@ private module Cached {
     or
     getATypeParameterSubType(t1) = getATypeParameterSubType(t2)
     or
-    getANonTypeParameterSubType(t1) = getANonTypeParameterSubType(t2)
+    t1 = getANonTypeParameterSubType(t2)
+    or
+    t2 = getANonTypeParameterSubType(t1)
+    or
+    exists(ValueOrRefType i1, ValueOrRefType i2 |
+      t1 = Gvn::getGlobalValueNumber(i1) and
+      t2 = Gvn::getGlobalValueNumber(i2) and
+      exists(ValueOrRefType common | i1 = common.getABaseType+() and i2 = common.getABaseType+()) and
+      (i1 instanceof Interface or i2 instanceof Interface)
+    )
   }
 
   cached
