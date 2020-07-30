@@ -1,4 +1,5 @@
 import java
+import semmle.code.java.dataflow.DataFlow
 import CredentialReceivingApi
 
 /**
@@ -40,7 +41,7 @@ class HardcodedExpr extends Expr {
 /**
  * An argument to a sensitive call, expected to contain credentials.
  */
-abstract class CredentialsSink extends Expr {
+abstract class CredentialsSink extends DataFlow::Expr {
   Call getSurroundingCall() { this = result.getAnArgument() }
 }
 
