@@ -59,7 +59,7 @@ predicate isReturnedWithError(DataFlow::Node node) {
   exists(ReturnStmt ret |
     ret.getExpr(0) = node.asExpr() and
     ret.getNumExpr() = 2 and
-    ret.getExpr(1).getType().implements(Builtin::error().getType().getUnderlyingType())
+    ret.getExpr(1).getType() instanceof ErrorType
     // That last condition implies ret.getExpr(1) is non-nil, since nil doesn't implement `error`
   )
 }

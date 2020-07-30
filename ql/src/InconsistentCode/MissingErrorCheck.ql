@@ -90,7 +90,7 @@ predicate returnUncheckedAtNode(
     err.getAPredecessor() = call.getResult(1) and
     call.asInstruction() = node and
     isDereferenceableType(ptr.getType()) and
-    err.getType().implements(Builtin::error().getType().getUnderlyingType()) and
+    err.getType() instanceof ErrorType and
     calleeMayReturnNilWithError(call)
     or
     // Recursive case: check that some predecessor is missing a check, and `node` does not itself
