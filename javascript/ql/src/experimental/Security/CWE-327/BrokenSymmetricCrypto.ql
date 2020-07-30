@@ -28,7 +28,7 @@ class ECBUsageSink extends BrokenSymmetricCryptoSink {
   ECBUsageSink() {
     exists(MethodCallNode call, string alg |
       call = moduleImport("crypto").getAMethodCall("createCipheriv") and
-      alg = call.(InvokeNode).getArgument(0).toString()
+      alg = call.getArgument(0).getStringValue()
     |
       alg.matches(["%aes-___-ecb%", "%des-____-ecb%"]) and
       this = call.(CallNode).getAMethodCall("update").getArgument(0)
