@@ -66,24 +66,30 @@ class CredentialsApiSink extends CredentialsSink {
   }
 }
 
+/** A variable that holds a password */
+abstract class PasswordVariable extends Variable { }
+
 /**
  * A variable whose name indicates that it may hold a password.
  */
-class PasswordVariable extends Variable {
-  PasswordVariable() {
+private class ByNamePasswordVariable extends PasswordVariable {
+  ByNamePasswordVariable() {
     getName().regexpMatch("(?i)(encrypted|old|new)?pass(wd|word|code|phrase)(chars|value)?")
   }
 }
 
+/** A variable that holds a username */
+abstract class UsernameVariable extends Variable { }
+
 /**
  * A variable whose name indicates that it may hold a user name.
  */
-class UsernameVariable extends Variable {
-  UsernameVariable() { getName().regexpMatch("(?i)(user|username)") }
+private class ByNameUsernameVariable extends UsernameVariable {
+  ByNameUsernameVariable() { getName().regexpMatch("(?i)(user|username)") }
 }
 
 /**
- * An argument to a call, where the parameter name corresponding
+ * An argument to a call, where the parameter corresponding
  * to the argument indicates that it may contain credentials.
  */
 class CredentialsSourceSink extends CredentialsSink {
