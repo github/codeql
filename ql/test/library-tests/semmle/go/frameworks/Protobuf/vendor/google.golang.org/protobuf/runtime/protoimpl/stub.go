@@ -12,11 +12,11 @@ import (
 
 type EnforceVersion uint
 
-var MaxVersion int = 0
+const MaxVersion int = 20
 
 type MessageState = impl.MessageState
 
-var MinVersion int = 0
+const MinVersion int = 20
 
 type Pointer = impl.Pointer
 
@@ -89,3 +89,19 @@ func (Export) MessageTypeOf(m message) interface{} {
 func (Export) MessageStringOf(m interface{}) string {
 	return ""
 }
+
+func (Export) MessageStateOf(p Pointer) *MessageState {
+	return nil
+}
+
+func (Export) CompressGZIP(_ []byte) []byte {
+	return nil
+}
+
+type EnumInfo = impl.EnumInfo
+
+type MessageInfo = impl.MessageInfo
+
+type TypeBuilder = impl.TypeBuilder
+
+type DescBuilder = impl.DescBuilder

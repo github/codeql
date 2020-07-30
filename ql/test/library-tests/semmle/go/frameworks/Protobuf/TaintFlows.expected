@@ -1,0 +1,2 @@
+| testDeprecatedApi.go:41:25:41:43 | call to getUntrustedBytes : slice type | testDeprecatedApi.go:45:13:45:29 | selection of Description |
+| testDeprecatedApi.go:49:25:49:43 | call to getUntrustedBytes : slice type | testDeprecatedApi.go:53:13:53:34 | call to GetDescription |
