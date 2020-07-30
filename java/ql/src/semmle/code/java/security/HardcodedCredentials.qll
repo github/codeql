@@ -1,3 +1,5 @@
+/** Provides classes to analyze the use of hardcoded credentials */
+
 import java
 import semmle.code.java.dataflow.DataFlow
 import CredentialReceivingApi
