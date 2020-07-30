@@ -8,6 +8,7 @@ private import internal.FlowSummarySpecific::Private
 private import internal.DataFlowPublic as DataFlowPublic
 // import all instances below
 private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
+private import semmle.code.csharp.frameworks.EntityFramework
 
 class SummarizableCallable = Impl::Public::SummarizableCallable;
 
@@ -134,6 +135,15 @@ module SummaryOutput {
   SummaryOutput delegate(SummarizableCallable c, int i, int j) {
     result = TDelegateSummaryOutput(i, j) and
     hasDelegateArgumentPosition2(c, i, j)
+  }
+
+  /**
+   * Gets an output specification that specifies the output `output` of calling
+   * `target` as the output. `output` is limited to (this) parameters and
+   * ordinary returns.
+   */
+  SummaryOutput jump(SummarizableCallable target, SummaryOutput output) {
+    result = TJumpSummaryOutput(target, toReturnKind(output))
   }
 }
 
