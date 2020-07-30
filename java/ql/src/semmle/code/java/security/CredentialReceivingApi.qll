@@ -2,9 +2,7 @@
 
 import java
 
-/**
- * Holds if callable `c` from a standard Java API expects a password parameter at index `i`.
- */
+/** Holds if callable `c` from a standard Java API expects a password parameter at index `i`. */
 predicate javaApiCallablePasswordParam(Callable c, int i) {
   exists(c.getParameter(i)) and
   javaApiCallablePasswordParam(c.getDeclaringType().getQualifiedName() + ";" +

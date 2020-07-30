@@ -40,9 +40,7 @@ class HardcodedExpr extends Expr {
   }
 }
 
-/**
- * An argument to a sensitive call, expected to contain credentials.
- */
+/** An argument to a sensitive call, expected to contain credentials. */
 abstract class CredentialsSink extends DataFlow::Expr {
   Call getSurroundingCall() { this = result.getAnArgument() }
 }
@@ -69,9 +67,7 @@ class CredentialsApiSink extends CredentialsSink {
 /** A variable that holds a password */
 abstract class PasswordVariable extends Variable { }
 
-/**
- * A variable whose name indicates that it may hold a password.
- */
+/** A variable whose name indicates that it may hold a password. */
 private class ByNamePasswordVariable extends PasswordVariable {
   ByNamePasswordVariable() {
     getName().regexpMatch("(?i)(encrypted|old|new)?pass(wd|word|code|phrase)(chars|value)?")
@@ -81,9 +77,7 @@ private class ByNamePasswordVariable extends PasswordVariable {
 /** A variable that holds a username */
 abstract class UsernameVariable extends Variable { }
 
-/**
- * A variable whose name indicates that it may hold a user name.
- */
+/** A variable whose name indicates that it may hold a user name. */
 private class ByNameUsernameVariable extends UsernameVariable {
   ByNameUsernameVariable() { getName().regexpMatch("(?i)(user|username)") }
 }
