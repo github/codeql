@@ -1,7 +1,7 @@
 /**
  * @name Insecure TLS configuration
  * @description If an application supports insecure TLS versions or ciphers, it may be vulnerable to
- *              man-in-the-middle and other attacks.
+ *              machine-in-the-middle and other attacks.
  * @kind path-problem
  * @problem.severity warning
  * @precision very-high
@@ -15,12 +15,12 @@ import DataFlow::PathGraph
 import semmle.go.security.InsecureFeatureFlag::InsecureFeatureFlag
 
 /**
- * Holds if it is insecure to assign TLS version `val` named `named` to `tls.Config` field `fieldName`
+ * Holds if it is insecure to assign TLS version `val` named `name` to `tls.Config` field `fieldName`.
  */
 predicate isInsecureTlsVersion(int val, string name, string fieldName) {
   (fieldName = "MinVersion" or fieldName = "MaxVersion") and
-  // tls.VersionSSL30
   (
+    // tls.VersionSSL30
     val = 768 and name = "VersionSSL30"
     or
     // tls.VersionTLS10
@@ -36,12 +36,19 @@ predicate isInsecureTlsVersion(int val, string name, string fieldName) {
 }
 
 /**
+ * Returns integers that may represent a secure TLS version.
+ */
+int getASecureTlsVersion() {
+  result in [771, 772] // TLS 1.2 and 1.3 respectively
+}
+
+/**
  * Returns integers that may represent a TLS version.
  *
  * Integer values corresponding to versions are defined at https://golang.org/pkg/crypto/tls/#pkg-constants
  * Zero means the default version; at the time of writing, TLS 1.0.
  */
-int getATlsVersion() { result in [768, 769, 770, 771, 772, 0] }
+int getATlsVersion() { result = getASecureTlsVersion() or isInsecureTlsVersion(result, _, _) }
 
 /**
  * Holds if `node` refers to a value returned alongside a non-nil error value.
@@ -52,8 +59,8 @@ predicate isReturnedWithError(DataFlow::Node node) {
   exists(ReturnStmt ret |
     ret.getExpr(0) = node.asExpr() and
     ret.getNumExpr() = 2 and
-    ret.getExpr(1).getType().implements(Builtin::error().getType().getUnderlyingType()) and
-    ret.getExpr(1) != Builtin::nil().getAReference()
+    ret.getExpr(1).getType().implements(Builtin::error().getType().getUnderlyingType())
+    // That last condition implies ret.getExpr(1) is non-nil, since nil doesn't implement `error`
   )
 }
 
@@ -106,7 +113,7 @@ predicate secureTlsVersionFlowsToSink(DataFlow::PathNode sink, Field fld) {
 }
 
 /**
- * Holds if a secure TLS version may reach `base`.`fld`
+ * Holds if a secure TLS version may reach `accessPath`.`fld`
  */
 predicate secureTlsVersionFlowsToField(SsaWithFields accessPath, Field fld) {
   exists(
