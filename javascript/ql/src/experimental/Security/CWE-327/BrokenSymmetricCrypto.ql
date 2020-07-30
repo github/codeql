@@ -42,7 +42,7 @@ class ConstIVSink extends BrokenSymmetricCryptoSink {
       call = moduleImport("crypto").getAMethodCall("createCipheriv") and
       createCihperBlock = call.(InvokeNode).getArgument(2).getBasicBlock() and
       ivBlock = call.(InvokeNode).getArgument(2).getALocalSource().getBasicBlock() and
-      alg = call.(InvokeNode).getArgument(0).toString()
+      alg = call.(InvokeNode).getArgument(0).getStringValue()
     |
       createCihperBlock.length() != ivBlock.length() and
       alg.matches(["%aes-___-ofb%", "%aes-___-ctr%"]) and
