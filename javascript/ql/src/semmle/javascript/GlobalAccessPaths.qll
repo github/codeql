@@ -319,16 +319,6 @@ module AccessPath {
     }
 
     /**
-     * Holds if `succ` is assigned to the same access path as `pred`, but with `step` appended.
-     *
-     * This predicate is mostly for internal use.
-     */
-    cached
-    predicate rhs2rhs(DataFlow::Node pred, DataFlow::Node succ, string step) {
-      any(DataFlow::PropWrite pw).writes(pred, step, succ)
-    }
-
-    /**
      * Gets the access path relative to `root`, which `node` is being assigned to, if any.
      *
      * Only holds for the immediate right-hand side of an assignment or property, not
@@ -349,11 +339,9 @@ module AccessPath {
       globalRhs(node, result) and
       root.isGlobal()
       or
-      exists(DataFlow::Node pred, string step |
-        ref2rhs(pred, node, step) and
+      exists(DataFlow::Node pred, string step | ref2rhs(pred, node, step) |
         result = join(fromReference(pred, root), step)
         or
-        rhs2rhs(pred, node, step) and
         result = join(fromRhs(pred, root), step)
       )
     }
