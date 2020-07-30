@@ -397,6 +397,20 @@ public class E
         color ??= System.Drawing.Color.White;
         return color.Value; // GOOD
     }
+
+    int Ex40()
+    {
+        int? i = null;
+        i ??= null;
+        return i.Value; // BAD (always)
+    }
+
+    int Ex41()
+    {
+        int? i = 1;
+        i ??= null;
+        return i.Value; // GOOD (false positive)
+    }
 }
 
 public static class Extensions

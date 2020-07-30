@@ -370,6 +370,11 @@ nodes
 | E.cs:384:27:384:28 | access to parameter e2 |
 | E.cs:386:16:386:17 | access to parameter e1 |
 | E.cs:386:27:386:28 | access to parameter e2 |
+| E.cs:404:9:404:18 | SSA def(i) |
+| E.cs:404:9:404:18 | SSA def(i) |
+| E.cs:405:16:405:16 | access to local variable i |
+| E.cs:411:9:411:18 | SSA def(i) |
+| E.cs:412:16:412:16 | access to local variable i |
 | Forwarding.cs:7:16:7:23 | SSA def(s) |
 | Forwarding.cs:14:9:17:9 | if (...) ... |
 | Forwarding.cs:19:9:22:9 | if (...) ... |
@@ -719,6 +724,9 @@ edges
 | E.cs:384:9:385:24 | if (...) ... | E.cs:384:27:384:28 | access to parameter e2 |
 | E.cs:384:9:385:24 | if (...) ... | E.cs:386:27:386:28 | access to parameter e2 |
 | E.cs:384:27:384:28 | access to parameter e2 | E.cs:386:16:386:17 | access to parameter e1 |
+| E.cs:404:9:404:18 | SSA def(i) | E.cs:405:16:405:16 | access to local variable i |
+| E.cs:404:9:404:18 | SSA def(i) | E.cs:405:16:405:16 | access to local variable i |
+| E.cs:411:9:411:18 | SSA def(i) | E.cs:412:16:412:16 | access to local variable i |
 | Forwarding.cs:7:16:7:23 | SSA def(s) | Forwarding.cs:14:9:17:9 | if (...) ... |
 | Forwarding.cs:14:9:17:9 | if (...) ... | Forwarding.cs:19:9:22:9 | if (...) ... |
 | Forwarding.cs:19:9:22:9 | if (...) ... | Forwarding.cs:24:9:27:9 | if (...) ... |
@@ -827,6 +835,7 @@ edges
 | E.cs:386:27:386:28 | access to parameter e2 | E.cs:380:30:380:31 | SSA param(e2) | E.cs:386:27:386:28 | access to parameter e2 | Variable $@ may be null here as suggested by $@ null check. | E.cs:380:30:380:31 | e2 | e2 | E.cs:382:28:382:37 | ... != ... | this |
 | E.cs:386:27:386:28 | access to parameter e2 | E.cs:380:30:380:31 | SSA param(e2) | E.cs:386:27:386:28 | access to parameter e2 | Variable $@ may be null here as suggested by $@ null check. | E.cs:380:30:380:31 | e2 | e2 | E.cs:382:58:382:67 | ... == ... | this |
 | E.cs:386:27:386:28 | access to parameter e2 | E.cs:380:30:380:31 | SSA param(e2) | E.cs:386:27:386:28 | access to parameter e2 | Variable $@ may be null here as suggested by $@ null check. | E.cs:380:30:380:31 | e2 | e2 | E.cs:384:27:384:36 | ... == ... | this |
+| E.cs:412:16:412:16 | access to local variable i | E.cs:411:9:411:18 | SSA def(i) | E.cs:412:16:412:16 | access to local variable i | Variable $@ may be null here because of $@ assignment. | E.cs:410:14:410:14 | i | i | E.cs:411:9:411:18 | ... = ... | this |
 | GuardedString.cs:35:31:35:31 | access to local variable s | GuardedString.cs:7:16:7:32 | SSA def(s) | GuardedString.cs:35:31:35:31 | access to local variable s | Variable $@ may be null here because of $@ assignment. | GuardedString.cs:7:16:7:16 | s | s | GuardedString.cs:7:16:7:32 | String s = ... | this |
 | NullMaybeBad.cs:7:27:7:27 | access to parameter o | NullMaybeBad.cs:13:17:13:20 | null | NullMaybeBad.cs:7:27:7:27 | access to parameter o | Variable $@ may be null here because of $@ null argument. | NullMaybeBad.cs:5:25:5:25 | o | o | NullMaybeBad.cs:13:17:13:20 | null | this |
 | StringConcatenation.cs:16:17:16:17 | access to local variable s | StringConcatenation.cs:14:16:14:23 | SSA def(s) | StringConcatenation.cs:16:17:16:17 | access to local variable s | Variable $@ may be null here because of $@ assignment. | StringConcatenation.cs:14:16:14:16 | s | s | StringConcatenation.cs:14:16:14:23 | String s = ... | this |
