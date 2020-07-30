@@ -32,6 +32,12 @@ private class SystemCommandExecutors extends SystemCommandExecution, DataFlow::I
           (method = "command" or method = "commandSync")
         ) and
         cmdArg = 0
+        or
+        mod = "execa" and
+        method = "node" and
+        cmdArg = 0 and
+        optionsArg = 1 and
+        shell = false
       |
         callee = DataFlow::moduleMember(mod, method) and
         sync = getSync(method)
@@ -59,6 +65,12 @@ private class SystemCommandExecutors extends SystemCommandExecution, DataFlow::I
     |
       this = callee.getACall()
     )
+    or
+    this = DataFlow::moduleImport("foreground-child").getACall() and
+    cmdArg = 0 and
+    optionsArg = 1 and
+    shell = false and
+    sync = true
   }
 
   override DataFlow::Node getACommandArgument() { result = getArgument(cmdArg) }
@@ -118,6 +130,18 @@ private class RemoteCommandExecutor extends SystemCommandExecution, DataFlow::In
   override DataFlow::Node getACommandArgument() { result = getArgument(cmdArg) }
 
   override predicate isShellInterpreted(DataFlow::Node arg) { arg = getACommandArgument() }
+
+  override predicate isSync() { none() }
+
+  override DataFlow::Node getOptionsArg() { none() }
+}
+
+private class Opener extends SystemCommandExecution, DataFlow::InvokeNode {
+  Opener() { this = DataFlow::moduleImport("opener").getACall() }
+
+  override DataFlow::Node getACommandArgument() { result = getOptionArgument(1, "command") }
+
+  override predicate isShellInterpreted(DataFlow::Node arg) { none() }
 
   override predicate isSync() { none() }
 
