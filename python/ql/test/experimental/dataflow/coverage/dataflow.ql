@@ -1,9 +1,9 @@
 /**
-  * @kind path-problem
-  */
+ * @kind path-problem
+ */
 
- import experimental.dataflow.testConfig
- import DataFlow::PathGraph
+import experimental.dataflow.testConfig
+import DataFlow::PathGraph
 
 from TestConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
