@@ -26,8 +26,6 @@ class DataSetOrTable extends DataSetOrTableRelatedClass {
  */
 class ClassWithDataSetOrTableMember extends DataSetOrTableRelatedClass {
   ClassWithDataSetOrTableMember() {
-    exists(Property p | p = this.getAProperty() | p.getType() instanceof DataSetOrTable)
-    or
     this.getAMember().(AssignableMember).getType() instanceof DataSetOrTable
     or
     exists(Property p | p = this.getAProperty() |
