@@ -399,6 +399,55 @@
 | stl.cpp:228:8:228:28 | call to basic_string | stl.cpp:228:3:228:28 | ... = ... |  |
 | stl.cpp:228:8:228:28 | call to basic_string | stl.cpp:231:8:231:9 | s2 |  |
 | stl.cpp:228:20:228:25 | call to source | stl.cpp:228:8:228:28 | call to basic_string | TAINT |
+| stl.cpp:238:16:238:21 | call to source | stl.cpp:238:16:238:24 | call to basic_string | TAINT |
+| stl.cpp:238:16:238:24 | call to basic_string | stl.cpp:239:15:239:15 | s |  |
+| stl.cpp:238:16:238:24 | call to basic_string | stl.cpp:243:33:243:33 | s |  |
+| stl.cpp:238:16:238:24 | call to basic_string | stl.cpp:243:50:243:50 | s |  |
+| stl.cpp:238:16:238:24 | call to basic_string | stl.cpp:247:16:247:16 | s |  |
+| stl.cpp:239:15:239:15 | call to begin | stl.cpp:239:15:239:15 | (__begin) |  |
+| stl.cpp:239:15:239:15 | call to begin | stl.cpp:239:15:239:15 | (__begin) |  |
+| stl.cpp:239:15:239:15 | call to begin | stl.cpp:239:15:239:15 | (__begin) |  |
+| stl.cpp:239:15:239:15 | call to end | stl.cpp:239:15:239:15 | (__end) |  |
+| stl.cpp:239:15:239:15 | call to operator* | stl.cpp:240:8:240:8 | c |  |
+| stl.cpp:239:15:239:15 | ref arg (__begin) | stl.cpp:239:15:239:15 | (__begin) |  |
+| stl.cpp:239:15:239:15 | ref arg (__begin) | stl.cpp:239:15:239:15 | (__begin) |  |
+| stl.cpp:239:15:239:15 | ref arg (__begin) | stl.cpp:239:15:239:15 | (__begin) |  |
+| stl.cpp:239:15:239:15 | ref arg (__range) | stl.cpp:239:15:239:15 | (__range) |  |
+| stl.cpp:239:15:239:15 | s | stl.cpp:239:15:239:15 | (__range) |  |
+| stl.cpp:239:15:239:15 | s | stl.cpp:239:15:239:15 | (__range) |  |
+| stl.cpp:243:33:243:33 | ref arg s | stl.cpp:243:50:243:50 | s |  |
+| stl.cpp:243:33:243:33 | ref arg s | stl.cpp:247:16:247:16 | s |  |
+| stl.cpp:243:35:243:39 | call to begin | stl.cpp:243:44:243:45 | it |  |
+| stl.cpp:243:35:243:39 | call to begin | stl.cpp:243:61:243:62 | it |  |
+| stl.cpp:243:35:243:39 | call to begin | stl.cpp:244:9:244:10 | it |  |
+| stl.cpp:243:50:243:50 | ref arg s | stl.cpp:243:50:243:50 | s |  |
+| stl.cpp:243:50:243:50 | ref arg s | stl.cpp:247:16:247:16 | s |  |
+| stl.cpp:243:61:243:62 | ref arg it | stl.cpp:243:44:243:45 | it |  |
+| stl.cpp:243:61:243:62 | ref arg it | stl.cpp:243:61:243:62 | it |  |
+| stl.cpp:243:61:243:62 | ref arg it | stl.cpp:244:9:244:10 | it |  |
+| stl.cpp:247:16:247:16 | call to begin | stl.cpp:247:16:247:16 | (__begin) |  |
+| stl.cpp:247:16:247:16 | call to begin | stl.cpp:247:16:247:16 | (__begin) |  |
+| stl.cpp:247:16:247:16 | call to begin | stl.cpp:247:16:247:16 | (__begin) |  |
+| stl.cpp:247:16:247:16 | call to end | stl.cpp:247:16:247:16 | (__end) |  |
+| stl.cpp:247:16:247:16 | call to operator* | stl.cpp:248:8:248:8 | c |  |
+| stl.cpp:247:16:247:16 | ref arg (__begin) | stl.cpp:247:16:247:16 | (__begin) |  |
+| stl.cpp:247:16:247:16 | ref arg (__begin) | stl.cpp:247:16:247:16 | (__begin) |  |
+| stl.cpp:247:16:247:16 | ref arg (__begin) | stl.cpp:247:16:247:16 | (__begin) |  |
+| stl.cpp:247:16:247:16 | ref arg (__range) | stl.cpp:247:16:247:16 | (__range) |  |
+| stl.cpp:247:16:247:16 | s | stl.cpp:247:16:247:16 | (__range) |  |
+| stl.cpp:247:16:247:16 | s | stl.cpp:247:16:247:16 | (__range) |  |
+| stl.cpp:251:28:251:33 | call to source | stl.cpp:251:28:251:36 | call to basic_string | TAINT |
+| stl.cpp:251:28:251:36 | call to basic_string | stl.cpp:252:22:252:28 | const_s |  |
+| stl.cpp:252:22:252:22 | call to begin | stl.cpp:252:22:252:22 | (__begin) |  |
+| stl.cpp:252:22:252:22 | call to begin | stl.cpp:252:22:252:22 | (__begin) |  |
+| stl.cpp:252:22:252:22 | call to begin | stl.cpp:252:22:252:22 | (__begin) |  |
+| stl.cpp:252:22:252:22 | call to end | stl.cpp:252:22:252:22 | (__end) |  |
+| stl.cpp:252:22:252:22 | call to operator* | stl.cpp:253:8:253:8 | c |  |
+| stl.cpp:252:22:252:22 | ref arg (__begin) | stl.cpp:252:22:252:22 | (__begin) |  |
+| stl.cpp:252:22:252:22 | ref arg (__begin) | stl.cpp:252:22:252:22 | (__begin) |  |
+| stl.cpp:252:22:252:22 | ref arg (__begin) | stl.cpp:252:22:252:22 | (__begin) |  |
+| stl.cpp:252:22:252:28 | const_s | stl.cpp:252:22:252:22 | (__range) |  |
+| stl.cpp:252:22:252:28 | const_s | stl.cpp:252:22:252:22 | (__range) |  |
 | structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
 | structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
 | structlikeclass.cpp:5:7:5:7 | this | structlikeclass.cpp:5:7:5:7 | constructor init of field v [pre-this] |  |
