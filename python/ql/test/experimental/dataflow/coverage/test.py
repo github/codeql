@@ -47,7 +47,7 @@ def test_imagnumber_literal():
 # 6.2.3. Parenthesized forms
 def test_parenthesized_form():
     x = (SOURCE)
-    SINK(x) # Flow missing
+    SINK(x)
 
 # 6.2.5. List displays
 def test_list_display():
