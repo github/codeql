@@ -1,3 +1,4 @@
+edges
 | test.py:23:9:23:14 | ControlFlowNode for SOURCE | test.py:24:10:24:10 | ControlFlowNode for x |
 | test.py:28:9:28:16 | ControlFlowNode for Str | test.py:29:10:29:10 | ControlFlowNode for x |
 | test.py:32:9:32:17 | ControlFlowNode for Str | test.py:33:10:33:10 | ControlFlowNode for x |
@@ -5,4 +6,30 @@
 | test.py:40:9:40:12 | ControlFlowNode for FloatLiteral | test.py:41:10:41:10 | ControlFlowNode for x |
 | test.py:49:10:49:15 | ControlFlowNode for SOURCE | test.py:50:10:50:10 | ControlFlowNode for x |
 | test.py:226:15:226:20 | ControlFlowNode for SOURCE | test.py:226:10:226:21 | ControlFlowNode for f() |
-| test.py:280:12:280:17 | ControlFlowNode for SOURCE | test.py:280:10:280:18 | ControlFlowNode for f() |
+| test.py:282:12:282:17 | ControlFlowNode for SOURCE | test.py:282:10:282:18 | ControlFlowNode for f() |
+nodes
+| test.py:23:9:23:14 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:24:10:24:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:28:9:28:16 | ControlFlowNode for Str | semmle.label | ControlFlowNode for Str |
+| test.py:29:10:29:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:32:9:32:17 | ControlFlowNode for Str | semmle.label | ControlFlowNode for Str |
+| test.py:33:10:33:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:36:9:36:10 | ControlFlowNode for IntegerLiteral | semmle.label | ControlFlowNode for IntegerLiteral |
+| test.py:37:10:37:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:40:9:40:12 | ControlFlowNode for FloatLiteral | semmle.label | ControlFlowNode for FloatLiteral |
+| test.py:41:10:41:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:49:10:49:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:50:10:50:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:226:10:226:21 | ControlFlowNode for f() | semmle.label | ControlFlowNode for f() |
+| test.py:226:15:226:20 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:282:10:282:18 | ControlFlowNode for f() | semmle.label | ControlFlowNode for f() |
+| test.py:282:12:282:17 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+#select
+| test.py:24:10:24:10 | ControlFlowNode for x | test.py:23:9:23:14 | ControlFlowNode for SOURCE | test.py:24:10:24:10 | ControlFlowNode for x | <message> |
+| test.py:29:10:29:10 | ControlFlowNode for x | test.py:28:9:28:16 | ControlFlowNode for Str | test.py:29:10:29:10 | ControlFlowNode for x | <message> |
+| test.py:33:10:33:10 | ControlFlowNode for x | test.py:32:9:32:17 | ControlFlowNode for Str | test.py:33:10:33:10 | ControlFlowNode for x | <message> |
+| test.py:37:10:37:10 | ControlFlowNode for x | test.py:36:9:36:10 | ControlFlowNode for IntegerLiteral | test.py:37:10:37:10 | ControlFlowNode for x | <message> |
+| test.py:41:10:41:10 | ControlFlowNode for x | test.py:40:9:40:12 | ControlFlowNode for FloatLiteral | test.py:41:10:41:10 | ControlFlowNode for x | <message> |
+| test.py:50:10:50:10 | ControlFlowNode for x | test.py:49:10:49:15 | ControlFlowNode for SOURCE | test.py:50:10:50:10 | ControlFlowNode for x | <message> |
+| test.py:226:10:226:21 | ControlFlowNode for f() | test.py:226:15:226:20 | ControlFlowNode for SOURCE | test.py:226:10:226:21 | ControlFlowNode for f() | <message> |
+| test.py:282:10:282:18 | ControlFlowNode for f() | test.py:282:12:282:17 | ControlFlowNode for SOURCE | test.py:282:10:282:18 | ControlFlowNode for f() | <message> |
