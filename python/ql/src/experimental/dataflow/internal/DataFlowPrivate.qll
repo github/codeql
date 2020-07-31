@@ -220,15 +220,32 @@ predicate jumpStep(Node pred, Node succ) {
 // Field flow
 //--------
 /**
- * Holds if data can flow from `node1` to `node2` via an assignment to
+ * Holds if data can flow from `nodeFrom` to `nodeTo` via an assignment to
  * content `c`.
  */
-predicate storeStep(Node node1, Content c, Node node2) { none() }
+predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
+  // Definition
+  //   `x = (..., 42, ...)`
+  //   or
+  //   `x = [..., 42, ...]`
+  //   nodeFrom is `f(42)`, cfg node
+  //   nodeTo is `x`, essa var
+  exists(SequenceNode s |
+    nodeFrom.(CfgNode).getNode() = s.getAnElement() and
+    nodeTo.(EssaNode).getVar().getDefinition().(AssignmentDefinition).getValue() = s
+  )
+}
 
 /**
- * Holds if data can flow from `node1` to `node2` via a read of content `c`.
+ * Holds if data can flow from `nodeFrom` to `nodeTo` via a read of content `c`.
  */
-predicate readStep(Node node1, Content c, Node node2) { none() }
+predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
+  // Subscription
+  //   `l[3]`
+  //   nodeFrom is `l`
+  //   nodeTo is `l[3]`
+  nodeFrom.(CfgNode).getNode() = nodeTo.(CfgNode).getNode().(SubscriptNode).getObject()
+}
 
 /**
  * Holds if values stored inside content `c` are cleared at node `n`. For example,
