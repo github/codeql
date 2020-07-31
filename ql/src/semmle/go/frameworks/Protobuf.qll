@@ -55,7 +55,7 @@ module Protobuf {
     MergeFunction() { this.hasQualifiedName("github.com/golang/protobuf/proto", "Merge") }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isParameter(_) and outp.isParameter(0)
+      inp.isParameter(1) and outp.isParameter(0)
     }
   }
 
@@ -67,10 +67,10 @@ module Protobuf {
   }
 
   /** The `Clone` method of a protobuf `Message` type. */
-  private class MessageCloneMethod extends DataFlow::FunctionModel, Method {
-    MessageCloneMethod() { this = any(MessageType msg).getMethod("Clone") }
+  private class MessageCloneFunction extends TaintTracking::FunctionModel {
+    MessageCloneFunction() { this.hasQualifiedName("github.com/golang/protobuf/proto", "Clone") }
 
-    override predicate hasDataFlow(FunctionInput inp, FunctionOutput outp) {
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(0) and outp.isResult()
     }
   }
