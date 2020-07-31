@@ -1,2 +1,4 @@
+| testDeprecatedApi.go:22:22:22:41 | call to getUntrustedString : string | testDeprecatedApi.go:26:12:26:21 | serialized |
 | testDeprecatedApi.go:41:25:41:43 | call to getUntrustedBytes : slice type | testDeprecatedApi.go:45:13:45:29 | selection of Description |
 | testDeprecatedApi.go:49:25:49:43 | call to getUntrustedBytes : slice type | testDeprecatedApi.go:53:13:53:34 | call to GetDescription |
+| testDeprecatedApi.go:58:23:58:42 | call to getUntrustedString : string | testDeprecatedApi.go:65:12:65:21 | serialized |
