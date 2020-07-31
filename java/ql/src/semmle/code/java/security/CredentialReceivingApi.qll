@@ -1,4 +1,4 @@
-/** Provides predicates to reason about methods that accept a credential (e.g., username, password, or cryptographic secret) */
+/** Provides predicates to reason about methods that accept a credential (e.g., username, password, or cryptographic secret). */
 
 import java
 

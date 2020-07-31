@@ -1,4 +1,4 @@
-/** Provides classes to analyze the use of hardcoded credentials */
+/** Provides classes to analyze the use of hardcoded credentials. */
 
 import java
 import semmle.code.java.dataflow.DataFlow
@@ -64,7 +64,7 @@ class CredentialsApiSink extends CredentialsSink {
   }
 }
 
-/** A variable that holds a password */
+/** A variable that holds a password. */
 abstract class PasswordVariable extends Variable { }
 
 /** A variable whose name indicates that it may hold a password. */
@@ -74,10 +74,10 @@ private class ByNamePasswordVariable extends PasswordVariable {
   }
 }
 
-/** A variable that holds a username */
+/** A variable that holds a username. */
 abstract class UsernameVariable extends Variable { }
 
-/** A variable whose name indicates that it may hold a user name. */
+/** A variable whose name indicates that it may hold a username. */
 private class ByNameUsernameVariable extends UsernameVariable {
   ByNameUsernameVariable() { getName().regexpMatch("(?i)(user|username)") }
 }
