@@ -72,13 +72,7 @@ class URIConstructor extends ClassInstanceExpr {
  * Gets a regular expression for matching private hosts.
  */
 private string getPrivateHostRegex() {
-  result = "(?i)localhost(/.*)?" or
-  result = "127\\.0\\.0\\.1(/.*)?" or // IPv4 patterns
-  result = "10(\\.[0-9]+){3}(/.*)?" or
-  result = "172\\.16(\\.[0-9]+){2}(/.*)?" or
-  result = "192.168(\\.[0-9]+){2}(/.*)?" or
-  result = "\\[0:0:0:0:0:0:0:1\\](/.*)?" or // IPv6 patterns
-  result = "\\[::1\\](/.*)?"
+  result = "(?i)localhost([:/].*)?|127\\.0\\.0\\.1([:/].*)?|10(\\.[0-9]+){3}([:/].*)?|172\\.16(\\.[0-9]+){2}([:/].*)?|192.168(\\.[0-9]+){2}([:/].*)?|\\[0:0:0:0:0:0:0:1\\]([:/].*)?|\\[::1\\]([:/].*)?" 
 }
 
 /**
