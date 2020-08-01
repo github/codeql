@@ -39,7 +39,7 @@ public class InsecureBasicAuth {
 	}
 
 	/**
-	 * Test basic authentication with Apache HTTP POST request using URI constructor.
+	 * Test basic authentication with Apache HTTP POST request using URI create method.
 	 */
 	public void testApacheHttpRequest3(String username, String password) {
 		String uriStr = "http://www.example.com/rest/getuser.do?uid=abcdx";
@@ -121,11 +121,10 @@ public class InsecureBasicAuth {
 	 * Test basic authentication with Java HTTP URL connection using a constructor with private URL.
 	 */
 	public void testHttpUrlConnection3(String username, String password) {
-		String host = "localhost";
-		String urlStr = "http://"+host+"/rest/getuser.do?uid=abcdx";
+		String host = "LOCALHOST";
 		String authString = username + ":" + password;
 		String encoding = Base64.getEncoder().encodeToString(authString.getBytes("UTF-8"));
-		HttpURLConnection conn = (HttpURLConnection) new URL("http://"+host+"/rest/getuser.do?uid=abcdx").openConnection();
+		HttpURLConnection conn = (HttpURLConnection) new URL("http://"+host+"/rest/getuser.do"+"?uid=abcdx").openConnection();
 		conn.setRequestMethod("POST");
 		conn.setDoOutput(true);
 		conn.setRequestProperty("Authorization", "Basic " + encoding);

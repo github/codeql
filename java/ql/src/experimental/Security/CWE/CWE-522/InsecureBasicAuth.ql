@@ -32,32 +32,38 @@ class ApacheHttpRequest extends RefType {
 class URLConstructor extends ClassInstanceExpr {
   URLConstructor() { this.getConstructor().getDeclaringType() instanceof TypeUrl }
 
-  // URLs constructed with the string constructor `URL(String spec)`
-  Expr specArg() {
+  predicate hasHttpStringArg() {
     this.getConstructor().getParameter(0).getType() instanceof TypeString and
     (
+      // URLs constructed with the string constructor `URL(String spec)`
       this.getConstructor().getNumberOfParameters() = 1 and
-      result = this.getArgument(0) // First argument contains the whole spec.
+      this.getArgument(0) instanceof HttpString // First argument contains the whole spec.
+      or
+      // URLs constructed with any of the three string constructors below:
+      // `URL(String protocol, String host, int port, String file)`,
+      // `URL(String protocol, String host, int port, String file, URLStreamHandler handler)`,
+      // `URL(String protocol, String host, String file)`
+      this.getConstructor().getNumberOfParameters() > 1 and
+      concatHttpString(getArgument(0), this.getArgument(1)) // First argument contains the protocol part and the second argument contains the host part.
     )
   }
+}
 
-  // URLs constructed with any of the three string constructors below:
-  // `URL(String protocol, String host, int port, String file)`,
-  // `URL(String protocol, String host, int port, String file, URLStreamHandler handler)`,
-  // `URL(String protocol, String host, String file)`
-  Expr protocolArg() {
-    this.getConstructor().getParameter(0).getType() instanceof TypeString and
-    (
-      this.getConstructor().getNumberOfParameters() > 1 and
-      result = this.getArgument(0) // First argument contains the protocol part.
-    )
-  }
+/**
+ * Class of Java URI constructor.
+ */
+class URIConstructor extends ClassInstanceExpr {
+  URIConstructor() { this.getConstructor().getDeclaringType().hasQualifiedName("java.net", "URI") }
 
-  Expr hostArg() {
-    this.getConstructor().getParameter(0).getType() instanceof TypeString and
+  predicate hasHttpStringArg() {
     (
-      this.getConstructor().getNumberOfParameters() > 1 and
-      result = this.getArgument(1) // Second argument contains the host part.
+      this.getNumArgument() = 1 // `URI(String str)`
+      or
+      this.getNumArgument() = 4 and
+      concatHttpString(this.getArgument(0), this.getArgument(1)) // `URI(String scheme, String host, String path, String fragment)`
+      or
+      this.getNumArgument() = 7 and
+      concatHttpString(this.getArgument(0), this.getArgument(2)) // `URI(String scheme, String userInfo, String host, int port, String path, String query, String fragment)`
     )
   }
 }
@@ -66,7 +72,7 @@ class URLConstructor extends ClassInstanceExpr {
  * Gets a regular expression for matching private hosts.
  */
 private string getPrivateHostRegex() {
-  result = "localhost(/.*)?" or
+  result = "(?i)localhost(/.*)?" or
   result = "127\\.0\\.0\\.1(/.*)?" or // IPv4 patterns
   result = "10(\\.[0-9]+){3}(/.*)?" or
   result = "172\\.16(\\.[0-9]+){2}(/.*)?" or
@@ -78,13 +84,11 @@ private string getPrivateHostRegex() {
 /**
  * String of HTTP URLs not in private domains.
  */
-class HttpString extends StringLiteral {
-  HttpString() {
+class HttpStringLiteral extends StringLiteral {
+  HttpStringLiteral() {
     // Match URLs with the HTTP protocol and without private IP addresses to reduce false positives.
     exists(string s | this.getRepresentedString() = s |
-      s.regexpMatch("(?i)http")
-      or
-      s.regexpMatch("(?i)http://.*") and
+      s.regexpMatch("(?i)http://[a-zA-Z0-9].*") and
       not s.substring(7, s.length()).regexpMatch(getPrivateHostRegex())
     )
   }
@@ -117,20 +121,22 @@ predicate concatHttpString(Expr protocol, Expr host) {
 }
 
 /**
- * String concatenated with `HttpString`.
+ * String concatenated with `HttpStringLiteral`.
  */
-predicate builtFromHttpStringConcat(Expr expr) {
-  expr instanceof HttpString
-  or
-  expr.(VarAccess).getVariable().getAnAssignedValue() instanceof HttpString
-  or
-  concatHttpString(expr.(AddExpr).getLeftOperand(), expr.(AddExpr).getRightOperand())
-  or
-  concatHttpString(expr.(AddExpr).getLeftOperand().(AddExpr).getLeftOperand(),
-    expr.(AddExpr).getLeftOperand().(AddExpr).getRightOperand())
-  or
-  concatHttpString(expr.(AddExpr).getLeftOperand(),
-    expr.(AddExpr).getRightOperand().(AddExpr).getLeftOperand())
+class HttpString extends Expr {
+  HttpString() {
+    this instanceof HttpStringLiteral
+    or
+    this.(VarAccess).getVariable().getAnAssignedValue() instanceof HttpStringLiteral
+    or
+    concatHttpString(this.(AddExpr).getLeftOperand(), this.(AddExpr).getRightOperand())
+    or
+    concatHttpString(this.(AddExpr).getLeftOperand().(AddExpr).getLeftOperand(),
+      this.(AddExpr).getLeftOperand().(AddExpr).getRightOperand())
+    or
+    concatHttpString(this.(AddExpr).getLeftOperand(),
+      this.(AddExpr).getRightOperand().(AddExpr).getLeftOperand()) // First two elements of a string concatenated from an arbitrary number of elements.
+  }
 }
 
 /**
@@ -161,10 +167,76 @@ class HttpURLOpenMethod extends Method {
   }
 }
 
+/** Constructor of `ApacheHttpRequest` */
+predicate apacheHttpRequest(DataFlow::Node node1, DataFlow::Node node2) {
+  exists(ConstructorCall cc |
+    cc.getConstructedType() instanceof ApacheHttpRequest and
+    node2.asExpr() = cc and
+    cc.getAnArgument() = node1.asExpr()
+  )
+}
+
+/** Constructors of `URI` */
+predicate createURI(DataFlow::Node node1, DataFlow::Node node2) {
+  exists(URIConstructor cc |
+    node2.asExpr() = cc and
+    cc.getArgument(0) = node1.asExpr() and
+    cc.hasHttpStringArg()
+  )
+  or
+  exists(
+    StaticMethodAccess ma // URI.create
+  |
+    ma.getMethod().getDeclaringType().hasQualifiedName("java.net", "URI") and
+    ma.getMethod().hasName("create") and
+    node1.asExpr() = ma.getArgument(0) and
+    node2.asExpr() = ma
+  )
+}
+
+/** Constructors of `URL` */
+predicate createURL(DataFlow::Node node1, DataFlow::Node node2) {
+  exists(URLConstructor cc |
+    node2.asExpr() = cc and
+    cc.getArgument(0) = node1.asExpr() and
+    cc.hasHttpStringArg()
+  )
+}
+
+/** Method call of `HttpURLOpenMethod` */
+predicate urlOpen(DataFlow::Node node1, DataFlow::Node node2) {
+  exists(MethodAccess ma |
+    ma.getMethod() instanceof HttpURLOpenMethod and
+    node1.asExpr() = ma.getQualifier() and
+    ma = node2.asExpr()
+  )
+}
+
+/** Constructor of `BasicRequestLine` */
+predicate basicRequestLine(DataFlow::Node node1, DataFlow::Node node2) {
+  exists(ConstructorCall mcc |
+    mcc.getConstructedType().hasQualifiedName("org.apache.http.message", "BasicRequestLine") and
+    mcc.getArgument(1) = node1.asExpr() and // `BasicRequestLine(String method, String uri, ProtocolVersion version)
+    node2.asExpr() = mcc
+  )
+}
+
 class BasicAuthFlowConfig extends TaintTracking::Configuration {
   BasicAuthFlowConfig() { this = "InsecureBasicAuth::BasicAuthFlowConfig" }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof HttpString }
+  override predicate isSource(DataFlow::Node src) {
+    src.asExpr() instanceof HttpString
+    or
+    exists(URLConstructor uc |
+      uc.hasHttpStringArg() and
+      src.asExpr() = uc.getArgument(0)
+    )
+    or
+    exists(URIConstructor uc |
+      uc.hasHttpStringArg() and
+      src.asExpr() = uc.getArgument(0)
+    )
+  }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma |
@@ -180,81 +252,11 @@ class BasicAuthFlowConfig extends TaintTracking::Configuration {
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(ConstructorCall cc |
-      cc.getConstructedType() instanceof ApacheHttpRequest and
-      node2.asExpr() = cc and
-      (
-        cc.getAnArgument() = node1.asExpr() and
-        builtFromHttpStringConcat(cc.getAnArgument())
-        or
-        exists(ConstructorCall mcc |
-          (
-            mcc.getConstructedType().hasQualifiedName("org.apache.http.message", "BasicRequestLine") and
-            mcc.getArgument(1) = node1.asExpr() and // `BasicRequestLine(String method, String uri, ProtocolVersion version)
-            builtFromHttpStringConcat(mcc.getArgument(1))
-            or
-            mcc.getConstructedType().hasQualifiedName("java.net", "URI") and
-            (
-              mcc.getNumArgument() = 1 and
-              mcc.getArgument(0) = node1.asExpr() and
-              builtFromHttpStringConcat(mcc.getArgument(0)) // `URI(String str)`
-              or
-              mcc.getNumArgument() = 4 and
-              mcc.getArgument(0) = node1.asExpr() and
-              concatHttpString(mcc.getArgument(0), mcc.getArgument(1)) // `URI(String scheme, String host, String path, String fragment)`
-              or
-              mcc.getNumArgument() = 7 and
-              mcc.getArgument(0) = node1.asExpr() and
-              concatHttpString(mcc.getArgument(2), mcc.getArgument(1)) // `URI(String scheme, String userInfo, String host, int port, String path, String query, String fragment)`
-            )
-          ) and
-          (
-            cc.getAnArgument() = mcc
-            or
-            exists(VarAccess va |
-              cc.getAnArgument() = va and va.getVariable().getAnAssignedValue() = mcc
-            )
-          )
-        )
-        or
-        exists(StaticMethodAccess ma |
-          ma.getMethod().getDeclaringType().hasQualifiedName("java.net", "URI") and
-          ma.getMethod().hasName("create") and
-          builtFromHttpStringConcat(ma.getArgument(0)) and
-          node1.asExpr() = ma.getArgument(0) and
-          (
-            cc.getArgument(0) = ma
-            or
-            exists(VarAccess va |
-              cc.getArgument(0) = va and va.getVariable().getAnAssignedValue() = ma
-            )
-          )
-        )
-      )
-    )
-    or
-    exists(MethodAccess ma |
-      ma.getMethod() instanceof HttpURLOpenMethod and
-      ma = node2.asExpr() and
-      (
-        node1.asExpr() = ma.getQualifier().(URLConstructor).getArgument(0) and
-        (
-          builtFromHttpStringConcat(ma.getQualifier().(URLConstructor).specArg()) or
-          concatHttpString(ma.getQualifier().(URLConstructor).protocolArg(),
-            ma.getQualifier().(URLConstructor).hostArg())
-        )
-        or
-        exists(URLConstructor uc, VarAccess va |
-          node1.asExpr() = uc.getAnArgument() and
-          uc = va.getVariable().getAnAssignedValue() and
-          ma.getQualifier() = va and
-          (
-            builtFromHttpStringConcat(uc.specArg()) or
-            concatHttpString(uc.protocolArg(), uc.hostArg())
-          )
-        )
-      )
-    )
+    apacheHttpRequest(node1, node2) or
+    createURI(node1, node2) or
+    basicRequestLine(node1, node2) or
+    createURL(node1, node2) or
+    urlOpen(node1, node2)
   }
 }
 
