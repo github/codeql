@@ -196,6 +196,12 @@ class TypeVariable extends BoundedType, @typevariable {
 class Wildcard extends BoundedType, @wildcard {
   /**
    * Holds if this wildcard is either unconstrained (i.e. `?`) or
+   * has a type bound.
+   */
+  override predicate hasTypeBound() { BoundedType.super.hasTypeBound() }
+
+  /**
+   * Holds if this wildcard is either unconstrained (i.e. `?`) or
    * has an upper bound.
    */
   predicate hasUpperBound() { wildcards(this, _, 1) }
