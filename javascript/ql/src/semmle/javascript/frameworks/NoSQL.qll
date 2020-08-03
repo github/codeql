@@ -302,6 +302,8 @@ private module Mongoose {
         MongoDB::CollectionMethodSignatures::interpretsArgumentAsQuery(name, n)
         or
         name = "findByIdAndUpdate" and n = 1
+        or
+        name = "where" and n = 0
       }
 
       /**
