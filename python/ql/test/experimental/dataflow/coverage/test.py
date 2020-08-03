@@ -72,7 +72,7 @@ def test_list_display_negative():
 
 def test_list_comprehension():
     x = [SOURCE for y in [NONSOURCE]]
-    SINK(x[0]) # Flow missing
+    SINK(x[0])
 
 def test_list_comprehension_flow():
     x = [y for y in [SOURCE]]

@@ -16,6 +16,9 @@ edges
 | test.py:66:9:66:16 | ControlFlowNode for List [Content] | test.py:67:10:67:10 | ControlFlowNode for x [Content] |
 | test.py:66:10:66:15 | ControlFlowNode for SOURCE | test.py:66:9:66:16 | ControlFlowNode for List [Content] |
 | test.py:67:10:67:10 | ControlFlowNode for x [Content] | test.py:67:10:67:13 | ControlFlowNode for Subscript |
+| test.py:74:9:74:37 | ControlFlowNode for ListComp [Content] | test.py:75:10:75:10 | ControlFlowNode for x [Content] |
+| test.py:74:10:74:15 | ControlFlowNode for SOURCE | test.py:74:9:74:37 | ControlFlowNode for ListComp [Content] |
+| test.py:75:10:75:10 | ControlFlowNode for x [Content] | test.py:75:10:75:13 | ControlFlowNode for Subscript |
 | test.py:222:11:222:16 | ControlFlowNode for SOURCE | test.py:222:11:222:17 | ControlFlowNode for Tuple [Content] |
 | test.py:222:11:222:17 | ControlFlowNode for Tuple [Content] | test.py:222:10:222:21 | ControlFlowNode for Subscript |
 | test.py:225:10:225:17 | ControlFlowNode for List [Content] | test.py:225:10:225:20 | ControlFlowNode for Subscript |
@@ -50,6 +53,10 @@ nodes
 | test.py:66:10:66:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:67:10:67:10 | ControlFlowNode for x [Content] | semmle.label | ControlFlowNode for x [Content] |
 | test.py:67:10:67:13 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:74:9:74:37 | ControlFlowNode for ListComp [Content] | semmle.label | ControlFlowNode for ListComp [Content] |
+| test.py:74:10:74:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:75:10:75:10 | ControlFlowNode for x [Content] | semmle.label | ControlFlowNode for x [Content] |
+| test.py:75:10:75:13 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | test.py:222:10:222:21 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | test.py:222:11:222:16 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:222:11:222:17 | ControlFlowNode for Tuple [Content] | semmle.label | ControlFlowNode for Tuple [Content] |
@@ -72,6 +79,7 @@ nodes
 | test.py:53:10:53:10 | ControlFlowNode for x | test.py:52:9:52:12 | ControlFlowNode for FloatLiteral | test.py:53:10:53:10 | ControlFlowNode for x | <message> |
 | test.py:62:10:62:10 | ControlFlowNode for x | test.py:61:10:61:15 | ControlFlowNode for SOURCE | test.py:62:10:62:10 | ControlFlowNode for x | <message> |
 | test.py:67:10:67:13 | ControlFlowNode for Subscript | test.py:66:10:66:15 | ControlFlowNode for SOURCE | test.py:67:10:67:13 | ControlFlowNode for Subscript | <message> |
+| test.py:75:10:75:13 | ControlFlowNode for Subscript | test.py:74:10:74:15 | ControlFlowNode for SOURCE | test.py:75:10:75:13 | ControlFlowNode for Subscript | <message> |
 | test.py:222:10:222:21 | ControlFlowNode for Subscript | test.py:222:11:222:16 | ControlFlowNode for SOURCE | test.py:222:10:222:21 | ControlFlowNode for Subscript | <message> |
 | test.py:225:10:225:20 | ControlFlowNode for Subscript | test.py:225:11:225:16 | ControlFlowNode for SOURCE | test.py:225:10:225:20 | ControlFlowNode for Subscript | <message> |
 | test.py:246:10:246:34 | ControlFlowNode for second() | test.py:246:28:246:33 | ControlFlowNode for SOURCE | test.py:246:10:246:34 | ControlFlowNode for second() | <message> |

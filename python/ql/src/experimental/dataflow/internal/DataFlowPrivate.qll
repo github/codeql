@@ -231,6 +231,12 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   //   nodeFrom is `42`, cfg node
   //   nodeTo is the sequence, say `[..., 42, ...]`, cfg node
   nodeTo.(CfgNode).getNode().(SequenceNode).getAnElement() = nodeFrom.(CfgNode).getNode()
+  or
+  // Comprehension
+  //   `[x+1 for x in l]`
+  //   nodeFrom is `x+1`
+  //   nodeTo is `[x+1 for x in l]`
+  nodeTo.(CfgNode).getNode().getNode().(Comp).getElt() = nodeFrom.(CfgNode).getNode().getNode()
 }
 
 /**
