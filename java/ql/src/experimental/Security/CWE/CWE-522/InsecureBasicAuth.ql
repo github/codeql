@@ -14,6 +14,14 @@ import semmle.code.java.dataflow.TaintTracking
 import DataFlow::PathGraph
 
 /**
+ * Gets a regular expression for matching private hosts, which only matches the host portion therefore checking for port is not necessary.
+ */
+private string getPrivateHostRegex() {
+  result =
+    "(?i)localhost(?:[:/?#].*)?|127\\.0\\.0\\.1(?:[:/?#].*)?|10(?:\\.[0-9]+){3}(?:[:/?#].*)?|172\\.16(?:\\.[0-9]+){2}(?:[:/?#].*)?|192.168(?:\\.[0-9]+){2}(?:[:/?#].*)?|\\[0:0:0:0:0:0:0:1\\](?:[:/?#].*)?|\\[::1\\](?:[:/?#].*)?"
+}
+
+/**
  * The Java class `org.apache.http.client.methods.HttpRequestBase`. Popular subclasses include `HttpGet`, `HttpPost`, and `HttpPut`.
  * And the Java class `org.apache.http.message.BasicHttpRequest`.
  */
@@ -35,16 +43,17 @@ class URLConstructor extends ClassInstanceExpr {
   predicate hasHttpStringArg() {
     this.getConstructor().getParameter(0).getType() instanceof TypeString and
     (
-      // URLs constructed with the string constructor `URL(String spec)`
-      this.getConstructor().getNumberOfParameters() = 1 and
-      this.getArgument(0) instanceof HttpString // First argument contains the whole spec.
-      or
       // URLs constructed with any of the three string constructors below:
       // `URL(String protocol, String host, int port, String file)`,
       // `URL(String protocol, String host, int port, String file, URLStreamHandler handler)`,
       // `URL(String protocol, String host, String file)`
       this.getConstructor().getNumberOfParameters() > 1 and
-      concatHttpString(getArgument(0), this.getArgument(1)) // First argument contains the protocol part and the second argument contains the host part.
+      concatHttpString(getArgument(0), this.getArgument(1))
+      or
+      // First argument contains the protocol part and the second argument contains the host part.
+      // URLs constructed with the string constructor `URL(String spec)`
+      this.getConstructor().getNumberOfParameters() = 1 and
+      this.getArgument(0) instanceof HttpString // First argument contains the whole spec.
     )
   }
 }
@@ -57,22 +66,19 @@ class URIConstructor extends ClassInstanceExpr {
 
   predicate hasHttpStringArg() {
     (
-      this.getNumArgument() = 1 // `URI(String str)`
+      this.getNumArgument() = 1 and
+      this.getArgument(0) instanceof HttpString // `URI(String str)`
       or
       this.getNumArgument() = 4 and
       concatHttpString(this.getArgument(0), this.getArgument(1)) // `URI(String scheme, String host, String path, String fragment)`
+      or
+      this.getNumArgument() = 5 and
+      concatHttpString(this.getArgument(0), this.getArgument(1)) // `URI(String scheme, String authority, String path, String query, String fragment)` without user-info in authority
       or
       this.getNumArgument() = 7 and
       concatHttpString(this.getArgument(0), this.getArgument(2)) // `URI(String scheme, String userInfo, String host, int port, String path, String query, String fragment)`
     )
   }
-}
-
-/**
- * Gets a regular expression for matching private hosts.
- */
-private string getPrivateHostRegex() {
-  result = "(?i)localhost([:/].*)?|127\\.0\\.0\\.1([:/].*)?|10(\\.[0-9]+){3}([:/].*)?|172\\.16(\\.[0-9]+){2}([:/].*)?|192.168(\\.[0-9]+){2}([:/].*)?|\\[0:0:0:0:0:0:0:1\\]([:/].*)?|\\[::1\\]([:/].*)?" 
 }
 
 /**
@@ -82,7 +88,7 @@ class HttpStringLiteral extends StringLiteral {
   HttpStringLiteral() {
     // Match URLs with the HTTP protocol and without private IP addresses to reduce false positives.
     exists(string s | this.getRepresentedString() = s |
-      s.regexpMatch("(?i)http://[a-zA-Z0-9].*") and
+      s.regexpMatch("(?i)http://[\\[a-zA-Z0-9].*") and
       not s.substring(7, s.length()).regexpMatch(getPrivateHostRegex())
     )
   }
@@ -121,15 +127,7 @@ class HttpString extends Expr {
   HttpString() {
     this instanceof HttpStringLiteral
     or
-    this.(VarAccess).getVariable().getAnAssignedValue() instanceof HttpStringLiteral
-    or
     concatHttpString(this.(AddExpr).getLeftOperand(), this.(AddExpr).getRightOperand())
-    or
-    concatHttpString(this.(AddExpr).getLeftOperand().(AddExpr).getLeftOperand(),
-      this.(AddExpr).getLeftOperand().(AddExpr).getRightOperand())
-    or
-    concatHttpString(this.(AddExpr).getLeftOperand(),
-      this.(AddExpr).getRightOperand().(AddExpr).getLeftOperand()) // First two elements of a string concatenated from an arbitrary number of elements.
   }
 }
 
@@ -170,16 +168,15 @@ predicate apacheHttpRequest(DataFlow::Node node1, DataFlow::Node node2) {
   )
 }
 
-/** Constructors of `URI` */
+/** `URI` methods */
 predicate createURI(DataFlow::Node node1, DataFlow::Node node2) {
-  exists(URIConstructor cc |
+  exists(URIConstructor cc |  // new URI
     node2.asExpr() = cc and
-    cc.getArgument(0) = node1.asExpr() and
-    cc.hasHttpStringArg()
+    cc.getArgument(0) = node1.asExpr()
   )
   or
   exists(
-    StaticMethodAccess ma // URI.create
+    StaticMethodAccess ma  // URI.create
   |
     ma.getMethod().getDeclaringType().hasQualifiedName("java.net", "URI") and
     ma.getMethod().hasName("create") and
@@ -192,8 +189,7 @@ predicate createURI(DataFlow::Node node1, DataFlow::Node node2) {
 predicate createURL(DataFlow::Node node1, DataFlow::Node node2) {
   exists(URLConstructor cc |
     node2.asExpr() = cc and
-    cc.getArgument(0) = node1.asExpr() and
-    cc.hasHttpStringArg()
+    cc.getArgument(0) = node1.asExpr()
   )
 }
 
@@ -257,4 +253,4 @@ class BasicAuthFlowConfig extends TaintTracking::Configuration {
 from DataFlow::PathNode source, DataFlow::PathNode sink, BasicAuthFlowConfig config
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Insecure basic authentication from $@.", source.getNode(),
-  "this user input"
+  "HTTP url"

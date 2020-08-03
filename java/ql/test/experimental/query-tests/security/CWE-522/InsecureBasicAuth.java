@@ -32,8 +32,8 @@ public class InsecureBasicAuth {
 	 * Test basic authentication with Apache HTTP GET request.
 	 */
 	public void testApacheHttpRequest2(String url) throws java.io.IOException {
-		url = "http://dashboardHost:dashboardPort/payment/retrieve";
-		HttpGet get = new HttpGet(url);
+		String urlStr = "http://www.example.com:dashboardPort/payment/retrieve";
+		HttpGet get = new HttpGet(urlStr);
 		get.setHeader("Accept", "application/json");
 		get.setHeader("Authorization", "Basic " + new String(Base64.getEncoder().encode("admin:test".getBytes())));
 	}
@@ -55,9 +55,41 @@ public class InsecureBasicAuth {
 	}
 
 	/**
-	 * Test basic authentication with Apache HTTP `BasicHttpRequest` using string constructor.
+	 * Test basic authentication with Apache HTTP POST request using the URI constructor with one argument.
 	 */
 	public void testApacheHttpRequest4(String username, String password) {
+		String uriStr = "http://www.example.com/rest/getuser.do?uid=abcdx";
+		URI uri = new URI(uriStr);
+		HttpRequestBase post = new HttpPost(uri);
+		post.setHeader("Accept", "application/json");
+		post.setHeader("Content-type", "application/json");
+		
+		String authString = username + ":" + password;
+		byte[] authEncBytes = Base64.getEncoder().encode(authString.getBytes());
+		String authStringEnc = new String(authEncBytes);
+
+		post.addHeader("Authorization", "Basic " + authStringEnc);
+	}
+
+	/**
+	 * Test basic authentication with Apache HTTP POST request using a URI constructor with multiple arguments.
+	 */
+	public void testApacheHttpRequest5(String username, String password) {
+		HttpRequestBase post = new HttpPost(new URI("http", "www.example.com", "/test", "abc=123", null));
+		post.setHeader("Accept", "application/json");
+		post.setHeader("Content-type", "application/json");
+		
+		String authString = username + ":" + password;
+		byte[] authEncBytes = Base64.getEncoder().encode(authString.getBytes());
+		String authStringEnc = new String(authEncBytes);
+
+		post.addHeader("Authorization", "Basic " + authStringEnc);
+	}
+
+	/**
+	 * Test basic authentication with Apache HTTP `BasicHttpRequest` using string constructor.
+	 */
+	public void testApacheHttpRequest6(String username, String password) {
 		String uriStr = "http://www.example.com/rest/getuser.do?uid=abcdx";
 		BasicHttpRequest post = new BasicHttpRequest("POST", uriStr);
 		post.setHeader("Accept", "application/json");
@@ -73,7 +105,7 @@ public class InsecureBasicAuth {
 	/**
 	 * Test basic authentication with Apache HTTP `BasicHttpRequest` using `RequestLine`.
 	 */
-	public void testApacheHttpRequest5(String username, String password) {
+	public void testApacheHttpRequest7(String username, String password) {
 		String uriStr = "http://www.example.com/rest/getuser.do?uid=abcdx";
 		RequestLine requestLine = new BasicRequestLine("POST", uriStr, null);
 		BasicHttpRequest post = new BasicHttpRequest(requestLine);
