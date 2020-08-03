@@ -631,6 +631,13 @@ class NamedType extends @namedtype, CompositeType {
 }
 
 /**
+ * A type that implements the builtin interface `error`.
+ */
+class ErrorType extends Type {
+  ErrorType() { this.implements(Builtin::error().getType().getUnderlyingType()) }
+}
+
+/**
  * Holds if `i` is the empty interface type, which is implemented by every type with a method set.
  */
 pragma[noinline]
