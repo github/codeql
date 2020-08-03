@@ -1,14 +1,35 @@
 edges
+| test.py:24:5:24:5 | SSA variable x [Content] | test.py:25:9:25:9 | ControlFlowNode for x [Content] |
+| test.py:24:21:24:26 | ControlFlowNode for SOURCE | test.py:24:5:24:5 | SSA variable x [Content] |
+| test.py:25:9:25:9 | ControlFlowNode for x [Content] | test.py:25:9:25:12 | ControlFlowNode for Subscript |
+| test.py:25:9:25:12 | ControlFlowNode for Subscript | test.py:26:10:26:10 | ControlFlowNode for y |
+| test.py:29:5:29:5 | SSA variable x [Content] | test.py:30:9:30:9 | ControlFlowNode for x [Content] |
+| test.py:29:21:29:26 | ControlFlowNode for SOURCE | test.py:29:5:29:5 | SSA variable x [Content] |
+| test.py:30:9:30:9 | ControlFlowNode for x [Content] | test.py:30:9:30:12 | ControlFlowNode for Subscript |
+| test.py:30:9:30:12 | ControlFlowNode for Subscript | test.py:31:12:31:12 | ControlFlowNode for y |
 | test.py:35:9:35:14 | ControlFlowNode for SOURCE | test.py:36:10:36:10 | ControlFlowNode for x |
 | test.py:40:9:40:16 | ControlFlowNode for Str | test.py:41:10:41:10 | ControlFlowNode for x |
 | test.py:44:9:44:17 | ControlFlowNode for Str | test.py:45:10:45:10 | ControlFlowNode for x |
 | test.py:48:9:48:10 | ControlFlowNode for IntegerLiteral | test.py:49:10:49:10 | ControlFlowNode for x |
 | test.py:52:9:52:12 | ControlFlowNode for FloatLiteral | test.py:53:10:53:10 | ControlFlowNode for x |
 | test.py:61:10:61:15 | ControlFlowNode for SOURCE | test.py:62:10:62:10 | ControlFlowNode for x |
+| test.py:66:5:66:5 | SSA variable x [Content] | test.py:67:10:67:10 | ControlFlowNode for x [Content] |
+| test.py:66:10:66:15 | ControlFlowNode for SOURCE | test.py:66:5:66:5 | SSA variable x [Content] |
+| test.py:67:10:67:10 | ControlFlowNode for x [Content] | test.py:67:10:67:13 | ControlFlowNode for Subscript |
 | test.py:238:28:238:33 | ControlFlowNode for SOURCE | test.py:238:10:238:34 | ControlFlowNode for second() |
 | test.py:297:12:297:17 | ControlFlowNode for SOURCE | test.py:297:10:297:18 | ControlFlowNode for f() |
 | test.py:301:28:301:33 | ControlFlowNode for SOURCE | test.py:301:10:301:34 | ControlFlowNode for second() |
 nodes
+| test.py:24:5:24:5 | SSA variable x [Content] | semmle.label | SSA variable x [Content] |
+| test.py:24:21:24:26 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:25:9:25:9 | ControlFlowNode for x [Content] | semmle.label | ControlFlowNode for x [Content] |
+| test.py:25:9:25:12 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:26:10:26:10 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
+| test.py:29:5:29:5 | SSA variable x [Content] | semmle.label | SSA variable x [Content] |
+| test.py:29:21:29:26 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:30:9:30:9 | ControlFlowNode for x [Content] | semmle.label | ControlFlowNode for x [Content] |
+| test.py:30:9:30:12 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:31:12:31:12 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
 | test.py:35:9:35:14 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:36:10:36:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
 | test.py:40:9:40:16 | ControlFlowNode for Str | semmle.label | ControlFlowNode for Str |
@@ -21,6 +42,10 @@ nodes
 | test.py:53:10:53:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
 | test.py:61:10:61:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:62:10:62:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:66:5:66:5 | SSA variable x [Content] | semmle.label | SSA variable x [Content] |
+| test.py:66:10:66:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:67:10:67:10 | ControlFlowNode for x [Content] | semmle.label | ControlFlowNode for x [Content] |
+| test.py:67:10:67:13 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | test.py:238:10:238:34 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
 | test.py:238:28:238:33 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:297:10:297:18 | ControlFlowNode for f() | semmle.label | ControlFlowNode for f() |
@@ -28,12 +53,15 @@ nodes
 | test.py:301:10:301:34 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
 | test.py:301:28:301:33 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 #select
+| test.py:26:10:26:10 | ControlFlowNode for y | test.py:24:21:24:26 | ControlFlowNode for SOURCE | test.py:26:10:26:10 | ControlFlowNode for y | <message> |
+| test.py:31:12:31:12 | ControlFlowNode for y | test.py:29:21:29:26 | ControlFlowNode for SOURCE | test.py:31:12:31:12 | ControlFlowNode for y | <message> |
 | test.py:36:10:36:10 | ControlFlowNode for x | test.py:35:9:35:14 | ControlFlowNode for SOURCE | test.py:36:10:36:10 | ControlFlowNode for x | <message> |
 | test.py:41:10:41:10 | ControlFlowNode for x | test.py:40:9:40:16 | ControlFlowNode for Str | test.py:41:10:41:10 | ControlFlowNode for x | <message> |
 | test.py:45:10:45:10 | ControlFlowNode for x | test.py:44:9:44:17 | ControlFlowNode for Str | test.py:45:10:45:10 | ControlFlowNode for x | <message> |
 | test.py:49:10:49:10 | ControlFlowNode for x | test.py:48:9:48:10 | ControlFlowNode for IntegerLiteral | test.py:49:10:49:10 | ControlFlowNode for x | <message> |
 | test.py:53:10:53:10 | ControlFlowNode for x | test.py:52:9:52:12 | ControlFlowNode for FloatLiteral | test.py:53:10:53:10 | ControlFlowNode for x | <message> |
 | test.py:62:10:62:10 | ControlFlowNode for x | test.py:61:10:61:15 | ControlFlowNode for SOURCE | test.py:62:10:62:10 | ControlFlowNode for x | <message> |
+| test.py:67:10:67:13 | ControlFlowNode for Subscript | test.py:66:10:66:15 | ControlFlowNode for SOURCE | test.py:67:10:67:13 | ControlFlowNode for Subscript | <message> |
 | test.py:238:10:238:34 | ControlFlowNode for second() | test.py:238:28:238:33 | ControlFlowNode for SOURCE | test.py:238:10:238:34 | ControlFlowNode for second() | <message> |
 | test.py:297:10:297:18 | ControlFlowNode for f() | test.py:297:12:297:17 | ControlFlowNode for SOURCE | test.py:297:10:297:18 | ControlFlowNode for f() | <message> |
 | test.py:301:10:301:34 | ControlFlowNode for second() | test.py:301:28:301:33 | ControlFlowNode for SOURCE | test.py:301:10:301:34 | ControlFlowNode for second() | <message> |

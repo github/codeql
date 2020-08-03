@@ -23,12 +23,12 @@ def SINK_F(x):
 def test_tuple_with_local_flow():
     x = (NONSOURCE, SOURCE)
     y = x[1]
-    SINK(y) # Flow missing
+    SINK(y)
 
 def test_tuple_negative():
     x = (NONSOURCE, SOURCE)
     y = x[0]
-    SINK_F(y)
+    SINK_F(y) # False positive
 
 # 6.2.1. Identifiers (Names)
 def test_names():
@@ -64,7 +64,7 @@ def test_parenthesized_form():
 # 6.2.5. List displays
 def test_list_display():
     x = [SOURCE]
-    SINK(x[0]) # Flow missing
+    SINK(x[0])
 
 def test_list_display_negative():
     x = [SOURCE]
