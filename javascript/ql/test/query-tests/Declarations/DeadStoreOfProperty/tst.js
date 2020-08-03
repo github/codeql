@@ -92,7 +92,7 @@
     o.defaulted2 = 42;
 
     var o = {};
-    o.pure18 = 42; // NOT OK TODO: Currently have duplicate result.
+    o.pure18 = 42; // NOT OK
     o.pure18 = 42; // NOT OK
     o.pure18 = 42;
 

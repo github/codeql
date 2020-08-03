@@ -97,10 +97,10 @@ predicate isDeadAssignment(string name, DataFlow::PropWrite assign1, DataFlow::P
 }
 
 /**
- * Holds if `assign` assigns a property `name` that may be accessed somewhere else in the same block,
+ * Holds if `assign` assigns a property that may be accessed somewhere else in the same block,
  * `after` indicates if the access happens before or after the node for `assign`.
  */
-predicate maybeAccessesAssignedPropInBlock(DataFlow::PropWrite assign, boolean after) {
+predicate maybeAssignsAccessedPropInBlock(DataFlow::PropWrite assign, boolean after) {
   (
     // early pruning - manual magic
     after = true and postDominatedPropWrite(_, assign, _, false)
@@ -176,11 +176,13 @@ ControlFlowNode getANodeBeforeWrite(DataFlow::PropWrite write, ReachableBasicBlo
 }
 
 /**
- * Gets a successor inside `bb` in the control-flow graph that does not pass through an impure expression (except for writes to `name`).
- * Stops after the first write to `name` that happens after `node`.
+ * Gets a successor inside `bb` in the control-flow graph that does not pass through an impure expression (except for writes to the same property).
+ * Stops after the first write to same property that happens after `node`.
+ * 
+ * `node` always corresponds to the CFG node of a `DataFlow::PropWrite` with a known name.
  */
 ControlFlowNode getAPureSuccessor(ControlFlowNode node) {
-  // stop at impure expressions (except writes to `name`)
+  // stop at reads of `name` and at impure expressions (except writes to `name`)
   not (
     maybeAccessesProperty(result, getPropertyWriteName(node)) and
     not result =
@@ -197,10 +199,10 @@ ControlFlowNode getAPureSuccessor(ControlFlowNode node) {
     )
     or
     // recursive case
-    exists(ControlFlowNode pred | pred = getAPureSuccessor(node) | result = pred.getASuccessor()) and
+    result = getAPureSuccessor(node).getASuccessor() and
     // stop at basic-block boundaries
     not result instanceof BasicBlock and
-    // make sure we stop after the first write to `name` that comes after `node`.
+    // make sure we stop after the first write to the same property that comes after `node`.
     (
       not result.getAPredecessor() =
         any(DataFlow::PropWrite write | write.getPropertyName() = getPropertyWriteName(node))
@@ -250,9 +252,9 @@ predicate noPropAccessBetweenGlobal(
   |
     postDominatedPropWrite(name, assign1, assign2, false) and // early pruning
     write1 = assign1.getWriteNode() and
-    not maybeAccessesAssignedPropInBlock(assign1, true) and
+    not maybeAssignsAccessedPropInBlock(assign1, true) and
     write2 = assign2.getWriteNode() and
-    not maybeAccessesAssignedPropInBlock(assign2, false) and
+    not maybeAssignsAccessedPropInBlock(assign2, false) and
     write1.getBasicBlock() = block1 and
     write2.getBasicBlock() = block2 and
     not block1 = block2 and
