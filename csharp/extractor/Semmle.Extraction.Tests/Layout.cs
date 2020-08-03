@@ -185,7 +185,7 @@ namespace Semmle.Extraction.Tests
 
         class StringTrapEmitter : ITrapEmitter
         {
-            string Content;
+            readonly string Content;
             public StringTrapEmitter(string content)
             {
                 Content = content;

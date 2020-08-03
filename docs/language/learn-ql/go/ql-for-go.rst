@@ -6,11 +6,12 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 .. toctree::
    :hidden:
 
+   basic-query-go
    introduce-libraries-go
    ast-class-reference
    library-modeling-go
 
--  `Basic Go query <https://lgtm.com/help/lgtm/console/ql-go-basic-example>`__: Learn to write and run a simple CodeQL query using LGTM.
+-  :doc:`Basic query for Go code <basic-query-go>`: Learn to write and run a simple CodeQL query using LGTM.
 
 -  :doc:`CodeQL library for Go <introduce-libraries-go>`: When you're analyzing a Go program, you can make use of the large collection of classes in the CodeQL library for Go.
 

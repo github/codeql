@@ -1,5 +1,6 @@
 { "provide": [ "*/ql/src/qlpack.yml",
                "*/ql/test/qlpack.yml",
+               "*/ql/examples/qlpack.yml",
                "*/upgrades/qlpack.yml",
                "misc/legacy-support/*/qlpack.yml",
                "misc/suite-helpers/qlpack.yml" ] }
