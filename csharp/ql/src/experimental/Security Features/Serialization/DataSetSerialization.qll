@@ -60,16 +60,9 @@ class SerializableClass extends Class {
 /**
  * Holds if the serializable class `c` has a property or field `m` that is of `DataSet` or `DataTable` related type
  */
-predicate isClassUnsafeXmlSerializerImplementation(SerializableClass c, Member m) {
-  exists(Property p | m = p |
-    p = c.getAProperty() and
-    p.getType() instanceof DataSetOrTableRelatedClass
-  )
-  or
-  exists(AssignableMember am | am = m |
-    (am = c.getAField() or am = c.getAMember()) and
-    am.getType() instanceof DataSetOrTableRelatedClass
-  )
+predicate isClassUnsafeXmlSerializerImplementation(SerializableClass c, AssignableMember am) {
+  am = c.getAMember() and
+  am.getType() instanceof DataSetOrTableRelatedClass
 }
 
 /**
