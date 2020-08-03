@@ -42,12 +42,20 @@ class SsaSourceVariable extends LocalVariable {
  */
 private predicate unresolvedReference(string name, FuncDef fn) {
   exists(Ident unresolved |
-    unresolved.getName() = name and
-    unresolved instanceof ReferenceExpr and
+    unresolvedIdentifier(unresolved, name) and
     not unresolved = any(SelectorExpr sel).getSelector() and
-    not unresolved.refersTo(_) and
     fn = unresolved.getEnclosingFunction()
   )
+}
+
+/**
+ * Holds if `id` is an unresolved identifier with the given `name`.
+ */
+pragma[noinline]
+private predicate unresolvedIdentifier(Ident id, string name) {
+  id.getName() = name and
+  id instanceof ReferenceExpr and
+  not id.refersTo(_)
 }
 
 /**
