@@ -224,16 +224,13 @@ predicate jumpStep(Node pred, Node succ) {
  * content `c`.
  */
 predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
-  // Definition
-  //   `x = (..., 42, ...)`
+  // Sequence
+  //   `(..., 42, ...)`
   //   or
-  //   `x = [..., 42, ...]`
-  //   nodeFrom is `f(42)`, cfg node
-  //   nodeTo is `x`, essa var
-  exists(SequenceNode s |
-    nodeFrom.(CfgNode).getNode() = s.getAnElement() and
-    nodeTo.(EssaNode).getVar().getDefinition().(AssignmentDefinition).getValue() = s
-  )
+  //   `[..., 42, ...]`
+  //   nodeFrom is `42`, cfg node
+  //   nodeTo is the sequence, say `[..., 42, ...]`, cfg node
+  nodeTo.(CfgNode).getNode().(SequenceNode).getAnElement() = nodeFrom.(CfgNode).getNode()
 }
 
 /**

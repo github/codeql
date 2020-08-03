@@ -74,6 +74,10 @@ def test_list_comprehension():
     x = [SOURCE for y in [NONSOURCE]]
     SINK(x[0]) # Flow missing
 
+def test_list_comprehension_flow():
+    x = [y for y in [SOURCE]]
+    SINK(x[0]) # Flow missing
+
 def test_nested_list_display():
     x = [* [SOURCE]]
     SINK(x[0]) # Flow missing
@@ -85,6 +89,10 @@ def test_set_display():
 
 def test_set_comprehension():
     x = {SOURCE for y in [NONSOURCE]}
+    SINK(x.pop()) # Flow missing
+
+def test_set_comprehension_flow():
+    x = {y for y in [SOURCE]}
     SINK(x.pop()) # Flow missing
 
 def test_nested_set_display():
@@ -211,10 +219,10 @@ def test_attribute_reference():
 
 # 6.3.2. Subscriptions
 def test_subscription_tuple():
-    SINK((SOURCE,)[0]) # Flow missing
+    SINK((SOURCE,)[0])
 
 def test_subscription_list():
-    SINK([SOURCE][0]) # Flow missing
+    SINK([SOURCE][0])
 
 def test_subscription_mapping():
     SINK({"s":SOURCE}["s"]) # Flow missing
