@@ -25,8 +25,29 @@ private predicate selectedFile(File f) {
   exists(PrintAstConfiguration config | config.selectedFile(f))
 }
 
+private int attributableOffset(Attributable a) {
+  if count(a.getAnAttribute()) > 0 then
+    result = 1
+  else
+    result = 0
+}
+
+private int unboundGenericOffset(ValueOrRefType t) {
+  if t instanceof UnboundGeneric then
+    result = 1
+  else
+    result = 0
+}
+
+private int assignableOffset(AssignableMember a) {
+  if a.(Property).hasInitializer() then result = 1 else result = 0
+}
+
 private newtype TPrintAstNode =
-  TAstNode(ControlFlowElement ast) { shouldPrint(ast) }
+  TAstNode(Element ast) { shouldPrint(ast) } or
+  TParametersNode(Callable callable) { shouldPrint(callable) } or
+  TAttributesNode(Attributable attributable) { shouldPrint(attributable) } or
+  TTypeParametersNode(UnboundGeneric generic) { shouldPrint(generic) }
   // we might have more types.
 
 /**
@@ -81,18 +102,17 @@ class PrintAstNode extends TPrintAstNode {
   }
 }
 
-/**
- * A node representing an AST node.
- */
-abstract class BaseAstNode extends PrintAstNode {
+abstract class AstNode extends PrintAstNode, TAstNode {
   Element ast;
+
+  AstNode() { this = TAstNode(ast) and ast.fromSource() }
 
   override string toString() { 
     //result = rank[1]("[" + ast.getAQlClass().toString() + "] " + ast.toString()) 
     result = ast.toString()
   }
 
-  final override Location getLocation() { result = ast.getLocation() and selectedFile(result.getFile()) }
+  final override Location getLocation() { result = getRepresentativeLocation(ast) and selectedFile(result.getFile()) }
 
   /**
    * Gets the AST represented by this node.
@@ -100,13 +120,242 @@ abstract class BaseAstNode extends PrintAstNode {
   final Element getAst() { result = ast }
 }
 
-class AstNode extends BaseAstNode, TAstNode {
-  AstNode() { this = TAstNode(ast) }
+class ControlFlowElementNode extends AstNode {
+  ControlFlowElement controlFlowElement;
+
+  ControlFlowElementNode() { controlFlowElement = ast }
 
   override AstNode getChild(int childIndex) {
-    result.getAst() = ast.getChild(childIndex)
+    result.getAst() = controlFlowElement.getChild(childIndex)
   }
 }
+
+final class LocalFunctionStmtNode extends ControlFlowElementNode {
+  LocalFunctionStmt stmt;
+
+  LocalFunctionStmtNode() { stmt = ast }
+
+  override CallableAstNode getChild(int childIndex) {
+    childIndex = 0 and
+    result.getAst() = stmt.getLocalFunction()
+  }
+}
+
+class CallableAstNode extends AstNode {
+  Callable callable;
+
+  CallableAstNode() {
+    callable = ast
+  }
+
+  override PrintAstNode getChild(int childIndex) {
+    childIndex = 0 and
+     result.(AttributesNode).getAttributable() = callable
+    or
+    childIndex = 1 and
+     result.(TypeParametersNode).getUnboundGeneric() = callable
+    or
+     childIndex = 2 and
+     result.(ParametersNode).getCallable() = callable
+    or
+     childIndex = 3 and
+     result.(AstNode).getAst() = callable.getBody()
+  }
+}
+
+class DeclarationWithAccessorsNode extends AstNode {
+  DeclarationWithAccessors declaration;
+
+  DeclarationWithAccessorsNode() { declaration = ast }
+
+  override PrintAstNode getChild(int childIndex) {
+     childIndex = 0 and
+     result.(AttributesNode).getAttributable() = declaration
+    or
+     childIndex = attributableOffset(declaration) and
+     result.(AstNode).getAst() = declaration.(Property).getInitializer().getParent()
+    or
+     result.(AstNode).getAst() = rank[childIndex - attributableOffset(declaration) - assignableOffset(declaration)](Accessor a, string file, int line, int column
+      |
+        a = declaration.getAnAccessor() and
+        locationSortKeys(a, file, line, column)
+      |
+        a order by file, line, column)
+  }
+}
+
+class FieldNode extends AstNode {
+  Field field;
+
+  FieldNode() { field = ast }
+
+  override PrintAstNode getChild(int childIndex) {
+     childIndex = 0 and
+     result.(AttributesNode).getAttributable() = field
+    or
+     childIndex = 1 and
+     //result.(AstNode).getAst() = field.getChild(childIndex - attributableOffset(field))
+     result.(AstNode).getAst() = field.getInitializer().getParent()
+  }
+}
+
+class ParameterNode extends AstNode {
+  Parameter param;
+
+  ParameterNode() { param = ast }
+
+  final override PrintAstNode getChild(int childIndex) {
+     childIndex = 0 and
+     result.(AttributesNode).getAttributable() = param
+    or
+     childIndex = 1 and
+     param.hasDefaultValue() and
+     result.(AstNode).getAst() = param.getDefaultValue()
+  }
+}
+
+class AttributeNode extends AstNode {
+  Attribute attr;
+
+  AttributeNode() { attr = ast }
+
+  final override AstNode getChild(int childIndex) {
+    result.getAst() = attr.getChild(childIndex)
+  }
+}
+
+class TypeParameterNode extends AstNode {
+  TypeParameter typeParameter;
+
+  TypeParameterNode() { typeParameter = ast }
+
+  final override AstNode getChild(int childIndex) {
+    none()
+  }
+}
+
+private Location getRepresentativeLocation(Element ast) {
+  result = rank[1](Location loc | loc = ast.getLocation() | loc order by loc.toString() desc) // todo tv: why do I need desc here?
+}
+
+private predicate locationSortKeys(Element ast, string file, int line, int column) {
+  if exists(getRepresentativeLocation(ast))
+  then
+    exists(Location loc |
+      loc = getRepresentativeLocation(ast) and
+      file = loc.getFile().toString() and
+      line = loc.getStartLine() and
+      column = loc.getStartColumn()
+    )
+  else (
+    file = "" and
+    line = 0 and
+    column = 0
+  )
+}
+
+class TypeNode extends AstNode {
+  ValueOrRefType type;
+
+  TypeNode() { type = ast }
+
+  final override PrintAstNode getChild(int childIndex) { 
+     childIndex = 0 and
+     result.(AttributesNode).getAttributable() = type
+    or
+     childIndex = attributableOffset(type) and
+     result.(TypeParametersNode).getUnboundGeneric() = type
+    or
+    result.(AstNode).getAst() = rank[childIndex - attributableOffset(type) - unboundGenericOffset(type)](Member m, string file, int line, int column
+      |
+        m = type.getAMember()  and
+        locationSortKeys(m, file, line, column)
+      |
+        m order by file, line, column)
+  }
+}
+
+class NamespaceNode extends AstNode {
+  NamespaceDeclaration namespace;
+
+  NamespaceNode() { namespace = ast }
+
+  final override PrintAstNode getChild(int childIndex) {
+    result.(AstNode).getAst() = rank[childIndex](Element a, string file, int line, int column
+      |
+        (a = namespace.getAChildNamespaceDeclaration() or a = namespace.getATypeDeclaration()) and
+        locationSortKeys(a, file, line, column)
+      |
+        a order by file, line, column)
+ }
+}
+
+/**
+ * A node representing the parameters of a `Callable`.
+ * Only rendered if there's at least one parameter.
+ */
+final class ParametersNode extends PrintAstNode, TParametersNode {
+  Callable callable;
+
+  ParametersNode() {
+    this = TParametersNode(callable) and
+    // not callable.isCompilerGenerated() and
+    callable.getNumberOfParameters() > 0
+  }
+
+  override string toString() { result = "Parameters" }
+
+  override Location getLocation() { none() }
+
+  override ParameterNode getChild(int childIndex) { result.getAst() = callable.getParameter(childIndex) }
+
+  Callable getCallable() { result = callable }
+}
+
+final class AttributesNode extends PrintAstNode, TAttributesNode {
+  Attributable attributable;
+
+  AttributesNode() {
+    this = TAttributesNode(attributable) and
+    count(attributable.getAnAttribute()) > 0
+  }
+
+  override string toString() { result = "Attributes" }
+
+  override Location getLocation() { none() }
+
+  override AttributeNode getChild(int childIndex) {
+    result.getAst() = rank[childIndex](Attribute a, string file, int line, int column
+      |
+        a = attributable.getAnAttribute()  and
+        locationSortKeys(a, file, line, column)
+      |
+        a order by file, line, column)
+  }
+
+  Attributable getAttributable() { result = attributable }
+}
+
+final class TypeParametersNode extends PrintAstNode, TTypeParametersNode {
+  UnboundGeneric unboundGeneric;
+
+  TypeParametersNode() {
+    this = TTypeParametersNode(unboundGeneric) and
+    unboundGeneric.getNumberOfTypeParameters() > 0
+  }
+
+  override string toString() { result = "TypeParameters" }
+
+  override Location getLocation() { none() }
+
+  override TypeParameterNode getChild(int childIndex) { result.getAst() = unboundGeneric.getTypeParameter(childIndex) }
+
+  UnboundGeneric getUnboundGeneric() { result = unboundGeneric }
+}
+
+// private predicate foo(Method m, Parameter p, int i){
+//   p = m.getParameter(i) and p.getLocation().getStartLine() = 84
+// }
 
 /** Holds if `node` belongs to the output tree, and its property `key` has the given `value`. */
 query predicate nodes(PrintAstNode node, string key, string value) {
