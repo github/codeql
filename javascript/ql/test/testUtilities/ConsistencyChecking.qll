@@ -28,7 +28,7 @@ abstract class ConsistencyConfiguration extends string {
 /**
  * A string that either equals a `ConsistencyConfiguration`, or the empty string if no such configuration exists.
  *
- * Is user internally to match a configuration or lack thereof.
+ * Is used internally to match a configuration or lack thereof.
  */
 final private class Conf extends string {
   Conf() {
