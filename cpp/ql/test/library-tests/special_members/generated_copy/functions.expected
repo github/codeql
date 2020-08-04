@@ -78,8 +78,6 @@
 | copy.cpp:111:9:111:9 | MoveAssign | deleted |  |
 | copy.cpp:111:9:111:9 | operator= | deleted |  |
 | copy.cpp:113:17:113:25 | operator= |  |  |
-| copy.cpp:120:9:120:9 | OnlyCtor |  |  |
-| copy.cpp:120:9:120:9 | OnlyCtor |  |  |
 | copy.cpp:120:9:120:9 | OnlyCtor | deleted |  |
 | copy.cpp:120:9:120:9 | operator= | deleted |  |
 | copy.cpp:126:11:126:19 | operator= |  |  |
