@@ -33,11 +33,11 @@ class to exclude known safe external APIs from future analysis.</p>
 </recommendation>
 <example>
 
-<p>If the query were to return the API <code>javax.servlet.http.HttpServletResponse.sendError(int sc, java.lang.String msg) [param 1]</code> 
+<p>If the query were to return the API <code>javax.servlet.http.HttpServletResponse.sendError(int, java.lang.String) [param 1]</code> 
 then we should first consider whether this a security relevant sink. In this case, this is writing to a HTTP response, so we should 
 consider whether this is an XSS sink. If it is, we should confirm that it is handled by the XSS query.</p>
 
-<p>If the query were to return the API <code>java.lang.StringBuilder.append(java.lang.String str) [param 0]</code>, then this should be
+<p>If the query were to return the API <code>java.lang.StringBuilder.append(java.lang.String) [param 0]</code>, then this should be
 reviewed as a possible taint step, because tainted data would flow from the 0th argument to the qualifier of the call.</p>
 
 <p>Note that both examples are correctly handled with the standard taint tracking library and XSS query.</p>
