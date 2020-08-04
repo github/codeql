@@ -284,7 +284,7 @@ final class ParameterNode extends AstNode {
       )
   }
 
-  final override PrintAstNode getChild(int childIndex) {
+  override PrintAstNode getChild(int childIndex) {
     childIndex = 0 and
     result.(AttributesNode).getAttributable() = param
     or
@@ -302,7 +302,7 @@ final class AttributeNode extends AstNode {
 
   AttributeNode() { attr = ast }
 
-  final override AstNode getChild(int childIndex) { result.getAst() = attr.getChild(childIndex) }
+  override AstNode getChild(int childIndex) { result.getAst() = attr.getChild(childIndex) }
 }
 
 /**
@@ -313,7 +313,7 @@ final class TypeParameterNode extends AstNode {
 
   TypeParameterNode() { typeParameter = ast }
 
-  final override AstNode getChild(int childIndex) { none() }
+  override AstNode getChild(int childIndex) { none() }
 }
 
 /**
@@ -325,7 +325,7 @@ final class TypeNode extends AstNode {
 
   TypeNode() { type = ast }
 
-  final override PrintAstNode getChild(int childIndex) {
+  override PrintAstNode getChild(int childIndex) {
     childIndex = 0 and
     result.(AttributesNode).getAttributable() = type
     or
@@ -352,7 +352,7 @@ final class NamespaceNode extends AstNode {
 
   NamespaceNode() { namespace = ast }
 
-  final override PrintAstNode getChild(int childIndex) {
+  override PrintAstNode getChild(int childIndex) {
     result.(AstNode).getAst() =
       rank[childIndex](Element a, string file, int line, int column |
         (a = namespace.getAChildNamespaceDeclaration() or a = namespace.getATypeDeclaration()) and
