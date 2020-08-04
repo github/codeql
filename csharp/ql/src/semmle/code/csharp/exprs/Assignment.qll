@@ -43,6 +43,8 @@ class LocalVariableDeclAndInitExpr extends LocalVariableDeclExpr, Assignment {
   override LocalVariableAccess getLValue() { result = Assignment.super.getLValue() }
 
   override string toString() { result = LocalVariableDeclExpr.super.toString() + " = ..." }
+
+  override string getAPrimaryQlClass() { result = "LocalVariableDeclAndInitExpr" }
 }
 
 /**
@@ -52,6 +54,8 @@ class AssignExpr extends Assignment, @simple_assign_expr {
   override string getOperator() { result = "=" }
 
   override string toString() { result = "... = ..." }
+
+  override string getAPrimaryQlClass() { result = "AssignExpr" }
 }
 
 /**
@@ -94,13 +98,17 @@ class AssignOperation extends Assignment, @assign_op_expr {
  * operation (`AssignDivExpr`), or a remainder assignment operation
  * (`AssignRemExpr`).
  */
-class AssignArithmeticOperation extends AssignOperation, @assign_arith_expr { }
+class AssignArithmeticOperation extends AssignOperation, @assign_arith_expr {
+  override string getAPrimaryQlClass() { result = "AssignArithmeticOperation" }
+}
 
 /**
  * An addition assignment operation, for example `x += y`.
  */
 class AssignAddExpr extends AssignArithmeticOperation, @assign_add_expr {
   override string getOperator() { result = "+=" }
+
+  override string getAPrimaryQlClass() { result = "AssignAddExpr" }
 }
 
 /**
@@ -108,6 +116,8 @@ class AssignAddExpr extends AssignArithmeticOperation, @assign_add_expr {
  */
 class AssignSubExpr extends AssignArithmeticOperation, @assign_sub_expr {
   override string getOperator() { result = "-=" }
+
+  override string getAPrimaryQlClass() { result = "AssignSubExpr" }
 }
 
 /**
@@ -115,6 +125,8 @@ class AssignSubExpr extends AssignArithmeticOperation, @assign_sub_expr {
  */
 class AssignMulExpr extends AssignArithmeticOperation, @assign_mul_expr {
   override string getOperator() { result = "*=" }
+
+  override string getAPrimaryQlClass() { result = "AssignMulExpr" }
 }
 
 /**
@@ -122,6 +134,8 @@ class AssignMulExpr extends AssignArithmeticOperation, @assign_mul_expr {
  */
 class AssignDivExpr extends AssignArithmeticOperation, @assign_div_expr {
   override string getOperator() { result = "/=" }
+
+  override string getAPrimaryQlClass() { result = "AssignDivExpr" }
 }
 
 /**
@@ -129,6 +143,8 @@ class AssignDivExpr extends AssignArithmeticOperation, @assign_div_expr {
  */
 class AssignRemExpr extends AssignArithmeticOperation, @assign_rem_expr {
   override string getOperator() { result = "%=" }
+
+  override string getAPrimaryQlClass() { result = "AssignRemExpr" }
 }
 
 /**
@@ -146,6 +162,8 @@ class AssignBitwiseOperation extends AssignOperation, @assign_bitwise_expr { }
  */
 class AssignAndExpr extends AssignBitwiseOperation, @assign_and_expr {
   override string getOperator() { result = "&=" }
+
+  override string getAPrimaryQlClass() { result = "AssignAndExpr" }
 }
 
 /**
@@ -153,6 +171,8 @@ class AssignAndExpr extends AssignBitwiseOperation, @assign_and_expr {
  */
 class AssignOrExpr extends AssignBitwiseOperation, @assign_or_expr {
   override string getOperator() { result = "|=" }
+
+  override string getAPrimaryQlClass() { result = "AssignOrExpr" }
 }
 
 /**
@@ -160,6 +180,8 @@ class AssignOrExpr extends AssignBitwiseOperation, @assign_or_expr {
  */
 class AssignXorExpr extends AssignBitwiseOperation, @assign_xor_expr {
   override string getOperator() { result = "^=" }
+
+  override string getAPrimaryQlClass() { result = "AssignXorExpr" }
 }
 
 /**
@@ -167,6 +189,8 @@ class AssignXorExpr extends AssignBitwiseOperation, @assign_xor_expr {
  */
 class AssignLShiftExpr extends AssignBitwiseOperation, @assign_lshift_expr {
   override string getOperator() { result = "<<=" }
+
+  override string getAPrimaryQlClass() { result = "AssignLShiftExpr" }
 }
 
 /**
@@ -174,6 +198,8 @@ class AssignLShiftExpr extends AssignBitwiseOperation, @assign_lshift_expr {
  */
 class AssignRShiftExpr extends AssignBitwiseOperation, @assign_rshift_expr {
   override string getOperator() { result = ">>=" }
+
+  override string getAPrimaryQlClass() { result = "AssignRShiftExpr" }
 }
 
 /**
@@ -208,6 +234,8 @@ class AddOrRemoveEventExpr extends AssignOperation, @assign_event_expr {
  */
 class AddEventExpr extends AddOrRemoveEventExpr, @add_event_expr {
   override string toString() { result = "... += ..." }
+
+  override string getAPrimaryQlClass() { result = "AddEventExpr" }
 }
 
 /**
@@ -229,6 +257,8 @@ class AddEventExpr extends AddOrRemoveEventExpr, @add_event_expr {
  */
 class RemoveEventExpr extends AddOrRemoveEventExpr, @remove_event_expr {
   override string toString() { result = "... -= ..." }
+
+  override string getAPrimaryQlClass() { result = "RemoveEventExpr" }
 }
 
 /**
@@ -236,4 +266,6 @@ class RemoveEventExpr extends AddOrRemoveEventExpr, @remove_event_expr {
  */
 class AssignCoalesceExpr extends AssignOperation, @assign_coalesce_expr {
   override string toString() { result = "... ??= ..." }
+
+  override string getAPrimaryQlClass() { result = "AssignCoalesceExpr" }
 }

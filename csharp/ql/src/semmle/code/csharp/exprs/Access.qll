@@ -78,6 +78,8 @@ class ThisAccess extends Access, @this_access_expr {
   override Class getTarget() { result = this.getEnclosingCallable().getDeclaringType() }
 
   override string toString() { result = "this access" }
+
+  override string getAPrimaryQlClass() { result = "ThisAccess" }
 }
 
 /**
@@ -96,6 +98,8 @@ class BaseAccess extends Access, @base_access_expr {
   }
 
   override string toString() { result = "base access" }
+
+  override string getAPrimaryQlClass() { result = "BaseAccess" }
 }
 
 /**
@@ -239,6 +243,8 @@ class ParameterRead extends ParameterAccess, LocalScopeVariableRead {
   override ParameterRead getAReachableRead() {
     result = LocalScopeVariableRead.super.getAReachableRead()
   }
+
+  override string getAPrimaryQlClass() { result = "ParameterRead" }
 }
 
 /**
@@ -252,7 +258,9 @@ class ParameterRead extends ParameterAccess, LocalScopeVariableRead {
  * }
  * ```
  */
-class ParameterWrite extends ParameterAccess, VariableWrite { }
+class ParameterWrite extends ParameterAccess, VariableWrite {
+  override string getAPrimaryQlClass() { result = "ParameterWrite" }
+}
 
 /**
  * An access to a local variable, for example the access to `x` on line 3 in
@@ -292,6 +300,8 @@ class LocalVariableRead extends LocalVariableAccess, LocalScopeVariableRead {
   override LocalVariableRead getAReachableRead() {
     result = LocalScopeVariableRead.super.getAReachableRead()
   }
+
+  override string getAPrimaryQlClass() { result = "LocalVariableRead" }
 }
 
 /**
@@ -306,7 +316,9 @@ class LocalVariableRead extends LocalVariableAccess, LocalScopeVariableRead {
  * }
  * ```
  */
-class LocalVariableWrite extends LocalVariableAccess, VariableWrite { }
+class LocalVariableWrite extends LocalVariableAccess, VariableWrite {
+  override string getAPrimaryQlClass() { result = "LocalVariableWrite" }
+}
 
 /**
  * An access to a field, for example the access to `F` on line 5 in
@@ -341,7 +353,9 @@ class FieldAccess extends AssignableMemberAccess, VariableAccess, @field_access_
  * }
  * ```
  */
-class FieldRead extends FieldAccess, VariableRead { }
+class FieldRead extends FieldAccess, VariableRead {
+  override string getAPrimaryQlClass() { result = "FieldRead" }
+}
 
 /**
  * An access to a field that updates the underlying value, for example the
@@ -357,7 +371,9 @@ class FieldRead extends FieldAccess, VariableRead { }
  * }
  * ```
  */
-class FieldWrite extends FieldAccess, VariableWrite { }
+class FieldWrite extends FieldAccess, VariableWrite {
+  override string getAPrimaryQlClass() { result = "FieldWrite" }
+}
 
 /**
  * An access to a member (field), for example the access to `F` on line 5 in
@@ -431,6 +447,8 @@ class PropertyRead extends PropertyAccess, AssignableRead {
   override PropertyRead getANextRead() { result = AssignableRead.super.getANextRead() }
 
   override PropertyRead getAReachableRead() { result = AssignableRead.super.getAReachableRead() }
+
+  override string getAPrimaryQlClass() { result = "PropertyRead" }
 }
 
 /**
@@ -447,7 +465,9 @@ class PropertyRead extends PropertyAccess, AssignableRead {
  * }
  * ```
  */
-class PropertyWrite extends PropertyAccess, AssignableWrite { }
+class PropertyWrite extends PropertyAccess, AssignableWrite {
+  override string getAPrimaryQlClass() { result = "PropertyWrite" }
+}
 
 /**
  * An access to a trivial property - a property with a default getter and
@@ -570,6 +590,8 @@ class IndexerRead extends IndexerAccess, ElementRead {
   override IndexerRead getANextRead() { result = ElementRead.super.getANextRead() }
 
   override IndexerRead getAReachableRead() { result = ElementRead.super.getAReachableRead() }
+
+  override string getAPrimaryQlClass() { result = "IndexerRead" }
 }
 
 /**
@@ -586,7 +608,9 @@ class IndexerRead extends IndexerAccess, ElementRead {
  * }
  * ```
  */
-class IndexerWrite extends IndexerAccess, ElementWrite { }
+class IndexerWrite extends IndexerAccess, ElementWrite {
+  override string getAPrimaryQlClass() { result = "IndexerWrite" }
+}
 
 /**
  * An access to a virtual indexer - an indexer that is virtual or defined in
@@ -655,7 +679,9 @@ class EventAccess extends AssignableMemberAccess, EventAccessExpr {
  * }
  * ```
  */
-class EventRead extends EventAccess, AssignableRead { }
+class EventRead extends EventAccess, AssignableRead {
+  override string getAPrimaryQlClass() { result = "EventRead" }
+}
 
 /**
  * An access to an event that updates the underlying value, for example the
@@ -673,7 +699,9 @@ class EventRead extends EventAccess, AssignableRead { }
  * }
  * ```
  */
-class EventWrite extends EventAccess, AssignableWrite { }
+class EventWrite extends EventAccess, AssignableWrite {
+  override string getAPrimaryQlClass() { result = "EventWrite" }
+}
 
 /**
  * An access to a virtual event - an event that is virtual or defined in
@@ -727,6 +755,10 @@ class MethodAccess extends MemberAccess, CallableAccess {
   override Method getTarget() { expr_access(this, result) }
 
   override string toString() { result = "access to method " + this.getTarget().getName() }
+
+  override string getAPrimaryQlClass() {
+    result = "MethodAccess" and not this instanceof VirtualMethodAccess
+  }
 }
 
 /**
@@ -750,6 +782,8 @@ class LocalFunctionAccess extends CallableAccess {
   override LocalFunction getTarget() { expr_access(this, result) }
 
   override string toString() { result = "access to local function " + this.getTarget().getName() }
+
+  override string getAPrimaryQlClass() { result = "LocalFunctionAccess" }
 }
 
 /**
@@ -770,6 +804,8 @@ class LocalFunctionAccess extends CallableAccess {
  */
 class VirtualMethodAccess extends MethodAccess {
   VirtualMethodAccess() { targetIsOverridableOrImplementable() }
+
+  override string getAPrimaryQlClass() { result = "VirtualMethodAccess" }
 }
 
 /**
@@ -787,6 +823,8 @@ class TypeAccess extends MemberAccess, @type_access_expr {
   override Type getTarget() { result = this.getType() }
 
   override string toString() { result = "access to type " + this.getTarget().getName() }
+
+  override string getAPrimaryQlClass() { result = "TypeAccess" }
 }
 
 /**
@@ -819,7 +857,9 @@ class ArrayAccess extends ElementAccess, @array_access_expr {
  * }
  * ```
  */
-class ArrayRead extends ArrayAccess, ElementRead { }
+class ArrayRead extends ArrayAccess, ElementRead {
+  override string getAPrimaryQlClass() { result = "ArrayRead" }
+}
 
 /**
  * An access to an array that updates the underlying value, for example
@@ -831,7 +871,9 @@ class ArrayRead extends ArrayAccess, ElementRead { }
  * }
  * ```
  */
-class ArrayWrite extends ArrayAccess, ElementWrite { }
+class ArrayWrite extends ArrayAccess, ElementWrite {
+  override string getAPrimaryQlClass() { result = "ArrayWrite" }
+}
 
 /**
  * An access to a namespace, for example `System` in `nameof(System)`.
@@ -840,4 +882,6 @@ class NamespaceAccess extends Access, @namespace_access_expr {
   override Namespace getTarget() { expr_access(this, result) }
 
   override string toString() { result = "access to namespace " + this.getTarget().getName() }
+
+  override string getAPrimaryQlClass() { result = "NamespaceAccess" }
 }

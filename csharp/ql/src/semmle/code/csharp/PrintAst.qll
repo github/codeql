@@ -43,6 +43,18 @@ private int assignableOffset(AssignableMember assignable) {
 }
 
 /**
+ * Retrieves the canonical QL class(es) for entity `el`
+ */
+private string getQlClass(Element el) {
+  if count(el.getAPrimaryQlClass()) = 1
+  then result = "[" + el.getAPrimaryQlClass() + "] "
+  else
+    if count(el.getAPrimaryQlClass()) > 1
+    then result = "ERR [" + concat(el.getAPrimaryQlClass(), ",") + "] "
+    else result = "ERR_MISSING [" + concat(el.getAQlClass(), ",") + "] "
+}
+
+/**
  * An `Element`, such as a `namespace` and a `partial class`, might have multiple locations.
  * The locations are ordered by file, line, column, and then the first one is selected.
  */
@@ -150,10 +162,7 @@ abstract class AstNode extends PrintAstNode, TAstNode {
     ast.fromSource()
   }
 
-  override string toString() {
-    //result = rank[1]("[" + ast.getAQlClass().toString() + "] " + ast.toString())
-    result = ast.toString()
-  }
+  override string toString() { result = getQlClass(ast) + ast.toString() }
 
   override Location getLocation() { result = getRepresentativeLocation(ast) }
 
