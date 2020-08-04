@@ -37,12 +37,10 @@
 | io.go:79:3:79:8 | reader | io.go:78:3:78:5 | definition of buf |
 | io.go:84:24:84:29 | reader | io.go:84:9:84:33 | call to LimitReader |
 | io.go:85:22:85:23 | lr | io.go:85:11:85:19 | selection of Stdout |
-| io.go:92:3:92:3 | definition of r | io.go:90:3:90:4 | definition of r2 |
 | io.go:92:23:92:24 | r1 | io.go:92:8:92:33 | call to MultiReader |
 | io.go:92:27:92:28 | r2 | io.go:92:8:92:33 | call to MultiReader |
 | io.go:92:31:92:32 | r3 | io.go:92:8:92:33 | call to MultiReader |
 | io.go:93:22:93:22 | r | io.go:93:11:93:19 | selection of Stdout |
-| io.go:98:3:98:5 | definition of tee | io.go:98:26:98:29 | &... |
 | io.go:98:23:98:23 | r | io.go:98:10:98:30 | call to TeeReader |
 | io.go:98:23:98:23 | r | io.go:98:26:98:29 | &... |
 | io.go:98:26:98:29 | &... | io.go:97:7:97:9 | definition of buf |
