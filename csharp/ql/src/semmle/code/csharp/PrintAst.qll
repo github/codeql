@@ -6,6 +6,9 @@ private newtype TPrintAstConfiguration = MkPrintAstConfiguration()
  * The query can extend this class to control which elements are printed.
  */
 class PrintAstConfiguration extends TPrintAstConfiguration {
+  /**
+   * Gets a textual representation of this `PrintAstConfiguration`.
+   */
   string toString() { result = "PrintAstConfiguration" }
 
   /**
@@ -110,8 +113,6 @@ class PrintAstNode extends TPrintAstNode {
    * but need not be contiguous.
    */
   abstract PrintAstNode getChild(int childIndex);
-
-  final predicate shouldPrint() { any() }
 
   /**
    * Gets the children of this node.
@@ -392,6 +393,9 @@ final class ParametersNode extends PrintAstNode, TParametersNode {
     result.getAst() = callable.getParameter(childIndex)
   }
 
+  /**
+   * Returns the underlying `Callable`
+   */
   Callable getCallable() { result = callable }
 }
 
@@ -421,6 +425,9 @@ final class AttributesNode extends PrintAstNode, TAttributesNode {
       )
   }
 
+  /**
+   * Returns the underlying `Attributable`
+   */
   Attributable getAttributable() { result = attributable }
 }
 
@@ -443,12 +450,14 @@ final class TypeParametersNode extends PrintAstNode, TTypeParametersNode {
     result.getAst() = unboundGeneric.getTypeParameter(childIndex)
   }
 
+  /**
+   * Returns the underlying `UnboundGeneric`
+   */
   UnboundGeneric getUnboundGeneric() { result = unboundGeneric }
 }
 
 /** Holds if `node` belongs to the output tree, and its property `key` has the given `value`. */
 query predicate nodes(PrintAstNode node, string key, string value) {
-  node.shouldPrint() and
   value = node.getProperty(key)
 }
 
@@ -458,8 +467,6 @@ query predicate nodes(PrintAstNode node, string key, string value) {
  */
 query predicate edges(PrintAstNode source, PrintAstNode target, string key, string value) {
   exists(int childIndex |
-    source.shouldPrint() and
-    target.shouldPrint() and
     target = source.getChild(childIndex) and
     (
       key = "semmle.label" and value = source.getChildEdgeLabel(childIndex)
