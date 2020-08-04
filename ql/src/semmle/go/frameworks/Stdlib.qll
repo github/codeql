@@ -6,6 +6,7 @@ import go
 import semmle.go.frameworks.stdlib.ArchiveTar
 import semmle.go.frameworks.stdlib.ArchiveZip
 import semmle.go.frameworks.stdlib.Bufio
+import semmle.go.frameworks.stdlib.Bytes
 
 /** A `String()` method. */
 class StringMethod extends TaintTracking::FunctionModel, Method {
@@ -70,17 +71,6 @@ module PathFilePath {
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(_) and
       outp.isResult(_)
-    }
-  }
-}
-
-/** Provides models of commonly used functions in the `bytes` package. */
-private module Bytes {
-  private class BufferBytes extends TaintTracking::FunctionModel, Method {
-    BufferBytes() { this.hasQualifiedName("bytes", "Buffer", ["Bytes", "String"]) }
-
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      input.isReceiver() and output.isResult()
     }
   }
 }
