@@ -13,9 +13,11 @@ module Bufio {
     FunctionModels() {
       // signature: func NewReadWriter(r *Reader, w *Writer) *ReadWriter
       hasQualifiedName("bufio", "NewReadWriter") and
-      (inp.isParameter(0) and outp.isResult())
-      or
-      inp.isResult() and outp.isParameter(1)
+      (
+        inp.isParameter(0) and outp.isResult()
+        or
+        inp.isResult() and outp.isParameter(1)
+      )
       or
       // signature: func NewReader(rd io.Reader) *Reader
       hasQualifiedName("bufio", "NewReader") and
@@ -64,73 +66,72 @@ module Bufio {
     FunctionOutput outp;
 
     MethodModels() {
-      // Methods:
       // signature: func (*Reader).Peek(n int) ([]byte, error)
-      this.(Method).hasQualifiedName("bufio", "Reader", "Peek") and
+      this.hasQualifiedName("bufio", "Reader", "Peek") and
       (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (*Reader).ReadByte() (byte, error)
-      this.(Method).hasQualifiedName("bufio", "Reader", "ReadByte") and
+      this.hasQualifiedName("bufio", "Reader", "ReadByte") and
       (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (*Reader).ReadBytes(delim byte) ([]byte, error)
-      this.(Method).hasQualifiedName("bufio", "Reader", "ReadBytes") and
+      this.hasQualifiedName("bufio", "Reader", "ReadBytes") and
       (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (*Reader).ReadLine() (line []byte, isPrefix bool, err error)
-      this.(Method).hasQualifiedName("bufio", "Reader", "ReadLine") and
+      this.hasQualifiedName("bufio", "Reader", "ReadLine") and
       (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (*Reader).ReadRune() (r rune, size int, err error)
-      this.(Method).hasQualifiedName("bufio", "Reader", "ReadRune") and
+      this.hasQualifiedName("bufio", "Reader", "ReadRune") and
       (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (*Reader).ReadSlice(delim byte) (line []byte, err error)
-      this.(Method).hasQualifiedName("bufio", "Reader", "ReadSlice") and
+      this.hasQualifiedName("bufio", "Reader", "ReadSlice") and
       (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (*Reader).ReadString(delim byte) (string, error)
-      this.(Method).hasQualifiedName("bufio", "Reader", "ReadString") and
+      this.hasQualifiedName("bufio", "Reader", "ReadString") and
       (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (*Reader).Reset(r io.Reader)
-      this.(Method).hasQualifiedName("bufio", "Reader", "Reset") and
+      this.hasQualifiedName("bufio", "Reader", "Reset") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (*Reader).WriteTo(w io.Writer) (n int64, err error)
-      this.(Method).hasQualifiedName("bufio", "Reader", "WriteTo") and
+      this.hasQualifiedName("bufio", "Reader", "WriteTo") and
       (inp.isReceiver() and outp.isParameter(0))
       or
       // signature: func (*Scanner).Bytes() []byte
-      this.(Method).hasQualifiedName("bufio", "Scanner", "Bytes") and
+      this.hasQualifiedName("bufio", "Scanner", "Bytes") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (*Scanner).Text() string
-      this.(Method).hasQualifiedName("bufio", "Scanner", "Text") and
+      this.hasQualifiedName("bufio", "Scanner", "Text") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (*Writer).ReadFrom(r io.Reader) (n int64, err error)
-      this.(Method).hasQualifiedName("bufio", "Writer", "ReadFrom") and
+      this.hasQualifiedName("bufio", "Writer", "ReadFrom") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (*Writer).Reset(w io.Writer)
-      this.(Method).hasQualifiedName("bufio", "Writer", "Reset") and
+      this.hasQualifiedName("bufio", "Writer", "Reset") and
       (inp.isReceiver() and outp.isParameter(0))
       or
       // signature: func (*Writer).Write(p []byte) (nn int, err error)
-      this.(Method).hasQualifiedName("bufio", "Writer", "Write") and
+      this.hasQualifiedName("bufio", "Writer", "Write") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (*Writer).WriteByte(c byte) error
-      this.(Method).hasQualifiedName("bufio", "Writer", "WriteByte") and
+      this.hasQualifiedName("bufio", "Writer", "WriteByte") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (*Writer).WriteRune(r rune) (size int, err error)
-      this.(Method).hasQualifiedName("bufio", "Writer", "WriteRune") and
+      this.hasQualifiedName("bufio", "Writer", "WriteRune") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (*Writer).WriteString(s string) (int, error)
-      this.(Method).hasQualifiedName("bufio", "Writer", "WriteString") and
+      this.hasQualifiedName("bufio", "Writer", "WriteString") and
       (inp.isParameter(0) and outp.isReceiver())
     }
 
