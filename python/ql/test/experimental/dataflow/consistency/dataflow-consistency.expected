@@ -88,7 +88,7 @@ uniquePostUpdate
 postIsInSameCallable
 reverseRead
 storeIsPostUpdate
-| test.py:152:5:152:5 | SSA variable l | Store targets should be PostUpdateNodes. |
+| test.py:152:9:152:16 | ControlFlowNode for List | Store targets should be PostUpdateNodes. |
 argHasPostUpdate
 | test.py:25:10:25:10 | ControlFlowNode for t | ArgumentNode is missing PostUpdateNode. |
 | test.py:29:10:29:10 | ControlFlowNode for t | ArgumentNode is missing PostUpdateNode. |

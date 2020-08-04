@@ -33,8 +33,15 @@ class Node extends TNode {
   /** Gets the scope of this node. */
   Scope getScope() { none() }
 
+  private DataFlowCallable getCallableScope(Scope s) {
+    result.getScope() = s
+    or
+    not exists(DataFlowCallable c | c.getScope() = s) and
+    result = getCallableScope(s.getEnclosingScope())
+  }
+
   /** Gets the enclosing callable of this node. */
-  DataFlowCallable getEnclosingCallable() { result.getScope() = this.getScope() }
+  DataFlowCallable getEnclosingCallable() { result = getCallableScope(this.getScope()) }
 
   /** Gets the location of this node */
   Location getLocation() { none() }

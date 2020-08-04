@@ -234,8 +234,8 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   or
   // Comprehension
   //   `[x+1 for x in l]`
-  //   nodeFrom is `x+1`
-  //   nodeTo is `[x+1 for x in l]`
+  //   nodeFrom is `x+1`, cfg node
+  //   nodeTo is `[x+1 for x in l]`, cfg node
   nodeTo.(CfgNode).getNode().getNode().(Comp).getElt() = nodeFrom.(CfgNode).getNode().getNode()
 }
 
@@ -245,9 +245,42 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
 predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   // Subscription
   //   `l[3]`
-  //   nodeFrom is `l`
-  //   nodeTo is `l[3]`
+  //   nodeFrom is `l`, cfg node
+  //   nodeTo is `l[3]`, cfg node
   nodeFrom.(CfgNode).getNode() = nodeTo.(CfgNode).getNode().(SubscriptNode).getObject()
+  or
+  // set.pop
+  //   `s.pop()`
+  //   nodeFrom is `s`, cfg node
+  //   nodeTo is `s.pop()`, cfg node
+  exists(CallNode call, AttrNode a |
+    call.getFunction() = a and
+    a.getName() = "pop" and // TODO: Should be made more robust, like Value::named("set.pop").getACall()
+    nodeFrom.(CfgNode).getNode() = a.getObject() and
+    nodeTo.(CfgNode).getNode() = call
+  )
+  or
+  // Comprehension
+  //   `[x+1 for x in l]`
+  //   nodeFrom is `l`, cfg node
+  //   nodeTo is `x`, essa var
+  exists(For f, Comp comp |
+    // Seems to need extractor changes to write this part properly
+    nodeFrom.(CfgNode).getNode().(SequenceNode).getNode().getParentNode() = comp and
+    colocated(f.getIter(), comp) and
+    nodeTo.(EssaNode).getVar().getDefinition().(AssignmentDefinition).getDefiningNode().getNode() = f.getTarget()
+  )
+}
+
+
+
+/** This should not be necessary */
+predicate colocated(AstNode n1, AstNode n2) {
+  n1.getLocation().getFile() = n2.getLocation().getFile() and
+  n1.getLocation().getStartLine() = n2.getLocation().getStartLine() and
+  n1.getLocation().getEndLine() = n2.getLocation().getEndLine() and
+  n1.getLocation().getStartColumn() = n2.getLocation().getStartColumn() and
+  n1.getLocation().getEndColumn() = n2.getLocation().getEndColumn()
 }
 
 /**
