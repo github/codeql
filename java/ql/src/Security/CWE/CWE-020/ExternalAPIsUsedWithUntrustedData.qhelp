@@ -28,7 +28,7 @@ used as the qualifier to the method call.</p>
 </ul>
 
 <p>Otherwise, the result is likely uninteresting. Custom versions of this query can extend the <code>SafeExternalAPIMethod</code> 
-class to exclude known safe external APIs from future analysis.
+class to exclude known safe external APIs from future analysis.</p>
 
 </recommendation>
 <example>
