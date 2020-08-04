@@ -155,9 +155,7 @@ abstract class AstNode extends PrintAstNode, TAstNode {
     result = ast.toString()
   }
 
-  final override Location getLocation() {
-    result = getRepresentativeLocation(ast) and selectedFile(result.getFile())
-  }
+  override Location getLocation() { result = getRepresentativeLocation(ast) }
 
   /**
    * Gets the AST represented by this node.
@@ -270,6 +268,21 @@ final class ParameterNode extends AstNode {
   Parameter param;
 
   ParameterNode() { param = ast }
+
+  override Location getLocation() {
+    not param.hasExtensionMethodModifier() and result = super.getLocation()
+    or
+    // for extension method first parameters, we're choosing the shorter location of the two
+    param.hasExtensionMethodModifier() and
+    result =
+      rank[1](Location loc |
+        loc = ast.getLocation() and
+        selectedFile(loc.getFile()) and
+        loc.getStartLine() = loc.getEndLine()
+      |
+        loc order by loc.getEndColumn() - loc.getStartColumn()
+      )
+  }
 
   final override PrintAstNode getChild(int childIndex) {
     childIndex = 0 and
