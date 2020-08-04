@@ -92,108 +92,82 @@ func TaintStepTest_BufioReaderRead_B0I0O0(sourceCQL interface{}) interface{} {
 	return intoByte898
 }
 
-func TaintStepTest_BufioReaderReadByte_B0I0O0(sourceCQL interface{}) interface{} {
+func TaintStepTest_BufioReaderReadBytes_B0I0O0(sourceCQL interface{}) interface{} {
 	fromReader598 := sourceCQL.(bufio.Reader)
-	intoByte631, _ := fromReader598.ReadByte()
+	intoByte631, _ := fromReader598.ReadBytes(0)
 	return intoByte631
 }
 
-func TaintStepTest_BufioReaderReadBytes_B0I0O0(sourceCQL interface{}) interface{} {
+func TaintStepTest_BufioReaderReadLine_B0I0O0(sourceCQL interface{}) interface{} {
 	fromReader165 := sourceCQL.(bufio.Reader)
-	intoByte150, _ := fromReader165.ReadBytes(0)
+	intoByte150, _, _ := fromReader165.ReadLine()
 	return intoByte150
 }
 
-func TaintStepTest_BufioReaderReadLine_B0I0O0(sourceCQL interface{}) interface{} {
+func TaintStepTest_BufioReaderReadSlice_B0I0O0(sourceCQL interface{}) interface{} {
 	fromReader340 := sourceCQL.(bufio.Reader)
-	intoByte471, _, _ := fromReader340.ReadLine()
+	intoByte471, _ := fromReader340.ReadSlice(0)
 	return intoByte471
 }
 
-func TaintStepTest_BufioReaderReadRune_B0I0O0(sourceCQL interface{}) interface{} {
-	fromReader290 := sourceCQL.(bufio.Reader)
-	intoRune758, _, _ := fromReader290.ReadRune()
-	return intoRune758
-}
-
-func TaintStepTest_BufioReaderReadSlice_B0I0O0(sourceCQL interface{}) interface{} {
-	fromReader396 := sourceCQL.(bufio.Reader)
-	intoByte707, _ := fromReader396.ReadSlice(0)
-	return intoByte707
-}
-
 func TaintStepTest_BufioReaderReadString_B0I0O0(sourceCQL interface{}) interface{} {
-	fromReader912 := sourceCQL.(bufio.Reader)
-	intoString718, _ := fromReader912.ReadString(0)
-	return intoString718
+	fromReader290 := sourceCQL.(bufio.Reader)
+	intoString758, _ := fromReader290.ReadString(0)
+	return intoString758
 }
 
 func TaintStepTest_BufioReaderReset_B0I0O0(sourceCQL interface{}) interface{} {
-	fromReader972 := sourceCQL.(io.Reader)
-	var intoReader633 bufio.Reader
-	intoReader633.Reset(fromReader972)
-	return intoReader633
+	fromReader396 := sourceCQL.(io.Reader)
+	var intoReader707 bufio.Reader
+	intoReader707.Reset(fromReader396)
+	return intoReader707
 }
 
 func TaintStepTest_BufioReaderWriteTo_B0I0O0(sourceCQL interface{}) interface{} {
-	fromReader316 := sourceCQL.(bufio.Reader)
-	var intoWriter145 io.Writer
-	fromReader316.WriteTo(intoWriter145)
-	return intoWriter145
+	fromReader912 := sourceCQL.(bufio.Reader)
+	var intoWriter718 io.Writer
+	fromReader912.WriteTo(intoWriter718)
+	return intoWriter718
 }
 
 func TaintStepTest_BufioScannerBytes_B0I0O0(sourceCQL interface{}) interface{} {
-	fromScanner817 := sourceCQL.(bufio.Scanner)
-	intoByte474 := fromScanner817.Bytes()
-	return intoByte474
+	fromScanner972 := sourceCQL.(bufio.Scanner)
+	intoByte633 := fromScanner972.Bytes()
+	return intoByte633
 }
 
 func TaintStepTest_BufioScannerText_B0I0O0(sourceCQL interface{}) interface{} {
-	fromScanner832 := sourceCQL.(bufio.Scanner)
-	intoString378 := fromScanner832.Text()
-	return intoString378
+	fromScanner316 := sourceCQL.(bufio.Scanner)
+	intoString145 := fromScanner316.Text()
+	return intoString145
 }
 
 func TaintStepTest_BufioWriterReadFrom_B0I0O0(sourceCQL interface{}) interface{} {
-	fromReader541 := sourceCQL.(io.Reader)
-	var intoWriter139 bufio.Writer
-	intoWriter139.ReadFrom(fromReader541)
-	return intoWriter139
+	fromReader817 := sourceCQL.(io.Reader)
+	var intoWriter474 bufio.Writer
+	intoWriter474.ReadFrom(fromReader817)
+	return intoWriter474
 }
 
 func TaintStepTest_BufioWriterReset_B0I0O0(sourceCQL interface{}) interface{} {
-	fromWriter814 := sourceCQL.(bufio.Writer)
-	var intoWriter768 io.Writer
-	fromWriter814.Reset(intoWriter768)
-	return intoWriter768
+	fromWriter832 := sourceCQL.(bufio.Writer)
+	var intoWriter378 io.Writer
+	fromWriter832.Reset(intoWriter378)
+	return intoWriter378
 }
 
 func TaintStepTest_BufioWriterWrite_B0I0O0(sourceCQL interface{}) interface{} {
-	fromByte468 := sourceCQL.([]byte)
-	var intoWriter736 bufio.Writer
-	intoWriter736.Write(fromByte468)
-	return intoWriter736
-}
-
-func TaintStepTest_BufioWriterWriteByte_B0I0O0(sourceCQL interface{}) interface{} {
-	fromByte516 := sourceCQL.(byte)
-	var intoWriter246 bufio.Writer
-	intoWriter246.WriteByte(fromByte516)
-	return intoWriter246
-}
-
-func TaintStepTest_BufioWriterWriteRune_B0I0O0(sourceCQL interface{}) interface{} {
-	fromRune679 := sourceCQL.(rune)
-	var intoWriter736 bufio.Writer
-	intoWriter736.WriteRune(fromRune679)
-	return intoWriter736
+	fromByte541 := sourceCQL.([]byte)
+	var intoWriter139 bufio.Writer
+	intoWriter139.Write(fromByte541)
+	return intoWriter139
 }
 
 func TaintStepTest_BufioWriterWriteString_B0I0O0(sourceCQL interface{}) interface{} {
-	fromString839 := sourceCQL.(string)
-	var intoWriter273 bufio.Writer
-	intoWriter273.WriteString(fromString839)
-	return intoWriter273
+	fromString814 := sourceCQL.(string)
+	var intoWriter768 bufio.Writer
+	intoWriter768.WriteString(fromString814)
+	return intoWriter768
 }
 
 func RunAllTaints_Bufio() {
@@ -264,82 +238,62 @@ func RunAllTaints_Bufio() {
 	}
 	{
 		source := newSource(13)
-		out := TaintStepTest_BufioReaderReadByte_B0I0O0(source)
+		out := TaintStepTest_BufioReaderReadBytes_B0I0O0(source)
 		sink(13, out)
 	}
 	{
 		source := newSource(14)
-		out := TaintStepTest_BufioReaderReadBytes_B0I0O0(source)
+		out := TaintStepTest_BufioReaderReadLine_B0I0O0(source)
 		sink(14, out)
 	}
 	{
 		source := newSource(15)
-		out := TaintStepTest_BufioReaderReadLine_B0I0O0(source)
+		out := TaintStepTest_BufioReaderReadSlice_B0I0O0(source)
 		sink(15, out)
 	}
 	{
 		source := newSource(16)
-		out := TaintStepTest_BufioReaderReadRune_B0I0O0(source)
+		out := TaintStepTest_BufioReaderReadString_B0I0O0(source)
 		sink(16, out)
 	}
 	{
 		source := newSource(17)
-		out := TaintStepTest_BufioReaderReadSlice_B0I0O0(source)
+		out := TaintStepTest_BufioReaderReset_B0I0O0(source)
 		sink(17, out)
 	}
 	{
 		source := newSource(18)
-		out := TaintStepTest_BufioReaderReadString_B0I0O0(source)
+		out := TaintStepTest_BufioReaderWriteTo_B0I0O0(source)
 		sink(18, out)
 	}
 	{
 		source := newSource(19)
-		out := TaintStepTest_BufioReaderReset_B0I0O0(source)
+		out := TaintStepTest_BufioScannerBytes_B0I0O0(source)
 		sink(19, out)
 	}
 	{
 		source := newSource(20)
-		out := TaintStepTest_BufioReaderWriteTo_B0I0O0(source)
+		out := TaintStepTest_BufioScannerText_B0I0O0(source)
 		sink(20, out)
 	}
 	{
 		source := newSource(21)
-		out := TaintStepTest_BufioScannerBytes_B0I0O0(source)
+		out := TaintStepTest_BufioWriterReadFrom_B0I0O0(source)
 		sink(21, out)
 	}
 	{
 		source := newSource(22)
-		out := TaintStepTest_BufioScannerText_B0I0O0(source)
+		out := TaintStepTest_BufioWriterReset_B0I0O0(source)
 		sink(22, out)
 	}
 	{
 		source := newSource(23)
-		out := TaintStepTest_BufioWriterReadFrom_B0I0O0(source)
+		out := TaintStepTest_BufioWriterWrite_B0I0O0(source)
 		sink(23, out)
 	}
 	{
 		source := newSource(24)
-		out := TaintStepTest_BufioWriterReset_B0I0O0(source)
-		sink(24, out)
-	}
-	{
-		source := newSource(25)
-		out := TaintStepTest_BufioWriterWrite_B0I0O0(source)
-		sink(25, out)
-	}
-	{
-		source := newSource(26)
-		out := TaintStepTest_BufioWriterWriteByte_B0I0O0(source)
-		sink(26, out)
-	}
-	{
-		source := newSource(27)
-		out := TaintStepTest_BufioWriterWriteRune_B0I0O0(source)
-		sink(27, out)
-	}
-	{
-		source := newSource(28)
 		out := TaintStepTest_BufioWriterWriteString_B0I0O0(source)
-		sink(28, out)
+		sink(24, out)
 	}
 }

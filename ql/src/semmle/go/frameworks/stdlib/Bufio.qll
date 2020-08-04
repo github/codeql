@@ -70,20 +70,12 @@ module Bufio {
       this.hasQualifiedName("bufio", "Reader", "Peek") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Reader).ReadByte() (byte, error)
-      this.hasQualifiedName("bufio", "Reader", "ReadByte") and
-      (inp.isReceiver() and outp.isResult(0))
-      or
       // signature: func (*Reader).ReadBytes(delim byte) ([]byte, error)
       this.hasQualifiedName("bufio", "Reader", "ReadBytes") and
       (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (*Reader).ReadLine() (line []byte, isPrefix bool, err error)
       this.hasQualifiedName("bufio", "Reader", "ReadLine") and
-      (inp.isReceiver() and outp.isResult(0))
-      or
-      // signature: func (*Reader).ReadRune() (r rune, size int, err error)
-      this.hasQualifiedName("bufio", "Reader", "ReadRune") and
       (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (*Reader).ReadSlice(delim byte) (line []byte, err error)
@@ -120,14 +112,6 @@ module Bufio {
       or
       // signature: func (*Writer).Write(p []byte) (nn int, err error)
       this.hasQualifiedName("bufio", "Writer", "Write") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
-      // signature: func (*Writer).WriteByte(c byte) error
-      this.hasQualifiedName("bufio", "Writer", "WriteByte") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
-      // signature: func (*Writer).WriteRune(r rune) (size int, err error)
-      this.hasQualifiedName("bufio", "Writer", "WriteRune") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (*Writer).WriteString(s string) (int, error)

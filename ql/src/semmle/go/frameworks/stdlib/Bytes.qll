@@ -158,10 +158,6 @@ module Bytes {
       this.hasQualifiedName("bytes", "Buffer", "Next") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (*Buffer).ReadByte() (byte, error)
-      this.hasQualifiedName("bytes", "Buffer", "ReadByte") and
-      (inp.isReceiver() and outp.isResult(0))
-      or
       // signature: func (*Buffer).ReadBytes(delim byte) (line []byte, err error)
       this.hasQualifiedName("bytes", "Buffer", "ReadBytes") and
       (inp.isReceiver() and outp.isResult(0))
@@ -169,10 +165,6 @@ module Bytes {
       // signature: func (*Buffer).ReadFrom(r io.Reader) (n int64, err error)
       this.hasQualifiedName("bytes", "Buffer", "ReadFrom") and
       (inp.isParameter(0) and outp.isReceiver())
-      or
-      // signature: func (*Buffer).ReadRune() (r rune, size int, err error)
-      this.hasQualifiedName("bytes", "Buffer", "ReadRune") and
-      (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (*Buffer).ReadString(delim byte) (line string, err error)
       this.hasQualifiedName("bytes", "Buffer", "ReadString") and
@@ -186,14 +178,6 @@ module Bytes {
       this.hasQualifiedName("bytes", "Buffer", "Write") and
       (inp.isParameter(0) and outp.isReceiver())
       or
-      // signature: func (*Buffer).WriteByte(c byte) error
-      this.hasQualifiedName("bytes", "Buffer", "WriteByte") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
-      // signature: func (*Buffer).WriteRune(r rune) (n int, err error)
-      this.hasQualifiedName("bytes", "Buffer", "WriteRune") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
       // signature: func (*Buffer).WriteString(s string) (n int, err error)
       this.hasQualifiedName("bytes", "Buffer", "WriteString") and
       (inp.isParameter(0) and outp.isReceiver())
@@ -205,14 +189,6 @@ module Bytes {
       // signature: func (*Reader).ReadAt(b []byte, off int64) (n int, err error)
       this.hasQualifiedName("bytes", "Reader", "ReadAt") and
       (inp.isReceiver() and outp.isParameter(0))
-      or
-      // signature: func (*Reader).ReadByte() (byte, error)
-      this.hasQualifiedName("bytes", "Reader", "ReadByte") and
-      (inp.isReceiver() and outp.isResult(0))
-      or
-      // signature: func (*Reader).ReadRune() (ch rune, size int, err error)
-      this.hasQualifiedName("bytes", "Reader", "ReadRune") and
-      (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (*Reader).Reset(b []byte)
       this.hasQualifiedName("bytes", "Reader", "Reset") and

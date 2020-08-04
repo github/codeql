@@ -242,116 +242,78 @@ func TaintStepTest_BytesBufferRead_B0I0O0(sourceCQL interface{}) interface{} {
 	return intoByte382
 }
 
-func TaintStepTest_BytesBufferReadByte_B0I0O0(sourceCQL interface{}) interface{} {
+func TaintStepTest_BytesBufferReadBytes_B0I0O0(sourceCQL interface{}) interface{} {
 	fromBuffer715 := sourceCQL.(bytes.Buffer)
-	intoByte179, _ := fromBuffer715.ReadByte()
+	intoByte179, _ := fromBuffer715.ReadBytes(0)
 	return intoByte179
 }
 
-func TaintStepTest_BytesBufferReadBytes_B0I0O0(sourceCQL interface{}) interface{} {
-	fromBuffer366 := sourceCQL.(bytes.Buffer)
-	intoByte648, _ := fromBuffer366.ReadBytes(0)
-	return intoByte648
-}
-
 func TaintStepTest_BytesBufferReadFrom_B0I0O0(sourceCQL interface{}) interface{} {
-	fromReader544 := sourceCQL.(io.Reader)
-	var intoBuffer484 bytes.Buffer
-	intoBuffer484.ReadFrom(fromReader544)
-	return intoBuffer484
-}
-
-func TaintStepTest_BytesBufferReadRune_B0I0O0(sourceCQL interface{}) interface{} {
-	fromBuffer824 := sourceCQL.(bytes.Buffer)
-	intoRune754, _, _ := fromBuffer824.ReadRune()
-	return intoRune754
+	fromReader366 := sourceCQL.(io.Reader)
+	var intoBuffer648 bytes.Buffer
+	intoBuffer648.ReadFrom(fromReader366)
+	return intoBuffer648
 }
 
 func TaintStepTest_BytesBufferReadString_B0I0O0(sourceCQL interface{}) interface{} {
-	fromBuffer680 := sourceCQL.(bytes.Buffer)
-	intoString722, _ := fromBuffer680.ReadString(0)
-	return intoString722
+	fromBuffer544 := sourceCQL.(bytes.Buffer)
+	intoString484, _ := fromBuffer544.ReadString(0)
+	return intoString484
 }
 
 func TaintStepTest_BytesBufferString_B0I0O0(sourceCQL interface{}) interface{} {
-	fromBuffer506 := sourceCQL.(bytes.Buffer)
-	intoString121 := fromBuffer506.String()
-	return intoString121
+	fromBuffer824 := sourceCQL.(bytes.Buffer)
+	intoString754 := fromBuffer824.String()
+	return intoString754
 }
 
 func TaintStepTest_BytesBufferWrite_B0I0O0(sourceCQL interface{}) interface{} {
-	fromByte293 := sourceCQL.([]byte)
-	var intoBuffer151 bytes.Buffer
-	intoBuffer151.Write(fromByte293)
-	return intoBuffer151
-}
-
-func TaintStepTest_BytesBufferWriteByte_B0I0O0(sourceCQL interface{}) interface{} {
-	fromByte849 := sourceCQL.(byte)
-	var intoBuffer322 bytes.Buffer
-	intoBuffer322.WriteByte(fromByte849)
-	return intoBuffer322
-}
-
-func TaintStepTest_BytesBufferWriteRune_B0I0O0(sourceCQL interface{}) interface{} {
-	fromRune339 := sourceCQL.(rune)
-	var intoBuffer478 bytes.Buffer
-	intoBuffer478.WriteRune(fromRune339)
-	return intoBuffer478
+	fromByte680 := sourceCQL.([]byte)
+	var intoBuffer722 bytes.Buffer
+	intoBuffer722.Write(fromByte680)
+	return intoBuffer722
 }
 
 func TaintStepTest_BytesBufferWriteString_B0I0O0(sourceCQL interface{}) interface{} {
-	fromString399 := sourceCQL.(string)
-	var intoBuffer426 bytes.Buffer
-	intoBuffer426.WriteString(fromString399)
-	return intoBuffer426
+	fromString506 := sourceCQL.(string)
+	var intoBuffer121 bytes.Buffer
+	intoBuffer121.WriteString(fromString506)
+	return intoBuffer121
 }
 
 func TaintStepTest_BytesBufferWriteTo_B0I0O0(sourceCQL interface{}) interface{} {
-	fromBuffer628 := sourceCQL.(bytes.Buffer)
-	var intoWriter197 io.Writer
-	fromBuffer628.WriteTo(intoWriter197)
-	return intoWriter197
+	fromBuffer293 := sourceCQL.(bytes.Buffer)
+	var intoWriter151 io.Writer
+	fromBuffer293.WriteTo(intoWriter151)
+	return intoWriter151
 }
 
 func TaintStepTest_BytesReaderRead_B0I0O0(sourceCQL interface{}) interface{} {
-	fromReader216 := sourceCQL.(bytes.Reader)
-	var intoByte742 []byte
-	fromReader216.Read(intoByte742)
-	return intoByte742
+	fromReader849 := sourceCQL.(bytes.Reader)
+	var intoByte322 []byte
+	fromReader849.Read(intoByte322)
+	return intoByte322
 }
 
 func TaintStepTest_BytesReaderReadAt_B0I0O0(sourceCQL interface{}) interface{} {
-	fromReader906 := sourceCQL.(bytes.Reader)
-	var intoByte620 []byte
-	fromReader906.ReadAt(intoByte620, 0)
-	return intoByte620
-}
-
-func TaintStepTest_BytesReaderReadByte_B0I0O0(sourceCQL interface{}) interface{} {
-	fromReader158 := sourceCQL.(bytes.Reader)
-	intoByte353, _ := fromReader158.ReadByte()
-	return intoByte353
-}
-
-func TaintStepTest_BytesReaderReadRune_B0I0O0(sourceCQL interface{}) interface{} {
-	fromReader625 := sourceCQL.(bytes.Reader)
-	intoRune340, _, _ := fromReader625.ReadRune()
-	return intoRune340
+	fromReader339 := sourceCQL.(bytes.Reader)
+	var intoByte478 []byte
+	fromReader339.ReadAt(intoByte478, 0)
+	return intoByte478
 }
 
 func TaintStepTest_BytesReaderReset_B0I0O0(sourceCQL interface{}) interface{} {
-	fromByte741 := sourceCQL.([]byte)
-	var intoReader199 bytes.Reader
-	intoReader199.Reset(fromByte741)
-	return intoReader199
+	fromByte399 := sourceCQL.([]byte)
+	var intoReader426 bytes.Reader
+	intoReader426.Reset(fromByte399)
+	return intoReader426
 }
 
 func TaintStepTest_BytesReaderWriteTo_B0I0O0(sourceCQL interface{}) interface{} {
-	fromReader873 := sourceCQL.(bytes.Reader)
-	var intoWriter304 io.Writer
-	fromReader873.WriteTo(intoWriter304)
-	return intoWriter304
+	fromReader628 := sourceCQL.(bytes.Reader)
+	var intoWriter197 io.Writer
+	fromReader628.WriteTo(intoWriter197)
+	return intoWriter197
 }
 
 func RunAllTaints_Bytes() {
@@ -552,87 +514,57 @@ func RunAllTaints_Bytes() {
 	}
 	{
 		source := newSource(39)
-		out := TaintStepTest_BytesBufferReadByte_B0I0O0(source)
+		out := TaintStepTest_BytesBufferReadBytes_B0I0O0(source)
 		sink(39, out)
 	}
 	{
 		source := newSource(40)
-		out := TaintStepTest_BytesBufferReadBytes_B0I0O0(source)
+		out := TaintStepTest_BytesBufferReadFrom_B0I0O0(source)
 		sink(40, out)
 	}
 	{
 		source := newSource(41)
-		out := TaintStepTest_BytesBufferReadFrom_B0I0O0(source)
+		out := TaintStepTest_BytesBufferReadString_B0I0O0(source)
 		sink(41, out)
 	}
 	{
 		source := newSource(42)
-		out := TaintStepTest_BytesBufferReadRune_B0I0O0(source)
+		out := TaintStepTest_BytesBufferString_B0I0O0(source)
 		sink(42, out)
 	}
 	{
 		source := newSource(43)
-		out := TaintStepTest_BytesBufferReadString_B0I0O0(source)
+		out := TaintStepTest_BytesBufferWrite_B0I0O0(source)
 		sink(43, out)
 	}
 	{
 		source := newSource(44)
-		out := TaintStepTest_BytesBufferString_B0I0O0(source)
+		out := TaintStepTest_BytesBufferWriteString_B0I0O0(source)
 		sink(44, out)
 	}
 	{
 		source := newSource(45)
-		out := TaintStepTest_BytesBufferWrite_B0I0O0(source)
+		out := TaintStepTest_BytesBufferWriteTo_B0I0O0(source)
 		sink(45, out)
 	}
 	{
 		source := newSource(46)
-		out := TaintStepTest_BytesBufferWriteByte_B0I0O0(source)
+		out := TaintStepTest_BytesReaderRead_B0I0O0(source)
 		sink(46, out)
 	}
 	{
 		source := newSource(47)
-		out := TaintStepTest_BytesBufferWriteRune_B0I0O0(source)
+		out := TaintStepTest_BytesReaderReadAt_B0I0O0(source)
 		sink(47, out)
 	}
 	{
 		source := newSource(48)
-		out := TaintStepTest_BytesBufferWriteString_B0I0O0(source)
+		out := TaintStepTest_BytesReaderReset_B0I0O0(source)
 		sink(48, out)
 	}
 	{
 		source := newSource(49)
-		out := TaintStepTest_BytesBufferWriteTo_B0I0O0(source)
-		sink(49, out)
-	}
-	{
-		source := newSource(50)
-		out := TaintStepTest_BytesReaderRead_B0I0O0(source)
-		sink(50, out)
-	}
-	{
-		source := newSource(51)
-		out := TaintStepTest_BytesReaderReadAt_B0I0O0(source)
-		sink(51, out)
-	}
-	{
-		source := newSource(52)
-		out := TaintStepTest_BytesReaderReadByte_B0I0O0(source)
-		sink(52, out)
-	}
-	{
-		source := newSource(53)
-		out := TaintStepTest_BytesReaderReadRune_B0I0O0(source)
-		sink(53, out)
-	}
-	{
-		source := newSource(54)
-		out := TaintStepTest_BytesReaderReset_B0I0O0(source)
-		sink(54, out)
-	}
-	{
-		source := newSource(55)
 		out := TaintStepTest_BytesReaderWriteTo_B0I0O0(source)
-		sink(55, out)
+		sink(49, out)
 	}
 }
