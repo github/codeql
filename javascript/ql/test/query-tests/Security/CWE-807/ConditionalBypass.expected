@@ -2,113 +2,113 @@ nodes
 | tst.js:9:8:9:26 | req.params.shutDown |
 | tst.js:9:8:9:26 | req.params.shutDown |
 | tst.js:9:8:9:26 | req.params.shutDown |
-| tst.js:14:9:14:19 | req.cookies |
-| tst.js:14:9:14:19 | req.cookies |
-| tst.js:14:9:14:30 | req.coo ... inThing |
-| tst.js:14:9:14:30 | req.coo ... inThing |
-| tst.js:30:9:30:37 | v3 |
-| tst.js:30:14:30:37 | id(req. ... okieId) |
-| tst.js:30:17:30:27 | req.cookies |
-| tst.js:30:17:30:27 | req.cookies |
-| tst.js:30:17:30:36 | req.cookies.cookieId |
-| tst.js:31:9:31:10 | v3 |
-| tst.js:31:9:31:10 | v3 |
-| tst.js:37:13:37:23 | req.cookies |
-| tst.js:37:13:37:23 | req.cookies |
-| tst.js:37:13:37:32 | req.cookies.cookieId |
-| tst.js:37:13:37:32 | req.cookies.cookieId |
-| tst.js:43:9:43:19 | req.cookies |
-| tst.js:43:9:43:19 | req.cookies |
-| tst.js:43:9:43:28 | req.cookies.cookieId |
-| tst.js:43:9:43:28 | req.cookies.cookieId |
-| tst.js:50:8:50:23 | req.params.login |
-| tst.js:50:8:50:23 | req.params.login |
-| tst.js:50:8:50:23 | req.params.login |
-| tst.js:65:8:65:23 | req.params.login |
-| tst.js:65:8:65:23 | req.params.login |
-| tst.js:65:8:65:23 | req.params.login |
-| tst.js:70:9:70:19 | req.cookies |
-| tst.js:70:9:70:19 | req.cookies |
-| tst.js:70:9:70:28 | req.cookies.cookieId |
-| tst.js:70:9:70:28 | req.cookies.cookieId |
-| tst.js:70:34:70:53 | req.params.requestId |
-| tst.js:70:34:70:53 | req.params.requestId |
-| tst.js:70:34:70:53 | req.params.requestId |
-| tst.js:75:14:75:24 | req.cookies |
-| tst.js:75:14:75:24 | req.cookies |
-| tst.js:75:14:75:33 | req.cookies.cookieId |
-| tst.js:75:14:75:33 | req.cookies.cookieId |
-| tst.js:75:39:75:58 | req.params.requestId |
-| tst.js:75:39:75:58 | req.params.requestId |
-| tst.js:75:39:75:58 | req.params.requestId |
-| tst.js:90:9:90:19 | req.cookies |
-| tst.js:90:9:90:19 | req.cookies |
-| tst.js:90:9:90:28 | req.cookies.cookieId |
-| tst.js:90:9:90:28 | req.cookies.cookieId |
-| tst.js:90:9:90:41 | req.coo ... secret" |
-| tst.js:90:9:90:41 | req.coo ... secret" |
-| tst.js:104:10:104:17 | req.body |
-| tst.js:104:10:104:17 | req.body |
-| tst.js:104:10:104:17 | req.body |
-| tst.js:111:13:111:32 | req.query.vulnerable |
-| tst.js:111:13:111:32 | req.query.vulnerable |
-| tst.js:111:13:111:32 | req.query.vulnerable |
-| tst.js:118:13:118:32 | req.query.vulnerable |
-| tst.js:118:13:118:32 | req.query.vulnerable |
-| tst.js:118:13:118:32 | req.query.vulnerable |
-| tst.js:126:13:126:32 | req.query.vulnerable |
-| tst.js:126:13:126:32 | req.query.vulnerable |
-| tst.js:126:13:126:32 | req.query.vulnerable |
+| tst.js:13:9:13:19 | req.cookies |
+| tst.js:13:9:13:19 | req.cookies |
+| tst.js:13:9:13:30 | req.coo ... inThing |
+| tst.js:13:9:13:30 | req.coo ... inThing |
+| tst.js:27:9:27:37 | v3 |
+| tst.js:27:14:27:37 | id(req. ... okieId) |
+| tst.js:27:17:27:27 | req.cookies |
+| tst.js:27:17:27:27 | req.cookies |
+| tst.js:27:17:27:36 | req.cookies.cookieId |
+| tst.js:28:9:28:10 | v3 |
+| tst.js:28:9:28:10 | v3 |
+| tst.js:33:13:33:23 | req.cookies |
+| tst.js:33:13:33:23 | req.cookies |
+| tst.js:33:13:33:32 | req.cookies.cookieId |
+| tst.js:33:13:33:32 | req.cookies.cookieId |
+| tst.js:38:9:38:19 | req.cookies |
+| tst.js:38:9:38:19 | req.cookies |
+| tst.js:38:9:38:28 | req.cookies.cookieId |
+| tst.js:38:9:38:28 | req.cookies.cookieId |
+| tst.js:44:8:44:23 | req.params.login |
+| tst.js:44:8:44:23 | req.params.login |
+| tst.js:44:8:44:23 | req.params.login |
+| tst.js:57:8:57:23 | req.params.login |
+| tst.js:57:8:57:23 | req.params.login |
+| tst.js:57:8:57:23 | req.params.login |
+| tst.js:61:9:61:19 | req.cookies |
+| tst.js:61:9:61:19 | req.cookies |
+| tst.js:61:9:61:28 | req.cookies.cookieId |
+| tst.js:61:9:61:28 | req.cookies.cookieId |
+| tst.js:61:34:61:53 | req.params.requestId |
+| tst.js:61:34:61:53 | req.params.requestId |
+| tst.js:61:34:61:53 | req.params.requestId |
+| tst.js:65:14:65:24 | req.cookies |
+| tst.js:65:14:65:24 | req.cookies |
+| tst.js:65:14:65:33 | req.cookies.cookieId |
+| tst.js:65:14:65:33 | req.cookies.cookieId |
+| tst.js:65:39:65:58 | req.params.requestId |
+| tst.js:65:39:65:58 | req.params.requestId |
+| tst.js:65:39:65:58 | req.params.requestId |
+| tst.js:78:9:78:19 | req.cookies |
+| tst.js:78:9:78:19 | req.cookies |
+| tst.js:78:9:78:28 | req.cookies.cookieId |
+| tst.js:78:9:78:28 | req.cookies.cookieId |
+| tst.js:78:9:78:41 | req.coo ... secret" |
+| tst.js:78:9:78:41 | req.coo ... secret" |
+| tst.js:91:10:91:17 | req.body |
+| tst.js:91:10:91:17 | req.body |
+| tst.js:91:10:91:17 | req.body |
+| tst.js:98:13:98:32 | req.query.vulnerable |
+| tst.js:98:13:98:32 | req.query.vulnerable |
+| tst.js:98:13:98:32 | req.query.vulnerable |
+| tst.js:105:13:105:32 | req.query.vulnerable |
+| tst.js:105:13:105:32 | req.query.vulnerable |
+| tst.js:105:13:105:32 | req.query.vulnerable |
+| tst.js:113:13:113:32 | req.query.vulnerable |
+| tst.js:113:13:113:32 | req.query.vulnerable |
+| tst.js:113:13:113:32 | req.query.vulnerable |
 edges
 | tst.js:9:8:9:26 | req.params.shutDown | tst.js:9:8:9:26 | req.params.shutDown |
-| tst.js:14:9:14:19 | req.cookies | tst.js:14:9:14:30 | req.coo ... inThing |
-| tst.js:14:9:14:19 | req.cookies | tst.js:14:9:14:30 | req.coo ... inThing |
-| tst.js:14:9:14:19 | req.cookies | tst.js:14:9:14:30 | req.coo ... inThing |
-| tst.js:14:9:14:19 | req.cookies | tst.js:14:9:14:30 | req.coo ... inThing |
-| tst.js:30:9:30:37 | v3 | tst.js:31:9:31:10 | v3 |
-| tst.js:30:9:30:37 | v3 | tst.js:31:9:31:10 | v3 |
-| tst.js:30:14:30:37 | id(req. ... okieId) | tst.js:30:9:30:37 | v3 |
-| tst.js:30:17:30:27 | req.cookies | tst.js:30:17:30:36 | req.cookies.cookieId |
-| tst.js:30:17:30:27 | req.cookies | tst.js:30:17:30:36 | req.cookies.cookieId |
-| tst.js:30:17:30:36 | req.cookies.cookieId | tst.js:30:14:30:37 | id(req. ... okieId) |
-| tst.js:37:13:37:23 | req.cookies | tst.js:37:13:37:32 | req.cookies.cookieId |
-| tst.js:37:13:37:23 | req.cookies | tst.js:37:13:37:32 | req.cookies.cookieId |
-| tst.js:37:13:37:23 | req.cookies | tst.js:37:13:37:32 | req.cookies.cookieId |
-| tst.js:37:13:37:23 | req.cookies | tst.js:37:13:37:32 | req.cookies.cookieId |
-| tst.js:43:9:43:19 | req.cookies | tst.js:43:9:43:28 | req.cookies.cookieId |
-| tst.js:43:9:43:19 | req.cookies | tst.js:43:9:43:28 | req.cookies.cookieId |
-| tst.js:43:9:43:19 | req.cookies | tst.js:43:9:43:28 | req.cookies.cookieId |
-| tst.js:43:9:43:19 | req.cookies | tst.js:43:9:43:28 | req.cookies.cookieId |
-| tst.js:50:8:50:23 | req.params.login | tst.js:50:8:50:23 | req.params.login |
-| tst.js:65:8:65:23 | req.params.login | tst.js:65:8:65:23 | req.params.login |
-| tst.js:70:9:70:19 | req.cookies | tst.js:70:9:70:28 | req.cookies.cookieId |
-| tst.js:70:9:70:19 | req.cookies | tst.js:70:9:70:28 | req.cookies.cookieId |
-| tst.js:70:9:70:19 | req.cookies | tst.js:70:9:70:28 | req.cookies.cookieId |
-| tst.js:70:9:70:19 | req.cookies | tst.js:70:9:70:28 | req.cookies.cookieId |
-| tst.js:70:34:70:53 | req.params.requestId | tst.js:70:34:70:53 | req.params.requestId |
-| tst.js:75:14:75:24 | req.cookies | tst.js:75:14:75:33 | req.cookies.cookieId |
-| tst.js:75:14:75:24 | req.cookies | tst.js:75:14:75:33 | req.cookies.cookieId |
-| tst.js:75:14:75:24 | req.cookies | tst.js:75:14:75:33 | req.cookies.cookieId |
-| tst.js:75:14:75:24 | req.cookies | tst.js:75:14:75:33 | req.cookies.cookieId |
-| tst.js:75:39:75:58 | req.params.requestId | tst.js:75:39:75:58 | req.params.requestId |
-| tst.js:90:9:90:19 | req.cookies | tst.js:90:9:90:28 | req.cookies.cookieId |
-| tst.js:90:9:90:19 | req.cookies | tst.js:90:9:90:28 | req.cookies.cookieId |
-| tst.js:90:9:90:19 | req.cookies | tst.js:90:9:90:28 | req.cookies.cookieId |
-| tst.js:90:9:90:19 | req.cookies | tst.js:90:9:90:28 | req.cookies.cookieId |
-| tst.js:90:9:90:28 | req.cookies.cookieId | tst.js:90:9:90:41 | req.coo ... secret" |
-| tst.js:90:9:90:28 | req.cookies.cookieId | tst.js:90:9:90:41 | req.coo ... secret" |
-| tst.js:104:10:104:17 | req.body | tst.js:104:10:104:17 | req.body |
-| tst.js:111:13:111:32 | req.query.vulnerable | tst.js:111:13:111:32 | req.query.vulnerable |
-| tst.js:118:13:118:32 | req.query.vulnerable | tst.js:118:13:118:32 | req.query.vulnerable |
-| tst.js:126:13:126:32 | req.query.vulnerable | tst.js:126:13:126:32 | req.query.vulnerable |
+| tst.js:13:9:13:19 | req.cookies | tst.js:13:9:13:30 | req.coo ... inThing |
+| tst.js:13:9:13:19 | req.cookies | tst.js:13:9:13:30 | req.coo ... inThing |
+| tst.js:13:9:13:19 | req.cookies | tst.js:13:9:13:30 | req.coo ... inThing |
+| tst.js:13:9:13:19 | req.cookies | tst.js:13:9:13:30 | req.coo ... inThing |
+| tst.js:27:9:27:37 | v3 | tst.js:28:9:28:10 | v3 |
+| tst.js:27:9:27:37 | v3 | tst.js:28:9:28:10 | v3 |
+| tst.js:27:14:27:37 | id(req. ... okieId) | tst.js:27:9:27:37 | v3 |
+| tst.js:27:17:27:27 | req.cookies | tst.js:27:17:27:36 | req.cookies.cookieId |
+| tst.js:27:17:27:27 | req.cookies | tst.js:27:17:27:36 | req.cookies.cookieId |
+| tst.js:27:17:27:36 | req.cookies.cookieId | tst.js:27:14:27:37 | id(req. ... okieId) |
+| tst.js:33:13:33:23 | req.cookies | tst.js:33:13:33:32 | req.cookies.cookieId |
+| tst.js:33:13:33:23 | req.cookies | tst.js:33:13:33:32 | req.cookies.cookieId |
+| tst.js:33:13:33:23 | req.cookies | tst.js:33:13:33:32 | req.cookies.cookieId |
+| tst.js:33:13:33:23 | req.cookies | tst.js:33:13:33:32 | req.cookies.cookieId |
+| tst.js:38:9:38:19 | req.cookies | tst.js:38:9:38:28 | req.cookies.cookieId |
+| tst.js:38:9:38:19 | req.cookies | tst.js:38:9:38:28 | req.cookies.cookieId |
+| tst.js:38:9:38:19 | req.cookies | tst.js:38:9:38:28 | req.cookies.cookieId |
+| tst.js:38:9:38:19 | req.cookies | tst.js:38:9:38:28 | req.cookies.cookieId |
+| tst.js:44:8:44:23 | req.params.login | tst.js:44:8:44:23 | req.params.login |
+| tst.js:57:8:57:23 | req.params.login | tst.js:57:8:57:23 | req.params.login |
+| tst.js:61:9:61:19 | req.cookies | tst.js:61:9:61:28 | req.cookies.cookieId |
+| tst.js:61:9:61:19 | req.cookies | tst.js:61:9:61:28 | req.cookies.cookieId |
+| tst.js:61:9:61:19 | req.cookies | tst.js:61:9:61:28 | req.cookies.cookieId |
+| tst.js:61:9:61:19 | req.cookies | tst.js:61:9:61:28 | req.cookies.cookieId |
+| tst.js:61:34:61:53 | req.params.requestId | tst.js:61:34:61:53 | req.params.requestId |
+| tst.js:65:14:65:24 | req.cookies | tst.js:65:14:65:33 | req.cookies.cookieId |
+| tst.js:65:14:65:24 | req.cookies | tst.js:65:14:65:33 | req.cookies.cookieId |
+| tst.js:65:14:65:24 | req.cookies | tst.js:65:14:65:33 | req.cookies.cookieId |
+| tst.js:65:14:65:24 | req.cookies | tst.js:65:14:65:33 | req.cookies.cookieId |
+| tst.js:65:39:65:58 | req.params.requestId | tst.js:65:39:65:58 | req.params.requestId |
+| tst.js:78:9:78:19 | req.cookies | tst.js:78:9:78:28 | req.cookies.cookieId |
+| tst.js:78:9:78:19 | req.cookies | tst.js:78:9:78:28 | req.cookies.cookieId |
+| tst.js:78:9:78:19 | req.cookies | tst.js:78:9:78:28 | req.cookies.cookieId |
+| tst.js:78:9:78:19 | req.cookies | tst.js:78:9:78:28 | req.cookies.cookieId |
+| tst.js:78:9:78:28 | req.cookies.cookieId | tst.js:78:9:78:41 | req.coo ... secret" |
+| tst.js:78:9:78:28 | req.cookies.cookieId | tst.js:78:9:78:41 | req.coo ... secret" |
+| tst.js:91:10:91:17 | req.body | tst.js:91:10:91:17 | req.body |
+| tst.js:98:13:98:32 | req.query.vulnerable | tst.js:98:13:98:32 | req.query.vulnerable |
+| tst.js:105:13:105:32 | req.query.vulnerable | tst.js:105:13:105:32 | req.query.vulnerable |
+| tst.js:113:13:113:32 | req.query.vulnerable | tst.js:113:13:113:32 | req.query.vulnerable |
 #select
-| tst.js:9:8:9:26 | req.params.shutDown | tst.js:9:8:9:26 | req.params.shutDown | tst.js:9:8:9:26 | req.params.shutDown | This condition guards a sensitive $@, but $@ controls it. | tst.js:11:9:11:22 | process.exit() | action | tst.js:9:8:9:26 | req.params.shutDown | a user-provided value |
-| tst.js:14:9:14:30 | req.coo ... inThing | tst.js:14:9:14:19 | req.cookies | tst.js:14:9:14:30 | req.coo ... inThing | This condition guards a sensitive $@, but $@ controls it. | tst.js:16:9:16:17 | o.login() | action | tst.js:14:9:14:19 | req.cookies | a user-provided value |
-| tst.js:31:9:31:10 | v3 | tst.js:30:17:30:27 | req.cookies | tst.js:31:9:31:10 | v3 | This condition guards a sensitive $@, but $@ controls it. | tst.js:33:9:33:22 | process.exit() | action | tst.js:30:17:30:27 | req.cookies | a user-provided value |
-| tst.js:37:13:37:32 | req.cookies.cookieId | tst.js:37:13:37:23 | req.cookies | tst.js:37:13:37:32 | req.cookies.cookieId | This condition guards a sensitive $@, but $@ controls it. | tst.js:39:13:39:26 | process.exit() | action | tst.js:37:13:37:23 | req.cookies | a user-provided value |
-| tst.js:43:9:43:28 | req.cookies.cookieId | tst.js:43:9:43:19 | req.cookies | tst.js:43:9:43:28 | req.cookies.cookieId | This condition guards a sensitive $@, but $@ controls it. | tst.js:46:13:46:26 | process.exit() | action | tst.js:43:9:43:19 | req.cookies | a user-provided value |
-| tst.js:50:8:50:23 | req.params.login | tst.js:50:8:50:23 | req.params.login | tst.js:50:8:50:23 | req.params.login | This condition guards a sensitive $@, but $@ controls it. | tst.js:54:9:54:15 | login() | action | tst.js:50:8:50:23 | req.params.login | a user-provided value |
-| tst.js:65:8:65:23 | req.params.login | tst.js:65:8:65:23 | req.params.login | tst.js:65:8:65:23 | req.params.login | This condition guards a sensitive $@, but $@ controls it. | tst.js:67:9:67:15 | login() | action | tst.js:65:8:65:23 | req.params.login | a user-provided value |
-| tst.js:90:9:90:41 | req.coo ... secret" | tst.js:90:9:90:19 | req.cookies | tst.js:90:9:90:41 | req.coo ... secret" | This condition guards a sensitive $@, but $@ controls it. | tst.js:92:9:92:22 | process.exit() | action | tst.js:90:9:90:19 | req.cookies | a user-provided value |
-| tst.js:111:13:111:32 | req.query.vulnerable | tst.js:111:13:111:32 | req.query.vulnerable | tst.js:111:13:111:32 | req.query.vulnerable | This condition guards a sensitive $@, but $@ controls it. | tst.js:114:9:114:16 | verify() | action | tst.js:111:13:111:32 | req.query.vulnerable | a user-provided value |
-| tst.js:118:13:118:32 | req.query.vulnerable | tst.js:118:13:118:32 | req.query.vulnerable | tst.js:118:13:118:32 | req.query.vulnerable | This condition guards a sensitive $@, but $@ controls it. | tst.js:121:13:121:20 | verify() | action | tst.js:118:13:118:32 | req.query.vulnerable | a user-provided value |
+| tst.js:9:8:9:26 | req.params.shutDown | tst.js:9:8:9:26 | req.params.shutDown | tst.js:9:8:9:26 | req.params.shutDown | This condition guards a sensitive $@, but $@ controls it. | tst.js:10:9:10:22 | process.exit() | action | tst.js:9:8:9:26 | req.params.shutDown | a user-provided value |
+| tst.js:13:9:13:30 | req.coo ... inThing | tst.js:13:9:13:19 | req.cookies | tst.js:13:9:13:30 | req.coo ... inThing | This condition guards a sensitive $@, but $@ controls it. | tst.js:14:9:14:17 | o.login() | action | tst.js:13:9:13:19 | req.cookies | a user-provided value |
+| tst.js:28:9:28:10 | v3 | tst.js:27:17:27:27 | req.cookies | tst.js:28:9:28:10 | v3 | This condition guards a sensitive $@, but $@ controls it. | tst.js:29:9:29:22 | process.exit() | action | tst.js:27:17:27:27 | req.cookies | a user-provided value |
+| tst.js:33:13:33:32 | req.cookies.cookieId | tst.js:33:13:33:23 | req.cookies | tst.js:33:13:33:32 | req.cookies.cookieId | This condition guards a sensitive $@, but $@ controls it. | tst.js:34:13:34:26 | process.exit() | action | tst.js:33:13:33:23 | req.cookies | a user-provided value |
+| tst.js:38:9:38:28 | req.cookies.cookieId | tst.js:38:9:38:19 | req.cookies | tst.js:38:9:38:28 | req.cookies.cookieId | This condition guards a sensitive $@, but $@ controls it. | tst.js:40:13:40:26 | process.exit() | action | tst.js:38:9:38:19 | req.cookies | a user-provided value |
+| tst.js:44:8:44:23 | req.params.login | tst.js:44:8:44:23 | req.params.login | tst.js:44:8:44:23 | req.params.login | This condition guards a sensitive $@, but $@ controls it. | tst.js:47:9:47:15 | login() | action | tst.js:44:8:44:23 | req.params.login | a user-provided value |
+| tst.js:57:8:57:23 | req.params.login | tst.js:57:8:57:23 | req.params.login | tst.js:57:8:57:23 | req.params.login | This condition guards a sensitive $@, but $@ controls it. | tst.js:58:9:58:15 | login() | action | tst.js:57:8:57:23 | req.params.login | a user-provided value |
+| tst.js:78:9:78:41 | req.coo ... secret" | tst.js:78:9:78:19 | req.cookies | tst.js:78:9:78:41 | req.coo ... secret" | This condition guards a sensitive $@, but $@ controls it. | tst.js:79:9:79:22 | process.exit() | action | tst.js:78:9:78:19 | req.cookies | a user-provided value |
+| tst.js:98:13:98:32 | req.query.vulnerable | tst.js:98:13:98:32 | req.query.vulnerable | tst.js:98:13:98:32 | req.query.vulnerable | This condition guards a sensitive $@, but $@ controls it. | tst.js:101:9:101:16 | verify() | action | tst.js:98:13:98:32 | req.query.vulnerable | a user-provided value |
+| tst.js:105:13:105:32 | req.query.vulnerable | tst.js:105:13:105:32 | req.query.vulnerable | tst.js:105:13:105:32 | req.query.vulnerable | This condition guards a sensitive $@, but $@ controls it. | tst.js:108:13:108:20 | verify() | action | tst.js:105:13:105:32 | req.query.vulnerable | a user-provided value |

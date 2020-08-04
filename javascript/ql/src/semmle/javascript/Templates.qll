@@ -57,15 +57,6 @@ class TemplateLiteral extends Expr, @templateliteral {
   int getNumElement() { result = count(getAnElement()) }
 
   override predicate isImpure() { getAnElement().isImpure() }
-
-  override string getStringValue() {
-    // fold singletons
-    getNumChildExpr() = 0 and
-    result = ""
-    or
-    getNumChildExpr() = 1 and
-    result = getElement(0).getStringValue()
-  }
 }
 
 /**
@@ -103,6 +94,4 @@ class TemplateElement extends Expr, @templateelement {
   string getRawValue() { literals(_, result, this) }
 
   override predicate isImpure() { none() }
-
-  override string getStringValue() { result = getValue() }
 }

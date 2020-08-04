@@ -26,7 +26,7 @@
 	try {
 		unknown({ prop: foo });
 	} catch (e) {
-		$('myId').html(e); // NOT OK!
+		$('myId').html(e); // NOT OK! - but not detected due to not tainting object that have a tainted propety. [INCONSISTENCY]
 	}
 
 	try {
@@ -179,9 +179,9 @@ app.get('/user/:id', function (req, res) {
 app.get('/user/:id', function (req, res) {
 	unknown(req.params.id, (error, res) => {
 		if (error) {
-			$('myId').html(error); // OK (falls through to the next statement) 
+			$('myId').html(error); // NOT OK
 		}
-		$('myId').html(res); // NOT OK!
+		$('myId').html(res); // OK - does not contain an error, and `res` is otherwise unknown. 
 	});
 });
 
