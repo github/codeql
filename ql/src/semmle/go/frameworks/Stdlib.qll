@@ -5,6 +5,7 @@
 import go
 import semmle.go.frameworks.stdlib.ArchiveTar
 import semmle.go.frameworks.stdlib.ArchiveZip
+import semmle.go.frameworks.stdlib.Bufio
 
 /** A `String()` method. */
 class StringMethod extends TaintTracking::FunctionModel, Method {
@@ -380,17 +381,6 @@ module Io {
 
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
       input.isReceiver() and output.isParameter(0)
-    }
-  }
-}
-
-/** Provides models of commonly used functions in the `bufio` package. */
-module Bufio {
-  private class NewWriter extends TaintTracking::FunctionModel {
-    NewWriter() { this.hasQualifiedName("bufio", "NewWriter") }
-
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      input.isResult() and output.isParameter(0)
     }
   }
 }
