@@ -69,10 +69,6 @@ module Bufio {
       this.(Method).hasQualifiedName("bufio", "Reader", "Peek") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Reader).Read(p []byte) (n int, err error)
-      this.(Method).hasQualifiedName("bufio", "Reader", "Read") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
       // signature: func (*Reader).ReadByte() (byte, error)
       this.(Method).hasQualifiedName("bufio", "Reader", "ReadByte") and
       (inp.isReceiver() and outp.isResult(0))

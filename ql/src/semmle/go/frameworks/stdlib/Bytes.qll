@@ -159,10 +159,6 @@ module Bytes {
       this.(Method).hasQualifiedName("bytes", "Buffer", "Next") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (*Buffer).Read(p []byte) (n int, err error)
-      this.(Method).hasQualifiedName("bytes", "Buffer", "Read") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
       // signature: func (*Buffer).ReadByte() (byte, error)
       this.(Method).hasQualifiedName("bytes", "Buffer", "ReadByte") and
       (inp.isReceiver() and outp.isResult(0))
@@ -205,10 +201,6 @@ module Bytes {
       or
       // signature: func (*Buffer).WriteTo(w io.Writer) (n int64, err error)
       this.(Method).hasQualifiedName("bytes", "Buffer", "WriteTo") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
-      // signature: func (*Reader).Read(b []byte) (n int, err error)
-      this.(Method).hasQualifiedName("bytes", "Reader", "Read") and
       (inp.isReceiver() and outp.isParameter(0))
       or
       // signature: func (*Reader).ReadAt(b []byte, off int64) (n int, err error)
