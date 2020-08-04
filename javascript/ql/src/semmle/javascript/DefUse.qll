@@ -38,7 +38,9 @@ private predicate defn(ControlFlowNode def, Expr lhs, AST::ValueNode rhs) {
   or
   exists(EnumDeclaration ed | def = ed.getIdentifier() | lhs = def and rhs = ed)
   or
-  exists(ImportEqualsDeclaration i | def = i | lhs = i.getIdentifier() and rhs = i.getImportedEntity())
+  exists(ImportEqualsDeclaration i | def = i |
+    lhs = i.getIdentifier() and rhs = i.getImportedEntity()
+  )
   or
   exists(ImportSpecifier i | def = i | lhs = i.getLocal() and rhs = i)
   or
