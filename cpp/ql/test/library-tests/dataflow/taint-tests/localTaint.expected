@@ -206,6 +206,8 @@
 | format.cpp:113:21:113:24 | {...} | format.cpp:115:8:115:13 | buffer |  |
 | format.cpp:113:23:113:23 | 0 | format.cpp:113:21:113:24 | {...} | TAINT |
 | format.cpp:114:18:114:23 | ref arg buffer | format.cpp:115:8:115:13 | buffer |  |
+| format.cpp:114:31:114:34 | %s | format.cpp:114:18:114:23 | ref arg buffer | TAINT |
+| format.cpp:114:37:114:50 | call to source | format.cpp:114:18:114:23 | ref arg buffer | TAINT |
 | format.cpp:119:10:119:11 | 0 | format.cpp:120:29:120:29 | i |  |
 | format.cpp:119:10:119:11 | 0 | format.cpp:121:8:121:8 | i |  |
 | format.cpp:120:28:120:29 | ref arg & ... | format.cpp:120:29:120:29 | i [inner post update] |  |

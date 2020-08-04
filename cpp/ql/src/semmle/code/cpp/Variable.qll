@@ -582,7 +582,7 @@ class TemplateVariable extends Variable {
  *   float a;
  * }
  *
- * template<type T>
+ * template<typename T>
  * void myTemplateFunction() {
  *   T b;
  * }

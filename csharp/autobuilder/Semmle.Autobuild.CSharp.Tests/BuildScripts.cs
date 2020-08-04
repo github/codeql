@@ -19,15 +19,15 @@ namespace Semmle.Autobuild.CSharp.Tests
         /// <summary>
         /// List of strings passed to FileDelete.
         /// </summary>
-        public IList<string> FileDeleteIn = new List<string>();
+        public readonly IList<string> FileDeleteIn = new List<string>();
 
         void IBuildActions.FileDelete(string file)
         {
             FileDeleteIn.Add(file);
         }
 
-        public IList<string> FileExistsIn = new List<string>();
-        public IDictionary<string, bool> FileExists = new Dictionary<string, bool>();
+        public readonly IList<string> FileExistsIn = new List<string>();
+        public readonly IDictionary<string, bool> FileExists = new Dictionary<string, bool>();
 
         bool IBuildActions.FileExists(string file)
         {
@@ -39,10 +39,10 @@ namespace Semmle.Autobuild.CSharp.Tests
             throw new ArgumentException("Missing FileExists " + file);
         }
 
-        public IList<string> RunProcessIn = new List<string>();
-        public IDictionary<string, int> RunProcess = new Dictionary<string, int>();
-        public IDictionary<string, string> RunProcessOut = new Dictionary<string, string>();
-        public IDictionary<string, string> RunProcessWorkingDirectory = new Dictionary<string, string>();
+        public readonly IList<string> RunProcessIn = new List<string>();
+        public readonly IDictionary<string, int> RunProcess = new Dictionary<string, int>();
+        public readonly IDictionary<string, string> RunProcessOut = new Dictionary<string, string>();
+        public readonly IDictionary<string, string> RunProcessWorkingDirectory = new Dictionary<string, string>();
 
         int IBuildActions.RunProcess(string cmd, string args, string? workingDirectory, IDictionary<string, string>? env, out IList<string> stdOut)
         {
@@ -72,14 +72,14 @@ namespace Semmle.Autobuild.CSharp.Tests
             throw new ArgumentException("Missing RunProcess " + pattern);
         }
 
-        public IList<string> DirectoryDeleteIn = new List<string>();
+        public readonly IList<string> DirectoryDeleteIn = new List<string>();
 
         void IBuildActions.DirectoryDelete(string dir, bool recursive)
         {
             DirectoryDeleteIn.Add(dir);
         }
 
-        public IDictionary<string, bool> DirectoryExists = new Dictionary<string, bool>();
+        public readonly IDictionary<string, bool> DirectoryExists = new Dictionary<string, bool>();
 
         bool IBuildActions.DirectoryExists(string dir)
         {
@@ -88,7 +88,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             throw new ArgumentException("Missing DirectoryExists " + dir);
         }
 
-        public IDictionary<string, string?> GetEnvironmentVariable = new Dictionary<string, string?>();
+        public readonly IDictionary<string, string?> GetEnvironmentVariable = new Dictionary<string, string?>();
 
         string? IBuildActions.GetEnvironmentVariable(string name)
         {
@@ -104,7 +104,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             return GetCurrentDirectory;
         }
 
-        public IDictionary<string, string> EnumerateFiles = new Dictionary<string, string>();
+        public readonly IDictionary<string, string> EnumerateFiles = new Dictionary<string, string>();
 
         IEnumerable<string> IBuildActions.EnumerateFiles(string dir)
         {
@@ -113,7 +113,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             throw new ArgumentException("Missing EnumerateFiles " + dir);
         }
 
-        public IDictionary<string, string> EnumerateDirectories = new Dictionary<string, string>();
+        public readonly IDictionary<string, string> EnumerateDirectories = new Dictionary<string, string>();
 
         IEnumerable<string> IBuildActions.EnumerateDirectories(string dir)
         {
@@ -137,7 +137,8 @@ namespace Semmle.Autobuild.CSharp.Tests
         {
         }
 
-        public IDictionary<string, XmlDocument> LoadXml = new Dictionary<string, XmlDocument>();
+        public readonly IDictionary<string, XmlDocument> LoadXml = new Dictionary<string, XmlDocument>();
+
         XmlDocument IBuildActions.LoadXml(string filename)
         {
             if (LoadXml.TryGetValue(filename, out var xml))
@@ -178,10 +179,10 @@ namespace Semmle.Autobuild.CSharp.Tests
 
     public class BuildScriptTests
     {
-        TestActions Actions = new TestActions();
+        readonly TestActions Actions = new TestActions();
 
         // Records the arguments passed to StartCallback.
-        IList<string> StartCallbackIn = new List<string>();
+        readonly IList<string> StartCallbackIn = new List<string>();
 
         void StartCallback(string s, bool silent)
         {
@@ -189,8 +190,8 @@ namespace Semmle.Autobuild.CSharp.Tests
         }
 
         // Records the arguments passed to EndCallback
-        IList<string> EndCallbackIn = new List<string>();
-        IList<int> EndCallbackReturn = new List<int>();
+        readonly IList<string> EndCallbackIn = new List<string>();
+        readonly IList<int> EndCallbackReturn = new List<int>();
 
         void EndCallback(int ret, string s, bool silent)
         {
