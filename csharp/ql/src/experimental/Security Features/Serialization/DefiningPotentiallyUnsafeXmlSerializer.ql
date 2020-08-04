@@ -1,6 +1,6 @@
 /**
  * @name Defining a potentially unsafe XML serializer
- * @description Defining an XML serializable class that includes members that derive from dataSet or DataTable type may lead to a security problem. Please visit https://go.microsoft.com/fwlink/?linkid=2132227 for details.
+ * @description Defining an XML serializable class that includes members that derive from DataSet or DataTable type may lead to a security problem. Please visit https://go.microsoft.com/fwlink/?linkid=2132227 for details.
  * @kind problem
  * @problem.severity error
  * @precision medium

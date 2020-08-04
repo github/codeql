@@ -42,17 +42,17 @@ class SerializableClass extends Class {
   SerializableClass() {
     (
       this.getABaseType*().getQualifiedName() = "System.Xml.Serialization.XmlSerializer" or
-      this.getABaseInterface*().getQualifiedName() = "System.Runtime.Serialization.ISerializable" or
+      this.getABaseType*().getQualifiedName() = "System.Runtime.Serialization.ISerializable" or
       this.getABaseType*().getQualifiedName() = "System.Runtime.Serialization.XmlObjectSerializer" or
-      this.getABaseInterface*().getQualifiedName() =
+      this.getABaseType*().getQualifiedName() =
         "System.Runtime.Serialization.ISerializationSurrogateProvider" or
       this.getABaseType*().getQualifiedName() =
         "System.Runtime.Serialization.XmlSerializableServices" or
-      this.getABaseInterface*().getQualifiedName() = "System.Xml.Serialization.IXmlSerializable"
+      this.getABaseType*().getQualifiedName() = "System.Xml.Serialization.IXmlSerializable"
     )
     or
     exists(Attribute a | a = this.getAnAttribute() |
-      a.getType().getQualifiedName().toString() = "System.SerializableAttribute"
+      a.getType().getQualifiedName() = "System.SerializableAttribute"
     )
   }
 }
@@ -77,13 +77,13 @@ class UnsafeXmlSerializerImplementation extends SerializableClass {
  */
 class UnsafeXmlReadMethod extends Method {
   UnsafeXmlReadMethod() {
-    this.getQualifiedName().toString() = "System.Data.DataTable.ReadXml"
+    this.getQualifiedName() = "System.Data.DataTable.ReadXml"
     or
-    this.getQualifiedName().toString() = "System.Data.DataTable.ReadXmlSchema"
+    this.getQualifiedName() = "System.Data.DataTable.ReadXmlSchema"
     or
-    this.getQualifiedName().toString() = "System.Data.DataSet.ReadXml"
+    this.getQualifiedName() = "System.Data.DataSet.ReadXml"
     or
-    this.getQualifiedName().toString() = "System.Data.DataSet.ReadXmlSchema"
+    this.getQualifiedName() = "System.Data.DataSet.ReadXmlSchema"
     or
     this.getName().matches("ReadXml%") and
     exists(Class c | c.getAMethod() = this |
