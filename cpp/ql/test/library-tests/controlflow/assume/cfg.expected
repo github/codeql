@@ -1,29 +1,29 @@
 | simple | f | 2 | 1 | simple.cpp:2:6:2:6 | f | <none> |
 | simple | g | 3 | 1 | simple.cpp:3:6:3:6 | g | <none> |
-| simple | h | 4 | 4 | simple.cpp:4:6:4:6 | h | <none> |
+| simple | h | 4 | 9 | simple.cpp:4:6:4:6 | h | <none> |
 | simple | h | 5 | 1 | simple.cpp:5:1:11:1 | { ... } | ExprStmt |
 | simple | h | 6 | 2 | simple.cpp:6:2:6:5 | ExprStmt | call to f |
 | simple | h | 6 | 3 | simple.cpp:6:2:6:2 | call to f | ExprStmt |
 | simple | h | 8 | 1 | simple.cpp:8:11:8:11 | 0 | <none> |
 | simple | h | 8 | 1 | simple.cpp:8:11:8:11 | (bool)... | <none> |
 | simple | h | 8 | 4 | simple.cpp:8:2:8:13 | ExprStmt | __assume(...) |
-| simple | h | 8 | 5 | simple.cpp:8:2:8:12 | __assume(...) | <none> |
-| simple | h | 10 | 1 | simple.cpp:10:2:10:5 | ExprStmt | call to g |
-| simple | h | 10 | 2 | simple.cpp:10:2:10:2 | call to g | return ... |
-| simple | h | 11 | 3 | simple.cpp:11:1:11:1 | return ... | h |
+| simple | h | 8 | 5 | simple.cpp:8:2:8:12 | __assume(...) | ExprStmt |
+| simple | h | 10 | 6 | simple.cpp:10:2:10:5 | ExprStmt | call to g |
+| simple | h | 10 | 7 | simple.cpp:10:2:10:2 | call to g | return ... |
+| simple | h | 11 | 8 | simple.cpp:11:1:11:1 | return ... | h |
 | simple | i | 12 | 1 | simple.cpp:12:6:12:6 | i | <none> |
 | simple | j | 13 | 1 | simple.cpp:13:6:13:6 | j | <none> |
-| simple | k | 14 | 4 | simple.cpp:14:6:14:6 | k | <none> |
+| simple | k | 14 | 9 | simple.cpp:14:6:14:6 | k | <none> |
 | simple | k | 15 | 1 | simple.cpp:15:1:19:1 | { ... } | ExprStmt |
 | simple | k | 16 | 2 | simple.cpp:16:2:16:5 | ExprStmt | call to i |
 | simple | k | 16 | 3 | simple.cpp:16:2:16:2 | call to i | ExprStmt |
 | simple | k | 17 | 4 | simple.cpp:17:2:17:5 | ExprStmt | call to h |
-| simple | k | 17 | 5 | simple.cpp:17:2:17:2 | call to h | <none> |
-| simple | k | 18 | 1 | simple.cpp:18:2:18:5 | ExprStmt | call to j |
-| simple | k | 18 | 2 | simple.cpp:18:2:18:2 | call to j | return ... |
-| simple | k | 19 | 3 | simple.cpp:19:1:19:1 | return ... | k |
+| simple | k | 17 | 5 | simple.cpp:17:2:17:2 | call to h | ExprStmt |
+| simple | k | 18 | 6 | simple.cpp:18:2:18:5 | ExprStmt | call to j |
+| simple | k | 18 | 7 | simple.cpp:18:2:18:2 | call to j | return ... |
+| simple | k | 19 | 8 | simple.cpp:19:1:19:1 | return ... | k |
 | switch | doThing | 2 | 1 | switch.cpp:2:6:2:12 | doThing | <none> |
-| switch | switchTest1 | 4 | 37 | switch.cpp:4:6:4:16 | switchTest1 | <none> |
+| switch | switchTest1 | 4 | 40 | switch.cpp:4:6:4:16 | switchTest1 | <none> |
 | switch | switchTest1 | 5 | 1 | switch.cpp:5:1:30:1 | { ... } | declaration |
 | switch | switchTest1 | 6 | 2 | switch.cpp:6:2:6:10 | declaration | declaration |
 | switch | switchTest1 | 7 | 3 | switch.cpp:7:2:7:10 | declaration | switch (...) ...  |
@@ -63,11 +63,11 @@
 | switch | switchTest1 | 21 | 1 | switch.cpp:21:13:21:13 | 0 | <none> |
 | switch | switchTest1 | 21 | 1 | switch.cpp:21:13:21:13 | (bool)... | <none> |
 | switch | switchTest1 | 21 | 8 | switch.cpp:21:4:21:15 | ExprStmt | __assume(...) |
-| switch | switchTest1 | 21 | 9 | switch.cpp:21:4:21:14 | __assume(...) | <none> |
-| switch | switchTest1 | 29 | 1 | switch.cpp:29:2:29:14 | ExprStmt | ptr |
-| switch | switchTest1 | 29 | 2 | switch.cpp:29:10:29:12 | ptr | call to doThing |
-| switch | switchTest1 | 29 | 3 | switch.cpp:29:2:29:8 | call to doThing | return ... |
-| switch | switchTest1 | 30 | 4 | switch.cpp:30:1:30:1 | return ... | switchTest1 |
+| switch | switchTest1 | 21 | 9 | switch.cpp:21:4:21:14 | __assume(...) | ExprStmt |
+| switch | switchTest1 | 29 | 10 | switch.cpp:29:2:29:14 | ExprStmt | ptr |
+| switch | switchTest1 | 29 | 11 | switch.cpp:29:10:29:12 | ptr | call to doThing |
+| switch | switchTest1 | 29 | 12 | switch.cpp:29:2:29:8 | call to doThing | return ... |
+| switch | switchTest1 | 30 | 13 | switch.cpp:30:1:30:1 | return ... | switchTest1 |
 | switch | switchTest2 | 32 | 37 | switch.cpp:32:6:32:16 | switchTest2 | <none> |
 | switch | switchTest2 | 33 | 1 | switch.cpp:33:1:51:1 | { ... } | declaration |
 | switch | switchTest2 | 34 | 2 | switch.cpp:34:2:34:10 | declaration | declaration |
