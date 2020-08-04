@@ -395,7 +395,7 @@ private predicate fieldOrPropertyStore(Expr e, Content c, Expr src, Expr q, bool
       f.isFieldLike() and
       f instanceof InstanceFieldOrProperty
       or
-      exists(AccessPath ap |
+      exists(LibraryFlow::AdjustedAccessPath ap |
         LibraryFlow::libraryFlowSummary(_, _, ap, _, _, _) and
         ap.contains(f.getContent())
       )
@@ -440,7 +440,7 @@ private predicate fieldOrPropertyRead(Expr e1, Content c, FieldOrPropertyRead e2
     ret.isFieldLike() and
     ret = e2.getTarget()
     or
-    exists(AccessPath ap, Property target |
+    exists(LibraryFlow::AdjustedAccessPath ap, Property target |
       LibraryFlow::libraryFlowSummary(_, _, _, _, ap, _) and
       ap.contains(ret.getContent()) and
       target.getGetter() = e2.(PropertyCall).getARuntimeTarget() and
@@ -569,8 +569,9 @@ private module Cached {
       )
     } or
     TLibraryCodeNode(
-      ControlFlow::Node callCfn, CallableFlowSource source, AccessPath sourceAp,
-      CallableFlowSink sink, AccessPath sinkAp, boolean preservesValue, LibraryCodeNodeState state
+      ControlFlow::Node callCfn, CallableFlowSource source, AdjustedAccessPath sourceAp,
+      CallableFlowSink sink, AdjustedAccessPath sinkAp, boolean preservesValue,
+      LibraryCodeNodeState state
     ) {
       libraryFlowSummary(callCfn.getElement(), source, sourceAp, sink, sinkAp, preservesValue) and
       (
@@ -1451,11 +1452,12 @@ import OutNodes
 module LibraryFlow {
   pragma[nomagic]
   private ValueOrRefType getPreciseSourceProperty0(
-    Call call, CallableFlowSource source, AccessPath sourceAp, Property p
+    Call call, CallableFlowSource source, AccessPath sourceAp, Property p, AccessPath sourceApTail
   ) {
     exists(LibraryTypeDataFlow ltdf, Property p0 |
       ltdf.callableFlow(source, sourceAp, _, _, call.getTarget().getSourceDeclaration(), _) and
-      sourceAp = AccessPath::property(p0) and
+      sourceAp.getHead().(PropertyContent).getProperty() = p0 and
+      sourceAp.getTail() = sourceApTail and
       overridesOrImplementsSourceDecl(p, p0) and
       result = source.getSourceType(call)
     )
@@ -1476,18 +1478,19 @@ module LibraryFlow {
    */
   pragma[nomagic]
   private Property getPreciseSourceProperty(
-    Call call, CallableFlowSource source, AccessPath sourceAp
+    Call call, CallableFlowSource source, AccessPath sourceAp, AccessPath sourceApTail
   ) {
-    getPreciseSourceProperty0(call, source, sourceAp, result).hasMember(result)
+    getPreciseSourceProperty0(call, source, sourceAp, result, sourceApTail).hasMember(result)
   }
 
   pragma[nomagic]
   private ValueOrRefType getPreciseSinkProperty0(
-    Call call, CallableFlowSink sink, AccessPath sinkAp, Property p
+    Call call, CallableFlowSink sink, AccessPath sinkAp, Property p, AccessPath sinkApTail
   ) {
     exists(LibraryTypeDataFlow ltdf, Property p0 |
       ltdf.callableFlow(_, _, sink, sinkAp, call.getTarget().getSourceDeclaration(), _) and
-      sinkAp = AccessPath::property(p0) and
+      sinkAp.getHead().(PropertyContent).getProperty() = p0 and
+      sinkAp.getTail() = sinkApTail and
       overridesOrImplementsSourceDecl(p, p0) and
       result = sink.getSinkType(call)
     )
@@ -1510,8 +1513,132 @@ module LibraryFlow {
    * from `IEnumerator<T>`.
    */
   pragma[nomagic]
-  private Property getPreciseSinkProperty(Call call, CallableFlowSink sink, AccessPath sinkAp) {
-    getPreciseSinkProperty0(call, sink, sinkAp, result).hasMember(result)
+  private Property getPreciseSinkProperty(
+    Call call, CallableFlowSink sink, AccessPath sinkAp, AccessPath sinkApTail
+  ) {
+    getPreciseSinkProperty0(call, sink, sinkAp, result, sinkApTail).hasMember(result)
+  }
+
+  predicate adjustSourceHead(
+    Call call, CallableFlowSource source, AccessPath sourceAp0, AccessPath sourceApTail,
+    PropertyContent p
+  ) {
+    overridesOrImplementsSourceDecl(p.getProperty(),
+      getPreciseSourceProperty(call, source, sourceAp0, sourceApTail).getSourceDeclaration())
+  }
+
+  predicate adjustSinkHead(
+    Call call, CallableFlowSink sink, AccessPath sinkAp0, AccessPath sinkApTail, PropertyContent p
+  ) {
+    p.getProperty() = getPreciseSinkProperty(call, sink, sinkAp0, sinkApTail).getSourceDeclaration()
+  }
+
+  private newtype TAdjustedAccessPath =
+    TOriginalAccessPath(AccessPath ap) or
+    THeadAdjustedAccessPath(PropertyContent head, AccessPath tail) {
+      adjustSourceHead(_, _, _, tail, head)
+      or
+      adjustSinkHead(_, _, _, tail, head)
+    }
+
+  /**
+   * An access path used in a library-code flow-summary, where the head of the path
+   * may have been adjusted. For example, in
+   *
+   * ```csharp
+   * var list = new List<string>();
+   * list.Add("taint");
+   * var enumerator = list.getEnumerator();
+   * ```
+   *
+   * the step from `list` to `list.getEnumerator()`, which may be modeled as a
+   * read of a collection element followed by a store into the `Current`
+   * property, can be strengthened to be a store into the `Current` property
+   * from `List<T>.Enumerator`, rather than the generic `Current` property
+   * from `IEnumerator<T>`.
+   */
+  abstract class AdjustedAccessPath extends TAdjustedAccessPath {
+    /** Gets the head of this access path, if any. */
+    abstract Content getHead();
+
+    /** Gets the tail of this access path, if any. */
+    abstract AdjustedAccessPath getTail();
+
+    /** Gets the length of this access path. */
+    abstract int length();
+
+    /** Gets the access path obtained by dropping the first `i` elements, if any. */
+    abstract AdjustedAccessPath drop(int i);
+
+    /** Holds if this access path contains content `c`. */
+    predicate contains(Content c) { c = this.drop(_).getHead() }
+
+    /** Gets a textual representation of this access path. */
+    string toString() {
+      exists(Content head, AdjustedAccessPath tail |
+        head = this.getHead() and
+        tail = this.getTail() and
+        if tail.length() = 0 then result = head.toString() else result = head + ", " + tail
+      )
+      or
+      this.length() = 0 and
+      result = "<empty>"
+    }
+  }
+
+  private class OriginalAccessPath extends AdjustedAccessPath, TOriginalAccessPath {
+    private AccessPath ap;
+
+    OriginalAccessPath() { this = TOriginalAccessPath(ap) }
+
+    override Content getHead() { result = ap.getHead() }
+
+    override AdjustedAccessPath getTail() { result = TOriginalAccessPath(ap.getTail()) }
+
+    override int length() { result = ap.length() }
+
+    override AdjustedAccessPath drop(int i) { result = TOriginalAccessPath(ap.drop(i)) }
+  }
+
+  private class HeadAdjustedAccessPath extends AdjustedAccessPath, THeadAdjustedAccessPath {
+    private PropertyContent head;
+    private AccessPath tail;
+
+    HeadAdjustedAccessPath() { this = THeadAdjustedAccessPath(head, tail) }
+
+    override Content getHead() { result = head }
+
+    override AdjustedAccessPath getTail() { result = TOriginalAccessPath(tail) }
+
+    override int length() { result = 1 + tail.length() }
+
+    override AdjustedAccessPath drop(int i) {
+      i = 0 and result = this
+      or
+      result = TOriginalAccessPath(tail.drop(i - 1))
+    }
+  }
+
+  module AdjustedAccessPath {
+    AdjustedAccessPath empty() { result.length() = 0 }
+
+    AdjustedAccessPath singleton(Content c) { result.getHead() = c and result.length() = 1 }
+  }
+
+  pragma[nomagic]
+  private predicate callableFlow(
+    CallableFlowSource source, AccessPath sourceAp, boolean adjustSourceAp, CallableFlowSink sink,
+    AccessPath sinkAp, boolean adjustSinkAp, SourceDeclarationCallable c, boolean preservesValue
+  ) {
+    any(LibraryTypeDataFlow ltdf).callableFlow(source, sourceAp, sink, sinkAp, c, preservesValue) and
+    (
+      if sourceAp.getHead() instanceof PropertyContent
+      then adjustSourceAp = true
+      else adjustSourceAp = false
+    ) and
+    if sinkAp.getHead() instanceof PropertyContent
+    then adjustSinkAp = true
+    else adjustSinkAp = false
   }
 
   /**
@@ -1524,33 +1651,38 @@ module LibraryFlow {
    */
   pragma[nomagic]
   predicate libraryFlowSummary(
-    Call call, CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink,
-    AccessPath sinkAp, boolean preservesValue
+    Call call, CallableFlowSource source, AdjustedAccessPath sourceAp, CallableFlowSink sink,
+    AdjustedAccessPath sinkAp, boolean preservesValue
   ) {
-    exists(LibraryTypeDataFlow ltdf, SourceDeclarationCallable c |
-      c = call.getTarget().getSourceDeclaration()
-    |
-      ltdf.callableFlow(source, sink, c, preservesValue) and
-      sourceAp = AccessPath::empty() and
-      sinkAp = AccessPath::empty()
+    exists(SourceDeclarationCallable c | c = call.getTarget().getSourceDeclaration() |
+      any(LibraryTypeDataFlow ltdf).callableFlow(source, sink, c, preservesValue) and
+      sourceAp = TOriginalAccessPath(AccessPath::empty()) and
+      sinkAp = TOriginalAccessPath(AccessPath::empty())
       or
-      exists(AccessPath sourceAp0, AccessPath sinkAp0 |
-        ltdf.callableFlow(source, sourceAp0, sink, sinkAp0, c, preservesValue) and
+      exists(
+        AccessPath sourceAp0, boolean adjustSourceAp, AccessPath sinkAp0, boolean adjustSinkAp
+      |
+        callableFlow(source, sourceAp0, adjustSourceAp, sink, sinkAp0, adjustSinkAp, c,
+          preservesValue) and
         (
-          not sourceAp0 = AccessPath::property(_) and
-          sourceAp = sourceAp0
+          adjustSourceAp = false and
+          sourceAp = TOriginalAccessPath(sourceAp0)
           or
-          exists(Property p |
-            overridesOrImplementsSourceDecl(p,
-              getPreciseSourceProperty(call, source, sourceAp0).getSourceDeclaration()) and
-            sourceAp = AccessPath::property(p)
+          adjustSourceAp = true and
+          exists(PropertyContent p, AccessPath sourceApTail |
+            adjustSourceHead(call, source, sourceAp0, sourceApTail, p) and
+            sourceAp = THeadAdjustedAccessPath(p, sourceApTail)
           )
         ) and
         (
-          not sinkAp0 = AccessPath::property(_) and
-          sinkAp = sinkAp0
+          adjustSinkAp = false and
+          sinkAp = TOriginalAccessPath(sinkAp0)
           or
-          sinkAp = AccessPath::property(getPreciseSinkProperty(call, sink, sinkAp0))
+          adjustSinkAp = true and
+          exists(PropertyContent p, AccessPath sinkApTail |
+            adjustSinkHead(call, sink, sinkAp0, sinkApTail, p) and
+            sinkAp = THeadAdjustedAccessPath(p, sinkApTail)
+          )
         )
       )
     )
@@ -1606,8 +1738,8 @@ module LibraryFlow {
   }
 
   newtype TLibraryCodeNodeState =
-    TLibraryCodeNodeAfterReadState(AccessPath ap) { ap.length() > 0 } or
-    TLibraryCodeNodeBeforeStoreState(AccessPath ap) { ap.length() > 0 }
+    TLibraryCodeNodeAfterReadState(AdjustedAccessPath ap) { ap.length() > 0 } or
+    TLibraryCodeNodeBeforeStoreState(AdjustedAccessPath ap) { ap.length() > 0 }
 
   /**
    * A state used to break up (complex) flow summaries for library code into atomic
@@ -1626,12 +1758,12 @@ module LibraryFlow {
    */
   class LibraryCodeNodeState extends TLibraryCodeNodeState {
     string toString() {
-      exists(AccessPath ap |
+      exists(AdjustedAccessPath ap |
         this = TLibraryCodeNodeAfterReadState(ap) and
         result = "after read: " + ap
       )
       or
-      exists(AccessPath ap |
+      exists(AdjustedAccessPath ap |
         this = TLibraryCodeNodeBeforeStoreState(ap) and
         result = "before store: " + ap
       )
@@ -1639,12 +1771,12 @@ module LibraryFlow {
 
     /** Holds if this state represents the state after the last read. */
     predicate isLastReadState() {
-      this = TLibraryCodeNodeAfterReadState(any(AccessPath ap | ap.length() = 1))
+      this = TLibraryCodeNodeAfterReadState(AdjustedAccessPath::singleton(_))
     }
 
     /** Holds if this state represents the state before the first store. */
     predicate isFirstStoreState() {
-      this = TLibraryCodeNodeBeforeStoreState(any(AccessPath ap | ap.length() = 1))
+      this = TLibraryCodeNodeBeforeStoreState(AdjustedAccessPath::singleton(_))
     }
   }
 
@@ -1726,21 +1858,21 @@ module LibraryFlow {
    */
   predicate localStepLibrary(Node pred, Node succ, boolean preservesValue) {
     exists(
-      ControlFlow::Node callCfn, CallableFlowSource source, AccessPath sourceAp,
-      CallableFlowSink sink, AccessPath sinkAp
+      ControlFlow::Node callCfn, CallableFlowSource source, AdjustedAccessPath sourceAp,
+      CallableFlowSink sink, AdjustedAccessPath sinkAp
     |
       libraryFlowSummary(callCfn.getElement(), source, sourceAp, sink, sinkAp, preservesValue)
     |
       // Simple flow summary without reads or stores
-      sourceAp = AccessPath::empty() and
-      sinkAp = AccessPath::empty() and
+      sourceAp = AdjustedAccessPath::empty() and
+      sinkAp = AdjustedAccessPath::empty() and
       entry(pred, callCfn, source) and
       exit(succ, callCfn, sink)
       or
       // Entry step for a complex summary with no reads and (1) multiple stores, or
       // (2) at least one store and non-value-preservation
       exists(LibraryCodeNodeState succState |
-        sourceAp.length() = 0 and
+        sourceAp = AdjustedAccessPath::empty() and
         entry(pred, callCfn, source) and
         succState.isFirstStoreState() and
         succ = TLibraryCodeNode(callCfn, source, sourceAp, sink, sinkAp, preservesValue, succState)
@@ -1749,7 +1881,7 @@ module LibraryFlow {
       // Exit step for a complex summary with no stores and (1) multiple reads, or
       // (2) at least one read and non-value-preservation
       exists(LibraryCodeNodeState predState |
-        sinkAp.length() = 0 and
+        sinkAp = AdjustedAccessPath::empty() and
         predState.isLastReadState() and
         pred = TLibraryCodeNode(callCfn, source, sourceAp, sink, sinkAp, preservesValue, predState) and
         exit(succ, callCfn, sink)
@@ -1758,8 +1890,8 @@ module LibraryFlow {
     or
     // Internal step for complex flow summaries with both reads and writes
     exists(
-      ControlFlow::Node callCfn, CallableFlowSource source, AccessPath sourceAp,
-      CallableFlowSink sink, AccessPath sinkAp, LibraryCodeNodeState predState,
+      ControlFlow::Node callCfn, CallableFlowSource source, AdjustedAccessPath sourceAp,
+      CallableFlowSink sink, AdjustedAccessPath sinkAp, LibraryCodeNodeState predState,
       LibraryCodeNodeState succState
     |
       predState.isLastReadState() and
@@ -1775,8 +1907,8 @@ module LibraryFlow {
    */
   predicate setterLibrary(Node pred, Content c, Node succ, boolean preservesValue) {
     exists(ControlFlow::Node callCfn, CallableFlowSource source, CallableFlowSink sink |
-      libraryFlowSummary(callCfn.getElement(), source, AccessPath::empty(), sink,
-        AccessPath::singleton(c), preservesValue)
+      libraryFlowSummary(callCfn.getElement(), source, AdjustedAccessPath::empty(), sink,
+        AdjustedAccessPath::singleton(c), preservesValue)
     |
       entry(pred, callCfn, source) and
       exit(succ, callCfn, sink)
@@ -1790,9 +1922,9 @@ module LibraryFlow {
   predicate storeStepLibrary(Node pred, Content c, Node succ) {
     // Complex flow summary
     exists(
-      ControlFlow::Node callCfn, CallableFlowSource source, AccessPath sourceAp,
-      CallableFlowSink sink, AccessPath sinkAp, boolean preservesValue,
-      LibraryCodeNodeState predState, AccessPath ap
+      ControlFlow::Node callCfn, CallableFlowSource source, AdjustedAccessPath sourceAp,
+      CallableFlowSink sink, AdjustedAccessPath sinkAp, boolean preservesValue,
+      LibraryCodeNodeState predState, AdjustedAccessPath ap
     |
       predState = TLibraryCodeNodeBeforeStoreState(ap) and
       pred = TLibraryCodeNode(callCfn, source, sourceAp, sink, sinkAp, preservesValue, predState) and
@@ -1800,7 +1932,8 @@ module LibraryFlow {
     |
       // More stores needed
       exists(LibraryCodeNodeState succState |
-        succState = TLibraryCodeNodeBeforeStoreState(any(AccessPath succAp | succAp.getTail() = ap)) and
+        succState =
+          TLibraryCodeNodeBeforeStoreState(any(AdjustedAccessPath succAp | succAp.getTail() = ap)) and
         succ = TLibraryCodeNode(callCfn, source, sourceAp, sink, sinkAp, preservesValue, succState)
       )
       or
@@ -1819,8 +1952,8 @@ module LibraryFlow {
    */
   predicate getterLibrary(Node pred, Content c, Node succ, boolean preservesValue) {
     exists(ControlFlow::Node callCfn, CallableFlowSource source, CallableFlowSink sink |
-      libraryFlowSummary(callCfn.getElement(), source, AccessPath::singleton(c), sink,
-        AccessPath::empty(), preservesValue) and
+      libraryFlowSummary(callCfn.getElement(), source, AdjustedAccessPath::singleton(c), sink,
+        AdjustedAccessPath::empty(), preservesValue) and
       entry(pred, callCfn, source) and
       exit(succ, callCfn, sink)
     )
@@ -1833,9 +1966,9 @@ module LibraryFlow {
   predicate readStepLibrary(Node pred, Content c, Node succ) {
     // Complex flow summary
     exists(
-      ControlFlow::Node callCfn, CallableFlowSource source, AccessPath sourceAp,
-      CallableFlowSink sink, AccessPath sinkAp, boolean preservesValue,
-      LibraryCodeNodeState succState, AccessPath ap
+      ControlFlow::Node callCfn, CallableFlowSource source, AdjustedAccessPath sourceAp,
+      CallableFlowSink sink, AdjustedAccessPath sinkAp, boolean preservesValue,
+      LibraryCodeNodeState succState, AdjustedAccessPath ap
     |
       succState = TLibraryCodeNodeAfterReadState(ap) and
       succ = TLibraryCodeNode(callCfn, source, sourceAp, sink, sinkAp, preservesValue, succState) and
@@ -1846,7 +1979,7 @@ module LibraryFlow {
       entry(pred, callCfn, source)
       or
       // Subsequent reads
-      exists(LibraryCodeNodeState predState, AccessPath predAp |
+      exists(LibraryCodeNodeState predState, AdjustedAccessPath predAp |
         predState = TLibraryCodeNodeAfterReadState(predAp) and
         predAp.getTail() = ap and
         pred = TLibraryCodeNode(callCfn, source, sourceAp, sink, sinkAp, preservesValue, predState)
@@ -1886,9 +2019,9 @@ private DataFlowType getContentType(Content c) {
 class LibraryCodeNode extends NodeImpl, TLibraryCodeNode {
   private ControlFlow::Node callCfn;
   private CallableFlowSource source;
-  private AccessPath sourceAp;
+  private LibraryFlow::AdjustedAccessPath sourceAp;
   private CallableFlowSink sink;
-  private AccessPath sinkAp;
+  private LibraryFlow::AdjustedAccessPath sinkAp;
   private boolean preservesValue;
   private LibraryFlow::LibraryCodeNodeState state;
 
@@ -1899,7 +2032,7 @@ class LibraryCodeNode extends NodeImpl, TLibraryCodeNode {
   override Callable getEnclosingCallableImpl() { result = callCfn.getEnclosingCallable() }
 
   override DataFlowType getDataFlowType() {
-    exists(AccessPath ap |
+    exists(LibraryFlow::AdjustedAccessPath ap |
       state = LibraryFlow::TLibraryCodeNodeAfterReadState(ap) and
       if sinkAp.length() = 0 and state.isLastReadState() and preservesValue = true
       then result = Gvn::getGlobalValueNumber(sink.getSinkType(callCfn.getElement()))
