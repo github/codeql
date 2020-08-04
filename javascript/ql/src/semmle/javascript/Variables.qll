@@ -312,8 +312,8 @@ class LocalVariable extends Variable {
     this = result.getScope().getAVariable()
     or
     exists(VarDecl d | d = getADeclaration() |
-      if d = any(FunctionDeclStmt fds).getId()
-      then exists(FunctionDeclStmt fds | d = fds.getId() | result = fds.getEnclosingContainer())
+      if d = any(FunctionDeclStmt fds).getIdentifier()
+      then exists(FunctionDeclStmt fds | d = fds.getIdentifier() | result = fds.getEnclosingContainer())
       else result = d.getContainer()
     )
   }
