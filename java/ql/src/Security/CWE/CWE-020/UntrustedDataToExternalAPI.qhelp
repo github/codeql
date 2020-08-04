@@ -46,7 +46,7 @@ some existing sanitization.</p>
 
 <sample src="ExternalAPITaintStepExample.java" />
 
-<p>If the query reported the call to <code>StringBuilder.append</code> on Line 7, this would suggest that this external API is 
+<p>If the query reported the call to <code>StringBuilder.append</code> on line 7, this would suggest that this external API is 
 not currently modeled as a taint step in the taint tracking library. The next step would be to model this as taint step, then
 re-run the query to determine what additional results might be found. In this example, it seems likely that the result of the
 <code>StringBuilder</code> will be executed as an SQL query, potentially leading to an SQL injection vulnerability.</p>
