@@ -47,7 +47,12 @@ private int assignableOffset(AssignableMember assignable) {
  * The locations are ordered by file, line, column, and then the first one is selected.
  */
 private Location getRepresentativeLocation(Element ast) {
-  result = rank[1](Location loc | loc = ast.getLocation() | loc order by loc.toString() desc) // todo tv: why do I need desc here?
+  result =
+    rank[1](Location loc |
+      loc = ast.getLocation() and selectedFile(loc.getFile())
+    |
+      loc order by loc.getStartLine(), loc.getStartColumn(), loc.getEndLine(), loc.getEndColumn()
+    )
 }
 
 private predicate locationSortKeys(Element ast, string file, int line, int column) {
@@ -357,7 +362,7 @@ final class ParametersNode extends PrintAstNode, TParametersNode {
     callable.getNumberOfParameters() > 0
   }
 
-  override string toString() { result = "Parameters" }
+  override string toString() { result = "(Parameters)" }
 
   override Location getLocation() { none() }
 
@@ -380,7 +385,7 @@ final class AttributesNode extends PrintAstNode, TAttributesNode {
     count(attributable.getAnAttribute()) > 0
   }
 
-  override string toString() { result = "Attributes" }
+  override string toString() { result = "(Attributes)" }
 
   override Location getLocation() { none() }
 
@@ -408,7 +413,7 @@ final class TypeParametersNode extends PrintAstNode, TTypeParametersNode {
     unboundGeneric.getNumberOfTypeParameters() > 0 // this might always be true
   }
 
-  override string toString() { result = "TypeParameters" }
+  override string toString() { result = "(TypeParameters)" }
 
   override Location getLocation() { none() }
 
@@ -419,9 +424,6 @@ final class TypeParametersNode extends PrintAstNode, TTypeParametersNode {
   UnboundGeneric getUnboundGeneric() { result = unboundGeneric }
 }
 
-// private predicate foo(Method m, Parameter p, int i){
-//   p = m.getParameter(i) and p.getLocation().getStartLine() = 84
-// }
 /** Holds if `node` belongs to the output tree, and its property `key` has the given `value`. */
 query predicate nodes(PrintAstNode node, string key, string value) {
   node.shouldPrint() and
