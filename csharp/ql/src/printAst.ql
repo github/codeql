@@ -18,15 +18,7 @@ external string selectedSourceFile();
 
 class PrintAstConfigurationOverride extends PrintAstConfiguration {
   /**
-   * Holds if the AST for `func` should be printed.
-   * Print All functions from the selected file.
+   * Holds if the file matches the selected file in the VS Code extension
    */
-  override predicate shouldPrint(Element elem) {
-    elem.getFile() = getEncodedFile(selectedSourceFile())
-  }
-
-  override predicate selectedFile(File f)
-  {
-    f = getEncodedFile(selectedSourceFile())
-  }
+  override predicate selectedFile(File file) { file = getEncodedFile(selectedSourceFile()) }
 }
