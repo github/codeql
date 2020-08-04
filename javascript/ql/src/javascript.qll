@@ -34,6 +34,7 @@ import semmle.javascript.InclusionTests
 import semmle.javascript.JSDoc
 import semmle.javascript.JSON
 import semmle.javascript.JsonParsers
+import semmle.javascript.JsonSerializers
 import semmle.javascript.JSX
 import semmle.javascript.Lines
 import semmle.javascript.Locations
