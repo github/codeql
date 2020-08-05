@@ -25,6 +25,10 @@ import semmle.code.cpp.controlflow.Dominance
 import semmle.code.cpp.controlflow.SSAUtils
 private import RangeAnalysisUtils
 
+/**
+ * The SSA logic comes in two versions: the standard SSA and range-analysis RangeSSA.
+ * This class provides the range-analysis SSA logic.
+ */
 library class RangeSSA extends SSAHelper {
   RangeSSA() { this = 1 }
 
@@ -84,6 +88,7 @@ class RangeSsaDefinition extends ControlFlowNodeBase {
   /** Gets the control flow node for this definition. */
   ControlFlowNode getDefinition() { result = this }
 
+  /** Gets the basic block containing this definition. */
   BasicBlock getBasicBlock() { result.contains(getDefinition()) }
 
   /** Whether this definition is a phi node for variable `v`. */
@@ -97,11 +102,13 @@ class RangeSsaDefinition extends ControlFlowNodeBase {
     guard_defn(v, guard, this, branch)
   }
 
+  /** Gets the primary location of this definition. */
   Location getLocation() { result = this.(ControlFlowNode).getLocation() }
 
   /** Whether this definition is from a parameter */
   predicate definedByParameter(Parameter p) { this = p.getFunction().getEntryPoint() }
 
+  /** Gets a definition of `v` that is a phi input for this basic block. */
   RangeSsaDefinition getAPhiInput(StackVariable v) {
     this.isPhiNode(v) and
     exists(BasicBlock pred |
@@ -153,6 +160,9 @@ class RangeSsaDefinition extends ControlFlowNodeBase {
     )
   }
 
+  /**
+   * Holds if this definition of the variable `v` reached the end of the basic block `b`.
+   */
   predicate reachesEndOfBB(StackVariable v, BasicBlock b) {
     exists(RangeSSA x | x.ssaDefinitionReachesEndOfBB(v, this, b))
   }

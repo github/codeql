@@ -78,7 +78,7 @@ We can use the ``Callable`` class to write a query that finds methods that are n
    where not exists(Callable caller | caller.polyCalls(callee))
    select callee
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/665280012/>`__. This simple query typically returns a large number of results.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/8376915232270534450/>`__. This simple query typically returns a large number of results.
 
 .. pull-quote::
 
@@ -97,7 +97,7 @@ Running this query on a typical Java project results in lots of hits in the Java
        callee.getCompilationUnit().fromSource()
    select callee, "Not called."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/668510015/>`__. This change reduces the number of results returned for most projects.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/8711624074465690976/>`__. This change reduces the number of results returned for most projects.
 
 We might also notice several unused methods with the somewhat strange name ``<clinit>``: these are class initializers; while they are not explicitly called anywhere in the code, they are called implicitly whenever the surrounding class is loaded. Hence it makes sense to exclude them from our query. While we are at it, we can also exclude finalizers, which are similarly invoked implicitly:
 
@@ -111,7 +111,7 @@ We might also notice several unused methods with the somewhat strange name ``<cl
        not callee.hasName("<clinit>") and not callee.hasName("finalize")
    select callee, "Not called."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/672230002/>`__. This also reduces the number of results returned by most projects.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/925473733866047471/>`__. This also reduces the number of results returned by most projects.
 
 We may also want to exclude public methods from our query, since they may be external API entry points:
 
@@ -126,7 +126,7 @@ We may also want to exclude public methods from our query, since they may be ext
        not callee.isPublic()
    select callee, "Not called."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/667290016/>`__. This should have a more noticeable effect on the number of results returned.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/6284320987237954610/>`__. This should have a more noticeable effect on the number of results returned.
 
 A further special case is non-public default constructors: in the singleton pattern, for example, a class is provided with private empty default constructor to prevent it from being instantiated. Since the very purpose of such constructors is their not being called, they should not be flagged up:
 
@@ -142,9 +142,9 @@ A further special case is non-public default constructors: in the singleton patt
        not callee.(Constructor).getNumberOfParameters() = 0
    select callee, "Not called."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/673060008/>`__. This change has a large effect on the results for some projects but little effect on the results for others. Use of this pattern varies widely between different projects.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/2625028545869146918/>`__. This change has a large effect on the results for some projects but little effect on the results for others. Use of this pattern varies widely between different projects.
 
-Finally, on many Java projects there are methods that are invoked indirectly by reflection. So, while there are no calls invoking these methods, they are, in fact, used. It is in general very hard to identify such methods. A very common special case, however, is JUnit test methods, which are reflectively invoked by a test runner. The QL Java library has support for recognizing test classes of JUnit and other testing frameworks, which we can employ to filter out methods defined in such classes:
+Finally, on many Java projects there are methods that are invoked indirectly by reflection. So, while there are no calls invoking these methods, they are, in fact, used. It is in general very hard to identify such methods. A very common special case, however, is JUnit test methods, which are reflectively invoked by a test runner. The CodeQL library for Java has support for recognizing test classes of JUnit and other testing frameworks, which we can employ to filter out methods defined in such classes:
 
 .. code-block:: ql
 
@@ -159,7 +159,7 @@ Finally, on many Java projects there are methods that are invoked indirectly by 
        not callee.getDeclaringType() instanceof TestClass
    select callee, "Not called."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/665760002/>`__. This should give a further reduction in the number of results returned.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/2055862421970264112/>`__. This should give a further reduction in the number of results returned.
 
 Further reading
 ---------------

@@ -1,0 +1,12 @@
+| xpath.py:8:20:8:29 | lxml.etree.parse.xpath | externally controlled string |
+| xpath.py:13:29:13:38 | lxml.etree.XPath | externally controlled string |
+| xpath.py:19:29:19:38 | lxml.etree.XPath | externally controlled string |
+| xpath.py:25:38:25:46 | lxml.etree.ETXpath | externally controlled string |
+| xpath.py:32:29:32:34 | libxml2.parseFile.xpathEval | externally controlled string |
+| xpathBad.py:13:20:13:43 | lxml.etree.parse.xpath | externally controlled string |
+| xpathFlow.py:14:20:14:29 | lxml.etree.parse.xpath | externally controlled string |
+| xpathFlow.py:23:29:23:38 | lxml.etree.XPath | externally controlled string |
+| xpathFlow.py:32:29:32:38 | lxml.etree.XPath | externally controlled string |
+| xpathFlow.py:41:31:41:40 | lxml.etree.ETXpath | externally controlled string |
+| xpathFlow.py:49:29:49:38 | libxml2.parseFile.xpathEval | externally controlled string |
+| xpathGood.py:13:20:13:37 | lxml.etree.parse.xpath | externally controlled string |

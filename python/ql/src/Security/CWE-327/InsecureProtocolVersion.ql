@@ -14,9 +14,10 @@ import python
 import semmle.python.security.Paths
 
 ModuleValue the_ssl_module() { result = Module::named("ssl") }
-ClassValue ssl_Context_class() { result = the_ssl_module().attr("SSLContext") }
-FunctionValue wrap_socket() { result = ssl_Context_class().lookup("wrap_socket") }
 
+ClassValue ssl_Context_class() { result = the_ssl_module().attr("SSLContext") }
+
+FunctionValue wrap_socket() { result = ssl_Context_class().lookup("wrap_socket") }
 
 class AllowsTLSv1 extends TaintKind {
   AllowsTLSv1() { this = "allows TLS 1.0" }
@@ -31,17 +32,17 @@ private predicate isSSLContextConstructor(CallNode node) {
 }
 
 string insecure_version_name() {
-    // For `pyOpenSSL.SSL`
-    result = "SSLv2_METHOD" or
-    result = "SSLv23_METHOD" or
-    result = "SSLv3_METHOD" or
-    result = "TLSv1_METHOD" or
-    // For the `ssl` module
-    result = "PROTOCOL_SSLv2" or
-    result = "PROTOCOL_SSLv3" or
-    result = "PROTOCOL_SSLv23" or
-    result = "PROTOCOL_TLS" or // could be fine since 3.6
-    result = "PROTOCOL_TLSv1"
+  // For `pyOpenSSL.SSL`
+  result = "SSLv2_METHOD" or
+  result = "SSLv23_METHOD" or
+  result = "SSLv3_METHOD" or
+  result = "TLSv1_METHOD" or
+  // For the `ssl` module
+  result = "PROTOCOL_SSLv2" or
+  result = "PROTOCOL_SSLv3" or
+  result = "PROTOCOL_SSLv23" or
+  result = "PROTOCOL_TLS" or // could be fine since 3.6
+  result = "PROTOCOL_TLSv1"
 }
 
 // TODO: this is a big table since it includes all calls with no arguments
@@ -52,7 +53,8 @@ private predicate usesDefaultValues(CallNode node) {
   exists(AttrNode arg |
     arg = node.getArgByName("protocol")
     or
-    arg = node.getArg(0) |
+    arg = node.getArg(0)
+  |
     arg.getObject(insecure_version_name()).pointsTo(the_ssl_module()) // TODO: Is it OK to use pointsto?
   )
 }
@@ -91,23 +93,19 @@ class SSLContextUse extends TaintSink {
 }
 
 class DisallowsTLSVersion extends Sanitizer {
-  DisallowsTLSVersion () { this = "disallows TLS version" }
+  DisallowsTLSVersion() { this = "disallows TLS version" }
 }
 
 class InsecureProtocolVersionConfiguration extends TaintTracking::Configuration {
   InsecureProtocolVersionConfiguration() { this = "Insecure protocol configuration" }
 
   override predicate isSource(TaintTracking::Source source) {
-      source instanceof SSLContextConstructor
+    source instanceof SSLContextConstructor
   }
 
-  override predicate isSink(TaintTracking::Sink sink) {
-      sink instanceof SSLContextUse
-  }
+  override predicate isSink(TaintTracking::Sink sink) { sink instanceof SSLContextUse }
 
-  override predicate isSanitizer(Sanitizer sanitizer) {
-      sanitizer instanceof DisallowsTLSVersion
-  }
+  override predicate isSanitizer(Sanitizer sanitizer) { sanitizer instanceof DisallowsTLSVersion }
 }
 
 /** Assume that an object stays tainted when attributes are modified */
@@ -164,6 +162,6 @@ from
 where
   // config.hasFlowPath(src, sink)
   node.getConfiguration() = config
-select
+select node,
   // sink.getSink(), src, sink, "$@ is used here.", src.getSource(), "Insecure SSLContext"
-  node, node.getNode()
+  node.getNode()

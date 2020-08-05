@@ -244,14 +244,14 @@ class CondReason extends Reason, TCondReason {
 /**
  * Holds if `typ` is a small integral type with the given lower and upper bounds.
  */
-private predicate typeBound(IntegralType typ, int lowerbound, int upperbound) {
-  typ.isSigned() and typ.getSize() = 1 and lowerbound = -128 and upperbound = 127
+private predicate typeBound(IRIntegerType typ, int lowerbound, int upperbound) {
+  typ.isSigned() and typ.getByteSize() = 1 and lowerbound = -128 and upperbound = 127
   or
-  typ.isUnsigned() and typ.getSize() = 1 and lowerbound = 0 and upperbound = 255
+  typ.isUnsigned() and typ.getByteSize() = 1 and lowerbound = 0 and upperbound = 255
   or
-  typ.isSigned() and typ.getSize() = 2 and lowerbound = -32768 and upperbound = 32767
+  typ.isSigned() and typ.getByteSize() = 2 and lowerbound = -32768 and upperbound = 32767
   or
-  typ.isUnsigned() and typ.getSize() = 2 and lowerbound = 0 and upperbound = 65535
+  typ.isUnsigned() and typ.getByteSize() = 2 and lowerbound = 0 and upperbound = 65535
 }
 
 /**
@@ -260,14 +260,14 @@ private predicate typeBound(IntegralType typ, int lowerbound, int upperbound) {
 private class NarrowingCastInstruction extends ConvertInstruction {
   NarrowingCastInstruction() {
     not this instanceof SafeCastInstruction and
-    typeBound(getResultType(), _, _)
+    typeBound(getResultIRType(), _, _)
   }
 
   /** Gets the lower bound of the resulting type. */
-  int getLowerBound() { typeBound(getResultType(), result, _) }
+  int getLowerBound() { typeBound(getResultIRType(), result, _) }
 
   /** Gets the upper bound of the resulting type. */
-  int getUpperBound() { typeBound(getResultType(), _, result) }
+  int getUpperBound() { typeBound(getResultIRType(), _, result) }
 }
 
 /**

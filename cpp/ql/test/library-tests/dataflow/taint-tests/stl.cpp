@@ -7,6 +7,26 @@ namespace std
 
 	typedef size_t streamsize;
 
+	struct ptrdiff_t;
+
+	template <class iterator_category,
+			  class value_type,
+			  class difference_type = ptrdiff_t,
+			  class pointer_type = value_type*,
+			  class reference_type = value_type&>
+	struct iterator {
+		iterator &operator++();
+		iterator operator++(int);
+		bool operator==(iterator other) const;
+		bool operator!=(iterator other) const;
+		reference_type operator*() const;
+	};
+
+	struct input_iterator_tag {};
+	struct forward_iterator_tag : public input_iterator_tag {};
+	struct bidirectional_iterator_tag : public forward_iterator_tag {};
+	struct random_access_iterator_tag : public bidirectional_iterator_tag {};
+
 	template <class T> class allocator {
 	public:
 		allocator() throw();
@@ -19,6 +39,16 @@ namespace std
 		basic_string(const charT* s, const Allocator& a = Allocator());
 
 		const charT* c_str() const;
+
+		typedef std::iterator<random_access_iterator_tag, charT> iterator;
+		typedef std::iterator<random_access_iterator_tag, const charT> const_iterator;
+
+		iterator begin();
+		iterator end();
+		const_iterator begin() const;
+		const_iterator end() const;
+		const_iterator cbegin() const;
+		const_iterator cend() const;
 	};
 
 	typedef basic_string<char> string;
@@ -155,4 +185,71 @@ void test_string4()
 
 	sink(cs); // tainted
 	sink(ss); // tainted
+}
+
+void test_string_constructors_assignments()
+{
+	{
+		std::string s1("hello");
+		std::string s2 = "hello";
+		std::string s3;
+		s3 = "hello";
+
+		sink(s1);
+		sink(s2);
+		sink(s3);
+	}
+
+	{
+		std::string s1(source());
+		std::string s2 = source();
+		std::string s3;
+		s3 = source();
+
+		sink(s1); // tainted
+		sink(s2); // tainted
+		sink(s3); // tainted
+	}
+
+	{
+		std::string s1;
+		std::string s2 = s1;
+		std::string s3;
+		s3 = s1;
+
+		sink(s1);
+		sink(s2);
+		sink(s3);
+	}
+
+	{
+		std::string s1 = std::string(source());
+		std::string s2;
+		s2 = std::string(source());
+
+		sink(s1); // tainted
+		sink(s2); // tainted
+	}
+}
+
+void sink(char) {}
+
+void test_range_based_for_loop() {
+	std::string s(source());
+	for(char c : s) {
+		sink(c); // tainted [NOT DETECTED]
+	}
+
+	for(std::string::iterator it = s.begin(); it != s.end(); ++it) {
+		sink(*it); // tainted [NOT DETECTED]
+	}
+
+	for(char& c : s) {
+		sink(c); // tainted [NOT DETECTED]
+	}
+
+	const std::string const_s(source());
+	for(const char& c : const_s) {
+		sink(c); // tainted [NOT DETECTED]
+	}
 }

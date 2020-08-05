@@ -1,3 +1,8 @@
+/**
+ * Provides the class `IRFunction`, which represents the Intermediate Representation for the
+ * definition of a function.
+ */
+
 private import internal.IRInternal
 private import internal.IRFunctionImports as Imports
 import Imports::IRFunctionBase

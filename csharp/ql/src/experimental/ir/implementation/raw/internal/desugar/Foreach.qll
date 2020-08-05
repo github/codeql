@@ -5,13 +5,13 @@
  * Also we only deal with foreach stmts where there is only
  * one declaration (see below).
  * For example the code:
- *    ```
+ *    ```csharp
  *      foreach(var item in some_enumerable) {
  *        // body
  *      }
  *    ```
  * gets desugared to:
- *    ```
+ *    ```csharp
  *      Enumerator e = some_enumerable.GetEnumerator();
  *      try
  *      {

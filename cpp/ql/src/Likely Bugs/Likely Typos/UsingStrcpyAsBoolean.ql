@@ -15,6 +15,15 @@ import cpp
 import semmle.code.cpp.models.implementations.Strcpy
 import semmle.code.cpp.dataflow.DataFlow
 
+/**
+ * A string copy function that returns a string, rather than an error code (for
+ * example, `strcpy` returns a string, whereas `strcpy_s` returns an error
+ * code).
+ */
+class InterestingStrcpyFunction extends StrcpyFunction {
+  InterestingStrcpyFunction() { getType().getUnspecifiedType() instanceof PointerType }
+}
+
 predicate isBoolean(Expr e1) {
   exists(Type t1 |
     t1 = e1.getType() and
@@ -25,12 +34,12 @@ predicate isBoolean(Expr e1) {
 predicate isStringCopyCastedAsBoolean(FunctionCall func, Expr expr1, string msg) {
   DataFlow::localExprFlow(func, expr1) and
   isBoolean(expr1.getConversion*()) and
-  func.getTarget() instanceof StrcpyFunction and
+  func.getTarget() instanceof InterestingStrcpyFunction and
   msg = "Return value of " + func.getTarget().getName() + " used as a Boolean."
 }
 
 predicate isStringCopyUsedInLogicalOperationOrCondition(FunctionCall func, Expr expr1, string msg) {
-  func.getTarget() instanceof StrcpyFunction and
+  func.getTarget() instanceof InterestingStrcpyFunction and
   (
     (
       // it is being used in an equality or logical operation

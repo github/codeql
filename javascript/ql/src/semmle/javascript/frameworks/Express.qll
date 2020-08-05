@@ -464,6 +464,26 @@ module Express {
   }
 
   /**
+   * Gets a reference to the "query" object from a request-object originating from route-handler `rh`.
+   */
+  DataFlow::SourceNode getAQueryObjectReference(DataFlow::TypeTracker t, RouteHandler rh) {
+    t.startInProp("query") and
+    result = rh.getARequestSource()
+    or
+    exists(DataFlow::TypeTracker t2 | result = getAQueryObjectReference(t2, rh).track(t2, t))
+  }
+
+  /**
+   * Gets a reference to the "params" object from a request-object originating from route-handler `rh`.
+   */
+  DataFlow::SourceNode getAParamsObjectReference(DataFlow::TypeTracker t, RouteHandler rh) {
+    t.startInProp("params") and
+    result = rh.getARequestSource()
+    or
+    exists(DataFlow::TypeTracker t2 | result = getAParamsObjectReference(t2, rh).track(t2, t))
+  }
+
+  /**
    * An access to a user-controlled Express request input.
    */
   class RequestInputAccess extends HTTP::RequestInputAccess {
@@ -471,13 +491,14 @@ module Express {
     string kind;
 
     RequestInputAccess() {
+      kind = "parameter" and
+      this =
+        [getAQueryObjectReference(DataFlow::TypeTracker::end(), rh),
+            getAParamsObjectReference(DataFlow::TypeTracker::end(), rh)].getAPropertyRead()
+      or
       exists(DataFlow::SourceNode request | request = rh.getARequestSource().ref() |
         kind = "parameter" and
-        (
-          this = request.getAMethodCall("param")
-          or
-          this = request.getAPropertyRead(["params", "query"]).getAPropertyRead()
-        )
+        this = request.getAMethodCall("param")
         or
         // `req.originalUrl`
         kind = "url" and
@@ -518,13 +539,11 @@ module Express {
       kind = "parameter" and
       exists(DataFlow::Node request | request = DataFlow::valueNode(rh.getARequestExpr()) |
         this.(DataFlow::MethodCallNode).calls(request, "param")
-        or
-        exists(DataFlow::PropRead base |
-          // `req.query.name`
-          base.accesses(request, "query") and
-          this = base.getAPropertyReference(_)
-        )
       )
+      or
+      // `req.query.name`
+      kind = "parameter" and
+      this = getAQueryObjectReference(DataFlow::TypeTracker::end(), rh).getAPropertyRead()
     }
   }
 

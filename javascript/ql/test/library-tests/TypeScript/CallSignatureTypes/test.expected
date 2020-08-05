@@ -108,51 +108,24 @@ test_FunctionCallSig
 | tst.ts:63:3:63:23 | method2 ... ing[]); | (y: string[]): any |
 | tst.ts:64:3:64:21 | method3(y: string); | (y: string): any |
 test_getRestParameterType
-| (...items: (string \| ConcatArray<string>)[]): T[] | string \| ConcatArray<string> |
-| (...items: ConcatArray<string>[]): T[] | ConcatArray<string> |
-| (...items: string[]): number | string |
-| (...strings: string[]): string | string |
 | (...y: string[]): any | string |
-| (start: number, deleteCount: number, ...items: string[]): T[] | string |
-| (substring: string, ...args: any[]): string | any |
 | (x: number, ...y: string[]): any | string |
 | new (...y: string[]): any | string |
 | new (x: number, ...y: string[]): any | string |
 test_getRestParameterArray
-| (...items: (string \| ConcatArray<string>)[]): T[] | (string \| ConcatArray<string>)[] |
-| (...items: ConcatArray<string>[]): T[] | ConcatArray<string>[] |
-| (...items: string[]): number | string[] |
-| (...strings: string[]): string | string[] |
 | (...y: string[]): any | string[] |
-| (start: number, deleteCount: number, ...items: string[]): T[] | string[] |
-| (substring: string, ...args: any[]): string | any[] |
 | (x: number, ...y: string[]): any | string[] |
 | new (...y: string[]): any | string[] |
 | new (x: number, ...y: string[]): any | string[] |
 test_RestSig_getParameter
-| (...items: (string \| ConcatArray<string>)[]): T[] | 0 | items | string \| ConcatArray<string> |
-| (...items: ConcatArray<string>[]): T[] | 0 | items | ConcatArray<string> |
-| (...items: string[]): number | 0 | items | string |
-| (...strings: string[]): string | 0 | strings | string |
 | (...y: string[]): any | 0 | y | string |
-| (start: number, deleteCount: number, ...items: string[]): T[] | 0 | start | number |
-| (start: number, deleteCount: number, ...items: string[]): T[] | 1 | deleteCount | number |
-| (start: number, deleteCount: number, ...items: string[]): T[] | 2 | items | string |
-| (substring: string, ...args: any[]): string | 0 | substring | string |
-| (substring: string, ...args: any[]): string | 1 | args | any |
 | (x: number, ...y: string[]): any | 0 | x | number |
 | (x: number, ...y: string[]): any | 1 | y | string |
 | new (...y: string[]): any | 0 | y | string |
 | new (x: number, ...y: string[]): any | 0 | x | number |
 | new (x: number, ...y: string[]): any | 1 | y | string |
 test_RestSig_numRequiredParams
-| (...items: (string \| ConcatArray<string>)[]): T[] | 0 |
-| (...items: ConcatArray<string>[]): T[] | 0 |
-| (...items: string[]): number | 0 |
-| (...strings: string[]): string | 0 |
 | (...y: string[]): any | 0 |
-| (start: number, deleteCount: number, ...items: string[]): T[] | 2 |
-| (substring: string, ...args: any[]): string | 1 |
 | (x: number, ...y: string[]): any | 1 |
 | new (...y: string[]): any | 0 |
 | new (x: number, ...y: string[]): any | 1 |
