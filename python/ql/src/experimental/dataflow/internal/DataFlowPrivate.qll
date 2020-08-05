@@ -268,11 +268,10 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
     // Seems to need extractor changes to write this part properly
     nodeFrom.(CfgNode).getNode().(SequenceNode).getNode().getParentNode() = comp and
     colocated(f.getIter(), comp) and
-    nodeTo.(EssaNode).getVar().getDefinition().(AssignmentDefinition).getDefiningNode().getNode() = f.getTarget()
+    nodeTo.(EssaNode).getVar().getDefinition().(AssignmentDefinition).getDefiningNode().getNode() =
+      f.getTarget()
   )
 }
-
-
 
 /** This should not be necessary */
 predicate colocated(AstNode n1, AstNode n2) {
