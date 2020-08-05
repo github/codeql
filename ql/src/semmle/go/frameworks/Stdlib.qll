@@ -7,6 +7,7 @@ import semmle.go.frameworks.stdlib.ArchiveTar
 import semmle.go.frameworks.stdlib.ArchiveZip
 import semmle.go.frameworks.stdlib.Bufio
 import semmle.go.frameworks.stdlib.Bytes
+import semmle.go.frameworks.stdlib.CompressBzip2
 
 /** A `String()` method. */
 class StringMethod extends TaintTracking::FunctionModel, Method {
