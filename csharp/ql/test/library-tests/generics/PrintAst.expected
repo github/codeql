@@ -721,11 +721,9 @@ generics.cs:
 #  190|     2: [Method] M
 #-----|       2: (Parameters)
 #  190|         0: [Parameter] x
-#   22| [ArrayType] T[]
 #    7| [DelegateType] GenericDelegate<T>
 #-----|   0: (Parameters)
 #    7|     0: [Parameter] t
-#   60| [ArrayType] T[,]
 #   22| [Class] B<String>
 #   25|   2: [Field] at
 #   27|   3: [Field] name
@@ -884,7 +882,6 @@ generics.cs:
 #   54|     2: [Field] t
 #   55|     3: [Field] myFunc
 #   13| [Class] A<X>
-#   45| [ArrayType] X[]
 #    7| [DelegateType] GenericDelegate<X>
 #-----|   0: (Parameters)
 #    7|     0: [Parameter] t

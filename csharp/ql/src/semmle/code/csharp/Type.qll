@@ -870,8 +870,6 @@ class ArrayType extends DotNet::ArrayType, RefType, @array_type {
     not type_location(this, _) and
     result = this.getElementType().getALocation()
   }
-
-  override string getAPrimaryQlClass() { result = "ArrayType" }
 }
 
 /**

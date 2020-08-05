@@ -93,8 +93,6 @@ definitions.cs:
 #   78| [Struct] S1
 #-----| 2 -> [Method] M
 
-#   78| [ArrayType] S1[]
-
 #   80| [Method] M
 #-----| 2 -> (Parameters)
 #-----| 3 -> [BlockStmt] {...}
@@ -793,8 +791,6 @@ definitions.cs:
 
 #   63| [LocalConstantDeclStmt] ... ...;
 #-----| 0 -> [LocalVariableDeclAndInitExpr] C1[] array = ...
-
-#   18| [ArrayType] C1[]
 
 #   63| [LocalVariableDeclAndInitExpr] C1[] array = ...
 #-----| 0 -> [NullLiteral] null

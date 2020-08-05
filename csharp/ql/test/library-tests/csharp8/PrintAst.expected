@@ -414,10 +414,6 @@ NullableRefTypes.cs:
 
 #   25| [Field] H
 
-#    6| [ArrayType] MyClass[]
-
-#    6| [ArrayType] MyClass[][]
-
 #   26| [Method] ArrayFn1
 #-----| 2 -> (Parameters)
 #-----| 3 -> [ThrowExpr] throw ...
@@ -682,35 +678,11 @@ NullableRefTypes.cs:
 
 #  128| [Field] i
 
-#    6| [ArrayType] MyClass[,,]
-
-#    6| [ArrayType] MyClass[,,][]
-
-#    6| [ArrayType] MyClass[,,][][,]
-
 #  129| [Field] j
-
-#    6| [ArrayType] MyClass[][,]
-
-#    6| [ArrayType] MyClass[][,][,,]
 
 #  130| [Field] k
 
-#    6| [ArrayType] MyClass[,,][,]
-
-#    6| [ArrayType] MyClass[,,][,][]
-
-#    6| [ArrayType] MyClass[,,][,][][,,,]
-
 #  131| [Field] l
-
-#    6| [ArrayType] MyClass[,]
-
-#    6| [ArrayType] MyClass[,][]
-
-#    6| [ArrayType] MyClass[,][][,,,]
-
-#    6| [ArrayType] MyClass[,][][,,,][,,]
 
 #  118| [Field] a
 
@@ -1325,10 +1297,6 @@ NullableRefTypes.cs:
 #   54| [Class] Generic<String,T1,IEnumerable<String>,MyClass>
 
 #   54| [Class] Generic<MyClass,MyClass,IDisposable,MyClass>
-
-#  165| [ArrayType] MyStruct[]
-
-#  165| [ArrayType] Nullable
 
 #  215| [Parameter] list
 

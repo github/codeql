@@ -359,7 +359,7 @@ final class TypeParameterNode extends AstNode {
 final class TypeNode extends AstNode {
   ValueOrRefType type;
 
-  TypeNode() { type = ast and not type instanceof TupleType }
+  TypeNode() { type = ast and not type instanceof TupleType and not type instanceof ArrayType }
 
   override PrintAstNode getChild(int childIndex) {
     childIndex = 0 and

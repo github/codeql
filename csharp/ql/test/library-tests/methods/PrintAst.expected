@@ -217,8 +217,6 @@ methods.cs:
 
 #  109| [TypeParameter] T
 
-#  109| [ArrayType] T[]
-
 #  109| [Parameter] index
 
 #  109| [Parameter] count

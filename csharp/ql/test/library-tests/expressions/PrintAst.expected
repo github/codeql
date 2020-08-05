@@ -4436,8 +4436,6 @@ expressions.cs:
 
 #  378| [ThisAccess] this access
 
-#  371| [ArrayType] Contact[]
-
 #  417| [Class] <>__AnonType0<String,String[]>
 #-----| 2 -> [IndexerProperty] Name
 #-----| 3 -> [Property] PhoneNumbers
@@ -4824,8 +4822,6 @@ expressions.cs:
 #  452| [Parameter] fun
 
 #  466| [Field] value
-
-#  417| [ArrayType] <>__AnonType0<String,String[]>[]
 
 #  437| [Parameter] x
 
