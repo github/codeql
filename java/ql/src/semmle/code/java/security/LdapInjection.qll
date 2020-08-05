@@ -79,14 +79,12 @@ private predicate apacheLdapInjectionSinkMethod(Method m, int index) {
   )
 }
 
-/** A sanitizer that clears the taint on primitive types. */
-private class PrimitiveTypeLdapSanitizer extends LdapInjectionSanitizer {
-  PrimitiveTypeLdapSanitizer() { this.getType() instanceof PrimitiveType }
-}
-
-/** A sanitizer that clears the taint on boxed primitive types. */
-private class BoxedTypeLdapSanitizer extends LdapInjectionSanitizer {
-  BoxedTypeLdapSanitizer() { this.getType() instanceof BoxedType }
+/** A sanitizer that clears the taint on (boxed) primitive types */
+private class DefaultLdapSanitizer extends LdapInjectionSanitizer {
+  DefaultLdapSanitizer() {
+    this.getType() instanceof PrimitiveType or
+    this.getType() instanceof BoxedType
+  }
 }
 
 /**
