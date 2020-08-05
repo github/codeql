@@ -1,0 +1,3428 @@
+AlternateInterpolatedStrings.cs:
+#    3| [Class] AlternateInterpolatedStrings
+#-----| 2 -> [Field] s1
+#-----| 3 -> [Field] s2
+
+#    6| [Field] s2
+#-----| 1 -> [AssignExpr] ... = ...
+
+#    5| [Field] s1
+#-----| 1 -> [AssignExpr] ... = ...
+
+#    5| [AssignExpr] ... = ...
+#-----| 0 -> [InterpolatedStringExpr] $"..."
+#-----| 1 -> [FieldAccess] access to field s1
+
+#    5| [InterpolatedStringExpr] $"..."
+#-----| 0 -> [StringLiteral] "C:"
+#-----| 1 -> [IntLiteral] 12
+
+#    5| [StringLiteral] "C:"
+
+#    5| [IntLiteral] 12
+
+#    5| [FieldAccess] access to field s1
+#-----| -1 -> [ThisAccess] this access
+
+#    5| [ThisAccess] this access
+
+#    6| [AssignExpr] ... = ...
+#-----| 0 -> [InterpolatedStringExpr] $"..."
+#-----| 1 -> [FieldAccess] access to field s2
+
+#    6| [InterpolatedStringExpr] $"..."
+#-----| 0 -> [StringLiteral] "C:"
+#-----| 1 -> [IntLiteral] 12
+
+#    6| [StringLiteral] "C:"
+
+#    6| [IntLiteral] 12
+
+#    6| [FieldAccess] access to field s2
+#-----| -1 -> [ThisAccess] this access
+
+#    6| [ThisAccess] this access
+
+AsyncStreams.cs:
+#   24| [NamespaceDeclaration] namespace ... { ... }
+#-----| 1 -> [Interface] IAsyncDisposable
+
+#   32| [NamespaceDeclaration] namespace ... { ... }
+#-----| 1 -> [Interface] IAsyncEnumerable<>
+#-----| 2 -> [Interface] IAsyncEnumerator<>
+
+#    8| [Class] AsyncStreams
+#-----| 2 -> [Method] Items
+#-----| 3 -> [Method] F
+
+#   10| [Method] Items
+#-----| 3 -> [BlockStmt] {...}
+
+#   10| [BlockStmt] {...}
+#-----| 0 -> [YieldReturnStmt] yield return ...;
+#-----| 1 -> [YieldReturnStmt] yield return ...;
+#-----| 2 -> [ExprStmt] ...;
+#-----| 3 -> [YieldReturnStmt] yield return ...;
+
+#   11| [YieldReturnStmt] yield return ...;
+#-----| 0 -> [IntLiteral] 1
+
+#   11| [IntLiteral] 1
+
+#   12| [YieldReturnStmt] yield return ...;
+#-----| 0 -> [IntLiteral] 2
+
+#   12| [IntLiteral] 2
+
+#   13| [ExprStmt] ...;
+#-----| 0 -> [AwaitExpr] await ...
+
+#   13| [AwaitExpr] await ...
+#-----| 0 -> [MethodCall] call to method Delay
+
+#   13| [MethodCall] call to method Delay
+#-----| -1 -> [TypeAccess] access to type Task
+#-----| 0 -> [IntLiteral] 1000
+
+#   13| [TypeAccess] access to type Task
+
+#   13| [IntLiteral] 1000
+
+#   14| [YieldReturnStmt] yield return ...;
+#-----| 0 -> [IntLiteral] 3
+
+#   14| [IntLiteral] 3
+
+#   17| [Method] F
+#-----| 3 -> [BlockStmt] {...}
+
+#   34| [Interface] IAsyncEnumerable<>
+#-----| 0 -> (TypeParameters)
+#-----| 2 -> [Method] GetAsyncEnumerator
+
+#   36| [Method] GetAsyncEnumerator
+#-----| 2 -> (Parameters)
+
+#   36| [DefaultValueExpr] default(...)
+#-----| 0 -> [TypeAccess] access to type CancellationToken
+
+#   36| [TypeAccess] access to type CancellationToken
+
+#   39| [Interface] IAsyncEnumerator<>
+#-----| 0 -> (TypeParameters)
+#-----| 2 -> [Property] Current
+#-----| 3 -> [Method] MoveNextAsync
+
+#   34| [TypeParameter] T
+
+#   41| [Getter] get_Current
+
+#   42| [Method] MoveNextAsync
+
+#   18| [BlockStmt] {...}
+#-----| 0 -> [ForeachStmt] foreach (... ... in ...) ...
+
+#   19| [ForeachStmt] foreach (... ... in ...) ...
+#-----| 0 -> [LocalVariableDeclExpr] Int32 item
+#-----| 1 -> [MethodCall] call to method Items
+#-----| 2 -> [ExprStmt] ...;
+
+#   19| [MethodCall] call to method Items
+#-----| -1 -> [ThisAccess] this access
+
+#   34| [Interface] IAsyncEnumerable<Int32>
+#-----| 1 -> [Method] GetAsyncEnumerator
+
+#   36| [Method] GetAsyncEnumerator
+#-----| 2 -> (Parameters)
+
+#   19| [ThisAccess] this access
+
+#   19| [LocalVariableDeclExpr] Int32 item
+
+#   20| [ExprStmt] ...;
+#-----| 0 -> [MethodCall] call to method WriteLine
+
+#   20| [MethodCall] call to method WriteLine
+#-----| -1 -> [TypeAccess] access to type Console
+#-----| 0 -> [LocalVariableAccess] access to local variable item
+
+#   20| [TypeAccess] access to type Console
+
+#   20| [LocalVariableAccess] access to local variable item
+
+#   36| [Parameter] cancellationToken
+#-----| 1 -> [DefaultValueExpr] default(...)
+
+#   39| [Interface] IAsyncEnumerator<Int32>
+
+#   26| [Interface] IAsyncDisposable
+#-----| 1 -> [Method] DisposeAsync
+
+#   28| [Method] DisposeAsync
+
+#   36| [Parameter] cancellationToken
+#-----| 1 -> [DefaultValueExpr] default(...)
+
+#   39| [Interface] IAsyncEnumerator<T>
+
+#   41| [Property] Current
+#-----| 1 -> [Getter] get_Current
+
+#   39| [TypeParameter] T
+
+DefaultInterfaceMethods.cs:
+#    3| [Interface] IPerson
+#-----| 1 -> [IndexerProperty] Name
+#-----| 2 -> [IndexerProperty] Greeting
+#-----| 3 -> [Method] Greet
+#-----| 4 -> [IndexerProperty] GreetingString
+#-----| 5 -> [Method] Greet
+
+#    5| [Getter] get_Name
+
+#    9| [Getter] get_Greeting
+#-----| 3 -> [StringLiteral] "Hello"
+
+#   10| [Setter] set_Greeting
+#-----| 2 -> (Parameters)
+#-----| 3 -> [BlockStmt] {...}
+
+#   10| [Parameter] value
+
+#   13| [Method] Greet
+#-----| 2 -> (Parameters)
+#-----| 3 -> [AddExpr] ... + ...
+
+#   13| [AddExpr] ... + ...
+#-----| 0 -> [AddExpr] ... + ...
+#-----| 1 -> [ParameterAccess] access to parameter name
+
+#   15| [IndexerProperty] GreetingString
+#-----| 1 -> [Getter] get_GreetingString
+
+#   15| [Getter] get_GreetingString
+#-----| 3 -> [MethodCall] call to method Greet
+
+#   17| [Method] Greet
+
+#   20| [Class] Person
+#-----| 2 -> [IndexerProperty] Name
+#-----| 3 -> [IndexerProperty] Greeting
+#-----| 4 -> [Method] Greet
+
+#   22| [Getter] get_Name
+#-----| 3 -> [StringLiteral] "Petra"
+
+#   22| [IndexerProperty] Name
+#-----| 1 -> [Getter] get_Name
+
+#   22| [StringLiteral] "Petra"
+
+#   24| [Getter] get_Greeting
+#-----| 3 -> [StringLiteral] "Howdy"
+
+#   24| [Setter] set_Greeting
+#-----| 2 -> (Parameters)
+#-----| 3 -> [BlockStmt] {...}
+
+#   24| [Parameter] value
+
+#   26| [Method] Greet
+#-----| 3 -> [BlockStmt] {...}
+
+#   26| [BlockStmt] {...}
+
+#    9| [StringLiteral] "Hello"
+
+#   10| [BlockStmt] {...}
+
+#   13| [AddExpr] ... + ...
+#-----| 0 -> [PropertyCall] access to property Greeting
+#-----| 1 -> [StringLiteral] " "
+
+#   13| [ParameterAccess] access to parameter name
+
+#   15| [MethodCall] call to method Greet
+#-----| -1 -> [ThisAccess] this access
+#-----| 0 -> [PropertyCall] access to property Name
+
+#   15| [ThisAccess] this access
+
+#   15| [PropertyCall] access to property Name
+#-----| -1 -> [ThisAccess] this access
+
+#   15| [ThisAccess] this access
+
+#   24| [StringLiteral] "Howdy"
+
+#   24| [BlockStmt] {...}
+
+#   13| [PropertyCall] access to property Greeting
+#-----| -1 -> [ThisAccess] this access
+
+#   13| [ThisAccess] this access
+
+#   13| [StringLiteral] " "
+
+#    5| [IndexerProperty] Name
+#-----| 1 -> [Getter] get_Name
+
+#    7| [IndexerProperty] Greeting
+#-----| 1 -> [Getter] get_Greeting
+#-----| 2 -> [Setter] set_Greeting
+
+#   13| [Parameter] name
+
+#   24| [IndexerProperty] Greeting
+#-----| 1 -> [Getter] get_Greeting
+#-----| 2 -> [Setter] set_Greeting
+
+NullCoalescingAssignment.cs:
+#    3| [Class] NullCoalescingAssignment
+#-----| 2 -> [Method] NullCoalescing
+
+#    5| [Method] NullCoalescing
+#-----| 3 -> [BlockStmt] {...}
+
+#    6| [BlockStmt] {...}
+#-----| 0 -> [LocalConstantDeclStmt] ... ...;
+#-----| 1 -> [ExprStmt] ...;
+
+#    7| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Object o = ...
+
+#    7| [LocalVariableDeclAndInitExpr] Object o = ...
+#-----| 0 -> [NullLiteral] null
+#-----| 1 -> [LocalVariableAccess] access to local variable o
+
+#    7| [NullLiteral] null
+
+#    7| [LocalVariableAccess] access to local variable o
+
+#    8| [ExprStmt] ...;
+#-----| 0 -> [AssignCoalesceExpr] ... ??= ...
+
+#    8| [AssignCoalesceExpr] ... ??= ...
+#-----| 0 -> [ThisAccess] this access
+#-----| 1 -> [LocalVariableAccess] access to local variable o
+
+#    8| [AssignExpr] ... = ...
+#-----| 0 -> [NullCoalescingExpr] ... ?? ...
+#-----| 1 -> [LocalVariableAccess] access to local variable o
+
+#    8| [LocalVariableAccess] access to local variable o
+
+#    8| [NullCoalescingExpr] ... ?? ...
+#-----| 0 -> [LocalVariableAccess] access to local variable o
+#-----| 1 -> [ThisAccess] this access
+
+#    8| [LocalVariableAccess] access to local variable o
+
+#    8| [ThisAccess] this access
+
+NullableRefTypes.cs:
+#    6| [Class] MyClass
+#-----| 2 -> [Field] A
+#-----| 3 -> [Field] B
+#-----| 4 -> [IndexerProperty] C
+#-----| 5 -> [IndexerProperty] D
+#-----| 6 -> [Indexer] Item
+#-----| 7 -> [Indexer] Item
+#-----| 8 -> [Indexer] Item
+#-----| 9 -> [Field] G1
+#-----| 10 -> [Field] G2
+#-----| 11 -> [Field] G3
+#-----| 12 -> [Field] H
+#-----| 13 -> [Method] ArrayFn1
+#-----| 14 -> [Method] ArrayFn2
+#-----| 15 -> [Method] M
+#-----| 16 -> [Method] N
+#-----| 17 -> [Method] O
+#-----| 18 -> [Method] Locals
+#-----| 19 -> [DelegateType] Del1
+#-----| 20 -> [DelegateType] Del
+#-----| 21 -> [Event] P
+#-----| 22 -> [Method] Q
+#-----| 22 -> [Method] Q
+#-----| 24 -> [Class] Generic<,,,>
+#-----| 24 -> [Class] Generic<String,T1,IEnumerable<String>,MyClass>
+#-----| 24 -> [Class] Generic<MyClass,MyClass,IDisposable,MyClass>
+#-----| 27 -> [Class] Generic2<,>
+#-----| 28 -> [Field] items2
+#-----| 29 -> [Method] GenericFn
+#-----| 29 -> [Method] GenericFn
+#-----| 31 -> [Method] CallF
+
+#   10| [Field] B
+
+#   13| [IndexerProperty] C
+#-----| 1 -> [Getter] get_C
+
+#   13| [Getter] get_C
+#-----| 3 -> [NullLiteral] null
+
+#   14| [IndexerProperty] D
+#-----| 1 -> [Getter] get_D
+
+#   14| [Getter] get_D
+#-----| 3 -> [ThisAccess] this access
+
+#    9| [Field] A
+
+#   17| [Indexer] Item
+#-----| 0 -> (Parameters)
+#-----| 2 -> [Getter] get_Item
+
+#   17| [Parameter] i
+
+#   17| [Getter] get_Item
+#-----| 2 -> (Parameters)
+#-----| 3 -> [NullLiteral] null
+
+#   17| [Parameter] i
+
+#   18| [Indexer] Item
+#-----| 0 -> (Parameters)
+#-----| 2 -> [Getter] get_Item
+
+#   18| [Parameter] i
+
+#   18| [Getter] get_Item
+#-----| 2 -> (Parameters)
+#-----| 3 -> [ThisAccess] this access
+
+#   18| [Parameter] i
+
+#   19| [Indexer] Item
+#-----| 0 -> (Parameters)
+#-----| 2 -> [Getter] get_Item
+
+#   19| [Parameter] i
+
+#   19| [Getter] get_Item
+#-----| 2 -> (Parameters)
+#-----| 3 -> [ThisAccess] this access
+
+#   19| [Parameter] i
+
+#   22| [Field] G1
+
+#   23| [Field] G2
+
+#   24| [Field] G3
+
+#   25| [Field] H
+
+#    6| [ArrayType] MyClass[]
+
+#    6| [ArrayType] MyClass[][]
+
+#   26| [Method] ArrayFn1
+#-----| 2 -> (Parameters)
+#-----| 3 -> [ThrowExpr] throw ...
+
+#   26| [Parameter] x
+
+#   27| [Method] ArrayFn2
+#-----| 2 -> (Parameters)
+#-----| 3 -> [ThrowExpr] throw ...
+
+#   27| [Parameter] x
+
+#   30| [Method] M
+#-----| 3 -> [NullLiteral] null
+
+#   31| [Method] N
+#-----| 3 -> [ThisAccess] this access
+
+#   32| [Method] O
+#-----| 2 -> (Parameters)
+#-----| 3 -> [BlockStmt] {...}
+
+#   32| [Parameter] a
+
+#   32| [Parameter] b
+
+#   35| [Method] Locals
+#-----| 3 -> [BlockStmt] {...}
+
+#   44| [DelegateType] Del1
+
+#   47| [DelegateType] Del
+#-----| 0 -> (Parameters)
+
+#   47| [Parameter] x
+
+#   48| [AddEventAccessor] add_P
+#-----| 2 -> (Parameters)
+
+#   48| [Parameter] value
+
+#   48| [RemoveEventAccessor] remove_P
+#-----| 2 -> (Parameters)
+
+#   48| [Parameter] value
+
+#   51| [Method] Q
+#-----| 1 -> (TypeParameters)
+#-----| 2 -> (Parameters)
+#-----| 3 -> [NullLiteral] null
+
+#   51| [Parameter] t
+
+#   51| [TypeParameter] T
+
+#   54| [Class] Generic<,,,>
+#-----| 0 -> (TypeParameters)
+
+#   54| [TypeParameter] T1
+
+#   54| [TypeParameter] T2
+
+#   54| [TypeParameter] T3
+
+#   54| [TypeParameter] T4
+
+#   58| [Class] Generic2<,>
+#-----| 0 -> (TypeParameters)
+
+#   58| [TypeParameter] T1
+
+#   58| [TypeParameter] T2
+
+#   65| [Field] items2
+
+#   67| [Method] GenericFn
+#-----| 1 -> (TypeParameters)
+#-----| 2 -> (Parameters)
+#-----| 3 -> [BlockStmt] {...}
+
+#   67| [Parameter] x
+
+#   67| [TypeParameter] T
+
+#   71| [Method] CallF
+#-----| 3 -> [BlockStmt] {...}
+
+#   47| [Parameter] x
+
+#   47| [Parameter] x
+
+#   80| [Class] NullableRefTypes
+#-----| 2 -> [Method] TestSuppressNullableWarningExpr
+#-----| 3 -> [Method] FunctionInNullableContext
+
+#   82| [Method] TestSuppressNullableWarningExpr
+#-----| 3 -> [BlockStmt] {...}
+
+#   83| [BlockStmt] {...}
+#-----| 0 -> [LocalConstantDeclStmt] ... ...;
+#-----| 1 -> [LocalConstantDeclStmt] ... ...;
+#-----| 2 -> [ExprStmt] ...;
+#-----| 3 -> [ExprStmt] ...;
+#-----| 4 -> [ExprStmt] ...;
+
+#   84| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] String x = ...
+
+#   84| [LocalVariableDeclAndInitExpr] String x = ...
+#-----| 0 -> [StringLiteral] "source"
+#-----| 1 -> [LocalVariableAccess] access to local variable x
+
+#   84| [StringLiteral] "source"
+
+#   84| [LocalVariableAccess] access to local variable x
+
+#   85| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] String y = ...
+
+#   85| [LocalVariableDeclAndInitExpr] String y = ...
+#-----| 0 -> [SuppressNullableWarningExpr] ...!
+#-----| 1 -> [LocalVariableAccess] access to local variable y
+
+#   85| [SuppressNullableWarningExpr] ...!
+#-----| 0 -> [LocalVariableAccess] access to local variable x
+
+#   85| [LocalVariableAccess] access to local variable x
+
+#   85| [LocalVariableAccess] access to local variable y
+
+#   86| [ExprStmt] ...;
+#-----| 0 -> [AssignExpr] ... = ...
+
+#   86| [AssignExpr] ... = ...
+#-----| 0 -> [SuppressNullableWarningExpr] ...!
+#-----| 1 -> [LocalVariableAccess] access to local variable y
+
+#   86| [LocalVariableAccess] access to local variable y
+
+#   86| [SuppressNullableWarningExpr] ...!
+#-----| 0 -> [LocalVariableAccess] access to local variable x
+
+#   86| [LocalVariableAccess] access to local variable x
+
+#   87| [ExprStmt] ...;
+#-----| 0 -> [AssignExpr] ... = ...
+
+#   87| [AssignExpr] ... = ...
+#-----| 0 -> [NullLiteral] null
+#-----| 1 -> [LocalVariableAccess] access to local variable x
+
+#   87| [LocalVariableAccess] access to local variable x
+
+#   87| [NullLiteral] null
+
+#   88| [ExprStmt] ...;
+#-----| 0 -> [AssignExpr] ... = ...
+
+#   88| [AssignExpr] ... = ...
+#-----| 0 -> [SuppressNullableWarningExpr] ...!
+#-----| 1 -> [LocalVariableAccess] access to local variable y
+
+#   88| [LocalVariableAccess] access to local variable y
+
+#   88| [SuppressNullableWarningExpr] ...!
+#-----| 0 -> [LocalVariableAccess] access to local variable x
+
+#   88| [LocalVariableAccess] access to local variable x
+
+#   91| [Method] FunctionInNullableContext
+#-----| 3 -> [BlockStmt] {...}
+
+#  100| [Class] RefTypes
+#-----| 2 -> [Method] ReturnsRef1
+#-----| 3 -> [Method] ReturnsRef2
+#-----| 4 -> [Method] ReturnsRef3
+#-----| 5 -> [Method] ReturnsRef4
+#-----| 6 -> [Method] ReturnsRef5
+#-----| 7 -> [Method] ReturnsRef6
+#-----| 8 -> [Method] Parameters1
+#-----| 9 -> [Field] Property
+#-----| 10 -> [IndexerProperty] RefProperty
+
+#  103| [Method] ReturnsRef1
+#-----| 2 -> (Parameters)
+#-----| 3 -> [RefExpr] ref ...
+
+#  103| [RefExpr] ref ...
+#-----| 0 -> [ParameterAccess] access to parameter r
+
+#  103| [ParameterAccess] access to parameter r
+
+#  104| [Method] ReturnsRef2
+#-----| 2 -> (Parameters)
+#-----| 3 -> [RefExpr] ref ...
+
+#  104| [Parameter] r
+
+#  105| [Method] ReturnsRef3
+#-----| 2 -> (Parameters)
+#-----| 3 -> [RefExpr] ref ...
+
+#  105| [Parameter] r
+
+#  106| [Method] ReturnsRef4
+#-----| 2 -> (Parameters)
+#-----| 3 -> [RefExpr] ref ...
+
+#  106| [Parameter] r
+
+#  107| [Method] ReturnsRef5
+#-----| 2 -> (Parameters)
+#-----| 3 -> [RefExpr] ref ...
+
+#  107| [Parameter] r
+
+#  108| [Method] ReturnsRef6
+#-----| 2 -> (Parameters)
+#-----| 3 -> [RefExpr] ref ...
+
+#  108| [Parameter] r
+
+#  110| [Method] Parameters1
+#-----| 2 -> (Parameters)
+#-----| 3 -> [ThrowExpr] throw ...
+
+#  110| [Parameter] p1
+
+#  110| [Parameter] p2
+
+#  112| [Field] Property
+
+#  113| [IndexerProperty] RefProperty
+#-----| 1 -> [Getter] get_RefProperty
+
+#  113| [Getter] get_RefProperty
+#-----| 3 -> [RefExpr] ref ...
+
+#  116| [Class] ToStringWithTypes
+#-----| 2 -> [Field] a
+#-----| 3 -> [Field] b
+#-----| 4 -> [Field] c
+#-----| 5 -> [Field] d
+#-----| 6 -> [Field] e
+#-----| 7 -> [Field] f
+#-----| 8 -> [Field] g
+#-----| 9 -> [Field] h
+#-----| 10 -> [Field] i
+#-----| 11 -> [Field] j
+#-----| 12 -> [Field] k
+#-----| 13 -> [Field] l
+
+#  119| [Field] b
+
+#  120| [Field] c
+
+#  121| [Field] d
+
+#  123| [Field] e
+
+#  124| [Field] f
+
+#  125| [Field] g
+
+#  126| [Field] h
+
+#  128| [Field] i
+
+#    6| [ArrayType] MyClass[,,]
+
+#    6| [ArrayType] MyClass[,,][]
+
+#    6| [ArrayType] MyClass[,,][][,]
+
+#  129| [Field] j
+
+#    6| [ArrayType] MyClass[][,]
+
+#    6| [ArrayType] MyClass[][,][,,]
+
+#  130| [Field] k
+
+#    6| [ArrayType] MyClass[,,][,]
+
+#    6| [ArrayType] MyClass[,,][,][]
+
+#    6| [ArrayType] MyClass[,,][,][][,,,]
+
+#  131| [Field] l
+
+#    6| [ArrayType] MyClass[,]
+
+#    6| [ArrayType] MyClass[,][]
+
+#    6| [ArrayType] MyClass[,][][,,,]
+
+#    6| [ArrayType] MyClass[,][][,,,][,,]
+
+#  118| [Field] a
+
+#  165| [Struct] MyStruct
+
+#  136| [Class] ToStringWithTypes2
+#-----| 2 -> [Field] a
+#-----| 3 -> [Field] b
+#-----| 4 -> [Field] c
+#-----| 5 -> [Field] d
+#-----| 6 -> [Field] e
+#-----| 7 -> [Field] f
+#-----| 8 -> [Field] g
+#-----| 9 -> [Field] h
+#-----| 10 -> [Field] i
+#-----| 11 -> [Field] j
+#-----| 12 -> [Field] k
+#-----| 13 -> [Field] l
+
+#  139| [Field] b
+
+#  140| [Field] c
+
+#  141| [Field] d
+
+#  143| [Field] e
+
+#  144| [Field] f
+
+#  145| [Field] g
+
+#  146| [Field] h
+
+#  148| [Field] i
+
+#  149| [Field] j
+
+#  150| [Field] k
+
+#  151| [Field] l
+
+#  154| [Class] DisabledNullability
+#-----| 2 -> [Field] f1
+#-----| 3 -> [IndexerProperty] P
+#-----| 4 -> [Method] Fn
+
+#  157| [IndexerProperty] P
+#-----| 1 -> [Getter] get_P
+
+#  157| [Getter] get_P
+#-----| 3 -> [ObjectCreation] object creation of type MyClass
+
+#  158| [Method] Fn
+#-----| 2 -> (Parameters)
+#-----| 3 -> [BlockStmt] {...}
+
+#  158| [Parameter] p
+
+#  171| [Class] TestNullableFlowStates
+#-----| 2 -> [Method] MaybeNull
+#-----| 3 -> [Method] Check
+#-----| 4 -> [Method] Count
+#-----| 5 -> [Method] LoopUnrolling
+#-----| 6 -> [Method] ExceptionFlow
+#-----| 7 -> [Method] InvocationTest
+#-----| 8 -> [Method] ElementTest
+#-----| 9 -> [Method] GetSelf
+#-----| 10 -> [Field] Field
+
+#  175| [Method] Check
+#-----| 2 -> (Parameters)
+
+#  175| [Parameter] isNull
+
+#  177| [Method] Count
+
+#  179| [Method] LoopUnrolling
+#-----| 3 -> [BlockStmt] {...}
+
+#  193| [Method] ExceptionFlow
+#-----| 3 -> [BlockStmt] {...}
+
+#  209| [Method] InvocationTest
+#-----| 2 -> (Parameters)
+#-----| 3 -> [BlockStmt] {...}
+
+#  209| [Parameter] o
+
+#  173| [Method] MaybeNull
+
+#  223| [Method] GetSelf
+
+#  225| [Field] Field
+
+#   13| [NullLiteral] null
+
+#   14| [ThisAccess] this access
+
+#   17| [NullLiteral] null
+
+#   18| [ThisAccess] this access
+
+#   19| [ThisAccess] this access
+
+#   26| [ThrowExpr] throw ...
+#-----| 0 -> [NullLiteral] null
+
+#   26| [NullLiteral] null
+
+#   27| [ThrowExpr] throw ...
+#-----| 0 -> [NullLiteral] null
+
+#   27| [NullLiteral] null
+
+#   30| [NullLiteral] null
+
+#   31| [ThisAccess] this access
+
+#   32| [BlockStmt] {...}
+
+#   36| [BlockStmt] {...}
+#-----| 0 -> [LocalConstantDeclStmt] ... ...;
+#-----| 1 -> [LocalConstantDeclStmt] ... ...;
+#-----| 2 -> [LocalConstantDeclStmt] ... ...;
+#-----| 3 -> [LocalConstantDeclStmt] ... ...;
+
+#   37| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] MyClass a = ...
+
+#   37| [LocalVariableDeclAndInitExpr] MyClass a = ...
+#-----| 0 -> [ObjectCreation] object creation of type MyClass
+#-----| 1 -> [LocalVariableAccess] access to local variable a
+
+#   37| [ObjectCreation] object creation of type MyClass
+
+#   37| [LocalVariableAccess] access to local variable a
+
+#   38| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] MyClass b = ...
+
+#   38| [LocalVariableDeclAndInitExpr] MyClass b = ...
+#-----| 0 -> [NullLiteral] null
+#-----| 1 -> [LocalVariableAccess] access to local variable b
+
+#   38| [NullLiteral] null
+
+#   38| [LocalVariableAccess] access to local variable b
+
+#   39| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] MyClass c = ...
+
+#   39| [LocalVariableDeclAndInitExpr] MyClass c = ...
+#-----| 0 -> [RefExpr] ref ...
+#-----| 1 -> [LocalVariableAccess] access to local variable c
+
+#   39| [RefExpr] ref ...
+#-----| 0 -> [LocalVariableAccess] access to local variable b
+
+#   39| [LocalVariableAccess] access to local variable b
+
+#   39| [LocalVariableAccess] access to local variable c
+
+#   40| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] MyClass d = ...
+
+#   40| [LocalVariableDeclAndInitExpr] MyClass d = ...
+#-----| 0 -> [RefExpr] ref ...
+#-----| 1 -> [LocalVariableAccess] access to local variable d
+
+#   40| [RefExpr] ref ...
+#-----| 0 -> [LocalVariableAccess] access to local variable b
+
+#   40| [LocalVariableAccess] access to local variable b
+
+#   40| [LocalVariableAccess] access to local variable d
+
+#   51| [NullLiteral] null
+
+#   68| [BlockStmt] {...}
+
+#   72| [BlockStmt] {...}
+#-----| 0 -> [LocalConstantDeclStmt] ... ...;
+#-----| 1 -> [ExprStmt] ...;
+#-----| 2 -> [ExprStmt] ...;
+#-----| 3 -> [ReturnStmt] return ...;
+
+#   73| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] MyClass x = ...
+
+#   73| [LocalVariableDeclAndInitExpr] MyClass x = ...
+#-----| 0 -> [NullLiteral] null
+#-----| 1 -> [LocalVariableAccess] access to local variable x
+
+#   73| [NullLiteral] null
+
+#   73| [LocalVariableAccess] access to local variable x
+
+#   74| [ExprStmt] ...;
+#-----| 0 -> [MethodCall] call to method GenericFn
+
+#   74| [MethodCall] call to method GenericFn
+#-----| -1 -> [ThisAccess] this access
+#-----| 0 -> [LocalVariableAccess] access to local variable x
+
+#   74| [ThisAccess] this access
+
+#   74| [LocalVariableAccess] access to local variable x
+
+#   67| [Method] GenericFn
+#-----| 2 -> (Parameters)
+
+#   75| [ExprStmt] ...;
+#-----| 0 -> [MethodCall] call to method Q
+
+#   75| [MethodCall] call to method Q
+#-----| -1 -> [ThisAccess] this access
+#-----| 0 -> [LocalVariableAccess] access to local variable x
+
+#   75| [ThisAccess] this access
+
+#   75| [LocalVariableAccess] access to local variable x
+
+#   51| [Method] Q
+#-----| 2 -> (Parameters)
+
+#   76| [ReturnStmt] return ...;
+#-----| 0 -> [DefaultValueExpr] default(...)
+
+#   76| [DefaultValueExpr] default(...)
+#-----| 0 -> [TypeAccess] access to type MyStruct
+
+#   76| [TypeAccess] access to type MyStruct
+
+#   92| [BlockStmt] {...}
+#-----| 0 -> [LocalConstantDeclStmt] ... ...;
+#-----| 1 -> [LocalConstantDeclStmt] ... ...;
+#-----| 2 -> [LocalConstantDeclStmt] ... ...;
+#-----| 3 -> [ExprStmt] ...;
+
+#   93| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] String x = ...
+
+#   93| [LocalVariableDeclAndInitExpr] String x = ...
+#-----| 0 -> [StringLiteral] "source"
+#-----| 1 -> [LocalVariableAccess] access to local variable x
+
+#   93| [StringLiteral] "source"
+
+#   93| [LocalVariableAccess] access to local variable x
+
+#   94| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] String y = ...
+
+#   94| [LocalVariableDeclAndInitExpr] String y = ...
+#-----| 0 -> [NullCoalescingExpr] ... ?? ...
+#-----| 1 -> [LocalVariableAccess] access to local variable y
+
+#   94| [NullCoalescingExpr] ... ?? ...
+#-----| 0 -> [LocalVariableAccess] access to local variable x
+#-----| 1 -> [NullLiteral] null
+
+#   94| [LocalVariableAccess] access to local variable y
+
+#   95| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] String z = ...
+
+#   95| [LocalVariableDeclAndInitExpr] String z = ...
+#-----| 0 -> [LocalVariableAccess] access to local variable x
+#-----| 1 -> [LocalVariableAccess] access to local variable z
+
+#   95| [LocalVariableAccess] access to local variable x
+
+#   95| [LocalVariableAccess] access to local variable z
+
+#   96| [ExprStmt] ...;
+#-----| 0 -> [MethodCall] call to method WriteLine
+
+#   96| [MethodCall] call to method WriteLine
+#-----| -1 -> [TypeAccess] access to type Console
+#-----| 0 -> [LocalVariableAccess] access to local variable x
+
+#   96| [TypeAccess] access to type Console
+
+#   96| [LocalVariableAccess] access to local variable x
+
+#  104| [RefExpr] ref ...
+#-----| 0 -> [ParameterAccess] access to parameter r
+
+#  104| [ParameterAccess] access to parameter r
+
+#  105| [RefExpr] ref ...
+#-----| 0 -> [ParameterAccess] access to parameter r
+
+#  105| [ParameterAccess] access to parameter r
+
+#  106| [RefExpr] ref ...
+#-----| 0 -> [ParameterAccess] access to parameter r
+
+#  106| [ParameterAccess] access to parameter r
+
+#  107| [RefExpr] ref ...
+#-----| 0 -> [ParameterAccess] access to parameter r
+
+#  107| [ParameterAccess] access to parameter r
+
+#  108| [RefExpr] ref ...
+#-----| 0 -> [ParameterAccess] access to parameter r
+
+#  108| [ParameterAccess] access to parameter r
+
+#  110| [ThrowExpr] throw ...
+#-----| 0 -> [NullLiteral] null
+
+#  110| [NullLiteral] null
+
+#  113| [RefExpr] ref ...
+#-----| 0 -> [SuppressNullableWarningExpr] ...!
+
+#  113| [SuppressNullableWarningExpr] ...!
+#-----| 0 -> [FieldAccess] access to field Property
+
+#  113| [FieldAccess] access to field Property
+#-----| -1 -> [ThisAccess] this access
+
+#  113| [ThisAccess] this access
+
+#  157| [ObjectCreation] object creation of type MyClass
+
+#  159| [BlockStmt] {...}
+#-----| 0 -> [LocalConstantDeclStmt] ... ...;
+#-----| 1 -> [ReturnStmt] return ...;
+
+#  160| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] MyClass a = ...
+
+#  160| [LocalVariableDeclAndInitExpr] MyClass a = ...
+#-----| 0 -> [ParameterAccess] access to parameter p
+#-----| 1 -> [LocalVariableAccess] access to local variable a
+
+#  160| [ParameterAccess] access to parameter p
+
+#  160| [LocalVariableAccess] access to local variable a
+
+#  161| [ReturnStmt] return ...;
+#-----| 0 -> [LocalVariableAccess] access to local variable a
+
+#  161| [LocalVariableAccess] access to local variable a
+
+#  180| [BlockStmt] {...}
+#-----| 0 -> [LocalConstantDeclStmt] ... ...;
+#-----| 1 -> [ExprStmt] ...;
+#-----| 2 -> [ForStmt] for (...;...;...) ...
+#-----| 3 -> [ExprStmt] ...;
+
+#  181| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] String x = ...
+
+#  181| [LocalVariableDeclAndInitExpr] String x = ...
+#-----| 0 -> [MethodCall] call to method MaybeNull
+#-----| 1 -> [LocalVariableAccess] access to local variable x
+
+#  181| [MethodCall] call to method MaybeNull
+#-----| -1 -> [ThisAccess] this access
+
+#  181| [ThisAccess] this access
+
+#  181| [LocalVariableAccess] access to local variable x
+
+#  183| [ExprStmt] ...;
+#-----| 0 -> [MethodCall] call to method Check
+
+#  183| [MethodCall] call to method Check
+#-----| -1 -> [ThisAccess] this access
+#-----| 0 -> [LocalVariableAccess] access to local variable x
+
+#  183| [ThisAccess] this access
+
+#  183| [LocalVariableAccess] access to local variable x
+
+#  185| [ForStmt] for (...;...;...) ...
+#-----| -1 -> [LocalVariableDeclAndInitExpr] Int32 i = ...
+#-----| 0 -> [LTExpr] ... < ...
+#-----| 1 -> [PreIncrExpr] ++...
+#-----| 2 -> [BlockStmt] {...}
+
+#  185| [LocalVariableDeclAndInitExpr] Int32 i = ...
+#-----| 0 -> [IntLiteral] 0
+#-----| 1 -> [LocalVariableAccess] access to local variable i
+
+#  185| [IntLiteral] 0
+
+#  185| [LocalVariableAccess] access to local variable i
+
+#  185| [LTExpr] ... < ...
+#-----| 0 -> [LocalVariableAccess] access to local variable i
+#-----| 1 -> [IntLiteral] 10
+
+#  185| [PreIncrExpr] ++...
+#-----| 0 -> [LocalVariableAccess] access to local variable i
+
+#  185| [LocalVariableAccess] access to local variable i
+
+#  186| [BlockStmt] {...}
+#-----| 0 -> [ExprStmt] ...;
+
+#  187| [ExprStmt] ...;
+#-----| 0 -> [AssignExpr] ... = ...
+
+#  187| [AssignExpr] ... = ...
+#-----| 0 -> [StringLiteral] "not null any more"
+#-----| 1 -> [LocalVariableAccess] access to local variable x
+
+#  187| [LocalVariableAccess] access to local variable x
+
+#  187| [StringLiteral] "not null any more"
+
+#  190| [ExprStmt] ...;
+#-----| 0 -> [MethodCall] call to method Check
+
+#  190| [MethodCall] call to method Check
+#-----| -1 -> [ThisAccess] this access
+#-----| 0 -> [LocalVariableAccess] access to local variable x
+
+#  190| [ThisAccess] this access
+
+#  190| [LocalVariableAccess] access to local variable x
+
+#  194| [BlockStmt] {...}
+#-----| 0 -> [LocalConstantDeclStmt] ... ...;
+#-----| 1 -> [TryStmt] try {...} ...
+#-----| 2 -> [ExprStmt] ...;
+
+#  195| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] String y = ...
+
+#  195| [LocalVariableDeclAndInitExpr] String y = ...
+#-----| 0 -> [MethodCall] call to method MaybeNull
+#-----| 1 -> [LocalVariableAccess] access to local variable y
+
+#  195| [MethodCall] call to method MaybeNull
+#-----| -1 -> [ThisAccess] this access
+
+#  195| [ThisAccess] this access
+
+#  195| [LocalVariableAccess] access to local variable y
+
+#  197| [TryStmt] try {...} ...
+#-----| -1 -> [BlockStmt] {...}
+#-----| 0 -> [BlockStmt] {...}
+
+#  198| [BlockStmt] {...}
+#-----| 0 -> [ThrowStmt] throw ...;
+
+#  199| [ThrowStmt] throw ...;
+#-----| 0 -> [ObjectCreation] object creation of type ArgumentException
+
+#  199| [ObjectCreation] object creation of type ArgumentException
+
+#  202| [BlockStmt] {...}
+#-----| 0 -> [ExprStmt] ...;
+
+#  203| [ExprStmt] ...;
+#-----| 0 -> [AssignExpr] ... = ...
+
+#  203| [AssignExpr] ... = ...
+#-----| 0 -> [StringLiteral] "not null"
+#-----| 1 -> [LocalVariableAccess] access to local variable y
+
+#  203| [LocalVariableAccess] access to local variable y
+
+#  203| [StringLiteral] "not null"
+
+#  206| [ExprStmt] ...;
+#-----| 0 -> [MethodCall] call to method Check
+
+#  206| [MethodCall] call to method Check
+#-----| -1 -> [ThisAccess] this access
+#-----| 0 -> [LocalVariableAccess] access to local variable y
+
+#  206| [ThisAccess] this access
+
+#  206| [LocalVariableAccess] access to local variable y
+
+#  210| [BlockStmt] {...}
+#-----| 0 -> [LocalConstantDeclStmt] ... ...;
+#-----| 1 -> [ReturnStmt] return ...;
+
+#  211| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Type t = ...
+
+#  211| [LocalVariableDeclAndInitExpr] Type t = ...
+#-----| 0 -> [MethodCall] call to method GetType
+#-----| 1 -> [LocalVariableAccess] access to local variable t
+
+#  211| [MethodCall] call to method GetType
+#-----| -1 -> [ParameterAccess] access to parameter o
+
+#  211| [ParameterAccess] access to parameter o
+
+#  211| [LocalVariableAccess] access to local variable t
+
+#  212| [ReturnStmt] return ...;
+#-----| 0 -> [MethodCall] call to method ToString
+
+#  212| [MethodCall] call to method ToString
+#-----| -1 -> [LocalVariableAccess] access to local variable t
+
+#  212| [LocalVariableAccess] access to local variable t
+
+#  215| [Method] ElementTest
+#-----| 2 -> (Parameters)
+#-----| 3 -> [BlockStmt] {...}
+
+#  216| [BlockStmt] {...}
+#-----| 0 -> [LocalConstantDeclStmt] ... ...;
+#-----| 1 -> [LocalConstantDeclStmt] ... ...;
+#-----| 2 -> [LocalConstantDeclStmt] ... ...;
+#-----| 3 -> [LocalConstantDeclStmt] ... ...;
+
+#  217| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] String a = ...
+
+#  217| [LocalVariableDeclAndInitExpr] String a = ...
+#-----| 0 -> [FieldAccess] access to field Field
+#-----| 1 -> [LocalVariableAccess] access to local variable a
+
+#  217| [FieldAccess] access to field Field
+#-----| -1 -> [MethodCall] call to method GetSelf
+
+#  217| [MethodCall] call to method GetSelf
+#-----| -1 -> [ThisAccess] this access
+
+#  217| [ThisAccess] this access
+
+#  217| [LocalVariableAccess] access to local variable a
+
+#  218| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] String b = ...
+
+#  218| [LocalVariableDeclAndInitExpr] String b = ...
+#-----| 0 -> [IndexerCall] access to indexer
+#-----| 1 -> [LocalVariableAccess] access to local variable b
+
+#  218| [IndexerCall] access to indexer
+#-----| -1 -> [ParameterAccess] access to parameter list
+#-----| 0 -> [IntLiteral] 0
+
+#  218| [ParameterAccess] access to parameter list
+
+#  218| [IntLiteral] 0
+
+#  218| [LocalVariableAccess] access to local variable b
+
+#  219| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] String c = ...
+
+#  219| [LocalVariableDeclAndInitExpr] String c = ...
+#-----| 0 -> [IndexerCall] access to indexer
+#-----| 1 -> [LocalVariableAccess] access to local variable c
+
+#  219| [IndexerCall] access to indexer
+#-----| -1 -> [ParameterAccess] access to parameter list
+#-----| 0 -> [IntLiteral] 0
+
+#  219| [ParameterAccess] access to parameter list
+
+#  219| [IntLiteral] 0
+
+#  219| [LocalVariableAccess] access to local variable c
+
+#  220| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] String d = ...
+
+#  220| [LocalVariableDeclAndInitExpr] String d = ...
+#-----| 0 -> [FieldAccess] access to field Field
+#-----| 1 -> [LocalVariableAccess] access to local variable d
+
+#  220| [FieldAccess] access to field Field
+#-----| -1 -> [MethodCall] call to method GetSelf
+
+#  220| [MethodCall] call to method GetSelf
+#-----| -1 -> [ThisAccess] this access
+
+#  220| [ThisAccess] this access
+
+#  220| [LocalVariableAccess] access to local variable d
+
+#   67| [Parameter] x
+
+#   51| [Parameter] t
+
+#   94| [LocalVariableAccess] access to local variable x
+
+#   94| [NullLiteral] null
+
+#  185| [LocalVariableAccess] access to local variable i
+
+#  185| [IntLiteral] 10
+
+#  103| [Parameter] r
+
+#  165| [NullableType] Nullable<MyStruct>
+
+#  138| [Field] a
+
+#  156| [Field] f1
+
+#   48| [Event] P
+#-----| 1 -> [AddEventAccessor] add_P
+#-----| 1 -> [RemoveEventAccessor] remove_P
+
+#   54| [Class] Generic<String,T1,IEnumerable<String>,MyClass>
+
+#   54| [Class] Generic<MyClass,MyClass,IDisposable,MyClass>
+
+#  165| [ArrayType] MyStruct[]
+
+#  165| [ArrayType] Nullable
+
+#  215| [Parameter] list
+
+StaticLocalFunctions.cs:
+#    5| [Class] StaticLocalFunctions
+#-----| 2 -> [Method] Fn
+
+#    7| [Method] Fn
+#-----| 2 -> (Parameters)
+#-----| 3 -> [BlockStmt] {...}
+
+#    8| [BlockStmt] {...}
+#-----| 0 -> [LocalFunctionStmt] I(...)
+#-----| 1 -> [LocalFunctionStmt] J(...)
+#-----| 2 -> [ReturnStmt] return ...;
+
+#    9| [LocalFunctionStmt] I(...)
+#-----| 0 -> [LocalFunction] I
+
+#    9| [LocalFunction] I
+#-----| 2 -> (Parameters)
+#-----| 3 -> [ParameterAccess] access to parameter y
+
+#   10| [LocalFunctionStmt] J(...)
+#-----| 0 -> [LocalFunction] J
+
+#   10| [LocalFunction] J
+#-----| 2 -> (Parameters)
+#-----| 3 -> [AddExpr] ... + ...
+
+#   11| [ReturnStmt] return ...;
+#-----| 0 -> [AddExpr] ... + ...
+
+#   11| [AddExpr] ... + ...
+#-----| 0 -> [LocalFunctionCall] call to local function I
+#-----| 1 -> [LocalFunctionCall] call to local function J
+
+#    9| [Parameter] y
+
+#   10| [Parameter] y
+
+#   11| [LocalFunctionCall] call to local function I
+#-----| -1 -> [LocalFunctionAccess] access to local function I
+#-----| 0 -> [ParameterAccess] access to parameter x
+
+#   11| [LocalFunctionAccess] access to local function I
+
+#   11| [ParameterAccess] access to parameter x
+
+#   11| [LocalFunctionCall] call to local function J
+#-----| -1 -> [LocalFunctionAccess] access to local function J
+#-----| 0 -> [ParameterAccess] access to parameter x
+
+#   11| [LocalFunctionAccess] access to local function J
+#-----| -1 -> [ThisAccess] this access
+
+#   11| [ThisAccess] this access
+
+#   11| [ParameterAccess] access to parameter x
+
+#    9| [ParameterAccess] access to parameter y
+
+#   10| [AddExpr] ... + ...
+#-----| 0 -> [ParameterAccess] access to parameter x
+#-----| 1 -> [ParameterAccess] access to parameter y
+
+#   10| [ParameterAccess] access to parameter x
+
+#   10| [ParameterAccess] access to parameter y
+
+#    7| [Parameter] x
+
+UnmanagedGenericStructs.cs:
+#    3| [Struct] S<,>
+#-----| 0 -> (TypeParameters)
+#-----| 3 -> [Field] id
+#-----| 4 -> [Field] value1
+#-----| 5 -> [Field] value2
+
+#    6| [Field] value1
+
+#    7| [Field] value2
+
+#    3| [TypeParameter] T
+
+#    3| [TypeParameter] U
+
+#    5| [Field] id
+
+UsingDeclarations.cs:
+#    4| [Class] UsingDeclarations
+#-----| 2 -> [Method] TestUsingDeclarations
+
+#    6| [Method] TestUsingDeclarations
+#-----| 3 -> [BlockStmt] {...}
+
+#    7| [BlockStmt] {...}
+#-----| 0 -> [UsingDeclStmt] using ... ...;
+#-----| 1 -> [UsingBlockStmt] using (...) {...}
+#-----| 2 -> [UsingBlockStmt] using (...) {...}
+
+#    8| [UsingDeclStmt] using ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] FileStream file1 = ...
+#-----| 1 -> [LocalVariableDeclAndInitExpr] FileStream file2 = ...
+
+#    8| [LocalVariableDeclAndInitExpr] FileStream file1 = ...
+#-----| 0 -> [ObjectCreation] object creation of type FileStream
+#-----| 1 -> [LocalVariableAccess] access to local variable file1
+
+#    8| [ObjectCreation] object creation of type FileStream
+#-----| 0 -> [StringLiteral] "..."
+#-----| 1 -> [MemberConstantAccess] access to constant Open
+
+#    8| [StringLiteral] "..."
+
+#    8| [MemberConstantAccess] access to constant Open
+#-----| -1 -> [TypeAccess] access to type FileMode
+
+#    8| [TypeAccess] access to type FileMode
+
+#    8| [LocalVariableAccess] access to local variable file1
+
+#    8| [LocalVariableDeclAndInitExpr] FileStream file2 = ...
+#-----| 0 -> [ObjectCreation] object creation of type FileStream
+#-----| 1 -> [LocalVariableAccess] access to local variable file2
+
+#    8| [ObjectCreation] object creation of type FileStream
+#-----| 0 -> [StringLiteral] "..."
+#-----| 1 -> [MemberConstantAccess] access to constant Open
+
+#    8| [StringLiteral] "..."
+
+#    8| [MemberConstantAccess] access to constant Open
+#-----| -1 -> [TypeAccess] access to type FileMode
+
+#    8| [TypeAccess] access to type FileMode
+
+#    8| [LocalVariableAccess] access to local variable file2
+
+#   10| [UsingBlockStmt] using (...) {...}
+#-----| -2 -> [LocalVariableDeclAndInitExpr] FileStream file4 = ...
+#-----| -1 -> [LocalVariableDeclAndInitExpr] FileStream file3 = ...
+#-----| 1 -> [BlockStmt] {...}
+
+#   10| [LocalVariableDeclAndInitExpr] FileStream file3 = ...
+#-----| 0 -> [ObjectCreation] object creation of type FileStream
+#-----| 1 -> [LocalVariableAccess] access to local variable file3
+
+#   10| [ObjectCreation] object creation of type FileStream
+#-----| 0 -> [StringLiteral] "..."
+#-----| 1 -> [MemberConstantAccess] access to constant Open
+
+#   10| [StringLiteral] "..."
+
+#   10| [MemberConstantAccess] access to constant Open
+#-----| -1 -> [TypeAccess] access to type FileMode
+
+#   10| [TypeAccess] access to type FileMode
+
+#   10| [LocalVariableAccess] access to local variable file3
+
+#   10| [LocalVariableDeclAndInitExpr] FileStream file4 = ...
+#-----| 0 -> [ObjectCreation] object creation of type FileStream
+#-----| 1 -> [LocalVariableAccess] access to local variable file4
+
+#   10| [ObjectCreation] object creation of type FileStream
+#-----| 0 -> [StringLiteral] "..."
+#-----| 1 -> [MemberConstantAccess] access to constant Open
+
+#   10| [StringLiteral] "..."
+
+#   10| [MemberConstantAccess] access to constant Open
+#-----| -1 -> [TypeAccess] access to type FileMode
+
+#   10| [TypeAccess] access to type FileMode
+
+#   10| [LocalVariableAccess] access to local variable file4
+
+#   11| [BlockStmt] {...}
+
+#   14| [UsingBlockStmt] using (...) {...}
+#-----| 0 -> [ObjectCreation] object creation of type FileStream
+#-----| 1 -> [EmptyStmt] ;
+
+#   14| [ObjectCreation] object creation of type FileStream
+#-----| 0 -> [StringLiteral] "..."
+#-----| 1 -> [MemberConstantAccess] access to constant Open
+
+#   14| [StringLiteral] "..."
+
+#   14| [MemberConstantAccess] access to constant Open
+#-----| -1 -> [TypeAccess] access to type FileMode
+
+#   14| [TypeAccess] access to type FileMode
+
+#   15| [EmptyStmt] ;
+
+patterns.cs:
+#    3| [Class] Patterns
+#-----| 2 -> [Method] IsPatterns
+#-----| 3 -> [Method] SwitchStatements
+#-----| 4 -> [Method] Expressions
+#-----| 5 -> [Method] Expressions2
+#-----| 6 -> [Struct] MyStruct
+
+#    5| [Method] IsPatterns
+#-----| 3 -> [BlockStmt] {...}
+
+#    6| [BlockStmt] {...}
+#-----| 0 -> [LocalConstantDeclStmt] ... ...;
+#-----| 1 -> [IfStmt] if (...) ...
+#-----| 2 -> [IfStmt] if (...) ...
+#-----| 3 -> [IfStmt] if (...) ...
+#-----| 4 -> [IfStmt] if (...) ...
+#-----| 5 -> [IfStmt] if (...) ...
+
+#    7| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Object o = ...
+
+#    7| [LocalVariableDeclAndInitExpr] Object o = ...
+#-----| 0 -> [CastExpr] (...) ...
+#-----| 1 -> [LocalVariableAccess] access to local variable o
+
+#    7| [CastExpr] (...) ...
+#-----| 0 -> [ObjectCreation] object creation of type MyStruct
+
+#    7| [ObjectCreation] object creation of type MyStruct
+#-----| -1 -> [ObjectInitializer] { ..., ... }
+
+#  151| [Struct] MyStruct
+#-----| 2 -> [Field] X
+#-----| 3 -> [Property] Y
+#-----| 4 -> [Property] S
+#-----| 5 -> [Method] Deconstruct
+#-----| 6 -> [Method] Deconstruct
+
+#    7| [ObjectInitializer] { ..., ... }
+#-----| 0 -> [MemberInitializer] ... = ...
+
+#    7| [MemberInitializer] ... = ...
+#-----| 0 -> [IntLiteral] 2
+#-----| 1 -> [FieldAccess] access to field X
+
+#    7| [IntLiteral] 2
+
+#    7| [FieldAccess] access to field X
+
+#    7| [LocalVariableAccess] access to local variable o
+
+#    9| [IfStmt] if (...) ...
+#-----| 0 -> [IsExpr] ... is ...
+#-----| 1 -> [BlockStmt] {...}
+
+#    9| [IsExpr] ... is ...
+#-----| 0 -> [LocalVariableAccess] access to local variable o
+#-----| 1 -> [VariablePatternExpr] MyStruct ms1
+
+#    9| [LocalVariableAccess] access to local variable o
+
+#    9| [VariablePatternExpr] MyStruct ms1
+
+#   10| [BlockStmt] {...}
+
+#   13| [IfStmt] if (...) ...
+#-----| 0 -> [LogicalAndExpr] ... && ...
+#-----| 1 -> [BlockStmt] {...}
+
+#   13| [LogicalAndExpr] ... && ...
+#-----| 0 -> [LogicalAndExpr] ... && ...
+#-----| 1 -> [LTExpr] ... < ...
+
+#   13| [LogicalAndExpr] ... && ...
+#-----| 0 -> [IsExpr] ... is ...
+#-----| 1 -> [LTExpr] ... < ...
+
+#   13| [IsExpr] ... is ...
+#-----| 0 -> [LocalVariableAccess] access to local variable o
+#-----| 1 -> [RecursivePatternExpr] { ... }
+
+#   13| [LocalVariableAccess] access to local variable o
+
+#   13| [RecursivePatternExpr] { ... }
+#-----| 0 -> [LocalVariableDeclExpr] MyStruct s
+#-----| 1 -> [TypeAccess] access to type MyStruct
+#-----| 3 -> [PropertyPatternExpr] { ... }
+
+#   13| [TypeAccess] access to type MyStruct
+
+#   13| [LocalVariableDeclExpr] MyStruct s
+
+#   13| [PropertyPatternExpr] { ... }
+#-----| 0 -> [LabeledPatternExpr,VariablePatternExpr] Int32 x
+
+#   13| [LabeledPatternExpr,VariablePatternExpr] Int32 x
+
+#   14| [BlockStmt] {...}
+
+#   17| [IfStmt] if (...) ...
+#-----| 0 -> [IsExpr] ... is ...
+#-----| 1 -> [BlockStmt] {...}
+
+#   17| [IsExpr] ... is ...
+#-----| 0 -> [LocalVariableAccess] access to local variable o
+#-----| 1 -> [RecursivePatternExpr] { ... }
+
+#   17| [LocalVariableAccess] access to local variable o
+
+#   17| [RecursivePatternExpr] { ... }
+#-----| 0 -> [LocalVariableDeclExpr] Object p
+#-----| 3 -> [PropertyPatternExpr] { ... }
+
+#   17| [LocalVariableDeclExpr] Object p
+
+#   17| [PropertyPatternExpr] { ... }
+
+#   18| [BlockStmt] {...}
+
+#   22| [IfStmt] if (...) ...
+#-----| 0 -> [IsExpr] ... is ...
+#-----| 1 -> [BlockStmt] {...}
+
+#   22| [IsExpr] ... is ...
+#-----| 0 -> [LocalVariableAccess] access to local variable o
+#-----| 1 -> [RecursivePatternExpr] { ... }
+
+#   22| [LocalVariableAccess] access to local variable o
+
+#   22| [RecursivePatternExpr] { ... }
+#-----| 1 -> [TypeAccess] access to type MyStruct
+#-----| 3 -> [PropertyPatternExpr] { ... }
+
+#   22| [TypeAccess] access to type MyStruct
+
+#   22| [PropertyPatternExpr] { ... }
+#-----| 0 -> [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 12
+#-----| 1 -> [LabeledPatternExpr,RecursivePatternExpr] { ... }
+
+#   22| [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 12
+
+#   22| [LabeledPatternExpr,RecursivePatternExpr] { ... }
+#-----| 3 -> [PropertyPatternExpr] { ... }
+
+#   22| [PropertyPatternExpr] { ... }
+#-----| 0 -> [LabeledPatternExpr,VariablePatternExpr] Int32 subX
+
+#   22| [LabeledPatternExpr,VariablePatternExpr] Int32 subX
+
+#   23| [BlockStmt] {...}
+
+#   27| [IfStmt] if (...) ...
+#-----| 0 -> [IsExpr] ... is ...
+#-----| 1 -> [BlockStmt] {...}
+
+#   27| [IsExpr] ... is ...
+#-----| 0 -> [LocalVariableAccess] access to local variable o
+#-----| 1 -> [RecursivePatternExpr] { ... }
+
+#   27| [LocalVariableAccess] access to local variable o
+
+#   27| [RecursivePatternExpr] { ... }
+#-----| 1 -> [TypeAccess] access to type MyStruct
+#-----| 3 -> [PropertyPatternExpr] { ... }
+
+#   27| [TypeAccess] access to type MyStruct
+
+#   27| [PropertyPatternExpr] { ... }
+#-----| 0 -> [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 12
+#-----| 1 -> [LabeledPatternExpr,RecursivePatternExpr] { ... }
+
+#   27| [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 12
+
+#   27| [LabeledPatternExpr,RecursivePatternExpr] { ... }
+#-----| 0 -> [LocalVariableDeclExpr] MyStruct ms
+#-----| 1 -> [TypeAccess] access to type MyStruct
+#-----| 3 -> [PropertyPatternExpr] { ... }
+
+#   27| [TypeAccess] access to type MyStruct
+
+#   27| [LocalVariableDeclExpr] MyStruct ms
+
+#   27| [PropertyPatternExpr] { ... }
+#-----| 0 -> [DiscardPatternExpr,LabeledPatternExpr] _
+
+#   27| [DiscardPatternExpr,LabeledPatternExpr] _
+
+#   28| [BlockStmt] {...}
+
+#   32| [Method] SwitchStatements
+#-----| 3 -> [BlockStmt] {...}
+
+#   98| [Method] Expressions
+#-----| 2 -> (Parameters)
+#-----| 3 -> [BlockStmt] {...}
+
+#   98| [Parameter] x
+
+#  123| [Method] Expressions2
+#-----| 2 -> (Parameters)
+#-----| 3 -> [BlockStmt] {...}
+
+#  123| [Parameter] o
+
+#  154| [Property] Y
+#-----| 1 -> [Getter] get_Y
+
+#  154| [Getter] get_Y
+#-----| 3 -> [IntLiteral] 10
+
+#  156| [Property] S
+#-----| 1 -> [Getter] get_S
+
+#  156| [Getter] get_S
+#-----| 3 -> [ThisAccess] this access
+
+#  158| [Method] Deconstruct
+#-----| 2 -> (Parameters)
+#-----| 3 -> [BlockStmt] {...}
+
+#  158| [Parameter] x
+
+#  158| [Parameter] y
+
+#  164| [Method] Deconstruct
+#-----| 3 -> [BlockStmt] {...}
+
+#   13| [LTExpr] ... < ...
+#-----| 0 -> [LocalVariableAccess] access to local variable x
+#-----| 1 -> [IntLiteral] 4
+
+#   13| [LTExpr] ... < ...
+#-----| 0 -> [PropertyCall] access to property Y
+#-----| 1 -> [IntLiteral] 2
+
+#   33| [BlockStmt] {...}
+#-----| 0 -> [LocalConstantDeclStmt] ... ...;
+#-----| 1 -> [SwitchStmt] switch (...) {...}
+#-----| 2 -> [SwitchStmt] switch (...) {...}
+#-----| 3 -> [SwitchStmt] switch (...) {...}
+#-----| 4 -> [SwitchStmt] switch (...) {...}
+#-----| 5 -> [SwitchStmt] switch (...) {...}
+#-----| 6 -> [SwitchStmt] switch (...) {...}
+
+#   34| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] MyStruct s = ...
+
+#   34| [LocalVariableDeclAndInitExpr] MyStruct s = ...
+#-----| 0 -> [ObjectCreation] object creation of type MyStruct
+#-----| 1 -> [LocalVariableAccess] access to local variable s
+
+#   34| [ObjectCreation] object creation of type MyStruct
+#-----| -1 -> [ObjectInitializer] { ..., ... }
+
+#   34| [ObjectInitializer] { ..., ... }
+#-----| 0 -> [MemberInitializer] ... = ...
+
+#   34| [MemberInitializer] ... = ...
+#-----| 0 -> [IntLiteral] 0
+#-----| 1 -> [FieldAccess] access to field X
+
+#   34| [IntLiteral] 0
+
+#   34| [FieldAccess] access to field X
+
+#   34| [LocalVariableAccess] access to local variable s
+
+#   36| [SwitchStmt] switch (...) {...}
+#-----| 0 -> [LocalVariableAccess] access to local variable s
+#-----| 0 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 1 -> [ExprStmt] ...;
+#-----| 2 -> [BreakStmt] break;
+#-----| 3 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 4 -> [ExprStmt] ...;
+#-----| 5 -> [BreakStmt] break;
+
+#   36| [LocalVariableAccess] access to local variable s
+
+#   38| [CaseStmt,LabeledStmt] case ...:
+#-----| 0 -> [VariablePatternExpr] MyStruct ms1
+#-----| 1 -> [EQExpr] ... == ...
+
+#   38| [VariablePatternExpr] MyStruct ms1
+
+#   38| [EQExpr] ... == ...
+#-----| 0 -> [FieldAccess] access to field X
+#-----| 1 -> [IntLiteral] 10
+
+#   39| [ExprStmt] ...;
+#-----| 0 -> [MethodCall] call to method WriteLine
+
+#   39| [MethodCall] call to method WriteLine
+#-----| -1 -> [TypeAccess] access to type Console
+#-----| 0 -> [StringLiteral] "Hit the breakpoint"
+
+#   39| [TypeAccess] access to type Console
+
+#   39| [StringLiteral] "Hit the breakpoint"
+
+#   40| [BreakStmt] break;
+
+#   41| [CaseStmt,LabeledStmt] case ...:
+#-----| 0 -> [VariablePatternExpr] MyStruct ms2
+#-----| 1 -> [LTExpr] ... < ...
+
+#   41| [VariablePatternExpr] MyStruct ms2
+
+#   41| [LTExpr] ... < ...
+#-----| 0 -> [FieldAccess] access to field X
+#-----| 1 -> [IntLiteral] 10
+
+#   42| [ExprStmt] ...;
+#-----| 0 -> [MethodCall] call to method WriteLine
+
+#   42| [MethodCall] call to method WriteLine
+#-----| -1 -> [TypeAccess] access to type Console
+#-----| 0 -> [StringLiteral] "Missed the breakpoint"
+
+#   42| [TypeAccess] access to type Console
+
+#   42| [StringLiteral] "Missed the breakpoint"
+
+#   43| [BreakStmt] break;
+
+#   46| [SwitchStmt] switch (...) {...}
+#-----| 0 -> [LocalVariableAccess] access to local variable s
+#-----| 0 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 1 -> [ExprStmt] ...;
+#-----| 2 -> [BreakStmt] break;
+#-----| 3 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 4 -> [ExprStmt] ...;
+#-----| 5 -> [BreakStmt] break;
+#-----| 6 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 7 -> [ExprStmt] ...;
+#-----| 8 -> [BreakStmt] break;
+#-----| 9 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 10 -> [BreakStmt] break;
+#-----| 11 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 12 -> [BreakStmt] break;
+#-----| 13 -> [DefaultCase] default:
+#-----| 14 -> [BreakStmt] break;
+
+#   46| [LocalVariableAccess] access to local variable s
+
+#   48| [CaseStmt,LabeledStmt] case ...:
+#-----| 0 -> [RecursivePatternExpr] { ... }
+#-----| 1 -> [GTExpr] ... > ...
+
+#   48| [RecursivePatternExpr] { ... }
+#-----| 1 -> [TypeAccess] access to type MyStruct
+#-----| 3 -> [PropertyPatternExpr] { ... }
+
+#   48| [TypeAccess] access to type MyStruct
+
+#   48| [PropertyPatternExpr] { ... }
+#-----| 0 -> [LabeledPatternExpr,VariablePatternExpr] Int32 x
+
+#   48| [LabeledPatternExpr,VariablePatternExpr] Int32 x
+
+#   48| [GTExpr] ... > ...
+#-----| 0 -> [LocalVariableAccess] access to local variable x
+#-----| 1 -> [IntLiteral] 2
+
+#   49| [ExprStmt] ...;
+#-----| 0 -> [MethodCall] call to method WriteLine
+
+#   49| [MethodCall] call to method WriteLine
+#-----| -1 -> [TypeAccess] access to type Console
+#-----| 0 -> [LocalVariableAccess] access to local variable x
+
+#   49| [TypeAccess] access to type Console
+
+#   49| [LocalVariableAccess] access to local variable x
+
+#   50| [BreakStmt] break;
+
+#   51| [CaseStmt,LabeledStmt] case ...:
+#-----| 0 -> [RecursivePatternExpr] { ... }
+
+#   51| [RecursivePatternExpr] { ... }
+#-----| 0 -> [LocalVariableDeclExpr] MyStruct ms
+#-----| 1 -> [TypeAccess] access to type MyStruct
+#-----| 3 -> [PropertyPatternExpr] { ... }
+
+#   51| [TypeAccess] access to type MyStruct
+
+#   51| [LocalVariableDeclExpr] MyStruct ms
+
+#   51| [PropertyPatternExpr] { ... }
+#-----| 0 -> [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 10
+
+#   51| [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 10
+
+#   52| [ExprStmt] ...;
+#-----| 0 -> [MethodCall] call to method WriteLine
+
+#   52| [MethodCall] call to method WriteLine
+#-----| -1 -> [TypeAccess] access to type Console
+#-----| 0 -> [StringLiteral] "Hit the breakpoint"
+
+#   52| [TypeAccess] access to type Console
+
+#   52| [StringLiteral] "Hit the breakpoint"
+
+#   53| [BreakStmt] break;
+
+#   54| [CaseStmt,LabeledStmt] case ...:
+#-----| 0 -> [RecursivePatternExpr] { ... }
+#-----| 1 -> [GTExpr] ... > ...
+
+#   54| [RecursivePatternExpr] { ... }
+#-----| 3 -> [PropertyPatternExpr] { ... }
+
+#   54| [PropertyPatternExpr] { ... }
+#-----| 0 -> [LabeledPatternExpr,VariablePatternExpr] Int32 x2
+
+#   54| [LabeledPatternExpr,VariablePatternExpr] Int32 x2
+
+#   54| [GTExpr] ... > ...
+#-----| 0 -> [LocalVariableAccess] access to local variable x2
+#-----| 1 -> [IntLiteral] 2
+
+#   55| [ExprStmt] ...;
+#-----| 0 -> [MethodCall] call to method WriteLine
+
+#   55| [MethodCall] call to method WriteLine
+#-----| -1 -> [TypeAccess] access to type Console
+#-----| 0 -> [LocalVariableAccess] access to local variable x2
+
+#   55| [TypeAccess] access to type Console
+
+#   55| [LocalVariableAccess] access to local variable x2
+
+#   56| [BreakStmt] break;
+
+#   57| [CaseStmt,LabeledStmt] case ...:
+#-----| 0 -> [RecursivePatternExpr] { ... }
+
+#   57| [RecursivePatternExpr] { ... }
+#-----| 2 -> [PositionalPatternExpr] ( ... )
+
+#   57| [PositionalPatternExpr] ( ... )
+#-----| 0 -> [ConstantPatternExpr,IntLiteral] 1
+#-----| 1 -> [ConstantPatternExpr,IntLiteral] 2
+
+#   57| [ConstantPatternExpr,IntLiteral] 1
+
+#   57| [ConstantPatternExpr,IntLiteral] 2
+
+#   58| [BreakStmt] break;
+
+#   59| [CaseStmt,LabeledStmt] case ...:
+#-----| 0 -> [TupleExpr] (..., ...)
+
+#   59| [TupleExpr] (..., ...)
+#-----| 0 -> [LocalVariableDeclExpr] Int32 x
+#-----| 1 -> [LocalVariableDeclExpr] Int32 y
+
+#   59| [LocalVariableDeclExpr] Int32 x
+
+#   59| [LocalVariableDeclExpr] Int32 y
+
+#   60| [BreakStmt] break;
+
+#   61| [DefaultCase] default:
+
+#   62| [BreakStmt] break;
+
+#   65| [SwitchStmt] switch (...) {...}
+#-----| 0 -> [LocalVariableAccess] access to local variable s
+#-----| 0 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 1 -> [ExprStmt] ...;
+#-----| 2 -> [BreakStmt] break;
+#-----| 3 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 4 -> [ExprStmt] ...;
+#-----| 5 -> [BreakStmt] break;
+
+#   65| [LocalVariableAccess] access to local variable s
+
+#   67| [CaseStmt,LabeledStmt] case ...:
+#-----| 0 -> [RecursivePatternExpr] { ... }
+#-----| 1 -> [GTExpr] ... > ...
+
+#   67| [RecursivePatternExpr] { ... }
+#-----| 1 -> [TypeAccess] access to type MyStruct
+#-----| 3 -> [PropertyPatternExpr] { ... }
+
+#   67| [TypeAccess] access to type MyStruct
+
+#   67| [PropertyPatternExpr] { ... }
+#-----| 0 -> [LabeledPatternExpr,VariablePatternExpr] Int32 x
+
+#   67| [LabeledPatternExpr,VariablePatternExpr] Int32 x
+
+#   67| [GTExpr] ... > ...
+#-----| 0 -> [LocalVariableAccess] access to local variable x
+#-----| 1 -> [IntLiteral] 2
+
+#   68| [ExprStmt] ...;
+#-----| 0 -> [MethodCall] call to method WriteLine
+
+#   68| [MethodCall] call to method WriteLine
+#-----| -1 -> [TypeAccess] access to type Console
+#-----| 0 -> [LocalVariableAccess] access to local variable x
+
+#   68| [TypeAccess] access to type Console
+
+#   68| [LocalVariableAccess] access to local variable x
+
+#   69| [BreakStmt] break;
+
+#   70| [CaseStmt,LabeledStmt] case ...:
+#-----| 0 -> [RecursivePatternExpr] { ... }
+#-----| 1 -> [EQExpr] ... == ...
+
+#   70| [RecursivePatternExpr] { ... }
+#-----| 0 -> [LocalVariableDeclExpr] MyStruct ms
+#-----| 1 -> [TypeAccess] access to type MyStruct
+#-----| 3 -> [PropertyPatternExpr] { ... }
+
+#   70| [TypeAccess] access to type MyStruct
+
+#   70| [LocalVariableDeclExpr] MyStruct ms
+
+#   70| [PropertyPatternExpr] { ... }
+#-----| 0 -> [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 10
+
+#   70| [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 10
+
+#   70| [EQExpr] ... == ...
+#-----| 0 -> [FieldAccess] access to field X
+#-----| 1 -> [IntLiteral] 0
+
+#   71| [ExprStmt] ...;
+#-----| 0 -> [MethodCall] call to method WriteLine
+
+#   71| [MethodCall] call to method WriteLine
+#-----| -1 -> [TypeAccess] access to type Console
+#-----| 0 -> [StringLiteral] "Hit the breakpoint"
+
+#   71| [TypeAccess] access to type Console
+
+#   71| [StringLiteral] "Hit the breakpoint"
+
+#   72| [BreakStmt] break;
+
+#   76| [SwitchStmt] switch (...) {...}
+#-----| 0 -> [ObjectCreation] object creation of type Object
+#-----| 0 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 1 -> [BreakStmt] break;
+#-----| 2 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 3 -> [BreakStmt] break;
+#-----| 4 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 5 -> [BreakStmt] break;
+
+#   76| [ObjectCreation] object creation of type Object
+
+#   78| [CaseStmt,LabeledStmt] case ...:
+#-----| 0 -> [RecursivePatternExpr] { ... }
+#-----| 1 -> [LTExpr] ... < ...
+
+#   78| [RecursivePatternExpr] { ... }
+#-----| 2 -> [PositionalPatternExpr] ( ... )
+
+#   78| [PositionalPatternExpr] ( ... )
+#-----| 0 -> [VariablePatternExpr] Int32 x
+#-----| 1 -> [VariablePatternExpr] Single y
+
+#   78| [VariablePatternExpr] Int32 x
+
+#   78| [VariablePatternExpr] Single y
+
+#   78| [LTExpr] ... < ...
+#-----| 0 -> [CastExpr] (...) ...
+#-----| 1 -> [LocalVariableAccess] access to local variable y
+
+#   79| [BreakStmt] break;
+
+#   80| [CaseStmt,LabeledStmt] case ...:
+#-----| 0 -> [RecursivePatternExpr] { ... }
+
+#   80| [RecursivePatternExpr] { ... }
+#-----| 2 -> [PositionalPatternExpr] ( ... )
+
+#   80| [PositionalPatternExpr] ( ... )
+
+#   81| [BreakStmt] break;
+
+#   82| [CaseStmt,LabeledStmt] case ...:
+#-----| 0 -> [RecursivePatternExpr] { ... }
+
+#   82| [RecursivePatternExpr] { ... }
+#-----| 3 -> [PropertyPatternExpr] { ... }
+
+#   82| [PropertyPatternExpr] { ... }
+
+#   83| [BreakStmt] break;
+
+#   86| [SwitchStmt] switch (...) {...}
+#-----| 0 -> [TupleExpr] (..., ...)
+#-----| 0 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 1 -> [BreakStmt] break;
+
+#   86| [TupleExpr] (..., ...)
+#-----| 0 -> [IntLiteral] 1
+#-----| 1 -> [IntLiteral] 2
+
+#   86| [TupleType] (Int32,Int32)
+#-----| 3 -> [Field] Item1
+#-----| 4 -> [Field] Item2
+
+#   86| [Field] Item1
+
+#   86| [Field] Item2
+
+#   86| [IntLiteral] 1
+
+#   86| [IntLiteral] 2
+
+#   88| [CaseStmt,LabeledStmt] case ...:
+#-----| 0 -> [RecursivePatternExpr] { ... }
+
+#   88| [RecursivePatternExpr] { ... }
+#-----| 2 -> [PositionalPatternExpr] ( ... )
+
+#   88| [PositionalPatternExpr] ( ... )
+#-----| 0 -> [ConstantPatternExpr,IntLiteral] 1
+#-----| 1 -> [ConstantPatternExpr,IntLiteral] 2
+
+#   88| [ConstantPatternExpr,IntLiteral] 1
+
+#   88| [ConstantPatternExpr,IntLiteral] 2
+
+#   88| [BreakStmt] break;
+
+#   91| [SwitchStmt] switch (...) {...}
+#-----| 0 -> [TupleExpr] (..., ...)
+#-----| 0 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 1 -> [BreakStmt] break;
+#-----| 2 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 3 -> [BreakStmt] break;
+
+#   91| [TupleExpr] (..., ...)
+#-----| 0 -> [IntLiteral] 1
+#-----| 1 -> [IntLiteral] 2
+
+#   91| [IntLiteral] 1
+
+#   91| [IntLiteral] 2
+
+#   93| [CaseStmt,LabeledStmt] case ...:
+#-----| 0 -> [RecursivePatternExpr] { ... }
+
+#   93| [RecursivePatternExpr] { ... }
+#-----| 2 -> [PositionalPatternExpr] ( ... )
+
+#   93| [PositionalPatternExpr] ( ... )
+#-----| 0 -> [ConstantPatternExpr,IntLiteral] 1
+#-----| 1 -> [VariablePatternExpr] Int32 x
+
+#   93| [ConstantPatternExpr,IntLiteral] 1
+
+#   93| [VariablePatternExpr] Int32 x
+
+#   93| [BreakStmt] break;
+
+#   94| [CaseStmt,LabeledStmt] case ...:
+#-----| 0 -> [RecursivePatternExpr] { ... }
+
+#   94| [RecursivePatternExpr] { ... }
+#-----| 2 -> [PositionalPatternExpr] ( ... )
+
+#   94| [PositionalPatternExpr] ( ... )
+#-----| 0 -> [ConstantPatternExpr,IntLiteral] 2
+#-----| 1 -> [DiscardPatternExpr] _
+
+#   94| [ConstantPatternExpr,IntLiteral] 2
+
+#   94| [DiscardPatternExpr] _
+
+#   94| [BreakStmt] break;
+
+#   99| [BlockStmt] {...}
+#-----| 0 -> [LocalConstantDeclStmt] ... ...;
+#-----| 1 -> [LocalConstantDeclStmt] ... ...;
+#-----| 2 -> [ExprStmt] ...;
+#-----| 3 -> [ExprStmt] ...;
+
+#  100| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] String size = ...
+
+#  100| [LocalVariableDeclAndInitExpr] String size = ...
+#-----| 0 -> [SwitchExpr] ... switch { ... }
+#-----| 1 -> [LocalVariableAccess] access to local variable size
+
+#  100| [SwitchExpr] ... switch { ... }
+#-----| -1 -> [ParameterAccess] access to parameter x
+#-----| 0 -> [SwitchCaseExpr] ... => ...
+#-----| 1 -> [SwitchCaseExpr] ... => ...
+
+#  100| [ParameterAccess] access to parameter x
+
+#  101| [SwitchCaseExpr] ... => ...
+#-----| 0 -> [VariablePatternExpr] Int32 y
+#-----| 1 -> [GTExpr] ... > ...
+#-----| 2 -> [StringLiteral] "large"
+
+#  101| [VariablePatternExpr] Int32 y
+
+#  101| [GTExpr] ... > ...
+#-----| 0 -> [LocalVariableAccess] access to local variable y
+#-----| 1 -> [IntLiteral] 10
+
+#  101| [StringLiteral] "large"
+
+#  102| [SwitchCaseExpr] ... => ...
+#-----| 0 -> [DiscardPatternExpr] _
+#-----| 2 -> [StringLiteral] "small"
+
+#  102| [DiscardPatternExpr] _
+
+#  102| [StringLiteral] "small"
+
+#  100| [LocalVariableAccess] access to local variable size
+
+#  105| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 x0 = ...
+#-----| 1 -> [LocalVariableDeclAndInitExpr] Int32 y0 = ...
+
+#  105| [LocalVariableDeclAndInitExpr] Int32 x0 = ...
+#-----| 0 -> [IntLiteral] 0
+#-----| 1 -> [LocalVariableAccess] access to local variable x0
+
+#  105| [IntLiteral] 0
+
+#  105| [LocalVariableAccess] access to local variable x0
+
+#  105| [LocalVariableDeclAndInitExpr] Int32 y0 = ...
+#-----| 0 -> [IntLiteral] 0
+#-----| 1 -> [LocalVariableAccess] access to local variable y0
+
+#  105| [IntLiteral] 0
+
+#  105| [LocalVariableAccess] access to local variable y0
+
+#  108| [ExprStmt] ...;
+#-----| 0 -> [AssignExpr] ... = ...
+
+#  108| [AssignExpr] ... = ...
+#-----| 0 -> [SwitchExpr] ... switch { ... }
+#-----| 1 -> [TupleExpr] (..., ...)
+
+#  108| [TupleType] (Int32,Int32)
+#-----| 1 -> [Field] Item1
+#-----| 1 -> [Field] x1
+#-----| 3 -> [Field] Item2
+#-----| 3 -> [Field] y1
+
+#  108| [Field] Item1
+
+#  108| [Field] x1
+
+#  108| [Field] Item2
+
+#  108| [Field] y1
+
+#  108| [TupleExpr] (..., ...)
+#-----| 0 -> [LocalVariableDeclExpr] Int32 x1
+#-----| 1 -> [LocalVariableDeclExpr] Int32 y1
+
+#  108| [LocalVariableDeclExpr] Int32 x1
+
+#  108| [LocalVariableDeclExpr] Int32 y1
+
+#  108| [SwitchExpr] ... switch { ... }
+#-----| -1 -> [TupleExpr] (..., ...)
+#-----| 0 -> [SwitchCaseExpr] ... => ...
+#-----| 1 -> [SwitchCaseExpr] ... => ...
+
+#  108| [TupleExpr] (..., ...)
+#-----| 0 -> [LocalVariableAccess] access to local variable x0
+#-----| 1 -> [LocalVariableAccess] access to local variable y0
+
+#  108| [TupleType] (Int32,Int32)
+#-----| 1 -> [Field] Item1
+#-----| 1 -> [Field] x0
+#-----| 3 -> [Field] Item2
+#-----| 3 -> [Field] y0
+
+#  108| [Field] Item1
+
+#  108| [Field] x0
+
+#  108| [Field] Item2
+
+#  108| [Field] y0
+
+#  108| [LocalVariableAccess] access to local variable x0
+
+#  108| [LocalVariableAccess] access to local variable y0
+
+#  110| [SwitchCaseExpr] ... => ...
+#-----| 0 -> [RecursivePatternExpr] { ... }
+#-----| 2 -> [TupleExpr] (..., ...)
+
+#  110| [RecursivePatternExpr] { ... }
+#-----| 2 -> [PositionalPatternExpr] ( ... )
+
+#  110| [PositionalPatternExpr] ( ... )
+#-----| 0 -> [ConstantPatternExpr,IntLiteral] 0
+#-----| 1 -> [ConstantPatternExpr,IntLiteral] 1
+
+#  110| [ConstantPatternExpr,IntLiteral] 0
+
+#  110| [ConstantPatternExpr,IntLiteral] 1
+
+#  110| [TupleExpr] (..., ...)
+#-----| 0 -> [IntLiteral] 1
+#-----| 1 -> [IntLiteral] 0
+
+#  110| [IntLiteral] 1
+
+#  110| [IntLiteral] 0
+
+#  111| [SwitchCaseExpr] ... => ...
+#-----| 0 -> [RecursivePatternExpr] { ... }
+#-----| 2 -> [TupleExpr] (..., ...)
+
+#  111| [RecursivePatternExpr] { ... }
+#-----| 2 -> [PositionalPatternExpr] ( ... )
+
+#  111| [PositionalPatternExpr] ( ... )
+#-----| 0 -> [ConstantPatternExpr,IntLiteral] 1
+#-----| 1 -> [ConstantPatternExpr,IntLiteral] 0
+
+#  111| [ConstantPatternExpr,IntLiteral] 1
+
+#  111| [ConstantPatternExpr,IntLiteral] 0
+
+#  111| [TupleExpr] (..., ...)
+#-----| 0 -> [IntLiteral] 0
+#-----| 1 -> [IntLiteral] 1
+
+#  111| [IntLiteral] 0
+
+#  111| [IntLiteral] 1
+
+#  115| [ExprStmt] ...;
+#-----| 0 -> [AssignExpr] ... = ...
+
+#  115| [AssignExpr] ... = ...
+#-----| 0 -> [SwitchExpr] ... switch { ... }
+#-----| 1 -> [TupleExpr] (..., ...)
+
+#  115| [TupleExpr] (..., ...)
+#-----| 0 -> [LocalVariableAccess] access to local variable x1
+#-----| 1 -> [LocalVariableAccess] access to local variable y1
+
+#  115| [LocalVariableAccess] access to local variable x1
+
+#  115| [LocalVariableAccess] access to local variable y1
+
+#  115| [SwitchExpr] ... switch { ... }
+#-----| -1 -> [TupleExpr] (..., ...)
+#-----| 0 -> [SwitchCaseExpr] ... => ...
+#-----| 1 -> [SwitchCaseExpr] ... => ...
+#-----| 2 -> [SwitchCaseExpr] ... => ...
+
+#  115| [TupleExpr] (..., ...)
+#-----| 0 -> [LocalVariableAccess] access to local variable x0
+#-----| 1 -> [LocalVariableAccess] access to local variable y0
+
+#  115| [LocalVariableAccess] access to local variable x0
+
+#  115| [LocalVariableAccess] access to local variable y0
+
+#  117| [SwitchCaseExpr] ... => ...
+#-----| 0 -> [RecursivePatternExpr] { ... }
+#-----| 2 -> [TupleExpr] (..., ...)
+
+#  117| [RecursivePatternExpr] { ... }
+#-----| 2 -> [PositionalPatternExpr] ( ... )
+
+#  117| [PositionalPatternExpr] ( ... )
+#-----| 0 -> [ConstantPatternExpr,IntLiteral] 0
+#-----| 1 -> [VariablePatternExpr] Int32 y2
+
+#  117| [ConstantPatternExpr,IntLiteral] 0
+
+#  117| [VariablePatternExpr] Int32 y2
+
+#  117| [TupleExpr] (..., ...)
+#-----| 0 -> [LocalVariableAccess] access to local variable y2
+#-----| 1 -> [IntLiteral] 0
+
+#  117| [TupleType] (Int32,Int32)
+#-----| 1 -> [Field] Item1
+#-----| 1 -> [Field] y2
+#-----| 3 -> [Field] Item2
+
+#  117| [Field] Item1
+
+#  117| [Field] y2
+
+#  117| [Field] Item2
+
+#  117| [LocalVariableAccess] access to local variable y2
+
+#  117| [IntLiteral] 0
+
+#  118| [SwitchCaseExpr] ... => ...
+#-----| 0 -> [RecursivePatternExpr] { ... }
+#-----| 2 -> [TupleExpr] (..., ...)
+
+#  118| [RecursivePatternExpr] { ... }
+#-----| 2 -> [PositionalPatternExpr] ( ... )
+
+#  118| [PositionalPatternExpr] ( ... )
+#-----| 0 -> [VariablePatternExpr] Int32 x2
+#-----| 1 -> [ConstantPatternExpr,IntLiteral] 0
+
+#  118| [VariablePatternExpr] Int32 x2
+
+#  118| [ConstantPatternExpr,IntLiteral] 0
+
+#  118| [TupleExpr] (..., ...)
+#-----| 0 -> [IntLiteral] 0
+#-----| 1 -> [LocalVariableAccess] access to local variable x2
+
+#  118| [TupleType] (Int32,Int32)
+#-----| 1 -> [Field] Item1
+#-----| 2 -> [Field] Item2
+#-----| 2 -> [Field] x2
+
+#  118| [Field] Item1
+
+#  118| [Field] Item2
+
+#  118| [Field] x2
+
+#  118| [IntLiteral] 0
+
+#  118| [LocalVariableAccess] access to local variable x2
+
+#  119| [SwitchCaseExpr] ... => ...
+#-----| 0 -> [RecursivePatternExpr] { ... }
+#-----| 2 -> [TupleExpr] (..., ...)
+
+#  119| [RecursivePatternExpr] { ... }
+#-----| 2 -> [PositionalPatternExpr] ( ... )
+
+#  119| [PositionalPatternExpr] ( ... )
+#-----| 0 -> [VariablePatternExpr] Int32 x2
+#-----| 1 -> [VariablePatternExpr] Int32 y2
+
+#  119| [VariablePatternExpr] Int32 x2
+
+#  119| [VariablePatternExpr] Int32 y2
+
+#  119| [TupleExpr] (..., ...)
+#-----| 0 -> [IntLiteral] 0
+#-----| 1 -> [IntLiteral] 0
+
+#  119| [IntLiteral] 0
+
+#  119| [IntLiteral] 0
+
+#  124| [BlockStmt] {...}
+#-----| 0 -> [LocalConstantDeclStmt] ... ...;
+#-----| 1 -> [LocalConstantDeclStmt] ... ...;
+#-----| 2 -> [TryStmt] try {...} ...
+
+#  125| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] MyStruct s = ...
+
+#  125| [LocalVariableDeclAndInitExpr] MyStruct s = ...
+#-----| 0 -> [ObjectCreation] object creation of type MyStruct
+#-----| 1 -> [LocalVariableAccess] access to local variable s
+
+#  125| [ObjectCreation] object creation of type MyStruct
+#-----| -1 -> [ObjectInitializer] { ..., ... }
+
+#  125| [ObjectInitializer] { ..., ... }
+#-----| 0 -> [MemberInitializer] ... = ...
+
+#  125| [MemberInitializer] ... = ...
+#-----| 0 -> [IntLiteral] 0
+#-----| 1 -> [FieldAccess] access to field X
+
+#  125| [IntLiteral] 0
+
+#  125| [FieldAccess] access to field X
+
+#  125| [LocalVariableAccess] access to local variable s
+
+#  126| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 r = ...
+
+#  126| [LocalVariableDeclAndInitExpr] Int32 r = ...
+#-----| 0 -> [SwitchExpr] ... switch { ... }
+#-----| 1 -> [LocalVariableAccess] access to local variable r
+
+#  126| [SwitchExpr] ... switch { ... }
+#-----| -1 -> [LocalVariableAccess] access to local variable s
+#-----| 0 -> [SwitchCaseExpr] ... => ...
+#-----| 1 -> [SwitchCaseExpr] ... => ...
+#-----| 2 -> [SwitchCaseExpr] ... => ...
+#-----| 3 -> [SwitchCaseExpr] ... => ...
+
+#  126| [LocalVariableAccess] access to local variable s
+
+#  128| [SwitchCaseExpr] ... => ...
+#-----| 0 -> [RecursivePatternExpr] { ... }
+#-----| 1 -> [GTExpr] ... > ...
+#-----| 2 -> [IntLiteral] 0
+
+#  128| [RecursivePatternExpr] { ... }
+#-----| 1 -> [TypeAccess] access to type MyStruct
+#-----| 3 -> [PropertyPatternExpr] { ... }
+
+#  128| [TypeAccess] access to type MyStruct
+
+#  128| [PropertyPatternExpr] { ... }
+#-----| 0 -> [LabeledPatternExpr,VariablePatternExpr] Int32 x
+
+#  128| [LabeledPatternExpr,VariablePatternExpr] Int32 x
+
+#  128| [GTExpr] ... > ...
+#-----| 0 -> [LocalVariableAccess] access to local variable x
+#-----| 1 -> [IntLiteral] 2
+
+#  128| [IntLiteral] 0
+
+#  129| [SwitchCaseExpr] ... => ...
+#-----| 0 -> [RecursivePatternExpr] { ... }
+#-----| 2 -> [IntLiteral] 1
+
+#  129| [RecursivePatternExpr] { ... }
+#-----| 0 -> [LocalVariableDeclExpr] MyStruct ms
+#-----| 1 -> [TypeAccess] access to type MyStruct
+#-----| 3 -> [PropertyPatternExpr] { ... }
+
+#  129| [TypeAccess] access to type MyStruct
+
+#  129| [LocalVariableDeclExpr] MyStruct ms
+
+#  129| [PropertyPatternExpr] { ... }
+#-----| 0 -> [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 10
+
+#  129| [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 10
+
+#  129| [IntLiteral] 1
+
+#  130| [SwitchCaseExpr] ... => ...
+#-----| 0 -> [RecursivePatternExpr] { ... }
+#-----| 2 -> [IntLiteral] 2
+
+#  130| [RecursivePatternExpr] { ... }
+#-----| 2 -> [PositionalPatternExpr] ( ... )
+
+#  130| [PositionalPatternExpr] ( ... )
+#-----| 0 -> [ConstantPatternExpr,IntLiteral] 1
+#-----| 1 -> [ConstantPatternExpr,IntLiteral] 2
+
+#  130| [ConstantPatternExpr,IntLiteral] 1
+
+#  130| [ConstantPatternExpr,IntLiteral] 2
+
+#  130| [IntLiteral] 2
+
+#  131| [SwitchCaseExpr] ... => ...
+#-----| 0 -> [TupleExpr] (..., ...)
+#-----| 2 -> [IntLiteral] 3
+
+#  131| [TupleExpr] (..., ...)
+#-----| 0 -> [LocalVariableDeclExpr] Int32 x
+#-----| 1 -> [DiscardExpr] _
+
+#  131| [LocalVariableDeclExpr] Int32 x
+
+#  131| [DiscardExpr] _
+
+#  131| [IntLiteral] 3
+
+#  126| [LocalVariableAccess] access to local variable r
+
+#  134| [TryStmt] try {...} ...
+#-----| 0 -> [BlockStmt] {...}
+#-----| 1 -> [SpecificCatchClause] catch (...) {...}
+
+#  145| [SpecificCatchClause] catch (...) {...}
+#-----| 0 -> [LocalVariableDeclExpr] InvalidOperationException ex
+#-----| 1 -> [BlockStmt] {...}
+
+#  145| [LocalVariableDeclExpr] InvalidOperationException ex
+
+#  146| [BlockStmt] {...}
+#-----| 0 -> [ExprStmt] ...;
+
+#  147| [ExprStmt] ...;
+#-----| 0 -> [MethodCall] call to method WriteLine
+
+#  147| [MethodCall] call to method WriteLine
+#-----| -1 -> [TypeAccess] access to type Console
+#-----| 0 -> [StringLiteral] "Invalid operation"
+
+#  147| [TypeAccess] access to type Console
+
+#  147| [StringLiteral] "Invalid operation"
+
+#  135| [BlockStmt] {...}
+#-----| 0 -> [ExprStmt] ...;
+
+#  136| [ExprStmt] ...;
+#-----| 0 -> [AssignExpr] ... = ...
+
+#  136| [AssignExpr] ... = ...
+#-----| 0 -> [SwitchExpr] ... switch { ... }
+#-----| 1 -> [LocalVariableAccess] access to local variable r
+
+#  136| [LocalVariableAccess] access to local variable r
+
+#  136| [SwitchExpr] ... switch { ... }
+#-----| -1 -> [ParameterAccess] access to parameter o
+#-----| 0 -> [SwitchCaseExpr] ... => ...
+#-----| 1 -> [SwitchCaseExpr] ... => ...
+#-----| 2 -> [SwitchCaseExpr] ... => ...
+#-----| 3 -> [SwitchCaseExpr] ... => ...
+#-----| 4 -> [SwitchCaseExpr] ... => ...
+
+#  136| [ParameterAccess] access to parameter o
+
+#  138| [SwitchCaseExpr] ... => ...
+#-----| 0 -> [ConstantPatternExpr,IntLiteral] 1
+#-----| 2 -> [ThrowExpr] throw ...
+
+#  138| [ConstantPatternExpr,IntLiteral] 1
+
+#  138| [ThrowExpr] throw ...
+#-----| 0 -> [ObjectCreation] object creation of type ArgumentException
+
+#  138| [ObjectCreation] object creation of type ArgumentException
+
+#  139| [SwitchCaseExpr] ... => ...
+#-----| 0 -> [ConstantPatternExpr,IntLiteral] 2
+#-----| 2 -> [IntLiteral] 3
+
+#  139| [ConstantPatternExpr,IntLiteral] 2
+
+#  139| [IntLiteral] 3
+
+#  140| [SwitchCaseExpr] ... => ...
+#-----| 0 -> [VariablePatternExpr] Object y
+#-----| 1 -> [IsExpr] ... is ...
+#-----| 2 -> [IntLiteral] 4
+
+#  140| [VariablePatternExpr] Object y
+
+#  140| [IsExpr] ... is ...
+#-----| 0 -> [LocalVariableAccess] access to local variable y
+#-----| 1 -> [RecursivePatternExpr] { ... }
+
+#  140| [LocalVariableAccess] access to local variable y
+
+#  140| [RecursivePatternExpr] { ... }
+#-----| 3 -> [PropertyPatternExpr] { ... }
+
+#  140| [PropertyPatternExpr] { ... }
+
+#  140| [IntLiteral] 4
+
+#  141| [SwitchCaseExpr] ... => ...
+#-----| 0 -> [TypeAccessPatternExpr] access to type String
+#-----| 2 -> [IntLiteral] 5
+
+#  141| [TypeAccessPatternExpr] access to type String
+
+#  141| [IntLiteral] 5
+
+#  142| [SwitchCaseExpr] ... => ...
+#-----| 0 -> [RecursivePatternExpr] { ... }
+#-----| 2 -> [IntLiteral] 6
+
+#  142| [RecursivePatternExpr] { ... }
+#-----| 1 -> [TypeAccess] access to type MyStruct
+#-----| 3 -> [PropertyPatternExpr] { ... }
+
+#  142| [TypeAccess] access to type MyStruct
+
+#  142| [PropertyPatternExpr] { ... }
+#-----| 0 -> [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 10
+
+#  142| [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 10
+
+#  142| [IntLiteral] 6
+
+#  154| [IntLiteral] 10
+
+#  156| [ThisAccess] this access
+
+#  159| [BlockStmt] {...}
+#-----| 0 -> [ExprStmt] ...;
+#-----| 1 -> [ExprStmt] ...;
+
+#  160| [ExprStmt] ...;
+#-----| 0 -> [AssignExpr] ... = ...
+
+#  160| [AssignExpr] ... = ...
+#-----| 0 -> [FieldAccess] access to field X
+#-----| 1 -> [ParameterAccess] access to parameter x
+
+#  160| [ParameterAccess] access to parameter x
+
+#  160| [FieldAccess] access to field X
+#-----| -1 -> [ThisAccess] this access
+
+#  160| [ThisAccess] this access
+
+#  161| [ExprStmt] ...;
+#-----| 0 -> [AssignExpr] ... = ...
+
+#  161| [AssignExpr] ... = ...
+#-----| 0 -> [PropertyCall] access to property Y
+#-----| 1 -> [ParameterAccess] access to parameter y
+
+#  161| [ParameterAccess] access to parameter y
+
+#  161| [PropertyCall] access to property Y
+#-----| -1 -> [ThisAccess] this access
+
+#  161| [ThisAccess] this access
+
+#  165| [BlockStmt] {...}
+
+#   13| [LocalVariableAccess] access to local variable x
+
+#   13| [IntLiteral] 4
+
+#   13| [PropertyCall] access to property Y
+#-----| -1 -> [LocalVariableAccess] access to local variable s
+
+#   13| [LocalVariableAccess] access to local variable s
+
+#   13| [IntLiteral] 2
+
+#   38| [FieldAccess] access to field X
+#-----| -1 -> [LocalVariableAccess] access to local variable ms1
+
+#   38| [LocalVariableAccess] access to local variable ms1
+
+#   38| [IntLiteral] 10
+
+#   41| [FieldAccess] access to field X
+#-----| -1 -> [LocalVariableAccess] access to local variable ms2
+
+#   41| [LocalVariableAccess] access to local variable ms2
+
+#   41| [IntLiteral] 10
+
+#   48| [LocalVariableAccess] access to local variable x
+
+#   48| [IntLiteral] 2
+
+#   54| [LocalVariableAccess] access to local variable x2
+
+#   54| [IntLiteral] 2
+
+#   67| [LocalVariableAccess] access to local variable x
+
+#   67| [IntLiteral] 2
+
+#   70| [FieldAccess] access to field X
+#-----| -1 -> [LocalVariableAccess] access to local variable s
+
+#   70| [LocalVariableAccess] access to local variable s
+
+#   70| [IntLiteral] 0
+
+#   78| [CastExpr] (...) ...
+#-----| 0 -> [LocalVariableAccess] access to local variable x
+
+#   78| [LocalVariableAccess] access to local variable x
+
+#   78| [LocalVariableAccess] access to local variable y
+
+#  101| [LocalVariableAccess] access to local variable y
+
+#  101| [IntLiteral] 10
+
+#  128| [LocalVariableAccess] access to local variable x
+
+#  128| [IntLiteral] 2
+
+#  153| [Field] X
+
+ranges.cs:
+#   25| [NamespaceDeclaration] namespace ... { ... }
+#-----| 1 -> [Struct] Index
+#-----| 2 -> [Struct] Range
+
+#    5| [Class] Ranges
+#-----| 2 -> [Method] F
+
+#    7| [Method] F
+#-----| 3 -> [BlockStmt] {...}
+
+#    8| [BlockStmt] {...}
+#-----| 0 -> [LocalConstantDeclStmt] ... ...;
+#-----| 1 -> [LocalConstantDeclStmt] ... ...;
+#-----| 2 -> [LocalConstantDeclStmt] ... ...;
+#-----| 3 -> [LocalConstantDeclStmt] ... ...;
+#-----| 4 -> [LocalConstantDeclStmt] ... ...;
+#-----| 5 -> [LocalConstantDeclStmt] ... ...;
+#-----| 6 -> [LocalConstantDeclStmt] ... ...;
+#-----| 7 -> [LocalConstantDeclStmt] ... ...;
+#-----| 8 -> [LocalConstantDeclStmt] ... ...;
+#-----| 9 -> [LocalConstantDeclStmt] ... ...;
+#-----| 10 -> [LocalConstantDeclStmt] ... ...;
+
+#    9| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32[] array = ...
+
+#    9| [LocalVariableDeclAndInitExpr] Int32[] array = ...
+#-----| 0 -> [ArrayCreation] array creation of type Int32[]
+#-----| 1 -> [LocalVariableAccess] access to local variable array
+
+#    9| [ArrayCreation] array creation of type Int32[]
+#-----| -1 -> [ArrayInitializer] { ..., ... }
+#-----| 0 -> [IntLiteral] 4
+
+#    9| [IntLiteral] 4
+
+#    9| [ArrayInitializer] { ..., ... }
+#-----| 0 -> [IntLiteral] 1
+#-----| 1 -> [IntLiteral] 2
+#-----| 2 -> [IntLiteral] 3
+#-----| 3 -> [IntLiteral] 4
+
+#    9| [IntLiteral] 1
+
+#    9| [IntLiteral] 2
+
+#    9| [IntLiteral] 3
+
+#    9| [IntLiteral] 4
+
+#    9| [LocalVariableAccess] access to local variable array
+
+#   10| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32[,] array2 = ...
+
+#   10| [LocalVariableDeclAndInitExpr] Int32[,] array2 = ...
+#-----| 0 -> [ArrayCreation] array creation of type Int32[,]
+#-----| 1 -> [LocalVariableAccess] access to local variable array2
+
+#   10| [ArrayCreation] array creation of type Int32[,]
+#-----| 0 -> [IntLiteral] 2
+#-----| 1 -> [IntLiteral] 3
+
+#   10| [IntLiteral] 2
+
+#   10| [IntLiteral] 3
+
+#   10| [LocalVariableAccess] access to local variable array2
+
+#   12| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 slice1 = ...
+
+#   12| [LocalVariableDeclAndInitExpr] Int32 slice1 = ...
+#-----| 0 -> [ArrayAccess] access to array element
+#-----| 1 -> [LocalVariableAccess] access to local variable slice1
+
+#   12| [ArrayAccess] access to array element
+#-----| -1 -> [LocalVariableAccess] access to local variable array
+#-----| 0 -> [OperatorCall] call to operator implicit conversion
+
+#   12| [LocalVariableAccess] access to local variable array
+
+#   12| [OperatorCall] call to operator implicit conversion
+#-----| 0 -> [RangeExpr] ... .. ...
+
+#   12| [RangeExpr] ... .. ...
+#-----| 0 -> [OperatorCall] call to operator implicit conversion
+#-----| 1 -> [OperatorCall] call to operator implicit conversion
+
+#   12| [OperatorCall] call to operator implicit conversion
+#-----| 0 -> [IntLiteral] 1
+
+#   12| [IntLiteral] 1
+
+#   12| [OperatorCall] call to operator implicit conversion
+#-----| 0 -> [IntLiteral] 3
+
+#   12| [IntLiteral] 3
+
+#   12| [LocalVariableAccess] access to local variable slice1
+
+#   13| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 slice2 = ...
+
+#   13| [LocalVariableDeclAndInitExpr] Int32 slice2 = ...
+#-----| 0 -> [ArrayAccess] access to array element
+#-----| 1 -> [LocalVariableAccess] access to local variable slice2
+
+#   13| [ArrayAccess] access to array element
+#-----| -1 -> [LocalVariableAccess] access to local variable array
+#-----| 0 -> [OperatorCall] call to operator implicit conversion
+
+#   13| [LocalVariableAccess] access to local variable array
+
+#   13| [OperatorCall] call to operator implicit conversion
+#-----| 0 -> [RangeExpr] ... .. ...
+
+#   13| [RangeExpr] ... .. ...
+#-----| 0 -> [OperatorCall] call to operator implicit conversion
+#-----| 1 -> [IndexExpr] ^...
+
+#   13| [OperatorCall] call to operator implicit conversion
+#-----| 0 -> [IntLiteral] 0
+
+#   13| [IntLiteral] 0
+
+#   13| [IndexExpr] ^...
+#-----| 0 -> [IntLiteral] 1
+
+#   13| [IntLiteral] 1
+
+#   13| [LocalVariableAccess] access to local variable slice2
+
+#   14| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 x = ...
+#-----| 1 -> [LocalVariableDeclAndInitExpr] Int32 y = ...
+
+#   14| [LocalVariableDeclAndInitExpr] Int32 x = ...
+#-----| 0 -> [IntLiteral] 2
+#-----| 1 -> [LocalVariableAccess] access to local variable x
+
+#   14| [IntLiteral] 2
+
+#   14| [LocalVariableAccess] access to local variable x
+
+#   14| [LocalVariableDeclAndInitExpr] Int32 y = ...
+#-----| 0 -> [IntLiteral] 3
+#-----| 1 -> [LocalVariableAccess] access to local variable y
+
+#   14| [IntLiteral] 3
+
+#   14| [LocalVariableAccess] access to local variable y
+
+#   15| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 slice3 = ...
+
+#   15| [LocalVariableDeclAndInitExpr] Int32 slice3 = ...
+#-----| 0 -> [ArrayAccess] access to array element
+#-----| 1 -> [LocalVariableAccess] access to local variable slice3
+
+#   15| [ArrayAccess] access to array element
+#-----| -1 -> [LocalVariableAccess] access to local variable array
+#-----| 0 -> [OperatorCall] call to operator implicit conversion
+
+#   15| [LocalVariableAccess] access to local variable array
+
+#   15| [OperatorCall] call to operator implicit conversion
+#-----| 0 -> [RangeExpr] ... .. ...
+
+#   15| [RangeExpr] ... .. ...
+#-----| 0 -> [OperatorCall] call to operator implicit conversion
+#-----| 1 -> [OperatorCall] call to operator implicit conversion
+
+#   15| [OperatorCall] call to operator implicit conversion
+#-----| 0 -> [LocalVariableAccess] access to local variable x
+
+#   15| [LocalVariableAccess] access to local variable x
+
+#   15| [OperatorCall] call to operator implicit conversion
+#-----| 0 -> [LocalVariableAccess] access to local variable y
+
+#   15| [LocalVariableAccess] access to local variable y
+
+#   15| [LocalVariableAccess] access to local variable slice3
+
+#   16| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 slice4 = ...
+
+#   16| [LocalVariableDeclAndInitExpr] Int32 slice4 = ...
+#-----| 0 -> [ArrayAccess] access to array element
+#-----| 1 -> [LocalVariableAccess] access to local variable slice4
+
+#   16| [ArrayAccess] access to array element
+#-----| -1 -> [LocalVariableAccess] access to local variable array
+#-----| 0 -> [OperatorCall] call to operator implicit conversion
+
+#   16| [LocalVariableAccess] access to local variable array
+
+#   16| [OperatorCall] call to operator implicit conversion
+#-----| 0 -> [RangeExpr] ... .. ...
+
+#   16| [RangeExpr] ... .. ...
+#-----| 1 -> [OperatorCall] call to operator implicit conversion
+
+#   16| [OperatorCall] call to operator implicit conversion
+#-----| 0 -> [LocalVariableAccess] access to local variable y
+
+#   16| [LocalVariableAccess] access to local variable y
+
+#   16| [LocalVariableAccess] access to local variable slice4
+
+#   17| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 slice5 = ...
+
+#   17| [LocalVariableDeclAndInitExpr] Int32 slice5 = ...
+#-----| 0 -> [ArrayAccess] access to array element
+#-----| 1 -> [LocalVariableAccess] access to local variable slice5
+
+#   17| [ArrayAccess] access to array element
+#-----| -1 -> [LocalVariableAccess] access to local variable array
+#-----| 0 -> [OperatorCall] call to operator implicit conversion
+
+#   17| [LocalVariableAccess] access to local variable array
+
+#   17| [OperatorCall] call to operator implicit conversion
+#-----| 0 -> [RangeExpr] ... .. ...
+
+#   17| [RangeExpr] ... .. ...
+#-----| 0 -> [OperatorCall] call to operator implicit conversion
+
+#   17| [OperatorCall] call to operator implicit conversion
+#-----| 0 -> [LocalVariableAccess] access to local variable x
+
+#   17| [LocalVariableAccess] access to local variable x
+
+#   17| [LocalVariableAccess] access to local variable slice5
+
+#   18| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 slice6 = ...
+
+#   18| [LocalVariableDeclAndInitExpr] Int32 slice6 = ...
+#-----| 0 -> [ArrayAccess] access to array element
+#-----| 1 -> [LocalVariableAccess] access to local variable slice6
+
+#   18| [ArrayAccess] access to array element
+#-----| -1 -> [LocalVariableAccess] access to local variable array
+#-----| 0 -> [OperatorCall] call to operator implicit conversion
+
+#   18| [LocalVariableAccess] access to local variable array
+
+#   18| [OperatorCall] call to operator implicit conversion
+#-----| 0 -> [RangeExpr] ... .. ...
+
+#   18| [RangeExpr] ... .. ...
+
+#   18| [LocalVariableAccess] access to local variable slice6
+
+#   19| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 slice7 = ...
+
+#   19| [LocalVariableDeclAndInitExpr] Int32 slice7 = ...
+#-----| 0 -> [ArrayAccess] access to array element
+#-----| 1 -> [LocalVariableAccess] access to local variable slice7
+
+#   19| [ArrayAccess] access to array element
+#-----| -1 -> [LocalVariableAccess] access to local variable array
+#-----| 0 -> [OperatorCall] call to operator implicit conversion
+
+#   19| [LocalVariableAccess] access to local variable array
+
+#   19| [OperatorCall] call to operator implicit conversion
+#-----| 0 -> [RangeExpr] ... .. ...
+
+#   19| [RangeExpr] ... .. ...
+#-----| 0 -> [IndexExpr] ^...
+#-----| 1 -> [IndexExpr] ^...
+
+#   19| [IndexExpr] ^...
+#-----| 0 -> [IntLiteral] 10
+
+#   19| [IntLiteral] 10
+
+#   19| [IndexExpr] ^...
+#-----| 0 -> [IntLiteral] 5
+
+#   19| [IntLiteral] 5
+
+#   19| [LocalVariableAccess] access to local variable slice7
+
+#   20| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 slice8 = ...
+
+#   20| [LocalVariableDeclAndInitExpr] Int32 slice8 = ...
+#-----| 0 -> [ArrayAccess] access to array element
+#-----| 1 -> [LocalVariableAccess] access to local variable slice8
+
+#   20| [ArrayAccess] access to array element
+#-----| -1 -> [LocalVariableAccess] access to local variable array2
+#-----| 0 -> [OperatorCall] call to operator implicit conversion
+#-----| 1 -> [OperatorCall] call to operator implicit conversion
+
+#   20| [LocalVariableAccess] access to local variable array2
+
+#   20| [OperatorCall] call to operator implicit conversion
+#-----| 0 -> [RangeExpr] ... .. ...
+
+#   20| [RangeExpr] ... .. ...
+#-----| 0 -> [OperatorCall] call to operator implicit conversion
+#-----| 1 -> [OperatorCall] call to operator implicit conversion
+
+#   20| [OperatorCall] call to operator implicit conversion
+#-----| 0 -> [IntLiteral] 1
+
+#   20| [IntLiteral] 1
+
+#   20| [OperatorCall] call to operator implicit conversion
+#-----| 0 -> [IntLiteral] 2
+
+#   20| [IntLiteral] 2
+
+#   20| [OperatorCall] call to operator implicit conversion
+#-----| 0 -> [RangeExpr] ... .. ...
+
+#   20| [RangeExpr] ... .. ...
+
+#   20| [LocalVariableAccess] access to local variable slice8
+
+#   27| [Struct] Index
+#-----| 2 -> [InstanceConstructor] Index
+#-----| 3 -> [ImplicitConversionOperator] implicit conversion
+
+#   29| [InstanceConstructor] Index
+#-----| 2 -> (Parameters)
+#-----| 3 -> [BlockStmt] {...}
+
+#   29| [BoolLiteral] false
+
+#   29| [BlockStmt] {...}
+
+#   30| [ImplicitConversionOperator] implicit conversion
+#-----| 2 -> (Parameters)
+#-----| 3 -> [DefaultValueExpr] default(...)
+
+#   30| [Parameter] value
+
+#   33| [Struct] Range
+#-----| 2 -> [InstanceConstructor] Range
+#-----| 3 -> [Method] StartAt
+#-----| 4 -> [Method] EndAt
+#-----| 5 -> [Property] All
+#-----| 6 -> [Method] Create
+#-----| 7 -> [ImplicitConversionOperator] implicit conversion
+
+#   35| [InstanceConstructor] Range
+#-----| 2 -> (Parameters)
+#-----| 3 -> [ThrowExpr] throw ...
+
+#   35| [ThrowExpr] throw ...
+#-----| 0 -> [NullLiteral] null
+
+#   35| [NullLiteral] null
+
+#   36| [Method] StartAt
+#-----| 2 -> (Parameters)
+#-----| 3 -> [ThrowExpr] throw ...
+
+#   36| [Parameter] start
+
+#   37| [Method] EndAt
+#-----| 2 -> (Parameters)
+#-----| 3 -> [ThrowExpr] throw ...
+
+#   37| [Parameter] end
+
+#   38| [Property] All
+#-----| 1 -> [Getter] get_All
+
+#   38| [Getter] get_All
+#-----| 3 -> [ThrowExpr] throw ...
+
+#   39| [Method] Create
+#-----| 2 -> (Parameters)
+#-----| 3 -> [ThrowExpr] throw ...
+
+#   39| [Parameter] start
+
+#   39| [Parameter] end
+
+#   40| [ImplicitConversionOperator] implicit conversion
+#-----| 2 -> (Parameters)
+#-----| 3 -> [ThrowExpr] throw ...
+
+#   40| [Parameter] r
+
+#   30| [DefaultValueExpr] default(...)
+#-----| 0 -> [TypeAccess] access to type Index
+
+#   30| [TypeAccess] access to type Index
+
+#   36| [ThrowExpr] throw ...
+#-----| 0 -> [NullLiteral] null
+
+#   36| [NullLiteral] null
+
+#   37| [ThrowExpr] throw ...
+#-----| 0 -> [NullLiteral] null
+
+#   37| [NullLiteral] null
+
+#   38| [ThrowExpr] throw ...
+#-----| 0 -> [NullLiteral] null
+
+#   38| [NullLiteral] null
+
+#   39| [ThrowExpr] throw ...
+#-----| 0 -> [NullLiteral] null
+
+#   39| [NullLiteral] null
+
+#   40| [ThrowExpr] throw ...
+#-----| 0 -> [NullLiteral] null
+
+#   40| [NullLiteral] null
+
+#   29| [Parameter] value
+
+#   29| [Parameter] fromEnd
+#-----| 1 -> [BoolLiteral] false
+
+#   35| [Parameter] start
+
+#   35| [Parameter] end
+
+#-----| (TypeParameters)
+#-----| 0 -> [TypeParameter] T
+
+#-----| (TypeParameters)
+#-----| 0 -> [TypeParameter] T
+
+#-----| (TypeParameters)
+#-----| 0 -> [TypeParameter] T
+
+#-----| (TypeParameters)
+#-----| 0 -> [TypeParameter] T1
+#-----| 1 -> [TypeParameter] T2
+#-----| 2 -> [TypeParameter] T3
+#-----| 3 -> [TypeParameter] T4
+
+#-----| (TypeParameters)
+#-----| 0 -> [TypeParameter] T1
+#-----| 1 -> [TypeParameter] T2
+
+#-----| (TypeParameters)
+#-----| 0 -> [TypeParameter] T
+
+#-----| (TypeParameters)
+#-----| 0 -> [TypeParameter] T
+#-----| 1 -> [TypeParameter] U
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] cancellationToken
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] cancellationToken
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] value
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] name
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] value
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] i
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] i
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] i
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] i
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] i
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] i
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] x
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] x
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] a
+#-----| 1 -> [Parameter] b
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] x
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] value
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] value
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] t
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] x
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] r
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] r
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] r
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] r
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] r
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] r
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] p1
+#-----| 1 -> [Parameter] p2
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] p
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] isNull
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] o
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] x
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] t
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] list
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] x
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] y
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] y
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] x
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] o
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] x
+#-----| 1 -> [Parameter] y
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] value
+#-----| 1 -> [Parameter] fromEnd
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] value
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] start
+#-----| 1 -> [Parameter] end
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] start
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] end
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] start
+#-----| 1 -> [Parameter] end
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] r

@@ -1,0 +1,115 @@
+unsafe.cs:
+#    1| [NamespaceDeclaration] namespace ... { ... }
+#    3|   1: [Class] Test
+#    5|     2: [Method] Main
+#-----|       2: (Parameters)
+#    5|         0: [Parameter] args
+#    6|       3: [BlockStmt] {...}
+#    7|         0: [LocalConstantDeclStmt] ... ...;
+#    7|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
+#    7|             0: [IntLiteral] 42
+#    7|             1: [LocalVariableAccess] access to local variable i
+#    8|         1: [LocalConstantDeclStmt] ... ...;
+#    8|           0: [LocalVariableDeclAndInitExpr] Int32[] ia = ...
+#    8|             0: [ArrayCreation] array creation of type Int32[]
+#    8|               0: [IntLiteral] 2
+#    8|             1: [LocalVariableAccess] access to local variable ia
+#    9|         2: [ExprStmt] ...;
+#    9|           0: [AssignExpr] ... = ...
+#    9|             0: [IntLiteral] 0
+#    9|             1: [ArrayAccess] access to array element
+#    9|               -1: [LocalVariableAccess] access to local variable ia
+#    9|               0: [IntLiteral] 0
+#   10|         3: [ExprStmt] ...;
+#   10|           0: [AssignExpr] ... = ...
+#   10|             0: [IntLiteral] 1
+#   10|             1: [ArrayAccess] access to array element
+#   10|               -1: [LocalVariableAccess] access to local variable ia
+#   10|               0: [IntLiteral] 1
+#   11|         4: [LocalConstantDeclStmt] ... ...;
+#   11|           0: [LocalVariableDeclAndInitExpr] Int32* ip = ...
+#   11|             0: [AddressOfExpr] &...
+#   11|               0: [LocalVariableAccess] access to local variable i
+#   11|             1: [LocalVariableAccess] access to local variable ip
+#   12|         5: [ExprStmt] ...;
+#   12|           0: [AssignExpr] ... = ...
+#   12|             0: [AddExpr] ... + ...
+#   12|               0: [LocalVariableAccess] access to local variable ip
+#   12|               1: [IntLiteral] 1
+#   12|             1: [LocalVariableAccess] access to local variable ip
+#   13|         6: [ExprStmt] ...;
+#   13|           0: [AssignExpr] ... = ...
+#   13|             0: [AddExpr] ... + ...
+#   13|               0: [PointerIndirectionExpr] *...
+#   13|                 0: [LocalVariableAccess] access to local variable ip
+#   13|               1: [LocalVariableAccess] access to local variable ip
+#   13|             1: [LocalVariableAccess] access to local variable ip
+#   14|         7: [ExprStmt] ...;
+#   14|           0: [AssignExpr] ... = ...
+#   14|             0: [AddExpr] ... + ...
+#   14|               0: [PointerIndirectionExpr] *...
+#   14|                 0: [LocalVariableAccess] access to local variable ip
+#   14|               1: [AddressOfExpr] &...
+#   14|                 0: [LocalVariableAccess] access to local variable i
+#   14|             1: [LocalVariableAccess] access to local variable ip
+#   15|         8: [LocalConstantDeclStmt] ... ...;
+#   15|           0: [LocalVariableDeclAndInitExpr] Int32* ip42 = ...
+#   15|             0: [AddressOfExpr] &...
+#   15|               0: [LocalVariableAccess] access to local variable i
+#   15|             1: [LocalVariableAccess] access to local variable ip42
+#   16|         9: [ExprStmt] ...;
+#   16|           0: [PostIncrExpr] ...++
+#   16|             0: [LocalVariableAccess] access to local variable ip
+#   17|         10: [ExprStmt] ...;
+#   17|           0: [AssignExpr] ... = ...
+#   17|             0: [SubExpr] ... - ...
+#   17|               0: [LocalVariableAccess] access to local variable ip
+#   17|               1: [IntLiteral] 1
+#   17|             1: [LocalVariableAccess] access to local variable ip
+#   18|         11: [ExprStmt] ...;
+#   18|           0: [AssignExpr] ... = ...
+#   18|             0: [SizeofExpr] sizeof(..)
+#   18|               0: [TypeAccess] access to type Char*
+#   18|             1: [PointerIndirectionExpr] *...
+#   18|               0: [LocalVariableAccess] access to local variable ip42
+#   19|         12: [LocalConstantDeclStmt] ... ...;
+#   19|           0: [LocalVariableDeclAndInitExpr] Int64 distance = ...
+#   19|             0: [SubExpr] ... - ...
+#   19|               0: [LocalVariableAccess] access to local variable ip
+#   19|               1: [LocalVariableAccess] access to local variable ip42
+#   19|             1: [LocalVariableAccess] access to local variable distance
+#   22|     3: [Method] f
+#-----|       2: (Parameters)
+#   22|         0: [Parameter] p
+#   23|       3: [BlockStmt] {...}
+#   24|         0: [ExprStmt] ...;
+#   24|           0: [MethodCall] call to method ToString
+#   24|             -1: [PointerIndirectionExpr] *...
+#   24|               0: [ParameterAccess] access to parameter p
+#   25|         1: [ExprStmt] ...;
+#   25|           0: [MethodCall] call to method ToString
+#   25|             -1: [PointerIndirectionExpr] *...
+#   25|               0: [ParameterAccess] access to parameter p
+#   26|         2: [ExprStmt] ...;
+#   26|           0: [MethodCall] call to method ToString
+#   26|             -1: [PointerIndirectionExpr] *...
+#   26|               0: [AddExpr] ... + ...
+#   26|                 0: [ParameterAccess] access to parameter p
+#   26|               1: [IntLiteral] 0
+#   30|     4: [Method] g
+#   30|       3: [BlockStmt] {...}
+#   32|     5: [Method] h
+#   33|       3: [BlockStmt] {...}
+#   34|         0: [UnstafeStmt] unsafe {...}
+#   35|           0: [BlockStmt] {...}
+#   36|             0: [LocalConstantDeclStmt] ... ...;
+#   36|               0: [LocalVariableDeclAndInitExpr] Int32[] data = ...
+#   36|                 0: [ArrayCreation] array creation of type Int32[]
+#   36|                   0: [IntLiteral] 10
+#   36|                 1: [LocalVariableAccess] access to local variable data
+#   37|             1: [FixedStmt] fixed(...) { ... }
+#   37|               -1: [LocalVariableDeclAndInitExpr] Int32* p = ...
+#   37|                 0: [LocalVariableAccess] access to local variable data
+#   37|                 1: [LocalVariableAccess] access to local variable p
+#   38|               0: [BlockStmt] {...}
+#   44|   2: [Class] SafeClass

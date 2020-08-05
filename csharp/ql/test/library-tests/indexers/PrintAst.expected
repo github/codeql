@@ -1,0 +1,1052 @@
+indexers.cs:
+#    5| [NamespaceDeclaration] namespace ... { ... }
+#-----| 1 -> [Class] BitArray
+#-----| 2 -> [Class] CountPrimes
+#-----| 3 -> [Class] Grid
+#-----| 4 -> [Class] DuplicateIndexerSignatures
+
+#    8| [Class] BitArray
+#-----| 1 -> [Field] bits
+#-----| 2 -> [Field] length
+#-----| 3 -> [InstanceConstructor] BitArray
+#-----| 4 -> [Property] Length
+#-----| 5 -> [Indexer] Item
+
+#   12| [Field] length
+
+#   11| [Field] bits
+
+#   14| [InstanceConstructor] BitArray
+#-----| 2 -> (Parameters)
+#-----| 3 -> [BlockStmt] {...}
+
+#   14| [Parameter] length
+
+#   22| [Property] Length
+#-----| 1 -> [Getter] get_Length
+
+#   22| [Getter] get_Length
+#-----| 3 -> [BlockStmt] {...}
+
+#   24| [Indexer] Item
+#-----| 0 -> (Parameters)
+#-----| 2 -> [Getter] get_Item
+#-----| 3 -> [Setter] set_Item
+
+#   24| [Parameter] index
+
+#   26| [Getter] get_Item
+#-----| 2 -> (Parameters)
+#-----| 3 -> [BlockStmt] {...}
+
+#   24| [Parameter] index
+
+#   34| [Setter] set_Item
+#-----| 2 -> (Parameters)
+#-----| 3 -> [BlockStmt] {...}
+
+#   24| [Parameter] index
+
+#   34| [Parameter] value
+
+#   53| [Class] CountPrimes
+#-----| 2 -> [Method] Count
+#-----| 3 -> [Method] Main
+
+#   56| [Method] Count
+#-----| 2 -> (Parameters)
+#-----| 3 -> [BlockStmt] {...}
+
+#   57| [BlockStmt] {...}
+#-----| 0 -> [LocalConstantDeclStmt] ... ...;
+#-----| 1 -> [LocalConstantDeclStmt] ... ...;
+#-----| 2 -> [ForStmt] for (...;...;...) ...
+#-----| 3 -> [ReturnStmt] return ...;
+
+#   58| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] BitArray flags = ...
+
+#   58| [LocalVariableDeclAndInitExpr] BitArray flags = ...
+#-----| 0 -> [ObjectCreation] object creation of type BitArray
+#-----| 1 -> [LocalVariableAccess] access to local variable flags
+
+#   58| [ObjectCreation] object creation of type BitArray
+#-----| 0 -> [AddExpr] ... + ...
+
+#   58| [AddExpr] ... + ...
+#-----| 0 -> [ParameterAccess] access to parameter max
+#-----| 1 -> [IntLiteral] 1
+
+#   58| [LocalVariableAccess] access to local variable flags
+
+#   59| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 count = ...
+
+#   59| [LocalVariableDeclAndInitExpr] Int32 count = ...
+#-----| 0 -> [IntLiteral] 1
+#-----| 1 -> [LocalVariableAccess] access to local variable count
+
+#   59| [IntLiteral] 1
+
+#   59| [LocalVariableAccess] access to local variable count
+
+#   60| [ForStmt] for (...;...;...) ...
+#-----| -1 -> [LocalVariableDeclAndInitExpr] Int32 i = ...
+#-----| 0 -> [LEExpr] ... <= ...
+#-----| 1 -> [PostIncrExpr] ...++
+#-----| 2 -> [BlockStmt] {...}
+
+#   60| [LocalVariableDeclAndInitExpr] Int32 i = ...
+#-----| 0 -> [IntLiteral] 2
+#-----| 1 -> [LocalVariableAccess] access to local variable i
+
+#   60| [IntLiteral] 2
+
+#   60| [LocalVariableAccess] access to local variable i
+
+#   60| [LEExpr] ... <= ...
+#-----| 0 -> [LocalVariableAccess] access to local variable i
+#-----| 1 -> [ParameterAccess] access to parameter max
+
+#   60| [PostIncrExpr] ...++
+#-----| 0 -> [LocalVariableAccess] access to local variable i
+
+#   60| [LocalVariableAccess] access to local variable i
+
+#   61| [BlockStmt] {...}
+#-----| 0 -> [IfStmt] if (...) ...
+
+#   62| [IfStmt] if (...) ...
+#-----| 0 -> [LogicalNotExpr] !...
+#-----| 1 -> [BlockStmt] {...}
+
+#   62| [LogicalNotExpr] !...
+#-----| 0 -> [IndexerCall] access to indexer
+
+#   62| [IndexerCall] access to indexer
+#-----| -1 -> [LocalVariableAccess] access to local variable flags
+#-----| 0 -> [LocalVariableAccess] access to local variable i
+
+#   62| [LocalVariableAccess] access to local variable flags
+
+#   62| [LocalVariableAccess] access to local variable i
+
+#   63| [BlockStmt] {...}
+#-----| 0 -> [ForStmt] for (...;...;...) ...
+#-----| 1 -> [ExprStmt] ...;
+
+#   64| [ForStmt] for (...;...;...) ...
+#-----| -1 -> [LocalVariableDeclAndInitExpr] Int32 j = ...
+#-----| 0 -> [LEExpr] ... <= ...
+#-----| 1 -> [AssignAddExpr] ... += ...
+#-----| 2 -> [ExprStmt] ...;
+
+#   64| [LocalVariableDeclAndInitExpr] Int32 j = ...
+#-----| 0 -> [MulExpr] ... * ...
+#-----| 1 -> [LocalVariableAccess] access to local variable j
+
+#   64| [MulExpr] ... * ...
+#-----| 0 -> [LocalVariableAccess] access to local variable i
+#-----| 1 -> [IntLiteral] 2
+
+#   64| [LocalVariableAccess] access to local variable j
+
+#   64| [LEExpr] ... <= ...
+#-----| 0 -> [LocalVariableAccess] access to local variable j
+#-----| 1 -> [ParameterAccess] access to parameter max
+
+#   64| [AssignAddExpr] ... += ...
+#-----| 0 -> [LocalVariableAccess] access to local variable i
+#-----| 1 -> [LocalVariableAccess] access to local variable j
+
+#   64| [AssignExpr] ... = ...
+#-----| 0 -> [AddExpr] ... + ...
+#-----| 1 -> [LocalVariableAccess] access to local variable j
+
+#   64| [LocalVariableAccess] access to local variable j
+
+#   64| [AddExpr] ... + ...
+#-----| 0 -> [LocalVariableAccess] access to local variable j
+#-----| 1 -> [LocalVariableAccess] access to local variable i
+
+#   64| [LocalVariableAccess] access to local variable j
+
+#   64| [LocalVariableAccess] access to local variable i
+
+#   65| [ExprStmt] ...;
+#-----| 0 -> [AssignExpr] ... = ...
+
+#   65| [AssignExpr] ... = ...
+#-----| 0 -> [BoolLiteral] true
+#-----| 1 -> [IndexerCall] access to indexer
+
+#   65| [IndexerCall] access to indexer
+#-----| -1 -> [LocalVariableAccess] access to local variable flags
+#-----| 0 -> [LocalVariableAccess] access to local variable j
+
+#   65| [LocalVariableAccess] access to local variable flags
+
+#   65| [LocalVariableAccess] access to local variable j
+
+#   65| [BoolLiteral] true
+
+#   66| [ExprStmt] ...;
+#-----| 0 -> [PostIncrExpr] ...++
+
+#   66| [PostIncrExpr] ...++
+#-----| 0 -> [LocalVariableAccess] access to local variable count
+
+#   66| [LocalVariableAccess] access to local variable count
+
+#   69| [ReturnStmt] return ...;
+#-----| 0 -> [LocalVariableAccess] access to local variable count
+
+#   69| [LocalVariableAccess] access to local variable count
+
+#   72| [Method] Main
+#-----| 2 -> (Parameters)
+#-----| 3 -> [BlockStmt] {...}
+
+#   72| [Parameter] args
+
+#   81| [Class] Grid
+#-----| 2 -> [Field] NumRows
+#-----| 3 -> [Field] NumCols
+#-----| 4 -> [Field] cells
+#-----| 5 -> [Indexer] Item
+
+#   85| [Field] NumCols
+#-----| 1 -> [AssignExpr] ... = ...
+
+#   87| [Field] cells
+#-----| 1 -> [AssignExpr] ... = ...
+
+#   84| [Field] NumRows
+#-----| 1 -> [AssignExpr] ... = ...
+
+#   89| [Indexer] Item
+#-----| 0 -> (Parameters)
+#-----| 2 -> [Getter] get_Item
+#-----| 3 -> [Setter] set_Item
+
+#   89| [Parameter] c
+
+#   89| [Parameter] col
+
+#   91| [Getter] get_Item
+#-----| 2 -> (Parameters)
+#-----| 3 -> [BlockStmt] {...}
+
+#   89| [Parameter] c
+
+#   89| [Parameter] col
+
+#  104| [Setter] set_Item
+#-----| 2 -> (Parameters)
+#-----| 3 -> [BlockStmt] {...}
+
+#   89| [Parameter] c
+
+#   89| [Parameter] col
+
+#  104| [Parameter] value
+
+#   84| [AssignExpr] ... = ...
+#-----| 0 -> [IntLiteral] 26
+#-----| 1 -> [MemberConstantAccess] access to constant NumRows
+
+#   84| [IntLiteral] 26
+
+#   84| [MemberConstantAccess] access to constant NumRows
+
+#  121| [Class] DuplicateIndexerSignatures
+#-----| 2 -> [Indexer] Item
+#-----| 3 -> [Indexer] Item
+
+#  125| [Getter] get_Item
+#-----| 2 -> (Parameters)
+#-----| 3 -> [BlockStmt] {...}
+
+#  123| [Parameter] index
+
+#  130| [Getter] get_Item
+#-----| 2 -> (Parameters)
+#-----| 3 -> [BlockStmt] {...}
+
+#  128| [Parameter] c
+
+#  128| [Parameter] col
+
+#   15| [BlockStmt] {...}
+#-----| 0 -> [IfStmt] if (...) ...
+#-----| 1 -> [ExprStmt] ...;
+#-----| 2 -> [ExprStmt] ...;
+
+#   16| [IfStmt] if (...) ...
+#-----| 0 -> [LTExpr] ... < ...
+#-----| 1 -> [ThrowStmt] throw ...;
+
+#   16| [LTExpr] ... < ...
+#-----| 0 -> [ParameterAccess] access to parameter length
+#-----| 1 -> [IntLiteral] 0
+
+#   17| [ThrowStmt] throw ...;
+#-----| 0 -> [ObjectCreation] object creation of type ArgumentException
+
+#   17| [ObjectCreation] object creation of type ArgumentException
+
+#   18| [ExprStmt] ...;
+#-----| 0 -> [AssignExpr] ... = ...
+
+#   18| [AssignExpr] ... = ...
+#-----| 0 -> [ArrayCreation] array creation of type Int32[]
+#-----| 1 -> [FieldAccess] access to field bits
+
+#   18| [FieldAccess] access to field bits
+#-----| -1 -> [ThisAccess] this access
+
+#   18| [ThisAccess] this access
+
+#   18| [ArrayCreation] array creation of type Int32[]
+#-----| 0 -> [AddExpr] ... + ...
+
+#   18| [AddExpr] ... + ...
+#-----| 0 -> [RShiftExpr] ... >> ...
+#-----| 1 -> [IntLiteral] 1
+
+#   19| [ExprStmt] ...;
+#-----| 0 -> [AssignExpr] ... = ...
+
+#   19| [AssignExpr] ... = ...
+#-----| 0 -> [ParameterAccess] access to parameter length
+#-----| 1 -> [FieldAccess] access to field length
+
+#   19| [FieldAccess] access to field length
+#-----| -1 -> [ThisAccess] this access
+
+#   19| [ThisAccess] this access
+
+#   19| [ParameterAccess] access to parameter length
+
+#   22| [BlockStmt] {...}
+#-----| 0 -> [ReturnStmt] return ...;
+
+#   22| [ReturnStmt] return ...;
+#-----| 0 -> [FieldAccess] access to field length
+
+#   22| [FieldAccess] access to field length
+#-----| -1 -> [ThisAccess] this access
+
+#   22| [ThisAccess] this access
+
+#   27| [BlockStmt] {...}
+#-----| 0 -> [IfStmt] if (...) ...
+#-----| 1 -> [ReturnStmt] return ...;
+
+#   28| [IfStmt] if (...) ...
+#-----| 0 -> [LogicalOrExpr] ... || ...
+#-----| 1 -> [BlockStmt] {...}
+
+#   28| [LogicalOrExpr] ... || ...
+#-----| 0 -> [LTExpr] ... < ...
+#-----| 1 -> [GEExpr] ... >= ...
+
+#   29| [BlockStmt] {...}
+#-----| 0 -> [ThrowStmt] throw ...;
+
+#   30| [ThrowStmt] throw ...;
+#-----| 0 -> [ObjectCreation] object creation of type IndexOutOfRangeException
+
+#   30| [ObjectCreation] object creation of type IndexOutOfRangeException
+
+#   32| [ReturnStmt] return ...;
+#-----| 0 -> [NEExpr] ... != ...
+
+#   32| [NEExpr] ... != ...
+#-----| 0 -> [BitwiseAndExpr] ... & ...
+#-----| 1 -> [IntLiteral] 0
+
+#   35| [BlockStmt] {...}
+#-----| 0 -> [IfStmt] if (...) ...
+#-----| 1 -> [IfStmt] if (...) ...
+
+#   36| [IfStmt] if (...) ...
+#-----| 0 -> [LogicalOrExpr] ... || ...
+#-----| 1 -> [BlockStmt] {...}
+
+#   36| [LogicalOrExpr] ... || ...
+#-----| 0 -> [LTExpr] ... < ...
+#-----| 1 -> [GEExpr] ... >= ...
+
+#   37| [BlockStmt] {...}
+#-----| 0 -> [ThrowStmt] throw ...;
+
+#   38| [ThrowStmt] throw ...;
+#-----| 0 -> [ObjectCreation] object creation of type IndexOutOfRangeException
+
+#   38| [ObjectCreation] object creation of type IndexOutOfRangeException
+
+#   40| [IfStmt] if (...) ...
+#-----| 0 -> [ParameterAccess] access to parameter value
+#-----| 1 -> [BlockStmt] {...}
+#-----| 2 -> [BlockStmt] {...}
+
+#   40| [ParameterAccess] access to parameter value
+
+#   41| [BlockStmt] {...}
+#-----| 0 -> [ExprStmt] ...;
+
+#   42| [ExprStmt] ...;
+#-----| 0 -> [AssignOrExpr] ... |= ...
+
+#   42| [AssignOrExpr] ... |= ...
+#-----| 0 -> [LShiftExpr] ... << ...
+#-----| 1 -> [ArrayAccess] access to array element
+
+#   42| [AssignExpr] ... = ...
+#-----| 0 -> [BitwiseOrExpr] ... | ...
+#-----| 1 -> [ArrayAccess] access to array element
+
+#   42| [ArrayAccess] access to array element
+#-----| -1 -> [FieldAccess] access to field bits
+#-----| 0 -> [RShiftExpr] ... >> ...
+
+#   42| [FieldAccess] access to field bits
+#-----| -1 -> [ThisAccess] this access
+
+#   42| [ThisAccess] this access
+
+#   42| [RShiftExpr] ... >> ...
+#-----| 0 -> [ParameterAccess] access to parameter index
+#-----| 1 -> [IntLiteral] 5
+
+#   42| [BitwiseOrExpr] ... | ...
+#-----| 0 -> [ArrayAccess] access to array element
+#-----| 1 -> [LShiftExpr] ... << ...
+
+#   42| [ArrayAccess] access to array element
+#-----| -1 -> [FieldAccess] access to field bits
+#-----| 0 -> [RShiftExpr] ... >> ...
+
+#   42| [FieldAccess] access to field bits
+#-----| -1 -> [ThisAccess] this access
+
+#   42| [ThisAccess] this access
+
+#   42| [RShiftExpr] ... >> ...
+#-----| 0 -> [ParameterAccess] access to parameter index
+#-----| 1 -> [IntLiteral] 5
+
+#   42| [LShiftExpr] ... << ...
+#-----| 0 -> [IntLiteral] 1
+#-----| 1 -> [ParameterAccess] access to parameter index
+
+#   45| [BlockStmt] {...}
+#-----| 0 -> [ExprStmt] ...;
+
+#   46| [ExprStmt] ...;
+#-----| 0 -> [AssignAndExpr] ... &= ...
+
+#   46| [AssignAndExpr] ... &= ...
+#-----| 0 -> [ComplementExpr] ~...
+#-----| 1 -> [ArrayAccess] access to array element
+
+#   46| [AssignExpr] ... = ...
+#-----| 0 -> [BitwiseAndExpr] ... & ...
+#-----| 1 -> [ArrayAccess] access to array element
+
+#   46| [ArrayAccess] access to array element
+#-----| -1 -> [FieldAccess] access to field bits
+#-----| 0 -> [RShiftExpr] ... >> ...
+
+#   46| [FieldAccess] access to field bits
+#-----| -1 -> [ThisAccess] this access
+
+#   46| [ThisAccess] this access
+
+#   46| [RShiftExpr] ... >> ...
+#-----| 0 -> [ParameterAccess] access to parameter index
+#-----| 1 -> [IntLiteral] 5
+
+#   46| [BitwiseAndExpr] ... & ...
+#-----| 0 -> [ArrayAccess] access to array element
+#-----| 1 -> [ComplementExpr] ~...
+
+#   46| [ArrayAccess] access to array element
+#-----| -1 -> [FieldAccess] access to field bits
+#-----| 0 -> [RShiftExpr] ... >> ...
+
+#   46| [FieldAccess] access to field bits
+#-----| -1 -> [ThisAccess] this access
+
+#   46| [ThisAccess] this access
+
+#   46| [RShiftExpr] ... >> ...
+#-----| 0 -> [ParameterAccess] access to parameter index
+#-----| 1 -> [IntLiteral] 5
+
+#   46| [ComplementExpr] ~...
+#-----| 0 -> [LShiftExpr] ... << ...
+
+#   46| [LShiftExpr] ... << ...
+#-----| 0 -> [IntLiteral] 1
+#-----| 1 -> [ParameterAccess] access to parameter index
+
+#   58| [ParameterAccess] access to parameter max
+
+#   58| [IntLiteral] 1
+
+#   60| [LocalVariableAccess] access to local variable i
+
+#   60| [ParameterAccess] access to parameter max
+
+#   64| [LocalVariableAccess] access to local variable i
+
+#   64| [IntLiteral] 2
+
+#   64| [LocalVariableAccess] access to local variable j
+
+#   64| [ParameterAccess] access to parameter max
+
+#   73| [BlockStmt] {...}
+#-----| 0 -> [LocalConstantDeclStmt] ... ...;
+#-----| 1 -> [LocalConstantDeclStmt] ... ...;
+#-----| 2 -> [ExprStmt] ...;
+
+#   74| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 max = ...
+
+#   74| [LocalVariableDeclAndInitExpr] Int32 max = ...
+#-----| 0 -> [MethodCall] call to method Parse
+#-----| 1 -> [LocalVariableAccess] access to local variable max
+
+#   74| [MethodCall] call to method Parse
+#-----| -1 -> [TypeAccess] access to type Int32
+#-----| 0 -> [ArrayAccess] access to array element
+
+#   74| [TypeAccess] access to type Int32
+
+#   74| [ArrayAccess] access to array element
+#-----| -1 -> [ParameterAccess] access to parameter args
+#-----| 0 -> [IntLiteral] 0
+
+#   74| [ParameterAccess] access to parameter args
+
+#   74| [IntLiteral] 0
+
+#   74| [LocalVariableAccess] access to local variable max
+
+#   75| [LocalConstantDeclStmt] ... ...;
+#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 count = ...
+
+#   75| [LocalVariableDeclAndInitExpr] Int32 count = ...
+#-----| 0 -> [MethodCall] call to method Count
+#-----| 1 -> [LocalVariableAccess] access to local variable count
+
+#   75| [MethodCall] call to method Count
+#-----| 0 -> [LocalVariableAccess] access to local variable max
+
+#   75| [LocalVariableAccess] access to local variable max
+
+#   75| [LocalVariableAccess] access to local variable count
+
+#   76| [ExprStmt] ...;
+#-----| 0 -> [MethodCall] call to method WriteLine
+
+#   76| [MethodCall] call to method WriteLine
+#-----| -1 -> [TypeAccess] access to type Console
+#-----| 0 -> [StringLiteral] "Found {0} primes between 1 and {1}"
+#-----| 1 -> [CastExpr] (...) ...
+#-----| 2 -> [CastExpr] (...) ...
+
+#   76| [TypeAccess] access to type Console
+
+#   76| [StringLiteral] "Found {0} primes between 1 and {1}"
+
+#   76| [CastExpr] (...) ...
+#-----| 0 -> [LocalVariableAccess] access to local variable count
+
+#   76| [LocalVariableAccess] access to local variable count
+
+#   76| [CastExpr] (...) ...
+#-----| 0 -> [LocalVariableAccess] access to local variable max
+
+#   76| [LocalVariableAccess] access to local variable max
+
+#   85| [AssignExpr] ... = ...
+#-----| 0 -> [IntLiteral] 10
+#-----| 1 -> [MemberConstantAccess] access to constant NumCols
+
+#   85| [IntLiteral] 10
+
+#   85| [MemberConstantAccess] access to constant NumCols
+
+#   87| [AssignExpr] ... = ...
+#-----| 0 -> [ArrayCreation] array creation of type Int32[,]
+#-----| 1 -> [FieldAccess] access to field cells
+
+#   87| [ArrayCreation] array creation of type Int32[,]
+#-----| 0 -> [MemberConstantAccess] access to constant NumRows
+#-----| 1 -> [MemberConstantAccess] access to constant NumCols
+
+#   87| [MemberConstantAccess] access to constant NumRows
+
+#   87| [MemberConstantAccess] access to constant NumCols
+
+#   87| [FieldAccess] access to field cells
+#-----| -1 -> [ThisAccess] this access
+
+#   87| [ThisAccess] this access
+
+#   92| [BlockStmt] {...}
+#-----| 0 -> [ExprStmt] ...;
+#-----| 1 -> [IfStmt] if (...) ...
+#-----| 2 -> [IfStmt] if (...) ...
+#-----| 3 -> [ReturnStmt] return ...;
+
+#   93| [ExprStmt] ...;
+#-----| 0 -> [AssignExpr] ... = ...
+
+#   93| [AssignExpr] ... = ...
+#-----| 0 -> [MethodCall] call to method ToUpper
+#-----| 1 -> [ParameterAccess] access to parameter c
+
+#   93| [ParameterAccess] access to parameter c
+
+#   93| [MethodCall] call to method ToUpper
+#-----| -1 -> [TypeAccess] access to type Char
+#-----| 0 -> [ParameterAccess] access to parameter c
+
+#   93| [TypeAccess] access to type Char
+
+#   93| [ParameterAccess] access to parameter c
+
+#   94| [IfStmt] if (...) ...
+#-----| 0 -> [LogicalOrExpr] ... || ...
+#-----| 1 -> [BlockStmt] {...}
+
+#   94| [LogicalOrExpr] ... || ...
+#-----| 0 -> [LTExpr] ... < ...
+#-----| 1 -> [GTExpr] ... > ...
+
+#   95| [BlockStmt] {...}
+#-----| 0 -> [ThrowStmt] throw ...;
+
+#   96| [ThrowStmt] throw ...;
+#-----| 0 -> [ObjectCreation] object creation of type ArgumentException
+
+#   96| [ObjectCreation] object creation of type ArgumentException
+
+#   98| [IfStmt] if (...) ...
+#-----| 0 -> [LogicalOrExpr] ... || ...
+#-----| 1 -> [BlockStmt] {...}
+
+#   98| [LogicalOrExpr] ... || ...
+#-----| 0 -> [LTExpr] ... < ...
+#-----| 1 -> [GEExpr] ... >= ...
+
+#   99| [BlockStmt] {...}
+#-----| 0 -> [ThrowStmt] throw ...;
+
+#  100| [ThrowStmt] throw ...;
+#-----| 0 -> [ObjectCreation] object creation of type IndexOutOfRangeException
+
+#  100| [ObjectCreation] object creation of type IndexOutOfRangeException
+
+#  102| [ReturnStmt] return ...;
+#-----| 0 -> [ArrayAccess] access to array element
+
+#  102| [ArrayAccess] access to array element
+#-----| -1 -> [FieldAccess] access to field cells
+#-----| 0 -> [SubExpr] ... - ...
+#-----| 1 -> [ParameterAccess] access to parameter col
+
+#  102| [FieldAccess] access to field cells
+#-----| -1 -> [ThisAccess] this access
+
+#  102| [ThisAccess] this access
+
+#  102| [SubExpr] ... - ...
+#-----| 0 -> [CastExpr] (...) ...
+#-----| 1 -> [CastExpr] (...) ...
+
+#  102| [ParameterAccess] access to parameter col
+
+#  105| [BlockStmt] {...}
+#-----| 0 -> [ExprStmt] ...;
+#-----| 1 -> [IfStmt] if (...) ...
+#-----| 2 -> [IfStmt] if (...) ...
+#-----| 3 -> [ExprStmt] ...;
+
+#  106| [ExprStmt] ...;
+#-----| 0 -> [AssignExpr] ... = ...
+
+#  106| [AssignExpr] ... = ...
+#-----| 0 -> [MethodCall] call to method ToUpper
+#-----| 1 -> [ParameterAccess] access to parameter c
+
+#  106| [ParameterAccess] access to parameter c
+
+#  106| [MethodCall] call to method ToUpper
+#-----| -1 -> [TypeAccess] access to type Char
+#-----| 0 -> [ParameterAccess] access to parameter c
+
+#  106| [TypeAccess] access to type Char
+
+#  106| [ParameterAccess] access to parameter c
+
+#  107| [IfStmt] if (...) ...
+#-----| 0 -> [LogicalOrExpr] ... || ...
+#-----| 1 -> [BlockStmt] {...}
+
+#  107| [LogicalOrExpr] ... || ...
+#-----| 0 -> [LTExpr] ... < ...
+#-----| 1 -> [GTExpr] ... > ...
+
+#  108| [BlockStmt] {...}
+#-----| 0 -> [ThrowStmt] throw ...;
+
+#  109| [ThrowStmt] throw ...;
+#-----| 0 -> [ObjectCreation] object creation of type ArgumentException
+
+#  109| [ObjectCreation] object creation of type ArgumentException
+
+#  111| [IfStmt] if (...) ...
+#-----| 0 -> [LogicalOrExpr] ... || ...
+#-----| 1 -> [BlockStmt] {...}
+
+#  111| [LogicalOrExpr] ... || ...
+#-----| 0 -> [LTExpr] ... < ...
+#-----| 1 -> [GEExpr] ... >= ...
+
+#  112| [BlockStmt] {...}
+#-----| 0 -> [ThrowStmt] throw ...;
+
+#  113| [ThrowStmt] throw ...;
+#-----| 0 -> [ObjectCreation] object creation of type IndexOutOfRangeException
+
+#  113| [ObjectCreation] object creation of type IndexOutOfRangeException
+
+#  115| [ExprStmt] ...;
+#-----| 0 -> [AssignExpr] ... = ...
+
+#  115| [AssignExpr] ... = ...
+#-----| 0 -> [ParameterAccess] access to parameter value
+#-----| 1 -> [ArrayAccess] access to array element
+
+#  115| [ArrayAccess] access to array element
+#-----| -1 -> [FieldAccess] access to field cells
+#-----| 0 -> [SubExpr] ... - ...
+#-----| 1 -> [ParameterAccess] access to parameter col
+
+#  115| [FieldAccess] access to field cells
+#-----| -1 -> [ThisAccess] this access
+
+#  115| [ThisAccess] this access
+
+#  115| [SubExpr] ... - ...
+#-----| 0 -> [CastExpr] (...) ...
+#-----| 1 -> [CastExpr] (...) ...
+
+#  115| [ParameterAccess] access to parameter col
+
+#  115| [ParameterAccess] access to parameter value
+
+#  125| [BlockStmt] {...}
+#-----| 0 -> [ReturnStmt] return ...;
+
+#  125| [ReturnStmt] return ...;
+#-----| 0 -> [BoolLiteral] false
+
+#  125| [BoolLiteral] false
+
+#  130| [BlockStmt] {...}
+#-----| 0 -> [ReturnStmt] return ...;
+
+#  130| [ReturnStmt] return ...;
+#-----| 0 -> [IntLiteral] 0
+
+#  130| [IntLiteral] 0
+
+#   16| [ParameterAccess] access to parameter length
+
+#   16| [IntLiteral] 0
+
+#   18| [RShiftExpr] ... >> ...
+#-----| 0 -> [SubExpr] ... - ...
+#-----| 1 -> [IntLiteral] 5
+
+#   18| [IntLiteral] 1
+
+#   28| [LTExpr] ... < ...
+#-----| 0 -> [ParameterAccess] access to parameter index
+#-----| 1 -> [IntLiteral] 0
+
+#   28| [GEExpr] ... >= ...
+#-----| 0 -> [ParameterAccess] access to parameter index
+#-----| 1 -> [FieldAccess] access to field length
+
+#   32| [BitwiseAndExpr] ... & ...
+#-----| 0 -> [ArrayAccess] access to array element
+#-----| 1 -> [LShiftExpr] ... << ...
+
+#   32| [IntLiteral] 0
+
+#   36| [LTExpr] ... < ...
+#-----| 0 -> [ParameterAccess] access to parameter index
+#-----| 1 -> [IntLiteral] 0
+
+#   36| [GEExpr] ... >= ...
+#-----| 0 -> [ParameterAccess] access to parameter index
+#-----| 1 -> [FieldAccess] access to field length
+
+#   42| [ParameterAccess] access to parameter index
+
+#   42| [IntLiteral] 5
+
+#   42| [ParameterAccess] access to parameter index
+
+#   42| [IntLiteral] 5
+
+#   42| [IntLiteral] 1
+
+#   42| [ParameterAccess] access to parameter index
+
+#   46| [ParameterAccess] access to parameter index
+
+#   46| [IntLiteral] 5
+
+#   46| [ParameterAccess] access to parameter index
+
+#   46| [IntLiteral] 5
+
+#   46| [IntLiteral] 1
+
+#   46| [ParameterAccess] access to parameter index
+
+#   94| [LTExpr] ... < ...
+#-----| 0 -> [CastExpr] (...) ...
+#-----| 1 -> [CastExpr] (...) ...
+
+#   94| [GTExpr] ... > ...
+#-----| 0 -> [CastExpr] (...) ...
+#-----| 1 -> [CastExpr] (...) ...
+
+#   98| [LTExpr] ... < ...
+#-----| 0 -> [ParameterAccess] access to parameter col
+#-----| 1 -> [IntLiteral] 0
+
+#   98| [GEExpr] ... >= ...
+#-----| 0 -> [ParameterAccess] access to parameter col
+#-----| 1 -> [MemberConstantAccess] access to constant NumCols
+
+#  102| [CastExpr] (...) ...
+#-----| 0 -> [ParameterAccess] access to parameter c
+
+#  102| [ParameterAccess] access to parameter c
+
+#  102| [CastExpr] (...) ...
+#-----| 0 -> [CharLiteral] A
+
+#  102| [CharLiteral] A
+
+#  107| [LTExpr] ... < ...
+#-----| 0 -> [CastExpr] (...) ...
+#-----| 1 -> [CastExpr] (...) ...
+
+#  107| [GTExpr] ... > ...
+#-----| 0 -> [CastExpr] (...) ...
+#-----| 1 -> [CastExpr] (...) ...
+
+#  111| [LTExpr] ... < ...
+#-----| 0 -> [ParameterAccess] access to parameter col
+#-----| 1 -> [IntLiteral] 0
+
+#  111| [GEExpr] ... >= ...
+#-----| 0 -> [ParameterAccess] access to parameter col
+#-----| 1 -> [MemberConstantAccess] access to constant NumCols
+
+#  115| [CastExpr] (...) ...
+#-----| 0 -> [ParameterAccess] access to parameter c
+
+#  115| [ParameterAccess] access to parameter c
+
+#  115| [CastExpr] (...) ...
+#-----| 0 -> [CharLiteral] A
+
+#  115| [CharLiteral] A
+
+#   18| [SubExpr] ... - ...
+#-----| 0 -> [ParameterAccess] access to parameter length
+#-----| 1 -> [IntLiteral] 1
+
+#   18| [IntLiteral] 5
+
+#   28| [ParameterAccess] access to parameter index
+
+#   28| [IntLiteral] 0
+
+#   28| [ParameterAccess] access to parameter index
+
+#   28| [FieldAccess] access to field length
+#-----| -1 -> [ThisAccess] this access
+
+#   28| [ThisAccess] this access
+
+#   32| [ArrayAccess] access to array element
+#-----| -1 -> [FieldAccess] access to field bits
+#-----| 0 -> [RShiftExpr] ... >> ...
+
+#   32| [FieldAccess] access to field bits
+#-----| -1 -> [ThisAccess] this access
+
+#   32| [ThisAccess] this access
+
+#   32| [RShiftExpr] ... >> ...
+#-----| 0 -> [ParameterAccess] access to parameter index
+#-----| 1 -> [IntLiteral] 5
+
+#   32| [LShiftExpr] ... << ...
+#-----| 0 -> [IntLiteral] 1
+#-----| 1 -> [ParameterAccess] access to parameter index
+
+#   36| [ParameterAccess] access to parameter index
+
+#   36| [IntLiteral] 0
+
+#   36| [ParameterAccess] access to parameter index
+
+#   36| [FieldAccess] access to field length
+#-----| -1 -> [ThisAccess] this access
+
+#   36| [ThisAccess] this access
+
+#   94| [CastExpr] (...) ...
+#-----| 0 -> [ParameterAccess] access to parameter c
+
+#   94| [ParameterAccess] access to parameter c
+
+#   94| [CastExpr] (...) ...
+#-----| 0 -> [CharLiteral] A
+
+#   94| [CharLiteral] A
+
+#   94| [CastExpr] (...) ...
+#-----| 0 -> [ParameterAccess] access to parameter c
+
+#   94| [ParameterAccess] access to parameter c
+
+#   94| [CastExpr] (...) ...
+#-----| 0 -> [CharLiteral] Z
+
+#   94| [CharLiteral] Z
+
+#   98| [ParameterAccess] access to parameter col
+
+#   98| [IntLiteral] 0
+
+#   98| [ParameterAccess] access to parameter col
+
+#   98| [MemberConstantAccess] access to constant NumCols
+
+#  107| [CastExpr] (...) ...
+#-----| 0 -> [ParameterAccess] access to parameter c
+
+#  107| [ParameterAccess] access to parameter c
+
+#  107| [CastExpr] (...) ...
+#-----| 0 -> [CharLiteral] A
+
+#  107| [CharLiteral] A
+
+#  107| [CastExpr] (...) ...
+#-----| 0 -> [ParameterAccess] access to parameter c
+
+#  107| [ParameterAccess] access to parameter c
+
+#  107| [CastExpr] (...) ...
+#-----| 0 -> [CharLiteral] Z
+
+#  107| [CharLiteral] Z
+
+#  111| [ParameterAccess] access to parameter col
+
+#  111| [IntLiteral] 0
+
+#  111| [ParameterAccess] access to parameter col
+
+#  111| [MemberConstantAccess] access to constant NumCols
+
+#   18| [ParameterAccess] access to parameter length
+
+#   18| [IntLiteral] 1
+
+#   32| [ParameterAccess] access to parameter index
+
+#   32| [IntLiteral] 5
+
+#   32| [IntLiteral] 1
+
+#   32| [ParameterAccess] access to parameter index
+
+#   56| [Parameter] max
+
+#  123| [Indexer] Item
+#-----| 0 -> (Parameters)
+#-----| 2 -> [Getter] get_Item
+
+#  123| [Parameter] index
+
+#  128| [Indexer] Item
+#-----| 0 -> (Parameters)
+#-----| 2 -> [Getter] get_Item
+
+#  128| [Parameter] c
+
+#  128| [Parameter] col
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] length
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] index
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] index
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] index
+#-----| 1 -> [Parameter] value
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] max
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] args
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] c
+#-----| 1 -> [Parameter] col
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] c
+#-----| 1 -> [Parameter] col
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] c
+#-----| 1 -> [Parameter] col
+#-----| 2 -> [Parameter] value
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] index
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] c
+#-----| 1 -> [Parameter] col
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] index
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] c
+#-----| 1 -> [Parameter] col

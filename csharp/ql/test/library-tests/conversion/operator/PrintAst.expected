@@ -1,0 +1,19 @@
+Operator.cs:
+#    3| [Class] C
+#    5|   2: [ImplicitConversionOperator] implicit conversion
+#-----|     2: (Parameters)
+#    5|       0: [Parameter] i
+#    5|     3: [BlockStmt] {...}
+#    5|       0: [ReturnStmt] return ...;
+#    5|         0: [NullLiteral] null
+#    7|   3: [Field] x1
+#    8|   4: [Field] x2
+#   11|   5: [Method] M
+#   12|     3: [BlockStmt] {...}
+#   13|       0: [ExprStmt] ...;
+#   13|         0: [AssignExpr] ... = ...
+#   13|           0: [OperatorCall] call to operator implicit conversion
+#   13|             0: [FieldAccess] access to field x1
+#   13|               -1: [ThisAccess] this access
+#   13|           1: [FieldAccess] access to field x2
+#   13|             -1: [ThisAccess] this access

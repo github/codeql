@@ -1,0 +1,43 @@
+csharp72.cs:
+#    5| [Class] InModifiers
+#    7|   2: [Struct] S
+#   11|   3: [Method] F
+#-----|     2: (Parameters)
+#   11|       0: [Parameter] s
+#   12|     3: [BlockStmt] {...}
+#   15|   4: [Method] CallF
+#   16|     3: [BlockStmt] {...}
+#   17|       0: [LocalConstantDeclStmt] ... ...;
+#   17|         0: [LocalVariableDeclAndInitExpr] S s = ...
+#   17|           0: [ObjectCreation] object creation of type S
+#   17|           1: [LocalVariableAccess] access to local variable s
+#   18|       1: [ExprStmt] ...;
+#   18|         0: [MethodCall] call to method F
+#   18|           -1: [ThisAccess] this access
+#   18|           0: [LocalVariableAccess] access to local variable s
+#   22| [Class] RefReadonlyReturns
+#   24|   2: [Field] s
+#   26|   3: [Method] F
+#   27|     3: [BlockStmt] {...}
+#   28|       0: [ReturnStmt] return ...;
+#   28|         0: [RefExpr] ref ...
+#   28|           0: [FieldAccess] access to field s
+#   28|             -1: [ThisAccess] this access
+#   31|   4: [DelegateType] Del
+#   46| [Class] NumericLiterals
+#   48|   2: [Field] binaryValue
+#   48|     1: [AssignExpr] ... = ...
+#   48|       0: [IntLiteral] 85
+#   48|       1: [FieldAccess] access to field binaryValue
+#   48|         -1: [ThisAccess] this access
+#   51| [Class] PrivateProtected
+#   53|   2: [Field] X
+#   53|     1: [AssignExpr] ... = ...
+#   53|       0: [IntLiteral] 1
+#   53|       1: [FieldAccess] access to field X
+#   53|         -1: [ThisAccess] this access
+#   55|   3: [Method] F
+#   55|     3: [BlockStmt] {...}
+#   34| [Struct] ReadonlyStruct
+#   38| [Struct] RefStruct
+#   42| [Struct] ReadonlyRefStruct
