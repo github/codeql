@@ -18,7 +18,7 @@ import DataFlow::PathGraph
  */
 private string getPrivateHostRegex() {
   result =
-    "(?i)localhost(?:[:/?#].*)?|127\\.0\\.0\\.1(?:[:/?#].*)?|10(?:\\.[0-9]+){3}(?:[:/?#].*)?|172\\.16(?:\\.[0-9]+){2}(?:[:/?#].*)?|192.168(?:\\.[0-9]+){2}(?:[:/?#].*)?|\\[0:0:0:0:0:0:0:1\\](?:[:/?#].*)?|\\[::1\\](?:[:/?#].*)?"
+    "(?i)localhost(?:[:/?#].*)?|127\\.0\\.0\\.1(?:[:/?#].*)?|10(?:\\.[0-9]+){3}(?:[:/?#].*)?|172\\.16(?:\\.[0-9]+){2}(?:[:/?#].*)?|192.168(?:\\.[0-9]+){2}(?:[:/?#].*)?|\\[?0:0:0:0:0:0:0:1\\]?(?:[:/?#].*)?|\\[?::1\\]?(?:[:/?#].*)?"
 }
 
 /**
@@ -48,9 +48,8 @@ class URLConstructor extends ClassInstanceExpr {
       // `URL(String protocol, String host, int port, String file, URLStreamHandler handler)`,
       // `URL(String protocol, String host, String file)`
       this.getConstructor().getNumberOfParameters() > 1 and
-      concatHttpString(getArgument(0), this.getArgument(1))
+      concatHttpString(getArgument(0), this.getArgument(1)) // First argument contains the protocol part and the second argument contains the host part.
       or
-      // First argument contains the protocol part and the second argument contains the host part.
       // URLs constructed with the string constructor `URL(String spec)`
       this.getConstructor().getNumberOfParameters() = 1 and
       this.getArgument(0) instanceof HttpString // First argument contains the whole spec.
@@ -88,7 +87,7 @@ class HttpStringLiteral extends StringLiteral {
   HttpStringLiteral() {
     // Match URLs with the HTTP protocol and without private IP addresses to reduce false positives.
     exists(string s | this.getRepresentedString() = s |
-      s.regexpMatch("(?i)http://[\\[a-zA-Z0-9].*") and
+      s.regexpMatch("(?i)http://[\\[:a-zA-Z0-9].*") and
       not s.substring(7, s.length()).regexpMatch(getPrivateHostRegex())
     )
   }
@@ -107,6 +106,16 @@ predicate concatHttpString(Expr protocol, Expr host) {
         .(CompileTimeConstantExpr)
         .getStringValue()
         .regexpMatch("(?i)http(://)?")
+  ) and // Not empty host string
+  (
+    host.(CompileTimeConstantExpr).getStringValue().length() > 0 or
+    host
+        .(VarAccess)
+        .getVariable()
+        .getAnAssignedValue()
+        .(CompileTimeConstantExpr)
+        .getStringValue()
+        .length() > 0
   ) and
   not (
     host.(CompileTimeConstantExpr).getStringValue().regexpMatch(getPrivateHostRegex()) or
@@ -170,13 +179,15 @@ predicate apacheHttpRequest(DataFlow::Node node1, DataFlow::Node node2) {
 
 /** `URI` methods */
 predicate createURI(DataFlow::Node node1, DataFlow::Node node2) {
-  exists(URIConstructor cc |  // new URI
+  exists(
+    URIConstructor cc // new URI
+  |
     node2.asExpr() = cc and
     cc.getArgument(0) = node1.asExpr()
   )
   or
   exists(
-    StaticMethodAccess ma  // URI.create
+    StaticMethodAccess ma // URI.create
   |
     ma.getMethod().getDeclaringType().hasQualifiedName("java.net", "URI") and
     ma.getMethod().hasName("create") and

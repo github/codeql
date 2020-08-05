@@ -32,7 +32,7 @@ public class InsecureBasicAuth {
 	 * Test basic authentication with Apache HTTP GET request.
 	 */
 	public void testApacheHttpRequest2(String url) throws java.io.IOException {
-		String urlStr = "http://www.example.com:dashboardPort/payment/retrieve";
+		String urlStr = "http://www.example.com:8000/payment/retrieve";
 		HttpGet get = new HttpGet(urlStr);
 		get.setHeader("Accept", "application/json");
 		get.setHeader("Authorization", "Basic " + new String(Base64.getEncoder().encode("admin:test".getBytes())));
