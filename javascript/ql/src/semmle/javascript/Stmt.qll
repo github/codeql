@@ -457,6 +457,10 @@ class LabeledStmt extends @labeledstmt, Stmt {
   Stmt getStmt() { result = getChildStmt(1) }
 }
 
+private class TJumpStmt = TBreakOrContinueStmt or @returnstmt or @throwstmt;
+
+private class TBreakOrContinueStmt = @breakstmt or @continuestmt;
+
 /**
  * A statement that disrupts structured control flow, that is, a `continue` statement,
  * a `break` statement, a `throw` statement, or a `return` statement.
@@ -470,7 +474,7 @@ class LabeledStmt extends @labeledstmt, Stmt {
  * return -1;
  * ```
  */
-abstract class JumpStmt extends Stmt {
+class JumpStmt extends TJumpStmt, Stmt {
   /**
    * Gets the target of this jump.
    *
@@ -497,7 +501,7 @@ abstract class JumpStmt extends Stmt {
  * break;
  * ```
  */
-abstract class BreakOrContinueStmt extends JumpStmt {
+class BreakOrContinueStmt extends TBreakOrContinueStmt, JumpStmt {
   /** Gets the label this statement refers to, if any. */
   string getTargetLabel() { result = getChildExpr(0).(Identifier).getName() }
 
