@@ -11,6 +11,7 @@ import semmle.go.frameworks.stdlib.CompressBzip2
 import semmle.go.frameworks.stdlib.CompressFlate
 import semmle.go.frameworks.stdlib.CompressGzip
 import semmle.go.frameworks.stdlib.CompressLzw
+import semmle.go.frameworks.stdlib.CompressZlib
 
 /** A `String()` method. */
 class StringMethod extends TaintTracking::FunctionModel, Method {
