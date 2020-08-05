@@ -49,7 +49,7 @@ class WrittenFileName extends Expr {
     or
     // Methods that write to their n'th argument
     exists(MethodAccess call, int n | this = call.getArgument(n) |
-      call.getMethod().getDeclaringType().hasQualifiedName("java.nio.file", "Files") and
+      call.getMethod().getDeclaringType() instanceof TypeFiles and
       (
         call.getMethod().getName().regexpMatch("new.*Reader|newOutputStream|create.*") and n = 0
         or

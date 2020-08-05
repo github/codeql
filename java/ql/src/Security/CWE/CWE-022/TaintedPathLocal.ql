@@ -14,7 +14,7 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import PathsCommon
+import semmle.code.java.security.PathCreation
 import DataFlow::PathGraph
 
 class TaintedPathLocalConfig extends TaintTracking::Configuration {
