@@ -1,0 +1,3 @@
+| Jinja2Templates.py:6:25:6:30 | argument to jinja2.Template() |
+| Jinja2Templates.py:11:25:11:30 | argument to jinja2.Template() |
+| Jinja2Templates.py:16:25:16:37 | argument to jinja2.Template() |

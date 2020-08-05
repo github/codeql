@@ -1,3 +1,7 @@
+/**
+ * Provides classes for modeling variables and their declarations.
+ */
+
 import semmle.code.cpp.Element
 import semmle.code.cpp.exprs.Access
 import semmle.code.cpp.Initializer
@@ -28,7 +32,7 @@ private import semmle.code.cpp.internal.ResolveClass
  * can have multiple declarations.
  */
 class Variable extends Declaration, @variable {
-  override string getCanonicalQLClass() { result = "Variable" }
+  override string getAPrimaryQlClass() { result = "Variable" }
 
   /** Gets the initializer of this variable, if any. */
   Initializer getInitializer() { result.getDeclaration() = this }
@@ -186,7 +190,7 @@ class Variable extends Declaration, @variable {
 class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
   override Variable getDeclaration() { result = getVariable() }
 
-  override string getCanonicalQLClass() { result = "VariableDeclarationEntry" }
+  override string getAPrimaryQlClass() { result = "VariableDeclarationEntry" }
 
   /**
    * Gets the variable which is being declared or defined.
@@ -245,7 +249,7 @@ class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
 class ParameterDeclarationEntry extends VariableDeclarationEntry {
   ParameterDeclarationEntry() { param_decl_bind(underlyingElement(this), _, _) }
 
-  override string getCanonicalQLClass() { result = "ParameterDeclarationEntry" }
+  override string getAPrimaryQlClass() { result = "ParameterDeclarationEntry" }
 
   /**
    * Gets the function declaration or definition which this parameter
@@ -321,7 +325,7 @@ class ParameterDeclarationEntry extends VariableDeclarationEntry {
  */
 class LocalScopeVariable extends Variable, @localscopevariable {
   /** Gets the function to which this variable belongs. */
-  /*abstract*/ Function getFunction() { none() }
+  Function getFunction() { none() } // overridden in subclasses
 }
 
 /**
@@ -359,7 +363,7 @@ class StackVariable extends LocalScopeVariable {
  * A local variable can be declared by a `DeclStmt` or a `ConditionDeclExpr`.
  */
 class LocalVariable extends LocalScopeVariable, @localvariable {
-  override string getCanonicalQLClass() { result = "LocalVariable" }
+  override string getAPrimaryQlClass() { result = "LocalVariable" }
 
   override string getName() { localvariables(underlyingElement(this), _, result) }
 
@@ -460,7 +464,7 @@ class NamespaceVariable extends GlobalOrNamespaceVariable {
     exists(Namespace n | namespacembrs(unresolveElement(n), underlyingElement(this)))
   }
 
-  override string getCanonicalQLClass() { result = "NamespaceVariable" }
+  override string getAPrimaryQlClass() { result = "NamespaceVariable" }
 }
 
 /**
@@ -481,7 +485,7 @@ class NamespaceVariable extends GlobalOrNamespaceVariable {
 class GlobalVariable extends GlobalOrNamespaceVariable {
   GlobalVariable() { not this instanceof NamespaceVariable }
 
-  override string getCanonicalQLClass() { result = "GlobalVariable" }
+  override string getAPrimaryQlClass() { result = "GlobalVariable" }
 }
 
 /**
@@ -501,7 +505,7 @@ class GlobalVariable extends GlobalOrNamespaceVariable {
 class MemberVariable extends Variable, @membervariable {
   MemberVariable() { this.isMember() }
 
-  override string getCanonicalQLClass() { result = "MemberVariable" }
+  override string getAPrimaryQlClass() { result = "MemberVariable" }
 
   /** Holds if this member is private. */
   predicate isPrivate() { this.hasSpecifier("private") }
@@ -578,7 +582,7 @@ class TemplateVariable extends Variable {
  *   float a;
  * }
  *
- * template<type T>
+ * template<typename T>
  * void myTemplateFunction() {
  *   T b;
  * }

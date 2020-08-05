@@ -27,7 +27,7 @@ class FriendDecl extends Declaration, @frienddecl {
    */
   override Location getADeclarationLocation() { result = this.getLocation() }
 
-  override string getCanonicalQLClass() { result = "FriendDecl" }
+  override string getAPrimaryQlClass() { result = "FriendDecl" }
 
   /**
    * Implements the abstract method `Declaration.getDefinitionLocation`. A

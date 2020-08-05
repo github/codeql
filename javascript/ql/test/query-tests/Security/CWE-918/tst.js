@@ -20,8 +20,8 @@ var server = http.createServer(function(req, res) {
     request.get(tainted); // NOT OK
 
     var options = {};
-    options.url = tainted;
-    request(options); // NOT OK
+    options.url = tainted; // NOT OK
+    request(options);
 
     request("http://" + tainted); // NOT OK
 
@@ -44,7 +44,7 @@ var server = http.createServer(function(req, res) {
 
     request('http://example.com/' + base + '/' + tainted); // NOT OK
 
-    request('http://example.com/' + base + ('/' + tainted)); // NOT OK - but not flagged
+    request('http://example.com/' + base + ('/' + tainted)); // NOT OK - but not flagged [INCONSISTENCY]
 
     request(`http://example.com/?${base}/${tainted}`); // OK
 

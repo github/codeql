@@ -15,16 +15,16 @@ class Location extends @location {
   /** Gets the file corresponding to this location, if any. */
   File getFile() { result = this.getContainer() }
 
-  /** Gets the start line of this location. */
+  /** Gets the 1-based line number (inclusive) where this location starts. */
   int getStartLine() { this.fullLocationInfo(_, result, _, _, _) }
 
-  /** Gets the start column of this location. */
+  /** Gets the 1-based column number (inclusive) where this location starts. */
   int getStartColumn() { this.fullLocationInfo(_, _, result, _, _) }
 
-  /** Gets the end line of this location. */
+  /** Gets the 1-based line number (inclusive) where this location ends. */
   int getEndLine() { this.fullLocationInfo(_, _, _, result, _) }
 
-  /** Gets the end column of this location. */
+  /** Gets the 1-based column number (inclusive) where this location ends. */
   int getEndColumn() { this.fullLocationInfo(_, _, _, _, result) }
 
   /**

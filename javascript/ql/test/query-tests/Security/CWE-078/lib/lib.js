@@ -51,12 +51,12 @@ module.exports.mz = function (name) {
 }
 
 module.exports.flow = function (name) {
-	var cmd1 = "rm -rf " + name;
-	cp.exec(cmd1); // NOT OK.
+	var cmd1 = "rm -rf " + name; // NOT OK.
+	cp.exec(cmd1); 
 
-	var cmd2 = "rm -rf " + name;
+	var cmd2 = "rm -rf " + name;  // NOT OK.
 	function myExec(cmd) {
-		cp.exec(cmd); // NOT OK.
+		cp.exec(cmd);
 	}
 	myExec(cmd2);
 }
@@ -83,8 +83,8 @@ module.exports.arrays = function (name) {
 	cp.exec("rm -rf " + name); // NOT OK.
 
 	var args1 = ["node"];
-	args1.push(name);
-	cp.exec(args1.join(" ")); // NOT OK.
+	args1.push(name); // NOT OK.
+	cp.exec(args1.join(" "));
 
 	cp.exec(["rm -rf", name].join(" ")); // NOT OK.
 
@@ -146,10 +146,10 @@ function Cla5(name) {
 module.exports.cla5 = new Cla5();
 
 module.exports.indirect = function (name) {
-	let cmd = "rm -rf " + name;
+	let cmd = "rm -rf " + name; // NOT OK
 	let sh = "sh";
 	let args = ["-c", cmd];
-	cp.spawn(sh, args, cb); // NOT OK
+	cp.spawn(sh, args, cb);
 }
 
 module.exports.indirect2 = function (name) {
@@ -221,7 +221,7 @@ module.exports.blackList2 = function (name) {
 		process.exit(-1);
 	}
 
-	cp.exec("rm -rf " + name); // OK - but FP due to tracking flow through `process.exit()`. 
+	cp.exec("rm -rf " + name); // OK - but FP due to tracking flow through `process.exit()`. [INCONSISTENCY]
 }
 
 module.exports.accessSync = function (name) {
@@ -233,7 +233,7 @@ module.exports.accessSync = function (name) {
 		return;
 	}
 
-	cp.exec("rm -rf " + name); // OK - but FP due to `path.accessSync` not being recognized as a sanitizer.
+	cp.exec("rm -rf " + name); // OK - but FP due to `path.accessSync` not being recognized as a sanitizer. [INCONSISTENCY]
 }
 
 var cleanInput = function (s) {
@@ -269,7 +269,7 @@ module.exports.sanitizerProperty = function (obj) {
 
 	obj.version = "";
 
-	cp.exec("rm -rf " + obj.version); // OK - but FP
+	cp.exec("rm -rf " + obj.version); // OK
 }
 
 module.exports.Foo = class Foo {
@@ -278,7 +278,7 @@ module.exports.Foo = class Foo {
 		this.opts = {};
 		this.opts.bla = opts.bla
 
-		cp.exec("rm -rf " + this.opts.bla); // NOT OK - but FN
+		cp.exec("rm -rf " + this.opts.bla); // NOT OK - but FN [INCONSISTENCY]
 	}
 }
 

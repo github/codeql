@@ -71,6 +71,7 @@ JavaScript and TypeScript built-in support
    sqlite3, Database
    superagent, Network communicator
    underscore, Utility library
+   vue, HTML framework
 
 
 

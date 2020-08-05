@@ -233,29 +233,25 @@ predicate clearsContent(Node n, Content c) {
   none() // stub implementation
 }
 
-/**
- * Gets a representative (boxed) type for `t` for the purpose of pruning
- * possible flow. A single type is used for all numeric types to account for
- * numeric conversions, and otherwise the erasure is used.
- */
-Type getErasedRepr(Type t) {
-  suppressUnusedType(t) and
-  result instanceof VoidType // stub implementation
+/** Gets the type of `n` used for type pruning. */
+IRType getNodeType(Node n) {
+  suppressUnusedNode(n) and
+  result instanceof IRVoidType // stub implementation
 }
 
-/** Gets a string representation of a type returned by `getErasedRepr`. */
-string ppReprType(Type t) { none() } // stub implementation
+/** Gets a string representation of a type returned by `getNodeType`. */
+string ppReprType(IRType t) { none() } // stub implementation
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
 pragma[inline]
-predicate compatibleTypes(Type t1, Type t2) {
+predicate compatibleTypes(IRType t1, IRType t2) {
   any() // stub implementation
 }
 
-private predicate suppressUnusedType(Type t) { any() }
+private predicate suppressUnusedNode(Node n) { any() }
 
 //////////////////////////////////////////////////////////////////////////////
 // Java QL library compatibility wrappers
@@ -275,7 +271,7 @@ class DataFlowCallable = Declaration;
 
 class DataFlowExpr = Expr;
 
-class DataFlowType = Type;
+class DataFlowType = IRType;
 
 /** A function call relevant for data flow. */
 class DataFlowCall extends CallInstruction {
@@ -307,4 +303,4 @@ predicate isImmutableOrUnobservable(Node n) {
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { none() }
+predicate nodeIsHidden(Node n) { n instanceof OperandNode }

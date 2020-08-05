@@ -14,11 +14,11 @@ import external.VCS
 from Module m
 where exists(m.getMetrics().getNumberOfLinesOfCode())
 select m,
-    count(Author author |
-        exists(Commit e |
-            e = author.getACommit() and
-            m.getFile() = e.getAnAffectedFile() and
-            e.daysToNow() <= 180 and
-            not artificialChange(e)
-        )
+  count(Author author |
+    exists(Commit e |
+      e = author.getACommit() and
+      m.getFile() = e.getAnAffectedFile() and
+      e.daysToNow() <= 180 and
+      not artificialChange(e)
     )
+  )

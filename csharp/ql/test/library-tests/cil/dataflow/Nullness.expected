@@ -8,7 +8,10 @@ alwaysNull
 | dataflow.cs:80:21:80:44 | access to property NullProperty |
 | dataflow.cs:89:31:89:44 | call to method NullFunction |
 alwaysNotNull
+| dataflow.cs:71:13:71:20 | access to local variable nonNull1 |
+| dataflow.cs:71:13:71:35 | Int32 nonNull1 = ... |
 | dataflow.cs:71:24:71:35 | default(...) |
+| dataflow.cs:71:32:71:34 | access to type Int32 |
 | dataflow.cs:72:27:72:30 | this access |
 | dataflow.cs:72:27:72:40 | call to method GetType |
 | dataflow.cs:73:30:73:33 | true |
@@ -25,6 +28,7 @@ alwaysNotNull
 | dataflow.cs:85:24:85:30 | access to local variable nonNull |
 | dataflow.cs:85:24:85:55 | call to method ReturnsNonNullIndirect |
 | dataflow.cs:86:24:86:30 | access to local variable nonNull |
+| dataflow.cs:89:24:89:27 | access to field cond |
 | dataflow.cs:89:24:89:27 | this access |
 | dataflow.cs:89:31:89:44 | this access |
 | dataflow.cs:89:48:89:51 | this access |

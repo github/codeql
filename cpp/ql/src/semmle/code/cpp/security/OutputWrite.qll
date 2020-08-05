@@ -1,5 +1,5 @@
 /**
- * Provides classes for modelling output to standard output / standard error through various mechanisms such as `printf`, `puts` and `operator<<`.
+ * Provides classes for modeling output to standard output / standard error through various mechanisms such as `printf`, `puts` and `operator<<`.
  */
 
 import cpp

@@ -1,3 +1,20 @@
+/**
+ * Provides predicates for identifying functions that wrap other functions,
+ * passing the same arguments from the outer call into the inner call. In the
+ * following example `MyMalloc` wraps a call to `malloc`, passing in the `size`
+ * parameter:
+ * ```
+ * void *MyMalloc(size_t size)
+ * {
+ *   void *ptr = malloc(size);
+ *
+ *   // ... additional logic?
+ *
+ *   return ptr;
+ * }
+ * ```
+ */
+
 import cpp
 import PrintfLike
 private import TaintTracking
@@ -152,6 +169,9 @@ abstract class FunctionWithWrappers extends Function {
   }
 }
 
+/**
+ * A `printf`-like formatting function.
+ */
 class PrintfLikeFunction extends FunctionWithWrappers {
   PrintfLikeFunction() { printfLikeFunction(this, _) }
 

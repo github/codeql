@@ -1,3 +1,7 @@
+/**
+ * Provides classes for modeling comparisons such as `==`, `!=` and `<`.
+ */
+
 import semmle.code.cpp.exprs.Expr
 
 /**
@@ -21,7 +25,7 @@ class EqualityOperation extends ComparisonOperation, @eq_op_expr {
  * ```
  */
 class EQExpr extends EqualityOperation, @eqexpr {
-  override string getCanonicalQLClass() { result = "EQExpr" }
+  override string getAPrimaryQlClass() { result = "EQExpr" }
 
   override string getOperator() { result = "==" }
 }
@@ -33,7 +37,7 @@ class EQExpr extends EqualityOperation, @eqexpr {
  * ```
  */
 class NEExpr extends EqualityOperation, @neexpr {
-  override string getCanonicalQLClass() { result = "NEExpr" }
+  override string getAPrimaryQlClass() { result = "NEExpr" }
 
   override string getOperator() { result = "!=" }
 }
@@ -78,7 +82,7 @@ class RelationalOperation extends ComparisonOperation, @rel_op_expr {
  * ```
  */
 class GTExpr extends RelationalOperation, @gtexpr {
-  override string getCanonicalQLClass() { result = "GTExpr" }
+  override string getAPrimaryQlClass() { result = "GTExpr" }
 
   override string getOperator() { result = ">" }
 
@@ -94,7 +98,7 @@ class GTExpr extends RelationalOperation, @gtexpr {
  * ```
  */
 class LTExpr extends RelationalOperation, @ltexpr {
-  override string getCanonicalQLClass() { result = "LTExpr" }
+  override string getAPrimaryQlClass() { result = "LTExpr" }
 
   override string getOperator() { result = "<" }
 
@@ -110,7 +114,7 @@ class LTExpr extends RelationalOperation, @ltexpr {
  * ```
  */
 class GEExpr extends RelationalOperation, @geexpr {
-  override string getCanonicalQLClass() { result = "GEExpr" }
+  override string getAPrimaryQlClass() { result = "GEExpr" }
 
   override string getOperator() { result = ">=" }
 
@@ -126,7 +130,7 @@ class GEExpr extends RelationalOperation, @geexpr {
  * ```
  */
 class LEExpr extends RelationalOperation, @leexpr {
-  override string getCanonicalQLClass() { result = "LEExpr" }
+  override string getAPrimaryQlClass() { result = "LEExpr" }
 
   override string getOperator() { result = "<=" }
 

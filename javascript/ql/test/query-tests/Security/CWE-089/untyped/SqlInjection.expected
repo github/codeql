@@ -56,6 +56,12 @@ nodes
 | mongodb.js:85:12:85:24 | { tags: tag } |
 | mongodb.js:85:12:85:24 | { tags: tag } |
 | mongodb.js:85:20:85:22 | tag |
+| mongodb.js:106:9:106:18 | query |
+| mongodb.js:106:17:106:18 | {} |
+| mongodb.js:107:17:107:29 | queries.title |
+| mongodb.js:107:17:107:29 | queries.title |
+| mongodb.js:112:14:112:18 | query |
+| mongodb.js:112:14:112:18 | query |
 | mongodb_bodySafe.js:23:11:23:20 | query |
 | mongodb_bodySafe.js:23:19:23:20 | {} |
 | mongodb_bodySafe.js:24:19:24:33 | req.query.title |
@@ -102,30 +108,34 @@ nodes
 | mongoose.js:67:27:67:31 | query |
 | mongoose.js:68:8:68:12 | query |
 | mongoose.js:68:8:68:12 | query |
-| mongoose.js:72:8:72:12 | query |
-| mongoose.js:72:8:72:12 | query |
-| mongoose.js:73:7:73:11 | query |
-| mongoose.js:73:7:73:11 | query |
-| mongoose.js:74:16:74:20 | query |
-| mongoose.js:74:16:74:20 | query |
-| mongoose.js:76:10:76:14 | query |
-| mongoose.js:76:10:76:14 | query |
-| mongoose.js:81:46:81:50 | query |
-| mongoose.js:81:46:81:50 | query |
-| mongoose.js:82:47:82:51 | query |
-| mongoose.js:82:47:82:51 | query |
-| mongoose.js:84:46:84:50 | query |
-| mongoose.js:84:46:84:50 | query |
-| mongoose.js:86:51:86:55 | query |
-| mongoose.js:86:51:86:55 | query |
-| mongoose.js:88:46:88:50 | query |
-| mongoose.js:88:46:88:50 | query |
-| mongoose.js:91:46:91:50 | query |
-| mongoose.js:91:46:91:50 | query |
-| mongoose.js:93:51:93:55 | query |
-| mongoose.js:93:51:93:55 | query |
-| mongoose.js:95:46:95:50 | query |
-| mongoose.js:95:46:95:50 | query |
+| mongoose.js:71:20:71:24 | query |
+| mongoose.js:71:20:71:24 | query |
+| mongoose.js:72:16:72:20 | query |
+| mongoose.js:72:16:72:20 | query |
+| mongoose.js:73:8:73:12 | query |
+| mongoose.js:73:8:73:12 | query |
+| mongoose.js:74:7:74:11 | query |
+| mongoose.js:74:7:74:11 | query |
+| mongoose.js:75:16:75:20 | query |
+| mongoose.js:75:16:75:20 | query |
+| mongoose.js:77:10:77:14 | query |
+| mongoose.js:77:10:77:14 | query |
+| mongoose.js:82:46:82:50 | query |
+| mongoose.js:82:46:82:50 | query |
+| mongoose.js:83:47:83:51 | query |
+| mongoose.js:83:47:83:51 | query |
+| mongoose.js:85:46:85:50 | query |
+| mongoose.js:85:46:85:50 | query |
+| mongoose.js:87:51:87:55 | query |
+| mongoose.js:87:51:87:55 | query |
+| mongoose.js:89:46:89:50 | query |
+| mongoose.js:89:46:89:50 | query |
+| mongoose.js:92:46:92:50 | query |
+| mongoose.js:92:46:92:50 | query |
+| mongoose.js:94:51:94:55 | query |
+| mongoose.js:94:51:94:55 | query |
+| mongoose.js:96:46:96:50 | query |
+| mongoose.js:96:46:96:50 | query |
 | mongooseJsonParse.js:19:11:19:20 | query |
 | mongooseJsonParse.js:19:19:19:20 | {} |
 | mongooseJsonParse.js:20:19:20:44 | JSON.pa ... y.data) |
@@ -156,12 +166,12 @@ nodes
 | tst2.js:9:27:9:84 | "select ... d + "'" |
 | tst2.js:9:66:9:78 | req.params.id |
 | tst2.js:9:66:9:78 | req.params.id |
-| tst3.js:8:7:9:55 | query1 |
-| tst3.js:8:16:9:55 | "SELECT ...  PRICE" |
-| tst3.js:9:16:9:34 | req.params.category |
-| tst3.js:9:16:9:34 | req.params.category |
-| tst3.js:10:14:10:19 | query1 |
-| tst3.js:10:14:10:19 | query1 |
+| tst3.js:7:7:8:55 | query1 |
+| tst3.js:7:16:8:55 | "SELECT ...  PRICE" |
+| tst3.js:8:16:8:34 | req.params.category |
+| tst3.js:8:16:8:34 | req.params.category |
+| tst3.js:9:14:9:19 | query1 |
+| tst3.js:9:14:9:19 | query1 |
 | tst4.js:8:10:8:66 | 'SELECT ... d + '"' |
 | tst4.js:8:10:8:66 | 'SELECT ... d + '"' |
 | tst4.js:8:46:8:60 | $routeParams.id |
@@ -244,6 +254,17 @@ edges
 | mongodb.js:77:22:77:24 | tag | mongodb.js:77:14:77:26 | { tags: tag } |
 | mongodb.js:85:20:85:22 | tag | mongodb.js:85:12:85:24 | { tags: tag } |
 | mongodb.js:85:20:85:22 | tag | mongodb.js:85:12:85:24 | { tags: tag } |
+| mongodb.js:106:9:106:18 | query | mongodb.js:112:14:112:18 | query |
+| mongodb.js:106:9:106:18 | query | mongodb.js:112:14:112:18 | query |
+| mongodb.js:106:17:106:18 | {} | mongodb.js:106:9:106:18 | query |
+| mongodb.js:107:17:107:29 | queries.title | mongodb.js:106:9:106:18 | query |
+| mongodb.js:107:17:107:29 | queries.title | mongodb.js:106:9:106:18 | query |
+| mongodb.js:107:17:107:29 | queries.title | mongodb.js:106:17:106:18 | {} |
+| mongodb.js:107:17:107:29 | queries.title | mongodb.js:106:17:106:18 | {} |
+| mongodb.js:107:17:107:29 | queries.title | mongodb.js:112:14:112:18 | query |
+| mongodb.js:107:17:107:29 | queries.title | mongodb.js:112:14:112:18 | query |
+| mongodb.js:107:17:107:29 | queries.title | mongodb.js:112:14:112:18 | query |
+| mongodb.js:107:17:107:29 | queries.title | mongodb.js:112:14:112:18 | query |
 | mongodb_bodySafe.js:23:11:23:20 | query | mongodb_bodySafe.js:29:16:29:20 | query |
 | mongodb_bodySafe.js:23:11:23:20 | query | mongodb_bodySafe.js:29:16:29:20 | query |
 | mongodb_bodySafe.js:23:19:23:20 | {} | mongodb_bodySafe.js:23:11:23:20 | query |
@@ -288,30 +309,34 @@ edges
 | mongoose.js:20:11:20:20 | query | mongoose.js:67:27:67:31 | query |
 | mongoose.js:20:11:20:20 | query | mongoose.js:68:8:68:12 | query |
 | mongoose.js:20:11:20:20 | query | mongoose.js:68:8:68:12 | query |
-| mongoose.js:20:11:20:20 | query | mongoose.js:72:8:72:12 | query |
-| mongoose.js:20:11:20:20 | query | mongoose.js:72:8:72:12 | query |
-| mongoose.js:20:11:20:20 | query | mongoose.js:73:7:73:11 | query |
-| mongoose.js:20:11:20:20 | query | mongoose.js:73:7:73:11 | query |
-| mongoose.js:20:11:20:20 | query | mongoose.js:74:16:74:20 | query |
-| mongoose.js:20:11:20:20 | query | mongoose.js:74:16:74:20 | query |
-| mongoose.js:20:11:20:20 | query | mongoose.js:76:10:76:14 | query |
-| mongoose.js:20:11:20:20 | query | mongoose.js:76:10:76:14 | query |
-| mongoose.js:20:11:20:20 | query | mongoose.js:81:46:81:50 | query |
-| mongoose.js:20:11:20:20 | query | mongoose.js:81:46:81:50 | query |
-| mongoose.js:20:11:20:20 | query | mongoose.js:82:47:82:51 | query |
-| mongoose.js:20:11:20:20 | query | mongoose.js:82:47:82:51 | query |
-| mongoose.js:20:11:20:20 | query | mongoose.js:84:46:84:50 | query |
-| mongoose.js:20:11:20:20 | query | mongoose.js:84:46:84:50 | query |
-| mongoose.js:20:11:20:20 | query | mongoose.js:86:51:86:55 | query |
-| mongoose.js:20:11:20:20 | query | mongoose.js:86:51:86:55 | query |
-| mongoose.js:20:11:20:20 | query | mongoose.js:88:46:88:50 | query |
-| mongoose.js:20:11:20:20 | query | mongoose.js:88:46:88:50 | query |
-| mongoose.js:20:11:20:20 | query | mongoose.js:91:46:91:50 | query |
-| mongoose.js:20:11:20:20 | query | mongoose.js:91:46:91:50 | query |
-| mongoose.js:20:11:20:20 | query | mongoose.js:93:51:93:55 | query |
-| mongoose.js:20:11:20:20 | query | mongoose.js:93:51:93:55 | query |
-| mongoose.js:20:11:20:20 | query | mongoose.js:95:46:95:50 | query |
-| mongoose.js:20:11:20:20 | query | mongoose.js:95:46:95:50 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:71:20:71:24 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:71:20:71:24 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:72:16:72:20 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:72:16:72:20 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:73:8:73:12 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:73:8:73:12 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:74:7:74:11 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:74:7:74:11 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:75:16:75:20 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:75:16:75:20 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:77:10:77:14 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:77:10:77:14 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:82:46:82:50 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:82:46:82:50 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:83:47:83:51 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:83:47:83:51 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:85:46:85:50 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:85:46:85:50 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:87:51:87:55 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:87:51:87:55 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:89:46:89:50 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:89:46:89:50 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:92:46:92:50 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:92:46:92:50 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:94:51:94:55 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:94:51:94:55 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:96:46:96:50 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:96:46:96:50 | query |
 | mongoose.js:20:19:20:20 | {} | mongoose.js:20:11:20:20 | query |
 | mongoose.js:21:19:21:26 | req.body | mongoose.js:21:19:21:32 | req.body.title |
 | mongoose.js:21:19:21:26 | req.body | mongoose.js:21:19:21:32 | req.body.title |
@@ -350,30 +375,34 @@ edges
 | mongoose.js:21:19:21:32 | req.body.title | mongoose.js:67:27:67:31 | query |
 | mongoose.js:21:19:21:32 | req.body.title | mongoose.js:68:8:68:12 | query |
 | mongoose.js:21:19:21:32 | req.body.title | mongoose.js:68:8:68:12 | query |
-| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:72:8:72:12 | query |
-| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:72:8:72:12 | query |
-| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:73:7:73:11 | query |
-| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:73:7:73:11 | query |
-| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:74:16:74:20 | query |
-| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:74:16:74:20 | query |
-| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:76:10:76:14 | query |
-| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:76:10:76:14 | query |
-| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:81:46:81:50 | query |
-| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:81:46:81:50 | query |
-| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:82:47:82:51 | query |
-| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:82:47:82:51 | query |
-| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:84:46:84:50 | query |
-| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:84:46:84:50 | query |
-| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:86:51:86:55 | query |
-| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:86:51:86:55 | query |
-| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:88:46:88:50 | query |
-| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:88:46:88:50 | query |
-| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:91:46:91:50 | query |
-| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:91:46:91:50 | query |
-| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:93:51:93:55 | query |
-| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:93:51:93:55 | query |
-| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:95:46:95:50 | query |
-| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:95:46:95:50 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:71:20:71:24 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:71:20:71:24 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:72:16:72:20 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:72:16:72:20 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:73:8:73:12 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:73:8:73:12 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:74:7:74:11 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:74:7:74:11 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:75:16:75:20 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:75:16:75:20 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:77:10:77:14 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:77:10:77:14 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:82:46:82:50 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:82:46:82:50 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:83:47:83:51 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:83:47:83:51 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:85:46:85:50 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:85:46:85:50 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:87:51:87:55 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:87:51:87:55 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:89:46:89:50 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:89:46:89:50 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:92:46:92:50 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:92:46:92:50 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:94:51:94:55 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:94:51:94:55 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:96:46:96:50 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:96:46:96:50 | query |
 | mongoose.js:24:25:24:29 | query | mongoose.js:24:24:24:30 | [query] |
 | mongoose.js:24:25:24:29 | query | mongoose.js:24:24:24:30 | [query] |
 | mongooseJsonParse.js:19:11:19:20 | query | mongooseJsonParse.js:23:19:23:23 | query |
@@ -405,11 +434,11 @@ edges
 | tst2.js:9:66:9:78 | req.params.id | tst2.js:9:27:9:84 | "select ... d + "'" |
 | tst2.js:9:66:9:78 | req.params.id | tst2.js:9:27:9:84 | "select ... d + "'" |
 | tst2.js:9:66:9:78 | req.params.id | tst2.js:9:27:9:84 | "select ... d + "'" |
-| tst3.js:8:7:9:55 | query1 | tst3.js:10:14:10:19 | query1 |
-| tst3.js:8:7:9:55 | query1 | tst3.js:10:14:10:19 | query1 |
-| tst3.js:8:16:9:55 | "SELECT ...  PRICE" | tst3.js:8:7:9:55 | query1 |
-| tst3.js:9:16:9:34 | req.params.category | tst3.js:8:16:9:55 | "SELECT ...  PRICE" |
-| tst3.js:9:16:9:34 | req.params.category | tst3.js:8:16:9:55 | "SELECT ...  PRICE" |
+| tst3.js:7:7:8:55 | query1 | tst3.js:9:14:9:19 | query1 |
+| tst3.js:7:7:8:55 | query1 | tst3.js:9:14:9:19 | query1 |
+| tst3.js:7:16:8:55 | "SELECT ...  PRICE" | tst3.js:7:7:8:55 | query1 |
+| tst3.js:8:16:8:34 | req.params.category | tst3.js:7:16:8:55 | "SELECT ...  PRICE" |
+| tst3.js:8:16:8:34 | req.params.category | tst3.js:7:16:8:55 | "SELECT ...  PRICE" |
 | tst4.js:8:46:8:60 | $routeParams.id | tst4.js:8:10:8:66 | 'SELECT ... d + '"' |
 | tst4.js:8:46:8:60 | $routeParams.id | tst4.js:8:10:8:66 | 'SELECT ... d + '"' |
 | tst4.js:8:46:8:60 | $routeParams.id | tst4.js:8:10:8:66 | 'SELECT ... d + '"' |
@@ -428,6 +457,7 @@ edges
 | mongodb.js:65:12:65:16 | query | mongodb.js:60:16:60:30 | req.query.title | mongodb.js:65:12:65:16 | query | This query depends on $@. | mongodb.js:60:16:60:30 | req.query.title | a user-provided value |
 | mongodb.js:77:14:77:26 | { tags: tag } | mongodb.js:70:13:70:25 | req.query.tag | mongodb.js:77:14:77:26 | { tags: tag } | This query depends on $@. | mongodb.js:70:13:70:25 | req.query.tag | a user-provided value |
 | mongodb.js:85:12:85:24 | { tags: tag } | mongodb.js:70:13:70:25 | req.query.tag | mongodb.js:85:12:85:24 | { tags: tag } | This query depends on $@. | mongodb.js:70:13:70:25 | req.query.tag | a user-provided value |
+| mongodb.js:112:14:112:18 | query | mongodb.js:107:17:107:29 | queries.title | mongodb.js:112:14:112:18 | query | This query depends on $@. | mongodb.js:107:17:107:29 | queries.title | a user-provided value |
 | mongodb_bodySafe.js:29:16:29:20 | query | mongodb_bodySafe.js:24:19:24:33 | req.query.title | mongodb_bodySafe.js:29:16:29:20 | query | This query depends on $@. | mongodb_bodySafe.js:24:19:24:33 | req.query.title | a user-provided value |
 | mongoose.js:24:24:24:30 | [query] | mongoose.js:21:19:21:26 | req.body | mongoose.js:24:24:24:30 | [query] | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
 | mongoose.js:27:20:27:24 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:27:20:27:24 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
@@ -446,23 +476,25 @@ edges
 | mongoose.js:65:32:65:36 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:65:32:65:36 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
 | mongoose.js:67:27:67:31 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:67:27:67:31 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
 | mongoose.js:68:8:68:12 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:68:8:68:12 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
-| mongoose.js:72:8:72:12 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:72:8:72:12 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
-| mongoose.js:73:7:73:11 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:73:7:73:11 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
-| mongoose.js:74:16:74:20 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:74:16:74:20 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
-| mongoose.js:76:10:76:14 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:76:10:76:14 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
-| mongoose.js:81:46:81:50 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:81:46:81:50 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
-| mongoose.js:82:47:82:51 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:82:47:82:51 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
-| mongoose.js:84:46:84:50 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:84:46:84:50 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
-| mongoose.js:86:51:86:55 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:86:51:86:55 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
-| mongoose.js:88:46:88:50 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:88:46:88:50 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
-| mongoose.js:91:46:91:50 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:91:46:91:50 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
-| mongoose.js:93:51:93:55 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:93:51:93:55 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
-| mongoose.js:95:46:95:50 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:95:46:95:50 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
+| mongoose.js:71:20:71:24 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:71:20:71:24 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
+| mongoose.js:72:16:72:20 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:72:16:72:20 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
+| mongoose.js:73:8:73:12 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:73:8:73:12 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
+| mongoose.js:74:7:74:11 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:74:7:74:11 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
+| mongoose.js:75:16:75:20 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:75:16:75:20 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
+| mongoose.js:77:10:77:14 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:77:10:77:14 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
+| mongoose.js:82:46:82:50 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:82:46:82:50 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
+| mongoose.js:83:47:83:51 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:83:47:83:51 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
+| mongoose.js:85:46:85:50 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:85:46:85:50 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
+| mongoose.js:87:51:87:55 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:87:51:87:55 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
+| mongoose.js:89:46:89:50 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:89:46:89:50 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
+| mongoose.js:92:46:92:50 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:92:46:92:50 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
+| mongoose.js:94:51:94:55 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:94:51:94:55 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
+| mongoose.js:96:46:96:50 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:96:46:96:50 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
 | mongooseJsonParse.js:23:19:23:23 | query | mongooseJsonParse.js:20:30:20:43 | req.query.data | mongooseJsonParse.js:23:19:23:23 | query | This query depends on $@. | mongooseJsonParse.js:20:30:20:43 | req.query.data | a user-provided value |
 | mongooseModelClient.js:11:16:11:24 | { id: v } | mongooseModelClient.js:10:22:10:29 | req.body | mongooseModelClient.js:11:16:11:24 | { id: v } | This query depends on $@. | mongooseModelClient.js:10:22:10:29 | req.body | a user-provided value |
 | mongooseModelClient.js:12:16:12:34 | { id: req.body.id } | mongooseModelClient.js:12:22:12:29 | req.body | mongooseModelClient.js:12:16:12:34 | { id: req.body.id } | This query depends on $@. | mongooseModelClient.js:12:22:12:29 | req.body | a user-provided value |
 | socketio.js:11:12:11:53 | `INSERT ... andle}` | socketio.js:10:25:10:30 | handle | socketio.js:11:12:11:53 | `INSERT ... andle}` | This query depends on $@. | socketio.js:10:25:10:30 | handle | a user-provided value |
 | tst2.js:9:27:9:84 | "select ... d + "'" | tst2.js:9:66:9:78 | req.params.id | tst2.js:9:27:9:84 | "select ... d + "'" | This query depends on $@. | tst2.js:9:66:9:78 | req.params.id | a user-provided value |
-| tst3.js:10:14:10:19 | query1 | tst3.js:9:16:9:34 | req.params.category | tst3.js:10:14:10:19 | query1 | This query depends on $@. | tst3.js:9:16:9:34 | req.params.category | a user-provided value |
+| tst3.js:9:14:9:19 | query1 | tst3.js:8:16:8:34 | req.params.category | tst3.js:9:14:9:19 | query1 | This query depends on $@. | tst3.js:8:16:8:34 | req.params.category | a user-provided value |
 | tst4.js:8:10:8:66 | 'SELECT ... d + '"' | tst4.js:8:46:8:60 | $routeParams.id | tst4.js:8:10:8:66 | 'SELECT ... d + '"' | This query depends on $@. | tst4.js:8:46:8:60 | $routeParams.id | a user-provided value |
 | tst.js:10:10:10:64 | 'SELECT ... d + '"' | tst.js:10:46:10:58 | req.params.id | tst.js:10:10:10:64 | 'SELECT ... d + '"' | This query depends on $@. | tst.js:10:46:10:58 | req.params.id | a user-provided value |

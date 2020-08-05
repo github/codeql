@@ -11,8 +11,17 @@ private float lowerBoundFC(Expr expr) { result = lowerBound(expr.getFullyConvert
 /** Gets the upper bound of the fully converted expression. */
 private float upperBoundFC(Expr expr) { result = upperBound(expr.getFullyConverted()) }
 
+/**
+ * Describes which side of a pointless comparison is known to be smaller.
+ */
 newtype SmallSide =
+  /**
+   * Represents that the left side of a pointless comparison is known to be smaller.
+   */
   LeftIsSmaller() or
+  /**
+   * Represents that the right side of a pointless comparison is known to be smaller.
+   */
   RightIsSmaller()
 
 /**

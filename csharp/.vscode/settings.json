@@ -1,0 +1,7 @@
+{
+    "dotnet-test-explorer.enableTelemetry": false,
+    "dotnet-test-explorer.testProjectPath": "**/*Tests.@(csproj|vbproj|fsproj)",
+    "dotnet-test-explorer.testArguments": "/property:GenerateTargetFrameworkAttribute=false",
+    "csharp.supressBuildAssetsNotification": true,
+    "csharp.suppressDotnetRestoreNotification": true
+}

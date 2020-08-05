@@ -21,7 +21,7 @@ private import Conversion
  *
  * Example:
  *
- * ```
+ * ```csharp
  * interface I { void M(); }
  *
  * class A { public void M() { } }
@@ -52,7 +52,7 @@ predicate implements(Virtualizable m1, Virtualizable m2, ValueOrRefType t) {
  *
  * Example:
  *
- * ```
+ * ```csharp
  * interface I { void M(); }
  *
  * class A { public void M() { } }
@@ -143,10 +143,10 @@ private predicate getACompatibleInterfaceAccessorAux(
  * of the interface `i`. Note that the class or struct need not be a
  * sub type of the interface in the inheritance hierarchy:
  *
- * ```
- * interface I { void M() }
+ * ```csharp
+ * interface I { void M(); }
  *
- * class A { public void M() }
+ * class A { public void M() { } }
  *
  * class B { }
  *

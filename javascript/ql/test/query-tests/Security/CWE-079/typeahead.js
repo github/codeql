@@ -7,7 +7,7 @@
     source: autocompleter.ttAdapter(),
     templates: {
       suggestion: function(loc) {
-        return loc; // NOT OK!
+        return loc; // NOT OK! - but not flagged due to not connecting the Bloodhound source with this sink [INCONSISTENCY]
       }
     }
   })

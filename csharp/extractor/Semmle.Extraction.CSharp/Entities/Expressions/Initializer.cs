@@ -74,7 +74,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     var typeInfoRight = cx.GetTypeInfo(assignment.Right);
                     if (typeInfoRight.Type is null)
                         // The type may be null for nested initializers such as
-                        // ```
+                        // ```csharp
                         // new ClassWithArrayField() { As = { [0] = a } }
                         // ```
                         // In this case we take the type from the assignment

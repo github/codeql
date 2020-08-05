@@ -209,7 +209,7 @@ predicate clearsContent(Node n, Content c) {
  * possible flow. A single type is used for all numeric types to account for
  * numeric conversions, and otherwise the erasure is used.
  */
-DataFlowType getErasedRepr(Type t) {
+private DataFlowType getErasedRepr(Type t) {
   exists(Type e | e = t.getErasure() |
     if e instanceof NumericOrCharType
     then result.(BoxedType).getPrimitiveType().getName() = "double"
@@ -221,6 +221,9 @@ DataFlowType getErasedRepr(Type t) {
   or
   t instanceof NullType and result instanceof TypeObject
 }
+
+pragma[noinline]
+DataFlowType getNodeType(Node n) { result = getErasedRepr(n.getTypeBound()) }
 
 /** Gets a string representation of a type returned by `getErasedRepr`. */
 string ppReprType(Type t) {
