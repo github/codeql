@@ -9,6 +9,7 @@ import semmle.go.frameworks.stdlib.Bufio
 import semmle.go.frameworks.stdlib.Bytes
 import semmle.go.frameworks.stdlib.CompressBzip2
 import semmle.go.frameworks.stdlib.CompressFlate
+import semmle.go.frameworks.stdlib.CompressGzip
 
 /** A `String()` method. */
 class StringMethod extends TaintTracking::FunctionModel, Method {
