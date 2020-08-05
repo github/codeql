@@ -145,6 +145,58 @@ class BarrierGuard extends Expr {
 /**
  * A reference contained in an object. This is either a field or a property.
  */
-class Content extends string {
-  Content() { this = "Content" }
+newtype TContent =
+  /** An element of a list. */
+  TListElementContent() or
+  /** An element of a set. */
+  TSetElementContent() or
+  /** An element of a tuple at a specifik index. */
+  TTupleElementContent(int index) { exists(IntegerLiteral lit | lit.getValue() = index) } or
+  /** An element of a dictionary under a specific key. */
+  TDictionaryElementContent(string key) { exists(StrConst s | s.getS() = key ) } or
+  /** An element of a dictionary at any key. */
+  TDictionaryElementAnyContent()
+
+class Content extends TContent {
+  /** Gets a textual representation of this element. */
+  string toString() { result = "Content" }
+}
+
+class ListElementContent extends TListElementContent, Content {
+  /** Gets a textual representation of this element. */
+  override string toString() { result = "List element" }
+}
+
+class SetElementContent extends TSetElementContent, Content {
+  /** Gets a textual representation of this element. */
+  override string toString() { result = "Set element" }
+}
+
+class TupleElementContent extends TTupleElementContent, Content {
+  int index;
+
+  TupleElementContent() { this = TTupleElementContent(index) }
+
+  /** Gets the index for this tuple element */
+  int getIndex() { result = index }
+
+  /** Gets a textual representation of this element. */
+  override string toString() { result = "Tuple element at " + index.toString() }
+}
+
+class DictionaryElementContent extends TDictionaryElementContent, Content {
+  string key;
+
+  DictionaryElementContent() { this = TDictionaryElementContent(key) }
+
+  /** Gets the index for this tuple element */
+  string getKey() { result = key }
+
+  /** Gets a textual representation of this element. */
+  override string toString() { result = "Dictionary element at " + key }
+}
+
+class DictionaryElementAnyContent extends TDictionaryElementAnyContent, Content {
+  /** Gets a textual representation of this element. */
+  override string toString() { result = "Any dictionary element" }
 }

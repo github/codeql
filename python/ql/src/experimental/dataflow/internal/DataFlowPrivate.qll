@@ -230,13 +230,35 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   //   `[..., 42, ...]`
   //   nodeFrom is `42`, cfg node
   //   nodeTo is the sequence, say `[..., 42, ...]`, cfg node
-  nodeTo.(CfgNode).getNode().(SequenceNode).getAnElement() = nodeFrom.(CfgNode).getNode()
+  //
+  // List
+  nodeTo.(CfgNode).getNode().(ListNode).getAnElement() = nodeFrom.(CfgNode).getNode() and
+  c instanceof ListElementContent
   or
+  // Tuple
+  exists(int n |
+    nodeTo.(CfgNode).getNode().(TupleNode).getNode().(Tuple).getElt(n) = nodeFrom.(CfgNode).getNode().getNode() and
+    c.(TupleElementContent).getIndex() = n and
+    nodeFrom.(CfgNode).getNode().(NameNode).getId() = "SOURCE"
+  )
+  or
+  //
   // Comprehension
   //   `[x+1 for x in l]`
   //   nodeFrom is `x+1`, cfg node
   //   nodeTo is `[x+1 for x in l]`, cfg node
-  nodeTo.(CfgNode).getNode().getNode().(Comp).getElt() = nodeFrom.(CfgNode).getNode().getNode()
+  //
+  // List
+  nodeTo.(CfgNode).getNode().getNode().(ListComp).getElt() = nodeFrom.(CfgNode).getNode().getNode() and
+  c instanceof ListElementContent
+  or
+  // Set
+  nodeTo.(CfgNode).getNode().getNode().(SetComp).getElt() = nodeFrom.(CfgNode).getNode().getNode() and
+  c instanceof SetElementContent
+  or
+  // Dictionary
+  nodeTo.(CfgNode).getNode().getNode().(DictComp).getElt() = nodeFrom.(CfgNode).getNode().getNode() and
+  c instanceof DictionaryElementAnyContent
 }
 
 /**
@@ -247,7 +269,18 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   //   `l[3]`
   //   nodeFrom is `l`, cfg node
   //   nodeTo is `l[3]`, cfg node
-  nodeFrom.(CfgNode).getNode() = nodeTo.(CfgNode).getNode().(SubscriptNode).getObject()
+  nodeFrom.(CfgNode).getNode() = nodeTo.(CfgNode).getNode().(SubscriptNode).getObject() and
+  (
+    c instanceof ListElementContent
+    or
+    c instanceof SetElementContent
+    or
+    c instanceof DictionaryElementAnyContent
+    or
+    c.(TupleElementContent).getIndex() = nodeTo.(CfgNode).getNode().(SubscriptNode).getIndex().getNode().(IntegerLiteral).getValue()
+    or
+    c.(DictionaryElementContent).getKey() = nodeTo.(CfgNode).getNode().(SubscriptNode).getIndex().getNode().(StrConst).getS()
+  )
   or
   // set.pop
   //   `s.pop()`
@@ -257,7 +290,12 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
     call.getFunction() = a and
     a.getName() = "pop" and // TODO: Should be made more robust, like Value::named("set.pop").getACall()
     nodeFrom.(CfgNode).getNode() = a.getObject() and
-    nodeTo.(CfgNode).getNode() = call
+    nodeTo.(CfgNode).getNode() = call and
+    (
+      c instanceof ListElementContent
+      or
+      c instanceof SetElementContent
+    )
   )
   or
   // Comprehension

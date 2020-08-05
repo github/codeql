@@ -28,7 +28,7 @@ def test_tuple_with_local_flow():
 def test_tuple_negative():
     x = (NONSOURCE, SOURCE)
     y = x[0]
-    SINK_F(y) # False positive
+    SINK_F(y)
 
 # 6.2.1. Identifiers (Names)
 def test_names():
