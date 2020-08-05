@@ -64,6 +64,13 @@ class Stmt extends @stmt, ExprOrStmt, Documentable {
   }
 }
 
+private class TControlStmt =
+  TLoopStmt or @ifstmt or @withstmt or @switchstmt or @trystmt or @catchclause;
+
+private class TLoopStmt = TEnhancedForLoop or @whilestmt or @dowhilestmt or @forstmt;
+
+private class TEnhancedForLoop = @forinstmt or @foreachstmt or @forofstmt;
+
 /**
  * A control statement, that is, is a loop, an if statement, a switch statement,
  * a with statement, a try statement, or a catch clause.
@@ -82,7 +89,7 @@ class Stmt extends @stmt, ExprOrStmt, Documentable {
  * }
  * ```
  */
-abstract class ControlStmt extends Stmt {
+class ControlStmt extends TControlStmt, Stmt {
   /** Gets a statement controlled by this control statement. */
   abstract Stmt getAControlledStmt();
 }
@@ -102,7 +109,7 @@ abstract class ControlStmt extends Stmt {
  * } while(++i < lines.length);
  * ```
  */
-abstract class LoopStmt extends ControlStmt {
+class LoopStmt extends TLoopStmt, ControlStmt {
   /** Gets the body of this loop. */
   abstract Stmt getBody();
 
@@ -801,7 +808,7 @@ class ForStmt extends @forstmt, LoopStmt {
  * }
  * ```
  */
-abstract class EnhancedForLoop extends LoopStmt {
+class EnhancedForLoop extends TEnhancedForLoop, LoopStmt {
   /**
    * Gets the iterator of this `for`-`in` or `for`-`of` loop; this can be either a
    * pattern, a property reference, or a variable declaration statement.
