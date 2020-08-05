@@ -1,3 +1,12 @@
+/**
+ * Provides queries to pretty-print a C# AST as a graph.
+ *
+ * By default, this will print the AST for all elements in the database. To change this behavior,
+ * extend `PrintAstConfiguration` and override `shouldPrint` to hold for only the elements
+ * you wish to view the AST for, or override `selectedFile` to hold for only the files you
+ * are interested in.
+ */
+
 import csharp
 
 private newtype TPrintAstConfiguration = MkPrintAstConfiguration()
