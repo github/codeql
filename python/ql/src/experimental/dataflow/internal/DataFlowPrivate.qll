@@ -150,11 +150,12 @@ class DataFlowClassValue extends DataFlowCallable, TClassValue {
 
   override Scope getScope() { result = c.getScope() }
 
-  override NameNode getParameter(int n) { result.getNode() = c.getScope().getInitMethod().getArg(n+1).asName() }
+  override NameNode getParameter(int n) {
+    result.getNode() = c.getScope().getInitMethod().getArg(n + 1).asName()
+  }
 
   override string getName() { result = c.getName() }
 }
-
 
 /** Represents a call to a callable */
 class DataFlowCall extends CallNode {
