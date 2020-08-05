@@ -34,10 +34,6 @@ module CompressGzip {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*Reader).Read(p []byte) (n int, err error)
-      this.hasQualifiedName("compress/gzip", "Reader", "Read") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
       // signature: func (*Reader).Reset(r io.Reader) error
       this.hasQualifiedName("compress/gzip", "Reader", "Reset") and
       (inp.isParameter(0) and outp.isReceiver())
