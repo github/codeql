@@ -507,6 +507,119 @@ module Path {
   }
 }
 
+/**
+ * Provides classes for some functions in the `strconv` package for
+ * converting strings to numbers.
+ */
+module StrConv {
+  /** A function that parses integers. */
+  class Atoi extends Function {
+    Atoi() { this.hasQualifiedName("strconv", "Atoi") }
+  }
+
+  /** A function that parses floating-point numbers. */
+  class ParseFloat extends Function {
+    ParseFloat() { this.hasQualifiedName("strconv", "ParseFloat") }
+  }
+
+  /** A function that parses integers with a specifiable bitSize. */
+  class ParseInt extends Function {
+    ParseInt() { this.hasQualifiedName("strconv", "ParseInt") }
+  }
+
+  /** A function that parses unsigned integers with a specifiable bitSize. */
+  class ParseUint extends Function {
+    ParseUint() { this.hasQualifiedName("strconv", "ParseUint") }
+  }
+
+  /**
+   * A constant that gives the size in bits of an int or uint
+   * value on the current architecture (32 or 64).
+   */
+  class IntSize extends DeclaredConstant {
+    IntSize() { this.hasQualifiedName("strconv", "IntSize") }
+  }
+}
+
+/** Provides a class for modeling calls to number-parsing functions. */
+module ParserCall {
+  /** A data-flow call node that parses a number. */
+  abstract class Range extends DataFlow::CallNode {
+    /** Gets the bit size of the type of the result number. */
+    abstract int getTargetBitSize();
+
+    /** Holds if the type of the result number is signed. */
+    abstract boolean getTargetIsSigned();
+
+    /** Gets the name of the parser function. */
+    abstract string getParserName();
+  }
+}
+
+/** A call to a number-parsing function */
+class ParserCall extends DataFlow::CallNode {
+  ParserCall::Range self;
+
+  ParserCall() { this = self }
+
+  /** Gets the bit size of the type of the result number. */
+  int getTargetBitSize() { result = self.getTargetBitSize() }
+
+  /** Holds if the type of the result number is signed. */
+  boolean getTargetIsSigned() { result = self.getTargetIsSigned() }
+
+  /** Gets the name of the parser function. */
+  string getParserName() { result = self.getParserName() }
+
+  /** Gets a string describing the size of the integer parsed. */
+  string getBitSizeString() {
+    if getTargetBitSize() != 0
+    then result = "a " + getTargetBitSize() + "-bit integer"
+    else result = "an integer with architecture-dependent bit-width"
+  }
+}
+
+/** A call to `strconv.Atoi` */
+class AtoiCall extends DataFlow::CallNode, ParserCall::Range {
+  AtoiCall() { exists(StrConv::Atoi atoi | this = atoi.getACall()) }
+
+  override int getTargetBitSize() { result = 0 }
+
+  override boolean getTargetIsSigned() { result = true }
+
+  override string getParserName() { result = "strconv.Atoi" }
+}
+
+/** A call to `strconv.ParseInt` */
+class ParseIntCall extends DataFlow::CallNode, ParserCall::Range {
+  ParseIntCall() { exists(StrConv::ParseInt parseInt | this = parseInt.getACall()) }
+
+  override int getTargetBitSize() {
+    if exists(StrConv::IntSize intSize | this.getArgument(2).(DataFlow::ReadNode).reads(intSize))
+    then result = 0
+    else result = this.getArgument(2).getIntValue()
+  }
+
+  override boolean getTargetIsSigned() { result = true }
+
+  override string getParserName() { result = "strconv.ParseInt" }
+}
+
+/** A call to `strconv.ParseUint` */
+class ParseUintCall extends DataFlow::CallNode, ParserCall::Range {
+  ParseUintCall() { exists(StrConv::ParseUint parseUint | this = parseUint.getACall()) }
+
+  override int getTargetBitSize() {
+    if exists(StrConv::IntSize intSize | this.getArgument(2).(DataFlow::ReadNode).reads(intSize))
+    then result = 0
+    else result = this.getArgument(2).getIntValue()
+  }
+
+  override boolean getTargetIsSigned() { result = false }
+
+  override string getParserName() { result = "strconv.ParseUint" }
+}
+
 /** Provides models of commonly used functions in the `strings` package. */
 module Strings {
   /** The `Join` function. */
