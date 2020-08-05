@@ -648,6 +648,8 @@ class Enum extends ValueType, @enum_type {
   EnumConstant getEnumConstant(string value) {
     result = this.getAnEnumConstant() and result.getValue() = value
   }
+
+  override string getAPrimaryQlClass() { result = "Enum" }
 }
 
 /**
