@@ -13,25 +13,30 @@ abstract class LdapInjectionSink extends DataFlow::Node { }
 /** A sanitizer that prevents LDAP injection attacks. */
 abstract class LdapInjectionSanitizer extends DataFlow::Node { }
 
+/** Default sink for LDAP injection vulnerabilities. */
+private class DefaultLdapInjectionSink extends LdapInjectionSink {
+  DefaultLdapInjectionSink() {
+    exists(MethodAccess ma, Method m, int index |
+      ma.getMethod() = m and
+      ma.getArgument(index) = this.asExpr() and
+      ldapInjectionSinkMethod(m, index)
+    )
+  }
+}
+
+/** Holds if the method parameter at index is susceptible to a LDAP injection attack. */
+private predicate ldapInjectionSinkMethod(Method m, int index) {
+  jndiLdapInjectionSinkMethod(m, index) or
+  unboundIdLdapInjectionSinkMethod(m, index) or
+  springLdapInjectionSinkMethod(m, index) or
+  apacheLdapInjectionSinkMethod(m, index)
+}
+
 /** Holds if the JNDI method parameter at index is susceptible to a LDAP injection attack. */
 private predicate jndiLdapInjectionSinkMethod(Method m, int index) {
   m.getDeclaringType().getAnAncestor() instanceof TypeDirContext and
   m.hasName("search") and
   index in [0 .. 1]
-}
-
-/**
- * JNDI sink for LDAP injection vulnerabilities, i.e. 1st (DN) or 2nd (filter) argument to
- * `search` method from `DirContext`.
- */
-private class JndiLdapInjectionSink extends LdapInjectionSink {
-  JndiLdapInjectionSink() {
-    exists(MethodAccess ma, Method m, int index |
-      ma.getMethod() = m and
-      ma.getArgument(index) = this.asExpr() and
-      jndiLdapInjectionSinkMethod(m, index)
-    )
-  }
 }
 
 /** Holds if the UnboundID method parameter at `index` is susceptible to a LDAP injection attack. */
@@ -41,20 +46,6 @@ private predicate unboundIdLdapInjectionSinkMethod(Method m, int index) {
     m instanceof MethodUnboundIdLDAPConnectionAsyncSearch or
     m instanceof MethodUnboundIdLDAPConnectionSearchForEntry
   )
-}
-
-/**
- * UnboundID sink for LDAP injection vulnerabilities,
- * i.e. LDAPConnection.search, LDAPConnection.asyncSearch or LDAPConnection.searchForEntry method.
- */
-private class UnboundedIdLdapInjectionSink extends LdapInjectionSink {
-  UnboundedIdLdapInjectionSink() {
-    exists(MethodAccess ma, Method m, int index |
-      ma.getMethod() = m and
-      ma.getArgument(index) = this.asExpr() and
-      unboundIdLdapInjectionSinkMethod(m, index)
-    )
-  }
 }
 
 /** Holds if the Spring method parameter at `index` is susceptible to a LDAP injection attack. */
@@ -80,37 +71,12 @@ private predicate springLdapInjectionSinkMethod(Method m, int index) {
   )
 }
 
-/**
- * Spring LDAP sink for LDAP injection vulnerabilities,
- * i.e. LdapTemplate.authenticate, LdapTemplate.find* or LdapTemplate.search* method.
- */
-private class SpringLdapInjectionSink extends LdapInjectionSink {
-  SpringLdapInjectionSink() {
-    exists(MethodAccess ma, Method m, int index |
-      ma.getMethod() = m and
-      ma.getArgument(index) = this.asExpr() and
-      springLdapInjectionSinkMethod(m, index)
-    )
-  }
-}
-
 /** Holds if the Apache LDAP API method parameter at `index` is susceptible to a LDAP injection attack. */
 private predicate apacheLdapInjectionSinkMethod(Method m, int index) {
   exists(Parameter param | m.getParameter(index) = param and not param.isVarargs() |
     m.getDeclaringType().getAnAncestor() instanceof TypeApacheLdapConnection and
     m.hasName("search")
   )
-}
-
-/** Apache LDAP API sink for LDAP injection vulnerabilities, i.e. LdapConnection.search method. */
-private class ApacheLdapInjectionSink extends LdapInjectionSink {
-  ApacheLdapInjectionSink() {
-    exists(MethodAccess ma, Method m, int index |
-      ma.getMethod() = m and
-      ma.getArgument(index) = this.asExpr() and
-      apacheLdapInjectionSinkMethod(m, index)
-    )
-  }
 }
 
 /** A sanitizer that clears the taint on primitive types. */
