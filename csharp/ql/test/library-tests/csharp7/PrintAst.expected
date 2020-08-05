@@ -733,7 +733,7 @@ CSharp7.cs:
 #  256|               0: [StringLiteral] "x "
 #  256|               1: [LocalVariableAccess] access to local variable s4
 #  257|         6: [BreakStmt] break;
-#  258|         7: [CaseStmt,LabeledStmt] case ...:
+#  258|         7: [CaseStmt] case ...:
 #  258|           0: [VariablePatternExpr] Int32 i2
 #  258|           1: [GTExpr] ... > ...
 #  258|             0: [LocalVariableAccess] access to local variable i2
@@ -745,7 +745,7 @@ CSharp7.cs:
 #  259|               0: [StringLiteral] "positive "
 #  259|               1: [LocalVariableAccess] access to local variable i2
 #  260|         9: [BreakStmt] break;
-#  261|         10: [CaseStmt,LabeledStmt] case ...:
+#  261|         10: [CaseStmt] case ...:
 #  261|           0: [VariablePatternExpr] Int32 i3
 #  262|         11: [ExprStmt] ...;
 #  262|           0: [MethodCall] call to method WriteLine
@@ -754,7 +754,7 @@ CSharp7.cs:
 #  262|               0: [StringLiteral] "int "
 #  262|               1: [LocalVariableAccess] access to local variable i3
 #  263|         12: [BreakStmt] break;
-#  264|         13: [CaseStmt,LabeledStmt] case ...:
+#  264|         13: [CaseStmt] case ...:
 #  264|           0: [VariablePatternExpr] String s2
 #  265|         14: [ExprStmt] ...;
 #  265|           0: [MethodCall] call to method WriteLine
@@ -763,14 +763,14 @@ CSharp7.cs:
 #  265|               0: [StringLiteral] "string "
 #  265|               1: [LocalVariableAccess] access to local variable s2
 #  266|         15: [BreakStmt] break;
-#  267|         16: [CaseStmt,LabeledStmt] case ...:
+#  267|         16: [CaseStmt] case ...:
 #  267|           0: [TypeAccessPatternExpr] access to type Double
 #  268|         17: [ExprStmt] ...;
 #  268|           0: [MethodCall] call to method WriteLine
 #  268|             -1: [TypeAccess] access to type Console
 #  268|             0: [StringLiteral] "Double"
 #  269|         18: [BreakStmt] break;
-#  270|         19: [CaseStmt,LabeledStmt] case ...:
+#  270|         19: [CaseStmt] case ...:
 #  270|           0: [VariablePatternExpr] Object v2
 #  271|         20: [BreakStmt] break;
 #  272|         21: [DefaultCase] default:

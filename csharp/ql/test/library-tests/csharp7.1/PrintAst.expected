@@ -19,7 +19,7 @@ csharp71.cs:
 #    9|         1: [EmptyStmt] ;
 #   10|       2: [SwitchStmt] switch (...) {...}
 #   10|         0: [LocalVariableAccess] access to local variable x
-#   12|         0: [CaseStmt,LabeledStmt] case ...:
+#   12|         0: [CaseStmt] case ...:
 #   12|           0: [DiscardPatternExpr] _
 #   12|         1: [BreakStmt] break;
 #   14|       3: [ExprStmt] ...;

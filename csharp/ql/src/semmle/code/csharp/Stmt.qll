@@ -1378,7 +1378,7 @@ class FixedStmt extends Stmt, @fixed_stmt {
  * exit: ...
  * ```
  */
-class LabelStmt extends LabeledStmt, @label_stmt { 
+class LabelStmt extends LabeledStmt, @label_stmt {
   override string getAPrimaryQlClass() { result = "LabelStmt" }
 }
 
@@ -1409,8 +1409,6 @@ class LabeledStmt extends Stmt, @labeled_stmt {
   string getLabel() { exprorstmt_name(this, result) }
 
   override string toString() { result = this.getLabel() + ":" }
-
-  override string getAPrimaryQlClass() { result = "LabeledStmt" }
 }
 
 /**

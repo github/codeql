@@ -466,13 +466,13 @@ definitions.cs:
 
 #  213| [SwitchStmt] switch (...) {...}
 #-----| 0 -> [LocalVariableAccess] access to local variable c8a
-#-----| 0 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 0 -> [CaseStmt] case ...:
 #-----| 1 -> [ExprStmt] ...;
 #-----| 2 -> [BreakStmt] break;
 
 #  213| [LocalVariableAccess] access to local variable c8a
 
-#  215| [CaseStmt,LabeledStmt] case ...:
+#  215| [CaseStmt] case ...:
 #-----| 0 -> [VariablePatternExpr] C8 c8c
 #-----| 1 -> [NEExpr] ... != ...
 
@@ -1189,6 +1189,36 @@ definitions.cs:
 
 #  106| [BlockStmt] {...}
 
+#-----| (Attributes)
+#-----| 1 -> [Attribute] [My(...)]
+
+#-----| (TypeParameters)
+#-----| 0 -> [TypeParameter] T
+
+#-----| (TypeParameters)
+#-----| 0 -> [TypeParameter] T
+
+#-----| (TypeParameters)
+#-----| 0 -> [TypeParameter] T
+
+#-----| (TypeParameters)
+#-----| 0 -> [TypeParameter] T2
+
+#-----| (TypeParameters)
+#-----| 0 -> [TypeParameter] T
+
+#-----| (TypeParameters)
+#-----| 0 -> [TypeParameter] T
+
+#-----| (TypeParameters)
+#-----| 0 -> [TypeParameter] T2
+
+#-----| (TypeParameters)
+#-----| 0 -> [TypeParameter] T
+
+#-----| (TypeParameters)
+#-----| 0 -> [TypeParameter] T
+
 #-----| (Parameters)
 #-----| 0 -> [Parameter] c1
 #-----| 1 -> [Parameter] args
@@ -1262,33 +1292,3 @@ definitions.cs:
 
 #-----| (Parameters)
 #-----| 0 -> [Parameter] value
-
-#-----| (Attributes)
-#-----| 1 -> [Attribute] [My(...)]
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T2
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T2
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T

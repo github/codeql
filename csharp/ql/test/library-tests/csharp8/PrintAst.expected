@@ -1800,16 +1800,16 @@ patterns.cs:
 
 #   36| [SwitchStmt] switch (...) {...}
 #-----| 0 -> [LocalVariableAccess] access to local variable s
-#-----| 0 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 0 -> [CaseStmt] case ...:
 #-----| 1 -> [ExprStmt] ...;
 #-----| 2 -> [BreakStmt] break;
-#-----| 3 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 3 -> [CaseStmt] case ...:
 #-----| 4 -> [ExprStmt] ...;
 #-----| 5 -> [BreakStmt] break;
 
 #   36| [LocalVariableAccess] access to local variable s
 
-#   38| [CaseStmt,LabeledStmt] case ...:
+#   38| [CaseStmt] case ...:
 #-----| 0 -> [VariablePatternExpr] MyStruct ms1
 #-----| 1 -> [EQExpr] ... == ...
 
@@ -1832,7 +1832,7 @@ patterns.cs:
 
 #   40| [BreakStmt] break;
 
-#   41| [CaseStmt,LabeledStmt] case ...:
+#   41| [CaseStmt] case ...:
 #-----| 0 -> [VariablePatternExpr] MyStruct ms2
 #-----| 1 -> [LTExpr] ... < ...
 
@@ -1857,25 +1857,25 @@ patterns.cs:
 
 #   46| [SwitchStmt] switch (...) {...}
 #-----| 0 -> [LocalVariableAccess] access to local variable s
-#-----| 0 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 0 -> [CaseStmt] case ...:
 #-----| 1 -> [ExprStmt] ...;
 #-----| 2 -> [BreakStmt] break;
-#-----| 3 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 3 -> [CaseStmt] case ...:
 #-----| 4 -> [ExprStmt] ...;
 #-----| 5 -> [BreakStmt] break;
-#-----| 6 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 6 -> [CaseStmt] case ...:
 #-----| 7 -> [ExprStmt] ...;
 #-----| 8 -> [BreakStmt] break;
-#-----| 9 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 9 -> [CaseStmt] case ...:
 #-----| 10 -> [BreakStmt] break;
-#-----| 11 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 11 -> [CaseStmt] case ...:
 #-----| 12 -> [BreakStmt] break;
 #-----| 13 -> [DefaultCase] default:
 #-----| 14 -> [BreakStmt] break;
 
 #   46| [LocalVariableAccess] access to local variable s
 
-#   48| [CaseStmt,LabeledStmt] case ...:
+#   48| [CaseStmt] case ...:
 #-----| 0 -> [RecursivePatternExpr] { ... }
 #-----| 1 -> [GTExpr] ... > ...
 
@@ -1907,7 +1907,7 @@ patterns.cs:
 
 #   50| [BreakStmt] break;
 
-#   51| [CaseStmt,LabeledStmt] case ...:
+#   51| [CaseStmt] case ...:
 #-----| 0 -> [RecursivePatternExpr] { ... }
 
 #   51| [RecursivePatternExpr] { ... }
@@ -1937,7 +1937,7 @@ patterns.cs:
 
 #   53| [BreakStmt] break;
 
-#   54| [CaseStmt,LabeledStmt] case ...:
+#   54| [CaseStmt] case ...:
 #-----| 0 -> [RecursivePatternExpr] { ... }
 #-----| 1 -> [GTExpr] ... > ...
 
@@ -1966,7 +1966,7 @@ patterns.cs:
 
 #   56| [BreakStmt] break;
 
-#   57| [CaseStmt,LabeledStmt] case ...:
+#   57| [CaseStmt] case ...:
 #-----| 0 -> [RecursivePatternExpr] { ... }
 
 #   57| [RecursivePatternExpr] { ... }
@@ -1982,7 +1982,7 @@ patterns.cs:
 
 #   58| [BreakStmt] break;
 
-#   59| [CaseStmt,LabeledStmt] case ...:
+#   59| [CaseStmt] case ...:
 #-----| 0 -> [TupleExpr] (..., ...)
 
 #   59| [TupleExpr] (..., ...)
@@ -2001,16 +2001,16 @@ patterns.cs:
 
 #   65| [SwitchStmt] switch (...) {...}
 #-----| 0 -> [LocalVariableAccess] access to local variable s
-#-----| 0 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 0 -> [CaseStmt] case ...:
 #-----| 1 -> [ExprStmt] ...;
 #-----| 2 -> [BreakStmt] break;
-#-----| 3 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 3 -> [CaseStmt] case ...:
 #-----| 4 -> [ExprStmt] ...;
 #-----| 5 -> [BreakStmt] break;
 
 #   65| [LocalVariableAccess] access to local variable s
 
-#   67| [CaseStmt,LabeledStmt] case ...:
+#   67| [CaseStmt] case ...:
 #-----| 0 -> [RecursivePatternExpr] { ... }
 #-----| 1 -> [GTExpr] ... > ...
 
@@ -2042,7 +2042,7 @@ patterns.cs:
 
 #   69| [BreakStmt] break;
 
-#   70| [CaseStmt,LabeledStmt] case ...:
+#   70| [CaseStmt] case ...:
 #-----| 0 -> [RecursivePatternExpr] { ... }
 #-----| 1 -> [EQExpr] ... == ...
 
@@ -2079,16 +2079,16 @@ patterns.cs:
 
 #   76| [SwitchStmt] switch (...) {...}
 #-----| 0 -> [ObjectCreation] object creation of type Object
-#-----| 0 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 0 -> [CaseStmt] case ...:
 #-----| 1 -> [BreakStmt] break;
-#-----| 2 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 2 -> [CaseStmt] case ...:
 #-----| 3 -> [BreakStmt] break;
-#-----| 4 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 4 -> [CaseStmt] case ...:
 #-----| 5 -> [BreakStmt] break;
 
 #   76| [ObjectCreation] object creation of type Object
 
-#   78| [CaseStmt,LabeledStmt] case ...:
+#   78| [CaseStmt] case ...:
 #-----| 0 -> [RecursivePatternExpr] { ... }
 #-----| 1 -> [LTExpr] ... < ...
 
@@ -2109,7 +2109,7 @@ patterns.cs:
 
 #   79| [BreakStmt] break;
 
-#   80| [CaseStmt,LabeledStmt] case ...:
+#   80| [CaseStmt] case ...:
 #-----| 0 -> [RecursivePatternExpr] { ... }
 
 #   80| [RecursivePatternExpr] { ... }
@@ -2119,7 +2119,7 @@ patterns.cs:
 
 #   81| [BreakStmt] break;
 
-#   82| [CaseStmt,LabeledStmt] case ...:
+#   82| [CaseStmt] case ...:
 #-----| 0 -> [RecursivePatternExpr] { ... }
 
 #   82| [RecursivePatternExpr] { ... }
@@ -2131,7 +2131,7 @@ patterns.cs:
 
 #   86| [SwitchStmt] switch (...) {...}
 #-----| 0 -> [TupleExpr] (..., ...)
-#-----| 0 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 0 -> [CaseStmt] case ...:
 #-----| 1 -> [BreakStmt] break;
 
 #   86| [TupleExpr] (..., ...)
@@ -2150,7 +2150,7 @@ patterns.cs:
 
 #   86| [IntLiteral] 2
 
-#   88| [CaseStmt,LabeledStmt] case ...:
+#   88| [CaseStmt] case ...:
 #-----| 0 -> [RecursivePatternExpr] { ... }
 
 #   88| [RecursivePatternExpr] { ... }
@@ -2168,9 +2168,9 @@ patterns.cs:
 
 #   91| [SwitchStmt] switch (...) {...}
 #-----| 0 -> [TupleExpr] (..., ...)
-#-----| 0 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 0 -> [CaseStmt] case ...:
 #-----| 1 -> [BreakStmt] break;
-#-----| 2 -> [CaseStmt,LabeledStmt] case ...:
+#-----| 2 -> [CaseStmt] case ...:
 #-----| 3 -> [BreakStmt] break;
 
 #   91| [TupleExpr] (..., ...)
@@ -2181,7 +2181,7 @@ patterns.cs:
 
 #   91| [IntLiteral] 2
 
-#   93| [CaseStmt,LabeledStmt] case ...:
+#   93| [CaseStmt] case ...:
 #-----| 0 -> [RecursivePatternExpr] { ... }
 
 #   93| [RecursivePatternExpr] { ... }
@@ -2197,7 +2197,7 @@ patterns.cs:
 
 #   93| [BreakStmt] break;
 
-#   94| [CaseStmt,LabeledStmt] case ...:
+#   94| [CaseStmt] case ...:
 #-----| 0 -> [RecursivePatternExpr] { ... }
 
 #   94| [RecursivePatternExpr] { ... }
