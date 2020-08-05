@@ -522,18 +522,18 @@ module StrConv {
     ParseFloat() { this.hasQualifiedName("strconv", "ParseFloat") }
   }
 
-  /** A function that parses integers with a specifiable bitSize. */
+  /** A function that parses integers with a specifiable bit size. */
   class ParseInt extends Function {
     ParseInt() { this.hasQualifiedName("strconv", "ParseInt") }
   }
 
-  /** A function that parses unsigned integers with a specifiable bitSize. */
+  /** A function that parses unsigned integers with a specifiable bit size. */
   class ParseUint extends Function {
     ParseUint() { this.hasQualifiedName("strconv", "ParseUint") }
   }
 
   /**
-   * A constant that gives the size in bits of an int or uint
+   * A constant that gives the size in bits of an `int` or `uint`
    * value on the current architecture (32 or 64).
    */
   class IntSize extends DeclaredConstant {
@@ -549,14 +549,14 @@ module ParserCall {
     abstract int getTargetBitSize();
 
     /** Holds if the type of the result number is signed. */
-    abstract boolean getTargetIsSigned();
+    abstract predicate targetIsSigned();
 
     /** Gets the name of the parser function. */
     abstract string getParserName();
   }
 }
 
-/** A call to a number-parsing function */
+/** A call to a number-parsing function. */
 class ParserCall extends DataFlow::CallNode {
   ParserCall::Range self;
 
@@ -566,7 +566,7 @@ class ParserCall extends DataFlow::CallNode {
   int getTargetBitSize() { result = self.getTargetBitSize() }
 
   /** Holds if the type of the result number is signed. */
-  boolean getTargetIsSigned() { result = self.getTargetIsSigned() }
+  predicate targetIsSigned() { self.targetIsSigned() }
 
   /** Gets the name of the parser function. */
   string getParserName() { result = self.getParserName() }
@@ -579,18 +579,18 @@ class ParserCall extends DataFlow::CallNode {
   }
 }
 
-/** A call to `strconv.Atoi` */
+/** A call to `strconv.Atoi`. */
 class AtoiCall extends DataFlow::CallNode, ParserCall::Range {
   AtoiCall() { exists(StrConv::Atoi atoi | this = atoi.getACall()) }
 
   override int getTargetBitSize() { result = 0 }
 
-  override boolean getTargetIsSigned() { result = true }
+  override predicate targetIsSigned() { any() }
 
   override string getParserName() { result = "strconv.Atoi" }
 }
 
-/** A call to `strconv.ParseInt` */
+/** A call to `strconv.ParseInt`. */
 class ParseIntCall extends DataFlow::CallNode, ParserCall::Range {
   ParseIntCall() { exists(StrConv::ParseInt parseInt | this = parseInt.getACall()) }
 
@@ -600,12 +600,12 @@ class ParseIntCall extends DataFlow::CallNode, ParserCall::Range {
     else result = this.getArgument(2).getIntValue()
   }
 
-  override boolean getTargetIsSigned() { result = true }
+  override predicate targetIsSigned() { any() }
 
   override string getParserName() { result = "strconv.ParseInt" }
 }
 
-/** A call to `strconv.ParseUint` */
+/** A call to `strconv.ParseUint`. */
 class ParseUintCall extends DataFlow::CallNode, ParserCall::Range {
   ParseUintCall() { exists(StrConv::ParseUint parseUint | this = parseUint.getACall()) }
 
@@ -615,7 +615,7 @@ class ParseUintCall extends DataFlow::CallNode, ParserCall::Range {
     else result = this.getArgument(2).getIntValue()
   }
 
-  override boolean getTargetIsSigned() { result = false }
+  override predicate targetIsSigned() { none() }
 
   override string getParserName() { result = "strconv.ParseUint" }
 }

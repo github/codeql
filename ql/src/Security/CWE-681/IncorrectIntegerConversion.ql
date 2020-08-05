@@ -64,7 +64,7 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) {
     exists(ParserCall pc, int bitSize | source = pc.getResult(0) |
-      sourceIsSigned = pc.getTargetIsSigned() and
+      (if pc.targetIsSigned() then sourceIsSigned = true else sourceIsSigned = false) and
       (if pc.getTargetBitSize() = 0 then bitSize = 0 else bitSize = pc.getTargetBitSize()) and
       // `bitSize` could be any value between 0 and 64, but we can round
       // it up to the nearest size of an integer type without changing
@@ -74,7 +74,7 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
   }
 
   /**
-   * Holds if sink is a typecast to an integer type with size `bitSize` (where
+   * Holds if `sink` is a typecast to an integer type with size `bitSize` (where
    * 0 represents architecture-dependent) and the expression being typecast is
    * not also in a right-shift expression.
    */
