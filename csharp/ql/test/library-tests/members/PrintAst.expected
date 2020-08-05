@@ -182,7 +182,3 @@ Members.cs:
 #   73|   7: [Enum] Enum2
 #   76|   8: [Struct] Struct
 #   78|   9: [Struct] Struct2
-#    3| [Parameter] sender
-#    3| [Parameter] e
-#    3| [Parameter] sender
-#    3| [Parameter] e

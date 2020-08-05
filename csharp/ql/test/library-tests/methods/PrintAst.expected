@@ -421,20 +421,6 @@ methods.cs:
 
 #  162| [Parameter] value
 
-#  157| [Parameter] a
-
-#  157| [Parameter] b
-#-----| 1 -> [IntLiteral] 12
-
-#  157| [Parameter] c
-#-----| 1 -> [ObjectCreation] object creation of type Double
-
-#  157| [Parameter] a
-
-#  157| [Parameter] b
-
-#  157| [Parameter] c
-
 #  166| [Class] TestDefaultExtensionParameters
 #-----| 1 -> [ExtensionMethod] Plus
 #-----| 2 -> [ExtensionMethod] SkipTwo
@@ -1044,6 +1030,15 @@ methods.cs:
 
 #  111| [ParameterAccess] access to parameter index
 
+#-----| (TypeParameters)
+#-----| 0 -> [TypeParameter] T
+
+#-----| (TypeParameters)
+#-----| 0 -> [TypeParameter] T
+
+#-----| (TypeParameters)
+#-----| 0 -> [TypeParameter] T
+
 #-----| (Parameters)
 #-----| 0 -> [Parameter] x
 #-----| 1 -> [Parameter] y
@@ -1152,12 +1147,3 @@ methods.cs:
 #-----| (Parameters)
 #-----| 0 -> [Parameter] list
 #-----| 1 -> [Parameter] i
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T

@@ -1574,16 +1574,8 @@ expressions.cs:
 
 #  202| [TypeParameter] T
 
-#  202| [Parameter] value
-
-#  202| [Parameter] value
-
 #  204| [DelegateType] D
 #-----| 0 -> (Parameters)
-
-#  204| [Parameter] x
-
-#  204| [Parameter] x
 
 #  206| [Class] C
 #-----| 2 -> [Method] M1
@@ -1634,14 +1626,6 @@ expressions.cs:
 
 #  224| [DelegateType] EventHandler
 #-----| 0 -> (Parameters)
-
-#  224| [Parameter] sender
-
-#  224| [Parameter] e
-
-#  224| [Parameter] sender
-
-#  224| [Parameter] e
 
 #  226| [Class] Button
 #-----| 2 -> [Event] Click
@@ -2831,14 +2815,6 @@ expressions.cs:
 #  435| [Method] MainAnonymousFunctions
 #-----| 3 -> [BlockStmt] {...}
 
-#  432| [Parameter] x
-
-#  432| [Parameter] y
-
-#  432| [Parameter] x
-
-#  432| [Parameter] y
-
 #  479| [DelegateType] MyDelegate
 #-----| 0 -> (Parameters)
 
@@ -2913,10 +2889,6 @@ expressions.cs:
 
 #  473| [Parameter] c2
 
-#  479| [Parameter] e
-
-#  479| [Parameter] e
-
 #  484| [AssignExpr] ... = ...
 #-----| 0 -> [AddExpr] ... + ...
 #-----| 1 -> [MemberConstantAccess] access to constant d
@@ -2936,17 +2908,9 @@ expressions.cs:
 #  492| [LocalConstantDeclStmt] ... ...;
 #-----| 0 -> [LocalVariableDeclAndInitExpr] (Int32,String) a = ...
 
-#  492| [TupleType] (Int32,String)
-#-----| 1 -> [Field] Item1
-#-----| 2 -> [Field] Item2
-
 #  492| [LocalVariableDeclAndInitExpr] (Int32,String) a = ...
 #-----| 0 -> [DefaultValueExpr] default(...)
 #-----| 1 -> [LocalVariableAccess] access to local variable a
-
-#  492| [Field] Item1
-
-#  492| [Field] Item2
 
 #  492| [DefaultValueExpr] default(...)
 #-----| 0 -> [TypeAccess] access to type (Int32,String)
@@ -4696,28 +4660,6 @@ expressions.cs:
 
 #  485| [IntLiteral] 1
 
-#  493| [TupleType] (Boolean,Int32[],Object)
-#-----| 1 -> [Field] Item1
-#-----| 2 -> [Field] Item2
-#-----| 3 -> [Field] Item3
-
-#  493| [Field] Item1
-
-#  493| [Field] Item2
-
-#  493| [Field] Item3
-
-#  495| [TupleType] (Boolean,Int32[],dynamic)
-#-----| 1 -> [Field] Item1
-#-----| 2 -> [Field] Item2
-#-----| 3 -> [Field] Item3
-
-#  495| [Field] Item1
-
-#  495| [Field] Item2
-
-#  495| [Field] Item3
-
 #   40| [ParameterAccess] access to parameter b
 
 #   40| [GTExpr] ... > ...
@@ -4824,14 +4766,6 @@ expressions.cs:
 #  187| [IntLiteral] 34
 
 #  187| [LocalVariableAccess] access to local variable x
-
-#  202| [Parameter] value
-
-#  202| [Parameter] value
-
-#  202| [Parameter] value
-
-#  202| [Parameter] value
 
 #  202| [Parameter] value
 

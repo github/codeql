@@ -78,8 +78,6 @@ nestedtypes.cs:
 #-----|       0: (TypeParameters)
 #   77|         0: [TypeParameter] T
 #   80|       3: [Field] t
-#   15| [Parameter] s
-#   15| [Parameter] s
 #   53| [Class] Outer<Int32>
 #   56|   2: [Class] Inner<>
 #-----|     0: (TypeParameters)

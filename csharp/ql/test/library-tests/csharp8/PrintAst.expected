@@ -505,10 +505,6 @@ NullableRefTypes.cs:
 #   71| [Method] CallF
 #-----| 3 -> [BlockStmt] {...}
 
-#   47| [Parameter] x
-
-#   47| [Parameter] x
-
 #   80| [Class] NullableRefTypes
 #-----| 2 -> [Method] TestSuppressNullableWarningExpr
 #-----| 3 -> [Method] FunctionInNullableContext
@@ -2138,14 +2134,6 @@ patterns.cs:
 #-----| 0 -> [IntLiteral] 1
 #-----| 1 -> [IntLiteral] 2
 
-#   86| [TupleType] (Int32,Int32)
-#-----| 3 -> [Field] Item1
-#-----| 4 -> [Field] Item2
-
-#   86| [Field] Item1
-
-#   86| [Field] Item2
-
 #   86| [IntLiteral] 1
 
 #   86| [IntLiteral] 2
@@ -2283,20 +2271,6 @@ patterns.cs:
 #-----| 0 -> [SwitchExpr] ... switch { ... }
 #-----| 1 -> [TupleExpr] (..., ...)
 
-#  108| [TupleType] (Int32,Int32)
-#-----| 1 -> [Field] Item1
-#-----| 1 -> [Field] x1
-#-----| 3 -> [Field] Item2
-#-----| 3 -> [Field] y1
-
-#  108| [Field] Item1
-
-#  108| [Field] x1
-
-#  108| [Field] Item2
-
-#  108| [Field] y1
-
 #  108| [TupleExpr] (..., ...)
 #-----| 0 -> [LocalVariableDeclExpr] Int32 x1
 #-----| 1 -> [LocalVariableDeclExpr] Int32 y1
@@ -2313,20 +2287,6 @@ patterns.cs:
 #  108| [TupleExpr] (..., ...)
 #-----| 0 -> [LocalVariableAccess] access to local variable x0
 #-----| 1 -> [LocalVariableAccess] access to local variable y0
-
-#  108| [TupleType] (Int32,Int32)
-#-----| 1 -> [Field] Item1
-#-----| 1 -> [Field] x0
-#-----| 3 -> [Field] Item2
-#-----| 3 -> [Field] y0
-
-#  108| [Field] Item1
-
-#  108| [Field] x0
-
-#  108| [Field] Item2
-
-#  108| [Field] y0
 
 #  108| [LocalVariableAccess] access to local variable x0
 
@@ -2426,17 +2386,6 @@ patterns.cs:
 #-----| 0 -> [LocalVariableAccess] access to local variable y2
 #-----| 1 -> [IntLiteral] 0
 
-#  117| [TupleType] (Int32,Int32)
-#-----| 1 -> [Field] Item1
-#-----| 1 -> [Field] y2
-#-----| 3 -> [Field] Item2
-
-#  117| [Field] Item1
-
-#  117| [Field] y2
-
-#  117| [Field] Item2
-
 #  117| [LocalVariableAccess] access to local variable y2
 
 #  117| [IntLiteral] 0
@@ -2459,17 +2408,6 @@ patterns.cs:
 #  118| [TupleExpr] (..., ...)
 #-----| 0 -> [IntLiteral] 0
 #-----| 1 -> [LocalVariableAccess] access to local variable x2
-
-#  118| [TupleType] (Int32,Int32)
-#-----| 1 -> [Field] Item1
-#-----| 2 -> [Field] Item2
-#-----| 2 -> [Field] x2
-
-#  118| [Field] Item1
-
-#  118| [Field] Item2
-
-#  118| [Field] x2
 
 #  118| [IntLiteral] 0
 

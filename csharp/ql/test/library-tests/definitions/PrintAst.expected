@@ -928,14 +928,6 @@ definitions.cs:
 #-----| 5 -> [Method] Tuple
 #-----| 6 -> [Indexer] Item
 
-#  132| [TupleType] (I1,B<A>)
-#-----| 1 -> [Field] Item1
-#-----| 2 -> [Field] Item2
-
-#  132| [Field] Item1
-
-#  132| [Field] Item2
-
 #  134| [BlockStmt] {...}
 #-----| 0 -> [ReturnStmt] return ...;
 
@@ -1189,9 +1181,6 @@ definitions.cs:
 
 #  106| [BlockStmt] {...}
 
-#-----| (Attributes)
-#-----| 1 -> [Attribute] [My(...)]
-
 #-----| (TypeParameters)
 #-----| 0 -> [TypeParameter] T
 
@@ -1292,3 +1281,6 @@ definitions.cs:
 
 #-----| (Parameters)
 #-----| 0 -> [Parameter] value
+
+#-----| (Attributes)
+#-----| 1 -> [Attribute] [My(...)]

@@ -961,8 +961,6 @@ class TupleType extends ValueType, @tuple_type {
   override string getLabel() { result = getUnderlyingType().getLabel() }
 
   override Type getChild(int i) { result = this.getUnderlyingType().getChild(i) }
-
-  override string getAPrimaryQlClass() { result = "TupleType" }
 }
 
 /**

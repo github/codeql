@@ -721,13 +721,6 @@ generics.cs:
 #  190|     2: [Method] M
 #-----|       2: (Parameters)
 #  190|         0: [Parameter] x
-#    7| [Parameter] t
-#    7| [Parameter] t
-#    7| [Parameter] t
-#   16| [Parameter] t
-#   16| [Parameter] u
-#   16| [Parameter] t
-#   16| [Parameter] u
 #   22| [ArrayType] T[]
 #    7| [DelegateType] GenericDelegate<T>
 #-----|   0: (Parameters)
@@ -883,9 +876,6 @@ generics.cs:
 #    7| [DelegateType] GenericDelegate<Object>
 #-----|   0: (Parameters)
 #    7|     0: [Parameter] t
-#    7| [Parameter] t
-#    7| [Parameter] t
-#    7| [Parameter] t
 #   48| [Class] Outer<Object>
 #   51|   1: [Class] Inner<>
 #-----|     0: (TypeParameters)

@@ -916,10 +916,6 @@ delegates.cs:
 #    4| [DelegateType] Del
 #-----| 0 -> (Parameters)
 
-#    4| [Parameter] num
-
-#    4| [Parameter] num
-
 #    6| [Method] returns
 #-----| 2 -> (Parameters)
 #-----| 3 -> [BlockStmt] {...}
@@ -981,10 +977,6 @@ events.cs:
 
 #    3| [DelegateType] MyDel
 #-----| 0 -> (Parameters)
-
-#    3| [Parameter] str
-
-#    3| [Parameter] str
 
 #    6| [AddEventAccessor] add_MyEvent
 #-----| 2 -> (Parameters)
@@ -1275,8 +1267,9 @@ indexers.cs:
 #-----| 1 -> [AssignExpr] ... = ...
 
 #    6| [Indexer] Item
-#-----| 1 -> [Getter] get_Item
-#-----| 2 -> [Setter] set_Item
+#-----| 0 -> (Parameters)
+#-----| 2 -> [Getter] get_Item
+#-----| 3 -> [Setter] set_Item
 
 #    6| [Parameter] index
 

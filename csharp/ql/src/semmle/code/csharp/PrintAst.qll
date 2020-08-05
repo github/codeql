@@ -279,7 +279,7 @@ final class DeclarationWithAccessorsNode extends AstNode {
 final class FieldNode extends AstNode {
   Field field;
 
-  FieldNode() { field = ast }
+  FieldNode() { field = ast and not field.getDeclaringType() instanceof TupleType }
 
   override PrintAstNode getChild(int childIndex) {
     childIndex = 0 and
@@ -297,7 +297,13 @@ final class FieldNode extends AstNode {
 final class ParameterNode extends AstNode {
   Parameter param;
 
-  ParameterNode() { param = ast }
+  ParameterNode() {
+    param = ast and
+    (
+      not param.getDeclaringElement().isCompilerGenerated() or
+      param.getDeclaringElement() instanceof Accessor
+    )
+  }
 
   override Location getLocation() {
     not param.hasExtensionMethodModifier() and result = super.getLocation()
@@ -353,7 +359,7 @@ final class TypeParameterNode extends AstNode {
 final class TypeNode extends AstNode {
   ValueOrRefType type;
 
-  TypeNode() { type = ast }
+  TypeNode() { type = ast and not type instanceof TupleType }
 
   override PrintAstNode getChild(int childIndex) {
     childIndex = 0 and
@@ -397,15 +403,21 @@ final class NamespaceNode extends AstNode {
 }
 
 /**
- * A node representing the parameters of a `Callable`.
- * Only rendered if there's at least one parameter.
+ * A node representing the parameters of a `Parameterizable`.
+ * Only rendered if there's at least one parameter and if the
+ * `Parameterizable` is not compiler generated or is of type
+ * `Accessor`.
  */
 final class ParametersNode extends PrintAstNode, TParametersNode {
   Parameterizable parameterizable;
 
   ParametersNode() {
     this = TParametersNode(parameterizable) and
-    parameterizable.getNumberOfParameters() > 0
+    parameterizable.getNumberOfParameters() > 0 and
+    (
+      not parameterizable.isCompilerGenerated() or
+      parameterizable instanceof Accessor
+    )
   }
 
   override string toString() { result = "(Parameters)" }

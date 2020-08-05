@@ -1,7 +1,4 @@
 CSharp7.cs:
-#   64| [TupleType] (Int32,Int32)
-#   64|   3: [Field] Item1
-#   64|   4: [Field] Item2
 #    7| [Class] Literals
 #    9|   2: [Field] x
 #    9|     1: [AssignExpr] ... = ...
@@ -616,9 +613,6 @@ CSharp7.cs:
 #  209|   4: [DelegateType] RefFn
 #-----|     0: (Parameters)
 #  209|       0: [Parameter] p
-#  209| [Parameter] p
-#  209| [Parameter] p
-#  209| [Parameter] p
 #  212| [Class] Discards
 #  214|   2: [Method] f
 #-----|     2: (Parameters)
@@ -664,9 +658,6 @@ CSharp7.cs:
 #  225|           1: [TupleExpr] (..., ...)
 #  225|             0: [DiscardExpr] _
 #  225|             1: [LocalVariableDeclExpr] Double y
-#  214| [TupleType] (Int32,Double)
-#  214|   1: [Field] Item1
-#  214|   2: [Field] Item2
 #  229| [Class] Patterns
 #  231|   2: [Method] Test
 #  232|     3: [BlockStmt] {...}
@@ -817,11 +808,6 @@ CSharp7.cs:
 #  290|           1: [LocalVariableDeclExpr] String b
 #  290|         1: [LocalVariableAccess] access to local variable list
 #  290|         2: [BlockStmt] {...}
-#  286| [TupleType] (Int32,String)
-#  286|   1: [Field] Item1
-#  286|   1: [Field] a
-#  286|   3: [Field] Item2
-#  286|   3: [Field] b
 #  294| [Class] ForLoops
 #  296|   2: [Method] Test
 #  297|     3: [BlockStmt] {...}
@@ -845,47 +831,6 @@ CSharp7.cs:
 #  300|               0: [LocalVariableAccess] access to local variable y
 #   24| [ConstructorInitializer] call to constructor ExpressionBodiedMembers
 #   24|   0: [IntLiteral] 1
-#   71| [TupleType] (Int32,Int32)
-#   71|   1: [Field] Item1
-#   71|   1: [Field] x
-#   71|   3: [Field] Item2
-#   71|   3: [Field] y
-#   75| [TupleType] (Int32,Int32,Int32)
-#   75|   1: [Field] Item1
-#   75|   1: [Field] x
-#   75|   3: [Field] Item2
-#   75|   3: [Field] y
-#   75|   5: [Field] Item3
-#   77| [TupleType] (Int32,(Int32,Int32))
-#   77|   1: [Field] Item1
-#   77|   2: [Field] Item2
-#   77|   2: [Field] z
-#   79| [TupleType] (String,Int32)
-#   79|   1: [Field] Item1
-#   79|   1: [Field] i
-#   79|   3: [Field] Item2
-#   79|   3: [Field] j
-#   79| [TupleType] (String,Int32)
-#   79|   1: [Field] Item1
-#   79|   2: [Field] Item2
-#   79|   2: [Field] x
-#   84| [TupleType] (String,Int32)
-#   84|   1: [Field] Item1
-#   84|   1: [Field] a
-#   84|   3: [Field] Item2
-#   89| [TupleType] (String,String)
-#   89|   1: [Field] Item1
-#   89|   2: [Field] Item2
-#   90| [TupleType] (String,String)
-#   90|   1: [Field] Item1
-#   90|   1: [Field] t2
-#   90|   3: [Field] Item2
-#   90|   3: [Field] t3
-#  109| [TupleType] (String,(Int32,Int32))
-#  109|   1: [Field] Item1
-#  109|   1: [Field] m1
-#  109|   3: [Field] Item2
-#  109|   3: [Field] m2
 #  163| [LocalFunction] h
 #-----|   2: (Parameters)
 #  163|     0: [Parameter] t
@@ -894,58 +839,6 @@ CSharp7.cs:
 #-----|   2: (Parameters)
 #  163|     0: [Parameter] t
 #  163|     1: [Parameter] u
-#  224| [TupleType] (Int32,Double)
-#  224|   1: [Field] Item1
-#  224|   1: [Field] x
-#  224|   3: [Field] Item2
-#  225| [TupleType] (Int32,Double)
-#  225|   1: [Field] Item1
-#  225|   2: [Field] Item2
-#  225|   2: [Field] y
-#  284| [TupleType] (Int32,String)
-#  284|   1: [Field] Item1
-#  284|   1: [Field] Key
-#  284|   3: [Field] Item2
-#  284|   3: [Field] Value
-#   77| [TupleType] (Int32,Int32)
-#   77|   1: [Field] Item1
-#   77|   1: [Field] b
-#   77|   3: [Field] Item2
-#   77|   3: [Field] c
-#   77| [TupleType] (Int32,(Int32,Int32))
-#   77|   1: [Field] Item1
-#   77|   1: [Field] a
-#   77|   3: [Field] Item2
-#   78| [TupleType] (Int32,Int32)
-#   78|   1: [Field] Item1
-#   78|   1: [Field] c
-#   78|   3: [Field] Item2
-#   78|   3: [Field] a
-#   78| [TupleType] (Int32,(Int32,Int32))
-#   78|   1: [Field] Item1
-#   78|   1: [Field] b
-#   78|   3: [Field] Item2
-#   98| [TupleType] (Int32,(String,Int32))
-#   98|   1: [Field] Item1
-#   98|   2: [Field] Item2
-#  112| [TupleType] (Int32,Int32)
-#  112|   1: [Field] Item1
-#  112|   1: [Field] m4
-#  112|   3: [Field] Item2
-#  112|   3: [Field] m5
-#  112| [TupleType] (String,(Int32,Int32))
-#  112|   1: [Field] Item1
-#  112|   1: [Field] m3
-#  112|   3: [Field] Item2
-#  114| [TupleType] (Int32,Int32)
-#  114|   1: [Field] Item1
-#  114|   1: [Field] m8
-#  114|   3: [Field] Item2
-#  114|   3: [Field] m9
-#  114| [TupleType] (String,(Int32,Int32))
-#  114|   1: [Field] Item1
-#  114|   1: [Field] m7
-#  114|   3: [Field] Item2
 #  160| [LocalFunction] f
 #  161| [LocalFunction] g
 #-----|   2: (Parameters)

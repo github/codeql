@@ -1,6 +1,3 @@
-#-----| (Parameters)
-#-----| 0 -> [Parameter] c
-
 enums.cs:
 #    5| [NamespaceDeclaration] namespace ... { ... }
 #-----| 1 -> [Enum] Color
@@ -258,3 +255,6 @@ enums.cs:
 #   28| [MemberConstantAccess] access to constant OneRed
 
 #   37| [Field] Red
+
+#-----| (Parameters)
+#-----| 0 -> [Parameter] c

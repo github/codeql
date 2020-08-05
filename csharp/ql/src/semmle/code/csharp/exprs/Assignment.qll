@@ -98,9 +98,7 @@ class AssignOperation extends Assignment, @assign_op_expr {
  * operation (`AssignDivExpr`), or a remainder assignment operation
  * (`AssignRemExpr`).
  */
-class AssignArithmeticOperation extends AssignOperation, @assign_arith_expr {
-  override string getAPrimaryQlClass() { result = "AssignArithmeticOperation" }
-}
+class AssignArithmeticOperation extends AssignOperation, @assign_arith_expr { }
 
 /**
  * An addition assignment operation, for example `x += y`.

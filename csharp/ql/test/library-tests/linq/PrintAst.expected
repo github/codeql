@@ -186,8 +186,3 @@ queries.cs:
 #   63|           0: [ObjectCreation] object creation of type NotImplementedException
 #   67|   4: [Class] B
 #   69|   5: [Class] C
-#   56| [TupleType] (Int32,IEnumerable<IList<Int32>>)
-#   56|   1: [Field] Item1
-#   56|   1: [Field] a
-#   56|   3: [Field] Item2
-#   56|   3: [Field] d

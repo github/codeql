@@ -462,17 +462,6 @@ arguments.cs:
 #-----| 0 -> [TupleExpr] (..., ...)
 #-----| 1 -> [TupleExpr] (..., ...)
 
-#   56| [TupleType] (Int32,Int32)
-#-----| 1 -> [Field] Item1
-#-----| 1 -> [Field] Prop
-#-----| 3 -> [Field] Item2
-
-#   56| [Field] Item1
-
-#   56| [Field] Prop
-
-#   56| [Field] Item2
-
 #   56| [TupleExpr] (..., ...)
 #-----| 0 -> [PropertyCall] access to property Prop
 #-----| 1 -> [IndexerCall] access to indexer
@@ -665,12 +654,6 @@ arguments.cs:
 #    5| [Parameter] y
 #-----| 1 -> [IntLiteral] 0
 
-#-----| (Attributes)
-#-----| 1 -> [Attribute] [My(...)]
-
-#-----| (Attributes)
-#-----| 1 -> [Attribute] [My(...)]
-
 #-----| (Parameters)
 #-----| 0 -> [Parameter] x
 #-----| 1 -> [Parameter] y
@@ -717,3 +700,9 @@ arguments.cs:
 
 #-----| (Parameters)
 #-----| 0 -> [Parameter] b
+
+#-----| (Attributes)
+#-----| 1 -> [Attribute] [My(...)]
+
+#-----| (Attributes)
+#-----| 1 -> [Attribute] [My(...)]

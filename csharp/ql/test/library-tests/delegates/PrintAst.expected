@@ -13,32 +13,8 @@ delegates.cs:
 #    7| [DelegateType] FooDelegate
 #-----| 0 -> (Parameters)
 
-#    7| [Parameter] param
-
-#    7| [Parameter] condition
-
-#    7| [Parameter] args
-
-#    7| [Parameter] param
-
-#    7| [Parameter] condition
-
-#    7| [Parameter] args
-
-#    7| [Parameter] param
-
-#    7| [Parameter] condition
-
 #    9| [DelegateType] D1
 #-----| 0 -> (Parameters)
-
-#    9| [Parameter] i
-
-#    9| [Parameter] d
-
-#    9| [Parameter] i
-
-#    9| [Parameter] d
 
 #   11| [Class] A
 #-----| 2 -> [Method] M1
@@ -72,14 +48,6 @@ delegates.cs:
 
 #   21| [DelegateType] D2
 #-----| 0 -> (Parameters)
-
-#   21| [Parameter] c
-
-#   21| [Parameter] d
-
-#   21| [Parameter] c
-
-#   21| [Parameter] d
 
 #   23| [Method] M1
 #-----| 2 -> (Parameters)
@@ -121,10 +89,6 @@ delegates.cs:
 
 #   33| [TypeParameter] T
 
-#   33| [Parameter] value
-
-#   33| [Parameter] value
-
 #   35| [Class] X
 #-----| 2 -> [Method] F
 #-----| 3 -> [Method] G
@@ -151,10 +115,6 @@ delegates.cs:
 
 #   44| [DelegateType] D
 #-----| 0 -> (Parameters)
-
-#   44| [Parameter] x
-
-#   44| [Parameter] x
 
 #   46| [Class] C
 #-----| 2 -> [Method] M1
@@ -519,14 +479,6 @@ delegates.cs:
 #   74| [IntLiteral] 34
 
 #   74| [LocalVariableAccess] access to local variable x
-
-#   33| [Parameter] value
-
-#   33| [Parameter] value
-
-#   33| [Parameter] value
-
-#   33| [Parameter] value
 
 #   33| [Parameter] value
 

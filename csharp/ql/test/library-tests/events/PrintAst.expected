@@ -161,7 +161,3 @@ events.cs:
 #   86|               -1: [LocalVariableAccess] access to local variable handler
 #   86|               0: [ThisAccess] this access
 #   86|               1: [ParameterAccess] access to parameter args
-#    7| [Parameter] sender
-#    7| [Parameter] e
-#    7| [Parameter] sender
-#    7| [Parameter] e
