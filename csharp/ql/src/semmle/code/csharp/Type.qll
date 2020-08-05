@@ -665,6 +665,8 @@ class Struct extends ValueType, @struct_type {
 
   /** Holds if this `struct` has a `readonly` modifier. */
   predicate isReadonly() { hasModifier("readonly") }
+
+  override string getAPrimaryQlClass() { result = "Struct" }
 }
 
 /**
@@ -758,7 +760,8 @@ class StringType extends Class {
  * ```
  */
 class Interface extends RefType, @interface_type {
-  override string getAPrimaryQlClass() { result = "Interface" }}
+  override string getAPrimaryQlClass() { result = "Interface" }
+}
 
 /**
  * A `delegate` type, for example
@@ -773,6 +776,8 @@ class DelegateType extends RefType, Parameterizable, @delegate_type {
 
   /** Gets the annotated return type of this delegate. */
   AnnotatedType getAnnotatedReturnType() { result.appliesTo(this) }
+
+  override string getAPrimaryQlClass() { result = "DelegateType" }
 }
 
 /**
@@ -797,6 +802,8 @@ class NullableType extends ValueType, DotNet::ConstructedGeneric, @nullable_type
   override Location getALocation() { result = getUnderlyingType().getALocation() }
 
   override Type getTypeArgument(int p) { p = 0 and result = getUnderlyingType() }
+
+  override string getAPrimaryQlClass() { result = "NullableType" }
 }
 
 /**
@@ -861,6 +868,8 @@ class ArrayType extends DotNet::ArrayType, RefType, @array_type {
     not type_location(this, _) and
     result = this.getElementType().getALocation()
   }
+
+  override string getAPrimaryQlClass() { result = "ArrayType" }
 }
 
 /**
@@ -878,6 +887,8 @@ class PointerType extends DotNet::PointerType, Type, @pointer_type {
   override Location getALocation() { result = getReferentType().getALocation() }
 
   override string toString() { result = DotNet::PointerType.super.toString() }
+
+  override string getAPrimaryQlClass() { result = "PointerType" }
 }
 
 /**
@@ -885,6 +896,8 @@ class PointerType extends DotNet::PointerType, Type, @pointer_type {
  */
 class DynamicType extends RefType, @dynamic_type {
   override string toStringWithTypes() { result = "dynamic" }
+
+  override string getAPrimaryQlClass() { result = "DynamicType" }
 }
 
 /**
@@ -892,6 +905,8 @@ class DynamicType extends RefType, @dynamic_type {
  */
 class ArglistType extends Type, @arglist_type {
   override string toStringWithTypes() { result = "__arglist" }
+
+  override string getAPrimaryQlClass() { result = "ArglistType" }
 }
 
 /**
@@ -944,6 +959,8 @@ class TupleType extends ValueType, @tuple_type {
   override string getLabel() { result = getUnderlyingType().getLabel() }
 
   override Type getChild(int i) { result = this.getUnderlyingType().getChild(i) }
+
+  override string getAPrimaryQlClass() { result = "TupleType" }
 }
 
 /**

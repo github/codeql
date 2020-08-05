@@ -297,6 +297,8 @@ class MethodCall extends Call, QualifiableExpr, LateBindableExpr, @method_invoca
 
   override string toString() { result = "call to method " + concat(this.getTarget().getName()) }
 
+  override string getAPrimaryQlClass() { result = "MethodCall" }
+
   override Expr getRawArgument(int i) {
     if exists(getQualifier())
     then
@@ -405,6 +407,8 @@ class ConstructorInitializer extends Call, @constructor_init_expr {
 
   override string toString() { result = "call to constructor " + this.getTarget().getName() }
 
+  override string getAPrimaryQlClass() { result = "ConstructorInitializer" }
+
   private ValueOrRefType getTargetType() {
     result = this.getTarget().getDeclaringType().getSourceDeclaration()
   }
@@ -493,6 +497,8 @@ class OperatorCall extends Call, LateBindableExpr, @operator_invocation_expr {
   override Operator getARuntimeTarget() { result = Call.super.getARuntimeTarget() }
 
   override string toString() { result = "call to operator " + this.getTarget().getName() }
+
+  override string getAPrimaryQlClass() { result = "OperatorCall" }
 }
 
 /**
@@ -594,6 +600,8 @@ class DelegateCall extends Call, @delegate_invocation_expr {
   Expr getDelegateExpr() { result = this.getChild(-1) }
 
   override string toString() { result = "delegate call" }
+
+  override string getAPrimaryQlClass() { result = "DelegateCall" }
 }
 
 /**
@@ -638,6 +646,8 @@ class PropertyCall extends AccessorCall, PropertyAccessExpr {
   }
 
   override string toString() { result = PropertyAccessExpr.super.toString() }
+
+  override string getAPrimaryQlClass() { result = "PropertyCall" }
 }
 
 /**
@@ -673,6 +683,8 @@ class IndexerCall extends AccessorCall, IndexerAccessExpr {
   }
 
   override string toString() { result = IndexerAccessExpr.super.toString() }
+
+  override string getAPrimaryQlClass() { result = "IndexerCall" }
 }
 
 /**
@@ -717,6 +729,8 @@ class EventCall extends AccessorCall, EventAccessExpr {
   }
 
   override string toString() { result = EventAccessExpr.super.toString() }
+
+  override string getAPrimaryQlClass() { result = "EventCall" }
 }
 
 /**
@@ -736,4 +750,6 @@ class LocalFunctionCall extends Call, @local_function_invocation_expr {
   override LocalFunction getTarget() { expr_call(this, result) }
 
   override string toString() { result = "call to local function " + getTarget().getName() }
+
+  override string getAPrimaryQlClass() { result = "LocalFunctionCall" }
 }

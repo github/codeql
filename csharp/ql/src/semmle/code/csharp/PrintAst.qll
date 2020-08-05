@@ -30,6 +30,7 @@ class PrintAstConfiguration extends TPrintAstConfiguration {
    * By default it checks the which file the `elem` belongs to.
    */
   predicate shouldPrint(Element elem) {
+    elem.fromSource() and
     this.selectedFile(getRepresentativeLocation(elem).getFile())
   }
 }
@@ -46,6 +47,18 @@ private int attributableOffset(Attributable attributable) {
   if count(attributable.getAnAttribute()) > 0 then result = 1 else result = 0
 }
 
+private int parameterizableTypeOffset(ValueOrRefType type) {
+  if type instanceof Parameterizable and type.(Parameterizable).getNumberOfParameters() > 0
+  then result = 1
+  else result = 0
+}
+
+private int parameterizableDeclarationOffset(DeclarationWithAccessors declaration) {
+  if declaration instanceof Indexer and declaration.(Parameterizable).getNumberOfParameters() > 0
+  then result = 1
+  else result = 0
+}
+
 private int unboundGenericOffset(ValueOrRefType type) {
   if type instanceof UnboundGeneric then result = 1 else result = 0
 }
@@ -58,12 +71,12 @@ private int assignableOffset(AssignableMember assignable) {
  * Retrieves the canonical QL class(es) for entity `el`
  */
 private string getQlClass(Element el) {
-  if count(el.getAPrimaryQlClass()) = 1
+  if count(el.getAPrimaryQlClass()) = 1 and not el.getAPrimaryQlClass() = "???"
   then result = "[" + el.getAPrimaryQlClass() + "] "
   else
     if count(el.getAPrimaryQlClass()) > 1
-    then result = "ERR [" + concat(el.getAPrimaryQlClass(), ",") + "] "
-    else result = "ERR_MISSING [" + concat(el.getAQlClass(), ",") + "] "
+    then result = "[" + concat(el.getAPrimaryQlClass(), ",") + "] "
+    else result = "ERR [" + concat(el.getAQlClass(), ",") + "] "
 }
 
 /**
@@ -104,7 +117,7 @@ private predicate locationSortKeys(Element ast, string file, int line, int colum
  */
 private newtype TPrintAstNode =
   TAstNode(Element ast) { shouldPrint(ast) } or
-  TParametersNode(Callable callable) { shouldPrint(callable) } or
+  TParametersNode(Parameterizable parameterizable) { shouldPrint(parameterizable) } or
   TAttributesNode(Attributable attributable) { shouldPrint(attributable) } or
   TTypeParametersNode(UnboundGeneric generic) { shouldPrint(generic) }
 
@@ -164,13 +177,7 @@ class PrintAstNode extends TPrintAstNode {
 abstract class AstNode extends PrintAstNode, TAstNode {
   Element ast;
 
-  AstNode() {
-    this = TAstNode(ast) and
-    // some elements might not be in the source code, such as default constructors.
-    // But we can't filter out compiler generated Callables, because we do want to see autoproperty get, set.
-    // So `fromSource` seems to be a good option.
-    ast.fromSource()
-  }
+  AstNode() { this = TAstNode(ast) }
 
   override string toString() { result = getQlClass(ast) + ast.toString() }
 
@@ -227,7 +234,7 @@ final class CallableAstNode extends AstNode {
     result.(TypeParametersNode).getUnboundGeneric() = callable
     or
     childIndex = 2 and
-    result.(ParametersNode).getCallable() = callable
+    result.(ParametersNode).getParameterizable() = callable
     or
     childIndex = 3 and
     result.(AstNode).getAst() = callable.getBody()
@@ -248,11 +255,15 @@ final class DeclarationWithAccessorsNode extends AstNode {
     result.(AttributesNode).getAttributable() = declaration
     or
     childIndex = attributableOffset(declaration) and
+    result.(ParametersNode).getParameterizable() = declaration
+    or
+    childIndex = attributableOffset(declaration) + parameterizableDeclarationOffset(declaration) and
     result.(AstNode).getAst() = declaration.(Property).getInitializer().getParent()
     or
     result.(AstNode).getAst() =
-      rank[childIndex - attributableOffset(declaration) - assignableOffset(declaration)](Element a,
-        string file, int line, int column |
+      rank[childIndex - attributableOffset(declaration) - assignableOffset(declaration) -
+          parameterizableDeclarationOffset(declaration)](Element a, string file, int line,
+        int column |
         a = declaration.getAnAccessor() and
         locationSortKeys(a, file, line, column)
       |
@@ -351,9 +362,12 @@ final class TypeNode extends AstNode {
     childIndex = attributableOffset(type) and
     result.(TypeParametersNode).getUnboundGeneric() = type
     or
+    childIndex = attributableOffset(type) + unboundGenericOffset(type) and
+    result.(ParametersNode).getParameterizable() = type
+    or
     result.(AstNode).getAst() =
-      rank[childIndex - attributableOffset(type) - unboundGenericOffset(type)](Member m,
-        string file, int line, int column |
+      rank[childIndex - attributableOffset(type) - unboundGenericOffset(type) -
+          parameterizableTypeOffset(type)](Member m, string file, int line, int column |
         m = type.getAMember() and
         locationSortKeys(m, file, line, column)
       |
@@ -387,11 +401,11 @@ final class NamespaceNode extends AstNode {
  * Only rendered if there's at least one parameter.
  */
 final class ParametersNode extends PrintAstNode, TParametersNode {
-  Callable callable;
+  Parameterizable parameterizable;
 
   ParametersNode() {
-    this = TParametersNode(callable) and
-    callable.getNumberOfParameters() > 0
+    this = TParametersNode(parameterizable) and
+    parameterizable.getNumberOfParameters() > 0
   }
 
   override string toString() { result = "(Parameters)" }
@@ -399,13 +413,13 @@ final class ParametersNode extends PrintAstNode, TParametersNode {
   override Location getLocation() { none() }
 
   override ParameterNode getChild(int childIndex) {
-    result.getAst() = callable.getParameter(childIndex)
+    result.getAst() = parameterizable.getParameter(childIndex)
   }
 
   /**
-   * Returns the underlying `Callable`
+   * Returns the underlying `Parameterizable`
    */
-  Callable getCallable() { result = callable }
+  Parameterizable getParameterizable() { result = parameterizable }
 }
 
 /**
@@ -466,9 +480,7 @@ final class TypeParametersNode extends PrintAstNode, TTypeParametersNode {
 }
 
 /** Holds if `node` belongs to the output tree, and its property `key` has the given `value`. */
-query predicate nodes(PrintAstNode node, string key, string value) {
-  value = node.getProperty(key)
-}
+query predicate nodes(PrintAstNode node, string key, string value) { value = node.getProperty(key) }
 
 /**
  * Holds if `target` is a child of `source` in the AST, and property `key` of the edge has the

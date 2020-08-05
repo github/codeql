@@ -166,8 +166,8 @@ class LocalVariableDeclExpr extends Expr, @local_var_decl_expr {
    */
   predicate isOutArgument() { expr_argument(this, 2) }
 
-  override string getAPrimaryQlClass() { result = "LocalVariableDeclExpr" and
-    not this instanceof LocalConstantDeclExpr and
+  override string getAPrimaryQlClass() {
+    result = "LocalVariableDeclExpr" and
     not this instanceof LocalVariableDeclAndInitExpr
   }
 }
@@ -179,8 +179,6 @@ class LocalConstantDeclExpr extends LocalVariableDeclExpr {
   LocalConstantDeclExpr() { super.getVariable() instanceof LocalConstant }
 
   override LocalConstant getVariable() { localvars(result, _, _, _, _, this) }
-
-  override string getAPrimaryQlClass() { result = "LocalConstantDeclExpr" }
 }
 
 /**
@@ -906,8 +904,6 @@ class QualifiableExpr extends Expr, @qualifiable_expr {
 
   /** Holds if this expression has a conditional qualifier `?.` */
   predicate isConditional() { conditional_access(this) }
-
-  override string getAPrimaryQlClass() { result = "QualifiableExpr" }
 }
 
 private Expr getAnAssignOrForeachChild() {
