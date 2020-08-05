@@ -67,7 +67,7 @@ predicate isBackslashEscape(StringReplaceCall mce, DataFlow::RegExpLiteralNode r
  */
 predicate allBackslashesEscaped(DataFlow::Node nd) {
   // `JSON.stringify` escapes backslashes
-  nd instanceof JsonSerializeCall
+  nd instanceof JsonStringifyCall
   or
   // check whether `nd` itself escapes backslashes
   exists(DataFlow::RegExpLiteralNode rel | isBackslashEscape(nd, rel) |

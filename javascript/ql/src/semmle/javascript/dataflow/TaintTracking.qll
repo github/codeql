@@ -544,7 +544,7 @@ module TaintTracking {
    * A taint propagating data flow edge arising from JSON unparsing.
    */
   private class JsonStringifyTaintStep extends AdditionalTaintStep, DataFlow::CallNode {
-    JsonStringifyTaintStep() { this instanceof JsonSerializeCall }
+    JsonStringifyTaintStep() { this instanceof JsonStringifyCall }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       pred = getArgument(0) and succ = this

@@ -5,10 +5,10 @@
 import javascript
 
 /**
- * A call to a JSON serializer such as `JSON.stringify` or `require("util").inspect`.
+ * A call to a JSON stringifier such as `JSON.stringify` or `require("util").inspect`.
  */
-class JsonSerializeCall extends DataFlow::CallNode {
-  JsonSerializeCall() {
+class JsonStringifyCall extends DataFlow::CallNode {
+  JsonStringifyCall() {
     exists(DataFlow::SourceNode callee | this = callee.getACall() |
       callee = DataFlow::globalVarRef("JSON").getAPropertyRead("stringify") or
       callee = DataFlow::moduleMember("json3", "stringify") or
@@ -23,7 +23,7 @@ class JsonSerializeCall extends DataFlow::CallNode {
   }
 
   /**
-   * Gets the data flow node holding the input object to be serialized.
+   * Gets the data flow node holding the input object to be stringified.
    */
   DataFlow::Node getInput() { result = getArgument(0) }
 

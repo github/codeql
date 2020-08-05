@@ -202,7 +202,7 @@ module CleartextLogging {
     exists(DataFlow::PropWrite write, DataFlow::PropRead read |
       read = write.getRhs()
       or
-      exists(JsonSerializeCall stringify |
+      exists(JsonStringifyCall stringify |
         stringify.getOutput() = write.getRhs() and
         stringify.getInput() = read
       )
