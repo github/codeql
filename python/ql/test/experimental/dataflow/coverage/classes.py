@@ -5,7 +5,7 @@
 # These tests should cover all the class calls that we hope to support.
 # It is based on https://docs.python.org/3/reference/datamodel.html, and headings refer there.
 #
-# Intended sources should be the variable `SOURCE` and intended sinks should be.
+# Intended sources should be the variable `SOURCE` and intended sinks should be
 # arguments to the function `SINK` (see python/ql/test/experimental/dataflow/testConfig.qll).
 #
 # Functions whose name ends with "_with_local_flow" will also be tested for local flow.
