@@ -5,6 +5,7 @@
 | Taint cryptography.encryptor.RC4 | test_cryptography.py:7:17:7:34 | test_cryptography.py:7 | test_cryptography.py:7:17:7:34 | Attribute() |  |
 | Taint cryptography.encryptor.RC4 | test_cryptography.py:8:12:8:20 | test_cryptography.py:8 | test_cryptography.py:8:12:8:20 | encryptor |  |
 | Taint cryptography.encryptor.RC4 | test_cryptography.py:8:42:8:50 | test_cryptography.py:8 | test_cryptography.py:8:42:8:50 | encryptor |  |
+| Taint sensitive.data.certificate | InsecureProtocolVersion.py:6:3:6:21 | InsecureProtocolVersion.py:6 | InsecureProtocolVersion.py:6:3:6:21 | Attribute |  |
 | Taint sensitive.data.password | test_cryptography.py:5:17:5:30 | test_cryptography.py:5 | test_cryptography.py:5:17:5:30 | get_password() |  |
 | Taint sensitive.data.password | test_cryptography.py:8:29:8:37 | test_cryptography.py:8 | test_cryptography.py:8:29:8:37 | dangerous |  |
 | Taint sensitive.data.password | test_cryptography.py:8:42:8:50 | test_cryptography.py:8 | test_cryptography.py:8:42:8:50 | encryptor |  |
