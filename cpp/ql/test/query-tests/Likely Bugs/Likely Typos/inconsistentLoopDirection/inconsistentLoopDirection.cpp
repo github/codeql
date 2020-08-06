@@ -178,3 +178,20 @@ void FalseNegativeTestCases()
     // For comparison
     for (int i = 100; i > 0; i ++ ) {}  // BUG
 }
+
+void IntendedOverflow()
+{
+    const unsigned char m = 10;
+    unsigned char i;
+    signed char s;
+
+    for (i = 63; i < 64; i--) {} // GOOD (legitimate way to count down with an unsigned) [FALSE POSITIVE]
+    for (i = 63; i < 128; i--) {} // DUBIOUS (could still be a typo?)
+    for (i = 63; i < 255; i--) {} // GOOD [FALSE POSITIVE]
+
+    for (i = m - 1; i < m; i--) {} // GOOD [FALSE POSITIVE]
+    for (i = m - 1; i < m; i--) {} // DUBIOUS
+    for (i = m - 1; i < m; i--) {} // GOOD [FALSE POSITIVE]
+
+    for (s = 63; s < 64; s--) {} // BAD (signed numbers don't wrap at 0 / at all)
+}
