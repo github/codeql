@@ -13,18 +13,12 @@ abstract class LdapInjectionSink extends DataFlow::Node { }
 /** A sanitizer that prevents LDAP injection attacks. */
 abstract class LdapInjectionSanitizer extends DataFlow::Node { }
 
-private newtype TUnit = TMkUnit()
-
-class Unit extends TUnit {
-  string toString() { result = "unit" }
-}
-
 /**
  * A unit class for adding additional taint steps.
  *
  * Extend this class to add additional taint steps that should apply to the LdapInjectionFlowConfig.
  */
-class LdapInjectionAdditionalTaintStep extends Unit {
+class LdapInjectionAdditionalTaintStep extends TaintTracking::Unit {
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
 
