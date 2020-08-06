@@ -9,17 +9,6 @@
 
 import csharp
 
-private predicate attr(Attributable a, Parameterizable p) {
-  a.(Element).getLocation().getStartLine() = 13 and
-  count(a.getAnAttribute()) > 0 and
-  a.(Parameter).getDeclaringElement() = p and
-  not isCompilerGeneratedParameter(a)
-}
-
-private predicate para(Parameter p) {
-  p.getLocation().getStartLine() = 13 and not isCompilerGeneratedParameter(p)
-}
-
 private newtype TPrintAstConfiguration = MkPrintAstConfiguration()
 
 /**
@@ -393,7 +382,12 @@ final class TypeParameterNode extends AstNode {
 final class TypeNode extends AstNode {
   ValueOrRefType type;
 
-  TypeNode() { type = ast and not type instanceof TupleType and not type instanceof ArrayType }
+  TypeNode() {
+    type = ast and
+    not type instanceof TupleType and
+    not type instanceof ArrayType and
+    not type instanceof ConstructedType
+  }
 
   override PrintAstNode getChild(int childIndex) {
     childIndex = 0 and
