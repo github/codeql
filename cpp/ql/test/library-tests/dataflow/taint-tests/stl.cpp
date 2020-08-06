@@ -237,7 +237,7 @@ void sink(char) {}
 void test_range_based_for_loop() {
 	std::string s(source());
 	for(char c : s) {
-		sink(c); // tainted [NOT DETECTED]
+		sink(c); // tainted [NOT DETECTED by IR]
 	}
 
 	for(std::string::iterator it = s.begin(); it != s.end(); ++it) {
@@ -245,11 +245,11 @@ void test_range_based_for_loop() {
 	}
 
 	for(char& c : s) {
-		sink(c); // tainted [NOT DETECTED]
+		sink(c); // tainted [NOT DETECTED by IR]
 	}
 
 	const std::string const_s(source());
 	for(const char& c : const_s) {
-		sink(c); // tainted [NOT DETECTED]
+		sink(c); // tainted [NOT DETECTED by IR]
 	}
 }

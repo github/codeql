@@ -47,6 +47,9 @@
 | stl.cpp:211:8:211:9 | s3 | stl.cpp:207:8:207:13 | call to source |
 | stl.cpp:230:8:230:9 | s1 | stl.cpp:226:32:226:37 | call to source |
 | stl.cpp:231:8:231:9 | s2 | stl.cpp:228:20:228:25 | call to source |
+| stl.cpp:240:8:240:8 | c | stl.cpp:238:16:238:21 | call to source |
+| stl.cpp:248:8:248:8 | c | stl.cpp:238:16:238:21 | call to source |
+| stl.cpp:253:8:253:8 | c | stl.cpp:251:28:251:33 | call to source |
 | structlikeclass.cpp:35:8:35:9 | s1 | structlikeclass.cpp:29:22:29:27 | call to source |
 | structlikeclass.cpp:36:8:36:9 | s2 | structlikeclass.cpp:30:24:30:29 | call to source |
 | structlikeclass.cpp:37:8:37:9 | s3 | structlikeclass.cpp:29:22:29:27 | call to source |
