@@ -45,11 +45,6 @@ nestedtypes.cs:
 #   59|           0: [Parameter] t
 #   59|           1: [Parameter] u
 #   59|         3: [BlockStmt] {...}
-#   56|     3: [Class] Inner<String>
-#   59|       2: [Method] F
-#-----|         2: (Parameters)
-#   59|           0: [Parameter] t
-#   59|           1: [Parameter] u
 #   63|     5: [Method] F
 #-----|       2: (Parameters)
 #   63|         0: [Parameter] t
@@ -78,15 +73,17 @@ nestedtypes.cs:
 #-----|       0: (TypeParameters)
 #   77|         0: [TypeParameter] T
 #   80|       3: [Field] t
-#   53| [Class] Outer<Int32>
-#   56|   2: [Class] Inner<>
-#-----|     0: (TypeParameters)
-#   56|       0: [TypeParameter] U
-#   56|   2: [Class] Inner<String>
-#   59|     2: [Method] F
-#-----|       2: (Parameters)
-#   59|         0: [Parameter] t
-#   59|         1: [Parameter] u
-#   63|   4: [Method] F
-#-----|     2: (Parameters)
-#   63|       0: [Parameter] t
+#   59| [Method] F
+#-----|   2: (Parameters)
+#   59|     0: [Parameter] t
+#   59|     1: [Parameter] u
+#   56| [Class] Inner<>
+#-----|   0: (TypeParameters)
+#   56|     0: [TypeParameter] U
+#   59| [Method] F
+#-----|   2: (Parameters)
+#   59|     0: [Parameter] t
+#   59|     1: [Parameter] u
+#   63| [Method] F
+#-----|   2: (Parameters)
+#   63|     0: [Parameter] t

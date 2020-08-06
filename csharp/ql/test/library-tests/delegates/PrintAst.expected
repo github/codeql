@@ -362,9 +362,6 @@ delegates.cs:
 #   76| [LocalConstantDeclStmt] ... ...;
 #-----| 0 -> [LocalVariableDeclAndInitExpr] Predicate<Int32> pi = ...
 
-#   33| [DelegateType] Predicate<Int32>
-#-----| 0 -> (Parameters)
-
 #   76| [LocalVariableDeclAndInitExpr] Predicate<Int32> pi = ...
 #-----| 0 -> [ExplicitDelegateCreation] delegate creation of type Predicate<Int32>
 #-----| 1 -> [LocalVariableAccess] access to local variable pi
@@ -381,9 +378,6 @@ delegates.cs:
 
 #   77| [LocalConstantDeclStmt] ... ...;
 #-----| 0 -> [LocalVariableDeclAndInitExpr] Predicate<String> ps = ...
-
-#   33| [DelegateType] Predicate<String>
-#-----| 0 -> (Parameters)
 
 #   77| [LocalVariableDeclAndInitExpr] Predicate<String> ps = ...
 #-----| 0 -> [ImplicitDelegateCreation] delegate creation of type Predicate<String>

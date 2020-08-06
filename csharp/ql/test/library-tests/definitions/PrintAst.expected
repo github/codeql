@@ -290,7 +290,6 @@ definitions.cs:
 #-----| 4 -> [Property] P
 #-----| 5 -> [Indexer] Item
 #-----| 6 -> [Class] Nested<>
-#-----| 6 -> [Class] Nested<I4>
 
 #  153| [AddEventAccessor] add_EH
 #-----| 2 -> (Parameters)
@@ -358,9 +357,6 @@ definitions.cs:
 #  166| [AssignExpr] ... = ...
 #-----| 0 -> [MethodCall] call to method Create
 #-----| 1 -> [FieldAccess] access to field f
-
-#  158| [Class] Nested<I4>
-#-----| 2 -> [Method] Create
 
 #  160| [Method] Create
 
@@ -917,13 +913,6 @@ definitions.cs:
 
 #  132| [ObjectCreation] object creation of type Exception
 
-#  121| [Class] B<A>
-#-----| 2 -> [Method] M
-#-----| 3 -> [Method] M2
-#-----| 4 -> [Struct] S<>
-#-----| 5 -> [Method] Tuple
-#-----| 6 -> [Indexer] Item
-
 #  134| [BlockStmt] {...}
 #-----| 0 -> [ReturnStmt] return ...;
 
@@ -1127,11 +1116,7 @@ definitions.cs:
 
 #  119| [Interface] I3
 
-#  117| [Interface] I2<Object>
-
 #  121| [TypeParameter] T
-
-#  117| [Interface] I2<A>
 
 #  139| [Enum] E
 

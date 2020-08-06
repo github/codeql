@@ -171,144 +171,138 @@ Nesting.cs:
 #   56|           0: [StringLiteral] ""
 #   56|           1: [DecimalLiteral] 0
 #   56|           2: [BoolLiteral] false
-#    1| [Class] A<String>
-#    3|   2: [Method] MA1
+#    3| [Method] MA1
+#-----|   2: (Parameters)
+#    3|     0: [Parameter] x
+#    4| [Method] MA2
+#-----|   1: (TypeParameters)
+#    4|     0: [TypeParameter] T2
+#-----|   2: (Parameters)
+#    4|     0: [Parameter] x
+#    4|     1: [Parameter] y
+#    6| [Class] B<>
+#-----|   0: (TypeParameters)
+#    6|     0: [TypeParameter] T3
+#   12| [Class] C
+#   14|   2: [Method] MC1
 #-----|     2: (Parameters)
-#    3|       0: [Parameter] x
-#    4|   3: [Method] MA2
+#   14|       0: [Parameter] x
+#   15|   3: [Method] MC2
 #-----|     1: (TypeParameters)
-#    4|       0: [TypeParameter] T2
+#   15|       0: [TypeParameter] T5
 #-----|     2: (Parameters)
-#    4|       0: [Parameter] x
-#    4|       1: [Parameter] y
-#    4|   3: [Method] MA2
+#   15|       0: [Parameter] x
+#   15|       1: [Parameter] y
+#   15|   3: [Method] MC2
 #-----|     2: (Parameters)
-#    4|       0: [Parameter] x
-#    4|       1: [Parameter] y
-#    6|   5: [Class] B<>
+#   15|       0: [Parameter] x
+#   15|       1: [Parameter] y
+#   17|   5: [Class] D<>
 #-----|     0: (TypeParameters)
-#    6|       0: [TypeParameter] T3
-#    6|   5: [Class] B<Int32>
-#    8|     2: [Method] MB1
-#-----|       2: (Parameters)
-#    8|         0: [Parameter] x
-#    8|         1: [Parameter] y
-#    9|     3: [Method] MB2
-#-----|       1: (TypeParameters)
-#    9|         0: [TypeParameter] T4
-#-----|       2: (Parameters)
-#    9|         0: [Parameter] x
-#    9|         1: [Parameter] y
-#    9|         2: [Parameter] z
-#    9|     3: [Method] MB2
-#-----|       2: (Parameters)
-#    9|         0: [Parameter] x
-#    9|         1: [Parameter] y
-#    9|         2: [Parameter] z
-#   12|   7: [Class] C
-#   14|     2: [Method] MC1
-#-----|       2: (Parameters)
-#   14|         0: [Parameter] x
-#   15|     3: [Method] MC2
-#-----|       1: (TypeParameters)
-#   15|         0: [TypeParameter] T5
-#-----|       2: (Parameters)
-#   15|         0: [Parameter] x
-#   15|         1: [Parameter] y
-#   15|     3: [Method] MC2
-#-----|       2: (Parameters)
-#   15|         0: [Parameter] x
-#   15|         1: [Parameter] y
-#   17|     5: [Class] D<>
-#-----|       0: (TypeParameters)
-#   17|         0: [TypeParameter] T6
-#   17|     5: [Class] D<Decimal>
-#   19|       2: [Method] MD1
-#-----|         2: (Parameters)
-#   19|           0: [Parameter] x
-#   19|           1: [Parameter] y
-#   20|       3: [Method] MD2
-#-----|         1: (TypeParameters)
-#   20|           0: [TypeParameter] T7
-#-----|         2: (Parameters)
-#   20|           0: [Parameter] x
-#   20|           1: [Parameter] y
-#   20|           2: [Parameter] z
-#   20|       3: [Method] MD2
-#-----|         2: (Parameters)
-#   20|           0: [Parameter] x
-#   20|           1: [Parameter] y
-#   20|           2: [Parameter] z
-#   24|   8: [Method] Construct
-#    1| [Class] A<Int32>
-#    3|   2: [Method] MA1
+#   17|       0: [TypeParameter] T6
+#   24| [Method] Construct
+#    3| [Method] MA1
+#-----|   2: (Parameters)
+#    3|     0: [Parameter] x
+#    4| [Method] MA2
+#-----|   1: (TypeParameters)
+#    4|     0: [TypeParameter] T2
+#-----|   2: (Parameters)
+#    4|     0: [Parameter] x
+#    4|     1: [Parameter] y
+#    6| [Class] B<>
+#-----|   0: (TypeParameters)
+#    6|     0: [TypeParameter] T3
+#   24| [Method] Construct
+#    4| [Method] MA2
+#-----|   2: (Parameters)
+#    4|     0: [Parameter] x
+#    4|     1: [Parameter] y
+#    4| [Method] MA2
+#-----|   2: (Parameters)
+#    4|     0: [Parameter] x
+#    4|     1: [Parameter] y
+#    8| [Method] MB1
+#-----|   2: (Parameters)
+#    8|     0: [Parameter] x
+#    8|     1: [Parameter] y
+#    9| [Method] MB2
+#-----|   1: (TypeParameters)
+#    9|     0: [TypeParameter] T4
+#-----|   2: (Parameters)
+#    9|     0: [Parameter] x
+#    9|     1: [Parameter] y
+#    9|     2: [Parameter] z
+#    9| [Method] MB2
+#-----|   2: (Parameters)
+#    9|     0: [Parameter] x
+#    9|     1: [Parameter] y
+#    9|     2: [Parameter] z
+#    8| [Method] MB1
+#-----|   2: (Parameters)
+#    8|     0: [Parameter] x
+#    8|     1: [Parameter] y
+#    9| [Method] MB2
+#-----|   1: (TypeParameters)
+#    9|     0: [TypeParameter] T4
+#-----|   2: (Parameters)
+#    9|     0: [Parameter] x
+#    9|     1: [Parameter] y
+#    9|     2: [Parameter] z
+#    9| [Method] MB2
+#-----|   2: (Parameters)
+#    9|     0: [Parameter] x
+#    9|     1: [Parameter] y
+#    9|     2: [Parameter] z
+#   12| [Class] C
+#   14|   2: [Method] MC1
 #-----|     2: (Parameters)
-#    3|       0: [Parameter] x
-#    4|   3: [Method] MA2
+#   14|       0: [Parameter] x
+#   15|   3: [Method] MC2
 #-----|     1: (TypeParameters)
-#    4|       0: [TypeParameter] T2
+#   15|       0: [TypeParameter] T5
 #-----|     2: (Parameters)
-#    4|       0: [Parameter] x
-#    4|       1: [Parameter] y
-#    4|   3: [Method] MA2
+#   15|       0: [Parameter] x
+#   15|       1: [Parameter] y
+#   15|   3: [Method] MC2
 #-----|     2: (Parameters)
-#    4|       0: [Parameter] x
-#    4|       1: [Parameter] y
-#    6|   5: [Class] B<>
+#   15|       0: [Parameter] x
+#   15|       1: [Parameter] y
+#   17|   5: [Class] D<>
 #-----|     0: (TypeParameters)
-#    6|       0: [TypeParameter] T3
-#    6|   5: [Class] B<String>
-#    8|     2: [Method] MB1
-#-----|       2: (Parameters)
-#    8|         0: [Parameter] x
-#    8|         1: [Parameter] y
-#    9|     3: [Method] MB2
-#-----|       1: (TypeParameters)
-#    9|         0: [TypeParameter] T4
-#-----|       2: (Parameters)
-#    9|         0: [Parameter] x
-#    9|         1: [Parameter] y
-#    9|         2: [Parameter] z
-#    9|     3: [Method] MB2
-#-----|       2: (Parameters)
-#    9|         0: [Parameter] x
-#    9|         1: [Parameter] y
-#    9|         2: [Parameter] z
-#   12|   7: [Class] C
-#   14|     2: [Method] MC1
-#-----|       2: (Parameters)
-#   14|         0: [Parameter] x
-#   15|     3: [Method] MC2
-#-----|       1: (TypeParameters)
-#   15|         0: [TypeParameter] T5
-#-----|       2: (Parameters)
-#   15|         0: [Parameter] x
-#   15|         1: [Parameter] y
-#   15|     3: [Method] MC2
-#-----|       2: (Parameters)
-#   15|         0: [Parameter] x
-#   15|         1: [Parameter] y
-#   17|     5: [Class] D<>
-#-----|       0: (TypeParameters)
-#   17|         0: [TypeParameter] T6
-#   17|     5: [Class] D<Boolean>
-#   19|       2: [Method] MD1
-#-----|         2: (Parameters)
-#   19|           0: [Parameter] x
-#   19|           1: [Parameter] y
-#   20|       3: [Method] MD2
-#-----|         1: (TypeParameters)
-#   20|           0: [TypeParameter] T7
-#-----|         2: (Parameters)
-#   20|           0: [Parameter] x
-#   20|           1: [Parameter] y
-#   20|           2: [Parameter] z
-#   20|       3: [Method] MD2
-#-----|         2: (Parameters)
-#   20|           0: [Parameter] x
-#   20|           1: [Parameter] y
-#   20|           2: [Parameter] z
-#   24|   8: [Method] Construct
+#   17|       0: [TypeParameter] T6
+#   19| [Method] MD1
+#-----|   2: (Parameters)
+#   19|     0: [Parameter] x
+#   19|     1: [Parameter] y
+#   20| [Method] MD2
+#-----|   1: (TypeParameters)
+#   20|     0: [TypeParameter] T7
+#-----|   2: (Parameters)
+#   20|     0: [Parameter] x
+#   20|     1: [Parameter] y
+#   20|     2: [Parameter] z
+#   20| [Method] MD2
+#-----|   2: (Parameters)
+#   20|     0: [Parameter] x
+#   20|     1: [Parameter] y
+#   20|     2: [Parameter] z
+#   19| [Method] MD1
+#-----|   2: (Parameters)
+#   19|     0: [Parameter] x
+#   19|     1: [Parameter] y
+#   20| [Method] MD2
+#-----|   1: (TypeParameters)
+#   20|     0: [TypeParameter] T7
+#-----|   2: (Parameters)
+#   20|     0: [Parameter] x
+#   20|     1: [Parameter] y
+#   20|     2: [Parameter] z
+#   20| [Method] MD2
+#-----|   2: (Parameters)
+#   20|     0: [Parameter] x
+#   20|     1: [Parameter] y
+#   20|     2: [Parameter] z
 generics.cs:
 #    5| [NamespaceDeclaration] namespace ... { ... }
 #    7|   1: [DelegateType] GenericDelegate<>
@@ -649,28 +643,6 @@ generics.cs:
 #  157|         3: [BlockStmt] {...}
 #  157|           0: [ReturnStmt] return ...;
 #  157|             0: [ParameterAccess] access to parameter t
-#  155|     8: [Class] Class<Int32>
-#  157|       2: [Method] CM3
-#-----|         1: (TypeParameters)
-#  157|           0: [TypeParameter] T2
-#-----|         2: (Parameters)
-#  157|           0: [Parameter] t
-#  157|           1: [Parameter] t1
-#  157|       2: [Method] CM3
-#-----|         2: (Parameters)
-#  157|           0: [Parameter] t
-#  157|           1: [Parameter] t1
-#  155|     8: [Class] Class<Double>
-#  157|       2: [Method] CM3
-#-----|         1: (TypeParameters)
-#  157|           0: [TypeParameter] T2
-#-----|         2: (Parameters)
-#  157|           0: [Parameter] t
-#  157|           1: [Parameter] t1
-#  157|       2: [Method] CM3
-#-----|         2: (Parameters)
-#  157|           0: [Parameter] t
-#  157|           1: [Parameter] t1
 #  160|     11: [Method] NonCM
 #  160|       3: [BlockStmt] {...}
 #  162|     12: [Method] CM
@@ -721,169 +693,171 @@ generics.cs:
 #  190|     2: [Method] M
 #-----|       2: (Parameters)
 #  190|         0: [Parameter] x
-#    7| [DelegateType] GenericDelegate<T>
+#   25| [Field] at
+#   27| [Field] name
+#   29| [Method] foo
+#   33| [Method] staticFoo
+#   35| [IndexerProperty] Name
+#   35|   1: [Getter] get_Name
+#   35|   2: [Setter] set_Name
+#-----|     2: (Parameters)
+#   35|       0: [Parameter] value
+#   37| [Event] myEvent
+#   37|   1: [AddEventAccessor] add_myEvent
+#-----|     2: (Parameters)
+#   37|       0: [Parameter] value
+#   37|   1: [RemoveEventAccessor] remove_myEvent
+#-----|     2: (Parameters)
+#   37|       0: [Parameter] value
+#   39| [IncrementOperator] ++
+#-----|   2: (Parameters)
+#   39|     0: [Parameter] a
+#   44| [Destructor] ~B
+#   45| [Method] f
+#-----|   1: (TypeParameters)
+#   45|     0: [TypeParameter] X
+#   16| [DelegateType] GenericDelegateInGenericClass<>
+#-----|   0: (TypeParameters)
+#   16|     0: [TypeParameter] U
+#-----|   1: (Parameters)
+#   16|     0: [Parameter] t
+#   16|     1: [Parameter] u
+#   18| [Method] bar
+#-----|   1: (TypeParameters)
+#   18|     0: [TypeParameter] X
+#-----|   2: (Parameters)
+#   18|     0: [Parameter] x
+#   18|     1: [Parameter] t
+#   25| [Field] at
+#   27| [Field] name
+#   29| [Method] foo
+#   33| [Method] staticFoo
+#   35| [IndexerProperty] Name
+#   35|   1: [Getter] get_Name
+#   35|   2: [Setter] set_Name
+#-----|     2: (Parameters)
+#   35|       0: [Parameter] value
+#   37| [Event] myEvent
+#   37|   1: [AddEventAccessor] add_myEvent
+#-----|     2: (Parameters)
+#   37|       0: [Parameter] value
+#   37|   1: [RemoveEventAccessor] remove_myEvent
+#-----|     2: (Parameters)
+#   37|       0: [Parameter] value
+#   39| [IncrementOperator] ++
+#-----|   2: (Parameters)
+#   39|     0: [Parameter] a
+#   44| [Destructor] ~B
+#   45| [Method] f
+#-----|   1: (TypeParameters)
+#   45|     0: [TypeParameter] X
+#   63| [Field] NumRows
+#   64| [Field] NumCols
+#   66| [Field] cells
+#   68| [Indexer] Item
 #-----|   0: (Parameters)
-#    7|     0: [Parameter] t
-#   22| [Class] B<String>
-#   25|   2: [Field] at
-#   27|   3: [Field] name
-#   29|   4: [Method] foo
-#   31|   5: [Method] fooParams
+#   68|     0: [Parameter] i
+#   70|   2: [Getter] get_Item
 #-----|     2: (Parameters)
-#   31|       0: [Parameter] ts
-#   33|   6: [Method] staticFoo
-#   35|   7: [IndexerProperty] Name
-#   35|     1: [Getter] get_Name
-#   35|     2: [Setter] set_Name
-#-----|       2: (Parameters)
-#   35|         0: [Parameter] value
-#   37|   8: [Event] myEvent
-#   37|     1: [AddEventAccessor] add_myEvent
-#-----|       2: (Parameters)
-#   37|         0: [Parameter] value
-#   37|     1: [RemoveEventAccessor] remove_myEvent
-#-----|       2: (Parameters)
-#   37|         0: [Parameter] value
-#   39|   9: [IncrementOperator] ++
-#-----|     2: (Parameters)
-#   39|       0: [Parameter] a
-#   44|   10: [Destructor] ~B
-#   45|   11: [Method] f
-#-----|     1: (TypeParameters)
-#   45|       0: [TypeParameter] X
-#   13| [Class] A<String>
-#   16|   2: [DelegateType] GenericDelegateInGenericClass<>
-#-----|     0: (TypeParameters)
-#   16|       0: [TypeParameter] U
-#-----|     1: (Parameters)
-#   16|       0: [Parameter] t
-#   16|       1: [Parameter] u
-#   18|   3: [Method] bar
-#-----|     1: (TypeParameters)
-#   18|       0: [TypeParameter] X
-#-----|     2: (Parameters)
-#   18|       0: [Parameter] x
-#   18|       1: [Parameter] t
-#   18|   3: [Method] bar
-#-----|     2: (Parameters)
-#   18|       0: [Parameter] x
-#   18|       1: [Parameter] t
-#   22| [Class] B<Object>
-#   25|   2: [Field] at
-#   27|   3: [Field] name
-#   29|   4: [Method] foo
-#   31|   5: [Method] fooParams
-#-----|     2: (Parameters)
-#   31|       0: [Parameter] ts
-#   33|   6: [Method] staticFoo
-#   35|   7: [IndexerProperty] Name
-#   35|     1: [Getter] get_Name
-#   35|     2: [Setter] set_Name
-#-----|       2: (Parameters)
-#   35|         0: [Parameter] value
-#   37|   8: [Event] myEvent
-#   37|     1: [AddEventAccessor] add_myEvent
-#-----|       2: (Parameters)
-#   37|         0: [Parameter] value
-#   37|     1: [RemoveEventAccessor] remove_myEvent
-#-----|       2: (Parameters)
-#   37|         0: [Parameter] value
-#   39|   9: [IncrementOperator] ++
-#-----|     2: (Parameters)
-#   39|       0: [Parameter] a
-#   44|   10: [Destructor] ~B
-#   45|   11: [Method] f
-#-----|     1: (TypeParameters)
-#   45|       0: [TypeParameter] X
-#   60| [Class] Grid<Int32>
-#   63|   2: [Field] NumRows
-#   64|   3: [Field] NumCols
-#   66|   4: [Field] cells
-#   68|   5: [Indexer] Item
-#-----|     0: (Parameters)
 #   68|       0: [Parameter] i
-#   70|     2: [Getter] get_Item
-#-----|       2: (Parameters)
-#   68|         0: [Parameter] i
-#   73|   6: [Indexer] Item
-#-----|     0: (Parameters)
+#   73| [Indexer] Item
+#-----|   0: (Parameters)
+#   73|     0: [Parameter] c
+#   73|     1: [Parameter] col
+#   75|   2: [Getter] get_Item
+#-----|     2: (Parameters)
 #   73|       0: [Parameter] c
 #   73|       1: [Parameter] col
-#   75|     2: [Getter] get_Item
-#-----|       2: (Parameters)
-#   73|         0: [Parameter] c
-#   73|         1: [Parameter] col
-#   88|     3: [Setter] set_Item
-#-----|       2: (Parameters)
-#   73|         0: [Parameter] c
-#   73|         1: [Parameter] col
-#   88|         2: [Parameter] value
-#   13| [Class] A<Int32>
-#   16|   2: [DelegateType] GenericDelegateInGenericClass<>
-#-----|     0: (TypeParameters)
-#   16|       0: [TypeParameter] U
-#-----|     1: (Parameters)
-#   16|       0: [Parameter] t
-#   16|       1: [Parameter] u
-#   18|   3: [Method] bar
-#-----|     1: (TypeParameters)
-#   18|       0: [TypeParameter] X
+#   88|   3: [Setter] set_Item
 #-----|     2: (Parameters)
-#   18|       0: [Parameter] x
-#   18|       1: [Parameter] t
-#   18|   3: [Method] bar
+#   73|       0: [Parameter] c
+#   73|       1: [Parameter] col
+#   88|       2: [Parameter] value
+#   18| [Method] bar
+#-----|   2: (Parameters)
+#   18|     0: [Parameter] x
+#   18|     1: [Parameter] t
+#   16| [DelegateType] GenericDelegateInGenericClass<>
+#-----|   0: (TypeParameters)
+#   16|     0: [TypeParameter] U
+#-----|   1: (Parameters)
+#   16|     0: [Parameter] t
+#   16|     1: [Parameter] u
+#   18| [Method] bar
+#-----|   1: (TypeParameters)
+#   18|     0: [TypeParameter] X
+#-----|   2: (Parameters)
+#   18|     0: [Parameter] x
+#   18|     1: [Parameter] t
+#   18| [Method] bar
+#-----|   2: (Parameters)
+#   18|     0: [Parameter] x
+#   18|     1: [Parameter] t
+#  175| [Method] set
+#-----|   2: (Parameters)
+#  175|     0: [Parameter] t
+#   25| [Field] at
+#   27| [Field] name
+#   29| [Method] foo
+#   33| [Method] staticFoo
+#   35| [IndexerProperty] Name
+#   35|   1: [Getter] get_Name
+#   35|   2: [Setter] set_Name
 #-----|     2: (Parameters)
-#   18|       0: [Parameter] x
-#   18|       1: [Parameter] t
-#  173| [Interface] Interface<T>
-#  175|   1: [Method] set
+#   35|       0: [Parameter] value
+#   37| [Event] myEvent
+#   37|   1: [AddEventAccessor] add_myEvent
 #-----|     2: (Parameters)
-#  175|       0: [Parameter] t
-#  173| [Interface] Interface<Int32>
-#   22| [Class] B<X>
-#   25|   2: [Field] at
-#   27|   3: [Field] name
-#   29|   4: [Method] foo
-#   31|   5: [Method] fooParams
+#   37|       0: [Parameter] value
+#   37|   1: [RemoveEventAccessor] remove_myEvent
 #-----|     2: (Parameters)
-#   31|       0: [Parameter] ts
-#   33|   6: [Method] staticFoo
-#   35|   7: [IndexerProperty] Name
-#   35|     1: [Getter] get_Name
-#   35|     2: [Setter] set_Name
-#-----|       2: (Parameters)
-#   35|         0: [Parameter] value
-#   37|   8: [Event] myEvent
-#   37|     1: [AddEventAccessor] add_myEvent
-#-----|       2: (Parameters)
-#   37|         0: [Parameter] value
-#   37|     1: [RemoveEventAccessor] remove_myEvent
-#-----|       2: (Parameters)
-#   37|         0: [Parameter] value
-#   39|   9: [IncrementOperator] ++
-#-----|     2: (Parameters)
-#   39|       0: [Parameter] a
-#   44|   10: [Destructor] ~B
-#   45|   11: [Method] f
-#-----|     1: (TypeParameters)
-#   45|       0: [TypeParameter] X
-#    7| [DelegateType] GenericDelegate<String>
-#-----|   0: (Parameters)
-#    7|     0: [Parameter] t
-#   13| [Class] A<Object>
-#    7| [DelegateType] GenericDelegate<Object>
-#-----|   0: (Parameters)
-#    7|     0: [Parameter] t
-#   48| [Class] Outer<Object>
-#   51|   1: [Class] Inner<>
-#-----|     0: (TypeParameters)
-#   51|       0: [TypeParameter] U
-#   51|   1: [Class] Inner<String>
-#   54|     2: [Field] t
-#   55|     3: [Field] myFunc
-#   13| [Class] A<X>
-#    7| [DelegateType] GenericDelegate<X>
-#-----|   0: (Parameters)
-#    7|     0: [Parameter] t
-#   13| [Class] A<T>
-#  178| [Class] Inheritance<Int32>
+#   37|       0: [Parameter] value
+#   39| [IncrementOperator] ++
+#-----|   2: (Parameters)
+#   39|     0: [Parameter] a
+#   44| [Destructor] ~B
+#   45| [Method] f
+#-----|   1: (TypeParameters)
+#   45|     0: [TypeParameter] X
+#   31| [Method] fooParams
+#-----|   2: (Parameters)
+#   31|     0: [Parameter] ts
+#   31| [Method] fooParams
+#-----|   2: (Parameters)
+#   31|     0: [Parameter] ts
+#   51| [Class] Inner<>
+#-----|   0: (TypeParameters)
+#   51|     0: [TypeParameter] U
+#   54| [Field] t
+#   55| [Field] myFunc
+#  157| [Method] CM3
+#-----|   1: (TypeParameters)
+#  157|     0: [TypeParameter] T2
+#-----|   2: (Parameters)
+#  157|     0: [Parameter] t
+#  157|     1: [Parameter] t1
+#   31| [Method] fooParams
+#-----|   2: (Parameters)
+#   31|     0: [Parameter] ts
+#  157| [Method] CM3
+#-----|   2: (Parameters)
+#  157|     0: [Parameter] t
+#  157|     1: [Parameter] t1
+#  157| [Method] CM3
+#-----|   1: (TypeParameters)
+#  157|     0: [TypeParameter] T2
+#-----|   2: (Parameters)
+#  157|     0: [Parameter] t
+#  157|     1: [Parameter] t1
+#  157| [Method] CM3
+#-----|   2: (Parameters)
+#  157|     0: [Parameter] t
+#  157|     1: [Parameter] t1
+#-----| (Parameters)
+#    7|   0: [Parameter] t
+#-----| (Parameters)
+#    7|   0: [Parameter] t
+#-----| (Parameters)
+#    7|   0: [Parameter] t
+#-----| (Parameters)
+#    7|   0: [Parameter] t

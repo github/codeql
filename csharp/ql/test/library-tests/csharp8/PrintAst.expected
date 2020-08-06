@@ -130,9 +130,6 @@ AsyncStreams.cs:
 #   19| [MethodCall] call to method Items
 #-----| -1 -> [ThisAccess] this access
 
-#   34| [Interface] IAsyncEnumerable<Int32>
-#-----| 1 -> [Method] GetAsyncEnumerator
-
 #   36| [Method] GetAsyncEnumerator
 #-----| 2 -> (Parameters)
 
@@ -154,8 +151,6 @@ AsyncStreams.cs:
 #   36| [Parameter] cancellationToken
 #-----| 1 -> [DefaultValueExpr] default(...)
 
-#   39| [Interface] IAsyncEnumerator<Int32>
-
 #   26| [Interface] IAsyncDisposable
 #-----| 1 -> [Method] DisposeAsync
 
@@ -163,8 +158,6 @@ AsyncStreams.cs:
 
 #   36| [Parameter] cancellationToken
 #-----| 1 -> [DefaultValueExpr] default(...)
-
-#   39| [Interface] IAsyncEnumerator<T>
 
 #   41| [Property] Current
 #-----| 1 -> [Getter] get_Current
@@ -346,8 +339,6 @@ NullableRefTypes.cs:
 #-----| 22 -> [Method] Q
 #-----| 22 -> [Method] Q
 #-----| 24 -> [Class] Generic<,,,>
-#-----| 24 -> [Class] Generic<String,T1,IEnumerable<String>,MyClass>
-#-----| 24 -> [Class] Generic<MyClass,MyClass,IDisposable,MyClass>
 #-----| 27 -> [Class] Generic2<,>
 #-----| 28 -> [Field] items2
 #-----| 29 -> [Method] GenericFn
@@ -1293,10 +1284,6 @@ NullableRefTypes.cs:
 #   48| [Event] P
 #-----| 1 -> [AddEventAccessor] add_P
 #-----| 1 -> [RemoveEventAccessor] remove_P
-
-#   54| [Class] Generic<String,T1,IEnumerable<String>,MyClass>
-
-#   54| [Class] Generic<MyClass,MyClass,IDisposable,MyClass>
 
 #  215| [Parameter] list
 

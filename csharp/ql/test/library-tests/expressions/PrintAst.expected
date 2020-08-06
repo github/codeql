@@ -1079,7 +1079,6 @@ expressions.cs:
 #-----| 14 -> [Method] MainIsAsCast
 #-----| 15 -> [Class] Y<,>
 #-----| 16 -> [Class] X<>
-#-----| 16 -> [Class] X<X<>>
 #-----| 18 -> [Class] Nested
 #-----| 19 -> [Method] MainLocalVarDecl
 #-----| 20 -> [Method] MainLocalConstDecl
@@ -1525,9 +1524,6 @@ expressions.cs:
 #-----| 0 -> [TypeAccess] access to type X<X<>>
 
 #  121| [TypeAccess] access to type X<X<>>
-
-#  107| [Class] X<X<>>
-#-----| 2 -> [Method] PrintTypes
 
 #  110| [Method] PrintTypes
 
@@ -3786,9 +3782,6 @@ expressions.cs:
 #  189| [LocalConstantDeclStmt] ... ...;
 #-----| 0 -> [LocalVariableDeclAndInitExpr] Predicate<Int32> pi = ...
 
-#  202| [DelegateType] Predicate<Int32>
-#-----| 0 -> (Parameters)
-
 #  189| [LocalVariableDeclAndInitExpr] Predicate<Int32> pi = ...
 #-----| 0 -> [ExplicitDelegateCreation] delegate creation of type Predicate<Int32>
 #-----| 1 -> [LocalVariableAccess] access to local variable pi
@@ -3805,9 +3798,6 @@ expressions.cs:
 
 #  190| [LocalConstantDeclStmt] ... ...;
 #-----| 0 -> [LocalVariableDeclAndInitExpr] Predicate<String> ps = ...
-
-#  202| [DelegateType] Predicate<String>
-#-----| 0 -> (Parameters)
 
 #  190| [LocalVariableDeclAndInitExpr] Predicate<String> ps = ...
 #-----| 0 -> [ImplicitDelegateCreation] delegate creation of type Predicate<String>

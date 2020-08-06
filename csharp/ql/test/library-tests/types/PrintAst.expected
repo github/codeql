@@ -46,8 +46,4 @@ types.cs:
 #-----|     0: (TypeParameters)
 #   47|       0: [TypeParameter] U
 #   47|       1: [TypeParameter] V
-#   44| [Class] GenericClass<Class>
-#   45| [Interface] GenericInterface<Class>
-#   46| [Struct] GenericStruct<Class>
 #   37| [NullableType] Nullable<Struct>
-#   47| [Class] Map<String,Class>

@@ -186,13 +186,11 @@ fields.cs:
 #  101|         0: [ReturnStmt] return ...;
 #  101|           0: [ObjectCreation] object creation of type D
 #  101|             0: [ParameterAccess] access to parameter d
-#   20| [Class] C<Int32>
-#   23|   2: [Field] count
-#   25|   3: [InstanceConstructor] C
-#   27|   4: [Property] Count
-#   27|     1: [Getter] get_Count
-#   20| [Class] C<Double>
-#   23|   2: [Field] count
-#   25|   3: [InstanceConstructor] C
-#   27|   4: [Property] Count
-#   27|     1: [Getter] get_Count
+#   23| [Field] count
+#   25| [InstanceConstructor] C
+#   27| [Property] Count
+#   27|   1: [Getter] get_Count
+#   23| [Field] count
+#   25| [InstanceConstructor] C
+#   27| [Property] Count
+#   27|   1: [Getter] get_Count
