@@ -73,17 +73,5 @@ nestedtypes.cs:
 #-----|       0: (TypeParameters)
 #   77|         0: [TypeParameter] T
 #   80|       3: [Field] t
-#   59| [Method] F
-#-----|   2: (Parameters)
-#   59|     0: [Parameter] t
-#   59|     1: [Parameter] u
-#   56| [Class] Inner<>
-#-----|   0: (TypeParameters)
-#   56|     0: [TypeParameter] U
-#   59| [Method] F
-#-----|   2: (Parameters)
-#   59|     0: [Parameter] t
-#   59|     1: [Parameter] u
-#   63| [Method] F
-#-----|   2: (Parameters)
-#   63|     0: [Parameter] t
+#-----| (TypeParameters)
+#   56|   0: [TypeParameter] U

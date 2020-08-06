@@ -130,9 +130,6 @@ AsyncStreams.cs:
 #   19| [MethodCall] call to method Items
 #-----| -1 -> [ThisAccess] this access
 
-#   36| [Method] GetAsyncEnumerator
-#-----| 2 -> (Parameters)
-
 #   19| [ThisAccess] this access
 
 #   19| [LocalVariableDeclExpr] Int32 item
@@ -147,9 +144,6 @@ AsyncStreams.cs:
 #   20| [TypeAccess] access to type Console
 
 #   20| [LocalVariableAccess] access to local variable item
-
-#   36| [Parameter] cancellationToken
-#-----| 1 -> [DefaultValueExpr] default(...)
 
 #   26| [Interface] IAsyncDisposable
 #-----| 1 -> [Method] DisposeAsync
@@ -337,11 +331,9 @@ NullableRefTypes.cs:
 #-----| 20 -> [DelegateType] Del
 #-----| 21 -> [Event] P
 #-----| 22 -> [Method] Q
-#-----| 22 -> [Method] Q
 #-----| 24 -> [Class] Generic<,,,>
 #-----| 27 -> [Class] Generic2<,>
 #-----| 28 -> [Field] items2
-#-----| 29 -> [Method] GenericFn
 #-----| 29 -> [Method] GenericFn
 #-----| 31 -> [Method] CallF
 
@@ -882,9 +874,6 @@ NullableRefTypes.cs:
 
 #   74| [LocalVariableAccess] access to local variable x
 
-#   67| [Method] GenericFn
-#-----| 2 -> (Parameters)
-
 #   75| [ExprStmt] ...;
 #-----| 0 -> [MethodCall] call to method Q
 
@@ -895,9 +884,6 @@ NullableRefTypes.cs:
 #   75| [ThisAccess] this access
 
 #   75| [LocalVariableAccess] access to local variable x
-
-#   51| [Method] Q
-#-----| 2 -> (Parameters)
 
 #   76| [ReturnStmt] return ...;
 #-----| 0 -> [DefaultValueExpr] default(...)
@@ -1260,10 +1246,6 @@ NullableRefTypes.cs:
 #  220| [ThisAccess] this access
 
 #  220| [LocalVariableAccess] access to local variable d
-
-#   67| [Parameter] x
-
-#   51| [Parameter] t
 
 #   94| [LocalVariableAccess] access to local variable x
 
@@ -3183,9 +3165,6 @@ ranges.cs:
 #-----| 0 -> [Parameter] cancellationToken
 
 #-----| (Parameters)
-#-----| 0 -> [Parameter] cancellationToken
-
-#-----| (Parameters)
 #-----| 0 -> [Parameter] value
 
 #-----| (Parameters)
@@ -3267,12 +3246,6 @@ ranges.cs:
 
 #-----| (Parameters)
 #-----| 0 -> [Parameter] o
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] x
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] t
 
 #-----| (Parameters)
 #-----| 0 -> [Parameter] list

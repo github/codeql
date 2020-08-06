@@ -1,1143 +1,367 @@
 methods.cs:
 #    3| [NamespaceDeclaration] namespace ... { ... }
-#-----| 1 -> [Class] TestRef
-#-----| 2 -> [Class] TestOut
-#-----| 3 -> [Class] Console
-#-----| 4 -> [Class] TestOverloading
-#-----| 5 -> [Class] Extensions
-#-----| 6 -> [Class] TestExtensions
-#-----| 7 -> [Class] TestDefaultParameters
-#-----| 8 -> [Class] TestDefaultExtensionParameters
-
-#    6| [Class] TestRef
-#-----| 2 -> [Method] Swap
-#-----| 3 -> [Method] Main
-
-#    9| [Method] Swap
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#   10| [BlockStmt] {...}
-#-----| 0 -> [LocalConstantDeclStmt] ... ...;
-#-----| 1 -> [ExprStmt] ...;
-#-----| 2 -> [ExprStmt] ...;
-
-#   11| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 temp = ...
-
-#   11| [LocalVariableDeclAndInitExpr] Int32 temp = ...
-#-----| 0 -> [ParameterAccess] access to parameter x
-#-----| 1 -> [LocalVariableAccess] access to local variable temp
-
-#   11| [ParameterAccess] access to parameter x
-
-#   11| [LocalVariableAccess] access to local variable temp
-
-#   12| [ExprStmt] ...;
-#-----| 0 -> [AssignExpr] ... = ...
-
-#   12| [AssignExpr] ... = ...
-#-----| 0 -> [ParameterAccess] access to parameter y
-#-----| 1 -> [ParameterAccess] access to parameter x
-
-#   12| [ParameterAccess] access to parameter x
-
-#   12| [ParameterAccess] access to parameter y
-
-#   13| [ExprStmt] ...;
-#-----| 0 -> [AssignExpr] ... = ...
-
-#   13| [AssignExpr] ... = ...
-#-----| 0 -> [LocalVariableAccess] access to local variable temp
-#-----| 1 -> [ParameterAccess] access to parameter y
-
-#   13| [ParameterAccess] access to parameter y
-
-#   13| [LocalVariableAccess] access to local variable temp
-
-#   16| [Method] Main
-#-----| 3 -> [BlockStmt] {...}
-
-#   25| [Class] TestOut
-#-----| 2 -> [Method] Divide
-#-----| 3 -> [Method] Main
-
-#   28| [Method] Divide
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#   29| [BlockStmt] {...}
-#-----| 0 -> [ExprStmt] ...;
-#-----| 1 -> [ExprStmt] ...;
-
-#   30| [ExprStmt] ...;
-#-----| 0 -> [AssignExpr] ... = ...
-
-#   30| [AssignExpr] ... = ...
-#-----| 0 -> [DivExpr] ... / ...
-#-----| 1 -> [ParameterAccess] access to parameter result
-
-#   30| [ParameterAccess] access to parameter result
-
-#   30| [DivExpr] ... / ...
-#-----| 0 -> [ParameterAccess] access to parameter x
-#-----| 1 -> [ParameterAccess] access to parameter y
-
-#   31| [ExprStmt] ...;
-#-----| 0 -> [AssignExpr] ... = ...
-
-#   31| [AssignExpr] ... = ...
-#-----| 0 -> [RemExpr] ... % ...
-#-----| 1 -> [ParameterAccess] access to parameter remainder
-
-#   31| [ParameterAccess] access to parameter remainder
-
-#   31| [RemExpr] ... % ...
-#-----| 0 -> [ParameterAccess] access to parameter x
-#-----| 1 -> [ParameterAccess] access to parameter y
-
-#   34| [Method] Main
-#-----| 3 -> [BlockStmt] {...}
-
-#   42| [Class] Console
-#-----| 2 -> [Method] Write
-#-----| 3 -> [Method] WriteLine
-
-#   45| [Method] Write
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#   45| [BlockStmt] {...}
-
-#   46| [Method] WriteLine
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#   46| [Parameter] fmt
-
-#   46| [Parameter] args
-
-#   49| [Class] TestOverloading
-#-----| 2 -> [Method] F
-#-----| 3 -> [Method] F
-#-----| 4 -> [Method] F
-#-----| 5 -> [Method] F
-#-----| 6 -> [Method] F
-#-----| 6 -> [Method] F
-#-----| 6 -> [Method] F
-#-----| 9 -> [Method] F
-#-----| 10 -> [Method] Main
-
-#   52| [Method] F
-#-----| 3 -> [BlockStmt] {...}
-
-#   53| [BlockStmt] {...}
-#-----| 0 -> [ExprStmt] ...;
-
-#   54| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method WriteLine
-
-#   54| [MethodCall] call to method WriteLine
-#-----| -1 -> [TypeAccess] access to type Console
-#-----| 0 -> [StringLiteral] "F()"
-
-#   54| [TypeAccess] access to type Console
-
-#   54| [StringLiteral] "F()"
-
-#   57| [Method] F
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#   57| [Parameter] x
-
-#   62| [Method] F
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#   62| [Parameter] x
-
-#   67| [Method] F
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#   67| [Parameter] x
-
-#   72| [Method] F
-#-----| 1 -> (TypeParameters)
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#   72| [Parameter] x
-
-#   72| [TypeParameter] T
-
-#   77| [Method] F
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#   77| [Parameter] x
-
-#   77| [Parameter] y
-
-#   82| [Method] Main
-#-----| 3 -> [BlockStmt] {...}
-
-#   96| [Class] Extensions
-#-----| 1 -> [ExtensionMethod] ToInt32
-#-----| 2 -> [ExtensionMethod] ToBool
-#-----| 3 -> [ExtensionMethod] Slice
-#-----| 3 -> [ExtensionMethod] Slice
-#-----| 5 -> [Method] CallToInt32
-
-#   99| [ExtensionMethod] ToInt32
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#  100| [BlockStmt] {...}
-#-----| 0 -> [ReturnStmt] return ...;
-
-#  101| [ReturnStmt] return ...;
-#-----| 0 -> [MethodCall] call to method Parse
-
-#  101| [MethodCall] call to method Parse
-#-----| -1 -> [TypeAccess] access to type Int32
-#-----| 0 -> [ParameterAccess] access to parameter s
-
-#  101| [TypeAccess] access to type Int32
-
-#  101| [ParameterAccess] access to parameter s
-
-#  109| [ExtensionMethod] Slice
-#-----| 1 -> (TypeParameters)
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#  109| [Parameter] source
-
-#  109| [TypeParameter] T
-
-#  109| [Parameter] index
-
-#  109| [Parameter] count
-
-#  118| [Method] CallToInt32
-#-----| 3 -> [MethodCall] call to method ToInt32
-
-#  121| [Class] TestExtensions
-#-----| 1 -> [Method] Main
-
-#  124| [Method] Main
-#-----| 3 -> [BlockStmt] {...}
-
-#  125| [BlockStmt] {...}
-#-----| 0 -> [LocalConstantDeclStmt] ... ...;
-#-----| 1 -> [ForeachStmt] foreach (... ... in ...) ...
-#-----| 2 -> [ExprStmt] ...;
-#-----| 3 -> [ExprStmt] ...;
-
-#  126| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] String[] strings = ...
-
-#  126| [LocalVariableDeclAndInitExpr] String[] strings = ...
-#-----| 0 -> [ArrayCreation] array creation of type String[]
-#-----| 1 -> [LocalVariableAccess] access to local variable strings
-
-#  126| [ArrayCreation] array creation of type String[]
-#-----| -1 -> [ArrayInitializer] { ..., ... }
-
-#  126| [ArrayInitializer] { ..., ... }
-#-----| 0 -> [StringLiteral] "1"
-#-----| 1 -> [StringLiteral] "22"
-#-----| 2 -> [StringLiteral] "333"
-#-----| 3 -> [StringLiteral] "4444"
-
-#  126| [StringLiteral] "1"
-
-#  126| [StringLiteral] "22"
-
-#  126| [StringLiteral] "333"
-
-#  126| [StringLiteral] "4444"
-
-#  126| [LocalVariableAccess] access to local variable strings
-
-#  127| [ForeachStmt] foreach (... ... in ...) ...
-#-----| 0 -> [LocalVariableDeclExpr] String s
-#-----| 1 -> [MethodCall] call to method Slice
-#-----| 2 -> [BlockStmt] {...}
-
-#  127| [MethodCall] call to method Slice
-#-----| -1 -> [LocalVariableAccess] access to local variable strings
-#-----| 0 -> [IntLiteral] 1
-#-----| 1 -> [IntLiteral] 2
-
-#  127| [LocalVariableAccess] access to local variable strings
-
-#  127| [IntLiteral] 1
-
-#  127| [IntLiteral] 2
-
-#  109| [ExtensionMethod] Slice
-#-----| 2 -> (Parameters)
-
-#  127| [LocalVariableDeclExpr] String s
-
-#  128| [BlockStmt] {...}
-#-----| 0 -> [ExprStmt] ...;
-
-#  129| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method WriteLine
-
-#  129| [MethodCall] call to method WriteLine
-#-----| -1 -> [TypeAccess] access to type Console
-#-----| 0 -> [MethodCall] call to method ToInt32
-
-#  129| [TypeAccess] access to type Console
-
-#  129| [MethodCall] call to method ToInt32
-#-----| -1 -> [LocalVariableAccess] access to local variable s
-
-#  129| [LocalVariableAccess] access to local variable s
-
-#  132| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method ToInt32
-
-#  132| [MethodCall] call to method ToInt32
-#-----| -1 -> [TypeAccess] access to type Extensions
-#-----| 0 -> [StringLiteral] ""
-
-#  132| [TypeAccess] access to type Extensions
-
-#  132| [StringLiteral] ""
-
-#  134| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method ToBool
-
-#  134| [MethodCall] call to method ToBool
-#-----| -1 -> [TypeAccess] access to type Extensions
-#-----| 0 -> [StringLiteral] "true"
-#-----| 1 -> [ImplicitDelegateCreation] delegate creation of type Func<String,Boolean>
-
-#  134| [TypeAccess] access to type Extensions
-
-#  134| [StringLiteral] "true"
-
-#  134| [ImplicitDelegateCreation] delegate creation of type Func<String,Boolean>
-#-----| 0 -> [MethodAccess] access to method Parse
-
-#  134| [MethodAccess] access to method Parse
-#-----| -1 -> [TypeAccess] access to type Boolean
-
-#  134| [TypeAccess] access to type Boolean
-
-#  139| [Class] TestDefaultParameters
-#-----| 1 -> [Method] Method1
-#-----| 2 -> [Method] Method2
-#-----| 3 -> [InstanceConstructor] TestDefaultParameters
-#-----| 4 -> [InstanceConstructor] TestDefaultParameters
-#-----| 5 -> [DelegateType] Del
-#-----| 6 -> [Indexer] Item
-
-#  141| [Method] Method1
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#  142| [BlockStmt] {...}
-
-#  145| [Method] Method2
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#  145| [Parameter] a
-
-#  145| [Parameter] b
-
-#  145| [Parameter] c
-#-----| 1 -> [IntLiteral] 1
-
-#  145| [Parameter] d
-#-----| 1 -> [IntLiteral] 2
-
-#  145| [Parameter] e
-#-----| 1 -> [AddExpr] ... + ...
-
-#  149| [InstanceConstructor] TestDefaultParameters
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#  149| [Parameter] x
-
-#  153| [InstanceConstructor] TestDefaultParameters
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#  153| [Parameter] x
-#-----| 1 -> [StringLiteral] "abc"
-
-#  153| [Parameter] y
-#-----| 1 -> [ObjectCreation] object creation of type Double
-
-#  157| [DelegateType] Del
-#-----| 0 -> (Parameters)
-
-#  157| [Parameter] a
-
-#  157| [Parameter] b
-#-----| 1 -> [IntLiteral] 12
-
-#  157| [Parameter] c
-#-----| 1 -> [ObjectCreation] object creation of type Double
-
-#  159| [Indexer] Item
-#-----| 0 -> (Parameters)
-#-----| 2 -> [Getter] get_Item
-#-----| 3 -> [Setter] set_Item
-
-#  159| [Parameter] x
-
-#  159| [Parameter] y
-#-----| 1 -> [IntLiteral] 0
-
-#  161| [Getter] get_Item
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#  159| [Parameter] x
-
-#  159| [Parameter] y
-#-----| 1 -> [IntLiteral] 0
-
-#  162| [Setter] set_Item
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#  159| [Parameter] x
-
-#  159| [Parameter] y
-#-----| 1 -> [IntLiteral] 0
-
-#  162| [Parameter] value
-
-#  166| [Class] TestDefaultExtensionParameters
-#-----| 1 -> [ExtensionMethod] Plus
-#-----| 2 -> [ExtensionMethod] SkipTwo
-#-----| 2 -> [ExtensionMethod] SkipTwo
-#-----| 4 -> [ExtensionMethod] SkipTwoInt
-
-#  168| [ExtensionMethod] Plus
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#  168| [IntLiteral] 0
-
-#  169| [BlockStmt] {...}
-#-----| 0 -> [ReturnStmt] return ...;
-
-#  170| [ReturnStmt] return ...;
-#-----| 0 -> [AddExpr] ... + ...
-
-#  170| [AddExpr] ... + ...
-#-----| 0 -> [ParameterAccess] access to parameter left
-#-----| 1 -> [ParameterAccess] access to parameter right
-
-#   17| [BlockStmt] {...}
-#-----| 0 -> [LocalConstantDeclStmt] ... ...;
-#-----| 1 -> [ExprStmt] ...;
-#-----| 2 -> [ExprStmt] ...;
-#-----| 3 -> [ExprStmt] ...;
-
-#   18| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 i = ...
-#-----| 1 -> [LocalVariableDeclAndInitExpr] Int32 j = ...
-
-#   18| [LocalVariableDeclAndInitExpr] Int32 i = ...
-#-----| 0 -> [IntLiteral] 1
-#-----| 1 -> [LocalVariableAccess] access to local variable i
-
-#   18| [IntLiteral] 1
-
-#   18| [LocalVariableAccess] access to local variable i
-
-#   18| [LocalVariableDeclAndInitExpr] Int32 j = ...
-#-----| 0 -> [IntLiteral] 2
-#-----| 1 -> [LocalVariableAccess] access to local variable j
-
-#   18| [IntLiteral] 2
-
-#   18| [LocalVariableAccess] access to local variable j
-
-#   19| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method Swap
-
-#   19| [MethodCall] call to method Swap
-#-----| 0 -> [LocalVariableAccess] access to local variable i
-#-----| 1 -> [LocalVariableAccess] access to local variable j
-
-#   19| [LocalVariableAccess] access to local variable i
-
-#   19| [LocalVariableAccess] access to local variable j
-
-#   20| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method WriteLine
-
-#   20| [MethodCall] call to method WriteLine
-#-----| -1 -> [TypeAccess] access to type Console
-#-----| 0 -> [StringLiteral] "{0} {1}"
-#-----| 1 -> [CastExpr] (...) ...
-#-----| 2 -> [CastExpr] (...) ...
-
-#   20| [TypeAccess] access to type Console
-
-#   20| [StringLiteral] "{0} {1}"
-
-#   20| [CastExpr] (...) ...
-#-----| 0 -> [LocalVariableAccess] access to local variable i
-
-#   20| [LocalVariableAccess] access to local variable i
-
-#   20| [CastExpr] (...) ...
-#-----| 0 -> [LocalVariableAccess] access to local variable j
-
-#   20| [LocalVariableAccess] access to local variable j
-
-#   21| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method WriteLine
-
-#   21| [MethodCall] call to method WriteLine
-#-----| -1 -> [TypeAccess] access to type Console
-#-----| 0 -> [StringLiteral] "{0} {1}"
-#-----| 1 -> [CastExpr] (...) ...
-#-----| 2 -> [CastExpr] (...) ...
-
-#   21| [TypeAccess] access to type Console
-
-#   21| [StringLiteral] "{0} {1}"
-
-#   21| [CastExpr] (...) ...
-#-----| 0 -> [LocalVariableAccess] access to local variable i
-
-#   21| [LocalVariableAccess] access to local variable i
-
-#   21| [CastExpr] (...) ...
-#-----| 0 -> [LocalVariableAccess] access to local variable j
-
-#   21| [LocalVariableAccess] access to local variable j
-
-#   30| [ParameterAccess] access to parameter x
-
-#   30| [ParameterAccess] access to parameter y
-
-#   31| [ParameterAccess] access to parameter x
-
-#   31| [ParameterAccess] access to parameter y
-
-#   35| [BlockStmt] {...}
-#-----| 0 -> [LocalConstantDeclStmt] ... ...;
-#-----| 1 -> [ExprStmt] ...;
-#-----| 2 -> [ExprStmt] ...;
-
-#   36| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclExpr] Int32 res
-#-----| 1 -> [LocalVariableDeclExpr] Int32 rem
-
-#   36| [LocalVariableDeclExpr] Int32 res
-
-#   36| [LocalVariableDeclExpr] Int32 rem
-
-#   37| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method Divide
-
-#   37| [MethodCall] call to method Divide
-#-----| 0 -> [IntLiteral] 10
-#-----| 1 -> [IntLiteral] 3
-#-----| 2 -> [LocalVariableAccess] access to local variable res
-#-----| 3 -> [LocalVariableAccess] access to local variable rem
-
-#   37| [IntLiteral] 10
-
-#   37| [IntLiteral] 3
-
-#   37| [LocalVariableAccess] access to local variable res
-
-#   37| [LocalVariableAccess] access to local variable rem
-
-#   38| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method WriteLine
-
-#   38| [MethodCall] call to method WriteLine
-#-----| -1 -> [TypeAccess] access to type Console
-#-----| 0 -> [StringLiteral] "{0} {1}"
-#-----| 1 -> [CastExpr] (...) ...
-#-----| 2 -> [CastExpr] (...) ...
-
-#   38| [TypeAccess] access to type Console
-
-#   38| [StringLiteral] "{0} {1}"
-
-#   38| [CastExpr] (...) ...
-#-----| 0 -> [LocalVariableAccess] access to local variable res
-
-#   38| [LocalVariableAccess] access to local variable res
-
-#   38| [CastExpr] (...) ...
-#-----| 0 -> [LocalVariableAccess] access to local variable rem
-
-#   38| [LocalVariableAccess] access to local variable rem
-
-#   46| [BlockStmt] {...}
-
-#   58| [BlockStmt] {...}
-#-----| 0 -> [ExprStmt] ...;
-
-#   59| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method WriteLine
-
-#   59| [MethodCall] call to method WriteLine
-#-----| -1 -> [TypeAccess] access to type Console
-#-----| 0 -> [StringLiteral] "F(object)"
-
-#   59| [TypeAccess] access to type Console
-
-#   59| [StringLiteral] "F(object)"
-
-#   63| [BlockStmt] {...}
-#-----| 0 -> [ExprStmt] ...;
-
-#   64| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method WriteLine
-
-#   64| [MethodCall] call to method WriteLine
-#-----| -1 -> [TypeAccess] access to type Console
-#-----| 0 -> [StringLiteral] "F(int)"
-
-#   64| [TypeAccess] access to type Console
-
-#   64| [StringLiteral] "F(int)"
-
-#   68| [BlockStmt] {...}
-#-----| 0 -> [ExprStmt] ...;
-
-#   69| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method WriteLine
-
-#   69| [MethodCall] call to method WriteLine
-#-----| -1 -> [TypeAccess] access to type Console
-#-----| 0 -> [StringLiteral] "F(double)"
-
-#   69| [TypeAccess] access to type Console
-
-#   69| [StringLiteral] "F(double)"
-
-#   73| [BlockStmt] {...}
-#-----| 0 -> [ExprStmt] ...;
-
-#   74| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method WriteLine
-
-#   74| [MethodCall] call to method WriteLine
-#-----| -1 -> [TypeAccess] access to type Console
-#-----| 0 -> [StringLiteral] "F<T>(T)"
-
-#   74| [TypeAccess] access to type Console
-
-#   74| [StringLiteral] "F<T>(T)"
-
-#   78| [BlockStmt] {...}
-#-----| 0 -> [ExprStmt] ...;
-
-#   79| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method WriteLine
-
-#   79| [MethodCall] call to method WriteLine
-#-----| -1 -> [TypeAccess] access to type Console
-#-----| 0 -> [StringLiteral] "F(double, double)"
-
-#   79| [TypeAccess] access to type Console
-
-#   79| [StringLiteral] "F(double, double)"
-
-#   83| [BlockStmt] {...}
-#-----| 0 -> [ExprStmt] ...;
-#-----| 1 -> [ExprStmt] ...;
-#-----| 2 -> [ExprStmt] ...;
-#-----| 3 -> [ExprStmt] ...;
-#-----| 4 -> [ExprStmt] ...;
-#-----| 5 -> [ExprStmt] ...;
-#-----| 6 -> [ExprStmt] ...;
-#-----| 7 -> [ExprStmt] ...;
-
-#   84| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method F
-
-#   84| [MethodCall] call to method F
-
-#   85| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method F
-
-#   85| [MethodCall] call to method F
-#-----| 0 -> [IntLiteral] 1
-
-#   85| [IntLiteral] 1
-
-#   86| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method F
-
-#   86| [MethodCall] call to method F
-#-----| 0 -> [DoubleLiteral] 1
-
-#   86| [DoubleLiteral] 1
-
-#   87| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method F
-
-#   87| [MethodCall] call to method F
-#-----| 0 -> [StringLiteral] "abc"
-
-#   87| [StringLiteral] "abc"
-
-#   72| [Method] F
-#-----| 2 -> (Parameters)
-
-#   88| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method F
-
-#   88| [MethodCall] call to method F
-#-----| 0 -> [CastExpr] (...) ...
-
-#   88| [CastExpr] (...) ...
-#-----| 0 -> [IntLiteral] 1
-#-----| 1 -> [TypeAccess] access to type Double
-
-#   88| [IntLiteral] 1
-
-#   88| [TypeAccess] access to type Double
-
-#   89| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method F
-
-#   89| [MethodCall] call to method F
-#-----| 0 -> [CastExpr] (...) ...
-
-#   89| [CastExpr] (...) ...
-#-----| 0 -> [IntLiteral] 1
-#-----| 1 -> [TypeAccess] access to type Object
-
-#   89| [IntLiteral] 1
-
-#   89| [TypeAccess] access to type Object
-
-#   90| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method F
-
-#   90| [MethodCall] call to method F
-#-----| 0 -> [IntLiteral] 1
-
-#   90| [IntLiteral] 1
-
-#   72| [Method] F
-#-----| 2 -> (Parameters)
-
-#   91| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method F
-
-#   91| [MethodCall] call to method F
-#-----| 0 -> [CastExpr] (...) ...
-#-----| 1 -> [CastExpr] (...) ...
-
-#   91| [CastExpr] (...) ...
-#-----| 0 -> [IntLiteral] 1
-
-#   91| [IntLiteral] 1
-
-#   91| [CastExpr] (...) ...
-#-----| 0 -> [IntLiteral] 1
-
-#   91| [IntLiteral] 1
-
-#  104| [ExtensionMethod] ToBool
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#  105| [BlockStmt] {...}
-#-----| 0 -> [ReturnStmt] return ...;
-
-#  106| [ReturnStmt] return ...;
-#-----| 0 -> [DelegateCall] delegate call
-
-#  106| [DelegateCall] delegate call
-#-----| -1 -> [ParameterAccess] access to parameter f
-#-----| 0 -> [ParameterAccess] access to parameter s
-
-#  106| [ParameterAccess] access to parameter f
-
-#  106| [ParameterAccess] access to parameter s
-
-#  110| [BlockStmt] {...}
-#-----| 0 -> [IfStmt] if (...) ...
-#-----| 1 -> [LocalConstantDeclStmt] ... ...;
-#-----| 2 -> [ExprStmt] ...;
-#-----| 3 -> [ReturnStmt] return ...;
-
-#  111| [IfStmt] if (...) ...
-#-----| 0 -> [LogicalOrExpr] ... || ...
-#-----| 1 -> [ThrowStmt] throw ...;
-
-#  111| [LogicalOrExpr] ... || ...
-#-----| 0 -> [LogicalOrExpr] ... || ...
-#-----| 1 -> [LTExpr] ... < ...
-
-#  112| [ThrowStmt] throw ...;
-#-----| 0 -> [ObjectCreation] object creation of type ArgumentException
-
-#  112| [ObjectCreation] object creation of type ArgumentException
-
-#  113| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] T[] result = ...
-
-#  113| [LocalVariableDeclAndInitExpr] T[] result = ...
-#-----| 0 -> [ArrayCreation] array creation of type T[]
-#-----| 1 -> [LocalVariableAccess] access to local variable result
-
-#  113| [ArrayCreation] array creation of type T[]
-#-----| 0 -> [ParameterAccess] access to parameter count
-
-#  113| [ParameterAccess] access to parameter count
-
-#  113| [LocalVariableAccess] access to local variable result
-
-#  114| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method Copy
-
-#  114| [MethodCall] call to method Copy
-#-----| -1 -> [TypeAccess] access to type Array
-#-----| 0 -> [ParameterAccess] access to parameter source
-#-----| 1 -> [ParameterAccess] access to parameter index
-#-----| 2 -> [LocalVariableAccess] access to local variable result
-#-----| 3 -> [IntLiteral] 0
-#-----| 4 -> [ParameterAccess] access to parameter count
-
-#  114| [TypeAccess] access to type Array
-
-#  114| [ParameterAccess] access to parameter source
-
-#  114| [ParameterAccess] access to parameter index
-
-#  114| [LocalVariableAccess] access to local variable result
-
-#  114| [IntLiteral] 0
-
-#  114| [ParameterAccess] access to parameter count
-
-#  115| [ReturnStmt] return ...;
-#-----| 0 -> [LocalVariableAccess] access to local variable result
-
-#  115| [LocalVariableAccess] access to local variable result
-
-#  118| [MethodCall] call to method ToInt32
-#-----| 0 -> [StringLiteral] "0"
-
-#  118| [StringLiteral] "0"
-
-#  109| [Parameter] source
-
-#  109| [Parameter] index
-
-#  109| [Parameter] count
-
-#   99| [Parameter] s
-
-#  145| [IntLiteral] 1
-
-#  145| [IntLiteral] 2
-
-#  145| [AddExpr] ... + ...
-#-----| 0 -> [StringLiteral] "a"
-#-----| 1 -> [StringLiteral] "b"
-
-#  146| [BlockStmt] {...}
-
-#  150| [BlockStmt] {...}
-
-#  153| [StringLiteral] "abc"
-
-#  153| [ObjectCreation] object creation of type Double
-
-#  154| [BlockStmt] {...}
-
-#  157| [IntLiteral] 12
-
-#  157| [ObjectCreation] object creation of type Double
-
-#  159| [IntLiteral] 0
-
-#  159| [IntLiteral] 0
-
-#  161| [BlockStmt] {...}
-#-----| 0 -> [ReturnStmt] return ...;
-
-#  161| [ReturnStmt] return ...;
-#-----| 0 -> [AddExpr] ... + ...
-
-#  161| [AddExpr] ... + ...
-#-----| 0 -> [ParameterAccess] access to parameter x
-#-----| 1 -> [ParameterAccess] access to parameter y
-
-#  159| [IntLiteral] 0
-
-#  162| [BlockStmt] {...}
-
-#  170| [ParameterAccess] access to parameter left
-
-#  170| [ParameterAccess] access to parameter right
-
-#  173| [ExtensionMethod] SkipTwo
-#-----| 1 -> (TypeParameters)
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#  173| [TypeParameter] T
-
-#  173| [IntLiteral] 1
-
-#  174| [BlockStmt] {...}
-#-----| 0 -> [ReturnStmt] return ...;
-
-#  175| [ReturnStmt] return ...;
-#-----| 0 -> [ParameterAccess] access to parameter list
-
-#  175| [ParameterAccess] access to parameter list
-
-#  178| [ExtensionMethod] SkipTwoInt
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#  178| [IntLiteral] 1
-
-#  179| [BlockStmt] {...}
-#-----| 0 -> [ReturnStmt] return ...;
-
-#  180| [ReturnStmt] return ...;
-#-----| 0 -> [MethodCall] call to method SkipTwo
-
-#  180| [MethodCall] call to method SkipTwo
-#-----| -1 -> [ParameterAccess] access to parameter list
-#-----| 0 -> [ParameterAccess] access to parameter i
-
-#  180| [ParameterAccess] access to parameter list
-
-#  180| [ParameterAccess] access to parameter i
-
-#  173| [ExtensionMethod] SkipTwo
-#-----| 2 -> (Parameters)
-
-#   72| [Parameter] x
-
-#   72| [Parameter] x
-
-#  111| [LogicalOrExpr] ... || ...
-#-----| 0 -> [LTExpr] ... < ...
-#-----| 1 -> [LTExpr] ... < ...
-
-#  111| [LTExpr] ... < ...
-#-----| 0 -> [SubExpr] ... - ...
-#-----| 1 -> [ParameterAccess] access to parameter count
-
-#  145| [StringLiteral] "a"
-
-#  145| [StringLiteral] "b"
-
-#  161| [ParameterAccess] access to parameter x
-
-#  161| [ParameterAccess] access to parameter y
-
-#  173| [Parameter] list
-
-#  173| [Parameter] i
-#-----| 1 -> [IntLiteral] 1
-
-#  111| [LTExpr] ... < ...
-#-----| 0 -> [ParameterAccess] access to parameter index
-#-----| 1 -> [IntLiteral] 0
-
-#  111| [LTExpr] ... < ...
-#-----| 0 -> [ParameterAccess] access to parameter count
-#-----| 1 -> [IntLiteral] 0
-
-#  111| [SubExpr] ... - ...
-#-----| 0 -> [PropertyCall] access to property Length
-#-----| 1 -> [ParameterAccess] access to parameter index
-
-#  111| [ParameterAccess] access to parameter count
-
-#    9| [Parameter] x
-
-#    9| [Parameter] y
-
-#   28| [Parameter] x
-
-#   28| [Parameter] y
-
-#   28| [Parameter] result
-
-#   28| [Parameter] remainder
-
-#   45| [Parameter] fmt
-
-#   45| [Parameter] args
-
-#  141| [Parameter] x
-
-#  141| [Parameter] y
-
-#  168| [Parameter] left
-
-#  168| [Parameter] right
-#-----| 1 -> [IntLiteral] 0
-
-#  104| [Parameter] s
-
-#  104| [Parameter] f
-
-#  173| [Parameter] list
-
-#  173| [Parameter] i
-#-----| 1 -> [IntLiteral] 1
-
-#  178| [Parameter] list
-
-#  178| [Parameter] i
-#-----| 1 -> [IntLiteral] 1
-
-#  111| [ParameterAccess] access to parameter index
-
-#  111| [IntLiteral] 0
-
-#  111| [ParameterAccess] access to parameter count
-
-#  111| [IntLiteral] 0
-
-#  111| [PropertyCall] access to property Length
-#-----| -1 -> [ParameterAccess] access to parameter source
-
-#  111| [ParameterAccess] access to parameter source
-
-#  111| [ParameterAccess] access to parameter index
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] x
-#-----| 1 -> [Parameter] y
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] x
-#-----| 1 -> [Parameter] y
-#-----| 2 -> [Parameter] result
-#-----| 3 -> [Parameter] remainder
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] fmt
-#-----| 1 -> [Parameter] args
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] fmt
-#-----| 1 -> [Parameter] args
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] x
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] x
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] x
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] x
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] x
-#-----| 1 -> [Parameter] y
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] s
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] source
-#-----| 1 -> [Parameter] index
-#-----| 2 -> [Parameter] count
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] source
-#-----| 1 -> [Parameter] index
-#-----| 2 -> [Parameter] count
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] x
-#-----| 1 -> [Parameter] y
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] a
-#-----| 1 -> [Parameter] b
-#-----| 2 -> [Parameter] c
-#-----| 3 -> [Parameter] d
-#-----| 4 -> [Parameter] e
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] x
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] x
-#-----| 1 -> [Parameter] y
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] a
-#-----| 1 -> [Parameter] b
-#-----| 2 -> [Parameter] c
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] x
-#-----| 1 -> [Parameter] y
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] x
-#-----| 1 -> [Parameter] y
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] x
-#-----| 1 -> [Parameter] y
-#-----| 2 -> [Parameter] value
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] left
-#-----| 1 -> [Parameter] right
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] x
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] x
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] s
-#-----| 1 -> [Parameter] f
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] list
-#-----| 1 -> [Parameter] i
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] list
-#-----| 1 -> [Parameter] i
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] list
-#-----| 1 -> [Parameter] i
+#    6|   1: [Class] TestRef
+#    9|     2: [Method] Swap
+#-----|       2: (Parameters)
+#    9|         0: [Parameter] x
+#    9|         1: [Parameter] y
+#   10|       3: [BlockStmt] {...}
+#   11|         0: [LocalConstantDeclStmt] ... ...;
+#   11|           0: [LocalVariableDeclAndInitExpr] Int32 temp = ...
+#   11|             0: [ParameterAccess] access to parameter x
+#   11|             1: [LocalVariableAccess] access to local variable temp
+#   12|         1: [ExprStmt] ...;
+#   12|           0: [AssignExpr] ... = ...
+#   12|             0: [ParameterAccess] access to parameter y
+#   12|             1: [ParameterAccess] access to parameter x
+#   13|         2: [ExprStmt] ...;
+#   13|           0: [AssignExpr] ... = ...
+#   13|             0: [LocalVariableAccess] access to local variable temp
+#   13|             1: [ParameterAccess] access to parameter y
+#   16|     3: [Method] Main
+#   17|       3: [BlockStmt] {...}
+#   18|         0: [LocalConstantDeclStmt] ... ...;
+#   18|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
+#   18|             0: [IntLiteral] 1
+#   18|             1: [LocalVariableAccess] access to local variable i
+#   18|           1: [LocalVariableDeclAndInitExpr] Int32 j = ...
+#   18|             0: [IntLiteral] 2
+#   18|             1: [LocalVariableAccess] access to local variable j
+#   19|         1: [ExprStmt] ...;
+#   19|           0: [MethodCall] call to method Swap
+#   19|             0: [LocalVariableAccess] access to local variable i
+#   19|             1: [LocalVariableAccess] access to local variable j
+#   20|         2: [ExprStmt] ...;
+#   20|           0: [MethodCall] call to method WriteLine
+#   20|             -1: [TypeAccess] access to type Console
+#   20|             0: [StringLiteral] "{0} {1}"
+#   20|             1: [CastExpr] (...) ...
+#   20|               0: [LocalVariableAccess] access to local variable i
+#   20|             2: [CastExpr] (...) ...
+#   20|               0: [LocalVariableAccess] access to local variable j
+#   21|         3: [ExprStmt] ...;
+#   21|           0: [MethodCall] call to method WriteLine
+#   21|             -1: [TypeAccess] access to type Console
+#   21|             0: [StringLiteral] "{0} {1}"
+#   21|             1: [CastExpr] (...) ...
+#   21|               0: [LocalVariableAccess] access to local variable i
+#   21|             2: [CastExpr] (...) ...
+#   21|               0: [LocalVariableAccess] access to local variable j
+#   25|   2: [Class] TestOut
+#   28|     2: [Method] Divide
+#-----|       2: (Parameters)
+#   28|         0: [Parameter] x
+#   28|         1: [Parameter] y
+#   28|         2: [Parameter] result
+#   28|         3: [Parameter] remainder
+#   29|       3: [BlockStmt] {...}
+#   30|         0: [ExprStmt] ...;
+#   30|           0: [AssignExpr] ... = ...
+#   30|             0: [DivExpr] ... / ...
+#   30|               0: [ParameterAccess] access to parameter x
+#   30|               1: [ParameterAccess] access to parameter y
+#   30|             1: [ParameterAccess] access to parameter result
+#   31|         1: [ExprStmt] ...;
+#   31|           0: [AssignExpr] ... = ...
+#   31|             0: [RemExpr] ... % ...
+#   31|               0: [ParameterAccess] access to parameter x
+#   31|               1: [ParameterAccess] access to parameter y
+#   31|             1: [ParameterAccess] access to parameter remainder
+#   34|     3: [Method] Main
+#   35|       3: [BlockStmt] {...}
+#   36|         0: [LocalConstantDeclStmt] ... ...;
+#   36|           0: [LocalVariableDeclExpr] Int32 res
+#   36|           1: [LocalVariableDeclExpr] Int32 rem
+#   37|         1: [ExprStmt] ...;
+#   37|           0: [MethodCall] call to method Divide
+#   37|             0: [IntLiteral] 10
+#   37|             1: [IntLiteral] 3
+#   37|             2: [LocalVariableAccess] access to local variable res
+#   37|             3: [LocalVariableAccess] access to local variable rem
+#   38|         2: [ExprStmt] ...;
+#   38|           0: [MethodCall] call to method WriteLine
+#   38|             -1: [TypeAccess] access to type Console
+#   38|             0: [StringLiteral] "{0} {1}"
+#   38|             1: [CastExpr] (...) ...
+#   38|               0: [LocalVariableAccess] access to local variable res
+#   38|             2: [CastExpr] (...) ...
+#   38|               0: [LocalVariableAccess] access to local variable rem
+#   42|   3: [Class] Console
+#   45|     2: [Method] Write
+#-----|       2: (Parameters)
+#   45|         0: [Parameter] fmt
+#   45|         1: [Parameter] args
+#   45|       3: [BlockStmt] {...}
+#   46|     3: [Method] WriteLine
+#-----|       2: (Parameters)
+#   46|         0: [Parameter] fmt
+#   46|         1: [Parameter] args
+#   46|       3: [BlockStmt] {...}
+#   49|   4: [Class] TestOverloading
+#   52|     2: [Method] F
+#   53|       3: [BlockStmt] {...}
+#   54|         0: [ExprStmt] ...;
+#   54|           0: [MethodCall] call to method WriteLine
+#   54|             -1: [TypeAccess] access to type Console
+#   54|             0: [StringLiteral] "F()"
+#   57|     3: [Method] F
+#-----|       2: (Parameters)
+#   57|         0: [Parameter] x
+#   58|       3: [BlockStmt] {...}
+#   59|         0: [ExprStmt] ...;
+#   59|           0: [MethodCall] call to method WriteLine
+#   59|             -1: [TypeAccess] access to type Console
+#   59|             0: [StringLiteral] "F(object)"
+#   62|     4: [Method] F
+#-----|       2: (Parameters)
+#   62|         0: [Parameter] x
+#   63|       3: [BlockStmt] {...}
+#   64|         0: [ExprStmt] ...;
+#   64|           0: [MethodCall] call to method WriteLine
+#   64|             -1: [TypeAccess] access to type Console
+#   64|             0: [StringLiteral] "F(int)"
+#   67|     5: [Method] F
+#-----|       2: (Parameters)
+#   67|         0: [Parameter] x
+#   68|       3: [BlockStmt] {...}
+#   69|         0: [ExprStmt] ...;
+#   69|           0: [MethodCall] call to method WriteLine
+#   69|             -1: [TypeAccess] access to type Console
+#   69|             0: [StringLiteral] "F(double)"
+#   72|     6: [Method] F
+#-----|       1: (TypeParameters)
+#   72|         0: [TypeParameter] T
+#-----|       2: (Parameters)
+#   72|         0: [Parameter] x
+#   73|       3: [BlockStmt] {...}
+#   74|         0: [ExprStmt] ...;
+#   74|           0: [MethodCall] call to method WriteLine
+#   74|             -1: [TypeAccess] access to type Console
+#   74|             0: [StringLiteral] "F<T>(T)"
+#   77|     9: [Method] F
+#-----|       2: (Parameters)
+#   77|         0: [Parameter] x
+#   77|         1: [Parameter] y
+#   78|       3: [BlockStmt] {...}
+#   79|         0: [ExprStmt] ...;
+#   79|           0: [MethodCall] call to method WriteLine
+#   79|             -1: [TypeAccess] access to type Console
+#   79|             0: [StringLiteral] "F(double, double)"
+#   82|     10: [Method] Main
+#   83|       3: [BlockStmt] {...}
+#   84|         0: [ExprStmt] ...;
+#   84|           0: [MethodCall] call to method F
+#   85|         1: [ExprStmt] ...;
+#   85|           0: [MethodCall] call to method F
+#   85|             0: [IntLiteral] 1
+#   86|         2: [ExprStmt] ...;
+#   86|           0: [MethodCall] call to method F
+#   86|             0: [DoubleLiteral] 1
+#   87|         3: [ExprStmt] ...;
+#   87|           0: [MethodCall] call to method F
+#   87|             0: [StringLiteral] "abc"
+#   88|         4: [ExprStmt] ...;
+#   88|           0: [MethodCall] call to method F
+#   88|             0: [CastExpr] (...) ...
+#   88|               0: [IntLiteral] 1
+#   88|               1: [TypeAccess] access to type Double
+#   89|         5: [ExprStmt] ...;
+#   89|           0: [MethodCall] call to method F
+#   89|             0: [CastExpr] (...) ...
+#   89|               0: [IntLiteral] 1
+#   89|               1: [TypeAccess] access to type Object
+#   90|         6: [ExprStmt] ...;
+#   90|           0: [MethodCall] call to method F
+#   90|             0: [IntLiteral] 1
+#   91|         7: [ExprStmt] ...;
+#   91|           0: [MethodCall] call to method F
+#   91|             0: [CastExpr] (...) ...
+#   91|               0: [IntLiteral] 1
+#   91|             1: [CastExpr] (...) ...
+#   91|               0: [IntLiteral] 1
+#   96|   5: [Class] Extensions
+#   99|     1: [ExtensionMethod] ToInt32
+#-----|       2: (Parameters)
+#   99|         0: [Parameter] s
+#  100|       3: [BlockStmt] {...}
+#  101|         0: [ReturnStmt] return ...;
+#  101|           0: [MethodCall] call to method Parse
+#  101|             -1: [TypeAccess] access to type Int32
+#  101|             0: [ParameterAccess] access to parameter s
+#  104|     2: [ExtensionMethod] ToBool
+#-----|       2: (Parameters)
+#  104|         0: [Parameter] s
+#  104|         1: [Parameter] f
+#  105|       3: [BlockStmt] {...}
+#  106|         0: [ReturnStmt] return ...;
+#  106|           0: [DelegateCall] delegate call
+#  106|             -1: [ParameterAccess] access to parameter f
+#  106|             0: [ParameterAccess] access to parameter s
+#  109|     3: [ExtensionMethod] Slice
+#-----|       1: (TypeParameters)
+#  109|         0: [TypeParameter] T
+#-----|       2: (Parameters)
+#  109|         0: [Parameter] source
+#  109|         1: [Parameter] index
+#  109|         2: [Parameter] count
+#  110|       3: [BlockStmt] {...}
+#  111|         0: [IfStmt] if (...) ...
+#  111|           0: [LogicalOrExpr] ... || ...
+#  111|             0: [LogicalOrExpr] ... || ...
+#  111|               0: [LTExpr] ... < ...
+#  111|                 0: [ParameterAccess] access to parameter index
+#  111|                 1: [IntLiteral] 0
+#  111|               1: [LTExpr] ... < ...
+#  111|                 0: [ParameterAccess] access to parameter count
+#  111|                 1: [IntLiteral] 0
+#  111|             1: [LTExpr] ... < ...
+#  111|               0: [SubExpr] ... - ...
+#  111|                 0: [PropertyCall] access to property Length
+#  111|                   -1: [ParameterAccess] access to parameter source
+#  111|                 1: [ParameterAccess] access to parameter index
+#  111|               1: [ParameterAccess] access to parameter count
+#  112|           1: [ThrowStmt] throw ...;
+#  112|             0: [ObjectCreation] object creation of type ArgumentException
+#  113|         1: [LocalConstantDeclStmt] ... ...;
+#  113|           0: [LocalVariableDeclAndInitExpr] T[] result = ...
+#  113|             0: [ArrayCreation] array creation of type T[]
+#  113|               0: [ParameterAccess] access to parameter count
+#  113|             1: [LocalVariableAccess] access to local variable result
+#  114|         2: [ExprStmt] ...;
+#  114|           0: [MethodCall] call to method Copy
+#  114|             -1: [TypeAccess] access to type Array
+#  114|             0: [ParameterAccess] access to parameter source
+#  114|             1: [ParameterAccess] access to parameter index
+#  114|             2: [LocalVariableAccess] access to local variable result
+#  114|             3: [IntLiteral] 0
+#  114|             4: [ParameterAccess] access to parameter count
+#  115|         3: [ReturnStmt] return ...;
+#  115|           0: [LocalVariableAccess] access to local variable result
+#  118|     5: [Method] CallToInt32
+#  118|       3: [MethodCall] call to method ToInt32
+#  118|         0: [StringLiteral] "0"
+#  121|   6: [Class] TestExtensions
+#  124|     1: [Method] Main
+#  125|       3: [BlockStmt] {...}
+#  126|         0: [LocalConstantDeclStmt] ... ...;
+#  126|           0: [LocalVariableDeclAndInitExpr] String[] strings = ...
+#  126|             0: [ArrayCreation] array creation of type String[]
+#  126|               -1: [ArrayInitializer] { ..., ... }
+#  126|                 0: [StringLiteral] "1"
+#  126|                 1: [StringLiteral] "22"
+#  126|                 2: [StringLiteral] "333"
+#  126|                 3: [StringLiteral] "4444"
+#  126|             1: [LocalVariableAccess] access to local variable strings
+#  127|         1: [ForeachStmt] foreach (... ... in ...) ...
+#  127|           0: [LocalVariableDeclExpr] String s
+#  127|           1: [MethodCall] call to method Slice
+#  127|             -1: [LocalVariableAccess] access to local variable strings
+#  127|             0: [IntLiteral] 1
+#  127|             1: [IntLiteral] 2
+#  128|           2: [BlockStmt] {...}
+#  129|             0: [ExprStmt] ...;
+#  129|               0: [MethodCall] call to method WriteLine
+#  129|                 -1: [TypeAccess] access to type Console
+#  129|                 0: [MethodCall] call to method ToInt32
+#  129|                   -1: [LocalVariableAccess] access to local variable s
+#  132|         2: [ExprStmt] ...;
+#  132|           0: [MethodCall] call to method ToInt32
+#  132|             -1: [TypeAccess] access to type Extensions
+#  132|             0: [StringLiteral] ""
+#  134|         3: [ExprStmt] ...;
+#  134|           0: [MethodCall] call to method ToBool
+#  134|             -1: [TypeAccess] access to type Extensions
+#  134|             0: [StringLiteral] "true"
+#  134|             1: [ImplicitDelegateCreation] delegate creation of type Func<String,Boolean>
+#  134|               0: [MethodAccess] access to method Parse
+#  134|                 -1: [TypeAccess] access to type Boolean
+#  139|   7: [Class] TestDefaultParameters
+#  141|     1: [Method] Method1
+#-----|       2: (Parameters)
+#  141|         0: [Parameter] x
+#  141|         1: [Parameter] y
+#  142|       3: [BlockStmt] {...}
+#  145|     2: [Method] Method2
+#-----|       2: (Parameters)
+#  145|         0: [Parameter] a
+#  145|         1: [Parameter] b
+#  145|         2: [Parameter] c
+#  145|           1: [IntLiteral] 1
+#  145|         3: [Parameter] d
+#  145|           1: [IntLiteral] 2
+#  145|         4: [Parameter] e
+#  145|           1: [AddExpr] ... + ...
+#  145|             0: [StringLiteral] "a"
+#  145|             1: [StringLiteral] "b"
+#  146|       3: [BlockStmt] {...}
+#  149|     3: [InstanceConstructor] TestDefaultParameters
+#-----|       2: (Parameters)
+#  149|         0: [Parameter] x
+#  150|       3: [BlockStmt] {...}
+#  153|     4: [InstanceConstructor] TestDefaultParameters
+#-----|       2: (Parameters)
+#  153|         0: [Parameter] x
+#  153|           1: [StringLiteral] "abc"
+#  153|         1: [Parameter] y
+#  153|           1: [ObjectCreation] object creation of type Double
+#  154|       3: [BlockStmt] {...}
+#  157|     5: [DelegateType] Del
+#-----|       0: (Parameters)
+#  157|         0: [Parameter] a
+#  157|         1: [Parameter] b
+#  157|           1: [IntLiteral] 12
+#  157|         2: [Parameter] c
+#  157|           1: [ObjectCreation] object creation of type Double
+#  159|     6: [Indexer] Item
+#-----|       0: (Parameters)
+#  159|         0: [Parameter] x
+#  159|         1: [Parameter] y
+#  159|           1: [IntLiteral] 0
+#  161|       2: [Getter] get_Item
+#-----|         2: (Parameters)
+#  159|           0: [Parameter] x
+#  159|           1: [Parameter] y
+#  159|             1: [IntLiteral] 0
+#  161|         3: [BlockStmt] {...}
+#  161|           0: [ReturnStmt] return ...;
+#  161|             0: [AddExpr] ... + ...
+#  161|               0: [ParameterAccess] access to parameter x
+#  161|               1: [ParameterAccess] access to parameter y
+#  162|       3: [Setter] set_Item
+#-----|         2: (Parameters)
+#  159|           0: [Parameter] x
+#  159|           1: [Parameter] y
+#  159|             1: [IntLiteral] 0
+#  162|           2: [Parameter] value
+#  162|         3: [BlockStmt] {...}
+#  166|   8: [Class] TestDefaultExtensionParameters
+#  168|     1: [ExtensionMethod] Plus
+#-----|       2: (Parameters)
+#  168|         0: [Parameter] left
+#  168|         1: [Parameter] right
+#  168|           1: [IntLiteral] 0
+#  169|       3: [BlockStmt] {...}
+#  170|         0: [ReturnStmt] return ...;
+#  170|           0: [AddExpr] ... + ...
+#  170|             0: [ParameterAccess] access to parameter left
+#  170|             1: [ParameterAccess] access to parameter right
+#  173|     2: [ExtensionMethod] SkipTwo
+#-----|       1: (TypeParameters)
+#  173|         0: [TypeParameter] T
+#-----|       2: (Parameters)
+#  173|         0: [Parameter] list
+#  173|         1: [Parameter] i
+#  173|           1: [IntLiteral] 1
+#  174|       3: [BlockStmt] {...}
+#  175|         0: [ReturnStmt] return ...;
+#  175|           0: [ParameterAccess] access to parameter list
+#  178|     4: [ExtensionMethod] SkipTwoInt
+#-----|       2: (Parameters)
+#  178|         0: [Parameter] list
+#  178|         1: [Parameter] i
+#  178|           1: [IntLiteral] 1
+#  179|       3: [BlockStmt] {...}
+#  180|         0: [ReturnStmt] return ...;
+#  180|           0: [MethodCall] call to method SkipTwo
+#  180|             -1: [ParameterAccess] access to parameter list
+#  180|             0: [ParameterAccess] access to parameter i

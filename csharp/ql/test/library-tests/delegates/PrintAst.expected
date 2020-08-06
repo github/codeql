@@ -474,10 +474,6 @@ delegates.cs:
 
 #   74| [LocalVariableAccess] access to local variable x
 
-#   33| [Parameter] value
-
-#   33| [Parameter] value
-
 #   79| [DelegateCall] delegate call
 #-----| -1 -> [LocalVariableAccess] access to local variable pi
 #-----| 0 -> [IntLiteral] 3
@@ -588,9 +584,3 @@ delegates.cs:
 
 #-----| (Parameters)
 #-----| 0 -> [Parameter] i
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] value
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] value

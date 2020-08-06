@@ -831,15 +831,3 @@ CSharp7.cs:
 #  300|               0: [LocalVariableAccess] access to local variable y
 #   24| [ConstructorInitializer] call to constructor ExpressionBodiedMembers
 #   24|   0: [IntLiteral] 1
-#  163| [LocalFunction] h
-#-----|   2: (Parameters)
-#  163|     0: [Parameter] t
-#  163|     1: [Parameter] u
-#  163| [LocalFunction] h
-#-----|   2: (Parameters)
-#  163|     0: [Parameter] t
-#  163|     1: [Parameter] u
-#  160| [LocalFunction] f
-#  161| [LocalFunction] g
-#-----|   2: (Parameters)
-#  161|     0: [Parameter] t

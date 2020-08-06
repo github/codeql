@@ -943,9 +943,6 @@ Qualifiers.cs:
 #-----| 3 -> [Property] I
 #-----| 4 -> [Property] B
 #-----| 5 -> [Method] Static
-#-----| 5 -> [Method] Static
-#-----| 7 -> [Method] Instance
-#-----| 7 -> [Method] Instance
 #-----| 7 -> [Method] Instance
 
 #    5| [Getter] get_S
@@ -959,9 +956,6 @@ Qualifiers.cs:
 
 #    5| [NullLiteral] null
 
-#   11| [Method] Static
-#-----| 2 -> (Parameters)
-
 #    7| [Getter] get_I
 #-----| 3 -> [MethodCall] call to method Instance
 
@@ -973,8 +967,6 @@ Qualifiers.cs:
 
 #    7| [ThisAccess] this access
 
-#   13| [Method] Instance
-
 #    9| [Getter] get_B
 #-----| 3 -> [MethodCall] call to method Instance
 
@@ -985,8 +977,6 @@ Qualifiers.cs:
 #-----| -1 -> [ThisAccess] this access
 
 #    9| [ThisAccess] this access
-
-#   13| [Method] Instance
 
 #   11| [Method] Static
 #-----| 1 -> (TypeParameters)
@@ -1003,8 +993,6 @@ Qualifiers.cs:
 #-----| 3 -> [DefaultValueExpr] default(...)
 
 #   13| [TypeParameter] T
-
-#   11| [Parameter] o
 
 #   13| [DefaultValueExpr] default(...)
 #-----| 0 -> [TypeAccess] access to type T
@@ -1524,8 +1512,6 @@ expressions.cs:
 #-----| 0 -> [TypeAccess] access to type X<X<>>
 
 #  121| [TypeAccess] access to type X<X<>>
-
-#  110| [Method] PrintTypes
 
 #  122| [TypeofExpr] typeof(...)
 #-----| 0 -> [TypeAccess] access to type Y<,>
@@ -4755,10 +4741,6 @@ expressions.cs:
 
 #  187| [LocalVariableAccess] access to local variable x
 
-#  202| [Parameter] value
-
-#  202| [Parameter] value
-
 #  192| [DelegateCall] delegate call
 #-----| -1 -> [LocalVariableAccess] access to local variable pi
 #-----| 0 -> [IntLiteral] 3
@@ -5470,9 +5452,6 @@ expressions.cs:
 #-----| 0 -> [Parameter] o
 
 #-----| (Parameters)
-#-----| 0 -> [Parameter] o
-
-#-----| (Parameters)
 #-----| 0 -> [Parameter] a
 #-----| 1 -> [Parameter] b
 
@@ -5621,12 +5600,6 @@ expressions.cs:
 #-----| (Parameters)
 #-----| 0 -> [Parameter] c1
 #-----| 1 -> [Parameter] c2
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] value
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] value
 
 #-----| (Parameters)
 #-----| 0 -> [Parameter] i

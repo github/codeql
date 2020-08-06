@@ -25,7 +25,6 @@ definitions.cs:
 #-----| 4 -> [Method] f1
 #-----| 5 -> [Method] VariableTypeUse
 #-----| 6 -> [Method] GenericFn
-#-----| 6 -> [Method] GenericFn
 
 #    6| [Class] StaticClass
 #-----| 1 -> [ExtensionMethod] ExtensionMethod
@@ -358,8 +357,6 @@ definitions.cs:
 #-----| 0 -> [MethodCall] call to method Create
 #-----| 1 -> [FieldAccess] access to field f
 
-#  160| [Method] Create
-
 #  166| [MethodCall] call to method Create
 #-----| -1 -> [TypeAccess] access to type Nested<I4>
 
@@ -670,9 +667,6 @@ definitions.cs:
 
 #   47| [IntLiteral] 1
 
-#   75| [Method] GenericFn
-#-----| 2 -> (Parameters)
-
 #   48| [ExprStmt] ...;
 #-----| 0 -> [MethodCall] call to method GenericFn
 
@@ -922,23 +916,6 @@ definitions.cs:
 #  134| [DefaultValueExpr] default(...)
 #-----| 0 -> [TypeAccess] access to type B<A>
 
-#  123| [Method] M
-
-#  128| [Method] M2
-#-----| 1 -> (TypeParameters)
-
-#  130| [Struct] S<>
-#-----| 0 -> (TypeParameters)
-
-#  132| [Method] Tuple
-
-#  134| [Indexer] Item
-#-----| 0 -> (Parameters)
-#-----| 2 -> [Getter] get_Item
-
-#  134| [Getter] get_Item
-#-----| 2 -> (Parameters)
-
 #  134| [TypeAccess] access to type B<A>
 
 #  153| [BlockStmt] {...}
@@ -1077,8 +1054,6 @@ definitions.cs:
 
 #    8| [Parameter] args
 
-#   75| [Parameter] t
-
 #   60| [PropertyCall] access to property property1
 #-----| -1 -> [ThisAccess] this access
 
@@ -1147,10 +1122,6 @@ definitions.cs:
 #  128| [TypeParameter] T
 
 #  130| [TypeParameter] T2
-
-#  134| [Parameter] a
-
-#  134| [Parameter] a
 
 #  173| [ObjectCreation] object creation of type C5
 
@@ -1247,15 +1218,6 @@ definitions.cs:
 #-----| (Parameters)
 #-----| 0 -> [Parameter] x
 #-----| 1 -> [Parameter] y
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] t
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] a
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] a
 
 #-----| (Parameters)
 #-----| 0 -> [Parameter] value

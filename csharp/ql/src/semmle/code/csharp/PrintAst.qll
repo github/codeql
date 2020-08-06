@@ -67,20 +67,41 @@ private int assignableOffset(AssignableMember assignable) {
   if assignable.(Property).hasInitializer() then result = 1 else result = 0
 }
 
+private predicate isInConstructedGenericAttributable(Attributable attributable) {
+  isInConstructedGenericType(attributable.(Field).getDeclaringType()) or
+  isInConstructedGenericParameterizable(attributable.(Parameter).getDeclaringElement()) or
+  isInConstructedGenericCallable(attributable.(Callable)) or
+  isInConstructedGenericType(attributable.(DeclarationWithAccessors).getDeclaringType()) or
+  isInConstructedGenericType(attributable.(ValueOrRefType))
+}
+
+private predicate isInConstructedGenericCallable(Callable c) {
+  c instanceof ConstructedGeneric or
+  isInConstructedGenericType(c.getDeclaringType())
+}
+
+private predicate isInConstructedGenericType(Type t) {
+  t instanceof ConstructedType or
+  t.getDeclaringType*() instanceof ConstructedType
+}
+
+private predicate isInConstructedGenericParameterizable(Parameterizable parameterizable) {
+  isInConstructedGenericCallable(parameterizable) or
+  isInConstructedGenericType(parameterizable.(Indexer).getDeclaringType()) or
+  isInConstructedGenericType(parameterizable.(DelegateType))
+}
+
+private predicate isCompilerGeneratedParameterizable(Parameterizable parameterizable) {
+  parameterizable.isCompilerGenerated() or
+  parameterizable.getDeclaringType*().isCompilerGenerated()
+}
+
 /**
  * Default parameter values on delegates are in the tree multiple times,
  * due to the compiler generated `Invoke`.
  */
-private predicate isCompilerGeneratedParameter(Parameter p) {
-  p.getDeclaringElement().isCompilerGenerated()
-}
-
-/**
- * Delegate have compiler generated `Invoke`, `BeginInvoke`, `EndInvoke`
- * methods, which keep the attributes of the parameters.
- */
-private predicate isCompilerGeneratedAttribute(Attribute a) {
-  isCompilerGeneratedParameter(a.getTarget())
+private predicate isCompilerGeneratedAttributable(Attributable attributable) {
+  isCompilerGeneratedParameterizable(attributable.(Parameter).getDeclaringElement())
 }
 
 /**
@@ -213,8 +234,10 @@ class ControlFlowElementNode extends AstNode {
 
   ControlFlowElementNode() {
     controlFlowElement = ast and
-    not isCompilerGeneratedParameter(ast.getParent+()) and
-    not isCompilerGeneratedAttribute(ast.getParent+())
+    not isCompilerGeneratedAttributable(ast.getParent+().(Attribute).getTarget()) and
+    not isCompilerGeneratedParameterizable(ast.getParent+().(Parameter).getDeclaringElement()) and
+    not isInConstructedGenericAttributable(ast.getParent+().(Attribute).getTarget()) and
+    not isInConstructedGenericParameterizable(ast.getParent+().(Parameter).getDeclaringElement())
   }
 
   override AstNode getChild(int childIndex) {
@@ -244,7 +267,10 @@ final class LocalFunctionStmtNode extends ControlFlowElementNode {
 final class CallableAstNode extends AstNode {
   Callable callable;
 
-  CallableAstNode() { callable = ast }
+  CallableAstNode() {
+    callable = ast and
+    not isInConstructedGenericCallable(callable)
+  }
 
   override PrintAstNode getChild(int childIndex) {
     childIndex = 0 and
@@ -268,7 +294,10 @@ final class CallableAstNode extends AstNode {
 final class DeclarationWithAccessorsNode extends AstNode {
   DeclarationWithAccessors declaration;
 
-  DeclarationWithAccessorsNode() { declaration = ast }
+  DeclarationWithAccessorsNode() {
+    declaration = ast and
+    not isInConstructedGenericType(declaration.getDeclaringType())
+  }
 
   override PrintAstNode getChild(int childIndex) {
     childIndex = 0 and
@@ -299,7 +328,11 @@ final class DeclarationWithAccessorsNode extends AstNode {
 final class FieldNode extends AstNode {
   Field field;
 
-  FieldNode() { field = ast and not field.getDeclaringType() instanceof TupleType }
+  FieldNode() {
+    field = ast and
+    not field.getDeclaringType() instanceof TupleType and
+    not isInConstructedGenericType(field.getDeclaringType())
+  }
 
   override PrintAstNode getChild(int childIndex) {
     childIndex = 0 and
@@ -319,8 +352,9 @@ final class ParameterNode extends AstNode {
 
   ParameterNode() {
     param = ast and
+    not isInConstructedGenericParameterizable(param.getDeclaringElement()) and
     (
-      not isCompilerGeneratedParameter(param) or
+      not param.getDeclaringElement().isCompilerGenerated() or
       param.getDeclaringElement() instanceof Accessor
     )
   }
@@ -358,7 +392,8 @@ final class AttributeNode extends AstNode {
 
   AttributeNode() {
     attr = ast and
-    not isCompilerGeneratedAttribute(attr)
+    not isCompilerGeneratedAttributable(attr.getTarget()) and
+    not isInConstructedGenericAttributable(attr.getTarget())
   }
 
   override AstNode getChild(int childIndex) { result.getAst() = attr.getChild(childIndex) }
@@ -386,7 +421,7 @@ final class TypeNode extends AstNode {
     type = ast and
     not type instanceof TupleType and
     not type instanceof ArrayType and
-    not type instanceof ConstructedType
+    not isInConstructedGenericType(type)
   }
 
   override PrintAstNode getChild(int childIndex) {
@@ -442,6 +477,7 @@ final class ParametersNode extends PrintAstNode, TParametersNode {
   ParametersNode() {
     this = TParametersNode(parameterizable) and
     parameterizable.getNumberOfParameters() > 0 and
+    not isInConstructedGenericParameterizable(parameterizable) and
     (
       not parameterizable.isCompilerGenerated() or
       parameterizable instanceof Accessor
@@ -472,7 +508,8 @@ final class AttributesNode extends PrintAstNode, TAttributesNode {
   AttributesNode() {
     this = TAttributesNode(attributable) and
     count(attributable.getAnAttribute()) > 0 and
-    not isCompilerGeneratedParameter(attributable)
+    not isCompilerGeneratedAttributable(attributable) and
+    not isInConstructedGenericAttributable(attributable)
   }
 
   override string toString() { result = "(Attributes)" }
