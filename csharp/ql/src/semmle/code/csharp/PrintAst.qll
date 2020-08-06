@@ -9,6 +9,17 @@
 
 import csharp
 
+private predicate attr(Attributable a, Parameterizable p) {
+  a.(Element).getLocation().getStartLine() = 13 and
+  count(a.getAnAttribute()) > 0 and
+  a.(Parameter).getDeclaringElement() = p and
+  not isCompilerGeneratedParameter(a)
+}
+
+private predicate para(Parameter p) {
+  p.getLocation().getStartLine() = 13 and not isCompilerGeneratedParameter(p)
+}
+
 private newtype TPrintAstConfiguration = MkPrintAstConfiguration()
 
 /**
@@ -65,6 +76,22 @@ private int unboundGenericOffset(ValueOrRefType type) {
 
 private int assignableOffset(AssignableMember assignable) {
   if assignable.(Property).hasInitializer() then result = 1 else result = 0
+}
+
+/**
+ * Default parameter values on delegates are in the tree multiple times,
+ * due to the compiler generated `Invoke`.
+ */
+private predicate isCompilerGeneratedParameter(Parameter p) {
+  p.getDeclaringElement().isCompilerGenerated()
+}
+
+/**
+ * Delegate have compiler generated `Invoke`, `BeginInvoke`, `EndInvoke`
+ * methods, which keep the attributes of the parameters.
+ */
+private predicate isCompilerGeneratedAttribute(Attribute a) {
+  isCompilerGeneratedParameter(a.getTarget())
 }
 
 /**
@@ -195,7 +222,11 @@ abstract class AstNode extends PrintAstNode, TAstNode {
 class ControlFlowElementNode extends AstNode {
   ControlFlowElement controlFlowElement;
 
-  ControlFlowElementNode() { controlFlowElement = ast }
+  ControlFlowElementNode() {
+    controlFlowElement = ast and
+    not isCompilerGeneratedParameter(ast.getParent+()) and
+    not isCompilerGeneratedAttribute(ast.getParent+())
+  }
 
   override AstNode getChild(int childIndex) {
     result.getAst() = controlFlowElement.getChild(childIndex)
@@ -300,7 +331,7 @@ final class ParameterNode extends AstNode {
   ParameterNode() {
     param = ast and
     (
-      not param.getDeclaringElement().isCompilerGenerated() or
+      not isCompilerGeneratedParameter(param) or
       param.getDeclaringElement() instanceof Accessor
     )
   }
@@ -336,7 +367,10 @@ final class ParameterNode extends AstNode {
 final class AttributeNode extends AstNode {
   Attribute attr;
 
-  AttributeNode() { attr = ast }
+  AttributeNode() {
+    attr = ast and
+    not isCompilerGeneratedAttribute(attr)
+  }
 
   override AstNode getChild(int childIndex) { result.getAst() = attr.getChild(childIndex) }
 }
@@ -443,7 +477,8 @@ final class AttributesNode extends PrintAstNode, TAttributesNode {
 
   AttributesNode() {
     this = TAttributesNode(attributable) and
-    count(attributable.getAnAttribute()) > 0
+    count(attributable.getAnAttribute()) > 0 and
+    not isCompilerGeneratedParameter(attributable)
   }
 
   override string toString() { result = "(Attributes)" }
