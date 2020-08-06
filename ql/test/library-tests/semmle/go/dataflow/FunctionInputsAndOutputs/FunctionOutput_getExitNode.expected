@@ -1,5 +1,7 @@
 | parameter 0 | reset.go:12:2:12:21 | call to Reset | reset.go:9:2:9:7 | definition of source |
 | parameter 0 | tst.go:10:2:10:29 | call to ReadFrom | tst.go:8:12:8:17 | definition of reader |
+| parameter 0 | tst.go:16:2:16:12 | call to test5 | tst.go:15:12:15:12 | definition of x |
+| parameter 1 | tst.go:16:2:16:12 | call to test5 | tst.go:15:15:15:15 | definition of y |
 | receiver | main.go:53:14:53:21 | call to bump | main.go:52:2:52:2 | definition of c |
 | receiver | reset.go:12:2:12:21 | call to Reset | reset.go:11:6:11:11 | definition of reader |
 | receiver | tst.go:10:2:10:29 | call to ReadFrom | tst.go:9:2:9:12 | definition of bytesBuffer |
