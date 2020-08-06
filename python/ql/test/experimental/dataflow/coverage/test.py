@@ -102,15 +102,27 @@ def test_nested_set_display():
 # 6.2.7. Dictionary displays
 def test_dict_display():
     x = {"s": SOURCE}
-    SINK(x["s"]) # Flow missing
+    SINK(x["s"])
+
+def test_dict_display_pop():
+    x = {"s": SOURCE}
+    SINK(x.pop("s"))
 
 def test_dict_comprehension():
     x = {y: SOURCE for y in ["s"]}
     SINK(x["s"]) # Flow missing
 
+def test_dict_comprehension_pop():
+    x = {y: SOURCE for y in ["s"]}
+    SINK(x.pop("s")) # Flow missing
+
 def test_nested_dict_display():
     x = {** {"s": SOURCE}}
     SINK(x["s"]) # Flow missing
+
+def test_nested_dict_display_pop():
+    x = {** {"s": SOURCE}}
+    SINK(x.pop("s")) # Flow missing
 
 # 6.2.8. Generator expressions
 def test_generator():
@@ -225,7 +237,7 @@ def test_subscription_list():
     SINK([SOURCE][0])
 
 def test_subscription_mapping():
-    SINK({"s":SOURCE}["s"]) # Flow missing
+    SINK({"s":SOURCE}["s"])
 
 # overriding __getitem__ should be tested by the class coverage tests
 

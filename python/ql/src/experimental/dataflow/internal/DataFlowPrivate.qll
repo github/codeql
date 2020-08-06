@@ -230,6 +230,7 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   //   `[..., 42, ...]`
   //   nodeFrom is `42`, cfg node
   //   nodeTo is the sequence, say `[..., 42, ...]`, cfg node
+  //   c denotes list or c denotes tuple and index of 42
   //
   // List
   nodeTo.(CfgNode).getNode().(ListNode).getAnElement() = nodeFrom.(CfgNode).getNode() and
@@ -237,9 +238,15 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   or
   // Tuple
   exists(int n |
-    nodeTo.(CfgNode).getNode().(TupleNode).getNode().(Tuple).getElt(n) = nodeFrom.(CfgNode).getNode().getNode() and
-    c.(TupleElementContent).getIndex() = n and
-    nodeFrom.(CfgNode).getNode().(NameNode).getId() = "SOURCE"
+    nodeTo.(CfgNode).getNode().(TupleNode).getElement(n) = nodeFrom.(CfgNode).getNode() and
+    c.(TupleElementContent).getIndex() = n
+  )
+  or
+  // Dict
+  exists(KeyValuePair item |
+    item = nodeTo.(CfgNode).getNode().(DictNode).getNode().(Dict).getAnItem() and
+    nodeFrom.(CfgNode).getNode().getNode() = item.getValue() and
+    c.(DictionaryElementContent).getKey() = item.getKey().(StrConst).getS()
   )
   or
   //
@@ -247,6 +254,7 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   //   `[x+1 for x in l]`
   //   nodeFrom is `x+1`, cfg node
   //   nodeTo is `[x+1 for x in l]`, cfg node
+  //   c denotes list or set or dictionary without index
   //
   // List
   nodeTo.(CfgNode).getNode().getNode().(ListComp).getElt() = nodeFrom.(CfgNode).getNode().getNode() and
@@ -269,6 +277,7 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   //   `l[3]`
   //   nodeFrom is `l`, cfg node
   //   nodeTo is `l[3]`, cfg node
+  //   c is compatible with 3
   nodeFrom.(CfgNode).getNode() = nodeTo.(CfgNode).getNode().(SubscriptNode).getObject() and
   (
     c instanceof ListElementContent
@@ -277,18 +286,22 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
     or
     c instanceof DictionaryElementAnyContent
     or
-    c.(TupleElementContent).getIndex() = nodeTo.(CfgNode).getNode().(SubscriptNode).getIndex().getNode().(IntegerLiteral).getValue()
+    c.(TupleElementContent).getIndex() =
+      nodeTo.(CfgNode).getNode().(SubscriptNode).getIndex().getNode().(IntegerLiteral).getValue()
     or
-    c.(DictionaryElementContent).getKey() = nodeTo.(CfgNode).getNode().(SubscriptNode).getIndex().getNode().(StrConst).getS()
+    c.(DictionaryElementContent).getKey() =
+      nodeTo.(CfgNode).getNode().(SubscriptNode).getIndex().getNode().(StrConst).getS()
   )
   or
-  // set.pop
+  // set.pop or list.pop
   //   `s.pop()`
   //   nodeFrom is `s`, cfg node
   //   nodeTo is `s.pop()`, cfg node
+  //   c denotes list or set
   exists(CallNode call, AttrNode a |
     call.getFunction() = a and
     a.getName() = "pop" and // TODO: Should be made more robust, like Value::named("set.pop").getACall()
+    not exists(call.getAnArg()) and
     nodeFrom.(CfgNode).getNode() = a.getObject() and
     nodeTo.(CfgNode).getNode() = call and
     (
@@ -298,16 +311,51 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
     )
   )
   or
+  // dict.pop
+  //   `d.pop(key)`
+  //   nodeFrom is `d`, cfg node
+  //   nodeTo is `d.pop(key)`, cfg node
+  //   c denotes key
+  exists(CallNode call, AttrNode a |
+    call.getFunction() = a and
+    a.getName() = "pop" and // TODO: Should be made more robust, like Value::named("set.pop").getACall()
+    nodeFrom.(CfgNode).getNode() = a.getObject() and
+    nodeTo.(CfgNode).getNode() = call and
+    c.(DictionaryElementContent).getKey() = call.getArg(0).getNode().(StrConst).getS()
+  )
+  or
   // Comprehension
   //   `[x+1 for x in l]`
   //   nodeFrom is `l`, cfg node
   //   nodeTo is `x`, essa var
+  //   c denotes list or set
   exists(For f, Comp comp |
-    // Seems to need extractor changes to write this part properly
-    nodeFrom.(CfgNode).getNode().(SequenceNode).getNode().getParentNode() = comp and
-    colocated(f.getIter(), comp) and
+    f = getCompFor(comp) and
+    nodeFrom.(CfgNode).getNode().(SequenceNode).getNode() = getCompIter(comp) and
     nodeTo.(EssaNode).getVar().getDefinition().(AssignmentDefinition).getDefiningNode().getNode() =
-      f.getTarget()
+      f.getTarget() and
+    (
+      c instanceof ListElementContent
+      or
+      c instanceof SetElementContent
+    )
+  )
+}
+
+/** This seems to compensate for extractor shortcomings */
+For getCompFor(Comp c) {
+  c.contains(result) and
+  c.getFunction() = result.getScope()
+}
+
+/** This seems to compensate for extractor shortcomings */
+AstNode getCompIter(Comp c) {
+  c.contains(result) and
+  c.getScope() = result.getScope() and
+  not result = c.getFunction() and
+  not exists(AstNode between |
+    c.contains(between) and
+    between.contains(result)
   )
 }
 
