@@ -726,7 +726,12 @@ class ConversionExpr extends CallOrConversionExpr {
  * ```
  */
 class CallExpr extends CallOrConversionExpr {
-  CallExpr() { exists(Expr callee | callee = getChildExpr(0) | not isTypeExprBottomUp(callee)) }
+  CallExpr() {
+    exists(Expr callee | callee = getChildExpr(0) | not isTypeExprBottomUp(callee))
+    or
+    // only calls can have an ellipsis after their last argument
+    has_ellipsis(this)
+  }
 
   /** Gets the expression representing the function being called. */
   Expr getCalleeExpr() { result = getChildExpr(0) }
@@ -754,6 +759,9 @@ class CallExpr extends CallOrConversionExpr {
 
   /** Gets the declared target of this call. */
   Function getTarget() { getCalleeExpr() = result.getAReference() }
+
+  /** Holds if this call has an ellipsis after its last argument. */
+  predicate hasEllipsis() { has_ellipsis(this) }
 
   override predicate mayHaveOwnSideEffects() {
     getTarget().mayHaveSideEffects() or

@@ -1,3 +1,5 @@
+| ellipsis.go:10:7:10:17 | composite literal | 0 | value | ellipsis.go:10:13:10:13 | 2 |
+| ellipsis.go:10:7:10:17 | composite literal | 1 | value | ellipsis.go:10:16:10:16 | 3 |
 | literals.go:7:15:11:1 | map literal | 0 | key | literals.go:8:2:8:10 | "decimal" |
 | literals.go:7:15:11:1 | map literal | 0 | value | literals.go:8:17:8:18 | 42 |
 | literals.go:7:15:11:1 | map literal | 1 | key | literals.go:9:2:9:8 | "octal" |
