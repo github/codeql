@@ -33,12 +33,15 @@ Location getLocation(CommentGroup cg) {
   not exists(cg.getLocation()) and result = cg.getComment(0).getLocation()
 }
 
-from CommentGroup cg, File f, int idx
+predicate hasLocation(CommentGroup cg, File f, int startLine) {
+  exists(Location loc | loc = getLocation(cg) |
+    f = loc.getFile() and
+    startLine = loc.getStartLine()
+  )
+}
+
+from CommentGroup cg, File file, int idx
 where
-  f = getLocation(cg).getFile() and
-  rank[idx + 1](CommentGroup rankedcg |
-    getLocation(rankedcg).getFile() = f
-  |
-    rankedcg order by getLocation(rankedcg).getStartLine()
-  ) = cg
-select cg, f, idx
+  hasLocation(cg, file, _) and
+  cg = rank[idx + 1](CommentGroup cg2, int line | hasLocation(cg2, file, line) | cg2 order by line)
+select cg, file, idx
