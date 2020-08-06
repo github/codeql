@@ -84,11 +84,16 @@ func getImportPath() (importpath string) {
 	if importpath == "" {
 		repourl := os.Getenv("SEMMLE_REPO_URL")
 		if repourl == "" {
+			log.Printf("Unable to determine import path, as neither LGTM_INDEX_IMPORT_PATH nor SEMMLE_REPO_URL is set\n")
 			return ""
 		}
 		importpath = getImportPathFromRepoURL(repourl)
+		if importpath == "" {
+			log.Printf("Failed to determine import path from SEMMLE_REPO_URL '%s'\n", repourl)
+			return
+		}
 	}
-	log.Printf("Import path is %s\n", importpath)
+	log.Printf("Import path is '%s'\n", importpath)
 	return
 }
 
@@ -103,8 +108,18 @@ func getImportPathFromRepoURL(repourl string) string {
 	// otherwise parse as proper URL
 	u, err := url.Parse(repourl)
 	if err != nil {
-		log.Fatalf("Malformed repository URL %s.\n", repourl)
+		log.Fatalf("Malformed repository URL '%s'\n", repourl)
 	}
+
+	if u.Scheme == "file" {
+		// we can't determine import paths from file paths
+		return ""
+	}
+
+	if u.Hostname() == "" || u.Path == "" {
+		return ""
+	}
+
 	host := u.Hostname()
 	path := u.Path
 	// strip off leading slashes and trailing `.git` if present
