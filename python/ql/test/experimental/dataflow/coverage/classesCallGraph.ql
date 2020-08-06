@@ -6,5 +6,4 @@ where
   sink.getLocation().getFile().getBaseName() = "classes.py" and
   exists(CallGraphConfig cfg | cfg.hasFlow(source, sink))
 select source, sink
-
 // Rewrite this to just have 1-step paths?
