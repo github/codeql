@@ -3,3 +3,5 @@
 | main.go:14:5:14:20 | ...<... | 'cap' is always non-negative, and hence cannot be less than 0. |
 | main.go:18:5:18:22 | ...<=... | 'len' is always non-negative, and hence cannot be less than -1. |
 | main.go:22:5:22:22 | ...==... | 'len' is always non-negative, and hence cannot equal -1. |
+| main.go:28:9:28:13 | ...<... | This unsigned value is always non-negative, and hence cannot be less than 0. |
+| main.go:36:9:36:15 | ...==... | This unsigned value is always non-negative, and hence cannot equal -1. |

@@ -10,7 +10,7 @@ never less than zero. Hence, checking whether the result of a call to <code>len<
 is either redundant or indicates a logic mistake.
 </p>
 <p>
-The same applies to the built-in function <code>cap</code>.
+The same applies to the built-in function <code>cap</code>, and to unsigned integer values.
 </p>
 </overview>
 
