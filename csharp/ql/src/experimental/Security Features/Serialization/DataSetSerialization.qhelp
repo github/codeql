@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>The <code>DataSet</code> and <code>DataTable</code> types are legacy .NET components that allow representing data sets as managed objects.</p>
+<p>The <code>DataSet</code> and <code>DataTable</code> types are legacy .NET components that you can use to represent data sets as managed objects.</p>
 
 <p>While <code>DataSet</code> and <code>DataTable</code> do impose default limitations on the types that are allowed to be present while deserializing XML payloads, <code>DataSet</code> and <code>DataTable</code> are in general not safe when populated with untrusted input.</p>
 
