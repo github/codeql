@@ -54,9 +54,11 @@ predicate illDefinedDecrForStmt(
       or
       (forstmt.conditionAlwaysFalse() or forstmt.conditionAlwaysTrue())
     )
-  ) and
-  // exclude cases where the loop counter is `unsigned` (where wrapping behaviour can be used deliberately)
-  not v.getUnspecifiedType().(IntegralType).isUnsigned()
+  ) and (
+    // exclude cases where the loop counter is `unsigned` (where wrapping behaviour can be used deliberately)
+    v.getUnspecifiedType().(IntegralType).isSigned() or
+    initialCondition.getValue().toInt() = 0
+  )
 }
 
 pragma[noinline]
