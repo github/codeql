@@ -128,6 +128,10 @@ SINK(asyncio.run(agen(SOURCE)))
 # Class Instances
 # Instances of arbitrary classes can be made callable by defining a __call__() method in their class.
 
+# If a class sets __iter__() to None, calling iter() on its instances will raise a TypeError (without falling back to __getitem__()).
+
+# 3.3.1. Basic customization
+
 class Customized:
 
   a = NONSOURCE
@@ -140,19 +144,15 @@ class Customized:
   def __init__(self):
     self.b = SOURCE
 
+# object.__new__(cls[, ...])
+# object.__init__(self[, ...])
 customized = Customized()
 SINK(Customized.a)
 SINK_F(Customized.b)
 SINK(customized.a)
 SINK(customized.b)
 
-#  def __del__(self):
 
-# If a class sets __iter__() to None, calling iter() on its instances will raise a TypeError (without falling back to __getitem__()).
-
-# 3.3.1. Basic customization
-# object.__new__(cls[, ...])
-# object.__init__(self[, ...])
 # object.__del__(self)
 # object.__repr__(self)
 # object.__str__(self)¶
