@@ -156,7 +156,7 @@ public class InsecureBasicAuth {
 		String host = "LOCALHOST";
 		String authString = username + ":" + password;
 		String encoding = Base64.getEncoder().encodeToString(authString.getBytes("UTF-8"));
-		HttpURLConnection conn = (HttpURLConnection) new URL("http://"+host+"/rest/getuser.do"+"?uid=abcdx").openConnection();
+		HttpURLConnection conn = (HttpURLConnection) new URL("http://"+(((host+"/rest/getuser.do")+"?uid=abcdx"))).openConnection();
 		conn.setRequestMethod("POST");
 		conn.setDoOutput(true);
 		conn.setRequestProperty("Authorization", "Basic " + encoding);

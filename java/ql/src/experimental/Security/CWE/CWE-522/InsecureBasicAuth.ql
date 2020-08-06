@@ -87,7 +87,7 @@ class HttpStringLiteral extends StringLiteral {
   HttpStringLiteral() {
     // Match URLs with the HTTP protocol and without private IP addresses to reduce false positives.
     exists(string s | this.getRepresentedString() = s |
-      s.regexpMatch("(?i)http://[\\[:a-zA-Z0-9].*") and
+      s.regexpMatch("(?i)http://[\\[a-zA-Z0-9].*") and
       not s.substring(7, s.length()).regexpMatch(getPrivateHostRegex())
     )
   }
@@ -106,27 +106,22 @@ predicate concatHttpString(Expr protocol, Expr host) {
         .(CompileTimeConstantExpr)
         .getStringValue()
         .regexpMatch("(?i)http(://)?")
-  ) and // Not empty host string
-  (
-    host.(CompileTimeConstantExpr).getStringValue().length() > 0 or
-    host
-        .(VarAccess)
-        .getVariable()
-        .getAnAssignedValue()
-        .(CompileTimeConstantExpr)
-        .getStringValue()
-        .length() > 0
   ) and
-  not (
-    host.(CompileTimeConstantExpr).getStringValue().regexpMatch(getPrivateHostRegex()) or
-    host
-        .(VarAccess)
-        .getVariable()
-        .getAnAssignedValue()
-        .(CompileTimeConstantExpr)
-        .getStringValue()
-        .regexpMatch(getPrivateHostRegex())
+  not exists(string hostString |
+    hostString = host.(CompileTimeConstantExpr).getStringValue() or
+    hostString =
+      host.(VarAccess).getVariable().getAnAssignedValue().(CompileTimeConstantExpr).getStringValue()
+  |
+    hostString.length() = 0 or // Empty host is loopback address
+    hostString.regexpMatch(getPrivateHostRegex())
   )
+}
+
+/** Gets the leftmost operand in a concatenated string */
+Expr getLeftmostConcatOperand(Expr expr) {
+  if expr instanceof AddExpr
+  then result = getLeftmostConcatOperand(expr.(AddExpr).getLeftOperand())
+  else result = expr
 }
 
 /**
@@ -136,7 +131,8 @@ class HttpString extends Expr {
   HttpString() {
     this instanceof HttpStringLiteral
     or
-    concatHttpString(this.(AddExpr).getLeftOperand(), this.(AddExpr).getRightOperand())
+    concatHttpString(this.(AddExpr).getLeftOperand(),
+      getLeftmostConcatOperand(this.(AddExpr).getRightOperand()))
   }
 }
 
