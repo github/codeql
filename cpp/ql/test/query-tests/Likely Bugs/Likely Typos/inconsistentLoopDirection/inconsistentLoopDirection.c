@@ -24,7 +24,7 @@ void Unsigned()
 {
     unsigned long i;
 
-    for (i = 0; i < 100; i--)   //BUG
+    for (i = 0; i < 100; i--)   //BUG [NOT DETECTED]
     {
     }
 
