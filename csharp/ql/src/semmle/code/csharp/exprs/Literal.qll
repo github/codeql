@@ -99,7 +99,7 @@ class DoubleLiteral extends RealLiteral, @double_literal_expr {
  */
 class DecimalLiteral extends RealLiteral, @decimal_literal_expr {
   override string getAPrimaryQlClass() { result = "DecimalLiteral" }
- }
+}
 
 /**
  * A `string` literal, for example `"Hello, World!"`.
