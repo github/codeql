@@ -16,12 +16,12 @@ abstract class LdapInjectionSanitizer extends DataFlow::Node { }
 /**
  * A unit class for adding additional taint steps.
  *
- * Extend this class to add additional taint steps that should apply to the LdapInjectionFlowConfig.
+ * Extend this class to add additional taint steps that should apply to the `LdapInjectionFlowConfig`.
  */
 class LdapInjectionAdditionalTaintStep extends TaintTracking::Unit {
   /**
    * Holds if the step from `node1` to `node2` should be considered a taint
-   * step for the LdapInjectionFlowConfig configuration.
+   * step for the `LdapInjectionFlowConfig` configuration.
    */
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
@@ -37,7 +37,7 @@ private class DefaultLdapInjectionSink extends LdapInjectionSink {
   }
 }
 
-/** Holds if the method parameter at index is susceptible to a LDAP injection attack. */
+/** Holds if the method parameter at `index` is susceptible to an LDAP injection attack. */
 private predicate ldapInjectionSinkMethod(Method m, int index) {
   jndiLdapInjectionSinkMethod(m, index) or
   unboundIdLdapInjectionSinkMethod(m, index) or
@@ -45,14 +45,14 @@ private predicate ldapInjectionSinkMethod(Method m, int index) {
   apacheLdapInjectionSinkMethod(m, index)
 }
 
-/** Holds if the JNDI method parameter at index is susceptible to a LDAP injection attack. */
+/** Holds if the JNDI method parameter at `index` is susceptible to an LDAP injection attack. */
 private predicate jndiLdapInjectionSinkMethod(Method m, int index) {
   m.getDeclaringType().getAnAncestor() instanceof TypeDirContext and
   m.hasName("search") and
   index in [0 .. 1]
 }
 
-/** Holds if the UnboundID method parameter at `index` is susceptible to a LDAP injection attack. */
+/** Holds if the UnboundID method parameter at `index` is susceptible to an LDAP injection attack. */
 private predicate unboundIdLdapInjectionSinkMethod(Method m, int index) {
   exists(Parameter param | m.getParameter(index) = param and not param.isVarargs() |
     m instanceof MethodUnboundIdLDAPConnectionSearch or
@@ -61,7 +61,7 @@ private predicate unboundIdLdapInjectionSinkMethod(Method m, int index) {
   )
 }
 
-/** Holds if the Spring method parameter at `index` is susceptible to a LDAP injection attack. */
+/** Holds if the Spring method parameter at `index` is susceptible to an LDAP injection attack. */
 private predicate springLdapInjectionSinkMethod(Method m, int index) {
   // LdapTemplate.authenticate, LdapTemplate.find* or LdapTemplate.search* method
   (
@@ -84,7 +84,7 @@ private predicate springLdapInjectionSinkMethod(Method m, int index) {
   )
 }
 
-/** Holds if the Apache LDAP API method parameter at `index` is susceptible to a LDAP injection attack. */
+/** Holds if the Apache LDAP API method parameter at `index` is susceptible to an LDAP injection attack. */
 private predicate apacheLdapInjectionSinkMethod(Method m, int index) {
   exists(Parameter param | m.getParameter(index) = param and not param.isVarargs() |
     m.getDeclaringType().getAnAncestor() instanceof TypeApacheLdapConnection and
@@ -92,7 +92,7 @@ private predicate apacheLdapInjectionSinkMethod(Method m, int index) {
   )
 }
 
-/** A sanitizer that clears the taint on (boxed) primitive types */
+/** A sanitizer that clears the taint on (boxed) primitive types. */
 private class DefaultLdapSanitizer extends LdapInjectionSanitizer {
   DefaultLdapSanitizer() {
     this.getType() instanceof PrimitiveType or
