@@ -234,6 +234,16 @@ class ControlFlowElementNode extends AstNode {
 
   ControlFlowElementNode() {
     controlFlowElement = ast and
+    // Removing extra nodes that are generated for an `AssignOperation`
+    not exists(AssignOperation ao |
+      ao.hasExpandedAssignment() and
+      (
+        ao.getExpandedAssignment() = controlFlowElement or
+        ao.getExpandedAssignment().getRValue() = controlFlowElement or
+        ao.getExpandedAssignment().getRValue().(BinaryOperation).getLeftOperand() =
+          controlFlowElement.getParent*()
+      )
+    ) and
     not isCompilerGeneratedAttributable(ast.getParent+().(Attribute).getTarget()) and
     not isCompilerGeneratedParameterizable(ast.getParent+().(Parameter).getDeclaringElement()) and
     not isInConstructedGenericAttributable(ast.getParent+().(Attribute).getTarget()) and

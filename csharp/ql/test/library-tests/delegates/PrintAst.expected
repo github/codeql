@@ -1,586 +1,192 @@
 delegates.cs:
 #    5| [NamespaceDeclaration] namespace ... { ... }
-#-----| 1 -> [DelegateType] FooDelegate
-#-----| 2 -> [DelegateType] D1
-#-----| 3 -> [Class] A
-#-----| 4 -> [Class] B
-#-----| 5 -> [DelegateType] Predicate<>
-#-----| 6 -> [Class] X
-#-----| 7 -> [DelegateType] D
-#-----| 8 -> [Class] C
-#-----| 9 -> [Class] Test
-
-#    7| [DelegateType] FooDelegate
-#-----| 0 -> (Parameters)
-
-#    9| [DelegateType] D1
-#-----| 0 -> (Parameters)
-
-#   11| [Class] A
-#-----| 2 -> [Method] M1
-
-#   14| [Method] M1
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#   14| [BlockStmt] {...}
-#-----| 0 -> [ReturnStmt] return ...;
-
-#   14| [ReturnStmt] return ...;
-#-----| 0 -> [CastExpr] (...) ...
-
-#   14| [CastExpr] (...) ...
-#-----| 0 -> [AddExpr] ... + ...
-#-----| 1 -> [TypeAccess] access to type Int32
-
-#   14| [AddExpr] ... + ...
-#-----| 0 -> [CastExpr] (...) ...
-#-----| 1 -> [ParameterAccess] access to parameter b
-
-#   14| [TypeAccess] access to type Int32
-
-#   18| [Class] B
-#-----| 2 -> [DelegateType] D2
-#-----| 3 -> [Method] M1
-#-----| 4 -> [Method] M2
-#-----| 5 -> [Method] M3
-#-----| 6 -> [Method] M4
-
-#   21| [DelegateType] D2
-#-----| 0 -> (Parameters)
-
-#   23| [Method] M1
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#   23| [BlockStmt] {...}
-#-----| 0 -> [ReturnStmt] return ...;
-
-#   23| [ReturnStmt] return ...;
-#-----| 0 -> [SubExpr] ... - ...
-
-#   23| [SubExpr] ... - ...
-#-----| 0 -> [ParameterAccess] access to parameter f
-#-----| 1 -> [CastExpr] (...) ...
-
-#   25| [Method] M2
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#   25| [Parameter] k
-
-#   25| [Parameter] l
-
-#   27| [Method] M3
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#   27| [Parameter] g
-
-#   29| [Method] M4
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#   29| [Parameter] g
-
-#   33| [DelegateType] Predicate<>
-#-----| 0 -> (TypeParameters)
-#-----| 1 -> (Parameters)
-
-#   33| [TypeParameter] T
-
-#   35| [Class] X
-#-----| 2 -> [Method] F
-#-----| 3 -> [Method] G
-
-#   38| [Method] F
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#   38| [BlockStmt] {...}
-#-----| 0 -> [ReturnStmt] return ...;
-
-#   38| [ReturnStmt] return ...;
-#-----| 0 -> [LTExpr] ... < ...
-
-#   38| [LTExpr] ... < ...
-#-----| 0 -> [ParameterAccess] access to parameter i
-#-----| 1 -> [IntLiteral] 2
-
-#   40| [Method] G
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#   40| [Parameter] s
-
-#   44| [DelegateType] D
-#-----| 0 -> (Parameters)
-
-#   46| [Class] C
-#-----| 2 -> [Method] M1
-#-----| 3 -> [Method] M2
-#-----| 4 -> [Method] M3
-
-#   49| [Method] M1
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#   49| [BlockStmt] {...}
-
-#   50| [Method] M2
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#   50| [Parameter] i
-
-#   51| [Method] M3
-#-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
-
-#   51| [Parameter] i
-
-#   55| [Class] Test
-#-----| 2 -> [Method] Main
-
-#   58| [Method] Main
-#-----| 3 -> [BlockStmt] {...}
-
-#   59| [BlockStmt] {...}
-#-----| 0 -> [LocalConstantDeclStmt] ... ...;
-#-----| 1 -> [LocalConstantDeclStmt] ... ...;
-#-----| 2 -> [LocalConstantDeclStmt] ... ...;
-#-----| 3 -> [LocalConstantDeclStmt] ... ...;
-#-----| 4 -> [LocalConstantDeclStmt] ... ...;
-#-----| 5 -> [ExprStmt] ...;
-#-----| 6 -> [ExprStmt] ...;
-#-----| 7 -> [LocalConstantDeclStmt] ... ...;
-#-----| 8 -> [LocalConstantDeclStmt] ... ...;
-#-----| 9 -> [LocalConstantDeclStmt] ... ...;
-#-----| 10 -> [ExprStmt] ...;
-#-----| 11 -> [LocalConstantDeclStmt] ... ...;
-#-----| 12 -> [ExprStmt] ...;
-#-----| 13 -> [LocalConstantDeclStmt] ... ...;
-#-----| 14 -> [LocalConstantDeclStmt] ... ...;
-#-----| 15 -> [LocalConstantDeclStmt] ... ...;
-#-----| 16 -> [LocalConstantDeclStmt] ... ...;
-
-#   60| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] D cd1 = ...
-
-#   60| [LocalVariableDeclAndInitExpr] D cd1 = ...
-#-----| 0 -> [ExplicitDelegateCreation] delegate creation of type D
-#-----| 1 -> [LocalVariableAccess] access to local variable cd1
-
-#   60| [ExplicitDelegateCreation] delegate creation of type D
-#-----| 0 -> [MethodAccess] access to method M1
-
-#   60| [MethodAccess] access to method M1
-#-----| -1 -> [TypeAccess] access to type C
-
-#   60| [TypeAccess] access to type C
-
-#   60| [LocalVariableAccess] access to local variable cd1
-
-#   61| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] D cd2 = ...
-
-#   61| [LocalVariableDeclAndInitExpr] D cd2 = ...
-#-----| 0 -> [ImplicitDelegateCreation] delegate creation of type D
-#-----| 1 -> [LocalVariableAccess] access to local variable cd2
-
-#   61| [ImplicitDelegateCreation] delegate creation of type D
-#-----| 0 -> [MethodAccess] access to method M2
-
-#   61| [MethodAccess] access to method M2
-#-----| -1 -> [TypeAccess] access to type C
-
-#   61| [TypeAccess] access to type C
-
-#   61| [LocalVariableAccess] access to local variable cd2
-
-#   62| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] D cd3 = ...
-
-#   62| [LocalVariableDeclAndInitExpr] D cd3 = ...
-#-----| 0 -> [OperatorCall] call to operator +
-#-----| 1 -> [LocalVariableAccess] access to local variable cd3
-
-#   62| [OperatorCall] call to operator +
-#-----| 0 -> [LocalVariableAccess] access to local variable cd1
-#-----| 1 -> [LocalVariableAccess] access to local variable cd2
-
-#   62| [LocalVariableAccess] access to local variable cd3
-
-#   63| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] D cd4 = ...
-
-#   63| [LocalVariableDeclAndInitExpr] D cd4 = ...
-#-----| 0 -> [OperatorCall] call to operator +
-#-----| 1 -> [LocalVariableAccess] access to local variable cd4
-
-#   63| [OperatorCall] call to operator +
-#-----| 0 -> [LocalVariableAccess] access to local variable cd3
-#-----| 1 -> [LocalVariableAccess] access to local variable cd1
-
-#   63| [LocalVariableAccess] access to local variable cd4
-
-#   64| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] D cd5 = ...
-
-#   64| [LocalVariableDeclAndInitExpr] D cd5 = ...
-#-----| 0 -> [OperatorCall] call to operator -
-#-----| 1 -> [LocalVariableAccess] access to local variable cd5
-
-#   64| [OperatorCall] call to operator -
-#-----| 0 -> [LocalVariableAccess] access to local variable cd4
-#-----| 1 -> [LocalVariableAccess] access to local variable cd3
-
-#   64| [LocalVariableAccess] access to local variable cd5
-
-#   65| [ExprStmt] ...;
-#-----| 0 -> [AssignAddExpr] ... += ...
-
-#   65| [AssignAddExpr] ... += ...
-#-----| 0 -> [LocalVariableAccess] access to local variable cd5
-#-----| 1 -> [LocalVariableAccess] access to local variable cd4
-
-#   65| [AssignExpr] ... = ...
-#-----| 0 -> [OperatorCall] call to operator +
-#-----| 1 -> [LocalVariableAccess] access to local variable cd4
-
+#    7|   1: [DelegateType] FooDelegate
+#-----|     0: (Parameters)
+#    7|       0: [Parameter] param
+#    7|       1: [Parameter] condition
+#    7|       2: [Parameter] args
+#    9|   2: [DelegateType] D1
+#-----|     0: (Parameters)
+#    9|       0: [Parameter] i
+#    9|       1: [Parameter] d
+#   11|   3: [Class] A
+#   14|     2: [Method] M1
+#-----|       2: (Parameters)
+#   14|         0: [Parameter] a
+#   14|         1: [Parameter] b
+#   14|       3: [BlockStmt] {...}
+#   14|         0: [ReturnStmt] return ...;
+#   14|           0: [CastExpr] (...) ...
+#   14|             0: [AddExpr] ... + ...
+#   14|               0: [CastExpr] (...) ...
+#   14|                 0: [ParameterAccess] access to parameter a
+#   14|               1: [ParameterAccess] access to parameter b
+#   14|             1: [TypeAccess] access to type Int32
+#   18|   4: [Class] B
+#   21|     2: [DelegateType] D2
+#-----|       0: (Parameters)
+#   21|         0: [Parameter] c
+#   21|         1: [Parameter] d
+#   23|     3: [Method] M1
+#-----|       2: (Parameters)
+#   23|         0: [Parameter] f
+#   23|         1: [Parameter] g
+#   23|       3: [BlockStmt] {...}
+#   23|         0: [ReturnStmt] return ...;
+#   23|           0: [SubExpr] ... - ...
+#   23|             0: [ParameterAccess] access to parameter f
+#   23|             1: [CastExpr] (...) ...
+#   23|               0: [ParameterAccess] access to parameter g
+#   23|               1: [TypeAccess] access to type Int32
+#   25|     4: [Method] M2
+#-----|       2: (Parameters)
+#   25|         0: [Parameter] k
+#   25|         1: [Parameter] l
+#   25|       3: [BlockStmt] {...}
+#   27|     5: [Method] M3
+#-----|       2: (Parameters)
+#   27|         0: [Parameter] g
+#   27|       3: [BlockStmt] {...}
+#   27|         0: [ReturnStmt] return ...;
+#   27|           0: [AddExpr] ... + ...
+#   27|             0: [UnaryMinusExpr] -...
+#   27|               0: [ParameterAccess] access to parameter g
+#   27|             1: [UnaryPlusExpr] +...
+#   27|               0: [ParameterAccess] access to parameter g
+#   29|     6: [Method] M4
+#-----|       2: (Parameters)
+#   29|         0: [Parameter] g
+#   29|       3: [BlockStmt] {...}
+#   33|   5: [DelegateType] Predicate<>
+#-----|     0: (TypeParameters)
+#   33|       0: [TypeParameter] T
+#-----|     1: (Parameters)
+#   33|       0: [Parameter] value
+#   35|   6: [Class] X
+#   38|     2: [Method] F
+#-----|       2: (Parameters)
+#   38|         0: [Parameter] i
+#   38|       3: [BlockStmt] {...}
+#   38|         0: [ReturnStmt] return ...;
+#   38|           0: [LTExpr] ... < ...
+#   38|             0: [ParameterAccess] access to parameter i
+#   38|             1: [IntLiteral] 2
+#   40|     3: [Method] G
+#-----|       2: (Parameters)
+#   40|         0: [Parameter] s
+#   40|       3: [BlockStmt] {...}
+#   40|         0: [ReturnStmt] return ...;
+#   40|           0: [BoolLiteral] false
+#   44|   7: [DelegateType] D
+#-----|     0: (Parameters)
+#   44|       0: [Parameter] x
+#   46|   8: [Class] C
+#   49|     2: [Method] M1
+#-----|       2: (Parameters)
+#   49|         0: [Parameter] i
+#   49|       3: [BlockStmt] {...}
+#   50|     3: [Method] M2
+#-----|       2: (Parameters)
+#   50|         0: [Parameter] i
+#   50|       3: [BlockStmt] {...}
+#   51|     4: [Method] M3
+#-----|       2: (Parameters)
+#   51|         0: [Parameter] i
+#   51|       3: [BlockStmt] {...}
+#   55|   9: [Class] Test
+#   58|     2: [Method] Main
+#   59|       3: [BlockStmt] {...}
+#   60|         0: [LocalConstantDeclStmt] ... ...;
+#   60|           0: [LocalVariableDeclAndInitExpr] D cd1 = ...
+#   60|             0: [ExplicitDelegateCreation] delegate creation of type D
+#   60|               0: [MethodAccess] access to method M1
+#   60|                 -1: [TypeAccess] access to type C
+#   60|             1: [LocalVariableAccess] access to local variable cd1
+#   61|         1: [LocalConstantDeclStmt] ... ...;
+#   61|           0: [LocalVariableDeclAndInitExpr] D cd2 = ...
+#   61|             0: [ImplicitDelegateCreation] delegate creation of type D
+#   61|               0: [MethodAccess] access to method M2
+#   61|                 -1: [TypeAccess] access to type C
+#   61|             1: [LocalVariableAccess] access to local variable cd2
+#   62|         2: [LocalConstantDeclStmt] ... ...;
+#   62|           0: [LocalVariableDeclAndInitExpr] D cd3 = ...
+#   62|             0: [OperatorCall] call to operator +
+#   62|               0: [LocalVariableAccess] access to local variable cd1
+#   62|               1: [LocalVariableAccess] access to local variable cd2
+#   62|             1: [LocalVariableAccess] access to local variable cd3
+#   63|         3: [LocalConstantDeclStmt] ... ...;
+#   63|           0: [LocalVariableDeclAndInitExpr] D cd4 = ...
+#   63|             0: [OperatorCall] call to operator +
+#   63|               0: [LocalVariableAccess] access to local variable cd3
+#   63|               1: [LocalVariableAccess] access to local variable cd1
+#   63|             1: [LocalVariableAccess] access to local variable cd4
+#   64|         4: [LocalConstantDeclStmt] ... ...;
+#   64|           0: [LocalVariableDeclAndInitExpr] D cd5 = ...
+#   64|             0: [OperatorCall] call to operator -
+#   64|               0: [LocalVariableAccess] access to local variable cd4
+#   64|               1: [LocalVariableAccess] access to local variable cd3
+#   64|             1: [LocalVariableAccess] access to local variable cd5
+#   65|         5: [ExprStmt] ...;
+#   65|           0: [AssignAddExpr] ... += ...
+#   65|             0: [LocalVariableAccess] access to local variable cd5
+#   65|             1: [LocalVariableAccess] access to local variable cd4
+#   66|         6: [ExprStmt] ...;
+#   66|           0: [AssignSubExpr] ... -= ...
+#   66|             0: [LocalVariableAccess] access to local variable cd1
+#   66|             1: [LocalVariableAccess] access to local variable cd4
+#   68|         7: [LocalConstantDeclStmt] ... ...;
+#   68|           0: [LocalVariableDeclAndInitExpr] C c = ...
+#   68|             0: [ObjectCreation] object creation of type C
+#   68|             1: [LocalVariableAccess] access to local variable c
+#   69|         8: [LocalConstantDeclStmt] ... ...;
+#   69|           0: [LocalVariableDeclAndInitExpr] D cd6 = ...
+#   69|             0: [ExplicitDelegateCreation] delegate creation of type D
+#   69|               0: [MethodAccess] access to method M3
+#   69|                 -1: [LocalVariableAccess] access to local variable c
+#   69|             1: [LocalVariableAccess] access to local variable cd6
+#   70|         9: [LocalConstantDeclStmt] ... ...;
+#   70|           0: [LocalVariableDeclAndInitExpr] D cd7 = ...
+#   70|             0: [ExplicitDelegateCreation] delegate creation of type D
+#   70|               0: [LocalVariableAccess] access to local variable cd6
+#   70|             1: [LocalVariableAccess] access to local variable cd7
+#   72|         10: [ExprStmt] ...;
+#   72|           0: [DelegateCall] delegate call
+#   72|             -1: [LocalVariableAccess] access to local variable cd1
+#   72|             0: [UnaryMinusExpr] -...
+#   72|               0: [IntLiteral] 40
+#   73|         11: [LocalConstantDeclStmt] ... ...;
+#   73|           0: [LocalVariableDeclAndInitExpr] Int32 x = ...
+#   73|             0: [IntLiteral] 0
+#   73|             1: [LocalVariableAccess] access to local variable x
+#   74|         12: [ExprStmt] ...;
+#   74|           0: [DelegateCall] delegate call
+#   74|             -1: [LocalVariableAccess] access to local variable cd7
+#   74|             0: [AddExpr] ... + ...
+#   74|               0: [IntLiteral] 34
+#   74|               1: [LocalVariableAccess] access to local variable x
+#   76|         13: [LocalConstantDeclStmt] ... ...;
+#   76|           0: [LocalVariableDeclAndInitExpr] Predicate<Int32> pi = ...
+#   76|             0: [ExplicitDelegateCreation] delegate creation of type Predicate<Int32>
+#   76|               0: [MethodAccess] access to method F
+#   76|                 -1: [TypeAccess] access to type X
+#   76|             1: [LocalVariableAccess] access to local variable pi
+#   77|         14: [LocalConstantDeclStmt] ... ...;
+#   77|           0: [LocalVariableDeclAndInitExpr] Predicate<String> ps = ...
+#   77|             0: [ImplicitDelegateCreation] delegate creation of type Predicate<String>
+#   77|               0: [MethodAccess] access to method G
+#   77|                 -1: [TypeAccess] access to type X
+#   77|             1: [LocalVariableAccess] access to local variable ps
+#   79|         15: [LocalConstantDeclStmt] ... ...;
+#   79|           0: [LocalVariableDeclAndInitExpr] Boolean b = ...
+#   79|             0: [BitwiseAndExpr] ... & ...
+#   79|               0: [DelegateCall] delegate call
+#   79|                 -1: [LocalVariableAccess] access to local variable pi
+#   79|                 0: [IntLiteral] 3
+#   79|               1: [DelegateCall] delegate call
+#   79|                 -1: [LocalVariableAccess] access to local variable ps
+#   79|                 0: [StringLiteral] ""
+#   79|             1: [LocalVariableAccess] access to local variable b
+#   81|         16: [LocalConstantDeclStmt] ... ...;
+#   81|           0: [LocalVariableDeclExpr] ContextCallback d
 #   65| [LocalVariableAccess] access to local variable cd4
-
-#   65| [OperatorCall] call to operator +
-#-----| 0 -> [LocalVariableAccess] access to local variable cd4
-#-----| 1 -> [LocalVariableAccess] access to local variable cd5
-
-#   65| [LocalVariableAccess] access to local variable cd4
-
-#   65| [LocalVariableAccess] access to local variable cd5
-
-#   66| [ExprStmt] ...;
-#-----| 0 -> [AssignSubExpr] ... -= ...
-
-#   66| [AssignSubExpr] ... -= ...
-#-----| 0 -> [LocalVariableAccess] access to local variable cd1
-#-----| 1 -> [LocalVariableAccess] access to local variable cd4
-
-#   66| [AssignExpr] ... = ...
-#-----| 0 -> [OperatorCall] call to operator -
-#-----| 1 -> [LocalVariableAccess] access to local variable cd4
-
 #   66| [LocalVariableAccess] access to local variable cd4
-
-#   66| [OperatorCall] call to operator -
-#-----| 0 -> [LocalVariableAccess] access to local variable cd4
-#-----| 1 -> [LocalVariableAccess] access to local variable cd1
-
-#   66| [LocalVariableAccess] access to local variable cd4
-
-#   66| [LocalVariableAccess] access to local variable cd1
-
-#   68| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] C c = ...
-
-#   68| [LocalVariableDeclAndInitExpr] C c = ...
-#-----| 0 -> [ObjectCreation] object creation of type C
-#-----| 1 -> [LocalVariableAccess] access to local variable c
-
-#   68| [ObjectCreation] object creation of type C
-
-#   68| [LocalVariableAccess] access to local variable c
-
-#   69| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] D cd6 = ...
-
-#   69| [LocalVariableDeclAndInitExpr] D cd6 = ...
-#-----| 0 -> [ExplicitDelegateCreation] delegate creation of type D
-#-----| 1 -> [LocalVariableAccess] access to local variable cd6
-
-#   69| [ExplicitDelegateCreation] delegate creation of type D
-#-----| 0 -> [MethodAccess] access to method M3
-
-#   69| [MethodAccess] access to method M3
-#-----| -1 -> [LocalVariableAccess] access to local variable c
-
-#   69| [LocalVariableAccess] access to local variable c
-
-#   69| [LocalVariableAccess] access to local variable cd6
-
-#   70| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] D cd7 = ...
-
-#   70| [LocalVariableDeclAndInitExpr] D cd7 = ...
-#-----| 0 -> [ExplicitDelegateCreation] delegate creation of type D
-#-----| 1 -> [LocalVariableAccess] access to local variable cd7
-
-#   70| [ExplicitDelegateCreation] delegate creation of type D
-#-----| 0 -> [LocalVariableAccess] access to local variable cd6
-
-#   70| [LocalVariableAccess] access to local variable cd6
-
-#   70| [LocalVariableAccess] access to local variable cd7
-
-#   72| [ExprStmt] ...;
-#-----| 0 -> [DelegateCall] delegate call
-
-#   72| [DelegateCall] delegate call
-#-----| -1 -> [LocalVariableAccess] access to local variable cd1
-#-----| 0 -> [UnaryMinusExpr] -...
-
-#   72| [LocalVariableAccess] access to local variable cd1
-
-#   72| [UnaryMinusExpr] -...
-#-----| 0 -> [IntLiteral] 40
-
-#   72| [IntLiteral] 40
-
-#   73| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 x = ...
-
-#   73| [LocalVariableDeclAndInitExpr] Int32 x = ...
-#-----| 0 -> [IntLiteral] 0
-#-----| 1 -> [LocalVariableAccess] access to local variable x
-
-#   73| [IntLiteral] 0
-
-#   73| [LocalVariableAccess] access to local variable x
-
-#   74| [ExprStmt] ...;
-#-----| 0 -> [DelegateCall] delegate call
-
-#   74| [DelegateCall] delegate call
-#-----| -1 -> [LocalVariableAccess] access to local variable cd7
-#-----| 0 -> [AddExpr] ... + ...
-
-#   74| [LocalVariableAccess] access to local variable cd7
-
-#   74| [AddExpr] ... + ...
-#-----| 0 -> [IntLiteral] 34
-#-----| 1 -> [LocalVariableAccess] access to local variable x
-
-#   76| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] Predicate<Int32> pi = ...
-
-#   76| [LocalVariableDeclAndInitExpr] Predicate<Int32> pi = ...
-#-----| 0 -> [ExplicitDelegateCreation] delegate creation of type Predicate<Int32>
-#-----| 1 -> [LocalVariableAccess] access to local variable pi
-
-#   76| [ExplicitDelegateCreation] delegate creation of type Predicate<Int32>
-#-----| 0 -> [MethodAccess] access to method F
-
-#   76| [MethodAccess] access to method F
-#-----| -1 -> [TypeAccess] access to type X
-
-#   76| [TypeAccess] access to type X
-
-#   76| [LocalVariableAccess] access to local variable pi
-
-#   77| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] Predicate<String> ps = ...
-
-#   77| [LocalVariableDeclAndInitExpr] Predicate<String> ps = ...
-#-----| 0 -> [ImplicitDelegateCreation] delegate creation of type Predicate<String>
-#-----| 1 -> [LocalVariableAccess] access to local variable ps
-
-#   77| [ImplicitDelegateCreation] delegate creation of type Predicate<String>
-#-----| 0 -> [MethodAccess] access to method G
-
-#   77| [MethodAccess] access to method G
-#-----| -1 -> [TypeAccess] access to type X
-
-#   77| [TypeAccess] access to type X
-
-#   77| [LocalVariableAccess] access to local variable ps
-
-#   79| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] Boolean b = ...
-
-#   79| [LocalVariableDeclAndInitExpr] Boolean b = ...
-#-----| 0 -> [BitwiseAndExpr] ... & ...
-#-----| 1 -> [LocalVariableAccess] access to local variable b
-
-#   79| [BitwiseAndExpr] ... & ...
-#-----| 0 -> [DelegateCall] delegate call
-#-----| 1 -> [DelegateCall] delegate call
-
-#   79| [LocalVariableAccess] access to local variable b
-
-#   81| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclExpr] ContextCallback d
-
-#   81| [LocalVariableDeclExpr] ContextCallback d
-
-#   14| [CastExpr] (...) ...
-#-----| 0 -> [ParameterAccess] access to parameter a
-
-#   14| [ParameterAccess] access to parameter a
-
-#   14| [ParameterAccess] access to parameter b
-
-#   23| [ParameterAccess] access to parameter f
-
-#   23| [CastExpr] (...) ...
-#-----| 0 -> [ParameterAccess] access to parameter g
-#-----| 1 -> [TypeAccess] access to type Int32
-
-#   23| [ParameterAccess] access to parameter g
-
-#   23| [TypeAccess] access to type Int32
-
-#   25| [BlockStmt] {...}
-
-#   27| [BlockStmt] {...}
-#-----| 0 -> [ReturnStmt] return ...;
-
-#   27| [ReturnStmt] return ...;
-#-----| 0 -> [AddExpr] ... + ...
-
-#   27| [AddExpr] ... + ...
-#-----| 0 -> [UnaryMinusExpr] -...
-#-----| 1 -> [UnaryPlusExpr] +...
-
-#   29| [BlockStmt] {...}
-
-#   38| [ParameterAccess] access to parameter i
-
-#   38| [IntLiteral] 2
-
-#   40| [BlockStmt] {...}
-#-----| 0 -> [ReturnStmt] return ...;
-
-#   40| [ReturnStmt] return ...;
-#-----| 0 -> [BoolLiteral] false
-
-#   40| [BoolLiteral] false
-
-#   50| [BlockStmt] {...}
-
-#   51| [BlockStmt] {...}
-
-#   62| [LocalVariableAccess] access to local variable cd1
-
-#   62| [LocalVariableAccess] access to local variable cd2
-
-#   63| [LocalVariableAccess] access to local variable cd3
-
-#   63| [LocalVariableAccess] access to local variable cd1
-
-#   64| [LocalVariableAccess] access to local variable cd4
-
-#   64| [LocalVariableAccess] access to local variable cd3
-
-#   74| [IntLiteral] 34
-
-#   74| [LocalVariableAccess] access to local variable x
-
-#   79| [DelegateCall] delegate call
-#-----| -1 -> [LocalVariableAccess] access to local variable pi
-#-----| 0 -> [IntLiteral] 3
-
-#   79| [LocalVariableAccess] access to local variable pi
-
-#   79| [IntLiteral] 3
-
-#   79| [DelegateCall] delegate call
-#-----| -1 -> [LocalVariableAccess] access to local variable ps
-#-----| 0 -> [StringLiteral] ""
-
-#   79| [LocalVariableAccess] access to local variable ps
-
-#   79| [StringLiteral] ""
-
-#   27| [UnaryMinusExpr] -...
-#-----| 0 -> [ParameterAccess] access to parameter g
-
-#   27| [ParameterAccess] access to parameter g
-
-#   27| [UnaryPlusExpr] +...
-#-----| 0 -> [ParameterAccess] access to parameter g
-
-#   27| [ParameterAccess] access to parameter g
-
-#    7| [Parameter] param
-
-#    7| [Parameter] condition
-
-#    7| [Parameter] args
-
-#    9| [Parameter] i
-
-#    9| [Parameter] d
-
-#   14| [Parameter] a
-
-#   14| [Parameter] b
-
-#   21| [Parameter] c
-
-#   21| [Parameter] d
-
-#   23| [Parameter] f
-
-#   23| [Parameter] g
-
-#   33| [Parameter] value
-
-#   38| [Parameter] i
-
-#   44| [Parameter] x
-
-#   49| [Parameter] i
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] param
-#-----| 1 -> [Parameter] condition
-#-----| 2 -> [Parameter] args
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] i
-#-----| 1 -> [Parameter] d
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] a
-#-----| 1 -> [Parameter] b
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] c
-#-----| 1 -> [Parameter] d
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] f
-#-----| 1 -> [Parameter] g
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] k
-#-----| 1 -> [Parameter] l
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] g
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] g
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] value
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] i
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] s
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] x
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] i
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] i
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] i
