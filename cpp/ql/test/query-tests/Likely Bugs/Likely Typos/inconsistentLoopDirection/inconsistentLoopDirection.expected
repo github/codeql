@@ -16,6 +16,7 @@
 | inconsistentLoopDirection.cpp:101:5:103:5 | for(...;...;...) ... | Ill-defined for-loop: a loop using variable "i" counts upward from a value (100), but the terminal condition is lower (0). |
 | inconsistentLoopDirection.cpp:118:5:120:5 | for(...;...;...) ... | Ill-defined for-loop: a loop using variable "i" counts downward from a value (max), but the terminal condition is always false. |
 | inconsistentLoopDirection.cpp:122:5:124:5 | for(...;...;...) ... | Ill-defined for-loop: a loop using variable "i" counts upward from a value (min), but the terminal condition is always false. |
+| inconsistentLoopDirection.cpp:133:5:135:5 | for(...;...;...) ... | Ill-defined for-loop: a loop using variable "i" counts downward from a value (100), but the terminal condition is always false. |
 | inconsistentLoopDirection.cpp:140:5:142:5 | for(...;...;...) ... | Ill-defined for-loop: a loop using variable "i" counts upward from a value (200), but the terminal condition is lower (0). |
 | inconsistentLoopDirection.cpp:175:5:175:36 | for(...;...;...) ... | Ill-defined for-loop: a loop using variable "i" counts downward from a value (0), but the terminal condition is higher (10). |
 | inconsistentLoopDirection.cpp:179:5:179:38 | for(...;...;...) ... | Ill-defined for-loop: a loop using variable "i" counts upward from a value (100), but the terminal condition is lower (0). |

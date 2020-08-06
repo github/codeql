@@ -130,7 +130,7 @@ void InvalidConditionUnsignedCornerCase()
     unsigned char min = 0;
     unsigned char max = 100;
 
-    for (i = 100; i < 0; i--)   //BUG [NOT DETECTED]
+    for (i = 100; i < 0; i--)   //BUG
     {
     }
 
