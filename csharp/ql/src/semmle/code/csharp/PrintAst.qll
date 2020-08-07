@@ -68,11 +68,11 @@ private int assignableOffset(AssignableMember assignable) {
 }
 
 private predicate isInConstructedGenericAttributable(Attributable attributable) {
-  isInConstructedGenericType(attributable.(Field).getDeclaringType()) or
+  isInUnneededType(attributable.(Field).getDeclaringType()) or
   isInConstructedGenericParameterizable(attributable.(Parameter).getDeclaringElement()) or
   isInConstructedGenericCallable(attributable.(Callable)) or
-  isInConstructedGenericType(attributable.(DeclarationWithAccessors).getDeclaringType()) or
-  isInConstructedGenericType(attributable.(ValueOrRefType))
+  isInUnneededType(attributable.(DeclarationWithAccessors).getDeclaringType()) or
+  isInUnneededType(attributable.(ValueOrRefType))
 }
 
 private predicate isInConstructedGenericUnboundGeneric(UnboundGeneric unboundGeneric) {
@@ -82,18 +82,20 @@ private predicate isInConstructedGenericUnboundGeneric(UnboundGeneric unboundGen
 
 private predicate isInConstructedGenericCallable(Callable c) {
   c instanceof ConstructedGeneric or
-  isInConstructedGenericType(c.getDeclaringType())
+  isInUnneededType(c.getDeclaringType())
 }
 
-private predicate isInConstructedGenericType(Type t) {
+private predicate isInUnneededType(Type t) {
   t instanceof ConstructedType or
-  t.getDeclaringType*() instanceof ConstructedType
+  t.getDeclaringType*() instanceof ConstructedType or
+  t instanceof AnonymousClass or
+  t.getDeclaringType*() instanceof AnonymousClass
 }
 
 private predicate isInConstructedGenericParameterizable(Parameterizable parameterizable) {
   isInConstructedGenericCallable(parameterizable) or
-  isInConstructedGenericType(parameterizable.(Indexer).getDeclaringType()) or
-  isInConstructedGenericType(parameterizable.(DelegateType))
+  isInUnneededType(parameterizable.(Indexer).getDeclaringType()) or
+  isInUnneededType(parameterizable.(DelegateType))
 }
 
 private predicate isCompilerGeneratedParameterizable(Parameterizable parameterizable) {
@@ -314,7 +316,7 @@ final class DeclarationWithAccessorsNode extends AstNode {
 
   DeclarationWithAccessorsNode() {
     declaration = ast and
-    not isInConstructedGenericType(declaration.getDeclaringType())
+    not isInUnneededType(declaration.getDeclaringType())
   }
 
   override PrintAstNode getChild(int childIndex) {
@@ -349,7 +351,7 @@ final class FieldNode extends AstNode {
   FieldNode() {
     field = ast and
     not field.getDeclaringType() instanceof TupleType and
-    not isInConstructedGenericType(field.getDeclaringType())
+    not isInUnneededType(field.getDeclaringType())
   }
 
   override PrintAstNode getChild(int childIndex) {
@@ -443,7 +445,7 @@ final class TypeNode extends AstNode {
     not type instanceof TupleType and
     not type instanceof ArrayType and
     not type instanceof NullableType and
-    not isInConstructedGenericType(type)
+    not isInUnneededType(type)
   }
 
   override PrintAstNode getChild(int childIndex) {

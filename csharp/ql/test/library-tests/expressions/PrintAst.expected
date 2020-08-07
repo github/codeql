@@ -1858,15 +1858,7 @@ expressions.cs:
 #  495|             0: [TypeofExpr] typeof(...)
 #  495|               0: [TypeAccess] access to type (Boolean,Int32[],dynamic)
 #  495|             1: [LocalVariableAccess] access to local variable y
-#  428| [Class] <>__AnonType1<Int32>
-#  428|   2: [Property] i
-#  428|     1: [Getter] get_i
 #  455| [LocalVariableAccess] access to local variable PropertyChanged
 #  178| [LocalVariableAccess] access to local variable cd4
 #  179| [LocalVariableAccess] access to local variable cd4
-#  417| [Class] <>__AnonType0<String,String[]>
-#  418|   2: [IndexerProperty] Name
-#  418|     1: [Getter] get_Name
-#  419|   3: [Property] PhoneNumbers
-#  419|     1: [Getter] get_PhoneNumbers
 #  461| [LocalVariableAccess] access to local variable result
