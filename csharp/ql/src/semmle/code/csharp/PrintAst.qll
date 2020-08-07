@@ -248,6 +248,10 @@ class ControlFlowElementNode extends AstNode {
         ao.getExpandedAssignment() = controlFlowElement or
         ao.getExpandedAssignment().getRValue() = controlFlowElement or
         ao.getExpandedAssignment().getRValue().(BinaryOperation).getLeftOperand() =
+          controlFlowElement.getParent*() or
+        ao.getExpandedAssignment().getRValue().(DynamicOperatorCall).getChild(0) =
+          controlFlowElement.getParent*() or
+        ao.getExpandedAssignment().getRValue().(OperatorCall).getChild(0) =
           controlFlowElement.getParent*()
       )
     ) and

@@ -1858,7 +1858,3 @@ expressions.cs:
 #  495|             0: [TypeofExpr] typeof(...)
 #  495|               0: [TypeAccess] access to type (Boolean,Int32[],dynamic)
 #  495|             1: [LocalVariableAccess] access to local variable y
-#  455| [LocalVariableAccess] access to local variable PropertyChanged
-#  178| [LocalVariableAccess] access to local variable cd4
-#  179| [LocalVariableAccess] access to local variable cd4
-#  461| [LocalVariableAccess] access to local variable result

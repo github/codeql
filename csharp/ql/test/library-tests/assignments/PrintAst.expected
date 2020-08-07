@@ -54,5 +54,3 @@ Assignments.cs:
 #   23|     1: [RemoveEventAccessor] remove_Event
 #-----|       2: (Parameters)
 #   23|         0: [Parameter] value
-#    9| [LocalVariableAccess] access to local variable d
-#   12| [LocalVariableAccess] access to local variable a

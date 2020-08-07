@@ -188,5 +188,3 @@ delegates.cs:
 #   79|             1: [LocalVariableAccess] access to local variable b
 #   81|         16: [LocalConstantDeclStmt] ... ...;
 #   81|           0: [LocalVariableDeclExpr] ContextCallback d
-#   65| [LocalVariableAccess] access to local variable cd4
-#   66| [LocalVariableAccess] access to local variable cd4

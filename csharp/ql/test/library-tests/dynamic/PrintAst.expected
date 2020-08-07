@@ -251,4 +251,3 @@ dynamic.cs:
 #   92|         0: [Parameter] x
 #   92|         1: [Parameter] value
 #   92|       4: [BlockStmt] {...}
-#   37| [LocalVariableAccess] access to local variable d
