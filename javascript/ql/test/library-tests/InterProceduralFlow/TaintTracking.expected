@@ -58,8 +58,6 @@
 | tst2.js:3:17:3:26 | "tainted2" | tst2.js:11:15:11:24 | g(source2) |
 | tst2.js:6:24:6:37 | "also tainted" | tst2.js:10:15:10:24 | g(source1) |
 | tst2.js:6:24:6:37 | "also tainted" | tst2.js:11:15:11:24 | g(source2) |
-| tst3.js:2:17:2:26 | "tainted1" | tst3.js:6:15:6:40 | noRetur ... ource1) |
-| tst3.js:9:19:9:28 | "tainted2" | tst3.js:12:15:12:33 | noReturnTracking2() |
 | tst4.js:2:16:2:24 | "tainted" | tst4.js:15:15:15:31 | id(still_tainted) |
 | tst4.js:2:16:2:24 | "tainted" | tst4.js:16:15:16:28 | p.also_tainted |
 | tst4.js:2:16:2:24 | "tainted" | tst4.js:17:15:17:28 | substr(source) |
