@@ -188,7 +188,7 @@ class PrintAstNode extends TPrintAstNode {
   /**
    * Gets the parent of this node, if any.
    */
-  final PrintAstNode getParent() { result.getAChild() = this }
+  PrintAstNode getParent() { result.getAChild() = this }
 
   /**
    * Gets the location of this node in the source code.
@@ -359,7 +359,14 @@ final class FieldNode extends AstNode {
     result.(AttributesNode).getAttributable() = field
     or
     childIndex = 1 and
-    result.(AstNode).getAst() = field.getInitializer().getParent()
+    field.hasInitializer() and
+    (
+      not field.getDeclaringType() instanceof Enum and
+      result.(AstNode).getAst() = field.getInitializer().getParent()
+      or
+      field.getDeclaringType() instanceof Enum and
+      result.(AstNode).getAst() = field.getInitializer()
+    )
   }
 }
 

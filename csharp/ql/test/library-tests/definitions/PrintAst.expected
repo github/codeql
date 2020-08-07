@@ -1,1217 +1,407 @@
 definitions.cs:
 #    4| [NamespaceDeclaration] namespace ... { ... }
-#-----| 1 -> [Class] StaticClass
-#-----| 2 -> [Enum] Enumeration
-#-----| 3 -> [Class] C1
-#-----| 4 -> [Struct] S1
-#-----| 5 -> [Class] A
-#-----| 6 -> [Interface] I1
-#-----| 7 -> [Interface] I2<>
-#-----| 8 -> [Interface] I3
-#-----| 9 -> [Class] B<>
-#-----| 10 -> [Class] C
-#-----| 11 -> [Interface] I4
-#-----| 12 -> [Class] C4
-#-----| 13 -> [Class] C5
-#-----| 14 -> [Class] C6
-#-----| 15 -> [Class] MyAttribute
-#-----| 16 -> [Class] C7
-#-----| 17 -> [Class] C8
-
-#   18| [Class] C1
-#-----| 1 -> [InstanceConstructor] C1
-#-----| 2 -> [Field] field1
-#-----| 3 -> [Property] property1
-#-----| 4 -> [Method] f1
-#-----| 5 -> [Method] VariableTypeUse
-#-----| 6 -> [Method] GenericFn
-
-#    6| [Class] StaticClass
-#-----| 1 -> [ExtensionMethod] ExtensionMethod
-
-#    8| [ExtensionMethod] ExtensionMethod
-#-----| 2 -> (Parameters)
-#-----| 4 -> [BlockStmt] {...}
-
-#    9| [BlockStmt] {...}
-
-#   13| [Enum] Enumeration
-#-----| 2 -> [Field] e1
-#-----| 3 -> [Field] e2
-#-----| 4 -> [Field] e3
-
-#   15| [Field] e2
-#-----| 1 -> [Field] e2
-
-#   15| [MemberConstantAccess] access to constant e2
-
-#   15| [Field] e3
-
-#   20| [InstanceConstructor] C1
-#-----| 2 -> (Parameters)
-#-----| 4 -> [BlockStmt] {...}
-
-#   20| [BlockStmt] {...}
-
-#   22| [Field] field1
-
-#   24| [Property] property1
-#-----| 1 -> [Getter] get_property1
-#-----| 2 -> [Setter] set_property1
-
-#   26| [Getter] get_property1
-#-----| 4 -> [BlockStmt] {...}
-
-#   27| [Setter] set_property1
-#-----| 2 -> (Parameters)
-#-----| 4 -> [BlockStmt] {...}
-
-#   27| [Parameter] value
-
-#   30| [Method] f1
-#-----| 2 -> (Parameters)
-#-----| 4 -> [BlockStmt] {...}
-
-#   30| [Parameter] args
-
-#   70| [Method] VariableTypeUse
-#-----| 2 -> (Parameters)
-#-----| 4 -> [BlockStmt] {...}
-
-#   70| [Parameter] c1
-
-#   75| [Method] GenericFn
-#-----| 1 -> (TypeParameters)
-#-----| 2 -> (Parameters)
-#-----| 4 -> [BlockStmt] {...}
-
-#   75| [Parameter] t
-
-#   75| [TypeParameter] T
-
-#   78| [Struct] S1
-#-----| 2 -> [Method] M
-
-#   80| [Method] M
-#-----| 2 -> (Parameters)
-#-----| 4 -> [BlockStmt] {...}
-
-#   81| [BlockStmt] {...}
-#-----| 0 -> [TryStmt] try {...} ...
-#-----| 1 -> [LocalConstantDeclStmt] ... ...;
-#-----| 2 -> [ReturnStmt] return ...;
-
-#   82| [TryStmt] try {...} ...
-#-----| 0 -> [BlockStmt] {...}
-#-----| 1 -> [SpecificCatchClause] catch (...) {...}
-
-#   86| [SpecificCatchClause] catch (...) {...}
-#-----| 0 -> [LocalVariableDeclExpr] Exception e
-#-----| 1 -> [BlockStmt] {...}
-
-#   86| [LocalVariableDeclExpr] Exception e
-
-#   87| [BlockStmt] {...}
-#-----| 0 -> [ForeachStmt] foreach (... ... in ...) ...
-
-#   88| [ForeachStmt] foreach (... ... in ...) ...
-#-----| 0 -> [LocalVariableDeclExpr] S1 s
-#-----| 1 -> [ParameterAccess] access to parameter ss
-#-----| 2 -> [BlockStmt] {...}
-
-#   88| [ParameterAccess] access to parameter ss
-
-#   88| [LocalVariableDeclExpr] S1 s
-
-#   89| [BlockStmt] {...}
-
-#   83| [BlockStmt] {...}
-#-----| 0 -> [LocalConstantDeclStmt] ... ...;
-
-#   84| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] String timestamp = ...
-
-#   84| [LocalVariableDeclAndInitExpr] String timestamp = ...
-#-----| 0 -> [MethodCall] call to method ToString
-#-----| 1 -> [LocalVariableAccess] access to local variable timestamp
-
-#   84| [MethodCall] call to method ToString
-#-----| -1 -> [PropertyCall] access to property Now
-#-----| 0 -> [StringLiteral] "HH:mm:ss"
-
-#   84| [PropertyCall] access to property Now
-#-----| -1 -> [TypeAccess] access to type DateTime
-
-#   84| [TypeAccess] access to type DateTime
-
-#   84| [StringLiteral] "HH:mm:ss"
-
-#   84| [LocalVariableAccess] access to local variable timestamp
-
-#   92| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] Type temp = ...
-
-#   92| [LocalVariableDeclAndInitExpr] Type temp = ...
-#-----| 0 -> [TypeofExpr] typeof(...)
-#-----| 1 -> [LocalVariableAccess] access to local variable temp
-
-#   92| [TypeofExpr] typeof(...)
-#-----| 0 -> [TypeAccess] access to type S1[]
-
-#   92| [TypeAccess] access to type S1[]
-
-#   92| [LocalVariableAccess] access to local variable temp
-
-#   93| [ReturnStmt] return ...;
-#-----| 0 -> [ObjectCreation] object creation of type S1
-
-#   93| [ObjectCreation] object creation of type S1
-
-#   97| [Class] A
-#-----| 2 -> [DelegateType] EventHandler
-#-----| 3 -> [Event] Click
-#-----| 4 -> [Method] M
-
-#   99| [DelegateType] EventHandler
-
-#  101| [RemoveEventAccessor] remove_Click
-#-----| 2 -> (Parameters)
-
-#  101| [Parameter] value
-
-#  103| [Method] M
-#-----| 4 -> [BlockStmt] {...}
-
-#  121| [Class] B<>
-#-----| 0 -> (TypeParameters)
-#-----| 3 -> [Method] M
-#-----| 4 -> [Method] M2
-#-----| 5 -> [Struct] S<>
-#-----| 6 -> [Method] Tuple
-#-----| 7 -> [Indexer] Item
-
-#  123| [Method] M
-#-----| 4 -> [BlockStmt] {...}
-
-#  124| [BlockStmt] {...}
-#-----| 0 -> [ExprStmt] ...;
-
-#  125| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method M
-
-#  125| [MethodCall] call to method M
-#-----| -1 -> [BaseAccess] base access
-
-#  125| [BaseAccess] base access
-
-#  112| [Interface] I1
-#-----| 1 -> [Method] M2
-
-#  128| [Method] M2
-#-----| 1 -> (TypeParameters)
-#-----| 4 -> [BlockStmt] {...}
-
-#  128| [TypeParameter] T
-
-#  130| [Struct] S<>
-#-----| 0 -> (TypeParameters)
-
-#  130| [TypeParameter] T2
-
-#  132| [Method] Tuple
-#-----| 4 -> [ThrowExpr] throw ...
-
-#  134| [Indexer] Item
-#-----| 0 -> (Parameters)
-#-----| 2 -> [Getter] get_Item
-
-#  134| [Parameter] a
-
-#  134| [Getter] get_Item
-#-----| 2 -> (Parameters)
-#-----| 4 -> [BlockStmt] {...}
-
-#  134| [Parameter] a
-
-#  137| [Class] C
-#-----| 2 -> [Enum] E
-#-----| 3 -> [Method] Pointer
-
-#  140| [Method] Pointer
-#-----| 4 -> [ThrowExpr] throw ...
-
-#  140| [ThrowExpr] throw ...
-#-----| 0 -> [ObjectCreation] object creation of type Exception
-
-#  140| [ObjectCreation] object creation of type Exception
-#-----| 0 -> [MethodCall] call to method ToString
-
-#  140| [MethodCall] call to method ToString
-#-----| -1 -> [SizeofExpr] sizeof(..)
-
-#  140| [SizeofExpr] sizeof(..)
-#-----| 0 -> [TypeAccess] access to type E*
-
-#  140| [TypeAccess] access to type E*
-
-#  143| [Interface] I4
-#-----| 1 -> [Event] EH
-#-----| 2 -> [Method] M
-#-----| 3 -> [Property] P
-#-----| 4 -> [Indexer] Item
-
-#  145| [RemoveEventAccessor] remove_EH
-#-----| 2 -> (Parameters)
-
-#  145| [Parameter] value
-
-#  146| [Method] M
-
-#  147| [Property] P
-#-----| 1 -> [Getter] get_P
-
-#  147| [Getter] get_P
-
-#  148| [Indexer] Item
-#-----| 0 -> (Parameters)
-#-----| 2 -> [Getter] get_Item
-
-#  148| [Parameter] eh
-
-#  148| [Getter] get_Item
-#-----| 2 -> (Parameters)
-
-#  148| [Parameter] eh
-
-#  151| [Class] C4
-#-----| 2 -> [Event] EH
-#-----| 3 -> [Method] M
-#-----| 4 -> [Property] P
-#-----| 5 -> [Indexer] Item
-#-----| 6 -> [Class] Nested<>
-
-#  153| [AddEventAccessor] add_EH
-#-----| 2 -> (Parameters)
-#-----| 4 -> [BlockStmt] {...}
-
-#  153| [BlockStmt] {...}
-
-#  153| [RemoveEventAccessor] remove_EH
-#-----| 2 -> (Parameters)
-#-----| 4 -> [BlockStmt] {...}
-
-#  153| [Parameter] value
-
-#  154| [Method] M
-#-----| 4 -> [ThrowExpr] throw ...
-
-#  155| [Property] P
-#-----| 1 -> [Getter] get_P
-
-#  155| [Getter] get_P
-#-----| 4 -> [ThrowExpr] throw ...
-
-#  156| [Indexer] Item
-#-----| 0 -> (Parameters)
-#-----| 2 -> [Getter] get_Item
-
-#  156| [Parameter] eh
-
-#  156| [Getter] get_Item
-#-----| 2 -> (Parameters)
-#-----| 4 -> [BlockStmt] {...}
-
-#  156| [Parameter] eh
-
-#  158| [Class] Nested<>
-#-----| 0 -> (TypeParameters)
-#-----| 3 -> [Method] Create
-
-#  158| [TypeParameter] T
-
-#  160| [Method] Create
-#-----| 4 -> [BlockStmt] {...}
-
-#  160| [BlockStmt] {...}
-#-----| 0 -> [ReturnStmt] return ...;
-
-#  160| [ReturnStmt] return ...;
-#-----| 0 -> [ObjectCreation] object creation of type Nested<>
-
-#  160| [ObjectCreation] object creation of type Nested<>
-
-#  164| [Class] C5
-#-----| 2 -> [Field] f
-#-----| 3 -> [Field] c1
-#-----| 4 -> [Method] M
-
-#  167| [Field] c1
-
-#  169| [Method] M
-#-----| 4 -> [BlockStmt] {...}
-
-#  166| [Field] f
-#-----| 1 -> [AssignExpr] ... = ...
-
-#  166| [AssignExpr] ... = ...
-#-----| 0 -> [MethodCall] call to method Create
-#-----| 1 -> [FieldAccess] access to field f
-
-#  166| [MethodCall] call to method Create
-#-----| -1 -> [TypeAccess] access to type Nested<I4>
-
-#  166| [TypeAccess] access to type Nested<I4>
-#-----| -1 -> [TypeAccess] access to type C4
-
-#  166| [TypeAccess] access to type C4
-
-#  166| [FieldAccess] access to field f
-#-----| -1 -> [ThisAccess] this access
-
-#  166| [ThisAccess] this access
-
-#  179| [Class] C6
-#-----| 2 -> [ExplicitConversionOperator] explicit conversion
-#-----| 3 -> [Method] M
-#-----| 4 -> [AddOperator] +
-
-#  181| [ExplicitConversionOperator] explicit conversion
-#-----| 2 -> (Parameters)
-#-----| 4 -> [BlockStmt] {...}
-
-#  182| [BlockStmt] {...}
-#-----| 0 -> [ReturnStmt] return ...;
-
-#  183| [ReturnStmt] return ...;
-#-----| 0 -> [NullLiteral] null
-
-#  183| [NullLiteral] null
-
-#  186| [Method] M
-#-----| 4 -> [BlockStmt] {...}
-
-#  191| [AddOperator] +
-#-----| 2 -> (Parameters)
-#-----| 4 -> [ParameterAccess] access to parameter x
-
-#  191| [Parameter] x
-
-#  191| [Parameter] y
-
-#  196| [Class] C7
-#-----| 2 -> [Method] M
-#-----| 3 -> [Method] M2
-
-#  198| [Method] M
-#-----| 4 -> [BlockStmt] {...}
-
-#  198| [BlockStmt] {...}
-
-#  200| [Method] M2
-#-----| 4 -> [BlockStmt] {...}
-
-#  206| [Class] C8
-#-----| 2 -> [Method] F
-
-#  208| [Method] F
-#-----| 4 -> [BlockStmt] {...}
-
-#  209| [BlockStmt] {...}
-#-----| 0 -> [LocalConstantDeclStmt] ... ...;
-#-----| 1 -> [IfStmt] if (...) ...
-#-----| 2 -> [SwitchStmt] switch (...) {...}
-
-#  210| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] C8 c8a = ...
-
-#  210| [LocalVariableDeclAndInitExpr] C8 c8a = ...
-#-----| 0 -> [NullLiteral] null
-#-----| 1 -> [LocalVariableAccess] access to local variable c8a
-
-#  210| [NullLiteral] null
-
-#  210| [LocalVariableAccess] access to local variable c8a
-
-#  211| [IfStmt] if (...) ...
-#-----| 0 -> [IsExpr] ... is ...
-#-----| 1 -> [ExprStmt] ...;
-
-#  211| [IsExpr] ... is ...
-#-----| 0 -> [LocalVariableAccess] access to local variable c8a
-#-----| 1 -> [VariablePatternExpr] C8 c8b
-
-#  211| [LocalVariableAccess] access to local variable c8a
-
-#  211| [VariablePatternExpr] C8 c8b
-
-#  212| [ExprStmt] ...;
-#-----| 0 -> [AssignExpr] ... = ...
-
-#  212| [AssignExpr] ... = ...
-#-----| 0 -> [LocalVariableAccess] access to local variable c8b
-#-----| 1 -> [LocalVariableAccess] access to local variable c8a
-
-#  212| [LocalVariableAccess] access to local variable c8a
-
-#  212| [LocalVariableAccess] access to local variable c8b
-
-#  213| [SwitchStmt] switch (...) {...}
-#-----| 0 -> [LocalVariableAccess] access to local variable c8a
-#-----| 0 -> [CaseStmt] case ...:
-#-----| 1 -> [ExprStmt] ...;
-#-----| 2 -> [BreakStmt] break;
-
-#  213| [LocalVariableAccess] access to local variable c8a
-
-#  215| [CaseStmt] case ...:
-#-----| 0 -> [VariablePatternExpr] C8 c8c
-#-----| 1 -> [NEExpr] ... != ...
-
-#  215| [VariablePatternExpr] C8 c8c
-
-#  215| [NEExpr] ... != ...
-#-----| 0 -> [LocalVariableAccess] access to local variable c8c
-#-----| 1 -> [NullLiteral] null
-
-#  216| [ExprStmt] ...;
-#-----| 0 -> [AssignExpr] ... = ...
-
-#  216| [AssignExpr] ... = ...
-#-----| 0 -> [LocalVariableAccess] access to local variable c8c
-#-----| 1 -> [LocalVariableAccess] access to local variable c8a
-
-#  216| [LocalVariableAccess] access to local variable c8a
-
-#  216| [LocalVariableAccess] access to local variable c8c
-
-#  217| [BreakStmt] break;
-
-#   26| [BlockStmt] {...}
-#-----| 0 -> [ReturnStmt] return ...;
-
-#   26| [ReturnStmt] return ...;
-#-----| 0 -> [FieldAccess] access to field field1
-
-#   26| [FieldAccess] access to field field1
-#-----| -1 -> [ThisAccess] this access
-
-#   26| [ThisAccess] this access
-
-#   27| [BlockStmt] {...}
-#-----| 0 -> [ExprStmt] ...;
-
-#   27| [ExprStmt] ...;
-#-----| 0 -> [AssignExpr] ... = ...
-
-#   27| [AssignExpr] ... = ...
-#-----| 0 -> [ParameterAccess] access to parameter value
-#-----| 1 -> [FieldAccess] access to field field1
-
-#   27| [FieldAccess] access to field field1
-#-----| -1 -> [ThisAccess] this access
-
-#   27| [ThisAccess] this access
-
-#   27| [ParameterAccess] access to parameter value
-
-#   31| [BlockStmt] {...}
-#-----| 0 -> [LocalConstantDeclStmt] ... ...;
-#-----| 1 -> [ExprStmt] ...;
-#-----| 2 -> [ExprStmt] ...;
-#-----| 3 -> [ExprStmt] ...;
-#-----| 4 -> [ExprStmt] ...;
-#-----| 5 -> [ExprStmt] ...;
-#-----| 6 -> [ExprStmt] ...;
-#-----| 7 -> [ExprStmt] ...;
-#-----| 8 -> [ExprStmt] ...;
-#-----| 9 -> [ExprStmt] ...;
-#-----| 10 -> [ExprStmt] ...;
-#-----| 11 -> [ExprStmt] ...;
-#-----| 12 -> [ExprStmt] ...;
-#-----| 13 -> [ExprStmt] ...;
-#-----| 14 -> [ExprStmt] ...;
-#-----| 15 -> [LocalConstantDeclStmt] ... ...;
-#-----| 16 -> [LocalConstantDeclStmt] ... ...;
-#-----| 17 -> [ExprStmt] ...;
-#-----| 18 -> [LocalConstantDeclStmt] ... ...;
-#-----| 19 -> [LocalConstantDeclStmt] ... ...;
-#-----| 20 -> [LocalConstantDeclStmt] ... ...;
-
-#   32| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] C1 qualifier = ...
-
-#   32| [LocalVariableDeclAndInitExpr] C1 qualifier = ...
-#-----| 0 -> [ThisAccess] this access
-#-----| 1 -> [LocalVariableAccess] access to local variable qualifier
-
-#   32| [ThisAccess] this access
-
-#   32| [LocalVariableAccess] access to local variable qualifier
-
-#   35| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method f1
-
-#   35| [MethodCall] call to method f1
-#-----| -1 -> [ThisAccess] this access
-
-#   35| [ThisAccess] this access
-
-#   36| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method f1
-
-#   36| [MethodCall] call to method f1
-#-----| -1 -> [ThisAccess] this access
-#-----| 0 -> [IntLiteral] 1
-
-#   36| [ThisAccess] this access
-
-#   36| [IntLiteral] 1
-
-#   37| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method f1
-
-#   37| [MethodCall] call to method f1
-#-----| -1 -> [ThisAccess] this access
-#-----| 0 -> [IntLiteral] 1
-#-----| 1 -> [IntLiteral] 2
-
-#   37| [ThisAccess] this access
-
-#   37| [IntLiteral] 1
-
-#   37| [IntLiteral] 2
-
-#   39| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method f1
-
-#   39| [MethodCall] call to method f1
-#-----| -1 -> [ThisAccess] this access
-
-#   39| [ThisAccess] this access
-
-#   40| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method f1
-
-#   40| [MethodCall] call to method f1
-#-----| -1 -> [ThisAccess] this access
-#-----| 0 -> [IntLiteral] 1
-
-#   40| [ThisAccess] this access
-
-#   40| [IntLiteral] 1
-
-#   41| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method f1
-
-#   41| [MethodCall] call to method f1
-#-----| -1 -> [ThisAccess] this access
-#-----| 0 -> [IntLiteral] 1
-#-----| 1 -> [IntLiteral] 2
-
-#   41| [ThisAccess] this access
-
-#   41| [IntLiteral] 1
-
-#   41| [IntLiteral] 2
-
-#   43| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method ExtensionMethod
-
-#   43| [MethodCall] call to method ExtensionMethod
-#-----| -1 -> [ThisAccess] this access
-
-#   43| [ThisAccess] this access
-
-#   44| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method ExtensionMethod
-
-#   44| [MethodCall] call to method ExtensionMethod
-#-----| -1 -> [ThisAccess] this access
-#-----| 0 -> [CastExpr] (...) ...
-
-#   44| [ThisAccess] this access
-
-#   44| [CastExpr] (...) ...
-#-----| 0 -> [IntLiteral] 1
-
-#   44| [IntLiteral] 1
-
-#   45| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method ExtensionMethod
-
-#   45| [MethodCall] call to method ExtensionMethod
-#-----| -1 -> [ThisAccess] this access
-#-----| 0 -> [CastExpr] (...) ...
-#-----| 1 -> [CastExpr] (...) ...
-
-#   45| [ThisAccess] this access
-
-#   45| [CastExpr] (...) ...
-#-----| 0 -> [IntLiteral] 1
-
-#   45| [IntLiteral] 1
-
-#   45| [CastExpr] (...) ...
-#-----| 0 -> [IntLiteral] 2
-
-#   45| [IntLiteral] 2
-
-#   47| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method GenericFn
-
-#   47| [MethodCall] call to method GenericFn
-#-----| -1 -> [ThisAccess] this access
-#-----| 0 -> [IntLiteral] 1
-
-#   47| [ThisAccess] this access
-
-#   47| [IntLiteral] 1
-
-#   48| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method GenericFn
-
-#   48| [MethodCall] call to method GenericFn
-#-----| -1 -> [ThisAccess] this access
-#-----| 0 -> [IntLiteral] 2
-
-#   48| [ThisAccess] this access
-
-#   48| [IntLiteral] 2
-
-#   51| [ExprStmt] ...;
-#-----| 0 -> [ObjectCreation] object creation of type C1
-
-#   51| [ObjectCreation] object creation of type C1
-
-#   52| [ExprStmt] ...;
-#-----| 0 -> [ObjectCreation] object creation of type C1
-
-#   52| [ObjectCreation] object creation of type C1
-#-----| 0 -> [IntLiteral] 1
-
-#   52| [IntLiteral] 1
-
-#   53| [ExprStmt] ...;
-#-----| 0 -> [ObjectCreation] object creation of type C1
-
-#   53| [ObjectCreation] object creation of type C1
-#-----| 0 -> [IntLiteral] 1
-#-----| 1 -> [IntLiteral] 2
-
-#   53| [IntLiteral] 1
-
-#   53| [IntLiteral] 2
-
-#   56| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] Int32 x = ...
-#-----| 1 -> [LocalVariableDeclAndInitExpr] Int32 y = ...
-#-----| 2 -> [LocalVariableDeclAndInitExpr] Int32 z = ...
-#-----| 3 -> [LocalVariableDeclAndInitExpr] Int32 w = ...
-
-#   56| [LocalVariableDeclAndInitExpr] Int32 x = ...
-#-----| 0 -> [IntLiteral] 2
-#-----| 1 -> [LocalVariableAccess] access to local variable x
-
-#   56| [IntLiteral] 2
-
-#   56| [LocalVariableAccess] access to local variable x
-
-#   56| [LocalVariableDeclAndInitExpr] Int32 y = ...
-#-----| 0 -> [LocalVariableAccess] access to local variable x
-#-----| 1 -> [LocalVariableAccess] access to local variable y
-
-#   56| [LocalVariableAccess] access to local variable x
-
-#   56| [LocalVariableAccess] access to local variable y
-
-#   56| [LocalVariableDeclAndInitExpr] Int32 z = ...
-#-----| 0 -> [FieldAccess] access to field field1
-#-----| 1 -> [LocalVariableAccess] access to local variable z
-
-#   56| [FieldAccess] access to field field1
-#-----| -1 -> [ThisAccess] this access
-
-#   56| [ThisAccess] this access
-
-#   56| [LocalVariableAccess] access to local variable z
-
-#   56| [LocalVariableDeclAndInitExpr] Int32 w = ...
-#-----| 0 -> [ArrayAccess] access to array element
-#-----| 1 -> [LocalVariableAccess] access to local variable w
-
-#   56| [ArrayAccess] access to array element
-#-----| -1 -> [ParameterAccess] access to parameter args
-#-----| 0 -> [IntLiteral] 0
-
-#   56| [ParameterAccess] access to parameter args
-
-#   56| [IntLiteral] 0
-
-#   56| [LocalVariableAccess] access to local variable w
-
-#   57| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] Enumeration e = ...
-
-#   57| [LocalVariableDeclAndInitExpr] Enumeration e = ...
-#-----| 0 -> [MemberConstantAccess] access to constant e1
-#-----| 1 -> [LocalVariableAccess] access to local variable e
-
-#   57| [MemberConstantAccess] access to constant e1
-#-----| -1 -> [TypeAccess] access to type Enumeration
-
-#   57| [TypeAccess] access to type Enumeration
-
-#   57| [LocalVariableAccess] access to local variable e
-
-#   60| [ExprStmt] ...;
-#-----| 0 -> [AssignExpr] ... = ...
-
-#   60| [AssignExpr] ... = ...
-#-----| 0 -> [AddExpr] ... + ...
-#-----| 1 -> [PropertyCall] access to property property1
-
-#   60| [PropertyCall] access to property property1
-#-----| -1 -> [ThisAccess] this access
-
-#   60| [ThisAccess] this access
-
-#   60| [AddExpr] ... + ...
-#-----| 0 -> [PropertyCall] access to property property1
-#-----| 1 -> [IntLiteral] 1
-
-#   63| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] C1[] array = ...
-
-#   63| [LocalVariableDeclAndInitExpr] C1[] array = ...
-#-----| 0 -> [NullLiteral] null
-#-----| 1 -> [LocalVariableAccess] access to local variable array
-
-#   63| [NullLiteral] null
-
-#   63| [LocalVariableAccess] access to local variable array
-
-#   64| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] Nullable<S1> nullable = ...
-
-#   64| [LocalVariableDeclAndInitExpr] Nullable<S1> nullable = ...
-#-----| 0 -> [NullLiteral] null
-#-----| 1 -> [LocalVariableAccess] access to local variable nullable
-
-#   64| [NullLiteral] null
-
-#   64| [LocalVariableAccess] access to local variable nullable
-
-#   67| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] Action<Int32> m1 = ...
-
-#   67| [LocalVariableDeclAndInitExpr] Action<Int32> m1 = ...
-#-----| 0 -> [ImplicitDelegateCreation] delegate creation of type Action<Int32>
-#-----| 1 -> [LocalVariableAccess] access to local variable m1
-
-#   67| [ImplicitDelegateCreation] delegate creation of type Action<Int32>
-#-----| 0 -> [MethodAccess] access to method GenericFn
-
-#   67| [MethodAccess] access to method GenericFn
-#-----| -1 -> [ThisAccess] this access
-
-#   67| [ThisAccess] this access
-
-#   67| [LocalVariableAccess] access to local variable m1
-
-#   71| [BlockStmt] {...}
-#-----| 0 -> [LocalConstantDeclStmt] ... ...;
-
-#   72| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] C1 c2 = ...
-
-#   72| [LocalVariableDeclAndInitExpr] C1 c2 = ...
-#-----| 0 -> [NullLiteral] null
-#-----| 1 -> [LocalVariableAccess] access to local variable c2
-
-#   72| [NullLiteral] null
-
-#   72| [LocalVariableAccess] access to local variable c2
-
-#   75| [BlockStmt] {...}
-
-#  104| [BlockStmt] {...}
-#-----| 0 -> [ExprStmt] ...;
-#-----| 1 -> [LocalFunctionStmt] LocalFunction(...)
-#-----| 2 -> [EmptyStmt] ;
-#-----| 3 -> [ExprStmt] ...;
-#-----| 4 -> [ExprStmt] ...;
-
-#  105| [ExprStmt] ...;
-#-----| 0 -> [AddEventExpr] ... += ...
-
-#  105| [AddEventExpr] ... += ...
-#-----| 0 -> [ImplicitDelegateCreation] delegate creation of type EventHandler
-#-----| 1 -> [EventAccess,EventCall] access to event Click
-
-#  105| [EventAccess,EventCall] access to event Click
-#-----| -1 -> [ThisAccess] this access
-
-#  105| [ThisAccess] this access
-
-#  105| [ImplicitDelegateCreation] delegate creation of type EventHandler
-#-----| 0 -> [MethodAccess] access to method M
-
-#  105| [MethodAccess] access to method M
-#-----| -1 -> [ThisAccess] this access
-
-#  105| [ThisAccess] this access
-
-#  106| [LocalFunctionStmt] LocalFunction(...)
-#-----| 0 -> [LocalFunction] LocalFunction
-
-#  106| [LocalFunction] LocalFunction
-#-----| 4 -> [BlockStmt] {...}
-
-#  106| [EmptyStmt] ;
-
-#  107| [ExprStmt] ...;
-#-----| 0 -> [AddEventExpr] ... += ...
-
-#  107| [AddEventExpr] ... += ...
-#-----| 0 -> [ImplicitDelegateCreation] delegate creation of type EventHandler
-#-----| 1 -> [EventAccess,EventCall] access to event Click
-
-#  107| [EventAccess,EventCall] access to event Click
-#-----| -1 -> [ThisAccess] this access
-
-#  107| [ThisAccess] this access
-
-#  107| [ImplicitDelegateCreation] delegate creation of type EventHandler
-#-----| 0 -> [LocalFunctionAccess] access to local function LocalFunction
-
-#  107| [LocalFunctionAccess] access to local function LocalFunction
-#-----| -1 -> [ThisAccess] this access
-
-#  107| [ThisAccess] this access
-
-#  108| [ExprStmt] ...;
-#-----| 0 -> [DelegateCall] delegate call
-
-#  108| [DelegateCall] delegate call
-#-----| -1 -> [EventAccess,EventCall] access to event Click
-
-#  108| [EventAccess,EventCall] access to event Click
-#-----| -1 -> [ThisAccess] this access
-
-#  108| [ThisAccess] this access
-
-#  128| [BlockStmt] {...}
-
-#  132| [ThrowExpr] throw ...
-#-----| 0 -> [ObjectCreation] object creation of type Exception
-
-#  132| [ObjectCreation] object creation of type Exception
-
-#  134| [BlockStmt] {...}
-#-----| 0 -> [ReturnStmt] return ...;
-
-#  134| [ReturnStmt] return ...;
-#-----| 0 -> [DefaultValueExpr] default(...)
-
-#  134| [DefaultValueExpr] default(...)
-#-----| 0 -> [TypeAccess] access to type B<A>
-
-#  134| [TypeAccess] access to type B<A>
-
-#  153| [BlockStmt] {...}
-
-#  154| [ThrowExpr] throw ...
-#-----| 0 -> [ObjectCreation] object creation of type Exception
-
-#  154| [ObjectCreation] object creation of type Exception
-
-#  155| [ThrowExpr] throw ...
-#-----| 0 -> [ObjectCreation] object creation of type Exception
-
-#  155| [ObjectCreation] object creation of type Exception
-
-#  156| [BlockStmt] {...}
-#-----| 0 -> [ReturnStmt] return ...;
-
-#  156| [ReturnStmt] return ...;
-#-----| 0 -> [CastExpr] (...) ...
-
-#  156| [CastExpr] (...) ...
-#-----| 0 -> [ObjectCreation] object creation of type S1
-#-----| 1 -> [TypeAccess] access to type S1
-
-#  156| [ObjectCreation] object creation of type S1
-
-#  156| [TypeAccess] access to type S1
-
-#  170| [BlockStmt] {...}
-#-----| 0 -> [LocalConstantDeclStmt] ... ...;
-#-----| 1 -> [ExprStmt] ...;
-#-----| 2 -> [LocalConstantDeclStmt] ... ...;
-#-----| 3 -> [ExprStmt] ...;
-#-----| 4 -> [LocalConstantDeclStmt] ... ...;
-
-#  171| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] C1 c = ...
-
-#  171| [LocalVariableDeclAndInitExpr] C1 c = ...
-#-----| 0 -> [ObjectCreation] object creation of type C1
-#-----| 1 -> [LocalVariableAccess] access to local variable c
-
-#  171| [ObjectCreation] object creation of type C1
-
-#  171| [LocalVariableAccess] access to local variable c
-
-#  172| [ExprStmt] ...;
-#-----| 0 -> [AssignExpr] ... = ...
-
-#  172| [AssignExpr] ... = ...
-#-----| 0 -> [PropertyCall] access to property property1
-#-----| 1 -> [PropertyCall] access to property property1
-
-#  172| [PropertyCall] access to property property1
-#-----| -1 -> [LocalVariableAccess] access to local variable c
-
-#  172| [LocalVariableAccess] access to local variable c
-
-#  172| [PropertyCall] access to property property1
-#-----| -1 -> [LocalVariableAccess] access to local variable c
-
-#  172| [LocalVariableAccess] access to local variable c
-
-#  173| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] C5 c5 = ...
-
-#  173| [LocalVariableDeclAndInitExpr] C5 c5 = ...
-#-----| 0 -> [AsExpr] ... as ...
-#-----| 1 -> [LocalVariableAccess] access to local variable c5
-
-#  173| [AsExpr] ... as ...
-#-----| 0 -> [ObjectCreation] object creation of type C5
-#-----| 1 -> [TypeAccess] access to type C5
-
-#  173| [LocalVariableAccess] access to local variable c5
-
-#  174| [ExprStmt] ...;
-#-----| 0 -> [AssignExpr] ... = ...
-
-#  174| [AssignExpr] ... = ...
-#-----| 0 -> [IntLiteral] 0
-#-----| 1 -> [PropertyCall] access to property property1
-
-#  174| [PropertyCall] access to property property1
-#-----| -1 -> [FieldAccess] access to field c1
-
-#  174| [FieldAccess] access to field c1
-#-----| -1 -> [LocalVariableAccess] access to local variable c5
-
-#  174| [LocalVariableAccess] access to local variable c5
-
-#  174| [IntLiteral] 0
-
-#  175| [LocalConstantDeclStmt] ... ...;
-#-----| 0 -> [LocalVariableDeclAndInitExpr] Boolean temp = ...
-
-#  175| [LocalVariableDeclAndInitExpr] Boolean temp = ...
-#-----| 0 -> [IsExpr] ... is ...
-#-----| 1 -> [LocalVariableAccess] access to local variable temp
-
-#  175| [IsExpr] ... is ...
-#-----| 0 -> [LocalVariableAccess] access to local variable c5
-#-----| 1 -> [TypeAccessPatternExpr] access to type Nested<I4>
-
-#  175| [LocalVariableAccess] access to local variable temp
-
-#  187| [BlockStmt] {...}
-#-----| 0 -> [ReturnStmt] return ...;
-
-#  188| [ReturnStmt] return ...;
-#-----| 0 -> [OperatorCall] call to operator explicit conversion
-
-#  188| [OperatorCall] call to operator explicit conversion
-#-----| 0 -> [ThisAccess] this access
-
-#  188| [ThisAccess] this access
-
-#  191| [ParameterAccess] access to parameter x
-
-#  201| [BlockStmt] {...}
-#-----| 0 -> [ExprStmt] ...;
-
-#  202| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method M
-
-#  202| [MethodCall] call to method M
-#-----| -1 -> [TypeAccess] access to type C7
-
-#  202| [TypeAccess] access to type C7
-
-#  215| [LocalVariableAccess] access to local variable c8c
-
-#  215| [NullLiteral] null
-
-#    8| [Parameter] c1
-
-#    8| [Parameter] args
-
-#   60| [PropertyCall] access to property property1
-#-----| -1 -> [ThisAccess] this access
-
-#   60| [ThisAccess] this access
-
-#   60| [IntLiteral] 1
-
-#   15| [Field] e1
-#-----| 1 -> [Field] e1
-
-#   15| [MemberConstantAccess] access to constant e1
-
-#   20| [Parameter] args
-
-#   80| [Parameter] ss
-
-#  101| [AddEventAccessor] add_Click
-#-----| 2 -> (Parameters)
-
-#  101| [Parameter] value
-
-#  101| [Event] Click
-#-----| 1 -> [RemoveEventAccessor] remove_Click
-#-----| 1 -> [AddEventAccessor] add_Click
-
-#  114| [Method] M2
-#-----| 1 -> (TypeParameters)
-
-#  114| [TypeParameter] T
-
-#  117| [Interface] I2<>
-#-----| 0 -> (TypeParameters)
-
-#  117| [TypeParameter] T
-
-#  119| [Interface] I3
-
-#  121| [TypeParameter] T
-
-#  139| [Enum] E
-
-#  145| [AddEventAccessor] add_EH
-#-----| 2 -> (Parameters)
-
-#  145| [Parameter] value
-
-#  145| [Event] EH
-#-----| 1 -> [RemoveEventAccessor] remove_EH
-#-----| 1 -> [AddEventAccessor] add_EH
-
-#  153| [Event] EH
-#-----| 1 -> [AddEventAccessor] add_EH
-#-----| 2 -> [RemoveEventAccessor] remove_EH
-
-#  153| [Parameter] value
-
-#  181| [Attribute] [My(...)]
-
-#  194| [Class] MyAttribute
-
-#  181| [Parameter] c
-#-----| 0 -> (Attributes)
-
-#  173| [ObjectCreation] object creation of type C5
-
-#  173| [TypeAccess] access to type C5
-
-#  175| [LocalVariableAccess] access to local variable c5
-
-#  175| [TypeAccessPatternExpr] access to type Nested<I4>
-
-#  106| [BlockStmt] {...}
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T2
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] c1
-#-----| 1 -> [Parameter] args
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] args
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] value
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] args
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] c1
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] t
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] ss
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] value
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] a
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] a
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] value
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] eh
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] eh
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] value
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] value
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] eh
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] eh
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] c
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] x
-#-----| 1 -> [Parameter] y
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] value
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] value
-
-#-----| (Attributes)
-#-----| 1 -> [Attribute] [My(...)]
+#    6|   1: [Class] StaticClass
+#    8|     1: [ExtensionMethod] ExtensionMethod
+#-----|       2: (Parameters)
+#    8|         0: [Parameter] c1
+#    8|         1: [Parameter] args
+#    9|       4: [BlockStmt] {...}
+#   13|   2: [Enum] Enumeration
+#   15|     2: [Field] e1
+#   15|       1: [MemberConstantAccess] access to constant e1
+#   15|     3: [Field] e2
+#   15|       1: [MemberConstantAccess] access to constant e2
+#   15|     4: [Field] e3
+#   18|   3: [Class] C1
+#   20|     1: [InstanceConstructor] C1
+#-----|       2: (Parameters)
+#   20|         0: [Parameter] args
+#   20|       4: [BlockStmt] {...}
+#   22|     2: [Field] field1
+#   24|     3: [Property] property1
+#   26|       1: [Getter] get_property1
+#   26|         4: [BlockStmt] {...}
+#   26|           0: [ReturnStmt] return ...;
+#   26|             0: [FieldAccess] access to field field1
+#   26|               -1: [ThisAccess] this access
+#   27|       2: [Setter] set_property1
+#-----|         2: (Parameters)
+#   27|           0: [Parameter] value
+#   27|         4: [BlockStmt] {...}
+#   27|           0: [ExprStmt] ...;
+#   27|             0: [AssignExpr] ... = ...
+#   27|               0: [ParameterAccess] access to parameter value
+#   27|               1: [FieldAccess] access to field field1
+#   27|                 -1: [ThisAccess] this access
+#   30|     4: [Method] f1
+#-----|       2: (Parameters)
+#   30|         0: [Parameter] args
+#   31|       4: [BlockStmt] {...}
+#   32|         0: [LocalConstantDeclStmt] ... ...;
+#   32|           0: [LocalVariableDeclAndInitExpr] C1 qualifier = ...
+#   32|             0: [ThisAccess] this access
+#   32|             1: [LocalVariableAccess] access to local variable qualifier
+#   35|         1: [ExprStmt] ...;
+#   35|           0: [MethodCall] call to method f1
+#   35|             -1: [ThisAccess] this access
+#   36|         2: [ExprStmt] ...;
+#   36|           0: [MethodCall] call to method f1
+#   36|             -1: [ThisAccess] this access
+#   36|             0: [IntLiteral] 1
+#   37|         3: [ExprStmt] ...;
+#   37|           0: [MethodCall] call to method f1
+#   37|             -1: [ThisAccess] this access
+#   37|             0: [IntLiteral] 1
+#   37|             1: [IntLiteral] 2
+#   39|         4: [ExprStmt] ...;
+#   39|           0: [MethodCall] call to method f1
+#   39|             -1: [ThisAccess] this access
+#   40|         5: [ExprStmt] ...;
+#   40|           0: [MethodCall] call to method f1
+#   40|             -1: [ThisAccess] this access
+#   40|             0: [IntLiteral] 1
+#   41|         6: [ExprStmt] ...;
+#   41|           0: [MethodCall] call to method f1
+#   41|             -1: [ThisAccess] this access
+#   41|             0: [IntLiteral] 1
+#   41|             1: [IntLiteral] 2
+#   43|         7: [ExprStmt] ...;
+#   43|           0: [MethodCall] call to method ExtensionMethod
+#   43|             -1: [ThisAccess] this access
+#   44|         8: [ExprStmt] ...;
+#   44|           0: [MethodCall] call to method ExtensionMethod
+#   44|             -1: [ThisAccess] this access
+#   44|             0: [CastExpr] (...) ...
+#   44|               0: [IntLiteral] 1
+#   45|         9: [ExprStmt] ...;
+#   45|           0: [MethodCall] call to method ExtensionMethod
+#   45|             -1: [ThisAccess] this access
+#   45|             0: [CastExpr] (...) ...
+#   45|               0: [IntLiteral] 1
+#   45|             1: [CastExpr] (...) ...
+#   45|               0: [IntLiteral] 2
+#   47|         10: [ExprStmt] ...;
+#   47|           0: [MethodCall] call to method GenericFn
+#   47|             -1: [ThisAccess] this access
+#   47|             0: [IntLiteral] 1
+#   48|         11: [ExprStmt] ...;
+#   48|           0: [MethodCall] call to method GenericFn
+#   48|             -1: [ThisAccess] this access
+#   48|             0: [IntLiteral] 2
+#   51|         12: [ExprStmt] ...;
+#   51|           0: [ObjectCreation] object creation of type C1
+#   52|         13: [ExprStmt] ...;
+#   52|           0: [ObjectCreation] object creation of type C1
+#   52|             0: [IntLiteral] 1
+#   53|         14: [ExprStmt] ...;
+#   53|           0: [ObjectCreation] object creation of type C1
+#   53|             0: [IntLiteral] 1
+#   53|             1: [IntLiteral] 2
+#   56|         15: [LocalConstantDeclStmt] ... ...;
+#   56|           0: [LocalVariableDeclAndInitExpr] Int32 x = ...
+#   56|             0: [IntLiteral] 2
+#   56|             1: [LocalVariableAccess] access to local variable x
+#   56|           1: [LocalVariableDeclAndInitExpr] Int32 y = ...
+#   56|             0: [LocalVariableAccess] access to local variable x
+#   56|             1: [LocalVariableAccess] access to local variable y
+#   56|           2: [LocalVariableDeclAndInitExpr] Int32 z = ...
+#   56|             0: [FieldAccess] access to field field1
+#   56|               -1: [ThisAccess] this access
+#   56|             1: [LocalVariableAccess] access to local variable z
+#   56|           3: [LocalVariableDeclAndInitExpr] Int32 w = ...
+#   56|             0: [ArrayAccess] access to array element
+#   56|               -1: [ParameterAccess] access to parameter args
+#   56|               0: [IntLiteral] 0
+#   56|             1: [LocalVariableAccess] access to local variable w
+#   57|         16: [LocalConstantDeclStmt] ... ...;
+#   57|           0: [LocalVariableDeclAndInitExpr] Enumeration e = ...
+#   57|             0: [MemberConstantAccess] access to constant e1
+#   57|               -1: [TypeAccess] access to type Enumeration
+#   57|             1: [LocalVariableAccess] access to local variable e
+#   60|         17: [ExprStmt] ...;
+#   60|           0: [AssignExpr] ... = ...
+#   60|             0: [AddExpr] ... + ...
+#   60|               0: [PropertyCall] access to property property1
+#   60|                 -1: [ThisAccess] this access
+#   60|               1: [IntLiteral] 1
+#   60|             1: [PropertyCall] access to property property1
+#   60|               -1: [ThisAccess] this access
+#   63|         18: [LocalConstantDeclStmt] ... ...;
+#   63|           0: [LocalVariableDeclAndInitExpr] C1[] array = ...
+#   63|             0: [NullLiteral] null
+#   63|             1: [LocalVariableAccess] access to local variable array
+#   64|         19: [LocalConstantDeclStmt] ... ...;
+#   64|           0: [LocalVariableDeclAndInitExpr] Nullable<S1> nullable = ...
+#   64|             0: [NullLiteral] null
+#   64|             1: [LocalVariableAccess] access to local variable nullable
+#   67|         20: [LocalConstantDeclStmt] ... ...;
+#   67|           0: [LocalVariableDeclAndInitExpr] Action<Int32> m1 = ...
+#   67|             0: [ImplicitDelegateCreation] delegate creation of type Action<Int32>
+#   67|               0: [MethodAccess] access to method GenericFn
+#   67|                 -1: [ThisAccess] this access
+#   67|             1: [LocalVariableAccess] access to local variable m1
+#   70|     5: [Method] VariableTypeUse
+#-----|       2: (Parameters)
+#   70|         0: [Parameter] c1
+#   71|       4: [BlockStmt] {...}
+#   72|         0: [LocalConstantDeclStmt] ... ...;
+#   72|           0: [LocalVariableDeclAndInitExpr] C1 c2 = ...
+#   72|             0: [NullLiteral] null
+#   72|             1: [LocalVariableAccess] access to local variable c2
+#   75|     6: [Method] GenericFn
+#-----|       1: (TypeParameters)
+#   75|         0: [TypeParameter] T
+#-----|       2: (Parameters)
+#   75|         0: [Parameter] t
+#   75|       4: [BlockStmt] {...}
+#   78|   4: [Struct] S1
+#   80|     2: [Method] M
+#-----|       2: (Parameters)
+#   80|         0: [Parameter] ss
+#   81|       4: [BlockStmt] {...}
+#   82|         0: [TryStmt] try {...} ...
+#   83|           0: [BlockStmt] {...}
+#   84|             0: [LocalConstantDeclStmt] ... ...;
+#   84|               0: [LocalVariableDeclAndInitExpr] String timestamp = ...
+#   84|                 0: [MethodCall] call to method ToString
+#   84|                   -1: [PropertyCall] access to property Now
+#   84|                     -1: [TypeAccess] access to type DateTime
+#   84|                   0: [StringLiteral] "HH:mm:ss"
+#   84|                 1: [LocalVariableAccess] access to local variable timestamp
+#   86|           1: [SpecificCatchClause] catch (...) {...}
+#   86|             0: [LocalVariableDeclExpr] Exception e
+#   87|             1: [BlockStmt] {...}
+#   88|               0: [ForeachStmt] foreach (... ... in ...) ...
+#   88|                 0: [LocalVariableDeclExpr] S1 s
+#   88|                 1: [ParameterAccess] access to parameter ss
+#   89|                 2: [BlockStmt] {...}
+#   92|         1: [LocalConstantDeclStmt] ... ...;
+#   92|           0: [LocalVariableDeclAndInitExpr] Type temp = ...
+#   92|             0: [TypeofExpr] typeof(...)
+#   92|               0: [TypeAccess] access to type S1[]
+#   92|             1: [LocalVariableAccess] access to local variable temp
+#   93|         2: [ReturnStmt] return ...;
+#   93|           0: [ObjectCreation] object creation of type S1
+#   97|   5: [Class] A
+#   99|     2: [DelegateType] EventHandler
+#  101|     3: [Event] Click
+#  101|       1: [RemoveEventAccessor] remove_Click
+#-----|         2: (Parameters)
+#  101|           0: [Parameter] value
+#  101|       1: [AddEventAccessor] add_Click
+#-----|         2: (Parameters)
+#  101|           0: [Parameter] value
+#  103|     4: [Method] M
+#  104|       4: [BlockStmt] {...}
+#  105|         0: [ExprStmt] ...;
+#  105|           0: [AddEventExpr] ... += ...
+#  105|             0: [ImplicitDelegateCreation] delegate creation of type EventHandler
+#  105|               0: [MethodAccess] access to method M
+#  105|                 -1: [ThisAccess] this access
+#  105|             1: [EventAccess,EventCall] access to event Click
+#  105|               -1: [ThisAccess] this access
+#  106|         1: [LocalFunctionStmt] LocalFunction(...)
+#  106|           0: [LocalFunction] LocalFunction
+#  106|             4: [BlockStmt] {...}
+#  106|         2: [EmptyStmt] ;
+#  107|         3: [ExprStmt] ...;
+#  107|           0: [AddEventExpr] ... += ...
+#  107|             0: [ImplicitDelegateCreation] delegate creation of type EventHandler
+#  107|               0: [LocalFunctionAccess] access to local function LocalFunction
+#  107|                 -1: [ThisAccess] this access
+#  107|             1: [EventAccess,EventCall] access to event Click
+#  107|               -1: [ThisAccess] this access
+#  108|         4: [ExprStmt] ...;
+#  108|           0: [DelegateCall] delegate call
+#  108|             -1: [EventAccess,EventCall] access to event Click
+#  108|               -1: [ThisAccess] this access
+#  112|   6: [Interface] I1
+#  114|     1: [Method] M2
+#-----|       1: (TypeParameters)
+#  114|         0: [TypeParameter] T
+#  117|   7: [Interface] I2<>
+#-----|     0: (TypeParameters)
+#  117|       0: [TypeParameter] T
+#  119|   8: [Interface] I3
+#  121|   9: [Class] B<>
+#-----|     0: (TypeParameters)
+#  121|       0: [TypeParameter] T
+#  123|     3: [Method] M
+#  124|       4: [BlockStmt] {...}
+#  125|         0: [ExprStmt] ...;
+#  125|           0: [MethodCall] call to method M
+#  125|             -1: [BaseAccess] base access
+#  128|     4: [Method] M2
+#-----|       1: (TypeParameters)
+#  128|         0: [TypeParameter] T
+#  128|       4: [BlockStmt] {...}
+#  130|     5: [Struct] S<>
+#-----|       0: (TypeParameters)
+#  130|         0: [TypeParameter] T2
+#  132|     6: [Method] Tuple
+#  132|       4: [ThrowExpr] throw ...
+#  132|         0: [ObjectCreation] object creation of type Exception
+#  134|     7: [Indexer] Item
+#-----|       0: (Parameters)
+#  134|         0: [Parameter] a
+#  134|       2: [Getter] get_Item
+#-----|         2: (Parameters)
+#  134|           0: [Parameter] a
+#  134|         4: [BlockStmt] {...}
+#  134|           0: [ReturnStmt] return ...;
+#  134|             0: [DefaultValueExpr] default(...)
+#  134|               0: [TypeAccess] access to type B<A>
+#  137|   10: [Class] C
+#  139|     2: [Enum] E
+#  140|     3: [Method] Pointer
+#  140|       4: [ThrowExpr] throw ...
+#  140|         0: [ObjectCreation] object creation of type Exception
+#  140|           0: [MethodCall] call to method ToString
+#  140|             -1: [SizeofExpr] sizeof(..)
+#  140|               0: [TypeAccess] access to type E*
+#  143|   11: [Interface] I4
+#  145|     1: [Event] EH
+#  145|       1: [RemoveEventAccessor] remove_EH
+#-----|         2: (Parameters)
+#  145|           0: [Parameter] value
+#  145|       1: [AddEventAccessor] add_EH
+#-----|         2: (Parameters)
+#  145|           0: [Parameter] value
+#  146|     2: [Method] M
+#  147|     3: [Property] P
+#  147|       1: [Getter] get_P
+#  148|     4: [Indexer] Item
+#-----|       0: (Parameters)
+#  148|         0: [Parameter] eh
+#  148|       2: [Getter] get_Item
+#-----|         2: (Parameters)
+#  148|           0: [Parameter] eh
+#  151|   12: [Class] C4
+#  153|     2: [Event] EH
+#  153|       1: [AddEventAccessor] add_EH
+#-----|         2: (Parameters)
+#  153|           0: [Parameter] value
+#  153|         4: [BlockStmt] {...}
+#  153|       2: [RemoveEventAccessor] remove_EH
+#-----|         2: (Parameters)
+#  153|           0: [Parameter] value
+#  153|         4: [BlockStmt] {...}
+#  154|     3: [Method] M
+#  154|       4: [ThrowExpr] throw ...
+#  154|         0: [ObjectCreation] object creation of type Exception
+#  155|     4: [Property] P
+#  155|       1: [Getter] get_P
+#  155|         4: [ThrowExpr] throw ...
+#  155|           0: [ObjectCreation] object creation of type Exception
+#  156|     5: [Indexer] Item
+#-----|       0: (Parameters)
+#  156|         0: [Parameter] eh
+#  156|       2: [Getter] get_Item
+#-----|         2: (Parameters)
+#  156|           0: [Parameter] eh
+#  156|         4: [BlockStmt] {...}
+#  156|           0: [ReturnStmt] return ...;
+#  156|             0: [CastExpr] (...) ...
+#  156|               0: [ObjectCreation] object creation of type S1
+#  156|               1: [TypeAccess] access to type S1
+#  158|     6: [Class] Nested<>
+#-----|       0: (TypeParameters)
+#  158|         0: [TypeParameter] T
+#  160|       3: [Method] Create
+#  160|         4: [BlockStmt] {...}
+#  160|           0: [ReturnStmt] return ...;
+#  160|             0: [ObjectCreation] object creation of type Nested<>
+#  164|   13: [Class] C5
+#  166|     2: [Field] f
+#  166|       1: [AssignExpr] ... = ...
+#  166|         0: [MethodCall] call to method Create
+#  166|           -1: [TypeAccess] access to type Nested<I4>
+#  166|             -1: [TypeAccess] access to type C4
+#  166|         1: [FieldAccess] access to field f
+#  166|           -1: [ThisAccess] this access
+#  167|     3: [Field] c1
+#  169|     4: [Method] M
+#  170|       4: [BlockStmt] {...}
+#  171|         0: [LocalConstantDeclStmt] ... ...;
+#  171|           0: [LocalVariableDeclAndInitExpr] C1 c = ...
+#  171|             0: [ObjectCreation] object creation of type C1
+#  171|             1: [LocalVariableAccess] access to local variable c
+#  172|         1: [ExprStmt] ...;
+#  172|           0: [AssignExpr] ... = ...
+#  172|             0: [PropertyCall] access to property property1
+#  172|               -1: [LocalVariableAccess] access to local variable c
+#  172|             1: [PropertyCall] access to property property1
+#  172|               -1: [LocalVariableAccess] access to local variable c
+#  173|         2: [LocalConstantDeclStmt] ... ...;
+#  173|           0: [LocalVariableDeclAndInitExpr] C5 c5 = ...
+#  173|             0: [AsExpr] ... as ...
+#  173|               0: [ObjectCreation] object creation of type C5
+#  173|               1: [TypeAccess] access to type C5
+#  173|             1: [LocalVariableAccess] access to local variable c5
+#  174|         3: [ExprStmt] ...;
+#  174|           0: [AssignExpr] ... = ...
+#  174|             0: [IntLiteral] 0
+#  174|             1: [PropertyCall] access to property property1
+#  174|               -1: [FieldAccess] access to field c1
+#  174|                 -1: [LocalVariableAccess] access to local variable c5
+#  175|         4: [LocalConstantDeclStmt] ... ...;
+#  175|           0: [LocalVariableDeclAndInitExpr] Boolean temp = ...
+#  175|             0: [IsExpr] ... is ...
+#  175|               0: [LocalVariableAccess] access to local variable c5
+#  175|               1: [TypeAccessPatternExpr] access to type Nested<I4>
+#  175|             1: [LocalVariableAccess] access to local variable temp
+#  179|   14: [Class] C6
+#  181|     2: [ExplicitConversionOperator] explicit conversion
+#-----|       2: (Parameters)
+#  181|         0: [Parameter] c
+#-----|           0: (Attributes)
+#  181|             1: [Attribute] [My(...)]
+#  182|       4: [BlockStmt] {...}
+#  183|         0: [ReturnStmt] return ...;
+#  183|           0: [NullLiteral] null
+#  186|     3: [Method] M
+#  187|       4: [BlockStmt] {...}
+#  188|         0: [ReturnStmt] return ...;
+#  188|           0: [OperatorCall] call to operator explicit conversion
+#  188|             0: [ThisAccess] this access
+#  191|     4: [AddOperator] +
+#-----|       2: (Parameters)
+#  191|         0: [Parameter] x
+#  191|         1: [Parameter] y
+#  191|       4: [ParameterAccess] access to parameter x
+#  194|   15: [Class] MyAttribute
+#  196|   16: [Class] C7
+#  198|     2: [Method] M
+#  198|       4: [BlockStmt] {...}
+#  200|     3: [Method] M2
+#  201|       4: [BlockStmt] {...}
+#  202|         0: [ExprStmt] ...;
+#  202|           0: [MethodCall] call to method M
+#  202|             -1: [TypeAccess] access to type C7
+#  206|   17: [Class] C8
+#  208|     2: [Method] F
+#  209|       4: [BlockStmt] {...}
+#  210|         0: [LocalConstantDeclStmt] ... ...;
+#  210|           0: [LocalVariableDeclAndInitExpr] C8 c8a = ...
+#  210|             0: [NullLiteral] null
+#  210|             1: [LocalVariableAccess] access to local variable c8a
+#  211|         1: [IfStmt] if (...) ...
+#  211|           0: [IsExpr] ... is ...
+#  211|             0: [LocalVariableAccess] access to local variable c8a
+#  211|             1: [VariablePatternExpr] C8 c8b
+#  212|           1: [ExprStmt] ...;
+#  212|             0: [AssignExpr] ... = ...
+#  212|               0: [LocalVariableAccess] access to local variable c8b
+#  212|               1: [LocalVariableAccess] access to local variable c8a
+#  213|         2: [SwitchStmt] switch (...) {...}
+#  213|           0: [LocalVariableAccess] access to local variable c8a
+#  215|           0: [CaseStmt] case ...:
+#  215|             0: [VariablePatternExpr] C8 c8c
+#  215|             1: [NEExpr] ... != ...
+#  215|               0: [LocalVariableAccess] access to local variable c8c
+#  215|               1: [NullLiteral] null
+#  216|           1: [ExprStmt] ...;
+#  216|             0: [AssignExpr] ... = ...
+#  216|               0: [LocalVariableAccess] access to local variable c8c
+#  216|               1: [LocalVariableAccess] access to local variable c8a
+#  217|           2: [BreakStmt] break;

@@ -1,260 +1,88 @@
 enums.cs:
 #    5| [NamespaceDeclaration] namespace ... { ... }
-#-----| 1 -> [Enum] Color
-#-----| 2 -> [Enum] LongColor
-#-----| 3 -> [Enum] E
-#-----| 4 -> [Enum] ValueColor
-#-----| 5 -> [Enum] SparseColor
-#-----| 6 -> [Class] Test
-
-#    7| [Enum] Color
-#-----| 2 -> [Field] Red
-#-----| 3 -> [Field] Green
-#-----| 4 -> [Field] Blue
-
-#   10| [Field] Green
-
-#   10| [Field] Blue
-
-#   14| [Enum] LongColor
-#-----| 2 -> [Field] Red
-#-----| 3 -> [Field] Green
-#-----| 4 -> [Field] Blue
-
-#   18| [Field] Green
-
-#   19| [Field] Blue
-
-#   25| [Enum] ValueColor
-#-----| 2 -> [Field] OneRed
-#-----| 3 -> [Field] TwoGreen
-#-----| 4 -> [Field] FourBlue
-
-#   29| [Field] TwoGreen
-#-----| 1 -> [Field] TwoGreen
-
-#   29| [MemberConstantAccess] access to constant TwoGreen
-
-#   30| [Field] FourBlue
-#-----| 1 -> [Field] FourBlue
-
-#   30| [MemberConstantAccess] access to constant FourBlue
-
-#   34| [Enum] SparseColor
-#-----| 2 -> [Field] Red
-#-----| 3 -> [Field] Green
-#-----| 4 -> [Field] Blue
-#-----| 5 -> [Field] AnotherBlue
-
-#   38| [Field] Green
-#-----| 1 -> [Field] Green
-
-#   38| [MemberConstantAccess] access to constant Green
-
-#   39| [Field] Blue
-
-#   40| [Field] AnotherBlue
-#-----| 1 -> [Field] AnotherBlue
-
-#   40| [MemberConstantAccess] access to constant AnotherBlue
-
-#   44| [Class] Test
-#-----| 2 -> [Method] Main
-#-----| 3 -> [Method] StringFromColor
-
-#   47| [Method] Main
-#-----| 4 -> [BlockStmt] {...}
-
-#   48| [BlockStmt] {...}
-#-----| 0 -> [ExprStmt] ...;
-#-----| 1 -> [ExprStmt] ...;
-#-----| 2 -> [ExprStmt] ...;
-
-#   49| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method WriteLine
-
-#   49| [MethodCall] call to method WriteLine
-#-----| -1 -> [TypeAccess] access to type Console
-#-----| 0 -> [MethodCall] call to method StringFromColor
-
-#   49| [TypeAccess] access to type Console
-
-#   49| [MethodCall] call to method StringFromColor
-#-----| 0 -> [MemberConstantAccess] access to constant Red
-
-#   49| [MemberConstantAccess] access to constant Red
-#-----| -1 -> [TypeAccess] access to type SparseColor
-
-#   49| [TypeAccess] access to type SparseColor
-
-#   50| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method WriteLine
-
-#   50| [MethodCall] call to method WriteLine
-#-----| -1 -> [TypeAccess] access to type Console
-#-----| 0 -> [MethodCall] call to method StringFromColor
-
-#   50| [TypeAccess] access to type Console
-
-#   50| [MethodCall] call to method StringFromColor
-#-----| 0 -> [MemberConstantAccess] access to constant Green
-
-#   50| [MemberConstantAccess] access to constant Green
-#-----| -1 -> [TypeAccess] access to type SparseColor
-
-#   50| [TypeAccess] access to type SparseColor
-
-#   51| [ExprStmt] ...;
-#-----| 0 -> [MethodCall] call to method WriteLine
-
-#   51| [MethodCall] call to method WriteLine
-#-----| -1 -> [TypeAccess] access to type Console
-#-----| 0 -> [MethodCall] call to method StringFromColor
-
-#   51| [TypeAccess] access to type Console
-
-#   51| [MethodCall] call to method StringFromColor
-#-----| 0 -> [MemberConstantAccess] access to constant Blue
-
-#   51| [MemberConstantAccess] access to constant Blue
-#-----| -1 -> [TypeAccess] access to type SparseColor
-
-#   51| [TypeAccess] access to type SparseColor
-
-#   54| [Method] StringFromColor
-#-----| 2 -> (Parameters)
-#-----| 4 -> [BlockStmt] {...}
-
-#   54| [Parameter] c
-
-#   55| [BlockStmt] {...}
-#-----| 0 -> [SwitchStmt] switch (...) {...}
-
-#   56| [SwitchStmt] switch (...) {...}
-#-----| 0 -> [ParameterAccess] access to parameter c
-#-----| 0 -> [ConstCase] case ...:
-#-----| 1 -> [ReturnStmt] return ...;
-#-----| 2 -> [ConstCase] case ...:
-#-----| 3 -> [ReturnStmt] return ...;
-#-----| 4 -> [ConstCase] case ...:
-#-----| 5 -> [ReturnStmt] return ...;
-#-----| 6 -> [DefaultCase] default:
-#-----| 7 -> [ReturnStmt] return ...;
-
-#   56| [ParameterAccess] access to parameter c
-
-#   58| [ConstCase] case ...:
-#-----| 0 -> [ConstantPatternExpr,MemberConstantAccess] access to constant Red
-
-#   58| [ConstantPatternExpr,MemberConstantAccess] access to constant Red
-#-----| -1 -> [TypeAccess] access to type SparseColor
-
-#   58| [TypeAccess] access to type SparseColor
-
-#   58| [ReturnStmt] return ...;
-#-----| 0 -> [MethodCall] call to method Format
-
-#   58| [MethodCall] call to method Format
-#-----| -1 -> [TypeAccess] access to type String
-#-----| 0 -> [StringLiteral] "Red = {0}"
-#-----| 1 -> [CastExpr] (...) ...
-
-#   58| [TypeAccess] access to type String
-
-#   58| [StringLiteral] "Red = {0}"
-
-#   58| [CastExpr] (...) ...
-#-----| 0 -> [CastExpr] (...) ...
-
-#   58| [CastExpr] (...) ...
-#-----| 0 -> [ParameterAccess] access to parameter c
-#-----| 1 -> [TypeAccess] access to type Int32
-
-#   58| [ParameterAccess] access to parameter c
-
-#   58| [TypeAccess] access to type Int32
-
-#   59| [ConstCase] case ...:
-#-----| 0 -> [ConstantPatternExpr,MemberConstantAccess] access to constant Green
-
-#   59| [ConstantPatternExpr,MemberConstantAccess] access to constant Green
-#-----| -1 -> [TypeAccess] access to type SparseColor
-
-#   59| [TypeAccess] access to type SparseColor
-
-#   59| [ReturnStmt] return ...;
-#-----| 0 -> [MethodCall] call to method Format
-
-#   59| [MethodCall] call to method Format
-#-----| -1 -> [TypeAccess] access to type String
-#-----| 0 -> [StringLiteral] "Green = {0}"
-#-----| 1 -> [CastExpr] (...) ...
-
-#   59| [TypeAccess] access to type String
-
-#   59| [StringLiteral] "Green = {0}"
-
-#   59| [CastExpr] (...) ...
-#-----| 0 -> [CastExpr] (...) ...
-
-#   59| [CastExpr] (...) ...
-#-----| 0 -> [ParameterAccess] access to parameter c
-#-----| 1 -> [TypeAccess] access to type Int32
-
-#   59| [ParameterAccess] access to parameter c
-
-#   59| [TypeAccess] access to type Int32
-
-#   60| [ConstCase] case ...:
-#-----| 0 -> [ConstantPatternExpr,MemberConstantAccess] access to constant Blue
-
-#   60| [ConstantPatternExpr,MemberConstantAccess] access to constant Blue
-#-----| -1 -> [TypeAccess] access to type SparseColor
-
-#   60| [TypeAccess] access to type SparseColor
-
-#   60| [ReturnStmt] return ...;
-#-----| 0 -> [MethodCall] call to method Format
-
-#   60| [MethodCall] call to method Format
-#-----| -1 -> [TypeAccess] access to type String
-#-----| 0 -> [StringLiteral] "Blue = {0}"
-#-----| 1 -> [CastExpr] (...) ...
-
-#   60| [TypeAccess] access to type String
-
-#   60| [StringLiteral] "Blue = {0}"
-
-#   60| [CastExpr] (...) ...
-#-----| 0 -> [CastExpr] (...) ...
-
-#   60| [CastExpr] (...) ...
-#-----| 0 -> [ParameterAccess] access to parameter c
-#-----| 1 -> [TypeAccess] access to type Int32
-
-#   60| [ParameterAccess] access to parameter c
-
-#   60| [TypeAccess] access to type Int32
-
-#   61| [DefaultCase] default:
-
-#   61| [ReturnStmt] return ...;
-#-----| 0 -> [StringLiteral] "Invalid color"
-
-#   61| [StringLiteral] "Invalid color"
-
-#   10| [Field] Red
-
-#   17| [Field] Red
-
-#   23| [Enum] E
-
-#   28| [Field] OneRed
-#-----| 1 -> [Field] OneRed
-
-#   28| [MemberConstantAccess] access to constant OneRed
-
-#   37| [Field] Red
-
-#-----| (Parameters)
-#-----| 0 -> [Parameter] c
+#    7|   1: [Enum] Color
+#   10|     2: [Field] Red
+#   10|     3: [Field] Green
+#   10|     4: [Field] Blue
+#   14|   2: [Enum] LongColor
+#   17|     2: [Field] Red
+#   18|     3: [Field] Green
+#   19|     4: [Field] Blue
+#   23|   3: [Enum] E
+#   25|   4: [Enum] ValueColor
+#   28|     2: [Field] OneRed
+#   28|       1: [MemberConstantAccess] access to constant OneRed
+#   29|     3: [Field] TwoGreen
+#   29|       1: [MemberConstantAccess] access to constant TwoGreen
+#   30|     4: [Field] FourBlue
+#   30|       1: [MemberConstantAccess] access to constant FourBlue
+#   34|   5: [Enum] SparseColor
+#   37|     2: [Field] Red
+#   38|     3: [Field] Green
+#   38|       1: [MemberConstantAccess] access to constant Green
+#   39|     4: [Field] Blue
+#   40|     5: [Field] AnotherBlue
+#   40|       1: [MemberConstantAccess] access to constant AnotherBlue
+#   44|   6: [Class] Test
+#   47|     2: [Method] Main
+#   48|       4: [BlockStmt] {...}
+#   49|         0: [ExprStmt] ...;
+#   49|           0: [MethodCall] call to method WriteLine
+#   49|             -1: [TypeAccess] access to type Console
+#   49|             0: [MethodCall] call to method StringFromColor
+#   49|               0: [MemberConstantAccess] access to constant Red
+#   49|                 -1: [TypeAccess] access to type SparseColor
+#   50|         1: [ExprStmt] ...;
+#   50|           0: [MethodCall] call to method WriteLine
+#   50|             -1: [TypeAccess] access to type Console
+#   50|             0: [MethodCall] call to method StringFromColor
+#   50|               0: [MemberConstantAccess] access to constant Green
+#   50|                 -1: [TypeAccess] access to type SparseColor
+#   51|         2: [ExprStmt] ...;
+#   51|           0: [MethodCall] call to method WriteLine
+#   51|             -1: [TypeAccess] access to type Console
+#   51|             0: [MethodCall] call to method StringFromColor
+#   51|               0: [MemberConstantAccess] access to constant Blue
+#   51|                 -1: [TypeAccess] access to type SparseColor
+#   54|     3: [Method] StringFromColor
+#-----|       2: (Parameters)
+#   54|         0: [Parameter] c
+#   55|       4: [BlockStmt] {...}
+#   56|         0: [SwitchStmt] switch (...) {...}
+#   56|           0: [ParameterAccess] access to parameter c
+#   58|           0: [ConstCase] case ...:
+#   58|             0: [ConstantPatternExpr,MemberConstantAccess] access to constant Red
+#   58|               -1: [TypeAccess] access to type SparseColor
+#   58|           1: [ReturnStmt] return ...;
+#   58|             0: [MethodCall] call to method Format
+#   58|               -1: [TypeAccess] access to type String
+#   58|               0: [StringLiteral] "Red = {0}"
+#   58|               1: [CastExpr] (...) ...
+#   58|                 0: [CastExpr] (...) ...
+#   58|                   0: [ParameterAccess] access to parameter c
+#   58|                   1: [TypeAccess] access to type Int32
+#   59|           2: [ConstCase] case ...:
+#   59|             0: [ConstantPatternExpr,MemberConstantAccess] access to constant Green
+#   59|               -1: [TypeAccess] access to type SparseColor
+#   59|           3: [ReturnStmt] return ...;
+#   59|             0: [MethodCall] call to method Format
+#   59|               -1: [TypeAccess] access to type String
+#   59|               0: [StringLiteral] "Green = {0}"
+#   59|               1: [CastExpr] (...) ...
+#   59|                 0: [CastExpr] (...) ...
+#   59|                   0: [ParameterAccess] access to parameter c
+#   59|                   1: [TypeAccess] access to type Int32
+#   60|           4: [ConstCase] case ...:
+#   60|             0: [ConstantPatternExpr,MemberConstantAccess] access to constant Blue
+#   60|               -1: [TypeAccess] access to type SparseColor
+#   60|           5: [ReturnStmt] return ...;
+#   60|             0: [MethodCall] call to method Format
+#   60|               -1: [TypeAccess] access to type String
+#   60|               0: [StringLiteral] "Blue = {0}"
+#   60|               1: [CastExpr] (...) ...
+#   60|                 0: [CastExpr] (...) ...
+#   60|                   0: [ParameterAccess] access to parameter c
+#   60|                   1: [TypeAccess] access to type Int32
+#   61|           6: [DefaultCase] default:
+#   61|           7: [ReturnStmt] return ...;
+#   61|             0: [StringLiteral] "Invalid color"
