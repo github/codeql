@@ -1,7 +1,8 @@
 /**
  * @name Incorrect conversion between integer types
- * @description Converting the result of strconv.Atoi, strconv.ParseInt and strconv.ParseUint
- *              to integer types of smaller bit size can produce unexpected values.
+ * @description Converting the result of `strconv.Atoi`, `strconv.ParseInt`,
+ *              and `strconv.ParseUint` to integer types of smaller bit size
+ *              can produce unexpected values.
  * @kind path-problem
  * @problem.severity warning
  * @id go/incorrect-integer-conversion
@@ -19,7 +20,7 @@ import DataFlow::PathGraph
  * is true, unsigned otherwise) with `bitSize` bits.
  */
 float getMaxIntValue(int bitSize, boolean isSigned) {
-  bitSize in [8, 16, 32, 64] and
+  bitSize in [8, 16, 32] and
   (
     isSigned = true and result = 2.pow(bitSize - 1) - 1
     or
@@ -33,15 +34,15 @@ float getMaxIntValue(int bitSize, boolean isSigned) {
  * architecture-dependent.
  */
 private predicate isIncorrectIntegerConversion(int sourceBitSize, int sinkBitSize) {
-  sourceBitSize in [0, 16, 32, 64] and
-  sinkBitSize in [0, 8, 16, 32] and
-  not (sourceBitSize = 0 and sinkBitSize = 0) and
-  exists(int source, int sink |
-    (if sourceBitSize = 0 then source = 64 else source = sourceBitSize) and
-    if sinkBitSize = 0 then sink = 32 else sink = sinkBitSize
-  |
-    source > sink
-  )
+  sourceBitSize in [16, 32, 64] and
+  sinkBitSize in [8, 16, 32] and
+  sourceBitSize > sinkBitSize
+  or
+  sourceBitSize = 0 and
+  sinkBitSize in [8, 16, 32]
+  or
+  sourceBitSize = 64 and
+  sinkBitSize = 0
 }
 
 /**
@@ -57,15 +58,24 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
   ConversionWithoutBoundsCheckConfig() {
     sourceIsSigned in [true, false] and
     isIncorrectIntegerConversion(sourceBitSize, sinkBitSize) and
-    this =
-      sourceBitSize.toString() + sourceIsSigned.toString() + sinkBitSize.toString() +
-        "ConversionWithoutBoundsCheckConfig"
+    this = "ConversionWithoutBoundsCheckConfig" + sourceBitSize + sourceIsSigned + sinkBitSize
   }
 
+  int getSourceBitSize() { result = sourceBitSize }
+
   override predicate isSource(DataFlow::Node source) {
-    exists(ParserCall pc, int bitSize | source = pc.getResult(0) |
-      (if pc.targetIsSigned() then sourceIsSigned = true else sourceIsSigned = false) and
-      (if pc.getTargetBitSize() = 0 then bitSize = 0 else bitSize = pc.getTargetBitSize()) and
+    exists(DataFlow::CallNode c, IntegerParser::Range ip, int bitSize |
+      c.getTarget() = ip and source = c.getResult(0)
+    |
+      (
+        if ip.getResultType(0) instanceof SignedIntegerType
+        then sourceIsSigned = true
+        else sourceIsSigned = false
+      ) and
+      (
+        bitSize = ip.getTargetBitSize() or
+        bitSize = ip.getTargetBitSizeInput().getNode(c).getIntValue()
+      ) and
       // `bitSize` could be any value between 0 and 64, but we can round
       // it up to the nearest size of an integer type without changing
       // behaviour.
@@ -76,16 +86,14 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
   /**
    * Holds if `sink` is a typecast to an integer type with size `bitSize` (where
    * 0 represents architecture-dependent) and the expression being typecast is
-   * not also in a right-shift expression.
+   * not also in a right-shift expression. We allow this case because it is
+   * a common pattern to serialise `byte(v)`, `byte(v >> 8)`, and so on.
    */
   predicate isSink(DataFlow::TypeCastNode sink, int bitSize) {
     exists(IntegerType integerType | sink.getType().getUnderlyingType() = integerType |
       bitSize = integerType.getSize()
       or
-      (
-        integerType instanceof IntType or
-        integerType instanceof UintType
-      ) and
+      not exists(integerType.getSize()) and
       bitSize = 0
     ) and
     not exists(ShrExpr shrExpr |
@@ -131,12 +139,18 @@ class UpperBoundCheckGuard extends DataFlow::BarrierGuard, DataFlow::RelationalC
   }
 }
 
+/** Gets a string describing the size of the integer parsed. */
+string describeBitSize(int bitSize) {
+  if bitSize != 0
+  then bitSize in [8, 16, 32, 64] and result = "a " + bitSize + "-bit integer"
+  else result = "an integer with architecture-dependent bit size"
+}
+
 from
   DataFlow::PathNode source, DataFlow::PathNode sink, ConversionWithoutBoundsCheckConfig cfg,
-  ParserCall pc
-where cfg.hasFlowPath(source, sink) and pc.getResult(0) = source.getNode()
+  DataFlow::CallNode call
+where cfg.hasFlowPath(source, sink) and call.getResult(0) = source.getNode()
 select source.getNode(), source, sink,
-  "Incorrect conversion of " + pc.getBitSizeString() + " from " + pc.getParserName() +
-    " to a lower bit size type " +
-    sink.getNode().(DataFlow::TypeCastNode).getType().getUnderlyingType().getName() +
-    " without an upper bound check."
+  "Incorrect conversion of " + describeBitSize(cfg.getSourceBitSize()) + " from " +
+    call.getTarget().getQualifiedName() + " to a lower bit size type " +
+    sink.getNode().getType().getUnderlyingType().getName() + " without an upper bound check."
