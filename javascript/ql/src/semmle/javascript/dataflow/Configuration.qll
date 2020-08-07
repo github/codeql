@@ -1019,10 +1019,16 @@ private predicate storeStep(
   isAdditionalStoreStep(pred, succ, prop, cfg) and
   summary = PathSummary::level()
   or
-  exists(Function f, DataFlow::Node mid | not f.isAsync() |
+  exists(Function f, DataFlow::Node mid, DataFlow::Node invk |
+    not f.isAsync() and invk = succ
+    or
+    // store in an immediately awaited function call
+    f.isAsync() and
+    invk = getAwaitOperand(succ)
+  |
     // `f` stores its parameter `pred` in property `prop` of a value that flows back to the caller,
     // and `succ` is an invocation of `f`
-    reachableFromInput(f, succ, pred, mid, cfg, summary) and
+    reachableFromInput(f, invk, pred, mid, cfg, summary) and
     (
       returnedPropWrite(f, _, prop, mid)
       or
@@ -1030,28 +1036,19 @@ private predicate storeStep(
         isAdditionalStoreStep(mid, base, prop, cfg)
       )
       or
-      succ instanceof DataFlow::NewNode and
+      invk instanceof DataFlow::NewNode and
       receiverPropWrite(f, prop, mid)
     )
   )
-  or
-  // store in an immediately awaited function call
-  exists(Function f, DataFlow::Node mid | f.isAsync() |
-    // `f` stores its parameter `pred` in property `prop` of a value that flows back to the caller,
-    // and `succ` is an invocation of `f`
-    exists(AwaitExpr await, DataFlow::Node operand |
-      operand = await.getOperand().getUnderlyingValue().flow() and
-      succ.asExpr() = await
-    |
-      reachableFromInput(f, operand, pred, mid, cfg, summary) and
-      (
-        returnedPropWrite(f, _, prop, mid)
-        or
-        exists(DataFlow::SourceNode base | base.flowsToExpr(f.getAReturnedExpr()) |
-          isAdditionalStoreStep(mid, base, prop, cfg)
-        )
-      )
-    )
+}
+
+/**
+ * Gets a dataflow-node for the operand of the await-expression `await`.
+ */
+private DataFlow::Node getAwaitOperand(DataFlow::Node await) {
+  exists(AwaitExpr awaitExpr |
+    result = awaitExpr.getOperand().getUnderlyingValue().flow() and
+    await.asExpr() = awaitExpr
   )
 }
 
@@ -1147,20 +1144,15 @@ private predicate loadStep(
   isAdditionalLoadStep(pred, succ, prop, cfg) and
   summary = PathSummary::level()
   or
-  exists(Function f, DataFlow::Node read | not f.isAsync() |
-    parameterPropRead(f, succ, pred, prop, read, cfg) and
+  exists(Function f, DataFlow::Node read, DataFlow::Node invk |
+    not f.isAsync() and invk = succ
+    or
+    // load from an immediately awaited function call
+    f.isAsync() and
+    invk = getAwaitOperand(succ)
+  |
+    parameterPropRead(f, invk, pred, prop, read, cfg) and
     reachesReturn(f, read, cfg, summary)
-  )
-  or
-  // load from an immediately awaited function call
-  exists(Function f, DataFlow::Node read | f.isAsync() |
-    exists(AwaitExpr await, DataFlow::Node operand |
-      operand = await.getOperand().getUnderlyingValue().flow() and
-      succ.asExpr() = await
-    |
-      parameterPropRead(f, operand, pred, prop, read, cfg) and
-      reachesReturn(f, read, cfg, summary)
-    )
   )
 }
 
