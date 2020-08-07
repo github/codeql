@@ -31,7 +31,7 @@ queries contained in this repository either on the command line or using the VS 
 
 Note that the [lgtm.com](https://github.com/github/codeql-go/tree/lgtm.com) branch of this
 repository corresponds to the version of the queries that is currently deployed on LGTM.com.
-The [master](https://github.com/github/codeql-go/tree/master) branch may contain changes that
+The [main](https://github.com/github/codeql-go/tree/main) branch may contain changes that
 have not been deployed yet, so you may need to upgrade databases downloaded from LGTM.com before
 running queries on them.
 
