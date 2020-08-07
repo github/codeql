@@ -1,3 +1,11 @@
+| missing | async.js:1:2:1:2 | source | async.js:8:15:8:27 | await async() |
+| missing | async.js:1:2:1:2 | source | async.js:26:12:26:12 | e |
+| missing | async.js:1:2:1:2 | source | async.js:26:12:26:12 | e |
+| missing | async.js:1:2:1:2 | source | async.js:27:17:27:17 | e |
+| missing | async.js:2:16:2:23 | "source" | async.js:8:15:8:27 | await async() |
+| missing | async.js:2:16:2:23 | "source" | async.js:26:12:26:12 | e |
+| missing | async.js:2:16:2:23 | "source" | async.js:26:12:26:12 | e |
+| missing | async.js:2:16:2:23 | "source" | async.js:27:17:27:17 | e |
 | missing | callback.js:17:15:17:23 | "source2" | callback.js:8:16:8:20 | xs[i] |
 | missing | callback.js:17:15:17:23 | "source2" | callback.js:12:16:12:16 | x |
 | missing | callback.js:17:15:17:23 | "source2" | callback.js:12:16:12:16 | x |
@@ -53,3 +61,7 @@
 | missing | tst.js:2:17:2:22 | "src1" | tst.js:27:22:27:24 | elt |
 | missing | tst.js:2:17:2:22 | "src1" | tst.js:27:22:27:24 | elt |
 | missing | tst.js:2:17:2:22 | "src1" | tst.js:28:20:28:22 | elt |
+| spurious | async.js:1:2:1:2 | source | async.js:7:14:7:20 | async() |
+| spurious | async.js:1:2:1:2 | source | async.js:8:21:8:27 | async() |
+| spurious | async.js:2:16:2:23 | "source" | async.js:7:14:7:20 | async() |
+| spurious | async.js:2:16:2:23 | "source" | async.js:8:21:8:27 | async() |
