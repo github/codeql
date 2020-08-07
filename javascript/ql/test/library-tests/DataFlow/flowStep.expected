@@ -17,10 +17,12 @@
 | sources.js:1:6:1:6 | x | sources.js:1:11:1:11 | x |
 | sources.js:1:6:1:11 | x => x | sources.js:1:5:1:12 | (x => x) |
 | sources.js:1:11:1:11 | x | sources.js:1:1:1:12 | new (x => x) |
+| sources.js:1:11:1:11 | x | sources.js:1:6:1:11 | return of anonymous function |
 | sources.js:3:2:5:1 | functio ... x+19;\\n} | sources.js:3:1:5:2 | (functi ... +19;\\n}) |
 | sources.js:3:11:3:11 | x | sources.js:3:11:3:11 | x |
 | sources.js:3:11:3:11 | x | sources.js:4:10:4:10 | x |
 | sources.js:4:10:4:13 | x+19 | sources.js:3:1:5:6 | (functi ... \\n})(23) |
+| sources.js:4:10:4:13 | x+19 | sources.js:3:2:5:1 | return of anonymous function |
 | sources.js:5:4:5:5 | 23 | sources.js:3:11:3:11 | x |
 | sources.js:9:14:9:18 | array | sources.js:9:14:9:18 | array |
 | sources.js:9:14:9:18 | array | sources.js:10:19:10:23 | array |
@@ -89,7 +91,9 @@
 | tst.js:16:13:16:13 | a | tst.js:16:13:16:13 | a |
 | tst.js:16:13:16:13 | a | tst.js:18:12:18:12 | a |
 | tst.js:18:12:18:12 | a | tst.js:16:1:20:9 | (functi ... ("arg") |
+| tst.js:18:12:18:12 | a | tst.js:16:2:20:1 | return of function f |
 | tst.js:19:10:19:11 | "" | tst.js:16:1:20:9 | (functi ... ("arg") |
+| tst.js:19:10:19:11 | "" | tst.js:16:2:20:1 | return of function f |
 | tst.js:20:4:20:8 | "arg" | tst.js:16:13:16:13 | a |
 | tst.js:22:5:22:25 | readFileSync | tst.js:23:1:23:12 | readFileSync |
 | tst.js:22:7:22:18 | readFileSync | tst.js:22:5:22:25 | readFileSync |
@@ -102,11 +106,13 @@
 | tst.js:28:2:28:1 | x | tst.js:29:3:29:3 | x |
 | tst.js:28:2:29:3 | () =>\\n  x | tst.js:28:1:30:1 | (() =>\\n ... ables\\n) |
 | tst.js:29:3:29:3 | x | tst.js:28:1:30:3 | (() =>\\n ... les\\n)() |
+| tst.js:29:3:29:3 | x | tst.js:28:2:29:3 | return of anonymous function |
 | tst.js:32:1:32:0 | x | tst.js:33:10:33:10 | x |
 | tst.js:32:1:34:1 | functio ... ables\\n} | tst.js:32:10:32:10 | g |
 | tst.js:32:10:32:10 | g | tst.js:35:1:35:1 | g |
 | tst.js:32:10:32:10 | g | tst.js:60:1:60:1 | g |
 | tst.js:32:10:32:10 | g | tst.js:62:4:62:4 | g |
+| tst.js:33:10:33:10 | x | tst.js:32:1:34:1 | return of function g |
 | tst.js:37:5:42:1 | o | tst.js:43:1:43:1 | o |
 | tst.js:37:5:42:1 | o | tst.js:44:1:44:1 | o |
 | tst.js:37:5:42:1 | o | tst.js:61:3:61:3 | o |
@@ -142,6 +148,7 @@
 | tst.js:90:15:90:15 | o | tst.js:90:4:90:11 | { r: z } |
 | tst.js:90:15:90:15 | o | tst.js:90:4:90:15 | { r: z } = o |
 | tst.js:91:10:91:18 | x + y + z | tst.js:87:1:96:2 | (functi ... r: 0\\n}) |
+| tst.js:91:10:91:18 | x + y + z | tst.js:87:2:92:1 | return of anonymous function |
 | tst.js:92:4:96:1 | {\\n  p:  ...  r: 0\\n} | tst.js:87:11:87:24 | { p: x, ...o } |
 | tst.js:98:2:103:1 | functio ...  + z;\\n} | tst.js:98:1:103:2 | (functi ... + z;\\n}) |
 | tst.js:98:11:98:24 | rest | tst.js:99:15:99:18 | rest |
@@ -156,6 +163,7 @@
 | tst.js:101:13:101:16 | rest | tst.js:101:3:101:9 | [ , z ] |
 | tst.js:101:13:101:16 | rest | tst.js:101:3:101:16 | [ , z ] = rest |
 | tst.js:102:10:102:18 | x + y + z | tst.js:98:1:103:17 | (functi ... 3, 0 ]) |
+| tst.js:102:10:102:18 | x + y + z | tst.js:98:2:103:1 | return of anonymous function |
 | tst.js:103:4:103:16 | [ 19, 23, 0 ] | tst.js:98:11:98:24 | [ x, ...rest ] |
 | tst.js:105:1:105:1 | x | tst.js:105:1:105:6 | x ?? y |
 | tst.js:105:6:105:6 | y | tst.js:105:1:105:6 | x ?? y |

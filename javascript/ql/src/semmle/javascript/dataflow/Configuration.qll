@@ -982,8 +982,8 @@ private predicate appendStep(
 private predicate flowThroughCall(
   DataFlow::Node input, DataFlow::Node output, DataFlow::Configuration cfg, PathSummary summary
 ) {
-  exists(Function f, DataFlow::ValueNode ret |
-    ret.asExpr() = f.getAReturnedExpr() and
+  exists(Function f, DataFlow::FunctionReturnNode ret |
+    ret.getFunction() = f and
     (calls(output, f) or callsBound(output, f, _)) and // Do not consider partial calls
     reachableFromInput(f, output, input, ret, cfg, summary) and
     not isBarrierEdge(cfg, ret, output) and
@@ -1623,6 +1623,9 @@ class MidPathNode extends PathNode, MkMidNode {
     or
     // Skip the exceptional return on functions, as this highlights the entire function.
     nd = any(DataFlow::FunctionNode f).getExceptionalReturn()
+    or
+    // Skip the special return node for functions, as this highlights the entire function (and the returned expr is the previous node).
+    nd = any(DataFlow::FunctionNode f).getReturnNode()
     or
     // Skip the synthetic 'this' node, as a ThisExpr will be the next node anyway
     nd = DataFlow::thisNode(_)

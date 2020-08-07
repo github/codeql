@@ -97,7 +97,7 @@
 			return e;
 		}
 	}
-	var foo = returnsRejected(new Promise((resolve, reject) => reject(source)));
+	var foo = await returnsRejected(new Promise((resolve, reject) => reject(source)));
 	sink(foo); // NOT OK!
 	
 	new Promise((resolve, reject) => reject("BLA")).catch(x => {return source}).then(x => sink(x)); // NOT OK

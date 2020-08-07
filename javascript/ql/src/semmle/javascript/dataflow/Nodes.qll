@@ -491,6 +491,16 @@ class FunctionNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   DataFlow::ExceptionalFunctionReturnNode getExceptionalReturn() {
     DataFlow::exceptionalFunctionReturnNode(result, astNode)
   }
+
+  /**
+   * Gets the data flow node representing the value returned from this function.
+   * 
+   * Note that this differs from `getAReturn()`, in that every function has exactly
+   * one canonical return node, but may have multiple (or zero) returned expressions.
+   * The result of `getAReturn()` is always a predecessor of `getReturnNode()`
+   * in the data-flow graph.
+   */
+  DataFlow::FunctionReturnNode getReturnNode() { DataFlow::functionReturnNode(result, astNode) }
 }
 
 /**

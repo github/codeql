@@ -213,14 +213,15 @@ private module CachedSteps {
 
   /**
    * Holds if there is a flow step from `pred` to `succ` through:
-   * - returning a value from a function call, or
+   * - returning a value from a function call (from the special `FunctionReturnNode`), or
    * - throwing an exception out of a function call, or
    * - the receiver flowing out of a constructor call.
    */
   cached
   predicate returnStep(DataFlow::Node pred, DataFlow::Node succ) {
+    // Note: FlowSteps::CachedSteps::returnStep/2 has copy-paste children
     exists(Function f | calls(succ, f) or callsBound(succ, f, _) |
-      returnExpr(f, pred, _)
+      DataFlow::functionReturnNode(pred, f)
       or
       succ instanceof DataFlow::NewNode and
       DataFlow::thisNode(pred, f)
