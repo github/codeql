@@ -513,83 +513,92 @@ def test_len_if():
   if with_len:
     pass
 
-# # object.__length_hint__(self)
-# # object.__getitem__(self, key)
-# class With_getitem:
+# object.__length_hint__(self)
+class With_length_hint:
 
-#   def __getitem__(self, key):
-#     OK()
-#     return "" # edit to match type
+  def __length_hint__(self):
+    OK()
+    return 0
 
-# def test_getitem():
-#   with_getitem = With_getitem()
-#   getitem(with_getitem) # edit to effect call
+def test_length_hint():
+  import operator
+  with_length_hint = With_length_hint()
+  operator.length_hint(with_length_hint)
 
-# # object.__setitem__(self, key, value)
-# class With_setitem:
+# object.__getitem__(self, key)
+class With_getitem:
 
-#   def __setitem__(self, key, value):
-#     OK()
-#     return "" # edit to match type
+  def __getitem__(self, key):
+    OK()
+    return ""
 
-# def test_setitem():
-#   with_setitem = With_setitem()
-#   setitem(with_setitem) # edit to effect call
+def test_getitem():
+  with_getitem = With_getitem()
+  with_getitem[0]
 
-# # object.__delitem__(self, key)
-# class With_delitem:
+# object.__setitem__(self, key, value)
+class With_setitem:
 
-#   def __delitem__(self, key):
-#     OK()
-#     return "" # edit to match type
+  def __setitem__(self, key, value):
+    OK()
 
-# def test_delitem():
-#   with_delitem = With_delitem()
-#   delitem(with_delitem) # edit to effect call
+def test_setitem():
+  with_setitem = With_setitem()
+  with_setitem[0] = ""
 
-# # object.__missing__(self, key)
-# class With_missing:
+# object.__delitem__(self, key)
+class With_delitem:
 
-#   def __missing__(self, key):
-#     OK()
-#     return "" # edit to match type
+  def __delitem__(self, key):
+    OK()
 
-# def test_missing():
-#   with_missing = With_missing()
-#   missing(with_missing) # edit to effect call
+def test_delitem():
+  with_delitem = With_delitem()
+  del with_delitem[0]
 
-# # object.__iter__(self)
-# class With_iter:
+# object.__missing__(self, key)
+class With_missing(dict):
 
-#   def __iter__(self):
-#     OK()
-#     return "" # edit to match type
+  def __missing__(self, key):
+    OK()
+    return ""
 
-# def test_iter():
-#   with_iter = With_iter()
-#   iter(with_iter) # edit to effect call
+def test_missing():
+  with_missing = With_missing()
+  with_missing[""]
 
-# # object.__reversed__(self)
-# class With_reversed:
+# object.__iter__(self)
+class With_iter:
 
-#   def __reversed__(self):
-#     OK()
-#     return "" # edit to match type
+  def __iter__(self):
+    OK()
+    return [].__iter__()
 
-# def test_reversed():
-#   with_reversed = With_reversed()
-#   reversed(with_reversed) # edit to effect call
+def test_iter():
+  with_iter = With_iter()
+  [x for x in with_iter]
 
-# # object.__contains__(self, item)
-# class With_contains:
+# object.__reversed__(self)
+class With_reversed:
 
-#   def __contains__(self, item):
-#     OK()
-#     return "" # edit to match type
+  def __reversed__(self):
+    OK()
+    return [].__iter__
 
-# def test_contains():
-#   with_contains = With_contains()
-#   contains(with_contains) # edit to effect call
+def test_reversed():
+  with_reversed = With_reversed()
+  reversed(with_reversed)
+
+# object.__contains__(self, item)
+class With_contains:
+
+  def __contains__(self, item):
+    OK()
+    return True
+
+def test_contains():
+  with_contains = With_contains()
+  0 in with_contains
 
 
 # # 3.3.8. Emulating numeric types
