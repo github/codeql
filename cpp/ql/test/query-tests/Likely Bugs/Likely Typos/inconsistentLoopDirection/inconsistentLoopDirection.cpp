@@ -179,7 +179,7 @@ void FalseNegativeTestCases()
     for (int i = 100; i > 0; i ++ ) {}  // BUG
 }
 
-void IntendedOverflow()
+void IntendedOverflow(unsigned char p)
 {
     const unsigned char m = 10;
     unsigned char i;
@@ -195,4 +195,7 @@ void IntendedOverflow()
 
     for (s = 63; s < 64; s--) {} // BAD (signed numbers don't wrap at 0 / at all)
     for (s = m + 1; s < m; s--) {} // BAD (never runs)
+
+    for (i = p - 1; i < p; i--) {} // GOOD
+    for (s = p - 1; s < p; s--) {} // BAD [NOT DETECTED]
 }
