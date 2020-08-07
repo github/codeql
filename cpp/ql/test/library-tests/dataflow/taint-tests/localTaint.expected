@@ -417,6 +417,7 @@
 | stl.cpp:239:15:239:15 | ref arg (__range) | stl.cpp:239:15:239:15 | (__range) |  |
 | stl.cpp:239:15:239:15 | s | stl.cpp:239:15:239:15 | (__range) |  |
 | stl.cpp:239:15:239:15 | s | stl.cpp:239:15:239:15 | (__range) |  |
+| stl.cpp:239:15:239:15 | s | stl.cpp:239:15:239:15 | call to operator* | TAINT |
 | stl.cpp:243:33:243:33 | ref arg s | stl.cpp:243:50:243:50 | s |  |
 | stl.cpp:243:33:243:33 | ref arg s | stl.cpp:247:16:247:16 | s |  |
 | stl.cpp:243:35:243:39 | call to begin | stl.cpp:243:44:243:45 | it |  |
@@ -438,6 +439,7 @@
 | stl.cpp:247:16:247:16 | ref arg (__range) | stl.cpp:247:16:247:16 | (__range) |  |
 | stl.cpp:247:16:247:16 | s | stl.cpp:247:16:247:16 | (__range) |  |
 | stl.cpp:247:16:247:16 | s | stl.cpp:247:16:247:16 | (__range) |  |
+| stl.cpp:247:16:247:16 | s | stl.cpp:247:16:247:16 | call to operator* | TAINT |
 | stl.cpp:251:28:251:33 | call to source | stl.cpp:251:28:251:36 | call to basic_string | TAINT |
 | stl.cpp:251:28:251:36 | call to basic_string | stl.cpp:252:22:252:28 | const_s |  |
 | stl.cpp:252:22:252:22 | call to begin | stl.cpp:252:22:252:22 | (__begin) |  |
@@ -450,6 +452,61 @@
 | stl.cpp:252:22:252:22 | ref arg (__begin) | stl.cpp:252:22:252:22 | (__begin) |  |
 | stl.cpp:252:22:252:28 | const_s | stl.cpp:252:22:252:22 | (__range) |  |
 | stl.cpp:252:22:252:28 | const_s | stl.cpp:252:22:252:22 | (__range) |  |
+| stl.cpp:252:22:252:28 | const_s | stl.cpp:252:22:252:22 | call to operator* | TAINT |
+| stl.cpp:288:43:288:49 | source1 | stl.cpp:292:21:292:27 | source1 |  |
+| stl.cpp:288:43:288:49 | source1 | stl.cpp:306:33:306:39 | source1 |  |
+| stl.cpp:292:21:292:27 | source1 | stl.cpp:292:21:292:28 | call to vector | TAINT |
+| stl.cpp:292:21:292:28 | call to vector | stl.cpp:294:14:294:14 | v |  |
+| stl.cpp:292:21:292:28 | call to vector | stl.cpp:298:38:298:38 | v |  |
+| stl.cpp:292:21:292:28 | call to vector | stl.cpp:298:55:298:55 | v |  |
+| stl.cpp:292:21:292:28 | call to vector | stl.cpp:302:15:302:15 | v |  |
+| stl.cpp:294:14:294:14 | call to begin | stl.cpp:294:14:294:14 | (__begin) |  |
+| stl.cpp:294:14:294:14 | call to begin | stl.cpp:294:14:294:14 | (__begin) |  |
+| stl.cpp:294:14:294:14 | call to begin | stl.cpp:294:14:294:14 | (__begin) |  |
+| stl.cpp:294:14:294:14 | call to end | stl.cpp:294:14:294:14 | (__end) |  |
+| stl.cpp:294:14:294:14 | call to operator* | stl.cpp:295:8:295:8 | x |  |
+| stl.cpp:294:14:294:14 | ref arg (__begin) | stl.cpp:294:14:294:14 | (__begin) |  |
+| stl.cpp:294:14:294:14 | ref arg (__begin) | stl.cpp:294:14:294:14 | (__begin) |  |
+| stl.cpp:294:14:294:14 | ref arg (__begin) | stl.cpp:294:14:294:14 | (__begin) |  |
+| stl.cpp:294:14:294:14 | ref arg (__range) | stl.cpp:294:14:294:14 | (__range) |  |
+| stl.cpp:294:14:294:14 | v | stl.cpp:294:14:294:14 | (__range) |  |
+| stl.cpp:294:14:294:14 | v | stl.cpp:294:14:294:14 | (__range) |  |
+| stl.cpp:294:14:294:14 | v | stl.cpp:294:14:294:14 | call to operator* | TAINT |
+| stl.cpp:298:38:298:38 | ref arg v | stl.cpp:298:55:298:55 | v |  |
+| stl.cpp:298:38:298:38 | ref arg v | stl.cpp:302:15:302:15 | v |  |
+| stl.cpp:298:40:298:44 | call to begin | stl.cpp:298:49:298:50 | it |  |
+| stl.cpp:298:40:298:44 | call to begin | stl.cpp:298:66:298:67 | it |  |
+| stl.cpp:298:40:298:44 | call to begin | stl.cpp:299:9:299:10 | it |  |
+| stl.cpp:298:55:298:55 | ref arg v | stl.cpp:298:55:298:55 | v |  |
+| stl.cpp:298:55:298:55 | ref arg v | stl.cpp:302:15:302:15 | v |  |
+| stl.cpp:298:66:298:67 | ref arg it | stl.cpp:298:49:298:50 | it |  |
+| stl.cpp:298:66:298:67 | ref arg it | stl.cpp:298:66:298:67 | it |  |
+| stl.cpp:298:66:298:67 | ref arg it | stl.cpp:299:9:299:10 | it |  |
+| stl.cpp:302:15:302:15 | call to begin | stl.cpp:302:15:302:15 | (__begin) |  |
+| stl.cpp:302:15:302:15 | call to begin | stl.cpp:302:15:302:15 | (__begin) |  |
+| stl.cpp:302:15:302:15 | call to begin | stl.cpp:302:15:302:15 | (__begin) |  |
+| stl.cpp:302:15:302:15 | call to end | stl.cpp:302:15:302:15 | (__end) |  |
+| stl.cpp:302:15:302:15 | call to operator* | stl.cpp:303:8:303:8 | x |  |
+| stl.cpp:302:15:302:15 | ref arg (__begin) | stl.cpp:302:15:302:15 | (__begin) |  |
+| stl.cpp:302:15:302:15 | ref arg (__begin) | stl.cpp:302:15:302:15 | (__begin) |  |
+| stl.cpp:302:15:302:15 | ref arg (__begin) | stl.cpp:302:15:302:15 | (__begin) |  |
+| stl.cpp:302:15:302:15 | ref arg (__range) | stl.cpp:302:15:302:15 | (__range) |  |
+| stl.cpp:302:15:302:15 | v | stl.cpp:302:15:302:15 | (__range) |  |
+| stl.cpp:302:15:302:15 | v | stl.cpp:302:15:302:15 | (__range) |  |
+| stl.cpp:302:15:302:15 | v | stl.cpp:302:15:302:15 | call to operator* | TAINT |
+| stl.cpp:306:33:306:39 | source1 | stl.cpp:306:33:306:40 | call to vector | TAINT |
+| stl.cpp:306:33:306:40 | call to vector | stl.cpp:307:21:307:27 | const_v |  |
+| stl.cpp:307:21:307:21 | call to begin | stl.cpp:307:21:307:21 | (__begin) |  |
+| stl.cpp:307:21:307:21 | call to begin | stl.cpp:307:21:307:21 | (__begin) |  |
+| stl.cpp:307:21:307:21 | call to begin | stl.cpp:307:21:307:21 | (__begin) |  |
+| stl.cpp:307:21:307:21 | call to end | stl.cpp:307:21:307:21 | (__end) |  |
+| stl.cpp:307:21:307:21 | call to operator* | stl.cpp:308:8:308:8 | x |  |
+| stl.cpp:307:21:307:21 | ref arg (__begin) | stl.cpp:307:21:307:21 | (__begin) |  |
+| stl.cpp:307:21:307:21 | ref arg (__begin) | stl.cpp:307:21:307:21 | (__begin) |  |
+| stl.cpp:307:21:307:21 | ref arg (__begin) | stl.cpp:307:21:307:21 | (__begin) |  |
+| stl.cpp:307:21:307:27 | const_v | stl.cpp:307:21:307:21 | (__range) |  |
+| stl.cpp:307:21:307:27 | const_v | stl.cpp:307:21:307:21 | (__range) |  |
+| stl.cpp:307:21:307:27 | const_v | stl.cpp:307:21:307:21 | call to operator* | TAINT |
 | structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
 | structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
 | structlikeclass.cpp:5:7:5:7 | this | structlikeclass.cpp:5:7:5:7 | constructor init of field v [pre-this] |  |
