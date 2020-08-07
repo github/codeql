@@ -477,17 +477,8 @@ private module AsyncReturnSteps {
         succ = f.getReturnNode()
         or
         // exceptional return
-        // Note: partially copy-paste from FlowSteps::localExceptionStep/2
         prop = errorProp() and
-        exists(Expr expr |
-          expr = any(ThrowStmt throw).getExpr() and
-          pred = expr.flow()
-          or
-          DataFlow::exceptionalInvocationReturnNode(pred, expr)
-        |
-          f.getFunction() = expr.getContainer() and
-          succ = f.getReturnNode() // returns a rejected promise - therefore using the ordinary return node.
-        )
+        localExceptionStepWithAsyncFlag(pred, succ, true)
       )
     }
   }

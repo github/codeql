@@ -61,15 +61,29 @@ predicate localFlowStep(
  * Holds if an exception thrown from `pred` can propagate locally to `succ`.
  */
 predicate localExceptionStep(DataFlow::Node pred, DataFlow::Node succ) {
-  // Note: FlowSteps::localExceptionStep/2 has copy-paste children
+  localExceptionStepWithAsyncFlag(pred, succ, false)
+}
+
+/**
+ * Holds if an exception thrown from `pred` can propagate locally to `succ`.
+ *
+ * The `async` flag is true if the successor
+ */
+predicate localExceptionStepWithAsyncFlag(DataFlow::Node pred, DataFlow::Node succ, boolean async) {
   exists(Expr expr |
     expr = any(ThrowStmt throw).getExpr() and
     pred = expr.flow()
     or
     DataFlow::exceptionalInvocationReturnNode(pred, expr)
   |
+    async = false and
     succ = expr.getExceptionTarget() and
     not succ = any(DataFlow::FunctionNode f | f.getFunction().isAsync()).getExceptionalReturn()
+    or
+    async = true and
+    exists(DataFlow::FunctionNode f | f.getExceptionalReturn() = expr.getExceptionTarget() |
+      succ = f.getReturnNode() // returns a rejected promise - therefore using the ordinary return node.
+    )
   )
 }
 
