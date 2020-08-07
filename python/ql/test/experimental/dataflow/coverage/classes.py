@@ -601,589 +601,627 @@ def test_contains():
   0 in with_contains
 
 
-# # 3.3.8. Emulating numeric types
-# # object.__add__(self, other)
-# class With_add:
+# 3.3.8. Emulating numeric types
+# object.__add__(self, other)
+class With_add:
 
-#   def __add__(self, other):
-#     OK()
-#     return self
+  def __add__(self, other):
+    OK()
+    return self
 
-# def test_add():
-#   with_add = With_add()
-#   with_add + with_add
+def test_add():
+  with_add = With_add()
+  with_add + with_add
 
-# # object.__sub__(self, other)
-# class With_sub:
+# object.__sub__(self, other)
+class With_sub:
 
-#   def __sub__(self, other):
-#     OK()
-#     return "" # edit to match type
+  def __sub__(self, other):
+    OK()
+    return self
 
-# def test_sub():
-#   with_sub = With_sub()
-#   sub(with_sub) # edit to effect call
+def test_sub():
+  with_sub = With_sub()
+  with_sub - with_sub
 
-# # object.__mul__(self, other)
-# class With_mul:
+# object.__mul__(self, other)
+class With_mul:
 
-#   def __mul__(self, other):
-#     OK()
-#     return "" # edit to match type
+  def __mul__(self, other):
+    OK()
+    return self
 
-# def test_mul():
-#   with_mul = With_mul()
-#   mul(with_mul) # edit to effect call
+def test_mul():
+  with_mul = With_mul()
+  with_mul * with_mul
 
-# # object.__matmul__(self, other)
-# class With_matmul:
+# object.__matmul__(self, other)
+class With_matmul:
 
-#   def __matmul__(self, other):
-#     OK()
-#     return "" # edit to match type
+  def __matmul__(self, other):
+    OK()
+    return self
 
-# def test_matmul():
-#   with_matmul = With_matmul()
-#   matmul(with_matmul) # edit to effect call
+def test_matmul():
+  with_matmul = With_matmul()
+  with_matmul @ with_matmul
 
-# # object.__truediv__(self, other)
-# class With_truediv:
+# object.__truediv__(self, other)
+class With_truediv:
 
-#   def __truediv__(self, other):
-#     OK()
-#     return "" # edit to match type
+  def __truediv__(self, other):
+    OK()
+    return self
 
-# def test_truediv():
-#   with_truediv = With_truediv()
-#   truediv(with_truediv) # edit to effect call
+def test_truediv():
+  with_truediv = With_truediv()
+  with_truediv / with_truediv
 
-# # object.__floordiv__(self, other)
-# class With_floordiv:
+# object.__floordiv__(self, other)
+class With_floordiv:
 
-#   def __floordiv__(self, other):
-#     OK()
-#     return "" # edit to match type
+  def __floordiv__(self, other):
+    OK()
+    return self
 
-# def test_floordiv():
-#   with_floordiv = With_floordiv()
-#   floordiv(with_floordiv) # edit to effect call
+def test_floordiv():
+  with_floordiv = With_floordiv()
+  with_floordiv // with_floordiv
 
-# # object.__mod__(self, other)
-# class With_mod:
+# object.__mod__(self, other)
+class With_mod:
 
-#   def __mod__(self, other):
-#     OK()
-#     return "" # edit to match type
+  def __mod__(self, other):
+    OK()
+    return self
 
-# def test_mod():
-#   with_mod = With_mod()
-#   mod(with_mod) # edit to effect call
+def test_mod():
+  with_mod = With_mod()
+  with_mod % with_mod
 
-# # object.__divmod__(self, other)
-# class With_divmod:
+# object.__divmod__(self, other)
+class With_divmod:
 
-#   def __divmod__(self, other):
-#     OK()
-#     return "" # edit to match type
+  def __divmod__(self, other):
+    OK()
+    return self
 
-# def test_divmod():
-#   with_divmod = With_divmod()
-#   divmod(with_divmod) # edit to effect call
+def test_divmod():
+  with_divmod = With_divmod()
+  divmod(with_divmod, with_divmod)
 
-# # object.__pow__(self, other[, modulo])
-# class With_pow:
+# object.__pow__(self, other[, modulo])
+class With_pow:
 
-#   def __pow__(self, other):
-#     OK()
-#     return "" # edit to match type
+  def __pow__(self, other):
+    OK()
+    return self
 
-# def test_pow():
-#   with_pow = With_pow()
-#   pow(with_pow) # edit to effect call
+def test_pow():
+  with_pow = With_pow()
+  pow(with_pow, with_pow)
 
-# # object.__lshift__(self, other)
-# class With_lshift:
+def test_pow_op():
+  with_pow = With_pow()
+  with_pow ** with_pow
 
-#   def __lshift__(self, other):
-#     OK()
-#     return "" # edit to match type
+# object.__lshift__(self, other)
+class With_lshift:
 
-# def test_lshift():
-#   with_lshift = With_lshift()
-#   lshift(with_lshift) # edit to effect call
+  def __lshift__(self, other):
+    OK()
+    return self
 
-# # object.__rshift__(self, other)
-# class With_rshift:
+def test_lshift():
+  with_lshift = With_lshift()
+  with_lshift << with_lshift
 
-#   def __rshift__(self, other):
-#     OK()
-#     return "" # edit to match type
+# object.__rshift__(self, other)
+class With_rshift:
 
-# def test_rshift():
-#   with_rshift = With_rshift()
-#   rshift(with_rshift) # edit to effect call
+  def __rshift__(self, other):
+    OK()
+    return self
 
-# # object.__and__(self, other)
-# class With_and:
+def test_rshift():
+  with_rshift = With_rshift()
+  with_rshift >> with_rshift
 
-#   def __and__(self, other):
-#     OK()
-#     return "" # edit to match type
+# object.__and__(self, other)
+class With_and:
 
-# def test_and():
-#   with_and = With_and()
-#   with_and & with_and
+  def __and__(self, other):
+    OK()
+    return self
 
-# # object.__xor__(self, other)
-# class With_xor:
+def test_and():
+  with_and = With_and()
+  with_and & with_and
 
-#   def __xor__(self, other):
-#     OK()
-#     return "" # edit to match type
+# object.__xor__(self, other)
+class With_xor:
 
-# def test_xor():
-#   with_xor = With_xor()
-#   xor(with_xor) # edit to effect call
+  def __xor__(self, other):
+    OK()
+    return self
 
-# # object.__or__(self, other)
-# class With_or:
+def test_xor():
+  with_xor = With_xor()
+  with_xor ^ with_xor
 
-#   def __or__(self, other):
-#     OK()
-#     return "" # edit to match type
+# object.__or__(self, other)
+class With_or:
 
-# def test_or():
-#   with_or = With_or()
-#   with_or | with_or
+  def __or__(self, other):
+    OK()
+    return self
 
-# # object.__radd__(self, other)
-# class With_radd:
+def test_or():
+  with_or = With_or()
+  with_or | with_or
 
-#   def __radd__(self, other):
-#     OK()
-#     return "" # edit to match type
+# object.__radd__(self, other)
+class With_radd:
 
-# def test_radd():
-#   with_radd = With_radd()
-#   radd(with_radd) # edit to effect call
+  def __radd__(self, other):
+    OK()
+    return self
 
-# # object.__rsub__(self, other)
-# class With_rsub:
+def test_radd():
+  with_radd = With_radd()
+  f"" + with_radd
 
-#   def __rsub__(self, other):
-#     OK()
-#     return "" # edit to match type
+# object.__rsub__(self, other)
+class With_rsub:
 
-# def test_rsub():
-#   with_rsub = With_rsub()
-#   rsub(with_rsub) # edit to effect call
+  def __rsub__(self, other):
+    OK()
+    return self
 
-# # object.__rmul__(self, other)
-# class With_rmul:
+def test_rsub():
+  with_rsub = With_rsub()
+  f"" - with_rsub
 
-#   def __rmul__(self, other):
-#     OK()
-#     return "" # edit to match type
+# object.__rmul__(self, other)
+class With_rmul:
 
-# def test_rmul():
-#   with_rmul = With_rmul()
-#   rmul(with_rmul) # edit to effect call
+  def __rmul__(self, other):
+    OK()
+    return self
 
-# # object.__rmatmul__(self, other)
-# class With_rmatmul:
+def test_rmul():
+  with_rmul = With_rmul()
+  f"" * with_rmul
 
-#   def __rmatmul__(self, other):
-#     OK()
-#     return "" # edit to match type
+# object.__rmatmul__(self, other)
+class With_rmatmul:
 
-# def test_rmatmul():
-#   with_rmatmul = With_rmatmul()
-#   rmatmul(with_rmatmul) # edit to effect call
+  def __rmatmul__(self, other):
+    OK()
+    return self
 
-# # object.__rtruediv__(self, other)
-# class With_rtruediv:
+def test_rmatmul():
+  with_rmatmul = With_rmatmul()
+  f"" @ with_rmatmul
 
-#   def __rtruediv__(self, other):
-#     OK()
-#     return "" # edit to match type
+# object.__rtruediv__(self, other)
+class With_rtruediv:
 
-# def test_rtruediv():
-#   with_rtruediv = With_rtruediv()
-#   rtruediv(with_rtruediv) # edit to effect call
+  def __rtruediv__(self, other):
+    OK()
+    return self
 
-# # object.__rfloordiv__(self, other)
-# class With_rfloordiv:
+def test_rtruediv():
+  with_rtruediv = With_rtruediv()
+  f"" / with_rtruediv
 
-#   def __rfloordiv__(self, other):
-#     OK()
-#     return "" # edit to match type
+# object.__rfloordiv__(self, other)
+class With_rfloordiv:
 
-# def test_rfloordiv():
-#   with_rfloordiv = With_rfloordiv()
-#   rfloordiv(with_rfloordiv) # edit to effect call
+  def __rfloordiv__(self, other):
+    OK()
+    return self
 
-# # object.__rmod__(self, other)
-# class With_rmod:
+def test_rfloordiv():
+  with_rfloordiv = With_rfloordiv()
+  f"" // with_rfloordiv
 
-#   def __rmod__(self, other):
-#     OK()
-#     return "" # edit to match type
+# object.__rmod__(self, other)
+class With_rmod:
 
-# def test_rmod():
-#   with_rmod = With_rmod()
-#   rmod(with_rmod) # edit to effect call
+  def __rmod__(self, other):
+    OK()
+    return self
 
-# # object.__rdivmod__(self, other)
-# class With_rdivmod:
+def test_rmod():
+  with_rmod = With_rmod()
+  {} % with_rmod
 
-#   def __rdivmod__(self, other):
-#     OK()
-#     return "" # edit to match type
+# object.__rdivmod__(self, other)
+class With_rdivmod:
 
-# def test_rdivmod():
-#   with_rdivmod = With_rdivmod()
-#   rdivmod(with_rdivmod) # edit to effect call
+  def __rdivmod__(self, other):
+    OK()
+    return self
 
-# # object.__rpow__(self, other[, modulo])
-# class With_rpow:
+def test_rdivmod():
+  with_rdivmod = With_rdivmod()
+  divmod(f"", with_rdivmod)
 
-#   def __rpow__(self, other):
-#     OK()
-#     return "" # edit to match type
+# object.__rpow__(self, other[, modulo])
+class With_rpow:
 
-# def test_rpow():
-#   with_rpow = With_rpow()
-#   rpow(with_rpow) # edit to effect call
+  def __rpow__(self, other):
+    OK()
+    return self
 
-# # object.__rlshift__(self, other)
-# class With_rlshift:
+def test_rpow():
+  with_rpow = With_rpow()
+  pow(f"", with_rpow)
 
-#   def __rlshift__(self, other):
-#     OK()
-#     return "" # edit to match type
+def test_rpow_op():
+  with_rpow = With_rpow()
+  f"" ** with_rpow
 
-# def test_rlshift():
-#   with_rlshift = With_rlshift()
-#   rlshift(with_rlshift) # edit to effect call
+# object.__rlshift__(self, other)
+class With_rlshift:
 
-# # object.__rrshift__(self, other)
-# class With_rrshift:
+  def __rlshift__(self, other):
+    OK()
+    return self
 
-#   def __rrshift__(self, other):
-#     OK()
-#     return "" # edit to match type
+def ftest_rlshift(): # TypeError: unsupported operand type(s) for >>: 'str' and 'With_rlshift'
+  with_rlshift = With_rlshift()
+  f"" >> with_rlshift
 
-# def test_rrshift():
-#   with_rrshift = With_rrshift()
-#   rrshift(with_rrshift) # edit to effect call
+# object.__rrshift__(self, other)
+class With_rrshift:
 
-# # object.__rand__(self, other)
-# class With_rand:
+  def __rrshift__(self, other):
+    OK()
+    return self
 
-#   def __rand__(self, other):
-#     OK()
-#     return "" # edit to match type
+def ftest_rrshift(): # TypeError: unsupported operand type(s) for <<: 'str' and 'With_rrshift'
+  with_rrshift = With_rrshift()
+  f"" << with_rrshift
 
-# def test_rand():
-#   with_rand = With_rand()
-#   rand(with_rand) # edit to effect call
+# object.__rand__(self, other)
+class With_rand:
 
-# # object.__rxor__(self, other)
-# class With_rxor:
+  def __rand__(self, other):
+    OK()
+    return self
 
-#   def __rxor__(self, other):
-#     OK()
-#     return "" # edit to match type
+def test_rand():
+  with_rand = With_rand()
+  f"" & with_rand
 
-# def test_rxor():
-#   with_rxor = With_rxor()
-#   rxor(with_rxor) # edit to effect call
+# object.__rxor__(self, other)
+class With_rxor:
 
-# # object.__ror__(self, other)
-# class With_ror:
+  def __rxor__(self, other):
+    OK()
+    return self
 
-#   def __ror__(self, other):
-#     OK()
-#     return "" # edit to match type
+def test_rxor():
+  with_rxor = With_rxor()
+  f"" ^ with_rxor
 
-# def test_ror():
-#   with_ror = With_ror()
-#   ror(with_ror) # edit to effect call
+# object.__ror__(self, other)
+class With_ror:
 
-# # object.__iadd__(self, other)
-# class With_iadd:
+  def __ror__(self, other):
+    OK()
+    return self
 
-#   def __iadd__(self, other):
-#     OK()
-#     return "" # edit to match type
+def test_ror():
+  with_ror = With_ror()
+  f"" | with_ror
 
-# def test_iadd():
-#   with_iadd = With_iadd()
-#   iadd(with_iadd) # edit to effect call
+# object.__iadd__(self, other)
+class With_iadd:
 
-# # object.__isub__(self, other)
-# class With_isub:
+  def __iadd__(self, other):
+    OK()
+    return self
 
-#   def __isub__(self, other):
-#     OK()
-#     return "" # edit to match type
+def test_iadd():
+  with_iadd = With_iadd()
+  with_iadd += with_iadd
 
-# def test_isub():
-#   with_isub = With_isub()
-#   isub(with_isub) # edit to effect call
+# object.__isub__(self, other)
+class With_isub:
 
-# # object.__imul__(self, other)
-# class With_imul:
+  def __isub__(self, other):
+    OK()
+    return self
 
-#   def __imul__(self, other):
-#     OK()
-#     return "" # edit to match type
+def test_isub():
+  with_isub = With_isub()
+  with_isub -= with_isub
 
-# def test_imul():
-#   with_imul = With_imul()
-#   imul(with_imul) # edit to effect call
+# object.__imul__(self, other)
+class With_imul:
 
-# # object.__imatmul__(self, other)
-# class With_imatmul:
+  def __imul__(self, other):
+    OK()
+    return self
 
-#   def __imatmul__(self, other):
-#     OK()
-#     return "" # edit to match type
+def test_imul():
+  with_imul = With_imul()
+  with_imul *= with_imul
 
-# def test_imatmul():
-#   with_imatmul = With_imatmul()
-#   imatmul(with_imatmul) # edit to effect call
+# object.__imatmul__(self, other)
+class With_imatmul:
 
-# # object.__itruediv__(self, other)
-# class With_itruediv:
+  def __imatmul__(self, other):
+    OK()
+    return self
 
-#   def __itruediv__(self, other):
-#     OK()
-#     return "" # edit to match type
+def test_imatmul():
+  with_imatmul = With_imatmul()
+  with_imatmul @= with_imatmul
 
-# def test_itruediv():
-#   with_itruediv = With_itruediv()
-#   itruediv(with_itruediv) # edit to effect call
+# object.__itruediv__(self, other)
+class With_itruediv:
 
-# # object.__ifloordiv__(self, other)
-# class With_ifloordiv:
+  def __itruediv__(self, other):
+    OK()
+    return self
 
-#   def __ifloordiv__(self, other):
-#     OK()
-#     return "" # edit to match type
+def test_itruediv():
+  with_itruediv = With_itruediv()
+  with_itruediv /= with_itruediv
 
-# def test_ifloordiv():
-#   with_ifloordiv = With_ifloordiv()
-#   ifloordiv(with_ifloordiv) # edit to effect call
+# object.__ifloordiv__(self, other)
+class With_ifloordiv:
 
-# # object.__imod__(self, other)
-# class With_imod:
+  def __ifloordiv__(self, other):
+    OK()
+    return self
 
-#   def __imod__(self, other):
-#     OK()
-#     return "" # edit to match type
+def test_ifloordiv():
+  with_ifloordiv = With_ifloordiv()
+  with_ifloordiv //= with_ifloordiv
 
-# def test_imod():
-#   with_imod = With_imod()
-#   imod(with_imod) # edit to effect call
+# object.__imod__(self, other)
+class With_imod:
 
-# # object.__ipow__(self, other[, modulo])
-# class With_ipow:
+  def __imod__(self, other):
+    OK()
+    return self
 
-#   def __ipow__(self, other):
-#     OK()
-#     return "" # edit to match type
+def test_imod():
+  with_imod = With_imod()
+  with_imod %= with_imod
 
-# def test_ipow():
-#   with_ipow = With_ipow()
-#   ipow(with_ipow) # edit to effect call
+# object.__ipow__(self, other[, modulo])
+class With_ipow:
 
-# # object.__ilshift__(self, other)
-# class With_ilshift:
+  def __ipow__(self, other):
+    OK()
+    return self
 
-#   def __ilshift__(self, other):
-#     OK()
-#     return "" # edit to match type
+def test_ipow():
+  with_ipow = With_ipow()
+  with_ipow **= with_ipow
 
-# def test_ilshift():
-#   with_ilshift = With_ilshift()
-#   ilshift(with_ilshift) # edit to effect call
+# object.__ilshift__(self, other)
+class With_ilshift:
 
-# # object.__irshift__(self, other)
-# class With_irshift:
+  def __ilshift__(self, other):
+    OK()
+    return self
 
-#   def __irshift__(self, other):
-#     OK()
-#     return "" # edit to match type
+def test_ilshift():
+  with_ilshift = With_ilshift()
+  with_ilshift <<= with_ilshift
 
-# def test_irshift():
-#   with_irshift = With_irshift()
-#   irshift(with_irshift) # edit to effect call
+# object.__irshift__(self, other)
+class With_irshift:
 
-# # object.__iand__(self, other)
-# class With_iand:
+  def __irshift__(self, other):
+    OK()
+    return self
 
-#   def __iand__(self, other):
-#     OK()
-#     return "" # edit to match type
+def test_irshift():
+  with_irshift = With_irshift()
+  with_irshift >>= with_irshift
 
-# def test_iand():
-#   with_iand = With_iand()
-#   iand(with_iand) # edit to effect call
+# object.__iand__(self, other)
+class With_iand:
 
-# # object.__ixor__(self, other)
-# class With_ixor:
+  def __iand__(self, other):
+    OK()
+    return self
 
-#   def __ixor__(self, other):
-#     OK()
-#     return "" # edit to match type
+def test_iand():
+  with_iand = With_iand()
+  with_iand &= with_iand
 
-# def test_ixor():
-#   with_ixor = With_ixor()
-#   ixor(with_ixor) # edit to effect call
+# object.__ixor__(self, other)
+class With_ixor:
 
-# # object.__ior__(self, other)
-# class With_ior:
+  def __ixor__(self, other):
+    OK()
+    return self
 
-#   def __ior__(self, other):
-#     OK()
-#     return "" # edit to match type
+def test_ixor():
+  with_ixor = With_ixor()
+  with_ixor ^= with_ixor
 
-# def test_ior():
-#   with_ior = With_ior()
-#   ior(with_ior) # edit to effect call
+# object.__ior__(self, other)
+class With_ior:
 
-# # object.__neg__(self)
-# class With_neg:
+  def __ior__(self, other):
+    OK()
+    return self
 
-#   def __neg__(self):
-#     OK()
-#     return "" # edit to match type
+def test_ior():
+  with_ior = With_ior()
+  with_ior |= with_ior
 
-# def test_neg():
-#   with_neg = With_neg()
-#   neg(with_neg) # edit to effect call
+# object.__neg__(self)
+class With_neg:
 
-# # object.__pos__(self)
-# class With_pos:
+  def __neg__(self):
+    OK()
+    return self
 
-#   def __pos__(self):
-#     OK()
-#     return "" # edit to match type
+def test_neg():
+  with_neg = With_neg()
+  -with_neg
 
-# def test_pos():
-#   with_pos = With_pos()
-#   pos(with_pos) # edit to effect call
+# object.__pos__(self)
+class With_pos:
 
-# # object.__abs__(self)
-# class With_abs:
+  def __pos__(self):
+    OK()
+    return self
 
-#   def __abs__(self):
-#     OK()
-#     return "" # edit to match type
+def test_pos():
+  with_pos = With_pos()
+  +with_pos
 
-# def test_abs():
-#   with_abs = With_abs()
-#   abs(with_abs) # edit to effect call
+# object.__abs__(self)
+class With_abs:
 
-# # object.__invert__(self)
-# class With_invert:
+  def __abs__(self):
+    OK()
+    return self
 
-#   def __invert__(self):
-#     OK()
-#     return "" # edit to match type
+def test_abs():
+  with_abs = With_abs()
+  abs(with_abs)
 
-# def test_invert():
-#   with_invert = With_invert()
-#   invert(with_invert) # edit to effect call
+# object.__invert__(self)
+class With_invert:
 
-# # object.__complex__(self)
-# class With_complex:
+  def __invert__(self):
+    OK()
+    return self
 
-#   def __complex__(self):
-#     OK()
-#     return "" # edit to match type
+def test_invert():
+  with_invert = With_invert()
+  ~with_invert
 
-# def test_complex():
-#   with_complex = With_complex()
-#   complex(with_complex) # edit to effect call
+# object.__complex__(self)
+class With_complex:
 
-# # object.__int__(self)
-# class With_int:
+  def __complex__(self):
+    OK()
+    return 0j
 
-#   def __int__(self):
-#     OK()
-#     return "" # edit to match type
+def test_complex():
+  with_complex = With_complex()
+  complex(with_complex)
 
-# def test_int():
-#   with_int = With_int()
-#   int(with_int) # edit to effect call
+# object.__int__(self)
+class With_int:
 
-# # object.__float__(self)
-# class With_float:
+  def __int__(self):
+    OK()
+    return 0
 
-#   def __float__(self):
-#     OK()
-#     return "" # edit to match type
+def test_int():
+  with_int = With_int()
+  int(with_int)
 
-# def test_float():
-#   with_float = With_float()
-#   float(with_float) # edit to effect call
+# object.__float__(self)
+class With_float:
 
-# # object.__index__(self)
-# class With_index:
+  def __float__(self):
+    OK()
+    return 0.0
 
-#   def __index__(self):
-#     OK()
-#     return "" # edit to match type
+def test_float():
+  with_float = With_float()
+  float(with_float)
 
-# def test_index():
-#   with_index = With_index()
-#   index(with_index) # edit to effect call
+# object.__index__(self)
+class With_index:
 
-# # object.__round__(self[, ndigits])
-# class With_round:
+  def __index__(self):
+    OK()
+    return 0
 
-#   def __round__(self):
-#     OK()
-#     return "" # edit to match type
+def test_index():
+  import operator
+  with_index = With_index()
+  operator.index(with_index)
 
-# def test_round():
-#   with_round = With_round()
-#   round(with_round) # edit to effect call
+# make With_index subscriptable to test slicing
 
-# # object.__trunc__(self)
-# class With_trunc:
+def test_index_bin():
+  with_index = With_index()
+  bin(with_index)
 
-#   def __trunc__(self):
-#     OK()
-#     return "" # edit to match type
+def test_index_hex():
+  with_index = With_index()
+  hex(with_index)
 
-# def test_trunc():
-#   with_trunc = With_trunc()
-#   trunc(with_trunc) # edit to effect call
+def test_index_oct():
+  with_index = With_index()
+  oct(with_index)
 
-# # object.__floor__(self)
-# class With_floor:
+def test_index_int():
+  with_index = With_index()
+  int(with_index)
 
-#   def __floor__(self):
-#     OK()
-#     return "" # edit to match type
+def test_index_float():
+  with_index = With_index()
+  float(with_index)
 
-# def test_floor():
-#   with_floor = With_floor()
-#   floor(with_floor) # edit to effect call
+def test_index_complex():
+  with_index = With_index()
+  complex(with_index)
 
-# # object.__ceil__(self)
-# class With_ceil:
+# object.__round__(self[, ndigits])
+class With_round:
 
-#   def __ceil__(self):
-#     OK()
-#     return "" # edit to match type
+  def __round__(self):
+    OK()
+    return 0
 
-# def test_ceil():
-#   with_ceil = With_ceil()
-#   ceil(with_ceil) # edit to effect call
+def test_round():
+  with_round = With_round()
+  round(with_round)
+
+# object.__trunc__(self)
+class With_trunc:
+
+  def __trunc__(self):
+    OK()
+    return 0
+
+def test_trunc():
+  with_trunc = With_trunc()
+  import math
+  math.trunc(with_trunc) # edit to effect call
+
+# object.__floor__(self)
+class With_floor:
+
+  def __floor__(self):
+    OK()
+    return 0
+
+def test_floor():
+  with_floor = With_floor()
+  import math
+  math.floor(with_floor) # edit to effect call
+
+# object.__ceil__(self)
+class With_ceil:
+
+  def __ceil__(self):
+    OK()
+    return 0
+
+def test_ceil():
+  with_ceil = With_ceil()
+  import math
+  math.ceil(with_ceil) # edit to effect call
 
 
 # # 3.3.9. With Statement Context Managers
