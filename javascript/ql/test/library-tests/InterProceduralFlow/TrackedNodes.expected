@@ -6,6 +6,15 @@
 | missing | async.js:2:16:2:23 | "source" | async.js:26:12:26:12 | e |
 | missing | async.js:2:16:2:23 | "source" | async.js:26:12:26:12 | e |
 | missing | async.js:2:16:2:23 | "source" | async.js:27:17:27:17 | e |
+| missing | async.js:73:22:73:22 | x | async.js:80:14:80:36 | (await  ... ce))).p |
+| missing | async.js:74:12:76:5 | {\\n      p: x\\n    } | async.js:80:14:80:34 | (await  ... urce))) |
+| missing | async.js:74:12:76:5 | {\\n      p: x\\n    } | async.js:80:15:80:33 | await (foo(source)) |
+| missing | async.js:79:16:79:23 | "source" | async.js:80:14:80:36 | (await  ... ce))).p |
+| missing | async.js:79:16:79:23 | "source" | async.js:92:15:92:30 | await (getP(o3)) |
+| missing | async.js:84:12:84:17 | base.p | async.js:92:15:92:30 | await (getP(o3)) |
+| missing | async.js:88:12:88:17 | base.q | async.js:93:15:93:30 | await (getQ(o3)) |
+| missing | async.js:96:18:96:25 | "source" | async.js:101:15:101:27 | await readP() |
+| missing | async.js:98:12:98:16 | obj.x | async.js:101:15:101:27 | await readP() |
 | missing | callback.js:17:15:17:23 | "source2" | callback.js:8:16:8:20 | xs[i] |
 | missing | callback.js:17:15:17:23 | "source2" | callback.js:12:16:12:16 | x |
 | missing | callback.js:17:15:17:23 | "source2" | callback.js:12:16:12:16 | x |

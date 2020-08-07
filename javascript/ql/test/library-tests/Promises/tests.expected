@@ -222,6 +222,7 @@ flow
 | flow.js:2:15:2:22 | "source" | flow.js:79:20:79:20 | x |
 | flow.js:2:15:2:22 | "source" | flow.js:84:21:84:21 | e |
 | flow.js:2:15:2:22 | "source" | flow.js:89:45:89:45 | e |
+| flow.js:2:15:2:22 | "source" | flow.js:101:7:101:9 | foo |
 | flow.js:2:15:2:22 | "source" | flow.js:103:93:103:93 | x |
 | flow.js:2:15:2:22 | "source" | flow.js:105:95:105:95 | x |
 | flow.js:2:15:2:22 | "source" | flow.js:109:89:109:89 | x |
@@ -231,8 +232,11 @@ flow
 | flow.js:2:15:2:22 | "source" | flow.js:125:59:125:59 | x |
 | flow.js:2:15:2:22 | "source" | flow.js:129:69:129:69 | x |
 | flow.js:2:15:2:22 | "source" | flow.js:131:43:131:43 | x |
+| flow.js:136:15:136:22 | "source" | flow.js:142:7:142:19 | await async() |
+| flow.js:136:15:136:22 | "source" | flow.js:155:9:155:9 | e |
 exclusiveTaintFlow
 | flow2.js:2:15:2:22 | "source" | flow2.js:20:7:20:14 | tainted3 |
+| flow.js:136:15:136:22 | "source" | flow.js:141:7:141:13 | async() |
 | interflow.js:3:18:3:25 | "source" | interflow.js:18:10:18:14 | error |
 typetrack
 | flow2.js:4:2:4:31 | Promise ... lean"]) | flow2.js:4:14:4:30 | [source, "clean"] | copy $PromiseResolveField$ |
@@ -370,6 +374,8 @@ typetrack
 | flow.js:131:2:131:45 | Promise ... ink(x)) | flow.js:131:38:131:44 | sink(x) | copy $PromiseResolveField$ |
 | flow.js:131:2:131:45 | Promise ... ink(x)) | flow.js:131:38:131:44 | sink(x) | store $PromiseResolveField$ |
 | flow.js:131:33:131:33 | x | flow.js:131:2:131:26 | Promise ... solved) | load $PromiseResolveField$ |
+| flow.js:142:7:142:19 | await async() | flow.js:142:13:142:19 | async() | load $PromiseResolveField$ |
+| flow.js:153:4:153:22 | await throwsAsync() | flow.js:153:10:153:22 | throwsAsync() | load $PromiseResolveField$ |
 | interflow.js:6:3:9:23 | loadScr ... eError) | interflow.js:6:3:8:26 | loadScr ... () { }) | copy $PromiseResolveField$ |
 | promises.js:33:19:35:6 | new Pro ... \\n    }) | promises.js:34:17:34:22 | source | copy $PromiseResolveField$ |
 | promises.js:33:19:35:6 | new Pro ... \\n    }) | promises.js:34:17:34:22 | source | store $PromiseResolveField$ |

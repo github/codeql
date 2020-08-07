@@ -1034,6 +1034,25 @@ private predicate storeStep(
       receiverPropWrite(f, prop, mid)
     )
   )
+  or
+  // store in an immediately awaited function call
+  exists(Function f, DataFlow::Node mid | f.isAsync() |
+    // `f` stores its parameter `pred` in property `prop` of a value that flows back to the caller,
+    // and `succ` is an invocation of `f`
+    exists(AwaitExpr await, DataFlow::Node operand |
+      operand = await.getOperand().getUnderlyingValue().flow() and
+      succ.asExpr() = await
+    |
+      reachableFromInput(f, operand, pred, mid, cfg, summary) and
+      (
+        returnedPropWrite(f, _, prop, mid)
+        or
+        exists(DataFlow::SourceNode base | base.flowsToExpr(f.getAReturnedExpr()) |
+          isAdditionalStoreStep(mid, base, prop, cfg)
+        )
+      )
+    )
+  )
 }
 
 /**
@@ -1131,6 +1150,17 @@ private predicate loadStep(
   exists(Function f, DataFlow::Node read | not f.isAsync() |
     parameterPropRead(f, succ, pred, prop, read, cfg) and
     reachesReturn(f, read, cfg, summary)
+  )
+  or
+  // load from an immediately awaited function call
+  exists(Function f, DataFlow::Node read | f.isAsync() |
+    exists(AwaitExpr await, DataFlow::Node operand |
+      operand = await.getOperand().getUnderlyingValue().flow() and
+      succ.asExpr() = await
+    |
+      parameterPropRead(f, operand, pred, prop, read, cfg) and
+      reachesReturn(f, read, cfg, summary)
+    )
   )
 }
 
