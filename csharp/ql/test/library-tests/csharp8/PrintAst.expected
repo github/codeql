@@ -463,7 +463,6 @@ NullableRefTypes.cs:
 #  220|           1: [LocalVariableAccess] access to local variable d
 #  223|   9: [Method] GetSelf
 #  225|   10: [Field] Field
-#  165| [NullableType] Nullable<MyStruct>
 StaticLocalFunctions.cs:
 #    5| [Class] StaticLocalFunctions
 #    7|   2: [Method] Fn

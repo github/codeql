@@ -1117,8 +1117,6 @@ definitions.cs:
 #  181| [Parameter] c
 #-----| 0 -> (Attributes)
 
-#   78| [NullableType] Nullable<S1>
-
 #  128| [TypeParameter] T
 
 #  130| [TypeParameter] T2

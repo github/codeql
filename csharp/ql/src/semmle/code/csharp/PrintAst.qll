@@ -434,6 +434,7 @@ final class TypeNode extends AstNode {
     type = ast and
     not type instanceof TupleType and
     not type instanceof ArrayType and
+    not type instanceof NullableType and
     not isInConstructedGenericType(type)
   }
 

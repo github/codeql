@@ -46,4 +46,3 @@ types.cs:
 #-----|     0: (TypeParameters)
 #   47|       0: [TypeParameter] U
 #   47|       1: [TypeParameter] V
-#   37| [NullableType] Nullable<Struct>
