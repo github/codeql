@@ -47,6 +47,9 @@
 | stl.cpp:240:8:240:8 | stl.cpp:238:16:238:21 | AST only |
 | stl.cpp:248:8:248:8 | stl.cpp:238:16:238:21 | AST only |
 | stl.cpp:253:8:253:8 | stl.cpp:251:28:251:33 | AST only |
+| stl.cpp:295:8:295:8 | stl.cpp:288:43:288:49 | AST only |
+| stl.cpp:303:8:303:8 | stl.cpp:288:43:288:49 | AST only |
+| stl.cpp:308:8:308:8 | stl.cpp:288:43:288:49 | AST only |
 | structlikeclass.cpp:35:8:35:9 | structlikeclass.cpp:29:22:29:27 | AST only |
 | structlikeclass.cpp:36:8:36:9 | structlikeclass.cpp:30:24:30:29 | AST only |
 | structlikeclass.cpp:37:8:37:9 | structlikeclass.cpp:29:22:29:27 | AST only |
