@@ -75,6 +75,11 @@ private predicate isInConstructedGenericAttributable(Attributable attributable) 
   isInConstructedGenericType(attributable.(ValueOrRefType))
 }
 
+private predicate isInConstructedGenericUnboundGeneric(UnboundGeneric unboundGeneric) {
+  isInConstructedGenericAttributable(unboundGeneric) or
+  isInConstructedGenericParameterizable(unboundGeneric)
+}
+
 private predicate isInConstructedGenericCallable(Callable c) {
   c instanceof ConstructedGeneric or
   isInConstructedGenericType(c.getDeclaringType())
@@ -418,7 +423,10 @@ final class AttributeNode extends AstNode {
 final class TypeParameterNode extends AstNode {
   TypeParameter typeParameter;
 
-  TypeParameterNode() { typeParameter = ast }
+  TypeParameterNode() {
+    typeParameter = ast and
+    not isInConstructedGenericUnboundGeneric(typeParameter.getDeclaringGeneric())
+  }
 
   override AstNode getChild(int childIndex) { none() }
 }
@@ -554,7 +562,8 @@ final class TypeParametersNode extends PrintAstNode, TTypeParametersNode {
 
   TypeParametersNode() {
     this = TTypeParametersNode(unboundGeneric) and
-    unboundGeneric.getNumberOfTypeParameters() > 0 // this might always be true
+    unboundGeneric.getNumberOfTypeParameters() > 0 and
+    not isInConstructedGenericUnboundGeneric(unboundGeneric)
   }
 
   override string toString() { result = "(TypeParameters)" }

@@ -1117,10 +1117,6 @@ definitions.cs:
 #  181| [Parameter] c
 #-----| 0 -> (Attributes)
 
-#  128| [TypeParameter] T
-
-#  130| [TypeParameter] T2
-
 #  173| [ObjectCreation] object creation of type C5
 
 #  173| [TypeAccess] access to type C5
@@ -1145,12 +1141,6 @@ definitions.cs:
 
 #-----| (TypeParameters)
 #-----| 0 -> [TypeParameter] T
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T
-
-#-----| (TypeParameters)
-#-----| 0 -> [TypeParameter] T2
 
 #-----| (TypeParameters)
 #-----| 0 -> [TypeParameter] T

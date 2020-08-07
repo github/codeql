@@ -73,5 +73,3 @@ nestedtypes.cs:
 #-----|       0: (TypeParameters)
 #   77|         0: [TypeParameter] T
 #   80|       3: [Field] t
-#-----| (TypeParameters)
-#   56|   0: [TypeParameter] U
