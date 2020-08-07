@@ -198,4 +198,22 @@ void IntendedOverflow(unsigned char p)
 
     for (i = p - 1; i < p; i--) {} // GOOD
     for (s = p - 1; s < p; s--) {} // BAD [NOT DETECTED]
+
+	{
+		int n;
+		
+		n = 64;
+		for (i = n - 1; i < n; i--) {} // GOOD
+		n = 64;
+		for (i = n - 1; i < 64; i--) {} // GOOD
+		n = 64;
+		for (i = 63; i < n; i--) {} // GOOD
+
+		n = 64;
+		for (s = n - 1; s < n; s--) {} // BAD [NOT DETECTED]
+		n = 64;
+		for (s = n - 1; s < 64; s--) {} // BAD
+		n = 64;
+		for (s = 63; s < n; s--) {} // BAD [NOT DETECTED]
+	}
 }
