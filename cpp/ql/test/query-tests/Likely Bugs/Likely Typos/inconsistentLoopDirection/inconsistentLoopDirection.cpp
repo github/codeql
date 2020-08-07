@@ -190,8 +190,9 @@ void IntendedOverflow()
     for (i = 63; i < 255; i--) {} // GOOD
 
     for (i = m - 1; i < m; i--) {} // GOOD
-    for (i = m - 1; i < m; i--) {} // DUBIOUS
-    for (i = m - 1; i < m; i--) {} // GOOD
+    for (i = m - 2; i < m; i--) {} // DUBIOUS
+    for (i = m; i < m + 1; i--) {} // GOOD
 
     for (s = 63; s < 64; s--) {} // BAD (signed numbers don't wrap at 0 / at all)
+    for (s = m + 1; s < m; s--) {} // BAD (never runs)
 }
