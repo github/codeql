@@ -1,7 +1,7 @@
 csharp73.cs:
 #    5| [Class] StackAllocs
 #    7|   2: [Method] Fn
-#    8|     3: [BlockStmt] {...}
+#    8|     4: [BlockStmt] {...}
 #    9|       0: [LocalConstantDeclStmt] ... ...;
 #    9|         0: [LocalVariableDeclAndInitExpr] Char* arr1 = ...
 #    9|           0: [Stackalloc] array creation of type Char*
@@ -44,7 +44,7 @@ csharp73.cs:
 #   14|           1: [LocalVariableAccess] access to local variable arr6
 #   18| [Class] PinnedReference
 #   20|   2: [Method] F
-#   21|     3: [BlockStmt] {...}
+#   21|     4: [BlockStmt] {...}
 #   22|       0: [LocalConstantDeclStmt] ... ...;
 #   22|         0: [LocalVariableDeclAndInitExpr] Span<Int32> t = ...
 #   22|           0: [OperatorCall] call to operator implicit conversion
@@ -56,21 +56,21 @@ csharp73.cs:
 #   44|   1: [InstanceConstructor] ExpressionVariables
 #-----|     2: (Parameters)
 #   44|       0: [Parameter] x
-#   45|     3: [BlockStmt] {...}
+#   45|     4: [BlockStmt] {...}
 #   46|       0: [ExprStmt] ...;
 #   46|         0: [AssignExpr] ... = ...
 #   46|           0: [IntLiteral] 5
 #   46|           1: [ParameterAccess] access to parameter x
 #   49|   2: [InstanceConstructor] ExpressionVariables
-#   50|     3: [BlockStmt] {...}
+#   49|     3: [ConstructorInitializer] call to constructor ExpressionVariables
+#   49|       0: [LocalVariableDeclExpr] Int32 x
+#   50|     4: [BlockStmt] {...}
 #   51|       0: [ExprStmt] ...;
 #   51|         0: [MethodCall] call to method WriteLine
 #   51|           -1: [TypeAccess] access to type Console
 #   51|           0: [InterpolatedStringExpr] $"..."
 #   51|             0: [StringLiteral] "x is "
 #   51|             1: [LocalVariableAccess] access to local variable x
-#   49| [ConstructorInitializer] call to constructor ExpressionVariables
-#   49|   0: [LocalVariableDeclExpr] Int32 x
 #   30| [Class] UnmanagedConstraint<>
 #-----|   0: (TypeParameters)
 #   30|     0: [TypeParameter] T

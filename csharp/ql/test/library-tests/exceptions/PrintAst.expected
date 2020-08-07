@@ -1,10 +1,10 @@
 exceptions.cs:
 #    3| [Class] Class1
 #    5|   2: [Method] G
-#    6|     3: [BlockStmt] {...}
+#    6|     4: [BlockStmt] {...}
 #    9|   3: [Field] p
 #   11|   4: [Method] TestNoThrow
-#   12|     3: [BlockStmt] {...}
+#   12|     4: [BlockStmt] {...}
 #   13|       0: [TryStmt] try {...} ...
 #   38|         -1: [BlockStmt] {...}
 #   39|           0: [EmptyStmt] ;
@@ -31,7 +31,7 @@ exceptions.cs:
 #   34|           1: [BlockStmt] {...}
 #   35|             0: [EmptyStmt] ;
 #   43|   5: [Method] TestCall
-#   44|     3: [BlockStmt] {...}
+#   44|     4: [BlockStmt] {...}
 #   45|       0: [TryStmt] try {...} ...
 #   46|         0: [BlockStmt] {...}
 #   47|           0: [EmptyStmt] ;
@@ -58,7 +58,7 @@ exceptions.cs:
 #   67|           1: [BlockStmt] {...}
 #   68|             0: [EmptyStmt] ;
 #   72|   6: [Method] TestCreation
-#   73|     3: [BlockStmt] {...}
+#   73|     4: [BlockStmt] {...}
 #   74|       0: [TryStmt] try {...} ...
 #   75|         0: [BlockStmt] {...}
 #   76|           0: [EmptyStmt] ;
@@ -87,7 +87,7 @@ exceptions.cs:
 #   96|           1: [BlockStmt] {...}
 #   97|             0: [EmptyStmt] ;
 #  101|   7: [Method] TestIntAdd
-#  102|     3: [BlockStmt] {...}
+#  102|     4: [BlockStmt] {...}
 #  103|       0: [TryStmt] try {...} ...
 #  104|         0: [BlockStmt] {...}
 #  105|           0: [EmptyStmt] ;
@@ -118,7 +118,7 @@ exceptions.cs:
 #  125|           1: [BlockStmt] {...}
 #  126|             0: [EmptyStmt] ;
 #  130|   8: [Method] TestIntSub
-#  131|     3: [BlockStmt] {...}
+#  131|     4: [BlockStmt] {...}
 #  132|       0: [TryStmt] try {...} ...
 #  133|         0: [BlockStmt] {...}
 #  134|           0: [EmptyStmt] ;
@@ -149,7 +149,7 @@ exceptions.cs:
 #  154|           1: [BlockStmt] {...}
 #  155|             0: [EmptyStmt] ;
 #  159|   9: [Method] TestIntMul
-#  160|     3: [BlockStmt] {...}
+#  160|     4: [BlockStmt] {...}
 #  161|       0: [TryStmt] try {...} ...
 #  162|         0: [BlockStmt] {...}
 #  163|           0: [EmptyStmt] ;
@@ -180,7 +180,7 @@ exceptions.cs:
 #  183|           1: [BlockStmt] {...}
 #  184|             0: [EmptyStmt] ;
 #  188|   10: [Method] TestStringLiteral
-#  189|     3: [BlockStmt] {...}
+#  189|     4: [BlockStmt] {...}
 #  190|       0: [TryStmt] try {...} ...
 #  191|         0: [BlockStmt] {...}
 #  192|           0: [EmptyStmt] ;
@@ -209,7 +209,7 @@ exceptions.cs:
 #  212|           1: [BlockStmt] {...}
 #  213|             0: [EmptyStmt] ;
 #  217|   11: [Method] TestStringAdd
-#  218|     3: [BlockStmt] {...}
+#  218|     4: [BlockStmt] {...}
 #  219|       0: [TryStmt] try {...} ...
 #  220|         0: [BlockStmt] {...}
 #  221|           0: [LocalConstantDeclStmt] ... ...;
@@ -244,7 +244,7 @@ exceptions.cs:
 #  242|           1: [BlockStmt] {...}
 #  243|             0: [EmptyStmt] ;
 #  247|   12: [Method] TestDivide
-#  248|     3: [BlockStmt] {...}
+#  248|     4: [BlockStmt] {...}
 #  249|       0: [TryStmt] try {...} ...
 #  250|         0: [BlockStmt] {...}
 #  251|           0: [EmptyStmt] ;
@@ -275,7 +275,7 @@ exceptions.cs:
 #  271|           1: [BlockStmt] {...}
 #  272|             0: [EmptyStmt] ;
 #  276|   13: [Method] TestRemainder
-#  277|     3: [BlockStmt] {...}
+#  277|     4: [BlockStmt] {...}
 #  278|       0: [TryStmt] try {...} ...
 #  279|         0: [BlockStmt] {...}
 #  280|           0: [EmptyStmt] ;
@@ -306,7 +306,7 @@ exceptions.cs:
 #  300|           1: [BlockStmt] {...}
 #  301|             0: [EmptyStmt] ;
 #  305|   14: [Method] TestMemberAccess
-#  306|     3: [BlockStmt] {...}
+#  306|     4: [BlockStmt] {...}
 #  307|       0: [TryStmt] try {...} ...
 #  308|         0: [BlockStmt] {...}
 #  309|           0: [EmptyStmt] ;
@@ -336,7 +336,7 @@ exceptions.cs:
 #  329|           1: [BlockStmt] {...}
 #  330|             0: [EmptyStmt] ;
 #  334|   15: [Method] TestCast
-#  335|     3: [BlockStmt] {...}
+#  335|     4: [BlockStmt] {...}
 #  336|       0: [TryStmt] try {...} ...
 #  337|         0: [BlockStmt] {...}
 #  338|           0: [EmptyStmt] ;
@@ -367,7 +367,7 @@ exceptions.cs:
 #  358|           1: [BlockStmt] {...}
 #  359|             0: [EmptyStmt] ;
 #  363|   16: [Method] TestThrow
-#  364|     3: [BlockStmt] {...}
+#  364|     4: [BlockStmt] {...}
 #  365|       0: [TryStmt] try {...} ...
 #  366|         0: [BlockStmt] {...}
 #  367|           0: [LocalConstantDeclStmt] ... ...;
@@ -398,7 +398,7 @@ exceptions.cs:
 #  388|           1: [BlockStmt] {...}
 #  389|             0: [EmptyStmt] ;
 #  393|   17: [Method] TestUnaryOperation
-#  394|     3: [BlockStmt] {...}
+#  394|     4: [BlockStmt] {...}
 #  395|       0: [TryStmt] try {...} ...
 #  396|         0: [BlockStmt] {...}
 #  397|           0: [LocalConstantDeclStmt] ... ...;
@@ -430,7 +430,7 @@ exceptions.cs:
 #  418|           1: [BlockStmt] {...}
 #  419|             0: [EmptyStmt] ;
 #  423|   18: [Method] TestRethrow
-#  424|     3: [BlockStmt] {...}
+#  424|     4: [BlockStmt] {...}
 #  425|       0: [TryStmt] try {...} ...
 #  426|         0: [BlockStmt] {...}
 #  427|           0: [TryStmt] try {...} ...
@@ -447,7 +447,7 @@ exceptions.cs:
 #  441|           1: [BlockStmt] {...}
 #  442|             0: [EmptyStmt] ;
 #  446|   19: [Method] TestSubtypeCast
-#  447|     3: [BlockStmt] {...}
+#  447|     4: [BlockStmt] {...}
 #  448|       0: [TryStmt] try {...} ...
 #  449|         0: [BlockStmt] {...}
 #  450|           0: [LocalConstantDeclStmt] ... ...;
@@ -472,7 +472,7 @@ exceptions.cs:
 #  464|   20: [Method] TestDivideMaybeZero
 #-----|     2: (Parameters)
 #  464|       0: [Parameter] i
-#  465|     3: [BlockStmt] {...}
+#  465|     4: [BlockStmt] {...}
 #  466|       0: [TryStmt] try {...} ...
 #  467|         0: [BlockStmt] {...}
 #  468|           0: [EmptyStmt] ;

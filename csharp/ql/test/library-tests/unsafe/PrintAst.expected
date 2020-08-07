@@ -4,7 +4,7 @@ unsafe.cs:
 #    5|     2: [Method] Main
 #-----|       2: (Parameters)
 #    5|         0: [Parameter] args
-#    6|       3: [BlockStmt] {...}
+#    6|       4: [BlockStmt] {...}
 #    7|         0: [LocalConstantDeclStmt] ... ...;
 #    7|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
 #    7|             0: [IntLiteral] 42
@@ -81,7 +81,7 @@ unsafe.cs:
 #   22|     3: [Method] f
 #-----|       2: (Parameters)
 #   22|         0: [Parameter] p
-#   23|       3: [BlockStmt] {...}
+#   23|       4: [BlockStmt] {...}
 #   24|         0: [ExprStmt] ...;
 #   24|           0: [MethodCall] call to method ToString
 #   24|             -1: [PointerIndirectionExpr] *...
@@ -97,9 +97,9 @@ unsafe.cs:
 #   26|                 0: [ParameterAccess] access to parameter p
 #   26|               1: [IntLiteral] 0
 #   30|     4: [Method] g
-#   30|       3: [BlockStmt] {...}
+#   30|       4: [BlockStmt] {...}
 #   32|     5: [Method] h
-#   33|       3: [BlockStmt] {...}
+#   33|       4: [BlockStmt] {...}
 #   34|         0: [UnstafeStmt] unsafe {...}
 #   35|           0: [BlockStmt] {...}
 #   36|             0: [LocalConstantDeclStmt] ... ...;

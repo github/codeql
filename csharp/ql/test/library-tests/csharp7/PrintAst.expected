@@ -22,37 +22,39 @@ CSharp7.cs:
 #   16|       1: [FieldAccess] access to field field
 #   16|         -1: [ThisAccess] this access
 #   17|   2: [Method] Foo
-#   17|     3: [FieldAccess] access to field field
+#   17|     4: [FieldAccess] access to field field
 #   17|       -1: [ThisAccess] this access
 #   18|   3: [Property] P
 #   18|     1: [Getter] get_P
-#   18|       3: [IntLiteral] 5
+#   18|       4: [IntLiteral] 5
 #   19|   4: [Property] Q
 #   21|     1: [Getter] get_Q
-#   21|       3: [MethodCall] call to method Foo
+#   21|       4: [MethodCall] call to method Foo
 #   21|         -1: [ThisAccess] this access
 #   22|     2: [Setter] set_Q
 #-----|       2: (Parameters)
 #   22|         0: [Parameter] value
-#   22|       3: [AssignExpr] ... = ...
+#   22|       4: [AssignExpr] ... = ...
 #   22|         0: [ParameterAccess] access to parameter value
 #   22|         1: [FieldAccess] access to field field
 #   22|           -1: [ThisAccess] this access
 #   24|   5: [InstanceConstructor] ExpressionBodiedMembers
-#   24|     3: [BlockStmt] {...}
+#   24|     3: [ConstructorInitializer] call to constructor ExpressionBodiedMembers
+#   24|       0: [IntLiteral] 1
+#   24|     4: [BlockStmt] {...}
 #   25|   6: [InstanceConstructor] ExpressionBodiedMembers
 #-----|     2: (Parameters)
 #   25|       0: [Parameter] x
-#   25|     3: [MethodCall] call to method Foo
+#   25|     4: [MethodCall] call to method Foo
 #   25|       -1: [ThisAccess] this access
 #   26|   7: [Destructor] ~ExpressionBodiedMembers
-#   26|     3: [MethodCall] call to method Foo
+#   26|     4: [MethodCall] call to method Foo
 #   26|       -1: [ThisAccess] this access
 #   29| [Class] ThrowExpr
 #   31|   2: [Method] Throw
 #-----|     2: (Parameters)
 #   31|       0: [Parameter] i
-#   32|     3: [BlockStmt] {...}
+#   32|     4: [BlockStmt] {...}
 #   33|       0: [ReturnStmt] return ...;
 #   33|         0: [ConditionalExpr] ... ? ... : ...
 #   33|           0: [GTExpr] ... > ...
@@ -66,7 +68,7 @@ CSharp7.cs:
 #   39|   2: [Method] F
 #-----|     2: (Parameters)
 #   39|       0: [Parameter] x
-#   40|     3: [BlockStmt] {...}
+#   40|     4: [BlockStmt] {...}
 #   41|       0: [ExprStmt] ...;
 #   41|         0: [AssignExpr] ... = ...
 #   41|           0: [StringLiteral] "tainted"
@@ -75,13 +77,13 @@ CSharp7.cs:
 #-----|     2: (Parameters)
 #   44|       0: [Parameter] x
 #   44|       1: [Parameter] y
-#   45|     3: [BlockStmt] {...}
+#   45|     4: [BlockStmt] {...}
 #   46|       0: [ExprStmt] ...;
 #   46|         0: [AssignExpr] ... = ...
 #   46|           0: [ParameterAccess] access to parameter x
 #   46|           1: [ParameterAccess] access to parameter y
 #   49|   4: [Method] G
-#   50|     3: [BlockStmt] {...}
+#   50|     4: [BlockStmt] {...}
 #   51|       0: [ExprStmt] ...;
 #   51|         0: [MethodCall] call to method F
 #   51|           -1: [ThisAccess] this access
@@ -117,13 +119,13 @@ CSharp7.cs:
 #   58|           1: [LocalVariableAccess] access to local variable t5
 #   62| [Class] Tuples
 #   64|   2: [Method] F
-#   65|     3: [BlockStmt] {...}
+#   65|     4: [BlockStmt] {...}
 #   66|       0: [ReturnStmt] return ...;
 #   66|         0: [TupleExpr] (..., ...)
 #   66|           0: [IntLiteral] 1
 #   66|           1: [IntLiteral] 2
 #   69|   3: [Method] Expressions
-#   70|     3: [BlockStmt] {...}
+#   70|     4: [BlockStmt] {...}
 #   71|       0: [ExprStmt] ...;
 #   71|         0: [AssignExpr] ... = ...
 #   71|           0: [MethodCall] call to method F
@@ -205,14 +207,14 @@ CSharp7.cs:
 #   82|   4: [Method] I
 #-----|     2: (Parameters)
 #   82|       0: [Parameter] x
-#   83|     3: [BlockStmt] {...}
+#   83|     4: [BlockStmt] {...}
 #   84|       0: [ReturnStmt] return ...;
 #   84|         0: [FieldAccess] access to field a
 #   84|           -1: [TupleExpr] (..., ...)
 #   84|             0: [ParameterAccess] access to parameter x
 #   84|             1: [IntLiteral] 2
 #   87|   5: [Method] TaintFlow
-#   88|     3: [BlockStmt] {...}
+#   88|     4: [BlockStmt] {...}
 #   89|       0: [LocalConstantDeclStmt] ... ...;
 #   89|         0: [LocalVariableDeclAndInitExpr] (String,String) t1 = ...
 #   89|           0: [TupleExpr] (..., ...)
@@ -237,7 +239,7 @@ CSharp7.cs:
 #   92|               -1: [LocalVariableAccess] access to local variable t1
 #   92|           1: [LocalVariableAccess] access to local variable t5
 #   95|   6: [Method] TupleExprNode
-#   96|     3: [BlockStmt] {...}
+#   96|     4: [BlockStmt] {...}
 #   97|       0: [LocalConstantDeclStmt] ... ...;
 #   97|         0: [LocalVariableDeclAndInitExpr] (Int32,String) m1 = ...
 #   97|           0: [TupleExpr] (..., ...)
@@ -253,7 +255,7 @@ CSharp7.cs:
 #   98|               1: [IntLiteral] 2
 #   98|           1: [LocalVariableAccess] access to local variable m2
 #  101|   7: [Method] TupleMemberAccess
-#  102|     3: [BlockStmt] {...}
+#  102|     4: [BlockStmt] {...}
 #  103|       0: [LocalConstantDeclStmt] ... ...;
 #  103|         0: [LocalVariableDeclAndInitExpr] String m1 = ...
 #  103|           0: [FieldAccess] access to field Item1
@@ -271,7 +273,7 @@ CSharp7.cs:
 #  104|                 1: [IntLiteral] 1
 #  104|           1: [LocalVariableAccess] access to local variable m2
 #  107|   8: [Method] DefUse
-#  108|     3: [BlockStmt] {...}
+#  108|     4: [BlockStmt] {...}
 #  109|       0: [ExprStmt] ...;
 #  109|         0: [AssignExpr] ... = ...
 #  109|           0: [TupleExpr] (..., ...)
@@ -341,12 +343,12 @@ CSharp7.cs:
 #  123|           1: [LocalVariableAccess] access to local variable m13
 #  127| [Class] LocalFunctions
 #  129|   2: [Method] Main
-#  130|     3: [BlockStmt] {...}
+#  130|     4: [BlockStmt] {...}
 #  131|       0: [LocalFunctionStmt] f1(...)
 #  131|         0: [LocalFunction] f1
 #-----|           2: (Parameters)
 #  131|             0: [Parameter] x
-#  131|           3: [BlockStmt] {...}
+#  131|           4: [BlockStmt] {...}
 #  131|             0: [ReturnStmt] return ...;
 #  131|               0: [AddExpr] ... + ...
 #  131|                 0: [ParameterAccess] access to parameter x
@@ -359,7 +361,7 @@ CSharp7.cs:
 #-----|           2: (Parameters)
 #  133|             0: [Parameter] t
 #  133|             1: [Parameter] u
-#  133|           3: [BlockStmt] {...}
+#  133|           4: [BlockStmt] {...}
 #  133|             0: [ReturnStmt] return ...;
 #  133|               0: [ParameterAccess] access to parameter t
 #  135|       2: [LocalConstantDeclStmt] ... ...;
@@ -370,13 +372,13 @@ CSharp7.cs:
 #  135|           1: [LocalVariableAccess] access to local variable f4
 #  137|       3: [LocalFunctionStmt] f3(...)
 #  137|         0: [LocalFunction] f3
-#  137|           3: [IntLiteral] 2
+#  137|           4: [IntLiteral] 2
 #  139|       4: [LocalConstantDeclStmt] ... ...;
 #  139|         0: [LocalVariableDeclAndInitExpr] Func<Int32,Int32> f5 = ...
 #  139|           0: [LambdaExpr] (...) => ...
 #-----|             2: (Parameters)
 #  139|               0: [Parameter] x
-#  139|             3: [AddExpr] ... + ...
+#  139|             4: [AddExpr] ... + ...
 #  139|               0: [ParameterAccess] access to parameter x
 #  139|               1: [IntLiteral] 1
 #  139|           1: [LocalVariableAccess] access to local variable f5
@@ -384,7 +386,7 @@ CSharp7.cs:
 #  141|         0: [LocalFunction] f6
 #-----|           2: (Parameters)
 #  141|             0: [Parameter] x
-#  141|           3: [ConditionalExpr] ... ? ... : ...
+#  141|           4: [ConditionalExpr] ... ? ... : ...
 #  141|             0: [GTExpr] ... > ...
 #  141|               0: [ParameterAccess] access to parameter x
 #  141|               1: [IntLiteral] 0
@@ -401,18 +403,18 @@ CSharp7.cs:
 #  143|         0: [LocalFunction] f7
 #-----|           2: (Parameters)
 #  143|             0: [Parameter] x
-#  143|           3: [LocalFunctionCall] call to local function f6
+#  143|           4: [LocalFunctionCall] call to local function f6
 #  143|             -1: [LocalFunctionAccess] access to local function f6
 #  143|               -1: [ThisAccess] this access
 #  143|             0: [ParameterAccess] access to parameter x
 #  145|       7: [LocalFunctionStmt] f8(...)
 #  145|         0: [LocalFunction] f8
-#  146|           3: [BlockStmt] {...}
+#  146|           4: [BlockStmt] {...}
 #  147|             0: [LocalFunctionStmt] f9(...)
 #  147|               0: [LocalFunction] f9
 #-----|                 2: (Parameters)
 #  147|                   0: [Parameter] x
-#  147|                 3: [LocalFunctionCall] call to local function f7
+#  147|                 4: [LocalFunctionCall] call to local function f7
 #  147|                   -1: [LocalFunctionAccess] access to local function f7
 #  147|                     -1: [ThisAccess] this access
 #  147|                   0: [ParameterAccess] access to parameter x
@@ -424,10 +426,10 @@ CSharp7.cs:
 #  151|       8: [LocalConstantDeclStmt] ... ...;
 #  151|         0: [LocalVariableDeclAndInitExpr] Action a = ...
 #  151|           0: [LambdaExpr] (...) => ...
-#  151|             3: [BlockStmt] {...}
+#  151|             4: [BlockStmt] {...}
 #  152|               0: [LocalFunctionStmt] f9(...)
 #  152|                 0: [LocalFunction] f9
-#  152|                   3: [IntLiteral] 0
+#  152|                   4: [IntLiteral] 0
 #  151|           1: [LocalVariableAccess] access to local variable a
 #  155|       9: [ReturnStmt] return ...;
 #  155|         0: [LocalFunctionCall] call to local function f1
@@ -435,19 +437,19 @@ CSharp7.cs:
 #  155|             -1: [ThisAccess] this access
 #  155|           0: [IntLiteral] 2
 #  158|   3: [Method] Generics
-#  159|     3: [BlockStmt] {...}
+#  159|     4: [BlockStmt] {...}
 #  160|       0: [LocalFunctionStmt] f(...)
 #  160|         0: [LocalFunction] f
 #-----|           1: (TypeParameters)
 #  160|             0: [TypeParameter] T
-#  160|           3: [IntLiteral] 1
+#  160|           4: [IntLiteral] 1
 #  161|       1: [LocalFunctionStmt] g(...)
 #  161|         0: [LocalFunction] g
 #-----|           1: (TypeParameters)
 #  161|             0: [TypeParameter] T
 #-----|           2: (Parameters)
 #  161|             0: [Parameter] t
-#  161|           3: [ParameterAccess] access to parameter t
+#  161|           4: [ParameterAccess] access to parameter t
 #  163|       2: [LocalFunctionStmt] h(...)
 #  163|         0: [LocalFunction] h
 #-----|           1: (TypeParameters)
@@ -456,7 +458,7 @@ CSharp7.cs:
 #-----|           2: (Parameters)
 #  163|             0: [Parameter] t
 #  163|             1: [Parameter] u
-#  164|           3: [BlockStmt] {...}
+#  164|           4: [BlockStmt] {...}
 #  165|             0: [LocalFunctionStmt] f2(...)
 #  165|               0: [LocalFunction] f2
 #-----|                 1: (TypeParameters)
@@ -464,7 +466,7 @@ CSharp7.cs:
 #-----|                 2: (Parameters)
 #  165|                   0: [Parameter] s
 #  165|                   1: [Parameter] _t
-#  165|                 3: [LocalFunctionCall] call to local function f
+#  165|                 4: [LocalFunctionCall] call to local function f
 #  165|                   -1: [LocalFunctionAccess] access to local function f
 #  165|                     -1: [ThisAccess] this access
 #  166|             1: [ExprStmt] ...;
@@ -489,7 +491,7 @@ CSharp7.cs:
 #  171|           0: [StringLiteral] ""
 #  171|           1: [BoolLiteral] true
 #  174|   4: [Method] GlobalFlow
-#  175|     3: [BlockStmt] {...}
+#  175|     4: [BlockStmt] {...}
 #  176|       0: [LocalConstantDeclStmt] ... ...;
 #  176|         0: [LocalVariableDeclAndInitExpr] String src = ...
 #  176|           0: [StringLiteral] "tainted"
@@ -498,7 +500,7 @@ CSharp7.cs:
 #  177|         0: [LocalFunction] f
 #-----|           2: (Parameters)
 #  177|             0: [Parameter] s
-#  177|           3: [AddExpr] ... + ...
+#  177|           4: [AddExpr] ... + ...
 #  177|             0: [LocalFunctionCall] call to local function g
 #  177|               -1: [LocalFunctionAccess] access to local function g
 #  177|                 -1: [ThisAccess] this access
@@ -508,12 +510,12 @@ CSharp7.cs:
 #  178|         0: [LocalFunction] g
 #-----|           2: (Parameters)
 #  178|             0: [Parameter] s
-#  178|           3: [ParameterAccess] access to parameter s
+#  178|           4: [ParameterAccess] access to parameter s
 #  179|       3: [LocalFunctionStmt] h(...)
 #  179|         0: [LocalFunction] h
 #-----|           2: (Parameters)
 #  179|             0: [Parameter] s
-#  179|           3: [BlockStmt] {...}
+#  179|           4: [BlockStmt] {...}
 #  179|             0: [ReturnStmt] return ...;
 #  179|               0: [ParameterAccess] access to parameter s
 #  181|       4: [LocalConstantDeclStmt] ... ...;
@@ -539,7 +541,7 @@ CSharp7.cs:
 #  183|           1: [LocalVariableAccess] access to local variable sink3
 #  187| [Class] Refs
 #  189|   2: [Method] F1
-#  190|     3: [BlockStmt] {...}
+#  190|     4: [BlockStmt] {...}
 #  191|       0: [LocalConstantDeclStmt] ... ...;
 #  191|         0: [LocalVariableDeclAndInitExpr] Int32 v1 = ...
 #  191|           0: [IntLiteral] 2
@@ -598,12 +600,12 @@ CSharp7.cs:
 #  203|   3: [Method] F2
 #-----|     2: (Parameters)
 #  203|       0: [Parameter] p
-#  204|     3: [BlockStmt] {...}
+#  204|     4: [BlockStmt] {...}
 #  205|       0: [LocalFunctionStmt] F3(...)
 #  205|         0: [LocalFunction] F3
 #-----|           2: (Parameters)
 #  205|             0: [Parameter] q
-#  205|           3: [BlockStmt] {...}
+#  205|           4: [BlockStmt] {...}
 #  205|             0: [ReturnStmt] return ...;
 #  205|               0: [RefExpr] ref ...
 #  205|                 0: [ParameterAccess] access to parameter q
@@ -617,7 +619,7 @@ CSharp7.cs:
 #  214|   2: [Method] f
 #-----|     2: (Parameters)
 #  214|       0: [Parameter] x
-#  215|     3: [BlockStmt] {...}
+#  215|     4: [BlockStmt] {...}
 #  216|       0: [ExprStmt] ...;
 #  216|         0: [AssignExpr] ... = ...
 #  216|           0: [BoolLiteral] false
@@ -627,7 +629,7 @@ CSharp7.cs:
 #  217|           0: [IntLiteral] 0
 #  217|           1: [DoubleLiteral] 0
 #  220|   3: [Method] Test
-#  221|     3: [BlockStmt] {...}
+#  221|     4: [BlockStmt] {...}
 #  222|       0: [ExprStmt] ...;
 #  222|         0: [AssignExpr] ... = ...
 #  222|           0: [MethodCall] call to method f
@@ -660,7 +662,7 @@ CSharp7.cs:
 #  225|             1: [LocalVariableDeclExpr] Double y
 #  229| [Class] Patterns
 #  231|   2: [Method] Test
-#  232|     3: [BlockStmt] {...}
+#  232|     4: [BlockStmt] {...}
 #  233|       0: [LocalConstantDeclStmt] ... ...;
 #  233|         0: [LocalVariableDeclAndInitExpr] Object o = ...
 #  233|           0: [NullLiteral] null
@@ -772,7 +774,7 @@ CSharp7.cs:
 #  274|         23: [BreakStmt] break;
 #  279| [Class] ForeachStatements
 #  281|   2: [Method] Test
-#  282|     3: [BlockStmt] {...}
+#  282|     4: [BlockStmt] {...}
 #  283|       0: [LocalConstantDeclStmt] ... ...;
 #  283|         0: [LocalVariableDeclAndInitExpr] Dictionary<Int32,String> dict = ...
 #  283|           0: [ObjectCreation] object creation of type Dictionary<Int32,String>
@@ -784,7 +786,7 @@ CSharp7.cs:
 #  284|             0: [LambdaExpr] (...) => ...
 #-----|               2: (Parameters)
 #  284|                 0: [Parameter] item
-#  284|               3: [TupleExpr] (..., ...)
+#  284|               4: [TupleExpr] (..., ...)
 #  284|                 0: [PropertyCall] access to property Key
 #  284|                   -1: [ParameterAccess] access to parameter item
 #  284|                 1: [PropertyCall] access to property Value
@@ -810,7 +812,7 @@ CSharp7.cs:
 #  290|         2: [BlockStmt] {...}
 #  294| [Class] ForLoops
 #  296|   2: [Method] Test
-#  297|     3: [BlockStmt] {...}
+#  297|     4: [BlockStmt] {...}
 #  298|       0: [ForStmt] for (...;...;...) ...
 #  298|         -1: [LocalVariableDeclAndInitExpr] Int32 x = ...
 #  298|           0: [IntLiteral] 0
@@ -829,5 +831,3 @@ CSharp7.cs:
 #  300|             0: [MethodCall] call to method WriteLine
 #  300|               -1: [TypeAccess] access to type Console
 #  300|               0: [LocalVariableAccess] access to local variable y
-#   24| [ConstructorInitializer] call to constructor ExpressionBodiedMembers
-#   24|   0: [IntLiteral] 1

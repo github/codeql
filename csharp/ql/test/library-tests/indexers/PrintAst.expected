@@ -6,7 +6,7 @@ indexers.cs:
 #   14|     3: [InstanceConstructor] BitArray
 #-----|       2: (Parameters)
 #   14|         0: [Parameter] length
-#   15|       3: [BlockStmt] {...}
+#   15|       4: [BlockStmt] {...}
 #   16|         0: [IfStmt] if (...) ...
 #   16|           0: [LTExpr] ... < ...
 #   16|             0: [ParameterAccess] access to parameter length
@@ -32,7 +32,7 @@ indexers.cs:
 #   19|               -1: [ThisAccess] this access
 #   22|     4: [Property] Length
 #   22|       1: [Getter] get_Length
-#   22|         3: [BlockStmt] {...}
+#   22|         4: [BlockStmt] {...}
 #   22|           0: [ReturnStmt] return ...;
 #   22|             0: [FieldAccess] access to field length
 #   22|               -1: [ThisAccess] this access
@@ -42,7 +42,7 @@ indexers.cs:
 #   26|       2: [Getter] get_Item
 #-----|         2: (Parameters)
 #   24|           0: [Parameter] index
-#   27|         3: [BlockStmt] {...}
+#   27|         4: [BlockStmt] {...}
 #   28|           0: [IfStmt] if (...) ...
 #   28|             0: [LogicalOrExpr] ... || ...
 #   28|               0: [LTExpr] ... < ...
@@ -72,7 +72,7 @@ indexers.cs:
 #-----|         2: (Parameters)
 #   24|           0: [Parameter] index
 #   34|           1: [Parameter] value
-#   35|         3: [BlockStmt] {...}
+#   35|         4: [BlockStmt] {...}
 #   36|           0: [IfStmt] if (...) ...
 #   36|             0: [LogicalOrExpr] ... || ...
 #   36|               0: [LTExpr] ... < ...
@@ -116,7 +116,7 @@ indexers.cs:
 #   56|     2: [Method] Count
 #-----|       2: (Parameters)
 #   56|         0: [Parameter] max
-#   57|       3: [BlockStmt] {...}
+#   57|       4: [BlockStmt] {...}
 #   58|         0: [LocalConstantDeclStmt] ... ...;
 #   58|           0: [LocalVariableDeclAndInitExpr] BitArray flags = ...
 #   58|             0: [ObjectCreation] object creation of type BitArray
@@ -170,7 +170,7 @@ indexers.cs:
 #   72|     3: [Method] Main
 #-----|       2: (Parameters)
 #   72|         0: [Parameter] args
-#   73|       3: [BlockStmt] {...}
+#   73|       4: [BlockStmt] {...}
 #   74|         0: [LocalConstantDeclStmt] ... ...;
 #   74|           0: [LocalVariableDeclAndInitExpr] Int32 max = ...
 #   74|             0: [MethodCall] call to method Parse
@@ -216,7 +216,7 @@ indexers.cs:
 #-----|         2: (Parameters)
 #   89|           0: [Parameter] c
 #   89|           1: [Parameter] col
-#   92|         3: [BlockStmt] {...}
+#   92|         4: [BlockStmt] {...}
 #   93|           0: [ExprStmt] ...;
 #   93|             0: [AssignExpr] ... = ...
 #   93|               0: [MethodCall] call to method ToUpper
@@ -264,7 +264,7 @@ indexers.cs:
 #   89|           0: [Parameter] c
 #   89|           1: [Parameter] col
 #  104|           2: [Parameter] value
-#  105|         3: [BlockStmt] {...}
+#  105|         4: [BlockStmt] {...}
 #  106|           0: [ExprStmt] ...;
 #  106|             0: [AssignExpr] ... = ...
 #  106|               0: [MethodCall] call to method ToUpper
@@ -316,7 +316,7 @@ indexers.cs:
 #  125|       2: [Getter] get_Item
 #-----|         2: (Parameters)
 #  123|           0: [Parameter] index
-#  125|         3: [BlockStmt] {...}
+#  125|         4: [BlockStmt] {...}
 #  125|           0: [ReturnStmt] return ...;
 #  125|             0: [BoolLiteral] false
 #  128|     3: [Indexer] Item
@@ -327,6 +327,6 @@ indexers.cs:
 #-----|         2: (Parameters)
 #  128|           0: [Parameter] c
 #  128|           1: [Parameter] col
-#  130|         3: [BlockStmt] {...}
+#  130|         4: [BlockStmt] {...}
 #  130|           0: [ReturnStmt] return ...;
 #  130|             0: [IntLiteral] 0

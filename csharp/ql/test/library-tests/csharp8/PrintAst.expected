@@ -35,7 +35,7 @@ AsyncStreams.cs:
 #   42|     3: [Method] MoveNextAsync
 #    8| [Class] AsyncStreams
 #   10|   2: [Method] Items
-#   10|     3: [BlockStmt] {...}
+#   10|     4: [BlockStmt] {...}
 #   11|       0: [YieldReturnStmt] yield return ...;
 #   11|         0: [IntLiteral] 1
 #   12|       1: [YieldReturnStmt] yield return ...;
@@ -48,7 +48,7 @@ AsyncStreams.cs:
 #   14|       3: [YieldReturnStmt] yield return ...;
 #   14|         0: [IntLiteral] 3
 #   17|   3: [Method] F
-#   18|     3: [BlockStmt] {...}
+#   18|     4: [BlockStmt] {...}
 #   19|       0: [ForeachStmt] foreach (... ... in ...) ...
 #   19|         0: [LocalVariableDeclExpr] Int32 item
 #   19|         1: [MethodCall] call to method Items
@@ -63,15 +63,15 @@ DefaultInterfaceMethods.cs:
 #    5|     1: [Getter] get_Name
 #    7|   2: [IndexerProperty] Greeting
 #    9|     1: [Getter] get_Greeting
-#    9|       3: [StringLiteral] "Hello"
+#    9|       4: [StringLiteral] "Hello"
 #   10|     2: [Setter] set_Greeting
 #-----|       2: (Parameters)
 #   10|         0: [Parameter] value
-#   10|       3: [BlockStmt] {...}
+#   10|       4: [BlockStmt] {...}
 #   13|   3: [Method] Greet
 #-----|     2: (Parameters)
 #   13|       0: [Parameter] name
-#   13|     3: [AddExpr] ... + ...
+#   13|     4: [AddExpr] ... + ...
 #   13|       0: [AddExpr] ... + ...
 #   13|         0: [PropertyCall] access to property Greeting
 #   13|           -1: [ThisAccess] this access
@@ -79,7 +79,7 @@ DefaultInterfaceMethods.cs:
 #   13|       1: [ParameterAccess] access to parameter name
 #   15|   4: [IndexerProperty] GreetingString
 #   15|     1: [Getter] get_GreetingString
-#   15|       3: [MethodCall] call to method Greet
+#   15|       4: [MethodCall] call to method Greet
 #   15|         -1: [ThisAccess] this access
 #   15|         0: [PropertyCall] access to property Name
 #   15|           -1: [ThisAccess] this access
@@ -87,20 +87,20 @@ DefaultInterfaceMethods.cs:
 #   20| [Class] Person
 #   22|   2: [IndexerProperty] Name
 #   22|     1: [Getter] get_Name
-#   22|       3: [StringLiteral] "Petra"
+#   22|       4: [StringLiteral] "Petra"
 #   24|   3: [IndexerProperty] Greeting
 #   24|     1: [Getter] get_Greeting
-#   24|       3: [StringLiteral] "Howdy"
+#   24|       4: [StringLiteral] "Howdy"
 #   24|     2: [Setter] set_Greeting
 #-----|       2: (Parameters)
 #   24|         0: [Parameter] value
-#   24|       3: [BlockStmt] {...}
+#   24|       4: [BlockStmt] {...}
 #   26|   4: [Method] Greet
-#   26|     3: [BlockStmt] {...}
+#   26|     4: [BlockStmt] {...}
 NullCoalescingAssignment.cs:
 #    3| [Class] NullCoalescingAssignment
 #    5|   2: [Method] NullCoalescing
-#    6|     3: [BlockStmt] {...}
+#    6|     4: [BlockStmt] {...}
 #    7|       0: [LocalConstantDeclStmt] ... ...;
 #    7|         0: [LocalVariableDeclAndInitExpr] Object o = ...
 #    7|           0: [NullLiteral] null
@@ -115,31 +115,31 @@ NullableRefTypes.cs:
 #   10|   3: [Field] B
 #   13|   4: [IndexerProperty] C
 #   13|     1: [Getter] get_C
-#   13|       3: [NullLiteral] null
+#   13|       4: [NullLiteral] null
 #   14|   5: [IndexerProperty] D
 #   14|     1: [Getter] get_D
-#   14|       3: [ThisAccess] this access
+#   14|       4: [ThisAccess] this access
 #   17|   6: [Indexer] Item
 #-----|     0: (Parameters)
 #   17|       0: [Parameter] i
 #   17|     2: [Getter] get_Item
 #-----|       2: (Parameters)
 #   17|         0: [Parameter] i
-#   17|       3: [NullLiteral] null
+#   17|       4: [NullLiteral] null
 #   18|   7: [Indexer] Item
 #-----|     0: (Parameters)
 #   18|       0: [Parameter] i
 #   18|     2: [Getter] get_Item
 #-----|       2: (Parameters)
 #   18|         0: [Parameter] i
-#   18|       3: [ThisAccess] this access
+#   18|       4: [ThisAccess] this access
 #   19|   8: [Indexer] Item
 #-----|     0: (Parameters)
 #   19|       0: [Parameter] i
 #   19|     2: [Getter] get_Item
 #-----|       2: (Parameters)
 #   19|         0: [Parameter] i
-#   19|       3: [ThisAccess] this access
+#   19|       4: [ThisAccess] this access
 #   22|   9: [Field] G1
 #   23|   10: [Field] G2
 #   24|   11: [Field] G3
@@ -147,24 +147,24 @@ NullableRefTypes.cs:
 #   26|   13: [Method] ArrayFn1
 #-----|     2: (Parameters)
 #   26|       0: [Parameter] x
-#   26|     3: [ThrowExpr] throw ...
+#   26|     4: [ThrowExpr] throw ...
 #   26|       0: [NullLiteral] null
 #   27|   14: [Method] ArrayFn2
 #-----|     2: (Parameters)
 #   27|       0: [Parameter] x
-#   27|     3: [ThrowExpr] throw ...
+#   27|     4: [ThrowExpr] throw ...
 #   27|       0: [NullLiteral] null
 #   30|   15: [Method] M
-#   30|     3: [NullLiteral] null
+#   30|     4: [NullLiteral] null
 #   31|   16: [Method] N
-#   31|     3: [ThisAccess] this access
+#   31|     4: [ThisAccess] this access
 #   32|   17: [Method] O
 #-----|     2: (Parameters)
 #   32|       0: [Parameter] a
 #   32|       1: [Parameter] b
-#   32|     3: [BlockStmt] {...}
+#   32|     4: [BlockStmt] {...}
 #   35|   18: [Method] Locals
-#   36|     3: [BlockStmt] {...}
+#   36|     4: [BlockStmt] {...}
 #   37|       0: [LocalConstantDeclStmt] ... ...;
 #   37|         0: [LocalVariableDeclAndInitExpr] MyClass a = ...
 #   37|           0: [ObjectCreation] object creation of type MyClass
@@ -199,7 +199,7 @@ NullableRefTypes.cs:
 #   51|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #   51|       0: [Parameter] t
-#   51|     3: [NullLiteral] null
+#   51|     4: [NullLiteral] null
 #   54|   24: [Class] Generic<,,,>
 #-----|     0: (TypeParameters)
 #   54|       0: [TypeParameter] T1
@@ -216,9 +216,9 @@ NullableRefTypes.cs:
 #   67|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #   67|       0: [Parameter] x
-#   68|     3: [BlockStmt] {...}
+#   68|     4: [BlockStmt] {...}
 #   71|   31: [Method] CallF
-#   72|     3: [BlockStmt] {...}
+#   72|     4: [BlockStmt] {...}
 #   73|       0: [LocalConstantDeclStmt] ... ...;
 #   73|         0: [LocalVariableDeclAndInitExpr] MyClass x = ...
 #   73|           0: [NullLiteral] null
@@ -236,7 +236,7 @@ NullableRefTypes.cs:
 #   76|           0: [TypeAccess] access to type MyStruct
 #   80| [Class] NullableRefTypes
 #   82|   2: [Method] TestSuppressNullableWarningExpr
-#   83|     3: [BlockStmt] {...}
+#   83|     4: [BlockStmt] {...}
 #   84|       0: [LocalConstantDeclStmt] ... ...;
 #   84|         0: [LocalVariableDeclAndInitExpr] String x = ...
 #   84|           0: [StringLiteral] "source"
@@ -261,7 +261,7 @@ NullableRefTypes.cs:
 #   88|             0: [LocalVariableAccess] access to local variable x
 #   88|           1: [LocalVariableAccess] access to local variable y
 #   91|   3: [Method] FunctionInNullableContext
-#   92|     3: [BlockStmt] {...}
+#   92|     4: [BlockStmt] {...}
 #   93|       0: [LocalConstantDeclStmt] ... ...;
 #   93|         0: [LocalVariableDeclAndInitExpr] String x = ...
 #   93|           0: [StringLiteral] "source"
@@ -284,43 +284,43 @@ NullableRefTypes.cs:
 #  103|   2: [Method] ReturnsRef1
 #-----|     2: (Parameters)
 #  103|       0: [Parameter] r
-#  103|     3: [RefExpr] ref ...
+#  103|     4: [RefExpr] ref ...
 #  103|       0: [ParameterAccess] access to parameter r
 #  104|   3: [Method] ReturnsRef2
 #-----|     2: (Parameters)
 #  104|       0: [Parameter] r
-#  104|     3: [RefExpr] ref ...
+#  104|     4: [RefExpr] ref ...
 #  104|       0: [ParameterAccess] access to parameter r
 #  105|   4: [Method] ReturnsRef3
 #-----|     2: (Parameters)
 #  105|       0: [Parameter] r
-#  105|     3: [RefExpr] ref ...
+#  105|     4: [RefExpr] ref ...
 #  105|       0: [ParameterAccess] access to parameter r
 #  106|   5: [Method] ReturnsRef4
 #-----|     2: (Parameters)
 #  106|       0: [Parameter] r
-#  106|     3: [RefExpr] ref ...
+#  106|     4: [RefExpr] ref ...
 #  106|       0: [ParameterAccess] access to parameter r
 #  107|   6: [Method] ReturnsRef5
 #-----|     2: (Parameters)
 #  107|       0: [Parameter] r
-#  107|     3: [RefExpr] ref ...
+#  107|     4: [RefExpr] ref ...
 #  107|       0: [ParameterAccess] access to parameter r
 #  108|   7: [Method] ReturnsRef6
 #-----|     2: (Parameters)
 #  108|       0: [Parameter] r
-#  108|     3: [RefExpr] ref ...
+#  108|     4: [RefExpr] ref ...
 #  108|       0: [ParameterAccess] access to parameter r
 #  110|   8: [Method] Parameters1
 #-----|     2: (Parameters)
 #  110|       0: [Parameter] p1
 #  110|       1: [Parameter] p2
-#  110|     3: [ThrowExpr] throw ...
+#  110|     4: [ThrowExpr] throw ...
 #  110|       0: [NullLiteral] null
 #  112|   9: [Field] Property
 #  113|   10: [IndexerProperty] RefProperty
 #  113|     1: [Getter] get_RefProperty
-#  113|       3: [RefExpr] ref ...
+#  113|       4: [RefExpr] ref ...
 #  113|         0: [SuppressNullableWarningExpr] ...!
 #  113|           0: [FieldAccess] access to field Property
 #  113|             -1: [ThisAccess] this access
@@ -355,11 +355,11 @@ NullableRefTypes.cs:
 #  156|   2: [Field] f1
 #  157|   3: [IndexerProperty] P
 #  157|     1: [Getter] get_P
-#  157|       3: [ObjectCreation] object creation of type MyClass
+#  157|       4: [ObjectCreation] object creation of type MyClass
 #  158|   4: [Method] Fn
 #-----|     2: (Parameters)
 #  158|       0: [Parameter] p
-#  159|     3: [BlockStmt] {...}
+#  159|     4: [BlockStmt] {...}
 #  160|       0: [LocalConstantDeclStmt] ... ...;
 #  160|         0: [LocalVariableDeclAndInitExpr] MyClass a = ...
 #  160|           0: [ParameterAccess] access to parameter p
@@ -373,7 +373,7 @@ NullableRefTypes.cs:
 #  175|       0: [Parameter] isNull
 #  177|   4: [Method] Count
 #  179|   5: [Method] LoopUnrolling
-#  180|     3: [BlockStmt] {...}
+#  180|     4: [BlockStmt] {...}
 #  181|       0: [LocalConstantDeclStmt] ... ...;
 #  181|         0: [LocalVariableDeclAndInitExpr] String x = ...
 #  181|           0: [MethodCall] call to method MaybeNull
@@ -402,7 +402,7 @@ NullableRefTypes.cs:
 #  190|           -1: [ThisAccess] this access
 #  190|           0: [LocalVariableAccess] access to local variable x
 #  193|   6: [Method] ExceptionFlow
-#  194|     3: [BlockStmt] {...}
+#  194|     4: [BlockStmt] {...}
 #  195|       0: [LocalConstantDeclStmt] ... ...;
 #  195|         0: [LocalVariableDeclAndInitExpr] String y = ...
 #  195|           0: [MethodCall] call to method MaybeNull
@@ -424,7 +424,7 @@ NullableRefTypes.cs:
 #  209|   7: [Method] InvocationTest
 #-----|     2: (Parameters)
 #  209|       0: [Parameter] o
-#  210|     3: [BlockStmt] {...}
+#  210|     4: [BlockStmt] {...}
 #  211|       0: [LocalConstantDeclStmt] ... ...;
 #  211|         0: [LocalVariableDeclAndInitExpr] Type t = ...
 #  211|           0: [MethodCall] call to method GetType
@@ -436,7 +436,7 @@ NullableRefTypes.cs:
 #  215|   8: [Method] ElementTest
 #-----|     2: (Parameters)
 #  215|       0: [Parameter] list
-#  216|     3: [BlockStmt] {...}
+#  216|     4: [BlockStmt] {...}
 #  217|       0: [LocalConstantDeclStmt] ... ...;
 #  217|         0: [LocalVariableDeclAndInitExpr] String a = ...
 #  217|           0: [FieldAccess] access to field Field
@@ -469,17 +469,17 @@ StaticLocalFunctions.cs:
 #    7|   2: [Method] Fn
 #-----|     2: (Parameters)
 #    7|       0: [Parameter] x
-#    8|     3: [BlockStmt] {...}
+#    8|     4: [BlockStmt] {...}
 #    9|       0: [LocalFunctionStmt] I(...)
 #    9|         0: [LocalFunction] I
 #-----|           2: (Parameters)
 #    9|             0: [Parameter] y
-#    9|           3: [ParameterAccess] access to parameter y
+#    9|           4: [ParameterAccess] access to parameter y
 #   10|       1: [LocalFunctionStmt] J(...)
 #   10|         0: [LocalFunction] J
 #-----|           2: (Parameters)
 #   10|             0: [Parameter] y
-#   10|           3: [AddExpr] ... + ...
+#   10|           4: [AddExpr] ... + ...
 #   10|             0: [ParameterAccess] access to parameter x
 #   10|             1: [ParameterAccess] access to parameter y
 #   11|       2: [ReturnStmt] return ...;
@@ -502,7 +502,7 @@ UnmanagedGenericStructs.cs:
 UsingDeclarations.cs:
 #    4| [Class] UsingDeclarations
 #    6|   2: [Method] TestUsingDeclarations
-#    7|     3: [BlockStmt] {...}
+#    7|     4: [BlockStmt] {...}
 #    8|       0: [UsingDeclStmt] using ... ...;
 #    8|         0: [LocalVariableDeclAndInitExpr] FileStream file1 = ...
 #    8|           0: [ObjectCreation] object creation of type FileStream
@@ -539,7 +539,7 @@ UsingDeclarations.cs:
 patterns.cs:
 #    3| [Class] Patterns
 #    5|   2: [Method] IsPatterns
-#    6|     3: [BlockStmt] {...}
+#    6|     4: [BlockStmt] {...}
 #    7|       0: [LocalConstantDeclStmt] ... ...;
 #    7|         0: [LocalVariableDeclAndInitExpr] Object o = ...
 #    7|           0: [CastExpr] (...) ...
@@ -604,7 +604,7 @@ patterns.cs:
 #   27|                   0: [DiscardPatternExpr,LabeledPatternExpr] _
 #   28|         1: [BlockStmt] {...}
 #   32|   3: [Method] SwitchStatements
-#   33|     3: [BlockStmt] {...}
+#   33|     4: [BlockStmt] {...}
 #   34|       0: [LocalConstantDeclStmt] ... ...;
 #   34|         0: [LocalVariableDeclAndInitExpr] MyStruct s = ...
 #   34|           0: [ObjectCreation] object creation of type MyStruct
@@ -767,7 +767,7 @@ patterns.cs:
 #   98|   4: [Method] Expressions
 #-----|     2: (Parameters)
 #   98|       0: [Parameter] x
-#   99|     3: [BlockStmt] {...}
+#   99|     4: [BlockStmt] {...}
 #  100|       0: [LocalConstantDeclStmt] ... ...;
 #  100|         0: [LocalVariableDeclAndInitExpr] String size = ...
 #  100|           0: [SwitchExpr] ... switch { ... }
@@ -850,7 +850,7 @@ patterns.cs:
 #  123|   5: [Method] Expressions2
 #-----|     2: (Parameters)
 #  123|       0: [Parameter] o
-#  124|     3: [BlockStmt] {...}
+#  124|     4: [BlockStmt] {...}
 #  125|       0: [LocalConstantDeclStmt] ... ...;
 #  125|         0: [LocalVariableDeclAndInitExpr] MyStruct s = ...
 #  125|           0: [ObjectCreation] object creation of type MyStruct
@@ -932,15 +932,15 @@ patterns.cs:
 #  153|     2: [Field] X
 #  154|     3: [Property] Y
 #  154|       1: [Getter] get_Y
-#  154|         3: [IntLiteral] 10
+#  154|         4: [IntLiteral] 10
 #  156|     4: [Property] S
 #  156|       1: [Getter] get_S
-#  156|         3: [ThisAccess] this access
+#  156|         4: [ThisAccess] this access
 #  158|     5: [Method] Deconstruct
 #-----|       2: (Parameters)
 #  158|         0: [Parameter] x
 #  158|         1: [Parameter] y
-#  159|       3: [BlockStmt] {...}
+#  159|       4: [BlockStmt] {...}
 #  160|         0: [ExprStmt] ...;
 #  160|           0: [AssignExpr] ... = ...
 #  160|             0: [FieldAccess] access to field X
@@ -952,7 +952,7 @@ patterns.cs:
 #  161|               -1: [ThisAccess] this access
 #  161|             1: [ParameterAccess] access to parameter y
 #  164|     6: [Method] Deconstruct
-#  165|       3: [BlockStmt] {...}
+#  165|       4: [BlockStmt] {...}
 ranges.cs:
 #   25| [NamespaceDeclaration] namespace ... { ... }
 #   27|   1: [Struct] Index
@@ -961,47 +961,47 @@ ranges.cs:
 #   29|         0: [Parameter] value
 #   29|         1: [Parameter] fromEnd
 #   29|           1: [BoolLiteral] false
-#   29|       3: [BlockStmt] {...}
+#   29|       4: [BlockStmt] {...}
 #   30|     3: [ImplicitConversionOperator] implicit conversion
 #-----|       2: (Parameters)
 #   30|         0: [Parameter] value
-#   30|       3: [DefaultValueExpr] default(...)
+#   30|       4: [DefaultValueExpr] default(...)
 #   30|         0: [TypeAccess] access to type Index
 #   33|   2: [Struct] Range
 #   35|     2: [InstanceConstructor] Range
 #-----|       2: (Parameters)
 #   35|         0: [Parameter] start
 #   35|         1: [Parameter] end
-#   35|       3: [ThrowExpr] throw ...
+#   35|       4: [ThrowExpr] throw ...
 #   35|         0: [NullLiteral] null
 #   36|     3: [Method] StartAt
 #-----|       2: (Parameters)
 #   36|         0: [Parameter] start
-#   36|       3: [ThrowExpr] throw ...
+#   36|       4: [ThrowExpr] throw ...
 #   36|         0: [NullLiteral] null
 #   37|     4: [Method] EndAt
 #-----|       2: (Parameters)
 #   37|         0: [Parameter] end
-#   37|       3: [ThrowExpr] throw ...
+#   37|       4: [ThrowExpr] throw ...
 #   37|         0: [NullLiteral] null
 #   38|     5: [Property] All
 #   38|       1: [Getter] get_All
-#   38|         3: [ThrowExpr] throw ...
+#   38|         4: [ThrowExpr] throw ...
 #   38|           0: [NullLiteral] null
 #   39|     6: [Method] Create
 #-----|       2: (Parameters)
 #   39|         0: [Parameter] start
 #   39|         1: [Parameter] end
-#   39|       3: [ThrowExpr] throw ...
+#   39|       4: [ThrowExpr] throw ...
 #   39|         0: [NullLiteral] null
 #   40|     7: [ImplicitConversionOperator] implicit conversion
 #-----|       2: (Parameters)
 #   40|         0: [Parameter] r
-#   40|       3: [ThrowExpr] throw ...
+#   40|       4: [ThrowExpr] throw ...
 #   40|         0: [NullLiteral] null
 #    5| [Class] Ranges
 #    7|   2: [Method] F
-#    8|     3: [BlockStmt] {...}
+#    8|     4: [BlockStmt] {...}
 #    9|       0: [LocalConstantDeclStmt] ... ...;
 #    9|         0: [LocalVariableDeclAndInitExpr] Int32[] array = ...
 #    9|           0: [ArrayCreation] array creation of type Int32[]

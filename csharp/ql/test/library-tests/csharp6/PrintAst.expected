@@ -8,10 +8,10 @@ csharp6.cs:
 #   17|   4: [Method] Fn
 #-----|     2: (Parameters)
 #   17|       0: [Parameter] x
-#   17|     3: [MethodCall] call to method WriteLine
+#   17|     4: [MethodCall] call to method WriteLine
 #   17|       0: [ParameterAccess] access to parameter x
 #   19|   5: [Method] Main
-#   20|     3: [BlockStmt] {...}
+#   20|     4: [BlockStmt] {...}
 #   21|       0: [TryStmt] try {...} ...
 #   22|         0: [BlockStmt] {...}
 #   23|           0: [LocalConstantDeclStmt] ... ...;
@@ -66,7 +66,7 @@ csharp6.cs:
 #   30|                   0: [LambdaExpr] (...) => ...
 #-----|                     2: (Parameters)
 #   30|                       0: [Parameter] c
-#   30|                     3: [EQExpr] ... == ...
+#   30|                     4: [EQExpr] ... == ...
 #   30|                       0: [CastExpr] (...) ...
 #   30|                         0: [ParameterAccess] access to parameter c
 #   30|                       1: [CastExpr] (...) ...
@@ -96,22 +96,22 @@ csharp6.cs:
 #-----|     2: (Parameters)
 #   45|       0: [Parameter] t1
 #   45|       1: [Parameter] t2
-#   45|     3: [BoolLiteral] true
+#   45|     4: [BoolLiteral] true
 #   46|   7: [NEOperator] !=
 #-----|     2: (Parameters)
 #   46|       0: [Parameter] t1
 #   46|       1: [Parameter] t2
-#   46|     3: [BoolLiteral] false
+#   46|     4: [BoolLiteral] false
 #   48|   8: [Property] ExprProperty
 #   48|     1: [Getter] get_ExprProperty
-#   48|       3: [IntLiteral] 3
+#   48|       4: [IntLiteral] 3
 #   50|   9: [Indexer] Item
 #-----|     0: (Parameters)
 #   50|       0: [Parameter] i
 #   50|     2: [Getter] get_Item
 #-----|       2: (Parameters)
 #   50|         0: [Parameter] i
-#   50|       3: [ParameterAccess] access to parameter i
+#   50|       4: [ParameterAccess] access to parameter i
 #   53| [Class] IndexInitializers
 #   55|   2: [Class] Compound
 #   57|     2: [Field] DictionaryField
@@ -133,7 +133,7 @@ csharp6.cs:
 #-----|         2: (Parameters)
 #   62|           0: [Parameter] value
 #   65|   3: [Method] Test
-#   66|     3: [BlockStmt] {...}
+#   66|     4: [BlockStmt] {...}
 #   68|       0: [LocalConstantDeclStmt] ... ...;
 #   68|         0: [LocalVariableDeclAndInitExpr] Dictionary<Int32,String> dict = ...
 #   68|           0: [ObjectCreation] object creation of type Dictionary<Int32,String>

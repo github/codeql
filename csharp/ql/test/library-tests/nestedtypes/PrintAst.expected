@@ -7,7 +7,7 @@ nestedtypes.cs:
 #-----|       0: (Parameters)
 #   15|         0: [Parameter] s
 #   17|     5: [Method] F
-#   18|       3: [BlockStmt] {...}
+#   18|       4: [BlockStmt] {...}
 #   19|         0: [ExprStmt] ...;
 #   19|           0: [MethodCall] call to method WriteLine
 #   19|             -1: [TypeAccess] access to type Console
@@ -16,7 +16,7 @@ nestedtypes.cs:
 #   26|   2: [Class] Derived
 #   29|     2: [Class] Nested
 #   32|       2: [Method] G
-#   33|         3: [BlockStmt] {...}
+#   33|         4: [BlockStmt] {...}
 #   34|           0: [LocalConstantDeclStmt] ... ...;
 #   34|             0: [LocalVariableDeclAndInitExpr] Derived d = ...
 #   34|               0: [ObjectCreation] object creation of type Derived
@@ -26,7 +26,7 @@ nestedtypes.cs:
 #   35|               -1: [LocalVariableAccess] access to local variable d
 #   42|   3: [Class] Test
 #   45|     2: [Method] Main
-#   46|       3: [BlockStmt] {...}
+#   46|       4: [BlockStmt] {...}
 #   47|         0: [LocalConstantDeclStmt] ... ...;
 #   47|           0: [LocalVariableDeclAndInitExpr] Nested n = ...
 #   47|             0: [ObjectCreation] object creation of type Nested
@@ -44,11 +44,11 @@ nestedtypes.cs:
 #-----|         2: (Parameters)
 #   59|           0: [Parameter] t
 #   59|           1: [Parameter] u
-#   59|         3: [BlockStmt] {...}
+#   59|         4: [BlockStmt] {...}
 #   63|     5: [Method] F
 #-----|       2: (Parameters)
 #   63|         0: [Parameter] t
-#   64|       3: [BlockStmt] {...}
+#   64|       4: [BlockStmt] {...}
 #   65|         0: [ExprStmt] ...;
 #   65|           0: [MethodCall] call to method F
 #   65|             -1: [TypeAccess] access to type Inner<String>

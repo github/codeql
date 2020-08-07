@@ -26,7 +26,7 @@ types.cs:
 #   27|     24: [Method] PointerPointerType
 #   28|     25: [Method] Map
 #   29|     26: [Method] Null
-#   30|       3: [BlockStmt] {...}
+#   30|       4: [BlockStmt] {...}
 #   31|         0: [ReturnStmt] return ...;
 #   31|           0: [NullLiteral] null
 #   34|   2: [Enum] Enum

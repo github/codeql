@@ -31,7 +31,7 @@ definitions.cs:
 
 #    8| [ExtensionMethod] ExtensionMethod
 #-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #    9| [BlockStmt] {...}
 
@@ -49,7 +49,7 @@ definitions.cs:
 
 #   20| [InstanceConstructor] C1
 #-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #   20| [BlockStmt] {...}
 
@@ -60,30 +60,30 @@ definitions.cs:
 #-----| 2 -> [Setter] set_property1
 
 #   26| [Getter] get_property1
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #   27| [Setter] set_property1
 #-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #   27| [Parameter] value
 
 #   30| [Method] f1
 #-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #   30| [Parameter] args
 
 #   70| [Method] VariableTypeUse
 #-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #   70| [Parameter] c1
 
 #   75| [Method] GenericFn
 #-----| 1 -> (TypeParameters)
 #-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #   75| [Parameter] t
 
@@ -94,7 +94,7 @@ definitions.cs:
 
 #   80| [Method] M
 #-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #   81| [BlockStmt] {...}
 #-----| 0 -> [TryStmt] try {...} ...
@@ -180,7 +180,7 @@ definitions.cs:
 #  101| [Parameter] value
 
 #  103| [Method] M
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #  121| [Class] B<>
 #-----| 0 -> (TypeParameters)
@@ -191,7 +191,7 @@ definitions.cs:
 #-----| 7 -> [Indexer] Item
 
 #  123| [Method] M
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #  124| [BlockStmt] {...}
 #-----| 0 -> [ExprStmt] ...;
@@ -209,7 +209,7 @@ definitions.cs:
 
 #  128| [Method] M2
 #-----| 1 -> (TypeParameters)
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #  128| [TypeParameter] T
 
@@ -219,7 +219,7 @@ definitions.cs:
 #  130| [TypeParameter] T2
 
 #  132| [Method] Tuple
-#-----| 3 -> [ThrowExpr] throw ...
+#-----| 4 -> [ThrowExpr] throw ...
 
 #  134| [Indexer] Item
 #-----| 0 -> (Parameters)
@@ -229,7 +229,7 @@ definitions.cs:
 
 #  134| [Getter] get_Item
 #-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #  134| [Parameter] a
 
@@ -238,7 +238,7 @@ definitions.cs:
 #-----| 3 -> [Method] Pointer
 
 #  140| [Method] Pointer
-#-----| 3 -> [ThrowExpr] throw ...
+#-----| 4 -> [ThrowExpr] throw ...
 
 #  140| [ThrowExpr] throw ...
 #-----| 0 -> [ObjectCreation] object creation of type Exception
@@ -292,24 +292,24 @@ definitions.cs:
 
 #  153| [AddEventAccessor] add_EH
 #-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #  153| [BlockStmt] {...}
 
 #  153| [RemoveEventAccessor] remove_EH
 #-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #  153| [Parameter] value
 
 #  154| [Method] M
-#-----| 3 -> [ThrowExpr] throw ...
+#-----| 4 -> [ThrowExpr] throw ...
 
 #  155| [Property] P
 #-----| 1 -> [Getter] get_P
 
 #  155| [Getter] get_P
-#-----| 3 -> [ThrowExpr] throw ...
+#-----| 4 -> [ThrowExpr] throw ...
 
 #  156| [Indexer] Item
 #-----| 0 -> (Parameters)
@@ -319,7 +319,7 @@ definitions.cs:
 
 #  156| [Getter] get_Item
 #-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #  156| [Parameter] eh
 
@@ -330,7 +330,7 @@ definitions.cs:
 #  158| [TypeParameter] T
 
 #  160| [Method] Create
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #  160| [BlockStmt] {...}
 #-----| 0 -> [ReturnStmt] return ...;
@@ -348,7 +348,7 @@ definitions.cs:
 #  167| [Field] c1
 
 #  169| [Method] M
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #  166| [Field] f
 #-----| 1 -> [AssignExpr] ... = ...
@@ -377,7 +377,7 @@ definitions.cs:
 
 #  181| [ExplicitConversionOperator] explicit conversion
 #-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #  182| [BlockStmt] {...}
 #-----| 0 -> [ReturnStmt] return ...;
@@ -388,11 +388,11 @@ definitions.cs:
 #  183| [NullLiteral] null
 
 #  186| [Method] M
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #  191| [AddOperator] +
 #-----| 2 -> (Parameters)
-#-----| 3 -> [ParameterAccess] access to parameter x
+#-----| 4 -> [ParameterAccess] access to parameter x
 
 #  191| [Parameter] x
 
@@ -403,18 +403,18 @@ definitions.cs:
 #-----| 3 -> [Method] M2
 
 #  198| [Method] M
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #  198| [BlockStmt] {...}
 
 #  200| [Method] M2
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #  206| [Class] C8
 #-----| 2 -> [Method] F
 
 #  208| [Method] F
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #  209| [BlockStmt] {...}
 #-----| 0 -> [LocalConstantDeclStmt] ... ...;
@@ -865,7 +865,7 @@ definitions.cs:
 #-----| 0 -> [LocalFunction] LocalFunction
 
 #  106| [LocalFunction] LocalFunction
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #  106| [EmptyStmt] ;
 

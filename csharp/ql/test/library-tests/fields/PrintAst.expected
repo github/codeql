@@ -28,13 +28,13 @@ fields.cs:
 #   23|         0: [IntLiteral] 0
 #   23|         1: [FieldAccess] access to field count
 #   25|     4: [InstanceConstructor] C
-#   25|       3: [BlockStmt] {...}
+#   25|       4: [BlockStmt] {...}
 #   25|         0: [ExprStmt] ...;
 #   25|           0: [PostIncrExpr] ...++
 #   25|             0: [FieldAccess] access to field count
 #   27|     5: [Property] Count
 #   27|       1: [Getter] get_Count
-#   27|         3: [BlockStmt] {...}
+#   27|         4: [BlockStmt] {...}
 #   27|           0: [ReturnStmt] return ...;
 #   27|             0: [FieldAccess] access to field count
 #   31|   4: [Class] Application
@@ -56,7 +56,7 @@ fields.cs:
 #   37|         1: [FieldAccess] access to field s
 #   37|           -1: [ThisAccess] this access
 #   39|     7: [Method] Main
-#   40|       3: [BlockStmt] {...}
+#   40|       4: [BlockStmt] {...}
 #   41|         0: [LocalConstantDeclStmt] ... ...;
 #   41|           0: [LocalVariableDeclAndInitExpr] Decimal d = ...
 #   41|             0: [MemberConstantAccess] access to constant MaxValue
@@ -106,7 +106,7 @@ fields.cs:
 #   56|         0: [Parameter] r
 #   56|         1: [Parameter] g
 #   56|         2: [Parameter] b
-#   56|       3: [BlockStmt] {...}
+#   56|       4: [BlockStmt] {...}
 #   60|   6: [Class] TestBindings
 #   63|     3: [Field] a
 #   63|       1: [AssignExpr] ... = ...
@@ -148,7 +148,7 @@ fields.cs:
 #   85|         1: [MemberConstantAccess] access to constant Foo
 #   86|     2: [Field] x
 #   87|     3: [InstanceConstructor] C
-#   88|       3: [BlockStmt] {...}
+#   88|       4: [BlockStmt] {...}
 #   89|         0: [ExprStmt] ...;
 #   89|           0: [AssignExpr] ... = ...
 #   89|             0: [CastExpr] (...) ...
@@ -178,11 +178,11 @@ fields.cs:
 #   98|     1: [InstanceConstructor] D
 #-----|       2: (Parameters)
 #   98|         0: [Parameter] d
-#   99|       3: [BlockStmt] {...}
+#   99|       4: [BlockStmt] {...}
 #  101|     2: [ImplicitConversionOperator] implicit conversion
 #-----|       2: (Parameters)
 #  101|         0: [Parameter] d
-#  101|       3: [BlockStmt] {...}
+#  101|       4: [BlockStmt] {...}
 #  101|         0: [ReturnStmt] return ...;
 #  101|           0: [ObjectCreation] object creation of type D
 #  101|             0: [ParameterAccess] access to parameter d

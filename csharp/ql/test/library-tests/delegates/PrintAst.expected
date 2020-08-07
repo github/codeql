@@ -14,7 +14,7 @@ delegates.cs:
 #-----|       2: (Parameters)
 #   14|         0: [Parameter] a
 #   14|         1: [Parameter] b
-#   14|       3: [BlockStmt] {...}
+#   14|       4: [BlockStmt] {...}
 #   14|         0: [ReturnStmt] return ...;
 #   14|           0: [CastExpr] (...) ...
 #   14|             0: [AddExpr] ... + ...
@@ -31,7 +31,7 @@ delegates.cs:
 #-----|       2: (Parameters)
 #   23|         0: [Parameter] f
 #   23|         1: [Parameter] g
-#   23|       3: [BlockStmt] {...}
+#   23|       4: [BlockStmt] {...}
 #   23|         0: [ReturnStmt] return ...;
 #   23|           0: [SubExpr] ... - ...
 #   23|             0: [ParameterAccess] access to parameter f
@@ -42,11 +42,11 @@ delegates.cs:
 #-----|       2: (Parameters)
 #   25|         0: [Parameter] k
 #   25|         1: [Parameter] l
-#   25|       3: [BlockStmt] {...}
+#   25|       4: [BlockStmt] {...}
 #   27|     5: [Method] M3
 #-----|       2: (Parameters)
 #   27|         0: [Parameter] g
-#   27|       3: [BlockStmt] {...}
+#   27|       4: [BlockStmt] {...}
 #   27|         0: [ReturnStmt] return ...;
 #   27|           0: [AddExpr] ... + ...
 #   27|             0: [UnaryMinusExpr] -...
@@ -56,7 +56,7 @@ delegates.cs:
 #   29|     6: [Method] M4
 #-----|       2: (Parameters)
 #   29|         0: [Parameter] g
-#   29|       3: [BlockStmt] {...}
+#   29|       4: [BlockStmt] {...}
 #   33|   5: [DelegateType] Predicate<>
 #-----|     0: (TypeParameters)
 #   33|       0: [TypeParameter] T
@@ -66,7 +66,7 @@ delegates.cs:
 #   38|     2: [Method] F
 #-----|       2: (Parameters)
 #   38|         0: [Parameter] i
-#   38|       3: [BlockStmt] {...}
+#   38|       4: [BlockStmt] {...}
 #   38|         0: [ReturnStmt] return ...;
 #   38|           0: [LTExpr] ... < ...
 #   38|             0: [ParameterAccess] access to parameter i
@@ -74,7 +74,7 @@ delegates.cs:
 #   40|     3: [Method] G
 #-----|       2: (Parameters)
 #   40|         0: [Parameter] s
-#   40|       3: [BlockStmt] {...}
+#   40|       4: [BlockStmt] {...}
 #   40|         0: [ReturnStmt] return ...;
 #   40|           0: [BoolLiteral] false
 #   44|   7: [DelegateType] D
@@ -84,18 +84,18 @@ delegates.cs:
 #   49|     2: [Method] M1
 #-----|       2: (Parameters)
 #   49|         0: [Parameter] i
-#   49|       3: [BlockStmt] {...}
+#   49|       4: [BlockStmt] {...}
 #   50|     3: [Method] M2
 #-----|       2: (Parameters)
 #   50|         0: [Parameter] i
-#   50|       3: [BlockStmt] {...}
+#   50|       4: [BlockStmt] {...}
 #   51|     4: [Method] M3
 #-----|       2: (Parameters)
 #   51|         0: [Parameter] i
-#   51|       3: [BlockStmt] {...}
+#   51|       4: [BlockStmt] {...}
 #   55|   9: [Class] Test
 #   58|     2: [Method] Main
-#   59|       3: [BlockStmt] {...}
+#   59|       4: [BlockStmt] {...}
 #   60|         0: [LocalConstantDeclStmt] ... ...;
 #   60|           0: [LocalVariableDeclAndInitExpr] D cd1 = ...
 #   60|             0: [ExplicitDelegateCreation] delegate creation of type D

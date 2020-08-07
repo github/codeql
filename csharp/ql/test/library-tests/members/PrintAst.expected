@@ -11,7 +11,7 @@ Members.cs:
 #   12|           0: [TypeParameter] T
 #-----|         2: (Parameters)
 #   12|           0: [Parameter] t
-#   12|         3: [MethodCall] call to method ToString
+#   12|         4: [MethodCall] call to method ToString
 #   12|           -1: [ParameterAccess] access to parameter t
 #   14|       3: [Indexer] Item
 #-----|         0: (Parameters)
@@ -19,13 +19,13 @@ Members.cs:
 #   14|         2: [Getter] get_Item
 #-----|           2: (Parameters)
 #   14|             0: [Parameter] i
-#   14|           3: [MethodCall] call to method ToString
+#   14|           4: [MethodCall] call to method ToString
 #   14|             -1: [ParameterAccess] access to parameter i
 #   14|         3: [Setter] set_Item
 #-----|           2: (Parameters)
 #   14|             0: [Parameter] i
 #   14|             1: [Parameter] value
-#   14|           3: [BlockStmt] {...}
+#   14|           4: [BlockStmt] {...}
 #   16|       4: [Field] Field
 #   18|       5: [IndexerProperty] Prop
 #   18|         1: [Getter] get_Prop
@@ -40,20 +40,20 @@ Members.cs:
 #-----|           2: (Parameters)
 #   20|             0: [Parameter] value
 #   24|     3: [Method] Method
-#   24|       3: [BlockStmt] {...}
+#   24|       4: [BlockStmt] {...}
 #   26|     4: [Indexer] Item
 #-----|       0: (Parameters)
 #   26|         0: [Parameter] i
 #   26|       2: [Getter] get_Item
 #-----|         2: (Parameters)
 #   26|           0: [Parameter] i
-#   26|         3: [MethodCall] call to method ToString
+#   26|         4: [MethodCall] call to method ToString
 #   26|           -1: [ParameterAccess] access to parameter i
 #   26|       3: [Setter] set_Item
 #-----|         2: (Parameters)
 #   26|           0: [Parameter] i
 #   26|           1: [Parameter] value
-#   26|         3: [BlockStmt] {...}
+#   26|         4: [BlockStmt] {...}
 #   28|     5: [Field] Field
 #   30|     6: [IndexerProperty] Prop
 #   30|       1: [Getter] get_Prop
@@ -74,7 +74,7 @@ Members.cs:
 #   39|           0: [TypeParameter] T
 #-----|         2: (Parameters)
 #   39|           0: [Parameter] t
-#   39|         3: [MethodCall] call to method ToString
+#   39|         4: [MethodCall] call to method ToString
 #   39|           -1: [ParameterAccess] access to parameter t
 #   40|       3: [Indexer] Item
 #-----|         0: (Parameters)
@@ -82,13 +82,13 @@ Members.cs:
 #   40|         2: [Getter] get_Item
 #-----|           2: (Parameters)
 #   40|             0: [Parameter] i
-#   40|           3: [MethodCall] call to method ToString
+#   40|           4: [MethodCall] call to method ToString
 #   40|             -1: [ParameterAccess] access to parameter i
 #   40|         3: [Setter] set_Item
 #-----|           2: (Parameters)
 #   40|             0: [Parameter] i
 #   40|             1: [Parameter] value
-#   40|           3: [BlockStmt] {...}
+#   40|           4: [BlockStmt] {...}
 #   41|       4: [Field] Field
 #   42|       5: [IndexerProperty] Prop
 #   42|         1: [Getter] get_Prop
@@ -103,20 +103,20 @@ Members.cs:
 #-----|           2: (Parameters)
 #   43|             0: [Parameter] value
 #   46|     3: [Method] Method
-#   46|       3: [BlockStmt] {...}
+#   46|       4: [BlockStmt] {...}
 #   47|     4: [Indexer] Item
 #-----|       0: (Parameters)
 #   47|         0: [Parameter] i
 #   47|       2: [Getter] get_Item
 #-----|         2: (Parameters)
 #   47|           0: [Parameter] i
-#   47|         3: [MethodCall] call to method ToString
+#   47|         4: [MethodCall] call to method ToString
 #   47|           -1: [ParameterAccess] access to parameter i
 #   47|       3: [Setter] set_Item
 #-----|         2: (Parameters)
 #   47|           0: [Parameter] i
 #   47|           1: [Parameter] value
-#   47|         3: [BlockStmt] {...}
+#   47|         4: [BlockStmt] {...}
 #   48|     5: [Field] Field
 #   49|     6: [IndexerProperty] Prop
 #   49|       1: [Getter] get_Prop

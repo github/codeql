@@ -3,11 +3,11 @@ dynamic.cs:
 #    6|   1: [InstanceConstructor] DynamicTest
 #-----|     2: (Parameters)
 #    6|       0: [Parameter] x
-#    6|     3: [BlockStmt] {...}
+#    6|     4: [BlockStmt] {...}
 #    8|   2: [Method] Main
 #-----|     2: (Parameters)
 #    8|       0: [Parameter] args
-#    9|     3: [BlockStmt] {...}
+#    9|     4: [BlockStmt] {...}
 #   10|       0: [LocalConstantDeclStmt] ... ...;
 #   10|         0: [LocalVariableDeclAndInitExpr] DynamicTest dt = ...
 #   10|           0: [ObjectCreation] object creation of type DynamicTest
@@ -25,7 +25,7 @@ dynamic.cs:
 #   12|           0: [LambdaExpr] (...) => ...
 #-----|             2: (Parameters)
 #   12|               0: [Parameter] x
-#   12|             3: [BlockStmt] {...}
+#   12|             4: [BlockStmt] {...}
 #   12|           1: [LocalVariableAccess] access to local variable action
 #   13|       3: [LocalConstantDeclStmt] ... ...;
 #   13|         0: [LocalVariableDeclAndInitExpr] dynamic d = ...
@@ -216,19 +216,19 @@ dynamic.cs:
 #   78|   3: [Method] Foo
 #-----|     2: (Parameters)
 #   78|       0: [Parameter] x
-#   78|     3: [BlockStmt] {...}
+#   78|     4: [BlockStmt] {...}
 #   79|   4: [Method] Foo
 #-----|     2: (Parameters)
 #   79|       0: [Parameter] x
-#   79|     3: [BlockStmt] {...}
+#   79|     4: [BlockStmt] {...}
 #   81|   5: [Method] Bar
 #-----|     2: (Parameters)
 #   81|       0: [Parameter] x
-#   81|     3: [BlockStmt] {...}
+#   81|     4: [BlockStmt] {...}
 #   83|   6: [IncrementOperator] ++
 #-----|     2: (Parameters)
 #   83|       0: [Parameter] dt
-#   84|     3: [BlockStmt] {...}
+#   84|     4: [BlockStmt] {...}
 #   85|       0: [ReturnStmt] return ...;
 #   85|         0: [ParameterAccess] access to parameter dt
 #   88|   7: [Field] Field
@@ -243,12 +243,12 @@ dynamic.cs:
 #   92|     2: [Getter] get_Item
 #-----|       2: (Parameters)
 #   92|         0: [Parameter] x
-#   92|       3: [BlockStmt] {...}
+#   92|       4: [BlockStmt] {...}
 #   92|         0: [ReturnStmt] return ...;
 #   92|           0: [ParameterAccess] access to parameter x
 #   92|     3: [Setter] set_Item
 #-----|       2: (Parameters)
 #   92|         0: [Parameter] x
 #   92|         1: [Parameter] value
-#   92|       3: [BlockStmt] {...}
+#   92|       4: [BlockStmt] {...}
 #   37| [LocalVariableAccess] access to local variable d

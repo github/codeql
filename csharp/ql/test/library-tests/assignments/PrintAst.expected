@@ -1,7 +1,7 @@
 Assignments.cs:
 #    1| [Class] Assignments
 #    3|   2: [Method] M
-#    4|     3: [BlockStmt] {...}
+#    4|     4: [BlockStmt] {...}
 #    5|       0: [LocalConstantDeclStmt] ... ...;
 #    5|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
 #    5|           0: [IntLiteral] 0
@@ -33,14 +33,14 @@ Assignments.cs:
 #-----|             2: (Parameters)
 #   14|               0: [Parameter] sender
 #   14|               1: [Parameter] e
-#   14|             3: [BlockStmt] {...}
+#   14|             4: [BlockStmt] {...}
 #   14|           1: [EventAccess,EventCall] access to event Event
 #   14|             -1: [ThisAccess] this access
 #   17|   3: [AddOperator] +
 #-----|     2: (Parameters)
 #   17|       0: [Parameter] x
 #   17|       1: [Parameter] y
-#   18|     3: [BlockStmt] {...}
+#   18|     4: [BlockStmt] {...}
 #   19|       0: [ReturnStmt] return ...;
 #   19|         0: [ParameterAccess] access to parameter x
 #   22|   4: [DelegateType] EventHandler

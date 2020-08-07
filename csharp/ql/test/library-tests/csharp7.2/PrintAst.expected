@@ -4,9 +4,9 @@ csharp72.cs:
 #   11|   3: [Method] F
 #-----|     2: (Parameters)
 #   11|       0: [Parameter] s
-#   12|     3: [BlockStmt] {...}
+#   12|     4: [BlockStmt] {...}
 #   15|   4: [Method] CallF
-#   16|     3: [BlockStmt] {...}
+#   16|     4: [BlockStmt] {...}
 #   17|       0: [LocalConstantDeclStmt] ... ...;
 #   17|         0: [LocalVariableDeclAndInitExpr] S s = ...
 #   17|           0: [ObjectCreation] object creation of type S
@@ -18,7 +18,7 @@ csharp72.cs:
 #   22| [Class] RefReadonlyReturns
 #   24|   2: [Field] s
 #   26|   3: [Method] F
-#   27|     3: [BlockStmt] {...}
+#   27|     4: [BlockStmt] {...}
 #   28|       0: [ReturnStmt] return ...;
 #   28|         0: [RefExpr] ref ...
 #   28|           0: [FieldAccess] access to field s
@@ -37,7 +37,7 @@ csharp72.cs:
 #   53|       1: [FieldAccess] access to field X
 #   53|         -1: [ThisAccess] this access
 #   55|   3: [Method] F
-#   55|     3: [BlockStmt] {...}
+#   55|     4: [BlockStmt] {...}
 #   34| [Struct] ReadonlyStruct
 #   38| [Struct] RefStruct
 #   42| [Struct] ReadonlyRefStruct

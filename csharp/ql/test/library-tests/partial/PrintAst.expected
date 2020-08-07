@@ -2,6 +2,6 @@ Partial.cs:
 #    1| [Class] A
 #    3|   2: [Method] M
 #    4|   3: [Method] M2
-#    4|     3: [BlockStmt] {...}
+#    4|     4: [BlockStmt] {...}
 #   10|   4: [Method] M3
-#   10|     3: [BlockStmt] {...}
+#   10|     4: [BlockStmt] {...}

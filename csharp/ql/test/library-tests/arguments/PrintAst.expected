@@ -6,13 +6,13 @@ arguments.cs:
 #    5|         1: [IntLiteral] 0
 #    5|       1: [Parameter] y
 #    5|         1: [IntLiteral] 0
-#    6|     3: [BlockStmt] {...}
+#    6|     4: [BlockStmt] {...}
 #    9|   2: [InstanceConstructor] ArgumentsTest
 #-----|     2: (Parameters)
 #    9|       0: [Parameter] x
 #    9|       1: [Parameter] y
 #    9|       2: [Parameter] z
-#   10|     3: [BlockStmt] {...}
+#   10|     4: [BlockStmt] {...}
 #   11|       0: [ExprStmt] ...;
 #   11|         0: [AssignExpr] ... = ...
 #   11|           0: [ParameterAccess] access to parameter x
@@ -23,19 +23,19 @@ arguments.cs:
 #   14|         1: [IntLiteral] 1
 #   14|       1: [Parameter] y
 #   14|         1: [IntLiteral] 2
-#   15|     3: [BlockStmt] {...}
+#   15|     4: [BlockStmt] {...}
 #   18|   4: [Method] f2
 #-----|     2: (Parameters)
 #   18|       0: [Parameter] x
 #   18|       1: [Parameter] y
 #   18|       2: [Parameter] z
-#   19|     3: [BlockStmt] {...}
+#   19|     4: [BlockStmt] {...}
 #   20|       0: [ExprStmt] ...;
 #   20|         0: [AssignExpr] ... = ...
 #   20|           0: [ParameterAccess] access to parameter x
 #   20|           1: [ParameterAccess] access to parameter y
 #   23|   5: [Method] f
-#   24|     3: [BlockStmt] {...}
+#   24|     4: [BlockStmt] {...}
 #   25|       0: [LocalConstantDeclStmt] ... ...;
 #   25|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
 #   25|           0: [IntLiteral] 1
@@ -63,7 +63,7 @@ arguments.cs:
 #-----|     2: (Parameters)
 #   33|       0: [Parameter] o
 #   33|       1: [Parameter] args
-#   34|     3: [BlockStmt] {...}
+#   34|     4: [BlockStmt] {...}
 #   35|       0: [ExprStmt] ...;
 #   35|         0: [MethodCall] call to method f3
 #   35|           -1: [ThisAccess] this access
@@ -106,7 +106,7 @@ arguments.cs:
 #   43|   7: [Method] f4
 #-----|     2: (Parameters)
 #   43|       0: [Parameter] args
-#   44|     3: [BlockStmt] {...}
+#   44|     4: [BlockStmt] {...}
 #   45|       0: [ExprStmt] ...;
 #   45|         0: [MethodCall] call to method f4
 #   45|           -1: [ThisAccess] this access
@@ -128,7 +128,7 @@ arguments.cs:
 #-----|       2: (Parameters)
 #   50|         0: [Parameter] a
 #   50|         1: [Parameter] b
-#   50|       3: [AddExpr] ... + ...
+#   50|       4: [AddExpr] ... + ...
 #   50|         0: [ParameterAccess] access to parameter a
 #   50|         1: [ParameterAccess] access to parameter b
 #   50|     3: [Setter] set_Item
@@ -136,9 +136,9 @@ arguments.cs:
 #   50|         0: [Parameter] a
 #   50|         1: [Parameter] b
 #   50|         2: [Parameter] value
-#   50|       3: [BlockStmt] {...}
+#   50|       4: [BlockStmt] {...}
 #   52|   10: [Method] f5
-#   53|     3: [BlockStmt] {...}
+#   53|     4: [BlockStmt] {...}
 #   54|       0: [ExprStmt] ...;
 #   54|         0: [AssignExpr] ... = ...
 #   54|           0: [IntLiteral] 0
@@ -206,14 +206,14 @@ arguments.cs:
 #-----|     0: (Attributes)
 #   65|       1: [Attribute] [My(...)]
 #   65|         0: [BoolLiteral] false
-#   66|     3: [BlockStmt] {...}
+#   66|     4: [BlockStmt] {...}
 #   69|   12: [Method] f7
 #-----|     0: (Attributes)
 #   68|       1: [Attribute] [My(...)]
 #   68|         0: [BoolLiteral] true
 #   68|         1: [StringLiteral] ""
 #   68|         2: [IntLiteral] 0
-#   69|     3: [BlockStmt] {...}
+#   69|     4: [BlockStmt] {...}
 #   72| [Class] MyAttribute
 #   74|   1: [Field] x
 #   75|   2: [IndexerProperty] y
@@ -224,4 +224,4 @@ arguments.cs:
 #   76|   3: [InstanceConstructor] MyAttribute
 #-----|     2: (Parameters)
 #   76|       0: [Parameter] b
-#   76|     3: [BlockStmt] {...}
+#   76|     4: [BlockStmt] {...}

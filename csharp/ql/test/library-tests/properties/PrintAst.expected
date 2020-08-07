@@ -4,14 +4,14 @@ properties.cs:
 #   10|     2: [Field] caption
 #   12|     3: [IndexerProperty] Caption
 #   15|       1: [Getter] get_Caption
-#   15|         3: [BlockStmt] {...}
+#   15|         4: [BlockStmt] {...}
 #   15|           0: [ReturnStmt] return ...;
 #   15|             0: [FieldAccess] access to field caption
 #   15|               -1: [ThisAccess] this access
 #   17|       2: [Setter] set_Caption
 #-----|         2: (Parameters)
 #   17|           0: [Parameter] value
-#   18|         3: [BlockStmt] {...}
+#   18|         4: [BlockStmt] {...}
 #   19|           0: [IfStmt] if (...) ...
 #   19|             0: [NEExpr] ... != ...
 #   19|               0: [FieldAccess] access to field caption
@@ -24,7 +24,7 @@ properties.cs:
 #   21|                   1: [FieldAccess] access to field caption
 #   21|                     -1: [ThisAccess] this access
 #   26|     4: [Method] Paint
-#   27|       3: [BlockStmt] {...}
+#   27|       4: [BlockStmt] {...}
 #   28|         0: [LocalConstantDeclStmt] ... ...;
 #   28|           0: [LocalVariableDeclAndInitExpr] Button okButton = ...
 #   28|             0: [ObjectCreation] object creation of type Button
@@ -43,7 +43,7 @@ properties.cs:
 #   37|     2: [Field] next
 #   39|     3: [Property] Next
 #   41|       1: [Getter] get_Next
-#   41|         3: [BlockStmt] {...}
+#   41|         4: [BlockStmt] {...}
 #   41|           0: [ReturnStmt] return ...;
 #   41|             0: [PostIncrExpr] ...++
 #   41|               0: [FieldAccess] access to field next
@@ -74,7 +74,7 @@ properties.cs:
 #-----|       2: (Parameters)
 #   59|         0: [Parameter] x
 #   59|         1: [Parameter] y
-#   60|       3: [BlockStmt] {...}
+#   60|       4: [BlockStmt] {...}
 #   61|         0: [ExprStmt] ...;
 #   61|           0: [AssignExpr] ... = ...
 #   61|             0: [ParameterAccess] access to parameter x
@@ -89,19 +89,19 @@ properties.cs:
 #   69|     2: [Field] y
 #   70|     3: [Property] X
 #   70|       1: [Getter] get_X
-#   70|         3: [BlockStmt] {...}
+#   70|         4: [BlockStmt] {...}
 #   70|           0: [ReturnStmt] return ...;
 #   70|             0: [IntLiteral] 0
 #   71|     4: [Property] Y
 #   73|       1: [Getter] get_Y
-#   73|         3: [BlockStmt] {...}
+#   73|         4: [BlockStmt] {...}
 #   73|           0: [ReturnStmt] return ...;
 #   73|             0: [FieldAccess] access to field y
 #   73|               -1: [ThisAccess] this access
 #   74|       2: [Setter] set_Y
 #-----|         2: (Parameters)
 #   74|           0: [Parameter] value
-#   74|         3: [BlockStmt] {...}
+#   74|         4: [BlockStmt] {...}
 #   74|           0: [ExprStmt] ...;
 #   74|             0: [AssignExpr] ... = ...
 #   74|               0: [ParameterAccess] access to parameter value
@@ -116,7 +116,7 @@ properties.cs:
 #   81|     2: [Field] z
 #   82|     3: [Property] X
 #   82|       1: [Getter] get_X
-#   82|         3: [BlockStmt] {...}
+#   82|         4: [BlockStmt] {...}
 #   82|           0: [ReturnStmt] return ...;
 #   82|             0: [AddExpr] ... + ...
 #   82|               0: [PropertyCall] access to property X
@@ -126,7 +126,7 @@ properties.cs:
 #   83|       1: [Setter] set_Y
 #-----|         2: (Parameters)
 #   83|           0: [Parameter] value
-#   83|         3: [BlockStmt] {...}
+#   83|         4: [BlockStmt] {...}
 #   83|           0: [ExprStmt] ...;
 #   83|             0: [AssignExpr] ... = ...
 #   83|               0: [ConditionalExpr] ... ? ... : ...
@@ -139,14 +139,14 @@ properties.cs:
 #   83|                 -1: [BaseAccess] base access
 #   84|     5: [Property] Z
 #   86|       1: [Getter] get_Z
-#   86|         3: [BlockStmt] {...}
+#   86|         4: [BlockStmt] {...}
 #   86|           0: [ReturnStmt] return ...;
 #   86|             0: [FieldAccess] access to field z
 #   86|               -1: [ThisAccess] this access
 #   87|       2: [Setter] set_Z
 #-----|         2: (Parameters)
 #   87|           0: [Parameter] value
-#   87|         3: [BlockStmt] {...}
+#   87|         4: [BlockStmt] {...}
 #   87|           0: [ExprStmt] ...;
 #   87|             0: [AssignExpr] ... = ...
 #   87|               0: [ParameterAccess] access to parameter value
@@ -157,9 +157,9 @@ properties.cs:
 #   93|       1: [Setter] set_Init
 #-----|         2: (Parameters)
 #   93|           0: [Parameter] value
-#   93|         3: [BlockStmt] {...}
+#   93|         4: [BlockStmt] {...}
 #   94|     3: [Method] Main
-#   95|       3: [BlockStmt] {...}
+#   95|       4: [BlockStmt] {...}
 #   96|         0: [LocalConstantDeclStmt] ... ...;
 #   96|           0: [LocalVariableDeclAndInitExpr] List<Double> ds = ...
 #   96|             0: [ObjectCreation] object creation of type List<Double>
@@ -185,16 +185,16 @@ properties.cs:
 #  110|   9: [Class] ImplementsProperties
 #  112|     2: [Property] Prop1
 #  114|       1: [Getter] get_Prop1
-#  114|         3: [BlockStmt] {...}
+#  114|         4: [BlockStmt] {...}
 #  114|           0: [ReturnStmt] return ...;
 #  114|             0: [IntLiteral] 0
 #  117|     3: [Property] Prop2
 #  119|       1: [Setter] set_Prop2
 #-----|         2: (Parameters)
 #  119|           0: [Parameter] value
-#  119|         3: [BlockStmt] {...}
+#  119|         4: [BlockStmt] {...}
 #  122|     4: [Property] Prop2
 #  124|       1: [Setter] set_Prop2
 #-----|         2: (Parameters)
 #  124|           0: [Parameter] value
-#  124|         3: [BlockStmt] {...}
+#  124|         4: [BlockStmt] {...}

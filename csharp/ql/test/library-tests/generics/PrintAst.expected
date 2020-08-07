@@ -5,14 +5,14 @@ Nesting.cs:
 #    3|   3: [Method] MA1
 #-----|     2: (Parameters)
 #    3|       0: [Parameter] x
-#    3|     3: [BlockStmt] {...}
+#    3|     4: [BlockStmt] {...}
 #    4|   4: [Method] MA2
 #-----|     1: (TypeParameters)
 #    4|       0: [TypeParameter] T2
 #-----|     2: (Parameters)
 #    4|       0: [Parameter] x
 #    4|       1: [Parameter] y
-#    4|     3: [BlockStmt] {...}
+#    4|     4: [BlockStmt] {...}
 #    6|   5: [Class] B<>
 #-----|     0: (TypeParameters)
 #    6|       0: [TypeParameter] T3
@@ -20,7 +20,7 @@ Nesting.cs:
 #-----|       2: (Parameters)
 #    8|         0: [Parameter] x
 #    8|         1: [Parameter] y
-#    8|       3: [BlockStmt] {...}
+#    8|       4: [BlockStmt] {...}
 #    9|     4: [Method] MB2
 #-----|       1: (TypeParameters)
 #    9|         0: [TypeParameter] T4
@@ -28,19 +28,19 @@ Nesting.cs:
 #    9|         0: [Parameter] x
 #    9|         1: [Parameter] y
 #    9|         2: [Parameter] z
-#    9|       3: [BlockStmt] {...}
+#    9|       4: [BlockStmt] {...}
 #   12|   6: [Class] C
 #   14|     2: [Method] MC1
 #-----|       2: (Parameters)
 #   14|         0: [Parameter] x
-#   14|       3: [BlockStmt] {...}
+#   14|       4: [BlockStmt] {...}
 #   15|     3: [Method] MC2
 #-----|       1: (TypeParameters)
 #   15|         0: [TypeParameter] T5
 #-----|       2: (Parameters)
 #   15|         0: [Parameter] x
 #   15|         1: [Parameter] y
-#   15|       3: [BlockStmt] {...}
+#   15|       4: [BlockStmt] {...}
 #   17|     4: [Class] D<>
 #-----|       0: (TypeParameters)
 #   17|         0: [TypeParameter] T6
@@ -48,7 +48,7 @@ Nesting.cs:
 #-----|         2: (Parameters)
 #   19|           0: [Parameter] x
 #   19|           1: [Parameter] y
-#   19|         3: [BlockStmt] {...}
+#   19|         4: [BlockStmt] {...}
 #   20|       4: [Method] MD2
 #-----|         1: (TypeParameters)
 #   20|           0: [TypeParameter] T7
@@ -56,9 +56,9 @@ Nesting.cs:
 #   20|           0: [Parameter] x
 #   20|           1: [Parameter] y
 #   20|           2: [Parameter] z
-#   20|         3: [BlockStmt] {...}
+#   20|         4: [BlockStmt] {...}
 #   24|   7: [Method] Construct
-#   25|     3: [BlockStmt] {...}
+#   25|     4: [BlockStmt] {...}
 #   26|       0: [LocalConstantDeclStmt] ... ...;
 #   26|         0: [LocalVariableDeclAndInitExpr] A<Int32> a1 = ...
 #   26|           0: [ObjectCreation] object creation of type A<Int32>
@@ -194,7 +194,7 @@ generics.cs:
 #-----|       2: (Parameters)
 #   18|         0: [Parameter] x
 #   18|         1: [Parameter] t
-#   18|       3: [BlockStmt] {...}
+#   18|       4: [BlockStmt] {...}
 #   18|         0: [LocalConstantDeclStmt] ... ...;
 #   18|           0: [LocalVariableDeclExpr] A<> a
 #   18|         1: [ReturnStmt] return ...;
@@ -205,23 +205,23 @@ generics.cs:
 #   25|     3: [Field] at
 #   27|     4: [Field] name
 #   29|     5: [Method] foo
-#   29|       3: [BlockStmt] {...}
+#   29|       4: [BlockStmt] {...}
 #   31|     6: [Method] fooParams
 #-----|       2: (Parameters)
 #   31|         0: [Parameter] ts
-#   31|       3: [BlockStmt] {...}
+#   31|       4: [BlockStmt] {...}
 #   33|     7: [Method] staticFoo
-#   33|       3: [BlockStmt] {...}
+#   33|       4: [BlockStmt] {...}
 #   35|     8: [IndexerProperty] Name
 #   35|       1: [Getter] get_Name
-#   35|         3: [BlockStmt] {...}
+#   35|         4: [BlockStmt] {...}
 #   35|           0: [ReturnStmt] return ...;
 #   35|             0: [FieldAccess] access to field name
 #   35|               -1: [ThisAccess] this access
 #   35|       2: [Setter] set_Name
 #-----|         2: (Parameters)
 #   35|           0: [Parameter] value
-#   35|         3: [BlockStmt] {...}
+#   35|         4: [BlockStmt] {...}
 #   35|           0: [ExprStmt] ...;
 #   35|             0: [AssignExpr] ... = ...
 #   35|               0: [ParameterAccess] access to parameter value
@@ -237,15 +237,15 @@ generics.cs:
 #   39|     10: [IncrementOperator] ++
 #-----|       2: (Parameters)
 #   39|         0: [Parameter] a
-#   40|       3: [BlockStmt] {...}
+#   40|       4: [BlockStmt] {...}
 #   41|         0: [ReturnStmt] return ...;
 #   41|           0: [ObjectCreation] object creation of type B<>
 #   44|     11: [Destructor] ~B
-#   44|       3: [BlockStmt] {...}
+#   44|       4: [BlockStmt] {...}
 #   45|     12: [Method] f
 #-----|       1: (TypeParameters)
 #   45|         0: [TypeParameter] X
-#   45|       3: [BlockStmt] {...}
+#   45|       4: [BlockStmt] {...}
 #   45|         0: [ExprStmt] ...;
 #   45|           0: [ObjectCreation] object creation of type B<X>
 #   48|   5: [Class] Outer<>
@@ -280,7 +280,7 @@ generics.cs:
 #   70|       2: [Getter] get_Item
 #-----|         2: (Parameters)
 #   68|           0: [Parameter] i
-#   70|         3: [BlockStmt] {...}
+#   70|         4: [BlockStmt] {...}
 #   70|           0: [ReturnStmt] return ...;
 #   70|             0: [ParameterAccess] access to parameter i
 #   73|     7: [Indexer] Item
@@ -291,7 +291,7 @@ generics.cs:
 #-----|         2: (Parameters)
 #   73|           0: [Parameter] c
 #   73|           1: [Parameter] col
-#   76|         3: [BlockStmt] {...}
+#   76|         4: [BlockStmt] {...}
 #   77|           0: [ExprStmt] ...;
 #   77|             0: [AssignExpr] ... = ...
 #   77|               0: [MethodCall] call to method ToUpper
@@ -339,7 +339,7 @@ generics.cs:
 #   73|           0: [Parameter] c
 #   73|           1: [Parameter] col
 #   88|           2: [Parameter] value
-#   89|         3: [BlockStmt] {...}
+#   89|         4: [BlockStmt] {...}
 #   90|           0: [ExprStmt] ...;
 #   90|             0: [AssignExpr] ... = ...
 #   90|               0: [MethodCall] call to method ToUpper
@@ -386,7 +386,7 @@ generics.cs:
 #   99|                 1: [ParameterAccess] access to parameter col
 #  105|   7: [Class] Test
 #  108|     2: [Method] Main
-#  109|       3: [BlockStmt] {...}
+#  109|       4: [BlockStmt] {...}
 #  110|         0: [LocalConstantDeclStmt] ... ...;
 #  110|           0: [LocalVariableDeclAndInitExpr] B<String> bs = ...
 #  110|             0: [ObjectCreation] object creation of type B<String>
@@ -452,7 +452,7 @@ generics.cs:
 #  130|     3: [Method] f
 #-----|       2: (Parameters)
 #  130|         0: [Parameter] s
-#  130|       3: [BlockStmt] {...}
+#  130|       4: [BlockStmt] {...}
 #  130|         0: [ReturnStmt] return ...;
 #  130|           0: [ParameterAccess] access to parameter s
 #  134|   8: [Class] Subtle
@@ -461,18 +461,18 @@ generics.cs:
 #  137|         0: [TypeParameter] X
 #-----|       2: (Parameters)
 #  137|         0: [Parameter] i
-#  137|       3: [BlockStmt] {...}
+#  137|       4: [BlockStmt] {...}
 #  139|     3: [Method] fs
 #-----|       1: (TypeParameters)
 #  139|         0: [TypeParameter] X
 #-----|       2: (Parameters)
 #  139|         0: [Parameter] i
 #  139|         1: [Parameter] j
-#  139|       3: [BlockStmt] {...}
+#  139|       4: [BlockStmt] {...}
 #  141|     4: [Method] fs
 #-----|       2: (Parameters)
 #  141|         0: [Parameter] i
-#  141|       3: [BlockStmt] {...}
+#  141|       4: [BlockStmt] {...}
 #  145|   9: [Class] Param<>
 #-----|     0: (TypeParameters)
 #  145|       0: [TypeParameter] T
@@ -482,13 +482,13 @@ generics.cs:
 #  152|     2: [Method] CM1
 #-----|       1: (TypeParameters)
 #  152|         0: [TypeParameter] T
-#  152|       3: [BlockStmt] {...}
+#  152|       4: [BlockStmt] {...}
 #  153|     5: [Method] CM2
 #-----|       1: (TypeParameters)
 #  153|         0: [TypeParameter] T
 #-----|       2: (Parameters)
 #  153|         0: [Parameter] t
-#  153|       3: [BlockStmt] {...}
+#  153|       4: [BlockStmt] {...}
 #  153|         0: [ReturnStmt] return ...;
 #  153|           0: [ParameterAccess] access to parameter t
 #  155|     8: [Class] Class<>
@@ -500,13 +500,13 @@ generics.cs:
 #-----|         2: (Parameters)
 #  157|           0: [Parameter] t
 #  157|           1: [Parameter] t1
-#  157|         3: [BlockStmt] {...}
+#  157|         4: [BlockStmt] {...}
 #  157|           0: [ReturnStmt] return ...;
 #  157|             0: [ParameterAccess] access to parameter t
 #  160|     11: [Method] NonCM
-#  160|       3: [BlockStmt] {...}
+#  160|       4: [BlockStmt] {...}
 #  162|     12: [Method] CM
-#  163|       3: [BlockStmt] {...}
+#  163|       4: [BlockStmt] {...}
 #  164|         0: [ExprStmt] ...;
 #  164|           0: [MethodCall] call to method CM1
 #  164|             -1: [ThisAccess] this access
@@ -543,7 +543,7 @@ generics.cs:
 #  180|     3: [Method] set
 #-----|       2: (Parameters)
 #  180|         0: [Parameter] t
-#  180|       3: [BlockStmt] {...}
+#  180|       4: [BlockStmt] {...}
 #  183|   13: [Class] InheritanceTest
 #  185|     2: [Field] member
 #  188|   14: [Interface] Interface2<,>

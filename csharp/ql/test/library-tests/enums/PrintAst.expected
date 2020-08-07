@@ -63,7 +63,7 @@ enums.cs:
 #-----| 3 -> [Method] StringFromColor
 
 #   47| [Method] Main
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #   48| [BlockStmt] {...}
 #-----| 0 -> [ExprStmt] ...;
@@ -123,7 +123,7 @@ enums.cs:
 
 #   54| [Method] StringFromColor
 #-----| 2 -> (Parameters)
-#-----| 3 -> [BlockStmt] {...}
+#-----| 4 -> [BlockStmt] {...}
 
 #   54| [Parameter] c
 

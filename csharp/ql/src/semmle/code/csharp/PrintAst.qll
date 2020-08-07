@@ -293,6 +293,9 @@ final class CallableAstNode extends AstNode {
     result.(ParametersNode).getParameterizable() = callable
     or
     childIndex = 3 and
+    result.(AstNode).getAst() = callable.(Constructor).getInitializer()
+    or
+    childIndex = 4 and
     result.(AstNode).getAst() = callable.getBody()
   }
 }

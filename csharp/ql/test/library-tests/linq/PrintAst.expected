@@ -1,7 +1,7 @@
 queries.cs:
 #    5| [Class] Queries
 #    7|   2: [Method] Queries1
-#    8|     3: [BlockStmt] {...}
+#    8|     4: [BlockStmt] {...}
 #    9|       0: [LocalConstantDeclStmt] ... ...;
 #    9|         0: [LocalVariableDeclAndInitExpr] IList<Int32> list1 = ...
 #    9|           0: [ObjectCreation] object creation of type List<Int32>
@@ -49,25 +49,25 @@ queries.cs:
 #   18|               -1: [MethodCall] call to method Where
 #   18|                 -1: [LocalVariableAccess] access to local variable list1
 #   19|                 0: [LambdaExpr] (...) => ...
-#   19|                   0: [LogicalOrExpr] ... || ...
+#-----|                   2: (Parameters)
+#   19|                     0: [Parameter] a
+#   19|                   4: [LogicalOrExpr] ... || ...
 #   19|                     0: [EQExpr] ... == ...
 #   19|                       0: [ParameterAccess] access to parameter a
 #   19|                       1: [IntLiteral] 2
 #   19|                     1: [EQExpr] ... == ...
 #   19|                       0: [ParameterAccess] access to parameter a
 #   19|                       1: [IntLiteral] 3
-#-----|                   2: (Parameters)
-#   19|                     0: [Parameter] a
 #   20|               0: [LambdaExpr] (...) => ...
-#   20|                 0: [ParameterAccess] access to parameter a
 #-----|                 2: (Parameters)
 #   20|                   0: [Parameter] a
+#   20|                 4: [ParameterAccess] access to parameter a
 #   21|             0: [LambdaExpr] (...) => ...
-#   21|               0: [AddExpr] ... + ...
-#   21|                 0: [ParameterAccess] access to parameter a
-#   21|                 1: [IntLiteral] 1
 #-----|               2: (Parameters)
 #   21|                 0: [Parameter] a
+#   21|               4: [AddExpr] ... + ...
+#   21|                 0: [ParameterAccess] access to parameter a
+#   21|                 1: [IntLiteral] 1
 #   18|           1: [LocalVariableAccess] access to local variable list4
 #   23|       4: [LocalConstantDeclStmt] ... ...;
 #   23|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> list5 = ...
@@ -181,7 +181,7 @@ queries.cs:
 #   53|           1: [LocalVariableAccess] access to local variable list12
 #   59|   3: [Class] A
 #   61|     2: [Method] GetEnumerator
-#   62|       3: [BlockStmt] {...}
+#   62|       4: [BlockStmt] {...}
 #   63|         0: [ThrowStmt] throw ...;
 #   63|           0: [ObjectCreation] object creation of type NotImplementedException
 #   67|   4: [Class] B
