@@ -469,7 +469,6 @@ private module AsyncReturnSteps {
    * A data-flow step for ordinary and exceptional returns from async functions.
    */
   private class AsyncReturn extends PreCallGraphStep {
-    // Note: partially copy-paste from FlowSteps::CachedSteps::returnStep/2
     override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       exists(DataFlow::FunctionNode f | f.getFunction().isAsync() |
         // ordinary return
@@ -478,6 +477,7 @@ private module AsyncReturnSteps {
         succ = f.getReturnNode()
         or
         // exceptional return
+        // Note: partially copy-paste from FlowSteps::localExceptionStep/2
         prop = errorProp() and
         exists(Expr expr |
           expr = any(ThrowStmt throw).getExpr() and

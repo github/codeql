@@ -61,6 +61,7 @@ predicate localFlowStep(
  * Holds if an exception thrown from `pred` can propagate locally to `succ`.
  */
 predicate localExceptionStep(DataFlow::Node pred, DataFlow::Node succ) {
+  // Note: FlowSteps::localExceptionStep/2 has copy-paste children
   exists(Expr expr |
     expr = any(ThrowStmt throw).getExpr() and
     pred = expr.flow()
@@ -220,7 +221,6 @@ private module CachedSteps {
    */
   cached
   predicate returnStep(DataFlow::Node pred, DataFlow::Node succ) {
-    // Note: FlowSteps::CachedSteps::returnStep/2 has copy-paste children
     exists(Function f | calls(succ, f) or callsBound(succ, f, _) |
       DataFlow::functionReturnNode(pred, f)
       or
