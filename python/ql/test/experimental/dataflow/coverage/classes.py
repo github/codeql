@@ -418,11 +418,10 @@ class With_get:
     OK()
     return ""
 
-def ftest_get():
+def test_get():
   with_get = With_get()
-  Owner.foo = ""
   Owner.attr = with_get
-  Owner.foo
+  Owner.attr
 
 # object.__set__(self, instance, value)
 class With_set:
@@ -430,9 +429,11 @@ class With_set:
   def __set__(self, instance, value):
     OK()
 
-def ftest_set():
+def test_set():
   with_set = With_set()
-  with_set.foo = ""
+  Owner.attr = with_set
+  owner = Owner()
+  owner.attr = ""
 
 # object.__delete__(self, instance)
 class With_delete:
@@ -440,21 +441,21 @@ class With_delete:
   def __delete__(self, instance):
     OK()
 
-def ftest_delete():
+def test_delete():
   with_delete = With_delete()
-  with_delete.foo = ""
-  del with_delete.foo
+  Owner.attr = with_delete
+  owner = Owner()
+  del owner.attr
 
 # object.__set_name__(self, owner, name)
 class With_set_name:
 
-  def __set_name__(self, instance):
+  def __set_name__(self, owner, name):
     OK()
 
-def ftest_set_name():
+def test_set_name():
   with_set_name = With_set_name()
-  with_set_name.foo = ""
-  del with_set_name.foo
+  type("Owner", (object,), dict(attr=with_set_name))
 
 # 3.3.2.4. __slots__
 # object.__slots__
