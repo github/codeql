@@ -193,7 +193,7 @@ private module NodeTracking {
     basicStoreStep(pred, succ, prop) and
     summary = PathSummary::level()
     or
-    exists(Function f, DataFlow::Node mid |
+    exists(Function f, DataFlow::Node mid | not f.isAsync() |
       // `f` stores its parameter `pred` in property `prop` of a value that flows back to the caller,
       // and `succ` is an invocation of `f`
       reachableFromInput(f, succ, pred, mid, summary) and
@@ -216,7 +216,7 @@ private module NodeTracking {
     basicLoadStep(pred, succ, prop) and
     summary = PathSummary::level()
     or
-    exists(Function f, DataFlow::SourceNode parm |
+    exists(Function f, DataFlow::SourceNode parm | not f.isAsync() |
       argumentPassing(succ, pred, f, parm) and
       reachesReturn(f, parm.getAPropertyRead(prop), summary)
     )

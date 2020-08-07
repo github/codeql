@@ -52,8 +52,6 @@ typeInferenceMismatch
 | exceptions.js:21:17:21:24 | source() | exceptions.js:24:10:24:21 | e.toString() |
 | exceptions.js:21:17:21:24 | source() | exceptions.js:25:10:25:18 | e.message |
 | exceptions.js:21:17:21:24 | source() | exceptions.js:26:10:26:19 | e.fileName |
-| exceptions.js:48:16:48:23 | source() | exceptions.js:50:10:50:10 | e |
-| exceptions.js:59:24:59:31 | source() | exceptions.js:61:12:61:12 | e |
 | exceptions.js:88:6:88:13 | source() | exceptions.js:11:10:11:10 | e |
 | exceptions.js:88:6:88:13 | source() | exceptions.js:32:10:32:10 | e |
 | exceptions.js:88:6:88:13 | source() | exceptions.js:33:10:33:21 | e.toString() |

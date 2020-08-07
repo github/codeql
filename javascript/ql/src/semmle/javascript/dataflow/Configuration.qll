@@ -1019,7 +1019,7 @@ private predicate storeStep(
   isAdditionalStoreStep(pred, succ, prop, cfg) and
   summary = PathSummary::level()
   or
-  exists(Function f, DataFlow::Node mid |
+  exists(Function f, DataFlow::Node mid | not f.isAsync() |
     // `f` stores its parameter `pred` in property `prop` of a value that flows back to the caller,
     // and `succ` is an invocation of `f`
     reachableFromInput(f, succ, pred, mid, cfg, summary) and
@@ -1128,7 +1128,7 @@ private predicate loadStep(
   isAdditionalLoadStep(pred, succ, prop, cfg) and
   summary = PathSummary::level()
   or
-  exists(Function f, DataFlow::Node read |
+  exists(Function f, DataFlow::Node read | not f.isAsync() |
     parameterPropRead(f, succ, pred, prop, read, cfg) and
     reachesReturn(f, read, cfg, summary)
   )
