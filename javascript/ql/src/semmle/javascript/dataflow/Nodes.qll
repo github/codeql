@@ -494,7 +494,7 @@ class FunctionNode extends DataFlow::ValueNode, DataFlow::SourceNode {
 
   /**
    * Gets the data flow node representing the value returned from this function.
-   * 
+   *
    * Note that this differs from `getAReturn()`, in that every function has exactly
    * one canonical return node, but may have multiple (or zero) returned expressions.
    * The result of `getAReturn()` is always a predecessor of `getReturnNode()`
