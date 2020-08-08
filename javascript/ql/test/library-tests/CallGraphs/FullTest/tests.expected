@@ -67,6 +67,7 @@ test_getAFunctionValue
 | es2015.js:2:14:4:3 | () {\\n   ... ");\\n  } | es2015.js:2:14:4:3 | () {\\n   ... ");\\n  } |
 | es2015.js:6:5:6:16 | ExampleClass | es2015.js:2:14:4:3 | () {\\n   ... ");\\n  } |
 | es2015.js:8:2:12:1 | functio ... \\n  };\\n} | es2015.js:8:2:12:1 | functio ... \\n  };\\n} |
+| es2015.js:8:2:12:1 | return of anonymous function | es2015.js:9:10:11:3 | () => { ... ();\\n  } |
 | es2015.js:9:10:11:3 | () => { ... ();\\n  } | es2015.js:9:10:11:3 | () => { ... ();\\n  } |
 | es2015.js:10:5:10:20 | arguments.callee | es2015.js:8:2:12:1 | functio ... \\n  };\\n} |
 | es2015.js:10:5:10:22 | arguments.callee() | es2015.js:9:10:11:3 | () => { ... ();\\n  } |
