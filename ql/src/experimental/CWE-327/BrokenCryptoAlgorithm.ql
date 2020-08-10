@@ -3,7 +3,6 @@
  * @description Using broken or weak cryptographic algorithms can allow an attacker to compromise security.
  * @kind problem
  * @problem.severity error
- * @precision high
  * @id go/weak-cryptographic-algorithm
  * @tags security
  */
