@@ -317,3 +317,20 @@ func testPathWithMoreThanOneSink(input string) {
 	v := int16(parsed) // NOT OK
 	_ = int8(v)        // OK
 }
+
+func testUsingStrConvIntSize(input string) {
+	parsed, err := strconv.ParseInt(input, 10, strconv.IntSize)
+	if err != nil {
+		panic(err)
+	}
+	_ = int8(parsed)   // NOT OK
+	_ = uint8(parsed)  // NOT OK
+	_ = int16(parsed)  // NOT OK
+	_ = uint16(parsed) // NOT OK
+	_ = int32(parsed)  // NOT OK
+	_ = uint32(parsed) // NOT OK
+	_ = int64(parsed)  // OK
+	_ = uint64(parsed) // OK
+	_ = int(parsed)    // OK
+	_ = uint(parsed)   // OK
+}

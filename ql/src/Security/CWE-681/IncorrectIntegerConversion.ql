@@ -61,6 +61,7 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
     this = "ConversionWithoutBoundsCheckConfig" + sourceBitSize + sourceIsSigned + sinkBitSize
   }
 
+  /** Gets the bit size of the source. */
   int getSourceBitSize() { result = sourceBitSize }
 
   override predicate isSource(DataFlow::Node source) {
@@ -73,8 +74,14 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
         else sourceIsSigned = false
       ) and
       (
-        bitSize = ip.getTargetBitSize() or
-        bitSize = ip.getTargetBitSizeInput().getNode(c).getIntValue()
+        bitSize = ip.getTargetBitSize()
+        or
+        if
+          exists(StrConv::IntSize intSize |
+            ip.getTargetBitSizeInput().getNode(c).(DataFlow::ReadNode).reads(intSize)
+          )
+        then bitSize = 0
+        else bitSize = ip.getTargetBitSizeInput().getNode(c).getIntValue()
       ) and
       // `bitSize` could be any value between 0 and 64, but we can round
       // it up to the nearest size of an integer type without changing
@@ -129,7 +136,7 @@ class UpperBoundCheckGuard extends DataFlow::BarrierGuard, DataFlow::RelationalC
     exists(int strictnessOffset |
       if expr.isStrict() then strictnessOffset = 1 else strictnessOffset = 0
     |
-      result = expr.getAnOperand().getIntValue() - strictnessOffset
+      result = expr.getAnOperand().getExactValue().toFloat() - strictnessOffset
     )
   }
 

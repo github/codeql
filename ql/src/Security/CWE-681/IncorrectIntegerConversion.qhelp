@@ -64,4 +64,11 @@ or check bounds before making the conversion as in <code>parseAllocateGood4</cod
 </p>
 <sample src="IncorrectIntegerConversionGood.go"/>
 </example>
+<references>
+<li>Wikipedia <a href="https://en.wikipedia.org/wiki/Integer_overflow">Integer overflow</a>.</li>
+<li>Go language specification <a href="https://golang.org/ref/spec#Integer_overflow">Integer overflow</a>.</li>
+<li>Documentation for <a href="https://golang.org/pkg/strconv/#Atoi"><code>strconv.Atoi</code></a>.</li>
+<li>Documentation for <a href="https://golang.org/pkg/strconv/#ParseInt"><code>strconv.ParseInt</code></a>.</li>
+<li>Documentation for <a href="https://golang.org/pkg/strconv/#ParseUint"><code>strconv.ParseUint</code></a>.</li>
+</references>
 </qhelp>

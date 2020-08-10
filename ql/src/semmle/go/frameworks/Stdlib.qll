@@ -524,8 +524,8 @@ module IntegerParser {
 
     /**
      * Gets the `FunctionInput` containing the maximum bit size of the
-     * return value, if this makes sense, where 0 represents the bit
-     * size of `int` and `uint`.
+     * return value, if this makes sense. Note that if the value of the
+     * input is 0 then it means the bit size of `int` and `uint`.
      */
     FunctionInput getTargetBitSizeInput() { none() }
   }
