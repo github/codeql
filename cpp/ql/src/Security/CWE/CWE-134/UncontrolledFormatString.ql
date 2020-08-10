@@ -42,7 +42,7 @@ where
     printf.outermostWrapperFunctionCall(sinkNode.getNode().asArgumentIndirection(), printfFunction) or
     printf.outermostWrapperFunctionCall(sinkNode.getNode().asConvertedExpr(), printfFunction)
   ) and
-  cause = sourceNode.getNode().(FlowSource).getSourceType()and
+  cause = sourceNode.getNode().(FlowSource).getSourceType() and
   conf.hasFlowPath(sourceNode, sinkNode)
 select sinkNode, sourceNode, sinkNode,
   "The value of this argument may come from $@ and is being used as a formatting argument to " +
