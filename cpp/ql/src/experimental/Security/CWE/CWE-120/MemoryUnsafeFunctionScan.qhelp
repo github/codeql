@@ -7,6 +7,18 @@
 
 </overview>
 
+<recommendation>
+
+<p>Specify a length within the format string parameter, and make this length one less than the size of the buffer, since the last character should be reserved for the NULL terminator.</p>
+
+</recommendation>
+
+<example>
+<p>The following example demonstrates safe and unsafe uses of scanf type functions.</p>
+<sample src="MemoryUnsafeFunctionScan.cpp" />
+
+</example>
+
 <references>
 </references>
 
