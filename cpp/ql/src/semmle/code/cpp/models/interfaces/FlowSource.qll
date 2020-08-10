@@ -11,7 +11,7 @@ import FunctionInputsAndOutputs
 import semmle.code.cpp.models.Models
 
 /**
- * A library function which returns data that may be read from a network connection.
+ * A library function that returns data that may be read from a network connection.
  */
 abstract class RemoteFlowFunction extends Function {
   /**
@@ -21,7 +21,7 @@ abstract class RemoteFlowFunction extends Function {
 }
 
 /**
- * A library function which returns data that is directly controlled by a user.
+ * A library function that returns data that is directly controlled by a user.
  */
 abstract class LocalFlowFunction extends Function {
   /**
