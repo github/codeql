@@ -769,7 +769,7 @@ class With_radd:
 
 def test_radd():
   with_radd = With_radd()
-  f"" + with_radd
+  "" + with_radd
 
 # object.__rsub__(self, other)
 class With_rsub:
@@ -780,7 +780,7 @@ class With_rsub:
 
 def test_rsub():
   with_rsub = With_rsub()
-  f"" - with_rsub
+  "" - with_rsub
 
 # object.__rmul__(self, other)
 class With_rmul:
@@ -791,7 +791,7 @@ class With_rmul:
 
 def test_rmul():
   with_rmul = With_rmul()
-  f"" * with_rmul
+  "" * with_rmul
 
 # object.__rmatmul__(self, other)
 class With_rmatmul:
@@ -802,7 +802,7 @@ class With_rmatmul:
 
 def test_rmatmul():
   with_rmatmul = With_rmatmul()
-  f"" @ with_rmatmul
+  "" @ with_rmatmul
 
 # object.__rtruediv__(self, other)
 class With_rtruediv:
@@ -813,7 +813,7 @@ class With_rtruediv:
 
 def test_rtruediv():
   with_rtruediv = With_rtruediv()
-  f"" / with_rtruediv
+  "" / with_rtruediv
 
 # object.__rfloordiv__(self, other)
 class With_rfloordiv:
@@ -824,7 +824,7 @@ class With_rfloordiv:
 
 def test_rfloordiv():
   with_rfloordiv = With_rfloordiv()
-  f"" // with_rfloordiv
+  "" // with_rfloordiv
 
 # object.__rmod__(self, other)
 class With_rmod:
@@ -846,7 +846,7 @@ class With_rdivmod:
 
 def test_rdivmod():
   with_rdivmod = With_rdivmod()
-  divmod(f"", with_rdivmod)
+  divmod("", with_rdivmod)
 
 # object.__rpow__(self, other[, modulo])
 class With_rpow:
@@ -857,11 +857,11 @@ class With_rpow:
 
 def test_rpow():
   with_rpow = With_rpow()
-  pow(f"", with_rpow)
+  pow("", with_rpow)
 
 def test_rpow_op():
   with_rpow = With_rpow()
-  f"" ** with_rpow
+  "" ** with_rpow
 
 # object.__rlshift__(self, other)
 class With_rlshift:
@@ -872,7 +872,7 @@ class With_rlshift:
 
 def ftest_rlshift(): # TypeError: unsupported operand type(s) for >>: 'str' and 'With_rlshift'
   with_rlshift = With_rlshift()
-  f"" >> with_rlshift
+  "" >> with_rlshift
 
 # object.__rrshift__(self, other)
 class With_rrshift:
@@ -883,7 +883,7 @@ class With_rrshift:
 
 def ftest_rrshift(): # TypeError: unsupported operand type(s) for <<: 'str' and 'With_rrshift'
   with_rrshift = With_rrshift()
-  f"" << with_rrshift
+  "" << with_rrshift
 
 # object.__rand__(self, other)
 class With_rand:
@@ -894,7 +894,7 @@ class With_rand:
 
 def test_rand():
   with_rand = With_rand()
-  f"" & with_rand
+  "" & with_rand
 
 # object.__rxor__(self, other)
 class With_rxor:
@@ -905,7 +905,7 @@ class With_rxor:
 
 def test_rxor():
   with_rxor = With_rxor()
-  f"" ^ with_rxor
+  "" ^ with_rxor
 
 # object.__ror__(self, other)
 class With_ror:
@@ -916,7 +916,7 @@ class With_ror:
 
 def test_ror():
   with_ror = With_ror()
-  f"" | with_ror
+  "" | with_ror
 
 # object.__iadd__(self, other)
 class With_iadd:
