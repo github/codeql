@@ -12,12 +12,11 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.TaintTrackingOneConf
 import semmle.code.java.security.ResponseSplitting
-import DataFlow::PathGraph
+import DataFlowOneConf::PathGraph
 
-class ResponseSplittingConfig extends TaintTracking::Configuration {
-  ResponseSplittingConfig() { this = "ResponseSplittingConfig" }
-
+class ResponseSplittingConfig extends TaintTrackingOneConf::Configuration {
   override predicate isSource(DataFlow::Node source) {
     source instanceof RemoteFlowSource and
     not source instanceof SafeHeaderSplittingSource
@@ -31,7 +30,7 @@ class ResponseSplittingConfig extends TaintTracking::Configuration {
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, ResponseSplittingConfig conf
+from DataFlowOneConf::PathNode source, DataFlowOneConf::PathNode sink, ResponseSplittingConfig conf
 where conf.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Response-splitting vulnerability due to this $@.",
   source.getNode(), "user-provided value"

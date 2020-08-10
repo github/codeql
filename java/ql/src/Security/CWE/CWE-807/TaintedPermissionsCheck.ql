@@ -13,7 +13,8 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import DataFlow::PathGraph
+import semmle.code.java.dataflow.TaintTrackingOneConf
+import DataFlowOneConf::PathGraph
 
 class TypeShiroSubject extends RefType {
   TypeShiroSubject() { this.getQualifiedName() = "org.apache.shiro.subject.Subject" }
@@ -51,9 +52,7 @@ class WCPermissionConstruction extends ClassInstanceExpr, PermissionsConstructio
   override Expr getInput() { result = getArgument(0) }
 }
 
-class TaintedPermissionsCheckFlowConfig extends TaintTracking::Configuration {
-  TaintedPermissionsCheckFlowConfig() { this = "TaintedPermissionsCheckFlowConfig" }
-
+class TaintedPermissionsCheckFlowConfig extends TaintTrackingOneConf::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof UserInput }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -62,7 +61,7 @@ class TaintedPermissionsCheckFlowConfig extends TaintTracking::Configuration {
 }
 
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink, PermissionsConstruction p,
+  DataFlowOneConf::PathNode source, DataFlowOneConf::PathNode sink, PermissionsConstruction p,
   TaintedPermissionsCheckFlowConfig conf
 where sink.getNode().asExpr() = p.getInput() and conf.hasFlowPath(source, sink)
 select p, source, sink, "Permissions check uses user-controlled $@.", source.getNode(), "data"

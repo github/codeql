@@ -13,12 +13,11 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.TaintTrackingOneConf
 import NumericCastCommon
-import DataFlow::PathGraph
+import DataFlowOneConf::PathGraph
 
-private class NumericCastFlowConfig extends TaintTracking::Configuration {
-  NumericCastFlowConfig() { this = "NumericCastTainted::RemoteUserInputToNumericNarrowingCastExpr" }
-
+private class NumericCastFlowConfig extends TaintTrackingOneConf::Configuration {
   override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -35,7 +34,7 @@ private class NumericCastFlowConfig extends TaintTracking::Configuration {
 }
 
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink, NumericNarrowingCastExpr exp,
+  DataFlowOneConf::PathNode source, DataFlowOneConf::PathNode sink, NumericNarrowingCastExpr exp,
   VarAccess tainted, NumericCastFlowConfig conf
 where
   exp.getExpr() = tainted and

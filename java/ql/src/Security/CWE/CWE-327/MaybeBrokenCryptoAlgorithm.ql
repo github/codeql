@@ -11,8 +11,8 @@
 
 import java
 import semmle.code.java.security.Encryption
-import semmle.code.java.dataflow.TaintTracking
-import DataFlow
+import semmle.code.java.dataflow.TaintTrackingOneConf
+import DataFlowOneConf
 import semmle.code.java.dispatch.VirtualDispatch
 import PathGraph
 
@@ -51,9 +51,7 @@ class StringContainer extends RefType {
   }
 }
 
-class InsecureCryptoConfiguration extends TaintTracking::Configuration {
-  InsecureCryptoConfiguration() { this = "InsecureCryptoConfiguration" }
-
+class InsecureCryptoConfiguration extends TaintTrackingOneConf::Configuration {
   override predicate isSource(Node n) { n.asExpr() instanceof InsecureAlgoLiteral }
 
   override predicate isSink(Node n) { exists(CryptoAlgoSpec c | n.asExpr() = c.getAlgoSpec()) }

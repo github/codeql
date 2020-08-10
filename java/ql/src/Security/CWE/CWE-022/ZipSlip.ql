@@ -14,8 +14,8 @@
 import java
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.SSA
-import semmle.code.java.dataflow.TaintTracking
-import DataFlow
+import semmle.code.java.dataflow.TaintTrackingOneConf
+import DataFlowOneConf
 import PathGraph
 
 /**
@@ -144,9 +144,7 @@ predicate validationMethod(Method m, int arg) {
   )
 }
 
-class ZipSlipConfiguration extends TaintTracking::Configuration {
-  ZipSlipConfiguration() { this = "ZipSlip" }
-
+class ZipSlipConfiguration extends TaintTrackingOneConf::Configuration {
   override predicate isSource(Node source) {
     source.asExpr().(MethodAccess).getMethod() instanceof ArchiveEntryNameMethod
   }

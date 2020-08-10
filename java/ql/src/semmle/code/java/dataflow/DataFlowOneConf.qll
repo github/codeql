@@ -4,6 +4,7 @@
  */
 
 import java
+import semmle.code.java.dataflow.DataFlow
 
 module DataFlowOneConf {
   import semmle.code.java.dataflow.internal.DataFlowImplOneConf

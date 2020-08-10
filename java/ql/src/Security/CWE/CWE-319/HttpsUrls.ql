@@ -10,8 +10,8 @@
  */
 
 import java
-import semmle.code.java.dataflow.TaintTracking
-import DataFlow::PathGraph
+import semmle.code.java.dataflow.TaintTrackingOneConf
+import DataFlowOneConf::PathGraph
 
 class HTTPString extends StringLiteral {
   HTTPString() {
@@ -51,9 +51,7 @@ class URLOpenMethod extends Method {
   }
 }
 
-class HTTPStringToURLOpenMethodFlowConfig extends TaintTracking::Configuration {
-  HTTPStringToURLOpenMethodFlowConfig() { this = "HttpsUrls::HTTPStringToURLOpenMethodFlowConfig" }
-
+class HTTPStringToURLOpenMethodFlowConfig extends TaintTrackingOneConf::Configuration {
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof HTTPString }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -74,7 +72,7 @@ class HTTPStringToURLOpenMethodFlowConfig extends TaintTracking::Configuration {
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, MethodAccess m, HTTPString s
+from DataFlowOneConf::PathNode source, DataFlowOneConf::PathNode sink, MethodAccess m, HTTPString s
 where
   source.getNode().asExpr() = s and
   sink.getNode().asExpr() = m.getQualifier() and

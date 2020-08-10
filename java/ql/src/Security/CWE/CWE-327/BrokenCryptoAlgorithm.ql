@@ -11,8 +11,8 @@
 
 import java
 import semmle.code.java.security.Encryption
-import semmle.code.java.dataflow.TaintTracking
-import DataFlow
+import semmle.code.java.dataflow.TaintTrackingOneConf
+import DataFlowOneConf
 import PathGraph
 
 private class ShortStringLiteral extends StringLiteral {
@@ -27,9 +27,7 @@ class BrokenAlgoLiteral extends ShortStringLiteral {
   }
 }
 
-class InsecureCryptoConfiguration extends TaintTracking::Configuration {
-  InsecureCryptoConfiguration() { this = "BrokenCryptoAlgortihm::InsecureCryptoConfiguration" }
-
+class InsecureCryptoConfiguration extends TaintTrackingOneConf::Configuration {
   override predicate isSource(Node n) { n.asExpr() instanceof BrokenAlgoLiteral }
 
   override predicate isSink(Node n) { exists(CryptoAlgoSpec c | n.asExpr() = c.getAlgoSpec()) }

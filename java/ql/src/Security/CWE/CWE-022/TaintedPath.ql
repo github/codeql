@@ -15,7 +15,8 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.PathCreation
-import DataFlow::PathGraph
+import semmle.code.java.dataflow.TaintTrackingOneConf
+import DataFlowOneConf::PathGraph
 import TaintedPathCommon
 
 class ContainsDotDotSanitizer extends DataFlow::BarrierGuard {
@@ -29,9 +30,7 @@ class ContainsDotDotSanitizer extends DataFlow::BarrierGuard {
   }
 }
 
-class TaintedPathConfig extends TaintTracking::Configuration {
-  TaintedPathConfig() { this = "TaintedPathConfig" }
-
+class TaintedPathConfig extends TaintTrackingOneConf::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -47,7 +46,7 @@ class TaintedPathConfig extends TaintTracking::Configuration {
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, PathCreation p, TaintedPathConfig conf
+from DataFlowOneConf::PathNode source, DataFlowOneConf::PathNode sink, PathCreation p, TaintedPathConfig conf
 where
   sink.getNode().asExpr() = p.getAnInput() and
   conf.hasFlowPath(source, sink)

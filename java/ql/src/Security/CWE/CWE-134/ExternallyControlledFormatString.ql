@@ -11,12 +11,11 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.TaintTrackingOneConf
 import semmle.code.java.StringFormat
-import DataFlow::PathGraph
+import DataFlowOneConf::PathGraph
 
-class ExternallyControlledFormatStringConfig extends TaintTracking::Configuration {
-  ExternallyControlledFormatStringConfig() { this = "ExternallyControlledFormatStringConfig" }
-
+class ExternallyControlledFormatStringConfig extends TaintTrackingOneConf::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -29,7 +28,7 @@ class ExternallyControlledFormatStringConfig extends TaintTracking::Configuratio
 }
 
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink, StringFormat formatCall,
+  DataFlowOneConf::PathNode source, DataFlowOneConf::PathNode sink, StringFormat formatCall,
   ExternallyControlledFormatStringConfig conf
 where conf.hasFlowPath(source, sink) and sink.getNode().asExpr() = formatCall.getFormatArgument()
 select formatCall.getFormatArgument(), source, sink,

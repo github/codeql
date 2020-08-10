@@ -3,6 +3,7 @@
  * global (inter-procedural) taint-tracking analyses.
  */
 
+import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.DataFlowOneConf
 
 module TaintTrackingOneConf {

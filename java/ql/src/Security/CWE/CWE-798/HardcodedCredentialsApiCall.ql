@@ -10,13 +10,11 @@
  */
 
 import java
-import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.DataFlowOneConf
 import HardcodedCredentials
-import DataFlow::PathGraph
+import DataFlowOneConf::PathGraph
 
-class HardcodedCredentialApiCallConfiguration extends DataFlow::Configuration {
-  HardcodedCredentialApiCallConfiguration() { this = "HardcodedCredentialApiCallConfiguration" }
-
+class HardcodedCredentialApiCallConfiguration extends DataFlowOneConf::Configuration {
   override predicate isSource(DataFlow::Node n) {
     n.asExpr() instanceof HardcodedExpr and
     not n.asExpr().getEnclosingCallable().getName() = "toString"
@@ -38,7 +36,7 @@ class HardcodedCredentialApiCallConfiguration extends DataFlow::Configuration {
 }
 
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink, HardcodedCredentialApiCallConfiguration conf
+  DataFlowOneConf::PathNode source, DataFlowOneConf::PathNode sink, HardcodedCredentialApiCallConfiguration conf
 where conf.hasFlowPath(source, sink)
 select source.getNode(), source, sink, "Hard-coded value flows to $@.", sink.getNode(),
   "sensitive API call"

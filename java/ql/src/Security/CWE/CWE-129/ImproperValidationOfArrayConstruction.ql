@@ -12,11 +12,10 @@
 import java
 import ArraySizing
 import semmle.code.java.dataflow.FlowSources
-import DataFlow::PathGraph
+import semmle.code.java.dataflow.TaintTrackingOneConf
+import DataFlowOneConf::PathGraph
 
-class Conf extends TaintTracking::Configuration {
-  Conf() { this = "RemoteUserInputTocanThrowOutOfBoundsDueToEmptyArrayConfig" }
-
+class Conf extends TaintTrackingOneConf::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -25,7 +24,7 @@ class Conf extends TaintTracking::Configuration {
 }
 
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink, Expr sizeExpr,
+  DataFlowOneConf::PathNode source, DataFlowOneConf::PathNode sink, Expr sizeExpr,
   ArrayCreationExpr arrayCreation, CheckableArrayAccess arrayAccess
 where
   arrayAccess.canThrowOutOfBoundsDueToEmptyArray(sizeExpr, arrayCreation) and

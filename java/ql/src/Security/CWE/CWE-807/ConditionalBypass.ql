@@ -13,10 +13,11 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.TaintTrackingOneConf
 import semmle.code.java.security.SensitiveActions
 import semmle.code.java.controlflow.Dominance
 import semmle.code.java.controlflow.Guards
-import DataFlow::PathGraph
+import DataFlowOneConf::PathGraph
 
 /**
  * Calls to a sensitive method that are controlled by a condition
@@ -31,16 +32,14 @@ predicate conditionControlsMethod(MethodAccess m, Expr e) {
   )
 }
 
-class ConditionalBypassFlowConfig extends TaintTracking::Configuration {
-  ConditionalBypassFlowConfig() { this = "ConditionalBypassFlowConfig" }
-
+class ConditionalBypassFlowConfig extends TaintTrackingOneConf::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof UserInput }
 
   override predicate isSink(DataFlow::Node sink) { conditionControlsMethod(_, sink.asExpr()) }
 }
 
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink, MethodAccess m, Expr e,
+  DataFlowOneConf::PathNode source, DataFlowOneConf::PathNode sink, MethodAccess m, Expr e,
   ConditionalBypassFlowConfig conf
 where
   conditionControlsMethod(m, e) and
