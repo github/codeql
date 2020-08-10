@@ -4,10 +4,13 @@
 | parameter 0 | main.go:57:2:57:27 | call to Printf | main.go:57:13:57:20 | "%d, %d" |
 | parameter 0 | reset.go:12:2:12:21 | call to Reset | reset.go:12:15:12:20 | source |
 | parameter 0 | tst.go:10:2:10:29 | call to ReadFrom | tst.go:10:23:10:28 | reader |
+| parameter 0 | tst.go:16:2:16:12 | call to test5 | tst.go:16:8:16:8 | x |
+| parameter 0 | tst.go:18:2:18:12 | call to test5 | tst.go:18:8:18:8 | s |
 | parameter 1 | main.go:51:2:51:14 | call to op | main.go:51:10:51:10 | 1 |
 | parameter 1 | main.go:53:2:53:22 | call to op2 | main.go:53:11:53:11 | 2 |
 | parameter 1 | main.go:55:2:55:27 | call to Printf | main.go:55:23:55:23 | x |
 | parameter 1 | main.go:57:2:57:27 | call to Printf | main.go:57:23:57:23 | x |
+| parameter 1 | tst.go:16:2:16:12 | call to test5 | tst.go:16:11:16:11 | y |
 | parameter 2 | main.go:51:2:51:14 | call to op | main.go:51:13:51:13 | 1 |
 | parameter 2 | main.go:53:2:53:22 | call to op2 | main.go:53:14:53:21 | call to bump |
 | parameter 2 | main.go:55:2:55:27 | call to Printf | main.go:55:26:55:26 | y |

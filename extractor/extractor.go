@@ -716,6 +716,9 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int) {
 		kind = dbscheme.CallOrConversionExpr.Index()
 		extractExpr(tw, expr.Fun, lbl, 0)
 		extractExprs(tw, expr.Args, lbl, 1, 1)
+		if expr.Ellipsis.IsValid() {
+			dbscheme.HasEllipsisTable.Emit(tw, lbl)
+		}
 	case *ast.StarExpr:
 		if expr == nil {
 			return

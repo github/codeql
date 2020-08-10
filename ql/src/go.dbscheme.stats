@@ -4114,7 +4114,7 @@
                                 <b>
                                     <a>1</a>
                                     <b>2</b>
-                                    <v>49</v>
+                                    <v>47</v>
                                 </b>
                                 <b>
                                     <a>2</a>
@@ -4124,7 +4124,7 @@
                                 <b>
                                     <a>3</a>
                                     <b>4</b>
-                                    <v>32</v>
+                                    <v>33</v>
                                 </b>
                                 <b>
                                     <a>4</a>
@@ -4134,7 +4134,7 @@
                                 <b>
                                     <a>5</a>
                                     <b>7</b>
-                                    <v>38</v>
+                                    <v>39</v>
                                 </b>
                                 <b>
                                     <a>7</a>
@@ -4219,7 +4219,7 @@
                                 </b>
                                 <b>
                                     <a>323</a>
-                                    <b>521</b>
+                                    <b>515</b>
                                     <v>7</v>
                                 </b>
                             </bs>
@@ -10925,6 +10925,17 @@
                     </val>
                 </dep>
             </dependencies>
+        </relation>
+        <relation>
+            <name>has_ellipsis</name>
+            <cardinality>268</cardinality>
+            <columnsizes>
+                <e>
+                    <k>id</k>
+                    <v>268</v>
+                </e>
+            </columnsizes>
+            <dependencies/>
         </relation>
     </stats>
 </dbstats>

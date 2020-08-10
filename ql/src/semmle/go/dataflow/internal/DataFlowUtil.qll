@@ -377,6 +377,9 @@ class CallNode extends ExprNode {
 
   /** Gets the data flow node corresponding to the receiver of this call, if any. */
   Node getReceiver() { result = getACalleeSource().(MethodReadNode).getReceiver() }
+
+  /** Holds if this call has an ellipsis after its last argument. */
+  predicate hasEllipsis() { expr.hasEllipsis() }
 }
 
 /** A data flow node that represents a call to a method. */

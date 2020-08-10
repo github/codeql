@@ -951,3 +951,7 @@ var ErrorsTable = NewTable("errors",
 	EntityColumn(PackageType, "package"),
 	IntColumn("idx"),
 ).KeySet("package", "idx")
+
+var HasEllipsisTable = NewTable("has_ellipsis",
+	EntityColumn(CallOrConversionExpr, "id"),
+)

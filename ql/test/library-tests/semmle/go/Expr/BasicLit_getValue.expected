@@ -26,6 +26,15 @@
 | consts.go:46:16:46:16 | 2 | 2 |
 | consts.go:47:16:47:18 | 1.0 | 1.0 |
 | consts.go:48:16:48:19 | "hi" | hi |
+| ellipsis.go:7:4:7:4 | 1 | 1 |
+| ellipsis.go:8:4:8:4 | 1 | 1 |
+| ellipsis.go:8:7:8:7 | 2 | 2 |
+| ellipsis.go:9:4:9:4 | 1 | 1 |
+| ellipsis.go:9:7:9:7 | 2 | 2 |
+| ellipsis.go:9:10:9:10 | 3 | 3 |
+| ellipsis.go:10:4:10:4 | 1 | 1 |
+| ellipsis.go:10:13:10:13 | 2 | 2 |
+| ellipsis.go:10:16:10:16 | 3 | 3 |
 | literals.go:3:8:3:12 | "fmt" | fmt |
 | literals.go:8:2:8:10 | "decimal" | decimal |
 | literals.go:8:17:8:18 | 42 | 42 |

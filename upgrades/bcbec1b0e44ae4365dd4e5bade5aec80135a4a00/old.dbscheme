@@ -129,8 +129,6 @@ modtokens(string token: string ref, int parent: @modexpr ref, int idx: int ref);
 errors(unique int id: @error, int kind: int ref, string msg: string ref, string rawpos: string ref,
        string file: string ref, int line: int ref, int col: int ref, int package: @package ref, int idx: int ref);
 
-has_ellipsis(int id: @callorconversionexpr ref);
-
 @container = @file | @folder;
 
 @locatable = @node | @localscope;
