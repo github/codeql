@@ -67,7 +67,7 @@ predicate localExceptionStep(DataFlow::Node pred, DataFlow::Node succ) {
 /**
  * Holds if an exception thrown from `pred` can propagate locally to `succ`.
  *
- * The `async` flag is true if the successor
+ * The `async` flag is true if the step involves wrapping the exception in a rejected Promise.
  */
 predicate localExceptionStepWithAsyncFlag(DataFlow::Node pred, DataFlow::Node succ, boolean async) {
   exists(DataFlow::Node target | target = getThrowTarget(pred) |
