@@ -264,6 +264,7 @@ private class OutParameter extends FunctionOutput, TOutParameter {
   override DataFlow::Node getExitNode(DataFlow::CallNode c) {
     exists(DataFlow::Node arg |
       arg = getArgument(c, index) and
+      // exclude slices passed to varargs parameters using `...` calls
       not (c.hasEllipsis() and index = c.getNumArgument() - 1)
     |
       result.(DataFlow::PostUpdateNode).getPreUpdateNode() = arg
