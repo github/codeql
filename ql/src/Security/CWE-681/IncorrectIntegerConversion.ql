@@ -32,15 +32,24 @@ float getMaxIntValue(int bitSize, boolean isSigned) {
  * Holds if converting from an integer types with size `sourceBitSize` to
  * one with size `sinkBitSize` can produce unexpected values, where 0 means
  * architecture-dependent.
+ *
+ * Architecture-dependent bit sizes can be 32 or 64. To catch flows that
+ * only manifest on 64-bit architectures we consider an
+ * architecture-dependent source bit size to be 64. To catch flows that
+ * only happen on 32-bit architectures we consider an
+ * architecture-dependent sink bit size to be 32. We exclude the case where
+ * both source and sink have architecture-dependent bit sizes.
  */
 private predicate isIncorrectIntegerConversion(int sourceBitSize, int sinkBitSize) {
   sourceBitSize in [16, 32, 64] and
   sinkBitSize in [8, 16, 32] and
   sourceBitSize > sinkBitSize
   or
+  // Treat `sourceBitSize = 0` like `sourceBitSize = 64`, and exclude `sinkBitSize = 0`
   sourceBitSize = 0 and
   sinkBitSize in [8, 16, 32]
   or
+  // Treat `sinkBitSize = 0` like `sinkBitSize = 32`, and exclude `sourceBitSize = 0`
   sourceBitSize = 64 and
   sinkBitSize = 0
 }
@@ -76,6 +85,8 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
       (
         bitSize = ip.getTargetBitSize()
         or
+        // If we are reading a variable, check if it is
+        // `strconv.IntSize`, and use 0 if it is.
         if
           exists(StrConv::IntSize intSize |
             ip.getTargetBitSizeInput().getNode(c).(DataFlow::ReadNode).reads(intSize)
@@ -105,6 +116,8 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
     ) and
     not exists(ShrExpr shrExpr |
       shrExpr.getLeftOperand().getGlobalValueNumber() =
+        sink.getOperand().asExpr().getGlobalValueNumber() or
+      shrExpr.getLeftOperand().(AndExpr).getAnOperand().getGlobalValueNumber() =
         sink.getOperand().asExpr().getGlobalValueNumber()
     )
   }
@@ -112,6 +125,8 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { isSink(sink, sinkBitSize) }
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    // To catch flows that only happen on 32-bit architectures we
+    // consider an architecture-dependent sink bit size to be 32.
     exists(int bitSize | if sinkBitSize != 0 then bitSize = sinkBitSize else bitSize = 32 |
       guard.(UpperBoundCheckGuard).getBound() <= getMaxIntValue(bitSize, sourceIsSigned)
     )

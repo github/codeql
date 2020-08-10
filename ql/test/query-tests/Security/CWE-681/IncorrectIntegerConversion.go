@@ -304,6 +304,22 @@ func testRightShifted(input string) {
 		if err != nil {
 			panic(err)
 		}
+		_ = byte(parsed) // OK
+		_ = byte(parsed & 0xff00 >> 8)
+	}
+	{
+		parsed, err := strconv.ParseInt(input, 10, 32)
+		if err != nil {
+			panic(err)
+		}
+		_ = byte(parsed) // OK
+		_ = byte(parsed >> 8 & 0xff)
+	}
+	{
+		parsed, err := strconv.ParseInt(input, 10, 16)
+		if err != nil {
+			panic(err)
+		}
 		_ = byte(parsed) // NOT OK
 		_ = byte(parsed << 8)
 	}
