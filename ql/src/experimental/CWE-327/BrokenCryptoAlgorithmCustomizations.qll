@@ -43,6 +43,9 @@ module BrokenCryptoAlgorithm {
     }
   }
 
+  /**
+   * A configuration depicting taint flow from sensitive information to weak cryptographic algorithms.
+   */
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "BrokenCryptoAlgorithm" }
 
