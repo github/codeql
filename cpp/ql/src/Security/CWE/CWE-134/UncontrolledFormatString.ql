@@ -22,10 +22,7 @@ class UncontrolledFormatStringConfiguration extends TaintTracking::Configuration
   UncontrolledFormatStringConfiguration() { this = "UncontrolledFormatStringConfiguration" }
 
   override predicate isSource(DataFlow::Node node) {
-    node instanceof RemoteFlowSource
-    or
-    // Even locally-sourced format strings can cause crashes or information leaks
-    node instanceof LocalFlowSource
+    node instanceof FlowSource
   }
 
   override predicate isSink(DataFlow::Node node) {
@@ -45,11 +42,7 @@ where
     printf.outermostWrapperFunctionCall(sinkNode.getNode().asArgumentIndirection(), printfFunction) or
     printf.outermostWrapperFunctionCall(sinkNode.getNode().asConvertedExpr(), printfFunction)
   ) and
-  (
-    cause = sourceNode.getNode().(RemoteFlowSource).getSourceType()
-    or
-    cause = sourceNode.getNode().(LocalFlowSource).getSourceType()
-  ) and
+  cause = sourceNode.getNode().(FlowSource).getSourceType()and
   conf.hasFlowPath(sourceNode, sinkNode)
 select sinkNode, sourceNode, sinkNode,
   "The value of this argument may come from $@ and is being used as a formatting argument to " +

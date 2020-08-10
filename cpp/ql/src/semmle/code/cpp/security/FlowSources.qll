@@ -7,17 +7,17 @@ import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.IR
 import semmle.code.cpp.models.interfaces.FlowSource
 
-/** A data flow source of remote user input. */
-abstract class RemoteFlowSource extends DataFlow::Node {
-  /** Gets a string that describes the type of this remote flow source. */
+/** A data flow source of user input, whether local or remote. */
+abstract class FlowSource extends DataFlow::Node {
+  /** Gets a string that describes the type of this flow source. */
   abstract string getSourceType();
 }
 
+/** A data flow source of remote user input. */
+abstract class RemoteFlowSource extends FlowSource { }
+
 /** A data flow source of local user input. */
-abstract class LocalFlowSource extends DataFlow::Node {
-  /** Gets a string that describes the type of this local flow source. */
-  abstract string getSourceType();
-}
+abstract class LocalFlowSource extends FlowSource { }
 
 private class RemoteReturnSource extends RemoteFlowSource {
   string sourceType;
