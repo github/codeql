@@ -1,16 +1,21 @@
-/** Provides models of commonly used functions and types in the `google.golang.org/protobuf/proto` package. */
+/** Provides models of commonly used functions and types in the protobuf packages. */
 
 import go
 
-/** Provides models of commonly used functions and types in the `google.golang.org/protobuf/proto` package. */
+/** Provides models of commonly used functions and types in the protobuf packages. */
 module Protobuf {
-  /** The `Marshal`, `MarshalAppend`, or `MarshalState` functions in the `google.golang.org/protobuf/proto` package. */
+  pragma[inline]
+  string protobufPackages() {
+    result in ["github.com/golang/protobuf/proto", "google.golang.org/protobuf/proto"]
+  }
+
+  /** The `Marshal`, `MarshalAppend`, or `MarshalState` functions in the protobuf packages. */
   private class MarshalFunction extends TaintTracking::FunctionModel, MarshalingFunction::Range {
     string name;
 
     MarshalFunction() {
       name = ["Marshal", "MarshalAppend", "MarshalState"] and
-      this.hasQualifiedName("github.com/golang/protobuf/proto", name)
+      this.hasQualifiedName(protobufPackages(), name)
     }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
@@ -30,13 +35,13 @@ module Protobuf {
     override string getFormat() { result = "protobuf" }
   }
 
-  /** The `Unmarshal` or `UnmarshalState` functions in the `google.golang.org/protobuf/proto` package. */
+  /** The `Unmarshal` or `UnmarshalState` functions in the protobuf packages. */
   class UnmarshalFunction extends TaintTracking::FunctionModel, UnmarshalingFunction::Range {
     string name;
 
     UnmarshalFunction() {
       name = ["Unmarshal", "UnmarshalState"] and
-      this.hasQualifiedName("github.com/golang/protobuf/proto", name)
+      this.hasQualifiedName(protobufPackages(), name)
     }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
@@ -50,9 +55,9 @@ module Protobuf {
     override string getFormat() { result = "protobuf" }
   }
 
-  /** The `Merge` function in the `google.golang.org/protobuf/proto` package. */
+  /** The `Merge` function in the protobuf packages. */
   private class MergeFunction extends TaintTracking::FunctionModel {
-    MergeFunction() { this.hasQualifiedName("github.com/golang/protobuf/proto", "Merge") }
+    MergeFunction() { this.hasQualifiedName(protobufPackages(), "Merge") }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(1) and outp.isParameter(0)
@@ -66,9 +71,9 @@ module Protobuf {
     }
   }
 
-  /** The `Clone` method of a protobuf `Message` type. */
+  /** The `Clone` function in the protobuf packages. */
   private class MessageCloneFunction extends TaintTracking::FunctionModel {
-    MessageCloneFunction() { this.hasQualifiedName("github.com/golang/protobuf/proto", "Clone") }
+    MessageCloneFunction() { this.hasQualifiedName(protobufPackages(), "Clone") }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(0) and outp.isResult()

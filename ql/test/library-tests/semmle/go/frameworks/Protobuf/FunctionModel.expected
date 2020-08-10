@@ -10,3 +10,11 @@
 | testDeprecatedApi.go:53:13:53:17 | query | testDeprecatedApi.go:53:13:53:34 | call to GetDescription |
 | testDeprecatedApi.go:61:22:61:27 | query1 | testDeprecatedApi.go:60:2:60:7 | definition of query2 |
 | testDeprecatedApi.go:63:33:63:38 | query2 | testDeprecatedApi.go:63:2:63:39 | ... := ...[0] |
+| testModernApi.go:24:33:24:37 | query | testModernApi.go:24:2:24:38 | ... := ...[0] |
+| testModernApi.go:33:28:33:32 | query | testModernApi.go:33:16:33:33 | call to Clone |
+| testModernApi.go:35:33:35:42 | queryClone | testModernApi.go:35:2:35:43 | ... := ...[0] |
+| testModernApi.go:43:18:43:36 | untrustedSerialized | testModernApi.go:42:2:42:6 | definition of query |
+| testModernApi.go:51:18:51:36 | untrustedSerialized | testModernApi.go:50:2:50:6 | definition of query |
+| testModernApi.go:53:13:53:17 | query | testModernApi.go:53:13:53:34 | call to GetDescription |
+| testModernApi.go:61:22:61:27 | query1 | testModernApi.go:60:2:60:7 | definition of query2 |
+| testModernApi.go:63:33:63:38 | query2 | testModernApi.go:63:2:63:39 | ... := ...[0] |
