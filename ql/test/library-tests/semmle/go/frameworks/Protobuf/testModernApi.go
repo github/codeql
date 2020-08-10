@@ -3,6 +3,7 @@ package main
 import (
 	"codeql-go-tests/protobuf/protos/query"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/proto/runtime/protoiface"
 )
 
 func getUntrustedString() string {
@@ -63,4 +64,41 @@ func testMergeThenMarshal() {
 	serialized, _ := proto.Marshal(query2)
 
 	sinkBytes(serialized)
+}
+
+func testMarshalWithOptions() {
+	query := &query.Query{}
+	query.Description = getUntrustedString()
+
+	options := proto.MarshalOptions{}
+	serialized, _ := options.Marshal(query)
+
+	sinkBytes(serialized)
+}
+
+func testMarshalAppend() {
+	query := &query.Query{}
+	query.Description = getUntrustedString()
+
+	options := proto.MarshalOptions{}
+	emptyArray := [0]byte{}
+	serialized, _ := options.MarshalAppend(emptyArray, query)
+
+	sinkBytes(serialized)
+}
+
+func testMarshalState() {
+	query := &query.Query{}
+	query.Description = getUntrustedString()
+
+	options := proto.MarshalOptions{}
+	emptyArray := [0]byte{}
+	marshalState := protoiface.MarshalInput{
+		Message: query,
+		Buf:     emptyArray,
+		Flags:   0,
+	}
+	serialized, _ := options.MarshalAppend(emptyArray, query)
+
+	sinkBytes(serialized.Buf)
 }

@@ -15,7 +15,10 @@ module Protobuf {
 
     MarshalFunction() {
       name = ["Marshal", "MarshalAppend", "MarshalState"] and
-      this.hasQualifiedName(protobufPackages(), name)
+      (
+        this.hasQualifiedName(protobufPackages(), name) or
+        this.(Method).hasQualifiedName("google.golang.org/protobuf/proto", "MarshalOptions", name)
+      )
     }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
