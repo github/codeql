@@ -96,5 +96,5 @@ private class ArgvSource extends LocalFlowSource {
     )
   }
 
-  override string getSourceType() { result = "a command line argument" }
+  override string getSourceType() { result = "a command-line argument" }
 }
