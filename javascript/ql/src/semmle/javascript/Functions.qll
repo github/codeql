@@ -82,6 +82,7 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    *
    * Gets the identifier specifying the name of this function, if any.
    */
+  deprecated
   VarDecl getId() { result = getIdentifier() }
 
   /** Gets the identifier specifying the name of this function, if any. */
