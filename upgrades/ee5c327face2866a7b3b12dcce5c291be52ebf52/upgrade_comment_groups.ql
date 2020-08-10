@@ -33,6 +33,7 @@ Location getLocation(CommentGroup cg) {
   not exists(cg.getLocation()) and result = cg.getComment(0).getLocation()
 }
 
+pragma[noinline]
 predicate hasLocation(CommentGroup cg, File f, int startLine) {
   exists(Location loc | loc = getLocation(cg) |
     f = loc.getFile() and
