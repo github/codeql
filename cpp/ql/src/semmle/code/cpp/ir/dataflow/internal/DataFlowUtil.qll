@@ -47,9 +47,10 @@ class Node extends TIRDataFlowNode {
    * evaluating the expression. For data flowing _out of_ an expression, like
    * when an argument is passed by reference, use `asDefiningArgument` instead
    * of `asExpr`.
-   * 
+   *
    * If this node strictly (in the sense of `asConvertedExpr`) corresponds to
-   * a `Conversion`, then the result is the underlying non-`Conversion` base expression.
+   * a `Conversion`, then the result is the underlying non-`Conversion` base
+   * expression.
    */
   Expr asExpr() { result = this.(ExprNode).getExpr() }
 
