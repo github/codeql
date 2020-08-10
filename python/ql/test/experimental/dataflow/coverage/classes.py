@@ -1197,7 +1197,7 @@ class With_trunc:
 def test_trunc():
   with_trunc = With_trunc()
   import math
-  math.trunc(with_trunc) # edit to effect call
+  math.trunc(with_trunc)
 
 # object.__floor__(self)
 class With_floor:
@@ -1209,7 +1209,7 @@ class With_floor:
 def test_floor():
   with_floor = With_floor()
   import math
-  math.floor(with_floor) # edit to effect call
+  math.floor(with_floor)
 
 # object.__ceil__(self)
 class With_ceil:
@@ -1221,7 +1221,7 @@ class With_ceil:
 def test_ceil():
   with_ceil = With_ceil()
   import math
-  math.ceil(with_ceil) # edit to effect call
+  math.ceil(with_ceil)
 
 
 # 3.3.9. With Statement Context Managers
