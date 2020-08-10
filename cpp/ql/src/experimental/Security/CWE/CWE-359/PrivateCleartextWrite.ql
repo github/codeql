@@ -12,7 +12,10 @@
 import cpp
 import experimental.semmle.code.cpp.security.PrivateCleartextWrite
 import experimental.semmle.code.cpp.security.PrivateCleartextWrite::PrivateCleartextWrite
+import DataFlow::PathGraph
 
-from WriteConfig b, DataFlow::Node source, DataFlow::Node sink
-where b.hasFlow(source, sink)
-select sink, "This write may contain unencrypted data"
+from WriteConfig b, DataFlow::PathNode source, DataFlow::PathNode sink
+where b.hasFlowPath(source, sink)
+select sink.getNode(),
+  "This write into the external location '" + sink + "' may contain unencrypted data from $@",
+  source, "this source."

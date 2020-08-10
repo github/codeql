@@ -4,7 +4,7 @@
 typedef int streamsize;
 
 size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream);
-int fputs(const char *s, FILE *stream); 
+int fputs(const char *s, FILE *stream);
 int fputc(int c, FILE *stream);
 int fprintf(FILE *stream, const char *format, ...);
 int sprintf(char *s, const char *format, ...);
@@ -12,37 +12,44 @@ size_t strlen(const char *s);
 
 namespace std
 {
-	template<class charT> struct char_traits;
+  template <class charT>
+  struct char_traits;
 
-	template <class charT, class traits = char_traits<charT> >
-	class basic_ostream /*: virtual public basic_ios<charT,traits> - not needed for this test */ {
-	public:
-		typedef charT char_type;
-		basic_ostream<charT,traits>& write(const char_type* s, streamsize n);
-	};
+  template <class charT, class traits = char_traits<charT>>
+  class basic_ostream /*: virtual public basic_ios<charT,traits> - not needed for this test */
+  {
+  public:
+    typedef charT char_type;
+    basic_ostream<charT, traits> &write(const char_type *s, streamsize n);
+  };
 
-	template <class charT, class traits = char_traits<charT> >
-	class basic_ofstream : public basic_ostream<charT,traits> {
-	public:
-	};
+  template <class charT, class traits = char_traits<charT>>
+  class basic_ofstream : public basic_ostream<charT, traits>
+  {
+  public:
+  };
 
-	template<class charT, class traits> basic_ostream<charT,traits>& operator<<(basic_ostream<charT,traits>&, const charT*);
+  template <class charT, class traits>
+  basic_ostream<charT, traits> &operator<<(basic_ostream<charT, traits> &, const charT *);
 
-	typedef basic_ostream<char> ostream;
-	typedef basic_ofstream<char> ofstream;
-};
+  typedef basic_ostream<char> ostream;
+  typedef basic_ofstream<char> ofstream;
+}; // namespace std
 
 using namespace std;
 
-char *encrypt(char *buffer) {
+char *encrypt(char *buffer)
+{
   return buffer;
 }
-char *func(char *buffer) {
+char *func(char *buffer)
+{
   return buffer;
 }
 
 // test for CleartextFileWrite
-void file() {
+void file()
+{
   char *theZipcode = "cleartext zipcode!";
   FILE *file;
 
@@ -55,7 +62,8 @@ void file() {
 }
 
 // test for CleartextBufferWrite
-int main(int argc, char** argv) {
+int main(int argc, char **argv)
+{
   char *medical = "medical";
   char *buff1;
   char *buff2;
@@ -75,11 +83,12 @@ int main(int argc, char** argv) {
 
   char *buff6 = encrypt(medical);
   // GOOD: encrypt first
-  sprintf(buff4, "%s", buff6); 
+  sprintf(buff4, "%s", buff6);
 }
 
 // test for CleartextFileWrite
-void stream() {
+void stream()
+{
   char *theZipcode = "cleartext zipcode!";
   ofstream mystream;
 
