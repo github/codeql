@@ -70,20 +70,31 @@ predicate localExceptionStep(DataFlow::Node pred, DataFlow::Node succ) {
  * The `async` flag is true if the successor
  */
 predicate localExceptionStepWithAsyncFlag(DataFlow::Node pred, DataFlow::Node succ, boolean async) {
-  exists(Expr expr |
-    expr = any(ThrowStmt throw).getExpr() and
-    pred = expr.flow()
-    or
-    DataFlow::exceptionalInvocationReturnNode(pred, expr)
-  |
+  exists(DataFlow::Node target | target = getThrowTarget(pred) |
     async = false and
-    succ = expr.getExceptionTarget() and
+    succ = target and
     not succ = any(DataFlow::FunctionNode f | f.getFunction().isAsync()).getExceptionalReturn()
     or
     async = true and
-    exists(DataFlow::FunctionNode f | f.getExceptionalReturn() = expr.getExceptionTarget() |
+    exists(DataFlow::FunctionNode f | f.getExceptionalReturn() = target |
       succ = f.getReturnNode() // returns a rejected promise - therefore using the ordinary return node.
     )
+  )
+}
+
+/**
+ * Gets the dataflow-node that an exception thrown at `thrower` will flow to.
+ *
+ * The predicate that all functions are not async.
+ */
+DataFlow::Node getThrowTarget(DataFlow::Node thrower) {
+  exists(Expr expr |
+    expr = any(ThrowStmt throw).getExpr() and
+    thrower = expr.flow()
+    or
+    DataFlow::exceptionalInvocationReturnNode(thrower, expr)
+  |
+    result = expr.getExceptionTarget()
   )
 }
 

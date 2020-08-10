@@ -1000,6 +1000,17 @@ private predicate flowThroughCall(
     not isLabeledBarrierEdge(cfg, ret, output, summary.getEndLabel()) and
     not cfg.isLabeledBarrier(output, summary.getEndLabel())
   )
+  or
+  // exception thrown inside an immidiatly awaited function call.
+  exists(DataFlow::FunctionNode f, DataFlow::Node invk, DataFlow::Node ret |
+    f.getFunction().isAsync()
+  |
+    (calls(invk, f.getFunction()) or callsBound(invk, f.getFunction(), _)) and
+    reachableFromInput(f.getFunction(), invk, input, ret, cfg, summary) and
+    output = invk.asExpr().getExceptionTarget() and
+    f.getExceptionalReturn() = getThrowTarget(ret) and
+    invk = getAwaitOperand(_)
+  )
 }
 
 /**
