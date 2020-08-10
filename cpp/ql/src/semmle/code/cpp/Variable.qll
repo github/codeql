@@ -325,7 +325,7 @@ class ParameterDeclarationEntry extends VariableDeclarationEntry {
  */
 class LocalScopeVariable extends Variable, @localscopevariable {
   /** Gets the function to which this variable belongs. */
-  /*abstract*/ Function getFunction() { none() }
+  Function getFunction() { none() } // overridden in subclasses
 }
 
 /**
@@ -582,7 +582,7 @@ class TemplateVariable extends Variable {
  *   float a;
  * }
  *
- * template<type T>
+ * template<typename T>
  * void myTemplateFunction() {
  *   T b;
  * }

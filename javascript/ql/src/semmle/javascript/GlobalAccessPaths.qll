@@ -4,6 +4,7 @@
 
 import javascript
 private import semmle.javascript.dataflow.InferredTypes
+private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 
 deprecated module GlobalAccessPath {
   /**
@@ -58,7 +59,8 @@ module AccessPath {
       not this instanceof DataFlow::PropRead and
       not this instanceof PropertyProjection and
       not this instanceof Closure::ClosureNamespaceAccess and
-      not this = DataFlow::parameterNode(any(ImmediatelyInvokedFunctionExpr iife).getAParameter())
+      not this = DataFlow::parameterNode(any(ImmediatelyInvokedFunctionExpr iife).getAParameter()) and
+      not FlowSteps::identityFunctionStep(_, this)
     }
 
     /** Holds if this represents the root of the global access path. */

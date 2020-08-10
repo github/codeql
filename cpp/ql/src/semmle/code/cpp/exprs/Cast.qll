@@ -1,3 +1,8 @@
+/**
+ * Provides classes for modeling C/C++ casts and conversions, as well as some
+ * type-related operators such as `sizeof` and `alignof`.
+ */
+
 import semmle.code.cpp.exprs.Expr
 private import semmle.code.cpp.internal.ResolveClass
 
@@ -656,6 +661,9 @@ class UuidofOperator extends Expr, @uuidof {
  * ```
  */
 class TypeidOperator extends Expr, @type_id {
+  /**
+   * Gets the type that is returned by this typeid expression.
+   */
   Type getResultType() { typeid_bind(underlyingElement(this), unresolveElement(result)) }
 
   /**

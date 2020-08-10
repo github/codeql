@@ -7,7 +7,6 @@
  * @precision very-high
  * @id java/integer-multiplication-cast-to-long
  * @tags reliability
- *       security
  *       correctness
  *       types
  *       external/cwe/cwe-190

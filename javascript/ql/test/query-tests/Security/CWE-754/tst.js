@@ -28,13 +28,13 @@
       obj[name]();  // NOT OK
 
     if (obj.hasOwnProperty(name)) {
-      obj[name]();  // NOT OK, but not flagged
+      obj[name]();  // NOT OK, but not flagged [INCONSISTENCY]
     }
 
     let key = "$" + name;
     obj[key]();     // NOT OK
     if (typeof obj[key] === 'function')
-      obj[key]();   // OK - but still flagged
+      obj[key]();   // OK - but still flagged [INCONSISTENCY]
 
     if (typeof fn === 'function') {
       fn.apply(obj); // OK

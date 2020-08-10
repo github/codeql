@@ -16,7 +16,7 @@ var cp = require("child_process");
 	cp.execSync("cmd.sh " + fewerArgs[0]); // NOT OK
 
 	var arg0 = fewerArgs[0];
-	cp.execSync(arg0); // OK
+	cp.execSync(arg0); // NOT OK
 	cp.execSync("cmd.sh " + arg0); // NOT OK
 });
 

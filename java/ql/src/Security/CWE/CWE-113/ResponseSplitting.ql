@@ -11,7 +11,8 @@
  */
 
 import java
-import ResponseSplitting
+import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.security.ResponseSplitting
 import DataFlow::PathGraph
 
 class ResponseSplittingConfig extends TaintTracking::Configuration {
@@ -19,7 +20,7 @@ class ResponseSplittingConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) {
     source instanceof RemoteFlowSource and
-    not source instanceof WhitelistedSource
+    not source instanceof SafeHeaderSplittingSource
   }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof HeaderSplittingSink }

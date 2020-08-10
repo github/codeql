@@ -1,0 +1,24 @@
+<!DOCTYPE qhelp SYSTEM "qhelp.dtd">
+<qhelp>
+    <overview>
+        <p>
+            Template Injection occurs when user input is embedded in a template in an unsafe manner.
+            When an attacker is able to use native template syntax to inject a malicious payload into a template, which is then executed server-side is results in Server Side Template Injection.         
+        </p>
+    </overview>
+    <recommendation>
+        <p>
+            To fix this, ensure that an untrusted value is not used as a template. If the application requirements do not alow this, use a sandboxed environment where access to unsafe attributes and methods is prohibited.
+        </p>
+    </recommendation>
+    <example>
+        <p>Consider the example given below, an untrusted HTTP parameter `template` is used to generate a Jinja2 template string. This can lead to remote code execution. </p>
+        <sample src="JinjaBad.py" />
+        
+        <p>Here we have fixed the problem by using the Jinja sandbox environment for evaluating untrusted code.</p>
+        <sample src="JinjaGood.py" />
+    </example>
+    <references>
+        <li>Portswigger : [Server Side Template Injection](https://portswigger.net/web-security/server-side-template-injection)</li>
+    </references>
+</qhelp>

@@ -1,7 +1,7 @@
 /**
  * Provides classes representing individual opcodes.
  *
- * See ECMA-335 (http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-335.pdf)
+ * See ECMA-335 (https://www.ecma-international.org/publications/files/ECMA-ST/ECMA-335.pdf)
  * pages 32-101 for a detailed explanation of these instructions.
  */
 

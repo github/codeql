@@ -5,6 +5,7 @@ private import implementations.Getenv
 private import implementations.Gets
 private import implementations.IdentityFunction
 private import implementations.Inet
+private import implementations.MemberFunction
 private import implementations.Memcpy
 private import implementations.Memset
 private import implementations.Printf

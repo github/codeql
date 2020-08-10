@@ -459,7 +459,18 @@ module NodeJSLib {
       ) and
       t.start()
       or
-      exists(DataFlow::TypeTracker t2 | result = fsModule(t2).track(t2, t))
+      exists(DataFlow::TypeTracker t2, DataFlow::SourceNode pred | pred = fsModule(t2) |
+        result = pred.track(t2, t)
+        or
+        t.continue() = t2 and
+        exists(DataFlow::CallNode promisifyAllCall |
+          result = promisifyAllCall and
+          pred.flowsTo(promisifyAllCall.getArgument(0)) and
+          promisifyAllCall =
+            [DataFlow::moduleMember("bluebird", "promisifyAll"),
+                DataFlow::moduleImport("util-promisifyall")].getACall()
+        )
+      )
     }
   }
 
@@ -605,7 +616,7 @@ module NodeJSLib {
     result = callback
     or
     exists(DataFlow::CallNode promisify |
-      promisify = DataFlow::moduleMember("util", "promisify").getACall()
+      promisify = DataFlow::moduleMember(["util", "bluebird"], "promisify").getACall()
     |
       result = promisify and promisify.getArgument(0).getALocalSource() = callback
     )

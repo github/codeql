@@ -21,6 +21,16 @@ ArrayType getArrayOfDim(int dim, Type type) {
   result.getElementType() = type
 }
 
+IRUserVariable getIRUserVariable(Language::Function func, Language::Variable var) {
+  result.getVariable() = var and
+  result.getEnclosingFunction() = func
+}
+
+IRTempVariable getIRTempVariable(Language::AST ast, TempVariableTag tag) {
+  result.getAST() = ast and
+  result.getTag() = tag
+}
+
 private predicate canCreateCompilerGeneratedElement(Element generatedBy, int nth) {
   generatedBy instanceof ForeachStmt and nth in [0 .. ForeachElements::noGeneratedElements() - 1]
   or

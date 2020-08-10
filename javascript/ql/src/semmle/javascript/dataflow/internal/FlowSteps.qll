@@ -404,6 +404,18 @@ private module CachedSteps {
   predicate receiverPropWrite(Function f, string prop, DataFlow::Node rhs) {
     DataFlow::thisNode(f).hasPropertyWrite(prop, rhs)
   }
+
+  /**
+   * A step from `pred` to `succ` through a call to an identity function.
+   */
+  cached
+  predicate identityFunctionStep(DataFlow::Node pred, DataFlow::CallNode succ) {
+    exists(DataFlow::GlobalVarRefNode global |
+      global.getName() = "Object" and
+      succ.(DataFlow::MethodCallNode).calls(global, ["freeze", "seal"]) and
+      pred = succ.getArgument(0)
+    )
+  }
 }
 
 import CachedSteps
