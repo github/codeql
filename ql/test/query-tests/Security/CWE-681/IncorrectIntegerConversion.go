@@ -281,7 +281,7 @@ func testBoundsChecking(input string) {
 		if parsed > 42 {
 			_ = uint16(parsed) // NOT OK
 		}
-		if parsed < 5 {
+		if parsed > 5 {
 			return
 		}
 		_ = uint8(parsed) // OK
