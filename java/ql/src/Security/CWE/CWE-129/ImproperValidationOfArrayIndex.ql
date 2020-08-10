@@ -25,7 +25,8 @@ class Conf extends TaintTrackingOneConf::Configuration {
   override predicate isSanitizer(DataFlow::Node node) { node.getType() instanceof BooleanType }
 }
 
-from DataFlowOneConf::PathNode source, DataFlowOneConf::PathNode sink, CheckableArrayAccess arrayAccess
+from
+  DataFlowOneConf::PathNode source, DataFlowOneConf::PathNode sink, CheckableArrayAccess arrayAccess
 where
   arrayAccess.canThrowOutOfBounds(sink.getNode().asExpr()) and
   any(Conf conf).hasFlowPath(source, sink)
