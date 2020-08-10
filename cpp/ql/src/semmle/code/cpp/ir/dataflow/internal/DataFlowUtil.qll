@@ -49,8 +49,7 @@ class Node extends TIRDataFlowNode {
    * of `asExpr`.
    * 
    * If this node strictly (in the sense of `asConvertedExpr`) corresponds to
-   * a `Conversion`, then the result is that `Conversion`'s non-`Conversion`
-   * base expression.
+   * a `Conversion`, then the result is the underlying non-`Conversion` base expression.
    */
   Expr asExpr() { result = this.(ExprNode).getExpr() }
 
