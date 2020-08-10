@@ -1,30 +1,3 @@
 edges
-| globalVars.c:8:7:8:10 | copy | globalVars.c:35:11:35:14 | copy |
-| globalVars.c:11:22:11:25 | argv | globalVars.c:12:2:12:15 | Store |
-| globalVars.c:11:22:11:25 | argv | globalVars.c:12:9:12:12 | argv |
-| globalVars.c:11:22:11:25 | argv | globalVars.c:12:9:12:15 | access to array |
-| globalVars.c:12:2:12:15 | Store | globalVars.c:8:7:8:10 | copy |
-| globalVars.c:12:2:12:15 | Store | globalVars.c:8:7:8:10 | copy |
-| globalVars.c:15:21:15:23 | val | globalVars.c:16:2:16:12 | Store |
-| globalVars.c:16:2:16:12 | Store | globalVars.c:9:7:9:11 | copy2 |
-| globalVars.c:24:11:24:14 | argv | globalVars.c:11:22:11:25 | argv |
-| globalVars.c:24:11:24:14 | argv | globalVars.c:11:22:11:25 | argv |
-| globalVars.c:24:11:24:14 | argv | globalVars.c:11:22:11:25 | argv |
-| globalVars.c:35:11:35:14 | copy | globalVars.c:15:21:15:23 | val |
 nodes
-| globalVars.c:8:7:8:10 | copy | semmle.label | copy |
-| globalVars.c:8:7:8:10 | copy | semmle.label | copy |
-| globalVars.c:9:7:9:11 | copy2 | semmle.label | copy2 |
-| globalVars.c:11:22:11:25 | argv | semmle.label | argv |
-| globalVars.c:11:22:11:25 | argv | semmle.label | argv |
-| globalVars.c:11:22:11:25 | argv | semmle.label | argv |
-| globalVars.c:12:2:12:15 | Store | semmle.label | Store |
-| globalVars.c:12:9:12:12 | argv | semmle.label | argv |
-| globalVars.c:12:9:12:15 | access to array | semmle.label | access to array |
-| globalVars.c:15:21:15:23 | val | semmle.label | val |
-| globalVars.c:16:2:16:12 | Store | semmle.label | Store |
-| globalVars.c:24:11:24:14 | argv | semmle.label | argv |
-| globalVars.c:24:11:24:14 | argv | semmle.label | argv |
-| globalVars.c:24:11:24:14 | argv | semmle.label | argv |
-| globalVars.c:35:11:35:14 | copy | semmle.label | copy |
 #select

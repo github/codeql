@@ -17,7 +17,8 @@
 
 import cpp
 import PrintfLike
-private import TaintTracking
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowDispatch as Dispatch
+private import semmle.code.cpp.ir.IR as IR
 
 bindingset[index]
 private string toCause(Function func, int index) {
@@ -167,6 +168,20 @@ abstract class FunctionWithWrappers extends Function {
       arg = call.getArgument(argIndex)
     )
   }
+}
+
+/**
+ * Resolve potential target function(s) for `call`.
+ *
+ * If `call` is a call through a function pointer (`ExprCall`) or
+ * targets a virtual method, simple data flow analysis is performed
+ * in order to identify target(s).
+ */
+private Function resolveCall(Call call) {
+  exists(IR::CallInstruction callInstruction |
+    callInstruction.getAST() = call and
+    result = Dispatch::viableCallable(callInstruction)
+  )
 }
 
 /**
