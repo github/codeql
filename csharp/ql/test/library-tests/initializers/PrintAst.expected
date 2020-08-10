@@ -1,0 +1,56 @@
+initializers.cs:
+#    3| [Class,LeafType,NonNestedType,SourceDeclarationType] S1
+#    5|   2: [DynamicMember,ExprOrStmtParent,Field,InstanceFieldOrProp,InstanceFieldOrProperty] P1
+#    6|   3: [DynamicMember,ExprOrStmtParent,InstanceFieldOrProp,InstanceFieldOrProperty,TrivialProperty] P2
+#    6|     1: [CallableOrCFE,Getter,InstanceCallable,RuntimeInstanceAccessor,SourceDeclarationCallable] get_P2
+#    6|     2: [CallableOrCFE,InstanceCallable,RuntimeInstanceAccessor,Setter,SourceDeclarationCallable] set_P2
+#-----|       2: (Parameters)
+#    6|         0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#    7|   4: [DynamicMember,ExprOrStmtParent,InstanceFieldOrProp,InstanceFieldOrProperty,Property] P3
+#    7|     1: [CallableOrCFE,InstanceCallable,RuntimeInstanceAccessor,Setter,SourceDeclarationCallable] set_P3
+#-----|       2: (Parameters)
+#    7|         0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#    7|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
+#   10| [Class,IEnumerableFlow,LeafType,NonNestedType,SourceDeclarationType] S2
+#   12|   2: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] Add
+#-----|     2: (Parameters)
+#   12|       0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] x
+#   12|     4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
+#   13|   3: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] Add
+#-----|     2: (Parameters)
+#   13|       0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] x
+#   13|       1: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] y
+#   13|     4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
+#   14|   4: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] GetEnumerator
+#   14|     4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
+#   14|       0: [CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,ReturnStmt] return ...;
+#   14|         0: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,NullLiteral,PostOrderElement,Source,StandardExpr] null
+#   17| [Class,LeafType,NonNestedType,SourceDeclarationType] Test
+#   19|   2: [CallableOrCFE,NonConstructedMethod,RuntimeMethod,SourceDeclarationMethod] Main
+#-----|     2: (Parameters)
+#   19|       0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] args
+#   20|     4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
+#   21|       0: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
+#   21|         0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,Source] object creation of type S1
+#   21|           -1: [BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonFinallyControlFlowElement,ObjectInitializer,PostOrderElement,Source,StandardExpr] { ..., ... }
+#   21|             0: [CallableOrCFE,ControlFlowScope,MemberInitializer,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
+#   21|               0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 1
+#   21|               1: [AccessOrCallExpr,CallableOrCFE,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,NonFinallyControlFlowElement,QualifiedWriteAccess,Source,WriteAccessNoNodeExpr] access to field P1
+#   21|             1: [AccessorWrite,CallableOrCFE,ControlFlowScope,MemberInitializer,NonFinallyControlFlowElement,Source] ... = ...
+#   21|               0: [Argument,CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Sink,Source,StandardExpr] 2
+#   21|               1: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,FieldOrPropAccess,FieldOrPropertyAccess,NonDelegateCall,NonFinallyControlFlowElement,PropertyCall,PropertyWrite,QualifiedWriteAccess,Source,StatOrDynAccessorCall,TrivialPropertyAccess,WriteAccessNoNodeExpr] access to property P2
+#   21|             2: [AccessorWrite,CallableOrCFE,ControlFlowScope,MemberInitializer,NonFinallyControlFlowElement,Source] ... = ...
+#   21|               0: [Argument,CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Sink,Source,StandardExpr] 3
+#   21|               1: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,FieldOrPropAccess,FieldOrPropertyAccess,NonDelegateCall,NonFinallyControlFlowElement,PropertyCall,PropertyWrite,QualifiedWriteAccess,Source,StatOrDynAccessorCall,WriteAccessNoNodeExpr] access to property P3
+#   22|       1: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
+#   22|         0: [AccessOrCallExpr,CallableOrCFE,CollectionExpr,ControlFlowScope,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,Source] object creation of type S2
+#   22|           -1: [BarrierGuard,CallableOrCFE,CollectionExpr,CollectionInitializer,ControlFlowScope,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] { ..., ... }
+#   22|             0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,ElementInitializer,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method Add
+#   22|               0: [Argument,CallableOrCFE,IntLiteral,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Sink,Source,StandardExpr] 1
+#   22|             1: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,ElementInitializer,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method Add
+#   22|               0: [Argument,CallableOrCFE,IntLiteral,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Sink,Source,StandardExpr] 2
+#   22|             2: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,ElementInitializer,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method Add
+#   22|               0: [Argument,CallableOrCFE,IntLiteral,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Sink,Source,StandardExpr] 3
+#   22|             3: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,ElementInitializer,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method Add
+#   22|               0: [Argument,CallableOrCFE,IntLiteral,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Sink,Source,StandardExpr] 4
+#   22|               1: [Argument,CallableOrCFE,IntLiteral,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Sink,Source,StandardExpr] 5

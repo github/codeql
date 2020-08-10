@@ -1,0 +1,184 @@
+Members.cs:
+#    1| [NamespaceDeclaration] namespace ... { ... }
+#    3|   1: [DelegateExtType,DelegateType,LeafType,NonNestedType,SourceDeclarationType] EventHandler
+#-----|     0: (Parameters)
+#    3|       0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] sender
+#    3|       1: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] e
+#    6|   2: [Class,LeafType,NonNestedType,SourceDeclarationType] Class
+#    9|     2: [Class,LeafType,NestedType,SourceDeclarationType] NestedClass
+#   12|       2: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod,UnboundGenericMethod] Method
+#-----|         1: (TypeParameters)
+#   12|           0: [MethodTypeParameter,SourceDeclarationType,UnconstrainedTypeParameter] T
+#-----|         2: (Parameters)
+#   12|           0: [ExprOrStmtParent,Parameter,SimpleAssignable,SimpleLocalScopeVariable] t
+#   12|         4: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,CollectionExpr,ControlFlowScope,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,VirtualMethodCall] call to method ToString
+#   12|           -1: [AccessOrCallExpr,Argument,CallableOrCFE,MethodCallArg,NonFinallyControlFlowElement,ParameterRead,PostOrderElement,PreBasicBlock,SameSplitsBlock,Sink,Source,StandardExpr] access to parameter t
+#   14|       3: [ExprOrStmtParent,Indexer,Property] Item
+#-----|         0: (Parameters)
+#   14|           0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] i
+#   14|         2: [CallableOrCFE,Getter,InstanceCallable,RuntimeInstanceAccessor,SourceDeclarationCallable] get_Item
+#-----|           2: (Parameters)
+#   14|             0: [ExprOrStmtParent,Parameter,SimpleAssignable,SimpleLocalScopeVariable] i
+#   14|           4: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,CollectionExpr,ControlFlowScope,DereferenceableExpr,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method ToString
+#   14|             -1: [AccessOrCallExpr,Argument,CallableOrCFE,MethodCallArg,NonFinallyControlFlowElement,ParameterRead,PostOrderElement,PreBasicBlock,SameSplitsBlock,Sink,Source,StandardExpr] access to parameter i
+#   14|         3: [CallableOrCFE,InstanceCallable,RuntimeInstanceAccessor,Setter,SourceDeclarationCallable] set_Item
+#-----|           2: (Parameters)
+#   14|             0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] i
+#   14|             1: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   14|           4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
+#   16|       4: [DynamicMember,ExprOrStmtParent,Field,InstanceFieldOrProp,InstanceFieldOrProperty] Field
+#   18|       5: [DynamicMember,ExprOrStmtParent,IndexerProperty,InstanceFieldOrProp,InstanceFieldOrProperty,TrivialProperty] Prop
+#   18|         1: [CallableOrCFE,Getter,InstanceCallable,RuntimeInstanceAccessor,SourceDeclarationCallable] get_Prop
+#   18|         2: [CallableOrCFE,InstanceCallable,RuntimeInstanceAccessor,Setter,SourceDeclarationCallable] set_Prop
+#-----|           2: (Parameters)
+#   18|             0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   20|       6: [DynamicMember,Event] Event
+#   20|         1: [AddEventAccessor,CallableOrCFE,InstanceCallable,RuntimeInstanceAccessor,SourceDeclarationCallable] add_Event
+#-----|           2: (Parameters)
+#   20|             0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   20|         1: [CallableOrCFE,InstanceCallable,RemoveEventAccessor,RuntimeInstanceAccessor,SourceDeclarationCallable] remove_Event
+#-----|           2: (Parameters)
+#   20|             0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   24|     3: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] Method
+#   24|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
+#   26|     4: [ExprOrStmtParent,Indexer,Property] Item
+#-----|       0: (Parameters)
+#   26|         0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] i
+#   26|       2: [CallableOrCFE,Getter,InstanceCallable,RuntimeInstanceAccessor,SourceDeclarationCallable] get_Item
+#-----|         2: (Parameters)
+#   26|           0: [ExprOrStmtParent,Parameter,SimpleAssignable,SimpleLocalScopeVariable] i
+#   26|         4: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,CollectionExpr,ControlFlowScope,DereferenceableExpr,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method ToString
+#   26|           -1: [AccessOrCallExpr,Argument,CallableOrCFE,MethodCallArg,NonFinallyControlFlowElement,ParameterRead,PostOrderElement,PreBasicBlock,SameSplitsBlock,Sink,Source,StandardExpr] access to parameter i
+#   26|       3: [CallableOrCFE,InstanceCallable,RuntimeInstanceAccessor,Setter,SourceDeclarationCallable] set_Item
+#-----|         2: (Parameters)
+#   26|           0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] i
+#   26|           1: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   26|         4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
+#   28|     5: [DynamicMember,ExprOrStmtParent,Field,InstanceFieldOrProp,InstanceFieldOrProperty] Field
+#   30|     6: [DynamicMember,ExprOrStmtParent,IndexerProperty,InstanceFieldOrProp,InstanceFieldOrProperty,TrivialProperty] Prop
+#   30|       1: [CallableOrCFE,Getter,InstanceCallable,RuntimeInstanceAccessor,SourceDeclarationCallable] get_Prop
+#   30|       2: [CallableOrCFE,InstanceCallable,RuntimeInstanceAccessor,Setter,SourceDeclarationCallable] set_Prop
+#-----|         2: (Parameters)
+#   30|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   32|     7: [DynamicMember,Event] Event
+#   32|       1: [AddEventAccessor,CallableOrCFE,InstanceCallable,RuntimeInstanceAccessor,SourceDeclarationCallable] add_Event
+#-----|         2: (Parameters)
+#   32|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   32|       1: [CallableOrCFE,InstanceCallable,RemoveEventAccessor,RuntimeInstanceAccessor,SourceDeclarationCallable] remove_Event
+#-----|         2: (Parameters)
+#   32|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   35|   3: [Class,LeafType,NonNestedType,SourceDeclarationType] Class2
+#   37|     2: [Class,LeafType,NestedType,SourceDeclarationType] NestedClass2
+#   39|       2: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod,UnboundGenericMethod] Method
+#-----|         1: (TypeParameters)
+#   39|           0: [MethodTypeParameter,SourceDeclarationType,UnconstrainedTypeParameter] T
+#-----|         2: (Parameters)
+#   39|           0: [ExprOrStmtParent,Parameter,SimpleAssignable,SimpleLocalScopeVariable] t
+#   39|         4: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,CollectionExpr,ControlFlowScope,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,VirtualMethodCall] call to method ToString
+#   39|           -1: [AccessOrCallExpr,Argument,CallableOrCFE,MethodCallArg,NonFinallyControlFlowElement,ParameterRead,PostOrderElement,PreBasicBlock,SameSplitsBlock,Sink,Source,StandardExpr] access to parameter t
+#   40|       3: [ExprOrStmtParent,Indexer,Property] Item
+#-----|         0: (Parameters)
+#   40|           0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] i
+#   40|         2: [CallableOrCFE,Getter,InstanceCallable,RuntimeInstanceAccessor,SourceDeclarationCallable] get_Item
+#-----|           2: (Parameters)
+#   40|             0: [ExprOrStmtParent,Parameter,SimpleAssignable,SimpleLocalScopeVariable] i
+#   40|           4: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,CollectionExpr,ControlFlowScope,DereferenceableExpr,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method ToString
+#   40|             -1: [AccessOrCallExpr,Argument,CallableOrCFE,MethodCallArg,NonFinallyControlFlowElement,ParameterRead,PostOrderElement,PreBasicBlock,SameSplitsBlock,Sink,Source,StandardExpr] access to parameter i
+#   40|         3: [CallableOrCFE,InstanceCallable,RuntimeInstanceAccessor,Setter,SourceDeclarationCallable] set_Item
+#-----|           2: (Parameters)
+#   40|             0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] i
+#   40|             1: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   40|           4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
+#   41|       4: [DynamicMember,ExprOrStmtParent,Field,InstanceFieldOrProp,InstanceFieldOrProperty] Field
+#   42|       5: [DynamicMember,ExprOrStmtParent,IndexerProperty,InstanceFieldOrProp,InstanceFieldOrProperty,TrivialProperty] Prop
+#   42|         1: [CallableOrCFE,Getter,InstanceCallable,RuntimeInstanceAccessor,SourceDeclarationCallable] get_Prop
+#   42|         2: [CallableOrCFE,InstanceCallable,RuntimeInstanceAccessor,Setter,SourceDeclarationCallable] set_Prop
+#-----|           2: (Parameters)
+#   42|             0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   43|       6: [DynamicMember,Event] Event
+#   43|         1: [AddEventAccessor,CallableOrCFE,InstanceCallable,RuntimeInstanceAccessor,SourceDeclarationCallable] add_Event
+#-----|           2: (Parameters)
+#   43|             0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   43|         1: [CallableOrCFE,InstanceCallable,RemoveEventAccessor,RuntimeInstanceAccessor,SourceDeclarationCallable] remove_Event
+#-----|           2: (Parameters)
+#   43|             0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   46|     3: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] Method
+#   46|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
+#   47|     4: [ExprOrStmtParent,Indexer,Property] Item
+#-----|       0: (Parameters)
+#   47|         0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] i
+#   47|       2: [CallableOrCFE,Getter,InstanceCallable,RuntimeInstanceAccessor,SourceDeclarationCallable] get_Item
+#-----|         2: (Parameters)
+#   47|           0: [ExprOrStmtParent,Parameter,SimpleAssignable,SimpleLocalScopeVariable] i
+#   47|         4: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,CollectionExpr,ControlFlowScope,DereferenceableExpr,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method ToString
+#   47|           -1: [AccessOrCallExpr,Argument,CallableOrCFE,MethodCallArg,NonFinallyControlFlowElement,ParameterRead,PostOrderElement,PreBasicBlock,SameSplitsBlock,Sink,Source,StandardExpr] access to parameter i
+#   47|       3: [CallableOrCFE,InstanceCallable,RuntimeInstanceAccessor,Setter,SourceDeclarationCallable] set_Item
+#-----|         2: (Parameters)
+#   47|           0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] i
+#   47|           1: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   47|         4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
+#   48|     5: [DynamicMember,ExprOrStmtParent,Field,InstanceFieldOrProp,InstanceFieldOrProperty] Field
+#   49|     6: [DynamicMember,ExprOrStmtParent,IndexerProperty,InstanceFieldOrProp,InstanceFieldOrProperty,TrivialProperty] Prop
+#   49|       1: [CallableOrCFE,Getter,InstanceCallable,RuntimeInstanceAccessor,SourceDeclarationCallable] get_Prop
+#   49|       2: [CallableOrCFE,InstanceCallable,RuntimeInstanceAccessor,Setter,SourceDeclarationCallable] set_Prop
+#-----|         2: (Parameters)
+#   49|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   50|     7: [DynamicMember,Event] Event
+#   50|       1: [AddEventAccessor,CallableOrCFE,InstanceCallable,RuntimeInstanceAccessor,SourceDeclarationCallable] add_Event
+#-----|         2: (Parameters)
+#   50|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   50|       1: [CallableOrCFE,InstanceCallable,RemoveEventAccessor,RuntimeInstanceAccessor,SourceDeclarationCallable] remove_Event
+#-----|         2: (Parameters)
+#   50|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   54|   4: [Interface,LeafType,NonNestedType,SourceDeclarationType] Interface
+#   56|     1: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] Method
+#   57|     2: [ExprOrStmtParent,Indexer,Property] Item
+#-----|       0: (Parameters)
+#   57|         0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] i
+#   57|       2: [CallableOrCFE,Getter,InstanceCallable,NonConstructedOverridableCallable,OverridableAccessor,SourceDeclarationCallable] get_Item
+#-----|         2: (Parameters)
+#   57|           0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] i
+#   57|       3: [CallableOrCFE,InstanceCallable,NonConstructedOverridableCallable,OverridableAccessor,Setter,SourceDeclarationCallable] set_Item
+#-----|         2: (Parameters)
+#   57|           0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] i
+#   57|           1: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   58|     3: [DynamicMember,ExprOrStmtParent,IndexerProperty,InstanceFieldOrProp,InstanceFieldOrProperty,TrivialProperty] Prop
+#   58|       1: [CallableOrCFE,Getter,InstanceCallable,NonConstructedOverridableCallable,OverridableAccessor,SourceDeclarationCallable] get_Prop
+#   58|       2: [CallableOrCFE,InstanceCallable,NonConstructedOverridableCallable,OverridableAccessor,Setter,SourceDeclarationCallable] set_Prop
+#-----|         2: (Parameters)
+#   58|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   59|     4: [DynamicMember,Event] Event
+#   59|       1: [AddEventAccessor,CallableOrCFE,InstanceCallable,NonConstructedOverridableCallable,OverridableAccessor,SourceDeclarationCallable] add_Event
+#-----|         2: (Parameters)
+#   59|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   59|       1: [CallableOrCFE,InstanceCallable,NonConstructedOverridableCallable,OverridableAccessor,RemoveEventAccessor,SourceDeclarationCallable] remove_Event
+#-----|         2: (Parameters)
+#   59|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   62|   5: [Interface,LeafType,NonNestedType,SourceDeclarationType] Interface2
+#   64|     1: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] Method
+#   65|     2: [ExprOrStmtParent,Indexer,Property] Item
+#-----|       0: (Parameters)
+#   65|         0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] i
+#   65|       2: [CallableOrCFE,Getter,InstanceCallable,NonConstructedOverridableCallable,OverridableAccessor,SourceDeclarationCallable] get_Item
+#-----|         2: (Parameters)
+#   65|           0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] i
+#   65|       3: [CallableOrCFE,InstanceCallable,NonConstructedOverridableCallable,OverridableAccessor,Setter,SourceDeclarationCallable] set_Item
+#-----|         2: (Parameters)
+#   65|           0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] i
+#   65|           1: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   66|     3: [DynamicMember,ExprOrStmtParent,IndexerProperty,InstanceFieldOrProp,InstanceFieldOrProperty,TrivialProperty] Prop
+#   66|       1: [CallableOrCFE,Getter,InstanceCallable,NonConstructedOverridableCallable,OverridableAccessor,SourceDeclarationCallable] get_Prop
+#   66|       2: [CallableOrCFE,InstanceCallable,NonConstructedOverridableCallable,OverridableAccessor,Setter,SourceDeclarationCallable] set_Prop
+#-----|         2: (Parameters)
+#   66|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   67|     4: [DynamicMember,Event] Event
+#   67|       1: [AddEventAccessor,CallableOrCFE,InstanceCallable,NonConstructedOverridableCallable,OverridableAccessor,SourceDeclarationCallable] add_Event
+#-----|         2: (Parameters)
+#   67|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   67|       1: [CallableOrCFE,InstanceCallable,NonConstructedOverridableCallable,OverridableAccessor,RemoveEventAccessor,SourceDeclarationCallable] remove_Event
+#-----|         2: (Parameters)
+#   67|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   71|   6: [Enum,LeafType,NonNestedType,SourceDeclarationType] Enum
+#   73|   7: [Enum,LeafType,NonNestedType,SourceDeclarationType] Enum2
+#   76|   8: [LeafType,NonNestedType,SourceDeclarationType,Struct] Struct
+#   78|   9: [LeafType,NonNestedType,SourceDeclarationType,Struct] Struct2

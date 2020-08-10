@@ -1,0 +1,48 @@
+types.cs:
+#    1| [NamespaceDeclaration] namespace ... { ... }
+#    3|   1: [ArrayElementType,Class,LeafType,NonNestedType,SourceDeclarationType,TypeArgument] Class
+#    5|     2: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] BoolType
+#    6|     3: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] CharType
+#    7|     4: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] DecimalType
+#    8|     5: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] SByteType
+#    9|     6: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] ShortType
+#   10|     7: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] IntType
+#   11|     8: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] LongType
+#   12|     9: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] ByteType
+#   13|     10: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] UShortType
+#   14|     11: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] UIntType
+#   15|     12: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] ULongType
+#   16|     13: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] FloatType
+#   17|     14: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] DoubleType
+#   18|     15: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] NullableType
+#   19|     16: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] VoidType
+#   20|     17: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] ArrayType
+#   21|     18: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] ArrayArrayType
+#   22|     19: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] ConstructedClassType
+#   23|     20: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] ConstructedInterfaceType
+#   24|     21: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] ConstructedStructType
+#   25|     22: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] DelegateType
+#   26|     23: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] PointerType
+#   27|     24: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] PointerPointerType
+#   28|     25: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] Map
+#   29|     26: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] Null
+#   30|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
+#   31|         0: [CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,ReturnStmt] return ...;
+#   31|           0: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,NullLiteral,PostOrderElement,Source,StandardExpr] null
+#   34|   2: [Enum,LeafType,NonNestedType,SourceDeclarationType] Enum
+#   37|   3: [LeafType,NonNestedType,SourceDeclarationType,Struct] Struct
+#   40|   4: [Interface,LeafType,NonNestedType,SourceDeclarationType] Interface
+#   43|   5: [DelegateExtType,DelegateType,LeafType,NonNestedType,SourceDeclarationType] Delegate
+#   44|   6: [GenericType,NonNestedType,SourceDeclarationType,UnboundGenericClass] GenericClass<>
+#-----|     0: (TypeParameters)
+#   44|       0: [LeafType,SourceDeclarationType,TypeArgument,UnconstrainedTypeParameter] T
+#   45|   7: [GenericType,NonNestedType,SourceDeclarationType,UnboundGenericInterface] GenericInterface<>
+#-----|     0: (TypeParameters)
+#   45|       0: [LeafType,SourceDeclarationType,TypeArgument,UnconstrainedTypeParameter] T
+#   46|   8: [GenericType,NonNestedType,SourceDeclarationType,UnboundGenericStruct] GenericStruct<>
+#-----|     0: (TypeParameters)
+#   46|       0: [LeafType,SourceDeclarationType,TypeArgument,UnconstrainedTypeParameter] T
+#   47|   9: [GenericType,NonNestedType,SourceDeclarationType,UnboundGenericClass] Map<,>
+#-----|     0: (TypeParameters)
+#   47|       0: [LeafType,SourceDeclarationType,TypeArgument,UnconstrainedTypeParameter] U
+#   47|       1: [LeafType,SourceDeclarationType,TypeArgument,UnconstrainedTypeParameter] V

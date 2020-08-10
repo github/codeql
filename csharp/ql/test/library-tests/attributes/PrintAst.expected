@@ -1,0 +1,69 @@
+attributes.cs:
+#   10| [Attribute,ExprOrStmtParent] [AssemblyTitle(...)]
+#   10|   0: [BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,Source,StandardExpr,StringLiteral] "C# attributes test"
+#   11| [Attribute,ExprOrStmtParent] [AssemblyDescription(...)]
+#   11|   0: [BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,Source,StandardExpr,StringLiteral] "A test of C# attributes"
+#   12| [Attribute,ExprOrStmtParent] [AssemblyConfiguration(...)]
+#   12|   0: [BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,Source,StandardExpr,StringLiteral] ""
+#   13| [Attribute,ExprOrStmtParent] [AssemblyCompany(...)]
+#   13|   0: [BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,Source,StandardExpr,StringLiteral] "Semmle Plc"
+#   14| [Attribute,ExprOrStmtParent] [AssemblyProduct(...)]
+#   14|   0: [BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,Source,StandardExpr,StringLiteral] "Odasa"
+#   15| [Attribute,ExprOrStmtParent] [AssemblyCopyright(...)]
+#   15|   0: [BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,Source,StandardExpr,StringLiteral] "Copyright � Semmle 2018"
+#   16| [Attribute,ExprOrStmtParent] [AssemblyTrademark(...)]
+#   16|   0: [BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,Source,StandardExpr,StringLiteral] ""
+#   17| [Attribute,ExprOrStmtParent] [AssemblyCulture(...)]
+#   17|   0: [BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,Source,StandardExpr,StringLiteral] ""
+#   22| [Attribute,ExprOrStmtParent] [ComVisible(...)]
+#   22|   0: [BoolLiteral,CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,Source,StandardExpr] false
+#   25| [Attribute,ExprOrStmtParent] [Guid(...)]
+#   25|   0: [BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,Source,StandardExpr,StringLiteral] "2f70fdd6-14aa-4850-b053-d547adb1f476"
+#   37| [Attribute,ExprOrStmtParent] [AssemblyVersion(...)]
+#   37|   0: [BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,Source,StandardExpr,StringLiteral] "1.0.0.0"
+#   38| [Attribute,ExprOrStmtParent] [AssemblyFileVersion(...)]
+#   38|   0: [BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,Source,StandardExpr,StringLiteral] "1.0.0.0"
+#   41| [Class,LeafType,NonNestedType,SourceDeclarationType] Foo
+#-----|   0: (Attributes)
+#   40|     1: [Attribute,ExprOrStmtParent] [AttributeUsage(...)]
+#   40|       0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MemberConstantAccess,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,Source,StandardExpr] access to constant All
+#   40|         -1: [CallableOrCFE,NonFinallyControlFlowElement,SimpleNoNodeExpr,Source,TypeAccess] access to type AttributeTargets
+#   44|   3: [CallableOrCFE,NonConstructedMethod,RuntimeMethod,SourceDeclarationMethod] foo
+#-----|     0: (Attributes)
+#   43|       1: [Attribute,ExprOrStmtParent] [Conditional(...)]
+#   43|         0: [BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,Source,StandardExpr,StringLiteral] "DEBUG2"
+#   44|     4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
+#   47| [Class,LeafType,NonNestedType,SourceDeclarationType] Bar
+#   49|   2: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] inc
+#-----|     2: (Parameters)
+#   49|       0: [ExprOrStmtParent,Parameter,SimpleAssignable,SimpleLocalScopeVariable] x
+#-----|         0: (Attributes)
+#   49|           1: [Attribute,ExprOrStmtParent] [Foo(...)]
+#   49|     4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
+#   49|       0: [CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,ReturnStmt] return ...;
+#   49|         0: [AddExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... + ...
+#   49|           0: [AccessOrCallExpr,CallableOrCFE,NonFinallyControlFlowElement,ParameterRead,PostOrderElement,Source,StandardExpr] access to parameter x
+#   49|           1: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 1
+#   52|   3: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] M1
+#-----|     0: (Attributes)
+#   51|       1: [Attribute,ExprOrStmtParent] [My(...)]
+#   51|         0: [BoolLiteral,CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,Source,StandardExpr] false
+#   52|     4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
+#   55|   4: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] M2
+#-----|     0: (Attributes)
+#   54|       1: [Attribute,ExprOrStmtParent] [My(...)]
+#   54|         0: [BoolLiteral,CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,Source,StandardExpr] true
+#   54|         1: [BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,Source,StandardExpr,StringLiteral] ""
+#   54|         2: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,SignedIntegralConstantExpr,Source,StandardExpr] 0
+#   55|     4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
+#   58| [Class,LeafType,NonNestedType,SourceDeclarationType] MyAttribute
+#   60|   1: [DynamicMember,ExprOrStmtParent,Field,InstanceFieldOrProp,InstanceFieldOrProperty] x
+#   61|   2: [DynamicMember,ExprOrStmtParent,IndexerProperty,InstanceFieldOrProp,InstanceFieldOrProperty,TrivialProperty] y
+#   61|     1: [CallableOrCFE,Getter,InstanceCallable,RuntimeInstanceAccessor,SourceDeclarationCallable] get_y
+#   61|     2: [CallableOrCFE,InstanceCallable,RuntimeInstanceAccessor,Setter,SourceDeclarationCallable] set_y
+#-----|       2: (Parameters)
+#   61|         0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
+#   62|   3: [CallableOrCFE,InstanceConstructor,RuntimeCallable,SourceDeclarationCallable] MyAttribute
+#-----|     2: (Parameters)
+#   62|       0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] b
+#   62|     4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}

@@ -1,0 +1,188 @@
+fields.cs:
+#    5| [NamespaceDeclaration] namespace ... { ... }
+#    7|   1: [Class,LeafType,NonNestedType,SourceDeclarationType] A
+#   10|     3: [DynamicMember,ExprOrStmtParent,Field,FieldOrProp,FieldOrProperty] X
+#   10|       1: [AssignExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
+#   10|         0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,PreBasicBlock,SameSplitsBlock,SignedIntegralConstantExpr,Source,StandardExpr] 1
+#   10|         1: [AccessOrCallExpr,CallableOrCFE,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to field X
+#   10|     4: [DynamicMember,ExprOrStmtParent,Field,FieldOrProp,FieldOrProperty] Y
+#   10|     5: [DynamicMember,ExprOrStmtParent,Field,FieldOrProp,FieldOrProperty] Z
+#   10|       1: [AssignExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
+#   10|         0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,PreBasicBlock,SameSplitsBlock,SignedIntegralConstantExpr,Source,StandardExpr] 100
+#   10|         1: [AccessOrCallExpr,CallableOrCFE,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to field Z
+#   13|   2: [Class,LeafType,NonNestedType,SourceDeclarationType] B
+#   15|     3: [DynamicMember,ExprOrStmtParent,Field,FieldOrProp,FieldOrProperty] X
+#   15|       1: [AssignExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
+#   15|         0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,PreBasicBlock,SameSplitsBlock,SignedIntegralConstantExpr,Source,StandardExpr] 1
+#   15|         1: [AccessOrCallExpr,CallableOrCFE,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to field X
+#   16|     4: [DynamicMember,ExprOrStmtParent,Field,FieldOrProp,FieldOrProperty] Y
+#   17|     5: [DynamicMember,ExprOrStmtParent,Field,FieldOrProp,FieldOrProperty] Z
+#   17|       1: [AssignExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
+#   17|         0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,PreBasicBlock,SameSplitsBlock,SignedIntegralConstantExpr,Source,StandardExpr] 100
+#   17|         1: [AccessOrCallExpr,CallableOrCFE,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to field Z
+#   20|   3: [GenericType,NonNestedType,SourceDeclarationType,UnboundGenericClass] C<>
+#-----|     0: (TypeParameters)
+#   20|       0: [LeafType,SourceDeclarationType,TypeArgument,UnconstrainedTypeParameter] V
+#   23|     3: [DynamicMember,ExprOrStmtParent,Field,FieldOrProp,FieldOrProperty] count
+#   23|       1: [AssignExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
+#   23|         0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,PreBasicBlock,SameSplitsBlock,SignedIntegralConstantExpr,Source,StandardExpr] 0
+#   23|         1: [AccessOrCallExpr,CallableOrCFE,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to field count
+#   25|     4: [CallableOrCFE,InstanceConstructor,RuntimeCallable,SourceDeclarationCallable] C
+#   25|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
+#   25|         0: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
+#   25|           0: [CallableOrCFE,NonFinallyControlFlowElement,Overflowable,PostIncrExpr,PostOrderElement,Source,StandardExpr] ...++
+#   25|             0: [AccessOrCallExpr,CallableOrCFE,FieldOrPropRead,FieldOrPropertyRead,FieldRead,FieldWrite,NonFinallyControlFlowElement,PostOrderElement,StandardExpr] access to field count
+#   27|     5: [DynamicMember,ExprOrStmtParent,FieldOrProp,FieldOrProperty,Property] Count
+#   27|       1: [CallableOrCFE,Getter,RuntimeAccessor,SourceDeclarationCallable] get_Count
+#   27|         4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
+#   27|           0: [CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,ReturnStmt] return ...;
+#   27|             0: [AccessOrCallExpr,CallableOrCFE,FieldOrPropRead,FieldOrPropertyRead,FieldRead,NonFinallyControlFlowElement,PostOrderElement,StandardExpr] access to field count
+#   31|   4: [Class,LeafType,NonNestedType,SourceDeclarationType] Application
+#   34|     3: [DynamicMember,ExprOrStmtParent,Field,FieldOrProp,FieldOrProperty] finished
+#   35|     4: [DynamicMember,ExprOrStmtParent,Field,FieldOrProp,FieldOrProperty] x
+#   35|       1: [AssignExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
+#   35|         0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method Sqrt
+#   35|           -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,SimpleNoNodeExpr,Sink,Source,TypeAccess] access to type Math
+#   35|           0: [Argument,CallableOrCFE,DoubleLiteral,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,PreBasicBlock,SameSplitsBlock,Sink,Source,StandardExpr] 2
+#   35|         1: [AccessOrCallExpr,CallableOrCFE,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to field x
+#   36|     5: [DynamicMember,ExprOrStmtParent,Field,InitializedInstanceMember,InstanceFieldOrProp,InstanceFieldOrProperty] i
+#   36|       1: [AssignExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
+#   36|         0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 100
+#   36|         1: [AccessOrCallExpr,CallableOrCFE,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,NonFinallyControlFlowElement,QualifiedWriteAccess,Source] access to field i
+#   36|           -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,PreBasicBlock,SameSplitsBlock,Source,StandardExpr,ThisAccess] this access
+#   37|     6: [DynamicMember,ExprOrStmtParent,Field,InitializedInstanceMember,InstanceFieldOrProp,InstanceFieldOrProperty] s
+#   37|       1: [AssignExpr,BarrierGuard,CallableOrCFE,CollectionExpr,ControlFlowScope,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
+#   37|         0: [BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,StringLiteral] "Hello"
+#   37|         1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,NonFinallyControlFlowElement,QualifiedWriteAccess,Source] access to field s
+#   37|           -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,ThisAccess] this access
+#   39|     7: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] Main
+#   40|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
+#   41|         0: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
+#   41|           0: [CallableOrCFE,ControlFlowScope,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] Decimal d = ...
+#   41|             0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MemberConstantAccess,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] access to constant MaxValue
+#   41|               -1: [CallableOrCFE,NonFinallyControlFlowElement,SimpleNoNodeExpr,Source,TypeAccess] access to type Decimal
+#   41|             1: [AccessOrCallExpr,CallableOrCFE,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable d
+#   42|         1: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
+#   42|           0: [CallableOrCFE,ControlFlowScope,DereferenceableExpr,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] C<Int32> x1 = ...
+#   42|             0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,Source] object creation of type C<Int32>
+#   42|             1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable x1
+#   43|         2: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
+#   43|           0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method WriteLine
+#   43|             -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,SimpleNoNodeExpr,Sink,Source,TypeAccess] access to type Console
+#   43|             0: [AccessOrCallExpr,Argument,CallableOrCFE,FieldOrPropRead,FieldOrPropertyRead,MethodCallArg,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,PropertyCall,PropertyRead,Sink,Source,StandardExpr,StatOrDynAccessorCall] access to property Count
+#   43|               -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,SimpleNoNodeExpr,Sink,Source,TypeAccess] access to type C<Int32>
+#   44|         3: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
+#   44|           0: [CallableOrCFE,ControlFlowScope,DereferenceableExpr,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] C<Double> x2 = ...
+#   44|             0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,Source] object creation of type C<Double>
+#   44|             1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable x2
+#   45|         4: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
+#   45|           0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method WriteLine
+#   45|             -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,SimpleNoNodeExpr,Sink,Source,TypeAccess] access to type Console
+#   45|             0: [AccessOrCallExpr,Argument,CallableOrCFE,FieldOrPropRead,FieldOrPropertyRead,MethodCallArg,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,PropertyCall,PropertyRead,Sink,Source,StandardExpr,StatOrDynAccessorCall] access to property Count
+#   45|               -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,SimpleNoNodeExpr,Sink,Source,TypeAccess] access to type C<Int32>
+#   50|   5: [Class,LeafType,NonNestedType,SourceDeclarationType] Color
+#   53|     2: [DynamicMember,ExprOrStmtParent,Field,FieldOrProp,FieldOrProperty] Black
+#   53|       1: [AssignExpr,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
+#   53|         0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,Source] object creation of type Color
+#   53|           0: [Argument,CallableOrCFE,CastExpr,ControlFlowScope,ImplicitCast,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr] (...) ...
+#   53|             0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,PreBasicBlock,SameSplitsBlock,SignedIntegralConstantExpr,Source,StandardExpr] 0
+#   53|           1: [Argument,CallableOrCFE,CastExpr,ControlFlowScope,ImplicitCast,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr] (...) ...
+#   53|             0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 0
+#   53|           2: [Argument,CallableOrCFE,CastExpr,ControlFlowScope,ImplicitCast,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr] (...) ...
+#   53|             0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 0
+#   53|         1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to field Black
+#   54|     3: [DynamicMember,ExprOrStmtParent,Field,FieldOrProp,FieldOrProperty] White
+#   54|       1: [AssignExpr,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
+#   54|         0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,Source] object creation of type Color
+#   54|           0: [Argument,CallableOrCFE,CastExpr,ControlFlowScope,ImplicitCast,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr] (...) ...
+#   54|             0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,PreBasicBlock,SameSplitsBlock,SignedIntegralConstantExpr,Source,StandardExpr] 255
+#   54|           1: [Argument,CallableOrCFE,CastExpr,ControlFlowScope,ImplicitCast,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr] (...) ...
+#   54|             0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 255
+#   54|           2: [Argument,CallableOrCFE,CastExpr,ControlFlowScope,ImplicitCast,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr] (...) ...
+#   54|             0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 255
+#   54|         1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to field White
+#   56|     4: [CallableOrCFE,InstanceConstructor,RuntimeCallable,SourceDeclarationCallable] Color
+#-----|       2: (Parameters)
+#   56|         0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] r
+#   56|         1: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] g
+#   56|         2: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] b
+#   56|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
+#   60|   6: [Class,LeafType,NonNestedType,SourceDeclarationType] TestBindings
+#   63|     3: [DynamicMember,ExprOrStmtParent,Field,FieldOrProp,FieldOrProperty] a
+#   63|       1: [AssignExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
+#   63|         0: [AddExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... + ...
+#   63|           0: [AccessOrCallExpr,CallableOrCFE,FieldOrPropRead,FieldOrPropertyRead,FieldRead,NonFinallyControlFlowElement,PostOrderElement,PreBasicBlock,SameSplitsBlock,StandardExpr] access to field b
+#   63|           1: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 1
+#   63|         1: [AccessOrCallExpr,CallableOrCFE,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to field a
+#   64|     4: [DynamicMember,ExprOrStmtParent,Field,FieldOrProp,FieldOrProperty] b
+#   64|       1: [AssignExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
+#   64|         0: [AddExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... + ...
+#   64|           0: [AccessOrCallExpr,CallableOrCFE,FieldOrPropRead,FieldOrPropertyRead,FieldRead,NonFinallyControlFlowElement,PostOrderElement,PreBasicBlock,SameSplitsBlock,StandardExpr] access to field a
+#   64|           1: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 1
+#   64|         1: [AccessOrCallExpr,CallableOrCFE,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to field b
+#   70| [NamespaceDeclaration] namespace ... { ... }
+#   72|   1: [Class,LeafType,NonNestedType,SourceDeclarationType] A
+#   74|     2: [DynamicMember,ExprOrStmtParent,FieldOrProp,FieldOrProperty,MemberConstant] X
+#   74|       1: [AssignExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
+#   74|         0: [AddExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] ... + ...
+#   74|           0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MemberConstantAccess,NonFinallyControlFlowElement,PostOrderElement,PreBasicBlock,SameSplitsBlock,SignedIntegralConstantExpr,StandardExpr] access to constant Z
+#   74|             -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,SimpleNoNodeExpr,Source,TypeAccess] access to type B
+#   74|           1: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 1
+#   74|         1: [AccessOrCallExpr,CallableOrCFE,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,MemberConstantAccess,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to constant X
+#   75|     3: [DynamicMember,ExprOrStmtParent,FieldOrProp,FieldOrProperty,MemberConstant] Y
+#   75|       1: [AssignExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
+#   75|         0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,PreBasicBlock,SameSplitsBlock,SignedIntegralConstantExpr,Source,StandardExpr] 10
+#   75|         1: [AccessOrCallExpr,CallableOrCFE,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,MemberConstantAccess,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to constant Y
+#   78|   2: [Class,LeafType,NonNestedType,SourceDeclarationType] B
+#   80|     2: [DynamicMember,ExprOrStmtParent,FieldOrProp,FieldOrProperty,MemberConstant] Z
+#   80|       1: [AssignExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
+#   80|         0: [AddExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] ... + ...
+#   80|           0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MemberConstantAccess,NonFinallyControlFlowElement,PostOrderElement,PreBasicBlock,SameSplitsBlock,SignedIntegralConstantExpr,StandardExpr] access to constant Y
+#   80|             -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,SimpleNoNodeExpr,Source,TypeAccess] access to type A
+#   80|           1: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 1
+#   80|         1: [AccessOrCallExpr,CallableOrCFE,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,MemberConstantAccess,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to constant Z
+#   83|   3: [Class,LeafType,NonNestedType,SourceDeclarationType] C
+#   85|     1: [DynamicMember,ExprOrStmtParent,FieldOrProp,FieldOrProperty,MemberConstant] Foo
+#   85|       1: [AssignExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
+#   85|         0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,PreBasicBlock,SameSplitsBlock,SignedIntegralConstantExpr,Source,StandardExpr] 1
+#   85|         1: [AccessOrCallExpr,CallableOrCFE,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,MemberConstantAccess,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to constant Foo
+#   86|     2: [DynamicMember,ExprOrStmtParent,Field,InstanceFieldOrProp,InstanceFieldOrProperty] x
+#   87|     3: [CallableOrCFE,InstanceConstructor,RuntimeCallable,SourceDeclarationCallable] C
+#   88|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
+#   89|         0: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
+#   89|           0: [AssignExpr,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
+#   89|             0: [BarrierGuard,CallableOrCFE,CastExpr,ControlFlowScope,DereferenceableExpr,ImplicitCast,NonFinallyControlFlowElement,PostOrderElement,StandardExpr] (...) ...
+#   89|               0: [AccessOrCallExpr,CallableOrCFE,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MemberConstantAccess,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,StandardExpr] access to constant Foo
+#   89|             1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,NonFinallyControlFlowElement,QualifiedWriteAccess,Source] access to field x
+#   89|               -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,ThisAccess] this access
+#   90|         1: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
+#   90|           0: [CallableOrCFE,ControlFlowScope,DereferenceableExpr,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] dynamic dyn = ...
+#   90|             0: [BarrierGuard,CallableOrCFE,CastExpr,ControlFlowScope,DereferenceableExpr,ImplicitCast,NonFinallyControlFlowElement,PostOrderElement,StandardExpr] (...) ...
+#   90|               0: [AccessOrCallExpr,CallableOrCFE,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MemberConstantAccess,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,StandardExpr] access to constant Foo
+#   90|             1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable dyn
+#   91|         2: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
+#   91|           0: [CallableOrCFE,ControlFlowScope,DereferenceableExpr,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] D d = ...
+#   91|             0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,OperatorCall,PostOrderElement,Source,StandardExpr] call to operator implicit conversion
+#   91|               0: [AccessOrCallExpr,Argument,CallableOrCFE,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MemberConstantAccess,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Sink,StandardExpr] access to constant Foo
+#   91|             1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable d
+#   92|         3: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
+#   92|           0: [CallableOrCFE,ControlFlowScope,DereferenceableExpr,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] C c = ...
+#   92|             0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,Source] object creation of type C
+#   92|               -1: [BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonFinallyControlFlowElement,ObjectInitializer,PostOrderElement,Source,StandardExpr] { ..., ... }
+#   92|                 0: [BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,MemberInitializer,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
+#   92|                   0: [BarrierGuard,CallableOrCFE,CastExpr,ControlFlowScope,DereferenceableExpr,ImplicitCast,NonFinallyControlFlowElement,PostOrderElement,StandardExpr] (...) ...
+#   92|                     0: [AccessOrCallExpr,CallableOrCFE,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MemberConstantAccess,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,StandardExpr] access to constant Foo
+#   92|                   1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,NonFinallyControlFlowElement,QualifiedWriteAccess,Source,WriteAccessNoNodeExpr] access to field x
+#   92|             1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable c
+#   96|   4: [Class,LeafType,NonNestedType,SourceDeclarationType] D
+#   98|     1: [CallableOrCFE,InstanceConstructor,RuntimeCallable,SourceDeclarationCallable] D
+#-----|       2: (Parameters)
+#   98|         0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] d
+#   99|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
+#  101|     2: [CallableOrCFE,ImplicitConversionOperator,RuntimeOperator,SourceDeclarationCallable] implicit conversion
+#-----|       2: (Parameters)
+#  101|         0: [ExprOrStmtParent,Parameter,SimpleAssignable,SimpleLocalScopeVariable] d
+#  101|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
+#  101|         0: [CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,ReturnStmt] return ...;
+#  101|           0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,Source] object creation of type D
+#  101|             0: [AccessOrCallExpr,Argument,CallableOrCFE,NonFinallyControlFlowElement,ParameterRead,PostOrderElement,Sink,Source,StandardExpr] access to parameter d
