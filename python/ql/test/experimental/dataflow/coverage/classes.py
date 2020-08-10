@@ -1253,17 +1253,17 @@ def test_exit():
   with With_exit():
     pass
 
-# # 3.4.1. Awaitable Objects
-# # object.__await__(self)
-# class With_await:
+# 3.4.1. Awaitable Objects
+# object.__await__(self)
+class With_await:
 
-#   def __await__(self):
-#     OK()
-#     return "" # edit to match type
+  def __await__(self):
+    OK()
+    return (yield from asyncio.coroutine(lambda: "")())
 
-# async def test_await():
-#   with_await = With_await()
-#   await(with_await) # edit to effect call
+async def atest_await():
+  with_await = With_await()
+  await(with_await)
 
 
 # # 3.4.2. Coroutine Objects
