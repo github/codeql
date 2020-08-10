@@ -507,6 +507,52 @@
 | stl.cpp:315:21:315:27 | const_v | stl.cpp:315:21:315:21 | (__range) |  |
 | stl.cpp:315:21:315:27 | const_v | stl.cpp:315:21:315:21 | (__range) |  |
 | stl.cpp:315:21:315:27 | const_v | stl.cpp:315:21:315:21 | call to operator* | TAINT |
+| stl.cpp:322:18:322:24 | hello | stl.cpp:322:18:322:25 | call to basic_string | TAINT |
+| stl.cpp:322:18:322:25 | call to basic_string | stl.cpp:325:8:325:9 | s1 |  |
+| stl.cpp:322:18:322:25 | call to basic_string | stl.cpp:325:13:325:14 | s1 |  |
+| stl.cpp:322:18:322:25 | call to basic_string | stl.cpp:326:8:326:9 | s1 |  |
+| stl.cpp:322:18:322:25 | call to basic_string | stl.cpp:327:13:327:14 | s1 |  |
+| stl.cpp:322:18:322:25 | call to basic_string | stl.cpp:330:8:330:9 | s1 |  |
+| stl.cpp:322:18:322:25 | call to basic_string | stl.cpp:331:8:331:9 | s1 |  |
+| stl.cpp:323:18:323:23 | call to source | stl.cpp:323:18:323:26 | call to basic_string | TAINT |
+| stl.cpp:323:18:323:26 | call to basic_string | stl.cpp:326:13:326:14 | s2 |  |
+| stl.cpp:323:18:323:26 | call to basic_string | stl.cpp:327:8:327:9 | s2 |  |
+| stl.cpp:323:18:323:26 | call to basic_string | stl.cpp:328:8:328:9 | s2 |  |
+| stl.cpp:323:18:323:26 | call to basic_string | stl.cpp:328:13:328:14 | s2 |  |
+| stl.cpp:335:18:335:22 | abc | stl.cpp:335:18:335:23 | call to basic_string | TAINT |
+| stl.cpp:335:18:335:23 | call to basic_string | stl.cpp:339:8:339:9 | s3 |  |
+| stl.cpp:335:18:335:23 | call to basic_string | stl.cpp:342:8:342:9 | s3 |  |
+| stl.cpp:335:18:335:23 | call to basic_string | stl.cpp:346:8:346:9 | s3 |  |
+| stl.cpp:335:18:335:23 | call to basic_string | stl.cpp:351:8:351:9 | s3 |  |
+| stl.cpp:335:18:335:23 | call to basic_string | stl.cpp:355:8:355:9 | s3 |  |
+| stl.cpp:336:18:336:23 | call to source | stl.cpp:336:18:336:26 | call to basic_string | TAINT |
+| stl.cpp:336:18:336:26 | call to basic_string | stl.cpp:339:13:339:14 | s4 |  |
+| stl.cpp:336:18:336:26 | call to basic_string | stl.cpp:343:9:343:10 | s4 |  |
+| stl.cpp:336:18:336:26 | call to basic_string | stl.cpp:352:13:352:14 | s4 |  |
+| stl.cpp:339:11:339:11 | call to operator+ | stl.cpp:339:3:339:14 | ... = ... |  |
+| stl.cpp:339:11:339:11 | call to operator+ | stl.cpp:340:8:340:9 | s5 |  |
+| stl.cpp:342:8:342:9 | s3 | stl.cpp:342:3:342:9 | ... = ... |  |
+| stl.cpp:342:8:342:9 | s3 | stl.cpp:343:3:343:4 | s6 |  |
+| stl.cpp:342:8:342:9 | s3 | stl.cpp:344:8:344:9 | s6 |  |
+| stl.cpp:343:3:343:4 | ref arg s6 | stl.cpp:344:8:344:9 | s6 |  |
+| stl.cpp:346:8:346:9 | s3 | stl.cpp:346:3:346:9 | ... = ... |  |
+| stl.cpp:346:8:346:9 | s3 | stl.cpp:347:3:347:4 | s7 |  |
+| stl.cpp:346:8:346:9 | s3 | stl.cpp:348:3:348:4 | s7 |  |
+| stl.cpp:346:8:346:9 | s3 | stl.cpp:349:8:349:9 | s7 |  |
+| stl.cpp:347:3:347:4 | ref arg s7 | stl.cpp:348:3:348:4 | s7 |  |
+| stl.cpp:347:3:347:4 | ref arg s7 | stl.cpp:349:8:349:9 | s7 |  |
+| stl.cpp:348:3:348:4 | ref arg s7 | stl.cpp:349:8:349:9 | s7 |  |
+| stl.cpp:351:8:351:9 | s3 | stl.cpp:351:3:351:9 | ... = ... |  |
+| stl.cpp:351:8:351:9 | s3 | stl.cpp:352:3:352:4 | s8 |  |
+| stl.cpp:351:8:351:9 | s3 | stl.cpp:353:8:353:9 | s8 |  |
+| stl.cpp:352:3:352:4 | ref arg s8 | stl.cpp:353:8:353:9 | s8 |  |
+| stl.cpp:355:8:355:9 | s3 | stl.cpp:355:3:355:9 | ... = ... |  |
+| stl.cpp:355:8:355:9 | s3 | stl.cpp:356:3:356:4 | s9 |  |
+| stl.cpp:355:8:355:9 | s3 | stl.cpp:357:3:357:4 | s9 |  |
+| stl.cpp:355:8:355:9 | s3 | stl.cpp:358:8:358:9 | s9 |  |
+| stl.cpp:356:3:356:4 | ref arg s9 | stl.cpp:357:3:357:4 | s9 |  |
+| stl.cpp:356:3:356:4 | ref arg s9 | stl.cpp:358:8:358:9 | s9 |  |
+| stl.cpp:357:3:357:4 | ref arg s9 | stl.cpp:358:8:358:9 | s9 |  |
 | structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
 | structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
 | structlikeclass.cpp:5:7:5:7 | this | structlikeclass.cpp:5:7:5:7 | constructor init of field v [pre-this] |  |

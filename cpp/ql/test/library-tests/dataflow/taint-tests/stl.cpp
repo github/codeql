@@ -316,3 +316,45 @@ void test_range_based_for_loop_vector(int source1) {
 		sink(x); // tainted [NOT DETECTED by IR]
 	}
 }
+
+void test_string_append() {
+	{
+		std::string s1("hello");
+		std::string s2(source());
+
+		sink(s1 + s1);
+		sink(s1 + s2); // tainted [NOT DETECTED]
+		sink(s2 + s1); // tainted [NOT DETECTED]
+		sink(s2 + s2); // tainted [NOT DETECTED]
+	
+		sink(s1 + " world");
+		sink(s1 + source()); // tainted [NOT DETECTED]
+	}
+
+	{
+		std::string s3("abc");
+		std::string s4(source());
+		std::string s5, s6, s7, s8, s9;
+
+		s5 = s3 + s4;
+		sink(s5); // tainted [NOT DETECTED]
+
+		s6 = s3;
+		s6 += s4;
+		sink(s6); // tainted [NOT DETECTED]
+
+		s7 = s3;
+		s7 += source();
+		s7 += " ";
+		sink(s7); // tainted [NOT DETECTED]
+
+		s8 = s3;
+		s8.append(s4);
+		sink(s8); // tainted [NOT DETECTED]
+
+		s9 = s3;
+		s9.append(source());
+		s9.append(" ");
+		sink(s9); // tainted [NOT DETECTED]
+	}
+}
