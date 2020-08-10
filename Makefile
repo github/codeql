@@ -107,6 +107,7 @@ ql/src/go.dbscheme.stats: ql/src/go.dbscheme build/stats/src.stamp extractor
 
 test: all build/testdb/check-upgrade-path
 	codeql test run ql/test --search-path .
+	env GOARCH=386 codeql$(EXE) test run ql/test/query-tests/Security/CWE-681 --search-path .
 	cd extractor; go test -mod=vendor ./... | grep -vF "[no test files]"
 
 .PHONY: build/testdb/check-upgrade-path

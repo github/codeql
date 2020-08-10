@@ -29,6 +29,19 @@ float getMaxIntValue(int bitSize, boolean isSigned) {
 }
 
 /**
+ * Get the size of `int` or `uint` in `file`, or 0 if it is
+ * architecture-specific.
+ */
+int getIntTypeBitSize(File file) {
+  if file.hasConstrainedIntBitSize(32)
+  then result = 32
+  else
+    if file.hasConstrainedIntBitSize(64)
+    then result = 64
+    else result = 0
+}
+
+/**
  * Holds if converting from an integer types with size `sourceBitSize` to
  * one with size `sinkBitSize` can produce unexpected values, where 0 means
  * architecture-dependent.
@@ -74,7 +87,9 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
   int getSourceBitSize() { result = sourceBitSize }
 
   override predicate isSource(DataFlow::Node source) {
-    exists(DataFlow::CallNode c, IntegerParser::Range ip, int bitSize |
+    exists(
+      DataFlow::CallNode c, IntegerParser::Range ip, int apparentBitSize, int effectiveBitSize
+    |
       c.getTarget() = ip and source = c.getResult(0)
     |
       (
@@ -83,20 +98,25 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
         else sourceIsSigned = false
       ) and
       (
-        bitSize = ip.getTargetBitSize()
+        apparentBitSize = ip.getTargetBitSize()
         or
         // If we are reading a variable, check if it is
         // `strconv.IntSize`, and use 0 if it is.
         exists(DataFlow::Node rawBitSize | rawBitSize = ip.getTargetBitSizeInput().getNode(c) |
           if rawBitSize = any(StrConv::IntSize intSize).getARead()
-          then bitSize = 0
-          else bitSize = rawBitSize.getIntValue()
+          then apparentBitSize = 0
+          else apparentBitSize = rawBitSize.getIntValue()
         )
       ) and
-      // `bitSize` could be any value between 0 and 64, but we can round
-      // it up to the nearest size of an integer type without changing
-      // behaviour.
-      sourceBitSize = min(int b | b in [0, 8, 16, 32, 64] and b >= bitSize)
+      (
+        if apparentBitSize = 0
+        then effectiveBitSize = getIntTypeBitSize(source.getFile())
+        else effectiveBitSize = apparentBitSize
+      ) and
+      // `effectiveBitSize` could be any value between 0 and 64, but we
+      // can round it up to the nearest size of an integer type without
+      // changing behaviour.
+      sourceBitSize = min(int b | b in [0, 8, 16, 32, 64] and b >= effectiveBitSize)
     )
   }
 
@@ -111,7 +131,7 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
       bitSize = integerType.getSize()
       or
       not exists(integerType.getSize()) and
-      bitSize = 0
+      bitSize = getIntTypeBitSize(sink.getFile())
     ) and
     not exists(ShrExpr shrExpr |
       shrExpr.getLeftOperand().getGlobalValueNumber() =
@@ -161,10 +181,17 @@ class UpperBoundCheckGuard extends DataFlow::BarrierGuard, DataFlow::RelationalC
 }
 
 /** Gets a string describing the size of the integer parsed. */
-string describeBitSize(int bitSize) {
+string describeBitSize(int bitSize, int intTypeBitSize) {
+  intTypeBitSize in [0, 32, 64] and
   if bitSize != 0
   then bitSize in [8, 16, 32, 64] and result = "a " + bitSize + "-bit integer"
-  else result = "an integer with architecture-dependent bit size"
+  else
+    if intTypeBitSize = 0
+    then result = "an integer with architecture-dependent bit size"
+    else
+      result =
+        "a number with architecture-dependent bit-width, which is constrained to be " +
+          intTypeBitSize + "-bit by build constraints,"
 }
 
 from
@@ -172,6 +199,7 @@ from
   DataFlow::CallNode call
 where cfg.hasFlowPath(source, sink) and call.getResult(0) = source.getNode()
 select source.getNode(), source, sink,
-  "Incorrect conversion of " + describeBitSize(cfg.getSourceBitSize()) + " from " +
-    call.getTarget().getQualifiedName() + " to a lower bit size type " +
+  "Incorrect conversion of " +
+    describeBitSize(cfg.getSourceBitSize(), getIntTypeBitSize(source.getNode().getFile())) +
+    " from " + call.getTarget().getQualifiedName() + " to a lower bit size type " +
     sink.getNode().getType().getUnderlyingType().getName() + " without an upper bound check."

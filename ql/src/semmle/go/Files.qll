@@ -203,6 +203,57 @@ class File extends Container, @file, Documentable, ExprParent, GoModExprParent, 
   pragma[noinline]
   predicate hasBuildConstraints() { exists(BuildConstraintComment bc | this = bc.getFile()) }
 
+  /**
+   * Gets an architecture that is valid in a build constraint with bit
+   * size `bitSize`.
+   *
+   * Information obtained from
+   * https://github.com/golang/go/blob/98cbf45cfc6a5a50cc6ac2367f9572cb198b57c7/src/go/types/gccgosizes.go
+   * where the first field of the struct is 4 for 32-bit architectures
+   * and 8 for 64-bit architectures.
+   */
+  private string getAnArchitecture(int bitSize) {
+    bitSize = 32 and
+    result in ["386", "amd64p32", "arm", "armbe", "mips", "mipsle", "mips64p32", "mips64p32le",
+          "ppc", "s390", "sparc"]
+    or
+    bitSize = 64 and
+    result in ["amd64", "arm64", "arm64be", "ppc64", "ppc64le", "mips64", "mips64le", "s390x",
+          "sparc64"]
+  }
+
+  /**
+   * Holds if this file contains build constraints that ensure that it
+   * is only built on architectures of bit size `bitSize`.
+   */
+  predicate hasConstrainedIntBitSize(int bitSize) {
+    hasExplicitBuildConstraintsForArchitectures(bitSize) or
+    hasImplicitBuildConstraintForAnArchitecture(bitSize)
+  }
+
+  /**
+   * Holds if this file contains explicit build constraints that ensure
+   * that it is only built on an architecture of bit size `bitSize`.
+   */
+  predicate hasExplicitBuildConstraintsForArchitectures(int bitSize) {
+    exists(BuildConstraintComment bcc, string bc |
+      this = bcc.getFile() and bc = bcc.getText().splitAt("+build ", 1)
+    |
+      forex(string disjunct | disjunct = bc.splitAt(" ") |
+        disjunct.splitAt(",").matches(getAnArchitecture(bitSize))
+      )
+    )
+  }
+
+  /**
+   * Holds if this file has a name which acts as an implicit build
+   * constraint that ensures that it is only built on an
+   * architecture of bit size `bitSize`.
+   */
+  predicate hasImplicitBuildConstraintForAnArchitecture(int bitSize) {
+    this.getStem().regexpMatch(".*_" + getAnArchitecture(bitSize) + "(_test)?")
+  }
+
   override string toString() { result = Container.super.toString() }
 
   /** Gets the URL of this file. */
