@@ -14,7 +14,7 @@
 </recommendation>
 
 <example>
-<p>The following example demonstrates safe and unsafe uses of scanf type functions.</p>
+<p>The following example demonstrates safe and unsafe uses of <code>scanf</code> type functions.</p>
 <sample src="MemoryUnsafeFunctionScan.cpp" />
 
 </example>
