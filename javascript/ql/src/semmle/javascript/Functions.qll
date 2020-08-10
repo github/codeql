@@ -77,6 +77,13 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
     result = getDocumentation().getATagByTitle("this").getType()
   }
 
+  /**
+   * DEPRECATED: Use `getIdentifier()` instead.
+   *
+   * Gets the identifier specifying the name of this function, if any.
+   */
+  VarDecl getId() { result = getIdentifier() }
+
   /** Gets the identifier specifying the name of this function, if any. */
   VarDecl getIdentifier() { result = getChildExpr(-1) }
 
