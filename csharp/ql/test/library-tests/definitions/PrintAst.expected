@@ -1,407 +1,407 @@
 definitions.cs:
 #    4| [NamespaceDeclaration] namespace ... { ... }
-#    6|   1: [Class,LeafType,NonNestedType,SourceDeclarationType] StaticClass
-#    8|     1: [CallableOrCFE,ExtensionMethod,NonConstructedMethod,RuntimeMethod,SourceDeclarationMethod] ExtensionMethod
+#    6|   1: [Class] StaticClass
+#    8|     1: [ExtensionMethod] ExtensionMethod
 #-----|       2: (Parameters)
-#    8|         0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] c1
-#    8|         1: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] args
-#    9|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   13|   2: [Enum,LeafType,NonNestedType,SourceDeclarationType] Enumeration
-#   15|     2: [DynamicMember,EnumConstant,ExprOrStmtParent,FieldOrProp,FieldOrProperty] e1
-#   15|       1: [AccessOrCallExpr,CallableOrCFE,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MemberConstantAccess,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,Source,StandardExpr] access to constant e1
-#   15|     3: [DynamicMember,EnumConstant,ExprOrStmtParent,FieldOrProp,FieldOrProperty] e2
-#   15|       1: [AccessOrCallExpr,CallableOrCFE,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MemberConstantAccess,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,Source,StandardExpr] access to constant e2
-#   15|     4: [DynamicMember,EnumConstant,ExprOrStmtParent,FieldOrProp,FieldOrProperty] e3
-#   18|   3: [ArrayElementType,Class,LeafType,NonNestedType,SourceDeclarationType,TypeArgument] C1
-#   20|     1: [CallableOrCFE,InstanceConstructor,RuntimeCallable,SourceDeclarationCallable] C1
+#    8|         0: [Parameter] c1
+#    8|         1: [Parameter] args
+#    9|       4: [BlockStmt] {...}
+#   13|   2: [Enum] Enumeration
+#   15|     2: [Field] e1
+#   15|       1: [MemberConstantAccess] access to constant e1
+#   15|     3: [Field] e2
+#   15|       1: [MemberConstantAccess] access to constant e2
+#   15|     4: [Field] e3
+#   18|   3: [Class] C1
+#   20|     1: [InstanceConstructor] C1
 #-----|       2: (Parameters)
-#   20|         0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] args
-#   20|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   22|     2: [DynamicMember,ExprOrStmtParent,Field,InstanceFieldOrProp,InstanceFieldOrProperty,SimpleAssignable] field1
-#   24|     3: [DynamicMember,ExprOrStmtParent,InstanceFieldOrProp,InstanceFieldOrProperty,TrivialProperty] property1
-#   26|       1: [CallableOrCFE,Getter,InstanceCallable,RuntimeInstanceAccessor,SourceDeclarationCallable] get_property1
-#   26|         4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   26|           0: [CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,ReturnStmt] return ...;
-#   26|             0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,FieldOrPropRead,FieldOrPropertyRead,FieldRead,NonFinallyControlFlowElement,PostOrderElement,StandardExpr] access to field field1
-#   26|               -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,ThisAccess] this access
-#   27|       2: [CallableOrCFE,InstanceCallable,RuntimeInstanceAccessor,Setter,SourceDeclarationCallable] set_property1
+#   20|         0: [Parameter] args
+#   20|       4: [BlockStmt] {...}
+#   22|     2: [Field] field1
+#   24|     3: [Property] property1
+#   26|       1: [Getter] get_property1
+#   26|         4: [BlockStmt] {...}
+#   26|           0: [ReturnStmt] return ...;
+#   26|             0: [FieldAccess] access to field field1
+#   26|               -1: [ThisAccess] this access
+#   27|       2: [Setter] set_property1
 #-----|         2: (Parameters)
-#   27|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleAssignable,SimpleLocalScopeVariable] value
-#   27|         4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   27|           0: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   27|             0: [AssignExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
-#   27|               0: [AccessOrCallExpr,CallableOrCFE,NonFinallyControlFlowElement,ParameterRead,PostOrderElement,StandardExpr] access to parameter value
-#   27|               1: [AccessOrCallExpr,CallableOrCFE,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,NonFinallyControlFlowElement,QualifiedWriteAccess,Source] access to field field1
-#   27|                 -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,ThisAccess] this access
-#   30|     4: [CallableOrCFE,InstanceCallable,NonConstructedMethod,PrunedCallable,RuntimeInstanceMethod,SourceDeclarationMethod] f1
+#   27|           0: [Parameter] value
+#   27|         4: [BlockStmt] {...}
+#   27|           0: [ExprStmt] ...;
+#   27|             0: [AssignExpr] ... = ...
+#   27|               0: [ParameterAccess] access to parameter value
+#   27|               1: [FieldAccess] access to field field1
+#   27|                 -1: [ThisAccess] this access
+#   30|     4: [Method] f1
 #-----|       2: (Parameters)
-#   30|         0: [ExprOrStmtParent,Parameter,SimpleAssignable,SimpleLocalScopeVariable] args
-#   31|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   32|         0: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
-#   32|           0: [CallableOrCFE,ControlFlowScope,DereferenceableExpr,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] C1 qualifier = ...
-#   32|             0: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,ThisAccess] this access
-#   32|             1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable qualifier
-#   35|         1: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   35|           0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method f1
-#   35|             -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#   36|         2: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   36|           0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method f1
-#   36|             -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#   36|             0: [CallableOrCFE,IntLiteral,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 1
-#   37|         3: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   37|           0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method f1
-#   37|             -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#   37|             0: [CallableOrCFE,IntLiteral,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 1
-#   37|             1: [CallableOrCFE,IntLiteral,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 2
-#   39|         4: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   39|           0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method f1
-#   39|             -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#   40|         5: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   40|           0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method f1
-#   40|             -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#   40|             0: [CallableOrCFE,IntLiteral,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 1
-#   41|         6: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   41|           0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method f1
-#   41|             -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#   41|             0: [CallableOrCFE,IntLiteral,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 1
-#   41|             1: [CallableOrCFE,IntLiteral,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 2
-#   43|         7: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   43|           0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,ExtensionMethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method ExtensionMethod
-#   43|             -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#   44|         8: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   44|           0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,ExtensionMethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method ExtensionMethod
-#   44|             -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#   44|             0: [BarrierGuard,CallableOrCFE,CastExpr,ControlFlowScope,DereferenceableExpr,ImplicitCast,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,StandardExpr] (...) ...
-#   44|               0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 1
-#   45|         9: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   45|           0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,ExtensionMethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method ExtensionMethod
-#   45|             -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#   45|             0: [BarrierGuard,CallableOrCFE,CastExpr,ControlFlowScope,DereferenceableExpr,ImplicitCast,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,StandardExpr] (...) ...
-#   45|               0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 1
-#   45|             1: [BarrierGuard,CallableOrCFE,CastExpr,ControlFlowScope,DereferenceableExpr,ImplicitCast,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,StandardExpr] (...) ...
-#   45|               0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 2
-#   47|         10: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   47|           0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method GenericFn
-#   47|             -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#   47|             0: [Argument,CallableOrCFE,IntLiteral,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Sink,Source,StandardExpr] 1
-#   48|         11: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   48|           0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method GenericFn
-#   48|             -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#   48|             0: [Argument,CallableOrCFE,IntLiteral,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Sink,Source,StandardExpr] 2
-#   51|         12: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   51|           0: [AccessOrCallExpr,CallableOrCFE,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,Source] object creation of type C1
-#   52|         13: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   52|           0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,Source] object creation of type C1
-#   52|             0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 1
-#   53|         14: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   53|           0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,Source] object creation of type C1
-#   53|             0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 1
-#   53|             1: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 2
-#   56|         15: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
-#   56|           0: [CallableOrCFE,ControlFlowScope,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] Int32 x = ...
-#   56|             0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 2
-#   56|             1: [AccessOrCallExpr,CallableOrCFE,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable x
-#   56|           1: [CallableOrCFE,ControlFlowScope,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] Int32 y = ...
-#   56|             0: [AccessOrCallExpr,CallableOrCFE,LocalVariableRead,NonFinallyControlFlowElement,PostOrderElement,StandardExpr] access to local variable x
-#   56|             1: [AccessOrCallExpr,CallableOrCFE,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable y
-#   56|           2: [CallableOrCFE,ControlFlowScope,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] Int32 z = ...
-#   56|             0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,FieldOrPropRead,FieldOrPropertyRead,FieldRead,NonFinallyControlFlowElement,PostOrderElement,StandardExpr] access to field field1
-#   56|               -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,ThisAccess] this access
-#   56|             1: [AccessOrCallExpr,CallableOrCFE,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable z
-#   56|           3: [CallableOrCFE,ControlFlowScope,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] Int32 w = ...
-#   56|             0: [ArrayRead,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] access to array element
-#   56|               -1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,NonFinallyControlFlowElement,ParameterRead,PostOrderElement,Source,StandardExpr] access to parameter args
-#   56|               0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 0
-#   56|             1: [AccessOrCallExpr,CallableOrCFE,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable w
-#   57|         16: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
-#   57|           0: [CallableOrCFE,ControlFlowScope,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] Enumeration e = ...
-#   57|             0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MemberConstantAccess,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] access to constant e1
-#   57|               -1: [CallableOrCFE,NonFinallyControlFlowElement,SimpleNoNodeExpr,Source,TypeAccess] access to type Enumeration
-#   57|             1: [AccessOrCallExpr,CallableOrCFE,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable e
-#   60|         17: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   60|           0: [AccessorWrite,AssignExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,Source] ... = ...
-#   60|             0: [AddExpr,Argument,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr] ... + ...
-#   60|               0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,FieldOrPropRead,FieldOrPropertyRead,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,PropertyCall,PropertyRead,StandardExpr,StatOrDynAccessorCall,TrivialPropertyAccess] access to property property1
-#   60|                 -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#   60|               1: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 1
-#   60|             1: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,FieldOrPropAccess,FieldOrPropertyAccess,NonDelegateCall,NonFinallyControlFlowElement,PropertyCall,PropertyWrite,QualifiedWriteAccess,Source,StatOrDynAccessorCall,TrivialPropertyAccess] access to property property1
-#   60|               -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#   63|         18: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
-#   63|           0: [CallableOrCFE,CollectionExpr,ControlFlowScope,DereferenceableExpr,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] C1[] array = ...
-#   63|             0: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,NullLiteral,PostOrderElement,Source,StandardExpr] null
-#   63|             1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable array
-#   64|         19: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
-#   64|           0: [CallableOrCFE,ControlFlowScope,DereferenceableExpr,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] Nullable<S1> nullable = ...
-#   64|             0: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,NullLiteral,PostOrderElement,Source,StandardExpr] null
-#   64|             1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable nullable
-#   67|         20: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
-#   67|           0: [CallableOrCFE,ControlFlowScope,DereferenceableExpr,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] Action<Int32> m1 = ...
-#   67|             0: [BarrierGuard,CallableOrCFE,DereferenceableExpr,ImplicitDelegateCreation,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] delegate creation of type Action<Int32>
-#   67|               0: [BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodAccess,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] access to method GenericFn
-#   67|                 -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,ThisAccess] this access
-#   67|             1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable m1
-#   70|     5: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] VariableTypeUse
+#   30|         0: [Parameter] args
+#   31|       4: [BlockStmt] {...}
+#   32|         0: [LocalConstantDeclStmt] ... ...;
+#   32|           0: [LocalVariableDeclAndInitExpr] C1 qualifier = ...
+#   32|             0: [ThisAccess] this access
+#   32|             1: [LocalVariableAccess] access to local variable qualifier
+#   35|         1: [ExprStmt] ...;
+#   35|           0: [MethodCall] call to method f1
+#   35|             -1: [ThisAccess] this access
+#   36|         2: [ExprStmt] ...;
+#   36|           0: [MethodCall] call to method f1
+#   36|             -1: [ThisAccess] this access
+#   36|             0: [IntLiteral] 1
+#   37|         3: [ExprStmt] ...;
+#   37|           0: [MethodCall] call to method f1
+#   37|             -1: [ThisAccess] this access
+#   37|             0: [IntLiteral] 1
+#   37|             1: [IntLiteral] 2
+#   39|         4: [ExprStmt] ...;
+#   39|           0: [MethodCall] call to method f1
+#   39|             -1: [ThisAccess] this access
+#   40|         5: [ExprStmt] ...;
+#   40|           0: [MethodCall] call to method f1
+#   40|             -1: [ThisAccess] this access
+#   40|             0: [IntLiteral] 1
+#   41|         6: [ExprStmt] ...;
+#   41|           0: [MethodCall] call to method f1
+#   41|             -1: [ThisAccess] this access
+#   41|             0: [IntLiteral] 1
+#   41|             1: [IntLiteral] 2
+#   43|         7: [ExprStmt] ...;
+#   43|           0: [MethodCall] call to method ExtensionMethod
+#   43|             -1: [ThisAccess] this access
+#   44|         8: [ExprStmt] ...;
+#   44|           0: [MethodCall] call to method ExtensionMethod
+#   44|             -1: [ThisAccess] this access
+#   44|             0: [CastExpr] (...) ...
+#   44|               0: [IntLiteral] 1
+#   45|         9: [ExprStmt] ...;
+#   45|           0: [MethodCall] call to method ExtensionMethod
+#   45|             -1: [ThisAccess] this access
+#   45|             0: [CastExpr] (...) ...
+#   45|               0: [IntLiteral] 1
+#   45|             1: [CastExpr] (...) ...
+#   45|               0: [IntLiteral] 2
+#   47|         10: [ExprStmt] ...;
+#   47|           0: [MethodCall] call to method GenericFn
+#   47|             -1: [ThisAccess] this access
+#   47|             0: [IntLiteral] 1
+#   48|         11: [ExprStmt] ...;
+#   48|           0: [MethodCall] call to method GenericFn
+#   48|             -1: [ThisAccess] this access
+#   48|             0: [IntLiteral] 2
+#   51|         12: [ExprStmt] ...;
+#   51|           0: [ObjectCreation] object creation of type C1
+#   52|         13: [ExprStmt] ...;
+#   52|           0: [ObjectCreation] object creation of type C1
+#   52|             0: [IntLiteral] 1
+#   53|         14: [ExprStmt] ...;
+#   53|           0: [ObjectCreation] object creation of type C1
+#   53|             0: [IntLiteral] 1
+#   53|             1: [IntLiteral] 2
+#   56|         15: [LocalConstantDeclStmt] ... ...;
+#   56|           0: [LocalVariableDeclAndInitExpr] Int32 x = ...
+#   56|             0: [IntLiteral] 2
+#   56|             1: [LocalVariableAccess] access to local variable x
+#   56|           1: [LocalVariableDeclAndInitExpr] Int32 y = ...
+#   56|             0: [LocalVariableAccess] access to local variable x
+#   56|             1: [LocalVariableAccess] access to local variable y
+#   56|           2: [LocalVariableDeclAndInitExpr] Int32 z = ...
+#   56|             0: [FieldAccess] access to field field1
+#   56|               -1: [ThisAccess] this access
+#   56|             1: [LocalVariableAccess] access to local variable z
+#   56|           3: [LocalVariableDeclAndInitExpr] Int32 w = ...
+#   56|             0: [ArrayAccess] access to array element
+#   56|               -1: [ParameterAccess] access to parameter args
+#   56|               0: [IntLiteral] 0
+#   56|             1: [LocalVariableAccess] access to local variable w
+#   57|         16: [LocalConstantDeclStmt] ... ...;
+#   57|           0: [LocalVariableDeclAndInitExpr] Enumeration e = ...
+#   57|             0: [MemberConstantAccess] access to constant e1
+#   57|               -1: [TypeAccess] access to type Enumeration
+#   57|             1: [LocalVariableAccess] access to local variable e
+#   60|         17: [ExprStmt] ...;
+#   60|           0: [AssignExpr] ... = ...
+#   60|             0: [AddExpr] ... + ...
+#   60|               0: [PropertyCall] access to property property1
+#   60|                 -1: [ThisAccess] this access
+#   60|               1: [IntLiteral] 1
+#   60|             1: [PropertyCall] access to property property1
+#   60|               -1: [ThisAccess] this access
+#   63|         18: [LocalConstantDeclStmt] ... ...;
+#   63|           0: [LocalVariableDeclAndInitExpr] C1[] array = ...
+#   63|             0: [NullLiteral] null
+#   63|             1: [LocalVariableAccess] access to local variable array
+#   64|         19: [LocalConstantDeclStmt] ... ...;
+#   64|           0: [LocalVariableDeclAndInitExpr] Nullable<S1> nullable = ...
+#   64|             0: [NullLiteral] null
+#   64|             1: [LocalVariableAccess] access to local variable nullable
+#   67|         20: [LocalConstantDeclStmt] ... ...;
+#   67|           0: [LocalVariableDeclAndInitExpr] Action<Int32> m1 = ...
+#   67|             0: [ImplicitDelegateCreation] delegate creation of type Action<Int32>
+#   67|               0: [MethodAccess] access to method GenericFn
+#   67|                 -1: [ThisAccess] this access
+#   67|             1: [LocalVariableAccess] access to local variable m1
+#   70|     5: [Method] VariableTypeUse
 #-----|       2: (Parameters)
-#   70|         0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] c1
-#   71|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   72|         0: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
-#   72|           0: [CallableOrCFE,ControlFlowScope,DereferenceableExpr,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] C1 c2 = ...
-#   72|             0: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,NullLiteral,PostOrderElement,Source,StandardExpr] null
-#   72|             1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable c2
-#   75|     6: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod,UnboundGenericMethod] GenericFn
+#   70|         0: [Parameter] c1
+#   71|       4: [BlockStmt] {...}
+#   72|         0: [LocalConstantDeclStmt] ... ...;
+#   72|           0: [LocalVariableDeclAndInitExpr] C1 c2 = ...
+#   72|             0: [NullLiteral] null
+#   72|             1: [LocalVariableAccess] access to local variable c2
+#   75|     6: [Method] GenericFn
 #-----|       1: (TypeParameters)
-#   75|         0: [MethodTypeParameter,SourceDeclarationType,UnconstrainedTypeParameter] T
+#   75|         0: [TypeParameter] T
 #-----|       2: (Parameters)
-#   75|         0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] t
-#   75|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   78|   4: [ArrayElementType,LeafType,NonNestedType,SourceDeclarationType,Struct,TypeArgument] S1
-#   80|     2: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] M
+#   75|         0: [Parameter] t
+#   75|       4: [BlockStmt] {...}
+#   78|   4: [Struct] S1
+#   80|     2: [Method] M
 #-----|       2: (Parameters)
-#   80|         0: [ExprOrStmtParent,Parameter,SimpleAssignable,SimpleLocalScopeVariable] ss
-#   81|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   82|         0: [CallableOrCFE,NonFinallyControlFlowElement,PreOrderElement,TryStmt] try {...} ...
-#   83|           0: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreOrderElement,StandardStmt,TriedControlFlowElement] {...}
-#   84|             0: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt,TriedControlFlowElement] ... ...;
-#   84|               0: [CallableOrCFE,CollectionExpr,ControlFlowScope,DereferenceableExpr,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,PreBasicBlock,Source,StandardExpr,TriedControlFlowElement] String timestamp = ...
-#   84|                 0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,CollectionExpr,ControlFlowScope,DereferenceableExpr,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,PreBasicBlock,Source,StandardExpr,TriedControlFlowElement] call to method ToString
-#   84|                   -1: [AccessOrCallExpr,Argument,CallableOrCFE,FieldOrPropRead,FieldOrPropertyRead,MethodCallArg,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,PropertyCall,PropertyRead,Sink,Source,StandardExpr,StatOrDynAccessorCall,TriedControlFlowElement] access to property Now
-#   84|                     -1: [CallableOrCFE,NonFinallyControlFlowElement,SimpleNoNodeExpr,Sink,Source,TriedControlFlowElement,TypeAccess] access to type DateTime
-#   84|                   0: [Argument,BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,PreBasicBlock,Sink,Source,StandardExpr,StringLiteral,TriedControlFlowElement] "HH:mm:ss"
-#   84|                 1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,TriedControlFlowElement,WriteAccessNoNodeExpr] access to local variable timestamp
-#   86|           1: [CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,SpecificCatchClause,SplitControlFlowElement] catch (...) {...}
-#   86|             0: [BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalVariableDeclExpr,NonFinallyControlFlowElement,Operation,PostOrderElement,Source,SplitControlFlowElement,StandardExpr] Exception e
-#   87|             1: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   88|               0: [CallableOrCFE,ConditionBlock,ControlFlowScope,ForeachStmt,NonFinallyControlFlowElement] foreach (... ... in ...) ...
-#   88|                 0: [CallableOrCFE,ControlFlowScope,LocalVariableDeclExpr,NonFinallyControlFlowElement,Operation,PostOrderElement,PreBasicBlock,Source,StandardExpr] S1 s
-#   88|                 1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,CollectionExpr,ControlFlowScope,DereferenceableExpr,NonFinallyControlFlowElement,ParameterRead,PostOrderElement,Source,StandardExpr] access to parameter ss
-#   89|                 2: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] {...}
-#   92|         1: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,StandardStmt] ... ...;
-#   92|           0: [CallableOrCFE,ControlFlowScope,DereferenceableExpr,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] Type temp = ...
-#   92|             0: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,TypeofExpr] typeof(...)
-#   92|               0: [BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,NonFinallyControlFlowElement,SimpleNoNodeExpr,Source,TypeAccess] access to type S1[]
-#   92|             1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable temp
-#   93|         2: [CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,ReturnStmt] return ...;
-#   93|           0: [AccessOrCallExpr,CallableOrCFE,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,Source] object creation of type S1
-#   97|   5: [Class,LeafType,NonNestedType,SourceDeclarationType,TypeArgument] A
-#   99|     2: [DelegateExtType,DelegateType,LeafType,NestedType,SourceDeclarationType] EventHandler
-#  101|     3: [DynamicMember,Event] Click
-#  101|       1: [CallableOrCFE,InstanceCallable,RemoveEventAccessor,RuntimeInstanceAccessor,SourceDeclarationCallable] remove_Click
+#   80|         0: [Parameter] ss
+#   81|       4: [BlockStmt] {...}
+#   82|         0: [TryStmt] try {...} ...
+#   83|           0: [BlockStmt] {...}
+#   84|             0: [LocalConstantDeclStmt] ... ...;
+#   84|               0: [LocalVariableDeclAndInitExpr] String timestamp = ...
+#   84|                 0: [MethodCall] call to method ToString
+#   84|                   -1: [PropertyCall] access to property Now
+#   84|                     -1: [TypeAccess] access to type DateTime
+#   84|                   0: [StringLiteral] "HH:mm:ss"
+#   84|                 1: [LocalVariableAccess] access to local variable timestamp
+#   86|           1: [SpecificCatchClause] catch (...) {...}
+#   86|             0: [LocalVariableDeclExpr] Exception e
+#   87|             1: [BlockStmt] {...}
+#   88|               0: [ForeachStmt] foreach (... ... in ...) ...
+#   88|                 0: [LocalVariableDeclExpr] S1 s
+#   88|                 1: [ParameterAccess] access to parameter ss
+#   89|                 2: [BlockStmt] {...}
+#   92|         1: [LocalConstantDeclStmt] ... ...;
+#   92|           0: [LocalVariableDeclAndInitExpr] Type temp = ...
+#   92|             0: [TypeofExpr] typeof(...)
+#   92|               0: [TypeAccess] access to type S1[]
+#   92|             1: [LocalVariableAccess] access to local variable temp
+#   93|         2: [ReturnStmt] return ...;
+#   93|           0: [ObjectCreation] object creation of type S1
+#   97|   5: [Class] A
+#   99|     2: [DelegateType] EventHandler
+#  101|     3: [Event] Click
+#  101|       1: [RemoveEventAccessor] remove_Click
 #-----|         2: (Parameters)
-#  101|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
-#  101|       1: [AddEventAccessor,CallableOrCFE,InstanceCallable,RuntimeInstanceAccessor,SourceDeclarationCallable] add_Click
+#  101|           0: [Parameter] value
+#  101|       1: [AddEventAccessor] add_Click
 #-----|         2: (Parameters)
-#  101|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
-#  103|     4: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,RuntimeInstanceMethod,SourceDeclarationMethod] M
-#  104|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#  105|         0: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#  105|           0: [AccessorWrite,AddEventExpr,CallableOrCFE,NonFinallyControlFlowElement,Source] ... += ...
-#  105|             0: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,ImplicitDelegateCreation,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr] delegate creation of type EventHandler
-#  105|               0: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,VirtualMethodAccess] access to method M
-#  105|                 -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,ThisAccess] this access
-#  105|             1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,EventCall,EventWrite,NonDelegateCall,NonFinallyControlFlowElement,QualifiedWriteAccess,Source,StatOrDynAccessorCall] access to event Click
-#  105|               -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#  106|         1: [CallableOrCFE,LocalFunctionStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] LocalFunction(...)
-#  106|           0: [CallableOrCFE,InstanceCallable,LocalFunction,RuntimeCallable,SourceDeclarationCallable] LocalFunction
-#  106|             4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#  106|         2: [CallableOrCFE,EmptyStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ;
-#  107|         3: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#  107|           0: [AccessorWrite,AddEventExpr,CallableOrCFE,NonFinallyControlFlowElement,Source] ... += ...
-#  107|             0: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,ImplicitDelegateCreation,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr] delegate creation of type EventHandler
-#  107|               0: [BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalFunctionAccess,MemberAccess,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] access to local function LocalFunction
-#  107|                 -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,ThisAccess] this access
-#  107|             1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,EventCall,EventWrite,NonDelegateCall,NonFinallyControlFlowElement,QualifiedWriteAccess,Source,StatOrDynAccessorCall] access to event Click
-#  107|               -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#  108|         4: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#  108|           0: [CallableOrCFE,DelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] delegate call
-#  108|             -1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,EventCall,EventRead,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,StatOrDynAccessorCall] access to event Click
-#  108|               -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#  112|   6: [Interface,LeafType,NonNestedType,SourceDeclarationType,TypeArgument] I1
-#  114|     1: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod,UnboundGenericMethod] M2
+#  101|           0: [Parameter] value
+#  103|     4: [Method] M
+#  104|       4: [BlockStmt] {...}
+#  105|         0: [ExprStmt] ...;
+#  105|           0: [AddEventExpr] ... += ...
+#  105|             0: [ImplicitDelegateCreation] delegate creation of type EventHandler
+#  105|               0: [MethodAccess] access to method M
+#  105|                 -1: [ThisAccess] this access
+#  105|             1: [EventAccess,EventCall] access to event Click
+#  105|               -1: [ThisAccess] this access
+#  106|         1: [LocalFunctionStmt] LocalFunction(...)
+#  106|           0: [LocalFunction] LocalFunction
+#  106|             4: [BlockStmt] {...}
+#  106|         2: [EmptyStmt] ;
+#  107|         3: [ExprStmt] ...;
+#  107|           0: [AddEventExpr] ... += ...
+#  107|             0: [ImplicitDelegateCreation] delegate creation of type EventHandler
+#  107|               0: [LocalFunctionAccess] access to local function LocalFunction
+#  107|                 -1: [ThisAccess] this access
+#  107|             1: [EventAccess,EventCall] access to event Click
+#  107|               -1: [ThisAccess] this access
+#  108|         4: [ExprStmt] ...;
+#  108|           0: [DelegateCall] delegate call
+#  108|             -1: [EventAccess,EventCall] access to event Click
+#  108|               -1: [ThisAccess] this access
+#  112|   6: [Interface] I1
+#  114|     1: [Method] M2
 #-----|       1: (TypeParameters)
-#  114|         0: [MethodTypeParameter,SingleConstraintTypeParameter,SourceDeclarationType] T
-#  117|   7: [GenericType,NonNestedType,SourceDeclarationType,UnboundGenericInterface] I2<>
+#  114|         0: [TypeParameter] T
+#  117|   7: [Interface] I2<>
 #-----|     0: (TypeParameters)
-#  117|       0: [LeafType,SingleConstraintTypeParameter,SourceDeclarationType,TypeArgument] T
-#  119|   8: [Interface,LeafType,NonNestedType,SourceDeclarationType] I3
-#  121|   9: [GenericType,NonNestedType,SourceDeclarationType,UnboundGenericClass] B<>
+#  117|       0: [TypeParameter] T
+#  119|   8: [Interface] I3
+#  121|   9: [Class] B<>
 #-----|     0: (TypeParameters)
-#  121|       0: [LeafType,SingleConstraintTypeParameter,SourceDeclarationType,TypeArgument] T
-#  123|     3: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,RuntimeInstanceMethod,SourceDeclarationMethod] M
-#  124|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#  125|         0: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#  125|           0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method M
-#  125|             -1: [Argument,BarrierGuard,BaseAccess,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr] base access
-#  128|     4: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod,UnboundGenericMethod] M2
+#  121|       0: [TypeParameter] T
+#  123|     3: [Method] M
+#  124|       4: [BlockStmt] {...}
+#  125|         0: [ExprStmt] ...;
+#  125|           0: [MethodCall] call to method M
+#  125|             -1: [BaseAccess] base access
+#  128|     4: [Method] M2
 #-----|       1: (TypeParameters)
-#  128|         0: [MethodTypeParameter,SingleConstraintTypeParameter,SourceDeclarationType] T
-#  128|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#  130|     5: [GenericType,NestedType,SourceDeclarationType,UnboundGenericStruct] S<>
+#  128|         0: [TypeParameter] T
+#  128|       4: [BlockStmt] {...}
+#  130|     5: [Struct] S<>
 #-----|       0: (TypeParameters)
-#  130|         0: [LeafType,SingleConstraintTypeParameter,SourceDeclarationType,TypeArgument] T2
-#  132|     6: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod,ThrowingCallable] Tuple
-#  132|       4: [CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,Source,ThrowExpr] throw ...
-#  132|         0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,PreBasicBlock,SameSplitsBlock,Source] object creation of type Exception
-#  134|     7: [ExprOrStmtParent,Indexer,Property] Item
+#  130|         0: [TypeParameter] T2
+#  132|     6: [Method] Tuple
+#  132|       4: [ThrowExpr] throw ...
+#  132|         0: [ObjectCreation] object creation of type Exception
+#  134|     7: [Indexer] Item
 #-----|       0: (Parameters)
-#  134|         0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] a
-#  134|       2: [CallableOrCFE,Getter,InstanceCallable,RuntimeInstanceAccessor,SourceDeclarationCallable] get_Item
+#  134|         0: [Parameter] a
+#  134|       2: [Getter] get_Item
 #-----|         2: (Parameters)
-#  134|           0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] a
-#  134|         4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#  134|           0: [CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,ReturnStmt] return ...;
-#  134|             0: [BarrierGuard,CallableOrCFE,DefaultValueExpr,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] default(...)
-#  134|               0: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,SimpleNoNodeExpr,Source,TypeAccess] access to type B<A>
-#  137|   10: [Class,LeafType,NonNestedType,SourceDeclarationType] C
-#  139|     2: [Enum,LeafType,NestedType,SourceDeclarationType] E
-#  140|     3: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod,ThrowingCallable] Pointer
-#  140|       4: [CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,Source,ThrowExpr] throw ...
-#  140|         0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,Source] object creation of type Exception
-#  140|           0: [AccessOrCallExpr,Argument,BarrierGuard,CallableOrCFE,CollectionExpr,ControlFlowScope,DereferenceableExpr,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr] call to method ToString
-#  140|             -1: [Argument,CallableOrCFE,MethodCallArg,NonFinallyControlFlowElement,Overflowable,PostOrderElement,PreBasicBlock,SameSplitsBlock,Sink,SizeofExpr,Source,StandardExpr] sizeof(..)
-#  140|               0: [CallableOrCFE,NonFinallyControlFlowElement,SimpleNoNodeExpr,Source,TypeAccess] access to type E*
-#  143|   11: [Interface,LeafType,NonNestedType,SourceDeclarationType,TypeArgument] I4
-#  145|     1: [DynamicMember,Event] EH
-#  145|       1: [CallableOrCFE,InstanceCallable,NonConstructedOverridableCallable,OverridableAccessor,RemoveEventAccessor,SourceDeclarationCallable] remove_EH
+#  134|           0: [Parameter] a
+#  134|         4: [BlockStmt] {...}
+#  134|           0: [ReturnStmt] return ...;
+#  134|             0: [DefaultValueExpr] default(...)
+#  134|               0: [TypeAccess] access to type B<A>
+#  137|   10: [Class] C
+#  139|     2: [Enum] E
+#  140|     3: [Method] Pointer
+#  140|       4: [ThrowExpr] throw ...
+#  140|         0: [ObjectCreation] object creation of type Exception
+#  140|           0: [MethodCall] call to method ToString
+#  140|             -1: [SizeofExpr] sizeof(..)
+#  140|               0: [TypeAccess] access to type E*
+#  143|   11: [Interface] I4
+#  145|     1: [Event] EH
+#  145|       1: [RemoveEventAccessor] remove_EH
 #-----|         2: (Parameters)
-#  145|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
-#  145|       1: [AddEventAccessor,CallableOrCFE,InstanceCallable,NonConstructedOverridableCallable,OverridableAccessor,SourceDeclarationCallable] add_EH
+#  145|           0: [Parameter] value
+#  145|       1: [AddEventAccessor] add_EH
 #-----|         2: (Parameters)
-#  145|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
-#  146|     2: [CallableOrCFE,InstanceCallable,NonConstructedMethod,NonConstructedOverridableCallable,OverridableMethod,SourceDeclarationMethod] M
-#  147|     3: [DynamicMember,ExprOrStmtParent,InstanceFieldOrProp,InstanceFieldOrProperty,Property] P
-#  147|       1: [CallableOrCFE,Getter,InstanceCallable,NonConstructedOverridableCallable,OverridableAccessor,SourceDeclarationCallable] get_P
-#  148|     4: [ExprOrStmtParent,Indexer,Property] Item
+#  145|           0: [Parameter] value
+#  146|     2: [Method] M
+#  147|     3: [Property] P
+#  147|       1: [Getter] get_P
+#  148|     4: [Indexer] Item
 #-----|       0: (Parameters)
-#  148|         0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] eh
-#  148|       2: [CallableOrCFE,Getter,InstanceCallable,NonConstructedOverridableCallable,OverridableAccessor,SourceDeclarationCallable] get_Item
+#  148|         0: [Parameter] eh
+#  148|       2: [Getter] get_Item
 #-----|         2: (Parameters)
-#  148|           0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] eh
-#  151|   12: [Class,LeafType,NonNestedType,SourceDeclarationType] C4
-#  153|     2: [DynamicMember,Event] EH
-#  153|       1: [AddEventAccessor,CallableOrCFE,InstanceCallable,RuntimeInstanceAccessor,SourceDeclarationCallable] add_EH
+#  148|           0: [Parameter] eh
+#  151|   12: [Class] C4
+#  153|     2: [Event] EH
+#  153|       1: [AddEventAccessor] add_EH
 #-----|         2: (Parameters)
-#  153|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
-#  153|         4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#  153|       2: [CallableOrCFE,InstanceCallable,RemoveEventAccessor,RuntimeInstanceAccessor,SourceDeclarationCallable] remove_EH
+#  153|           0: [Parameter] value
+#  153|         4: [BlockStmt] {...}
+#  153|       2: [RemoveEventAccessor] remove_EH
 #-----|         2: (Parameters)
-#  153|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
-#  153|         4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#  154|     3: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod,ThrowingCallable] M
-#  154|       4: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,ThrowExpr] throw ...
-#  154|         0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,PreBasicBlock,SameSplitsBlock,Source] object creation of type Exception
-#  155|     4: [DynamicMember,ExprOrStmtParent,InstanceFieldOrProp,InstanceFieldOrProperty,Property] P
-#  155|       1: [CallableOrCFE,Getter,InstanceCallable,RuntimeInstanceAccessor,SourceDeclarationCallable,ThrowingCallable] get_P
-#  155|         4: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,ThrowExpr] throw ...
-#  155|           0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,PreBasicBlock,SameSplitsBlock,Source] object creation of type Exception
-#  156|     5: [ExprOrStmtParent,Indexer,Property] Item
+#  153|           0: [Parameter] value
+#  153|         4: [BlockStmt] {...}
+#  154|     3: [Method] M
+#  154|       4: [ThrowExpr] throw ...
+#  154|         0: [ObjectCreation] object creation of type Exception
+#  155|     4: [Property] P
+#  155|       1: [Getter] get_P
+#  155|         4: [ThrowExpr] throw ...
+#  155|           0: [ObjectCreation] object creation of type Exception
+#  156|     5: [Indexer] Item
 #-----|       0: (Parameters)
-#  156|         0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] eh
-#  156|       2: [CallableOrCFE,Getter,InstanceCallable,RuntimeInstanceAccessor,SourceDeclarationCallable] get_Item
+#  156|         0: [Parameter] eh
+#  156|       2: [Getter] get_Item
 #-----|         2: (Parameters)
-#  156|           0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] eh
-#  156|         4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#  156|           0: [CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,ReturnStmt] return ...;
-#  156|             0: [CallableOrCFE,CastExpr,ControlFlowScope,ExplicitCast,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] (...) ...
-#  156|               0: [AccessOrCallExpr,CallableOrCFE,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,Source] object creation of type S1
-#  156|               1: [CallableOrCFE,NonFinallyControlFlowElement,SimpleNoNodeExpr,Source,TypeAccess] access to type S1
-#  158|     6: [GenericType,NestedType,SourceDeclarationType,UnboundGenericClass] Nested<>
+#  156|           0: [Parameter] eh
+#  156|         4: [BlockStmt] {...}
+#  156|           0: [ReturnStmt] return ...;
+#  156|             0: [CastExpr] (...) ...
+#  156|               0: [ObjectCreation] object creation of type S1
+#  156|               1: [TypeAccess] access to type S1
+#  158|     6: [Class] Nested<>
 #-----|       0: (TypeParameters)
-#  158|         0: [LeafType,SourceDeclarationType,TypeArgument,UnconstrainedTypeParameter] T
-#  160|       3: [CallableOrCFE,NonConstructedMethod,RuntimeMethod,SourceDeclarationMethod] Create
-#  160|         4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#  160|           0: [CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,ReturnStmt] return ...;
-#  160|             0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,Source] object creation of type Nested<>
-#  164|   13: [Class,LeafType,NonNestedType,SourceDeclarationType] C5
-#  166|     2: [DynamicMember,ExprOrStmtParent,Field,InitializedInstanceMember,InstanceFieldOrProp,InstanceFieldOrProperty] f
-#  166|       1: [AssignExpr,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
-#  166|         0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method Create
-#  166|           -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,SimpleNoNodeExpr,Sink,Source,TypeAccess] access to type Nested<I4>
-#  166|             -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,SimpleNoNodeExpr,Source,TypeAccess] access to type C4
-#  166|         1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,NonFinallyControlFlowElement,QualifiedWriteAccess,Source] access to field f
-#  166|           -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,PreBasicBlock,SameSplitsBlock,Source,StandardExpr,ThisAccess] this access
-#  167|     3: [DynamicMember,ExprOrStmtParent,Field,InstanceFieldOrProp,InstanceFieldOrProperty] c1
-#  169|     4: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] M
-#  170|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#  171|         0: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
-#  171|           0: [CallableOrCFE,ControlFlowScope,DereferenceableExpr,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] C1 c = ...
-#  171|             0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,Source] object creation of type C1
-#  171|             1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable c
-#  172|         1: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#  172|           0: [AccessorWrite,AssignExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,Source] ... = ...
-#  172|             0: [AccessOrCallExpr,Argument,CallableOrCFE,ControlFlowScope,FieldOrPropRead,FieldOrPropertyRead,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,PropertyCall,PropertyRead,Sink,StandardExpr,StatOrDynAccessorCall,TrivialPropertyAccess] access to property property1
-#  172|               -1: [AccessOrCallExpr,Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalVariableRead,NonFinallyControlFlowElement,PostOrderElement,Sink,StandardExpr] access to local variable c
-#  172|             1: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,FieldOrPropAccess,FieldOrPropertyAccess,NonDelegateCall,NonFinallyControlFlowElement,PropertyCall,PropertyWrite,QualifiedWriteAccess,Source,StatOrDynAccessorCall,TrivialPropertyAccess] access to property property1
-#  172|               -1: [AccessOrCallExpr,Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalVariableRead,NonFinallyControlFlowElement,PostOrderElement,Sink,StandardExpr] access to local variable c
-#  173|         2: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
-#  173|           0: [CallableOrCFE,ControlFlowScope,DereferenceableExpr,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] C5 c5 = ...
-#  173|             0: [AsExpr,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,ExplicitCast,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... as ...
-#  173|               0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,Source] object creation of type C5
-#  173|               1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,SimpleNoNodeExpr,Source,TypeAccess] access to type C5
-#  173|             1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable c5
-#  174|         3: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#  174|           0: [AccessorWrite,AssignExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,Source] ... = ...
-#  174|             0: [Argument,CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Sink,Source,StandardExpr] 0
-#  174|             1: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,FieldOrPropAccess,FieldOrPropertyAccess,NonDelegateCall,NonFinallyControlFlowElement,PropertyCall,PropertyWrite,QualifiedWriteAccess,Source,StatOrDynAccessorCall,TrivialPropertyAccess] access to property property1
-#  174|               -1: [AccessOrCallExpr,Argument,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,FieldOrPropRead,FieldOrPropertyRead,FieldRead,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr] access to field c1
-#  174|                 -1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalVariableRead,NonFinallyControlFlowElement,PostOrderElement,StandardExpr] access to local variable c5
-#  175|         4: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
-#  175|           0: [CallableOrCFE,ControlFlowScope,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] Boolean temp = ...
-#  175|             0: [BarrierGuard,CallableOrCFE,IsExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... is ...
-#  175|               0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalVariableRead,NonFinallyControlFlowElement,PostOrderElement,StandardExpr] access to local variable c5
-#  175|               1: [CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,TypeAccessPatternExpr] access to type Nested<I4>
-#  175|             1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable temp
-#  179|   14: [Class,LeafType,NonNestedType,SourceDeclarationType] C6
-#  181|     2: [CallableOrCFE,ExplicitConversionOperator,RuntimeOperator,SourceDeclarationCallable] explicit conversion
+#  158|         0: [TypeParameter] T
+#  160|       3: [Method] Create
+#  160|         4: [BlockStmt] {...}
+#  160|           0: [ReturnStmt] return ...;
+#  160|             0: [ObjectCreation] object creation of type Nested<>
+#  164|   13: [Class] C5
+#  166|     2: [Field] f
+#  166|       1: [AssignExpr] ... = ...
+#  166|         0: [MethodCall] call to method Create
+#  166|           -1: [TypeAccess] access to type Nested<I4>
+#  166|             -1: [TypeAccess] access to type C4
+#  166|         1: [FieldAccess] access to field f
+#  166|           -1: [ThisAccess] this access
+#  167|     3: [Field] c1
+#  169|     4: [Method] M
+#  170|       4: [BlockStmt] {...}
+#  171|         0: [LocalConstantDeclStmt] ... ...;
+#  171|           0: [LocalVariableDeclAndInitExpr] C1 c = ...
+#  171|             0: [ObjectCreation] object creation of type C1
+#  171|             1: [LocalVariableAccess] access to local variable c
+#  172|         1: [ExprStmt] ...;
+#  172|           0: [AssignExpr] ... = ...
+#  172|             0: [PropertyCall] access to property property1
+#  172|               -1: [LocalVariableAccess] access to local variable c
+#  172|             1: [PropertyCall] access to property property1
+#  172|               -1: [LocalVariableAccess] access to local variable c
+#  173|         2: [LocalConstantDeclStmt] ... ...;
+#  173|           0: [LocalVariableDeclAndInitExpr] C5 c5 = ...
+#  173|             0: [AsExpr] ... as ...
+#  173|               0: [ObjectCreation] object creation of type C5
+#  173|               1: [TypeAccess] access to type C5
+#  173|             1: [LocalVariableAccess] access to local variable c5
+#  174|         3: [ExprStmt] ...;
+#  174|           0: [AssignExpr] ... = ...
+#  174|             0: [IntLiteral] 0
+#  174|             1: [PropertyCall] access to property property1
+#  174|               -1: [FieldAccess] access to field c1
+#  174|                 -1: [LocalVariableAccess] access to local variable c5
+#  175|         4: [LocalConstantDeclStmt] ... ...;
+#  175|           0: [LocalVariableDeclAndInitExpr] Boolean temp = ...
+#  175|             0: [IsExpr] ... is ...
+#  175|               0: [LocalVariableAccess] access to local variable c5
+#  175|               1: [TypeAccessPatternExpr] access to type Nested<I4>
+#  175|             1: [LocalVariableAccess] access to local variable temp
+#  179|   14: [Class] C6
+#  181|     2: [ExplicitConversionOperator] explicit conversion
 #-----|       2: (Parameters)
-#  181|         0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] c
+#  181|         0: [Parameter] c
 #-----|           0: (Attributes)
-#  181|             1: [Attribute,ExprOrStmtParent] [My(...)]
-#  182|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#  183|         0: [CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,ReturnStmt] return ...;
-#  183|           0: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,NullLiteral,PostOrderElement,Source,StandardExpr] null
-#  186|     3: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] M
-#  187|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#  188|         0: [CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,ReturnStmt] return ...;
-#  188|           0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,OperatorCall,PostOrderElement,Source,StandardExpr] call to operator explicit conversion
-#  188|             0: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#  191|     4: [AddOperator,CallableOrCFE,RuntimeOperator,SourceDeclarationCallable] +
+#  181|             1: [Attribute] [My(...)]
+#  182|       4: [BlockStmt] {...}
+#  183|         0: [ReturnStmt] return ...;
+#  183|           0: [NullLiteral] null
+#  186|     3: [Method] M
+#  187|       4: [BlockStmt] {...}
+#  188|         0: [ReturnStmt] return ...;
+#  188|           0: [OperatorCall] call to operator explicit conversion
+#  188|             0: [ThisAccess] this access
+#  191|     4: [AddOperator] +
 #-----|       2: (Parameters)
-#  191|         0: [ExprOrStmtParent,Parameter,SimpleAssignable,SimpleLocalScopeVariable] x
-#  191|         1: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] y
-#  191|       4: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,ParameterRead,PostOrderElement,PreBasicBlock,SameSplitsBlock,Source,StandardExpr] access to parameter x
-#  194|   15: [Class,LeafType,NonNestedType,SourceDeclarationType] MyAttribute
-#  196|   16: [Class,LeafType,NonNestedType,SourceDeclarationType] C7
-#  198|     2: [CallableOrCFE,NonConstructedMethod,RuntimeMethod,SourceDeclarationMethod] M
-#  198|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#  200|     3: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] M2
-#  201|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#  202|         0: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#  202|           0: [AccessOrCallExpr,CallableOrCFE,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method M
-#  202|             -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,SimpleNoNodeExpr,Sink,Source,TypeAccess] access to type C7
-#  206|   17: [Class,LeafType,NonNestedType,SourceDeclarationType] C8
-#  208|     2: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] F
-#  209|       4: [BlockStmt,CallableOrCFE,ConditionBlock,NonFinallyControlFlowElement,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#  210|         0: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
-#  210|           0: [CallableOrCFE,ControlFlowScope,DereferenceableExpr,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] C8 c8a = ...
-#  210|             0: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,NullLiteral,PostOrderElement,Source,StandardExpr] null
-#  210|             1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable c8a
-#  211|         1: [CallableOrCFE,IfStmt,NonFinallyControlFlowElement,PreOrderElement] if (...) ...
-#  211|           0: [BarrierGuard,CallableOrCFE,ControlFlowScope,IsExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... is ...
-#  211|             0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalVariableRead,NonFinallyControlFlowElement,PostOrderElement,StandardExpr] access to local variable c8a
-#  211|             1: [CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,Operation,PostOrderElement,Source,StandardExpr,TopLevelPatternDecl,TypePatternExpr,VariablePatternExpr] C8 c8b
-#  212|           1: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,StandardStmt] ...;
-#  212|             0: [AssignExpr,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
-#  212|               0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalVariableRead,NonFinallyControlFlowElement,PostOrderElement,StandardExpr] access to local variable c8b
-#  212|               1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable c8a
-#  213|         2: [CallableOrCFE,ConditionBlock,NonFinallyControlFlowElement,PreOrderElement,SwitchStmt] switch (...) {...}
-#  213|           0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,LocalVariableRead,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] access to local variable c8a
-#  215|           0: [CallableOrCFE,CaseStmt,ControlFlowScope,LabeledStmt,NonFinallyControlFlowElement,PreOrderElement] case ...:
-#  215|             0: [CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,Operation,PostOrderElement,Source,StandardExpr,TopLevelPatternDecl,TypePatternExpr,VariablePatternExpr] C8 c8c
-#  215|             1: [BarrierGuard,CallableOrCFE,ControlFlowScope,NEExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... != ...
-#  215|               0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,ConditionBlock,DereferenceableExpr,LocalVariableRead,NonFinallyControlFlowElement,PostOrderElement,StandardExpr] access to local variable c8c
-#  215|               1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,NullLiteral,PostOrderElement,Source,StandardExpr] null
-#  216|           1: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,StandardStmt] ...;
-#  216|             0: [AssignExpr,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
-#  216|               0: [BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalVariableRead,NonFinallyControlFlowElement,NullGuardedExpr,PostOrderElement,StandardExpr] access to local variable c8c
-#  216|               1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable c8a
-#  217|           2: [BreakStmt,CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement] break;
+#  191|         0: [Parameter] x
+#  191|         1: [Parameter] y
+#  191|       4: [ParameterAccess] access to parameter x
+#  194|   15: [Class] MyAttribute
+#  196|   16: [Class] C7
+#  198|     2: [Method] M
+#  198|       4: [BlockStmt] {...}
+#  200|     3: [Method] M2
+#  201|       4: [BlockStmt] {...}
+#  202|         0: [ExprStmt] ...;
+#  202|           0: [MethodCall] call to method M
+#  202|             -1: [TypeAccess] access to type C7
+#  206|   17: [Class] C8
+#  208|     2: [Method] F
+#  209|       4: [BlockStmt] {...}
+#  210|         0: [LocalConstantDeclStmt] ... ...;
+#  210|           0: [LocalVariableDeclAndInitExpr] C8 c8a = ...
+#  210|             0: [NullLiteral] null
+#  210|             1: [LocalVariableAccess] access to local variable c8a
+#  211|         1: [IfStmt] if (...) ...
+#  211|           0: [IsExpr] ... is ...
+#  211|             0: [LocalVariableAccess] access to local variable c8a
+#  211|             1: [VariablePatternExpr] C8 c8b
+#  212|           1: [ExprStmt] ...;
+#  212|             0: [AssignExpr] ... = ...
+#  212|               0: [LocalVariableAccess] access to local variable c8b
+#  212|               1: [LocalVariableAccess] access to local variable c8a
+#  213|         2: [SwitchStmt] switch (...) {...}
+#  213|           0: [LocalVariableAccess] access to local variable c8a
+#  215|           0: [CaseStmt] case ...:
+#  215|             0: [VariablePatternExpr] C8 c8c
+#  215|             1: [NEExpr] ... != ...
+#  215|               0: [LocalVariableAccess] access to local variable c8c
+#  215|               1: [NullLiteral] null
+#  216|           1: [ExprStmt] ...;
+#  216|             0: [AssignExpr] ... = ...
+#  216|               0: [LocalVariableAccess] access to local variable c8c
+#  216|               1: [LocalVariableAccess] access to local variable c8a
+#  217|           2: [BreakStmt] break;

@@ -1,42 +1,42 @@
 goto.cs:
-#    2| [Class,LeafType,NonNestedType,SourceDeclarationType] Goto
-#    4|   2: [CallableOrCFE,NonConstructedMethod,RuntimeMethod,SourceDeclarationMethod] Main
-#    5|     4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#    6|       0: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] {...}
-#    7|         0: [CallableOrCFE,LabelStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] s1:
-#    7|         1: [CallableOrCFE,GotoLabelStmt,NonFinallyControlFlowElement,PostOrderElement] goto ...;
-#    9|       1: [CallableOrCFE,LabelStmt,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,StandardStmt] s2:
-#    9|       2: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
-#    9|         0: [CallableOrCFE,CollectionExpr,ControlFlowScope,DereferenceableExpr,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] String s = ...
-#    9|           0: [BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,StringLiteral] "5"
-#    9|           1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable s
-#   10|       3: [CallableOrCFE,NonFinallyControlFlowElement,PreOrderElement,SwitchStmt] switch (...) {...}
-#   10|         0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,LocalVariableRead,NonFinallyControlFlowElement,PostOrderElement,StandardExpr] access to local variable s
-#   12|         0: [CallableOrCFE,ConditionBlock,ConstCase,NonFinallyControlFlowElement,PreOrderElement] case ...:
-#   12|           0: [CallableOrCFE,ConstantPatternExpr,NonFinallyControlFlowElement,NullLiteral,PostOrderElement,Source,StandardExpr] null
-#   12|         1: [CallableOrCFE,LabelStmt,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,StandardStmt] s3:
-#   12|         2: [CallableOrCFE,GotoCaseStmt,NonFinallyControlFlowElement,PostOrderElement] goto case ...;
-#   12|           0: [BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,StringLiteral] "1"
-#   13|         3: [CallableOrCFE,ConditionBlock,ConstCase,NonFinallyControlFlowElement,PreOrderElement] case ...:
-#   13|           0: [BarrierGuard,CallableOrCFE,CollectionExpr,ConstantPatternExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,StringLiteral] "1"
-#   13|         4: [CallableOrCFE,LabelStmt,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,StandardStmt] s4:
-#   13|         5: [CallableOrCFE,GotoCaseStmt,NonFinallyControlFlowElement,PostOrderElement] goto case ...;
-#   13|           0: [BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,StringLiteral] "2"
-#   14|         6: [CallableOrCFE,ConditionBlock,ConstCase,NonFinallyControlFlowElement,PreOrderElement] case ...:
-#   14|           0: [BarrierGuard,CallableOrCFE,CollectionExpr,ConstantPatternExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,StringLiteral] "2"
-#   14|         7: [CallableOrCFE,LabelStmt,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,StandardStmt] s5:
-#   14|         8: [CallableOrCFE,GotoLabelStmt,NonFinallyControlFlowElement,PostOrderElement] goto ...;
-#   15|         9: [CallableOrCFE,ConditionBlock,ConstCase,NonFinallyControlFlowElement,PreOrderElement] case ...:
-#   15|           0: [BarrierGuard,CallableOrCFE,CollectionExpr,ConstantPatternExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,StringLiteral] "3"
-#   15|         10: [CallableOrCFE,LabelStmt,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,StandardStmt] s6:
-#   15|         11: [CallableOrCFE,GotoDefaultStmt,NonFinallyControlFlowElement,PostOrderElement] goto default;
-#   16|         12: [CallableOrCFE,ConditionBlock,ConstCase,NonFinallyControlFlowElement,PreOrderElement] case ...:
-#   16|           0: [BarrierGuard,CallableOrCFE,CollectionExpr,ConstantPatternExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,StringLiteral] "4"
-#   16|         13: [CallableOrCFE,LabelStmt,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,StandardStmt] s7:
-#   16|         14: [BreakStmt,CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement] break;
-#   17|         15: [CallableOrCFE,DefaultCase,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement] default:
-#   17|         16: [CallableOrCFE,LabelStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] s8:
-#   17|         17: [CallableOrCFE,GotoCaseStmt,NonFinallyControlFlowElement,PostOrderElement] goto case ...;
-#   17|           0: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,NullLiteral,PostOrderElement,Source,StandardExpr] null
-#   19|       4: [CallableOrCFE,LabelStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] s9:
-#   19|       5: [CallableOrCFE,EmptyStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ;
+#    2| [Class] Goto
+#    4|   2: [Method] Main
+#    5|     4: [BlockStmt] {...}
+#    6|       0: [BlockStmt] {...}
+#    7|         0: [LabelStmt] s1:
+#    7|         1: [GotoLabelStmt] goto ...;
+#    9|       1: [LabelStmt] s2:
+#    9|       2: [LocalConstantDeclStmt] ... ...;
+#    9|         0: [LocalVariableDeclAndInitExpr] String s = ...
+#    9|           0: [StringLiteral] "5"
+#    9|           1: [LocalVariableAccess] access to local variable s
+#   10|       3: [SwitchStmt] switch (...) {...}
+#   10|         0: [LocalVariableAccess] access to local variable s
+#   12|         0: [ConstCase] case ...:
+#   12|           0: [ConstantPatternExpr,NullLiteral] null
+#   12|         1: [LabelStmt] s3:
+#   12|         2: [GotoCaseStmt] goto case ...;
+#   12|           0: [StringLiteral] "1"
+#   13|         3: [ConstCase] case ...:
+#   13|           0: [ConstantPatternExpr,StringLiteral] "1"
+#   13|         4: [LabelStmt] s4:
+#   13|         5: [GotoCaseStmt] goto case ...;
+#   13|           0: [StringLiteral] "2"
+#   14|         6: [ConstCase] case ...:
+#   14|           0: [ConstantPatternExpr,StringLiteral] "2"
+#   14|         7: [LabelStmt] s5:
+#   14|         8: [GotoLabelStmt] goto ...;
+#   15|         9: [ConstCase] case ...:
+#   15|           0: [ConstantPatternExpr,StringLiteral] "3"
+#   15|         10: [LabelStmt] s6:
+#   15|         11: [GotoDefaultStmt] goto default;
+#   16|         12: [ConstCase] case ...:
+#   16|           0: [ConstantPatternExpr,StringLiteral] "4"
+#   16|         13: [LabelStmt] s7:
+#   16|         14: [BreakStmt] break;
+#   17|         15: [DefaultCase] default:
+#   17|         16: [LabelStmt] s8:
+#   17|         17: [GotoCaseStmt] goto case ...;
+#   17|           0: [NullLiteral] null
+#   19|       4: [LabelStmt] s9:
+#   19|       5: [EmptyStmt] ;

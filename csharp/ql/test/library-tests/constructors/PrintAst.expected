@@ -1,17 +1,17 @@
 constructors.cs:
 #    1| [NamespaceDeclaration] namespace ... { ... }
-#    3|   1: [Class,LeafType,NonNestedType,SourceDeclarationType] Class
-#    5|     1: [CallableOrCFE,InstanceConstructor,RuntimeCallable,SourceDeclarationCallable] Class
-#    6|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#    8|     2: [CallableOrCFE,InstanceConstructor,RuntimeCallable,SourceDeclarationCallable] Class
+#    3|   1: [Class] Class
+#    5|     1: [InstanceConstructor] Class
+#    6|       4: [BlockStmt] {...}
+#    8|     2: [InstanceConstructor] Class
 #-----|       2: (Parameters)
-#    8|         0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] i
-#    9|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   11|     3: [CallableOrCFE,RuntimeCallable,SourceDeclarationCallable,StaticConstructor] Class
-#   12|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   14|     4: [CallableOrCFE,Destructor,InstanceCallable,RuntimeCallable,SourceDeclarationCallable] ~Class
-#   15|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   16|         0: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
-#   16|           0: [CallableOrCFE,ControlFlowScope,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] Int32 i = ...
-#   16|             0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 0
-#   16|             1: [AccessOrCallExpr,CallableOrCFE,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable i
+#    8|         0: [Parameter] i
+#    9|       4: [BlockStmt] {...}
+#   11|     3: [StaticConstructor] Class
+#   12|       4: [BlockStmt] {...}
+#   14|     4: [Destructor] ~Class
+#   15|       4: [BlockStmt] {...}
+#   16|         0: [LocalConstantDeclStmt] ... ...;
+#   16|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
+#   16|             0: [IntLiteral] 0
+#   16|             1: [LocalVariableAccess] access to local variable i

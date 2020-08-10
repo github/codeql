@@ -232,6 +232,8 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
   override Getter getGetter() { result = DeclarationWithGetSetAccessors.super.getGetter() }
 
   override Setter getSetter() { result = DeclarationWithGetSetAccessors.super.getSetter() }
+
+  override string getAPrimaryQlClass() { result = "Property" }
 }
 
 /**
@@ -298,6 +300,8 @@ class Indexer extends DeclarationWithGetSetAccessors, Parameterizable, @indexer 
   override Location getALocation() { indexer_location(this, result) }
 
   override string toStringWithTypes() { result = getName() + "[" + parameterTypesToString() + "]" }
+
+  override string getAPrimaryQlClass() { result = "Indexer" }
 }
 
 /**
@@ -370,6 +374,10 @@ class Accessor extends Callable, Modifiable, Attributable, @callable_accessor {
   override Location getALocation() { accessor_location(this, result) }
 
   override string toString() { result = getName() }
+
+  override string getAPrimaryQlClass() {
+    result = "Accessor" and not this instanceof Getter and not this instanceof Setter
+  }
 }
 
 /**
@@ -415,6 +423,8 @@ class Getter extends Accessor, @getter {
   override DeclarationWithGetSetAccessors getDeclaration() {
     result = Accessor.super.getDeclaration()
   }
+
+  override string getAPrimaryQlClass() { result = "Getter" }
 }
 
 /**
@@ -464,6 +474,8 @@ class Setter extends Accessor, @setter {
   override DeclarationWithGetSetAccessors getDeclaration() {
     result = Accessor.super.getDeclaration()
   }
+
+  override string getAPrimaryQlClass() { result = "Setter" }
 }
 
 /**
@@ -554,4 +566,6 @@ class IndexerProperty extends Property {
     // ```
     result.getIndexer() = i
   }
+
+  override string getAPrimaryQlClass() { result = "IndexerProperty" }
 }

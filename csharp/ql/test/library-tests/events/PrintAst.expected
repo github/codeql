@@ -1,163 +1,163 @@
 events.cs:
 #    5| [NamespaceDeclaration] namespace ... { ... }
-#    7|   1: [DelegateExtType,DelegateType,LeafType,NonNestedType,SourceDeclarationType] EventHandler
+#    7|   1: [DelegateType] EventHandler
 #-----|     0: (Parameters)
-#    7|       0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] sender
-#    7|       1: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] e
-#   10|   2: [Class,LeafType,NonNestedType,SourceDeclarationType] Button
-#   13|     2: [DynamicMember,Event] Click
-#   13|       1: [CallableOrCFE,InstanceCallable,RemoveEventAccessor,RuntimeInstanceAccessor,SourceDeclarationCallable] remove_Click
+#    7|       0: [Parameter] sender
+#    7|       1: [Parameter] e
+#   10|   2: [Class] Button
+#   13|     2: [Event] Click
+#   13|       1: [RemoveEventAccessor] remove_Click
 #-----|         2: (Parameters)
-#   13|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
-#   13|       1: [AddEventAccessor,CallableOrCFE,InstanceCallable,RuntimeInstanceAccessor,SourceDeclarationCallable] add_Click
+#   13|           0: [Parameter] value
+#   13|       1: [AddEventAccessor] add_Click
 #-----|         2: (Parameters)
-#   13|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleLocalScopeVariable] value
-#   15|     3: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] OnClick
+#   13|           0: [Parameter] value
+#   15|     3: [Method] OnClick
 #-----|       2: (Parameters)
-#   15|         0: [ExprOrStmtParent,Parameter,SimpleAssignable,SimpleLocalScopeVariable] e
-#   16|       4: [BlockStmt,CallableOrCFE,ConditionBlock,NonFinallyControlFlowElement,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   17|         0: [CallableOrCFE,IfStmt,NonFinallyControlFlowElement,PreOrderElement] if (...) ...
-#   17|           0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,ControlFlowScope,NonDelegateCall,NonFinallyControlFlowElement,OperatorCall,PostOrderElement,Source,StandardExpr] call to operator !=
-#   17|             0: [AccessOrCallExpr,Argument,BarrierGuard,CallableOrCFE,ControlFlowScope,DelegateArgumentToLibraryCallable,DereferenceableExpr,EventCall,EventRead,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,StatOrDynAccessorCall] access to event Click
-#   17|               -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#   17|             1: [Argument,BarrierGuard,CallableOrCFE,DelegateArgumentToLibraryCallable,DereferenceableExpr,NonFinallyControlFlowElement,NullLiteral,PostOrderElement,Sink,Source,StandardExpr] null
-#   18|           1: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,StandardStmt] ...;
-#   18|             0: [CallableOrCFE,ControlFlowScope,DelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] delegate call
-#   18|               -1: [BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,EventCall,EventRead,NonDelegateCall,NonFinallyControlFlowElement,NullGuardedExpr,PostOrderElement,Source,StandardExpr,StatOrDynAccessorCall] access to event Click
-#   18|                 -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#   18|               0: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,ThisAccess] this access
-#   18|               1: [AccessOrCallExpr,Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,ParameterRead,PostOrderElement,Source,StandardExpr] access to parameter e
-#   21|     4: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] Reset
-#   22|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   23|         0: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   23|           0: [AccessorWrite,AssignExpr,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonFinallyControlFlowElement,Source] ... = ...
-#   23|             0: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,NullLiteral,PostOrderElement,Source,StandardExpr] null
-#   23|             1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,EventCall,EventWrite,NonDelegateCall,NonFinallyControlFlowElement,QualifiedWriteAccess,Source,StatOrDynAccessorCall] access to event Click
-#   23|               -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#   27|   3: [Class,LeafType,NonNestedType,SourceDeclarationType] LoginDialog
-#   30|     1: [DynamicMember,ExprOrStmtParent,Field,InstanceFieldOrProp,InstanceFieldOrProperty,SimpleAssignable] OkButton
-#   31|     2: [DynamicMember,ExprOrStmtParent,Field,InstanceFieldOrProp,InstanceFieldOrProperty,SimpleAssignable] CancelButton
-#   33|     3: [CallableOrCFE,InstanceConstructor,RuntimeCallable,SourceDeclarationCallable] LoginDialog
-#   34|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   35|         0: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   35|           0: [AssignExpr,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
-#   35|             0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,Source] object creation of type Button
-#   35|             1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,NonFinallyControlFlowElement,QualifiedWriteAccess,Source] access to field OkButton
-#   35|               -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,ThisAccess] this access
-#   36|         1: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   36|           0: [AccessorWrite,AddEventExpr,CallableOrCFE,NonFinallyControlFlowElement,Source] ... += ...
-#   36|             0: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,ExplicitDelegateCreation,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr] delegate creation of type EventHandler
-#   36|               0: [BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodAccess,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] access to method OkButtonClick
-#   36|                 -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,ThisAccess] this access
-#   36|             1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,EventCall,EventWrite,NonDelegateCall,NonFinallyControlFlowElement,QualifiedWriteAccess,Source,StatOrDynAccessorCall] access to event Click
-#   36|               -1: [AccessOrCallExpr,Argument,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,FieldOrPropRead,FieldOrPropertyRead,FieldRead,NonFinallyControlFlowElement,PostOrderElement,Sink,StandardExpr] access to field OkButton
-#   36|                 -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,ThisAccess] this access
-#   37|         2: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   37|           0: [AssignExpr,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
-#   37|             0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,Source] object creation of type Button
-#   37|             1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,NonFinallyControlFlowElement,QualifiedWriteAccess,Source] access to field CancelButton
-#   37|               -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,ThisAccess] this access
-#   38|         3: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   38|           0: [AccessorWrite,CallableOrCFE,NonFinallyControlFlowElement,RemoveEventExpr,Source] ... -= ...
-#   38|             0: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,ExplicitDelegateCreation,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr] delegate creation of type EventHandler
-#   38|               0: [BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodAccess,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] access to method CancelButtonClick
-#   38|                 -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,ThisAccess] this access
-#   38|             1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,EventCall,EventWrite,NonDelegateCall,NonFinallyControlFlowElement,QualifiedWriteAccess,Source,StatOrDynAccessorCall] access to event Click
-#   38|               -1: [AccessOrCallExpr,Argument,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,FieldOrPropRead,FieldOrPropertyRead,FieldRead,NonFinallyControlFlowElement,PostOrderElement,Sink,StandardExpr] access to field CancelButton
-#   38|                 -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,ThisAccess] this access
-#   41|     4: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] OkButtonClick
+#   15|         0: [Parameter] e
+#   16|       4: [BlockStmt] {...}
+#   17|         0: [IfStmt] if (...) ...
+#   17|           0: [OperatorCall] call to operator !=
+#   17|             0: [EventAccess,EventCall] access to event Click
+#   17|               -1: [ThisAccess] this access
+#   17|             1: [NullLiteral] null
+#   18|           1: [ExprStmt] ...;
+#   18|             0: [DelegateCall] delegate call
+#   18|               -1: [EventAccess,EventCall] access to event Click
+#   18|                 -1: [ThisAccess] this access
+#   18|               0: [ThisAccess] this access
+#   18|               1: [ParameterAccess] access to parameter e
+#   21|     4: [Method] Reset
+#   22|       4: [BlockStmt] {...}
+#   23|         0: [ExprStmt] ...;
+#   23|           0: [AssignExpr] ... = ...
+#   23|             0: [NullLiteral] null
+#   23|             1: [EventAccess,EventCall] access to event Click
+#   23|               -1: [ThisAccess] this access
+#   27|   3: [Class] LoginDialog
+#   30|     1: [Field] OkButton
+#   31|     2: [Field] CancelButton
+#   33|     3: [InstanceConstructor] LoginDialog
+#   34|       4: [BlockStmt] {...}
+#   35|         0: [ExprStmt] ...;
+#   35|           0: [AssignExpr] ... = ...
+#   35|             0: [ObjectCreation] object creation of type Button
+#   35|             1: [FieldAccess] access to field OkButton
+#   35|               -1: [ThisAccess] this access
+#   36|         1: [ExprStmt] ...;
+#   36|           0: [AddEventExpr] ... += ...
+#   36|             0: [ExplicitDelegateCreation] delegate creation of type EventHandler
+#   36|               0: [MethodAccess] access to method OkButtonClick
+#   36|                 -1: [ThisAccess] this access
+#   36|             1: [EventAccess,EventCall] access to event Click
+#   36|               -1: [FieldAccess] access to field OkButton
+#   36|                 -1: [ThisAccess] this access
+#   37|         2: [ExprStmt] ...;
+#   37|           0: [AssignExpr] ... = ...
+#   37|             0: [ObjectCreation] object creation of type Button
+#   37|             1: [FieldAccess] access to field CancelButton
+#   37|               -1: [ThisAccess] this access
+#   38|         3: [ExprStmt] ...;
+#   38|           0: [RemoveEventExpr] ... -= ...
+#   38|             0: [ExplicitDelegateCreation] delegate creation of type EventHandler
+#   38|               0: [MethodAccess] access to method CancelButtonClick
+#   38|                 -1: [ThisAccess] this access
+#   38|             1: [EventAccess,EventCall] access to event Click
+#   38|               -1: [FieldAccess] access to field CancelButton
+#   38|                 -1: [ThisAccess] this access
+#   41|     4: [Method] OkButtonClick
 #-----|       2: (Parameters)
-#   41|         0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] sender
-#   41|         1: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] e
-#   42|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   45|     5: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] CancelButtonClick
+#   41|         0: [Parameter] sender
+#   41|         1: [Parameter] e
+#   42|       4: [BlockStmt] {...}
+#   45|     5: [Method] CancelButtonClick
 #-----|       2: (Parameters)
-#   45|         0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] sender
-#   45|         1: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] e
-#   46|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   51|   4: [Class,LeafType,NonNestedType,SourceDeclarationType] Control
-#   54|     3: [DynamicMember,ExprOrStmtParent,Field,FieldOrProp,FieldOrProperty] mouseDownEventKey
-#   54|       1: [AssignExpr,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
-#   54|         0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,PreBasicBlock,SameSplitsBlock,Source] object creation of type Object
-#   54|         1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to field mouseDownEventKey
-#   55|     4: [DynamicMember,ExprOrStmtParent,Field,FieldOrProp,FieldOrProperty] mouseUpEventKey
-#   55|       1: [AssignExpr,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
-#   55|         0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,PreBasicBlock,SameSplitsBlock,Source] object creation of type Object
-#   55|         1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to field mouseUpEventKey
-#   58|     5: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] GetEventHandler
+#   45|         0: [Parameter] sender
+#   45|         1: [Parameter] e
+#   46|       4: [BlockStmt] {...}
+#   51|   4: [Class] Control
+#   54|     3: [Field] mouseDownEventKey
+#   54|       1: [AssignExpr] ... = ...
+#   54|         0: [ObjectCreation] object creation of type Object
+#   54|         1: [FieldAccess] access to field mouseDownEventKey
+#   55|     4: [Field] mouseUpEventKey
+#   55|       1: [AssignExpr] ... = ...
+#   55|         0: [ObjectCreation] object creation of type Object
+#   55|         1: [FieldAccess] access to field mouseUpEventKey
+#   58|     5: [Method] GetEventHandler
 #-----|       2: (Parameters)
-#   58|         0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] key
-#   58|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   58|         0: [CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,ReturnStmt] return ...;
-#   58|           0: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,NullLiteral,PostOrderElement,Source,StandardExpr] null
-#   61|     6: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] AddEventHandler
+#   58|         0: [Parameter] key
+#   58|       4: [BlockStmt] {...}
+#   58|         0: [ReturnStmt] return ...;
+#   58|           0: [NullLiteral] null
+#   61|     6: [Method] AddEventHandler
 #-----|       2: (Parameters)
-#   61|         0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] key
-#   61|         1: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] handler
-#   61|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   64|     7: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] RemoveEventHandler
+#   61|         0: [Parameter] key
+#   61|         1: [Parameter] handler
+#   61|       4: [BlockStmt] {...}
+#   64|     7: [Method] RemoveEventHandler
 #-----|       2: (Parameters)
-#   64|         0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] key
-#   64|         1: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] handler
-#   64|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   67|     8: [DynamicMember,Event] MouseDown
-#   69|       1: [AddEventAccessor,CallableOrCFE,InstanceCallable,RuntimeInstanceAccessor,SourceDeclarationCallable] add_MouseDown
+#   64|         0: [Parameter] key
+#   64|         1: [Parameter] handler
+#   64|       4: [BlockStmt] {...}
+#   67|     8: [Event] MouseDown
+#   69|       1: [AddEventAccessor] add_MouseDown
 #-----|         2: (Parameters)
-#   69|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleAssignable,SimpleLocalScopeVariable] value
-#   69|         4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   69|           0: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   69|             0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method AddEventHandler
-#   69|               -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#   69|               0: [AccessOrCallExpr,Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,StandardExpr] access to field mouseDownEventKey
-#   69|               1: [AccessOrCallExpr,Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,ParameterRead,PostOrderElement,Sink,Source,StandardExpr] access to parameter value
-#   70|       2: [CallableOrCFE,InstanceCallable,RemoveEventAccessor,RuntimeInstanceAccessor,SourceDeclarationCallable] remove_MouseDown
+#   69|           0: [Parameter] value
+#   69|         4: [BlockStmt] {...}
+#   69|           0: [ExprStmt] ...;
+#   69|             0: [MethodCall] call to method AddEventHandler
+#   69|               -1: [ThisAccess] this access
+#   69|               0: [FieldAccess] access to field mouseDownEventKey
+#   69|               1: [ParameterAccess] access to parameter value
+#   70|       2: [RemoveEventAccessor] remove_MouseDown
 #-----|         2: (Parameters)
-#   70|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleAssignable,SimpleLocalScopeVariable] value
-#   70|         4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   70|           0: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   70|             0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method RemoveEventHandler
-#   70|               -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#   70|               0: [AccessOrCallExpr,Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,StandardExpr] access to field mouseDownEventKey
-#   70|               1: [AccessOrCallExpr,Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,ParameterRead,PostOrderElement,Sink,Source,StandardExpr] access to parameter value
-#   74|     9: [DynamicMember,Event] MouseUp
-#   76|       1: [AddEventAccessor,CallableOrCFE,InstanceCallable,RuntimeInstanceAccessor,SourceDeclarationCallable] add_MouseUp
+#   70|           0: [Parameter] value
+#   70|         4: [BlockStmt] {...}
+#   70|           0: [ExprStmt] ...;
+#   70|             0: [MethodCall] call to method RemoveEventHandler
+#   70|               -1: [ThisAccess] this access
+#   70|               0: [FieldAccess] access to field mouseDownEventKey
+#   70|               1: [ParameterAccess] access to parameter value
+#   74|     9: [Event] MouseUp
+#   76|       1: [AddEventAccessor] add_MouseUp
 #-----|         2: (Parameters)
-#   76|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleAssignable,SimpleLocalScopeVariable] value
-#   76|         4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   76|           0: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   76|             0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method AddEventHandler
-#   76|               -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#   76|               0: [AccessOrCallExpr,Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,StandardExpr] access to field mouseUpEventKey
-#   76|               1: [AccessOrCallExpr,Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,ParameterRead,PostOrderElement,Sink,Source,StandardExpr] access to parameter value
-#   77|       2: [CallableOrCFE,InstanceCallable,RemoveEventAccessor,RuntimeInstanceAccessor,SourceDeclarationCallable] remove_MouseUp
+#   76|           0: [Parameter] value
+#   76|         4: [BlockStmt] {...}
+#   76|           0: [ExprStmt] ...;
+#   76|             0: [MethodCall] call to method AddEventHandler
+#   76|               -1: [ThisAccess] this access
+#   76|               0: [FieldAccess] access to field mouseUpEventKey
+#   76|               1: [ParameterAccess] access to parameter value
+#   77|       2: [RemoveEventAccessor] remove_MouseUp
 #-----|         2: (Parameters)
-#   77|           0: [ExprOrStmtParent,ImplicitAccessorParameter,SimpleAssignable,SimpleLocalScopeVariable] value
-#   77|         4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   77|           0: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   77|             0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method RemoveEventHandler
-#   77|               -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#   77|               0: [AccessOrCallExpr,Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,StandardExpr] access to field mouseUpEventKey
-#   77|               1: [AccessOrCallExpr,Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,ParameterRead,PostOrderElement,Sink,Source,StandardExpr] access to parameter value
-#   81|     10: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] OnMouseUp
+#   77|           0: [Parameter] value
+#   77|         4: [BlockStmt] {...}
+#   77|           0: [ExprStmt] ...;
+#   77|             0: [MethodCall] call to method RemoveEventHandler
+#   77|               -1: [ThisAccess] this access
+#   77|               0: [FieldAccess] access to field mouseUpEventKey
+#   77|               1: [ParameterAccess] access to parameter value
+#   81|     10: [Method] OnMouseUp
 #-----|       2: (Parameters)
-#   81|         0: [ExprOrStmtParent,Parameter,SimpleAssignable,SimpleLocalScopeVariable] args
-#   82|       4: [BlockStmt,CallableOrCFE,ConditionBlock,NonFinallyControlFlowElement,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   83|         0: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
-#   83|           0: [CallableOrCFE,DereferenceableExpr,LocalVariableDeclExpr,NonFinallyControlFlowElement,Operation,PostOrderElement,Source,StandardExpr] EventHandler handler
-#   84|         1: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   84|           0: [AssignExpr,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
-#   84|             0: [BarrierGuard,CallableOrCFE,CastExpr,ControlFlowScope,DereferenceableExpr,ExplicitCast,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] (...) ...
-#   84|               0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method GetEventHandler
-#   84|                 -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#   84|                 0: [AccessOrCallExpr,Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,StandardExpr] access to field mouseUpEventKey
-#   84|               1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,SimpleNoNodeExpr,Source,TypeAccess] access to type EventHandler
-#   84|             1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable handler
-#   85|         2: [CallableOrCFE,IfStmt,NonFinallyControlFlowElement,PreOrderElement] if (...) ...
-#   85|           0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,ControlFlowScope,NonDelegateCall,NonFinallyControlFlowElement,OperatorCall,PostOrderElement,Source,StandardExpr] call to operator !=
-#   85|             0: [AccessOrCallExpr,Argument,BarrierGuard,CallableOrCFE,DelegateArgumentToLibraryCallable,DereferenceableExpr,LocalVariableRead,NonFinallyControlFlowElement,PostOrderElement,Sink,StandardExpr] access to local variable handler
-#   85|             1: [Argument,BarrierGuard,CallableOrCFE,DelegateArgumentToLibraryCallable,DereferenceableExpr,NonFinallyControlFlowElement,NullLiteral,PostOrderElement,Sink,Source,StandardExpr] null
-#   86|           1: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,StandardStmt] ...;
-#   86|             0: [CallableOrCFE,ControlFlowScope,DelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] delegate call
-#   86|               -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,LocalVariableRead,NonFinallyControlFlowElement,NullGuardedExpr,PostOrderElement,StandardExpr] access to local variable handler
-#   86|               0: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,ThisAccess] this access
-#   86|               1: [AccessOrCallExpr,Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,ParameterRead,PostOrderElement,Source,StandardExpr] access to parameter args
+#   81|         0: [Parameter] args
+#   82|       4: [BlockStmt] {...}
+#   83|         0: [LocalConstantDeclStmt] ... ...;
+#   83|           0: [LocalVariableDeclExpr] EventHandler handler
+#   84|         1: [ExprStmt] ...;
+#   84|           0: [AssignExpr] ... = ...
+#   84|             0: [CastExpr] (...) ...
+#   84|               0: [MethodCall] call to method GetEventHandler
+#   84|                 -1: [ThisAccess] this access
+#   84|                 0: [FieldAccess] access to field mouseUpEventKey
+#   84|               1: [TypeAccess] access to type EventHandler
+#   84|             1: [LocalVariableAccess] access to local variable handler
+#   85|         2: [IfStmt] if (...) ...
+#   85|           0: [OperatorCall] call to operator !=
+#   85|             0: [LocalVariableAccess] access to local variable handler
+#   85|             1: [NullLiteral] null
+#   86|           1: [ExprStmt] ...;
+#   86|             0: [DelegateCall] delegate call
+#   86|               -1: [LocalVariableAccess] access to local variable handler
+#   86|               0: [ThisAccess] this access
+#   86|               1: [ParameterAccess] access to parameter args

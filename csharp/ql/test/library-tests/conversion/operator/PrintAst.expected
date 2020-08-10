@@ -1,19 +1,19 @@
 Operator.cs:
-#    3| [Class,LeafType,NonNestedType,SourceDeclarationType] C
-#    5|   2: [CallableOrCFE,ImplicitConversionOperator,RuntimeOperator,SourceDeclarationCallable] implicit conversion
+#    3| [Class] C
+#    5|   2: [ImplicitConversionOperator] implicit conversion
 #-----|     2: (Parameters)
-#    5|       0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] i
-#    5|     4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#    5|       0: [CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,ReturnStmt] return ...;
-#    5|         0: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,NullLiteral,PostOrderElement,Source,StandardExpr] null
-#    7|   3: [DynamicMember,ExprOrStmtParent,Field,InstanceFieldOrProp,InstanceFieldOrProperty,SimpleAssignable] x1
-#    8|   4: [DynamicMember,ExprOrStmtParent,Field,InstanceFieldOrProp,InstanceFieldOrProperty,SimpleAssignable] x2
-#   11|   5: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] M
-#   12|     4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   13|       0: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   13|         0: [AssignExpr,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
-#   13|           0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,ControlFlowScope,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,OperatorCall,PostOrderElement,Source,StandardExpr] call to operator implicit conversion
-#   13|             0: [AccessOrCallExpr,Argument,CallableOrCFE,ControlFlowScope,FieldOrPropRead,FieldOrPropertyRead,FieldRead,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr] access to field x1
-#   13|               -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,ThisAccess] this access
-#   13|           1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,NonFinallyControlFlowElement,QualifiedWriteAccess,Source] access to field x2
-#   13|             -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,ThisAccess] this access
+#    5|       0: [Parameter] i
+#    5|     4: [BlockStmt] {...}
+#    5|       0: [ReturnStmt] return ...;
+#    5|         0: [NullLiteral] null
+#    7|   3: [Field] x1
+#    8|   4: [Field] x2
+#   11|   5: [Method] M
+#   12|     4: [BlockStmt] {...}
+#   13|       0: [ExprStmt] ...;
+#   13|         0: [AssignExpr] ... = ...
+#   13|           0: [OperatorCall] call to operator implicit conversion
+#   13|             0: [FieldAccess] access to field x1
+#   13|               -1: [ThisAccess] this access
+#   13|           1: [FieldAccess] access to field x2
+#   13|             -1: [ThisAccess] this access

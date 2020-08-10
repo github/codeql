@@ -1,43 +1,43 @@
 csharp72.cs:
-#    5| [Class,LeafType,NonNestedType,SourceDeclarationType] InModifiers
-#    7|   2: [LeafType,NestedType,SourceDeclarationType,Struct] S
-#   11|   3: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] F
+#    5| [Class] InModifiers
+#    7|   2: [Struct] S
+#   11|   3: [Method] F
 #-----|     2: (Parameters)
-#   11|       0: [ExprOrStmtParent,Parameter,SimpleLocalScopeVariable] s
-#   12|     4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   15|   4: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] CallF
-#   16|     4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   17|       0: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
-#   17|         0: [CallableOrCFE,ControlFlowScope,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] S s = ...
-#   17|           0: [AccessOrCallExpr,CallableOrCFE,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,Source] object creation of type S
-#   17|           1: [AccessOrCallExpr,CallableOrCFE,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable s
-#   18|       1: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   18|         0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method F
-#   18|           -1: [Argument,BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr,ThisAccess] this access
-#   18|           0: [AccessOrCallExpr,Argument,CallableOrCFE,LocalVariableRead,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr] access to local variable s
-#   22| [Class,LeafType,NonNestedType,SourceDeclarationType] RefReadonlyReturns
-#   24|   2: [DynamicMember,ExprOrStmtParent,Field,InstanceFieldOrProp,InstanceFieldOrProperty,SimpleAssignable] s
-#   26|   3: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] F
-#   27|     4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   28|       0: [CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,ReturnStmt] return ...;
-#   28|         0: [CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,RefExpr,Source,StandardExpr] ref ...
-#   28|           0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,FieldOrPropRead,FieldOrPropertyRead,FieldRead,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] access to field s
-#   28|             -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,ThisAccess] this access
-#   31|   4: [DelegateExtType,DelegateType,LeafType,NestedType,SourceDeclarationType] Del
-#   46| [Class,LeafType,NonNestedType,SourceDeclarationType] NumericLiterals
-#   48|   2: [DynamicMember,ExprOrStmtParent,Field,InitializedInstanceMember,InstanceFieldOrProp,InstanceFieldOrProperty] binaryValue
-#   48|     1: [AssignExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
-#   48|       0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 85
-#   48|       1: [AccessOrCallExpr,CallableOrCFE,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,NonFinallyControlFlowElement,QualifiedWriteAccess,Source] access to field binaryValue
-#   48|         -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,PreBasicBlock,SameSplitsBlock,Source,StandardExpr,ThisAccess] this access
-#   51| [Class,LeafType,NonNestedType,SourceDeclarationType] PrivateProtected
-#   53|   2: [DynamicMember,ExprOrStmtParent,Field,InitializedInstanceMember,InstanceFieldOrProp,InstanceFieldOrProperty] X
-#   53|     1: [AssignExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
-#   53|       0: [CallableOrCFE,IntLiteral,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] 1
-#   53|       1: [AccessOrCallExpr,CallableOrCFE,FieldOrPropAccess,FieldOrPropertyAccess,FieldWrite,NonFinallyControlFlowElement,QualifiedWriteAccess,Source] access to field X
-#   53|         -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,PreBasicBlock,SameSplitsBlock,Source,StandardExpr,ThisAccess] this access
-#   55|   3: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] F
-#   55|     4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   34| [LeafType,NonNestedType,SourceDeclarationType,Struct] ReadonlyStruct
-#   38| [LeafType,NonNestedType,SourceDeclarationType,Struct] RefStruct
-#   42| [LeafType,NonNestedType,SourceDeclarationType,Struct] ReadonlyRefStruct
+#   11|       0: [Parameter] s
+#   12|     4: [BlockStmt] {...}
+#   15|   4: [Method] CallF
+#   16|     4: [BlockStmt] {...}
+#   17|       0: [LocalConstantDeclStmt] ... ...;
+#   17|         0: [LocalVariableDeclAndInitExpr] S s = ...
+#   17|           0: [ObjectCreation] object creation of type S
+#   17|           1: [LocalVariableAccess] access to local variable s
+#   18|       1: [ExprStmt] ...;
+#   18|         0: [MethodCall] call to method F
+#   18|           -1: [ThisAccess] this access
+#   18|           0: [LocalVariableAccess] access to local variable s
+#   22| [Class] RefReadonlyReturns
+#   24|   2: [Field] s
+#   26|   3: [Method] F
+#   27|     4: [BlockStmt] {...}
+#   28|       0: [ReturnStmt] return ...;
+#   28|         0: [RefExpr] ref ...
+#   28|           0: [FieldAccess] access to field s
+#   28|             -1: [ThisAccess] this access
+#   31|   4: [DelegateType] Del
+#   46| [Class] NumericLiterals
+#   48|   2: [Field] binaryValue
+#   48|     1: [AssignExpr] ... = ...
+#   48|       0: [IntLiteral] 85
+#   48|       1: [FieldAccess] access to field binaryValue
+#   48|         -1: [ThisAccess] this access
+#   51| [Class] PrivateProtected
+#   53|   2: [Field] X
+#   53|     1: [AssignExpr] ... = ...
+#   53|       0: [IntLiteral] 1
+#   53|       1: [FieldAccess] access to field X
+#   53|         -1: [ThisAccess] this access
+#   55|   3: [Method] F
+#   55|     4: [BlockStmt] {...}
+#   34| [Struct] ReadonlyStruct
+#   38| [Struct] RefStruct
+#   42| [Struct] ReadonlyRefStruct

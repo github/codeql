@@ -1,67 +1,67 @@
 csharp71.cs:
-#    3| [Class,LeafType,NonNestedType,SourceDeclarationType] DefaultLiterals
-#    5|   2: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] f
-#    6|     4: [BlockStmt,CallableOrCFE,ConditionBlock,NonFinallyControlFlowElement,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#    7|       0: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
-#    7|         0: [CallableOrCFE,ControlFlowScope,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] Int32 x = ...
-#    7|           0: [CallableOrCFE,CastExpr,ControlFlowScope,ImplicitCast,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,StandardExpr] (...) ...
-#    7|             0: [CallableOrCFE,DefaultValueExpr,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] default
-#    7|           1: [AccessOrCallExpr,CallableOrCFE,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable x
-#    7|         1: [CallableOrCFE,ControlFlowScope,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] Int32 y = ...
-#    7|           0: [CallableOrCFE,DefaultValueExpr,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] default(...)
-#    7|             0: [CallableOrCFE,NonFinallyControlFlowElement,SimpleNoNodeExpr,Source,TypeAccess] access to type Int32
-#    7|           1: [AccessOrCallExpr,CallableOrCFE,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable y
-#    8|       1: [CallableOrCFE,IfStmt,NonFinallyControlFlowElement,PreOrderElement] if (...) ...
-#    8|         0: [BarrierGuard,CallableOrCFE,ControlFlowScope,EQExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... == ...
-#    8|           0: [AccessOrCallExpr,CallableOrCFE,LocalVariableRead,NonFinallyControlFlowElement,PostOrderElement,StandardExpr] access to local variable x
-#    8|           1: [CallableOrCFE,CastExpr,ControlFlowScope,ImplicitCast,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,StandardExpr] (...) ...
-#    8|             0: [CallableOrCFE,DefaultValueExpr,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] default
-#    9|         1: [CallableOrCFE,EmptyStmt,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,StandardStmt] ;
-#   10|       2: [CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SwitchStmt] switch (...) {...}
-#   10|         0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,LocalVariableRead,NonFinallyControlFlowElement,PostOrderElement,StandardExpr] access to local variable x
-#   12|         0: [CallableOrCFE,CaseStmt,LabeledStmt,NonFinallyControlFlowElement,PreOrderElement] case ...:
-#   12|           0: [CallableOrCFE,DiscardPatternExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] _
-#   12|         1: [BreakStmt,CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement] break;
-#   14|       3: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   14|         0: [AssignExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
-#   14|           0: [CallableOrCFE,CastExpr,ControlFlowScope,ImplicitCast,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,StandardExpr] (...) ...
-#   14|             0: [CallableOrCFE,DefaultValueExpr,NonFinallyControlFlowElement,PostOrderElement,SignedIntegralConstantExpr,Source,StandardExpr] default
-#   14|           1: [AccessOrCallExpr,CallableOrCFE,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable x
-#   15|       4: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
-#   15|         0: [CallableOrCFE,CollectionExpr,ControlFlowScope,DereferenceableExpr,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] String s = ...
-#   15|           0: [BarrierGuard,CallableOrCFE,CastExpr,CollectionExpr,ControlFlowScope,DereferenceableExpr,ImplicitCast,NonFinallyControlFlowElement,PostOrderElement,StandardExpr] (...) ...
-#   15|             0: [BarrierGuard,CallableOrCFE,CollectionExpr,DefaultValueExpr,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] default
-#   15|           1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable s
-#   16|       5: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
-#   16|         0: [CallableOrCFE,ControlFlowScope,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] Boolean b = ...
-#   16|           0: [BarrierGuard,CallableOrCFE,CastExpr,ControlFlowScope,ImplicitCast,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] (...) ...
-#   16|             0: [BarrierGuard,CallableOrCFE,DefaultValueExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] default
-#   16|           1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable b
-#   17|       6: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
-#   17|         0: [CallableOrCFE,ControlFlowScope,LocalVariableDeclAndInitExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] Double d = ...
-#   17|           0: [CallableOrCFE,CastExpr,ControlFlowScope,ImplicitCast,NonFinallyControlFlowElement,PostOrderElement,StandardExpr] (...) ...
-#   17|             0: [CallableOrCFE,DefaultValueExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] default
-#   17|           1: [AccessOrCallExpr,CallableOrCFE,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable d
-#   21| [Class,LeafType,NonNestedType,SourceDeclarationType] IsConstants
-#   23|   2: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] f
-#   24|     4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   25|       0: [CallableOrCFE,LocalVariableDeclStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ... ...;
-#   25|         0: [CallableOrCFE,LocalVariableDeclExpr,NonFinallyControlFlowElement,Operation,PostOrderElement,Source,StandardExpr] Boolean b
-#   26|       1: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   26|         0: [AssignExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
-#   26|           0: [BarrierGuard,CallableOrCFE,IsExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... is ...
-#   26|             0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,DereferenceableExpr,NonDelegateCall,NonFinallyControlFlowElement,ObjectCreation,PostOrderElement,Source] object creation of type Object
-#   26|             1: [BarrierGuard,CallableOrCFE,CollectionExpr,ConstantPatternExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,StringLiteral] "abc"
-#   26|           1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable b
-#   27|       2: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   27|         0: [AssignExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
-#   27|           0: [BarrierGuard,CallableOrCFE,IsExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... is ...
-#   27|             0: [BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,StringLiteral] ""
-#   27|             1: [CallableOrCFE,ConstantPatternExpr,NonFinallyControlFlowElement,NullLiteral,PostOrderElement,Source,StandardExpr] null
-#   27|           1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable b
-#   28|       3: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   28|         0: [AssignExpr,CallableOrCFE,ControlFlowScope,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... = ...
-#   28|           0: [BarrierGuard,CallableOrCFE,IsExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] ... is ...
-#   28|             0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,LocalVariableRead,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] access to local variable b
-#   28|             1: [BoolLiteral,CallableOrCFE,ConstantPatternExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] true
-#   28|           1: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,LocalScopeVariableWrite,LocalVariableWrite,NonFinallyControlFlowElement,Source,WriteAccessNoNodeExpr] access to local variable b
+#    3| [Class] DefaultLiterals
+#    5|   2: [Method] f
+#    6|     4: [BlockStmt] {...}
+#    7|       0: [LocalConstantDeclStmt] ... ...;
+#    7|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
+#    7|           0: [CastExpr] (...) ...
+#    7|             0: [DefaultValueExpr] default
+#    7|           1: [LocalVariableAccess] access to local variable x
+#    7|         1: [LocalVariableDeclAndInitExpr] Int32 y = ...
+#    7|           0: [DefaultValueExpr] default(...)
+#    7|             0: [TypeAccess] access to type Int32
+#    7|           1: [LocalVariableAccess] access to local variable y
+#    8|       1: [IfStmt] if (...) ...
+#    8|         0: [EQExpr] ... == ...
+#    8|           0: [LocalVariableAccess] access to local variable x
+#    8|           1: [CastExpr] (...) ...
+#    8|             0: [DefaultValueExpr] default
+#    9|         1: [EmptyStmt] ;
+#   10|       2: [SwitchStmt] switch (...) {...}
+#   10|         0: [LocalVariableAccess] access to local variable x
+#   12|         0: [CaseStmt] case ...:
+#   12|           0: [DiscardPatternExpr] _
+#   12|         1: [BreakStmt] break;
+#   14|       3: [ExprStmt] ...;
+#   14|         0: [AssignExpr] ... = ...
+#   14|           0: [CastExpr] (...) ...
+#   14|             0: [DefaultValueExpr] default
+#   14|           1: [LocalVariableAccess] access to local variable x
+#   15|       4: [LocalConstantDeclStmt] ... ...;
+#   15|         0: [LocalVariableDeclAndInitExpr] String s = ...
+#   15|           0: [CastExpr] (...) ...
+#   15|             0: [DefaultValueExpr] default
+#   15|           1: [LocalVariableAccess] access to local variable s
+#   16|       5: [LocalConstantDeclStmt] ... ...;
+#   16|         0: [LocalVariableDeclAndInitExpr] Boolean b = ...
+#   16|           0: [CastExpr] (...) ...
+#   16|             0: [DefaultValueExpr] default
+#   16|           1: [LocalVariableAccess] access to local variable b
+#   17|       6: [LocalConstantDeclStmt] ... ...;
+#   17|         0: [LocalVariableDeclAndInitExpr] Double d = ...
+#   17|           0: [CastExpr] (...) ...
+#   17|             0: [DefaultValueExpr] default
+#   17|           1: [LocalVariableAccess] access to local variable d
+#   21| [Class] IsConstants
+#   23|   2: [Method] f
+#   24|     4: [BlockStmt] {...}
+#   25|       0: [LocalConstantDeclStmt] ... ...;
+#   25|         0: [LocalVariableDeclExpr] Boolean b
+#   26|       1: [ExprStmt] ...;
+#   26|         0: [AssignExpr] ... = ...
+#   26|           0: [IsExpr] ... is ...
+#   26|             0: [ObjectCreation] object creation of type Object
+#   26|             1: [ConstantPatternExpr,StringLiteral] "abc"
+#   26|           1: [LocalVariableAccess] access to local variable b
+#   27|       2: [ExprStmt] ...;
+#   27|         0: [AssignExpr] ... = ...
+#   27|           0: [IsExpr] ... is ...
+#   27|             0: [StringLiteral] ""
+#   27|             1: [ConstantPatternExpr,NullLiteral] null
+#   27|           1: [LocalVariableAccess] access to local variable b
+#   28|       3: [ExprStmt] ...;
+#   28|         0: [AssignExpr] ... = ...
+#   28|           0: [IsExpr] ... is ...
+#   28|             0: [LocalVariableAccess] access to local variable b
+#   28|             1: [BoolLiteral,ConstantPatternExpr] true
+#   28|           1: [LocalVariableAccess] access to local variable b

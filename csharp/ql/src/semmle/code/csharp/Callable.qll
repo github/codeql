@@ -284,6 +284,8 @@ class Method extends Callable, Virtualizable, Attributable, @method {
   override Parameter getRawParameter(int i) {
     if this.isStatic() then result = this.getParameter(i) else result = this.getParameter(i - 1)
   }
+
+  override string getAPrimaryQlClass() { result = "Method" and not this instanceof ExtensionMethod }
 }
 
 /**
@@ -302,6 +304,8 @@ class ExtensionMethod extends Method {
 
   /** Gets the type being extended by this method. */
   Type getExtendedType() { result = getParameter(0).getType() }
+
+  override string getAPrimaryQlClass() { result = "ExtensionMethod" }
 }
 
 /**
@@ -371,6 +375,8 @@ class StaticConstructor extends Constructor {
   StaticConstructor() { this.isStatic() }
 
   override string getUndecoratedName() { result = ".cctor" }
+
+  override string getAPrimaryQlClass() { result = "StaticConstructor" }
 }
 
 /**
@@ -385,6 +391,8 @@ class StaticConstructor extends Constructor {
  */
 class InstanceConstructor extends Constructor {
   InstanceConstructor() { not this.isStatic() }
+
+  override string getAPrimaryQlClass() { result = "InstanceConstructor" }
 }
 
 /**
@@ -413,6 +421,8 @@ class Destructor extends DotNet::Destructor, Callable, Member, Attributable, @de
   override Location getALocation() { destructor_location(this, result) }
 
   override string toString() { result = Callable.super.toString() }
+
+  override string getAPrimaryQlClass() { result = "Destructor" }
 }
 
 /**
@@ -471,6 +481,8 @@ class PlusOperator extends UnaryOperator {
   PlusOperator() { this.getName() = "+" }
 
   override string getFunctionName() { result = "op_UnaryPlus" }
+
+  override string getAPrimaryQlClass() { result = "PlusOperator" }
 }
 
 /**
@@ -486,6 +498,8 @@ class MinusOperator extends UnaryOperator {
   MinusOperator() { this.getName() = "-" }
 
   override string getFunctionName() { result = "op_UnaryNegation" }
+
+  override string getAPrimaryQlClass() { result = "MinusOperator" }
 }
 
 /**
@@ -501,6 +515,8 @@ class NotOperator extends UnaryOperator {
   NotOperator() { this.getName() = "!" }
 
   override string getFunctionName() { result = "op_LogicalNot" }
+
+  override string getAPrimaryQlClass() { result = "NotOperator" }
 }
 
 /**
@@ -516,6 +532,8 @@ class ComplementOperator extends UnaryOperator {
   ComplementOperator() { this.getName() = "~" }
 
   override string getFunctionName() { result = "op_OnesComplement" }
+
+  override string getAPrimaryQlClass() { result = "ComplementOperator" }
 }
 
 /**
@@ -531,6 +549,8 @@ class IncrementOperator extends UnaryOperator {
   IncrementOperator() { this.getName() = "++" }
 
   override string getFunctionName() { result = "op_Increment" }
+
+  override string getAPrimaryQlClass() { result = "IncrementOperator" }
 }
 
 /**
@@ -546,6 +566,8 @@ class DecrementOperator extends UnaryOperator {
   DecrementOperator() { this.getName() = "--" }
 
   override string getFunctionName() { result = "op_Decrement" }
+
+  override string getAPrimaryQlClass() { result = "DecrementOperator" }
 }
 
 /**
@@ -561,6 +583,8 @@ class FalseOperator extends UnaryOperator {
   FalseOperator() { this.getName() = "false" }
 
   override string getFunctionName() { result = "op_False" }
+
+  override string getAPrimaryQlClass() { result = "FalseOperator" }
 }
 
 /**
@@ -576,6 +600,8 @@ class TrueOperator extends UnaryOperator {
   TrueOperator() { this.getName() = "true" }
 
   override string getFunctionName() { result = "op_True" }
+
+  override string getAPrimaryQlClass() { result = "TrueOperator" }
 }
 
 /**
@@ -608,6 +634,8 @@ class AddOperator extends BinaryOperator {
   AddOperator() { this.getName() = "+" }
 
   override string getFunctionName() { result = "op_Addition" }
+
+  override string getAPrimaryQlClass() { result = "AddOperator" }
 }
 
 /**
@@ -623,6 +651,8 @@ class SubOperator extends BinaryOperator {
   SubOperator() { this.getName() = "-" }
 
   override string getFunctionName() { result = "op_Subtraction" }
+
+  override string getAPrimaryQlClass() { result = "SubOperator" }
 }
 
 /**
@@ -638,6 +668,8 @@ class MulOperator extends BinaryOperator {
   MulOperator() { this.getName() = "*" }
 
   override string getFunctionName() { result = "op_Multiply" }
+
+  override string getAPrimaryQlClass() { result = "MulOperator" }
 }
 
 /**
@@ -653,6 +685,8 @@ class DivOperator extends BinaryOperator {
   DivOperator() { this.getName() = "/" }
 
   override string getFunctionName() { result = "op_Division" }
+
+  override string getAPrimaryQlClass() { result = "DivOperator" }
 }
 
 /**
@@ -668,6 +702,8 @@ class RemOperator extends BinaryOperator {
   RemOperator() { this.getName() = "%" }
 
   override string getFunctionName() { result = "op_Modulus" }
+
+  override string getAPrimaryQlClass() { result = "RemOperator" }
 }
 
 /**
@@ -683,6 +719,8 @@ class AndOperator extends BinaryOperator {
   AndOperator() { this.getName() = "&" }
 
   override string getFunctionName() { result = "op_BitwiseAnd" }
+
+  override string getAPrimaryQlClass() { result = "AndOperator" }
 }
 
 /**
@@ -698,6 +736,8 @@ class OrOperator extends BinaryOperator {
   OrOperator() { this.getName() = "|" }
 
   override string getFunctionName() { result = "op_BitwiseOr" }
+
+  override string getAPrimaryQlClass() { result = "OrOperator" }
 }
 
 /**
@@ -713,6 +753,8 @@ class XorOperator extends BinaryOperator {
   XorOperator() { this.getName() = "^" }
 
   override string getFunctionName() { result = "op_ExclusiveOr" }
+
+  override string getAPrimaryQlClass() { result = "XorOperator" }
 }
 
 /**
@@ -728,6 +770,8 @@ class LShiftOperator extends BinaryOperator {
   LShiftOperator() { this.getName() = "<<" }
 
   override string getFunctionName() { result = "op_LeftShift" }
+
+  override string getAPrimaryQlClass() { result = "LShiftOperator" }
 }
 
 /**
@@ -743,6 +787,8 @@ class RShiftOperator extends BinaryOperator {
   RShiftOperator() { this.getName() = ">>" }
 
   override string getFunctionName() { result = "op_RightShift" }
+
+  override string getAPrimaryQlClass() { result = "RShiftOperator" }
 }
 
 /**
@@ -758,6 +804,8 @@ class EQOperator extends BinaryOperator {
   EQOperator() { this.getName() = "==" }
 
   override string getFunctionName() { result = "op_Equality" }
+
+  override string getAPrimaryQlClass() { result = "EQOperator" }
 }
 
 /**
@@ -773,6 +821,8 @@ class NEOperator extends BinaryOperator {
   NEOperator() { this.getName() = "!=" }
 
   override string getFunctionName() { result = "op_Inequality" }
+
+  override string getAPrimaryQlClass() { result = "NEOperator" }
 }
 
 /**
@@ -788,6 +838,8 @@ class LTOperator extends BinaryOperator {
   LTOperator() { this.getName() = "<" }
 
   override string getFunctionName() { result = "op_LessThan" }
+
+  override string getAPrimaryQlClass() { result = "LTOperator" }
 }
 
 /**
@@ -803,6 +855,8 @@ class GTOperator extends BinaryOperator {
   GTOperator() { this.getName() = ">" }
 
   override string getFunctionName() { result = "op_GreaterThan" }
+
+  override string getAPrimaryQlClass() { result = "GTOperator" }
 }
 
 /**
@@ -818,6 +872,8 @@ class LEOperator extends BinaryOperator {
   LEOperator() { this.getName() = "<=" }
 
   override string getFunctionName() { result = "op_LessThanOrEqual" }
+
+  override string getAPrimaryQlClass() { result = "LEOperator" }
 }
 
 /**
@@ -833,6 +889,8 @@ class GEOperator extends BinaryOperator {
   GEOperator() { this.getName() = ">=" }
 
   override string getFunctionName() { result = "op_GreaterThanOrEqual" }
+
+  override string getAPrimaryQlClass() { result = "GEOperator" }
 }
 
 /**
@@ -870,6 +928,8 @@ class ImplicitConversionOperator extends ConversionOperator {
   ImplicitConversionOperator() { this.getName() = "implicit conversion" }
 
   override string getFunctionName() { result = "op_Implicit" }
+
+  override string getAPrimaryQlClass() { result = "ImplicitConversionOperator" }
 }
 
 /**
@@ -885,6 +945,8 @@ class ExplicitConversionOperator extends ConversionOperator {
   ExplicitConversionOperator() { this.getName() = "explicit conversion" }
 
   override string getFunctionName() { result = "op_Explicit" }
+
+  override string getAPrimaryQlClass() { result = "ExplicitConversionOperator" }
 }
 
 /**
@@ -923,4 +985,6 @@ class LocalFunction extends Callable, Modifiable, @local_function {
   override Location getALocation() { result = getStatement().getALocation() }
 
   override Parameter getRawParameter(int i) { result = getParameter(i) }
+
+  override string getAPrimaryQlClass() { result = "LocalFunction" }
 }

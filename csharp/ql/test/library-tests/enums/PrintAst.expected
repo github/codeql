@@ -1,88 +1,88 @@
 enums.cs:
 #    5| [NamespaceDeclaration] namespace ... { ... }
-#    7|   1: [Enum,LeafType,NonNestedType,SourceDeclarationType] Color
-#   10|     2: [DynamicMember,EnumConstant,ExprOrStmtParent,FieldOrProp,FieldOrProperty] Red
-#   10|     3: [DynamicMember,EnumConstant,ExprOrStmtParent,FieldOrProp,FieldOrProperty] Green
-#   10|     4: [DynamicMember,EnumConstant,ExprOrStmtParent,FieldOrProp,FieldOrProperty] Blue
-#   14|   2: [Enum,LeafType,NonNestedType,SourceDeclarationType] LongColor
-#   17|     2: [DynamicMember,EnumConstant,ExprOrStmtParent,FieldOrProp,FieldOrProperty] Red
-#   18|     3: [DynamicMember,EnumConstant,ExprOrStmtParent,FieldOrProp,FieldOrProperty] Green
-#   19|     4: [DynamicMember,EnumConstant,ExprOrStmtParent,FieldOrProp,FieldOrProperty] Blue
-#   23|   3: [Enum,LeafType,NonNestedType,SourceDeclarationType] E
-#   25|   4: [Enum,LeafType,NonNestedType,SourceDeclarationType] ValueColor
-#   28|     2: [DynamicMember,EnumConstant,ExprOrStmtParent,FieldOrProp,FieldOrProperty] OneRed
-#   28|       1: [AccessOrCallExpr,CallableOrCFE,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MemberConstantAccess,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,Source,StandardExpr] access to constant OneRed
-#   29|     3: [DynamicMember,EnumConstant,ExprOrStmtParent,FieldOrProp,FieldOrProperty] TwoGreen
-#   29|       1: [AccessOrCallExpr,CallableOrCFE,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MemberConstantAccess,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,Source,StandardExpr] access to constant TwoGreen
-#   30|     4: [DynamicMember,EnumConstant,ExprOrStmtParent,FieldOrProp,FieldOrProperty] FourBlue
-#   30|       1: [AccessOrCallExpr,CallableOrCFE,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MemberConstantAccess,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,Source,StandardExpr] access to constant FourBlue
-#   34|   5: [Enum,LeafType,NonNestedType,SourceDeclarationType] SparseColor
-#   37|     2: [DynamicMember,EnumConstant,ExprOrStmtParent,FieldOrProp,FieldOrProperty] Red
-#   38|     3: [DynamicMember,EnumConstant,ExprOrStmtParent,FieldOrProp,FieldOrProperty] Green
-#   38|       1: [AccessOrCallExpr,CallableOrCFE,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MemberConstantAccess,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,Source,StandardExpr] access to constant Green
-#   39|     4: [DynamicMember,EnumConstant,ExprOrStmtParent,FieldOrProp,FieldOrProperty] Blue
-#   40|     5: [DynamicMember,EnumConstant,ExprOrStmtParent,FieldOrProp,FieldOrProperty] AnotherBlue
-#   40|       1: [AccessOrCallExpr,CallableOrCFE,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MemberConstantAccess,NonFinallyControlFlowElement,PostOrderElement,SameSplitsBlock,Source,StandardExpr] access to constant AnotherBlue
-#   44|   6: [Class,LeafType,NonNestedType,SourceDeclarationType] Test
-#   47|     2: [CallableOrCFE,NonConstructedMethod,RuntimeMethod,SourceDeclarationMethod] Main
-#   48|       4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   49|         0: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   49|           0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method WriteLine
-#   49|             -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,SimpleNoNodeExpr,Sink,Source,TypeAccess] access to type Console
-#   49|             0: [AccessOrCallExpr,Argument,BarrierGuard,CallableOrCFE,CollectionExpr,ControlFlowScope,DereferenceableExpr,MethodCall,MethodCallArg,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr] call to method StringFromColor
-#   49|               0: [AccessOrCallExpr,Argument,CallableOrCFE,ControlFlowScope,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MemberConstantAccess,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr] access to constant Red
-#   49|                 -1: [CallableOrCFE,NonFinallyControlFlowElement,SimpleNoNodeExpr,Source,TypeAccess] access to type SparseColor
-#   50|         1: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   50|           0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method WriteLine
-#   50|             -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,SimpleNoNodeExpr,Sink,Source,TypeAccess] access to type Console
-#   50|             0: [AccessOrCallExpr,Argument,BarrierGuard,CallableOrCFE,CollectionExpr,ControlFlowScope,DereferenceableExpr,MethodCall,MethodCallArg,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr] call to method StringFromColor
-#   50|               0: [AccessOrCallExpr,Argument,CallableOrCFE,ControlFlowScope,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MemberConstantAccess,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr] access to constant Green
-#   50|                 -1: [CallableOrCFE,NonFinallyControlFlowElement,SimpleNoNodeExpr,Source,TypeAccess] access to type SparseColor
-#   51|         2: [CallableOrCFE,ExprStmt,NonFinallyControlFlowElement,PreOrderElement,StandardStmt] ...;
-#   51|           0: [AccessOrCallExpr,CallableOrCFE,ControlFlowScope,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method WriteLine
-#   51|             -1: [BarrierGuard,CallableOrCFE,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,SimpleNoNodeExpr,Sink,Source,TypeAccess] access to type Console
-#   51|             0: [AccessOrCallExpr,Argument,BarrierGuard,CallableOrCFE,CollectionExpr,ControlFlowScope,DereferenceableExpr,MethodCall,MethodCallArg,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr] call to method StringFromColor
-#   51|               0: [AccessOrCallExpr,Argument,CallableOrCFE,ControlFlowScope,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MemberConstantAccess,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,Source,StandardExpr] access to constant Blue
-#   51|                 -1: [CallableOrCFE,NonFinallyControlFlowElement,SimpleNoNodeExpr,Source,TypeAccess] access to type SparseColor
-#   54|     3: [CallableOrCFE,NonConstructedMethod,RuntimeMethod,SourceDeclarationMethod] StringFromColor
+#    7|   1: [Enum] Color
+#   10|     2: [Field] Red
+#   10|     3: [Field] Green
+#   10|     4: [Field] Blue
+#   14|   2: [Enum] LongColor
+#   17|     2: [Field] Red
+#   18|     3: [Field] Green
+#   19|     4: [Field] Blue
+#   23|   3: [Enum] E
+#   25|   4: [Enum] ValueColor
+#   28|     2: [Field] OneRed
+#   28|       1: [MemberConstantAccess] access to constant OneRed
+#   29|     3: [Field] TwoGreen
+#   29|       1: [MemberConstantAccess] access to constant TwoGreen
+#   30|     4: [Field] FourBlue
+#   30|       1: [MemberConstantAccess] access to constant FourBlue
+#   34|   5: [Enum] SparseColor
+#   37|     2: [Field] Red
+#   38|     3: [Field] Green
+#   38|       1: [MemberConstantAccess] access to constant Green
+#   39|     4: [Field] Blue
+#   40|     5: [Field] AnotherBlue
+#   40|       1: [MemberConstantAccess] access to constant AnotherBlue
+#   44|   6: [Class] Test
+#   47|     2: [Method] Main
+#   48|       4: [BlockStmt] {...}
+#   49|         0: [ExprStmt] ...;
+#   49|           0: [MethodCall] call to method WriteLine
+#   49|             -1: [TypeAccess] access to type Console
+#   49|             0: [MethodCall] call to method StringFromColor
+#   49|               0: [MemberConstantAccess] access to constant Red
+#   49|                 -1: [TypeAccess] access to type SparseColor
+#   50|         1: [ExprStmt] ...;
+#   50|           0: [MethodCall] call to method WriteLine
+#   50|             -1: [TypeAccess] access to type Console
+#   50|             0: [MethodCall] call to method StringFromColor
+#   50|               0: [MemberConstantAccess] access to constant Green
+#   50|                 -1: [TypeAccess] access to type SparseColor
+#   51|         2: [ExprStmt] ...;
+#   51|           0: [MethodCall] call to method WriteLine
+#   51|             -1: [TypeAccess] access to type Console
+#   51|             0: [MethodCall] call to method StringFromColor
+#   51|               0: [MemberConstantAccess] access to constant Blue
+#   51|                 -1: [TypeAccess] access to type SparseColor
+#   54|     3: [Method] StringFromColor
 #-----|       2: (Parameters)
-#   54|         0: [ExprOrStmtParent,Parameter,SimpleAssignable,SimpleLocalScopeVariable] c
-#   55|       4: [BlockStmt,CallableOrCFE,ConditionBlock,NonFinallyControlFlowElement,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   56|         0: [CallableOrCFE,NonFinallyControlFlowElement,PreOrderElement,SwitchStmt] switch (...) {...}
-#   56|           0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,NonFinallyControlFlowElement,ParameterRead,PostOrderElement,Source,StandardExpr] access to parameter c
-#   58|           0: [CallableOrCFE,ConstCase,NonFinallyControlFlowElement,PreOrderElement] case ...:
-#   58|             0: [AccessOrCallExpr,CallableOrCFE,ConstantPatternExpr,ControlFlowScope,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MemberConstantAccess,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] access to constant Red
-#   58|               -1: [CallableOrCFE,NonFinallyControlFlowElement,SimpleNoNodeExpr,Source,TypeAccess] access to type SparseColor
-#   58|           1: [CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,ReturnStmt] return ...;
-#   58|             0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,CollectionExpr,ControlFlowScope,DereferenceableExpr,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method Format
-#   58|               -1: [BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,SimpleNoNodeExpr,Sink,Source,TypeAccess] access to type String
-#   58|               0: [Argument,BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,PreBasicBlock,Sink,Source,StandardExpr,StringLiteral] "Red = {0}"
-#   58|               1: [Argument,BarrierGuard,CallableOrCFE,CastExpr,ControlFlowScope,DereferenceableExpr,ImplicitCast,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,StandardExpr] (...) ...
-#   58|                 0: [CallableOrCFE,CastExpr,ControlFlowScope,ExplicitCast,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] (...) ...
-#   58|                   0: [CallableOrCFE,GuardedExpr,NonFinallyControlFlowElement,ParameterRead,PostOrderElement,Source,StandardExpr] access to parameter c
-#   58|                   1: [CallableOrCFE,NonFinallyControlFlowElement,SimpleNoNodeExpr,Source,TypeAccess] access to type Int32
-#   59|           2: [CallableOrCFE,ConditionBlock,ConstCase,NonFinallyControlFlowElement,PreOrderElement] case ...:
-#   59|             0: [AccessOrCallExpr,CallableOrCFE,ConstantPatternExpr,ControlFlowScope,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MemberConstantAccess,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] access to constant Green
-#   59|               -1: [CallableOrCFE,NonFinallyControlFlowElement,SimpleNoNodeExpr,Source,TypeAccess] access to type SparseColor
-#   59|           3: [CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,ReturnStmt] return ...;
-#   59|             0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,CollectionExpr,ControlFlowScope,DereferenceableExpr,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method Format
-#   59|               -1: [BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,SimpleNoNodeExpr,Sink,Source,TypeAccess] access to type String
-#   59|               0: [Argument,BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,PreBasicBlock,Sink,Source,StandardExpr,StringLiteral] "Green = {0}"
-#   59|               1: [Argument,BarrierGuard,CallableOrCFE,CastExpr,ControlFlowScope,DereferenceableExpr,ImplicitCast,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,StandardExpr] (...) ...
-#   59|                 0: [CallableOrCFE,CastExpr,ControlFlowScope,ExplicitCast,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] (...) ...
-#   59|                   0: [CallableOrCFE,GuardedExpr,NonFinallyControlFlowElement,ParameterRead,PostOrderElement,Source,StandardExpr] access to parameter c
-#   59|                   1: [CallableOrCFE,NonFinallyControlFlowElement,SimpleNoNodeExpr,Source,TypeAccess] access to type Int32
-#   60|           4: [CallableOrCFE,ConditionBlock,ConstCase,NonFinallyControlFlowElement,PreOrderElement] case ...:
-#   60|             0: [AccessOrCallExpr,CallableOrCFE,ConstantPatternExpr,ControlFlowScope,FieldOrPropRead,FieldOrPropertyRead,FieldRead,MemberConstantAccess,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] access to constant Blue
-#   60|               -1: [CallableOrCFE,NonFinallyControlFlowElement,SimpleNoNodeExpr,Source,TypeAccess] access to type SparseColor
-#   60|           5: [CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,ReturnStmt] return ...;
-#   60|             0: [AccessOrCallExpr,BarrierGuard,CallableOrCFE,CollectionExpr,ControlFlowScope,DereferenceableExpr,MethodCall,NonDelegateCall,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] call to method Format
-#   60|               -1: [BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,SimpleNoNodeExpr,Sink,Source,TypeAccess] access to type String
-#   60|               0: [Argument,BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,PreBasicBlock,Sink,Source,StandardExpr,StringLiteral] "Blue = {0}"
-#   60|               1: [Argument,BarrierGuard,CallableOrCFE,CastExpr,ControlFlowScope,DereferenceableExpr,ImplicitCast,MethodCallArg,NonFinallyControlFlowElement,PostOrderElement,Sink,StandardExpr] (...) ...
-#   60|                 0: [CallableOrCFE,CastExpr,ControlFlowScope,ExplicitCast,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr] (...) ...
-#   60|                   0: [CallableOrCFE,GuardedExpr,NonFinallyControlFlowElement,ParameterRead,PostOrderElement,Source,StandardExpr] access to parameter c
-#   60|                   1: [CallableOrCFE,NonFinallyControlFlowElement,SimpleNoNodeExpr,Source,TypeAccess] access to type Int32
-#   61|           6: [CallableOrCFE,DefaultCase,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement] default:
-#   61|           7: [CallableOrCFE,NonFinallyControlFlowElement,PostOrderElement,ReturnStmt] return ...;
-#   61|             0: [BarrierGuard,CallableOrCFE,CollectionExpr,DereferenceableExpr,NonFinallyControlFlowElement,PostOrderElement,Source,StandardExpr,StringLiteral] "Invalid color"
+#   54|         0: [Parameter] c
+#   55|       4: [BlockStmt] {...}
+#   56|         0: [SwitchStmt] switch (...) {...}
+#   56|           0: [ParameterAccess] access to parameter c
+#   58|           0: [ConstCase] case ...:
+#   58|             0: [ConstantPatternExpr,MemberConstantAccess] access to constant Red
+#   58|               -1: [TypeAccess] access to type SparseColor
+#   58|           1: [ReturnStmt] return ...;
+#   58|             0: [MethodCall] call to method Format
+#   58|               -1: [TypeAccess] access to type String
+#   58|               0: [StringLiteral] "Red = {0}"
+#   58|               1: [CastExpr] (...) ...
+#   58|                 0: [CastExpr] (...) ...
+#   58|                   0: [ParameterAccess] access to parameter c
+#   58|                   1: [TypeAccess] access to type Int32
+#   59|           2: [ConstCase] case ...:
+#   59|             0: [ConstantPatternExpr,MemberConstantAccess] access to constant Green
+#   59|               -1: [TypeAccess] access to type SparseColor
+#   59|           3: [ReturnStmt] return ...;
+#   59|             0: [MethodCall] call to method Format
+#   59|               -1: [TypeAccess] access to type String
+#   59|               0: [StringLiteral] "Green = {0}"
+#   59|               1: [CastExpr] (...) ...
+#   59|                 0: [CastExpr] (...) ...
+#   59|                   0: [ParameterAccess] access to parameter c
+#   59|                   1: [TypeAccess] access to type Int32
+#   60|           4: [ConstCase] case ...:
+#   60|             0: [ConstantPatternExpr,MemberConstantAccess] access to constant Blue
+#   60|               -1: [TypeAccess] access to type SparseColor
+#   60|           5: [ReturnStmt] return ...;
+#   60|             0: [MethodCall] call to method Format
+#   60|               -1: [TypeAccess] access to type String
+#   60|               0: [StringLiteral] "Blue = {0}"
+#   60|               1: [CastExpr] (...) ...
+#   60|                 0: [CastExpr] (...) ...
+#   60|                   0: [ParameterAccess] access to parameter c
+#   60|                   1: [TypeAccess] access to type Int32
+#   61|           6: [DefaultCase] default:
+#   61|           7: [ReturnStmt] return ...;
+#   61|             0: [StringLiteral] "Invalid color"

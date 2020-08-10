@@ -110,9 +110,16 @@ private predicate isCompilerGeneratedAttributable(Attributable attributable) {
 }
 
 /**
- * Retrieves the QL class(es) for entity `el`
+ * Retrieves the canonical QL class(es) for entity `el`
  */
-private string getQlClass(Element el) { result = "[" + concat(el.getAQlClass(), ",") + "] " }
+private string getQlClass(Element el) {
+  if count(el.getAPrimaryQlClass()) = 1 and not el.getAPrimaryQlClass() = "???"
+  then result = "[" + el.getAPrimaryQlClass() + "] "
+  else
+    if count(el.getAPrimaryQlClass()) > 1
+    then result = "[" + concat(el.getAPrimaryQlClass(), ",") + "] "
+    else result = "ERR [" + concat(el.getAQlClass(), ",") + "] "
+}
 
 /**
  * An `Element`, such as a `namespace` and a `partial class`, might have multiple locations.

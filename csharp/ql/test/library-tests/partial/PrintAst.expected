@@ -1,7 +1,7 @@
 Partial.cs:
-#    1| [Class,LeafType,NonNestedType,SourceDeclarationType] A
-#    3|   2: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] M
-#    4|   3: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] M2
-#    4|     4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
-#   10|   4: [CallableOrCFE,InstanceCallable,NonConstructedMethod,RuntimeInstanceMethod,SourceDeclarationMethod] M3
-#   10|     4: [BlockStmt,CallableOrCFE,NonFinallyControlFlowElement,PreBasicBlock,PreOrderElement,SameSplitsBlock,StandardStmt] {...}
+#    1| [Class] A
+#    3|   2: [Method] M
+#    4|   3: [Method] M2
+#    4|     4: [BlockStmt] {...}
+#   10|   4: [Method] M3
+#   10|     4: [BlockStmt] {...}
