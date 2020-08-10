@@ -36,7 +36,8 @@ class HardcodedCredentialApiCallConfiguration extends DataFlowOneConf::Configura
 }
 
 from
-  DataFlowOneConf::PathNode source, DataFlowOneConf::PathNode sink, HardcodedCredentialApiCallConfiguration conf
+  DataFlowOneConf::PathNode source, DataFlowOneConf::PathNode sink,
+  HardcodedCredentialApiCallConfiguration conf
 where conf.hasFlowPath(source, sink)
 select source.getNode(), source, sink, "Hard-coded value flows to $@.", sink.getNode(),
   "sensitive API call"

@@ -46,7 +46,9 @@ class TaintedPathConfig extends TaintTrackingOneConf::Configuration {
   }
 }
 
-from DataFlowOneConf::PathNode source, DataFlowOneConf::PathNode sink, PathCreation p, TaintedPathConfig conf
+from
+  DataFlowOneConf::PathNode source, DataFlowOneConf::PathNode sink, PathCreation p,
+  TaintedPathConfig conf
 where
   sink.getNode().asExpr() = p.getAnInput() and
   conf.hasFlowPath(source, sink)
