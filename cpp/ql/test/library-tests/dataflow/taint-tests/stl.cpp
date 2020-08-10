@@ -49,7 +49,15 @@ namespace std
 		const_iterator end() const;
 		const_iterator cbegin() const;
 		const_iterator cend() const;
+
+		template<class T> basic_string& operator+=(const T& t);
+		basic_string& operator+=(const charT* s);
+		basic_string& append(const basic_string& str);
+		basic_string& append(const charT* s);
 	};
+
+	template<class charT, class traits, class Allocator> basic_string<charT, traits, Allocator> operator+(const basic_string<charT, traits, Allocator>& lhs, const basic_string<charT, traits, Allocator>& rhs);
+	template<class charT, class traits, class Allocator> basic_string<charT, traits, Allocator> operator+(const basic_string<charT, traits, Allocator>& lhs, const charT* rhs);
 
 	typedef basic_string<char> string;
 
