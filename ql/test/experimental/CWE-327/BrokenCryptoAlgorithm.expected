@@ -1,0 +1,2 @@
+| BadCrypto.go:18:35:18:46 | tripleDESKey | Sensitive data is used in a broken or weak cryptographic algorithm. |
+| BadCrypto.go:24:27:24:34 | password | Sensitive data is used in a broken or weak cryptographic algorithm. |
