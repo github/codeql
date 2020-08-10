@@ -473,10 +473,12 @@ class VariableNode extends Node, TVariableNode {
 InstructionNode instructionNode(Instruction instr) { result.getInstruction() = instr }
 
 /**
+ * DEPRECATED: use `definitionByReferenceNodeFromArgument` instead.
+ *
  * Gets the `Node` corresponding to a definition by reference of the variable
  * that is passed as `argument` of a call.
  */
-DefinitionByReferenceNode definitionByReferenceNode(Expr e) { result.getArgument() = e }
+deprecated DefinitionByReferenceNode definitionByReferenceNode(Expr e) { result.getArgument() = e }
 
 /**
  * Gets the `Node` corresponding to the value of evaluating `e` or any of its
