@@ -1224,29 +1224,34 @@ def test_ceil():
   math.ceil(with_ceil) # edit to effect call
 
 
-# # 3.3.9. With Statement Context Managers
-# # object.__enter__(self)
-# class With_enter:
+# 3.3.9. With Statement Context Managers
+# object.__enter__(self)
+class With_enter:
 
-#   def __enter__(self):
-#     OK()
-#     return "" # edit to match type
+  def __enter__(self):
+    OK()
+    return
 
-# def test_enter():
-#   with_enter = With_enter()
-#   enter(with_enter) # edit to effect call
+  def __exit__(self, exc_type, exc_value, traceback):
+    return
 
-# # object.__exit__(self, exc_type, exc_value, traceback)
-# class With_exit:
+def test_enter():
+  with With_enter():
+    pass
 
-#   def __exit__(self, exc_type, exc_value, traceback):
-#     OK()
-#     return "" # edit to match type
+# object.__exit__(self, exc_type, exc_value, traceback)
+class With_exit:
 
-# def test_exit():
-#   with_exit = With_exit()
-#   exit(with_exit) # edit to effect call
+  def __enter__(self):
+    return
 
+  def __exit__(self, exc_type, exc_value, traceback):
+    OK()
+    return
+
+def test_exit():
+  with With_exit():
+    pass
 
 # # 3.4.1. Awaitable Objects
 # # object.__await__(self)
