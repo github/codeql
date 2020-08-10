@@ -27,7 +27,7 @@ class PrintAstConfiguration extends TPrintAstConfiguration {
 
   /**
    * Controls whether the `Element` should be considered for AST printing.
-   * By default it checks the which file the `elem` belongs to.
+   * By default it checks which file the `elem` belongs to.
    */
   predicate shouldPrint(Element elem) {
     elem.fromSource() and
@@ -67,35 +67,35 @@ private int assignableOffset(AssignableMember assignable) {
   if assignable.(Property).hasInitializer() then result = 1 else result = 0
 }
 
-private predicate isInConstructedGenericAttributable(Attributable attributable) {
-  isInUnneededType(attributable.(Field).getDeclaringType()) or
-  isInConstructedGenericParameterizable(attributable.(Parameter).getDeclaringElement()) or
-  isInConstructedGenericCallable(attributable.(Callable)) or
-  isInUnneededType(attributable.(DeclarationWithAccessors).getDeclaringType()) or
-  isInUnneededType(attributable.(ValueOrRefType))
+private predicate isInsideUnneededAttributable(Attributable attributable) {
+  isInsideUnneededType(attributable.(Field).getDeclaringType()) or
+  isInsideUnneededParameterizable(attributable.(Parameter).getDeclaringElement()) or
+  isInsideUnneededCallable(attributable.(Callable)) or
+  isInsideUnneededType(attributable.(DeclarationWithAccessors).getDeclaringType()) or
+  isInsideUnneededType(attributable.(ValueOrRefType))
 }
 
-private predicate isInConstructedGenericUnboundGeneric(UnboundGeneric unboundGeneric) {
-  isInConstructedGenericAttributable(unboundGeneric) or
-  isInConstructedGenericParameterizable(unboundGeneric)
+private predicate isInsideUnneededUnboundGeneric(UnboundGeneric unboundGeneric) {
+  isInsideUnneededAttributable(unboundGeneric) or
+  isInsideUnneededParameterizable(unboundGeneric)
 }
 
-private predicate isInConstructedGenericCallable(Callable c) {
+private predicate isInsideUnneededCallable(Callable c) {
   c instanceof ConstructedGeneric or
-  isInUnneededType(c.getDeclaringType())
+  isInsideUnneededType(c.getDeclaringType())
 }
 
-private predicate isInUnneededType(Type t) {
+private predicate isInsideUnneededType(Type t) {
   t instanceof ConstructedType or
   t.getDeclaringType*() instanceof ConstructedType or
   t instanceof AnonymousClass or
   t.getDeclaringType*() instanceof AnonymousClass
 }
 
-private predicate isInConstructedGenericParameterizable(Parameterizable parameterizable) {
-  isInConstructedGenericCallable(parameterizable) or
-  isInUnneededType(parameterizable.(Indexer).getDeclaringType()) or
-  isInUnneededType(parameterizable.(DelegateType))
+private predicate isInsideUnneededParameterizable(Parameterizable parameterizable) {
+  isInsideUnneededCallable(parameterizable) or
+  isInsideUnneededType(parameterizable.(Indexer).getDeclaringType()) or
+  isInsideUnneededType(parameterizable.(DelegateType))
 }
 
 private predicate isCompilerGeneratedParameterizable(Parameterizable parameterizable) {
@@ -103,11 +103,9 @@ private predicate isCompilerGeneratedParameterizable(Parameterizable parameteriz
   parameterizable.getDeclaringType*().isCompilerGenerated()
 }
 
-/**
- * Default parameter values on delegates are in the tree multiple times,
- * due to the compiler generated `Invoke`.
- */
 private predicate isCompilerGeneratedAttributable(Attributable attributable) {
+  // Default parameter values on delegates are in the tree multiple times
+  // due to the compiler generated `Invoke`.
   isCompilerGeneratedParameterizable(attributable.(Parameter).getDeclaringElement())
 }
 
@@ -125,7 +123,7 @@ private string getQlClass(Element el) {
 
 /**
  * An `Element`, such as a `namespace` and a `partial class`, might have multiple locations.
- * The locations are ordered by file, line, column, and then the first one is selected.
+ * The locations are ordered by line, column, and then the first one is selected.
  */
 private Location getRepresentativeLocation(Element ast) {
   result =
@@ -154,7 +152,7 @@ private predicate locationSortKeys(Element ast, string file, int line, int colum
 
 /**
  * Printed AST nodes are mostly `Element`s of the underlying AST.
- * There are extra AST nodes generated for parameters of `Callable`s,
+ * There are extra AST nodes generated for parameters of `Parameterizable`s,
  * attributes of `Attributable`s, and type parameters of `UnboundGeneric`
  * types. These extra node are used as containers to organize the tree a
  * bit better.
@@ -188,7 +186,7 @@ class PrintAstNode extends TPrintAstNode {
   /**
    * Gets the parent of this node, if any.
    */
-  PrintAstNode getParent() { result.getAChild() = this }
+  final PrintAstNode getParent() { result.getAChild() = this }
 
   /**
    * Gets the location of this node in the source code.
@@ -257,8 +255,8 @@ class ControlFlowElementNode extends AstNode {
     ) and
     not isCompilerGeneratedAttributable(ast.getParent+().(Attribute).getTarget()) and
     not isCompilerGeneratedParameterizable(ast.getParent+().(Parameter).getDeclaringElement()) and
-    not isInConstructedGenericAttributable(ast.getParent+().(Attribute).getTarget()) and
-    not isInConstructedGenericParameterizable(ast.getParent+().(Parameter).getDeclaringElement())
+    not isInsideUnneededAttributable(ast.getParent+().(Attribute).getTarget()) and
+    not isInsideUnneededParameterizable(ast.getParent+().(Parameter).getDeclaringElement())
   }
 
   override AstNode getChild(int childIndex) {
@@ -275,7 +273,7 @@ final class LocalFunctionStmtNode extends ControlFlowElementNode {
 
   LocalFunctionStmtNode() { stmt = ast }
 
-  override CallableAstNode getChild(int childIndex) {
+  override CallableNode getChild(int childIndex) {
     childIndex = 0 and
     result.getAst() = stmt.getLocalFunction()
   }
@@ -283,14 +281,13 @@ final class LocalFunctionStmtNode extends ControlFlowElementNode {
 
 /**
  * A node representing a `Callable`, such as method declaration.
- * Attributes, type parameters, parameters and the body are displayed as child nodes.
  */
-final class CallableAstNode extends AstNode {
+final class CallableNode extends AstNode {
   Callable callable;
 
-  CallableAstNode() {
+  CallableNode() {
     callable = ast and
-    not isInConstructedGenericCallable(callable)
+    not isInsideUnneededCallable(callable)
   }
 
   override PrintAstNode getChild(int childIndex) {
@@ -313,14 +310,13 @@ final class CallableAstNode extends AstNode {
 
 /**
  * A node representing a `DeclarationWithAccessors`, such as property declaration.
- * Attributes, the initializer and the accessors are displayed as child nodes.
  */
 final class DeclarationWithAccessorsNode extends AstNode {
   DeclarationWithAccessors declaration;
 
   DeclarationWithAccessorsNode() {
     declaration = ast and
-    not isInUnneededType(declaration.getDeclaringType())
+    not isInsideUnneededType(declaration.getDeclaringType())
   }
 
   override PrintAstNode getChild(int childIndex) {
@@ -347,7 +343,6 @@ final class DeclarationWithAccessorsNode extends AstNode {
 
 /**
  * A node representing a `Field` declaration.
- * Attributes and the initializer are displayed as child nodes.
  */
 final class FieldNode extends AstNode {
   Field field;
@@ -355,7 +350,7 @@ final class FieldNode extends AstNode {
   FieldNode() {
     field = ast and
     not field.getDeclaringType() instanceof TupleType and
-    not isInUnneededType(field.getDeclaringType())
+    not isInsideUnneededType(field.getDeclaringType())
   }
 
   override PrintAstNode getChild(int childIndex) {
@@ -376,14 +371,13 @@ final class FieldNode extends AstNode {
 
 /**
  * A node representing a `Parameter` declaration.
- * Attributes and the default value are displayed as child nodes.
  */
 final class ParameterNode extends AstNode {
   Parameter param;
 
   ParameterNode() {
     param = ast and
-    not isInConstructedGenericParameterizable(param.getDeclaringElement()) and
+    not isInsideUnneededParameterizable(param.getDeclaringElement()) and
     (
       not param.getDeclaringElement().isCompilerGenerated() or
       param.getDeclaringElement() instanceof Accessor
@@ -424,7 +418,7 @@ final class AttributeNode extends AstNode {
   AttributeNode() {
     attr = ast and
     not isCompilerGeneratedAttributable(attr.getTarget()) and
-    not isInConstructedGenericAttributable(attr.getTarget())
+    not isInsideUnneededAttributable(attr.getTarget())
   }
 
   override AstNode getChild(int childIndex) { result.getAst() = attr.getChild(childIndex) }
@@ -438,7 +432,7 @@ final class TypeParameterNode extends AstNode {
 
   TypeParameterNode() {
     typeParameter = ast and
-    not isInConstructedGenericUnboundGeneric(typeParameter.getDeclaringGeneric())
+    not isInsideUnneededUnboundGeneric(typeParameter.getDeclaringGeneric())
   }
 
   override AstNode getChild(int childIndex) { none() }
@@ -446,7 +440,6 @@ final class TypeParameterNode extends AstNode {
 
 /**
  * A node representing a `ValueOrRefType`.
- * Attributes, type parameters, and members are displayed as child nodes.
  */
 final class TypeNode extends AstNode {
   ValueOrRefType type;
@@ -456,7 +449,7 @@ final class TypeNode extends AstNode {
     not type instanceof TupleType and
     not type instanceof ArrayType and
     not type instanceof NullableType and
-    not isInUnneededType(type)
+    not isInsideUnneededType(type)
   }
 
   override PrintAstNode getChild(int childIndex) {
@@ -482,7 +475,6 @@ final class TypeNode extends AstNode {
 
 /**
  * A node representing a `NamespaceDeclaration`.
- * Child namespaces and type declarations are displayed as child nodes.
  */
 final class NamespaceNode extends AstNode {
   NamespaceDeclaration namespace;
@@ -512,7 +504,7 @@ final class ParametersNode extends PrintAstNode, TParametersNode {
   ParametersNode() {
     this = TParametersNode(parameterizable) and
     parameterizable.getNumberOfParameters() > 0 and
-    not isInConstructedGenericParameterizable(parameterizable) and
+    not isInsideUnneededParameterizable(parameterizable) and
     (
       not parameterizable.isCompilerGenerated() or
       parameterizable instanceof Accessor
@@ -544,7 +536,7 @@ final class AttributesNode extends PrintAstNode, TAttributesNode {
     this = TAttributesNode(attributable) and
     count(attributable.getAnAttribute()) > 0 and
     not isCompilerGeneratedAttributable(attributable) and
-    not isInConstructedGenericAttributable(attributable)
+    not isInsideUnneededAttributable(attributable)
   }
 
   override string toString() { result = "(Attributes)" }
@@ -576,7 +568,7 @@ final class TypeParametersNode extends PrintAstNode, TTypeParametersNode {
   TypeParametersNode() {
     this = TTypeParametersNode(unboundGeneric) and
     unboundGeneric.getNumberOfTypeParameters() > 0 and
-    not isInConstructedGenericUnboundGeneric(unboundGeneric)
+    not isInsideUnneededUnboundGeneric(unboundGeneric)
   }
 
   override string toString() { result = "(TypeParameters)" }
