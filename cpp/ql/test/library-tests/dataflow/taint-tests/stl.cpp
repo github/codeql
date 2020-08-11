@@ -350,11 +350,11 @@ void test_string_append() {
 
 		s8 = s3;
 		s8.append(s4);
-		sink(s8); // tainted [NOT DETECTED]
+		sink(s8); // tainted
 
 		s9 = s3;
 		s9.append(source());
 		s9.append(" ");
-		sink(s9); // tainted [NOT DETECTED]
+		sink(s9); // tainted
 	}
 }

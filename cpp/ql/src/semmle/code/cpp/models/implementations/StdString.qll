@@ -12,3 +12,19 @@ class StdStringCStr extends TaintFunction {
     output.isReturnValue()
   }
 }
+
+/**
+ * The `std::string` function `append`.
+ */
+class StdStringAppend extends TaintFunction {
+  StdStringAppend() { this.hasQualifiedName("std", "basic_string", "append") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from parameter to string itself (qualifier) and return value
+    input.isParameterDeref(0) and
+    (
+      output.isQualifierObject() or
+      output.isReturnValueDeref()
+    )
+  }
+}

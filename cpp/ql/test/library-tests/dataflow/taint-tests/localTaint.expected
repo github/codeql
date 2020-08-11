@@ -546,13 +546,19 @@
 | stl.cpp:351:8:351:9 | s3 | stl.cpp:352:3:352:4 | s8 |  |
 | stl.cpp:351:8:351:9 | s3 | stl.cpp:353:8:353:9 | s8 |  |
 | stl.cpp:352:3:352:4 | ref arg s8 | stl.cpp:353:8:353:9 | s8 |  |
+| stl.cpp:352:13:352:14 | s4 | stl.cpp:352:3:352:4 | ref arg s8 | TAINT |
+| stl.cpp:352:13:352:14 | s4 | stl.cpp:352:6:352:11 | call to append | TAINT |
 | stl.cpp:355:8:355:9 | s3 | stl.cpp:355:3:355:9 | ... = ... |  |
 | stl.cpp:355:8:355:9 | s3 | stl.cpp:356:3:356:4 | s9 |  |
 | stl.cpp:355:8:355:9 | s3 | stl.cpp:357:3:357:4 | s9 |  |
 | stl.cpp:355:8:355:9 | s3 | stl.cpp:358:8:358:9 | s9 |  |
 | stl.cpp:356:3:356:4 | ref arg s9 | stl.cpp:357:3:357:4 | s9 |  |
 | stl.cpp:356:3:356:4 | ref arg s9 | stl.cpp:358:8:358:9 | s9 |  |
+| stl.cpp:356:13:356:18 | call to source | stl.cpp:356:3:356:4 | ref arg s9 | TAINT |
+| stl.cpp:356:13:356:18 | call to source | stl.cpp:356:6:356:11 | call to append | TAINT |
 | stl.cpp:357:3:357:4 | ref arg s9 | stl.cpp:358:8:358:9 | s9 |  |
+| stl.cpp:357:13:357:15 |   | stl.cpp:357:3:357:4 | ref arg s9 | TAINT |
+| stl.cpp:357:13:357:15 |   | stl.cpp:357:6:357:11 | call to append | TAINT |
 | structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
 | structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
 | structlikeclass.cpp:5:7:5:7 | this | structlikeclass.cpp:5:7:5:7 | constructor init of field v [pre-this] |  |

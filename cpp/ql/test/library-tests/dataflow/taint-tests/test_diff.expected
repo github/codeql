@@ -50,6 +50,8 @@
 | stl.cpp:303:8:303:8 | stl.cpp:296:43:296:49 | AST only |
 | stl.cpp:311:8:311:8 | stl.cpp:296:43:296:49 | AST only |
 | stl.cpp:316:8:316:8 | stl.cpp:296:43:296:49 | AST only |
+| stl.cpp:353:8:353:9 | stl.cpp:336:18:336:23 | AST only |
+| stl.cpp:358:8:358:9 | stl.cpp:356:13:356:18 | AST only |
 | structlikeclass.cpp:35:8:35:9 | structlikeclass.cpp:29:22:29:27 | AST only |
 | structlikeclass.cpp:36:8:36:9 | structlikeclass.cpp:30:24:30:29 | AST only |
 | structlikeclass.cpp:37:8:37:9 | structlikeclass.cpp:29:22:29:27 | AST only |
