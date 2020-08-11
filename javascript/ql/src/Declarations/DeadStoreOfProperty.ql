@@ -115,20 +115,22 @@ predicate maybeAssignsAccessedPropInBlock(DataFlow::PropWrite assign, boolean af
     or
     after = false and postDominatedPropWrite(_, _, assign, false)
   ) and
-  exists(ReachableBasicBlock block, int i, int j, Expr e, string name |
-    i = getRank(block, assign.getWriteNode(), name) and
-    j = getRank(block, e, name) and
-    isAPropertyRead(e, name)
-  |
-    after = true and i < j
+  (
+    exists(ReachableBasicBlock block, int i, int j, Expr e, string name |
+      i = getRank(block, assign.getWriteNode(), name) and
+      j = getRank(block, e, name) and
+      isAPropertyRead(e, name)
+    |
+      after = true and i < j
+      or
+      after = false and j < i
+    )
     or
-    after = false and j < i
-  )
-  or
-  exists(ReachableBasicBlock block | assign.getWriteNode().getBasicBlock() = block |
-    after = true and isBeforeImpure(assign, block)
-    or
-    after = false and isAfterImpure(assign, block)
+    exists(ReachableBasicBlock block | assign.getWriteNode().getBasicBlock() = block |
+      after = true and isBeforeImpure(assign, block)
+      or
+      after = false and isAfterImpure(assign, block)
+    )
   )
 }
 
