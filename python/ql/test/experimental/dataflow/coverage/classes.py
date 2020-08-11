@@ -870,9 +870,9 @@ class With_rlshift:
     OK()
     return self
 
-def ftest_rlshift(): # TypeError: unsupported operand type(s) for >>: 'str' and 'With_rlshift'
+def test_rlshift():
   with_rlshift = With_rlshift()
-  "" >> with_rlshift
+  "" << with_rlshift
 
 # object.__rrshift__(self, other)
 class With_rrshift:
@@ -881,9 +881,9 @@ class With_rrshift:
     OK()
     return self
 
-def ftest_rrshift(): # TypeError: unsupported operand type(s) for <<: 'str' and 'With_rrshift'
+def test_rrshift():
   with_rrshift = With_rrshift()
-  "" << with_rrshift
+  "" >> with_rrshift
 
 # object.__rand__(self, other)
 class With_rand:
