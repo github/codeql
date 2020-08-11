@@ -9,7 +9,7 @@ import semmle.code.java.dataflow.TaintTracking
 
 module ExternalAPIs {
   /**
-   * A `Method` which is considered a "safe" external API from a security perspective.
+   * A `Method` that is considered a "safe" external API from a security perspective.
    */
   abstract class SafeExternalAPIMethod extends Method { }
 
@@ -24,7 +24,7 @@ module ExternalAPIs {
       or
       getQualifiedName() = "Objects.equals"
       or
-      getDeclaringType().getQualifiedName() = "java.lang.String" and getName() = "equals"
+      getDeclaringType() instanceof TypeString and getName() = "equals"
       or
       getDeclaringType().hasQualifiedName("com.google.common.base", "Preconditions")
       or
@@ -76,7 +76,7 @@ module ExternalAPIs {
         m.getASourceOverriddenMethod() = call.getCallee().getSourceDeclaration() and
         m.fromSource()
       ) and
-      // Not already modelled as a taint step
+      // Not already modeled as a taint step
       not exists(DataFlow::Node next | TaintTracking::localTaintStep(this, next)) and
       // Not a call to a known safe external API
       not call.getCallee() instanceof SafeExternalAPIMethod

@@ -1,6 +1,6 @@
 /**
- * @name Frequency counts for external APIs which are used with untrusted data
- * @description This reports the external APIs which are used with untrusted data, along with how
+ * @name Frequency counts for external APIs that are used with untrusted data
+ * @description This reports the external APIs that are used with untrusted data, along with how
  *              frequently the API is called, and how many unique sources of untrusted data flow
  *              to it.
  * @id java/count-untrusted-data-external-api

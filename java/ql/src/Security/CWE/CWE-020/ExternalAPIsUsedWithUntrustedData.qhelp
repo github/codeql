@@ -4,11 +4,11 @@
 <qhelp>
 <overview>
 <p>Using unsanitized untrusted data in an external API can cause a variety of security issues. This query reports 
-all external APIs which are used with untrusted data, along with how frequently the API is used, and how many 
+all external APIs that are used with untrusted data, along with how frequently the API is used, and how many 
 unique sources of untrusted data flow this API. This query is designed primarily to help identify which APIs 
 may be relevant for security analysis of this application.</p>
 
-<p>An external API is defined as a method call to a method which is not defined in the source code, not overridden 
+<p>An external API is defined as a method call to a method that is not defined in the source code, not overridden 
 in the source code, and is not modeled as a taint step in the default taint library. External APIs may be from the 
 Java standard library, third party dependencies or from internal dependencies. The query will report the method 
 signature with a fully qualified name, along with either <code>[param x]</code>, where <code>x</code> indicates the 
