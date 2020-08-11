@@ -3,10 +3,10 @@
 | testDeprecatedApi.go:41:25:41:43 | call to getUntrustedBytes : slice type | testDeprecatedApi.go:45:13:45:29 | selection of Description |
 | testDeprecatedApi.go:49:25:49:43 | call to getUntrustedBytes : slice type | testDeprecatedApi.go:53:13:53:34 | call to GetDescription |
 | testDeprecatedApi.go:58:23:58:42 | call to getUntrustedString : string | testDeprecatedApi.go:65:12:65:21 | serialized |
-| testModernApi.go:23:22:23:41 | call to getUntrustedString : string | testModernApi.go:27:12:27:21 | serialized |
-| testModernApi.go:32:22:32:41 | call to getUntrustedString : string | testModernApi.go:38:12:38:21 | serialized |
-| testModernApi.go:42:25:42:43 | call to getUntrustedBytes : slice type | testModernApi.go:46:13:46:29 | selection of Description |
-| testModernApi.go:50:25:50:43 | call to getUntrustedBytes : slice type | testModernApi.go:54:13:54:34 | call to GetDescription |
-| testModernApi.go:59:23:59:42 | call to getUntrustedString : string | testModernApi.go:66:12:66:21 | serialized |
-| testModernApi.go:71:22:71:41 | call to getUntrustedString : string | testModernApi.go:76:12:76:21 | serialized |
-| testModernApi.go:81:22:81:41 | call to getUntrustedString : string | testModernApi.go:87:12:87:21 | serialized |
+| testModernApi.go:11:22:11:41 | call to getUntrustedString : string | testModernApi.go:15:12:15:21 | serialized |
+| testModernApi.go:20:22:20:41 | call to getUntrustedString : string | testModernApi.go:26:12:26:21 | serialized |
+| testModernApi.go:30:25:30:43 | call to getUntrustedBytes : slice type | testModernApi.go:34:13:34:29 | selection of Description |
+| testModernApi.go:38:25:38:43 | call to getUntrustedBytes : slice type | testModernApi.go:42:13:42:34 | call to GetDescription |
+| testModernApi.go:47:23:47:42 | call to getUntrustedString : string | testModernApi.go:54:12:54:21 | serialized |
+| testModernApi.go:59:22:59:41 | call to getUntrustedString : string | testModernApi.go:64:12:64:21 | serialized |
+| testModernApi.go:71:22:71:41 | call to getUntrustedString : string | testModernApi.go:77:12:77:21 | serialized |

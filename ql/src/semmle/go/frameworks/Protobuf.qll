@@ -4,17 +4,16 @@ import go
 
 /** Provides models of commonly used functions and types in the protobuf packages. */
 module Protobuf {
-  pragma[inline]
   string protobufPackages() {
     result in ["github.com/golang/protobuf/proto", "google.golang.org/protobuf/proto"]
   }
 
-  /** The `Marshal`, `MarshalAppend`, or `MarshalState` functions in the protobuf packages. */
+  /** The `Marshal` and `MarshalAppend` functions in the protobuf packages. */
   private class MarshalFunction extends TaintTracking::FunctionModel, MarshalingFunction::Range {
     string name;
 
     MarshalFunction() {
-      name = ["Marshal", "MarshalAppend", "MarshalState"] and
+      name = ["Marshal", "MarshalAppend"] and
       (
         this.hasQualifiedName(protobufPackages(), name) or
         this.(Method).hasQualifiedName("google.golang.org/protobuf/proto", "MarshalOptions", name)
@@ -36,6 +35,46 @@ module Protobuf {
     }
 
     override string getFormat() { result = "protobuf" }
+  }
+
+  private Field inputMessageField() {
+    result
+        .hasQualifiedName("google.golang.org/protobuf/runtime/protoiface", "MarshalInput", "Message")
+  }
+
+  private Method marshalStateMethod() {
+    result
+        .hasQualifiedName("google.golang.org/protobuf/runtime/protoiface", "MarshalOptions",
+          "MarshalState")
+  }
+
+  /**
+   * Additional taint-flow step modelling flow from MarshalInput.Message to MarshalOutput,
+   * mediated by a MarshalOptions.MarshalState call.
+   *
+   * Note we can taint the whole MarshalOutput as it only has one field (Buf), and taint-
+   * tracking always considers a field of a tainted struct to itself be tainted.
+   */
+  private class MarshalStateStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(
+        DataFlow::Node marshalInput, DataFlow::Node passedMarshalInput,
+        DataFlow::CallNode marshalStateCall
+      |
+        marshalStateCall = marshalStateMethod().getACall() and
+        // pred -> marshalInput.Message
+        any(DataFlow::Write w)
+            .writesField(marshalInput.(DataFlow::PostUpdateNode).getPreUpdateNode(),
+              inputMessageField(), pred) and
+        // marshalInput -> passedMarshalInput
+        passedMarshalInput.asExpr().getGlobalValueNumber() =
+          marshalInput.asExpr().getGlobalValueNumber() and
+        // passedMarshalInput -> marshalStateCall
+        marshalStateCall.getArgument(0) = passedMarshalInput and
+        // marshalStateCall -> succ
+        marshalStateCall.getResult() = succ
+      )
+    }
   }
 
   /** The `Unmarshal` or `UnmarshalState` functions in the protobuf packages. */
@@ -88,6 +127,15 @@ module Protobuf {
     GetMethod() {
       exists(string name | name.matches("Get%") | this = any(MessageType msg).getMethod(name))
     }
+
+    override predicate hasDataFlow(FunctionInput inp, FunctionOutput outp) {
+      inp.isReceiver() and outp.isResult()
+    }
+  }
+
+  /** A `ProtoReflect` method of a protobuf `Message` type. */
+  private class ProtoReflectMethod extends DataFlow::FunctionModel, Method {
+    ProtoReflectMethod() { this = any(MessageType msg).getMethod("ProtoReflect") }
 
     override predicate hasDataFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isReceiver() and outp.isResult()

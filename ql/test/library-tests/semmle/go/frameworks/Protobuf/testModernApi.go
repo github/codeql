@@ -3,22 +3,10 @@ package main
 import (
 	"codeql-go-tests/protobuf/protos/query"
 	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/proto/runtime/protoiface"
+	"google.golang.org/protobuf/runtime/protoiface"
 )
 
-func getUntrustedString() string {
-	return "trouble"
-}
-
-func getUntrustedBytes() []byte {
-	return []byte{}
-}
-
-func sinkString(_ string) {}
-
-func sinkBytes(_ []byte) {}
-
-func testMarshal() {
+func testMarshalModern() {
 	query := &query.Query{}
 	query.Description = getUntrustedString()
 
@@ -27,7 +15,7 @@ func testMarshal() {
 	sinkBytes(serialized)
 }
 
-func testCloneThenMarshal() {
+func testCloneThenMarshalModern() {
 	query := &query.Query{}
 	query.Description = getUntrustedString()
 
@@ -38,7 +26,7 @@ func testCloneThenMarshal() {
 	sinkBytes(serialized)
 }
 
-func testUnmarshalFieldAccess() {
+func testUnmarshalFieldAccessModern() {
 	untrustedSerialized := getUntrustedBytes()
 	query := &query.Query{}
 	proto.Unmarshal(untrustedSerialized, query)
@@ -46,7 +34,7 @@ func testUnmarshalFieldAccess() {
 	sinkString(query.Description)
 }
 
-func testUnmarshalGetter() {
+func testUnmarshalGetterModern() {
 	untrustedSerialized := getUntrustedBytes()
 	query := &query.Query{}
 	proto.Unmarshal(untrustedSerialized, query)
@@ -54,7 +42,7 @@ func testUnmarshalGetter() {
 	sinkString(query.GetDescription())
 }
 
-func testMergeThenMarshal() {
+func testMergeThenMarshalModern() {
 	query1 := &query.Query{}
 	query1.Description = getUntrustedString()
 
@@ -66,7 +54,7 @@ func testMergeThenMarshal() {
 	sinkBytes(serialized)
 }
 
-func testMarshalWithOptions() {
+func testMarshalWithOptionsModern() {
 	query := &query.Query{}
 	query.Description = getUntrustedString()
 
@@ -76,12 +64,14 @@ func testMarshalWithOptions() {
 	sinkBytes(serialized)
 }
 
+// Tests only applicable to the modern API:
+
 func testMarshalAppend() {
 	query := &query.Query{}
 	query.Description = getUntrustedString()
 
 	options := proto.MarshalOptions{}
-	emptyArray := [0]byte{}
+	emptyArray := []byte{}
 	serialized, _ := options.MarshalAppend(emptyArray, query)
 
 	sinkBytes(serialized)
@@ -92,13 +82,13 @@ func testMarshalState() {
 	query.Description = getUntrustedString()
 
 	options := proto.MarshalOptions{}
-	emptyArray := [0]byte{}
+	emptyArray := []byte{}
 	marshalState := protoiface.MarshalInput{
-		Message: query,
+		Message: query.ProtoReflect(),
 		Buf:     emptyArray,
 		Flags:   0,
 	}
-	serialized, _ := options.MarshalAppend(emptyArray, query)
+	serialized, _ := options.MarshalState(marshalState)
 
 	sinkBytes(serialized.Buf)
 }
