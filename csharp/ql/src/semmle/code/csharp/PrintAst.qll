@@ -113,12 +113,9 @@ private predicate isCompilerGeneratedAttributable(Attributable attributable) {
  * Retrieves the canonical QL class(es) for entity `el`
  */
 private string getQlClass(Element el) {
-  if count(el.getAPrimaryQlClass()) = 1 and not el.getAPrimaryQlClass() = "???"
-  then result = "[" + el.getAPrimaryQlClass() + "] "
-  else
-    if count(el.getAPrimaryQlClass()) > 1
-    then result = "[" + concat(el.getAPrimaryQlClass(), ",") + "] "
-    else result = "ERR [" + concat(el.getAQlClass(), ",") + "] "
+  result = "[" + concat(el.getAPrimaryQlClass(), ",") + "] "
+  // Alternative implementation -- do not delete. It is useful for QL class discovery.
+  // result = "["+ concat(el.getAQlClass(), ",") + "] "
 }
 
 /**
