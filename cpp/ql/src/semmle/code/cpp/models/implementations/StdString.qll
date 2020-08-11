@@ -26,7 +26,8 @@ class StdStringCStr extends TaintFunction {
 class StdStringPlus extends TaintFunction {
   StdStringPlus() {
     this.hasQualifiedName("std", "operator+") and
-    this.getParameter(0).getType().getUnspecifiedType().(ReferenceType).getBaseType() = any(StdBasicString s).getAnInstantiation()
+    this.getParameter(0).getType().getUnspecifiedType().(ReferenceType).getBaseType() =
+      any(StdBasicString s).getAnInstantiation()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
