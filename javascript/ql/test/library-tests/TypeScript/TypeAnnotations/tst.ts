@@ -178,3 +178,12 @@ type Numbers = [number, number];
 // [string, string, number, number]
 type StrStrNumNum = [...Strings, ...Numbers];
 var foo: StrStrNumNum;
+
+// Short-Circuiting Assignment Operators
+function shortAssignment() {
+  let a1 : number = parseInt("foo");
+  let a2 : number = parseInt("bar");
+  let a3 : number = a1 ||= a2;
+  let a4 = a2 &&= a3;
+  let a5 = a3 ??= a4;
+}

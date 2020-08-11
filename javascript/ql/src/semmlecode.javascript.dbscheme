@@ -351,6 +351,9 @@ case @expr.kind of
 | 113 = @e4x_xml_dynamic_qualident
 | 114 = @e4x_xml_dotdotexpr
 | 115 = @importmetaexpr
+| 116 = @assignlogandexpr
+| 117 = @assignlogorexpr
+| 118 = @assignnullishcoalescingexpr
 ;
 
 @varaccess = @proper_varaccess | @export_varaccess;
@@ -372,7 +375,7 @@ case @expr.kind of
 
 @binaryexpr = @comparison | @lshiftexpr | @rshiftexpr | @urshiftexpr | @addexpr | @subexpr | @mulexpr | @divexpr | @modexpr | @expexpr | @bitorexpr | @xorexpr | @bitandexpr | @inexpr | @instanceofexpr | @logandexpr | @logorexpr | @nullishcoalescingexpr;
 
-@assignment = @assignexpr | @assignaddexpr | @assignsubexpr | @assignmulexpr | @assigndivexpr | @assignmodexpr | @assignexpexpr | @assignlshiftexpr | @assignrshiftexpr | @assignurshiftexpr | @assignorexpr | @assignxorexpr | @assignandexpr;
+@assignment = @assignexpr | @assignaddexpr | @assignsubexpr | @assignmulexpr | @assigndivexpr | @assignmodexpr | @assignexpexpr | @assignlshiftexpr | @assignrshiftexpr | @assignurshiftexpr | @assignorexpr | @assignxorexpr | @assignandexpr | @assignlogandexpr | @assignlogorexpr | @assignnullishcoalescingexpr;
 
 @updateexpr = @preincexpr | @postincexpr | @predecexpr | @postdecexpr;
 

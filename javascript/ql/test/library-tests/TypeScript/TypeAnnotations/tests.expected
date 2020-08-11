@@ -113,6 +113,9 @@ test_VariableTypes
 | tst.ts:164:56:164:59 | arr2 | arr2 | tst.ts:164:62:164:62 | U |
 | tst.ts:169:31:169:31 | x | x | tst.ts:169:34:169:64 | [first: ... number] |
 | tst.ts:180:5:180:7 | foo | foo | tst.ts:180:10:180:21 | StrStrNumNum |
+| tst.ts:184:7:184:8 | a1 | a1 | tst.ts:184:12:184:17 | number |
+| tst.ts:185:7:185:8 | a2 | a2 | tst.ts:185:12:185:17 | number |
+| tst.ts:186:7:186:8 | a3 | a3 | tst.ts:186:12:186:17 | number |
 test_QualifiedTypeAccess
 | tst.ts:63:19:63:21 | N.I | tst.ts:63:19:63:19 | N | tst.ts:63:21:63:21 | I |
 | tst.ts:64:20:64:24 | N.M.I | tst.ts:64:20:64:22 | N.M | tst.ts:64:24:64:24 | I |

@@ -1851,7 +1851,7 @@ class AssignExpr extends @assignexpr, Assignment {
 private class TCompoundAssignExpr =
   @assignaddexpr or @assignsubexpr or @assignmulexpr or @assigndivexpr or @assignmodexpr or
       @assignexpexpr or @assignlshiftexpr or @assignrshiftexpr or @assignurshiftexpr or
-      @assignorexpr or @assignxorexpr or @assignandexpr;
+      @assignorexpr or @assignxorexpr or @assignandexpr or @assignlogandexpr or @assignlogorexpr or @assignnullishcoalescingexpr;
 
 /**
  * A compound assign expression.
@@ -1996,6 +1996,39 @@ class AssignXOrExpr extends @assignxorexpr, CompoundAssignExpr { }
  * ```
  */
 class AssignAndExpr extends @assignandexpr, CompoundAssignExpr { }
+
+/**
+ * A logical-'or'-assign expression.
+ *
+ * Example:
+ *
+ * ```
+ * x ||= y
+ * ```
+ */
+class AssignLogOrExpr extends @assignlogandexpr, CompoundAssignExpr { }
+
+/**
+ * A logical-'and'-assign expression.
+ *
+ * Example:
+ *
+ * ```
+ * x &&= y
+ * ```
+ */
+class AssignLogAndExpr extends @assignlogorexpr, CompoundAssignExpr { }
+
+/**
+ * A 'nullish-coalescing'-assign expression.
+ *
+ * Example:
+ *
+ * ```
+ * x ??= y
+ * ```
+ */
+class AssignNullishCoalescingExpr extends @assignnullishcoalescingexpr, CompoundAssignExpr { }
 
 /**
  * An update expression, that is, an increment or decrement expression.
