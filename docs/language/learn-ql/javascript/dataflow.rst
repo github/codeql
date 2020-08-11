@@ -9,7 +9,7 @@ The various sections in this article describe how to utilize the libraries for l
 As our running example, we will develop a query that identifies command-line arguments that are passed as a file path to the standard Node.js ``readFile`` function.
 While this is not a problematic pattern as such, it is typical of the kind of reasoning that is frequently used in security queries.
 
-For a more general introduction to modeling data flow, see :doc:`About data flow analysis <../intro-to-data-flow>`.
+For a more general introduction to modeling data flow, see ":doc:`About data flow analysis <../intro-to-data-flow>`."
 
 Data flow nodes
 ---------------
@@ -554,7 +554,8 @@ Exercise 4
 Further reading
 ---------------
 
-- `Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-paths.html>`__
+- "`Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-paths.html>`__"
+
 
 .. include:: ../../reusables/java-further-reading.rst
 .. include:: ../../reusables/codeql-ref-tools-further-reading.rst

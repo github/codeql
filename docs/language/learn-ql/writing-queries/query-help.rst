@@ -49,11 +49,11 @@ Section-level elements are used to group the information in the help file into s
 +====================+=========================================+========================+===============================================================================================================================================+
 | ``example``        | None                                    | Any block element      | Demonstrate an example of code that violates the rule implemented by the query with guidance on how to fix it. Default heading.               |
 +--------------------+-----------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
-| ``fragment``       | None                                    | Any block element      | See :ref:`Query help inclusion <qhelp-inclusion>` below. No heading.                                                                          |
+| ``fragment``       | None                                    | Any block element      | See ":ref:`Query help inclusion <qhelp-inclusion>`" below. No heading.                                                                        |
 +--------------------+-----------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
 | ``hr``             | None                                    | None                   | A horizontal rule. No heading.                                                                                                                |
 +--------------------+-----------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
-| ``include``        | ``src`` The query help file to include. | None                   | Include a query help file at the location of this element. See :ref:`Query help inclusion <qhelp-inclusion>` below. No heading.               |
+| ``include``        | ``src`` The query help file to include. | None                   | Include a query help file at the location of this element. See ":ref:`Query help inclusion <qhelp-inclusion>`" below. No heading.             |
 +--------------------+-----------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
 | ``overview``       | None                                    | Any block element      | Overview of the purpose of the query. Typically this is the first section in a query document. No heading.                                    |
 +--------------------+-----------------------------------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
@@ -69,7 +69,7 @@ Section-level elements are used to group the information in the help file into s
 Block elements
 ==============
 
-The following elements are optional child elements of the ``section``, ``example``, ``fragment``, ``recommendation``, ``overview``, and ``semmleNotes`` elements.
+The following elements are optional child elements of the ``section``, ``example``, ``fragment``, ``recommendation``, ``overview``, and ``semmleNotes`` elements.
 
 .. table::
    :widths: 7 20 10 25
@@ -143,7 +143,7 @@ Inline content is used to define the content for paragraphs, list items, table c
 +------------+--------------------------------------+----------------+--------------------------------------------------------------------------------------------------+
 | ``i``      | None                                 | Inline content | Defines content that should be displayed as italics.                                             |
 +------------+--------------------------------------+----------------+--------------------------------------------------------------------------------------------------+
-| ``img``    | | ``src``                            | None           | Display an image. See the description above in Block elements.                                   |
+| ``img``    | | ``src``                            | None           | Display an image. See the description above in Block elements.                                   |
 |            | | ``alt``                            |                |                                                                                                  |
 |            | | ``height``                         |                |                                                                                                  |
 |            | | ``width``                          |                |                                                                                                  |
@@ -152,7 +152,7 @@ Inline content is used to define the content for paragraphs, list items, table c
 +------------+--------------------------------------+----------------+--------------------------------------------------------------------------------------------------+
 | ``sub``    | None                                 | Inline content | Defines content that should be rendered as subscript.                                            |
 +------------+--------------------------------------+----------------+--------------------------------------------------------------------------------------------------+
-| ``sup``    | None                                 | Inline content | Defines content that should be rendered as superscript.                                          |
+| ``sup``    | None                                 | Inline content | Defines content that should be rendered as superscript.                                          |
 +------------+--------------------------------------+----------------+--------------------------------------------------------------------------------------------------+
 | ``tt``     | None                                 | Inline content | Defines content that should be displayed with a monospace font.                                  |
 +------------+--------------------------------------+----------------+--------------------------------------------------------------------------------------------------+
@@ -162,9 +162,9 @@ Inline content is used to define the content for paragraphs, list items, table c
 Query help inclusion
 ====================
 
-To reuse content between different help topics, you can store shared content in one query help file and then include it in a number of other query help files using the ``include`` element. The shared content can be stored either in the same directory as the including files, or in ``SEMMLE_DIST/docs/include``.
+To reuse content between different help topics, you can store shared content in one query help file and then include it in a number of other query help files using the ``include`` element. The shared content can be stored either in the same directory as the including files, or in ``SEMMLE_DIST/docs/include``.
 
-The ``include`` element can be used as a section or block element. The content of the query help file defined by the ``src`` attribute must contain elements that are appropriate to the location of the ``include`` element.
+The ``include`` element can be used as a section or block element. The content of the query help file defined by the ``src`` attribute must contain elements that are appropriate to the location of the ``include`` element.
 
 Section-level include elements
 ------------------------------
@@ -177,7 +177,7 @@ Section-level ``include`` elements can be located beneath the top-level ``qhelp`
        <include src="XSS.qhelp" />
    </qhelp>
 
-In this example, the `XSS.qhelp <https://github.com/github/codeql/blob/master/csharp/ql/src/Security%20Features/CWE-079/XSS.qhelp>`__ file must conform to the standard for a full query help file as described above. That is, the ``qhelp`` element may only contain non-``fragment``, section-level elements.
+In this example, the `XSS.qhelp <https://github.com/github/codeql/blob/master/csharp/ql/src/Security%20Features/CWE-079/XSS.qhelp>`__ file must conform to the standard for a full query help file as described above. That is, the ``qhelp`` element may only contain non-``fragment``, section-level elements.
 
 Block-level include elements
 ----------------------------
@@ -193,7 +193,7 @@ Block-level ``include`` elements can be included beneath section-level elements.
        ...
    </qhelp>
 
-The included file, `ThreadUnsafeICryptoTransformOverview.qhelp <https://github.com/github/codeql/blob/master/csharp/ql/src/Likely%20Bugs/ThreadUnsafeICryptoTransformOverview.qhelp>`_, may only contain one or more ``fragment`` sections. For example:
+The included file, `ThreadUnsafeICryptoTransformOverview.qhelp <https://github.com/github/codeql/blob/master/csharp/ql/src/Likely%20Bugs/ThreadUnsafeICryptoTransformOverview.qhelp>`_, may only contain one or more ``fragment`` sections. For example:
 
 .. code-block:: xml 
 
