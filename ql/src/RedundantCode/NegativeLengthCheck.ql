@@ -1,7 +1,9 @@
 /**
- * @name Check for negative length
+ * @name Redundant check for negative value
  * @description Checking whether the result of 'len' or 'cap' is negative is pointless,
- *              since these functions always returns a non-negative number.
+ *              since these functions always returns a non-negative number. It is also
+ *              pointless checking if an unsigned integer is negative, as it can only
+ *              hold non-negative values.
  * @kind problem
  * @problem.severity warning
  * @precision very-high
@@ -11,12 +13,19 @@
 
 import go
 
-from ComparisonExpr cmp, BuiltinFunction len, int ub, string r
+from ComparisonExpr cmp, DataFlow::Node op, int ub, string d, string r
 where
-  (len = Builtin::len() or len = Builtin::cap()) and
+  (
+    exists(BuiltinFunction bf | bf = Builtin::len() or bf = Builtin::cap() |
+      op = bf.getACall() and d = "'" + bf.getName() + "'"
+    )
+    or
+    op.getType().getUnderlyingType() instanceof UnsignedIntegerType and
+    d = "This unsigned value"
+  ) and
   (
     exists(RelationalComparisonExpr rel | rel = cmp |
-      rel.getLesserOperand() = len.getACall().asExpr() and
+      rel.getLesserOperand() = op.asExpr() and
       rel.getGreaterOperand().getIntValue() = ub and
       (
         ub < 0
@@ -27,10 +36,10 @@ where
     )
     or
     exists(EqualityTestExpr eq | eq = cmp |
-      eq.getAnOperand() = len.getACall().asExpr() and
+      eq.getAnOperand() = op.asExpr() and
       eq.getAnOperand().getIntValue() = ub and
       ub < 0 and
       r = "equal"
     )
   )
-select cmp, "'" + len.getName() + "' is always non-negative, and hence cannot " + r + " " + ub + "."
+select cmp, d + " is always non-negative, and hence cannot " + r + " " + ub + "."
