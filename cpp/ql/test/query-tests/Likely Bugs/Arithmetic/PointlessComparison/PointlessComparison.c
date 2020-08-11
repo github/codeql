@@ -385,10 +385,10 @@ void bitwise_ands()
 
 void unsigned_mult(unsigned int x, unsigned int y) {
   if(x < 13 && y < 35) {
-      if(x * y > 1024) {} // always false [NOT DETECTED]
+      if(x * y > 1024) {} // always false
       if(x * y < 204) {}
       if(x >= 3 && y >= 2) {
-        if(x * y < 5) {} // always false [NOT DETECTED]
+        if(x * y < 5) {} // always false
       }
   }
 }
