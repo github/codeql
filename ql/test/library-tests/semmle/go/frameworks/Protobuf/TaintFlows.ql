@@ -12,10 +12,6 @@ class SinkFunction extends Function {
   SinkFunction() { this.getName() = ["sinkString", "sinkBytes"] }
 }
 
-predicate fieldWriteStep(DataFlow::Node pred, DataFlow::Node succ) {
-  any(DataFlow::Write w).writesField(succ.(DataFlow::PostUpdateNode).getPreUpdateNode(), _, pred)
-}
-
 class TestConfig extends TaintTracking::Configuration {
   TestConfig() { this = "testconfig" }
 
@@ -23,11 +19,6 @@ class TestConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     sink = any(SinkFunction f).getACall().getAnArgument()
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    super.isAdditionalTaintStep(fromNode, toNode) or
-    fieldWriteStep(fromNode, toNode)
   }
 }
 

@@ -141,4 +141,23 @@ module Protobuf {
       inp.isReceiver() and outp.isResult()
     }
   }
+
+  /**
+   * Gets a field of a Message type.
+   */
+  private Field getAMessageField() {
+    result = any(MessageType msg).getField(_)
+    or
+    exists(Type base | base.getPointerType() instanceof MessageType | result = base.getField(_))
+  }
+
+  /**
+   * Additional taint step tainting a Message when taint is written to any of its fields.
+   */
+  private class WriteMessageFieldStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      any(DataFlow::Write w)
+          .writesField(succ.(DataFlow::PostUpdateNode).getPreUpdateNode(), getAMessageField(), pred)
+    }
+  }
 }
