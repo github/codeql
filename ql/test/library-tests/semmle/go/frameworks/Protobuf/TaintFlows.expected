@@ -3,6 +3,8 @@
 | testDeprecatedApi.go:41:25:41:43 | call to getUntrustedBytes : slice type | testDeprecatedApi.go:45:13:45:29 | selection of Description |
 | testDeprecatedApi.go:49:25:49:43 | call to getUntrustedBytes : slice type | testDeprecatedApi.go:53:13:53:34 | call to GetDescription |
 | testDeprecatedApi.go:58:23:58:42 | call to getUntrustedString : string | testDeprecatedApi.go:65:12:65:21 | serialized |
+| testDeprecatedApi.go:70:14:70:33 | call to getUntrustedString : string | testDeprecatedApi.go:77:12:77:21 | serialized |
+| testDeprecatedApi.go:85:24:85:43 | call to getUntrustedString : string | testDeprecatedApi.go:89:12:89:21 | serialized |
 | testModernApi.go:11:22:11:41 | call to getUntrustedString : string | testModernApi.go:15:12:15:21 | serialized |
 | testModernApi.go:20:22:20:41 | call to getUntrustedString : string | testModernApi.go:26:12:26:21 | serialized |
 | testModernApi.go:30:25:30:43 | call to getUntrustedBytes : slice type | testModernApi.go:34:13:34:29 | selection of Description |

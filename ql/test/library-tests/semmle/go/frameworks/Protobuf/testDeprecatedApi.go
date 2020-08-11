@@ -64,3 +64,27 @@ func testMergeThenMarshal() {
 
 	sinkBytes(serialized)
 }
+
+func testTaintedSubmessage() {
+	alert := &query.Query_Alert{}
+	alert.Msg = getUntrustedString()
+
+	query := &query.Query{}
+	query.Alerts = append(query.Alerts, alert)
+
+	serialized, _ := proto.Marshal(query)
+
+	sinkBytes(serialized)
+}
+
+func testTaintedSubmessageInPlace() {
+	alert := &query.Query_Alert{}
+
+	query := &query.Query{}
+	query.Alerts = append(query.Alerts, alert)
+	query.Alerts[0].Msg = getUntrustedString()
+
+	serialized, _ := proto.Marshal(query)
+
+	sinkBytes(serialized)
+}
