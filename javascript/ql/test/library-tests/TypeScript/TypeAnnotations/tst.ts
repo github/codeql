@@ -158,3 +158,9 @@ function tail<T extends any[]>(arr: readonly [any, ...T]) {
     const [_ignored, ...rest] = arr;
     return rest;
 }
+
+// spread in tuple in non-last position
+type Arr = readonly any[];
+function concat<T extends Arr, U extends Arr>(arr1: T, arr2: U): [...T, ...U] {
+    return [...arr1, ...arr2];
+}
