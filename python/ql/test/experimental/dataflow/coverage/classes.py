@@ -1271,49 +1271,63 @@ async def atest_await():
 # # coroutine.throw(type[, value[, traceback]])
 # # coroutine.close()
 
-# # 3.4.3. Asynchronous Iterators
-# # object.__aiter__(self)
-# class With_aiter:
+# 3.4.3. Asynchronous Iterators
+# object.__aiter__(self)
+class With_aiter:
 
-#   def __aiter__(self):
-#     OK()
-#     return "" # edit to match type
+  def __aiter__(self):
+    OK()
+    return self
 
-# def test_aiter():
-#   with_aiter = With_aiter()
-#   aiter(with_aiter) # edit to effect call
+  async def __anext__(self):
+    raise StopAsyncIteration
 
-# # object.__anext__(self)
-# class With_anext:
+async def atest_aiter():
+  with_aiter = With_aiter()
+  async for x in with_aiter:
+    pass
 
-#   def __anext__(self):
-#     OK()
-#     return "" # edit to match type
+# object.__anext__(self)
+class With_anext:
 
-# def test_anext():
-#   with_anext = With_anext()
-#   anext(with_anext) # edit to effect call
+  def __aiter__(self):
+    return self
+
+  async def __anext__(self):
+    OK()
+    raise StopAsyncIteration
+
+async def atest_anext():
+  with_anext = With_anext()
+  async for x in with_anext:
+    pass
 
 
-# # 3.4.4. Asynchronous Context Managers
-# # object.__aenter__(self)
-# class With_aenter:
+# 3.4.4. Asynchronous Context Managers
+# object.__aenter__(self)
+class With_aenter:
 
-#   def __aenter__(self):
-#     OK()
-#     return "" # edit to match type
+  async def __aenter__(self):
+    OK()
 
-# def test_aenter():
-#   with_aenter = With_aenter()
-#   aenter(with_aenter) # edit to effect call
+  async def __aexit__(self, exc_type, exc_value, traceback):
+    pass
 
-# # object.__aexit__(self, exc_type, exc_value, traceback)
-# class With_aexit:
+async def atest_aenter():
+  with_aenter = With_aenter()
+  async with with_aenter:
+    pass
 
-#   def __aexit__(self, exc_type, exc_value, traceback):
-#     OK()
-#     return "" # edit to match type
+# object.__aexit__(self, exc_type, exc_value, traceback)
+class With_aexit:
 
-# def test_aexit():
-#   with_aexit = With_aexit()
-#   aexit(with_aexit) # edit to effect call
+  async def __aenter__(self):
+    pass
+
+  async def __aexit__(self, exc_type, exc_value, traceback):
+    OK()
+
+async def atest_aexit():
+  with_aexit = With_aexit()
+  async with with_aexit:
+    pass
