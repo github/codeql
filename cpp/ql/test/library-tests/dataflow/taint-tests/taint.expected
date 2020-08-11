@@ -58,6 +58,8 @@
 | stl.cpp:328:11:328:11 | call to operator+ | stl.cpp:323:18:323:23 | call to source |
 | stl.cpp:331:11:331:11 | call to operator+ | stl.cpp:331:13:331:18 | call to source |
 | stl.cpp:340:8:340:9 | s5 | stl.cpp:336:18:336:23 | call to source |
+| stl.cpp:344:8:344:9 | s6 | stl.cpp:336:18:336:23 | call to source |
+| stl.cpp:349:8:349:9 | s7 | stl.cpp:347:9:347:14 | call to source |
 | stl.cpp:353:8:353:9 | s8 | stl.cpp:336:18:336:23 | call to source |
 | stl.cpp:358:8:358:9 | s9 | stl.cpp:356:13:356:18 | call to source |
 | structlikeclass.cpp:35:8:35:9 | s1 | structlikeclass.cpp:29:22:29:27 | call to source |

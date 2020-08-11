@@ -40,10 +40,13 @@ class StdStringPlus extends TaintFunction {
 }
 
 /**
- * The `std::string` function `append`.
+ * The `std::string` functions `operator+=` and `append`.
  */
 class StdStringAppend extends TaintFunction {
-  StdStringAppend() { this.hasQualifiedName("std", "basic_string", "append") }
+  StdStringAppend() {
+    this.hasQualifiedName("std", "basic_string", "operator+=") or
+    this.hasQualifiedName("std", "basic_string", "append")
+  }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from parameter to string itself (qualifier) and return value

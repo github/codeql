@@ -341,12 +341,12 @@ void test_string_append() {
 
 		s6 = s3;
 		s6 += s4;
-		sink(s6); // tainted [NOT DETECTED]
+		sink(s6); // tainted
 
 		s7 = s3;
 		s7 += source();
 		s7 += " ";
-		sink(s7); // tainted [NOT DETECTED]
+		sink(s7); // tainted
 
 		s8 = s3;
 		s8.append(s4);

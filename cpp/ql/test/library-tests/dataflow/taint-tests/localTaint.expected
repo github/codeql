@@ -549,13 +549,19 @@
 | stl.cpp:342:8:342:9 | s3 | stl.cpp:343:3:343:4 | s6 |  |
 | stl.cpp:342:8:342:9 | s3 | stl.cpp:344:8:344:9 | s6 |  |
 | stl.cpp:343:3:343:4 | ref arg s6 | stl.cpp:344:8:344:9 | s6 |  |
+| stl.cpp:343:9:343:10 | s4 | stl.cpp:343:3:343:4 | ref arg s6 | TAINT |
+| stl.cpp:343:9:343:10 | s4 | stl.cpp:343:6:343:6 | call to operator+= | TAINT |
 | stl.cpp:346:8:346:9 | s3 | stl.cpp:346:3:346:9 | ... = ... |  |
 | stl.cpp:346:8:346:9 | s3 | stl.cpp:347:3:347:4 | s7 |  |
 | stl.cpp:346:8:346:9 | s3 | stl.cpp:348:3:348:4 | s7 |  |
 | stl.cpp:346:8:346:9 | s3 | stl.cpp:349:8:349:9 | s7 |  |
 | stl.cpp:347:3:347:4 | ref arg s7 | stl.cpp:348:3:348:4 | s7 |  |
 | stl.cpp:347:3:347:4 | ref arg s7 | stl.cpp:349:8:349:9 | s7 |  |
+| stl.cpp:347:9:347:14 | call to source | stl.cpp:347:3:347:4 | ref arg s7 | TAINT |
+| stl.cpp:347:9:347:14 | call to source | stl.cpp:347:6:347:6 | call to operator+= | TAINT |
 | stl.cpp:348:3:348:4 | ref arg s7 | stl.cpp:349:8:349:9 | s7 |  |
+| stl.cpp:348:9:348:11 |   | stl.cpp:348:3:348:4 | ref arg s7 | TAINT |
+| stl.cpp:348:9:348:11 |   | stl.cpp:348:6:348:6 | call to operator+= | TAINT |
 | stl.cpp:351:8:351:9 | s3 | stl.cpp:351:3:351:9 | ... = ... |  |
 | stl.cpp:351:8:351:9 | s3 | stl.cpp:352:3:352:4 | s8 |  |
 | stl.cpp:351:8:351:9 | s3 | stl.cpp:353:8:353:9 | s8 |  |
