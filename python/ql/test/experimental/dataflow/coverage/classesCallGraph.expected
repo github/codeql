@@ -3,4 +3,4 @@
 | classes.py:178:7:178:28 | ControlFlowNode for frozenset() | classes.py:178:7:178:28 | ControlFlowNode for frozenset() |
 | classes.py:182:7:182:26 | ControlFlowNode for dict() | classes.py:182:7:182:26 | ControlFlowNode for dict() |
 | classes.py:303:28:303:51 | ControlFlowNode for dict() | classes.py:303:28:303:51 | ControlFlowNode for dict() |
-| classes.py:420:12:420:24 | ControlFlowNode for Attribute() | classes.py:420:12:420:24 | ControlFlowNode for Attribute() |
+| classes.py:466:12:466:24 | ControlFlowNode for Attribute() | classes.py:466:12:466:24 | ControlFlowNode for Attribute() |

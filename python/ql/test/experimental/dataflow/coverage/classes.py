@@ -302,13 +302,20 @@ def test_set_name():
   with_set_name = With_set_name()
   type("Owner", (object,), dict(attr=with_set_name))
 
-# 3.3.2.4. __slots__
+# 3.3.2.4. __slots__   // We are not testing the  suppression of -weakref_ and _dict_ here
 # object.__slots__
 # __weakref__
 # __dict__
 
 # 3.3.3. Customizing class creation
 # classmethod object.__init_subclass__(cls)
+class With_init_subclass:
+
+  def __init_subclass__(cls):
+    OK()
+
+def test_init_subclass():
+  type("Subclass", (With_init_subclass,), {})
 
 # 3.3.3.1. Metaclasses
 # By default, classes are constructed using type(). The class body is executed in a new namespace and the class name is bound locally to the result of type(name, bases, namespace).
@@ -318,13 +325,52 @@ def test_set_name():
 
 # 3.3.3.4. Preparing the class namespace
 # metaclass.__prepare__(name, bases, **kwds)
+class With_prepare(type):
+
+  def __prepare__(name, bases, **kwds):
+    OK()
+    return kwds
+
+
+def test_prepare():
+  class With_meta(metaclass=With_prepare):
+    pass
 
 # 3.3.4. Customizing instance and subclass checks
 # class.__instancecheck__(self, instance)
+class With_instancecheck:
+
+  def __instancecheck__(self, instance):
+    OK()
+    return True
+
+def test_instancecheck():
+  with_instancecheck = With_instancecheck()
+  isinstance("", with_instancecheck)
+
 # class.__subclasscheck__(self, subclass)
+class With_subclasscheck:
+
+  def __subclasscheck__(self, subclass):
+    OK()
+    return True
+
+def test_subclasscheck():
+  with_subclasscheck = With_subclasscheck()
+  issubclass(object, with_subclasscheck)
+
 
 # 3.3.5. Emulating generic types
 # classmethod object.__class_getitem__(cls, key)
+class With_class_getitem:
+
+  def __class_getitem__(cls, key):
+    OK()
+    return object
+
+def test_class_getitem():
+  with_class_getitem = With_class_getitem[int]()
+
 
 # 3.3.6. Emulating callable objects
 # object.__call__(self[, args...])
@@ -1113,7 +1159,7 @@ async def atest_await():
   await(with_await)
 
 
-# # 3.4.2. Coroutine Objects
+# # 3.4.2. Coroutine Objects   // These should be handled as normal function calls
 # # coroutine.send(value)
 # # coroutine.throw(type[, value[, traceback]])
 # # coroutine.close()
