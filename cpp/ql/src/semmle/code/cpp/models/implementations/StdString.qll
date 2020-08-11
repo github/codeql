@@ -36,7 +36,7 @@ class StdStringPlus extends TaintFunction {
       input.isParameterDeref(0) or
       input.isParameterDeref(1)
     ) and
-    output.isReturnValueDeref()
+    output.isReturnValue()
   }
 }
 
