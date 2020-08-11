@@ -170,3 +170,11 @@ function labelOnTupleElements(x: [first: number, second: number]): number {
   let [a, b] = x;
   return a + b;
 }
+
+// spread elements can occur anywhere in a tuple – not just at the end!
+type Strings = [string, string];
+type Numbers = [number, number];
+
+// [string, string, number, number]
+type StrStrNumNum = [...Strings, ...Numbers];
+var foo: StrStrNumNum;
