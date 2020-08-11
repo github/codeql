@@ -164,3 +164,9 @@ type Arr = readonly any[];
 function concat<T extends Arr, U extends Arr>(arr1: T, arr2: U): [...T, ...U] {
     return [...arr1, ...arr2];
 }
+
+// labelled tuple elements
+function labelOnTupleElements(x: [first: number, second: number]): number {
+  let [a, b] = x;
+  return a + b;
+}

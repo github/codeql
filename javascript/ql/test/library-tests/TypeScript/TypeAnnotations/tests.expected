@@ -111,6 +111,7 @@ test_VariableTypes
 | tst.ts:157:32:157:34 | arr | arr | tst.ts:157:37:157:56 | readonly [any, ...T] |
 | tst.ts:164:47:164:50 | arr1 | arr1 | tst.ts:164:53:164:53 | T |
 | tst.ts:164:56:164:59 | arr2 | arr2 | tst.ts:164:62:164:62 | U |
+| tst.ts:169:31:169:31 | x | x | tst.ts:169:34:169:64 | [first: ... number] |
 test_QualifiedTypeAccess
 | tst.ts:63:19:63:21 | N.I | tst.ts:63:19:63:19 | N | tst.ts:63:21:63:21 | I |
 | tst.ts:64:20:64:24 | N.M.I | tst.ts:64:20:64:22 | N.M | tst.ts:64:24:64:24 | I |
@@ -205,6 +206,8 @@ test_TupleTypeExpr
 | tst.ts:157:46:157:56 | [any, ...T] | 1 | 2 | tst.ts:157:52:157:55 | ...T |
 | tst.ts:164:66:164:77 | [...T, ...U] | 0 | 2 | tst.ts:164:67:164:70 | ...T |
 | tst.ts:164:66:164:77 | [...T, ...U] | 1 | 2 | tst.ts:164:73:164:76 | ...U |
+| tst.ts:169:34:169:64 | [first: ... number] | 0 | 2 | tst.ts:169:42:169:47 | number |
+| tst.ts:169:34:169:64 | [first: ... number] | 1 | 2 | tst.ts:169:58:169:63 | number |
 test_FieldTypes
 | tst.ts:15:3:15:22 | numberField: number; | tst.ts:15:16:15:21 | number |
 | tst.ts:16:3:16:22 | stringField: string; | tst.ts:16:16:16:21 | string |
@@ -280,6 +283,7 @@ test_ReturnTypes
 | tst.ts:142:1:146:1 | functio ... )\\n  }\\n} | function assert | tst.ts:142:48:142:64 | asserts condition |
 | tst.ts:148:1:152:1 | functio ... ;\\n  }\\n} | function assertIsString | tst.ts:148:36:148:56 | asserts ...  string |
 | tst.ts:164:1:166:1 | functio ... rr2];\\n} | function concat | tst.ts:164:66:164:77 | [...T, ...U] |
+| tst.ts:169:1:172:1 | functio ...  + b;\\n} | function labelOnTupleElements | tst.ts:169:68:169:73 | number |
 test_KeyofTypeExpr
 | tst.ts:49:16:49:30 | keyof Interface | tst.ts:49:22:49:30 | Interface |
 | tst.ts:113:26:113:35 | keyof Node | tst.ts:113:32:113:35 | Node |

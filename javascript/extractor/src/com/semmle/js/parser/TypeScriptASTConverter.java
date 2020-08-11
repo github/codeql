@@ -585,6 +585,8 @@ public class TypeScriptASTConverter {
         return convertTryStatement(node, loc);
       case "TupleType":
         return convertTupleType(node, loc);
+      case "NamedTupleMember": 
+        return convertNamedTupleMember(node, loc);
       case "TypeAliasDeclaration":
         return convertTypeAliasDeclaration(node, loc);
       case "TypeAssertionExpression":
@@ -2178,6 +2180,10 @@ public class TypeScriptASTConverter {
 
   private Node convertTupleType(JsonObject node, SourceLocation loc) throws ParseError {
     return new TupleTypeExpr(loc, convertChildrenAsTypes(node, "elements"));
+  }
+
+  private Node convertNamedTupleMember(JsonObject node, SourceLocation loc) throws ParseError {
+    return convertChild(node, "type");
   }
 
   private Node convertTypeAliasDeclaration(JsonObject node, SourceLocation loc) throws ParseError {
