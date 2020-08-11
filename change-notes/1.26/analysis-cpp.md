@@ -17,3 +17,4 @@ The following changes in version 1.26 affect C/C++ analysis in all applications.
 
 ## Changes to libraries
 
+* The models library now models more taint flows through `std::string`.
