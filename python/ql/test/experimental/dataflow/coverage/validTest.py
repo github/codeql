@@ -27,9 +27,7 @@ def check_async_test_function(f):
     sys.stdout = old_stdout
     check_output(capturer.getvalue(), f)
 
-def check_classes_valid(testFile):
-    # import python.ql.test.experimental.dataflow.coverage.classes as tests
-    # import classes as tests
+def check_tests_valid(testFile):
     import importlib
     tests = importlib.import_module(testFile)
     for i in dir(tests):
@@ -47,5 +45,5 @@ def check_classes_valid(testFile):
                 check_async_test_function(item)
 
 if __name__ == '__main__':
-    check_classes_valid("classes")
-    check_classes_valid("test")
+    check_tests_valid("classes")
+    check_tests_valid("test")
