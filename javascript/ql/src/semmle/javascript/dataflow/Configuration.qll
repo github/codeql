@@ -1001,7 +1001,7 @@ private predicate flowThroughCall(
     not cfg.isLabeledBarrier(output, summary.getEndLabel())
   )
   or
-  // exception thrown inside an immidiatly awaited function call.
+  // exception thrown inside an immediately awaited function call.
   exists(DataFlow::FunctionNode f, DataFlow::Node invk, DataFlow::Node ret |
     f.getFunction().isAsync()
   |
