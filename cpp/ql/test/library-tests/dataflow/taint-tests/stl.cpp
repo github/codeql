@@ -323,12 +323,12 @@ void test_string_append() {
 		std::string s2(source());
 
 		sink(s1 + s1);
-		sink(s1 + s2); // tainted [NOT DETECTED]
-		sink(s2 + s1); // tainted [NOT DETECTED]
-		sink(s2 + s2); // tainted [NOT DETECTED]
+		sink(s1 + s2); // tainted
+		sink(s2 + s1); // tainted
+		sink(s2 + s2); // tainted
 	
 		sink(s1 + " world");
-		sink(s1 + source()); // tainted [NOT DETECTED]
+		sink(s1 + source()); // tainted
 	}
 
 	{
@@ -337,7 +337,7 @@ void test_string_append() {
 		std::string s5, s6, s7, s8, s9;
 
 		s5 = s3 + s4;
-		sink(s5); // tainted [NOT DETECTED]
+		sink(s5); // tainted
 
 		s6 = s3;
 		s6 += s4;

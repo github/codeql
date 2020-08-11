@@ -1,6 +1,13 @@
 import semmle.code.cpp.models.interfaces.Taint
 
 /**
+ * The `std::basic_string` template class.
+ */
+class StdBasicString extends TemplateClass {
+  StdBasicString() { this.hasQualifiedName("std", "basic_string") }
+}
+
+/**
  * The standard function `std::string.c_str`.
  */
 class StdStringCStr extends TaintFunction {
@@ -10,6 +17,25 @@ class StdStringCStr extends TaintFunction {
     // flow from string itself (qualifier) to return value
     input.isQualifierObject() and
     output.isReturnValue()
+  }
+}
+
+/**
+ * The `std::string` function `operator+`.
+ */
+class StdStringPlus extends TaintFunction {
+  StdStringPlus() {
+    this.hasQualifiedName("std", "operator+") and
+    this.getParameter(0).getType().getUnspecifiedType().(ReferenceType).getBaseType() = any(StdBasicString s).getAnInstantiation()
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from parameters to return value
+    (
+      input.isParameterDeref(0) or
+      input.isParameterDeref(1)
+    ) and
+    output.isReturnValueDeref()
   }
 }
 
