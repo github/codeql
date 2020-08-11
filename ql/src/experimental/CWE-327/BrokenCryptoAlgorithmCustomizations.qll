@@ -49,11 +49,9 @@ module BrokenCryptoAlgorithm {
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "BrokenCryptoAlgorithm" }
 
-    override predicate isSource(DataFlow::Node source) { source instanceof SensitiveSource }
+    override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink) {
-      sink instanceof WeakCryptographicOperationSink
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     override predicate isSanitizer(DataFlow::Node node) {
       super.isSanitizer(node) or

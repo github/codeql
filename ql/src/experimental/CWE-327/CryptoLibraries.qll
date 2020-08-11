@@ -40,7 +40,6 @@ private module AlgorithmNames {
     name = "RIPEMD" or
     name = "RIPEMD128" or
     name = "RIPEMD256" or
-    name = "RIPEMD160" or
     name = "RIPEMD320" or
     name = "SHA0" or
     name = "SHA1"
@@ -122,7 +121,8 @@ abstract class CryptographicAlgorithm extends TCryptographicAlgorithm {
    */
   bindingset[name]
   predicate matchesName(string name) {
-    name.toUpperCase().regexpReplaceAll("[-_ ]", "").regexpMatch(".*" + getName() + ".*")
+    exists(name.regexpReplaceAll("[-_]", "").regexpFind("(?i)\\Q" + getName() + "\\E", _, _))
+    // name.toUpperCase().regexpReplaceAll("[-_ ]", "").regexpMatch(".*" + getName() + ".*")
   }
 
   /**
@@ -188,6 +188,10 @@ abstract class CryptographicOperation extends Expr {
   abstract CryptographicAlgorithm getAlgorithm();
 }
 
+/**
+ * Below are the cryptographic functions that have been implemented so far for this library.
+ * Class that checks for use of Md5 package.
+ */
 class Md5 extends CryptographicOperation {
   Expr input;
   CryptographicAlgorithm algorithm;
@@ -207,16 +211,20 @@ class Md5 extends CryptographicOperation {
   override CryptographicAlgorithm getAlgorithm() { result = algorithm }
 }
 
+/**
+ * Class that checks for use of Des package.
+ */
 class Des extends CryptographicOperation {
   Expr input;
   CryptographicAlgorithm algorithm;
-  CallExpr call;
   SelectorExpr sel;
+  CallExpr call;
 
   Des() {
     this = call and
-    algorithm.matchesName(call.getCalleeName()) and
+    algorithm.matchesName(sel.getBase().toString()) and
     algorithm.matchesName("DES") and
+    sel.getSelector().toString() = call.getCalleeName().toString() and
     call.getArgument(0) = input
   }
 
