@@ -98,12 +98,20 @@ predicate maybeAccessesProperty(Expr e, string name) {
  */
 predicate isDeadAssignment(string name, DataFlow::PropWrite assign1, DataFlow::PropWrite assign2) {
   (
-    assign2.getWriteNode() = getANodeWithNoPropAccessBetweenInsideBlock(name, assign1) and
-    postDominatedPropWrite(name, assign1, assign2, true)
-    or
-    noPropAccessBetweenGlobal(name, assign1, assign2)
+    noPropAccessBetweenInsideBasicBlock(name, assign1, assign2) or
+    noPropAccessBetweenAcrossBasicBlocks(name, assign1, assign2)
   ) and
   not isDOMProperty(name)
+}
+
+/**
+ * Holds if `assign1` and `assign2` are in the same basicblock and both assign property `name`, and the assigned property is not accessed between the two assignments.
+ */
+predicate noPropAccessBetweenInsideBasicBlock(
+  string name, DataFlow::PropWrite assign1, DataFlow::PropWrite assign2
+) {
+  assign2.getWriteNode() = getANodeWithNoPropAccessBetweenInsideBlock(name, assign1) and
+  postDominatedPropWrite(name, assign1, assign2, true)
 }
 
 /**
@@ -234,7 +242,7 @@ ControlFlowNode getANodeWithNoPropAccessBetweenInsideBlock(string name, DataFlow
  * Holds if `assign1` and `assign2` are in different basicblocks and both assign property `name`, and the assigned property is not accessed between the two assignments.
  */
 pragma[nomagic]
-predicate noPropAccessBetweenGlobal(
+predicate noPropAccessBetweenAcrossBasicBlocks(
   string name, DataFlow::PropWrite assign1, DataFlow::PropWrite assign2
 ) {
   exists(
