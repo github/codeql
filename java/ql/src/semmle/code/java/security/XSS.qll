@@ -3,33 +3,36 @@ import semmle.code.java.frameworks.Servlets
 import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.spring.SpringController
 import semmle.code.java.frameworks.spring.SpringHttp
-import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking2
 
 /*
  * Definitions for XSS sinks
  */
 
-class XssSink extends DataFlow::ExprNode {
-  XssSink() {
+abstract class XssSink extends DataFlow::Node { }
+
+private class DefaultXssSink extends XssSink {
+  DefaultXssSink() {
     exists(HttpServletResponseSendErrorMethod m, MethodAccess ma |
       ma.getMethod() = m and
-      this.getExpr() = ma.getArgument(1)
+      this.asExpr() = ma.getArgument(1)
     )
     or
     exists(ServletWriterSourceToWritingMethodFlowConfig writer, MethodAccess ma |
       ma.getMethod() instanceof WritingMethod and
       writer.hasFlowToExpr(ma.getQualifier()) and
-      this.getExpr() = ma.getArgument(_)
+      this.asExpr() = ma.getArgument(_)
     )
     or
     exists(Method m |
       m.getDeclaringType() instanceof TypeWebView and
       (
-        m.getAReference().getArgument(0) = this.getExpr() and m.getName() = "loadData"
+        m.getAReference().getArgument(0) = this.asExpr() and m.getName() = "loadData"
         or
-        m.getAReference().getArgument(0) = this.getExpr() and m.getName() = "loadUrl"
+        m.getAReference().getArgument(0) = this.asExpr() and m.getName() = "loadUrl"
         or
-        m.getAReference().getArgument(1) = this.getExpr() and m.getName() = "loadDataWithBaseURL"
+        m.getAReference().getArgument(1) = this.asExpr() and m.getName() = "loadDataWithBaseURL"
       )
     )
     or
@@ -77,7 +80,7 @@ class XssSink extends DataFlow::ExprNode {
   }
 }
 
-class ServletWriterSourceToWritingMethodFlowConfig extends TaintTracking::Configuration {
+private class ServletWriterSourceToWritingMethodFlowConfig extends TaintTracking2::Configuration {
   ServletWriterSourceToWritingMethodFlowConfig() {
     this = "XSS::ServletWriterSourceToWritingMethodFlowConfig"
   }
@@ -91,7 +94,7 @@ class ServletWriterSourceToWritingMethodFlowConfig extends TaintTracking::Config
   }
 }
 
-class WritingMethod extends Method {
+private class WritingMethod extends Method {
   WritingMethod() {
     getDeclaringType().getASupertype*().hasQualifiedName("java.io", _) and
     (
