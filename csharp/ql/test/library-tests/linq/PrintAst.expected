@@ -2,7 +2,7 @@ queries.cs:
 #    5| [Class] Queries
 #    7|   2: [Method] Queries1
 #    8|     4: [BlockStmt] {...}
-#    9|       0: [LocalConstantDeclStmt] ... ...;
+#    9|       0: [LocalVariableDeclStmt] ... ...;
 #    9|         0: [LocalVariableDeclAndInitExpr] IList<Int32> list1 = ...
 #    9|           0: [ObjectCreation] object creation of type List<Int32>
 #    9|             -1: [CollectionInitializer] { ..., ... }
@@ -13,7 +13,7 @@ queries.cs:
 #    9|               2: [ElementInitializer] call to method Add
 #    9|                 0: [IntLiteral] 3
 #    9|           1: [LocalVariableAccess] access to local variable list1
-#   10|       1: [LocalConstantDeclStmt] ... ...;
+#   10|       1: [LocalVariableDeclStmt] ... ...;
 #   10|         0: [LocalVariableDeclAndInitExpr] IList<IList<Int32>> list2 = ...
 #   10|           0: [ObjectCreation] object creation of type List<IList<Int32>>
 #   10|             -1: [CollectionInitializer] { ..., ... }
@@ -22,7 +22,7 @@ queries.cs:
 #   10|               1: [ElementInitializer] call to method Add
 #   10|                 0: [LocalVariableAccess] access to local variable list1
 #   10|           1: [LocalVariableAccess] access to local variable list2
-#   12|       2: [LocalConstantDeclStmt] ... ...;
+#   12|       2: [LocalVariableDeclStmt] ... ...;
 #   12|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> list3 = ...
 #   16|           0: [MethodCall] call to method Select
 #   15|             0: [MethodCall] call to method OrderBy
@@ -42,7 +42,7 @@ queries.cs:
 #   16|               0: [LocalVariableAccess] access to local variable a
 #   16|               1: [IntLiteral] 1
 #   12|           1: [LocalVariableAccess] access to local variable list3
-#   18|       3: [LocalConstantDeclStmt] ... ...;
+#   18|       3: [LocalVariableDeclStmt] ... ...;
 #   18|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> list4 = ...
 #   18|           0: [MethodCall] call to method Select
 #   18|             -1: [MethodCall] call to method OrderBy
@@ -69,7 +69,7 @@ queries.cs:
 #   21|                 0: [ParameterAccess] access to parameter a
 #   21|                 1: [IntLiteral] 1
 #   18|           1: [LocalVariableAccess] access to local variable list4
-#   23|       4: [LocalConstantDeclStmt] ... ...;
+#   23|       4: [LocalVariableDeclStmt] ... ...;
 #   23|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> list5 = ...
 #   28|           0: [MethodCall] call to method 
 #   27|             0: [MethodCall] call to method Join
@@ -98,7 +98,7 @@ queries.cs:
 #   27|               4: [LocalVariableAccess] access to local variable c
 #   28|             1: [IntLiteral] 1
 #   23|           1: [LocalVariableAccess] access to local variable list5
-#   30|       5: [LocalConstantDeclStmt] ... ...;
+#   30|       5: [LocalVariableDeclStmt] ... ...;
 #   30|         0: [LocalVariableDeclAndInitExpr] IEnumerable<IGrouping<Int32,Int32>> list6 = ...
 #   35|           0: [MethodCall] call to method GroupBy
 #   34|             0: [MethodCall] call to method OrderByDescending
@@ -125,11 +125,11 @@ queries.cs:
 #   35|             1: [LocalVariableAccess] access to local variable b
 #   35|             2: [LocalVariableAccess] access to local variable next
 #   30|           1: [LocalVariableAccess] access to local variable list6
-#   37|       6: [LocalConstantDeclStmt] ... ...;
+#   37|       6: [LocalVariableDeclStmt] ... ...;
 #   37|         0: [LocalVariableDeclAndInitExpr] B list7 = ...
 #   37|           0: [ObjectCreation] object creation of type B
 #   37|           1: [LocalVariableAccess] access to local variable list7
-#   39|       7: [LocalConstantDeclStmt] ... ...;
+#   39|       7: [LocalVariableDeclStmt] ... ...;
 #   39|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Object> list8 = ...
 #   41|           0: [MethodCall] call to method Select
 #   40|             0: [LocalVariableDeclAndInitExpr] Object a = ...
@@ -137,11 +137,11 @@ queries.cs:
 #   40|               1: [LocalVariableAccess] access to local variable a
 #   41|             1: [LocalVariableAccess] access to local variable a
 #   39|           1: [LocalVariableAccess] access to local variable list8
-#   43|       8: [LocalConstantDeclStmt] ... ...;
+#   43|       8: [LocalVariableDeclStmt] ... ...;
 #   43|         0: [LocalVariableDeclAndInitExpr] C list9 = ...
 #   43|           0: [ObjectCreation] object creation of type C
 #   43|           1: [LocalVariableAccess] access to local variable list9
-#   45|       9: [LocalConstantDeclStmt] ... ...;
+#   45|       9: [LocalVariableDeclStmt] ... ...;
 #   45|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> list10 = ...
 #   47|           0: [MethodCall] call to method Select
 #   46|             0: [LocalVariableDeclAndInitExpr] Int32 a = ...
@@ -149,7 +149,7 @@ queries.cs:
 #   46|               1: [LocalVariableAccess] access to local variable a
 #   47|             1: [LocalVariableAccess] access to local variable a
 #   45|           1: [LocalVariableAccess] access to local variable list10
-#   49|       10: [LocalConstantDeclStmt] ... ...;
+#   49|       10: [LocalVariableDeclStmt] ... ...;
 #   49|         0: [LocalVariableDeclAndInitExpr] IEnumerable<String> list11 = ...
 #   51|           0: [MethodCall] call to method Select
 #   50|             0: [LocalVariableDeclAndInitExpr] String a = ...
@@ -157,7 +157,7 @@ queries.cs:
 #   50|               1: [LocalVariableAccess] access to local variable a
 #   51|             1: [LocalVariableAccess] access to local variable a
 #   49|           1: [LocalVariableAccess] access to local variable list11
-#   53|       11: [LocalConstantDeclStmt] ... ...;
+#   53|       11: [LocalVariableDeclStmt] ... ...;
 #   53|         0: [LocalVariableDeclAndInitExpr] IEnumerable<(Int32,IEnumerable<IList<Int32>>)> list12 = ...
 #   56|           0: [MethodCall] call to method 
 #   55|             0: [MethodCall] call to method GroupJoin

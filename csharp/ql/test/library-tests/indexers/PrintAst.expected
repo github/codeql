@@ -117,14 +117,14 @@ indexers.cs:
 #-----|       2: (Parameters)
 #   56|         0: [Parameter] max
 #   57|       4: [BlockStmt] {...}
-#   58|         0: [LocalConstantDeclStmt] ... ...;
+#   58|         0: [LocalVariableDeclStmt] ... ...;
 #   58|           0: [LocalVariableDeclAndInitExpr] BitArray flags = ...
 #   58|             0: [ObjectCreation] object creation of type BitArray
 #   58|               0: [AddExpr] ... + ...
 #   58|                 0: [ParameterAccess] access to parameter max
 #   58|                 1: [IntLiteral] 1
 #   58|             1: [LocalVariableAccess] access to local variable flags
-#   59|         1: [LocalConstantDeclStmt] ... ...;
+#   59|         1: [LocalVariableDeclStmt] ... ...;
 #   59|           0: [LocalVariableDeclAndInitExpr] Int32 count = ...
 #   59|             0: [IntLiteral] 1
 #   59|             1: [LocalVariableAccess] access to local variable count
@@ -171,7 +171,7 @@ indexers.cs:
 #-----|       2: (Parameters)
 #   72|         0: [Parameter] args
 #   73|       4: [BlockStmt] {...}
-#   74|         0: [LocalConstantDeclStmt] ... ...;
+#   74|         0: [LocalVariableDeclStmt] ... ...;
 #   74|           0: [LocalVariableDeclAndInitExpr] Int32 max = ...
 #   74|             0: [MethodCall] call to method Parse
 #   74|               -1: [TypeAccess] access to type Int32
@@ -179,7 +179,7 @@ indexers.cs:
 #   74|                 -1: [ParameterAccess] access to parameter args
 #   74|                 0: [IntLiteral] 0
 #   74|             1: [LocalVariableAccess] access to local variable max
-#   75|         1: [LocalConstantDeclStmt] ... ...;
+#   75|         1: [LocalVariableDeclStmt] ... ...;
 #   75|           0: [LocalVariableDeclAndInitExpr] Int32 count = ...
 #   75|             0: [MethodCall] call to method Count
 #   75|               0: [LocalVariableAccess] access to local variable max

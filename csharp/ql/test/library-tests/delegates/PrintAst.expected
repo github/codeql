@@ -96,31 +96,31 @@ delegates.cs:
 #   55|   9: [Class] Test
 #   58|     2: [Method] Main
 #   59|       4: [BlockStmt] {...}
-#   60|         0: [LocalConstantDeclStmt] ... ...;
+#   60|         0: [LocalVariableDeclStmt] ... ...;
 #   60|           0: [LocalVariableDeclAndInitExpr] D cd1 = ...
 #   60|             0: [ExplicitDelegateCreation] delegate creation of type D
 #   60|               0: [MethodAccess] access to method M1
 #   60|                 -1: [TypeAccess] access to type C
 #   60|             1: [LocalVariableAccess] access to local variable cd1
-#   61|         1: [LocalConstantDeclStmt] ... ...;
+#   61|         1: [LocalVariableDeclStmt] ... ...;
 #   61|           0: [LocalVariableDeclAndInitExpr] D cd2 = ...
 #   61|             0: [ImplicitDelegateCreation] delegate creation of type D
 #   61|               0: [MethodAccess] access to method M2
 #   61|                 -1: [TypeAccess] access to type C
 #   61|             1: [LocalVariableAccess] access to local variable cd2
-#   62|         2: [LocalConstantDeclStmt] ... ...;
+#   62|         2: [LocalVariableDeclStmt] ... ...;
 #   62|           0: [LocalVariableDeclAndInitExpr] D cd3 = ...
 #   62|             0: [OperatorCall] call to operator +
 #   62|               0: [LocalVariableAccess] access to local variable cd1
 #   62|               1: [LocalVariableAccess] access to local variable cd2
 #   62|             1: [LocalVariableAccess] access to local variable cd3
-#   63|         3: [LocalConstantDeclStmt] ... ...;
+#   63|         3: [LocalVariableDeclStmt] ... ...;
 #   63|           0: [LocalVariableDeclAndInitExpr] D cd4 = ...
 #   63|             0: [OperatorCall] call to operator +
 #   63|               0: [LocalVariableAccess] access to local variable cd3
 #   63|               1: [LocalVariableAccess] access to local variable cd1
 #   63|             1: [LocalVariableAccess] access to local variable cd4
-#   64|         4: [LocalConstantDeclStmt] ... ...;
+#   64|         4: [LocalVariableDeclStmt] ... ...;
 #   64|           0: [LocalVariableDeclAndInitExpr] D cd5 = ...
 #   64|             0: [OperatorCall] call to operator -
 #   64|               0: [LocalVariableAccess] access to local variable cd4
@@ -134,17 +134,17 @@ delegates.cs:
 #   66|           0: [AssignSubExpr] ... -= ...
 #   66|             0: [LocalVariableAccess] access to local variable cd1
 #   66|             1: [LocalVariableAccess] access to local variable cd4
-#   68|         7: [LocalConstantDeclStmt] ... ...;
+#   68|         7: [LocalVariableDeclStmt] ... ...;
 #   68|           0: [LocalVariableDeclAndInitExpr] C c = ...
 #   68|             0: [ObjectCreation] object creation of type C
 #   68|             1: [LocalVariableAccess] access to local variable c
-#   69|         8: [LocalConstantDeclStmt] ... ...;
+#   69|         8: [LocalVariableDeclStmt] ... ...;
 #   69|           0: [LocalVariableDeclAndInitExpr] D cd6 = ...
 #   69|             0: [ExplicitDelegateCreation] delegate creation of type D
 #   69|               0: [MethodAccess] access to method M3
 #   69|                 -1: [LocalVariableAccess] access to local variable c
 #   69|             1: [LocalVariableAccess] access to local variable cd6
-#   70|         9: [LocalConstantDeclStmt] ... ...;
+#   70|         9: [LocalVariableDeclStmt] ... ...;
 #   70|           0: [LocalVariableDeclAndInitExpr] D cd7 = ...
 #   70|             0: [ExplicitDelegateCreation] delegate creation of type D
 #   70|               0: [LocalVariableAccess] access to local variable cd6
@@ -154,7 +154,7 @@ delegates.cs:
 #   72|             -1: [LocalVariableAccess] access to local variable cd1
 #   72|             0: [UnaryMinusExpr] -...
 #   72|               0: [IntLiteral] 40
-#   73|         11: [LocalConstantDeclStmt] ... ...;
+#   73|         11: [LocalVariableDeclStmt] ... ...;
 #   73|           0: [LocalVariableDeclAndInitExpr] Int32 x = ...
 #   73|             0: [IntLiteral] 0
 #   73|             1: [LocalVariableAccess] access to local variable x
@@ -164,19 +164,19 @@ delegates.cs:
 #   74|             0: [AddExpr] ... + ...
 #   74|               0: [IntLiteral] 34
 #   74|               1: [LocalVariableAccess] access to local variable x
-#   76|         13: [LocalConstantDeclStmt] ... ...;
+#   76|         13: [LocalVariableDeclStmt] ... ...;
 #   76|           0: [LocalVariableDeclAndInitExpr] Predicate<Int32> pi = ...
 #   76|             0: [ExplicitDelegateCreation] delegate creation of type Predicate<Int32>
 #   76|               0: [MethodAccess] access to method F
 #   76|                 -1: [TypeAccess] access to type X
 #   76|             1: [LocalVariableAccess] access to local variable pi
-#   77|         14: [LocalConstantDeclStmt] ... ...;
+#   77|         14: [LocalVariableDeclStmt] ... ...;
 #   77|           0: [LocalVariableDeclAndInitExpr] Predicate<String> ps = ...
 #   77|             0: [ImplicitDelegateCreation] delegate creation of type Predicate<String>
 #   77|               0: [MethodAccess] access to method G
 #   77|                 -1: [TypeAccess] access to type X
 #   77|             1: [LocalVariableAccess] access to local variable ps
-#   79|         15: [LocalConstantDeclStmt] ... ...;
+#   79|         15: [LocalVariableDeclStmt] ... ...;
 #   79|           0: [LocalVariableDeclAndInitExpr] Boolean b = ...
 #   79|             0: [BitwiseAndExpr] ... & ...
 #   79|               0: [DelegateCall] delegate call
@@ -186,5 +186,5 @@ delegates.cs:
 #   79|                 -1: [LocalVariableAccess] access to local variable ps
 #   79|                 0: [StringLiteral] ""
 #   79|             1: [LocalVariableAccess] access to local variable b
-#   81|         16: [LocalConstantDeclStmt] ... ...;
+#   81|         16: [LocalVariableDeclStmt] ... ...;
 #   81|           0: [LocalVariableDeclExpr] ContextCallback d

@@ -6,7 +6,7 @@ goto.cs:
 #    7|         0: [LabelStmt] s1:
 #    7|         1: [GotoLabelStmt] goto ...;
 #    9|       1: [LabelStmt] s2:
-#    9|       2: [LocalConstantDeclStmt] ... ...;
+#    9|       2: [LocalVariableDeclStmt] ... ...;
 #    9|         0: [LocalVariableDeclAndInitExpr] String s = ...
 #    9|           0: [StringLiteral] "5"
 #    9|           1: [LocalVariableAccess] access to local variable s

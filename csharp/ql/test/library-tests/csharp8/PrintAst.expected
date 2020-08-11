@@ -101,7 +101,7 @@ NullCoalescingAssignment.cs:
 #    3| [Class] NullCoalescingAssignment
 #    5|   2: [Method] NullCoalescing
 #    6|     4: [BlockStmt] {...}
-#    7|       0: [LocalConstantDeclStmt] ... ...;
+#    7|       0: [LocalVariableDeclStmt] ... ...;
 #    7|         0: [LocalVariableDeclAndInitExpr] Object o = ...
 #    7|           0: [NullLiteral] null
 #    7|           1: [LocalVariableAccess] access to local variable o
@@ -165,20 +165,20 @@ NullableRefTypes.cs:
 #   32|     4: [BlockStmt] {...}
 #   35|   18: [Method] Locals
 #   36|     4: [BlockStmt] {...}
-#   37|       0: [LocalConstantDeclStmt] ... ...;
+#   37|       0: [LocalVariableDeclStmt] ... ...;
 #   37|         0: [LocalVariableDeclAndInitExpr] MyClass a = ...
 #   37|           0: [ObjectCreation] object creation of type MyClass
 #   37|           1: [LocalVariableAccess] access to local variable a
-#   38|       1: [LocalConstantDeclStmt] ... ...;
+#   38|       1: [LocalVariableDeclStmt] ... ...;
 #   38|         0: [LocalVariableDeclAndInitExpr] MyClass b = ...
 #   38|           0: [NullLiteral] null
 #   38|           1: [LocalVariableAccess] access to local variable b
-#   39|       2: [LocalConstantDeclStmt] ... ...;
+#   39|       2: [LocalVariableDeclStmt] ... ...;
 #   39|         0: [LocalVariableDeclAndInitExpr] MyClass c = ...
 #   39|           0: [RefExpr] ref ...
 #   39|             0: [LocalVariableAccess] access to local variable b
 #   39|           1: [LocalVariableAccess] access to local variable c
-#   40|       3: [LocalConstantDeclStmt] ... ...;
+#   40|       3: [LocalVariableDeclStmt] ... ...;
 #   40|         0: [LocalVariableDeclAndInitExpr] MyClass d = ...
 #   40|           0: [RefExpr] ref ...
 #   40|             0: [LocalVariableAccess] access to local variable b
@@ -219,7 +219,7 @@ NullableRefTypes.cs:
 #   68|     4: [BlockStmt] {...}
 #   71|   31: [Method] CallF
 #   72|     4: [BlockStmt] {...}
-#   73|       0: [LocalConstantDeclStmt] ... ...;
+#   73|       0: [LocalVariableDeclStmt] ... ...;
 #   73|         0: [LocalVariableDeclAndInitExpr] MyClass x = ...
 #   73|           0: [NullLiteral] null
 #   73|           1: [LocalVariableAccess] access to local variable x
@@ -237,11 +237,11 @@ NullableRefTypes.cs:
 #   80| [Class] NullableRefTypes
 #   82|   2: [Method] TestSuppressNullableWarningExpr
 #   83|     4: [BlockStmt] {...}
-#   84|       0: [LocalConstantDeclStmt] ... ...;
+#   84|       0: [LocalVariableDeclStmt] ... ...;
 #   84|         0: [LocalVariableDeclAndInitExpr] String x = ...
 #   84|           0: [StringLiteral] "source"
 #   84|           1: [LocalVariableAccess] access to local variable x
-#   85|       1: [LocalConstantDeclStmt] ... ...;
+#   85|       1: [LocalVariableDeclStmt] ... ...;
 #   85|         0: [LocalVariableDeclAndInitExpr] String y = ...
 #   85|           0: [SuppressNullableWarningExpr] ...!
 #   85|             0: [LocalVariableAccess] access to local variable x
@@ -262,17 +262,17 @@ NullableRefTypes.cs:
 #   88|           1: [LocalVariableAccess] access to local variable y
 #   91|   3: [Method] FunctionInNullableContext
 #   92|     4: [BlockStmt] {...}
-#   93|       0: [LocalConstantDeclStmt] ... ...;
+#   93|       0: [LocalVariableDeclStmt] ... ...;
 #   93|         0: [LocalVariableDeclAndInitExpr] String x = ...
 #   93|           0: [StringLiteral] "source"
 #   93|           1: [LocalVariableAccess] access to local variable x
-#   94|       1: [LocalConstantDeclStmt] ... ...;
+#   94|       1: [LocalVariableDeclStmt] ... ...;
 #   94|         0: [LocalVariableDeclAndInitExpr] String y = ...
 #   94|           0: [NullCoalescingExpr] ... ?? ...
 #   94|             0: [LocalVariableAccess] access to local variable x
 #   94|             1: [NullLiteral] null
 #   94|           1: [LocalVariableAccess] access to local variable y
-#   95|       2: [LocalConstantDeclStmt] ... ...;
+#   95|       2: [LocalVariableDeclStmt] ... ...;
 #   95|         0: [LocalVariableDeclAndInitExpr] String z = ...
 #   95|           0: [LocalVariableAccess] access to local variable x
 #   95|           1: [LocalVariableAccess] access to local variable z
@@ -360,7 +360,7 @@ NullableRefTypes.cs:
 #-----|     2: (Parameters)
 #  158|       0: [Parameter] p
 #  159|     4: [BlockStmt] {...}
-#  160|       0: [LocalConstantDeclStmt] ... ...;
+#  160|       0: [LocalVariableDeclStmt] ... ...;
 #  160|         0: [LocalVariableDeclAndInitExpr] MyClass a = ...
 #  160|           0: [ParameterAccess] access to parameter p
 #  160|           1: [LocalVariableAccess] access to local variable a
@@ -374,7 +374,7 @@ NullableRefTypes.cs:
 #  177|   4: [Method] Count
 #  179|   5: [Method] LoopUnrolling
 #  180|     4: [BlockStmt] {...}
-#  181|       0: [LocalConstantDeclStmt] ... ...;
+#  181|       0: [LocalVariableDeclStmt] ... ...;
 #  181|         0: [LocalVariableDeclAndInitExpr] String x = ...
 #  181|           0: [MethodCall] call to method MaybeNull
 #  181|             -1: [ThisAccess] this access
@@ -403,7 +403,7 @@ NullableRefTypes.cs:
 #  190|           0: [LocalVariableAccess] access to local variable x
 #  193|   6: [Method] ExceptionFlow
 #  194|     4: [BlockStmt] {...}
-#  195|       0: [LocalConstantDeclStmt] ... ...;
+#  195|       0: [LocalVariableDeclStmt] ... ...;
 #  195|         0: [LocalVariableDeclAndInitExpr] String y = ...
 #  195|           0: [MethodCall] call to method MaybeNull
 #  195|             -1: [ThisAccess] this access
@@ -425,7 +425,7 @@ NullableRefTypes.cs:
 #-----|     2: (Parameters)
 #  209|       0: [Parameter] o
 #  210|     4: [BlockStmt] {...}
-#  211|       0: [LocalConstantDeclStmt] ... ...;
+#  211|       0: [LocalVariableDeclStmt] ... ...;
 #  211|         0: [LocalVariableDeclAndInitExpr] Type t = ...
 #  211|           0: [MethodCall] call to method GetType
 #  211|             -1: [ParameterAccess] access to parameter o
@@ -437,25 +437,25 @@ NullableRefTypes.cs:
 #-----|     2: (Parameters)
 #  215|       0: [Parameter] list
 #  216|     4: [BlockStmt] {...}
-#  217|       0: [LocalConstantDeclStmt] ... ...;
+#  217|       0: [LocalVariableDeclStmt] ... ...;
 #  217|         0: [LocalVariableDeclAndInitExpr] String a = ...
 #  217|           0: [FieldAccess] access to field Field
 #  217|             -1: [MethodCall] call to method GetSelf
 #  217|               -1: [ThisAccess] this access
 #  217|           1: [LocalVariableAccess] access to local variable a
-#  218|       1: [LocalConstantDeclStmt] ... ...;
+#  218|       1: [LocalVariableDeclStmt] ... ...;
 #  218|         0: [LocalVariableDeclAndInitExpr] String b = ...
 #  218|           0: [IndexerCall] access to indexer
 #  218|             -1: [ParameterAccess] access to parameter list
 #  218|             0: [IntLiteral] 0
 #  218|           1: [LocalVariableAccess] access to local variable b
-#  219|       2: [LocalConstantDeclStmt] ... ...;
+#  219|       2: [LocalVariableDeclStmt] ... ...;
 #  219|         0: [LocalVariableDeclAndInitExpr] String c = ...
 #  219|           0: [IndexerCall] access to indexer
 #  219|             -1: [ParameterAccess] access to parameter list
 #  219|             0: [IntLiteral] 0
 #  219|           1: [LocalVariableAccess] access to local variable c
-#  220|       3: [LocalConstantDeclStmt] ... ...;
+#  220|       3: [LocalVariableDeclStmt] ... ...;
 #  220|         0: [LocalVariableDeclAndInitExpr] String d = ...
 #  220|           0: [FieldAccess] access to field Field
 #  220|             -1: [MethodCall] call to method GetSelf
@@ -539,7 +539,7 @@ patterns.cs:
 #    3| [Class] Patterns
 #    5|   2: [Method] IsPatterns
 #    6|     4: [BlockStmt] {...}
-#    7|       0: [LocalConstantDeclStmt] ... ...;
+#    7|       0: [LocalVariableDeclStmt] ... ...;
 #    7|         0: [LocalVariableDeclAndInitExpr] Object o = ...
 #    7|           0: [CastExpr] (...) ...
 #    7|             0: [ObjectCreation] object creation of type MyStruct
@@ -604,7 +604,7 @@ patterns.cs:
 #   28|         1: [BlockStmt] {...}
 #   32|   3: [Method] SwitchStatements
 #   33|     4: [BlockStmt] {...}
-#   34|       0: [LocalConstantDeclStmt] ... ...;
+#   34|       0: [LocalVariableDeclStmt] ... ...;
 #   34|         0: [LocalVariableDeclAndInitExpr] MyStruct s = ...
 #   34|           0: [ObjectCreation] object creation of type MyStruct
 #   34|             -1: [ObjectInitializer] { ..., ... }
@@ -767,7 +767,7 @@ patterns.cs:
 #-----|     2: (Parameters)
 #   98|       0: [Parameter] x
 #   99|     4: [BlockStmt] {...}
-#  100|       0: [LocalConstantDeclStmt] ... ...;
+#  100|       0: [LocalVariableDeclStmt] ... ...;
 #  100|         0: [LocalVariableDeclAndInitExpr] String size = ...
 #  100|           0: [SwitchExpr] ... switch { ... }
 #  100|             -1: [ParameterAccess] access to parameter x
@@ -781,7 +781,7 @@ patterns.cs:
 #  102|               0: [DiscardPatternExpr] _
 #  102|               2: [StringLiteral] "small"
 #  100|           1: [LocalVariableAccess] access to local variable size
-#  105|       1: [LocalConstantDeclStmt] ... ...;
+#  105|       1: [LocalVariableDeclStmt] ... ...;
 #  105|         0: [LocalVariableDeclAndInitExpr] Int32 x0 = ...
 #  105|           0: [IntLiteral] 0
 #  105|           1: [LocalVariableAccess] access to local variable x0
@@ -850,7 +850,7 @@ patterns.cs:
 #-----|     2: (Parameters)
 #  123|       0: [Parameter] o
 #  124|     4: [BlockStmt] {...}
-#  125|       0: [LocalConstantDeclStmt] ... ...;
+#  125|       0: [LocalVariableDeclStmt] ... ...;
 #  125|         0: [LocalVariableDeclAndInitExpr] MyStruct s = ...
 #  125|           0: [ObjectCreation] object creation of type MyStruct
 #  125|             -1: [ObjectInitializer] { ..., ... }
@@ -858,7 +858,7 @@ patterns.cs:
 #  125|                 0: [IntLiteral] 0
 #  125|                 1: [FieldAccess] access to field X
 #  125|           1: [LocalVariableAccess] access to local variable s
-#  126|       1: [LocalConstantDeclStmt] ... ...;
+#  126|       1: [LocalVariableDeclStmt] ... ...;
 #  126|         0: [LocalVariableDeclAndInitExpr] Int32 r = ...
 #  126|           0: [SwitchExpr] ... switch { ... }
 #  126|             -1: [LocalVariableAccess] access to local variable s
@@ -1001,7 +1001,7 @@ ranges.cs:
 #    5| [Class] Ranges
 #    7|   2: [Method] F
 #    8|     4: [BlockStmt] {...}
-#    9|       0: [LocalConstantDeclStmt] ... ...;
+#    9|       0: [LocalVariableDeclStmt] ... ...;
 #    9|         0: [LocalVariableDeclAndInitExpr] Int32[] array = ...
 #    9|           0: [ArrayCreation] array creation of type Int32[]
 #    9|             -1: [ArrayInitializer] { ..., ... }
@@ -1011,13 +1011,13 @@ ranges.cs:
 #    9|               3: [IntLiteral] 4
 #    9|             0: [IntLiteral] 4
 #    9|           1: [LocalVariableAccess] access to local variable array
-#   10|       1: [LocalConstantDeclStmt] ... ...;
+#   10|       1: [LocalVariableDeclStmt] ... ...;
 #   10|         0: [LocalVariableDeclAndInitExpr] Int32[,] array2 = ...
 #   10|           0: [ArrayCreation] array creation of type Int32[,]
 #   10|             0: [IntLiteral] 2
 #   10|             1: [IntLiteral] 3
 #   10|           1: [LocalVariableAccess] access to local variable array2
-#   12|       2: [LocalConstantDeclStmt] ... ...;
+#   12|       2: [LocalVariableDeclStmt] ... ...;
 #   12|         0: [LocalVariableDeclAndInitExpr] Int32 slice1 = ...
 #   12|           0: [ArrayAccess] access to array element
 #   12|             -1: [LocalVariableAccess] access to local variable array
@@ -1028,7 +1028,7 @@ ranges.cs:
 #   12|                 1: [OperatorCall] call to operator implicit conversion
 #   12|                   0: [IntLiteral] 3
 #   12|           1: [LocalVariableAccess] access to local variable slice1
-#   13|       3: [LocalConstantDeclStmt] ... ...;
+#   13|       3: [LocalVariableDeclStmt] ... ...;
 #   13|         0: [LocalVariableDeclAndInitExpr] Int32 slice2 = ...
 #   13|           0: [ArrayAccess] access to array element
 #   13|             -1: [LocalVariableAccess] access to local variable array
@@ -1039,14 +1039,14 @@ ranges.cs:
 #   13|                 1: [IndexExpr] ^...
 #   13|                   0: [IntLiteral] 1
 #   13|           1: [LocalVariableAccess] access to local variable slice2
-#   14|       4: [LocalConstantDeclStmt] ... ...;
+#   14|       4: [LocalVariableDeclStmt] ... ...;
 #   14|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
 #   14|           0: [IntLiteral] 2
 #   14|           1: [LocalVariableAccess] access to local variable x
 #   14|         1: [LocalVariableDeclAndInitExpr] Int32 y = ...
 #   14|           0: [IntLiteral] 3
 #   14|           1: [LocalVariableAccess] access to local variable y
-#   15|       5: [LocalConstantDeclStmt] ... ...;
+#   15|       5: [LocalVariableDeclStmt] ... ...;
 #   15|         0: [LocalVariableDeclAndInitExpr] Int32 slice3 = ...
 #   15|           0: [ArrayAccess] access to array element
 #   15|             -1: [LocalVariableAccess] access to local variable array
@@ -1057,7 +1057,7 @@ ranges.cs:
 #   15|                 1: [OperatorCall] call to operator implicit conversion
 #   15|                   0: [LocalVariableAccess] access to local variable y
 #   15|           1: [LocalVariableAccess] access to local variable slice3
-#   16|       6: [LocalConstantDeclStmt] ... ...;
+#   16|       6: [LocalVariableDeclStmt] ... ...;
 #   16|         0: [LocalVariableDeclAndInitExpr] Int32 slice4 = ...
 #   16|           0: [ArrayAccess] access to array element
 #   16|             -1: [LocalVariableAccess] access to local variable array
@@ -1066,7 +1066,7 @@ ranges.cs:
 #   16|                 1: [OperatorCall] call to operator implicit conversion
 #   16|                   0: [LocalVariableAccess] access to local variable y
 #   16|           1: [LocalVariableAccess] access to local variable slice4
-#   17|       7: [LocalConstantDeclStmt] ... ...;
+#   17|       7: [LocalVariableDeclStmt] ... ...;
 #   17|         0: [LocalVariableDeclAndInitExpr] Int32 slice5 = ...
 #   17|           0: [ArrayAccess] access to array element
 #   17|             -1: [LocalVariableAccess] access to local variable array
@@ -1075,14 +1075,14 @@ ranges.cs:
 #   17|                 0: [OperatorCall] call to operator implicit conversion
 #   17|                   0: [LocalVariableAccess] access to local variable x
 #   17|           1: [LocalVariableAccess] access to local variable slice5
-#   18|       8: [LocalConstantDeclStmt] ... ...;
+#   18|       8: [LocalVariableDeclStmt] ... ...;
 #   18|         0: [LocalVariableDeclAndInitExpr] Int32 slice6 = ...
 #   18|           0: [ArrayAccess] access to array element
 #   18|             -1: [LocalVariableAccess] access to local variable array
 #   18|             0: [OperatorCall] call to operator implicit conversion
 #   18|               0: [RangeExpr] ... .. ...
 #   18|           1: [LocalVariableAccess] access to local variable slice6
-#   19|       9: [LocalConstantDeclStmt] ... ...;
+#   19|       9: [LocalVariableDeclStmt] ... ...;
 #   19|         0: [LocalVariableDeclAndInitExpr] Int32 slice7 = ...
 #   19|           0: [ArrayAccess] access to array element
 #   19|             -1: [LocalVariableAccess] access to local variable array
@@ -1093,7 +1093,7 @@ ranges.cs:
 #   19|                 1: [IndexExpr] ^...
 #   19|                   0: [IntLiteral] 5
 #   19|           1: [LocalVariableAccess] access to local variable slice7
-#   20|       10: [LocalConstantDeclStmt] ... ...;
+#   20|       10: [LocalVariableDeclStmt] ... ...;
 #   20|         0: [LocalVariableDeclAndInitExpr] Int32 slice8 = ...
 #   20|           0: [ArrayAccess] access to array element
 #   20|             -1: [LocalVariableAccess] access to local variable array2

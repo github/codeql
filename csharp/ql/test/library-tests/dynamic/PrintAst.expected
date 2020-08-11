@@ -8,26 +8,26 @@ dynamic.cs:
 #-----|     2: (Parameters)
 #    8|       0: [Parameter] args
 #    9|     4: [BlockStmt] {...}
-#   10|       0: [LocalConstantDeclStmt] ... ...;
+#   10|       0: [LocalVariableDeclStmt] ... ...;
 #   10|         0: [LocalVariableDeclAndInitExpr] DynamicTest dt = ...
 #   10|           0: [ObjectCreation] object creation of type DynamicTest
 #   10|             0: [IntLiteral] 0
 #   10|           1: [LocalVariableAccess] access to local variable dt
-#   11|       1: [LocalConstantDeclStmt] ... ...;
+#   11|       1: [LocalVariableDeclStmt] ... ...;
 #   11|         0: [LocalVariableDeclAndInitExpr] Int32[] array = ...
 #   11|           0: [ArrayCreation] array creation of type Int32[]
 #   11|             -1: [ArrayInitializer] { ..., ... }
 #   11|               0: [IntLiteral] 42
 #   11|             0: [IntLiteral] 1
 #   11|           1: [LocalVariableAccess] access to local variable array
-#   12|       2: [LocalConstantDeclStmt] ... ...;
+#   12|       2: [LocalVariableDeclStmt] ... ...;
 #   12|         0: [LocalVariableDeclAndInitExpr] Action<Int32> action = ...
 #   12|           0: [LambdaExpr] (...) => ...
 #-----|             2: (Parameters)
 #   12|               0: [Parameter] x
 #   12|             4: [BlockStmt] {...}
 #   12|           1: [LocalVariableAccess] access to local variable action
-#   13|       3: [LocalConstantDeclStmt] ... ...;
+#   13|       3: [LocalVariableDeclStmt] ... ...;
 #   13|         0: [LocalVariableDeclAndInitExpr] dynamic d = ...
 #   13|           0: [CastExpr] (...) ...
 #   13|             0: [IntLiteral] 0
@@ -96,7 +96,7 @@ dynamic.cs:
 #   37|         0: [AssignAddExpr] ... += ...
 #   37|           0: [LocalVariableAccess] access to local variable d
 #   37|           1: [LocalVariableAccess] access to local variable d
-#   40|       18: [LocalConstantDeclStmt] ... ...;
+#   40|       18: [LocalVariableDeclStmt] ... ...;
 #   40|         0: [LocalVariableDeclAndInitExpr] Int32 i = ...
 #   40|           0: [IntLiteral] 0
 #   40|           1: [LocalVariableAccess] access to local variable i

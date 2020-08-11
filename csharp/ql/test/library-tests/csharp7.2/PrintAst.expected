@@ -7,7 +7,7 @@ csharp72.cs:
 #   12|     4: [BlockStmt] {...}
 #   15|   4: [Method] CallF
 #   16|     4: [BlockStmt] {...}
-#   17|       0: [LocalConstantDeclStmt] ... ...;
+#   17|       0: [LocalVariableDeclStmt] ... ...;
 #   17|         0: [LocalVariableDeclAndInitExpr] S s = ...
 #   17|           0: [ObjectCreation] object creation of type S
 #   17|           1: [LocalVariableAccess] access to local variable s

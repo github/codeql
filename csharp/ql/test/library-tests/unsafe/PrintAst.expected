@@ -5,11 +5,11 @@ unsafe.cs:
 #-----|       2: (Parameters)
 #    5|         0: [Parameter] args
 #    6|       4: [BlockStmt] {...}
-#    7|         0: [LocalConstantDeclStmt] ... ...;
+#    7|         0: [LocalVariableDeclStmt] ... ...;
 #    7|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
 #    7|             0: [IntLiteral] 42
 #    7|             1: [LocalVariableAccess] access to local variable i
-#    8|         1: [LocalConstantDeclStmt] ... ...;
+#    8|         1: [LocalVariableDeclStmt] ... ...;
 #    8|           0: [LocalVariableDeclAndInitExpr] Int32[] ia = ...
 #    8|             0: [ArrayCreation] array creation of type Int32[]
 #    8|               0: [IntLiteral] 2
@@ -26,7 +26,7 @@ unsafe.cs:
 #   10|             1: [ArrayAccess] access to array element
 #   10|               -1: [LocalVariableAccess] access to local variable ia
 #   10|               0: [IntLiteral] 1
-#   11|         4: [LocalConstantDeclStmt] ... ...;
+#   11|         4: [LocalVariableDeclStmt] ... ...;
 #   11|           0: [LocalVariableDeclAndInitExpr] Int32* ip = ...
 #   11|             0: [AddressOfExpr] &...
 #   11|               0: [LocalVariableAccess] access to local variable i
@@ -52,7 +52,7 @@ unsafe.cs:
 #   14|               1: [AddressOfExpr] &...
 #   14|                 0: [LocalVariableAccess] access to local variable i
 #   14|             1: [LocalVariableAccess] access to local variable ip
-#   15|         8: [LocalConstantDeclStmt] ... ...;
+#   15|         8: [LocalVariableDeclStmt] ... ...;
 #   15|           0: [LocalVariableDeclAndInitExpr] Int32* ip42 = ...
 #   15|             0: [AddressOfExpr] &...
 #   15|               0: [LocalVariableAccess] access to local variable i
@@ -72,7 +72,7 @@ unsafe.cs:
 #   18|               0: [TypeAccess] access to type Char*
 #   18|             1: [PointerIndirectionExpr] *...
 #   18|               0: [LocalVariableAccess] access to local variable ip42
-#   19|         12: [LocalConstantDeclStmt] ... ...;
+#   19|         12: [LocalVariableDeclStmt] ... ...;
 #   19|           0: [LocalVariableDeclAndInitExpr] Int64 distance = ...
 #   19|             0: [SubExpr] ... - ...
 #   19|               0: [LocalVariableAccess] access to local variable ip
@@ -102,7 +102,7 @@ unsafe.cs:
 #   33|       4: [BlockStmt] {...}
 #   34|         0: [UnstafeStmt] unsafe {...}
 #   35|           0: [BlockStmt] {...}
-#   36|             0: [LocalConstantDeclStmt] ... ...;
+#   36|             0: [LocalVariableDeclStmt] ... ...;
 #   36|               0: [LocalVariableDeclAndInitExpr] Int32[] data = ...
 #   36|                 0: [ArrayCreation] array creation of type Int32[]
 #   36|                   0: [IntLiteral] 10

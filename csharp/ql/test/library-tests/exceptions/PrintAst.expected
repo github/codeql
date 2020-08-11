@@ -62,7 +62,7 @@ exceptions.cs:
 #   74|       0: [TryStmt] try {...} ...
 #   75|         0: [BlockStmt] {...}
 #   76|           0: [EmptyStmt] ;
-#   77|           1: [LocalConstantDeclStmt] ... ...;
+#   77|           1: [LocalVariableDeclStmt] ... ...;
 #   77|             0: [LocalVariableDeclAndInitExpr] Class1 v = ...
 #   77|               0: [ObjectCreation] object creation of type Class1
 #   77|               1: [LocalVariableAccess] access to local variable v
@@ -91,7 +91,7 @@ exceptions.cs:
 #  103|       0: [TryStmt] try {...} ...
 #  104|         0: [BlockStmt] {...}
 #  105|           0: [EmptyStmt] ;
-#  106|           1: [LocalConstantDeclStmt] ... ...;
+#  106|           1: [LocalVariableDeclStmt] ... ...;
 #  106|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
 #  106|               0: [AddExpr] ... + ...
 #  106|                 0: [IntLiteral] 1
@@ -122,7 +122,7 @@ exceptions.cs:
 #  132|       0: [TryStmt] try {...} ...
 #  133|         0: [BlockStmt] {...}
 #  134|           0: [EmptyStmt] ;
-#  135|           1: [LocalConstantDeclStmt] ... ...;
+#  135|           1: [LocalVariableDeclStmt] ... ...;
 #  135|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
 #  135|               0: [SubExpr] ... - ...
 #  135|                 0: [IntLiteral] 1
@@ -153,7 +153,7 @@ exceptions.cs:
 #  161|       0: [TryStmt] try {...} ...
 #  162|         0: [BlockStmt] {...}
 #  163|           0: [EmptyStmt] ;
-#  164|           1: [LocalConstantDeclStmt] ... ...;
+#  164|           1: [LocalVariableDeclStmt] ... ...;
 #  164|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
 #  164|               0: [MulExpr] ... * ...
 #  164|                 0: [IntLiteral] 1
@@ -184,7 +184,7 @@ exceptions.cs:
 #  190|       0: [TryStmt] try {...} ...
 #  191|         0: [BlockStmt] {...}
 #  192|           0: [EmptyStmt] ;
-#  193|           1: [LocalConstantDeclStmt] ... ...;
+#  193|           1: [LocalVariableDeclStmt] ... ...;
 #  193|             0: [LocalVariableDeclAndInitExpr] String v = ...
 #  193|               0: [StringLiteral] ""
 #  193|               1: [LocalVariableAccess] access to local variable v
@@ -212,12 +212,12 @@ exceptions.cs:
 #  218|     4: [BlockStmt] {...}
 #  219|       0: [TryStmt] try {...} ...
 #  220|         0: [BlockStmt] {...}
-#  221|           0: [LocalConstantDeclStmt] ... ...;
+#  221|           0: [LocalVariableDeclStmt] ... ...;
 #  221|             0: [LocalVariableDeclAndInitExpr] String s = ...
 #  221|               0: [StringLiteral] ""
 #  221|               1: [LocalVariableAccess] access to local variable s
 #  222|           1: [EmptyStmt] ;
-#  223|           2: [LocalConstantDeclStmt] ... ...;
+#  223|           2: [LocalVariableDeclStmt] ... ...;
 #  223|             0: [LocalVariableDeclAndInitExpr] String v = ...
 #  223|               0: [AddExpr] ... + ...
 #  223|                 0: [LocalVariableAccess] access to local variable s
@@ -248,7 +248,7 @@ exceptions.cs:
 #  249|       0: [TryStmt] try {...} ...
 #  250|         0: [BlockStmt] {...}
 #  251|           0: [EmptyStmt] ;
-#  252|           1: [LocalConstantDeclStmt] ... ...;
+#  252|           1: [LocalVariableDeclStmt] ... ...;
 #  252|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
 #  252|               0: [DivExpr] ... / ...
 #  252|                 0: [IntLiteral] 1
@@ -279,7 +279,7 @@ exceptions.cs:
 #  278|       0: [TryStmt] try {...} ...
 #  279|         0: [BlockStmt] {...}
 #  280|           0: [EmptyStmt] ;
-#  281|           1: [LocalConstantDeclStmt] ... ...;
+#  281|           1: [LocalVariableDeclStmt] ... ...;
 #  281|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
 #  281|               0: [RemExpr] ... % ...
 #  281|                 0: [IntLiteral] 1
@@ -310,7 +310,7 @@ exceptions.cs:
 #  307|       0: [TryStmt] try {...} ...
 #  308|         0: [BlockStmt] {...}
 #  309|           0: [EmptyStmt] ;
-#  310|           1: [LocalConstantDeclStmt] ... ...;
+#  310|           1: [LocalVariableDeclStmt] ... ...;
 #  310|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
 #  310|               0: [FieldAccess] access to field p
 #  310|                 -1: [ThisAccess] this access
@@ -340,7 +340,7 @@ exceptions.cs:
 #  336|       0: [TryStmt] try {...} ...
 #  337|         0: [BlockStmt] {...}
 #  338|           0: [EmptyStmt] ;
-#  339|           1: [LocalConstantDeclStmt] ... ...;
+#  339|           1: [LocalVariableDeclStmt] ... ...;
 #  339|             0: [LocalVariableDeclAndInitExpr] Int16 v = ...
 #  339|               0: [CastExpr] (...) ...
 #  339|                 0: [IntLiteral] 1
@@ -370,7 +370,7 @@ exceptions.cs:
 #  364|     4: [BlockStmt] {...}
 #  365|       0: [TryStmt] try {...} ...
 #  366|         0: [BlockStmt] {...}
-#  367|           0: [LocalConstantDeclStmt] ... ...;
+#  367|           0: [LocalVariableDeclStmt] ... ...;
 #  367|             0: [LocalVariableDeclAndInitExpr] DivideByZeroException e = ...
 #  367|               0: [ObjectCreation] object creation of type DivideByZeroException
 #  367|               1: [LocalVariableAccess] access to local variable e
@@ -401,7 +401,7 @@ exceptions.cs:
 #  394|     4: [BlockStmt] {...}
 #  395|       0: [TryStmt] try {...} ...
 #  396|         0: [BlockStmt] {...}
-#  397|           0: [LocalConstantDeclStmt] ... ...;
+#  397|           0: [LocalVariableDeclStmt] ... ...;
 #  397|             0: [LocalVariableDeclAndInitExpr] Int32 a = ...
 #  397|               0: [IntLiteral] 1
 #  397|               1: [LocalVariableAccess] access to local variable a
@@ -450,12 +450,12 @@ exceptions.cs:
 #  447|     4: [BlockStmt] {...}
 #  448|       0: [TryStmt] try {...} ...
 #  449|         0: [BlockStmt] {...}
-#  450|           0: [LocalConstantDeclStmt] ... ...;
+#  450|           0: [LocalVariableDeclStmt] ... ...;
 #  450|             0: [LocalVariableDeclAndInitExpr] Object o = ...
 #  450|               0: [NullLiteral] null
 #  450|               1: [LocalVariableAccess] access to local variable o
 #  451|           1: [EmptyStmt] ;
-#  452|           2: [LocalConstantDeclStmt] ... ...;
+#  452|           2: [LocalVariableDeclStmt] ... ...;
 #  452|             0: [LocalVariableDeclAndInitExpr] Class1 p = ...
 #  452|               0: [CastExpr] (...) ...
 #  452|                 0: [LocalVariableAccess] access to local variable o
@@ -476,7 +476,7 @@ exceptions.cs:
 #  466|       0: [TryStmt] try {...} ...
 #  467|         0: [BlockStmt] {...}
 #  468|           0: [EmptyStmt] ;
-#  469|           1: [LocalConstantDeclStmt] ... ...;
+#  469|           1: [LocalVariableDeclStmt] ... ...;
 #  469|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
 #  469|               0: [DivExpr] ... / ...
 #  469|                 0: [IntLiteral] 1

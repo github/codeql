@@ -59,7 +59,7 @@ Nesting.cs:
 #   20|         4: [BlockStmt] {...}
 #   24|   7: [Method] Construct
 #   25|     4: [BlockStmt] {...}
-#   26|       0: [LocalConstantDeclStmt] ... ...;
+#   26|       0: [LocalVariableDeclStmt] ... ...;
 #   26|         0: [LocalVariableDeclAndInitExpr] A<Int32> a1 = ...
 #   26|           0: [ObjectCreation] object creation of type A<Int32>
 #   26|           1: [LocalVariableAccess] access to local variable a1
@@ -72,7 +72,7 @@ Nesting.cs:
 #   28|           -1: [LocalVariableAccess] access to local variable a1
 #   28|           0: [IntLiteral] 0
 #   28|           1: [StringLiteral] ""
-#   30|       3: [LocalConstantDeclStmt] ... ...;
+#   30|       3: [LocalVariableDeclStmt] ... ...;
 #   30|         0: [LocalVariableDeclAndInitExpr] A<String> a2 = ...
 #   30|           0: [ObjectCreation] object creation of type A<String>
 #   30|           1: [LocalVariableAccess] access to local variable a2
@@ -85,7 +85,7 @@ Nesting.cs:
 #   32|           -1: [LocalVariableAccess] access to local variable a2
 #   32|           0: [StringLiteral] ""
 #   32|           1: [IntLiteral] 0
-#   34|       6: [LocalConstantDeclStmt] ... ...;
+#   34|       6: [LocalVariableDeclStmt] ... ...;
 #   34|         0: [LocalVariableDeclAndInitExpr] B<String> b1 = ...
 #   34|           0: [ObjectCreation] object creation of type B<String>
 #   34|           1: [LocalVariableAccess] access to local variable b1
@@ -100,7 +100,7 @@ Nesting.cs:
 #   36|           0: [IntLiteral] 0
 #   36|           1: [StringLiteral] ""
 #   36|           2: [BoolLiteral] false
-#   38|       9: [LocalConstantDeclStmt] ... ...;
+#   38|       9: [LocalVariableDeclStmt] ... ...;
 #   38|         0: [LocalVariableDeclAndInitExpr] B<Int32> b2 = ...
 #   38|           0: [ObjectCreation] object creation of type B<Int32>
 #   38|           1: [LocalVariableAccess] access to local variable b2
@@ -115,7 +115,7 @@ Nesting.cs:
 #   40|           0: [StringLiteral] ""
 #   40|           1: [IntLiteral] 0
 #   40|           2: [BoolLiteral] false
-#   42|       12: [LocalConstantDeclStmt] ... ...;
+#   42|       12: [LocalVariableDeclStmt] ... ...;
 #   42|         0: [LocalVariableDeclAndInitExpr] C c1 = ...
 #   42|           0: [ObjectCreation] object creation of type C
 #   42|           1: [LocalVariableAccess] access to local variable c1
@@ -128,7 +128,7 @@ Nesting.cs:
 #   44|           -1: [LocalVariableAccess] access to local variable c1
 #   44|           0: [IntLiteral] 0
 #   44|           1: [BoolLiteral] false
-#   46|       15: [LocalConstantDeclStmt] ... ...;
+#   46|       15: [LocalVariableDeclStmt] ... ...;
 #   46|         0: [LocalVariableDeclAndInitExpr] C c2 = ...
 #   46|           0: [ObjectCreation] object creation of type C
 #   46|           1: [LocalVariableAccess] access to local variable c2
@@ -141,7 +141,7 @@ Nesting.cs:
 #   48|           -1: [LocalVariableAccess] access to local variable c2
 #   48|           0: [StringLiteral] ""
 #   48|           1: [BoolLiteral] false
-#   50|       18: [LocalConstantDeclStmt] ... ...;
+#   50|       18: [LocalVariableDeclStmt] ... ...;
 #   50|         0: [LocalVariableDeclAndInitExpr] D<Boolean> d1 = ...
 #   50|           0: [ObjectCreation] object creation of type D<Boolean>
 #   50|           1: [LocalVariableAccess] access to local variable d1
@@ -156,7 +156,7 @@ Nesting.cs:
 #   52|           0: [IntLiteral] 0
 #   52|           1: [BoolLiteral] false
 #   52|           2: [StringLiteral] ""
-#   54|       21: [LocalConstantDeclStmt] ... ...;
+#   54|       21: [LocalVariableDeclStmt] ... ...;
 #   54|         0: [LocalVariableDeclAndInitExpr] D<Decimal> d2 = ...
 #   54|           0: [ObjectCreation] object creation of type D<Decimal>
 #   54|           1: [LocalVariableAccess] access to local variable d2
@@ -195,7 +195,7 @@ generics.cs:
 #   18|         0: [Parameter] x
 #   18|         1: [Parameter] t
 #   18|       4: [BlockStmt] {...}
-#   18|         0: [LocalConstantDeclStmt] ... ...;
+#   18|         0: [LocalVariableDeclStmt] ... ...;
 #   18|           0: [LocalVariableDeclExpr] A<> a
 #   18|         1: [ReturnStmt] return ...;
 #   18|           0: [ParameterAccess] access to parameter t
@@ -387,7 +387,7 @@ generics.cs:
 #  105|   7: [Class] Test
 #  108|     2: [Method] Main
 #  109|       4: [BlockStmt] {...}
-#  110|         0: [LocalConstantDeclStmt] ... ...;
+#  110|         0: [LocalVariableDeclStmt] ... ...;
 #  110|           0: [LocalVariableDeclAndInitExpr] B<String> bs = ...
 #  110|             0: [ObjectCreation] object creation of type B<String>
 #  110|             1: [LocalVariableAccess] access to local variable bs
@@ -422,11 +422,11 @@ generics.cs:
 #  119|         7: [ExprStmt] ...;
 #  119|           0: [OperatorCall] call to operator ++
 #  119|             0: [LocalVariableAccess] access to local variable bs
-#  121|         8: [LocalConstantDeclStmt] ... ...;
+#  121|         8: [LocalVariableDeclStmt] ... ...;
 #  121|           0: [LocalVariableDeclAndInitExpr] Grid<Int32> g = ...
 #  121|             0: [ObjectCreation] object creation of type Grid<Int32>
 #  121|             1: [LocalVariableAccess] access to local variable g
-#  122|         9: [LocalConstantDeclStmt] ... ...;
+#  122|         9: [LocalVariableDeclStmt] ... ...;
 #  122|           0: [LocalVariableDeclAndInitExpr] Int32 j = ...
 #  122|             0: [IndexerCall] access to indexer
 #  122|               -1: [LocalVariableAccess] access to local variable g

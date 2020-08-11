@@ -25,7 +25,7 @@ properties.cs:
 #   21|                     -1: [ThisAccess] this access
 #   26|     4: [Method] Paint
 #   27|       4: [BlockStmt] {...}
-#   28|         0: [LocalConstantDeclStmt] ... ...;
+#   28|         0: [LocalVariableDeclStmt] ... ...;
 #   28|           0: [LocalVariableDeclAndInitExpr] Button okButton = ...
 #   28|             0: [ObjectCreation] object creation of type Button
 #   28|             1: [LocalVariableAccess] access to local variable okButton
@@ -34,7 +34,7 @@ properties.cs:
 #   29|             0: [StringLiteral] "OK"
 #   29|             1: [PropertyCall] access to property Caption
 #   29|               -1: [LocalVariableAccess] access to local variable okButton
-#   30|         2: [LocalConstantDeclStmt] ... ...;
+#   30|         2: [LocalVariableDeclStmt] ... ...;
 #   30|           0: [LocalVariableDeclAndInitExpr] String s = ...
 #   30|             0: [PropertyCall] access to property Caption
 #   30|               -1: [LocalVariableAccess] access to local variable okButton
@@ -160,11 +160,11 @@ properties.cs:
 #   93|         4: [BlockStmt] {...}
 #   94|     3: [Method] Main
 #   95|       4: [BlockStmt] {...}
-#   96|         0: [LocalConstantDeclStmt] ... ...;
+#   96|         0: [LocalVariableDeclStmt] ... ...;
 #   96|           0: [LocalVariableDeclAndInitExpr] List<Double> ds = ...
 #   96|             0: [ObjectCreation] object creation of type List<Double>
 #   96|             1: [LocalVariableAccess] access to local variable ds
-#   97|         1: [LocalConstantDeclStmt] ... ...;
+#   97|         1: [LocalVariableDeclStmt] ... ...;
 #   97|           0: [LocalVariableDeclAndInitExpr] List<Object> os = ...
 #   97|             0: [ObjectCreation] object creation of type List<Object>
 #   97|             1: [LocalVariableAccess] access to local variable os

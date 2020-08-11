@@ -28,7 +28,7 @@ operators.cs:
 #-----|       2: (Parameters)
 #   16|         0: [Parameter] iv
 #   17|       4: [BlockStmt] {...}
-#   18|         0: [LocalConstantDeclStmt] ... ...;
+#   18|         0: [LocalVariableDeclStmt] ... ...;
 #   18|           0: [LocalVariableDeclAndInitExpr] IntVector temp = ...
 #   18|             0: [ObjectCreation] object creation of type IntVector
 #   18|               0: [PropertyCall] access to property Length
@@ -59,12 +59,12 @@ operators.cs:
 #   26|   2: [Class] TestUnaryOperator
 #   29|     2: [Method] Main
 #   30|       4: [BlockStmt] {...}
-#   31|         0: [LocalConstantDeclStmt] ... ...;
+#   31|         0: [LocalVariableDeclStmt] ... ...;
 #   31|           0: [LocalVariableDeclAndInitExpr] IntVector iv1 = ...
 #   31|             0: [ObjectCreation] object creation of type IntVector
 #   31|               0: [IntLiteral] 4
 #   31|             1: [LocalVariableAccess] access to local variable iv1
-#   32|         1: [LocalConstantDeclStmt] ... ...;
+#   32|         1: [LocalVariableDeclStmt] ... ...;
 #   32|           0: [LocalVariableDeclExpr] IntVector iv2
 #   33|         2: [ExprStmt] ...;
 #   33|           0: [AssignExpr] ... = ...
@@ -116,13 +116,13 @@ operators.cs:
 #   63|   4: [Class] TestConversionOperator
 #   66|     2: [Method] Main
 #   67|       4: [BlockStmt] {...}
-#   68|         0: [LocalConstantDeclStmt] ... ...;
+#   68|         0: [LocalVariableDeclStmt] ... ...;
 #   68|           0: [LocalVariableDeclAndInitExpr] Digit d = ...
 #   68|             0: [OperatorCall] call to operator explicit conversion
 #   68|               0: [CastExpr] (...) ...
 #   68|                 0: [IntLiteral] 8
 #   68|             1: [LocalVariableAccess] access to local variable d
-#   69|         1: [LocalConstantDeclStmt] ... ...;
+#   69|         1: [LocalVariableDeclStmt] ... ...;
 #   69|           0: [LocalVariableDeclAndInitExpr] Byte b = ...
 #   69|             0: [OperatorCall] call to operator implicit conversion
 #   69|               0: [LocalVariableAccess] access to local variable d

@@ -2,7 +2,7 @@ Assignments.cs:
 #    1| [Class] Assignments
 #    3|   2: [Method] M
 #    4|     4: [BlockStmt] {...}
-#    5|       0: [LocalConstantDeclStmt] ... ...;
+#    5|       0: [LocalVariableDeclStmt] ... ...;
 #    5|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
 #    5|           0: [IntLiteral] 0
 #    5|           1: [LocalVariableAccess] access to local variable x
@@ -10,7 +10,7 @@ Assignments.cs:
 #    6|         0: [AssignAddExpr] ... += ...
 #    6|           0: [IntLiteral] 1
 #    6|           1: [LocalVariableAccess] access to local variable x
-#    8|       2: [LocalConstantDeclStmt] ... ...;
+#    8|       2: [LocalVariableDeclStmt] ... ...;
 #    8|         0: [LocalVariableDeclAndInitExpr] dynamic d = ...
 #    8|           0: [CastExpr] (...) ...
 #    8|             0: [IntLiteral] 0
@@ -19,7 +19,7 @@ Assignments.cs:
 #    9|         0: [AssignSubExpr] ... -= ...
 #    9|           0: [IntLiteral] 2
 #    9|           1: [LocalVariableAccess] access to local variable d
-#   11|       4: [LocalConstantDeclStmt] ... ...;
+#   11|       4: [LocalVariableDeclStmt] ... ...;
 #   11|         0: [LocalVariableDeclAndInitExpr] Assignments a = ...
 #   11|           0: [ObjectCreation] object creation of type Assignments
 #   11|           1: [LocalVariableAccess] access to local variable a

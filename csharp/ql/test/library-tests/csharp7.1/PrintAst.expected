@@ -2,7 +2,7 @@ csharp71.cs:
 #    3| [Class] DefaultLiterals
 #    5|   2: [Method] f
 #    6|     4: [BlockStmt] {...}
-#    7|       0: [LocalConstantDeclStmt] ... ...;
+#    7|       0: [LocalVariableDeclStmt] ... ...;
 #    7|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
 #    7|           0: [CastExpr] (...) ...
 #    7|             0: [DefaultValueExpr] default
@@ -27,17 +27,17 @@ csharp71.cs:
 #   14|           0: [CastExpr] (...) ...
 #   14|             0: [DefaultValueExpr] default
 #   14|           1: [LocalVariableAccess] access to local variable x
-#   15|       4: [LocalConstantDeclStmt] ... ...;
+#   15|       4: [LocalVariableDeclStmt] ... ...;
 #   15|         0: [LocalVariableDeclAndInitExpr] String s = ...
 #   15|           0: [CastExpr] (...) ...
 #   15|             0: [DefaultValueExpr] default
 #   15|           1: [LocalVariableAccess] access to local variable s
-#   16|       5: [LocalConstantDeclStmt] ... ...;
+#   16|       5: [LocalVariableDeclStmt] ... ...;
 #   16|         0: [LocalVariableDeclAndInitExpr] Boolean b = ...
 #   16|           0: [CastExpr] (...) ...
 #   16|             0: [DefaultValueExpr] default
 #   16|           1: [LocalVariableAccess] access to local variable b
-#   17|       6: [LocalConstantDeclStmt] ... ...;
+#   17|       6: [LocalVariableDeclStmt] ... ...;
 #   17|         0: [LocalVariableDeclAndInitExpr] Double d = ...
 #   17|           0: [CastExpr] (...) ...
 #   17|             0: [DefaultValueExpr] default
@@ -45,7 +45,7 @@ csharp71.cs:
 #   21| [Class] IsConstants
 #   23|   2: [Method] f
 #   24|     4: [BlockStmt] {...}
-#   25|       0: [LocalConstantDeclStmt] ... ...;
+#   25|       0: [LocalVariableDeclStmt] ... ...;
 #   25|         0: [LocalVariableDeclExpr] Boolean b
 #   26|       1: [ExprStmt] ...;
 #   26|         0: [AssignExpr] ... = ...

@@ -11,7 +11,7 @@ constructors.cs:
 #   12|       4: [BlockStmt] {...}
 #   14|     4: [Destructor] ~Class
 #   15|       4: [BlockStmt] {...}
-#   16|         0: [LocalConstantDeclStmt] ... ...;
+#   16|         0: [LocalVariableDeclStmt] ... ...;
 #   16|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
 #   16|             0: [IntLiteral] 0
 #   16|             1: [LocalVariableAccess] access to local variable i

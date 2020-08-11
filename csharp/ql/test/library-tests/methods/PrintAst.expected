@@ -6,7 +6,7 @@ methods.cs:
 #    9|         0: [Parameter] x
 #    9|         1: [Parameter] y
 #   10|       4: [BlockStmt] {...}
-#   11|         0: [LocalConstantDeclStmt] ... ...;
+#   11|         0: [LocalVariableDeclStmt] ... ...;
 #   11|           0: [LocalVariableDeclAndInitExpr] Int32 temp = ...
 #   11|             0: [ParameterAccess] access to parameter x
 #   11|             1: [LocalVariableAccess] access to local variable temp
@@ -20,7 +20,7 @@ methods.cs:
 #   13|             1: [ParameterAccess] access to parameter y
 #   16|     3: [Method] Main
 #   17|       4: [BlockStmt] {...}
-#   18|         0: [LocalConstantDeclStmt] ... ...;
+#   18|         0: [LocalVariableDeclStmt] ... ...;
 #   18|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
 #   18|             0: [IntLiteral] 1
 #   18|             1: [LocalVariableAccess] access to local variable i
@@ -69,7 +69,7 @@ methods.cs:
 #   31|             1: [ParameterAccess] access to parameter remainder
 #   34|     3: [Method] Main
 #   35|       4: [BlockStmt] {...}
-#   36|         0: [LocalConstantDeclStmt] ... ...;
+#   36|         0: [LocalVariableDeclStmt] ... ...;
 #   36|           0: [LocalVariableDeclExpr] Int32 res
 #   36|           1: [LocalVariableDeclExpr] Int32 rem
 #   37|         1: [ExprStmt] ...;
@@ -222,7 +222,7 @@ methods.cs:
 #  111|               1: [ParameterAccess] access to parameter count
 #  112|           1: [ThrowStmt] throw ...;
 #  112|             0: [ObjectCreation] object creation of type ArgumentException
-#  113|         1: [LocalConstantDeclStmt] ... ...;
+#  113|         1: [LocalVariableDeclStmt] ... ...;
 #  113|           0: [LocalVariableDeclAndInitExpr] T[] result = ...
 #  113|             0: [ArrayCreation] array creation of type T[]
 #  113|               0: [ParameterAccess] access to parameter count
@@ -243,7 +243,7 @@ methods.cs:
 #  121|   6: [Class] TestExtensions
 #  124|     1: [Method] Main
 #  125|       4: [BlockStmt] {...}
-#  126|         0: [LocalConstantDeclStmt] ... ...;
+#  126|         0: [LocalVariableDeclStmt] ... ...;
 #  126|           0: [LocalVariableDeclAndInitExpr] String[] strings = ...
 #  126|             0: [ArrayCreation] array creation of type String[]
 #  126|               -1: [ArrayInitializer] { ..., ... }

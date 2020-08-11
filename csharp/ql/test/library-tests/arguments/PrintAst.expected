@@ -36,7 +36,7 @@ arguments.cs:
 #   20|           1: [ParameterAccess] access to parameter y
 #   23|   5: [Method] f
 #   24|     4: [BlockStmt] {...}
-#   25|       0: [LocalConstantDeclStmt] ... ...;
+#   25|       0: [LocalVariableDeclStmt] ... ...;
 #   25|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
 #   25|           0: [IntLiteral] 1
 #   25|           1: [LocalVariableAccess] access to local variable x
@@ -186,7 +186,7 @@ arguments.cs:
 #   60|             -1: [ThisAccess] this access
 #   60|             0: [IntLiteral] 10
 #   60|             1: [IntLiteral] 11
-#   61|       7: [LocalConstantDeclStmt] ... ...;
+#   61|       7: [LocalVariableDeclStmt] ... ...;
 #   61|         0: [LocalVariableDeclAndInitExpr] (Int32,Int32) tuple = ...
 #   61|           0: [TupleExpr] (..., ...)
 #   61|             0: [IntLiteral] 13

@@ -37,7 +37,7 @@ definitions.cs:
 #-----|       2: (Parameters)
 #   30|         0: [Parameter] args
 #   31|       4: [BlockStmt] {...}
-#   32|         0: [LocalConstantDeclStmt] ... ...;
+#   32|         0: [LocalVariableDeclStmt] ... ...;
 #   32|           0: [LocalVariableDeclAndInitExpr] C1 qualifier = ...
 #   32|             0: [ThisAccess] this access
 #   32|             1: [LocalVariableAccess] access to local variable qualifier
@@ -97,7 +97,7 @@ definitions.cs:
 #   53|           0: [ObjectCreation] object creation of type C1
 #   53|             0: [IntLiteral] 1
 #   53|             1: [IntLiteral] 2
-#   56|         15: [LocalConstantDeclStmt] ... ...;
+#   56|         15: [LocalVariableDeclStmt] ... ...;
 #   56|           0: [LocalVariableDeclAndInitExpr] Int32 x = ...
 #   56|             0: [IntLiteral] 2
 #   56|             1: [LocalVariableAccess] access to local variable x
@@ -113,7 +113,7 @@ definitions.cs:
 #   56|               -1: [ParameterAccess] access to parameter args
 #   56|               0: [IntLiteral] 0
 #   56|             1: [LocalVariableAccess] access to local variable w
-#   57|         16: [LocalConstantDeclStmt] ... ...;
+#   57|         16: [LocalVariableDeclStmt] ... ...;
 #   57|           0: [LocalVariableDeclAndInitExpr] Enumeration e = ...
 #   57|             0: [MemberConstantAccess] access to constant e1
 #   57|               -1: [TypeAccess] access to type Enumeration
@@ -126,15 +126,15 @@ definitions.cs:
 #   60|               1: [IntLiteral] 1
 #   60|             1: [PropertyCall] access to property property1
 #   60|               -1: [ThisAccess] this access
-#   63|         18: [LocalConstantDeclStmt] ... ...;
+#   63|         18: [LocalVariableDeclStmt] ... ...;
 #   63|           0: [LocalVariableDeclAndInitExpr] C1[] array = ...
 #   63|             0: [NullLiteral] null
 #   63|             1: [LocalVariableAccess] access to local variable array
-#   64|         19: [LocalConstantDeclStmt] ... ...;
+#   64|         19: [LocalVariableDeclStmt] ... ...;
 #   64|           0: [LocalVariableDeclAndInitExpr] Nullable<S1> nullable = ...
 #   64|             0: [NullLiteral] null
 #   64|             1: [LocalVariableAccess] access to local variable nullable
-#   67|         20: [LocalConstantDeclStmt] ... ...;
+#   67|         20: [LocalVariableDeclStmt] ... ...;
 #   67|           0: [LocalVariableDeclAndInitExpr] Action<Int32> m1 = ...
 #   67|             0: [ImplicitDelegateCreation] delegate creation of type Action<Int32>
 #   67|               0: [MethodAccess] access to method GenericFn
@@ -144,7 +144,7 @@ definitions.cs:
 #-----|       2: (Parameters)
 #   70|         0: [Parameter] c1
 #   71|       4: [BlockStmt] {...}
-#   72|         0: [LocalConstantDeclStmt] ... ...;
+#   72|         0: [LocalVariableDeclStmt] ... ...;
 #   72|           0: [LocalVariableDeclAndInitExpr] C1 c2 = ...
 #   72|             0: [NullLiteral] null
 #   72|             1: [LocalVariableAccess] access to local variable c2
@@ -161,7 +161,7 @@ definitions.cs:
 #   81|       4: [BlockStmt] {...}
 #   82|         0: [TryStmt] try {...} ...
 #   83|           0: [BlockStmt] {...}
-#   84|             0: [LocalConstantDeclStmt] ... ...;
+#   84|             0: [LocalVariableDeclStmt] ... ...;
 #   84|               0: [LocalVariableDeclAndInitExpr] String timestamp = ...
 #   84|                 0: [MethodCall] call to method ToString
 #   84|                   -1: [PropertyCall] access to property Now
@@ -175,7 +175,7 @@ definitions.cs:
 #   88|                 0: [LocalVariableDeclExpr] S1 s
 #   88|                 1: [ParameterAccess] access to parameter ss
 #   89|                 2: [BlockStmt] {...}
-#   92|         1: [LocalConstantDeclStmt] ... ...;
+#   92|         1: [LocalVariableDeclStmt] ... ...;
 #   92|           0: [LocalVariableDeclAndInitExpr] Type temp = ...
 #   92|             0: [TypeofExpr] typeof(...)
 #   92|               0: [TypeAccess] access to type S1[]
@@ -322,7 +322,7 @@ definitions.cs:
 #  167|     3: [Field] c1
 #  169|     4: [Method] M
 #  170|       4: [BlockStmt] {...}
-#  171|         0: [LocalConstantDeclStmt] ... ...;
+#  171|         0: [LocalVariableDeclStmt] ... ...;
 #  171|           0: [LocalVariableDeclAndInitExpr] C1 c = ...
 #  171|             0: [ObjectCreation] object creation of type C1
 #  171|             1: [LocalVariableAccess] access to local variable c
@@ -332,7 +332,7 @@ definitions.cs:
 #  172|               -1: [LocalVariableAccess] access to local variable c
 #  172|             1: [PropertyCall] access to property property1
 #  172|               -1: [LocalVariableAccess] access to local variable c
-#  173|         2: [LocalConstantDeclStmt] ... ...;
+#  173|         2: [LocalVariableDeclStmt] ... ...;
 #  173|           0: [LocalVariableDeclAndInitExpr] C5 c5 = ...
 #  173|             0: [AsExpr] ... as ...
 #  173|               0: [ObjectCreation] object creation of type C5
@@ -344,7 +344,7 @@ definitions.cs:
 #  174|             1: [PropertyCall] access to property property1
 #  174|               -1: [FieldAccess] access to field c1
 #  174|                 -1: [LocalVariableAccess] access to local variable c5
-#  175|         4: [LocalConstantDeclStmt] ... ...;
+#  175|         4: [LocalVariableDeclStmt] ... ...;
 #  175|           0: [LocalVariableDeclAndInitExpr] Boolean temp = ...
 #  175|             0: [IsExpr] ... is ...
 #  175|               0: [LocalVariableAccess] access to local variable c5
@@ -381,7 +381,7 @@ definitions.cs:
 #  206|   17: [Class] C8
 #  208|     2: [Method] F
 #  209|       4: [BlockStmt] {...}
-#  210|         0: [LocalConstantDeclStmt] ... ...;
+#  210|         0: [LocalVariableDeclStmt] ... ...;
 #  210|           0: [LocalVariableDeclAndInitExpr] C8 c8a = ...
 #  210|             0: [NullLiteral] null
 #  210|             1: [LocalVariableAccess] access to local variable c8a

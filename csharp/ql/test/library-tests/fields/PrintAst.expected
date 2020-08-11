@@ -57,12 +57,12 @@ fields.cs:
 #   37|           -1: [ThisAccess] this access
 #   39|     7: [Method] Main
 #   40|       4: [BlockStmt] {...}
-#   41|         0: [LocalConstantDeclStmt] ... ...;
+#   41|         0: [LocalVariableDeclStmt] ... ...;
 #   41|           0: [LocalVariableDeclAndInitExpr] Decimal d = ...
 #   41|             0: [MemberConstantAccess] access to constant MaxValue
 #   41|               -1: [TypeAccess] access to type Decimal
 #   41|             1: [LocalVariableAccess] access to local variable d
-#   42|         1: [LocalConstantDeclStmt] ... ...;
+#   42|         1: [LocalVariableDeclStmt] ... ...;
 #   42|           0: [LocalVariableDeclAndInitExpr] C<Int32> x1 = ...
 #   42|             0: [ObjectCreation] object creation of type C<Int32>
 #   42|             1: [LocalVariableAccess] access to local variable x1
@@ -71,7 +71,7 @@ fields.cs:
 #   43|             -1: [TypeAccess] access to type Console
 #   43|             0: [PropertyCall] access to property Count
 #   43|               -1: [TypeAccess] access to type C<Int32>
-#   44|         3: [LocalConstantDeclStmt] ... ...;
+#   44|         3: [LocalVariableDeclStmt] ... ...;
 #   44|           0: [LocalVariableDeclAndInitExpr] C<Double> x2 = ...
 #   44|             0: [ObjectCreation] object creation of type C<Double>
 #   44|             1: [LocalVariableAccess] access to local variable x2
@@ -155,17 +155,17 @@ fields.cs:
 #   89|               0: [MemberConstantAccess] access to constant Foo
 #   89|             1: [FieldAccess] access to field x
 #   89|               -1: [ThisAccess] this access
-#   90|         1: [LocalConstantDeclStmt] ... ...;
+#   90|         1: [LocalVariableDeclStmt] ... ...;
 #   90|           0: [LocalVariableDeclAndInitExpr] dynamic dyn = ...
 #   90|             0: [CastExpr] (...) ...
 #   90|               0: [MemberConstantAccess] access to constant Foo
 #   90|             1: [LocalVariableAccess] access to local variable dyn
-#   91|         2: [LocalConstantDeclStmt] ... ...;
+#   91|         2: [LocalVariableDeclStmt] ... ...;
 #   91|           0: [LocalVariableDeclAndInitExpr] D d = ...
 #   91|             0: [OperatorCall] call to operator implicit conversion
 #   91|               0: [MemberConstantAccess] access to constant Foo
 #   91|             1: [LocalVariableAccess] access to local variable d
-#   92|         3: [LocalConstantDeclStmt] ... ...;
+#   92|         3: [LocalVariableDeclStmt] ... ...;
 #   92|           0: [LocalVariableDeclAndInitExpr] C c = ...
 #   92|             0: [ObjectCreation] object creation of type C
 #   92|               -1: [ObjectInitializer] { ..., ... }

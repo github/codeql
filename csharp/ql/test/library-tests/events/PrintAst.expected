@@ -142,7 +142,7 @@ events.cs:
 #-----|       2: (Parameters)
 #   81|         0: [Parameter] args
 #   82|       4: [BlockStmt] {...}
-#   83|         0: [LocalConstantDeclStmt] ... ...;
+#   83|         0: [LocalVariableDeclStmt] ... ...;
 #   83|           0: [LocalVariableDeclExpr] EventHandler handler
 #   84|         1: [ExprStmt] ...;
 #   84|           0: [AssignExpr] ... = ...

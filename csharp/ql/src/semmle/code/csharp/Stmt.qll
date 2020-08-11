@@ -1229,7 +1229,7 @@ class LocalVariableDeclStmt extends Stmt, @decl_stmt {
   override string toString() { result = "... ...;" }
 
   override string getAPrimaryQlClass() {
-    result = "LocalConstantDeclStmt" and
+    result = "LocalVariableDeclStmt" and
     not this instanceof LocalConstantDeclStmt and
     not this instanceof UsingDeclStmt
   }

@@ -17,7 +17,7 @@ nestedtypes.cs:
 #   29|     2: [Class] Nested
 #   32|       2: [Method] G
 #   33|         4: [BlockStmt] {...}
-#   34|           0: [LocalConstantDeclStmt] ... ...;
+#   34|           0: [LocalVariableDeclStmt] ... ...;
 #   34|             0: [LocalVariableDeclAndInitExpr] Derived d = ...
 #   34|               0: [ObjectCreation] object creation of type Derived
 #   34|               1: [LocalVariableAccess] access to local variable d
@@ -27,7 +27,7 @@ nestedtypes.cs:
 #   42|   3: [Class] Test
 #   45|     2: [Method] Main
 #   46|       4: [BlockStmt] {...}
-#   47|         0: [LocalConstantDeclStmt] ... ...;
+#   47|         0: [LocalVariableDeclStmt] ... ...;
 #   47|           0: [LocalVariableDeclAndInitExpr] Nested n = ...
 #   47|             0: [ObjectCreation] object creation of type Nested
 #   47|             1: [LocalVariableAccess] access to local variable n
@@ -61,7 +61,7 @@ nestedtypes.cs:
 #   68|               -1: [TypeAccess] access to type Outer<Int32>
 #   68|             0: [IntLiteral] 3
 #   68|             1: [StringLiteral] "abc"
-#   69|         2: [LocalConstantDeclStmt] ... ...;
+#   69|         2: [LocalVariableDeclStmt] ... ...;
 #   69|           0: [LocalVariableDeclAndInitExpr] Type type = ...
 #   69|             0: [TypeofExpr] typeof(...)
 #   69|               0: [TypeAccess] access to type Inner<>
