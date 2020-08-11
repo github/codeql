@@ -2177,7 +2177,7 @@ public class TypeScriptASTConverter {
   }
 
   private Node convertTupleType(JsonObject node, SourceLocation loc) throws ParseError {
-    return new TupleTypeExpr(loc, convertChildrenAsTypes(node, "elementTypes"));
+    return new TupleTypeExpr(loc, convertChildrenAsTypes(node, "elements"));
   }
 
   private Node convertTypeAliasDeclaration(JsonObject node, SourceLocation loc) throws ParseError {
