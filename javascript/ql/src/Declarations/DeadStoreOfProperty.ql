@@ -132,61 +132,70 @@ predicate maybeAssignsAccessedPropInBlock(DataFlow::PropWrite assign, boolean af
     or
     // impure expression that might access the property before/after assign
     exists(ReachableBasicBlock block | assign.getWriteNode().getBasicBlock() = block |
-      after = true and isBeforeImpure(assign, block)
+      after = true and PurityCheck::isBeforeImpure(assign, block)
       or
-      after = false and isAfterImpure(assign, block)
+      after = false and PurityCheck::isAfterImpure(assign, block)
     )
   )
 }
 
 /**
- * Holds if a ControlFlowNode `c` is before an impure expression inside `bb`.
+ * Predicates to check if a property-write comes after/before an impure expression within the same basicblock.
  */
-predicate isBeforeImpure(DataFlow::PropWrite write, ReachableBasicBlock bb) {
-  getANodeAfterWrite(write, bb).(Expr).isImpure()
-}
+private module PurityCheck {
+  /**
+   * Holds if a ControlFlowNode `c` is before an impure expression inside `bb`.
+   */
+  predicate isBeforeImpure(DataFlow::PropWrite write, ReachableBasicBlock bb) {
+    getANodeAfterWrite(write, bb).(Expr).isImpure()
+  }
 
-/**
- * Gets a ControlFlowNode that comes after `write` inside `bb`.
- * Stops after finding the first impure expression
- */
-ControlFlowNode getANodeAfterWrite(DataFlow::PropWrite write, ReachableBasicBlock bb) {
-  // base case
-  result.getBasicBlock() = bb and
-  postDominatedPropWrite(_, write, _, false) and // early pruning - manual magic
-  result = write.getWriteNode().getASuccessor()
-  or
-  // recursive case
-  exists(ControlFlowNode prev | prev = getANodeAfterWrite(write, bb) |
-    not result instanceof BasicBlock and
-    not prev.(Expr).isImpure() and
-    result = prev.getASuccessor()
-  )
-}
+  /**
+   * Gets a ControlFlowNode that comes after `write` inside `bb`.
+   * Stops after finding the first impure expression.
+   *
+   * This predicate is used as a helper to check if one of the successors to `write` inside `bb` is impure (see `isBeforeImpure`).
+   */
+  private ControlFlowNode getANodeAfterWrite(DataFlow::PropWrite write, ReachableBasicBlock bb) {
+    // base case
+    result.getBasicBlock() = bb and
+    postDominatedPropWrite(_, write, _, false) and // early pruning - manual magic
+    result = write.getWriteNode().getASuccessor()
+    or
+    // recursive case
+    exists(ControlFlowNode prev | prev = getANodeAfterWrite(write, bb) |
+      not result instanceof BasicBlock and
+      not prev.(Expr).isImpure() and
+      result = prev.getASuccessor()
+    )
+  }
 
-/**
- * Holds if a ControlFlowNode `c` is after an impure expression inside `bb`.
- */
-predicate isAfterImpure(DataFlow::PropWrite write, ReachableBasicBlock bb) {
-  getANodeBeforeWrite(write, bb).(Expr).isImpure()
-}
+  /**
+   * Holds if a ControlFlowNode `c` is after an impure expression inside `bb`.
+   */
+  predicate isAfterImpure(DataFlow::PropWrite write, ReachableBasicBlock bb) {
+    getANodeBeforeWrite(write, bb).(Expr).isImpure()
+  }
 
-/**
- * Gets a ControlFlowNode that comes before `write` inside `bb`.
- * Stops after finding the first impure expression.
- */
-ControlFlowNode getANodeBeforeWrite(DataFlow::PropWrite write, ReachableBasicBlock bb) {
-  // base case
-  result.getBasicBlock() = bb and
-  postDominatedPropWrite(_, _, write, false) and // early pruning - manual magic
-  result = write.getWriteNode().getAPredecessor()
-  or
-  // recursive case
-  exists(ControlFlowNode prev | prev = getANodeBeforeWrite(write, bb) |
-    not prev instanceof BasicBlock and
-    not prev.(Expr).isImpure() and
-    result = prev.getAPredecessor()
-  )
+  /**
+   * Gets a ControlFlowNode that comes before `write` inside `bb`.
+   * Stops after finding the first impure expression.
+   *
+   * This predicate is used as a helper to check if one of the predecessors to `write` inside `bb` is impure (see `isAfterImpure`).
+   */
+  private ControlFlowNode getANodeBeforeWrite(DataFlow::PropWrite write, ReachableBasicBlock bb) {
+    // base case
+    result.getBasicBlock() = bb and
+    postDominatedPropWrite(_, _, write, false) and // early pruning - manual magic
+    result = write.getWriteNode().getAPredecessor()
+    or
+    // recursive case
+    exists(ControlFlowNode prev | prev = getANodeBeforeWrite(write, bb) |
+      not prev instanceof BasicBlock and
+      not prev.(Expr).isImpure() and
+      result = prev.getAPredecessor()
+    )
+  }
 }
 
 /**
