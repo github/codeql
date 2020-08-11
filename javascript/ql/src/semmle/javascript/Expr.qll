@@ -1848,6 +1848,11 @@ class AssignExpr extends @assignexpr, Assignment {
   override Expr getUnderlyingValue() { result = getRhs().getUnderlyingValue() }
 }
 
+private class TCompoundAssignExpr =
+  @assignaddexpr or @assignsubexpr or @assignmulexpr or @assigndivexpr or @assignmodexpr or
+      @assignexpexpr or @assignlshiftexpr or @assignrshiftexpr or @assignurshiftexpr or
+      @assignorexpr or @assignxorexpr or @assignandexpr;
+
 /**
  * A compound assign expression.
  *
@@ -1858,7 +1863,7 @@ class AssignExpr extends @assignexpr, Assignment {
  * x /= 2
  * ```
  */
-abstract class CompoundAssignExpr extends Assignment { }
+class CompoundAssignExpr extends TCompoundAssignExpr, Assignment { }
 
 /**
  * A compound add-assign expression.

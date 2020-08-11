@@ -214,6 +214,9 @@ abstract class ImplicitConversionFunction extends MemberFunction {
 }
 
 /**
+ * DEPRECATED: as of C++11 this class does not correspond perfectly with the
+ * language definition of a converting constructor.
+ *
  * A C++ constructor that also defines an implicit conversion. For example the
  * function `MyClass` in the following code is a `ConversionConstructor`:
  * ```
@@ -225,15 +228,16 @@ abstract class ImplicitConversionFunction extends MemberFunction {
  * };
  * ```
  */
-class ConversionConstructor extends Constructor, ImplicitConversionFunction {
+deprecated class ConversionConstructor extends Constructor, ImplicitConversionFunction {
   ConversionConstructor() {
     strictcount(Parameter p | p = getAParameter() and not p.hasInitializer()) = 1 and
-    not hasSpecifier("explicit") and
-    not this instanceof CopyConstructor
+    not hasSpecifier("explicit")
   }
 
   override string getAPrimaryQlClass() {
-    not this instanceof MoveConstructor and result = "ConversionConstructor"
+    not this instanceof CopyConstructor and
+    not this instanceof MoveConstructor and
+    result = "ConversionConstructor"
   }
 
   /** Gets the type this `ConversionConstructor` takes as input. */
