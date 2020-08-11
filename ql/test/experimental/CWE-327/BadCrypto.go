@@ -22,5 +22,5 @@ func main() {
 
 	// BAD, md5 is a weak crypto algorithm
 	fmt.Printf("%x", md5.Sum(password))
-	
+
 }
