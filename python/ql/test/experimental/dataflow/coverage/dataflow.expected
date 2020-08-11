@@ -1,73 +1,73 @@
 edges
-| classes.py:18:1:18:6 | GSSA Variable SOURCE | classes.py:43:6:43:17 | ControlFlowNode for f() |
-| classes.py:18:1:18:6 | GSSA Variable SOURCE | classes.py:43:6:43:17 | GSSA Variable SOURCE |
-| classes.py:18:1:18:6 | GSSA Variable SOURCE | classes.py:43:8:43:13 | ControlFlowNode for SOURCE |
-| classes.py:18:10:18:17 | ControlFlowNode for Str | classes.py:18:1:18:6 | GSSA Variable SOURCE |
-| classes.py:43:6:43:17 | GSSA Variable SOURCE | classes.py:70:5:70:7 | ControlFlowNode for C() |
-| classes.py:43:6:43:17 | GSSA Variable SOURCE | classes.py:76:6:76:24 | ControlFlowNode for Attribute() |
-| classes.py:43:6:43:17 | GSSA Variable SOURCE | classes.py:76:6:76:24 | GSSA Variable SOURCE |
-| classes.py:43:6:43:17 | GSSA Variable SOURCE | classes.py:76:15:76:20 | ControlFlowNode for SOURCE |
-| classes.py:43:8:43:13 | ControlFlowNode for SOURCE | classes.py:43:6:43:17 | ControlFlowNode for f() |
-| classes.py:70:1:70:1 | GSSA Variable c | classes.py:76:6:76:24 | ControlFlowNode for Attribute() |
-| classes.py:70:1:70:1 | GSSA Variable c | classes.py:76:6:76:24 | GSSA Variable c |
-| classes.py:70:5:70:7 | ControlFlowNode for C() | classes.py:70:1:70:1 | GSSA Variable c |
-| classes.py:76:6:76:24 | GSSA Variable SOURCE | classes.py:77:6:77:27 | ControlFlowNode for Attribute() |
-| classes.py:76:6:76:24 | GSSA Variable SOURCE | classes.py:77:18:77:23 | ControlFlowNode for SOURCE |
-| classes.py:76:6:76:24 | GSSA Variable SOURCE | classes.py:78:6:78:27 | ControlFlowNode for func_obj() |
-| classes.py:76:6:76:24 | GSSA Variable SOURCE | classes.py:85:6:85:26 | ControlFlowNode for Attribute() |
-| classes.py:76:6:76:24 | GSSA Variable SOURCE | classes.py:85:6:85:26 | GSSA Variable SOURCE |
-| classes.py:76:6:76:24 | GSSA Variable SOURCE | classes.py:85:20:85:25 | ControlFlowNode for SOURCE |
-| classes.py:76:6:76:24 | GSSA Variable c | classes.py:77:6:77:27 | ControlFlowNode for Attribute() |
-| classes.py:76:6:76:24 | GSSA Variable c | classes.py:77:6:77:27 | GSSA Variable c |
-| classes.py:76:15:76:20 | ControlFlowNode for SOURCE | classes.py:76:6:76:24 | ControlFlowNode for Attribute() |
-| classes.py:77:6:77:27 | GSSA Variable c | classes.py:78:6:78:27 | ControlFlowNode for func_obj() |
-| classes.py:77:6:77:27 | GSSA Variable c | classes.py:78:6:78:27 | GSSA Variable c |
-| classes.py:77:18:77:23 | ControlFlowNode for SOURCE | classes.py:77:6:77:27 | ControlFlowNode for Attribute() |
-| classes.py:78:6:78:27 | GSSA Variable c | classes.py:85:6:85:26 | ControlFlowNode for Attribute() |
-| classes.py:78:6:78:27 | GSSA Variable c | classes.py:85:6:85:26 | GSSA Variable c |
-| classes.py:85:6:85:26 | GSSA Variable SOURCE | classes.py:86:6:86:26 | ControlFlowNode for Attribute() |
-| classes.py:85:6:85:26 | GSSA Variable SOURCE | classes.py:86:6:86:26 | GSSA Variable SOURCE |
-| classes.py:85:6:85:26 | GSSA Variable SOURCE | classes.py:86:20:86:25 | ControlFlowNode for SOURCE |
-| classes.py:85:6:85:26 | GSSA Variable c | classes.py:86:6:86:26 | ControlFlowNode for Attribute() |
-| classes.py:85:6:85:26 | GSSA Variable c | classes.py:87:6:87:26 | ControlFlowNode for c_func_obj() |
-| classes.py:85:6:85:26 | GSSA Variable c | classes.py:97:8:97:21 | ControlFlowNode for gen() |
-| classes.py:85:6:85:26 | GSSA Variable c | classes.py:98:6:98:20 | ControlFlowNode for Attribute() |
-| classes.py:85:6:85:26 | GSSA Variable c | classes.py:101:9:101:24 | ControlFlowNode for Attribute() |
-| classes.py:85:6:85:26 | GSSA Variable c | classes.py:101:9:101:24 | GSSA Variable c |
-| classes.py:85:20:85:25 | ControlFlowNode for SOURCE | classes.py:85:6:85:26 | ControlFlowNode for Attribute() |
-| classes.py:86:6:86:26 | GSSA Variable SOURCE | classes.py:87:6:87:26 | ControlFlowNode for c_func_obj() |
-| classes.py:86:6:86:26 | GSSA Variable SOURCE | classes.py:97:8:97:21 | ControlFlowNode for gen() |
-| classes.py:86:6:86:26 | GSSA Variable SOURCE | classes.py:97:8:97:21 | GSSA Variable SOURCE |
-| classes.py:86:20:86:25 | ControlFlowNode for SOURCE | classes.py:86:6:86:26 | ControlFlowNode for Attribute() |
-| classes.py:97:1:97:4 | GSSA Variable iter | classes.py:98:6:98:20 | ControlFlowNode for Attribute() |
-| classes.py:97:1:97:4 | GSSA Variable iter | classes.py:98:6:98:20 | GSSA Variable iter |
-| classes.py:97:8:97:21 | ControlFlowNode for gen() | classes.py:97:1:97:4 | GSSA Variable iter |
-| classes.py:97:8:97:21 | GSSA Variable SOURCE | classes.py:98:6:98:20 | ControlFlowNode for Attribute() |
-| classes.py:97:8:97:21 | GSSA Variable SOURCE | classes.py:101:9:101:24 | ControlFlowNode for Attribute() |
-| classes.py:97:8:97:21 | GSSA Variable SOURCE | classes.py:101:9:101:24 | GSSA Variable SOURCE |
-| classes.py:98:6:98:20 | GSSA Variable iter | classes.py:101:9:101:24 | ControlFlowNode for Attribute() |
-| classes.py:98:6:98:20 | GSSA Variable iter | classes.py:102:6:102:21 | ControlFlowNode for Attribute() |
-| classes.py:98:6:98:20 | GSSA Variable iter | classes.py:111:6:111:30 | ControlFlowNode for Attribute() |
-| classes.py:98:6:98:20 | GSSA Variable iter | classes.py:112:6:112:32 | ControlFlowNode for Attribute() |
-| classes.py:98:6:98:20 | GSSA Variable iter | classes.py:124:6:124:30 | ControlFlowNode for Attribute() |
-| classes.py:101:1:101:5 | GSSA Variable oiter | classes.py:102:6:102:21 | ControlFlowNode for Attribute() |
-| classes.py:101:1:101:5 | GSSA Variable oiter | classes.py:102:6:102:21 | GSSA Variable oiter |
-| classes.py:101:9:101:24 | ControlFlowNode for Attribute() | classes.py:101:1:101:5 | GSSA Variable oiter |
-| classes.py:101:9:101:24 | GSSA Variable SOURCE | classes.py:102:6:102:21 | ControlFlowNode for Attribute() |
-| classes.py:101:9:101:24 | GSSA Variable SOURCE | classes.py:111:18:111:29 | GSSA Variable SOURCE |
-| classes.py:101:9:101:24 | GSSA Variable c | classes.py:102:6:102:21 | ControlFlowNode for Attribute() |
-| classes.py:101:9:101:24 | GSSA Variable c | classes.py:111:6:111:30 | ControlFlowNode for Attribute() |
-| classes.py:101:9:101:24 | GSSA Variable c | classes.py:112:18:112:31 | GSSA Variable c |
-| classes.py:102:6:102:21 | GSSA Variable oiter | classes.py:111:6:111:30 | ControlFlowNode for Attribute() |
-| classes.py:102:6:102:21 | GSSA Variable oiter | classes.py:112:6:112:32 | ControlFlowNode for Attribute() |
-| classes.py:102:6:102:21 | GSSA Variable oiter | classes.py:124:6:124:30 | ControlFlowNode for Attribute() |
-| classes.py:111:18:111:29 | GSSA Variable SOURCE | classes.py:111:6:111:30 | ControlFlowNode for Attribute() |
-| classes.py:111:18:111:29 | GSSA Variable SOURCE | classes.py:112:18:112:31 | GSSA Variable SOURCE |
-| classes.py:112:18:112:31 | GSSA Variable SOURCE | classes.py:112:6:112:32 | ControlFlowNode for Attribute() |
-| classes.py:112:18:112:31 | GSSA Variable SOURCE | classes.py:124:18:124:29 | GSSA Variable SOURCE |
-| classes.py:112:18:112:31 | GSSA Variable c | classes.py:112:6:112:32 | ControlFlowNode for Attribute() |
-| classes.py:112:18:112:31 | GSSA Variable c | classes.py:124:6:124:30 | ControlFlowNode for Attribute() |
-| classes.py:124:18:124:29 | GSSA Variable SOURCE | classes.py:124:6:124:30 | ControlFlowNode for Attribute() |
+| datamodel.py:13:1:13:6 | GSSA Variable SOURCE | datamodel.py:38:6:38:17 | ControlFlowNode for f() |
+| datamodel.py:13:1:13:6 | GSSA Variable SOURCE | datamodel.py:38:6:38:17 | GSSA Variable SOURCE |
+| datamodel.py:13:1:13:6 | GSSA Variable SOURCE | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE |
+| datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:13:1:13:6 | GSSA Variable SOURCE |
+| datamodel.py:38:6:38:17 | GSSA Variable SOURCE | datamodel.py:65:5:65:7 | ControlFlowNode for C() |
+| datamodel.py:38:6:38:17 | GSSA Variable SOURCE | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() |
+| datamodel.py:38:6:38:17 | GSSA Variable SOURCE | datamodel.py:71:6:71:24 | GSSA Variable SOURCE |
+| datamodel.py:38:6:38:17 | GSSA Variable SOURCE | datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE |
+| datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | datamodel.py:38:6:38:17 | ControlFlowNode for f() |
+| datamodel.py:65:1:65:1 | GSSA Variable c | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() |
+| datamodel.py:65:1:65:1 | GSSA Variable c | datamodel.py:71:6:71:24 | GSSA Variable c |
+| datamodel.py:65:5:65:7 | ControlFlowNode for C() | datamodel.py:65:1:65:1 | GSSA Variable c |
+| datamodel.py:71:6:71:24 | GSSA Variable SOURCE | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() |
+| datamodel.py:71:6:71:24 | GSSA Variable SOURCE | datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE |
+| datamodel.py:71:6:71:24 | GSSA Variable SOURCE | datamodel.py:73:6:73:27 | ControlFlowNode for func_obj() |
+| datamodel.py:71:6:71:24 | GSSA Variable SOURCE | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() |
+| datamodel.py:71:6:71:24 | GSSA Variable SOURCE | datamodel.py:80:6:80:26 | GSSA Variable SOURCE |
+| datamodel.py:71:6:71:24 | GSSA Variable SOURCE | datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE |
+| datamodel.py:71:6:71:24 | GSSA Variable c | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() |
+| datamodel.py:71:6:71:24 | GSSA Variable c | datamodel.py:72:6:72:27 | GSSA Variable c |
+| datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() |
+| datamodel.py:72:6:72:27 | GSSA Variable c | datamodel.py:73:6:73:27 | ControlFlowNode for func_obj() |
+| datamodel.py:72:6:72:27 | GSSA Variable c | datamodel.py:73:6:73:27 | GSSA Variable c |
+| datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() |
+| datamodel.py:73:6:73:27 | GSSA Variable c | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() |
+| datamodel.py:73:6:73:27 | GSSA Variable c | datamodel.py:80:6:80:26 | GSSA Variable c |
+| datamodel.py:80:6:80:26 | GSSA Variable SOURCE | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() |
+| datamodel.py:80:6:80:26 | GSSA Variable SOURCE | datamodel.py:81:6:81:26 | GSSA Variable SOURCE |
+| datamodel.py:80:6:80:26 | GSSA Variable SOURCE | datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE |
+| datamodel.py:80:6:80:26 | GSSA Variable c | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() |
+| datamodel.py:80:6:80:26 | GSSA Variable c | datamodel.py:82:6:82:26 | ControlFlowNode for c_func_obj() |
+| datamodel.py:80:6:80:26 | GSSA Variable c | datamodel.py:92:8:92:21 | ControlFlowNode for gen() |
+| datamodel.py:80:6:80:26 | GSSA Variable c | datamodel.py:93:6:93:20 | ControlFlowNode for Attribute() |
+| datamodel.py:80:6:80:26 | GSSA Variable c | datamodel.py:96:9:96:24 | ControlFlowNode for Attribute() |
+| datamodel.py:80:6:80:26 | GSSA Variable c | datamodel.py:96:9:96:24 | GSSA Variable c |
+| datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() |
+| datamodel.py:81:6:81:26 | GSSA Variable SOURCE | datamodel.py:82:6:82:26 | ControlFlowNode for c_func_obj() |
+| datamodel.py:81:6:81:26 | GSSA Variable SOURCE | datamodel.py:92:8:92:21 | ControlFlowNode for gen() |
+| datamodel.py:81:6:81:26 | GSSA Variable SOURCE | datamodel.py:92:8:92:21 | GSSA Variable SOURCE |
+| datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() |
+| datamodel.py:92:1:92:4 | GSSA Variable iter | datamodel.py:93:6:93:20 | ControlFlowNode for Attribute() |
+| datamodel.py:92:1:92:4 | GSSA Variable iter | datamodel.py:93:6:93:20 | GSSA Variable iter |
+| datamodel.py:92:8:92:21 | ControlFlowNode for gen() | datamodel.py:92:1:92:4 | GSSA Variable iter |
+| datamodel.py:92:8:92:21 | GSSA Variable SOURCE | datamodel.py:93:6:93:20 | ControlFlowNode for Attribute() |
+| datamodel.py:92:8:92:21 | GSSA Variable SOURCE | datamodel.py:96:9:96:24 | ControlFlowNode for Attribute() |
+| datamodel.py:92:8:92:21 | GSSA Variable SOURCE | datamodel.py:96:9:96:24 | GSSA Variable SOURCE |
+| datamodel.py:93:6:93:20 | GSSA Variable iter | datamodel.py:96:9:96:24 | ControlFlowNode for Attribute() |
+| datamodel.py:93:6:93:20 | GSSA Variable iter | datamodel.py:97:6:97:21 | ControlFlowNode for Attribute() |
+| datamodel.py:93:6:93:20 | GSSA Variable iter | datamodel.py:106:6:106:30 | ControlFlowNode for Attribute() |
+| datamodel.py:93:6:93:20 | GSSA Variable iter | datamodel.py:107:6:107:32 | ControlFlowNode for Attribute() |
+| datamodel.py:93:6:93:20 | GSSA Variable iter | datamodel.py:119:6:119:30 | ControlFlowNode for Attribute() |
+| datamodel.py:96:1:96:5 | GSSA Variable oiter | datamodel.py:97:6:97:21 | ControlFlowNode for Attribute() |
+| datamodel.py:96:1:96:5 | GSSA Variable oiter | datamodel.py:97:6:97:21 | GSSA Variable oiter |
+| datamodel.py:96:9:96:24 | ControlFlowNode for Attribute() | datamodel.py:96:1:96:5 | GSSA Variable oiter |
+| datamodel.py:96:9:96:24 | GSSA Variable SOURCE | datamodel.py:97:6:97:21 | ControlFlowNode for Attribute() |
+| datamodel.py:96:9:96:24 | GSSA Variable SOURCE | datamodel.py:106:18:106:29 | GSSA Variable SOURCE |
+| datamodel.py:96:9:96:24 | GSSA Variable c | datamodel.py:97:6:97:21 | ControlFlowNode for Attribute() |
+| datamodel.py:96:9:96:24 | GSSA Variable c | datamodel.py:106:6:106:30 | ControlFlowNode for Attribute() |
+| datamodel.py:96:9:96:24 | GSSA Variable c | datamodel.py:107:18:107:31 | GSSA Variable c |
+| datamodel.py:97:6:97:21 | GSSA Variable oiter | datamodel.py:106:6:106:30 | ControlFlowNode for Attribute() |
+| datamodel.py:97:6:97:21 | GSSA Variable oiter | datamodel.py:107:6:107:32 | ControlFlowNode for Attribute() |
+| datamodel.py:97:6:97:21 | GSSA Variable oiter | datamodel.py:119:6:119:30 | ControlFlowNode for Attribute() |
+| datamodel.py:106:18:106:29 | GSSA Variable SOURCE | datamodel.py:106:6:106:30 | ControlFlowNode for Attribute() |
+| datamodel.py:106:18:106:29 | GSSA Variable SOURCE | datamodel.py:107:18:107:31 | GSSA Variable SOURCE |
+| datamodel.py:107:18:107:31 | GSSA Variable SOURCE | datamodel.py:107:6:107:32 | ControlFlowNode for Attribute() |
+| datamodel.py:107:18:107:31 | GSSA Variable SOURCE | datamodel.py:119:18:119:29 | GSSA Variable SOURCE |
+| datamodel.py:107:18:107:31 | GSSA Variable c | datamodel.py:107:6:107:32 | ControlFlowNode for Attribute() |
+| datamodel.py:107:18:107:31 | GSSA Variable c | datamodel.py:119:6:119:30 | ControlFlowNode for Attribute() |
+| datamodel.py:119:18:119:29 | GSSA Variable SOURCE | datamodel.py:119:6:119:30 | ControlFlowNode for Attribute() |
 | test.py:43:9:43:14 | ControlFlowNode for SOURCE | test.py:44:10:44:10 | ControlFlowNode for x |
 | test.py:48:9:48:16 | ControlFlowNode for Str | test.py:49:10:49:10 | ControlFlowNode for x |
 | test.py:52:9:52:17 | ControlFlowNode for Str | test.py:53:10:53:10 | ControlFlowNode for x |
@@ -78,48 +78,48 @@ edges
 | test.py:305:12:305:17 | ControlFlowNode for SOURCE | test.py:305:10:305:18 | ControlFlowNode for f() |
 | test.py:309:28:309:33 | ControlFlowNode for SOURCE | test.py:309:10:309:34 | ControlFlowNode for second() |
 nodes
-| classes.py:18:1:18:6 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
-| classes.py:18:10:18:17 | ControlFlowNode for Str | semmle.label | ControlFlowNode for Str |
-| classes.py:43:6:43:17 | ControlFlowNode for f() | semmle.label | ControlFlowNode for f() |
-| classes.py:43:6:43:17 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
-| classes.py:43:8:43:13 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| classes.py:70:1:70:1 | GSSA Variable c | semmle.label | GSSA Variable c |
-| classes.py:70:5:70:7 | ControlFlowNode for C() | semmle.label | ControlFlowNode for C() |
-| classes.py:76:6:76:24 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| classes.py:76:6:76:24 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
-| classes.py:76:6:76:24 | GSSA Variable c | semmle.label | GSSA Variable c |
-| classes.py:76:15:76:20 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| classes.py:77:6:77:27 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| classes.py:77:6:77:27 | GSSA Variable c | semmle.label | GSSA Variable c |
-| classes.py:77:18:77:23 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| classes.py:78:6:78:27 | ControlFlowNode for func_obj() | semmle.label | ControlFlowNode for func_obj() |
-| classes.py:78:6:78:27 | GSSA Variable c | semmle.label | GSSA Variable c |
-| classes.py:85:6:85:26 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| classes.py:85:6:85:26 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
-| classes.py:85:6:85:26 | GSSA Variable c | semmle.label | GSSA Variable c |
-| classes.py:85:20:85:25 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| classes.py:86:6:86:26 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| classes.py:86:6:86:26 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
-| classes.py:86:20:86:25 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| classes.py:87:6:87:26 | ControlFlowNode for c_func_obj() | semmle.label | ControlFlowNode for c_func_obj() |
-| classes.py:97:1:97:4 | GSSA Variable iter | semmle.label | GSSA Variable iter |
-| classes.py:97:8:97:21 | ControlFlowNode for gen() | semmle.label | ControlFlowNode for gen() |
-| classes.py:97:8:97:21 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
-| classes.py:98:6:98:20 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| classes.py:98:6:98:20 | GSSA Variable iter | semmle.label | GSSA Variable iter |
-| classes.py:101:1:101:5 | GSSA Variable oiter | semmle.label | GSSA Variable oiter |
-| classes.py:101:9:101:24 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| classes.py:101:9:101:24 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
-| classes.py:101:9:101:24 | GSSA Variable c | semmle.label | GSSA Variable c |
-| classes.py:102:6:102:21 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| classes.py:102:6:102:21 | GSSA Variable oiter | semmle.label | GSSA Variable oiter |
-| classes.py:111:6:111:30 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| classes.py:111:18:111:29 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
-| classes.py:112:6:112:32 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| classes.py:112:18:112:31 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
-| classes.py:112:18:112:31 | GSSA Variable c | semmle.label | GSSA Variable c |
-| classes.py:124:6:124:30 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| classes.py:124:18:124:29 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
+| datamodel.py:13:1:13:6 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
+| datamodel.py:13:10:13:17 | ControlFlowNode for Str | semmle.label | ControlFlowNode for Str |
+| datamodel.py:38:6:38:17 | ControlFlowNode for f() | semmle.label | ControlFlowNode for f() |
+| datamodel.py:38:6:38:17 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
+| datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| datamodel.py:65:1:65:1 | GSSA Variable c | semmle.label | GSSA Variable c |
+| datamodel.py:65:5:65:7 | ControlFlowNode for C() | semmle.label | ControlFlowNode for C() |
+| datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:71:6:71:24 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
+| datamodel.py:71:6:71:24 | GSSA Variable c | semmle.label | GSSA Variable c |
+| datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:72:6:72:27 | GSSA Variable c | semmle.label | GSSA Variable c |
+| datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| datamodel.py:73:6:73:27 | ControlFlowNode for func_obj() | semmle.label | ControlFlowNode for func_obj() |
+| datamodel.py:73:6:73:27 | GSSA Variable c | semmle.label | GSSA Variable c |
+| datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:80:6:80:26 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
+| datamodel.py:80:6:80:26 | GSSA Variable c | semmle.label | GSSA Variable c |
+| datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:81:6:81:26 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
+| datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| datamodel.py:82:6:82:26 | ControlFlowNode for c_func_obj() | semmle.label | ControlFlowNode for c_func_obj() |
+| datamodel.py:92:1:92:4 | GSSA Variable iter | semmle.label | GSSA Variable iter |
+| datamodel.py:92:8:92:21 | ControlFlowNode for gen() | semmle.label | ControlFlowNode for gen() |
+| datamodel.py:92:8:92:21 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
+| datamodel.py:93:6:93:20 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:93:6:93:20 | GSSA Variable iter | semmle.label | GSSA Variable iter |
+| datamodel.py:96:1:96:5 | GSSA Variable oiter | semmle.label | GSSA Variable oiter |
+| datamodel.py:96:9:96:24 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:96:9:96:24 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
+| datamodel.py:96:9:96:24 | GSSA Variable c | semmle.label | GSSA Variable c |
+| datamodel.py:97:6:97:21 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:97:6:97:21 | GSSA Variable oiter | semmle.label | GSSA Variable oiter |
+| datamodel.py:106:6:106:30 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:106:18:106:29 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
+| datamodel.py:107:6:107:32 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:107:18:107:31 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
+| datamodel.py:107:18:107:31 | GSSA Variable c | semmle.label | GSSA Variable c |
+| datamodel.py:119:6:119:30 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:119:18:119:29 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
 | test.py:43:9:43:14 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:44:10:44:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
 | test.py:48:9:48:16 | ControlFlowNode for Str | semmle.label | ControlFlowNode for Str |
@@ -139,23 +139,23 @@ nodes
 | test.py:309:10:309:34 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
 | test.py:309:28:309:33 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 #select
-| classes.py:43:6:43:17 | ControlFlowNode for f() | classes.py:18:10:18:17 | ControlFlowNode for Str | classes.py:43:6:43:17 | ControlFlowNode for f() | <message> |
-| classes.py:43:6:43:17 | ControlFlowNode for f() | classes.py:43:8:43:13 | ControlFlowNode for SOURCE | classes.py:43:6:43:17 | ControlFlowNode for f() | <message> |
-| classes.py:76:6:76:24 | ControlFlowNode for Attribute() | classes.py:18:10:18:17 | ControlFlowNode for Str | classes.py:76:6:76:24 | ControlFlowNode for Attribute() | <message> |
-| classes.py:76:6:76:24 | ControlFlowNode for Attribute() | classes.py:76:15:76:20 | ControlFlowNode for SOURCE | classes.py:76:6:76:24 | ControlFlowNode for Attribute() | <message> |
-| classes.py:77:6:77:27 | ControlFlowNode for Attribute() | classes.py:18:10:18:17 | ControlFlowNode for Str | classes.py:77:6:77:27 | ControlFlowNode for Attribute() | <message> |
-| classes.py:77:6:77:27 | ControlFlowNode for Attribute() | classes.py:77:18:77:23 | ControlFlowNode for SOURCE | classes.py:77:6:77:27 | ControlFlowNode for Attribute() | <message> |
-| classes.py:78:6:78:27 | ControlFlowNode for func_obj() | classes.py:18:10:18:17 | ControlFlowNode for Str | classes.py:78:6:78:27 | ControlFlowNode for func_obj() | <message> |
-| classes.py:85:6:85:26 | ControlFlowNode for Attribute() | classes.py:18:10:18:17 | ControlFlowNode for Str | classes.py:85:6:85:26 | ControlFlowNode for Attribute() | <message> |
-| classes.py:85:6:85:26 | ControlFlowNode for Attribute() | classes.py:85:20:85:25 | ControlFlowNode for SOURCE | classes.py:85:6:85:26 | ControlFlowNode for Attribute() | <message> |
-| classes.py:86:6:86:26 | ControlFlowNode for Attribute() | classes.py:18:10:18:17 | ControlFlowNode for Str | classes.py:86:6:86:26 | ControlFlowNode for Attribute() | <message> |
-| classes.py:86:6:86:26 | ControlFlowNode for Attribute() | classes.py:86:20:86:25 | ControlFlowNode for SOURCE | classes.py:86:6:86:26 | ControlFlowNode for Attribute() | <message> |
-| classes.py:87:6:87:26 | ControlFlowNode for c_func_obj() | classes.py:18:10:18:17 | ControlFlowNode for Str | classes.py:87:6:87:26 | ControlFlowNode for c_func_obj() | <message> |
-| classes.py:98:6:98:20 | ControlFlowNode for Attribute() | classes.py:18:10:18:17 | ControlFlowNode for Str | classes.py:98:6:98:20 | ControlFlowNode for Attribute() | <message> |
-| classes.py:102:6:102:21 | ControlFlowNode for Attribute() | classes.py:18:10:18:17 | ControlFlowNode for Str | classes.py:102:6:102:21 | ControlFlowNode for Attribute() | <message> |
-| classes.py:111:6:111:30 | ControlFlowNode for Attribute() | classes.py:18:10:18:17 | ControlFlowNode for Str | classes.py:111:6:111:30 | ControlFlowNode for Attribute() | <message> |
-| classes.py:112:6:112:32 | ControlFlowNode for Attribute() | classes.py:18:10:18:17 | ControlFlowNode for Str | classes.py:112:6:112:32 | ControlFlowNode for Attribute() | <message> |
-| classes.py:124:6:124:30 | ControlFlowNode for Attribute() | classes.py:18:10:18:17 | ControlFlowNode for Str | classes.py:124:6:124:30 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:38:6:38:17 | ControlFlowNode for f() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:38:6:38:17 | ControlFlowNode for f() | <message> |
+| datamodel.py:38:6:38:17 | ControlFlowNode for f() | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | datamodel.py:38:6:38:17 | ControlFlowNode for f() | <message> |
+| datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() | datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:73:6:73:27 | ControlFlowNode for func_obj() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:73:6:73:27 | ControlFlowNode for func_obj() | <message> |
+| datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() | datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:82:6:82:26 | ControlFlowNode for c_func_obj() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:82:6:82:26 | ControlFlowNode for c_func_obj() | <message> |
+| datamodel.py:93:6:93:20 | ControlFlowNode for Attribute() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:93:6:93:20 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:97:6:97:21 | ControlFlowNode for Attribute() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:97:6:97:21 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:106:6:106:30 | ControlFlowNode for Attribute() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:106:6:106:30 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:107:6:107:32 | ControlFlowNode for Attribute() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:107:6:107:32 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:119:6:119:30 | ControlFlowNode for Attribute() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:119:6:119:30 | ControlFlowNode for Attribute() | <message> |
 | test.py:44:10:44:10 | ControlFlowNode for x | test.py:43:9:43:14 | ControlFlowNode for SOURCE | test.py:44:10:44:10 | ControlFlowNode for x | <message> |
 | test.py:49:10:49:10 | ControlFlowNode for x | test.py:48:9:48:16 | ControlFlowNode for Str | test.py:49:10:49:10 | ControlFlowNode for x | <message> |
 | test.py:53:10:53:10 | ControlFlowNode for x | test.py:52:9:52:17 | ControlFlowNode for Str | test.py:53:10:53:10 | ControlFlowNode for x | <message> |
