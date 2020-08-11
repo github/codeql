@@ -107,6 +107,9 @@ predicate isDeadAssignment(string name, DataFlow::PropWrite assign1, DataFlow::P
 /**
  * Holds if `assign` assigns a property that may be accessed somewhere else in the same block,
  * `after` indicates if the access happens before or after the node for `assign`.
+ *
+ * The access can either be a direct property access of the same name,
+ * or an impure expression where we assume that the expression can access the property.
  */
 predicate maybeAssignsAccessedPropInBlock(DataFlow::PropWrite assign, boolean after) {
   (
@@ -116,6 +119,7 @@ predicate maybeAssignsAccessedPropInBlock(DataFlow::PropWrite assign, boolean af
     after = false and postDominatedPropWrite(_, _, assign, false)
   ) and
   (
+    // direct property write before/after assign
     exists(ReachableBasicBlock block, int i, int j, Expr e, string name |
       i = getRank(block, assign.getWriteNode(), name) and
       j = getRank(block, e, name) and
@@ -126,6 +130,7 @@ predicate maybeAssignsAccessedPropInBlock(DataFlow::PropWrite assign, boolean af
       after = false and j < i
     )
     or
+    // impure expression that might access the property before/after assign
     exists(ReachableBasicBlock block | assign.getWriteNode().getBasicBlock() = block |
       after = true and isBeforeImpure(assign, block)
       or
