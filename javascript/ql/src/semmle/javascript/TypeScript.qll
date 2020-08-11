@@ -12,8 +12,7 @@ class NamespaceDefinition extends Stmt, @namespacedefinition, AST::ValueNode {
    *
    * Gets the identifier naming the namespace.
    */
-  deprecated
-  Identifier getId() { result = getIdentifier() }
+  deprecated Identifier getId() { result = getIdentifier() }
 
   /**
    * Gets the identifier naming the namespace.
@@ -187,8 +186,7 @@ class ImportEqualsDeclaration extends Stmt, @importequalsdeclaration {
    *
    * Gets the name under which the imported entity is imported.
    */
-  deprecated
-  Identifier getId() { result = getIdentifier() }
+  deprecated Identifier getId() { result = getIdentifier() }
 
   /** Gets the name under which the imported entity is imported. */
   Identifier getIdentifier() { result = getChildExpr(0) }
