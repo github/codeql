@@ -285,7 +285,7 @@ class Method extends Callable, Virtualizable, Attributable, @method {
     if this.isStatic() then result = this.getParameter(i) else result = this.getParameter(i - 1)
   }
 
-  override string getAPrimaryQlClass() { result = "Method" and not this instanceof ExtensionMethod }
+  override string getAPrimaryQlClass() { result = "Method" }
 }
 
 /**

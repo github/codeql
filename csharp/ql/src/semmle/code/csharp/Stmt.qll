@@ -293,9 +293,7 @@ class CaseStmt extends Case, @case_stmt {
 
   override string toString() { result = "case ...:" }
 
-  override string getAPrimaryQlClass() {
-    result = "CaseStmt" and not this instanceof ConstCase and not this instanceof DefaultCase
-  }
+  override string getAPrimaryQlClass() { result = "CaseStmt" }
 }
 
 /**
@@ -1228,11 +1226,7 @@ class LocalVariableDeclStmt extends Stmt, @decl_stmt {
 
   override string toString() { result = "... ...;" }
 
-  override string getAPrimaryQlClass() {
-    result = "LocalVariableDeclStmt" and
-    not this instanceof LocalConstantDeclStmt and
-    not this instanceof UsingDeclStmt
-  }
+  override string getAPrimaryQlClass() { result = "LocalVariableDeclStmt" }
 }
 
 /**
@@ -1329,7 +1323,7 @@ class UnsafeStmt extends Stmt, @unsafe_stmt {
 
   override string toString() { result = "unsafe {...}" }
 
-  override string getAPrimaryQlClass() { result = "UnstafeStmt" }
+  override string getAPrimaryQlClass() { result = "UnsafeStmt" }
 }
 
 /**

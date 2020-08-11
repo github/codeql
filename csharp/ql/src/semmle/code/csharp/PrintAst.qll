@@ -44,7 +44,7 @@ private predicate selectedFile(File file) {
 }
 
 private int attributableOffset(Attributable attributable) {
-  if count(attributable.getAnAttribute()) > 0 then result = 1 else result = 0
+  if exists(attributable.getAnAttribute()) then result = 1 else result = 0
 }
 
 private int parameterizableTypeOffset(ValueOrRefType type) {
@@ -151,7 +151,7 @@ private predicate locationSortKeys(Element ast, string file, int line, int colum
  * Printed AST nodes are mostly `Element`s of the underlying AST.
  * There are extra AST nodes generated for parameters of `Parameterizable`s,
  * attributes of `Attributable`s, and type parameters of `UnboundGeneric`
- * types. These extra node are used as containers to organize the tree a
+ * types. These extra nodes are used as containers to organize the tree a
  * bit better.
  */
 private newtype TPrintAstNode =
@@ -531,7 +531,7 @@ final class AttributesNode extends PrintAstNode, TAttributesNode {
 
   AttributesNode() {
     this = TAttributesNode(attributable) and
-    count(attributable.getAnAttribute()) > 0 and
+    exists(attributable.getAnAttribute()) and
     not isCompilerGeneratedAttributable(attributable) and
     not isInsideUnneededAttributable(attributable)
   }

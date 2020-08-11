@@ -334,9 +334,7 @@ class FieldAccess extends AssignableMemberAccess, VariableAccess, @field_access_
 
   override string toString() { result = "access to field " + this.getTarget().getName() }
 
-  override string getAPrimaryQlClass() {
-    result = "FieldAccess" and not this instanceof MemberConstantAccess
-  }
+  override string getAPrimaryQlClass() { result = "FieldAccess" }
 }
 
 /**

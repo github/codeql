@@ -391,9 +391,7 @@ class ArrayCreation extends Expr, @array_creation_expr {
 
   override string toString() { result = "array creation of type " + this.getType().getName() }
 
-  override string getAPrimaryQlClass() {
-    result = "ArrayCreation" and not this instanceof Stackalloc
-  }
+  override string getAPrimaryQlClass() { result = "ArrayCreation" }
 }
 
 /**
