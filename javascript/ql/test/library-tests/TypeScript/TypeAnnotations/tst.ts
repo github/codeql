@@ -150,3 +150,11 @@ function assertIsString(val: any): asserts val is string {
       throw new AssertionError("Not a string!");
   }
 }
+
+// TypeScript 4.0
+ 
+// spreads in tuple type syntax can now be generic
+function tail<T extends any[]>(arr: readonly [any, ...T]) {
+    const [_ignored, ...rest] = arr;
+    return rest;
+}
