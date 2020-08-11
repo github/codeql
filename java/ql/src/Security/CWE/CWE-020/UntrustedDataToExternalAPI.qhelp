@@ -34,7 +34,7 @@ class to exclude known safe external APIs from future analysis.</p>
 <example>
 
 <p>In this first example, a request parameter is read from <code>HttpServletRequest</code> and then ultimately used in a call to the 
-<code>HttpServletResponse.sendError</code> external API:
+<code>HttpServletResponse.sendError</code> external API:</p>
 
 <sample src="ExternalAPISinkExample.java" />
 
