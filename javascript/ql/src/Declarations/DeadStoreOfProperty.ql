@@ -61,12 +61,7 @@ predicate postDominatedPropWrite(
 int getRank(ReachableBasicBlock bb, ControlFlowNode ref, string name) {
   ref =
     rank[result](ControlFlowNode e |
-      exists(DataFlow::PropWrite write |
-        write.getPropertyName() = name and
-        e = write.getWriteNode() and
-        unambiguousPropWrite(write)
-      )
-      or
+      isAPropertyWrite(e, name) or
       isAPropertyRead(e, name)
     |
       e order by any(int i | e = bb.getNode(i))
@@ -78,6 +73,13 @@ int getRank(ReachableBasicBlock bb, ControlFlowNode ref, string name) {
  */
 predicate isAPropertyRead(Expr e, string name) {
   exists(DataFlow::PropRead read | read.asExpr() = e and read.getPropertyName() = name)
+}
+
+/**
+ * Holds if `e` is a property write of a property `name`.
+ */
+predicate isAPropertyWrite(ControlFlowNode e, string name) {
+  exists(DataFlow::PropWrite write | write.getWriteNode() = e and write.getPropertyName() = name) // TODO: umambi?
 }
 
 /**
@@ -218,12 +220,11 @@ ControlFlowNode getANodeWithNoPropAccessBetweenInsideBlock(string name, DataFlow
   // stop at reads of `name` and at impure expressions (except writes to `name`)
   not (
     maybeAccessesProperty(result, name) and
-    not result = any(DataFlow::PropWrite w | w.getPropertyName() = name).getWriteNode()
+    not isAPropertyWrite(result, name)
   ) and
   // stop at the first write to `name` that comes after `write`.
   (
-    not result.getAPredecessor() =
-      any(DataFlow::PropWrite w | w.getPropertyName() = name).getWriteNode()
+    not isAPropertyWrite(result.getAPredecessor(), name)
     or
     result.getAPredecessor() = write.getWriteNode()
   )
