@@ -97,6 +97,7 @@ class WritingMethod extends Method {
     (
       this.getName().matches("print%") or
       this.getName() = "append" or
+      this.getName() = "format" or
       this.getName() = "write"
     )
   }
