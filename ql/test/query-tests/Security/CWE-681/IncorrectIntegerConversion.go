@@ -326,12 +326,41 @@ func testRightShifted(input string) {
 }
 
 func testPathWithMoreThanOneSink(input string) {
-	parsed, err := strconv.ParseInt(input, 10, 32)
-	if err != nil {
-		panic(err)
+	{
+		parsed, err := strconv.ParseInt(input, 10, 32)
+		if err != nil {
+			panic(err)
+		}
+		v1 := int16(parsed) // NOT OK
+		_ = int16(v1)       // OK
 	}
-	v := int16(parsed) // NOT OK
-	_ = int8(v)        // OK
+	{
+		parsed, err := strconv.ParseInt(input, 10, 32)
+		if err != nil {
+			panic(err)
+		}
+		v := int16(parsed) // NOT OK
+		_ = int8(v)        // OK
+	}
+	{
+		parsed, err := strconv.ParseInt(input, 10, 32)
+		if err != nil {
+			panic(err)
+		}
+		v1 := int32(parsed) // OK
+		v2 := int16(v1)     // NOT OK
+		_ = int8(v2)        // OK
+	}
+	{
+		parsed, err := strconv.ParseInt(input, 10, 16)
+		if err != nil {
+			panic(err)
+		}
+		v1 := int64(parsed) // OK
+		v2 := int32(v1)     // OK
+		v3 := int16(v2)     // OK
+		_ = int8(v3)        // NOT OK
+	}
 }
 
 func testUsingStrConvIntSize(input string) {

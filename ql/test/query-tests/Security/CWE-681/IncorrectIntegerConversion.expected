@@ -51,13 +51,20 @@ edges
 | IncorrectIntegerConversion.go:247:3:247:36 | ... := ...[0] : int | IncorrectIntegerConversion.go:261:8:261:19 | type conversion |
 | IncorrectIntegerConversion.go:268:3:268:49 | ... := ...[0] : uint64 | IncorrectIntegerConversion.go:282:8:282:21 | type conversion |
 | IncorrectIntegerConversion.go:319:3:319:48 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:323:7:323:18 | type conversion |
-| IncorrectIntegerConversion.go:329:2:329:47 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:333:7:333:19 | type conversion |
-| IncorrectIntegerConversion.go:338:2:338:60 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:342:6:342:17 | type conversion |
-| IncorrectIntegerConversion.go:338:2:338:60 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:343:6:343:18 | type conversion |
-| IncorrectIntegerConversion.go:338:2:338:60 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:344:6:344:18 | type conversion |
-| IncorrectIntegerConversion.go:338:2:338:60 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:345:6:345:19 | type conversion |
-| IncorrectIntegerConversion.go:338:2:338:60 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:346:6:346:18 | type conversion |
-| IncorrectIntegerConversion.go:338:2:338:60 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:347:6:347:19 | type conversion |
+| IncorrectIntegerConversion.go:330:3:330:48 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:334:9:334:21 | type conversion |
+| IncorrectIntegerConversion.go:338:3:338:48 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:342:8:342:20 | type conversion |
+| IncorrectIntegerConversion.go:346:3:346:48 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:350:9:350:21 | type conversion : int64 |
+| IncorrectIntegerConversion.go:350:9:350:21 | type conversion : int64 | IncorrectIntegerConversion.go:351:9:351:17 | type conversion |
+| IncorrectIntegerConversion.go:355:3:355:48 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:359:9:359:21 | type conversion : int64 |
+| IncorrectIntegerConversion.go:359:9:359:21 | type conversion : int64 | IncorrectIntegerConversion.go:360:9:360:17 | type conversion : int64 |
+| IncorrectIntegerConversion.go:360:9:360:17 | type conversion : int64 | IncorrectIntegerConversion.go:361:9:361:17 | type conversion : int64 |
+| IncorrectIntegerConversion.go:361:9:361:17 | type conversion : int64 | IncorrectIntegerConversion.go:362:7:362:14 | type conversion |
+| IncorrectIntegerConversion.go:367:2:367:60 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:371:6:371:17 | type conversion |
+| IncorrectIntegerConversion.go:367:2:367:60 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:372:6:372:18 | type conversion |
+| IncorrectIntegerConversion.go:367:2:367:60 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:373:6:373:18 | type conversion |
+| IncorrectIntegerConversion.go:367:2:367:60 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:374:6:374:19 | type conversion |
+| IncorrectIntegerConversion.go:367:2:367:60 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:375:6:375:18 | type conversion |
+| IncorrectIntegerConversion.go:367:2:367:60 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:376:6:376:19 | type conversion |
 nodes
 | IncorrectIntegerConversion.go:26:2:26:28 | ... := ...[0] : int | semmle.label | ... := ...[0] : int |
 | IncorrectIntegerConversion.go:35:41:35:50 | type conversion | semmle.label | type conversion |
@@ -140,17 +147,27 @@ nodes
 | IncorrectIntegerConversion.go:282:8:282:21 | type conversion | semmle.label | type conversion |
 | IncorrectIntegerConversion.go:319:3:319:48 | ... := ...[0] : int64 | semmle.label | ... := ...[0] : int64 |
 | IncorrectIntegerConversion.go:323:7:323:18 | type conversion | semmle.label | type conversion |
-| IncorrectIntegerConversion.go:329:2:329:47 | ... := ...[0] : int64 | semmle.label | ... := ...[0] : int64 |
-| IncorrectIntegerConversion.go:333:7:333:19 | type conversion | semmle.label | type conversion |
-| IncorrectIntegerConversion.go:338:2:338:60 | ... := ...[0] : int64 | semmle.label | ... := ...[0] : int64 |
-| IncorrectIntegerConversion.go:338:2:338:60 | ... := ...[0] : int64 | semmle.label | ... := ...[0] : int64 |
-| IncorrectIntegerConversion.go:338:2:338:60 | ... := ...[0] : int64 | semmle.label | ... := ...[0] : int64 |
-| IncorrectIntegerConversion.go:342:6:342:17 | type conversion | semmle.label | type conversion |
-| IncorrectIntegerConversion.go:343:6:343:18 | type conversion | semmle.label | type conversion |
-| IncorrectIntegerConversion.go:344:6:344:18 | type conversion | semmle.label | type conversion |
-| IncorrectIntegerConversion.go:345:6:345:19 | type conversion | semmle.label | type conversion |
-| IncorrectIntegerConversion.go:346:6:346:18 | type conversion | semmle.label | type conversion |
-| IncorrectIntegerConversion.go:347:6:347:19 | type conversion | semmle.label | type conversion |
+| IncorrectIntegerConversion.go:330:3:330:48 | ... := ...[0] : int64 | semmle.label | ... := ...[0] : int64 |
+| IncorrectIntegerConversion.go:334:9:334:21 | type conversion | semmle.label | type conversion |
+| IncorrectIntegerConversion.go:338:3:338:48 | ... := ...[0] : int64 | semmle.label | ... := ...[0] : int64 |
+| IncorrectIntegerConversion.go:342:8:342:20 | type conversion | semmle.label | type conversion |
+| IncorrectIntegerConversion.go:346:3:346:48 | ... := ...[0] : int64 | semmle.label | ... := ...[0] : int64 |
+| IncorrectIntegerConversion.go:350:9:350:21 | type conversion : int64 | semmle.label | type conversion : int64 |
+| IncorrectIntegerConversion.go:351:9:351:17 | type conversion | semmle.label | type conversion |
+| IncorrectIntegerConversion.go:355:3:355:48 | ... := ...[0] : int64 | semmle.label | ... := ...[0] : int64 |
+| IncorrectIntegerConversion.go:359:9:359:21 | type conversion : int64 | semmle.label | type conversion : int64 |
+| IncorrectIntegerConversion.go:360:9:360:17 | type conversion : int64 | semmle.label | type conversion : int64 |
+| IncorrectIntegerConversion.go:361:9:361:17 | type conversion : int64 | semmle.label | type conversion : int64 |
+| IncorrectIntegerConversion.go:362:7:362:14 | type conversion | semmle.label | type conversion |
+| IncorrectIntegerConversion.go:367:2:367:60 | ... := ...[0] : int64 | semmle.label | ... := ...[0] : int64 |
+| IncorrectIntegerConversion.go:367:2:367:60 | ... := ...[0] : int64 | semmle.label | ... := ...[0] : int64 |
+| IncorrectIntegerConversion.go:367:2:367:60 | ... := ...[0] : int64 | semmle.label | ... := ...[0] : int64 |
+| IncorrectIntegerConversion.go:371:6:371:17 | type conversion | semmle.label | type conversion |
+| IncorrectIntegerConversion.go:372:6:372:18 | type conversion | semmle.label | type conversion |
+| IncorrectIntegerConversion.go:373:6:373:18 | type conversion | semmle.label | type conversion |
+| IncorrectIntegerConversion.go:374:6:374:19 | type conversion | semmle.label | type conversion |
+| IncorrectIntegerConversion.go:375:6:375:18 | type conversion | semmle.label | type conversion |
+| IncorrectIntegerConversion.go:376:6:376:19 | type conversion | semmle.label | type conversion |
 #select
 | IncorrectIntegerConversion.go:26:2:26:28 | ... := ...[0] | IncorrectIntegerConversion.go:26:2:26:28 | ... := ...[0] : int | IncorrectIntegerConversion.go:35:41:35:50 | type conversion | Incorrect conversion of an integer with architecture-dependent bit size from strconv.Atoi to a lower bit size type int32 without an upper bound check. |
 | IncorrectIntegerConversion.go:65:3:65:49 | ... := ...[0] | IncorrectIntegerConversion.go:65:3:65:49 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:69:7:69:18 | type conversion | Incorrect conversion of a 16-bit integer from strconv.ParseInt to a lower bit size type int8 without an upper bound check. |
@@ -204,10 +221,13 @@ nodes
 | IncorrectIntegerConversion.go:247:3:247:36 | ... := ...[0] | IncorrectIntegerConversion.go:247:3:247:36 | ... := ...[0] : int | IncorrectIntegerConversion.go:261:8:261:19 | type conversion | Incorrect conversion of an integer with architecture-dependent bit size from strconv.Atoi to a lower bit size type int8 without an upper bound check. |
 | IncorrectIntegerConversion.go:268:3:268:49 | ... := ...[0] | IncorrectIntegerConversion.go:268:3:268:49 | ... := ...[0] : uint64 | IncorrectIntegerConversion.go:282:8:282:21 | type conversion | Incorrect conversion of a 32-bit integer from strconv.ParseUint to a lower bit size type uint16 without an upper bound check. |
 | IncorrectIntegerConversion.go:319:3:319:48 | ... := ...[0] | IncorrectIntegerConversion.go:319:3:319:48 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:323:7:323:18 | type conversion | Incorrect conversion of a 16-bit integer from strconv.ParseInt to a lower bit size type uint8 without an upper bound check. |
-| IncorrectIntegerConversion.go:329:2:329:47 | ... := ...[0] | IncorrectIntegerConversion.go:329:2:329:47 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:333:7:333:19 | type conversion | Incorrect conversion of a 32-bit integer from strconv.ParseInt to a lower bit size type int16 without an upper bound check. |
-| IncorrectIntegerConversion.go:338:2:338:60 | ... := ...[0] | IncorrectIntegerConversion.go:338:2:338:60 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:342:6:342:17 | type conversion | Incorrect conversion of an integer with architecture-dependent bit size from strconv.ParseInt to a lower bit size type int8 without an upper bound check. |
-| IncorrectIntegerConversion.go:338:2:338:60 | ... := ...[0] | IncorrectIntegerConversion.go:338:2:338:60 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:343:6:343:18 | type conversion | Incorrect conversion of an integer with architecture-dependent bit size from strconv.ParseInt to a lower bit size type uint8 without an upper bound check. |
-| IncorrectIntegerConversion.go:338:2:338:60 | ... := ...[0] | IncorrectIntegerConversion.go:338:2:338:60 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:344:6:344:18 | type conversion | Incorrect conversion of an integer with architecture-dependent bit size from strconv.ParseInt to a lower bit size type int16 without an upper bound check. |
-| IncorrectIntegerConversion.go:338:2:338:60 | ... := ...[0] | IncorrectIntegerConversion.go:338:2:338:60 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:345:6:345:19 | type conversion | Incorrect conversion of an integer with architecture-dependent bit size from strconv.ParseInt to a lower bit size type uint16 without an upper bound check. |
-| IncorrectIntegerConversion.go:338:2:338:60 | ... := ...[0] | IncorrectIntegerConversion.go:338:2:338:60 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:346:6:346:18 | type conversion | Incorrect conversion of an integer with architecture-dependent bit size from strconv.ParseInt to a lower bit size type int32 without an upper bound check. |
-| IncorrectIntegerConversion.go:338:2:338:60 | ... := ...[0] | IncorrectIntegerConversion.go:338:2:338:60 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:347:6:347:19 | type conversion | Incorrect conversion of an integer with architecture-dependent bit size from strconv.ParseInt to a lower bit size type uint32 without an upper bound check. |
+| IncorrectIntegerConversion.go:330:3:330:48 | ... := ...[0] | IncorrectIntegerConversion.go:330:3:330:48 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:334:9:334:21 | type conversion | Incorrect conversion of a 32-bit integer from strconv.ParseInt to a lower bit size type int16 without an upper bound check. |
+| IncorrectIntegerConversion.go:338:3:338:48 | ... := ...[0] | IncorrectIntegerConversion.go:338:3:338:48 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:342:8:342:20 | type conversion | Incorrect conversion of a 32-bit integer from strconv.ParseInt to a lower bit size type int16 without an upper bound check. |
+| IncorrectIntegerConversion.go:346:3:346:48 | ... := ...[0] | IncorrectIntegerConversion.go:346:3:346:48 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:351:9:351:17 | type conversion | Incorrect conversion of a 32-bit integer from strconv.ParseInt to a lower bit size type int16 without an upper bound check. |
+| IncorrectIntegerConversion.go:355:3:355:48 | ... := ...[0] | IncorrectIntegerConversion.go:355:3:355:48 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:362:7:362:14 | type conversion | Incorrect conversion of a 16-bit integer from strconv.ParseInt to a lower bit size type int8 without an upper bound check. |
+| IncorrectIntegerConversion.go:367:2:367:60 | ... := ...[0] | IncorrectIntegerConversion.go:367:2:367:60 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:371:6:371:17 | type conversion | Incorrect conversion of an integer with architecture-dependent bit size from strconv.ParseInt to a lower bit size type int8 without an upper bound check. |
+| IncorrectIntegerConversion.go:367:2:367:60 | ... := ...[0] | IncorrectIntegerConversion.go:367:2:367:60 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:372:6:372:18 | type conversion | Incorrect conversion of an integer with architecture-dependent bit size from strconv.ParseInt to a lower bit size type uint8 without an upper bound check. |
+| IncorrectIntegerConversion.go:367:2:367:60 | ... := ...[0] | IncorrectIntegerConversion.go:367:2:367:60 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:373:6:373:18 | type conversion | Incorrect conversion of an integer with architecture-dependent bit size from strconv.ParseInt to a lower bit size type int16 without an upper bound check. |
+| IncorrectIntegerConversion.go:367:2:367:60 | ... := ...[0] | IncorrectIntegerConversion.go:367:2:367:60 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:374:6:374:19 | type conversion | Incorrect conversion of an integer with architecture-dependent bit size from strconv.ParseInt to a lower bit size type uint16 without an upper bound check. |
+| IncorrectIntegerConversion.go:367:2:367:60 | ... := ...[0] | IncorrectIntegerConversion.go:367:2:367:60 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:375:6:375:18 | type conversion | Incorrect conversion of an integer with architecture-dependent bit size from strconv.ParseInt to a lower bit size type int32 without an upper bound check. |
+| IncorrectIntegerConversion.go:367:2:367:60 | ... := ...[0] | IncorrectIntegerConversion.go:367:2:367:60 | ... := ...[0] : int64 | IncorrectIntegerConversion.go:376:6:376:19 | type conversion | Incorrect conversion of an integer with architecture-dependent bit size from strconv.ParseInt to a lower bit size type uint32 without an upper bound check. |
