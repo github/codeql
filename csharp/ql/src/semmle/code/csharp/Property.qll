@@ -374,10 +374,6 @@ class Accessor extends Callable, Modifiable, Attributable, @callable_accessor {
   override Location getALocation() { accessor_location(this, result) }
 
   override string toString() { result = getName() }
-
-  override string getAPrimaryQlClass() {
-    result = "Accessor" and not this instanceof Getter and not this instanceof Setter
-  }
 }
 
 /**
