@@ -8,7 +8,7 @@
  */
 
 import java
-import semmle.code.java.security.ExternalAPIs::ExternalAPIs
+import semmle.code.java.security.ExternalAPIs
 import semmle.code.java.dataflow.DataFlow
 
 from ExternalAPIUsedWithUntrustedData externalAPI

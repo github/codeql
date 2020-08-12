@@ -11,7 +11,7 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.security.ExternalAPIs::ExternalAPIs
+import semmle.code.java.security.ExternalAPIs
 import DataFlow::PathGraph
 
 from UntrustedDataToExternalAPIConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
