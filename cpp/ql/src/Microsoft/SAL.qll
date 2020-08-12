@@ -27,8 +27,8 @@ class SALMacro extends Macro {
   }
 }
 
-private pragma[noinline]
-predicate isTopLevelMacroAccess(MacroAccess ma) { not exists(ma.getParentInvocation()) }
+pragma[noinline]
+private predicate isTopLevelMacroAccess(MacroAccess ma) { not exists(ma.getParentInvocation()) }
 
 /**
  * An invocation of a SAL macro (excluding invocations inside other macros).
