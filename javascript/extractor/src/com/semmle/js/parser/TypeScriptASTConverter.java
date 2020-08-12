@@ -2183,18 +2183,13 @@ public class TypeScriptASTConverter {
     List<JsonElement> elements = new ArrayList<>();
     ((JsonArray)node.get("elements")).iterator().forEachRemaining(elements::add);
 
-    List<String> elementNames = elements.stream()
+    List<Identifier> names = convertNodes(elements.stream()
       .filter(n -> getKind(n).equals("NamedTupleMember"))
       .map(n -> n.getAsJsonObject().get("name"))
-      .map(n -> n.getAsJsonObject().get("escapedText"))
-      .map(n -> n.getAsString())
-      .collect(Collectors.toList());
+      .collect(Collectors.toList())
+    );
 
-    if (elementNames.size() == 0) {
-      elementNames = null;
-    }
-
-    return new TupleTypeExpr(loc, convertChildrenAsTypes(node, "elements"), elementNames);
+    return new TupleTypeExpr(loc, convertChildrenAsTypes(node, "elements"), names);
   }
 
   // This method just does a trivial forward to the type. The names have already been extracted in `convertTupleType`.

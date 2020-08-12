@@ -1820,9 +1820,8 @@ public class ASTExtractor {
     public Label visit(TupleTypeExpr nd, Context c) {
       Label key = super.visit(nd, c);
       if (nd.getElementNames() != null) {
-        for (int i = 0; i < nd.getElementNames().size(); i++) {
-          trapwriter.addTuple("tuple_element_name", key, i, nd.getElementNames().get(i));
-        }
+        // Element names are index -1, -2, -3...
+        visitAll(nd.getElementNames(), key, IdContext.typeDecl, -1, -1);
       }
       visitAll(nd.getElementTypes(), key, IdContext.typeBind, 0);
       return key;

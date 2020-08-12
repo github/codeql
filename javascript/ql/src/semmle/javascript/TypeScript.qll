@@ -846,7 +846,7 @@ class ParenthesizedTypeExpr extends @parenthesizedtypeexpr, TypeExpr {
  */
 class TupleTypeExpr extends @tupletypeexpr, TypeExpr {
   /** Gets the `n`th element type in the tuple, starting at 0. */
-  TypeExpr getElementType(int n) { result = getChildTypeExpr(n) }
+  TypeExpr getElementType(int n) { result = getChildTypeExpr(n) and n >= 0 }
 
   /** Gets any of the element types in the tuple. */
   TypeExpr getAnElementType() { result = getElementType(_) }
@@ -854,8 +854,13 @@ class TupleTypeExpr extends @tupletypeexpr, TypeExpr {
   /** Gets the number of elements in the tuple type. */
   int getNumElementType() { result = count(getAnElementType()) }
 
-  /** Gets the name of the `n`th tuple member if the tuple members are named. */
-  string getElementName(int n) { tuple_element_name(this, n, result) }
+  /**
+   * Gets the name of the `n`th tuple member, starting at 0.
+   * Only has a result if the tuple members are named.
+   *
+   * Type element names are at indices -1, -2, -3, ...
+   */
+  Identifier getElementName(int n) { result = getChild(-(n + 1)) and n >= 0 }
 }
 
 /**

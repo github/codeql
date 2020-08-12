@@ -705,7 +705,7 @@ public class NodeCopier implements Visitor<Void, INode> {
 
   @Override
   public INode visit(TupleTypeExpr nd, Void c) {
-    return new TupleTypeExpr(visit(nd.getLoc()), copy(nd.getElementTypes()), nd.getElementNames());
+    return new TupleTypeExpr(visit(nd.getLoc()), copy(nd.getElementTypes()), copy(nd.getElementNames()));
   }
 
   @Override
