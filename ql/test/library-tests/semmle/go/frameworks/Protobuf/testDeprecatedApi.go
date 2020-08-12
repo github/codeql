@@ -96,3 +96,34 @@ func testUnmarshalTaintedSubmessage() {
 
 	sinkString(query.Alerts[0].Msg) // BAD
 }
+
+// This test should be ok, but is flagged because writing taint to a field of a Message
+// taints the entire Message structure in our current implementation.
+func testFieldConflationFalsePositive() {
+	query := &query.Query{}
+	query.Description = getUntrustedString()
+	sinkString(query.Id) // OK (but incorrectly tainted)
+}
+
+// This test should be ok, but it flagged because our current implementation doesn't notice
+// that the taint applied to `query` is overwritten.
+func testMessageReuseFalsePositive() {
+	query := &query.Query{}
+	query.Description = getUntrustedString()
+	query.Description = "clean"
+
+	serialized, _ := proto.Marshal(query)
+
+	sinkBytes(serialized) // OK (but incorrectly tainted)
+}
+
+// This test should be flagged, but we don't notice tainting via an alias of a field.
+func testSubmessageAliasFalseNegative() {
+	query := &query.Query{}
+	alias := &query.Description
+	*alias = getUntrustedString()
+
+	serialized, _ := proto.Marshal(query)
+
+	sinkBytes(serialized) // BAD (but not noticed by our current implementation)
+}
