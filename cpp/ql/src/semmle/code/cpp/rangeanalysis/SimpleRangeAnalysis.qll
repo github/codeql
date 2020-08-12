@@ -284,7 +284,9 @@ private predicate exprDependsOnDef(Expr e, RangeSsaDefinition srcDef, StackVaria
   or
   exists(SubExpr subExpr | e = subExpr | exprDependsOnDef(subExpr.getAnOperand(), srcDef, srcVar))
   or
-  exists(UnsignedMulExpr mulExpr | e = mulExpr | exprDependsOnDef(mulExpr.getAnOperand(), srcDef, srcVar))
+  exists(UnsignedMulExpr mulExpr | e = mulExpr |
+    exprDependsOnDef(mulExpr.getAnOperand(), srcDef, srcVar)
+  )
   or
   exists(AssignExpr addExpr | e = addExpr | exprDependsOnDef(addExpr.getRValue(), srcDef, srcVar))
   or
