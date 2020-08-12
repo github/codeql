@@ -22,6 +22,6 @@ where
   not decl.isAmbient() and
   not redecl.isAmbient() and
   // Redeclaring a namespace extends the previous definition.
-  not decl = any(NamespaceDeclaration ns).getId() and
-  not redecl = any(NamespaceDeclaration ns).getId()
+  not decl = any(NamespaceDeclaration ns).getIdentifier() and
+  not redecl = any(NamespaceDeclaration ns).getIdentifier()
 select redecl, "This variable has already been declared $@.", decl, "here"

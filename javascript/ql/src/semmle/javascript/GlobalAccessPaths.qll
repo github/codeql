@@ -267,7 +267,7 @@ module AccessPath {
     or
     exists(FunctionDeclStmt fun |
       node = DataFlow::valueNode(fun) and
-      result = fun.getId().(GlobalVarDecl).getName() and
+      result = fun.getIdentifier().(GlobalVarDecl).getName() and
       root.isGlobal()
     )
     or
@@ -285,7 +285,7 @@ module AccessPath {
     or
     exists(NamespaceDeclaration decl |
       node = DataFlow::valueNode(decl) and
-      result = decl.getId().(GlobalVarDecl).getName() and
+      result = decl.getIdentifier().(GlobalVarDecl).getName() and
       root.isGlobal()
     )
   }
