@@ -102,7 +102,7 @@ You may also wish to consider methods called by constructors that assign to the 
      int m_value;
    };
 
-This case can be excluded by creating a recursive predicate. The recursive predicate is given a function and a field, then checks whether the function assigns to the field. The predicate runs itself on all the functions called by the function that it has been given. By passing the constructor to this predicate, we can check for assignments of a field in all functions called by the constructor, and then do the same for all functions called by those functions all the way down the tree of function calls. For more information, see "`Recursion <https://help.semmle.com/QL/ql-handbook/recursion.html>`__"  in the QL language reference.
+This case can be excluded by creating a recursive predicate. The recursive predicate is given a function and a field, then checks whether the function assigns to the field. The predicate runs itself on all the functions called by the function that it has been given. By passing the constructor to this predicate, we can check for assignments of a field in all functions called by the constructor, and then do the same for all functions called by those functions all the way down the tree of function calls. For more information, see "`Recursion <https://help.semmle.com/QL/ql-handbook/recursion.html>`__" in the QL language reference.
 
 .. code-block:: ql
 

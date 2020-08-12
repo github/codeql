@@ -1079,7 +1079,7 @@ Exercise 9
    from Variable v, StringLiteral value
    where v.getName().regexpMatch("[pP]ass(word|wd|)")
      and value = v.getAnAssignedValue()
-     and value.getValue() != "
+     and value.getValue() != ""
    select v, "Hard-coded password '" + value.getValue() + "'."
 
 Exercise 10

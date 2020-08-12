@@ -54,7 +54,7 @@ To avoid making this mistake, ``this`` should be restricted in the member predic
 Use specific types
 ~~~~~~~~~~~~~~~~~~
 
-"`Types <https://help.semmle.com/QL/ql-handbook/types.html>`__"  provide an upper bound on the size of a relation. 
+"`Types <https://help.semmle.com/QL/ql-handbook/types.html>`__" provide an upper bound on the size of a relation. 
 This helps the query optimizer be more effective, so it's generally good to use the most specific types possible. For example::
 
   predicate foo(LoggingCall e)
@@ -90,7 +90,7 @@ Use ``getAQlClass()`` as a debugging tool, but don't include it in the final ver
 Avoid complex recursion
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-"`Recursion <https://help.semmle.com/QL/ql-handbook/recursion.html>`__"  is about self-referencing definitions.
+"`Recursion <https://help.semmle.com/QL/ql-handbook/recursion.html>`__" is about self-referencing definitions.
 It can be extremely powerful as long as it is used appropriately.
 On the whole, you should try to make recursive predicates as simple as possible.
 That is, you should define a *base case* that allows the predicate to *bottom out*, along with a single *recursive call*::
