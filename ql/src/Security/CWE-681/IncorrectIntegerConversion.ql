@@ -33,12 +33,10 @@ float getMaxIntValue(int bitSize, boolean isSigned) {
  * architecture-specific.
  */
 int getIntTypeBitSize(File file) {
-  if file.hasConstrainedIntBitSize(32)
-  then result = 32
-  else
-    if file.hasConstrainedIntBitSize(64)
-    then result = 64
-    else result = 0
+  file.constrainsIntBitSize(result)
+  or
+  not file.constrainsIntBitSize(_) and
+  result = 0
 }
 
 /**

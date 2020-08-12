@@ -211,4 +211,10 @@ class BuildConstraintComment extends LineComment {
   }
 
   override string getAPrimaryQlClass() { result = "BuildConstraintComment" }
+
+  /** Gets the body of this build constraint. */
+  string getConstraintBody() { result = getText().splitAt("+build ", 1) }
+
+  /** Gets a disjunct of this build constraint. */
+  string getADisjunct() { result = getConstraintBody().splitAt(" ") }
 }
