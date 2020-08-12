@@ -1,0 +1,4 @@
+| BadCrypto.go:15:2:15:33 | call to NewTripleDESCipher | Use of weak or broken cryptographic algorithm |
+| BadCrypto.go:18:2:18:18 | call to Sum | Use of weak or broken cryptographic algorithm |
+| BadCrypto.go:22:2:22:19 | call to NewCipher | Use of weak or broken cryptographic algorithm |
+| BadCrypto.go:26:2:26:15 | call to Sum | Use of weak or broken cryptographic algorithm |
