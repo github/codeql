@@ -1,5 +1,13 @@
+/**
+ * Provides classes for identifying and reasoning about Microsoft source code
+ * annoatation language (SAL) macros.
+ */
+
 import cpp
 
+/**
+ * A SAL macro defined in `sal.h` or a similar header file.
+ */
 class SALMacro extends Macro {
   SALMacro() {
     exists(string filename | filename = this.getFile().getBaseName() |
@@ -22,25 +30,32 @@ class SALMacro extends Macro {
 pragma[noinline]
 predicate isTopLevelMacroAccess(MacroAccess ma) { not exists(ma.getParentInvocation()) }
 
+/**
+ * An invocation of a SAL macro (excluding invocations inside other macros).
+ */
 class SALAnnotation extends MacroInvocation {
   SALAnnotation() {
     this.getMacro() instanceof SALMacro and
     isTopLevelMacroAccess(this)
   }
 
-  /** Returns the `Declaration` annotated by `this`. */
+  /** Gets the `Declaration` annotated by `this`. */
   Declaration getDeclaration() {
     annotatesAt(this, result.getADeclarationEntry(), _, _) and
     not result instanceof Type // exclude typedefs
   }
 
-  /** Returns the `DeclarationEntry` annotated by `this`. */
+  /** Gets the `DeclarationEntry` annotated by `this`. */
   DeclarationEntry getDeclarationEntry() {
     annotatesAt(this, result, _, _) and
     not result instanceof TypeDeclarationEntry // exclude typedefs
   }
 }
 
+/**
+ * A SAL macro indicating that the return value of a function should always be
+ * checked.
+ */
 class SALCheckReturn extends SALAnnotation {
   SALCheckReturn() {
     exists(SALMacro m | m = this.getMacro() |
@@ -50,6 +65,10 @@ class SALCheckReturn extends SALAnnotation {
   }
 }
 
+/**
+ * A SAL macro indicating that a pointer variable or return value should not be
+ * `NULL`.
+ */
 class SALNotNull extends SALAnnotation {
   SALNotNull() {
     exists(SALMacro m | m = this.getMacro() |
@@ -69,6 +88,9 @@ class SALNotNull extends SALAnnotation {
   }
 }
 
+/**
+ * A SAL macro indicating that a value may be `NULL`.
+ */
 class SALMaybeNull extends SALAnnotation {
   SALMaybeNull() {
     exists(SALMacro m | m = this.getMacro() |
