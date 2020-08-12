@@ -26,8 +26,7 @@ class StdStringCStr extends TaintFunction {
 class StdStringPlus extends TaintFunction {
   StdStringPlus() {
     this.hasQualifiedName("std", "operator+") and
-    this.getParameter(0).getType().getUnspecifiedType().(ReferenceType).getBaseType() =
-      any(StdBasicString s).getAnInstantiation()
+    this.getUnspecifiedType() = any(StdBasicString s).getAnInstantiation()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -49,9 +48,17 @@ class StdStringAppend extends TaintFunction {
     this.hasQualifiedName("std", "basic_string", "append")
   }
 
+  /**
+   * Gets the index of a parameter to this function that is a string.
+   */
+  int getAStringParameter() {
+    getParameter(result).getType() instanceof PointerType or
+    getParameter(result).getType() instanceof ReferenceType
+  }
+
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from parameter to string itself (qualifier) and return value
-    input.isParameterDeref(0) and
+    input.isParameterDeref(getAStringParameter()) and
     (
       output.isQualifierObject() or
       output.isReturnValueDeref()
