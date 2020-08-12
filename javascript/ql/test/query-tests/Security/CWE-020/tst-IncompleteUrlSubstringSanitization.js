@@ -67,5 +67,9 @@
 
 	} else {
 		doSomeThingWithTrustedURL(x);
-	}
+    }
+    
+    x.startsWith("https://secure.com/foo/bar"); // OK - the trailing slash makes prefix checks safe.
+    x.indexOf("https://secure.com/foo/bar") >= 0 // NOT OK - the url can be anywhere in the string.
+    x.indexOf("https://secure.com") >= 0 // NOT OK
 });
