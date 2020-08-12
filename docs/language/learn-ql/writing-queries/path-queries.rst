@@ -149,11 +149,11 @@ The configuration class is accessed by importing the data flow library. This cla
 - ``isSource()`` defines where data may flow from.
 - ``isSink()`` defines where data may flow to.
 
-For further information on using the configuration class in your analysis see the sections on global data flow in ":doc:`Analyzing data flow in C/C++ <../cpp/dataflow>`"
+For more information on using the configuration class in your analysis see the sections on global data flow in ":doc:`Analyzing data flow in C/C++ <../cpp/dataflow>`"
  and ":doc:`Analyzing data flow in C# <../csharp/dataflow>`."
 
 You can also create a configuration for different frameworks and environments by extending the ``Configuration`` class.
-For further information, see `defining a class <https://help.semmle.com/QL/ql-handbook/types.html#defining-a-class>`__.
+For more information, see `defining a class <https://help.semmle.com/QL/ql-handbook/types.html#defining-a-class>`__.
 
 If you are querying Python code (and you have used ``import semmle.python.security.Paths`` in your query) you should declare ``TaintedPathSource source, TaintedPathSink sink`` in your ``from`` statement. You do not need to declare a ``Configuration`` class as the definitions of the ``TaintedPathSource`` and ``TaintedPathSink`` contain all of the type information that is required::
 

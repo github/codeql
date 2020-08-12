@@ -106,7 +106,7 @@ Select clauses for alert queries (``@kind problem``) consist of two 'columns', w
 - ``element``: a code element that is identified by the query, which defines where the alert is displayed.
 - ``string``: a message, which can also include links and placeholders, explaining why the alert was generated. 
 
-You can modify the alert message defined in the final column of the ``select`` statement to give more detail about the alert or path found by the query using links and placeholders. For further information, see ":doc:`Defining the results of a query <select-statement>`." 
+You can modify the alert message defined in the final column of the ``select`` statement to give more detail about the alert or path found by the query using links and placeholders. For more information, see ":doc:`Defining the results of a query <select-statement>`." 
 
 Select clauses for path queries (``@kind path-problem``) are crafted to display both an alert and the source and sink of an associated path graph. For more information, see ":doc:`Creating path queries <path-queries>`."
 
