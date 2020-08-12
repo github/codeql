@@ -29,7 +29,7 @@ class LocalUserInputToArgumentToExecFlowConfig extends TaintTracking::Configurat
 }
 
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink, StringArgumentToExec execArg,
+  DataFlow::PathNode source, DataFlow::PathNode sink, ArgumentToExec execArg,
   LocalUserInputToArgumentToExecFlowConfig conf
 where conf.hasFlowPath(source, sink) and sink.getNode().asExpr() = execArg
 select execArg, source, sink, "$@ flows to here and is used in a command.", source.getNode(),
