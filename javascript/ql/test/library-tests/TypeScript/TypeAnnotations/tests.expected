@@ -218,6 +218,9 @@ test_TupleTypeExpr
 | tst.ts:176:16:176:31 | [number, number] | 1 | 2 | tst.ts:176:25:176:30 | number |
 | tst.ts:179:21:179:44 | [...Str ... umbers] | 0 | 2 | tst.ts:179:22:179:31 | ...Strings |
 | tst.ts:179:21:179:44 | [...Str ... umbers] | 1 | 2 | tst.ts:179:34:179:43 | ...Numbers |
+test_TupleTypeElementName
+| tst.ts:169:34:169:64 | [first: ... number] | 0 | first |
+| tst.ts:169:34:169:64 | [first: ... number] | 1 | second |
 test_FieldTypes
 | tst.ts:15:3:15:22 | numberField: number; | tst.ts:15:16:15:21 | number |
 | tst.ts:16:3:16:22 | stringField: string; | tst.ts:16:16:16:21 | string |

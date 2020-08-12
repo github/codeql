@@ -853,6 +853,9 @@ class TupleTypeExpr extends @tupletypeexpr, TypeExpr {
 
   /** Gets the number of elements in the tuple type. */
   int getNumElementType() { result = count(getAnElementType()) }
+
+  /** Gets the name of the `n`th tuple member if the tuple members are named. */
+  string getElementName(int n) { tuple_element_name(this, n, result) }
 }
 
 /**

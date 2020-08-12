@@ -790,6 +790,13 @@ tuple_type_rest(
   unique int typ: @type ref
 );
 
+#keyset[tuple, index]
+tuple_element_name (
+  int tuple: @tupletypeexpr ref,
+  int index: int ref,
+  varchar(900) name: string ref
+);
+
 // comments
 comments (unique int id: @comment,
           int kind: int ref,

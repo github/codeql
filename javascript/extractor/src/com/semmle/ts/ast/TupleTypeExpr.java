@@ -7,14 +7,20 @@ import java.util.List;
 /** A tuple type, such as <tt>[number, string]</tt>. */
 public class TupleTypeExpr extends TypeExpression {
   private final List<ITypeExpression> elementTypes;
+  private final List<String> elementNames;
 
-  public TupleTypeExpr(SourceLocation loc, List<ITypeExpression> elementTypes) {
+  public TupleTypeExpr(SourceLocation loc, List<ITypeExpression> elementTypes, List<String> elementNames) {
     super("TupleTypeExpr", loc);
     this.elementTypes = elementTypes;
+    this.elementNames = elementNames;
   }
 
   public List<ITypeExpression> getElementTypes() {
     return elementTypes;
+  }
+
+  public List<String> getElementNames() {
+    return elementNames;
   }
 
   @Override

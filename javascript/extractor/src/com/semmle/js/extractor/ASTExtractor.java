@@ -1819,6 +1819,11 @@ public class ASTExtractor {
     @Override
     public Label visit(TupleTypeExpr nd, Context c) {
       Label key = super.visit(nd, c);
+      if (nd.getElementNames() != null) {
+        for (int i = 0; i < nd.getElementNames().size(); i++) {
+          trapwriter.addTuple("tuple_element_name", key, i, nd.getElementNames().get(i));
+        }
+      }
       visitAll(nd.getElementTypes(), key, IdContext.typeBind, 0);
       return key;
     }

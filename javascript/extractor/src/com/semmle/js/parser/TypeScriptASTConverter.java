@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -2179,9 +2180,24 @@ public class TypeScriptASTConverter {
   }
 
   private Node convertTupleType(JsonObject node, SourceLocation loc) throws ParseError {
-    return new TupleTypeExpr(loc, convertChildrenAsTypes(node, "elements"));
+    List<JsonElement> elements = new ArrayList<>();
+    ((JsonArray)node.get("elements")).iterator().forEachRemaining(elements::add);
+
+    List<String> elementNames = elements.stream()
+      .filter(n -> getKind(n).equals("NamedTupleMember"))
+      .map(n -> n.getAsJsonObject().get("name"))
+      .map(n -> n.getAsJsonObject().get("escapedText"))
+      .map(n -> n.getAsString())
+      .collect(Collectors.toList());
+
+    if (elementNames.size() == 0) {
+      elementNames = null;
+    }
+
+    return new TupleTypeExpr(loc, convertChildrenAsTypes(node, "elements"), elementNames);
   }
 
+  // This method just does a trivial forward to the type. The names have already been extracted in `convertTupleType`.
   private Node convertNamedTupleMember(JsonObject node, SourceLocation loc) throws ParseError {
     return convertChild(node, "type");
   }
