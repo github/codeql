@@ -92,3 +92,66 @@ func testMarshalState() {
 
 	sinkBytes(serialized.Buf)
 }
+
+func testTaintedSubmessageModern() {
+	alert := &query.Query_Alert{}
+	alert.Msg = getUntrustedString()
+
+	query := &query.Query{}
+	query.Alerts = append(query.Alerts, alert)
+
+	serialized, _ := proto.Marshal(query)
+
+	sinkBytes(serialized) // BAD
+}
+
+func testTaintedSubmessageInPlaceModern() {
+	alert := &query.Query_Alert{}
+
+	query := &query.Query{}
+	query.Alerts = append(query.Alerts, alert)
+	query.Alerts[0].Msg = getUntrustedString()
+
+	serialized, _ := proto.Marshal(query)
+
+	sinkBytes(serialized) // BAD
+}
+
+func testUnmarshalTaintedSubmessageModern() {
+	untrustedSerialized := getUntrustedBytes()
+	query := &query.Query{}
+	proto.Unmarshal(untrustedSerialized, query)
+
+	sinkString(query.Alerts[0].Msg) // BAD
+}
+
+// This test should be ok, but is flagged because writing taint to a field of a Message
+// taints the entire Message structure in our current implementation.
+func testFieldConflationFalsePositiveModern() {
+	query := &query.Query{}
+	query.Description = getUntrustedString()
+	sinkString(query.Id) // OK (but incorrectly tainted)
+}
+
+// This test should be ok, but it flagged because our current implementation doesn't notice
+// that the taint applied to `query` is overwritten.
+func testMessageReuseFalsePositiveModern() {
+	query := &query.Query{}
+	query.Description = getUntrustedString()
+	query.Description = "clean"
+
+	serialized, _ := proto.Marshal(query)
+
+	sinkBytes(serialized) // OK (but incorrectly tainted)
+}
+
+// This test should be flagged, but we don't notice tainting via an alias of a field.
+func testSubmessageAliasFalseNegativeModern() {
+	query := &query.Query{}
+	alias := &query.Description
+	*alias = getUntrustedString()
+
+	serialized, _ := proto.Marshal(query)
+
+	sinkBytes(serialized) // BAD (but not noticed by our current implementation)
+}

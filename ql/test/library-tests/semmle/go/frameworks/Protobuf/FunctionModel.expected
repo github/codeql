@@ -31,3 +31,12 @@
 | testModernApi.go:75:53:75:57 | query | testModernApi.go:74:2:74:11 | definition of emptyArray |
 | testModernApi.go:75:53:75:57 | query | testModernApi.go:75:2:75:58 | ... := ...[0] |
 | testModernApi.go:87:12:87:16 | query | testModernApi.go:87:12:87:31 | call to ProtoReflect |
+| testModernApi.go:101:24:101:35 | selection of Alerts | testModernApi.go:101:17:101:43 | call to append |
+| testModernApi.go:101:38:101:42 | alert | testModernApi.go:101:17:101:43 | call to append |
+| testModernApi.go:103:33:103:37 | query | testModernApi.go:103:2:103:38 | ... := ...[0] |
+| testModernApi.go:112:24:112:35 | selection of Alerts | testModernApi.go:112:17:112:43 | call to append |
+| testModernApi.go:112:38:112:42 | alert | testModernApi.go:112:17:112:43 | call to append |
+| testModernApi.go:115:33:115:37 | query | testModernApi.go:115:2:115:38 | ... := ...[0] |
+| testModernApi.go:123:18:123:36 | untrustedSerialized | testModernApi.go:122:2:122:6 | definition of query |
+| testModernApi.go:143:33:143:37 | query | testModernApi.go:143:2:143:38 | ... := ...[0] |
+| testModernApi.go:154:33:154:37 | query | testModernApi.go:154:2:154:38 | ... := ...[0] |
