@@ -23,7 +23,7 @@ func testMarshal() {
 
 	serialized, _ := proto.Marshal(query)
 
-	sinkBytes(serialized)
+	sinkBytes(serialized) // BAD
 }
 
 func testCloneThenMarshal() {
@@ -34,7 +34,7 @@ func testCloneThenMarshal() {
 
 	serialized, _ := proto.Marshal(queryClone)
 
-	sinkBytes(serialized)
+	sinkBytes(serialized) // BAD
 }
 
 func testUnmarshalFieldAccess() {
@@ -42,7 +42,7 @@ func testUnmarshalFieldAccess() {
 	query := &query.Query{}
 	proto.Unmarshal(untrustedSerialized, query)
 
-	sinkString(query.Description)
+	sinkString(query.Description) // BAD
 }
 
 func testUnmarshalGetter() {
@@ -50,7 +50,7 @@ func testUnmarshalGetter() {
 	query := &query.Query{}
 	proto.Unmarshal(untrustedSerialized, query)
 
-	sinkString(query.GetDescription())
+	sinkString(query.GetDescription()) // BAD
 }
 
 func testMergeThenMarshal() {
@@ -62,7 +62,7 @@ func testMergeThenMarshal() {
 
 	serialized, _ := proto.Marshal(query2)
 
-	sinkBytes(serialized)
+	sinkBytes(serialized) // BAD
 }
 
 func testTaintedSubmessage() {
@@ -74,7 +74,7 @@ func testTaintedSubmessage() {
 
 	serialized, _ := proto.Marshal(query)
 
-	sinkBytes(serialized)
+	sinkBytes(serialized) // BAD
 }
 
 func testTaintedSubmessageInPlace() {
@@ -86,5 +86,13 @@ func testTaintedSubmessageInPlace() {
 
 	serialized, _ := proto.Marshal(query)
 
-	sinkBytes(serialized)
+	sinkBytes(serialized) // BAD
+}
+
+func testUnmarshalTaintedSubmessage() {
+	untrustedSerialized := getUntrustedBytes()
+	query := &query.Query{}
+	proto.Unmarshal(untrustedSerialized, query)
+
+	sinkString(query.Alerts[0].Msg) // BAD
 }

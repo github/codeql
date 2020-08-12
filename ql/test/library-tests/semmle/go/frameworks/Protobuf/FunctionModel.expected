@@ -16,6 +16,7 @@
 | testDeprecatedApi.go:84:24:84:35 | selection of Alerts | testDeprecatedApi.go:84:17:84:43 | call to append |
 | testDeprecatedApi.go:84:38:84:42 | alert | testDeprecatedApi.go:84:17:84:43 | call to append |
 | testDeprecatedApi.go:87:33:87:37 | query | testDeprecatedApi.go:87:2:87:38 | ... := ...[0] |
+| testDeprecatedApi.go:95:18:95:36 | untrustedSerialized | testDeprecatedApi.go:94:2:94:6 | definition of query |
 | testModernApi.go:13:33:13:37 | query | testModernApi.go:13:2:13:38 | ... := ...[0] |
 | testModernApi.go:22:28:22:32 | query | testModernApi.go:22:16:22:33 | call to Clone |
 | testModernApi.go:24:33:24:42 | queryClone | testModernApi.go:24:2:24:43 | ... := ...[0] |
