@@ -1851,7 +1851,8 @@ class AssignExpr extends @assignexpr, Assignment {
 private class TCompoundAssignExpr =
   @assignaddexpr or @assignsubexpr or @assignmulexpr or @assigndivexpr or @assignmodexpr or
       @assignexpexpr or @assignlshiftexpr or @assignrshiftexpr or @assignurshiftexpr or
-      @assignorexpr or @assignxorexpr or @assignandexpr or @assignlogandexpr or @assignlogorexpr or @assignnullishcoalescingexpr;
+      @assignorexpr or @assignxorexpr or @assignandexpr or @assignlogandexpr or @assignlogorexpr or
+      @assignnullishcoalescingexpr;
 
 /**
  * A compound assign expression.
