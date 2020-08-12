@@ -5,7 +5,7 @@
 <overview>
 <p>Using unsanitized untrusted data in an external API can cause a variety of security issues. This query reports 
 all external APIs that are used with untrusted data, along with how frequently the API is used, and how many 
-unique sources of untrusted data flow this API. This query is designed primarily to help identify which APIs 
+unique sources of untrusted data flow to this API. This query is designed primarily to help identify which APIs 
 may be relevant for security analysis of this application.</p>
 
 <p>An external API is defined as a method call to a method that is not defined in the source code, not overridden 
@@ -40,7 +40,7 @@ consider whether this is an XSS sink. If it is, we should confirm that it is han
 <p>If the query were to return the API <code>java.lang.StringBuilder.append(java.lang.String) [param 0]</code>, then this should be
 reviewed as a possible taint step, because tainted data would flow from the 0th argument to the qualifier of the call.</p>
 
-<p>Note that both examples are correctly handled with the standard taint tracking library and XSS query.</p>
+<p>Note that both examples are correctly handled by the standard taint tracking library and XSS query.</p>
 </example>
 <references>
 

@@ -5,6 +5,7 @@
  *              to it.
  * @id java/count-untrusted-data-external-api
  * @kind table
+ * @tags security external/cwe/cwe-20
  */
 
 import java

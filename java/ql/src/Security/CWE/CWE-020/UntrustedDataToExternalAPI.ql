@@ -1,6 +1,6 @@
 /**
  * @name Untrusted data passed to external API
- * @description Data provided remotely is used in this external API.
+ * @description Data provided remotely is used in this external API without sanitization, which could be a security risk.
  * @id java/untrusted-data-to-external-api
  * @kind path-problem
  * @precision very-low
