@@ -101,6 +101,22 @@ class SALMaybeNull extends SALAnnotation {
   }
 }
 
+/**
+ * A parameter annotated by one or more SAL annotations.
+ */
+class SALParameter extends Parameter {
+  /** One of this parameter's annotations. */
+  SALAnnotation a;
+
+  SALParameter() { annotatesAt(a, this.getADeclarationEntry(), _, _) }
+
+  predicate isIn() { a.getMacroName().toLowerCase().matches("%\\_in%") }
+
+  predicate isOut() { a.getMacroName().toLowerCase().matches("%\\_out%") }
+
+  predicate isInOut() { a.getMacroName().toLowerCase().matches("%\\_inout%") }
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation details
 /**
@@ -129,22 +145,6 @@ private predicate annotatesAtPosition(SALPosition pos, DeclarationEntry d, File 
     // Recursive case: `pos` right before some annotation on `d`
     annotatesAtPosition(_, d, file, idx + 1)
   )
-}
-
-/**
- * A parameter annotated by one or more SAL annotations.
- */
-class SALParameter extends Parameter {
-  /** One of this parameter's annotations. */
-  SALAnnotation a;
-
-  SALParameter() { annotatesAt(a, this.getADeclarationEntry(), _, _) }
-
-  predicate isIn() { a.getMacroName().toLowerCase().matches("%\\_in%") }
-
-  predicate isOut() { a.getMacroName().toLowerCase().matches("%\\_out%") }
-
-  predicate isInOut() { a.getMacroName().toLowerCase().matches("%\\_inout%") }
 }
 
 /**
