@@ -77,13 +77,13 @@ module Protobuf {
     }
   }
 
-  /** The `Unmarshal` or `UnmarshalState` functions in the protobuf packages. */
+  /** The `Unmarshal` function in the protobuf packages. */
   class UnmarshalFunction extends TaintTracking::FunctionModel, UnmarshalingFunction::Range {
-    string name;
-
     UnmarshalFunction() {
-      name = ["Unmarshal", "UnmarshalState"] and
-      this.hasQualifiedName(protobufPackages(), name)
+      this.hasQualifiedName(protobufPackages(), "Unmarshal") or
+      this
+          .(Method)
+          .hasQualifiedName("google.golang.org/protobuf/proto", "UnmarshalOptions", "Unmarshal")
     }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {

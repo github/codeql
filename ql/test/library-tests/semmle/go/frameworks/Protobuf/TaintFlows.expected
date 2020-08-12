@@ -18,5 +18,6 @@
 | testModernApi.go:98:14:98:33 | call to getUntrustedString : string | testModernApi.go:105:12:105:21 | serialized |
 | testModernApi.go:113:24:113:43 | call to getUntrustedString : string | testModernApi.go:117:12:117:21 | serialized |
 | testModernApi.go:121:25:121:43 | call to getUntrustedBytes : slice type | testModernApi.go:125:13:125:31 | selection of Msg |
-| testModernApi.go:132:22:132:41 | call to getUntrustedString : string | testModernApi.go:133:13:133:20 | selection of Id |
-| testModernApi.go:140:22:140:41 | call to getUntrustedString : string | testModernApi.go:145:12:145:21 | serialized |
+| testModernApi.go:131:25:131:43 | call to getUntrustedBytes : slice type | testModernApi.go:135:13:135:29 | selection of Description |
+| testModernApi.go:142:22:142:41 | call to getUntrustedString : string | testModernApi.go:143:13:143:20 | selection of Id |
+| testModernApi.go:150:22:150:41 | call to getUntrustedString : string | testModernApi.go:155:12:155:21 | serialized |

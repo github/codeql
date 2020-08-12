@@ -125,6 +125,16 @@ func testUnmarshalTaintedSubmessageModern() {
 	sinkString(query.Alerts[0].Msg) // BAD
 }
 
+func testUnmarshalOptions() {
+	options := proto.UnmarshalOptions{}
+
+	untrustedSerialized := getUntrustedBytes()
+	query := &query.Query{}
+	options.Unmarshal(untrustedSerialized, query)
+
+	sinkString(query.Description) // BAD
+}
+
 // This test should be ok, but is flagged because writing taint to a field of a Message
 // taints the entire Message structure in our current implementation.
 func testFieldConflationFalsePositiveModern() {

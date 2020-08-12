@@ -196,6 +196,8 @@ type FieldDescriptors interface {
 	ProtoInternal(_ interface{})
 }
 
+type FieldNumber int32
+
 type FieldNumbers interface {
 	Get(_ int) interface{}
 	Has(_ interface{}) bool

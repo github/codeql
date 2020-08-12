@@ -35,6 +35,32 @@ func (_ MarshalOptions) MarshalState(in protoiface.MarshalInput) (protoiface.Mar
 	return protoiface.MarshalOutput{nil}, nil
 }
 
+type UnmarshalOptions struct {
+	// Merge merges the input into the destination message.
+	// The default behavior is to always reset the message before unmarshaling,
+	// unless Merge is specified.
+	Merge bool
+
+	// AllowPartial accepts input for messages that will result in missing
+	// required fields. If AllowPartial is false (the default), Unmarshal will
+	// return an error if there are any missing required fields.
+	AllowPartial bool
+
+	// If DiscardUnknown is set, unknown fields are ignored.
+	DiscardUnknown bool
+
+	// Resolver is used for looking up types when unmarshaling extension fields.
+	// If nil, this defaults to using protoregistry.GlobalTypes.
+	Resolver interface {
+		FindExtensionByName(field protoreflect.FullName) (protoreflect.ExtensionType, error)
+		FindExtensionByNumber(message protoreflect.FullName, field protoreflect.FieldNumber) (protoreflect.ExtensionType, error)
+	}
+}
+
+func (o UnmarshalOptions) Unmarshal(b []byte, m Message) error {
+	return nil
+}
+
 func Clone(_ Message) Message {
 	return nil
 }
