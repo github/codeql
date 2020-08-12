@@ -10,6 +10,7 @@ private import implementations.Memcpy
 private import implementations.Memset
 private import implementations.Printf
 private import implementations.Pure
+private import implementations.Read
 private import implementations.Strcat
 private import implementations.Strcpy
 private import implementations.Strdup
