@@ -155,3 +155,22 @@ func testSubmessageAliasFalseNegativeModern() {
 
 	sinkBytes(serialized) // BAD (but not noticed by our current implementation)
 }
+
+// This test should be flagged, but we don't notice that marshalState2.Message is the
+// same as marshalState.Message.
+func testMarshalStateFalseNegative() {
+	query := &query.Query{}
+	query.Description = getUntrustedString()
+
+	options := proto.MarshalOptions{}
+	emptyArray := []byte{}
+	marshalState := protoiface.MarshalInput{
+		Message: query.ProtoReflect(),
+		Buf:     emptyArray,
+		Flags:   0,
+	}
+	marshalState2 := marshalState
+	serialized, _ := options.MarshalState(marshalState2)
+
+	sinkBytes(serialized.Buf) // BAD (but not noticed by our current implementation)
+}

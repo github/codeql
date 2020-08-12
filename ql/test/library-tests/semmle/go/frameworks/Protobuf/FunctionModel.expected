@@ -40,3 +40,4 @@
 | testModernApi.go:123:18:123:36 | untrustedSerialized | testModernApi.go:122:2:122:6 | definition of query |
 | testModernApi.go:143:33:143:37 | query | testModernApi.go:143:2:143:38 | ... := ...[0] |
 | testModernApi.go:154:33:154:37 | query | testModernApi.go:154:2:154:38 | ... := ...[0] |
+| testModernApi.go:168:12:168:16 | query | testModernApi.go:168:12:168:31 | call to ProtoReflect |
