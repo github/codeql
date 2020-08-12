@@ -89,6 +89,7 @@ postIsInSameCallable
 reverseRead
 storeIsPostUpdate
 | test.py:152:9:152:16 | ControlFlowNode for List | Store targets should be PostUpdateNodes. |
+| test.py:153:9:153:24 | ControlFlowNode for Dict | Store targets should be PostUpdateNodes. |
 argHasPostUpdate
 | test.py:25:10:25:10 | ControlFlowNode for t | ArgumentNode is missing PostUpdateNode. |
 | test.py:29:10:29:10 | ControlFlowNode for t | ArgumentNode is missing PostUpdateNode. |
