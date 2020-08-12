@@ -27,7 +27,7 @@ class SALMacro extends Macro {
   }
 }
 
-pragma[noinline]
+private pragma[noinline]
 predicate isTopLevelMacroAccess(MacroAccess ma) { not exists(ma.getParentInvocation()) }
 
 /**
@@ -107,7 +107,7 @@ class SALMaybeNull extends SALAnnotation {
  * Holds if `a` annotates the declaration entry `d` and
  * its start position is the `idx`th position in `file` that holds a SAL element.
  */
-predicate annotatesAt(SALAnnotation a, DeclarationEntry d, File file, int idx) {
+private predicate annotatesAt(SALAnnotation a, DeclarationEntry d, File file, int idx) {
   annotatesAtPosition(a.(SALElement).getStartPosition(), d, file, idx)
 }
 
