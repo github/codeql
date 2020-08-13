@@ -1,6 +1,6 @@
 /**
  * Provides classes for identifying and reasoning about Microsoft source code
- * annoatation language (SAL) macros.
+ * annotation language (SAL) macros.
  */
 
 import cpp
