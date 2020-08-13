@@ -90,6 +90,13 @@
 | tst.ts:43:26:43:48 | { foo:  ... s const | { readonly foo: "foo"; } |
 | tst.ts:43:28:43:30 | foo | "foo" |
 | tst.ts:43:33:43:37 | "foo" | "foo" |
+| tst.ts:47:8:47:8 | e | unknown |
+| tst.ts:48:7:48:14 | typeof e | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| tst.ts:48:7:48:27 | typeof  ... string" | boolean |
+| tst.ts:48:14:48:14 | e | unknown |
+| tst.ts:48:20:48:27 | "string" | "string" |
+| tst.ts:49:11:49:11 | b | string |
+| tst.ts:49:24:49:24 | e | string |
 | type_alias.ts:3:5:3:5 | b | boolean |
 | type_alias.ts:7:5:7:5 | c | ValueOrArray<number> |
 | type_alias.ts:14:9:14:32 | [proper ... ]: Json | any |
