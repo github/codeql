@@ -21,9 +21,7 @@ import semmle.code.cpp.security.FlowSources
 class UncontrolledFormatStringConfiguration extends TaintTracking::Configuration {
   UncontrolledFormatStringConfiguration() { this = "UncontrolledFormatStringConfiguration" }
 
-  override predicate isSource(DataFlow::Node node) {
-    node instanceof FlowSource
-  }
+  override predicate isSource(DataFlow::Node node) { node instanceof FlowSource }
 
   override predicate isSink(DataFlow::Node node) {
     exists(PrintfLikeFunction printf |
