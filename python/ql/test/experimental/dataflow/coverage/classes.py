@@ -27,7 +27,7 @@ def OK():
 class With_new:
 
   def __new__(cls):
-    SINK1(cls)
+    SINK1(cls) # Flow not found
     OK()
     return super().__new__(cls)
 
@@ -38,7 +38,7 @@ def test_new():
 class With_init:
 
   def __init__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
 
 def test_init():
@@ -48,7 +48,7 @@ def test_init():
 class With_del:
 
   def __del__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
 
 def test_del():
@@ -59,7 +59,7 @@ def test_del():
 class With_repr:
 
   def __repr__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return "With_repr()"
 
@@ -71,7 +71,7 @@ def test_repr():
 class With_str:
 
   def __str__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return "Awesome"
 
@@ -83,7 +83,7 @@ def test_str():
 class With_bytes:
 
   def __bytes__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return b"Awesome"
 
@@ -95,14 +95,15 @@ def test_bytes():
 class With_format:
 
   def __format__(self, format_spec):
-    SINK2(format_spec)
-    SINK1(self)
+    SINK2(format_spec) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return "Awesome"
 
 def test_format():
   with_format = With_format()
-  format(with_format)
+  arg2 = ""
+  format(with_format, arg2)
 
 def test_format_str():
   with_format = With_format()
@@ -116,8 +117,8 @@ def test_format_fstr():
 class With_lt:
 
   def __lt__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return ""
 
@@ -130,8 +131,8 @@ def test_lt():
 class With_le:
 
   def __le__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return ""
 
@@ -144,8 +145,8 @@ def test_le():
 class With_eq:
 
   def __eq__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return ""
 
@@ -157,8 +158,8 @@ def test_eq():
 class With_ne:
 
   def __ne__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return ""
 
@@ -170,8 +171,8 @@ def test_ne():
 class With_gt:
 
   def __gt__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return ""
 
@@ -184,8 +185,8 @@ def test_gt():
 class With_ge:
 
   def __ge__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return ""
 
@@ -198,7 +199,7 @@ def test_ge():
 class With_hash:
 
   def __hash__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return 0
 
@@ -222,7 +223,7 @@ def test_hash_dict():
 class With_bool:
 
   def __bool__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return True
 
@@ -240,35 +241,35 @@ def test_bool_if():
 class With_getattr:
 
   def __getattr__(self, name):
-    SINK2(name)
-    SINK1(self)
+    SINK2(name) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return ""
 
 def test_getattr():
   with_getattr = With_getattr()
-  with_getattr.foo
+  with_getattr.arg2
 
 # object.__getattribute__(self, name)
 class With_getattribute:
 
   def __getattribute__(self, name):
-    SINK2(name)
-    SINK1(self)
+    SINK2(name) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return ""
 
 def test_getattribute():
   with_getattribute = With_getattribute()
-  with_getattribute.foo
+  with_getattribute.arg2
 
 # object.__setattr__(self, name, value)
 class With_setattr:
 
   def __setattr__(self, name, value):
-    SINK3(value)
-    SINK2(name)
-    SINK1(self)
+    SINK3(value) # Flow not found
+    SINK2(name) # Flow not found
+    SINK1(self) # Flow not found
     OK()
 
 def test_setattr():
@@ -280,19 +281,19 @@ def test_setattr():
 class With_delattr:
 
   def __delattr__(self, name):
-    SINK2(name)
-    SINK1(self)
+    SINK2(name) # Flow not found
+    SINK1(self) # Flow not found
     OK()
 
 def test_delattr():
   with_delattr = With_delattr()
-  del with_delattr.foo
+  del with_delattr.arg2
 
 # object.__dir__(self)
 class With_dir:
 
   def __dir__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return []
 
@@ -309,24 +310,28 @@ class Owner:
 class With_get:
 
   def __get__(self, instance, owner=None):
-    SINK3(owner)
-    SINK2(instance)
-    SINK1(self)
+    SINK3(owner) # Flow not testsed, use class `Owner` as source to test
+    SINK2(instance) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return ""
 
 def test_get():
+  class arg3:
+    pass
+
   with_get = With_get()
-  Owner.attr = with_get
-  Owner.attr
+  arg3.attr = with_get
+  arg2 = arg3()
+  arg2.attr
 
 # object.__set__(self, instance, value)
 class With_set:
 
   def __set__(self, instance, value):
-    SINK3(value)
-    SINK2(instance)
-    SINK1(self)
+    SINK3(value) # Flow not found
+    SINK2(instance) # Flow not found
+    SINK1(self) # Flow not found
     OK()
 
 def test_set():
@@ -340,8 +345,8 @@ def test_set():
 class With_delete:
 
   def __delete__(self, instance):
-    SINK2(instance)
-    SINK1(self)
+    SINK2(instance) # Flow not found
+    SINK1(self) # Flow not found
     OK()
 
 def test_delete():
@@ -354,14 +359,14 @@ def test_delete():
 class With_set_name:
 
   def __set_name__(self, owner, name):
-    SINK3(name)
-    SINK2(owner)
-    SINK1(self)
+    SINK3(name) # Flow not found
+    SINK2(owner) # Flow not found
+    SINK1(self) # Flow not found
     OK()
 
 def test_set_name():
   with_set_name = With_set_name()
-  type("Owner", (object,), dict(attr=with_set_name))
+  type("arg2", (object,), dict(arg3=with_set_name))
 
 # 3.3.2.4. __slots__   // We are not testing the  suppression of -weakref_ and _dict_ here
 # object.__slots__
@@ -373,7 +378,7 @@ def test_set_name():
 class With_init_subclass:
 
   def __init_subclass__(cls):
-    SINK1(cls)
+    SINK1(cls) # Flow not found
     OK()
 
 def test_init_subclass():
@@ -390,15 +395,15 @@ def test_init_subclass():
 class With_prepare(type):
 
   def __prepare__(name, bases, **kwds):
-    SINK3(kwds)
-    SINK2(bases)
-    SINK1(name)
+    SINK3(kwds) # Flow not tested
+    SINK2(bases) # Flow not tested
+    SINK1(name) # Flow not found
     OK()
     return kwds
 
 
 def test_prepare():
-  class With_meta(metaclass=With_prepare):
+  class arg1(metaclass=With_prepare):
     pass
 
 # 3.3.4. Customizing instance and subclass checks
@@ -406,8 +411,8 @@ def test_prepare():
 class With_instancecheck:
 
   def __instancecheck__(self, instance):
-    SINK2(instance)
-    SINK1(self)
+    SINK2(instance) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return True
 
@@ -420,8 +425,8 @@ def test_instancecheck():
 class With_subclasscheck:
 
   def __subclasscheck__(self, subclass):
-    SINK2(subclass)
-    SINK1(self)
+    SINK2(subclass) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return True
 
@@ -436,8 +441,8 @@ def test_subclasscheck():
 class With_class_getitem:
 
   def __class_getitem__(cls, key):
-    SINK2(key)
-    SINK1(cls)
+    SINK2(key) # Flow not found
+    SINK1(cls) # Flow not found
     OK()
     return object
 
@@ -451,7 +456,7 @@ def test_class_getitem():
 class With_call:
 
   def __call__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
 
 def test_call():
@@ -463,7 +468,7 @@ def test_call():
 class With_len:
 
   def __len__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return 0
 
@@ -484,7 +489,7 @@ def test_len_if():
 class With_length_hint:
 
   def __length_hint__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return 0
 
@@ -497,8 +502,8 @@ def test_length_hint():
 class With_getitem:
 
   def __getitem__(self, key):
-    SINK2(key)
-    SINK1(self)
+    SINK2(key) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return ""
 
@@ -511,9 +516,9 @@ def test_getitem():
 class With_setitem:
 
   def __setitem__(self, key, value):
-    SINK3(value)
-    SINK2(key)
-    SINK1(self)
+    SINK3(value) # Flow not found
+    SINK2(key) # Flow not found
+    SINK1(self) # Flow not found
     OK()
 
 def test_setitem():
@@ -526,8 +531,8 @@ def test_setitem():
 class With_delitem:
 
   def __delitem__(self, key):
-    SINK2(key)
-    SINK1(self)
+    SINK2(key) # Flow not found
+    SINK1(self) # Flow not found
     OK()
 
 def test_delitem():
@@ -539,8 +544,8 @@ def test_delitem():
 class With_missing(dict):
 
   def __missing__(self, key):
-    SINK2(key)
-    SINK1(self)
+    SINK2(key) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return ""
 
@@ -553,7 +558,7 @@ def test_missing():
 class With_iter:
 
   def __iter__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return [].__iter__()
 
@@ -565,7 +570,7 @@ def test_iter():
 class With_reversed:
 
   def __reversed__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return [].__iter__
 
@@ -577,8 +582,8 @@ def test_reversed():
 class With_contains:
 
   def __contains__(self, item):
-    SINK2(item)
-    SINK1(self)
+    SINK2(item) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return True
 
@@ -593,8 +598,8 @@ def test_contains():
 class With_add:
 
   def __add__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -607,8 +612,8 @@ def test_add():
 class With_sub:
 
   def __sub__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -621,8 +626,8 @@ def test_sub():
 class With_mul:
 
   def __mul__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -635,8 +640,8 @@ def test_mul():
 class With_matmul:
 
   def __matmul__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -649,8 +654,8 @@ def test_matmul():
 class With_truediv:
 
   def __truediv__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -663,8 +668,8 @@ def test_truediv():
 class With_floordiv:
 
   def __floordiv__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -677,8 +682,8 @@ def test_floordiv():
 class With_mod:
 
   def __mod__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -691,21 +696,22 @@ def test_mod():
 class With_divmod:
 
   def __divmod__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
 def test_divmod():
   with_divmod = With_divmod()
-  divmod(with_divmod, with_divmod)
+  arg2 = With_divmod
+  divmod(with_divmod, arg2)
 
 # object.__pow__(self, other[, modulo])
 class With_pow:
 
   def __pow__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -723,8 +729,8 @@ def test_pow_op():
 class With_lshift:
 
   def __lshift__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -737,8 +743,8 @@ def test_lshift():
 class With_rshift:
 
   def __rshift__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -751,8 +757,8 @@ def test_rshift():
 class With_and:
 
   def __and__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -765,21 +771,22 @@ def test_and():
 class With_xor:
 
   def __xor__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
 def test_xor():
   with_xor = With_xor()
-  with_xor ^ with_xor
+  arg2 = with_xor
+  with_xor ^ arg2
 
 # object.__or__(self, other)
 class With_or:
 
   def __or__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -792,21 +799,22 @@ def test_or():
 class With_radd:
 
   def __radd__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
 def test_radd():
   with_radd = With_radd()
-  "" + with_radd
+  arg2 = ""
+  arg2 + with_radd
 
 # object.__rsub__(self, other)
 class With_rsub:
 
   def __rsub__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -819,8 +827,8 @@ def test_rsub():
 class With_rmul:
 
   def __rmul__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -833,8 +841,8 @@ def test_rmul():
 class With_rmatmul:
 
   def __rmatmul__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -847,8 +855,8 @@ def test_rmatmul():
 class With_rtruediv:
 
   def __rtruediv__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -861,8 +869,8 @@ def test_rtruediv():
 class With_rfloordiv:
 
   def __rfloordiv__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -875,34 +883,36 @@ def test_rfloordiv():
 class With_rmod:
 
   def __rmod__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
 def test_rmod():
   with_rmod = With_rmod()
-  {} % with_rmod
+  arg2 = {}
+  arg2 % with_rmod
 
 # object.__rdivmod__(self, other)
 class With_rdivmod:
 
   def __rdivmod__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
 def test_rdivmod():
   with_rdivmod = With_rdivmod()
-  divmod("", with_rdivmod)
+  arg2 = ""
+  divmod(arg2, with_rdivmod)
 
 # object.__rpow__(self, other[, modulo])
 class With_rpow:
 
   def __rpow__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -920,8 +930,8 @@ def test_rpow_op():
 class With_rlshift:
 
   def __rlshift__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -934,8 +944,8 @@ def test_rlshift():
 class With_rrshift:
 
   def __rrshift__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -948,8 +958,8 @@ def test_rrshift():
 class With_rand:
 
   def __rand__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -962,21 +972,22 @@ def test_rand():
 class With_rxor:
 
   def __rxor__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
 def test_rxor():
   with_rxor = With_rxor()
-  "" ^ with_rxor
+  arg2 = ""
+  arg2 ^ with_rxor
 
 # object.__ror__(self, other)
 class With_ror:
 
   def __ror__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -989,21 +1000,22 @@ def test_ror():
 class With_iadd:
 
   def __iadd__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
 def test_iadd():
   with_iadd = With_iadd()
-  with_iadd += with_iadd
+  arg2 = with_iadd
+  with_iadd += arg2
 
 # object.__isub__(self, other)
 class With_isub:
 
   def __isub__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -1016,8 +1028,8 @@ def test_isub():
 class With_imul:
 
   def __imul__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -1030,8 +1042,8 @@ def test_imul():
 class With_imatmul:
 
   def __imatmul__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -1044,8 +1056,8 @@ def test_imatmul():
 class With_itruediv:
 
   def __itruediv__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -1058,8 +1070,8 @@ def test_itruediv():
 class With_ifloordiv:
 
   def __ifloordiv__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -1072,8 +1084,8 @@ def test_ifloordiv():
 class With_imod:
 
   def __imod__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -1086,8 +1098,8 @@ def test_imod():
 class With_ipow:
 
   def __ipow__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -1100,8 +1112,8 @@ def test_ipow():
 class With_ilshift:
 
   def __ilshift__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -1114,8 +1126,8 @@ def test_ilshift():
 class With_irshift:
 
   def __irshift__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -1128,8 +1140,8 @@ def test_irshift():
 class With_iand:
 
   def __iand__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -1142,21 +1154,22 @@ def test_iand():
 class With_ixor:
 
   def __ixor__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
 def test_ixor():
   with_ixor = With_ixor()
-  with_ixor ^= with_ixor
+  arg2 = with_ixor
+  with_ixor ^= arg2
 
 # object.__ior__(self, other)
 class With_ior:
 
   def __ior__(self, other):
-    SINK2(other)
-    SINK1(self)
+    SINK2(other) # Flow not found
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -1169,7 +1182,7 @@ def test_ior():
 class With_neg:
 
   def __neg__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -1181,7 +1194,7 @@ def test_neg():
 class With_pos:
 
   def __pos__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -1193,7 +1206,7 @@ def test_pos():
 class With_abs:
 
   def __abs__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -1205,7 +1218,7 @@ def test_abs():
 class With_invert:
 
   def __invert__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -1217,7 +1230,7 @@ def test_invert():
 class With_complex:
 
   def __complex__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return 0j
 
@@ -1229,7 +1242,7 @@ def test_complex():
 class With_int:
 
   def __int__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return 0
 
@@ -1241,7 +1254,7 @@ def test_int():
 class With_float:
 
   def __float__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return 0.0
 
@@ -1253,7 +1266,7 @@ def test_float():
 class With_index:
 
   def __index__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return 0
 
@@ -1292,7 +1305,7 @@ def test_index_complex():
 class With_round:
 
   def __round__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return 0
 
@@ -1304,7 +1317,7 @@ def test_round():
 class With_trunc:
 
   def __trunc__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return 0
 
@@ -1317,7 +1330,7 @@ def test_trunc():
 class With_floor:
 
   def __floor__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return 0
 
@@ -1330,7 +1343,7 @@ def test_floor():
 class With_ceil:
 
   def __ceil__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return 0
 
@@ -1345,7 +1358,7 @@ def test_ceil():
 class With_enter:
 
   def __enter__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return
 
@@ -1363,10 +1376,10 @@ class With_exit:
     return
 
   def __exit__(self, exc_type, exc_value, traceback):
-    SINK4(traceback)
-    SINK3(exc_value)
-    SINK2(exc_type)
-    SINK1(self)
+    SINK4(traceback) # Flow not tested
+    SINK3(exc_value) # Flow not tested
+    SINK2(exc_type) # Flow not tested
+    SINK1(self) # Flow not found
     OK()
     return
 
@@ -1381,7 +1394,7 @@ import asyncio
 class With_await:
 
   def __await__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return (yield from asyncio.coroutine(lambda: "")())
 
@@ -1400,7 +1413,7 @@ async def atest_await():
 class With_aiter:
 
   def __aiter__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     return self
 
@@ -1419,7 +1432,7 @@ class With_anext:
     return self
 
   async def __anext__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
     raise StopAsyncIteration
 
@@ -1434,7 +1447,7 @@ async def atest_anext():
 class With_aenter:
 
   async def __aenter__(self):
-    SINK1(self)
+    SINK1(self) # Flow not found
     OK()
 
   async def __aexit__(self, exc_type, exc_value, traceback):
@@ -1452,10 +1465,10 @@ class With_aexit:
     pass
 
   async def __aexit__(self, exc_type, exc_value, traceback):
-    SINK4(traceback)
-    SINK3(exc_value)
-    SINK2(exc_type)
-    SINK1(self)
+    SINK4(traceback) # Flow not tested
+    SINK3(exc_value) # Flow not tested
+    SINK2(exc_type) # Flow not tested
+    SINK1(self) # Flow not found
     OK()
 
 async def atest_aexit():
