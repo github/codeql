@@ -46,7 +46,7 @@ where
     or
     // target is a HTTP URL to a domain on any TLD with path elements, and the check is an includes check
     check instanceof StringOps::Includes and
-    target.regexpMatch("(?i)https?://([a-z0-9-]+\\.)+([a-z]+)(:[0-9]+)?/([a-z0-9-]+/?)*")
+    target.regexpMatch("(?i)https?://([a-z0-9-]+\\.)+([a-z]+)(:[0-9]+)?/[a-z0-9/_-]+")
   ) and
   (
     if check instanceof StringOps::StartsWith
