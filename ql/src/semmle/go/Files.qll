@@ -219,9 +219,7 @@ class File extends Container, @file, Documentable, ExprParent, GoModExprParent, 
    * which can be 32 or 64.
    */
   predicate explicitlyConstrainsIntBitSize(int bitSize) {
-    exists(BuildConstraintComment bcc, string bc |
-      this = bcc.getFile() and bc = bcc.getText().splitAt("+build ", 1)
-    |
+    exists(BuildConstraintComment bcc | this = bcc.getFile() |
       forex(string disjunct | disjunct = bcc.getADisjunct() |
         disjunct.splitAt(",").(Architecture).getBitSize() = bitSize
       )
@@ -234,9 +232,9 @@ class File extends Container, @file, Documentable, ExprParent, GoModExprParent, 
    * architecture of bit size `bitSize`, which can be 32 or 64.
    */
   predicate implicitlyConstrainsIntBitSize(int bitSize) {
-    this
-        .getStem()
-        .regexpMatch(".*_" + any(Architecture arch | arch.getBitSize() = bitSize) + "(_test)?")
+    exists(Architecture arch | arch.getBitSize() = bitSize |
+      this.getStem().regexpMatch("(?i).*_\\Q" + arch + "\\E(_test)?")
+    )
   }
 
   override string toString() { result = Container.super.toString() }
