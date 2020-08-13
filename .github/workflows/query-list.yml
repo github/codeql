@@ -15,9 +15,12 @@ jobs:
       with:
         python-version: 3.8
     - name: Download CodeQL CLI
-      run: |  
-        curl -O https://github.com/github/codeql-cli-binaries/releases/download/v2.2.4/codeql-linux64.zip
-        ls
+      uses: dsaltares/fetch-gh-release-asset@master
+      with:
+        repo: "github/codeql-cli-binaries"
+        version: "latest"
+        file: "codeql-linux64.zip"
+        token: ${{ secrets.GITHUB_TOKEN }}
     - name: Unzip CodeQL CLI
       run: unzip codeql-linux64.zip
     - name: Build query list
