@@ -30,11 +30,14 @@ namespace std
 	template <class T> class allocator {
 	public:
 		allocator() throw();
+		typedef size_t size_type;
 	};
 	
 	template<class charT, class traits = char_traits<charT>, class Allocator = allocator<charT> >
 	class basic_string {
 	public:
+		typedef typename Allocator::size_type size_type;
+
 		explicit basic_string(const Allocator& a = Allocator());
 		basic_string(const charT* s, const Allocator& a = Allocator());
 
@@ -54,6 +57,7 @@ namespace std
 		basic_string& operator+=(const charT* s);
 		basic_string& append(const basic_string& str);
 		basic_string& append(const charT* s);
+		basic_string& append(size_type n, charT c);
 	};
 
 	template<class charT, class traits, class Allocator> basic_string<charT, traits, Allocator> operator+(const basic_string<charT, traits, Allocator>& lhs, const basic_string<charT, traits, Allocator>& rhs);
@@ -315,6 +319,11 @@ void test_range_based_for_loop_vector(int source1) {
 	for(const int& x : const_v) {
 		sink(x); // tainted [NOT DETECTED by IR]
 	}
+}
+
+namespace ns_char
+{
+	char source();
 }
 
 void test_string_append() {
