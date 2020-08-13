@@ -10,6 +10,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
+      with:
+        repository : github/codeql-go 
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
@@ -25,7 +28,6 @@ jobs:
       run: unzip codeql-linux64.zip
     - name: Build query list
       run: |
-        ls -R
         python ./misc/scripts/resolve-code-scanning-query-packs.py > output.csv
     - name: Upload query list
       uses: actions/upload-artifact@v2
