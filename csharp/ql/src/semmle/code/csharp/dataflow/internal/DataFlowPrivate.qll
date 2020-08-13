@@ -26,7 +26,7 @@ abstract class NodeImpl extends Node {
 
   /** Gets the type of this node used for type pruning. */
   cached
-  DataFlowType getDataFlowType() {
+  Gvn::GvnType getDataFlowType() {
     Stages::DataFlowStage::forceCachingInSameStage() and
     exists(Type t0 | result = Gvn::getGlobalValueNumber(t0) |
       t0 = getCSharpType(this.getType())
@@ -490,14 +490,23 @@ private Type getCSharpType(DotNet::Type t) {
   result.matchesHandle(t)
 }
 
+/** A GVN type that is either a `DataFlowType` or unifiable with a `DataFlowType`. */
+private class DataFlowTypeOrUnifiable extends Gvn::GvnType {
+  pragma[nomagic]
+  DataFlowTypeOrUnifiable() {
+    this instanceof DataFlowType or
+    Gvn::unifiable(any(DataFlowType t), this)
+  }
+}
+
 pragma[noinline]
-private TypeParameter getATypeParameterSubType(DataFlowType t) {
+private TypeParameter getATypeParameterSubType(DataFlowTypeOrUnifiable t) {
   not t instanceof Gvn::TypeParameterGvnType and
   exists(Type t0 | t = Gvn::getGlobalValueNumber(t0) | implicitConversionRestricted(result, t0))
 }
 
 pragma[noinline]
-private DataFlowType getANonTypeParameterSubType(DataFlowType t) {
+private Gvn::GvnType getANonTypeParameterSubType(DataFlowTypeOrUnifiable t) {
   not t instanceof Gvn::TypeParameterGvnType and
   not result instanceof Gvn::TypeParameterGvnType and
   exists(Type t1, Type t2 |
@@ -728,12 +737,8 @@ private module Cached {
     )
   }
 
-  /**
-   * Holds if GVNs `t1` and `t2` may have a common sub type. Neither `t1` nor
-   * `t2` are allowed to be type parameters.
-   */
-  cached
-  predicate commonSubType(DataFlowType t1, DataFlowType t2) {
+  pragma[nomagic]
+  private predicate commonSubTypeGeneral(DataFlowTypeOrUnifiable t1, DataFlowType t2) {
     not t1 instanceof Gvn::TypeParameterGvnType and
     t1 = t2
     or
@@ -742,11 +747,18 @@ private module Cached {
     getANonTypeParameterSubType(t1) = getANonTypeParameterSubType(t2)
   }
 
+  /**
+   * Holds if GVNs `t1` and `t2` may have a common sub type. Neither `t1` nor
+   * `t2` are allowed to be type parameters.
+   */
+  cached
+  predicate commonSubType(DataFlowType t1, DataFlowType t2) { commonSubTypeGeneral(t1, t2) }
+
   cached
   predicate commonSubTypeUnifiableLeft(DataFlowType t1, DataFlowType t2) {
-    exists(DataFlowType t |
+    exists(Gvn::GvnType t |
       Gvn::unifiable(t1, t) and
-      commonSubType(t, t2)
+      commonSubTypeGeneral(t, t2)
     )
   }
 
@@ -2004,7 +2016,7 @@ module LibraryFlow {
 
 /** Gets the type of content `c`. */
 pragma[noinline]
-private DataFlowType getContentType(Content c) {
+private Gvn::GvnType getContentType(Content c) {
   exists(Type t | result = Gvn::getGlobalValueNumber(t) |
     t = c.(FieldContent).getField().getType()
     or
@@ -2031,7 +2043,7 @@ class LibraryCodeNode extends NodeImpl, TLibraryCodeNode {
 
   override Callable getEnclosingCallableImpl() { result = callCfn.getEnclosingCallable() }
 
-  override DataFlowType getDataFlowType() {
+  override Gvn::GvnType getDataFlowType() {
     exists(LibraryFlow::AdjustedAccessPath ap |
       state = LibraryFlow::TLibraryCodeNodeAfterReadState(ap) and
       if sinkAp.length() = 0 and state.isLastReadState() and preservesValue = true
@@ -2194,6 +2206,20 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
 
 predicate readStep = readStepImpl/3;
 
+/**
+ * An entity used to represent the type of data-flow node. Two nodes will have
+ * the same `DataFlowType` when the underlying `Type`s are structurally equal
+ * modulo type parameters and identity conversions.
+ *
+ * For example, `Func<T, int>` and `Func<S, int>` are mapped to the same
+ * `DataFlowType`, while `Func<T, int>` and `Func<string, int>` are not, because
+ * `string` is not a type parameter.
+ */
+class DataFlowType extends Gvn::GvnType {
+  pragma[nomagic]
+  DataFlowType() { this = any(NodeImpl n).getDataFlowType() }
+}
+
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(NodeImpl n) { result = n.getDataFlowType() }
 
@@ -2322,8 +2348,6 @@ class CastNode extends Node {
 }
 
 class DataFlowExpr = DotNet::Expr;
-
-class DataFlowType = Gvn::GvnType;
 
 /** Holds if `e` is an expression that always has the same Boolean value `val`. */
 private predicate constantBooleanExpr(Expr e, boolean val) {
