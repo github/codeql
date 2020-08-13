@@ -143,6 +143,18 @@ func getImportPathFromRepoURL(repourl string) string {
 	return host + "/" + path
 }
 
+func restoreRepoLayout(fromDir string, dirEntries []string, scratchDirName string, toDir string) {
+	for _, dirEntry := range dirEntries {
+		if dirEntry != scratchDirName {
+			log.Printf("Restoring %s/%s to %s/%s.\n", fromDir, dirEntry, toDir, dirEntry)
+			err := os.Rename(filepath.Join(fromDir, dirEntry), filepath.Join(toDir, dirEntry))
+			if err != nil {
+				log.Fatalf("Failed to move file/directory %s from directory %s to directory %s: %s\n", dirEntry, fromDir, toDir, err.Error())
+			}
+		}
+	}
+}
+
 // DependencyInstallerMode is an enum describing how dependencies should be installed
 type DependencyInstallerMode int
 
@@ -345,6 +357,10 @@ func main() {
 		if err != nil {
 			log.Fatalf("Failed to rename %s to %s: %s\n", scratch, newdir, err.Error())
 		}
+
+		// schedule restoring the contents of newdir to their original location after this function completes:
+		defer restoreRepoLayout(newdir, files, filepath.Base(scratch), srcdir)
+
 		err = os.Chdir(newdir)
 		if err != nil {
 			log.Fatalf("Failed to chdir into %s: %s\n", newdir, err.Error())
