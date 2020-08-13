@@ -30,11 +30,14 @@ namespace std
 	template <class T> class allocator {
 	public:
 		allocator() throw();
+		typedef size_t size_type;
 	};
 	
 	template<class charT, class traits = char_traits<charT>, class Allocator = allocator<charT> >
 	class basic_string {
 	public:
+		typedef typename Allocator::size_type size_type;
+
 		explicit basic_string(const Allocator& a = Allocator());
 		basic_string(const charT* s, const Allocator& a = Allocator());
 
@@ -49,7 +52,16 @@ namespace std
 		const_iterator end() const;
 		const_iterator cbegin() const;
 		const_iterator cend() const;
+
+		template<class T> basic_string& operator+=(const T& t);
+		basic_string& operator+=(const charT* s);
+		basic_string& append(const basic_string& str);
+		basic_string& append(const charT* s);
+		basic_string& append(size_type n, charT c);
 	};
+
+	template<class charT, class traits, class Allocator> basic_string<charT, traits, Allocator> operator+(const basic_string<charT, traits, Allocator>& lhs, const basic_string<charT, traits, Allocator>& rhs);
+	template<class charT, class traits, class Allocator> basic_string<charT, traits, Allocator> operator+(const basic_string<charT, traits, Allocator>& lhs, const charT* rhs);
 
 	typedef basic_string<char> string;
 
@@ -306,5 +318,60 @@ void test_range_based_for_loop_vector(int source1) {
 	const std::vector<int> const_v(source1);
 	for(const int& x : const_v) {
 		sink(x); // tainted [NOT DETECTED by IR]
+	}
+}
+
+namespace ns_char
+{
+	char source();
+}
+
+void test_string_append() {
+	{
+		std::string s1("hello");
+		std::string s2(source());
+
+		sink(s1 + s1);
+		sink(s1 + s2); // tainted
+		sink(s2 + s1); // tainted
+		sink(s2 + s2); // tainted
+	
+		sink(s1 + " world");
+		sink(s1 + source()); // tainted
+	}
+
+	{
+		std::string s3("abc");
+		std::string s4(source());
+		std::string s5, s6, s7, s8, s9;
+
+		s5 = s3 + s4;
+		sink(s5); // tainted
+
+		s6 = s3;
+		s6 += s4;
+		sink(s6); // tainted
+
+		s7 = s3;
+		s7 += source();
+		s7 += " ";
+		sink(s7); // tainted
+
+		s8 = s3;
+		s8.append(s4);
+		sink(s8); // tainted
+
+		s9 = s3;
+		s9.append(source());
+		s9.append(" ");
+		sink(s9); // tainted
+	}
+
+	{
+		std::string s10("abc");
+		char c = ns_char::source();
+
+		s10.append(1, c);
+		sink(s10); // tainted
 	}
 }
