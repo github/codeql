@@ -24,7 +24,9 @@ jobs:
     - name: Unzip CodeQL CLI
       run: unzip codeql-linux64.zip
     - name: Build query list
-      run: python resolve-code-scanning-query-packs.py > output.csv
+      run: |
+        ls -R
+        python ./resolve-code-scanning-query-packs.py > output.csv
     - name: Upload query list
       uses: actions/upload-artifact@v2
       with:
