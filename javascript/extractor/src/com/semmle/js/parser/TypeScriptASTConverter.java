@@ -852,6 +852,9 @@ public class TypeScriptASTConverter {
       case ">>=":
       case "<<=":
       case ">>>=":
+      case "??=":
+      case "&&=":
+      case "||=":
         return new AssignmentExpression(loc, operator, convertLValue(left), right);
 
       default:
