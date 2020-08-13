@@ -579,6 +579,13 @@
 | stl.cpp:366:3:366:4 | ref arg s9 | stl.cpp:367:8:367:9 | s9 |  |
 | stl.cpp:366:13:366:15 |   | stl.cpp:366:3:366:4 | ref arg s9 | TAINT |
 | stl.cpp:366:13:366:15 |   | stl.cpp:366:6:366:11 | call to append | TAINT |
+| stl.cpp:371:19:371:23 | abc | stl.cpp:371:19:371:24 | call to basic_string | TAINT |
+| stl.cpp:371:19:371:24 | call to basic_string | stl.cpp:374:3:374:5 | s10 |  |
+| stl.cpp:371:19:371:24 | call to basic_string | stl.cpp:375:8:375:10 | s10 |  |
+| stl.cpp:372:12:372:26 | call to source | stl.cpp:374:17:374:17 | c |  |
+| stl.cpp:374:3:374:5 | ref arg s10 | stl.cpp:375:8:375:10 | s10 |  |
+| stl.cpp:374:17:374:17 | c | stl.cpp:374:3:374:5 | ref arg s10 | TAINT |
+| stl.cpp:374:17:374:17 | c | stl.cpp:374:7:374:12 | call to append | TAINT |
 | structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
 | structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
 | structlikeclass.cpp:5:7:5:7 | this | structlikeclass.cpp:5:7:5:7 | constructor init of field v [pre-this] |  |

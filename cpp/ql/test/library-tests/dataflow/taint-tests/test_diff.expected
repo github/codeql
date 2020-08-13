@@ -59,6 +59,7 @@
 | stl.cpp:358:8:358:9 | stl.cpp:356:9:356:14 | AST only |
 | stl.cpp:362:8:362:9 | stl.cpp:345:18:345:23 | AST only |
 | stl.cpp:367:8:367:9 | stl.cpp:365:13:365:18 | AST only |
+| stl.cpp:375:8:375:10 | stl.cpp:372:12:372:26 | AST only |
 | structlikeclass.cpp:35:8:35:9 | structlikeclass.cpp:29:22:29:27 | AST only |
 | structlikeclass.cpp:36:8:36:9 | structlikeclass.cpp:30:24:30:29 | AST only |
 | structlikeclass.cpp:37:8:37:9 | structlikeclass.cpp:29:22:29:27 | AST only |

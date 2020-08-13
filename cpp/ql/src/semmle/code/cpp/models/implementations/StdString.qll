@@ -49,11 +49,13 @@ class StdStringAppend extends TaintFunction {
   }
 
   /**
-   * Gets the index of a parameter to this function that is a string.
+   * Gets the index of a parameter to this function that is a string (or
+   * character).
    */
   int getAStringParameter() {
     getParameter(result).getType() instanceof PointerType or
-    getParameter(result).getType() instanceof ReferenceType
+    getParameter(result).getType() instanceof ReferenceType or
+    getParameter(result).getType() = getDeclaringType().getTemplateArgument(0) // i.e. `std::basic_string::CharT`
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

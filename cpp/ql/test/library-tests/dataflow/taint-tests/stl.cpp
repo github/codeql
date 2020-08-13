@@ -372,6 +372,6 @@ void test_string_append() {
 		char c = ns_char::source();
 
 		s10.append(1, c);
-		sink(s10); // tainted [NOT DETECTED]
+		sink(s10); // tainted
 	}
 }
