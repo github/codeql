@@ -25,7 +25,7 @@ packs = [ "code-scanning", "security-and-quality", "security-extended" ]
 #  - the 'codeql' subdirectory of the cwd
 #
 # (and assumes the codeql-go repo is in a similar location)
-codeql_search_path = ".:../codeql-go:codeql:codeql-go"   # will be extended further down
+codeql_search_path = ".:../codeql-go:./codeql:./codeql-go:codeql:codeql-go"   # will be extended further down
 
 
 def prefix_repo_nwo(filename):
