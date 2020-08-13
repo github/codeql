@@ -3,6 +3,7 @@
  */
 
 import Customizations
+import semmle.go.Architectures
 import semmle.go.AST
 import semmle.go.Comments
 import semmle.go.Concepts

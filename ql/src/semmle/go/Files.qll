@@ -203,6 +203,40 @@ class File extends Container, @file, Documentable, ExprParent, GoModExprParent, 
   pragma[noinline]
   predicate hasBuildConstraints() { exists(BuildConstraintComment bc | this = bc.getFile()) }
 
+  /**
+   * Holds if this file contains build constraints that ensure that it
+   * is only built on architectures of bit size `bitSize`, which can be
+   * 32 or 64.
+   */
+  predicate constrainsIntBitSize(int bitSize) {
+    explicitlyConstrainsIntBitSize(bitSize) or
+    implicitlyConstrainsIntBitSize(bitSize)
+  }
+
+  /**
+   * Holds if this file contains explicit build constraints that ensure
+   * that it is only built on an architecture of bit size `bitSize`,
+   * which can be 32 or 64.
+   */
+  predicate explicitlyConstrainsIntBitSize(int bitSize) {
+    exists(BuildConstraintComment bcc | this = bcc.getFile() |
+      forex(string disjunct | disjunct = bcc.getADisjunct() |
+        disjunct.splitAt(",").(Architecture).getBitSize() = bitSize
+      )
+    )
+  }
+
+  /**
+   * Holds if this file has a name which acts as an implicit build
+   * constraint that ensures that it is only built on an
+   * architecture of bit size `bitSize`, which can be 32 or 64.
+   */
+  predicate implicitlyConstrainsIntBitSize(int bitSize) {
+    exists(Architecture arch | arch.getBitSize() = bitSize |
+      this.getStem().regexpMatch("(?i).*_\\Q" + arch + "\\E(_test)?")
+    )
+  }
+
   override string toString() { result = Container.super.toString() }
 
   /** Gets the URL of this file. */

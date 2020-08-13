@@ -1,0 +1,74 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+If a string is parsed into an int using <code>strconv.Atoi</code>, and subsequently that int
+is converted into another integer type of a smaller size, the result can produce unexpected values.
+</p>
+<p>
+This also applies to the results of <code>strconv.ParseInt</code> and <code>strconv.ParseUint</code> when
+the specified size is larger than the size of the type that number is converted to.
+</p>
+</overview>
+
+<recommendation>
+<p>
+If you need to parse integer values with specific bit sizes, avoid <code>strconv.Atoi</code>, and instead
+use <code>strconv.ParseInt</code> or <code>strconv.ParseUint</code>, which also allow specifying the
+bit size.
+</p>
+<p>
+When using those functions, be careful to not convert the result to another type with a smaller bit size than
+the bit size you specified when parsing the number.
+</p>
+<p>
+If this is not possible, then add upper (and lower) bound checks specific to each type and
+bit size (you can find the minimum and maximum value for each type in the <code>math</code> package).
+</p>
+</recommendation>
+
+<example>
+<p>
+In the first example, assume that an input string is passed to <code>parseAllocateBad1</code> function,
+parsed by <code>strconv.Atoi</code>, and then converted into an <code>int32</code> type:
+</p>
+<sample src="IncorrectIntegerConversion.go"/>
+<p>
+The bounds are not checked, so this means that if the provided number is greater than the maximum value of type <code>int32</code>,
+the resulting value from the conversion will be different from the actual provided value.
+</p>
+<p>
+To avoid unexpected values, you should either use the other functions provided by the <code>strconv</code>
+package to parse the specific types and bit sizes as shown in the
+<code>parseAllocateGood2</code> function; or check bounds as in the <code>parseAllocateGood1</code>
+function.
+</p>
+<sample src="IncorrectIntegerConversionGood.go"/>
+</example>
+
+<example>
+<p>
+In the second example, assume that an input string is passed to <code>parseAllocateBad2</code> function,
+parsed by <code>strconv.ParseInt</code> with a bit size set to 64, and then converted into an <code>int32</code> type:
+</p>
+<sample src="IncorrectIntegerConversion.go"/>
+<p>
+If the provided number is greater than the maximum value of type <code>int32</code>, the resulting value from the conversion will be
+different from the actual provided value.
+</p>
+<p>
+To avoid unexpected values, you should specify the correct bit size as in <code>parseAllocateGood3</code>;
+or check bounds before making the conversion as in <code>parseAllocateGood4</code>.
+</p>
+<sample src="IncorrectIntegerConversionGood.go"/>
+</example>
+<references>
+<li>Wikipedia <a href="https://en.wikipedia.org/wiki/Integer_overflow">Integer overflow</a>.</li>
+<li>Go language specification <a href="https://golang.org/ref/spec#Integer_overflow">Integer overflow</a>.</li>
+<li>Documentation for <a href="https://golang.org/pkg/strconv/#Atoi"><code>strconv.Atoi</code></a>.</li>
+<li>Documentation for <a href="https://golang.org/pkg/strconv/#ParseInt"><code>strconv.ParseInt</code></a>.</li>
+<li>Documentation for <a href="https://golang.org/pkg/strconv/#ParseUint"><code>strconv.ParseUint</code></a>.</li>
+</references>
+</qhelp>

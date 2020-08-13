@@ -16,7 +16,7 @@ func parseAllocateGood1(desired string) int32 {
 	if err != nil {
 		return DefaultAllocate
 	}
-	// GOOD: check for lower and uppper bounds
+	// GOOD: check for lower and upper bounds
 	if parsed > 0 && parsed <= math.MaxInt32 {
 		return int32(parsed)
 	}

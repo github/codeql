@@ -512,6 +512,65 @@ module Path {
   }
 }
 
+/** Provides a class for modeling functions which convert strings into integers. */
+module IntegerParser {
+  /**
+   * A function that converts strings into integers.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `IntegerParser` instead.
+   */
+  abstract class Range extends Function {
+    /**
+     * Gets the maximum bit size of the return value, if this makes
+     * sense, where 0 represents the bit size of `int` and `uint`.
+     */
+    int getTargetBitSize() { none() }
+
+    /**
+     * Gets the `FunctionInput` containing the maximum bit size of the
+     * return value, if this makes sense. Note that if the value of the
+     * input is 0 then it means the bit size of `int` and `uint`.
+     */
+    FunctionInput getTargetBitSizeInput() { none() }
+  }
+}
+
+/**
+ * Provides classes for some functions in the `strconv` package for
+ * converting strings to numbers.
+ */
+module StrConv {
+  /** The `Atoi` function. */
+  class Atoi extends IntegerParser::Range {
+    Atoi() { this.hasQualifiedName("strconv", "Atoi") }
+
+    override int getTargetBitSize() { result = 0 }
+  }
+
+  /** The `ParseInt` function. */
+  class ParseInt extends IntegerParser::Range {
+    ParseInt() { this.hasQualifiedName("strconv", "ParseInt") }
+
+    override FunctionInput getTargetBitSizeInput() { result.isParameter(2) }
+  }
+
+  /** The `ParseUint` function. */
+  class ParseUint extends IntegerParser::Range {
+    ParseUint() { this.hasQualifiedName("strconv", "ParseUint") }
+
+    override FunctionInput getTargetBitSizeInput() { result.isParameter(2) }
+  }
+
+  /**
+   * The `IntSize` constant, that gives the size in bits of an `int` or
+   * `uint` value on the current architecture (32 or 64).
+   */
+  class IntSize extends DeclaredConstant {
+    IntSize() { this.hasQualifiedName("strconv", "IntSize") }
+  }
+}
+
 /** Provides models of commonly used functions in the `strings` package. */
 module Strings {
   /** The `Join` function. */
