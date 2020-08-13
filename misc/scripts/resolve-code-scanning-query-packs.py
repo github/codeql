@@ -97,7 +97,7 @@ git_toplevel_dir = subprocess.run("git rev-parse --show-toplevel", shell=True, c
 if git_toplevel_dir.returncode == 0:
     # Current working directory is in a Git repo. It might be the CodeQL repo. Add it to the search path.
     git_toplevel_dir = git_toplevel_dir.stdout.strip()
-    codeql_search_path += ":" + git_toplevel_dir + ":" + git_toplevel_dir + "../codeql-go"
+    codeql_search_path += ":" + git_toplevel_dir + ":" + git_toplevel_dir + "/../codeql-go"
 
 # Create CSV writer and write CSV header to stdout
 csvwriter = csv.writer(sys.stdout)
@@ -115,6 +115,7 @@ for lang in languages:
             shell=True, capture_output=True, text=True)
 
         if queries_subp.returncode != 0:
+            print(qyeries_subp.returncode)
             print(
                 "Warning: couldn't find query pack '%s' for language '%s'. Do you have the right repositories in the right places (search path: '%s')?" % (pack, lang, codeql_search_path),
                 file=sys.stderr
