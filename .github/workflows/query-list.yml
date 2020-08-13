@@ -1,0 +1,28 @@
+name: Build query list
+
+on:
+  push:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Download and unzip CodeQL CLI
+      run: | 
+        curl -O https://github.com/github/codeql-cli-binaries/releases/download/v2.2.4/codeql-linux64.zip
+        unzip codeql-linux64.zip
+    - name: Build query list
+      run: python resolve-code-scanning-query-packs.py > output.csv
+    - name: Upload query list
+      uses: actions/upload-artifact@v2
+      with:
+        name: query-list
+        path: output.csv
+    
