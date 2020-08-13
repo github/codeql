@@ -453,13 +453,6 @@ private float addRoundingDownSmall(float x, float small) {
 }
 
 /**
- * Gets the truncated lower bounds of the fully converted expression.
- */
-float getFullyConvertedLowerBounds(Expr expr) {
-  result = getTruncatedLowerBounds(expr.getFullyConverted())
-}
-
-/**
  * Gets the lower bounds of the expression.
  *
  * Most of the work of computing the lower bounds is done by
@@ -503,13 +496,6 @@ private float getTruncatedLowerBounds(Expr expr) {
     // expressions to just those with arithmetic types. There is no
     // need to return results for non-arithmetic expressions.
     result = exprMinVal(expr)
-}
-
-/**
- * Gets the truncated upper bounds of the fully converted expression.
- */
-float getFullyConvertedUpperBounds(Expr expr) {
-  result = getTruncatedUpperBounds(expr.getFullyConverted())
 }
 
 /**
@@ -1527,3 +1513,25 @@ private module SimpleRangeAnalysisCached {
     convertedExprMightOverflowPositively(expr)
   }
 }
+
+/**
+ * INTERNAL: do not use. This module contains utilities for use in the
+ * experimental `SimpleRangeAnalysisExpr` module.
+ */
+module SimpleRangeAnalysisInternal {
+  /**
+   * Gets the truncated lower bounds of the fully converted expression.
+   */
+  float getFullyConvertedLowerBounds(Expr expr) {
+    result = getTruncatedLowerBounds(expr.getFullyConverted())
+  }
+
+  /**
+   * Gets the truncated upper bounds of the fully converted expression.
+   */
+  float getFullyConvertedUpperBounds(Expr expr) {
+    result = getTruncatedUpperBounds(expr.getFullyConverted())
+  }
+}
+
+private import SimpleRangeAnalysisInternal
