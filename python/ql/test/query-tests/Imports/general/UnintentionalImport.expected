@@ -1,2 +1,1 @@
 | imports_test.py:22:1:22:32 | from module_without_all import * | Import pollutes the enclosing namespace, as the imported module $@ does not define '__all__'. | module_without_all.py:0:0:0:0 | Module module_without_all | module_without_all |
-| imports_test.py:65:1:65:40 | from module_that_does_not_exist import * | Import pollutes the enclosing namespace, as the imported module $@ does not define '__all__'. | file://:0:0:0:0 | Missing module module_that_does_not_exist | module_that_does_not_exist |
