@@ -308,284 +308,230 @@
 | movableclass.cpp:65:13:65:18 | call to source | movableclass.cpp:65:13:65:20 | call to MyMovableClass | TAINT |
 | movableclass.cpp:65:13:65:20 | call to MyMovableClass | movableclass.cpp:65:8:65:9 | ref arg s3 | TAINT |
 | movableclass.cpp:65:13:65:20 | call to MyMovableClass | movableclass.cpp:65:11:65:11 | call to operator= | TAINT |
-| stl.cpp:109:12:109:17 | call to source | stl.cpp:113:7:113:7 | a |  |
-| stl.cpp:110:16:110:20 | 123 | stl.cpp:110:16:110:21 | call to basic_string | TAINT |
-| stl.cpp:110:16:110:21 | call to basic_string | stl.cpp:114:7:114:7 | b |  |
-| stl.cpp:110:16:110:21 | call to basic_string | stl.cpp:116:7:116:7 | b |  |
-| stl.cpp:111:16:111:21 | call to source | stl.cpp:111:16:111:24 | call to basic_string | TAINT |
-| stl.cpp:111:16:111:24 | call to basic_string | stl.cpp:115:7:115:7 | c |  |
-| stl.cpp:111:16:111:24 | call to basic_string | stl.cpp:117:7:117:7 | c |  |
-| stl.cpp:116:7:116:7 | b | stl.cpp:116:9:116:13 | call to c_str | TAINT |
-| stl.cpp:117:7:117:7 | c | stl.cpp:117:9:117:13 | call to c_str | TAINT |
-| stl.cpp:122:20:122:22 | call to basic_stringstream | stl.cpp:125:2:125:4 | ss1 |  |
-| stl.cpp:122:20:122:22 | call to basic_stringstream | stl.cpp:131:7:131:9 | ss1 |  |
-| stl.cpp:122:20:122:22 | call to basic_stringstream | stl.cpp:136:7:136:9 | ss1 |  |
-| stl.cpp:122:25:122:27 | call to basic_stringstream | stl.cpp:126:2:126:4 | ss2 |  |
-| stl.cpp:122:25:122:27 | call to basic_stringstream | stl.cpp:132:7:132:9 | ss2 |  |
-| stl.cpp:122:25:122:27 | call to basic_stringstream | stl.cpp:137:7:137:9 | ss2 |  |
-| stl.cpp:122:30:122:32 | call to basic_stringstream | stl.cpp:127:2:127:4 | ss3 |  |
-| stl.cpp:122:30:122:32 | call to basic_stringstream | stl.cpp:133:7:133:9 | ss3 |  |
-| stl.cpp:122:30:122:32 | call to basic_stringstream | stl.cpp:138:7:138:9 | ss3 |  |
-| stl.cpp:122:35:122:37 | call to basic_stringstream | stl.cpp:128:2:128:4 | ss4 |  |
-| stl.cpp:122:35:122:37 | call to basic_stringstream | stl.cpp:134:7:134:9 | ss4 |  |
-| stl.cpp:122:35:122:37 | call to basic_stringstream | stl.cpp:139:7:139:9 | ss4 |  |
-| stl.cpp:122:40:122:42 | call to basic_stringstream | stl.cpp:129:2:129:4 | ss5 |  |
-| stl.cpp:122:40:122:42 | call to basic_stringstream | stl.cpp:135:7:135:9 | ss5 |  |
-| stl.cpp:122:40:122:42 | call to basic_stringstream | stl.cpp:140:7:140:9 | ss5 |  |
-| stl.cpp:123:16:123:21 | call to source | stl.cpp:123:16:123:24 | call to basic_string | TAINT |
-| stl.cpp:123:16:123:24 | call to basic_string | stl.cpp:129:9:129:9 | t |  |
-| stl.cpp:125:2:125:4 | ref arg ss1 | stl.cpp:131:7:131:9 | ss1 |  |
-| stl.cpp:125:2:125:4 | ref arg ss1 | stl.cpp:136:7:136:9 | ss1 |  |
-| stl.cpp:126:2:126:4 | ref arg ss2 | stl.cpp:132:7:132:9 | ss2 |  |
-| stl.cpp:126:2:126:4 | ref arg ss2 | stl.cpp:137:7:137:9 | ss2 |  |
-| stl.cpp:127:2:127:4 | ref arg ss3 | stl.cpp:133:7:133:9 | ss3 |  |
-| stl.cpp:127:2:127:4 | ref arg ss3 | stl.cpp:138:7:138:9 | ss3 |  |
-| stl.cpp:128:2:128:4 | ref arg ss4 | stl.cpp:134:7:134:9 | ss4 |  |
-| stl.cpp:128:2:128:4 | ref arg ss4 | stl.cpp:139:7:139:9 | ss4 |  |
-| stl.cpp:129:2:129:4 | ref arg ss5 | stl.cpp:135:7:135:9 | ss5 |  |
-| stl.cpp:129:2:129:4 | ref arg ss5 | stl.cpp:140:7:140:9 | ss5 |  |
-| stl.cpp:143:32:143:37 | source | stl.cpp:148:9:148:14 | source |  |
-| stl.cpp:145:20:145:22 | call to basic_stringstream | stl.cpp:147:2:147:4 | ss1 |  |
-| stl.cpp:145:20:145:22 | call to basic_stringstream | stl.cpp:150:7:150:9 | ss1 |  |
-| stl.cpp:145:20:145:22 | call to basic_stringstream | stl.cpp:152:7:152:9 | ss1 |  |
-| stl.cpp:145:25:145:27 | call to basic_stringstream | stl.cpp:148:2:148:4 | ss2 |  |
-| stl.cpp:145:25:145:27 | call to basic_stringstream | stl.cpp:151:7:151:9 | ss2 |  |
-| stl.cpp:145:25:145:27 | call to basic_stringstream | stl.cpp:153:7:153:9 | ss2 |  |
-| stl.cpp:147:2:147:4 | ref arg ss1 | stl.cpp:150:7:150:9 | ss1 |  |
-| stl.cpp:147:2:147:4 | ref arg ss1 | stl.cpp:152:7:152:9 | ss1 |  |
-| stl.cpp:148:2:148:4 | ref arg ss2 | stl.cpp:151:7:151:9 | ss2 |  |
-| stl.cpp:148:2:148:4 | ref arg ss2 | stl.cpp:153:7:153:9 | ss2 |  |
-| stl.cpp:166:16:166:28 | call to basic_string | stl.cpp:167:7:167:11 | path1 |  |
-| stl.cpp:166:17:166:26 | call to user_input | stl.cpp:166:16:166:28 | call to basic_string | TAINT |
-| stl.cpp:167:7:167:11 | path1 | stl.cpp:167:13:167:17 | call to c_str | TAINT |
-| stl.cpp:170:10:170:19 | call to user_input | stl.cpp:170:10:170:21 | call to basic_string | TAINT |
-| stl.cpp:170:10:170:21 | call to basic_string | stl.cpp:170:2:170:21 | ... = ... |  |
-| stl.cpp:170:10:170:21 | call to basic_string | stl.cpp:171:7:171:11 | path2 |  |
-| stl.cpp:171:7:171:11 | path2 | stl.cpp:171:13:171:17 | call to c_str | TAINT |
-| stl.cpp:173:15:173:24 | call to user_input | stl.cpp:173:15:173:27 | call to basic_string | TAINT |
-| stl.cpp:173:15:173:27 | call to basic_string | stl.cpp:174:7:174:11 | path3 |  |
-| stl.cpp:174:7:174:11 | path3 | stl.cpp:174:13:174:17 | call to c_str | TAINT |
-| stl.cpp:179:19:179:24 | call to source | stl.cpp:182:17:182:18 | cs |  |
-| stl.cpp:179:19:179:24 | call to source | stl.cpp:184:7:184:8 | cs |  |
-| stl.cpp:182:17:182:18 | cs | stl.cpp:182:17:182:19 | call to basic_string | TAINT |
-| stl.cpp:182:17:182:19 | call to basic_string | stl.cpp:185:7:185:8 | ss |  |
-| stl.cpp:190:19:190:24 | call to source | stl.cpp:193:17:193:18 | cs |  |
-| stl.cpp:193:17:193:18 | cs | stl.cpp:193:17:193:19 | call to basic_string | TAINT |
-| stl.cpp:193:17:193:19 | call to basic_string | stl.cpp:196:7:196:8 | ss |  |
-| stl.cpp:193:17:193:19 | call to basic_string | stl.cpp:199:7:199:8 | ss |  |
-| stl.cpp:196:7:196:8 | ss | stl.cpp:196:10:196:14 | call to c_str | TAINT |
-| stl.cpp:196:10:196:14 | call to c_str | stl.cpp:196:2:196:16 | ... = ... |  |
-| stl.cpp:196:10:196:14 | call to c_str | stl.cpp:198:7:198:8 | cs |  |
-| stl.cpp:205:18:205:24 | hello | stl.cpp:205:18:205:25 | call to basic_string | TAINT |
-| stl.cpp:205:18:205:25 | call to basic_string | stl.cpp:210:8:210:9 | s1 |  |
-| stl.cpp:206:19:206:26 | call to basic_string | stl.cpp:211:8:211:9 | s2 |  |
-| stl.cpp:206:20:206:26 | hello | stl.cpp:206:19:206:26 | call to basic_string | TAINT |
-| stl.cpp:208:8:208:14 | call to basic_string | stl.cpp:208:3:208:14 | ... = ... |  |
-| stl.cpp:208:8:208:14 | call to basic_string | stl.cpp:212:8:212:9 | s3 |  |
-| stl.cpp:208:8:208:14 | hello | stl.cpp:208:8:208:14 | call to basic_string | TAINT |
-| stl.cpp:216:18:216:23 | call to source | stl.cpp:216:18:216:26 | call to basic_string | TAINT |
-| stl.cpp:216:18:216:26 | call to basic_string | stl.cpp:221:8:221:9 | s1 |  |
-| stl.cpp:217:19:217:27 | call to basic_string | stl.cpp:222:8:222:9 | s2 |  |
-| stl.cpp:217:20:217:25 | call to source | stl.cpp:217:19:217:27 | call to basic_string | TAINT |
-| stl.cpp:219:8:219:13 | call to source | stl.cpp:219:8:219:15 | call to basic_string | TAINT |
-| stl.cpp:219:8:219:15 | call to basic_string | stl.cpp:219:3:219:15 | ... = ... |  |
-| stl.cpp:219:8:219:15 | call to basic_string | stl.cpp:223:8:223:9 | s3 |  |
-| stl.cpp:227:15:227:16 | call to basic_string | stl.cpp:228:20:228:21 | s1 |  |
-| stl.cpp:227:15:227:16 | call to basic_string | stl.cpp:230:8:230:9 | s1 |  |
-| stl.cpp:227:15:227:16 | call to basic_string | stl.cpp:232:8:232:9 | s1 |  |
-| stl.cpp:228:20:228:21 | s1 | stl.cpp:233:8:233:9 | s2 |  |
-| stl.cpp:230:8:230:9 | s1 | stl.cpp:230:3:230:9 | ... = ... |  |
-| stl.cpp:230:8:230:9 | s1 | stl.cpp:234:8:234:9 | s3 |  |
-| stl.cpp:238:19:238:40 | call to basic_string | stl.cpp:242:8:242:9 | s1 |  |
-| stl.cpp:238:32:238:37 | call to source | stl.cpp:238:19:238:40 | call to basic_string | TAINT |
-| stl.cpp:240:8:240:28 | call to basic_string | stl.cpp:240:3:240:28 | ... = ... |  |
-| stl.cpp:240:8:240:28 | call to basic_string | stl.cpp:243:8:243:9 | s2 |  |
-| stl.cpp:240:20:240:25 | call to source | stl.cpp:240:8:240:28 | call to basic_string | TAINT |
-| stl.cpp:250:16:250:21 | call to source | stl.cpp:250:16:250:24 | call to basic_string | TAINT |
-| stl.cpp:250:16:250:24 | call to basic_string | stl.cpp:251:15:251:15 | s |  |
-| stl.cpp:250:16:250:24 | call to basic_string | stl.cpp:255:33:255:33 | s |  |
-| stl.cpp:250:16:250:24 | call to basic_string | stl.cpp:255:50:255:50 | s |  |
-| stl.cpp:250:16:250:24 | call to basic_string | stl.cpp:259:16:259:16 | s |  |
-| stl.cpp:251:15:251:15 | call to begin | stl.cpp:251:15:251:15 | (__begin) |  |
-| stl.cpp:251:15:251:15 | call to begin | stl.cpp:251:15:251:15 | (__begin) |  |
-| stl.cpp:251:15:251:15 | call to begin | stl.cpp:251:15:251:15 | (__begin) |  |
-| stl.cpp:251:15:251:15 | call to end | stl.cpp:251:15:251:15 | (__end) |  |
-| stl.cpp:251:15:251:15 | call to operator* | stl.cpp:252:8:252:8 | c |  |
-| stl.cpp:251:15:251:15 | ref arg (__begin) | stl.cpp:251:15:251:15 | (__begin) |  |
-| stl.cpp:251:15:251:15 | ref arg (__begin) | stl.cpp:251:15:251:15 | (__begin) |  |
-| stl.cpp:251:15:251:15 | ref arg (__begin) | stl.cpp:251:15:251:15 | (__begin) |  |
-| stl.cpp:251:15:251:15 | ref arg (__range) | stl.cpp:251:15:251:15 | (__range) |  |
-| stl.cpp:251:15:251:15 | s | stl.cpp:251:15:251:15 | (__range) |  |
-| stl.cpp:251:15:251:15 | s | stl.cpp:251:15:251:15 | (__range) |  |
-| stl.cpp:251:15:251:15 | s | stl.cpp:251:15:251:15 | call to operator* | TAINT |
-| stl.cpp:255:33:255:33 | ref arg s | stl.cpp:255:50:255:50 | s |  |
-| stl.cpp:255:33:255:33 | ref arg s | stl.cpp:259:16:259:16 | s |  |
-| stl.cpp:255:35:255:39 | call to begin | stl.cpp:255:44:255:45 | it |  |
-| stl.cpp:255:35:255:39 | call to begin | stl.cpp:255:61:255:62 | it |  |
-| stl.cpp:255:35:255:39 | call to begin | stl.cpp:256:9:256:10 | it |  |
-| stl.cpp:255:50:255:50 | ref arg s | stl.cpp:255:50:255:50 | s |  |
-| stl.cpp:255:50:255:50 | ref arg s | stl.cpp:259:16:259:16 | s |  |
-| stl.cpp:255:61:255:62 | ref arg it | stl.cpp:255:44:255:45 | it |  |
-| stl.cpp:255:61:255:62 | ref arg it | stl.cpp:255:61:255:62 | it |  |
-| stl.cpp:255:61:255:62 | ref arg it | stl.cpp:256:9:256:10 | it |  |
-| stl.cpp:259:16:259:16 | call to begin | stl.cpp:259:16:259:16 | (__begin) |  |
-| stl.cpp:259:16:259:16 | call to begin | stl.cpp:259:16:259:16 | (__begin) |  |
-| stl.cpp:259:16:259:16 | call to begin | stl.cpp:259:16:259:16 | (__begin) |  |
-| stl.cpp:259:16:259:16 | call to end | stl.cpp:259:16:259:16 | (__end) |  |
-| stl.cpp:259:16:259:16 | call to operator* | stl.cpp:260:8:260:8 | c |  |
-| stl.cpp:259:16:259:16 | ref arg (__begin) | stl.cpp:259:16:259:16 | (__begin) |  |
-| stl.cpp:259:16:259:16 | ref arg (__begin) | stl.cpp:259:16:259:16 | (__begin) |  |
-| stl.cpp:259:16:259:16 | ref arg (__begin) | stl.cpp:259:16:259:16 | (__begin) |  |
-| stl.cpp:259:16:259:16 | ref arg (__range) | stl.cpp:259:16:259:16 | (__range) |  |
-| stl.cpp:259:16:259:16 | s | stl.cpp:259:16:259:16 | (__range) |  |
-| stl.cpp:259:16:259:16 | s | stl.cpp:259:16:259:16 | (__range) |  |
-| stl.cpp:259:16:259:16 | s | stl.cpp:259:16:259:16 | call to operator* | TAINT |
-| stl.cpp:263:28:263:33 | call to source | stl.cpp:263:28:263:36 | call to basic_string | TAINT |
-| stl.cpp:263:28:263:36 | call to basic_string | stl.cpp:264:22:264:28 | const_s |  |
-| stl.cpp:264:22:264:22 | call to begin | stl.cpp:264:22:264:22 | (__begin) |  |
-| stl.cpp:264:22:264:22 | call to begin | stl.cpp:264:22:264:22 | (__begin) |  |
-| stl.cpp:264:22:264:22 | call to begin | stl.cpp:264:22:264:22 | (__begin) |  |
-| stl.cpp:264:22:264:22 | call to end | stl.cpp:264:22:264:22 | (__end) |  |
-| stl.cpp:264:22:264:22 | call to operator* | stl.cpp:265:8:265:8 | c |  |
-| stl.cpp:264:22:264:22 | ref arg (__begin) | stl.cpp:264:22:264:22 | (__begin) |  |
-| stl.cpp:264:22:264:22 | ref arg (__begin) | stl.cpp:264:22:264:22 | (__begin) |  |
-| stl.cpp:264:22:264:22 | ref arg (__begin) | stl.cpp:264:22:264:22 | (__begin) |  |
-| stl.cpp:264:22:264:28 | const_s | stl.cpp:264:22:264:22 | (__range) |  |
-| stl.cpp:264:22:264:28 | const_s | stl.cpp:264:22:264:22 | (__range) |  |
-| stl.cpp:264:22:264:28 | const_s | stl.cpp:264:22:264:22 | call to operator* | TAINT |
-| stl.cpp:300:43:300:49 | source1 | stl.cpp:304:21:304:27 | source1 |  |
-| stl.cpp:300:43:300:49 | source1 | stl.cpp:318:33:318:39 | source1 |  |
-| stl.cpp:304:21:304:27 | source1 | stl.cpp:304:21:304:28 | call to vector | TAINT |
-| stl.cpp:304:21:304:28 | call to vector | stl.cpp:306:14:306:14 | v |  |
-| stl.cpp:304:21:304:28 | call to vector | stl.cpp:310:38:310:38 | v |  |
-| stl.cpp:304:21:304:28 | call to vector | stl.cpp:310:55:310:55 | v |  |
-| stl.cpp:304:21:304:28 | call to vector | stl.cpp:314:15:314:15 | v |  |
-| stl.cpp:306:14:306:14 | call to begin | stl.cpp:306:14:306:14 | (__begin) |  |
-| stl.cpp:306:14:306:14 | call to begin | stl.cpp:306:14:306:14 | (__begin) |  |
-| stl.cpp:306:14:306:14 | call to begin | stl.cpp:306:14:306:14 | (__begin) |  |
-| stl.cpp:306:14:306:14 | call to end | stl.cpp:306:14:306:14 | (__end) |  |
-| stl.cpp:306:14:306:14 | call to operator* | stl.cpp:307:8:307:8 | x |  |
-| stl.cpp:306:14:306:14 | ref arg (__begin) | stl.cpp:306:14:306:14 | (__begin) |  |
-| stl.cpp:306:14:306:14 | ref arg (__begin) | stl.cpp:306:14:306:14 | (__begin) |  |
-| stl.cpp:306:14:306:14 | ref arg (__begin) | stl.cpp:306:14:306:14 | (__begin) |  |
-| stl.cpp:306:14:306:14 | ref arg (__range) | stl.cpp:306:14:306:14 | (__range) |  |
-| stl.cpp:306:14:306:14 | v | stl.cpp:306:14:306:14 | (__range) |  |
-| stl.cpp:306:14:306:14 | v | stl.cpp:306:14:306:14 | (__range) |  |
-| stl.cpp:306:14:306:14 | v | stl.cpp:306:14:306:14 | call to operator* | TAINT |
-| stl.cpp:310:38:310:38 | ref arg v | stl.cpp:310:55:310:55 | v |  |
-| stl.cpp:310:38:310:38 | ref arg v | stl.cpp:314:15:314:15 | v |  |
-| stl.cpp:310:40:310:44 | call to begin | stl.cpp:310:49:310:50 | it |  |
-| stl.cpp:310:40:310:44 | call to begin | stl.cpp:310:66:310:67 | it |  |
-| stl.cpp:310:40:310:44 | call to begin | stl.cpp:311:9:311:10 | it |  |
-| stl.cpp:310:55:310:55 | ref arg v | stl.cpp:310:55:310:55 | v |  |
-| stl.cpp:310:55:310:55 | ref arg v | stl.cpp:314:15:314:15 | v |  |
-| stl.cpp:310:66:310:67 | ref arg it | stl.cpp:310:49:310:50 | it |  |
-| stl.cpp:310:66:310:67 | ref arg it | stl.cpp:310:66:310:67 | it |  |
-| stl.cpp:310:66:310:67 | ref arg it | stl.cpp:311:9:311:10 | it |  |
-| stl.cpp:314:15:314:15 | call to begin | stl.cpp:314:15:314:15 | (__begin) |  |
-| stl.cpp:314:15:314:15 | call to begin | stl.cpp:314:15:314:15 | (__begin) |  |
-| stl.cpp:314:15:314:15 | call to begin | stl.cpp:314:15:314:15 | (__begin) |  |
-| stl.cpp:314:15:314:15 | call to end | stl.cpp:314:15:314:15 | (__end) |  |
-| stl.cpp:314:15:314:15 | call to operator* | stl.cpp:315:8:315:8 | x |  |
-| stl.cpp:314:15:314:15 | ref arg (__begin) | stl.cpp:314:15:314:15 | (__begin) |  |
-| stl.cpp:314:15:314:15 | ref arg (__begin) | stl.cpp:314:15:314:15 | (__begin) |  |
-| stl.cpp:314:15:314:15 | ref arg (__begin) | stl.cpp:314:15:314:15 | (__begin) |  |
-| stl.cpp:314:15:314:15 | ref arg (__range) | stl.cpp:314:15:314:15 | (__range) |  |
-| stl.cpp:314:15:314:15 | v | stl.cpp:314:15:314:15 | (__range) |  |
-| stl.cpp:314:15:314:15 | v | stl.cpp:314:15:314:15 | (__range) |  |
-| stl.cpp:314:15:314:15 | v | stl.cpp:314:15:314:15 | call to operator* | TAINT |
-| stl.cpp:318:33:318:39 | source1 | stl.cpp:318:33:318:40 | call to vector | TAINT |
-| stl.cpp:318:33:318:40 | call to vector | stl.cpp:319:21:319:27 | const_v |  |
-| stl.cpp:319:21:319:21 | call to begin | stl.cpp:319:21:319:21 | (__begin) |  |
-| stl.cpp:319:21:319:21 | call to begin | stl.cpp:319:21:319:21 | (__begin) |  |
-| stl.cpp:319:21:319:21 | call to begin | stl.cpp:319:21:319:21 | (__begin) |  |
-| stl.cpp:319:21:319:21 | call to end | stl.cpp:319:21:319:21 | (__end) |  |
-| stl.cpp:319:21:319:21 | call to operator* | stl.cpp:320:8:320:8 | x |  |
-| stl.cpp:319:21:319:21 | ref arg (__begin) | stl.cpp:319:21:319:21 | (__begin) |  |
-| stl.cpp:319:21:319:21 | ref arg (__begin) | stl.cpp:319:21:319:21 | (__begin) |  |
-| stl.cpp:319:21:319:21 | ref arg (__begin) | stl.cpp:319:21:319:21 | (__begin) |  |
-| stl.cpp:319:21:319:27 | const_v | stl.cpp:319:21:319:21 | (__range) |  |
-| stl.cpp:319:21:319:27 | const_v | stl.cpp:319:21:319:21 | (__range) |  |
-| stl.cpp:319:21:319:27 | const_v | stl.cpp:319:21:319:21 | call to operator* | TAINT |
-| stl.cpp:331:18:331:24 | hello | stl.cpp:331:18:331:25 | call to basic_string | TAINT |
-| stl.cpp:331:18:331:25 | call to basic_string | stl.cpp:334:8:334:9 | s1 |  |
-| stl.cpp:331:18:331:25 | call to basic_string | stl.cpp:334:13:334:14 | s1 |  |
-| stl.cpp:331:18:331:25 | call to basic_string | stl.cpp:335:8:335:9 | s1 |  |
-| stl.cpp:331:18:331:25 | call to basic_string | stl.cpp:336:13:336:14 | s1 |  |
-| stl.cpp:331:18:331:25 | call to basic_string | stl.cpp:339:8:339:9 | s1 |  |
-| stl.cpp:331:18:331:25 | call to basic_string | stl.cpp:340:8:340:9 | s1 |  |
-| stl.cpp:332:18:332:23 | call to source | stl.cpp:332:18:332:26 | call to basic_string | TAINT |
-| stl.cpp:332:18:332:26 | call to basic_string | stl.cpp:335:13:335:14 | s2 |  |
-| stl.cpp:332:18:332:26 | call to basic_string | stl.cpp:336:8:336:9 | s2 |  |
-| stl.cpp:332:18:332:26 | call to basic_string | stl.cpp:337:8:337:9 | s2 |  |
-| stl.cpp:332:18:332:26 | call to basic_string | stl.cpp:337:13:337:14 | s2 |  |
-| stl.cpp:334:8:334:9 | s1 | stl.cpp:334:11:334:11 | call to operator+ | TAINT |
-| stl.cpp:334:13:334:14 | s1 | stl.cpp:334:11:334:11 | call to operator+ | TAINT |
-| stl.cpp:335:8:335:9 | s1 | stl.cpp:335:11:335:11 | call to operator+ | TAINT |
-| stl.cpp:335:13:335:14 | s2 | stl.cpp:335:11:335:11 | call to operator+ | TAINT |
-| stl.cpp:336:8:336:9 | s2 | stl.cpp:336:11:336:11 | call to operator+ | TAINT |
-| stl.cpp:336:13:336:14 | s1 | stl.cpp:336:11:336:11 | call to operator+ | TAINT |
-| stl.cpp:337:8:337:9 | s2 | stl.cpp:337:11:337:11 | call to operator+ | TAINT |
-| stl.cpp:337:13:337:14 | s2 | stl.cpp:337:11:337:11 | call to operator+ | TAINT |
-| stl.cpp:339:8:339:9 | s1 | stl.cpp:339:11:339:11 | call to operator+ | TAINT |
-| stl.cpp:339:13:339:20 |  world | stl.cpp:339:11:339:11 | call to operator+ | TAINT |
-| stl.cpp:340:8:340:9 | s1 | stl.cpp:340:11:340:11 | call to operator+ | TAINT |
-| stl.cpp:340:13:340:18 | call to source | stl.cpp:340:11:340:11 | call to operator+ | TAINT |
-| stl.cpp:344:18:344:22 | abc | stl.cpp:344:18:344:23 | call to basic_string | TAINT |
-| stl.cpp:344:18:344:23 | call to basic_string | stl.cpp:348:8:348:9 | s3 |  |
-| stl.cpp:344:18:344:23 | call to basic_string | stl.cpp:351:8:351:9 | s3 |  |
-| stl.cpp:344:18:344:23 | call to basic_string | stl.cpp:355:8:355:9 | s3 |  |
-| stl.cpp:344:18:344:23 | call to basic_string | stl.cpp:360:8:360:9 | s3 |  |
-| stl.cpp:344:18:344:23 | call to basic_string | stl.cpp:364:8:364:9 | s3 |  |
-| stl.cpp:345:18:345:23 | call to source | stl.cpp:345:18:345:26 | call to basic_string | TAINT |
-| stl.cpp:345:18:345:26 | call to basic_string | stl.cpp:348:13:348:14 | s4 |  |
-| stl.cpp:345:18:345:26 | call to basic_string | stl.cpp:352:9:352:10 | s4 |  |
-| stl.cpp:345:18:345:26 | call to basic_string | stl.cpp:361:13:361:14 | s4 |  |
-| stl.cpp:348:8:348:9 | s3 | stl.cpp:348:11:348:11 | call to operator+ | TAINT |
-| stl.cpp:348:11:348:11 | call to operator+ | stl.cpp:348:3:348:14 | ... = ... |  |
-| stl.cpp:348:11:348:11 | call to operator+ | stl.cpp:349:8:349:9 | s5 |  |
-| stl.cpp:348:13:348:14 | s4 | stl.cpp:348:11:348:11 | call to operator+ | TAINT |
-| stl.cpp:351:8:351:9 | s3 | stl.cpp:351:3:351:9 | ... = ... |  |
-| stl.cpp:351:8:351:9 | s3 | stl.cpp:352:3:352:4 | s6 |  |
-| stl.cpp:351:8:351:9 | s3 | stl.cpp:353:8:353:9 | s6 |  |
-| stl.cpp:352:3:352:4 | ref arg s6 | stl.cpp:353:8:353:9 | s6 |  |
-| stl.cpp:352:9:352:10 | s4 | stl.cpp:352:3:352:4 | ref arg s6 | TAINT |
-| stl.cpp:352:9:352:10 | s4 | stl.cpp:352:6:352:6 | call to operator+= | TAINT |
-| stl.cpp:355:8:355:9 | s3 | stl.cpp:355:3:355:9 | ... = ... |  |
-| stl.cpp:355:8:355:9 | s3 | stl.cpp:356:3:356:4 | s7 |  |
-| stl.cpp:355:8:355:9 | s3 | stl.cpp:357:3:357:4 | s7 |  |
-| stl.cpp:355:8:355:9 | s3 | stl.cpp:358:8:358:9 | s7 |  |
-| stl.cpp:356:3:356:4 | ref arg s7 | stl.cpp:357:3:357:4 | s7 |  |
-| stl.cpp:356:3:356:4 | ref arg s7 | stl.cpp:358:8:358:9 | s7 |  |
-| stl.cpp:356:9:356:14 | call to source | stl.cpp:356:3:356:4 | ref arg s7 | TAINT |
-| stl.cpp:356:9:356:14 | call to source | stl.cpp:356:6:356:6 | call to operator+= | TAINT |
-| stl.cpp:357:3:357:4 | ref arg s7 | stl.cpp:358:8:358:9 | s7 |  |
-| stl.cpp:357:9:357:11 |   | stl.cpp:357:3:357:4 | ref arg s7 | TAINT |
-| stl.cpp:357:9:357:11 |   | stl.cpp:357:6:357:6 | call to operator+= | TAINT |
-| stl.cpp:360:8:360:9 | s3 | stl.cpp:360:3:360:9 | ... = ... |  |
-| stl.cpp:360:8:360:9 | s3 | stl.cpp:361:3:361:4 | s8 |  |
-| stl.cpp:360:8:360:9 | s3 | stl.cpp:362:8:362:9 | s8 |  |
-| stl.cpp:361:3:361:4 | ref arg s8 | stl.cpp:362:8:362:9 | s8 |  |
-| stl.cpp:361:13:361:14 | s4 | stl.cpp:361:3:361:4 | ref arg s8 | TAINT |
-| stl.cpp:361:13:361:14 | s4 | stl.cpp:361:6:361:11 | call to append | TAINT |
-| stl.cpp:364:8:364:9 | s3 | stl.cpp:364:3:364:9 | ... = ... |  |
-| stl.cpp:364:8:364:9 | s3 | stl.cpp:365:3:365:4 | s9 |  |
-| stl.cpp:364:8:364:9 | s3 | stl.cpp:366:3:366:4 | s9 |  |
-| stl.cpp:364:8:364:9 | s3 | stl.cpp:367:8:367:9 | s9 |  |
-| stl.cpp:365:3:365:4 | ref arg s9 | stl.cpp:366:3:366:4 | s9 |  |
-| stl.cpp:365:3:365:4 | ref arg s9 | stl.cpp:367:8:367:9 | s9 |  |
-| stl.cpp:365:13:365:18 | call to source | stl.cpp:365:3:365:4 | ref arg s9 | TAINT |
-| stl.cpp:365:13:365:18 | call to source | stl.cpp:365:6:365:11 | call to append | TAINT |
-| stl.cpp:366:3:366:4 | ref arg s9 | stl.cpp:367:8:367:9 | s9 |  |
-| stl.cpp:366:13:366:15 |   | stl.cpp:366:3:366:4 | ref arg s9 | TAINT |
-| stl.cpp:366:13:366:15 |   | stl.cpp:366:6:366:11 | call to append | TAINT |
-| stl.cpp:371:19:371:23 | abc | stl.cpp:371:19:371:24 | call to basic_string | TAINT |
-| stl.cpp:371:19:371:24 | call to basic_string | stl.cpp:374:3:374:5 | s10 |  |
-| stl.cpp:371:19:371:24 | call to basic_string | stl.cpp:375:8:375:10 | s10 |  |
-| stl.cpp:372:12:372:26 | call to source | stl.cpp:374:17:374:17 | c |  |
-| stl.cpp:374:3:374:5 | ref arg s10 | stl.cpp:375:8:375:10 | s10 |  |
-| stl.cpp:374:17:374:17 | c | stl.cpp:374:3:374:5 | ref arg s10 | TAINT |
-| stl.cpp:374:17:374:17 | c | stl.cpp:374:7:374:12 | call to append | TAINT |
+| string.cpp:11:12:11:17 | call to source | string.cpp:15:7:15:7 | a |  |
+| string.cpp:12:16:12:20 | 123 | string.cpp:12:16:12:21 | call to basic_string | TAINT |
+| string.cpp:12:16:12:21 | call to basic_string | string.cpp:16:7:16:7 | b |  |
+| string.cpp:12:16:12:21 | call to basic_string | string.cpp:18:7:18:7 | b |  |
+| string.cpp:13:16:13:21 | call to source | string.cpp:13:16:13:24 | call to basic_string | TAINT |
+| string.cpp:13:16:13:24 | call to basic_string | string.cpp:17:7:17:7 | c |  |
+| string.cpp:13:16:13:24 | call to basic_string | string.cpp:19:7:19:7 | c |  |
+| string.cpp:18:7:18:7 | b | string.cpp:18:9:18:13 | call to c_str | TAINT |
+| string.cpp:19:7:19:7 | c | string.cpp:19:9:19:13 | call to c_str | TAINT |
+| string.cpp:24:20:24:22 | call to basic_stringstream | string.cpp:27:2:27:4 | ss1 |  |
+| string.cpp:24:20:24:22 | call to basic_stringstream | string.cpp:33:7:33:9 | ss1 |  |
+| string.cpp:24:20:24:22 | call to basic_stringstream | string.cpp:38:7:38:9 | ss1 |  |
+| string.cpp:24:25:24:27 | call to basic_stringstream | string.cpp:28:2:28:4 | ss2 |  |
+| string.cpp:24:25:24:27 | call to basic_stringstream | string.cpp:34:7:34:9 | ss2 |  |
+| string.cpp:24:25:24:27 | call to basic_stringstream | string.cpp:39:7:39:9 | ss2 |  |
+| string.cpp:24:30:24:32 | call to basic_stringstream | string.cpp:29:2:29:4 | ss3 |  |
+| string.cpp:24:30:24:32 | call to basic_stringstream | string.cpp:35:7:35:9 | ss3 |  |
+| string.cpp:24:30:24:32 | call to basic_stringstream | string.cpp:40:7:40:9 | ss3 |  |
+| string.cpp:24:35:24:37 | call to basic_stringstream | string.cpp:30:2:30:4 | ss4 |  |
+| string.cpp:24:35:24:37 | call to basic_stringstream | string.cpp:36:7:36:9 | ss4 |  |
+| string.cpp:24:35:24:37 | call to basic_stringstream | string.cpp:41:7:41:9 | ss4 |  |
+| string.cpp:24:40:24:42 | call to basic_stringstream | string.cpp:31:2:31:4 | ss5 |  |
+| string.cpp:24:40:24:42 | call to basic_stringstream | string.cpp:37:7:37:9 | ss5 |  |
+| string.cpp:24:40:24:42 | call to basic_stringstream | string.cpp:42:7:42:9 | ss5 |  |
+| string.cpp:25:16:25:21 | call to source | string.cpp:25:16:25:24 | call to basic_string | TAINT |
+| string.cpp:25:16:25:24 | call to basic_string | string.cpp:31:9:31:9 | t |  |
+| string.cpp:27:2:27:4 | ref arg ss1 | string.cpp:33:7:33:9 | ss1 |  |
+| string.cpp:27:2:27:4 | ref arg ss1 | string.cpp:38:7:38:9 | ss1 |  |
+| string.cpp:28:2:28:4 | ref arg ss2 | string.cpp:34:7:34:9 | ss2 |  |
+| string.cpp:28:2:28:4 | ref arg ss2 | string.cpp:39:7:39:9 | ss2 |  |
+| string.cpp:29:2:29:4 | ref arg ss3 | string.cpp:35:7:35:9 | ss3 |  |
+| string.cpp:29:2:29:4 | ref arg ss3 | string.cpp:40:7:40:9 | ss3 |  |
+| string.cpp:30:2:30:4 | ref arg ss4 | string.cpp:36:7:36:9 | ss4 |  |
+| string.cpp:30:2:30:4 | ref arg ss4 | string.cpp:41:7:41:9 | ss4 |  |
+| string.cpp:31:2:31:4 | ref arg ss5 | string.cpp:37:7:37:9 | ss5 |  |
+| string.cpp:31:2:31:4 | ref arg ss5 | string.cpp:42:7:42:9 | ss5 |  |
+| string.cpp:45:32:45:37 | source | string.cpp:50:9:50:14 | source |  |
+| string.cpp:47:20:47:22 | call to basic_stringstream | string.cpp:49:2:49:4 | ss1 |  |
+| string.cpp:47:20:47:22 | call to basic_stringstream | string.cpp:52:7:52:9 | ss1 |  |
+| string.cpp:47:20:47:22 | call to basic_stringstream | string.cpp:54:7:54:9 | ss1 |  |
+| string.cpp:47:25:47:27 | call to basic_stringstream | string.cpp:50:2:50:4 | ss2 |  |
+| string.cpp:47:25:47:27 | call to basic_stringstream | string.cpp:53:7:53:9 | ss2 |  |
+| string.cpp:47:25:47:27 | call to basic_stringstream | string.cpp:55:7:55:9 | ss2 |  |
+| string.cpp:49:2:49:4 | ref arg ss1 | string.cpp:52:7:52:9 | ss1 |  |
+| string.cpp:49:2:49:4 | ref arg ss1 | string.cpp:54:7:54:9 | ss1 |  |
+| string.cpp:50:2:50:4 | ref arg ss2 | string.cpp:53:7:53:9 | ss2 |  |
+| string.cpp:50:2:50:4 | ref arg ss2 | string.cpp:55:7:55:9 | ss2 |  |
+| string.cpp:68:16:68:28 | call to basic_string | string.cpp:69:7:69:11 | path1 |  |
+| string.cpp:68:17:68:26 | call to user_input | string.cpp:68:16:68:28 | call to basic_string | TAINT |
+| string.cpp:69:7:69:11 | path1 | string.cpp:69:13:69:17 | call to c_str | TAINT |
+| string.cpp:72:10:72:19 | call to user_input | string.cpp:72:10:72:21 | call to basic_string | TAINT |
+| string.cpp:72:10:72:21 | call to basic_string | string.cpp:72:2:72:21 | ... = ... |  |
+| string.cpp:72:10:72:21 | call to basic_string | string.cpp:73:7:73:11 | path2 |  |
+| string.cpp:73:7:73:11 | path2 | string.cpp:73:13:73:17 | call to c_str | TAINT |
+| string.cpp:75:15:75:24 | call to user_input | string.cpp:75:15:75:27 | call to basic_string | TAINT |
+| string.cpp:75:15:75:27 | call to basic_string | string.cpp:76:7:76:11 | path3 |  |
+| string.cpp:76:7:76:11 | path3 | string.cpp:76:13:76:17 | call to c_str | TAINT |
+| string.cpp:81:19:81:24 | call to source | string.cpp:84:17:84:18 | cs |  |
+| string.cpp:81:19:81:24 | call to source | string.cpp:86:7:86:8 | cs |  |
+| string.cpp:84:17:84:18 | cs | string.cpp:84:17:84:19 | call to basic_string | TAINT |
+| string.cpp:84:17:84:19 | call to basic_string | string.cpp:87:7:87:8 | ss |  |
+| string.cpp:92:19:92:24 | call to source | string.cpp:95:17:95:18 | cs |  |
+| string.cpp:95:17:95:18 | cs | string.cpp:95:17:95:19 | call to basic_string | TAINT |
+| string.cpp:95:17:95:19 | call to basic_string | string.cpp:98:7:98:8 | ss |  |
+| string.cpp:95:17:95:19 | call to basic_string | string.cpp:101:7:101:8 | ss |  |
+| string.cpp:98:7:98:8 | ss | string.cpp:98:10:98:14 | call to c_str | TAINT |
+| string.cpp:98:10:98:14 | call to c_str | string.cpp:98:2:98:16 | ... = ... |  |
+| string.cpp:98:10:98:14 | call to c_str | string.cpp:100:7:100:8 | cs |  |
+| string.cpp:107:18:107:24 | hello | string.cpp:107:18:107:25 | call to basic_string | TAINT |
+| string.cpp:107:18:107:25 | call to basic_string | string.cpp:112:8:112:9 | s1 |  |
+| string.cpp:108:19:108:26 | call to basic_string | string.cpp:113:8:113:9 | s2 |  |
+| string.cpp:108:20:108:26 | hello | string.cpp:108:19:108:26 | call to basic_string | TAINT |
+| string.cpp:110:8:110:14 | call to basic_string | string.cpp:110:3:110:14 | ... = ... |  |
+| string.cpp:110:8:110:14 | call to basic_string | string.cpp:114:8:114:9 | s3 |  |
+| string.cpp:110:8:110:14 | hello | string.cpp:110:8:110:14 | call to basic_string | TAINT |
+| string.cpp:118:18:118:23 | call to source | string.cpp:118:18:118:26 | call to basic_string | TAINT |
+| string.cpp:118:18:118:26 | call to basic_string | string.cpp:123:8:123:9 | s1 |  |
+| string.cpp:119:19:119:27 | call to basic_string | string.cpp:124:8:124:9 | s2 |  |
+| string.cpp:119:20:119:25 | call to source | string.cpp:119:19:119:27 | call to basic_string | TAINT |
+| string.cpp:121:8:121:13 | call to source | string.cpp:121:8:121:15 | call to basic_string | TAINT |
+| string.cpp:121:8:121:15 | call to basic_string | string.cpp:121:3:121:15 | ... = ... |  |
+| string.cpp:121:8:121:15 | call to basic_string | string.cpp:125:8:125:9 | s3 |  |
+| string.cpp:129:15:129:16 | call to basic_string | string.cpp:130:20:130:21 | s1 |  |
+| string.cpp:129:15:129:16 | call to basic_string | string.cpp:132:8:132:9 | s1 |  |
+| string.cpp:129:15:129:16 | call to basic_string | string.cpp:134:8:134:9 | s1 |  |
+| string.cpp:130:20:130:21 | s1 | string.cpp:135:8:135:9 | s2 |  |
+| string.cpp:132:8:132:9 | s1 | string.cpp:132:3:132:9 | ... = ... |  |
+| string.cpp:132:8:132:9 | s1 | string.cpp:136:8:136:9 | s3 |  |
+| string.cpp:140:19:140:40 | call to basic_string | string.cpp:144:8:144:9 | s1 |  |
+| string.cpp:140:32:140:37 | call to source | string.cpp:140:19:140:40 | call to basic_string | TAINT |
+| string.cpp:142:8:142:28 | call to basic_string | string.cpp:142:3:142:28 | ... = ... |  |
+| string.cpp:142:8:142:28 | call to basic_string | string.cpp:145:8:145:9 | s2 |  |
+| string.cpp:142:20:142:25 | call to source | string.cpp:142:8:142:28 | call to basic_string | TAINT |
+| string.cpp:152:16:152:21 | call to source | string.cpp:152:16:152:24 | call to basic_string | TAINT |
+| string.cpp:152:16:152:24 | call to basic_string | string.cpp:153:15:153:15 | s |  |
+| string.cpp:152:16:152:24 | call to basic_string | string.cpp:157:33:157:33 | s |  |
+| string.cpp:152:16:152:24 | call to basic_string | string.cpp:157:50:157:50 | s |  |
+| string.cpp:152:16:152:24 | call to basic_string | string.cpp:161:16:161:16 | s |  |
+| string.cpp:153:15:153:15 | call to begin | string.cpp:153:15:153:15 | (__begin) |  |
+| string.cpp:153:15:153:15 | call to begin | string.cpp:153:15:153:15 | (__begin) |  |
+| string.cpp:153:15:153:15 | call to begin | string.cpp:153:15:153:15 | (__begin) |  |
+| string.cpp:153:15:153:15 | call to end | string.cpp:153:15:153:15 | (__end) |  |
+| string.cpp:153:15:153:15 | call to operator* | string.cpp:154:8:154:8 | c |  |
+| string.cpp:153:15:153:15 | ref arg (__begin) | string.cpp:153:15:153:15 | (__begin) |  |
+| string.cpp:153:15:153:15 | ref arg (__begin) | string.cpp:153:15:153:15 | (__begin) |  |
+| string.cpp:153:15:153:15 | ref arg (__begin) | string.cpp:153:15:153:15 | (__begin) |  |
+| string.cpp:153:15:153:15 | ref arg (__range) | string.cpp:153:15:153:15 | (__range) |  |
+| string.cpp:153:15:153:15 | s | string.cpp:153:15:153:15 | (__range) |  |
+| string.cpp:153:15:153:15 | s | string.cpp:153:15:153:15 | (__range) |  |
+| string.cpp:153:15:153:15 | s | string.cpp:153:15:153:15 | call to operator* | TAINT |
+| string.cpp:157:33:157:33 | ref arg s | string.cpp:157:50:157:50 | s |  |
+| string.cpp:157:33:157:33 | ref arg s | string.cpp:161:16:161:16 | s |  |
+| string.cpp:157:35:157:39 | call to begin | string.cpp:157:44:157:45 | it |  |
+| string.cpp:157:35:157:39 | call to begin | string.cpp:157:61:157:62 | it |  |
+| string.cpp:157:35:157:39 | call to begin | string.cpp:158:9:158:10 | it |  |
+| string.cpp:157:50:157:50 | ref arg s | string.cpp:157:50:157:50 | s |  |
+| string.cpp:157:50:157:50 | ref arg s | string.cpp:161:16:161:16 | s |  |
+| string.cpp:157:61:157:62 | ref arg it | string.cpp:157:44:157:45 | it |  |
+| string.cpp:157:61:157:62 | ref arg it | string.cpp:157:61:157:62 | it |  |
+| string.cpp:157:61:157:62 | ref arg it | string.cpp:158:9:158:10 | it |  |
+| string.cpp:161:16:161:16 | call to begin | string.cpp:161:16:161:16 | (__begin) |  |
+| string.cpp:161:16:161:16 | call to begin | string.cpp:161:16:161:16 | (__begin) |  |
+| string.cpp:161:16:161:16 | call to begin | string.cpp:161:16:161:16 | (__begin) |  |
+| string.cpp:161:16:161:16 | call to end | string.cpp:161:16:161:16 | (__end) |  |
+| string.cpp:161:16:161:16 | call to operator* | string.cpp:162:8:162:8 | c |  |
+| string.cpp:161:16:161:16 | ref arg (__begin) | string.cpp:161:16:161:16 | (__begin) |  |
+| string.cpp:161:16:161:16 | ref arg (__begin) | string.cpp:161:16:161:16 | (__begin) |  |
+| string.cpp:161:16:161:16 | ref arg (__begin) | string.cpp:161:16:161:16 | (__begin) |  |
+| string.cpp:161:16:161:16 | ref arg (__range) | string.cpp:161:16:161:16 | (__range) |  |
+| string.cpp:161:16:161:16 | s | string.cpp:161:16:161:16 | (__range) |  |
+| string.cpp:161:16:161:16 | s | string.cpp:161:16:161:16 | (__range) |  |
+| string.cpp:161:16:161:16 | s | string.cpp:161:16:161:16 | call to operator* | TAINT |
+| string.cpp:165:28:165:33 | call to source | string.cpp:165:28:165:36 | call to basic_string | TAINT |
+| string.cpp:165:28:165:36 | call to basic_string | string.cpp:166:22:166:28 | const_s |  |
+| string.cpp:166:22:166:22 | call to begin | string.cpp:166:22:166:22 | (__begin) |  |
+| string.cpp:166:22:166:22 | call to begin | string.cpp:166:22:166:22 | (__begin) |  |
+| string.cpp:166:22:166:22 | call to begin | string.cpp:166:22:166:22 | (__begin) |  |
+| string.cpp:166:22:166:22 | call to end | string.cpp:166:22:166:22 | (__end) |  |
+| string.cpp:166:22:166:22 | call to operator* | string.cpp:167:8:167:8 | c |  |
+| string.cpp:166:22:166:22 | ref arg (__begin) | string.cpp:166:22:166:22 | (__begin) |  |
+| string.cpp:166:22:166:22 | ref arg (__begin) | string.cpp:166:22:166:22 | (__begin) |  |
+| string.cpp:166:22:166:22 | ref arg (__begin) | string.cpp:166:22:166:22 | (__begin) |  |
+| string.cpp:166:22:166:28 | const_s | string.cpp:166:22:166:22 | (__range) |  |
+| string.cpp:166:22:166:28 | const_s | string.cpp:166:22:166:22 | (__range) |  |
+| string.cpp:166:22:166:28 | const_s | string.cpp:166:22:166:22 | call to operator* | TAINT |
+| string.cpp:178:18:178:24 | hello | string.cpp:178:18:178:25 | call to basic_string | TAINT |
+| string.cpp:178:18:178:25 | call to basic_string | string.cpp:181:8:181:9 | s1 |  |
+| string.cpp:178:18:178:25 | call to basic_string | string.cpp:181:13:181:14 | s1 |  |
+| string.cpp:178:18:178:25 | call to basic_string | string.cpp:182:8:182:9 | s1 |  |
+| string.cpp:178:18:178:25 | call to basic_string | string.cpp:183:13:183:14 | s1 |  |
+| string.cpp:178:18:178:25 | call to basic_string | string.cpp:186:8:186:9 | s1 |  |
+| string.cpp:178:18:178:25 | call to basic_string | string.cpp:187:8:187:9 | s1 |  |
+| string.cpp:179:18:179:23 | call to source | string.cpp:179:18:179:26 | call to basic_string | TAINT |
+| string.cpp:179:18:179:26 | call to basic_string | string.cpp:182:13:182:14 | s2 |  |
+| string.cpp:179:18:179:26 | call to basic_string | string.cpp:183:8:183:9 | s2 |  |
+| string.cpp:179:18:179:26 | call to basic_string | string.cpp:184:8:184:9 | s2 |  |
+| string.cpp:179:18:179:26 | call to basic_string | string.cpp:184:13:184:14 | s2 |  |
+| string.cpp:181:8:181:9 | s1 | string.cpp:181:11:181:11 | call to operator+ | TAINT |
+| string.cpp:181:13:181:14 | s1 | string.cpp:181:11:181:11 | call to operator+ | TAINT |
+| string.cpp:182:8:182:9 | s1 | string.cpp:182:11:182:11 | call to operator+ | TAINT |
+| string.cpp:182:13:182:14 | s2 | string.cpp:182:11:182:11 | call to operator+ | TAINT |
+| string.cpp:183:8:183:9 | s2 | string.cpp:183:11:183:11 | call to operator+ | TAINT |
+| string.cpp:183:13:183:14 | s1 | string.cpp:183:11:183:11 | call to operator+ | TAINT |
+| string.cpp:184:8:184:9 | s2 | string.cpp:184:11:184:11 | call to operator+ | TAINT |
+| string.cpp:184:13:184:14 | s2 | string.cpp:184:11:184:11 | call to operator+ | TAINT |
+| string.cpp:186:8:186:9 | s1 | string.cpp:186:11:186:11 | call to operator+ | TAINT |
+| string.cpp:186:13:186:20 |  world | string.cpp:186:11:186:11 | call to operator+ | TAINT |
+| string.cpp:187:8:187:9 | s1 | string.cpp:187:11:187:11 | call to operator+ | TAINT |
+| string.cpp:187:13:187:18 | call to source | string.cpp:187:11:187:11 | call to operator+ | TAINT |
+| string.cpp:191:18:191:22 | abc | string.cpp:191:18:191:23 | call to basic_string | TAINT |
+| string.cpp:191:18:191:23 | call to basic_string | string.cpp:195:8:195:9 | s3 |  |
+| string.cpp:191:18:191:23 | call to basic_string | string.cpp:198:8:198:9 | s3 |  |
+| string.cpp:191:18:191:23 | call to basic_string | string.cpp:202:8:202:9 | s3 |  |
+| string.cpp:191:18:191:23 | call to basic_string | string.cpp:207:8:207:9 | s3 |  |
+| string.cpp:191:18:191:23 | call to basic_string | string.cpp:211:8:211:9 | s3 |  |
+| string.cpp:192:18:192:23 | call to source | string.cpp:192:18:192:26 | call to basic_string | TAINT |
+| string.cpp:192:18:192:26 | call to basic_string | string.cpp:195:13:195:14 | s4 |  |
+| string.cpp:192:18:192:26 | call to basic_string | string.cpp:199:9:199:10 | s4 |  |
+| string.cpp:192:18:192:26 | call to basic_string | string.cpp:208:13:208:14 | s4 |  |
+| string.cpp:195:8:195:9 | s3 | string.cpp:195:11:195:11 | call to operator+ | TAINT |
+| string.cpp:195:11:195:11 | call to operator+ | string.cpp:195:3:195:14 | ... = ... |  |
+| string.cpp:195:11:195:11 | call to operator+ | string.cpp:196:8:196:9 | s5 |  |
+| string.cpp:195:13:195:14 | s4 | string.cpp:195:11:195:11 | call to operator+ | TAINT |
+| string.cpp:198:8:198:9 | s3 | string.cpp:198:3:198:9 | ... = ... |  |
+| string.cpp:198:8:198:9 | s3 | string.cpp:199:3:199:4 | s6 |  |
+| string.cpp:198:8:198:9 | s3 | string.cpp:200:8:200:9 | s6 |  |
+| string.cpp:199:3:199:4 | ref arg s6 | string.cpp:200:8:200:9 | s6 |  |
+| string.cpp:199:9:199:10 | s4 | string.cpp:199:3:199:4 | ref arg s6 | TAINT |
+| string.cpp:199:9:199:10 | s4 | string.cpp:199:6:199:6 | call to operator+= | TAINT |
+| string.cpp:202:8:202:9 | s3 | string.cpp:202:3:202:9 | ... = ... |  |
+| string.cpp:202:8:202:9 | s3 | string.cpp:203:3:203:4 | s7 |  |
+| string.cpp:202:8:202:9 | s3 | string.cpp:204:3:204:4 | s7 |  |
+| string.cpp:202:8:202:9 | s3 | string.cpp:205:8:205:9 | s7 |  |
+| string.cpp:203:3:203:4 | ref arg s7 | string.cpp:204:3:204:4 | s7 |  |
+| string.cpp:203:3:203:4 | ref arg s7 | string.cpp:205:8:205:9 | s7 |  |
+| string.cpp:203:9:203:14 | call to source | string.cpp:203:3:203:4 | ref arg s7 | TAINT |
+| string.cpp:203:9:203:14 | call to source | string.cpp:203:6:203:6 | call to operator+= | TAINT |
+| string.cpp:204:3:204:4 | ref arg s7 | string.cpp:205:8:205:9 | s7 |  |
+| string.cpp:204:9:204:11 |   | string.cpp:204:3:204:4 | ref arg s7 | TAINT |
+| string.cpp:204:9:204:11 |   | string.cpp:204:6:204:6 | call to operator+= | TAINT |
+| string.cpp:207:8:207:9 | s3 | string.cpp:207:3:207:9 | ... = ... |  |
+| string.cpp:207:8:207:9 | s3 | string.cpp:208:3:208:4 | s8 |  |
+| string.cpp:207:8:207:9 | s3 | string.cpp:209:8:209:9 | s8 |  |
+| string.cpp:208:3:208:4 | ref arg s8 | string.cpp:209:8:209:9 | s8 |  |
+| string.cpp:208:13:208:14 | s4 | string.cpp:208:3:208:4 | ref arg s8 | TAINT |
+| string.cpp:208:13:208:14 | s4 | string.cpp:208:6:208:11 | call to append | TAINT |
+| string.cpp:211:8:211:9 | s3 | string.cpp:211:3:211:9 | ... = ... |  |
+| string.cpp:211:8:211:9 | s3 | string.cpp:212:3:212:4 | s9 |  |
+| string.cpp:211:8:211:9 | s3 | string.cpp:213:3:213:4 | s9 |  |
+| string.cpp:211:8:211:9 | s3 | string.cpp:214:8:214:9 | s9 |  |
+| string.cpp:212:3:212:4 | ref arg s9 | string.cpp:213:3:213:4 | s9 |  |
+| string.cpp:212:3:212:4 | ref arg s9 | string.cpp:214:8:214:9 | s9 |  |
+| string.cpp:212:13:212:18 | call to source | string.cpp:212:3:212:4 | ref arg s9 | TAINT |
+| string.cpp:212:13:212:18 | call to source | string.cpp:212:6:212:11 | call to append | TAINT |
+| string.cpp:213:3:213:4 | ref arg s9 | string.cpp:214:8:214:9 | s9 |  |
+| string.cpp:213:13:213:15 |   | string.cpp:213:3:213:4 | ref arg s9 | TAINT |
+| string.cpp:213:13:213:15 |   | string.cpp:213:6:213:11 | call to append | TAINT |
+| string.cpp:218:19:218:23 | abc | string.cpp:218:19:218:24 | call to basic_string | TAINT |
+| string.cpp:218:19:218:24 | call to basic_string | string.cpp:221:3:221:5 | s10 |  |
+| string.cpp:218:19:218:24 | call to basic_string | string.cpp:222:8:222:10 | s10 |  |
+| string.cpp:219:12:219:26 | call to source | string.cpp:221:17:221:17 | c |  |
+| string.cpp:221:3:221:5 | ref arg s10 | string.cpp:222:8:222:10 | s10 |  |
+| string.cpp:221:17:221:17 | c | string.cpp:221:3:221:5 | ref arg s10 | TAINT |
+| string.cpp:221:17:221:17 | c | string.cpp:221:7:221:12 | call to append | TAINT |
 | structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
 | structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
 | structlikeclass.cpp:5:7:5:7 | this | structlikeclass.cpp:5:7:5:7 | constructor init of field v [pre-this] |  |
@@ -1384,3 +1330,57 @@
 | taint.cpp:483:18:483:19 | ref arg & ... | taint.cpp:483:19:483:19 | n [inner post update] |  |
 | taint.cpp:483:19:483:19 | n | taint.cpp:483:18:483:19 | & ... |  |
 | taint.cpp:483:28:483:34 | source1 | taint.cpp:483:11:483:15 | ref arg & ... | TAINT |
+| vector.cpp:8:43:8:49 | source1 | vector.cpp:12:21:12:27 | source1 |  |
+| vector.cpp:8:43:8:49 | source1 | vector.cpp:26:33:26:39 | source1 |  |
+| vector.cpp:12:21:12:27 | source1 | vector.cpp:12:21:12:28 | call to vector | TAINT |
+| vector.cpp:12:21:12:28 | call to vector | vector.cpp:14:14:14:14 | v |  |
+| vector.cpp:12:21:12:28 | call to vector | vector.cpp:18:38:18:38 | v |  |
+| vector.cpp:12:21:12:28 | call to vector | vector.cpp:18:55:18:55 | v |  |
+| vector.cpp:12:21:12:28 | call to vector | vector.cpp:22:15:22:15 | v |  |
+| vector.cpp:14:14:14:14 | call to begin | vector.cpp:14:14:14:14 | (__begin) |  |
+| vector.cpp:14:14:14:14 | call to begin | vector.cpp:14:14:14:14 | (__begin) |  |
+| vector.cpp:14:14:14:14 | call to begin | vector.cpp:14:14:14:14 | (__begin) |  |
+| vector.cpp:14:14:14:14 | call to end | vector.cpp:14:14:14:14 | (__end) |  |
+| vector.cpp:14:14:14:14 | call to operator* | vector.cpp:15:8:15:8 | x |  |
+| vector.cpp:14:14:14:14 | ref arg (__begin) | vector.cpp:14:14:14:14 | (__begin) |  |
+| vector.cpp:14:14:14:14 | ref arg (__begin) | vector.cpp:14:14:14:14 | (__begin) |  |
+| vector.cpp:14:14:14:14 | ref arg (__begin) | vector.cpp:14:14:14:14 | (__begin) |  |
+| vector.cpp:14:14:14:14 | ref arg (__range) | vector.cpp:14:14:14:14 | (__range) |  |
+| vector.cpp:14:14:14:14 | v | vector.cpp:14:14:14:14 | (__range) |  |
+| vector.cpp:14:14:14:14 | v | vector.cpp:14:14:14:14 | (__range) |  |
+| vector.cpp:14:14:14:14 | v | vector.cpp:14:14:14:14 | call to operator* | TAINT |
+| vector.cpp:18:38:18:38 | ref arg v | vector.cpp:18:55:18:55 | v |  |
+| vector.cpp:18:38:18:38 | ref arg v | vector.cpp:22:15:22:15 | v |  |
+| vector.cpp:18:40:18:44 | call to begin | vector.cpp:18:49:18:50 | it |  |
+| vector.cpp:18:40:18:44 | call to begin | vector.cpp:18:66:18:67 | it |  |
+| vector.cpp:18:40:18:44 | call to begin | vector.cpp:19:9:19:10 | it |  |
+| vector.cpp:18:55:18:55 | ref arg v | vector.cpp:18:55:18:55 | v |  |
+| vector.cpp:18:55:18:55 | ref arg v | vector.cpp:22:15:22:15 | v |  |
+| vector.cpp:18:66:18:67 | ref arg it | vector.cpp:18:49:18:50 | it |  |
+| vector.cpp:18:66:18:67 | ref arg it | vector.cpp:18:66:18:67 | it |  |
+| vector.cpp:18:66:18:67 | ref arg it | vector.cpp:19:9:19:10 | it |  |
+| vector.cpp:22:15:22:15 | call to begin | vector.cpp:22:15:22:15 | (__begin) |  |
+| vector.cpp:22:15:22:15 | call to begin | vector.cpp:22:15:22:15 | (__begin) |  |
+| vector.cpp:22:15:22:15 | call to begin | vector.cpp:22:15:22:15 | (__begin) |  |
+| vector.cpp:22:15:22:15 | call to end | vector.cpp:22:15:22:15 | (__end) |  |
+| vector.cpp:22:15:22:15 | call to operator* | vector.cpp:23:8:23:8 | x |  |
+| vector.cpp:22:15:22:15 | ref arg (__begin) | vector.cpp:22:15:22:15 | (__begin) |  |
+| vector.cpp:22:15:22:15 | ref arg (__begin) | vector.cpp:22:15:22:15 | (__begin) |  |
+| vector.cpp:22:15:22:15 | ref arg (__begin) | vector.cpp:22:15:22:15 | (__begin) |  |
+| vector.cpp:22:15:22:15 | ref arg (__range) | vector.cpp:22:15:22:15 | (__range) |  |
+| vector.cpp:22:15:22:15 | v | vector.cpp:22:15:22:15 | (__range) |  |
+| vector.cpp:22:15:22:15 | v | vector.cpp:22:15:22:15 | (__range) |  |
+| vector.cpp:22:15:22:15 | v | vector.cpp:22:15:22:15 | call to operator* | TAINT |
+| vector.cpp:26:33:26:39 | source1 | vector.cpp:26:33:26:40 | call to vector | TAINT |
+| vector.cpp:26:33:26:40 | call to vector | vector.cpp:27:21:27:27 | const_v |  |
+| vector.cpp:27:21:27:21 | call to begin | vector.cpp:27:21:27:21 | (__begin) |  |
+| vector.cpp:27:21:27:21 | call to begin | vector.cpp:27:21:27:21 | (__begin) |  |
+| vector.cpp:27:21:27:21 | call to begin | vector.cpp:27:21:27:21 | (__begin) |  |
+| vector.cpp:27:21:27:21 | call to end | vector.cpp:27:21:27:21 | (__end) |  |
+| vector.cpp:27:21:27:21 | call to operator* | vector.cpp:28:8:28:8 | x |  |
+| vector.cpp:27:21:27:21 | ref arg (__begin) | vector.cpp:27:21:27:21 | (__begin) |  |
+| vector.cpp:27:21:27:21 | ref arg (__begin) | vector.cpp:27:21:27:21 | (__begin) |  |
+| vector.cpp:27:21:27:21 | ref arg (__begin) | vector.cpp:27:21:27:21 | (__begin) |  |
+| vector.cpp:27:21:27:27 | const_v | vector.cpp:27:21:27:21 | (__range) |  |
+| vector.cpp:27:21:27:27 | const_v | vector.cpp:27:21:27:21 | (__range) |  |
+| vector.cpp:27:21:27:27 | const_v | vector.cpp:27:21:27:21 | call to operator* | TAINT |
