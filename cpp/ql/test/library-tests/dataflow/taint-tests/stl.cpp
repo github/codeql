@@ -7,6 +7,26 @@ namespace std
 
 	typedef size_t streamsize;
 
+	struct ptrdiff_t;
+
+	template <class iterator_category,
+			  class value_type,
+			  class difference_type = ptrdiff_t,
+			  class pointer_type = value_type*,
+			  class reference_type = value_type&>
+	struct iterator {
+		iterator &operator++();
+		iterator operator++(int);
+		bool operator==(iterator other) const;
+		bool operator!=(iterator other) const;
+		reference_type operator*() const;
+	};
+
+	struct input_iterator_tag {};
+	struct forward_iterator_tag : public input_iterator_tag {};
+	struct bidirectional_iterator_tag : public forward_iterator_tag {};
+	struct random_access_iterator_tag : public bidirectional_iterator_tag {};
+
 	template <class T> class allocator {
 	public:
 		allocator() throw();
@@ -19,6 +39,16 @@ namespace std
 		basic_string(const charT* s, const Allocator& a = Allocator());
 
 		const charT* c_str() const;
+
+		typedef std::iterator<random_access_iterator_tag, charT> iterator;
+		typedef std::iterator<random_access_iterator_tag, const charT> const_iterator;
+
+		iterator begin();
+		iterator end();
+		const_iterator begin() const;
+		const_iterator end() const;
+		const_iterator cbegin() const;
+		const_iterator cend() const;
 	};
 
 	typedef basic_string<char> string;
@@ -202,3 +232,79 @@ void test_string_constructors_assignments()
 	}
 }
 
+void sink(char) {}
+
+void test_range_based_for_loop_string() {
+	std::string s(source());
+	for(char c : s) {
+		sink(c); // tainted [NOT DETECTED by IR]
+	}
+
+	for(std::string::iterator it = s.begin(); it != s.end(); ++it) {
+		sink(*it); // tainted [NOT DETECTED]
+	}
+
+	for(char& c : s) {
+		sink(c); // tainted [NOT DETECTED by IR]
+	}
+
+	const std::string const_s(source());
+	for(const char& c : const_s) {
+		sink(c); // tainted [NOT DETECTED by IR]
+	}
+}
+
+
+
+
+
+
+
+
+namespace std {
+	template <class T>
+	class vector {
+	private:
+		void *data_;
+	public:
+		vector(int size);
+
+		T& operator[](int idx);
+		const T& operator[](int idx) const;
+
+		typedef std::iterator<random_access_iterator_tag, T> iterator;
+		typedef std::iterator<random_access_iterator_tag, const T> const_iterator;
+
+		iterator begin() noexcept;
+		iterator end() noexcept;
+
+		const_iterator begin() const noexcept;
+		const_iterator end() const noexcept;
+	};
+}
+
+void sink(int);
+
+void test_range_based_for_loop_vector(int source1) {
+	// Tainting the vector by allocating a tainted length. This doesn't represent
+	// how a vector would typically get tainted, but it allows this test to avoid
+	// being concerned with std::vector modeling.
+	std::vector<int> v(source1);
+
+	for(int x : v) {
+		sink(x); // tainted [NOT DETECTED by IR]
+	}
+
+	for(std::vector<int>::iterator it = v.begin(); it != v.end(); ++it) {
+		sink(*it); // tainted [NOT DETECTED]
+	}
+
+	for(int& x : v) {
+		sink(x); // tainted [NOT DETECTED by IR]
+	}
+
+	const std::vector<int> const_v(source1);
+	for(const int& x : const_v) {
+		sink(x); // tainted [NOT DETECTED by IR]
+	}
+}

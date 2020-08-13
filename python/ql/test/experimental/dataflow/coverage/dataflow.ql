@@ -1,5 +1,10 @@
-import experimental.dataflow.testConfig
+/**
+ * @kind path-problem
+ */
 
-from DataFlow::Node source, DataFlow::Node sink
-where exists(TestConfiguration cfg | cfg.hasFlow(source, sink))
-select source, sink
+import experimental.dataflow.testConfig
+import DataFlow::PathGraph
+
+from TestConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
+where config.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "<message>"

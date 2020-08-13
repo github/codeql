@@ -136,7 +136,7 @@ app.get('/user/:id', function (req, res) {
 
   res.send(escapeHtml1(url)); // OK
   res.send(escapeHtml2(url)); // OK
-  res.send(escapeHtml3(url)); // OK - but FP
+  res.send(escapeHtml3(url)); // OK - but FP [INCONSISTENCY]
   res.send(escapeHtml4(url)); // OK
 });
 

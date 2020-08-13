@@ -22,9 +22,15 @@ credentials are sent in an SSL session without certificate validation. In the 'G
 
 <references>
 <li>
-<a href="https://cwe.mitre.org/data/definitions/297.html">CWE-297</a>
-<a href="https://issues.apache.org/jira/browse/LOG4J2-2819">Add support for specifying an SSL configuration for SmtpAppender (CVE-2020-9488)</a>
-<a href="https://rules.sonarsource.com/java/tag/owasp/RSPEC-4499">SMTP SSL connection should check server identity</a>
+  <a href="https://cwe.mitre.org/data/definitions/297.html">CWE-297</a>
+</li>
+<li>
+  Log4j2:
+  <a href="https://issues.apache.org/jira/browse/LOG4J2-2819">Add support for specifying an SSL configuration for SmtpAppender (CVE-2020-9488)</a>
+</li>
+<li>
+  SonarSource rule:
+  <a href="https://rules.sonarsource.com/java/tag/owasp/RSPEC-4499">SMTP SSL connection should check server identity</a>
 </li>
 </references>
 </qhelp>

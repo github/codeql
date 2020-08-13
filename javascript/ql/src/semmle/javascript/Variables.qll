@@ -312,8 +312,11 @@ class LocalVariable extends Variable {
     this = result.getScope().getAVariable()
     or
     exists(VarDecl d | d = getADeclaration() |
-      if d = any(FunctionDeclStmt fds).getId()
-      then exists(FunctionDeclStmt fds | d = fds.getId() | result = fds.getEnclosingContainer())
+      if d = any(FunctionDeclStmt fds).getIdentifier()
+      then
+        exists(FunctionDeclStmt fds | d = fds.getIdentifier() |
+          result = fds.getEnclosingContainer()
+        )
       else result = d.getContainer()
     )
   }
@@ -406,6 +409,8 @@ class BindingPattern extends @pattern, Expr {
   }
 }
 
+private class TDestructuringPattern = @arraypattern or @objectpattern;
+
 /**
  * A destructuring pattern, that is, either an array pattern or an object pattern.
  *
@@ -418,9 +423,9 @@ class BindingPattern extends @pattern, Expr {
  * }
  * ```
  */
-abstract class DestructuringPattern extends BindingPattern {
+class DestructuringPattern extends TDestructuringPattern, BindingPattern {
   /** Gets the rest pattern of this destructuring pattern, if any. */
-  abstract Expr getRest();
+  Expr getRest() { none() } // Overridden in subtypes.
 }
 
 /**

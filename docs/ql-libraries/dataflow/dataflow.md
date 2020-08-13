@@ -469,6 +469,6 @@ https://github.com/github/codeql/pull/1718 for details.
 ### Consistency checks
 
 The file `dataflow/internal/DataFlowImplConsistency.qll` contains a number of
-consistency checks to verify that the language-specfic parts satisfy the
+consistency checks to verify that the language-specific parts satisfy the
 invariants that are expected by the shared implementation. Run these queries to
 check for inconsistencies.

@@ -6,6 +6,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 .. toctree::
    :hidden:
 
+   basic-query-cpp
    introduce-libraries-cpp
    function-classes
    expressions-types
@@ -18,7 +19,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    value-numbering-hash-cons
 
 
--  `Basic C/C++ query <https://lgtm.com/help/lgtm/console/ql-cpp-basic-example>`__: Learn to write and run a simple CodeQL query using LGTM.
+-  :doc:`Basic query for C and C++ code <basic-query-cpp>`: Learn to write and run a simple CodeQL query using LGTM.
 
 -  :doc:`CodeQL library for C and C++ <introduce-libraries-cpp>`: When analyzing C or C++ code, you can use the large collection of classes in the CodeQL library for C and C++.
 

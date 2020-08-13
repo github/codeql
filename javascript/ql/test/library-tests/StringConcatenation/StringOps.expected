@@ -46,6 +46,12 @@ concatenation
 | tst.js:89:3:89:14 | x |
 | tst.js:89:3:89:14 | x += 'three' |
 | tst.js:95:7:95:30 | x.conca ... three') |
+| tst.js:104:11:104:23 | "foo" + "bar" |
+| tst.js:104:11:104:31 | "foo" + ... + value |
+| tst.js:105:11:105:23 | value + "foo" |
+| tst.js:105:11:105:31 | value + ... + "bar" |
+| tst.js:106:11:106:33 | "foo" + ...  "baz") |
+| tst.js:106:20:106:32 | "bar" + "baz" |
 concatenationOperand
 | closure.js:5:1:5:37 | build(' ... 'four') |
 | closure.js:5:7:5:11 | 'one' |
@@ -127,6 +133,18 @@ concatenationOperand
 | tst.js:95:7:95:7 | x |
 | tst.js:95:16:95:20 | 'two' |
 | tst.js:95:23:95:29 | 'three' |
+| tst.js:104:11:104:15 | "foo" |
+| tst.js:104:11:104:23 | "foo" + "bar" |
+| tst.js:104:19:104:23 | "bar" |
+| tst.js:104:27:104:31 | value |
+| tst.js:105:11:105:15 | value |
+| tst.js:105:11:105:23 | value + "foo" |
+| tst.js:105:19:105:23 | "foo" |
+| tst.js:105:27:105:31 | "bar" |
+| tst.js:106:11:106:15 | "foo" |
+| tst.js:106:19:106:33 | ("bar" + "baz") |
+| tst.js:106:20:106:24 | "bar" |
+| tst.js:106:28:106:32 | "baz" |
 concatenationLeaf
 | closure.js:5:7:5:11 | 'one' |
 | closure.js:5:14:5:18 | 'two' |
@@ -199,6 +217,16 @@ concatenationLeaf
 | tst.js:95:7:95:7 | x |
 | tst.js:95:16:95:20 | 'two' |
 | tst.js:95:23:95:29 | 'three' |
+| tst.js:104:11:104:15 | "foo" |
+| tst.js:104:19:104:23 | "bar" |
+| tst.js:104:27:104:31 | value |
+| tst.js:105:11:105:15 | value |
+| tst.js:105:19:105:23 | "foo" |
+| tst.js:105:27:105:31 | "bar" |
+| tst.js:106:11:106:15 | "foo" |
+| tst.js:106:19:106:33 | ("bar" + "baz") |
+| tst.js:106:20:106:24 | "bar" |
+| tst.js:106:28:106:32 | "baz" |
 concatenationNode
 | closure.js:5:1:5:37 | build(' ... 'four') |
 | closure.js:5:1:5:46 | build(' ...  'five' |
@@ -318,6 +346,22 @@ concatenationNode
 | tst.js:95:7:95:30 | x.conca ... three') |
 | tst.js:95:16:95:20 | 'two' |
 | tst.js:95:23:95:29 | 'three' |
+| tst.js:104:11:104:15 | "foo" |
+| tst.js:104:11:104:23 | "foo" + "bar" |
+| tst.js:104:11:104:31 | "foo" + ... + value |
+| tst.js:104:19:104:23 | "bar" |
+| tst.js:104:27:104:31 | value |
+| tst.js:105:11:105:15 | value |
+| tst.js:105:11:105:23 | value + "foo" |
+| tst.js:105:11:105:31 | value + ... + "bar" |
+| tst.js:105:19:105:23 | "foo" |
+| tst.js:105:27:105:31 | "bar" |
+| tst.js:106:11:106:15 | "foo" |
+| tst.js:106:11:106:33 | "foo" + ...  "baz") |
+| tst.js:106:19:106:33 | ("bar" + "baz") |
+| tst.js:106:20:106:24 | "bar" |
+| tst.js:106:20:106:32 | "bar" + "baz" |
+| tst.js:106:28:106:32 | "baz" |
 operand
 | closure.js:5:1:5:37 | build(' ... 'four') | 0 | closure.js:5:7:5:11 | 'one' |
 | closure.js:5:1:5:37 | build(' ... 'four') | 1 | closure.js:5:14:5:28 | 'two' + 'three' |
@@ -421,6 +465,18 @@ operand
 | tst.js:95:7:95:30 | x.conca ... three') | 0 | tst.js:95:7:95:7 | x |
 | tst.js:95:7:95:30 | x.conca ... three') | 1 | tst.js:95:16:95:20 | 'two' |
 | tst.js:95:7:95:30 | x.conca ... three') | 2 | tst.js:95:23:95:29 | 'three' |
+| tst.js:104:11:104:23 | "foo" + "bar" | 0 | tst.js:104:11:104:15 | "foo" |
+| tst.js:104:11:104:23 | "foo" + "bar" | 1 | tst.js:104:19:104:23 | "bar" |
+| tst.js:104:11:104:31 | "foo" + ... + value | 0 | tst.js:104:11:104:23 | "foo" + "bar" |
+| tst.js:104:11:104:31 | "foo" + ... + value | 1 | tst.js:104:27:104:31 | value |
+| tst.js:105:11:105:23 | value + "foo" | 0 | tst.js:105:11:105:15 | value |
+| tst.js:105:11:105:23 | value + "foo" | 1 | tst.js:105:19:105:23 | "foo" |
+| tst.js:105:11:105:31 | value + ... + "bar" | 0 | tst.js:105:11:105:23 | value + "foo" |
+| tst.js:105:11:105:31 | value + ... + "bar" | 1 | tst.js:105:27:105:31 | "bar" |
+| tst.js:106:11:106:33 | "foo" + ...  "baz") | 0 | tst.js:106:11:106:15 | "foo" |
+| tst.js:106:11:106:33 | "foo" + ...  "baz") | 1 | tst.js:106:19:106:33 | ("bar" + "baz") |
+| tst.js:106:20:106:32 | "bar" + "baz" | 0 | tst.js:106:20:106:24 | "bar" |
+| tst.js:106:20:106:32 | "bar" + "baz" | 1 | tst.js:106:28:106:32 | "baz" |
 nextLeaf
 | closure.js:5:7:5:11 | 'one' | closure.js:5:14:5:18 | 'two' |
 | closure.js:5:14:5:18 | 'two' | closure.js:5:22:5:28 | 'three' |
@@ -466,6 +522,12 @@ nextLeaf
 | tst.js:89:3:89:3 | x | tst.js:89:8:89:14 | 'three' |
 | tst.js:95:7:95:7 | x | tst.js:95:16:95:20 | 'two' |
 | tst.js:95:16:95:20 | 'two' | tst.js:95:23:95:29 | 'three' |
+| tst.js:104:11:104:15 | "foo" | tst.js:104:19:104:23 | "bar" |
+| tst.js:104:19:104:23 | "bar" | tst.js:104:27:104:31 | value |
+| tst.js:105:11:105:15 | value | tst.js:105:19:105:23 | "foo" |
+| tst.js:105:19:105:23 | "foo" | tst.js:105:27:105:31 | "bar" |
+| tst.js:106:11:106:15 | "foo" | tst.js:106:19:106:33 | ("bar" + "baz") |
+| tst.js:106:20:106:24 | "bar" | tst.js:106:28:106:32 | "baz" |
 htmlRoot
 | html-concat.js:2:14:2:26 | `<b>${x}</b>` |
 | html-concat.js:3:14:3:26 | `<B>${x}</B>` |
@@ -488,3 +550,13 @@ htmlLeaf
 | html-concat.js:8:15:10:23 | .\\n    \\n ... um!</i> |
 | html-concat.js:13:3:13:8 | buffer |
 | html-concat.js:13:13:13:18 | '<li>' |
+getStringValue
+| tst.js:104:11:104:15 | "foo" | foo |
+| tst.js:104:11:104:23 | "foo" + "bar" | foobar |
+| tst.js:104:19:104:23 | "bar" | bar |
+| tst.js:105:19:105:23 | "foo" | foo |
+| tst.js:105:27:105:31 | "bar" | bar |
+| tst.js:106:11:106:15 | "foo" | foo |
+| tst.js:106:11:106:33 | "foo" + ...  "baz") | foobarbaz |
+| tst.js:106:20:106:24 | "bar" | bar |
+| tst.js:106:28:106:32 | "baz" | baz |

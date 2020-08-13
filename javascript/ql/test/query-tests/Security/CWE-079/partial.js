@@ -49,7 +49,7 @@ app.get("/return", (req, res) => {
   let callback = getFirst.bind(null, req.url);
 
   res.send(callback);   // OK - the callback itself is not tainted
-  res.send(callback()); // NOT OK - but not currently detected
+  res.send(callback()); // NOT OK - but not currently detected [INCONSISTENCY]
 
   res.send(getFirst("Hello")); // OK - argument is not tainted from this call site
 });

@@ -130,6 +130,7 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   m.(CollectionMethod).hasName(["peek", "pop"])
   or
   // java.util.Queue
+  // covered by Stack: peek()
   m.(CollectionMethod).hasName(["element", "poll"])
   or
   m.(CollectionMethod).hasName("remove") and m.getNumberOfParameters() = 0
@@ -254,7 +255,7 @@ private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
   // covered by Deque: offerFirst(E, long, TimeUnit), offerLast(E, long, TimeUnit)
   method.(CollectionMethod).hasName(["putFirst", "putLast"]) and arg = 0
   or
-  //java.util.Dictionary
+  // java.util.Dictionary
   method
       .getDeclaringType()
       .getSourceDeclaration()
@@ -269,9 +270,6 @@ private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
  * `arg`th argument is tainted.
  */
 private predicate taintPreservingArgumentToMethod(Method method, int arg) {
-  // java.util.Stack
-  method.(CollectionMethod).hasName("push") and arg = 0
-  or
   method.getDeclaringType().hasQualifiedName("java.util", "Collections") and
   (
     method

@@ -178,3 +178,42 @@ void FalseNegativeTestCases()
     // For comparison
     for (int i = 100; i > 0; i ++ ) {}  // BUG
 }
+
+void IntendedOverflow(unsigned char p)
+{
+    const unsigned char m = 10;
+    unsigned char i;
+    signed char s;
+
+    for (i = 63; i < 64; i--) {} // GOOD (legitimate way to count down with an unsigned)
+    for (i = 63; i < 128; i--) {} // DUBIOUS (could still be a typo?)
+    for (i = 63; i < 255; i--) {} // GOOD
+
+    for (i = m - 1; i < m; i--) {} // GOOD
+    for (i = m - 2; i < m; i--) {} // DUBIOUS
+    for (i = m; i < m + 1; i--) {} // GOOD
+
+    for (s = 63; s < 64; s--) {} // BAD (signed numbers don't wrap at 0 / at all)
+    for (s = m + 1; s < m; s--) {} // BAD (never runs)
+
+    for (i = p - 1; i < p; i--) {} // GOOD
+    for (s = p - 1; s < p; s--) {} // BAD [NOT DETECTED]
+
+	{
+		int n;
+		
+		n = 64;
+		for (i = n - 1; i < n; i--) {} // GOOD
+		n = 64;
+		for (i = n - 1; i < 64; i--) {} // GOOD
+		n = 64;
+		for (i = 63; i < n; i--) {} // GOOD
+
+		n = 64;
+		for (s = n - 1; s < n; s--) {} // BAD [NOT DETECTED]
+		n = 64;
+		for (s = n - 1; s < 64; s--) {} // BAD
+		n = 64;
+		for (s = 63; s < n; s--) {} // BAD [NOT DETECTED]
+	}
+}
