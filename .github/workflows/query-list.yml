@@ -9,7 +9,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Clone self
+      run: git clone https://github.com/github/codeql
     - name: Clone go
       run: git clone https://github.com/github/codeql-go
     - name: Set up Python 3.8
