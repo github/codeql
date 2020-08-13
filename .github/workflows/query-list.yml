@@ -10,7 +10,7 @@ jobs:
 
     steps:
     - name: Clone self
-      run: git clone https://github.com/{{github.repository}} -b {{github.ref}}
+      run: git clone https://github.com/${{ github.repository }} -b ${{ github.ref }}
     - name: Clone go
       run: git clone https://github.com/github/codeql-go
     - name: Set up Python 3.8
