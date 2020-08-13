@@ -26,6 +26,8 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
     - name: Unzip CodeQL CLI
       run: unzip -d cli codeql-linux64.zip
+    - name: ls -R
+      run: ls -R
     - name: Build query list
       run: |
         python ./codeql/misc/scripts/resolve-code-scanning-query-packs.py > output.csv
