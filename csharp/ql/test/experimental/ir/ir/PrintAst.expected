@@ -799,7 +799,7 @@ pointers.cs:
 #   27|         0: [LocalVariableDeclAndInitExpr] MyStruct s = ...
 #   27|           0: [ObjectCreation] object creation of type MyStruct
 #   27|           1: [LocalVariableAccess] access to local variable s
-#   28|       2: [UnstafeStmt] unsafe {...}
+#   28|       2: [UnsafeStmt] unsafe {...}
 #   29|         0: [BlockStmt] {...}
 #   30|           0: [FixedStmt] fixed(...) { ... }
 #   30|             -2: [LocalVariableDeclAndInitExpr] Int32* q = ...

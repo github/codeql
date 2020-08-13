@@ -100,7 +100,7 @@ unsafe.cs:
 #   30|       4: [BlockStmt] {...}
 #   32|     5: [Method] h
 #   33|       4: [BlockStmt] {...}
-#   34|         0: [UnstafeStmt] unsafe {...}
+#   34|         0: [UnsafeStmt] unsafe {...}
 #   35|           0: [BlockStmt] {...}
 #   36|             0: [LocalVariableDeclStmt] ... ...;
 #   36|               0: [LocalVariableDeclAndInitExpr] Int32[] data = ...
