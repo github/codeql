@@ -14,10 +14,12 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
-    - name: Download and unzip CodeQL CLI
-      run: | 
+    - name: Download CodeQL CLI
+      run: |  
         curl -O https://github.com/github/codeql-cli-binaries/releases/download/v2.2.4/codeql-linux64.zip
-        unzip codeql-linux64.zip
+        ls
+    - name: Unzip CodeQL CLI
+      run: unzip codeql-linux64.zip
     - name: Build query list
       run: python resolve-code-scanning-query-packs.py > output.csv
     - name: Upload query list
