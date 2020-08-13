@@ -463,3 +463,30 @@ int test_unsigned_mult02(unsigned b) {
 
   return total;
 }
+
+unsigned long mult_rounding() {
+  unsigned long x, y, xy;
+  x = y = 1000000003UL; // 1e9 + 3
+  xy = x * y;
+  return xy; // BUG: upper bound should be >= 1000000006000000009UL
+}
+
+unsigned long mult_overflow() {
+  unsigned long x, y, xy;
+  x = 274177UL;
+  y = 67280421310721UL;
+  xy = x * y;
+  return xy; // BUG: lower bound should be <= 18446744073709551617UL
+}
+
+unsigned long mult_lower_bound(unsigned int ui, unsigned long ul) {
+  if (ui >= 10) {
+    unsigned long result = (unsigned long)ui * ui;
+    return result; // BUG: upper bound should be >= 18446744065119617025 (possibly a pretty-printing bug)
+  }
+  if (ul >= 10) {
+    unsigned long result = ul * ul;
+    return result; // lower bound is correctly 0 (overflow is possible)
+  }
+  return 0;
+}
