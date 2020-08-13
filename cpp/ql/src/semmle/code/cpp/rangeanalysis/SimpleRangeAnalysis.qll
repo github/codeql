@@ -44,7 +44,7 @@
 
 import cpp
 private import RangeAnalysisUtils
-private import semmle.code.cpp.models.interfaces.RangeAnalysisExpr
+private import experimental.semmle.code.cpp.models.interfaces.SimpleRangeAnalysisExpr
 import RangeSSA
 import SimpleRangeAnalysisCached
 private import NanAnalysis
@@ -216,7 +216,7 @@ private predicate analyzableExpr(Expr e) {
     exists(e.(RShiftExpr).getRightOperand().getValue())
     or
     // A modeled expression for range analysis
-    e instanceof RangeAnalysisExpr
+    e instanceof SimpleRangeAnalysisExpr
   )
 }
 
@@ -334,7 +334,7 @@ private predicate exprDependsOnDef(Expr e, RangeSsaDefinition srcDef, StackVaria
   e = srcDef.getAUse(srcVar)
   or
   // A modeled expression for range analysis
-  exists(RangeAnalysisExpr rae |
+  exists(SimpleRangeAnalysisExpr rae |
     rae.dependsOnDef(srcDef, srcVar)
   )
 }
@@ -738,8 +738,8 @@ private float getLowerBoundsImpl(Expr expr) {
   // Use SSA to get the lower bounds for a variable use.
   exists(RangeSsaDefinition def, StackVariable v | expr = def.getAUse(v) |
     result = getDefLowerBounds(def, v) and
-    // Not explicitly modeled by a RangeAnalysisExpr
-    not expr instanceof RangeAnalysisExpr
+    // Not explicitly modeled by a SimpleRangeAnalysisExpr
+    not expr instanceof SimpleRangeAnalysisExpr
   )
   or
   // unsigned `&` (tighter bounds may exist)
@@ -757,7 +757,7 @@ private float getLowerBoundsImpl(Expr expr) {
   )
   or
   // A modeled expression for range analysis
-  exists(RangeAnalysisExpr rangeAnalysisExpr |
+  exists(SimpleRangeAnalysisExpr rangeAnalysisExpr |
     rangeAnalysisExpr = expr and
     result = rangeAnalysisExpr.getLowerBounds()
   )
@@ -920,8 +920,8 @@ private float getUpperBoundsImpl(Expr expr) {
   // Use SSA to get the upper bounds for a variable use.
   exists(RangeSsaDefinition def, StackVariable v | expr = def.getAUse(v) |
     result = getDefUpperBounds(def, v) and
-    // Not explicitly modeled by a RangeAnalysisExpr
-    not expr instanceof RangeAnalysisExpr
+    // Not explicitly modeled by a SimpleRangeAnalysisExpr
+    not expr instanceof SimpleRangeAnalysisExpr
   )
   or
   // unsigned `&` (tighter bounds may exist)
@@ -941,7 +941,7 @@ private float getUpperBoundsImpl(Expr expr) {
   )
   or
   // A modeled expression for range analysis
-  exists(RangeAnalysisExpr rangeAnalysisExpr |
+  exists(SimpleRangeAnalysisExpr rangeAnalysisExpr |
     rangeAnalysisExpr = expr and
     result = rangeAnalysisExpr.getUpperBounds()
   )

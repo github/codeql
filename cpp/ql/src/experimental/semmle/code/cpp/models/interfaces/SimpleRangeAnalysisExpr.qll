@@ -6,7 +6,7 @@ import cpp
 /**
  * An expression for which a range can be deduced.
  */
-abstract class RangeAnalysisExpr extends Expr {
+abstract class SimpleRangeAnalysisExpr extends Expr {
   /** Gets the lower bound of the expression. */
   abstract float getLowerBounds();
   /** Gets the upper bound of the expression. */
