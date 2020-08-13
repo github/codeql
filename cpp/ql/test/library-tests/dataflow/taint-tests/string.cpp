@@ -1,10 +1,24 @@
 
 #include "stl.h"
 
+using namespace std;
+
 char *source();
+
+namespace ns_char
+{
+	char source();
+}
+
+char *user_input() {
+  return source();
+}
+
 void sink(const char *s) {};
 void sink(const std::string &s) {};
 void sink(const std::stringstream &s) {};
+void sink(const char *filename, const char *mode);
+void sink(char) {}
 
 void test_string()
 {
@@ -54,14 +68,6 @@ void test_stringstream_int(int source)
 	sink(ss1.str());
 	sink(ss2.str()); // tainted [NOT DETECTED]
 }
-
-using namespace std;
-
-char *user_input() {
-  return source();
-}
-
-void sink(const char *filename, const char *mode);
 
 void test_strings2()
 {
@@ -146,8 +152,6 @@ void test_string_constructors_assignments()
 	}
 }
 
-void sink(char) {}
-
 void test_range_based_for_loop_string() {
 	std::string s(source());
 	for(char c : s) {
@@ -166,11 +170,6 @@ void test_range_based_for_loop_string() {
 	for(const char& c : const_s) {
 		sink(c); // tainted [NOT DETECTED by IR]
 	}
-}
-
-namespace ns_char
-{
-	char source();
 }
 
 void test_string_append() {
