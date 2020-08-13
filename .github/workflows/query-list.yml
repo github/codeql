@@ -26,7 +26,7 @@ jobs:
     - name: Build query list
       run: |
         ls -R
-        python ./resolve-code-scanning-query-packs.py > output.csv
+        python ./misc/scripts/resolve-code-scanning-query-packs.py > output.csv
     - name: Upload query list
       uses: actions/upload-artifact@v2
       with:
