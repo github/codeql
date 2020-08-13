@@ -59,6 +59,7 @@
 | taint.cpp:167:8:167:13 | call to source | taint.cpp:167:8:167:13 | call to source |
 | taint.cpp:168:8:168:14 | tainted | taint.cpp:164:19:164:24 | call to source |
 | taint.cpp:181:8:181:9 | * ... | taint.cpp:185:11:185:16 | call to source |
+| taint.cpp:195:7:195:7 | x | taint.cpp:192:23:192:28 | source |
 | taint.cpp:210:7:210:7 | x | taint.cpp:207:6:207:11 | call to source |
 | taint.cpp:215:7:215:7 | x | taint.cpp:207:6:207:11 | call to source |
 | taint.cpp:216:7:216:7 | y | taint.cpp:207:6:207:11 | call to source |

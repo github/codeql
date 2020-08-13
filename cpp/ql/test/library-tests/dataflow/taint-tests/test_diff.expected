@@ -77,7 +77,6 @@
 | taint.cpp:130:7:130:9 | taint.cpp:127:8:127:13 | IR only |
 | taint.cpp:137:7:137:9 | taint.cpp:120:11:120:16 | AST only |
 | taint.cpp:173:8:173:13 | taint.cpp:164:19:164:24 | AST only |
-| taint.cpp:195:7:195:7 | taint.cpp:192:23:192:28 | AST only |
 | taint.cpp:195:7:195:7 | taint.cpp:193:6:193:6 | AST only |
 | taint.cpp:236:3:236:6 | taint.cpp:223:10:223:15 | AST only |
 | taint.cpp:261:7:261:7 | taint.cpp:258:7:258:12 | AST only |
