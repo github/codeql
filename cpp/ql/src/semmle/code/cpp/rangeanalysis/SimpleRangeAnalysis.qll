@@ -160,6 +160,10 @@ private class UnsignedMulExpr extends MulExpr {
   UnsignedMulExpr() { this.getType().(IntegralType).isUnsigned() }
 }
 
+private class UnsignedAssignMulExpr extends AssignMulExpr {
+  UnsignedAssignMulExpr() { this.getType().(IntegralType).isUnsigned() }
+}
+
 /** Set of expressions which we know how to analyze. */
 private predicate analyzableExpr(Expr e) {
   // The type of the expression must be arithmetic. We reuse the logic in
@@ -189,6 +193,8 @@ private predicate analyzableExpr(Expr e) {
     e instanceof AssignAddExpr
     or
     e instanceof AssignSubExpr
+    or
+    e instanceof UnsignedAssignMulExpr
     or
     e instanceof CrementOperation
     or
@@ -249,6 +255,14 @@ private predicate defDependsOnDef(
     exprDependsOnDef(assignSub.getRValue(), srcDef, srcVar)
   )
   or
+  exists(UnsignedAssignMulExpr assignMul, RangeSsaDefinition nextDef |
+    def = assignMul and
+    assignMul.getLValue() = nextDef.getAUse(v)
+  |
+    defDependsOnDef(nextDef, v, srcDef, srcVar) or
+    exprDependsOnDef(assignMul.getRValue(), srcDef, srcVar)
+  )
+  or
   exists(CrementOperation crem |
     def = crem and
     crem.getOperand() = v.getAnAccess() and
@@ -296,6 +310,10 @@ private predicate exprDependsOnDef(Expr e, RangeSsaDefinition srcDef, StackVaria
   or
   exists(AssignSubExpr subExpr | e = subExpr |
     exprDependsOnDef(subExpr.getAnOperand(), srcDef, srcVar)
+  )
+  or
+  exists(UnsignedAssignMulExpr mulExpr | e = mulExpr |
+    exprDependsOnDef(mulExpr.getAnOperand(), srcDef, srcVar)
   )
   or
   exists(CrementOperation crementExpr | e = crementExpr |
@@ -669,6 +687,13 @@ private float getLowerBoundsImpl(Expr expr) {
     result = addRoundingDown(xLow, -yHigh)
   )
   or
+  exists(UnsignedAssignMulExpr mulExpr, float xLow, float yLow |
+    expr = mulExpr and
+    xLow = getFullyConvertedLowerBounds(mulExpr.getLValue()) and
+    yLow = getFullyConvertedLowerBounds(mulExpr.getRValue()) and
+    result = xLow * yLow
+  )
+  or
   exists(PrefixIncrExpr incrExpr, float xLow |
     expr = incrExpr and
     xLow = getFullyConvertedLowerBounds(incrExpr.getOperand()) and
@@ -843,6 +868,13 @@ private float getUpperBoundsImpl(Expr expr) {
     xHigh = getFullyConvertedUpperBounds(subExpr.getLValue()) and
     yLow = getFullyConvertedLowerBounds(subExpr.getRValue()) and
     result = addRoundingUp(xHigh, -yLow)
+  )
+  or
+  exists(UnsignedAssignMulExpr mulExpr, float xHigh, float yHigh |
+    expr = mulExpr and
+    xHigh = getFullyConvertedUpperBounds(mulExpr.getLValue()) and
+    yHigh = getFullyConvertedUpperBounds(mulExpr.getRValue()) and
+    result = xHigh * yHigh
   )
   or
   exists(PrefixIncrExpr incrExpr, float xHigh |
@@ -1073,6 +1105,14 @@ private float getDefLowerBoundsImpl(RangeSsaDefinition def, StackVariable v) {
     result = addRoundingDown(lhsLB, -rhsUB)
   )
   or
+  exists(UnsignedAssignMulExpr assignMul, RangeSsaDefinition nextDef, float lhsLB, float rhsLB |
+    def = assignMul and
+    assignMul.getLValue() = nextDef.getAUse(v) and
+    lhsLB = getDefLowerBounds(nextDef, v) and
+    rhsLB = getFullyConvertedLowerBounds(assignMul.getRValue()) and
+    result = lhsLB * rhsLB
+  )
+  or
   exists(IncrementOperation incr, float newLB |
     def = incr and
     incr.getOperand() = v.getAnAccess() and
@@ -1113,6 +1153,14 @@ private float getDefUpperBoundsImpl(RangeSsaDefinition def, StackVariable v) {
     lhsUB = getDefUpperBounds(nextDef, v) and
     rhsLB = getFullyConvertedLowerBounds(assignSub.getRValue()) and
     result = addRoundingUp(lhsUB, -rhsLB)
+  )
+  or
+  exists(UnsignedAssignMulExpr assignMul, RangeSsaDefinition nextDef, float lhsUB, float rhsUB |
+    def = assignMul and
+    assignMul.getLValue() = nextDef.getAUse(v) and
+    lhsUB = getDefUpperBounds(nextDef, v) and
+    rhsUB = getFullyConvertedUpperBounds(assignMul.getRValue()) and
+    result = lhsUB * rhsUB
   )
   or
   exists(IncrementOperation incr, float newUB |
