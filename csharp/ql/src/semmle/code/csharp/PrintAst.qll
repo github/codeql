@@ -130,9 +130,26 @@ private predicate locationSortKeys(Element ast, string file, int line, int colum
  */
 private newtype TPrintAstNode =
   TElementNode(Element element) { shouldPrint(element) } or
-  TParametersNode(Parameterizable parameterizable) { shouldPrint(parameterizable) } or
-  TAttributesNode(Attributable attributable) { shouldPrint(attributable) } or
-  TTypeParametersNode(UnboundGeneric generic) { shouldPrint(generic) }
+  TParametersNode(Parameterizable parameterizable) {
+    shouldPrint(parameterizable) and
+    parameterizable.getNumberOfParameters() > 0 and
+    not isInsideUnneededParameterizable(parameterizable) and
+    (
+      not parameterizable.isCompilerGenerated() or
+      parameterizable instanceof Accessor
+    )
+  } or
+  TAttributesNode(Attributable attributable) {
+    shouldPrint(attributable) and
+    exists(attributable.getAnAttribute()) and
+    not isCompilerGeneratedAttributable(attributable) and
+    not isInsideUnneededAttributable(attributable)
+  } or
+  TTypeParametersNode(UnboundGeneric unboundGeneric) {
+    shouldPrint(unboundGeneric) and
+    unboundGeneric.getNumberOfTypeParameters() > 0 and
+    not isInsideUnneededUnboundGeneric(unboundGeneric)
+  }
 
 /**
  * A node in the output tree.
@@ -464,15 +481,7 @@ final class NamespaceNode extends ElementNode {
 final class ParametersNode extends PrintAstNode, TParametersNode {
   Parameterizable parameterizable;
 
-  ParametersNode() {
-    this = TParametersNode(parameterizable) and
-    parameterizable.getNumberOfParameters() > 0 and
-    not isInsideUnneededParameterizable(parameterizable) and
-    (
-      not parameterizable.isCompilerGenerated() or
-      parameterizable instanceof Accessor
-    )
-  }
+  ParametersNode() { this = TParametersNode(parameterizable) }
 
   override string toString() { result = "(Parameters)" }
 
@@ -495,12 +504,7 @@ final class ParametersNode extends PrintAstNode, TParametersNode {
 final class AttributesNode extends PrintAstNode, TAttributesNode {
   Attributable attributable;
 
-  AttributesNode() {
-    this = TAttributesNode(attributable) and
-    exists(attributable.getAnAttribute()) and
-    not isCompilerGeneratedAttributable(attributable) and
-    not isInsideUnneededAttributable(attributable)
-  }
+  AttributesNode() { this = TAttributesNode(attributable) }
 
   override string toString() { result = "(Attributes)" }
 
@@ -528,11 +532,7 @@ final class AttributesNode extends PrintAstNode, TAttributesNode {
 final class TypeParametersNode extends PrintAstNode, TTypeParametersNode {
   UnboundGeneric unboundGeneric;
 
-  TypeParametersNode() {
-    this = TTypeParametersNode(unboundGeneric) and
-    unboundGeneric.getNumberOfTypeParameters() > 0 and
-    not isInsideUnneededUnboundGeneric(unboundGeneric)
-  }
+  TypeParametersNode() { this = TTypeParametersNode(unboundGeneric) }
 
   override string toString() { result = "(TypeParameters)" }
 
