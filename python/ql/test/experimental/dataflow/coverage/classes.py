@@ -8,14 +8,14 @@
 # All functions starting with "test_" should run and print `"OK"`.
 # This can be checked by running validTest.py.
 
-def OK():
+def OK() # Call not found:
   print("OK")
 
 # object.__new__(cls[, ...])
 class With_new:
 
   def __new__(cls):
-    OK()
+    OK() # Call not found
     return super().__new__(cls)
 
 def test_new():
@@ -25,7 +25,7 @@ def test_new():
 class With_init:
 
   def __init__(self):
-    OK()
+    OK() # Call not found
 
 def test_init():
   with_init = With_init()
@@ -34,7 +34,7 @@ def test_init():
 class With_del:
 
   def __del__(self):
-    OK()
+    OK() # Call not found
 
 def test_del():
   with_del = With_del()
@@ -44,7 +44,7 @@ def test_del():
 class With_repr:
 
   def __repr__(self):
-    OK()
+    OK() # Call not found
     return "With_repr()"
 
 def test_repr():
@@ -55,7 +55,7 @@ def test_repr():
 class With_str:
 
   def __str__(self):
-    OK()
+    OK() # Call not found
     return "Awesome"
 
 def test_str():
@@ -66,7 +66,7 @@ def test_str():
 class With_bytes:
 
   def __bytes__(self):
-    OK()
+    OK() # Call not found
     return b"Awesome"
 
 def test_bytes():
@@ -77,7 +77,7 @@ def test_bytes():
 class With_format:
 
   def __format__(self, format_spec):
-    OK()
+    OK() # Call not found
     return "Awesome"
 
 def test_format():
@@ -96,7 +96,7 @@ def test_format_fstr():
 class With_lt:
 
   def __lt__(self, other):
-    OK()
+    OK() # Call not found
     return ""
 
 def test_lt():
@@ -107,7 +107,7 @@ def test_lt():
 class With_le:
 
   def __le__(self, other):
-    OK()
+    OK() # Call not found
     return ""
 
 def test_le():
@@ -118,7 +118,7 @@ def test_le():
 class With_eq:
 
   def __eq__(self, other):
-    OK()
+    OK() # Call not found
     return ""
 
 def test_eq():
@@ -129,7 +129,7 @@ def test_eq():
 class With_ne:
 
   def __ne__(self, other):
-    OK()
+    OK() # Call not found
     return ""
 
 def test_ne():
@@ -140,7 +140,7 @@ def test_ne():
 class With_gt:
 
   def __gt__(self, other):
-    OK()
+    OK() # Call not found
     return ""
 
 def test_gt():
@@ -151,7 +151,7 @@ def test_gt():
 class With_ge:
 
   def __ge__(self, other):
-    OK()
+    OK() # Call not found
     return ""
 
 def test_ge():
@@ -162,7 +162,7 @@ def test_ge():
 class With_hash:
 
   def __hash__(self):
-    OK()
+    OK() # Call not found
     return 0
 
 def test_hash():
@@ -185,7 +185,7 @@ def test_hash_dict():
 class With_bool:
 
   def __bool__(self):
-    OK()
+    OK() # Call not found
     return True
 
 def test_bool():
@@ -202,7 +202,7 @@ def test_bool_if():
 class With_getattr:
 
   def __getattr__(self, name):
-    OK()
+    OK() # Call not found
     return ""
 
 def test_getattr():
@@ -213,7 +213,7 @@ def test_getattr():
 class With_getattribute:
 
   def __getattribute__(self, name):
-    OK()
+    OK() # Call not found
     return ""
 
 def test_getattribute():
@@ -224,7 +224,7 @@ def test_getattribute():
 class With_setattr:
 
   def __setattr__(self, name, value):
-    OK()
+    OK() # Call not found
 
 def test_setattr():
   with_setattr = With_setattr()
@@ -234,7 +234,7 @@ def test_setattr():
 class With_delattr:
 
   def __delattr__(self, name):
-    OK()
+    OK() # Call not found
 
 def test_delattr():
   with_delattr = With_delattr()
@@ -244,7 +244,7 @@ def test_delattr():
 class With_dir:
 
   def __dir__(self):
-    OK()
+    OK() # Call not found
     return []
 
 def test_dir():
@@ -260,7 +260,7 @@ class Owner:
 class With_get:
 
   def __get__(self, instance, owner=None):
-    OK()
+    OK() # Call not found
     return ""
 
 def test_get():
@@ -272,7 +272,7 @@ def test_get():
 class With_set:
 
   def __set__(self, instance, value):
-    OK()
+    OK() # Call not found
 
 def test_set():
   with_set = With_set()
@@ -284,7 +284,7 @@ def test_set():
 class With_delete:
 
   def __delete__(self, instance):
-    OK()
+    OK() # Call not found
 
 def test_delete():
   with_delete = With_delete()
@@ -296,7 +296,7 @@ def test_delete():
 class With_set_name:
 
   def __set_name__(self, owner, name):
-    OK()
+    OK() # Call not found
 
 def test_set_name():
   with_set_name = With_set_name()
@@ -312,7 +312,7 @@ def test_set_name():
 class With_init_subclass:
 
   def __init_subclass__(cls):
-    OK()
+    OK() # Call not found
 
 def test_init_subclass():
   type("Subclass", (With_init_subclass,), {})
@@ -328,7 +328,7 @@ def test_init_subclass():
 class With_prepare(type):
 
   def __prepare__(name, bases, **kwds):
-    OK()
+    OK() # Call not found
     return kwds
 
 
@@ -341,7 +341,7 @@ def test_prepare():
 class With_instancecheck:
 
   def __instancecheck__(self, instance):
-    OK()
+    OK() # Call not found
     return True
 
 def test_instancecheck():
@@ -352,7 +352,7 @@ def test_instancecheck():
 class With_subclasscheck:
 
   def __subclasscheck__(self, subclass):
-    OK()
+    OK() # Call not found
     return True
 
 def test_subclasscheck():
@@ -365,7 +365,7 @@ def test_subclasscheck():
 class With_class_getitem:
 
   def __class_getitem__(cls, key):
-    OK()
+    OK() # Call not found
     return object
 
 def test_class_getitem():
@@ -377,7 +377,7 @@ def test_class_getitem():
 class With_call:
 
   def __call__(self):
-    OK()
+    OK() # Call not found
 
 def test_call():
   with_call = With_call()
@@ -388,7 +388,7 @@ def test_call():
 class With_len:
 
   def __len__(self):
-    OK()
+    OK() # Call not found
     return 0
 
 def test_len():
@@ -408,7 +408,7 @@ def test_len_if():
 class With_length_hint:
 
   def __length_hint__(self):
-    OK()
+    OK() # Call not found
     return 0
 
 def test_length_hint():
@@ -420,7 +420,7 @@ def test_length_hint():
 class With_getitem:
 
   def __getitem__(self, key):
-    OK()
+    OK() # Call not found
     return ""
 
 def test_getitem():
@@ -431,7 +431,7 @@ def test_getitem():
 class With_setitem:
 
   def __setitem__(self, key, value):
-    OK()
+    OK() # Call not found
 
 def test_setitem():
   with_setitem = With_setitem()
@@ -441,7 +441,7 @@ def test_setitem():
 class With_delitem:
 
   def __delitem__(self, key):
-    OK()
+    OK() # Call not found
 
 def test_delitem():
   with_delitem = With_delitem()
@@ -451,7 +451,7 @@ def test_delitem():
 class With_missing(dict):
 
   def __missing__(self, key):
-    OK()
+    OK() # Call not found
     return ""
 
 def test_missing():
@@ -462,7 +462,7 @@ def test_missing():
 class With_iter:
 
   def __iter__(self):
-    OK()
+    OK() # Call not found
     return [].__iter__()
 
 def test_iter():
@@ -473,7 +473,7 @@ def test_iter():
 class With_reversed:
 
   def __reversed__(self):
-    OK()
+    OK() # Call not found
     return [].__iter__
 
 def test_reversed():
@@ -484,7 +484,7 @@ def test_reversed():
 class With_contains:
 
   def __contains__(self, item):
-    OK()
+    OK() # Call not found
     return True
 
 def test_contains():
@@ -497,7 +497,7 @@ def test_contains():
 class With_add:
 
   def __add__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_add():
@@ -508,7 +508,7 @@ def test_add():
 class With_sub:
 
   def __sub__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_sub():
@@ -519,7 +519,7 @@ def test_sub():
 class With_mul:
 
   def __mul__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_mul():
@@ -530,7 +530,7 @@ def test_mul():
 class With_matmul:
 
   def __matmul__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_matmul():
@@ -541,7 +541,7 @@ def test_matmul():
 class With_truediv:
 
   def __truediv__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_truediv():
@@ -552,7 +552,7 @@ def test_truediv():
 class With_floordiv:
 
   def __floordiv__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_floordiv():
@@ -563,7 +563,7 @@ def test_floordiv():
 class With_mod:
 
   def __mod__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_mod():
@@ -574,7 +574,7 @@ def test_mod():
 class With_divmod:
 
   def __divmod__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_divmod():
@@ -585,7 +585,7 @@ def test_divmod():
 class With_pow:
 
   def __pow__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_pow():
@@ -600,7 +600,7 @@ def test_pow_op():
 class With_lshift:
 
   def __lshift__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_lshift():
@@ -611,7 +611,7 @@ def test_lshift():
 class With_rshift:
 
   def __rshift__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_rshift():
@@ -622,7 +622,7 @@ def test_rshift():
 class With_and:
 
   def __and__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_and():
@@ -633,7 +633,7 @@ def test_and():
 class With_xor:
 
   def __xor__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_xor():
@@ -644,7 +644,7 @@ def test_xor():
 class With_or:
 
   def __or__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_or():
@@ -655,7 +655,7 @@ def test_or():
 class With_radd:
 
   def __radd__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_radd():
@@ -666,7 +666,7 @@ def test_radd():
 class With_rsub:
 
   def __rsub__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_rsub():
@@ -677,7 +677,7 @@ def test_rsub():
 class With_rmul:
 
   def __rmul__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_rmul():
@@ -688,7 +688,7 @@ def test_rmul():
 class With_rmatmul:
 
   def __rmatmul__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_rmatmul():
@@ -699,7 +699,7 @@ def test_rmatmul():
 class With_rtruediv:
 
   def __rtruediv__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_rtruediv():
@@ -710,7 +710,7 @@ def test_rtruediv():
 class With_rfloordiv:
 
   def __rfloordiv__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_rfloordiv():
@@ -721,7 +721,7 @@ def test_rfloordiv():
 class With_rmod:
 
   def __rmod__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_rmod():
@@ -732,7 +732,7 @@ def test_rmod():
 class With_rdivmod:
 
   def __rdivmod__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_rdivmod():
@@ -743,7 +743,7 @@ def test_rdivmod():
 class With_rpow:
 
   def __rpow__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_rpow():
@@ -758,7 +758,7 @@ def test_rpow_op():
 class With_rlshift:
 
   def __rlshift__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_rlshift():
@@ -769,7 +769,7 @@ def test_rlshift():
 class With_rrshift:
 
   def __rrshift__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_rrshift():
@@ -780,7 +780,7 @@ def test_rrshift():
 class With_rand:
 
   def __rand__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_rand():
@@ -791,7 +791,7 @@ def test_rand():
 class With_rxor:
 
   def __rxor__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_rxor():
@@ -802,7 +802,7 @@ def test_rxor():
 class With_ror:
 
   def __ror__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_ror():
@@ -813,7 +813,7 @@ def test_ror():
 class With_iadd:
 
   def __iadd__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_iadd():
@@ -824,7 +824,7 @@ def test_iadd():
 class With_isub:
 
   def __isub__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_isub():
@@ -835,7 +835,7 @@ def test_isub():
 class With_imul:
 
   def __imul__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_imul():
@@ -846,7 +846,7 @@ def test_imul():
 class With_imatmul:
 
   def __imatmul__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_imatmul():
@@ -857,7 +857,7 @@ def test_imatmul():
 class With_itruediv:
 
   def __itruediv__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_itruediv():
@@ -868,7 +868,7 @@ def test_itruediv():
 class With_ifloordiv:
 
   def __ifloordiv__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_ifloordiv():
@@ -879,7 +879,7 @@ def test_ifloordiv():
 class With_imod:
 
   def __imod__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_imod():
@@ -890,7 +890,7 @@ def test_imod():
 class With_ipow:
 
   def __ipow__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_ipow():
@@ -901,7 +901,7 @@ def test_ipow():
 class With_ilshift:
 
   def __ilshift__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_ilshift():
@@ -912,7 +912,7 @@ def test_ilshift():
 class With_irshift:
 
   def __irshift__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_irshift():
@@ -923,7 +923,7 @@ def test_irshift():
 class With_iand:
 
   def __iand__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_iand():
@@ -934,7 +934,7 @@ def test_iand():
 class With_ixor:
 
   def __ixor__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_ixor():
@@ -945,7 +945,7 @@ def test_ixor():
 class With_ior:
 
   def __ior__(self, other):
-    OK()
+    OK() # Call not found
     return self
 
 def test_ior():
@@ -956,7 +956,7 @@ def test_ior():
 class With_neg:
 
   def __neg__(self):
-    OK()
+    OK() # Call not found
     return self
 
 def test_neg():
@@ -967,7 +967,7 @@ def test_neg():
 class With_pos:
 
   def __pos__(self):
-    OK()
+    OK() # Call not found
     return self
 
 def test_pos():
@@ -978,7 +978,7 @@ def test_pos():
 class With_abs:
 
   def __abs__(self):
-    OK()
+    OK() # Call not found
     return self
 
 def test_abs():
@@ -989,7 +989,7 @@ def test_abs():
 class With_invert:
 
   def __invert__(self):
-    OK()
+    OK() # Call not found
     return self
 
 def test_invert():
@@ -1000,7 +1000,7 @@ def test_invert():
 class With_complex:
 
   def __complex__(self):
-    OK()
+    OK() # Call not found
     return 0j
 
 def test_complex():
@@ -1011,7 +1011,7 @@ def test_complex():
 class With_int:
 
   def __int__(self):
-    OK()
+    OK() # Call not found
     return 0
 
 def test_int():
@@ -1022,7 +1022,7 @@ def test_int():
 class With_float:
 
   def __float__(self):
-    OK()
+    OK() # Call not found
     return 0.0
 
 def test_float():
@@ -1033,7 +1033,7 @@ def test_float():
 class With_index:
 
   def __index__(self):
-    OK()
+    OK() # Call not found
     return 0
 
 def test_index():
@@ -1073,7 +1073,7 @@ def test_index_complex():
 class With_round:
 
   def __round__(self):
-    OK()
+    OK() # Call not found
     return 0
 
 def test_round():
@@ -1084,7 +1084,7 @@ def test_round():
 class With_trunc:
 
   def __trunc__(self):
-    OK()
+    OK() # Call not found
     return 0
 
 def test_trunc():
@@ -1096,7 +1096,7 @@ def test_trunc():
 class With_floor:
 
   def __floor__(self):
-    OK()
+    OK() # Call not found
     return 0
 
 def test_floor():
@@ -1108,7 +1108,7 @@ def test_floor():
 class With_ceil:
 
   def __ceil__(self):
-    OK()
+    OK() # Call not found
     return 0
 
 def test_ceil():
@@ -1122,7 +1122,7 @@ def test_ceil():
 class With_enter:
 
   def __enter__(self):
-    OK()
+    OK() # Call not found
     return
 
   def __exit__(self, exc_type, exc_value, traceback):
@@ -1139,7 +1139,7 @@ class With_exit:
     return
 
   def __exit__(self, exc_type, exc_value, traceback):
-    OK()
+    OK() # Call not found
     return
 
 def test_exit():
@@ -1153,7 +1153,7 @@ import asyncio
 class With_await:
 
   def __await__(self):
-    OK()
+    OK() # Call not found
     return (yield from asyncio.coroutine(lambda: "")())
 
 async def atest_await():
@@ -1171,7 +1171,7 @@ async def atest_await():
 class With_aiter:
 
   def __aiter__(self):
-    OK()
+    OK() # Call not found
     return self
 
   async def __anext__(self):
@@ -1189,7 +1189,7 @@ class With_anext:
     return self
 
   async def __anext__(self):
-    OK()
+    OK() # Call not found
     raise StopAsyncIteration
 
 async def atest_anext():
@@ -1203,7 +1203,7 @@ async def atest_anext():
 class With_aenter:
 
   async def __aenter__(self):
-    OK()
+    OK() # Call not found
 
   async def __aexit__(self, exc_type, exc_value, traceback):
     pass
@@ -1220,7 +1220,7 @@ class With_aexit:
     pass
 
   async def __aexit__(self, exc_type, exc_value, traceback):
-    OK()
+    OK() # Call not found
 
 async def atest_aexit():
   with_aexit = With_aexit()
