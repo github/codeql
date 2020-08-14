@@ -30,8 +30,9 @@ jobs:
       run: unzip -d cli codeql-linux64.zip
     - name: Build query list
       run: |
-        cd codeql
-        python ./misc/scripts/resolve-code-scanning-query-packs.py > output.csv
+        pwd
+        ls
+        python codeql/misc/scripts/resolve-code-scanning-query-packs.py > output.csv
     - name: Upload query list
       uses: actions/upload-artifact@v2
       with:
