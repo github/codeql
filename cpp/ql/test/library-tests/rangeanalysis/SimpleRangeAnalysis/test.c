@@ -504,3 +504,25 @@ unsigned long mul_assign(unsigned int ui) {
   ulconst *= 4;
   return uiconst + ulconst; // 40 .. 40 for both
 }
+
+int mul_by_constant(int i, int j) {
+  if (i >= -1 && i <= 2) {
+    i = 5 * i;
+    out(i); // -5 .. 10
+
+    i = i * -3;
+    out(i); // -30 .. 15
+
+    i *= 7;
+    out(i); // -210 .. 105 [BUG: not supported]
+
+    i *= -11;
+    out(i); // -1155 .. 2310 [BUG: not supported]
+  }
+  if (i == -1) {
+    i = i * (int)0xffFFffFF; // fully converted literal is -1
+    out(i); // 1 .. 1
+  }
+  i = i * -1;
+  return i; // -2^31 .. 2^31-1
+}
