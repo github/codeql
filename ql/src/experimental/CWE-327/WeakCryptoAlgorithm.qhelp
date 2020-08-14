@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+     <overview>
+          <p>
+               Using weak cryptographic algorithms can leave data
+               vulnerable to being decrypted or forged by an attacker.
+          </p>
+
+          <p>
+               Many cryptographic algorithms provided by cryptography
+               libraries are known to be weak. Using such an
+               algorithm means that encrypted or hashed data is less
+               secure than it appears to be.
+          </p>
+
+     </overview>
+     <recommendation>
+
+          <p>
+               Ensure that you use a strong, modern cryptographic
+               algorithm. Use at least AES-128 or RSA-2048 for
+               encryption, and SHA-2 or SHA-3 for secure hashing.
+          </p>
+
+     </recommendation>
+     <example>
+
+          <p>
+               The following code uses the different packages to encrypt/hash 
+               some secret data. The first few examples uses DES, MD5, RC4, and SHA1, 
+               which are older algorithms that are now considered weak. The following
+               examples use AES and SHA256, which are stronger, more modern algorithms.
+          </p>
+
+          <sample src="examples/Crypto.go" />
+
+     </example>
+
+     <references>
+          <li>OWASP: <a
+          href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html">Cryptographic Storage Cheat Sheet</a>.
+          </li>
+          <li>Wikipedia: <a
+          href="https://en.wikipedia.org/wiki/Strong_cryptography#Cryptographically_strong_algorithms">Cryptographically Strong Algorithms</a>.
+          </li>
+          <li>Wikipedia: <a
+          href="https://en.wikipedia.org/wiki/Strong_cryptography#Examples">Strong Cryptography Examples</a>.
+          </li>
+          <li>NIST, FIPS 140 Annex a: <a href="http://csrc.nist.gov/publications/fips/fips140-2/fips1402annexa.pdf"> Approved Security Functions</a>.</li>
+          <li>NIST, SP 800-131A: <a href="http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar1.pdf"> Transitions: Recommendation for Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.</li>
+     </references>
+
+</qhelp>
