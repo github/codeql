@@ -7,3 +7,14 @@
 
 import csharp
 import PrintAst
+
+/**
+ * Temporarily tweak this class or make a copy to control which functions are
+ * printed.
+ */
+class PrintAstConfigurationOverride extends PrintAstConfiguration {
+  /**
+   * TWEAK THIS PREDICATE AS NEEDED.
+   */
+  override predicate shouldPrint(Element e, File f) { super.shouldPrint(e, f) }
+}
