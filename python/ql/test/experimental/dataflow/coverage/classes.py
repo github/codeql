@@ -497,7 +497,7 @@ def test_contains():
 class With_add:
 
   def __add__(self, other):
-    OK() # Call not found
+    OK()
     return self
 
 def test_add():
@@ -508,7 +508,7 @@ def test_add():
 class With_sub:
 
   def __sub__(self, other):
-    OK() # Call not found
+    OK()
     return self
 
 def test_sub():
@@ -519,7 +519,7 @@ def test_sub():
 class With_mul:
 
   def __mul__(self, other):
-    OK() # Call not found
+    OK()
     return self
 
 def test_mul():
@@ -530,7 +530,7 @@ def test_mul():
 class With_matmul:
 
   def __matmul__(self, other):
-    OK() # Call not found
+    OK()
     return self
 
 def test_matmul():
@@ -541,7 +541,7 @@ def test_matmul():
 class With_truediv:
 
   def __truediv__(self, other):
-    OK() # Call not found
+    OK()
     return self
 
 def test_truediv():
@@ -552,7 +552,7 @@ def test_truediv():
 class With_floordiv:
 
   def __floordiv__(self, other):
-    OK() # Call not found
+    OK()
     return self
 
 def test_floordiv():
@@ -563,7 +563,7 @@ def test_floordiv():
 class With_mod:
 
   def __mod__(self, other):
-    OK() # Call not found
+    OK()
     return self
 
 def test_mod():
@@ -585,12 +585,12 @@ def test_divmod():
 class With_pow:
 
   def __pow__(self, other):
-    OK() # Call not found
+    OK()
     return self
 
 def test_pow():
   with_pow = With_pow()
-  pow(with_pow, with_pow)
+  pow(with_pow, with_pow) # Call not found
 
 def test_pow_op():
   with_pow = With_pow()
@@ -600,7 +600,7 @@ def test_pow_op():
 class With_lshift:
 
   def __lshift__(self, other):
-    OK() # Call not found
+    OK()
     return self
 
 def test_lshift():
@@ -611,7 +611,7 @@ def test_lshift():
 class With_rshift:
 
   def __rshift__(self, other):
-    OK() # Call not found
+    OK()
     return self
 
 def test_rshift():
@@ -622,7 +622,7 @@ def test_rshift():
 class With_and:
 
   def __and__(self, other):
-    OK() # Call not found
+    OK()
     return self
 
 def test_and():
@@ -633,7 +633,7 @@ def test_and():
 class With_xor:
 
   def __xor__(self, other):
-    OK() # Call not found
+    OK()
     return self
 
 def test_xor():
@@ -644,7 +644,7 @@ def test_xor():
 class With_or:
 
   def __or__(self, other):
-    OK() # Call not found
+    OK()
     return self
 
 def test_or():
