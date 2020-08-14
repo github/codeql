@@ -1041,7 +1041,9 @@ def test_index():
   with_index = With_index()
   operator.index(with_index)
 
-# make With_index subscriptable to test slicing
+def test_index_slicing():
+  with_index = With_index()
+  [0][with_index:1]
 
 def test_index_bin():
   with_index = With_index()
