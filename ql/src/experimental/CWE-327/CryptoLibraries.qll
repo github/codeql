@@ -127,7 +127,6 @@ abstract class CryptographicAlgorithm extends TCryptographicAlgorithm {
   bindingset[name]
   predicate matchesName(string name) {
     exists(name.regexpReplaceAll("[-_]", "").regexpFind("(?i)\\Q" + getName() + "\\E", _, _))
-    // name.toUpperCase().regexpReplaceAll("[-_ ]", "").regexpMatch(".*" + getName() + ".*")
   }
 
   /**
@@ -194,70 +193,53 @@ abstract class CryptographicOperation extends DataFlow::Node {
 }
 
 /**
- * Below are the cryptographic functions that have been implemented so far for this library.
- * Class that checks for use of Md5 package.
+ * Models cryptographic operations of the `crypto/md5` package.
  */
 class Md5 extends CryptographicOperation, DataFlow::CallNode {
-  Expr input;
-  CryptographicAlgorithm algorithm;
+  Md5() { getTarget().hasQualifiedName("crypto/md5", ["New", "Sum"]) }
 
-  Md5() {
-    getTarget().hasQualifiedName("crypto/md5", ["New", "Sum"]) and
-    this.getArgument(0).asExpr() = input
+  override Expr getInput() { result = this.getArgument(0).asExpr() }
+
+  override CryptographicAlgorithm getAlgorithm() {
+    result.matchesName(this.getTarget().getPackage().getName())
   }
-
-  override Expr getInput() { result = input }
-
-  override CryptographicAlgorithm getAlgorithm() { result = algorithm }
 }
 
 /**
- * Class that checks for use of Sha1 package.
+ * Models cryptographic operations of the `crypto/sha1` package.
  */
 class Sha1 extends CryptographicOperation, DataFlow::CallNode {
-  Expr input;
-  CryptographicAlgorithm algorithm;
+  Sha1() { getTarget().hasQualifiedName("crypto/sha1", ["New", "Sum"]) }
 
-  Sha1() {
-    getTarget().hasQualifiedName("crypto/sha1", ["New", "Sum"]) and
-    this.getArgument(0).asExpr() = input
+  override Expr getInput() { result = this.getArgument(0).asExpr() }
+
+  override CryptographicAlgorithm getAlgorithm() {
+    result.matchesName(this.getTarget().getPackage().getName())
   }
-
-  override Expr getInput() { result = input }
-
-  override CryptographicAlgorithm getAlgorithm() { result = algorithm }
 }
 
 /**
- * Class that checks for use of Des package.
+ * Models cryptographic operations of the `crypto/des` package.
  */
 class Des extends CryptographicOperation, DataFlow::CallNode {
-  Expr input;
-  CryptographicAlgorithm algorithm;
+  Des() { getTarget().hasQualifiedName("crypto/des", ["NewCipher", "NewTripleDESCipher"]) }
 
-  Des() {
-    getTarget().hasQualifiedName("crypto/des", ["NewCipher", "NewTripleDESCipher"]) and
-    this.getArgument(0).asExpr() = input
+  override Expr getInput() { result = this.getArgument(0).asExpr() }
+
+  override CryptographicAlgorithm getAlgorithm() {
+    result.matchesName(this.getTarget().getPackage().getName())
   }
-
-  override Expr getInput() { result = input }
-
-  override CryptographicAlgorithm getAlgorithm() { result = algorithm }
 }
 
 /**
- * Class that checks for use of Rc4 package.
+ * Models cryptographic operations of the `crypto/rc4` package.
  */
 class Rc4 extends CryptographicOperation, DataFlow::CallNode {
-  Expr input;
-  CryptographicAlgorithm algorithm;
+  Rc4() { getTarget().hasQualifiedName("crypto/rc4", ["NewCipher"]) }
 
-  Rc4() {
-    getTarget().hasQualifiedName("crypto/rc4", ["NewCipher"]) and
-    this.getArgument(0).asExpr() = input
+  override Expr getInput() { result = this.getArgument(0).asExpr() }
+
+  override CryptographicAlgorithm getAlgorithm() {
+    result.matchesName(this.getTarget().getPackage().getName())
   }
-
-  override Expr getInput() { result = input }
-
-  override CryptographicAlgorithm getAlgorithm() { result = algorithm }
 }
