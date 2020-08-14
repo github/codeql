@@ -334,7 +334,14 @@ private predicate exprDependsOnDef(Expr e, RangeSsaDefinition srcDef, StackVaria
   e = srcDef.getAUse(srcVar)
   or
   // A modeled expression for range analysis
-  exists(SimpleRangeAnalysisExpr rae | rae = e | rae.dependsOnDef(srcDef, srcVar))
+  exists(SimpleRangeAnalysisExpr rae | rae = e |
+    rae.dependsOnDef(srcDef, srcVar)
+    or
+    exists(Expr child |
+      rae.dependsOnChild(child) and
+      exprDependsOnDef(child, srcDef, srcVar)
+    )
+  )
 }
 
 /**

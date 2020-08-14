@@ -32,8 +32,27 @@ abstract class SimpleRangeAnalysisExpr extends Expr {
    */
   abstract float getUpperBounds();
 
-  /** Holds if this expression depends on the definition `srcDef` for StackVariable `srcVar`. */
+  /**
+   * Holds if the range this expression depends on the definition `srcDef` for
+   * StackVariable `srcVar`.
+   *
+   * Because this predicate cannot be recursive, most implementations should
+   * override `dependsOnChild` instead.
+   */
   predicate dependsOnDef(RangeSsaDefinition srcDef, StackVariable srcVar) { none() }
+
+  /**
+   * Holds if this expression depends on the range of its unconverted
+   * subexpression `child`. This information is used to inform the range
+   * analysis about cyclic dependencies. Without this information, range
+   * analysis might work for simple cases but will go into infinite loops on
+   * complex code.
+   *
+   * For example, when modeling a function call whose return value depends on
+   * all of its arguments, implement this predicate as
+   * `child = this.getAnArgument()`.
+   */
+  abstract predicate dependsOnChild(Expr child);
 }
 
 import SimpleRangeAnalysisInternal
