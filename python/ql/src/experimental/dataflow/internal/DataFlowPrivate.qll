@@ -1,5 +1,6 @@
 private import python
 private import DataFlowPublic
+import semmle.python.Magic
 
 //--------
 // Data flow graph
@@ -157,17 +158,67 @@ class DataFlowClassValue extends DataFlowCallable, TClassValue {
   override string getName() { result = c.getName() }
 }
 
-/** Represents a call to a callable */
-class DataFlowCall extends CallNode {
-  DataFlowCallable callable;
+newtype TDataFlowCall =
+  TCallNode(CallNode call) or
+  TMagicCall(MagicMethod::Actual magic)
 
-  DataFlowCall() { this = callable.getACall() }
+abstract class DataFlowCall extends TDataFlowCall {
+  /** Gets a textual representation of this element. */
+  abstract string toString();
 
   /** Get the callable to which this call goes. */
-  DataFlowCallable getCallable() { result = callable }
+  abstract DataFlowCallable getCallable();
+
+  /** Get the specified arguemnt to this call. */
+  abstract ControlFlowNode getArg(int n);
+
+  /** Get the control flow node representing this call. */
+  abstract ControlFlowNode getNode();
 
   /** Gets the enclosing callable of this call. */
-  DataFlowCallable getEnclosingCallable() { result.getScope() = this.getNode().getScope() }
+  abstract DataFlowCallable getEnclosingCallable();
+}
+
+
+/** Represents a call to a callable */
+class CallNodeCall extends DataFlowCall, TCallNode {
+  CallNode call;
+  DataFlowCallable callable;
+
+  CallNodeCall() {
+    this = TCallNode(call) and
+    call = callable.getACall()
+  }
+
+  override string toString() { result = call.toString() }
+
+  override ControlFlowNode getArg(int n) {
+    result = call.getArg(n)
+  }
+
+  override ControlFlowNode getNode() { result = call }
+
+  override DataFlowCallable getCallable() { result = callable }
+
+  override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getNode().getScope() }
+}
+
+class MagicCall extends DataFlowCall, TMagicCall {
+  MagicMethod::Actual magic;
+
+  MagicCall() { this = TMagicCall(magic) }
+
+  override string toString() { result = magic.toString() }
+
+  override ControlFlowNode getArg(int n) {
+    result = magic.(MagicMethod::Potential).getArg(n)
+  }
+
+  override ControlFlowNode getNode() { result = magic }
+
+  override DataFlowCallable getCallable() { result = TCallableValue(magic.getResolvedMagicMethod()) }
+
+  override DataFlowCallable getEnclosingCallable() { result.getScope() = magic.getNode().getScope() }
 }
 
 /** A data flow node that represents a call argument. */
@@ -220,7 +271,7 @@ class OutNode extends CfgNode {
  * `kind`.
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
-  call = result.getNode() and
+  call.getNode() = result.getNode() and
   kind = TNormalReturnKind()
 }
 

@@ -4,7 +4,7 @@ module MagicMethod {
   abstract class Potential extends ControlFlowNode {
     abstract string getMagicMethodName();
     abstract ControlFlowNode getArg(int n);
-    ControlFlowNode getSelf() { result = this.getArg(1) }
+    ControlFlowNode getSelf() { result = this.getArg(0) }
   }
 
   class Actual extends ControlFlowNode {
@@ -31,8 +31,8 @@ class MagicBinOp extends MagicMethod::Potential, BinaryExprNode {
   }
 
   override ControlFlowNode getArg(int n) {
-    n = 1 and result = this.getLeft()
+    n = 0 and result = this.getLeft()
     or
-    n = 2 and result = this.getRight()
+    n = 1 and result = this.getRight()
   }
 }
