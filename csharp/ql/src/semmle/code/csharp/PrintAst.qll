@@ -21,26 +21,14 @@ class PrintAstConfiguration extends TPrintAstConfiguration {
   string toString() { result = "PrintAstConfiguration" }
 
   /**
-   * Controls whether the `File` should be considered for AST printing.
-   */
-  predicate selectedFile(File file) { any() }
-
-  /**
    * Controls whether the `Element` should be considered for AST printing.
-   * By default it checks which file the `elem` belongs to.
+   * By default it checks whether the `Element` `e` belongs to `File` `f`.
    */
-  predicate shouldPrint(Element elem) {
-    elem.fromSource() and
-    this.selectedFile(getRepresentativeLocation(elem).getFile())
-  }
+  predicate shouldPrint(Element e, File f) { e.fromSource() and f = e.getFile() }
 }
 
-private predicate shouldPrint(Element elem) {
-  exists(PrintAstConfiguration config | config.shouldPrint(elem))
-}
-
-private predicate selectedFile(File file) {
-  exists(PrintAstConfiguration config | config.selectedFile(file))
+private predicate shouldPrint(Element e, File f) {
+  exists(PrintAstConfiguration config | config.shouldPrint(e, f))
 }
 
 private predicate isInsideUnneededAttributable(Attributable attributable) {
@@ -101,7 +89,7 @@ private string getQlClass(Element el) {
 private Location getRepresentativeLocation(Element ast) {
   result =
     min(Location loc |
-      loc = ast.getLocation() and selectedFile(loc.getFile())
+      loc = ast.getLocation() and shouldPrint(ast, loc.getFile())
     |
       loc order by loc.getStartLine(), loc.getStartColumn(), loc.getEndLine(), loc.getEndColumn()
     )
@@ -129,9 +117,9 @@ private predicate locationSortKeys(Element ast, string file, int line, int colum
  * tree a bit better.
  */
 private newtype TPrintAstNode =
-  TElementNode(Element element) { shouldPrint(element) } or
+  TElementNode(Element element) { shouldPrint(element, element.getFile()) } or
   TParametersNode(Parameterizable parameterizable) {
-    shouldPrint(parameterizable) and
+    shouldPrint(parameterizable, parameterizable.getFile()) and
     parameterizable.getNumberOfParameters() > 0 and
     not isInsideUnneededParameterizable(parameterizable) and
     (
@@ -140,13 +128,13 @@ private newtype TPrintAstNode =
     )
   } or
   TAttributesNode(Attributable attributable) {
-    shouldPrint(attributable) and
+    shouldPrint(attributable, attributable.(Element).getFile()) and
     exists(attributable.getAnAttribute()) and
     not isCompilerGeneratedAttributable(attributable) and
     not isInsideUnneededAttributable(attributable)
   } or
   TTypeParametersNode(UnboundGeneric unboundGeneric) {
-    shouldPrint(unboundGeneric) and
+    shouldPrint(unboundGeneric, unboundGeneric.getFile()) and
     unboundGeneric.getNumberOfTypeParameters() > 0 and
     not isInsideUnneededUnboundGeneric(unboundGeneric)
   }
@@ -373,8 +361,8 @@ final class ParameterNode extends ElementNode {
     param.hasExtensionMethodModifier() and
     result =
       min(Location loc |
-        loc = element.getLocation() and
-        selectedFile(loc.getFile()) and
+        loc = param.getLocation() and
+        shouldPrint(param, loc.getFile()) and
         loc.getStartLine() = loc.getEndLine()
       |
         loc order by loc.getEndColumn() - loc.getStartColumn()
