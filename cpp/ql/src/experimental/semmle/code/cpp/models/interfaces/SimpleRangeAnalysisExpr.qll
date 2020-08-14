@@ -56,3 +56,23 @@ abstract class SimpleRangeAnalysisExpr extends Expr {
 }
 
 import SimpleRangeAnalysisInternal
+
+/**
+ * This class exists to prevent the QL front end from emitting compile errors
+ * inside `SimpleRangeAnalysis.qll` about certain conjuncts being empty
+ * because the overrides of `SimpleRangeAnalysisExpr` that happen to be in
+ * scope do not make use of every feature it offers.
+ */
+private class Empty extends SimpleRangeAnalysisExpr {
+  Empty() {
+    // This predicate is complicated enough that the QL type checker doesn't
+    // see it as empty but simple enough that the optimizer should.
+    this = this and none()
+  }
+
+  override float getLowerBounds() { none() }
+
+  override float getUpperBounds() { none() }
+
+  override predicate dependsOnChild(Expr child) { none() }
+}
