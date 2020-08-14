@@ -1,5 +1,5 @@
 # User-defined methods, both instance methods and class methods, can be called in many non-standard ways
-# i.e. differently from simply `c.f()` or `C.f()`. For example, a user-defined `__await__` function on a
+# i.e. differently from simply `c.f()` or `C.f()`. For example, a user-defined `__await__` method on a
 # class `C` will be called by the syntactic construct `await c` when `c` is an instance of `C`.
 #
 # These tests should cover all the class calls that we hope to support.
