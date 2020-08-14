@@ -1,7 +1,7 @@
 methods.cs:
 #    3| [NamespaceDeclaration] namespace ... { ... }
 #    6|   1: [Class] TestRef
-#    9|     2: [Method] Swap
+#    9|     4: [Method] Swap
 #-----|       2: (Parameters)
 #    9|         0: [Parameter] x
 #    9|         1: [Parameter] y
@@ -18,7 +18,7 @@ methods.cs:
 #   13|           0: [AssignExpr] ... = ...
 #   13|             0: [LocalVariableAccess] access to local variable temp
 #   13|             1: [ParameterAccess] access to parameter y
-#   16|     3: [Method] Main
+#   16|     5: [Method] Main
 #   17|       4: [BlockStmt] {...}
 #   18|         0: [LocalVariableDeclStmt] ... ...;
 #   18|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
@@ -48,7 +48,7 @@ methods.cs:
 #   21|             2: [CastExpr] (...) ...
 #   21|               0: [LocalVariableAccess] access to local variable j
 #   25|   2: [Class] TestOut
-#   28|     2: [Method] Divide
+#   28|     4: [Method] Divide
 #-----|       2: (Parameters)
 #   28|         0: [Parameter] x
 #   28|         1: [Parameter] y
@@ -67,7 +67,7 @@ methods.cs:
 #   31|               0: [ParameterAccess] access to parameter x
 #   31|               1: [ParameterAccess] access to parameter y
 #   31|             1: [ParameterAccess] access to parameter remainder
-#   34|     3: [Method] Main
+#   34|     5: [Method] Main
 #   35|       4: [BlockStmt] {...}
 #   36|         0: [LocalVariableDeclStmt] ... ...;
 #   36|           0: [LocalVariableDeclExpr] Int32 res
@@ -87,24 +87,24 @@ methods.cs:
 #   38|             2: [CastExpr] (...) ...
 #   38|               0: [LocalVariableAccess] access to local variable rem
 #   42|   3: [Class] Console
-#   45|     2: [Method] Write
+#   45|     4: [Method] Write
 #-----|       2: (Parameters)
 #   45|         0: [Parameter] fmt
 #   45|         1: [Parameter] args
 #   45|       4: [BlockStmt] {...}
-#   46|     3: [Method] WriteLine
+#   46|     5: [Method] WriteLine
 #-----|       2: (Parameters)
 #   46|         0: [Parameter] fmt
 #   46|         1: [Parameter] args
 #   46|       4: [BlockStmt] {...}
 #   49|   4: [Class] TestOverloading
-#   52|     2: [Method] F
+#   52|     4: [Method] F
 #   53|       4: [BlockStmt] {...}
 #   54|         0: [ExprStmt] ...;
 #   54|           0: [MethodCall] call to method WriteLine
 #   54|             -1: [TypeAccess] access to type Console
 #   54|             0: [StringLiteral] "F()"
-#   57|     3: [Method] F
+#   57|     5: [Method] F
 #-----|       2: (Parameters)
 #   57|         0: [Parameter] x
 #   58|       4: [BlockStmt] {...}
@@ -112,7 +112,7 @@ methods.cs:
 #   59|           0: [MethodCall] call to method WriteLine
 #   59|             -1: [TypeAccess] access to type Console
 #   59|             0: [StringLiteral] "F(object)"
-#   62|     4: [Method] F
+#   62|     6: [Method] F
 #-----|       2: (Parameters)
 #   62|         0: [Parameter] x
 #   63|       4: [BlockStmt] {...}
@@ -120,7 +120,7 @@ methods.cs:
 #   64|           0: [MethodCall] call to method WriteLine
 #   64|             -1: [TypeAccess] access to type Console
 #   64|             0: [StringLiteral] "F(int)"
-#   67|     5: [Method] F
+#   67|     7: [Method] F
 #-----|       2: (Parameters)
 #   67|         0: [Parameter] x
 #   68|       4: [BlockStmt] {...}
@@ -128,7 +128,7 @@ methods.cs:
 #   69|           0: [MethodCall] call to method WriteLine
 #   69|             -1: [TypeAccess] access to type Console
 #   69|             0: [StringLiteral] "F(double)"
-#   72|     6: [Method] F
+#   72|     8: [Method] F
 #-----|       1: (TypeParameters)
 #   72|         0: [TypeParameter] T
 #-----|       2: (Parameters)
@@ -138,7 +138,7 @@ methods.cs:
 #   74|           0: [MethodCall] call to method WriteLine
 #   74|             -1: [TypeAccess] access to type Console
 #   74|             0: [StringLiteral] "F<T>(T)"
-#   77|     9: [Method] F
+#   77|     11: [Method] F
 #-----|       2: (Parameters)
 #   77|         0: [Parameter] x
 #   77|         1: [Parameter] y
@@ -147,7 +147,7 @@ methods.cs:
 #   79|           0: [MethodCall] call to method WriteLine
 #   79|             -1: [TypeAccess] access to type Console
 #   79|             0: [StringLiteral] "F(double, double)"
-#   82|     10: [Method] Main
+#   82|     12: [Method] Main
 #   83|       4: [BlockStmt] {...}
 #   84|         0: [ExprStmt] ...;
 #   84|           0: [MethodCall] call to method F
@@ -180,7 +180,7 @@ methods.cs:
 #   91|             1: [CastExpr] (...) ...
 #   91|               0: [IntLiteral] 1
 #   96|   5: [Class] Extensions
-#   99|     1: [ExtensionMethod] ToInt32
+#   99|     3: [ExtensionMethod] ToInt32
 #-----|       2: (Parameters)
 #   99|         0: [Parameter] s
 #  100|       4: [BlockStmt] {...}
@@ -188,7 +188,7 @@ methods.cs:
 #  101|           0: [MethodCall] call to method Parse
 #  101|             -1: [TypeAccess] access to type Int32
 #  101|             0: [ParameterAccess] access to parameter s
-#  104|     2: [ExtensionMethod] ToBool
+#  104|     4: [ExtensionMethod] ToBool
 #-----|       2: (Parameters)
 #  104|         0: [Parameter] s
 #  104|         1: [Parameter] f
@@ -197,7 +197,7 @@ methods.cs:
 #  106|           0: [DelegateCall] delegate call
 #  106|             -1: [ParameterAccess] access to parameter f
 #  106|             0: [ParameterAccess] access to parameter s
-#  109|     3: [ExtensionMethod] Slice
+#  109|     5: [ExtensionMethod] Slice
 #-----|       1: (TypeParameters)
 #  109|         0: [TypeParameter] T
 #-----|       2: (Parameters)
@@ -237,11 +237,11 @@ methods.cs:
 #  114|             4: [ParameterAccess] access to parameter count
 #  115|         3: [ReturnStmt] return ...;
 #  115|           0: [LocalVariableAccess] access to local variable result
-#  118|     5: [Method] CallToInt32
+#  118|     7: [Method] CallToInt32
 #  118|       4: [MethodCall] call to method ToInt32
 #  118|         0: [StringLiteral] "0"
 #  121|   6: [Class] TestExtensions
-#  124|     1: [Method] Main
+#  124|     3: [Method] Main
 #  125|       4: [BlockStmt] {...}
 #  126|         0: [LocalVariableDeclStmt] ... ...;
 #  126|           0: [LocalVariableDeclAndInitExpr] String[] strings = ...
@@ -276,12 +276,12 @@ methods.cs:
 #  134|               0: [MethodAccess] access to method Parse
 #  134|                 -1: [TypeAccess] access to type Boolean
 #  139|   7: [Class] TestDefaultParameters
-#  141|     1: [Method] Method1
+#  141|     3: [Method] Method1
 #-----|       2: (Parameters)
 #  141|         0: [Parameter] x
 #  141|         1: [Parameter] y
 #  142|       4: [BlockStmt] {...}
-#  145|     2: [Method] Method2
+#  145|     4: [Method] Method2
 #-----|       2: (Parameters)
 #  145|         0: [Parameter] a
 #  145|         1: [Parameter] b
@@ -294,30 +294,30 @@ methods.cs:
 #  145|             0: [StringLiteral] "a"
 #  145|             1: [StringLiteral] "b"
 #  146|       4: [BlockStmt] {...}
-#  149|     3: [InstanceConstructor] TestDefaultParameters
+#  149|     5: [InstanceConstructor] TestDefaultParameters
 #-----|       2: (Parameters)
 #  149|         0: [Parameter] x
 #  150|       4: [BlockStmt] {...}
-#  153|     4: [InstanceConstructor] TestDefaultParameters
+#  153|     6: [InstanceConstructor] TestDefaultParameters
 #-----|       2: (Parameters)
 #  153|         0: [Parameter] x
 #  153|           1: [StringLiteral] "abc"
 #  153|         1: [Parameter] y
 #  153|           1: [ObjectCreation] object creation of type Double
 #  154|       4: [BlockStmt] {...}
-#  157|     5: [DelegateType] Del
-#-----|       0: (Parameters)
+#  157|     7: [DelegateType] Del
+#-----|       2: (Parameters)
 #  157|         0: [Parameter] a
 #  157|         1: [Parameter] b
 #  157|           1: [IntLiteral] 12
 #  157|         2: [Parameter] c
 #  157|           1: [ObjectCreation] object creation of type Double
-#  159|     6: [Indexer] Item
-#-----|       0: (Parameters)
+#  159|     8: [Indexer] Item
+#-----|       1: (Parameters)
 #  159|         0: [Parameter] x
 #  159|         1: [Parameter] y
 #  159|           1: [IntLiteral] 0
-#  161|       2: [Getter] get_Item
+#  161|       3: [Getter] get_Item
 #-----|         2: (Parameters)
 #  159|           0: [Parameter] x
 #  159|           1: [Parameter] y
@@ -327,7 +327,7 @@ methods.cs:
 #  161|             0: [AddExpr] ... + ...
 #  161|               0: [ParameterAccess] access to parameter x
 #  161|               1: [ParameterAccess] access to parameter y
-#  162|       3: [Setter] set_Item
+#  162|       4: [Setter] set_Item
 #-----|         2: (Parameters)
 #  159|           0: [Parameter] x
 #  159|           1: [Parameter] y
@@ -335,7 +335,7 @@ methods.cs:
 #  162|           2: [Parameter] value
 #  162|         4: [BlockStmt] {...}
 #  166|   8: [Class] TestDefaultExtensionParameters
-#  168|     1: [ExtensionMethod] Plus
+#  168|     3: [ExtensionMethod] Plus
 #-----|       2: (Parameters)
 #  168|         0: [Parameter] left
 #  168|         1: [Parameter] right
@@ -345,7 +345,7 @@ methods.cs:
 #  170|           0: [AddExpr] ... + ...
 #  170|             0: [ParameterAccess] access to parameter left
 #  170|             1: [ParameterAccess] access to parameter right
-#  173|     2: [ExtensionMethod] SkipTwo
+#  173|     4: [ExtensionMethod] SkipTwo
 #-----|       1: (TypeParameters)
 #  173|         0: [TypeParameter] T
 #-----|       2: (Parameters)
@@ -355,7 +355,7 @@ methods.cs:
 #  174|       4: [BlockStmt] {...}
 #  175|         0: [ReturnStmt] return ...;
 #  175|           0: [ParameterAccess] access to parameter list
-#  178|     4: [ExtensionMethod] SkipTwoInt
+#  178|     6: [ExtensionMethod] SkipTwoInt
 #-----|       2: (Parameters)
 #  178|         0: [Parameter] list
 #  178|         1: [Parameter] i

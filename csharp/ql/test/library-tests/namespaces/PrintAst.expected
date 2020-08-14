@@ -20,9 +20,9 @@ namespaces.cs:
 #   66|   2: [Class] C
 #   70| [NamespaceDeclaration] namespace ... { ... }
 #   73|   1: [Class] A<>
-#-----|     0: (TypeParameters)
+#-----|     1: (TypeParameters)
 #   73|       0: [TypeParameter] T
-#   76|     3: [Class] B
+#   76|     4: [Class] B
 #   80|   2: [Class] A
 #   84| [NamespaceDeclaration] namespace ... { ... }
 #   91| [NamespaceDeclaration] namespace ... { ... }

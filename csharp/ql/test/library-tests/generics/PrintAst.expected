@@ -1,27 +1,27 @@
 Nesting.cs:
 #    1| [Class] A<>
-#-----|   0: (TypeParameters)
+#-----|   1: (TypeParameters)
 #    1|     0: [TypeParameter] T1
-#    3|   3: [Method] MA1
+#    3|   4: [Method] MA1
 #-----|     2: (Parameters)
 #    3|       0: [Parameter] x
 #    3|     4: [BlockStmt] {...}
-#    4|   4: [Method] MA2
+#    4|   5: [Method] MA2
 #-----|     1: (TypeParameters)
 #    4|       0: [TypeParameter] T2
 #-----|     2: (Parameters)
 #    4|       0: [Parameter] x
 #    4|       1: [Parameter] y
 #    4|     4: [BlockStmt] {...}
-#    6|   5: [Class] B<>
-#-----|     0: (TypeParameters)
+#    6|   6: [Class] B<>
+#-----|     1: (TypeParameters)
 #    6|       0: [TypeParameter] T3
-#    8|     3: [Method] MB1
+#    8|     4: [Method] MB1
 #-----|       2: (Parameters)
 #    8|         0: [Parameter] x
 #    8|         1: [Parameter] y
 #    8|       4: [BlockStmt] {...}
-#    9|     4: [Method] MB2
+#    9|     5: [Method] MB2
 #-----|       1: (TypeParameters)
 #    9|         0: [TypeParameter] T4
 #-----|       2: (Parameters)
@@ -29,27 +29,27 @@ Nesting.cs:
 #    9|         1: [Parameter] y
 #    9|         2: [Parameter] z
 #    9|       4: [BlockStmt] {...}
-#   12|   6: [Class] C
-#   14|     2: [Method] MC1
+#   12|   7: [Class] C
+#   14|     4: [Method] MC1
 #-----|       2: (Parameters)
 #   14|         0: [Parameter] x
 #   14|       4: [BlockStmt] {...}
-#   15|     3: [Method] MC2
+#   15|     5: [Method] MC2
 #-----|       1: (TypeParameters)
 #   15|         0: [TypeParameter] T5
 #-----|       2: (Parameters)
 #   15|         0: [Parameter] x
 #   15|         1: [Parameter] y
 #   15|       4: [BlockStmt] {...}
-#   17|     4: [Class] D<>
-#-----|       0: (TypeParameters)
+#   17|     6: [Class] D<>
+#-----|       1: (TypeParameters)
 #   17|         0: [TypeParameter] T6
-#   19|       3: [Method] MD1
+#   19|       4: [Method] MD1
 #-----|         2: (Parameters)
 #   19|           0: [Parameter] x
 #   19|           1: [Parameter] y
 #   19|         4: [BlockStmt] {...}
-#   20|       4: [Method] MD2
+#   20|       5: [Method] MD2
 #-----|         1: (TypeParameters)
 #   20|           0: [TypeParameter] T7
 #-----|         2: (Parameters)
@@ -57,7 +57,7 @@ Nesting.cs:
 #   20|           1: [Parameter] y
 #   20|           2: [Parameter] z
 #   20|         4: [BlockStmt] {...}
-#   24|   7: [Method] Construct
+#   24|   8: [Method] Construct
 #   25|     4: [BlockStmt] {...}
 #   26|       0: [LocalVariableDeclStmt] ... ...;
 #   26|         0: [LocalVariableDeclAndInitExpr] A<Int32> a1 = ...
@@ -174,21 +174,21 @@ Nesting.cs:
 generics.cs:
 #    5| [NamespaceDeclaration] namespace ... { ... }
 #    7|   1: [DelegateType] GenericDelegate<>
-#-----|     0: (TypeParameters)
+#-----|     1: (TypeParameters)
 #    7|       0: [TypeParameter] T
-#-----|     1: (Parameters)
+#-----|     2: (Parameters)
 #    7|       0: [Parameter] t
 #    9|   2: [Class] A
 #   13|   3: [Class] A<>
-#-----|     0: (TypeParameters)
+#-----|     1: (TypeParameters)
 #   13|       0: [TypeParameter] T
-#   16|     3: [DelegateType] GenericDelegateInGenericClass<>
-#-----|       0: (TypeParameters)
+#   16|     4: [DelegateType] GenericDelegateInGenericClass<>
+#-----|       1: (TypeParameters)
 #   16|         0: [TypeParameter] U
-#-----|       1: (Parameters)
+#-----|       2: (Parameters)
 #   16|         0: [Parameter] t
 #   16|         1: [Parameter] u
-#   18|     4: [Method] bar
+#   18|     5: [Method] bar
 #-----|       1: (TypeParameters)
 #   18|         0: [TypeParameter] X
 #-----|       2: (Parameters)
@@ -200,25 +200,25 @@ generics.cs:
 #   18|         1: [ReturnStmt] return ...;
 #   18|           0: [ParameterAccess] access to parameter t
 #   22|   4: [Class] B<>
-#-----|     0: (TypeParameters)
+#-----|     1: (TypeParameters)
 #   22|       0: [TypeParameter] T
-#   25|     3: [Field] at
-#   27|     4: [Field] name
-#   29|     5: [Method] foo
+#   25|     4: [Field] at
+#   27|     5: [Field] name
+#   29|     6: [Method] foo
 #   29|       4: [BlockStmt] {...}
-#   31|     6: [Method] fooParams
+#   31|     7: [Method] fooParams
 #-----|       2: (Parameters)
 #   31|         0: [Parameter] ts
 #   31|       4: [BlockStmt] {...}
-#   33|     7: [Method] staticFoo
+#   33|     8: [Method] staticFoo
 #   33|       4: [BlockStmt] {...}
-#   35|     8: [IndexerProperty] Name
-#   35|       1: [Getter] get_Name
+#   35|     9: [IndexerProperty] Name
+#   35|       3: [Getter] get_Name
 #   35|         4: [BlockStmt] {...}
 #   35|           0: [ReturnStmt] return ...;
 #   35|             0: [FieldAccess] access to field name
 #   35|               -1: [ThisAccess] this access
-#   35|       2: [Setter] set_Name
+#   35|       4: [Setter] set_Name
 #-----|         2: (Parameters)
 #   35|           0: [Parameter] value
 #   35|         4: [BlockStmt] {...}
@@ -227,67 +227,67 @@ generics.cs:
 #   35|               0: [ParameterAccess] access to parameter value
 #   35|               1: [FieldAccess] access to field name
 #   35|                 -1: [ThisAccess] this access
-#   37|     9: [Event] myEvent
-#   37|       1: [AddEventAccessor] add_myEvent
+#   37|     10: [Event] myEvent
+#   37|       3: [AddEventAccessor] add_myEvent
 #-----|         2: (Parameters)
 #   37|           0: [Parameter] value
-#   37|       1: [RemoveEventAccessor] remove_myEvent
+#   37|       3: [RemoveEventAccessor] remove_myEvent
 #-----|         2: (Parameters)
 #   37|           0: [Parameter] value
-#   39|     10: [IncrementOperator] ++
+#   39|     11: [IncrementOperator] ++
 #-----|       2: (Parameters)
 #   39|         0: [Parameter] a
 #   40|       4: [BlockStmt] {...}
 #   41|         0: [ReturnStmt] return ...;
 #   41|           0: [ObjectCreation] object creation of type B<>
-#   44|     11: [Destructor] ~B
+#   44|     12: [Destructor] ~B
 #   44|       4: [BlockStmt] {...}
-#   45|     12: [Method] f
+#   45|     13: [Method] f
 #-----|       1: (TypeParameters)
 #   45|         0: [TypeParameter] X
 #   45|       4: [BlockStmt] {...}
 #   45|         0: [ExprStmt] ...;
 #   45|           0: [ObjectCreation] object creation of type B<X>
 #   48|   5: [Class] Outer<>
-#-----|     0: (TypeParameters)
+#-----|     1: (TypeParameters)
 #   48|       0: [TypeParameter] T
-#   51|     3: [Class] Inner<>
-#-----|       0: (TypeParameters)
+#   51|     4: [Class] Inner<>
+#-----|       1: (TypeParameters)
 #   51|         0: [TypeParameter] U
-#   54|       3: [Field] t
-#   55|       4: [Field] myFunc
+#   54|       4: [Field] t
+#   55|       5: [Field] myFunc
 #   60|   6: [Class] Grid<>
-#-----|     0: (TypeParameters)
+#-----|     1: (TypeParameters)
 #   60|       0: [TypeParameter] T
-#   63|     3: [Field] NumRows
+#   63|     4: [Field] NumRows
 #   63|       1: [AssignExpr] ... = ...
 #   63|         0: [IntLiteral] 26
 #   63|         1: [MemberConstantAccess] access to constant NumRows
-#   64|     4: [Field] NumCols
+#   64|     5: [Field] NumCols
 #   64|       1: [AssignExpr] ... = ...
 #   64|         0: [IntLiteral] 10
 #   64|         1: [MemberConstantAccess] access to constant NumCols
-#   66|     5: [Field] cells
+#   66|     6: [Field] cells
 #   66|       1: [AssignExpr] ... = ...
 #   66|         0: [ArrayCreation] array creation of type T[,]
 #   66|           0: [MemberConstantAccess] access to constant NumRows
 #   66|           1: [MemberConstantAccess] access to constant NumCols
 #   66|         1: [FieldAccess] access to field cells
 #   66|           -1: [ThisAccess] this access
-#   68|     6: [Indexer] Item
-#-----|       0: (Parameters)
+#   68|     7: [Indexer] Item
+#-----|       1: (Parameters)
 #   68|         0: [Parameter] i
-#   70|       2: [Getter] get_Item
+#   70|       3: [Getter] get_Item
 #-----|         2: (Parameters)
 #   68|           0: [Parameter] i
 #   70|         4: [BlockStmt] {...}
 #   70|           0: [ReturnStmt] return ...;
 #   70|             0: [ParameterAccess] access to parameter i
-#   73|     7: [Indexer] Item
-#-----|       0: (Parameters)
+#   73|     8: [Indexer] Item
+#-----|       1: (Parameters)
 #   73|         0: [Parameter] c
 #   73|         1: [Parameter] col
-#   75|       2: [Getter] get_Item
+#   75|       3: [Getter] get_Item
 #-----|         2: (Parameters)
 #   73|           0: [Parameter] c
 #   73|           1: [Parameter] col
@@ -334,7 +334,7 @@ generics.cs:
 #   86|                 1: [CastExpr] (...) ...
 #   86|                   0: [CharLiteral] A
 #   86|               1: [ParameterAccess] access to parameter col
-#   88|       3: [Setter] set_Item
+#   88|       4: [Setter] set_Item
 #-----|         2: (Parameters)
 #   73|           0: [Parameter] c
 #   73|           1: [Parameter] col
@@ -385,7 +385,7 @@ generics.cs:
 #   99|                     0: [CharLiteral] A
 #   99|                 1: [ParameterAccess] access to parameter col
 #  105|   7: [Class] Test
-#  108|     2: [Method] Main
+#  108|     4: [Method] Main
 #  109|       4: [BlockStmt] {...}
 #  110|         0: [LocalVariableDeclStmt] ... ...;
 #  110|           0: [LocalVariableDeclAndInitExpr] B<String> bs = ...
@@ -449,41 +449,41 @@ generics.cs:
 #  127|             -1: [ObjectCreation] object creation of type A<Int32>
 #  127|             0: [ObjectCreation] object creation of type Test
 #  127|             1: [IntLiteral] 2
-#  130|     3: [Method] f
+#  130|     5: [Method] f
 #-----|       2: (Parameters)
 #  130|         0: [Parameter] s
 #  130|       4: [BlockStmt] {...}
 #  130|         0: [ReturnStmt] return ...;
 #  130|           0: [ParameterAccess] access to parameter s
 #  134|   8: [Class] Subtle
-#  137|     2: [Method] fs
+#  137|     4: [Method] fs
 #-----|       1: (TypeParameters)
 #  137|         0: [TypeParameter] X
 #-----|       2: (Parameters)
 #  137|         0: [Parameter] i
 #  137|       4: [BlockStmt] {...}
-#  139|     3: [Method] fs
+#  139|     5: [Method] fs
 #-----|       1: (TypeParameters)
 #  139|         0: [TypeParameter] X
 #-----|       2: (Parameters)
 #  139|         0: [Parameter] i
 #  139|         1: [Parameter] j
 #  139|       4: [BlockStmt] {...}
-#  141|     4: [Method] fs
+#  141|     6: [Method] fs
 #-----|       2: (Parameters)
 #  141|         0: [Parameter] i
 #  141|       4: [BlockStmt] {...}
 #  145|   9: [Class] Param<>
-#-----|     0: (TypeParameters)
+#-----|     1: (TypeParameters)
 #  145|       0: [TypeParameter] T
-#  147|     3: [Enum] E
-#  147|       2: [Field] x
+#  147|     4: [Enum] E
+#  147|       4: [Field] x
 #  150|   10: [Class] ConstructedMethods
-#  152|     2: [Method] CM1
+#  152|     4: [Method] CM1
 #-----|       1: (TypeParameters)
 #  152|         0: [TypeParameter] T
 #  152|       4: [BlockStmt] {...}
-#  153|     5: [Method] CM2
+#  153|     7: [Method] CM2
 #-----|       1: (TypeParameters)
 #  153|         0: [TypeParameter] T
 #-----|       2: (Parameters)
@@ -491,10 +491,10 @@ generics.cs:
 #  153|       4: [BlockStmt] {...}
 #  153|         0: [ReturnStmt] return ...;
 #  153|           0: [ParameterAccess] access to parameter t
-#  155|     8: [Class] Class<>
-#-----|       0: (TypeParameters)
+#  155|     10: [Class] Class<>
+#-----|       1: (TypeParameters)
 #  155|         0: [TypeParameter] T1
-#  157|       3: [Method] CM3
+#  157|       4: [Method] CM3
 #-----|         1: (TypeParameters)
 #  157|           0: [TypeParameter] T2
 #-----|         2: (Parameters)
@@ -503,9 +503,9 @@ generics.cs:
 #  157|         4: [BlockStmt] {...}
 #  157|           0: [ReturnStmt] return ...;
 #  157|             0: [ParameterAccess] access to parameter t
-#  160|     11: [Method] NonCM
+#  160|     13: [Method] NonCM
 #  160|       4: [BlockStmt] {...}
-#  162|     12: [Method] CM
+#  162|     14: [Method] CM
 #  163|       4: [BlockStmt] {...}
 #  164|         0: [ExprStmt] ...;
 #  164|           0: [MethodCall] call to method CM1
@@ -532,24 +532,24 @@ generics.cs:
 #  169|             0: [DoubleLiteral] 1
 #  169|             1: [DoubleLiteral] 2
 #  173|   11: [Interface] Interface<>
-#-----|     0: (TypeParameters)
+#-----|     1: (TypeParameters)
 #  173|       0: [TypeParameter] T
-#  175|     2: [Method] set
+#  175|     3: [Method] set
 #-----|       2: (Parameters)
 #  175|         0: [Parameter] t
 #  178|   12: [Class] Inheritance<>
-#-----|     0: (TypeParameters)
+#-----|     1: (TypeParameters)
 #  178|       0: [TypeParameter] T
-#  180|     3: [Method] set
+#  180|     4: [Method] set
 #-----|       2: (Parameters)
 #  180|         0: [Parameter] t
 #  180|       4: [BlockStmt] {...}
 #  183|   13: [Class] InheritanceTest
-#  185|     2: [Field] member
+#  185|     4: [Field] member
 #  188|   14: [Interface] Interface2<,>
-#-----|     0: (TypeParameters)
+#-----|     1: (TypeParameters)
 #  188|       0: [TypeParameter] T1
 #  188|       1: [TypeParameter] T2
-#  190|     2: [Method] M
+#  190|     3: [Method] M
 #-----|       2: (Parameters)
 #  190|         0: [Parameter] x

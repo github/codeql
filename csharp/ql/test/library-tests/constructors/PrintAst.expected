@@ -1,15 +1,15 @@
 constructors.cs:
 #    1| [NamespaceDeclaration] namespace ... { ... }
 #    3|   1: [Class] Class
-#    5|     1: [InstanceConstructor] Class
+#    5|     3: [InstanceConstructor] Class
 #    6|       4: [BlockStmt] {...}
-#    8|     2: [InstanceConstructor] Class
+#    8|     4: [InstanceConstructor] Class
 #-----|       2: (Parameters)
 #    8|         0: [Parameter] i
 #    9|       4: [BlockStmt] {...}
-#   11|     3: [StaticConstructor] Class
+#   11|     5: [StaticConstructor] Class
 #   12|       4: [BlockStmt] {...}
-#   14|     4: [Destructor] ~Class
+#   14|     6: [Destructor] ~Class
 #   15|       4: [BlockStmt] {...}
 #   16|         0: [LocalVariableDeclStmt] ... ...;
 #   16|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...

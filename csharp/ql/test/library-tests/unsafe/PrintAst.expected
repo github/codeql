@@ -1,7 +1,7 @@
 unsafe.cs:
 #    1| [NamespaceDeclaration] namespace ... { ... }
 #    3|   1: [Class] Test
-#    5|     2: [Method] Main
+#    5|     4: [Method] Main
 #-----|       2: (Parameters)
 #    5|         0: [Parameter] args
 #    6|       4: [BlockStmt] {...}
@@ -78,7 +78,7 @@ unsafe.cs:
 #   19|               0: [LocalVariableAccess] access to local variable ip
 #   19|               1: [LocalVariableAccess] access to local variable ip42
 #   19|             1: [LocalVariableAccess] access to local variable distance
-#   22|     3: [Method] f
+#   22|     5: [Method] f
 #-----|       2: (Parameters)
 #   22|         0: [Parameter] p
 #   23|       4: [BlockStmt] {...}
@@ -96,9 +96,9 @@ unsafe.cs:
 #   26|               0: [AddExpr] ... + ...
 #   26|                 0: [ParameterAccess] access to parameter p
 #   26|               1: [IntLiteral] 0
-#   30|     4: [Method] g
+#   30|     6: [Method] g
 #   30|       4: [BlockStmt] {...}
-#   32|     5: [Method] h
+#   32|     7: [Method] h
 #   33|       4: [BlockStmt] {...}
 #   34|         0: [UnsafeStmt] unsafe {...}
 #   35|           0: [BlockStmt] {...}

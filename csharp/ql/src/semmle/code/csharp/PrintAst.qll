@@ -43,30 +43,6 @@ private predicate selectedFile(File file) {
   exists(PrintAstConfiguration config | config.selectedFile(file))
 }
 
-private int attributableOffset(Attributable attributable) {
-  if exists(attributable.getAnAttribute()) then result = 1 else result = 0
-}
-
-private int parameterizableTypeOffset(ValueOrRefType type) {
-  if type instanceof Parameterizable and type.(Parameterizable).getNumberOfParameters() > 0
-  then result = 1
-  else result = 0
-}
-
-private int parameterizableDeclarationOffset(DeclarationWithAccessors declaration) {
-  if declaration instanceof Indexer and declaration.(Parameterizable).getNumberOfParameters() > 0
-  then result = 1
-  else result = 0
-}
-
-private int unboundGenericOffset(ValueOrRefType type) {
-  if type instanceof UnboundGeneric then result = 1 else result = 0
-}
-
-private int assignableOffset(AssignableMember assignable) {
-  if assignable.(Property).hasInitializer() then result = 1 else result = 0
-}
-
 private predicate isInsideUnneededAttributable(Attributable attributable) {
   isInsideUnneededType(attributable.(Field).getDeclaringType()) or
   isInsideUnneededParameterizable(attributable.(Parameter).getDeclaringElement()) or
@@ -320,16 +296,14 @@ final class DeclarationWithAccessorsNode extends AstNode {
     childIndex = 0 and
     result.(AttributesNode).getAttributable() = declaration
     or
-    childIndex = attributableOffset(declaration) and
+    childIndex = 1 and
     result.(ParametersNode).getParameterizable() = declaration
     or
-    childIndex = attributableOffset(declaration) + parameterizableDeclarationOffset(declaration) and
+    childIndex = 2 and
     result.(AstNode).getAst() = declaration.(Property).getInitializer().getParent()
     or
     result.(AstNode).getAst() =
-      rank[childIndex - attributableOffset(declaration) - assignableOffset(declaration) -
-          parameterizableDeclarationOffset(declaration)](Element a, string file, int line,
-        int column |
+      rank[childIndex - 2](Element a, string file, int line, int column |
         a = declaration.getAnAccessor() and
         locationSortKeys(a, file, line, column)
       |
@@ -453,15 +427,14 @@ final class TypeNode extends AstNode {
     childIndex = 0 and
     result.(AttributesNode).getAttributable() = type
     or
-    childIndex = attributableOffset(type) and
+    childIndex = 1 and
     result.(TypeParametersNode).getUnboundGeneric() = type
     or
-    childIndex = attributableOffset(type) + unboundGenericOffset(type) and
+    childIndex = 2 and
     result.(ParametersNode).getParameterizable() = type
     or
     result.(AstNode).getAst() =
-      rank[childIndex - attributableOffset(type) - unboundGenericOffset(type) -
-          parameterizableTypeOffset(type)](Member m, string file, int line, int column |
+      rank[childIndex - 2](Member m, string file, int line, int column |
         m = type.getAMember() and
         locationSortKeys(m, file, line, column)
       |

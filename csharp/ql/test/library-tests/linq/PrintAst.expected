@@ -1,6 +1,6 @@
 queries.cs:
 #    5| [Class] Queries
-#    7|   2: [Method] Queries1
+#    7|   4: [Method] Queries1
 #    8|     4: [BlockStmt] {...}
 #    9|       0: [LocalVariableDeclStmt] ... ...;
 #    9|         0: [LocalVariableDeclAndInitExpr] IList<Int32> list1 = ...
@@ -179,10 +179,10 @@ queries.cs:
 #   56|               0: [LocalVariableAccess] access to local variable a
 #   56|               1: [LocalVariableAccess] access to local variable d
 #   53|           1: [LocalVariableAccess] access to local variable list12
-#   59|   3: [Class] A
-#   61|     2: [Method] GetEnumerator
+#   59|   5: [Class] A
+#   61|     4: [Method] GetEnumerator
 #   62|       4: [BlockStmt] {...}
 #   63|         0: [ThrowStmt] throw ...;
 #   63|           0: [ObjectCreation] object creation of type NotImplementedException
-#   67|   4: [Class] B
-#   69|   5: [Class] C
+#   67|   6: [Class] B
+#   69|   7: [Class] C

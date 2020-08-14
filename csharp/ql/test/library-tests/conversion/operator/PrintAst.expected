@@ -1,14 +1,14 @@
 Operator.cs:
 #    3| [Class] C
-#    5|   2: [ImplicitConversionOperator] implicit conversion
+#    5|   4: [ImplicitConversionOperator] implicit conversion
 #-----|     2: (Parameters)
 #    5|       0: [Parameter] i
 #    5|     4: [BlockStmt] {...}
 #    5|       0: [ReturnStmt] return ...;
 #    5|         0: [NullLiteral] null
-#    7|   3: [Field] x1
-#    8|   4: [Field] x2
-#   11|   5: [Method] M
+#    7|   5: [Field] x1
+#    8|   6: [Field] x2
+#   11|   7: [Method] M
 #   12|     4: [BlockStmt] {...}
 #   13|       0: [ExprStmt] ...;
 #   13|         0: [AssignExpr] ... = ...

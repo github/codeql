@@ -1,6 +1,6 @@
 FoldedLiterals.cs:
 #    1| [Class] FoldedLiterals
-#    3|   2: [Method] Test
+#    3|   4: [Method] Test
 #    4|     4: [BlockStmt] {...}
 #    6|       0: [LocalVariableDeclStmt] ... ...;
 #    6|         0: [LocalVariableDeclAndInitExpr] Boolean b1 = ...
@@ -274,7 +274,7 @@ FoldedLiterals.cs:
 #   77|           1: [LocalVariableAccess] access to local variable m2
 MethodAccess.cs:
 #    3| [Class] MethodAccess
-#    5|   2: [Method] M
+#    5|   4: [Method] M
 #    6|     4: [BlockStmt] {...}
 #    7|       0: [LocalFunctionStmt] M1(...)
 #    7|         0: [LocalFunction] M1
@@ -309,39 +309,39 @@ MethodAccess.cs:
 #   12|             0: [MethodAccess] access to method M3
 #   12|               -1: [TypeAccess] access to type MethodAccess
 #   12|           1: [LocalVariableAccess] access to local variable a
-#   15|   3: [Method] M2
+#   15|   5: [Method] M2
 #   15|     4: [BlockStmt] {...}
-#   17|   4: [Method] M3
+#   17|   6: [Method] M3
 #   17|     4: [BlockStmt] {...}
 Qualifiers.cs:
 #    3| [Class] Qualifiers
-#    5|   2: [Property] S
-#    5|     1: [Getter] get_S
+#    5|   4: [Property] S
+#    5|     3: [Getter] get_S
 #    5|       4: [MethodCall] call to method Static
 #    5|         0: [NullLiteral] null
-#    7|   3: [Property] I
-#    7|     1: [Getter] get_I
+#    7|   5: [Property] I
+#    7|     3: [Getter] get_I
 #    7|       4: [MethodCall] call to method Instance
 #    7|         -1: [ThisAccess] this access
-#    9|   4: [Property] B
-#    9|     1: [Getter] get_B
+#    9|   6: [Property] B
+#    9|     3: [Getter] get_B
 #    9|       4: [MethodCall] call to method Instance
 #    9|         -1: [ThisAccess] this access
-#   11|   5: [Method] Static
+#   11|   7: [Method] Static
 #-----|     1: (TypeParameters)
 #   11|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #   11|       0: [Parameter] o
 #   11|     4: [DefaultValueExpr] default(...)
 #   11|       0: [TypeAccess] access to type T
-#   13|   7: [Method] Instance
+#   13|   9: [Method] Instance
 #-----|     1: (TypeParameters)
 #   13|       0: [TypeParameter] T
 #   13|     4: [DefaultValueExpr] default(...)
 #   13|       0: [TypeAccess] access to type T
 ReducedExpression.cs:
 #    2| [Class] ReducedClass
-#    5|   2: [Field] ReducedExpression
+#    5|   4: [Field] ReducedExpression
 #    5|     1: [AssignExpr] ... = ...
 #    5|       0: [ConditionalExpr] ... ? ... : ...
 #    5|         0: [BoolLiteral] true
@@ -351,7 +351,7 @@ ReducedExpression.cs:
 expressions.cs:
 #    5| [NamespaceDeclaration] namespace ... { ... }
 #    7|   1: [Class] Class
-#   10|     1: [Method] MainLiterals
+#   10|     3: [Method] MainLiterals
 #   11|       4: [BlockStmt] {...}
 #   12|         0: [LocalVariableDeclStmt] ... ...;
 #   12|           0: [LocalVariableDeclExpr] Boolean b
@@ -429,7 +429,7 @@ expressions.cs:
 #   34|           0: [AssignExpr] ... = ...
 #   34|             0: [NullLiteral] null
 #   34|             1: [LocalVariableAccess] access to local variable o
-#   37|     2: [Method] LogicalOperators
+#   37|     4: [Method] LogicalOperators
 #-----|       2: (Parameters)
 #   37|         0: [Parameter] a
 #   37|         1: [Parameter] b
@@ -456,17 +456,17 @@ expressions.cs:
 #   41|               1: [ParameterAccess] access to parameter b
 #   41|             1: [LogicalNotExpr] !...
 #   41|               0: [LocalVariableAccess] access to local variable c
-#   44|     3: [Field] constant
+#   44|     5: [Field] constant
 #   44|       1: [AssignExpr] ... = ...
 #   44|         0: [StringLiteral] "constant"
 #   44|         1: [MemberConstantAccess] access to constant constant
-#   45|     4: [Field] f
+#   45|     6: [Field] f
 #   45|       1: [AssignExpr] ... = ...
 #   45|         0: [IntLiteral] 0
 #   45|         1: [FieldAccess] access to field f
 #   45|           -1: [ThisAccess] this access
-#   46|     5: [Field] name
-#   48|     6: [StaticConstructor] Class
+#   46|     7: [Field] name
+#   48|     8: [StaticConstructor] Class
 #   49|       4: [BlockStmt] {...}
 #   51|         0: [ExprStmt] ...;
 #   51|           0: [AssignExpr] ... = ...
@@ -478,17 +478,17 @@ expressions.cs:
 #   52|             -1: [TypeAccess] access to type Class
 #   53|         2: [ExprStmt] ...;
 #   53|           0: [MethodCall] call to method Foo
-#   56|     7: [InstanceConstructor] Class
+#   56|     9: [InstanceConstructor] Class
 #   56|       3: [ConstructorInitializer] call to constructor Class
 #   56|         0: [IntLiteral] 0
 #   56|       4: [BlockStmt] {...}
-#   58|     8: [InstanceConstructor] Class
+#   58|     10: [InstanceConstructor] Class
 #-----|       2: (Parameters)
 #   58|         0: [Parameter] i
 #   58|       4: [BlockStmt] {...}
-#   60|     9: [Method] Foo
+#   60|     11: [Method] Foo
 #   60|       4: [BlockStmt] {...}
-#   62|     10: [Method] Bar
+#   62|     12: [Method] Bar
 #-----|       2: (Parameters)
 #   62|         0: [Parameter] x
 #   62|         1: [Parameter] s
@@ -498,12 +498,12 @@ expressions.cs:
 #   64|             0: [PropertyCall] access to property Length
 #   64|               -1: [ParameterAccess] access to parameter s
 #   64|             1: [ParameterAccess] access to parameter x
-#   67|     11: [IndexerProperty] Name
-#   69|       1: [Getter] get_Name
+#   67|     13: [IndexerProperty] Name
+#   69|       3: [Getter] get_Name
 #   69|         4: [BlockStmt] {...}
 #   69|           0: [ReturnStmt] return ...;
 #   69|             0: [FieldAccess] access to field name
-#   70|       2: [Setter] set_Name
+#   70|       4: [Setter] set_Name
 #-----|         2: (Parameters)
 #   70|           0: [Parameter] value
 #   70|         4: [BlockStmt] {...}
@@ -511,11 +511,11 @@ expressions.cs:
 #   70|             0: [AssignExpr] ... = ...
 #   70|               0: [ParameterAccess] access to parameter value
 #   70|               1: [FieldAccess] access to field name
-#   73|     12: [Indexer] Item
-#-----|       0: (Parameters)
+#   73|     14: [Indexer] Item
+#-----|       1: (Parameters)
 #   73|         0: [Parameter] i
 #   73|         1: [Parameter] s
-#   75|       2: [Getter] get_Item
+#   75|       3: [Getter] get_Item
 #-----|         2: (Parameters)
 #   73|           0: [Parameter] i
 #   73|           1: [Parameter] s
@@ -528,7 +528,7 @@ expressions.cs:
 #   75|               1: [MethodCall] call to method Equals
 #   75|                 -1: [ParameterAccess] access to parameter s
 #   75|                 0: [StringLiteral] ""
-#   76|       3: [Setter] set_Item
+#   76|       4: [Setter] set_Item
 #-----|         2: (Parameters)
 #   73|           0: [Parameter] i
 #   73|           1: [Parameter] s
@@ -540,7 +540,7 @@ expressions.cs:
 #   76|               0: [PostIncrExpr] ...++
 #   76|                 0: [FieldAccess] access to field f
 #   76|                   -1: [ThisAccess] this access
-#   79|     13: [Method] MainAccesses
+#   79|     15: [Method] MainAccesses
 #-----|       2: (Parameters)
 #   79|         0: [Parameter] other
 #   79|         1: [Parameter] args
@@ -598,7 +598,7 @@ expressions.cs:
 #   87|             1: [ArrayAccess] access to array element
 #   87|               -1: [LocalVariableAccess] access to local variable array
 #   87|               0: [IntLiteral] 1
-#   91|     14: [Method] MainIsAsCast
+#   91|     16: [Method] MainIsAsCast
 #-----|       2: (Parameters)
 #   91|         0: [Parameter] s
 #   91|         1: [Parameter] o
@@ -645,14 +645,14 @@ expressions.cs:
 #  100|               1: [CastExpr] (...) ...
 #  100|                 0: [LocalVariableAccess] access to local variable i
 #  100|             1: [ParameterAccess] access to parameter s
-#  103|     15: [Class] Y<,>
-#-----|       0: (TypeParameters)
+#  103|     17: [Class] Y<,>
+#-----|       1: (TypeParameters)
 #  103|         0: [TypeParameter] T
 #  103|         1: [TypeParameter] U
-#  107|     16: [Class] X<>
-#-----|       0: (TypeParameters)
+#  107|     18: [Class] X<>
+#-----|       1: (TypeParameters)
 #  107|         0: [TypeParameter] T
-#  110|       3: [Method] PrintTypes
+#  110|       4: [Method] PrintTypes
 #  111|         4: [BlockStmt] {...}
 #  112|           0: [LocalVariableDeclStmt] ... ...;
 #  112|             0: [LocalVariableDeclAndInitExpr] Type[] t = ...
@@ -684,8 +684,8 @@ expressions.cs:
 #  124|               0: [DefaultValueExpr] default(...)
 #  124|                 0: [TypeAccess] access to type T
 #  124|               1: [LocalVariableAccess] access to local variable e
-#  129|     18: [Class] Nested
-#  133|       1: [InstanceConstructor] Nested
+#  129|     20: [Class] Nested
+#  133|       3: [InstanceConstructor] Nested
 #-----|         2: (Parameters)
 #  133|           0: [Parameter] i
 #  133|         3: [ConstructorInitializer] call to constructor Class
@@ -693,7 +693,7 @@ expressions.cs:
 #  133|             0: [ParameterAccess] access to parameter i
 #  133|             1: [IntLiteral] 1
 #  133|         4: [BlockStmt] {...}
-#  135|       2: [Method] OtherAccesses
+#  135|       4: [Method] OtherAccesses
 #  136|         4: [BlockStmt] {...}
 #  137|           0: [ExprStmt] ...;
 #  137|             0: [AssignExpr] ... = ...
@@ -713,7 +713,7 @@ expressions.cs:
 #  138|               4: [CastExpr] (...) ...
 #  138|                 0: [IntLiteral] 4
 #  138|               5: [StringLiteral] ""
-#  143|     19: [Method] MainLocalVarDecl
+#  143|     21: [Method] MainLocalVarDecl
 #  144|       4: [BlockStmt] {...}
 #  145|         0: [LocalVariableDeclStmt] ... ...;
 #  145|           0: [LocalVariableDeclExpr] Int32 a
@@ -744,7 +744,7 @@ expressions.cs:
 #  150|           0: [LocalVariableDeclAndInitExpr] String y = ...
 #  150|             0: [StringLiteral] "test"
 #  150|             1: [LocalVariableAccess] access to local variable y
-#  153|     20: [Method] MainLocalConstDecl
+#  153|     22: [Method] MainLocalConstDecl
 #  154|       4: [BlockStmt] {...}
 #  155|         0: [LocalConstantDeclStmt] const ... ...;
 #  155|           0: [LocalVariableDeclAndInitExpr] Single pi = ...
@@ -766,7 +766,7 @@ expressions.cs:
 #  157|                   0: [LocalVariableAccess] access to local variable r
 #  157|               1: [CastExpr] (...) ...
 #  157|                 0: [LocalVariableAccess] access to local variable r
-#  160|     21: [Method] MainChecked
+#  160|     23: [Method] MainChecked
 #  161|       4: [BlockStmt] {...}
 #  162|         0: [LocalVariableDeclStmt] ... ...;
 #  162|           0: [LocalVariableDeclAndInitExpr] String s = ...
@@ -782,7 +782,7 @@ expressions.cs:
 #  163|                   -1: [ThisAccess] this access
 #  163|                 1: [IntLiteral] 20
 #  163|             1: [LocalVariableAccess] access to local variable t
-#  166|     22: [Method] MainElementAccess
+#  166|     24: [Method] MainElementAccess
 #-----|       2: (Parameters)
 #  166|         0: [Parameter] i
 #  167|       4: [BlockStmt] {...}
@@ -794,7 +794,7 @@ expressions.cs:
 #  168|                   0: [ParameterAccess] access to parameter i
 #  168|               0: [IntLiteral] 1
 #  168|             1: [LocalVariableAccess] access to local variable os
-#  171|     23: [Method] MainDelegateAndMethodAccesses
+#  171|     25: [Method] MainDelegateAndMethodAccesses
 #  172|       4: [BlockStmt] {...}
 #  173|         0: [LocalVariableDeclStmt] ... ...;
 #  173|           0: [LocalVariableDeclAndInitExpr] D cd1 = ...
@@ -907,28 +907,28 @@ expressions.cs:
 #  198|                 -1: [ThisAccess] this access
 #  198|             1: [LocalVariableAccess] access to local variable cd1
 #  202|   2: [DelegateType] Predicate<>
-#-----|     0: (TypeParameters)
+#-----|     1: (TypeParameters)
 #  202|       0: [TypeParameter] T
-#-----|     1: (Parameters)
+#-----|     2: (Parameters)
 #  202|       0: [Parameter] value
 #  204|   3: [DelegateType] D
-#-----|     0: (Parameters)
+#-----|     2: (Parameters)
 #  204|       0: [Parameter] x
 #  206|   4: [Class] C
-#  209|     2: [Method] M1
+#  209|     4: [Method] M1
 #-----|       2: (Parameters)
 #  209|         0: [Parameter] i
 #  209|       4: [BlockStmt] {...}
-#  210|     3: [Method] M2
+#  210|     5: [Method] M2
 #-----|       2: (Parameters)
 #  210|         0: [Parameter] i
 #  210|       4: [BlockStmt] {...}
-#  211|     4: [Method] M3
+#  211|     6: [Method] M3
 #-----|       2: (Parameters)
 #  211|         0: [Parameter] i
 #  211|       4: [BlockStmt] {...}
 #  215|   5: [Class] X
-#  218|     2: [Method] F
+#  218|     4: [Method] F
 #-----|       2: (Parameters)
 #  218|         0: [Parameter] i
 #  218|       4: [BlockStmt] {...}
@@ -936,25 +936,25 @@ expressions.cs:
 #  218|           0: [LTExpr] ... < ...
 #  218|             0: [ParameterAccess] access to parameter i
 #  218|             1: [IntLiteral] 2
-#  220|     3: [Method] G
+#  220|     5: [Method] G
 #-----|       2: (Parameters)
 #  220|         0: [Parameter] s
 #  220|       4: [BlockStmt] {...}
 #  220|         0: [ReturnStmt] return ...;
 #  220|           0: [BoolLiteral] false
 #  224|   6: [DelegateType] EventHandler
-#-----|     0: (Parameters)
+#-----|     2: (Parameters)
 #  224|       0: [Parameter] sender
 #  224|       1: [Parameter] e
 #  226|   7: [Class] Button
-#  229|     2: [Event] Click
-#  229|       1: [RemoveEventAccessor] remove_Click
+#  229|     4: [Event] Click
+#  229|       3: [RemoveEventAccessor] remove_Click
 #-----|         2: (Parameters)
 #  229|           0: [Parameter] value
-#  229|       1: [AddEventAccessor] add_Click
+#  229|       3: [AddEventAccessor] add_Click
 #-----|         2: (Parameters)
 #  229|           0: [Parameter] value
-#  231|     3: [Method] OnClick
+#  231|     5: [Method] OnClick
 #-----|       2: (Parameters)
 #  231|         0: [Parameter] e
 #  232|       4: [BlockStmt] {...}
@@ -969,7 +969,7 @@ expressions.cs:
 #  234|                 -1: [ThisAccess] this access
 #  234|               0: [ThisAccess] this access
 #  234|               1: [ParameterAccess] access to parameter e
-#  237|     4: [Method] Reset
+#  237|     6: [Method] Reset
 #  238|       4: [BlockStmt] {...}
 #  239|         0: [ExprStmt] ...;
 #  239|           0: [AssignExpr] ... = ...
@@ -977,9 +977,9 @@ expressions.cs:
 #  239|             1: [EventAccess,EventCall] access to event Click
 #  239|               -1: [ThisAccess] this access
 #  243|   8: [Class] LoginDialog
-#  246|     1: [Field] OkButton
-#  247|     2: [Field] CancelButton
-#  249|     3: [InstanceConstructor] LoginDialog
+#  246|     3: [Field] OkButton
+#  247|     4: [Field] CancelButton
+#  249|     5: [InstanceConstructor] LoginDialog
 #  250|       4: [BlockStmt] {...}
 #  251|         0: [ExprStmt] ...;
 #  251|           0: [AssignExpr] ... = ...
@@ -1007,41 +1007,41 @@ expressions.cs:
 #  254|             1: [EventAccess,EventCall] access to event Click
 #  254|               -1: [FieldAccess] access to field CancelButton
 #  254|                 -1: [ThisAccess] this access
-#  257|     4: [Method] OkButtonClick
+#  257|     6: [Method] OkButtonClick
 #-----|       2: (Parameters)
 #  257|         0: [Parameter] sender
 #  257|         1: [Parameter] e
 #  258|       4: [BlockStmt] {...}
-#  261|     5: [Method] CancelButtonClick
+#  261|     7: [Method] CancelButtonClick
 #-----|       2: (Parameters)
 #  261|         0: [Parameter] sender
 #  261|         1: [Parameter] e
 #  262|       4: [BlockStmt] {...}
 #  267|   9: [Class] IntVector
-#  270|     1: [InstanceConstructor] IntVector
+#  270|     3: [InstanceConstructor] IntVector
 #-----|       2: (Parameters)
 #  270|         0: [Parameter] length
 #  270|       4: [BlockStmt] {...}
-#  272|     2: [Property] Length
-#  272|       1: [Getter] get_Length
+#  272|     4: [Property] Length
+#  272|       3: [Getter] get_Length
 #  272|         4: [BlockStmt] {...}
 #  272|           0: [ReturnStmt] return ...;
 #  272|             0: [IntLiteral] 4
-#  274|     3: [Indexer] Item
-#-----|       0: (Parameters)
+#  274|     5: [Indexer] Item
+#-----|       1: (Parameters)
 #  274|         0: [Parameter] index
-#  274|       2: [Getter] get_Item
+#  274|       3: [Getter] get_Item
 #-----|         2: (Parameters)
 #  274|           0: [Parameter] index
 #  274|         4: [BlockStmt] {...}
 #  274|           0: [ReturnStmt] return ...;
 #  274|             0: [IntLiteral] 0
-#  274|       3: [Setter] set_Item
+#  274|       4: [Setter] set_Item
 #-----|         2: (Parameters)
 #  274|           0: [Parameter] index
 #  274|           1: [Parameter] value
 #  274|         4: [BlockStmt] {...}
-#  276|     4: [IncrementOperator] ++
+#  276|     6: [IncrementOperator] ++
 #-----|       2: (Parameters)
 #  276|         0: [Parameter] iv
 #  277|       4: [BlockStmt] {...}
@@ -1073,7 +1073,7 @@ expressions.cs:
 #  280|                 0: [LocalVariableAccess] access to local variable i
 #  281|         2: [ReturnStmt] return ...;
 #  281|           0: [LocalVariableAccess] access to local variable temp
-#  284|     5: [AddOperator] +
+#  284|     7: [AddOperator] +
 #-----|       2: (Parameters)
 #  284|         0: [Parameter] iv1
 #  284|         1: [Parameter] iv2
@@ -1081,7 +1081,7 @@ expressions.cs:
 #  286|         0: [ReturnStmt] return ...;
 #  286|           0: [ParameterAccess] access to parameter iv1
 #  291|   10: [Class] TestUnaryOperator
-#  294|     2: [Method] MainUnaryOperator
+#  294|     4: [Method] MainUnaryOperator
 #  295|       4: [BlockStmt] {...}
 #  296|         0: [LocalVariableDeclStmt] ... ...;
 #  296|           0: [LocalVariableDeclAndInitExpr] IntVector iv1 = ...
@@ -1107,8 +1107,8 @@ expressions.cs:
 #  300|               1: [LocalVariableAccess] access to local variable iv2
 #  300|             1: [LocalVariableAccess] access to local variable iv3
 #  305|   11: [Struct] Digit
-#  308|     2: [Field] value
-#  310|     3: [InstanceConstructor] Digit
+#  308|     4: [Field] value
+#  310|     5: [InstanceConstructor] Digit
 #-----|       2: (Parameters)
 #  310|         0: [Parameter] value
 #  311|       4: [BlockStmt] {...}
@@ -1129,14 +1129,14 @@ expressions.cs:
 #  314|             0: [ParameterAccess] access to parameter value
 #  314|             1: [FieldAccess] access to field value
 #  314|               -1: [ThisAccess] this access
-#  317|     4: [ImplicitConversionOperator] implicit conversion
+#  317|     6: [ImplicitConversionOperator] implicit conversion
 #-----|       2: (Parameters)
 #  317|         0: [Parameter] d
 #  318|       4: [BlockStmt] {...}
 #  319|         0: [ReturnStmt] return ...;
 #  319|           0: [FieldAccess] access to field value
 #  319|             -1: [ParameterAccess] access to parameter d
-#  322|     5: [ExplicitConversionOperator] explicit conversion
+#  322|     7: [ExplicitConversionOperator] explicit conversion
 #-----|       2: (Parameters)
 #  322|         0: [Parameter] b
 #  323|       4: [BlockStmt] {...}
@@ -1144,7 +1144,7 @@ expressions.cs:
 #  324|           0: [ObjectCreation] object creation of type Digit
 #  324|             0: [ParameterAccess] access to parameter b
 #  329|   12: [Class] TestConversionOperator
-#  332|     2: [Method] MainConversionOperator
+#  332|     4: [Method] MainConversionOperator
 #  333|       4: [BlockStmt] {...}
 #  334|         0: [LocalVariableDeclStmt] ... ...;
 #  334|           0: [LocalVariableDeclAndInitExpr] Digit d = ...
@@ -1158,15 +1158,15 @@ expressions.cs:
 #  335|               0: [LocalVariableAccess] access to local variable d
 #  335|             1: [LocalVariableAccess] access to local variable b
 #  340|   13: [Class] Point
-#  343|     2: [Field] x
-#  343|     3: [Field] y
-#  345|     4: [Property] X
-#  345|       1: [Getter] get_X
+#  343|     4: [Field] x
+#  343|     5: [Field] y
+#  345|     6: [Property] X
+#  345|       3: [Getter] get_X
 #  345|         4: [BlockStmt] {...}
 #  345|           0: [ReturnStmt] return ...;
 #  345|             0: [FieldAccess] access to field x
 #  345|               -1: [ThisAccess] this access
-#  345|       2: [Setter] set_X
+#  345|       4: [Setter] set_X
 #-----|         2: (Parameters)
 #  345|           0: [Parameter] value
 #  345|         4: [BlockStmt] {...}
@@ -1175,13 +1175,13 @@ expressions.cs:
 #  345|               0: [ParameterAccess] access to parameter value
 #  345|               1: [FieldAccess] access to field x
 #  345|                 -1: [ThisAccess] this access
-#  346|     5: [Property] Y
-#  346|       1: [Getter] get_Y
+#  346|     7: [Property] Y
+#  346|       3: [Getter] get_Y
 #  346|         4: [BlockStmt] {...}
 #  346|           0: [ReturnStmt] return ...;
 #  346|             0: [FieldAccess] access to field y
 #  346|               -1: [ThisAccess] this access
-#  346|       2: [Setter] set_Y
+#  346|       4: [Setter] set_Y
 #-----|         2: (Parameters)
 #  346|           0: [Parameter] value
 #  346|         4: [BlockStmt] {...}
@@ -1191,15 +1191,15 @@ expressions.cs:
 #  346|               1: [FieldAccess] access to field y
 #  346|                 -1: [ThisAccess] this access
 #  350|   14: [Class] Rectangle
-#  353|     2: [Field] p1
-#  353|     3: [Field] p2
-#  355|     4: [Property] P1
-#  355|       1: [Getter] get_P1
+#  353|     4: [Field] p1
+#  353|     5: [Field] p2
+#  355|     6: [Property] P1
+#  355|       3: [Getter] get_P1
 #  355|         4: [BlockStmt] {...}
 #  355|           0: [ReturnStmt] return ...;
 #  355|             0: [FieldAccess] access to field p1
 #  355|               -1: [ThisAccess] this access
-#  355|       2: [Setter] set_P1
+#  355|       4: [Setter] set_P1
 #-----|         2: (Parameters)
 #  355|           0: [Parameter] value
 #  355|         4: [BlockStmt] {...}
@@ -1208,13 +1208,13 @@ expressions.cs:
 #  355|               0: [ParameterAccess] access to parameter value
 #  355|               1: [FieldAccess] access to field p1
 #  355|                 -1: [ThisAccess] this access
-#  356|     5: [Property] P2
-#  356|       1: [Getter] get_P2
+#  356|     7: [Property] P2
+#  356|       3: [Getter] get_P2
 #  356|         4: [BlockStmt] {...}
 #  356|           0: [ReturnStmt] return ...;
 #  356|             0: [FieldAccess] access to field p2
 #  356|               -1: [ThisAccess] this access
-#  356|       2: [Setter] set_P2
+#  356|       4: [Setter] set_P2
 #-----|         2: (Parameters)
 #  356|           0: [Parameter] value
 #  356|         4: [BlockStmt] {...}
@@ -1224,42 +1224,42 @@ expressions.cs:
 #  356|               1: [FieldAccess] access to field p2
 #  356|                 -1: [ThisAccess] this access
 #  360|   15: [Class] Rectangle2
-#  363|     2: [Field] p1
+#  363|     4: [Field] p1
 #  363|       1: [AssignExpr] ... = ...
 #  363|         0: [ObjectCreation] object creation of type Point
 #  363|         1: [FieldAccess] access to field p1
 #  363|           -1: [ThisAccess] this access
-#  364|     3: [Field] p2
+#  364|     5: [Field] p2
 #  364|       1: [AssignExpr] ... = ...
 #  364|         0: [ObjectCreation] object creation of type Point
 #  364|         1: [FieldAccess] access to field p2
 #  364|           -1: [ThisAccess] this access
-#  366|     4: [Property] P1
-#  366|       1: [Getter] get_P1
+#  366|     6: [Property] P1
+#  366|       3: [Getter] get_P1
 #  366|         4: [BlockStmt] {...}
 #  366|           0: [ReturnStmt] return ...;
 #  366|             0: [FieldAccess] access to field p1
 #  366|               -1: [ThisAccess] this access
-#  367|     5: [Property] P2
-#  367|       1: [Getter] get_P2
+#  367|     7: [Property] P2
+#  367|       3: [Getter] get_P2
 #  367|         4: [BlockStmt] {...}
 #  367|           0: [ReturnStmt] return ...;
 #  367|             0: [FieldAccess] access to field p2
 #  367|               -1: [ThisAccess] this access
 #  371|   16: [Class] Contact
-#  374|     2: [Field] name
-#  375|     3: [Field] phoneNumbers
+#  374|     4: [Field] name
+#  375|     5: [Field] phoneNumbers
 #  375|       1: [AssignExpr] ... = ...
 #  375|         0: [ObjectCreation] object creation of type List<String>
 #  375|         1: [FieldAccess] access to field phoneNumbers
 #  375|           -1: [ThisAccess] this access
-#  377|     4: [IndexerProperty] Name
-#  377|       1: [Getter] get_Name
+#  377|     6: [IndexerProperty] Name
+#  377|       3: [Getter] get_Name
 #  377|         4: [BlockStmt] {...}
 #  377|           0: [ReturnStmt] return ...;
 #  377|             0: [FieldAccess] access to field name
 #  377|               -1: [ThisAccess] this access
-#  377|       2: [Setter] set_Name
+#  377|       4: [Setter] set_Name
 #-----|         2: (Parameters)
 #  377|           0: [Parameter] value
 #  377|         4: [BlockStmt] {...}
@@ -1268,14 +1268,14 @@ expressions.cs:
 #  377|               0: [ParameterAccess] access to parameter value
 #  377|               1: [FieldAccess] access to field name
 #  377|                 -1: [ThisAccess] this access
-#  378|     5: [IndexerProperty] PhoneNumbers
-#  378|       1: [Getter] get_PhoneNumbers
+#  378|     7: [IndexerProperty] PhoneNumbers
+#  378|       3: [Getter] get_PhoneNumbers
 #  378|         4: [BlockStmt] {...}
 #  378|           0: [ReturnStmt] return ...;
 #  378|             0: [FieldAccess] access to field phoneNumbers
 #  378|               -1: [ThisAccess] this access
 #  382|   17: [Class] TestCreations
-#  385|     2: [Method] MainCreations
+#  385|     4: [Method] MainCreations
 #  386|       4: [BlockStmt] {...}
 #  387|         0: [LocalVariableDeclStmt] ... ...;
 #  387|           0: [LocalVariableDeclAndInitExpr] Point a = ...
@@ -1523,12 +1523,12 @@ expressions.cs:
 #  429|                     0: [LocalVariableAccess] access to local variable i
 #  429|                     1: [IntLiteral] 2
 #  429|             1: [LocalVariableAccess] access to local variable list3
-#  432|     3: [DelegateType] S
-#-----|       0: (Parameters)
+#  432|     5: [DelegateType] S
+#-----|       2: (Parameters)
 #  432|         0: [Parameter] x
 #  432|         1: [Parameter] y
-#  433|     4: [DelegateType] Unit
-#  435|     5: [Method] MainAnonymousFunctions
+#  433|     6: [DelegateType] Unit
+#  435|     7: [Method] MainAnonymousFunctions
 #  436|       4: [BlockStmt] {...}
 #  437|         0: [LocalVariableDeclStmt] ... ...;
 #  437|           0: [LocalVariableDeclAndInitExpr] Func<Int16,Byte> f1 = ...
@@ -1616,7 +1616,7 @@ expressions.cs:
 #  445|                     1: [IntLiteral] 1
 #  445|             1: [LocalVariableAccess] access to local variable f8
 #  450|   18: [Class] OperatorCalls
-#  452|     2: [Method] delegateCombine
+#  452|     4: [Method] delegateCombine
 #-----|       2: (Parameters)
 #  452|         0: [Parameter] fun
 #  453|       4: [BlockStmt] {...}
@@ -1628,7 +1628,7 @@ expressions.cs:
 #  455|           0: [AssignAddExpr] ... += ...
 #  455|             0: [ParameterAccess] access to parameter fun
 #  455|             1: [LocalVariableAccess] access to local variable PropertyChanged
-#  458|     3: [Method] addition
+#  458|     5: [Method] addition
 #-----|       2: (Parameters)
 #  458|         0: [Parameter] a
 #  458|         1: [Parameter] b
@@ -1646,9 +1646,9 @@ expressions.cs:
 #  461|             1: [LocalVariableAccess] access to local variable result
 #  462|         2: [ReturnStmt] return ...;
 #  462|           0: [LocalVariableAccess] access to local variable result
-#  464|     4: [Class] Num
-#  466|       1: [Field] value
-#  468|       2: [InstanceConstructor] Num
+#  464|     6: [Class] Num
+#  466|       3: [Field] value
+#  468|       4: [InstanceConstructor] Num
 #-----|         2: (Parameters)
 #  468|           0: [Parameter] value
 #  469|         4: [BlockStmt] {...}
@@ -1657,7 +1657,7 @@ expressions.cs:
 #  470|               0: [ParameterAccess] access to parameter value
 #  470|               1: [FieldAccess] access to field value
 #  470|                 -1: [ThisAccess] this access
-#  473|       3: [AddOperator] +
+#  473|       5: [AddOperator] +
 #-----|         2: (Parameters)
 #  473|           0: [Parameter] c1
 #  473|           1: [Parameter] c2
@@ -1669,11 +1669,11 @@ expressions.cs:
 #  475|                   -1: [ParameterAccess] access to parameter c1
 #  475|                 1: [FieldAccess] access to field value
 #  475|                   -1: [ParameterAccess] access to parameter c2
-#  479|     5: [DelegateType] MyDelegate
-#-----|       0: (Parameters)
+#  479|     7: [DelegateType] MyDelegate
+#-----|       2: (Parameters)
 #  479|         0: [Parameter] e
 #  482|   19: [Class] ExpressionDepth
-#  484|     2: [Field] d
+#  484|     4: [Field] d
 #  484|       1: [AssignExpr] ... = ...
 #  484|         0: [AddExpr] ... + ...
 #  484|           0: [AddExpr] ... + ...
@@ -1836,7 +1836,7 @@ expressions.cs:
 #  485|           1: [IntLiteral] 1
 #  484|         1: [MemberConstantAccess] access to constant d
 #  488|   20: [Class] TupleExprs
-#  490|     2: [Method] Test
+#  490|     4: [Method] Test
 #  491|       4: [BlockStmt] {...}
 #  492|         0: [LocalVariableDeclStmt] ... ...;
 #  492|           0: [LocalVariableDeclAndInitExpr] (Int32,String) a = ...

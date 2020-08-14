@@ -1,6 +1,6 @@
 fixed.cs:
 #    3| [Class] Fixed
-#    5|   2: [Method] fixed1
+#    5|   4: [Method] fixed1
 #    6|     4: [BlockStmt] {...}
 #    7|       0: [LocalVariableDeclStmt] ... ...;
 #    7|         0: [LocalVariableDeclAndInitExpr] Byte[] buffer = ...
@@ -41,14 +41,14 @@ fixed.cs:
 statements.cs:
 #    5| [NamespaceDeclaration] namespace ... { ... }
 #    7|   1: [Class] Class
-#   10|     2: [Method] Main
+#   10|     4: [Method] Main
 #   11|       4: [BlockStmt] {...}
 #   12|         0: [LabelStmt] block:
 #   13|         1: [BlockStmt] {...}
 #   14|           0: [BlockStmt] {...}
 #   16|           1: [BlockStmt] {...}
 #   17|             0: [BlockStmt] {...}
-#   23|     3: [Method] MainEmpty
+#   23|     5: [Method] MainEmpty
 #   24|       4: [BlockStmt] {...}
 #   25|         0: [LocalVariableDeclStmt] ... ...;
 #   25|           0: [LocalVariableDeclAndInitExpr] Class c = ...
@@ -60,7 +60,7 @@ statements.cs:
 #   27|         4: [IfStmt] if (...) ...
 #   27|           0: [BoolLiteral] true
 #   27|           1: [EmptyStmt] ;
-#   30|     4: [Method] MainLocalVarDecl
+#   30|     6: [Method] MainLocalVarDecl
 #   31|       4: [BlockStmt] {...}
 #   32|         0: [LocalVariableDeclStmt] ... ...;
 #   32|           0: [LocalVariableDeclExpr] Int32 a
@@ -91,7 +91,7 @@ statements.cs:
 #   37|           0: [LocalVariableDeclAndInitExpr] String y = ...
 #   37|             0: [StringLiteral] "test"
 #   37|             1: [LocalVariableAccess] access to local variable y
-#   40|     5: [Method] MainLocalConstDecl
+#   40|     7: [Method] MainLocalConstDecl
 #   41|       4: [BlockStmt] {...}
 #   42|         0: [LocalConstantDeclStmt] const ... ...;
 #   42|           0: [LocalVariableDeclAndInitExpr] Single pi = ...
@@ -113,7 +113,7 @@ statements.cs:
 #   44|                   0: [LocalVariableAccess] access to local variable r
 #   44|               1: [CastExpr] (...) ...
 #   44|                 0: [LocalVariableAccess] access to local variable r
-#   47|     6: [Method] MainExpr
+#   47|     8: [Method] MainExpr
 #   48|       4: [BlockStmt] {...}
 #   49|         0: [LocalVariableDeclStmt] ... ...;
 #   49|           0: [LocalVariableDeclExpr] Int32 i
@@ -132,7 +132,7 @@ statements.cs:
 #   53|           0: [MethodCall] call to method WriteLine
 #   53|             -1: [TypeAccess] access to type Console
 #   53|             0: [LocalVariableAccess] access to local variable i
-#   56|     7: [Method] MainIf
+#   56|     9: [Method] MainIf
 #-----|       2: (Parameters)
 #   56|         0: [Parameter] args
 #   57|       4: [BlockStmt] {...}
@@ -151,7 +151,7 @@ statements.cs:
 #   64|               0: [MethodCall] call to method WriteLine
 #   64|                 -1: [TypeAccess] access to type Console
 #   64|                 0: [StringLiteral] "One or more arguments"
-#   69|     8: [Method] MainSwitch
+#   69|     10: [Method] MainSwitch
 #-----|       2: (Parameters)
 #   69|         0: [Parameter] args
 #   70|       4: [BlockStmt] {...}
@@ -184,7 +184,7 @@ statements.cs:
 #   81|               1: [CastExpr] (...) ...
 #   81|                 0: [LocalVariableAccess] access to local variable n
 #   82|           8: [BreakStmt] break;
-#   86|     9: [Method] StringSwitch
+#   86|     11: [Method] StringSwitch
 #-----|       2: (Parameters)
 #   86|         0: [Parameter] foo
 #   87|       4: [BlockStmt] {...}
@@ -226,7 +226,7 @@ statements.cs:
 #  106|             0: [IntLiteral] 7
 #  108|         1: [ReturnStmt] return ...;
 #  108|           0: [IntLiteral] 7
-#  111|     10: [Method] MainWhile
+#  111|     12: [Method] MainWhile
 #-----|       2: (Parameters)
 #  111|         0: [Parameter] args
 #  112|       4: [BlockStmt] {...}
@@ -249,7 +249,7 @@ statements.cs:
 #  117|             1: [ExprStmt] ...;
 #  117|               0: [PostIncrExpr] ...++
 #  117|                 0: [LocalVariableAccess] access to local variable i
-#  121|     11: [Method] MainDo
+#  121|     13: [Method] MainDo
 #  122|       4: [BlockStmt] {...}
 #  123|         0: [LocalVariableDeclStmt] ... ...;
 #  123|           0: [LocalVariableDeclExpr] String s
@@ -271,7 +271,7 @@ statements.cs:
 #  127|                 0: [MethodCall] call to method WriteLine
 #  127|                   -1: [TypeAccess] access to type Console
 #  127|                   0: [LocalVariableAccess] access to local variable s
-#  131|     12: [Method] MainFor
+#  131|     14: [Method] MainFor
 #-----|       2: (Parameters)
 #  131|         0: [Parameter] args
 #  132|       4: [BlockStmt] {...}
@@ -292,7 +292,7 @@ statements.cs:
 #  135|                 0: [ArrayAccess] access to array element
 #  135|                   -1: [ParameterAccess] access to parameter args
 #  135|                   0: [LocalVariableAccess] access to local variable i
-#  140|     13: [Method] MainForeach
+#  140|     15: [Method] MainForeach
 #-----|       2: (Parameters)
 #  140|         0: [Parameter] args
 #  141|       4: [BlockStmt] {...}
@@ -304,7 +304,7 @@ statements.cs:
 #  144|               0: [MethodCall] call to method WriteLine
 #  144|                 -1: [TypeAccess] access to type Console
 #  144|                 0: [LocalVariableAccess] access to local variable s
-#  148|     14: [Method] MainBreak
+#  148|     16: [Method] MainBreak
 #  149|       4: [BlockStmt] {...}
 #  150|         0: [WhileStmt] while (...) ...
 #  150|           0: [BoolLiteral] true
@@ -323,7 +323,7 @@ statements.cs:
 #  154|               0: [MethodCall] call to method WriteLine
 #  154|                 -1: [TypeAccess] access to type Console
 #  154|                 0: [LocalVariableAccess] access to local variable s
-#  158|     15: [Method] MainContinue
+#  158|     17: [Method] MainContinue
 #-----|       2: (Parameters)
 #  158|         0: [Parameter] args
 #  159|       4: [BlockStmt] {...}
@@ -351,7 +351,7 @@ statements.cs:
 #  163|                 0: [ArrayAccess] access to array element
 #  163|                   -1: [ParameterAccess] access to parameter args
 #  163|                   0: [LocalVariableAccess] access to local variable i
-#  167|     16: [Method] MainGoto
+#  167|     18: [Method] MainGoto
 #-----|       2: (Parameters)
 #  167|         0: [Parameter] args
 #  168|       4: [BlockStmt] {...}
@@ -375,7 +375,7 @@ statements.cs:
 #  172|             1: [PropertyCall] access to property Length
 #  172|               -1: [ParameterAccess] access to parameter args
 #  172|           1: [GotoLabelStmt] goto ...;
-#  175|     17: [Method] Add
+#  175|     19: [Method] Add
 #-----|       2: (Parameters)
 #  175|         0: [Parameter] a
 #  175|         1: [Parameter] b
@@ -384,7 +384,7 @@ statements.cs:
 #  177|           0: [AddExpr] ... + ...
 #  177|             0: [ParameterAccess] access to parameter a
 #  177|             1: [ParameterAccess] access to parameter b
-#  179|     18: [Method] MainReturn
+#  179|     20: [Method] MainReturn
 #  180|       4: [BlockStmt] {...}
 #  181|         0: [ExprStmt] ...;
 #  181|           0: [MethodCall] call to method WriteLine
@@ -393,7 +393,7 @@ statements.cs:
 #  181|               0: [IntLiteral] 1
 #  181|               1: [IntLiteral] 2
 #  182|         1: [ReturnStmt] return ...;
-#  185|     19: [Method] Range
+#  185|     21: [Method] Range
 #-----|       2: (Parameters)
 #  185|         0: [Parameter] from
 #  185|         1: [Parameter] to
@@ -411,7 +411,7 @@ statements.cs:
 #  189|             0: [YieldReturnStmt] yield return ...;
 #  189|               0: [LocalVariableAccess] access to local variable i
 #  191|         1: [YieldBreakStmt] yield break;
-#  193|     20: [Method] MainYield
+#  193|     22: [Method] MainYield
 #  194|       4: [BlockStmt] {...}
 #  195|         0: [ForeachStmt] foreach (... ... in ...) ...
 #  195|           0: [LocalVariableDeclExpr] Int32 x
@@ -424,7 +424,7 @@ statements.cs:
 #  197|               0: [MethodCall] call to method WriteLine
 #  197|                 -1: [TypeAccess] access to type Console
 #  197|                 0: [LocalVariableAccess] access to local variable x
-#  201|     21: [Method] Divide
+#  201|     23: [Method] Divide
 #-----|       2: (Parameters)
 #  201|         0: [Parameter] x
 #  201|         1: [Parameter] y
@@ -440,7 +440,7 @@ statements.cs:
 #  204|           0: [DivExpr] ... / ...
 #  204|             0: [ParameterAccess] access to parameter x
 #  204|             1: [ParameterAccess] access to parameter y
-#  206|     22: [Method] MainTryThrow
+#  206|     24: [Method] MainTryThrow
 #-----|       2: (Parameters)
 #  206|         0: [Parameter] args
 #  207|       4: [BlockStmt] {...}
@@ -496,7 +496,7 @@ statements.cs:
 #  224|                 0: [MethodCall] call to method WriteLine
 #  224|                   -1: [TypeAccess] access to type Console
 #  224|                   0: [StringLiteral] "Exception"
-#  232|     23: [Method] MainCheckedUnchecked
+#  232|     25: [Method] MainCheckedUnchecked
 #  233|       4: [BlockStmt] {...}
 #  234|         0: [LocalVariableDeclStmt] ... ...;
 #  234|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
@@ -519,9 +519,9 @@ statements.cs:
 #  241|                 0: [AddExpr] ... + ...
 #  241|                   0: [LocalVariableAccess] access to local variable i
 #  241|                   1: [IntLiteral] 1
-#  245|     24: [Class] AccountLock
-#  247|       2: [Field] balance
-#  248|       3: [Method] Withdraw
+#  245|     26: [Class] AccountLock
+#  247|       4: [Field] balance
+#  248|       5: [Method] Withdraw
 #-----|         2: (Parameters)
 #  248|           0: [Parameter] amount
 #  249|         4: [BlockStmt] {...}
@@ -542,7 +542,7 @@ statements.cs:
 #  256|                   0: [ParameterAccess] access to parameter amount
 #  256|                   1: [FieldAccess] access to field balance
 #  256|                     -1: [ThisAccess] this access
-#  261|     25: [Method] MainUsing
+#  261|     27: [Method] MainUsing
 #  262|       4: [BlockStmt] {...}
 #  263|         0: [UsingBlockStmt] using (...) {...}
 #  263|           -1: [LocalVariableDeclAndInitExpr] TextWriter w = ...
@@ -568,7 +568,7 @@ statements.cs:
 #  269|             -1: [TypeAccess] access to type File
 #  269|             0: [StringLiteral] "test.txt"
 #  270|           1: [BlockStmt] {...}
-#  274|     26: [Method] MainLabeled
+#  274|     28: [Method] MainLabeled
 #  275|       4: [BlockStmt] {...}
 #  276|         0: [GotoLabelStmt] goto ...;
 #  277|         1: [LabelStmt] Label:
