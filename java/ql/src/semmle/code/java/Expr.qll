@@ -1243,7 +1243,7 @@ class VariableAssign extends VariableUpdate {
   }
 
   /**
-   * Gets the source of this assignment, if any.
+   * Gets the source (right-hand side) of this assignment, if any.
    *
    * An initialization in a `CatchClause` or `EnhancedForStmt` is implicit and
    * does not have a source.
@@ -1344,10 +1344,7 @@ class VarAccess extends Expr, @varaccess {
    */
   predicate isLValue() {
     exists(Assignment a | a.getDest() = this) or
-    exists(PreIncExpr e | e.getExpr() = this) or
-    exists(PreDecExpr e | e.getExpr() = this) or
-    exists(PostIncExpr e | e.getExpr() = this) or
-    exists(PostDecExpr e | e.getExpr() = this)
+    exists(UnaryAssignExpr e | e.getExpr() = this)
   }
 
   /**

@@ -157,6 +157,10 @@ float safeFloor(float v) {
   result = v
 }
 
+private class UnsignedMulExpr extends MulExpr {
+  UnsignedMulExpr() { this.getType().(IntegralType).isUnsigned() }
+}
+
 /** Set of expressions which we know how to analyze. */
 private predicate analyzableExpr(Expr e) {
   // The type of the expression must be arithmetic. We reuse the logic in
@@ -178,6 +182,8 @@ private predicate analyzableExpr(Expr e) {
     e instanceof AddExpr
     or
     e instanceof SubExpr
+    or
+    e instanceof UnsignedMulExpr
     or
     e instanceof AssignExpr
     or
@@ -281,6 +287,10 @@ private predicate exprDependsOnDef(Expr e, RangeSsaDefinition srcDef, StackVaria
   exists(AddExpr addExpr | e = addExpr | exprDependsOnDef(addExpr.getAnOperand(), srcDef, srcVar))
   or
   exists(SubExpr subExpr | e = subExpr | exprDependsOnDef(subExpr.getAnOperand(), srcDef, srcVar))
+  or
+  exists(UnsignedMulExpr mulExpr | e = mulExpr |
+    exprDependsOnDef(mulExpr.getAnOperand(), srcDef, srcVar)
+  )
   or
   exists(AssignExpr addExpr | e = addExpr | exprDependsOnDef(addExpr.getRValue(), srcDef, srcVar))
   or
@@ -634,6 +644,13 @@ private float getLowerBoundsImpl(Expr expr) {
     result = addRoundingDown(xLow, -yHigh)
   )
   or
+  exists(UnsignedMulExpr mulExpr, float xLow, float yLow |
+    expr = mulExpr and
+    xLow = getFullyConvertedLowerBounds(mulExpr.getLeftOperand()) and
+    yLow = getFullyConvertedLowerBounds(mulExpr.getRightOperand()) and
+    result = xLow * yLow
+  )
+  or
   exists(AssignExpr assign |
     expr = assign and
     result = getFullyConvertedLowerBounds(assign.getRValue())
@@ -735,7 +752,7 @@ private float getLowerBoundsImpl(Expr expr) {
   exists(RShiftExpr rsExpr, float left, int right |
     rsExpr = expr and
     left = getFullyConvertedLowerBounds(rsExpr.getLeftOperand()) and
-    right = rsExpr.getRightOperand().getValue().toInt() and
+    right = rsExpr.getRightOperand().getFullyConverted().getValue().toInt() and
     result = safeFloor(left / 2.pow(right))
   )
   or
@@ -809,6 +826,13 @@ private float getUpperBoundsImpl(Expr expr) {
     xHigh = getFullyConvertedUpperBounds(subExpr.getLeftOperand()) and
     yLow = getFullyConvertedLowerBounds(subExpr.getRightOperand()) and
     result = addRoundingUp(xHigh, -yLow)
+  )
+  or
+  exists(UnsignedMulExpr mulExpr, float xHigh, float yHigh |
+    expr = mulExpr and
+    xHigh = getFullyConvertedUpperBounds(mulExpr.getLeftOperand()) and
+    yHigh = getFullyConvertedUpperBounds(mulExpr.getRightOperand()) and
+    result = xHigh * yHigh
   )
   or
   exists(AssignExpr assign |
@@ -912,7 +936,7 @@ private float getUpperBoundsImpl(Expr expr) {
   exists(RShiftExpr rsExpr, float left, int right |
     rsExpr = expr and
     left = getFullyConvertedUpperBounds(rsExpr.getLeftOperand()) and
-    right = rsExpr.getRightOperand().getValue().toInt() and
+    right = rsExpr.getRightOperand().getFullyConverted().getValue().toInt() and
     result = safeFloor(left / 2.pow(right))
   )
   or

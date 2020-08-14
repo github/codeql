@@ -11,9 +11,7 @@ class MaximalFlowsConfig extends DataFlow::Configuration {
     node instanceof DataFlow::ParameterNode
     or
     node instanceof DataFlow::EssaNode and
-    not exists(DataFlow::EssaNode pred |
-      DataFlow::localFlowStep(pred, node)
-    )
+    not exists(DataFlow::EssaNode pred | DataFlow::localFlowStep(pred, node))
   }
 
   override predicate isSink(DataFlow::Node node) {

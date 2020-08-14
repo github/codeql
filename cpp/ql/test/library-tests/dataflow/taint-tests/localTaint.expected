@@ -62,6 +62,57 @@
 | copyableclass.cpp:67:13:67:18 | call to source | copyableclass.cpp:67:13:67:20 | call to MyCopyableClass | TAINT |
 | copyableclass.cpp:67:13:67:20 | call to MyCopyableClass | copyableclass.cpp:67:8:67:9 | ref arg s3 | TAINT |
 | copyableclass.cpp:67:13:67:20 | call to MyCopyableClass | copyableclass.cpp:67:11:67:11 | call to operator= | TAINT |
+| copyableclass_declonly.cpp:21:30:21:30 | 1 | copyableclass_declonly.cpp:21:30:21:31 | call to MyCopyableClassDeclOnly | TAINT |
+| copyableclass_declonly.cpp:21:30:21:31 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:23:30:23:31 | s1 |  |
+| copyableclass_declonly.cpp:21:30:21:31 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:27:8:27:9 | s1 |  |
+| copyableclass_declonly.cpp:22:31:22:32 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:28:8:28:9 | s2 |  |
+| copyableclass_declonly.cpp:22:32:22:32 | 1 | copyableclass_declonly.cpp:22:31:22:32 | call to MyCopyableClassDeclOnly | TAINT |
+| copyableclass_declonly.cpp:23:30:23:31 | s1 | copyableclass_declonly.cpp:23:30:23:32 | call to MyCopyableClassDeclOnly |  |
+| copyableclass_declonly.cpp:23:30:23:32 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:29:8:29:9 | s3 |  |
+| copyableclass_declonly.cpp:24:27:24:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:25:3:25:4 | s4 |  |
+| copyableclass_declonly.cpp:24:27:24:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:30:8:30:9 | s4 |  |
+| copyableclass_declonly.cpp:25:3:25:4 | ref arg s4 | copyableclass_declonly.cpp:30:8:30:9 | s4 |  |
+| copyableclass_declonly.cpp:25:8:25:8 | 1 | copyableclass_declonly.cpp:25:8:25:8 | call to MyCopyableClassDeclOnly | TAINT |
+| copyableclass_declonly.cpp:25:8:25:8 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:25:3:25:4 | ref arg s4 | TAINT |
+| copyableclass_declonly.cpp:25:8:25:8 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:25:6:25:6 | call to operator= | TAINT |
+| copyableclass_declonly.cpp:34:30:34:35 | call to source | copyableclass_declonly.cpp:34:30:34:38 | call to MyCopyableClassDeclOnly | TAINT |
+| copyableclass_declonly.cpp:34:30:34:38 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:36:30:36:31 | s1 |  |
+| copyableclass_declonly.cpp:34:30:34:38 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:40:8:40:9 | s1 |  |
+| copyableclass_declonly.cpp:35:31:35:39 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:41:8:41:9 | s2 |  |
+| copyableclass_declonly.cpp:35:32:35:37 | call to source | copyableclass_declonly.cpp:35:31:35:39 | call to MyCopyableClassDeclOnly | TAINT |
+| copyableclass_declonly.cpp:36:30:36:31 | s1 | copyableclass_declonly.cpp:36:30:36:32 | call to MyCopyableClassDeclOnly |  |
+| copyableclass_declonly.cpp:36:30:36:32 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:42:8:42:9 | s3 |  |
+| copyableclass_declonly.cpp:37:27:37:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:38:3:38:4 | s4 |  |
+| copyableclass_declonly.cpp:37:27:37:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:43:8:43:9 | s4 |  |
+| copyableclass_declonly.cpp:38:3:38:4 | ref arg s4 | copyableclass_declonly.cpp:43:8:43:9 | s4 |  |
+| copyableclass_declonly.cpp:38:8:38:13 | call to source | copyableclass_declonly.cpp:38:8:38:15 | call to MyCopyableClassDeclOnly | TAINT |
+| copyableclass_declonly.cpp:38:8:38:15 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:38:3:38:4 | ref arg s4 | TAINT |
+| copyableclass_declonly.cpp:38:8:38:15 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:38:6:38:6 | call to operator= | TAINT |
+| copyableclass_declonly.cpp:47:27:47:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:48:32:48:33 | s1 |  |
+| copyableclass_declonly.cpp:47:27:47:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:49:30:49:31 | s1 |  |
+| copyableclass_declonly.cpp:47:27:47:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:51:8:51:9 | s1 |  |
+| copyableclass_declonly.cpp:47:27:47:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:53:8:53:9 | s1 |  |
+| copyableclass_declonly.cpp:48:31:48:33 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:54:8:54:9 | s2 |  |
+| copyableclass_declonly.cpp:48:32:48:33 | s1 | copyableclass_declonly.cpp:48:31:48:33 | call to MyCopyableClassDeclOnly |  |
+| copyableclass_declonly.cpp:49:30:49:31 | s1 | copyableclass_declonly.cpp:49:30:49:32 | call to MyCopyableClassDeclOnly |  |
+| copyableclass_declonly.cpp:49:30:49:32 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:55:8:55:9 | s3 |  |
+| copyableclass_declonly.cpp:50:27:50:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:51:3:51:4 | s4 |  |
+| copyableclass_declonly.cpp:50:27:50:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:56:8:56:9 | s4 |  |
+| copyableclass_declonly.cpp:51:3:51:4 | ref arg s4 | copyableclass_declonly.cpp:56:8:56:9 | s4 |  |
+| copyableclass_declonly.cpp:51:8:51:9 | s1 | copyableclass_declonly.cpp:51:3:51:4 | ref arg s4 | TAINT |
+| copyableclass_declonly.cpp:51:8:51:9 | s1 | copyableclass_declonly.cpp:51:6:51:6 | call to operator= | TAINT |
+| copyableclass_declonly.cpp:60:31:60:64 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:65:8:65:9 | s1 |  |
+| copyableclass_declonly.cpp:60:56:60:61 | call to source | copyableclass_declonly.cpp:60:31:60:64 | call to MyCopyableClassDeclOnly | TAINT |
+| copyableclass_declonly.cpp:61:27:61:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:63:3:63:4 | s2 |  |
+| copyableclass_declonly.cpp:61:27:61:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:66:8:66:9 | s2 |  |
+| copyableclass_declonly.cpp:62:27:62:28 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:67:8:67:9 | s3 |  |
+| copyableclass_declonly.cpp:63:3:63:4 | ref arg s2 | copyableclass_declonly.cpp:66:8:66:9 | s2 |  |
+| copyableclass_declonly.cpp:63:8:63:40 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:63:3:63:4 | ref arg s2 | TAINT |
+| copyableclass_declonly.cpp:63:8:63:40 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:63:6:63:6 | call to operator= | TAINT |
+| copyableclass_declonly.cpp:63:32:63:37 | call to source | copyableclass_declonly.cpp:63:8:63:40 | call to MyCopyableClassDeclOnly | TAINT |
+| copyableclass_declonly.cpp:67:13:67:18 | call to source | copyableclass_declonly.cpp:67:13:67:20 | call to MyCopyableClassDeclOnly | TAINT |
+| copyableclass_declonly.cpp:67:13:67:20 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:67:8:67:9 | ref arg s3 | TAINT |
+| copyableclass_declonly.cpp:67:13:67:20 | call to MyCopyableClassDeclOnly | copyableclass_declonly.cpp:67:11:67:11 | call to operator= | TAINT |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
@@ -155,6 +206,8 @@
 | format.cpp:113:21:113:24 | {...} | format.cpp:115:8:115:13 | buffer |  |
 | format.cpp:113:23:113:23 | 0 | format.cpp:113:21:113:24 | {...} | TAINT |
 | format.cpp:114:18:114:23 | ref arg buffer | format.cpp:115:8:115:13 | buffer |  |
+| format.cpp:114:31:114:34 | %s | format.cpp:114:18:114:23 | ref arg buffer | TAINT |
+| format.cpp:114:37:114:50 | call to source | format.cpp:114:18:114:23 | ref arg buffer | TAINT |
 | format.cpp:119:10:119:11 | 0 | format.cpp:120:29:120:29 | i |  |
 | format.cpp:119:10:119:11 | 0 | format.cpp:121:8:121:8 | i |  |
 | format.cpp:120:28:120:29 | ref arg & ... | format.cpp:120:29:120:29 | i [inner post update] |  |
@@ -255,99 +308,284 @@
 | movableclass.cpp:65:13:65:18 | call to source | movableclass.cpp:65:13:65:20 | call to MyMovableClass | TAINT |
 | movableclass.cpp:65:13:65:20 | call to MyMovableClass | movableclass.cpp:65:8:65:9 | ref arg s3 | TAINT |
 | movableclass.cpp:65:13:65:20 | call to MyMovableClass | movableclass.cpp:65:11:65:11 | call to operator= | TAINT |
-| stl.cpp:67:12:67:17 | call to source | stl.cpp:71:7:71:7 | a |  |
-| stl.cpp:68:16:68:20 | 123 | stl.cpp:68:16:68:21 | call to basic_string | TAINT |
-| stl.cpp:68:16:68:21 | call to basic_string | stl.cpp:72:7:72:7 | b |  |
-| stl.cpp:68:16:68:21 | call to basic_string | stl.cpp:74:7:74:7 | b |  |
-| stl.cpp:69:16:69:21 | call to source | stl.cpp:69:16:69:24 | call to basic_string | TAINT |
-| stl.cpp:69:16:69:24 | call to basic_string | stl.cpp:73:7:73:7 | c |  |
-| stl.cpp:69:16:69:24 | call to basic_string | stl.cpp:75:7:75:7 | c |  |
-| stl.cpp:74:7:74:7 | b | stl.cpp:74:9:74:13 | call to c_str | TAINT |
-| stl.cpp:75:7:75:7 | c | stl.cpp:75:9:75:13 | call to c_str | TAINT |
-| stl.cpp:80:20:80:22 | call to basic_stringstream | stl.cpp:83:2:83:4 | ss1 |  |
-| stl.cpp:80:20:80:22 | call to basic_stringstream | stl.cpp:89:7:89:9 | ss1 |  |
-| stl.cpp:80:20:80:22 | call to basic_stringstream | stl.cpp:94:7:94:9 | ss1 |  |
-| stl.cpp:80:25:80:27 | call to basic_stringstream | stl.cpp:84:2:84:4 | ss2 |  |
-| stl.cpp:80:25:80:27 | call to basic_stringstream | stl.cpp:90:7:90:9 | ss2 |  |
-| stl.cpp:80:25:80:27 | call to basic_stringstream | stl.cpp:95:7:95:9 | ss2 |  |
-| stl.cpp:80:30:80:32 | call to basic_stringstream | stl.cpp:85:2:85:4 | ss3 |  |
-| stl.cpp:80:30:80:32 | call to basic_stringstream | stl.cpp:91:7:91:9 | ss3 |  |
-| stl.cpp:80:30:80:32 | call to basic_stringstream | stl.cpp:96:7:96:9 | ss3 |  |
-| stl.cpp:80:35:80:37 | call to basic_stringstream | stl.cpp:86:2:86:4 | ss4 |  |
-| stl.cpp:80:35:80:37 | call to basic_stringstream | stl.cpp:92:7:92:9 | ss4 |  |
-| stl.cpp:80:35:80:37 | call to basic_stringstream | stl.cpp:97:7:97:9 | ss4 |  |
-| stl.cpp:80:40:80:42 | call to basic_stringstream | stl.cpp:87:2:87:4 | ss5 |  |
-| stl.cpp:80:40:80:42 | call to basic_stringstream | stl.cpp:93:7:93:9 | ss5 |  |
-| stl.cpp:80:40:80:42 | call to basic_stringstream | stl.cpp:98:7:98:9 | ss5 |  |
-| stl.cpp:81:16:81:21 | call to source | stl.cpp:81:16:81:24 | call to basic_string | TAINT |
-| stl.cpp:81:16:81:24 | call to basic_string | stl.cpp:87:9:87:9 | t |  |
-| stl.cpp:83:2:83:4 | ref arg ss1 | stl.cpp:89:7:89:9 | ss1 |  |
-| stl.cpp:83:2:83:4 | ref arg ss1 | stl.cpp:94:7:94:9 | ss1 |  |
-| stl.cpp:84:2:84:4 | ref arg ss2 | stl.cpp:90:7:90:9 | ss2 |  |
-| stl.cpp:84:2:84:4 | ref arg ss2 | stl.cpp:95:7:95:9 | ss2 |  |
-| stl.cpp:85:2:85:4 | ref arg ss3 | stl.cpp:91:7:91:9 | ss3 |  |
-| stl.cpp:85:2:85:4 | ref arg ss3 | stl.cpp:96:7:96:9 | ss3 |  |
-| stl.cpp:86:2:86:4 | ref arg ss4 | stl.cpp:92:7:92:9 | ss4 |  |
-| stl.cpp:86:2:86:4 | ref arg ss4 | stl.cpp:97:7:97:9 | ss4 |  |
-| stl.cpp:87:2:87:4 | ref arg ss5 | stl.cpp:93:7:93:9 | ss5 |  |
-| stl.cpp:87:2:87:4 | ref arg ss5 | stl.cpp:98:7:98:9 | ss5 |  |
-| stl.cpp:101:32:101:37 | source | stl.cpp:106:9:106:14 | source |  |
-| stl.cpp:103:20:103:22 | call to basic_stringstream | stl.cpp:105:2:105:4 | ss1 |  |
-| stl.cpp:103:20:103:22 | call to basic_stringstream | stl.cpp:108:7:108:9 | ss1 |  |
-| stl.cpp:103:20:103:22 | call to basic_stringstream | stl.cpp:110:7:110:9 | ss1 |  |
-| stl.cpp:103:25:103:27 | call to basic_stringstream | stl.cpp:106:2:106:4 | ss2 |  |
-| stl.cpp:103:25:103:27 | call to basic_stringstream | stl.cpp:109:7:109:9 | ss2 |  |
-| stl.cpp:103:25:103:27 | call to basic_stringstream | stl.cpp:111:7:111:9 | ss2 |  |
-| stl.cpp:105:2:105:4 | ref arg ss1 | stl.cpp:108:7:108:9 | ss1 |  |
-| stl.cpp:105:2:105:4 | ref arg ss1 | stl.cpp:110:7:110:9 | ss1 |  |
-| stl.cpp:106:2:106:4 | ref arg ss2 | stl.cpp:109:7:109:9 | ss2 |  |
-| stl.cpp:106:2:106:4 | ref arg ss2 | stl.cpp:111:7:111:9 | ss2 |  |
-| stl.cpp:124:16:124:28 | call to basic_string | stl.cpp:125:7:125:11 | path1 |  |
-| stl.cpp:124:17:124:26 | call to user_input | stl.cpp:124:16:124:28 | call to basic_string | TAINT |
-| stl.cpp:125:7:125:11 | path1 | stl.cpp:125:13:125:17 | call to c_str | TAINT |
-| stl.cpp:128:10:128:19 | call to user_input | stl.cpp:128:10:128:21 | call to basic_string | TAINT |
-| stl.cpp:128:10:128:21 | call to basic_string | stl.cpp:128:2:128:21 | ... = ... |  |
-| stl.cpp:128:10:128:21 | call to basic_string | stl.cpp:129:7:129:11 | path2 |  |
-| stl.cpp:129:7:129:11 | path2 | stl.cpp:129:13:129:17 | call to c_str | TAINT |
-| stl.cpp:131:15:131:24 | call to user_input | stl.cpp:131:15:131:27 | call to basic_string | TAINT |
-| stl.cpp:131:15:131:27 | call to basic_string | stl.cpp:132:7:132:11 | path3 |  |
-| stl.cpp:132:7:132:11 | path3 | stl.cpp:132:13:132:17 | call to c_str | TAINT |
-| stl.cpp:137:19:137:24 | call to source | stl.cpp:140:17:140:18 | cs |  |
-| stl.cpp:137:19:137:24 | call to source | stl.cpp:142:7:142:8 | cs |  |
-| stl.cpp:140:17:140:18 | cs | stl.cpp:140:17:140:19 | call to basic_string | TAINT |
-| stl.cpp:140:17:140:19 | call to basic_string | stl.cpp:143:7:143:8 | ss |  |
-| stl.cpp:148:19:148:24 | call to source | stl.cpp:151:17:151:18 | cs |  |
-| stl.cpp:151:17:151:18 | cs | stl.cpp:151:17:151:19 | call to basic_string | TAINT |
-| stl.cpp:151:17:151:19 | call to basic_string | stl.cpp:154:7:154:8 | ss |  |
-| stl.cpp:151:17:151:19 | call to basic_string | stl.cpp:157:7:157:8 | ss |  |
-| stl.cpp:154:7:154:8 | ss | stl.cpp:154:10:154:14 | call to c_str | TAINT |
-| stl.cpp:154:10:154:14 | call to c_str | stl.cpp:154:2:154:16 | ... = ... |  |
-| stl.cpp:154:10:154:14 | call to c_str | stl.cpp:156:7:156:8 | cs |  |
-| stl.cpp:163:18:163:24 | hello | stl.cpp:163:18:163:25 | call to basic_string | TAINT |
-| stl.cpp:163:18:163:25 | call to basic_string | stl.cpp:168:8:168:9 | s1 |  |
-| stl.cpp:164:19:164:26 | call to basic_string | stl.cpp:169:8:169:9 | s2 |  |
-| stl.cpp:164:20:164:26 | hello | stl.cpp:164:19:164:26 | call to basic_string | TAINT |
-| stl.cpp:166:8:166:14 | call to basic_string | stl.cpp:166:3:166:14 | ... = ... |  |
-| stl.cpp:166:8:166:14 | call to basic_string | stl.cpp:170:8:170:9 | s3 |  |
-| stl.cpp:166:8:166:14 | hello | stl.cpp:166:8:166:14 | call to basic_string | TAINT |
-| stl.cpp:174:18:174:23 | call to source | stl.cpp:174:18:174:26 | call to basic_string | TAINT |
-| stl.cpp:174:18:174:26 | call to basic_string | stl.cpp:179:8:179:9 | s1 |  |
-| stl.cpp:175:19:175:27 | call to basic_string | stl.cpp:180:8:180:9 | s2 |  |
-| stl.cpp:175:20:175:25 | call to source | stl.cpp:175:19:175:27 | call to basic_string | TAINT |
-| stl.cpp:177:8:177:13 | call to source | stl.cpp:177:8:177:15 | call to basic_string | TAINT |
-| stl.cpp:177:8:177:15 | call to basic_string | stl.cpp:177:3:177:15 | ... = ... |  |
-| stl.cpp:177:8:177:15 | call to basic_string | stl.cpp:181:8:181:9 | s3 |  |
-| stl.cpp:185:15:185:16 | call to basic_string | stl.cpp:186:20:186:21 | s1 |  |
-| stl.cpp:185:15:185:16 | call to basic_string | stl.cpp:188:8:188:9 | s1 |  |
-| stl.cpp:185:15:185:16 | call to basic_string | stl.cpp:190:8:190:9 | s1 |  |
-| stl.cpp:186:20:186:21 | s1 | stl.cpp:191:8:191:9 | s2 |  |
-| stl.cpp:188:8:188:9 | s1 | stl.cpp:188:3:188:9 | ... = ... |  |
-| stl.cpp:188:8:188:9 | s1 | stl.cpp:192:8:192:9 | s3 |  |
-| stl.cpp:196:19:196:40 | call to basic_string | stl.cpp:200:8:200:9 | s1 |  |
-| stl.cpp:196:32:196:37 | call to source | stl.cpp:196:19:196:40 | call to basic_string | TAINT |
-| stl.cpp:198:8:198:28 | call to basic_string | stl.cpp:198:3:198:28 | ... = ... |  |
-| stl.cpp:198:8:198:28 | call to basic_string | stl.cpp:201:8:201:9 | s2 |  |
-| stl.cpp:198:20:198:25 | call to source | stl.cpp:198:8:198:28 | call to basic_string | TAINT |
+| stl.cpp:109:12:109:17 | call to source | stl.cpp:113:7:113:7 | a |  |
+| stl.cpp:110:16:110:20 | 123 | stl.cpp:110:16:110:21 | call to basic_string | TAINT |
+| stl.cpp:110:16:110:21 | call to basic_string | stl.cpp:114:7:114:7 | b |  |
+| stl.cpp:110:16:110:21 | call to basic_string | stl.cpp:116:7:116:7 | b |  |
+| stl.cpp:111:16:111:21 | call to source | stl.cpp:111:16:111:24 | call to basic_string | TAINT |
+| stl.cpp:111:16:111:24 | call to basic_string | stl.cpp:115:7:115:7 | c |  |
+| stl.cpp:111:16:111:24 | call to basic_string | stl.cpp:117:7:117:7 | c |  |
+| stl.cpp:116:7:116:7 | b | stl.cpp:116:9:116:13 | call to c_str | TAINT |
+| stl.cpp:117:7:117:7 | c | stl.cpp:117:9:117:13 | call to c_str | TAINT |
+| stl.cpp:122:20:122:22 | call to basic_stringstream | stl.cpp:125:2:125:4 | ss1 |  |
+| stl.cpp:122:20:122:22 | call to basic_stringstream | stl.cpp:131:7:131:9 | ss1 |  |
+| stl.cpp:122:20:122:22 | call to basic_stringstream | stl.cpp:136:7:136:9 | ss1 |  |
+| stl.cpp:122:25:122:27 | call to basic_stringstream | stl.cpp:126:2:126:4 | ss2 |  |
+| stl.cpp:122:25:122:27 | call to basic_stringstream | stl.cpp:132:7:132:9 | ss2 |  |
+| stl.cpp:122:25:122:27 | call to basic_stringstream | stl.cpp:137:7:137:9 | ss2 |  |
+| stl.cpp:122:30:122:32 | call to basic_stringstream | stl.cpp:127:2:127:4 | ss3 |  |
+| stl.cpp:122:30:122:32 | call to basic_stringstream | stl.cpp:133:7:133:9 | ss3 |  |
+| stl.cpp:122:30:122:32 | call to basic_stringstream | stl.cpp:138:7:138:9 | ss3 |  |
+| stl.cpp:122:35:122:37 | call to basic_stringstream | stl.cpp:128:2:128:4 | ss4 |  |
+| stl.cpp:122:35:122:37 | call to basic_stringstream | stl.cpp:134:7:134:9 | ss4 |  |
+| stl.cpp:122:35:122:37 | call to basic_stringstream | stl.cpp:139:7:139:9 | ss4 |  |
+| stl.cpp:122:40:122:42 | call to basic_stringstream | stl.cpp:129:2:129:4 | ss5 |  |
+| stl.cpp:122:40:122:42 | call to basic_stringstream | stl.cpp:135:7:135:9 | ss5 |  |
+| stl.cpp:122:40:122:42 | call to basic_stringstream | stl.cpp:140:7:140:9 | ss5 |  |
+| stl.cpp:123:16:123:21 | call to source | stl.cpp:123:16:123:24 | call to basic_string | TAINT |
+| stl.cpp:123:16:123:24 | call to basic_string | stl.cpp:129:9:129:9 | t |  |
+| stl.cpp:125:2:125:4 | ref arg ss1 | stl.cpp:131:7:131:9 | ss1 |  |
+| stl.cpp:125:2:125:4 | ref arg ss1 | stl.cpp:136:7:136:9 | ss1 |  |
+| stl.cpp:126:2:126:4 | ref arg ss2 | stl.cpp:132:7:132:9 | ss2 |  |
+| stl.cpp:126:2:126:4 | ref arg ss2 | stl.cpp:137:7:137:9 | ss2 |  |
+| stl.cpp:127:2:127:4 | ref arg ss3 | stl.cpp:133:7:133:9 | ss3 |  |
+| stl.cpp:127:2:127:4 | ref arg ss3 | stl.cpp:138:7:138:9 | ss3 |  |
+| stl.cpp:128:2:128:4 | ref arg ss4 | stl.cpp:134:7:134:9 | ss4 |  |
+| stl.cpp:128:2:128:4 | ref arg ss4 | stl.cpp:139:7:139:9 | ss4 |  |
+| stl.cpp:129:2:129:4 | ref arg ss5 | stl.cpp:135:7:135:9 | ss5 |  |
+| stl.cpp:129:2:129:4 | ref arg ss5 | stl.cpp:140:7:140:9 | ss5 |  |
+| stl.cpp:143:32:143:37 | source | stl.cpp:148:9:148:14 | source |  |
+| stl.cpp:145:20:145:22 | call to basic_stringstream | stl.cpp:147:2:147:4 | ss1 |  |
+| stl.cpp:145:20:145:22 | call to basic_stringstream | stl.cpp:150:7:150:9 | ss1 |  |
+| stl.cpp:145:20:145:22 | call to basic_stringstream | stl.cpp:152:7:152:9 | ss1 |  |
+| stl.cpp:145:25:145:27 | call to basic_stringstream | stl.cpp:148:2:148:4 | ss2 |  |
+| stl.cpp:145:25:145:27 | call to basic_stringstream | stl.cpp:151:7:151:9 | ss2 |  |
+| stl.cpp:145:25:145:27 | call to basic_stringstream | stl.cpp:153:7:153:9 | ss2 |  |
+| stl.cpp:147:2:147:4 | ref arg ss1 | stl.cpp:150:7:150:9 | ss1 |  |
+| stl.cpp:147:2:147:4 | ref arg ss1 | stl.cpp:152:7:152:9 | ss1 |  |
+| stl.cpp:148:2:148:4 | ref arg ss2 | stl.cpp:151:7:151:9 | ss2 |  |
+| stl.cpp:148:2:148:4 | ref arg ss2 | stl.cpp:153:7:153:9 | ss2 |  |
+| stl.cpp:166:16:166:28 | call to basic_string | stl.cpp:167:7:167:11 | path1 |  |
+| stl.cpp:166:17:166:26 | call to user_input | stl.cpp:166:16:166:28 | call to basic_string | TAINT |
+| stl.cpp:167:7:167:11 | path1 | stl.cpp:167:13:167:17 | call to c_str | TAINT |
+| stl.cpp:170:10:170:19 | call to user_input | stl.cpp:170:10:170:21 | call to basic_string | TAINT |
+| stl.cpp:170:10:170:21 | call to basic_string | stl.cpp:170:2:170:21 | ... = ... |  |
+| stl.cpp:170:10:170:21 | call to basic_string | stl.cpp:171:7:171:11 | path2 |  |
+| stl.cpp:171:7:171:11 | path2 | stl.cpp:171:13:171:17 | call to c_str | TAINT |
+| stl.cpp:173:15:173:24 | call to user_input | stl.cpp:173:15:173:27 | call to basic_string | TAINT |
+| stl.cpp:173:15:173:27 | call to basic_string | stl.cpp:174:7:174:11 | path3 |  |
+| stl.cpp:174:7:174:11 | path3 | stl.cpp:174:13:174:17 | call to c_str | TAINT |
+| stl.cpp:179:19:179:24 | call to source | stl.cpp:182:17:182:18 | cs |  |
+| stl.cpp:179:19:179:24 | call to source | stl.cpp:184:7:184:8 | cs |  |
+| stl.cpp:182:17:182:18 | cs | stl.cpp:182:17:182:19 | call to basic_string | TAINT |
+| stl.cpp:182:17:182:19 | call to basic_string | stl.cpp:185:7:185:8 | ss |  |
+| stl.cpp:190:19:190:24 | call to source | stl.cpp:193:17:193:18 | cs |  |
+| stl.cpp:193:17:193:18 | cs | stl.cpp:193:17:193:19 | call to basic_string | TAINT |
+| stl.cpp:193:17:193:19 | call to basic_string | stl.cpp:196:7:196:8 | ss |  |
+| stl.cpp:193:17:193:19 | call to basic_string | stl.cpp:199:7:199:8 | ss |  |
+| stl.cpp:196:7:196:8 | ss | stl.cpp:196:10:196:14 | call to c_str | TAINT |
+| stl.cpp:196:10:196:14 | call to c_str | stl.cpp:196:2:196:16 | ... = ... |  |
+| stl.cpp:196:10:196:14 | call to c_str | stl.cpp:198:7:198:8 | cs |  |
+| stl.cpp:205:18:205:24 | hello | stl.cpp:205:18:205:25 | call to basic_string | TAINT |
+| stl.cpp:205:18:205:25 | call to basic_string | stl.cpp:210:8:210:9 | s1 |  |
+| stl.cpp:206:19:206:26 | call to basic_string | stl.cpp:211:8:211:9 | s2 |  |
+| stl.cpp:206:20:206:26 | hello | stl.cpp:206:19:206:26 | call to basic_string | TAINT |
+| stl.cpp:208:8:208:14 | call to basic_string | stl.cpp:208:3:208:14 | ... = ... |  |
+| stl.cpp:208:8:208:14 | call to basic_string | stl.cpp:212:8:212:9 | s3 |  |
+| stl.cpp:208:8:208:14 | hello | stl.cpp:208:8:208:14 | call to basic_string | TAINT |
+| stl.cpp:216:18:216:23 | call to source | stl.cpp:216:18:216:26 | call to basic_string | TAINT |
+| stl.cpp:216:18:216:26 | call to basic_string | stl.cpp:221:8:221:9 | s1 |  |
+| stl.cpp:217:19:217:27 | call to basic_string | stl.cpp:222:8:222:9 | s2 |  |
+| stl.cpp:217:20:217:25 | call to source | stl.cpp:217:19:217:27 | call to basic_string | TAINT |
+| stl.cpp:219:8:219:13 | call to source | stl.cpp:219:8:219:15 | call to basic_string | TAINT |
+| stl.cpp:219:8:219:15 | call to basic_string | stl.cpp:219:3:219:15 | ... = ... |  |
+| stl.cpp:219:8:219:15 | call to basic_string | stl.cpp:223:8:223:9 | s3 |  |
+| stl.cpp:227:15:227:16 | call to basic_string | stl.cpp:228:20:228:21 | s1 |  |
+| stl.cpp:227:15:227:16 | call to basic_string | stl.cpp:230:8:230:9 | s1 |  |
+| stl.cpp:227:15:227:16 | call to basic_string | stl.cpp:232:8:232:9 | s1 |  |
+| stl.cpp:228:20:228:21 | s1 | stl.cpp:233:8:233:9 | s2 |  |
+| stl.cpp:230:8:230:9 | s1 | stl.cpp:230:3:230:9 | ... = ... |  |
+| stl.cpp:230:8:230:9 | s1 | stl.cpp:234:8:234:9 | s3 |  |
+| stl.cpp:238:19:238:40 | call to basic_string | stl.cpp:242:8:242:9 | s1 |  |
+| stl.cpp:238:32:238:37 | call to source | stl.cpp:238:19:238:40 | call to basic_string | TAINT |
+| stl.cpp:240:8:240:28 | call to basic_string | stl.cpp:240:3:240:28 | ... = ... |  |
+| stl.cpp:240:8:240:28 | call to basic_string | stl.cpp:243:8:243:9 | s2 |  |
+| stl.cpp:240:20:240:25 | call to source | stl.cpp:240:8:240:28 | call to basic_string | TAINT |
+| stl.cpp:250:16:250:21 | call to source | stl.cpp:250:16:250:24 | call to basic_string | TAINT |
+| stl.cpp:250:16:250:24 | call to basic_string | stl.cpp:251:15:251:15 | s |  |
+| stl.cpp:250:16:250:24 | call to basic_string | stl.cpp:255:33:255:33 | s |  |
+| stl.cpp:250:16:250:24 | call to basic_string | stl.cpp:255:50:255:50 | s |  |
+| stl.cpp:250:16:250:24 | call to basic_string | stl.cpp:259:16:259:16 | s |  |
+| stl.cpp:251:15:251:15 | call to begin | stl.cpp:251:15:251:15 | (__begin) |  |
+| stl.cpp:251:15:251:15 | call to begin | stl.cpp:251:15:251:15 | (__begin) |  |
+| stl.cpp:251:15:251:15 | call to begin | stl.cpp:251:15:251:15 | (__begin) |  |
+| stl.cpp:251:15:251:15 | call to end | stl.cpp:251:15:251:15 | (__end) |  |
+| stl.cpp:251:15:251:15 | call to operator* | stl.cpp:252:8:252:8 | c |  |
+| stl.cpp:251:15:251:15 | ref arg (__begin) | stl.cpp:251:15:251:15 | (__begin) |  |
+| stl.cpp:251:15:251:15 | ref arg (__begin) | stl.cpp:251:15:251:15 | (__begin) |  |
+| stl.cpp:251:15:251:15 | ref arg (__begin) | stl.cpp:251:15:251:15 | (__begin) |  |
+| stl.cpp:251:15:251:15 | ref arg (__range) | stl.cpp:251:15:251:15 | (__range) |  |
+| stl.cpp:251:15:251:15 | s | stl.cpp:251:15:251:15 | (__range) |  |
+| stl.cpp:251:15:251:15 | s | stl.cpp:251:15:251:15 | (__range) |  |
+| stl.cpp:251:15:251:15 | s | stl.cpp:251:15:251:15 | call to operator* | TAINT |
+| stl.cpp:255:33:255:33 | ref arg s | stl.cpp:255:50:255:50 | s |  |
+| stl.cpp:255:33:255:33 | ref arg s | stl.cpp:259:16:259:16 | s |  |
+| stl.cpp:255:35:255:39 | call to begin | stl.cpp:255:44:255:45 | it |  |
+| stl.cpp:255:35:255:39 | call to begin | stl.cpp:255:61:255:62 | it |  |
+| stl.cpp:255:35:255:39 | call to begin | stl.cpp:256:9:256:10 | it |  |
+| stl.cpp:255:50:255:50 | ref arg s | stl.cpp:255:50:255:50 | s |  |
+| stl.cpp:255:50:255:50 | ref arg s | stl.cpp:259:16:259:16 | s |  |
+| stl.cpp:255:61:255:62 | ref arg it | stl.cpp:255:44:255:45 | it |  |
+| stl.cpp:255:61:255:62 | ref arg it | stl.cpp:255:61:255:62 | it |  |
+| stl.cpp:255:61:255:62 | ref arg it | stl.cpp:256:9:256:10 | it |  |
+| stl.cpp:259:16:259:16 | call to begin | stl.cpp:259:16:259:16 | (__begin) |  |
+| stl.cpp:259:16:259:16 | call to begin | stl.cpp:259:16:259:16 | (__begin) |  |
+| stl.cpp:259:16:259:16 | call to begin | stl.cpp:259:16:259:16 | (__begin) |  |
+| stl.cpp:259:16:259:16 | call to end | stl.cpp:259:16:259:16 | (__end) |  |
+| stl.cpp:259:16:259:16 | call to operator* | stl.cpp:260:8:260:8 | c |  |
+| stl.cpp:259:16:259:16 | ref arg (__begin) | stl.cpp:259:16:259:16 | (__begin) |  |
+| stl.cpp:259:16:259:16 | ref arg (__begin) | stl.cpp:259:16:259:16 | (__begin) |  |
+| stl.cpp:259:16:259:16 | ref arg (__begin) | stl.cpp:259:16:259:16 | (__begin) |  |
+| stl.cpp:259:16:259:16 | ref arg (__range) | stl.cpp:259:16:259:16 | (__range) |  |
+| stl.cpp:259:16:259:16 | s | stl.cpp:259:16:259:16 | (__range) |  |
+| stl.cpp:259:16:259:16 | s | stl.cpp:259:16:259:16 | (__range) |  |
+| stl.cpp:259:16:259:16 | s | stl.cpp:259:16:259:16 | call to operator* | TAINT |
+| stl.cpp:263:28:263:33 | call to source | stl.cpp:263:28:263:36 | call to basic_string | TAINT |
+| stl.cpp:263:28:263:36 | call to basic_string | stl.cpp:264:22:264:28 | const_s |  |
+| stl.cpp:264:22:264:22 | call to begin | stl.cpp:264:22:264:22 | (__begin) |  |
+| stl.cpp:264:22:264:22 | call to begin | stl.cpp:264:22:264:22 | (__begin) |  |
+| stl.cpp:264:22:264:22 | call to begin | stl.cpp:264:22:264:22 | (__begin) |  |
+| stl.cpp:264:22:264:22 | call to end | stl.cpp:264:22:264:22 | (__end) |  |
+| stl.cpp:264:22:264:22 | call to operator* | stl.cpp:265:8:265:8 | c |  |
+| stl.cpp:264:22:264:22 | ref arg (__begin) | stl.cpp:264:22:264:22 | (__begin) |  |
+| stl.cpp:264:22:264:22 | ref arg (__begin) | stl.cpp:264:22:264:22 | (__begin) |  |
+| stl.cpp:264:22:264:22 | ref arg (__begin) | stl.cpp:264:22:264:22 | (__begin) |  |
+| stl.cpp:264:22:264:28 | const_s | stl.cpp:264:22:264:22 | (__range) |  |
+| stl.cpp:264:22:264:28 | const_s | stl.cpp:264:22:264:22 | (__range) |  |
+| stl.cpp:264:22:264:28 | const_s | stl.cpp:264:22:264:22 | call to operator* | TAINT |
+| stl.cpp:300:43:300:49 | source1 | stl.cpp:304:21:304:27 | source1 |  |
+| stl.cpp:300:43:300:49 | source1 | stl.cpp:318:33:318:39 | source1 |  |
+| stl.cpp:304:21:304:27 | source1 | stl.cpp:304:21:304:28 | call to vector | TAINT |
+| stl.cpp:304:21:304:28 | call to vector | stl.cpp:306:14:306:14 | v |  |
+| stl.cpp:304:21:304:28 | call to vector | stl.cpp:310:38:310:38 | v |  |
+| stl.cpp:304:21:304:28 | call to vector | stl.cpp:310:55:310:55 | v |  |
+| stl.cpp:304:21:304:28 | call to vector | stl.cpp:314:15:314:15 | v |  |
+| stl.cpp:306:14:306:14 | call to begin | stl.cpp:306:14:306:14 | (__begin) |  |
+| stl.cpp:306:14:306:14 | call to begin | stl.cpp:306:14:306:14 | (__begin) |  |
+| stl.cpp:306:14:306:14 | call to begin | stl.cpp:306:14:306:14 | (__begin) |  |
+| stl.cpp:306:14:306:14 | call to end | stl.cpp:306:14:306:14 | (__end) |  |
+| stl.cpp:306:14:306:14 | call to operator* | stl.cpp:307:8:307:8 | x |  |
+| stl.cpp:306:14:306:14 | ref arg (__begin) | stl.cpp:306:14:306:14 | (__begin) |  |
+| stl.cpp:306:14:306:14 | ref arg (__begin) | stl.cpp:306:14:306:14 | (__begin) |  |
+| stl.cpp:306:14:306:14 | ref arg (__begin) | stl.cpp:306:14:306:14 | (__begin) |  |
+| stl.cpp:306:14:306:14 | ref arg (__range) | stl.cpp:306:14:306:14 | (__range) |  |
+| stl.cpp:306:14:306:14 | v | stl.cpp:306:14:306:14 | (__range) |  |
+| stl.cpp:306:14:306:14 | v | stl.cpp:306:14:306:14 | (__range) |  |
+| stl.cpp:306:14:306:14 | v | stl.cpp:306:14:306:14 | call to operator* | TAINT |
+| stl.cpp:310:38:310:38 | ref arg v | stl.cpp:310:55:310:55 | v |  |
+| stl.cpp:310:38:310:38 | ref arg v | stl.cpp:314:15:314:15 | v |  |
+| stl.cpp:310:40:310:44 | call to begin | stl.cpp:310:49:310:50 | it |  |
+| stl.cpp:310:40:310:44 | call to begin | stl.cpp:310:66:310:67 | it |  |
+| stl.cpp:310:40:310:44 | call to begin | stl.cpp:311:9:311:10 | it |  |
+| stl.cpp:310:55:310:55 | ref arg v | stl.cpp:310:55:310:55 | v |  |
+| stl.cpp:310:55:310:55 | ref arg v | stl.cpp:314:15:314:15 | v |  |
+| stl.cpp:310:66:310:67 | ref arg it | stl.cpp:310:49:310:50 | it |  |
+| stl.cpp:310:66:310:67 | ref arg it | stl.cpp:310:66:310:67 | it |  |
+| stl.cpp:310:66:310:67 | ref arg it | stl.cpp:311:9:311:10 | it |  |
+| stl.cpp:314:15:314:15 | call to begin | stl.cpp:314:15:314:15 | (__begin) |  |
+| stl.cpp:314:15:314:15 | call to begin | stl.cpp:314:15:314:15 | (__begin) |  |
+| stl.cpp:314:15:314:15 | call to begin | stl.cpp:314:15:314:15 | (__begin) |  |
+| stl.cpp:314:15:314:15 | call to end | stl.cpp:314:15:314:15 | (__end) |  |
+| stl.cpp:314:15:314:15 | call to operator* | stl.cpp:315:8:315:8 | x |  |
+| stl.cpp:314:15:314:15 | ref arg (__begin) | stl.cpp:314:15:314:15 | (__begin) |  |
+| stl.cpp:314:15:314:15 | ref arg (__begin) | stl.cpp:314:15:314:15 | (__begin) |  |
+| stl.cpp:314:15:314:15 | ref arg (__begin) | stl.cpp:314:15:314:15 | (__begin) |  |
+| stl.cpp:314:15:314:15 | ref arg (__range) | stl.cpp:314:15:314:15 | (__range) |  |
+| stl.cpp:314:15:314:15 | v | stl.cpp:314:15:314:15 | (__range) |  |
+| stl.cpp:314:15:314:15 | v | stl.cpp:314:15:314:15 | (__range) |  |
+| stl.cpp:314:15:314:15 | v | stl.cpp:314:15:314:15 | call to operator* | TAINT |
+| stl.cpp:318:33:318:39 | source1 | stl.cpp:318:33:318:40 | call to vector | TAINT |
+| stl.cpp:318:33:318:40 | call to vector | stl.cpp:319:21:319:27 | const_v |  |
+| stl.cpp:319:21:319:21 | call to begin | stl.cpp:319:21:319:21 | (__begin) |  |
+| stl.cpp:319:21:319:21 | call to begin | stl.cpp:319:21:319:21 | (__begin) |  |
+| stl.cpp:319:21:319:21 | call to begin | stl.cpp:319:21:319:21 | (__begin) |  |
+| stl.cpp:319:21:319:21 | call to end | stl.cpp:319:21:319:21 | (__end) |  |
+| stl.cpp:319:21:319:21 | call to operator* | stl.cpp:320:8:320:8 | x |  |
+| stl.cpp:319:21:319:21 | ref arg (__begin) | stl.cpp:319:21:319:21 | (__begin) |  |
+| stl.cpp:319:21:319:21 | ref arg (__begin) | stl.cpp:319:21:319:21 | (__begin) |  |
+| stl.cpp:319:21:319:21 | ref arg (__begin) | stl.cpp:319:21:319:21 | (__begin) |  |
+| stl.cpp:319:21:319:27 | const_v | stl.cpp:319:21:319:21 | (__range) |  |
+| stl.cpp:319:21:319:27 | const_v | stl.cpp:319:21:319:21 | (__range) |  |
+| stl.cpp:319:21:319:27 | const_v | stl.cpp:319:21:319:21 | call to operator* | TAINT |
+| stl.cpp:331:18:331:24 | hello | stl.cpp:331:18:331:25 | call to basic_string | TAINT |
+| stl.cpp:331:18:331:25 | call to basic_string | stl.cpp:334:8:334:9 | s1 |  |
+| stl.cpp:331:18:331:25 | call to basic_string | stl.cpp:334:13:334:14 | s1 |  |
+| stl.cpp:331:18:331:25 | call to basic_string | stl.cpp:335:8:335:9 | s1 |  |
+| stl.cpp:331:18:331:25 | call to basic_string | stl.cpp:336:13:336:14 | s1 |  |
+| stl.cpp:331:18:331:25 | call to basic_string | stl.cpp:339:8:339:9 | s1 |  |
+| stl.cpp:331:18:331:25 | call to basic_string | stl.cpp:340:8:340:9 | s1 |  |
+| stl.cpp:332:18:332:23 | call to source | stl.cpp:332:18:332:26 | call to basic_string | TAINT |
+| stl.cpp:332:18:332:26 | call to basic_string | stl.cpp:335:13:335:14 | s2 |  |
+| stl.cpp:332:18:332:26 | call to basic_string | stl.cpp:336:8:336:9 | s2 |  |
+| stl.cpp:332:18:332:26 | call to basic_string | stl.cpp:337:8:337:9 | s2 |  |
+| stl.cpp:332:18:332:26 | call to basic_string | stl.cpp:337:13:337:14 | s2 |  |
+| stl.cpp:334:8:334:9 | s1 | stl.cpp:334:11:334:11 | call to operator+ | TAINT |
+| stl.cpp:334:13:334:14 | s1 | stl.cpp:334:11:334:11 | call to operator+ | TAINT |
+| stl.cpp:335:8:335:9 | s1 | stl.cpp:335:11:335:11 | call to operator+ | TAINT |
+| stl.cpp:335:13:335:14 | s2 | stl.cpp:335:11:335:11 | call to operator+ | TAINT |
+| stl.cpp:336:8:336:9 | s2 | stl.cpp:336:11:336:11 | call to operator+ | TAINT |
+| stl.cpp:336:13:336:14 | s1 | stl.cpp:336:11:336:11 | call to operator+ | TAINT |
+| stl.cpp:337:8:337:9 | s2 | stl.cpp:337:11:337:11 | call to operator+ | TAINT |
+| stl.cpp:337:13:337:14 | s2 | stl.cpp:337:11:337:11 | call to operator+ | TAINT |
+| stl.cpp:339:8:339:9 | s1 | stl.cpp:339:11:339:11 | call to operator+ | TAINT |
+| stl.cpp:339:13:339:20 |  world | stl.cpp:339:11:339:11 | call to operator+ | TAINT |
+| stl.cpp:340:8:340:9 | s1 | stl.cpp:340:11:340:11 | call to operator+ | TAINT |
+| stl.cpp:340:13:340:18 | call to source | stl.cpp:340:11:340:11 | call to operator+ | TAINT |
+| stl.cpp:344:18:344:22 | abc | stl.cpp:344:18:344:23 | call to basic_string | TAINT |
+| stl.cpp:344:18:344:23 | call to basic_string | stl.cpp:348:8:348:9 | s3 |  |
+| stl.cpp:344:18:344:23 | call to basic_string | stl.cpp:351:8:351:9 | s3 |  |
+| stl.cpp:344:18:344:23 | call to basic_string | stl.cpp:355:8:355:9 | s3 |  |
+| stl.cpp:344:18:344:23 | call to basic_string | stl.cpp:360:8:360:9 | s3 |  |
+| stl.cpp:344:18:344:23 | call to basic_string | stl.cpp:364:8:364:9 | s3 |  |
+| stl.cpp:345:18:345:23 | call to source | stl.cpp:345:18:345:26 | call to basic_string | TAINT |
+| stl.cpp:345:18:345:26 | call to basic_string | stl.cpp:348:13:348:14 | s4 |  |
+| stl.cpp:345:18:345:26 | call to basic_string | stl.cpp:352:9:352:10 | s4 |  |
+| stl.cpp:345:18:345:26 | call to basic_string | stl.cpp:361:13:361:14 | s4 |  |
+| stl.cpp:348:8:348:9 | s3 | stl.cpp:348:11:348:11 | call to operator+ | TAINT |
+| stl.cpp:348:11:348:11 | call to operator+ | stl.cpp:348:3:348:14 | ... = ... |  |
+| stl.cpp:348:11:348:11 | call to operator+ | stl.cpp:349:8:349:9 | s5 |  |
+| stl.cpp:348:13:348:14 | s4 | stl.cpp:348:11:348:11 | call to operator+ | TAINT |
+| stl.cpp:351:8:351:9 | s3 | stl.cpp:351:3:351:9 | ... = ... |  |
+| stl.cpp:351:8:351:9 | s3 | stl.cpp:352:3:352:4 | s6 |  |
+| stl.cpp:351:8:351:9 | s3 | stl.cpp:353:8:353:9 | s6 |  |
+| stl.cpp:352:3:352:4 | ref arg s6 | stl.cpp:353:8:353:9 | s6 |  |
+| stl.cpp:352:9:352:10 | s4 | stl.cpp:352:3:352:4 | ref arg s6 | TAINT |
+| stl.cpp:352:9:352:10 | s4 | stl.cpp:352:6:352:6 | call to operator+= | TAINT |
+| stl.cpp:355:8:355:9 | s3 | stl.cpp:355:3:355:9 | ... = ... |  |
+| stl.cpp:355:8:355:9 | s3 | stl.cpp:356:3:356:4 | s7 |  |
+| stl.cpp:355:8:355:9 | s3 | stl.cpp:357:3:357:4 | s7 |  |
+| stl.cpp:355:8:355:9 | s3 | stl.cpp:358:8:358:9 | s7 |  |
+| stl.cpp:356:3:356:4 | ref arg s7 | stl.cpp:357:3:357:4 | s7 |  |
+| stl.cpp:356:3:356:4 | ref arg s7 | stl.cpp:358:8:358:9 | s7 |  |
+| stl.cpp:356:9:356:14 | call to source | stl.cpp:356:3:356:4 | ref arg s7 | TAINT |
+| stl.cpp:356:9:356:14 | call to source | stl.cpp:356:6:356:6 | call to operator+= | TAINT |
+| stl.cpp:357:3:357:4 | ref arg s7 | stl.cpp:358:8:358:9 | s7 |  |
+| stl.cpp:357:9:357:11 |   | stl.cpp:357:3:357:4 | ref arg s7 | TAINT |
+| stl.cpp:357:9:357:11 |   | stl.cpp:357:6:357:6 | call to operator+= | TAINT |
+| stl.cpp:360:8:360:9 | s3 | stl.cpp:360:3:360:9 | ... = ... |  |
+| stl.cpp:360:8:360:9 | s3 | stl.cpp:361:3:361:4 | s8 |  |
+| stl.cpp:360:8:360:9 | s3 | stl.cpp:362:8:362:9 | s8 |  |
+| stl.cpp:361:3:361:4 | ref arg s8 | stl.cpp:362:8:362:9 | s8 |  |
+| stl.cpp:361:13:361:14 | s4 | stl.cpp:361:3:361:4 | ref arg s8 | TAINT |
+| stl.cpp:361:13:361:14 | s4 | stl.cpp:361:6:361:11 | call to append | TAINT |
+| stl.cpp:364:8:364:9 | s3 | stl.cpp:364:3:364:9 | ... = ... |  |
+| stl.cpp:364:8:364:9 | s3 | stl.cpp:365:3:365:4 | s9 |  |
+| stl.cpp:364:8:364:9 | s3 | stl.cpp:366:3:366:4 | s9 |  |
+| stl.cpp:364:8:364:9 | s3 | stl.cpp:367:8:367:9 | s9 |  |
+| stl.cpp:365:3:365:4 | ref arg s9 | stl.cpp:366:3:366:4 | s9 |  |
+| stl.cpp:365:3:365:4 | ref arg s9 | stl.cpp:367:8:367:9 | s9 |  |
+| stl.cpp:365:13:365:18 | call to source | stl.cpp:365:3:365:4 | ref arg s9 | TAINT |
+| stl.cpp:365:13:365:18 | call to source | stl.cpp:365:6:365:11 | call to append | TAINT |
+| stl.cpp:366:3:366:4 | ref arg s9 | stl.cpp:367:8:367:9 | s9 |  |
+| stl.cpp:366:13:366:15 |   | stl.cpp:366:3:366:4 | ref arg s9 | TAINT |
+| stl.cpp:366:13:366:15 |   | stl.cpp:366:6:366:11 | call to append | TAINT |
+| stl.cpp:371:19:371:23 | abc | stl.cpp:371:19:371:24 | call to basic_string | TAINT |
+| stl.cpp:371:19:371:24 | call to basic_string | stl.cpp:374:3:374:5 | s10 |  |
+| stl.cpp:371:19:371:24 | call to basic_string | stl.cpp:375:8:375:10 | s10 |  |
+| stl.cpp:372:12:372:26 | call to source | stl.cpp:374:17:374:17 | c |  |
+| stl.cpp:374:3:374:5 | ref arg s10 | stl.cpp:375:8:375:10 | s10 |  |
+| stl.cpp:374:17:374:17 | c | stl.cpp:374:3:374:5 | ref arg s10 | TAINT |
+| stl.cpp:374:17:374:17 | c | stl.cpp:374:7:374:12 | call to append | TAINT |
 | structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
 | structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
 | structlikeclass.cpp:5:7:5:7 | this | structlikeclass.cpp:5:7:5:7 | constructor init of field v [pre-this] |  |
@@ -414,88 +652,133 @@
 | swap1.cpp:36:13:36:16 | this | swap1.cpp:37:21:37:24 | this |  |
 | swap1.cpp:36:18:36:21 | ref arg that | swap1.cpp:34:34:34:37 | that |  |
 | swap1.cpp:37:21:37:24 | this | swap1.cpp:37:20:37:24 | * ... | TAINT |
-| swap1.cpp:40:14:40:17 | this | swap1.cpp:43:18:43:22 | this |  |
-| swap1.cpp:40:26:40:29 | that | swap1.cpp:40:26:40:29 | that |  |
-| swap1.cpp:40:26:40:29 | that | swap1.cpp:43:25:43:28 | that |  |
-| swap1.cpp:43:18:43:22 | data1 | swap1.cpp:43:30:43:34 | ref arg data1 |  |
-| swap1.cpp:43:25:43:28 | that | swap1.cpp:43:18:43:22 | ref arg data1 |  |
-| swap1.cpp:43:25:43:28 | that [post update] | swap1.cpp:40:26:40:29 | that |  |
-| swap1.cpp:43:30:43:34 | data1 | swap1.cpp:43:18:43:22 | ref arg data1 |  |
-| swap1.cpp:48:22:48:22 | x | swap1.cpp:48:22:48:22 | x |  |
-| swap1.cpp:48:22:48:22 | x | swap1.cpp:50:9:50:9 | x |  |
-| swap1.cpp:48:22:48:22 | x | swap2.cpp:48:22:48:22 | x |  |
-| swap1.cpp:48:22:48:22 | x | swap2.cpp:50:9:50:9 | x |  |
-| swap1.cpp:48:32:48:32 | y | swap1.cpp:48:32:48:32 | y |  |
-| swap1.cpp:48:32:48:32 | y | swap1.cpp:50:16:50:16 | y |  |
-| swap1.cpp:48:32:48:32 | y | swap2.cpp:48:32:48:32 | y |  |
-| swap1.cpp:48:32:48:32 | y | swap2.cpp:50:16:50:16 | y |  |
-| swap1.cpp:50:9:50:9 | ref arg x | swap1.cpp:48:22:48:22 | x |  |
-| swap1.cpp:50:9:50:9 | ref arg x | swap2.cpp:48:22:48:22 | x |  |
-| swap1.cpp:50:16:50:16 | ref arg y | swap1.cpp:48:32:48:32 | y |  |
-| swap1.cpp:50:16:50:16 | ref arg y | swap2.cpp:48:32:48:32 | y |  |
-| swap1.cpp:56:23:56:23 | x | swap1.cpp:58:5:58:5 | x |  |
-| swap1.cpp:56:23:56:23 | x | swap1.cpp:60:10:60:10 | x |  |
-| swap1.cpp:56:23:56:23 | x | swap1.cpp:63:9:63:9 | x |  |
-| swap1.cpp:56:23:56:23 | x | swap1.cpp:66:10:66:10 | x |  |
-| swap1.cpp:57:23:57:23 | y | swap1.cpp:61:10:61:10 | y |  |
-| swap1.cpp:57:23:57:23 | y | swap1.cpp:63:5:63:5 | y |  |
-| swap1.cpp:57:23:57:23 | y | swap1.cpp:65:10:65:10 | y |  |
-| swap1.cpp:58:5:58:5 | x [post update] | swap1.cpp:60:10:60:10 | x |  |
-| swap1.cpp:58:5:58:5 | x [post update] | swap1.cpp:63:9:63:9 | x |  |
-| swap1.cpp:58:5:58:5 | x [post update] | swap1.cpp:66:10:66:10 | x |  |
-| swap1.cpp:58:5:58:22 | ... = ... | swap1.cpp:60:12:60:16 | data1 |  |
-| swap1.cpp:58:5:58:22 | ... = ... | swap1.cpp:66:12:66:16 | data1 |  |
-| swap1.cpp:58:15:58:20 | call to source | swap1.cpp:58:5:58:22 | ... = ... |  |
-| swap1.cpp:63:5:63:5 | ref arg y | swap1.cpp:65:10:65:10 | y |  |
-| swap1.cpp:63:9:63:9 | x | swap1.cpp:63:5:63:5 | ref arg y | TAINT |
-| swap1.cpp:63:9:63:9 | x | swap1.cpp:63:7:63:7 | call to operator= | TAINT |
-| swap1.cpp:68:23:68:24 | z1 | swap1.cpp:69:5:69:6 | z1 |  |
-| swap1.cpp:68:23:68:24 | z1 | swap1.cpp:70:10:70:11 | z1 |  |
-| swap1.cpp:68:23:68:24 | z1 | swap1.cpp:72:10:72:11 | z1 |  |
-| swap1.cpp:68:23:68:24 | z1 | swap1.cpp:75:10:75:11 | z1 |  |
-| swap1.cpp:68:27:68:28 | z2 | swap1.cpp:72:14:72:15 | z2 |  |
-| swap1.cpp:68:27:68:28 | z2 | swap1.cpp:74:10:74:11 | z2 |  |
-| swap1.cpp:69:5:69:6 | z1 [post update] | swap1.cpp:70:10:70:11 | z1 |  |
-| swap1.cpp:69:5:69:6 | z1 [post update] | swap1.cpp:72:10:72:11 | z1 |  |
-| swap1.cpp:69:5:69:6 | z1 [post update] | swap1.cpp:75:10:75:11 | z1 |  |
-| swap1.cpp:69:5:69:23 | ... = ... | swap1.cpp:70:13:70:17 | data1 |  |
-| swap1.cpp:69:5:69:23 | ... = ... | swap1.cpp:75:13:75:17 | data1 |  |
-| swap1.cpp:69:16:69:21 | call to source | swap1.cpp:69:5:69:23 | ... = ... |  |
-| swap1.cpp:72:10:72:11 | ref arg z1 | swap1.cpp:75:10:75:11 | z1 |  |
-| swap1.cpp:72:14:72:15 | ref arg z2 | swap1.cpp:74:10:74:11 | z2 |  |
-| swap1.cpp:80:23:80:23 | x | swap1.cpp:82:5:82:5 | x |  |
-| swap1.cpp:80:23:80:23 | x | swap1.cpp:84:10:84:10 | x |  |
-| swap1.cpp:80:23:80:23 | x | swap1.cpp:87:19:87:19 | x |  |
-| swap1.cpp:80:23:80:23 | x | swap1.cpp:90:10:90:10 | x |  |
-| swap1.cpp:81:23:81:23 | y | swap1.cpp:85:10:85:10 | y |  |
-| swap1.cpp:81:23:81:23 | y | swap1.cpp:87:5:87:5 | y |  |
-| swap1.cpp:81:23:81:23 | y | swap1.cpp:89:10:89:10 | y |  |
-| swap1.cpp:82:5:82:5 | x [post update] | swap1.cpp:84:10:84:10 | x |  |
-| swap1.cpp:82:5:82:5 | x [post update] | swap1.cpp:87:19:87:19 | x |  |
-| swap1.cpp:82:5:82:5 | x [post update] | swap1.cpp:90:10:90:10 | x |  |
-| swap1.cpp:82:5:82:22 | ... = ... | swap1.cpp:84:12:84:16 | data1 |  |
-| swap1.cpp:82:5:82:22 | ... = ... | swap1.cpp:90:12:90:16 | data1 |  |
-| swap1.cpp:82:15:82:20 | call to source | swap1.cpp:82:5:82:22 | ... = ... |  |
-| swap1.cpp:87:5:87:5 | ref arg y | swap1.cpp:89:10:89:10 | y |  |
-| swap1.cpp:87:9:87:17 | call to move | swap1.cpp:87:5:87:5 | ref arg y | TAINT |
-| swap1.cpp:87:9:87:17 | call to move | swap1.cpp:87:7:87:7 | call to operator= | TAINT |
-| swap1.cpp:87:9:87:17 | ref arg call to move | swap1.cpp:87:19:87:19 | x [inner post update] |  |
-| swap1.cpp:87:9:87:17 | ref arg call to move | swap1.cpp:90:10:90:10 | x |  |
-| swap1.cpp:87:19:87:19 | x | swap1.cpp:87:5:87:5 | ref arg y | TAINT |
-| swap1.cpp:87:19:87:19 | x | swap1.cpp:87:7:87:7 | call to operator= | TAINT |
-| swap1.cpp:87:19:87:19 | x | swap1.cpp:87:9:87:17 | call to move |  |
-| swap1.cpp:95:23:95:31 | move_from | swap1.cpp:96:5:96:13 | move_from |  |
-| swap1.cpp:95:23:95:31 | move_from | swap1.cpp:98:10:98:18 | move_from |  |
-| swap1.cpp:95:23:95:31 | move_from | swap1.cpp:100:41:100:49 | move_from |  |
-| swap1.cpp:96:5:96:13 | move_from [post update] | swap1.cpp:98:10:98:18 | move_from |  |
-| swap1.cpp:96:5:96:13 | move_from [post update] | swap1.cpp:100:41:100:49 | move_from |  |
-| swap1.cpp:96:5:96:30 | ... = ... | swap1.cpp:98:20:98:24 | data1 |  |
-| swap1.cpp:96:5:96:30 | ... = ... | swap1.cpp:102:18:102:22 | data1 |  |
-| swap1.cpp:96:23:96:28 | call to source | swap1.cpp:96:5:96:30 | ... = ... |  |
-| swap1.cpp:100:31:100:39 | call to move | swap1.cpp:100:31:100:51 | call to Class |  |
-| swap1.cpp:100:31:100:39 | ref arg call to move | swap1.cpp:100:41:100:49 | move_from [inner post update] |  |
-| swap1.cpp:100:31:100:51 | call to Class | swap1.cpp:102:10:102:16 | move_to |  |
-| swap1.cpp:100:41:100:49 | move_from | swap1.cpp:100:31:100:39 | call to move |  |
+| swap1.cpp:40:16:40:26 | this | swap1.cpp:43:13:43:16 | this |  |
+| swap1.cpp:40:41:40:44 | that | swap1.cpp:42:24:42:27 | that |  |
+| swap1.cpp:42:23:42:27 | call to Class | swap1.cpp:43:18:43:20 | tmp |  |
+| swap1.cpp:42:24:42:27 | that | swap1.cpp:42:23:42:27 | call to Class |  |
+| swap1.cpp:43:13:43:16 | ref arg this | swap1.cpp:44:21:44:24 | this |  |
+| swap1.cpp:43:13:43:16 | this | swap1.cpp:44:21:44:24 | this |  |
+| swap1.cpp:44:21:44:24 | this | swap1.cpp:44:20:44:24 | * ... | TAINT |
+| swap1.cpp:47:16:47:26 | this | swap1.cpp:49:13:49:16 | this |  |
+| swap1.cpp:47:36:47:39 | that | swap1.cpp:47:36:47:39 | that |  |
+| swap1.cpp:47:36:47:39 | that | swap1.cpp:49:18:49:21 | that |  |
+| swap1.cpp:49:13:49:16 | ref arg this | swap1.cpp:50:21:50:24 | this |  |
+| swap1.cpp:49:13:49:16 | this | swap1.cpp:50:21:50:24 | this |  |
+| swap1.cpp:49:18:49:21 | ref arg that | swap1.cpp:47:36:47:39 | that |  |
+| swap1.cpp:50:21:50:24 | this | swap1.cpp:50:20:50:24 | * ... | TAINT |
+| swap1.cpp:53:14:53:17 | this | swap1.cpp:56:18:56:22 | this |  |
+| swap1.cpp:53:26:53:29 | that | swap1.cpp:53:26:53:29 | that |  |
+| swap1.cpp:53:26:53:29 | that | swap1.cpp:56:25:56:28 | that |  |
+| swap1.cpp:56:18:56:22 | data1 | swap1.cpp:56:30:56:34 | ref arg data1 |  |
+| swap1.cpp:56:25:56:28 | that | swap1.cpp:56:18:56:22 | ref arg data1 |  |
+| swap1.cpp:56:25:56:28 | that [post update] | swap1.cpp:53:26:53:29 | that |  |
+| swap1.cpp:56:30:56:34 | data1 | swap1.cpp:56:18:56:22 | ref arg data1 |  |
+| swap1.cpp:61:22:61:22 | x | swap1.cpp:61:22:61:22 | x |  |
+| swap1.cpp:61:22:61:22 | x | swap1.cpp:63:9:63:9 | x |  |
+| swap1.cpp:61:22:61:22 | x | swap2.cpp:61:22:61:22 | x |  |
+| swap1.cpp:61:22:61:22 | x | swap2.cpp:63:9:63:9 | x |  |
+| swap1.cpp:61:32:61:32 | y | swap1.cpp:61:32:61:32 | y |  |
+| swap1.cpp:61:32:61:32 | y | swap1.cpp:63:16:63:16 | y |  |
+| swap1.cpp:61:32:61:32 | y | swap2.cpp:61:32:61:32 | y |  |
+| swap1.cpp:61:32:61:32 | y | swap2.cpp:63:16:63:16 | y |  |
+| swap1.cpp:63:9:63:9 | ref arg x | swap1.cpp:61:22:61:22 | x |  |
+| swap1.cpp:63:9:63:9 | ref arg x | swap2.cpp:61:22:61:22 | x |  |
+| swap1.cpp:63:16:63:16 | ref arg y | swap1.cpp:61:32:61:32 | y |  |
+| swap1.cpp:63:16:63:16 | ref arg y | swap2.cpp:61:32:61:32 | y |  |
+| swap1.cpp:69:23:69:23 | x | swap1.cpp:71:5:71:5 | x |  |
+| swap1.cpp:69:23:69:23 | x | swap1.cpp:73:10:73:10 | x |  |
+| swap1.cpp:69:23:69:23 | x | swap1.cpp:76:9:76:9 | x |  |
+| swap1.cpp:69:23:69:23 | x | swap1.cpp:79:10:79:10 | x |  |
+| swap1.cpp:70:23:70:23 | y | swap1.cpp:74:10:74:10 | y |  |
+| swap1.cpp:70:23:70:23 | y | swap1.cpp:76:5:76:5 | y |  |
+| swap1.cpp:70:23:70:23 | y | swap1.cpp:78:10:78:10 | y |  |
+| swap1.cpp:71:5:71:5 | x [post update] | swap1.cpp:73:10:73:10 | x |  |
+| swap1.cpp:71:5:71:5 | x [post update] | swap1.cpp:76:9:76:9 | x |  |
+| swap1.cpp:71:5:71:5 | x [post update] | swap1.cpp:79:10:79:10 | x |  |
+| swap1.cpp:71:5:71:22 | ... = ... | swap1.cpp:73:12:73:16 | data1 |  |
+| swap1.cpp:71:5:71:22 | ... = ... | swap1.cpp:79:12:79:16 | data1 |  |
+| swap1.cpp:71:15:71:20 | call to source | swap1.cpp:71:5:71:22 | ... = ... |  |
+| swap1.cpp:76:5:76:5 | ref arg y | swap1.cpp:78:10:78:10 | y |  |
+| swap1.cpp:76:9:76:9 | x | swap1.cpp:76:5:76:5 | ref arg y | TAINT |
+| swap1.cpp:76:9:76:9 | x | swap1.cpp:76:7:76:7 | call to operator= | TAINT |
+| swap1.cpp:81:23:81:24 | z1 | swap1.cpp:82:5:82:6 | z1 |  |
+| swap1.cpp:81:23:81:24 | z1 | swap1.cpp:83:10:83:11 | z1 |  |
+| swap1.cpp:81:23:81:24 | z1 | swap1.cpp:85:10:85:11 | z1 |  |
+| swap1.cpp:81:23:81:24 | z1 | swap1.cpp:88:10:88:11 | z1 |  |
+| swap1.cpp:81:27:81:28 | z2 | swap1.cpp:85:14:85:15 | z2 |  |
+| swap1.cpp:81:27:81:28 | z2 | swap1.cpp:87:10:87:11 | z2 |  |
+| swap1.cpp:82:5:82:6 | z1 [post update] | swap1.cpp:83:10:83:11 | z1 |  |
+| swap1.cpp:82:5:82:6 | z1 [post update] | swap1.cpp:85:10:85:11 | z1 |  |
+| swap1.cpp:82:5:82:6 | z1 [post update] | swap1.cpp:88:10:88:11 | z1 |  |
+| swap1.cpp:82:5:82:23 | ... = ... | swap1.cpp:83:13:83:17 | data1 |  |
+| swap1.cpp:82:5:82:23 | ... = ... | swap1.cpp:88:13:88:17 | data1 |  |
+| swap1.cpp:82:16:82:21 | call to source | swap1.cpp:82:5:82:23 | ... = ... |  |
+| swap1.cpp:85:10:85:11 | ref arg z1 | swap1.cpp:88:10:88:11 | z1 |  |
+| swap1.cpp:85:14:85:15 | ref arg z2 | swap1.cpp:87:10:87:11 | z2 |  |
+| swap1.cpp:93:23:93:23 | x | swap1.cpp:95:5:95:5 | x |  |
+| swap1.cpp:93:23:93:23 | x | swap1.cpp:97:10:97:10 | x |  |
+| swap1.cpp:93:23:93:23 | x | swap1.cpp:100:19:100:19 | x |  |
+| swap1.cpp:93:23:93:23 | x | swap1.cpp:103:10:103:10 | x |  |
+| swap1.cpp:94:23:94:23 | y | swap1.cpp:98:10:98:10 | y |  |
+| swap1.cpp:94:23:94:23 | y | swap1.cpp:100:5:100:5 | y |  |
+| swap1.cpp:94:23:94:23 | y | swap1.cpp:102:10:102:10 | y |  |
+| swap1.cpp:95:5:95:5 | x [post update] | swap1.cpp:97:10:97:10 | x |  |
+| swap1.cpp:95:5:95:5 | x [post update] | swap1.cpp:100:19:100:19 | x |  |
+| swap1.cpp:95:5:95:5 | x [post update] | swap1.cpp:103:10:103:10 | x |  |
+| swap1.cpp:95:5:95:22 | ... = ... | swap1.cpp:97:12:97:16 | data1 |  |
+| swap1.cpp:95:5:95:22 | ... = ... | swap1.cpp:103:12:103:16 | data1 |  |
+| swap1.cpp:95:15:95:20 | call to source | swap1.cpp:95:5:95:22 | ... = ... |  |
+| swap1.cpp:100:5:100:5 | ref arg y | swap1.cpp:102:10:102:10 | y |  |
+| swap1.cpp:100:9:100:17 | call to move | swap1.cpp:100:5:100:5 | ref arg y | TAINT |
+| swap1.cpp:100:9:100:17 | call to move | swap1.cpp:100:7:100:7 | call to operator= | TAINT |
+| swap1.cpp:100:9:100:17 | ref arg call to move | swap1.cpp:100:19:100:19 | x [inner post update] |  |
+| swap1.cpp:100:9:100:17 | ref arg call to move | swap1.cpp:103:10:103:10 | x |  |
+| swap1.cpp:100:19:100:19 | x | swap1.cpp:100:5:100:5 | ref arg y | TAINT |
+| swap1.cpp:100:19:100:19 | x | swap1.cpp:100:7:100:7 | call to operator= | TAINT |
+| swap1.cpp:100:19:100:19 | x | swap1.cpp:100:9:100:17 | call to move |  |
+| swap1.cpp:108:23:108:31 | move_from | swap1.cpp:109:5:109:13 | move_from |  |
+| swap1.cpp:108:23:108:31 | move_from | swap1.cpp:111:10:111:18 | move_from |  |
+| swap1.cpp:108:23:108:31 | move_from | swap1.cpp:113:41:113:49 | move_from |  |
+| swap1.cpp:109:5:109:13 | move_from [post update] | swap1.cpp:111:10:111:18 | move_from |  |
+| swap1.cpp:109:5:109:13 | move_from [post update] | swap1.cpp:113:41:113:49 | move_from |  |
+| swap1.cpp:109:5:109:30 | ... = ... | swap1.cpp:111:20:111:24 | data1 |  |
+| swap1.cpp:109:5:109:30 | ... = ... | swap1.cpp:115:18:115:22 | data1 |  |
+| swap1.cpp:109:23:109:28 | call to source | swap1.cpp:109:5:109:30 | ... = ... |  |
+| swap1.cpp:113:31:113:39 | call to move | swap1.cpp:113:31:113:51 | call to Class |  |
+| swap1.cpp:113:31:113:39 | ref arg call to move | swap1.cpp:113:41:113:49 | move_from [inner post update] |  |
+| swap1.cpp:113:31:113:51 | call to Class | swap1.cpp:115:10:115:16 | move_to |  |
+| swap1.cpp:113:41:113:49 | move_from | swap1.cpp:113:31:113:39 | call to move |  |
+| swap1.cpp:120:23:120:23 | x | swap1.cpp:122:5:122:5 | x |  |
+| swap1.cpp:120:23:120:23 | x | swap1.cpp:124:10:124:10 | x |  |
+| swap1.cpp:120:23:120:23 | x | swap1.cpp:127:19:127:19 | x |  |
+| swap1.cpp:120:23:120:23 | x | swap1.cpp:130:10:130:10 | x |  |
+| swap1.cpp:121:23:121:23 | y | swap1.cpp:125:10:125:10 | y |  |
+| swap1.cpp:121:23:121:23 | y | swap1.cpp:127:5:127:5 | y |  |
+| swap1.cpp:121:23:121:23 | y | swap1.cpp:129:10:129:10 | y |  |
+| swap1.cpp:122:5:122:5 | x [post update] | swap1.cpp:124:10:124:10 | x |  |
+| swap1.cpp:122:5:122:5 | x [post update] | swap1.cpp:127:19:127:19 | x |  |
+| swap1.cpp:122:5:122:5 | x [post update] | swap1.cpp:130:10:130:10 | x |  |
+| swap1.cpp:122:5:122:22 | ... = ... | swap1.cpp:124:12:124:16 | data1 |  |
+| swap1.cpp:122:5:122:22 | ... = ... | swap1.cpp:130:12:130:16 | data1 |  |
+| swap1.cpp:122:15:122:20 | call to source | swap1.cpp:122:5:122:22 | ... = ... |  |
+| swap1.cpp:127:5:127:5 | ref arg y | swap1.cpp:129:10:129:10 | y |  |
+| swap1.cpp:135:23:135:23 | x | swap1.cpp:137:5:137:5 | x |  |
+| swap1.cpp:135:23:135:23 | x | swap1.cpp:139:10:139:10 | x |  |
+| swap1.cpp:135:23:135:23 | x | swap1.cpp:142:29:142:29 | x |  |
+| swap1.cpp:135:23:135:23 | x | swap1.cpp:145:10:145:10 | x |  |
+| swap1.cpp:136:23:136:23 | y | swap1.cpp:140:10:140:10 | y |  |
+| swap1.cpp:136:23:136:23 | y | swap1.cpp:142:5:142:5 | y |  |
+| swap1.cpp:136:23:136:23 | y | swap1.cpp:144:10:144:10 | y |  |
+| swap1.cpp:137:5:137:5 | x [post update] | swap1.cpp:139:10:139:10 | x |  |
+| swap1.cpp:137:5:137:5 | x [post update] | swap1.cpp:142:29:142:29 | x |  |
+| swap1.cpp:137:5:137:5 | x [post update] | swap1.cpp:145:10:145:10 | x |  |
+| swap1.cpp:137:5:137:22 | ... = ... | swap1.cpp:139:12:139:16 | data1 |  |
+| swap1.cpp:137:5:137:22 | ... = ... | swap1.cpp:145:12:145:16 | data1 |  |
+| swap1.cpp:137:15:137:20 | call to source | swap1.cpp:137:5:137:22 | ... = ... |  |
+| swap1.cpp:142:5:142:5 | ref arg y | swap1.cpp:144:10:144:10 | y |  |
+| swap1.cpp:142:19:142:27 | ref arg call to move | swap1.cpp:142:29:142:29 | x [inner post update] |  |
+| swap1.cpp:142:19:142:27 | ref arg call to move | swap1.cpp:145:10:145:10 | x |  |
+| swap1.cpp:142:29:142:29 | x | swap1.cpp:142:19:142:27 | call to move |  |
 | swap2.cpp:14:17:14:17 | t | swap2.cpp:14:17:14:17 | t |  |
 | swap2.cpp:14:17:14:17 | t | swap2.cpp:14:17:14:17 | t |  |
 | swap2.cpp:14:17:14:17 | t | swap2.cpp:14:56:14:56 | t |  |
@@ -527,96 +810,141 @@
 | swap2.cpp:36:13:36:16 | this | swap2.cpp:37:21:37:24 | this |  |
 | swap2.cpp:36:18:36:21 | ref arg that | swap2.cpp:34:34:34:37 | that |  |
 | swap2.cpp:37:21:37:24 | this | swap2.cpp:37:20:37:24 | * ... | TAINT |
-| swap2.cpp:40:14:40:17 | this | swap2.cpp:43:18:43:22 | this |  |
-| swap2.cpp:40:26:40:29 | that | swap2.cpp:40:26:40:29 | that |  |
-| swap2.cpp:40:26:40:29 | that | swap2.cpp:43:25:43:28 | that |  |
-| swap2.cpp:40:26:40:29 | that | swap2.cpp:43:50:43:53 | that |  |
-| swap2.cpp:43:18:43:22 | data1 | swap2.cpp:43:30:43:34 | ref arg data1 |  |
-| swap2.cpp:43:18:43:22 | this | swap2.cpp:43:43:43:47 | this |  |
-| swap2.cpp:43:18:43:22 | this [post update] | swap2.cpp:43:43:43:47 | this |  |
-| swap2.cpp:43:25:43:28 | that | swap2.cpp:43:18:43:22 | ref arg data1 |  |
-| swap2.cpp:43:25:43:28 | that [post update] | swap2.cpp:40:26:40:29 | that |  |
-| swap2.cpp:43:25:43:28 | that [post update] | swap2.cpp:43:50:43:53 | that |  |
-| swap2.cpp:43:30:43:34 | data1 | swap2.cpp:43:18:43:22 | ref arg data1 |  |
-| swap2.cpp:43:43:43:47 | data2 | swap2.cpp:43:55:43:59 | ref arg data2 |  |
-| swap2.cpp:43:50:43:53 | that | swap2.cpp:43:43:43:47 | ref arg data2 |  |
-| swap2.cpp:43:50:43:53 | that [post update] | swap2.cpp:40:26:40:29 | that |  |
-| swap2.cpp:43:55:43:59 | data2 | swap2.cpp:43:43:43:47 | ref arg data2 |  |
-| swap2.cpp:48:22:48:22 | x | swap1.cpp:48:22:48:22 | x |  |
-| swap2.cpp:48:22:48:22 | x | swap1.cpp:50:9:50:9 | x |  |
-| swap2.cpp:48:22:48:22 | x | swap2.cpp:48:22:48:22 | x |  |
-| swap2.cpp:48:22:48:22 | x | swap2.cpp:50:9:50:9 | x |  |
-| swap2.cpp:48:32:48:32 | y | swap1.cpp:48:32:48:32 | y |  |
-| swap2.cpp:48:32:48:32 | y | swap1.cpp:50:16:50:16 | y |  |
-| swap2.cpp:48:32:48:32 | y | swap2.cpp:48:32:48:32 | y |  |
-| swap2.cpp:48:32:48:32 | y | swap2.cpp:50:16:50:16 | y |  |
-| swap2.cpp:50:9:50:9 | ref arg x | swap1.cpp:48:22:48:22 | x |  |
-| swap2.cpp:50:9:50:9 | ref arg x | swap2.cpp:48:22:48:22 | x |  |
-| swap2.cpp:50:16:50:16 | ref arg y | swap1.cpp:48:32:48:32 | y |  |
-| swap2.cpp:50:16:50:16 | ref arg y | swap2.cpp:48:32:48:32 | y |  |
-| swap2.cpp:56:23:56:23 | x | swap2.cpp:58:5:58:5 | x |  |
-| swap2.cpp:56:23:56:23 | x | swap2.cpp:60:10:60:10 | x |  |
-| swap2.cpp:56:23:56:23 | x | swap2.cpp:63:9:63:9 | x |  |
-| swap2.cpp:56:23:56:23 | x | swap2.cpp:66:10:66:10 | x |  |
-| swap2.cpp:57:23:57:23 | y | swap2.cpp:61:10:61:10 | y |  |
-| swap2.cpp:57:23:57:23 | y | swap2.cpp:63:5:63:5 | y |  |
-| swap2.cpp:57:23:57:23 | y | swap2.cpp:65:10:65:10 | y |  |
-| swap2.cpp:58:5:58:5 | x [post update] | swap2.cpp:60:10:60:10 | x |  |
-| swap2.cpp:58:5:58:5 | x [post update] | swap2.cpp:63:9:63:9 | x |  |
-| swap2.cpp:58:5:58:5 | x [post update] | swap2.cpp:66:10:66:10 | x |  |
-| swap2.cpp:58:5:58:22 | ... = ... | swap2.cpp:60:12:60:16 | data1 |  |
-| swap2.cpp:58:5:58:22 | ... = ... | swap2.cpp:66:12:66:16 | data1 |  |
-| swap2.cpp:58:15:58:20 | call to source | swap2.cpp:58:5:58:22 | ... = ... |  |
-| swap2.cpp:63:5:63:5 | ref arg y | swap2.cpp:65:10:65:10 | y |  |
-| swap2.cpp:63:9:63:9 | x | swap2.cpp:63:5:63:5 | ref arg y | TAINT |
-| swap2.cpp:63:9:63:9 | x | swap2.cpp:63:7:63:7 | call to operator= | TAINT |
-| swap2.cpp:68:23:68:24 | z1 | swap2.cpp:69:5:69:6 | z1 |  |
-| swap2.cpp:68:23:68:24 | z1 | swap2.cpp:70:10:70:11 | z1 |  |
-| swap2.cpp:68:23:68:24 | z1 | swap2.cpp:72:10:72:11 | z1 |  |
-| swap2.cpp:68:23:68:24 | z1 | swap2.cpp:75:10:75:11 | z1 |  |
-| swap2.cpp:68:27:68:28 | z2 | swap2.cpp:72:14:72:15 | z2 |  |
-| swap2.cpp:68:27:68:28 | z2 | swap2.cpp:74:10:74:11 | z2 |  |
-| swap2.cpp:69:5:69:6 | z1 [post update] | swap2.cpp:70:10:70:11 | z1 |  |
-| swap2.cpp:69:5:69:6 | z1 [post update] | swap2.cpp:72:10:72:11 | z1 |  |
-| swap2.cpp:69:5:69:6 | z1 [post update] | swap2.cpp:75:10:75:11 | z1 |  |
-| swap2.cpp:69:5:69:23 | ... = ... | swap2.cpp:70:13:70:17 | data1 |  |
-| swap2.cpp:69:5:69:23 | ... = ... | swap2.cpp:75:13:75:17 | data1 |  |
-| swap2.cpp:69:16:69:21 | call to source | swap2.cpp:69:5:69:23 | ... = ... |  |
-| swap2.cpp:72:10:72:11 | ref arg z1 | swap2.cpp:75:10:75:11 | z1 |  |
-| swap2.cpp:72:14:72:15 | ref arg z2 | swap2.cpp:74:10:74:11 | z2 |  |
-| swap2.cpp:80:23:80:23 | x | swap2.cpp:82:5:82:5 | x |  |
-| swap2.cpp:80:23:80:23 | x | swap2.cpp:84:10:84:10 | x |  |
-| swap2.cpp:80:23:80:23 | x | swap2.cpp:87:19:87:19 | x |  |
-| swap2.cpp:80:23:80:23 | x | swap2.cpp:90:10:90:10 | x |  |
-| swap2.cpp:81:23:81:23 | y | swap2.cpp:85:10:85:10 | y |  |
-| swap2.cpp:81:23:81:23 | y | swap2.cpp:87:5:87:5 | y |  |
-| swap2.cpp:81:23:81:23 | y | swap2.cpp:89:10:89:10 | y |  |
-| swap2.cpp:82:5:82:5 | x [post update] | swap2.cpp:84:10:84:10 | x |  |
-| swap2.cpp:82:5:82:5 | x [post update] | swap2.cpp:87:19:87:19 | x |  |
-| swap2.cpp:82:5:82:5 | x [post update] | swap2.cpp:90:10:90:10 | x |  |
-| swap2.cpp:82:5:82:22 | ... = ... | swap2.cpp:84:12:84:16 | data1 |  |
-| swap2.cpp:82:5:82:22 | ... = ... | swap2.cpp:90:12:90:16 | data1 |  |
-| swap2.cpp:82:15:82:20 | call to source | swap2.cpp:82:5:82:22 | ... = ... |  |
-| swap2.cpp:87:5:87:5 | ref arg y | swap2.cpp:89:10:89:10 | y |  |
-| swap2.cpp:87:9:87:17 | call to move | swap2.cpp:87:5:87:5 | ref arg y | TAINT |
-| swap2.cpp:87:9:87:17 | call to move | swap2.cpp:87:7:87:7 | call to operator= | TAINT |
-| swap2.cpp:87:9:87:17 | ref arg call to move | swap2.cpp:87:19:87:19 | x [inner post update] |  |
-| swap2.cpp:87:9:87:17 | ref arg call to move | swap2.cpp:90:10:90:10 | x |  |
-| swap2.cpp:87:19:87:19 | x | swap2.cpp:87:5:87:5 | ref arg y | TAINT |
-| swap2.cpp:87:19:87:19 | x | swap2.cpp:87:7:87:7 | call to operator= | TAINT |
-| swap2.cpp:87:19:87:19 | x | swap2.cpp:87:9:87:17 | call to move |  |
-| swap2.cpp:95:23:95:31 | move_from | swap2.cpp:96:5:96:13 | move_from |  |
-| swap2.cpp:95:23:95:31 | move_from | swap2.cpp:98:10:98:18 | move_from |  |
-| swap2.cpp:95:23:95:31 | move_from | swap2.cpp:100:41:100:49 | move_from |  |
-| swap2.cpp:96:5:96:13 | move_from [post update] | swap2.cpp:98:10:98:18 | move_from |  |
-| swap2.cpp:96:5:96:13 | move_from [post update] | swap2.cpp:100:41:100:49 | move_from |  |
-| swap2.cpp:96:5:96:30 | ... = ... | swap2.cpp:98:20:98:24 | data1 |  |
-| swap2.cpp:96:5:96:30 | ... = ... | swap2.cpp:102:18:102:22 | data1 |  |
-| swap2.cpp:96:23:96:28 | call to source | swap2.cpp:96:5:96:30 | ... = ... |  |
-| swap2.cpp:100:31:100:39 | call to move | swap2.cpp:100:31:100:51 | call to Class |  |
-| swap2.cpp:100:31:100:39 | ref arg call to move | swap2.cpp:100:41:100:49 | move_from [inner post update] |  |
-| swap2.cpp:100:31:100:51 | call to Class | swap2.cpp:102:10:102:16 | move_to |  |
-| swap2.cpp:100:41:100:49 | move_from | swap2.cpp:100:31:100:39 | call to move |  |
+| swap2.cpp:40:16:40:26 | this | swap2.cpp:43:13:43:16 | this |  |
+| swap2.cpp:40:41:40:44 | that | swap2.cpp:42:24:42:27 | that |  |
+| swap2.cpp:42:23:42:27 | call to Class | swap2.cpp:43:18:43:20 | tmp |  |
+| swap2.cpp:42:24:42:27 | that | swap2.cpp:42:23:42:27 | call to Class |  |
+| swap2.cpp:43:13:43:16 | ref arg this | swap2.cpp:44:21:44:24 | this |  |
+| swap2.cpp:43:13:43:16 | this | swap2.cpp:44:21:44:24 | this |  |
+| swap2.cpp:44:21:44:24 | this | swap2.cpp:44:20:44:24 | * ... | TAINT |
+| swap2.cpp:47:16:47:26 | this | swap2.cpp:49:13:49:16 | this |  |
+| swap2.cpp:47:36:47:39 | that | swap2.cpp:47:36:47:39 | that |  |
+| swap2.cpp:47:36:47:39 | that | swap2.cpp:49:18:49:21 | that |  |
+| swap2.cpp:49:13:49:16 | ref arg this | swap2.cpp:50:21:50:24 | this |  |
+| swap2.cpp:49:13:49:16 | this | swap2.cpp:50:21:50:24 | this |  |
+| swap2.cpp:49:18:49:21 | ref arg that | swap2.cpp:47:36:47:39 | that |  |
+| swap2.cpp:50:21:50:24 | this | swap2.cpp:50:20:50:24 | * ... | TAINT |
+| swap2.cpp:53:14:53:17 | this | swap2.cpp:56:18:56:22 | this |  |
+| swap2.cpp:53:26:53:29 | that | swap2.cpp:53:26:53:29 | that |  |
+| swap2.cpp:53:26:53:29 | that | swap2.cpp:56:25:56:28 | that |  |
+| swap2.cpp:53:26:53:29 | that | swap2.cpp:56:50:56:53 | that |  |
+| swap2.cpp:56:18:56:22 | data1 | swap2.cpp:56:30:56:34 | ref arg data1 |  |
+| swap2.cpp:56:18:56:22 | this | swap2.cpp:56:43:56:47 | this |  |
+| swap2.cpp:56:18:56:22 | this [post update] | swap2.cpp:56:43:56:47 | this |  |
+| swap2.cpp:56:25:56:28 | that | swap2.cpp:56:18:56:22 | ref arg data1 |  |
+| swap2.cpp:56:25:56:28 | that [post update] | swap2.cpp:53:26:53:29 | that |  |
+| swap2.cpp:56:25:56:28 | that [post update] | swap2.cpp:56:50:56:53 | that |  |
+| swap2.cpp:56:30:56:34 | data1 | swap2.cpp:56:18:56:22 | ref arg data1 |  |
+| swap2.cpp:56:43:56:47 | data2 | swap2.cpp:56:55:56:59 | ref arg data2 |  |
+| swap2.cpp:56:50:56:53 | that | swap2.cpp:56:43:56:47 | ref arg data2 |  |
+| swap2.cpp:56:50:56:53 | that [post update] | swap2.cpp:53:26:53:29 | that |  |
+| swap2.cpp:56:55:56:59 | data2 | swap2.cpp:56:43:56:47 | ref arg data2 |  |
+| swap2.cpp:61:22:61:22 | x | swap1.cpp:61:22:61:22 | x |  |
+| swap2.cpp:61:22:61:22 | x | swap1.cpp:63:9:63:9 | x |  |
+| swap2.cpp:61:22:61:22 | x | swap2.cpp:61:22:61:22 | x |  |
+| swap2.cpp:61:22:61:22 | x | swap2.cpp:63:9:63:9 | x |  |
+| swap2.cpp:61:32:61:32 | y | swap1.cpp:61:32:61:32 | y |  |
+| swap2.cpp:61:32:61:32 | y | swap1.cpp:63:16:63:16 | y |  |
+| swap2.cpp:61:32:61:32 | y | swap2.cpp:61:32:61:32 | y |  |
+| swap2.cpp:61:32:61:32 | y | swap2.cpp:63:16:63:16 | y |  |
+| swap2.cpp:63:9:63:9 | ref arg x | swap1.cpp:61:22:61:22 | x |  |
+| swap2.cpp:63:9:63:9 | ref arg x | swap2.cpp:61:22:61:22 | x |  |
+| swap2.cpp:63:16:63:16 | ref arg y | swap1.cpp:61:32:61:32 | y |  |
+| swap2.cpp:63:16:63:16 | ref arg y | swap2.cpp:61:32:61:32 | y |  |
+| swap2.cpp:69:23:69:23 | x | swap2.cpp:71:5:71:5 | x |  |
+| swap2.cpp:69:23:69:23 | x | swap2.cpp:73:10:73:10 | x |  |
+| swap2.cpp:69:23:69:23 | x | swap2.cpp:76:9:76:9 | x |  |
+| swap2.cpp:69:23:69:23 | x | swap2.cpp:79:10:79:10 | x |  |
+| swap2.cpp:70:23:70:23 | y | swap2.cpp:74:10:74:10 | y |  |
+| swap2.cpp:70:23:70:23 | y | swap2.cpp:76:5:76:5 | y |  |
+| swap2.cpp:70:23:70:23 | y | swap2.cpp:78:10:78:10 | y |  |
+| swap2.cpp:71:5:71:5 | x [post update] | swap2.cpp:73:10:73:10 | x |  |
+| swap2.cpp:71:5:71:5 | x [post update] | swap2.cpp:76:9:76:9 | x |  |
+| swap2.cpp:71:5:71:5 | x [post update] | swap2.cpp:79:10:79:10 | x |  |
+| swap2.cpp:71:5:71:22 | ... = ... | swap2.cpp:73:12:73:16 | data1 |  |
+| swap2.cpp:71:5:71:22 | ... = ... | swap2.cpp:79:12:79:16 | data1 |  |
+| swap2.cpp:71:15:71:20 | call to source | swap2.cpp:71:5:71:22 | ... = ... |  |
+| swap2.cpp:76:5:76:5 | ref arg y | swap2.cpp:78:10:78:10 | y |  |
+| swap2.cpp:76:9:76:9 | x | swap2.cpp:76:5:76:5 | ref arg y | TAINT |
+| swap2.cpp:76:9:76:9 | x | swap2.cpp:76:7:76:7 | call to operator= | TAINT |
+| swap2.cpp:81:23:81:24 | z1 | swap2.cpp:82:5:82:6 | z1 |  |
+| swap2.cpp:81:23:81:24 | z1 | swap2.cpp:83:10:83:11 | z1 |  |
+| swap2.cpp:81:23:81:24 | z1 | swap2.cpp:85:10:85:11 | z1 |  |
+| swap2.cpp:81:23:81:24 | z1 | swap2.cpp:88:10:88:11 | z1 |  |
+| swap2.cpp:81:27:81:28 | z2 | swap2.cpp:85:14:85:15 | z2 |  |
+| swap2.cpp:81:27:81:28 | z2 | swap2.cpp:87:10:87:11 | z2 |  |
+| swap2.cpp:82:5:82:6 | z1 [post update] | swap2.cpp:83:10:83:11 | z1 |  |
+| swap2.cpp:82:5:82:6 | z1 [post update] | swap2.cpp:85:10:85:11 | z1 |  |
+| swap2.cpp:82:5:82:6 | z1 [post update] | swap2.cpp:88:10:88:11 | z1 |  |
+| swap2.cpp:82:5:82:23 | ... = ... | swap2.cpp:83:13:83:17 | data1 |  |
+| swap2.cpp:82:5:82:23 | ... = ... | swap2.cpp:88:13:88:17 | data1 |  |
+| swap2.cpp:82:16:82:21 | call to source | swap2.cpp:82:5:82:23 | ... = ... |  |
+| swap2.cpp:85:10:85:11 | ref arg z1 | swap2.cpp:88:10:88:11 | z1 |  |
+| swap2.cpp:85:14:85:15 | ref arg z2 | swap2.cpp:87:10:87:11 | z2 |  |
+| swap2.cpp:93:23:93:23 | x | swap2.cpp:95:5:95:5 | x |  |
+| swap2.cpp:93:23:93:23 | x | swap2.cpp:97:10:97:10 | x |  |
+| swap2.cpp:93:23:93:23 | x | swap2.cpp:100:19:100:19 | x |  |
+| swap2.cpp:93:23:93:23 | x | swap2.cpp:103:10:103:10 | x |  |
+| swap2.cpp:94:23:94:23 | y | swap2.cpp:98:10:98:10 | y |  |
+| swap2.cpp:94:23:94:23 | y | swap2.cpp:100:5:100:5 | y |  |
+| swap2.cpp:94:23:94:23 | y | swap2.cpp:102:10:102:10 | y |  |
+| swap2.cpp:95:5:95:5 | x [post update] | swap2.cpp:97:10:97:10 | x |  |
+| swap2.cpp:95:5:95:5 | x [post update] | swap2.cpp:100:19:100:19 | x |  |
+| swap2.cpp:95:5:95:5 | x [post update] | swap2.cpp:103:10:103:10 | x |  |
+| swap2.cpp:95:5:95:22 | ... = ... | swap2.cpp:97:12:97:16 | data1 |  |
+| swap2.cpp:95:5:95:22 | ... = ... | swap2.cpp:103:12:103:16 | data1 |  |
+| swap2.cpp:95:15:95:20 | call to source | swap2.cpp:95:5:95:22 | ... = ... |  |
+| swap2.cpp:100:5:100:5 | ref arg y | swap2.cpp:102:10:102:10 | y |  |
+| swap2.cpp:100:9:100:17 | call to move | swap2.cpp:100:5:100:5 | ref arg y | TAINT |
+| swap2.cpp:100:9:100:17 | call to move | swap2.cpp:100:7:100:7 | call to operator= | TAINT |
+| swap2.cpp:100:9:100:17 | ref arg call to move | swap2.cpp:100:19:100:19 | x [inner post update] |  |
+| swap2.cpp:100:9:100:17 | ref arg call to move | swap2.cpp:103:10:103:10 | x |  |
+| swap2.cpp:100:19:100:19 | x | swap2.cpp:100:5:100:5 | ref arg y | TAINT |
+| swap2.cpp:100:19:100:19 | x | swap2.cpp:100:7:100:7 | call to operator= | TAINT |
+| swap2.cpp:100:19:100:19 | x | swap2.cpp:100:9:100:17 | call to move |  |
+| swap2.cpp:108:23:108:31 | move_from | swap2.cpp:109:5:109:13 | move_from |  |
+| swap2.cpp:108:23:108:31 | move_from | swap2.cpp:111:10:111:18 | move_from |  |
+| swap2.cpp:108:23:108:31 | move_from | swap2.cpp:113:41:113:49 | move_from |  |
+| swap2.cpp:109:5:109:13 | move_from [post update] | swap2.cpp:111:10:111:18 | move_from |  |
+| swap2.cpp:109:5:109:13 | move_from [post update] | swap2.cpp:113:41:113:49 | move_from |  |
+| swap2.cpp:109:5:109:30 | ... = ... | swap2.cpp:111:20:111:24 | data1 |  |
+| swap2.cpp:109:5:109:30 | ... = ... | swap2.cpp:115:18:115:22 | data1 |  |
+| swap2.cpp:109:23:109:28 | call to source | swap2.cpp:109:5:109:30 | ... = ... |  |
+| swap2.cpp:113:31:113:39 | call to move | swap2.cpp:113:31:113:51 | call to Class |  |
+| swap2.cpp:113:31:113:39 | ref arg call to move | swap2.cpp:113:41:113:49 | move_from [inner post update] |  |
+| swap2.cpp:113:31:113:51 | call to Class | swap2.cpp:115:10:115:16 | move_to |  |
+| swap2.cpp:113:41:113:49 | move_from | swap2.cpp:113:31:113:39 | call to move |  |
+| swap2.cpp:120:23:120:23 | x | swap2.cpp:122:5:122:5 | x |  |
+| swap2.cpp:120:23:120:23 | x | swap2.cpp:124:10:124:10 | x |  |
+| swap2.cpp:120:23:120:23 | x | swap2.cpp:127:19:127:19 | x |  |
+| swap2.cpp:120:23:120:23 | x | swap2.cpp:130:10:130:10 | x |  |
+| swap2.cpp:121:23:121:23 | y | swap2.cpp:125:10:125:10 | y |  |
+| swap2.cpp:121:23:121:23 | y | swap2.cpp:127:5:127:5 | y |  |
+| swap2.cpp:121:23:121:23 | y | swap2.cpp:129:10:129:10 | y |  |
+| swap2.cpp:122:5:122:5 | x [post update] | swap2.cpp:124:10:124:10 | x |  |
+| swap2.cpp:122:5:122:5 | x [post update] | swap2.cpp:127:19:127:19 | x |  |
+| swap2.cpp:122:5:122:5 | x [post update] | swap2.cpp:130:10:130:10 | x |  |
+| swap2.cpp:122:5:122:22 | ... = ... | swap2.cpp:124:12:124:16 | data1 |  |
+| swap2.cpp:122:5:122:22 | ... = ... | swap2.cpp:130:12:130:16 | data1 |  |
+| swap2.cpp:122:15:122:20 | call to source | swap2.cpp:122:5:122:22 | ... = ... |  |
+| swap2.cpp:127:5:127:5 | ref arg y | swap2.cpp:129:10:129:10 | y |  |
+| swap2.cpp:135:23:135:23 | x | swap2.cpp:137:5:137:5 | x |  |
+| swap2.cpp:135:23:135:23 | x | swap2.cpp:139:10:139:10 | x |  |
+| swap2.cpp:135:23:135:23 | x | swap2.cpp:142:29:142:29 | x |  |
+| swap2.cpp:135:23:135:23 | x | swap2.cpp:145:10:145:10 | x |  |
+| swap2.cpp:136:23:136:23 | y | swap2.cpp:140:10:140:10 | y |  |
+| swap2.cpp:136:23:136:23 | y | swap2.cpp:142:5:142:5 | y |  |
+| swap2.cpp:136:23:136:23 | y | swap2.cpp:144:10:144:10 | y |  |
+| swap2.cpp:137:5:137:5 | x [post update] | swap2.cpp:139:10:139:10 | x |  |
+| swap2.cpp:137:5:137:5 | x [post update] | swap2.cpp:142:29:142:29 | x |  |
+| swap2.cpp:137:5:137:5 | x [post update] | swap2.cpp:145:10:145:10 | x |  |
+| swap2.cpp:137:5:137:22 | ... = ... | swap2.cpp:139:12:139:16 | data1 |  |
+| swap2.cpp:137:5:137:22 | ... = ... | swap2.cpp:145:12:145:16 | data1 |  |
+| swap2.cpp:137:15:137:20 | call to source | swap2.cpp:137:5:137:22 | ... = ... |  |
+| swap2.cpp:142:5:142:5 | ref arg y | swap2.cpp:144:10:144:10 | y |  |
+| swap2.cpp:142:19:142:27 | ref arg call to move | swap2.cpp:142:29:142:29 | x [inner post update] |  |
+| swap2.cpp:142:19:142:27 | ref arg call to move | swap2.cpp:145:10:145:10 | x |  |
+| swap2.cpp:142:29:142:29 | x | swap2.cpp:142:19:142:27 | call to move |  |
 | taint.cpp:4:27:4:33 | source1 | taint.cpp:6:13:6:19 | source1 |  |
 | taint.cpp:4:40:4:45 | clean1 | taint.cpp:5:8:5:13 | clean1 |  |
 | taint.cpp:4:40:4:45 | clean1 | taint.cpp:6:3:6:8 | clean1 |  |

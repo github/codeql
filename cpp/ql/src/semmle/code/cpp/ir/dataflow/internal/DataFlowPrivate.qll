@@ -234,20 +234,20 @@ predicate clearsContent(Node n, Content c) {
 }
 
 /** Gets the type of `n` used for type pruning. */
-Type getNodeType(Node n) {
+IRType getNodeType(Node n) {
   suppressUnusedNode(n) and
-  result instanceof VoidType // stub implementation
+  result instanceof IRVoidType // stub implementation
 }
 
 /** Gets a string representation of a type returned by `getNodeType`. */
-string ppReprType(Type t) { none() } // stub implementation
+string ppReprType(IRType t) { none() } // stub implementation
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
 pragma[inline]
-predicate compatibleTypes(Type t1, Type t2) {
+predicate compatibleTypes(IRType t1, IRType t2) {
   any() // stub implementation
 }
 
@@ -271,7 +271,7 @@ class DataFlowCallable = Declaration;
 
 class DataFlowExpr = Expr;
 
-class DataFlowType = Type;
+class DataFlowType = IRType;
 
 /** A function call relevant for data flow. */
 class DataFlowCall extends CallInstruction {
@@ -303,4 +303,4 @@ predicate isImmutableOrUnobservable(Node n) {
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { none() }
+predicate nodeIsHidden(Node n) { n instanceof OperandNode }
