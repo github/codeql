@@ -1,5 +1,5 @@
 # User-defined methods, both instance methods and class methods, can be called in many non-standard ways
-# i.e. differently from simply `c.f()` or `C.f()`. For example, a user-defined `__await__` function on a
+# i.e. differently from simply `c.f()` or `C.f()`. For example, a user-defined `__await__` method on a
 # class `C` will be called by the syntactic construct `await c` when `c` is an instance of `C`.
 #
 # These tests should cover all the class calls that we hope to support.
@@ -1275,7 +1275,9 @@ def test_index():
   with_index = With_index()
   operator.index(with_index)
 
-# make With_index subscriptable to test slicing
+def test_index_slicing():
+  with_index = With_index()
+  [0][with_index:1]
 
 def test_index_bin():
   with_index = With_index()
