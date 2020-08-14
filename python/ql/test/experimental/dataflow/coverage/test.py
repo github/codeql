@@ -6,19 +6,27 @@
 #
 # Functions whose name ends with "_with_local_flow" will also be tested for local flow.
 #
-# All functions starting with "test_" should run and either
-#  - print a source (sources are defined in testConfig.qll).
-#  - print "Unexpected flow: " and a non-source
-# (The idea is to later write a script to autimatically confirm this.)
+# All functions starting with "test_" should run and print `"OK"`.
+# This can be checked by running validTest.py.
 
 # These are defined so that we can evaluate the test code.
 NONSOURCE = "not a source"
 SOURCE = "source"
+
+def is_source(x):
+    return x == "source" or x == b"source" or x == 42 or x == 42.0 or x == 42j
+
 def SINK(x):
-    print(x)
+    if is_source(x):
+        print("OK")
+    else:
+        print("Unexpected flow", x)
 
 def SINK_F(x):
-    print("Unexpected flow: ", x)
+    if is_source(x):
+        print("Unexpected flow", x)
+    else:
+        print("OK")
 
 def test_tuple_with_local_flow():
     x = (NONSOURCE, SOURCE)
