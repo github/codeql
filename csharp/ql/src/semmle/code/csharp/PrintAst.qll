@@ -35,46 +35,23 @@ private predicate isImplicitExpression(ControlFlowElement element) {
   element instanceof Expr and element.(Expr).isImplicit() and not exists(element.getAChild())
 }
 
-private predicate isInsideUnneededAttributable(Attributable attributable) {
-  isInsideUnneededType(attributable.(Field).getDeclaringType()) or
-  isInsideUnneededParameterizable(attributable.(Parameter).getDeclaringElement()) or
-  isInsideUnneededCallable(attributable.(Callable)) or
-  isInsideUnneededType(attributable.(DeclarationWithAccessors).getDeclaringType()) or
-  isInsideUnneededType(attributable.(ValueOrRefType))
+private predicate isFilteredCompilerGenerated(Declaration d) {
+  d.isCompilerGenerated() and
+  not d instanceof Accessor
 }
 
-private predicate isInsideUnneededUnboundGeneric(UnboundGeneric unboundGeneric) {
-  isInsideUnneededAttributable(unboundGeneric) or
-  isInsideUnneededParameterizable(unboundGeneric)
-}
-
-private predicate isInsideUnneededCallable(Callable callable) {
-  callable instanceof ConstructedGeneric or
-  isInsideUnneededType(callable.getDeclaringType())
-}
-
-private predicate isInsideUnneededType(Type type) {
-  type instanceof ConstructedType or
-  type.getDeclaringType*() instanceof ConstructedType or
-  type instanceof AnonymousClass or
-  type.getDeclaringType*() instanceof AnonymousClass
-}
-
-private predicate isInsideUnneededParameterizable(Parameterizable parameterizable) {
-  isInsideUnneededCallable(parameterizable) or
-  isInsideUnneededType(parameterizable.(Indexer).getDeclaringType()) or
-  isInsideUnneededType(parameterizable.(DelegateType))
-}
-
-private predicate isCompilerGeneratedParameterizable(Parameterizable parameterizable) {
-  parameterizable.isCompilerGenerated() or
-  parameterizable.getDeclaringType*().isCompilerGenerated()
-}
-
-private predicate isCompilerGeneratedAttributable(Attributable attributable) {
-  // Default parameter values on delegates are in the tree multiple times
-  // due to the compiler generated `Invoke`.
-  isCompilerGeneratedParameterizable(attributable.(Parameter).getDeclaringElement())
+private predicate isNotNeeded(Element e) {
+  isFilteredCompilerGenerated(e)
+  or
+  e instanceof ConstructedGeneric
+  or
+  e instanceof AnonymousClass
+  or
+  isNotNeeded(e.(Declaration).getDeclaringType())
+  or
+  isNotNeeded(e.(Parameter).getDeclaringElement())
+  or
+  isNotNeeded(e.(Attribute).getTarget())
 }
 
 /**
@@ -125,22 +102,17 @@ private newtype TPrintAstNode =
   TParametersNode(Parameterizable parameterizable) {
     shouldPrint(parameterizable, parameterizable.getFile()) and
     parameterizable.getNumberOfParameters() > 0 and
-    not isInsideUnneededParameterizable(parameterizable) and
-    (
-      not parameterizable.isCompilerGenerated() or
-      parameterizable instanceof Accessor
-    )
+    not isNotNeeded(parameterizable)
   } or
   TAttributesNode(Attributable attributable) {
     shouldPrint(attributable, attributable.(Element).getFile()) and
     exists(attributable.getAnAttribute()) and
-    not isCompilerGeneratedAttributable(attributable) and
-    not isInsideUnneededAttributable(attributable)
+    not isNotNeeded(attributable)
   } or
   TTypeParametersNode(UnboundGeneric unboundGeneric) {
     shouldPrint(unboundGeneric, unboundGeneric.getFile()) and
     unboundGeneric.getNumberOfTypeParameters() > 0 and
-    not isInsideUnneededUnboundGeneric(unboundGeneric)
+    not isNotNeeded(unboundGeneric)
   }
 
 /**
@@ -233,10 +205,7 @@ class ControlFlowElementNode extends ElementNode {
           controlFlowElement.getParent*()
       )
     ) and
-    not isCompilerGeneratedAttributable(element.getParent+().(Attribute).getTarget()) and
-    not isCompilerGeneratedParameterizable(element.getParent+().(Parameter).getDeclaringElement()) and
-    not isInsideUnneededAttributable(element.getParent+().(Attribute).getTarget()) and
-    not isInsideUnneededParameterizable(element.getParent+().(Parameter).getDeclaringElement())
+    not isNotNeeded(element.getParent+())
   }
 
   override ElementNode getChild(int childIndex) {
@@ -267,7 +236,7 @@ final class CallableNode extends ElementNode {
 
   CallableNode() {
     callable = element and
-    not isInsideUnneededCallable(callable)
+    not isNotNeeded(callable)
   }
 
   override PrintAstNode getChild(int childIndex) {
@@ -296,7 +265,7 @@ final class DeclarationWithAccessorsNode extends ElementNode {
 
   DeclarationWithAccessorsNode() {
     declaration = element and
-    not isInsideUnneededType(declaration.getDeclaringType())
+    not isNotNeeded(declaration.getDeclaringType())
   }
 
   override PrintAstNode getChild(int childIndex) {
@@ -328,7 +297,7 @@ final class FieldNode extends ElementNode {
   FieldNode() {
     field = element and
     not field.getDeclaringType() instanceof TupleType and
-    not isInsideUnneededType(field.getDeclaringType())
+    not isNotNeeded(field.getDeclaringType())
   }
 
   override PrintAstNode getChild(int childIndex) {
@@ -353,11 +322,7 @@ final class ParameterNode extends ElementNode {
 
   ParameterNode() {
     param = element and
-    not isInsideUnneededParameterizable(param.getDeclaringElement()) and
-    (
-      not param.getDeclaringElement().isCompilerGenerated() or
-      param.getDeclaringElement() instanceof Accessor
-    )
+    not isNotNeeded(param.getDeclaringElement())
   }
 
   override Location getLocation() {
@@ -392,8 +357,7 @@ final class AttributeNode extends ElementNode {
 
   AttributeNode() {
     attr = element and
-    not isCompilerGeneratedAttributable(attr.getTarget()) and
-    not isInsideUnneededAttributable(attr.getTarget())
+    not isNotNeeded(attr.getTarget())
   }
 
   override ElementNode getChild(int childIndex) { result.getElement() = attr.getChild(childIndex) }
@@ -407,7 +371,7 @@ final class TypeParameterNode extends ElementNode {
 
   TypeParameterNode() {
     typeParameter = element and
-    not isInsideUnneededUnboundGeneric(typeParameter.getDeclaringGeneric())
+    not isNotNeeded(typeParameter.getDeclaringGeneric())
   }
 
   override ElementNode getChild(int childIndex) { none() }
@@ -424,7 +388,7 @@ final class TypeNode extends ElementNode {
     not type instanceof TupleType and
     not type instanceof ArrayType and
     not type instanceof NullableType and
-    not isInsideUnneededType(type)
+    not isNotNeeded(type)
   }
 
   override PrintAstNode getChild(int childIndex) {
