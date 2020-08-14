@@ -131,9 +131,9 @@ dynamic.cs:
 #   53|             -1: [LocalVariableAccess] access to local variable d
 #   54|       26: [ExprStmt] ...;
 #   54|         0: [AssignExpr] ... = ...
-#   54|           0: [DynamicAccessorCall,DynamicMemberAccess] dynamic access to member Prop
+#   54|           0: [DynamicMemberAccess] dynamic access to member Prop
 #   54|             -1: [LocalVariableAccess] access to local variable d
-#   54|           1: [DynamicAccessorCall,DynamicMemberAccess] dynamic access to member Prop
+#   54|           1: [DynamicMemberAccess] dynamic access to member Prop
 #   54|             -1: [LocalVariableAccess] access to local variable d
 #   57|       27: [ExprStmt] ...;
 #   57|         0: [AssignExpr] ... = ...

@@ -317,8 +317,6 @@ class DynamicAccessorCall extends DynamicAccess {
       result = dc.getArgument(i)
     )
   }
-
-  override string getAPrimaryQlClass() { result = "DynamicAccessorCall" }
 }
 
 /**
