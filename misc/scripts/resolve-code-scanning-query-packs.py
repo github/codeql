@@ -25,7 +25,7 @@ packs = [ "code-scanning", "security-and-quality", "security-extended" ]
 #  - the 'codeql' subdirectory of the cwd
 #
 # (and assumes the codeql-go repo is in a similar location)
-codeql_search_path = "../codeql-go:./codeql:./codeql-go:"   # will be extended further down
+codeql_search_path = "./codeql:./codeql-go:"   # will be extended further down
 
 
 def prefix_repo_nwo(filename):
@@ -115,6 +115,7 @@ for lang in languages:
             shell=True, capture_output=True, text=True)
 
         if queries_subp.returncode != 0:
+            print(queries_subp.stderr)
             print(
                 "Warning: couldn't find query pack '%s' for language '%s'. Do you have the right repositories in the right places (search path: '%s')?" % (pack, lang, codeql_search_path),
                 file=sys.stderr
