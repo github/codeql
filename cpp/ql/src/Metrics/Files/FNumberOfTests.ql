@@ -18,6 +18,9 @@ Expr getTest() {
   or
   // boost tests; http://www.boost.org/
   result.(FunctionCall).getTarget().hasQualifiedName("boost::unit_test", "make_test_case")
+  or
+  // googletest tests; https://github.com/google/googletest/
+  result.(FunctionCall).getTarget().hasQualifiedName("testing::internal", "MakeAndRegisterTestInfo")
 }
 
 from File f, int n
