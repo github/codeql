@@ -259,7 +259,8 @@ which defines the simplest possible taint kind class, ``HardcodedValue``, and cu
 Further reading
 ---------------
 
-- `Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-paths.html>`__
+- "`Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-paths.html>`__"
+
 
 .. include:: ../../reusables/python-further-reading.rst
 .. include:: ../../reusables/codeql-ref-tools-further-reading.rst

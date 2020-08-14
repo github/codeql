@@ -14,7 +14,7 @@ There is an extensive core library for analyzing CodeQL databases extracted from
 
 Since this is required for all C# queries, it's omitted from code snippets below.
 
-The core library contains all the program elements, including `files <#files>`__, `types <#types>`__, methods, `variables <#variables>`__, `statements <#statements>`__, and `expressions <#expressions>`__. This is sufficient for most queries, however additional libraries can be imported for bespoke functionality such as control flow and data flow. For information about these additional libraries, see :doc:`CodeQL for C# <ql-for-csharp>`. 
+The core library contains all the program elements, including `files <#files>`__, `types <#types>`__, methods, `variables <#variables>`__, `statements <#statements>`__, and `expressions <#expressions>`__. This is sufficient for most queries, however additional libraries can be imported for bespoke functionality such as control flow and data flow. For information about these additional libraries, see ":doc:`CodeQL for C# <ql-for-csharp>`." 
 
 Class hierarchies
 ~~~~~~~~~~~~~~~~~
