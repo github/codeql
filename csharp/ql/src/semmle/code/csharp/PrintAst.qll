@@ -218,8 +218,6 @@ class ControlFlowElementNode extends ElementNode {
         ao.getExpandedAssignment().getRValue() = controlFlowElement or
         ao.getExpandedAssignment().getRValue().(BinaryOperation).getLeftOperand() =
           controlFlowElement.getParent*() or
-        ao.getExpandedAssignment().getRValue().(DynamicOperatorCall).getChild(0) =
-          controlFlowElement.getParent*() or
         ao.getExpandedAssignment().getRValue().(OperatorCall).getChild(0) =
           controlFlowElement.getParent*()
       )
@@ -371,7 +369,6 @@ final class ParameterNode extends ElementNode {
     result.(AttributesNode).getAttributable() = param
     or
     childIndex = 1 and
-    param.hasDefaultValue() and
     result.(ElementNode).getElement() = param.getDefaultValue()
   }
 }
