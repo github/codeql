@@ -422,7 +422,7 @@ void test17() {
   out(i); // 50
 
   i = 20 + (j -= 10);
-  out(i); // 60 [BUG: the analysis thinks it's 2^-31 .. 2^31-1]
+  out(i); // 60
 }
 
 // Tests for unsigned multiplication.
