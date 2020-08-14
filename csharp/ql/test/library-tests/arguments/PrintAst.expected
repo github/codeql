@@ -42,11 +42,9 @@ arguments.cs:
 #   25|           1: [LocalVariableAccess] access to local variable x
 #   27|       1: [ExprStmt] ...;
 #   27|         0: [MethodCall] call to method f1
-#   27|           -1: [ThisAccess] this access
 #   27|           0: [IntLiteral] 2
 #   28|       2: [ExprStmt] ...;
 #   28|         0: [MethodCall] call to method f2
-#   28|           -1: [ThisAccess] this access
 #   28|           0: [LocalVariableAccess] access to local variable x
 #   28|           1: [LocalVariableAccess] access to local variable x
 #   28|           2: [LocalVariableAccess] access to local variable x
@@ -66,13 +64,11 @@ arguments.cs:
 #   34|     4: [BlockStmt] {...}
 #   35|       0: [ExprStmt] ...;
 #   35|         0: [MethodCall] call to method f3
-#   35|           -1: [ThisAccess] this access
 #   35|           0: [IntLiteral] 0
 #   35|           1: [IntLiteral] 1
 #   35|           2: [IntLiteral] 2
 #   36|       1: [ExprStmt] ...;
 #   36|         0: [MethodCall] call to method f3
-#   36|           -1: [ThisAccess] this access
 #   36|           0: [IntLiteral] 0
 #   36|           1: [ArrayCreation] array creation of type Int32[]
 #   36|             -1: [ArrayInitializer] { ..., ... }
@@ -81,22 +77,18 @@ arguments.cs:
 #   36|             0: [IntLiteral] 2
 #   37|       2: [ExprStmt] ...;
 #   37|         0: [MethodCall] call to method f3
-#   37|           -1: [ThisAccess] this access
 #   37|           0: [IntLiteral] 1
 #   37|           1: [IntLiteral] 0
 #   38|       3: [ExprStmt] ...;
 #   38|         0: [MethodCall] call to method f3
-#   38|           -1: [ThisAccess] this access
 #   38|           0: [IntLiteral] 0
 #   38|           1: [ParameterAccess] access to parameter args
 #   39|       4: [ExprStmt] ...;
 #   39|         0: [MethodCall] call to method f3
-#   39|           -1: [ThisAccess] this access
 #   39|           0: [ParameterAccess] access to parameter args
 #   39|           1: [IntLiteral] 0
 #   40|       5: [ExprStmt] ...;
 #   40|         0: [MethodCall] call to method f3
-#   40|           -1: [ThisAccess] this access
 #   40|           0: [ArrayCreation] array creation of type Int32[]
 #   40|             -1: [ArrayInitializer] { ..., ... }
 #   40|               0: [IntLiteral] 1
@@ -109,7 +101,6 @@ arguments.cs:
 #   44|     4: [BlockStmt] {...}
 #   45|       0: [ExprStmt] ...;
 #   45|         0: [MethodCall] call to method f4
-#   45|           -1: [ThisAccess] this access
 #   45|           0: [ArrayCreation] array creation of type Object[]
 #   45|             -1: [ArrayInitializer] { ..., ... }
 #   45|               0: [NullLiteral] null
@@ -143,7 +134,6 @@ arguments.cs:
 #   54|         0: [AssignExpr] ... = ...
 #   54|           0: [IntLiteral] 0
 #   54|           1: [PropertyCall] access to property Prop
-#   54|             -1: [ThisAccess] this access
 #   55|       1: [ExprStmt] ...;
 #   55|         0: [AssignExpr] ... = ...
 #   55|           0: [IndexerCall] access to indexer
@@ -151,7 +141,6 @@ arguments.cs:
 #   55|             0: [IntLiteral] 1
 #   55|             1: [IntLiteral] 2
 #   55|           1: [PropertyCall] access to property Prop
-#   55|             -1: [ThisAccess] this access
 #   56|       2: [ExprStmt] ...;
 #   56|         0: [AssignExpr] ... = ...
 #   56|           0: [TupleExpr] (..., ...)
@@ -159,7 +148,6 @@ arguments.cs:
 #   56|             1: [IntLiteral] 6
 #   56|           1: [TupleExpr] (..., ...)
 #   56|             0: [PropertyCall] access to property Prop
-#   56|               -1: [ThisAccess] this access
 #   56|             1: [IndexerCall] access to indexer
 #   56|               -1: [ThisAccess] this access
 #   56|               0: [IntLiteral] 3
@@ -167,12 +155,10 @@ arguments.cs:
 #   57|       3: [ExprStmt] ...;
 #   57|         0: [PostIncrExpr] ...++
 #   57|           0: [PropertyCall] access to property Prop
-#   57|             -1: [ThisAccess] this access
 #   58|       4: [ExprStmt] ...;
 #   58|         0: [AssignAddExpr] ... += ...
 #   58|           0: [IntLiteral] 7
 #   58|           1: [PropertyCall] access to property Prop
-#   58|             -1: [ThisAccess] this access
 #   59|       5: [ExprStmt] ...;
 #   59|         0: [PostIncrExpr] ...++
 #   59|           0: [IndexerCall] access to indexer
@@ -197,7 +183,6 @@ arguments.cs:
 #   62|           0: [LocalVariableAccess] access to local variable tuple
 #   62|           1: [TupleExpr] (..., ...)
 #   62|             0: [PropertyCall] access to property Prop
-#   62|               -1: [ThisAccess] this access
 #   62|             1: [IndexerCall] access to indexer
 #   62|               -1: [ThisAccess] this access
 #   62|               0: [IntLiteral] 15

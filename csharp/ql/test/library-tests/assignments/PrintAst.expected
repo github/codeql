@@ -35,7 +35,6 @@ Assignments.cs:
 #   14|               1: [Parameter] e
 #   14|             4: [BlockStmt] {...}
 #   14|           1: [EventAccess,EventCall] access to event Event
-#   14|             -1: [ThisAccess] this access
 #   17|   5: [AddOperator] +
 #-----|     2: (Parameters)
 #   17|       0: [Parameter] x

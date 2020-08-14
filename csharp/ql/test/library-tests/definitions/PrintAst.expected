@@ -23,7 +23,6 @@ definitions.cs:
 #   26|         4: [BlockStmt] {...}
 #   26|           0: [ReturnStmt] return ...;
 #   26|             0: [FieldAccess] access to field field1
-#   26|               -1: [ThisAccess] this access
 #   27|       4: [Setter] set_property1
 #-----|         2: (Parameters)
 #   27|           0: [Parameter] value
@@ -32,7 +31,6 @@ definitions.cs:
 #   27|             0: [AssignExpr] ... = ...
 #   27|               0: [ParameterAccess] access to parameter value
 #   27|               1: [FieldAccess] access to field field1
-#   27|                 -1: [ThisAccess] this access
 #   30|     6: [Method] f1
 #-----|       2: (Parameters)
 #   30|         0: [Parameter] args
@@ -43,14 +41,11 @@ definitions.cs:
 #   32|             1: [LocalVariableAccess] access to local variable qualifier
 #   35|         1: [ExprStmt] ...;
 #   35|           0: [MethodCall] call to method f1
-#   35|             -1: [ThisAccess] this access
 #   36|         2: [ExprStmt] ...;
 #   36|           0: [MethodCall] call to method f1
-#   36|             -1: [ThisAccess] this access
 #   36|             0: [IntLiteral] 1
 #   37|         3: [ExprStmt] ...;
 #   37|           0: [MethodCall] call to method f1
-#   37|             -1: [ThisAccess] this access
 #   37|             0: [IntLiteral] 1
 #   37|             1: [IntLiteral] 2
 #   39|         4: [ExprStmt] ...;
@@ -82,7 +77,6 @@ definitions.cs:
 #   45|               0: [IntLiteral] 2
 #   47|         10: [ExprStmt] ...;
 #   47|           0: [MethodCall] call to method GenericFn
-#   47|             -1: [ThisAccess] this access
 #   47|             0: [IntLiteral] 1
 #   48|         11: [ExprStmt] ...;
 #   48|           0: [MethodCall] call to method GenericFn
@@ -106,7 +100,6 @@ definitions.cs:
 #   56|             1: [LocalVariableAccess] access to local variable y
 #   56|           2: [LocalVariableDeclAndInitExpr] Int32 z = ...
 #   56|             0: [FieldAccess] access to field field1
-#   56|               -1: [ThisAccess] this access
 #   56|             1: [LocalVariableAccess] access to local variable z
 #   56|           3: [LocalVariableDeclAndInitExpr] Int32 w = ...
 #   56|             0: [ArrayAccess] access to array element
@@ -122,10 +115,8 @@ definitions.cs:
 #   60|           0: [AssignExpr] ... = ...
 #   60|             0: [AddExpr] ... + ...
 #   60|               0: [PropertyCall] access to property property1
-#   60|                 -1: [ThisAccess] this access
 #   60|               1: [IntLiteral] 1
 #   60|             1: [PropertyCall] access to property property1
-#   60|               -1: [ThisAccess] this access
 #   63|         18: [LocalVariableDeclStmt] ... ...;
 #   63|           0: [LocalVariableDeclAndInitExpr] C1[] array = ...
 #   63|             0: [NullLiteral] null
@@ -138,7 +129,6 @@ definitions.cs:
 #   67|           0: [LocalVariableDeclAndInitExpr] Action<Int32> m1 = ...
 #   67|             0: [ImplicitDelegateCreation] delegate creation of type Action<Int32>
 #   67|               0: [MethodAccess] access to method GenericFn
-#   67|                 -1: [ThisAccess] this access
 #   67|             1: [LocalVariableAccess] access to local variable m1
 #   70|     7: [Method] VariableTypeUse
 #-----|       2: (Parameters)
@@ -197,9 +187,7 @@ definitions.cs:
 #  105|           0: [AddEventExpr] ... += ...
 #  105|             0: [ImplicitDelegateCreation] delegate creation of type EventHandler
 #  105|               0: [MethodAccess] access to method M
-#  105|                 -1: [ThisAccess] this access
 #  105|             1: [EventAccess,EventCall] access to event Click
-#  105|               -1: [ThisAccess] this access
 #  106|         1: [LocalFunctionStmt] LocalFunction(...)
 #  106|           0: [LocalFunction] LocalFunction
 #  106|             4: [BlockStmt] {...}
@@ -208,13 +196,10 @@ definitions.cs:
 #  107|           0: [AddEventExpr] ... += ...
 #  107|             0: [ImplicitDelegateCreation] delegate creation of type EventHandler
 #  107|               0: [LocalFunctionAccess] access to local function LocalFunction
-#  107|                 -1: [ThisAccess] this access
 #  107|             1: [EventAccess,EventCall] access to event Click
-#  107|               -1: [ThisAccess] this access
 #  108|         4: [ExprStmt] ...;
 #  108|           0: [DelegateCall] delegate call
 #  108|             -1: [EventAccess,EventCall] access to event Click
-#  108|               -1: [ThisAccess] this access
 #  112|   6: [Interface] I1
 #  114|     3: [Method] M2
 #-----|       1: (TypeParameters)
@@ -318,7 +303,6 @@ definitions.cs:
 #  166|           -1: [TypeAccess] access to type Nested<I4>
 #  166|             -1: [TypeAccess] access to type C4
 #  166|         1: [FieldAccess] access to field f
-#  166|           -1: [ThisAccess] this access
 #  167|     5: [Field] c1
 #  169|     6: [Method] M
 #  170|       4: [BlockStmt] {...}

@@ -49,12 +49,10 @@ fields.cs:
 #   36|       1: [AssignExpr] ... = ...
 #   36|         0: [IntLiteral] 100
 #   36|         1: [FieldAccess] access to field i
-#   36|           -1: [ThisAccess] this access
 #   37|     8: [Field] s
 #   37|       1: [AssignExpr] ... = ...
 #   37|         0: [StringLiteral] "Hello"
 #   37|         1: [FieldAccess] access to field s
-#   37|           -1: [ThisAccess] this access
 #   39|     9: [Method] Main
 #   40|       4: [BlockStmt] {...}
 #   41|         0: [LocalVariableDeclStmt] ... ...;
@@ -154,7 +152,6 @@ fields.cs:
 #   89|             0: [CastExpr] (...) ...
 #   89|               0: [MemberConstantAccess] access to constant Foo
 #   89|             1: [FieldAccess] access to field x
-#   89|               -1: [ThisAccess] this access
 #   90|         1: [LocalVariableDeclStmt] ... ...;
 #   90|           0: [LocalVariableDeclAndInitExpr] dynamic dyn = ...
 #   90|             0: [CastExpr] (...) ...

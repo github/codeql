@@ -7,7 +7,6 @@ properties.cs:
 #   15|         4: [BlockStmt] {...}
 #   15|           0: [ReturnStmt] return ...;
 #   15|             0: [FieldAccess] access to field caption
-#   15|               -1: [ThisAccess] this access
 #   17|       4: [Setter] set_Caption
 #-----|         2: (Parameters)
 #   17|           0: [Parameter] value
@@ -15,14 +14,12 @@ properties.cs:
 #   19|           0: [IfStmt] if (...) ...
 #   19|             0: [NEExpr] ... != ...
 #   19|               0: [FieldAccess] access to field caption
-#   19|                 -1: [ThisAccess] this access
 #   19|               1: [ParameterAccess] access to parameter value
 #   20|             1: [BlockStmt] {...}
 #   21|               0: [ExprStmt] ...;
 #   21|                 0: [AssignExpr] ... = ...
 #   21|                   0: [ParameterAccess] access to parameter value
 #   21|                   1: [FieldAccess] access to field caption
-#   21|                     -1: [ThisAccess] this access
 #   26|     6: [Method] Paint
 #   27|       4: [BlockStmt] {...}
 #   28|         0: [LocalVariableDeclStmt] ... ...;
@@ -47,7 +44,6 @@ properties.cs:
 #   41|           0: [ReturnStmt] return ...;
 #   41|             0: [PostIncrExpr] ...++
 #   41|               0: [FieldAccess] access to field next
-#   41|                 -1: [ThisAccess] this access
 #   46|   3: [Class] Point
 #   49|     4: [Property] X
 #   49|       3: [Getter] get_X
@@ -79,12 +75,10 @@ properties.cs:
 #   61|           0: [AssignExpr] ... = ...
 #   61|             0: [ParameterAccess] access to parameter x
 #   61|             1: [PropertyCall] access to property X
-#   61|               -1: [ThisAccess] this access
 #   62|         1: [ExprStmt] ...;
 #   62|           0: [AssignExpr] ... = ...
 #   62|             0: [ParameterAccess] access to parameter y
 #   62|             1: [PropertyCall] access to property Y
-#   62|               -1: [ThisAccess] this access
 #   67|   5: [Class] A
 #   69|     4: [Field] y
 #   70|     5: [Property] X
@@ -97,7 +91,6 @@ properties.cs:
 #   73|         4: [BlockStmt] {...}
 #   73|           0: [ReturnStmt] return ...;
 #   73|             0: [FieldAccess] access to field y
-#   73|               -1: [ThisAccess] this access
 #   74|       4: [Setter] set_Y
 #-----|         2: (Parameters)
 #   74|           0: [Parameter] value
@@ -106,7 +99,6 @@ properties.cs:
 #   74|             0: [AssignExpr] ... = ...
 #   74|               0: [ParameterAccess] access to parameter value
 #   74|               1: [FieldAccess] access to field y
-#   74|                 -1: [ThisAccess] this access
 #   76|     7: [Property] Z
 #   76|       3: [Getter] get_Z
 #   76|       4: [Setter] set_Z
@@ -142,7 +134,6 @@ properties.cs:
 #   86|         4: [BlockStmt] {...}
 #   86|           0: [ReturnStmt] return ...;
 #   86|             0: [FieldAccess] access to field z
-#   86|               -1: [ThisAccess] this access
 #   87|       4: [Setter] set_Z
 #-----|         2: (Parameters)
 #   87|           0: [Parameter] value
@@ -151,7 +142,6 @@ properties.cs:
 #   87|             0: [AssignExpr] ... = ...
 #   87|               0: [ParameterAccess] access to parameter value
 #   87|               1: [FieldAccess] access to field z
-#   87|                 -1: [ThisAccess] this access
 #   91|   7: [Class] Test
 #   93|     4: [Property] Init
 #   93|       3: [Setter] set_Init

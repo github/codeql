@@ -37,7 +37,6 @@ exceptions.cs:
 #   47|           0: [EmptyStmt] ;
 #   48|           1: [ExprStmt] ...;
 #   48|             0: [MethodCall] call to method G
-#   48|               -1: [ThisAccess] this access
 #   50|         1: [SpecificCatchClause] catch (...) {...}
 #   50|           0: [LocalVariableDeclExpr] NullReferenceException ex
 #   51|           1: [BlockStmt] {...}

@@ -21,7 +21,6 @@ fixed.cs:
 #   11|               1: [LocalVariableAccess] access to local variable t
 #   12|           1: [ExprStmt] ...;
 #   12|             0: [MethodCall] call to method fixed1
-#   12|               -1: [ThisAccess] this access
 #   15|       2: [FixedStmt] fixed(...) { ... }
 #   15|         -1: [LocalVariableDeclAndInitExpr] Byte* pinned_buffer = ...
 #   15|           0: [AddressOfExpr] &...
@@ -532,7 +531,6 @@ statements.cs:
 #  252|                 0: [GTExpr] ... > ...
 #  252|                   0: [ParameterAccess] access to parameter amount
 #  252|                   1: [FieldAccess] access to field balance
-#  252|                     -1: [ThisAccess] this access
 #  253|                 1: [BlockStmt] {...}
 #  254|                   0: [ThrowStmt] throw ...;
 #  254|                     0: [ObjectCreation] object creation of type Exception
@@ -541,7 +539,6 @@ statements.cs:
 #  256|                 0: [AssignSubExpr] ... -= ...
 #  256|                   0: [ParameterAccess] access to parameter amount
 #  256|                   1: [FieldAccess] access to field balance
-#  256|                     -1: [ThisAccess] this access
 #  261|     27: [Method] MainUsing
 #  262|       4: [BlockStmt] {...}
 #  263|         0: [UsingBlockStmt] using (...) {...}

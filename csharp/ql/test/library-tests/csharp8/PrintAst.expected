@@ -6,14 +6,12 @@ AlternateInterpolatedStrings.cs:
 #    5|         0: [StringLiteral] "C:"
 #    5|         1: [IntLiteral] 12
 #    5|       1: [FieldAccess] access to field s1
-#    5|         -1: [ThisAccess] this access
 #    6|   5: [Field] s2
 #    6|     1: [AssignExpr] ... = ...
 #    6|       0: [InterpolatedStringExpr] $"..."
 #    6|         0: [StringLiteral] "C:"
 #    6|         1: [IntLiteral] 12
 #    6|       1: [FieldAccess] access to field s2
-#    6|         -1: [ThisAccess] this access
 AsyncStreams.cs:
 #   24| [NamespaceDeclaration] namespace ... { ... }
 #   26|   1: [Interface] IAsyncDisposable
@@ -52,7 +50,6 @@ AsyncStreams.cs:
 #   19|       0: [ForeachStmt] foreach (... ... in ...) ...
 #   19|         0: [LocalVariableDeclExpr] Int32 item
 #   19|         1: [MethodCall] call to method Items
-#   19|           -1: [ThisAccess] this access
 #   20|         2: [ExprStmt] ...;
 #   20|           0: [MethodCall] call to method WriteLine
 #   20|             -1: [TypeAccess] access to type Console
@@ -74,15 +71,12 @@ DefaultInterfaceMethods.cs:
 #   13|     4: [AddExpr] ... + ...
 #   13|       0: [AddExpr] ... + ...
 #   13|         0: [PropertyCall] access to property Greeting
-#   13|           -1: [ThisAccess] this access
 #   13|         1: [StringLiteral] " "
 #   13|       1: [ParameterAccess] access to parameter name
 #   15|   6: [IndexerProperty] GreetingString
 #   15|     3: [Getter] get_GreetingString
 #   15|       4: [MethodCall] call to method Greet
-#   15|         -1: [ThisAccess] this access
 #   15|         0: [PropertyCall] access to property Name
-#   15|           -1: [ThisAccess] this access
 #   17|   7: [Method] Greet
 #   20| [Class] Person
 #   22|   4: [IndexerProperty] Name
@@ -225,11 +219,9 @@ NullableRefTypes.cs:
 #   73|           1: [LocalVariableAccess] access to local variable x
 #   74|       1: [ExprStmt] ...;
 #   74|         0: [MethodCall] call to method GenericFn
-#   74|           -1: [ThisAccess] this access
 #   74|           0: [LocalVariableAccess] access to local variable x
 #   75|       2: [ExprStmt] ...;
 #   75|         0: [MethodCall] call to method Q
-#   75|           -1: [ThisAccess] this access
 #   75|           0: [LocalVariableAccess] access to local variable x
 #   76|       3: [ReturnStmt] return ...;
 #   76|         0: [DefaultValueExpr] default(...)
@@ -323,7 +315,6 @@ NullableRefTypes.cs:
 #  113|       4: [RefExpr] ref ...
 #  113|         0: [SuppressNullableWarningExpr] ...!
 #  113|           0: [FieldAccess] access to field Property
-#  113|             -1: [ThisAccess] this access
 #  116| [Class] ToStringWithTypes
 #  118|   4: [Field] a
 #  119|   5: [Field] b
@@ -377,11 +368,9 @@ NullableRefTypes.cs:
 #  181|       0: [LocalVariableDeclStmt] ... ...;
 #  181|         0: [LocalVariableDeclAndInitExpr] String x = ...
 #  181|           0: [MethodCall] call to method MaybeNull
-#  181|             -1: [ThisAccess] this access
 #  181|           1: [LocalVariableAccess] access to local variable x
 #  183|       1: [ExprStmt] ...;
 #  183|         0: [MethodCall] call to method Check
-#  183|           -1: [ThisAccess] this access
 #  183|           0: [LocalVariableAccess] access to local variable x
 #  185|       2: [ForStmt] for (...;...;...) ...
 #  185|         -1: [LocalVariableDeclAndInitExpr] Int32 i = ...
@@ -399,14 +388,12 @@ NullableRefTypes.cs:
 #  187|               1: [LocalVariableAccess] access to local variable x
 #  190|       3: [ExprStmt] ...;
 #  190|         0: [MethodCall] call to method Check
-#  190|           -1: [ThisAccess] this access
 #  190|           0: [LocalVariableAccess] access to local variable x
 #  193|   8: [Method] ExceptionFlow
 #  194|     4: [BlockStmt] {...}
 #  195|       0: [LocalVariableDeclStmt] ... ...;
 #  195|         0: [LocalVariableDeclAndInitExpr] String y = ...
 #  195|           0: [MethodCall] call to method MaybeNull
-#  195|             -1: [ThisAccess] this access
 #  195|           1: [LocalVariableAccess] access to local variable y
 #  197|       1: [TryStmt] try {...} ...
 #  202|         -1: [BlockStmt] {...}
@@ -419,7 +406,6 @@ NullableRefTypes.cs:
 #  199|             0: [ObjectCreation] object creation of type ArgumentException
 #  206|       2: [ExprStmt] ...;
 #  206|         0: [MethodCall] call to method Check
-#  206|           -1: [ThisAccess] this access
 #  206|           0: [LocalVariableAccess] access to local variable y
 #  209|   9: [Method] InvocationTest
 #-----|     2: (Parameters)
@@ -441,7 +427,6 @@ NullableRefTypes.cs:
 #  217|         0: [LocalVariableDeclAndInitExpr] String a = ...
 #  217|           0: [FieldAccess] access to field Field
 #  217|             -1: [MethodCall] call to method GetSelf
-#  217|               -1: [ThisAccess] this access
 #  217|           1: [LocalVariableAccess] access to local variable a
 #  218|       1: [LocalVariableDeclStmt] ... ...;
 #  218|         0: [LocalVariableDeclAndInitExpr] String b = ...
@@ -459,7 +444,6 @@ NullableRefTypes.cs:
 #  220|         0: [LocalVariableDeclAndInitExpr] String d = ...
 #  220|           0: [FieldAccess] access to field Field
 #  220|             -1: [MethodCall] call to method GetSelf
-#  220|               -1: [ThisAccess] this access
 #  220|           1: [LocalVariableAccess] access to local variable d
 #  223|   11: [Method] GetSelf
 #  225|   12: [Field] Field
@@ -488,7 +472,6 @@ StaticLocalFunctions.cs:
 #   11|             0: [ParameterAccess] access to parameter x
 #   11|           1: [LocalFunctionCall] call to local function J
 #   11|             -1: [LocalFunctionAccess] access to local function J
-#   11|               -1: [ThisAccess] this access
 #   11|             0: [ParameterAccess] access to parameter x
 UnmanagedGenericStructs.cs:
 #    3| [Struct] S<,>
@@ -943,12 +926,10 @@ patterns.cs:
 #  160|         0: [ExprStmt] ...;
 #  160|           0: [AssignExpr] ... = ...
 #  160|             0: [FieldAccess] access to field X
-#  160|               -1: [ThisAccess] this access
 #  160|             1: [ParameterAccess] access to parameter x
 #  161|         1: [ExprStmt] ...;
 #  161|           0: [AssignExpr] ... = ...
 #  161|             0: [PropertyCall] access to property Y
-#  161|               -1: [ThisAccess] this access
 #  161|             1: [ParameterAccess] access to parameter y
 #  164|     8: [Method] Deconstruct
 #  165|       4: [BlockStmt] {...}

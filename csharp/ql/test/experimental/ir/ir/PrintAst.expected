@@ -216,7 +216,6 @@ constructor_init.cs:
 #   11|         0: [AssignExpr] ... = ...
 #   11|           0: [ParameterAccess] access to parameter i
 #   11|           1: [FieldAccess] access to field num
-#   11|             -1: [ThisAccess] this access
 #   15| [Class] DerivedClass
 #   17|   3: [InstanceConstructor] DerivedClass
 #   17|     3: [ConstructorInitializer] call to constructor BaseClass
@@ -415,7 +414,6 @@ indexers.cs:
 #    5|         0: [ArrayCreation] array creation of type String[]
 #    5|           0: [IntLiteral] 2
 #    5|         1: [FieldAccess] access to field address
-#    5|           -1: [ThisAccess] this access
 #    6|     5: [Indexer] Item
 #-----|       1: (Parameters)
 #    6|         0: [Parameter] index
@@ -426,7 +424,6 @@ indexers.cs:
 #   10|           0: [ReturnStmt] return ...;
 #   10|             0: [ArrayAccess] access to array element
 #   10|               -1: [FieldAccess] access to field address
-#   10|                 -1: [ThisAccess] this access
 #   10|               0: [ParameterAccess] access to parameter index
 #   12|       4: [Setter] set_Item
 #-----|         2: (Parameters)
@@ -438,7 +435,6 @@ indexers.cs:
 #   14|               0: [ParameterAccess] access to parameter value
 #   14|               1: [ArrayAccess] access to array element
 #   14|                 -1: [FieldAccess] access to field address
-#   14|                   -1: [ThisAccess] this access
 #   14|                 0: [ParameterAccess] access to parameter index
 #   19|   5: [Method] Main
 #   20|     4: [BlockStmt] {...}
@@ -720,7 +716,6 @@ obj_creation.cs:
 #   13|           0: [AssignExpr] ... = ...
 #   13|             0: [ParameterAccess] access to parameter _x
 #   13|             1: [FieldAccess] access to field x
-#   13|               -1: [ThisAccess] this access
 #   17|   5: [Method] SomeFun
 #-----|     2: (Parameters)
 #   17|       0: [Parameter] x
@@ -853,7 +848,6 @@ prop.cs:
 #    8|       4: [BlockStmt] {...}
 #    9|         0: [ReturnStmt] return ...;
 #    9|           0: [MethodCall] call to method func
-#    9|             -1: [ThisAccess] this access
 #   12|     4: [Setter] set_Prop
 #-----|       2: (Parameters)
 #   12|         0: [Parameter] value

@@ -24,7 +24,6 @@ indexers.cs:
 #   18|                   1: [IntLiteral] 5
 #   18|                 1: [IntLiteral] 1
 #   18|             1: [FieldAccess] access to field bits
-#   18|               -1: [ThisAccess] this access
 #   19|         2: [ExprStmt] ...;
 #   19|           0: [AssignExpr] ... = ...
 #   19|             0: [ParameterAccess] access to parameter length
@@ -35,7 +34,6 @@ indexers.cs:
 #   22|         4: [BlockStmt] {...}
 #   22|           0: [ReturnStmt] return ...;
 #   22|             0: [FieldAccess] access to field length
-#   22|               -1: [ThisAccess] this access
 #   24|     7: [Indexer] Item
 #-----|       1: (Parameters)
 #   24|         0: [Parameter] index
@@ -51,7 +49,6 @@ indexers.cs:
 #   28|               1: [GEExpr] ... >= ...
 #   28|                 0: [ParameterAccess] access to parameter index
 #   28|                 1: [FieldAccess] access to field length
-#   28|                   -1: [ThisAccess] this access
 #   29|             1: [BlockStmt] {...}
 #   30|               0: [ThrowStmt] throw ...;
 #   30|                 0: [ObjectCreation] object creation of type IndexOutOfRangeException
@@ -60,7 +57,6 @@ indexers.cs:
 #   32|               0: [BitwiseAndExpr] ... & ...
 #   32|                 0: [ArrayAccess] access to array element
 #   32|                   -1: [FieldAccess] access to field bits
-#   32|                     -1: [ThisAccess] this access
 #   32|                   0: [RShiftExpr] ... >> ...
 #   32|                     0: [ParameterAccess] access to parameter index
 #   32|                     1: [IntLiteral] 5
@@ -81,7 +77,6 @@ indexers.cs:
 #   36|               1: [GEExpr] ... >= ...
 #   36|                 0: [ParameterAccess] access to parameter index
 #   36|                 1: [FieldAccess] access to field length
-#   36|                   -1: [ThisAccess] this access
 #   37|             1: [BlockStmt] {...}
 #   38|               0: [ThrowStmt] throw ...;
 #   38|                 0: [ObjectCreation] object creation of type IndexOutOfRangeException
@@ -95,7 +90,6 @@ indexers.cs:
 #   42|                     1: [ParameterAccess] access to parameter index
 #   42|                   1: [ArrayAccess] access to array element
 #   42|                     -1: [FieldAccess] access to field bits
-#   42|                       -1: [ThisAccess] this access
 #   42|                     0: [RShiftExpr] ... >> ...
 #   42|                       0: [ParameterAccess] access to parameter index
 #   42|                       1: [IntLiteral] 5
@@ -108,7 +102,6 @@ indexers.cs:
 #   46|                       1: [ParameterAccess] access to parameter index
 #   46|                   1: [ArrayAccess] access to array element
 #   46|                     -1: [FieldAccess] access to field bits
-#   46|                       -1: [ThisAccess] this access
 #   46|                     0: [RShiftExpr] ... >> ...
 #   46|                       0: [ParameterAccess] access to parameter index
 #   46|                       1: [IntLiteral] 5
@@ -207,7 +200,6 @@ indexers.cs:
 #   87|           0: [MemberConstantAccess] access to constant NumRows
 #   87|           1: [MemberConstantAccess] access to constant NumCols
 #   87|         1: [FieldAccess] access to field cells
-#   87|           -1: [ThisAccess] this access
 #   89|     7: [Indexer] Item
 #-----|       1: (Parameters)
 #   89|         0: [Parameter] c
@@ -252,7 +244,6 @@ indexers.cs:
 #  102|           3: [ReturnStmt] return ...;
 #  102|             0: [ArrayAccess] access to array element
 #  102|               -1: [FieldAccess] access to field cells
-#  102|                 -1: [ThisAccess] this access
 #  102|               0: [SubExpr] ... - ...
 #  102|                 0: [CastExpr] (...) ...
 #  102|                   0: [ParameterAccess] access to parameter c
@@ -302,7 +293,6 @@ indexers.cs:
 #  115|               0: [ParameterAccess] access to parameter value
 #  115|               1: [ArrayAccess] access to array element
 #  115|                 -1: [FieldAccess] access to field cells
-#  115|                   -1: [ThisAccess] this access
 #  115|                 0: [SubExpr] ... - ...
 #  115|                   0: [CastExpr] (...) ...
 #  115|                     0: [ParameterAccess] access to parameter c

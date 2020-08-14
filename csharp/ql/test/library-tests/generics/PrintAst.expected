@@ -217,7 +217,6 @@ generics.cs:
 #   35|         4: [BlockStmt] {...}
 #   35|           0: [ReturnStmt] return ...;
 #   35|             0: [FieldAccess] access to field name
-#   35|               -1: [ThisAccess] this access
 #   35|       4: [Setter] set_Name
 #-----|         2: (Parameters)
 #   35|           0: [Parameter] value
@@ -226,7 +225,6 @@ generics.cs:
 #   35|             0: [AssignExpr] ... = ...
 #   35|               0: [ParameterAccess] access to parameter value
 #   35|               1: [FieldAccess] access to field name
-#   35|                 -1: [ThisAccess] this access
 #   37|     10: [Event] myEvent
 #   37|       3: [AddEventAccessor] add_myEvent
 #-----|         2: (Parameters)
@@ -273,7 +271,6 @@ generics.cs:
 #   66|           0: [MemberConstantAccess] access to constant NumRows
 #   66|           1: [MemberConstantAccess] access to constant NumCols
 #   66|         1: [FieldAccess] access to field cells
-#   66|           -1: [ThisAccess] this access
 #   68|     7: [Indexer] Item
 #-----|       1: (Parameters)
 #   68|         0: [Parameter] i
@@ -327,7 +324,6 @@ generics.cs:
 #   86|           3: [ReturnStmt] return ...;
 #   86|             0: [ArrayAccess] access to array element
 #   86|               -1: [FieldAccess] access to field cells
-#   86|                 -1: [ThisAccess] this access
 #   86|               0: [SubExpr] ... - ...
 #   86|                 0: [CastExpr] (...) ...
 #   86|                   0: [ParameterAccess] access to parameter c
@@ -377,7 +373,6 @@ generics.cs:
 #   99|               0: [ParameterAccess] access to parameter value
 #   99|               1: [ArrayAccess] access to array element
 #   99|                 -1: [FieldAccess] access to field cells
-#   99|                   -1: [ThisAccess] this access
 #   99|                 0: [SubExpr] ... - ...
 #   99|                   0: [CastExpr] (...) ...
 #   99|                     0: [ParameterAccess] access to parameter c
@@ -416,7 +411,6 @@ generics.cs:
 #  118|           0: [AddEventExpr] ... += ...
 #  118|             0: [ExplicitDelegateCreation] delegate creation of type GenericDelegate<String>
 #  118|               0: [MethodAccess] access to method f
-#  118|                 -1: [ThisAccess] this access
 #  118|             1: [EventAccess,EventCall] access to event myEvent
 #  118|               -1: [LocalVariableAccess] access to local variable bs
 #  119|         7: [ExprStmt] ...;
@@ -509,17 +503,13 @@ generics.cs:
 #  163|       4: [BlockStmt] {...}
 #  164|         0: [ExprStmt] ...;
 #  164|           0: [MethodCall] call to method CM1
-#  164|             -1: [ThisAccess] this access
 #  165|         1: [ExprStmt] ...;
 #  165|           0: [MethodCall] call to method CM1
-#  165|             -1: [ThisAccess] this access
 #  166|         2: [ExprStmt] ...;
 #  166|           0: [MethodCall] call to method CM2
-#  166|             -1: [ThisAccess] this access
 #  166|             0: [IntLiteral] 4
 #  167|         3: [ExprStmt] ...;
 #  167|           0: [MethodCall] call to method CM2
-#  167|             -1: [ThisAccess] this access
 #  167|             0: [DoubleLiteral] 2
 #  168|         4: [ExprStmt] ...;
 #  168|           0: [MethodCall] call to method CM3

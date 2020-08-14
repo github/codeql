@@ -31,6 +31,10 @@ private predicate shouldPrint(Element e, File f) {
   exists(PrintAstConfiguration config | config.shouldPrint(e, f))
 }
 
+private predicate isImplicitExpression(ControlFlowElement element) {
+  element instanceof Expr and element.(Expr).isImplicit() and not exists(element.getAChild())
+}
+
 private predicate isInsideUnneededAttributable(Attributable attributable) {
   isInsideUnneededType(attributable.(Field).getDeclaringType()) or
   isInsideUnneededParameterizable(attributable.(Parameter).getDeclaringElement()) or
@@ -215,6 +219,8 @@ class ControlFlowElementNode extends ElementNode {
 
   ControlFlowElementNode() {
     controlFlowElement = element and
+    // Removing implicit expressions
+    not isImplicitExpression(element) and
     // Removing extra nodes that are generated for an `AssignOperation`
     not exists(AssignOperation ao |
       ao.hasExpandedAssignment() and
