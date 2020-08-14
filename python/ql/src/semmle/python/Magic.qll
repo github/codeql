@@ -8,14 +8,16 @@ module MagicMethod {
   }
 
   class Actual extends ControlFlowNode {
-    Object resolvedMagicMethod;
+    Value resolvedMagicMethod;
 
     Actual() {
       exists(Potential pot |
         this.(Potential) = pot and
-        pot.getSelf().(ClassObject).lookupAttribute(pot.getMagicMethodName()) = resolvedMagicMethod
+        pot.getSelf().pointsTo().getClass().lookup(pot.getMagicMethodName()) = resolvedMagicMethod
       )
     }
+
+    Value getResolvedMagicMethod() { result = resolvedMagicMethod }
   }
 }
 
