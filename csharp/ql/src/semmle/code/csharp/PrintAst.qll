@@ -100,7 +100,7 @@ private string getQlClass(Element el) {
  */
 private Location getRepresentativeLocation(Element ast) {
   result =
-    rank[1](Location loc |
+    min(Location loc |
       loc = ast.getLocation() and selectedFile(loc.getFile())
     |
       loc order by loc.getStartLine(), loc.getStartColumn(), loc.getEndLine(), loc.getEndColumn()
@@ -108,30 +108,28 @@ private Location getRepresentativeLocation(Element ast) {
 }
 
 private predicate locationSortKeys(Element ast, string file, int line, int column) {
-  if exists(getRepresentativeLocation(ast))
-  then
-    exists(Location loc |
-      loc = getRepresentativeLocation(ast) and
-      file = loc.getFile().toString() and
-      line = loc.getStartLine() and
-      column = loc.getStartColumn()
-    )
-  else (
-    file = "" and
-    line = 0 and
-    column = 0
+  exists(Location loc |
+    loc = getRepresentativeLocation(ast) and
+    file = loc.getFile().toString() and
+    line = loc.getStartLine() and
+    column = loc.getStartColumn()
   )
+  or
+  not exists(getRepresentativeLocation(ast)) and
+  file = "" and
+  line = 0 and
+  column = 0
 }
 
 /**
  * Printed AST nodes are mostly `Element`s of the underlying AST.
  * There are extra AST nodes generated for parameters of `Parameterizable`s,
  * attributes of `Attributable`s, and type parameters of `UnboundGeneric`
- * types. These extra nodes are used as containers to organize the tree a
- * bit better.
+ * declarations. These extra nodes are used as containers to organize the
+ * tree a bit better.
  */
 private newtype TPrintAstNode =
-  TAstNode(Element ast) { shouldPrint(ast) } or
+  TElementNode(Element element) { shouldPrint(element) } or
   TParametersNode(Parameterizable parameterizable) { shouldPrint(parameterizable) } or
   TAttributesNode(Attributable attributable) { shouldPrint(attributable) } or
   TTypeParametersNode(UnboundGeneric generic) { shouldPrint(generic) }
@@ -152,7 +150,7 @@ class PrintAstNode extends TPrintAstNode {
   abstract PrintAstNode getChild(int childIndex);
 
   /**
-   * Gets the children of this node.
+   * Gets a child of this node.
    */
   final PrintAstNode getAChild() { result = getChild(_) }
 
@@ -189,29 +187,29 @@ class PrintAstNode extends TPrintAstNode {
 /**
  * A node representing an AST node with an underlying `Element`.
  */
-abstract class AstNode extends PrintAstNode, TAstNode {
-  Element ast;
+abstract class ElementNode extends PrintAstNode, TElementNode {
+  Element element;
 
-  AstNode() { this = TAstNode(ast) }
+  ElementNode() { this = TElementNode(element) }
 
-  override string toString() { result = getQlClass(ast) + ast.toString() }
+  override string toString() { result = getQlClass(element) + element.toString() }
 
-  override Location getLocation() { result = getRepresentativeLocation(ast) }
+  override Location getLocation() { result = getRepresentativeLocation(element) }
 
   /**
-   * Gets the AST represented by this node.
+   * Gets the `Element` represented by this node.
    */
-  final Element getAst() { result = ast }
+  final Element getElement() { result = element }
 }
 
 /**
  * A node representing a `ControlFlowElement` (`Expr` or `Stmt`).
  */
-class ControlFlowElementNode extends AstNode {
+class ControlFlowElementNode extends ElementNode {
   ControlFlowElement controlFlowElement;
 
   ControlFlowElementNode() {
-    controlFlowElement = ast and
+    controlFlowElement = element and
     // Removing extra nodes that are generated for an `AssignOperation`
     not exists(AssignOperation ao |
       ao.hasExpandedAssignment() and
@@ -226,14 +224,14 @@ class ControlFlowElementNode extends AstNode {
           controlFlowElement.getParent*()
       )
     ) and
-    not isCompilerGeneratedAttributable(ast.getParent+().(Attribute).getTarget()) and
-    not isCompilerGeneratedParameterizable(ast.getParent+().(Parameter).getDeclaringElement()) and
-    not isInsideUnneededAttributable(ast.getParent+().(Attribute).getTarget()) and
-    not isInsideUnneededParameterizable(ast.getParent+().(Parameter).getDeclaringElement())
+    not isCompilerGeneratedAttributable(element.getParent+().(Attribute).getTarget()) and
+    not isCompilerGeneratedParameterizable(element.getParent+().(Parameter).getDeclaringElement()) and
+    not isInsideUnneededAttributable(element.getParent+().(Attribute).getTarget()) and
+    not isInsideUnneededParameterizable(element.getParent+().(Parameter).getDeclaringElement())
   }
 
-  override AstNode getChild(int childIndex) {
-    result.getAst() = controlFlowElement.getChild(childIndex)
+  override ElementNode getChild(int childIndex) {
+    result.getElement() = controlFlowElement.getChild(childIndex)
   }
 }
 
@@ -244,22 +242,22 @@ class ControlFlowElementNode extends AstNode {
 final class LocalFunctionStmtNode extends ControlFlowElementNode {
   LocalFunctionStmt stmt;
 
-  LocalFunctionStmtNode() { stmt = ast }
+  LocalFunctionStmtNode() { stmt = element }
 
   override CallableNode getChild(int childIndex) {
     childIndex = 0 and
-    result.getAst() = stmt.getLocalFunction()
+    result.getElement() = stmt.getLocalFunction()
   }
 }
 
 /**
  * A node representing a `Callable`, such as method declaration.
  */
-final class CallableNode extends AstNode {
+final class CallableNode extends ElementNode {
   Callable callable;
 
   CallableNode() {
-    callable = ast and
+    callable = element and
     not isInsideUnneededCallable(callable)
   }
 
@@ -274,21 +272,21 @@ final class CallableNode extends AstNode {
     result.(ParametersNode).getParameterizable() = callable
     or
     childIndex = 3 and
-    result.(AstNode).getAst() = callable.(Constructor).getInitializer()
+    result.(ElementNode).getElement() = callable.(Constructor).getInitializer()
     or
     childIndex = 4 and
-    result.(AstNode).getAst() = callable.getBody()
+    result.(ElementNode).getElement() = callable.getBody()
   }
 }
 
 /**
  * A node representing a `DeclarationWithAccessors`, such as property declaration.
  */
-final class DeclarationWithAccessorsNode extends AstNode {
+final class DeclarationWithAccessorsNode extends ElementNode {
   DeclarationWithAccessors declaration;
 
   DeclarationWithAccessorsNode() {
-    declaration = ast and
+    declaration = element and
     not isInsideUnneededType(declaration.getDeclaringType())
   }
 
@@ -300,9 +298,9 @@ final class DeclarationWithAccessorsNode extends AstNode {
     result.(ParametersNode).getParameterizable() = declaration
     or
     childIndex = 2 and
-    result.(AstNode).getAst() = declaration.(Property).getInitializer().getParent()
+    result.(ElementNode).getElement() = declaration.(Property).getInitializer().getParent()
     or
-    result.(AstNode).getAst() =
+    result.(ElementNode).getElement() =
       rank[childIndex - 2](Element a, string file, int line, int column |
         a = declaration.getAnAccessor() and
         locationSortKeys(a, file, line, column)
@@ -315,11 +313,11 @@ final class DeclarationWithAccessorsNode extends AstNode {
 /**
  * A node representing a `Field` declaration.
  */
-final class FieldNode extends AstNode {
+final class FieldNode extends ElementNode {
   Field field;
 
   FieldNode() {
-    field = ast and
+    field = element and
     not field.getDeclaringType() instanceof TupleType and
     not isInsideUnneededType(field.getDeclaringType())
   }
@@ -331,11 +329,9 @@ final class FieldNode extends AstNode {
     childIndex = 1 and
     field.hasInitializer() and
     (
-      not field.getDeclaringType() instanceof Enum and
-      result.(AstNode).getAst() = field.getInitializer().getParent()
-      or
-      field.getDeclaringType() instanceof Enum and
-      result.(AstNode).getAst() = field.getInitializer()
+      if field.getDeclaringType() instanceof Enum
+      then result.(ElementNode).getElement() = field.getInitializer()
+      else result.(ElementNode).getElement() = field.getInitializer().getParent()
     )
   }
 }
@@ -343,11 +339,11 @@ final class FieldNode extends AstNode {
 /**
  * A node representing a `Parameter` declaration.
  */
-final class ParameterNode extends AstNode {
+final class ParameterNode extends ElementNode {
   Parameter param;
 
   ParameterNode() {
-    param = ast and
+    param = element and
     not isInsideUnneededParameterizable(param.getDeclaringElement()) and
     (
       not param.getDeclaringElement().isCompilerGenerated() or
@@ -361,8 +357,8 @@ final class ParameterNode extends AstNode {
     // for extension method first parameters, we're choosing the shorter location of the two
     param.hasExtensionMethodModifier() and
     result =
-      rank[1](Location loc |
-        loc = ast.getLocation() and
+      min(Location loc |
+        loc = element.getLocation() and
         selectedFile(loc.getFile()) and
         loc.getStartLine() = loc.getEndLine()
       |
@@ -376,47 +372,47 @@ final class ParameterNode extends AstNode {
     or
     childIndex = 1 and
     param.hasDefaultValue() and
-    result.(AstNode).getAst() = param.getDefaultValue()
+    result.(ElementNode).getElement() = param.getDefaultValue()
   }
 }
 
 /**
  * A node representing an `Attribute`.
  */
-final class AttributeNode extends AstNode {
+final class AttributeNode extends ElementNode {
   Attribute attr;
 
   AttributeNode() {
-    attr = ast and
+    attr = element and
     not isCompilerGeneratedAttributable(attr.getTarget()) and
     not isInsideUnneededAttributable(attr.getTarget())
   }
 
-  override AstNode getChild(int childIndex) { result.getAst() = attr.getChild(childIndex) }
+  override ElementNode getChild(int childIndex) { result.getElement() = attr.getChild(childIndex) }
 }
 
 /**
  * A node representing a `TypeParameter`.
  */
-final class TypeParameterNode extends AstNode {
+final class TypeParameterNode extends ElementNode {
   TypeParameter typeParameter;
 
   TypeParameterNode() {
-    typeParameter = ast and
+    typeParameter = element and
     not isInsideUnneededUnboundGeneric(typeParameter.getDeclaringGeneric())
   }
 
-  override AstNode getChild(int childIndex) { none() }
+  override ElementNode getChild(int childIndex) { none() }
 }
 
 /**
  * A node representing a `ValueOrRefType`.
  */
-final class TypeNode extends AstNode {
+final class TypeNode extends ElementNode {
   ValueOrRefType type;
 
   TypeNode() {
-    type = ast and
+    type = element and
     not type instanceof TupleType and
     not type instanceof ArrayType and
     not type instanceof NullableType and
@@ -433,7 +429,7 @@ final class TypeNode extends AstNode {
     childIndex = 2 and
     result.(ParametersNode).getParameterizable() = type
     or
-    result.(AstNode).getAst() =
+    result.(ElementNode).getElement() =
       rank[childIndex - 2](Member m, string file, int line, int column |
         m = type.getAMember() and
         locationSortKeys(m, file, line, column)
@@ -446,13 +442,13 @@ final class TypeNode extends AstNode {
 /**
  * A node representing a `NamespaceDeclaration`.
  */
-final class NamespaceNode extends AstNode {
+final class NamespaceNode extends ElementNode {
   NamespaceDeclaration namespace;
 
-  NamespaceNode() { namespace = ast }
+  NamespaceNode() { namespace = element }
 
   override PrintAstNode getChild(int childIndex) {
-    result.(AstNode).getAst() =
+    result.(ElementNode).getElement() =
       rank[childIndex](Element a, string file, int line, int column |
         (a = namespace.getAChildNamespaceDeclaration() or a = namespace.getATypeDeclaration()) and
         locationSortKeys(a, file, line, column)
@@ -486,11 +482,11 @@ final class ParametersNode extends PrintAstNode, TParametersNode {
   override Location getLocation() { none() }
 
   override ParameterNode getChild(int childIndex) {
-    result.getAst() = parameterizable.getParameter(childIndex)
+    result.getElement() = parameterizable.getParameter(childIndex)
   }
 
   /**
-   * Returns the underlying `Parameterizable`
+   * Gets the underlying `Parameterizable`
    */
   Parameterizable getParameterizable() { result = parameterizable }
 }
@@ -514,7 +510,7 @@ final class AttributesNode extends PrintAstNode, TAttributesNode {
   override Location getLocation() { none() }
 
   override AttributeNode getChild(int childIndex) {
-    result.getAst() =
+    result.getElement() =
       rank[childIndex](Attribute a, string file, int line, int column |
         a = attributable.getAnAttribute() and
         locationSortKeys(a, file, line, column)
@@ -524,7 +520,7 @@ final class AttributesNode extends PrintAstNode, TAttributesNode {
   }
 
   /**
-   * Returns the underlying `Attributable`
+   * Gets the underlying `Attributable`
    */
   Attributable getAttributable() { result = attributable }
 }
@@ -546,11 +542,11 @@ final class TypeParametersNode extends PrintAstNode, TTypeParametersNode {
   override Location getLocation() { none() }
 
   override TypeParameterNode getChild(int childIndex) {
-    result.getAst() = unboundGeneric.getTypeParameter(childIndex)
+    result.getElement() = unboundGeneric.getTypeParameter(childIndex)
   }
 
   /**
-   * Returns the underlying `UnboundGeneric`
+   * Gets the underlying `UnboundGeneric`
    */
   UnboundGeneric getUnboundGeneric() { result = unboundGeneric }
 }
