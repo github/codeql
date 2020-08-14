@@ -12,7 +12,7 @@ Query files have the extension `.ql`. Each file has two distinct areas:
 *   Query definition–defined using QL. The query includes a select statement, which defines the content and format of the results. For further information about writing QL, see the following topics:
     *   [Learning CodeQL](https://help.semmle.com/QL/learn-ql/index.html)
     *   [QL language reference](https://help.semmle.com/QL/ql-handbook/index.html)
-    *   [CodeQL style guide](https://github.com/github/codeql/blob/master/docs/ql-style-guide.md) 
+    *   [CodeQL style guide](https://github.com/github/codeql/blob/main/docs/ql-style-guide.md) 
 
 
 For examples of query files for the languages supported by CodeQL, visit the following links: 
