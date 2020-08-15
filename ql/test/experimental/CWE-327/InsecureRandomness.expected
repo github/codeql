@@ -1,0 +1,10 @@
+edges
+| InsecureRandomness.go:24:12:24:40 | call to New : pointer type | InsecureRandomness.go:27:25:27:29 | nonce |
+| InsecureRandomness.go:24:12:24:40 | call to New : pointer type | InsecureRandomness.go:27:32:27:36 | nonce |
+nodes
+| InsecureRandomness.go:24:12:24:40 | call to New : pointer type | semmle.label | call to New : pointer type |
+| InsecureRandomness.go:27:25:27:29 | nonce | semmle.label | nonce |
+| InsecureRandomness.go:27:32:27:36 | nonce | semmle.label | nonce |
+#select
+| InsecureRandomness.go:27:25:27:29 | nonce | InsecureRandomness.go:24:12:24:40 | call to New : pointer type | InsecureRandomness.go:27:25:27:29 | nonce | $@ is a weak key used in cryptographic algorithm. | InsecureRandomness.go:24:12:24:40 | call to New | Random number |
+| InsecureRandomness.go:27:32:27:36 | nonce | InsecureRandomness.go:24:12:24:40 | call to New : pointer type | InsecureRandomness.go:27:32:27:36 | nonce | $@ is a weak key used in cryptographic algorithm. | InsecureRandomness.go:24:12:24:40 | call to New | Random number |

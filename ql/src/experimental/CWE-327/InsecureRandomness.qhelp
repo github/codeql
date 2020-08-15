@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+	<overview>
+		<p>
+			Generating secure random numbers can be an important part of creating a
+			secure software system. This can be done using APIs that create
+			cryptographically secure random numbers.
+		</p>
+		<p>
+			However, using an insecure random number generator can make it easier for an attacker to guess the random
+			numbers, and thereby break the security of the software system.
+		</p>
+	</overview>
+	<recommendation>
+		<p>
+			Be very careful not to use insecure random number generation as keys in cryptographic algorithms.
+		</p>
+		<p>
+			If possible, avoid using math/rand for cryptographic algorithms, and use crypto/rand instead.
+		</p>
+	</recommendation>
+	<example>
+		<p>
+			The example below uses the math/rand package instead of crypto/rand to hash and encrypt a password,
+            demonstrating an insecure use of random number generation.
+		</p>
+		<sample src="examples/InsecureRandomness.go" />
+	</example>
+
+
+	<references>
+		<li>OWASP: <a href="https://owasp.org/www-community/vulnerabilities/Insecure_Randomness">Insecure Randomness</a>.</li>
+		<li>OWASP: <a
+		href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#secure-random-number-generation">Secure Random Number Generation</a>.
+		</li>
+	</references>
+
+</qhelp>
