@@ -65,7 +65,7 @@ module InsecureCookie {
       result = this.getOption("cookie")
     }
 
-    DataFlow::Node getCookieFlagValue(string flag) {
+    private DataFlow::Node getCookieFlagValue(string flag) {
       result = this.getCookieOptionsArgument().getAPropertyWrite(flag).getRhs()
     }
 
