@@ -5,7 +5,7 @@
 
 import javascript
 
-module InsecureCookie {
+module Cookie {
   /**
    * `secure` property of the cookie options.
    */
@@ -14,7 +14,7 @@ module InsecureCookie {
   /**
    * Abstract class to represent different cases of insecure cookie settings.
    */
-  abstract class InsecureCookies extends DataFlow::Node {
+  abstract class Cookie extends DataFlow::Node {
     /**
      * Gets the name of the middleware/library used to set the cookie.
      */
@@ -34,8 +34,7 @@ module InsecureCookie {
   /**
    * A cookie set using the `express` module `cookie-session` (https://github.com/expressjs/cookie-session).
    */
-  class InsecureCookieSession extends ExpressLibraries::CookieSession::MiddlewareInstance,
-    InsecureCookies {
+  class InsecureCookieSession extends ExpressLibraries::CookieSession::MiddlewareInstance, Cookie {
     override string getKind() { result = "cookie-session" }
 
     override DataFlow::SourceNode getCookieOptionsArgument() { result = this.getOption("cookie") }
@@ -54,7 +53,7 @@ module InsecureCookie {
    * A cookie set using the `express` module `express-session` (https://github.com/expressjs/session).
    */
   class InsecureExpressSessionCookie extends ExpressLibraries::ExpressSession::MiddlewareInstance,
-    InsecureCookies {
+    Cookie {
     override string getKind() { result = "express-session" }
 
     override DataFlow::SourceNode getCookieOptionsArgument() { result = this.getOption("cookie") }
@@ -73,7 +72,7 @@ module InsecureCookie {
   /**
    * A cookie set using `response.cookie` from `express` module (https://expressjs.com/en/api.html#res.cookie).
    */
-  class InsecureExpressCookieResponse extends InsecureCookies {
+  class InsecureExpressCookieResponse extends Cookie {
     InsecureExpressCookieResponse() {
       this = any(Express::ResponseExpr response).flow().getALocalSource().getAMethodCall("cookie")
     }
@@ -97,7 +96,7 @@ module InsecureCookie {
   /**
    * A cookie set using `Set-Cookie` header of an `HTTP` response (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie).
    */
-  class InsecureSetCookieHeader extends InsecureCookies {
+  class InsecureSetCookieHeader extends Cookie {
     InsecureSetCookieHeader() {
       this.asExpr() = any(HTTP::SetCookieHeader setCookie).getHeaderArgument()
     }
@@ -120,7 +119,7 @@ module InsecureCookie {
   /**
    * A cookie set using `js-cookie` library (https://github.com/js-cookie/js-cookie).
    */
-  class InsecureJsCookie extends InsecureCookies {
+  class InsecureJsCookie extends Cookie {
     InsecureJsCookie() {
       this = DataFlow::globalVarRef("Cookie").getAMemberCall("set") or
       this = DataFlow::globalVarRef("Cookie").getAMemberCall("noConflict").getAMemberCall("set") or

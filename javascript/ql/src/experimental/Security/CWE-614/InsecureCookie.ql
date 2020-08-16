@@ -11,9 +11,9 @@
  */
 
 import javascript
-import InsecureCookie::InsecureCookie
+import InsecureCookie::Cookie
 
-from InsecureCookies insecureCookies
+from Cookie insecureCookies
 where insecureCookies.isInsecure()
 select "Cookie is added to response without the 'secure' flag being set to true (using " +
     insecureCookies.getKind() + ").", insecureCookies
