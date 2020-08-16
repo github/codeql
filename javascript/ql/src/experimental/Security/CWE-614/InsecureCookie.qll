@@ -71,10 +71,7 @@ module InsecureCookie {
 
     override predicate isInsecure() {
         // A cookie is insecure if there are not cookie options with the `secure` flag set to `true`.
-      not exists(DataFlow::SourceNode cookieOptions |
-        cookieOptions = this.getCookieOptionsArgument() and
-        getCookieFlagValue(flag()).mayHaveBooleanValue(true)
-      ) and
+      not getCookieFlagValue(flag()).mayHaveBooleanValue(true) and
       not getCookieFlagValue(flag()).mayHaveStringValue("auto")
     }
   }
