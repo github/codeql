@@ -115,8 +115,8 @@ module InsecureCookie {
       result.asExpr() = this.asExpr().(ArrayExpr).getAnElement()
     }
 
-    // A cookie is insecure if the 'secure' flag is not specified in the cookie definition.
     override predicate isInsecure() {
+        // A cookie is insecure if the 'secure' flag is not specified in the cookie definition.
       not exists(string s |
         getCookieOptionsArgument().mayHaveStringValue(s) and
         s.matches("%; secure%")
