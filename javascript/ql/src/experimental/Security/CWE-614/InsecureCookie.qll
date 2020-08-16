@@ -56,8 +56,6 @@ module InsecureCookie {
 
   /**
    * A cookie set using the `express` module `express-session` (https://github.com/expressjs/session).
-   * The flag `secure` is not set by default (https://github.com/expressjs/session#cookiesecure).
-   * The default value for cookie options is { path: '/', httpOnly: true, secure: false, maxAge: null }.
    */
   class InsecureExpressSessionCookie extends ExpressLibraries::ExpressSession::MiddlewareInstance,
     InsecureCookies {
