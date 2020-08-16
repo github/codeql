@@ -90,7 +90,7 @@ module InsecureCookie {
       result = this.(DataFlow::InvokeNode).getLastArgument().getALocalSource()
     }
 
-    DataFlow::Node getCookieFlagValue(string flag) {
+    private DataFlow::Node getCookieFlagValue(string flag) {
       result = this.getCookieOptionsArgument().getAPropertyWrite(flag).getRhs()
     }
 
