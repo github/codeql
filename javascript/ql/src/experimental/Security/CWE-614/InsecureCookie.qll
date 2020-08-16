@@ -21,7 +21,7 @@ module InsecureCookie {
     abstract string getKind();
 
     /**
-     * The `cookie` options.
+     * Gets the options used to set this cookie, if any.
      */
     abstract DataFlow::Node getCookieOptionsArgument();
 
