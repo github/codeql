@@ -81,7 +81,7 @@ module InsecureCookie {
    */
   class InsecureExpressCookieResponse extends InsecureCookies {
     InsecureExpressCookieResponse() {
-      this = any(Express::ResponseExpr response).flow().getALocalSource().getAMemberCall("cookie")
+      this = any(Express::ResponseExpr response).flow().getALocalSource().getAMethodCall("cookie")
     }
 
     override string getKind() { result = "response.cookie" }
