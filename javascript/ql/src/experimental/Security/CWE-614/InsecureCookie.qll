@@ -16,7 +16,7 @@ module InsecureCookie {
    */
   abstract class InsecureCookies extends DataFlow::Node {
     /**
-     * The name of the middleware/library used to set the cookie.
+     * Gets the name of the middleware/library used to set the cookie.
      */
     abstract string getKind();
 
