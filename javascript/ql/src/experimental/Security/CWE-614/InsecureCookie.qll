@@ -48,8 +48,10 @@ module InsecureCookie {
       result = this.getCookieOptionsArgument().getAPropertyWrite(flag).getRhs()
     }
 
-    // A cookie is insecure if the `secure` flag is explicitly set to `false`.
-    override predicate isInsecure() { getCookieFlagValue(flag()).mayHaveBooleanValue(false) }
+    override predicate isInsecure() { 
+        // A cookie is insecure if the `secure` flag is explicitly set to `false`.
+        getCookieFlagValue(flag()).mayHaveBooleanValue(false)
+    }
   }
 
   /**
