@@ -26,9 +26,9 @@ module Cookie {
     abstract DataFlow::Node getCookieOptionsArgument();
 
     /**
-     * Predicate that determines if a cookie is insecure.
+     * Holds if this cookie is secure.
      */
-    abstract predicate isInsecure();
+    abstract predicate isSecure();
   }
 
   /**
@@ -43,9 +43,10 @@ module Cookie {
       result = this.getCookieOptionsArgument().getAPropertyWrite(flag).getRhs()
     }
 
-    override predicate isInsecure() {
-      // A cookie is insecure if the `secure` flag is explicitly set to `false`.
-      getCookieFlagValue(flag()).mayHaveBooleanValue(false)
+    override predicate isSecure() {
+      // The flag `secure` is set to `false` by default for HTTP, `true` by default for HTTPS (https://github.com/expressjs/cookie-session#cookie-options).
+      // A cookie is secure if the `secure` flag is not explicitly set to `false`.
+      not getCookieFlagValue(flag()).mayHaveBooleanValue(false)
     }
   }
 
@@ -62,10 +63,12 @@ module Cookie {
       result = this.getCookieOptionsArgument().getAPropertyWrite(flag).getRhs()
     }
 
-    override predicate isInsecure() {
-      // A cookie is insecure if there are not cookie options with the `secure` flag set to `true`.
-      not getCookieFlagValue(flag()).mayHaveBooleanValue(true) and
-      not getCookieFlagValue(flag()).mayHaveStringValue("auto")
+    override predicate isSecure() {
+      // The flag `secure` is not set by default (https://github.com/expressjs/session#Cookieecure).
+      // The default value for cookie options is { path: '/', httpOnly: true, secure: false, maxAge: null }.
+      // A cookie is secure if there are the cookie options with the `secure` flag set to `true` or to `auto`.
+      getCookieFlagValue(flag()).mayHaveBooleanValue(true) or
+      getCookieFlagValue(flag()).mayHaveStringValue("auto")
     }
   }
 
@@ -87,9 +90,9 @@ module Cookie {
       result = this.getCookieOptionsArgument().getAPropertyWrite(flag).getRhs()
     }
 
-    override predicate isInsecure() {
-      // A cookie is insecure if there are not cookie options with the `secure` flag set to `true`.
-      not getCookieFlagValue(flag()).mayHaveBooleanValue(true)
+    override predicate isSecure() {
+      // A cookie is secure if there are cookie options with the `secure` flag set to `true`.
+      getCookieFlagValue(flag()).mayHaveBooleanValue(true)
     }
   }
 
@@ -107,9 +110,9 @@ module Cookie {
       result.asExpr() = this.asExpr().(ArrayExpr).getAnElement()
     }
 
-    override predicate isInsecure() {
-      // A cookie is insecure if the 'secure' flag is not specified in the cookie definition.
-      not exists(string s |
+    override predicate isSecure() {
+      // A cookie is secure if the 'secure' flag is specified in the cookie definition.
+      exists(string s |
         getCookieOptionsArgument().mayHaveStringValue(s) and
         s.regexpMatch("(.*;)?\\s*secure.*")
       )
@@ -129,16 +132,16 @@ module Cookie {
     override string getKind() { result = "js-cookie" }
 
     override DataFlow::SourceNode getCookieOptionsArgument() {
-      result = this.(DataFlow::CallNode).getArgument(2).getALocalSource()
+      result = this.(DataFlow::CallNode).getAnArgument().getALocalSource()
     }
 
     DataFlow::Node getCookieFlagValue(string flag) {
       result = this.getCookieOptionsArgument().getAPropertyWrite(flag).getRhs()
     }
 
-    override predicate isInsecure() {
-      // A cookie is insecure if there are not cookie options with the `secure` flag set to `true`.
-      not getCookieFlagValue(flag()).mayHaveBooleanValue(true)
+    override predicate isSecure() {
+      // A cookie is secure if there are cookie options with the `secure` flag set to `true`.
+      getCookieFlagValue(flag()).mayHaveBooleanValue(true)
     }
   }
 }
