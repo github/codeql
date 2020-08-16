@@ -36,21 +36,17 @@ module InsecureCookie {
    */
   class InsecureCookieSession extends ExpressLibraries::CookieSession::MiddlewareInstance,
     InsecureCookies {
-    InsecureCookieSession() { this instanceof ExpressLibraries::CookieSession::MiddlewareInstance }
-
     override string getKind() { result = "cookie-session" }
 
-    override DataFlow::SourceNode getCookieOptionsArgument() {
-      result = this.getOption("cookie")
-    }
+    override DataFlow::SourceNode getCookieOptionsArgument() { result = this.getOption("cookie") }
 
     private DataFlow::Node getCookieFlagValue(string flag) {
       result = this.getCookieOptionsArgument().getAPropertyWrite(flag).getRhs()
     }
 
-    override predicate isInsecure() { 
-        // A cookie is insecure if the `secure` flag is explicitly set to `false`.
-        getCookieFlagValue(flag()).mayHaveBooleanValue(false)
+    override predicate isInsecure() {
+      // A cookie is insecure if the `secure` flag is explicitly set to `false`.
+      getCookieFlagValue(flag()).mayHaveBooleanValue(false)
     }
   }
 
@@ -61,16 +57,14 @@ module InsecureCookie {
     InsecureCookies {
     override string getKind() { result = "express-session" }
 
-    override DataFlow::SourceNode getCookieOptionsArgument() {
-      result = this.getOption("cookie")
-    }
+    override DataFlow::SourceNode getCookieOptionsArgument() { result = this.getOption("cookie") }
 
     private DataFlow::Node getCookieFlagValue(string flag) {
       result = this.getCookieOptionsArgument().getAPropertyWrite(flag).getRhs()
     }
 
     override predicate isInsecure() {
-        // A cookie is insecure if there are not cookie options with the `secure` flag set to `true`.
+      // A cookie is insecure if there are not cookie options with the `secure` flag set to `true`.
       not getCookieFlagValue(flag()).mayHaveBooleanValue(true) and
       not getCookieFlagValue(flag()).mayHaveStringValue("auto")
     }
@@ -95,9 +89,8 @@ module InsecureCookie {
     }
 
     override predicate isInsecure() {
-        // A cookie is insecure if there are not cookie options with the `secure` flag set to `true`.
-
-      not getCookieFlagValue(flag()).mayHaveBooleanValue(true)    
+      // A cookie is insecure if there are not cookie options with the `secure` flag set to `true`.
+      not getCookieFlagValue(flag()).mayHaveBooleanValue(true)
     }
   }
 
@@ -116,7 +109,7 @@ module InsecureCookie {
     }
 
     override predicate isInsecure() {
-        // A cookie is insecure if the 'secure' flag is not specified in the cookie definition.
+      // A cookie is insecure if the 'secure' flag is not specified in the cookie definition.
       not exists(string s |
         getCookieOptionsArgument().mayHaveStringValue(s) and
         s.matches("%; secure%")
@@ -145,7 +138,7 @@ module InsecureCookie {
     }
 
     override predicate isInsecure() {
-        // A cookie is insecure if there are not cookie options with the `secure` flag set to `true`.
+      // A cookie is insecure if there are not cookie options with the `secure` flag set to `true`.
       not getCookieFlagValue(flag()).mayHaveBooleanValue(true)
     }
   }
