@@ -62,7 +62,7 @@ module InsecureCookie {
     override string getKind() { result = "express-session" }
 
     override DataFlow::SourceNode getCookieOptionsArgument() {
-      result = this.getOption("cookie").(DataFlow::SourceNode)
+      result = this.getOption("cookie")
     }
 
     DataFlow::Node getCookieFlagValue(string flag) {
