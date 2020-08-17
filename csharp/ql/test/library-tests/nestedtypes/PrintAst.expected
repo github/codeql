@@ -1,21 +1,23 @@
 nestedtypes.cs:
 #    5| [NamespaceDeclaration] namespace ... { ... }
 #    8|   1: [Class] Base
-#   11|     4: [Struct] S
-#   13|     5: [Interface] I
-#   15|     6: [DelegateType] MyDelegate
+#   11|     5: [Struct] S
+#   13|     6: [Interface] I
+#   15|     7: [DelegateType] MyDelegate
 #-----|       2: (Parameters)
 #   15|         0: [Parameter] s
-#   17|     7: [Method] F
+#   17|     8: [Method] F
 #   18|       4: [BlockStmt] {...}
 #   19|         0: [ExprStmt] ...;
 #   19|           0: [MethodCall] call to method WriteLine
 #   19|             -1: [TypeAccess] access to type Console
 #   19|             0: [StringLiteral] "Base.F"
-#   22|     8: [Class] C
+#   22|     9: [Class] C
 #   26|   2: [Class] Derived
-#   29|     4: [Class] Nested
-#   32|       4: [Method] G
+#-----|     3: (BaseTypes)
+#   26|       0: Base
+#   29|     5: [Class] Nested
+#   32|       5: [Method] G
 #   33|         4: [BlockStmt] {...}
 #   34|           0: [LocalVariableDeclStmt] ... ...;
 #   34|             0: [LocalVariableDeclAndInitExpr] Derived d = ...
@@ -24,10 +26,8 @@ nestedtypes.cs:
 #   35|           1: [ExprStmt] ...;
 #   35|             0: [MethodCall] call to method F
 #   35|               -1: [LocalVariableAccess] access to local variable d
-#-----|     100: (BaseTypes)
-#   26|       0: Base
 #   42|   3: [Class] Test
-#   45|     4: [Method] Main
+#   45|     5: [Method] Main
 #   46|       4: [BlockStmt] {...}
 #   47|         0: [LocalVariableDeclStmt] ... ...;
 #   47|           0: [LocalVariableDeclAndInitExpr] Nested n = ...
@@ -39,15 +39,15 @@ nestedtypes.cs:
 #   53|   4: [Class] Outer<>
 #-----|     1: (TypeParameters)
 #   53|       0: [TypeParameter] T
-#   56|     4: [Class] Inner<>
+#   56|     5: [Class] Inner<>
 #-----|       1: (TypeParameters)
 #   56|         0: [TypeParameter] U
-#   59|       4: [Method] F
+#   59|       5: [Method] F
 #-----|         2: (Parameters)
 #   59|           0: [Parameter] t
 #   59|           1: [Parameter] u
 #   59|         4: [BlockStmt] {...}
-#   63|     6: [Method] F
+#   63|     7: [Method] F
 #-----|       2: (Parameters)
 #   63|         0: [Parameter] t
 #   64|       4: [BlockStmt] {...}
@@ -71,7 +71,7 @@ nestedtypes.cs:
 #   74|   5: [Class] Outer2<>
 #-----|     1: (TypeParameters)
 #   74|       0: [TypeParameter] T
-#   77|     4: [Class] Inner2<>
+#   77|     5: [Class] Inner2<>
 #-----|       1: (TypeParameters)
 #   77|         0: [TypeParameter] T
-#   80|       4: [Field] t
+#   80|       5: [Field] t

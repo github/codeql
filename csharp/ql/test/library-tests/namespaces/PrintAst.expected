@@ -17,21 +17,21 @@ namespaces.cs:
 #   53|   1: [Class] A
 #   57| [NamespaceDeclaration] namespace ... { ... }
 #   64|   1: [Class] B
-#-----|     100: (BaseTypes)
+#-----|     3: (BaseTypes)
 #   64|       0: A
 #   66|   2: [Class] C
-#-----|     100: (BaseTypes)
+#-----|     3: (BaseTypes)
 #   66|       0: A
 #   70| [NamespaceDeclaration] namespace ... { ... }
 #   73|   1: [Class] A<>
 #-----|     1: (TypeParameters)
 #   73|       0: [TypeParameter] T
-#   76|     4: [Class] B
+#   76|     5: [Class] B
 #   80|   2: [Class] A
 #   84| [NamespaceDeclaration] namespace ... { ... }
 #   91| [NamespaceDeclaration] namespace ... { ... }
 #   94|   1: [Class] A
 #   97| [NamespaceDeclaration] namespace ... { ... }
 #  102|   1: [Class] B
-#-----|     100: (BaseTypes)
+#-----|     3: (BaseTypes)
 #  102|       0: A

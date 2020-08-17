@@ -1,10 +1,10 @@
 dynamic.cs:
 #    4| [Class] DynamicTest
-#    6|   3: [InstanceConstructor] DynamicTest
+#    6|   4: [InstanceConstructor] DynamicTest
 #-----|     2: (Parameters)
 #    6|       0: [Parameter] x
 #    6|     4: [BlockStmt] {...}
-#    8|   4: [Method] Main
+#    8|   5: [Method] Main
 #-----|     2: (Parameters)
 #    8|       0: [Parameter] args
 #    9|     4: [BlockStmt] {...}
@@ -213,31 +213,31 @@ dynamic.cs:
 #   75|         0: [DelegateCall] delegate call
 #   75|           -1: [LocalVariableAccess] access to local variable d
 #   75|           0: [IntLiteral] 42
-#   78|   5: [Method] Foo
+#   78|   6: [Method] Foo
 #-----|     2: (Parameters)
 #   78|       0: [Parameter] x
 #   78|     4: [BlockStmt] {...}
-#   79|   6: [Method] Foo
+#   79|   7: [Method] Foo
 #-----|     2: (Parameters)
 #   79|       0: [Parameter] x
 #   79|     4: [BlockStmt] {...}
-#   81|   7: [Method] Bar
+#   81|   8: [Method] Bar
 #-----|     2: (Parameters)
 #   81|       0: [Parameter] x
 #   81|     4: [BlockStmt] {...}
-#   83|   8: [IncrementOperator] ++
+#   83|   9: [IncrementOperator] ++
 #-----|     2: (Parameters)
 #   83|       0: [Parameter] dt
 #   84|     4: [BlockStmt] {...}
 #   85|       0: [ReturnStmt] return ...;
 #   85|         0: [ParameterAccess] access to parameter dt
-#   88|   9: [Field] Field
-#   90|   10: [Property] Prop
+#   88|   10: [Field] Field
+#   90|   11: [Property] Prop
 #   90|     3: [Getter] get_Prop
 #   90|     4: [Setter] set_Prop
 #-----|       2: (Parameters)
 #   90|         0: [Parameter] value
-#   92|   11: [Indexer] Item
+#   92|   12: [Indexer] Item
 #-----|     1: (Parameters)
 #   92|       0: [Parameter] x
 #   92|     3: [Getter] get_Item

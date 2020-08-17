@@ -5,15 +5,15 @@ Members.cs:
 #    3|       0: [Parameter] sender
 #    3|       1: [Parameter] e
 #    6|   2: [Class] Class
-#    9|     4: [Class] NestedClass
-#   12|       4: [Method] Method
+#    9|     5: [Class] NestedClass
+#   12|       5: [Method] Method
 #-----|         1: (TypeParameters)
 #   12|           0: [TypeParameter] T
 #-----|         2: (Parameters)
 #   12|           0: [Parameter] t
 #   12|         4: [MethodCall] call to method ToString
 #   12|           -1: [ParameterAccess] access to parameter t
-#   14|       5: [Indexer] Item
+#   14|       6: [Indexer] Item
 #-----|         1: (Parameters)
 #   14|           0: [Parameter] i
 #   14|         3: [Getter] get_Item
@@ -26,22 +26,22 @@ Members.cs:
 #   14|             0: [Parameter] i
 #   14|             1: [Parameter] value
 #   14|           4: [BlockStmt] {...}
-#   16|       6: [Field] Field
-#   18|       7: [IndexerProperty] Prop
+#   16|       7: [Field] Field
+#   18|       8: [IndexerProperty] Prop
 #   18|         3: [Getter] get_Prop
 #   18|         4: [Setter] set_Prop
 #-----|           2: (Parameters)
 #   18|             0: [Parameter] value
-#   20|       8: [Event] Event
+#   20|       9: [Event] Event
 #   20|         3: [AddEventAccessor] add_Event
 #-----|           2: (Parameters)
 #   20|             0: [Parameter] value
 #   20|         3: [RemoveEventAccessor] remove_Event
 #-----|           2: (Parameters)
 #   20|             0: [Parameter] value
-#   24|     5: [Method] Method
+#   24|     6: [Method] Method
 #   24|       4: [BlockStmt] {...}
-#   26|     6: [Indexer] Item
+#   26|     7: [Indexer] Item
 #-----|       1: (Parameters)
 #   26|         0: [Parameter] i
 #   26|       3: [Getter] get_Item
@@ -54,13 +54,13 @@ Members.cs:
 #   26|           0: [Parameter] i
 #   26|           1: [Parameter] value
 #   26|         4: [BlockStmt] {...}
-#   28|     7: [Field] Field
-#   30|     8: [IndexerProperty] Prop
+#   28|     8: [Field] Field
+#   30|     9: [IndexerProperty] Prop
 #   30|       3: [Getter] get_Prop
 #   30|       4: [Setter] set_Prop
 #-----|         2: (Parameters)
 #   30|           0: [Parameter] value
-#   32|     9: [Event] Event
+#   32|     10: [Event] Event
 #   32|       3: [AddEventAccessor] add_Event
 #-----|         2: (Parameters)
 #   32|           0: [Parameter] value
@@ -68,15 +68,15 @@ Members.cs:
 #-----|         2: (Parameters)
 #   32|           0: [Parameter] value
 #   35|   3: [Class] Class2
-#   37|     4: [Class] NestedClass2
-#   39|       4: [Method] Method
+#   37|     5: [Class] NestedClass2
+#   39|       5: [Method] Method
 #-----|         1: (TypeParameters)
 #   39|           0: [TypeParameter] T
 #-----|         2: (Parameters)
 #   39|           0: [Parameter] t
 #   39|         4: [MethodCall] call to method ToString
 #   39|           -1: [ParameterAccess] access to parameter t
-#   40|       5: [Indexer] Item
+#   40|       6: [Indexer] Item
 #-----|         1: (Parameters)
 #   40|           0: [Parameter] i
 #   40|         3: [Getter] get_Item
@@ -89,22 +89,22 @@ Members.cs:
 #   40|             0: [Parameter] i
 #   40|             1: [Parameter] value
 #   40|           4: [BlockStmt] {...}
-#   41|       6: [Field] Field
-#   42|       7: [IndexerProperty] Prop
+#   41|       7: [Field] Field
+#   42|       8: [IndexerProperty] Prop
 #   42|         3: [Getter] get_Prop
 #   42|         4: [Setter] set_Prop
 #-----|           2: (Parameters)
 #   42|             0: [Parameter] value
-#   43|       8: [Event] Event
+#   43|       9: [Event] Event
 #   43|         3: [AddEventAccessor] add_Event
 #-----|           2: (Parameters)
 #   43|             0: [Parameter] value
 #   43|         3: [RemoveEventAccessor] remove_Event
 #-----|           2: (Parameters)
 #   43|             0: [Parameter] value
-#   46|     5: [Method] Method
+#   46|     6: [Method] Method
 #   46|       4: [BlockStmt] {...}
-#   47|     6: [Indexer] Item
+#   47|     7: [Indexer] Item
 #-----|       1: (Parameters)
 #   47|         0: [Parameter] i
 #   47|       3: [Getter] get_Item
@@ -117,13 +117,13 @@ Members.cs:
 #   47|           0: [Parameter] i
 #   47|           1: [Parameter] value
 #   47|         4: [BlockStmt] {...}
-#   48|     7: [Field] Field
-#   49|     8: [IndexerProperty] Prop
+#   48|     8: [Field] Field
+#   49|     9: [IndexerProperty] Prop
 #   49|       3: [Getter] get_Prop
 #   49|       4: [Setter] set_Prop
 #-----|         2: (Parameters)
 #   49|           0: [Parameter] value
-#   50|     9: [Event] Event
+#   50|     10: [Event] Event
 #   50|       3: [AddEventAccessor] add_Event
 #-----|         2: (Parameters)
 #   50|           0: [Parameter] value
@@ -131,8 +131,8 @@ Members.cs:
 #-----|         2: (Parameters)
 #   50|           0: [Parameter] value
 #   54|   4: [Interface] Interface
-#   56|     3: [Method] Method
-#   57|     4: [Indexer] Item
+#   56|     4: [Method] Method
+#   57|     5: [Indexer] Item
 #-----|       1: (Parameters)
 #   57|         0: [Parameter] i
 #   57|       3: [Getter] get_Item
@@ -142,12 +142,12 @@ Members.cs:
 #-----|         2: (Parameters)
 #   57|           0: [Parameter] i
 #   57|           1: [Parameter] value
-#   58|     5: [IndexerProperty] Prop
+#   58|     6: [IndexerProperty] Prop
 #   58|       3: [Getter] get_Prop
 #   58|       4: [Setter] set_Prop
 #-----|         2: (Parameters)
 #   58|           0: [Parameter] value
-#   59|     6: [Event] Event
+#   59|     7: [Event] Event
 #   59|       3: [AddEventAccessor] add_Event
 #-----|         2: (Parameters)
 #   59|           0: [Parameter] value
@@ -155,8 +155,8 @@ Members.cs:
 #-----|         2: (Parameters)
 #   59|           0: [Parameter] value
 #   62|   5: [Interface] Interface2
-#   64|     3: [Method] Method
-#   65|     4: [Indexer] Item
+#   64|     4: [Method] Method
+#   65|     5: [Indexer] Item
 #-----|       1: (Parameters)
 #   65|         0: [Parameter] i
 #   65|       3: [Getter] get_Item
@@ -166,12 +166,12 @@ Members.cs:
 #-----|         2: (Parameters)
 #   65|           0: [Parameter] i
 #   65|           1: [Parameter] value
-#   66|     5: [IndexerProperty] Prop
+#   66|     6: [IndexerProperty] Prop
 #   66|       3: [Getter] get_Prop
 #   66|       4: [Setter] set_Prop
 #-----|         2: (Parameters)
 #   66|           0: [Parameter] value
-#   67|     6: [Event] Event
+#   67|     7: [Event] Event
 #   67|       3: [AddEventAccessor] add_Event
 #-----|         2: (Parameters)
 #   67|           0: [Parameter] value

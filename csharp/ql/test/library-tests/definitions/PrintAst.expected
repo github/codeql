@@ -1,24 +1,24 @@
 definitions.cs:
 #    4| [NamespaceDeclaration] namespace ... { ... }
 #    6|   1: [Class] StaticClass
-#    8|     3: [ExtensionMethod] ExtensionMethod
+#    8|     4: [ExtensionMethod] ExtensionMethod
 #-----|       2: (Parameters)
 #    8|         0: [Parameter] c1
 #    8|         1: [Parameter] args
 #    9|       4: [BlockStmt] {...}
 #   13|   2: [Enum] Enumeration
-#   15|     4: [Field] e1
+#   15|     5: [Field] e1
 #   15|       1: [MemberConstantAccess] access to constant e1
-#   15|     5: [Field] e2
+#   15|     6: [Field] e2
 #   15|       1: [MemberConstantAccess] access to constant e2
-#   15|     6: [Field] e3
+#   15|     7: [Field] e3
 #   18|   3: [Class] C1
-#   20|     3: [InstanceConstructor] C1
+#   20|     4: [InstanceConstructor] C1
 #-----|       2: (Parameters)
 #   20|         0: [Parameter] args
 #   20|       4: [BlockStmt] {...}
-#   22|     4: [Field] field1
-#   24|     5: [Property] property1
+#   22|     5: [Field] field1
+#   24|     6: [Property] property1
 #   26|       3: [Getter] get_property1
 #   26|         4: [BlockStmt] {...}
 #   26|           0: [ReturnStmt] return ...;
@@ -31,7 +31,7 @@ definitions.cs:
 #   27|             0: [AssignExpr] ... = ...
 #   27|               0: [ParameterAccess] access to parameter value
 #   27|               1: [FieldAccess] access to field field1
-#   30|     6: [Method] f1
+#   30|     7: [Method] f1
 #-----|       2: (Parameters)
 #   30|         0: [Parameter] args
 #   31|       4: [BlockStmt] {...}
@@ -130,7 +130,7 @@ definitions.cs:
 #   67|             0: [ImplicitDelegateCreation] delegate creation of type Action<Int32>
 #   67|               0: [MethodAccess] access to method GenericFn
 #   67|             1: [LocalVariableAccess] access to local variable m1
-#   70|     7: [Method] VariableTypeUse
+#   70|     8: [Method] VariableTypeUse
 #-----|       2: (Parameters)
 #   70|         0: [Parameter] c1
 #   71|       4: [BlockStmt] {...}
@@ -138,14 +138,14 @@ definitions.cs:
 #   72|           0: [LocalVariableDeclAndInitExpr] C1 c2 = ...
 #   72|             0: [NullLiteral] null
 #   72|             1: [LocalVariableAccess] access to local variable c2
-#   75|     8: [Method] GenericFn
+#   75|     9: [Method] GenericFn
 #-----|       1: (TypeParameters)
 #   75|         0: [TypeParameter] T
 #-----|       2: (Parameters)
 #   75|         0: [Parameter] t
 #   75|       4: [BlockStmt] {...}
 #   78|   4: [Struct] S1
-#   80|     4: [Method] M
+#   80|     5: [Method] M
 #-----|       2: (Parameters)
 #   80|         0: [Parameter] ss
 #   81|       4: [BlockStmt] {...}
@@ -173,15 +173,15 @@ definitions.cs:
 #   93|         2: [ReturnStmt] return ...;
 #   93|           0: [ObjectCreation] object creation of type S1
 #   97|   5: [Class] A
-#   99|     4: [DelegateType] EventHandler
-#  101|     5: [Event] Click
+#   99|     5: [DelegateType] EventHandler
+#  101|     6: [Event] Click
 #  101|       3: [RemoveEventAccessor] remove_Click
 #-----|         2: (Parameters)
 #  101|           0: [Parameter] value
 #  101|       3: [AddEventAccessor] add_Click
 #-----|         2: (Parameters)
 #  101|           0: [Parameter] value
-#  103|     6: [Method] M
+#  103|     7: [Method] M
 #  104|       4: [BlockStmt] {...}
 #  105|         0: [ExprStmt] ...;
 #  105|           0: [AddEventExpr] ... += ...
@@ -201,36 +201,40 @@ definitions.cs:
 #  108|           0: [DelegateCall] delegate call
 #  108|             -1: [EventAccess,EventCall] access to event Click
 #  112|   6: [Interface] I1
-#  114|     3: [Method] M2
+#  114|     4: [Method] M2
 #-----|       1: (TypeParameters)
 #  114|         0: [TypeParameter] T
 #  117|   7: [Interface] I2<>
 #-----|     1: (TypeParameters)
 #  117|       0: [TypeParameter] T
 #  119|   8: [Interface] I3
-#-----|     100: (BaseTypes)
+#-----|     3: (BaseTypes)
 #  119|       2: I2<Object>
 #  121|   9: [Class] B<>
 #-----|     1: (TypeParameters)
 #  121|       0: [TypeParameter] T
-#  123|     4: [Method] M
+#-----|     3: (BaseTypes)
+#  121|       0: A
+#  121|       2: I1
+#  121|       3: I2<A>
+#  123|     5: [Method] M
 #  124|       4: [BlockStmt] {...}
 #  125|         0: [ExprStmt] ...;
 #  125|           0: [MethodCall] call to method M
 #  125|             -1: [BaseAccess] base access
-#  128|     5: [Method] M2
+#  128|     6: [Method] M2
 #-----|       1: (TypeParameters)
 #  128|         0: [TypeParameter] T
 #  128|       4: [BlockStmt] {...}
-#  130|     6: [Struct] S<>
+#  130|     7: [Struct] S<>
 #-----|       1: (TypeParameters)
 #  130|         0: [TypeParameter] T2
-#-----|       100: (BaseTypes)
+#-----|       3: (BaseTypes)
 #  130|         2: I3
-#  132|     7: [Method] Tuple
+#  132|     8: [Method] Tuple
 #  132|       4: [ThrowExpr] throw ...
 #  132|         0: [ObjectCreation] object creation of type Exception
-#  134|     8: [Indexer] Item
+#  134|     9: [Indexer] Item
 #-----|       1: (Parameters)
 #  134|         0: [Parameter] a
 #  134|       3: [Getter] get_Item
@@ -240,37 +244,35 @@ definitions.cs:
 #  134|           0: [ReturnStmt] return ...;
 #  134|             0: [DefaultValueExpr] default(...)
 #  134|               0: [TypeAccess] access to type B<A>
-#-----|     100: (BaseTypes)
-#  121|       0: A
-#  121|       2: I1
-#  121|       3: I2<A>
 #  137|   10: [Class] C
-#  139|     4: [Enum] E
-#  140|     5: [Method] Pointer
+#  139|     5: [Enum] E
+#  140|     6: [Method] Pointer
 #  140|       4: [ThrowExpr] throw ...
 #  140|         0: [ObjectCreation] object creation of type Exception
 #  140|           0: [MethodCall] call to method ToString
 #  140|             -1: [SizeofExpr] sizeof(..)
 #  140|               0: [TypeAccess] access to type E*
 #  143|   11: [Interface] I4
-#  145|     3: [Event] EH
+#  145|     4: [Event] EH
 #  145|       3: [RemoveEventAccessor] remove_EH
 #-----|         2: (Parameters)
 #  145|           0: [Parameter] value
 #  145|       3: [AddEventAccessor] add_EH
 #-----|         2: (Parameters)
 #  145|           0: [Parameter] value
-#  146|     4: [Method] M
-#  147|     5: [Property] P
+#  146|     5: [Method] M
+#  147|     6: [Property] P
 #  147|       3: [Getter] get_P
-#  148|     6: [Indexer] Item
+#  148|     7: [Indexer] Item
 #-----|       1: (Parameters)
 #  148|         0: [Parameter] eh
 #  148|       3: [Getter] get_Item
 #-----|         2: (Parameters)
 #  148|           0: [Parameter] eh
 #  151|   12: [Class] C4
-#  153|     4: [Event] EH
+#-----|     3: (BaseTypes)
+#  151|       2: I4
+#  153|     5: [Event] EH
 #  153|       3: [AddEventAccessor] add_EH
 #-----|         2: (Parameters)
 #  153|           0: [Parameter] value
@@ -279,14 +281,14 @@ definitions.cs:
 #-----|         2: (Parameters)
 #  153|           0: [Parameter] value
 #  153|         4: [BlockStmt] {...}
-#  154|     5: [Method] M
+#  154|     6: [Method] M
 #  154|       4: [ThrowExpr] throw ...
 #  154|         0: [ObjectCreation] object creation of type Exception
-#  155|     6: [Property] P
+#  155|     7: [Property] P
 #  155|       3: [Getter] get_P
 #  155|         4: [ThrowExpr] throw ...
 #  155|           0: [ObjectCreation] object creation of type Exception
-#  156|     7: [Indexer] Item
+#  156|     8: [Indexer] Item
 #-----|       1: (Parameters)
 #  156|         0: [Parameter] eh
 #  156|       3: [Getter] get_Item
@@ -297,24 +299,22 @@ definitions.cs:
 #  156|             0: [CastExpr] (...) ...
 #  156|               0: [ObjectCreation] object creation of type S1
 #  156|               1: [TypeAccess] access to type S1
-#  158|     8: [Class] Nested<>
+#  158|     9: [Class] Nested<>
 #-----|       1: (TypeParameters)
 #  158|         0: [TypeParameter] T
-#  160|       4: [Method] Create
+#  160|       5: [Method] Create
 #  160|         4: [BlockStmt] {...}
 #  160|           0: [ReturnStmt] return ...;
 #  160|             0: [ObjectCreation] object creation of type Nested<>
-#-----|     100: (BaseTypes)
-#  151|       2: I4
 #  164|   13: [Class] C5
-#  166|     4: [Field] f
+#  166|     5: [Field] f
 #  166|       1: [AssignExpr] ... = ...
 #  166|         0: [MethodCall] call to method Create
 #  166|           -1: [TypeAccess] access to type Nested<I4>
 #  166|             -1: [TypeAccess] access to type C4
 #  166|         1: [FieldAccess] access to field f
-#  167|     5: [Field] c1
-#  169|     6: [Method] M
+#  167|     6: [Field] c1
+#  169|     7: [Method] M
 #  170|       4: [BlockStmt] {...}
 #  171|         0: [LocalVariableDeclStmt] ... ...;
 #  171|           0: [LocalVariableDeclAndInitExpr] C1 c = ...
@@ -345,7 +345,7 @@ definitions.cs:
 #  175|               1: [TypeAccessPatternExpr] access to type Nested<I4>
 #  175|             1: [LocalVariableAccess] access to local variable temp
 #  179|   14: [Class] C6
-#  181|     4: [ExplicitConversionOperator] explicit conversion
+#  181|     5: [ExplicitConversionOperator] explicit conversion
 #-----|       2: (Parameters)
 #  181|         0: [Parameter] c
 #-----|           0: (Attributes)
@@ -353,29 +353,29 @@ definitions.cs:
 #  182|       4: [BlockStmt] {...}
 #  183|         0: [ReturnStmt] return ...;
 #  183|           0: [NullLiteral] null
-#  186|     5: [Method] M
+#  186|     6: [Method] M
 #  187|       4: [BlockStmt] {...}
 #  188|         0: [ReturnStmt] return ...;
 #  188|           0: [OperatorCall] call to operator explicit conversion
 #  188|             0: [ThisAccess] this access
-#  191|     6: [AddOperator] +
+#  191|     7: [AddOperator] +
 #-----|       2: (Parameters)
 #  191|         0: [Parameter] x
 #  191|         1: [Parameter] y
 #  191|       4: [ParameterAccess] access to parameter x
 #  194|   15: [Class] MyAttribute
-#-----|     100: (BaseTypes)
+#-----|     3: (BaseTypes)
 #  194|       0: Attribute
 #  196|   16: [Class] C7
-#  198|     4: [Method] M
+#  198|     5: [Method] M
 #  198|       4: [BlockStmt] {...}
-#  200|     5: [Method] M2
+#  200|     6: [Method] M2
 #  201|       4: [BlockStmt] {...}
 #  202|         0: [ExprStmt] ...;
 #  202|           0: [MethodCall] call to method M
 #  202|             -1: [TypeAccess] access to type C7
 #  206|   17: [Class] C8
-#  208|     4: [Method] F
+#  208|     5: [Method] F
 #  209|       4: [BlockStmt] {...}
 #  210|         0: [LocalVariableDeclStmt] ... ...;
 #  210|           0: [LocalVariableDeclAndInitExpr] C8 c8a = ...

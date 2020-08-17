@@ -1,16 +1,16 @@
 csharp6.cs:
 #   10| [Class] TestCSharp6
-#   12|   5: [Property] Value
+#   12|   6: [Property] Value
 #   15|     2: [AssignExpr] ... = ...
 #   15|       0: [IntLiteral] 20
 #   12|       1: [PropertyCall] access to property Value
 #   14|     3: [Getter] get_Value
-#   17|   6: [Method] Fn
+#   17|   7: [Method] Fn
 #-----|     2: (Parameters)
 #   17|       0: [Parameter] x
 #   17|     4: [MethodCall] call to method WriteLine
 #   17|       0: [ParameterAccess] access to parameter x
-#   19|   7: [Method] Main
+#   19|   8: [Method] Main
 #   20|     4: [BlockStmt] {...}
 #   21|       0: [TryStmt] try {...} ...
 #   22|         0: [BlockStmt] {...}
@@ -92,20 +92,20 @@ csharp6.cs:
 #   37|             1: [IntLiteral] 30
 #   40|         3: [GeneralCatchClause] catch {...}
 #   41|           1: [BlockStmt] {...}
-#   45|   8: [EQOperator] ==
+#   45|   9: [EQOperator] ==
 #-----|     2: (Parameters)
 #   45|       0: [Parameter] t1
 #   45|       1: [Parameter] t2
 #   45|     4: [BoolLiteral] true
-#   46|   9: [NEOperator] !=
+#   46|   10: [NEOperator] !=
 #-----|     2: (Parameters)
 #   46|       0: [Parameter] t1
 #   46|       1: [Parameter] t2
 #   46|     4: [BoolLiteral] false
-#   48|   10: [Property] ExprProperty
+#   48|   11: [Property] ExprProperty
 #   48|     3: [Getter] get_ExprProperty
 #   48|       4: [IntLiteral] 3
-#   50|   11: [Indexer] Item
+#   50|   12: [Indexer] Item
 #-----|     1: (Parameters)
 #   50|       0: [Parameter] i
 #   50|     3: [Getter] get_Item
@@ -113,26 +113,26 @@ csharp6.cs:
 #   50|         0: [Parameter] i
 #   50|       4: [ParameterAccess] access to parameter i
 #   53| [Class] IndexInitializers
-#   55|   4: [Class] Compound
-#   57|     4: [Field] DictionaryField
-#   58|     5: [IndexerProperty] DictionaryProperty
+#   55|   5: [Class] Compound
+#   57|     5: [Field] DictionaryField
+#   58|     6: [IndexerProperty] DictionaryProperty
 #   58|       3: [Getter] get_DictionaryProperty
 #   58|       4: [Setter] set_DictionaryProperty
 #-----|         2: (Parameters)
 #   58|           0: [Parameter] value
-#   59|     6: [Field] ArrayField
-#   60|     7: [Property] ArrayProperty
+#   59|     7: [Field] ArrayField
+#   60|     8: [Property] ArrayProperty
 #   60|       3: [Getter] get_ArrayProperty
 #   60|       4: [Setter] set_ArrayProperty
 #-----|         2: (Parameters)
 #   60|           0: [Parameter] value
-#   61|     8: [Field] ArrayField2
-#   62|     9: [Property] ArrayProperty2
+#   61|     9: [Field] ArrayField2
+#   62|     10: [Property] ArrayProperty2
 #   62|       3: [Getter] get_ArrayProperty2
 #   62|       4: [Setter] set_ArrayProperty2
 #-----|         2: (Parameters)
 #   62|           0: [Parameter] value
-#   65|   5: [Method] Test
+#   65|   6: [Method] Test
 #   66|     4: [BlockStmt] {...}
 #   68|       0: [LocalVariableDeclStmt] ... ...;
 #   68|         0: [LocalVariableDeclAndInitExpr] Dictionary<Int32,String> dict = ...

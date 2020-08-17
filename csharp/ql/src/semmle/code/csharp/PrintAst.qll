@@ -431,11 +431,11 @@ final class TypeNode extends ElementNode {
     childIndex = 2 and
     result.(ParametersNode).getParameterizable() = type
     or
-    childIndex = 100 and
+    childIndex = 3 and
     result.(BaseTypesNode).getValueOrRefType() = type
     or
     result.(ElementNode).getElement() =
-      rank[childIndex - 2](Member m, string file, int line, int column |
+      rank[childIndex - 3](Member m, string file, int line, int column |
         m = type.getAMember() and
         locationSortKeys(m, file, line, column)
       |

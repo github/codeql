@@ -1,6 +1,6 @@
 goto.cs:
 #    2| [Class] Goto
-#    4|   4: [Method] Main
+#    4|   5: [Method] Main
 #    5|     4: [BlockStmt] {...}
 #    6|       0: [BlockStmt] {...}
 #    7|         0: [LabelStmt] s1:

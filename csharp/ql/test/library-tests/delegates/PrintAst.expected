@@ -10,7 +10,7 @@ delegates.cs:
 #    9|       0: [Parameter] i
 #    9|       1: [Parameter] d
 #   11|   3: [Class] A
-#   14|     4: [Method] M1
+#   14|     5: [Method] M1
 #-----|       2: (Parameters)
 #   14|         0: [Parameter] a
 #   14|         1: [Parameter] b
@@ -23,11 +23,11 @@ delegates.cs:
 #   14|               1: [ParameterAccess] access to parameter b
 #   14|             1: [TypeAccess] access to type Int32
 #   18|   4: [Class] B
-#   21|     4: [DelegateType] D2
+#   21|     5: [DelegateType] D2
 #-----|       2: (Parameters)
 #   21|         0: [Parameter] c
 #   21|         1: [Parameter] d
-#   23|     5: [Method] M1
+#   23|     6: [Method] M1
 #-----|       2: (Parameters)
 #   23|         0: [Parameter] f
 #   23|         1: [Parameter] g
@@ -38,12 +38,12 @@ delegates.cs:
 #   23|             1: [CastExpr] (...) ...
 #   23|               0: [ParameterAccess] access to parameter g
 #   23|               1: [TypeAccess] access to type Int32
-#   25|     6: [Method] M2
+#   25|     7: [Method] M2
 #-----|       2: (Parameters)
 #   25|         0: [Parameter] k
 #   25|         1: [Parameter] l
 #   25|       4: [BlockStmt] {...}
-#   27|     7: [Method] M3
+#   27|     8: [Method] M3
 #-----|       2: (Parameters)
 #   27|         0: [Parameter] g
 #   27|       4: [BlockStmt] {...}
@@ -53,7 +53,7 @@ delegates.cs:
 #   27|               0: [ParameterAccess] access to parameter g
 #   27|             1: [UnaryPlusExpr] +...
 #   27|               0: [ParameterAccess] access to parameter g
-#   29|     8: [Method] M4
+#   29|     9: [Method] M4
 #-----|       2: (Parameters)
 #   29|         0: [Parameter] g
 #   29|       4: [BlockStmt] {...}
@@ -63,7 +63,7 @@ delegates.cs:
 #-----|     2: (Parameters)
 #   33|       0: [Parameter] value
 #   35|   6: [Class] X
-#   38|     4: [Method] F
+#   38|     5: [Method] F
 #-----|       2: (Parameters)
 #   38|         0: [Parameter] i
 #   38|       4: [BlockStmt] {...}
@@ -71,7 +71,7 @@ delegates.cs:
 #   38|           0: [LTExpr] ... < ...
 #   38|             0: [ParameterAccess] access to parameter i
 #   38|             1: [IntLiteral] 2
-#   40|     5: [Method] G
+#   40|     6: [Method] G
 #-----|       2: (Parameters)
 #   40|         0: [Parameter] s
 #   40|       4: [BlockStmt] {...}
@@ -81,20 +81,20 @@ delegates.cs:
 #-----|     2: (Parameters)
 #   44|       0: [Parameter] x
 #   46|   8: [Class] C
-#   49|     4: [Method] M1
+#   49|     5: [Method] M1
 #-----|       2: (Parameters)
 #   49|         0: [Parameter] i
 #   49|       4: [BlockStmt] {...}
-#   50|     5: [Method] M2
+#   50|     6: [Method] M2
 #-----|       2: (Parameters)
 #   50|         0: [Parameter] i
 #   50|       4: [BlockStmt] {...}
-#   51|     6: [Method] M3
+#   51|     7: [Method] M3
 #-----|       2: (Parameters)
 #   51|         0: [Parameter] i
 #   51|       4: [BlockStmt] {...}
 #   55|   9: [Class] Test
-#   58|     4: [Method] Main
+#   58|     5: [Method] Main
 #   59|       4: [BlockStmt] {...}
 #   60|         0: [LocalVariableDeclStmt] ... ...;
 #   60|           0: [LocalVariableDeclAndInitExpr] D cd1 = ...

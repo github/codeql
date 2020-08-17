@@ -1,6 +1,6 @@
 csharp73.cs:
 #    5| [Class] StackAllocs
-#    7|   4: [Method] Fn
+#    7|   5: [Method] Fn
 #    8|     4: [BlockStmt] {...}
 #    9|       0: [LocalVariableDeclStmt] ... ...;
 #    9|         0: [LocalVariableDeclAndInitExpr] Char* arr1 = ...
@@ -43,7 +43,7 @@ csharp73.cs:
 #   14|               2: [IntLiteral] 3
 #   14|           1: [LocalVariableAccess] access to local variable arr6
 #   18| [Class] PinnedReference
-#   20|   4: [Method] F
+#   20|   5: [Method] F
 #   21|     4: [BlockStmt] {...}
 #   22|       0: [LocalVariableDeclStmt] ... ...;
 #   22|         0: [LocalVariableDeclAndInitExpr] Span<Int32> t = ...
@@ -53,7 +53,7 @@ csharp73.cs:
 #   22|           1: [LocalVariableAccess] access to local variable t
 #   25|       1: [BlockStmt] {...}
 #   42| [Class] ExpressionVariables
-#   44|   3: [InstanceConstructor] ExpressionVariables
+#   44|   4: [InstanceConstructor] ExpressionVariables
 #-----|     2: (Parameters)
 #   44|       0: [Parameter] x
 #   45|     4: [BlockStmt] {...}
@@ -61,7 +61,7 @@ csharp73.cs:
 #   46|         0: [AssignExpr] ... = ...
 #   46|           0: [IntLiteral] 5
 #   46|           1: [ParameterAccess] access to parameter x
-#   49|   4: [InstanceConstructor] ExpressionVariables
+#   49|   5: [InstanceConstructor] ExpressionVariables
 #   49|     3: [ConstructorInitializer] call to constructor ExpressionVariables
 #   49|       0: [LocalVariableDeclExpr] Int32 x
 #   50|     4: [BlockStmt] {...}

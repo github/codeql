@@ -1,34 +1,34 @@
 initializers.cs:
 #    3| [Class] S1
-#    5|   4: [Field] P1
-#    6|   5: [Property] P2
+#    5|   5: [Field] P1
+#    6|   6: [Property] P2
 #    6|     3: [Getter] get_P2
 #    6|     4: [Setter] set_P2
 #-----|       2: (Parameters)
 #    6|         0: [Parameter] value
-#    7|   6: [Property] P3
+#    7|   7: [Property] P3
 #    7|     3: [Setter] set_P3
 #-----|       2: (Parameters)
 #    7|         0: [Parameter] value
 #    7|       4: [BlockStmt] {...}
 #   10| [Class] S2
-#   12|   4: [Method] Add
+#-----|   3: (BaseTypes)
+#   10|     2: IEnumerable
+#   12|   5: [Method] Add
 #-----|     2: (Parameters)
 #   12|       0: [Parameter] x
 #   12|     4: [BlockStmt] {...}
-#   13|   5: [Method] Add
+#   13|   6: [Method] Add
 #-----|     2: (Parameters)
 #   13|       0: [Parameter] x
 #   13|       1: [Parameter] y
 #   13|     4: [BlockStmt] {...}
-#   14|   6: [Method] GetEnumerator
+#   14|   7: [Method] GetEnumerator
 #   14|     4: [BlockStmt] {...}
 #   14|       0: [ReturnStmt] return ...;
 #   14|         0: [NullLiteral] null
-#-----|   100: (BaseTypes)
-#   10|     2: IEnumerable
 #   17| [Class] Test
-#   19|   4: [Method] Main
+#   19|   5: [Method] Main
 #-----|     2: (Parameters)
 #   19|       0: [Parameter] args
 #   20|     4: [BlockStmt] {...}

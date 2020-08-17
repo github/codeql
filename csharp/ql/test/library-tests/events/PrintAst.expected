@@ -5,14 +5,14 @@ events.cs:
 #    7|       0: [Parameter] sender
 #    7|       1: [Parameter] e
 #   10|   2: [Class] Button
-#   13|     4: [Event] Click
+#   13|     5: [Event] Click
 #   13|       3: [RemoveEventAccessor] remove_Click
 #-----|         2: (Parameters)
 #   13|           0: [Parameter] value
 #   13|       3: [AddEventAccessor] add_Click
 #-----|         2: (Parameters)
 #   13|           0: [Parameter] value
-#   15|     5: [Method] OnClick
+#   15|     6: [Method] OnClick
 #-----|       2: (Parameters)
 #   15|         0: [Parameter] e
 #   16|       4: [BlockStmt] {...}
@@ -25,16 +25,16 @@ events.cs:
 #   18|               -1: [EventAccess,EventCall] access to event Click
 #   18|               0: [ThisAccess] this access
 #   18|               1: [ParameterAccess] access to parameter e
-#   21|     6: [Method] Reset
+#   21|     7: [Method] Reset
 #   22|       4: [BlockStmt] {...}
 #   23|         0: [ExprStmt] ...;
 #   23|           0: [AssignExpr] ... = ...
 #   23|             0: [NullLiteral] null
 #   23|             1: [EventAccess,EventCall] access to event Click
 #   27|   3: [Class] LoginDialog
-#   30|     3: [Field] OkButton
-#   31|     4: [Field] CancelButton
-#   33|     5: [InstanceConstructor] LoginDialog
+#   30|     4: [Field] OkButton
+#   31|     5: [Field] CancelButton
+#   33|     6: [InstanceConstructor] LoginDialog
 #   34|       4: [BlockStmt] {...}
 #   35|         0: [ExprStmt] ...;
 #   35|           0: [AssignExpr] ... = ...
@@ -56,42 +56,42 @@ events.cs:
 #   38|               0: [MethodAccess] access to method CancelButtonClick
 #   38|             1: [EventAccess,EventCall] access to event Click
 #   38|               -1: [FieldAccess] access to field CancelButton
-#   41|     6: [Method] OkButtonClick
+#   41|     7: [Method] OkButtonClick
 #-----|       2: (Parameters)
 #   41|         0: [Parameter] sender
 #   41|         1: [Parameter] e
 #   42|       4: [BlockStmt] {...}
-#   45|     7: [Method] CancelButtonClick
+#   45|     8: [Method] CancelButtonClick
 #-----|       2: (Parameters)
 #   45|         0: [Parameter] sender
 #   45|         1: [Parameter] e
 #   46|       4: [BlockStmt] {...}
 #   51|   4: [Class] Control
-#   54|     5: [Field] mouseDownEventKey
+#   54|     6: [Field] mouseDownEventKey
 #   54|       1: [AssignExpr] ... = ...
 #   54|         0: [ObjectCreation] object creation of type Object
 #   54|         1: [FieldAccess] access to field mouseDownEventKey
-#   55|     6: [Field] mouseUpEventKey
+#   55|     7: [Field] mouseUpEventKey
 #   55|       1: [AssignExpr] ... = ...
 #   55|         0: [ObjectCreation] object creation of type Object
 #   55|         1: [FieldAccess] access to field mouseUpEventKey
-#   58|     7: [Method] GetEventHandler
+#   58|     8: [Method] GetEventHandler
 #-----|       2: (Parameters)
 #   58|         0: [Parameter] key
 #   58|       4: [BlockStmt] {...}
 #   58|         0: [ReturnStmt] return ...;
 #   58|           0: [NullLiteral] null
-#   61|     8: [Method] AddEventHandler
+#   61|     9: [Method] AddEventHandler
 #-----|       2: (Parameters)
 #   61|         0: [Parameter] key
 #   61|         1: [Parameter] handler
 #   61|       4: [BlockStmt] {...}
-#   64|     9: [Method] RemoveEventHandler
+#   64|     10: [Method] RemoveEventHandler
 #-----|       2: (Parameters)
 #   64|         0: [Parameter] key
 #   64|         1: [Parameter] handler
 #   64|       4: [BlockStmt] {...}
-#   67|     10: [Event] MouseDown
+#   67|     11: [Event] MouseDown
 #   69|       3: [AddEventAccessor] add_MouseDown
 #-----|         2: (Parameters)
 #   69|           0: [Parameter] value
@@ -108,7 +108,7 @@ events.cs:
 #   70|             0: [MethodCall] call to method RemoveEventHandler
 #   70|               0: [FieldAccess] access to field mouseDownEventKey
 #   70|               1: [ParameterAccess] access to parameter value
-#   74|     11: [Event] MouseUp
+#   74|     12: [Event] MouseUp
 #   76|       3: [AddEventAccessor] add_MouseUp
 #-----|         2: (Parameters)
 #   76|           0: [Parameter] value
@@ -125,7 +125,7 @@ events.cs:
 #   77|             0: [MethodCall] call to method RemoveEventHandler
 #   77|               0: [FieldAccess] access to field mouseUpEventKey
 #   77|               1: [ParameterAccess] access to parameter value
-#   81|     12: [Method] OnMouseUp
+#   81|     13: [Method] OnMouseUp
 #-----|       2: (Parameters)
 #   81|         0: [Parameter] args
 #   82|       4: [BlockStmt] {...}

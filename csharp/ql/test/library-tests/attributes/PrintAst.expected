@@ -28,15 +28,15 @@ attributes.cs:
 #   40|     1: [Attribute] [AttributeUsage(...)]
 #   40|       0: [MemberConstantAccess] access to constant All
 #   40|         -1: [TypeAccess] access to type AttributeTargets
-#   44|   4: [Method] foo
+#-----|   3: (BaseTypes)
+#   41|     0: Attribute
+#   44|   5: [Method] foo
 #-----|     0: (Attributes)
 #   43|       1: [Attribute] [Conditional(...)]
 #   43|         0: [StringLiteral] "DEBUG2"
 #   44|     4: [BlockStmt] {...}
-#-----|   100: (BaseTypes)
-#   41|     0: Attribute
 #   47| [Class] Bar
-#   49|   4: [Method] inc
+#   49|   5: [Method] inc
 #-----|     2: (Parameters)
 #   49|       0: [Parameter] x
 #-----|         0: (Attributes)
@@ -46,12 +46,12 @@ attributes.cs:
 #   49|         0: [AddExpr] ... + ...
 #   49|           0: [ParameterAccess] access to parameter x
 #   49|           1: [IntLiteral] 1
-#   52|   5: [Method] M1
+#   52|   6: [Method] M1
 #-----|     0: (Attributes)
 #   51|       1: [Attribute] [My(...)]
 #   51|         0: [BoolLiteral] false
 #   52|     4: [BlockStmt] {...}
-#   55|   6: [Method] M2
+#   55|   7: [Method] M2
 #-----|     0: (Attributes)
 #   54|       1: [Attribute] [My(...)]
 #   54|         0: [BoolLiteral] true
@@ -59,15 +59,15 @@ attributes.cs:
 #   54|         2: [IntLiteral] 0
 #   55|     4: [BlockStmt] {...}
 #   58| [Class] MyAttribute
-#   60|   3: [Field] x
-#   61|   4: [IndexerProperty] y
+#-----|   3: (BaseTypes)
+#   58|     0: Attribute
+#   60|   4: [Field] x
+#   61|   5: [IndexerProperty] y
 #   61|     3: [Getter] get_y
 #   61|     4: [Setter] set_y
 #-----|       2: (Parameters)
 #   61|         0: [Parameter] value
-#   62|   5: [InstanceConstructor] MyAttribute
+#   62|   6: [InstanceConstructor] MyAttribute
 #-----|     2: (Parameters)
 #   62|       0: [Parameter] b
 #   62|     4: [BlockStmt] {...}
-#-----|   100: (BaseTypes)
-#   58|     0: Attribute

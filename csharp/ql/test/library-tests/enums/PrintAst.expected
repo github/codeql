@@ -1,30 +1,30 @@
 enums.cs:
 #    5| [NamespaceDeclaration] namespace ... { ... }
 #    7|   1: [Enum] Color
-#   10|     4: [Field] Red
-#   10|     5: [Field] Green
-#   10|     6: [Field] Blue
+#   10|     5: [Field] Red
+#   10|     6: [Field] Green
+#   10|     7: [Field] Blue
 #   14|   2: [Enum] LongColor
-#   17|     4: [Field] Red
-#   18|     5: [Field] Green
-#   19|     6: [Field] Blue
+#   17|     5: [Field] Red
+#   18|     6: [Field] Green
+#   19|     7: [Field] Blue
 #   23|   3: [Enum] E
 #   25|   4: [Enum] ValueColor
-#   28|     4: [Field] OneRed
+#   28|     5: [Field] OneRed
 #   28|       1: [MemberConstantAccess] access to constant OneRed
-#   29|     5: [Field] TwoGreen
+#   29|     6: [Field] TwoGreen
 #   29|       1: [MemberConstantAccess] access to constant TwoGreen
-#   30|     6: [Field] FourBlue
+#   30|     7: [Field] FourBlue
 #   30|       1: [MemberConstantAccess] access to constant FourBlue
 #   34|   5: [Enum] SparseColor
-#   37|     4: [Field] Red
-#   38|     5: [Field] Green
+#   37|     5: [Field] Red
+#   38|     6: [Field] Green
 #   38|       1: [MemberConstantAccess] access to constant Green
-#   39|     6: [Field] Blue
-#   40|     7: [Field] AnotherBlue
+#   39|     7: [Field] Blue
+#   40|     8: [Field] AnotherBlue
 #   40|       1: [MemberConstantAccess] access to constant AnotherBlue
 #   44|   6: [Class] Test
-#   47|     4: [Method] Main
+#   47|     5: [Method] Main
 #   48|       4: [BlockStmt] {...}
 #   49|         0: [ExprStmt] ...;
 #   49|           0: [MethodCall] call to method WriteLine
@@ -44,7 +44,7 @@ enums.cs:
 #   51|             0: [MethodCall] call to method StringFromColor
 #   51|               0: [MemberConstantAccess] access to constant Blue
 #   51|                 -1: [TypeAccess] access to type SparseColor
-#   54|     5: [Method] StringFromColor
+#   54|     6: [Method] StringFromColor
 #-----|       2: (Parameters)
 #   54|         0: [Parameter] c
 #   55|       4: [BlockStmt] {...}

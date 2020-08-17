@@ -1,9 +1,9 @@
 indexers.cs:
 #    5| [NamespaceDeclaration] namespace ... { ... }
 #    8|   1: [Class] BitArray
-#   11|     3: [Field] bits
-#   12|     4: [Field] length
-#   14|     5: [InstanceConstructor] BitArray
+#   11|     4: [Field] bits
+#   12|     5: [Field] length
+#   14|     6: [InstanceConstructor] BitArray
 #-----|       2: (Parameters)
 #   14|         0: [Parameter] length
 #   15|       4: [BlockStmt] {...}
@@ -29,12 +29,12 @@ indexers.cs:
 #   19|             0: [ParameterAccess] access to parameter length
 #   19|             1: [FieldAccess] access to field length
 #   19|               -1: [ThisAccess] this access
-#   22|     6: [Property] Length
+#   22|     7: [Property] Length
 #   22|       3: [Getter] get_Length
 #   22|         4: [BlockStmt] {...}
 #   22|           0: [ReturnStmt] return ...;
 #   22|             0: [FieldAccess] access to field length
-#   24|     7: [Indexer] Item
+#   24|     8: [Indexer] Item
 #-----|       1: (Parameters)
 #   24|         0: [Parameter] index
 #   26|       3: [Getter] get_Item
@@ -106,7 +106,7 @@ indexers.cs:
 #   46|                       0: [ParameterAccess] access to parameter index
 #   46|                       1: [IntLiteral] 5
 #   53|   2: [Class] CountPrimes
-#   56|     4: [Method] Count
+#   56|     5: [Method] Count
 #-----|       2: (Parameters)
 #   56|         0: [Parameter] max
 #   57|       4: [BlockStmt] {...}
@@ -160,7 +160,7 @@ indexers.cs:
 #   66|                     0: [LocalVariableAccess] access to local variable count
 #   69|         3: [ReturnStmt] return ...;
 #   69|           0: [LocalVariableAccess] access to local variable count
-#   72|     5: [Method] Main
+#   72|     6: [Method] Main
 #-----|       2: (Parameters)
 #   72|         0: [Parameter] args
 #   73|       4: [BlockStmt] {...}
@@ -186,21 +186,21 @@ indexers.cs:
 #   76|             2: [CastExpr] (...) ...
 #   76|               0: [LocalVariableAccess] access to local variable max
 #   81|   3: [Class] Grid
-#   84|     4: [Field] NumRows
+#   84|     5: [Field] NumRows
 #   84|       1: [AssignExpr] ... = ...
 #   84|         0: [IntLiteral] 26
 #   84|         1: [MemberConstantAccess] access to constant NumRows
-#   85|     5: [Field] NumCols
+#   85|     6: [Field] NumCols
 #   85|       1: [AssignExpr] ... = ...
 #   85|         0: [IntLiteral] 10
 #   85|         1: [MemberConstantAccess] access to constant NumCols
-#   87|     6: [Field] cells
+#   87|     7: [Field] cells
 #   87|       1: [AssignExpr] ... = ...
 #   87|         0: [ArrayCreation] array creation of type Int32[,]
 #   87|           0: [MemberConstantAccess] access to constant NumRows
 #   87|           1: [MemberConstantAccess] access to constant NumCols
 #   87|         1: [FieldAccess] access to field cells
-#   89|     7: [Indexer] Item
+#   89|     8: [Indexer] Item
 #-----|       1: (Parameters)
 #   89|         0: [Parameter] c
 #   89|         1: [Parameter] col
@@ -300,7 +300,7 @@ indexers.cs:
 #  115|                     0: [CharLiteral] A
 #  115|                 1: [ParameterAccess] access to parameter col
 #  121|   4: [Class] DuplicateIndexerSignatures
-#  123|     4: [Indexer] Item
+#  123|     5: [Indexer] Item
 #-----|       1: (Parameters)
 #  123|         0: [Parameter] index
 #  125|       3: [Getter] get_Item
@@ -309,7 +309,7 @@ indexers.cs:
 #  125|         4: [BlockStmt] {...}
 #  125|           0: [ReturnStmt] return ...;
 #  125|             0: [BoolLiteral] false
-#  128|     5: [Indexer] Item
+#  128|     6: [Indexer] Item
 #-----|       1: (Parameters)
 #  128|         0: [Parameter] c
 #  128|         1: [Parameter] col

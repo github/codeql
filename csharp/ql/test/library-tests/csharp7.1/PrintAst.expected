@@ -1,6 +1,6 @@
 csharp71.cs:
 #    3| [Class] DefaultLiterals
-#    5|   4: [Method] f
+#    5|   5: [Method] f
 #    6|     4: [BlockStmt] {...}
 #    7|       0: [LocalVariableDeclStmt] ... ...;
 #    7|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
@@ -43,7 +43,7 @@ csharp71.cs:
 #   17|             0: [DefaultValueExpr] default
 #   17|           1: [LocalVariableAccess] access to local variable d
 #   21| [Class] IsConstants
-#   23|   4: [Method] f
+#   23|   5: [Method] f
 #   24|     4: [BlockStmt] {...}
 #   25|       0: [LocalVariableDeclStmt] ... ...;
 #   25|         0: [LocalVariableDeclExpr] Boolean b
