@@ -10,7 +10,7 @@ import go
  */
 class RedirectCheckBarrierGuard extends DataFlow::BarrierGuard, DataFlow::CallNode {
   RedirectCheckBarrierGuard() {
-    this.getCalleeName().regexpMatch("(?i)(is_?)?(local_?url|valid_?redir(ect)?)")
+    this.getCalleeName().regexpMatch("(?i)(is_?)?(local_?url|valid_?redir(ect)?)(ur[li])?")
   }
 
   override predicate checks(Expr e, boolean outcome) {
