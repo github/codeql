@@ -2183,14 +2183,15 @@ public class TypeScriptASTConverter {
   }
 
   private Node convertTupleType(JsonObject node, SourceLocation loc) throws ParseError {
-    List<JsonElement> elements = new ArrayList<>();
-    ((JsonArray)node.get("elements")).iterator().forEachRemaining(elements::add);
+    List<Identifier> names = new ArrayList<>();
 
-    List<Identifier> names = convertNodes(elements.stream()
-      .filter(n -> getKind(n).equals("NamedTupleMember"))
-      .map(n -> n.getAsJsonObject().get("name"))
-      .collect(Collectors.toList())
-    );
+    for (JsonElement element : node.get("elements").getAsJsonArray()) {
+      Identifier id = null;
+      if (getKind(element).equals("NamedTupleMember")) {
+        id = (Identifier)convertNode(element.getAsJsonObject().get("name").getAsJsonObject());
+      }
+      names.add(id);
+    }
 
     return new TupleTypeExpr(loc, convertChildrenAsTypes(node, "elements"), names);
   }

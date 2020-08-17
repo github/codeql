@@ -187,3 +187,8 @@ function shortAssignment() {
   let a4 = a2 &&= a3;
   let a5 = a3 ??= a4;
 }
+
+// only label on some tuple elements (is a type-error)
+function weirdId(x: [first: number, number]): [number, second: number] {
+  return x;
+}
