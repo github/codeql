@@ -239,33 +239,27 @@ private predicate defDependsOnDef(
   // Definitions with a defining value.
   exists(Expr expr | assignmentDef(def, v, expr) | exprDependsOnDef(expr, srcDef, srcVar))
   or
-  exists(AssignAddExpr assignAdd, RangeSsaDefinition nextDef |
+  exists(AssignAddExpr assignAdd |
     def = assignAdd and
-    assignAdd.getLValue() = nextDef.getAUse(v)
-  |
-    defDependsOnDef(nextDef, v, srcDef, srcVar) or
-    exprDependsOnDef(assignAdd.getRValue(), srcDef, srcVar)
+    def.getAVariable() = v and
+    exprDependsOnDef(assignAdd.getAnOperand(), srcDef, srcVar)
   )
   or
-  exists(AssignSubExpr assignSub, RangeSsaDefinition nextDef |
+  exists(AssignSubExpr assignSub |
     def = assignSub and
-    assignSub.getLValue() = nextDef.getAUse(v)
-  |
-    defDependsOnDef(nextDef, v, srcDef, srcVar) or
-    exprDependsOnDef(assignSub.getRValue(), srcDef, srcVar)
+    def.getAVariable() = v and
+    exprDependsOnDef(assignSub.getAnOperand(), srcDef, srcVar)
   )
   or
-  exists(UnsignedAssignMulExpr assignMul, RangeSsaDefinition nextDef |
+  exists(UnsignedAssignMulExpr assignMul |
     def = assignMul and
-    assignMul.getLValue() = nextDef.getAUse(v)
-  |
-    defDependsOnDef(nextDef, v, srcDef, srcVar) or
-    exprDependsOnDef(assignMul.getRValue(), srcDef, srcVar)
+    def.getAVariable() = v and
+    exprDependsOnDef(assignMul.getAnOperand(), srcDef, srcVar)
   )
   or
   exists(CrementOperation crem |
     def = crem and
-    crem.getOperand() = v.getAnAccess() and
+    def.getAVariable() = v and
     exprDependsOnDef(crem.getOperand(), srcDef, srcVar)
   )
   or
