@@ -857,10 +857,11 @@ class TupleTypeExpr extends @tupletypeexpr, TypeExpr {
   /**
    * Gets the name of the `n`th tuple member, starting at 0.
    * Only has a result if the tuple members are named.
-   *
-   * Type element names are at indices -1, -2, -3, ...
    */
-  Identifier getElementName(int n) { result = getChild(-(n + 1)) and n >= 0 }
+  Identifier getElementName(int n) {
+    // Type element names are at indices -1, -2, -3, ...
+    result = getChild(-(n + 1)) and n >= 0
+  }
 }
 
 /**
