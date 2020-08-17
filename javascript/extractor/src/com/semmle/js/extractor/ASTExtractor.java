@@ -1821,7 +1821,7 @@ public class ASTExtractor {
       Label key = super.visit(nd, c);
       if (nd.getElementNames() != null) {
         // Element names are index -1, -2, -3...
-        visitAll(nd.getElementNames(), key, IdContext.typeDecl, -1, -1);
+        visitAll(nd.getElementNames(), key, IdContext.typeLabel, -1, -1);
       }
       visitAll(nd.getElementTypes(), key, IdContext.typeBind, 0);
       return key;
