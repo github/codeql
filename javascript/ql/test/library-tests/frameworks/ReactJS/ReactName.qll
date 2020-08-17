@@ -14,6 +14,4 @@ query predicate test_JSXname(JSXElement element, JSXName jsxname, string name, s
   element.getNameExpr() = jsxname
 }
 
-query ThisExpr test_JSXName_this(JSXElement element) {
-  result.getParentExpr+() = element
-}
+query ThisExpr test_JSXName_this(JSXElement element) { result.getParentExpr+() = element }
