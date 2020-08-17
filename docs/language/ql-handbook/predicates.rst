@@ -161,7 +161,7 @@ Non-member predicates are defined outside a class, that is, they are not members
 
 For more information about the other kinds of predicates, see :ref:`characteristic predicates
 <characteristic-predicates>` and :ref:`member predicates <member-predicates>` in the 
-:ref:`Classes <classes>` topic.
+":ref:`Classes <classes>`" topic.
 
 Here is an example showing a predicate of each kind::
 
@@ -198,7 +198,7 @@ It must be possible to evaluate a predicate in a finite amount of time, so the s
 is not usually allowed to be infinite. In other words, a predicate can only contain a finite number of tuples.
 
 The QL compiler reports an error when it can prove that a predicate contains variables that
-aren't constrained to a finite number of values. See :ref:`binding` for more information.
+aren't constrained to a finite number of values. For more information, see ":ref:`binding`."
 
 Here are a few examples of infinite predicates::
 
