@@ -10,24 +10,44 @@ import (
 )
 
 func main() {
-	password := []byte("password")
+	public := []byte("hello")
 
-	// BAD, des is a weak crypto algorithm
-	des.NewTripleDESCipher(password)
+	password := []byte("123456")
+	buf := password // testing dataflow by passing into different variable
 
-	// BAD, md5 is a weak crypto algorithm
-	md5.Sum(password)
+	// BAD, des is a weak crypto algorithm and password is sensitive data
+	des.NewTripleDESCipher(buf)
 
-	// BAD, rc4 is a weak crypto algorithm
-	rc4.NewCipher(password)
+	// BAD, md5 is a weak crypto algorithm and password is sensitive data
+	md5.Sum(buf)
 
-	// BAD, sha1 is a weak crypto algorithm
-	sha1.Sum(password)
+	// BAD, rc4 is a weak crypto algorithm and password is sensitive data
+	rc4.NewCipher(buf)
 
-	// GOOD, aes is a strong crypto algorithm
-	aes.NewCipher(password)
+	// BAD, sha1 is a weak crypto algorithm and password is sensitive data
+	sha1.Sum(buf)
 
-	// GOOD, sha256 is a strong crypto algorithm
-	sha256.Sum256(password)
+	// GOOD, password is sensitive data but aes is a strong crypto algorithm
+	aes.NewCipher(buf)
 
+	// GOOD, password is sensitive data but sha256 is a strong crypto algorithm
+	sha256.Sum256(buf)
+
+	// GOOD, des is a weak crypto algorithm but public is not sensitive data
+	des.NewTripleDESCipher(public)
+
+	// GOOD, md5 is a weak crypto algorithm but public is not sensitive data
+	md5.Sum(public)
+
+	// GOOD, rc4 is a weak crypto algorithm but public is not sensitive data
+	rc4.NewCipher(public)
+
+	// GOOD, sha1 is a weak crypto algorithm but public is not sensitive data
+	sha1.Sum(public)
+
+	// GOOD, aes is a strong crypto algorithm and public is not sensitive data
+	aes.NewCipher(public)
+
+	// GOOD, sha256 is a strong crypto algorithm and public is not sensitive data
+	sha256.Sum256(public)
 }
