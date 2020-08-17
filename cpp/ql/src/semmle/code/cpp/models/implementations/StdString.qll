@@ -66,8 +66,11 @@ class StdStringAppend extends TaintFunction {
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // flow from parameter to string itself (qualifier) and return value
-    input.isParameterDeref(getAStringParameter()) and
+    // flow from string and parameter to string (qualifier) and return value
+    (
+      input.isQualifierObject() or
+      input.isParameterDeref(getAStringParameter())
+    ) and
     (
       output.isQualifierObject() or
       output.isReturnValueDeref()
@@ -140,6 +143,7 @@ class StdStringSwap extends TaintFunction {
   StdStringSwap() { this.hasQualifiedName("std", "basic_string", "swap") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // str1.swap(str2)
     input.isQualifierObject() and
     output.isParameterDeref(0)
     or

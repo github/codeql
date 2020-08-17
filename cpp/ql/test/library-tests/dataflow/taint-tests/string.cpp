@@ -216,7 +216,7 @@ void test_string_insert() {
 	sink(s3);
 
 	s4 = s2;
-	sink(s4.insert(0, s1)); // tainted [NOT DETECTED]
+	sink(s4.insert(0, s1)); // tainted
 	sink(s4); // tainted
 
 	s5 = s1;
@@ -239,7 +239,7 @@ void test_string_replace() {
 	sink(s3);
 
 	s4 = s2;
-	sink(s4.replace(1, 2, s1)); // tainted [NOT DETECTED]
+	sink(s4.replace(1, 2, s1)); // tainted
 	sink(s4); // tainted
 
 	s5 = s1;
