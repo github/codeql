@@ -82,9 +82,7 @@ class StdStringAppend extends TaintFunction {
  * The standard function `std::string.assign`.
  */
 class StdStringAssign extends TaintFunction {
-  StdStringAssign() {
-    this.hasQualifiedName("std", "basic_string", "assign")
-  }
+  StdStringAssign() { this.hasQualifiedName("std", "basic_string", "assign") }
 
   /**
    * Gets the index of a parameter to this function that is a string (or
@@ -110,9 +108,7 @@ class StdStringAssign extends TaintFunction {
  * The standard function `std::string.copy`.
  */
 class StdStringCopy extends TaintFunction {
-  StdStringCopy() {
-    this.hasQualifiedName("std", "basic_string", "copy")
-  }
+  StdStringCopy() { this.hasQualifiedName("std", "basic_string", "copy") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // copy(dest, num, pos)
@@ -125,9 +121,7 @@ class StdStringCopy extends TaintFunction {
  * The standard function `std::string.substr`.
  */
 class StdStringSubstr extends TaintFunction {
-  StdStringSubstr() {
-    this.hasQualifiedName("std", "basic_string", "substr")
-  }
+  StdStringSubstr() { this.hasQualifiedName("std", "basic_string", "substr") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // substr(pos, num)
