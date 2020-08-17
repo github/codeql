@@ -380,7 +380,7 @@ class ConstexprIfStmt extends ConditionalStmt, @stmt_constexpr_if {
   }
 }
 
-private class TLoop = @stmt_while or @stmt_end_test_while or @stmt_range_based_for or @stmt_for;
+private class TLoop = @stmt_while or @stmt_end_test_while or @range_based_for_stmt or @stmt_for;
 
 /**
  * A C/C++ loop, that is, either a 'while' loop, a 'for' loop, or a
@@ -663,6 +663,54 @@ class LabelStmt extends Stmt, @stmt_label {
 }
 
 /**
+ * A C/C++ 'co_return' statement.
+ *
+ * For example:
+ * ```
+ * co_return 1+2;
+ * ```
+ * or
+ * ```
+ * co_return;
+ * ```
+ */
+class CoReturnStmt extends Stmt, @stmt_co_return {
+  override string getAPrimaryQlClass() { result = "CoReturnStmt" }
+
+  /**
+   * Gets the expression of this 'co_return' statement.
+   *
+   * For example, for
+   * ```
+   * co_return 1+2;
+   * ```
+   * the result is `1+2`, and there is no result for
+   * ```
+   * co_return;
+   * ```
+   *
+   * TODO: Really?
+   */
+  Expr getExpr() { result = this.getChild(0) }
+
+  /**
+   * Holds if this 'co_return' statement has an expression.
+   *
+   * For example, this holds for
+   * ```
+   * co_return 1+2;
+   * ```
+   * but not for
+   * ```
+   * co_return;
+   * ```
+   */
+  predicate hasExpr() { exists(this.getExpr()) }
+
+  override string toString() { result = "co_return ..." }
+}
+
+/**
  * A C/C++ 'return' statement.
  *
  * For example:
@@ -771,7 +819,7 @@ class DoStmt extends Loop, @stmt_end_test_while {
  * ```
  * where `begin_expr` and `end_expr` depend on the type of `xs`.
  */
-class RangeBasedForStmt extends Loop, @stmt_range_based_for {
+class RangeBasedForStmt extends Loop, @range_based_for_stmt {
   override string getAPrimaryQlClass() { result = "RangeBasedForStmt" }
 
   /**
@@ -845,6 +893,16 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
 
   /** Gets the compiler-generated `__begin` variable after desugaring. */
   LocalVariable getAnIterationVariable() { result = getBeginVariable() }
+}
+
+/**
+ * A C/C++ 'for await' statement.
+ *
+ * This represents a range-based 'for await' statement.
+class RangeBasedForAwaitStmt extends Loop, @stmt_range_based_for_co_await {
+  override string getAPrimaryQlClass() { result = "RangeBasedForAwaitStmt" }
+
+  override string toString() { result = "for co_await(...:...) ..." }
 }
 
 /**
