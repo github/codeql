@@ -360,12 +360,11 @@ class SystemStringClass extends StringType {
     result.getReturnType() instanceof StringType
   }
 
-  /** Gets a `Join(string, ...)` method. */
+  /** Gets a `Join(...)` method. */
   Method getJoinMethod() {
     result.getDeclaringType() = this and
     result.hasName("Join") and
     result.getNumberOfParameters() > 1 and
-    result.getParameter(0).getType() instanceof StringType and
     result.getReturnType() instanceof StringType
   }
 

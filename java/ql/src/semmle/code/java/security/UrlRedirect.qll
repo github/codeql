@@ -1,12 +1,15 @@
-import java
-import semmle.code.java.frameworks.Servlets
-import semmle.code.java.dataflow.DataFlow
+/** Provides classes to reason about URL redirect attacks. */
 
-/**
- * A URL redirection sink.
- */
-class UrlRedirectSink extends DataFlow::ExprNode {
-  UrlRedirectSink() {
+import java
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.frameworks.Servlets
+
+/** A URL redirection sink */
+abstract class UrlRedirectSink extends DataFlow::Node { }
+
+/** A Servlet URL redirection sink. */
+private class ServletUrlRedirectSink extends UrlRedirectSink {
+  ServletUrlRedirectSink() {
     exists(MethodAccess ma |
       ma.getMethod() instanceof HttpServletResponseSendRedirectMethod and
       this.asExpr() = ma.getArgument(0)

@@ -310,6 +310,8 @@ private predicate qualifierToMethodStep(Expr tracked, MethodAccess sink) {
  * Methods that return tainted data when called on tainted data.
  */
 private predicate taintPreservingQualifierToMethod(Method m) {
+  m instanceof CloneMethod
+  or
   m.getDeclaringType() instanceof TypeString and
   (
     m.getName() = "concat" or
