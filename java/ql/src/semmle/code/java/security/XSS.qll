@@ -14,6 +14,20 @@ abstract class XssSink extends DataFlow::Node { }
 
 abstract class XssSanitizer extends DataFlow::Node { }
 
+/**
+ * A unit class for adding additional taint steps.
+ *
+ * Extend this class to add additional taint steps that should apply to the XSS
+ * taint configuration.
+ */
+abstract class XssAdditionalTaintStep extends TaintTracking2::Unit {
+  /**
+   * Holds if the step from `node1` to `node2` should be considered a taint
+   * step for all configurations.
+   */
+  abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
+}
+
 private class DefaultXssSink extends XssSink {
   DefaultXssSink() {
     exists(HttpServletResponseSendErrorMethod m, MethodAccess ma |
