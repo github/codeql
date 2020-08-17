@@ -32,27 +32,34 @@
 | movableclass.cpp:55:8:55:9 | s2 | movableclass.cpp:52:23:52:28 | call to source |
 | movableclass.cpp:64:8:64:9 | s2 | movableclass.cpp:23:55:23:60 | call to source |
 | movableclass.cpp:65:11:65:11 | call to operator= | movableclass.cpp:65:13:65:18 | call to source |
-| stl.cpp:101:7:101:7 | a | stl.cpp:97:12:97:17 | call to source |
-| stl.cpp:103:7:103:7 | c | stl.cpp:99:16:99:21 | call to source |
-| stl.cpp:105:9:105:13 | call to c_str | stl.cpp:99:16:99:21 | call to source |
-| stl.cpp:155:13:155:17 | call to c_str | stl.cpp:147:10:147:15 | call to source |
-| stl.cpp:159:13:159:17 | call to c_str | stl.cpp:147:10:147:15 | call to source |
-| stl.cpp:162:13:162:17 | call to c_str | stl.cpp:147:10:147:15 | call to source |
-| stl.cpp:172:7:172:8 | cs | stl.cpp:167:19:167:24 | call to source |
-| stl.cpp:173:7:173:8 | ss | stl.cpp:167:19:167:24 | call to source |
-| stl.cpp:186:7:186:8 | cs | stl.cpp:178:19:178:24 | call to source |
-| stl.cpp:187:7:187:8 | ss | stl.cpp:178:19:178:24 | call to source |
-| stl.cpp:209:8:209:9 | s1 | stl.cpp:204:18:204:23 | call to source |
-| stl.cpp:210:8:210:9 | s2 | stl.cpp:205:20:205:25 | call to source |
-| stl.cpp:211:8:211:9 | s3 | stl.cpp:207:8:207:13 | call to source |
-| stl.cpp:230:8:230:9 | s1 | stl.cpp:226:32:226:37 | call to source |
-| stl.cpp:231:8:231:9 | s2 | stl.cpp:228:20:228:25 | call to source |
-| stl.cpp:240:8:240:8 | c | stl.cpp:238:16:238:21 | call to source |
-| stl.cpp:248:8:248:8 | c | stl.cpp:238:16:238:21 | call to source |
-| stl.cpp:253:8:253:8 | c | stl.cpp:251:28:251:33 | call to source |
-| stl.cpp:295:8:295:8 | x | stl.cpp:288:43:288:49 | source1 |
-| stl.cpp:303:8:303:8 | x | stl.cpp:288:43:288:49 | source1 |
-| stl.cpp:308:8:308:8 | x | stl.cpp:288:43:288:49 | source1 |
+| string.cpp:28:7:28:7 | a | string.cpp:24:12:24:17 | call to source |
+| string.cpp:30:7:30:7 | c | string.cpp:26:16:26:21 | call to source |
+| string.cpp:32:9:32:13 | call to c_str | string.cpp:26:16:26:21 | call to source |
+| string.cpp:38:13:38:17 | call to c_str | string.cpp:14:10:14:15 | call to source |
+| string.cpp:42:13:42:17 | call to c_str | string.cpp:14:10:14:15 | call to source |
+| string.cpp:45:13:45:17 | call to c_str | string.cpp:14:10:14:15 | call to source |
+| string.cpp:55:7:55:8 | cs | string.cpp:50:19:50:24 | call to source |
+| string.cpp:56:7:56:8 | ss | string.cpp:50:19:50:24 | call to source |
+| string.cpp:69:7:69:8 | cs | string.cpp:61:19:61:24 | call to source |
+| string.cpp:70:7:70:8 | ss | string.cpp:61:19:61:24 | call to source |
+| string.cpp:92:8:92:9 | s1 | string.cpp:87:18:87:23 | call to source |
+| string.cpp:93:8:93:9 | s2 | string.cpp:88:20:88:25 | call to source |
+| string.cpp:94:8:94:9 | s3 | string.cpp:90:8:90:13 | call to source |
+| string.cpp:113:8:113:9 | s1 | string.cpp:109:32:109:37 | call to source |
+| string.cpp:114:8:114:9 | s2 | string.cpp:111:20:111:25 | call to source |
+| string.cpp:121:8:121:8 | c | string.cpp:119:16:119:21 | call to source |
+| string.cpp:129:8:129:8 | c | string.cpp:119:16:119:21 | call to source |
+| string.cpp:134:8:134:8 | c | string.cpp:132:28:132:33 | call to source |
+| string.cpp:144:11:144:11 | call to operator+ | string.cpp:141:18:141:23 | call to source |
+| string.cpp:145:11:145:11 | call to operator+ | string.cpp:141:18:141:23 | call to source |
+| string.cpp:146:11:146:11 | call to operator+ | string.cpp:141:18:141:23 | call to source |
+| string.cpp:149:11:149:11 | call to operator+ | string.cpp:149:13:149:18 | call to source |
+| string.cpp:158:8:158:9 | s5 | string.cpp:154:18:154:23 | call to source |
+| string.cpp:162:8:162:9 | s6 | string.cpp:154:18:154:23 | call to source |
+| string.cpp:167:8:167:9 | s7 | string.cpp:165:9:165:14 | call to source |
+| string.cpp:171:8:171:9 | s8 | string.cpp:154:18:154:23 | call to source |
+| string.cpp:176:8:176:9 | s9 | string.cpp:174:13:174:18 | call to source |
+| string.cpp:184:8:184:10 | s10 | string.cpp:181:12:181:26 | call to source |
 | structlikeclass.cpp:35:8:35:9 | s1 | structlikeclass.cpp:29:22:29:27 | call to source |
 | structlikeclass.cpp:36:8:36:9 | s2 | structlikeclass.cpp:30:24:30:29 | call to source |
 | structlikeclass.cpp:37:8:37:9 | s3 | structlikeclass.cpp:29:22:29:27 | call to source |
@@ -159,3 +166,6 @@
 | taint.cpp:470:7:470:7 | x | taint.cpp:462:6:462:11 | call to source |
 | taint.cpp:471:7:471:7 | y | taint.cpp:462:6:462:11 | call to source |
 | taint.cpp:485:7:485:10 | line | taint.cpp:480:26:480:32 | source1 |
+| vector.cpp:15:8:15:8 | x | vector.cpp:8:43:8:49 | source1 |
+| vector.cpp:23:8:23:8 | x | vector.cpp:8:43:8:49 | source1 |
+| vector.cpp:28:8:28:8 | x | vector.cpp:8:43:8:49 | source1 |

@@ -44,6 +44,7 @@
 
 import cpp
 private import RangeAnalysisUtils
+private import experimental.semmle.code.cpp.models.interfaces.SimpleRangeAnalysisExpr
 import RangeSSA
 import SimpleRangeAnalysisCached
 private import NanAnalysis
@@ -156,6 +157,10 @@ float safeFloor(float v) {
   result = v
 }
 
+private class UnsignedMulExpr extends MulExpr {
+  UnsignedMulExpr() { this.getType().(IntegralType).isUnsigned() }
+}
+
 /** Set of expressions which we know how to analyze. */
 private predicate analyzableExpr(Expr e) {
   // The type of the expression must be arithmetic. We reuse the logic in
@@ -177,6 +182,8 @@ private predicate analyzableExpr(Expr e) {
     e instanceof AddExpr
     or
     e instanceof SubExpr
+    or
+    e instanceof UnsignedMulExpr
     or
     e instanceof AssignExpr
     or
@@ -207,6 +214,9 @@ private predicate analyzableExpr(Expr e) {
     or
     // `>>` by a constant
     exists(e.(RShiftExpr).getRightOperand().getValue())
+    or
+    // A modeled expression for range analysis
+    e instanceof SimpleRangeAnalysisExpr
   )
 }
 
@@ -278,6 +288,10 @@ private predicate exprDependsOnDef(Expr e, RangeSsaDefinition srcDef, StackVaria
   or
   exists(SubExpr subExpr | e = subExpr | exprDependsOnDef(subExpr.getAnOperand(), srcDef, srcVar))
   or
+  exists(UnsignedMulExpr mulExpr | e = mulExpr |
+    exprDependsOnDef(mulExpr.getAnOperand(), srcDef, srcVar)
+  )
+  or
   exists(AssignExpr addExpr | e = addExpr | exprDependsOnDef(addExpr.getRValue(), srcDef, srcVar))
   or
   exists(AssignAddExpr addExpr | e = addExpr |
@@ -318,6 +332,16 @@ private predicate exprDependsOnDef(Expr e, RangeSsaDefinition srcDef, StackVaria
   )
   or
   e = srcDef.getAUse(srcVar)
+  or
+  // A modeled expression for range analysis
+  exists(SimpleRangeAnalysisExpr rae | rae = e |
+    rae.dependsOnDef(srcDef, srcVar)
+    or
+    exists(Expr child |
+      rae.dependsOnChild(child) and
+      exprDependsOnDef(child, srcDef, srcVar)
+    )
+  )
 }
 
 /**
@@ -381,9 +405,17 @@ private predicate assignmentDef(RangeSsaDefinition def, StackVariable v, Expr ex
   )
 }
 
-/** See comment above sourceDef. */
+/** See comment above assignmentDef. */
 private predicate analyzableDef(RangeSsaDefinition def, StackVariable v) {
-  assignmentDef(def, v, _) or defDependsOnDef(def, v, _, _)
+  assignmentDef(def, v, _)
+  or
+  analyzableExpr(def.(AssignOperation)) and
+  v = def.getAVariable()
+  or
+  analyzableExpr(def.(CrementOperation)) and
+  v = def.getAVariable()
+  or
+  phiDependsOnDef(def, v, _, _)
 }
 
 /**
@@ -436,13 +468,6 @@ private float addRoundingDownSmall(float x, float small) {
 }
 
 /**
- * Gets the truncated lower bounds of the fully converted expression.
- */
-private float getFullyConvertedLowerBounds(Expr expr) {
-  result = getTruncatedLowerBounds(expr.getFullyConverted())
-}
-
-/**
  * Gets the lower bounds of the expression.
  *
  * Most of the work of computing the lower bounds is done by
@@ -486,13 +511,6 @@ private float getTruncatedLowerBounds(Expr expr) {
     // expressions to just those with arithmetic types. There is no
     // need to return results for non-arithmetic expressions.
     result = exprMinVal(expr)
-}
-
-/**
- * Gets the truncated upper bounds of the fully converted expression.
- */
-private float getFullyConvertedUpperBounds(Expr expr) {
-  result = getTruncatedUpperBounds(expr.getFullyConverted())
 }
 
 /**
@@ -625,6 +643,13 @@ private float getLowerBoundsImpl(Expr expr) {
     result = addRoundingDown(xLow, -yHigh)
   )
   or
+  exists(UnsignedMulExpr mulExpr, float xLow, float yLow |
+    expr = mulExpr and
+    xLow = getFullyConvertedLowerBounds(mulExpr.getLeftOperand()) and
+    yLow = getFullyConvertedLowerBounds(mulExpr.getRightOperand()) and
+    result = xLow * yLow
+  )
+  or
   exists(AssignExpr assign |
     expr = assign and
     result = getFullyConvertedLowerBounds(assign.getRValue())
@@ -711,7 +736,9 @@ private float getLowerBoundsImpl(Expr expr) {
   or
   // Use SSA to get the lower bounds for a variable use.
   exists(RangeSsaDefinition def, StackVariable v | expr = def.getAUse(v) |
-    result = getDefLowerBounds(def, v)
+    result = getDefLowerBounds(def, v) and
+    // Not explicitly modeled by a SimpleRangeAnalysisExpr
+    not expr instanceof SimpleRangeAnalysisExpr
   )
   or
   // unsigned `&` (tighter bounds may exist)
@@ -726,6 +753,12 @@ private float getLowerBoundsImpl(Expr expr) {
     left = getFullyConvertedLowerBounds(rsExpr.getLeftOperand()) and
     right = rsExpr.getRightOperand().getFullyConverted().getValue().toInt() and
     result = safeFloor(left / 2.pow(right))
+  )
+  or
+  // A modeled expression for range analysis
+  exists(SimpleRangeAnalysisExpr rangeAnalysisExpr |
+    rangeAnalysisExpr = expr and
+    result = rangeAnalysisExpr.getLowerBounds()
   )
 }
 
@@ -792,6 +825,13 @@ private float getUpperBoundsImpl(Expr expr) {
     xHigh = getFullyConvertedUpperBounds(subExpr.getLeftOperand()) and
     yLow = getFullyConvertedLowerBounds(subExpr.getRightOperand()) and
     result = addRoundingUp(xHigh, -yLow)
+  )
+  or
+  exists(UnsignedMulExpr mulExpr, float xHigh, float yHigh |
+    expr = mulExpr and
+    xHigh = getFullyConvertedUpperBounds(mulExpr.getLeftOperand()) and
+    yHigh = getFullyConvertedUpperBounds(mulExpr.getRightOperand()) and
+    result = xHigh * yHigh
   )
   or
   exists(AssignExpr assign |
@@ -878,7 +918,9 @@ private float getUpperBoundsImpl(Expr expr) {
   or
   // Use SSA to get the upper bounds for a variable use.
   exists(RangeSsaDefinition def, StackVariable v | expr = def.getAUse(v) |
-    result = getDefUpperBounds(def, v)
+    result = getDefUpperBounds(def, v) and
+    // Not explicitly modeled by a SimpleRangeAnalysisExpr
+    not expr instanceof SimpleRangeAnalysisExpr
   )
   or
   // unsigned `&` (tighter bounds may exist)
@@ -895,6 +937,12 @@ private float getUpperBoundsImpl(Expr expr) {
     left = getFullyConvertedUpperBounds(rsExpr.getLeftOperand()) and
     right = rsExpr.getRightOperand().getFullyConverted().getValue().toInt() and
     result = safeFloor(left / 2.pow(right))
+  )
+  or
+  // A modeled expression for range analysis
+  exists(SimpleRangeAnalysisExpr rangeAnalysisExpr |
+    rangeAnalysisExpr = expr and
+    result = rangeAnalysisExpr.getUpperBounds()
   )
 }
 
@@ -1480,3 +1528,25 @@ private module SimpleRangeAnalysisCached {
     convertedExprMightOverflowPositively(expr)
   }
 }
+
+/**
+ * INTERNAL: do not use. This module contains utilities for use in the
+ * experimental `SimpleRangeAnalysisExpr` module.
+ */
+module SimpleRangeAnalysisInternal {
+  /**
+   * Gets the truncated lower bounds of the fully converted expression.
+   */
+  float getFullyConvertedLowerBounds(Expr expr) {
+    result = getTruncatedLowerBounds(expr.getFullyConverted())
+  }
+
+  /**
+   * Gets the truncated upper bounds of the fully converted expression.
+   */
+  float getFullyConvertedUpperBounds(Expr expr) {
+    result = getTruncatedUpperBounds(expr.getFullyConverted())
+  }
+}
+
+private import SimpleRangeAnalysisInternal

@@ -41,6 +41,9 @@
 | PointlessComparison.c:372:6:372:16 | ... >= ... | Comparison is always true because ... >> ... >= 1. |
 | PointlessComparison.c:373:6:373:16 | ... >= ... | Comparison is always false because ... >> ... <= 1. |
 | PointlessComparison.c:383:6:383:17 | ... >= ... | Comparison is always false because ... & ... <= 2. |
+| PointlessComparison.c:388:10:388:21 | ... > ... | Comparison is always false because ... * ... <= 408. |
+| PointlessComparison.c:391:12:391:20 | ... < ... | Comparison is always false because ... * ... >= 6. |
+| PointlessComparison.c:414:7:414:16 | ... == ... | Comparison is always false because ... * ... >= 18446744073709552000. |
 | PointlessComparison.cpp:36:6:36:33 | ... >= ... | Comparison is always false because ... >> ... <= 9223372036854776000. |
 | PointlessComparison.cpp:41:6:41:29 | ... >= ... | Comparison is always false because ... >> ... <= 140737488355327.5. |
 | PointlessComparison.cpp:42:6:42:29 | ... >= ... | Comparison is always false because ... >> ... <= 140737488355327.5. |

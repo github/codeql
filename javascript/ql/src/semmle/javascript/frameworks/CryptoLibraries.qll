@@ -1,5 +1,5 @@
 /**
- * Provides classes for modelling cryptographic libraries.
+ * Provides classes for modeling cryptographic libraries.
  */
 
 import javascript
