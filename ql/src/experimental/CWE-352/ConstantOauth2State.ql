@@ -50,6 +50,8 @@ class FlowToPrint extends DataFlow::Configuration {
 
   predicate isSink(DataFlow::Node sink, DataFlow::CallNode call) {
     exists(Fmt::Printer printer | call = printer.getACall() | sink = call.getArgument(_))
+    or
+    exists(LoggerCall logCall | call = logCall | sink = logCall.getAMessageComponent())
   }
 
   override predicate isSource(DataFlow::Node source) { isSource(source, _) }
