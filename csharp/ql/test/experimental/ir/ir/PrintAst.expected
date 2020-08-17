@@ -171,6 +171,8 @@ casts.cs:
 #   15|           1: [LocalVariableAccess] access to local variable bobjAS
 #    1| [Class] Casts_A
 #    5| [Class] Casts_B
+#-----|   100: (BaseTypes)
+#    5|     0: Casts_A
 collections.cs:
 #    3| [Class] Collections
 #    5|   4: [Class] MyClass
@@ -250,6 +252,8 @@ constructor_init.cs:
 #   33|             0: [IntLiteral] 1
 #   33|             1: [IntLiteral] 2
 #   33|           1: [LocalVariableAccess] access to local variable obj3
+#-----|   100: (BaseTypes)
+#   15|     0: BaseClass
 crement.cs:
 #    1| [Class] CrementOpsTest
 #    3|   4: [Method] Main
@@ -473,6 +477,8 @@ inheritance_polymorphism.cs:
 #   16|     4: [BlockStmt] {...}
 #   17|       0: [ReturnStmt] return ...;
 #   17|         0: [IntLiteral] 1
+#-----|   100: (BaseTypes)
+#   13|     0: B
 #   21| [Class] Program
 #   23|   4: [Method] Main
 #   24|     4: [BlockStmt] {...}
@@ -500,6 +506,8 @@ inheritance_polymorphism.cs:
 #   34|         0: [MethodCall] call to method function
 #   34|           -1: [LocalVariableAccess] access to local variable objC
 #    9| [Class] B
+#-----|   100: (BaseTypes)
+#    9|     0: A
 inoutref.cs:
 #    1| [Class] MyClass
 #    2|   4: [Field] fld
@@ -1093,6 +1101,8 @@ using.cs:
 #    8|       4: [BlockStmt] {...}
 #    9|     5: [Method] Dispose
 #    9|       4: [BlockStmt] {...}
+#-----|     100: (BaseTypes)
+#    5|       2: IDisposable
 #   12|   5: [Method] Main
 #   13|     4: [BlockStmt] {...}
 #   14|       0: [UsingBlockStmt] using (...) {...}

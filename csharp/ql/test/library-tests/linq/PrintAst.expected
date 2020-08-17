@@ -184,5 +184,11 @@ queries.cs:
 #   62|       4: [BlockStmt] {...}
 #   63|         0: [ThrowStmt] throw ...;
 #   63|           0: [ObjectCreation] object creation of type NotImplementedException
+#-----|     100: (BaseTypes)
+#   59|       2: IEnumerable
 #   67|   6: [Class] B
+#-----|     100: (BaseTypes)
+#   67|       0: A
 #   69|   7: [Class] C
+#-----|     100: (BaseTypes)
+#   69|       0: List<Int32>

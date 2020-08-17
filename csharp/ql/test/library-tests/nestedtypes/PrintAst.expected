@@ -24,6 +24,8 @@ nestedtypes.cs:
 #   35|           1: [ExprStmt] ...;
 #   35|             0: [MethodCall] call to method F
 #   35|               -1: [LocalVariableAccess] access to local variable d
+#-----|     100: (BaseTypes)
+#   26|       0: Base
 #   42|   3: [Class] Test
 #   45|     4: [Method] Main
 #   46|       4: [BlockStmt] {...}

@@ -31,6 +31,8 @@ AsyncStreams.cs:
 #   41|     3: [Property] Current
 #   41|       3: [Getter] get_Current
 #   42|     4: [Method] MoveNextAsync
+#-----|     100: (BaseTypes)
+#   39|       2: IAsyncDisposable
 #    8| [Class] AsyncStreams
 #   10|   4: [Method] Items
 #   10|     4: [BlockStmt] {...}
@@ -91,6 +93,8 @@ DefaultInterfaceMethods.cs:
 #   24|       4: [BlockStmt] {...}
 #   26|   6: [Method] Greet
 #   26|     4: [BlockStmt] {...}
+#-----|   100: (BaseTypes)
+#   20|     2: IPerson
 NullCoalescingAssignment.cs:
 #    3| [Class] NullCoalescingAssignment
 #    5|   4: [Method] NullCoalescing

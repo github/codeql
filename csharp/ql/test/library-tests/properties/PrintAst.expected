@@ -142,6 +142,8 @@ properties.cs:
 #   87|             0: [AssignExpr] ... = ...
 #   87|               0: [ParameterAccess] access to parameter value
 #   87|               1: [FieldAccess] access to field z
+#-----|     100: (BaseTypes)
+#   79|       0: A
 #   91|   7: [Class] Test
 #   93|     4: [Property] Init
 #   93|       3: [Setter] set_Init
@@ -188,3 +190,5 @@ properties.cs:
 #-----|         2: (Parameters)
 #  124|           0: [Parameter] value
 #  124|         4: [BlockStmt] {...}
+#-----|     100: (BaseTypes)
+#  110|       2: InterfaceWithProperties

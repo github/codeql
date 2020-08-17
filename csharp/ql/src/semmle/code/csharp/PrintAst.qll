@@ -89,12 +89,32 @@ private predicate locationSortKeys(Element ast, string file, int line, int colum
   column = 0
 }
 
+private predicate hasInterestingBaseTypes(ValueOrRefType type) {
+  exists(getAnInterestingBaseType(type))
+}
+
+private ValueOrRefType getAnInterestingBaseType(ValueOrRefType type) {
+  not type instanceof TupleType and
+  not type instanceof ArrayType and
+  not type instanceof NullableType and
+  result = type.getABaseType() and
+  isInterestingBaseType(result)
+}
+
+private predicate isInterestingBaseType(ValueOrRefType base) {
+  not base instanceof ObjectType and
+  not base.getQualifiedName() = "System.ValueType" and
+  not base.getQualifiedName() = "System.Delegate" and
+  not base.getQualifiedName() = "System.MulticastDelegate" and
+  not base.getQualifiedName() = "System.Enum"
+}
+
 /**
  * Printed AST nodes are mostly `Element`s of the underlying AST.
  * There are extra AST nodes generated for parameters of `Parameterizable`s,
- * attributes of `Attributable`s, and type parameters of `UnboundGeneric`
- * declarations. These extra nodes are used as containers to organize the
- * tree a bit better.
+ * attributes of `Attributable`s, type parameters of `UnboundGeneric` and
+ * base types of `ValueOrRefType` declarations. These extra nodes are used
+ * as containers to organize the tree a bit better.
  */
 private newtype TPrintAstNode =
   TElementNode(Element element) { shouldPrint(element, _) } or
@@ -112,6 +132,18 @@ private newtype TPrintAstNode =
     shouldPrint(unboundGeneric, _) and
     unboundGeneric.getNumberOfTypeParameters() > 0 and
     not isNotNeeded(unboundGeneric)
+  } or
+  TBaseTypesNode(ValueOrRefType type) {
+    shouldPrint(type, _) and
+    hasInterestingBaseTypes(type) and
+    not isNotNeeded(type)
+  } or
+  TBaseTypeNode(ValueOrRefType derived, ValueOrRefType base) {
+    shouldPrint(derived, _) and
+    hasInterestingBaseTypes(derived) and
+    not isNotNeeded(derived) and
+    derived.getABaseType() = base and
+    isInterestingBaseType(base)
   }
 
 /**
@@ -399,6 +431,9 @@ final class TypeNode extends ElementNode {
     childIndex = 2 and
     result.(ParametersNode).getParameterizable() = type
     or
+    childIndex = 100 and
+    result.(BaseTypesNode).getValueOrRefType() = type
+    or
     result.(ElementNode).getElement() =
       rank[childIndex - 2](Member m, string file, int line, int column |
         m = type.getAMember() and
@@ -502,6 +537,66 @@ final class TypeParametersNode extends PrintAstNode, TTypeParametersNode {
    * Gets the underlying `UnboundGeneric`
    */
   UnboundGeneric getUnboundGeneric() { result = unboundGeneric }
+}
+
+/**
+ * A node representing the base types of a `ValueOrRefType`.
+ */
+final class BaseTypesNode extends PrintAstNode, TBaseTypesNode {
+  ValueOrRefType valueOrRefType;
+
+  BaseTypesNode() { this = TBaseTypesNode(valueOrRefType) }
+
+  override string toString() { result = "(BaseTypes)" }
+
+  override Location getLocation() { none() }
+
+  override BaseTypeNode getChild(int childIndex) {
+    childIndex = 0 and
+    result.getBaseType() = valueOrRefType.getBaseClass() and
+    isInterestingBaseType(valueOrRefType.getBaseClass()) and
+    result.getDerivedType() = valueOrRefType
+    or
+    result.getBaseType() =
+      rank[childIndex - 1](ValueOrRefType base, string name |
+        base = valueOrRefType.getABaseInterface() and
+        name = base.toString()
+      |
+        base order by name
+      ) and
+    result.getDerivedType() = valueOrRefType
+  }
+
+  /**
+   * Gets the underlying `ValueOrRefType`
+   */
+  ValueOrRefType getValueOrRefType() { result = valueOrRefType }
+}
+
+/**
+ * A node representing a base type reference of a `ValueOrRefType` declaration.
+ */
+final class BaseTypeNode extends PrintAstNode, TBaseTypeNode {
+  ValueOrRefType derived;
+  ValueOrRefType base;
+
+  BaseTypeNode() { this = TBaseTypeNode(derived, base) }
+
+  override string toString() { result = base.toString() }
+
+  override Location getLocation() { result = derived.getLocation() }
+
+  override BaseTypeNode getChild(int childIndex) { none() }
+
+  /**
+   * Gets the underlying derived `ValueOrRefType`
+   */
+  ValueOrRefType getDerivedType() { result = derived }
+
+  /**
+   * Gets the underlying base `ValueOrRefType`
+   */
+  ValueOrRefType getBaseType() { result = base }
 }
 
 /** Holds if `node` belongs to the output tree, and its property `key` has the given `value`. */

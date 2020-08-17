@@ -25,6 +25,8 @@ initializers.cs:
 #   14|     4: [BlockStmt] {...}
 #   14|       0: [ReturnStmt] return ...;
 #   14|         0: [NullLiteral] null
+#-----|   100: (BaseTypes)
+#   10|     2: IEnumerable
 #   17| [Class] Test
 #   19|   4: [Method] Main
 #-----|     2: (Parameters)

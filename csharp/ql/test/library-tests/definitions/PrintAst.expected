@@ -208,6 +208,8 @@ definitions.cs:
 #-----|     1: (TypeParameters)
 #  117|       0: [TypeParameter] T
 #  119|   8: [Interface] I3
+#-----|     100: (BaseTypes)
+#  119|       2: I2<Object>
 #  121|   9: [Class] B<>
 #-----|     1: (TypeParameters)
 #  121|       0: [TypeParameter] T
@@ -223,6 +225,8 @@ definitions.cs:
 #  130|     6: [Struct] S<>
 #-----|       1: (TypeParameters)
 #  130|         0: [TypeParameter] T2
+#-----|       100: (BaseTypes)
+#  130|         2: I3
 #  132|     7: [Method] Tuple
 #  132|       4: [ThrowExpr] throw ...
 #  132|         0: [ObjectCreation] object creation of type Exception
@@ -236,6 +240,10 @@ definitions.cs:
 #  134|           0: [ReturnStmt] return ...;
 #  134|             0: [DefaultValueExpr] default(...)
 #  134|               0: [TypeAccess] access to type B<A>
+#-----|     100: (BaseTypes)
+#  121|       0: A
+#  121|       2: I1
+#  121|       3: I2<A>
 #  137|   10: [Class] C
 #  139|     4: [Enum] E
 #  140|     5: [Method] Pointer
@@ -296,6 +304,8 @@ definitions.cs:
 #  160|         4: [BlockStmt] {...}
 #  160|           0: [ReturnStmt] return ...;
 #  160|             0: [ObjectCreation] object creation of type Nested<>
+#-----|     100: (BaseTypes)
+#  151|       2: I4
 #  164|   13: [Class] C5
 #  166|     4: [Field] f
 #  166|       1: [AssignExpr] ... = ...
@@ -354,6 +364,8 @@ definitions.cs:
 #  191|         1: [Parameter] y
 #  191|       4: [ParameterAccess] access to parameter x
 #  194|   15: [Class] MyAttribute
+#-----|     100: (BaseTypes)
+#  194|       0: Attribute
 #  196|   16: [Class] C7
 #  198|     4: [Method] M
 #  198|       4: [BlockStmt] {...}

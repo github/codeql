@@ -33,6 +33,8 @@ attributes.cs:
 #   43|       1: [Attribute] [Conditional(...)]
 #   43|         0: [StringLiteral] "DEBUG2"
 #   44|     4: [BlockStmt] {...}
+#-----|   100: (BaseTypes)
+#   41|     0: Attribute
 #   47| [Class] Bar
 #   49|   4: [Method] inc
 #-----|     2: (Parameters)
@@ -67,3 +69,5 @@ attributes.cs:
 #-----|     2: (Parameters)
 #   62|       0: [Parameter] b
 #   62|     4: [BlockStmt] {...}
+#-----|   100: (BaseTypes)
+#   58|     0: Attribute

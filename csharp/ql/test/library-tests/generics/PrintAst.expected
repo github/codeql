@@ -534,6 +534,8 @@ generics.cs:
 #-----|       2: (Parameters)
 #  180|         0: [Parameter] t
 #  180|       4: [BlockStmt] {...}
+#-----|     100: (BaseTypes)
+#  178|       2: Interface<T>
 #  183|   13: [Class] InheritanceTest
 #  185|     4: [Field] member
 #  188|   14: [Interface] Interface2<,>

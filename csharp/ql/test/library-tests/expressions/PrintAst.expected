@@ -706,6 +706,8 @@ expressions.cs:
 #  138|               4: [CastExpr] (...) ...
 #  138|                 0: [IntLiteral] 4
 #  138|               5: [StringLiteral] ""
+#-----|       100: (BaseTypes)
+#  129|         0: Class
 #  143|     21: [Method] MainLocalVarDecl
 #  144|       4: [BlockStmt] {...}
 #  145|         0: [LocalVariableDeclStmt] ... ...;
