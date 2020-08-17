@@ -405,9 +405,17 @@ private predicate assignmentDef(RangeSsaDefinition def, StackVariable v, Expr ex
   )
 }
 
-/** See comment above sourceDef. */
+/** See comment above assignmentDef. */
 private predicate analyzableDef(RangeSsaDefinition def, StackVariable v) {
-  assignmentDef(def, v, _) or defDependsOnDef(def, v, _, _)
+  assignmentDef(def, v, _)
+  or
+  analyzableExpr(def.(AssignOperation)) and
+  v = def.getAVariable()
+  or
+  analyzableExpr(def.(CrementOperation)) and
+  v = def.getAVariable()
+  or
+  phiDependsOnDef(def, v, _, _)
 }
 
 /**
