@@ -3,8 +3,7 @@
  *
  * By default, this will print the AST for all elements in the database. To change this behavior,
  * extend `PrintAstConfiguration` and override `shouldPrint` to hold for only the elements
- * you wish to view the AST for, or override `selectedFile` to hold for only the files you
- * are interested in.
+ * you wish to view the AST for.
  */
 
 import csharp
@@ -22,13 +21,13 @@ class PrintAstConfiguration extends TPrintAstConfiguration {
 
   /**
    * Controls whether the `Element` should be considered for AST printing.
-   * By default it checks whether the `Element` `e` belongs to `File` `f`.
+   * By default it checks whether the `Element` `e` belongs to `Location` `l`.
    */
-  predicate shouldPrint(Element e, File f) { e.fromSource() and f = e.getFile() }
+  predicate shouldPrint(Element e, Location l) { e.fromSource() and l = e.getLocation() }
 }
 
-private predicate shouldPrint(Element e, File f) {
-  exists(PrintAstConfiguration config | config.shouldPrint(e, f))
+private predicate shouldPrint(Element e, Location l) {
+  exists(PrintAstConfiguration config | config.shouldPrint(e, l))
 }
 
 private predicate isImplicitExpression(ControlFlowElement element) {
@@ -70,7 +69,7 @@ private string getQlClass(Element el) {
 private Location getRepresentativeLocation(Element ast) {
   result =
     min(Location loc |
-      loc = ast.getLocation() and shouldPrint(ast, loc.getFile())
+      shouldPrint(ast, loc)
     |
       loc order by loc.getStartLine(), loc.getStartColumn(), loc.getEndLine(), loc.getEndColumn()
     )
@@ -98,19 +97,19 @@ private predicate locationSortKeys(Element ast, string file, int line, int colum
  * tree a bit better.
  */
 private newtype TPrintAstNode =
-  TElementNode(Element element) { shouldPrint(element, element.getFile()) } or
+  TElementNode(Element element) { shouldPrint(element, _) } or
   TParametersNode(Parameterizable parameterizable) {
-    shouldPrint(parameterizable, parameterizable.getFile()) and
+    shouldPrint(parameterizable, _) and
     parameterizable.getNumberOfParameters() > 0 and
     not isNotNeeded(parameterizable)
   } or
   TAttributesNode(Attributable attributable) {
-    shouldPrint(attributable, attributable.(Element).getFile()) and
+    shouldPrint(attributable, _) and
     exists(attributable.getAnAttribute()) and
     not isNotNeeded(attributable)
   } or
   TTypeParametersNode(UnboundGeneric unboundGeneric) {
-    shouldPrint(unboundGeneric, unboundGeneric.getFile()) and
+    shouldPrint(unboundGeneric, _) and
     unboundGeneric.getNumberOfTypeParameters() > 0 and
     not isNotNeeded(unboundGeneric)
   }
@@ -332,8 +331,7 @@ final class ParameterNode extends ElementNode {
     param.hasExtensionMethodModifier() and
     result =
       min(Location loc |
-        loc = param.getLocation() and
-        shouldPrint(param, loc.getFile()) and
+        shouldPrint(param, loc) and
         loc.getStartLine() = loc.getEndLine()
       |
         loc order by loc.getEndColumn() - loc.getStartColumn()

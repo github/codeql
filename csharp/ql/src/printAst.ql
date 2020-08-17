@@ -18,10 +18,11 @@ external string selectedSourceFile();
 
 class PrintAstConfigurationOverride extends PrintAstConfiguration {
   /**
-   * Holds if the file matches the selected file in the VS Code extension and
+   * Holds if the location matches the selected file in the VS Code extension and
    * the element is `fromSource`.
    */
-  override predicate shouldPrint(Element e, File f) {
-    super.shouldPrint(e, f) and f = getEncodedFile(selectedSourceFile())
+  override predicate shouldPrint(Element e, Location l) {
+    super.shouldPrint(e, l) and
+    l.getFile() = getEncodedFile(selectedSourceFile())
   }
 }

@@ -16,5 +16,5 @@ class PrintAstConfigurationOverride extends PrintAstConfiguration {
   /**
    * TWEAK THIS PREDICATE AS NEEDED.
    */
-  override predicate shouldPrint(Element e, File f) { super.shouldPrint(e, f) }
+  override predicate shouldPrint(Element e, Location l) { super.shouldPrint(e, l) }
 }
