@@ -65,17 +65,27 @@ predicate resultFlowsToPrinter(DataFlow::CallNode authCodeURLCall) {
   )
 }
 
+/** Gets dataflow nodes that read the value of os.Stdin */
+DataFlow::Node getAStdinNode() {
+  result = any(ValueEntity v | v.hasQualifiedName("os", "Stdin")).getARead()
+}
+
+/**
+ * Gets a call to a scanner function that reads from os.Stdin, or which creates a scanner
+ * instance wrapping os.Stdin.
+ */
+DataFlow::CallNode getAScannerCall() {
+  result instanceof Fmt::ScannerCall or
+  result.(Fmt::FScannerCall).getReader() = getAStdinNode() or
+  result.(Bufio::NewScannerCall).getReader() = getAStdinNode()
+}
+
 /**
  * Holds if the provided CallNode is within the same root as a call
  * to a scanner that reads from os.Stdin.
  */
-predicate rootContainsCallToStdinScanner(DataFlow::CallNode authCodeURLCall) {
-  exists(Fmt::ScannerCall scannerCall | scannerCall.getRoot() = authCodeURLCall.getRoot())
-  or
-  exists(Fmt::FScannerCall fScannerCall |
-    fScannerCall.getReader() = any(ValueEntity v | v.hasQualifiedName("os", "Stdin")).getARead() and
-    fScannerCall.getRoot() = authCodeURLCall.getRoot()
-  )
+predicate containsCallToStdinScanner(FuncDef funcDef) {
+  exists(DataFlow::CallNode call | call = getAScannerCall() | call.getRoot() = funcDef)
 }
 
 /**
@@ -86,7 +96,7 @@ predicate rootContainsCallToStdinScanner(DataFlow::CallNode authCodeURLCall) {
  */
 predicate seemsLikeDoneWithinATerminal(DataFlow::CallNode authCodeURLCall) {
   resultFlowsToPrinter(authCodeURLCall) and
-  rootContainsCallToStdinScanner(authCodeURLCall)
+  containsCallToStdinScanner(authCodeURLCall.getRoot())
 }
 
 from
