@@ -28,7 +28,7 @@ class ConstantStateFlowConf extends DataFlow::Configuration {
   ConstantStateFlowConf() { this = "ConstantStateFlowConf" }
 
   predicate isSource(DataFlow::Node source, Literal state) {
-    state.isConst() and source.asExpr() = state
+    state.isConst() and source.asExpr() = state and not DataFlow::isReturnedWithError(source)
   }
 
   predicate isSink(DataFlow::Node sink, DataFlow::CallNode call) {

@@ -51,20 +51,6 @@ int getASecureTlsVersion() {
 int getATlsVersion() { result = getASecureTlsVersion() or isInsecureTlsVersion(result, _, _) }
 
 /**
- * Holds if `node` refers to a value returned alongside a non-nil error value.
- *
- * For example, `0` in `func tryGetInt() (int, error) { return 0, errors.New("no good") }`
- */
-predicate isReturnedWithError(DataFlow::Node node) {
-  exists(ReturnStmt ret |
-    ret.getExpr(0) = node.asExpr() and
-    ret.getNumExpr() = 2 and
-    ret.getExpr(1).getType() instanceof ErrorType
-    // That last condition implies ret.getExpr(1) is non-nil, since nil doesn't implement `error`
-  )
-}
-
-/**
  * Flow of TLS versions into a `tls.Config` struct, to the `MinVersion` and `MaxVersion` fields.
  */
 class TlsVersionFlowConfig extends TaintTracking::Configuration {
@@ -76,7 +62,7 @@ class TlsVersionFlowConfig extends TaintTracking::Configuration {
   predicate isSource(DataFlow::Node source, int val) {
     val = source.getIntValue() and
     val = getATlsVersion() and
-    not isReturnedWithError(source)
+    not DataFlow::isReturnedWithError(source)
   }
 
   /**
