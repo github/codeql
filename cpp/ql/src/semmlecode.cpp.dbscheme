@@ -1857,6 +1857,8 @@ case @stmt.kind of
 |  38 = @stmt_range_based_for_co_await
 ;
 
+@range_based_for_stmt = @stmt_range_based_for | @stmt_range_based_for_co_await;
+
 type_vla(
     int type_id: @type ref,
     int decl: @stmt_vla_decl ref
