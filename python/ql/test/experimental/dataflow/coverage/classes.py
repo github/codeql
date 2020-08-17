@@ -8,7 +8,7 @@
 # All functions starting with "test_" should run and print `"OK"`.
 # This can be checked by running validTest.py.
 
-def OK() # Call not found:
+def OK():
   print("OK")
 
 # object.__new__(cls[, ...])
