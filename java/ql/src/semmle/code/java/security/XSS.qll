@@ -12,6 +12,8 @@ import semmle.code.java.dataflow.TaintTracking2
 
 abstract class XssSink extends DataFlow::Node { }
 
+abstract class XssSanitizer extends DataFlow::Node { }
+
 private class DefaultXssSink extends XssSink {
   DefaultXssSink() {
     exists(HttpServletResponseSendErrorMethod m, MethodAccess ma |
@@ -77,6 +79,12 @@ private class DefaultXssSink extends XssSink {
         returnType instanceof RawClass
       )
     )
+  }
+}
+
+private class DefaultXSSSanitizer extends XssSanitizer {
+  DefaultXSSSanitizer() {
+    this.getType() instanceof NumericType or this.getType() instanceof BooleanType
   }
 }
 
