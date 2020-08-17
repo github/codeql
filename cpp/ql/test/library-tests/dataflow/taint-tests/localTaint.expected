@@ -510,9 +510,17 @@
 | string.cpp:193:17:193:25 | call to basic_string | string.cpp:204:7:204:8 | s6 |  |
 | string.cpp:193:17:193:25 | call to basic_string | string.cpp:205:7:205:8 | s6 |  |
 | string.cpp:195:7:195:8 | ref arg s3 | string.cpp:196:7:196:8 | s3 |  |
+| string.cpp:195:17:195:18 | s1 | string.cpp:195:7:195:8 | ref arg s3 | TAINT |
+| string.cpp:195:17:195:18 | s1 | string.cpp:195:10:195:15 | call to assign | TAINT |
 | string.cpp:198:7:198:8 | ref arg s4 | string.cpp:199:7:199:8 | s4 |  |
+| string.cpp:198:17:198:18 | s2 | string.cpp:198:7:198:8 | ref arg s4 | TAINT |
+| string.cpp:198:17:198:18 | s2 | string.cpp:198:10:198:15 | call to assign | TAINT |
 | string.cpp:201:7:201:8 | ref arg s5 | string.cpp:202:7:202:8 | s5 |  |
+| string.cpp:201:21:201:21 | c | string.cpp:201:7:201:8 | ref arg s5 | TAINT |
+| string.cpp:201:21:201:21 | c | string.cpp:201:10:201:15 | call to assign | TAINT |
 | string.cpp:204:7:204:8 | ref arg s6 | string.cpp:205:7:205:8 | s6 |  |
+| string.cpp:204:17:204:18 | s1 | string.cpp:204:7:204:8 | ref arg s6 | TAINT |
+| string.cpp:204:17:204:18 | s1 | string.cpp:204:10:204:15 | call to assign | TAINT |
 | string.cpp:209:17:209:23 | hello | string.cpp:209:17:209:24 | call to basic_string | TAINT |
 | string.cpp:209:17:209:24 | call to basic_string | string.cpp:214:7:214:8 | s1 |  |
 | string.cpp:209:17:209:24 | call to basic_string | string.cpp:215:20:215:21 | s1 |  |
@@ -527,18 +535,26 @@
 | string.cpp:214:7:214:8 | s1 | string.cpp:215:7:215:8 | s3 |  |
 | string.cpp:214:7:214:8 | s1 | string.cpp:216:7:216:8 | s3 |  |
 | string.cpp:215:7:215:8 | ref arg s3 | string.cpp:216:7:216:8 | s3 |  |
+| string.cpp:215:20:215:21 | s1 | string.cpp:215:7:215:8 | ref arg s3 | TAINT |
+| string.cpp:215:20:215:21 | s1 | string.cpp:215:10:215:15 | call to insert | TAINT |
 | string.cpp:218:7:218:8 | s2 | string.cpp:218:2:218:8 | ... = ... |  |
 | string.cpp:218:7:218:8 | s2 | string.cpp:219:7:219:8 | s4 |  |
 | string.cpp:218:7:218:8 | s2 | string.cpp:220:7:220:8 | s4 |  |
 | string.cpp:219:7:219:8 | ref arg s4 | string.cpp:220:7:220:8 | s4 |  |
+| string.cpp:219:20:219:21 | s1 | string.cpp:219:7:219:8 | ref arg s4 | TAINT |
+| string.cpp:219:20:219:21 | s1 | string.cpp:219:10:219:15 | call to insert | TAINT |
 | string.cpp:222:7:222:8 | s1 | string.cpp:222:2:222:8 | ... = ... |  |
 | string.cpp:222:7:222:8 | s1 | string.cpp:223:7:223:8 | s5 |  |
 | string.cpp:222:7:222:8 | s1 | string.cpp:224:7:224:8 | s5 |  |
 | string.cpp:223:7:223:8 | ref arg s5 | string.cpp:224:7:224:8 | s5 |  |
+| string.cpp:223:20:223:21 | s2 | string.cpp:223:7:223:8 | ref arg s5 | TAINT |
+| string.cpp:223:20:223:21 | s2 | string.cpp:223:10:223:15 | call to insert | TAINT |
 | string.cpp:226:7:226:8 | s1 | string.cpp:226:2:226:8 | ... = ... |  |
 | string.cpp:226:7:226:8 | s1 | string.cpp:227:7:227:8 | s6 |  |
 | string.cpp:226:7:226:8 | s1 | string.cpp:228:7:228:8 | s6 |  |
 | string.cpp:227:7:227:8 | ref arg s6 | string.cpp:228:7:228:8 | s6 |  |
+| string.cpp:227:24:227:24 | c | string.cpp:227:7:227:8 | ref arg s6 | TAINT |
+| string.cpp:227:24:227:24 | c | string.cpp:227:10:227:15 | call to insert | TAINT |
 | string.cpp:232:17:232:23 | hello | string.cpp:232:17:232:24 | call to basic_string | TAINT |
 | string.cpp:232:17:232:24 | call to basic_string | string.cpp:237:7:237:8 | s1 |  |
 | string.cpp:232:17:232:24 | call to basic_string | string.cpp:238:24:238:25 | s1 |  |
@@ -553,18 +569,26 @@
 | string.cpp:237:7:237:8 | s1 | string.cpp:238:7:238:8 | s3 |  |
 | string.cpp:237:7:237:8 | s1 | string.cpp:239:7:239:8 | s3 |  |
 | string.cpp:238:7:238:8 | ref arg s3 | string.cpp:239:7:239:8 | s3 |  |
+| string.cpp:238:24:238:25 | s1 | string.cpp:238:7:238:8 | ref arg s3 | TAINT |
+| string.cpp:238:24:238:25 | s1 | string.cpp:238:10:238:16 | call to replace | TAINT |
 | string.cpp:241:7:241:8 | s2 | string.cpp:241:2:241:8 | ... = ... |  |
 | string.cpp:241:7:241:8 | s2 | string.cpp:242:7:242:8 | s4 |  |
 | string.cpp:241:7:241:8 | s2 | string.cpp:243:7:243:8 | s4 |  |
 | string.cpp:242:7:242:8 | ref arg s4 | string.cpp:243:7:243:8 | s4 |  |
+| string.cpp:242:24:242:25 | s1 | string.cpp:242:7:242:8 | ref arg s4 | TAINT |
+| string.cpp:242:24:242:25 | s1 | string.cpp:242:10:242:16 | call to replace | TAINT |
 | string.cpp:245:7:245:8 | s1 | string.cpp:245:2:245:8 | ... = ... |  |
 | string.cpp:245:7:245:8 | s1 | string.cpp:246:7:246:8 | s5 |  |
 | string.cpp:245:7:245:8 | s1 | string.cpp:247:7:247:8 | s5 |  |
 | string.cpp:246:7:246:8 | ref arg s5 | string.cpp:247:7:247:8 | s5 |  |
+| string.cpp:246:24:246:25 | s2 | string.cpp:246:7:246:8 | ref arg s5 | TAINT |
+| string.cpp:246:24:246:25 | s2 | string.cpp:246:10:246:16 | call to replace | TAINT |
 | string.cpp:249:7:249:8 | s1 | string.cpp:249:2:249:8 | ... = ... |  |
 | string.cpp:249:7:249:8 | s1 | string.cpp:250:7:250:8 | s6 |  |
 | string.cpp:249:7:249:8 | s1 | string.cpp:251:7:251:8 | s6 |  |
 | string.cpp:250:7:250:8 | ref arg s6 | string.cpp:251:7:251:8 | s6 |  |
+| string.cpp:250:28:250:28 | c | string.cpp:250:7:250:8 | ref arg s6 | TAINT |
+| string.cpp:250:28:250:28 | c | string.cpp:250:10:250:16 | call to replace | TAINT |
 | string.cpp:255:17:255:20 | {...} | string.cpp:260:10:260:11 | b1 |  |
 | string.cpp:255:17:255:20 | {...} | string.cpp:261:7:261:8 | b1 |  |
 | string.cpp:255:19:255:19 | 0 | string.cpp:255:17:255:20 | {...} | TAINT |
@@ -577,7 +601,9 @@
 | string.cpp:257:17:257:24 | call to basic_string | string.cpp:263:14:263:15 | s1 |  |
 | string.cpp:258:17:258:22 | call to source | string.cpp:258:17:258:25 | call to basic_string | TAINT |
 | string.cpp:258:17:258:25 | call to basic_string | string.cpp:263:2:263:3 | s2 |  |
+| string.cpp:260:2:260:3 | s1 | string.cpp:260:10:260:11 | ref arg b1 | TAINT |
 | string.cpp:260:10:260:11 | ref arg b1 | string.cpp:261:7:261:8 | b1 |  |
+| string.cpp:263:2:263:3 | s2 | string.cpp:263:10:263:11 | ref arg b2 | TAINT |
 | string.cpp:263:10:263:11 | ref arg b2 | string.cpp:264:7:264:8 | b2 |  |
 | string.cpp:268:17:268:23 | hello | string.cpp:268:17:268:24 | call to basic_string | TAINT |
 | string.cpp:268:17:268:24 | call to basic_string | string.cpp:273:7:273:8 | s1 |  |
@@ -596,9 +622,13 @@
 | string.cpp:271:17:271:25 | call to basic_string | string.cpp:279:2:279:3 | s4 |  |
 | string.cpp:271:17:271:25 | call to basic_string | string.cpp:284:7:284:8 | s4 |  |
 | string.cpp:278:2:278:3 | ref arg s1 | string.cpp:281:7:281:8 | s1 |  |
+| string.cpp:278:2:278:3 | s1 | string.cpp:278:10:278:11 | ref arg s2 | TAINT |
 | string.cpp:278:10:278:11 | ref arg s2 | string.cpp:282:7:282:8 | s2 |  |
+| string.cpp:278:10:278:11 | s2 | string.cpp:278:2:278:3 | ref arg s1 | TAINT |
 | string.cpp:279:2:279:3 | ref arg s4 | string.cpp:284:7:284:8 | s4 |  |
+| string.cpp:279:2:279:3 | s4 | string.cpp:279:10:279:11 | ref arg s3 | TAINT |
 | string.cpp:279:10:279:11 | ref arg s3 | string.cpp:283:7:283:8 | s3 |  |
+| string.cpp:279:10:279:11 | s3 | string.cpp:279:2:279:3 | ref arg s4 | TAINT |
 | string.cpp:288:17:288:22 | call to source | string.cpp:288:17:288:25 | call to basic_string | TAINT |
 | string.cpp:288:17:288:25 | call to basic_string | string.cpp:292:7:292:8 | s1 |  |
 | string.cpp:288:17:288:25 | call to basic_string | string.cpp:296:2:296:3 | s1 |  |
@@ -620,7 +650,9 @@
 | string.cpp:308:16:308:21 | call to source | string.cpp:308:16:308:24 | call to basic_string | TAINT |
 | string.cpp:308:16:308:24 | call to basic_string | string.cpp:311:7:311:7 | b |  |
 | string.cpp:308:16:308:24 | call to basic_string | string.cpp:313:7:313:7 | b |  |
+| string.cpp:310:7:310:7 | a | string.cpp:310:9:310:12 | call to data | TAINT |
 | string.cpp:310:7:310:7 | ref arg a | string.cpp:312:7:312:7 | a |  |
+| string.cpp:311:7:311:7 | b | string.cpp:311:9:311:12 | call to data | TAINT |
 | string.cpp:311:7:311:7 | ref arg b | string.cpp:313:7:313:7 | b |  |
 | string.cpp:318:16:318:20 | 123 | string.cpp:318:16:318:21 | call to basic_string | TAINT |
 | string.cpp:318:16:318:21 | call to basic_string | string.cpp:321:7:321:7 | a |  |
@@ -628,6 +660,8 @@
 | string.cpp:319:16:319:21 | call to source | string.cpp:319:16:319:24 | call to basic_string | TAINT |
 | string.cpp:319:16:319:24 | call to basic_string | string.cpp:322:7:322:7 | b |  |
 | string.cpp:319:16:319:24 | call to basic_string | string.cpp:322:19:322:19 | b |  |
+| string.cpp:321:7:321:7 | a | string.cpp:321:9:321:14 | call to substr | TAINT |
+| string.cpp:322:7:322:7 | b | string.cpp:322:9:322:14 | call to substr | TAINT |
 | stringstream.cpp:13:20:13:22 | call to basic_stringstream | stringstream.cpp:16:2:16:4 | ss1 |  |
 | stringstream.cpp:13:20:13:22 | call to basic_stringstream | stringstream.cpp:22:7:22:9 | ss1 |  |
 | stringstream.cpp:13:20:13:22 | call to basic_stringstream | stringstream.cpp:27:7:27:9 | ss1 |  |

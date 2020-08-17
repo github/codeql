@@ -195,11 +195,11 @@ void test_string_assign() {
 	sink(s3.assign(s1));
 	sink(s3);
 
-	sink(s4.assign(s2)); // tainted [NOT DETECTED]
-	sink(s4); // tainted [NOT DETECTED]
+	sink(s4.assign(s2)); // tainted
+	sink(s4); // tainted
 
-	sink(s5.assign(10, c)); // tainted [NOT DETECTED]
-	sink(s5); // tainted [NOT DETECTED]
+	sink(s5.assign(10, c)); // tainted
+	sink(s5); // tainted
 
 	sink(s6.assign(s1));
 	sink(s6); // [FALSE POSITIVE]
@@ -220,12 +220,12 @@ void test_string_insert() {
 	sink(s4); // tainted
 
 	s5 = s1;
-	sink(s5.insert(0, s2)); // tainted [NOT DETECTED]
-	sink(s5); // tainted [NOT DETECTED]
+	sink(s5.insert(0, s2)); // tainted
+	sink(s5); // tainted
 
 	s6 = s1;
-	sink(s6.insert(0, 10, c)); // tainted [NOT DETECTED]
-	sink(s6); // tainted [NOT DETECTED]
+	sink(s6.insert(0, 10, c)); // tainted
+	sink(s6); // tainted
 }
 
 void test_string_replace() {
@@ -243,12 +243,12 @@ void test_string_replace() {
 	sink(s4); // tainted
 
 	s5 = s1;
-	sink(s5.replace(1, 2, s2)); // tainted [NOT DETECTED]
-	sink(s5); // tainted [NOT DETECTED]
+	sink(s5.replace(1, 2, s2)); // tainted
+	sink(s5); // tainted
 
 	s6 = s1;
-	sink(s6.replace(1, 2, 10, c)); // tainted [NOT DETECTED]
-	sink(s6); // tainted [NOT DETECTED]
+	sink(s6.replace(1, 2, 10, c)); // tainted
+	sink(s6); // tainted
 }
 
 void test_string_copy() {
@@ -261,7 +261,7 @@ void test_string_copy() {
 	sink(b1);
 
 	s2.copy(b2, s1.length(), 0);
-	sink(b2); // tainted [NOT DETECTED]
+	sink(b2); // tainted
 }
 
 void test_string_swap() {
@@ -278,9 +278,9 @@ void test_string_swap() {
 	s1.swap(s2);
 	s4.swap(s3);
 
-	sink(s1); // tainted [NOT DETECTED]
+	sink(s1); // tainted
 	sink(s2); // [FALSE POSITIVE]
-	sink(s3); // tainted [NOT DETECTED]
+	sink(s3); // tainted
 	sink(s4); // [FALSE POSITIVE]
 }
 
@@ -308,7 +308,7 @@ void test_string_data()
 	std::string b(source());
 
 	sink(a.data());
-	sink(b.data()); // tainted // [FALSE POSITIVE]
+	sink(b.data()); // tainted
 	sink(a.length());
 	sink(b.length());
 }
@@ -319,5 +319,5 @@ void test_string_substr()
 	std::string b(source());
 
 	sink(a.substr(0, a.length()));
-	sink(b.substr(0, b.length())); // tainted // [FALSE POSITIVE]
+	sink(b.substr(0, b.length())); // tainted
 }
