@@ -1228,6 +1228,8 @@ funbind(
             | @builtinaddressof
             | @vec_fill
             | @un_log_op_expr
+            | @co_await
+            | @co_yield
             ;
 
 @bin_log_op_expr = @andlogicalexpr | @orlogicalexpr;
