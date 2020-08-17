@@ -68,7 +68,7 @@ class EssaNode extends Node, TEssaNode {
   override Location getLocation() { result = var.getDefinition().getLocation() }
 }
 
-class CfgNode extends Node, TCfgNode {
+abstract class CfgNode extends Node, TCfgNode {
   ControlFlowNode node;
 
   CfgNode() { this = TCfgNode(node) }
@@ -83,6 +83,10 @@ class CfgNode extends Node, TCfgNode {
   override Location getLocation() { result = node.getLocation() }
 }
 
+class CfgLiteralNode extends CfgNode {
+  CfgLiteralNode() { node.isLiteral() }
+}
+
 /**
  * An expression, viewed as a node in a data flow graph.
  *
@@ -90,7 +94,13 @@ class CfgNode extends Node, TCfgNode {
  * to multiple `ExprNode`s, just like it may correspond to multiple
  * `ControlFlow::Node`s.
  */
-class ExprNode extends Node { }
+class ExprNode extends CfgNode {
+  ExprNode() {
+    // node.isAttribute()
+    // or
+    node instanceof NameNode
+  }
+}
 
 /** Gets a node corresponding to expression `e`. */
 ExprNode exprNode(DataFlowExpr e) { none() }
