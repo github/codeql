@@ -31,7 +31,7 @@ private predicate shouldPrint(Element e, Location l) {
 }
 
 private predicate isImplicitExpression(ControlFlowElement element) {
-  element instanceof Expr and element.(Expr).isImplicit() and not exists(element.getAChild())
+  element.(Expr).isImplicit() and not exists(element.getAChild())
 }
 
 private predicate isFilteredCompilerGenerated(Declaration d) {
