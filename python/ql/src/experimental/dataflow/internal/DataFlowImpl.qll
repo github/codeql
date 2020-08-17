@@ -1713,15 +1713,15 @@ private predicate flowFwd0(
   )
   or
   // flow into a callable
-  flowFwdIn(_, node, cc, _, _, apf, ap, config) and
+  flowFwdIn(_, node, _, cc, _, apf, ap, config) and
   if flowCand(node, true, _, apf, config)
   then argAp = TAccessPathSome(ap)
   else argAp = TAccessPathNone()
   or
   // flow out of a callable
   exists(DataFlowCall call |
-    exists(CallContextNoCall innercc, DataFlowCallable c |
-      flowFwdOut(call, node, innercc, c, argAp, apf, ap, config) and
+    exists(DataFlowCallable c |
+      flowFwdOut(call, node, any(CallContextNoCall innercc), c, argAp, apf, ap, config) and
       if reducedViableImplInReturn(c, call) then cc = TReturn(c, call) else cc = TAnyCallContext()
     )
     or
@@ -1806,7 +1806,7 @@ private predicate flowFwdConsCand(
 
 pragma[nomagic]
 private predicate flowFwdIn(
-  DataFlowCall call, ParameterNode p, CallContext innercc, CallContext outercc,
+  DataFlowCall call, ParameterNode p, CallContext outercc, CallContext innercc,
   AccessPathOption argAp, AccessPathFront apf, AccessPath ap, Configuration config
 ) {
   exists(ArgumentNode arg, boolean allowsFieldFlow, DataFlowCallable c |
@@ -1857,7 +1857,7 @@ private predicate flowFwdIsEntered(
   DataFlowCall call, CallContext cc, AccessPathOption argAp, AccessPath ap, Configuration config
 ) {
   exists(ParameterNode p, AccessPathFront apf |
-    flowFwdIn(call, p, _, cc, argAp, apf, ap, config) and
+    flowFwdIn(call, p, cc, _, argAp, apf, ap, config) and
     flowCand(p, true, TAccessPathFrontSome(_), apf, config)
   )
 }
