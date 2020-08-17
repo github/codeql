@@ -124,5 +124,15 @@
 
 	var o = {};
 	Object.defineProperty(o, "prop", {writable:!0,configurable:!0,enumerable:!1}) // OK
-	o.prop = 42;
+    o.prop = 42;
+    
+    var o = {};
+    o.pure19 = 42; // OK
+    o.some_other_property = 42;
+    o.pure19 = 42;
+
+    var o = {};
+    o.pure20 = 42; // OK
+    some_other_obj.some_other_property = 42;
+    o.pure20 = 42;
 });
