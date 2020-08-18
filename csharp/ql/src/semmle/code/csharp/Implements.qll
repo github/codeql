@@ -259,7 +259,7 @@ private module Gvn {
   private newtype TGvnType =
     TLeafGvnType(LeafType t) or
     TMethodTypeParameterGvnType(int i) { i = any(MethodTypeParameter p).getIndex() } or
-    TConstructedGvnType(ConstructedGvnTypeList l) { l.isComplete() }
+    TConstructedGvnType(ConstructedGvnTypeList l) { l.isFullyConstructed() }
 
   private newtype TConstructedGvnTypeList =
     TConstructedGvnTypeNil(Unification::CompoundTypeKind k) or
@@ -334,7 +334,9 @@ private module Gvn {
       )
     }
 
-    predicate isComplete() { this.getKind().getNumberOfTypeParameters() - 1 = this.length() }
+    predicate isFullyConstructed() {
+      this.getKind().getNumberOfTypeParameters() - 1 = this.length()
+    }
 
     private GvnType getArg(int i) {
       exists(GvnType head, ConstructedGvnTypeList tail |
@@ -365,7 +367,7 @@ private module Gvn {
      */
     language[monotonicAggregates]
     private string toStringConstructedPart(int i, int j) {
-      this.isComplete() and
+      this.isFullyConstructed() and
       exists(Unification::GenericType t |
         t = this.getConstructedGenericDeclaringTypeAt(i) and
         exists(int offset, int children, string name |
@@ -398,7 +400,7 @@ private module Gvn {
 
     language[monotonicAggregates]
     string toString() {
-      this.isComplete() and
+      this.isFullyConstructed() and
       exists(Unification::CompoundTypeKind k | k = this.getKind() |
         result = k.toStringBuiltin(this.getArg(0).toString())
         or

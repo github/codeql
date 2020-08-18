@@ -213,7 +213,9 @@ module Gvn {
       )
     }
 
-    predicate isComplete() { this.getKind().getNumberOfTypeParameters() - 1 = this.length() }
+    predicate isFullyConstructed() {
+      this.getKind().getNumberOfTypeParameters() - 1 = this.length()
+    }
 
     GvnType getArg(int i) {
       exists(GvnType head, ConstructedGvnTypeList tail |
@@ -244,7 +246,7 @@ module Gvn {
      */
     language[monotonicAggregates]
     private string toStringConstructedPart(int i, int j) {
-      this.isComplete() and
+      this.isFullyConstructed() and
       exists(GenericType t |
         t = this.getConstructedGenericDeclaringTypeAt(i) and
         exists(int offset, int children, string name |
@@ -277,7 +279,7 @@ module Gvn {
 
     language[monotonicAggregates]
     string toString() {
-      this.isComplete() and
+      this.isFullyConstructed() and
       exists(CompoundTypeKind k | k = this.getKind() |
         result = k.toStringBuiltin(this.getArg(0).toString())
         or
@@ -509,7 +511,7 @@ module Gvn {
     newtype TGvnType =
       TLeafGvnType(LeafType t) or
       TTypeParameterGvnType() or
-      TConstructedGvnType(ConstructedGvnTypeList l) { l.isComplete() }
+      TConstructedGvnType(ConstructedGvnTypeList l) { l.isFullyConstructed() }
 
     cached
     newtype TConstructedGvnTypeList =
