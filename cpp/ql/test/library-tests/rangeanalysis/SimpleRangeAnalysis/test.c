@@ -514,15 +514,22 @@ int mul_by_constant(int i, int j) {
     out(i); // -30 .. 15
 
     i *= 7;
-    out(i); // -210 .. 105 [BUG: not supported]
+    out(i); // -210 .. 105
 
     i *= -11;
-    out(i); // -1155 .. 2310 [BUG: not supported]
+    out(i); // -1155 .. 2310
   }
   if (i == -1) {
     i = i * (int)0xffFFffFF; // fully converted literal is -1
     out(i); // 1 .. 1
   }
   i = i * -1;
-  return i; // -2^31 .. 2^31-1
+  out(   i); // -2^31 .. 2^31-1
+
+  signed char sc = 1;
+  i = (*&sc *= 2);
+  out(sc); // demonstrate that we couldn't analyze the LHS of the `*=` above...
+  out(i); // -128 .. 127 // ... but we can still bound its result by its type.
+
+  return 0;
 }
