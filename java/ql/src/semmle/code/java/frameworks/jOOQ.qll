@@ -10,9 +10,7 @@ import java
  * https://www.jooq.org/doc/current/manual/sql-building/plain-sql/
  */
 private class PlainSQLType extends Annotation {
-  PlainSQLType() {
-    this.getType().hasQualifiedName("org.jooq", "PlainSQL")
-  }
+  PlainSQLType() { this.getType().hasQualifiedName("org.jooq", "PlainSQL") }
 }
 
 /**
