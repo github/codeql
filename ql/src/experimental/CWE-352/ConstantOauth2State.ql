@@ -65,9 +65,24 @@ class PrivateUrlFlowsToAuthCodeUrlCall extends DataFlow::Configuration {
   /**
    * Propagates a URL written to a RedirectURL field to the whole Config object.
    */
-  override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+  predicate isUrlTaintingConfigStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(Write w, Field f | f.hasQualifiedName("golang.org/x/oauth2", "Config", "RedirectURL") |
       w.writesField(succ.(DataFlow::PostUpdateNode).getPreUpdateNode(), f, pred)
+    )
+  }
+
+  override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    // Propagate from a RedirectURL field to a whole Config
+    isUrlTaintingConfigStep(pred, succ)
+    or
+    // Propagate across deref and address-taking steps
+    TaintTracking::referenceStep(pred, succ)
+    or
+    // Propagate across Sprintf and similar calls
+    exists(DataFlow::CallNode c |
+      c = any(Fmt::Sprinter s).getACall() and
+      pred = c.getAnArgument() and
+      succ = c.getResult()
     )
   }
 
