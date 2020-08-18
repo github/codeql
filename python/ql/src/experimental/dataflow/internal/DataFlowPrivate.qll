@@ -1,6 +1,6 @@
 private import python
 private import DataFlowPublic
-import semmle.python.Magic
+import semmle.python.SpecialMethods
 
 //--------
 // Data flow graph
@@ -160,7 +160,7 @@ class DataFlowClassValue extends DataFlowCallable, TClassValue {
 
 newtype TDataFlowCall =
   TCallNode(CallNode call) or
-  TMagicCall(MagicMethod::Actual magic)
+  TSpecialCall(SpecialMethodCallNode special)
 
 abstract class DataFlowCall extends TDataFlowCall {
   /** Gets a textual representation of this element. */
@@ -179,7 +179,6 @@ abstract class DataFlowCall extends TDataFlowCall {
   abstract DataFlowCallable getEnclosingCallable();
 }
 
-
 /** Represents a call to a callable. */
 class CallNodeCall extends DataFlowCall, TCallNode {
   CallNode call;
@@ -192,9 +191,7 @@ class CallNodeCall extends DataFlowCall, TCallNode {
 
   override string toString() { result = call.toString() }
 
-  override ControlFlowNode getArg(int n) {
-    result = call.getArg(n)
-  }
+  override ControlFlowNode getArg(int n) { result = call.getArg(n) }
 
   override ControlFlowNode getNode() { result = call }
 
@@ -203,22 +200,24 @@ class CallNodeCall extends DataFlowCall, TCallNode {
   override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getNode().getScope() }
 }
 
-class MagicCall extends DataFlowCall, TMagicCall {
-  MagicMethod::Actual magic;
+class SpecialCall extends DataFlowCall, TSpecialCall {
+  SpecialMethodCallNode special;
 
-  MagicCall() { this = TMagicCall(magic) }
+  SpecialCall() { this = TSpecialCall(special) }
 
-  override string toString() { result = magic.toString() }
+  override string toString() { result = special.toString() }
 
-  override ControlFlowNode getArg(int n) {
-    result = magic.(MagicMethod::Potential).getArg(n)
+  override ControlFlowNode getArg(int n) { result = special.(SpecialMethod::Potential).getArg(n) }
+
+  override ControlFlowNode getNode() { result = special }
+
+  override DataFlowCallable getCallable() {
+    result = TCallableValue(special.getResolvedSpecialMethod())
   }
 
-  override ControlFlowNode getNode() { result = magic }
-
-  override DataFlowCallable getCallable() { result = TCallableValue(magic.getResolvedMagicMethod()) }
-
-  override DataFlowCallable getEnclosingCallable() { result.getScope() = magic.getNode().getScope() }
+  override DataFlowCallable getEnclosingCallable() {
+    result.getScope() = special.getNode().getScope()
+  }
 }
 
 /** A data flow node that represents a call argument. */
