@@ -22,8 +22,10 @@ module MagicMethod {
     /** Gets the controlflow node that would be passed as the specified argument. */
     abstract ControlFlowNode getArg(int n);
 
-    /** Gets the control flow node corresponding to the instance
-     * that would define the magic method. */
+    /**
+     * Gets the control flow node corresponding to the instance
+     * that would define the magic method.
+     */
     ControlFlowNode getSelf() { result = this.getArg(0) }
   }
 
@@ -47,15 +49,63 @@ module MagicMethod {
 class MagicBinOp extends MagicMethod::Potential, BinaryExprNode {
   Operator operator;
 
-  MagicBinOp() { this.getOp() = operator}
+  MagicBinOp() { this.getOp() = operator }
 
-  override string getMagicMethodName() {
-    result = operator.getSpecialMethodName()
-  }
+  override string getMagicMethodName() { result = operator.getSpecialMethodName() }
 
   override ControlFlowNode getArg(int n) {
     n = 0 and result = this.getLeft()
     or
     n = 1 and result = this.getRight()
   }
+}
+
+/** A subscript expression node that might correspond to a magic method call. */
+abstract class MagicSubscript extends MagicMethod::Potential, SubscriptNode {
+  override ControlFlowNode getArg(int n) {
+    n = 0 and result = this.getObject()
+    or
+    n = 1 and result = this.getIndex()
+  }
+}
+
+/** A subscript expression node that might correspond to a call to __getitem__. */
+class MagicGetItem extends MagicSubscript {
+  MagicGetItem() { this.isLoad() }
+
+  override string getMagicMethodName() { result = "__getitem__" }
+}
+
+/** A subscript expression node that might correspond to a call to __setitem__. */
+class MagicSetItem extends MagicSubscript {
+  MagicSetItem() { this.isStore() }
+
+  override string getMagicMethodName() { result = "__setitem__" }
+
+  override ControlFlowNode getArg(int n) {
+    n = 0 and result = this.getObject()
+    or
+    n = 1 and result = this.getIndex()
+    or
+    n = 2 and result = this.getValueNode()
+  }
+
+  private ControlFlowNode getValueNode() {
+    exists(AssignStmt a |
+      a.getATarget() = this.getNode() and
+      result.getNode() = a.getValue()
+    )
+    or
+    exists(AugAssign a |
+      a.getTarget() = this.getNode() and
+      result.getNode() = a.getValue()
+    )
+  }
+}
+
+/** A subscript expression node that might correspond to a call to __delitem__. */
+class MagicDelItem extends MagicSubscript {
+  MagicDelItem() { this.isDelete() }
+
+  override string getMagicMethodName() { result = "__delitem__" }
 }

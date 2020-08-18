@@ -3,6 +3,13 @@
 | classes.py:178:7:178:28 | ControlFlowNode for frozenset() | classes.py:178:7:178:28 | ControlFlowNode for frozenset() |
 | classes.py:182:7:182:26 | ControlFlowNode for dict() | classes.py:182:7:182:26 | ControlFlowNode for dict() |
 | classes.py:303:28:303:51 | ControlFlowNode for dict() | classes.py:303:28:303:51 | ControlFlowNode for dict() |
+| classes.py:428:3:428:14 | ControlFlowNode for with_getitem | classes.py:422:19:422:22 | SSA variable self |
+| classes.py:428:16:428:16 | ControlFlowNode for IntegerLiteral | classes.py:422:25:422:27 | SSA variable key |
+| classes.py:438:3:438:14 | ControlFlowNode for with_setitem | classes.py:433:19:433:22 | SSA variable self |
+| classes.py:438:16:438:16 | ControlFlowNode for IntegerLiteral | classes.py:433:25:433:27 | SSA variable key |
+| classes.py:438:21:438:22 | ControlFlowNode for Str | classes.py:433:30:433:34 | SSA variable value |
+| classes.py:448:7:448:18 | ControlFlowNode for with_delitem | classes.py:443:19:443:22 | SSA variable self |
+| classes.py:448:20:448:20 | ControlFlowNode for IntegerLiteral | classes.py:443:25:443:27 | SSA variable key |
 | classes.py:466:12:466:24 | ControlFlowNode for Attribute() | classes.py:466:12:466:24 | ControlFlowNode for Attribute() |
 | classes.py:505:3:505:10 | ControlFlowNode for with_add | classes.py:499:15:499:18 | SSA variable self |
 | classes.py:505:14:505:21 | ControlFlowNode for with_add | classes.py:499:21:499:25 | SSA variable other |
