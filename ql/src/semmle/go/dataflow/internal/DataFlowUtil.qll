@@ -881,11 +881,11 @@ Node extractTupleElement(Node t, int i) {
  * For example, `0` in `func tryGetInt() (int, error) { return 0, errors.New("no good") }`
  */
 predicate isReturnedWithError(Node node) {
-  exists(ReturnStmt ret |
-    ret.getExpr(0) = node.asExpr() and
-    ret.getNumExpr() = 2 and
-    ret.getExpr(1).getType() instanceof ErrorType
-    // That last condition implies ret.getExpr(1) is non-nil, since nil doesn't implement `error`
+  exists(ReturnStmt ret, int nodeArg, int errorArg |
+    ret.getExpr(nodeArg) = node.asExpr() and
+    nodeArg != errorArg and
+    ret.getExpr(errorArg).getType() instanceof ErrorType
+    // That last condition implies ret.getExpr(errorArg) is non-nil, since nil doesn't implement `error`
   )
 }
 
