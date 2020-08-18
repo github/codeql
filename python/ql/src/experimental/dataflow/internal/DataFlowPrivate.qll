@@ -169,7 +169,7 @@ abstract class DataFlowCall extends TDataFlowCall {
   /** Get the callable to which this call goes. */
   abstract DataFlowCallable getCallable();
 
-  /** Get the specified arguemnt to this call. */
+  /** Get the specified argument to this call. */
   abstract ControlFlowNode getArg(int n);
 
   /** Get the control flow node representing this call. */
