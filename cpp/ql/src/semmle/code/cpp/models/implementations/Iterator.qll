@@ -34,8 +34,8 @@ class LegacyIterator extends Type {
   }
 }
 
-class IteratorOperatorStar extends Operator, TaintFunction {
-  IteratorOperatorStar() {
+class IteratorPointerDereferenceOperator extends Operator, TaintFunction {
+  IteratorPointerDereferenceOperator() {
     this.hasName("operator*") and
     this.getACallToThisFunction().getArgument(0).getFullyConverted().getUnderlyingType() instanceof
       LegacyIterator
@@ -47,9 +47,12 @@ class IteratorOperatorStar extends Operator, TaintFunction {
   }
 }
 
-class IteratorOperatorPlusPlus extends Operator, TaintFunction {
-  IteratorOperatorPlusPlus() {
-    this.hasName("operator++") and
+class IteratorCrementOperator extends Operator, TaintFunction {
+  IteratorCrementOperator() {
+    (
+      this.hasName("operator++") or
+      this.hasName("operator--")
+    ) and
     this
         .getACallToThisFunction()
         .getArgument(0)
@@ -65,26 +68,8 @@ class IteratorOperatorPlusPlus extends Operator, TaintFunction {
   }
 }
 
-
-class IteratorOperatorMinusMinus extends Operator, TaintFunction {
-    IteratorOperatorMinusMinus() {
-      this.hasName("operator++") and
-      this
-          .getACallToThisFunction()
-          .getArgument(0)
-          .getFullyConverted()
-          .getUnderlyingType()
-          .(ReferenceType)
-          .getBaseType() instanceof LegacyIterator
-    }
-  
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      input.isParameterDeref(0) and
-      output.isParameterDeref(0)
-    }
-}
-class IteratorOperatorArrow extends Operator, TaintFunction {
-  IteratorOperatorArrow() {
+class IteratorFieldOperator extends Operator, TaintFunction {
+  IteratorFieldOperator() {
     this.hasName("operator->") and
     this
         .getACallToThisFunction()
@@ -101,8 +86,8 @@ class IteratorOperatorArrow extends Operator, TaintFunction {
   }
 }
 
-class IteratorMemberOperatorStar extends MemberFunction, TaintFunction {
-  IteratorMemberOperatorStar() {
+class IteratorPointerDereferenceMemberOperator extends MemberFunction, TaintFunction {
+  IteratorPointerDereferenceMemberOperator() {
     this.hasName("operator*") and
     this.getDeclaringType() instanceof LegacyIterator
   }
@@ -113,9 +98,12 @@ class IteratorMemberOperatorStar extends MemberFunction, TaintFunction {
   }
 }
 
-class IteratorMemberOperatorPlusPlus extends MemberFunction, TaintFunction {
-  IteratorMemberOperatorPlusPlus() {
-    this.hasName("operator++") and
+class IteratorCrementMemberOperator extends MemberFunction, TaintFunction {
+  IteratorCrementMemberOperator() {
+    (
+      this.hasName("operator++") or
+      this.hasName("operator--")
+    ) and
     this.getDeclaringType() instanceof LegacyIterator
   }
 
@@ -125,8 +113,8 @@ class IteratorMemberOperatorPlusPlus extends MemberFunction, TaintFunction {
   }
 }
 
-class IteratorMemberOperatorArrow extends Operator, TaintFunction {
-  IteratorMemberOperatorArrow() {
+class IteratorFieldMemberOperator extends Operator, TaintFunction {
+  IteratorFieldMemberOperator() {
     this.hasName("operator->") and
     this.getDeclaringType() instanceof LegacyIterator
   }
@@ -134,17 +122,5 @@ class IteratorMemberOperatorArrow extends Operator, TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierAddress() and
     output.isReturnValue()
-  }
-}
-
-class IteratorMemberOperatorMinusMinus extends MemberFunction, TaintFunction {
-  IteratorMemberOperatorMinusMinus() {
-    this.hasName("operator--") and
-    this.getDeclaringType() instanceof LegacyIterator
-  }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isQualifierObject() and
-    output.isQualifierObject()
   }
 }
