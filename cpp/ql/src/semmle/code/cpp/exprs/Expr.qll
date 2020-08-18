@@ -544,7 +544,7 @@ class BinaryOperation extends Operation, @bin_op_expr {
    * binary operation.
    */
   predicate hasOperands(Expr e1, Expr e2) {
-    exists(int i | i in [0 .. 1] |
+    exists(int i | i in [0, 1] |
       this.hasChild(e1, i) and
       this.hasChild(e2, 1 - i)
     )
