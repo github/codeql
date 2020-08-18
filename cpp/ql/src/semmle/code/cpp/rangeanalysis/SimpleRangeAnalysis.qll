@@ -126,7 +126,7 @@ private class UnsignedBitwiseAndExpr extends BitwiseAndExpr {
   UnsignedBitwiseAndExpr() {
     (
       getLeftOperand().getFullyConverted().getType().getUnderlyingType().(IntegralType).isUnsigned() or
-      getLeftOperand().getFullyConverted().getValue().toInt() >= 0
+      getValue(getLeftOperand().getFullyConverted()).toInt() >= 0
     ) and
     (
       getRightOperand()
@@ -135,7 +135,7 @@ private class UnsignedBitwiseAndExpr extends BitwiseAndExpr {
           .getUnderlyingType()
           .(IntegralType)
           .isUnsigned() or
-      getRightOperand().getFullyConverted().getValue().toInt() >= 0
+      getValue(getRightOperand().getFullyConverted()).toInt() >= 0
     )
   }
 }
@@ -164,8 +164,8 @@ private class MulByConstantExpr extends MulExpr {
   MulByConstantExpr() {
     exists(Expr constantExpr |
       this.hasOperands(constantExpr, operand) and
-      constant = constantExpr.getFullyConverted().getValue().toFloat() and
-      not exists(operand.getFullyConverted().getValue().toFloat())
+      constant = getValue(constantExpr.getFullyConverted()).toFloat() and
+      not exists(getValue(operand.getFullyConverted()).toFloat())
     )
   }
 
@@ -220,7 +220,7 @@ private predicate multipliesByNegative(Expr expr, Expr operand, float negative) 
 private class AssignMulByConstantExpr extends AssignMulExpr {
   float constant;
 
-  AssignMulByConstantExpr() { constant = this.getRValue().getFullyConverted().getValue().toFloat() }
+  AssignMulByConstantExpr() { constant = getValue(this.getRValue().getFullyConverted()).toFloat() }
 
   float getConstant() { result = constant }
 }
@@ -294,7 +294,7 @@ private predicate analyzableExpr(Expr e) {
     e instanceof UnsignedBitwiseAndExpr
     or
     // `>>` by a constant
-    exists(e.(RShiftExpr).getRightOperand().getValue())
+    exists(getValue(e.(RShiftExpr).getRightOperand()))
   )
 }
 
@@ -415,7 +415,7 @@ private predicate exprDependsOnDef(Expr e, RangeSsaDefinition srcDef, StackVaria
   // `>>` by a constant
   exists(RShiftExpr rs |
     rs = e and
-    exists(rs.getRightOperand().getValue()) and
+    exists(getValue(rs.getRightOperand())) and
     exprDependsOnDef(rs.getLeftOperand(), srcDef, srcVar)
   )
   or
@@ -851,7 +851,7 @@ private float getLowerBoundsImpl(Expr expr) {
   exists(RShiftExpr rsExpr, float left, int right |
     rsExpr = expr and
     left = getFullyConvertedLowerBounds(rsExpr.getLeftOperand()) and
-    right = rsExpr.getRightOperand().getFullyConverted().getValue().toInt() and
+    right = getValue(rsExpr.getRightOperand().getFullyConverted()).toInt() and
     result = safeFloor(left / 2.pow(right))
   )
 }
@@ -1037,7 +1037,7 @@ private float getUpperBoundsImpl(Expr expr) {
   exists(RShiftExpr rsExpr, float left, int right |
     rsExpr = expr and
     left = getFullyConvertedUpperBounds(rsExpr.getLeftOperand()) and
-    right = rsExpr.getRightOperand().getFullyConverted().getValue().toInt() and
+    right = getValue(rsExpr.getRightOperand().getFullyConverted()).toInt() and
     result = safeFloor(left / 2.pow(right))
   )
 }
