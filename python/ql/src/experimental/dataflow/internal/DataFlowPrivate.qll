@@ -200,6 +200,7 @@ class CallNodeCall extends DataFlowCall, TCallNode {
   override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getNode().getScope() }
 }
 
+/** Represents a call to a special method. */
 class SpecialCall extends DataFlowCall, TSpecialCall {
   SpecialMethodCallNode special;
 
