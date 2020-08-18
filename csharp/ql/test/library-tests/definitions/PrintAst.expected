@@ -139,7 +139,7 @@ definitions.cs:
 #   72|             0: [NullLiteral] null
 #   72|             1: [LocalVariableAccess] access to local variable c2
 #   75|     9: [Method] GenericFn
-#-----|       1: (TypeParameters)
+#-----|       1: (Type parameters)
 #   75|         0: [TypeParameter] T
 #-----|       2: (Parameters)
 #   75|         0: [Parameter] t
@@ -202,35 +202,35 @@ definitions.cs:
 #  108|             -1: [EventAccess,EventCall] access to event Click
 #  112|   6: [Interface] I1
 #  114|     4: [Method] M2
-#-----|       1: (TypeParameters)
+#-----|       1: (Type parameters)
 #  114|         0: [TypeParameter] T
 #  117|   7: [Interface] I2<>
-#-----|     1: (TypeParameters)
+#-----|     1: (Type parameters)
 #  117|       0: [TypeParameter] T
 #  119|   8: [Interface] I3
-#-----|     3: (BaseTypes)
-#  119|       2: I2<Object>
+#-----|     3: (Base types)
+#  119|       1: [Interface] I2<Object>
 #  121|   9: [Class] B<>
-#-----|     1: (TypeParameters)
+#-----|     1: (Type parameters)
 #  121|       0: [TypeParameter] T
-#-----|     3: (BaseTypes)
-#  121|       0: A
-#  121|       2: I1
-#  121|       3: I2<A>
+#-----|     3: (Base types)
+#  121|       0: [Class] A
+#  121|       1: [Interface] I1
+#  121|       2: [Interface] I2<A>
 #  123|     5: [Method] M
 #  124|       4: [BlockStmt] {...}
 #  125|         0: [ExprStmt] ...;
 #  125|           0: [MethodCall] call to method M
 #  125|             -1: [BaseAccess] base access
 #  128|     6: [Method] M2
-#-----|       1: (TypeParameters)
+#-----|       1: (Type parameters)
 #  128|         0: [TypeParameter] T
 #  128|       4: [BlockStmt] {...}
 #  130|     7: [Struct] S<>
-#-----|       1: (TypeParameters)
+#-----|       1: (Type parameters)
 #  130|         0: [TypeParameter] T2
-#-----|       3: (BaseTypes)
-#  130|         2: I3
+#-----|       3: (Base types)
+#  130|         1: [Interface] I3
 #  132|     8: [Method] Tuple
 #  132|       4: [ThrowExpr] throw ...
 #  132|         0: [ObjectCreation] object creation of type Exception
@@ -270,8 +270,8 @@ definitions.cs:
 #-----|         2: (Parameters)
 #  148|           0: [Parameter] eh
 #  151|   12: [Class] C4
-#-----|     3: (BaseTypes)
-#  151|       2: I4
+#-----|     3: (Base types)
+#  151|       1: [Interface] I4
 #  153|     5: [Event] EH
 #  153|       3: [AddEventAccessor] add_EH
 #-----|         2: (Parameters)
@@ -300,7 +300,7 @@ definitions.cs:
 #  156|               0: [ObjectCreation] object creation of type S1
 #  156|               1: [TypeAccess] access to type S1
 #  158|     9: [Class] Nested<>
-#-----|       1: (TypeParameters)
+#-----|       1: (Type parameters)
 #  158|         0: [TypeParameter] T
 #  160|       5: [Method] Create
 #  160|         4: [BlockStmt] {...}
@@ -364,8 +364,8 @@ definitions.cs:
 #  191|         1: [Parameter] y
 #  191|       4: [ParameterAccess] access to parameter x
 #  194|   15: [Class] MyAttribute
-#-----|     3: (BaseTypes)
-#  194|       0: Attribute
+#-----|     3: (Base types)
+#  194|       0: [Class] Attribute
 #  196|   16: [Class] C7
 #  198|     5: [Method] M
 #  198|       4: [BlockStmt] {...}

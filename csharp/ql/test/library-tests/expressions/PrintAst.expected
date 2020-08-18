@@ -325,14 +325,14 @@ Qualifiers.cs:
 #    9|       4: [MethodCall] call to method Instance
 #    9|         -1: [ThisAccess] this access
 #   11|   8: [Method] Static
-#-----|     1: (TypeParameters)
+#-----|     1: (Type parameters)
 #   11|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #   11|       0: [Parameter] o
 #   11|     4: [DefaultValueExpr] default(...)
 #   11|       0: [TypeAccess] access to type T
 #   13|   10: [Method] Instance
-#-----|     1: (TypeParameters)
+#-----|     1: (Type parameters)
 #   13|       0: [TypeParameter] T
 #   13|     4: [DefaultValueExpr] default(...)
 #   13|       0: [TypeAccess] access to type T
@@ -639,11 +639,11 @@ expressions.cs:
 #  100|                 0: [LocalVariableAccess] access to local variable i
 #  100|             1: [ParameterAccess] access to parameter s
 #  103|     18: [Class] Y<,>
-#-----|       1: (TypeParameters)
+#-----|       1: (Type parameters)
 #  103|         0: [TypeParameter] T
 #  103|         1: [TypeParameter] U
 #  107|     19: [Class] X<>
-#-----|       1: (TypeParameters)
+#-----|       1: (Type parameters)
 #  107|         0: [TypeParameter] T
 #  110|       5: [Method] PrintTypes
 #  111|         4: [BlockStmt] {...}
@@ -678,8 +678,8 @@ expressions.cs:
 #  124|                 0: [TypeAccess] access to type T
 #  124|               1: [LocalVariableAccess] access to local variable e
 #  129|     21: [Class] Nested
-#-----|       3: (BaseTypes)
-#  129|         0: Class
+#-----|       3: (Base types)
+#  129|         0: [Class] Class
 #  133|       4: [InstanceConstructor] Nested
 #-----|         2: (Parameters)
 #  133|           0: [Parameter] i
@@ -898,7 +898,7 @@ expressions.cs:
 #  198|               0: [LocalFunctionAccess] access to local function LocalFunction
 #  198|             1: [LocalVariableAccess] access to local variable cd1
 #  202|   2: [DelegateType] Predicate<>
-#-----|     1: (TypeParameters)
+#-----|     1: (Type parameters)
 #  202|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #  202|       0: [Parameter] value

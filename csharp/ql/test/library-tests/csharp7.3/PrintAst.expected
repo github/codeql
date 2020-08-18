@@ -72,11 +72,11 @@ csharp73.cs:
 #   51|             0: [StringLiteral] "x is "
 #   51|             1: [LocalVariableAccess] access to local variable x
 #   30| [Class] UnmanagedConstraint<>
-#-----|   1: (TypeParameters)
+#-----|   1: (Type parameters)
 #   30|     0: [TypeParameter] T
 #   34| [Class] EnumConstraint<>
-#-----|   1: (TypeParameters)
+#-----|   1: (Type parameters)
 #   34|     0: [TypeParameter] T
 #   38| [Class] DelegateConstraint<>
-#-----|   1: (TypeParameters)
+#-----|   1: (Type parameters)
 #   38|     0: [TypeParameter] T

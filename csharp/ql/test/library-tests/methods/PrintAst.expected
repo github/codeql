@@ -129,7 +129,7 @@ methods.cs:
 #   69|             -1: [TypeAccess] access to type Console
 #   69|             0: [StringLiteral] "F(double)"
 #   72|     9: [Method] F
-#-----|       1: (TypeParameters)
+#-----|       1: (Type parameters)
 #   72|         0: [TypeParameter] T
 #-----|       2: (Parameters)
 #   72|         0: [Parameter] x
@@ -198,7 +198,7 @@ methods.cs:
 #  106|             -1: [ParameterAccess] access to parameter f
 #  106|             0: [ParameterAccess] access to parameter s
 #  109|     6: [ExtensionMethod] Slice
-#-----|       1: (TypeParameters)
+#-----|       1: (Type parameters)
 #  109|         0: [TypeParameter] T
 #-----|       2: (Parameters)
 #  109|         0: [Parameter] source
@@ -346,7 +346,7 @@ methods.cs:
 #  170|             0: [ParameterAccess] access to parameter left
 #  170|             1: [ParameterAccess] access to parameter right
 #  173|     5: [ExtensionMethod] SkipTwo
-#-----|       1: (TypeParameters)
+#-----|       1: (Type parameters)
 #  173|         0: [TypeParameter] T
 #-----|       2: (Parameters)
 #  173|         0: [Parameter] list

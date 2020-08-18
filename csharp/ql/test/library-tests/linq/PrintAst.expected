@@ -180,15 +180,15 @@ queries.cs:
 #   56|               1: [LocalVariableAccess] access to local variable d
 #   53|           1: [LocalVariableAccess] access to local variable list12
 #   59|   6: [Class] A
-#-----|     3: (BaseTypes)
-#   59|       2: IEnumerable
+#-----|     3: (Base types)
+#   59|       1: [Interface] IEnumerable
 #   61|     5: [Method] GetEnumerator
 #   62|       4: [BlockStmt] {...}
 #   63|         0: [ThrowStmt] throw ...;
 #   63|           0: [ObjectCreation] object creation of type NotImplementedException
 #   67|   7: [Class] B
-#-----|     3: (BaseTypes)
-#   67|       0: A
+#-----|     3: (Base types)
+#   67|       0: [Class] A
 #   69|   8: [Class] C
-#-----|     3: (BaseTypes)
-#   69|       0: List<Int32>
+#-----|     3: (Base types)
+#   69|       0: [Class] List<Int32>

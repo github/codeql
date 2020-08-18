@@ -18,7 +18,7 @@ AsyncStreams.cs:
 #   28|     4: [Method] DisposeAsync
 #   32| [NamespaceDeclaration] namespace ... { ... }
 #   34|   1: [Interface] IAsyncEnumerable<>
-#-----|     1: (TypeParameters)
+#-----|     1: (Type parameters)
 #   34|       0: [TypeParameter] T
 #   36|     4: [Method] GetAsyncEnumerator
 #-----|       2: (Parameters)
@@ -26,10 +26,10 @@ AsyncStreams.cs:
 #   36|           1: [DefaultValueExpr] default(...)
 #   36|             0: [TypeAccess] access to type CancellationToken
 #   39|   2: [Interface] IAsyncEnumerator<>
-#-----|     1: (TypeParameters)
+#-----|     1: (Type parameters)
 #   39|       0: [TypeParameter] T
-#-----|     3: (BaseTypes)
-#   39|       2: IAsyncDisposable
+#-----|     3: (Base types)
+#   39|       1: [Interface] IAsyncDisposable
 #   41|     4: [Property] Current
 #   41|       3: [Getter] get_Current
 #   42|     5: [Method] MoveNextAsync
@@ -81,8 +81,8 @@ DefaultInterfaceMethods.cs:
 #   15|         0: [PropertyCall] access to property Name
 #   17|   8: [Method] Greet
 #   20| [Class] Person
-#-----|   3: (BaseTypes)
-#   20|     2: IPerson
+#-----|   3: (Base types)
+#   20|     1: [Interface] IPerson
 #   22|   5: [IndexerProperty] Name
 #   22|     3: [Getter] get_Name
 #   22|       4: [StringLiteral] "Petra"
@@ -193,24 +193,24 @@ NullableRefTypes.cs:
 #-----|       2: (Parameters)
 #   48|         0: [Parameter] value
 #   51|   25: [Method] Q
-#-----|     1: (TypeParameters)
+#-----|     1: (Type parameters)
 #   51|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #   51|       0: [Parameter] t
 #   51|     4: [NullLiteral] null
 #   54|   27: [Class] Generic<,,,>
-#-----|     1: (TypeParameters)
+#-----|     1: (Type parameters)
 #   54|       0: [TypeParameter] T1
 #   54|       1: [TypeParameter] T2
 #   54|       2: [TypeParameter] T3
 #   54|       3: [TypeParameter] T4
 #   58|   30: [Class] Generic2<,>
-#-----|     1: (TypeParameters)
+#-----|     1: (Type parameters)
 #   58|       0: [TypeParameter] T1
 #   58|       1: [TypeParameter] T2
 #   65|   31: [Field] items2
 #   67|   32: [Method] GenericFn
-#-----|     1: (TypeParameters)
+#-----|     1: (Type parameters)
 #   67|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #   67|       0: [Parameter] x
@@ -479,7 +479,7 @@ StaticLocalFunctions.cs:
 #   11|             0: [ParameterAccess] access to parameter x
 UnmanagedGenericStructs.cs:
 #    3| [Struct] S<,>
-#-----|   1: (TypeParameters)
+#-----|   1: (Type parameters)
 #    3|     0: [TypeParameter] T
 #    3|     1: [TypeParameter] U
 #    5|   5: [Field] id

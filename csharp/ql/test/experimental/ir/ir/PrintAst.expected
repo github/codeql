@@ -171,8 +171,8 @@ casts.cs:
 #   15|           1: [LocalVariableAccess] access to local variable bobjAS
 #    1| [Class] Casts_A
 #    5| [Class] Casts_B
-#-----|   3: (BaseTypes)
-#    5|     0: Casts_A
+#-----|   3: (Base types)
+#    5|     0: [Class] Casts_A
 collections.cs:
 #    3| [Class] Collections
 #    5|   5: [Class] MyClass
@@ -219,8 +219,8 @@ constructor_init.cs:
 #   11|           0: [ParameterAccess] access to parameter i
 #   11|           1: [FieldAccess] access to field num
 #   15| [Class] DerivedClass
-#-----|   3: (BaseTypes)
-#   15|     0: BaseClass
+#-----|   3: (Base types)
+#   15|     0: [Class] BaseClass
 #   17|   4: [InstanceConstructor] DerivedClass
 #   17|     3: [ConstructorInitializer] call to constructor BaseClass
 #   18|     4: [BlockStmt] {...}
@@ -473,8 +473,8 @@ inheritance_polymorphism.cs:
 #    5|       0: [ReturnStmt] return ...;
 #    5|         0: [IntLiteral] 0
 #   13| [Class] C
-#-----|   3: (BaseTypes)
-#   13|     0: B
+#-----|   3: (Base types)
+#   13|     0: [Class] B
 #   15|   5: [Method] function
 #   16|     4: [BlockStmt] {...}
 #   17|       0: [ReturnStmt] return ...;
@@ -506,8 +506,8 @@ inheritance_polymorphism.cs:
 #   34|         0: [MethodCall] call to method function
 #   34|           -1: [LocalVariableAccess] access to local variable objC
 #    9| [Class] B
-#-----|   3: (BaseTypes)
-#    9|     0: A
+#-----|   3: (Base types)
+#    9|     0: [Class] A
 inoutref.cs:
 #    1| [Class] MyClass
 #    2|   5: [Field] fld
@@ -1095,8 +1095,8 @@ stmts.cs:
 using.cs:
 #    3| [Class] UsingStmt
 #    5|   5: [Class] MyDisposable
-#-----|     3: (BaseTypes)
-#    5|       2: IDisposable
+#-----|     3: (Base types)
+#    5|       1: [Interface] IDisposable
 #    7|     4: [InstanceConstructor] MyDisposable
 #    7|       4: [BlockStmt] {...}
 #    8|     5: [Method] DoSomething

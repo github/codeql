@@ -14,8 +14,8 @@ nestedtypes.cs:
 #   19|             0: [StringLiteral] "Base.F"
 #   22|     9: [Class] C
 #   26|   2: [Class] Derived
-#-----|     3: (BaseTypes)
-#   26|       0: Base
+#-----|     3: (Base types)
+#   26|       0: [Class] Base
 #   29|     5: [Class] Nested
 #   32|       5: [Method] G
 #   33|         4: [BlockStmt] {...}
@@ -37,10 +37,10 @@ nestedtypes.cs:
 #   48|           0: [MethodCall] call to method G
 #   48|             -1: [LocalVariableAccess] access to local variable n
 #   53|   4: [Class] Outer<>
-#-----|     1: (TypeParameters)
+#-----|     1: (Type parameters)
 #   53|       0: [TypeParameter] T
 #   56|     5: [Class] Inner<>
-#-----|       1: (TypeParameters)
+#-----|       1: (Type parameters)
 #   56|         0: [TypeParameter] U
 #   59|       5: [Method] F
 #-----|         2: (Parameters)
@@ -69,9 +69,9 @@ nestedtypes.cs:
 #   69|               0: [TypeAccess] access to type Inner<>
 #   69|             1: [LocalVariableAccess] access to local variable type
 #   74|   5: [Class] Outer2<>
-#-----|     1: (TypeParameters)
+#-----|     1: (Type parameters)
 #   74|       0: [TypeParameter] T
 #   77|     5: [Class] Inner2<>
-#-----|       1: (TypeParameters)
+#-----|       1: (Type parameters)
 #   77|         0: [TypeParameter] T
 #   80|       5: [Field] t

@@ -140,10 +140,8 @@ private newtype TPrintAstNode =
   } or
   TBaseTypeNode(ValueOrRefType derived, ValueOrRefType base) {
     shouldPrint(derived, _) and
-    hasInterestingBaseTypes(derived) and
-    not isNotNeeded(derived) and
-    derived.getABaseType() = base and
-    isInterestingBaseType(base)
+    base = getAnInterestingBaseType(derived) and
+    not isNotNeeded(derived)
   }
 
 /**
@@ -525,7 +523,7 @@ final class TypeParametersNode extends PrintAstNode, TTypeParametersNode {
 
   TypeParametersNode() { this = TTypeParametersNode(unboundGeneric) }
 
-  override string toString() { result = "(TypeParameters)" }
+  override string toString() { result = "(Type parameters)" }
 
   override Location getLocation() { none() }
 
@@ -547,18 +545,17 @@ final class BaseTypesNode extends PrintAstNode, TBaseTypesNode {
 
   BaseTypesNode() { this = TBaseTypesNode(valueOrRefType) }
 
-  override string toString() { result = "(BaseTypes)" }
+  override string toString() { result = "(Base types)" }
 
   override Location getLocation() { none() }
 
   override BaseTypeNode getChild(int childIndex) {
     childIndex = 0 and
     result.getBaseType() = valueOrRefType.getBaseClass() and
-    isInterestingBaseType(valueOrRefType.getBaseClass()) and
     result.getDerivedType() = valueOrRefType
     or
     result.getBaseType() =
-      rank[childIndex - 1](ValueOrRefType base, string name |
+      rank[childIndex](ValueOrRefType base, string name |
         base = valueOrRefType.getABaseInterface() and
         name = base.toString()
       |
@@ -582,7 +579,7 @@ final class BaseTypeNode extends PrintAstNode, TBaseTypeNode {
 
   BaseTypeNode() { this = TBaseTypeNode(derived, base) }
 
-  override string toString() { result = base.toString() }
+  override string toString() { result = getQlClass(base) + base.toString() }
 
   override Location getLocation() { result = derived.getLocation() }
 

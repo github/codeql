@@ -337,7 +337,7 @@ CSharp7.cs:
 #  131|                 1: [IntLiteral] 1
 #  133|       1: [LocalFunctionStmt] f2(...)
 #  133|         0: [LocalFunction] f2
-#-----|           1: (TypeParameters)
+#-----|           1: (Type parameters)
 #  133|             0: [TypeParameter] T
 #  133|             1: [TypeParameter] U
 #-----|           2: (Parameters)
@@ -416,19 +416,19 @@ CSharp7.cs:
 #  159|     4: [BlockStmt] {...}
 #  160|       0: [LocalFunctionStmt] f(...)
 #  160|         0: [LocalFunction] f
-#-----|           1: (TypeParameters)
+#-----|           1: (Type parameters)
 #  160|             0: [TypeParameter] T
 #  160|           4: [IntLiteral] 1
 #  161|       1: [LocalFunctionStmt] g(...)
 #  161|         0: [LocalFunction] g
-#-----|           1: (TypeParameters)
+#-----|           1: (Type parameters)
 #  161|             0: [TypeParameter] T
 #-----|           2: (Parameters)
 #  161|             0: [Parameter] t
 #  161|           4: [ParameterAccess] access to parameter t
 #  163|       2: [LocalFunctionStmt] h(...)
 #  163|         0: [LocalFunction] h
-#-----|           1: (TypeParameters)
+#-----|           1: (Type parameters)
 #  163|             0: [TypeParameter] T
 #  163|             1: [TypeParameter] U
 #-----|           2: (Parameters)
@@ -437,7 +437,7 @@ CSharp7.cs:
 #  164|           4: [BlockStmt] {...}
 #  165|             0: [LocalFunctionStmt] f2(...)
 #  165|               0: [LocalFunction] f2
-#-----|                 1: (TypeParameters)
+#-----|                 1: (Type parameters)
 #  165|                   0: [TypeParameter] S
 #-----|                 2: (Parameters)
 #  165|                   0: [Parameter] s

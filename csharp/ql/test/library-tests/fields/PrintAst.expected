@@ -21,7 +21,7 @@ fields.cs:
 #   17|         0: [IntLiteral] 100
 #   17|         1: [FieldAccess] access to field Z
 #   20|   3: [Class] C<>
-#-----|     1: (TypeParameters)
+#-----|     1: (Type parameters)
 #   20|       0: [TypeParameter] V
 #   23|     5: [Field] count
 #   23|       1: [AssignExpr] ... = ...

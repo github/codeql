@@ -28,8 +28,8 @@ attributes.cs:
 #   40|     1: [Attribute] [AttributeUsage(...)]
 #   40|       0: [MemberConstantAccess] access to constant All
 #   40|         -1: [TypeAccess] access to type AttributeTargets
-#-----|   3: (BaseTypes)
-#   41|     0: Attribute
+#-----|   3: (Base types)
+#   41|     0: [Class] Attribute
 #   44|   5: [Method] foo
 #-----|     0: (Attributes)
 #   43|       1: [Attribute] [Conditional(...)]
@@ -59,8 +59,8 @@ attributes.cs:
 #   54|         2: [IntLiteral] 0
 #   55|     4: [BlockStmt] {...}
 #   58| [Class] MyAttribute
-#-----|   3: (BaseTypes)
-#   58|     0: Attribute
+#-----|   3: (Base types)
+#   58|     0: [Class] Attribute
 #   60|   4: [Field] x
 #   61|   5: [IndexerProperty] y
 #   61|     3: [Getter] get_y

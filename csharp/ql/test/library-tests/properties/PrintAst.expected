@@ -105,8 +105,8 @@ properties.cs:
 #-----|         2: (Parameters)
 #   76|           0: [Parameter] value
 #   79|   6: [Class] B
-#-----|     3: (BaseTypes)
-#   79|       0: A
+#-----|     3: (Base types)
+#   79|       0: [Class] A
 #   81|     5: [Field] z
 #   82|     6: [Property] X
 #   82|       3: [Getter] get_X
@@ -175,8 +175,8 @@ properties.cs:
 #-----|         2: (Parameters)
 #  107|           0: [Parameter] value
 #  110|   9: [Class] ImplementsProperties
-#-----|     3: (BaseTypes)
-#  110|       2: InterfaceWithProperties
+#-----|     3: (Base types)
+#  110|       1: [Interface] InterfaceWithProperties
 #  112|     5: [Property] Prop1
 #  114|       3: [Getter] get_Prop1
 #  114|         4: [BlockStmt] {...}

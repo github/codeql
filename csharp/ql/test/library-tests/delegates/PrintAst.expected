@@ -58,7 +58,7 @@ delegates.cs:
 #   29|         0: [Parameter] g
 #   29|       4: [BlockStmt] {...}
 #   33|   5: [DelegateType] Predicate<>
-#-----|     1: (TypeParameters)
+#-----|     1: (Type parameters)
 #   33|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #   33|       0: [Parameter] value

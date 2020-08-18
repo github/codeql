@@ -200,8 +200,8 @@ arguments.cs:
 #   68|         2: [IntLiteral] 0
 #   69|     4: [BlockStmt] {...}
 #   72| [Class] MyAttribute
-#-----|   3: (BaseTypes)
-#   72|     0: Attribute
+#-----|   3: (Base types)
+#   72|     0: [Class] Attribute
 #   74|   4: [Field] x
 #   75|   5: [IndexerProperty] y
 #   75|     3: [Getter] get_y

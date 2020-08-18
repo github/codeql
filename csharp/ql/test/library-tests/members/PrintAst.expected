@@ -7,7 +7,7 @@ Members.cs:
 #    6|   2: [Class] Class
 #    9|     5: [Class] NestedClass
 #   12|       5: [Method] Method
-#-----|         1: (TypeParameters)
+#-----|         1: (Type parameters)
 #   12|           0: [TypeParameter] T
 #-----|         2: (Parameters)
 #   12|           0: [Parameter] t
@@ -70,7 +70,7 @@ Members.cs:
 #   35|   3: [Class] Class2
 #   37|     5: [Class] NestedClass2
 #   39|       5: [Method] Method
-#-----|         1: (TypeParameters)
+#-----|         1: (Type parameters)
 #   39|           0: [TypeParameter] T
 #-----|         2: (Parameters)
 #   39|           0: [Parameter] t

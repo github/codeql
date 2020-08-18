@@ -12,8 +12,8 @@ initializers.cs:
 #    7|         0: [Parameter] value
 #    7|       4: [BlockStmt] {...}
 #   10| [Class] S2
-#-----|   3: (BaseTypes)
-#   10|     2: IEnumerable
+#-----|   3: (Base types)
+#   10|     1: [Interface] IEnumerable
 #   12|   5: [Method] Add
 #-----|     2: (Parameters)
 #   12|       0: [Parameter] x
