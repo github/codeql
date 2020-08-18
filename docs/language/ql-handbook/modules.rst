@@ -110,7 +110,7 @@ You can also define a module within another module. This is an explicit module d
 
 An explicit module is defined with the keyword ``module`` followed by 
 the module name, and then the module body enclosed in braces. It can contain any 
-of the elements listed in :ref:`module-bodies` below, apart from select clauses. 
+of the elements listed in ":ref:`module-bodies`" below, apart from select clauses. 
 
 For example, you could add the following QL snippet to the library file **OneTwoThreeLib.qll** 
 defined :ref:`above <library-modules>`::

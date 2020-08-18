@@ -31,8 +31,7 @@ while ``hasCapital`` is the set of two-tuples ``{("Belgium","Brussels"),("German
 The `arity <https://en.wikipedia.org/wiki/Arity>`_ of these predicates is one and two, respectively.
 
 In general, all tuples in a predicate have the same number of elements. The **arity** of 
-a predicate is that number of elements, not including a possible ``result`` variable (see 
-:ref:`predicates-with-result`).
+a predicate is that number of elements, not including a possible ``result`` variable. For more information, see ":ref:`predicates-with-result`."
 
 There are a number of `built-in predicates <https://help.semmle.com/QL/ql-spec/language.html#built-ins>`_ 
 in QL. You can use these in any queries without needing to :ref:`import <importing-modules>`
@@ -147,7 +146,7 @@ predicate recursively, as shown below::
 
 Now ``getANeighbor("Belgium")`` also returns results, namely ``"France"`` and ``"Germany"``.
 
-For a more general discussion of recursive predicates and queries, see :ref:`recursion`.
+For a more general discussion of recursive predicates and queries, see ":ref:`recursion`."
 
 Kinds of predicates
 *******************
