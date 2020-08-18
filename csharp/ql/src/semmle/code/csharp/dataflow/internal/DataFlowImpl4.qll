@@ -1029,45 +1029,46 @@ private predicate nodeCand2IsReturned(
   )
 }
 
-private predicate nodeCand2(Node node, Configuration config) { nodeCand2(node, _, _, _, config) }
+private predicate nodeCand2(Node node, boolean read, Configuration config) {
+  nodeCand2(node, _, _, read, config)
+}
 
 pragma[nomagic]
 private predicate flowOutOfCallNodeCand2(
-  DataFlowCall call, ReturnNodeExt node1, Node node2, boolean allowsFieldFlow, Configuration config
+  DataFlowCall call, ReturnNodeExt node1, Node node2, boolean read, boolean allowsFieldFlow,
+  Configuration config
 ) {
   flowOutOfCallNodeCand1(call, node1, node2, allowsFieldFlow, config) and
-  nodeCand2(node2, config) and
-  nodeCand2(node1, unbind(config))
+  nodeCand2(node2, read, config) and
+  nodeCand2(node1, unbindBool(read), unbind(config))
 }
 
 pragma[nomagic]
 private predicate flowIntoCallNodeCand2(
-  DataFlowCall call, ArgumentNode node1, ParameterNode node2, boolean allowsFieldFlow,
+  DataFlowCall call, ArgumentNode node1, ParameterNode node2, boolean read, boolean allowsFieldFlow,
   Configuration config
 ) {
   flowIntoCallNodeCand1(call, node1, node2, allowsFieldFlow, config) and
-  nodeCand2(node2, config) and
-  nodeCand2(node1, unbind(config))
+  nodeCand2(node2, read, config) and
+  nodeCand2(node1, unbindBool(read), unbind(config))
 }
 
 private module LocalFlowBigStep {
-  /**
-   * A node where some checking is required, and hence the big-step relation
-   * is not allowed to step over.
-   */
-  private class FlowCheckNode extends Node {
-    FlowCheckNode() {
-      this instanceof CastNode or
-      clearsContent(this, _)
-    }
+  /** Holds if content may be cleared at `node`. */
+  private predicate contentMayBeCleared(Node node, Configuration config) {
+    exists(Content c |
+      nodeCand2IsReadAndStored(c, config) and
+      nodeCand2(node, true, unbind(config)) and
+      clearsContent(node, c)
+    )
   }
 
   /**
    * Holds if `node` can be the first node in a maximal subsequence of local
    * flow steps in a dataflow path.
    */
-  predicate localFlowEntry(Node node, Configuration config) {
-    nodeCand2(node, config) and
+  predicate localFlowEntry(Node node, boolean read, Configuration config) {
+    nodeCand2(node, read, config) and
     (
       config.isSource(node) or
       jumpStep(_, node, config) or
@@ -1076,8 +1077,11 @@ private module LocalFlowBigStep {
       node instanceof OutNodeExt or
       store(_, _, node, _) or
       read(_, _, node) or
-      node instanceof FlowCheckNode
+      node instanceof CastNode
     )
+    or
+    contentMayBeCleared(node, config) and
+    read = true
   }
 
   /**
@@ -1085,7 +1089,7 @@ private module LocalFlowBigStep {
    * flow steps in a dataflow path.
    */
   private predicate localFlowExit(Node node, Configuration config) {
-    exists(Node next | nodeCand2(next, config) |
+    exists(Node next | nodeCand2(next, _, config) |
       jumpStep(node, next, config) or
       additionalJumpStep(node, next, config) or
       flowIntoCallNodeCand1(_, node, next, config) or
@@ -1094,7 +1098,10 @@ private module LocalFlowBigStep {
       read(node, _, next)
     )
     or
-    node instanceof FlowCheckNode
+    node instanceof CastNode and
+    nodeCand2(node, _, config)
+    or
+    contentMayBeCleared(node, config)
     or
     config.isSink(node)
   }
@@ -1102,8 +1109,8 @@ private module LocalFlowBigStep {
   pragma[noinline]
   private predicate additionalLocalFlowStepNodeCand2(Node node1, Node node2, Configuration config) {
     additionalLocalFlowStepNodeCand1(node1, node2, config) and
-    nodeCand2(node1, _, _, false, config) and
-    nodeCand2(node2, _, _, false, unbind(config))
+    nodeCand2(node1, false, config) and
+    nodeCand2(node2, false, unbind(config))
   }
 
   /**
@@ -1115,12 +1122,12 @@ private module LocalFlowBigStep {
    */
   pragma[nomagic]
   private predicate localFlowStepPlus(
-    Node node1, Node node2, boolean preservesValue, DataFlowType t, Configuration config,
-    LocalCallContext cc
+    Node node1, Node node2, boolean read, boolean preservesValue, DataFlowType t,
+    Configuration config, LocalCallContext cc
   ) {
     not isUnreachableInCall(node2, cc.(LocalCallContextSpecificCall).getCall()) and
     (
-      localFlowEntry(node1, config) and
+      localFlowEntry(node1, read, config) and
       (
         localFlowStepNodeCand1(node1, node2, config) and
         preservesValue = true and
@@ -1133,22 +1140,25 @@ private module LocalFlowBigStep {
       node1 != node2 and
       cc.relevantFor(node1.getEnclosingCallable()) and
       not isUnreachableInCall(node1, cc.(LocalCallContextSpecificCall).getCall()) and
-      nodeCand2(node2, unbind(config))
+      nodeCand2(node2, unbindBool(read), unbind(config))
       or
       exists(Node mid |
-        localFlowStepPlus(node1, mid, preservesValue, t, config, cc) and
+        localFlowStepPlus(node1, mid, read, preservesValue, t, config, cc) and
         localFlowStepNodeCand1(mid, node2, config) and
-        not mid instanceof FlowCheckNode and
-        nodeCand2(node2, unbind(config))
+        not mid instanceof CastNode and
+        nodeCand2(node2, unbindBool(read), unbind(config))
+      |
+        not contentMayBeCleared(mid, config) or read = false
       )
       or
       exists(Node mid |
-        localFlowStepPlus(node1, mid, _, _, config, cc) and
+        localFlowStepPlus(node1, mid, read, _, _, config, cc) and
         additionalLocalFlowStepNodeCand2(mid, node2, config) and
-        not mid instanceof FlowCheckNode and
+        not mid instanceof CastNode and
         preservesValue = false and
         t = getNodeType(node2) and
-        nodeCand2(node2, unbind(config))
+        nodeCand2(node2, false, unbind(config)) and
+        read = false
       )
     )
   }
@@ -1159,10 +1169,10 @@ private module LocalFlowBigStep {
    */
   pragma[nomagic]
   predicate localFlowBigStep(
-    Node node1, Node node2, boolean preservesValue, AccessPathFrontNil apf, Configuration config,
-    LocalCallContext callContext
+    Node node1, Node node2, boolean read, boolean preservesValue, AccessPathFrontNil apf,
+    Configuration config, LocalCallContext callContext
   ) {
-    localFlowStepPlus(node1, node2, preservesValue, apf.getType(), config, callContext) and
+    localFlowStepPlus(node1, node2, read, preservesValue, apf.getType(), config, callContext) and
     localFlowExit(node2, config)
   }
 }
@@ -1172,8 +1182,8 @@ private import LocalFlowBigStep
 pragma[nomagic]
 private predicate readCand2(Node node1, Content c, Node node2, Configuration config) {
   read(node1, c, node2, config) and
-  nodeCand2(node1, _, _, true, unbind(config)) and
-  nodeCand2(node2, config) and
+  nodeCand2(node1, true, unbind(config)) and
+  nodeCand2(node2, _, config) and
   nodeCand2IsReadAndStored(c, unbind(config))
 }
 
@@ -1182,8 +1192,8 @@ private predicate storeCand2(
   Node node1, TypedContent tc, Node node2, DataFlowType contentType, Configuration config
 ) {
   store(node1, tc, node2, contentType) and
-  nodeCand2(node1, config) and
-  nodeCand2(node2, _, _, true, unbind(config)) and
+  nodeCand2(node1, _, config) and
+  nodeCand2(node2, true, unbind(config)) and
   nodeCand2IsReadAndStored(tc.getContent(), unbind(config))
 }
 
@@ -1210,7 +1220,7 @@ private predicate flowCandFwd0(
   Node node, boolean fromArg, AccessPathFrontOption argApf, AccessPathFront apf,
   Configuration config
 ) {
-  nodeCand2(node, _, _, false, config) and
+  nodeCand2(node, false, config) and
   config.isSource(node) and
   fromArg = false and
   argApf = TAccessPathFrontNone() and
@@ -1218,17 +1228,17 @@ private predicate flowCandFwd0(
   or
   exists(Node mid |
     flowCandFwd(mid, fromArg, argApf, apf, config) and
-    localFlowBigStep(mid, node, true, _, config, _)
+    localFlowBigStep(mid, node, unbindBool(apf.toBoolNonEmpty()), true, _, config, _)
   )
   or
   exists(Node mid, AccessPathFrontNil nil |
     flowCandFwd(mid, fromArg, argApf, nil, config) and
-    localFlowBigStep(mid, node, false, apf, config, _)
+    localFlowBigStep(mid, node, _, false, apf, config, _)
   )
   or
   exists(Node mid |
     flowCandFwd(mid, _, _, apf, config) and
-    nodeCand2(node, unbind(config)) and
+    nodeCand2(node, unbindBool(apf.toBoolNonEmpty()), unbind(config)) and
     jumpStep(mid, node, config) and
     fromArg = false and
     argApf = TAccessPathFrontNone()
@@ -1236,7 +1246,7 @@ private predicate flowCandFwd0(
   or
   exists(Node mid, AccessPathFrontNil nil |
     flowCandFwd(mid, _, _, nil, config) and
-    nodeCand2(node, unbind(config)) and
+    nodeCand2(node, false, unbind(config)) and
     additionalJumpStep(mid, node, config) and
     fromArg = false and
     argApf = TAccessPathFrontNone() and
@@ -1247,7 +1257,7 @@ private predicate flowCandFwd0(
   exists(Node mid, TypedContent tc, AccessPathFront apf0, DataFlowType contentType |
     flowCandFwd(mid, fromArg, argApf, apf0, config) and
     storeCand2(mid, tc, node, contentType, config) and
-    nodeCand2(node, _, _, true, unbind(config)) and
+    nodeCand2(node, true, unbind(config)) and
     apf.headUsesContent(tc) and
     compatibleTypes(apf0.getType(), contentType)
   )
@@ -1256,7 +1266,7 @@ private predicate flowCandFwd0(
   exists(TypedContent tc |
     flowCandFwdRead(tc, node, fromArg, argApf, config) and
     flowCandFwdConsCand(tc, apf, config) and
-    nodeCand2(node, _, _, unbindBool(apf.toBoolNonEmpty()), unbind(config))
+    nodeCand2(node, unbindBool(apf.toBoolNonEmpty()), unbind(config))
   )
   or
   // flow into a callable
@@ -1283,7 +1293,7 @@ private predicate flowCandFwdConsCand(TypedContent tc, AccessPathFront apf, Conf
   exists(Node mid, Node n, DataFlowType contentType |
     flowCandFwd(mid, _, _, apf, config) and
     storeCand2(mid, tc, n, contentType, config) and
-    nodeCand2(n, _, _, true, unbind(config)) and
+    nodeCand2(n, true, unbind(config)) and
     compatibleTypes(apf.getType(), contentType)
   )
 }
@@ -1312,7 +1322,7 @@ private predicate flowCandFwdIn(
 ) {
   exists(ArgumentNode arg, boolean allowsFieldFlow |
     flowCandFwd(arg, fromArg, argApf, apf, config) and
-    flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config)
+    flowIntoCallNodeCand2(call, arg, p, unbindBool(apf.toBoolNonEmpty()), allowsFieldFlow, config)
   |
     apf instanceof AccessPathFrontNil or allowsFieldFlow = true
   )
@@ -1325,7 +1335,8 @@ private predicate flowCandFwdOut(
 ) {
   exists(ReturnNodeExt ret, boolean allowsFieldFlow |
     flowCandFwd(ret, fromArg, argApf, apf, config) and
-    flowOutOfCallNodeCand2(call, ret, node, allowsFieldFlow, config)
+    flowOutOfCallNodeCand2(call, ret, node, unbindBool(apf.toBoolNonEmpty()), allowsFieldFlow,
+      config)
   |
     apf instanceof AccessPathFrontNil or allowsFieldFlow = true
   )
@@ -1381,13 +1392,13 @@ private predicate flowCand0(
   apf instanceof AccessPathFrontNil
   or
   exists(Node mid |
-    localFlowBigStep(node, mid, true, _, config, _) and
+    localFlowBigStep(node, mid, unbindBool(apf.toBoolNonEmpty()), true, _, config, _) and
     flowCand(mid, toReturn, returnApf, apf, config)
   )
   or
   exists(Node mid, AccessPathFrontNil nil |
     flowCandFwd(node, _, _, apf, config) and
-    localFlowBigStep(node, mid, false, _, config, _) and
+    localFlowBigStep(node, mid, _, false, _, config, _) and
     flowCand(mid, toReturn, returnApf, nil, config) and
     apf instanceof AccessPathFrontNil
   )
@@ -1482,7 +1493,7 @@ private predicate flowCandOut(
 ) {
   exists(Node out, boolean allowsFieldFlow |
     flowCand(out, toReturn, returnApf, apf, config) and
-    flowOutOfCallNodeCand2(call, ret, out, allowsFieldFlow, config)
+    flowOutOfCallNodeCand2(call, ret, out, unbindBool(apf.toBoolNonEmpty()), allowsFieldFlow, config)
   |
     apf instanceof AccessPathFrontNil or allowsFieldFlow = true
   )
@@ -1495,7 +1506,7 @@ private predicate flowCandIn(
 ) {
   exists(ParameterNode p, boolean allowsFieldFlow |
     flowCand(p, toReturn, returnApf, apf, config) and
-    flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config)
+    flowIntoCallNodeCand2(call, arg, p, unbindBool(apf.toBoolNonEmpty()), allowsFieldFlow, config)
   |
     apf instanceof AccessPathFrontNil or allowsFieldFlow = true
   )
@@ -1677,12 +1688,12 @@ private predicate flowFwd0(
   (
     exists(Node mid, LocalCallContext localCC |
       flowFwdLocalEntry(mid, cc, argAp, apf, ap, localCC, config) and
-      localFlowBigStep(mid, node, true, _, config, localCC)
+      localFlowBigStep(mid, node, unbindBool(apf.toBoolNonEmpty()), true, _, config, localCC)
     )
     or
     exists(Node mid, AccessPathNil nil, LocalCallContext localCC |
       flowFwdLocalEntry(mid, cc, argAp, _, nil, localCC, config) and
-      localFlowBigStep(mid, node, false, apf, config, localCC) and
+      localFlowBigStep(mid, node, _, false, apf, config, localCC) and
       apf = ap.(AccessPathNil).getFront()
     )
     or
@@ -1738,7 +1749,7 @@ private predicate flowFwdLocalEntry(
   LocalCallContext localCC, Configuration config
 ) {
   flowFwd(node, cc, argAp, apf, ap, config) and
-  localFlowEntry(node, config) and
+  localFlowEntry(node, _, config) and
   localCC = getLocalCallContext(cc, node.getEnclosingCallable())
 }
 
@@ -1811,7 +1822,7 @@ private predicate flowFwdIn(
 ) {
   exists(ArgumentNode arg, boolean allowsFieldFlow, DataFlowCallable c |
     flowFwd(arg, outercc, argAp, apf, ap, config) and
-    flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config) and
+    flowIntoCallNodeCand2(call, arg, p, unbindBool(apf.toBoolNonEmpty()), allowsFieldFlow, config) and
     c = p.getEnclosingCallable() and
     c = resolveCall(call, outercc) and
     flowCand(p, _, _, _, unbind(config)) and
@@ -1828,7 +1839,8 @@ private predicate flowFwdOut(
 ) {
   exists(ReturnNodeExt ret, boolean allowsFieldFlow |
     flowFwd(ret, innercc, argAp, apf, ap, config) and
-    flowOutOfCallNodeCand2(call, ret, node, allowsFieldFlow, config) and
+    flowOutOfCallNodeCand2(call, ret, node, unbindBool(apf.toBoolNonEmpty()), allowsFieldFlow,
+      config) and
     innerc = ret.getEnclosingCallable() and
     flowCand(node, _, _, _, unbind(config)) and
     (
@@ -1887,13 +1899,13 @@ private predicate flow0(
   ap instanceof AccessPathNil
   or
   exists(Node mid |
-    localFlowBigStep(node, mid, true, _, config, _) and
+    localFlowBigStep(node, mid, _, true, _, config, _) and
     flow(mid, toReturn, returnAp, ap, config)
   )
   or
   exists(Node mid, AccessPathNil nil |
     flowFwd(node, _, _, _, ap, config) and
-    localFlowBigStep(node, mid, false, _, config, _) and
+    localFlowBigStep(node, mid, _, false, _, config, _) and
     flow(mid, toReturn, returnAp, nil, config) and
     ap instanceof AccessPathNil
   )
@@ -1992,7 +2004,7 @@ private predicate flowOut(
 ) {
   exists(Node out, boolean allowsFieldFlow |
     flow(out, toReturn, returnAp, ap, config) and
-    flowOutOfCallNodeCand2(call, ret, out, allowsFieldFlow, config)
+    flowOutOfCallNodeCand2(call, ret, out, _, allowsFieldFlow, config)
   |
     ap instanceof AccessPathNil or allowsFieldFlow = true
   )
@@ -2005,7 +2017,7 @@ private predicate flowIn(
 ) {
   exists(ParameterNode p, boolean allowsFieldFlow |
     flow(p, toReturn, returnAp, ap, config) and
-    flowIntoCallNodeCand2(call, arg, p, allowsFieldFlow, config)
+    flowIntoCallNodeCand2(call, arg, p, _, allowsFieldFlow, config)
   |
     ap instanceof AccessPathNil or allowsFieldFlow = true
   )
@@ -2307,10 +2319,10 @@ private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, SummaryCt
     localCC = getLocalCallContext(cc, midnode.getEnclosingCallable()) and
     ap0 = mid.getAp()
   |
-    localFlowBigStep(midnode, node, true, _, conf, localCC) and
+    localFlowBigStep(midnode, node, _, true, _, conf, localCC) and
     ap = ap0
     or
-    localFlowBigStep(midnode, node, false, ap.getFront(), conf, localCC) and
+    localFlowBigStep(midnode, node, _, false, ap.getFront(), conf, localCC) and
     ap0 instanceof AccessPathNil
   )
   or
