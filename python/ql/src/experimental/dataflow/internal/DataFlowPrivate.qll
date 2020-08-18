@@ -180,7 +180,7 @@ abstract class DataFlowCall extends TDataFlowCall {
 }
 
 
-/** Represents a call to a callable */
+/** Represents a call to a callable. */
 class CallNodeCall extends DataFlowCall, TCallNode {
   CallNode call;
   DataFlowCallable callable;
