@@ -6,7 +6,7 @@ QL is the powerful query language that underlies CodeQL, which is used to analyz
 About query languages and databases
 -----------------------------------
 
-This section is aimed at users with a background in general purpose programming as well as in databases. For a basic introduction and information on how to get started, see `Learning CodeQL <https://help.semmle.com/QL/learn-ql/index.html>`__.
+This section is aimed at users with a background in general purpose programming as well as in databases. For a basic introduction and information on how to get started, see "`Learning CodeQL <https://help.semmle.com/QL/learn-ql/index.html>`__."
 
 QL is a declarative, object-oriented query language that is optimized to enable efficient analysis of hierarchical data structures, in particular, databases representing software artifacts.
 
@@ -39,10 +39,10 @@ When you write this process in QL, it closely resembles the above structure. Not
      result = count(getADescendant(p))
    }
 
-For more information about the important concepts and syntactic constructs of QL, see the individual reference topics such as :doc:`Expressions <expressions>` and :doc:`Recursion <recursion>`.
+For more information about the important concepts and syntactic constructs of QL, see the individual reference topics such as ":doc:`Expressions <expressions>`" and ":doc:`Recursion <recursion>`."
 The explanations and examples help you understand how the language works, and how to write more advanced QL code.
 
-For formal specifications of the QL language and QLDoc comments, see the :doc:`QL language specification <language>` and :doc:`QLDoc comment specification <qldoc>`.
+For formal specifications of the QL language and QLDoc comments, see the ":doc:`QL language specification <language>`" and ":doc:`QLDoc comment specification <qldoc>`."
 
 QL and object orientation
 -------------------------
