@@ -10,10 +10,9 @@
 
 import python
 
-
 /** A control flow node which might correpsond to a special method call. */
 class PotentialSpecialMethodCallNode extends ControlFlowNode {
-  PotentialSpecialMethodCallNode() { this instanceof SpecialMethod::Potential}
+  PotentialSpecialMethodCallNode() { this instanceof SpecialMethod::Potential }
 }
 
 /**
