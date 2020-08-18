@@ -162,6 +162,8 @@ private predicate isRequire(DataFlow::Node nd) {
   not nd.getFile().getExtension() = "mjs"
   or
   isRequire(nd.getAPredecessor())
+  or
+  nd = DataFlow::moduleMember("module", "createRequire").getACall()
 }
 
 /**
