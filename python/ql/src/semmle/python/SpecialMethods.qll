@@ -102,6 +102,7 @@ module SpecialMethod {
   }
 }
 
+/** A control flow node corresponding to a special method call. */
 class SpecialMethodCallNode extends PotentialSpecialMethodCallNode {
   Value resolvedSpecialMethod;
 
