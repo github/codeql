@@ -190,7 +190,7 @@ private class UnsignedMulExpr extends MulExpr {
  * Holds if `expr` is effectively a multiplication of `operand` with the
  * positive constant `positive`.
  */
-private predicate multipliesByPositive(Expr expr, Expr operand, float positive) {
+private predicate effectivelyMultipliesByPositive(Expr expr, Expr operand, float positive) {
   operand = expr.(MulByConstantExpr).getOperand() and
   positive = expr.(MulByConstantExpr).getConstant() and
   positive >= 0.0 // includes positive zero
@@ -209,7 +209,7 @@ private predicate multipliesByPositive(Expr expr, Expr operand, float positive) 
  * Holds if `expr` is effectively a multiplication of `operand` with the
  * negative constant `negative`.
  */
-private predicate multipliesByNegative(Expr expr, Expr operand, float negative) {
+private predicate effectivelyMultipliesByNegative(Expr expr, Expr operand, float negative) {
   operand = expr.(MulByConstantExpr).getOperand() and
   negative = expr.(MulByConstantExpr).getConstant() and
   negative < 0.0 // includes negative zero
@@ -251,9 +251,9 @@ private predicate analyzableExpr(Expr e) {
   (
     exists(getValue(e).toFloat())
     or
-    multipliesByPositive(e, _, _)
+    effectivelyMultipliesByPositive(e, _, _)
     or
-    multipliesByNegative(e, _, _)
+    effectivelyMultipliesByNegative(e, _, _)
     or
     e instanceof MinExpr
     or
@@ -359,12 +359,12 @@ private predicate defDependsOnDef(
  */
 private predicate exprDependsOnDef(Expr e, RangeSsaDefinition srcDef, StackVariable srcVar) {
   exists(Expr operand |
-    multipliesByNegative(e, operand, _) and
+    effectivelyMultipliesByNegative(e, operand, _) and
     exprDependsOnDef(operand, srcDef, srcVar)
   )
   or
   exists(Expr operand |
-    multipliesByPositive(e, operand, _) and
+    effectivelyMultipliesByPositive(e, operand, _) and
     exprDependsOnDef(operand, srcDef, srcVar)
   )
   or
@@ -673,13 +673,13 @@ deprecated predicate positive_overflow(Expr expr) { exprMightOverflowPositively(
 /** Only to be called by `getTruncatedLowerBounds`. */
 private float getLowerBoundsImpl(Expr expr) {
   exists(Expr operand, float operandLow, float positive |
-    multipliesByPositive(expr, operand, positive) and
+    effectivelyMultipliesByPositive(expr, operand, positive) and
     operandLow = getFullyConvertedLowerBounds(operand) and
     result = positive * operandLow
   )
   or
   exists(Expr operand, float operandHigh, float negative |
-    multipliesByNegative(expr, operand, negative) and
+    effectivelyMultipliesByNegative(expr, operand, negative) and
     operandHigh = getFullyConvertedUpperBounds(operand) and
     result = negative * operandHigh
   )
@@ -867,13 +867,13 @@ private float getLowerBoundsImpl(Expr expr) {
 /** Only to be called by `getTruncatedUpperBounds`. */
 private float getUpperBoundsImpl(Expr expr) {
   exists(Expr operand, float operandHigh, float positive |
-    multipliesByPositive(expr, operand, positive) and
+    effectivelyMultipliesByPositive(expr, operand, positive) and
     operandHigh = getFullyConvertedUpperBounds(operand) and
     result = positive * operandHigh
   )
   or
   exists(Expr operand, float operandLow, float negative |
-    multipliesByNegative(expr, operand, negative) and
+    effectivelyMultipliesByNegative(expr, operand, negative) and
     operandLow = getFullyConvertedLowerBounds(operand) and
     result = negative * operandLow
   )
