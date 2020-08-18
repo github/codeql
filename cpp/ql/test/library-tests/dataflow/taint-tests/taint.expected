@@ -166,6 +166,3 @@
 | taint.cpp:470:7:470:7 | x | taint.cpp:462:6:462:11 | call to source |
 | taint.cpp:471:7:471:7 | y | taint.cpp:462:6:462:11 | call to source |
 | taint.cpp:485:7:485:10 | line | taint.cpp:480:26:480:32 | source1 |
-| vector.cpp:15:8:15:8 | x | vector.cpp:8:43:8:49 | source1 |
-| vector.cpp:23:8:23:8 | x | vector.cpp:8:43:8:49 | source1 |
-| vector.cpp:28:8:28:8 | x | vector.cpp:8:43:8:49 | source1 |

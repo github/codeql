@@ -101,6 +101,3 @@
 | taint.cpp:446:7:446:7 | taint.cpp:445:14:445:28 | AST only |
 | taint.cpp:447:9:447:17 | taint.cpp:445:14:445:28 | AST only |
 | taint.cpp:471:7:471:7 | taint.cpp:462:6:462:11 | AST only |
-| vector.cpp:15:8:15:8 | vector.cpp:8:43:8:49 | AST only |
-| vector.cpp:23:8:23:8 | vector.cpp:8:43:8:49 | AST only |
-| vector.cpp:28:8:28:8 | vector.cpp:8:43:8:49 | AST only |
