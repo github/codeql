@@ -16,7 +16,7 @@ import python
 module MagicMethod {
   /** A control flow node which might correpsond to a magic method call. */
   abstract class Potential extends ControlFlowNode {
-    /** Gets the name of the method that would be called */
+    /** Gets the name of the method that would be called. */
     abstract string getMagicMethodName();
 
     /** Gets the controlflow node that would be passed as the specified argument. */
