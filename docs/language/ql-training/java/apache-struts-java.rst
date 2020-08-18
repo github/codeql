@@ -134,4 +134,4 @@ Model answer, step 4
      and sink.getNode() instanceof UnsafeDeserializationSink
    select sink.getNode().(UnsafeDeserializationSink).getMethodAccess(), source, sink, "Unsafe    deserialization of $@.", source, "user input"
 
-More full-featured version: https://github.com/github/security-lab/tree/master/CodeQL_Queries/java/Apache_Struts_CVE-2017-9805
+More full-featured version: https://github.com/github/security-lab/tree/main/CodeQL_Queries/java/Apache_Struts_CVE-2017-9805
