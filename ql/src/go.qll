@@ -28,6 +28,7 @@ import semmle.go.dataflow.SSA
 import semmle.go.dataflow.TaintTracking
 import semmle.go.frameworks.Email
 import semmle.go.frameworks.Encoding
+import semmle.go.frameworks.Gin
 import semmle.go.frameworks.Glog
 import semmle.go.frameworks.HTTP
 import semmle.go.frameworks.Macaron
