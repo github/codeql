@@ -328,7 +328,7 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   //   `[x+1 for x in l]`
   //   nodeFrom is `l`, cfg node
   //   nodeTo is `x`, essa var
-  //   c denotes list or set
+  //   c denotes element of list or set
   exists(For f, Comp comp |
     f = getCompFor(comp) and
     nodeFrom.(CfgNode).getNode().(SequenceNode).getNode() = getCompIter(comp) and
