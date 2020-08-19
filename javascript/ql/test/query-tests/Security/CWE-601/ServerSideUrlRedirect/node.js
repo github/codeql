@@ -2,9 +2,8 @@ var https = require('https');
 var url = require('url');
 
 var server = https.createServer(function(req, res) {
-  // BAD: a request parameter is incorporated without validation into a URL redirect
   let target = url.parse(req.url, true).query.target;
-  res.writeHead(302, { Location: target });
+  res.writeHead(302, { Location: target }); // BAD: a request parameter is incorporated without validation into a URL redirect
 })
 
 server.on('request', (req, res) => {

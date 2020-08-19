@@ -194,7 +194,16 @@ class TypeVariable extends BoundedType, @typevariable {
  * and the second wildcard has a lower bound of `Float`.
  */
 class Wildcard extends BoundedType, @wildcard {
-  /** Holds if this wildcard has an upper bound. */
+  /**
+   * Holds if this wildcard is either unconstrained (i.e. `?`) or
+   * has a type bound.
+   */
+  override predicate hasTypeBound() { BoundedType.super.hasTypeBound() }
+
+  /**
+   * Holds if this wildcard is either unconstrained (i.e. `?`) or
+   * has an upper bound.
+   */
   predicate hasUpperBound() { wildcards(this, _, 1) }
 
   /** Holds if this wildcard has a lower bound. */

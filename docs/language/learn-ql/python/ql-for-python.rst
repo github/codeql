@@ -6,6 +6,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 .. toctree::
    :hidden:
 
+   basic-query-python
    introduce-libraries-python
    functions
    statements-expressions
@@ -13,7 +14,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    control-flow
    taint-tracking
 
--  `Basic Python query <https://lgtm.com/help/lgtm/console/ql-python-basic-example>`__ : Learn to write and run a simple CodeQL query using LGTM.
+-  :doc:`Basic query for Python code <basic-query-python>`: Learn to write and run a simple CodeQL query using LGTM.
 
 -  :doc:`CodeQL library for Python <introduce-libraries-python>`: When you need to analyze a Python program, you can make use of the large collection of classes in the CodeQL library for Python.
 

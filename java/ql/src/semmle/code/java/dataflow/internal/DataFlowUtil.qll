@@ -413,6 +413,18 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
       m.hasName("toString") and node1.asExpr() = ma.getArgument(1)
     )
   )
+  or
+  exists(MethodAccess ma, Method m |
+    ma = node2.asExpr() and
+    m = ma.getMethod() and
+    m
+        .getDeclaringType()
+        .getSourceDeclaration()
+        .getASourceSupertype*()
+        .hasQualifiedName("java.util", "Stack") and
+    m.hasName("push") and
+    node1.asExpr() = ma.getArgument(0)
+  )
 }
 
 /**

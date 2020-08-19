@@ -876,6 +876,8 @@ module Internal {
     not e.(QualifiableExpr).isConditional()
     or
     e instanceof SuppressNullableWarningExpr
+    or
+    e.stripCasts().getType() = any(ValueType t | not t instanceof NullableType)
   }
 
   /** Holds if expression `e2` is a non-`null` value whenever `e1` is. */

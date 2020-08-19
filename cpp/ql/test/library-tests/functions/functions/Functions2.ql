@@ -19,9 +19,6 @@ string describe(Class c, MemberFunction f) {
   f instanceof Destructor and
   result = "Destructor"
   or
-  f instanceof ConversionConstructor and
-  result = "ConversionConstructor"
-  or
   f instanceof CopyConstructor and
   result = "CopyConstructor"
   or

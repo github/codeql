@@ -697,13 +697,20 @@ predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)
  */
 class BarrierGuard extends IRGuardCondition {
   /** Override this predicate to hold if this guard validates `instr` upon evaluating to `b`. */
-  abstract predicate checks(Instruction instr, boolean b);
+  predicate checksInstr(Instruction instr, boolean b) { none() }
+
+  /** Override this predicate to hold if this guard validates `expr` upon evaluating to `b`. */
+  predicate checks(Expr e, boolean b) { none() }
 
   /** Gets a node guarded by this guard. */
   final Node getAGuardedNode() {
     exists(ValueNumber value, boolean edge |
+      (
+        this.checksInstr(value.getAnInstruction(), edge)
+        or
+        this.checks(value.getAnInstruction().getConvertedResultExpression(), edge)
+      ) and
       result.asInstruction() = value.getAnInstruction() and
-      this.checks(value.getAnInstruction(), edge) and
       this.controls(result.asInstruction().getBlock(), edge)
     )
   }
