@@ -110,6 +110,7 @@ import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.function.IntFunction;
 import java.util.HashMap;
@@ -183,40 +184,41 @@ public class CFGExtractor {
   }
 
   /**
-   * Creates an `Iterable<Node>` from the one-or-more nodes contained in `nodes`.
+   * Creates an `Collection<Node>` from the one-or-more nodes contained in `nodes`.
+   * `nodes` is either `null`, a `Node`, or a `Collection<Node>`.
    */
   @SuppressWarnings("unchecked")
-  private static Iterable<Node> createIterable(Object nodes) {
+  private static Collection<Node> createCollection(Object nodes) {
     if (nodes == null) return Collections.<Node>emptySet();
-    if (nodes instanceof Node) return CollectionUtil.singletonIterable((Node) nodes);
-    return (Iterable<Node>) nodes;
+    if (nodes instanceof Node) return Collections.<Node>singleton((Node) nodes);
+    return (Collection<Node>) nodes;
   }
 
   /**
-   * Creates an `Iterable<Node>` that iterates the nodes in reverse order from the one-or-more nodes contained in `nodes`.
+   * Creates an `Collection<Node>` that iterates the nodes in reverse order from the one-or-more nodes contained in `nodes`.
    */
-  private static Iterable<Node> createReversedIterable(final Object nodes) {
+  private static Collection<Node> createReversedCollection(final Object nodes) {
     List<Node> list = new ArrayList<>();
-    createIterable(nodes).forEach(list::add);
+    createCollection(nodes).forEach(list::add);
     Collections.reverse(list);
     return list;
   }
 
   /** Returns a list of all the nodes in a tree of nested lists. */
-  private static List<Node> flattenNestedList(Iterable<?> lists) {
+  private static List<Node> flattenNestedList(Collection<?> lists) {
     return flattenNestedList(lists, new ArrayList<>());
   }
 
   /**
    * Appends all the nodes in a tree of nested lists the given output list, and returns that list.
    */
-  private static List<Node> flattenNestedList(Iterable<?> lists, List<Node> output) {
+  private static List<Node> flattenNestedList(Collection<?> lists, List<Node> output) {
     for (Object object : lists) {
       if (object == null) continue;
       if (object instanceof Node) {
         output.add((Node) object);
-      } else if (object instanceof Iterable<?>) {
-        flattenNestedList((Iterable<?>) object, output);
+      } else if (object instanceof Collection<?>) {
+        flattenNestedList((Collection<?>) object, output);
       } else {
         throw new RuntimeException("Cannot flatten object: " + object);
       }
@@ -234,7 +236,7 @@ public class CFGExtractor {
     if (xs instanceof List<?>) {
       @SuppressWarnings("unchecked")
       List<Node> xsCopy = new ArrayList<Node>((List<Node>) xs);
-      for (Node y : createIterable(ys)) if (!xsCopy.contains(y)) xsCopy.add(y);
+      for (Node y : createCollection(ys)) if (!xsCopy.contains(y)) xsCopy.add(y);
       return xsCopy;
     } else {
       if (ys instanceof List<?>) {
@@ -262,7 +264,7 @@ public class CFGExtractor {
    */
   private void writeSuccessors(INode prev, Object succs) {
     Label prevKey = trapwriter.localID(prev);
-    for (Node succ : createIterable(succs)) writeSuccessor(prevKey, succ);
+    for (Node succ : createCollection(succs)) writeSuccessor(prevKey, succ);
   }
 
   /**
@@ -947,7 +949,7 @@ public class CFGExtractor {
     private Object seq(Object... nodes) {
       Object fst = nodes[nodes.length - 1];
       for (int i = nodes.length - 2; i >= 0; --i) {
-        for (Node node : createReversedIterable(nodes[i])) {
+        for (Node node : createReversedCollection(nodes[i])) {
           Node ffst = visitWithSuccessors(node, fst);
           if (ffst != null) fst = ffst;
         }
@@ -1890,7 +1892,7 @@ public class CFGExtractor {
       Label propkey = trapwriter.localID(nd, "JSXSpreadAttribute");
       Label spreadkey = trapwriter.localID(nd);
       trapwriter.addTuple("successor", spreadkey, propkey);
-      for (Node succ : createIterable(c.getAllSuccessors())) writeSuccessor(propkey, succ);
+      for (Node succ : createCollection(c.getAllSuccessors())) writeSuccessor(propkey, succ);
       return null;
     }
 
