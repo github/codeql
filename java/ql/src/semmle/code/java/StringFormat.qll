@@ -95,7 +95,8 @@ class FmtSyntax extends TFmtSyntax {
 }
 
 private Expr getArgumentOrQualifier(Call c, int i) {
-  result = c.getArgument(i) or
+  result = c.getArgument(i)
+  or
   result = c.getQualifier() and i = -1
 }
 
