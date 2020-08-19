@@ -20,7 +20,7 @@ newtype TNode =
   /** A node corresponding to an SSA variable. */
   TEssaNode(EssaVariable var) or
   /** A node corresponding to a control flow node. */
-  TCfgNode(ControlFlowNode node)
+  TCfgNode(DataFlowCfgNode node)
 
 /**
  * An element, viewed as a node in a data flow graph. Either an SSA variable
@@ -68,12 +68,12 @@ class EssaNode extends Node, TEssaNode {
   override Location getLocation() { result = var.getDefinition().getLocation() }
 }
 
-abstract class CfgNode extends Node, TCfgNode {
-  ControlFlowNode node;
+class CfgNode extends Node, TCfgNode {
+  DataFlowCfgNode node;
 
   CfgNode() { this = TCfgNode(node) }
 
-  ControlFlowNode getNode() { result = node }
+  DataFlowCfgNode getNode() { result = node }
 
   /** Gets a textual representation of this element. */
   override string toString() { result = node.toString() }
@@ -83,10 +83,6 @@ abstract class CfgNode extends Node, TCfgNode {
   override Location getLocation() { result = node.getLocation() }
 }
 
-class CfgLiteralNode extends CfgNode {
-  CfgLiteralNode() { node.isLiteral() }
-}
-
 /**
  * An expression, viewed as a node in a data flow graph.
  *
@@ -94,13 +90,7 @@ class CfgLiteralNode extends CfgNode {
  * to multiple `ExprNode`s, just like it may correspond to multiple
  * `ControlFlow::Node`s.
  */
-class ExprNode extends CfgNode {
-  ExprNode() {
-    // node.isAttribute()
-    // or
-    node instanceof NameNode
-  }
-}
+class ExprNode extends CfgNode { }
 
 /** Gets a node corresponding to expression `e`. */
 ExprNode exprNode(DataFlowExpr e) { none() }
