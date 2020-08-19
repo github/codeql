@@ -25,9 +25,9 @@ namespace Semmle.Extraction.CIL.Entities
             trapFile.Write(Semmle.Extraction.Entities.File.PathAsDatabaseId(path));
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            return GetType() == obj.GetType() && path == ((File)obj).path;
+            return GetType() == obj?.GetType() && path == ((File)obj).path;
         }
 
         public override int GetHashCode() => 11 * path.GetHashCode();
@@ -36,7 +36,11 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                var parent = cx.CreateFolder(System.IO.Path.GetDirectoryName(path));
+                var directoryName = System.IO.Path.GetDirectoryName(path);
+                if (directoryName == null)
+                    throw new InternalError($"Directory name for path '{path}' is null.");
+
+                var parent = cx.CreateFolder(directoryName);
                 yield return parent;
                 yield return Tuples.containerparent(parent, this);
                 yield return Tuples.files(this, path, System.IO.Path.GetFileNameWithoutExtension(path), System.IO.Path.GetExtension(path).Substring(1));

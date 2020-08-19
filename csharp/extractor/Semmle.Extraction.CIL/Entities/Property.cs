@@ -48,7 +48,7 @@ namespace Semmle.Extraction.CIL.Entities
             trapFile.Write(")");
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is Property property && Equals(handle, property.handle);
         }

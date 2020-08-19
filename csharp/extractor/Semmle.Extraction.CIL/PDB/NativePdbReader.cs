@@ -23,7 +23,7 @@ namespace Semmle.Extraction.PDB
             public Document(ISymUnmanagedDocument doc)
             {
                 document = doc;
-                contents = new Lazy<string>(() =>
+                contents = new Lazy<string?>(() =>
                 {
                     bool isEmbedded;
                     if (document.HasEmbeddedSource(out isEmbedded) == 0 && isEmbedded)
@@ -38,7 +38,7 @@ namespace Semmle.Extraction.PDB
                 });
             }
 
-            public override bool Equals(object obj)
+            public override bool Equals(object? obj)
             {
                 var otherDoc = obj as Document;
                 return otherDoc != null && Path.Equals(otherDoc.Path);
@@ -50,14 +50,14 @@ namespace Semmle.Extraction.PDB
 
             public override string ToString() => Path;
 
-            readonly Lazy<string> contents;
+            readonly Lazy<string?> contents;
 
-            public string Contents => contents.Value;
+            public string? Contents => contents.Value;
         }
 
         public IEnumerable<ISourceFile> SourceFiles => reader.GetDocuments().Select(d => new Document(d));
 
-        public IMethod GetMethod(MethodDebugInformationHandle h)
+        public IMethod? GetMethod(MethodDebugInformationHandle h)
         {
             int methodToken = MetadataTokens.GetToken(h.ToDefinitionHandle());
             var method = reader.GetMethod(methodToken);
@@ -72,7 +72,7 @@ namespace Semmle.Extraction.PDB
                     Select(sp => new SequencePoint(sp.Offset, new Location(new Document(sp.Document), sp.StartLine, sp.StartColumn, sp.EndLine, sp.EndColumn))).
                     ToArray();
 
-                return s.Any() ? new Method { SequencePoints = s } : null;
+                return s.Any() ? new Method(s) : null;
             }
             return null;
         }
@@ -87,7 +87,7 @@ namespace Semmle.Extraction.PDB
         readonly ISymUnmanagedReader5 reader;
         readonly FileStream pdbStream;
 
-        public static NativePdbReader CreateFromAssembly(string assemblyPath, PEReader peReader)
+        public static NativePdbReader? CreateFromAssembly(string assemblyPath, PEReader peReader)
         {
             // The Native PDB reader uses an unmanaged Windows DLL
             // so only works on Windows.
@@ -123,7 +123,7 @@ namespace Semmle.Extraction.PDB
         {
         }
 
-        public object GetMetadataImport() => null;
+        public object? GetMetadataImport() => null;
 
         public unsafe bool TryGetStandaloneSignature(int standaloneSignatureToken, out byte* signature, out int length) =>
             throw new NotImplementedException();

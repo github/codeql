@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override string IdSuffix => ";cil-event";
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is Event e && handle.Equals(e.handle);
         }
