@@ -182,15 +182,15 @@ public class CFGExtractor {
   }
 
   @SuppressWarnings("unchecked")
-  private static Iterable<Node> foreach(Object nd) {
+  private static Iterable<Node> createIterable(Object nd) {
     if (nd == null) return Collections.<Node>emptySet();
     if (nd instanceof Node) return CollectionUtil.singletonIterable((Node) nd);
     return (Iterable<Node>) nd;
   }
 
-  private Iterable<Node> hcaerof(final Object nd) {
+  private Iterable<Node> createReversedIterable(final Object nd) {
     List<Node> list = new ArrayList<>();
-    foreach(nd).forEach(list::add);
+    createIterable(nd).forEach(list::add);
     Collections.reverse(list);
     return list;
   }
@@ -223,7 +223,7 @@ public class CFGExtractor {
     if (xs instanceof List<?>) {
       @SuppressWarnings("unchecked")
       List<Node> xsCopy = new ArrayList<Node>((List<Node>) xs);
-      for (Node y : foreach(ys)) if (!xsCopy.contains(y)) xsCopy.add(y);
+      for (Node y : createIterable(ys)) if (!xsCopy.contains(y)) xsCopy.add(y);
       return xsCopy;
     } else {
       if (ys instanceof List<?>) {
@@ -251,7 +251,7 @@ public class CFGExtractor {
    */
   private void writeSuccessors(INode prev, Object succs) {
     Label prevKey = trapwriter.localID(prev);
-    for (Node succ : foreach(succs)) writeSuccessor(prevKey, succ);
+    for (Node succ : createIterable(succs)) writeSuccessor(prevKey, succ);
   }
 
   /**
@@ -918,7 +918,7 @@ public class CFGExtractor {
     private Object seq(Object... nodes) {
       Object fst = nodes[nodes.length - 1];
       for (int i = nodes.length - 2; i >= 0; --i) {
-        for (Node node : hcaerof(nodes[i])) {
+        for (Node node : createReversedIterable(nodes[i])) {
           Node ffst = visit(node, fst, null);
           if (ffst != null) fst = ffst;
         }
@@ -1856,7 +1856,7 @@ public class CFGExtractor {
       Label propkey = trapwriter.localID(nd, "JSXSpreadAttribute");
       Label spreadkey = trapwriter.localID(nd);
       trapwriter.addTuple("successor", spreadkey, propkey);
-      for (Node succ : foreach(c.getAllSuccessors())) writeSuccessor(propkey, succ);
+      for (Node succ : createIterable(c.getAllSuccessors())) writeSuccessor(propkey, succ);
       return null;
     }
 
