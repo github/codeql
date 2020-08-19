@@ -117,6 +117,7 @@ namespace std {
 		vector() noexcept(noexcept(Allocator())) : vector(Allocator()) { }
 		explicit vector(const Allocator&) noexcept;
 		explicit vector(size_type n, const Allocator& = Allocator());
+		vector(size_type n, const T& value, const Allocator& = Allocator()); 
 		~vector();
 
 		vector& operator=(const vector& x);

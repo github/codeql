@@ -1330,59 +1330,61 @@
 | taint.cpp:483:18:483:19 | ref arg & ... | taint.cpp:483:19:483:19 | n [inner post update] |  |
 | taint.cpp:483:19:483:19 | n | taint.cpp:483:18:483:19 | & ... |  |
 | taint.cpp:483:28:483:34 | source1 | taint.cpp:483:11:483:15 | ref arg & ... | TAINT |
-| vector.cpp:8:43:8:49 | source1 | vector.cpp:12:21:12:27 | source1 |  |
-| vector.cpp:8:43:8:49 | source1 | vector.cpp:26:33:26:39 | source1 |  |
-| vector.cpp:12:21:12:28 | call to vector | vector.cpp:14:14:14:14 | v |  |
-| vector.cpp:12:21:12:28 | call to vector | vector.cpp:18:38:18:38 | v |  |
-| vector.cpp:12:21:12:28 | call to vector | vector.cpp:18:55:18:55 | v |  |
-| vector.cpp:12:21:12:28 | call to vector | vector.cpp:22:15:22:15 | v |  |
-| vector.cpp:12:21:12:28 | call to vector | vector.cpp:30:1:30:1 | v |  |
-| vector.cpp:14:14:14:14 | call to begin | vector.cpp:14:14:14:14 | (__begin) |  |
-| vector.cpp:14:14:14:14 | call to begin | vector.cpp:14:14:14:14 | (__begin) |  |
-| vector.cpp:14:14:14:14 | call to begin | vector.cpp:14:14:14:14 | (__begin) |  |
-| vector.cpp:14:14:14:14 | call to end | vector.cpp:14:14:14:14 | (__end) |  |
-| vector.cpp:14:14:14:14 | call to operator* | vector.cpp:15:8:15:8 | x |  |
-| vector.cpp:14:14:14:14 | ref arg (__begin) | vector.cpp:14:14:14:14 | (__begin) |  |
-| vector.cpp:14:14:14:14 | ref arg (__begin) | vector.cpp:14:14:14:14 | (__begin) |  |
-| vector.cpp:14:14:14:14 | ref arg (__begin) | vector.cpp:14:14:14:14 | (__begin) |  |
-| vector.cpp:14:14:14:14 | ref arg (__range) | vector.cpp:14:14:14:14 | (__range) |  |
-| vector.cpp:14:14:14:14 | v | vector.cpp:14:14:14:14 | (__range) |  |
-| vector.cpp:14:14:14:14 | v | vector.cpp:14:14:14:14 | (__range) |  |
-| vector.cpp:14:14:14:14 | v | vector.cpp:14:14:14:14 | call to operator* | TAINT |
-| vector.cpp:18:38:18:38 | ref arg v | vector.cpp:18:55:18:55 | v |  |
-| vector.cpp:18:38:18:38 | ref arg v | vector.cpp:22:15:22:15 | v |  |
-| vector.cpp:18:38:18:38 | ref arg v | vector.cpp:30:1:30:1 | v |  |
-| vector.cpp:18:40:18:44 | call to begin | vector.cpp:18:49:18:50 | it |  |
-| vector.cpp:18:40:18:44 | call to begin | vector.cpp:18:66:18:67 | it |  |
-| vector.cpp:18:40:18:44 | call to begin | vector.cpp:19:9:19:10 | it |  |
-| vector.cpp:18:55:18:55 | ref arg v | vector.cpp:18:55:18:55 | v |  |
-| vector.cpp:18:55:18:55 | ref arg v | vector.cpp:22:15:22:15 | v |  |
-| vector.cpp:18:55:18:55 | ref arg v | vector.cpp:30:1:30:1 | v |  |
-| vector.cpp:18:66:18:67 | ref arg it | vector.cpp:18:49:18:50 | it |  |
-| vector.cpp:18:66:18:67 | ref arg it | vector.cpp:18:66:18:67 | it |  |
-| vector.cpp:18:66:18:67 | ref arg it | vector.cpp:19:9:19:10 | it |  |
-| vector.cpp:22:15:22:15 | call to begin | vector.cpp:22:15:22:15 | (__begin) |  |
-| vector.cpp:22:15:22:15 | call to begin | vector.cpp:22:15:22:15 | (__begin) |  |
-| vector.cpp:22:15:22:15 | call to begin | vector.cpp:22:15:22:15 | (__begin) |  |
-| vector.cpp:22:15:22:15 | call to end | vector.cpp:22:15:22:15 | (__end) |  |
-| vector.cpp:22:15:22:15 | call to operator* | vector.cpp:23:8:23:8 | x |  |
-| vector.cpp:22:15:22:15 | ref arg (__begin) | vector.cpp:22:15:22:15 | (__begin) |  |
-| vector.cpp:22:15:22:15 | ref arg (__begin) | vector.cpp:22:15:22:15 | (__begin) |  |
-| vector.cpp:22:15:22:15 | ref arg (__begin) | vector.cpp:22:15:22:15 | (__begin) |  |
-| vector.cpp:22:15:22:15 | ref arg (__range) | vector.cpp:22:15:22:15 | (__range) |  |
-| vector.cpp:22:15:22:15 | v | vector.cpp:22:15:22:15 | (__range) |  |
-| vector.cpp:22:15:22:15 | v | vector.cpp:22:15:22:15 | (__range) |  |
-| vector.cpp:22:15:22:15 | v | vector.cpp:22:15:22:15 | call to operator* | TAINT |
-| vector.cpp:26:33:26:40 | call to vector | vector.cpp:27:21:27:27 | const_v |  |
-| vector.cpp:26:33:26:40 | call to vector | vector.cpp:30:1:30:1 | const_v |  |
-| vector.cpp:27:21:27:21 | call to begin | vector.cpp:27:21:27:21 | (__begin) |  |
-| vector.cpp:27:21:27:21 | call to begin | vector.cpp:27:21:27:21 | (__begin) |  |
-| vector.cpp:27:21:27:21 | call to begin | vector.cpp:27:21:27:21 | (__begin) |  |
-| vector.cpp:27:21:27:21 | call to end | vector.cpp:27:21:27:21 | (__end) |  |
-| vector.cpp:27:21:27:21 | call to operator* | vector.cpp:28:8:28:8 | x |  |
-| vector.cpp:27:21:27:21 | ref arg (__begin) | vector.cpp:27:21:27:21 | (__begin) |  |
-| vector.cpp:27:21:27:21 | ref arg (__begin) | vector.cpp:27:21:27:21 | (__begin) |  |
-| vector.cpp:27:21:27:21 | ref arg (__begin) | vector.cpp:27:21:27:21 | (__begin) |  |
-| vector.cpp:27:21:27:27 | const_v | vector.cpp:27:21:27:21 | (__range) |  |
-| vector.cpp:27:21:27:27 | const_v | vector.cpp:27:21:27:21 | (__range) |  |
-| vector.cpp:27:21:27:27 | const_v | vector.cpp:27:21:27:21 | call to operator* | TAINT |
+| vector.cpp:8:43:8:49 | source1 | vector.cpp:9:26:9:32 | source1 |  |
+| vector.cpp:8:43:8:49 | source1 | vector.cpp:23:38:23:44 | source1 |  |
+| vector.cpp:9:21:9:33 | call to vector | vector.cpp:11:14:11:14 | v |  |
+| vector.cpp:9:21:9:33 | call to vector | vector.cpp:15:38:15:38 | v |  |
+| vector.cpp:9:21:9:33 | call to vector | vector.cpp:15:55:15:55 | v |  |
+| vector.cpp:9:21:9:33 | call to vector | vector.cpp:19:15:19:15 | v |  |
+| vector.cpp:9:21:9:33 | call to vector | vector.cpp:27:1:27:1 | v |  |
+| vector.cpp:9:26:9:32 | source1 | vector.cpp:9:21:9:33 | call to vector | TAINT |
+| vector.cpp:11:14:11:14 | call to begin | vector.cpp:11:14:11:14 | (__begin) |  |
+| vector.cpp:11:14:11:14 | call to begin | vector.cpp:11:14:11:14 | (__begin) |  |
+| vector.cpp:11:14:11:14 | call to begin | vector.cpp:11:14:11:14 | (__begin) |  |
+| vector.cpp:11:14:11:14 | call to end | vector.cpp:11:14:11:14 | (__end) |  |
+| vector.cpp:11:14:11:14 | call to operator* | vector.cpp:12:8:12:8 | x |  |
+| vector.cpp:11:14:11:14 | ref arg (__begin) | vector.cpp:11:14:11:14 | (__begin) |  |
+| vector.cpp:11:14:11:14 | ref arg (__begin) | vector.cpp:11:14:11:14 | (__begin) |  |
+| vector.cpp:11:14:11:14 | ref arg (__begin) | vector.cpp:11:14:11:14 | (__begin) |  |
+| vector.cpp:11:14:11:14 | ref arg (__range) | vector.cpp:11:14:11:14 | (__range) |  |
+| vector.cpp:11:14:11:14 | v | vector.cpp:11:14:11:14 | (__range) |  |
+| vector.cpp:11:14:11:14 | v | vector.cpp:11:14:11:14 | (__range) |  |
+| vector.cpp:11:14:11:14 | v | vector.cpp:11:14:11:14 | call to operator* | TAINT |
+| vector.cpp:15:38:15:38 | ref arg v | vector.cpp:15:55:15:55 | v |  |
+| vector.cpp:15:38:15:38 | ref arg v | vector.cpp:19:15:19:15 | v |  |
+| vector.cpp:15:38:15:38 | ref arg v | vector.cpp:27:1:27:1 | v |  |
+| vector.cpp:15:40:15:44 | call to begin | vector.cpp:15:49:15:50 | it |  |
+| vector.cpp:15:40:15:44 | call to begin | vector.cpp:15:66:15:67 | it |  |
+| vector.cpp:15:40:15:44 | call to begin | vector.cpp:16:9:16:10 | it |  |
+| vector.cpp:15:55:15:55 | ref arg v | vector.cpp:15:55:15:55 | v |  |
+| vector.cpp:15:55:15:55 | ref arg v | vector.cpp:19:15:19:15 | v |  |
+| vector.cpp:15:55:15:55 | ref arg v | vector.cpp:27:1:27:1 | v |  |
+| vector.cpp:15:66:15:67 | ref arg it | vector.cpp:15:49:15:50 | it |  |
+| vector.cpp:15:66:15:67 | ref arg it | vector.cpp:15:66:15:67 | it |  |
+| vector.cpp:15:66:15:67 | ref arg it | vector.cpp:16:9:16:10 | it |  |
+| vector.cpp:19:15:19:15 | call to begin | vector.cpp:19:15:19:15 | (__begin) |  |
+| vector.cpp:19:15:19:15 | call to begin | vector.cpp:19:15:19:15 | (__begin) |  |
+| vector.cpp:19:15:19:15 | call to begin | vector.cpp:19:15:19:15 | (__begin) |  |
+| vector.cpp:19:15:19:15 | call to end | vector.cpp:19:15:19:15 | (__end) |  |
+| vector.cpp:19:15:19:15 | call to operator* | vector.cpp:20:8:20:8 | x |  |
+| vector.cpp:19:15:19:15 | ref arg (__begin) | vector.cpp:19:15:19:15 | (__begin) |  |
+| vector.cpp:19:15:19:15 | ref arg (__begin) | vector.cpp:19:15:19:15 | (__begin) |  |
+| vector.cpp:19:15:19:15 | ref arg (__begin) | vector.cpp:19:15:19:15 | (__begin) |  |
+| vector.cpp:19:15:19:15 | ref arg (__range) | vector.cpp:19:15:19:15 | (__range) |  |
+| vector.cpp:19:15:19:15 | v | vector.cpp:19:15:19:15 | (__range) |  |
+| vector.cpp:19:15:19:15 | v | vector.cpp:19:15:19:15 | (__range) |  |
+| vector.cpp:19:15:19:15 | v | vector.cpp:19:15:19:15 | call to operator* | TAINT |
+| vector.cpp:23:33:23:45 | call to vector | vector.cpp:24:21:24:27 | const_v |  |
+| vector.cpp:23:33:23:45 | call to vector | vector.cpp:27:1:27:1 | const_v |  |
+| vector.cpp:23:38:23:44 | source1 | vector.cpp:23:33:23:45 | call to vector | TAINT |
+| vector.cpp:24:21:24:21 | call to begin | vector.cpp:24:21:24:21 | (__begin) |  |
+| vector.cpp:24:21:24:21 | call to begin | vector.cpp:24:21:24:21 | (__begin) |  |
+| vector.cpp:24:21:24:21 | call to begin | vector.cpp:24:21:24:21 | (__begin) |  |
+| vector.cpp:24:21:24:21 | call to end | vector.cpp:24:21:24:21 | (__end) |  |
+| vector.cpp:24:21:24:21 | call to operator* | vector.cpp:25:8:25:8 | x |  |
+| vector.cpp:24:21:24:21 | ref arg (__begin) | vector.cpp:24:21:24:21 | (__begin) |  |
+| vector.cpp:24:21:24:21 | ref arg (__begin) | vector.cpp:24:21:24:21 | (__begin) |  |
+| vector.cpp:24:21:24:21 | ref arg (__begin) | vector.cpp:24:21:24:21 | (__begin) |  |
+| vector.cpp:24:21:24:27 | const_v | vector.cpp:24:21:24:21 | (__range) |  |
+| vector.cpp:24:21:24:27 | const_v | vector.cpp:24:21:24:21 | (__range) |  |
+| vector.cpp:24:21:24:27 | const_v | vector.cpp:24:21:24:21 | call to operator* | TAINT |
