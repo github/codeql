@@ -72,6 +72,15 @@ module AllocationSizeOverflow {
     }
   }
 
+  /** A check of the allocation size, acting as a guard to prevent allocation-size overflow. */
+  class AllocationSizeCheck extends DataFlow::BarrierGuard, DataFlow::RelationalComparisonNode {
+    override predicate checks(Expr e, boolean branch) {
+      exists(DataFlow::Node lesser | this.leq(branch, lesser, _, _) |
+        globalValueNumber(DataFlow::exprNode(e)) = globalValueNumber(lesser)
+      )
+    }
+  }
+
   /**
    * An arithmetic operation that might overflow, and whose result is used to compute an
    * allocation size.
@@ -81,7 +90,8 @@ module AllocationSizeOverflow {
 
     DefaultSink() {
       this instanceof OverflowProneOperand and
-      localStep*(this, allocsz)
+      localStep*(this, allocsz) and
+      not exists(AllocationSizeCheck g | allocsz = g.getAGuardedNode())
     }
 
     override DataFlow::Node getAllocationSize() { result = allocsz }
