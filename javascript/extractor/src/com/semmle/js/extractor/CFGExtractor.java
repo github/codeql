@@ -189,15 +189,10 @@ public class CFGExtractor {
   }
 
   private Iterable<Node> hcaerof(final Object nd) {
-    if (nd == null) return Collections.<Node>emptySet();
-    if (nd instanceof Node) return CollectionUtil.singletonIterable((Node) nd);
-    return new Iterable<Node>() {
-      @SuppressWarnings("unchecked")
-      @Override
-      public Iterator<Node> iterator() {
-        return CollectionUtil.reverseIterator((List<Node>) nd);
-      }
-    };
+    List<Node> list = new ArrayList<>();
+    foreach(nd).forEach(list::add);
+    Collections.reverse(list);
+    return list;
   }
 
   /** Returns a list of all the nodes in a tree of nested lists. */
