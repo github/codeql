@@ -123,6 +123,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Extractor for intra-procedural expression-level control flow graphs.
@@ -190,7 +191,7 @@ public class CFGExtractor {
    * `nodes` is either `null`, a `Node`, or a `Collection<Node>`.
    */
   @SuppressWarnings("unchecked")
-  private static Collection<Node> createCollection(Object nodes) {
+  private static Collection<Node> createCollection(Object nodes) { // TODO: Delete usages.
     if (nodes == null) return Collections.<Node>emptySet();
     if (nodes instanceof Node) return Collections.<Node>singleton((Node) nodes);
     return (Collection<Node>) nodes;
@@ -206,52 +207,51 @@ public class CFGExtractor {
     return list;
   }
 
-  /** Returns a list of all the nodes in a tree of nested lists. */
-  private static List<Node> flattenNestedList(Collection<?> lists) {
-    return flattenNestedList(lists, new ArrayList<>());
+  private static Collection<Node> union(Node x, Node y) {
+    return union(Collections.singleton(x), Collections.singleton(y));
   }
 
-  /**
-   * Appends all the nodes in a tree of nested lists the given output list, and returns that list.
-   */
-  private static List<Node> flattenNestedList(Collection<?> lists, List<Node> output) {
-    for (Object object : lists) {
-      if (object == null) continue;
-      if (object instanceof Node) {
-        output.add((Node) object);
-      } else if (object instanceof Collection<?>) {
-        flattenNestedList((Collection<?>) object, output);
-      } else {
-        throw new RuntimeException("Cannot flatten object: " + object);
-      }
-    }
-    return output;
+  private static Collection<Node> union(Collection<Node> xs, Node y) {
+    return union(xs, Collections.singleton(y));
+  }
+
+  private static Collection<Node> union(Node x, Collection<Node> ys) {
+    return union(Collections.singleton(x), ys);
   }
 
   /**
    * Creates an order preserving concatenation of the nodes in `xs` and `ys` without duplicates.
-   * Returns `null`, or an `Node`, or a `List<Node>`.
    */
   @SuppressWarnings("unchecked")
-  private static Object union(Object xs, Object ys) {
-    Set<Node> set = new HashSet<>();
-    List<Node> result = flattenNestedList(Arrays.asList(xs, ys)).stream().filter(set::add).collect(Collectors.toList());
-    if (result.size() == 0) {
-      return null;
-    } else if (result.size() == 1) {
-      return result.get(0);
-    } else {
-      return result;
+  private static Collection<Node> union(Collection<Node> xs, Collection<Node> ys) {
+    if (xs == null || xs.size() == 0) {
+      return ys;
     }
+    if (ys == null || ys.size() == 0) {
+      return xs;
+    }
+    
+    Set<Node> set = new HashSet<>();
+    return Stream.concat(xs.stream(), ys.stream()).filter(set::add).collect(Collectors.toList());
   }
 
   /**
    * Adds tuples in the `successor` relation from `prev` to one-or-more successors in `succs`. 
-   * `succs` is either a single `INode`, or a list of `INode`s.
    */
-  private void writeSuccessors(INode prev, Object succs) {
+  private void writeSuccessors(INode prev, Collection<Node> succs) {
     Label prevKey = trapwriter.localID(prev);
-    for (Node succ : createCollection(succs)) writeSuccessor(prevKey, succ);
+    for (Node succ : succs) writeSuccessor(prevKey, succ);
+  }
+
+  /**
+   * Adds a in the `successor` relation from `prev` to `succ`. 
+   */
+  private void writeSuccessor(INode prev, Node succ) {
+    if (succ == null) {
+      return;
+    }
+    Label prevKey = trapwriter.localID(prev);
+    writeSuccessor(prevKey, succ);
   }
 
   /**
@@ -576,13 +576,13 @@ public class CFGExtractor {
     /**
      * Get all possible successors, including both "true" and "false" successors where applicable.
      */
-    public abstract Object getAllSuccessors();
+    public abstract Collection<Node> getAllSuccessors();
 
     /**
      * Depending on the value of {@code edge}, get only the "true" or only the "false" successors
      * (if they are not distinguished, the same set will be returned in both cases.)
      */
-    public abstract Object getSuccessors(boolean edge);
+    public abstract Collection<Node> getSuccessors(boolean edge);
 
     /**
      * If we have both true and false successors, place guard nodes before them indicating that
@@ -591,7 +591,7 @@ public class CFGExtractor {
      *
      * <p>Otherwise, just return the set of all successors.
      */
-    public abstract Object getGuardedSuccessors(Expression guard);
+    public abstract Collection<Node> getGuardedSuccessors(Expression guard);
   }
 
   /**
@@ -599,24 +599,24 @@ public class CFGExtractor {
    * "false" successors.
    */
   private static class SimpleSuccessorInfo extends SuccessorInfo {
-    private final Object successors;
+    private final Collection<Node> successors;
 
-    public SimpleSuccessorInfo(Object successors) {
+    public SimpleSuccessorInfo(Collection<Node> successors) {
       this.successors = successors;
     }
 
     @Override
-    public Object getAllSuccessors() {
+    public Collection<Node> getAllSuccessors() {
       return successors;
     }
 
     @Override
-    public Object getSuccessors(boolean edge) {
+    public Collection<Node> getSuccessors(boolean edge) {
       return successors;
     }
 
     @Override
-    public Object getGuardedSuccessors(Expression guard) {
+    public Collection<Node> getGuardedSuccessors(Expression guard) {
       return successors;
     }
   }
@@ -626,28 +626,28 @@ public class CFGExtractor {
    * successors.
    */
   private class SplitSuccessorInfo extends SuccessorInfo {
-    private final Object trueSuccessors;
-    private final Object falseSuccessors;
+    private final Collection<Node> trueSuccessors;
+    private final Collection<Node> falseSuccessors;
 
-    public SplitSuccessorInfo(Object trueSuccessors, Object falseSuccessors) {
+    public SplitSuccessorInfo(Collection<Node> trueSuccessors, Collection<Node> falseSuccessors) {
       this.trueSuccessors = trueSuccessors;
       this.falseSuccessors = falseSuccessors;
     }
 
     @Override
-    public Object getSuccessors(boolean edge) {
+    public Collection<Node> getSuccessors(boolean edge) {
       return edge ? trueSuccessors : falseSuccessors;
     }
 
     @Override
-    public Object getAllSuccessors() {
+    public Collection<Node> getAllSuccessors() {
       return union(trueSuccessors, falseSuccessors);
     }
 
     @Override
-    public Object getGuardedSuccessors(Expression guard) {
-      Object trueGuard = addGuard(guard, true, trueSuccessors);
-      Object falseGuard = addGuard(guard, false, falseSuccessors);
+    public Collection<Node> getGuardedSuccessors(Expression guard) {
+      Collection<Node> trueGuard = addGuard(guard, true, trueSuccessors);
+      Collection<Node> falseGuard = addGuard(guard, false, falseSuccessors);
       return union(trueGuard, falseGuard);
     }
   }
@@ -679,7 +679,7 @@ public class CFGExtractor {
    * can only add a guard for the entire <code>!a</code> expression, at which point we will try to
    * recover a condition involving <code>a</code> if possible.
    */
-  private Object addGuard(Expression test, boolean outcome, Object succs) {
+  private Collection<Node> addGuard(Expression test, boolean outcome, Collection<Node> succs) {
     if (test instanceof ParenthesizedExpression)
       return addGuard(((ParenthesizedExpression) test).getExpression(), outcome, succs);
 
@@ -706,7 +706,7 @@ public class CFGExtractor {
 
     Node guardNode = guardNode(test, outcome);
     writeSuccessors(guardNode, succs);
-    return guardNode;
+    return Collections.singleton(guardNode);
   }
 
   /** Generate guard nodes. */
@@ -774,7 +774,7 @@ public class CFGExtractor {
 
     // cache the set of normal control flow successors;
     // per-function cache, cleared after each function
-    private Map<Node, Object> followingCache = new LinkedHashMap<Node, Object>();
+    private Map<Node, Collection<Node>> followingCache = new LinkedHashMap<>();
 
     // map from a node in a chain of property accesses or calls to the successor info
     // for the first node in the chain;
@@ -842,9 +842,9 @@ public class CFGExtractor {
      * @param label for labelled `BreakStatement` and `ContinueStatement`, the target label;
      *     otherwise null
      */
-    private Object findTarget(final JumpType type, final String label) {
-      return new Object() {
-        private Object find(final int i) {
+    private Collection<Node> findTarget(final JumpType type, final String label) {
+      Collection<Node> result = new Object() {
+        private Collection<Node> find(final int i) {
           if (i < 0) return null;
 
           Node nd = ctxt.get(i);
@@ -852,68 +852,85 @@ public class CFGExtractor {
           if (nd instanceof Finally) {
             BlockStatement finalizer = ((Finally) nd).body;
             followingCache.put(finalizer, union(followingCache.get(finalizer), find(i - 1)));
-            return First.of(finalizer);
+            return Collections.singleton(First.of(finalizer));
           }
 
           return nd.accept(
-              new DefaultVisitor<Void, Object>() {
+              new DefaultVisitor<Void, Collection<Node>>() {
                 @Override
-                public Object visit(Loop loop, Void v) {
+                public Collection<Node> visit(Loop loop, Void v) {
                   Set<String> labels = loopLabels.computeIfAbsent(loop, k -> new LinkedHashSet<>());
                   if (type == JumpType.CONTINUE && (label == null || labels.contains(label)))
-                    return First.of(loop.getContinueTarget());
+                    return Collections.singleton(First.of(loop.getContinueTarget()));
                   else if (type == JumpType.BREAK && label == null) return followingCache.get(loop);
                   return find(i - 1);
                 }
 
                 @Override
-                public Object visit(SwitchStatement nd, Void v) {
+                public Collection<Node> visit(SwitchStatement nd, Void v) {
                   if (type == JumpType.BREAK && label == null) return followingCache.get(nd);
                   return find(i - 1);
                 }
 
                 @Override
-                public Object visit(LabeledStatement nd, Void v) {
+                public Collection<Node> visit(LabeledStatement nd, Void v) {
                   if (type == JumpType.BREAK && nd.getLabel().getName().equals(label))
                     return followingCache.get(nd);
                   return find(i - 1);
                 }
 
                 @Override
-                public Object visit(TryStatement t, Void v) {
+                public Collection<Node> visit(TryStatement t, Void v) {
                   if (type == JumpType.THROW && !t.getAllHandlers().isEmpty()) {
-                    return First.of(t.getAllHandlers().get(0));
+                    return Collections.singleton(First.of(t.getAllHandlers().get(0)));
                   }
                   if (t.hasFinalizer()) {
                     BlockStatement finalizer = t.getFinalizer();
                     followingCache.put(
                         finalizer, union(followingCache.get(finalizer), find(i - 1)));
-                    return First.of(finalizer);
+                    return Collections.singleton(First.of(finalizer));
                   }
                   return find(i - 1);
                 }
 
                 @Override
-                public Object visit(Program nd, Void v) {
+                public Collection<Node> visit(Program nd, Void v) {
                   return visit(nd);
                 }
 
                 @Override
-                public Object visit(IFunction nd, Void v) {
+                public Collection<Node> visit(IFunction nd, Void v) {
                   return visit(nd);
                 }
 
-                private Object visit(IStatementContainer nd) {
-                  if (type == JumpType.RETURN) return getExitNode((IStatementContainer) nd);
+                private Collection<Node> visit(IStatementContainer nd) {
+                  if (type == JumpType.RETURN) return Collections.singleton(getExitNode((IStatementContainer) nd));
                   return null;
                 }
               },
               null);
         }
       }.find(ctxt.size() - 1);
+
+      if (result == null) {
+        return Collections.emptyList();
+      }
+      return result;
     }
 
-    private Node visitWithSuccessors(Node nd, Object trueSuccessors, Object falseSuccessors) {
+    private Node visitWithSuccessors(Node nd, Node trueSuccessor, Node falseSuccessor) {
+      return visitWithSuccessors(nd, Collections.singleton(trueSuccessor), Collections.singleton(falseSuccessor));
+    }
+
+    private Node visitWithSuccessors(Node nd, Collection<Node> trueSuccessors, Node falseSuccessor) {
+      return visitWithSuccessors(nd, trueSuccessors, Collections.singleton(falseSuccessor));
+    }
+
+    private Node visitWithSuccessors(Node nd, Node trueSuccessor, Collection<Node> falseSuccessors) {
+      return visitWithSuccessors(nd, Collections.singleton(trueSuccessor), falseSuccessors);
+    }
+
+    private Node visitWithSuccessors(Node nd, Collection<Node> trueSuccessors, Collection<Node> falseSuccessors) {
       if (nd == null) return null;
 
       followingCache.put(nd, union(followingCache.get(nd), union(trueSuccessors, falseSuccessors)));
@@ -925,7 +942,11 @@ public class CFGExtractor {
       return First.of(nd);
     }
 
-    private Node visitWithSuccessors(Node nd, Object successors) {
+    private Node visitWithSuccessors(Node nd, Node successor) {
+      return visitWithSuccessors(nd, Collections.singleton(successor));
+    }
+
+    private Node visitWithSuccessors(Node nd, Collection<Node> successors) {
       if (nd == null) return null;
 
       followingCache.put(nd, union(followingCache.get(nd), successors));
@@ -935,16 +956,20 @@ public class CFGExtractor {
 
     /**
      * Visit each of the `nodes` in reverse order, with the successor of the `i`th node set to the `i+1`th node, such that the `followingCache` for a given node is populated when visiting the previous node.
+     * 
+     * Each `node` in `nodes` can be a single `Node` or a collection of `Node`s.
+     * 
+     * @return The earliest non-null (collection of) node from `nodes`.
      */
-    private Object visitSequence(Object... nodes) {
+    private Collection<Node> visitSequence(Object... nodes) {
       Object fst = nodes[nodes.length - 1];
       for (int i = nodes.length - 2; i >= 0; --i) {
         for (Node node : createReversedCollection(nodes[i])) {
-          Node ffst = visitWithSuccessors(node, fst);
+          Node ffst = visitWithSuccessors(node, createCollection(fst));
           if (ffst != null) fst = ffst;
         }
       }
-      return fst;
+      return createCollection(fst);
     }
 
     @Override
@@ -972,7 +997,7 @@ public class CFGExtractor {
       List<Identifier> fns = HoistedFunDecls.of(nd);
       hoistedFns.addAll(fns);
 
-      Object fst = visitSequence(importSpecifiers, fns, nd.getBody(), this.getExitNode(nd));
+      Collection<Node> fst = visitSequence(importSpecifiers, fns, nd.getBody(), this.getExitNode(nd));
       writeSuccessors(entry, fst);
       this.ctxt.pop();
       return null;
@@ -994,7 +1019,7 @@ public class CFGExtractor {
       // `tail` is the last CFG node in the function creation
       INode tail = nd;
       if (!(nd instanceof AFunctionExpression) && !hoistedFns.contains(nd.getId())) {
-        writeSuccessors(tail, nd.getId());
+        writeSuccessor(tail, nd.getId());
         tail = nd.getId();
       }
       writeSuccessors(tail, nd instanceof AFunctionExpression ? i.getSuccessors(true) : i.getAllSuccessors());
@@ -1027,12 +1052,12 @@ public class CFGExtractor {
         Pair<FieldDefinition, FieldDefinition> p = instanceFields.peek();
         if (p != null) {
           firstField = p.fst();
-          writeSuccessors(p.snd(), First.of(nd.getBody()));
+          writeSuccessor(p.snd(), First.of(nd.getBody()));
         }
       }
 
-      Object fst = visitSequence(nd.getBody(), this.getExitNode(nd));
-      if (firstField != null) fst = First.of(firstField);
+      Collection<Node> fst = visitSequence(nd.getBody(), this.getExitNode(nd));
+      if (firstField != null) fst = Collections.singleton(First.of(firstField));
       fst =
           visitSequence(
               nd instanceof FunctionDeclaration ? null : nd.getId(), paramsAndDefaults, fns, fst);
@@ -1045,7 +1070,7 @@ public class CFGExtractor {
     public Void visit(IFunction nd, SuccessorInfo i) {
       // save per-function caches
       Map<Statement, Set<String>> oldLoopLabels = loopLabels;
-      Map<Node, Object> oldFollowingCache = followingCache;
+      Map<Node, Collection<Node>> oldFollowingCache = followingCache;
       Map<Chainable, SuccessorInfo> oldChainRootSuccessors = chainRootSuccessors;
 
       // clear caches
@@ -1085,7 +1110,7 @@ public class CFGExtractor {
       return visit(nd, nd.getClassDef(), i);
     }
 
-    private Map<Object, AClass> constructor2Class = new LinkedHashMap<>();
+    private Map<Expression, AClass> constructor2Class = new LinkedHashMap<>();
 
     private Void visit(Node nd, AClass ac, SuccessorInfo i) {
       for (MemberDefinition<?> m : ac.getBody().getBody())
@@ -1101,12 +1126,16 @@ public class CFGExtractor {
      * <p>The result is a tree of nested lists containing Decorator and DecoratorList nodes at the
      * leaves.
      */
-    private List<?> getMemberDecorators(MemberDefinition<?> member) {
+    @SuppressWarnings("unchecked")
+    private List<Node> getMemberDecorators(MemberDefinition<?> member) {
       if (member instanceof MethodDefinition) {
         MethodDefinition method = (MethodDefinition) member;
-        return Arrays.asList(method.getValue().getParameterDecorators(), method.getDecorators());
+        List<Node> result = new ArrayList<>();
+        method.getValue().getParameterDecorators().forEach(result::add);
+        method.getDecorators().forEach(result::add);
+        return result;
       } else {
-        return member.getDecorators();
+        return (List<Node>)(List<?>)member.getDecorators();
       }
     }
 
@@ -1118,28 +1147,29 @@ public class CFGExtractor {
      *
      * <p>The result is a list of Decorator and DecoratorList nodes.
      */
+    @SuppressWarnings("unchecked")
     private List<Node> getDecoratorsOfClass(AClass ac) {
-      List<Object> instanceDecorators = new ArrayList<>();
-      List<Object> staticDecorators = new ArrayList<>();
-      List<Object> constructorParameterDecorators = new ArrayList<>();
-      List<?> classDecorators = ac.getDecorators();
+      List<Node> instanceDecorators = new ArrayList<>();
+      List<Node> staticDecorators = new ArrayList<>();
+      List<Node> constructorParameterDecorators = new ArrayList<>();
+      List<Node> classDecorators = (List<Node>)(List<?>)ac.getDecorators();
       for (MemberDefinition<?> member : ac.getBody().getBody()) {
         if (!member.isConcrete()) continue;
-        List<?> decorators = getMemberDecorators(member);
+        List<Node> decorators = getMemberDecorators(member);
         if (member.isConstructor()) {
-          constructorParameterDecorators.add(decorators);
+          constructorParameterDecorators.addAll(decorators);
         } else if (member.isStatic()) {
-          staticDecorators.add(decorators);
+          staticDecorators.addAll(decorators);
         } else {
-          instanceDecorators.add(decorators);
+          instanceDecorators.addAll(decorators);
         }
       }
-      return flattenNestedList(
-          Arrays.asList(
-              instanceDecorators,
-              staticDecorators,
-              constructorParameterDecorators,
-              classDecorators));
+      return Arrays.asList(
+        instanceDecorators, 
+        staticDecorators, 
+        constructorParameterDecorators, 
+        classDecorators
+      ).stream().flatMap(list -> list.stream()).collect(Collectors.toList());
     }
 
     @Override
@@ -1149,7 +1179,7 @@ public class CFGExtractor {
       } else {
         List<Identifier> hoisted = HoistedFunDecls.of(nd.getBody());
         hoistedFns.addAll(hoisted);
-        writeSuccessors(nd.getName(), nd);
+        writeSuccessor(nd.getName(), nd);
         writeSuccessors(nd, visitSequence(hoisted, nd.getBody(), i.getAllSuccessors()));
       }
       return null;
@@ -1168,7 +1198,7 @@ public class CFGExtractor {
     @Override
     public Void visit(BlockStatement nd, SuccessorInfo i) {
       if (nd.getBody().isEmpty()) writeSuccessors(nd, i.getAllSuccessors());
-      else writeSuccessors(nd, First.of(nd.getBody().get(0)));
+      else writeSuccessor(nd, First.of(nd.getBody().get(0)));
       visitSequence(nd.getBody(), i.getAllSuccessors());
       return null;
     }
@@ -1179,17 +1209,17 @@ public class CFGExtractor {
       if (nd.hasGuard()) {
         // if so, the guard may fail and execution might continue with the next
         // catch clause (if any)
-        writeSuccessors(nd, nd.getParam());
+        writeSuccessor(nd, (Node)nd.getParam());
         visitSequence(
             nd.getParam(), nd.getGuard(), union(First.of(nd.getBody()), i.getSuccessors(false)));
         visitSequence(nd.getBody(), i.getSuccessors(true));
       } else {
         // unguarded catch clauses always execute their body
         if (nd.getParam() != null) {
-          writeSuccessors(nd, nd.getParam());
+          writeSuccessor(nd, (Node)nd.getParam());
           visitSequence(nd.getParam(), nd.getBody(), i.getAllSuccessors());
         } else {
-          writeSuccessors(nd, First.of(nd.getBody()));
+          writeSuccessor(nd, First.of(nd.getBody()));
           visitSequence(nd.getBody(), i.getAllSuccessors());
         }
       }
@@ -1202,7 +1232,7 @@ public class CFGExtractor {
           bodyLabels = loopLabels.computeIfAbsent(nd.getBody(), k -> new LinkedHashSet<>());
       bodyLabels.addAll(ndLabels);
       bodyLabels.add(nd.getLabel().getName());
-      writeSuccessors(nd, First.of(nd.getBody()));
+      writeSuccessor(nd, First.of(nd.getBody()));
       this.ctxt.push(nd);
       visitSequence(nd.getBody(), i.getAllSuccessors());
       this.ctxt.pop();
@@ -1211,26 +1241,26 @@ public class CFGExtractor {
 
     @Override
     public Void visit(ExpressionStatement nd, SuccessorInfo i) {
-      writeSuccessors(nd, First.of(nd.getExpression()));
+      writeSuccessor(nd, First.of(nd.getExpression()));
       visitWithSuccessors(nd.getExpression(), i.getAllSuccessors());
       return null;
     }
 
     @Override
     public Void visit(ParenthesizedExpression nd, SuccessorInfo i) {
-      writeSuccessors(nd, First.of(nd.getExpression()));
+      writeSuccessor(nd, First.of(nd.getExpression()));
       return nd.getExpression().accept(this, i);
     }
 
     @Override
     public Void visit(IfStatement nd, SuccessorInfo i) {
       Expression test = nd.getTest();
-      writeSuccessors(nd, First.of(test));
-      Object following = i.getAllSuccessors();
+      writeSuccessor(nd, First.of(test));
+      Collection<Node> following = i.getAllSuccessors();
       visitWithSuccessors(
           test,
           First.of(nd.getConsequent()),
-          nd.hasAlternate() ? First.of(nd.getAlternate()) : following);
+          nd.hasAlternate() ? Collections.singleton(First.of(nd.getAlternate())) : following);
       visitWithSuccessors(nd.getConsequent(), following);
       visitWithSuccessors(nd.getAlternate(), following);
       return null;
@@ -1239,7 +1269,7 @@ public class CFGExtractor {
     @Override
     public Void visit(ConditionalExpression nd, SuccessorInfo i) {
       Expression test = nd.getTest();
-      writeSuccessors(nd, First.of(test));
+      writeSuccessor(nd, First.of(test));
       visitWithSuccessors(test, First.of(nd.getConsequent()), First.of(nd.getAlternate()));
 
       nd.getConsequent().accept(this, i);
@@ -1257,7 +1287,7 @@ public class CFGExtractor {
 
     @Override
     public Void visit(WithStatement nd, SuccessorInfo i) {
-      writeSuccessors(nd, First.of(nd.getObject()));
+      writeSuccessor(nd, First.of(nd.getObject()));
       visitSequence(nd.getObject(), nd.getBody(), i.getAllSuccessors());
       return null;
     }
@@ -1265,12 +1295,12 @@ public class CFGExtractor {
     @Override
     public Void visit(SwitchStatement nd, SuccessorInfo i) {
       this.ctxt.push(nd);
-      writeSuccessors(nd, First.of(nd.getDiscriminant()));
+      writeSuccessor(nd, First.of(nd.getDiscriminant()));
 
       // find all default cases (in a valid program there is
       // only one, but we want to gracefully handle switches with
       // multiple defaults)
-      Object deflt = null;
+      Collection<Node> deflt = null;
       for (SwitchCase c : nd.getCases()) if (c.isDefault()) deflt = union(deflt, c);
 
       // compute 'following' for every case label
@@ -1281,7 +1311,7 @@ public class CFGExtractor {
           // find next non-default clause
           for (int k = j + 1; k < n; ++k) {
             if (nd.getCases().get(k).hasTest()) {
-              followingCache.put(cse.getTest(), nd.getCases().get(k));
+              followingCache.put(cse.getTest(), Collections.singleton(nd.getCases().get(k)));
               continue outer;
             }
           }
@@ -1305,10 +1335,10 @@ public class CFGExtractor {
 
     @Override
     public Void visit(SwitchCase nd, SuccessorInfo i) {
-      if (nd.hasTest()) writeSuccessors(nd, First.of(nd.getTest()));
-      else if (!nd.getConsequent().isEmpty()) writeSuccessors(nd, First.of(nd.getConsequent().get(0)));
+      if (nd.hasTest()) writeSuccessor(nd, First.of(nd.getTest()));
+      else if (!nd.getConsequent().isEmpty()) writeSuccessor(nd, First.of(nd.getConsequent().get(0)));
       else writeSuccessors(nd, followingCache.get(nd));
-      Object fst = followingCache.get(nd.getTest());
+      Collection<Node> fst = followingCache.get(nd.getTest());
       if (nd.getConsequent().isEmpty()) fst = union(i.getAllSuccessors(), fst);
       else fst = union(First.of(nd.getConsequent().get(0)), fst);
       visitSequence(nd.getTest(), fst);
@@ -1332,11 +1362,11 @@ public class CFGExtractor {
 
     @Override
     public Void visit(TryStatement nd, SuccessorInfo i) {
-      writeSuccessors(nd, First.of(nd.getBlock()));
+      writeSuccessor(nd, First.of(nd.getBlock()));
       if (nd.hasFinalizer()) followingCache.put(nd.getFinalizer(), i.getAllSuccessors());
 
       ctxt.push(nd);
-      Object fst = nd.hasFinalizer() ? First.of(nd.getFinalizer()) : i.getAllSuccessors();
+      Collection<Node> fst = nd.hasFinalizer() ? Collections.singleton(First.of(nd.getFinalizer())) : i.getAllSuccessors();
       visitWithSuccessors(nd.getBlock(), fst);
       ctxt.pop();
 
@@ -1362,7 +1392,7 @@ public class CFGExtractor {
       if (nd.hasDeclareKeyword()) {
         writeSuccessors(nd, i.getAllSuccessors());
       } else {
-        writeSuccessors(nd, First.of(nd.getDeclarations().get(0)));
+        writeSuccessor(nd, First.of(nd.getDeclarations().get(0)));
         visitSequence(nd.getDeclarations(), i.getAllSuccessors());
       }
       return null;
@@ -1377,21 +1407,21 @@ public class CFGExtractor {
 
     @Override
     public Void visit(ExportWholeDeclaration nd, SuccessorInfo i) {
-      writeSuccessors(nd, First.of(nd.getRhs()));
+      writeSuccessor(nd, First.of(nd.getRhs()));
       visitSequence(nd.getRhs(), i.getAllSuccessors());
       return null;
     }
 
     @Override
     public Void visit(LetStatement nd, SuccessorInfo i) {
-      writeSuccessors(nd, First.of(nd.getHead().get(0)));
+      writeSuccessor(nd, First.of(nd.getHead().get(0)));
       visitSequence(nd.getHead(), nd.getBody(), i.getAllSuccessors());
       return null;
     }
 
     @Override
     public Void visit(LetExpression nd, SuccessorInfo i) {
-      writeSuccessors(nd, First.of(nd.getHead().get(0)));
+      writeSuccessor(nd, First.of(nd.getHead().get(0)));
       visitSequence(nd.getHead(), nd.getBody(), i.getGuardedSuccessors(nd));
       return null;
     }
@@ -1400,7 +1430,7 @@ public class CFGExtractor {
     public Void visit(WhileStatement nd, SuccessorInfo i) {
       Expression test = nd.getTest();
       Node testStart = First.of(test);
-      writeSuccessors(nd, testStart);
+      writeSuccessor(nd, testStart);
       ctxt.push(nd);
       visitWithSuccessors(nd.getBody(), testStart);
       visitWithSuccessors(test, First.of(nd.getBody()), i.getAllSuccessors());
@@ -1411,7 +1441,7 @@ public class CFGExtractor {
     @Override
     public Void visit(DoWhileStatement nd, SuccessorInfo i) {
       Node body = First.of(nd.getBody());
-      writeSuccessors(nd, body);
+      writeSuccessor(nd, body);
       ctxt.push(nd);
       Expression test = nd.getTest();
       visitWithSuccessors(nd.getBody(), First.of(test));
@@ -1423,7 +1453,7 @@ public class CFGExtractor {
     @Override
     public Void visit(EnhancedForStatement nd, SuccessorInfo i) {
       visitSequence(nd.getRight(), nd);
-      writeSuccessors(nd, First.of(nd.getLeft()));
+      writeSuccessor(nd, First.of(nd.getLeft()));
       writeSuccessors(nd, i.getAllSuccessors());
       ctxt.push(nd);
       visitSequence(nd.getLeft(), nd.getDefaultValue(), nd.getBody(), nd);
@@ -1433,7 +1463,7 @@ public class CFGExtractor {
 
     @Override
     public Void visit(ForStatement nd, SuccessorInfo i) {
-      writeSuccessors(nd, First.of(nd.hasInit() ? nd.getInit() : nd.hasTest() ? nd.getTest() : nd.getBody()));
+      writeSuccessor(nd, First.of(nd.hasInit() ? nd.getInit() : nd.hasTest() ? nd.getTest() : nd.getBody()));
       ctxt.push(nd);
       Node fst = First.of(nd.hasTest() ? nd.getTest() : nd.getBody());
       visitWithSuccessors(nd.getInit(), fst);
@@ -1450,7 +1480,7 @@ public class CFGExtractor {
     @Override
     public Void visit(SequenceExpression nd, SuccessorInfo i) {
       List<Expression> expressions = nd.getExpressions();
-      writeSuccessors(nd, First.of(expressions.get(0)));
+      writeSuccessor(nd, First.of(expressions.get(0)));
       int n = expressions.size() - 1;
       expressions.get(n).accept(this, i);
       Node next = First.of(expressions.get(n));
@@ -1481,14 +1511,14 @@ public class CFGExtractor {
       return null;
     }
 
-    public void visitArrayLike(Node nd, List<? extends INode> elements, Object following) {
+    public void visitArrayLike(Node nd, List<? extends INode> elements, Collection<Node> following) {
       // find the first non-omitted element
       boolean foundNonOmitted = false;
       for (INode element : elements)
         if (element != null) {
           // `nd` is followed by the first non-omitted element
           foundNonOmitted = true;
-          writeSuccessors(nd, First.of((Node) element));
+          writeSuccessor(nd, First.of((Node) element));
           break;
         }
 
@@ -1556,7 +1586,7 @@ public class CFGExtractor {
 
     public Void visitObjectLike(Node nd, List<? extends Node> properties, SuccessorInfo i) {
       if (properties.isEmpty()) writeSuccessors(nd, i.getAllSuccessors());
-      else writeSuccessors(nd, First.of(properties.get(0)));
+      else writeSuccessor(nd, First.of(properties.get(0)));
       visitSequence(properties, i.getAllSuccessors());
       return null;
     }
@@ -1612,8 +1642,8 @@ public class CFGExtractor {
     public Void visit(BinaryExpression nd, SuccessorInfo i) {
       if ("??".equals(nd.getOperator())) {
         // the nullish coalescing operator is short-circuiting, but we do not add guards for it
-        writeSuccessors(nd, First.of(nd.getLeft()));
-        Object leftSucc =
+        writeSuccessor(nd, First.of(nd.getLeft()));
+        Collection<Node> leftSucc =
             union(
                 First.of(nd.getRight()),
                 i.getAllSuccessors()); // short-circuiting happens with both truthy and falsy values
@@ -1637,7 +1667,7 @@ public class CFGExtractor {
     @Override
     public Void visit(LogicalExpression nd, SuccessorInfo i) {
       Expression left = nd.getLeft();
-      writeSuccessors(nd, First.of(left));
+      writeSuccessor(nd, First.of(left));
       if ("&&".equals(nd.getOperator()))
         visitWithSuccessors(left, First.of(nd.getRight()), i.getSuccessors(false));
       else visitWithSuccessors(left, i.getSuccessors(true), First.of(nd.getRight()));
@@ -1706,7 +1736,7 @@ public class CFGExtractor {
     public Void visit(InvokeExpression nd, SuccessorInfo i) {
       preVisitChainable(nd, nd.getCallee(), i);
       visitSequence(nd.getCallee(), nd.getArguments(), nd);
-      Object succs = i.getGuardedSuccessors(nd);
+      Collection<Node> succs = i.getGuardedSuccessors(nd);
       if (nd instanceof CallExpression
           && nd.getCallee() instanceof Super
           && !instanceFields.isEmpty()) {
@@ -1715,7 +1745,7 @@ public class CFGExtractor {
           FieldDefinition firstField = p.fst();
           FieldDefinition lastField = p.snd();
           writeSuccessors(lastField, succs);
-          succs = First.of(firstField);
+          succs = Collections.singleton(First.of(firstField));
         }
       }
       // calls may throw
@@ -1726,7 +1756,7 @@ public class CFGExtractor {
 
     @Override
     public Void visit(TaggedTemplateExpression nd, SuccessorInfo i) {
-      writeSuccessors(nd, First.of(nd.getTag()));
+      writeSuccessor(nd, First.of(nd.getTag()));
       visitSequence(nd.getTag(), nd.getQuasi(), i.getGuardedSuccessors(nd));
       return null;
     }
@@ -1736,7 +1766,7 @@ public class CFGExtractor {
       if (nd.getChildren().isEmpty()) {
         writeSuccessors(nd, i.getSuccessors(false));
       } else {
-        writeSuccessors(nd, First.of(nd.getChildren().get(0)));
+        writeSuccessor(nd, First.of(nd.getChildren().get(0)));
         visitSequence(nd.getChildren(), i.getGuardedSuccessors(nd));
       }
       return null;
@@ -1744,17 +1774,17 @@ public class CFGExtractor {
 
     @Override
     public Void visit(ComprehensionExpression nd, SuccessorInfo i) {
-      writeSuccessors(nd, visitComprehensionBlock(nd, 0, i.getSuccessors(true)));
+      writeSuccessor(nd, visitComprehensionBlock(nd, 0, i.getSuccessors(true)));
       return null;
     }
 
-    private Node visitComprehensionBlock(ComprehensionExpression nd, int i, Object follow) {
+    private Node visitComprehensionBlock(ComprehensionExpression nd, int i, Collection<Node> follow) {
       int n = nd.getBlocks().size();
       if (i >= n) {
         return visitComprehensionFilter(nd, follow);
       } else {
         ComprehensionBlock block = nd.getBlocks().get(i);
-        writeSuccessors(block, First.of(block.getRight()));
+        writeSuccessor(block, First.of(block.getRight()));
         follow = union(First.of((Node) block.getLeft()), follow);
         visitSequence(block.getRight(), follow);
         visitSequence(block.getLeft(), visitComprehensionBlock(nd, i + 1, follow));
@@ -1762,7 +1792,7 @@ public class CFGExtractor {
       }
     }
 
-    private Node visitComprehensionFilter(ComprehensionExpression nd, Object follow) {
+    private Node visitComprehensionFilter(ComprehensionExpression nd, Collection<Node> follow) {
       if (nd.hasFilter()) {
         visitWithSuccessors(nd.getFilter(), visitComprehensionBody(nd, follow), follow);
         return First.of(nd.getFilter());
@@ -1771,21 +1801,21 @@ public class CFGExtractor {
       }
     }
 
-    private Node visitComprehensionBody(ComprehensionExpression nd, Object back) {
+    private Node visitComprehensionBody(ComprehensionExpression nd, Collection<Node> back) {
       visitSequence(nd.getBody(), back);
       return First.of(nd.getBody());
     }
 
     @Override
     public Void visit(ExportAllDeclaration nd, SuccessorInfo c) {
-      writeSuccessors(nd, First.of(nd.getSource()));
+      writeSuccessor(nd, First.of(nd.getSource()));
       visitSequence(nd.getSource(), c.getAllSuccessors());
       return null;
     }
 
     @Override
     public Void visit(ExportDefaultDeclaration nd, SuccessorInfo c) {
-      writeSuccessors(nd, First.of(nd.getDeclaration()));
+      writeSuccessor(nd, First.of(nd.getDeclaration()));
       visitSequence(nd.getDeclaration(), c.getAllSuccessors());
       return null;
     }
@@ -1793,15 +1823,15 @@ public class CFGExtractor {
     @Override
     public Void visit(ExportNamedDeclaration nd, SuccessorInfo c) {
       if (nd.hasDeclaration()) {
-        writeSuccessors(nd, First.of(nd.getDeclaration()));
+        writeSuccessor(nd, First.of(nd.getDeclaration()));
         visitSequence(nd.getDeclaration(), c.getAllSuccessors());
       } else if (nd.hasSource()) {
-        writeSuccessors(nd, First.of(nd.getSource()));
+        writeSuccessor(nd, First.of(nd.getSource()));
         visitSequence(nd.getSource(), nd.getSpecifiers(), c.getAllSuccessors());
       } else if (nd.getSpecifiers().isEmpty()) {
         writeSuccessors(nd, c.getAllSuccessors());
       } else {
-        writeSuccessors(nd, First.of(nd.getSpecifiers().get(0)));
+        writeSuccessor(nd, First.of(nd.getSpecifiers().get(0)));
         visitSequence(nd.getSpecifiers(), c.getAllSuccessors());
       }
       return null;
@@ -1809,21 +1839,21 @@ public class CFGExtractor {
 
     @Override
     public Void visit(ExportSpecifier nd, SuccessorInfo c) {
-      writeSuccessors(nd, First.of(nd.getLocal()));
+      writeSuccessor(nd, First.of(nd.getLocal()));
       visitSequence(nd.getLocal(), nd.getExported(), c.getAllSuccessors());
       return null;
     }
 
     @Override
     public Void visit(ExportDefaultSpecifier nd, SuccessorInfo c) {
-      writeSuccessors(nd, First.of(nd.getExported()));
+      writeSuccessor(nd, First.of(nd.getExported()));
       visitSequence(nd.getExported(), c.getAllSuccessors());
       return null;
     }
 
     @Override
     public Void visit(ExportNamespaceSpecifier nd, SuccessorInfo c) {
-      writeSuccessors(nd, First.of(nd.getExported()));
+      writeSuccessor(nd, First.of(nd.getExported()));
       visitSequence(nd.getExported(), c.getAllSuccessors());
       return null;
     }
@@ -1833,7 +1863,7 @@ public class CFGExtractor {
       if (hoistedImports.contains(nd) || nd.getSpecifiers().isEmpty()) {
         writeSuccessors(nd, c.getAllSuccessors());
       } else {
-        writeSuccessors(nd, First.of(nd.getSpecifiers().get(0)));
+        writeSuccessor(nd, First.of(nd.getSpecifiers().get(0)));
         visitSequence(nd.getSpecifiers(), c.getAllSuccessors());
       }
       return null;
@@ -1882,7 +1912,7 @@ public class CFGExtractor {
       Label propkey = trapwriter.localID(nd, "JSXSpreadAttribute");
       Label spreadkey = trapwriter.localID(nd);
       trapwriter.addTuple("successor", spreadkey, propkey);
-      for (Node succ : createCollection(c.getAllSuccessors())) writeSuccessor(propkey, succ);
+      for (Node succ : c.getAllSuccessors()) writeSuccessor(propkey, succ);
       return null;
     }
 
