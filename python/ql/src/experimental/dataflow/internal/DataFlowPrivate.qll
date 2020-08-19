@@ -297,7 +297,7 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   //   `s.pop()`
   //   nodeFrom is `s`, cfg node
   //   nodeTo is `s.pop()`, cfg node
-  //   c denotes list or set
+  //   c denotes element of list or set
   exists(CallNode call, AttrNode a |
     call.getFunction() = a and
     a.getName() = "pop" and // TODO: Should be made more robust, like Value::named("set.pop").getACall()
