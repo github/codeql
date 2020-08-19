@@ -230,7 +230,7 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   //   `[..., 42, ...]`
   //   nodeFrom is `42`, cfg node
   //   nodeTo is the sequence, say `[..., 42, ...]`, cfg node
-  //   c denotes list or c denotes tuple and index of 42
+  //   c denotes list or c denotes tuple and index of nodeFrom
   //
   // List
   nodeTo.(CfgNode).getNode().(ListNode).getAnElement() = nodeFrom.(CfgNode).getNode() and
