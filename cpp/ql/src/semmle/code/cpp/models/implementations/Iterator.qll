@@ -1,5 +1,6 @@
 import cpp
 import semmle.code.cpp.models.interfaces.Taint
+import semmle.code.cpp.models.interfaces.DataFlow
 
 class IteratorTraits extends Class {
   IteratorTraits() {
@@ -25,12 +26,17 @@ class IteratorByTypedefs extends Class {
   }
 }
 
-class IteratorByStdIteratorTraits extends Type { }
+class StdIterator extends Class {
+  StdIterator() {
+    this.hasQualifiedName("std", "iterator")
+  }
+}
 
 class LegacyIterator extends Type {
   LegacyIterator() {
     this instanceof IteratorByTypedefs or
-    exists(IteratorTraits it | it.getIteratorType() = this)
+    exists(IteratorTraits it | it.getIteratorType() = this) or
+    this instanceof StdIterator
   }
 }
 
@@ -47,7 +53,7 @@ class IteratorPointerDereferenceOperator extends Operator, TaintFunction {
   }
 }
 
-class IteratorCrementOperator extends Operator, TaintFunction {
+class IteratorCrementOperator extends Operator, DataFlowFunction, TaintFunction {
   IteratorCrementOperator() {
     (
       this.hasName("operator++") or
@@ -60,6 +66,11 @@ class IteratorCrementOperator extends Operator, TaintFunction {
         .getUnderlyingType()
         .(ReferenceType)
         .getBaseType() instanceof LegacyIterator
+  }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    input.isParameter(0) and
+    output.isReturnValue()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -75,7 +86,7 @@ class IteratorFieldOperator extends Operator, TaintFunction {
         .getACallToThisFunction()
         .getArgument(0)
         .getFullyConverted()
-        .getUnderlyingType()
+        .getUnspecifiedType()
         .(PointerType)
         .getBaseType() instanceof LegacyIterator
   }
@@ -88,24 +99,22 @@ class IteratorFieldOperator extends Operator, TaintFunction {
 
 class IteratorAddOperator extends Operator, TaintFunction {
   IteratorAddOperator() {
+    this.hasName("operator+") and
     (
-      this.hasName("operator+")
-    ) and
-    (
-    this
-        .getACallToThisFunction()
-        .getArgument(0)
-        .getFullyConverted()
-        .getUnderlyingType()
-        .(PointerType)
-        .getBaseType() instanceof LegacyIterator or
-    this
-        .getACallToThisFunction()
-        .getArgument(0)
-        .getFullyConverted()
-        .getUnderlyingType()
-        .(PointerType)
-        .getBaseType() instanceof LegacyIterator
+      this
+          .getACallToThisFunction()
+          .getArgument(0)
+          .getFullyConverted()
+          .getUnspecifiedType()
+          .(PointerType)
+          .getBaseType() instanceof LegacyIterator or
+      this
+          .getACallToThisFunction()
+          .getArgument(0)
+          .getFullyConverted()
+          .getUnspecifiedType()
+          .(PointerType)
+          .getBaseType() instanceof LegacyIterator
     )
   }
 
@@ -118,23 +127,17 @@ class IteratorAddOperator extends Operator, TaintFunction {
   }
 }
 
+/**
+ * A non-member `operator-` function that takes an iterator as its first argument.
+ */
 class IteratorSubOperator extends Operator, TaintFunction {
   IteratorSubOperator() {
-    (
-      this.hasName("operator-")
-    ) and
+    this.hasName("operator-") and
     this
         .getACallToThisFunction()
         .getArgument(0)
         .getFullyConverted()
-        .getUnderlyingType()
-        .(PointerType)
-        .getBaseType() instanceof LegacyIterator and
-    not this
-        .getACallToThisFunction()
-        .getArgument(1)
-        .getFullyConverted()
-        .getUnderlyingType()
+        .getUnspecifiedType()
         .(PointerType)
         .getBaseType() instanceof LegacyIterator
   }
@@ -148,35 +151,26 @@ class IteratorSubOperator extends Operator, TaintFunction {
   }
 }
 
-class IteratorDiffOperator extends Operator, TaintFunction {
-  IteratorDiffOperator() {
+class IteratorAssignArithmeticOperator extends MemberFunction, DataFlowFunction, TaintFunction {
+  IteratorAssignArithmeticOperator() {
     (
-      this.hasName("operator-")
+      this.hasName("operator+=") or
+      this.hasName("operator-=")
     ) and
-    this
-        .getACallToThisFunction()
-        .getArgument(0)
-        .getFullyConverted()
-        .getUnderlyingType()
-        .(PointerType)
-        .getBaseType() instanceof LegacyIterator and
-    not this
-        .getACallToThisFunction()
-        .getArgument(1)
-        .getFullyConverted()
-        .getUnderlyingType()
-        .(PointerType)
-        .getBaseType() instanceof LegacyIterator
+    this.getDeclaringType() instanceof LegacyIterator
+  }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    input.isParameter(0) and
+    output.isReturnValue()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    (
-      input.isParameter(0) or
-      input.isParameter(1)
-    ) and
-    output.isReturnValue()
+    input.isParameterDeref(1) and
+    output.isParameterDeref(0)
   }
 }
+
 class IteratorPointerDereferenceMemberOperator extends MemberFunction, TaintFunction {
   IteratorPointerDereferenceMemberOperator() {
     this.hasName("operator*") and
@@ -189,13 +183,18 @@ class IteratorPointerDereferenceMemberOperator extends MemberFunction, TaintFunc
   }
 }
 
-class IteratorCrementMemberOperator extends MemberFunction, TaintFunction {
+class IteratorCrementMemberOperator extends MemberFunction, DataFlowFunction, TaintFunction {
   IteratorCrementMemberOperator() {
     (
       this.hasName("operator++") or
       this.hasName("operator--")
     ) and
     this.getDeclaringType() instanceof LegacyIterator
+  }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    input.isQualifierAddress() and
+    output.isReturnValue()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -216,13 +215,14 @@ class IteratorFieldMemberOperator extends Operator, TaintFunction {
   }
 }
 
-class IteratorMemberBinaryOperator extends MemberFunction, TaintFunction {
-  IteratorMemberBinaryOperator() {
-    (
-      this.hasName("operator+") or
-      this.hasName("operator-")
-    ) and
-    this.getDeclaringType() instanceof LegacyIterator
+/**
+ * An `operator+` or `operator-` member function of an iterator class.
+ */
+class IteratorBinaryArithmeticMemberOperator extends MemberFunction, TaintFunction {
+  IteratorBinaryArithmeticMemberOperator() {
+    this.hasName("operator-") and
+    this.getDeclaringType() instanceof LegacyIterator and
+    this.getParameter(0).getUnspecifiedType() instanceof LegacyIterator
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -234,12 +234,29 @@ class IteratorMemberBinaryOperator extends MemberFunction, TaintFunction {
   }
 }
 
-class IteratorMemberAssignOperator extends MemberFunction, TaintFunction {
-  IteratorMemberAssignOperator() {
+class IteratorAssignArithmeticMemberOperator extends MemberFunction, DataFlowFunction, TaintFunction {
+  IteratorAssignArithmeticMemberOperator() {
     (
       this.hasName("operator+=") or
       this.hasName("operator-=")
     ) and
+    this.getDeclaringType() instanceof LegacyIterator
+  }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    input.isQualifierAddress() and
+    output.isReturnValue()
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isParameter(0) and
+    output.isQualifierObject()
+  }
+}
+
+class IteratorArrayMemberOperator extends MemberFunction, TaintFunction {
+  IteratorArrayMemberOperator() {
+    this.hasName("operator[]") and
     this.getDeclaringType() instanceof LegacyIterator
   }
 
@@ -248,8 +265,6 @@ class IteratorMemberAssignOperator extends MemberFunction, TaintFunction {
       input.isQualifierObject() or
       input.isParameter(0)
     ) and
-    output.isQualifierObject()
-    or
     output.isReturnValue()
   }
 }

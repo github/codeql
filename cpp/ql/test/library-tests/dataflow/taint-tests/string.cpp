@@ -321,3 +321,13 @@ void test_string_substr()
 	sink(a.substr(0, a.length()));
 	sink(b.substr(0, b.length())); // tainted
 }
+
+void test_string_iterators() {
+	{
+		std::string s1("hello");
+		std::string s2(source());
+		sink(s1);
+		sink(s1.append(s2.begin(), s2.end()));
+		sink(s1);
+	}
+}

@@ -1,4 +1,5 @@
 import semmle.code.cpp.models.interfaces.Taint
+import semmle.code.cpp.models.implementations.Iterator
 
 /**
  * The `std::basic_string` template class.
@@ -65,11 +66,17 @@ class StdStringAppend extends TaintFunction {
     getParameter(result).getType() = getDeclaringType().getTemplateArgument(0) // i.e. `std::basic_string::CharT`
   }
 
+  int getAnIteratorParameter() {
+    getParameter(result).getType() instanceof LegacyIterator
+  }
+
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from string and parameter to string (qualifier) and return value
     (
       input.isQualifierObject() or
       input.isParameterDeref(getAStringParameter())
+      or
+      input.isParameter(getAnIteratorParameter())
     ) and
     (
       output.isQualifierObject() or
@@ -101,6 +108,20 @@ class StdStringAssign extends TaintFunction {
       output.isQualifierObject() or
       output.isReturnValueDeref()
     )
+  }
+}
+
+class StdStringBegin extends TaintFunction {
+  StdStringBegin() {
+    this.hasQualifiedName("std", "basic_string", "begin") or
+    this.hasQualifiedName("std", "basic_string", "cbegin") or
+    this.hasQualifiedName("std", "basic_string", "rbegin") or
+    this.hasQualifiedName("std", "basic_string", "crbegin")
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isQualifierObject() and
+    output.isReturnValue()
   }
 }
 

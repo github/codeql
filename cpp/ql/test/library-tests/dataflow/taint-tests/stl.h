@@ -63,6 +63,7 @@ namespace std
 		basic_string& append(const basic_string& str);
 		basic_string& append(const charT* s);
 		basic_string& append(size_type n, charT c);
+		template<class InputIt> constexpr basic_string& append(InputIt first, InputIt last);
 		basic_string& assign(const basic_string& str);
 		basic_string& assign(size_type n, charT c);
 		basic_string& insert(size_type pos, const basic_string& str);
