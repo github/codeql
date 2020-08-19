@@ -25,12 +25,9 @@ jobs:
     - name: Unzip CodeQL CLI
       run: unzip -d cli codeql-linux64.zip
     - name: Add codeql to path
-      run: | 
-        echo "::add-path::{path}:${{ github.workspace }}/cli/codeql"
+      run: echo "::add-path::{path}:${{ github.workspace }}/cli/codeql"
     - name: Build query list
-      run: |
-        cd codeql
-        pwsh -Command "./misc/scripts/resolve-queries.ps1 | Out-file output.csv"
+      run: pwsh -Command "./codeql/misc/scripts/resolve-queries.ps1 | Out-file output.csv"
     - name: Upload query list
       uses: actions/upload-artifact@v2
       with:
