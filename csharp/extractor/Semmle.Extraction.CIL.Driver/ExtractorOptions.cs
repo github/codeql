@@ -60,13 +60,11 @@ namespace Semmle.Extraction.CIL.Driver
             {
                 try
                 {
-                    isAssembly = peReader.HasMetadata;
-                    if (!isAssembly) return;
+                    if (!peReader.HasMetadata) throw new InvalidAssemblyException();
 
                     var mdReader = peReader.GetMetadataReader();
 
-                    isAssembly = mdReader.IsAssembly;
-                    if (!mdReader.IsAssembly) return;
+                    if (!mdReader.IsAssembly) throw new InvalidAssemblyException();
 
                     // Get our own assembly name
                     name = CreateAssemblyName(mdReader, mdReader.GetAssemblyDefinition());
@@ -81,7 +79,7 @@ namespace Semmle.Extraction.CIL.Driver
                     // This failed on one of the Roslyn tests that includes
                     // a deliberately malformed assembly.
                     // In this case, we just skip the extraction of this assembly.
-                    isAssembly = false;
+                    throw new InvalidAssemblyException();
                 }
             }
         }
@@ -89,7 +87,6 @@ namespace Semmle.Extraction.CIL.Driver
         public readonly AssemblyName name;
         public readonly string filename;
         public bool extract;
-        public readonly bool isAssembly;
         public readonly AssemblyName[] references;
     }
 
@@ -102,11 +99,12 @@ namespace Semmle.Extraction.CIL.Driver
     {
         class AssemblyNameComparer : IEqualityComparer<AssemblyName>
         {
-            bool IEqualityComparer<AssemblyName>.Equals(AssemblyName x, AssemblyName y) =>
-                x.Name == y.Name && x.Version == y.Version;
+            bool IEqualityComparer<AssemblyName>.Equals(AssemblyName? x, AssemblyName? y) =>
+                object.ReferenceEquals(x, y) ||
+                x?.Name == y?.Name && x?.Version == y?.Version;
 
             int IEqualityComparer<AssemblyName>.GetHashCode(AssemblyName obj) =>
-                obj.Name.GetHashCode() + 7 * obj.Version.GetHashCode();
+                (obj.Name, obj.Version).GetHashCode();
         }
 
         readonly Dictionary<AssemblyName, AssemblyInfo> assembliesRead = new Dictionary<AssemblyName, AssemblyInfo>(new AssemblyNameComparer());
@@ -116,13 +114,15 @@ namespace Semmle.Extraction.CIL.Driver
             if (!filesAnalyzed.Contains(assemblyPath))
             {
                 filesAnalyzed.Add(assemblyPath);
-                var info = new AssemblyInfo(assemblyPath);
-                if (info.isAssembly)
+                try
                 {
+                    var info = new AssemblyInfo(assemblyPath);
                     info.extract = extractAll;
                     if (!assembliesRead.ContainsKey(info.name))
                         assembliesRead.Add(info.name, info);
                 }
+                catch (InvalidAssemblyException)
+                { }
             }
         }
 
@@ -137,8 +137,7 @@ namespace Semmle.Extraction.CIL.Driver
             while (assembliesToReference.Any())
             {
                 var item = assembliesToReference.Pop();
-                AssemblyInfo info;
-                if (assembliesRead.TryGetValue(item, out info))
+                if (assembliesRead.TryGetValue(item, out AssemblyInfo? info))
                 {
                     if (!info.extract)
                     {
@@ -164,6 +163,21 @@ namespace Semmle.Extraction.CIL.Driver
     class ExtractorOptions
     {
         readonly AssemblyList assemblyList = new AssemblyList();
+
+        private ExtractorOptions(string[] args)
+        {
+            Verbosity = Verbosity.Info;
+            Threads = System.Environment.ProcessorCount;
+            PDB = true;
+            TrapCompression = TrapWriter.CompressionMode.Gzip;
+
+            ParseArgs(args);
+
+            AddFrameworkDirectories(false);
+
+            assemblyList.ResolveReferences();
+            AssembliesToExtract = assemblyList.AssembliesToExtract.ToArray();
+        }
 
         public void AddDirectory(string directory, bool extractAll)
         {
@@ -192,7 +206,12 @@ namespace Semmle.Extraction.CIL.Driver
             if (File.Exists(path))
             {
                 assemblyList.AddFile(path, true);
-                AddDirectory(Path.GetDirectoryName(path), false);
+                string? directory = Path.GetDirectoryName(path);
+                if (directory is null)
+                {
+                    throw new InternalError($"Directory of path '{path}' is null");
+                }
+                AddDirectory(directory, false);
             }
             else if (Directory.Exists(path))
             {
@@ -200,13 +219,7 @@ namespace Semmle.Extraction.CIL.Driver
             }
         }
 
-        void ResolveReferences()
-        {
-            assemblyList.ResolveReferences();
-            AssembliesToExtract = assemblyList.AssembliesToExtract.ToArray();
-        }
-
-        public IEnumerable<AssemblyInfo> AssembliesToExtract { get; private set; }
+        public IEnumerable<AssemblyInfo> AssembliesToExtract { get; }
 
         /// <summary>
         /// Gets the assemblies that were referenced but were not available to be
@@ -217,53 +230,48 @@ namespace Semmle.Extraction.CIL.Driver
 
         public static ExtractorOptions ParseCommandLine(string[] args)
         {
-            var options = new ExtractorOptions();
-            options.Verbosity = Verbosity.Info;
-            options.Threads = System.Environment.ProcessorCount;
-            options.PDB = true;
-            options.TrapCompression = TrapWriter.CompressionMode.Gzip;
-
-            foreach (var arg in args)
-            {
-                if (arg == "--verbose")
-                {
-                    options.Verbosity = Verbosity.All;
-                }
-                else if (arg == "--silent")
-                {
-                    options.Verbosity = Verbosity.Off;
-                }
-                else if (arg.StartsWith("--verbosity:"))
-                {
-                    options.Verbosity = (Verbosity)int.Parse(arg.Substring(12));
-                }
-                else if (arg == "--dotnet")
-                {
-                    options.AddFrameworkDirectories(true);
-                }
-                else if (arg == "--nocache")
-                {
-                    options.NoCache = true;
-                }
-                else if (arg.StartsWith("--threads:"))
-                {
-                    options.Threads = int.Parse(arg.Substring(10));
-                }
-                else if (arg == "--no-pdb")
-                {
-                    options.PDB = false;
-                }
-                else
-                {
-                    options.AddFileOrDirectory(arg);
-                }
-            }
-
-            options.AddFrameworkDirectories(false);
-            options.ResolveReferences();
+            var options = new ExtractorOptions(args);
 
             return options;
         }
 
+        private void ParseArgs(string[] args)
+        {
+            foreach (var arg in args)
+            {
+                if (arg == "--verbose")
+                {
+                    Verbosity = Verbosity.All;
+                }
+                else if (arg == "--silent")
+                {
+                    Verbosity = Verbosity.Off;
+                }
+                else if (arg.StartsWith("--verbosity:"))
+                {
+                    Verbosity = (Verbosity)int.Parse(arg.Substring(12));
+                }
+                else if (arg == "--dotnet")
+                {
+                    AddFrameworkDirectories(true);
+                }
+                else if (arg == "--nocache")
+                {
+                    NoCache = true;
+                }
+                else if (arg.StartsWith("--threads:"))
+                {
+                    Threads = int.Parse(arg.Substring(10));
+                }
+                else if (arg == "--no-pdb")
+                {
+                    PDB = false;
+                }
+                else
+                {
+                    AddFileOrDirectory(arg);
+                }
+            }
+        }
     }
 }
