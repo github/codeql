@@ -669,7 +669,9 @@ public class ASTExtractor {
     public Label visit(Program nd, Context c) {
       contextManager.enterContainer(toplevelLabel);
 
-      isStrict = hasUseStrict(nd.getBody());
+      boolean prevIsStrict = isStrict;
+
+      isStrict = isStrict || hasUseStrict(nd.getBody());
 
       // Add platform-specific globals.
       scopeManager.addVariables(platform.getPredefinedGlobals());
@@ -714,6 +716,8 @@ public class ASTExtractor {
       contextManager.leaveContainer();
 
       emitNodeSymbol(nd, toplevelLabel);
+
+      isStrict = prevIsStrict;
 
       return toplevelLabel;
     }
