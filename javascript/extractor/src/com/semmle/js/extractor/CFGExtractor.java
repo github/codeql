@@ -797,7 +797,10 @@ public class CFGExtractor {
     private final HashMap<IStatementContainer, Node> entryNodeCache =
         new LinkedHashMap<IStatementContainer, Node>();
 
-    private Node entry(IStatementContainer nd) {
+    /**
+     * Gets the entry node (a node without predecessors) for either a Function or a Program `nd`.
+     */
+    private Node getEntryNode(IStatementContainer nd) {
       Node entry = entryNodeCache.get(nd);
       if (entry == null) {
         entry =
@@ -821,7 +824,10 @@ public class CFGExtractor {
     private final HashMap<IStatementContainer, Node> exitNodeCache =
         new LinkedHashMap<IStatementContainer, Node>();
 
-    private Node exit(IStatementContainer nd) {
+    /**
+     * Gets the exit node (a node without sucessors) for either a Function or a Program `nd`.
+     */
+    private Node getExitNode(IStatementContainer nd) {
       Node exit = exitNodeCache.get(nd);
       if (exit == null) {
         exit =
@@ -909,7 +915,7 @@ public class CFGExtractor {
                 }
 
                 private Object visit(IStatementContainer nd) {
-                  if (type == JumpType.RETURN) return exit((IStatementContainer) nd);
+                  if (type == JumpType.RETURN) return getExitNode((IStatementContainer) nd);
                   return null;
                 }
               },
@@ -956,7 +962,7 @@ public class CFGExtractor {
     @Override
     public Void visit(Program nd, SuccessorInfo i) {
       this.ctxt.push(nd);
-      Node entry = this.entry(nd);
+      Node entry = getEntryNode(nd);
 
       List<ImportDeclaration> imports = scanImports(nd);
       hoistedImports.addAll(imports);
@@ -966,7 +972,7 @@ public class CFGExtractor {
       List<Identifier> fns = HoistedFunDecls.of(nd);
       hoistedFns.addAll(fns);
 
-      Object fst = this.seq(importSpecifiers, fns, nd.getBody(), this.exit(nd));
+      Object fst = this.seq(importSpecifiers, fns, nd.getBody(), this.getExitNode(nd));
       writeSuccessors(entry, fst);
       this.ctxt.pop();
       return null;
@@ -1007,7 +1013,7 @@ public class CFGExtractor {
       }
       if (nd.hasRest()) paramsAndDefaults.add((Expression) nd.getRest());
 
-      Node entry = this.entry(nd);
+      Node entry = getEntryNode(nd);
       List<Identifier> fns = HoistedFunDecls.of(nd);
       hoistedFns.addAll(fns);
 
@@ -1025,7 +1031,7 @@ public class CFGExtractor {
         }
       }
 
-      Object fst = this.seq(nd.getBody(), this.exit(nd));
+      Object fst = this.seq(nd.getBody(), this.getExitNode(nd));
       if (firstField != null) fst = First.of(firstField);
       fst =
           this.seq(
