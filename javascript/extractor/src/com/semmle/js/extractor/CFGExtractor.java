@@ -181,16 +181,22 @@ public class CFGExtractor {
     this.metrics = astExtractor.getMetrics();
   }
 
+  /**
+   * Creates an `Iterable<Node>` from the one-or-more nodes contained in `nodes`.
+   */
   @SuppressWarnings("unchecked")
-  private static Iterable<Node> createIterable(Object nd) {
-    if (nd == null) return Collections.<Node>emptySet();
-    if (nd instanceof Node) return CollectionUtil.singletonIterable((Node) nd);
-    return (Iterable<Node>) nd;
+  private static Iterable<Node> createIterable(Object nodes) {
+    if (nodes == null) return Collections.<Node>emptySet();
+    if (nodes instanceof Node) return CollectionUtil.singletonIterable((Node) nodes);
+    return (Iterable<Node>) nodes;
   }
 
-  private Iterable<Node> createReversedIterable(final Object nd) {
+  /**
+   * Creates an `Iterable<Node>` that iterates the nodes in reverse order from the one-or-more nodes contained in `nodes`.
+   */
+  private Iterable<Node> createReversedIterable(final Object nodes) {
     List<Node> list = new ArrayList<>();
-    createIterable(nd).forEach(list::add);
+    createIterable(nodes).forEach(list::add);
     Collections.reverse(list);
     return list;
   }
