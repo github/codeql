@@ -195,7 +195,7 @@ public class CFGExtractor {
   /**
    * Creates an `Iterable<Node>` that iterates the nodes in reverse order from the one-or-more nodes contained in `nodes`.
    */
-  private Iterable<Node> createReversedIterable(final Object nodes) {
+  private static Iterable<Node> createReversedIterable(final Object nodes) {
     List<Node> list = new ArrayList<>();
     createIterable(nodes).forEach(list::add);
     Collections.reverse(list);
@@ -203,14 +203,14 @@ public class CFGExtractor {
   }
 
   /** Returns a list of all the nodes in a tree of nested lists. */
-  private List<Node> flattenNestedList(Iterable<?> lists) {
+  private static List<Node> flattenNestedList(Iterable<?> lists) {
     return flattenNestedList(lists, new ArrayList<>());
   }
 
   /**
    * Appends all the nodes in a tree of nested lists the given output list, and returns that list.
    */
-  private List<Node> flattenNestedList(Iterable<?> lists, List<Node> output) {
+  private static List<Node> flattenNestedList(Iterable<?> lists, List<Node> output) {
     for (Object object : lists) {
       if (object == null) continue;
       if (object instanceof Node) {
@@ -226,7 +226,7 @@ public class CFGExtractor {
 
   /**
    * Creates an order preserving concatenation of the nodes in `xs` and `ys` without duplicates.
-   * Returns `null`, or an `INode` or a `List<Node>`.
+   * Returns `null`, or an `Node` or a `List<Node>`.
    */
   private static Object union(Object xs, Object ys) {
     if (xs == null) return ys;
