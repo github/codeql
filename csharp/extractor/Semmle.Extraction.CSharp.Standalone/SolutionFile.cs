@@ -57,10 +57,15 @@ namespace Semmle.BuildAnalyser
         /// <summary>
         /// List of projects which were mentioned but don't exist on disk.
         /// </summary>
-        public IEnumerable<string> MissingProjects =>
+        public IEnumerable<string> MissingProjects
+        {
+            get
+            {
                 // Only projects in the solution file can be missing.
                 // (NestedProjects are located on disk so always exist.)
-                MsBuildProjects.Where(p => !File.Exists(p));
+                return MsBuildProjects.Where(p => !File.Exists(p));
+            }
+        }
 
         /// <summary>
         /// The list of project files.

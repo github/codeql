@@ -49,7 +49,7 @@ namespace Semmle.BuildAnalyser
     class BuildAnalysis : IBuildAnalysis, IDisposable
     {
         private readonly AssemblyCache assemblyCache;
-        private readonly NugetPackages nuget;
+        private readonly NugetPackages? nuget;
         private readonly IProgressMonitor progressMonitor;
         private readonly IDictionary<string, bool> usedReferences = new ConcurrentDictionary<string, bool>();
         private readonly IDictionary<string, bool> sources = new ConcurrentDictionary<string, bool>();
@@ -86,7 +86,7 @@ namespace Semmle.BuildAnalyser
                 try
                 {
                     nuget = new NugetPackages(sourceDir.FullName, PackageDirectory);
-                    ReadNugetFiles();
+                    nuget.InstallPackages(progressMonitor);
                 }
                 catch (FileNotFoundException)
                 {
@@ -177,6 +177,7 @@ namespace Semmle.BuildAnalyser
         {
             var sortedReferences = usedReferences.
                 Select(r => assemblyCache.GetAssemblyInfo(r.Key)).
+                Where(r => r != AssemblyInfo.Invalid).
                 OrderBy(r => r.Version).
                 ToArray();
 
@@ -201,15 +202,6 @@ namespace Semmle.BuildAnalyser
                     ++conflictedReferences;
                 }
             }
-        }
-
-        /// <summary>
-        /// Find and restore NuGet packages.
-        /// </summary>
-        void ReadNugetFiles()
-        {
-            nuget.FindPackages();
-            nuget.InstallPackages(progressMonitor);
         }
 
         /// <summary>
@@ -294,7 +286,7 @@ namespace Semmle.BuildAnalyser
                 foreach (var @ref in csProj.References)
                 {
                     AssemblyInfo resolved = assemblyCache.ResolveReference(@ref);
-                    if (!resolved.Valid)
+                    if (resolved == AssemblyInfo.Invalid)
                     {
                         UnresolvedReference(@ref, project.FullName);
                     }
