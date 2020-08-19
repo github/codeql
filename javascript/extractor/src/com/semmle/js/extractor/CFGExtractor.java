@@ -111,6 +111,7 @@ import com.semmle.util.trap.TrapWriter.Label;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.function.IntFunction;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -737,7 +738,11 @@ public class CFGExtractor {
     return result;
   }
 
-  private class V extends DefaultVisitor<SuccessorInfo, Void> {
+  /**
+   * A visitor that recursively visits all the nodes in the CFG (starting with the top-level `Program`) and writes the `successor` relation for each of the nodes.
+   * Depends on the `First` visitor to compute which CFG-node is first in the CFG for a given parent-node.
+   */
+  private class WriteSuccessorsVisitor extends DefaultVisitor<SuccessorInfo, Void> {
     /**
      * The context stores relevant bits of syntactic context to be able to resolve jumps.
      *
@@ -1990,7 +1995,7 @@ public class CFGExtractor {
 
   public void extract(Node nd) {
     metrics.startPhase(ExtractionPhase.CFGExtractor_extract);
-    nd.accept(new V(), new SimpleSuccessorInfo(null));
+    nd.accept(new WriteSuccessorsVisitor(), new SimpleSuccessorInfo(null));
     metrics.stopPhase(ExtractionPhase.CFGExtractor_extract);
   }
 }
