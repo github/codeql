@@ -924,7 +924,7 @@ public class CFGExtractor {
       }.find(ctxt.size() - 1);
     }
 
-    private Node visit(Node nd, Object trueSuccessors, Object falseSuccessors) {
+    private Node visitWithSuccessors(Node nd, Object trueSuccessors, Object falseSuccessors) {
       if (nd == null) return null;
 
       followingCache.put(nd, union(followingCache.get(nd), union(trueSuccessors, falseSuccessors)));
@@ -936,11 +936,19 @@ public class CFGExtractor {
       return First.of(nd);
     }
 
+    private Node visitWithSuccessors(Node nd, Object successors) {
+      if (nd == null) return null;
+
+      followingCache.put(nd, union(followingCache.get(nd), successors));
+      nd.accept(this, new SimpleSuccessorInfo(successors));
+      return First.of(nd);
+    }
+
     private Object seq(Object... nodes) {
       Object fst = nodes[nodes.length - 1];
       for (int i = nodes.length - 2; i >= 0; --i) {
         for (Node node : createReversedIterable(nodes[i])) {
-          Node ffst = visit(node, fst, null);
+          Node ffst = visitWithSuccessors(node, fst);
           if (ffst != null) fst = ffst;
         }
       }
@@ -1212,7 +1220,7 @@ public class CFGExtractor {
     @Override
     public Void visit(ExpressionStatement nd, SuccessorInfo i) {
       writeSuccessors(nd, First.of(nd.getExpression()));
-      visit(nd.getExpression(), i.getAllSuccessors(), null);
+      visitWithSuccessors(nd.getExpression(), i.getAllSuccessors());
       return null;
     }
 
@@ -1227,12 +1235,12 @@ public class CFGExtractor {
       Expression test = nd.getTest();
       writeSuccessors(nd, First.of(test));
       Object following = i.getAllSuccessors();
-      visit(
+      visitWithSuccessors(
           test,
           First.of(nd.getConsequent()),
           nd.hasAlternate() ? First.of(nd.getAlternate()) : following);
-      this.visit(nd.getConsequent(), following, null);
-      this.visit(nd.getAlternate(), following, null);
+      visitWithSuccessors(nd.getConsequent(), following);
+      visitWithSuccessors(nd.getAlternate(), following);
       return null;
     }
 
@@ -1240,7 +1248,7 @@ public class CFGExtractor {
     public Void visit(ConditionalExpression nd, SuccessorInfo i) {
       Expression test = nd.getTest();
       writeSuccessors(nd, First.of(test));
-      visit(test, First.of(nd.getConsequent()), First.of(nd.getAlternate()));
+      visitWithSuccessors(test, First.of(nd.getConsequent()), First.of(nd.getAlternate()));
 
       nd.getConsequent().accept(this, i);
       nd.getAlternate().accept(this, i);
@@ -1294,10 +1302,10 @@ public class CFGExtractor {
         }
       }
 
-      if (nd.getCases().isEmpty()) this.visit(nd.getDiscriminant(), i.getAllSuccessors(), null);
+      if (nd.getCases().isEmpty()) visitWithSuccessors(nd.getDiscriminant(), i.getAllSuccessors());
       else if (nd.getCases().size() > 1 && nd.getCases().get(0).isDefault())
-        this.visit(nd.getDiscriminant(), First.of(nd.getCases().get(1)), null);
-      else this.visit(nd.getDiscriminant(), First.of(nd.getCases().get(0)), null);
+        visitWithSuccessors(nd.getDiscriminant(), First.of(nd.getCases().get(1)));
+      else visitWithSuccessors(nd.getDiscriminant(), First.of(nd.getCases().get(0)));
       this.seq(nd.getCases(), i.getAllSuccessors());
       this.ctxt.pop();
       return null;
@@ -1318,14 +1326,14 @@ public class CFGExtractor {
 
     @Override
     public Void visit(ReturnStatement nd, SuccessorInfo i) {
-      visit(nd.getArgument(), nd, null);
+      visitWithSuccessors(nd.getArgument(), nd);
       writeSuccessors(nd, findTarget(JumpType.RETURN, null));
       return null;
     }
 
     @Override
     public Void visit(ThrowStatement nd, SuccessorInfo i) {
-      visit(nd.getArgument(), nd, null);
+      visitWithSuccessors(nd.getArgument(), nd);
       writeSuccessors(nd, findTarget(JumpType.THROW, null));
       return null;
     }
@@ -1337,17 +1345,22 @@ public class CFGExtractor {
 
       ctxt.push(nd);
       Object fst = nd.hasFinalizer() ? First.of(nd.getFinalizer()) : i.getAllSuccessors();
-      this.visit(nd.getBlock(), fst, null);
+      visitWithSuccessors(nd.getBlock(), fst);
       ctxt.pop();
 
       if (nd.hasFinalizer()) ctxt.push(new Finally(nd.getFinalizer().getLoc(), nd.getFinalizer()));
 
-      for (int j = 0, n = nd.getAllHandlers().size(); j < n; ++j)
-        visit(nd.getAllHandlers().get(j), fst, j + 1 < n ? nd.getAllHandlers().get(j + 1) : null);
+      for (int j = 0, n = nd.getAllHandlers().size(); j < n; ++j) {
+        if (j + 1 < n) {
+          visitWithSuccessors(nd.getAllHandlers().get(j), fst, nd.getAllHandlers().get(j + 1));
+        } else {
+          visitWithSuccessors(nd.getAllHandlers().get(j), fst);
+        }
+      }
 
       if (nd.hasFinalizer()) {
         ctxt.pop();
-        visit(nd.getFinalizer(), followingCache.get(nd.getFinalizer()), null);
+        visitWithSuccessors(nd.getFinalizer(), followingCache.get(nd.getFinalizer()));
       }
       return null;
     }
@@ -1397,8 +1410,8 @@ public class CFGExtractor {
       Node testStart = First.of(test);
       writeSuccessors(nd, testStart);
       ctxt.push(nd);
-      visit(nd.getBody(), testStart, null);
-      visit(test, First.of(nd.getBody()), i.getAllSuccessors());
+      visitWithSuccessors(nd.getBody(), testStart);
+      visitWithSuccessors(test, First.of(nd.getBody()), i.getAllSuccessors());
       ctxt.pop();
       return null;
     }
@@ -1409,8 +1422,8 @@ public class CFGExtractor {
       writeSuccessors(nd, body);
       ctxt.push(nd);
       Expression test = nd.getTest();
-      visit(nd.getBody(), First.of(test), null);
-      visit(test, body, i.getAllSuccessors());
+      visitWithSuccessors(nd.getBody(), First.of(test));
+      visitWithSuccessors(test, body, i.getAllSuccessors());
       ctxt.pop();
       return null;
     }
@@ -1431,11 +1444,11 @@ public class CFGExtractor {
       writeSuccessors(nd, First.of(nd.hasInit() ? nd.getInit() : nd.hasTest() ? nd.getTest() : nd.getBody()));
       ctxt.push(nd);
       Node fst = First.of(nd.hasTest() ? nd.getTest() : nd.getBody());
-      visit(nd.getInit(), fst, null);
+      visitWithSuccessors(nd.getInit(), fst);
 
       if (nd.hasTest()) {
         Expression test = nd.getTest();
-        visit(test, First.of(nd.getBody()), i.getAllSuccessors());
+        visitWithSuccessors(test, First.of(nd.getBody()), i.getAllSuccessors());
       }
       seq(nd.getBody(), nd.getUpdate(), fst);
       ctxt.pop();
@@ -1449,7 +1462,7 @@ public class CFGExtractor {
       int n = expressions.size() - 1;
       expressions.get(n).accept(this, i);
       Node next = First.of(expressions.get(n));
-      while (--n >= 0) next = visit(expressions.get(n), next, null);
+      while (--n >= 0) next = visitWithSuccessors(expressions.get(n), next);
       return null;
     }
 
@@ -1579,16 +1592,16 @@ public class CFGExtractor {
       if ("&&=".equals(nd.getOperator()) || "||=".equals(nd.getOperator()) || "??=".equals(nd.getOperator())) {
         if ("&&=".equals(nd.getOperator())) {
           // from lhs to rhs on truthy. from lhs to false-branch on falsy.
-          visit(nd.getLeft(), First.of(nd.getRight()), i.getSuccessors(false));
+          visitWithSuccessors(nd.getLeft(), First.of(nd.getRight()), i.getSuccessors(false));
         } else if ("||=".equals(nd.getOperator())) {
           // from lhs to true-branch on truthy. from lhs to rhs on falsy.
-          visit(nd.getLeft(), i.getSuccessors(true), First.of(nd.getRight()));
+          visitWithSuccessors(nd.getLeft(), i.getSuccessors(true), First.of(nd.getRight()));
         } else { // "??="
           // the union of the above - truthyness is unknown.
-          visit(nd.getLeft(), union(First.of(nd.getRight()), i.getAllSuccessors()), null);
+          visitWithSuccessors(nd.getLeft(), union(First.of(nd.getRight()), i.getAllSuccessors()));
         }
         
-        visit(nd.getRight(), First.of(nd), null); // from right to assignment.
+        visitWithSuccessors(nd.getRight(), First.of(nd)); // from right to assignment.
 
         writeSuccessors(nd, i.getGuardedSuccessors(nd));
       } else {
@@ -1612,7 +1625,7 @@ public class CFGExtractor {
             union(
                 First.of(nd.getRight()),
                 i.getAllSuccessors()); // short-circuiting happens with both truthy and falsy values
-        visit(nd.getLeft(), leftSucc, null);
+        visitWithSuccessors(nd.getLeft(), leftSucc);
         nd.getRight().accept(this, i);
       } else {
         this.seq(nd.getLeft(), nd.getRight(), nd);
@@ -1634,36 +1647,36 @@ public class CFGExtractor {
       Expression left = nd.getLeft();
       writeSuccessors(nd, First.of(left));
       if ("&&".equals(nd.getOperator()))
-        visit(left, First.of(nd.getRight()), i.getSuccessors(false));
-      else visit(left, i.getSuccessors(true), First.of(nd.getRight()));
+        visitWithSuccessors(left, First.of(nd.getRight()), i.getSuccessors(false));
+      else visitWithSuccessors(left, i.getSuccessors(true), First.of(nd.getRight()));
       nd.getRight().accept(this, i);
       return null;
     }
 
     @Override
     public Void visit(SpreadElement nd, SuccessorInfo i) {
-      visit(nd.getArgument(), nd, null);
+      visitWithSuccessors(nd.getArgument(), nd);
       writeSuccessors(nd, i.getAllSuccessors());
       return null;
     }
 
     @Override
     public Void visit(UnaryExpression nd, SuccessorInfo i) {
-      visit(nd.getArgument(), nd, null);
+      visitWithSuccessors(nd.getArgument(), nd);
       writeSuccessors(nd, i.getGuardedSuccessors(nd));
       return null;
     }
 
     @Override
     public Void visit(UpdateExpression nd, SuccessorInfo i) {
-      visit(nd.getArgument(), nd, null);
+      visitWithSuccessors(nd.getArgument(), nd);
       writeSuccessors(nd, i.getGuardedSuccessors(nd));
       return null;
     }
 
     @Override
     public Void visit(YieldExpression nd, SuccessorInfo i) {
-      visit(nd.getArgument(), nd, null);
+      visitWithSuccessors(nd.getArgument(), nd);
       // yield expressions may throw
       writeSuccessors(nd, union(this.findTarget(JumpType.THROW, null), i.getGuardedSuccessors(nd)));
       return null;
@@ -1759,7 +1772,7 @@ public class CFGExtractor {
 
     private Node visitComprehensionFilter(ComprehensionExpression nd, Object follow) {
       if (nd.hasFilter()) {
-        visit(nd.getFilter(), visitComprehensionBody(nd, follow), follow);
+        visitWithSuccessors(nd.getFilter(), visitComprehensionBody(nd, follow), follow);
         return First.of(nd.getFilter());
       } else {
         return visitComprehensionBody(nd, follow);
@@ -1873,7 +1886,7 @@ public class CFGExtractor {
 
     @Override
     public Void visit(JSXSpreadAttribute nd, SuccessorInfo c) {
-      visit(nd.getArgument(), nd, null);
+      visitWithSuccessors(nd.getArgument(), nd);
       Label propkey = trapwriter.localID(nd, "JSXSpreadAttribute");
       Label spreadkey = trapwriter.localID(nd);
       trapwriter.addTuple("successor", spreadkey, propkey);
