@@ -186,27 +186,6 @@ public class CFGExtractor {
     this.metrics = astExtractor.getMetrics();
   }
 
-  /**
-   * Creates an `Collection<Node>` from the one-or-more nodes contained in `nodes`.
-   * `nodes` is either `null`, a `Node`, or a `Collection<Node>`.
-   */
-  @SuppressWarnings("unchecked")
-  private static Collection<Node> createCollection(Object nodes) { // TODO: Delete usages.
-    if (nodes == null) return Collections.<Node>emptySet();
-    if (nodes instanceof Node) return Collections.<Node>singleton((Node) nodes);
-    return (Collection<Node>) nodes;
-  }
-
-  /**
-   * Creates an `Collection<Node>` that iterates the nodes in reverse order from the one-or-more nodes contained in `nodes`.
-   */
-  private static Collection<Node> createReversedCollection(final Object nodes) {
-    List<Node> list = new ArrayList<>();
-    createCollection(nodes).forEach(list::add);
-    Collections.reverse(list);
-    return list;
-  }
-
   private static Collection<Node> union(Node x, Node y) {
     return union(Collections.singleton(x), Collections.singleton(y));
   }
@@ -952,6 +931,27 @@ public class CFGExtractor {
       followingCache.put(nd, union(followingCache.get(nd), successors));
       nd.accept(this, new SimpleSuccessorInfo(successors));
       return First.of(nd);
+    }
+
+    /**
+     * Creates an `Collection<Node>` from the one-or-more nodes contained in `nodes`.
+     * `nodes` is either `null`, a `Node`, or a `Collection<Node>`.
+     */
+    @SuppressWarnings("unchecked")
+    private Collection<Node> createCollection(Object nodes) { // TODO: Delete usages.
+      if (nodes == null) return Collections.<Node>emptySet();
+      if (nodes instanceof Node) return Collections.<Node>singleton((Node) nodes);
+      return (Collection<Node>) nodes;
+    }
+
+    /**
+     * Creates an `Collection<Node>` that iterates the nodes in reverse order from the one-or-more nodes contained in `nodes`.
+     */
+    private Collection<Node> createReversedCollection(final Object nodes) {
+      List<Node> list = new ArrayList<>();
+      createCollection(nodes).forEach(list::add);
+      Collections.reverse(list);
+      return list;
     }
 
     /**
