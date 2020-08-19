@@ -223,6 +223,10 @@ public class CFGExtractor {
     return output;
   }
 
+  /**
+   * Creates an order preserving concatenation of the nodes in `xs` and `ys` without duplicates.
+   * Returns `null`, or an `INode` or a `List<Node>`.
+   */
   private static Object union(Object xs, Object ys) {
     if (xs == null) return ys;
     if (ys == null) return xs;
