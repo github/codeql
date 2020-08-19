@@ -181,7 +181,7 @@ class TupleElementContent extends TTupleElementContent, Content {
   int getIndex() { result = index }
 
   /** Gets a textual representation of this element. */
-  override string toString() { result = "Tuple element at " + index.toString() }
+  override string toString() { result = "Tuple element at index " + index.toString() }
 }
 
 class DictionaryElementContent extends TDictionaryElementContent, Content {
