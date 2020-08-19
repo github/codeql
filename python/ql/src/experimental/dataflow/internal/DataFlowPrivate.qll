@@ -224,32 +224,54 @@ predicate jumpStep(Node pred, Node succ) {
  * content `c`.
  */
 predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
-  // Sequence
-  //   `(..., 42, ...)`
-  //   or
+  listStoreStep(nodeFrom, c, nodeTo)
+  or
+  tupleStoreStep(nodeFrom, c, nodeTo)
+  or
+  dictStoreStep(nodeFrom, c, nodeTo)
+  or
+  comprehensionStoreStep(nodeFrom, c, nodeTo)
+}
+
+/** Data flows from an element of a list to the list. */
+predicate listStoreStep(CfgNode nodeFrom, ListElementContent c, CfgNode nodeTo) {
+  // List
   //   `[..., 42, ...]`
   //   nodeFrom is `42`, cfg node
-  //   nodeTo is the sequence, say `[..., 42, ...]`, cfg node
-  //   c denotes list or c denotes tuple and index of nodeFrom
-  //
-  // List
-  nodeTo.(CfgNode).getNode().(ListNode).getAnElement() = nodeFrom.(CfgNode).getNode() and
-  c instanceof ListElementContent
-  or
+  //   nodeTo is the sequence, `[..., 42, ...]`, cfg node
+  //   c denotes element of list
+  nodeTo.getNode().(ListNode).getAnElement() = nodeFrom.getNode()
+}
+
+/** Data flows from an element of a tuple to the tuple at a specific index. */
+predicate tupleStoreStep(CfgNode nodeFrom, TupleElementContent c, CfgNode nodeTo) {
   // Tuple
+  //   `(..., 42, ...)`
+  //   nodeFrom is `42`, cfg node
+  //   nodeTo is the sequence, `(..., 42, ...)`, cfg node
+  //   c denotes element of tuple and index of nodeFrom
   exists(int n |
-    nodeTo.(CfgNode).getNode().(TupleNode).getElement(n) = nodeFrom.(CfgNode).getNode() and
-    c.(TupleElementContent).getIndex() = n
+    nodeTo.getNode().(TupleNode).getElement(n) = nodeFrom.getNode() and
+    c.getIndex() = n
   )
-  or
-  // Dict
+}
+
+/** Data flows from an element of a dictionary to the dictionary at a specific key. */
+predicate dictStoreStep(CfgNode nodeFrom, DictionaryElementContent c, CfgNode nodeTo) {
+  // Dictionary
+  //   `{..., "key" = 42, ...}`
+  //   nodeFrom is `42`, cfg node
+  //   nodeTo is the sequence, `{..., "key" = 42, ...}`, cfg node
+  //   c denotes element of dictionary and the key `"key"`
   exists(KeyValuePair item |
-    item = nodeTo.(CfgNode).getNode().(DictNode).getNode().(Dict).getAnItem() and
-    nodeFrom.(CfgNode).getNode().getNode() = item.getValue() and
-    c.(DictionaryElementContent).getKey() = item.getKey().(StrConst).getS()
+    item = nodeTo.getNode().(DictNode).getNode().(Dict).getAnItem() and
+    nodeFrom.getNode().getNode() = item.getValue() and
+    c.getKey() = item.getKey().(StrConst).getS()
   )
-  or
-  //
+}
+
+/** Data flows from an element expression in a comprehension to the comprehension. */
+predicate comprehensionStoreStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
   // Comprehension
   //   `[x+1 for x in l]`
   //   nodeFrom is `x+1`, cfg node
@@ -257,15 +279,15 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   //   c denotes list or set or dictionary without index
   //
   // List
-  nodeTo.(CfgNode).getNode().getNode().(ListComp).getElt() = nodeFrom.(CfgNode).getNode().getNode() and
+  nodeTo.getNode().getNode().(ListComp).getElt() = nodeFrom.getNode().getNode() and
   c instanceof ListElementContent
   or
   // Set
-  nodeTo.(CfgNode).getNode().getNode().(SetComp).getElt() = nodeFrom.(CfgNode).getNode().getNode() and
+  nodeTo.getNode().getNode().(SetComp).getElt() = nodeFrom.getNode().getNode() and
   c instanceof SetElementContent
   or
   // Dictionary
-  nodeTo.(CfgNode).getNode().getNode().(DictComp).getElt() = nodeFrom.(CfgNode).getNode().getNode() and
+  nodeTo.getNode().getNode().(DictComp).getElt() = nodeFrom.getNode().getNode() and
   c instanceof DictionaryElementAnyContent
 }
 
@@ -273,12 +295,21 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
  * Holds if data can flow from `nodeFrom` to `nodeTo` via a read of content `c`.
  */
 predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
+  subscriptionReadStep(nodeFrom, c, nodeTo)
+  or
+  popReadStep(nodeFrom, c, nodeTo)
+  or
+  comprehensionReadStep(nodeFrom, c, nodeTo)
+}
+
+/** Data flows from a sequence to a subscript of the sequence. */
+predicate subscriptionReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
   // Subscription
   //   `l[3]`
   //   nodeFrom is `l`, cfg node
   //   nodeTo is `l[3]`, cfg node
   //   c is compatible with 3
-  nodeFrom.(CfgNode).getNode() = nodeTo.(CfgNode).getNode().(SubscriptNode).getObject() and
+  nodeFrom.getNode() = nodeTo.getNode().(SubscriptNode).getObject() and
   (
     c instanceof ListElementContent
     or
@@ -287,12 +318,15 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
     c instanceof DictionaryElementAnyContent
     or
     c.(TupleElementContent).getIndex() =
-      nodeTo.(CfgNode).getNode().(SubscriptNode).getIndex().getNode().(IntegerLiteral).getValue()
+      nodeTo.getNode().(SubscriptNode).getIndex().getNode().(IntegerLiteral).getValue()
     or
     c.(DictionaryElementContent).getKey() =
-      nodeTo.(CfgNode).getNode().(SubscriptNode).getIndex().getNode().(StrConst).getS()
+      nodeTo.getNode().(SubscriptNode).getIndex().getNode().(StrConst).getS()
   )
-  or
+}
+
+/** Data flows from a sequence to a call to `pop` on the sequence. */
+predicate popReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
   // set.pop or list.pop
   //   `s.pop()`
   //   nodeFrom is `s`, cfg node
@@ -300,10 +334,10 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   //   c denotes element of list or set
   exists(CallNode call, AttrNode a |
     call.getFunction() = a and
-    a.getName() = "pop" and // TODO: Should be made more robust, like Value::named("set.pop").getACall()
+    a.getName() = "pop" and // Should match appropriate call since we tracked a sequence here.
     not exists(call.getAnArg()) and
-    nodeFrom.(CfgNode).getNode() = a.getObject() and
-    nodeTo.(CfgNode).getNode() = call and
+    nodeFrom.getNode() = a.getObject() and
+    nodeTo.getNode() = call and
     (
       c instanceof ListElementContent
       or
@@ -312,18 +346,21 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   )
   or
   // dict.pop
-  //   `d.pop(key)`
+  //   `d.pop("key")`
   //   nodeFrom is `d`, cfg node
-  //   nodeTo is `d.pop(key)`, cfg node
-  //   c denotes key
+  //   nodeTo is `d.pop("key")`, cfg node
+  //   c denotes the key `"key"`
   exists(CallNode call, AttrNode a |
     call.getFunction() = a and
-    a.getName() = "pop" and // TODO: Should be made more robust, like Value::named("set.pop").getACall()
-    nodeFrom.(CfgNode).getNode() = a.getObject() and
-    nodeTo.(CfgNode).getNode() = call and
+    a.getName() = "pop" and // Should match appropriate call since we tracked a dictionary here.
+    nodeFrom.getNode() = a.getObject() and
+    nodeTo.getNode() = call and
     c.(DictionaryElementContent).getKey() = call.getArg(0).getNode().(StrConst).getS()
   )
-  or
+}
+
+/** Data flows from a iterated sequence to the variable iterating over the sequence. */
+predicate comprehensionReadStep(CfgNode nodeFrom, Content c, EssaNode nodeTo) {
   // Comprehension
   //   `[x+1 for x in l]`
   //   nodeFrom is `l`, cfg node
@@ -331,8 +368,8 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   //   c denotes element of list or set
   exists(For f, Comp comp |
     f = getCompFor(comp) and
-    nodeFrom.(CfgNode).getNode().(SequenceNode).getNode() = getCompIter(comp) and
-    nodeTo.(EssaNode).getVar().getDefinition().(AssignmentDefinition).getDefiningNode().getNode() =
+    nodeFrom.getNode().(SequenceNode).getNode() = getCompIter(comp) and
+    nodeTo.getVar().getDefinition().(AssignmentDefinition).getDefiningNode().getNode() =
       f.getTarget() and
     (
       c instanceof ListElementContent
@@ -357,15 +394,6 @@ AstNode getCompIter(Comp c) {
     c.contains(between) and
     between.contains(result)
   )
-}
-
-/** This should not be necessary */
-predicate colocated(AstNode n1, AstNode n2) {
-  n1.getLocation().getFile() = n2.getLocation().getFile() and
-  n1.getLocation().getStartLine() = n2.getLocation().getStartLine() and
-  n1.getLocation().getEndLine() = n2.getLocation().getEndLine() and
-  n1.getLocation().getStartColumn() = n2.getLocation().getStartColumn() and
-  n1.getLocation().getEndColumn() = n2.getLocation().getEndColumn()
 }
 
 /**

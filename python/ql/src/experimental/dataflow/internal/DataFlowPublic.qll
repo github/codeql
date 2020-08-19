@@ -151,9 +151,13 @@ newtype TContent =
   /** An element of a set. */
   TSetElementContent() or
   /** An element of a tuple at a specifik index. */
-  TTupleElementContent(int index) { exists(IntegerLiteral lit | lit.getValue() = index) } or
+  TTupleElementContent(int index) { exists(any(TupleNode tn).getElement(index)) } or
   /** An element of a dictionary under a specific key. */
-  TDictionaryElementContent(string key) { exists(StrConst s | s.getS() = key) } or
+  TDictionaryElementContent(string key) {
+    key = any(KeyValuePair kvp).getKey().(StrConst).getS()
+    or
+    key = any(Keyword kw).getArg()
+  } or
   /** An element of a dictionary at any key. */
   TDictionaryElementAnyContent()
 

@@ -1,7 +1,7 @@
 edges
-| test.py:24:10:24:26 | ControlFlowNode for Tuple [Tuple element at 1] | test.py:25:9:25:9 | ControlFlowNode for x [Tuple element at 1] |
-| test.py:24:21:24:26 | ControlFlowNode for SOURCE | test.py:24:10:24:26 | ControlFlowNode for Tuple [Tuple element at 1] |
-| test.py:25:9:25:9 | ControlFlowNode for x [Tuple element at 1] | test.py:25:9:25:12 | ControlFlowNode for Subscript |
+| test.py:24:10:24:26 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:25:9:25:9 | ControlFlowNode for x [Tuple element at index 1] |
+| test.py:24:21:24:26 | ControlFlowNode for SOURCE | test.py:24:10:24:26 | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:25:9:25:9 | ControlFlowNode for x [Tuple element at index 1] | test.py:25:9:25:12 | ControlFlowNode for Subscript |
 | test.py:25:9:25:12 | ControlFlowNode for Subscript | test.py:26:10:26:10 | ControlFlowNode for y |
 | test.py:35:9:35:14 | ControlFlowNode for SOURCE | test.py:36:10:36:10 | ControlFlowNode for x |
 | test.py:40:9:40:16 | ControlFlowNode for Str | test.py:41:10:41:10 | ControlFlowNode for x |
@@ -30,25 +30,25 @@ edges
 | test.py:95:21:95:28 | ControlFlowNode for List [List element] | test.py:95:16:95:16 | SSA variable y |
 | test.py:95:22:95:27 | ControlFlowNode for SOURCE | test.py:95:21:95:28 | ControlFlowNode for List [List element] |
 | test.py:96:10:96:10 | ControlFlowNode for x [Set element] | test.py:96:10:96:16 | ControlFlowNode for Attribute() |
-| test.py:104:9:104:21 | ControlFlowNode for Dict [Dictionary element at s] | test.py:105:10:105:10 | ControlFlowNode for x [Dictionary element at s] |
-| test.py:104:15:104:20 | ControlFlowNode for SOURCE | test.py:104:9:104:21 | ControlFlowNode for Dict [Dictionary element at s] |
-| test.py:105:10:105:10 | ControlFlowNode for x [Dictionary element at s] | test.py:105:10:105:15 | ControlFlowNode for Subscript |
-| test.py:108:9:108:21 | ControlFlowNode for Dict [Dictionary element at s] | test.py:109:10:109:10 | ControlFlowNode for x [Dictionary element at s] |
-| test.py:108:15:108:20 | ControlFlowNode for SOURCE | test.py:108:9:108:21 | ControlFlowNode for Dict [Dictionary element at s] |
-| test.py:109:10:109:10 | ControlFlowNode for x [Dictionary element at s] | test.py:109:10:109:19 | ControlFlowNode for Attribute() |
-| test.py:234:11:234:16 | ControlFlowNode for SOURCE | test.py:234:11:234:17 | ControlFlowNode for Tuple [Tuple element at 0] |
-| test.py:234:11:234:17 | ControlFlowNode for Tuple [Tuple element at 0] | test.py:234:10:234:21 | ControlFlowNode for Subscript |
+| test.py:104:9:104:21 | ControlFlowNode for Dict [Dictionary element at key s] | test.py:105:10:105:10 | ControlFlowNode for x [Dictionary element at key s] |
+| test.py:104:15:104:20 | ControlFlowNode for SOURCE | test.py:104:9:104:21 | ControlFlowNode for Dict [Dictionary element at key s] |
+| test.py:105:10:105:10 | ControlFlowNode for x [Dictionary element at key s] | test.py:105:10:105:15 | ControlFlowNode for Subscript |
+| test.py:108:9:108:21 | ControlFlowNode for Dict [Dictionary element at key s] | test.py:109:10:109:10 | ControlFlowNode for x [Dictionary element at key s] |
+| test.py:108:15:108:20 | ControlFlowNode for SOURCE | test.py:108:9:108:21 | ControlFlowNode for Dict [Dictionary element at key s] |
+| test.py:109:10:109:10 | ControlFlowNode for x [Dictionary element at key s] | test.py:109:10:109:19 | ControlFlowNode for Attribute() |
+| test.py:234:11:234:16 | ControlFlowNode for SOURCE | test.py:234:11:234:17 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:234:11:234:17 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:234:10:234:21 | ControlFlowNode for Subscript |
 | test.py:237:10:237:17 | ControlFlowNode for List [List element] | test.py:237:10:237:20 | ControlFlowNode for Subscript |
 | test.py:237:11:237:16 | ControlFlowNode for SOURCE | test.py:237:10:237:17 | ControlFlowNode for List [List element] |
-| test.py:240:10:240:21 | ControlFlowNode for Dict [Dictionary element at s] | test.py:240:10:240:26 | ControlFlowNode for Subscript |
-| test.py:240:15:240:20 | ControlFlowNode for SOURCE | test.py:240:10:240:21 | ControlFlowNode for Dict [Dictionary element at s] |
+| test.py:240:10:240:21 | ControlFlowNode for Dict [Dictionary element at key s] | test.py:240:10:240:26 | ControlFlowNode for Subscript |
+| test.py:240:15:240:20 | ControlFlowNode for SOURCE | test.py:240:10:240:21 | ControlFlowNode for Dict [Dictionary element at key s] |
 | test.py:258:28:258:33 | ControlFlowNode for SOURCE | test.py:258:10:258:34 | ControlFlowNode for second() |
 | test.py:317:12:317:17 | ControlFlowNode for SOURCE | test.py:317:10:317:18 | ControlFlowNode for f() |
 | test.py:321:28:321:33 | ControlFlowNode for SOURCE | test.py:321:10:321:34 | ControlFlowNode for second() |
 nodes
-| test.py:24:10:24:26 | ControlFlowNode for Tuple [Tuple element at 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at 1] |
+| test.py:24:10:24:26 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
 | test.py:24:21:24:26 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:25:9:25:9 | ControlFlowNode for x [Tuple element at 1] | semmle.label | ControlFlowNode for x [Tuple element at 1] |
+| test.py:25:9:25:9 | ControlFlowNode for x [Tuple element at index 1] | semmle.label | ControlFlowNode for x [Tuple element at index 1] |
 | test.py:25:9:25:12 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | test.py:26:10:26:10 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
 | test.py:35:9:35:14 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
@@ -89,21 +89,21 @@ nodes
 | test.py:95:22:95:27 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:96:10:96:10 | ControlFlowNode for x [Set element] | semmle.label | ControlFlowNode for x [Set element] |
 | test.py:96:10:96:16 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| test.py:104:9:104:21 | ControlFlowNode for Dict [Dictionary element at s] | semmle.label | ControlFlowNode for Dict [Dictionary element at s] |
+| test.py:104:9:104:21 | ControlFlowNode for Dict [Dictionary element at key s] | semmle.label | ControlFlowNode for Dict [Dictionary element at key s] |
 | test.py:104:15:104:20 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:105:10:105:10 | ControlFlowNode for x [Dictionary element at s] | semmle.label | ControlFlowNode for x [Dictionary element at s] |
+| test.py:105:10:105:10 | ControlFlowNode for x [Dictionary element at key s] | semmle.label | ControlFlowNode for x [Dictionary element at key s] |
 | test.py:105:10:105:15 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| test.py:108:9:108:21 | ControlFlowNode for Dict [Dictionary element at s] | semmle.label | ControlFlowNode for Dict [Dictionary element at s] |
+| test.py:108:9:108:21 | ControlFlowNode for Dict [Dictionary element at key s] | semmle.label | ControlFlowNode for Dict [Dictionary element at key s] |
 | test.py:108:15:108:20 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:109:10:109:10 | ControlFlowNode for x [Dictionary element at s] | semmle.label | ControlFlowNode for x [Dictionary element at s] |
+| test.py:109:10:109:10 | ControlFlowNode for x [Dictionary element at key s] | semmle.label | ControlFlowNode for x [Dictionary element at key s] |
 | test.py:109:10:109:19 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | test.py:234:10:234:21 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | test.py:234:11:234:16 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:234:11:234:17 | ControlFlowNode for Tuple [Tuple element at 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at 0] |
+| test.py:234:11:234:17 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
 | test.py:237:10:237:17 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
 | test.py:237:10:237:20 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | test.py:237:11:237:16 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:240:10:240:21 | ControlFlowNode for Dict [Dictionary element at s] | semmle.label | ControlFlowNode for Dict [Dictionary element at s] |
+| test.py:240:10:240:21 | ControlFlowNode for Dict [Dictionary element at key s] | semmle.label | ControlFlowNode for Dict [Dictionary element at key s] |
 | test.py:240:10:240:26 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | test.py:240:15:240:20 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:258:10:258:34 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
