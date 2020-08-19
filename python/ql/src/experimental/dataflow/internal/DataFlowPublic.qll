@@ -193,7 +193,7 @@ class DictionaryElementContent extends TDictionaryElementContent, Content {
   string getKey() { result = key }
 
   /** Gets a textual representation of this element. */
-  override string toString() { result = "Dictionary element at " + key }
+  override string toString() { result = "Dictionary element at key " + key }
 }
 
 class DictionaryElementAnyContent extends TDictionaryElementAnyContent, Content {
