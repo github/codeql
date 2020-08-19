@@ -67,7 +67,7 @@ class StdStringAppend extends TaintFunction {
   }
 
   int getAnIteratorParameter() {
-    getParameter(result).getType() instanceof LegacyIterator
+    getParameter(result).getType() instanceof Iterator
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
