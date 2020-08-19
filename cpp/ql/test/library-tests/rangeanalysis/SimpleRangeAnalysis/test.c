@@ -490,3 +490,17 @@ unsigned long mult_lower_bound(unsigned int ui, unsigned long ul) {
   }
   return 0;
 }
+
+unsigned long mul_assign(unsigned int ui) {
+  if (ui <= 10 && ui >= 2) {
+    ui *= ui + 0;
+    return ui; // 4 .. 100
+  }
+
+  unsigned int uiconst = 10;
+  uiconst *= 4;
+
+  unsigned long ulconst = 10;
+  ulconst *= 4;
+  return uiconst + ulconst; // 40 .. 40 for both
+}
