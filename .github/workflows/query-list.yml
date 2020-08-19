@@ -30,7 +30,7 @@ jobs:
     - name: Build query list
       run: |
         cd codeql
-        pwsh ./misc/scripts/resolve-queries.ps1 | Out-file output.csv
+        pwsh -Command "./misc/scripts/resolve-queries.ps1 | Out-file output.csv"
     - name: Upload query list
       uses: actions/upload-artifact@v2
       with:
