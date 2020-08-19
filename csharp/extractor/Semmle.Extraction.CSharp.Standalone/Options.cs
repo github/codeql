@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Standalone
     {
         public override bool handleFlag(string key, bool value)
         {
-            switch(key)
+            switch (key)
             {
                 case "silent":
                     Verbosity = value ? Verbosity.Off : Verbosity.Info;
@@ -43,7 +43,7 @@ namespace Semmle.Extraction.CSharp.Standalone
 
         public override bool handleOption(string key, string value)
         {
-            switch(key)
+            switch (key)
             {
                 case "exclude":
                     Excludes.Add(value);
@@ -117,7 +117,7 @@ namespace Semmle.Extraction.CSharp.Standalone
         /// <summary>
         /// The solution file to analyse, or null if not specified.
         /// </summary>
-        public string SolutionFile;
+        public string? SolutionFile;
 
         /// <summary>
         /// Whether the extraction phase should be skipped (dry-run).

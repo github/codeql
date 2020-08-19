@@ -16,35 +16,30 @@ namespace Semmle.BuildAnalyser
         /// <summary>
         /// The file containing the assembly.
         /// </summary>
-        public string Filename { get; private set; }
-
-        /// <summary>
-        /// Was the information correctly determined?
-        /// </summary>
-        public bool Valid { get; private set; }
+        public string Filename { get; }
 
         /// <summary>
         /// The short name of this assembly.
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <summary>
         /// The version number of this assembly.
         /// </summary>
-        public System.Version Version { get; private set; }
+        public System.Version? Version { get; }
 
         /// <summary>
         /// The public key token of the assembly.
         /// </summary>
-        public string PublicKeyToken { get; private set; }
+        public string? PublicKeyToken { get; }
 
         /// <summary>
         /// The culture.
         /// </summary>
-        public string Culture { get; private set; }
+        public string? Culture { get; }
 
         /// <summary>
-        /// Get/parse a canonical ID of this assembly.
+        /// Gets the canonical ID of this assembly.
         /// </summary>
         public string Id
         {
@@ -58,25 +53,6 @@ namespace Semmle.BuildAnalyser
                 if (PublicKeyToken != null)
                     result = string.Format("{0}, PublicKeyToken={1}", result, PublicKeyToken);
                 return result;
-            }
-
-            private set
-            {
-                var sections = value.Split(new string[] { ", " }, StringSplitOptions.None);
-
-                Name = sections.First();
-
-                foreach (var section in sections.Skip(1))
-                {
-                    if (section.StartsWith("Version="))
-                        Version = new Version(section.Substring(8));
-                    else if (section.StartsWith("Culture="))
-                        Culture = section.Substring(8);
-                    else if (section.StartsWith("PublicKeyToken="))
-                        PublicKeyToken = section.Substring(15);
-                    // else: Some other field like processorArchitecture - ignore.
-                }
-
             }
         }
 
@@ -101,26 +77,74 @@ namespace Semmle.BuildAnalyser
         }
 
         /// <summary>
-        /// Get an invalid assembly info (Valid==false).
+        /// Get an invalid assembly info.
         /// </summary>
         public static AssemblyInfo Invalid { get; } = new AssemblyInfo();
 
-        private AssemblyInfo() { }
+        // Constructs a partial AssemblyInfo for the above Invalid instance.
+        private AssemblyInfo()
+        {
+            // Initializing non null fields.
+            Name = string.Empty;
+            Filename = string.Empty;
+        }
+
+        // Constructs only a partial AssemblyInfo, FileName is not specified
+        private AssemblyInfo(string id) : this()
+        {
+            var sections = id.Split(new string[] { ", " }, StringSplitOptions.None);
+
+            Name = sections.First();
+
+            foreach (var section in sections.Skip(1))
+            {
+                if (section.StartsWith("Version="))
+                    Version = new Version(section.Substring(8));
+                else if (section.StartsWith("Culture="))
+                    Culture = section.Substring(8);
+                else if (section.StartsWith("PublicKeyToken="))
+                    PublicKeyToken = section.Substring(15);
+                // else: Some other field like processorArchitecture - ignore.
+            }
+        }
+
+        private AssemblyInfo(string id, string filename) : this(id)
+        {
+            Filename = filename;
+        }
+
+        private AssemblyInfo(string filename, string name, Version version, string culture, string publicKeyToken)
+        {
+            Filename = filename;
+            Name = name;
+            Version = version;
+            Culture = culture;
+            PublicKeyToken = publicKeyToken;
+        }
 
         /// <summary>
         /// Get AssemblyInfo from a loaded Assembly.
         /// </summary>
         /// <param name="assembly">The assembly.</param>
         /// <returns>Info about the assembly.</returns>
-        public static AssemblyInfo MakeFromAssembly(Assembly assembly) => new AssemblyInfo() { Valid = true, Filename = assembly.Location, Id = assembly.FullName };
+        public static AssemblyInfo MakeFromAssembly(Assembly assembly)
+        {
+            if (assembly.FullName is null)
+            {
+                throw new InvalidOperationException("Assembly with empty full name is not expected.");
+            }
+
+            return new AssemblyInfo(assembly.FullName, assembly.Location);
+        }
 
         /// <summary>
-        /// Parse an assembly name/Id into an AssemblyInfo,
-        /// populating the available fields and leaving the others null.
+        /// Returns the id and name of the assembly that would be created from the received id.
         /// </summary>
-        /// <param name="id">The assembly name/Id.</param>
-        /// <returns>The deconstructed assembly info.</returns>
-        public static AssemblyInfo MakeFromId(string id) => new AssemblyInfo() { Valid = true, Id = id };
+        public static (string id, string name) ComputeSanitizedAssemblyInfo(string id)
+        {
+            var assembly = new AssemblyInfo(id);
+            return (assembly.Id, assembly.Name);
+        }
 
         /// <summary>
         /// Reads the assembly info from a file.
@@ -131,48 +155,42 @@ namespace Semmle.BuildAnalyser
         /// <returns>The information about the assembly.</returns>
         public static AssemblyInfo ReadFromFile(string filename)
         {
-            var result = new AssemblyInfo() { Filename = filename };
             try
             {
                 /*  This method is significantly faster and more lightweight than using
                  *  System.Reflection.Assembly.ReflectionOnlyLoadFrom. It also allows
                  *  loading the same assembly from different locations.
                  */
-                using (var pereader = new System.Reflection.PortableExecutable.PEReader(new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read)))
-                using (var sha1 = new SHA1CryptoServiceProvider())
+                using var pereader = new System.Reflection.PortableExecutable.PEReader(new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read));
+                using var sha1 = new SHA1CryptoServiceProvider();
+                var metadata = pereader.GetMetadata();
+                unsafe
                 {
-                    var metadata = pereader.GetMetadata();
-                    unsafe
-                    {
-                        var reader = new System.Reflection.Metadata.MetadataReader(metadata.Pointer, metadata.Length);
-                        var def = reader.GetAssemblyDefinition();
+                    var reader = new System.Reflection.Metadata.MetadataReader(metadata.Pointer, metadata.Length);
+                    var def = reader.GetAssemblyDefinition();
 
-                        // This is how you compute the public key token from the full public key.
-                        // The last 8 bytes of the SHA1 of the public key.
-                        var publicKey = reader.GetBlobBytes(def.PublicKey);
-                        var publicKeyToken = sha1.ComputeHash(publicKey);
-                        var publicKeyString = new StringBuilder();
-                        foreach (var b in publicKeyToken.Skip(12).Reverse())
-                            publicKeyString.AppendFormat("{0:x2}", b);
+                    // This is how you compute the public key token from the full public key.
+                    // The last 8 bytes of the SHA1 of the public key.
+                    var publicKey = reader.GetBlobBytes(def.PublicKey);
+                    var publicKeyToken = sha1.ComputeHash(publicKey);
+                    var publicKeyString = new StringBuilder();
+                    foreach (var b in publicKeyToken.Skip(12).Reverse())
+                        publicKeyString.AppendFormat("{0:x2}", b);
 
-                        result.Name = reader.GetString(def.Name);
-                        result.Version = def.Version;
-                        result.Culture = def.Culture.IsNil ? "neutral" : reader.GetString(def.Culture);
-                        result.PublicKeyToken = publicKeyString.ToString();
-                        result.Valid = true;
-                    }
+                    var culture = def.Culture.IsNil ? "neutral" : reader.GetString(def.Culture);
+                    return new AssemblyInfo(filename, reader.GetString(def.Name), def.Version, culture, publicKeyString.ToString());
                 }
             }
             catch (BadImageFormatException)
             {
-                // The DLL wasn't an assembly -> result.Valid = false.
+                // The DLL wasn't an assembly
             }
             catch (InvalidOperationException)
             {
-                // Some other failure -> result.Valid = false.
+                // Some other failure
             }
 
-            return result;
+            throw new AssemblyLoadException();
         }
     }
 }

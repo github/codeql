@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -12,7 +13,7 @@ namespace Semmle.BuildAnalyser
     {
         private string Filename { get; }
 
-        private string Directory => Path.GetDirectoryName(Filename);
+        private string Directory { get; }
 
         /// <summary>
         /// Reads the .csproj file.
@@ -21,6 +22,15 @@ namespace Semmle.BuildAnalyser
         public CsProjFile(FileInfo filename)
         {
             Filename = filename.FullName;
+
+            var directoryName = Path.GetDirectoryName(Filename);
+
+            if (directoryName is null)
+            {
+                throw new Extraction.InternalError($"Directory of file '{Filename}' is null");
+            }
+
+            Directory = directoryName;
 
             try
             {
@@ -97,7 +107,7 @@ namespace Semmle.BuildAnalyser
 
                 csFiles = explicitCsFiles.Concat(additionalCsFiles).ToArray();
 
-                references = new string[0];
+                references = Array.Empty<string>();
             }
             else
             {
@@ -121,18 +131,18 @@ namespace Semmle.BuildAnalyser
             }
         }
 
-        string[] references;
-        string[] csFiles;
+        string[]? references;
+        string[]? csFiles;
 
         /// <summary>
         /// The list of references as a list of assembly IDs.
         /// </summary>
-        public IEnumerable<string> References => references;
+        public IEnumerable<string> References => references!;
 
         /// <summary>
         /// The list of C# source files in full path format.
         /// </summary>
-        public IEnumerable<string> Sources => csFiles;
+        public IEnumerable<string> Sources => csFiles!;
     }
 
     static class XmlNodeHelper
@@ -145,8 +155,7 @@ namespace Semmle.BuildAnalyser
         /// <returns>A more useful data type.</returns>
         public static IEnumerable<XmlNode> NodeList(this XmlNodeList list)
         {
-            foreach (var i in list)
-                yield return i as XmlNode;
+            return list.OfType<XmlNode>();
         }
     }
 }

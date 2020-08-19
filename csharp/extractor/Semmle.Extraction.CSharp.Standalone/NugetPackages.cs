@@ -25,24 +25,22 @@ namespace Semmle.BuildAnalyser
 
             // Expect nuget.exe to be in a `nuget` directory under the directory containing this exe.
             var currentAssembly = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            nugetExe = Path.Combine(Path.GetDirectoryName(currentAssembly), "nuget", "nuget.exe");
+            string? directory = Path.GetDirectoryName(currentAssembly);
+            if (directory is null)
+                throw new FileNotFoundException($"Directory path '{currentAssembly}' of current assembly is null");
+
+            nugetExe = Path.Combine(directory, "nuget", "nuget.exe");
 
             if (!File.Exists(nugetExe))
                 throw new FileNotFoundException(string.Format("NuGet could not be found at {0}", nugetExe));
-        }
 
-        /// <summary>
-        /// Locate all NuGet packages but don't download them yet.
-        /// </summary>
-        public void FindPackages()
-        {
             packages = new DirectoryInfo(SourceDirectory).
                 EnumerateFiles("packages.config", SearchOption.AllDirectories).
                 ToArray();
         }
 
         // List of package files to download.
-        FileInfo[] packages;
+        private readonly FileInfo[] packages;
 
         /// <summary>
         /// The list of package files.
