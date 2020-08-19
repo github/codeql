@@ -114,6 +114,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.function.IntFunction;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -121,6 +122,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 /**
  * Extractor for intra-procedural expression-level control flow graphs.
@@ -228,33 +230,18 @@ public class CFGExtractor {
 
   /**
    * Creates an order preserving concatenation of the nodes in `xs` and `ys` without duplicates.
-   * Returns `null`, or an `Node` or a `List<Node>`.
+   * Returns `null`, or an `Node`, or a `List<Node>`.
    */
+  @SuppressWarnings("unchecked")
   private static Object union(Object xs, Object ys) {
-    if (xs == null) return ys;
-    if (ys == null) return xs;
-    if (xs instanceof List<?>) {
-      @SuppressWarnings("unchecked")
-      List<Node> xsCopy = new ArrayList<Node>((List<Node>) xs);
-      for (Node y : createCollection(ys)) if (!xsCopy.contains(y)) xsCopy.add(y);
-      return xsCopy;
+    Set<Node> set = new HashSet<>();
+    List<Node> result = flattenNestedList(Arrays.asList(xs, ys)).stream().filter(set::add).collect(Collectors.toList());
+    if (result.size() == 0) {
+      return null;
+    } else if (result.size() == 1) {
+      return result.get(0);
     } else {
-      if (ys instanceof List<?>) {
-        @SuppressWarnings("unchecked")
-        List<Object> lys = (List<Object>) ys;
-        if (!lys.contains(xs)) {
-          lys = new ArrayList<Object>(lys);
-          lys.add(0, xs);
-        }
-        return lys;
-      } else if (xs == ys) {
-        return xs;
-      } else {
-        List<Node> res = new ArrayList<Node>(2);
-        res.add((Node) xs);
-        res.add((Node) ys);
-        return res;
-      }
+      return result;
     }
   }
 
