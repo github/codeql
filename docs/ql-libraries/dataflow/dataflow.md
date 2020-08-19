@@ -98,6 +98,10 @@ Recommendations:
   also work, but the upside of `use-use` steps is that sources defined in terms
   of variable reads just work out of the box. It also makes certain
   barrier-implementations simpler.
+* A predicate `DataFlowCallable Node::getEnclosingCallable()` is required, and in
+  order to ensure appropriate join-orders, it is important that the QL compiler knows
+  that this predicate is functional. It can therefore be necessary to enclose the body
+  of this predicate in a `unique` aggregate.
 
 The shared library does not use `localFlowStep` nor `localFlow` but users of
 `DataFlow.qll` may expect the existence of `DataFlow::localFlowStep` and

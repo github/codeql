@@ -44,6 +44,7 @@
 
 import cpp
 private import RangeAnalysisUtils
+private import experimental.semmle.code.cpp.models.interfaces.SimpleRangeAnalysisExpr
 import RangeSSA
 import SimpleRangeAnalysisCached
 private import NanAnalysis
@@ -219,6 +220,9 @@ private predicate analyzableExpr(Expr e) {
     or
     // `>>` by a constant
     exists(e.(RShiftExpr).getRightOperand().getValue())
+    or
+    // A modeled expression for range analysis
+    e instanceof SimpleRangeAnalysisExpr
   )
 }
 
@@ -340,6 +344,16 @@ private predicate exprDependsOnDef(Expr e, RangeSsaDefinition srcDef, StackVaria
   )
   or
   e = srcDef.getAUse(srcVar)
+  or
+  // A modeled expression for range analysis
+  exists(SimpleRangeAnalysisExpr rae | rae = e |
+    rae.dependsOnDef(srcDef, srcVar)
+    or
+    exists(Expr child |
+      rae.dependsOnChild(child) and
+      exprDependsOnDef(child, srcDef, srcVar)
+    )
+  )
 }
 
 /**
@@ -466,13 +480,6 @@ private float addRoundingDownSmall(float x, float small) {
 }
 
 /**
- * Gets the truncated lower bounds of the fully converted expression.
- */
-private float getFullyConvertedLowerBounds(Expr expr) {
-  result = getTruncatedLowerBounds(expr.getFullyConverted())
-}
-
-/**
  * Gets the lower bounds of the expression.
  *
  * Most of the work of computing the lower bounds is done by
@@ -516,13 +523,6 @@ private float getTruncatedLowerBounds(Expr expr) {
     // expressions to just those with arithmetic types. There is no
     // need to return results for non-arithmetic expressions.
     result = exprMinVal(expr)
-}
-
-/**
- * Gets the truncated upper bounds of the fully converted expression.
- */
-private float getFullyConvertedUpperBounds(Expr expr) {
-  result = getTruncatedUpperBounds(expr.getFullyConverted())
 }
 
 /**
@@ -755,7 +755,9 @@ private float getLowerBoundsImpl(Expr expr) {
   or
   // Use SSA to get the lower bounds for a variable use.
   exists(RangeSsaDefinition def, StackVariable v | expr = def.getAUse(v) |
-    result = getDefLowerBounds(def, v)
+    result = getDefLowerBounds(def, v) and
+    // Not explicitly modeled by a SimpleRangeAnalysisExpr
+    not expr instanceof SimpleRangeAnalysisExpr
   )
   or
   // unsigned `&` (tighter bounds may exist)
@@ -770,6 +772,12 @@ private float getLowerBoundsImpl(Expr expr) {
     left = getFullyConvertedLowerBounds(rsExpr.getLeftOperand()) and
     right = rsExpr.getRightOperand().getFullyConverted().getValue().toInt() and
     result = safeFloor(left / 2.pow(right))
+  )
+  or
+  // A modeled expression for range analysis
+  exists(SimpleRangeAnalysisExpr rangeAnalysisExpr |
+    rangeAnalysisExpr = expr and
+    result = rangeAnalysisExpr.getLowerBounds()
   )
 }
 
@@ -936,7 +944,9 @@ private float getUpperBoundsImpl(Expr expr) {
   or
   // Use SSA to get the upper bounds for a variable use.
   exists(RangeSsaDefinition def, StackVariable v | expr = def.getAUse(v) |
-    result = getDefUpperBounds(def, v)
+    result = getDefUpperBounds(def, v) and
+    // Not explicitly modeled by a SimpleRangeAnalysisExpr
+    not expr instanceof SimpleRangeAnalysisExpr
   )
   or
   // unsigned `&` (tighter bounds may exist)
@@ -953,6 +963,12 @@ private float getUpperBoundsImpl(Expr expr) {
     left = getFullyConvertedUpperBounds(rsExpr.getLeftOperand()) and
     right = rsExpr.getRightOperand().getFullyConverted().getValue().toInt() and
     result = safeFloor(left / 2.pow(right))
+  )
+  or
+  // A modeled expression for range analysis
+  exists(SimpleRangeAnalysisExpr rangeAnalysisExpr |
+    rangeAnalysisExpr = expr and
+    result = rangeAnalysisExpr.getUpperBounds()
   )
 }
 
@@ -1554,3 +1570,25 @@ private module SimpleRangeAnalysisCached {
     convertedExprMightOverflowPositively(expr)
   }
 }
+
+/**
+ * INTERNAL: do not use. This module contains utilities for use in the
+ * experimental `SimpleRangeAnalysisExpr` module.
+ */
+module SimpleRangeAnalysisInternal {
+  /**
+   * Gets the truncated lower bounds of the fully converted expression.
+   */
+  float getFullyConvertedLowerBounds(Expr expr) {
+    result = getTruncatedLowerBounds(expr.getFullyConverted())
+  }
+
+  /**
+   * Gets the truncated upper bounds of the fully converted expression.
+   */
+  float getFullyConvertedUpperBounds(Expr expr) {
+    result = getTruncatedUpperBounds(expr.getFullyConverted())
+  }
+}
+
+private import SimpleRangeAnalysisInternal

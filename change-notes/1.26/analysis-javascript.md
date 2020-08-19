@@ -24,7 +24,7 @@
 
 | **Query**                      | **Expected impact**          | **Change**                                                                |
 |--------------------------------|------------------------------|---------------------------------------------------------------------------|
+| Incomplete URL substring sanitization (`js/incomplete-url-substring-sanitization`) | More results | This query now recognizes additional URLs when the substring check is an inclusion check. |
 
 
 ## Changes to libraries
-
