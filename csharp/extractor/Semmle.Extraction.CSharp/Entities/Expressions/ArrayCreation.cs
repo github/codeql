@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected abstract ArrayTypeSyntax TypeSyntax { get; }
 
-        public abstract InitializerExpressionSyntax  Initializer { get;  }
+        public abstract InitializerExpressionSyntax Initializer { get; }
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
@@ -48,7 +48,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                             ExprKind.INT_LITERAL,
                             this,
                             child,
-                            false,
+                            true,
                             size.ToString());
 
                         new Expression(info);

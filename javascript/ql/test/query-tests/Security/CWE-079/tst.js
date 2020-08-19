@@ -11,17 +11,14 @@ function test() {
   // NOT OK
   $('<div style="width:' + target + 'px">');
 
-  // OK
-  $('<div style="width:' + +target + 'px">');
-  $('<div style="width:' + parseInt(target) + 'px">');
+  $('<div style="width:' + +target + 'px">'); // OK
+  $('<div style="width:' + parseInt(target) + 'px">'); // OK
 
-  // NOT OK
   let params = (new URL(document.location)).searchParams;
-  $('name').html(params.get('name'));
+  $('name').html(params.get('name'));  // NOT OK
 
-  // NOT OK
   var searchParams = new URLSearchParams(target.substring(1));
-  $('name').html(searchParams.get('name'));
+  $('name').html(searchParams.get('name')); // NOT OK
 }
 
 function foo(target) {
@@ -331,14 +328,11 @@ function getTaintedUrl() {
 }
 
 function URLPseudoProperties() {
-  // NOT OK
   let params = getTaintedUrl().searchParams;
-  $('name').html(params.get('name'));
+  $('name').html(params.get('name')); // NOT OK
 
-  // OK (.get is not defined on a URL)
   let myUrl = getTaintedUrl();
-  $('name').html(myUrl.get('name'));
-
+  $('name').html(myUrl.get('name')); // OK (.get is not defined on a URL)
 }
 
 

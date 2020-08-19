@@ -1,135 +1,263 @@
 edges
-| test.py:24:10:24:26 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:25:9:25:9 | ControlFlowNode for x [Tuple element at index 1] |
-| test.py:24:21:24:26 | ControlFlowNode for SOURCE | test.py:24:10:24:26 | ControlFlowNode for Tuple [Tuple element at index 1] |
-| test.py:25:9:25:9 | ControlFlowNode for x [Tuple element at index 1] | test.py:25:9:25:12 | ControlFlowNode for Subscript |
-| test.py:25:9:25:12 | ControlFlowNode for Subscript | test.py:26:10:26:10 | ControlFlowNode for y |
-| test.py:35:9:35:14 | ControlFlowNode for SOURCE | test.py:36:10:36:10 | ControlFlowNode for x |
-| test.py:40:9:40:16 | ControlFlowNode for Str | test.py:41:10:41:10 | ControlFlowNode for x |
-| test.py:44:9:44:17 | ControlFlowNode for Str | test.py:45:10:45:10 | ControlFlowNode for x |
-| test.py:48:9:48:10 | ControlFlowNode for IntegerLiteral | test.py:49:10:49:10 | ControlFlowNode for x |
-| test.py:52:9:52:12 | ControlFlowNode for FloatLiteral | test.py:53:10:53:10 | ControlFlowNode for x |
-| test.py:61:10:61:15 | ControlFlowNode for SOURCE | test.py:62:10:62:10 | ControlFlowNode for x |
-| test.py:66:9:66:16 | ControlFlowNode for List [List element] | test.py:67:10:67:10 | ControlFlowNode for x [List element] |
-| test.py:66:10:66:15 | ControlFlowNode for SOURCE | test.py:66:9:66:16 | ControlFlowNode for List [List element] |
-| test.py:67:10:67:10 | ControlFlowNode for x [List element] | test.py:67:10:67:13 | ControlFlowNode for Subscript |
-| test.py:74:9:74:37 | ControlFlowNode for ListComp [List element] | test.py:75:10:75:10 | ControlFlowNode for x [List element] |
-| test.py:74:10:74:15 | ControlFlowNode for SOURCE | test.py:74:9:74:37 | ControlFlowNode for ListComp [List element] |
+| datamodel.py:13:1:13:6 | GSSA Variable SOURCE | datamodel.py:38:6:38:17 | ControlFlowNode for f() |
+| datamodel.py:13:1:13:6 | GSSA Variable SOURCE | datamodel.py:38:6:38:17 | GSSA Variable SOURCE |
+| datamodel.py:13:1:13:6 | GSSA Variable SOURCE | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE |
+| datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:13:1:13:6 | GSSA Variable SOURCE |
+| datamodel.py:38:6:38:17 | GSSA Variable SOURCE | datamodel.py:65:5:65:7 | ControlFlowNode for C() |
+| datamodel.py:38:6:38:17 | GSSA Variable SOURCE | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() |
+| datamodel.py:38:6:38:17 | GSSA Variable SOURCE | datamodel.py:71:6:71:24 | GSSA Variable SOURCE |
+| datamodel.py:38:6:38:17 | GSSA Variable SOURCE | datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE |
+| datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | datamodel.py:38:6:38:17 | ControlFlowNode for f() |
+| datamodel.py:65:1:65:1 | GSSA Variable c | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() |
+| datamodel.py:65:1:65:1 | GSSA Variable c | datamodel.py:71:6:71:24 | GSSA Variable c |
+| datamodel.py:65:5:65:7 | ControlFlowNode for C() | datamodel.py:65:1:65:1 | GSSA Variable c |
+| datamodel.py:71:6:71:24 | GSSA Variable SOURCE | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() |
+| datamodel.py:71:6:71:24 | GSSA Variable SOURCE | datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE |
+| datamodel.py:71:6:71:24 | GSSA Variable SOURCE | datamodel.py:73:6:73:27 | ControlFlowNode for func_obj() |
+| datamodel.py:71:6:71:24 | GSSA Variable SOURCE | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() |
+| datamodel.py:71:6:71:24 | GSSA Variable SOURCE | datamodel.py:80:6:80:26 | GSSA Variable SOURCE |
+| datamodel.py:71:6:71:24 | GSSA Variable SOURCE | datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE |
+| datamodel.py:71:6:71:24 | GSSA Variable c | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() |
+| datamodel.py:71:6:71:24 | GSSA Variable c | datamodel.py:72:6:72:27 | GSSA Variable c |
+| datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() |
+| datamodel.py:72:6:72:27 | GSSA Variable c | datamodel.py:73:6:73:27 | ControlFlowNode for func_obj() |
+| datamodel.py:72:6:72:27 | GSSA Variable c | datamodel.py:73:6:73:27 | GSSA Variable c |
+| datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() |
+| datamodel.py:73:6:73:27 | GSSA Variable c | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() |
+| datamodel.py:73:6:73:27 | GSSA Variable c | datamodel.py:80:6:80:26 | GSSA Variable c |
+| datamodel.py:80:6:80:26 | GSSA Variable SOURCE | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() |
+| datamodel.py:80:6:80:26 | GSSA Variable SOURCE | datamodel.py:81:6:81:26 | GSSA Variable SOURCE |
+| datamodel.py:80:6:80:26 | GSSA Variable SOURCE | datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE |
+| datamodel.py:80:6:80:26 | GSSA Variable c | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() |
+| datamodel.py:80:6:80:26 | GSSA Variable c | datamodel.py:82:6:82:26 | ControlFlowNode for c_func_obj() |
+| datamodel.py:80:6:80:26 | GSSA Variable c | datamodel.py:92:8:92:21 | ControlFlowNode for gen() |
+| datamodel.py:80:6:80:26 | GSSA Variable c | datamodel.py:93:6:93:20 | ControlFlowNode for Attribute() |
+| datamodel.py:80:6:80:26 | GSSA Variable c | datamodel.py:96:9:96:24 | ControlFlowNode for Attribute() |
+| datamodel.py:80:6:80:26 | GSSA Variable c | datamodel.py:96:9:96:24 | GSSA Variable c |
+| datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() |
+| datamodel.py:81:6:81:26 | GSSA Variable SOURCE | datamodel.py:82:6:82:26 | ControlFlowNode for c_func_obj() |
+| datamodel.py:81:6:81:26 | GSSA Variable SOURCE | datamodel.py:92:8:92:21 | ControlFlowNode for gen() |
+| datamodel.py:81:6:81:26 | GSSA Variable SOURCE | datamodel.py:92:8:92:21 | GSSA Variable SOURCE |
+| datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() |
+| datamodel.py:92:1:92:4 | GSSA Variable iter | datamodel.py:93:6:93:20 | ControlFlowNode for Attribute() |
+| datamodel.py:92:1:92:4 | GSSA Variable iter | datamodel.py:93:6:93:20 | GSSA Variable iter |
+| datamodel.py:92:8:92:21 | ControlFlowNode for gen() | datamodel.py:92:1:92:4 | GSSA Variable iter |
+| datamodel.py:92:8:92:21 | GSSA Variable SOURCE | datamodel.py:93:6:93:20 | ControlFlowNode for Attribute() |
+| datamodel.py:92:8:92:21 | GSSA Variable SOURCE | datamodel.py:96:9:96:24 | ControlFlowNode for Attribute() |
+| datamodel.py:92:8:92:21 | GSSA Variable SOURCE | datamodel.py:96:9:96:24 | GSSA Variable SOURCE |
+| datamodel.py:93:6:93:20 | GSSA Variable iter | datamodel.py:96:9:96:24 | ControlFlowNode for Attribute() |
+| datamodel.py:93:6:93:20 | GSSA Variable iter | datamodel.py:97:6:97:21 | ControlFlowNode for Attribute() |
+| datamodel.py:93:6:93:20 | GSSA Variable iter | datamodel.py:106:6:106:30 | ControlFlowNode for Attribute() |
+| datamodel.py:93:6:93:20 | GSSA Variable iter | datamodel.py:107:6:107:32 | ControlFlowNode for Attribute() |
+| datamodel.py:93:6:93:20 | GSSA Variable iter | datamodel.py:119:6:119:30 | ControlFlowNode for Attribute() |
+| datamodel.py:96:1:96:5 | GSSA Variable oiter | datamodel.py:97:6:97:21 | ControlFlowNode for Attribute() |
+| datamodel.py:96:1:96:5 | GSSA Variable oiter | datamodel.py:97:6:97:21 | GSSA Variable oiter |
+| datamodel.py:96:9:96:24 | ControlFlowNode for Attribute() | datamodel.py:96:1:96:5 | GSSA Variable oiter |
+| datamodel.py:96:9:96:24 | GSSA Variable SOURCE | datamodel.py:97:6:97:21 | ControlFlowNode for Attribute() |
+| datamodel.py:96:9:96:24 | GSSA Variable SOURCE | datamodel.py:106:18:106:29 | GSSA Variable SOURCE |
+| datamodel.py:96:9:96:24 | GSSA Variable c | datamodel.py:97:6:97:21 | ControlFlowNode for Attribute() |
+| datamodel.py:96:9:96:24 | GSSA Variable c | datamodel.py:106:6:106:30 | ControlFlowNode for Attribute() |
+| datamodel.py:96:9:96:24 | GSSA Variable c | datamodel.py:107:18:107:31 | GSSA Variable c |
+| datamodel.py:97:6:97:21 | GSSA Variable oiter | datamodel.py:106:6:106:30 | ControlFlowNode for Attribute() |
+| datamodel.py:97:6:97:21 | GSSA Variable oiter | datamodel.py:107:6:107:32 | ControlFlowNode for Attribute() |
+| datamodel.py:97:6:97:21 | GSSA Variable oiter | datamodel.py:119:6:119:30 | ControlFlowNode for Attribute() |
+| datamodel.py:106:18:106:29 | GSSA Variable SOURCE | datamodel.py:106:6:106:30 | ControlFlowNode for Attribute() |
+| datamodel.py:106:18:106:29 | GSSA Variable SOURCE | datamodel.py:107:18:107:31 | GSSA Variable SOURCE |
+| datamodel.py:107:18:107:31 | GSSA Variable SOURCE | datamodel.py:107:6:107:32 | ControlFlowNode for Attribute() |
+| datamodel.py:107:18:107:31 | GSSA Variable SOURCE | datamodel.py:119:18:119:29 | GSSA Variable SOURCE |
+| datamodel.py:107:18:107:31 | GSSA Variable c | datamodel.py:107:6:107:32 | ControlFlowNode for Attribute() |
+| datamodel.py:107:18:107:31 | GSSA Variable c | datamodel.py:119:6:119:30 | ControlFlowNode for Attribute() |
+| datamodel.py:119:18:119:29 | GSSA Variable SOURCE | datamodel.py:119:6:119:30 | ControlFlowNode for Attribute() |
+| test.py:32:10:32:26 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:33:9:33:9 | ControlFlowNode for x [Tuple element at index 1] |
+| test.py:32:21:32:26 | ControlFlowNode for SOURCE | test.py:32:10:32:26 | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:33:9:33:9 | ControlFlowNode for x [Tuple element at index 1] | test.py:33:9:33:12 | ControlFlowNode for Subscript |
+| test.py:33:9:33:12 | ControlFlowNode for Subscript | test.py:34:10:34:10 | ControlFlowNode for y |
+| test.py:43:9:43:14 | ControlFlowNode for SOURCE | test.py:44:10:44:10 | ControlFlowNode for x |
+| test.py:48:9:48:16 | ControlFlowNode for Str | test.py:49:10:49:10 | ControlFlowNode for x |
+| test.py:52:9:52:17 | ControlFlowNode for Str | test.py:53:10:53:10 | ControlFlowNode for x |
+| test.py:56:9:56:10 | ControlFlowNode for IntegerLiteral | test.py:57:10:57:10 | ControlFlowNode for x |
+| test.py:60:9:60:12 | ControlFlowNode for FloatLiteral | test.py:61:10:61:10 | ControlFlowNode for x |
+| test.py:69:10:69:15 | ControlFlowNode for SOURCE | test.py:70:10:70:10 | ControlFlowNode for x |
+| test.py:74:9:74:16 | ControlFlowNode for List [List element] | test.py:75:10:75:10 | ControlFlowNode for x [List element] |
+| test.py:74:10:74:15 | ControlFlowNode for SOURCE | test.py:74:9:74:16 | ControlFlowNode for List [List element] |
 | test.py:75:10:75:10 | ControlFlowNode for x [List element] | test.py:75:10:75:13 | ControlFlowNode for Subscript |
-| test.py:78:9:78:29 | ControlFlowNode for ListComp [List element] | test.py:79:10:79:10 | ControlFlowNode for x [List element] |
-| test.py:78:10:78:10 | ControlFlowNode for y | test.py:78:9:78:29 | ControlFlowNode for ListComp [List element] |
-| test.py:78:16:78:16 | SSA variable y | test.py:78:10:78:10 | ControlFlowNode for y |
-| test.py:78:21:78:28 | ControlFlowNode for List [List element] | test.py:78:16:78:16 | SSA variable y |
-| test.py:78:22:78:27 | ControlFlowNode for SOURCE | test.py:78:21:78:28 | ControlFlowNode for List [List element] |
-| test.py:79:10:79:10 | ControlFlowNode for x [List element] | test.py:79:10:79:13 | ControlFlowNode for Subscript |
-| test.py:91:9:91:37 | ControlFlowNode for SetComp [Set element] | test.py:92:10:92:10 | ControlFlowNode for x [Set element] |
-| test.py:91:10:91:15 | ControlFlowNode for SOURCE | test.py:91:9:91:37 | ControlFlowNode for SetComp [Set element] |
-| test.py:92:10:92:10 | ControlFlowNode for x [Set element] | test.py:92:10:92:16 | ControlFlowNode for Attribute() |
-| test.py:95:9:95:29 | ControlFlowNode for SetComp [Set element] | test.py:96:10:96:10 | ControlFlowNode for x [Set element] |
-| test.py:95:10:95:10 | ControlFlowNode for y | test.py:95:9:95:29 | ControlFlowNode for SetComp [Set element] |
-| test.py:95:16:95:16 | SSA variable y | test.py:95:10:95:10 | ControlFlowNode for y |
-| test.py:95:21:95:28 | ControlFlowNode for List [List element] | test.py:95:16:95:16 | SSA variable y |
-| test.py:95:22:95:27 | ControlFlowNode for SOURCE | test.py:95:21:95:28 | ControlFlowNode for List [List element] |
-| test.py:96:10:96:10 | ControlFlowNode for x [Set element] | test.py:96:10:96:16 | ControlFlowNode for Attribute() |
-| test.py:104:9:104:21 | ControlFlowNode for Dict [Dictionary element at key s] | test.py:105:10:105:10 | ControlFlowNode for x [Dictionary element at key s] |
-| test.py:104:15:104:20 | ControlFlowNode for SOURCE | test.py:104:9:104:21 | ControlFlowNode for Dict [Dictionary element at key s] |
-| test.py:105:10:105:10 | ControlFlowNode for x [Dictionary element at key s] | test.py:105:10:105:15 | ControlFlowNode for Subscript |
-| test.py:108:9:108:21 | ControlFlowNode for Dict [Dictionary element at key s] | test.py:109:10:109:10 | ControlFlowNode for x [Dictionary element at key s] |
-| test.py:108:15:108:20 | ControlFlowNode for SOURCE | test.py:108:9:108:21 | ControlFlowNode for Dict [Dictionary element at key s] |
-| test.py:109:10:109:10 | ControlFlowNode for x [Dictionary element at key s] | test.py:109:10:109:19 | ControlFlowNode for Attribute() |
-| test.py:234:11:234:16 | ControlFlowNode for SOURCE | test.py:234:11:234:17 | ControlFlowNode for Tuple [Tuple element at index 0] |
-| test.py:234:11:234:17 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:234:10:234:21 | ControlFlowNode for Subscript |
-| test.py:237:10:237:17 | ControlFlowNode for List [List element] | test.py:237:10:237:20 | ControlFlowNode for Subscript |
-| test.py:237:11:237:16 | ControlFlowNode for SOURCE | test.py:237:10:237:17 | ControlFlowNode for List [List element] |
-| test.py:240:10:240:21 | ControlFlowNode for Dict [Dictionary element at key s] | test.py:240:10:240:26 | ControlFlowNode for Subscript |
-| test.py:240:15:240:20 | ControlFlowNode for SOURCE | test.py:240:10:240:21 | ControlFlowNode for Dict [Dictionary element at key s] |
-| test.py:258:28:258:33 | ControlFlowNode for SOURCE | test.py:258:10:258:34 | ControlFlowNode for second() |
-| test.py:317:12:317:17 | ControlFlowNode for SOURCE | test.py:317:10:317:18 | ControlFlowNode for f() |
-| test.py:321:28:321:33 | ControlFlowNode for SOURCE | test.py:321:10:321:34 | ControlFlowNode for second() |
+| test.py:82:9:82:37 | ControlFlowNode for ListComp [List element] | test.py:83:10:83:10 | ControlFlowNode for x [List element] |
+| test.py:82:10:82:15 | ControlFlowNode for SOURCE | test.py:82:9:82:37 | ControlFlowNode for ListComp [List element] |
+| test.py:83:10:83:10 | ControlFlowNode for x [List element] | test.py:83:10:83:13 | ControlFlowNode for Subscript |
+| test.py:86:9:86:29 | ControlFlowNode for ListComp [List element] | test.py:87:10:87:10 | ControlFlowNode for x [List element] |
+| test.py:86:10:86:10 | ControlFlowNode for y | test.py:86:9:86:29 | ControlFlowNode for ListComp [List element] |
+| test.py:86:16:86:16 | SSA variable y | test.py:86:10:86:10 | ControlFlowNode for y |
+| test.py:86:21:86:28 | ControlFlowNode for List [List element] | test.py:86:16:86:16 | SSA variable y |
+| test.py:86:22:86:27 | ControlFlowNode for SOURCE | test.py:86:21:86:28 | ControlFlowNode for List [List element] |
+| test.py:87:10:87:10 | ControlFlowNode for x [List element] | test.py:87:10:87:13 | ControlFlowNode for Subscript |
+| test.py:99:9:99:37 | ControlFlowNode for SetComp [Set element] | test.py:100:10:100:10 | ControlFlowNode for x [Set element] |
+| test.py:99:10:99:15 | ControlFlowNode for SOURCE | test.py:99:9:99:37 | ControlFlowNode for SetComp [Set element] |
+| test.py:100:10:100:10 | ControlFlowNode for x [Set element] | test.py:100:10:100:16 | ControlFlowNode for Attribute() |
+| test.py:103:9:103:29 | ControlFlowNode for SetComp [Set element] | test.py:104:10:104:10 | ControlFlowNode for x [Set element] |
+| test.py:103:10:103:10 | ControlFlowNode for y | test.py:103:9:103:29 | ControlFlowNode for SetComp [Set element] |
+| test.py:103:16:103:16 | SSA variable y | test.py:103:10:103:10 | ControlFlowNode for y |
+| test.py:103:21:103:28 | ControlFlowNode for List [List element] | test.py:103:16:103:16 | SSA variable y |
+| test.py:103:22:103:27 | ControlFlowNode for SOURCE | test.py:103:21:103:28 | ControlFlowNode for List [List element] |
+| test.py:104:10:104:10 | ControlFlowNode for x [Set element] | test.py:104:10:104:16 | ControlFlowNode for Attribute() |
+| test.py:112:9:112:21 | ControlFlowNode for Dict [Dictionary element at key s] | test.py:113:10:113:10 | ControlFlowNode for x [Dictionary element at key s] |
+| test.py:112:15:112:20 | ControlFlowNode for SOURCE | test.py:112:9:112:21 | ControlFlowNode for Dict [Dictionary element at key s] |
+| test.py:113:10:113:10 | ControlFlowNode for x [Dictionary element at key s] | test.py:113:10:113:15 | ControlFlowNode for Subscript |
+| test.py:116:9:116:21 | ControlFlowNode for Dict [Dictionary element at key s] | test.py:117:10:117:10 | ControlFlowNode for x [Dictionary element at key s] |
+| test.py:116:15:116:20 | ControlFlowNode for SOURCE | test.py:116:9:116:21 | ControlFlowNode for Dict [Dictionary element at key s] |
+| test.py:117:10:117:10 | ControlFlowNode for x [Dictionary element at key s] | test.py:117:10:117:19 | ControlFlowNode for Attribute() |
+| test.py:242:11:242:16 | ControlFlowNode for SOURCE | test.py:242:11:242:17 | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:242:11:242:17 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:242:10:242:21 | ControlFlowNode for Subscript |
+| test.py:245:10:245:17 | ControlFlowNode for List [List element] | test.py:245:10:245:20 | ControlFlowNode for Subscript |
+| test.py:245:11:245:16 | ControlFlowNode for SOURCE | test.py:245:10:245:17 | ControlFlowNode for List [List element] |
+| test.py:248:10:248:21 | ControlFlowNode for Dict [Dictionary element at key s] | test.py:248:10:248:26 | ControlFlowNode for Subscript |
+| test.py:248:15:248:20 | ControlFlowNode for SOURCE | test.py:248:10:248:21 | ControlFlowNode for Dict [Dictionary element at key s] |
+| test.py:266:28:266:33 | ControlFlowNode for SOURCE | test.py:266:10:266:34 | ControlFlowNode for second() |
+| test.py:325:12:325:17 | ControlFlowNode for SOURCE | test.py:325:10:325:18 | ControlFlowNode for f() |
+| test.py:329:28:329:33 | ControlFlowNode for SOURCE | test.py:329:10:329:34 | ControlFlowNode for second() |
 nodes
-| test.py:24:10:24:26 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
-| test.py:24:21:24:26 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:25:9:25:9 | ControlFlowNode for x [Tuple element at index 1] | semmle.label | ControlFlowNode for x [Tuple element at index 1] |
-| test.py:25:9:25:12 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| test.py:26:10:26:10 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
-| test.py:35:9:35:14 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:36:10:36:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| test.py:40:9:40:16 | ControlFlowNode for Str | semmle.label | ControlFlowNode for Str |
-| test.py:41:10:41:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| test.py:44:9:44:17 | ControlFlowNode for Str | semmle.label | ControlFlowNode for Str |
-| test.py:45:10:45:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| test.py:48:9:48:10 | ControlFlowNode for IntegerLiteral | semmle.label | ControlFlowNode for IntegerLiteral |
+| datamodel.py:13:1:13:6 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
+| datamodel.py:13:10:13:17 | ControlFlowNode for Str | semmle.label | ControlFlowNode for Str |
+| datamodel.py:38:6:38:17 | ControlFlowNode for f() | semmle.label | ControlFlowNode for f() |
+| datamodel.py:38:6:38:17 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
+| datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| datamodel.py:65:1:65:1 | GSSA Variable c | semmle.label | GSSA Variable c |
+| datamodel.py:65:5:65:7 | ControlFlowNode for C() | semmle.label | ControlFlowNode for C() |
+| datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:71:6:71:24 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
+| datamodel.py:71:6:71:24 | GSSA Variable c | semmle.label | GSSA Variable c |
+| datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:72:6:72:27 | GSSA Variable c | semmle.label | GSSA Variable c |
+| datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| datamodel.py:73:6:73:27 | ControlFlowNode for func_obj() | semmle.label | ControlFlowNode for func_obj() |
+| datamodel.py:73:6:73:27 | GSSA Variable c | semmle.label | GSSA Variable c |
+| datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:80:6:80:26 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
+| datamodel.py:80:6:80:26 | GSSA Variable c | semmle.label | GSSA Variable c |
+| datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:81:6:81:26 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
+| datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| datamodel.py:82:6:82:26 | ControlFlowNode for c_func_obj() | semmle.label | ControlFlowNode for c_func_obj() |
+| datamodel.py:92:1:92:4 | GSSA Variable iter | semmle.label | GSSA Variable iter |
+| datamodel.py:92:8:92:21 | ControlFlowNode for gen() | semmle.label | ControlFlowNode for gen() |
+| datamodel.py:92:8:92:21 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
+| datamodel.py:93:6:93:20 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:93:6:93:20 | GSSA Variable iter | semmle.label | GSSA Variable iter |
+| datamodel.py:96:1:96:5 | GSSA Variable oiter | semmle.label | GSSA Variable oiter |
+| datamodel.py:96:9:96:24 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:96:9:96:24 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
+| datamodel.py:96:9:96:24 | GSSA Variable c | semmle.label | GSSA Variable c |
+| datamodel.py:97:6:97:21 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:97:6:97:21 | GSSA Variable oiter | semmle.label | GSSA Variable oiter |
+| datamodel.py:106:6:106:30 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:106:18:106:29 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
+| datamodel.py:107:6:107:32 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:107:18:107:31 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
+| datamodel.py:107:18:107:31 | GSSA Variable c | semmle.label | GSSA Variable c |
+| datamodel.py:119:6:119:30 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| datamodel.py:119:18:119:29 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
+| test.py:32:10:32:26 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
+| test.py:32:21:32:26 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:33:9:33:9 | ControlFlowNode for x [Tuple element at index 1] | semmle.label | ControlFlowNode for x [Tuple element at index 1] |
+| test.py:33:9:33:12 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:34:10:34:10 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
+| test.py:43:9:43:14 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:44:10:44:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:48:9:48:16 | ControlFlowNode for Str | semmle.label | ControlFlowNode for Str |
 | test.py:49:10:49:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| test.py:52:9:52:12 | ControlFlowNode for FloatLiteral | semmle.label | ControlFlowNode for FloatLiteral |
+| test.py:52:9:52:17 | ControlFlowNode for Str | semmle.label | ControlFlowNode for Str |
 | test.py:53:10:53:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| test.py:61:10:61:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:62:10:62:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| test.py:66:9:66:16 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
-| test.py:66:10:66:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:67:10:67:10 | ControlFlowNode for x [List element] | semmle.label | ControlFlowNode for x [List element] |
-| test.py:67:10:67:13 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| test.py:74:9:74:37 | ControlFlowNode for ListComp [List element] | semmle.label | ControlFlowNode for ListComp [List element] |
+| test.py:56:9:56:10 | ControlFlowNode for IntegerLiteral | semmle.label | ControlFlowNode for IntegerLiteral |
+| test.py:57:10:57:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:60:9:60:12 | ControlFlowNode for FloatLiteral | semmle.label | ControlFlowNode for FloatLiteral |
+| test.py:61:10:61:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:69:10:69:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:70:10:70:10 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:74:9:74:16 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
 | test.py:74:10:74:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:75:10:75:10 | ControlFlowNode for x [List element] | semmle.label | ControlFlowNode for x [List element] |
 | test.py:75:10:75:13 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| test.py:78:9:78:29 | ControlFlowNode for ListComp [List element] | semmle.label | ControlFlowNode for ListComp [List element] |
-| test.py:78:10:78:10 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
-| test.py:78:16:78:16 | SSA variable y | semmle.label | SSA variable y |
-| test.py:78:21:78:28 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
-| test.py:78:22:78:27 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:79:10:79:10 | ControlFlowNode for x [List element] | semmle.label | ControlFlowNode for x [List element] |
-| test.py:79:10:79:13 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| test.py:91:9:91:37 | ControlFlowNode for SetComp [Set element] | semmle.label | ControlFlowNode for SetComp [Set element] |
-| test.py:91:10:91:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:92:10:92:10 | ControlFlowNode for x [Set element] | semmle.label | ControlFlowNode for x [Set element] |
-| test.py:92:10:92:16 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| test.py:95:9:95:29 | ControlFlowNode for SetComp [Set element] | semmle.label | ControlFlowNode for SetComp [Set element] |
-| test.py:95:10:95:10 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
-| test.py:95:16:95:16 | SSA variable y | semmle.label | SSA variable y |
-| test.py:95:21:95:28 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
-| test.py:95:22:95:27 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:96:10:96:10 | ControlFlowNode for x [Set element] | semmle.label | ControlFlowNode for x [Set element] |
-| test.py:96:10:96:16 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| test.py:104:9:104:21 | ControlFlowNode for Dict [Dictionary element at key s] | semmle.label | ControlFlowNode for Dict [Dictionary element at key s] |
-| test.py:104:15:104:20 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:105:10:105:10 | ControlFlowNode for x [Dictionary element at key s] | semmle.label | ControlFlowNode for x [Dictionary element at key s] |
-| test.py:105:10:105:15 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| test.py:108:9:108:21 | ControlFlowNode for Dict [Dictionary element at key s] | semmle.label | ControlFlowNode for Dict [Dictionary element at key s] |
-| test.py:108:15:108:20 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:109:10:109:10 | ControlFlowNode for x [Dictionary element at key s] | semmle.label | ControlFlowNode for x [Dictionary element at key s] |
-| test.py:109:10:109:19 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| test.py:234:10:234:21 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| test.py:234:11:234:16 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:234:11:234:17 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
-| test.py:237:10:237:17 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
-| test.py:237:10:237:20 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| test.py:237:11:237:16 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:240:10:240:21 | ControlFlowNode for Dict [Dictionary element at key s] | semmle.label | ControlFlowNode for Dict [Dictionary element at key s] |
-| test.py:240:10:240:26 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| test.py:240:15:240:20 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:258:10:258:34 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
-| test.py:258:28:258:33 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:317:10:317:18 | ControlFlowNode for f() | semmle.label | ControlFlowNode for f() |
-| test.py:317:12:317:17 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| test.py:321:10:321:34 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
-| test.py:321:28:321:33 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:82:9:82:37 | ControlFlowNode for ListComp [List element] | semmle.label | ControlFlowNode for ListComp [List element] |
+| test.py:82:10:82:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:83:10:83:10 | ControlFlowNode for x [List element] | semmle.label | ControlFlowNode for x [List element] |
+| test.py:83:10:83:13 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:86:9:86:29 | ControlFlowNode for ListComp [List element] | semmle.label | ControlFlowNode for ListComp [List element] |
+| test.py:86:10:86:10 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
+| test.py:86:16:86:16 | SSA variable y | semmle.label | SSA variable y |
+| test.py:86:21:86:28 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
+| test.py:86:22:86:27 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:87:10:87:10 | ControlFlowNode for x [List element] | semmle.label | ControlFlowNode for x [List element] |
+| test.py:87:10:87:13 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:99:9:99:37 | ControlFlowNode for SetComp [Set element] | semmle.label | ControlFlowNode for SetComp [Set element] |
+| test.py:99:10:99:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:100:10:100:10 | ControlFlowNode for x [Set element] | semmle.label | ControlFlowNode for x [Set element] |
+| test.py:100:10:100:16 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:103:9:103:29 | ControlFlowNode for SetComp [Set element] | semmle.label | ControlFlowNode for SetComp [Set element] |
+| test.py:103:10:103:10 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
+| test.py:103:16:103:16 | SSA variable y | semmle.label | SSA variable y |
+| test.py:103:21:103:28 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
+| test.py:103:22:103:27 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:104:10:104:10 | ControlFlowNode for x [Set element] | semmle.label | ControlFlowNode for x [Set element] |
+| test.py:104:10:104:16 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:112:9:112:21 | ControlFlowNode for Dict [Dictionary element at key s] | semmle.label | ControlFlowNode for Dict [Dictionary element at key s] |
+| test.py:112:15:112:20 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:113:10:113:10 | ControlFlowNode for x [Dictionary element at key s] | semmle.label | ControlFlowNode for x [Dictionary element at key s] |
+| test.py:113:10:113:15 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:116:9:116:21 | ControlFlowNode for Dict [Dictionary element at key s] | semmle.label | ControlFlowNode for Dict [Dictionary element at key s] |
+| test.py:116:15:116:20 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:117:10:117:10 | ControlFlowNode for x [Dictionary element at key s] | semmle.label | ControlFlowNode for x [Dictionary element at key s] |
+| test.py:117:10:117:19 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:242:10:242:21 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:242:11:242:16 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:242:11:242:17 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
+| test.py:245:10:245:17 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
+| test.py:245:10:245:20 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:245:11:245:16 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:248:10:248:21 | ControlFlowNode for Dict [Dictionary element at key s] | semmle.label | ControlFlowNode for Dict [Dictionary element at key s] |
+| test.py:248:10:248:26 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:248:15:248:20 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:266:10:266:34 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
+| test.py:266:28:266:33 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:325:10:325:18 | ControlFlowNode for f() | semmle.label | ControlFlowNode for f() |
+| test.py:325:12:325:17 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:329:10:329:34 | ControlFlowNode for second() | semmle.label | ControlFlowNode for second() |
+| test.py:329:28:329:33 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 #select
-| test.py:26:10:26:10 | ControlFlowNode for y | test.py:24:21:24:26 | ControlFlowNode for SOURCE | test.py:26:10:26:10 | ControlFlowNode for y | <message> |
-| test.py:36:10:36:10 | ControlFlowNode for x | test.py:35:9:35:14 | ControlFlowNode for SOURCE | test.py:36:10:36:10 | ControlFlowNode for x | <message> |
-| test.py:41:10:41:10 | ControlFlowNode for x | test.py:40:9:40:16 | ControlFlowNode for Str | test.py:41:10:41:10 | ControlFlowNode for x | <message> |
-| test.py:45:10:45:10 | ControlFlowNode for x | test.py:44:9:44:17 | ControlFlowNode for Str | test.py:45:10:45:10 | ControlFlowNode for x | <message> |
-| test.py:49:10:49:10 | ControlFlowNode for x | test.py:48:9:48:10 | ControlFlowNode for IntegerLiteral | test.py:49:10:49:10 | ControlFlowNode for x | <message> |
-| test.py:53:10:53:10 | ControlFlowNode for x | test.py:52:9:52:12 | ControlFlowNode for FloatLiteral | test.py:53:10:53:10 | ControlFlowNode for x | <message> |
-| test.py:62:10:62:10 | ControlFlowNode for x | test.py:61:10:61:15 | ControlFlowNode for SOURCE | test.py:62:10:62:10 | ControlFlowNode for x | <message> |
-| test.py:67:10:67:13 | ControlFlowNode for Subscript | test.py:66:10:66:15 | ControlFlowNode for SOURCE | test.py:67:10:67:13 | ControlFlowNode for Subscript | <message> |
+| datamodel.py:38:6:38:17 | ControlFlowNode for f() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:38:6:38:17 | ControlFlowNode for f() | <message> |
+| datamodel.py:38:6:38:17 | ControlFlowNode for f() | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | datamodel.py:38:6:38:17 | ControlFlowNode for f() | <message> |
+| datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() | datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:73:6:73:27 | ControlFlowNode for func_obj() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:73:6:73:27 | ControlFlowNode for func_obj() | <message> |
+| datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() | datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:82:6:82:26 | ControlFlowNode for c_func_obj() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:82:6:82:26 | ControlFlowNode for c_func_obj() | <message> |
+| datamodel.py:93:6:93:20 | ControlFlowNode for Attribute() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:93:6:93:20 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:97:6:97:21 | ControlFlowNode for Attribute() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:97:6:97:21 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:106:6:106:30 | ControlFlowNode for Attribute() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:106:6:106:30 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:107:6:107:32 | ControlFlowNode for Attribute() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:107:6:107:32 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:119:6:119:30 | ControlFlowNode for Attribute() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:119:6:119:30 | ControlFlowNode for Attribute() | <message> |
+| test.py:34:10:34:10 | ControlFlowNode for y | test.py:32:21:32:26 | ControlFlowNode for SOURCE | test.py:34:10:34:10 | ControlFlowNode for y | <message> |
+| test.py:44:10:44:10 | ControlFlowNode for x | test.py:43:9:43:14 | ControlFlowNode for SOURCE | test.py:44:10:44:10 | ControlFlowNode for x | <message> |
+| test.py:49:10:49:10 | ControlFlowNode for x | test.py:48:9:48:16 | ControlFlowNode for Str | test.py:49:10:49:10 | ControlFlowNode for x | <message> |
+| test.py:53:10:53:10 | ControlFlowNode for x | test.py:52:9:52:17 | ControlFlowNode for Str | test.py:53:10:53:10 | ControlFlowNode for x | <message> |
+| test.py:57:10:57:10 | ControlFlowNode for x | test.py:56:9:56:10 | ControlFlowNode for IntegerLiteral | test.py:57:10:57:10 | ControlFlowNode for x | <message> |
+| test.py:61:10:61:10 | ControlFlowNode for x | test.py:60:9:60:12 | ControlFlowNode for FloatLiteral | test.py:61:10:61:10 | ControlFlowNode for x | <message> |
+| test.py:70:10:70:10 | ControlFlowNode for x | test.py:69:10:69:15 | ControlFlowNode for SOURCE | test.py:70:10:70:10 | ControlFlowNode for x | <message> |
 | test.py:75:10:75:13 | ControlFlowNode for Subscript | test.py:74:10:74:15 | ControlFlowNode for SOURCE | test.py:75:10:75:13 | ControlFlowNode for Subscript | <message> |
-| test.py:79:10:79:13 | ControlFlowNode for Subscript | test.py:78:22:78:27 | ControlFlowNode for SOURCE | test.py:79:10:79:13 | ControlFlowNode for Subscript | <message> |
-| test.py:92:10:92:16 | ControlFlowNode for Attribute() | test.py:91:10:91:15 | ControlFlowNode for SOURCE | test.py:92:10:92:16 | ControlFlowNode for Attribute() | <message> |
-| test.py:96:10:96:16 | ControlFlowNode for Attribute() | test.py:95:22:95:27 | ControlFlowNode for SOURCE | test.py:96:10:96:16 | ControlFlowNode for Attribute() | <message> |
-| test.py:105:10:105:15 | ControlFlowNode for Subscript | test.py:104:15:104:20 | ControlFlowNode for SOURCE | test.py:105:10:105:15 | ControlFlowNode for Subscript | <message> |
-| test.py:109:10:109:19 | ControlFlowNode for Attribute() | test.py:108:15:108:20 | ControlFlowNode for SOURCE | test.py:109:10:109:19 | ControlFlowNode for Attribute() | <message> |
-| test.py:234:10:234:21 | ControlFlowNode for Subscript | test.py:234:11:234:16 | ControlFlowNode for SOURCE | test.py:234:10:234:21 | ControlFlowNode for Subscript | <message> |
-| test.py:237:10:237:20 | ControlFlowNode for Subscript | test.py:237:11:237:16 | ControlFlowNode for SOURCE | test.py:237:10:237:20 | ControlFlowNode for Subscript | <message> |
-| test.py:240:10:240:26 | ControlFlowNode for Subscript | test.py:240:15:240:20 | ControlFlowNode for SOURCE | test.py:240:10:240:26 | ControlFlowNode for Subscript | <message> |
-| test.py:258:10:258:34 | ControlFlowNode for second() | test.py:258:28:258:33 | ControlFlowNode for SOURCE | test.py:258:10:258:34 | ControlFlowNode for second() | <message> |
-| test.py:317:10:317:18 | ControlFlowNode for f() | test.py:317:12:317:17 | ControlFlowNode for SOURCE | test.py:317:10:317:18 | ControlFlowNode for f() | <message> |
-| test.py:321:10:321:34 | ControlFlowNode for second() | test.py:321:28:321:33 | ControlFlowNode for SOURCE | test.py:321:10:321:34 | ControlFlowNode for second() | <message> |
+| test.py:83:10:83:13 | ControlFlowNode for Subscript | test.py:82:10:82:15 | ControlFlowNode for SOURCE | test.py:83:10:83:13 | ControlFlowNode for Subscript | <message> |
+| test.py:87:10:87:13 | ControlFlowNode for Subscript | test.py:86:22:86:27 | ControlFlowNode for SOURCE | test.py:87:10:87:13 | ControlFlowNode for Subscript | <message> |
+| test.py:100:10:100:16 | ControlFlowNode for Attribute() | test.py:99:10:99:15 | ControlFlowNode for SOURCE | test.py:100:10:100:16 | ControlFlowNode for Attribute() | <message> |
+| test.py:104:10:104:16 | ControlFlowNode for Attribute() | test.py:103:22:103:27 | ControlFlowNode for SOURCE | test.py:104:10:104:16 | ControlFlowNode for Attribute() | <message> |
+| test.py:113:10:113:15 | ControlFlowNode for Subscript | test.py:112:15:112:20 | ControlFlowNode for SOURCE | test.py:113:10:113:15 | ControlFlowNode for Subscript | <message> |
+| test.py:117:10:117:19 | ControlFlowNode for Attribute() | test.py:116:15:116:20 | ControlFlowNode for SOURCE | test.py:117:10:117:19 | ControlFlowNode for Attribute() | <message> |
+| test.py:242:10:242:21 | ControlFlowNode for Subscript | test.py:242:11:242:16 | ControlFlowNode for SOURCE | test.py:242:10:242:21 | ControlFlowNode for Subscript | <message> |
+| test.py:245:10:245:20 | ControlFlowNode for Subscript | test.py:245:11:245:16 | ControlFlowNode for SOURCE | test.py:245:10:245:20 | ControlFlowNode for Subscript | <message> |
+| test.py:248:10:248:26 | ControlFlowNode for Subscript | test.py:248:15:248:20 | ControlFlowNode for SOURCE | test.py:248:10:248:26 | ControlFlowNode for Subscript | <message> |
+| test.py:266:10:266:34 | ControlFlowNode for second() | test.py:266:28:266:33 | ControlFlowNode for SOURCE | test.py:266:10:266:34 | ControlFlowNode for second() | <message> |
+| test.py:325:10:325:18 | ControlFlowNode for f() | test.py:325:12:325:17 | ControlFlowNode for SOURCE | test.py:325:10:325:18 | ControlFlowNode for f() | <message> |
+| test.py:329:10:329:34 | ControlFlowNode for second() | test.py:329:28:329:33 | ControlFlowNode for SOURCE | test.py:329:10:329:34 | ControlFlowNode for second() | <message> |
