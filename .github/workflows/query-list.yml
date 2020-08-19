@@ -24,6 +24,8 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
     - name: Unzip CodeQL CLI
       run: unzip -d cli codeql-linux64.zip
+    - name: Add codeql to path
+      run: PATH=$PATH:${{ github.workspace }}/cli
     - name: Build query list
       run: |
         cd codeql
