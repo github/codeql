@@ -26,7 +26,7 @@ jobs:
       run: unzip -d cli codeql-linux64.zip
     - name: Add codeql to path
       run: | 
-        PATH=$PATH:${{ github.workspace }}/cli/codeql
+        PATH=$PATH:${{ github.workspace }}../cli/codeql
     - name: Build query list
       run: |
         cd codeql
