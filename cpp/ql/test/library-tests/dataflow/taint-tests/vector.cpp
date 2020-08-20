@@ -67,9 +67,9 @@ void test_element_taint(int x) {
 	sink(v4[x]); // tainted [NOT DETECTED]
 
 	v5.push_back(source());
-	sink(v5); // tainted [NOT DETECTED]
-	sink(v5.front());
-	sink(v5.back()); // tainted [NOT DETECTED]
+	sink(v5); // tainted
+	sink(v5.front()); // [FALSE POSITIVE]
+	sink(v5.back()); // tainted
 
 	v6.data()[2] = source();
 	sink(v6); // tainted [NOT DETECTED]
@@ -106,18 +106,18 @@ void test_vector_swap() {
 	v1.push_back(source());
 	v4.push_back(source());
 
-	sink(v1); // tainted [NOT DETECTED]
+	sink(v1); // tainted
 	sink(v2);
 	sink(v3);
-	sink(v4); // tainted [NOT DETECTED]
+	sink(v4); // tainted
 
 	v1.swap(v2);
 	v3.swap(v4);
 
-	sink(v1);
-	sink(v2); // tainted [NOT DETECTED]
-	sink(v3); // tainted [NOT DETECTED]
-	sink(v4);
+	sink(v1); // [FALSE POSITIVE]
+	sink(v2); // tainted
+	sink(v3); // tainted
+	sink(v4); // [FALSE POSITIVE]
 }
 
 void test_vector_clear() {
@@ -127,17 +127,17 @@ void test_vector_clear() {
 	v2.push_back(source());
 	v3.push_back(source());
 
-	sink(v1); // tainted [NOT DETECTED]
-	sink(v2); // tainted [NOT DETECTED]
-	sink(v3); // tainted [NOT DETECTED]
+	sink(v1); // tainted
+	sink(v2); // tainted
+	sink(v3); // tainted
 	sink(v4);
 
 	v1.clear();
 	v2 = v2;
 	v3 = v4;
 
-	sink(v1);
-	sink(v2); // tainted [NOT DETECTED]
-	sink(v3);
+	sink(v1); // [FALSE POSITIVE]
+	sink(v2); // tainted
+	sink(v3); // [FALSE POSITIVE]
 	sink(v4);
 }
