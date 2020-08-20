@@ -41,9 +41,6 @@ public class FileExtractor {
   public static final Pattern JSON_OBJECT_START =
       Pattern.compile("^(?s)\\s*\\{\\s*\"([^\"]|\\\\.)*\"\\s*:.*");
 
-  /** The charset for decoding UTF-8 strings. */
-  private static final Charset UTF8_CHARSET = StandardCharsets.UTF_8;
-
   /**
    * Returns true if the byte sequence contains invalid UTF-8 or unprintable ASCII characters.
    */
@@ -161,7 +158,7 @@ public class FileExtractor {
 
       /** Computes if `f` is a binary file based on whether the initial `fileHeaderSize` bytes are printable UTF-8 chars. */
       private boolean isBinaryFile(File f, String lcExt, ExtractorConfig config) {
-        if (!config.getDefaultEncoding().equals(UTF8_CHARSET.name())) {
+        if (!config.getDefaultEncoding().equals(StandardCharsets.UTF_8.name())) {
           return false;
         }
         try (FileInputStream fis = new FileInputStream(f)) {
@@ -251,7 +248,7 @@ public class FileExtractor {
           if (length == -1) return false;
 
           // Avoid invalid or unprintable UTF-8 files.
-          if (config.getDefaultEncoding().equals(UTF8_CHARSET.name()) && hasUnprintableUtf8(bytes, length)) {
+          if (config.getDefaultEncoding().equals(StandardCharsets.UTF_8.name()) && hasUnprintableUtf8(bytes, length)) {
             return true;
           }
 
@@ -318,7 +315,7 @@ public class FileExtractor {
         // Extract the shebang text
         int startOfText = startIndex + "#!".length();
         int lengthOfText = endOfLine - startOfText;
-        String text = new String(bytes, startOfText, lengthOfText, UTF8_CHARSET);
+        String text = new String(bytes, startOfText, lengthOfText, StandardCharsets.UTF_8);
         // Check if the shebang is a recognized JavaScript intepreter.
         return !NODE_INVOCATION.matcher(text).find();
       }
