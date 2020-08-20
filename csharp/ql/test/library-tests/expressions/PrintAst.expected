@@ -785,7 +785,6 @@ expressions.cs:
 #  168|               -1: [ArrayInitializer] { ..., ... }
 #  168|                 0: [CastExpr] (...) ...
 #  168|                   0: [ParameterAccess] access to parameter i
-#  168|               0: [IntLiteral] 1
 #  168|             1: [LocalVariableAccess] access to local variable os
 #  171|     26: [Method] MainDelegateAndMethodAccesses
 #  172|       4: [BlockStmt] {...}
@@ -1369,8 +1368,6 @@ expressions.cs:
 #  409|                 2: [ArrayInitializer] { ..., ... }
 #  409|                   0: [IntLiteral] 4
 #  409|                   1: [IntLiteral] 5
-#  409|               0: [IntLiteral] 3
-#  409|               1: [IntLiteral] 3
 #  409|             1: [LocalVariableAccess] access to local variable is1
 #  410|         6: [LocalVariableDeclStmt] ... ...;
 #  410|           0: [LocalVariableDeclAndInitExpr] Int32[,] is2 = ...

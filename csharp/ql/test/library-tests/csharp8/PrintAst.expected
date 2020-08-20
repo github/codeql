@@ -994,7 +994,6 @@ ranges.cs:
 #    9|               1: [IntLiteral] 2
 #    9|               2: [IntLiteral] 3
 #    9|               3: [IntLiteral] 4
-#    9|             0: [IntLiteral] 4
 #    9|           1: [LocalVariableAccess] access to local variable array
 #   10|       1: [LocalVariableDeclStmt] ... ...;
 #   10|         0: [LocalVariableDeclAndInitExpr] Int32[,] array2 = ...

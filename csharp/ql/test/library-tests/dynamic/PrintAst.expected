@@ -18,7 +18,6 @@ dynamic.cs:
 #   11|           0: [ArrayCreation] array creation of type Int32[]
 #   11|             -1: [ArrayInitializer] { ..., ... }
 #   11|               0: [IntLiteral] 42
-#   11|             0: [IntLiteral] 1
 #   11|           1: [LocalVariableAccess] access to local variable array
 #   12|       2: [LocalVariableDeclStmt] ... ...;
 #   12|         0: [LocalVariableDeclAndInitExpr] Action<Int32> action = ...

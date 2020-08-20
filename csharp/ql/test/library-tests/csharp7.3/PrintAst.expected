@@ -8,7 +8,6 @@ csharp73.cs:
 #    9|             -1: [ArrayInitializer] { ..., ... }
 #    9|               0: [CharLiteral] x
 #    9|               1: [CharLiteral] y
-#    9|             0: [IntLiteral] 2
 #    9|           1: [LocalVariableAccess] access to local variable arr1
 #   10|       1: [LocalVariableDeclStmt] ... ...;
 #   10|         0: [LocalVariableDeclAndInitExpr] Char* arr2 = ...
@@ -22,7 +21,6 @@ csharp73.cs:
 #   11|           0: [ArrayCreation] array creation of type Char[]
 #   11|             -1: [ArrayInitializer] { ..., ... }
 #   11|               0: [CharLiteral] x
-#   11|             0: [IntLiteral] 1
 #   11|           1: [LocalVariableAccess] access to local variable arr3
 #   12|       3: [LocalVariableDeclStmt] ... ...;
 #   12|         0: [LocalVariableDeclAndInitExpr] Char* arr4 = ...

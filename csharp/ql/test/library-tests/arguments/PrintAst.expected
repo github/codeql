@@ -74,7 +74,6 @@ arguments.cs:
 #   36|             -1: [ArrayInitializer] { ..., ... }
 #   36|               0: [IntLiteral] 1
 #   36|               1: [IntLiteral] 2
-#   36|             0: [IntLiteral] 2
 #   37|       2: [ExprStmt] ...;
 #   37|         0: [MethodCall] call to method f3
 #   37|           0: [IntLiteral] 1
@@ -93,7 +92,6 @@ arguments.cs:
 #   40|             -1: [ArrayInitializer] { ..., ... }
 #   40|               0: [IntLiteral] 1
 #   40|               1: [IntLiteral] 2
-#   40|             0: [IntLiteral] 2
 #   40|           1: [IntLiteral] 0
 #   43|   10: [Method] f4
 #-----|     2: (Parameters)
@@ -104,7 +102,6 @@ arguments.cs:
 #   45|           0: [ArrayCreation] array creation of type Object[]
 #   45|             -1: [ArrayInitializer] { ..., ... }
 #   45|               0: [NullLiteral] null
-#   45|             0: [IntLiteral] 1
 #   45|           1: [NullLiteral] null
 #   48|   11: [Property] Prop
 #   48|     3: [Getter] get_Prop

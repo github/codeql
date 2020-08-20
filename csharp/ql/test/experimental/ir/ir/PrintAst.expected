@@ -82,8 +82,6 @@ array.cs:
 #   18|               1: [ArrayInitializer] { ..., ... }
 #   18|                 0: [IntLiteral] 102
 #   18|                 1: [IntLiteral] 103
-#   18|             0: [IntLiteral] 2
-#   18|             1: [IntLiteral] 2
 #   18|           1: [LocalVariableAccess] access to local variable d
 #   19|       4: [LocalVariableDeclStmt] ... ...;
 #   19|         0: [LocalVariableDeclAndInitExpr] Int32[,] e = ...
@@ -383,7 +381,6 @@ foreach.cs:
 #    5|               4: [IntLiteral] 5
 #    5|               5: [IntLiteral] 6
 #    5|               6: [IntLiteral] 7
-#    5|             0: [IntLiteral] 7
 #    5|           1: [LocalVariableAccess] access to local variable a_array
 #    7|       1: [ForeachStmt] foreach (... ... in ...) ...
 #    7|         0: [LocalVariableDeclExpr] Int32 items
