@@ -28,7 +28,7 @@ jobs:
         echo "Done"
 
     - name: Check out code
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
 
     - name: Build
       run: env PATH=$PATH:$HOME/codeql make
@@ -64,7 +64,7 @@ jobs:
         echo "Done"
 
     - name: Check out code
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
 
     - name: Build
       run: env PATH=$PATH:$HOME/codeql make
@@ -97,7 +97,7 @@ jobs:
         echo "Done"
 
     - name: Check out code
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
 
     - name: Build
       run: |
