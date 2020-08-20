@@ -39,11 +39,14 @@ namespace std
 	class basic_string {
 	public:
 		typedef typename Allocator::size_type size_type;
+		static const size_type npos = -1;
 
 		explicit basic_string(const Allocator& a = Allocator());
 		basic_string(const charT* s, const Allocator& a = Allocator());
 
 		const charT* c_str() const;
+		charT* data() noexcept;
+		size_t length() const;
 
 		typedef std::iterator<random_access_iterator_tag, charT> iterator;
 		typedef std::iterator<random_access_iterator_tag, const charT> const_iterator;
@@ -60,6 +63,16 @@ namespace std
 		basic_string& append(const basic_string& str);
 		basic_string& append(const charT* s);
 		basic_string& append(size_type n, charT c);
+		basic_string& assign(const basic_string& str);
+		basic_string& assign(size_type n, charT c);
+		basic_string& insert(size_type pos, const basic_string& str);
+		basic_string& insert(size_type pos, size_type n, charT c);
+		basic_string& replace(size_type pos1, size_type n1, const basic_string& str);
+		basic_string& replace(size_type pos1, size_type n1, size_type n2, charT c);
+		size_type copy(charT* s, size_type n, size_type pos = 0) const;
+		void clear() noexcept;
+		basic_string substr(size_type pos = 0, size_type n = npos) const;
+		void swap(basic_string& s) noexcept/*(allocator_traits<Allocator>::propagate_on_container_swap::value || allocator_traits<Allocator>::is_always_equal::value)*/;
 	};
 
 	template<class charT, class traits, class Allocator> basic_string<charT, traits, Allocator> operator+(const basic_string<charT, traits, Allocator>& lhs, const basic_string<charT, traits, Allocator>& rhs);
