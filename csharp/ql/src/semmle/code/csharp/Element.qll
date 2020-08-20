@@ -48,4 +48,17 @@ class Element extends DotNet::Element, @element {
    * other children (zero-based).
    */
   int getIndex() { exists(Element parent | parent.getChild(result) = this) }
+
+  /**
+   * Gets the name of a primary CodeQL class to which this element belongs.
+   *
+   * For most elements, this is simply the most precise syntactic category to
+   * which they belong; for example, `AddExpr` is a primary class, but
+   * `BinaryOperation` is not.
+   *
+   * This predicate always has a result. If no primary class can be
+   * determined, the result is `"???"`. If multiple primary classes match,
+   * this predicate can have multiple results.
+   */
+  string getAPrimaryQlClass() { result = "???" }
 }

@@ -73,6 +73,8 @@ class ObjectInitializer extends ObjectOrCollectionInitializer, @object_init_expr
 
   /** Holds if this object initializer has no member initializers. */
   predicate hasNoMemberInitializers() { not exists(this.getAMemberInitializer()) }
+
+  override string getAPrimaryQlClass() { result = "ObjectInitializer" }
 }
 
 /**
@@ -94,6 +96,8 @@ class MemberInitializer extends AssignExpr {
 
   /** Gets the initialized member. */
   Member getInitializedMember() { result.getAnAccess() = this.getLValue() }
+
+  override string getAPrimaryQlClass() { result = "MemberInitializer" }
 }
 
 /**
@@ -142,6 +146,8 @@ class CollectionInitializer extends ObjectOrCollectionInitializer, @collection_i
 
   /** Holds if this collection initializer has no element initializers. */
   predicate hasNoElementInitializers() { not exists(this.getAnElementInitializer()) }
+
+  override string getAPrimaryQlClass() { result = "CollectionInitializer" }
 }
 
 /**
@@ -157,6 +163,8 @@ class CollectionInitializer extends ObjectOrCollectionInitializer, @collection_i
  */
 class ElementInitializer extends MethodCall {
   ElementInitializer() { this.getParent() instanceof CollectionInitializer }
+
+  override string getAPrimaryQlClass() { result = "ElementInitializer" }
 }
 
 /**
@@ -204,6 +212,10 @@ class ObjectCreation extends Call, LateBindableExpr, @object_creation_expr {
     then result = this.getArgument(i)
     else result = this.getArgument(i - 1)
   }
+
+  override string getAPrimaryQlClass() {
+    result = "ObjectCreation" and not this instanceof AnonymousObjectCreation
+  }
 }
 
 /**
@@ -221,6 +233,8 @@ class AnonymousObjectCreation extends ObjectCreation {
   AnonymousObjectCreation() { this.getObjectType() instanceof AnonymousClass }
 
   override ObjectInitializer getInitializer() { result = this.getChild(-1) }
+
+  override string getAPrimaryQlClass() { result = "AnonymousObjectCreation" }
 }
 
 /**
@@ -255,7 +269,9 @@ class DelegateCreation extends Expr, @delegate_creation_expr {
  * }
  * ```
  */
-class ExplicitDelegateCreation extends DelegateCreation, @explicit_delegate_creation_expr { }
+class ExplicitDelegateCreation extends DelegateCreation, @explicit_delegate_creation_expr {
+  override string getAPrimaryQlClass() { result = "ExplicitDelegateCreation" }
+}
 
 /**
  * An implicit delegate creation, for example the access to `M` on line 6 in
@@ -270,7 +286,9 @@ class ExplicitDelegateCreation extends DelegateCreation, @explicit_delegate_crea
  * }
  * ```
  */
-class ImplicitDelegateCreation extends DelegateCreation, @implicit_delegate_creation_expr { }
+class ImplicitDelegateCreation extends DelegateCreation, @implicit_delegate_creation_expr {
+  override string getAPrimaryQlClass() { result = "ImplicitDelegateCreation" }
+}
 
 /**
  * An array initializer, for example `{ {0, 1}, {2, 3}, {4, 5} }` in
@@ -322,6 +340,8 @@ class ArrayInitializer extends Expr, @array_init_expr {
   predicate hasNoElements() { not exists(this.getAnElement()) }
 
   override string toString() { result = "{ ..., ... }" }
+
+  override string getAPrimaryQlClass() { result = "ArrayInitializer" }
 }
 
 /**
@@ -370,6 +390,8 @@ class ArrayCreation extends Expr, @array_creation_expr {
   predicate isImplicitlyTyped() { implicitly_typed_array_creation(this) }
 
   override string toString() { result = "array creation of type " + this.getType().getName() }
+
+  override string getAPrimaryQlClass() { result = "ArrayCreation" }
 }
 
 /**
@@ -377,6 +399,8 @@ class ArrayCreation extends Expr, @array_creation_expr {
  */
 class Stackalloc extends ArrayCreation {
   Stackalloc() { stackalloc_array_creation(this) }
+
+  override string getAPrimaryQlClass() { result = "Stackalloc" }
 }
 
 /**
@@ -405,6 +429,8 @@ class AnonymousFunctionExpr extends Expr, Callable, @anonymous_function_expr {
  */
 class LambdaExpr extends AnonymousFunctionExpr, @lambda_expr {
   override string toString() { result = "(...) => ..." }
+
+  override string getAPrimaryQlClass() { result = "LambdaExpr" }
 }
 
 /**
@@ -413,4 +439,6 @@ class LambdaExpr extends AnonymousFunctionExpr, @lambda_expr {
  */
 class AnonymousMethodExpr extends AnonymousFunctionExpr, @anonymous_method_expr {
   override string toString() { result = "delegate(...) { ... }" }
+
+  override string getAPrimaryQlClass() { result = "AnonymousMethodExpr" }
 }

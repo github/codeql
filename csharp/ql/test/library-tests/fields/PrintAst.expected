@@ -1,0 +1,185 @@
+fields.cs:
+#    5| [NamespaceDeclaration] namespace ... { ... }
+#    7|   1: [Class] A
+#   10|     6: [Field] X
+#   10|       1: [AssignExpr] ... = ...
+#   10|         0: [IntLiteral] 1
+#   10|         1: [FieldAccess] access to field X
+#   10|     7: [Field] Y
+#   10|     8: [Field] Z
+#   10|       1: [AssignExpr] ... = ...
+#   10|         0: [IntLiteral] 100
+#   10|         1: [FieldAccess] access to field Z
+#   13|   2: [Class] B
+#   15|     6: [Field] X
+#   15|       1: [AssignExpr] ... = ...
+#   15|         0: [IntLiteral] 1
+#   15|         1: [FieldAccess] access to field X
+#   16|     7: [Field] Y
+#   17|     8: [Field] Z
+#   17|       1: [AssignExpr] ... = ...
+#   17|         0: [IntLiteral] 100
+#   17|         1: [FieldAccess] access to field Z
+#   20|   3: [Class] C<>
+#-----|     1: (Type parameters)
+#   20|       0: [TypeParameter] V
+#   23|     5: [Field] count
+#   23|       1: [AssignExpr] ... = ...
+#   23|         0: [IntLiteral] 0
+#   23|         1: [FieldAccess] access to field count
+#   25|     6: [InstanceConstructor] C
+#   25|       4: [BlockStmt] {...}
+#   25|         0: [ExprStmt] ...;
+#   25|           0: [PostIncrExpr] ...++
+#   25|             0: [FieldAccess] access to field count
+#   27|     7: [Property] Count
+#   27|       3: [Getter] get_Count
+#   27|         4: [BlockStmt] {...}
+#   27|           0: [ReturnStmt] return ...;
+#   27|             0: [FieldAccess] access to field count
+#   31|   4: [Class] Application
+#   34|     6: [Field] finished
+#   35|     7: [Field] x
+#   35|       1: [AssignExpr] ... = ...
+#   35|         0: [MethodCall] call to method Sqrt
+#   35|           -1: [TypeAccess] access to type Math
+#   35|           0: [DoubleLiteral] 2
+#   35|         1: [FieldAccess] access to field x
+#   36|     8: [Field] i
+#   36|       1: [AssignExpr] ... = ...
+#   36|         0: [IntLiteral] 100
+#   36|         1: [FieldAccess] access to field i
+#   37|     9: [Field] s
+#   37|       1: [AssignExpr] ... = ...
+#   37|         0: [StringLiteral] "Hello"
+#   37|         1: [FieldAccess] access to field s
+#   39|     10: [Method] Main
+#   40|       4: [BlockStmt] {...}
+#   41|         0: [LocalVariableDeclStmt] ... ...;
+#   41|           0: [LocalVariableDeclAndInitExpr] Decimal d = ...
+#   41|             0: [MemberConstantAccess] access to constant MaxValue
+#   41|               -1: [TypeAccess] access to type Decimal
+#   41|             1: [LocalVariableAccess] access to local variable d
+#   42|         1: [LocalVariableDeclStmt] ... ...;
+#   42|           0: [LocalVariableDeclAndInitExpr] C<Int32> x1 = ...
+#   42|             0: [ObjectCreation] object creation of type C<Int32>
+#   42|             1: [LocalVariableAccess] access to local variable x1
+#   43|         2: [ExprStmt] ...;
+#   43|           0: [MethodCall] call to method WriteLine
+#   43|             -1: [TypeAccess] access to type Console
+#   43|             0: [PropertyCall] access to property Count
+#   43|               -1: [TypeAccess] access to type C<Int32>
+#   44|         3: [LocalVariableDeclStmt] ... ...;
+#   44|           0: [LocalVariableDeclAndInitExpr] C<Double> x2 = ...
+#   44|             0: [ObjectCreation] object creation of type C<Double>
+#   44|             1: [LocalVariableAccess] access to local variable x2
+#   45|         4: [ExprStmt] ...;
+#   45|           0: [MethodCall] call to method WriteLine
+#   45|             -1: [TypeAccess] access to type Console
+#   45|             0: [PropertyCall] access to property Count
+#   45|               -1: [TypeAccess] access to type C<Int32>
+#   50|   5: [Class] Color
+#   53|     5: [Field] Black
+#   53|       1: [AssignExpr] ... = ...
+#   53|         0: [ObjectCreation] object creation of type Color
+#   53|           0: [CastExpr] (...) ...
+#   53|             0: [IntLiteral] 0
+#   53|           1: [CastExpr] (...) ...
+#   53|             0: [IntLiteral] 0
+#   53|           2: [CastExpr] (...) ...
+#   53|             0: [IntLiteral] 0
+#   53|         1: [FieldAccess] access to field Black
+#   54|     6: [Field] White
+#   54|       1: [AssignExpr] ... = ...
+#   54|         0: [ObjectCreation] object creation of type Color
+#   54|           0: [CastExpr] (...) ...
+#   54|             0: [IntLiteral] 255
+#   54|           1: [CastExpr] (...) ...
+#   54|             0: [IntLiteral] 255
+#   54|           2: [CastExpr] (...) ...
+#   54|             0: [IntLiteral] 255
+#   54|         1: [FieldAccess] access to field White
+#   56|     7: [InstanceConstructor] Color
+#-----|       2: (Parameters)
+#   56|         0: [Parameter] r
+#   56|         1: [Parameter] g
+#   56|         2: [Parameter] b
+#   56|       4: [BlockStmt] {...}
+#   60|   6: [Class] TestBindings
+#   63|     6: [Field] a
+#   63|       1: [AssignExpr] ... = ...
+#   63|         0: [AddExpr] ... + ...
+#   63|           0: [FieldAccess] access to field b
+#   63|           1: [IntLiteral] 1
+#   63|         1: [FieldAccess] access to field a
+#   64|     7: [Field] b
+#   64|       1: [AssignExpr] ... = ...
+#   64|         0: [AddExpr] ... + ...
+#   64|           0: [FieldAccess] access to field a
+#   64|           1: [IntLiteral] 1
+#   64|         1: [FieldAccess] access to field b
+#   70| [NamespaceDeclaration] namespace ... { ... }
+#   72|   1: [Class] A
+#   74|     5: [Field] X
+#   74|       1: [AssignExpr] ... = ...
+#   74|         0: [AddExpr] ... + ...
+#   74|           0: [MemberConstantAccess] access to constant Z
+#   74|             -1: [TypeAccess] access to type B
+#   74|           1: [IntLiteral] 1
+#   74|         1: [MemberConstantAccess] access to constant X
+#   75|     6: [Field] Y
+#   75|       1: [AssignExpr] ... = ...
+#   75|         0: [IntLiteral] 10
+#   75|         1: [MemberConstantAccess] access to constant Y
+#   78|   2: [Class] B
+#   80|     5: [Field] Z
+#   80|       1: [AssignExpr] ... = ...
+#   80|         0: [AddExpr] ... + ...
+#   80|           0: [MemberConstantAccess] access to constant Y
+#   80|             -1: [TypeAccess] access to type A
+#   80|           1: [IntLiteral] 1
+#   80|         1: [MemberConstantAccess] access to constant Z
+#   83|   3: [Class] C
+#   85|     4: [Field] Foo
+#   85|       1: [AssignExpr] ... = ...
+#   85|         0: [IntLiteral] 1
+#   85|         1: [MemberConstantAccess] access to constant Foo
+#   86|     5: [Field] x
+#   87|     6: [InstanceConstructor] C
+#   88|       4: [BlockStmt] {...}
+#   89|         0: [ExprStmt] ...;
+#   89|           0: [AssignExpr] ... = ...
+#   89|             0: [CastExpr] (...) ...
+#   89|               0: [MemberConstantAccess] access to constant Foo
+#   89|             1: [FieldAccess] access to field x
+#   90|         1: [LocalVariableDeclStmt] ... ...;
+#   90|           0: [LocalVariableDeclAndInitExpr] dynamic dyn = ...
+#   90|             0: [CastExpr] (...) ...
+#   90|               0: [MemberConstantAccess] access to constant Foo
+#   90|             1: [LocalVariableAccess] access to local variable dyn
+#   91|         2: [LocalVariableDeclStmt] ... ...;
+#   91|           0: [LocalVariableDeclAndInitExpr] D d = ...
+#   91|             0: [OperatorCall] call to operator implicit conversion
+#   91|               0: [MemberConstantAccess] access to constant Foo
+#   91|             1: [LocalVariableAccess] access to local variable d
+#   92|         3: [LocalVariableDeclStmt] ... ...;
+#   92|           0: [LocalVariableDeclAndInitExpr] C c = ...
+#   92|             0: [ObjectCreation] object creation of type C
+#   92|               -1: [ObjectInitializer] { ..., ... }
+#   92|                 0: [MemberInitializer] ... = ...
+#   92|                   0: [CastExpr] (...) ...
+#   92|                     0: [MemberConstantAccess] access to constant Foo
+#   92|                   1: [FieldAccess] access to field x
+#   92|             1: [LocalVariableAccess] access to local variable c
+#   96|   4: [Class] D
+#   98|     4: [InstanceConstructor] D
+#-----|       2: (Parameters)
+#   98|         0: [Parameter] d
+#   99|       4: [BlockStmt] {...}
+#  101|     5: [ImplicitConversionOperator] implicit conversion
+#-----|       2: (Parameters)
+#  101|         0: [Parameter] d
+#  101|       4: [BlockStmt] {...}
+#  101|         0: [ReturnStmt] return ...;
+#  101|           0: [ObjectCreation] object creation of type D
+#  101|             0: [ParameterAccess] access to parameter d

@@ -1,0 +1,322 @@
+indexers.cs:
+#    5| [NamespaceDeclaration] namespace ... { ... }
+#    8|   1: [Class] BitArray
+#   11|     4: [Field] bits
+#   12|     5: [Field] length
+#   14|     6: [InstanceConstructor] BitArray
+#-----|       2: (Parameters)
+#   14|         0: [Parameter] length
+#   15|       4: [BlockStmt] {...}
+#   16|         0: [IfStmt] if (...) ...
+#   16|           0: [LTExpr] ... < ...
+#   16|             0: [ParameterAccess] access to parameter length
+#   16|             1: [IntLiteral] 0
+#   17|           1: [ThrowStmt] throw ...;
+#   17|             0: [ObjectCreation] object creation of type ArgumentException
+#   18|         1: [ExprStmt] ...;
+#   18|           0: [AssignExpr] ... = ...
+#   18|             0: [ArrayCreation] array creation of type Int32[]
+#   18|               0: [AddExpr] ... + ...
+#   18|                 0: [RShiftExpr] ... >> ...
+#   18|                   0: [SubExpr] ... - ...
+#   18|                     0: [ParameterAccess] access to parameter length
+#   18|                     1: [IntLiteral] 1
+#   18|                   1: [IntLiteral] 5
+#   18|                 1: [IntLiteral] 1
+#   18|             1: [FieldAccess] access to field bits
+#   19|         2: [ExprStmt] ...;
+#   19|           0: [AssignExpr] ... = ...
+#   19|             0: [ParameterAccess] access to parameter length
+#   19|             1: [FieldAccess] access to field length
+#   19|               -1: [ThisAccess] this access
+#   22|     7: [Property] Length
+#   22|       3: [Getter] get_Length
+#   22|         4: [BlockStmt] {...}
+#   22|           0: [ReturnStmt] return ...;
+#   22|             0: [FieldAccess] access to field length
+#   24|     8: [Indexer] Item
+#-----|       1: (Parameters)
+#   24|         0: [Parameter] index
+#   26|       3: [Getter] get_Item
+#-----|         2: (Parameters)
+#   24|           0: [Parameter] index
+#   27|         4: [BlockStmt] {...}
+#   28|           0: [IfStmt] if (...) ...
+#   28|             0: [LogicalOrExpr] ... || ...
+#   28|               0: [LTExpr] ... < ...
+#   28|                 0: [ParameterAccess] access to parameter index
+#   28|                 1: [IntLiteral] 0
+#   28|               1: [GEExpr] ... >= ...
+#   28|                 0: [ParameterAccess] access to parameter index
+#   28|                 1: [FieldAccess] access to field length
+#   29|             1: [BlockStmt] {...}
+#   30|               0: [ThrowStmt] throw ...;
+#   30|                 0: [ObjectCreation] object creation of type IndexOutOfRangeException
+#   32|           1: [ReturnStmt] return ...;
+#   32|             0: [NEExpr] ... != ...
+#   32|               0: [BitwiseAndExpr] ... & ...
+#   32|                 0: [ArrayAccess] access to array element
+#   32|                   -1: [FieldAccess] access to field bits
+#   32|                   0: [RShiftExpr] ... >> ...
+#   32|                     0: [ParameterAccess] access to parameter index
+#   32|                     1: [IntLiteral] 5
+#   32|                 1: [LShiftExpr] ... << ...
+#   32|                   0: [IntLiteral] 1
+#   32|                   1: [ParameterAccess] access to parameter index
+#   32|               1: [IntLiteral] 0
+#   34|       4: [Setter] set_Item
+#-----|         2: (Parameters)
+#   24|           0: [Parameter] index
+#   34|           1: [Parameter] value
+#   35|         4: [BlockStmt] {...}
+#   36|           0: [IfStmt] if (...) ...
+#   36|             0: [LogicalOrExpr] ... || ...
+#   36|               0: [LTExpr] ... < ...
+#   36|                 0: [ParameterAccess] access to parameter index
+#   36|                 1: [IntLiteral] 0
+#   36|               1: [GEExpr] ... >= ...
+#   36|                 0: [ParameterAccess] access to parameter index
+#   36|                 1: [FieldAccess] access to field length
+#   37|             1: [BlockStmt] {...}
+#   38|               0: [ThrowStmt] throw ...;
+#   38|                 0: [ObjectCreation] object creation of type IndexOutOfRangeException
+#   40|           1: [IfStmt] if (...) ...
+#   40|             0: [ParameterAccess] access to parameter value
+#   41|             1: [BlockStmt] {...}
+#   42|               0: [ExprStmt] ...;
+#   42|                 0: [AssignOrExpr] ... |= ...
+#   42|                   0: [LShiftExpr] ... << ...
+#   42|                     0: [IntLiteral] 1
+#   42|                     1: [ParameterAccess] access to parameter index
+#   42|                   1: [ArrayAccess] access to array element
+#   42|                     -1: [FieldAccess] access to field bits
+#   42|                     0: [RShiftExpr] ... >> ...
+#   42|                       0: [ParameterAccess] access to parameter index
+#   42|                       1: [IntLiteral] 5
+#   45|             2: [BlockStmt] {...}
+#   46|               0: [ExprStmt] ...;
+#   46|                 0: [AssignAndExpr] ... &= ...
+#   46|                   0: [ComplementExpr] ~...
+#   46|                     0: [LShiftExpr] ... << ...
+#   46|                       0: [IntLiteral] 1
+#   46|                       1: [ParameterAccess] access to parameter index
+#   46|                   1: [ArrayAccess] access to array element
+#   46|                     -1: [FieldAccess] access to field bits
+#   46|                     0: [RShiftExpr] ... >> ...
+#   46|                       0: [ParameterAccess] access to parameter index
+#   46|                       1: [IntLiteral] 5
+#   53|   2: [Class] CountPrimes
+#   56|     5: [Method] Count
+#-----|       2: (Parameters)
+#   56|         0: [Parameter] max
+#   57|       4: [BlockStmt] {...}
+#   58|         0: [LocalVariableDeclStmt] ... ...;
+#   58|           0: [LocalVariableDeclAndInitExpr] BitArray flags = ...
+#   58|             0: [ObjectCreation] object creation of type BitArray
+#   58|               0: [AddExpr] ... + ...
+#   58|                 0: [ParameterAccess] access to parameter max
+#   58|                 1: [IntLiteral] 1
+#   58|             1: [LocalVariableAccess] access to local variable flags
+#   59|         1: [LocalVariableDeclStmt] ... ...;
+#   59|           0: [LocalVariableDeclAndInitExpr] Int32 count = ...
+#   59|             0: [IntLiteral] 1
+#   59|             1: [LocalVariableAccess] access to local variable count
+#   60|         2: [ForStmt] for (...;...;...) ...
+#   60|           -1: [LocalVariableDeclAndInitExpr] Int32 i = ...
+#   60|             0: [IntLiteral] 2
+#   60|             1: [LocalVariableAccess] access to local variable i
+#   60|           0: [LEExpr] ... <= ...
+#   60|             0: [LocalVariableAccess] access to local variable i
+#   60|             1: [ParameterAccess] access to parameter max
+#   60|           1: [PostIncrExpr] ...++
+#   60|             0: [LocalVariableAccess] access to local variable i
+#   61|           2: [BlockStmt] {...}
+#   62|             0: [IfStmt] if (...) ...
+#   62|               0: [LogicalNotExpr] !...
+#   62|                 0: [IndexerCall] access to indexer
+#   62|                   -1: [LocalVariableAccess] access to local variable flags
+#   62|                   0: [LocalVariableAccess] access to local variable i
+#   63|               1: [BlockStmt] {...}
+#   64|                 0: [ForStmt] for (...;...;...) ...
+#   64|                   -1: [LocalVariableDeclAndInitExpr] Int32 j = ...
+#   64|                     0: [MulExpr] ... * ...
+#   64|                       0: [LocalVariableAccess] access to local variable i
+#   64|                       1: [IntLiteral] 2
+#   64|                     1: [LocalVariableAccess] access to local variable j
+#   64|                   0: [LEExpr] ... <= ...
+#   64|                     0: [LocalVariableAccess] access to local variable j
+#   64|                     1: [ParameterAccess] access to parameter max
+#   64|                   1: [AssignAddExpr] ... += ...
+#   64|                     0: [LocalVariableAccess] access to local variable i
+#   64|                     1: [LocalVariableAccess] access to local variable j
+#   65|                   2: [ExprStmt] ...;
+#   65|                     0: [AssignExpr] ... = ...
+#   65|                       0: [BoolLiteral] true
+#   65|                       1: [IndexerCall] access to indexer
+#   65|                         -1: [LocalVariableAccess] access to local variable flags
+#   65|                         0: [LocalVariableAccess] access to local variable j
+#   66|                 1: [ExprStmt] ...;
+#   66|                   0: [PostIncrExpr] ...++
+#   66|                     0: [LocalVariableAccess] access to local variable count
+#   69|         3: [ReturnStmt] return ...;
+#   69|           0: [LocalVariableAccess] access to local variable count
+#   72|     6: [Method] Main
+#-----|       2: (Parameters)
+#   72|         0: [Parameter] args
+#   73|       4: [BlockStmt] {...}
+#   74|         0: [LocalVariableDeclStmt] ... ...;
+#   74|           0: [LocalVariableDeclAndInitExpr] Int32 max = ...
+#   74|             0: [MethodCall] call to method Parse
+#   74|               -1: [TypeAccess] access to type Int32
+#   74|               0: [ArrayAccess] access to array element
+#   74|                 -1: [ParameterAccess] access to parameter args
+#   74|                 0: [IntLiteral] 0
+#   74|             1: [LocalVariableAccess] access to local variable max
+#   75|         1: [LocalVariableDeclStmt] ... ...;
+#   75|           0: [LocalVariableDeclAndInitExpr] Int32 count = ...
+#   75|             0: [MethodCall] call to method Count
+#   75|               0: [LocalVariableAccess] access to local variable max
+#   75|             1: [LocalVariableAccess] access to local variable count
+#   76|         2: [ExprStmt] ...;
+#   76|           0: [MethodCall] call to method WriteLine
+#   76|             -1: [TypeAccess] access to type Console
+#   76|             0: [StringLiteral] "Found {0} primes between 1 and {1}"
+#   76|             1: [CastExpr] (...) ...
+#   76|               0: [LocalVariableAccess] access to local variable count
+#   76|             2: [CastExpr] (...) ...
+#   76|               0: [LocalVariableAccess] access to local variable max
+#   81|   3: [Class] Grid
+#   84|     5: [Field] NumRows
+#   84|       1: [AssignExpr] ... = ...
+#   84|         0: [IntLiteral] 26
+#   84|         1: [MemberConstantAccess] access to constant NumRows
+#   85|     6: [Field] NumCols
+#   85|       1: [AssignExpr] ... = ...
+#   85|         0: [IntLiteral] 10
+#   85|         1: [MemberConstantAccess] access to constant NumCols
+#   87|     7: [Field] cells
+#   87|       1: [AssignExpr] ... = ...
+#   87|         0: [ArrayCreation] array creation of type Int32[,]
+#   87|           0: [MemberConstantAccess] access to constant NumRows
+#   87|           1: [MemberConstantAccess] access to constant NumCols
+#   87|         1: [FieldAccess] access to field cells
+#   89|     8: [Indexer] Item
+#-----|       1: (Parameters)
+#   89|         0: [Parameter] c
+#   89|         1: [Parameter] col
+#   91|       3: [Getter] get_Item
+#-----|         2: (Parameters)
+#   89|           0: [Parameter] c
+#   89|           1: [Parameter] col
+#   92|         4: [BlockStmt] {...}
+#   93|           0: [ExprStmt] ...;
+#   93|             0: [AssignExpr] ... = ...
+#   93|               0: [MethodCall] call to method ToUpper
+#   93|                 -1: [TypeAccess] access to type Char
+#   93|                 0: [ParameterAccess] access to parameter c
+#   93|               1: [ParameterAccess] access to parameter c
+#   94|           1: [IfStmt] if (...) ...
+#   94|             0: [LogicalOrExpr] ... || ...
+#   94|               0: [LTExpr] ... < ...
+#   94|                 0: [CastExpr] (...) ...
+#   94|                   0: [ParameterAccess] access to parameter c
+#   94|                 1: [CastExpr] (...) ...
+#   94|                   0: [CharLiteral] A
+#   94|               1: [GTExpr] ... > ...
+#   94|                 0: [CastExpr] (...) ...
+#   94|                   0: [ParameterAccess] access to parameter c
+#   94|                 1: [CastExpr] (...) ...
+#   94|                   0: [CharLiteral] Z
+#   95|             1: [BlockStmt] {...}
+#   96|               0: [ThrowStmt] throw ...;
+#   96|                 0: [ObjectCreation] object creation of type ArgumentException
+#   98|           2: [IfStmt] if (...) ...
+#   98|             0: [LogicalOrExpr] ... || ...
+#   98|               0: [LTExpr] ... < ...
+#   98|                 0: [ParameterAccess] access to parameter col
+#   98|                 1: [IntLiteral] 0
+#   98|               1: [GEExpr] ... >= ...
+#   98|                 0: [ParameterAccess] access to parameter col
+#   98|                 1: [MemberConstantAccess] access to constant NumCols
+#   99|             1: [BlockStmt] {...}
+#  100|               0: [ThrowStmt] throw ...;
+#  100|                 0: [ObjectCreation] object creation of type IndexOutOfRangeException
+#  102|           3: [ReturnStmt] return ...;
+#  102|             0: [ArrayAccess] access to array element
+#  102|               -1: [FieldAccess] access to field cells
+#  102|               0: [SubExpr] ... - ...
+#  102|                 0: [CastExpr] (...) ...
+#  102|                   0: [ParameterAccess] access to parameter c
+#  102|                 1: [CastExpr] (...) ...
+#  102|                   0: [CharLiteral] A
+#  102|               1: [ParameterAccess] access to parameter col
+#  104|       4: [Setter] set_Item
+#-----|         2: (Parameters)
+#   89|           0: [Parameter] c
+#   89|           1: [Parameter] col
+#  104|           2: [Parameter] value
+#  105|         4: [BlockStmt] {...}
+#  106|           0: [ExprStmt] ...;
+#  106|             0: [AssignExpr] ... = ...
+#  106|               0: [MethodCall] call to method ToUpper
+#  106|                 -1: [TypeAccess] access to type Char
+#  106|                 0: [ParameterAccess] access to parameter c
+#  106|               1: [ParameterAccess] access to parameter c
+#  107|           1: [IfStmt] if (...) ...
+#  107|             0: [LogicalOrExpr] ... || ...
+#  107|               0: [LTExpr] ... < ...
+#  107|                 0: [CastExpr] (...) ...
+#  107|                   0: [ParameterAccess] access to parameter c
+#  107|                 1: [CastExpr] (...) ...
+#  107|                   0: [CharLiteral] A
+#  107|               1: [GTExpr] ... > ...
+#  107|                 0: [CastExpr] (...) ...
+#  107|                   0: [ParameterAccess] access to parameter c
+#  107|                 1: [CastExpr] (...) ...
+#  107|                   0: [CharLiteral] Z
+#  108|             1: [BlockStmt] {...}
+#  109|               0: [ThrowStmt] throw ...;
+#  109|                 0: [ObjectCreation] object creation of type ArgumentException
+#  111|           2: [IfStmt] if (...) ...
+#  111|             0: [LogicalOrExpr] ... || ...
+#  111|               0: [LTExpr] ... < ...
+#  111|                 0: [ParameterAccess] access to parameter col
+#  111|                 1: [IntLiteral] 0
+#  111|               1: [GEExpr] ... >= ...
+#  111|                 0: [ParameterAccess] access to parameter col
+#  111|                 1: [MemberConstantAccess] access to constant NumCols
+#  112|             1: [BlockStmt] {...}
+#  113|               0: [ThrowStmt] throw ...;
+#  113|                 0: [ObjectCreation] object creation of type IndexOutOfRangeException
+#  115|           3: [ExprStmt] ...;
+#  115|             0: [AssignExpr] ... = ...
+#  115|               0: [ParameterAccess] access to parameter value
+#  115|               1: [ArrayAccess] access to array element
+#  115|                 -1: [FieldAccess] access to field cells
+#  115|                 0: [SubExpr] ... - ...
+#  115|                   0: [CastExpr] (...) ...
+#  115|                     0: [ParameterAccess] access to parameter c
+#  115|                   1: [CastExpr] (...) ...
+#  115|                     0: [CharLiteral] A
+#  115|                 1: [ParameterAccess] access to parameter col
+#  121|   4: [Class] DuplicateIndexerSignatures
+#  123|     5: [Indexer] Item
+#-----|       1: (Parameters)
+#  123|         0: [Parameter] index
+#  125|       3: [Getter] get_Item
+#-----|         2: (Parameters)
+#  123|           0: [Parameter] index
+#  125|         4: [BlockStmt] {...}
+#  125|           0: [ReturnStmt] return ...;
+#  125|             0: [BoolLiteral] false
+#  128|     6: [Indexer] Item
+#-----|       1: (Parameters)
+#  128|         0: [Parameter] c
+#  128|         1: [Parameter] col
+#  130|       3: [Getter] get_Item
+#-----|         2: (Parameters)
+#  128|           0: [Parameter] c
+#  128|           1: [Parameter] col
+#  130|         4: [BlockStmt] {...}
+#  130|           0: [ReturnStmt] return ...;
+#  130|             0: [IntLiteral] 0
