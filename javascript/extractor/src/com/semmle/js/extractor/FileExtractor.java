@@ -58,7 +58,7 @@ public class FileExtractor {
       }
     },
 
-    JS(".js", ".jsx", ".mjs", ".es6", ".es") {
+    JS(".js", ".jsx", ".mjs", ".cjs", ".es6", ".es") {
       @Override
       public IExtractor mkExtractor(ExtractorConfig config, ExtractorState state) {
         return new ScriptExtractor(config);
