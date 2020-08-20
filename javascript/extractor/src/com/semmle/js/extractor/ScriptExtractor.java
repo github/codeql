@@ -1,5 +1,15 @@
 package com.semmle.js.extractor;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+
+import com.google.gson.Gson;
+
 import com.semmle.js.extractor.ExtractorConfig.Platform;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import com.semmle.js.parser.ParseError;
@@ -14,14 +24,20 @@ public class ScriptExtractor implements IExtractor {
     this.config = config;
   }
 
-  /** True if files with the given extension should always be treated as modules. */
-  private boolean isAlwaysModule(String extension) {
-    return extension.equals(".mjs") || extension.equals(".es6") || extension.equals(".es");
+  /** True if the file specified by `locationManager` should always be treated as a module. */
+  private boolean isAlwaysModule(LocationManager locationManager, String packageType) {
+    String extension = locationManager.getSourceFileExtension();
+    if (extension.equals(".mjs") || extension.equals(".es6") || extension.equals(".es")) {
+      return true;
+    }
+    return "module".equals(packageType) && extension.equals(".js");
   }
 
-  /** True if files with the given extension should always be treated as CommonJS modules. */
-  private boolean isAlwaysCommonJSModule(String extension) {
-    return extension.equals(".cjs");
+  /** True if the file specified by `locationManager` should always be treated as CommonJS modules. */
+  private boolean isAlwaysCommonJSModule(LocationManager locationManager, String packageType) {
+    String extension = locationManager.getSourceFileExtension();
+
+    return extension.equals(".cjs") || (extension.equals(".js") && "commonjs".equals(packageType));
   }
 
   @Override
@@ -49,13 +65,15 @@ public class ScriptExtractor implements IExtractor {
       locationManager.setStart(2, 1);
     }
 
-    // Some file extensions are interpreted as modules by default.
+    String packageType = getPackageType(locationManager.getSourceFile().getParentFile());
+
+    // Some files are interpreted as modules by default.
     if (config.getSourceType() == SourceType.AUTO) {
-      if (isAlwaysModule(locationManager.getSourceFileExtension())) {
+      if (isAlwaysModule(locationManager, packageType)) {
         config = config.withSourceType(SourceType.MODULE);
       }
-      if (isAlwaysCommonJSModule(locationManager.getSourceFileExtension())) {
-        config = config.withSourceType(SourceType.COMMONJS_MODULE);
+      if (isAlwaysCommonJSModule(locationManager, packageType)) {
+        config = config.withSourceType(SourceType.COMMONJS_MODULE).withPlatform(Platform.NODE);
       }
     }
 
@@ -77,5 +95,45 @@ public class ScriptExtractor implements IExtractor {
       textualExtractor.extractLine(shebangLine, shebangLineTerm, 0, toplevelLabel);
 
     return loc;
+  }
+
+  /**
+   * A minimal model of `package.json` files that can be used to read the "type" field.
+   */
+  private static class PackageJSON {
+    String type;
+  }
+
+  // cache for `getPackageType`.
+  private static final Map<File, String> cache = new HashMap<>();
+
+  /**
+   * Returns the "type" field from the nearest `package.json` file (searching up the file hierarchy).
+   */
+  private String getPackageType(File folder) {
+    if (folder == null || !folder.isDirectory()) {
+      return null;
+    }
+    if (cache.containsKey(folder)) {
+      return cache.get(folder);
+    }
+    for (final File file : folder.listFiles()) {
+      if (file.isDirectory()) {
+        continue;
+      }
+      if ("package.json".equals(file.getName())) {
+        try {
+          BufferedReader reader = new BufferedReader(new FileReader(file));
+          String result = new Gson().fromJson(reader, PackageJSON.class).type;
+          cache.put(folder, result);
+          return result;
+        } catch (IOException e) {
+          return null;
+        }
+      }
+    }
+    String result = getPackageType(folder.getParentFile());
+    cache.put(folder, result);
+    return result;
   }
 }
