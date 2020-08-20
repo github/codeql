@@ -1,6 +1,32 @@
 /**
- * DEPRECATED: Use `TypeTracking.qll` or a `DataFlow::Configuration` from `Configuration.qll` instead.
- * 
+ * DEPRECATED: Use `TypeTracking.qll` instead.
+ *
+ * The following `TrackedNode` usage is less expressive than the equivalent type tracking usage below.
+ *
+ * ```
+ * class MyTrackedNode extends TrackedNode {
+ *    MyTrackedNode() { isInteresting(this) }
+ * }
+ *
+ * DataFlow::Node getMyTrackedNodeLocation(MyTrackedNode n) {
+ *   n.flowsTo(result)
+ * }
+ * ```
+ *
+ * ```
+ * DataFlow::Node getMyTrackedNodeLocation(DataFlow::Node start, DataFlow::TypeTracker t) {
+ *   t.start() and
+ *   isInteresting(result) and
+ *   result = start
+ *   or
+ *   exists(DataFlow::TypeTracker t2 | t = t2.smallstep(getMyTrackedNodeLocation(start, t2), result))
+ * }
+ *
+ * DataFlow::Node getMyTrackedNodeLocation(DataFlow::Node n) {
+ *   result = getMyTrackedNodeLocation(n, DataFlow::TypeTracker::end())
+ * }
+ * ```
+ *
  * Provides support for inter-procedural tracking of a customizable
  * set of data flow nodes.
  */
@@ -14,7 +40,7 @@ private import internal.FlowSteps as FlowSteps
  * To track additional values, extends this class with additional
  * subclasses.
  */
-deprecated abstract class TrackedNode extends DataFlow::Node {
+abstract deprecated class TrackedNode extends DataFlow::Node {
   /**
    * Holds if this node flows into `sink` in zero or more (possibly
    * inter-procedural) steps.
@@ -28,7 +54,7 @@ deprecated abstract class TrackedNode extends DataFlow::Node {
  * To track additional expressions, extends this class with additional
  * subclasses.
  */
-deprecated abstract class TrackedExpr extends Expr {
+abstract deprecated class TrackedExpr extends Expr {
   predicate flowsTo(Expr sink) {
     exists(TrackedExprNode ten | ten.asExpr() = this | ten.flowsTo(DataFlow::valueNode(sink)))
   }
@@ -66,7 +92,9 @@ private module NodeTracking {
    *
    * Summary steps through function calls are not taken into account.
    */
-  deprecated private predicate basicFlowStep(DataFlow::Node pred, DataFlow::Node succ, PathSummary summary) {
+  deprecated private predicate basicFlowStep(
+    DataFlow::Node pred, DataFlow::Node succ, PathSummary summary
+  ) {
     isRelevant(pred) and
     (
       // Local flow
@@ -343,7 +371,9 @@ private module NodeTracking {
   /**
    * Holds if there is a flow step from `pred` to `succ` described by `summary`.
    */
-  deprecated private predicate flowStep(DataFlow::Node pred, DataFlow::Node succ, PathSummary summary) {
+  deprecated private predicate flowStep(
+    DataFlow::Node pred, DataFlow::Node succ, PathSummary summary
+  ) {
     basicFlowStep(pred, succ, summary)
     or
     // Flow through a function that returns a value that depends on one of its arguments
