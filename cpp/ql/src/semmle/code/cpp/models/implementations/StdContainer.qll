@@ -1,27 +1,37 @@
 /**
- * Provides models for C++ containers such as `std::vector` and `std::list`.
+ * Provides models for C++ containers `std::array`, `std::vector`, `std::deque`, `std::list` and `std::forward_list`.
  */
 
 import semmle.code.cpp.models.interfaces.Taint
 
 /**
- * Model standard container constructors.
+ * Additional model for standard container constructors that reference the
+ * value type of the container (that is, the `T` in `std::vector<T>`).  For
+ * example the fill constructor:
+ * ```
+ * std::vector<std::string> v(100, potentially_tainted_string);
+ * ```
  */
 class StdContainerConstructor extends Constructor, TaintFunction {
-  StdContainerConstructor() { this.getDeclaringType().hasQualifiedName("std", "vector") }
+  StdContainerConstructor() {
+    this.getDeclaringType().hasQualifiedName("std", "vector") or
+    this.getDeclaringType().hasQualifiedName("std", "deque") or
+    this.getDeclaringType().hasQualifiedName("std", "list") or
+    this.getDeclaringType().hasQualifiedName("std", "forward_list")
+  }
 
   /**
    * Gets the index of a parameter to this function that is a reference to the
-   * type of thing contained.
+   * value type of the container.
    */
-  int getAnElementParameter() {
+  int getAValueTypeParameter() {
     getParameter(result).getType().getUnspecifiedType().(ReferenceType).getBaseType() =
       getDeclaringType().getTemplateArgument(0) // i.e. the `T` of this `std::vector<T>`
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // taint flow from any parameter of type `T` to the returned object
-    input.isParameterDeref(getAnElementParameter()) and
+    // taint flow from any parameter of the value type to the returned object
+    input.isParameterDeref(getAValueTypeParameter()) and
     output.isReturnValue() // TODO: this should be `isQualifierObject` by our current definitions, but that flow is not yet supported.
   }
 }
