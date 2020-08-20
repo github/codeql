@@ -12,8 +12,8 @@ import semmle.code.cpp.models.interfaces.Taint
  * std::vector<std::string> v(100, potentially_tainted_string);
  * ```
  */
-class StdContainerConstructor extends Constructor, TaintFunction {
-  StdContainerConstructor() {
+class StdSequenceContainerConstructor extends Constructor, TaintFunction {
+  StdSequenceContainerConstructor() {
     this.getDeclaringType().hasQualifiedName("std", "vector") or
     this.getDeclaringType().hasQualifiedName("std", "deque") or
     this.getDeclaringType().hasQualifiedName("std", "list") or
@@ -24,14 +24,14 @@ class StdContainerConstructor extends Constructor, TaintFunction {
    * Gets the index of a parameter to this function that is a reference to the
    * value type of the container.
    */
-  int getAValueTypeParameter() {
+  int getAValueTypeParameterIndex() {
     getParameter(result).getType().getUnspecifiedType().(ReferenceType).getBaseType() =
       getDeclaringType().getTemplateArgument(0) // i.e. the `T` of this `std::vector<T>`
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from any parameter of the value type to the returned object
-    input.isParameterDeref(getAValueTypeParameter()) and
+    input.isParameterDeref(getAValueTypeParameterIndex()) and
     output.isReturnValue() // TODO: this should be `isQualifierObject` by our current definitions, but that flow is not yet supported.
   }
 }
@@ -39,8 +39,8 @@ class StdContainerConstructor extends Constructor, TaintFunction {
 /**
  * The standard container functions `push_back` and `push_front`.
  */
-class StdContainerPush extends TaintFunction {
-  StdContainerPush() {
+class StdSequenceContainerPush extends TaintFunction {
+  StdSequenceContainerPush() {
     this.hasQualifiedName("std", "vector", "push_back") or
     this.hasQualifiedName("std", "deque", "push_back") or
     this.hasQualifiedName("std", "deque", "push_front") or
@@ -59,8 +59,8 @@ class StdContainerPush extends TaintFunction {
 /**
  * The standard container functions `front` and `back`.
  */
-class StdContainerFrontBack extends TaintFunction {
-  StdContainerFrontBack() {
+class StdSequenceContainerFrontBack extends TaintFunction {
+  StdSequenceContainerFrontBack() {
     this.hasQualifiedName("std", "array", "front") or
     this.hasQualifiedName("std", "array", "back") or
     this.hasQualifiedName("std", "vector", "front") or
@@ -82,8 +82,8 @@ class StdContainerFrontBack extends TaintFunction {
 /**
  * The standard container `swap` functions.
  */
-class StdContainerSwap extends TaintFunction {
-  StdContainerSwap() {
+class StdSequenceContainerSwap extends TaintFunction {
+  StdSequenceContainerSwap() {
     this.hasQualifiedName("std", "array", "swap") or
     this.hasQualifiedName("std", "vector", "swap") or
     this.hasQualifiedName("std", "deque", "swap") or
