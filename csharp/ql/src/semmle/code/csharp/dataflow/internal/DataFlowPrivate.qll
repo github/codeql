@@ -2354,7 +2354,7 @@ private predicate viableConstantBooleanParamArg(
   )
 }
 
-int accessPathLimit() { result = 3 }
+int accessPathLimit() { result = 5 }
 
 /**
  * Holds if `n` does not require a `PostUpdateNode` as it either cannot be

@@ -95,14 +95,15 @@ namespace Semmle.Extraction.CSharp.Entities
                 Context.BindComments(this, FullLocation);
         }
 
+        protected virtual T BodyDeclaringSymbol => symbol;
+
         public BlockSyntax Block
         {
             get
             {
-                return symbol.
+                return BodyDeclaringSymbol.
                     DeclaringSyntaxReferences.
-                    Select(r => r.GetSyntax()).
-                    SelectMany(n => n.ChildNodes()).
+                    SelectMany(r => r.GetSyntax().ChildNodes()).
                     OfType<BlockSyntax>().
                     FirstOrDefault();
             }
@@ -112,7 +113,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             get
             {
-                return symbol.
+                return BodyDeclaringSymbol.
                     DeclaringSyntaxReferences.
                     SelectMany(r => r.GetSyntax().ChildNodes()).
                     OfType<ArrowExpressionClauseSyntax>().
