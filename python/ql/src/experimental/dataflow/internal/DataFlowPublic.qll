@@ -90,10 +90,12 @@ class CfgNode extends Node, TCfgNode {
  * to multiple `ExprNode`s, just like it may correspond to multiple
  * `ControlFlow::Node`s.
  */
-class ExprNode extends CfgNode { }
+class ExprNode extends CfgNode {
+  ExprNode() { isExpressionNode(node) }
+}
 
 /** Gets a node corresponding to expression `e`. */
-ExprNode exprNode(DataFlowExpr e) { none() }
+ExprNode exprNode(DataFlowExpr e) { result.getNode().getNode() = e }
 
 /**
  * The value of a parameter at function entry, viewed as a node in a data

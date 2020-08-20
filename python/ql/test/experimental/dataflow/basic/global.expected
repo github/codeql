@@ -4,6 +4,10 @@
 | test.py:0:0:0:0 | GSSA Variable __package__ | test.py:7:5:7:20 | ControlFlowNode for obfuscated_id() |
 | test.py:0:0:0:0 | GSSA Variable b | test.py:7:1:7:1 | GSSA Variable b |
 | test.py:0:0:0:0 | GSSA Variable b | test.py:7:5:7:20 | ControlFlowNode for obfuscated_id() |
+| test.py:1:1:1:21 | ControlFlowNode for FunctionExpr | test.py:1:5:1:17 | GSSA Variable obfuscated_id |
+| test.py:1:1:1:21 | ControlFlowNode for FunctionExpr | test.py:7:1:7:1 | GSSA Variable b |
+| test.py:1:1:1:21 | ControlFlowNode for FunctionExpr | test.py:7:5:7:17 | ControlFlowNode for obfuscated_id |
+| test.py:1:1:1:21 | ControlFlowNode for FunctionExpr | test.py:7:5:7:20 | ControlFlowNode for obfuscated_id() |
 | test.py:1:5:1:17 | GSSA Variable obfuscated_id | test.py:7:1:7:1 | GSSA Variable b |
 | test.py:1:5:1:17 | GSSA Variable obfuscated_id | test.py:7:5:7:17 | ControlFlowNode for obfuscated_id |
 | test.py:1:5:1:17 | GSSA Variable obfuscated_id | test.py:7:5:7:20 | ControlFlowNode for obfuscated_id() |

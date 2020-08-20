@@ -7,22 +7,11 @@ private import DataFlowPublic
 //--------
 // Nodes
 //--------
+predicate isExpressionNode(ControlFlowNode node) { node.getNode() instanceof Expr }
+
 /** A control flow node which is also a dataflow node */
-abstract class DataFlowCfgNode extends ControlFlowNode { }
-
-/** Literals contribute to dataflow */
-class CfgLiteralNode extends DataFlowCfgNode {
-  CfgLiteralNode() { this.isLiteral() }
-}
-
-/** Variables contribute to dataflow */
-class CfgNameNode extends DataFlowCfgNode {
-  CfgNameNode() { this instanceof NameNode }
-}
-
-/** Calls contribute to dataflow */
-class CfgCallNode extends DataFlowCfgNode {
-  CfgCallNode() { this instanceof CallNode }
+class DataFlowCfgNode extends ControlFlowNode {
+  DataFlowCfgNode() { isExpressionNode(this) }
 }
 
 /**
