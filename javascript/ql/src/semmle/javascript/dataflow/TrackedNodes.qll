@@ -1,7 +1,7 @@
 /**
  * DEPRECATED: Use `TypeTracking.qll` instead.
  *
- * The following `TrackedNode` usage is less expressive than the equivalent type tracking usage below.
+ * The following `TrackedNode` usage is usually equivalent to the type tracking usage below.
  *
  * ```
  * class MyTrackedNode extends TrackedNode {
@@ -14,12 +14,32 @@
  * ```
  *
  * ```
+ * DataFlow::SourceNode getMyTrackedNodeLocation(DataFlow::SourceNode start, DataFlow::TypeTracker t) {
+ *   t.start() and
+ *   isInteresting(result) and
+ *   result = start
+ *   or
+ *   exists (DataFlow::TypeTracker t2 |
+ *     result = getMyTrackedNodeLocation(start, t2).track(t2, t)
+ *   )
+ * }
+ *
+ * DataFlow::SourceNode getMyTrackedNodeLocation(DataFlow::SourceNode n) {
+ *   result = getMyTrackedNodeLocation(n, DataFlow::TypeTracker::end())
+ * }
+ * ```
+ *
+ * In rare cases, additional tracking is required, for instance when tracking string constants, and the following type tracking formulation is required instead.
+ *
+ * ```
  * DataFlow::Node getMyTrackedNodeLocation(DataFlow::Node start, DataFlow::TypeTracker t) {
  *   t.start() and
  *   isInteresting(result) and
  *   result = start
  *   or
- *   exists(DataFlow::TypeTracker t2 | t = t2.smallstep(getMyTrackedNodeLocation(start, t2), result))
+ *   exists(DataFlow::TypeTracker t2 |
+ *     t = t2.smallstep(getMyTrackedNodeLocation(start, t2), result)
+ *   )
  * }
  *
  * DataFlow::Node getMyTrackedNodeLocation(DataFlow::Node n) {
