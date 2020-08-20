@@ -7,5 +7,3 @@ lgtm,codescanning
   may lead to more results from the security queries.
 * Basic support for the [Json-iterator](https://github.com/json-iterator/go) JSON library has been added, which
   may lead to more results from the security queries.
-
-
