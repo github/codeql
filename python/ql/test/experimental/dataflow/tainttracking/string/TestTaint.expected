@@ -1,10 +1,10 @@
 | test.py:24 | ok   | str_operations | ts |
-| test.py:25 | fail | str_operations | BinaryExpr |
-| test.py:26 | fail | str_operations | BinaryExpr |
-| test.py:27 | fail | str_operations | ts[Slice] |
-| test.py:28 | fail | str_operations | ts[Slice] |
-| test.py:29 | fail | str_operations | ts[Slice] |
-| test.py:30 | fail | str_operations | ts[0] |
+| test.py:25 | ok   | str_operations | BinaryExpr |
+| test.py:26 | ok   | str_operations | BinaryExpr |
+| test.py:27 | ok   | str_operations | ts[Slice] |
+| test.py:28 | ok   | str_operations | ts[Slice] |
+| test.py:29 | ok   | str_operations | ts[Slice] |
+| test.py:30 | ok   | str_operations | ts[0] |
 | test.py:31 | fail | str_operations | str(..) |
 | test.py:40 | fail | str_methods | ts.capitalize() |
 | test.py:41 | fail | str_methods | ts.casefold() |
