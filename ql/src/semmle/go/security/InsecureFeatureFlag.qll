@@ -15,6 +15,7 @@ module InsecureFeatureFlag {
     /**
      * Returns a flag name of this type.
      */
+    bindingset[result]
     abstract string getAFlagName();
 
     /** Gets a global value number representing a (likely) security flag. */
