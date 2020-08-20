@@ -151,13 +151,13 @@ class PrintAstNode extends TPrintAstNode {
   /**
    * Gets a textual representation of this node in the PrintAst output tree.
    */
-  abstract string toString();
+  string toString() { none() }
 
   /**
    * Gets the child node at index `childIndex`. Child indices must be unique,
    * but need not be contiguous.
    */
-  abstract PrintAstNode getChild(int childIndex);
+  PrintAstNode getChild(int childIndex) { none() }
 
   /**
    * Gets a child of this node.
@@ -172,7 +172,7 @@ class PrintAstNode extends TPrintAstNode {
   /**
    * Gets the location of this node in the source code.
    */
-  abstract Location getLocation();
+  Location getLocation() { none() }
 
   /**
    * Gets the value of the property of this node, where the name of the property
@@ -191,6 +191,30 @@ class PrintAstNode extends TPrintAstNode {
   string getChildEdgeLabel(int childIndex) {
     exists(getChild(childIndex)) and
     result = childIndex.toString()
+  }
+}
+
+/** A top-level AST node. */
+class TopLevelPrintAstNode extends PrintAstNode {
+  TopLevelPrintAstNode() { not exists(this.getParent()) }
+
+  private int getOrder() {
+    this =
+      rank[result](TopLevelPrintAstNode n, Location l |
+        l = n.getLocation()
+      |
+        n
+        order by
+          l.getFile().getRelativePath(), l.getStartLine(), l.getStartColumn(), l.getEndLine(),
+          l.getEndColumn()
+      )
+  }
+
+  override string getProperty(string key) {
+    result = super.getProperty(key)
+    or
+    key = "semmle.order" and
+    result = this.getOrder().toString()
   }
 }
 

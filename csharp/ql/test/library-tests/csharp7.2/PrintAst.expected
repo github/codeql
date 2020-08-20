@@ -22,6 +22,9 @@ csharp72.cs:
 #   28|         0: [RefExpr] ref ...
 #   28|           0: [FieldAccess] access to field s
 #   31|   7: [DelegateType] Del
+#   34| [Struct] ReadonlyStruct
+#   38| [Struct] RefStruct
+#   42| [Struct] ReadonlyRefStruct
 #   46| [Class] NumericLiterals
 #   48|   5: [Field] binaryValue
 #   48|     1: [AssignExpr] ... = ...
@@ -34,6 +37,3 @@ csharp72.cs:
 #   53|       1: [FieldAccess] access to field X
 #   55|   6: [Method] F
 #   55|     4: [BlockStmt] {...}
-#   34| [Struct] ReadonlyStruct
-#   38| [Struct] RefStruct
-#   42| [Struct] ReadonlyRefStruct

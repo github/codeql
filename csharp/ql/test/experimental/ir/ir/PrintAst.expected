@@ -148,6 +148,10 @@ assignop.cs:
 #   17|           0: [IntLiteral] 2
 #   17|           1: [LocalVariableAccess] access to local variable c
 casts.cs:
+#    1| [Class] Casts_A
+#    5| [Class] Casts_B
+#-----|   3: (Base types)
+#    5|     0: [Class] Casts_A
 #    9| [Class] Casts
 #   11|   5: [Method] Main
 #   12|     4: [BlockStmt] {...}
@@ -167,10 +171,6 @@ casts.cs:
 #   15|             0: [LocalVariableAccess] access to local variable Aobj
 #   15|             1: [TypeAccess] access to type Casts_B
 #   15|           1: [LocalVariableAccess] access to local variable bobjAS
-#    1| [Class] Casts_A
-#    5| [Class] Casts_B
-#-----|   3: (Base types)
-#    5|     0: [Class] Casts_A
 collections.cs:
 #    3| [Class] Collections
 #    5|   5: [Class] MyClass
@@ -469,6 +469,9 @@ inheritance_polymorphism.cs:
 #    4|     4: [BlockStmt] {...}
 #    5|       0: [ReturnStmt] return ...;
 #    5|         0: [IntLiteral] 0
+#    9| [Class] B
+#-----|   3: (Base types)
+#    9|     0: [Class] A
 #   13| [Class] C
 #-----|   3: (Base types)
 #   13|     0: [Class] B
@@ -502,9 +505,6 @@ inheritance_polymorphism.cs:
 #   34|       6: [ExprStmt] ...;
 #   34|         0: [MethodCall] call to method function
 #   34|           -1: [LocalVariableAccess] access to local variable objC
-#    9| [Class] B
-#-----|   3: (Base types)
-#    9|     0: [Class] A
 inoutref.cs:
 #    1| [Class] MyClass
 #    2|   5: [Field] fld
