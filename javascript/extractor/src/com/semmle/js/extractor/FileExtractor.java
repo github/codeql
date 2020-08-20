@@ -161,6 +161,9 @@ public class FileExtractor {
 
       /** Computes if `f` is a binary file based on whether the initial `fileHeaderSize` bytes are printable UTF-8 chars. */
       private boolean isBinaryFile(File f, String lcExt, ExtractorConfig config) {
+        if (!config.getDefaultEncoding().equals(UTF8_CHARSET.name())) {
+          return false;
+        }
         try (FileInputStream fis = new FileInputStream(f)) {
           byte[] bytes = new byte[fileHeaderSize];
           int length = fis.read(bytes);
@@ -168,7 +171,7 @@ public class FileExtractor {
           if (length == -1) return false;
 
           // Avoid invalid or unprintable UTF-8 files.
-          if (config.getDefaultEncoding().equals(UTF8_CHARSET.name()) && hasUnprintableUtf8(bytes, length)) {
+          if (hasUnprintableUtf8(bytes, length)) {
             return true;
           }
 
