@@ -51,6 +51,15 @@ class Node extends TNode {
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
+
+  /** Convenience method for casting to EssaNode and calling getVar. */
+  EssaVariable asVar() { none() }
+
+  /** Convenience method for casting to CfgNode and calling getNode. */
+  DataFlowCfgNode asCfgNode() { none() }
+
+  /** Convenience method for casting to ExprNode and calling getNode and getNode again. */
+  Expr asExpr() { none() }
 }
 
 class EssaNode extends Node, TEssaNode {
@@ -59,6 +68,8 @@ class EssaNode extends Node, TEssaNode {
   EssaNode() { this = TEssaNode(var) }
 
   EssaVariable getVar() { result = var }
+
+  override EssaVariable asVar() { result = var }
 
   /** Gets a textual representation of this element. */
   override string toString() { result = var.toString() }
@@ -74,6 +85,8 @@ class CfgNode extends Node, TCfgNode {
   CfgNode() { this = TCfgNode(node) }
 
   DataFlowCfgNode getNode() { result = node }
+
+  override DataFlowCfgNode asCfgNode() { result = node }
 
   /** Gets a textual representation of this element. */
   override string toString() { result = node.toString() }
@@ -92,6 +105,8 @@ class CfgNode extends Node, TCfgNode {
  */
 class ExprNode extends CfgNode {
   ExprNode() { isExpressionNode(node) }
+
+  override Expr asExpr() { result = node.getNode() }
 }
 
 /** Gets a node corresponding to expression `e`. */
