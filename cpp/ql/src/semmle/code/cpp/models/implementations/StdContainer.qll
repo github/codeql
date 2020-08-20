@@ -69,7 +69,6 @@ class StdContainerFrontBack extends TaintFunction {
   }
 }
 
-
 /**
  * The standard container `swap` functions.
  */
