@@ -21,7 +21,7 @@ foreach ($suite in $suites) {
 
     $temp = codeql resolve queries $lang-$suite.qls --search-path $searchPath
     
-    Write-Output "filename, suite, query name, id, kind, severity, precision
+    Write-Output "filename, suite, query name, id, kind, severity, precision"
     
     foreach ($file in $temp) {
       $metadata = ConvertFrom-Json (codeql resolve metadata $file | out-string)
