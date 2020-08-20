@@ -7,20 +7,20 @@ import go
 /** Provides models of commonly used functions in the `bufio` package. */
 module Bufio {
   /**
-   * The function bufio.NewScanner.
+   * The function `bufio.NewScanner`.
    */
   class NewScanner extends Function {
     NewScanner() { this.hasQualifiedName("bufio", "NewScanner") }
   }
 
   /**
-   * A call to bufio.NewScanner.
+   * A call to `bufio.NewScanner`.
    */
   class NewScannerCall extends DataFlow::CallNode {
     NewScannerCall() { this.getTarget() instanceof NewScanner }
 
     /**
-     * Returns the node corresponding to the io.Reader
+     * Returns the node corresponding to the `io.Reader`
      * argument provided in the call.
      */
     DataFlow::Node getReader() { result = this.getArgument(0) }
