@@ -1,4 +1,6 @@
 /**
+ * DEPRECATED: Use `TypeTracking.qll` or a `DataFlow::Configuration` from `Configuration.qll` instead.
+ * 
  * Provides support for inter-procedural tracking of a customizable
  * set of data flow nodes.
  */
@@ -12,7 +14,7 @@ private import internal.FlowSteps as FlowSteps
  * To track additional values, extends this class with additional
  * subclasses.
  */
-abstract class TrackedNode extends DataFlow::Node {
+deprecated abstract class TrackedNode extends DataFlow::Node {
   /**
    * Holds if this node flows into `sink` in zero or more (possibly
    * inter-procedural) steps.
@@ -26,7 +28,7 @@ abstract class TrackedNode extends DataFlow::Node {
  * To track additional expressions, extends this class with additional
  * subclasses.
  */
-abstract class TrackedExpr extends Expr {
+deprecated abstract class TrackedExpr extends Expr {
   predicate flowsTo(Expr sink) {
     exists(TrackedExprNode ten | ten.asExpr() = this | ten.flowsTo(DataFlow::valueNode(sink)))
   }
@@ -35,7 +37,7 @@ abstract class TrackedExpr extends Expr {
 /**
  * Turn all `TrackedExpr`s into `TrackedNode`s.
  */
-private class TrackedExprNode extends TrackedNode {
+deprecated private class TrackedExprNode extends TrackedNode {
   TrackedExprNode() { asExpr() instanceof TrackedExpr }
 }
 
@@ -64,7 +66,7 @@ private module NodeTracking {
    *
    * Summary steps through function calls are not taken into account.
    */
-  private predicate basicFlowStep(DataFlow::Node pred, DataFlow::Node succ, PathSummary summary) {
+  deprecated private predicate basicFlowStep(DataFlow::Node pred, DataFlow::Node succ, PathSummary summary) {
     isRelevant(pred) and
     (
       // Local flow
@@ -94,7 +96,7 @@ private module NodeTracking {
    *
    * No call/return matching is done, so this is a relatively coarse over-approximation.
    */
-  private predicate isRelevant(DataFlow::Node nd) {
+  deprecated private predicate isRelevant(DataFlow::Node nd) {
     nd instanceof TrackedNode
     or
     exists(DataFlow::Node mid | isRelevant(mid) |
@@ -115,7 +117,7 @@ private module NodeTracking {
    * either `pred` is an argument of `f` and `succ` the corresponding parameter, or
    * `pred` is a variable definition whose value is captured by `f` at `succ`.
    */
-  private predicate callInputStep(
+  deprecated private predicate callInputStep(
     Function f, DataFlow::Node invk, DataFlow::Node pred, DataFlow::Node succ
   ) {
     isRelevant(pred) and
@@ -136,7 +138,7 @@ private module NodeTracking {
    * that is captured by `f`, may flow to `nd` (possibly through callees, but not containing
    * any unmatched calls or returns) along a path summarized by `summary`.
    */
-  private predicate reachableFromInput(
+  deprecated private predicate reachableFromInput(
     Function f, DataFlow::Node invk, DataFlow::Node input, DataFlow::Node nd, PathSummary summary
   ) {
     callInputStep(f, invk, input, nd) and
@@ -154,7 +156,7 @@ private module NodeTracking {
    * Holds if `nd` may flow into a return statement of `f`
    * (possibly through callees) along a path summarized by `summary`.
    */
-  private predicate reachesReturn(Function f, DataFlow::Node nd, PathSummary summary) {
+  deprecated private predicate reachesReturn(Function f, DataFlow::Node nd, PathSummary summary) {
     returnExpr(f, nd, _) and
     summary = PathSummary::level()
     or
@@ -170,7 +172,7 @@ private module NodeTracking {
    * which is either an argument or a definition captured by the function, flows,
    * possibly through callees.
    */
-  private predicate flowThroughCall(DataFlow::Node input, DataFlow::Node output) {
+  deprecated private predicate flowThroughCall(DataFlow::Node input, DataFlow::Node output) {
     exists(Function f, DataFlow::ValueNode ret |
       ret.asExpr() = f.getAReturnedExpr() and
       reachableFromInput(f, output, input, ret, _)
@@ -187,7 +189,7 @@ private module NodeTracking {
   /**
    * Holds if `pred` may flow into property `prop` of `succ` along a path summarized by `summary`.
    */
-  private predicate storeStep(
+  deprecated private predicate storeStep(
     DataFlow::Node pred, DataFlow::SourceNode succ, string prop, PathSummary summary
   ) {
     basicStoreStep(pred, succ, prop) and
@@ -210,7 +212,7 @@ private module NodeTracking {
    * Holds if property `prop` of `pred` may flow into `succ` along a path summarized by
    * `summary`.
    */
-  private predicate loadStep(
+  deprecated private predicate loadStep(
     DataFlow::Node pred, DataFlow::Node succ, string prop, PathSummary summary
   ) {
     basicLoadStep(pred, succ, prop) and
@@ -226,7 +228,7 @@ private module NodeTracking {
    * Holds if `rhs` is the right-hand side of a write to property `prop`, and `nd` is reachable
    * from the base of that write (possibly through callees) along a path summarized by `summary`.
    */
-  private predicate reachableFromStoreBase(
+  deprecated private predicate reachableFromStoreBase(
     string prop, DataFlow::Node rhs, DataFlow::Node nd, PathSummary summary
   ) {
     storeStep(rhs, nd, prop, summary)
@@ -244,7 +246,7 @@ private module NodeTracking {
    *
    * In other words, `pred` may flow to `succ` through a property.
    */
-  private predicate flowThroughProperty(
+  deprecated private predicate flowThroughProperty(
     DataFlow::Node pred, DataFlow::Node succ, PathSummary summary
   ) {
     exists(string prop, DataFlow::Node base, PathSummary oldSummary, PathSummary newSummary |
@@ -259,7 +261,7 @@ private module NodeTracking {
    * invokes `cb`, passing `arg` as its `i`th argument. `arg` flows along a path summarized
    * by `summary`, while `cb` is only tracked locally.
    */
-  private predicate summarizedHigherOrderCall(
+  deprecated private predicate summarizedHigherOrderCall(
     DataFlow::Node arg, DataFlow::Node cb, int i, PathSummary summary
   ) {
     exists(
@@ -293,7 +295,7 @@ private module NodeTracking {
    * Alternatively, the callback can flow into a call `f(callback)` which itself provides the `arg`.
    * That is, `arg` refers to a value defined in `f` or one of its callees.
    */
-  predicate higherOrderCall(
+  deprecated predicate higherOrderCall(
     DataFlow::Node arg, DataFlow::SourceNode callback, int i, PathSummary summary
   ) {
     // Summarized call
@@ -328,7 +330,7 @@ private module NodeTracking {
    * of `cb`. `arg` flows along a path summarized by `summary`, while `cb` is only tracked
    * locally.
    */
-  private predicate flowIntoHigherOrderCall(
+  deprecated private predicate flowIntoHigherOrderCall(
     DataFlow::Node pred, DataFlow::Node succ, PathSummary summary
   ) {
     exists(DataFlow::FunctionNode cb, int i, PathSummary oldSummary |
@@ -341,7 +343,7 @@ private module NodeTracking {
   /**
    * Holds if there is a flow step from `pred` to `succ` described by `summary`.
    */
-  private predicate flowStep(DataFlow::Node pred, DataFlow::Node succ, PathSummary summary) {
+  deprecated private predicate flowStep(DataFlow::Node pred, DataFlow::Node succ, PathSummary summary) {
     basicFlowStep(pred, succ, summary)
     or
     // Flow through a function that returns a value that depends on one of its arguments
@@ -360,7 +362,7 @@ private module NodeTracking {
    * Holds if there is a path from `source` to `nd` along a path summarized by
    * `summary`.
    */
-  predicate flowsTo(TrackedNode source, DataFlow::Node nd, PathSummary summary) {
+  deprecated predicate flowsTo(TrackedNode source, DataFlow::Node nd, PathSummary summary) {
     source = nd and
     summary = PathSummary::level()
     or
