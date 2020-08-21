@@ -115,23 +115,22 @@ public class ScriptExtractor implements IExtractor {
     if (cache.containsKey(folder)) {
       return cache.get(folder);
     }
-    for (final File file : folder.listFiles()) {
-      if (file.isDirectory()) {
-        continue;
-      }
-      if ("package.json".equals(file.getName())) {
-        try {
-          BufferedReader reader = new BufferedReader(new FileReader(file));
-          String result = new Gson().fromJson(reader, PackageJSON.class).type;
-          cache.put(folder, result);
-          return result;
-        } catch (IOException e) {
-          return null;
-        }
-      }
+    File file = new File(folder, "package.json");
+    if (file.isDirectory()) {
+      return null;
     }
-    String result = getPackageType(folder.getParentFile());
-    cache.put(folder, result);
-    return result;
+    if (!file.exists()) {
+      String result = getPackageType(folder.getParentFile());
+      cache.put(folder, result);
+      return result;
+    }
+    try {
+      BufferedReader reader = new BufferedReader(new FileReader(file));
+      String result = new Gson().fromJson(reader, PackageJSON.class).type;
+      cache.put(folder, result);
+      return result;
+    } catch (IOException e) {
+      return null;
+    }
   }
 }
