@@ -13,6 +13,8 @@
 
 $langs = @('cpp', 'java', 'javascript', 'csharp', 'python', 'go')
 $suites = @('code-scanning', 'security-and-quality', 'security-extended')
+    
+Write-Output "filename, suite, query name, id, kind, severity, precision"
 
 foreach ($suite in $suites) {
   foreach ($lang in $langs) { 
@@ -20,8 +22,6 @@ foreach ($suite in $suites) {
     $searchPath = ".:../codeql-go"
 
     $temp = codeql resolve queries $lang-$suite.qls --search-path $searchPath
-    
-    Write-Output "filename, suite, query name, id, kind, severity, precision"
     
     foreach ($file in $temp) {
       $metadata = ConvertFrom-Json (codeql resolve metadata $file | out-string)
