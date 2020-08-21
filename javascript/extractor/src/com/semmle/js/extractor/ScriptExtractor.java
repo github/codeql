@@ -24,19 +24,16 @@ public class ScriptExtractor implements IExtractor {
     this.config = config;
   }
 
-  /** True if the file specified by `locationManager` should always be treated as a module. */
-  private boolean isAlwaysModule(LocationManager locationManager, String packageType) {
-    String extension = locationManager.getSourceFileExtension();
+  /** True if files with the given extension and type (from package.json) should always be treated as ES2015 modules. */
+  private boolean isAlwaysModule(String extension, String packageType) {
     if (extension.equals(".mjs") || extension.equals(".es6") || extension.equals(".es")) {
       return true;
     }
     return "module".equals(packageType) && extension.equals(".js");
   }
 
-  /** True if the file specified by `locationManager` should always be treated as CommonJS modules. */
-  private boolean isAlwaysCommonJSModule(LocationManager locationManager, String packageType) {
-    String extension = locationManager.getSourceFileExtension();
-
+  /** True if files with the given extension and type (from package.json) should always be treated as CommonJS modules. */
+  private boolean isAlwaysCommonJSModule(String extension, String packageType) {
     return extension.equals(".cjs") || (extension.equals(".js") && "commonjs".equals(packageType));
   }
 
@@ -66,13 +63,14 @@ public class ScriptExtractor implements IExtractor {
     }
 
     String packageType = getPackageType(locationManager.getSourceFile().getParentFile());
+    String extension = locationManager.getSourceFileExtension();
 
     // Some files are interpreted as modules by default.
     if (config.getSourceType() == SourceType.AUTO) {
-      if (isAlwaysModule(locationManager, packageType)) {
+      if (isAlwaysModule(extension, packageType)) {
         config = config.withSourceType(SourceType.MODULE);
       }
-      if (isAlwaysCommonJSModule(locationManager, packageType)) {
+      if (isAlwaysCommonJSModule(extension, packageType)) {
         config = config.withSourceType(SourceType.COMMONJS_MODULE).withPlatform(Platform.NODE);
       }
     }
