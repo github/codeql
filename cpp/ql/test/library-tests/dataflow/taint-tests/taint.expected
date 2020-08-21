@@ -95,8 +95,14 @@
 | string.cpp:334:11:334:16 | call to append | string.cpp:329:18:329:23 | call to source |
 | string.cpp:353:8:353:8 | call to operator* | string.cpp:345:18:345:23 | call to source |
 | string.cpp:354:13:354:13 | call to operator[] | string.cpp:345:18:345:23 | call to source |
+| string.cpp:367:8:367:8 | call to operator* | string.cpp:360:18:360:23 | call to source |
+| string.cpp:368:8:368:8 | call to operator* | string.cpp:360:18:360:23 | call to source |
+| string.cpp:370:8:370:8 | call to operator* | string.cpp:360:18:360:23 | call to source |
+| string.cpp:372:8:372:8 | call to operator* | string.cpp:360:18:360:23 | call to source |
 | string.cpp:375:8:375:8 | call to operator* | string.cpp:360:18:360:23 | call to source |
 | string.cpp:378:8:378:8 | call to operator* | string.cpp:360:18:360:23 | call to source |
+| string.cpp:380:8:380:8 | call to operator* | string.cpp:360:18:360:23 | call to source |
+| string.cpp:382:8:382:8 | call to operator* | string.cpp:360:18:360:23 | call to source |
 | structlikeclass.cpp:35:8:35:9 | s1 | structlikeclass.cpp:29:22:29:27 | call to source |
 | structlikeclass.cpp:36:8:36:9 | s2 | structlikeclass.cpp:30:24:30:29 | call to source |
 | structlikeclass.cpp:37:8:37:9 | s3 | structlikeclass.cpp:29:22:29:27 | call to source |
