@@ -19,6 +19,7 @@ The following changes in version 1.26 affect C/C++ analysis in all applications.
 
 ## Changes to libraries
 
+* The models library now models some taint flows through `std::array`, `std::vector`, `std::deque`, `std::list` and `std::forward_list`.
 * The models library now models many more taint flows through `std::string`.
 * The `SimpleRangeAnalysis` library now supports multiplications of the form
-  `e1 * e2` when `e1` and `e2` are unsigned.
+  `e1 * e2` and `x *= e2` when `e1` and `e2` are unsigned or constant.

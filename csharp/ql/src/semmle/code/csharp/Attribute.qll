@@ -93,4 +93,6 @@ class Attribute extends TopLevelExprParent, @attribute {
       result = "[" + name + "(...)]"
     )
   }
+
+  override string getAPrimaryQlClass() { result = "Attribute" }
 }
