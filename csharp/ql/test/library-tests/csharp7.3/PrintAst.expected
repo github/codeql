@@ -50,6 +50,15 @@ csharp73.cs:
 #   22|               0: [IntLiteral] 10
 #   22|           1: [LocalVariableAccess] access to local variable t
 #   25|       1: [BlockStmt] {...}
+#   30| [Class] UnmanagedConstraint<>
+#-----|   1: (Type parameters)
+#   30|     0: [TypeParameter] T
+#   34| [Class] EnumConstraint<>
+#-----|   1: (Type parameters)
+#   34|     0: [TypeParameter] T
+#   38| [Class] DelegateConstraint<>
+#-----|   1: (Type parameters)
+#   38|     0: [TypeParameter] T
 #   42| [Class] ExpressionVariables
 #   44|   4: [InstanceConstructor] ExpressionVariables
 #-----|     2: (Parameters)
@@ -69,12 +78,3 @@ csharp73.cs:
 #   51|           0: [InterpolatedStringExpr] $"..."
 #   51|             0: [StringLiteral] "x is "
 #   51|             1: [LocalVariableAccess] access to local variable x
-#   30| [Class] UnmanagedConstraint<>
-#-----|   1: (Type parameters)
-#   30|     0: [TypeParameter] T
-#   34| [Class] EnumConstraint<>
-#-----|   1: (Type parameters)
-#   34|     0: [TypeParameter] T
-#   38| [Class] DelegateConstraint<>
-#-----|   1: (Type parameters)
-#   38|     0: [TypeParameter] T

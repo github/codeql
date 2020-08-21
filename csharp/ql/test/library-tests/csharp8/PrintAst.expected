@@ -13,26 +13,6 @@ AlternateInterpolatedStrings.cs:
 #    6|         1: [IntLiteral] 12
 #    6|       1: [FieldAccess] access to field s2
 AsyncStreams.cs:
-#   24| [NamespaceDeclaration] namespace ... { ... }
-#   26|   1: [Interface] IAsyncDisposable
-#   28|     4: [Method] DisposeAsync
-#   32| [NamespaceDeclaration] namespace ... { ... }
-#   34|   1: [Interface] IAsyncEnumerable<>
-#-----|     1: (Type parameters)
-#   34|       0: [TypeParameter] T
-#   36|     4: [Method] GetAsyncEnumerator
-#-----|       2: (Parameters)
-#   36|         0: [Parameter] cancellationToken
-#   36|           1: [DefaultValueExpr] default(...)
-#   36|             0: [TypeAccess] access to type CancellationToken
-#   39|   2: [Interface] IAsyncEnumerator<>
-#-----|     1: (Type parameters)
-#   39|       0: [TypeParameter] T
-#-----|     3: (Base types)
-#   39|       1: [Interface] IAsyncDisposable
-#   41|     4: [Property] Current
-#   41|       3: [Getter] get_Current
-#   42|     5: [Method] MoveNextAsync
 #    8| [Class] AsyncStreams
 #   10|   5: [Method] Items
 #   10|     4: [BlockStmt] {...}
@@ -56,6 +36,26 @@ AsyncStreams.cs:
 #   20|           0: [MethodCall] call to method WriteLine
 #   20|             -1: [TypeAccess] access to type Console
 #   20|             0: [LocalVariableAccess] access to local variable item
+#   24| [NamespaceDeclaration] namespace ... { ... }
+#   26|   1: [Interface] IAsyncDisposable
+#   28|     4: [Method] DisposeAsync
+#   32| [NamespaceDeclaration] namespace ... { ... }
+#   34|   1: [Interface] IAsyncEnumerable<>
+#-----|     1: (Type parameters)
+#   34|       0: [TypeParameter] T
+#   36|     4: [Method] GetAsyncEnumerator
+#-----|       2: (Parameters)
+#   36|         0: [Parameter] cancellationToken
+#   36|           1: [DefaultValueExpr] default(...)
+#   36|             0: [TypeAccess] access to type CancellationToken
+#   39|   2: [Interface] IAsyncEnumerator<>
+#-----|     1: (Type parameters)
+#   39|       0: [TypeParameter] T
+#-----|     3: (Base types)
+#   39|       1: [Interface] IAsyncDisposable
+#   41|     4: [Property] Current
+#   41|       3: [Getter] get_Current
+#   42|     5: [Method] MoveNextAsync
 DefaultInterfaceMethods.cs:
 #    3| [Interface] IPerson
 #    5|   4: [IndexerProperty] Name
@@ -332,7 +332,6 @@ NullableRefTypes.cs:
 #  129|   14: [Field] j
 #  130|   15: [Field] k
 #  131|   16: [Field] l
-#  165| [Struct] MyStruct
 #  136| [Class] ToStringWithTypes2
 #  138|   5: [Field] a
 #  139|   6: [Field] b
@@ -361,6 +360,7 @@ NullableRefTypes.cs:
 #  160|           1: [LocalVariableAccess] access to local variable a
 #  161|       1: [ReturnStmt] return ...;
 #  161|         0: [LocalVariableAccess] access to local variable a
+#  165| [Struct] MyStruct
 #  171| [Class] TestNullableFlowStates
 #  173|   5: [Method] MaybeNull
 #  175|   6: [Method] Check
@@ -938,51 +938,6 @@ patterns.cs:
 #  164|     9: [Method] Deconstruct
 #  165|       4: [BlockStmt] {...}
 ranges.cs:
-#   25| [NamespaceDeclaration] namespace ... { ... }
-#   27|   1: [Struct] Index
-#   29|     5: [InstanceConstructor] Index
-#-----|       2: (Parameters)
-#   29|         0: [Parameter] value
-#   29|         1: [Parameter] fromEnd
-#   29|           1: [BoolLiteral] false
-#   29|       4: [BlockStmt] {...}
-#   30|     6: [ImplicitConversionOperator] implicit conversion
-#-----|       2: (Parameters)
-#   30|         0: [Parameter] value
-#   30|       4: [DefaultValueExpr] default(...)
-#   30|         0: [TypeAccess] access to type Index
-#   33|   2: [Struct] Range
-#   35|     5: [InstanceConstructor] Range
-#-----|       2: (Parameters)
-#   35|         0: [Parameter] start
-#   35|         1: [Parameter] end
-#   35|       4: [ThrowExpr] throw ...
-#   35|         0: [NullLiteral] null
-#   36|     6: [Method] StartAt
-#-----|       2: (Parameters)
-#   36|         0: [Parameter] start
-#   36|       4: [ThrowExpr] throw ...
-#   36|         0: [NullLiteral] null
-#   37|     7: [Method] EndAt
-#-----|       2: (Parameters)
-#   37|         0: [Parameter] end
-#   37|       4: [ThrowExpr] throw ...
-#   37|         0: [NullLiteral] null
-#   38|     8: [Property] All
-#   38|       3: [Getter] get_All
-#   38|         4: [ThrowExpr] throw ...
-#   38|           0: [NullLiteral] null
-#   39|     9: [Method] Create
-#-----|       2: (Parameters)
-#   39|         0: [Parameter] start
-#   39|         1: [Parameter] end
-#   39|       4: [ThrowExpr] throw ...
-#   39|         0: [NullLiteral] null
-#   40|     10: [ImplicitConversionOperator] implicit conversion
-#-----|       2: (Parameters)
-#   40|         0: [Parameter] r
-#   40|       4: [ThrowExpr] throw ...
-#   40|         0: [NullLiteral] null
 #    5| [Class] Ranges
 #    7|   5: [Method] F
 #    8|     4: [BlockStmt] {...}
@@ -1090,3 +1045,48 @@ ranges.cs:
 #   20|             1: [OperatorCall] call to operator implicit conversion
 #   20|               0: [RangeExpr] ... .. ...
 #   20|           1: [LocalVariableAccess] access to local variable slice8
+#   25| [NamespaceDeclaration] namespace ... { ... }
+#   27|   1: [Struct] Index
+#   29|     5: [InstanceConstructor] Index
+#-----|       2: (Parameters)
+#   29|         0: [Parameter] value
+#   29|         1: [Parameter] fromEnd
+#   29|           1: [BoolLiteral] false
+#   29|       4: [BlockStmt] {...}
+#   30|     6: [ImplicitConversionOperator] implicit conversion
+#-----|       2: (Parameters)
+#   30|         0: [Parameter] value
+#   30|       4: [DefaultValueExpr] default(...)
+#   30|         0: [TypeAccess] access to type Index
+#   33|   2: [Struct] Range
+#   35|     5: [InstanceConstructor] Range
+#-----|       2: (Parameters)
+#   35|         0: [Parameter] start
+#   35|         1: [Parameter] end
+#   35|       4: [ThrowExpr] throw ...
+#   35|         0: [NullLiteral] null
+#   36|     6: [Method] StartAt
+#-----|       2: (Parameters)
+#   36|         0: [Parameter] start
+#   36|       4: [ThrowExpr] throw ...
+#   36|         0: [NullLiteral] null
+#   37|     7: [Method] EndAt
+#-----|       2: (Parameters)
+#   37|         0: [Parameter] end
+#   37|       4: [ThrowExpr] throw ...
+#   37|         0: [NullLiteral] null
+#   38|     8: [Property] All
+#   38|       3: [Getter] get_All
+#   38|         4: [ThrowExpr] throw ...
+#   38|           0: [NullLiteral] null
+#   39|     9: [Method] Create
+#-----|       2: (Parameters)
+#   39|         0: [Parameter] start
+#   39|         1: [Parameter] end
+#   39|       4: [ThrowExpr] throw ...
+#   39|         0: [NullLiteral] null
+#   40|     10: [ImplicitConversionOperator] implicit conversion
+#-----|       2: (Parameters)
+#   40|         0: [Parameter] r
+#   40|       4: [ThrowExpr] throw ...
+#   40|         0: [NullLiteral] null
