@@ -86,6 +86,11 @@ def test_list_comprehension_flow():
     x = [y for y in [SOURCE]]
     SINK(x[0])
 
+def test_list_comprehension_inflow():
+    l = [SOURCE]
+    x = [y for y in l]
+    SINK(x[0])
+
 def test_nested_list_display():
     x = [* [SOURCE]]
     SINK(x[0]) # Flow missing
@@ -102,6 +107,11 @@ def test_set_comprehension():
 def test_set_comprehension_flow():
     x = {y for y in [SOURCE]}
     SINK(x.pop())
+
+def test_set_comprehension_inflow():
+    l = {SOURCE}
+    x = {y for y in l}
+    SINK(x.pop()) # Flow missing
 
 def test_nested_set_display():
     x = {* {SOURCE}}
