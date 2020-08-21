@@ -19,9 +19,17 @@ namespace std
 	struct iterator {
 		iterator &operator++();
 		iterator operator++(int);
+		iterator &operator--();
+		iterator operator--(int);
 		bool operator==(iterator other) const;
 		bool operator!=(iterator other) const;
 		reference_type operator*() const;
+		iterator operator+(int);
+		iterator operator-(int);
+		iterator &operator+=(int);
+		iterator &operator-=(int);
+		int operator-(iterator);
+		reference_type operator[](int);
 	};
 
 	struct input_iterator_tag {};
@@ -63,7 +71,8 @@ namespace std
 		basic_string& append(const basic_string& str);
 		basic_string& append(const charT* s);
 		basic_string& append(size_type n, charT c);
-		template<class InputIt> constexpr basic_string& append(InputIt first, InputIt last);
+		template<class InputIterator>
+		constexpr basic_string& append(InputIterator first, InputIterator last);
 		basic_string& assign(const basic_string& str);
 		basic_string& assign(size_type n, charT c);
 		basic_string& insert(size_type pos, const basic_string& str);
