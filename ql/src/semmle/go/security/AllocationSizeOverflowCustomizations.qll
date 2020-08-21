@@ -175,7 +175,7 @@ module AllocationSizeOverflow {
 
   /**
    * Holds if the value of `pred` can flow into `succ` in one step, either through a call to `len`
-   * or through an arithmetic operation.
+   * or through an arithmetic operation (other than remainder).
    */
   predicate additionalStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(DataFlow::CallNode c |
@@ -184,7 +184,8 @@ module AllocationSizeOverflow {
       succ = c
     )
     or
-    succ.asExpr().(ArithmeticExpr).getAnOperand() = pred.asExpr()
+    succ.asExpr().(ArithmeticExpr).getAnOperand() = pred.asExpr() and
+    not succ.asExpr() instanceof RemExpr
   }
 
   /**
