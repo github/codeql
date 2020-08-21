@@ -5,8 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.Optional;
 
 import com.google.gson.Gson;
 
@@ -19,9 +19,11 @@ import com.semmle.util.trap.TrapWriter.Label;
 /** Extract a stand-alone JavaScript script. */
 public class ScriptExtractor implements IExtractor {
   private ExtractorConfig config;
+  private ConcurrentMap<File, Optional<String>> packageTypeCache;
 
-  public ScriptExtractor(ExtractorConfig config) {
+  public ScriptExtractor(ExtractorConfig config, ExtractorState state) {
     this.config = config;
+    this.packageTypeCache = state.getPackageTypeCache();
   }
 
   /** True if files with the given extension and type (from package.json) should always be treated as ES2015 modules. */
@@ -102,9 +104,6 @@ public class ScriptExtractor implements IExtractor {
     String type;
   }
 
-  // cache for `getPackageType`.
-  private static final Map<File, String> cache = new HashMap<>();
-
   /**
    * Returns the "type" field from the nearest `package.json` file (searching up the file hierarchy).
    */
@@ -112,8 +111,8 @@ public class ScriptExtractor implements IExtractor {
     if (folder == null || !folder.isDirectory()) {
       return null;
     }
-    if (cache.containsKey(folder)) {
-      return cache.get(folder);
+    if (packageTypeCache.containsKey(folder)) {
+      return packageTypeCache.get(folder).orElse(null);
     }
     File file = new File(folder, "package.json");
     if (file.isDirectory()) {
@@ -121,13 +120,13 @@ public class ScriptExtractor implements IExtractor {
     }
     if (!file.exists()) {
       String result = getPackageType(folder.getParentFile());
-      cache.put(folder, result);
+      packageTypeCache.put(folder, Optional.ofNullable(result));
       return result;
     }
     try {
       BufferedReader reader = new BufferedReader(new FileReader(file));
       String result = new Gson().fromJson(reader, PackageJSON.class).type;
-      cache.put(folder, result);
+      packageTypeCache.put(folder, Optional.ofNullable(result));
       return result;
     } catch (IOException e) {
       return null;
