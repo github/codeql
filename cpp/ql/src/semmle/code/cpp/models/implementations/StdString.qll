@@ -66,16 +66,13 @@ class StdStringAppend extends TaintFunction {
     getParameter(result).getType() = getDeclaringType().getTemplateArgument(0) // i.e. `std::basic_string::CharT`
   }
 
-  int getAnIteratorParameter() {
-    getParameter(result).getType() instanceof Iterator
-  }
+  int getAnIteratorParameter() { getParameter(result).getType() instanceof Iterator }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from string and parameter to string (qualifier) and return value
     (
       input.isQualifierObject() or
-      input.isParameterDeref(getAStringParameter())
-      or
+      input.isParameterDeref(getAStringParameter()) or
       input.isParameter(getAnIteratorParameter())
     ) and
     (
