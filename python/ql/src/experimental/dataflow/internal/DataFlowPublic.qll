@@ -56,7 +56,7 @@ class Node extends TNode {
   EssaVariable asVar() { none() }
 
   /** Convenience method for casting to CfgNode and calling getNode. */
-  DataFlowCfgNode asCfgNode() { none() }
+  ControlFlowNode asCfgNode() { none() }
 
   /** Convenience method for casting to ExprNode and calling getNode and getNode again. */
   Expr asExpr() { none() }
@@ -84,9 +84,9 @@ class CfgNode extends Node, TCfgNode {
 
   CfgNode() { this = TCfgNode(node) }
 
-  DataFlowCfgNode getNode() { result = node }
+  ControlFlowNode getNode() { result = node }
 
-  override DataFlowCfgNode asCfgNode() { result = node }
+  override ControlFlowNode asCfgNode() { result = node }
 
   /** Gets a textual representation of this element. */
   override string toString() { result = node.toString() }
