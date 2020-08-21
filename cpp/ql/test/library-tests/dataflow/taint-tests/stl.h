@@ -72,7 +72,7 @@ namespace std
 		basic_string& append(const charT* s);
 		basic_string& append(size_type n, charT c);
 		template<class InputIterator>
-		constexpr basic_string& append(InputIterator first, InputIterator last);
+		/* constexpr */ basic_string& append(InputIterator first, InputIterator last);
 		basic_string& assign(const basic_string& str);
 		basic_string& assign(size_type n, charT c);
 		basic_string& insert(size_type pos, const basic_string& str);

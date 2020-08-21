@@ -703,15 +703,21 @@
 | string.cpp:331:18:331:24 | world | string.cpp:331:18:331:25 | call to basic_string | TAINT |
 | string.cpp:331:18:331:25 | call to basic_string | string.cpp:338:18:338:19 | s4 |  |
 | string.cpp:331:18:331:25 | call to basic_string | string.cpp:338:30:338:31 | s4 |  |
+| string.cpp:334:8:334:9 | ref arg s1 | string.cpp:335:8:335:9 | s1 |  |
 | string.cpp:334:8:334:9 | s1 | string.cpp:334:11:334:16 | call to append | TAINT |
 | string.cpp:334:18:334:19 | ref arg s2 | string.cpp:334:30:334:31 | s2 |  |
 | string.cpp:334:18:334:19 | s2 | string.cpp:334:21:334:25 | call to begin | TAINT |
+| string.cpp:334:21:334:25 | call to begin | string.cpp:334:8:334:9 | ref arg s1 | TAINT |
 | string.cpp:334:21:334:25 | call to begin | string.cpp:334:11:334:16 | call to append | TAINT |
+| string.cpp:334:33:334:35 | call to end | string.cpp:334:8:334:9 | ref arg s1 | TAINT |
 | string.cpp:334:33:334:35 | call to end | string.cpp:334:11:334:16 | call to append | TAINT |
+| string.cpp:338:8:338:9 | ref arg s3 | string.cpp:339:8:339:9 | s3 |  |
 | string.cpp:338:8:338:9 | s3 | string.cpp:338:11:338:16 | call to append | TAINT |
 | string.cpp:338:18:338:19 | ref arg s4 | string.cpp:338:30:338:31 | s4 |  |
 | string.cpp:338:18:338:19 | s4 | string.cpp:338:21:338:25 | call to begin | TAINT |
+| string.cpp:338:21:338:25 | call to begin | string.cpp:338:8:338:9 | ref arg s3 | TAINT |
 | string.cpp:338:21:338:25 | call to begin | string.cpp:338:11:338:16 | call to append | TAINT |
+| string.cpp:338:33:338:35 | call to end | string.cpp:338:8:338:9 | ref arg s3 | TAINT |
 | string.cpp:338:33:338:35 | call to end | string.cpp:338:11:338:16 | call to append | TAINT |
 | string.cpp:344:18:344:24 | hello | string.cpp:344:18:344:25 | call to basic_string | TAINT |
 | string.cpp:344:18:344:25 | call to basic_string | string.cpp:347:28:347:29 | s1 |  |
