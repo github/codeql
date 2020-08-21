@@ -17,7 +17,7 @@ import PathGraph
  */
 private string getACredentialRegex() {
   result = "(?i).*challenge|pass(wd|word|code|phrase)(?!.*question).*" or
-  result = "(?i)(.*username|url).*"
+  result = "(?i)(.*username|.*secret|url).*"
 }
 
 /** Variable keeps sensitive information judging by its name * */
@@ -31,8 +31,12 @@ class CredentialExpr extends Expr {
 class LoggerType extends RefType {
   LoggerType() {
     this.hasQualifiedName("org.apache.log4j", "Category") or //Log4J
+    this.hasQualifiedName("org.apache.logging.log4j", "Logger") or //Log4J 2
     this.hasQualifiedName("org.slf4j", "Logger") or //SLF4j and Gradle Logging
-    this.hasQualifiedName("org.jboss.logging", "BasicLogger") //JBoss Logging
+    this.hasQualifiedName("org.jboss.logging", "BasicLogger") or //JBoss Logging
+    this.hasQualifiedName("org.jboss.logging", "Logger") or //JBoss Logging (`org.jboss.logging.Logger` in some implementations like JBoss Application Server 4.0.4 did not implement `BasicLogger`)
+    this.hasQualifiedName("org.apache.commons.logging", "Log") or //Apache Commons Logging
+    this.hasQualifiedName("org.scijava.log", "Logger") //SciJava Logging
   }
 }
 
@@ -42,7 +46,8 @@ predicate isSensitiveLoggingSink(DataFlow::Node sink) {
     (
       ma.getMethod().hasName("debug") or
       ma.getMethod().hasName("trace") or
-      ma.getMethod().hasName("debugf")
+      ma.getMethod().hasName("debugf") or
+      ma.getMethod().hasName("debugv")
     ) and //Check low priority log levels which are more likely to be real issues to reduce false positives
     sink.asExpr() = ma.getAnArgument()
   )

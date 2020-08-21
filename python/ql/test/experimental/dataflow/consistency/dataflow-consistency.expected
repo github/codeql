@@ -101,3 +101,5 @@ argHasPostUpdate
 | test.py:74:17:74:17 | ControlFlowNode for t | ArgumentNode is missing PostUpdateNode. |
 | test.py:81:13:81:13 | ControlFlowNode for t | ArgumentNode is missing PostUpdateNode. |
 | test.py:86:13:86:13 | ControlFlowNode for t | ArgumentNode is missing PostUpdateNode. |
+| test.py:158:15:158:15 | ControlFlowNode for l | ArgumentNode is missing PostUpdateNode. |
+| test.py:159:15:159:15 | ControlFlowNode for d | ArgumentNode is missing PostUpdateNode. |

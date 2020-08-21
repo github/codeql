@@ -144,7 +144,7 @@ import com.semmle.util.trap.TrapWriter;
  *
  * <ul>
  *   <li>All JavaScript files, that is, files with one of the extensions supported by {@link
- *       FileType#JS} (currently ".js", ".jsx", ".mjs", ".es6", ".es").
+ *       FileType#JS} (currently ".js", ".jsx", ".mjs", ".cjs", ".es6", ".es").
  *   <li>All HTML files, that is, files with with one of the extensions supported by {@link
  *       FileType#HTML} (currently ".htm", ".html", ".xhtm", ".xhtml", ".vue").
  *   <li>All YAML files, that is, files with one of the extensions supported by {@link
@@ -210,6 +210,7 @@ public class AutoBuild {
   private final String defaultEncoding;
   private ExecutorService threadPool;
   private volatile boolean seenCode = false;
+  private volatile boolean seenFiles = false;
   private boolean installDependencies = false;
   private int installDependenciesTimeout;
   private final VirtualSourceRoot virtualSourceRoot;
@@ -472,7 +473,11 @@ public class AutoBuild {
       shutdownThreadPool();
     }
     if (!seenCode) {
-      warn("No JavaScript or TypeScript code found.");
+      if (seenFiles) {
+        warn("Only found JavaScript or TypeScript files that were empty or contained syntax errors.");
+      } else {
+        warn("No JavaScript or TypeScript code found.");
+      }
       return -1;
     }
     return 0;
@@ -1201,6 +1206,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       long start = logBeginProcess("Extracting " + file);
       Integer loc = extractor.extract(f, state);
       if (!extractor.getConfig().isExterns() && (loc == null || loc != 0)) seenCode = true;
+      if (!extractor.getConfig().isExterns()) seenFiles = true;
       logEndProcess(start, "Done extracting " + file);
     } catch (Throwable t) {
       System.err.println("Exception while extracting " + file + ".");
