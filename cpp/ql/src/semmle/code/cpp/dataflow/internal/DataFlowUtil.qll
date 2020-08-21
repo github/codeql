@@ -564,6 +564,8 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
   or
   toExpr = any(AssignExpr assign | fromExpr = assign.getRValue())
   or
+  fromExpr = any(AssignExpr assign | toExpr = assign.getLValue())
+  or
   toExpr = any(CommaExpr comma | fromExpr = comma.getRightOperand())
   or
   toExpr = any(PostfixCrementOperation op | fromExpr = op.getOperand())

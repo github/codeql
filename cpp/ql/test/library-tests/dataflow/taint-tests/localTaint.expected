@@ -9,6 +9,7 @@
 | copyableclass.cpp:10:52:10:56 | other | copyableclass.cpp:11:7:11:11 | other |  |
 | copyableclass.cpp:11:3:11:3 | this | copyableclass.cpp:12:11:12:14 | this |  |
 | copyableclass.cpp:11:3:11:3 | this [post update] | copyableclass.cpp:12:11:12:14 | this |  |
+| copyableclass.cpp:11:3:11:13 | ... = ... | copyableclass.cpp:11:3:11:3 | v |  |
 | copyableclass.cpp:11:13:11:13 | v | copyableclass.cpp:11:3:11:13 | ... = ... |  |
 | copyableclass.cpp:12:11:12:14 | this | copyableclass.cpp:12:10:12:14 | * ... | TAINT |
 | copyableclass.cpp:21:22:21:22 | 1 | copyableclass.cpp:21:22:21:23 | call to MyCopyableClass | TAINT |
@@ -124,6 +125,7 @@
 | format.cpp:16:31:16:31 | n | format.cpp:22:25:22:25 | n |  |
 | format.cpp:16:46:16:51 | format | format.cpp:22:28:22:33 | format |  |
 | format.cpp:20:10:20:13 | args | format.cpp:22:36:22:39 | args |  |
+| format.cpp:22:3:22:40 | ... = ... | format.cpp:22:3:22:8 | result |  |
 | format.cpp:22:12:22:20 | call to vsnprintf | format.cpp:22:3:22:40 | ... = ... |  |
 | format.cpp:22:12:22:20 | call to vsnprintf | format.cpp:25:9:25:14 | result |  |
 | format.cpp:50:21:50:24 | {...} | format.cpp:51:17:51:22 | buffer |  |
@@ -237,6 +239,7 @@
 | format.cpp:148:16:148:30 | call to source | format.cpp:152:14:152:15 | ws |  |
 | format.cpp:148:16:148:30 | call to source | format.cpp:158:7:158:8 | ws |  |
 | format.cpp:148:16:148:30 | call to source | format.cpp:158:20:158:21 | ws |  |
+| format.cpp:154:2:154:18 | ... = ... | format.cpp:154:2:154:2 | i |  |
 | format.cpp:154:6:154:11 | call to strlen | format.cpp:154:6:154:18 | ... + ... | TAINT |
 | format.cpp:154:6:154:18 | ... + ... | format.cpp:154:2:154:18 | ... = ... |  |
 | format.cpp:154:6:154:18 | ... + ... | format.cpp:155:7:155:7 | i |  |
@@ -257,8 +260,10 @@
 | movableclass.cpp:9:34:9:38 | other | movableclass.cpp:9:34:9:38 | other |  |
 | movableclass.cpp:9:34:9:38 | other | movableclass.cpp:10:7:10:11 | other |  |
 | movableclass.cpp:9:34:9:38 | other | movableclass.cpp:11:3:11:7 | other |  |
+| movableclass.cpp:10:3:10:13 | ... = ... | movableclass.cpp:10:3:10:3 | v |  |
 | movableclass.cpp:10:13:10:13 | v | movableclass.cpp:10:3:10:13 | ... = ... |  |
 | movableclass.cpp:11:3:11:7 | other [post update] | movableclass.cpp:9:34:9:38 | other |  |
+| movableclass.cpp:11:3:11:13 | ... = ... | movableclass.cpp:11:9:11:9 | v |  |
 | movableclass.cpp:11:13:11:13 | 0 | movableclass.cpp:11:3:11:13 | ... = ... |  |
 | movableclass.cpp:13:18:13:26 | this | movableclass.cpp:14:3:14:3 | this |  |
 | movableclass.cpp:13:45:13:49 | other | movableclass.cpp:13:45:13:49 | other |  |
@@ -266,8 +271,10 @@
 | movableclass.cpp:13:45:13:49 | other | movableclass.cpp:15:3:15:7 | other |  |
 | movableclass.cpp:14:3:14:3 | this | movableclass.cpp:16:11:16:14 | this |  |
 | movableclass.cpp:14:3:14:3 | this [post update] | movableclass.cpp:16:11:16:14 | this |  |
+| movableclass.cpp:14:3:14:13 | ... = ... | movableclass.cpp:14:3:14:3 | v |  |
 | movableclass.cpp:14:13:14:13 | v | movableclass.cpp:14:3:14:13 | ... = ... |  |
 | movableclass.cpp:15:3:15:7 | other [post update] | movableclass.cpp:13:45:13:49 | other |  |
+| movableclass.cpp:15:3:15:13 | ... = ... | movableclass.cpp:15:9:15:9 | v |  |
 | movableclass.cpp:15:13:15:13 | 0 | movableclass.cpp:15:3:15:13 | ... = ... |  |
 | movableclass.cpp:16:11:16:14 | this | movableclass.cpp:16:10:16:14 | * ... | TAINT |
 | movableclass.cpp:22:57:22:57 | 1 | movableclass.cpp:22:42:22:58 | call to MyMovableClass | TAINT |
@@ -320,6 +327,7 @@
 | string.cpp:37:16:37:28 | call to basic_string | string.cpp:38:7:38:11 | path1 |  |
 | string.cpp:37:17:37:26 | call to user_input | string.cpp:37:16:37:28 | call to basic_string | TAINT |
 | string.cpp:38:7:38:11 | path1 | string.cpp:38:13:38:17 | call to c_str | TAINT |
+| string.cpp:41:2:41:21 | ... = ... | string.cpp:41:2:41:6 | path2 |  |
 | string.cpp:41:10:41:19 | call to user_input | string.cpp:41:10:41:21 | call to basic_string | TAINT |
 | string.cpp:41:10:41:21 | call to basic_string | string.cpp:41:2:41:21 | ... = ... |  |
 | string.cpp:41:10:41:21 | call to basic_string | string.cpp:42:7:42:11 | path2 |  |
@@ -335,6 +343,7 @@
 | string.cpp:64:17:64:18 | cs | string.cpp:64:17:64:19 | call to basic_string | TAINT |
 | string.cpp:64:17:64:19 | call to basic_string | string.cpp:67:7:67:8 | ss |  |
 | string.cpp:64:17:64:19 | call to basic_string | string.cpp:70:7:70:8 | ss |  |
+| string.cpp:67:2:67:16 | ... = ... | string.cpp:67:2:67:3 | cs |  |
 | string.cpp:67:7:67:8 | ss | string.cpp:67:10:67:14 | call to c_str | TAINT |
 | string.cpp:67:10:67:14 | call to c_str | string.cpp:67:2:67:16 | ... = ... |  |
 | string.cpp:67:10:67:14 | call to c_str | string.cpp:69:7:69:8 | cs |  |
@@ -342,6 +351,7 @@
 | string.cpp:76:18:76:25 | call to basic_string | string.cpp:81:8:81:9 | s1 |  |
 | string.cpp:77:19:77:26 | call to basic_string | string.cpp:82:8:82:9 | s2 |  |
 | string.cpp:77:20:77:26 | hello | string.cpp:77:19:77:26 | call to basic_string | TAINT |
+| string.cpp:79:3:79:14 | ... = ... | string.cpp:79:3:79:4 | s3 |  |
 | string.cpp:79:8:79:14 | call to basic_string | string.cpp:79:3:79:14 | ... = ... |  |
 | string.cpp:79:8:79:14 | call to basic_string | string.cpp:83:8:83:9 | s3 |  |
 | string.cpp:79:8:79:14 | hello | string.cpp:79:8:79:14 | call to basic_string | TAINT |
@@ -349,6 +359,7 @@
 | string.cpp:87:18:87:26 | call to basic_string | string.cpp:92:8:92:9 | s1 |  |
 | string.cpp:88:19:88:27 | call to basic_string | string.cpp:93:8:93:9 | s2 |  |
 | string.cpp:88:20:88:25 | call to source | string.cpp:88:19:88:27 | call to basic_string | TAINT |
+| string.cpp:90:3:90:15 | ... = ... | string.cpp:90:3:90:4 | s3 |  |
 | string.cpp:90:8:90:13 | call to source | string.cpp:90:8:90:15 | call to basic_string | TAINT |
 | string.cpp:90:8:90:15 | call to basic_string | string.cpp:90:3:90:15 | ... = ... |  |
 | string.cpp:90:8:90:15 | call to basic_string | string.cpp:94:8:94:9 | s3 |  |
@@ -356,10 +367,12 @@
 | string.cpp:98:15:98:16 | call to basic_string | string.cpp:101:8:101:9 | s1 |  |
 | string.cpp:98:15:98:16 | call to basic_string | string.cpp:103:8:103:9 | s1 |  |
 | string.cpp:99:20:99:21 | s1 | string.cpp:104:8:104:9 | s2 |  |
+| string.cpp:101:3:101:9 | ... = ... | string.cpp:101:3:101:4 | s3 |  |
 | string.cpp:101:8:101:9 | s1 | string.cpp:101:3:101:9 | ... = ... |  |
 | string.cpp:101:8:101:9 | s1 | string.cpp:105:8:105:9 | s3 |  |
 | string.cpp:109:19:109:40 | call to basic_string | string.cpp:113:8:113:9 | s1 |  |
 | string.cpp:109:32:109:37 | call to source | string.cpp:109:19:109:40 | call to basic_string | TAINT |
+| string.cpp:111:3:111:28 | ... = ... | string.cpp:111:3:111:4 | s2 |  |
 | string.cpp:111:8:111:28 | call to basic_string | string.cpp:111:3:111:28 | ... = ... |  |
 | string.cpp:111:8:111:28 | call to basic_string | string.cpp:114:8:114:9 | s2 |  |
 | string.cpp:111:20:111:25 | call to source | string.cpp:111:8:111:28 | call to basic_string | TAINT |
@@ -449,10 +462,12 @@
 | string.cpp:154:18:154:26 | call to basic_string | string.cpp:157:13:157:14 | s4 |  |
 | string.cpp:154:18:154:26 | call to basic_string | string.cpp:161:9:161:10 | s4 |  |
 | string.cpp:154:18:154:26 | call to basic_string | string.cpp:170:13:170:14 | s4 |  |
+| string.cpp:157:3:157:14 | ... = ... | string.cpp:157:3:157:4 | s5 |  |
 | string.cpp:157:8:157:9 | s3 | string.cpp:157:11:157:11 | call to operator+ | TAINT |
 | string.cpp:157:11:157:11 | call to operator+ | string.cpp:157:3:157:14 | ... = ... |  |
 | string.cpp:157:11:157:11 | call to operator+ | string.cpp:158:8:158:9 | s5 |  |
 | string.cpp:157:13:157:14 | s4 | string.cpp:157:11:157:11 | call to operator+ | TAINT |
+| string.cpp:160:3:160:9 | ... = ... | string.cpp:160:3:160:4 | s6 |  |
 | string.cpp:160:8:160:9 | s3 | string.cpp:160:3:160:9 | ... = ... |  |
 | string.cpp:160:8:160:9 | s3 | string.cpp:161:3:161:4 | s6 |  |
 | string.cpp:160:8:160:9 | s3 | string.cpp:162:8:162:9 | s6 |  |
@@ -460,6 +475,7 @@
 | string.cpp:161:3:161:4 | s6 | string.cpp:161:6:161:6 | call to operator+= | TAINT |
 | string.cpp:161:9:161:10 | s4 | string.cpp:161:3:161:4 | ref arg s6 | TAINT |
 | string.cpp:161:9:161:10 | s4 | string.cpp:161:6:161:6 | call to operator+= | TAINT |
+| string.cpp:164:3:164:9 | ... = ... | string.cpp:164:3:164:4 | s7 |  |
 | string.cpp:164:8:164:9 | s3 | string.cpp:164:3:164:9 | ... = ... |  |
 | string.cpp:164:8:164:9 | s3 | string.cpp:165:3:165:4 | s7 |  |
 | string.cpp:164:8:164:9 | s3 | string.cpp:166:3:166:4 | s7 |  |
@@ -473,6 +489,7 @@
 | string.cpp:166:3:166:4 | s7 | string.cpp:166:6:166:6 | call to operator+= | TAINT |
 | string.cpp:166:9:166:11 |   | string.cpp:166:3:166:4 | ref arg s7 | TAINT |
 | string.cpp:166:9:166:11 |   | string.cpp:166:6:166:6 | call to operator+= | TAINT |
+| string.cpp:169:3:169:9 | ... = ... | string.cpp:169:3:169:4 | s8 |  |
 | string.cpp:169:8:169:9 | s3 | string.cpp:169:3:169:9 | ... = ... |  |
 | string.cpp:169:8:169:9 | s3 | string.cpp:170:3:170:4 | s8 |  |
 | string.cpp:169:8:169:9 | s3 | string.cpp:171:8:171:9 | s8 |  |
@@ -480,6 +497,7 @@
 | string.cpp:170:3:170:4 | s8 | string.cpp:170:6:170:11 | call to append | TAINT |
 | string.cpp:170:13:170:14 | s4 | string.cpp:170:3:170:4 | ref arg s8 | TAINT |
 | string.cpp:170:13:170:14 | s4 | string.cpp:170:6:170:11 | call to append | TAINT |
+| string.cpp:173:3:173:9 | ... = ... | string.cpp:173:3:173:4 | s9 |  |
 | string.cpp:173:8:173:9 | s3 | string.cpp:173:3:173:9 | ... = ... |  |
 | string.cpp:173:8:173:9 | s3 | string.cpp:174:3:174:4 | s9 |  |
 | string.cpp:173:8:173:9 | s3 | string.cpp:175:3:175:4 | s9 |  |
@@ -538,6 +556,7 @@
 | string.cpp:210:17:210:25 | call to basic_string | string.cpp:218:7:218:8 | s2 |  |
 | string.cpp:210:17:210:25 | call to basic_string | string.cpp:223:20:223:21 | s2 |  |
 | string.cpp:211:11:211:25 | call to source | string.cpp:227:24:227:24 | c |  |
+| string.cpp:214:2:214:8 | ... = ... | string.cpp:214:2:214:3 | s3 |  |
 | string.cpp:214:7:214:8 | s1 | string.cpp:214:2:214:8 | ... = ... |  |
 | string.cpp:214:7:214:8 | s1 | string.cpp:215:7:215:8 | s3 |  |
 | string.cpp:214:7:214:8 | s1 | string.cpp:216:7:216:8 | s3 |  |
@@ -545,6 +564,7 @@
 | string.cpp:215:7:215:8 | s3 | string.cpp:215:10:215:15 | call to insert | TAINT |
 | string.cpp:215:20:215:21 | s1 | string.cpp:215:7:215:8 | ref arg s3 | TAINT |
 | string.cpp:215:20:215:21 | s1 | string.cpp:215:10:215:15 | call to insert | TAINT |
+| string.cpp:218:2:218:8 | ... = ... | string.cpp:218:2:218:3 | s4 |  |
 | string.cpp:218:7:218:8 | s2 | string.cpp:218:2:218:8 | ... = ... |  |
 | string.cpp:218:7:218:8 | s2 | string.cpp:219:7:219:8 | s4 |  |
 | string.cpp:218:7:218:8 | s2 | string.cpp:220:7:220:8 | s4 |  |
@@ -552,6 +572,7 @@
 | string.cpp:219:7:219:8 | s4 | string.cpp:219:10:219:15 | call to insert | TAINT |
 | string.cpp:219:20:219:21 | s1 | string.cpp:219:7:219:8 | ref arg s4 | TAINT |
 | string.cpp:219:20:219:21 | s1 | string.cpp:219:10:219:15 | call to insert | TAINT |
+| string.cpp:222:2:222:8 | ... = ... | string.cpp:222:2:222:3 | s5 |  |
 | string.cpp:222:7:222:8 | s1 | string.cpp:222:2:222:8 | ... = ... |  |
 | string.cpp:222:7:222:8 | s1 | string.cpp:223:7:223:8 | s5 |  |
 | string.cpp:222:7:222:8 | s1 | string.cpp:224:7:224:8 | s5 |  |
@@ -559,6 +580,7 @@
 | string.cpp:223:7:223:8 | s5 | string.cpp:223:10:223:15 | call to insert | TAINT |
 | string.cpp:223:20:223:21 | s2 | string.cpp:223:7:223:8 | ref arg s5 | TAINT |
 | string.cpp:223:20:223:21 | s2 | string.cpp:223:10:223:15 | call to insert | TAINT |
+| string.cpp:226:2:226:8 | ... = ... | string.cpp:226:2:226:3 | s6 |  |
 | string.cpp:226:7:226:8 | s1 | string.cpp:226:2:226:8 | ... = ... |  |
 | string.cpp:226:7:226:8 | s1 | string.cpp:227:7:227:8 | s6 |  |
 | string.cpp:226:7:226:8 | s1 | string.cpp:228:7:228:8 | s6 |  |
@@ -576,6 +598,7 @@
 | string.cpp:233:17:233:25 | call to basic_string | string.cpp:241:7:241:8 | s2 |  |
 | string.cpp:233:17:233:25 | call to basic_string | string.cpp:246:24:246:25 | s2 |  |
 | string.cpp:234:11:234:25 | call to source | string.cpp:250:28:250:28 | c |  |
+| string.cpp:237:2:237:8 | ... = ... | string.cpp:237:2:237:3 | s3 |  |
 | string.cpp:237:7:237:8 | s1 | string.cpp:237:2:237:8 | ... = ... |  |
 | string.cpp:237:7:237:8 | s1 | string.cpp:238:7:238:8 | s3 |  |
 | string.cpp:237:7:237:8 | s1 | string.cpp:239:7:239:8 | s3 |  |
@@ -583,6 +606,7 @@
 | string.cpp:238:7:238:8 | s3 | string.cpp:238:10:238:16 | call to replace | TAINT |
 | string.cpp:238:24:238:25 | s1 | string.cpp:238:7:238:8 | ref arg s3 | TAINT |
 | string.cpp:238:24:238:25 | s1 | string.cpp:238:10:238:16 | call to replace | TAINT |
+| string.cpp:241:2:241:8 | ... = ... | string.cpp:241:2:241:3 | s4 |  |
 | string.cpp:241:7:241:8 | s2 | string.cpp:241:2:241:8 | ... = ... |  |
 | string.cpp:241:7:241:8 | s2 | string.cpp:242:7:242:8 | s4 |  |
 | string.cpp:241:7:241:8 | s2 | string.cpp:243:7:243:8 | s4 |  |
@@ -590,6 +614,7 @@
 | string.cpp:242:7:242:8 | s4 | string.cpp:242:10:242:16 | call to replace | TAINT |
 | string.cpp:242:24:242:25 | s1 | string.cpp:242:7:242:8 | ref arg s4 | TAINT |
 | string.cpp:242:24:242:25 | s1 | string.cpp:242:10:242:16 | call to replace | TAINT |
+| string.cpp:245:2:245:8 | ... = ... | string.cpp:245:2:245:3 | s5 |  |
 | string.cpp:245:7:245:8 | s1 | string.cpp:245:2:245:8 | ... = ... |  |
 | string.cpp:245:7:245:8 | s1 | string.cpp:246:7:246:8 | s5 |  |
 | string.cpp:245:7:245:8 | s1 | string.cpp:247:7:247:8 | s5 |  |
@@ -597,6 +622,7 @@
 | string.cpp:246:7:246:8 | s5 | string.cpp:246:10:246:16 | call to replace | TAINT |
 | string.cpp:246:24:246:25 | s2 | string.cpp:246:7:246:8 | ref arg s5 | TAINT |
 | string.cpp:246:24:246:25 | s2 | string.cpp:246:10:246:16 | call to replace | TAINT |
+| string.cpp:249:2:249:8 | ... = ... | string.cpp:249:2:249:3 | s6 |  |
 | string.cpp:249:7:249:8 | s1 | string.cpp:249:2:249:8 | ... = ... |  |
 | string.cpp:249:7:249:8 | s1 | string.cpp:250:7:250:8 | s6 |  |
 | string.cpp:249:7:249:8 | s1 | string.cpp:251:7:251:8 | s6 |  |
@@ -654,9 +680,11 @@
 | string.cpp:290:17:290:25 | call to basic_string | string.cpp:294:7:294:8 | s3 |  |
 | string.cpp:290:17:290:25 | call to basic_string | string.cpp:298:7:298:8 | s3 |  |
 | string.cpp:296:2:296:3 | ref arg s1 | string.cpp:300:7:300:8 | s1 |  |
+| string.cpp:297:2:297:8 | ... = ... | string.cpp:297:2:297:3 | s2 |  |
 | string.cpp:297:7:297:8 |  | string.cpp:297:7:297:8 | call to basic_string | TAINT |
 | string.cpp:297:7:297:8 | call to basic_string | string.cpp:297:2:297:8 | ... = ... |  |
 | string.cpp:297:7:297:8 | call to basic_string | string.cpp:301:7:301:8 | s2 |  |
+| string.cpp:298:2:298:8 | ... = ... | string.cpp:298:2:298:3 | s3 |  |
 | string.cpp:298:7:298:8 | s3 | string.cpp:298:2:298:8 | ... = ... |  |
 | string.cpp:298:7:298:8 | s3 | string.cpp:302:7:302:8 | s3 |  |
 | string.cpp:307:16:307:20 | 123 | string.cpp:307:16:307:21 | call to basic_string | TAINT |
@@ -693,12 +721,15 @@
 | string.cpp:335:2:335:2 | a | string.cpp:335:3:335:3 | call to operator[] | TAINT |
 | string.cpp:335:2:335:2 | ref arg a | string.cpp:337:9:337:9 | a |  |
 | string.cpp:335:2:335:2 | ref arg a | string.cpp:339:7:339:7 | a |  |
+| string.cpp:335:2:335:25 | ... = ... | string.cpp:335:3:335:3 | call to operator[] |  |
 | string.cpp:335:9:335:23 | call to source | string.cpp:335:2:335:25 | ... = ... |  |
 | string.cpp:336:2:336:2 | b | string.cpp:336:4:336:5 | call to at | TAINT |
 | string.cpp:336:2:336:2 | ref arg b | string.cpp:340:7:340:7 | b |  |
+| string.cpp:336:2:336:28 | ... = ... | string.cpp:336:4:336:5 | call to at |  |
 | string.cpp:336:12:336:26 | call to source | string.cpp:336:2:336:28 | ... = ... |  |
 | string.cpp:337:2:337:2 | c | string.cpp:337:3:337:3 | call to operator[] | TAINT |
 | string.cpp:337:2:337:2 | ref arg c | string.cpp:341:7:341:7 | c |  |
+| string.cpp:337:2:337:12 | ... = ... | string.cpp:337:3:337:3 | call to operator[] |  |
 | string.cpp:337:9:337:9 | a | string.cpp:337:10:337:10 | call to operator[] | TAINT |
 | string.cpp:337:9:337:9 | ref arg a | string.cpp:339:7:339:7 | a |  |
 | string.cpp:337:10:337:10 | call to operator[] | string.cpp:337:2:337:12 | ... = ... |  |
@@ -753,6 +784,7 @@
 | structlikeclass.cpp:17:23:17:24 | call to StructLikeClass | structlikeclass.cpp:23:8:23:9 | s2 |  |
 | structlikeclass.cpp:17:24:17:24 | 1 | structlikeclass.cpp:17:23:17:24 | call to StructLikeClass | TAINT |
 | structlikeclass.cpp:18:22:18:23 | s1 | structlikeclass.cpp:24:8:24:9 | s3 |  |
+| structlikeclass.cpp:20:3:20:8 | ... = ... | structlikeclass.cpp:20:3:20:4 | s4 |  |
 | structlikeclass.cpp:20:8:20:8 | 1 | structlikeclass.cpp:20:8:20:8 | call to StructLikeClass | TAINT |
 | structlikeclass.cpp:20:8:20:8 | call to StructLikeClass | structlikeclass.cpp:20:3:20:8 | ... = ... |  |
 | structlikeclass.cpp:20:8:20:8 | call to StructLikeClass | structlikeclass.cpp:25:8:25:9 | s4 |  |
@@ -762,6 +794,7 @@
 | structlikeclass.cpp:30:23:30:31 | call to StructLikeClass | structlikeclass.cpp:36:8:36:9 | s2 |  |
 | structlikeclass.cpp:30:24:30:29 | call to source | structlikeclass.cpp:30:23:30:31 | call to StructLikeClass | TAINT |
 | structlikeclass.cpp:31:22:31:23 | s1 | structlikeclass.cpp:37:8:37:9 | s3 |  |
+| structlikeclass.cpp:33:3:33:15 | ... = ... | structlikeclass.cpp:33:3:33:4 | s4 |  |
 | structlikeclass.cpp:33:8:33:13 | call to source | structlikeclass.cpp:33:8:33:15 | call to StructLikeClass | TAINT |
 | structlikeclass.cpp:33:8:33:15 | call to StructLikeClass | structlikeclass.cpp:33:3:33:15 | ... = ... |  |
 | structlikeclass.cpp:33:8:33:15 | call to StructLikeClass | structlikeclass.cpp:38:8:38:9 | s4 |  |
@@ -771,13 +804,16 @@
 | structlikeclass.cpp:42:19:42:20 | call to StructLikeClass | structlikeclass.cpp:48:8:48:9 | s1 |  |
 | structlikeclass.cpp:43:24:43:25 | s1 | structlikeclass.cpp:49:8:49:9 | s2 |  |
 | structlikeclass.cpp:44:22:44:23 | s1 | structlikeclass.cpp:50:8:50:9 | s3 |  |
+| structlikeclass.cpp:46:3:46:9 | ... = ... | structlikeclass.cpp:46:3:46:4 | s4 |  |
 | structlikeclass.cpp:46:8:46:9 | s1 | structlikeclass.cpp:46:3:46:9 | ... = ... |  |
 | structlikeclass.cpp:46:8:46:9 | s1 | structlikeclass.cpp:51:8:51:9 | s4 |  |
 | structlikeclass.cpp:55:23:55:48 | call to StructLikeClass | structlikeclass.cpp:60:8:60:9 | s1 |  |
 | structlikeclass.cpp:55:40:55:45 | call to source | structlikeclass.cpp:55:23:55:48 | call to StructLikeClass | TAINT |
+| structlikeclass.cpp:58:3:58:32 | ... = ... | structlikeclass.cpp:58:3:58:4 | s2 |  |
 | structlikeclass.cpp:58:8:58:32 | call to StructLikeClass | structlikeclass.cpp:58:3:58:32 | ... = ... |  |
 | structlikeclass.cpp:58:8:58:32 | call to StructLikeClass | structlikeclass.cpp:61:8:61:9 | s2 |  |
 | structlikeclass.cpp:58:24:58:29 | call to source | structlikeclass.cpp:58:8:58:32 | call to StructLikeClass | TAINT |
+| structlikeclass.cpp:62:8:62:20 | ... = ... | structlikeclass.cpp:62:8:62:9 | s3 |  |
 | structlikeclass.cpp:62:13:62:18 | call to source | structlikeclass.cpp:62:13:62:20 | call to StructLikeClass | TAINT |
 | structlikeclass.cpp:62:13:62:20 | call to StructLikeClass | structlikeclass.cpp:62:8:62:20 | ... = ... |  |
 | swap1.cpp:14:17:14:17 | t | swap1.cpp:14:17:14:17 | t |  |
@@ -849,6 +885,7 @@
 | swap1.cpp:71:5:71:5 | x [post update] | swap1.cpp:73:10:73:10 | x |  |
 | swap1.cpp:71:5:71:5 | x [post update] | swap1.cpp:76:9:76:9 | x |  |
 | swap1.cpp:71:5:71:5 | x [post update] | swap1.cpp:79:10:79:10 | x |  |
+| swap1.cpp:71:5:71:22 | ... = ... | swap1.cpp:71:7:71:11 | data1 |  |
 | swap1.cpp:71:5:71:22 | ... = ... | swap1.cpp:73:12:73:16 | data1 |  |
 | swap1.cpp:71:5:71:22 | ... = ... | swap1.cpp:79:12:79:16 | data1 |  |
 | swap1.cpp:71:15:71:20 | call to source | swap1.cpp:71:5:71:22 | ... = ... |  |
@@ -864,6 +901,7 @@
 | swap1.cpp:82:5:82:6 | z1 [post update] | swap1.cpp:83:10:83:11 | z1 |  |
 | swap1.cpp:82:5:82:6 | z1 [post update] | swap1.cpp:85:10:85:11 | z1 |  |
 | swap1.cpp:82:5:82:6 | z1 [post update] | swap1.cpp:88:10:88:11 | z1 |  |
+| swap1.cpp:82:5:82:23 | ... = ... | swap1.cpp:82:8:82:12 | data1 |  |
 | swap1.cpp:82:5:82:23 | ... = ... | swap1.cpp:83:13:83:17 | data1 |  |
 | swap1.cpp:82:5:82:23 | ... = ... | swap1.cpp:88:13:88:17 | data1 |  |
 | swap1.cpp:82:16:82:21 | call to source | swap1.cpp:82:5:82:23 | ... = ... |  |
@@ -879,6 +917,7 @@
 | swap1.cpp:95:5:95:5 | x [post update] | swap1.cpp:97:10:97:10 | x |  |
 | swap1.cpp:95:5:95:5 | x [post update] | swap1.cpp:100:19:100:19 | x |  |
 | swap1.cpp:95:5:95:5 | x [post update] | swap1.cpp:103:10:103:10 | x |  |
+| swap1.cpp:95:5:95:22 | ... = ... | swap1.cpp:95:7:95:11 | data1 |  |
 | swap1.cpp:95:5:95:22 | ... = ... | swap1.cpp:97:12:97:16 | data1 |  |
 | swap1.cpp:95:5:95:22 | ... = ... | swap1.cpp:103:12:103:16 | data1 |  |
 | swap1.cpp:95:15:95:20 | call to source | swap1.cpp:95:5:95:22 | ... = ... |  |
@@ -895,6 +934,7 @@
 | swap1.cpp:108:23:108:31 | move_from | swap1.cpp:113:41:113:49 | move_from |  |
 | swap1.cpp:109:5:109:13 | move_from [post update] | swap1.cpp:111:10:111:18 | move_from |  |
 | swap1.cpp:109:5:109:13 | move_from [post update] | swap1.cpp:113:41:113:49 | move_from |  |
+| swap1.cpp:109:5:109:30 | ... = ... | swap1.cpp:109:15:109:19 | data1 |  |
 | swap1.cpp:109:5:109:30 | ... = ... | swap1.cpp:111:20:111:24 | data1 |  |
 | swap1.cpp:109:5:109:30 | ... = ... | swap1.cpp:115:18:115:22 | data1 |  |
 | swap1.cpp:109:23:109:28 | call to source | swap1.cpp:109:5:109:30 | ... = ... |  |
@@ -912,6 +952,7 @@
 | swap1.cpp:122:5:122:5 | x [post update] | swap1.cpp:124:10:124:10 | x |  |
 | swap1.cpp:122:5:122:5 | x [post update] | swap1.cpp:127:19:127:19 | x |  |
 | swap1.cpp:122:5:122:5 | x [post update] | swap1.cpp:130:10:130:10 | x |  |
+| swap1.cpp:122:5:122:22 | ... = ... | swap1.cpp:122:7:122:11 | data1 |  |
 | swap1.cpp:122:5:122:22 | ... = ... | swap1.cpp:124:12:124:16 | data1 |  |
 | swap1.cpp:122:5:122:22 | ... = ... | swap1.cpp:130:12:130:16 | data1 |  |
 | swap1.cpp:122:15:122:20 | call to source | swap1.cpp:122:5:122:22 | ... = ... |  |
@@ -926,6 +967,7 @@
 | swap1.cpp:137:5:137:5 | x [post update] | swap1.cpp:139:10:139:10 | x |  |
 | swap1.cpp:137:5:137:5 | x [post update] | swap1.cpp:142:29:142:29 | x |  |
 | swap1.cpp:137:5:137:5 | x [post update] | swap1.cpp:145:10:145:10 | x |  |
+| swap1.cpp:137:5:137:22 | ... = ... | swap1.cpp:137:7:137:11 | data1 |  |
 | swap1.cpp:137:5:137:22 | ... = ... | swap1.cpp:139:12:139:16 | data1 |  |
 | swap1.cpp:137:5:137:22 | ... = ... | swap1.cpp:145:12:145:16 | data1 |  |
 | swap1.cpp:137:15:137:20 | call to source | swap1.cpp:137:5:137:22 | ... = ... |  |
@@ -1015,6 +1057,7 @@
 | swap2.cpp:71:5:71:5 | x [post update] | swap2.cpp:73:10:73:10 | x |  |
 | swap2.cpp:71:5:71:5 | x [post update] | swap2.cpp:76:9:76:9 | x |  |
 | swap2.cpp:71:5:71:5 | x [post update] | swap2.cpp:79:10:79:10 | x |  |
+| swap2.cpp:71:5:71:22 | ... = ... | swap2.cpp:71:7:71:11 | data1 |  |
 | swap2.cpp:71:5:71:22 | ... = ... | swap2.cpp:73:12:73:16 | data1 |  |
 | swap2.cpp:71:5:71:22 | ... = ... | swap2.cpp:79:12:79:16 | data1 |  |
 | swap2.cpp:71:15:71:20 | call to source | swap2.cpp:71:5:71:22 | ... = ... |  |
@@ -1030,6 +1073,7 @@
 | swap2.cpp:82:5:82:6 | z1 [post update] | swap2.cpp:83:10:83:11 | z1 |  |
 | swap2.cpp:82:5:82:6 | z1 [post update] | swap2.cpp:85:10:85:11 | z1 |  |
 | swap2.cpp:82:5:82:6 | z1 [post update] | swap2.cpp:88:10:88:11 | z1 |  |
+| swap2.cpp:82:5:82:23 | ... = ... | swap2.cpp:82:8:82:12 | data1 |  |
 | swap2.cpp:82:5:82:23 | ... = ... | swap2.cpp:83:13:83:17 | data1 |  |
 | swap2.cpp:82:5:82:23 | ... = ... | swap2.cpp:88:13:88:17 | data1 |  |
 | swap2.cpp:82:16:82:21 | call to source | swap2.cpp:82:5:82:23 | ... = ... |  |
@@ -1045,6 +1089,7 @@
 | swap2.cpp:95:5:95:5 | x [post update] | swap2.cpp:97:10:97:10 | x |  |
 | swap2.cpp:95:5:95:5 | x [post update] | swap2.cpp:100:19:100:19 | x |  |
 | swap2.cpp:95:5:95:5 | x [post update] | swap2.cpp:103:10:103:10 | x |  |
+| swap2.cpp:95:5:95:22 | ... = ... | swap2.cpp:95:7:95:11 | data1 |  |
 | swap2.cpp:95:5:95:22 | ... = ... | swap2.cpp:97:12:97:16 | data1 |  |
 | swap2.cpp:95:5:95:22 | ... = ... | swap2.cpp:103:12:103:16 | data1 |  |
 | swap2.cpp:95:15:95:20 | call to source | swap2.cpp:95:5:95:22 | ... = ... |  |
@@ -1061,6 +1106,7 @@
 | swap2.cpp:108:23:108:31 | move_from | swap2.cpp:113:41:113:49 | move_from |  |
 | swap2.cpp:109:5:109:13 | move_from [post update] | swap2.cpp:111:10:111:18 | move_from |  |
 | swap2.cpp:109:5:109:13 | move_from [post update] | swap2.cpp:113:41:113:49 | move_from |  |
+| swap2.cpp:109:5:109:30 | ... = ... | swap2.cpp:109:15:109:19 | data1 |  |
 | swap2.cpp:109:5:109:30 | ... = ... | swap2.cpp:111:20:111:24 | data1 |  |
 | swap2.cpp:109:5:109:30 | ... = ... | swap2.cpp:115:18:115:22 | data1 |  |
 | swap2.cpp:109:23:109:28 | call to source | swap2.cpp:109:5:109:30 | ... = ... |  |
@@ -1078,6 +1124,7 @@
 | swap2.cpp:122:5:122:5 | x [post update] | swap2.cpp:124:10:124:10 | x |  |
 | swap2.cpp:122:5:122:5 | x [post update] | swap2.cpp:127:19:127:19 | x |  |
 | swap2.cpp:122:5:122:5 | x [post update] | swap2.cpp:130:10:130:10 | x |  |
+| swap2.cpp:122:5:122:22 | ... = ... | swap2.cpp:122:7:122:11 | data1 |  |
 | swap2.cpp:122:5:122:22 | ... = ... | swap2.cpp:124:12:124:16 | data1 |  |
 | swap2.cpp:122:5:122:22 | ... = ... | swap2.cpp:130:12:130:16 | data1 |  |
 | swap2.cpp:122:15:122:20 | call to source | swap2.cpp:122:5:122:22 | ... = ... |  |
@@ -1092,6 +1139,7 @@
 | swap2.cpp:137:5:137:5 | x [post update] | swap2.cpp:139:10:139:10 | x |  |
 | swap2.cpp:137:5:137:5 | x [post update] | swap2.cpp:142:29:142:29 | x |  |
 | swap2.cpp:137:5:137:5 | x [post update] | swap2.cpp:145:10:145:10 | x |  |
+| swap2.cpp:137:5:137:22 | ... = ... | swap2.cpp:137:7:137:11 | data1 |  |
 | swap2.cpp:137:5:137:22 | ... = ... | swap2.cpp:139:12:139:16 | data1 |  |
 | swap2.cpp:137:5:137:22 | ... = ... | swap2.cpp:145:12:145:16 | data1 |  |
 | swap2.cpp:137:15:137:20 | call to source | swap2.cpp:137:5:137:22 | ... = ... |  |
@@ -1108,10 +1156,14 @@
 | taint.cpp:7:3:7:8 | clean1 | taint.cpp:7:3:7:13 | ... += ... | TAINT |
 | taint.cpp:7:3:7:13 | ... += ... | taint.cpp:8:8:8:13 | clean1 |  |
 | taint.cpp:7:13:7:13 | 1 | taint.cpp:7:3:7:13 | ... += ... | TAINT |
+| taint.cpp:10:3:10:22 | ... = ... | taint.cpp:10:3:10:8 | clean1 |  |
 | taint.cpp:10:12:10:22 | ... = ... | taint.cpp:10:3:10:22 | ... = ... |  |
+| taint.cpp:10:12:10:22 | ... = ... | taint.cpp:10:12:10:18 | source1 |  |
 | taint.cpp:10:12:10:22 | ... = ... | taint.cpp:11:8:11:13 | clean1 |  |
 | taint.cpp:10:22:10:22 | 1 | taint.cpp:10:12:10:22 | ... = ... |  |
+| taint.cpp:12:3:12:29 | ... = ... | taint.cpp:12:3:12:9 | source1 |  |
 | taint.cpp:12:13:12:29 | ... = ... | taint.cpp:12:3:12:29 | ... = ... |  |
+| taint.cpp:12:13:12:29 | ... = ... | taint.cpp:12:13:12:18 | clean1 |  |
 | taint.cpp:12:13:12:29 | ... = ... | taint.cpp:13:3:13:9 | source1 |  |
 | taint.cpp:12:22:12:27 | call to source | taint.cpp:12:13:12:29 | ... = ... |  |
 | taint.cpp:13:3:13:9 | source1 | taint.cpp:13:3:13:11 | ... ++ |  |
@@ -1128,17 +1180,22 @@
 | taint.cpp:22:34:22:34 | 1 | taint.cpp:22:30:22:34 | ... + ... | TAINT |
 | taint.cpp:27:15:27:21 | global2 | taint.cpp:27:15:27:25 | ... + ... | TAINT |
 | taint.cpp:27:25:27:25 | 1 | taint.cpp:27:15:27:25 | ... + ... | TAINT |
+| taint.cpp:34:2:34:12 | ... = ... | taint.cpp:34:2:34:8 | global6 |  |
 | taint.cpp:34:12:34:12 | 0 | taint.cpp:34:2:34:12 | ... = ... |  |
 | taint.cpp:34:12:34:12 | 0 | taint.cpp:40:7:40:13 | global6 |  |
+| taint.cpp:35:2:35:19 | ... = ... | taint.cpp:35:2:35:8 | global7 |  |
 | taint.cpp:35:12:35:17 | call to source | taint.cpp:35:2:35:19 | ... = ... |  |
 | taint.cpp:35:12:35:17 | call to source | taint.cpp:36:12:36:18 | global7 |  |
 | taint.cpp:35:12:35:17 | call to source | taint.cpp:41:7:41:13 | global7 |  |
+| taint.cpp:36:2:36:22 | ... = ... | taint.cpp:36:2:36:8 | global8 |  |
 | taint.cpp:36:12:36:18 | global7 | taint.cpp:36:12:36:22 | ... + ... | TAINT |
 | taint.cpp:36:12:36:22 | ... + ... | taint.cpp:36:2:36:22 | ... = ... |  |
 | taint.cpp:36:12:36:22 | ... + ... | taint.cpp:42:7:42:13 | global8 |  |
 | taint.cpp:36:22:36:22 | 1 | taint.cpp:36:12:36:22 | ... + ... | TAINT |
+| taint.cpp:37:2:37:30 | ... = ... | taint.cpp:37:2:37:8 | global9 |  |
 | taint.cpp:37:12:37:20 | call to increment | taint.cpp:37:2:37:30 | ... = ... |  |
 | taint.cpp:37:12:37:20 | call to increment | taint.cpp:43:7:43:13 | global9 |  |
+| taint.cpp:38:2:38:26 | ... = ... | taint.cpp:38:2:38:9 | global10 |  |
 | taint.cpp:38:13:38:16 | call to zero | taint.cpp:38:2:38:26 | ... = ... |  |
 | taint.cpp:38:13:38:16 | call to zero | taint.cpp:44:7:44:14 | global10 |  |
 | taint.cpp:71:2:71:8 | this | taint.cpp:71:14:71:17 | constructor init of field a [pre-this] |  |
@@ -1150,9 +1207,12 @@
 | taint.cpp:71:22:71:27 | call to source | taint.cpp:71:20:71:30 | constructor init of field b | TAINT |
 | taint.cpp:72:3:72:3 | this | taint.cpp:73:3:73:3 | this |  |
 | taint.cpp:72:3:72:3 | this [post update] | taint.cpp:73:3:73:3 | this |  |
+| taint.cpp:72:3:72:14 | ... = ... | taint.cpp:72:3:72:3 | c |  |
 | taint.cpp:72:7:72:12 | call to source | taint.cpp:72:3:72:14 | ... = ... |  |
+| taint.cpp:73:3:73:7 | ... = ... | taint.cpp:73:3:73:3 | d |  |
 | taint.cpp:73:7:73:7 | 0 | taint.cpp:73:3:73:7 | ... = ... |  |
 | taint.cpp:76:7:76:14 | this | taint.cpp:77:3:77:3 | this |  |
+| taint.cpp:77:3:77:14 | ... = ... | taint.cpp:77:3:77:3 | d |  |
 | taint.cpp:77:7:77:12 | call to source | taint.cpp:77:3:77:14 | ... = ... |  |
 | taint.cpp:84:10:84:12 | call to MyClass | taint.cpp:86:2:86:4 | mc1 |  |
 | taint.cpp:84:10:84:12 | call to MyClass | taint.cpp:88:7:88:9 | mc1 |  |
@@ -1178,12 +1238,15 @@
 | taint.cpp:103:16:103:19 | {...} | taint.cpp:107:2:107:5 | arr3 |  |
 | taint.cpp:103:18:103:18 | 0 | taint.cpp:103:16:103:19 | {...} | TAINT |
 | taint.cpp:105:2:105:5 | arr1 | taint.cpp:105:2:105:8 | access to array | TAINT |
+| taint.cpp:105:2:105:19 | ... = ... | taint.cpp:105:2:105:8 | access to array |  |
 | taint.cpp:105:7:105:7 | 5 | taint.cpp:105:2:105:8 | access to array | TAINT |
 | taint.cpp:105:12:105:17 | call to source | taint.cpp:105:2:105:19 | ... = ... |  |
 | taint.cpp:106:2:106:5 | arr2 | taint.cpp:106:2:106:8 | access to array | TAINT |
+| taint.cpp:106:2:106:19 | ... = ... | taint.cpp:106:2:106:8 | access to array |  |
 | taint.cpp:106:7:106:7 | i | taint.cpp:106:2:106:8 | access to array | TAINT |
 | taint.cpp:106:12:106:17 | call to source | taint.cpp:106:2:106:19 | ... = ... |  |
 | taint.cpp:107:2:107:5 | arr3 | taint.cpp:107:2:107:8 | access to array | TAINT |
+| taint.cpp:107:2:107:12 | ... = ... | taint.cpp:107:2:107:8 | access to array |  |
 | taint.cpp:107:7:107:7 | 5 | taint.cpp:107:2:107:8 | access to array | TAINT |
 | taint.cpp:107:12:107:12 | 0 | taint.cpp:107:2:107:12 | ... = ... |  |
 | taint.cpp:109:7:109:10 | arr1 | taint.cpp:109:7:109:13 | access to array | TAINT |
@@ -1209,17 +1272,20 @@
 | taint.cpp:124:13:124:14 | t2 | taint.cpp:124:12:124:14 | & ... |  |
 | taint.cpp:125:12:125:14 | & ... | taint.cpp:131:8:131:9 | p3 |  |
 | taint.cpp:125:13:125:14 | t3 | taint.cpp:125:12:125:14 | & ... |  |
+| taint.cpp:127:2:127:15 | ... = ... | taint.cpp:127:2:127:4 | * ... |  |
 | taint.cpp:127:3:127:4 | p2 | taint.cpp:127:2:127:4 | * ... | TAINT |
 | taint.cpp:127:8:127:13 | call to source | taint.cpp:127:2:127:15 | ... = ... |  |
 | taint.cpp:129:8:129:9 | p1 | taint.cpp:129:7:129:9 | * ... | TAINT |
 | taint.cpp:130:8:130:9 | p2 | taint.cpp:130:7:130:9 | * ... | TAINT |
 | taint.cpp:131:8:131:9 | p3 | taint.cpp:131:7:131:9 | * ... | TAINT |
+| taint.cpp:133:2:133:9 | ... = ... | taint.cpp:133:2:133:3 | p3 |  |
 | taint.cpp:133:7:133:9 | & ... | taint.cpp:133:2:133:9 | ... = ... |  |
 | taint.cpp:133:7:133:9 | & ... | taint.cpp:134:8:134:9 | p3 |  |
 | taint.cpp:133:7:133:9 | & ... | taint.cpp:136:3:136:4 | p3 |  |
 | taint.cpp:133:7:133:9 | & ... | taint.cpp:137:8:137:9 | p3 |  |
 | taint.cpp:133:8:133:9 | t1 | taint.cpp:133:7:133:9 | & ... |  |
 | taint.cpp:134:8:134:9 | p3 | taint.cpp:134:7:134:9 | * ... | TAINT |
+| taint.cpp:136:2:136:8 | ... = ... | taint.cpp:136:2:136:4 | * ... |  |
 | taint.cpp:136:3:136:4 | p3 | taint.cpp:136:2:136:4 | * ... | TAINT |
 | taint.cpp:136:8:136:8 | 0 | taint.cpp:136:2:136:8 | ... = ... |  |
 | taint.cpp:137:8:137:9 | p3 | taint.cpp:137:7:137:9 | * ... | TAINT |
@@ -1263,10 +1329,12 @@
 | taint.cpp:194:13:194:18 | source | taint.cpp:194:9:194:10 | ref arg & ... | TAINT |
 | taint.cpp:194:21:194:31 | sizeof(int) | taint.cpp:194:2:194:7 | call to memcpy | TAINT |
 | taint.cpp:194:21:194:31 | sizeof(int) | taint.cpp:194:9:194:10 | ref arg & ... | TAINT |
+| taint.cpp:207:2:207:13 | ... = ... | taint.cpp:207:2:207:2 | x |  |
 | taint.cpp:207:6:207:11 | call to source | taint.cpp:207:2:207:13 | ... = ... |  |
 | taint.cpp:207:6:207:11 | call to source | taint.cpp:210:7:210:7 | x |  |
 | taint.cpp:207:6:207:11 | call to source | taint.cpp:213:12:213:12 | x |  |
 | taint.cpp:207:6:207:11 | call to source | taint.cpp:215:7:215:7 | x |  |
+| taint.cpp:208:2:208:6 | ... = ... | taint.cpp:208:2:208:2 | y |  |
 | taint.cpp:208:6:208:6 | 0 | taint.cpp:208:2:208:6 | ... = ... |  |
 | taint.cpp:208:6:208:6 | 0 | taint.cpp:211:7:211:7 | y |  |
 | taint.cpp:208:6:208:6 | 0 | taint.cpp:213:15:213:15 | y |  |
@@ -1312,6 +1380,7 @@
 | taint.cpp:235:15:235:15 | this | taint.cpp:236:3:236:6 | this |  |
 | taint.cpp:236:3:236:6 | this | taint.cpp:237:3:237:6 | this |  |
 | taint.cpp:237:3:237:6 | this | taint.cpp:238:3:238:14 | this |  |
+| taint.cpp:238:3:238:14 | ... = ... | taint.cpp:238:3:238:14 | v |  |
 | taint.cpp:238:7:238:12 | call to source | taint.cpp:238:3:238:14 | ... = ... |  |
 | taint.cpp:243:10:246:2 | [...](...){...} | taint.cpp:247:2:247:2 | c |  |
 | taint.cpp:243:10:246:2 | {...} | taint.cpp:243:10:246:2 | [...](...){...} |  |
@@ -1330,57 +1399,73 @@
 | taint.cpp:255:19:255:19 | a | taint.cpp:256:8:256:8 | a |  |
 | taint.cpp:255:27:255:27 | b | taint.cpp:255:27:255:27 | b |  |
 | taint.cpp:255:27:255:27 | b | taint.cpp:257:8:257:8 | b |  |
+| taint.cpp:258:3:258:14 | ... = ... | taint.cpp:258:3:258:3 | c |  |
 | taint.cpp:258:7:258:12 | call to source | taint.cpp:255:35:255:35 | c |  |
 | taint.cpp:258:7:258:12 | call to source | taint.cpp:258:3:258:14 | ... = ... |  |
 | taint.cpp:260:10:260:10 | ref arg w | taint.cpp:261:7:261:7 | w |  |
 | taint.cpp:266:12:266:12 | x | taint.cpp:268:9:268:9 | x |  |
+| taint.cpp:275:2:275:13 | ... = ... | taint.cpp:275:2:275:2 | t |  |
 | taint.cpp:275:6:275:11 | call to source | taint.cpp:275:2:275:13 | ... = ... |  |
 | taint.cpp:275:6:275:11 | call to source | taint.cpp:280:7:280:7 | t |  |
 | taint.cpp:275:6:275:11 | call to source | taint.cpp:285:9:285:9 | t |  |
 | taint.cpp:275:6:275:11 | call to source | taint.cpp:286:12:286:12 | t |  |
 | taint.cpp:275:6:275:11 | call to source | taint.cpp:289:7:289:7 | t |  |
+| taint.cpp:276:2:276:6 | ... = ... | taint.cpp:276:2:276:2 | x |  |
 | taint.cpp:276:6:276:6 | 0 | taint.cpp:276:2:276:6 | ... = ... |  |
 | taint.cpp:276:6:276:6 | 0 | taint.cpp:281:7:281:7 | x |  |
+| taint.cpp:277:2:277:6 | ... = ... | taint.cpp:277:2:277:2 | y |  |
 | taint.cpp:277:6:277:6 | 0 | taint.cpp:277:2:277:6 | ... = ... |  |
 | taint.cpp:277:6:277:6 | 0 | taint.cpp:282:7:282:7 | y |  |
+| taint.cpp:278:2:278:6 | ... = ... | taint.cpp:278:2:278:2 | z |  |
 | taint.cpp:278:6:278:6 | 0 | taint.cpp:278:2:278:6 | ... = ... |  |
 | taint.cpp:278:6:278:6 | 0 | taint.cpp:283:7:283:7 | z |  |
 | taint.cpp:278:6:278:6 | 0 | taint.cpp:287:9:287:9 | z |  |
+| taint.cpp:285:2:285:10 | ... = ... | taint.cpp:285:2:285:2 | x |  |
 | taint.cpp:285:6:285:7 | call to id | taint.cpp:285:2:285:10 | ... = ... |  |
 | taint.cpp:285:6:285:7 | call to id | taint.cpp:290:7:290:7 | x |  |
+| taint.cpp:286:2:286:14 | ... = ... | taint.cpp:286:2:286:2 | y |  |
 | taint.cpp:286:6:286:7 | call to id | taint.cpp:286:2:286:14 | ... = ... |  |
 | taint.cpp:286:6:286:7 | call to id | taint.cpp:291:7:291:7 | y |  |
+| taint.cpp:287:2:287:10 | ... = ... | taint.cpp:287:2:287:2 | z |  |
 | taint.cpp:287:6:287:7 | call to id | taint.cpp:287:2:287:10 | ... = ... |  |
 | taint.cpp:287:6:287:7 | call to id | taint.cpp:292:7:292:7 | z |  |
 | taint.cpp:297:29:297:29 | b | taint.cpp:297:29:297:29 | b |  |
 | taint.cpp:297:29:297:29 | b | taint.cpp:299:6:299:6 | b |  |
+| taint.cpp:299:2:299:6 | ... = ... | taint.cpp:299:2:299:2 | a |  |
 | taint.cpp:299:6:299:6 | b | taint.cpp:297:21:297:21 | a |  |
 | taint.cpp:299:6:299:6 | b | taint.cpp:299:2:299:6 | ... = ... |  |
 | taint.cpp:302:28:302:28 | b | taint.cpp:304:6:304:6 | b |  |
+| taint.cpp:304:2:304:6 | ... = ... | taint.cpp:304:2:304:2 | a |  |
 | taint.cpp:304:6:304:6 | b | taint.cpp:302:21:302:21 | a |  |
 | taint.cpp:304:6:304:6 | b | taint.cpp:304:2:304:6 | ... = ... |  |
 | taint.cpp:307:21:307:21 | a | taint.cpp:309:3:309:3 | a |  |
 | taint.cpp:307:28:307:28 | b | taint.cpp:309:7:309:7 | b |  |
+| taint.cpp:309:2:309:7 | ... = ... | taint.cpp:309:2:309:3 | * ... |  |
 | taint.cpp:309:3:309:3 | a | taint.cpp:309:2:309:3 | * ... | TAINT |
 | taint.cpp:309:7:309:7 | b | taint.cpp:309:2:309:7 | ... = ... |  |
 | taint.cpp:312:21:312:21 | a | taint.cpp:317:3:317:3 | a |  |
 | taint.cpp:312:28:312:28 | b | taint.cpp:316:6:316:6 | b |  |
+| taint.cpp:316:2:316:10 | ... = ... | taint.cpp:316:2:316:2 | c |  |
 | taint.cpp:316:6:316:6 | b | taint.cpp:316:6:316:10 | ... + ... | TAINT |
 | taint.cpp:316:6:316:10 | ... + ... | taint.cpp:316:2:316:10 | ... = ... |  |
 | taint.cpp:316:6:316:10 | ... + ... | taint.cpp:317:7:317:7 | c |  |
 | taint.cpp:316:10:316:10 | 1 | taint.cpp:316:6:316:10 | ... + ... | TAINT |
+| taint.cpp:317:2:317:7 | ... = ... | taint.cpp:317:2:317:3 | * ... |  |
 | taint.cpp:317:3:317:3 | a | taint.cpp:317:2:317:3 | * ... | TAINT |
 | taint.cpp:317:7:317:7 | c | taint.cpp:317:2:317:7 | ... = ... |  |
 | taint.cpp:320:23:320:23 | a | taint.cpp:322:6:322:6 | a |  |
 | taint.cpp:320:31:320:31 | b | taint.cpp:323:6:323:6 | b |  |
+| taint.cpp:322:2:322:10 | ... = ... | taint.cpp:322:2:322:2 | a |  |
 | taint.cpp:322:6:322:6 | a | taint.cpp:322:6:322:10 | ... + ... | TAINT |
 | taint.cpp:322:6:322:10 | ... + ... | taint.cpp:320:23:320:23 | a |  |
 | taint.cpp:322:6:322:10 | ... + ... | taint.cpp:322:2:322:10 | ... = ... |  |
 | taint.cpp:322:10:322:10 | 1 | taint.cpp:322:6:322:10 | ... + ... | TAINT |
+| taint.cpp:323:2:323:10 | ... = ... | taint.cpp:323:2:323:2 | b |  |
 | taint.cpp:323:6:323:6 | b | taint.cpp:323:6:323:10 | ... + ... | TAINT |
 | taint.cpp:323:6:323:10 | ... + ... | taint.cpp:320:31:320:31 | b |  |
 | taint.cpp:323:6:323:10 | ... + ... | taint.cpp:323:2:323:10 | ... = ... |  |
 | taint.cpp:323:10:323:10 | 1 | taint.cpp:323:6:323:10 | ... + ... | TAINT |
+| taint.cpp:330:2:330:13 | ... = ... | taint.cpp:330:2:330:2 | t |  |
 | taint.cpp:330:6:330:11 | call to source | taint.cpp:330:2:330:13 | ... = ... |  |
 | taint.cpp:330:6:330:11 | call to source | taint.cpp:337:7:337:7 | t |  |
 | taint.cpp:330:6:330:11 | call to source | taint.cpp:344:15:344:15 | t |  |
@@ -1389,22 +1474,27 @@
 | taint.cpp:330:6:330:11 | call to source | taint.cpp:347:16:347:16 | t |  |
 | taint.cpp:330:6:330:11 | call to source | taint.cpp:348:17:348:17 | t |  |
 | taint.cpp:330:6:330:11 | call to source | taint.cpp:350:7:350:7 | t |  |
+| taint.cpp:331:2:331:6 | ... = ... | taint.cpp:331:2:331:2 | a |  |
 | taint.cpp:331:6:331:6 | 0 | taint.cpp:331:2:331:6 | ... = ... |  |
 | taint.cpp:331:6:331:6 | 0 | taint.cpp:338:7:338:7 | a |  |
 | taint.cpp:331:6:331:6 | 0 | taint.cpp:344:12:344:12 | a |  |
 | taint.cpp:331:6:331:6 | 0 | taint.cpp:351:7:351:7 | a |  |
+| taint.cpp:332:2:332:6 | ... = ... | taint.cpp:332:2:332:2 | b |  |
 | taint.cpp:332:6:332:6 | 0 | taint.cpp:332:2:332:6 | ... = ... |  |
 | taint.cpp:332:6:332:6 | 0 | taint.cpp:339:7:339:7 | b |  |
 | taint.cpp:332:6:332:6 | 0 | taint.cpp:345:12:345:12 | b |  |
 | taint.cpp:332:6:332:6 | 0 | taint.cpp:352:7:352:7 | b |  |
+| taint.cpp:333:2:333:6 | ... = ... | taint.cpp:333:2:333:2 | c |  |
 | taint.cpp:333:6:333:6 | 0 | taint.cpp:333:2:333:6 | ... = ... |  |
 | taint.cpp:333:6:333:6 | 0 | taint.cpp:340:7:340:7 | c |  |
 | taint.cpp:333:6:333:6 | 0 | taint.cpp:346:13:346:13 | c |  |
 | taint.cpp:333:6:333:6 | 0 | taint.cpp:353:7:353:7 | c |  |
+| taint.cpp:334:2:334:6 | ... = ... | taint.cpp:334:2:334:2 | d |  |
 | taint.cpp:334:6:334:6 | 0 | taint.cpp:334:2:334:6 | ... = ... |  |
 | taint.cpp:334:6:334:6 | 0 | taint.cpp:341:7:341:7 | d |  |
 | taint.cpp:334:6:334:6 | 0 | taint.cpp:347:13:347:13 | d |  |
 | taint.cpp:334:6:334:6 | 0 | taint.cpp:354:7:354:7 | d |  |
+| taint.cpp:335:2:335:6 | ... = ... | taint.cpp:335:2:335:2 | e |  |
 | taint.cpp:335:6:335:6 | 0 | taint.cpp:335:2:335:6 | ... = ... |  |
 | taint.cpp:335:6:335:6 | 0 | taint.cpp:342:7:342:7 | e |  |
 | taint.cpp:335:6:335:6 | 0 | taint.cpp:348:14:348:14 | e |  |
@@ -1426,25 +1516,31 @@
 | taint.cpp:348:17:348:17 | ref arg t | taint.cpp:350:7:350:7 | t |  |
 | taint.cpp:365:24:365:29 | source | taint.cpp:369:13:369:18 | source |  |
 | taint.cpp:365:24:365:29 | source | taint.cpp:371:14:371:19 | source |  |
+| taint.cpp:369:2:369:19 | ... = ... | taint.cpp:369:2:369:2 | a |  |
 | taint.cpp:369:6:369:11 | call to strdup | taint.cpp:369:2:369:19 | ... = ... |  |
 | taint.cpp:369:6:369:11 | call to strdup | taint.cpp:372:7:372:7 | a |  |
 | taint.cpp:369:13:369:18 | source | taint.cpp:369:6:369:11 | call to strdup | TAINT |
+| taint.cpp:370:2:370:27 | ... = ... | taint.cpp:370:2:370:2 | b |  |
 | taint.cpp:370:6:370:11 | call to strdup | taint.cpp:370:2:370:27 | ... = ... |  |
 | taint.cpp:370:6:370:11 | call to strdup | taint.cpp:373:7:373:7 | b |  |
 | taint.cpp:370:13:370:26 | hello, world | taint.cpp:370:6:370:11 | call to strdup | TAINT |
+| taint.cpp:371:2:371:25 | ... = ... | taint.cpp:371:2:371:2 | c |  |
 | taint.cpp:371:6:371:12 | call to strndup | taint.cpp:371:2:371:25 | ... = ... |  |
 | taint.cpp:371:6:371:12 | call to strndup | taint.cpp:374:7:374:7 | c |  |
 | taint.cpp:371:14:371:19 | source | taint.cpp:371:6:371:12 | call to strndup | TAINT |
 | taint.cpp:371:22:371:24 | 100 | taint.cpp:371:6:371:12 | call to strndup | TAINT |
 | taint.cpp:377:23:377:28 | source | taint.cpp:381:30:381:35 | source |  |
+| taint.cpp:381:2:381:36 | ... = ... | taint.cpp:381:2:381:2 | a |  |
 | taint.cpp:381:6:381:12 | call to strndup | taint.cpp:381:2:381:36 | ... = ... |  |
 | taint.cpp:381:6:381:12 | call to strndup | taint.cpp:382:7:382:7 | a |  |
 | taint.cpp:381:14:381:27 | hello, world | taint.cpp:381:6:381:12 | call to strndup | TAINT |
 | taint.cpp:381:30:381:35 | source | taint.cpp:381:6:381:12 | call to strndup | TAINT |
 | taint.cpp:385:27:385:32 | source | taint.cpp:389:13:389:18 | source |  |
+| taint.cpp:389:2:389:19 | ... = ... | taint.cpp:389:2:389:2 | a |  |
 | taint.cpp:389:6:389:11 | call to wcsdup | taint.cpp:389:2:389:19 | ... = ... |  |
 | taint.cpp:389:6:389:11 | call to wcsdup | taint.cpp:391:7:391:7 | a |  |
 | taint.cpp:389:13:389:18 | source | taint.cpp:389:6:389:11 | call to wcsdup | TAINT |
+| taint.cpp:390:2:390:28 | ... = ... | taint.cpp:390:2:390:2 | b |  |
 | taint.cpp:390:6:390:11 | call to wcsdup | taint.cpp:390:2:390:28 | ... = ... |  |
 | taint.cpp:390:6:390:11 | call to wcsdup | taint.cpp:392:7:392:7 | b |  |
 | taint.cpp:390:13:390:27 | hello, world | taint.cpp:390:6:390:11 | call to wcsdup | TAINT |
@@ -1479,8 +1575,10 @@
 | taint.cpp:428:2:428:2 | b [post update] | taint.cpp:429:7:429:7 | b |  |
 | taint.cpp:428:2:428:2 | b [post update] | taint.cpp:430:7:430:7 | b |  |
 | taint.cpp:428:2:428:2 | b [post update] | taint.cpp:431:7:431:7 | b |  |
+| taint.cpp:428:2:428:20 | ... = ... | taint.cpp:428:4:428:9 | member |  |
 | taint.cpp:428:2:428:20 | ... = ... | taint.cpp:430:9:430:14 | member |  |
 | taint.cpp:428:13:428:18 | call to source | taint.cpp:428:2:428:20 | ... = ... |  |
+| taint.cpp:433:2:433:20 | ... = ... | taint.cpp:433:2:433:2 | c |  |
 | taint.cpp:433:6:433:20 | call to MyClass2 | taint.cpp:433:6:433:20 | new |  |
 | taint.cpp:433:6:433:20 | new | taint.cpp:433:2:433:20 | ... = ... |  |
 | taint.cpp:433:6:433:20 | new | taint.cpp:435:7:435:7 | c |  |
@@ -1514,14 +1612,18 @@
 | taint.cpp:452:16:452:16 | a | taint.cpp:454:10:454:10 | a |  |
 | taint.cpp:452:24:452:24 | b | taint.cpp:455:6:455:6 | b |  |
 | taint.cpp:454:10:454:10 | a | taint.cpp:456:6:456:6 | c |  |
+| taint.cpp:455:2:455:6 | ... = ... | taint.cpp:455:2:455:2 | a |  |
 | taint.cpp:455:6:455:6 | b | taint.cpp:452:16:452:16 | a |  |
 | taint.cpp:455:6:455:6 | b | taint.cpp:455:2:455:6 | ... = ... |  |
+| taint.cpp:456:2:456:6 | ... = ... | taint.cpp:456:2:456:2 | b |  |
 | taint.cpp:456:6:456:6 | c | taint.cpp:452:24:452:24 | b |  |
 | taint.cpp:456:6:456:6 | c | taint.cpp:456:2:456:6 | ... = ... |  |
+| taint.cpp:462:2:462:13 | ... = ... | taint.cpp:462:2:462:2 | x |  |
 | taint.cpp:462:6:462:11 | call to source | taint.cpp:462:2:462:13 | ... = ... |  |
 | taint.cpp:462:6:462:11 | call to source | taint.cpp:465:7:465:7 | x |  |
 | taint.cpp:462:6:462:11 | call to source | taint.cpp:468:7:468:7 | x |  |
 | taint.cpp:462:6:462:11 | call to source | taint.cpp:470:7:470:7 | x |  |
+| taint.cpp:463:2:463:6 | ... = ... | taint.cpp:463:2:463:2 | y |  |
 | taint.cpp:463:6:463:6 | 0 | taint.cpp:463:2:463:6 | ... = ... |  |
 | taint.cpp:463:6:463:6 | 0 | taint.cpp:466:7:466:7 | y |  |
 | taint.cpp:463:6:463:6 | 0 | taint.cpp:468:10:468:10 | y |  |
@@ -1672,6 +1774,7 @@
 | vector.cpp:40:2:40:3 | ref arg v1 | vector.cpp:49:7:49:8 | v1 |  |
 | vector.cpp:40:2:40:3 | ref arg v1 | vector.cpp:101:1:101:1 | v1 |  |
 | vector.cpp:40:2:40:3 | v1 | vector.cpp:40:4:40:4 | call to operator[] | TAINT |
+| vector.cpp:40:2:40:10 | ... = ... | vector.cpp:40:4:40:4 | call to operator[] |  |
 | vector.cpp:40:10:40:10 | 0 | vector.cpp:40:2:40:10 | ... = ... |  |
 | vector.cpp:41:2:41:3 | ref arg v1 | vector.cpp:42:2:42:3 | v1 |  |
 | vector.cpp:41:2:41:3 | ref arg v1 | vector.cpp:43:2:43:3 | v1 |  |
@@ -1683,6 +1786,7 @@
 | vector.cpp:41:2:41:3 | ref arg v1 | vector.cpp:49:7:49:8 | v1 |  |
 | vector.cpp:41:2:41:3 | ref arg v1 | vector.cpp:101:1:101:1 | v1 |  |
 | vector.cpp:41:2:41:3 | v1 | vector.cpp:41:4:41:4 | call to operator[] | TAINT |
+| vector.cpp:41:2:41:10 | ... = ... | vector.cpp:41:4:41:4 | call to operator[] |  |
 | vector.cpp:41:10:41:10 | 0 | vector.cpp:41:2:41:10 | ... = ... |  |
 | vector.cpp:42:2:42:3 | ref arg v1 | vector.cpp:43:2:43:3 | v1 |  |
 | vector.cpp:42:2:42:3 | ref arg v1 | vector.cpp:44:7:44:8 | v1 |  |
@@ -1693,6 +1797,7 @@
 | vector.cpp:42:2:42:3 | ref arg v1 | vector.cpp:49:7:49:8 | v1 |  |
 | vector.cpp:42:2:42:3 | ref arg v1 | vector.cpp:101:1:101:1 | v1 |  |
 | vector.cpp:42:2:42:3 | v1 | vector.cpp:42:4:42:4 | call to operator[] | TAINT |
+| vector.cpp:42:2:42:10 | ... = ... | vector.cpp:42:4:42:4 | call to operator[] |  |
 | vector.cpp:42:10:42:10 | 0 | vector.cpp:42:2:42:10 | ... = ... |  |
 | vector.cpp:43:2:43:3 | ref arg v1 | vector.cpp:44:7:44:8 | v1 |  |
 | vector.cpp:43:2:43:3 | ref arg v1 | vector.cpp:45:7:45:8 | v1 |  |
@@ -1735,6 +1840,7 @@
 | vector.cpp:51:2:51:3 | ref arg v2 | vector.cpp:57:7:57:8 | v2 |  |
 | vector.cpp:51:2:51:3 | ref arg v2 | vector.cpp:101:1:101:1 | v2 |  |
 | vector.cpp:51:2:51:3 | v2 | vector.cpp:51:4:51:4 | call to operator[] | TAINT |
+| vector.cpp:51:2:51:17 | ... = ... | vector.cpp:51:4:51:4 | call to operator[] |  |
 | vector.cpp:51:10:51:15 | call to source | vector.cpp:51:2:51:17 | ... = ... |  |
 | vector.cpp:52:7:52:8 | ref arg v2 | vector.cpp:53:7:53:8 | v2 |  |
 | vector.cpp:52:7:52:8 | ref arg v2 | vector.cpp:54:7:54:8 | v2 |  |
@@ -1779,6 +1885,7 @@
 | vector.cpp:63:2:63:3 | ref arg v4 | vector.cpp:67:7:67:8 | v4 |  |
 | vector.cpp:63:2:63:3 | ref arg v4 | vector.cpp:101:1:101:1 | v4 |  |
 | vector.cpp:63:2:63:3 | v4 | vector.cpp:63:4:63:4 | call to operator[] | TAINT |
+| vector.cpp:63:2:63:17 | ... = ... | vector.cpp:63:4:63:4 | call to operator[] |  |
 | vector.cpp:63:10:63:15 | call to source | vector.cpp:63:2:63:17 | ... = ... |  |
 | vector.cpp:64:7:64:8 | ref arg v4 | vector.cpp:65:7:65:8 | v4 |  |
 | vector.cpp:64:7:64:8 | ref arg v4 | vector.cpp:66:7:66:8 | v4 |  |
@@ -1810,6 +1917,7 @@
 | vector.cpp:74:2:74:3 | ref arg v6 | vector.cpp:76:7:76:8 | v6 |  |
 | vector.cpp:74:2:74:3 | ref arg v6 | vector.cpp:101:1:101:1 | v6 |  |
 | vector.cpp:74:2:74:13 | access to array [post update] | vector.cpp:74:5:74:8 | call to data [inner post update] |  |
+| vector.cpp:74:2:74:24 | ... = ... | vector.cpp:74:2:74:13 | access to array |  |
 | vector.cpp:74:5:74:8 | call to data | vector.cpp:74:2:74:13 | access to array | TAINT |
 | vector.cpp:74:12:74:12 | 2 | vector.cpp:74:2:74:13 | access to array | TAINT |
 | vector.cpp:74:17:74:22 | call to source | vector.cpp:74:2:74:24 | ... = ... |  |
@@ -1852,6 +1960,7 @@
 | vector.cpp:96:2:96:3 | ref arg v9 | vector.cpp:100:7:100:8 | v9 |  |
 | vector.cpp:96:2:96:3 | ref arg v9 | vector.cpp:101:1:101:1 | v9 |  |
 | vector.cpp:96:2:96:3 | v9 | vector.cpp:96:5:96:6 | call to at | TAINT |
+| vector.cpp:96:2:96:20 | ... = ... | vector.cpp:96:5:96:6 | call to at |  |
 | vector.cpp:96:13:96:18 | call to source | vector.cpp:96:2:96:20 | ... = ... |  |
 | vector.cpp:97:7:97:8 | ref arg v9 | vector.cpp:98:7:98:8 | v9 |  |
 | vector.cpp:97:7:97:8 | ref arg v9 | vector.cpp:99:7:99:8 | v9 |  |
