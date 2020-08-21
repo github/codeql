@@ -163,7 +163,16 @@ private predicate isRequire(DataFlow::Node nd) {
   or
   isRequire(nd.getAPredecessor())
   or
-  nd = DataFlow::moduleMember("module", "createRequire").getACall()
+  // `import { createRequire } from 'module';` support.
+  // specialized to ES2015 modules to avoid recursion in the `DataFlow::moduleImport()` predicate.
+  exists(ImportDeclaration imp | imp.getImportedPath().getValue() = "module" |
+    nd =
+      imp
+          .getImportedModuleNode()
+          .(DataFlow::SourceNode)
+          .getAPropertyRead("createRequire")
+          .getACall()
+  )
 }
 
 /**
