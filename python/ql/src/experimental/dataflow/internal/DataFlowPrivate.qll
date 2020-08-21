@@ -425,7 +425,7 @@ predicate comprehensionReadStep(CfgNode nodeFrom, Content c, EssaNode nodeTo) {
   //   c denotes element of list or set
   exists(For f, Comp comp |
     f = getCompFor(comp) and
-    nodeFrom.getNode().(SequenceNode).getNode() = getCompIter(comp) and
+    nodeFrom.getNode().getNode() = getCompIter(comp) and
     nodeTo.getVar().getDefinition().(AssignmentDefinition).getDefiningNode().getNode() =
       f.getTarget() and
     (
