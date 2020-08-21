@@ -100,3 +100,23 @@ class StdSequenceContainerSwap extends TaintFunction {
     output.isQualifierObject()
   }
 }
+
+/**
+ * The standard container functions `at` and `operator[]`.
+ */
+class StdSequenceContainerAt extends TaintFunction {
+  StdSequenceContainerAt() {
+    this.hasQualifiedName("std", "vector", "at") or
+    this.hasQualifiedName("std", "vector", "operator[]") or
+    this.hasQualifiedName("std", "array", "at") or
+    this.hasQualifiedName("std", "array", "operator[]") or
+    this.hasQualifiedName("std", "deque", "at") or
+    this.hasQualifiedName("std", "deque", "operator[]")
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from qualifier to referenced return value
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
+  }
+}

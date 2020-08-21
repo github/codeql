@@ -145,3 +145,19 @@ class StdStringSwap extends TaintFunction {
     output.isQualifierObject()
   }
 }
+
+/**
+ * The `std::string` functions `at` and `operator[]`.
+ */
+class StdStringAt extends TaintFunction {
+  StdStringAt() {
+    this.hasQualifiedName("std", "basic_string", "at") or
+    this.hasQualifiedName("std", "basic_string", "operator[]")
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from qualifier to referenced return value
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
+  }
+}
