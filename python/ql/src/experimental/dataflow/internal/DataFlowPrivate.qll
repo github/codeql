@@ -352,7 +352,7 @@ predicate comprehensionStoreStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
  * Holds if data can flow from `nodeFrom` to `nodeTo` via a read of content `c`.
  */
 predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
-  subscriptionReadStep(nodeFrom, c, nodeTo)
+  subscriptReadStep(nodeFrom, c, nodeTo)
   or
   popReadStep(nodeFrom, c, nodeTo)
   or
@@ -360,8 +360,8 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
 }
 
 /** Data flows from a sequence to a subscript of the sequence. */
-predicate subscriptionReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
-  // Subscription
+predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
+  // Subscript
   //   `l[3]`
   //   nodeFrom is `l`, cfg node
   //   nodeTo is `l[3]`, cfg node
