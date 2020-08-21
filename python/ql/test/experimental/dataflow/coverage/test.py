@@ -98,7 +98,7 @@ def test_nested_list_display():
 # 6.2.6. Set displays
 def test_set_display():
     x = {SOURCE}
-    SINK(x.pop()) # Flow missing
+    SINK(x.pop())
 
 def test_set_comprehension():
     x = {SOURCE for y in [NONSOURCE]}
@@ -111,7 +111,7 @@ def test_set_comprehension_flow():
 def test_set_comprehension_inflow():
     l = {SOURCE}
     x = {y for y in l}
-    SINK(x.pop()) # Flow missing
+    SINK(x.pop())
 
 def test_nested_set_display():
     x = {* {SOURCE}}

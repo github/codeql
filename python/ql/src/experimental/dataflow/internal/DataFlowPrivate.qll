@@ -283,6 +283,8 @@ predicate jumpStep(Node pred, Node succ) {
 predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   listStoreStep(nodeFrom, c, nodeTo)
   or
+  setStoreStep(nodeFrom, c, nodeTo)
+  or
   tupleStoreStep(nodeFrom, c, nodeTo)
   or
   dictStoreStep(nodeFrom, c, nodeTo)
@@ -295,9 +297,19 @@ predicate listStoreStep(CfgNode nodeFrom, ListElementContent c, CfgNode nodeTo) 
   // List
   //   `[..., 42, ...]`
   //   nodeFrom is `42`, cfg node
-  //   nodeTo is the sequence, `[..., 42, ...]`, cfg node
+  //   nodeTo is the list, `[..., 42, ...]`, cfg node
   //   c denotes element of list
   nodeTo.getNode().(ListNode).getAnElement() = nodeFrom.getNode()
+}
+
+/** Data flows from an element of a set to the set. */
+predicate setStoreStep(CfgNode nodeFrom, ListElementContent c, CfgNode nodeTo) {
+  // Set
+  //   `{..., 42, ...}`
+  //   nodeFrom is `42`, cfg node
+  //   nodeTo is the set, `{..., 42, ...}`, cfg node
+  //   c denotes element of list
+  nodeTo.getNode().(SetNode).getAnElement() = nodeFrom.getNode()
 }
 
 /** Data flows from an element of a tuple to the tuple at a specific index. */
@@ -305,7 +317,7 @@ predicate tupleStoreStep(CfgNode nodeFrom, TupleElementContent c, CfgNode nodeTo
   // Tuple
   //   `(..., 42, ...)`
   //   nodeFrom is `42`, cfg node
-  //   nodeTo is the sequence, `(..., 42, ...)`, cfg node
+  //   nodeTo is the tuple, `(..., 42, ...)`, cfg node
   //   c denotes element of tuple and index of nodeFrom
   exists(int n |
     nodeTo.getNode().(TupleNode).getElement(n) = nodeFrom.getNode() and
@@ -318,7 +330,7 @@ predicate dictStoreStep(CfgNode nodeFrom, DictionaryElementContent c, CfgNode no
   // Dictionary
   //   `{..., "key" = 42, ...}`
   //   nodeFrom is `42`, cfg node
-  //   nodeTo is the sequence, `{..., "key" = 42, ...}`, cfg node
+  //   nodeTo is the dict, `{..., "key" = 42, ...}`, cfg node
   //   c denotes element of dictionary and the key `"key"`
   exists(KeyValuePair item |
     item = nodeTo.getNode().(DictNode).getNode().(Dict).getAnItem() and

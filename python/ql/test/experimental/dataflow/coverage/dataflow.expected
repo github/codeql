@@ -97,6 +97,9 @@ edges
 | test.py:91:16:91:16 | SSA variable y | test.py:91:10:91:10 | ControlFlowNode for y |
 | test.py:91:21:91:21 | ControlFlowNode for l [List element] | test.py:91:16:91:16 | SSA variable y |
 | test.py:92:10:92:10 | ControlFlowNode for x [List element] | test.py:92:10:92:13 | ControlFlowNode for Subscript |
+| test.py:100:9:100:16 | ControlFlowNode for Set [List element] | test.py:101:10:101:10 | ControlFlowNode for x [List element] |
+| test.py:100:10:100:15 | ControlFlowNode for SOURCE | test.py:100:9:100:16 | ControlFlowNode for Set [List element] |
+| test.py:101:10:101:10 | ControlFlowNode for x [List element] | test.py:101:10:101:16 | ControlFlowNode for Attribute() |
 | test.py:104:9:104:37 | ControlFlowNode for SetComp [Set element] | test.py:105:10:105:10 | ControlFlowNode for x [Set element] |
 | test.py:104:10:104:15 | ControlFlowNode for SOURCE | test.py:104:9:104:37 | ControlFlowNode for SetComp [Set element] |
 | test.py:105:10:105:10 | ControlFlowNode for x [Set element] | test.py:105:10:105:16 | ControlFlowNode for Attribute() |
@@ -106,6 +109,13 @@ edges
 | test.py:108:21:108:28 | ControlFlowNode for List [List element] | test.py:108:16:108:16 | SSA variable y |
 | test.py:108:22:108:27 | ControlFlowNode for SOURCE | test.py:108:21:108:28 | ControlFlowNode for List [List element] |
 | test.py:109:10:109:10 | ControlFlowNode for x [Set element] | test.py:109:10:109:16 | ControlFlowNode for Attribute() |
+| test.py:112:9:112:16 | ControlFlowNode for Set [List element] | test.py:113:21:113:21 | ControlFlowNode for l [List element] |
+| test.py:112:10:112:15 | ControlFlowNode for SOURCE | test.py:112:9:112:16 | ControlFlowNode for Set [List element] |
+| test.py:113:9:113:22 | ControlFlowNode for SetComp [Set element] | test.py:114:10:114:10 | ControlFlowNode for x [Set element] |
+| test.py:113:10:113:10 | ControlFlowNode for y | test.py:113:9:113:22 | ControlFlowNode for SetComp [Set element] |
+| test.py:113:16:113:16 | SSA variable y | test.py:113:10:113:10 | ControlFlowNode for y |
+| test.py:113:21:113:21 | ControlFlowNode for l [List element] | test.py:113:16:113:16 | SSA variable y |
+| test.py:114:10:114:10 | ControlFlowNode for x [Set element] | test.py:114:10:114:16 | ControlFlowNode for Attribute() |
 | test.py:122:9:122:21 | ControlFlowNode for Dict [Dictionary element at key s] | test.py:123:10:123:10 | ControlFlowNode for x [Dictionary element at key s] |
 | test.py:122:15:122:20 | ControlFlowNode for SOURCE | test.py:122:9:122:21 | ControlFlowNode for Dict [Dictionary element at key s] |
 | test.py:123:10:123:10 | ControlFlowNode for x [Dictionary element at key s] | test.py:123:10:123:15 | ControlFlowNode for Subscript |
@@ -204,6 +214,10 @@ nodes
 | test.py:91:21:91:21 | ControlFlowNode for l [List element] | semmle.label | ControlFlowNode for l [List element] |
 | test.py:92:10:92:10 | ControlFlowNode for x [List element] | semmle.label | ControlFlowNode for x [List element] |
 | test.py:92:10:92:13 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:100:9:100:16 | ControlFlowNode for Set [List element] | semmle.label | ControlFlowNode for Set [List element] |
+| test.py:100:10:100:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:101:10:101:10 | ControlFlowNode for x [List element] | semmle.label | ControlFlowNode for x [List element] |
+| test.py:101:10:101:16 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | test.py:104:9:104:37 | ControlFlowNode for SetComp [Set element] | semmle.label | ControlFlowNode for SetComp [Set element] |
 | test.py:104:10:104:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:105:10:105:10 | ControlFlowNode for x [Set element] | semmle.label | ControlFlowNode for x [Set element] |
@@ -215,6 +229,14 @@ nodes
 | test.py:108:22:108:27 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:109:10:109:10 | ControlFlowNode for x [Set element] | semmle.label | ControlFlowNode for x [Set element] |
 | test.py:109:10:109:16 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| test.py:112:9:112:16 | ControlFlowNode for Set [List element] | semmle.label | ControlFlowNode for Set [List element] |
+| test.py:112:10:112:15 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:113:9:113:22 | ControlFlowNode for SetComp [Set element] | semmle.label | ControlFlowNode for SetComp [Set element] |
+| test.py:113:10:113:10 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
+| test.py:113:16:113:16 | SSA variable y | semmle.label | SSA variable y |
+| test.py:113:21:113:21 | ControlFlowNode for l [List element] | semmle.label | ControlFlowNode for l [List element] |
+| test.py:114:10:114:10 | ControlFlowNode for x [Set element] | semmle.label | ControlFlowNode for x [Set element] |
+| test.py:114:10:114:16 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | test.py:122:9:122:21 | ControlFlowNode for Dict [Dictionary element at key s] | semmle.label | ControlFlowNode for Dict [Dictionary element at key s] |
 | test.py:122:15:122:20 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:123:10:123:10 | ControlFlowNode for x [Dictionary element at key s] | semmle.label | ControlFlowNode for x [Dictionary element at key s] |
@@ -267,8 +289,10 @@ nodes
 | test.py:83:10:83:13 | ControlFlowNode for Subscript | test.py:82:10:82:15 | ControlFlowNode for SOURCE | test.py:83:10:83:13 | ControlFlowNode for Subscript | <message> |
 | test.py:87:10:87:13 | ControlFlowNode for Subscript | test.py:86:22:86:27 | ControlFlowNode for SOURCE | test.py:87:10:87:13 | ControlFlowNode for Subscript | <message> |
 | test.py:92:10:92:13 | ControlFlowNode for Subscript | test.py:90:10:90:15 | ControlFlowNode for SOURCE | test.py:92:10:92:13 | ControlFlowNode for Subscript | <message> |
+| test.py:101:10:101:16 | ControlFlowNode for Attribute() | test.py:100:10:100:15 | ControlFlowNode for SOURCE | test.py:101:10:101:16 | ControlFlowNode for Attribute() | <message> |
 | test.py:105:10:105:16 | ControlFlowNode for Attribute() | test.py:104:10:104:15 | ControlFlowNode for SOURCE | test.py:105:10:105:16 | ControlFlowNode for Attribute() | <message> |
 | test.py:109:10:109:16 | ControlFlowNode for Attribute() | test.py:108:22:108:27 | ControlFlowNode for SOURCE | test.py:109:10:109:16 | ControlFlowNode for Attribute() | <message> |
+| test.py:114:10:114:16 | ControlFlowNode for Attribute() | test.py:112:10:112:15 | ControlFlowNode for SOURCE | test.py:114:10:114:16 | ControlFlowNode for Attribute() | <message> |
 | test.py:123:10:123:15 | ControlFlowNode for Subscript | test.py:122:15:122:20 | ControlFlowNode for SOURCE | test.py:123:10:123:15 | ControlFlowNode for Subscript | <message> |
 | test.py:127:10:127:19 | ControlFlowNode for Attribute() | test.py:126:15:126:20 | ControlFlowNode for SOURCE | test.py:127:10:127:19 | ControlFlowNode for Attribute() | <message> |
 | test.py:252:10:252:21 | ControlFlowNode for Subscript | test.py:252:11:252:16 | ControlFlowNode for SOURCE | test.py:252:10:252:21 | ControlFlowNode for Subscript | <message> |
