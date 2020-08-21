@@ -26,7 +26,7 @@ predicate all_defined(ModuleValue exporter) {
 }
 
 from ImportStar imp, ModuleValue exporter
-where import_star(imp, exporter) and not all_defined(exporter)
+where import_star(imp, exporter) and not all_defined(exporter) and not exporter.isAbsent()
 select imp,
   "Import pollutes the enclosing namespace, as the imported module $@ does not define '__all__'.",
   exporter, exporter.getName()

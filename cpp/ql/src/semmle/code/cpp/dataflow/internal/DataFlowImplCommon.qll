@@ -512,13 +512,19 @@ abstract class CallContext extends TCallContext {
   abstract predicate relevantFor(DataFlowCallable callable);
 }
 
-class CallContextAny extends CallContext, TAnyCallContext {
+abstract class CallContextNoCall extends CallContext { }
+
+class CallContextAny extends CallContextNoCall, TAnyCallContext {
   override string toString() { result = "CcAny" }
 
   override predicate relevantFor(DataFlowCallable callable) { any() }
 }
 
-abstract class CallContextCall extends CallContext { }
+abstract class CallContextCall extends CallContext {
+  /** Holds if this call context may be `call`. */
+  bindingset[call]
+  abstract predicate matchesCall(DataFlowCall call);
+}
 
 class CallContextSpecificCall extends CallContextCall, TSpecificCall {
   override string toString() {
@@ -529,6 +535,8 @@ class CallContextSpecificCall extends CallContextCall, TSpecificCall {
     recordDataFlowCallSite(getCall(), callable)
   }
 
+  override predicate matchesCall(DataFlowCall call) { call = this.getCall() }
+
   DataFlowCall getCall() { this = TSpecificCall(result) }
 }
 
@@ -538,9 +546,11 @@ class CallContextSomeCall extends CallContextCall, TSomeCall {
   override predicate relevantFor(DataFlowCallable callable) {
     exists(ParameterNode p | p.getEnclosingCallable() = callable)
   }
+
+  override predicate matchesCall(DataFlowCall call) { any() }
 }
 
-class CallContextReturn extends CallContext, TReturn {
+class CallContextReturn extends CallContextNoCall, TReturn {
   override string toString() {
     exists(DataFlowCall call | this = TReturn(_, call) | result = "CcReturn(" + call + ")")
   }

@@ -1,0 +1,129 @@
+operators.cs:
+#    5| [NamespaceDeclaration] namespace ... { ... }
+#    7|   1: [Class] IntVector
+#   10|     4: [InstanceConstructor] IntVector
+#-----|       2: (Parameters)
+#   10|         0: [Parameter] length
+#   10|       4: [BlockStmt] {...}
+#   12|     5: [Property] Length
+#   12|       3: [Getter] get_Length
+#   12|         4: [BlockStmt] {...}
+#   12|           0: [ReturnStmt] return ...;
+#   12|             0: [IntLiteral] 4
+#   14|     6: [Indexer] Item
+#-----|       1: (Parameters)
+#   14|         0: [Parameter] index
+#   14|       3: [Getter] get_Item
+#-----|         2: (Parameters)
+#   14|           0: [Parameter] index
+#   14|         4: [BlockStmt] {...}
+#   14|           0: [ReturnStmt] return ...;
+#   14|             0: [IntLiteral] 0
+#   14|       4: [Setter] set_Item
+#-----|         2: (Parameters)
+#   14|           0: [Parameter] index
+#   14|           1: [Parameter] value
+#   14|         4: [BlockStmt] {...}
+#   16|     7: [IncrementOperator] ++
+#-----|       2: (Parameters)
+#   16|         0: [Parameter] iv
+#   17|       4: [BlockStmt] {...}
+#   18|         0: [LocalVariableDeclStmt] ... ...;
+#   18|           0: [LocalVariableDeclAndInitExpr] IntVector temp = ...
+#   18|             0: [ObjectCreation] object creation of type IntVector
+#   18|               0: [PropertyCall] access to property Length
+#   18|                 -1: [ParameterAccess] access to parameter iv
+#   18|             1: [LocalVariableAccess] access to local variable temp
+#   19|         1: [ForStmt] for (...;...;...) ...
+#   19|           -1: [LocalVariableDeclAndInitExpr] Int32 i = ...
+#   19|             0: [IntLiteral] 0
+#   19|             1: [LocalVariableAccess] access to local variable i
+#   19|           0: [LTExpr] ... < ...
+#   19|             0: [LocalVariableAccess] access to local variable i
+#   19|             1: [PropertyCall] access to property Length
+#   19|               -1: [ParameterAccess] access to parameter iv
+#   19|           1: [PostIncrExpr] ...++
+#   19|             0: [LocalVariableAccess] access to local variable i
+#   20|           2: [ExprStmt] ...;
+#   20|             0: [AssignExpr] ... = ...
+#   20|               0: [AddExpr] ... + ...
+#   20|                 0: [IndexerCall] access to indexer
+#   20|                   -1: [ParameterAccess] access to parameter iv
+#   20|                   0: [LocalVariableAccess] access to local variable i
+#   20|                 1: [IntLiteral] 1
+#   20|               1: [IndexerCall] access to indexer
+#   20|                 -1: [LocalVariableAccess] access to local variable temp
+#   20|                 0: [LocalVariableAccess] access to local variable i
+#   21|         2: [ReturnStmt] return ...;
+#   21|           0: [LocalVariableAccess] access to local variable temp
+#   26|   2: [Class] TestUnaryOperator
+#   29|     5: [Method] Main
+#   30|       4: [BlockStmt] {...}
+#   31|         0: [LocalVariableDeclStmt] ... ...;
+#   31|           0: [LocalVariableDeclAndInitExpr] IntVector iv1 = ...
+#   31|             0: [ObjectCreation] object creation of type IntVector
+#   31|               0: [IntLiteral] 4
+#   31|             1: [LocalVariableAccess] access to local variable iv1
+#   32|         1: [LocalVariableDeclStmt] ... ...;
+#   32|           0: [LocalVariableDeclExpr] IntVector iv2
+#   33|         2: [ExprStmt] ...;
+#   33|           0: [AssignExpr] ... = ...
+#   33|             0: [OperatorCall] call to operator ++
+#   33|               0: [LocalVariableAccess] access to local variable iv1
+#   33|             1: [LocalVariableAccess] access to local variable iv2
+#   34|         3: [ExprStmt] ...;
+#   34|           0: [AssignExpr] ... = ...
+#   34|             0: [OperatorCall] call to operator ++
+#   34|               0: [LocalVariableAccess] access to local variable iv1
+#   34|             1: [LocalVariableAccess] access to local variable iv2
+#   39|   3: [Struct] Digit
+#   42|     5: [Field] value
+#   44|     6: [InstanceConstructor] Digit
+#-----|       2: (Parameters)
+#   44|         0: [Parameter] value
+#   45|       4: [BlockStmt] {...}
+#   46|         0: [IfStmt] if (...) ...
+#   46|           0: [LogicalOrExpr] ... || ...
+#   46|             0: [LTExpr] ... < ...
+#   46|               0: [CastExpr] (...) ...
+#   46|                 0: [ParameterAccess] access to parameter value
+#   46|               1: [IntLiteral] 0
+#   46|             1: [GTExpr] ... > ...
+#   46|               0: [CastExpr] (...) ...
+#   46|                 0: [ParameterAccess] access to parameter value
+#   46|               1: [IntLiteral] 9
+#   47|           1: [ThrowStmt] throw ...;
+#   47|             0: [ObjectCreation] object creation of type ArgumentException
+#   48|         1: [ExprStmt] ...;
+#   48|           0: [AssignExpr] ... = ...
+#   48|             0: [ParameterAccess] access to parameter value
+#   48|             1: [FieldAccess] access to field value
+#   48|               -1: [ThisAccess] this access
+#   51|     7: [ImplicitConversionOperator] implicit conversion
+#-----|       2: (Parameters)
+#   51|         0: [Parameter] d
+#   52|       4: [BlockStmt] {...}
+#   53|         0: [ReturnStmt] return ...;
+#   53|           0: [FieldAccess] access to field value
+#   53|             -1: [ParameterAccess] access to parameter d
+#   56|     8: [ExplicitConversionOperator] explicit conversion
+#-----|       2: (Parameters)
+#   56|         0: [Parameter] b
+#   57|       4: [BlockStmt] {...}
+#   58|         0: [ReturnStmt] return ...;
+#   58|           0: [ObjectCreation] object creation of type Digit
+#   58|             0: [ParameterAccess] access to parameter b
+#   63|   4: [Class] TestConversionOperator
+#   66|     5: [Method] Main
+#   67|       4: [BlockStmt] {...}
+#   68|         0: [LocalVariableDeclStmt] ... ...;
+#   68|           0: [LocalVariableDeclAndInitExpr] Digit d = ...
+#   68|             0: [OperatorCall] call to operator explicit conversion
+#   68|               0: [CastExpr] (...) ...
+#   68|                 0: [IntLiteral] 8
+#   68|             1: [LocalVariableAccess] access to local variable d
+#   69|         1: [LocalVariableDeclStmt] ... ...;
+#   69|           0: [LocalVariableDeclAndInitExpr] Byte b = ...
+#   69|             0: [OperatorCall] call to operator implicit conversion
+#   69|               0: [LocalVariableAccess] access to local variable d
+#   69|             1: [LocalVariableAccess] access to local variable b

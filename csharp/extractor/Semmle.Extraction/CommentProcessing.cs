@@ -35,7 +35,7 @@ namespace Semmle.Extraction.CommentProcessing
 
         class LocationComparer : IComparer<Location>
         {
-            public int Compare(Location l1, Location l2) => CommentProcessor.Compare(l1, l2);
+            public int Compare(Location? l1, Location? l2) => CommentProcessor.Compare(l1, l2);
         }
 
         /// <summary>
@@ -44,8 +44,12 @@ namespace Semmle.Extraction.CommentProcessing
         /// <param name="l1">First location</param>
         /// <param name="l2">Second location</param>
         /// <returns>&lt;0 if l1 before l2, &gt;0 if l1 after l2, else 0.</returns>
-        static int Compare(Location l1, Location l2)
+        static int Compare(Location? l1, Location? l2)
         {
+            if (object.ReferenceEquals(l1, l2)) return 0;
+            if (l1 == null) return -1;
+            if (l2 == null) return 1;
+
             int diff = l1.SourceTree == l2.SourceTree ? 0 : l1.SourceTree.FilePath.CompareTo(l2.SourceTree.FilePath);
             if (diff != 0) return diff;
             diff = l1.SourceSpan.Start - l2.SourceSpan.Start;
@@ -243,7 +247,7 @@ namespace Semmle.Extraction.CommentProcessing
         /// Process comments up until nextElement.
         /// Group comments into blocks, and associate blocks with elements.
         /// </summary>
-        /// 
+        ///
         /// <param name="commentEnumerator">Enumerator for all comments in the program.</param>
         /// <param name="nextElement">The next element in the list.</param>
         /// <param name="elementStack">A stack of nested program elements.</param>
@@ -261,7 +265,7 @@ namespace Semmle.Extraction.CommentProcessing
             // Iterate comments until the commentEnumerator has gone past nextElement
             while (nextElement == null || Compare(commentEnumerator.Current.Value.Location, nextElement.Value.Key) < 0)
             {
-                if(block is null)
+                if (block is null)
                     block = new CommentBlock(commentEnumerator.Current.Value);
 
                 if (!block.CombinesWith(commentEnumerator.Current.Value))
@@ -284,7 +288,7 @@ namespace Semmle.Extraction.CommentProcessing
                 }
             }
 
-            if(!(block is null))
+            if (!(block is null))
                 GenerateBindings(block, elementStack, nextElement, cb);
 
             return true;
