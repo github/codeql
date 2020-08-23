@@ -14,6 +14,8 @@
   - [pretty-format](https://www.npmjs.com/package/pretty-format)
   - [stringify-object](https://www.npmjs.com/package/stringify-object)
 
+* Analyzing files with the ".cjs" extension is now supported.
+
 ## New queries
 
 | **Query**                                                                       | **Tags**                                                          | **Purpose**                                                                                                                                                                            |
@@ -24,7 +26,7 @@
 
 | **Query**                      | **Expected impact**          | **Change**                                                                |
 |--------------------------------|------------------------------|---------------------------------------------------------------------------|
+| Incomplete URL substring sanitization (`js/incomplete-url-substring-sanitization`) | More results | This query now recognizes additional URLs when the substring check is an inclusion check. |
 
 
 ## Changes to libraries
-

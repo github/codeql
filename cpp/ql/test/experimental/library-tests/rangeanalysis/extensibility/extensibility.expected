@@ -1,0 +1,4 @@
+| extensibility.c:5:7:5:7 | x | -2.147483648E9 | 2.147483647E9 |
+| extensibility.c:5:19:5:19 | x | -10.0 | 2.147483647E9 |
+| extensibility.c:6:38:6:38 | x | -10.0 | 10.0 |
+| extensibility.c:7:12:7:17 | result | 90.0 | 110.0 |
