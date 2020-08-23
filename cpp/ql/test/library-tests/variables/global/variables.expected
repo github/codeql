@@ -1,5 +1,4 @@
-| a.c:4:5:4:6 | is | array of 4 {int} | 2 |
-| a.c:4:5:4:6 | is | array of {int} | 2 |
+| a.c:4:5:4:6 | is | array of {int} | 1 |
 | file://:0:0:0:0 | fp_offset | unsigned int | 1 |
 | file://:0:0:0:0 | gp_offset | unsigned int | 1 |
 | file://:0:0:0:0 | overflow_arg_area | pointer to {void} | 1 |
