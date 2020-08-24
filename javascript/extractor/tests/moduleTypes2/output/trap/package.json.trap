@@ -1,14 +1,11 @@
-#10000=@"/invalid2/package.json;sourcefile"
-files(#10000,"/invalid2/package.json","package","json",0)
-#10001=@"/invalid2;folder"
-folders(#10001,"/invalid2","invalid2")
-#10002=@"/;folder"
-folders(#10002,"/","")
-containerparent(#10002,#10001)
+#10000=@"/package.json;sourcefile"
+files(#10000,"/package.json","package","json",0)
+#10001=@"/;folder"
+folders(#10001,"/","")
 containerparent(#10001,#10000)
-#10003=@"loc,{#10000},0,0,0,0"
-locations_default(#10003,#10000,0,0,0,0)
-hasLocation(#10000,#10003)
+#10002=@"loc,{#10000},0,0,0,0"
+locations_default(#10002,#10000,0,0,0,0)
+hasLocation(#10000,#10002)
 #20000=*
 json(#20000,5,#10000,0,"{\n  ""type"": 123\n}")
 #20001=@"loc,{#10000},1,1,3,1"
