@@ -1611,6 +1611,19 @@ expressions.cs:
 #  444|                     0: [ArrayInitializer] { ..., ... }
 #  444|                       0: [IntLiteral] 1
 #  444|                       1: [IntLiteral] 2
+#  444|                       2: [IntLiteral] 3
+#  444|                     1: [ArrayInitializer] { ..., ... }
+#  444|                       0: [IntLiteral] 1
+#  444|                       1: [IntLiteral] 2
+#  444|                       2: [IntLiteral] 3
+#  444|                     2: [ArrayInitializer] { ..., ... }
+#  444|                       0: [IntLiteral] 1
+#  444|                       1: [IntLiteral] 2
+#  444|                       2: [IntLiteral] 3
+#  444|                     3: [ArrayInitializer] { ..., ... }
+#  444|                       0: [IntLiteral] 1
+#  444|                       1: [IntLiteral] 2
+#  444|                       2: [IntLiteral] 3
 #  444|             1: [LocalVariableAccess] access to local variable o
 #  447|     9: [Method] MainAnonymousFunctions
 #  448|       4: [BlockStmt] {...}
