@@ -4,6 +4,9 @@
 
 import go
 
+/**
+ * Provides classes and predicates relating to flags that may indicate security expectations.
+ */
 module InsecureFeatureFlag {
   /**
    * A kind of flag that may indicate security expectations regarding the code it guards.
