@@ -38,6 +38,9 @@ namespace std
 	template<class charT, class traits = char_traits<charT>, class Allocator = allocator<charT> >
 	class basic_string {
 	public:
+		using value_type = charT;
+		using reference = value_type&;
+		using const_reference = const value_type&;
 		typedef typename Allocator::size_type size_type;
 		static const size_type npos = -1;
 
@@ -58,6 +61,10 @@ namespace std
 		const_iterator cbegin() const;
 		const_iterator cend() const;
 
+		const_reference operator[](size_type pos) const;
+		reference operator[](size_type pos);
+		const_reference at(size_type n) const;
+		reference at(size_type n);
 		template<class T> basic_string& operator+=(const T& t);
 		basic_string& operator+=(const charT* s);
 		basic_string& append(const basic_string& str);

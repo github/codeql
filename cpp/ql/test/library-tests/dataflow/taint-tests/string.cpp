@@ -321,3 +321,22 @@ void test_string_substr()
 	sink(a.substr(0, a.length()));
 	sink(b.substr(0, b.length())); // tainted
 }
+
+void test_string_at()
+{
+	std::string a("123");
+	std::string b("123");
+	std::string c("123");
+
+	sink(a);
+	sink(b);
+	sink(c);
+
+	a[0] = ns_char::source();
+	b.at(0) = ns_char::source();
+	c[0] = a[0];
+
+	sink(a); // tainted [NOT DETECTED]
+	sink(b); // tainted [NOT DETECTED]
+	sink(c); // tainted [NOT DETECTED]
+}
