@@ -1,7 +1,7 @@
 /**
  * Provides the `TypeTracker` class for tracking types interprocedurally.
  *
- * This provides an alternative to `DataFlow::TrackedNode` and `AbstractValue`
+ * This provides an alternative to `AbstractValue`
  * for tracking certain types interprocedurally without computing which source
  * a given value came from.
  */

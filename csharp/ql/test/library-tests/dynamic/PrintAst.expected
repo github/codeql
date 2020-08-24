@@ -1,0 +1,252 @@
+dynamic.cs:
+#    4| [Class] DynamicTest
+#    6|   4: [InstanceConstructor] DynamicTest
+#-----|     2: (Parameters)
+#    6|       0: [Parameter] x
+#    6|     4: [BlockStmt] {...}
+#    8|   5: [Method] Main
+#-----|     2: (Parameters)
+#    8|       0: [Parameter] args
+#    9|     4: [BlockStmt] {...}
+#   10|       0: [LocalVariableDeclStmt] ... ...;
+#   10|         0: [LocalVariableDeclAndInitExpr] DynamicTest dt = ...
+#   10|           0: [ObjectCreation] object creation of type DynamicTest
+#   10|             0: [IntLiteral] 0
+#   10|           1: [LocalVariableAccess] access to local variable dt
+#   11|       1: [LocalVariableDeclStmt] ... ...;
+#   11|         0: [LocalVariableDeclAndInitExpr] Int32[] array = ...
+#   11|           0: [ArrayCreation] array creation of type Int32[]
+#   11|             -1: [ArrayInitializer] { ..., ... }
+#   11|               0: [IntLiteral] 42
+#   11|           1: [LocalVariableAccess] access to local variable array
+#   12|       2: [LocalVariableDeclStmt] ... ...;
+#   12|         0: [LocalVariableDeclAndInitExpr] Action<Int32> action = ...
+#   12|           0: [LambdaExpr] (...) => ...
+#-----|             2: (Parameters)
+#   12|               0: [Parameter] x
+#   12|             4: [BlockStmt] {...}
+#   12|           1: [LocalVariableAccess] access to local variable action
+#   13|       3: [LocalVariableDeclStmt] ... ...;
+#   13|         0: [LocalVariableDeclAndInitExpr] dynamic d = ...
+#   13|           0: [CastExpr] (...) ...
+#   13|             0: [IntLiteral] 0
+#   13|           1: [LocalVariableAccess] access to local variable d
+#   16|       4: [ExprStmt] ...;
+#   16|         0: [DynamicObjectCreation] dynamic object creation of type DynamicTest
+#   16|           0: [LocalVariableAccess] access to local variable d
+#   17|       5: [ExprStmt] ...;
+#   17|         0: [DynamicObjectCreation] dynamic object creation of type DynamicTest
+#   17|           -1: [ObjectInitializer] { ..., ... }
+#   17|             0: [MemberInitializer] ... = ...
+#   17|               0: [CastExpr] (...) ...
+#   17|                 0: [LocalVariableAccess] access to local variable d
+#   17|               1: [FieldAccess] access to field Field
+#   17|           0: [LocalVariableAccess] access to local variable d
+#   18|       6: [ExprStmt] ...;
+#   18|         0: [DynamicObjectCreation] dynamic object creation of type KeyValuePair<String,dynamic>
+#   18|           0: [StringLiteral] ""
+#   18|           1: [LocalVariableAccess] access to local variable d
+#   19|       7: [ExprStmt] ...;
+#   19|         0: [DynamicObjectCreation] dynamic object creation of type KeyValuePair<String,dynamic>
+#   19|           0: [StringLiteral] ""
+#   19|           1: [LocalVariableAccess] access to local variable d
+#   22|       8: [ExprStmt] ...;
+#   22|         0: [ObjectCreation] object creation of type DynamicTest
+#   22|           0: [IntLiteral] 0
+#   23|       9: [ExprStmt] ...;
+#   23|         0: [ObjectCreation] object creation of type DynamicTest
+#   23|           -1: [ObjectInitializer] { ..., ... }
+#   23|             0: [MemberInitializer] ... = ...
+#   23|               0: [CastExpr] (...) ...
+#   23|                 0: [LocalVariableAccess] access to local variable d
+#   23|               1: [FieldAccess] access to field Field
+#   23|           0: [IntLiteral] 0
+#   26|       10: [ExprStmt] ...;
+#   26|         0: [DynamicMethodCall] dynamic call to method Bar
+#   26|           -1: [LocalVariableAccess] access to local variable d
+#   26|           0: [StringLiteral] ""
+#   27|       11: [ExprStmt] ...;
+#   27|         0: [DynamicMethodCall] dynamic call to method Foo
+#   27|           0: [LocalVariableAccess] access to local variable d
+#   30|       12: [ExprStmt] ...;
+#   30|         0: [MethodCall] call to method Bar
+#   30|           -1: [LocalVariableAccess] access to local variable dt
+#   30|           0: [StringLiteral] ""
+#   31|       13: [ExprStmt] ...;
+#   31|         0: [MethodCall] call to method Foo
+#   31|           0: [IntLiteral] 0
+#   34|       14: [ExprStmt] ...;
+#   34|         0: [AssignExpr] ... = ...
+#   34|           0: [CastExpr] (...) ...
+#   34|             0: [IntLiteral] 0
+#   34|           1: [LocalVariableAccess] access to local variable d
+#   35|       15: [ExprStmt] ...;
+#   35|         0: [AssignExpr] ... = ...
+#   35|           0: [DynamicOperatorCall] dynamic call to operator -
+#   35|             0: [LocalVariableAccess] access to local variable d
+#   35|           1: [LocalVariableAccess] access to local variable d
+#   36|       16: [ExprStmt] ...;
+#   36|         0: [AssignExpr] ... = ...
+#   36|           0: [DynamicOperatorCall] dynamic call to operator +
+#   36|             0: [LocalVariableAccess] access to local variable d
+#   36|             1: [LocalVariableAccess] access to local variable d
+#   36|           1: [LocalVariableAccess] access to local variable d
+#   37|       17: [ExprStmt] ...;
+#   37|         0: [AssignAddExpr] ... += ...
+#   37|           0: [LocalVariableAccess] access to local variable d
+#   37|           1: [LocalVariableAccess] access to local variable d
+#   40|       18: [LocalVariableDeclStmt] ... ...;
+#   40|         0: [LocalVariableDeclAndInitExpr] Int32 i = ...
+#   40|           0: [IntLiteral] 0
+#   40|           1: [LocalVariableAccess] access to local variable i
+#   41|       19: [ExprStmt] ...;
+#   41|         0: [AssignExpr] ... = ...
+#   41|           0: [UnaryMinusExpr] -...
+#   41|             0: [LocalVariableAccess] access to local variable i
+#   41|           1: [LocalVariableAccess] access to local variable i
+#   42|       20: [ExprStmt] ...;
+#   42|         0: [AssignExpr] ... = ...
+#   42|           0: [AddExpr] ... + ...
+#   42|             0: [LocalVariableAccess] access to local variable i
+#   42|             1: [LocalVariableAccess] access to local variable i
+#   42|           1: [LocalVariableAccess] access to local variable i
+#   43|       21: [ExprStmt] ...;
+#   43|         0: [AssignAddExpr] ... += ...
+#   43|           0: [LocalVariableAccess] access to local variable i
+#   43|           1: [LocalVariableAccess] access to local variable i
+#   44|       22: [ExprStmt] ...;
+#   44|         0: [PostIncrExpr] ...++
+#   44|           0: [LocalVariableAccess] access to local variable i
+#   47|       23: [ExprStmt] ...;
+#   47|         0: [DynamicOperatorCall] dynamic call to operator ++
+#   47|           0: [LocalVariableAccess] access to local variable d
+#   50|       24: [ExprStmt] ...;
+#   50|         0: [PostIncrExpr] ...++
+#   50|           0: [LocalVariableAccess] access to local variable i
+#   53|       25: [ExprStmt] ...;
+#   53|         0: [AssignExpr] ... = ...
+#   53|           0: [IntLiteral] 0
+#   53|           1: [DynamicMemberAccess] dynamic access to member Field
+#   53|             -1: [LocalVariableAccess] access to local variable d
+#   54|       26: [ExprStmt] ...;
+#   54|         0: [AssignExpr] ... = ...
+#   54|           0: [DynamicMemberAccess] dynamic access to member Prop
+#   54|             -1: [LocalVariableAccess] access to local variable d
+#   54|           1: [DynamicMemberAccess] dynamic access to member Prop
+#   54|             -1: [LocalVariableAccess] access to local variable d
+#   57|       27: [ExprStmt] ...;
+#   57|         0: [AssignExpr] ... = ...
+#   57|           0: [IntLiteral] 0
+#   57|           1: [FieldAccess] access to field Field
+#   57|             -1: [LocalVariableAccess] access to local variable dt
+#   58|       28: [ExprStmt] ...;
+#   58|         0: [AssignExpr] ... = ...
+#   58|           0: [PropertyCall] access to property Prop
+#   58|             -1: [LocalVariableAccess] access to local variable dt
+#   58|           1: [PropertyCall] access to property Prop
+#   58|             -1: [LocalVariableAccess] access to local variable dt
+#   61|       29: [ExprStmt] ...;
+#   61|         0: [AssignExpr] ... = ...
+#   61|           0: [LocalVariableAccess] access to local variable array
+#   61|           1: [LocalVariableAccess] access to local variable d
+#   62|       30: [ExprStmt] ...;
+#   62|         0: [AssignExpr] ... = ...
+#   62|           0: [DynamicElementAccess] dynamic access to element
+#   62|             -1: [LocalVariableAccess] access to local variable d
+#   62|             0: [IntLiteral] 0
+#   62|           1: [DynamicElementAccess] dynamic access to element
+#   62|             -1: [LocalVariableAccess] access to local variable d
+#   62|             0: [IntLiteral] 0
+#   63|       31: [ExprStmt] ...;
+#   63|         0: [AssignExpr] ... = ...
+#   63|           0: [DynamicElementAccess] dynamic access to element
+#   63|             -1: [LocalVariableAccess] access to local variable d
+#   63|             0: [IntLiteral] 0
+#   63|           1: [LocalVariableAccess] access to local variable d
+#   66|       32: [ExprStmt] ...;
+#   66|         0: [AssignExpr] ... = ...
+#   66|           0: [CastExpr] (...) ...
+#   66|             0: [IntLiteral] 0
+#   66|           1: [LocalVariableAccess] access to local variable d
+#   67|       33: [ExprStmt] ...;
+#   67|         0: [AssignExpr] ... = ...
+#   67|           0: [CastExpr] (...) ...
+#   67|             0: [IndexerCall] access to indexer
+#   67|               -1: [LocalVariableAccess] access to local variable dt
+#   67|               0: [LocalVariableAccess] access to local variable d
+#   67|           1: [IndexerCall] access to indexer
+#   67|             -1: [LocalVariableAccess] access to local variable dt
+#   67|             0: [IntLiteral] 0
+#   68|       34: [ExprStmt] ...;
+#   68|         0: [AssignExpr] ... = ...
+#   68|           0: [CastExpr] (...) ...
+#   68|             0: [IndexerCall] access to indexer
+#   68|               -1: [LocalVariableAccess] access to local variable dt
+#   68|               0: [IntLiteral] 0
+#   68|           1: [LocalVariableAccess] access to local variable d
+#   69|       35: [ExprStmt] ...;
+#   69|         0: [AssignExpr] ... = ...
+#   69|           0: [ArrayAccess] access to array element
+#   69|             -1: [LocalVariableAccess] access to local variable array
+#   69|             0: [CastExpr] (...) ...
+#   69|               0: [LocalVariableAccess] access to local variable d
+#   69|           1: [ArrayAccess] access to array element
+#   69|             -1: [LocalVariableAccess] access to local variable array
+#   69|             0: [IntLiteral] 0
+#   70|       36: [ExprStmt] ...;
+#   70|         0: [AssignExpr] ... = ...
+#   70|           0: [CastExpr] (...) ...
+#   70|             0: [ArrayAccess] access to array element
+#   70|               -1: [LocalVariableAccess] access to local variable array
+#   70|               0: [IntLiteral] 0
+#   70|           1: [LocalVariableAccess] access to local variable d
+#   73|       37: [ExprStmt] ...;
+#   73|         0: [DelegateCall] delegate call
+#   73|           -1: [LocalVariableAccess] access to local variable action
+#   73|           0: [IntLiteral] 3
+#   74|       38: [ExprStmt] ...;
+#   74|         0: [AssignExpr] ... = ...
+#   74|           0: [LocalVariableAccess] access to local variable action
+#   74|           1: [LocalVariableAccess] access to local variable d
+#   75|       39: [ExprStmt] ...;
+#   75|         0: [DelegateCall] delegate call
+#   75|           -1: [LocalVariableAccess] access to local variable d
+#   75|           0: [IntLiteral] 42
+#   78|   6: [Method] Foo
+#-----|     2: (Parameters)
+#   78|       0: [Parameter] x
+#   78|     4: [BlockStmt] {...}
+#   79|   7: [Method] Foo
+#-----|     2: (Parameters)
+#   79|       0: [Parameter] x
+#   79|     4: [BlockStmt] {...}
+#   81|   8: [Method] Bar
+#-----|     2: (Parameters)
+#   81|       0: [Parameter] x
+#   81|     4: [BlockStmt] {...}
+#   83|   9: [IncrementOperator] ++
+#-----|     2: (Parameters)
+#   83|       0: [Parameter] dt
+#   84|     4: [BlockStmt] {...}
+#   85|       0: [ReturnStmt] return ...;
+#   85|         0: [ParameterAccess] access to parameter dt
+#   88|   10: [Field] Field
+#   90|   11: [Property] Prop
+#   90|     3: [Getter] get_Prop
+#   90|     4: [Setter] set_Prop
+#-----|       2: (Parameters)
+#   90|         0: [Parameter] value
+#   92|   12: [Indexer] Item
+#-----|     1: (Parameters)
+#   92|       0: [Parameter] x
+#   92|     3: [Getter] get_Item
+#-----|       2: (Parameters)
+#   92|         0: [Parameter] x
+#   92|       4: [BlockStmt] {...}
+#   92|         0: [ReturnStmt] return ...;
+#   92|           0: [ParameterAccess] access to parameter x
+#   92|     4: [Setter] set_Item
+#-----|       2: (Parameters)
+#   92|         0: [Parameter] x
+#   92|         1: [Parameter] value
+#   92|       4: [BlockStmt] {...}

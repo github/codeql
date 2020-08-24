@@ -539,6 +539,17 @@ class BinaryOperation extends Operation, @bin_op_expr {
   /** Gets the right operand of this binary operation. */
   Expr getRightOperand() { this.hasChild(result, 1) }
 
+  /**
+   * Holds if `e1` and `e2` (in either order) are the two operands of this
+   * binary operation.
+   */
+  predicate hasOperands(Expr e1, Expr e2) {
+    exists(int i | i in [0, 1] |
+      this.hasChild(e1, i) and
+      this.hasChild(e2, 1 - i)
+    )
+  }
+
   override string toString() { result = "... " + this.getOperator() + " ..." }
 
   override predicate mayBeImpure() {

@@ -61,6 +61,8 @@ class Event extends DeclarationWithAccessors, @event {
   }
 
   override Location getALocation() { event_location(this, result) }
+
+  override string getAPrimaryQlClass() { result = "Event" }
 }
 
 /**
@@ -107,6 +109,8 @@ class EventAccessor extends Accessor, @event_accessor {
  */
 class AddEventAccessor extends EventAccessor, @add_event_accessor {
   override string getName() { result = "add" + "_" + getDeclaration().getName() }
+
+  override string getAPrimaryQlClass() { result = "AddEventAccessor" }
 }
 
 /**
@@ -124,4 +128,6 @@ class AddEventAccessor extends EventAccessor, @add_event_accessor {
  */
 class RemoveEventAccessor extends EventAccessor, @remove_event_accessor {
   override string getName() { result = "remove" + "_" + getDeclaration().getName() }
+
+  override string getAPrimaryQlClass() { result = "RemoveEventAccessor" }
 }

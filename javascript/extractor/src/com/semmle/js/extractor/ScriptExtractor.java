@@ -19,6 +19,11 @@ public class ScriptExtractor implements IExtractor {
     return extension.equals(".mjs") || extension.equals(".es6") || extension.equals(".es");
   }
 
+  /** True if files with the given extension should always be treated as CommonJS modules. */
+  private boolean isAlwaysCommonJSModule(String extension) {
+    return extension.equals(".cjs");
+  }
+
   @Override
   public LoCInfo extract(TextualExtractor textualExtractor) {
     LocationManager locationManager = textualExtractor.getLocationManager();
@@ -45,9 +50,13 @@ public class ScriptExtractor implements IExtractor {
     }
 
     // Some file extensions are interpreted as modules by default.
-    if (isAlwaysModule(locationManager.getSourceFileExtension())) {
-      if (config.getSourceType() == SourceType.AUTO)
+    if (config.getSourceType() == SourceType.AUTO) {
+      if (isAlwaysModule(locationManager.getSourceFileExtension())) {
         config = config.withSourceType(SourceType.MODULE);
+      }
+      if (isAlwaysCommonJSModule(locationManager.getSourceFileExtension())) {
+        config = config.withSourceType(SourceType.COMMONJS_MODULE);
+      }
     }
 
     ScopeManager scopeManager =

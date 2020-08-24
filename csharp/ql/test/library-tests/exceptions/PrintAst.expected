@@ -1,0 +1,503 @@
+exceptions.cs:
+#    3| [Class] Class1
+#    5|   5: [Method] G
+#    6|     4: [BlockStmt] {...}
+#    9|   6: [Field] p
+#   11|   7: [Method] TestNoThrow
+#   12|     4: [BlockStmt] {...}
+#   13|       0: [TryStmt] try {...} ...
+#   38|         -1: [BlockStmt] {...}
+#   39|           0: [EmptyStmt] ;
+#   14|         0: [BlockStmt] {...}
+#   15|           0: [EmptyStmt] ;
+#   17|         1: [SpecificCatchClause] catch (...) {...}
+#   17|           0: [LocalVariableDeclExpr] NullReferenceException ex
+#   18|           1: [BlockStmt] {...}
+#   19|             0: [EmptyStmt] ;
+#   21|         2: [SpecificCatchClause] catch (...) {...}
+#   21|           0: [LocalVariableDeclExpr] OverflowException ex
+#   22|           1: [BlockStmt] {...}
+#   23|             0: [EmptyStmt] ;
+#   25|         3: [SpecificCatchClause] catch (...) {...}
+#   25|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
+#   26|           1: [BlockStmt] {...}
+#   27|             0: [EmptyStmt] ;
+#   29|         4: [SpecificCatchClause] catch (...) {...}
+#   29|           0: [LocalVariableDeclExpr] DivideByZeroException ex
+#   30|           1: [BlockStmt] {...}
+#   31|             0: [EmptyStmt] ;
+#   33|         5: [SpecificCatchClause] catch (...) {...}
+#   33|           0: [LocalVariableDeclExpr] Exception ex
+#   34|           1: [BlockStmt] {...}
+#   35|             0: [EmptyStmt] ;
+#   43|   8: [Method] TestCall
+#   44|     4: [BlockStmt] {...}
+#   45|       0: [TryStmt] try {...} ...
+#   46|         0: [BlockStmt] {...}
+#   47|           0: [EmptyStmt] ;
+#   48|           1: [ExprStmt] ...;
+#   48|             0: [MethodCall] call to method G
+#   50|         1: [SpecificCatchClause] catch (...) {...}
+#   50|           0: [LocalVariableDeclExpr] NullReferenceException ex
+#   51|           1: [BlockStmt] {...}
+#   52|             0: [EmptyStmt] ;
+#   54|         2: [SpecificCatchClause] catch (...) {...}
+#   54|           0: [LocalVariableDeclExpr] OverflowException ex
+#   55|           1: [BlockStmt] {...}
+#   56|             0: [EmptyStmt] ;
+#   58|         3: [SpecificCatchClause] catch (...) {...}
+#   58|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
+#   59|           1: [BlockStmt] {...}
+#   60|             0: [EmptyStmt] ;
+#   62|         4: [SpecificCatchClause] catch (...) {...}
+#   62|           0: [LocalVariableDeclExpr] DivideByZeroException ex
+#   63|           1: [BlockStmt] {...}
+#   64|             0: [EmptyStmt] ;
+#   66|         5: [GeneralCatchClause] catch {...}
+#   67|           1: [BlockStmt] {...}
+#   68|             0: [EmptyStmt] ;
+#   72|   9: [Method] TestCreation
+#   73|     4: [BlockStmt] {...}
+#   74|       0: [TryStmt] try {...} ...
+#   75|         0: [BlockStmt] {...}
+#   76|           0: [EmptyStmt] ;
+#   77|           1: [LocalVariableDeclStmt] ... ...;
+#   77|             0: [LocalVariableDeclAndInitExpr] Class1 v = ...
+#   77|               0: [ObjectCreation] object creation of type Class1
+#   77|               1: [LocalVariableAccess] access to local variable v
+#   79|         1: [SpecificCatchClause] catch (...) {...}
+#   79|           0: [LocalVariableDeclExpr] NullReferenceException ex
+#   80|           1: [BlockStmt] {...}
+#   81|             0: [EmptyStmt] ;
+#   83|         2: [SpecificCatchClause] catch (...) {...}
+#   83|           0: [LocalVariableDeclExpr] OverflowException ex
+#   84|           1: [BlockStmt] {...}
+#   85|             0: [EmptyStmt] ;
+#   87|         3: [SpecificCatchClause] catch (...) {...}
+#   87|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
+#   88|           1: [BlockStmt] {...}
+#   89|             0: [EmptyStmt] ;
+#   91|         4: [SpecificCatchClause] catch (...) {...}
+#   91|           0: [LocalVariableDeclExpr] DivideByZeroException ex
+#   92|           1: [BlockStmt] {...}
+#   93|             0: [EmptyStmt] ;
+#   95|         5: [SpecificCatchClause] catch (...) {...}
+#   95|           0: [LocalVariableDeclExpr] Exception ex
+#   96|           1: [BlockStmt] {...}
+#   97|             0: [EmptyStmt] ;
+#  101|   10: [Method] TestIntAdd
+#  102|     4: [BlockStmt] {...}
+#  103|       0: [TryStmt] try {...} ...
+#  104|         0: [BlockStmt] {...}
+#  105|           0: [EmptyStmt] ;
+#  106|           1: [LocalVariableDeclStmt] ... ...;
+#  106|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
+#  106|               0: [AddExpr] ... + ...
+#  106|                 0: [IntLiteral] 1
+#  106|                 1: [IntLiteral] 2
+#  106|               1: [LocalVariableAccess] access to local variable v
+#  108|         1: [SpecificCatchClause] catch (...) {...}
+#  108|           0: [LocalVariableDeclExpr] NullReferenceException ex
+#  109|           1: [BlockStmt] {...}
+#  110|             0: [EmptyStmt] ;
+#  112|         2: [SpecificCatchClause] catch (...) {...}
+#  112|           0: [LocalVariableDeclExpr] OverflowException ex
+#  113|           1: [BlockStmt] {...}
+#  114|             0: [EmptyStmt] ;
+#  116|         3: [SpecificCatchClause] catch (...) {...}
+#  116|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
+#  117|           1: [BlockStmt] {...}
+#  118|             0: [EmptyStmt] ;
+#  120|         4: [SpecificCatchClause] catch (...) {...}
+#  120|           0: [LocalVariableDeclExpr] DivideByZeroException ex
+#  121|           1: [BlockStmt] {...}
+#  122|             0: [EmptyStmt] ;
+#  124|         5: [SpecificCatchClause] catch (...) {...}
+#  124|           0: [LocalVariableDeclExpr] Exception ex
+#  125|           1: [BlockStmt] {...}
+#  126|             0: [EmptyStmt] ;
+#  130|   11: [Method] TestIntSub
+#  131|     4: [BlockStmt] {...}
+#  132|       0: [TryStmt] try {...} ...
+#  133|         0: [BlockStmt] {...}
+#  134|           0: [EmptyStmt] ;
+#  135|           1: [LocalVariableDeclStmt] ... ...;
+#  135|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
+#  135|               0: [SubExpr] ... - ...
+#  135|                 0: [IntLiteral] 1
+#  135|                 1: [IntLiteral] 2
+#  135|               1: [LocalVariableAccess] access to local variable v
+#  137|         1: [SpecificCatchClause] catch (...) {...}
+#  137|           0: [LocalVariableDeclExpr] NullReferenceException ex
+#  138|           1: [BlockStmt] {...}
+#  139|             0: [EmptyStmt] ;
+#  141|         2: [SpecificCatchClause] catch (...) {...}
+#  141|           0: [LocalVariableDeclExpr] OverflowException ex
+#  142|           1: [BlockStmt] {...}
+#  143|             0: [EmptyStmt] ;
+#  145|         3: [SpecificCatchClause] catch (...) {...}
+#  145|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
+#  146|           1: [BlockStmt] {...}
+#  147|             0: [EmptyStmt] ;
+#  149|         4: [SpecificCatchClause] catch (...) {...}
+#  149|           0: [LocalVariableDeclExpr] DivideByZeroException ex
+#  150|           1: [BlockStmt] {...}
+#  151|             0: [EmptyStmt] ;
+#  153|         5: [SpecificCatchClause] catch (...) {...}
+#  153|           0: [LocalVariableDeclExpr] Exception ex
+#  154|           1: [BlockStmt] {...}
+#  155|             0: [EmptyStmt] ;
+#  159|   12: [Method] TestIntMul
+#  160|     4: [BlockStmt] {...}
+#  161|       0: [TryStmt] try {...} ...
+#  162|         0: [BlockStmt] {...}
+#  163|           0: [EmptyStmt] ;
+#  164|           1: [LocalVariableDeclStmt] ... ...;
+#  164|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
+#  164|               0: [MulExpr] ... * ...
+#  164|                 0: [IntLiteral] 1
+#  164|                 1: [IntLiteral] 2
+#  164|               1: [LocalVariableAccess] access to local variable v
+#  166|         1: [SpecificCatchClause] catch (...) {...}
+#  166|           0: [LocalVariableDeclExpr] NullReferenceException ex
+#  167|           1: [BlockStmt] {...}
+#  168|             0: [EmptyStmt] ;
+#  170|         2: [SpecificCatchClause] catch (...) {...}
+#  170|           0: [LocalVariableDeclExpr] OverflowException ex
+#  171|           1: [BlockStmt] {...}
+#  172|             0: [EmptyStmt] ;
+#  174|         3: [SpecificCatchClause] catch (...) {...}
+#  174|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
+#  175|           1: [BlockStmt] {...}
+#  176|             0: [EmptyStmt] ;
+#  178|         4: [SpecificCatchClause] catch (...) {...}
+#  178|           0: [LocalVariableDeclExpr] DivideByZeroException ex
+#  179|           1: [BlockStmt] {...}
+#  180|             0: [EmptyStmt] ;
+#  182|         5: [SpecificCatchClause] catch (...) {...}
+#  182|           0: [LocalVariableDeclExpr] Exception ex
+#  183|           1: [BlockStmt] {...}
+#  184|             0: [EmptyStmt] ;
+#  188|   13: [Method] TestStringLiteral
+#  189|     4: [BlockStmt] {...}
+#  190|       0: [TryStmt] try {...} ...
+#  191|         0: [BlockStmt] {...}
+#  192|           0: [EmptyStmt] ;
+#  193|           1: [LocalVariableDeclStmt] ... ...;
+#  193|             0: [LocalVariableDeclAndInitExpr] String v = ...
+#  193|               0: [StringLiteral] ""
+#  193|               1: [LocalVariableAccess] access to local variable v
+#  195|         1: [SpecificCatchClause] catch (...) {...}
+#  195|           0: [LocalVariableDeclExpr] NullReferenceException ex
+#  196|           1: [BlockStmt] {...}
+#  197|             0: [EmptyStmt] ;
+#  199|         2: [SpecificCatchClause] catch (...) {...}
+#  199|           0: [LocalVariableDeclExpr] OverflowException ex
+#  200|           1: [BlockStmt] {...}
+#  201|             0: [EmptyStmt] ;
+#  203|         3: [SpecificCatchClause] catch (...) {...}
+#  203|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
+#  204|           1: [BlockStmt] {...}
+#  205|             0: [EmptyStmt] ;
+#  207|         4: [SpecificCatchClause] catch (...) {...}
+#  207|           0: [LocalVariableDeclExpr] DivideByZeroException ex
+#  208|           1: [BlockStmt] {...}
+#  209|             0: [EmptyStmt] ;
+#  211|         5: [SpecificCatchClause] catch (...) {...}
+#  211|           0: [LocalVariableDeclExpr] Exception ex
+#  212|           1: [BlockStmt] {...}
+#  213|             0: [EmptyStmt] ;
+#  217|   14: [Method] TestStringAdd
+#  218|     4: [BlockStmt] {...}
+#  219|       0: [TryStmt] try {...} ...
+#  220|         0: [BlockStmt] {...}
+#  221|           0: [LocalVariableDeclStmt] ... ...;
+#  221|             0: [LocalVariableDeclAndInitExpr] String s = ...
+#  221|               0: [StringLiteral] ""
+#  221|               1: [LocalVariableAccess] access to local variable s
+#  222|           1: [EmptyStmt] ;
+#  223|           2: [LocalVariableDeclStmt] ... ...;
+#  223|             0: [LocalVariableDeclAndInitExpr] String v = ...
+#  223|               0: [AddExpr] ... + ...
+#  223|                 0: [LocalVariableAccess] access to local variable s
+#  223|                 1: [LocalVariableAccess] access to local variable s
+#  223|               1: [LocalVariableAccess] access to local variable v
+#  225|         1: [SpecificCatchClause] catch (...) {...}
+#  225|           0: [LocalVariableDeclExpr] NullReferenceException ex
+#  226|           1: [BlockStmt] {...}
+#  227|             0: [EmptyStmt] ;
+#  229|         2: [SpecificCatchClause] catch (...) {...}
+#  229|           0: [LocalVariableDeclExpr] OverflowException ex
+#  230|           1: [BlockStmt] {...}
+#  231|             0: [EmptyStmt] ;
+#  233|         3: [SpecificCatchClause] catch (...) {...}
+#  233|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
+#  234|           1: [BlockStmt] {...}
+#  235|             0: [EmptyStmt] ;
+#  237|         4: [SpecificCatchClause] catch (...) {...}
+#  237|           0: [LocalVariableDeclExpr] DivideByZeroException ex
+#  238|           1: [BlockStmt] {...}
+#  239|             0: [EmptyStmt] ;
+#  241|         5: [SpecificCatchClause] catch (...) {...}
+#  241|           0: [LocalVariableDeclExpr] Exception ex
+#  242|           1: [BlockStmt] {...}
+#  243|             0: [EmptyStmt] ;
+#  247|   15: [Method] TestDivide
+#  248|     4: [BlockStmt] {...}
+#  249|       0: [TryStmt] try {...} ...
+#  250|         0: [BlockStmt] {...}
+#  251|           0: [EmptyStmt] ;
+#  252|           1: [LocalVariableDeclStmt] ... ...;
+#  252|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
+#  252|               0: [DivExpr] ... / ...
+#  252|                 0: [IntLiteral] 1
+#  252|                 1: [IntLiteral] 2
+#  252|               1: [LocalVariableAccess] access to local variable v
+#  254|         1: [SpecificCatchClause] catch (...) {...}
+#  254|           0: [LocalVariableDeclExpr] NullReferenceException ex
+#  255|           1: [BlockStmt] {...}
+#  256|             0: [EmptyStmt] ;
+#  258|         2: [SpecificCatchClause] catch (...) {...}
+#  258|           0: [LocalVariableDeclExpr] OverflowException ex
+#  259|           1: [BlockStmt] {...}
+#  260|             0: [EmptyStmt] ;
+#  262|         3: [SpecificCatchClause] catch (...) {...}
+#  262|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
+#  263|           1: [BlockStmt] {...}
+#  264|             0: [EmptyStmt] ;
+#  266|         4: [SpecificCatchClause] catch (...) {...}
+#  266|           0: [LocalVariableDeclExpr] DivideByZeroException ex
+#  267|           1: [BlockStmt] {...}
+#  268|             0: [EmptyStmt] ;
+#  270|         5: [SpecificCatchClause] catch (...) {...}
+#  270|           0: [LocalVariableDeclExpr] Exception ex
+#  271|           1: [BlockStmt] {...}
+#  272|             0: [EmptyStmt] ;
+#  276|   16: [Method] TestRemainder
+#  277|     4: [BlockStmt] {...}
+#  278|       0: [TryStmt] try {...} ...
+#  279|         0: [BlockStmt] {...}
+#  280|           0: [EmptyStmt] ;
+#  281|           1: [LocalVariableDeclStmt] ... ...;
+#  281|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
+#  281|               0: [RemExpr] ... % ...
+#  281|                 0: [IntLiteral] 1
+#  281|                 1: [IntLiteral] 2
+#  281|               1: [LocalVariableAccess] access to local variable v
+#  283|         1: [SpecificCatchClause] catch (...) {...}
+#  283|           0: [LocalVariableDeclExpr] NullReferenceException ex
+#  284|           1: [BlockStmt] {...}
+#  285|             0: [EmptyStmt] ;
+#  287|         2: [SpecificCatchClause] catch (...) {...}
+#  287|           0: [LocalVariableDeclExpr] OverflowException ex
+#  288|           1: [BlockStmt] {...}
+#  289|             0: [EmptyStmt] ;
+#  291|         3: [SpecificCatchClause] catch (...) {...}
+#  291|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
+#  292|           1: [BlockStmt] {...}
+#  293|             0: [EmptyStmt] ;
+#  295|         4: [SpecificCatchClause] catch (...) {...}
+#  295|           0: [LocalVariableDeclExpr] DivideByZeroException ex
+#  296|           1: [BlockStmt] {...}
+#  297|             0: [EmptyStmt] ;
+#  299|         5: [SpecificCatchClause] catch (...) {...}
+#  299|           0: [LocalVariableDeclExpr] Exception ex
+#  300|           1: [BlockStmt] {...}
+#  301|             0: [EmptyStmt] ;
+#  305|   17: [Method] TestMemberAccess
+#  306|     4: [BlockStmt] {...}
+#  307|       0: [TryStmt] try {...} ...
+#  308|         0: [BlockStmt] {...}
+#  309|           0: [EmptyStmt] ;
+#  310|           1: [LocalVariableDeclStmt] ... ...;
+#  310|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
+#  310|               0: [FieldAccess] access to field p
+#  310|                 -1: [ThisAccess] this access
+#  310|               1: [LocalVariableAccess] access to local variable v
+#  312|         1: [SpecificCatchClause] catch (...) {...}
+#  312|           0: [LocalVariableDeclExpr] NullReferenceException ex
+#  313|           1: [BlockStmt] {...}
+#  314|             0: [EmptyStmt] ;
+#  316|         2: [SpecificCatchClause] catch (...) {...}
+#  316|           0: [LocalVariableDeclExpr] OverflowException ex
+#  317|           1: [BlockStmt] {...}
+#  318|             0: [EmptyStmt] ;
+#  320|         3: [SpecificCatchClause] catch (...) {...}
+#  320|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
+#  321|           1: [BlockStmt] {...}
+#  322|             0: [EmptyStmt] ;
+#  324|         4: [SpecificCatchClause] catch (...) {...}
+#  324|           0: [LocalVariableDeclExpr] DivideByZeroException ex
+#  325|           1: [BlockStmt] {...}
+#  326|             0: [EmptyStmt] ;
+#  328|         5: [SpecificCatchClause] catch (...) {...}
+#  328|           0: [LocalVariableDeclExpr] Exception ex
+#  329|           1: [BlockStmt] {...}
+#  330|             0: [EmptyStmt] ;
+#  334|   18: [Method] TestCast
+#  335|     4: [BlockStmt] {...}
+#  336|       0: [TryStmt] try {...} ...
+#  337|         0: [BlockStmt] {...}
+#  338|           0: [EmptyStmt] ;
+#  339|           1: [LocalVariableDeclStmt] ... ...;
+#  339|             0: [LocalVariableDeclAndInitExpr] Int16 v = ...
+#  339|               0: [CastExpr] (...) ...
+#  339|                 0: [IntLiteral] 1
+#  339|                 1: [TypeAccess] access to type Int16
+#  339|               1: [LocalVariableAccess] access to local variable v
+#  341|         1: [SpecificCatchClause] catch (...) {...}
+#  341|           0: [LocalVariableDeclExpr] NullReferenceException ex
+#  342|           1: [BlockStmt] {...}
+#  343|             0: [EmptyStmt] ;
+#  345|         2: [SpecificCatchClause] catch (...) {...}
+#  345|           0: [LocalVariableDeclExpr] OverflowException ex
+#  346|           1: [BlockStmt] {...}
+#  347|             0: [EmptyStmt] ;
+#  349|         3: [SpecificCatchClause] catch (...) {...}
+#  349|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
+#  350|           1: [BlockStmt] {...}
+#  351|             0: [EmptyStmt] ;
+#  353|         4: [SpecificCatchClause] catch (...) {...}
+#  353|           0: [LocalVariableDeclExpr] DivideByZeroException ex
+#  354|           1: [BlockStmt] {...}
+#  355|             0: [EmptyStmt] ;
+#  357|         5: [SpecificCatchClause] catch (...) {...}
+#  357|           0: [LocalVariableDeclExpr] Exception ex
+#  358|           1: [BlockStmt] {...}
+#  359|             0: [EmptyStmt] ;
+#  363|   19: [Method] TestThrow
+#  364|     4: [BlockStmt] {...}
+#  365|       0: [TryStmt] try {...} ...
+#  366|         0: [BlockStmt] {...}
+#  367|           0: [LocalVariableDeclStmt] ... ...;
+#  367|             0: [LocalVariableDeclAndInitExpr] DivideByZeroException e = ...
+#  367|               0: [ObjectCreation] object creation of type DivideByZeroException
+#  367|               1: [LocalVariableAccess] access to local variable e
+#  368|           1: [EmptyStmt] ;
+#  369|           2: [ThrowStmt] throw ...;
+#  369|             0: [LocalVariableAccess] access to local variable e
+#  371|         1: [SpecificCatchClause] catch (...) {...}
+#  371|           0: [LocalVariableDeclExpr] NullReferenceException ex
+#  372|           1: [BlockStmt] {...}
+#  373|             0: [EmptyStmt] ;
+#  375|         2: [SpecificCatchClause] catch (...) {...}
+#  375|           0: [LocalVariableDeclExpr] OverflowException ex
+#  376|           1: [BlockStmt] {...}
+#  377|             0: [EmptyStmt] ;
+#  379|         3: [SpecificCatchClause] catch (...) {...}
+#  379|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
+#  380|           1: [BlockStmt] {...}
+#  381|             0: [EmptyStmt] ;
+#  383|         4: [SpecificCatchClause] catch (...) {...}
+#  383|           0: [LocalVariableDeclExpr] DivideByZeroException ex
+#  384|           1: [BlockStmt] {...}
+#  385|             0: [EmptyStmt] ;
+#  387|         5: [SpecificCatchClause] catch (...) {...}
+#  387|           0: [LocalVariableDeclExpr] Exception ex
+#  388|           1: [BlockStmt] {...}
+#  389|             0: [EmptyStmt] ;
+#  393|   20: [Method] TestUnaryOperation
+#  394|     4: [BlockStmt] {...}
+#  395|       0: [TryStmt] try {...} ...
+#  396|         0: [BlockStmt] {...}
+#  397|           0: [LocalVariableDeclStmt] ... ...;
+#  397|             0: [LocalVariableDeclAndInitExpr] Int32 a = ...
+#  397|               0: [IntLiteral] 1
+#  397|               1: [LocalVariableAccess] access to local variable a
+#  398|           1: [EmptyStmt] ;
+#  399|           2: [ExprStmt] ...;
+#  399|             0: [PreIncrExpr] ++...
+#  399|               0: [LocalVariableAccess] access to local variable a
+#  401|         1: [SpecificCatchClause] catch (...) {...}
+#  401|           0: [LocalVariableDeclExpr] NullReferenceException ex
+#  402|           1: [BlockStmt] {...}
+#  403|             0: [EmptyStmt] ;
+#  405|         2: [SpecificCatchClause] catch (...) {...}
+#  405|           0: [LocalVariableDeclExpr] OverflowException ex
+#  406|           1: [BlockStmt] {...}
+#  407|             0: [EmptyStmt] ;
+#  409|         3: [SpecificCatchClause] catch (...) {...}
+#  409|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
+#  410|           1: [BlockStmt] {...}
+#  411|             0: [EmptyStmt] ;
+#  413|         4: [SpecificCatchClause] catch (...) {...}
+#  413|           0: [LocalVariableDeclExpr] DivideByZeroException ex
+#  414|           1: [BlockStmt] {...}
+#  415|             0: [EmptyStmt] ;
+#  417|         5: [SpecificCatchClause] catch (...) {...}
+#  417|           0: [LocalVariableDeclExpr] Exception ex
+#  418|           1: [BlockStmt] {...}
+#  419|             0: [EmptyStmt] ;
+#  423|   21: [Method] TestRethrow
+#  424|     4: [BlockStmt] {...}
+#  425|       0: [TryStmt] try {...} ...
+#  426|         0: [BlockStmt] {...}
+#  427|           0: [TryStmt] try {...} ...
+#  428|             0: [BlockStmt] {...}
+#  430|             1: [GeneralCatchClause] catch {...}
+#  431|               1: [BlockStmt] {...}
+#  432|                 0: [EmptyStmt] ;
+#  433|                 1: [ThrowStmt] throw ...;
+#  436|         1: [SpecificCatchClause] catch (...) {...}
+#  436|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
+#  437|           1: [BlockStmt] {...}
+#  438|             0: [EmptyStmt] ;
+#  440|         2: [GeneralCatchClause] catch {...}
+#  441|           1: [BlockStmt] {...}
+#  442|             0: [EmptyStmt] ;
+#  446|   22: [Method] TestSubtypeCast
+#  447|     4: [BlockStmt] {...}
+#  448|       0: [TryStmt] try {...} ...
+#  449|         0: [BlockStmt] {...}
+#  450|           0: [LocalVariableDeclStmt] ... ...;
+#  450|             0: [LocalVariableDeclAndInitExpr] Object o = ...
+#  450|               0: [NullLiteral] null
+#  450|               1: [LocalVariableAccess] access to local variable o
+#  451|           1: [EmptyStmt] ;
+#  452|           2: [LocalVariableDeclStmt] ... ...;
+#  452|             0: [LocalVariableDeclAndInitExpr] Class1 p = ...
+#  452|               0: [CastExpr] (...) ...
+#  452|                 0: [LocalVariableAccess] access to local variable o
+#  452|                 1: [TypeAccess] access to type Class1
+#  452|               1: [LocalVariableAccess] access to local variable p
+#  454|         1: [SpecificCatchClause] catch (...) {...}
+#  454|           0: [LocalVariableDeclExpr] InvalidCastException ex
+#  455|           1: [BlockStmt] {...}
+#  456|             0: [EmptyStmt] ;
+#  458|         2: [SpecificCatchClause] catch (...) {...}
+#  458|           0: [LocalVariableDeclExpr] Exception ex
+#  459|           1: [BlockStmt] {...}
+#  460|             0: [EmptyStmt] ;
+#  464|   23: [Method] TestDivideMaybeZero
+#-----|     2: (Parameters)
+#  464|       0: [Parameter] i
+#  465|     4: [BlockStmt] {...}
+#  466|       0: [TryStmt] try {...} ...
+#  467|         0: [BlockStmt] {...}
+#  468|           0: [EmptyStmt] ;
+#  469|           1: [LocalVariableDeclStmt] ... ...;
+#  469|             0: [LocalVariableDeclAndInitExpr] Int32 v = ...
+#  469|               0: [DivExpr] ... / ...
+#  469|                 0: [IntLiteral] 1
+#  469|                 1: [ParameterAccess] access to parameter i
+#  469|               1: [LocalVariableAccess] access to local variable v
+#  471|         1: [SpecificCatchClause] catch (...) {...}
+#  471|           0: [LocalVariableDeclExpr] NullReferenceException ex
+#  472|           1: [BlockStmt] {...}
+#  473|             0: [EmptyStmt] ;
+#  475|         2: [SpecificCatchClause] catch (...) {...}
+#  475|           0: [LocalVariableDeclExpr] OverflowException ex
+#  476|           1: [BlockStmt] {...}
+#  477|             0: [EmptyStmt] ;
+#  479|         3: [SpecificCatchClause] catch (...) {...}
+#  479|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
+#  480|           1: [BlockStmt] {...}
+#  481|             0: [EmptyStmt] ;
+#  483|         4: [SpecificCatchClause] catch (...) {...}
+#  483|           0: [LocalVariableDeclExpr] DivideByZeroException ex
+#  484|           1: [BlockStmt] {...}
+#  485|             0: [EmptyStmt] ;
+#  487|         5: [SpecificCatchClause] catch (...) {...}
+#  487|           0: [LocalVariableDeclExpr] Exception ex
+#  488|           1: [BlockStmt] {...}
+#  489|             0: [EmptyStmt] ;
