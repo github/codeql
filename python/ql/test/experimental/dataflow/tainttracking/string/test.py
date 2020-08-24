@@ -29,6 +29,7 @@ def str_operations():
         ts[0:1000],
         ts[0],
         str(ts),
+        bytes(ts),
     )
 
 
