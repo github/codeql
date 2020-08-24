@@ -15,17 +15,17 @@ import DataFlow::PathGraph
 /**
  * An instance of `mysql.createConnection()`, tracked globally.
  */
-class MysqlConnection extends TrackedNode {
-  MysqlConnection() { this = moduleImport("mysql").getAMemberCall("createConnection") }
-
-  /**
-   * Gets a call to the `query` method on this connection object.
-   */
-  MethodCallNode getAQueryCall() {
-    this.flowsTo(result.getReceiver()) and
-    result.getMethodName() = "query"
-  }
+DataFlow::SourceNode mysqlConnection(DataFlow::TypeTracker t) {
+  t.start() and
+  result = moduleImport("mysql").getAMemberCall("createConnection")
+  or
+  exists(DataFlow::TypeTracker t2 | result = mysqlConnection(t2).track(t2, t))
 }
+
+/**
+ * An instance of `mysql.createConnection()`, tracked globally.
+ */
+DataFlow::SourceNode mysqlConnection() { result = mysqlConnection(DataFlow::TypeTracker::end()) }
 
 /**
  * Data returned from a MySQL query.
@@ -42,7 +42,7 @@ class MysqlConnection extends TrackedNode {
  * ```
  */
 class MysqlSource extends StoredXss::Source {
-  MysqlSource() { this = any(MysqlConnection con).getAQueryCall().getCallback(1).getParameter(1) }
+  MysqlSource() { this = mysqlConnection().getAMethodCall("query").getCallback(1).getParameter(1) }
 }
 
 from StoredXss::Configuration cfg, PathNode source, PathNode sink
