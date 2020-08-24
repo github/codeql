@@ -484,6 +484,12 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Expr -> Expr
   exprToExprStep_nocfg(nodeFrom.asExpr(), nodeTo.asExpr())
   or
+  // Assignment -> LValue post-update node
+  exists(AssignExpr assign |
+    nodeFrom.asExpr() = assign and
+    nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr() = assign.getLValue()
+  )
+  or
   // Node -> FlowVar -> VariableAccess
   exists(FlowVar var |
     (
@@ -563,8 +569,6 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
   toExpr = any(ConditionalExpr cond | fromExpr = cond.getThen() or fromExpr = cond.getElse())
   or
   toExpr = any(AssignExpr assign | fromExpr = assign.getRValue())
-  or
-  fromExpr = any(AssignExpr assign | toExpr = assign.getLValue())
   or
   toExpr = any(CommaExpr comma | fromExpr = comma.getRightOperand())
   or
