@@ -1,5 +1,7 @@
 package gorestfultest
 
+//go:generate depstubber -vendor github.com/emicklei/go-restful Request,Response
+
 import (
 	restful "github.com/emicklei/go-restful"
 	"os/exec"
