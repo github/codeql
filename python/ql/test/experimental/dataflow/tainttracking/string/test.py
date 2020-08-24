@@ -24,6 +24,7 @@ def str_operations():
         ts,
         ts + "foo",
         "foo" + ts,
+        ts * 5,
         ts[0 : len(ts)],
         ts[:],
         ts[0:1000],
