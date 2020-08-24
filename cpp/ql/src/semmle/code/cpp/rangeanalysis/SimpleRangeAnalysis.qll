@@ -1500,11 +1500,17 @@ private predicate linearBoundFromGuard(
   //   1. x <= upperbound(RHS)
   //   2. x >= lowerbound(RHS)
   //
-  // For x != RHS, we create trivial bounds:
-  //
-  //   1. x <= typeUpperBound(RHS.getUnspecifiedType())
-  //   2. x >= typeLowerBound(RHS.getUnspecifiedType())
-  //
+  // For x != RHS, we create bounds based on the size of the type, adjusted according to the RHS bounds:
+  //   1. if lowerbound(RHS) == typeUpperBound(RHS.getUnspecifiedType()) == upperbound(RHS)
+  //      then
+  //        x < lowerbound(RHS)
+  //      else
+  //        x <= typeUpperBound(RHS.getUnspecifiedType())
+  //   2. if lowerbound(RHS) == typeLowerBound(RHS.getUnspecifiedType()) == upperbound(RHS)
+  //      then
+  //        x > upperbound(RHS)
+  //      else
+  //        x >= typeLowerBound(RHS.getUnspecifiedType())
   exists(Expr lhs, Expr rhs, boolean isEQ |
     linearAccess(lhs, v, p, q) and
     eqOpWithSwapAndNegate(guard, lhs, rhs, isEQ, branch) and
@@ -1513,8 +1519,24 @@ private predicate linearBoundFromGuard(
     // True branch
     isEQ = true and getBounds(rhs, boundValue, isLowerBound)
     or
-    // False branch: set the bounds to the min/max for the type.
-    isEQ = false and exprTypeBounds(rhs, boundValue, isLowerBound)
+    // False branch
+    isEQ = false and
+    exists(float rhslb, float rhsub, float typeBound |
+      // Determine bounds of rhs
+      getBounds(rhs, rhslb, true) and
+      getBounds(rhs, rhsub, false) and
+      // Determine the type bound
+      exprTypeBounds(rhs, typeBound, isLowerBound) and
+      // If we're only negating a single value, which matches either the upper or lower bound
+      if rhslb = rhsub and rhslb = typeBound
+      then
+        isLowerBound = true and boundValue = typeBound + 1
+        or
+        isLowerBound = false and boundValue = typeBound - 1
+      else
+        // The negation range cannot be used to refine the type bound
+        boundValue = typeBound
+    )
   )
 }
 
