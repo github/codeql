@@ -28,6 +28,8 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   concatStep(nodeFrom, nodeTo)
   or
   subscriptStep(nodeFrom, nodeTo)
+  or
+  stringMethods(nodeFrom, nodeTo)
 }
 
 /**
@@ -53,4 +55,54 @@ predicate concatStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
  */
 predicate subscriptStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
   nodeTo.getNode().(SubscriptNode).getObject() = nodeFrom.getNode()
+}
+
+/**
+ * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to string
+ * manipulation.
+ *
+ * Note that since we cannot easily distinguish when something is a string, this can
+ * also make taint flow on `<non string>.replace(foo, bar)`.
+ */
+predicate stringMethods(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
+  // transforming something tainted into a string will make the string tainted
+  exists(CallNode call | call = nodeTo.getNode() |
+    call.getFunction().(NameNode).getId() = "str" and
+    (
+      nodeFrom.getNode() = call.getArg(0)
+      or
+      nodeFrom.getNode() = call.getArgByName("object")
+    )
+  )
+  or
+  // String methods. Note that this doesn't recognize `meth = "foo".upper; meth()`
+  exists(CallNode call, string method_name, ControlFlowNode object |
+    call = nodeTo.getNode() and
+    object = call.getFunction().(AttrNode).getObject(method_name)
+  |
+    nodeFrom.getNode() = object and
+    method_name in ["capitalize", "casefold", "center", "expandtabs", "format", "format_map",
+          "join", "ljust", "lstrip", "lower", "replace", "rjust", "rstrip", "strip", "swapcase",
+          "title", "upper", "zfill", "encode", "decode"]
+    or
+    method_name = "replace" and
+    nodeFrom.getNode() = call.getArg(1)
+    or
+    method_name = "format" and
+    nodeFrom.getNode() = call.getAnArg()
+    or
+    // str -> List[str]
+    // TODO: check if these should be handled differently in regards to content
+    nodeFrom.getNode() = object and
+    method_name in ["partition", "rpartition", "rsplit", "split", "splitlines"]
+    or
+    // List[str] -> str
+    // TODO: check if these should be handled differently in regards to content
+    method_name = "join" and
+    nodeFrom.getNode() = call.getArg(0)
+    or
+    // Mapping[str, Any] -> str
+    method_name = "format_map" and
+    nodeFrom.getNode() = call.getArg(0)
+  )
 }
