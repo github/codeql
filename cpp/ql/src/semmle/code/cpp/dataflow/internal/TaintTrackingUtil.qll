@@ -86,7 +86,7 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   // Reverse taint: if a function model has taint from the qualifier to the
   // dereferenced return value, also apply reverse taint from the post-update
   // of the return value back to the qualifier. This allows taint to flow 'in'
-  // through references returned by a modelled function such as `operator[]`.
+  // through references returned by a modeled function such as `operator[]`.
   exists(
     TaintFunction f, Call call, FunctionInput inModel, FunctionOutput outModel
   |
