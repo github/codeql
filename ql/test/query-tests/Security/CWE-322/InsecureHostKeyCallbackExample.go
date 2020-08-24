@@ -91,7 +91,7 @@ func potentialInsecureSSHClientConfigUsingKnownHosts(x bool) {
 	if x {
 		config.HostKeyCallback = ssh.InsecureIgnoreHostKey() // OK
 	} else {
-		callback, err := knownhosts.New("somefile")
+		callback, _ := knownhosts.New("somefile")
 		config.HostKeyCallback = callback
 	}
 }

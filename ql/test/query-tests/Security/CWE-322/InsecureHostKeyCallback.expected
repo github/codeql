@@ -6,7 +6,7 @@ edges
 | InsecureHostKeyCallbackExample.go:58:39:58:46 | definition of callback : HostKeyCallback | InsecureHostKeyCallbackExample.go:62:20:62:27 | callback |
 | InsecureHostKeyCallbackExample.go:58:39:58:46 | definition of callback : signature type | InsecureHostKeyCallbackExample.go:62:20:62:27 | callback |
 | InsecureHostKeyCallbackExample.go:68:48:68:55 | definition of callback : signature type | InsecureHostKeyCallbackExample.go:78:28:78:35 | callback |
-| InsecureHostKeyCallbackExample.go:94:3:94:45 | ... := ...[0] : HostKeyCallback | InsecureHostKeyCallbackExample.go:95:28:95:35 | callback |
+| InsecureHostKeyCallbackExample.go:94:3:94:43 | ... := ...[0] : HostKeyCallback | InsecureHostKeyCallbackExample.go:95:28:95:35 | callback |
 | InsecureHostKeyCallbackExample.go:102:22:105:4 | type conversion : signature type | InsecureHostKeyCallbackExample.go:107:35:107:50 | insecureCallback : signature type |
 | InsecureHostKeyCallbackExample.go:103:3:105:3 | function literal : signature type | InsecureHostKeyCallbackExample.go:102:22:105:4 | type conversion : signature type |
 | InsecureHostKeyCallbackExample.go:107:35:107:50 | insecureCallback : signature type | InsecureHostKeyCallbackExample.go:58:39:58:46 | definition of callback : signature type |
@@ -32,7 +32,7 @@ nodes
 | InsecureHostKeyCallbackExample.go:76:28:76:54 | call to InsecureIgnoreHostKey | semmle.label | call to InsecureIgnoreHostKey |
 | InsecureHostKeyCallbackExample.go:78:28:78:35 | callback | semmle.label | callback |
 | InsecureHostKeyCallbackExample.go:92:28:92:54 | call to InsecureIgnoreHostKey | semmle.label | call to InsecureIgnoreHostKey |
-| InsecureHostKeyCallbackExample.go:94:3:94:45 | ... := ...[0] : HostKeyCallback | semmle.label | ... := ...[0] : HostKeyCallback |
+| InsecureHostKeyCallbackExample.go:94:3:94:43 | ... := ...[0] : HostKeyCallback | semmle.label | ... := ...[0] : HostKeyCallback |
 | InsecureHostKeyCallbackExample.go:95:28:95:35 | callback | semmle.label | callback |
 | InsecureHostKeyCallbackExample.go:102:22:105:4 | type conversion : signature type | semmle.label | type conversion : signature type |
 | InsecureHostKeyCallbackExample.go:103:3:105:3 | function literal : signature type | semmle.label | function literal : signature type |
