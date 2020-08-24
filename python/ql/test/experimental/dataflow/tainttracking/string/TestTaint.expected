@@ -43,3 +43,6 @@
 | test.py:89 | fail | str_methods | ts.join(..) |
 | test.py:99 | fail | non_syntactic | meth() |
 | test.py:100 | fail | non_syntactic | _str(..) |
+| test.py:109 | ok   | percent_fmt | BinaryExpr |
+| test.py:110 | ok   | percent_fmt | BinaryExpr |
+| test.py:111 | fail | percent_fmt | BinaryExpr |

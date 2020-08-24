@@ -105,4 +105,14 @@ predicate stringMethods(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
     method_name = "format_map" and
     nodeFrom.getNode() = call.getArg(0)
   )
+  or
+  // % formatting
+  exists(BinaryExprNode fmt | fmt = nodeTo.getNode() |
+    fmt.getOp() instanceof Mod and
+    (
+      fmt.getLeft() = nodeFrom.getNode()
+      or
+      fmt.getRight() = nodeFrom.getNode()
+    )
+  )
 }

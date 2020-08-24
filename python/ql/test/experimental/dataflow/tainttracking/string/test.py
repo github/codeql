@@ -100,8 +100,21 @@ def non_syntactic():
         _str(ts),
     )
 
+
+def percent_fmt():
+    print("\n#percent_fmt")
+    ts = TAINTED_STRING
+    tainted_fmt = ts + " %s %s"
+    ensure_tainted(
+        tainted_fmt % (1, 2),
+        "%s foo bar" % ts,
+        "%s %s %s" % (1, 2, ts),
+    )
+
+
 # Make tests runable
 
 str_operations()
 str_methods()
 non_syntactic()
+percent_fmt()
