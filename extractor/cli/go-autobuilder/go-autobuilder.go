@@ -141,6 +141,12 @@ const (
 	Glide
 )
 
+// addVersionToMod add a go version directive, e.g. `go 1.14` to a `go.mod` file.
+func addVersionToMod(goMod []byte, version string) bool {
+	cmd := exec.Command("go", "mod", "edit", "-go="+version)
+	return run(cmd)
+}
+
 func main() {
 	if len(os.Args) > 1 {
 		usage()
@@ -184,6 +190,34 @@ func main() {
 	// if a vendor/modules.txt file exists, we assume that there are vendored Go dependencies, and
 	// skip the dependency installation step and run the extractor with `-mod=vendor`
 	hasVendor := util.FileExists("vendor/modules.txt")
+	if hasVendor {
+		// fix go vendor issues with go versions >= 1.14 when no go version is specified in the go.mod
+		// if this is the case, and dependencies were vendored with an old go version (and therefore
+		// do not contain a '## explicit' annotation, the go command will fail and refuse to do any
+		// work
+		//
+		// we work around this by adding an explicit go version of 1.13, which is the last version
+		// where this is not an issue
+		if depMode == GoGetWithModules {
+			goMod, err := ioutil.ReadFile("go.mod")
+			if err != nil {
+				log.Println("Failed to read go.mod to check for missing Go version")
+			} else if versionRe := regexp.MustCompile(`(?m)^go[ \t\r]+[0-9]+\.[0-9]+$`); !versionRe.Match(goMod) {
+				// if the go.mod does not contain a version line
+				modulesTxt, err := ioutil.ReadFile("vendor/modules.txt")
+				if err != nil {
+					log.Println("Failed to read vendor/modules.txt to check for mismatched Go version")
+				} else if explicitRe := regexp.MustCompile("(?m)^## explicit$"); !explicitRe.Match(modulesTxt) {
+					// and the modules.txt does not contain an explicit annotation
+					log.Println("Adding a version directive to the go.mod file as the modules.txt does not have explicit annotations")
+					if !addVersionToMod(goMod, "1.13") {
+						log.Println("Failed to add a version to the go.mod file to fix explicitly required package bug; not using vendored dependencies")
+						hasVendor = false
+					}
+				}
+			}
+		}
+	}
 
 	// if `LGTM_INDEX_NEED_GOPATH` is set, it overrides the value for `needGopath` inferred above
 	if needGopathOverride := os.Getenv("LGTM_INDEX_NEED_GOPATH"); needGopathOverride != "" {
