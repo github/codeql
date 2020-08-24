@@ -49,22 +49,22 @@ void test_element_taint(int x) {
 	sink(v1.back());
 
 	v2[0] = source();
-	sink(v2); // tainted [NOT DETECTED]
-	sink(v2[0]); // tainted [NOT DETECTED]
-	sink(v2[1]);
+	sink(v2); // tainted
+	sink(v2[0]); // tainted
+	sink(v2[1]); // [FALSE POSITIVE]
 	sink(v2[x]); // potentially tainted
 
 	v3 = v2;
-	sink(v3); // tainted [NOT DETECTED]
-	sink(v3[0]); // tainted [NOT DETECTED]
-	sink(v3[1]);
+	sink(v3); // tainted
+	sink(v3[0]); // tainted
+	sink(v3[1]); // [FALSE POSITIVE]
 	sink(v3[x]); // potentially tainted
 
 	v4[x] = source();
-	sink(v4); // tainted [NOT DETECTED]
+	sink(v4); // tainted
 	sink(v4[0]); // potentially tainted
 	sink(v4[1]); // potentially tainted
-	sink(v4[x]); // tainted [NOT DETECTED]
+	sink(v4[x]); // tainted
 
 	v5.push_back(source());
 	sink(v5); // tainted
@@ -94,10 +94,10 @@ void test_element_taint(int x) {
 	sink(v8.back());
 
 	v9.at(x) = source();
-	sink(v9); // tainted [NOT DETECTED]
+	sink(v9); // tainted
 	sink(v9.at(0)); // potentially tainted
 	sink(v9.at(1)); // potentially tainted
-	sink(v9.at(x)); // tainted [NOT DETECTED]
+	sink(v9.at(x)); // tainted
 }
 
 void test_vector_swap() {

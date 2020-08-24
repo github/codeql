@@ -214,6 +214,17 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
       exprIn = call.getQualifier()
     )
   )
+  or
+  exists(
+    TaintFunction f, Call call, FunctionInput inModel, FunctionOutput outModel
+  |
+    call.getTarget() = f and
+    inModel.isQualifierObject() and
+    outModel.isReturnValueDeref() and
+    f.hasTaintFlow(inModel, outModel) and
+    exprIn = call and
+    argOut = call.getQualifier()
+  )
 }
 
 private predicate exprToPartialDefinitionStep(Expr exprIn, Expr exprOut) {

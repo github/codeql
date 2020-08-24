@@ -336,7 +336,7 @@ void test_string_at()
 	b.at(0) = ns_char::source();
 	c[0] = a[0];
 
-	sink(a); // tainted [NOT DETECTED]
-	sink(b); // tainted [NOT DETECTED]
-	sink(c); // tainted [NOT DETECTED]
+	sink(a); // tainted
+	sink(b); // tainted
+	sink(c); // tainted
 }
