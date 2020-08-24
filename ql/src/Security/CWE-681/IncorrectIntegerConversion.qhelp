@@ -67,8 +67,8 @@ or check bounds before making the conversion as in <code>parseAllocateGood4</cod
 <references>
 <li>Wikipedia <a href="https://en.wikipedia.org/wiki/Integer_overflow">Integer overflow</a>.</li>
 <li>Go language specification <a href="https://golang.org/ref/spec#Integer_overflow">Integer overflow</a>.</li>
-<li>Documentation for <a href="https://golang.org/pkg/strconv/#Atoi"><code>strconv.Atoi</code></a>.</li>
-<li>Documentation for <a href="https://golang.org/pkg/strconv/#ParseInt"><code>strconv.ParseInt</code></a>.</li>
-<li>Documentation for <a href="https://golang.org/pkg/strconv/#ParseUint"><code>strconv.ParseUint</code></a>.</li>
+<li>Documentation for <a href="https://golang.org/pkg/strconv/#Atoi">strconv.Atoi</a>.</li>
+<li>Documentation for <a href="https://golang.org/pkg/strconv/#ParseInt">strconv.ParseInt</a>.</li>
+<li>Documentation for <a href="https://golang.org/pkg/strconv/#ParseUint">strconv.ParseUint</a>.</li>
 </references>
 </qhelp>
