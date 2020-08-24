@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.Optional;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import com.semmle.js.extractor.ExtractorConfig.Platform;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
@@ -128,7 +129,7 @@ public class ScriptExtractor implements IExtractor {
       String result = new Gson().fromJson(reader, PackageJSON.class).type;
       packageTypeCache.put(folder, Optional.ofNullable(result));
       return result;
-    } catch (IOException e) {
+    } catch (IOException | JsonSyntaxException e) {
       return null;
     }
   }
