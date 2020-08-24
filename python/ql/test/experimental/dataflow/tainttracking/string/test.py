@@ -113,9 +113,55 @@ def percent_fmt():
     )
 
 
+def binary_decode_encode():
+    print("\n#percent_fmt")
+    tb = TAINTED_BYTES
+    import base64
+
+    ensure_tainted(
+        base64.b64encode(tb),
+        base64.b64decode(base64.b64encode(tb)),
+
+        base64.standard_b64encode(tb),
+        base64.standard_b64decode(base64.standard_b64encode(tb)),
+
+        base64.urlsafe_b64encode(tb),
+        base64.urlsafe_b64decode(base64.urlsafe_b64encode(tb)),
+
+        base64.b32encode(tb),
+        base64.b32decode(base64.b32encode(tb)),
+
+        base64.b16encode(tb),
+        base64.b16decode(base64.b16encode(tb)),
+
+        # # New in Python 3.4
+        # base64.a85encode(tb),
+        # base64.a85decode(base64.a85encode(tb)),
+
+        # # New in Python 3.4
+        # base64.b85encode(tb),
+        # base64.b85decode(base64.b85encode(tb)),
+
+        # # New in Python 3.1
+        # base64.encodebytes(tb),
+        # base64.decodebytes(base64.encodebytes(tb)),
+
+        # deprecated since Python 3.1, but still works
+        base64.encodestring(tb),
+        base64.decodestring(base64.encodestring(tb)),
+    )
+
+    import quopri
+    ensure_tainted(
+        quopri.encodestring(tb),
+        quopri.decodestring(quopri.encodestring(tb)),
+    )
+
+
 # Make tests runable
 
 str_operations()
 str_methods()
 non_syntactic()
 percent_fmt()
+binary_decode_encode()

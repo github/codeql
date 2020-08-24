@@ -47,3 +47,17 @@
 | test.py:110 | ok   | percent_fmt | BinaryExpr |
 | test.py:111 | ok   | percent_fmt | BinaryExpr |
 | test.py:112 | fail | percent_fmt | BinaryExpr |
+| test.py:122 | fail | binary_decode_encode | base64.b64encode(..) |
+| test.py:123 | fail | binary_decode_encode | base64.b64decode(..) |
+| test.py:125 | fail | binary_decode_encode | base64.standard_b64encode(..) |
+| test.py:126 | fail | binary_decode_encode | base64.standard_b64decode(..) |
+| test.py:128 | fail | binary_decode_encode | base64.urlsafe_b64encode(..) |
+| test.py:129 | fail | binary_decode_encode | base64.urlsafe_b64decode(..) |
+| test.py:131 | fail | binary_decode_encode | base64.b32encode(..) |
+| test.py:132 | fail | binary_decode_encode | base64.b32decode(..) |
+| test.py:134 | fail | binary_decode_encode | base64.b16encode(..) |
+| test.py:135 | fail | binary_decode_encode | base64.b16decode(..) |
+| test.py:150 | fail | binary_decode_encode | base64.encodestring(..) |
+| test.py:151 | fail | binary_decode_encode | base64.decodestring(..) |
+| test.py:156 | fail | binary_decode_encode | quopri.encodestring(..) |
+| test.py:157 | fail | binary_decode_encode | quopri.decodestring(..) |
