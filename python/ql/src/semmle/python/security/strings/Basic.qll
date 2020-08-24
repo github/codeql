@@ -27,7 +27,8 @@ abstract class StringKind extends TaintKind {
       os_path_join(fromnode, tonode) or
       str_format(fromnode, tonode) or
       encode_decode(fromnode, tonode) or
-      to_str(fromnode, tonode)
+      to_str(fromnode, tonode) or
+      f_string(fromnode, tonode)
     )
     or
     result = this and copy_call(fromnode, tonode)
@@ -105,6 +106,11 @@ private predicate slice(ControlFlowNode fromnode, SubscriptNode tonode) {
 private predicate os_path_join(ControlFlowNode fromnode, CallNode tonode) {
   tonode = Value::named("os.path.join").getACall() and
   tonode.getAnArg() = fromnode
+}
+
+/** tonode = f"... {fromnode} ..." */
+private predicate f_string(ControlFlowNode fromnode, ControlFlowNode tonode) {
+  tonode.getNode().(Fstring).getAValue() = fromnode.getNode()
 }
 
 /**
