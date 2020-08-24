@@ -11,7 +11,7 @@ func serve1() {
 		r.ParseForm()
 		username := r.Form.Get("username")
 		if !isValidUsername(username) {
-			// BAD: a request parameter is incorporated without validation into the response
+			// GOOD: a request parameter is escaped before being put into the response
 			fmt.Fprintf(w, "%q is an unknown user", html.EscapeString(username))
 		} else {
 			// TODO: do something exciting
