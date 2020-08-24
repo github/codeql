@@ -19,10 +19,7 @@ predicate blockDominates(Block check, Block access) {
 }
 
 predicate isCheckedInstruction(VariableAccess unchecked, VariableAccess checked) {
-  checked =
-    any(VariableAccess va |
-      va.getTarget() = unchecked.getTarget()
-  ) and
+  checked = any(VariableAccess va | va.getTarget() = unchecked.getTarget()) and
   //Simple test if the first access in this code path is dereferenced
   not dereferenced(checked) and
   blockDominates(checked.getEnclosingBlock(), unchecked.getEnclosingBlock())
@@ -38,7 +35,8 @@ predicate candidateResultChecked(VariableAccess check, EqualityOperation eqop) {
   //assert macros are not taken into account
   not check.isInMacroExpansion() and
   // is part of a comparison against some constant NULL
-  eqop.getAnOperand() = check and eqop.getAnOperand() instanceof NullValue
+  eqop.getAnOperand() = check and
+  eqop.getAnOperand() instanceof NullValue
 }
 
 from VariableAccess unchecked, VariableAccess check, EqualityOperation eqop, Parameter param
@@ -54,4 +52,5 @@ where
   candidateResultChecked(check, eqop) and
   // and which has not been checked before in this code path
   candidateResultUnchecked(unchecked)
-select check, "This null check is redundant or there is a missing null check before $@ ", unchecked, "where dereferencing happens"
+select check, "This null check is redundant or there is a missing null check before $@ ", unchecked,
+  "where dereferencing happens"
