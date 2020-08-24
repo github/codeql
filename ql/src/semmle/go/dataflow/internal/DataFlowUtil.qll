@@ -669,6 +669,13 @@ class BinaryOperationNode extends Node {
 
   /** Gets the operator of this operation. */
   string getOperator() { result = op }
+
+  /** Holds if `x` and `y` are the operands of this operation, in either order. */
+  predicate hasOperands(Node x, Node y) {
+    x = getAnOperand() and
+    y = getAnOperand() and
+    x != y
+  }
 }
 
 /**

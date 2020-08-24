@@ -78,15 +78,25 @@ module StringOps {
     }
 
     /**
-     * An expression of form `strings.Index(A, B) === 0`.
+     * Holds if `eq` is of the form `nd == 0` or `nd != 0`.
+     */
+    pragma[noinline]
+    private predicate comparesToZero(DataFlow::EqualityTestNode eq, DataFlow::Node nd) {
+      exists(DataFlow::Node zero |
+        eq.hasOperands(globalValueNumber(nd).getANode(), zero) and
+        zero.getIntValue() = 0
+      )
+    }
+
+    /**
+     * An expression of form `strings.Index(A, B) == 0`.
      */
     private class HasPrefix_IndexOfEquals extends Range, DataFlow::EqualityTestNode {
       DataFlow::CallNode indexOf;
 
       HasPrefix_IndexOfEquals() {
-        indexOf.getTarget().hasQualifiedName("strings", "Index") and
-        getAnOperand() = globalValueNumber(indexOf).getANode() and
-        getAnOperand().getIntValue() = 0
+        comparesToZero(this, indexOf) and
+        indexOf.getTarget().hasQualifiedName("strings", "Index")
       }
 
       override DataFlow::Node getBaseString() { result = indexOf.getArgument(0) }
@@ -97,19 +107,30 @@ module StringOps {
     }
 
     /**
-     * A comparison of form `x[0] === 'k'` for some rune literal `k`.
+     * Holds if `eq` is of the form `str[0] == rhs` or `str[0] != rhs`.
+     */
+    pragma[noinline]
+    private predicate comparesFirstCharacter(
+      DataFlow::EqualityTestNode eq, DataFlow::Node str, DataFlow::Node rhs
+    ) {
+      exists(DataFlow::ElementReadNode read |
+        eq.hasOperands(globalValueNumber(read).getANode(), rhs) and
+        str = read.getBase() and
+        str.getType().getUnderlyingType() instanceof StringType and
+        read.getIndex().getIntValue() = 0
+      )
+    }
+
+    /**
+     * A comparison of form `x[0] == 'k'` for some rune literal `k`.
      */
     private class HasPrefix_FirstCharacter extends Range, DataFlow::EqualityTestNode {
-      DataFlow::ElementReadNode read;
+      DataFlow::Node base;
       DataFlow::Node runeLiteral;
 
-      HasPrefix_FirstCharacter() {
-        read.getBase().getType().getUnderlyingType() instanceof StringType and
-        read.getIndex().getIntValue() = 0 and
-        eq(_, globalValueNumber(read).getANode(), runeLiteral)
-      }
+      HasPrefix_FirstCharacter() { comparesFirstCharacter(this, base, runeLiteral) }
 
-      override DataFlow::Node getBaseString() { result = read.getBase() }
+      override DataFlow::Node getBaseString() { result = base }
 
       override DataFlow::Node getSubstring() { result = runeLiteral }
 
