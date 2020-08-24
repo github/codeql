@@ -1,15 +1,12 @@
 
 typedef unsigned long size_t;
 
-// --- string ---
+// --- iterator ---
 
-namespace std
-{
-	template<class charT> struct char_traits;
-
-	typedef size_t streamsize;
-
+namespace std {
 	struct ptrdiff_t;
+
+	template<class I> struct iterator_traits;
 
 	template <class iterator_category,
 			  class value_type,
@@ -36,6 +33,16 @@ namespace std
 	struct forward_iterator_tag : public input_iterator_tag {};
 	struct bidirectional_iterator_tag : public forward_iterator_tag {};
 	struct random_access_iterator_tag : public bidirectional_iterator_tag {};
+}
+
+// --- string ---
+
+namespace std
+{
+	template<class charT> struct char_traits;
+
+	typedef size_t streamsize;
+
 
 	template <class T> class allocator {
 	public:
