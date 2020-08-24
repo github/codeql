@@ -1,9 +1,7 @@
 package main
 
 // This file tests type inference for expressions referencing undeclared entities.
-// It is therefore expected to expected frontend errors.
-
-// codeql test: expect frontend errors
+// It is therefore expected to produce frontend errors.
 
 import "fmt"
 

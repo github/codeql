@@ -9,4 +9,4 @@
 | pkg1/tst.go:33:1:35:1 | function declaration | 1 |
 | pkg1/tst.go:37:1:37:26 | function declaration | 0 |
 | pkg1/tst.go:39:1:57:1 | function declaration | 0 |
-| unknownFunction.go:10:1:14:1 | function declaration | 0 |
+| unknownFunction.go:8:1:12:1 | function declaration | 0 |
