@@ -61,13 +61,13 @@ private class StringEqualitySanitizer extends Sanitizer {
   }
 }
 
-/* tonode = ....format(fromnode) */
+/** tonode = ....format(fromnode) */
 private predicate str_format(ControlFlowNode fromnode, CallNode tonode) {
   tonode.getFunction().(AttrNode).getName() = "format" and
   tonode.getAnArg() = fromnode
 }
 
-/* tonode = codec.[en|de]code(fromnode)*/
+/** tonode = codec.[en|de]code(fromnode) */
 private predicate encode_decode(ControlFlowNode fromnode, CallNode tonode) {
   exists(FunctionObject func, string name |
     not func.getFunction().isMethod() and
@@ -81,7 +81,7 @@ private predicate encode_decode(ControlFlowNode fromnode, CallNode tonode) {
   )
 }
 
-/* tonode = str(fromnode)*/
+/** tonode = str(fromnode) */
 private predicate to_str(ControlFlowNode fromnode, CallNode tonode) {
   tonode.getAnArg() = fromnode and
   (
@@ -91,7 +91,7 @@ private predicate to_str(ControlFlowNode fromnode, CallNode tonode) {
   )
 }
 
-/* tonode = fromnode[:] */
+/** tonode = fromnode[:] */
 private predicate slice(ControlFlowNode fromnode, SubscriptNode tonode) {
   exists(Slice all |
     all = tonode.getIndex().getNode() and
@@ -101,7 +101,7 @@ private predicate slice(ControlFlowNode fromnode, SubscriptNode tonode) {
   )
 }
 
-/* tonode = os.path.join(..., fromnode, ...) */
+/** tonode = os.path.join(..., fromnode, ...) */
 private predicate os_path_join(ControlFlowNode fromnode, CallNode tonode) {
   tonode = Value::named("os.path.join").getACall() and
   tonode.getAnArg() = fromnode
