@@ -923,6 +923,32 @@ module DataFlow {
   }
 
   /**
+   * A data flow node representing the values returned by a function.
+   */
+  class FunctionReturnNode extends DataFlow::Node, TFunctionReturnNode {
+    Function function;
+
+    FunctionReturnNode() { this = TFunctionReturnNode(function) }
+
+    override string toString() { result = "return of " + function.describe() }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      function.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+
+    override BasicBlock getBasicBlock() { result = function.(ExprOrStmt).getBasicBlock() }
+
+    /**
+     * Gets the function corresponding to this return node.
+     */
+    Function getFunction() { result = function }
+
+    override File getFile() { result = function.getFile() }
+  }
+
+  /**
    * A data flow node representing the exceptions thrown by the callee of an invocation.
    */
   class ExceptionalInvocationReturnNode extends DataFlow::Node, TExceptionalInvocationReturnNode {
@@ -1266,6 +1292,13 @@ module DataFlow {
   }
 
   /**
+   * INTERNAL: Use `FunctionReturnNode` instead.
+   */
+  predicate functionReturnNode(DataFlow::Node nd, Function function) {
+    nd = TFunctionReturnNode(function)
+  }
+
+  /**
    * Gets the data flow node corresponding the given l-value expression, if
    * such a node exists.
    *
@@ -1459,6 +1492,11 @@ module DataFlow {
         predExpr = f.getAReturnedExpr() and
         localCall(succExpr, f)
       )
+    )
+    or
+    // from returned expr to the FunctionReturnNode.
+    exists(Function f | not f.isAsync() |
+      DataFlow::functionReturnNode(succ, f) and pred = valueNode(f.getAReturnedExpr())
     )
   }
 
