@@ -435,16 +435,26 @@ predicate comprehensionReadStep(CfgNode nodeFrom, Content c, EssaNode nodeTo) {
   //   nodeFrom is `l`, cfg node
   //   nodeTo is `x`, essa var
   //   c denotes element of list or set
-  exists(For f, Comp comp |
-    f = getCompFor(comp) and
-    nodeFrom.getNode().getNode() = getCompIter(comp) and
-    nodeTo.getVar().getDefinition().(AssignmentDefinition).getDefiningNode().getNode() =
-      f.getTarget() and
-    (
-      c instanceof ListElementContent
-      or
-      c instanceof SetElementContent
+  exists(Comp comp |
+    // outermost for
+    exists(For f |
+      f = getCompFor(comp) and
+      nodeFrom.getNode().getNode() = getCompIter(comp) and
+      nodeTo.getVar().getDefinition().(AssignmentDefinition).getDefiningNode().getNode() =
+        f.getTarget()
     )
+    or
+    // an inner for
+    exists(int n |
+      nodeFrom.getNode().getNode() = comp.getNthInnerLoop(n + 1).getIter() and
+      nodeTo.getVar().getDefinition().(AssignmentDefinition).getDefiningNode().getNode() =
+        comp.getNthInnerLoop(n).getTarget()
+    )
+  ) and
+  (
+    c instanceof ListElementContent
+    or
+    c instanceof SetElementContent
   )
 }
 
