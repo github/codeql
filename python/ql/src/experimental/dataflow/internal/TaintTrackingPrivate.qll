@@ -125,6 +125,9 @@ predicate stringMethods(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
     mult.getOp() instanceof Mult and
     mult.getLeft() = nodeFrom.getNode()
   )
+  or
+  // f-strings
+  nodeTo.getNode().getNode().(Fstring).getAValue() = nodeFrom.getNode().getNode()
   // TODO: Handle encode/decode from base64/quopri
   // TODO: Handle os.path.join
   // TODO: Handle functions in https://docs.python.org/3/library/binascii.html
