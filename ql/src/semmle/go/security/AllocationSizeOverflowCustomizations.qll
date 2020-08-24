@@ -75,7 +75,7 @@ module AllocationSizeOverflow {
   /** A check of the allocation size, acting as a guard to prevent allocation-size overflow. */
   class AllocationSizeCheck extends DataFlow::BarrierGuard, DataFlow::RelationalComparisonNode {
     override predicate checks(Expr e, boolean branch) {
-      exists(DataFlow::Node lesser | this.leq(branch, lesser, _, _) |
+      exists(DataFlow::Node lesser | this.leq(branch, lesser, _, _) and not lesser.isConst() |
         globalValueNumber(DataFlow::exprNode(e)) = globalValueNumber(lesser)
       )
     }
