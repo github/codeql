@@ -107,6 +107,7 @@
 | string.cpp:378:8:378:8 | string.cpp:360:18:360:23 | AST only |
 | string.cpp:380:8:380:8 | string.cpp:360:18:360:23 | AST only |
 | string.cpp:382:8:382:8 | string.cpp:360:18:360:23 | AST only |
+| string.cpp:386:8:386:8 | string.cpp:360:18:360:23 | AST only |
 | structlikeclass.cpp:35:8:35:9 | structlikeclass.cpp:29:22:29:27 | AST only |
 | structlikeclass.cpp:36:8:36:9 | structlikeclass.cpp:30:24:30:29 | AST only |
 | structlikeclass.cpp:37:8:37:9 | structlikeclass.cpp:29:22:29:27 | AST only |

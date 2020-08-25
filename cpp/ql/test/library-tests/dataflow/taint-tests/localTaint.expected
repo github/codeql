@@ -393,6 +393,7 @@
 | string.cpp:120:15:120:15 | (__begin) | string.cpp:120:15:120:15 | call to operator* | TAINT |
 | string.cpp:120:15:120:15 | (__begin) | string.cpp:120:15:120:15 | call to operator++ | TAINT |
 | string.cpp:120:15:120:15 | (__range) | string.cpp:120:15:120:15 | call to begin | TAINT |
+| string.cpp:120:15:120:15 | (__range) | string.cpp:120:15:120:15 | call to end | TAINT |
 | string.cpp:120:15:120:15 | call to begin | string.cpp:120:15:120:15 | (__begin) |  |
 | string.cpp:120:15:120:15 | call to begin | string.cpp:120:15:120:15 | (__begin) |  |
 | string.cpp:120:15:120:15 | call to begin | string.cpp:120:15:120:15 | (__begin) |  |
@@ -413,6 +414,7 @@
 | string.cpp:124:35:124:39 | call to begin | string.cpp:125:9:125:10 | it |  |
 | string.cpp:124:50:124:50 | ref arg s | string.cpp:124:50:124:50 | s |  |
 | string.cpp:124:50:124:50 | ref arg s | string.cpp:128:16:128:16 | s |  |
+| string.cpp:124:50:124:50 | s | string.cpp:124:52:124:54 | call to end | TAINT |
 | string.cpp:124:61:124:62 | it | string.cpp:124:59:124:59 | call to operator++ | TAINT |
 | string.cpp:124:61:124:62 | ref arg it | string.cpp:124:44:124:45 | it |  |
 | string.cpp:124:61:124:62 | ref arg it | string.cpp:124:61:124:62 | it |  |
@@ -421,6 +423,7 @@
 | string.cpp:128:16:128:16 | (__begin) | string.cpp:128:16:128:16 | call to operator* | TAINT |
 | string.cpp:128:16:128:16 | (__begin) | string.cpp:128:16:128:16 | call to operator++ | TAINT |
 | string.cpp:128:16:128:16 | (__range) | string.cpp:128:16:128:16 | call to begin | TAINT |
+| string.cpp:128:16:128:16 | (__range) | string.cpp:128:16:128:16 | call to end | TAINT |
 | string.cpp:128:16:128:16 | call to begin | string.cpp:128:16:128:16 | (__begin) |  |
 | string.cpp:128:16:128:16 | call to begin | string.cpp:128:16:128:16 | (__begin) |  |
 | string.cpp:128:16:128:16 | call to begin | string.cpp:128:16:128:16 | (__begin) |  |
@@ -438,6 +441,7 @@
 | string.cpp:133:22:133:22 | (__begin) | string.cpp:133:22:133:22 | call to operator* | TAINT |
 | string.cpp:133:22:133:22 | (__begin) | string.cpp:133:22:133:22 | call to operator++ | TAINT |
 | string.cpp:133:22:133:22 | (__range) | string.cpp:133:22:133:22 | call to begin | TAINT |
+| string.cpp:133:22:133:22 | (__range) | string.cpp:133:22:133:22 | call to end | TAINT |
 | string.cpp:133:22:133:22 | call to begin | string.cpp:133:22:133:22 | (__begin) |  |
 | string.cpp:133:22:133:22 | call to begin | string.cpp:133:22:133:22 | (__begin) |  |
 | string.cpp:133:22:133:22 | call to begin | string.cpp:133:22:133:22 | (__begin) |  |
@@ -731,6 +735,7 @@
 | string.cpp:334:18:334:19 | s2 | string.cpp:334:21:334:25 | call to begin | TAINT |
 | string.cpp:334:21:334:25 | call to begin | string.cpp:334:8:334:9 | ref arg s1 | TAINT |
 | string.cpp:334:21:334:25 | call to begin | string.cpp:334:11:334:16 | call to append | TAINT |
+| string.cpp:334:30:334:31 | s2 | string.cpp:334:33:334:35 | call to end | TAINT |
 | string.cpp:334:33:334:35 | call to end | string.cpp:334:8:334:9 | ref arg s1 | TAINT |
 | string.cpp:334:33:334:35 | call to end | string.cpp:334:11:334:16 | call to append | TAINT |
 | string.cpp:338:8:338:9 | ref arg s3 | string.cpp:339:8:339:9 | s3 |  |
@@ -739,6 +744,7 @@
 | string.cpp:338:18:338:19 | s4 | string.cpp:338:21:338:25 | call to begin | TAINT |
 | string.cpp:338:21:338:25 | call to begin | string.cpp:338:8:338:9 | ref arg s3 | TAINT |
 | string.cpp:338:21:338:25 | call to begin | string.cpp:338:11:338:16 | call to append | TAINT |
+| string.cpp:338:30:338:31 | s4 | string.cpp:338:33:338:35 | call to end | TAINT |
 | string.cpp:338:33:338:35 | call to end | string.cpp:338:8:338:9 | ref arg s3 | TAINT |
 | string.cpp:338:33:338:35 | call to end | string.cpp:338:11:338:16 | call to append | TAINT |
 | string.cpp:344:18:344:24 | hello | string.cpp:344:18:344:25 | call to basic_string | TAINT |
@@ -761,7 +767,9 @@
 | string.cpp:359:18:359:25 | call to basic_string | string.cpp:362:25:362:26 | s1 |  |
 | string.cpp:360:18:360:23 | call to source | string.cpp:360:18:360:26 | call to basic_string | TAINT |
 | string.cpp:360:18:360:26 | call to basic_string | string.cpp:364:25:364:26 | s2 |  |
+| string.cpp:360:18:360:26 | call to basic_string | string.cpp:384:8:384:9 | s2 |  |
 | string.cpp:362:25:362:26 | s1 | string.cpp:362:28:362:32 | call to begin | TAINT |
+| string.cpp:364:25:364:26 | ref arg s2 | string.cpp:384:8:384:9 | s2 |  |
 | string.cpp:364:25:364:26 | s2 | string.cpp:364:28:364:32 | call to begin | TAINT |
 | string.cpp:364:28:364:32 | call to begin | string.cpp:367:10:367:11 | i2 |  |
 | string.cpp:364:28:364:32 | call to begin | string.cpp:368:10:368:11 | i2 |  |
@@ -822,6 +830,13 @@
 | string.cpp:382:12:382:12 | call to operator-= | string.cpp:382:8:382:8 | call to operator* | TAINT |
 | string.cpp:382:14:382:14 | 1 | string.cpp:382:10:382:11 | ref arg i8 | TAINT |
 | string.cpp:382:14:382:14 | 1 | string.cpp:382:12:382:12 | call to operator-= |  |
+| string.cpp:384:8:384:9 | s2 | string.cpp:384:11:384:13 | call to end | TAINT |
+| string.cpp:384:11:384:13 | call to end | string.cpp:384:3:384:15 | ... = ... |  |
+| string.cpp:384:11:384:13 | call to end | string.cpp:385:5:385:6 | i9 |  |
+| string.cpp:384:11:384:13 | call to end | string.cpp:386:9:386:10 | i9 |  |
+| string.cpp:385:5:385:6 | i9 | string.cpp:385:3:385:3 | call to operator-- | TAINT |
+| string.cpp:385:5:385:6 | ref arg i9 | string.cpp:386:9:386:10 | i9 |  |
+| string.cpp:386:9:386:10 | i9 | string.cpp:386:8:386:8 | call to operator* | TAINT |
 | stringstream.cpp:13:20:13:22 | call to basic_stringstream | stringstream.cpp:16:2:16:4 | ss1 |  |
 | stringstream.cpp:13:20:13:22 | call to basic_stringstream | stringstream.cpp:22:7:22:9 | ss1 |  |
 | stringstream.cpp:13:20:13:22 | call to basic_stringstream | stringstream.cpp:27:7:27:9 | ss1 |  |

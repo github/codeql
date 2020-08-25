@@ -380,5 +380,9 @@ void test_string_iterators() {
 		sink(*(i7+=1)); // tainted
 		i8 = i2;
 		sink(*(i8-=1)); // tainted
+
+		i9 = s2.end();
+		--i9;
+		sink(*i9); // tainted
 	}
 }
