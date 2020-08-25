@@ -187,6 +187,18 @@ func addVersionToMod(goMod []byte, version string) bool {
 	return run(cmd)
 }
 
+// checkVendor tests to see whether a vendor directory is inconsistent according to the go frontend
+func checkVendor() bool {
+	vendorCheckCmd := exec.Command("go", "list", "-mod=vendor", "./...")
+	outp, err := vendorCheckCmd.CombinedOutput()
+	if err != nil {
+		badVendorRe := regexp.MustCompile(`(?m)^go: inconsistent vendoring in .*:$`)
+		return !badVendorRe.Match(outp)
+	}
+
+	return true
+}
+
 func main() {
 	if len(os.Args) > 1 {
 		usage()
@@ -380,6 +392,15 @@ func main() {
 
 		if !buildSucceeded {
 			if modMode == ModVendor {
+				// test if running `go` with -mod=vendor works, and if it doesn't, try to fallback to -mod=mod
+				// or not set if the go version < 1.14.
+				if !checkVendor() {
+					modMode = modModIfSupported()
+					log.Println("The vendor directory is not consistent with the go.mod; not using vendored dependencies.")
+				}
+			}
+
+			if modMode == ModVendor {
 				log.Printf("Skipping dependency installation because a Go vendor directory was found.")
 			} else {
 				// automatically determine command to install dependencies
@@ -459,24 +480,19 @@ func main() {
 		os.Chmod(script.Name(), 0700)
 		install = exec.Command(script.Name())
 		log.Println("Installing dependencies using custom build command.")
-	}
 
-	if install != nil {
-		run(install)
-	}
-
-	if modMode == ModVendor {
-		// test if running `go` with -mod=vendor works, and if it doesn't, try to fallback to -mod=mod
-		// or not set if the go version < 1.14.
-		vendorCheckCmd := exec.Command("go", "list", "-mod=vendor", "./...")
-		outp, err := vendorCheckCmd.CombinedOutput()
-		if err != nil {
-			badVendorRe := regexp.MustCompile(`(?m)^go: inconsistent vendoring in .*:$`)
-			if badVendorRe.Match(outp) {
+		if modMode == ModVendor {
+			// test if running `go` with -mod=vendor works, and if it doesn't, try to fallback to -mod=mod
+			// or not set if the go version < 1.14.
+			if !checkVendor() {
 				modMode = modModIfSupported()
 				log.Println("The vendor directory is not consistent with the go.mod; not using vendored dependencies.")
 			}
 		}
+	}
+
+	if install != nil {
+		run(install)
 	}
 
 	// extract
