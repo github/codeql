@@ -11,7 +11,19 @@ private module GeneratorDataFlow {
     override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       exists(DataFlow::FunctionNode f | f.getFunction().isGenerator() |
         prop = iteratorElement() and
-        exists(YieldExpr yield | yield.getContainer() = f.getFunction() |
+        exists(YieldExpr yield |
+          yield.getContainer() = f.getFunction() and not yield.isDelegating()
+        |
+          pred.asExpr() = yield.getOperand()
+        ) and
+        succ = f.getReturnNode()
+      )
+    }
+
+    override predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+      exists(DataFlow::FunctionNode f | f.getFunction().isGenerator() |
+        prop = iteratorElement() and
+        exists(YieldExpr yield | yield.getContainer() = f.getFunction() and yield.isDelegating() |
           pred.asExpr() = yield.getOperand()
         ) and
         succ = f.getReturnNode()

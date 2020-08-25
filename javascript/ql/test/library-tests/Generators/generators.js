@@ -30,4 +30,24 @@
   } catch (e) {
     sink(e); // NOT OK
   }
+
+  function *delegating() {
+    yield* delegate();
+  }
+
+  function *delegate() {
+    yield source;
+  }
+
+  Array.from(delegating()).forEach(x => sink(x)); // NOT OK
+
+  function *delegating2() {
+    yield* returnsTaint();
+  }
+
+  function returnsTaint() {
+    return source;
+  }
+
+  Array.from(delegating2()).forEach(x => sink(x)); // OK
 });
