@@ -1,3 +1,9 @@
+import sys
+
+if sys.version_info[0] == 3:
+    unicode = str
+
+
 TAINTED_STRING = "TAINTED_STRING"
 TAINTED_BYTES = b"TAINTED_BYTES"
 
@@ -20,6 +26,8 @@ def ensure_not_tainted(*args):
 def str_operations():
     print("\n# str_operations")
     ts = TAINTED_STRING
+    tb = TAINTED_BYTES
+
     ensure_tainted(
         ts,
         ts + "foo",
@@ -30,7 +38,8 @@ def str_operations():
         ts[0:1000],
         ts[0],
         str(ts),
-        bytes(ts),
+        bytes(tb),
+        unicode(ts),
     )
 
 

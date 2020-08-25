@@ -67,11 +67,7 @@ predicate subscriptStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
 predicate stringMethods(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
   // transforming something tainted into a string will make the string tainted
   exists(CallNode call | call = nodeTo.getNode() |
-    (
-      call.getFunction().(NameNode).getId() = "str"
-      or
-      call.getFunction().(NameNode).getId() = "bytes"
-    ) and
+    call.getFunction().(NameNode).getId() in ["str", "bytes", "unicode"] and
     (
       nodeFrom.getNode() = call.getArg(0)
       or
