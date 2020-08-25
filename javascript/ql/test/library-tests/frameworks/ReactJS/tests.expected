@@ -35,6 +35,7 @@ test_ReactComponent_getInstanceMethod
 | thisAccesses.js:18:19:29:1 | {\\n    r ...     }\\n} | someInstanceMethod | thisAccesses.js:26:25:28:5 | functio ... ;\\n    } |
 | thisAccesses.js:31:2:36:1 | functio ... iv/>;\\n} | render | thisAccesses.js:31:2:36:1 | functio ... iv/>;\\n} |
 | thisAccesses.js:38:19:45:1 | {\\n    r ...    },\\n} | render | thisAccesses.js:39:13:44:5 | functio ... ;\\n    } |
+| thisAccesses.js:54:1:63:1 | class C ...     }\\n} | render | thisAccesses.js:59:11:62:5 | () {\\n   ... ;\\n    } |
 | thisAccesses_importedMappers.js:4:19:15:1 | {\\n    r ...    },\\n} | render | thisAccesses_importedMappers.js:5:13:14:5 | functio ... ;\\n    } |
 test_react
 | es5.js:1:13:1:17 | React |
@@ -70,6 +71,7 @@ test_react
 | thisAccesses.js:38:1:38:5 | React |
 | thisAccesses.js:40:9:40:13 | React |
 | thisAccesses.js:47:18:47:22 | React |
+| thisAccesses.js:54:18:54:22 | React |
 | thisAccesses_importedMappers.js:1:8:1:12 | React |
 | thisAccesses_importedMappers.js:4:1:4:5 | React |
 | thisAccesses_importedMappers.js:6:9:6:13 | React |
@@ -165,6 +167,10 @@ test_ReactComponent_ref
 | thisAccesses.js:47:1:52:1 | class C ...     }\\n} | thisAccesses.js:48:17:48:16 | this |
 | thisAccesses.js:47:1:52:1 | class C ...     }\\n} | thisAccesses.js:49:9:49:12 | this |
 | thisAccesses.js:47:1:52:1 | class C ...     }\\n} | thisAccesses.js:50:9:50:12 | this |
+| thisAccesses.js:54:1:63:1 | class C ...     }\\n} | thisAccesses.js:55:16:55:15 | this |
+| thisAccesses.js:54:1:63:1 | class C ...     }\\n} | thisAccesses.js:59:11:59:10 | this |
+| thisAccesses.js:54:1:63:1 | class C ...     }\\n} | thisAccesses.js:60:20:60:23 | this |
+| thisAccesses.js:54:1:63:1 | class C ...     }\\n} | thisAccesses.js:61:20:61:23 | this |
 | thisAccesses_importedMappers.js:4:19:15:1 | {\\n    r ...    },\\n} | thisAccesses_importedMappers.js:4:19:15:1 | {\\n    r ...    },\\n} |
 | thisAccesses_importedMappers.js:4:19:15:1 | {\\n    r ...    },\\n} | thisAccesses_importedMappers.js:5:13:5:12 | this |
 | thisAccesses_importedMappers.js:4:19:15:1 | {\\n    r ...    },\\n} | thisAccesses_importedMappers.js:6:38:6:37 | this |
@@ -248,6 +254,7 @@ test_ReactComponent
 | thisAccesses.js:31:2:36:1 | functio ... iv/>;\\n} |
 | thisAccesses.js:38:19:45:1 | {\\n    r ...    },\\n} |
 | thisAccesses.js:47:1:52:1 | class C ...     }\\n} |
+| thisAccesses.js:54:1:63:1 | class C ...     }\\n} |
 | thisAccesses_importedMappers.js:4:19:15:1 | {\\n    r ...    },\\n} |
 test_ReactComponent_getAPropRead
 | es5.js:1:31:11:1 | {\\n  dis ... ;\\n  }\\n} | name | es5.js:4:24:4:38 | this.props.name |
@@ -258,3 +265,30 @@ test_ReactComponent_getAPropRead
 | preact.js:1:1:7:1 | class H ...     }\\n} | name | preact.js:3:9:3:18 | props.name |
 | probably-a-component.js:1:1:6:1 | class H ...     }\\n} | name | probably-a-component.js:3:9:3:23 | this.props.name |
 | statePropertyWrites.js:36:19:45:1 | {\\n  ren ... ;\\n  }\\n} | name | statePropertyWrites.js:38:24:38:38 | this.props.name |
+test_JSXname
+| es5.js:4:12:4:45 | <div>He ... }</div> | es5.js:4:13:4:15 | div | div | Identifier |
+| es5.js:20:12:20:44 | <h1>Hel ... e}</h1> | es5.js:20:13:20:14 | h1 | h1 | Identifier |
+| es6.js:3:12:3:45 | <div>He ... }</div> | es6.js:3:13:3:15 | div | div | Identifier |
+| exportedComponent.jsx:2:12:2:46 | <div st ... lor}}/> | exportedComponent.jsx:2:13:2:15 | div | div | Identifier |
+| importedComponent.jsx:4:12:4:39 | <MyComp ... olor}/> | importedComponent.jsx:4:13:4:23 | MyComponent | MyComponent | Identifier |
+| plainfn.js:2:10:2:38 | <div>He ... }</div> | plainfn.js:2:11:2:13 | div | div | Identifier |
+| preact.js:5:16:5:21 | <div/> | preact.js:5:17:5:19 | div | div | Identifier |
+| probably-a-component.js:4:16:4:21 | <div/> | probably-a-component.js:4:17:4:19 | div | div | Identifier |
+| props.js:7:6:7:37 | <C prop ... JSX"}/> | props.js:7:7:7:7 | C | C | Identifier |
+| props.js:19:6:19:37 | <C prop ... JSX"}/> | props.js:19:7:19:7 | C | C | Identifier |
+| props.js:27:16:27:21 | <div/> | props.js:27:17:27:19 | div | div | Identifier |
+| props.js:32:6:32:37 | <C prop ... JSX"}/> | props.js:32:7:32:7 | C | C | Identifier |
+| statePropertyWrites.js:38:12:38:45 | <div>He ... }</div> | statePropertyWrites.js:38:13:38:15 | div | div | Identifier |
+| thisAccesses.js:23:16:23:21 | <div/> | thisAccesses.js:23:17:23:19 | div | div | Identifier |
+| thisAccesses.js:35:12:35:17 | <div/> | thisAccesses.js:35:13:35:15 | div | div | Identifier |
+| thisAccesses.js:43:16:43:21 | <div/> | thisAccesses.js:43:17:43:19 | div | div | Identifier |
+| thisAccesses.js:60:19:60:41 | <this.n ... s.name> | thisAccesses.js:60:20:60:28 | this.name | this.name | dot |
+| thisAccesses.js:61:19:61:41 | <this.t ... s.this> | thisAccesses.js:61:20:61:28 | this.this | this.this | dot |
+| thisAccesses_importedMappers.js:13:16:13:21 | <div/> | thisAccesses_importedMappers.js:13:17:13:19 | div | div | Identifier |
+test_JSXName_this
+| es5.js:4:12:4:45 | <div>He ... }</div> | es5.js:4:24:4:27 | this |
+| es5.js:20:12:20:44 | <h1>Hel ... e}</h1> | es5.js:20:24:20:27 | this |
+| es6.js:3:12:3:45 | <div>He ... }</div> | es6.js:3:24:3:27 | this |
+| statePropertyWrites.js:38:12:38:45 | <div>He ... }</div> | statePropertyWrites.js:38:24:38:27 | this |
+| thisAccesses.js:60:19:60:41 | <this.n ... s.name> | thisAccesses.js:60:20:60:23 | this |
+| thisAccesses.js:61:19:61:41 | <this.t ... s.this> | thisAccesses.js:61:20:61:23 | this |
