@@ -18,6 +18,18 @@ def ensure_not_tainted(*args):
 
 # Actual tests
 
+def str_methods():
+    print("\n# str_methods")
+    ts = TAINTED_STRING
+    tb = TAINTED_BYTES
+    ensure_tainted(
+        ts.casefold(),
+
+        ts.format_map({}),
+        "{unsafe}".format_map({"unsafe": ts}),
+    )
+
+
 def binary_decode_encode():
     print("\n#percent_fmt")
     tb = TAINTED_BYTES
@@ -47,5 +59,6 @@ def f_strings():
 
 # Make tests runable
 
+str_methods()
 binary_decode_encode()
 f_strings()

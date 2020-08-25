@@ -49,16 +49,12 @@ def str_methods():
     tb = TAINTED_BYTES
     ensure_tainted(
         ts.capitalize(),
-        ts.casefold(),
         ts.center(100),
         ts.expandtabs(),
 
         ts.format(),
         "{}".format(ts),
         "{unsafe}".format(unsafe=ts),
-
-        ts.format_map({}),
-        "{unsafe}".format_map({"unsafe": ts}),
 
         ts.join(["", ""]),
         "".join([ts]),
