@@ -485,6 +485,11 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   exprToExprStep_nocfg(nodeFrom.asExpr(), nodeTo.asExpr())
   or
   // Assignment -> LValue post-update node
+  //
+  // This is used for assignments whose left-hand side is not a variable
+  // assignment or a storeStep but is still modeled by other means. It could be
+  // a call to `operator*` or `operator[]` where taint should flow to the
+  // post-update node of the qualifier.
   exists(AssignExpr assign |
     nodeFrom.asExpr() = assign and
     nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr() = assign.getLValue()
