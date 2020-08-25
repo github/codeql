@@ -117,6 +117,10 @@ class StdStringAssign extends TaintFunction {
   }
 }
 
+/**
+ * The standard functions `std::string.begin` and `std::string.end` and their
+ * variants.
+ */
 class StdStringBeginEnd extends TaintFunction {
   StdStringBeginEnd() {
     this.hasQualifiedName("std", "basic_string", "begin") or
