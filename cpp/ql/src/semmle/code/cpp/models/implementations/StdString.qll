@@ -1,3 +1,9 @@
+/**
+ * Provides implementation classes modeling `std::string` and other
+ * instantiations of`std::basic_string`. See `semmle.code.cpp.models.Models`
+ * for usage information.
+ */
+
 import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.implementations.Iterator
 
@@ -66,6 +72,9 @@ class StdStringAppend extends TaintFunction {
     getParameter(result).getType() = getDeclaringType().getTemplateArgument(0) // i.e. `std::basic_string::CharT`
   }
 
+  /**
+   * Gets the index of a parameter to this function that is an iterator.
+   */
   int getAnIteratorParameter() { getParameter(result).getType() instanceof Iterator }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

@@ -1,3 +1,10 @@
+/**
+ * Provides implementation classes modeling C++ iterators, including
+ * `std::iterator`, `std::iterator_traits`, and types meeting the
+ * `LegacyIterator` named requirement. See `semmle.code.cpp.models.Models` for
+ * usage information.
+ */
+
 import cpp
 import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.DataFlow
@@ -187,6 +194,9 @@ class IteratorAssignArithmeticOperator extends Operator, DataFlowFunction, Taint
   }
 }
 
+/**
+ * A non-member `operator[]` function for an iterator type.
+ */
 class IteratorArrayOperator extends Operator, TaintFunction {
   IteratorArrayOperator() {
     this.hasName("operator[]") and
