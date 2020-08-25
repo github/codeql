@@ -191,6 +191,8 @@ private predicate linearAccessImpl(Expr expr, VariableAccess v, float p, float q
   // Base case
   expr = v and p = 1.0 and q = 0.0
   or
+  expr.(ReferenceDereferenceExpr).getExpr() = v and p = 1.0 and q = 0.0
+  or
   // a+(p*v+b) == p*v + (a+b)
   exists(AddExpr addExpr, float a, float b |
     addExpr.getLeftOperand().isConstant() and
@@ -349,13 +351,25 @@ private predicate typeBounds(ArithmeticType t, float lb, float ub) {
   t instanceof FloatingPointType and lb = -(1.0 / 0.0) and ub = 1.0 / 0.0
 }
 
+private Type stripReference(Type t) {
+  if t instanceof ReferenceType then
+    result = t.(ReferenceType).getBaseType()
+  else
+    result = t
+}
+
+/** Gets the type used by range analysis for the given `StackVariable`. */
+Type getVariableRangeType(StackVariable v) {
+  result = stripReference(v.getUnspecifiedType())
+}
+
 /**
  * Gets the lower bound for the unspecified type `t`.
  *
  * For example, if `t` is a signed 32-bit type then the result is
  * `-2^31`.
  */
-float typeLowerBound(ArithmeticType t) { typeBounds(t, result, _) }
+float typeLowerBound(Type t) { typeBounds(stripReference(t), result, _) }
 
 /**
  * Gets the upper bound for the unspecified type `t`.
@@ -363,7 +377,7 @@ float typeLowerBound(ArithmeticType t) { typeBounds(t, result, _) }
  * For example, if `t` is a signed 32-bit type then the result is
  * `2^31 - 1`.
  */
-float typeUpperBound(ArithmeticType t) { typeBounds(t, _, result) }
+float typeUpperBound(Type t) { typeBounds(stripReference(t), _, result) }
 
 /**
  * Gets the minimum value that this expression could represent, based on

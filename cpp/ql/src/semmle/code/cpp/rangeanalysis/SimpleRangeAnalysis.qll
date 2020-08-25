@@ -485,7 +485,7 @@ private predicate isRecursiveDef(RangeSsaDefinition def, StackVariable v) {
  * This predicate finds all the definitions in the first set.
  */
 private predicate assignmentDef(RangeSsaDefinition def, StackVariable v, Expr expr) {
-  v.getUnspecifiedType() instanceof ArithmeticType and
+  getVariableRangeType(v) instanceof ArithmeticType and
   (
     def = v.getInitializer().getExpr() and def = expr
     or
@@ -1329,7 +1329,7 @@ private float getDefLowerBounds(RangeSsaDefinition def, StackVariable v) {
       // recursion from exploding.
       result =
         max(float widenLB |
-          widenLB = wideningLowerBounds(v.getUnspecifiedType()) and
+          widenLB = wideningLowerBounds(getVariableRangeType(v)) and
           not widenLB > truncatedLB
         |
           widenLB
@@ -1359,7 +1359,7 @@ private float getDefUpperBounds(RangeSsaDefinition def, StackVariable v) {
       // from exploding.
       result =
         min(float widenUB |
-          widenUB = wideningUpperBounds(v.getUnspecifiedType()) and
+          widenUB = wideningUpperBounds(getVariableRangeType(v)) and
           not widenUB < truncatedUB
         |
           widenUB
@@ -1391,9 +1391,9 @@ private predicate unanalyzableDefBounds(RangeSsaDefinition def, StackVariable v,
  */
 bindingset[guard, v, branch]
 predicate nonNanGuardedVariable(ComparisonOperation guard, VariableAccess v, boolean branch) {
-  v.getUnspecifiedType() instanceof IntegralType
+  getVariableRangeType(v.getTarget()) instanceof IntegralType
   or
-  v.getUnspecifiedType() instanceof FloatingPointType and v instanceof NonNanVariableAccess
+  getVariableRangeType(v.getTarget()) instanceof FloatingPointType and v instanceof NonNanVariableAccess
   or
   // The reason the following case is here is to ensure that when we say
   // `if (x > 5) { ...then... } else { ...else... }`
@@ -1418,7 +1418,7 @@ private predicate lowerBoundFromGuard(
     then
       if
         strictness = Nonstrict() or
-        not v.getUnspecifiedType() instanceof IntegralType
+        not getVariableRangeType(v.getTarget()) instanceof IntegralType
       then lb = childLB
       else lb = childLB + 1
     else lb = varMinVal(v.getTarget())
@@ -1440,7 +1440,7 @@ private predicate upperBoundFromGuard(
     then
       if
         strictness = Nonstrict() or
-        not v.getUnspecifiedType() instanceof IntegralType
+        not getVariableRangeType(v.getTarget()) instanceof IntegralType
       then ub = childUB
       else ub = childUB - 1
     else ub = varMaxVal(v.getTarget())
