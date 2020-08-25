@@ -1,20 +1,11 @@
-# Python 3 specific taint tracking for string
+# Add taintlib to PATH so it can be imported during runtime without any hassle
+import sys; import os; sys.path.append(os.path.dirname(os.path.dirname((__file__))))
+from taintlib import *
 
-TAINTED_STRING = "TAINTED_STRING"
-TAINTED_BYTES = b"TAINTED_BYTES"
-
-
-def ensure_tainted(*args):
-    print("- ensure_tainted")
-    for i, arg in enumerate(args):
-        print("arg {}: {!r}".format(i, arg))
-
-
-def ensure_not_tainted(*args):
-    print("- ensure_not_tainted")
-    for i, arg in enumerate(args):
-        print("arg {}: {!r}".format(i, arg))
-
+# This has no runtime impact, but allows autocomplete to work
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from ..taintlib import *
 
 # Actual tests
 
