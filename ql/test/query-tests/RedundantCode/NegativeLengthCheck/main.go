@@ -31,7 +31,3 @@ func checkNegative(x uint) bool {
 func checkNonPositive(x uint) bool {
 	return x <= 0 // OK
 }
-
-func checkIsMinusOne(x uint) bool {
-	return x == -1 // NOT OK
-}

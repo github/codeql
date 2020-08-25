@@ -133,7 +133,7 @@ func serveStdlib() {
 
 		target := r.Form.Get("target")
 		// GOOD: a check is done on the URL
-		if isValidRedirectUri(target) {
+		if isValidRedirect(target) {
 			http.Redirect(w, r, target, 302)
 		} else {
 			// ...

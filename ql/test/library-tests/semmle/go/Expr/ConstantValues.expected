@@ -31,3 +31,12 @@
 | consts.go:34:20:34:20 | k | k | 2, 2 |
 | consts.go:34:23:34:23 | l | l | 1, 1 |
 | consts.go:34:26:34:26 | m | m | hi |
+| ellipsis.go:7:5:7:5 | 1 | 1 | 1, 1 |
+| ellipsis.go:8:5:8:5 | 1 | 1 | 1, 1 |
+| ellipsis.go:8:8:8:8 | 2 | 2 | 2, 2 |
+| ellipsis.go:9:5:9:5 | 1 | 1 | 1, 1 |
+| ellipsis.go:9:8:9:8 | 2 | 2 | 2, 2 |
+| ellipsis.go:9:11:9:11 | 3 | 3 | 3, 3 |
+| ellipsis.go:10:5:10:5 | 1 | 1 | 1, 1 |
+| ellipsis.go:10:14:10:14 | 2 | 2 | 2, 2 |
+| ellipsis.go:10:17:10:17 | 3 | 3 | 3, 3 |
