@@ -35,6 +35,7 @@ import com.semmle.js.ast.jsx.JSXMemberExpression;
 import com.semmle.js.ast.jsx.JSXNamespacedName;
 import com.semmle.js.ast.jsx.JSXOpeningElement;
 import com.semmle.js.ast.jsx.JSXSpreadAttribute;
+import com.semmle.js.ast.jsx.JSXThisExpr;
 import com.semmle.util.data.Either;
 import java.util.ArrayList;
 import java.util.List;
@@ -225,22 +226,26 @@ public class JSXParser extends Parser {
   }
 
   /** Parse next token as JSX identifier */
-  private JSXIdentifier jsx_parseIdentifier() {
+  private IJSXName jsx_parseIdentifier(boolean expectThisExpr) {
     SourceLocation loc = new SourceLocation(this.startLoc);
     String name = null;
     if (this.type == jsxName) name = String.valueOf(this.value);
     else if (this.type.keyword != null) name = this.type.keyword;
     else this.unexpected();
     this.next();
-    return this.finishNode(new JSXIdentifier(loc, name));
+    if (expectThisExpr && name.equals("this")) {
+      return this.finishNode(new JSXThisExpr(loc));
+    } else {
+      return this.finishNode(new JSXIdentifier(loc, name));
+    }
   }
 
   /** Parse namespaced identifier. */
   private IJSXName jsx_parseNamespacedName() {
     SourceLocation loc = new SourceLocation(this.startLoc);
-    JSXIdentifier namespace = this.jsx_parseIdentifier();
-    if (!((JSXOptions) options).allowNamespaces || !this.eat(colon)) return namespace;
-    return this.finishNode(new JSXNamespacedName(loc, namespace, this.jsx_parseIdentifier()));
+    IJSXName namespace = this.jsx_parseIdentifier(true);
+    if (namespace instanceof JSXThisExpr || (!((JSXOptions) options).allowNamespaces || !this.eat(colon))) return namespace;
+    return this.finishNode(new JSXNamespacedName(loc, (JSXIdentifier)namespace, (JSXIdentifier)this.jsx_parseIdentifier(false)));
   }
 
   /**
@@ -258,7 +263,7 @@ public class JSXParser extends Parser {
     }
     while (this.eat(dot)) {
       SourceLocation loc = new SourceLocation(startPos);
-      node = this.finishNode(new JSXMemberExpression(loc, node, this.jsx_parseIdentifier()));
+      node = this.finishNode(new JSXMemberExpression(loc, node, (JSXIdentifier)this.jsx_parseIdentifier(false)));
     }
     return node;
   }

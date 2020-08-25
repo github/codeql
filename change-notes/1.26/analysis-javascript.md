@@ -14,6 +14,8 @@
   - [pretty-format](https://www.npmjs.com/package/pretty-format)
   - [stringify-object](https://www.npmjs.com/package/stringify-object)
 
+* Analyzing files with the ".cjs" extension is now supported.
+
 ## New queries
 
 | **Query**                                                                       | **Tags**                                                          | **Purpose**                                                                                                                                                                            |

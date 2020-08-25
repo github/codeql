@@ -39,11 +39,14 @@ namespace std
 	class basic_string {
 	public:
 		typedef typename Allocator::size_type size_type;
+		static const size_type npos = -1;
 
 		explicit basic_string(const Allocator& a = Allocator());
 		basic_string(const charT* s, const Allocator& a = Allocator());
 
 		const charT* c_str() const;
+		charT* data() noexcept;
+		size_t length() const;
 
 		typedef std::iterator<random_access_iterator_tag, charT> iterator;
 		typedef std::iterator<random_access_iterator_tag, const charT> const_iterator;
@@ -60,6 +63,16 @@ namespace std
 		basic_string& append(const basic_string& str);
 		basic_string& append(const charT* s);
 		basic_string& append(size_type n, charT c);
+		basic_string& assign(const basic_string& str);
+		basic_string& assign(size_type n, charT c);
+		basic_string& insert(size_type pos, const basic_string& str);
+		basic_string& insert(size_type pos, size_type n, charT c);
+		basic_string& replace(size_type pos1, size_type n1, const basic_string& str);
+		basic_string& replace(size_type pos1, size_type n1, size_type n2, charT c);
+		size_type copy(charT* s, size_type n, size_type pos = 0) const;
+		void clear() noexcept;
+		basic_string substr(size_type pos = 0, size_type n = npos) const;
+		void swap(basic_string& s) noexcept/*(allocator_traits<Allocator>::propagate_on_container_swap::value || allocator_traits<Allocator>::is_always_equal::value)*/;
 	};
 
 	template<class charT, class traits, class Allocator> basic_string<charT, traits, Allocator> operator+(const basic_string<charT, traits, Allocator>& lhs, const basic_string<charT, traits, Allocator>& rhs);
@@ -104,23 +117,53 @@ namespace std
 // --- vector ---
 
 namespace std {
-	template <class T>
-	class vector {
-	private:
-		void *data_;
+	template<class T, class Allocator = allocator<T>>
+	class vector { 
 	public:
-		vector(int size);
+		using value_type = T;
+		using reference = value_type&;
+		using const_reference = const value_type&; 
+		using size_type = unsigned int;
+		using iterator = std::iterator<random_access_iterator_tag, T>;
+		using const_iterator = std::iterator<random_access_iterator_tag, const T>;
 
-		T& operator[](int idx);
-		const T& operator[](int idx) const;
+		vector() noexcept(noexcept(Allocator())) : vector(Allocator()) { }
+		explicit vector(const Allocator&) noexcept;
+		explicit vector(size_type n, const Allocator& = Allocator());
+		vector(size_type n, const T& value, const Allocator& = Allocator()); 
+		~vector();
 
-		typedef std::iterator<random_access_iterator_tag, T> iterator;
-		typedef std::iterator<random_access_iterator_tag, const T> const_iterator;
+		vector& operator=(const vector& x);
+		vector& operator=(vector&& x) noexcept/*(allocator_traits<Allocator>::propagate_on_container_move_assignment::value || allocator_traits<Allocator>::is_always_equal::value)*/;
 
 		iterator begin() noexcept;
-		iterator end() noexcept;
-
 		const_iterator begin() const noexcept;
+		iterator end() noexcept;
 		const_iterator end() const noexcept;
+
+		size_type size() const noexcept;
+
+		reference operator[](size_type n);
+		const_reference operator[](size_type n) const;
+		const_reference at(size_type n) const;
+		reference at(size_type n);
+		reference front();
+		const_reference front() const;
+		reference back();
+		const_reference back() const;
+
+		T* data() noexcept;
+		const T* data() const noexcept;
+
+		void push_back(const T& x);
+		void push_back(T&& x);
+
+		iterator insert(const_iterator position, const T& x);
+		iterator insert(const_iterator position, T&& x);
+		iterator insert(const_iterator position, size_type n, const T& x);
+
+		void swap(vector&) noexcept/*(allocator_traits<Allocator>::propagate_on_container_swap::value || allocator_traits<Allocator>::is_always_equal::value)*/;
+
+		void clear() noexcept;
 	};
 }

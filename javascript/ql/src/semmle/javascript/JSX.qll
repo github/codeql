@@ -181,6 +181,7 @@ class JSXQualifiedName extends Expr, @jsxqualifiedname {
 class JSXName extends Expr {
   JSXName() {
     this instanceof Identifier or
+    this instanceof ThisExpr or
     this.(DotExpr).getBase() instanceof JSXName or
     this instanceof JSXQualifiedName
   }
@@ -198,6 +199,9 @@ class JSXName extends Expr {
     exists(JSXQualifiedName qual | qual = this |
       result = qual.getNamespace().getName() + ":" + qual.getName().getName()
     )
+    or
+    this instanceof ThisExpr and
+    result = "this"
   }
 }
 

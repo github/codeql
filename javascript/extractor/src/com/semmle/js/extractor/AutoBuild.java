@@ -144,7 +144,7 @@ import com.semmle.util.trap.TrapWriter;
  *
  * <ul>
  *   <li>All JavaScript files, that is, files with one of the extensions supported by {@link
- *       FileType#JS} (currently ".js", ".jsx", ".mjs", ".es6", ".es").
+ *       FileType#JS} (currently ".js", ".jsx", ".mjs", ".cjs", ".es6", ".es").
  *   <li>All HTML files, that is, files with with one of the extensions supported by {@link
  *       FileType#HTML} (currently ".htm", ".html", ".xhtm", ".xhtml", ".vue").
  *   <li>All YAML files, that is, files with one of the extensions supported by {@link
