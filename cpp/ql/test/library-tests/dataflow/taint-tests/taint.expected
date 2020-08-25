@@ -1,3 +1,8 @@
+| arrayassignment.cpp:33:7:33:9 | r_x | arrayassignment.cpp:29:8:29:13 | call to source |
+| arrayassignment.cpp:57:10:57:12 | call to get | arrayassignment.cpp:54:9:54:14 | call to source |
+| arrayassignment.cpp:67:10:67:12 | call to get | arrayassignment.cpp:64:13:64:18 | call to source |
+| arrayassignment.cpp:101:7:101:18 | access to array | arrayassignment.cpp:99:17:99:22 | call to source |
+| arrayassignment.cpp:135:7:135:10 | ref1 | arrayassignment.cpp:134:9:134:14 | call to source |
 | copyableclass.cpp:40:8:40:9 | s1 | copyableclass.cpp:34:22:34:27 | call to source |
 | copyableclass.cpp:41:8:41:9 | s2 | copyableclass.cpp:35:24:35:29 | call to source |
 | copyableclass.cpp:42:8:42:9 | s3 | copyableclass.cpp:34:22:34:27 | call to source |
