@@ -12,8 +12,7 @@ class StdBasicString extends TemplateClass {
  */
 class StdStringCStr extends TaintFunction {
   StdStringCStr() {
-    this.hasQualifiedName("std", "basic_string", "c_str") or
-    this.hasQualifiedName("std", "basic_string", "data")
+    this.hasQualifiedName("std", "basic_string", ["c_str", "data"])
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -49,10 +48,7 @@ class StdStringPlus extends TaintFunction {
  */
 class StdStringAppend extends TaintFunction {
   StdStringAppend() {
-    this.hasQualifiedName("std", "basic_string", "operator+=") or
-    this.hasQualifiedName("std", "basic_string", "append") or
-    this.hasQualifiedName("std", "basic_string", "insert") or
-    this.hasQualifiedName("std", "basic_string", "replace")
+    this.hasQualifiedName("std", "basic_string", ["operator+=", "append", "insert", "replace"])
   }
 
   /**
@@ -151,8 +147,7 @@ class StdStringSwap extends TaintFunction {
  */
 class StdStringAt extends TaintFunction {
   StdStringAt() {
-    this.hasQualifiedName("std", "basic_string", "at") or
-    this.hasQualifiedName("std", "basic_string", "operator[]")
+    this.hasQualifiedName("std", "basic_string", ["at", "operator[]"])
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
