@@ -24,6 +24,7 @@
 
 import javascript
 private import semmle.javascript.frameworks.ConnectExpressShared::ConnectExpressShared
+private import ApiGraphs
 
 // main concepts
 /**
@@ -126,7 +127,7 @@ abstract class RateLimiter extends Express::RouteHandlerExpr { }
  */
 class ExpressRateLimit extends RateLimiter {
   ExpressRateLimit() {
-    DataFlow::moduleImport("express-rate-limit").getAnInvocation().flowsToExpr(this)
+    this = API::moduleImport("express-rate-limit").getReturn().getAUse().asExpr()
   }
 }
 
@@ -135,11 +136,7 @@ class ExpressRateLimit extends RateLimiter {
  */
 class BruteForceRateLimit extends RateLimiter {
   BruteForceRateLimit() {
-    exists(DataFlow::ModuleImportNode expressBrute, DataFlow::SourceNode prevent |
-      expressBrute.getPath() = "express-brute" and
-      prevent = expressBrute.getAnInstantiation().getAPropertyRead("prevent") and
-      prevent.flowsToExpr(this)
-    )
+    this = API::moduleImport("express-brute").getInstance().getMember("prevent").getAUse().asExpr()
   }
 }
 
@@ -148,9 +145,9 @@ class BruteForceRateLimit extends RateLimiter {
  */
 class RouteHandlerLimitedByExpressLimiter extends RateLimitedRouteHandlerExpr {
   RouteHandlerLimitedByExpressLimiter() {
-    exists(DataFlow::ModuleImportNode expressLimiter |
-      expressLimiter.getPath() = "express-limiter" and
-      expressLimiter.getACall().getArgument(0).getALocalSource().asExpr() =
+    exists(API::Feature expressLimiter |
+      expressLimiter = API::moduleImport("express-limiter") and
+      expressLimiter.getParameter(0).getADefinition().getALocalSource().asExpr() =
         this.getSetup().getRouter()
     )
   }
@@ -175,14 +172,14 @@ class RouteHandlerLimitedByExpressLimiter extends RateLimitedRouteHandlerExpr {
 class RateLimiterFlexibleRateLimiter extends DataFlow::FunctionNode {
   RateLimiterFlexibleRateLimiter() {
     exists(
-      string rateLimiterClassName, DataFlow::SourceNode rateLimiterClass,
-      DataFlow::SourceNode rateLimiterInstance, DataFlow::ParameterNode request
+      string rateLimiterClassName, API::Feature rateLimiterClass, API::Feature rateLimiterConsume,
+      DataFlow::ParameterNode request
     |
       rateLimiterClassName.matches("RateLimiter%") and
-      rateLimiterClass = DataFlow::moduleMember("rate-limiter-flexible", rateLimiterClassName) and
-      rateLimiterInstance = rateLimiterClass.getAnInstantiation() and
+      rateLimiterClass = API::moduleImport("rate-limiter-flexible").getMember(rateLimiterClassName) and
+      rateLimiterConsume = rateLimiterClass.getInstance().getMember("consume") and
       request.getParameter() = getRouteHandlerParameter(getFunction(), "request") and
-      request.getAPropertyRead() = rateLimiterInstance.getAMemberCall("consume").getAnArgument()
+      request.getAPropertyRead().flowsTo(rateLimiterConsume.getAParameter().getADefinition())
     )
   }
 }
