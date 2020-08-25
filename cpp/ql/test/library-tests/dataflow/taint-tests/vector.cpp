@@ -21,7 +21,7 @@ void test_range_based_for_loop_vector(int source1) {
 	}
 
 	for(std::vector<int>::iterator it = v.begin(); it != v.end(); ++it) {
-		sink(*it); // tainted
+		sink(*it); // tainted [NOT DETECTED by IR]
 	}
 
 	for(int& x : v) {
@@ -335,12 +335,12 @@ void test_vector_output_iterator() {
 
 	std::vector<int>::iterator i1 = v1.begin();
 	*i1 = source();
-	sink(v1);  // tainted [NOT DETECTED]
+	sink(v1); // tainted [NOT DETECTED by IR]
 
 	for(std::vector<int>::iterator it = v2.begin(); it != v2.end(); ++it) {
-		*it = source(); // tainted [NOT DETECTED]
+		*it = source();
 	}
-	sink(v2);
+	sink(v2); // tainted [NOT DETECTED by IR]
 
 	for(int& x : v3) {
 		x = source();
@@ -350,5 +350,5 @@ void test_vector_output_iterator() {
 	for(std::vector<int>::iterator it = v4.begin(); it != v4.end(); ++it) {
 		*it = source();
 	}
-	sink(v4); // tainted [NOT DETECTED]
+	sink(v4); // tainted [NOT DETECTED by IR]
 }

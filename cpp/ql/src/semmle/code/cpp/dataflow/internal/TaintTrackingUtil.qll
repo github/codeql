@@ -10,6 +10,7 @@
 
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.models.interfaces.Taint
+private import semmle.code.cpp.models.implementations.Iterator
 
 private module DataFlow {
   import semmle.code.cpp.dataflow.internal.DataFlowUtil
@@ -186,6 +187,12 @@ private predicate exprToExprStep(Expr exprIn, Expr exprOut) {
       exprIn = call.getQualifier()
     )
   )
+  or
+  exists(Variable iterator, Variable collection |
+    assignmentViaIterator(iterator, exprIn) and
+    isIteratorForCollection(iterator, collection) and
+    collection.getAnAccess() = exprOut
+  )
 }
 
 private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
@@ -247,5 +254,29 @@ private predicate exprToPartialDefinitionStep(Expr exprIn, Expr exprOut) {
       inModel.isParameter(argInIndex) and
       exprIn = call.getArgument(argInIndex)
     )
+  )
+}
+
+private predicate isIteratorForCollection(Variable iterator, Variable collection) {
+  exists(Call beginOrEnd |
+    beginOrEnd.getTarget() instanceof BeginOrEndFunction and
+    beginOrEnd.getQualifier() = collection.getAnAccess() and
+    iterator.getAnAssignedValue() = beginOrEnd
+  )
+}
+
+private predicate assignmentViaIterator(Variable iterator, Expr rvalue) {
+  exists(Assignment a, Call c |
+    c.getTarget() instanceof IteratorArrayMemberOperator and
+    c.getQualifier() = iterator.getAnAccess()
+    or
+    c.getTarget() instanceof IteratorPointerDereferenceMemberOperator and
+    c.getQualifier() = iterator.getAnAccess()
+    or
+    c.getTarget() instanceof IteratorPointerDereferenceOperator and
+    c.getArgument(0) = iterator.getAnAccess()
+    |
+    c = a.getLValue() and
+    rvalue = a.getRValue()
   )
 }

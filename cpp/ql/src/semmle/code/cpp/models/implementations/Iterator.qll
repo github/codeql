@@ -271,3 +271,15 @@ class IteratorArrayMemberOperator extends MemberFunction, TaintFunction {
     output.isReturnValue()
   }
 }
+
+class BeginOrEndFunction extends MemberFunction, TaintFunction {
+  BeginOrEndFunction() {
+    this.hasName(["begin", "cbegin", "rbegin", "crbegin", "end", "cend", "rend", "crend"]) and
+    this.getType().getUnspecifiedType() instanceof Iterator
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isQualifierObject() and
+    output.isReturnValue()
+  }
+}

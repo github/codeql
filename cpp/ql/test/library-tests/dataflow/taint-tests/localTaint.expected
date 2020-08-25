@@ -3197,7 +3197,10 @@
 | vector.cpp:336:37:336:41 | call to begin | vector.cpp:337:3:337:4 | i1 |  |
 | vector.cpp:337:2:337:15 | ... = ... | vector.cpp:337:2:337:2 | call to operator* [post update] |  |
 | vector.cpp:337:3:337:4 | i1 | vector.cpp:337:2:337:2 | call to operator* | TAINT |
+| vector.cpp:337:8:337:13 | call to source | vector.cpp:336:34:336:35 | v1 | TAINT |
 | vector.cpp:337:8:337:13 | call to source | vector.cpp:337:2:337:15 | ... = ... |  |
+| vector.cpp:337:8:337:13 | call to source | vector.cpp:338:7:338:8 | v1 | TAINT |
+| vector.cpp:337:8:337:13 | call to source | vector.cpp:354:1:354:1 | v1 | TAINT |
 | vector.cpp:338:7:338:8 | ref arg v1 | vector.cpp:354:1:354:1 | v1 |  |
 | vector.cpp:340:38:340:39 | ref arg v2 | vector.cpp:340:56:340:57 | v2 |  |
 | vector.cpp:340:38:340:39 | ref arg v2 | vector.cpp:343:7:343:8 | v2 |  |
@@ -3216,7 +3219,11 @@
 | vector.cpp:340:68:340:69 | ref arg it | vector.cpp:341:4:341:5 | it |  |
 | vector.cpp:341:3:341:16 | ... = ... | vector.cpp:341:3:341:3 | call to operator* [post update] |  |
 | vector.cpp:341:4:341:5 | it | vector.cpp:341:3:341:3 | call to operator* | TAINT |
+| vector.cpp:341:9:341:14 | call to source | vector.cpp:340:38:340:39 | v2 | TAINT |
+| vector.cpp:341:9:341:14 | call to source | vector.cpp:340:56:340:57 | v2 | TAINT |
 | vector.cpp:341:9:341:14 | call to source | vector.cpp:341:3:341:16 | ... = ... |  |
+| vector.cpp:341:9:341:14 | call to source | vector.cpp:343:7:343:8 | v2 | TAINT |
+| vector.cpp:341:9:341:14 | call to source | vector.cpp:354:1:354:1 | v2 | TAINT |
 | vector.cpp:343:7:343:8 | ref arg v2 | vector.cpp:354:1:354:1 | v2 |  |
 | vector.cpp:345:15:345:15 | (__begin) | vector.cpp:345:15:345:15 | call to operator* | TAINT |
 | vector.cpp:345:15:345:15 | (__begin) | vector.cpp:345:15:345:15 | call to operator++ | TAINT |
@@ -3253,5 +3260,9 @@
 | vector.cpp:350:68:350:69 | ref arg it | vector.cpp:351:4:351:5 | it |  |
 | vector.cpp:351:3:351:16 | ... = ... | vector.cpp:351:3:351:3 | call to operator* [post update] |  |
 | vector.cpp:351:4:351:5 | it | vector.cpp:351:3:351:3 | call to operator* | TAINT |
+| vector.cpp:351:9:351:14 | call to source | vector.cpp:350:38:350:39 | v4 | TAINT |
+| vector.cpp:351:9:351:14 | call to source | vector.cpp:350:56:350:57 | v4 | TAINT |
 | vector.cpp:351:9:351:14 | call to source | vector.cpp:351:3:351:16 | ... = ... |  |
+| vector.cpp:351:9:351:14 | call to source | vector.cpp:353:7:353:8 | v4 | TAINT |
+| vector.cpp:351:9:351:14 | call to source | vector.cpp:354:1:354:1 | v4 | TAINT |
 | vector.cpp:353:7:353:8 | ref arg v4 | vector.cpp:354:1:354:1 | v4 |  |
