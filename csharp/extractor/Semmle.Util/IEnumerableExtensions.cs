@@ -93,7 +93,7 @@ namespace Semmle.Util
         /// <typeparam name="T">The type of the item.</typeparam>
         /// <param name="items">The list of items to hash.</param>
         /// <returns>The hash code.</returns>
-        public static int SequenceHash<T>(this IEnumerable<T> items) where T: notnull
+        public static int SequenceHash<T>(this IEnumerable<T> items) where T : notnull
         {
             int h = 0;
             foreach (var i in items)

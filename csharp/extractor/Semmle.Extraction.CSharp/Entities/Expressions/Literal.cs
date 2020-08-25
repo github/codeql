@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
     class Literal : Expression<LiteralExpressionSyntax>
     {
-        Literal(ExpressionNodeInfo info) : base(info.SetKind(GetKind(info)) ) { }
+        Literal(ExpressionNodeInfo info) : base(info.SetKind(GetKind(info))) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new Literal(info).TryPopulate();
 
@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         static ExprKind GetKind(ExpressionNodeInfo info)
         {
-            switch(info.Node.Kind())
+            switch (info.Node.Kind())
             {
                 case SyntaxKind.DefaultLiteralExpression:
                     return ExprKind.DEFAULT;

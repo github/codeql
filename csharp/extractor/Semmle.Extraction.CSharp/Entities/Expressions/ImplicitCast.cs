@@ -22,7 +22,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
 
         public ImplicitCast(ExpressionNodeInfo info, IMethodSymbol method)
-            : base(new ExpressionInfo(info.Context, Entities.Type.Create(info.Context, info.ConvertedType), info.Location, ExprKind.OPERATOR_INVOCATION, info.Parent, info.Child, true, info.ExprValue) )
+            : base(new ExpressionInfo(info.Context, Entities.Type.Create(info.Context, info.ConvertedType), info.Location, ExprKind.OPERATOR_INVOCATION, info.Parent, info.Child, true, info.ExprValue))
         {
             Expr = Factory.Create(info.SetParent(this, 0));
 

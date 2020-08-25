@@ -64,7 +64,7 @@ namespace Semmle.Extraction.CSharp.Entities
                         Emit(trapFile, Loc ?? Syntax.GetLocation(), Parent, Type);
                         Create(cx, nts.ElementType, this, nt.symbol.IsReferenceType ? nt : nt.TypeArguments[0]);
                     }
-                    else if(Type is ArrayType array)
+                    else if (Type is ArrayType array)
                     {
                         Create(cx, nts.ElementType, Parent, array);
                     }

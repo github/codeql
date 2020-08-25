@@ -61,7 +61,7 @@ namespace Semmle.Extraction
             /// </summary>
             /// <param name="srcFile">The source file.</param>
             /// <returns>A newly created TrapWriter.</returns>
-            public TrapWriter CreateTrapWriter(ILogger logger, string srcFile, bool discardDuplicates, TrapWriter.CompressionMode trapCompression) => 
+            public TrapWriter CreateTrapWriter(ILogger logger, string srcFile, bool discardDuplicates, TrapWriter.CompressionMode trapCompression) =>
                 new TrapWriter(logger, srcFile, TRAP_FOLDER, SOURCE_ARCHIVE, discardDuplicates, trapCompression);
         }
 
