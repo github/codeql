@@ -50,6 +50,13 @@ namespace Semmle.Extraction.CIL.Driver
             return an;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AssemblyInfo"/> class.
+        /// </summary>
+        /// <param name="path">Path of the assembly.</param>
+        /// <exception cref="Semmle.Extraction.CIL.Driver.InvalidAssemblyException">
+        /// Thrown when the input file is not a valid assembly.
+        /// </exception>
         public AssemblyInfo(string path)
         {
             filename = path;
@@ -164,7 +171,7 @@ namespace Semmle.Extraction.CIL.Driver
     {
         readonly AssemblyList assemblyList = new AssemblyList();
 
-        private ExtractorOptions(string[] args)
+        public ExtractorOptions(string[] args)
         {
             Verbosity = Verbosity.Info;
             Threads = System.Environment.ProcessorCount;
@@ -227,13 +234,6 @@ namespace Semmle.Extraction.CIL.Driver
         /// as complete as it could be.
         /// </summary>
         public IEnumerable<AssemblyName> MissingReferences => assemblyList.missingReferences;
-
-        public static ExtractorOptions ParseCommandLine(string[] args)
-        {
-            var options = new ExtractorOptions(args);
-
-            return options;
-        }
 
         private void ParseArgs(string[] args)
         {
