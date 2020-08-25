@@ -20,7 +20,7 @@ namespace Semmle.Extraction.CIL.Entities
         public Namespace? ParentNamespace;
         public readonly string Name;
 
-        public bool IsGlobalNamespace => ParentNamespace == null;
+        public bool IsGlobalNamespace => ParentNamespace is null;
 
         public override string IdSuffix => ";namespace";
 
@@ -85,8 +85,8 @@ namespace Semmle.Extraction.CIL.Entities
             get
             {
                 yield return Tuples.namespaces(this, Name);
-                if (!IsGlobalNamespace)
-                    yield return Tuples.parent_namespace(this, ParentNamespace!);
+                if (ParentNamespace is object)
+                    yield return Tuples.parent_namespace(this, ParentNamespace);
             }
         }
     }

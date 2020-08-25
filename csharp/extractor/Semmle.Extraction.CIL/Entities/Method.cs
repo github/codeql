@@ -146,7 +146,7 @@ namespace Semmle.Extraction.CIL.Entities
         readonly PDB.IMethod? methodDebugInformation;
         readonly Type declaringType;
 
-        string name;
+        readonly string name;
         LocalVariable[]? locals;
 
         public MethodImplementation? Implementation { get; private set; }
@@ -417,7 +417,7 @@ namespace Semmle.Extraction.CIL.Entities
 
             var parentMethod = parent as Method;
 
-            var declType = parentMethod == null ? parent as Type : parentMethod.DeclaringType;
+            var declType = parentMethod is null ? parent as Type : parentMethod.DeclaringType;
 
             if (declType is null)
                 throw new InternalError("Parent context of method is not a type");

@@ -37,7 +37,7 @@ namespace Semmle.Extraction.CIL.Entities
             get
             {
                 var directoryName = System.IO.Path.GetDirectoryName(path);
-                if (directoryName == null)
+                if (directoryName is null)
                     throw new InternalError($"Directory name for path '{path}' is null.");
 
                 var parent = cx.CreateFolder(directoryName);
