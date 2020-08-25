@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"golang.org/x/mod/semver"
 	"io/ioutil"
 	"log"
 	"net/url"
@@ -44,12 +45,17 @@ variable is 32.
 	fmt.Fprintf(os.Stderr, "Usage:\n\n  %s\n", os.Args[0])
 }
 
+var goVersion = ""
+
 func getEnvGoVersion() string {
-	gover, err := exec.Command("go", "version").CombinedOutput()
-	if err != nil {
-		log.Fatalf("Unable to run the go command, is it installed?\nError: %s", err.Error())
+	if goVersion == "" {
+		gover, err := exec.Command("go", "version").CombinedOutput()
+		if err != nil {
+			log.Fatalf("Unable to run the go command, is it installed?\nError: %s", err.Error())
+		}
+		goVersion = strings.Fields(string(gover))[2]
 	}
-	return strings.Fields(string(gover))[2]
+	return goVersion
 }
 
 func run(cmd *exec.Cmd) bool {
@@ -141,6 +147,40 @@ const (
 	Glide
 )
 
+// ModMode corresponds to the possible values of the -mod flag for the Go compiler
+type ModMode int
+
+const (
+	ModUnset ModMode = iota
+	ModReadonly
+	ModMod
+	ModVendor
+)
+
+func (m ModMode) String() string {
+	switch m {
+	case ModUnset:
+		return ""
+	case ModReadonly:
+		return "-mod=readonly"
+	case ModMod:
+		return "-mod=mod"
+	case ModVendor:
+		return "-mod=vendor"
+	}
+	return ""
+}
+
+// modModIfSupported returns `ModMod` if that flag is supported, or `ModUnset` if it is not, in
+// which case the behavior should be identical to `ModMod`.
+func modModIfSupported() ModMode {
+	if semver.Compare(getEnvGoVersion(), "1.14") < 0 {
+		return ModUnset
+	} else {
+		return ModMod
+	}
+}
+
 // addVersionToMod add a go version directive, e.g. `go 1.14` to a `go.mod` file.
 func addVersionToMod(goMod []byte, version string) bool {
 	cmd := exec.Command("go", "mod", "edit", "-go="+version)
@@ -174,6 +214,7 @@ func main() {
 	// determine how to install dependencies and whether a GOPATH needs to be set up before
 	// extraction
 	depMode := GoGetNoModules
+	modMode := ModUnset
 	needGopath := true
 	if util.FileExists("go.mod") {
 		depMode = GoGetWithModules
@@ -189,8 +230,10 @@ func main() {
 
 	// if a vendor/modules.txt file exists, we assume that there are vendored Go dependencies, and
 	// skip the dependency installation step and run the extractor with `-mod=vendor`
-	hasVendor := util.FileExists("vendor/modules.txt")
-	if hasVendor {
+	if util.FileExists("vendor/modules.txt") {
+		modMode = ModVendor
+	}
+	if modMode == ModVendor {
 		// fix go vendor issues with go versions >= 1.14 when no go version is specified in the go.mod
 		// if this is the case, and dependencies were vendored with an old go version (and therefore
 		// do not contain a '## explicit' annotation, the go command will fail and refuse to do any
@@ -212,7 +255,7 @@ func main() {
 					log.Println("Adding a version directive to the go.mod file as the modules.txt does not have explicit annotations")
 					if !addVersionToMod(goMod, "1.13") {
 						log.Println("Failed to add a version to the go.mod file to fix explicitly required package bug; not using vendored dependencies")
-						hasVendor = false
+						modMode = modModIfSupported()
 					}
 				}
 			}
@@ -336,7 +379,7 @@ func main() {
 			tryBuild("build.sh", "./build.sh")
 
 		if !buildSucceeded {
-			if hasVendor {
+			if modMode == ModVendor {
 				log.Printf("Skipping dependency installation because a Go vendor directory was found.")
 			} else {
 				// automatically determine command to install dependencies
@@ -422,6 +465,20 @@ func main() {
 		run(install)
 	}
 
+	if modMode == ModVendor {
+		// test if running `go` with -mod=vendor works, and if it doesn't, try to fallback to -mod=mod
+		// or not set if the go version < 1.14.
+		vendorCheckCmd := exec.Command("go", "list", "-mod=vendor", "./...")
+		outp, err := vendorCheckCmd.CombinedOutput()
+		if err != nil {
+			badVendorRe := regexp.MustCompile(`(?m)^go: inconsistent vendoring in .*:$`)
+			if badVendorRe.Match(outp) {
+				modMode = modModIfSupported()
+				log.Println("The vendor directory is not consistent with the go.mod; not using vendored dependencies.")
+			}
+		}
+	}
+
 	// extract
 	mypath, err := os.Executable()
 	if err != nil {
@@ -438,14 +495,8 @@ func main() {
 	}
 
 	var cmd *exec.Cmd
-	// check for `vendor/modules.txt` and not just `vendor` in order to distinguish non-go vendor dirs
-	if depMode == GoGetWithModules && hasVendor {
-		log.Printf("Running extractor command '%s -mod=vendor ./...' from directory '%s'.\n", extractor, cwd)
-		cmd = exec.Command(extractor, "-mod=vendor", "./...")
-	} else {
-		log.Printf("Running extractor command '%s ./...' from directory '%s'.\n", extractor, cwd)
-		cmd = exec.Command(extractor, "./...")
-	}
+	log.Printf("Running extractor command '%s %s ./...' from directory '%s'.\n", extractor, modMode, cwd)
+	cmd = exec.Command(extractor, modMode.String(), "./...")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err = cmd.Run()
