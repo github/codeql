@@ -75,7 +75,7 @@ module Cookie {
   /**
    * A cookie set using `response.cookie` from `express` module (https://expressjs.com/en/api.html#res.cookie).
    */
-  class InsecureExpressCookieResponse extends Cookie {
+  class InsecureExpressCookieResponse extends Cookie, DataFlow::MethodCallNode {
     InsecureExpressCookieResponse() {
       this.calls(any(Express::ResponseExpr r).flow(), "cookie")
     }
