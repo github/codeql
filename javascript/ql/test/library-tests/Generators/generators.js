@@ -6,7 +6,7 @@
     yield source;
   }
   for (const x of gen1()) {
-    sink(x); // NOT OK - but not found yet [INCONSISTENCY]
+    sink(x); // NOT OK
   }
 
   function *gen2() {
