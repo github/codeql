@@ -11,9 +11,7 @@ class StdBasicString extends TemplateClass {
  * The `std::string` functions `c_str` and  `data`.
  */
 class StdStringCStr extends TaintFunction {
-  StdStringCStr() {
-    this.hasQualifiedName("std", "basic_string", ["c_str", "data"])
-  }
+  StdStringCStr() { this.hasQualifiedName("std", "basic_string", ["c_str", "data"]) }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from string itself (qualifier) to return value
@@ -146,9 +144,7 @@ class StdStringSwap extends TaintFunction {
  * The `std::string` functions `at` and `operator[]`.
  */
 class StdStringAt extends TaintFunction {
-  StdStringAt() {
-    this.hasQualifiedName("std", "basic_string", ["at", "operator[]"])
-  }
+  StdStringAt() { this.hasQualifiedName("std", "basic_string", ["at", "operator[]"]) }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to referenced return value
