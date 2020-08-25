@@ -83,16 +83,16 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   or
   exprToPartialDefinitionStep(nodeFrom.asExpr(), nodeTo.asPartialDefinition())
   or
-  // Reverse taint: if a function model has taint from the qualifier to the
-  // dereferenced return value, also apply reverse taint from the post-update
-  // of the return value back to the qualifier. This allows taint to flow 'in'
-  // through references returned by a modeled function such as `operator[]`.
+  // Reverse taint: taint that flows from the post-update node of a reference 
+  // returned by a function call, back into the qualifier of that function.
+  // This allows taint to flow 'in' through references returned by a modeled
+  // function such as `operator[]`.
   exists(
     TaintFunction f, Call call, FunctionInput inModel, FunctionOutput outModel
   |
     call.getTarget() = f and
-    inModel.isQualifierObject() and
-    outModel.isReturnValueDeref() and
+    inModel.isReturnValueDeref() and
+    outModel.isQualifierObject() and
     f.hasTaintFlow(inModel, outModel) and
     nodeFrom.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = call and
     nodeTo.asDefiningArgument() = call.getQualifier()

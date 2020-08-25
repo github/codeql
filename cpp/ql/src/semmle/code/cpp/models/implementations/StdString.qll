@@ -154,5 +154,9 @@ class StdStringAt extends TaintFunction {
     // flow from qualifier to referenced return value
     input.isQualifierObject() and
     output.isReturnValueDeref()
+    or
+    // reverse flow from returned reference to the qualifier
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
   }
 }

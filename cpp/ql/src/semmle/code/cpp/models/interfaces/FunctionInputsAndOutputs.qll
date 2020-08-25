@@ -10,7 +10,8 @@ private newtype TFunctionInput =
   TInParameter(ParameterIndex i) or
   TInParameterDeref(ParameterIndex i) or
   TInQualifierObject() or
-  TInQualifierAddress()
+  TInQualifierAddress() or
+  TInReturnValueDeref()
 
 /**
  * An input to a function. This can be:
@@ -106,6 +107,31 @@ class FunctionInput extends TFunctionInput {
    *   (with type `C const *`) on entry to the function.
    */
   predicate isQualifierAddress() { none() }
+
+  /**
+   * Holds if this is the input value pointed to by the return value of a
+   * function, if the function returns a pointer, or the input value referred
+   * to by the return value of a function, if the function returns a reference.
+   *
+   * Example:
+   * ```
+   * char* getPointer();
+   * float& getReference();
+   * int getInt();
+   * ```
+   * - `isReturnValueDeref()` holds for the `FunctionInput` that represents the
+   *   value of `*getPointer()` (with type `char`).
+   * - `isReturnValueDeref()` holds for the `FunctionInput` that represents the
+   *   value of `getReference()` (with type `float`).
+   * - There is no `FunctionInput` of `getInt()` for which
+   *   `isReturnValueDeref()` holds because the return type of `getInt()` is
+   *   neither a pointer nor a reference.
+   *
+   * Note that data flows in through function return values are relatively
+   * rare, but they do occur when a function returns a reference to itself,
+   * part of itself, or one of its other inputs.
+   */
+  predicate isReturnValueDeref() { none() }
 }
 
 /**
@@ -197,6 +223,34 @@ class InQualifierAddress extends FunctionInput, TInQualifierAddress {
   override string toString() { result = "InQualifierAddress" }
 
   override predicate isQualifierAddress() { any() }
+}
+
+/**
+ * The input value pointed to by the return value of a function, if the
+ * function returns a pointer, or the input value referred to by the return
+ * value of a function, if the function returns a reference.
+ *
+ * Example:
+ * ```
+ * char* getPointer();
+ * float& getReference();
+ * int getInt();
+ * ```
+ * - `InReturnValueDeref` represents the value of `*getPointer()` (with type
+ *   `char`).
+ * - `InReturnValueDeref` represents the value of `getReference()` (with type
+ *   `float`).
+ * - `InReturnValueDeref` does not represent the return value of `getInt()`
+ *   because the return type of `getInt()` is neither a pointer nor a reference.
+ *
+ * Note that data flows in through function return values are relatively
+ * rare, but they do occur when a function returns a reference to itself,
+ * part of itself, or one of its other inputs.
+ */
+class InReturnValueDeref extends FunctionInput, TInReturnValueDeref {
+  override string toString() { result = "InReturnValueDeref" }
+
+  override predicate isReturnValueDeref() { any() }
 }
 
 private newtype TFunctionOutput =
