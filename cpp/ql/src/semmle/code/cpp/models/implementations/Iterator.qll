@@ -272,6 +272,10 @@ class IteratorArrayMemberOperator extends MemberFunction, TaintFunction {
   }
 }
 
+/**
+ * A `begin` or `end` member function, or a related member function, that
+ * returns an iterator.
+ */
 class BeginOrEndFunction extends MemberFunction, TaintFunction {
   BeginOrEndFunction() {
     this.hasName(["begin", "cbegin", "rbegin", "crbegin", "end", "cend", "rend", "crend"]) and
