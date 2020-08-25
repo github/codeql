@@ -41,12 +41,7 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
  */
 predicate concatStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
   exists(BinaryExprNode add | add = nodeTo.getNode() |
-    add.getOp() instanceof Add and
-    (
-      add.getLeft() = nodeFrom.getNode()
-      or
-      add.getRight() = nodeFrom.getNode()
-    )
+    add.getOp() instanceof Add and add.getAnOperand() = nodeFrom.getNode()
   )
 }
 
