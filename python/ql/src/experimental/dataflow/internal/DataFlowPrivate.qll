@@ -437,16 +437,13 @@ predicate comprehensionReadStep(CfgNode nodeFrom, Content c, EssaNode nodeTo) {
   //   c denotes element of list or set
   exists(Comp comp |
     // outermost for
-    exists(For f |
-      f = getCompFor(comp) and
-      nodeFrom.getNode().getNode() = getCompIter(comp) and
-      nodeTo.getVar().getDefinition().(AssignmentDefinition).getDefiningNode().getNode() =
-        f.getTarget()
-    )
+    nodeFrom.getNode().getNode() = comp.getIterable() and
+    nodeTo.getVar().getDefinition().(AssignmentDefinition).getDefiningNode().getNode() =
+      comp.getIterationVariable(0).getAStore()
     or
     // an inner for
-    exists(int n |
-      nodeFrom.getNode().getNode() = comp.getNthInnerLoop(n + 1).getIter() and
+    exists(int n | n > 0 |
+      nodeFrom.getNode().getNode() = comp.getNthInnerLoop(n).getIter() and
       nodeTo.getVar().getDefinition().(AssignmentDefinition).getDefiningNode().getNode() =
         comp.getNthInnerLoop(n).getTarget()
     )
