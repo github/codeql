@@ -146,6 +146,15 @@ edges
 | test.py:189:62:189:62 | SSA variable y | test.py:189:10:189:10 | ControlFlowNode for y |
 | test.py:189:67:189:67 | ControlFlowNode for z [List element] | test.py:189:62:189:62 | SSA variable y |
 | test.py:190:10:190:10 | ControlFlowNode for x [List element] | test.py:190:10:190:13 | ControlFlowNode for Subscript |
+| test.py:200:9:200:42 | ControlFlowNode for ListComp [List element] | test.py:201:10:201:10 | ControlFlowNode for x [List element] |
+| test.py:200:10:200:10 | ControlFlowNode for y | test.py:200:9:200:42 | ControlFlowNode for ListComp [List element] |
+| test.py:200:16:200:16 | SSA variable y | test.py:200:10:200:10 | ControlFlowNode for y |
+| test.py:200:22:200:22 | ControlFlowNode for z | test.py:200:22:200:40 | ControlFlowNode for GeneratorExp [List element] |
+| test.py:200:22:200:40 | ControlFlowNode for GeneratorExp [List element] | test.py:200:16:200:16 | SSA variable y |
+| test.py:200:28:200:28 | SSA variable z | test.py:200:22:200:22 | ControlFlowNode for z |
+| test.py:200:33:200:40 | ControlFlowNode for List [List element] | test.py:200:28:200:28 | SSA variable z |
+| test.py:200:34:200:39 | ControlFlowNode for SOURCE | test.py:200:33:200:40 | ControlFlowNode for List [List element] |
+| test.py:201:10:201:10 | ControlFlowNode for x [List element] | test.py:201:10:201:13 | ControlFlowNode for Subscript |
 | test.py:344:11:344:16 | ControlFlowNode for SOURCE | test.py:344:11:344:17 | ControlFlowNode for Tuple [Tuple element at index 0] |
 | test.py:344:11:344:17 | ControlFlowNode for Tuple [Tuple element at index 0] | test.py:344:10:344:21 | ControlFlowNode for Subscript |
 | test.py:348:10:348:17 | ControlFlowNode for List [List element] | test.py:348:10:348:20 | ControlFlowNode for Subscript |
@@ -295,6 +304,16 @@ nodes
 | test.py:189:67:189:67 | ControlFlowNode for z [List element] | semmle.label | ControlFlowNode for z [List element] |
 | test.py:190:10:190:10 | ControlFlowNode for x [List element] | semmle.label | ControlFlowNode for x [List element] |
 | test.py:190:10:190:13 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| test.py:200:9:200:42 | ControlFlowNode for ListComp [List element] | semmle.label | ControlFlowNode for ListComp [List element] |
+| test.py:200:10:200:10 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
+| test.py:200:16:200:16 | SSA variable y | semmle.label | SSA variable y |
+| test.py:200:22:200:22 | ControlFlowNode for z | semmle.label | ControlFlowNode for z |
+| test.py:200:22:200:40 | ControlFlowNode for GeneratorExp [List element] | semmle.label | ControlFlowNode for GeneratorExp [List element] |
+| test.py:200:28:200:28 | SSA variable z | semmle.label | SSA variable z |
+| test.py:200:33:200:40 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
+| test.py:200:34:200:39 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:201:10:201:10 | ControlFlowNode for x [List element] | semmle.label | ControlFlowNode for x [List element] |
+| test.py:201:10:201:13 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | test.py:344:10:344:21 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | test.py:344:11:344:16 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:344:11:344:17 | ControlFlowNode for Tuple [Tuple element at index 0] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 0] |
@@ -347,6 +366,7 @@ nodes
 | test.py:158:10:158:19 | ControlFlowNode for Attribute() | test.py:157:15:157:20 | ControlFlowNode for SOURCE | test.py:158:10:158:19 | ControlFlowNode for Attribute() | <message> |
 | test.py:185:10:185:13 | ControlFlowNode for Subscript | test.py:184:23:184:28 | ControlFlowNode for SOURCE | test.py:185:10:185:13 | ControlFlowNode for Subscript | <message> |
 | test.py:190:10:190:13 | ControlFlowNode for Subscript | test.py:189:25:189:30 | ControlFlowNode for SOURCE | test.py:190:10:190:13 | ControlFlowNode for Subscript | <message> |
+| test.py:201:10:201:13 | ControlFlowNode for Subscript | test.py:200:34:200:39 | ControlFlowNode for SOURCE | test.py:201:10:201:13 | ControlFlowNode for Subscript | <message> |
 | test.py:344:10:344:21 | ControlFlowNode for Subscript | test.py:344:11:344:16 | ControlFlowNode for SOURCE | test.py:344:10:344:21 | ControlFlowNode for Subscript | <message> |
 | test.py:348:10:348:20 | ControlFlowNode for Subscript | test.py:348:11:348:16 | ControlFlowNode for SOURCE | test.py:348:10:348:20 | ControlFlowNode for Subscript | <message> |
 | test.py:352:10:352:27 | ControlFlowNode for Subscript | test.py:352:16:352:21 | ControlFlowNode for SOURCE | test.py:352:10:352:27 | ControlFlowNode for Subscript | <message> |

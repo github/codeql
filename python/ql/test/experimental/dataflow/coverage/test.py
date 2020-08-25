@@ -198,7 +198,7 @@ def test_nested_comprehension_dict():
 
 def test_nested_comprehension_paren():
     x = [y for y in (z for z in [SOURCE])]
-    SINK(x[0])  # Flow missing
+    SINK(x[0])
 
 # 6.2.8. Generator expressions
 

@@ -358,6 +358,10 @@ predicate comprehensionStoreStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
   // Dictionary
   nodeTo.getNode().getNode().(DictComp).getElt() = nodeFrom.getNode().getNode() and
   c instanceof DictionaryElementAnyContent
+  or
+  // Generator
+  nodeTo.getNode().getNode().(GeneratorExp).getElt() = nodeFrom.getNode().getNode() and
+  c instanceof ListElementContent
 }
 
 /**
