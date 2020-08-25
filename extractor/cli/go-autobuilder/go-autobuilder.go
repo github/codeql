@@ -244,7 +244,10 @@ func main() {
 	// skip the dependency installation step and run the extractor with `-mod=vendor`
 	if util.FileExists("vendor/modules.txt") {
 		modMode = ModVendor
+	} else if util.DirExists("vendor") {
+		modMode = modModIfSupported()
 	}
+
 	if modMode == ModVendor {
 		// fix go vendor issues with go versions >= 1.14 when no go version is specified in the go.mod
 		// if this is the case, and dependencies were vendored with an old go version (and therefore

@@ -91,3 +91,12 @@ func FileExists(filename string) bool {
 	}
 	return err == nil && !info.IsDir()
 }
+
+// DirExists tests whether `filename` exists and is a directory.
+func DirExists(filename string) bool {
+	info, err := os.Stat(filename)
+	if err != nil && !os.IsNotExist(err) {
+		log.Printf("Unable to stat %s: %s\n", filename, err.Error())
+	}
+	return err == nil && info.IsDir()
+}
