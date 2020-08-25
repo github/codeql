@@ -67,7 +67,7 @@ module StringOps {
     }
 
     /**
-     * An expression of form `strings.HasPrefix(A, B)`.
+     * An expression of the form `strings.HasPrefix(A, B)`.
      */
     private class StringsHasPrefix extends Range, DataFlow::CallNode {
       StringsHasPrefix() { getTarget().hasQualifiedName("strings", "HasPrefix") }
@@ -89,7 +89,7 @@ module StringOps {
     }
 
     /**
-     * An expression of form `strings.Index(A, B) == 0`.
+     * An expression of the form `strings.Index(A, B) == 0`.
      */
     private class HasPrefix_IndexOfEquals extends Range, DataFlow::EqualityTestNode {
       DataFlow::CallNode indexOf;
@@ -122,7 +122,7 @@ module StringOps {
     }
 
     /**
-     * A comparison of form `x[0] == 'k'` for some rune literal `k`.
+     * A comparison of the form `x[0] == 'k'` for some rune literal `k`.
      */
     private class HasPrefix_FirstCharacter extends Range, DataFlow::EqualityTestNode {
       DataFlow::Node base;
@@ -138,7 +138,7 @@ module StringOps {
     }
 
     /**
-     * A comparison of form `x[:len(y)] === y`.
+     * A comparison of the form `x[:len(y)] == y`.
      */
     private class HasPrefix_Substring extends Range, DataFlow::EqualityTestNode {
       DataFlow::SliceNode slice;
