@@ -325,3 +325,30 @@ void test_constructors_more() {
 	sink(v3);
 	sink(v4); // tainted
 }
+
+void taint_vector_output_iterator(std::vector<int>::iterator iter) {
+	*iter = source();
+}
+
+void test_vector_output_iterator() {
+	std::vector<int> v1(10), v2(10), v3(10), v4(10);
+
+	std::vector<int>::iterator i1 = v1.begin();
+	*i1 = source();
+	sink(v1);  // tainted [NOT DETECTED]
+
+	for(std::vector<int>::iterator it = v2.begin(); it != v2.end(); ++it) {
+		*it = source(); // tainted [NOT DETECTED]
+	}
+	sink(v2);
+
+	for(int& x : v3) {
+		x = source();
+	}
+	sink(v3); // tainted [NOT DETECTED]
+
+	for(std::vector<int>::iterator it = v4.begin(); it != v4.end(); ++it) {
+		*it = source();
+	}
+	sink(v4); // tainted [NOT DETECTED]
+}
