@@ -29,7 +29,7 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   or
   subscriptStep(nodeFrom, nodeTo)
   or
-  stringMethods(nodeFrom, nodeTo)
+  stringManipulation(nodeFrom, nodeTo)
 }
 
 /**
@@ -59,7 +59,7 @@ predicate subscriptStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
  * Note that since we cannot easily distinguish when something is a string, this can
  * also make taint flow on `<non string>.replace(foo, bar)`.
  */
-predicate stringMethods(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
+predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
   // transforming something tainted into a string will make the string tainted
   exists(CallNode call | call = nodeTo.getNode() |
     call.getFunction().(NameNode).getId() in ["str", "bytes", "unicode"] and
