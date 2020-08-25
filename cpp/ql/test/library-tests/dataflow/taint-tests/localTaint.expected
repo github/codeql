@@ -313,6 +313,10 @@
 | movableclass.cpp:65:13:65:18 | call to source | movableclass.cpp:65:13:65:20 | call to MyMovableClass | TAINT |
 | movableclass.cpp:65:13:65:20 | call to MyMovableClass | movableclass.cpp:65:8:65:9 | ref arg s3 | TAINT |
 | movableclass.cpp:65:13:65:20 | call to MyMovableClass | movableclass.cpp:65:11:65:11 | call to operator= | TAINT |
+| stl.h:137:30:137:40 | call to allocator | stl.h:137:21:137:41 | noexcept(...) | TAINT |
+| stl.h:137:30:137:40 | call to allocator | stl.h:137:21:137:41 | noexcept(...) | TAINT |
+| stl.h:137:30:137:40 | call to allocator | stl.h:137:21:137:41 | noexcept(...) | TAINT |
+| stl.h:137:53:137:63 | 0 | stl.h:137:46:137:64 | (no string representation) | TAINT |
 | string.cpp:24:12:24:17 | call to source | string.cpp:28:7:28:7 | a |  |
 | string.cpp:25:16:25:20 | 123 | string.cpp:25:16:25:21 | call to basic_string | TAINT |
 | string.cpp:25:16:25:21 | call to basic_string | string.cpp:29:7:29:7 | b |  |
@@ -2026,3 +2030,182 @@
 | vector.cpp:140:7:140:8 | ref arg v2 | vector.cpp:143:1:143:1 | v2 |  |
 | vector.cpp:141:7:141:8 | ref arg v3 | vector.cpp:143:1:143:1 | v3 |  |
 | vector.cpp:142:7:142:8 | ref arg v4 | vector.cpp:143:1:143:1 | v4 |  |
+| vector.cpp:150:8:150:8 | call to vector | vector.cpp:150:8:150:8 | constructor init of field vs | TAINT |
+| vector.cpp:150:8:150:8 | call to ~vector | vector.cpp:150:8:150:8 | destructor field destruction of vs | TAINT |
+| vector.cpp:150:8:150:8 | this | vector.cpp:150:8:150:8 | constructor init of field vs [pre-this] |  |
+| vector.cpp:158:19:158:22 | {...} | vector.cpp:160:8:160:9 | aa |  |
+| vector.cpp:158:19:158:22 | {...} | vector.cpp:161:3:161:4 | aa |  |
+| vector.cpp:158:21:158:21 | 0 | vector.cpp:158:21:158:21 | {...} | TAINT |
+| vector.cpp:158:21:158:21 | {...} | vector.cpp:158:19:158:22 | {...} | TAINT |
+| vector.cpp:160:8:160:9 | aa | vector.cpp:160:8:160:12 | access to array | TAINT |
+| vector.cpp:160:8:160:12 | access to array | vector.cpp:160:8:160:15 | access to array | TAINT |
+| vector.cpp:160:11:160:11 | 0 | vector.cpp:160:8:160:12 | access to array | TAINT |
+| vector.cpp:160:14:160:14 | 0 | vector.cpp:160:8:160:15 | access to array | TAINT |
+| vector.cpp:161:3:161:4 | aa | vector.cpp:161:3:161:7 | access to array | TAINT |
+| vector.cpp:161:3:161:7 | access to array | vector.cpp:161:3:161:10 | access to array | TAINT |
+| vector.cpp:161:6:161:6 | 0 | vector.cpp:161:3:161:7 | access to array | TAINT |
+| vector.cpp:161:9:161:9 | 0 | vector.cpp:161:3:161:10 | access to array | TAINT |
+| vector.cpp:161:14:161:19 | call to source | vector.cpp:161:3:161:21 | ... = ... |  |
+| vector.cpp:162:8:162:9 | aa | vector.cpp:162:8:162:12 | access to array | TAINT |
+| vector.cpp:162:8:162:12 | access to array | vector.cpp:162:8:162:15 | access to array | TAINT |
+| vector.cpp:162:11:162:11 | 0 | vector.cpp:162:8:162:12 | access to array | TAINT |
+| vector.cpp:162:14:162:14 | 0 | vector.cpp:162:8:162:15 | access to array | TAINT |
+| vector.cpp:166:37:166:39 | call to vector | vector.cpp:168:3:168:4 | bb |  |
+| vector.cpp:166:37:166:39 | call to vector | vector.cpp:169:8:169:9 | bb |  |
+| vector.cpp:166:37:166:39 | call to vector | vector.cpp:170:3:170:4 | bb |  |
+| vector.cpp:166:37:166:39 | call to vector | vector.cpp:171:8:171:9 | bb |  |
+| vector.cpp:166:37:166:39 | call to vector | vector.cpp:172:2:172:2 | bb |  |
+| vector.cpp:168:3:168:4 | bb | vector.cpp:168:5:168:5 | call to operator[] | TAINT |
+| vector.cpp:168:3:168:4 | ref arg bb | vector.cpp:169:8:169:9 | bb |  |
+| vector.cpp:168:3:168:4 | ref arg bb | vector.cpp:170:3:170:4 | bb |  |
+| vector.cpp:168:3:168:4 | ref arg bb | vector.cpp:171:8:171:9 | bb |  |
+| vector.cpp:168:3:168:4 | ref arg bb | vector.cpp:172:2:172:2 | bb |  |
+| vector.cpp:168:5:168:5 | ref arg call to operator[] | vector.cpp:168:3:168:4 | ref arg bb | TAINT |
+| vector.cpp:168:19:168:19 | 0 | vector.cpp:168:5:168:5 | ref arg call to operator[] | TAINT |
+| vector.cpp:169:8:169:9 | bb | vector.cpp:169:10:169:10 | call to operator[] | TAINT |
+| vector.cpp:169:8:169:9 | ref arg bb | vector.cpp:170:3:170:4 | bb |  |
+| vector.cpp:169:8:169:9 | ref arg bb | vector.cpp:171:8:171:9 | bb |  |
+| vector.cpp:169:8:169:9 | ref arg bb | vector.cpp:172:2:172:2 | bb |  |
+| vector.cpp:169:10:169:10 | call to operator[] | vector.cpp:169:13:169:13 | call to operator[] | TAINT |
+| vector.cpp:169:10:169:10 | ref arg call to operator[] | vector.cpp:169:8:169:9 | ref arg bb | TAINT |
+| vector.cpp:170:3:170:4 | bb | vector.cpp:170:5:170:5 | call to operator[] | TAINT |
+| vector.cpp:170:3:170:4 | ref arg bb | vector.cpp:171:8:171:9 | bb |  |
+| vector.cpp:170:3:170:4 | ref arg bb | vector.cpp:172:2:172:2 | bb |  |
+| vector.cpp:170:3:170:21 | ... = ... | vector.cpp:170:8:170:8 | call to operator[] [post update] |  |
+| vector.cpp:170:5:170:5 | call to operator[] | vector.cpp:170:8:170:8 | call to operator[] | TAINT |
+| vector.cpp:170:5:170:5 | ref arg call to operator[] | vector.cpp:170:3:170:4 | ref arg bb | TAINT |
+| vector.cpp:170:8:170:8 | call to operator[] [post update] | vector.cpp:170:5:170:5 | ref arg call to operator[] | TAINT |
+| vector.cpp:170:14:170:19 | call to source | vector.cpp:170:3:170:21 | ... = ... |  |
+| vector.cpp:171:8:171:9 | bb | vector.cpp:171:10:171:10 | call to operator[] | TAINT |
+| vector.cpp:171:8:171:9 | ref arg bb | vector.cpp:172:2:172:2 | bb |  |
+| vector.cpp:171:10:171:10 | call to operator[] | vector.cpp:171:13:171:13 | call to operator[] | TAINT |
+| vector.cpp:171:10:171:10 | ref arg call to operator[] | vector.cpp:171:8:171:9 | ref arg bb | TAINT |
+| vector.cpp:175:20:175:21 | call to vector | vector.cpp:175:20:175:21 | {...} | TAINT |
+| vector.cpp:175:20:175:21 | {...} | vector.cpp:177:3:177:4 | cc |  |
+| vector.cpp:175:20:175:21 | {...} | vector.cpp:178:8:178:9 | cc |  |
+| vector.cpp:175:20:175:21 | {...} | vector.cpp:179:3:179:4 | cc |  |
+| vector.cpp:175:20:175:21 | {...} | vector.cpp:180:8:180:9 | cc |  |
+| vector.cpp:175:20:175:21 | {...} | vector.cpp:181:2:181:2 | cc |  |
+| vector.cpp:177:3:177:4 | cc | vector.cpp:177:3:177:7 | access to array | TAINT |
+| vector.cpp:177:3:177:7 | ref arg access to array | vector.cpp:177:3:177:4 | cc [inner post update] |  |
+| vector.cpp:177:3:177:7 | ref arg access to array | vector.cpp:178:8:178:9 | cc |  |
+| vector.cpp:177:3:177:7 | ref arg access to array | vector.cpp:179:3:179:4 | cc |  |
+| vector.cpp:177:3:177:7 | ref arg access to array | vector.cpp:180:8:180:9 | cc |  |
+| vector.cpp:177:3:177:7 | ref arg access to array | vector.cpp:181:2:181:2 | cc |  |
+| vector.cpp:177:6:177:6 | 0 | vector.cpp:177:3:177:7 | access to array | TAINT |
+| vector.cpp:177:19:177:19 | 0 | vector.cpp:177:3:177:7 | ref arg access to array | TAINT |
+| vector.cpp:178:8:178:9 | cc | vector.cpp:178:8:178:12 | access to array | TAINT |
+| vector.cpp:178:8:178:12 | access to array | vector.cpp:178:13:178:13 | call to operator[] | TAINT |
+| vector.cpp:178:8:178:12 | ref arg access to array | vector.cpp:178:8:178:9 | cc [inner post update] |  |
+| vector.cpp:178:8:178:12 | ref arg access to array | vector.cpp:179:3:179:4 | cc |  |
+| vector.cpp:178:8:178:12 | ref arg access to array | vector.cpp:180:8:180:9 | cc |  |
+| vector.cpp:178:8:178:12 | ref arg access to array | vector.cpp:181:2:181:2 | cc |  |
+| vector.cpp:178:11:178:11 | 0 | vector.cpp:178:8:178:12 | access to array | TAINT |
+| vector.cpp:179:3:179:4 | cc | vector.cpp:179:3:179:7 | access to array | TAINT |
+| vector.cpp:179:3:179:7 | access to array | vector.cpp:179:8:179:8 | call to operator[] | TAINT |
+| vector.cpp:179:3:179:7 | ref arg access to array | vector.cpp:179:3:179:4 | cc [inner post update] |  |
+| vector.cpp:179:3:179:7 | ref arg access to array | vector.cpp:180:8:180:9 | cc |  |
+| vector.cpp:179:3:179:7 | ref arg access to array | vector.cpp:181:2:181:2 | cc |  |
+| vector.cpp:179:3:179:21 | ... = ... | vector.cpp:179:8:179:8 | call to operator[] [post update] |  |
+| vector.cpp:179:6:179:6 | 0 | vector.cpp:179:3:179:7 | access to array | TAINT |
+| vector.cpp:179:8:179:8 | call to operator[] [post update] | vector.cpp:179:3:179:7 | ref arg access to array | TAINT |
+| vector.cpp:179:14:179:19 | call to source | vector.cpp:179:3:179:21 | ... = ... |  |
+| vector.cpp:180:8:180:9 | cc | vector.cpp:180:8:180:12 | access to array | TAINT |
+| vector.cpp:180:8:180:12 | access to array | vector.cpp:180:13:180:13 | call to operator[] | TAINT |
+| vector.cpp:180:8:180:12 | ref arg access to array | vector.cpp:180:8:180:9 | cc [inner post update] |  |
+| vector.cpp:180:8:180:12 | ref arg access to array | vector.cpp:181:2:181:2 | cc |  |
+| vector.cpp:180:11:180:11 | 0 | vector.cpp:180:8:180:12 | access to array | TAINT |
+| vector.cpp:184:23:184:24 | call to vector | vector.cpp:187:3:187:4 | dd |  |
+| vector.cpp:184:23:184:24 | call to vector | vector.cpp:188:8:188:9 | dd |  |
+| vector.cpp:184:23:184:24 | call to vector | vector.cpp:189:8:189:9 | dd |  |
+| vector.cpp:184:23:184:24 | call to vector | vector.cpp:190:3:190:4 | dd |  |
+| vector.cpp:184:23:184:24 | call to vector | vector.cpp:191:8:191:9 | dd |  |
+| vector.cpp:184:23:184:24 | call to vector | vector.cpp:192:8:192:9 | dd |  |
+| vector.cpp:184:23:184:24 | call to vector | vector.cpp:193:2:193:2 | dd |  |
+| vector.cpp:185:14:185:20 | {...} | vector.cpp:187:16:187:17 | mp |  |
+| vector.cpp:187:3:187:4 | ref arg dd | vector.cpp:188:8:188:9 | dd |  |
+| vector.cpp:187:3:187:4 | ref arg dd | vector.cpp:189:8:189:9 | dd |  |
+| vector.cpp:187:3:187:4 | ref arg dd | vector.cpp:190:3:190:4 | dd |  |
+| vector.cpp:187:3:187:4 | ref arg dd | vector.cpp:191:8:191:9 | dd |  |
+| vector.cpp:187:3:187:4 | ref arg dd | vector.cpp:192:8:192:9 | dd |  |
+| vector.cpp:187:3:187:4 | ref arg dd | vector.cpp:193:2:193:2 | dd |  |
+| vector.cpp:187:16:187:17 | mp | vector.cpp:187:3:187:4 | ref arg dd | TAINT |
+| vector.cpp:188:8:188:9 | dd | vector.cpp:188:10:188:10 | call to operator[] | TAINT |
+| vector.cpp:188:8:188:9 | ref arg dd | vector.cpp:189:8:189:9 | dd |  |
+| vector.cpp:188:8:188:9 | ref arg dd | vector.cpp:190:3:190:4 | dd |  |
+| vector.cpp:188:8:188:9 | ref arg dd | vector.cpp:191:8:191:9 | dd |  |
+| vector.cpp:188:8:188:9 | ref arg dd | vector.cpp:192:8:192:9 | dd |  |
+| vector.cpp:188:8:188:9 | ref arg dd | vector.cpp:193:2:193:2 | dd |  |
+| vector.cpp:189:8:189:9 | dd | vector.cpp:189:10:189:10 | call to operator[] | TAINT |
+| vector.cpp:189:8:189:9 | ref arg dd | vector.cpp:190:3:190:4 | dd |  |
+| vector.cpp:189:8:189:9 | ref arg dd | vector.cpp:191:8:191:9 | dd |  |
+| vector.cpp:189:8:189:9 | ref arg dd | vector.cpp:192:8:192:9 | dd |  |
+| vector.cpp:189:8:189:9 | ref arg dd | vector.cpp:193:2:193:2 | dd |  |
+| vector.cpp:190:3:190:4 | dd | vector.cpp:190:5:190:5 | call to operator[] | TAINT |
+| vector.cpp:190:3:190:4 | ref arg dd | vector.cpp:191:8:191:9 | dd |  |
+| vector.cpp:190:3:190:4 | ref arg dd | vector.cpp:192:8:192:9 | dd |  |
+| vector.cpp:190:3:190:4 | ref arg dd | vector.cpp:193:2:193:2 | dd |  |
+| vector.cpp:190:3:190:20 | ... = ... | vector.cpp:190:9:190:9 | a [post update] |  |
+| vector.cpp:190:5:190:5 | call to operator[] [post update] | vector.cpp:190:3:190:4 | ref arg dd | TAINT |
+| vector.cpp:190:13:190:18 | call to source | vector.cpp:190:3:190:20 | ... = ... |  |
+| vector.cpp:191:8:191:9 | dd | vector.cpp:191:10:191:10 | call to operator[] | TAINT |
+| vector.cpp:191:8:191:9 | ref arg dd | vector.cpp:192:8:192:9 | dd |  |
+| vector.cpp:191:8:191:9 | ref arg dd | vector.cpp:193:2:193:2 | dd |  |
+| vector.cpp:192:8:192:9 | dd | vector.cpp:192:10:192:10 | call to operator[] | TAINT |
+| vector.cpp:192:8:192:9 | ref arg dd | vector.cpp:193:2:193:2 | dd |  |
+| vector.cpp:196:21:196:22 | call to MyVectorContainer | vector.cpp:198:3:198:4 | ee |  |
+| vector.cpp:196:21:196:22 | call to MyVectorContainer | vector.cpp:199:8:199:9 | ee |  |
+| vector.cpp:196:21:196:22 | call to MyVectorContainer | vector.cpp:200:3:200:4 | ee |  |
+| vector.cpp:196:21:196:22 | call to MyVectorContainer | vector.cpp:201:8:201:9 | ee |  |
+| vector.cpp:196:21:196:22 | call to MyVectorContainer | vector.cpp:202:2:202:2 | ee |  |
+| vector.cpp:198:3:198:4 | ee [post update] | vector.cpp:199:8:199:9 | ee |  |
+| vector.cpp:198:3:198:4 | ee [post update] | vector.cpp:200:3:200:4 | ee |  |
+| vector.cpp:198:3:198:4 | ee [post update] | vector.cpp:201:8:201:9 | ee |  |
+| vector.cpp:198:3:198:4 | ee [post update] | vector.cpp:202:2:202:2 | ee |  |
+| vector.cpp:198:19:198:19 | 0 | vector.cpp:198:6:198:7 | ref arg vs | TAINT |
+| vector.cpp:199:8:199:9 | ee [post update] | vector.cpp:200:3:200:4 | ee |  |
+| vector.cpp:199:8:199:9 | ee [post update] | vector.cpp:201:8:201:9 | ee |  |
+| vector.cpp:199:8:199:9 | ee [post update] | vector.cpp:202:2:202:2 | ee |  |
+| vector.cpp:199:11:199:12 | vs | vector.cpp:199:13:199:13 | call to operator[] | TAINT |
+| vector.cpp:200:3:200:4 | ee [post update] | vector.cpp:201:8:201:9 | ee |  |
+| vector.cpp:200:3:200:4 | ee [post update] | vector.cpp:202:2:202:2 | ee |  |
+| vector.cpp:200:3:200:21 | ... = ... | vector.cpp:200:8:200:8 | call to operator[] [post update] |  |
+| vector.cpp:200:6:200:7 | vs | vector.cpp:200:8:200:8 | call to operator[] | TAINT |
+| vector.cpp:200:8:200:8 | call to operator[] [post update] | vector.cpp:200:6:200:7 | ref arg vs | TAINT |
+| vector.cpp:200:14:200:19 | call to source | vector.cpp:200:3:200:21 | ... = ... |  |
+| vector.cpp:201:8:201:9 | ee [post update] | vector.cpp:202:2:202:2 | ee |  |
+| vector.cpp:201:11:201:12 | vs | vector.cpp:201:13:201:13 | call to operator[] | TAINT |
+| vector.cpp:205:34:205:35 | call to vector | vector.cpp:209:3:209:4 | ff |  |
+| vector.cpp:205:34:205:35 | call to vector | vector.cpp:210:8:210:9 | ff |  |
+| vector.cpp:205:34:205:35 | call to vector | vector.cpp:211:3:211:4 | ff |  |
+| vector.cpp:205:34:205:35 | call to vector | vector.cpp:212:8:212:9 | ff |  |
+| vector.cpp:205:34:205:35 | call to vector | vector.cpp:213:2:213:2 | ff |  |
+| vector.cpp:206:21:206:23 | call to MyVectorContainer | vector.cpp:208:3:208:5 | mvc |  |
+| vector.cpp:206:21:206:23 | call to MyVectorContainer | vector.cpp:209:16:209:18 | mvc |  |
+| vector.cpp:206:21:206:23 | call to MyVectorContainer | vector.cpp:213:2:213:2 | mvc |  |
+| vector.cpp:208:3:208:5 | mvc [post update] | vector.cpp:209:16:209:18 | mvc |  |
+| vector.cpp:208:3:208:5 | mvc [post update] | vector.cpp:213:2:213:2 | mvc |  |
+| vector.cpp:208:20:208:20 | 0 | vector.cpp:208:7:208:8 | ref arg vs | TAINT |
+| vector.cpp:209:3:209:4 | ref arg ff | vector.cpp:210:8:210:9 | ff |  |
+| vector.cpp:209:3:209:4 | ref arg ff | vector.cpp:211:3:211:4 | ff |  |
+| vector.cpp:209:3:209:4 | ref arg ff | vector.cpp:212:8:212:9 | ff |  |
+| vector.cpp:209:3:209:4 | ref arg ff | vector.cpp:213:2:213:2 | ff |  |
+| vector.cpp:209:16:209:18 | mvc | vector.cpp:209:3:209:4 | ref arg ff | TAINT |
+| vector.cpp:210:8:210:9 | ff | vector.cpp:210:10:210:10 | call to operator[] | TAINT |
+| vector.cpp:210:8:210:9 | ref arg ff | vector.cpp:211:3:211:4 | ff |  |
+| vector.cpp:210:8:210:9 | ref arg ff | vector.cpp:212:8:212:9 | ff |  |
+| vector.cpp:210:8:210:9 | ref arg ff | vector.cpp:213:2:213:2 | ff |  |
+| vector.cpp:210:10:210:10 | call to operator[] [post update] | vector.cpp:210:8:210:9 | ref arg ff | TAINT |
+| vector.cpp:210:14:210:15 | vs | vector.cpp:210:16:210:16 | call to operator[] | TAINT |
+| vector.cpp:211:3:211:4 | ff | vector.cpp:211:5:211:5 | call to operator[] | TAINT |
+| vector.cpp:211:3:211:4 | ref arg ff | vector.cpp:212:8:212:9 | ff |  |
+| vector.cpp:211:3:211:4 | ref arg ff | vector.cpp:213:2:213:2 | ff |  |
+| vector.cpp:211:3:211:24 | ... = ... | vector.cpp:211:11:211:11 | call to operator[] [post update] |  |
+| vector.cpp:211:5:211:5 | call to operator[] [post update] | vector.cpp:211:3:211:4 | ref arg ff | TAINT |
+| vector.cpp:211:9:211:10 | vs | vector.cpp:211:11:211:11 | call to operator[] | TAINT |
+| vector.cpp:211:11:211:11 | call to operator[] [post update] | vector.cpp:211:9:211:10 | ref arg vs | TAINT |
+| vector.cpp:211:17:211:22 | call to source | vector.cpp:211:3:211:24 | ... = ... |  |
+| vector.cpp:212:8:212:9 | ff | vector.cpp:212:10:212:10 | call to operator[] | TAINT |
+| vector.cpp:212:8:212:9 | ref arg ff | vector.cpp:213:2:213:2 | ff |  |
+| vector.cpp:212:10:212:10 | call to operator[] [post update] | vector.cpp:212:8:212:9 | ref arg ff | TAINT |
+| vector.cpp:212:14:212:15 | vs | vector.cpp:212:16:212:16 | call to operator[] | TAINT |

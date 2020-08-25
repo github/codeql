@@ -234,3 +234,6 @@
 | vector.cpp:139:7:139:8 | v1 | vector.cpp:126:15:126:20 | call to source |
 | vector.cpp:140:7:140:8 | v2 | vector.cpp:127:15:127:20 | call to source |
 | vector.cpp:141:7:141:8 | v3 | vector.cpp:128:15:128:20 | call to source |
+| vector.cpp:171:13:171:13 | call to operator[] | vector.cpp:170:14:170:19 | call to source |
+| vector.cpp:180:13:180:13 | call to operator[] | vector.cpp:179:14:179:19 | call to source |
+| vector.cpp:201:13:201:13 | call to operator[] | vector.cpp:200:14:200:19 | call to source |
