@@ -10,7 +10,7 @@
 
 import python
 
-/** A control flow node which might correpsond to a special method call. */
+/** A control flow node which might correspond to a special method call. */
 class PotentialSpecialMethodCallNode extends ControlFlowNode {
   PotentialSpecialMethodCallNode() { this instanceof SpecialMethod::Potential }
 }
@@ -20,12 +20,12 @@ class PotentialSpecialMethodCallNode extends ControlFlowNode {
  * Extend `SpecialMethod::Potential` to capture more cases.
  */
 module SpecialMethod {
-  /** A control flow node which might correpsond to a special method call. */
+  /** A control flow node which might correspond to a special method call. */
   abstract class Potential extends ControlFlowNode {
     /** Gets the name of the method that would be called. */
     abstract string getSpecialMethodName();
 
-    /** Gets the controlflow node that would be passed as the specified argument. */
+    /** Gets the control flow node that would be passed as the specified argument. */
     abstract ControlFlowNode getArg(int n);
 
     /**
