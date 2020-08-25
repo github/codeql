@@ -459,23 +459,6 @@ predicate comprehensionReadStep(CfgNode nodeFrom, Content c, EssaNode nodeTo) {
   )
 }
 
-/** This seems to compensate for extractor shortcomings */
-For getCompFor(Comp c) {
-  c.contains(result) and
-  c.getFunction() = result.getScope()
-}
-
-/** This seems to compensate for extractor shortcomings */
-AstNode getCompIter(Comp c) {
-  c.contains(result) and
-  c.getScope() = result.getScope() and
-  not result = c.getFunction() and
-  not exists(AstNode between |
-    c.contains(between) and
-    between.contains(result)
-  )
-}
-
 /**
  * Holds if values stored inside content `c` are cleared at node `n`. For example,
  * any value stored inside `f` is cleared at the pre-update node associated with `x`
