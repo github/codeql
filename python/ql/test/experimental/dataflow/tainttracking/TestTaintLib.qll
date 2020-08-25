@@ -42,25 +42,31 @@ private string repr(Expr e) {
   result = repr(e.(Attribute).getObject()) + "." + e.(Attribute).getName()
 }
 
-from Call call, Expr arg, boolean expected_taint, boolean has_taint, string test_res
-where
-  call.getLocation().getFile().getShortName() = "test.py" and
-  (
-    call.getFunc().(Name).getId() = "ensure_tainted" and
-    expected_taint = true
-    or
-    call.getFunc().(Name).getId() = "ensure_not_tainted" and
-    expected_taint = false
-  ) and
-  arg = call.getAnArg() and
-  (
-    // TODO: Replace with `hasFlowToExpr` once that is working
-    if
-      exists(TaintTracking::Configuration c |
-        c.hasFlowTo(any(DataFlow::Node n | n.(DataFlow::CfgNode).getNode() = arg.getAFlowNode()))
-      )
-    then has_taint = true
-    else has_taint = false
-  ) and
-  if expected_taint = has_taint then test_res = "ok  " else test_res = "fail"
-select arg.getLocation().toString(), test_res, call.getScope().(Function).getName(), repr(arg)
+query predicate test_taint(string arg_location, string test_res, string function_name, string repr) {
+  exists(Call call, Expr arg, boolean expected_taint, boolean has_taint |
+    call.getLocation().getFile().getShortName() = "test.py" and
+    (
+      call.getFunc().(Name).getId() = "ensure_tainted" and
+      expected_taint = true
+      or
+      call.getFunc().(Name).getId() = "ensure_not_tainted" and
+      expected_taint = false
+    ) and
+    arg = call.getAnArg() and
+    (
+      // TODO: Replace with `hasFlowToExpr` once that is working
+      if
+        exists(TaintTracking::Configuration c |
+          c.hasFlowTo(any(DataFlow::Node n | n.(DataFlow::CfgNode).getNode() = arg.getAFlowNode()))
+        )
+      then has_taint = true
+      else has_taint = false
+    ) and
+    (if expected_taint = has_taint then test_res = "ok  " else test_res = "fail") and
+    // select
+    arg_location = arg.getLocation().toString() and
+    test_res = test_res and
+    function_name = call.getScope().(Function).getName() and
+    repr = repr(arg)
+  )
+}
