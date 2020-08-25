@@ -7,18 +7,19 @@ abstract class Comp extends Expr {
   /** Gets the iterable of this set comprehension. */
   abstract Expr getIterable();
 
-  /** Gets the iteration variable for the nth innermost generator of this list comprehension */
+  /** Gets the iteration variable for the nth innermost generator of this comprehension. */
   Variable getIterationVariable(int n) {
     result.getAnAccess() = this.getNthInnerLoop(n).getTarget()
   }
 
+  /** Gets the nth innermost For expression of this comprehension. */
   For getNthInnerLoop(int n) {
     n = 0 and result = this.getFunction().getStmt(0)
     or
     result = this.getNthInnerLoop(n - 1).getStmt(0)
   }
 
-  /** Gets the iteration variable for a generator of this list comprehension */
+  /** Gets the iteration variable for a generator of this list comprehension. */
   Variable getAnIterationVariable() { result = this.getIterationVariable(_) }
 
   /** Gets the scope in which the body of this list comprehension evaluates. */
