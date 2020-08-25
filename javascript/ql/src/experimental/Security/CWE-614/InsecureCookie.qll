@@ -83,7 +83,7 @@ module Cookie {
     override string getKind() { result = "response.cookie" }
 
     override DataFlow::SourceNode getCookieOptionsArgument() {
-      result = this.(DataFlow::InvokeNode).getLastArgument().getALocalSource()
+      result = this.getLastArgument().getALocalSource()
     }
 
     private DataFlow::Node getCookieFlagValue(string flag) {
