@@ -1031,7 +1031,7 @@ private predicate storeStep(
   summary = PathSummary::level()
   or
   exists(Function f, DataFlow::Node mid, DataFlow::Node invk |
-    not f.isAsync() and invk = succ
+    f.isOrdinary() and invk = succ
     or
     // store in an immediately awaited function call
     f.isAsync() and
@@ -1156,7 +1156,7 @@ private predicate loadStep(
   summary = PathSummary::level()
   or
   exists(Function f, DataFlow::Node read, DataFlow::Node invk |
-    not f.isAsync() and invk = succ
+    f.isOrdinary() and invk = succ
     or
     // load from an immediately awaited function call
     f.isAsync() and
