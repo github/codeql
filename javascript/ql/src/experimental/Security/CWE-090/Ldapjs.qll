@@ -5,14 +5,8 @@
 import javascript
 
 module Ldapjs {
-  string getLdapjsClientAPIMethodName() {
-    result = "add" or
-    result = "bind" or
-    result = "compare" or
-    result = "del" or
-    result = "modify" or
-    result = "modifyDN" or
-    result = "search"
+  string getLdapjsClientDNMethodName() {
+    result = ["add", "bind", "compare", "del", "modify", "modifyDN", "search"]
   }
 
   /**
