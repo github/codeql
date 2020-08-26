@@ -11,13 +11,13 @@ is likely to be able to run malicious LDAP queries.</p>
 <recommendation>
 <p>If user input must be included in an LDAP query, it should be escaped to
 avoid a malicious user providing special characters that change the meaning
-of the query. In NodeJS, it is possible to build the LDAP query using frameworks like `ldapjs`. 
-The library provides a `Filter API`, however it's still possibile to pass a string version of an LDAP filter.
+of the query. In NodeJS, it is possible to build the LDAP query using frameworks like <code>ldapjs</code>. 
+The library provides a <code>Filter API</code>, however it's still possibile to pass a string version of an LDAP filter.
 A good practice is to escape filter characters that could change the meaning of the query (https://tools.ietf.org/search/rfc4515#section-3).</p>
 </recommendation>
 
 <example>
-<p>In the following examples, the code accepts a `username` from the user, which it uses in a LDAP query.</p>
+<p>In the following examples, the code accepts a <code>username</code> from the user, which it uses in a LDAP query.</p>
 
 <p>The first and the second example uses the unsanitized user input directly
 in the search filter for the LDAP query.
@@ -28,12 +28,12 @@ queries, and search for a completely different set of values.
 <sample src="examples/example_bad2.js" />
 
 
-<p>The second example the `username` is sanitized before it is included in the search filters. 
+<p>The second example the <code>username</code> is sanitized before it is included in the search filters. 
 This ensures the meaning of the query cannot be changed by a malicious user.</p>
 
 <sample src="examples/example_good1.js" />
 
-<p>The third example the `username` is passed to an `OrFilter` filter before it is included in the search filters. 
+<p>The third example the <code>username</code> is passed to an <code>OrFilter</code> filter before it is included in the search filters. 
 This ensures the meaning of the query cannot be changed by a malicious user.</p>
 
 <sample src="examples/example_good2.js" />
