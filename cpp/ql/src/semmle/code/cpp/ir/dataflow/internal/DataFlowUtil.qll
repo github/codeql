@@ -10,6 +10,8 @@ private import semmle.code.cpp.ir.ValueNumbering
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.models.interfaces.DataFlow
+private import semmle.code.cpp.ir.implementation.aliased_ssa.internal.AliasedSSA
+private import semmle.code.cpp.ir.internal.IntegerConstant
 
 private newtype TIRDataFlowNode =
   TInstructionNode(Instruction i) or
@@ -321,15 +323,16 @@ abstract private class PartialDefinitionNode extends PostUpdateNode {
   abstract Expr getDefinedExpr();
 }
 
-private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
+class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
   override ChiInstruction instr;
-  FieldAddressInstruction field;
+  IntValue startBitDef;
+  IntValue endBitDef;
+  StoreInstruction store;
 
   ExplicitFieldStoreQualifierNode() {
     not instr.isResultConflated() and
-    exists(StoreInstruction store |
-      instr.getPartial() = store and field = store.getDestinationAddress()
-    )
+    instr.getPartial() = store and
+    getDefInterval(store, startBitDef, endBitDef)
   }
 
   // By using an operand as the result of this predicate we avoid the dataflow inconsistency errors
@@ -339,7 +342,12 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
   override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
 
   override Expr getDefinedExpr() {
-    result = field.getObjectAddress().getUnconvertedResultExpression()
+    result =
+      store
+          .getDestinationAddress()
+          .(FieldAddressInstruction)
+          .getObjectAddress()
+          .getUnconvertedResultExpression()
   }
 }
 
@@ -351,17 +359,25 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
  */
 private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNode {
   override StoreInstruction instr;
-  FieldAddressInstruction field;
+  IntValue startBitDef;
+  IntValue endBitDef;
 
   ExplicitSingleFieldStoreQualifierNode() {
-    field = instr.getDestinationAddress() and
-    not exists(ChiInstruction chi | chi.getPartial() = instr)
+    getDefInterval(instr, startBitDef, endBitDef) and
+    not exists(ChiInstruction chi | chi.getPartial() = instr) and
+    // Without this condition any store would create a `PostUpdateNode`.
+    instr.getDestinationAddress() instanceof FieldAddressInstruction
   }
 
   override Node getPreUpdateNode() { none() }
 
   override Expr getDefinedExpr() {
-    result = field.getObjectAddress().getUnconvertedResultExpression()
+    result =
+      instr
+          .getDestinationAddress()
+          .(FieldAddressInstruction)
+          .getObjectAddress()
+          .getUnconvertedResultExpression()
   }
 }
 

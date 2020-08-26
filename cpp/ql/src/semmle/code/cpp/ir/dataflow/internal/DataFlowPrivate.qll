@@ -2,6 +2,8 @@ private import cpp
 private import DataFlowUtil
 private import semmle.code.cpp.ir.IR
 private import DataFlowDispatch
+private import semmle.code.cpp.ir.implementation.aliased_ssa.internal.AliasedSSA
+private import semmle.code.cpp.ir.internal.IntegerConstant
 
 /**
  * A data flow node that occurs as the argument of a call and is passed as-is
@@ -145,7 +147,10 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
 predicate jumpStep(Node n1, Node n2) { none() }
 
 private newtype TContent =
-  TFieldContent(Field f) or
+  TFieldContent(IntValue startBitOffset, IntValue endBitOffset) {
+    getDefInterval(_, startBitOffset, endBitOffset) or
+    getUseInterval(_, startBitOffset, endBitOffset)
+  } or
   TCollectionContent() or
   TArrayContent()
 
@@ -163,16 +168,18 @@ class Content extends TContent {
 }
 
 private class FieldContent extends Content, TFieldContent {
-  Field f;
+  IntValue startBitOffset;
+  IntValue endBitOffset;
 
-  FieldContent() { this = TFieldContent(f) }
+  FieldContent() { this = TFieldContent(startBitOffset, endBitOffset) }
 
-  Field getField() { result = f }
+  override string toString() {
+    result = "[" + startBitOffset.toString() + ".." + endBitOffset.toString() + ")"
+  }
 
-  override string toString() { result = f.toString() }
-
-  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
+  predicate hasOffset(IntValue start, IntValue end) {
+    start = startBitOffset and
+    end = endBitOffset
   }
 }
 
@@ -185,20 +192,21 @@ private class ArrayContent extends Content, TArrayContent {
 }
 
 private predicate storeStepNoChi(Node node1, Content f, PostUpdateNode node2) {
-  exists(FieldAddressInstruction fa, StoreInstruction store |
+  exists(StoreInstruction store, IntValue startBitDef, IntValue endBitDef |
     store = node2.asInstruction() and
-    store.getDestinationAddress() = fa and
+    getDefInterval(store, startBitDef, endBitDef) and
     store.getSourceValue() = node1.asInstruction() and
-    f.(FieldContent).getField() = fa.getField()
+    f.(FieldContent).hasOffset(startBitDef, endBitDef)
   )
 }
 
 private predicate storeStepChi(Node node1, Content f, PostUpdateNode node2) {
-  exists(FieldAddressInstruction fa, StoreInstruction store |
+  exists(StoreInstruction store, ChiInstruction chi, IntValue startBitDef, IntValue endBitDef |
     node1.asInstruction() = store and
-    store.getDestinationAddress() = fa and
-    node2.asInstruction().(ChiInstruction).getPartial() = store and
-    f.(FieldContent).getField() = fa.getField()
+    getDefInterval(store, startBitDef, endBitDef) and
+    node2.asInstruction() = chi and
+    chi.getPartial() = store and
+    f.(FieldContent).hasOffset(startBitDef, endBitDef)
   )
 }
 
@@ -218,11 +226,11 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
  * `node2`.
  */
 predicate readStep(Node node1, Content f, Node node2) {
-  exists(FieldAddressInstruction fa, LoadInstruction load |
-    load.getSourceAddress() = fa and
+  exists(LoadInstruction load, IntValue startBitUse, IntValue endBitUse |
+    node2.asInstruction() = load and
     node1.asInstruction() = load.getSourceValueOperand().getAnyDef() and
-    fa.getField() = f.(FieldContent).getField() and
-    load = node2.asInstruction()
+    getUseInterval(load, startBitUse, endBitUse) and
+    f.(FieldContent).hasOffset(startBitUse, endBitUse)
   )
 }
 
