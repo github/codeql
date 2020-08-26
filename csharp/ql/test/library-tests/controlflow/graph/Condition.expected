@@ -424,39 +424,46 @@ conditionBlock
 | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:36:10:36:11 | exit M6 | true |
 | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:38:26:38:26 | String x | false |
 | LoopUnrolling.cs:7:10:7:11 | enter M1 | LoopUnrolling.cs:10:13:10:19 | return ...; | true |
-| LoopUnrolling.cs:7:10:7:11 | enter M1 | LoopUnrolling.cs:11:21:11:23 | String arg | false |
-| LoopUnrolling.cs:7:10:7:11 | enter M1 | LoopUnrolling.cs:11:28:11:31 | access to parameter args | false |
-| LoopUnrolling.cs:11:28:11:31 | access to parameter args | LoopUnrolling.cs:11:21:11:23 | String arg | false |
+| LoopUnrolling.cs:7:10:7:11 | enter M1 | LoopUnrolling.cs:11:22:11:24 | String arg | false |
+| LoopUnrolling.cs:7:10:7:11 | enter M1 | LoopUnrolling.cs:11:29:11:32 | access to parameter args | false |
+| LoopUnrolling.cs:11:29:11:32 | access to parameter args | LoopUnrolling.cs:11:22:11:24 | String arg | false |
 | LoopUnrolling.cs:15:10:15:11 | enter M2 | LoopUnrolling.cs:15:10:15:11 | exit M2 | false |
-| LoopUnrolling.cs:15:10:15:11 | enter M2 | LoopUnrolling.cs:18:21:18:21 | String x | false |
-| LoopUnrolling.cs:18:21:18:21 | String x | LoopUnrolling.cs:15:10:15:11 | exit M2 | true |
+| LoopUnrolling.cs:15:10:15:11 | enter M2 | LoopUnrolling.cs:18:22:18:22 | String x | false |
+| LoopUnrolling.cs:18:22:18:22 | String x | LoopUnrolling.cs:15:10:15:11 | exit M2 | true |
 | LoopUnrolling.cs:24:9:26:40 | foreach (... ... in ...) ... | LoopUnrolling.cs:22:10:22:11 | exit M3 | true |
 | LoopUnrolling.cs:24:9:26:40 | foreach (... ... in ...) ... | LoopUnrolling.cs:24:22:24:24 | Char arg | false |
 | LoopUnrolling.cs:24:9:26:40 | foreach (... ... in ...) ... | LoopUnrolling.cs:25:26:25:29 | Char arg0 | false |
 | LoopUnrolling.cs:24:22:24:24 | Char arg | LoopUnrolling.cs:25:26:25:29 | Char arg0 | false |
 | LoopUnrolling.cs:32:9:33:33 | foreach (... ... in ...) ... | LoopUnrolling.cs:29:10:29:11 | exit M4 | true |
-| LoopUnrolling.cs:32:9:33:33 | foreach (... ... in ...) ... | LoopUnrolling.cs:32:21:32:21 | String x | false |
+| LoopUnrolling.cs:32:9:33:33 | foreach (... ... in ...) ... | LoopUnrolling.cs:32:22:32:22 | String x | false |
 | LoopUnrolling.cs:36:10:36:11 | enter M5 | LoopUnrolling.cs:36:10:36:11 | exit M5 | false |
 | LoopUnrolling.cs:36:10:36:11 | enter M5 | LoopUnrolling.cs:40:9:42:41 | foreach (... ... in ...) ... | false |
-| LoopUnrolling.cs:36:10:36:11 | enter M5 | LoopUnrolling.cs:40:21:40:21 | String x | false |
-| LoopUnrolling.cs:36:10:36:11 | enter M5 | LoopUnrolling.cs:41:25:41:25 | String y | false |
+| LoopUnrolling.cs:36:10:36:11 | enter M5 | LoopUnrolling.cs:40:22:40:22 | String x | false |
+| LoopUnrolling.cs:36:10:36:11 | enter M5 | LoopUnrolling.cs:41:26:41:26 | String y | false |
 | LoopUnrolling.cs:40:9:42:41 | foreach (... ... in ...) ... | LoopUnrolling.cs:36:10:36:11 | exit M5 | true |
-| LoopUnrolling.cs:40:21:40:21 | String x | LoopUnrolling.cs:36:10:36:11 | exit M5 | false |
-| LoopUnrolling.cs:40:21:40:21 | String x | LoopUnrolling.cs:40:9:42:41 | foreach (... ... in ...) ... | false |
-| LoopUnrolling.cs:40:21:40:21 | String x | LoopUnrolling.cs:41:25:41:25 | String y | false |
-| LoopUnrolling.cs:41:25:41:25 | String y | LoopUnrolling.cs:36:10:36:11 | exit M5 | true |
-| LoopUnrolling.cs:41:25:41:25 | String y | LoopUnrolling.cs:40:9:42:41 | foreach (... ... in ...) ... | true |
-| LoopUnrolling.cs:55:10:55:11 | enter M7 | LoopUnrolling.cs:58:21:58:21 | [b (line 55): false] String x | false |
-| LoopUnrolling.cs:55:10:55:11 | enter M7 | LoopUnrolling.cs:58:21:58:21 | [b (line 55): true] String x | true |
+| LoopUnrolling.cs:40:22:40:22 | String x | LoopUnrolling.cs:36:10:36:11 | exit M5 | false |
+| LoopUnrolling.cs:40:22:40:22 | String x | LoopUnrolling.cs:40:9:42:41 | foreach (... ... in ...) ... | false |
+| LoopUnrolling.cs:40:22:40:22 | String x | LoopUnrolling.cs:41:26:41:26 | String y | false |
+| LoopUnrolling.cs:41:26:41:26 | String y | LoopUnrolling.cs:36:10:36:11 | exit M5 | true |
+| LoopUnrolling.cs:41:26:41:26 | String y | LoopUnrolling.cs:40:9:42:41 | foreach (... ... in ...) ... | true |
+| LoopUnrolling.cs:55:10:55:11 | enter M7 | LoopUnrolling.cs:58:22:58:22 | [b (line 55): false] String x | false |
+| LoopUnrolling.cs:55:10:55:11 | enter M7 | LoopUnrolling.cs:58:22:58:22 | [b (line 55): true] String x | true |
 | LoopUnrolling.cs:55:10:55:11 | enter M7 | LoopUnrolling.cs:61:17:61:37 | [b (line 55): true] ...; | true |
 | LoopUnrolling.cs:55:10:55:11 | enter M7 | LoopUnrolling.cs:62:13:63:37 | [b (line 55): false] if (...) ... | false |
-| LoopUnrolling.cs:61:17:61:37 | [b (line 55): true] ...; | LoopUnrolling.cs:58:21:58:21 | [b (line 55): true] String x | false |
-| LoopUnrolling.cs:62:13:63:37 | [b (line 55): false] if (...) ... | LoopUnrolling.cs:58:21:58:21 | [b (line 55): false] String x | false |
+| LoopUnrolling.cs:61:17:61:37 | [b (line 55): true] ...; | LoopUnrolling.cs:58:22:58:22 | [b (line 55): true] String x | false |
+| LoopUnrolling.cs:62:13:63:37 | [b (line 55): false] if (...) ... | LoopUnrolling.cs:58:22:58:22 | [b (line 55): false] String x | false |
 | LoopUnrolling.cs:67:10:67:11 | enter M8 | LoopUnrolling.cs:70:13:70:19 | return ...; | false |
 | LoopUnrolling.cs:67:10:67:11 | enter M8 | LoopUnrolling.cs:71:9:71:21 | ...; | true |
 | LoopUnrolling.cs:67:10:67:11 | enter M8 | LoopUnrolling.cs:72:9:73:35 | foreach (... ... in ...) ... | true |
-| LoopUnrolling.cs:67:10:67:11 | enter M8 | LoopUnrolling.cs:72:21:72:23 | String arg | true |
-| LoopUnrolling.cs:72:9:73:35 | foreach (... ... in ...) ... | LoopUnrolling.cs:72:21:72:23 | String arg | false |
+| LoopUnrolling.cs:67:10:67:11 | enter M8 | LoopUnrolling.cs:72:22:72:24 | String arg | true |
+| LoopUnrolling.cs:72:9:73:35 | foreach (... ... in ...) ... | LoopUnrolling.cs:72:22:72:24 | String arg | false |
+| LoopUnrolling.cs:79:9:82:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:76:10:76:11 | exit M9 | true |
+| LoopUnrolling.cs:79:9:82:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:79:22:79:22 | String x | false |
+| LoopUnrolling.cs:88:9:91:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:85:10:85:12 | exit M10 | true |
+| LoopUnrolling.cs:88:9:91:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:88:22:88:22 | String x | false |
+| LoopUnrolling.cs:94:10:94:12 | enter M11 | LoopUnrolling.cs:94:10:94:12 | exit M11 | false |
+| LoopUnrolling.cs:94:10:94:12 | enter M11 | LoopUnrolling.cs:97:22:97:22 | String x | false |
+| LoopUnrolling.cs:97:22:97:22 | String x | LoopUnrolling.cs:94:10:94:12 | exit M11 | true |
 | NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:28:3:28 | 0 | true |
 | NullCoalescing.cs:5:9:5:10 | enter M2 | NullCoalescing.cs:5:30:5:34 | false | true |
 | NullCoalescing.cs:5:9:5:10 | enter M2 | NullCoalescing.cs:5:39:5:39 | 0 | true |
@@ -1009,7 +1016,7 @@ conditionFlow
 | Finally.cs:209:21:209:22 | access to parameter b3 | Finally.cs:209:31:209:46 | object creation of type ExceptionC | true |
 | Finally.cs:209:21:209:22 | access to parameter b3 | Finally.cs:211:13:211:29 | ...; | false |
 | LoopUnrolling.cs:9:13:9:28 | ... == ... | LoopUnrolling.cs:10:13:10:19 | return ...; | true |
-| LoopUnrolling.cs:9:13:9:28 | ... == ... | LoopUnrolling.cs:11:28:11:31 | access to parameter args | false |
+| LoopUnrolling.cs:9:13:9:28 | ... == ... | LoopUnrolling.cs:11:29:11:32 | access to parameter args | false |
 | LoopUnrolling.cs:60:17:60:17 | [b (line 55): false] access to parameter b | LoopUnrolling.cs:62:13:63:37 | [b (line 55): false] if (...) ... | false |
 | LoopUnrolling.cs:60:17:60:17 | [b (line 55): true] access to parameter b | LoopUnrolling.cs:61:17:61:37 | [b (line 55): true] ...; | true |
 | LoopUnrolling.cs:60:17:60:17 | access to parameter b | LoopUnrolling.cs:61:17:61:37 | [b (line 55): true] ...; | true |
