@@ -383,7 +383,7 @@ func main() {
 
 	// check whether an explicit dependency installation command was provided
 	inst := util.Getenv("CODEQL_EXTRACTOR_GO_BUILD_COMMAND", "LGTM_INDEX_BUILD_COMMAND")
-	var install *exec.Cmd
+	shouldInstallDependencies := false
 	if inst == "" {
 		// if there is a build file, run the corresponding build tool
 		buildSucceeded := tryBuild("Makefile", "make") ||
@@ -393,65 +393,9 @@ func main() {
 			tryBuild("build", "./build") ||
 			tryBuild("build.sh", "./build.sh")
 
-		if modMode == ModVendor {
-			// test if running `go` with -mod=vendor works, and if it doesn't, try to fallback to -mod=mod
-			// or not set if the go version < 1.14. Note we check this post-build in case the build brings
-			// the vendor directory up to date.
-			if !checkVendor() {
-				modMode = modModIfSupported()
-				log.Println("The vendor directory is not consistent with the go.mod; not using vendored dependencies.")
-			}
-		}
-
 		if !buildSucceeded {
-			if modMode == ModVendor {
-				log.Printf("Skipping dependency installation because a Go vendor directory was found.")
-			} else {
-				// automatically determine command to install dependencies
-				if depMode == Dep {
-					// set up the dep cache if SEMMLE_CACHE is set
-					cacheDir := os.Getenv("SEMMLE_CACHE")
-					if cacheDir != "" {
-						depCacheDir := filepath.Join(cacheDir, "go", "dep")
-						log.Printf("Attempting to create dep cache dir %s\n", depCacheDir)
-						err := os.MkdirAll(depCacheDir, 0755)
-						if err != nil {
-							log.Printf("Failed to create dep cache directory: %s\n", err.Error())
-						} else {
-							log.Printf("Setting dep cache directory to %s\n", depCacheDir)
-							err = os.Setenv("DEPCACHEDIR", depCacheDir)
-							if err != nil {
-								log.Println("Failed to set dep cache directory")
-							} else {
-								err = os.Setenv("DEPCACHEAGE", "720h") // 30 days
-								if err != nil {
-									log.Println("Failed to set dep cache age")
-								}
-							}
-						}
-					}
-
-					if util.FileExists("Gopkg.lock") {
-						// if Gopkg.lock exists, don't update it and only vendor dependencies
-						install = exec.Command("dep", "ensure", "-v", "-vendor-only")
-					} else {
-						install = exec.Command("dep", "ensure", "-v")
-					}
-					log.Println("Installing dependencies using `dep ensure`.")
-				} else if depMode == Glide {
-					install = exec.Command("glide", "install")
-					log.Println("Installing dependencies using `glide install`")
-				} else {
-					if depMode == GoGetWithModules {
-						// enable go modules if used
-						os.Setenv("GO111MODULE", "on")
-					}
-
-					// get dependencies
-					install = exec.Command("go", "get", "-v", "./...")
-					log.Println("Installing dependencies using `go get -v ./...`.")
-				}
-			}
+			// Build failed; we'll try to install dependencies ourselves
+			shouldInstallDependencies = true
 		}
 	} else {
 		// write custom build commands into a script, then run it
@@ -482,21 +426,70 @@ func main() {
 			log.Fatalf("Unable to close temporary script holding custom build commands: %s\n", err.Error())
 		}
 		os.Chmod(script.Name(), 0700)
-		install = exec.Command(script.Name())
 		log.Println("Installing dependencies using custom build command.")
+		run(exec.Command(script.Name()))
+	}
 
-		if modMode == ModVendor {
-			// test if running `go` with -mod=vendor works, and if it doesn't, try to fallback to -mod=mod
-			// or not set if the go version < 1.14.
-			if !checkVendor() {
-				modMode = modModIfSupported()
-				log.Println("The vendor directory is not consistent with the go.mod; not using vendored dependencies.")
-			}
+	if modMode == ModVendor {
+		// test if running `go` with -mod=vendor works, and if it doesn't, try to fallback to -mod=mod
+		// or not set if the go version < 1.14. Note we check this post-build in case the build brings
+		// the vendor directory up to date.
+		if !checkVendor() {
+			modMode = modModIfSupported()
+			log.Println("The vendor directory is not consistent with the go.mod; not using vendored dependencies.")
 		}
 	}
 
-	if install != nil {
-		run(install)
+	if shouldInstallDependencies {
+		if modMode == ModVendor {
+			log.Printf("Skipping dependency installation because a Go vendor directory was found.")
+		} else {
+			// automatically determine command to install dependencies
+			var install *exec.Cmd
+			if depMode == Dep {
+				// set up the dep cache if SEMMLE_CACHE is set
+				cacheDir := os.Getenv("SEMMLE_CACHE")
+				if cacheDir != "" {
+					depCacheDir := filepath.Join(cacheDir, "go", "dep")
+					log.Printf("Attempting to create dep cache dir %s\n", depCacheDir)
+					err := os.MkdirAll(depCacheDir, 0755)
+					if err != nil {
+						log.Printf("Failed to create dep cache directory: %s\n", err.Error())
+					} else {
+						log.Printf("Setting dep cache directory to %s\n", depCacheDir)
+						err = os.Setenv("DEPCACHEDIR", depCacheDir)
+						if err != nil {
+							log.Println("Failed to set dep cache directory")
+						} else {
+							err = os.Setenv("DEPCACHEAGE", "720h") // 30 days
+							if err != nil {
+								log.Println("Failed to set dep cache age")
+							}
+						}
+					}
+				}
+
+				if util.FileExists("Gopkg.lock") {
+					// if Gopkg.lock exists, don't update it and only vendor dependencies
+					install = exec.Command("dep", "ensure", "-v", "-vendor-only")
+				} else {
+					install = exec.Command("dep", "ensure", "-v")
+				}
+				log.Println("Installing dependencies using `dep ensure`.")
+			} else if depMode == Glide {
+				install = exec.Command("glide", "install")
+				log.Println("Installing dependencies using `glide install`")
+			} else {
+				if depMode == GoGetWithModules {
+					// enable go modules if used
+					os.Setenv("GO111MODULE", "on")
+				}
+				// get dependencies
+				install = exec.Command("go", "get", "-v", "./...")
+				log.Println("Installing dependencies using `go get -v ./...`.")
+			}
+			run(install)
+		}
 	}
 
 	// extract
