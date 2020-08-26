@@ -31,6 +31,7 @@ class ReadRefAccess extends ReadAccess, ReadRef { }
 
 /** An instruction that writes a variable. */
 class WriteAccess extends VariableAccess, @cil_write_access {
+  /** Gets the `Expr` whose value is used in this variable write. */
   Expr getExpr() { none() }
 }
 

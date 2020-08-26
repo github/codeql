@@ -1011,6 +1011,7 @@ class RangeExpr extends Expr, @range_expr {
 
 /** An index expression, for example `^1` meaning "1 from the end". */
 class IndexExpr extends Expr, @index_expr {
+  /** Gets the sub expression of this `IndexExpr`. */
   Expr getExpr() { result.getParent() = this }
 
   override string toString() { result = "^..." }
