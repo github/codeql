@@ -157,7 +157,8 @@ predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
   or
   // constructor call
   exists(CallNode call | call = nodeTo.getNode() |
-    call.getFunction().(NameNode).getId() in ["list", "set", "frozenset", "dict", "defaultdict", "tuple"] and
+    call.getFunction().(NameNode).getId() in ["list", "set", "frozenset", "dict", "defaultdict",
+          "tuple"] and
     call.getArg(0) = nodeFrom.getNode()
   )
   or
@@ -169,16 +170,14 @@ predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
   or
   // methods
   exists(CallNode call, string name | call = nodeTo.getNode() |
-    name in [
-      // general
-      "copy", "pop",
-      // dict
-      "values", "items", "get", "popitem"
-    ] and
+    name in ["copy",
+          // general
+          "pop",
+          // dict
+          "values", "items", "get", "popitem"] and
     call.getFunction().(AttrNode).getObject(name) = nodeFrom.getNode()
   )
 }
-
 
 /**
  * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to copying.
@@ -195,7 +194,6 @@ predicate copyStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
   )
 }
 
-
 /**
  * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to `for`-iteration,
  * for example `for x in xs`, or `for x,y in points`.
@@ -207,7 +205,6 @@ predicate forStep(DataFlow::CfgNode nodeFrom, DataFlow::EssaNode nodeTo) {
     nodeFrom.getNode().getNode() = for.getIter()
   )
 }
-
 
 /**
  * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to iterable unpacking.
