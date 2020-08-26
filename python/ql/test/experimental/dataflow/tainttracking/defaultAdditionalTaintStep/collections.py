@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 # Actual tests
 
 from collections import defaultdict, namedtuple
-
+from copy import copy, deepcopy
 
 def test_construction():
     tainted_string = TAINTED_STRING
@@ -48,6 +48,13 @@ def test_access(x, y, z):
         tainted_list[0],
         tainted_list[x],
         tainted_list[y:z],
+
+        sorted(tainted_list),
+        reversed(tainted_list),
+        iter(tainted_list),
+        next(iter(tainted_list)),
+        copy(tainted_list),
+        deepcopy(tainted_list)
     )
 
     a, b, c = tainted_list[0:3]
@@ -64,6 +71,7 @@ def test_dict_access(x):
 
     ensure_tainted(
         tainted_dict["name"],
+        tainted_dict.get("name"),
         tainted_dict[x],
         tainted_dict.copy(),
     )
@@ -99,6 +107,7 @@ def test_defaultdict(key, x): # TODO: defaultdict currently not handled
 
     ensure_tainted(
         tainted_default_dict["name"],
+        tainted_default_dict.get("name"),
         tainted_default_dict[x],
         tainted_default_dict.copy(),
     )
