@@ -456,6 +456,49 @@ private class PromiseTaintStep extends TaintTracking::AdditionalTaintStep {
 }
 
 /**
+ * Defines flow steps for return on async functions.
+ */
+private module AsyncReturnSteps {
+  private predicate valueProp = Promises::valueProp/0;
+
+  private predicate errorProp = Promises::errorProp/0;
+
+  private import semmle.javascript.dataflow.internal.FlowSteps
+
+  /**
+   * A data-flow step for ordinary and exceptional returns from async functions.
+   */
+  private class AsyncReturn extends PreCallGraphStep {
+    override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+      exists(DataFlow::FunctionNode f | f.getFunction().isAsync() |
+        // ordinary return
+        prop = valueProp() and
+        pred = f.getAReturn() and
+        succ = f.getReturnNode()
+        or
+        // exceptional return
+        prop = errorProp() and
+        localExceptionStepWithAsyncFlag(pred, succ, true)
+      )
+    }
+  }
+
+  /**
+   * A data-flow step for ordinary return from an async function in a taint configuration.
+   */
+  private class AsyncTaintReturn extends TaintTracking::AdditionalTaintStep, DataFlow::FunctionNode {
+    Function f;
+
+    AsyncTaintReturn() { this.getFunction() = f and f.isAsync() }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      returnExpr(f, pred, _) and
+      succ.(DataFlow::FunctionReturnNode).getFunction() = f
+    }
+  }
+}
+
+/**
  * Provides classes for working with the `bluebird` library (http://bluebirdjs.com).
  */
 module Bluebird {

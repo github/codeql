@@ -3,6 +3,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.frameworks.Jdbc
+import semmle.code.java.frameworks.jOOQ
 import semmle.code.java.frameworks.android.SQLite
 import semmle.code.java.frameworks.javaee.Persistence
 import semmle.code.java.frameworks.SpringJdbc
@@ -30,6 +31,8 @@ private class SqlInjectionSink extends QueryInjectionSink {
       index = 0 and mybatisSqlMethod(m)
       or
       index = 0 and hibernateSqlMethod(m)
+      or
+      index = 0 and jOOQSqlMethod(m)
     )
   }
 }

@@ -2,6 +2,7 @@
 | electron.js:3:10:3:48 | new Bro ... s: {}}) |
 | electron.js:4:5:4:46 | bv |
 | electron.js:4:10:4:46 | new Bro ... s: {}}) |
+| electron.js:35:1:37:1 | return of function foo |
 | electron.js:35:14:35:14 | x |
 | electron.js:35:14:35:14 | x |
 | electron.js:36:12:36:12 | x |

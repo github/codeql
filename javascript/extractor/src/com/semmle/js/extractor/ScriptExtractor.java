@@ -1,5 +1,16 @@
 package com.semmle.js.extractor;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.concurrent.ConcurrentMap;
+import java.util.Optional;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
 import com.semmle.js.extractor.ExtractorConfig.Platform;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import com.semmle.js.parser.ParseError;
@@ -9,14 +20,24 @@ import com.semmle.util.trap.TrapWriter.Label;
 /** Extract a stand-alone JavaScript script. */
 public class ScriptExtractor implements IExtractor {
   private ExtractorConfig config;
+  private ConcurrentMap<File, Optional<String>> packageTypeCache;
 
-  public ScriptExtractor(ExtractorConfig config) {
+  public ScriptExtractor(ExtractorConfig config, ExtractorState state) {
     this.config = config;
+    this.packageTypeCache = state.getPackageTypeCache();
   }
 
-  /** True if files with the given extension should always be treated as modules. */
-  private boolean isAlwaysModule(String extension) {
-    return extension.equals(".mjs") || extension.equals(".es6") || extension.equals(".es");
+  /** True if files with the given extension and type (from package.json) should always be treated as ES2015 modules. */
+  private boolean isAlwaysModule(String extension, String packageType) {
+    if (extension.equals(".mjs") || extension.equals(".es6") || extension.equals(".es")) {
+      return true;
+    }
+    return "module".equals(packageType) && extension.equals(".js");
+  }
+
+  /** True if files with the given extension and type (from package.json) should always be treated as CommonJS modules. */
+  private boolean isAlwaysCommonJSModule(String extension, String packageType) {
+    return extension.equals(".cjs") || (extension.equals(".js") && "commonjs".equals(packageType));
   }
 
   @Override
@@ -44,10 +65,17 @@ public class ScriptExtractor implements IExtractor {
       locationManager.setStart(2, 1);
     }
 
-    // Some file extensions are interpreted as modules by default.
-    if (isAlwaysModule(locationManager.getSourceFileExtension())) {
-      if (config.getSourceType() == SourceType.AUTO)
+    String packageType = getPackageType(locationManager.getSourceFile().getParentFile());
+    String extension = locationManager.getSourceFileExtension();
+
+    // Some files are interpreted as modules by default.
+    if (config.getSourceType() == SourceType.AUTO) {
+      if (isAlwaysModule(extension, packageType)) {
         config = config.withSourceType(SourceType.MODULE);
+      }
+      if (isAlwaysCommonJSModule(extension, packageType)) {
+        config = config.withSourceType(SourceType.COMMONJS_MODULE).withPlatform(Platform.NODE);
+      }
     }
 
     ScopeManager scopeManager =
@@ -68,5 +96,41 @@ public class ScriptExtractor implements IExtractor {
       textualExtractor.extractLine(shebangLine, shebangLineTerm, 0, toplevelLabel);
 
     return loc;
+  }
+
+  /**
+   * A minimal model of `package.json` files that can be used to read the "type" field.
+   */
+  private static class PackageJSON {
+    String type;
+  }
+
+  /**
+   * Returns the "type" field from the nearest `package.json` file (searching up the file hierarchy).
+   */
+  private String getPackageType(File folder) {
+    if (folder == null || !folder.isDirectory()) {
+      return null;
+    }
+    if (packageTypeCache.containsKey(folder)) {
+      return packageTypeCache.get(folder).orElse(null);
+    }
+    File file = new File(folder, "package.json");
+    if (file.isDirectory()) {
+      return null;
+    }
+    if (!file.exists()) {
+      String result = getPackageType(folder.getParentFile());
+      packageTypeCache.put(folder, Optional.ofNullable(result));
+      return result;
+    }
+    try {
+      BufferedReader reader = new BufferedReader(new FileReader(file));
+      String result = new Gson().fromJson(reader, PackageJSON.class).type;
+      packageTypeCache.put(folder, Optional.ofNullable(result));
+      return result;
+    } catch (IOException | JsonSyntaxException e) {
+      return null;
+    }
   }
 }

@@ -13,6 +13,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override string Name => symbol.GetName();
 
+        protected override IMethodSymbol BodyDeclaringSymbol => symbol.PartialImplementationPart ?? symbol;
+
         public IMethodSymbol SourceDeclaration
         {
             get

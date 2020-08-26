@@ -1867,6 +1867,7 @@ test_RouteSetup_getARouteHandler
 | src/advanced-routehandler-registration.js:163:1:163:33 | app.get ... t("f")) | src/advanced-routehandler-registration.js:163:14:163:32 | routesMap2.get("f") |
 | src/auth.js:4:1:4:53 | app.use ... d' }})) | src/auth.js:4:9:4:52 | basicAu ... rd' }}) |
 | src/csurf-example.js:13:1:13:20 | app.use('/api', api) | src/csurf-example.js:10:11:10:27 | createApiRouter() |
+| src/csurf-example.js:13:1:13:20 | app.use('/api', api) | src/csurf-example.js:29:1:37:1 | return of function createApiRouter |
 | src/csurf-example.js:13:1:13:20 | app.use('/api', api) | src/csurf-example.js:30:16:30:35 | new express.Router() |
 | src/csurf-example.js:16:1:16:51 | app.use ... lse })) | src/csurf-example.js:16:9:16:50 | bodyPar ... alse }) |
 | src/csurf-example.js:17:1:17:23 | app.use ... rser()) | src/csurf-example.js:17:9:17:22 | cookieParser() |
@@ -1880,6 +1881,7 @@ test_RouteSetup_getARouteHandler
 | src/express2.js:3:1:4:77 | router. ... sult }) | src/express2.js:4:32:4:76 | functio ... esult } |
 | src/express2.js:6:1:6:15 | app.use(router) | src/express2.js:2:14:2:23 | e.Router() |
 | src/express3.js:4:1:7:2 | app.get ... l");\\n}) | src/express3.js:4:23:7:1 | functio ... al");\\n} |
+| src/express3.js:12:1:12:21 | app.use ... dler()) | src/express3.js:9:1:11:1 | return of function getHandler |
 | src/express3.js:12:1:12:21 | app.use ... dler()) | src/express3.js:10:12:10:32 | functio ...  res){} |
 | src/express3.js:12:1:12:21 | app.use ... dler()) | src/express3.js:12:9:12:20 | getHandler() |
 | src/express4.js:4:1:9:2 | app.get ... c1);\\n}) | src/express4.js:4:23:9:1 | functio ... ic1);\\n} |
@@ -1888,8 +1890,10 @@ test_RouteSetup_getARouteHandler
 | src/express.js:22:1:32:2 | app.pos ... r');\\n}) | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/express.js:34:1:34:53 | app.get ... andler) | src/exportedHandler.js:1:19:1:55 | functio ... res) {} |
 | src/express.js:34:1:34:53 | app.get ... andler) | src/express.js:34:14:34:52 | require ... handler |
+| src/express.js:39:1:39:21 | app.use ... dler()) | src/express.js:36:1:38:1 | return of function getHandler |
 | src/express.js:39:1:39:21 | app.use ... dler()) | src/express.js:37:12:37:32 | functio ...  res){} |
 | src/express.js:39:1:39:21 | app.use ... dler()) | src/express.js:39:9:39:20 | getHandler() |
+| src/express.js:44:1:44:26 | app.use ... dler()) | src/express.js:41:1:43:1 | return of function getArrowHandler |
 | src/express.js:44:1:44:26 | app.use ... dler()) | src/express.js:42:12:42:28 | (req, res) => f() |
 | src/express.js:44:1:44:26 | app.use ... dler()) | src/express.js:44:9:44:25 | getArrowHandler() |
 | src/express.js:46:1:51:2 | app.pos ... me];\\n}) | src/express.js:46:22:51:1 | functio ... ame];\\n} |
@@ -1908,6 +1912,7 @@ test_RouteSetup_getARouteHandler
 | src/routesetups.js:12:1:12:16 | root.post('', h) | src/routesetups.js:12:15:12:15 | h |
 | src/subrouter.js:4:1:4:26 | app.use ... rotect) | src/subrouter.js:4:19:4:25 | protect |
 | src/subrouter.js:5:1:5:29 | app.use ... uter()) | src/subrouter.js:5:14:5:28 | makeSubRouter() |
+| src/subrouter.js:5:1:5:29 | app.use ... uter()) | src/subrouter.js:7:1:12:1 | return of function makeSubRouter |
 | src/subrouter.js:5:1:5:29 | app.use ... uter()) | src/subrouter.js:8:16:8:31 | express.Router() |
 | src/subrouter.js:9:3:9:35 | router. ... ndler1) | src/subrouter.js:9:27:9:34 | handler1 |
 | src/subrouter.js:10:3:10:41 | router. ... ndler2) | src/subrouter.js:10:33:10:40 | handler2 |

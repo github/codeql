@@ -47,6 +47,7 @@ test_RouteHandler_getAResponseExpr
 test_RouteSetup_getARouteHandler
 | src/test.js:6:1:9:2 | app.use ... o');\\n}) | src/test.js:6:9:9:1 | functio ... oo');\\n} |
 | src/test.js:12:1:12:42 | app.use ... word')) | src/test.js:12:9:12:41 | basicAu ... sword') |
+| src/test.js:17:1:17:21 | app.use ... dler()) | src/test.js:14:1:16:1 | return of function getHandler |
 | src/test.js:17:1:17:21 | app.use ... dler()) | src/test.js:15:12:15:32 | functio ...  res){} |
 | src/test.js:17:1:17:21 | app.use ... dler()) | src/test.js:17:9:17:20 | getHandler() |
 | src/test.js:19:1:19:28 | app.use ... res){}) | src/test.js:19:9:19:27 | function(req,res){} |

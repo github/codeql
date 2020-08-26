@@ -80,7 +80,7 @@ namespace Semmle.Extraction.CSharp.Entities
                         else
                             Expression.Create(Context, expr, this, 0);
 
-                        Context.NumberOfLines(trapFile, symbol, this);
+                        Context.NumberOfLines(trapFile, BodyDeclaringSymbol, this);
                     });
         }
 
@@ -126,7 +126,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 {
                     trapFile.Write('<');
                     // Encode the nullability of the type arguments in the label.
-                    // Type arguments with different nullability can result in 
+                    // Type arguments with different nullability can result in
                     // a constructed method with different nullability of its parameters and return type,
                     // so we need to create a distinct database entity for it.
                     trapFile.BuildList(",", m.symbol.GetAnnotatedTypeArguments(), (ta, tb0) => { AddSignatureTypeToId(m.Context, tb0, m.symbol, ta.Symbol); trapFile.Write((int)ta.Nullability); });

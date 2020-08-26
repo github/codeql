@@ -31,7 +31,6 @@
 | constructor-calls.js:14:15:14:22 | source() | constructor-calls.js:17:8:17:14 | c.param |
 | constructor-calls.js:14:15:14:22 | source() | constructor-calls.js:25:8:25:14 | d.param |
 | exceptions.js:3:15:3:22 | source() | exceptions.js:5:10:5:10 | e |
-| exceptions.js:48:16:48:23 | source() | exceptions.js:50:10:50:10 | e |
 | exceptions.js:59:24:59:31 | source() | exceptions.js:61:12:61:12 | e |
 | exceptions.js:88:6:88:13 | source() | exceptions.js:11:10:11:10 | e |
 | exceptions.js:93:11:93:18 | source() | exceptions.js:95:10:95:10 | e |
