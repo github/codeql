@@ -18,7 +18,7 @@ predicate nonEmptyArrayLiteralOrNull(Expr e) {
     any(ArrayCreation arr |
       exists(arr.getInitializer().getAnElement())
       or
-      not arr.getALengthArgument().getValue() = "0"
+      arr.getLengthArgument(0).getValue().toInt() > 0
     )
   or
   e instanceof NullLiteral

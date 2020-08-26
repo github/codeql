@@ -6,7 +6,7 @@ class Program
 
     public static readonly int[] EmptyArray2 = new int[] { }; // GOOD: empty
 
-    public static readonly int[,,,] EmptyArray3 = new int[3, 3, 0, 2]; // GOOD: empty
+    public static readonly int[,,,] EmptyArray3 = new int[0, 3, 0, 2]; // GOOD: empty
 
     public static readonly int[] EmptyArray4; // GOOD: empty
 
@@ -15,6 +15,8 @@ class Program
     static readonly int[] NonEmptyArray2 = new int[] { 42 }; // GOOD: private
 
     public static readonly int[] NonEmptyArray3; // BAD
+
+    public static readonly int[,,,] NonEmptyArray4 = new int[2, 3, 0, 2]; // BAD
 
     public static readonly int[] Array = new int[new Random().Next()]; // BAD
 
