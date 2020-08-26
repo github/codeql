@@ -19,6 +19,8 @@ The following changes in version 1.26 affect C# analysis in all applications.
 ## Changes to code extraction
 
 * Partial method bodies are extracted. Previously, partial method bodies were skipped completely.
+* Inferring the lengths of implicitely sized arrays is fixed. Previously, multi dimensional arrays were always extracted with the same length for
+each dimension. With the fix, the array sizes `2` and `1` are extracted for `new int[,]{{1},{2}}`. Previously `2` and `2` were extracted.
 
 ## Changes to libraries
 
