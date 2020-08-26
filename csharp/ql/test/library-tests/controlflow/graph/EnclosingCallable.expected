@@ -2083,12 +2083,8 @@ nodeEnclosing
 | LoopUnrolling.cs:31:13:31:30 | String[] xs = ... | LoopUnrolling.cs:29:10:29:11 | M4 |
 | LoopUnrolling.cs:31:18:31:30 | array creation of type String[] | LoopUnrolling.cs:29:10:29:11 | M4 |
 | LoopUnrolling.cs:31:29:31:29 | 0 | LoopUnrolling.cs:29:10:29:11 | M4 |
-| LoopUnrolling.cs:32:9:33:33 | foreach (... ... in ...) ... | LoopUnrolling.cs:29:10:29:11 | M4 |
-| LoopUnrolling.cs:32:22:32:22 | String x | LoopUnrolling.cs:29:10:29:11 | M4 |
+| LoopUnrolling.cs:32:9:33:33 | [skip (line 32)] foreach (... ... in ...) ... | LoopUnrolling.cs:29:10:29:11 | M4 |
 | LoopUnrolling.cs:32:27:32:28 | access to local variable xs | LoopUnrolling.cs:29:10:29:11 | M4 |
-| LoopUnrolling.cs:33:13:33:32 | call to method WriteLine | LoopUnrolling.cs:29:10:29:11 | M4 |
-| LoopUnrolling.cs:33:13:33:33 | ...; | LoopUnrolling.cs:29:10:29:11 | M4 |
-| LoopUnrolling.cs:33:31:33:31 | access to local variable x | LoopUnrolling.cs:29:10:29:11 | M4 |
 | LoopUnrolling.cs:36:10:36:11 | enter M5 | LoopUnrolling.cs:36:10:36:11 | M5 |
 | LoopUnrolling.cs:36:10:36:11 | exit M5 | LoopUnrolling.cs:36:10:36:11 | M5 |
 | LoopUnrolling.cs:37:5:43:5 | {...} | LoopUnrolling.cs:36:10:36:11 | M5 |
@@ -2184,12 +2180,8 @@ nodeEnclosing
 | LoopUnrolling.cs:71:9:71:12 | access to parameter args | LoopUnrolling.cs:67:10:67:11 | M8 |
 | LoopUnrolling.cs:71:9:71:20 | call to method Clear | LoopUnrolling.cs:67:10:67:11 | M8 |
 | LoopUnrolling.cs:71:9:71:21 | ...; | LoopUnrolling.cs:67:10:67:11 | M8 |
-| LoopUnrolling.cs:72:9:73:35 | foreach (... ... in ...) ... | LoopUnrolling.cs:67:10:67:11 | M8 |
-| LoopUnrolling.cs:72:22:72:24 | String arg | LoopUnrolling.cs:67:10:67:11 | M8 |
+| LoopUnrolling.cs:72:9:73:35 | [skip (line 72)] foreach (... ... in ...) ... | LoopUnrolling.cs:67:10:67:11 | M8 |
 | LoopUnrolling.cs:72:29:72:32 | access to parameter args | LoopUnrolling.cs:67:10:67:11 | M8 |
-| LoopUnrolling.cs:73:13:73:34 | call to method WriteLine | LoopUnrolling.cs:67:10:67:11 | M8 |
-| LoopUnrolling.cs:73:13:73:35 | ...; | LoopUnrolling.cs:67:10:67:11 | M8 |
-| LoopUnrolling.cs:73:31:73:33 | access to local variable arg | LoopUnrolling.cs:67:10:67:11 | M8 |
 | LoopUnrolling.cs:76:10:76:11 | enter M9 | LoopUnrolling.cs:76:10:76:11 | M9 |
 | LoopUnrolling.cs:76:10:76:11 | exit M9 | LoopUnrolling.cs:76:10:76:11 | M9 |
 | LoopUnrolling.cs:77:5:83:5 | {...} | LoopUnrolling.cs:76:10:76:11 | M9 |
@@ -2198,13 +2190,8 @@ nodeEnclosing
 | LoopUnrolling.cs:78:18:78:33 | array creation of type String[,] | LoopUnrolling.cs:76:10:76:11 | M9 |
 | LoopUnrolling.cs:78:29:78:29 | 2 | LoopUnrolling.cs:76:10:76:11 | M9 |
 | LoopUnrolling.cs:78:32:78:32 | 0 | LoopUnrolling.cs:76:10:76:11 | M9 |
-| LoopUnrolling.cs:79:9:82:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:76:10:76:11 | M9 |
-| LoopUnrolling.cs:79:22:79:22 | String x | LoopUnrolling.cs:76:10:76:11 | M9 |
+| LoopUnrolling.cs:79:9:82:9 | [skip (line 79)] foreach (... ... in ...) ... | LoopUnrolling.cs:76:10:76:11 | M9 |
 | LoopUnrolling.cs:79:27:79:28 | access to local variable xs | LoopUnrolling.cs:76:10:76:11 | M9 |
-| LoopUnrolling.cs:80:9:82:9 | {...} | LoopUnrolling.cs:76:10:76:11 | M9 |
-| LoopUnrolling.cs:81:13:81:32 | call to method WriteLine | LoopUnrolling.cs:76:10:76:11 | M9 |
-| LoopUnrolling.cs:81:13:81:33 | ...; | LoopUnrolling.cs:76:10:76:11 | M9 |
-| LoopUnrolling.cs:81:31:81:31 | access to local variable x | LoopUnrolling.cs:76:10:76:11 | M9 |
 | LoopUnrolling.cs:85:10:85:12 | enter M10 | LoopUnrolling.cs:85:10:85:12 | M10 |
 | LoopUnrolling.cs:85:10:85:12 | exit M10 | LoopUnrolling.cs:85:10:85:12 | M10 |
 | LoopUnrolling.cs:86:5:92:5 | {...} | LoopUnrolling.cs:85:10:85:12 | M10 |
@@ -2213,13 +2200,8 @@ nodeEnclosing
 | LoopUnrolling.cs:87:18:87:33 | array creation of type String[,] | LoopUnrolling.cs:85:10:85:12 | M10 |
 | LoopUnrolling.cs:87:29:87:29 | 0 | LoopUnrolling.cs:85:10:85:12 | M10 |
 | LoopUnrolling.cs:87:32:87:32 | 2 | LoopUnrolling.cs:85:10:85:12 | M10 |
-| LoopUnrolling.cs:88:9:91:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:85:10:85:12 | M10 |
-| LoopUnrolling.cs:88:22:88:22 | String x | LoopUnrolling.cs:85:10:85:12 | M10 |
+| LoopUnrolling.cs:88:9:91:9 | [skip (line 88)] foreach (... ... in ...) ... | LoopUnrolling.cs:85:10:85:12 | M10 |
 | LoopUnrolling.cs:88:27:88:28 | access to local variable xs | LoopUnrolling.cs:85:10:85:12 | M10 |
-| LoopUnrolling.cs:89:9:91:9 | {...} | LoopUnrolling.cs:85:10:85:12 | M10 |
-| LoopUnrolling.cs:90:13:90:32 | call to method WriteLine | LoopUnrolling.cs:85:10:85:12 | M10 |
-| LoopUnrolling.cs:90:13:90:33 | ...; | LoopUnrolling.cs:85:10:85:12 | M10 |
-| LoopUnrolling.cs:90:31:90:31 | access to local variable x | LoopUnrolling.cs:85:10:85:12 | M10 |
 | LoopUnrolling.cs:94:10:94:12 | enter M11 | LoopUnrolling.cs:94:10:94:12 | M11 |
 | LoopUnrolling.cs:94:10:94:12 | exit M11 | LoopUnrolling.cs:94:10:94:12 | M11 |
 | LoopUnrolling.cs:95:5:101:5 | {...} | LoopUnrolling.cs:94:10:94:12 | M11 |
@@ -4065,9 +4047,6 @@ blockEnclosing
 | LoopUnrolling.cs:24:22:24:24 | Char arg | LoopUnrolling.cs:22:10:22:11 | M3 |
 | LoopUnrolling.cs:25:26:25:29 | Char arg0 | LoopUnrolling.cs:22:10:22:11 | M3 |
 | LoopUnrolling.cs:29:10:29:11 | enter M4 | LoopUnrolling.cs:29:10:29:11 | M4 |
-| LoopUnrolling.cs:29:10:29:11 | exit M4 | LoopUnrolling.cs:29:10:29:11 | M4 |
-| LoopUnrolling.cs:32:9:33:33 | foreach (... ... in ...) ... | LoopUnrolling.cs:29:10:29:11 | M4 |
-| LoopUnrolling.cs:32:22:32:22 | String x | LoopUnrolling.cs:29:10:29:11 | M4 |
 | LoopUnrolling.cs:36:10:36:11 | enter M5 | LoopUnrolling.cs:36:10:36:11 | M5 |
 | LoopUnrolling.cs:36:10:36:11 | exit M5 | LoopUnrolling.cs:36:10:36:11 | M5 |
 | LoopUnrolling.cs:40:9:42:41 | foreach (... ... in ...) ... | LoopUnrolling.cs:36:10:36:11 | M5 |
@@ -4085,16 +4064,8 @@ blockEnclosing
 | LoopUnrolling.cs:67:10:67:11 | exit M8 | LoopUnrolling.cs:67:10:67:11 | M8 |
 | LoopUnrolling.cs:70:13:70:19 | return ...; | LoopUnrolling.cs:67:10:67:11 | M8 |
 | LoopUnrolling.cs:71:9:71:21 | ...; | LoopUnrolling.cs:67:10:67:11 | M8 |
-| LoopUnrolling.cs:72:9:73:35 | foreach (... ... in ...) ... | LoopUnrolling.cs:67:10:67:11 | M8 |
-| LoopUnrolling.cs:72:22:72:24 | String arg | LoopUnrolling.cs:67:10:67:11 | M8 |
 | LoopUnrolling.cs:76:10:76:11 | enter M9 | LoopUnrolling.cs:76:10:76:11 | M9 |
-| LoopUnrolling.cs:76:10:76:11 | exit M9 | LoopUnrolling.cs:76:10:76:11 | M9 |
-| LoopUnrolling.cs:79:9:82:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:76:10:76:11 | M9 |
-| LoopUnrolling.cs:79:22:79:22 | String x | LoopUnrolling.cs:76:10:76:11 | M9 |
 | LoopUnrolling.cs:85:10:85:12 | enter M10 | LoopUnrolling.cs:85:10:85:12 | M10 |
-| LoopUnrolling.cs:85:10:85:12 | exit M10 | LoopUnrolling.cs:85:10:85:12 | M10 |
-| LoopUnrolling.cs:88:9:91:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:85:10:85:12 | M10 |
-| LoopUnrolling.cs:88:22:88:22 | String x | LoopUnrolling.cs:85:10:85:12 | M10 |
 | LoopUnrolling.cs:94:10:94:12 | enter M11 | LoopUnrolling.cs:94:10:94:12 | M11 |
 | LoopUnrolling.cs:94:10:94:12 | exit M11 | LoopUnrolling.cs:94:10:94:12 | M11 |
 | LoopUnrolling.cs:97:22:97:22 | String x | LoopUnrolling.cs:94:10:94:12 | M11 |

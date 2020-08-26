@@ -434,8 +434,6 @@ conditionBlock
 | LoopUnrolling.cs:24:9:26:40 | foreach (... ... in ...) ... | LoopUnrolling.cs:24:22:24:24 | Char arg | false |
 | LoopUnrolling.cs:24:9:26:40 | foreach (... ... in ...) ... | LoopUnrolling.cs:25:26:25:29 | Char arg0 | false |
 | LoopUnrolling.cs:24:22:24:24 | Char arg | LoopUnrolling.cs:25:26:25:29 | Char arg0 | false |
-| LoopUnrolling.cs:32:9:33:33 | foreach (... ... in ...) ... | LoopUnrolling.cs:29:10:29:11 | exit M4 | true |
-| LoopUnrolling.cs:32:9:33:33 | foreach (... ... in ...) ... | LoopUnrolling.cs:32:22:32:22 | String x | false |
 | LoopUnrolling.cs:36:10:36:11 | enter M5 | LoopUnrolling.cs:36:10:36:11 | exit M5 | false |
 | LoopUnrolling.cs:36:10:36:11 | enter M5 | LoopUnrolling.cs:40:9:42:41 | foreach (... ... in ...) ... | false |
 | LoopUnrolling.cs:36:10:36:11 | enter M5 | LoopUnrolling.cs:40:22:40:22 | String x | false |
@@ -454,13 +452,6 @@ conditionBlock
 | LoopUnrolling.cs:62:13:63:37 | [b (line 55): false] if (...) ... | LoopUnrolling.cs:58:22:58:22 | [b (line 55): false] String x | false |
 | LoopUnrolling.cs:67:10:67:11 | enter M8 | LoopUnrolling.cs:70:13:70:19 | return ...; | false |
 | LoopUnrolling.cs:67:10:67:11 | enter M8 | LoopUnrolling.cs:71:9:71:21 | ...; | true |
-| LoopUnrolling.cs:67:10:67:11 | enter M8 | LoopUnrolling.cs:72:9:73:35 | foreach (... ... in ...) ... | true |
-| LoopUnrolling.cs:67:10:67:11 | enter M8 | LoopUnrolling.cs:72:22:72:24 | String arg | true |
-| LoopUnrolling.cs:72:9:73:35 | foreach (... ... in ...) ... | LoopUnrolling.cs:72:22:72:24 | String arg | false |
-| LoopUnrolling.cs:79:9:82:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:76:10:76:11 | exit M9 | true |
-| LoopUnrolling.cs:79:9:82:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:79:22:79:22 | String x | false |
-| LoopUnrolling.cs:88:9:91:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:85:10:85:12 | exit M10 | true |
-| LoopUnrolling.cs:88:9:91:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:88:22:88:22 | String x | false |
 | LoopUnrolling.cs:94:10:94:12 | enter M11 | LoopUnrolling.cs:94:10:94:12 | exit M11 | false |
 | LoopUnrolling.cs:94:10:94:12 | enter M11 | LoopUnrolling.cs:97:22:97:22 | String x | false |
 | LoopUnrolling.cs:97:22:97:22 | String x | LoopUnrolling.cs:94:10:94:12 | exit M11 | true |

@@ -29,7 +29,7 @@ class LoopUnrolling
     void M4()
     {
         var xs = new string[0];
-        foreach (var x in xs) // skip [MISSING]
+        foreach (var x in xs) // skip
             Console.WriteLine(x);
     }
 
@@ -69,14 +69,14 @@ class LoopUnrolling
         if (!args.Any())
             return;
         args.Clear();
-        foreach (var arg in args) // skip [MISSING]
+        foreach (var arg in args) // skip
             Console.WriteLine(arg);
     }
 
     void M9()
     {
         var xs = new string[2, 0];
-        foreach (var x in xs) //skip [MISSING]
+        foreach (var x in xs) //skip
         {
             Console.WriteLine(x);
         }
@@ -85,7 +85,7 @@ class LoopUnrolling
     void M10()
     {
         var xs = new string[0, 2];
-        foreach (var x in xs) // skip [MISSING]
+        foreach (var x in xs) // skip
         {
             Console.WriteLine(x);
         }

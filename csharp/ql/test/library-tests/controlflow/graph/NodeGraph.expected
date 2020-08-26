@@ -2153,13 +2153,8 @@
 | LoopUnrolling.cs:31:13:31:30 | String[] xs = ... | LoopUnrolling.cs:32:27:32:28 | access to local variable xs | semmle.label | successor |
 | LoopUnrolling.cs:31:18:31:30 | array creation of type String[] | LoopUnrolling.cs:31:13:31:30 | String[] xs = ... | semmle.label | successor |
 | LoopUnrolling.cs:31:29:31:29 | 0 | LoopUnrolling.cs:31:18:31:30 | array creation of type String[] | semmle.label | successor |
-| LoopUnrolling.cs:32:9:33:33 | foreach (... ... in ...) ... | LoopUnrolling.cs:29:10:29:11 | exit M4 | semmle.label | empty |
-| LoopUnrolling.cs:32:9:33:33 | foreach (... ... in ...) ... | LoopUnrolling.cs:32:22:32:22 | String x | semmle.label | non-empty |
-| LoopUnrolling.cs:32:22:32:22 | String x | LoopUnrolling.cs:33:13:33:33 | ...; | semmle.label | successor |
-| LoopUnrolling.cs:32:27:32:28 | access to local variable xs | LoopUnrolling.cs:32:9:33:33 | foreach (... ... in ...) ... | semmle.label | successor |
-| LoopUnrolling.cs:33:13:33:32 | call to method WriteLine | LoopUnrolling.cs:32:9:33:33 | foreach (... ... in ...) ... | semmle.label | successor |
-| LoopUnrolling.cs:33:13:33:33 | ...; | LoopUnrolling.cs:33:31:33:31 | access to local variable x | semmle.label | successor |
-| LoopUnrolling.cs:33:31:33:31 | access to local variable x | LoopUnrolling.cs:33:13:33:32 | call to method WriteLine | semmle.label | successor |
+| LoopUnrolling.cs:32:9:33:33 | [skip (line 32)] foreach (... ... in ...) ... | LoopUnrolling.cs:29:10:29:11 | exit M4 | semmle.label | empty |
+| LoopUnrolling.cs:32:27:32:28 | access to local variable xs | LoopUnrolling.cs:32:9:33:33 | [skip (line 32)] foreach (... ... in ...) ... | semmle.label | successor |
 | LoopUnrolling.cs:36:10:36:11 | enter M5 | LoopUnrolling.cs:37:5:43:5 | {...} | semmle.label | successor |
 | LoopUnrolling.cs:37:5:43:5 | {...} | LoopUnrolling.cs:38:9:38:48 | ... ...; | semmle.label | successor |
 | LoopUnrolling.cs:38:9:38:48 | ... ...; | LoopUnrolling.cs:38:18:38:47 | array creation of type String[] | semmle.label | successor |
@@ -2258,13 +2253,8 @@
 | LoopUnrolling.cs:71:9:71:12 | access to parameter args | LoopUnrolling.cs:71:9:71:20 | call to method Clear | semmle.label | successor |
 | LoopUnrolling.cs:71:9:71:20 | call to method Clear | LoopUnrolling.cs:72:29:72:32 | access to parameter args | semmle.label | successor |
 | LoopUnrolling.cs:71:9:71:21 | ...; | LoopUnrolling.cs:71:9:71:12 | access to parameter args | semmle.label | successor |
-| LoopUnrolling.cs:72:9:73:35 | foreach (... ... in ...) ... | LoopUnrolling.cs:67:10:67:11 | exit M8 | semmle.label | empty |
-| LoopUnrolling.cs:72:9:73:35 | foreach (... ... in ...) ... | LoopUnrolling.cs:72:22:72:24 | String arg | semmle.label | non-empty |
-| LoopUnrolling.cs:72:22:72:24 | String arg | LoopUnrolling.cs:73:13:73:35 | ...; | semmle.label | successor |
-| LoopUnrolling.cs:72:29:72:32 | access to parameter args | LoopUnrolling.cs:72:9:73:35 | foreach (... ... in ...) ... | semmle.label | successor |
-| LoopUnrolling.cs:73:13:73:34 | call to method WriteLine | LoopUnrolling.cs:72:9:73:35 | foreach (... ... in ...) ... | semmle.label | successor |
-| LoopUnrolling.cs:73:13:73:35 | ...; | LoopUnrolling.cs:73:31:73:33 | access to local variable arg | semmle.label | successor |
-| LoopUnrolling.cs:73:31:73:33 | access to local variable arg | LoopUnrolling.cs:73:13:73:34 | call to method WriteLine | semmle.label | successor |
+| LoopUnrolling.cs:72:9:73:35 | [skip (line 72)] foreach (... ... in ...) ... | LoopUnrolling.cs:67:10:67:11 | exit M8 | semmle.label | empty |
+| LoopUnrolling.cs:72:29:72:32 | access to parameter args | LoopUnrolling.cs:72:9:73:35 | [skip (line 72)] foreach (... ... in ...) ... | semmle.label | successor |
 | LoopUnrolling.cs:76:10:76:11 | enter M9 | LoopUnrolling.cs:77:5:83:5 | {...} | semmle.label | successor |
 | LoopUnrolling.cs:77:5:83:5 | {...} | LoopUnrolling.cs:78:9:78:34 | ... ...; | semmle.label | successor |
 | LoopUnrolling.cs:78:9:78:34 | ... ...; | LoopUnrolling.cs:78:29:78:29 | 2 | semmle.label | successor |
@@ -2272,14 +2262,8 @@
 | LoopUnrolling.cs:78:18:78:33 | array creation of type String[,] | LoopUnrolling.cs:78:13:78:33 | String[,] xs = ... | semmle.label | successor |
 | LoopUnrolling.cs:78:29:78:29 | 2 | LoopUnrolling.cs:78:32:78:32 | 0 | semmle.label | successor |
 | LoopUnrolling.cs:78:32:78:32 | 0 | LoopUnrolling.cs:78:18:78:33 | array creation of type String[,] | semmle.label | successor |
-| LoopUnrolling.cs:79:9:82:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:76:10:76:11 | exit M9 | semmle.label | empty |
-| LoopUnrolling.cs:79:9:82:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:79:22:79:22 | String x | semmle.label | non-empty |
-| LoopUnrolling.cs:79:22:79:22 | String x | LoopUnrolling.cs:80:9:82:9 | {...} | semmle.label | successor |
-| LoopUnrolling.cs:79:27:79:28 | access to local variable xs | LoopUnrolling.cs:79:9:82:9 | foreach (... ... in ...) ... | semmle.label | successor |
-| LoopUnrolling.cs:80:9:82:9 | {...} | LoopUnrolling.cs:81:13:81:33 | ...; | semmle.label | successor |
-| LoopUnrolling.cs:81:13:81:32 | call to method WriteLine | LoopUnrolling.cs:79:9:82:9 | foreach (... ... in ...) ... | semmle.label | successor |
-| LoopUnrolling.cs:81:13:81:33 | ...; | LoopUnrolling.cs:81:31:81:31 | access to local variable x | semmle.label | successor |
-| LoopUnrolling.cs:81:31:81:31 | access to local variable x | LoopUnrolling.cs:81:13:81:32 | call to method WriteLine | semmle.label | successor |
+| LoopUnrolling.cs:79:9:82:9 | [skip (line 79)] foreach (... ... in ...) ... | LoopUnrolling.cs:76:10:76:11 | exit M9 | semmle.label | empty |
+| LoopUnrolling.cs:79:27:79:28 | access to local variable xs | LoopUnrolling.cs:79:9:82:9 | [skip (line 79)] foreach (... ... in ...) ... | semmle.label | successor |
 | LoopUnrolling.cs:85:10:85:12 | enter M10 | LoopUnrolling.cs:86:5:92:5 | {...} | semmle.label | successor |
 | LoopUnrolling.cs:86:5:92:5 | {...} | LoopUnrolling.cs:87:9:87:34 | ... ...; | semmle.label | successor |
 | LoopUnrolling.cs:87:9:87:34 | ... ...; | LoopUnrolling.cs:87:29:87:29 | 0 | semmle.label | successor |
@@ -2287,14 +2271,8 @@
 | LoopUnrolling.cs:87:18:87:33 | array creation of type String[,] | LoopUnrolling.cs:87:13:87:33 | String[,] xs = ... | semmle.label | successor |
 | LoopUnrolling.cs:87:29:87:29 | 0 | LoopUnrolling.cs:87:32:87:32 | 2 | semmle.label | successor |
 | LoopUnrolling.cs:87:32:87:32 | 2 | LoopUnrolling.cs:87:18:87:33 | array creation of type String[,] | semmle.label | successor |
-| LoopUnrolling.cs:88:9:91:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:85:10:85:12 | exit M10 | semmle.label | empty |
-| LoopUnrolling.cs:88:9:91:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:88:22:88:22 | String x | semmle.label | non-empty |
-| LoopUnrolling.cs:88:22:88:22 | String x | LoopUnrolling.cs:89:9:91:9 | {...} | semmle.label | successor |
-| LoopUnrolling.cs:88:27:88:28 | access to local variable xs | LoopUnrolling.cs:88:9:91:9 | foreach (... ... in ...) ... | semmle.label | successor |
-| LoopUnrolling.cs:89:9:91:9 | {...} | LoopUnrolling.cs:90:13:90:33 | ...; | semmle.label | successor |
-| LoopUnrolling.cs:90:13:90:32 | call to method WriteLine | LoopUnrolling.cs:88:9:91:9 | foreach (... ... in ...) ... | semmle.label | successor |
-| LoopUnrolling.cs:90:13:90:33 | ...; | LoopUnrolling.cs:90:31:90:31 | access to local variable x | semmle.label | successor |
-| LoopUnrolling.cs:90:31:90:31 | access to local variable x | LoopUnrolling.cs:90:13:90:32 | call to method WriteLine | semmle.label | successor |
+| LoopUnrolling.cs:88:9:91:9 | [skip (line 88)] foreach (... ... in ...) ... | LoopUnrolling.cs:85:10:85:12 | exit M10 | semmle.label | empty |
+| LoopUnrolling.cs:88:27:88:28 | access to local variable xs | LoopUnrolling.cs:88:9:91:9 | [skip (line 88)] foreach (... ... in ...) ... | semmle.label | successor |
 | LoopUnrolling.cs:94:10:94:12 | enter M11 | LoopUnrolling.cs:95:5:101:5 | {...} | semmle.label | successor |
 | LoopUnrolling.cs:95:5:101:5 | {...} | LoopUnrolling.cs:96:9:96:34 | ... ...; | semmle.label | successor |
 | LoopUnrolling.cs:96:9:96:34 | ... ...; | LoopUnrolling.cs:96:29:96:29 | 2 | semmle.label | successor |
