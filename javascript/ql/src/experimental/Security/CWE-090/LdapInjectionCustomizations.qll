@@ -16,7 +16,24 @@ module LdapInjection {
   /**
    * A data flow sink for LDAP injection vulnerabilities.
    */
-  abstract class Sink extends DataFlow::Node { }
+  abstract class Sink extends DataFlow::Node {
+    DataFlow::Node getQueryCall() {
+      exists(DataFlow::CallNode call |
+        result = call.getCalleeNode() and
+        call = any(LdapClient client).getAMemberCall(getLdapjsClientDNMethodName())
+      |
+        this =
+          call
+              .getArgument(1)
+              .getALocalSource()
+              .(DataFlow::SourceNode)
+              .getAPropertyWrite("filter")
+              .getRhs()
+        or
+        this = call.getArgument(0)
+      )
+    }
+  }
 
   /**
    * A sanitizer for LDAP injection vulnerabilities.
