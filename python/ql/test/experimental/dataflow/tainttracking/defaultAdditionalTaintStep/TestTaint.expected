@@ -35,8 +35,8 @@
 | collections.py:103 | fail | test_defaultdict | tainted_default_dict.copy() |
 | collections.py:106 | fail | test_defaultdict | v |
 | collections.py:108 | fail | test_defaultdict | v |
-| json.py:26 | fail | test | json.dumps(..) |
-| json.py:27 | fail | test | json.loads(..) |
+| json.py:26 | ok   | test | json.dumps(..) |
+| json.py:27 | ok   | test | json.loads(..) |
 | json.py:34 | fail | test | tainted_filelike |
 | json.py:35 | fail | test | json.load(..) |
 | json.py:48 | fail | non_syntacical | dumps(..) |

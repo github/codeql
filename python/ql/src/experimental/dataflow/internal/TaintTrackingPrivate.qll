@@ -30,6 +30,8 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   subscriptStep(nodeFrom, nodeTo)
   or
   stringManipulation(nodeFrom, nodeTo)
+  or
+  jsonStep(nodeFrom, nodeTo)
 }
 
 /**
@@ -122,4 +124,14 @@ predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeT
   // TODO: Handle encode/decode from base64/quopri
   // TODO: Handle os.path.join
   // TODO: Handle functions in https://docs.python.org/3/library/binascii.html
+}
+
+/**
+ * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to JSON encoding/decoding.
+ */
+predicate jsonStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
+  exists(CallNode call | call = nodeTo.getNode() |
+    call.getFunction().(AttrNode).getObject(["load", "loads", "dumps"]).(NameNode).getId() = "json" and
+    call.getArg(0) = nodeFrom.getNode()
+  )
 }
