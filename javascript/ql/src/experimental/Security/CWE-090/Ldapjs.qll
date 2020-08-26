@@ -47,7 +47,7 @@ module Ldapjs {
   class LdapjsSearchFilter extends DataFlow::Node {
     LdapjsSearchFilter() {
       this =
-        any(LdapjsSearchOptions options).(DataFlow::SourceNode).getAPropertyWrite("filter").getRhs()
+        any(LdapjsSearchOptions options).getAPropertyWrite("filter").getRhs()
     }
   }
 
