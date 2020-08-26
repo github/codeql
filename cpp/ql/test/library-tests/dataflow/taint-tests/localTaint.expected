@@ -2244,8 +2244,12 @@
 | vector.cpp:221:2:221:3 | ref arg v1 | vector.cpp:233:13:233:14 | v1 |  |
 | vector.cpp:221:2:221:3 | ref arg v1 | vector.cpp:233:25:233:26 | v1 |  |
 | vector.cpp:221:2:221:3 | ref arg v1 | vector.cpp:247:1:247:1 | v1 |  |
+| vector.cpp:221:12:221:14 | 100 | vector.cpp:221:2:221:3 | ref arg v1 | TAINT |
+| vector.cpp:221:17:221:17 | 0 | vector.cpp:221:2:221:3 | ref arg v1 | TAINT |
 | vector.cpp:222:2:222:3 | ref arg v2 | vector.cpp:226:7:226:8 | v2 |  |
 | vector.cpp:222:2:222:3 | ref arg v2 | vector.cpp:247:1:247:1 | v2 |  |
+| vector.cpp:222:12:222:14 | 100 | vector.cpp:222:2:222:3 | ref arg v2 | TAINT |
+| vector.cpp:222:17:222:30 | call to source | vector.cpp:222:2:222:3 | ref arg v2 | TAINT |
 | vector.cpp:223:2:223:3 | ref arg v3 | vector.cpp:227:7:227:8 | v3 |  |
 | vector.cpp:223:2:223:3 | ref arg v3 | vector.cpp:234:13:234:14 | v3 |  |
 | vector.cpp:223:2:223:3 | ref arg v3 | vector.cpp:234:25:234:26 | v3 |  |

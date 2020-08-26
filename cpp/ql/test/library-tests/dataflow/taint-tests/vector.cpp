@@ -223,7 +223,7 @@ void test_vector_assign() {
 	v3.push_back(source());
 
 	sink(v1);
-	sink(v2); // tainted [NOT DETECTED]
+	sink(v2); // tainted
 	sink(v3); // tainted
 
 	{

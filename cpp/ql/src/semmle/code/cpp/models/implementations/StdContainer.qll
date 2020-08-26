@@ -89,6 +89,32 @@ class StdSequenceContainerFrontBack extends TaintFunction {
 }
 
 /**
+ * The standard container function `assign`.
+ */
+class StdSequenceContainerAssign extends TaintFunction {
+  StdSequenceContainerAssign() {
+    this.hasQualifiedName("std", ["vector", "deque", "list", "forward_list"], "assign")
+  }
+
+  /**
+   * Gets the index of a parameter to this function that is a reference to the
+   * value type of the container.
+   */
+  int getAValueTypeParameterIndex() {
+    getParameter(result).getUnspecifiedType() = getDeclaringType().getTemplateArgument(0) // i.e. the `T` of this `std::vector<T>`
+    or
+    getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
+      getDeclaringType().getTemplateArgument(0)
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from parameter to string itself (qualifier) and return value
+    input.isParameterDeref(getAValueTypeParameterIndex()) and
+    output.isQualifierObject()
+  }
+}
+
+/**
  * The standard container `swap` functions.
  */
 class StdSequenceContainerSwap extends TaintFunction {
