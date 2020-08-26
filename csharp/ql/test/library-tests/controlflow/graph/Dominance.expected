@@ -2045,11 +2045,12 @@ dominance
 | LoopUnrolling.cs:78:18:78:33 | array creation of type String[,] | LoopUnrolling.cs:78:13:78:33 | String[,] xs = ... |
 | LoopUnrolling.cs:78:29:78:29 | 2 | LoopUnrolling.cs:78:32:78:32 | 0 |
 | LoopUnrolling.cs:78:32:78:32 | 0 | LoopUnrolling.cs:78:18:78:33 | array creation of type String[,] |
+| LoopUnrolling.cs:79:9:85:9 | [unroll (line 79)] foreach (... ... in ...) ... | LoopUnrolling.cs:79:22:79:22 | String x |
 | LoopUnrolling.cs:79:9:85:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:76:10:76:11 | exit M9 |
-| LoopUnrolling.cs:79:9:85:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:79:22:79:22 | String x |
 | LoopUnrolling.cs:79:22:79:22 | String x | LoopUnrolling.cs:80:9:85:9 | {...} |
-| LoopUnrolling.cs:79:27:79:28 | access to local variable xs | LoopUnrolling.cs:79:9:85:9 | foreach (... ... in ...) ... |
+| LoopUnrolling.cs:79:27:79:28 | access to local variable xs | LoopUnrolling.cs:79:9:85:9 | [unroll (line 79)] foreach (... ... in ...) ... |
 | LoopUnrolling.cs:80:9:85:9 | {...} | LoopUnrolling.cs:81:31:81:31 | access to local variable x |
+| LoopUnrolling.cs:81:13:84:13 | foreach (... ... in ...) ... | LoopUnrolling.cs:79:9:85:9 | foreach (... ... in ...) ... |
 | LoopUnrolling.cs:81:13:84:13 | foreach (... ... in ...) ... | LoopUnrolling.cs:81:26:81:26 | Char y |
 | LoopUnrolling.cs:81:26:81:26 | Char y | LoopUnrolling.cs:82:13:84:13 | {...} |
 | LoopUnrolling.cs:81:31:81:31 | access to local variable x | LoopUnrolling.cs:81:13:84:13 | foreach (... ... in ...) ... |
@@ -5130,8 +5131,9 @@ postDominance
 | LoopUnrolling.cs:78:18:78:33 | array creation of type String[,] | LoopUnrolling.cs:78:32:78:32 | 0 |
 | LoopUnrolling.cs:78:29:78:29 | 2 | LoopUnrolling.cs:78:9:78:34 | ... ...; |
 | LoopUnrolling.cs:78:32:78:32 | 0 | LoopUnrolling.cs:78:29:78:29 | 2 |
-| LoopUnrolling.cs:79:9:85:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:79:27:79:28 | access to local variable xs |
+| LoopUnrolling.cs:79:9:85:9 | [unroll (line 79)] foreach (... ... in ...) ... | LoopUnrolling.cs:79:27:79:28 | access to local variable xs |
 | LoopUnrolling.cs:79:9:85:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:81:13:84:13 | foreach (... ... in ...) ... |
+| LoopUnrolling.cs:79:22:79:22 | String x | LoopUnrolling.cs:79:9:85:9 | [unroll (line 79)] foreach (... ... in ...) ... |
 | LoopUnrolling.cs:79:27:79:28 | access to local variable xs | LoopUnrolling.cs:78:13:78:33 | String[,] xs = ... |
 | LoopUnrolling.cs:80:9:85:9 | {...} | LoopUnrolling.cs:79:22:79:22 | String x |
 | LoopUnrolling.cs:81:13:84:13 | foreach (... ... in ...) ... | LoopUnrolling.cs:81:31:81:31 | access to local variable x |
@@ -7505,12 +7507,13 @@ blockDominance
 | LoopUnrolling.cs:76:10:76:11 | exit M9 | LoopUnrolling.cs:76:10:76:11 | exit M9 |
 | LoopUnrolling.cs:79:9:85:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:76:10:76:11 | exit M9 |
 | LoopUnrolling.cs:79:9:85:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:79:9:85:9 | foreach (... ... in ...) ... |
-| LoopUnrolling.cs:79:9:85:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:79:22:79:22 | String x |
-| LoopUnrolling.cs:79:9:85:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:81:13:84:13 | foreach (... ... in ...) ... |
-| LoopUnrolling.cs:79:9:85:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:81:26:81:26 | Char y |
+| LoopUnrolling.cs:79:22:79:22 | String x | LoopUnrolling.cs:76:10:76:11 | exit M9 |
+| LoopUnrolling.cs:79:22:79:22 | String x | LoopUnrolling.cs:79:9:85:9 | foreach (... ... in ...) ... |
 | LoopUnrolling.cs:79:22:79:22 | String x | LoopUnrolling.cs:79:22:79:22 | String x |
 | LoopUnrolling.cs:79:22:79:22 | String x | LoopUnrolling.cs:81:13:84:13 | foreach (... ... in ...) ... |
 | LoopUnrolling.cs:79:22:79:22 | String x | LoopUnrolling.cs:81:26:81:26 | Char y |
+| LoopUnrolling.cs:81:13:84:13 | foreach (... ... in ...) ... | LoopUnrolling.cs:76:10:76:11 | exit M9 |
+| LoopUnrolling.cs:81:13:84:13 | foreach (... ... in ...) ... | LoopUnrolling.cs:79:9:85:9 | foreach (... ... in ...) ... |
 | LoopUnrolling.cs:81:13:84:13 | foreach (... ... in ...) ... | LoopUnrolling.cs:81:13:84:13 | foreach (... ... in ...) ... |
 | LoopUnrolling.cs:81:13:84:13 | foreach (... ... in ...) ... | LoopUnrolling.cs:81:26:81:26 | Char y |
 | LoopUnrolling.cs:81:26:81:26 | Char y | LoopUnrolling.cs:81:26:81:26 | Char y |
@@ -9387,7 +9390,9 @@ postBlockDominance
 | LoopUnrolling.cs:79:9:85:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:79:22:79:22 | String x |
 | LoopUnrolling.cs:79:9:85:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:81:13:84:13 | foreach (... ... in ...) ... |
 | LoopUnrolling.cs:79:9:85:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:81:26:81:26 | Char y |
+| LoopUnrolling.cs:79:22:79:22 | String x | LoopUnrolling.cs:76:10:76:11 | enter M9 |
 | LoopUnrolling.cs:79:22:79:22 | String x | LoopUnrolling.cs:79:22:79:22 | String x |
+| LoopUnrolling.cs:81:13:84:13 | foreach (... ... in ...) ... | LoopUnrolling.cs:76:10:76:11 | enter M9 |
 | LoopUnrolling.cs:81:13:84:13 | foreach (... ... in ...) ... | LoopUnrolling.cs:79:22:79:22 | String x |
 | LoopUnrolling.cs:81:13:84:13 | foreach (... ... in ...) ... | LoopUnrolling.cs:81:13:84:13 | foreach (... ... in ...) ... |
 | LoopUnrolling.cs:81:13:84:13 | foreach (... ... in ...) ... | LoopUnrolling.cs:81:26:81:26 | Char y |

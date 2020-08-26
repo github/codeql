@@ -76,7 +76,7 @@ class LoopUnrolling
     void M9()
     {
         var xs = new string[2, 0];
-        foreach (var x in xs) // unroll [MISSING]
+        foreach (var x in xs) // unroll
         {
             foreach (var y in x) // no unroll
             {

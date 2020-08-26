@@ -1666,7 +1666,7 @@ module Internal {
 
       cached
       predicate emptyValue(Expr e) {
-        e.(ArrayCreation).getALengthArgument().getValue().toInt() = 0
+        e.(ArrayCreation).getLengthArgument(0).getValue().toInt() = 0
         or
         e.(ArrayInitializer).hasNoElements()
         or
@@ -1687,9 +1687,7 @@ module Internal {
 
       cached
       predicate nonEmptyValue(Expr e) {
-        forex(Expr length | length = e.(ArrayCreation).getALengthArgument() |
-          length.getValue().toInt() != 0
-        )
+        e.(ArrayCreation).getLengthArgument(0).getValue().toInt() > 0
         or
         e.(ArrayInitializer).getNumberOfElements() > 0
         or
