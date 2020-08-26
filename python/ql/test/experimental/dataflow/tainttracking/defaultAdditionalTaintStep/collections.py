@@ -117,6 +117,46 @@ def test_defaultdict(key, x): # TODO: defaultdict currently not handled
         ensure_tainted(v)
 
 
+def list_clear():
+    tainted_string = TAINTED_STRING
+    tainted_list = [tainted_string]
+
+    ensure_tainted(tainted_list)
+
+    tainted_list.clear()
+    ensure_not_tainted(tainted_list)
+
+
+def list_index_assign():
+    tainted_string = TAINTED_STRING
+    my_list = ["safe"]
+
+    ensure_not_tainted(my_list)
+
+    my_list[0] = tainted_string
+    ensure_tainted(my_list)
+
+
+def list_index_aug_assign():
+    tainted_string = TAINTED_STRING
+    my_list = ["safe"]
+
+    ensure_not_tainted(my_list)
+
+    my_list[0] += tainted_string
+    ensure_tainted(my_list)
+
+
+def list_append():
+    tainted_string = TAINTED_STRING
+    my_list = ["safe"]
+
+    ensure_not_tainted(my_list)
+
+    my_list.append(tainted_string)
+    ensure_tainted(my_list)
+
+
 # Make tests runable
 
 test_construction()

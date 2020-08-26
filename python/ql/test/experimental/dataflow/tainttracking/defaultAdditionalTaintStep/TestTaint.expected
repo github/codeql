@@ -43,6 +43,14 @@
 | collections.py:112 | fail | test_defaultdict | tainted_default_dict.copy() |
 | collections.py:115 | fail | test_defaultdict | v |
 | collections.py:117 | fail | test_defaultdict | v |
+| collections.py:124 | ok   | list_clear | tainted_list |
+| collections.py:127 | fail | list_clear | tainted_list |
+| collections.py:134 | ok   | list_index_assign | my_list |
+| collections.py:137 | fail | list_index_assign | my_list |
+| collections.py:144 | ok   | list_index_aug_assign | my_list |
+| collections.py:147 | fail | list_index_aug_assign | my_list |
+| collections.py:154 | ok   | list_append | my_list |
+| collections.py:157 | fail | list_append | my_list |
 | json.py:26 | ok   | test | json.dumps(..) |
 | json.py:27 | ok   | test | json.loads(..) |
 | json.py:34 | fail | test | tainted_filelike |
