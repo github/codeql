@@ -20,7 +20,7 @@ A good practice is to escape filter characters that could change the meaning of 
 <p>In the following examples, the code accepts a `username` from the user, which it uses in a LDAP query.</p>
 
 <p>The first and the second example uses the unsanitized user input directly
-into the search filter used for the LDAP query.
+in the search filter for the LDAP query.
 A malicious user could provide special characters to change the meaning of these
 queries, and search for a completely different set of values.
 </p>
