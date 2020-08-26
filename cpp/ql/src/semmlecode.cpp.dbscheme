@@ -1856,10 +1856,7 @@ case @stmt.kind of
 // ...  34 @stmt_finally_end deprecated
 |  35 = @stmt_constexpr_if
 |  37 = @stmt_co_return
-|  38 = @stmt_range_based_for_co_await
 ;
-
-@range_based_for_stmt = @stmt_range_based_for | @stmt_range_based_for_co_await;
 
 type_vla(
     int type_id: @type ref,
