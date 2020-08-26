@@ -34,6 +34,19 @@ class StdSequenceContainerConstructor extends Constructor, TaintFunction {
 }
 
 /**
+ * The standard container function `data`.
+ */
+class StdSequenceContainerData extends TaintFunction {
+  StdSequenceContainerData() { this.hasQualifiedName("std", ["array", "vector"], "data") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from container itself (qualifier) to return value
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
+  }
+}
+
+/**
  * The standard container functions `push_back` and `push_front`.
  */
 class StdSequenceContainerPush extends TaintFunction {

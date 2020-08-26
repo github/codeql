@@ -1864,6 +1864,7 @@
 | vector.cpp:74:2:74:3 | ref arg v6 | vector.cpp:75:7:75:8 | v6 |  |
 | vector.cpp:74:2:74:3 | ref arg v6 | vector.cpp:76:7:76:8 | v6 |  |
 | vector.cpp:74:2:74:3 | ref arg v6 | vector.cpp:101:1:101:1 | v6 |  |
+| vector.cpp:74:2:74:3 | v6 | vector.cpp:74:5:74:8 | call to data | TAINT |
 | vector.cpp:74:2:74:13 | access to array [post update] | vector.cpp:74:5:74:8 | call to data [inner post update] |  |
 | vector.cpp:74:2:74:24 | ... = ... | vector.cpp:74:2:74:13 | access to array [post update] |  |
 | vector.cpp:74:5:74:8 | call to data | vector.cpp:74:2:74:13 | access to array | TAINT |
@@ -1872,6 +1873,7 @@
 | vector.cpp:75:7:75:8 | ref arg v6 | vector.cpp:76:7:76:8 | v6 |  |
 | vector.cpp:75:7:75:8 | ref arg v6 | vector.cpp:101:1:101:1 | v6 |  |
 | vector.cpp:76:7:76:8 | ref arg v6 | vector.cpp:101:1:101:1 | v6 |  |
+| vector.cpp:76:7:76:8 | v6 | vector.cpp:76:10:76:13 | call to data | TAINT |
 | vector.cpp:76:10:76:13 | call to data | vector.cpp:76:7:76:18 | access to array | TAINT |
 | vector.cpp:76:17:76:17 | 2 | vector.cpp:76:7:76:18 | access to array | TAINT |
 | vector.cpp:79:33:79:34 | v7 | vector.cpp:80:41:80:43 | v7c |  |
@@ -2317,7 +2319,9 @@
 | vector.cpp:255:7:255:8 | ref arg v1 | vector.cpp:263:1:263:1 | v1 |  |
 | vector.cpp:256:7:256:8 | ref arg v1 | vector.cpp:257:7:257:8 | v1 |  |
 | vector.cpp:256:7:256:8 | ref arg v1 | vector.cpp:263:1:263:1 | v1 |  |
+| vector.cpp:256:7:256:8 | v1 | vector.cpp:256:10:256:13 | call to data | TAINT |
 | vector.cpp:257:7:257:8 | ref arg v1 | vector.cpp:263:1:263:1 | v1 |  |
+| vector.cpp:257:7:257:8 | v1 | vector.cpp:257:10:257:13 | call to data | TAINT |
 | vector.cpp:257:10:257:13 | call to data | vector.cpp:257:7:257:18 | access to array | TAINT |
 | vector.cpp:257:17:257:17 | 2 | vector.cpp:257:7:257:18 | access to array | TAINT |
 | vector.cpp:259:2:259:13 | * ... [post update] | vector.cpp:259:7:259:10 | call to data [inner post update] |  |
@@ -2326,6 +2330,7 @@
 | vector.cpp:259:4:259:5 | ref arg v2 | vector.cpp:261:7:261:8 | v2 |  |
 | vector.cpp:259:4:259:5 | ref arg v2 | vector.cpp:262:7:262:8 | v2 |  |
 | vector.cpp:259:4:259:5 | ref arg v2 | vector.cpp:263:1:263:1 | v2 |  |
+| vector.cpp:259:4:259:5 | v2 | vector.cpp:259:7:259:10 | call to data | TAINT |
 | vector.cpp:259:7:259:10 | call to data | vector.cpp:259:2:259:13 | * ... | TAINT |
 | vector.cpp:259:17:259:30 | call to source | vector.cpp:259:2:259:32 | ... = ... |  |
 | vector.cpp:260:7:260:8 | ref arg v2 | vector.cpp:261:7:261:8 | v2 |  |
@@ -2333,6 +2338,8 @@
 | vector.cpp:260:7:260:8 | ref arg v2 | vector.cpp:263:1:263:1 | v2 |  |
 | vector.cpp:261:7:261:8 | ref arg v2 | vector.cpp:262:7:262:8 | v2 |  |
 | vector.cpp:261:7:261:8 | ref arg v2 | vector.cpp:263:1:263:1 | v2 |  |
+| vector.cpp:261:7:261:8 | v2 | vector.cpp:261:10:261:13 | call to data | TAINT |
 | vector.cpp:262:7:262:8 | ref arg v2 | vector.cpp:263:1:263:1 | v2 |  |
+| vector.cpp:262:7:262:8 | v2 | vector.cpp:262:10:262:13 | call to data | TAINT |
 | vector.cpp:262:10:262:13 | call to data | vector.cpp:262:7:262:18 | access to array | TAINT |
 | vector.cpp:262:17:262:17 | 2 | vector.cpp:262:7:262:18 | access to array | TAINT |

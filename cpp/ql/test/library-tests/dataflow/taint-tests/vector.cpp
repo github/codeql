@@ -253,8 +253,8 @@ void test_data_more() {
 
 	v1.push_back(source());
 	sink(v1); // tainted
-	sink(v1.data()); // tainted [NOT DETECTED]
-	sink(v1.data()[2]); // tainted [NOT DETECTED]
+	sink(v1.data()); // tainted
+	sink(v1.data()[2]); // tainted
 
 	*(v2.data()) = ns_int::source();
 	sink(v2); // tainted [NOT DETECTED]
