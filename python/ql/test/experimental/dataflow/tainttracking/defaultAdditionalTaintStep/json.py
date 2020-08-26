@@ -10,7 +10,6 @@ if TYPE_CHECKING:
 
 # Actual tests
 
-import json
 from io import StringIO
 
 # Workaround for Python3 not having unicode
@@ -21,6 +20,7 @@ if sys.version_info[0] == 3:
 def test():
     print("\n# test")
     ts = TAINTED_STRING
+    import json
 
     ensure_tainted(
         json.dumps(ts),
@@ -35,7 +35,30 @@ def test():
         json.load(tainted_filelike),
     )
 
+def non_syntacical():
+    print("\n# non_syntacical")
+    ts = TAINTED_STRING
+
+    # a less syntactical approach
+    from json import load, loads, dumps
+
+    dumps_alias = dumps
+
+    ensure_tainted(
+        dumps(ts),
+        dumps_alias(ts),
+        loads(dumps(ts)),
+    )
+
+    # For Python2, need to convert to unicode for StringIO to work
+    tainted_filelike = StringIO(unicode(dumps(ts)))
+
+    ensure_tainted(
+        tainted_filelike,
+        load(tainted_filelike),
+    )
 
 # Make tests runable
 
 test()
+non_syntacical()

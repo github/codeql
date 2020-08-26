@@ -39,6 +39,11 @@
 | json.py:27 | fail | test | json.loads(..) |
 | json.py:34 | fail | test | tainted_filelike |
 | json.py:35 | fail | test | json.load(..) |
+| json.py:48 | fail | non_syntacical | dumps(..) |
+| json.py:49 | fail | non_syntacical | dumps_alias(..) |
+| json.py:50 | fail | non_syntacical | loads(..) |
+| json.py:57 | fail | non_syntacical | tainted_filelike |
+| json.py:58 | fail | non_syntacical | load(..) |
 | string.py:25 | ok   | str_operations | ts |
 | string.py:26 | ok   | str_operations | BinaryExpr |
 | string.py:27 | ok   | str_operations | BinaryExpr |
