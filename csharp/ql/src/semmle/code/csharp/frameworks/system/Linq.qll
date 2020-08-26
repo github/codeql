@@ -5,6 +5,7 @@
 private import csharp as csharp
 private import semmle.code.csharp.frameworks.System as System
 
+/** Definitions relating to the `System.Linq`. */
 module SystemLinq {
   /** The `System.Linq` namespace. */
   class Namespace extends csharp::Namespace {
