@@ -35,7 +35,7 @@ module Ldapjs {
   /**
    * Gets a data flow node for the client `search` options.
    */
-  class LdapjsSearchOptions extends DataFlow::Node {
+  class LdapjsSearchOptions extends DataFlow::SourceNode {
     LdapjsSearchOptions() {
       this = any(LdapClient client).getAMemberCall("search").getArgument(1).getALocalSource()
     }
