@@ -38,6 +38,8 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   copyStep(nodeFrom, nodeTo)
   or
   forStep(nodeFrom, nodeTo)
+  or
+  unpackingAssignmentStep(nodeFrom, nodeTo)
 }
 
 /**
@@ -203,5 +205,19 @@ predicate forStep(DataFlow::CfgNode nodeFrom, DataFlow::EssaNode nodeTo) {
     for.getTarget().getAChildNode*() = defn.getDefiningNode().getNode() and
     nodeTo.getVar() = defn and
     nodeFrom.getNode().getNode() = for.getIter()
+  )
+}
+
+
+/**
+ * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to iterable unpacking.
+ * Only handles normal assignment (`x,y = calc_point()`), since `for x,y in points` is handled by `forStep`.
+ */
+predicate unpackingAssignmentStep(DataFlow::CfgNode nodeFrom, DataFlow::EssaNode nodeTo) {
+  // `a, b = myiterable` or `head, *tail = myiterable` (only Python 3)
+  exists(MultiAssignmentDefinition defn, Assign assign |
+    assign.getATarget().contains(defn.getDefiningNode().getNode()) and
+    nodeTo.getVar() = defn and
+    nodeFrom.getNode().getNode() = assign.getValue()
   )
 }
