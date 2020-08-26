@@ -185,6 +185,8 @@
 | aliasing.cpp:92:3:92:3 | w |
 | aliasing.cpp:92:5:92:5 | s |
 | aliasing.cpp:92:7:92:8 | m1 |
+| aliasing.cpp:98:3:98:3 | s |
+| aliasing.cpp:98:5:98:6 | m1 |
 | by_reference.cpp:12:5:12:5 | s |
 | by_reference.cpp:12:8:12:8 | a |
 | by_reference.cpp:16:5:16:8 | this |
