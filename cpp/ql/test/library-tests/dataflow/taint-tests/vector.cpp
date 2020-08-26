@@ -49,22 +49,22 @@ void test_element_taint(int x) {
 	sink(v1.back());
 
 	v2[0] = source();
-	sink(v2); // tainted [NOT DETECTED]
-	sink(v2[0]); // tainted [NOT DETECTED]
-	sink(v2[1]);
+	sink(v2); // tainted
+	sink(v2[0]); // tainted
+	sink(v2[1]); // [FALSE POSITIVE]
 	sink(v2[x]); // potentially tainted
 
 	v3 = v2;
-	sink(v3); // tainted [NOT DETECTED]
-	sink(v3[0]); // tainted [NOT DETECTED]
-	sink(v3[1]);
+	sink(v3); // tainted
+	sink(v3[0]); // tainted
+	sink(v3[1]); // [FALSE POSITIVE]
 	sink(v3[x]); // potentially tainted
 
 	v4[x] = source();
-	sink(v4); // tainted [NOT DETECTED]
+	sink(v4); // tainted
 	sink(v4[0]); // potentially tainted
 	sink(v4[1]); // potentially tainted
-	sink(v4[x]); // tainted [NOT DETECTED]
+	sink(v4[x]); // tainted
 
 	v5.push_back(source());
 	sink(v5); // tainted
@@ -94,10 +94,10 @@ void test_element_taint(int x) {
 	sink(v8.back());
 
 	v9.at(x) = source();
-	sink(v9); // tainted [NOT DETECTED]
+	sink(v9); // tainted
 	sink(v9.at(0)); // potentially tainted
 	sink(v9.at(1)); // potentially tainted
-	sink(v9.at(x)); // tainted [NOT DETECTED]
+	sink(v9.at(x)); // tainted
 }
 
 void test_vector_swap() {
@@ -140,4 +140,75 @@ void test_vector_clear() {
 	sink(v2); // tainted
 	sink(v3); // [FALSE POSITIVE]
 	sink(v4);
+}
+
+struct MyPair
+{
+	int a, b;
+};
+
+struct MyVectorContainer
+{
+	std::vector<int> vs;
+};
+
+void test_nested_vectors()
+{
+	{
+		int aa[10][20] = {0};
+
+		sink(aa[0][0]);
+		aa[0][0] = source();
+		sink(aa[0][0]); // tainted [IR ONLY]
+	}
+
+	{
+		std::vector<std::vector<int> > bb(30);
+
+		bb[0].push_back(0);
+		sink(bb[0][0]);
+		bb[0][0] = source();
+		sink(bb[0][0]); // tainted
+	}
+
+	{
+		std::vector<int> cc[40];
+
+		cc[0].push_back(0);
+		sink(cc[0][0]);
+		cc[0][0] = source();
+		sink(cc[0][0]); // tainted
+	}
+
+	{
+		std::vector<MyPair> dd;
+		MyPair mp = {0, 0};
+
+		dd.push_back(mp);
+		sink(dd[0].a);
+		sink(dd[0].b);
+		dd[0].a = source();
+		sink(dd[0].a); // tainted [NOT DETECTED]
+		sink(dd[0].b);
+	}
+
+	{
+		MyVectorContainer ee;
+
+		ee.vs.push_back(0);
+		sink(ee.vs[0]);
+		ee.vs[0] = source();
+		sink(ee.vs[0]); // tainted
+	}
+
+	{
+		std::vector<MyVectorContainer> ff;
+		MyVectorContainer mvc;
+
+		mvc.vs.push_back(0);
+		ff.push_back(mvc);
+		sink(ff[0].vs[0]);
+		ff[0].vs[0] = source();
+		sink(ff[0].vs[0]); // tainted [NOT DETECTED]
+	}
 }

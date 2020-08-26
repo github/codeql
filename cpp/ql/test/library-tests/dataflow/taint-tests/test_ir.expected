@@ -79,3 +79,4 @@
 | taint.cpp:465:7:465:7 | x | taint.cpp:462:6:462:11 | call to source |
 | taint.cpp:470:7:470:7 | x | taint.cpp:462:6:462:11 | call to source |
 | taint.cpp:485:7:485:10 | line | taint.cpp:480:26:480:32 | source1 |
+| vector.cpp:162:8:162:15 | access to array | vector.cpp:161:14:161:19 | call to source |
