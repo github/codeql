@@ -11,6 +11,6 @@ const server = http.createServer((req, res) => {
     let username = q.query.username;
 
     // BAD
-    client.search('o=example', { filter: `(|(name=${username}})(username=${username}))` }, function (err, res) {
+    client.search('o=example', { filter: `(|(name=${username})(username=${username}))` }, function (err, res) {
     });
 });

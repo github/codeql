@@ -12,7 +12,7 @@ const server = http.createServer((req, res) => {
 
     var opts = {
         // BAD
-        filter: `(|(name=${username}})(username=${username}))`
+        filter: `(|(name=${username})(username=${username}))`
     };
 
     client.search('o=example', opts, function (err, res) {
