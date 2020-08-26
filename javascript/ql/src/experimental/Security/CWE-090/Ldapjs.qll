@@ -49,7 +49,7 @@ module Ldapjs {
    */
   class LdapjsClientAPICall extends DataFlow::CallNode {
     LdapjsClientAPICall() {
-      this = any(LdapjsClient client).getAMemberCall(getLdapjsClientAPIMethodName())
+      this = any(LdapjsClient client).getAMemberCall(getLdapjsClientDNMethodName())
     }
   }
 
