@@ -38,8 +38,8 @@
 
 		<p>
 
-			An even safer alternative is to design the application such that sanitization isn't
-			needed at all, for instance by using prepared statements for SQL queries.
+			An even safer alternative is to design the application so that sanitization is not
+			needed, for instance by using prepared statements for SQL queries.
 
 		</p>
 

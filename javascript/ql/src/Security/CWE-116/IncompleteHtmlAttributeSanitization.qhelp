@@ -41,7 +41,7 @@
 		<p>
 
 			An even safer alternative is to design the application
-			such that sanitization isn't needed at all, for instance by using HTML
+			so that sanitization is not needed, for instance by using HTML
 			templates that are explicit about the values they treat as HTML.
 
 		</p>
