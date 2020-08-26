@@ -16,7 +16,7 @@ class StdStringCStr extends TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from string itself (qualifier) to return value
     input.isQualifierObject() and
-    output.isReturnValue()
+    output.isReturnValueDeref()
   }
 }
 
@@ -29,7 +29,7 @@ class StdStringData extends TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from string itself (qualifier) to return value
     input.isQualifierObject() and
-    output.isReturnValue()
+    output.isReturnValueDeref()
     or
     // reverse flow from returned reference to the qualifier (for writes to
     // `data`)
