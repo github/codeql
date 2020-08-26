@@ -36,6 +36,8 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   containerStep(nodeFrom, nodeTo)
   or
   copyStep(nodeFrom, nodeTo)
+  or
+  forStep(nodeFrom, nodeTo)
 }
 
 /**
@@ -188,5 +190,18 @@ predicate copyStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
       call.getFunction().(AttrNode).getObject("copy").(NameNode).getId() in ["copy", "deepcopy"]
     ) and
     call.getArg(0) = nodeFrom.getNode()
+  )
+}
+
+
+/**
+ * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to `for`-iteration,
+ * for example `for x in xs`, or `for x,y in points`.
+ */
+predicate forStep(DataFlow::CfgNode nodeFrom, DataFlow::EssaNode nodeTo) {
+  exists(EssaNodeDefinition defn, For for |
+    for.getTarget().getAChildNode*() = defn.getDefiningNode().getNode() and
+    nodeTo.getVar() = defn and
+    nodeFrom.getNode().getNode() = for.getIter()
   )
 }

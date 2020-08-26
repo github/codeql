@@ -13,8 +13,8 @@
 | unpacking.py:18 | fail | extended_unpacking | last |
 | unpacking.py:18 | fail | extended_unpacking | rest |
 | unpacking.py:23 | fail | also_allowed | a |
-| unpacking.py:31 | fail | also_allowed | b |
-| unpacking.py:31 | fail | also_allowed | c |
+| unpacking.py:31 | ok   | also_allowed | b |
+| unpacking.py:31 | ok   | also_allowed | c |
 | unpacking.py:39 | fail | nested | x |
 | unpacking.py:39 | fail | nested | xs |
 | unpacking.py:39 | fail | nested | ys |
