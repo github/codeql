@@ -393,16 +393,17 @@ func main() {
 			tryBuild("build", "./build") ||
 			tryBuild("build.sh", "./build.sh")
 
-		if !buildSucceeded {
-			if modMode == ModVendor {
-				// test if running `go` with -mod=vendor works, and if it doesn't, try to fallback to -mod=mod
-				// or not set if the go version < 1.14.
-				if !checkVendor() {
-					modMode = modModIfSupported()
-					log.Println("The vendor directory is not consistent with the go.mod; not using vendored dependencies.")
-				}
+		if modMode == ModVendor {
+			// test if running `go` with -mod=vendor works, and if it doesn't, try to fallback to -mod=mod
+			// or not set if the go version < 1.14. Note we check this post-build in case the build brings
+			// the vendor directory up to date.
+			if !checkVendor() {
+				modMode = modModIfSupported()
+				log.Println("The vendor directory is not consistent with the go.mod; not using vendored dependencies.")
 			}
+		}
 
+		if !buildSucceeded {
 			if modMode == ModVendor {
 				log.Printf("Skipping dependency installation because a Go vendor directory was found.")
 			} else {
