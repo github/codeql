@@ -72,8 +72,8 @@ void test_element_taint(int x) {
 	sink(v5.back()); // tainted
 
 	v6.data()[2] = source();
-	sink(v6); // tainted [NOT DETECTED]
-	sink(v6.data()[2]); // tainted [NOT DETECTED]
+	sink(v6); // tainted
+	sink(v6.data()[2]); // tainted
 
 	{
 		const std::vector<int> &v7c = v7; // (workaround because our iterators don't convert to const_iterator)
@@ -257,7 +257,7 @@ void test_data_more() {
 	sink(v1.data()[2]); // tainted
 
 	*(v2.data()) = ns_int::source();
-	sink(v2); // tainted [NOT DETECTED]
-	sink(v2.data()); // tainted [NOT DETECTED]
-	sink(v2.data()[2]); // tainted [NOT DETECTED]
+	sink(v2); // tainted
+	sink(v2.data()); // tainted
+	sink(v2.data()[2]); // tainted
 }

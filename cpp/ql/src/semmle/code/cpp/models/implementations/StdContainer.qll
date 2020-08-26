@@ -43,6 +43,11 @@ class StdSequenceContainerData extends TaintFunction {
     // flow from container itself (qualifier) to return value
     input.isQualifierObject() and
     output.isReturnValueDeref()
+    or
+    // reverse flow from returned reference to the qualifier (for writes to
+    // `data`)
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
   }
 }
 

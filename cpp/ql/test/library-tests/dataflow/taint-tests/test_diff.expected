@@ -153,6 +153,8 @@
 | vector.cpp:70:7:70:8 | vector.cpp:69:15:69:20 | AST only |
 | vector.cpp:71:10:71:14 | vector.cpp:69:15:69:20 | AST only |
 | vector.cpp:72:10:72:13 | vector.cpp:69:15:69:20 | AST only |
+| vector.cpp:75:7:75:8 | vector.cpp:74:17:74:22 | AST only |
+| vector.cpp:76:7:76:18 | vector.cpp:74:17:74:22 | AST only |
 | vector.cpp:97:7:97:8 | vector.cpp:96:13:96:18 | AST only |
 | vector.cpp:98:10:98:11 | vector.cpp:96:13:96:18 | AST only |
 | vector.cpp:99:10:99:11 | vector.cpp:96:13:96:18 | AST only |
@@ -177,3 +179,6 @@
 | vector.cpp:255:7:255:8 | vector.cpp:254:15:254:20 | AST only |
 | vector.cpp:256:10:256:13 | vector.cpp:254:15:254:20 | AST only |
 | vector.cpp:257:7:257:18 | vector.cpp:254:15:254:20 | AST only |
+| vector.cpp:260:7:260:8 | vector.cpp:259:17:259:30 | AST only |
+| vector.cpp:261:10:261:13 | vector.cpp:259:17:259:30 | AST only |
+| vector.cpp:262:7:262:18 | vector.cpp:259:17:259:30 | AST only |
