@@ -18,7 +18,7 @@
 | collections.py:53 | ok   | test_access | reversed(..) |
 | collections.py:54 | ok   | test_access | iter(..) |
 | collections.py:55 | ok   | test_access | next(..) |
-| collections.py:56 | fail | test_access | copy(..) |
+| collections.py:56 | ok   | test_access | copy(..) |
 | collections.py:57 | ok   | test_access | deepcopy(..) |
 | collections.py:61 | fail | test_access | a |
 | collections.py:61 | fail | test_access | b |

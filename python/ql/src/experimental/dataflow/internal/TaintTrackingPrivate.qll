@@ -34,6 +34,8 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   jsonStep(nodeFrom, nodeTo)
   or
   containerStep(nodeFrom, nodeTo)
+  or
+  copyStep(nodeFrom, nodeTo)
 }
 
 /**
@@ -170,5 +172,21 @@ predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
       "values", "items", "get", "popitem"
     ] and
     call.getFunction().(AttrNode).getObject(name) = nodeFrom.getNode()
+  )
+}
+
+
+/**
+ * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to copying.
+ */
+predicate copyStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
+  exists(CallNode call | call = nodeTo.getNode() |
+    // Fully qualified: copy.copy, copy.deepcopy
+    (
+      call.getFunction().(NameNode).getId() in ["copy", "deepcopy"]
+      or
+      call.getFunction().(AttrNode).getObject("copy").(NameNode).getId() in ["copy", "deepcopy"]
+    ) and
+    call.getArg(0) = nodeFrom.getNode()
   )
 }
