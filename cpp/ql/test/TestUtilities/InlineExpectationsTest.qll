@@ -2,6 +2,11 @@
  * Provides a library for writing QL tests whose success or failure is based on expected results
  * embedded in the test source code as comments, rather than a `.expected` file.
  *
+ * To add this framework to a new language:
+ * - Add a file `InlineExpectationsTestPrivate.qll` that defines a `LineComment` class. This class
+ *   must support a `getContents` method that returns the contents of the given comment, _excluding_
+ *   the comment indicator itself. It should also define `toString` and `getLocation` as usual.
+ *
  * To create a new inline expectations test:
  * - Declare a class that extends `InlineExpectationsTest`. In the characteristic predicate of the
  * new class, bind `this` to a unique string (usually the name of the test).
@@ -13,7 +18,7 @@
  * `hasActualResult()`. Often this is just a single tag.
  *
  * Example:
- * ```
+ * ```ql
  * class ConstantValueTest extends InlineExpectationsTest {
  *   ConstantValueTest() { this = "ConstantValueTest" }
  *
@@ -38,10 +43,10 @@
  * There is no need to write a `select` clause or query predicate. All of the differences between
  * expected results and actual results will be reported in the `failures()` query predicate.
  *
- * To annotate the test source code with an expected result, place a C++-style (`//`) comment on the
+ * To annotate the test source code with an expected result, place a comment on the
  * same line as the expected result, with text of the following format as the body of the comment:
  *
- * `// $tag=expected-value`
+ * `$tag=expected-value`
  *
  * Where `tag` is the value of the `tag` parameter from `hasActualResult()`, and `expected-value` is
  * the value of the `value` parameter from `hasActualResult()`. The `=expected-value` portion may be
@@ -53,7 +58,7 @@
  * "Missing result: tag=expected-value".
  *
  * Example:
- * ```
+ * ```cpp
  * int i = x + 5;  // $const=5
  * int j = y + (7 - 3)  // $const=7 $const=3 $const=4  // The result of the subtraction is a constant.
  * ```
@@ -62,8 +67,8 @@
  * annotate that a particular expected result is known to be a false positive, or that a particular
  * missing result is known to be a false negative:
  *
- * `// $f+:tag=expected-value`  // False positive
- * `// $f-:tag=expected-value`  // False negative
+ * `$f+:tag=expected-value`  // False positive
+ * `$f-:tag=expected-value`  // False negative
  *
  * A false positive expectation is treated as any other expected result, except that if there is no
  * matching actual result, the message will be of the form "Fixed false positive: tag=value". A
@@ -74,14 +79,14 @@
  * If the same result value is expected for two or more tags on the same line, there is a shorthand
  * notation available:
  *
- * `// $tag1,tag2=expected-value`
+ * `$tag1,tag2=expected-value`
  *
  * is equivalent to:
  *
- * `// $tag1=expected-value $tag2=expected-value`
+ * `$tag1=expected-value $tag2=expected-value`
  */
 
-import cpp
+private import InlineExpectationsTestPrivate
 
 /**
  * Base class for tests with inline expectations. The test extends this class to provide the actual
@@ -150,12 +155,12 @@ abstract class InlineExpectationsTest extends string {
 }
 
 /**
- * RegEx pattern to match a comment containing one or more expected results. The comment must be a
- * C++-style (`//`) comment with `$` as its first non-whitespace character. Any subsequent character
+ * RegEx pattern to match a comment containing one or more expected results. The comment must have
+ * `$` as its first non-whitespace character. Any subsequent character
  * is treated as part of the expected results, except that the comment may contain a `//` sequence
  * to treat the remainder of the line as a regular (non-interpreted) comment.
  */
-private string expectationCommentPattern() { result = "//\\s*(\\$(?:[^/]|/[^/])*)(?://.*)?" }
+private string expectationCommentPattern() { result = "\\s*(\\$(?:[^/]|/[^/])*)(?://.*)?" }
 
 /**
  * RegEx pattern to match a single expected result, not including the leading `$`. It starts with an
@@ -166,7 +171,7 @@ private string expectationPattern() {
   result = "(?:(f(?:\\+|-)):)?((?:[A-Za-z-_]+)(?:\\s*,\\s*[A-Za-z-_]+)*)(?:=(.*))?"
 }
 
-private string getAnExpectation(CppStyleComment comment) {
+private string getAnExpectation(LineComment comment) {
   result = comment.getContents().regexpCapture(expectationCommentPattern(), 1).splitAt("$").trim() and
   result != ""
 }
@@ -177,7 +182,7 @@ private newtype TFailureLocatable =
   ) {
     test.hasActualResult(location, element, tag, value)
   } or
-  TValidExpectation(CppStyleComment comment, string tag, string value, string knownFailure) {
+  TValidExpectation(LineComment comment, string tag, string value, string knownFailure) {
     exists(string expectation |
       expectation = getAnExpectation(comment) and
       expectation.regexpMatch(expectationPattern()) and
@@ -194,7 +199,7 @@ private newtype TFailureLocatable =
       )
     )
   } or
-  TInvalidExpectation(CppStyleComment comment, string expectation) {
+  TInvalidExpectation(LineComment comment, string expectation) {
     expectation = getAnExpectation(comment) and
     not expectation.regexpMatch(expectationPattern())
   }
@@ -232,7 +237,7 @@ class ActualResult extends FailureLocatable, TActualResult {
 }
 
 abstract private class Expectation extends FailureLocatable {
-  CppStyleComment comment;
+  LineComment comment;
 
   override string toString() { result = comment.toString() }
 
