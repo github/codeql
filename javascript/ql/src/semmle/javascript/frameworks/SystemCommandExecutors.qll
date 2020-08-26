@@ -63,18 +63,16 @@ private class SystemCommandExecutors extends SystemCommandExecution, DataFlow::I
   boolean sync;
 
   SystemCommandExecutors() {
-    exists(string mod, API::Feature callee |
+    exists(string mod |
       exists(string fn |
         execApi(mod, fn, cmdArg, optionsArg, shell) and
         sync = getSync(fn) and
-        callee = API::moduleImport(mod).getMember(fn)
+        this = API::moduleImport(mod).getMember(fn).getReturn().getAUse()
       )
       or
       execApi(mod, cmdArg, optionsArg, shell) and
       sync = false and
-      callee = API::moduleImport(mod)
-    |
-      this = callee.getReturn().getAUse()
+      this = API::moduleImport(mod).getReturn().getAUse()
     )
     or
     this = API::moduleImport("foreground-child").getReturn().getAUse() and
