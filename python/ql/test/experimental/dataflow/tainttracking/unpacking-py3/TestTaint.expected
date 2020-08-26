@@ -1,9 +1,0 @@
-| test.py:18 | fail | extended_unpacking | first |
-| test.py:18 | fail | extended_unpacking | last |
-| test.py:18 | fail | extended_unpacking | rest |
-| test.py:23 | fail | also_allowed | a |
-| test.py:31 | fail | also_allowed | b |
-| test.py:31 | fail | also_allowed | c |
-| test.py:39 | fail | nested | x |
-| test.py:39 | fail | nested | xs |
-| test.py:39 | fail | nested | ys |

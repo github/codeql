@@ -1,4 +1,0 @@
-| test.py:26 | fail | test | json.dumps(..) |
-| test.py:27 | fail | test | json.loads(..) |
-| test.py:34 | fail | test | tainted_filelike |
-| test.py:35 | fail | test | json.load(..) |
