@@ -501,7 +501,7 @@ namespace Semmle.Extraction.CIL.Entities
             unboundMethod.WriteId(trapFile);
             trapFile.Write('<');
             int index = 0;
-            foreach(var param in typeParams)
+            foreach (var param in typeParams)
             {
                 trapFile.WriteSeparator(",", ref index);
                 trapFile.WriteSubId(param);

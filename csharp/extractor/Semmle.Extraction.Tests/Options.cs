@@ -9,8 +9,8 @@ namespace Semmle.Extraction.Tests
 {
     public class OptionsTests
     {
-        CSharp.Options options;
-        CSharp.Standalone.Options standaloneOptions;
+        CSharp.Options? options;
+        CSharp.Standalone.Options? standaloneOptions;
 
         public OptionsTests()
         {

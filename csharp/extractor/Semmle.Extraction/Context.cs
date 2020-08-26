@@ -49,7 +49,7 @@ namespace Semmle.Extraction
         /// <param name="factory">The entity factory.</param>
         /// <param name="init">The initializer for the entity.</param>
         /// <returns>The new/existing entity.</returns>
-        public Entity CreateEntity<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init) where Entity : ICachedEntity where Type:struct
+        public Entity CreateEntity<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init) where Entity : ICachedEntity where Type : struct
         {
             return CreateNonNullEntity(factory, init);
         }
@@ -73,7 +73,7 @@ namespace Semmle.Extraction
         /// <returns>The new/existing entity.</returns>
         public Entity CreateEntityFromSymbol<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init)
             where Entity : ICachedEntity
-            where Type: ISymbol
+            where Type : ISymbol
         {
             return init == null ? CreateEntity2(factory, init) : CreateNonNullEntity(factory, init);
         }
@@ -500,7 +500,7 @@ namespace Semmle.Extraction
             {
                 ExtractionError(message, optionalSymbol.ToDisplayString(), Entities.Location.Create(this, optionalSymbol.Locations.FirstOrDefault()));
             }
-            else if(!(optionalEntity is null))
+            else if (!(optionalEntity is null))
             {
                 ExtractionError(message, optionalEntity.Label.ToString(), Entities.Location.Create(this, optionalEntity.ReportingLocation));
             }

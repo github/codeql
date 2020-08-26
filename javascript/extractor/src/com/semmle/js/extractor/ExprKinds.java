@@ -18,6 +18,7 @@ import com.semmle.js.ast.Literal;
 import com.semmle.js.ast.LogicalExpression;
 import com.semmle.js.ast.MemberExpression;
 import com.semmle.js.ast.MetaProperty;
+import com.semmle.js.ast.ThisExpression;
 import com.semmle.js.ast.UnaryExpression;
 import com.semmle.js.ast.UpdateExpression;
 import com.semmle.js.ast.XMLAnyName;
@@ -28,6 +29,7 @@ import com.semmle.js.ast.XMLQualifiedIdentifier;
 import com.semmle.js.ast.jsx.JSXIdentifier;
 import com.semmle.js.ast.jsx.JSXMemberExpression;
 import com.semmle.js.ast.jsx.JSXSpreadAttribute;
+import com.semmle.js.ast.jsx.JSXThisExpr;
 import com.semmle.js.extractor.ASTExtractor.IdContext;
 import com.semmle.ts.ast.DecoratorList;
 import com.semmle.ts.ast.ExpressionWithTypeArguments;
@@ -189,6 +191,11 @@ public class ExprKinds {
               @Override
               public Integer visit(JSXIdentifier nd, Void c) {
                 return visit((Identifier) nd, c);
+              }
+
+              @Override
+              public Integer visit(JSXThisExpr nd, Void c) {
+                return visit((ThisExpression) nd, c);
               }
 
               @Override

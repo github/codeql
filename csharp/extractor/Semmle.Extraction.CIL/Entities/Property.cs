@@ -38,7 +38,7 @@ namespace Semmle.Extraction.CIL.Entities
             trapFile.Write('.');
             trapFile.Write(cx.GetString(pd.Name));
             trapFile.Write("(");
-            int index=0;
+            int index = 0;
             var signature = pd.DecodeSignature(new SignatureDecoder(), gc);
             foreach (var param in signature.ParameterTypes)
             {

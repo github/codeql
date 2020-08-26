@@ -1,0 +1,73 @@
+attributes.cs:
+#   10| [Attribute] [AssemblyTitle(...)]
+#   10|   0: [StringLiteral] "C# attributes test"
+#   11| [Attribute] [AssemblyDescription(...)]
+#   11|   0: [StringLiteral] "A test of C# attributes"
+#   12| [Attribute] [AssemblyConfiguration(...)]
+#   12|   0: [StringLiteral] ""
+#   13| [Attribute] [AssemblyCompany(...)]
+#   13|   0: [StringLiteral] "Semmle Plc"
+#   14| [Attribute] [AssemblyProduct(...)]
+#   14|   0: [StringLiteral] "Odasa"
+#   15| [Attribute] [AssemblyCopyright(...)]
+#   15|   0: [StringLiteral] "Copyright � Semmle 2018"
+#   16| [Attribute] [AssemblyTrademark(...)]
+#   16|   0: [StringLiteral] ""
+#   17| [Attribute] [AssemblyCulture(...)]
+#   17|   0: [StringLiteral] ""
+#   22| [Attribute] [ComVisible(...)]
+#   22|   0: [BoolLiteral] false
+#   25| [Attribute] [Guid(...)]
+#   25|   0: [StringLiteral] "2f70fdd6-14aa-4850-b053-d547adb1f476"
+#   37| [Attribute] [AssemblyVersion(...)]
+#   37|   0: [StringLiteral] "1.0.0.0"
+#   38| [Attribute] [AssemblyFileVersion(...)]
+#   38|   0: [StringLiteral] "1.0.0.0"
+#   41| [Class] Foo
+#-----|   0: (Attributes)
+#   40|     1: [Attribute] [AttributeUsage(...)]
+#   40|       0: [MemberConstantAccess] access to constant All
+#   40|         -1: [TypeAccess] access to type AttributeTargets
+#-----|   3: (Base types)
+#   41|     0: [Class] Attribute
+#   44|   5: [Method] foo
+#-----|     0: (Attributes)
+#   43|       1: [Attribute] [Conditional(...)]
+#   43|         0: [StringLiteral] "DEBUG2"
+#   44|     4: [BlockStmt] {...}
+#   47| [Class] Bar
+#   49|   5: [Method] inc
+#-----|     2: (Parameters)
+#   49|       0: [Parameter] x
+#-----|         0: (Attributes)
+#   49|           1: [Attribute] [Foo(...)]
+#   49|     4: [BlockStmt] {...}
+#   49|       0: [ReturnStmt] return ...;
+#   49|         0: [AddExpr] ... + ...
+#   49|           0: [ParameterAccess] access to parameter x
+#   49|           1: [IntLiteral] 1
+#   52|   6: [Method] M1
+#-----|     0: (Attributes)
+#   51|       1: [Attribute] [My(...)]
+#   51|         0: [BoolLiteral] false
+#   52|     4: [BlockStmt] {...}
+#   55|   7: [Method] M2
+#-----|     0: (Attributes)
+#   54|       1: [Attribute] [My(...)]
+#   54|         0: [BoolLiteral] true
+#   54|         1: [StringLiteral] ""
+#   54|         2: [IntLiteral] 0
+#   55|     4: [BlockStmt] {...}
+#   58| [Class] MyAttribute
+#-----|   3: (Base types)
+#   58|     0: [Class] Attribute
+#   60|   4: [Field] x
+#   61|   5: [IndexerProperty] y
+#   61|     3: [Getter] get_y
+#   61|     4: [Setter] set_y
+#-----|       2: (Parameters)
+#   61|         0: [Parameter] value
+#   62|   6: [InstanceConstructor] MyAttribute
+#-----|     2: (Parameters)
+#   62|       0: [Parameter] b
+#   62|     4: [BlockStmt] {...}

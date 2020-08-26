@@ -31,7 +31,7 @@ def SINK_F(x):
 def test_tuple_with_local_flow():
     x = (NONSOURCE, SOURCE)
     y = x[1]
-    SINK(y) # Flow missing
+    SINK(y)
 
 def test_tuple_negative():
     x = (NONSOURCE, SOURCE)
@@ -72,7 +72,7 @@ def test_parenthesized_form():
 # 6.2.5. List displays
 def test_list_display():
     x = [SOURCE]
-    SINK(x[0]) # Flow missing
+    SINK(x[0])
 
 def test_list_display_negative():
     x = [SOURCE]
@@ -80,7 +80,16 @@ def test_list_display_negative():
 
 def test_list_comprehension():
     x = [SOURCE for y in [NONSOURCE]]
-    SINK(x[0]) # Flow missing
+    SINK(x[0])
+
+def test_list_comprehension_flow():
+    x = [y for y in [SOURCE]]
+    SINK(x[0])
+
+def test_list_comprehension_inflow():
+    l = [SOURCE]
+    x = [y for y in l]
+    SINK(x[0])
 
 def test_nested_list_display():
     x = [* [SOURCE]]
@@ -89,11 +98,20 @@ def test_nested_list_display():
 # 6.2.6. Set displays
 def test_set_display():
     x = {SOURCE}
-    SINK(x.pop()) # Flow missing
+    SINK(x.pop())
 
 def test_set_comprehension():
     x = {SOURCE for y in [NONSOURCE]}
-    SINK(x.pop()) # Flow missing
+    SINK(x.pop())
+
+def test_set_comprehension_flow():
+    x = {y for y in [SOURCE]}
+    SINK(x.pop())
+
+def test_set_comprehension_inflow():
+    l = {SOURCE}
+    x = {y for y in l}
+    SINK(x.pop())
 
 def test_nested_set_display():
     x = {* {SOURCE}}
@@ -102,15 +120,27 @@ def test_nested_set_display():
 # 6.2.7. Dictionary displays
 def test_dict_display():
     x = {"s": SOURCE}
-    SINK(x["s"]) # Flow missing
+    SINK(x["s"])
+
+def test_dict_display_pop():
+    x = {"s": SOURCE}
+    SINK(x.pop("s"))
 
 def test_dict_comprehension():
     x = {y: SOURCE for y in ["s"]}
     SINK(x["s"]) # Flow missing
 
+def test_dict_comprehension_pop():
+    x = {y: SOURCE for y in ["s"]}
+    SINK(x.pop("s")) # Flow missing
+
 def test_nested_dict_display():
     x = {** {"s": SOURCE}}
     SINK(x["s"]) # Flow missing
+
+def test_nested_dict_display_pop():
+    x = {** {"s": SOURCE}}
+    SINK(x.pop("s")) # Flow missing
 
 # 6.2.8. Generator expressions
 def test_generator():
@@ -219,13 +249,13 @@ def test_attribute_reference():
 
 # 6.3.2. Subscriptions
 def test_subscription_tuple():
-    SINK((SOURCE,)[0]) # Flow missing
+    SINK((SOURCE,)[0])
 
 def test_subscription_list():
-    SINK([SOURCE][0]) # Flow missing
+    SINK([SOURCE][0])
 
 def test_subscription_mapping():
-    SINK({"s":SOURCE}["s"]) # Flow missing
+    SINK({"s":SOURCE}["s"])
 
 # overriding __getitem__ should be tested by the class coverage tests
 

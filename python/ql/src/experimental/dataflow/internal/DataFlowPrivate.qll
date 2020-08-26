@@ -284,15 +284,193 @@ predicate jumpStep(Node pred, Node succ) {
 // Field flow
 //--------
 /**
- * Holds if data can flow from `node1` to `node2` via an assignment to
+ * Holds if data can flow from `nodeFrom` to `nodeTo` via an assignment to
  * content `c`.
  */
-predicate storeStep(Node node1, Content c, Node node2) { none() }
+predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
+  listStoreStep(nodeFrom, c, nodeTo)
+  or
+  setStoreStep(nodeFrom, c, nodeTo)
+  or
+  tupleStoreStep(nodeFrom, c, nodeTo)
+  or
+  dictStoreStep(nodeFrom, c, nodeTo)
+  or
+  comprehensionStoreStep(nodeFrom, c, nodeTo)
+}
+
+/** Data flows from an element of a list to the list. */
+predicate listStoreStep(CfgNode nodeFrom, ListElementContent c, CfgNode nodeTo) {
+  // List
+  //   `[..., 42, ...]`
+  //   nodeFrom is `42`, cfg node
+  //   nodeTo is the list, `[..., 42, ...]`, cfg node
+  //   c denotes element of list
+  nodeTo.getNode().(ListNode).getAnElement() = nodeFrom.getNode()
+}
+
+/** Data flows from an element of a set to the set. */
+predicate setStoreStep(CfgNode nodeFrom, ListElementContent c, CfgNode nodeTo) {
+  // Set
+  //   `{..., 42, ...}`
+  //   nodeFrom is `42`, cfg node
+  //   nodeTo is the set, `{..., 42, ...}`, cfg node
+  //   c denotes element of list
+  nodeTo.getNode().(SetNode).getAnElement() = nodeFrom.getNode()
+}
+
+/** Data flows from an element of a tuple to the tuple at a specific index. */
+predicate tupleStoreStep(CfgNode nodeFrom, TupleElementContent c, CfgNode nodeTo) {
+  // Tuple
+  //   `(..., 42, ...)`
+  //   nodeFrom is `42`, cfg node
+  //   nodeTo is the tuple, `(..., 42, ...)`, cfg node
+  //   c denotes element of tuple and index of nodeFrom
+  exists(int n |
+    nodeTo.getNode().(TupleNode).getElement(n) = nodeFrom.getNode() and
+    c.getIndex() = n
+  )
+}
+
+/** Data flows from an element of a dictionary to the dictionary at a specific key. */
+predicate dictStoreStep(CfgNode nodeFrom, DictionaryElementContent c, CfgNode nodeTo) {
+  // Dictionary
+  //   `{..., "key" = 42, ...}`
+  //   nodeFrom is `42`, cfg node
+  //   nodeTo is the dict, `{..., "key" = 42, ...}`, cfg node
+  //   c denotes element of dictionary and the key `"key"`
+  exists(KeyValuePair item |
+    item = nodeTo.getNode().(DictNode).getNode().(Dict).getAnItem() and
+    nodeFrom.getNode().getNode() = item.getValue() and
+    c.getKey() = item.getKey().(StrConst).getS()
+  )
+}
+
+/** Data flows from an element expression in a comprehension to the comprehension. */
+predicate comprehensionStoreStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
+  // Comprehension
+  //   `[x+1 for x in l]`
+  //   nodeFrom is `x+1`, cfg node
+  //   nodeTo is `[x+1 for x in l]`, cfg node
+  //   c denotes list or set or dictionary without index
+  //
+  // List
+  nodeTo.getNode().getNode().(ListComp).getElt() = nodeFrom.getNode().getNode() and
+  c instanceof ListElementContent
+  or
+  // Set
+  nodeTo.getNode().getNode().(SetComp).getElt() = nodeFrom.getNode().getNode() and
+  c instanceof SetElementContent
+  or
+  // Dictionary
+  nodeTo.getNode().getNode().(DictComp).getElt() = nodeFrom.getNode().getNode() and
+  c instanceof DictionaryElementAnyContent
+}
 
 /**
- * Holds if data can flow from `node1` to `node2` via a read of content `c`.
+ * Holds if data can flow from `nodeFrom` to `nodeTo` via a read of content `c`.
  */
-predicate readStep(Node node1, Content c, Node node2) { none() }
+predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
+  subscriptReadStep(nodeFrom, c, nodeTo)
+  or
+  popReadStep(nodeFrom, c, nodeTo)
+  or
+  comprehensionReadStep(nodeFrom, c, nodeTo)
+}
+
+/** Data flows from a sequence to a subscript of the sequence. */
+predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
+  // Subscript
+  //   `l[3]`
+  //   nodeFrom is `l`, cfg node
+  //   nodeTo is `l[3]`, cfg node
+  //   c is compatible with 3
+  nodeFrom.getNode() = nodeTo.getNode().(SubscriptNode).getObject() and
+  (
+    c instanceof ListElementContent
+    or
+    c instanceof SetElementContent
+    or
+    c instanceof DictionaryElementAnyContent
+    or
+    c.(TupleElementContent).getIndex() =
+      nodeTo.getNode().(SubscriptNode).getIndex().getNode().(IntegerLiteral).getValue()
+    or
+    c.(DictionaryElementContent).getKey() =
+      nodeTo.getNode().(SubscriptNode).getIndex().getNode().(StrConst).getS()
+  )
+}
+
+/** Data flows from a sequence to a call to `pop` on the sequence. */
+predicate popReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
+  // set.pop or list.pop
+  //   `s.pop()`
+  //   nodeFrom is `s`, cfg node
+  //   nodeTo is `s.pop()`, cfg node
+  //   c denotes element of list or set
+  exists(CallNode call, AttrNode a |
+    call.getFunction() = a and
+    a.getName() = "pop" and // Should match appropriate call since we tracked a sequence here.
+    not exists(call.getAnArg()) and
+    nodeFrom.getNode() = a.getObject() and
+    nodeTo.getNode() = call and
+    (
+      c instanceof ListElementContent
+      or
+      c instanceof SetElementContent
+    )
+  )
+  or
+  // dict.pop
+  //   `d.pop("key")`
+  //   nodeFrom is `d`, cfg node
+  //   nodeTo is `d.pop("key")`, cfg node
+  //   c denotes the key `"key"`
+  exists(CallNode call, AttrNode a |
+    call.getFunction() = a and
+    a.getName() = "pop" and // Should match appropriate call since we tracked a dictionary here.
+    nodeFrom.getNode() = a.getObject() and
+    nodeTo.getNode() = call and
+    c.(DictionaryElementContent).getKey() = call.getArg(0).getNode().(StrConst).getS()
+  )
+}
+
+/** Data flows from a iterated sequence to the variable iterating over the sequence. */
+predicate comprehensionReadStep(CfgNode nodeFrom, Content c, EssaNode nodeTo) {
+  // Comprehension
+  //   `[x+1 for x in l]`
+  //   nodeFrom is `l`, cfg node
+  //   nodeTo is `x`, essa var
+  //   c denotes element of list or set
+  exists(For f, Comp comp |
+    f = getCompFor(comp) and
+    nodeFrom.getNode().getNode() = getCompIter(comp) and
+    nodeTo.getVar().getDefinition().(AssignmentDefinition).getDefiningNode().getNode() =
+      f.getTarget() and
+    (
+      c instanceof ListElementContent
+      or
+      c instanceof SetElementContent
+    )
+  )
+}
+
+/** This seems to compensate for extractor shortcomings */
+For getCompFor(Comp c) {
+  c.contains(result) and
+  c.getFunction() = result.getScope()
+}
+
+/** This seems to compensate for extractor shortcomings */
+AstNode getCompIter(Comp c) {
+  c.contains(result) and
+  c.getScope() = result.getScope() and
+  not result = c.getFunction() and
+  not exists(AstNode between |
+    c.contains(between) and
+    between.contains(result)
+  )
+}
 
 /**
  * Holds if values stored inside content `c` are cleared at node `n`. For example,

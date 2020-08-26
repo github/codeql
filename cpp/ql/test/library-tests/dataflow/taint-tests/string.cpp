@@ -184,3 +184,159 @@ void test_string_append() {
 		sink(s10); // tainted
 	}
 }
+
+void test_string_assign() {
+	std::string s1("hello");
+	std::string s2(source());
+	char c = ns_char::source();
+	std::string s3, s4, s5;
+	std::string s6(source());
+
+	sink(s3.assign(s1));
+	sink(s3);
+
+	sink(s4.assign(s2)); // tainted
+	sink(s4); // tainted
+
+	sink(s5.assign(10, c)); // tainted
+	sink(s5); // tainted
+
+	sink(s6.assign(s1));
+	sink(s6); // [FALSE POSITIVE]
+}
+
+void test_string_insert() {
+	std::string s1("hello");
+	std::string s2(source());
+	char c = ns_char::source();
+	std::string s3, s4, s5, s6;
+
+	s3 = s1;
+	sink(s3.insert(0, s1));
+	sink(s3);
+
+	s4 = s2;
+	sink(s4.insert(0, s1)); // tainted
+	sink(s4); // tainted
+
+	s5 = s1;
+	sink(s5.insert(0, s2)); // tainted
+	sink(s5); // tainted
+
+	s6 = s1;
+	sink(s6.insert(0, 10, c)); // tainted
+	sink(s6); // tainted
+}
+
+void test_string_replace() {
+	std::string s1("hello");
+	std::string s2(source());
+	char c = ns_char::source();
+	std::string s3, s4, s5, s6;
+
+	s3 = s1;
+	sink(s3.replace(1, 2, s1));
+	sink(s3);
+
+	s4 = s2;
+	sink(s4.replace(1, 2, s1)); // tainted
+	sink(s4); // tainted
+
+	s5 = s1;
+	sink(s5.replace(1, 2, s2)); // tainted
+	sink(s5); // tainted
+
+	s6 = s1;
+	sink(s6.replace(1, 2, 10, c)); // tainted
+	sink(s6); // tainted
+}
+
+void test_string_copy() {
+	char b1[1024] = {0};
+	char b2[1024] = {0};
+	std::string s1("hello");
+	std::string s2(source());
+
+	s1.copy(b1, s1.length(), 0);
+	sink(b1);
+
+	s2.copy(b2, s1.length(), 0);
+	sink(b2); // tainted
+}
+
+void test_string_swap() {
+	std::string s1("hello");
+	std::string s2(source());
+	std::string s3("world");
+	std::string s4(source());
+
+	sink(s1);
+	sink(s2); // tainted
+	sink(s3);
+	sink(s4); // tainted
+
+	s1.swap(s2);
+	s4.swap(s3);
+
+	sink(s1); // tainted
+	sink(s2); // [FALSE POSITIVE]
+	sink(s3); // tainted
+	sink(s4); // [FALSE POSITIVE]
+}
+
+void test_string_clear() {
+	std::string s1(source());
+	std::string s2(source());
+	std::string s3(source());
+
+	sink(s1); // tainted
+	sink(s2); // tainted
+	sink(s3); // tainted
+
+	s1.clear();
+	s2 = "";
+	s3 = s3;
+
+	sink(s1); // [FALSE POSITIVE]
+	sink(s2);
+	sink(s3); // tainted
+}
+
+void test_string_data()
+{
+	std::string a("123");
+	std::string b(source());
+
+	sink(a.data());
+	sink(b.data()); // tainted
+	sink(a.length());
+	sink(b.length());
+}
+
+void test_string_substr()
+{
+	std::string a("123");
+	std::string b(source());
+
+	sink(a.substr(0, a.length()));
+	sink(b.substr(0, b.length())); // tainted
+}
+
+void test_string_at()
+{
+	std::string a("123");
+	std::string b("123");
+	std::string c("123");
+
+	sink(a);
+	sink(b);
+	sink(c);
+
+	a[0] = ns_char::source();
+	b.at(0) = ns_char::source();
+	c[0] = a[0];
+
+	sink(a); // tainted
+	sink(b); // tainted
+	sink(c); // tainted
+}
