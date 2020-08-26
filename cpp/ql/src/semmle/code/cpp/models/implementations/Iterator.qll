@@ -78,10 +78,7 @@ class IteratorPointerDereferenceOperator extends Operator, TaintFunction {
  */
 class IteratorCrementOperator extends Operator, DataFlowFunction {
   IteratorCrementOperator() {
-    (
-      this.hasName("operator++") or
-      this.hasName("operator--")
-    ) and
+    this.hasName(["operator++", "operator--"]) and
     this
         .getACallToThisFunction()
         .getArgument(0)
@@ -155,10 +152,7 @@ class IteratorSubOperator extends Operator, TaintFunction {
  */
 class IteratorAssignArithmeticOperator extends Operator, DataFlowFunction, TaintFunction {
   IteratorAssignArithmeticOperator() {
-    (
-      this.hasName("operator+=") or
-      this.hasName("operator-=")
-    ) and
+    this.hasName(["operator+=", "operator-="]) and
     this.getDeclaringType() instanceof Iterator
   }
 
@@ -193,10 +187,7 @@ class IteratorPointerDereferenceMemberOperator extends MemberFunction, TaintFunc
  */
 class IteratorCrementMemberOperator extends MemberFunction, DataFlowFunction, TaintFunction {
   IteratorCrementMemberOperator() {
-    (
-      this.hasName("operator++") or
-      this.hasName("operator--")
-    ) and
+    this.hasName(["operator++", "operator--"]) and
     this.getDeclaringType() instanceof Iterator
   }
 
@@ -231,7 +222,7 @@ class IteratorFieldMemberOperator extends Operator, TaintFunction {
  */
 class IteratorBinaryArithmeticMemberOperator extends MemberFunction, TaintFunction {
   IteratorBinaryArithmeticMemberOperator() {
-    (this.hasName("operator+") or this.hasName("operator-")) and
+    this.hasName(["operator+", "operator-"]) and
     this.getDeclaringType() instanceof Iterator
   }
 
@@ -249,10 +240,7 @@ class IteratorBinaryArithmeticMemberOperator extends MemberFunction, TaintFuncti
  */
 class IteratorAssignArithmeticMemberOperator extends MemberFunction, DataFlowFunction, TaintFunction {
   IteratorAssignArithmeticMemberOperator() {
-    (
-      this.hasName("operator+=") or
-      this.hasName("operator-=")
-    ) and
+    this.hasName(["operator+=", "operator-="]) and
     this.getDeclaringType() instanceof Iterator
   }
 
