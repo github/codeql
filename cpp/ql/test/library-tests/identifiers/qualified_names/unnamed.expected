@@ -1,6 +1,7 @@
 | qualifiedNames.cpp:3:25:3:27 | p#0 |
 | qualifiedNames.cpp:4:25:4:28 | p#0 |
 | qualifiedNames.cpp:18:18:18:31 | Nested's friend |
+| qualifiedNames.cpp:26:9:26:9 | LocalClass |
 | qualifiedNames.cpp:26:9:26:9 | operator= |
 | qualifiedNames.cpp:26:9:26:9 | operator= |
 | qualifiedNames.cpp:26:9:26:18 | LocalClass |
