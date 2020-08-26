@@ -1,3 +1,8 @@
+/**
+ * Provides `Callable` classes, which are things that can be called
+ * such as methods and constructors.
+ */
+
 import Declaration
 import Variable
 import Expr
