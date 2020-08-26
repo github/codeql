@@ -142,6 +142,8 @@ namespace std {
 
 		vector& operator=(const vector& x);
 		vector& operator=(vector&& x) noexcept/*(allocator_traits<Allocator>::propagate_on_container_move_assignment::value || allocator_traits<Allocator>::is_always_equal::value)*/;
+		template<class InputIterator> void assign(InputIterator first, InputIterator last);
+		void assign(size_type n, const T& u);
 
 		iterator begin() noexcept;
 		const_iterator begin() const noexcept;

@@ -173,3 +173,5 @@
 | vector.cpp:171:13:171:13 | vector.cpp:170:14:170:19 | AST only |
 | vector.cpp:180:13:180:13 | vector.cpp:179:14:179:19 | AST only |
 | vector.cpp:201:13:201:13 | vector.cpp:200:14:200:19 | AST only |
+| vector.cpp:227:7:227:8 | vector.cpp:223:15:223:20 | AST only |
+| vector.cpp:255:7:255:8 | vector.cpp:254:15:254:20 | AST only |
