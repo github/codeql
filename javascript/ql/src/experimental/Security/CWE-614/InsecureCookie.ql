@@ -16,4 +16,3 @@ import InsecureCookie::Cookie
 from Cookie cookie
 where not cookie.isSecure()
 select cookie, "Cookie is added to response without the 'secure' flag being set to true"
-    cookie.getKind() + ").", cookie
