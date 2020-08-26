@@ -25,7 +25,7 @@ const server = http.createServer((req, res) => {
     // GOOD
     username = sanitizeInput(username);
 
-    client.search('o=example', { filter: `(|(name=${username}})(username=${username}))` }, function (err, res) {
+    client.search('o=example', { filter: `(|(name=${username})(username=${username}))` }, function (err, res) {
     });
 
 });
