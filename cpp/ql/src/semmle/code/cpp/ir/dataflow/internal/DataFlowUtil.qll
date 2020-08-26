@@ -323,7 +323,7 @@ abstract private class PartialDefinitionNode extends PostUpdateNode {
   abstract Expr getDefinedExpr();
 }
 
-class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
+private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
   override ChiInstruction instr;
   IntValue startBitDef;
   IntValue endBitDef;
