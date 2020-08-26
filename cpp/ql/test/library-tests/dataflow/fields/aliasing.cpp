@@ -99,5 +99,5 @@ void addressOfField() {
 
   S s_copy = s;
   int* px = &s_copy.m1;
-  sink(*px); // $f-:ast,ir
+  sink(*px); // $f-:ast $ir
 }
