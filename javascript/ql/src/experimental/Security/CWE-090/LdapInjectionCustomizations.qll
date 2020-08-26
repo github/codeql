@@ -34,7 +34,10 @@ module LdapInjection {
    * An LDAP filter for an API call that executes an operation against the LDAP server.
    */
   class LdapjsSink extends Sink {
-    LdapjsSink() { this instanceof LdapjsSearchFilter }
+    LdapjsSink() {
+      this instanceof LdapjsSearchFilter or
+      this instanceof LdapjsDNArgument
+    }
   }
 
   /**

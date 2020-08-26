@@ -46,8 +46,7 @@ module Ldapjs {
    */
   class LdapjsSearchFilter extends DataFlow::Node {
     LdapjsSearchFilter() {
-      this =
-        any(LdapjsSearchOptions options).getAPropertyWrite("filter").getRhs()
+      this = any(LdapjsSearchOptions options).getAPropertyWrite("filter").getRhs()
     }
   }
 
@@ -63,8 +62,8 @@ module Ldapjs {
   /**
    * A distinguished name (DN) used in a Client API call against the LDAP server.
    */
-  class LdapjsDN extends DataFlow::Node {
-    LdapjsDN() { this = any(LdapjsClientAPICall clientAPIcall).getArgument(0) }
+  class LdapjsDNArgument extends DataFlow::Node {
+    LdapjsDNArgument() { this = any(LdapjsClientAPICall clientAPIcall).getArgument(0) }
   }
 
   /**
