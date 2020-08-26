@@ -98,27 +98,6 @@ class IteratorCrementOperator extends Operator, DataFlowFunction {
 }
 
 /**
- * A non-member `operator->` function for an iterator type.
- */
-class IteratorFieldOperator extends Operator, TaintFunction {
-  IteratorFieldOperator() {
-    this.hasName("operator->") and
-    this
-        .getACallToThisFunction()
-        .getArgument(0)
-        .getFullyConverted()
-        .getUnspecifiedType()
-        .(PointerType)
-        .getBaseType() instanceof Iterator
-  }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameterDeref(0) and
-    output.isReturnValue()
-  }
-}
-
-/**
  * A non-member `operator+` function for an iterator type.
  */
 class IteratorAddOperator extends Operator, TaintFunction {
@@ -191,22 +170,6 @@ class IteratorAssignArithmeticOperator extends Operator, DataFlowFunction, Taint
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isParameterDeref(1) and
     output.isParameterDeref(0)
-  }
-}
-
-/**
- * A non-member `operator[]` function for an iterator type.
- */
-class IteratorArrayOperator extends Operator, TaintFunction {
-  IteratorArrayOperator() {
-    this.hasName("operator[]") and
-    this.getACallToThisFunction().getArgument(0).getType().(PointerType).getBaseType() instanceof
-      Iterator
-  }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    (input.isParameter(0) or input.isParameter(1)) and
-    output.isReturnValue()
   }
 }
 
