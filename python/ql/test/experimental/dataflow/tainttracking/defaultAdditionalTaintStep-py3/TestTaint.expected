@@ -1,7 +1,7 @@
-| collections.py:16 | fail | test_access | tainted_list.copy() |
+| collections.py:16 | ok   | test_access | tainted_list.copy() |
 | string.py:17 | ok   | str_methods | ts.casefold() |
 | string.py:19 | ok   | str_methods | ts.format_map(..) |
-| string.py:20 | fail | str_methods | "{unsafe}".format_map(..) |
+| string.py:20 | ok   | str_methods | "{unsafe}".format_map(..) |
 | string.py:31 | fail | binary_decode_encode | base64.a85encode(..) |
 | string.py:32 | fail | binary_decode_encode | base64.a85decode(..) |
 | string.py:35 | fail | binary_decode_encode | base64.b85encode(..) |

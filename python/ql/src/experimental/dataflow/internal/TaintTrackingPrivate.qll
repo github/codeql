@@ -32,6 +32,8 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   stringManipulation(nodeFrom, nodeTo)
   or
   jsonStep(nodeFrom, nodeTo)
+  or
+  containerStep(nodeFrom, nodeTo)
 }
 
 /**
@@ -133,5 +135,40 @@ predicate jsonStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
   exists(CallNode call | call = nodeTo.getNode() |
     call.getFunction().(AttrNode).getObject(["load", "loads", "dumps"]).(NameNode).getId() = "json" and
     call.getArg(0) = nodeFrom.getNode()
+  )
+}
+
+/**
+ * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to containers
+ * (lists/sets/dictionaries): literals, constructor invocation, methods. Note that this
+ * is currently very imprecise, as an example, since we model `dict.get`, we treat any
+ * `<tainted object>.get(<arg>)` will be tainted, whether it's true or not.
+ */
+predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
+  // construction by literal
+  // TODO: Not limiting the content argument here feels like a BIG hack, but we currently get nothing for free :|
+  storeStep(nodeFrom, _, nodeTo)
+  or
+  // constructor call
+  exists(CallNode call | call = nodeTo.getNode() |
+    call.getFunction().(NameNode).getId() in ["list", "set", "frozenset", "dict", "defaultdict", "tuple"] and
+    call.getArg(0) = nodeFrom.getNode()
+  )
+  or
+  // functions operating on collections
+  exists(CallNode call | call = nodeTo.getNode() |
+    call.getFunction().(NameNode).getId() in ["sorted", "reversed", "iter", "next"] and
+    call.getArg(0) = nodeFrom.getNode()
+  )
+  or
+  // methods
+  exists(CallNode call, string name | call = nodeTo.getNode() |
+    name in [
+      // general
+      "copy", "pop",
+      // dict
+      "values", "items", "get", "popitem"
+    ] and
+    call.getFunction().(AttrNode).getObject(name) = nodeFrom.getNode()
   )
 }
