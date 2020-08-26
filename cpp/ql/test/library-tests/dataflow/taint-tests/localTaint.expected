@@ -727,6 +727,7 @@
 | string.cpp:348:2:348:14 | access to array [post update] | string.cpp:348:6:348:9 | call to data [inner post update] |  |
 | string.cpp:348:2:348:34 | ... = ... | string.cpp:348:2:348:14 | access to array [post update] |  |
 | string.cpp:348:6:348:9 | call to data | string.cpp:348:2:348:14 | access to array | TAINT |
+| string.cpp:348:6:348:9 | call to data [inner post update] | string.cpp:348:2:348:4 | ref arg str | TAINT |
 | string.cpp:348:13:348:13 | 1 | string.cpp:348:2:348:14 | access to array | TAINT |
 | string.cpp:348:18:348:32 | call to source | string.cpp:348:2:348:34 | ... = ... |  |
 | string.cpp:350:7:350:9 | str | string.cpp:350:11:350:14 | call to data | TAINT |

@@ -91,6 +91,8 @@
 | string.cpp:339:7:339:7 | string.cpp:335:9:335:23 | AST only |
 | string.cpp:340:7:340:7 | string.cpp:336:12:336:26 | AST only |
 | string.cpp:341:7:341:7 | string.cpp:335:9:335:23 | AST only |
+| string.cpp:349:7:349:9 | string.cpp:348:18:348:32 | AST only |
+| string.cpp:350:11:350:14 | string.cpp:348:18:348:32 | AST only |
 | structlikeclass.cpp:35:8:35:9 | structlikeclass.cpp:29:22:29:27 | AST only |
 | structlikeclass.cpp:36:8:36:9 | structlikeclass.cpp:30:24:30:29 | AST only |
 | structlikeclass.cpp:37:8:37:9 | structlikeclass.cpp:29:22:29:27 | AST only |

@@ -8,15 +8,33 @@ class StdBasicString extends TemplateClass {
 }
 
 /**
- * The `std::string` functions `c_str` and  `data`.
+ * The `std::string` function `c_str`.
  */
 class StdStringCStr extends TaintFunction {
-  StdStringCStr() { this.hasQualifiedName("std", "basic_string", ["c_str", "data"]) }
+  StdStringCStr() { this.hasQualifiedName("std", "basic_string", "c_str") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from string itself (qualifier) to return value
     input.isQualifierObject() and
     output.isReturnValue()
+  }
+}
+
+/**
+ * The `std::string` function `data`.
+ */
+class StdStringData extends TaintFunction {
+  StdStringData() { this.hasQualifiedName("std", "basic_string", "data") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from string itself (qualifier) to return value
+    input.isQualifierObject() and
+    output.isReturnValue()
+    or
+    // reverse flow from returned reference to the qualifier (for writes to
+    // `data`)
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
   }
 }
 

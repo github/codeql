@@ -346,6 +346,6 @@ void test_string_data_more()
 	std::string str("123");
 
 	str.data()[1] = ns_char::source();
-	sink(str); // tainted [NOT DETECTED]
-	sink(str.data()); // tainted [NOT DETECTED]
+	sink(str); // tainted
+	sink(str.data()); // tainted
 }
