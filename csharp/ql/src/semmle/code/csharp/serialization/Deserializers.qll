@@ -8,6 +8,9 @@ import csharp
 /** An unsafe deserializer. */
 abstract class UnsafeDeserializer extends Callable { }
 
+/**
+ * Known unsafe deserializer methods in the `System.*` namespace.
+ */
 class SystemDeserializer extends UnsafeDeserializer {
   SystemDeserializer() {
     this
@@ -48,12 +51,19 @@ class SystemDeserializer extends UnsafeDeserializer {
   }
 }
 
+/**
+ * Known unsafe deserializer methods in the `Microsoft.*` namespace.
+ */
 class MicrosoftDeserializer extends UnsafeDeserializer {
   MicrosoftDeserializer() {
     this.hasQualifiedName("Microsoft.Web.Design.Remote.ProxyObject", "DecodeValue")
   }
 }
 
+/**
+ * Unsafe deserializer methods that call unsafe deserializers on the
+ * parameters.
+ */
 class WrapperDeserializer extends UnsafeDeserializer {
   WrapperDeserializer() {
     exists(Call call |
