@@ -28,11 +28,11 @@
  *   }
  *
  *   override predicate hasActualResult(
- *     Location location, string element, string tag, string values
+ *     Location location, string element, string tag, string value
  *   ) {
  *     exists(Expr e |
  *       tag = "const" and // The tag for this test.
- *       values = e.getValue() and // The expected value. Will only hold for constant expressions.
+ *       value = e.getValue() and // The expected value. Will only hold for constant expressions.
  *       location = e.getLocation() and // The location of the result to be reported.
  *       element = e.toString() // The display text for the result.
  *     )
