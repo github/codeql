@@ -1,5 +1,5 @@
 /**
- * @name Use of constant `state` value in OAuth 2.0 URL.
+ * @name Use of constant `state` value in OAuth 2.0 URL
  * @description Using a constant value for the `state` in the OAuth 2.0 URL makes the application
  *              susceptible to CSRF attacks.
  * @kind path-problem
