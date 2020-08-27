@@ -240,7 +240,7 @@ module FlowVar_internal {
       (
         initializer(v, sbb.getANode())
         or
-        assignmentLikeOperation(sbb, v, _, _)
+        assignmentLikeOperation(sbb, v, _)
         or
         exists(PartialDefinition p | p.partiallyDefinesVariableAt(v, sbb))
         or
@@ -359,7 +359,7 @@ module FlowVar_internal {
     }
 
     override predicate definedByExpr(Expr e, ControlFlowNode node) {
-      assignmentLikeOperation(node, v, _, e) and
+      assignmentLikeOperation(node, v, e) and
       node = sbb
       or
       // We pick the defining `ControlFlowNode` of an `Initializer` to be its
@@ -449,7 +449,7 @@ module FlowVar_internal {
     pragma[noinline]
     private Variable getAVariableAssignedInLoop() {
       exists(BasicBlock bbAssign |
-        assignmentLikeOperation(bbAssign.getANode(), result, _, _) and
+        assignmentLikeOperation(bbAssign.getANode(), result, _) and
         this.bbInLoop(bbAssign)
       )
     }
@@ -487,7 +487,7 @@ module FlowVar_internal {
 
   pragma[noinline]
   private predicate assignsToVar(BasicBlock bb, Variable v) {
-    assignmentLikeOperation(bb.getANode(), v, _, _) and
+    assignmentLikeOperation(bb.getANode(), v, _) and
     exists(AlwaysTrueUponEntryLoop loop | v = loop.getARelevantVariable())
   }
 
@@ -524,7 +524,7 @@ module FlowVar_internal {
       result = mid.getASuccessor() and
       variableLiveInSBB(result, v) and
       forall(AlwaysTrueUponEntryLoop loop | skipLoop(mid, result, v, loop) | loop.sbbInLoop(sbbDef)) and
-      not assignmentLikeOperation(result, v, _, _)
+      not assignmentLikeOperation(result, v, _)
     )
   }
 
@@ -566,7 +566,7 @@ module FlowVar_internal {
    * Holds if liveness of `v` should stop propagating backwards from `sbb`.
    */
   private predicate variableNotLiveBefore(SubBasicBlock sbb, Variable v) {
-    assignmentLikeOperation(sbb, v, _, _)
+    assignmentLikeOperation(sbb, v, _)
     or
     // Liveness of `v` is killed when going backwards from a block that declares it
     exists(DeclStmt ds | ds.getADeclaration().(LocalVariable) = v and sbb.contains(ds))
@@ -687,20 +687,18 @@ module FlowVar_internal {
    * predicate.
    */
   predicate assignmentLikeOperation(
-    ControlFlowNode node, Variable v, VariableAccess va, Expr assignedExpr
+    ControlFlowNode node, Variable v, Expr assignedExpr
   ) {
     // Together, the two following cases cover `Assignment`
     node =
       any(AssignExpr ae |
-        va = ae.getLValue() and
-        v = va.getTarget() and
+        v.getAnAccess() = ae.getLValue() and
         assignedExpr = ae.getRValue()
       )
     or
     node =
       any(AssignOperation ao |
-        va = ao.getLValue() and
-        v = va.getTarget() and
+        v.getAnAccess() = ao.getLValue() and
         // Here and in the `PrefixCrementOperation` case, we say that the assigned
         // expression is the operation itself. For example, we say that `x += 1`
         // assigns `x += 1` to `x`. The justification is that after this operation,
@@ -712,8 +710,7 @@ module FlowVar_internal {
     // `PrefixCrementOperation` is itself a source
     node =
       any(CrementOperation op |
-        va = op.getOperand() and
-        v = va.getTarget() and
+        v.getAnAccess() = op.getOperand() and
         assignedExpr = op
       )
   }
@@ -749,7 +746,7 @@ module FlowVar_internal {
   class DataFlowSubBasicBlockCutNode extends SubBasicBlockCutNode {
     DataFlowSubBasicBlockCutNode() {
       exists(Variable v | not fullySupportedSsaVariable(v) |
-        assignmentLikeOperation(this, v, _, _)
+        assignmentLikeOperation(this, v, _)
         or
         exists(PartialDefinition p | p.partiallyDefinesVariableAt(v, this))
         // It is not necessary to cut the basic blocks at `Initializer` nodes
