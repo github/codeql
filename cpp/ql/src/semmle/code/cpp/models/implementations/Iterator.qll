@@ -196,7 +196,7 @@ class IteratorFieldMemberOperator extends Operator, TaintFunction {
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isQualifierAddress() and
+    input.isQualifierObject() and
     output.isReturnValue()
   }
 }
@@ -211,10 +211,7 @@ class IteratorBinaryArithmeticMemberOperator extends MemberFunction, TaintFuncti
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    (
-      input.isQualifierObject() or
-      input.isParameter(0)
-    ) and
+    input.isQualifierObject() and
     output.isReturnValue()
   }
 }
@@ -234,9 +231,6 @@ class IteratorAssignArithmeticMemberOperator extends MemberFunction, DataFlowFun
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameter(0) and
-    output.isQualifierObject()
-    or
     input.isQualifierObject() and
     output.isReturnValueDeref()
   }
@@ -252,10 +246,7 @@ class IteratorArrayMemberOperator extends MemberFunction, TaintFunction {
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    (
-      input.isQualifierObject() or
-      input.isParameter(0)
-    ) and
+    input.isQualifierObject() and
     output.isReturnValue()
   }
 }
