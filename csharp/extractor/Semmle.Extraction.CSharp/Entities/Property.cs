@@ -13,8 +13,12 @@ namespace Semmle.Extraction.CSharp.Entities
         protected Property(Context cx, IPropertySymbol init)
             : base(cx, init) { }
 
+        Type Type => Type.Create(Context, symbol.Type);
+
         public override void WriteId(TextWriter trapFile)
         {
+            trapFile.WriteSubId(Type);
+            trapFile.Write(" ");
             trapFile.WriteSubId(ContainingType);
             trapFile.Write('.');
             Method.AddExplicitInterfaceQualifierToId(Context, trapFile, symbol.ExplicitInterfaceImplementations);
@@ -31,7 +35,7 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateNullability(trapFile, symbol.GetAnnotatedType());
             PopulateRefKind(trapFile, symbol.RefKind);
 
-            var type = Type.Create(Context, symbol.Type);
+            var type = Type;
             trapFile.properties(this, symbol.GetName(), ContainingType, type.TypeRef, Create(Context, symbol.OriginalDefinition));
 
             var getter = symbol.GetMethod;

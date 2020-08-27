@@ -101,6 +101,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
+            trapFile.WriteSubId(Type.Type);
+            trapFile.Write(" ");
             trapFile.WriteSubId(ContainingType);
             trapFile.Write('.');
             trapFile.Write(symbol.Name);

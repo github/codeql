@@ -100,17 +100,12 @@ namespace Semmle.Extraction.CSharp.Entities
 
             // Visit base types
             var baseTypes = new List<Type>();
-            if (symbol.BaseType != null)
+            if (symbol.GetNonObjectBaseType(Context) is INamedTypeSymbol @base)
             {
-                Type baseKey = Create(Context, symbol.BaseType);
+                Type baseKey = Create(Context, @base);
                 trapFile.extend(this, baseKey.TypeRef);
                 if (symbol.TypeKind != TypeKind.Struct)
                     baseTypes.Add(baseKey);
-            }
-
-            if (symbol.TypeKind == TypeKind.Interface)
-            {
-                trapFile.extend(this, Create(Context, Context.Compilation.ObjectType));
             }
 
             if (!(base.symbol is IArrayTypeSymbol))
@@ -297,8 +292,22 @@ namespace Semmle.Extraction.CSharp.Entities
             DelegateTypeParameter(Context cx, IParameterSymbol init, IEntity parent, Parameter original)
                 : base(cx, init, parent, original) { }
 
+            sealed class DelegateTypeParameterCacheKey
+            {
+                public readonly IParameterSymbol Symbol;
+                public DelegateTypeParameterCacheKey(IParameterSymbol symbol) => Symbol = symbol;
+
+                public override int GetHashCode() =>
+                    13 * Symbol.GetHashCode();
+
+                public override bool Equals(object obj) =>
+                    obj is DelegateTypeParameterCacheKey k && SymbolEqualityComparer.IncludeNullability.Equals(k.Symbol, Symbol);
+            }
+
             new public static DelegateTypeParameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter original = null) =>
-                DelegateTypeParameterFactory.Instance.CreateEntity(cx, (param, parent, original));
+                // We need to use a different cache key than `param` to avoid mixing up
+                // `DelegateTypeParameter`s and `Parameter`s
+                DelegateTypeParameterFactory.Instance.CreateEntity(cx, new DelegateTypeParameterCacheKey(param), (param, parent, original));
 
             class DelegateTypeParameterFactory : ICachedEntityFactory<(IParameterSymbol, IEntity, Parameter), DelegateTypeParameter>
             {

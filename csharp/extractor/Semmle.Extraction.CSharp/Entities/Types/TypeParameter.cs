@@ -38,17 +38,11 @@ namespace Semmle.Extraction.CSharp.Entities
             if (symbol.HasUnmanagedTypeConstraint)
                 trapFile.general_type_parameter_constraints(constraints, 4);
 
-            ITypeSymbol baseType = symbol.HasValueTypeConstraint ?
-                    Context.Compilation.GetTypeByMetadataName(valueTypeName) :
-                    Context.Compilation.ObjectType;
-
             if (symbol.ReferenceTypeConstraintNullableAnnotation == NullableAnnotation.Annotated)
                 trapFile.general_type_parameter_constraints(constraints, 5);
 
             foreach (var abase in symbol.GetAnnotatedTypeConstraints())
             {
-                if (abase.Symbol.TypeKind != TypeKind.Interface)
-                    baseType = abase.Symbol;
                 var t = Create(Context, abase.Symbol);
                 trapFile.specific_type_parameter_constraints(constraints, t.TypeRef);
                 if (!abase.HasObliviousNullability())
@@ -56,7 +50,6 @@ namespace Semmle.Extraction.CSharp.Entities
             }
 
             trapFile.types(this, Kinds.TypeKind.TYPE_PARAMETER, symbol.Name);
-            trapFile.extend(this, Create(Context, baseType).TypeRef);
 
             Namespace parentNs = Namespace.Create(Context, symbol.TypeParameterKind == TypeParameterKind.Method ? Context.Compilation.GlobalNamespace : symbol.ContainingNamespace);
             trapFile.parent_namespace(this, parentNs);

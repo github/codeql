@@ -108,6 +108,9 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         protected static void BuildMethodId(Method m, TextWriter trapFile)
         {
+            m.symbol.ReturnType.BuildOrWriteId(m.Context, trapFile, m.symbol);
+            trapFile.Write(" ");
+
             trapFile.WriteSubId(m.ContainingType);
 
             AddExplicitInterfaceQualifierToId(m.Context, trapFile, m.symbol.ExplicitInterfaceImplementations);
@@ -129,7 +132,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     // Type arguments with different nullability can result in
                     // a constructed method with different nullability of its parameters and return type,
                     // so we need to create a distinct database entity for it.
-                    trapFile.BuildList(",", m.symbol.GetAnnotatedTypeArguments(), (ta, tb0) => { ta.Symbol.BuildNestedTypeId(m.Context, tb0, m.symbol); trapFile.Write((int)ta.Nullability); });
+                    trapFile.BuildList(",", m.symbol.GetAnnotatedTypeArguments(), (ta, tb0) => { ta.Symbol.BuildOrWriteId(m.Context, tb0, m.symbol); trapFile.Write((int)ta.Nullability); });
                     trapFile.Write('>');
                 }
             }
@@ -171,13 +174,17 @@ namespace Semmle.Extraction.CSharp.Entities
             if (method.MethodKind == MethodKind.ReducedExtension)
             {
                 trapFile.WriteSeparator(",", ref index);
-                method.ReceiverType.BuildNestedTypeId(cx, trapFile, method);
+                method.ReceiverType.BuildOrWriteId(cx, trapFile, method);
+                trapFile.Write(" ");
+                trapFile.Write(method.ReducedFrom.Parameters.First().Name);
             }
 
             foreach (var param in method.Parameters)
             {
                 trapFile.WriteSeparator(",", ref index);
-                param.Type.BuildNestedTypeId(cx, trapFile, method);
+                param.Type.BuildOrWriteId(cx, trapFile, method);
+                trapFile.Write(" ");
+                trapFile.Write(param.Name);
                 switch (param.RefKind)
                 {
                     case RefKind.Out:
@@ -200,11 +207,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static void AddExplicitInterfaceQualifierToId(Context cx, System.IO.TextWriter trapFile, IEnumerable<ISymbol> explicitInterfaceImplementations)
         {
-            foreach (var i in explicitInterfaceImplementations)
-            {
-                trapFile.Write(';');
-                i.ContainingType.BuildNestedTypeId(cx, trapFile, null);
-            }
+            if (explicitInterfaceImplementations.Any())
+                trapFile.AppendList(",", explicitInterfaceImplementations.Select(impl => cx.CreateEntity(impl.ContainingType)));
         }
 
         public virtual string Name => symbol.Name;

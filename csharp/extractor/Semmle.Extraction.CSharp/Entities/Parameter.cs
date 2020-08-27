@@ -66,10 +66,10 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         public static Parameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter original = null) =>
-            ParameterFactory.Instance.CreateEntity(cx, param, parent, original);
+            ParameterFactory.Instance.CreateEntity(cx, param, (param, parent, original));
 
         public static Parameter Create(Context cx, IParameterSymbol param) =>
-            ParameterFactory.Instance.CreateEntity(cx, param, null, null);
+            ParameterFactory.Instance.CreateEntity(cx, param, (param, null, null));
 
         public override void WriteId(TextWriter trapFile)
         {
@@ -202,7 +202,8 @@ namespace Semmle.Extraction.CSharp.Entities
             return obj != null && obj.GetType() == typeof(VarargsType);
         }
 
-        public static VarargsType Create(Context cx) => VarargsTypeFactory.Instance.CreateNullableEntity(cx, null);
+        static readonly object cacheKey = new object();
+        public static VarargsType Create(Context cx) => VarargsTypeFactory.Instance.CreateEntity(cx, cacheKey, null);
 
         class VarargsTypeFactory : ICachedEntityFactory<string, VarargsType>
         {
@@ -237,7 +238,8 @@ namespace Semmle.Extraction.CSharp.Entities
             return obj != null && obj.GetType() == typeof(VarargsParam);
         }
 
-        public static VarargsParam Create(Context cx, Method method) => VarargsParamFactory.Instance.CreateEntity(cx, method);
+        static readonly object cacheKey = new object();
+        public static VarargsParam Create(Context cx, Method method) => VarargsParamFactory.Instance.CreateEntity(cx, cacheKey, method);
 
         class VarargsParamFactory : ICachedEntityFactory<Method, VarargsParam>
         {
@@ -264,19 +266,27 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.param_location(this, Original.Location);
         }
 
-        public override int GetHashCode() => symbol.GetHashCode() + 31 * ConstructedType.GetHashCode();
-
-        public override bool Equals(object obj)
+        sealed class ConstructedExtensionParameterCacheKey
         {
-            var other = obj as ConstructedExtensionParameter;
-            if (other == null || other.GetType() != typeof(ConstructedExtensionParameter))
-                return false;
+            public readonly IParameterSymbol Parameter;
+            public readonly ITypeSymbol ConstructedType;
+            public ConstructedExtensionParameterCacheKey(IParameterSymbol parameter, ITypeSymbol constructedType)
+            {
+                Parameter = parameter;
+                ConstructedType = constructedType;
+            }
 
-            return SymbolEqualityComparer.Default.Equals(symbol, other.symbol) && SymbolEqualityComparer.Default.Equals(ConstructedType, other.ConstructedType);
+            public override int GetHashCode() =>
+                (Parameter, ConstructedType).GetHashCode();
+
+            public override bool Equals(object obj) =>
+                obj is ConstructedExtensionParameterCacheKey k &&
+                SymbolEqualityComparer.Default.Equals(k.Parameter, Parameter) &&
+                SymbolEqualityComparer.Default.Equals(k.ConstructedType, ConstructedType);
         }
 
         public static ConstructedExtensionParameter Create(Context cx, Method method, Parameter parameter) =>
-            ExtensionParamFactory.Instance.CreateEntity(cx, (method, parameter));
+            ExtensionParamFactory.Instance.CreateEntity(cx, new ConstructedExtensionParameterCacheKey(parameter.symbol, method.symbol.ReceiverType), (method, parameter));
 
         class ExtensionParamFactory : ICachedEntityFactory<(Method, Parameter), ConstructedExtensionParameter>
         {

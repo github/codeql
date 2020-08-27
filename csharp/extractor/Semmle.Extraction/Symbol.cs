@@ -65,16 +65,6 @@ namespace Semmle.Extraction
             get;
         }
 
-        /// <summary>
-        /// Runs the given action <paramref name="a"/>, guarding for trap duplication
-        /// based on the ID an location of this entity.
-        /// </summary>
-        protected void WithDuplicationGuard(System.Action a, IEntity location)
-        {
-            var key = new Key(this, location);
-            Context.WithDuplicationGuard(key, a);
-        }
-
         public override int GetHashCode() => symbol is null ? 0 : symbol.GetHashCode();
 
         public override bool Equals(object? obj)

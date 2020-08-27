@@ -46,6 +46,9 @@ class Type extends DotNet::Type, Member, TypeContainer, @type {
   predicate isValueType() { none() }
 }
 
+pragma[nomagic]
+private predicate isObjectClass(Class c) { c instanceof ObjectType }
+
 /**
  * A value or reference type.
  *
@@ -112,7 +115,15 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
   }
 
   /** Gets the immediate base class of this class, if any. */
-  Class getBaseClass() { extend(this, getTypeRef(result)) }
+  final Class getBaseClass() {
+    extend(this, getTypeRef(result))
+    or
+    not extend(this, _) and
+    not isObjectClass(this) and
+    not this instanceof DynamicType and
+    not this instanceof NullType and
+    isObjectClass(result)
+  }
 
   /** Gets an immediate base interface of this type, if any. */
   Interface getABaseInterface() { implement(this, getTypeRef(result)) }

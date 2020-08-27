@@ -152,11 +152,17 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public static Modifier Create(Context cx, string modifier) =>
-            ModifierFactory.Instance.CreateEntity(cx, new ModifierKey(modifier));
+        public static Modifier Create(Context cx, string modifier)
+        {
+            var modifierKey = new ModifierKey(modifier);
+            return ModifierFactory.Instance.CreateEntity(cx, modifierKey, modifierKey);
+        }
 
-        public static Modifier Create(Context cx, Accessibility access) =>
-            ModifierFactory.Instance.CreateEntity(cx, new ModifierKey(AccessbilityModifier(access)));
+        public static Modifier Create(Context cx, Accessibility access)
+        {
+            var modifierKey = new ModifierKey(AccessbilityModifier(access));
+            return ModifierFactory.Instance.CreateEntity(cx, modifierKey, modifierKey);
+        }
 
         class ModifierFactory : ICachedEntityFactory<ModifierKey, Modifier>
         {

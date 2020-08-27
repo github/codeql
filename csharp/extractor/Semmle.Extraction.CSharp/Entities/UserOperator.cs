@@ -49,13 +49,6 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override void WriteId(TextWriter trapFile)
-        {
-            symbol.ReturnType.BuildNestedTypeId(Context, trapFile, symbol); // Needed for op_explicit(), which differs only by return type.
-            trapFile.Write(' ');
-            BuildMethodId(this, trapFile);
-        }
-
         /// <summary>
         /// For some reason, some operators are missing from the Roslyn database of mscorlib.
         /// This method returns <code>true</code> for such operators.
@@ -68,7 +61,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (containingType != null)
             {
                 var containingNamedType = containingType as INamedTypeSymbol;
-                return containingNamedType == null || !containingNamedType.MemberNames.Contains(symbol.Name);
+                return containingNamedType == null || !containingNamedType.GetMembers(symbol.Name).Contains(symbol);
             }
 
             var pointerType = symbol.Parameters.Select(p => p.Type).OfType<IPointerTypeSymbol>().FirstOrDefault();
