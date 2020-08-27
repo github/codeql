@@ -316,6 +316,7 @@
 | stl.h:137:30:137:40 | call to allocator | stl.h:137:21:137:41 | noexcept(...) | TAINT |
 | stl.h:137:30:137:40 | call to allocator | stl.h:137:21:137:41 | noexcept(...) | TAINT |
 | stl.h:137:30:137:40 | call to allocator | stl.h:137:21:137:41 | noexcept(...) | TAINT |
+| stl.h:137:30:137:40 | call to allocator | stl.h:137:21:137:41 | noexcept(...) | TAINT |
 | stl.h:137:53:137:63 | 0 | stl.h:137:46:137:64 | (no string representation) | TAINT |
 | string.cpp:24:12:24:17 | call to source | string.cpp:28:7:28:7 | a |  |
 | string.cpp:25:16:25:20 | 123 | string.cpp:25:16:25:21 | call to basic_string | TAINT |
@@ -2226,129 +2227,144 @@
 | vector.cpp:212:8:212:9 | ref arg ff | vector.cpp:213:2:213:2 | ff |  |
 | vector.cpp:212:10:212:10 | call to operator[] [post update] | vector.cpp:212:8:212:9 | ref arg ff | TAINT |
 | vector.cpp:212:14:212:15 | vs | vector.cpp:212:16:212:16 | call to operator[] | TAINT |
-| vector.cpp:219:19:219:20 | call to vector | vector.cpp:221:2:221:3 | v1 |  |
-| vector.cpp:219:19:219:20 | call to vector | vector.cpp:225:7:225:8 | v1 |  |
-| vector.cpp:219:19:219:20 | call to vector | vector.cpp:233:13:233:14 | v1 |  |
-| vector.cpp:219:19:219:20 | call to vector | vector.cpp:233:25:233:26 | v1 |  |
-| vector.cpp:219:19:219:20 | call to vector | vector.cpp:247:1:247:1 | v1 |  |
-| vector.cpp:219:23:219:24 | call to vector | vector.cpp:222:2:222:3 | v2 |  |
-| vector.cpp:219:23:219:24 | call to vector | vector.cpp:226:7:226:8 | v2 |  |
-| vector.cpp:219:23:219:24 | call to vector | vector.cpp:247:1:247:1 | v2 |  |
-| vector.cpp:219:27:219:28 | call to vector | vector.cpp:223:2:223:3 | v3 |  |
-| vector.cpp:219:27:219:28 | call to vector | vector.cpp:227:7:227:8 | v3 |  |
-| vector.cpp:219:27:219:28 | call to vector | vector.cpp:234:13:234:14 | v3 |  |
-| vector.cpp:219:27:219:28 | call to vector | vector.cpp:234:25:234:26 | v3 |  |
-| vector.cpp:219:27:219:28 | call to vector | vector.cpp:235:8:235:9 | v3 |  |
-| vector.cpp:219:27:219:28 | call to vector | vector.cpp:247:1:247:1 | v3 |  |
-| vector.cpp:221:2:221:3 | ref arg v1 | vector.cpp:225:7:225:8 | v1 |  |
-| vector.cpp:221:2:221:3 | ref arg v1 | vector.cpp:233:13:233:14 | v1 |  |
-| vector.cpp:221:2:221:3 | ref arg v1 | vector.cpp:233:25:233:26 | v1 |  |
-| vector.cpp:221:2:221:3 | ref arg v1 | vector.cpp:247:1:247:1 | v1 |  |
-| vector.cpp:221:12:221:14 | 100 | vector.cpp:221:2:221:3 | ref arg v1 | TAINT |
-| vector.cpp:221:17:221:17 | 0 | vector.cpp:221:2:221:3 | ref arg v1 | TAINT |
-| vector.cpp:222:2:222:3 | ref arg v2 | vector.cpp:226:7:226:8 | v2 |  |
-| vector.cpp:222:2:222:3 | ref arg v2 | vector.cpp:247:1:247:1 | v2 |  |
-| vector.cpp:222:12:222:14 | 100 | vector.cpp:222:2:222:3 | ref arg v2 | TAINT |
-| vector.cpp:222:17:222:30 | call to source | vector.cpp:222:2:222:3 | ref arg v2 | TAINT |
-| vector.cpp:223:2:223:3 | ref arg v3 | vector.cpp:227:7:227:8 | v3 |  |
-| vector.cpp:223:2:223:3 | ref arg v3 | vector.cpp:234:13:234:14 | v3 |  |
-| vector.cpp:223:2:223:3 | ref arg v3 | vector.cpp:234:25:234:26 | v3 |  |
-| vector.cpp:223:2:223:3 | ref arg v3 | vector.cpp:235:8:235:9 | v3 |  |
-| vector.cpp:223:2:223:3 | ref arg v3 | vector.cpp:247:1:247:1 | v3 |  |
-| vector.cpp:223:15:223:20 | call to source | vector.cpp:223:2:223:3 | ref arg v3 | TAINT |
-| vector.cpp:225:7:225:8 | ref arg v1 | vector.cpp:233:13:233:14 | v1 |  |
-| vector.cpp:225:7:225:8 | ref arg v1 | vector.cpp:233:25:233:26 | v1 |  |
-| vector.cpp:225:7:225:8 | ref arg v1 | vector.cpp:247:1:247:1 | v1 |  |
-| vector.cpp:226:7:226:8 | ref arg v2 | vector.cpp:247:1:247:1 | v2 |  |
-| vector.cpp:227:7:227:8 | ref arg v3 | vector.cpp:234:13:234:14 | v3 |  |
-| vector.cpp:227:7:227:8 | ref arg v3 | vector.cpp:234:25:234:26 | v3 |  |
-| vector.cpp:227:7:227:8 | ref arg v3 | vector.cpp:235:8:235:9 | v3 |  |
-| vector.cpp:227:7:227:8 | ref arg v3 | vector.cpp:247:1:247:1 | v3 |  |
-| vector.cpp:230:20:230:21 | call to vector | vector.cpp:233:3:233:4 | v4 |  |
-| vector.cpp:230:20:230:21 | call to vector | vector.cpp:241:8:241:9 | v4 |  |
-| vector.cpp:230:20:230:21 | call to vector | vector.cpp:246:2:246:2 | v4 |  |
-| vector.cpp:230:24:230:25 | call to vector | vector.cpp:234:3:234:4 | v5 |  |
-| vector.cpp:230:24:230:25 | call to vector | vector.cpp:242:8:242:9 | v5 |  |
-| vector.cpp:230:24:230:25 | call to vector | vector.cpp:246:2:246:2 | v5 |  |
-| vector.cpp:230:28:230:29 | call to vector | vector.cpp:239:3:239:4 | v6 |  |
-| vector.cpp:230:28:230:29 | call to vector | vector.cpp:245:8:245:9 | v6 |  |
-| vector.cpp:230:28:230:29 | call to vector | vector.cpp:246:2:246:2 | v6 |  |
-| vector.cpp:233:3:233:4 | ref arg v4 | vector.cpp:241:8:241:9 | v4 |  |
-| vector.cpp:233:3:233:4 | ref arg v4 | vector.cpp:246:2:246:2 | v4 |  |
-| vector.cpp:233:13:233:14 | ref arg v1 | vector.cpp:233:25:233:26 | v1 |  |
-| vector.cpp:233:13:233:14 | ref arg v1 | vector.cpp:247:1:247:1 | v1 |  |
-| vector.cpp:233:25:233:26 | ref arg v1 | vector.cpp:247:1:247:1 | v1 |  |
-| vector.cpp:234:3:234:4 | ref arg v5 | vector.cpp:242:8:242:9 | v5 |  |
-| vector.cpp:234:3:234:4 | ref arg v5 | vector.cpp:246:2:246:2 | v5 |  |
-| vector.cpp:234:13:234:14 | ref arg v3 | vector.cpp:234:25:234:26 | v3 |  |
-| vector.cpp:234:13:234:14 | ref arg v3 | vector.cpp:235:8:235:9 | v3 |  |
-| vector.cpp:234:13:234:14 | ref arg v3 | vector.cpp:247:1:247:1 | v3 |  |
-| vector.cpp:234:25:234:26 | ref arg v3 | vector.cpp:235:8:235:9 | v3 |  |
-| vector.cpp:234:25:234:26 | ref arg v3 | vector.cpp:247:1:247:1 | v3 |  |
-| vector.cpp:235:8:235:9 | ref arg v3 | vector.cpp:247:1:247:1 | v3 |  |
-| vector.cpp:235:11:235:15 | call to begin | vector.cpp:235:3:235:17 | ... = ... |  |
-| vector.cpp:235:11:235:15 | call to begin | vector.cpp:236:3:236:4 | i1 |  |
-| vector.cpp:235:11:235:15 | call to begin | vector.cpp:237:8:237:9 | i1 |  |
-| vector.cpp:235:11:235:15 | call to begin | vector.cpp:239:13:239:14 | i1 |  |
-| vector.cpp:235:11:235:15 | call to begin | vector.cpp:243:8:243:9 | i1 |  |
-| vector.cpp:236:3:236:4 | ref arg i1 | vector.cpp:237:8:237:9 | i1 |  |
-| vector.cpp:236:3:236:4 | ref arg i1 | vector.cpp:239:13:239:14 | i1 |  |
-| vector.cpp:236:3:236:4 | ref arg i1 | vector.cpp:243:8:243:9 | i1 |  |
-| vector.cpp:237:8:237:9 | i1 | vector.cpp:237:3:237:9 | ... = ... |  |
-| vector.cpp:237:8:237:9 | i1 | vector.cpp:238:3:238:4 | i2 |  |
-| vector.cpp:237:8:237:9 | i1 | vector.cpp:239:17:239:18 | i2 |  |
-| vector.cpp:237:8:237:9 | i1 | vector.cpp:244:8:244:9 | i2 |  |
-| vector.cpp:238:3:238:4 | ref arg i2 | vector.cpp:239:17:239:18 | i2 |  |
-| vector.cpp:238:3:238:4 | ref arg i2 | vector.cpp:244:8:244:9 | i2 |  |
-| vector.cpp:239:3:239:4 | ref arg v6 | vector.cpp:245:8:245:9 | v6 |  |
-| vector.cpp:239:3:239:4 | ref arg v6 | vector.cpp:246:2:246:2 | v6 |  |
-| vector.cpp:241:8:241:9 | ref arg v4 | vector.cpp:246:2:246:2 | v4 |  |
-| vector.cpp:242:8:242:9 | ref arg v5 | vector.cpp:246:2:246:2 | v5 |  |
-| vector.cpp:245:8:245:9 | ref arg v6 | vector.cpp:246:2:246:2 | v6 |  |
-| vector.cpp:252:19:252:20 | call to vector | vector.cpp:254:2:254:3 | v1 |  |
-| vector.cpp:252:19:252:20 | call to vector | vector.cpp:255:7:255:8 | v1 |  |
-| vector.cpp:252:19:252:20 | call to vector | vector.cpp:256:7:256:8 | v1 |  |
-| vector.cpp:252:19:252:20 | call to vector | vector.cpp:257:7:257:8 | v1 |  |
-| vector.cpp:252:19:252:20 | call to vector | vector.cpp:263:1:263:1 | v1 |  |
-| vector.cpp:252:23:252:24 | call to vector | vector.cpp:259:4:259:5 | v2 |  |
-| vector.cpp:252:23:252:24 | call to vector | vector.cpp:260:7:260:8 | v2 |  |
-| vector.cpp:252:23:252:24 | call to vector | vector.cpp:261:7:261:8 | v2 |  |
-| vector.cpp:252:23:252:24 | call to vector | vector.cpp:262:7:262:8 | v2 |  |
-| vector.cpp:252:23:252:24 | call to vector | vector.cpp:263:1:263:1 | v2 |  |
-| vector.cpp:254:2:254:3 | ref arg v1 | vector.cpp:255:7:255:8 | v1 |  |
-| vector.cpp:254:2:254:3 | ref arg v1 | vector.cpp:256:7:256:8 | v1 |  |
-| vector.cpp:254:2:254:3 | ref arg v1 | vector.cpp:257:7:257:8 | v1 |  |
-| vector.cpp:254:2:254:3 | ref arg v1 | vector.cpp:263:1:263:1 | v1 |  |
-| vector.cpp:254:15:254:20 | call to source | vector.cpp:254:2:254:3 | ref arg v1 | TAINT |
-| vector.cpp:255:7:255:8 | ref arg v1 | vector.cpp:256:7:256:8 | v1 |  |
-| vector.cpp:255:7:255:8 | ref arg v1 | vector.cpp:257:7:257:8 | v1 |  |
-| vector.cpp:255:7:255:8 | ref arg v1 | vector.cpp:263:1:263:1 | v1 |  |
-| vector.cpp:256:7:256:8 | ref arg v1 | vector.cpp:257:7:257:8 | v1 |  |
-| vector.cpp:256:7:256:8 | ref arg v1 | vector.cpp:263:1:263:1 | v1 |  |
-| vector.cpp:256:7:256:8 | v1 | vector.cpp:256:10:256:13 | call to data | TAINT |
-| vector.cpp:256:10:256:13 | ref arg call to data | vector.cpp:256:7:256:8 | ref arg v1 | TAINT |
-| vector.cpp:257:7:257:8 | ref arg v1 | vector.cpp:263:1:263:1 | v1 |  |
-| vector.cpp:257:7:257:8 | v1 | vector.cpp:257:10:257:13 | call to data | TAINT |
-| vector.cpp:257:10:257:13 | call to data | vector.cpp:257:7:257:18 | access to array | TAINT |
-| vector.cpp:257:17:257:17 | 2 | vector.cpp:257:7:257:18 | access to array | TAINT |
-| vector.cpp:259:2:259:13 | * ... [post update] | vector.cpp:259:7:259:10 | call to data [inner post update] |  |
-| vector.cpp:259:2:259:32 | ... = ... | vector.cpp:259:2:259:13 | * ... [post update] |  |
-| vector.cpp:259:4:259:5 | ref arg v2 | vector.cpp:260:7:260:8 | v2 |  |
-| vector.cpp:259:4:259:5 | ref arg v2 | vector.cpp:261:7:261:8 | v2 |  |
-| vector.cpp:259:4:259:5 | ref arg v2 | vector.cpp:262:7:262:8 | v2 |  |
-| vector.cpp:259:4:259:5 | ref arg v2 | vector.cpp:263:1:263:1 | v2 |  |
-| vector.cpp:259:4:259:5 | v2 | vector.cpp:259:7:259:10 | call to data | TAINT |
-| vector.cpp:259:7:259:10 | call to data | vector.cpp:259:2:259:13 | * ... | TAINT |
-| vector.cpp:259:7:259:10 | call to data [inner post update] | vector.cpp:259:4:259:5 | ref arg v2 | TAINT |
-| vector.cpp:259:17:259:30 | call to source | vector.cpp:259:2:259:32 | ... = ... |  |
-| vector.cpp:260:7:260:8 | ref arg v2 | vector.cpp:261:7:261:8 | v2 |  |
-| vector.cpp:260:7:260:8 | ref arg v2 | vector.cpp:262:7:262:8 | v2 |  |
-| vector.cpp:260:7:260:8 | ref arg v2 | vector.cpp:263:1:263:1 | v2 |  |
-| vector.cpp:261:7:261:8 | ref arg v2 | vector.cpp:262:7:262:8 | v2 |  |
-| vector.cpp:261:7:261:8 | ref arg v2 | vector.cpp:263:1:263:1 | v2 |  |
-| vector.cpp:261:7:261:8 | v2 | vector.cpp:261:10:261:13 | call to data | TAINT |
-| vector.cpp:261:10:261:13 | ref arg call to data | vector.cpp:261:7:261:8 | ref arg v2 | TAINT |
-| vector.cpp:262:7:262:8 | ref arg v2 | vector.cpp:263:1:263:1 | v2 |  |
-| vector.cpp:262:7:262:8 | v2 | vector.cpp:262:10:262:13 | call to data | TAINT |
-| vector.cpp:262:10:262:13 | call to data | vector.cpp:262:7:262:18 | access to array | TAINT |
-| vector.cpp:262:17:262:17 | 2 | vector.cpp:262:7:262:18 | access to array | TAINT |
+| vector.cpp:229:19:229:20 | call to vector | vector.cpp:231:2:231:3 | v1 |  |
+| vector.cpp:229:19:229:20 | call to vector | vector.cpp:235:7:235:8 | v1 |  |
+| vector.cpp:229:19:229:20 | call to vector | vector.cpp:243:13:243:14 | v1 |  |
+| vector.cpp:229:19:229:20 | call to vector | vector.cpp:243:25:243:26 | v1 |  |
+| vector.cpp:229:19:229:20 | call to vector | vector.cpp:268:1:268:1 | v1 |  |
+| vector.cpp:229:23:229:24 | call to vector | vector.cpp:232:2:232:3 | v2 |  |
+| vector.cpp:229:23:229:24 | call to vector | vector.cpp:236:7:236:8 | v2 |  |
+| vector.cpp:229:23:229:24 | call to vector | vector.cpp:268:1:268:1 | v2 |  |
+| vector.cpp:229:27:229:28 | call to vector | vector.cpp:233:2:233:3 | v3 |  |
+| vector.cpp:229:27:229:28 | call to vector | vector.cpp:237:7:237:8 | v3 |  |
+| vector.cpp:229:27:229:28 | call to vector | vector.cpp:244:13:244:14 | v3 |  |
+| vector.cpp:229:27:229:28 | call to vector | vector.cpp:244:25:244:26 | v3 |  |
+| vector.cpp:229:27:229:28 | call to vector | vector.cpp:245:8:245:9 | v3 |  |
+| vector.cpp:229:27:229:28 | call to vector | vector.cpp:268:1:268:1 | v3 |  |
+| vector.cpp:231:2:231:3 | ref arg v1 | vector.cpp:235:7:235:8 | v1 |  |
+| vector.cpp:231:2:231:3 | ref arg v1 | vector.cpp:243:13:243:14 | v1 |  |
+| vector.cpp:231:2:231:3 | ref arg v1 | vector.cpp:243:25:243:26 | v1 |  |
+| vector.cpp:231:2:231:3 | ref arg v1 | vector.cpp:268:1:268:1 | v1 |  |
+| vector.cpp:231:12:231:14 | 100 | vector.cpp:231:2:231:3 | ref arg v1 | TAINT |
+| vector.cpp:231:17:231:17 | 0 | vector.cpp:231:2:231:3 | ref arg v1 | TAINT |
+| vector.cpp:232:2:232:3 | ref arg v2 | vector.cpp:236:7:236:8 | v2 |  |
+| vector.cpp:232:2:232:3 | ref arg v2 | vector.cpp:268:1:268:1 | v2 |  |
+| vector.cpp:232:12:232:14 | 100 | vector.cpp:232:2:232:3 | ref arg v2 | TAINT |
+| vector.cpp:232:17:232:30 | call to source | vector.cpp:232:2:232:3 | ref arg v2 | TAINT |
+| vector.cpp:233:2:233:3 | ref arg v3 | vector.cpp:237:7:237:8 | v3 |  |
+| vector.cpp:233:2:233:3 | ref arg v3 | vector.cpp:244:13:244:14 | v3 |  |
+| vector.cpp:233:2:233:3 | ref arg v3 | vector.cpp:244:25:244:26 | v3 |  |
+| vector.cpp:233:2:233:3 | ref arg v3 | vector.cpp:245:8:245:9 | v3 |  |
+| vector.cpp:233:2:233:3 | ref arg v3 | vector.cpp:268:1:268:1 | v3 |  |
+| vector.cpp:233:15:233:20 | call to source | vector.cpp:233:2:233:3 | ref arg v3 | TAINT |
+| vector.cpp:235:7:235:8 | ref arg v1 | vector.cpp:243:13:243:14 | v1 |  |
+| vector.cpp:235:7:235:8 | ref arg v1 | vector.cpp:243:25:243:26 | v1 |  |
+| vector.cpp:235:7:235:8 | ref arg v1 | vector.cpp:268:1:268:1 | v1 |  |
+| vector.cpp:236:7:236:8 | ref arg v2 | vector.cpp:268:1:268:1 | v2 |  |
+| vector.cpp:237:7:237:8 | ref arg v3 | vector.cpp:244:13:244:14 | v3 |  |
+| vector.cpp:237:7:237:8 | ref arg v3 | vector.cpp:244:25:244:26 | v3 |  |
+| vector.cpp:237:7:237:8 | ref arg v3 | vector.cpp:245:8:245:9 | v3 |  |
+| vector.cpp:237:7:237:8 | ref arg v3 | vector.cpp:268:1:268:1 | v3 |  |
+| vector.cpp:240:20:240:21 | call to vector | vector.cpp:243:3:243:4 | v4 |  |
+| vector.cpp:240:20:240:21 | call to vector | vector.cpp:251:8:251:9 | v4 |  |
+| vector.cpp:240:20:240:21 | call to vector | vector.cpp:256:2:256:2 | v4 |  |
+| vector.cpp:240:24:240:25 | call to vector | vector.cpp:244:3:244:4 | v5 |  |
+| vector.cpp:240:24:240:25 | call to vector | vector.cpp:252:8:252:9 | v5 |  |
+| vector.cpp:240:24:240:25 | call to vector | vector.cpp:256:2:256:2 | v5 |  |
+| vector.cpp:240:28:240:29 | call to vector | vector.cpp:249:3:249:4 | v6 |  |
+| vector.cpp:240:28:240:29 | call to vector | vector.cpp:255:8:255:9 | v6 |  |
+| vector.cpp:240:28:240:29 | call to vector | vector.cpp:256:2:256:2 | v6 |  |
+| vector.cpp:243:3:243:4 | ref arg v4 | vector.cpp:251:8:251:9 | v4 |  |
+| vector.cpp:243:3:243:4 | ref arg v4 | vector.cpp:256:2:256:2 | v4 |  |
+| vector.cpp:243:13:243:14 | ref arg v1 | vector.cpp:243:25:243:26 | v1 |  |
+| vector.cpp:243:13:243:14 | ref arg v1 | vector.cpp:268:1:268:1 | v1 |  |
+| vector.cpp:243:25:243:26 | ref arg v1 | vector.cpp:268:1:268:1 | v1 |  |
+| vector.cpp:244:3:244:4 | ref arg v5 | vector.cpp:252:8:252:9 | v5 |  |
+| vector.cpp:244:3:244:4 | ref arg v5 | vector.cpp:256:2:256:2 | v5 |  |
+| vector.cpp:244:13:244:14 | ref arg v3 | vector.cpp:244:25:244:26 | v3 |  |
+| vector.cpp:244:13:244:14 | ref arg v3 | vector.cpp:245:8:245:9 | v3 |  |
+| vector.cpp:244:13:244:14 | ref arg v3 | vector.cpp:268:1:268:1 | v3 |  |
+| vector.cpp:244:25:244:26 | ref arg v3 | vector.cpp:245:8:245:9 | v3 |  |
+| vector.cpp:244:25:244:26 | ref arg v3 | vector.cpp:268:1:268:1 | v3 |  |
+| vector.cpp:245:8:245:9 | ref arg v3 | vector.cpp:268:1:268:1 | v3 |  |
+| vector.cpp:245:11:245:15 | call to begin | vector.cpp:245:3:245:17 | ... = ... |  |
+| vector.cpp:245:11:245:15 | call to begin | vector.cpp:246:3:246:4 | i1 |  |
+| vector.cpp:245:11:245:15 | call to begin | vector.cpp:247:8:247:9 | i1 |  |
+| vector.cpp:245:11:245:15 | call to begin | vector.cpp:249:13:249:14 | i1 |  |
+| vector.cpp:245:11:245:15 | call to begin | vector.cpp:253:8:253:9 | i1 |  |
+| vector.cpp:246:3:246:4 | ref arg i1 | vector.cpp:247:8:247:9 | i1 |  |
+| vector.cpp:246:3:246:4 | ref arg i1 | vector.cpp:249:13:249:14 | i1 |  |
+| vector.cpp:246:3:246:4 | ref arg i1 | vector.cpp:253:8:253:9 | i1 |  |
+| vector.cpp:247:8:247:9 | i1 | vector.cpp:247:3:247:9 | ... = ... |  |
+| vector.cpp:247:8:247:9 | i1 | vector.cpp:248:3:248:4 | i2 |  |
+| vector.cpp:247:8:247:9 | i1 | vector.cpp:249:17:249:18 | i2 |  |
+| vector.cpp:247:8:247:9 | i1 | vector.cpp:254:8:254:9 | i2 |  |
+| vector.cpp:248:3:248:4 | ref arg i2 | vector.cpp:249:17:249:18 | i2 |  |
+| vector.cpp:248:3:248:4 | ref arg i2 | vector.cpp:254:8:254:9 | i2 |  |
+| vector.cpp:249:3:249:4 | ref arg v6 | vector.cpp:255:8:255:9 | v6 |  |
+| vector.cpp:249:3:249:4 | ref arg v6 | vector.cpp:256:2:256:2 | v6 |  |
+| vector.cpp:251:8:251:9 | ref arg v4 | vector.cpp:256:2:256:2 | v4 |  |
+| vector.cpp:252:8:252:9 | ref arg v5 | vector.cpp:256:2:256:2 | v5 |  |
+| vector.cpp:255:8:255:9 | ref arg v6 | vector.cpp:256:2:256:2 | v6 |  |
+| vector.cpp:259:22:259:23 | call to vector | vector.cpp:262:3:262:4 | v7 |  |
+| vector.cpp:259:22:259:23 | call to vector | vector.cpp:265:8:265:9 | v7 |  |
+| vector.cpp:259:22:259:23 | call to vector | vector.cpp:267:2:267:2 | v7 |  |
+| vector.cpp:260:24:260:25 | call to vector | vector.cpp:263:3:263:4 | v8 |  |
+| vector.cpp:260:24:260:25 | call to vector | vector.cpp:266:8:266:9 | v8 |  |
+| vector.cpp:260:24:260:25 | call to vector | vector.cpp:267:2:267:2 | v8 |  |
+| vector.cpp:262:3:262:4 | ref arg v7 | vector.cpp:265:8:265:9 | v7 |  |
+| vector.cpp:262:3:262:4 | ref arg v7 | vector.cpp:267:2:267:2 | v7 |  |
+| vector.cpp:262:13:262:15 | 100 | vector.cpp:262:3:262:4 | ref arg v7 | TAINT |
+| vector.cpp:262:18:262:31 | call to source | vector.cpp:262:3:262:4 | ref arg v7 | TAINT |
+| vector.cpp:263:3:263:4 | ref arg v8 | vector.cpp:266:8:266:9 | v8 |  |
+| vector.cpp:263:3:263:4 | ref arg v8 | vector.cpp:267:2:267:2 | v8 |  |
+| vector.cpp:263:18:263:35 | call to source | vector.cpp:263:3:263:4 | ref arg v8 | TAINT |
+| vector.cpp:265:8:265:9 | ref arg v7 | vector.cpp:267:2:267:2 | v7 |  |
+| vector.cpp:266:8:266:9 | ref arg v8 | vector.cpp:267:2:267:2 | v8 |  |
+| vector.cpp:273:19:273:20 | call to vector | vector.cpp:275:2:275:3 | v1 |  |
+| vector.cpp:273:19:273:20 | call to vector | vector.cpp:276:7:276:8 | v1 |  |
+| vector.cpp:273:19:273:20 | call to vector | vector.cpp:277:7:277:8 | v1 |  |
+| vector.cpp:273:19:273:20 | call to vector | vector.cpp:278:7:278:8 | v1 |  |
+| vector.cpp:273:19:273:20 | call to vector | vector.cpp:284:1:284:1 | v1 |  |
+| vector.cpp:273:23:273:24 | call to vector | vector.cpp:280:4:280:5 | v2 |  |
+| vector.cpp:273:23:273:24 | call to vector | vector.cpp:281:7:281:8 | v2 |  |
+| vector.cpp:273:23:273:24 | call to vector | vector.cpp:282:7:282:8 | v2 |  |
+| vector.cpp:273:23:273:24 | call to vector | vector.cpp:283:7:283:8 | v2 |  |
+| vector.cpp:273:23:273:24 | call to vector | vector.cpp:284:1:284:1 | v2 |  |
+| vector.cpp:275:2:275:3 | ref arg v1 | vector.cpp:276:7:276:8 | v1 |  |
+| vector.cpp:275:2:275:3 | ref arg v1 | vector.cpp:277:7:277:8 | v1 |  |
+| vector.cpp:275:2:275:3 | ref arg v1 | vector.cpp:278:7:278:8 | v1 |  |
+| vector.cpp:275:2:275:3 | ref arg v1 | vector.cpp:284:1:284:1 | v1 |  |
+| vector.cpp:275:15:275:20 | call to source | vector.cpp:275:2:275:3 | ref arg v1 | TAINT |
+| vector.cpp:276:7:276:8 | ref arg v1 | vector.cpp:277:7:277:8 | v1 |  |
+| vector.cpp:276:7:276:8 | ref arg v1 | vector.cpp:278:7:278:8 | v1 |  |
+| vector.cpp:276:7:276:8 | ref arg v1 | vector.cpp:284:1:284:1 | v1 |  |
+| vector.cpp:277:7:277:8 | ref arg v1 | vector.cpp:278:7:278:8 | v1 |  |
+| vector.cpp:277:7:277:8 | ref arg v1 | vector.cpp:284:1:284:1 | v1 |  |
+| vector.cpp:277:7:277:8 | v1 | vector.cpp:277:10:277:13 | call to data | TAINT |
+| vector.cpp:277:10:277:13 | ref arg call to data | vector.cpp:277:7:277:8 | ref arg v1 | TAINT |
+| vector.cpp:278:7:278:8 | ref arg v1 | vector.cpp:284:1:284:1 | v1 |  |
+| vector.cpp:278:7:278:8 | v1 | vector.cpp:278:10:278:13 | call to data | TAINT |
+| vector.cpp:278:10:278:13 | call to data | vector.cpp:278:7:278:18 | access to array | TAINT |
+| vector.cpp:278:17:278:17 | 2 | vector.cpp:278:7:278:18 | access to array | TAINT |
+| vector.cpp:280:2:280:13 | * ... [post update] | vector.cpp:280:7:280:10 | call to data [inner post update] |  |
+| vector.cpp:280:2:280:32 | ... = ... | vector.cpp:280:2:280:13 | * ... [post update] |  |
+| vector.cpp:280:4:280:5 | ref arg v2 | vector.cpp:281:7:281:8 | v2 |  |
+| vector.cpp:280:4:280:5 | ref arg v2 | vector.cpp:282:7:282:8 | v2 |  |
+| vector.cpp:280:4:280:5 | ref arg v2 | vector.cpp:283:7:283:8 | v2 |  |
+| vector.cpp:280:4:280:5 | ref arg v2 | vector.cpp:284:1:284:1 | v2 |  |
+| vector.cpp:280:4:280:5 | v2 | vector.cpp:280:7:280:10 | call to data | TAINT |
+| vector.cpp:280:7:280:10 | call to data | vector.cpp:280:2:280:13 | * ... | TAINT |
+| vector.cpp:280:7:280:10 | call to data [inner post update] | vector.cpp:280:4:280:5 | ref arg v2 | TAINT |
+| vector.cpp:280:17:280:30 | call to source | vector.cpp:280:2:280:32 | ... = ... |  |
+| vector.cpp:281:7:281:8 | ref arg v2 | vector.cpp:282:7:282:8 | v2 |  |
+| vector.cpp:281:7:281:8 | ref arg v2 | vector.cpp:283:7:283:8 | v2 |  |
+| vector.cpp:281:7:281:8 | ref arg v2 | vector.cpp:284:1:284:1 | v2 |  |
+| vector.cpp:282:7:282:8 | ref arg v2 | vector.cpp:283:7:283:8 | v2 |  |
+| vector.cpp:282:7:282:8 | ref arg v2 | vector.cpp:284:1:284:1 | v2 |  |
+| vector.cpp:282:7:282:8 | v2 | vector.cpp:282:10:282:13 | call to data | TAINT |
+| vector.cpp:282:10:282:13 | ref arg call to data | vector.cpp:282:7:282:8 | ref arg v2 | TAINT |
+| vector.cpp:283:7:283:8 | ref arg v2 | vector.cpp:284:1:284:1 | v2 |  |
+| vector.cpp:283:7:283:8 | v2 | vector.cpp:283:10:283:13 | call to data | TAINT |
+| vector.cpp:283:10:283:13 | call to data | vector.cpp:283:7:283:18 | access to array | TAINT |
+| vector.cpp:283:17:283:17 | 2 | vector.cpp:283:7:283:18 | access to array | TAINT |

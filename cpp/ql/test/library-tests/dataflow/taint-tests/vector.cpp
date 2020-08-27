@@ -215,6 +215,16 @@ void test_nested_vectors()
 
 void sink(std::vector<int>::iterator &);
 
+typedef int myInt;
+typedef float myFloat;
+
+namespace ns_myFloat
+{
+	myFloat source();
+}
+
+void sink(std::vector<myFloat> &);
+
 void test_vector_assign() {
 	std::vector<int> v1, v2, v3;
 
@@ -243,6 +253,17 @@ void test_vector_assign() {
 		sink(i1); // tainted [NOT DETECTED]
 		sink(i2); // tainted [NOT DETECTED]
 		sink(v6); // tainted [NOT DETECTED]
+	}
+
+	{
+		std::vector<myInt> v7;
+		std::vector<myFloat> v8;
+
+		v7.assign(100, ns_int::source());
+		v8.assign(100, ns_myFloat::source());
+
+		sink(v7); // tainted
+		sink(v8); // tainted
 	}
 }
 
