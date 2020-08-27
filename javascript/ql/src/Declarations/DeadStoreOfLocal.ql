@@ -42,11 +42,11 @@ where
     access.isAmbient()
   ) and
   // don't flag function expressions
-  not exists(FunctionExpr fe | dead = fe.getId()) and
+  not exists(FunctionExpr fe | dead = fe.getIdentifier()) and
   // don't flag function declarations nested inside blocks or other compound statements;
   // their meaning is only partially specified by the standard
   not exists(FunctionDeclStmt fd, StmtContainer outer |
-    dead = fd.getId() and outer = fd.getEnclosingContainer()
+    dead = fd.getIdentifier() and outer = fd.getEnclosingContainer()
   |
     not fd = outer.getBody().(BlockStmt).getAStmt()
   ) and

@@ -21,7 +21,7 @@ function f4() {
 }
 
 function f5() {
-    var pw = Math.random(); // NOT OK, but our naming heuristic does not identify `pw` as sensitive
+    var pw = Math.random(); // NOT OK, but our naming heuristic does not identify `pw` as sensitive [INCONSISTENCY]
 }
 
 function f6() {

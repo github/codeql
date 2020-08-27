@@ -771,7 +771,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override bool Equals(object obj)
         {
-            if(obj is ConstructedType t && Equals(unboundGenericType, t.unboundGenericType) && Equals(containingType, t.containingType))
+            if (obj is ConstructedType t && Equals(unboundGenericType, t.unboundGenericType) && Equals(containingType, t.containingType))
             {
                 if (thisTypeArguments is null) return t.thisTypeArguments is null;
                 if (!(t.thisTypeArguments is null)) return thisTypeArguments.SequenceEqual(t.thisTypeArguments);
@@ -1208,7 +1208,7 @@ namespace Semmle.Extraction.CIL.Entities
             {
                 elementType.WriteId(trapFile, gc);
                 trapFile.Write('[');
-                for (int i=1; i<shape.Rank; ++i)
+                for (int i = 1; i < shape.Rank; ++i)
                     trapFile.Write(',');
                 trapFile.Write(']');
             }
@@ -1254,7 +1254,7 @@ namespace Semmle.Extraction.CIL.Entities
                 genericType.WriteId(trapFile, gc);
                 trapFile.Write('<');
                 int index = 0;
-                foreach(var arg in typeArguments)
+                foreach (var arg in typeArguments)
                 {
                     trapFile.WriteSeparator(",", ref index);
                     arg.WriteId(trapFile, gc);
@@ -1451,8 +1451,7 @@ namespace Semmle.Extraction.CIL.Entities
             genericContext.GetGenericTypeParameter(index);
 
         Type ISignatureTypeProvider<Type, GenericContext>.GetModifiedType(Type modifier, Type unmodifiedType, bool isRequired) =>
-            // !! Not implemented properly
-            unmodifiedType;
+            unmodifiedType; // !! Not implemented properly
 
         Type ISignatureTypeProvider<Type, GenericContext>.GetPinnedType(Type elementType) =>
             cx.Populate(new PointerType(cx, elementType));

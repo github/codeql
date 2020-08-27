@@ -10,6 +10,7 @@ import com.semmle.js.ast.jsx.JSXMemberExpression;
 import com.semmle.js.ast.jsx.JSXNamespacedName;
 import com.semmle.js.ast.jsx.JSXOpeningElement;
 import com.semmle.js.ast.jsx.JSXSpreadAttribute;
+import com.semmle.js.ast.jsx.JSXThisExpr;
 import com.semmle.ts.ast.ArrayTypeExpr;
 import com.semmle.ts.ast.ConditionalTypeExpr;
 import com.semmle.ts.ast.DecoratorList;
@@ -199,6 +200,8 @@ public interface Visitor<C, R> {
   public R visit(ImportSpecifier nd, C c);
 
   public R visit(JSXIdentifier nd, C c);
+
+  public R visit(JSXThisExpr nd, C c);
 
   public R visit(JSXMemberExpression nd, C c);
 

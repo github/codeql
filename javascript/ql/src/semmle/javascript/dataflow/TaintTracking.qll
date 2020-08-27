@@ -543,8 +543,8 @@ module TaintTracking {
   /**
    * A taint propagating data flow edge arising from JSON unparsing.
    */
-  private class JsonStringifyTaintStep extends AdditionalTaintStep, DataFlow::MethodCallNode {
-    JsonStringifyTaintStep() { this = DataFlow::globalVarRef("JSON").getAMemberCall("stringify") }
+  private class JsonStringifyTaintStep extends AdditionalTaintStep, DataFlow::CallNode {
+    JsonStringifyTaintStep() { this instanceof JsonStringifyCall }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       pred = getArgument(0) and succ = this
@@ -690,18 +690,6 @@ module TaintTracking {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       pred = getArgument(0) and
       succ = this
-    }
-  }
-
-  /**
-   * A taint step through the Node.JS function `util.inspect(..)`.
-   */
-  class UtilInspectTaintStep extends AdditionalTaintStep, DataFlow::InvokeNode {
-    UtilInspectTaintStep() { this = DataFlow::moduleImport("util").getAMemberCall("inspect") }
-
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      succ = this and
-      this.getAnArgument() = pred
     }
   }
 

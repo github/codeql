@@ -98,6 +98,10 @@ Recommendations:
   also work, but the upside of `use-use` steps is that sources defined in terms
   of variable reads just work out of the box. It also makes certain
   barrier-implementations simpler.
+* A predicate `DataFlowCallable Node::getEnclosingCallable()` is required, and in
+  order to ensure appropriate join-orders, it is important that the QL compiler knows
+  that this predicate is functional. It can therefore be necessary to enclose the body
+  of this predicate in a `unique` aggregate.
 
 The shared library does not use `localFlowStep` nor `localFlow` but users of
 `DataFlow.qll` may expect the existence of `DataFlow::localFlowStep` and
@@ -469,6 +473,6 @@ https://github.com/github/codeql/pull/1718 for details.
 ### Consistency checks
 
 The file `dataflow/internal/DataFlowImplConsistency.qll` contains a number of
-consistency checks to verify that the language-specfic parts satisfy the
+consistency checks to verify that the language-specific parts satisfy the
 invariants that are expected by the shared implementation. Run these queries to
 check for inconsistencies.

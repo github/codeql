@@ -78,15 +78,19 @@ class Node extends TNode {
     result = this.(ImplicitPostUpdateNode).getPreUpdateNode().getType()
   }
 
-  /** Gets the callable in which this node occurs. */
-  Callable getEnclosingCallable() {
+  private Callable getEnclosingCallableImpl() {
     result = this.asExpr().getEnclosingCallable() or
     result = this.asParameter().getCallable() or
     result = this.(ImplicitVarargsArray).getCall().getEnclosingCallable() or
     result = this.(InstanceParameterNode).getCallable() or
     result = this.(ImplicitInstanceAccess).getInstanceAccess().getEnclosingCallable() or
     result = this.(MallocNode).getClassInstanceExpr().getEnclosingCallable() or
-    result = this.(ImplicitPostUpdateNode).getPreUpdateNode().getEnclosingCallable()
+    result = this.(ImplicitPostUpdateNode).getPreUpdateNode().getEnclosingCallableImpl()
+  }
+
+  /** Gets the callable in which this node occurs. */
+  Callable getEnclosingCallable() {
+    result = unique(DataFlowCallable c | c = this.getEnclosingCallableImpl() | c)
   }
 
   private Type getImprovedTypeBound() {
@@ -412,6 +416,18 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
       or
       m.hasName("toString") and node1.asExpr() = ma.getArgument(1)
     )
+  )
+  or
+  exists(MethodAccess ma, Method m |
+    ma = node2.asExpr() and
+    m = ma.getMethod() and
+    m
+        .getDeclaringType()
+        .getSourceDeclaration()
+        .getASourceSupertype*()
+        .hasQualifiedName("java.util", "Stack") and
+    m.hasName("push") and
+    node1.asExpr() = ma.getArgument(0)
   )
 }
 

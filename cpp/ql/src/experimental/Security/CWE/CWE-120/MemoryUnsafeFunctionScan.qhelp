@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>It is bad practice to use any of the <code>scanf</code> functions without including a specified length within the format parameter, as it will be vulnerable to buffer overflows.</p>
+
+</overview>
+
+<recommendation>
+
+<p>Specify a length within the format string parameter, and make this length one less than the size of the buffer, since the last character should be reserved for the NULL terminator.</p>
+
+</recommendation>
+
+<example>
+<p>The following example demonstrates safe and unsafe uses of <code>scanf</code> type functions.</p>
+<sample src="MemoryUnsafeFunctionScan.cpp" />
+
+</example>
+
+<references>
+</references>
+
+</qhelp>
