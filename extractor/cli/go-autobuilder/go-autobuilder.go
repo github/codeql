@@ -157,28 +157,24 @@ const (
 	ModVendor
 )
 
-func (m ModMode) String() string {
+func (m ModMode) argsForGoVersion(version string) []string {
 	switch m {
 	case ModUnset:
-		return ""
+		return []string{}
 	case ModReadonly:
-		return "-mod=readonly"
+		return []string{"-mod=readonly"}
 	case ModMod:
-		return "-mod=mod"
+		if semver.Compare(getEnvGoVersion(), "1.14") < 0 {
+			log.Printf("%s < %s", getEnvGoVersion(), "1.14")
+			return []string{} // -mod=mod is the default behaviour for go <= 1.13, and is not accepted as an argument
+		} else {
+			log.Printf("%s >= %s", getEnvGoVersion(), "1.14")
+			return []string{"-mod=mod"}
+		}
 	case ModVendor:
-		return "-mod=vendor"
+		return []string{"-mod=vendor"}
 	}
-	return ""
-}
-
-// modModIfSupported returns `ModMod` if that flag is supported, or `ModUnset` if it is not, in
-// which case the behavior should be identical to `ModMod`.
-func modModIfSupported() ModMode {
-	if semver.Compare(getEnvGoVersion(), "1.14") < 0 {
-		return ModUnset
-	} else {
-		return ModMod
-	}
+	return nil
 }
 
 // addVersionToMod add a go version directive, e.g. `go 1.14` to a `go.mod` file.
@@ -245,7 +241,7 @@ func main() {
 	if util.FileExists("vendor/modules.txt") {
 		modMode = ModVendor
 	} else if util.DirExists("vendor") {
-		modMode = modModIfSupported()
+		modMode = ModMod
 	}
 
 	if modMode == ModVendor {
@@ -270,7 +266,7 @@ func main() {
 					log.Println("Adding a version directive to the go.mod file as the modules.txt does not have explicit annotations")
 					if !addVersionToMod(goMod, "1.13") {
 						log.Println("Failed to add a version to the go.mod file to fix explicitly required package bug; not using vendored dependencies")
-						modMode = modModIfSupported()
+						modMode = ModMod
 					}
 				}
 			}
@@ -435,7 +431,7 @@ func main() {
 		// or not set if the go version < 1.14. Note we check this post-build in case the build brings
 		// the vendor directory up to date.
 		if !checkVendor() {
-			modMode = modModIfSupported()
+			modMode = ModMod
 			log.Println("The vendor directory is not consistent with the go.mod; not using vendored dependencies.")
 		}
 	}
@@ -507,14 +503,14 @@ func main() {
 		log.Fatalf("Unable to determine current directory: %s\n", err.Error())
 	}
 
-	var cmd *exec.Cmd
-	if depMode == GoGetWithModules && modMode.String() != "" {
-		log.Printf("Running extractor command '%s %s ./...' from directory '%s'.\n", extractor, modMode, cwd)
-		cmd = exec.Command(extractor, modMode.String(), "./...")
-	} else {
-		log.Printf("Running extractor command '%s ./...' from directory '%s'.\n", extractor, cwd)
-		cmd = exec.Command(extractor, "./...")
+	extractorArgs := []string{}
+	if depMode == GoGetWithModules {
+		extractorArgs = append(extractorArgs, modMode.argsForGoVersion(getEnvGoVersion())...)
 	}
+	extractorArgs = append(extractorArgs, "./...")
+
+	log.Printf("Running extractor command '%s %v' from directory '%s'.\n", extractor, extractorArgs, cwd)
+	cmd := exec.Command(extractor, extractorArgs...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err = cmd.Run()
