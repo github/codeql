@@ -49,6 +49,8 @@
 | collections_.py:137 | fail | list_index_aug_assign | my_list |
 | collections_.py:144 | ok   | list_append | my_list |
 | collections_.py:147 | fail | list_append | my_list |
+| collections_.py:154 | ok   | set_add | my_set |
+| collections_.py:157 | fail | set_add | my_set |
 | json_.py:26 | ok   | test | json.dumps(..) |
 | json_.py:27 | ok   | test | json.loads(..) |
 | json_.py:34 | fail | test | tainted_filelike |

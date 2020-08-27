@@ -147,6 +147,16 @@ def list_append():
     ensure_tainted(my_list)
 
 
+def set_add():
+    tainted_string = TAINTED_STRING
+    my_set = {"safe"}
+
+    ensure_not_tainted(my_set)
+
+    my_set.add(tainted_string)
+    ensure_tainted(my_set)
+
+
 # Make tests runable
 
 test_construction()
@@ -158,3 +168,4 @@ test_defaultdict("key", "key")
 list_index_assign()
 list_index_aug_assign()
 list_append()
+set_add()
