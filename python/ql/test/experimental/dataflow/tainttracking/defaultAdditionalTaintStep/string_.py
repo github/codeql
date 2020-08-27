@@ -35,6 +35,11 @@ def str_operations():
         unicode(ts),
     )
 
+    aug_assignment = "safe"
+    ensure_not_tainted(aug_assignment)
+    aug_assignment += TAINTED_STRING
+    ensure_tainted(aug_assignment)
+
 
 def str_methods():
     print("\n# str_methods")
