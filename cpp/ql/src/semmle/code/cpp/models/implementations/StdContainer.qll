@@ -23,7 +23,7 @@ class StdSequenceContainerConstructor extends Constructor, TaintFunction {
    */
   int getAValueTypeParameterIndex() {
     getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
-      getDeclaringType().getTemplateArgument(0) // i.e. the `T` of this `std::vector<T>`
+      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

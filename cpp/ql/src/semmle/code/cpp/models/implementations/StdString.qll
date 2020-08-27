@@ -71,17 +71,17 @@ class StdStringAppend extends TaintFunction {
    * Gets the index of a parameter to this function that is a string (or
    * character).
    */
-  int getAStringParameter() {
+  int getAStringParameterIndex() {
     getParameter(result).getType() instanceof PointerType or
     getParameter(result).getType() instanceof ReferenceType or
-    getParameter(result).getType() = getDeclaringType().getTemplateArgument(0) // i.e. `std::basic_string::CharT`
+    getParameter(result).getUnspecifiedType() = getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. `std::basic_string::CharT`
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from string and parameter to string (qualifier) and return value
     (
       input.isQualifierObject() or
-      input.isParameterDeref(getAStringParameter())
+      input.isParameterDeref(getAStringParameterIndex())
     ) and
     (
       output.isQualifierObject() or
@@ -100,15 +100,15 @@ class StdStringAssign extends TaintFunction {
    * Gets the index of a parameter to this function that is a string (or
    * character).
    */
-  int getAStringParameter() {
+  int getAStringParameterIndex() {
     getParameter(result).getType() instanceof PointerType or
     getParameter(result).getType() instanceof ReferenceType or
-    getParameter(result).getType() = getDeclaringType().getTemplateArgument(0) // i.e. `std::basic_string::CharT`
+    getParameter(result).getUnspecifiedType() = getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. `std::basic_string::CharT`
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from parameter to string itself (qualifier) and return value
-    input.isParameterDeref(getAStringParameter()) and
+    input.isParameterDeref(getAStringParameterIndex()) and
     (
       output.isQualifierObject() or
       output.isReturnValueDeref()
