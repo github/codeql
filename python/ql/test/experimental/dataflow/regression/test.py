@@ -100,6 +100,26 @@ def test16():
     t = module.dangerous_func()
     SINK(t)
 
+class C(object): pass
+
+def x_sink(arg):
+    SINK(arg.x)
+
+def test17():
+    t = C()
+    t.x = module.dangerous
+    SINK(t.x)
+
+def test18():
+    t = C()
+    t.x = module.dangerous
+    t = hub(t)
+    x_sink(t)
+
+def test19():
+    t = CUSTOM_SOURCE
+    t = hub(TAINT_FROM_ARG(t))
+    CUSTOM_SINK(t)
 
 def test20(cond):
     if cond:
@@ -159,9 +179,55 @@ def test_truth():
     if t:
         SINK(t)
     else:
-        SINK(t) # Regression: FP here
+        SINK(t)
     if not t:
-        SINK(t) # Regression: FP here
+        SINK(t)
     else:
         SINK(t)
 
+def test_early_exit():
+    t = FALSEY
+    if not t:
+        return
+    t
+
+def flow_through_type_test_if_no_class():
+    t = SOURCE
+    if isinstance(t, str):
+        SINK(t)
+    else:
+        SINK(t)
+
+def flow_in_iteration():
+    t = ITERABLE_SOURCE
+    for i in t:
+        i
+    return i
+
+def flow_in_generator():
+    seq = [SOURCE]
+    for i in seq:
+        yield i
+
+def flow_from_generator():
+    for x in flow_in_generator():
+        SINK(x)
+
+def const_eq_clears_taint():
+    tainted = SOURCE
+    if tainted == "safe":
+        SINK(tainted) # safe
+    SINK(tainted) # unsafe
+
+def const_eq_clears_taint2():
+    tainted = SOURCE
+    if tainted != "safe":
+        return
+    SINK(tainted) # safe
+
+def non_const_eq_preserves_taint(x):
+    tainted = SOURCE
+    if tainted == tainted:
+        SINK(tainted) # unsafe
+    if tainted == x:
+        SINK(tainted) # unsafe
