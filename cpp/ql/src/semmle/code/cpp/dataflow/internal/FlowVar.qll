@@ -427,7 +427,7 @@ module FlowVar_internal {
     /**
      * Gets a variable that is assigned in this loop and read outside the loop.
      */
-    private Variable getARelevantVariable() {
+    Variable getARelevantVariable() {
       result = this.getAVariableAssignedInLoop() and
       exists(VariableAccess va |
         va.getTarget() = result and
@@ -472,8 +472,14 @@ module FlowVar_internal {
         reachesWithoutAssignment(bb.getAPredecessor(), v) and
         this.bbInLoop(bb)
       ) and
-      not assignmentLikeOperation(bb.getANode(), v, _, _)
+      not assignsToVar(bb, v)
     }
+  }
+
+  pragma[noinline]
+  private predicate assignsToVar(BasicBlock bb, Variable v) {
+    assignmentLikeOperation(bb.getANode(), v, _, _) and
+    exists(AlwaysTrueUponEntryLoop loop | v = loop.getARelevantVariable())
   }
 
   /**
