@@ -47,6 +47,7 @@ variable is 32.
 
 var goVersion = ""
 
+// Returns the current Go version as returned by 'go version', e.g. go1.14.4
 func getEnvGoVersion() string {
 	if goVersion == "" {
 		gover, err := exec.Command("go", "version").CombinedOutput()
@@ -56,6 +57,15 @@ func getEnvGoVersion() string {
 		goVersion = strings.Fields(string(gover))[2]
 	}
 	return goVersion
+}
+
+// Returns the current Go version in semver format, e.g. v1.14.4
+func getEnvGoSemVer() string {
+	goVersion := getEnvGoVersion()
+	if !strings.HasPrefix(goVersion, "go") {
+		log.Fatalf("Expected 'go version' output of the form 'go1.2.3'; got '%s'", goVersion)
+	}
+	return "v" + goVersion[2:]
 }
 
 func run(cmd *exec.Cmd) bool {
@@ -164,11 +174,12 @@ func (m ModMode) argsForGoVersion(version string) []string {
 	case ModReadonly:
 		return []string{"-mod=readonly"}
 	case ModMod:
-		if semver.Compare(getEnvGoVersion(), "1.14") < 0 {
-			log.Printf("%s < %s", getEnvGoVersion(), "1.14")
+		if !semver.IsValid(version) {
+			log.Fatalf("Invalid Go semver: '%s'", version)
+		}
+		if semver.Compare(version, "v1.14") < 0 {
 			return []string{} // -mod=mod is the default behaviour for go <= 1.13, and is not accepted as an argument
 		} else {
-			log.Printf("%s >= %s", getEnvGoVersion(), "1.14")
 			return []string{"-mod=mod"}
 		}
 	case ModVendor:
@@ -505,7 +516,7 @@ func main() {
 
 	extractorArgs := []string{}
 	if depMode == GoGetWithModules {
-		extractorArgs = append(extractorArgs, modMode.argsForGoVersion(getEnvGoVersion())...)
+		extractorArgs = append(extractorArgs, modMode.argsForGoVersion(getEnvGoSemVer())...)
 	}
 	extractorArgs = append(extractorArgs, "./...")
 
