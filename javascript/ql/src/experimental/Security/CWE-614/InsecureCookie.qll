@@ -76,9 +76,7 @@ module Cookie {
    * A cookie set using `response.cookie` from `express` module (https://expressjs.com/en/api.html#res.cookie).
    */
   class InsecureExpressCookieResponse extends Cookie, DataFlow::MethodCallNode {
-    InsecureExpressCookieResponse() {
-      this.calls(any(Express::ResponseExpr r).flow(), "cookie")
-    }
+    InsecureExpressCookieResponse() { this.calls(any(Express::ResponseExpr r).flow(), "cookie") }
 
     override string getKind() { result = "response.cookie" }
 
@@ -124,10 +122,10 @@ module Cookie {
    */
   class InsecureJsCookie extends Cookie {
     InsecureJsCookie() {
-    this =
-      [DataFlow::globalVarRef("Cookie"),
-          DataFlow::globalVarRef("Cookie").getAMemberCall("noConflict"),
-          DataFlow::moduleImport("js-cookie")].getAMemberCall("set")
+      this =
+        [DataFlow::globalVarRef("Cookie"),
+            DataFlow::globalVarRef("Cookie").getAMemberCall("noConflict"),
+            DataFlow::moduleImport("js-cookie")].getAMemberCall("set")
     }
 
     override string getKind() { result = "js-cookie" }
