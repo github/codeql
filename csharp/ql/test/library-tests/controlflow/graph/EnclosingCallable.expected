@@ -2190,6 +2190,274 @@ nodeEnclosing
 | LoopUnrolling.cs:73:13:73:34 | call to method WriteLine | LoopUnrolling.cs:67:10:67:11 | M8 |
 | LoopUnrolling.cs:73:13:73:35 | ...; | LoopUnrolling.cs:67:10:67:11 | M8 |
 | LoopUnrolling.cs:73:31:73:33 | access to local variable arg | LoopUnrolling.cs:67:10:67:11 | M8 |
+| MultiImplementationA.cs:6:22:6:31 | enter get_P1 | MultiImplementationA.cs:6:22:6:31 | get_P1 |
+| MultiImplementationA.cs:6:22:6:31 | enter get_P1 | MultiImplementationB.cs:3:22:3:22 | get_P1 |
+| MultiImplementationA.cs:6:22:6:31 | exit get_P1 | MultiImplementationA.cs:6:22:6:31 | get_P1 |
+| MultiImplementationA.cs:6:22:6:31 | exit get_P1 | MultiImplementationB.cs:3:22:3:22 | get_P1 |
+| MultiImplementationA.cs:6:22:6:31 | throw ... | MultiImplementationA.cs:6:22:6:31 | get_P1 |
+| MultiImplementationA.cs:6:22:6:31 | throw ... | MultiImplementationB.cs:3:22:3:22 | get_P1 |
+| MultiImplementationA.cs:6:28:6:31 | null | MultiImplementationA.cs:6:22:6:31 | get_P1 |
+| MultiImplementationA.cs:6:28:6:31 | null | MultiImplementationB.cs:3:22:3:22 | get_P1 |
+| MultiImplementationA.cs:7:21:7:23 | enter get_P2 | MultiImplementationA.cs:7:21:7:23 | get_P2 |
+| MultiImplementationA.cs:7:21:7:23 | enter get_P2 | MultiImplementationB.cs:4:21:4:23 | get_P2 |
+| MultiImplementationA.cs:7:21:7:23 | exit get_P2 | MultiImplementationA.cs:7:21:7:23 | get_P2 |
+| MultiImplementationA.cs:7:21:7:23 | exit get_P2 | MultiImplementationB.cs:4:21:4:23 | get_P2 |
+| MultiImplementationA.cs:7:25:7:39 | {...} | MultiImplementationA.cs:7:21:7:23 | get_P2 |
+| MultiImplementationA.cs:7:25:7:39 | {...} | MultiImplementationB.cs:4:21:4:23 | get_P2 |
+| MultiImplementationA.cs:7:27:7:37 | throw ...; | MultiImplementationA.cs:7:21:7:23 | get_P2 |
+| MultiImplementationA.cs:7:27:7:37 | throw ...; | MultiImplementationB.cs:4:21:4:23 | get_P2 |
+| MultiImplementationA.cs:7:33:7:36 | null | MultiImplementationA.cs:7:21:7:23 | get_P2 |
+| MultiImplementationA.cs:7:33:7:36 | null | MultiImplementationB.cs:4:21:4:23 | get_P2 |
+| MultiImplementationA.cs:7:41:7:43 | enter set_P2 | MultiImplementationA.cs:7:41:7:43 | set_P2 |
+| MultiImplementationA.cs:7:41:7:43 | enter set_P2 | MultiImplementationB.cs:4:39:4:41 | set_P2 |
+| MultiImplementationA.cs:7:41:7:43 | exit set_P2 | MultiImplementationA.cs:7:41:7:43 | set_P2 |
+| MultiImplementationA.cs:7:41:7:43 | exit set_P2 | MultiImplementationB.cs:4:39:4:41 | set_P2 |
+| MultiImplementationA.cs:7:45:7:59 | {...} | MultiImplementationA.cs:7:41:7:43 | set_P2 |
+| MultiImplementationA.cs:7:45:7:59 | {...} | MultiImplementationB.cs:4:39:4:41 | set_P2 |
+| MultiImplementationA.cs:7:47:7:57 | throw ...; | MultiImplementationA.cs:7:41:7:43 | set_P2 |
+| MultiImplementationA.cs:7:47:7:57 | throw ...; | MultiImplementationB.cs:4:39:4:41 | set_P2 |
+| MultiImplementationA.cs:7:53:7:56 | null | MultiImplementationA.cs:7:41:7:43 | set_P2 |
+| MultiImplementationA.cs:7:53:7:56 | null | MultiImplementationB.cs:4:39:4:41 | set_P2 |
+| MultiImplementationA.cs:8:16:8:16 | enter M | MultiImplementationA.cs:8:16:8:16 | M |
+| MultiImplementationA.cs:8:16:8:16 | enter M | MultiImplementationB.cs:5:16:5:16 | M |
+| MultiImplementationA.cs:8:16:8:16 | exit M | MultiImplementationA.cs:8:16:8:16 | M |
+| MultiImplementationA.cs:8:16:8:16 | exit M | MultiImplementationB.cs:5:16:5:16 | M |
+| MultiImplementationA.cs:8:23:8:32 | throw ... | MultiImplementationA.cs:8:16:8:16 | M |
+| MultiImplementationA.cs:8:23:8:32 | throw ... | MultiImplementationB.cs:5:16:5:16 | M |
+| MultiImplementationA.cs:8:29:8:32 | null | MultiImplementationA.cs:8:16:8:16 | M |
+| MultiImplementationA.cs:8:29:8:32 | null | MultiImplementationB.cs:5:16:5:16 | M |
+| MultiImplementationA.cs:13:16:13:16 | this access | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationA.cs:13:16:13:16 | this access | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationA.cs:13:16:13:20 | ... = ... | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationA.cs:13:16:13:20 | ... = ... | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationA.cs:13:20:13:20 | 0 | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationA.cs:13:20:13:20 | 0 | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationA.cs:14:31:14:31 | access to parameter i | MultiImplementationA.cs:14:31:14:31 | get_Item |
+| MultiImplementationA.cs:14:31:14:31 | access to parameter i | MultiImplementationB.cs:12:31:12:40 | get_Item |
+| MultiImplementationA.cs:14:31:14:31 | enter get_Item | MultiImplementationA.cs:14:31:14:31 | get_Item |
+| MultiImplementationA.cs:14:31:14:31 | enter get_Item | MultiImplementationB.cs:12:31:12:40 | get_Item |
+| MultiImplementationA.cs:14:31:14:31 | exit get_Item | MultiImplementationA.cs:14:31:14:31 | get_Item |
+| MultiImplementationA.cs:14:31:14:31 | exit get_Item | MultiImplementationB.cs:12:31:12:40 | get_Item |
+| MultiImplementationA.cs:15:36:15:38 | enter get_Item | MultiImplementationA.cs:15:36:15:38 | get_Item |
+| MultiImplementationA.cs:15:36:15:38 | enter get_Item | MultiImplementationB.cs:13:36:13:38 | get_Item |
+| MultiImplementationA.cs:15:36:15:38 | exit get_Item | MultiImplementationA.cs:15:36:15:38 | get_Item |
+| MultiImplementationA.cs:15:36:15:38 | exit get_Item | MultiImplementationB.cs:13:36:13:38 | get_Item |
+| MultiImplementationA.cs:15:40:15:52 | {...} | MultiImplementationA.cs:15:36:15:38 | get_Item |
+| MultiImplementationA.cs:15:40:15:52 | {...} | MultiImplementationB.cs:13:36:13:38 | get_Item |
+| MultiImplementationA.cs:15:42:15:50 | return ...; | MultiImplementationA.cs:15:36:15:38 | get_Item |
+| MultiImplementationA.cs:15:42:15:50 | return ...; | MultiImplementationB.cs:13:36:13:38 | get_Item |
+| MultiImplementationA.cs:15:49:15:49 | access to parameter s | MultiImplementationA.cs:15:36:15:38 | get_Item |
+| MultiImplementationA.cs:15:49:15:49 | access to parameter s | MultiImplementationB.cs:13:36:13:38 | get_Item |
+| MultiImplementationA.cs:15:54:15:56 | enter set_Item | MultiImplementationA.cs:15:54:15:56 | set_Item |
+| MultiImplementationA.cs:15:54:15:56 | enter set_Item | MultiImplementationB.cs:13:56:13:58 | set_Item |
+| MultiImplementationA.cs:15:54:15:56 | exit set_Item | MultiImplementationA.cs:15:54:15:56 | set_Item |
+| MultiImplementationA.cs:15:54:15:56 | exit set_Item | MultiImplementationB.cs:13:56:13:58 | set_Item |
+| MultiImplementationA.cs:15:58:15:60 | {...} | MultiImplementationA.cs:15:54:15:56 | set_Item |
+| MultiImplementationA.cs:15:58:15:60 | {...} | MultiImplementationB.cs:13:56:13:58 | set_Item |
+| MultiImplementationA.cs:16:17:16:18 | enter M1 | MultiImplementationA.cs:16:17:16:18 | M1 |
+| MultiImplementationA.cs:16:17:16:18 | enter M1 | MultiImplementationB.cs:14:17:14:18 | M1 |
+| MultiImplementationA.cs:16:17:16:18 | exit M1 | MultiImplementationA.cs:16:17:16:18 | M1 |
+| MultiImplementationA.cs:16:17:16:18 | exit M1 | MultiImplementationB.cs:14:17:14:18 | M1 |
+| MultiImplementationA.cs:17:5:19:5 | {...} | MultiImplementationA.cs:16:17:16:18 | M1 |
+| MultiImplementationA.cs:17:5:19:5 | {...} | MultiImplementationB.cs:14:17:14:18 | M1 |
+| MultiImplementationA.cs:18:9:18:22 | M2(...) | MultiImplementationA.cs:16:17:16:18 | M1 |
+| MultiImplementationA.cs:18:9:18:22 | M2(...) | MultiImplementationB.cs:14:17:14:18 | M1 |
+| MultiImplementationA.cs:18:9:18:22 | enter M2 | MultiImplementationA.cs:18:9:18:22 | M2 |
+| MultiImplementationA.cs:18:9:18:22 | exit M2 | MultiImplementationA.cs:18:9:18:22 | M2 |
+| MultiImplementationA.cs:18:21:18:21 | 0 | MultiImplementationA.cs:18:9:18:22 | M2 |
+| MultiImplementationA.cs:20:12:20:13 | enter C2 | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationA.cs:20:12:20:13 | enter C2 | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationA.cs:20:12:20:13 | exit C2 | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationA.cs:20:12:20:13 | exit C2 | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationA.cs:20:22:20:31 | {...} | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationA.cs:20:22:20:31 | {...} | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationA.cs:20:24:20:24 | this access | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationA.cs:20:24:20:24 | this access | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationA.cs:20:24:20:28 | ... = ... | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationA.cs:20:24:20:28 | ... = ... | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationA.cs:20:24:20:29 | ...; | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationA.cs:20:24:20:29 | ...; | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationA.cs:20:28:20:28 | access to parameter i | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationA.cs:20:28:20:28 | access to parameter i | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationA.cs:21:12:21:13 | enter C2 | MultiImplementationA.cs:21:12:21:13 | C2 |
+| MultiImplementationA.cs:21:12:21:13 | enter C2 | MultiImplementationB.cs:19:12:19:13 | C2 |
+| MultiImplementationA.cs:21:12:21:13 | exit C2 | MultiImplementationA.cs:21:12:21:13 | C2 |
+| MultiImplementationA.cs:21:12:21:13 | exit C2 | MultiImplementationB.cs:19:12:19:13 | C2 |
+| MultiImplementationA.cs:21:19:21:22 | call to constructor C2 | MultiImplementationA.cs:21:12:21:13 | C2 |
+| MultiImplementationA.cs:21:19:21:22 | call to constructor C2 | MultiImplementationB.cs:19:12:19:13 | C2 |
+| MultiImplementationA.cs:21:24:21:24 | 0 | MultiImplementationA.cs:21:12:21:13 | C2 |
+| MultiImplementationA.cs:21:24:21:24 | 0 | MultiImplementationB.cs:19:12:19:13 | C2 |
+| MultiImplementationA.cs:21:27:21:29 | {...} | MultiImplementationA.cs:21:12:21:13 | C2 |
+| MultiImplementationA.cs:21:27:21:29 | {...} | MultiImplementationB.cs:19:12:19:13 | C2 |
+| MultiImplementationA.cs:22:6:22:7 | enter ~C2 | MultiImplementationA.cs:22:6:22:7 | ~C2 |
+| MultiImplementationA.cs:22:6:22:7 | enter ~C2 | MultiImplementationB.cs:20:6:20:7 | ~C2 |
+| MultiImplementationA.cs:22:6:22:7 | exit ~C2 | MultiImplementationA.cs:22:6:22:7 | ~C2 |
+| MultiImplementationA.cs:22:6:22:7 | exit ~C2 | MultiImplementationB.cs:20:6:20:7 | ~C2 |
+| MultiImplementationA.cs:22:11:22:13 | {...} | MultiImplementationA.cs:22:6:22:7 | ~C2 |
+| MultiImplementationA.cs:22:11:22:13 | {...} | MultiImplementationB.cs:20:6:20:7 | ~C2 |
+| MultiImplementationA.cs:23:28:23:35 | enter implicit conversion | MultiImplementationA.cs:23:28:23:35 | implicit conversion |
+| MultiImplementationA.cs:23:28:23:35 | enter implicit conversion | MultiImplementationB.cs:21:28:21:35 | implicit conversion |
+| MultiImplementationA.cs:23:28:23:35 | exit implicit conversion | MultiImplementationA.cs:23:28:23:35 | implicit conversion |
+| MultiImplementationA.cs:23:28:23:35 | exit implicit conversion | MultiImplementationB.cs:21:28:21:35 | implicit conversion |
+| MultiImplementationA.cs:23:50:23:53 | null | MultiImplementationA.cs:23:28:23:35 | implicit conversion |
+| MultiImplementationA.cs:23:50:23:53 | null | MultiImplementationB.cs:21:28:21:35 | implicit conversion |
+| MultiImplementationA.cs:24:16:24:16 | access to property P | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationA.cs:24:16:24:16 | access to property P | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationA.cs:24:16:24:16 | this access | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationA.cs:24:16:24:16 | this access | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationA.cs:24:32:24:34 | ... = ... | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationA.cs:24:32:24:34 | ... = ... | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationA.cs:24:34:24:34 | 0 | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationA.cs:24:34:24:34 | 0 | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationA.cs:30:21:30:23 | enter get_P3 | MultiImplementationA.cs:30:21:30:23 | get_P3 |
+| MultiImplementationA.cs:30:21:30:23 | enter get_P3 | MultiImplementationB.cs:27:21:27:23 | get_P3 |
+| MultiImplementationA.cs:30:21:30:23 | exit get_P3 | MultiImplementationA.cs:30:21:30:23 | get_P3 |
+| MultiImplementationA.cs:30:21:30:23 | exit get_P3 | MultiImplementationB.cs:27:21:27:23 | get_P3 |
+| MultiImplementationA.cs:30:28:30:37 | throw ... | MultiImplementationA.cs:30:21:30:23 | get_P3 |
+| MultiImplementationA.cs:30:28:30:37 | throw ... | MultiImplementationB.cs:27:21:27:23 | get_P3 |
+| MultiImplementationA.cs:30:34:30:37 | null | MultiImplementationA.cs:30:21:30:23 | get_P3 |
+| MultiImplementationA.cs:30:34:30:37 | null | MultiImplementationB.cs:27:21:27:23 | get_P3 |
+| MultiImplementationA.cs:36:9:36:10 | enter M1 | MultiImplementationA.cs:36:9:36:10 | M1 |
+| MultiImplementationA.cs:36:9:36:10 | enter M1 | MultiImplementationB.cs:32:9:32:10 | M1 |
+| MultiImplementationA.cs:36:9:36:10 | exit M1 | MultiImplementationA.cs:36:9:36:10 | M1 |
+| MultiImplementationA.cs:36:9:36:10 | exit M1 | MultiImplementationB.cs:32:9:32:10 | M1 |
+| MultiImplementationA.cs:36:14:36:28 | {...} | MultiImplementationA.cs:36:9:36:10 | M1 |
+| MultiImplementationA.cs:36:14:36:28 | {...} | MultiImplementationB.cs:32:9:32:10 | M1 |
+| MultiImplementationA.cs:36:16:36:26 | throw ...; | MultiImplementationA.cs:36:9:36:10 | M1 |
+| MultiImplementationA.cs:36:16:36:26 | throw ...; | MultiImplementationB.cs:32:9:32:10 | M1 |
+| MultiImplementationA.cs:36:22:36:25 | null | MultiImplementationA.cs:36:9:36:10 | M1 |
+| MultiImplementationA.cs:36:22:36:25 | null | MultiImplementationB.cs:32:9:32:10 | M1 |
+| MultiImplementationA.cs:37:9:37:10 | enter M2 | MultiImplementationA.cs:37:9:37:10 | M2 |
+| MultiImplementationA.cs:37:9:37:10 | exit M2 | MultiImplementationA.cs:37:9:37:10 | M2 |
+| MultiImplementationA.cs:37:14:37:28 | {...} | MultiImplementationA.cs:37:9:37:10 | M2 |
+| MultiImplementationA.cs:37:16:37:26 | throw ...; | MultiImplementationA.cs:37:9:37:10 | M2 |
+| MultiImplementationA.cs:37:22:37:25 | null | MultiImplementationA.cs:37:9:37:10 | M2 |
+| MultiImplementationB.cs:3:22:3:22 | 0 | MultiImplementationA.cs:6:22:6:31 | get_P1 |
+| MultiImplementationB.cs:3:22:3:22 | 0 | MultiImplementationB.cs:3:22:3:22 | get_P1 |
+| MultiImplementationB.cs:3:22:3:22 | enter get_P1 | MultiImplementationA.cs:6:22:6:31 | get_P1 |
+| MultiImplementationB.cs:3:22:3:22 | enter get_P1 | MultiImplementationB.cs:3:22:3:22 | get_P1 |
+| MultiImplementationB.cs:3:22:3:22 | exit get_P1 | MultiImplementationA.cs:6:22:6:31 | get_P1 |
+| MultiImplementationB.cs:3:22:3:22 | exit get_P1 | MultiImplementationB.cs:3:22:3:22 | get_P1 |
+| MultiImplementationB.cs:4:21:4:23 | enter get_P2 | MultiImplementationA.cs:7:21:7:23 | get_P2 |
+| MultiImplementationB.cs:4:21:4:23 | enter get_P2 | MultiImplementationB.cs:4:21:4:23 | get_P2 |
+| MultiImplementationB.cs:4:21:4:23 | exit get_P2 | MultiImplementationA.cs:7:21:7:23 | get_P2 |
+| MultiImplementationB.cs:4:21:4:23 | exit get_P2 | MultiImplementationB.cs:4:21:4:23 | get_P2 |
+| MultiImplementationB.cs:4:25:4:37 | {...} | MultiImplementationA.cs:7:21:7:23 | get_P2 |
+| MultiImplementationB.cs:4:25:4:37 | {...} | MultiImplementationB.cs:4:21:4:23 | get_P2 |
+| MultiImplementationB.cs:4:27:4:35 | return ...; | MultiImplementationA.cs:7:21:7:23 | get_P2 |
+| MultiImplementationB.cs:4:27:4:35 | return ...; | MultiImplementationB.cs:4:21:4:23 | get_P2 |
+| MultiImplementationB.cs:4:34:4:34 | 1 | MultiImplementationA.cs:7:21:7:23 | get_P2 |
+| MultiImplementationB.cs:4:34:4:34 | 1 | MultiImplementationB.cs:4:21:4:23 | get_P2 |
+| MultiImplementationB.cs:4:39:4:41 | enter set_P2 | MultiImplementationA.cs:7:41:7:43 | set_P2 |
+| MultiImplementationB.cs:4:39:4:41 | enter set_P2 | MultiImplementationB.cs:4:39:4:41 | set_P2 |
+| MultiImplementationB.cs:4:39:4:41 | exit set_P2 | MultiImplementationA.cs:7:41:7:43 | set_P2 |
+| MultiImplementationB.cs:4:39:4:41 | exit set_P2 | MultiImplementationB.cs:4:39:4:41 | set_P2 |
+| MultiImplementationB.cs:4:43:4:45 | {...} | MultiImplementationA.cs:7:41:7:43 | set_P2 |
+| MultiImplementationB.cs:4:43:4:45 | {...} | MultiImplementationB.cs:4:39:4:41 | set_P2 |
+| MultiImplementationB.cs:5:16:5:16 | enter M | MultiImplementationA.cs:8:16:8:16 | M |
+| MultiImplementationB.cs:5:16:5:16 | enter M | MultiImplementationB.cs:5:16:5:16 | M |
+| MultiImplementationB.cs:5:16:5:16 | exit M | MultiImplementationA.cs:8:16:8:16 | M |
+| MultiImplementationB.cs:5:16:5:16 | exit M | MultiImplementationB.cs:5:16:5:16 | M |
+| MultiImplementationB.cs:5:23:5:23 | 2 | MultiImplementationA.cs:8:16:8:16 | M |
+| MultiImplementationB.cs:5:23:5:23 | 2 | MultiImplementationB.cs:5:16:5:16 | M |
+| MultiImplementationB.cs:11:16:11:16 | this access | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationB.cs:11:16:11:16 | this access | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationB.cs:11:16:11:20 | ... = ... | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationB.cs:11:16:11:20 | ... = ... | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationB.cs:11:20:11:20 | 1 | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationB.cs:11:20:11:20 | 1 | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationB.cs:12:31:12:40 | enter get_Item | MultiImplementationA.cs:14:31:14:31 | get_Item |
+| MultiImplementationB.cs:12:31:12:40 | enter get_Item | MultiImplementationB.cs:12:31:12:40 | get_Item |
+| MultiImplementationB.cs:12:31:12:40 | exit get_Item | MultiImplementationA.cs:14:31:14:31 | get_Item |
+| MultiImplementationB.cs:12:31:12:40 | exit get_Item | MultiImplementationB.cs:12:31:12:40 | get_Item |
+| MultiImplementationB.cs:12:31:12:40 | throw ... | MultiImplementationA.cs:14:31:14:31 | get_Item |
+| MultiImplementationB.cs:12:31:12:40 | throw ... | MultiImplementationB.cs:12:31:12:40 | get_Item |
+| MultiImplementationB.cs:12:37:12:40 | null | MultiImplementationA.cs:14:31:14:31 | get_Item |
+| MultiImplementationB.cs:12:37:12:40 | null | MultiImplementationB.cs:12:31:12:40 | get_Item |
+| MultiImplementationB.cs:13:36:13:38 | enter get_Item | MultiImplementationA.cs:15:36:15:38 | get_Item |
+| MultiImplementationB.cs:13:36:13:38 | enter get_Item | MultiImplementationB.cs:13:36:13:38 | get_Item |
+| MultiImplementationB.cs:13:36:13:38 | exit get_Item | MultiImplementationA.cs:15:36:15:38 | get_Item |
+| MultiImplementationB.cs:13:36:13:38 | exit get_Item | MultiImplementationB.cs:13:36:13:38 | get_Item |
+| MultiImplementationB.cs:13:40:13:54 | {...} | MultiImplementationA.cs:15:36:15:38 | get_Item |
+| MultiImplementationB.cs:13:40:13:54 | {...} | MultiImplementationB.cs:13:36:13:38 | get_Item |
+| MultiImplementationB.cs:13:42:13:52 | throw ...; | MultiImplementationA.cs:15:36:15:38 | get_Item |
+| MultiImplementationB.cs:13:42:13:52 | throw ...; | MultiImplementationB.cs:13:36:13:38 | get_Item |
+| MultiImplementationB.cs:13:48:13:51 | null | MultiImplementationA.cs:15:36:15:38 | get_Item |
+| MultiImplementationB.cs:13:48:13:51 | null | MultiImplementationB.cs:13:36:13:38 | get_Item |
+| MultiImplementationB.cs:13:56:13:58 | enter set_Item | MultiImplementationA.cs:15:54:15:56 | set_Item |
+| MultiImplementationB.cs:13:56:13:58 | enter set_Item | MultiImplementationB.cs:13:56:13:58 | set_Item |
+| MultiImplementationB.cs:13:56:13:58 | exit set_Item | MultiImplementationA.cs:15:54:15:56 | set_Item |
+| MultiImplementationB.cs:13:56:13:58 | exit set_Item | MultiImplementationB.cs:13:56:13:58 | set_Item |
+| MultiImplementationB.cs:13:60:13:62 | {...} | MultiImplementationA.cs:15:54:15:56 | set_Item |
+| MultiImplementationB.cs:13:60:13:62 | {...} | MultiImplementationB.cs:13:56:13:58 | set_Item |
+| MultiImplementationB.cs:14:17:14:18 | enter M1 | MultiImplementationA.cs:16:17:16:18 | M1 |
+| MultiImplementationB.cs:14:17:14:18 | enter M1 | MultiImplementationB.cs:14:17:14:18 | M1 |
+| MultiImplementationB.cs:14:17:14:18 | exit M1 | MultiImplementationA.cs:16:17:16:18 | M1 |
+| MultiImplementationB.cs:14:17:14:18 | exit M1 | MultiImplementationB.cs:14:17:14:18 | M1 |
+| MultiImplementationB.cs:15:5:17:5 | {...} | MultiImplementationA.cs:16:17:16:18 | M1 |
+| MultiImplementationB.cs:15:5:17:5 | {...} | MultiImplementationB.cs:14:17:14:18 | M1 |
+| MultiImplementationB.cs:16:9:16:31 | M2(...) | MultiImplementationA.cs:16:17:16:18 | M1 |
+| MultiImplementationB.cs:16:9:16:31 | M2(...) | MultiImplementationB.cs:14:17:14:18 | M1 |
+| MultiImplementationB.cs:16:9:16:31 | enter M2 | MultiImplementationB.cs:16:9:16:31 | M2 |
+| MultiImplementationB.cs:16:9:16:31 | exit M2 | MultiImplementationB.cs:16:9:16:31 | M2 |
+| MultiImplementationB.cs:16:21:16:30 | throw ... | MultiImplementationB.cs:16:9:16:31 | M2 |
+| MultiImplementationB.cs:16:27:16:30 | null | MultiImplementationB.cs:16:9:16:31 | M2 |
+| MultiImplementationB.cs:18:12:18:13 | enter C2 | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationB.cs:18:12:18:13 | enter C2 | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationB.cs:18:12:18:13 | exit C2 | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationB.cs:18:12:18:13 | exit C2 | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationB.cs:18:22:18:36 | {...} | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationB.cs:18:22:18:36 | {...} | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationB.cs:18:24:18:34 | throw ...; | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationB.cs:18:24:18:34 | throw ...; | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationB.cs:18:30:18:33 | null | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationB.cs:18:30:18:33 | null | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationB.cs:19:12:19:13 | enter C2 | MultiImplementationA.cs:21:12:21:13 | C2 |
+| MultiImplementationB.cs:19:12:19:13 | enter C2 | MultiImplementationB.cs:19:12:19:13 | C2 |
+| MultiImplementationB.cs:19:12:19:13 | exit C2 | MultiImplementationA.cs:21:12:21:13 | C2 |
+| MultiImplementationB.cs:19:12:19:13 | exit C2 | MultiImplementationB.cs:19:12:19:13 | C2 |
+| MultiImplementationB.cs:19:19:19:22 | call to constructor C2 | MultiImplementationA.cs:21:12:21:13 | C2 |
+| MultiImplementationB.cs:19:19:19:22 | call to constructor C2 | MultiImplementationB.cs:19:12:19:13 | C2 |
+| MultiImplementationB.cs:19:24:19:24 | 1 | MultiImplementationA.cs:21:12:21:13 | C2 |
+| MultiImplementationB.cs:19:24:19:24 | 1 | MultiImplementationB.cs:19:12:19:13 | C2 |
+| MultiImplementationB.cs:19:27:19:29 | {...} | MultiImplementationA.cs:21:12:21:13 | C2 |
+| MultiImplementationB.cs:19:27:19:29 | {...} | MultiImplementationB.cs:19:12:19:13 | C2 |
+| MultiImplementationB.cs:20:6:20:7 | enter ~C2 | MultiImplementationA.cs:22:6:22:7 | ~C2 |
+| MultiImplementationB.cs:20:6:20:7 | enter ~C2 | MultiImplementationB.cs:20:6:20:7 | ~C2 |
+| MultiImplementationB.cs:20:6:20:7 | exit ~C2 | MultiImplementationA.cs:22:6:22:7 | ~C2 |
+| MultiImplementationB.cs:20:6:20:7 | exit ~C2 | MultiImplementationB.cs:20:6:20:7 | ~C2 |
+| MultiImplementationB.cs:20:11:20:25 | {...} | MultiImplementationA.cs:22:6:22:7 | ~C2 |
+| MultiImplementationB.cs:20:11:20:25 | {...} | MultiImplementationB.cs:20:6:20:7 | ~C2 |
+| MultiImplementationB.cs:20:13:20:23 | throw ...; | MultiImplementationA.cs:22:6:22:7 | ~C2 |
+| MultiImplementationB.cs:20:13:20:23 | throw ...; | MultiImplementationB.cs:20:6:20:7 | ~C2 |
+| MultiImplementationB.cs:20:19:20:22 | null | MultiImplementationA.cs:22:6:22:7 | ~C2 |
+| MultiImplementationB.cs:20:19:20:22 | null | MultiImplementationB.cs:20:6:20:7 | ~C2 |
+| MultiImplementationB.cs:21:28:21:35 | enter implicit conversion | MultiImplementationA.cs:23:28:23:35 | implicit conversion |
+| MultiImplementationB.cs:21:28:21:35 | enter implicit conversion | MultiImplementationB.cs:21:28:21:35 | implicit conversion |
+| MultiImplementationB.cs:21:28:21:35 | exit implicit conversion | MultiImplementationA.cs:23:28:23:35 | implicit conversion |
+| MultiImplementationB.cs:21:28:21:35 | exit implicit conversion | MultiImplementationB.cs:21:28:21:35 | implicit conversion |
+| MultiImplementationB.cs:21:50:21:59 | throw ... | MultiImplementationA.cs:23:28:23:35 | implicit conversion |
+| MultiImplementationB.cs:21:50:21:59 | throw ... | MultiImplementationB.cs:21:28:21:35 | implicit conversion |
+| MultiImplementationB.cs:21:56:21:59 | null | MultiImplementationA.cs:23:28:23:35 | implicit conversion |
+| MultiImplementationB.cs:21:56:21:59 | null | MultiImplementationB.cs:21:28:21:35 | implicit conversion |
+| MultiImplementationB.cs:22:16:22:16 | access to property P | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationB.cs:22:16:22:16 | access to property P | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationB.cs:22:16:22:16 | this access | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationB.cs:22:16:22:16 | this access | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationB.cs:22:32:22:34 | ... = ... | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationB.cs:22:32:22:34 | ... = ... | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationB.cs:22:34:22:34 | 1 | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationB.cs:22:34:22:34 | 1 | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationB.cs:27:21:27:23 | enter get_P3 | MultiImplementationA.cs:30:21:30:23 | get_P3 |
+| MultiImplementationB.cs:27:21:27:23 | enter get_P3 | MultiImplementationB.cs:27:21:27:23 | get_P3 |
+| MultiImplementationB.cs:27:21:27:23 | exit get_P3 | MultiImplementationA.cs:30:21:30:23 | get_P3 |
+| MultiImplementationB.cs:27:21:27:23 | exit get_P3 | MultiImplementationB.cs:27:21:27:23 | get_P3 |
+| MultiImplementationB.cs:32:9:32:10 | enter M1 | MultiImplementationA.cs:36:9:36:10 | M1 |
+| MultiImplementationB.cs:32:9:32:10 | enter M1 | MultiImplementationB.cs:32:9:32:10 | M1 |
+| MultiImplementationB.cs:32:9:32:10 | exit M1 | MultiImplementationA.cs:36:9:36:10 | M1 |
+| MultiImplementationB.cs:32:9:32:10 | exit M1 | MultiImplementationB.cs:32:9:32:10 | M1 |
+| MultiImplementationB.cs:32:17:32:17 | 0 | MultiImplementationA.cs:36:9:36:10 | M1 |
+| MultiImplementationB.cs:32:17:32:17 | 0 | MultiImplementationB.cs:32:9:32:10 | M1 |
 | NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:9:3:10 | M1 |
 | NullCoalescing.cs:3:9:3:10 | exit M1 | NullCoalescing.cs:3:9:3:10 | M1 |
 | NullCoalescing.cs:3:23:3:23 | access to parameter i | NullCoalescing.cs:3:9:3:10 | M1 |
@@ -3773,6 +4041,181 @@ blockEnclosing
 | LoopUnrolling.cs:71:9:71:21 | ...; | LoopUnrolling.cs:67:10:67:11 | M8 |
 | LoopUnrolling.cs:72:9:73:35 | foreach (... ... in ...) ... | LoopUnrolling.cs:67:10:67:11 | M8 |
 | LoopUnrolling.cs:72:21:72:23 | String arg | LoopUnrolling.cs:67:10:67:11 | M8 |
+| MultiImplementationA.cs:6:22:6:31 | enter get_P1 | MultiImplementationA.cs:6:22:6:31 | get_P1 |
+| MultiImplementationA.cs:6:22:6:31 | enter get_P1 | MultiImplementationB.cs:3:22:3:22 | get_P1 |
+| MultiImplementationA.cs:6:22:6:31 | exit get_P1 | MultiImplementationA.cs:6:22:6:31 | get_P1 |
+| MultiImplementationA.cs:6:22:6:31 | exit get_P1 | MultiImplementationB.cs:3:22:3:22 | get_P1 |
+| MultiImplementationA.cs:6:28:6:31 | null | MultiImplementationA.cs:6:22:6:31 | get_P1 |
+| MultiImplementationA.cs:6:28:6:31 | null | MultiImplementationB.cs:3:22:3:22 | get_P1 |
+| MultiImplementationA.cs:7:21:7:23 | enter get_P2 | MultiImplementationA.cs:7:21:7:23 | get_P2 |
+| MultiImplementationA.cs:7:21:7:23 | enter get_P2 | MultiImplementationB.cs:4:21:4:23 | get_P2 |
+| MultiImplementationA.cs:7:21:7:23 | exit get_P2 | MultiImplementationA.cs:7:21:7:23 | get_P2 |
+| MultiImplementationA.cs:7:21:7:23 | exit get_P2 | MultiImplementationB.cs:4:21:4:23 | get_P2 |
+| MultiImplementationA.cs:7:25:7:39 | {...} | MultiImplementationA.cs:7:21:7:23 | get_P2 |
+| MultiImplementationA.cs:7:25:7:39 | {...} | MultiImplementationB.cs:4:21:4:23 | get_P2 |
+| MultiImplementationA.cs:7:41:7:43 | enter set_P2 | MultiImplementationA.cs:7:41:7:43 | set_P2 |
+| MultiImplementationA.cs:7:41:7:43 | enter set_P2 | MultiImplementationB.cs:4:39:4:41 | set_P2 |
+| MultiImplementationA.cs:7:41:7:43 | exit set_P2 | MultiImplementationA.cs:7:41:7:43 | set_P2 |
+| MultiImplementationA.cs:7:41:7:43 | exit set_P2 | MultiImplementationB.cs:4:39:4:41 | set_P2 |
+| MultiImplementationA.cs:7:45:7:59 | {...} | MultiImplementationA.cs:7:41:7:43 | set_P2 |
+| MultiImplementationA.cs:7:45:7:59 | {...} | MultiImplementationB.cs:4:39:4:41 | set_P2 |
+| MultiImplementationA.cs:8:16:8:16 | enter M | MultiImplementationA.cs:8:16:8:16 | M |
+| MultiImplementationA.cs:8:16:8:16 | enter M | MultiImplementationB.cs:5:16:5:16 | M |
+| MultiImplementationA.cs:8:16:8:16 | exit M | MultiImplementationA.cs:8:16:8:16 | M |
+| MultiImplementationA.cs:8:16:8:16 | exit M | MultiImplementationB.cs:5:16:5:16 | M |
+| MultiImplementationA.cs:8:29:8:32 | null | MultiImplementationA.cs:8:16:8:16 | M |
+| MultiImplementationA.cs:8:29:8:32 | null | MultiImplementationB.cs:5:16:5:16 | M |
+| MultiImplementationA.cs:13:16:13:16 | this access | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationA.cs:13:16:13:16 | this access | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationA.cs:14:31:14:31 | access to parameter i | MultiImplementationA.cs:14:31:14:31 | get_Item |
+| MultiImplementationA.cs:14:31:14:31 | access to parameter i | MultiImplementationB.cs:12:31:12:40 | get_Item |
+| MultiImplementationA.cs:14:31:14:31 | enter get_Item | MultiImplementationA.cs:14:31:14:31 | get_Item |
+| MultiImplementationA.cs:14:31:14:31 | enter get_Item | MultiImplementationB.cs:12:31:12:40 | get_Item |
+| MultiImplementationA.cs:14:31:14:31 | exit get_Item | MultiImplementationA.cs:14:31:14:31 | get_Item |
+| MultiImplementationA.cs:14:31:14:31 | exit get_Item | MultiImplementationB.cs:12:31:12:40 | get_Item |
+| MultiImplementationA.cs:15:36:15:38 | enter get_Item | MultiImplementationA.cs:15:36:15:38 | get_Item |
+| MultiImplementationA.cs:15:36:15:38 | enter get_Item | MultiImplementationB.cs:13:36:13:38 | get_Item |
+| MultiImplementationA.cs:15:36:15:38 | exit get_Item | MultiImplementationA.cs:15:36:15:38 | get_Item |
+| MultiImplementationA.cs:15:36:15:38 | exit get_Item | MultiImplementationB.cs:13:36:13:38 | get_Item |
+| MultiImplementationA.cs:15:40:15:52 | {...} | MultiImplementationA.cs:15:36:15:38 | get_Item |
+| MultiImplementationA.cs:15:40:15:52 | {...} | MultiImplementationB.cs:13:36:13:38 | get_Item |
+| MultiImplementationA.cs:15:54:15:56 | enter set_Item | MultiImplementationA.cs:15:54:15:56 | set_Item |
+| MultiImplementationA.cs:15:54:15:56 | enter set_Item | MultiImplementationB.cs:13:56:13:58 | set_Item |
+| MultiImplementationA.cs:15:54:15:56 | exit set_Item | MultiImplementationA.cs:15:54:15:56 | set_Item |
+| MultiImplementationA.cs:15:54:15:56 | exit set_Item | MultiImplementationB.cs:13:56:13:58 | set_Item |
+| MultiImplementationA.cs:15:58:15:60 | {...} | MultiImplementationA.cs:15:54:15:56 | set_Item |
+| MultiImplementationA.cs:15:58:15:60 | {...} | MultiImplementationB.cs:13:56:13:58 | set_Item |
+| MultiImplementationA.cs:16:17:16:18 | enter M1 | MultiImplementationA.cs:16:17:16:18 | M1 |
+| MultiImplementationA.cs:16:17:16:18 | enter M1 | MultiImplementationB.cs:14:17:14:18 | M1 |
+| MultiImplementationA.cs:16:17:16:18 | exit M1 | MultiImplementationA.cs:16:17:16:18 | M1 |
+| MultiImplementationA.cs:16:17:16:18 | exit M1 | MultiImplementationB.cs:14:17:14:18 | M1 |
+| MultiImplementationA.cs:17:5:19:5 | {...} | MultiImplementationA.cs:16:17:16:18 | M1 |
+| MultiImplementationA.cs:17:5:19:5 | {...} | MultiImplementationB.cs:14:17:14:18 | M1 |
+| MultiImplementationA.cs:18:9:18:22 | enter M2 | MultiImplementationA.cs:18:9:18:22 | M2 |
+| MultiImplementationA.cs:20:12:20:13 | enter C2 | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationA.cs:20:12:20:13 | enter C2 | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationA.cs:20:12:20:13 | exit C2 | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationA.cs:20:12:20:13 | exit C2 | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationA.cs:20:22:20:31 | {...} | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationA.cs:20:22:20:31 | {...} | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationA.cs:21:12:21:13 | enter C2 | MultiImplementationA.cs:21:12:21:13 | C2 |
+| MultiImplementationA.cs:21:12:21:13 | enter C2 | MultiImplementationB.cs:19:12:19:13 | C2 |
+| MultiImplementationA.cs:21:12:21:13 | exit C2 | MultiImplementationA.cs:21:12:21:13 | C2 |
+| MultiImplementationA.cs:21:12:21:13 | exit C2 | MultiImplementationB.cs:19:12:19:13 | C2 |
+| MultiImplementationA.cs:21:24:21:24 | 0 | MultiImplementationA.cs:21:12:21:13 | C2 |
+| MultiImplementationA.cs:21:24:21:24 | 0 | MultiImplementationB.cs:19:12:19:13 | C2 |
+| MultiImplementationA.cs:21:27:21:29 | {...} | MultiImplementationA.cs:21:12:21:13 | C2 |
+| MultiImplementationA.cs:21:27:21:29 | {...} | MultiImplementationB.cs:19:12:19:13 | C2 |
+| MultiImplementationA.cs:22:6:22:7 | enter ~C2 | MultiImplementationA.cs:22:6:22:7 | ~C2 |
+| MultiImplementationA.cs:22:6:22:7 | enter ~C2 | MultiImplementationB.cs:20:6:20:7 | ~C2 |
+| MultiImplementationA.cs:22:6:22:7 | exit ~C2 | MultiImplementationA.cs:22:6:22:7 | ~C2 |
+| MultiImplementationA.cs:22:6:22:7 | exit ~C2 | MultiImplementationB.cs:20:6:20:7 | ~C2 |
+| MultiImplementationA.cs:22:11:22:13 | {...} | MultiImplementationA.cs:22:6:22:7 | ~C2 |
+| MultiImplementationA.cs:22:11:22:13 | {...} | MultiImplementationB.cs:20:6:20:7 | ~C2 |
+| MultiImplementationA.cs:23:28:23:35 | enter implicit conversion | MultiImplementationA.cs:23:28:23:35 | implicit conversion |
+| MultiImplementationA.cs:23:28:23:35 | enter implicit conversion | MultiImplementationB.cs:21:28:21:35 | implicit conversion |
+| MultiImplementationA.cs:23:28:23:35 | exit implicit conversion | MultiImplementationA.cs:23:28:23:35 | implicit conversion |
+| MultiImplementationA.cs:23:28:23:35 | exit implicit conversion | MultiImplementationB.cs:21:28:21:35 | implicit conversion |
+| MultiImplementationA.cs:23:50:23:53 | null | MultiImplementationA.cs:23:28:23:35 | implicit conversion |
+| MultiImplementationA.cs:23:50:23:53 | null | MultiImplementationB.cs:21:28:21:35 | implicit conversion |
+| MultiImplementationA.cs:24:16:24:16 | this access | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationA.cs:24:16:24:16 | this access | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationA.cs:30:21:30:23 | enter get_P3 | MultiImplementationA.cs:30:21:30:23 | get_P3 |
+| MultiImplementationA.cs:30:21:30:23 | enter get_P3 | MultiImplementationB.cs:27:21:27:23 | get_P3 |
+| MultiImplementationA.cs:36:9:36:10 | enter M1 | MultiImplementationA.cs:36:9:36:10 | M1 |
+| MultiImplementationA.cs:36:9:36:10 | enter M1 | MultiImplementationB.cs:32:9:32:10 | M1 |
+| MultiImplementationA.cs:36:9:36:10 | exit M1 | MultiImplementationA.cs:36:9:36:10 | M1 |
+| MultiImplementationA.cs:36:9:36:10 | exit M1 | MultiImplementationB.cs:32:9:32:10 | M1 |
+| MultiImplementationA.cs:36:14:36:28 | {...} | MultiImplementationA.cs:36:9:36:10 | M1 |
+| MultiImplementationA.cs:36:14:36:28 | {...} | MultiImplementationB.cs:32:9:32:10 | M1 |
+| MultiImplementationA.cs:37:9:37:10 | enter M2 | MultiImplementationA.cs:37:9:37:10 | M2 |
+| MultiImplementationB.cs:3:22:3:22 | 0 | MultiImplementationA.cs:6:22:6:31 | get_P1 |
+| MultiImplementationB.cs:3:22:3:22 | 0 | MultiImplementationB.cs:3:22:3:22 | get_P1 |
+| MultiImplementationB.cs:3:22:3:22 | enter get_P1 | MultiImplementationA.cs:6:22:6:31 | get_P1 |
+| MultiImplementationB.cs:3:22:3:22 | enter get_P1 | MultiImplementationB.cs:3:22:3:22 | get_P1 |
+| MultiImplementationB.cs:3:22:3:22 | exit get_P1 | MultiImplementationA.cs:6:22:6:31 | get_P1 |
+| MultiImplementationB.cs:3:22:3:22 | exit get_P1 | MultiImplementationB.cs:3:22:3:22 | get_P1 |
+| MultiImplementationB.cs:4:21:4:23 | enter get_P2 | MultiImplementationA.cs:7:21:7:23 | get_P2 |
+| MultiImplementationB.cs:4:21:4:23 | enter get_P2 | MultiImplementationB.cs:4:21:4:23 | get_P2 |
+| MultiImplementationB.cs:4:21:4:23 | exit get_P2 | MultiImplementationA.cs:7:21:7:23 | get_P2 |
+| MultiImplementationB.cs:4:21:4:23 | exit get_P2 | MultiImplementationB.cs:4:21:4:23 | get_P2 |
+| MultiImplementationB.cs:4:25:4:37 | {...} | MultiImplementationA.cs:7:21:7:23 | get_P2 |
+| MultiImplementationB.cs:4:25:4:37 | {...} | MultiImplementationB.cs:4:21:4:23 | get_P2 |
+| MultiImplementationB.cs:4:39:4:41 | enter set_P2 | MultiImplementationA.cs:7:41:7:43 | set_P2 |
+| MultiImplementationB.cs:4:39:4:41 | enter set_P2 | MultiImplementationB.cs:4:39:4:41 | set_P2 |
+| MultiImplementationB.cs:4:39:4:41 | exit set_P2 | MultiImplementationA.cs:7:41:7:43 | set_P2 |
+| MultiImplementationB.cs:4:39:4:41 | exit set_P2 | MultiImplementationB.cs:4:39:4:41 | set_P2 |
+| MultiImplementationB.cs:4:43:4:45 | {...} | MultiImplementationA.cs:7:41:7:43 | set_P2 |
+| MultiImplementationB.cs:4:43:4:45 | {...} | MultiImplementationB.cs:4:39:4:41 | set_P2 |
+| MultiImplementationB.cs:5:16:5:16 | enter M | MultiImplementationA.cs:8:16:8:16 | M |
+| MultiImplementationB.cs:5:16:5:16 | enter M | MultiImplementationB.cs:5:16:5:16 | M |
+| MultiImplementationB.cs:5:16:5:16 | exit M | MultiImplementationA.cs:8:16:8:16 | M |
+| MultiImplementationB.cs:5:16:5:16 | exit M | MultiImplementationB.cs:5:16:5:16 | M |
+| MultiImplementationB.cs:5:23:5:23 | 2 | MultiImplementationA.cs:8:16:8:16 | M |
+| MultiImplementationB.cs:5:23:5:23 | 2 | MultiImplementationB.cs:5:16:5:16 | M |
+| MultiImplementationB.cs:11:16:11:16 | this access | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationB.cs:11:16:11:16 | this access | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationB.cs:12:31:12:40 | enter get_Item | MultiImplementationA.cs:14:31:14:31 | get_Item |
+| MultiImplementationB.cs:12:31:12:40 | enter get_Item | MultiImplementationB.cs:12:31:12:40 | get_Item |
+| MultiImplementationB.cs:12:31:12:40 | exit get_Item | MultiImplementationA.cs:14:31:14:31 | get_Item |
+| MultiImplementationB.cs:12:31:12:40 | exit get_Item | MultiImplementationB.cs:12:31:12:40 | get_Item |
+| MultiImplementationB.cs:12:37:12:40 | null | MultiImplementationA.cs:14:31:14:31 | get_Item |
+| MultiImplementationB.cs:12:37:12:40 | null | MultiImplementationB.cs:12:31:12:40 | get_Item |
+| MultiImplementationB.cs:13:36:13:38 | enter get_Item | MultiImplementationA.cs:15:36:15:38 | get_Item |
+| MultiImplementationB.cs:13:36:13:38 | enter get_Item | MultiImplementationB.cs:13:36:13:38 | get_Item |
+| MultiImplementationB.cs:13:36:13:38 | exit get_Item | MultiImplementationA.cs:15:36:15:38 | get_Item |
+| MultiImplementationB.cs:13:36:13:38 | exit get_Item | MultiImplementationB.cs:13:36:13:38 | get_Item |
+| MultiImplementationB.cs:13:40:13:54 | {...} | MultiImplementationA.cs:15:36:15:38 | get_Item |
+| MultiImplementationB.cs:13:40:13:54 | {...} | MultiImplementationB.cs:13:36:13:38 | get_Item |
+| MultiImplementationB.cs:13:56:13:58 | enter set_Item | MultiImplementationA.cs:15:54:15:56 | set_Item |
+| MultiImplementationB.cs:13:56:13:58 | enter set_Item | MultiImplementationB.cs:13:56:13:58 | set_Item |
+| MultiImplementationB.cs:13:56:13:58 | exit set_Item | MultiImplementationA.cs:15:54:15:56 | set_Item |
+| MultiImplementationB.cs:13:56:13:58 | exit set_Item | MultiImplementationB.cs:13:56:13:58 | set_Item |
+| MultiImplementationB.cs:13:60:13:62 | {...} | MultiImplementationA.cs:15:54:15:56 | set_Item |
+| MultiImplementationB.cs:13:60:13:62 | {...} | MultiImplementationB.cs:13:56:13:58 | set_Item |
+| MultiImplementationB.cs:14:17:14:18 | enter M1 | MultiImplementationA.cs:16:17:16:18 | M1 |
+| MultiImplementationB.cs:14:17:14:18 | enter M1 | MultiImplementationB.cs:14:17:14:18 | M1 |
+| MultiImplementationB.cs:14:17:14:18 | exit M1 | MultiImplementationA.cs:16:17:16:18 | M1 |
+| MultiImplementationB.cs:14:17:14:18 | exit M1 | MultiImplementationB.cs:14:17:14:18 | M1 |
+| MultiImplementationB.cs:15:5:17:5 | {...} | MultiImplementationA.cs:16:17:16:18 | M1 |
+| MultiImplementationB.cs:15:5:17:5 | {...} | MultiImplementationB.cs:14:17:14:18 | M1 |
+| MultiImplementationB.cs:16:9:16:31 | enter M2 | MultiImplementationB.cs:16:9:16:31 | M2 |
+| MultiImplementationB.cs:18:12:18:13 | enter C2 | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationB.cs:18:12:18:13 | enter C2 | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationB.cs:18:12:18:13 | exit C2 | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationB.cs:18:12:18:13 | exit C2 | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationB.cs:18:22:18:36 | {...} | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationB.cs:18:22:18:36 | {...} | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationB.cs:19:12:19:13 | enter C2 | MultiImplementationA.cs:21:12:21:13 | C2 |
+| MultiImplementationB.cs:19:12:19:13 | enter C2 | MultiImplementationB.cs:19:12:19:13 | C2 |
+| MultiImplementationB.cs:19:12:19:13 | exit C2 | MultiImplementationA.cs:21:12:21:13 | C2 |
+| MultiImplementationB.cs:19:12:19:13 | exit C2 | MultiImplementationB.cs:19:12:19:13 | C2 |
+| MultiImplementationB.cs:19:24:19:24 | 1 | MultiImplementationA.cs:21:12:21:13 | C2 |
+| MultiImplementationB.cs:19:24:19:24 | 1 | MultiImplementationB.cs:19:12:19:13 | C2 |
+| MultiImplementationB.cs:19:27:19:29 | {...} | MultiImplementationA.cs:21:12:21:13 | C2 |
+| MultiImplementationB.cs:19:27:19:29 | {...} | MultiImplementationB.cs:19:12:19:13 | C2 |
+| MultiImplementationB.cs:20:6:20:7 | enter ~C2 | MultiImplementationA.cs:22:6:22:7 | ~C2 |
+| MultiImplementationB.cs:20:6:20:7 | enter ~C2 | MultiImplementationB.cs:20:6:20:7 | ~C2 |
+| MultiImplementationB.cs:20:6:20:7 | exit ~C2 | MultiImplementationA.cs:22:6:22:7 | ~C2 |
+| MultiImplementationB.cs:20:6:20:7 | exit ~C2 | MultiImplementationB.cs:20:6:20:7 | ~C2 |
+| MultiImplementationB.cs:20:11:20:25 | {...} | MultiImplementationA.cs:22:6:22:7 | ~C2 |
+| MultiImplementationB.cs:20:11:20:25 | {...} | MultiImplementationB.cs:20:6:20:7 | ~C2 |
+| MultiImplementationB.cs:21:28:21:35 | enter implicit conversion | MultiImplementationA.cs:23:28:23:35 | implicit conversion |
+| MultiImplementationB.cs:21:28:21:35 | enter implicit conversion | MultiImplementationB.cs:21:28:21:35 | implicit conversion |
+| MultiImplementationB.cs:21:28:21:35 | exit implicit conversion | MultiImplementationA.cs:23:28:23:35 | implicit conversion |
+| MultiImplementationB.cs:21:28:21:35 | exit implicit conversion | MultiImplementationB.cs:21:28:21:35 | implicit conversion |
+| MultiImplementationB.cs:21:56:21:59 | null | MultiImplementationA.cs:23:28:23:35 | implicit conversion |
+| MultiImplementationB.cs:21:56:21:59 | null | MultiImplementationB.cs:21:28:21:35 | implicit conversion |
+| MultiImplementationB.cs:22:16:22:16 | this access | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationB.cs:22:16:22:16 | this access | MultiImplementationB.cs:18:12:18:13 | C2 |
+| MultiImplementationB.cs:27:21:27:23 | enter get_P3 | MultiImplementationA.cs:30:21:30:23 | get_P3 |
+| MultiImplementationB.cs:27:21:27:23 | enter get_P3 | MultiImplementationB.cs:27:21:27:23 | get_P3 |
+| MultiImplementationB.cs:32:9:32:10 | enter M1 | MultiImplementationA.cs:36:9:36:10 | M1 |
+| MultiImplementationB.cs:32:9:32:10 | enter M1 | MultiImplementationB.cs:32:9:32:10 | M1 |
+| MultiImplementationB.cs:32:9:32:10 | exit M1 | MultiImplementationA.cs:36:9:36:10 | M1 |
+| MultiImplementationB.cs:32:9:32:10 | exit M1 | MultiImplementationB.cs:32:9:32:10 | M1 |
+| MultiImplementationB.cs:32:17:32:17 | 0 | MultiImplementationA.cs:36:9:36:10 | M1 |
+| MultiImplementationB.cs:32:17:32:17 | 0 | MultiImplementationB.cs:32:9:32:10 | M1 |
 | NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:9:3:10 | M1 |
 | NullCoalescing.cs:3:9:3:10 | exit M1 | NullCoalescing.cs:3:9:3:10 | M1 |
 | NullCoalescing.cs:3:28:3:28 | 0 | NullCoalescing.cs:3:9:3:10 | M1 |
