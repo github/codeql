@@ -223,7 +223,13 @@ namespace ns_myFloat
 	myFloat source();
 }
 
+namespace ns_ci_ptr
+{
+	const int *source();
+}
+
 void sink(std::vector<myFloat> &);
+void sink(std::vector<const int *> &);
 
 void test_vector_assign() {
 	std::vector<int> v1, v2, v3;
@@ -258,12 +264,15 @@ void test_vector_assign() {
 	{
 		std::vector<myInt> v7;
 		std::vector<myFloat> v8;
+		std::vector<const int *> v9;
 
 		v7.assign(100, ns_int::source());
 		v8.assign(100, ns_myFloat::source());
+		v9.assign(100, ns_ci_ptr::source());
 
 		sink(v7); // tainted
 		sink(v8); // tainted
+		sink(v9); // tainted [NOT DETECTED]
 	}
 }
 
