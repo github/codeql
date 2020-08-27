@@ -133,18 +133,6 @@ def binary_decode_encode():
         base64.b16encode(tb),
         base64.b16decode(base64.b16encode(tb)),
 
-        # # New in Python 3.4
-        # base64.a85encode(tb),
-        # base64.a85decode(base64.a85encode(tb)),
-
-        # # New in Python 3.4
-        # base64.b85encode(tb),
-        # base64.b85decode(base64.b85encode(tb)),
-
-        # # New in Python 3.1
-        # base64.encodebytes(tb),
-        # base64.decodebytes(base64.encodebytes(tb)),
-
         # deprecated since Python 3.1, but still works
         base64.encodestring(tb),
         base64.decodestring(base64.encodestring(tb)),

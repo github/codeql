@@ -17,6 +17,16 @@ def test_access():
     )
 
 
+def list_clear():
+    tainted_string = TAINTED_STRING
+    tainted_list = [tainted_string]
+
+    ensure_tainted(tainted_list)
+
+    tainted_list.clear()
+    ensure_not_tainted(tainted_list)
+
 # Make tests runable
 
 test_access()
+list_clear()

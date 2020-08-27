@@ -117,16 +117,6 @@ def test_defaultdict(key, x): # TODO: defaultdict currently not handled
         ensure_tainted(v)
 
 
-def list_clear():
-    tainted_string = TAINTED_STRING
-    tainted_list = [tainted_string]
-
-    ensure_tainted(tainted_list)
-
-    tainted_list.clear()
-    ensure_not_tainted(tainted_list)
-
-
 def list_index_assign():
     tainted_string = TAINTED_STRING
     my_list = ["safe"]
@@ -164,3 +154,7 @@ test_access(0, 0, 2)
 test_dict_access("name")
 test_named_tuple()
 test_defaultdict("key", "key")
+
+list_index_assign()
+list_index_aug_assign()
+list_append()
