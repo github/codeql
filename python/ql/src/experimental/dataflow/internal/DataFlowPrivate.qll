@@ -7,6 +7,13 @@ private import DataFlowPublic
 //--------
 // Nodes
 //--------
+predicate isExpressionNode(ControlFlowNode node) { node.getNode() instanceof Expr }
+
+/** A control flow node which is also a dataflow node */
+class DataFlowCfgNode extends ControlFlowNode {
+  DataFlowCfgNode() { isExpressionNode(this) }
+}
+
 /**
  * A node associated with an object after an operation that might have
  * changed its state.

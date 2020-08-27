@@ -1,12 +1,10 @@
 uniqueEnclosingCallable
-| test.py:0:0:0:0 | Exit node for Module test | Node should have one enclosing callable but has 0. |
 | test.py:0:0:0:0 | GSSA Variable __name__ | Node should have one enclosing callable but has 0. |
 | test.py:0:0:0:0 | GSSA Variable __package__ | Node should have one enclosing callable but has 0. |
 | test.py:0:0:0:0 | GSSA Variable test23 | Node should have one enclosing callable but has 0. |
 | test.py:0:0:0:0 | GSSA Variable test24 | Node should have one enclosing callable but has 0. |
 | test.py:0:0:0:0 | GSSA Variable test_truth | Node should have one enclosing callable but has 0. |
 | test.py:0:0:0:0 | GSSA Variable test_update_extend | Node should have one enclosing callable but has 0. |
-| test.py:0:0:0:0 | SSA variable $ | Node should have one enclosing callable but has 0. |
 | test.py:6:1:6:12 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
 | test.py:6:5:6:9 | GSSA Variable test1 | Node should have one enclosing callable but has 0. |
 | test.py:9:1:9:12 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
