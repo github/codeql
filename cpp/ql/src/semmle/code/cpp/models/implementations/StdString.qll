@@ -74,7 +74,8 @@ class StdStringAppend extends TaintFunction {
   int getAStringParameterIndex() {
     getParameter(result).getType() instanceof PointerType or
     getParameter(result).getType() instanceof ReferenceType or
-    getParameter(result).getUnspecifiedType() = getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. `std::basic_string::CharT`
+    getParameter(result).getUnspecifiedType() =
+      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. `std::basic_string::CharT`
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -103,7 +104,8 @@ class StdStringAssign extends TaintFunction {
   int getAStringParameterIndex() {
     getParameter(result).getType() instanceof PointerType or
     getParameter(result).getType() instanceof ReferenceType or
-    getParameter(result).getUnspecifiedType() = getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. `std::basic_string::CharT`
+    getParameter(result).getUnspecifiedType() =
+      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. `std::basic_string::CharT`
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
