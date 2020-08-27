@@ -18,10 +18,7 @@ module LdapInjection {
    */
   abstract class Sink extends DataFlow::Node {
     DataFlow::Node getQueryCall() {
-      exists(DataFlow::CallNode call |
-        result = call.getCalleeNode() and
-        call = any(LdapClient client).getAMemberCall(getLdapjsClientDNMethodName())
-      |
+      exists(LdapjsClientAPICall call | result = call.getCalleeNode() |
         this =
           call
               .getArgument(1)
