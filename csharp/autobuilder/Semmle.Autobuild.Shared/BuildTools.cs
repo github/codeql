@@ -11,13 +11,11 @@ namespace Semmle.Autobuild.Shared
     {
         public readonly int ToolsVersion;
         public readonly string Path;
-        public readonly string[] Platform;
 
-        public VcVarsBatFile(string path, int version, params string[] platform)
+        public VcVarsBatFile(string path, int version)
         {
             Path = path;
             ToolsVersion = version;
-            Platform = platform;
         }
     };
 
@@ -51,12 +49,15 @@ namespace Semmle.Autobuild.Shared
                         {
                             if (majorVersion < 15)
                             {
-                                yield return new VcVarsBatFile(actions.PathCombine(vsInstallation.InstallationPath, @"VC\vcvarsall.bat"), majorVersion, "x86");
+                                // Visual Studio 2015 and below
+                                yield return new VcVarsBatFile(actions.PathCombine(vsInstallation.InstallationPath, @"VC\vcvarsall.bat"), majorVersion);
                             }
                             else
                             {
-                                yield return new VcVarsBatFile(actions.PathCombine(vsInstallation.InstallationPath, @"VC\Auxiliary\Build\vcvars32.bat"), majorVersion, "x86");
-                                yield return new VcVarsBatFile(actions.PathCombine(vsInstallation.InstallationPath, @"VC\Auxiliary\Build\vcvars64.bat"), majorVersion, "x64");
+                                // Visual Studio 2017 and above
+                                yield return new VcVarsBatFile(actions.PathCombine(vsInstallation.InstallationPath, @"VC\Auxiliary\Build\vcvars32.bat"), majorVersion);
+                                yield return new VcVarsBatFile(actions.PathCombine(vsInstallation.InstallationPath, @"VC\Auxiliary\Build\vcvars64.bat"), majorVersion);
+                                yield return new VcVarsBatFile(actions.PathCombine(vsInstallation.InstallationPath, @"Common7\Tools\VsDevCmd.bat"), majorVersion);
                             }
                         }
                         // else: Skip installation without a version
@@ -66,10 +67,10 @@ namespace Semmle.Autobuild.Shared
             }
 
             // vswhere not installed or didn't run correctly - return legacy Visual Studio versions
-            yield return new VcVarsBatFile(actions.PathCombine(programFilesx86, @"Microsoft Visual Studio 14.0\VC\vcvarsall.bat"), 14, "x86");
-            yield return new VcVarsBatFile(actions.PathCombine(programFilesx86, @"Microsoft Visual Studio 12.0\VC\vcvarsall.bat"), 12, "x86");
-            yield return new VcVarsBatFile(actions.PathCombine(programFilesx86, @"Microsoft Visual Studio 11.0\VC\vcvarsall.bat"), 11, "x86");
-            yield return new VcVarsBatFile(actions.PathCombine(programFilesx86, @"Microsoft Visual Studio 10.0\VC\vcvarsall.bat"), 10, "x86");
+            yield return new VcVarsBatFile(actions.PathCombine(programFilesx86, @"Microsoft Visual Studio 14.0\VC\vcvarsall.bat"), 14);
+            yield return new VcVarsBatFile(actions.PathCombine(programFilesx86, @"Microsoft Visual Studio 12.0\VC\vcvarsall.bat"), 12);
+            yield return new VcVarsBatFile(actions.PathCombine(programFilesx86, @"Microsoft Visual Studio 11.0\VC\vcvarsall.bat"), 11);
+            yield return new VcVarsBatFile(actions.PathCombine(programFilesx86, @"Microsoft Visual Studio 10.0\VC\vcvarsall.bat"), 10);
         }
 
         /// <summary>
