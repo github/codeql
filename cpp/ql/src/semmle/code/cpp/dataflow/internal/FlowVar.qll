@@ -125,6 +125,11 @@ private module PartialDefinitions {
     deprecated predicate partiallyDefinesThis(ThisExpr e) { innerDefinedExpr = e }
 
     /**
+     * Gets the subBasicBlock where this `PartialDefinition` is defined.
+     */
+    ControlFlowNode getSubBasicBlockStart() { result = node }
+
+    /**
      * Holds if this `PartialDefinition` defines variable `v` at control-flow
      * node `cfn`.
      */
