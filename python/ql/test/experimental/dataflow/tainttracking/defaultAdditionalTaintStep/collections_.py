@@ -147,6 +147,64 @@ def list_append():
     ensure_tainted(my_list)
 
 
+def list_extend():
+    my_list = ["safe"]
+    tainted_list = [TAINTED_STRING]
+
+    ensure_not_tainted(my_list)
+
+    my_list.extend(tainted_list)
+    ensure_tainted(my_list)
+
+
+def dict_update_dict():
+    my_dict = {"key1": "safe"}
+    tainted_dict = {"key2": TAINTED_STRING}
+
+    ensure_not_tainted(my_dict)
+
+    my_dict.update(tainted_dict)
+    ensure_tainted(my_dict)
+
+
+def dict_update_kv_list():
+    my_dict = {"key1": "safe"}
+    tainted_kv_list = [("key2", TAINTED_STRING)]
+
+    ensure_not_tainted(my_dict)
+
+    my_dict.update(tainted_kv_list)
+    ensure_tainted(my_dict)
+
+
+def dict_update_kv_arg():
+    my_dict = {"key1": "safe"}
+
+    ensure_not_tainted(my_dict)
+
+    my_dict.update(key2=TAINTED_STRING)
+    ensure_tainted(my_dict)
+
+
+def dict_manual_update():
+    my_dict = {"key1": "safe"}
+    tainted_dict = {"key2": TAINTED_STRING}
+
+    ensure_not_tainted(my_dict)
+
+    for k in tainted_dict:
+        my_dict[k] = tainted_dict[k]
+    ensure_tainted(my_dict)
+
+
+def dict_merge():
+    my_dict = {"key1": "safe"}
+    tainted_dict = {"key2": TAINTED_STRING}
+
+    merged = {**my_dict, **tainted_dict}
+    ensure_tainted(merged)
+
+
 def set_add():
     tainted_string = TAINTED_STRING
     my_set = {"safe"}
@@ -168,4 +226,12 @@ test_defaultdict("key", "key")
 list_index_assign()
 list_index_aug_assign()
 list_append()
+list_extend()
+
+dict_update_dict()
+dict_update_kv_list()
+dict_update_kv_arg()
+dict_manual_update()
+dict_merge()
+
 set_add()
