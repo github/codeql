@@ -272,7 +272,7 @@ void test_vector_assign() {
 
 		sink(v7); // tainted
 		sink(v8); // tainted
-		sink(v9); // tainted [NOT DETECTED]
+		sink(v9); // tainted
 	}
 }
 
