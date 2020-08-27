@@ -11,12 +11,14 @@ namespace std
 
 	struct ptrdiff_t;
 
-	template <class iterator_category,
+	template <class Category,
 			  class value_type,
 			  class difference_type = ptrdiff_t,
 			  class pointer_type = value_type*,
 			  class reference_type = value_type&>
 	struct iterator {
+		typedef Category iterator_category;
+
 		iterator &operator++();
 		iterator operator++(int);
 		bool operator==(iterator other) const;
@@ -142,7 +144,9 @@ namespace std {
 
 		vector& operator=(const vector& x);
 		vector& operator=(vector&& x) noexcept/*(allocator_traits<Allocator>::propagate_on_container_move_assignment::value || allocator_traits<Allocator>::is_always_equal::value)*/;
-		template<class InputIterator> void assign(InputIterator first, InputIterator last);
+		template<class InputIterator, class IteratorCategory = typename InputIterator::iterator_category> void assign(InputIterator first, InputIterator last);
+			// use of `iterator_category` makes sure InputIterator is (probably) an iterator, and not an `int` or
+			// similar that should match a different overload (SFINAE).
 		void assign(size_type n, const T& u);
 
 		iterator begin() noexcept;
