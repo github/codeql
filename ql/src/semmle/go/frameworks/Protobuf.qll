@@ -153,6 +153,11 @@ module Protobuf {
       exists(DataFlow::ReadNode base | succ = DataFlow::getUnderlyingNode(base) |
         any(DataFlow::Write w).writesField(base, getAMessageField(), pred)
       )
+      or
+      exists(DataFlow::ReadNode base | succ = DataFlow::getUnderlyingNode(base) |
+        any(DataFlow::Write w).writesElement(base, _, pred) and
+        [succ.getType(), succ.getType().getPointerType()] instanceof MessageType
+      )
     }
   }
 }

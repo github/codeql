@@ -16,6 +16,8 @@ message Query {
   }
 
   repeated Alert alerts = 4;
+
+  map<int32, string> keyValuePairs = 5;
 }
 
 message QuerySuite {

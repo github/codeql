@@ -127,3 +127,43 @@ func testSubmessageAliasFalseNegative() {
 
 	sinkBytes(serialized) // BAD (but not noticed by our current implementation)
 }
+
+func testTaintedMapFieldWrite() {
+	query := &query.Query{}
+	query.KeyValuePairs[123] = getUntrustedString()
+
+	serialized, _ := proto.Marshal(query)
+
+	sinkBytes(serialized) // BAD
+}
+
+func testTaintedMapWriteWholeMap() {
+	query := &query.Query{}
+	taintedMap := map[int32]string{}
+	taintedMap[123] = getUntrustedString()
+	query.KeyValuePairs = taintedMap
+
+	serialized, _ := proto.Marshal(query)
+
+	sinkBytes(serialized) // BAD
+}
+
+func testTaintedMapFieldRead() {
+	untrustedSerialized := getUntrustedBytes()
+	query := &query.Query{}
+
+	proto.Unmarshal(untrustedSerialized, query)
+
+	sinkString(query.KeyValuePairs[123]) // BAD
+}
+
+func testTaintedMapFieldReadViaAlias() {
+	untrustedSerialized := getUntrustedBytes()
+	query := &query.Query{}
+
+	proto.Unmarshal(untrustedSerialized, query)
+
+	alias := &query.KeyValuePairs
+
+	sinkString((*alias)[123]) // BAD
+}

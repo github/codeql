@@ -184,3 +184,43 @@ func testMarshalStateFalseNegative() {
 
 	sinkBytes(serialized.Buf) // BAD (but not noticed by our current implementation)
 }
+
+func testTaintedMapFieldWriteModern() {
+	query := &query.Query{}
+	query.KeyValuePairs[123] = getUntrustedString()
+
+	serialized, _ := proto.Marshal(query)
+
+	sinkBytes(serialized) // BAD
+}
+
+func testTaintedMapWriteWholeMapModern() {
+	query := &query.Query{}
+	taintedMap := map[int32]string{}
+	taintedMap[123] = getUntrustedString()
+	query.KeyValuePairs = taintedMap
+
+	serialized, _ := proto.Marshal(query)
+
+	sinkBytes(serialized) // BAD
+}
+
+func testTaintedMapFieldReadModern() {
+	untrustedSerialized := getUntrustedBytes()
+	query := &query.Query{}
+
+	proto.Unmarshal(untrustedSerialized, query)
+
+	sinkString(query.KeyValuePairs[123]) // BAD
+}
+
+func testTaintedMapFieldReadViaAliasModern() {
+	untrustedSerialized := getUntrustedBytes()
+	query := &query.Query{}
+
+	proto.Unmarshal(untrustedSerialized, query)
+
+	alias := &query.KeyValuePairs
+
+	sinkString((*alias)[123]) // BAD
+}
