@@ -45,7 +45,7 @@ namespace Semmle.Extraction.CIL.Entities
         public abstract string Name { get; }
 
         public virtual IList<LocalVariable>? LocalVariables => throw new NotImplementedException();
-        public IList<Parameter>? Parameters { get; private set; }
+        public IList<Parameter>? Parameters { get; protected set; }
 
         public override void WriteId(TextWriter trapFile) => WriteMethodId(trapFile, DeclaringType, NameLabel);
 
@@ -76,11 +76,6 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override string IdSuffix => ";cil-method";
 
-        protected void PopulateParameters(IEnumerable<Type> parameterTypes)
-        {
-            Parameters = MakeParameters(parameterTypes).ToArray();
-        }
-
         protected IEnumerable<IExtractionProduct> PopulateFlags
         {
             get
@@ -92,7 +87,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public abstract bool IsStatic { get; }
 
-        private IEnumerable<Parameter> MakeParameters(IEnumerable<Type> parameterTypes)
+        protected IEnumerable<Parameter> MakeParameters(IEnumerable<Type> parameterTypes)
         {
             int i = 0;
 
@@ -206,9 +201,9 @@ namespace Semmle.Extraction.CIL.Entities
 
                 var typeSignature = md.DecodeSignature(cx.TypeSignatureDecoder, this);
 
-                PopulateParameters(typeSignature.ParameterTypes);
+                Parameters = MakeParameters(typeSignature.ParameterTypes).ToArray();
 
-                foreach (var c in Parameters!)
+                foreach (var c in Parameters)
                     yield return c;
 
                 foreach (var c in PopulateFlags)
@@ -466,8 +461,8 @@ namespace Semmle.Extraction.CIL.Entities
 
                 var typeSignature = mr.DecodeMethodSignature(cx.TypeSignatureDecoder, this);
 
-                PopulateParameters(typeSignature.ParameterTypes);
-                foreach (var p in Parameters!) yield return p;
+                Parameters = MakeParameters(typeSignature.ParameterTypes).ToArray();
+                foreach (var p in Parameters) yield return p;
 
                 foreach (var f in PopulateFlags) yield return f;
 
@@ -550,8 +545,8 @@ namespace Semmle.Extraction.CIL.Entities
                         throw new InternalError($"Unexpected constructed method handle kind {ms.Method.Kind}");
                 }
 
-                PopulateParameters(constructedTypeSignature.ParameterTypes);
-                foreach (var p in Parameters!)
+                Parameters = MakeParameters(constructedTypeSignature.ParameterTypes).ToArray();
+                foreach (var p in Parameters)
                     yield return p;
 
                 foreach (var f in PopulateFlags)

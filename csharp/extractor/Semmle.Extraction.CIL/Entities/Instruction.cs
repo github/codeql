@@ -419,14 +419,14 @@ namespace Semmle.Extraction.CIL.Entities
                         break;
                     case Payload.Arg8:
                     case Payload.Arg16:
-                        if (!(Method.Parameters is null))
+                        if (Method.Parameters is object)
                         {
                             yield return Tuples.cil_access(this, Method.Parameters[(int)UnsignedPayloadValue]);
                         }
                         break;
                     case Payload.Local8:
                     case Payload.Local16:
-                        if (!(Method.LocalVariables is null))
+                        if (Method.LocalVariables is object)
                         {
                             yield return Tuples.cil_access(this, Method.LocalVariables[(int)UnsignedPayloadValue]);
                         }
