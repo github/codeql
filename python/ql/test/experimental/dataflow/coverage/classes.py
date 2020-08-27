@@ -610,9 +610,9 @@ def test_length_hint():
 class With_getitem:
 
     def __getitem__(self, key):
-        SINK2(key)  # Flow not found
-        SINK1(self)  # Flow not found
-        OK()  # Call not found
+        SINK2(key)
+        SINK1(self)
+        OK()
         return ""
 
 
@@ -627,10 +627,10 @@ def test_getitem():
 class With_setitem:
 
     def __setitem__(self, key, value):
-        SINK3(value)  # Flow not found
-        SINK2(key)  # Flow not found
-        SINK1(self)  # Flow not found
-        OK()  # Call not found
+        SINK3(value)
+        SINK2(key)
+        SINK1(self)
+        OK()
 
 
 def test_setitem():
@@ -645,9 +645,9 @@ def test_setitem():
 class With_delitem:
 
     def __delitem__(self, key):
-        SINK2(key)  # Flow not found
-        SINK1(self)  # Flow not found
-        OK()  # Call not found
+        SINK2(key)
+        SINK1(self)
+        OK()
 
 
 def test_delitem():
@@ -725,9 +725,9 @@ def test_contains():
 class With_add:
 
     def __add__(self, other):
-        SINK2(other)  # Flow not found
-        SINK1(self)  # Flow not found
-        OK()  # Call not found
+        SINK2(other)
+        SINK1(self)
+        OK()
         return self
 
 
@@ -742,9 +742,9 @@ def test_add():
 class With_sub:
 
     def __sub__(self, other):
-        SINK2(other)  # Flow not found
-        SINK1(self)  # Flow not found
-        OK()  # Call not found
+        SINK2(other)
+        SINK1(self)
+        OK()
         return self
 
 
@@ -759,9 +759,9 @@ def test_sub():
 class With_mul:
 
     def __mul__(self, other):
-        SINK2(other)  # Flow not found
-        SINK1(self)  # Flow not found
-        OK()  # Call not found
+        SINK2(other)
+        SINK1(self)
+        OK()
         return self
 
 
@@ -776,9 +776,9 @@ def test_mul():
 class With_matmul:
 
     def __matmul__(self, other):
-        SINK2(other)  # Flow not found
-        SINK1(self)  # Flow not found
-        OK()  # Call not found
+        SINK2(other)
+        SINK1(self)
+        OK()
         return self
 
 
@@ -793,9 +793,9 @@ def test_matmul():
 class With_truediv:
 
     def __truediv__(self, other):
-        SINK2(other)  # Flow not found
-        SINK1(self)  # Flow not found
-        OK()  # Call not found
+        SINK2(other)
+        SINK1(self)
+        OK()
         return self
 
 
@@ -810,9 +810,9 @@ def test_truediv():
 class With_floordiv:
 
     def __floordiv__(self, other):
-        SINK2(other)  # Flow not found
-        SINK1(self)  # Flow not found
-        OK()  # Call not found
+        SINK2(other)
+        SINK1(self)
+        OK()
         return self
 
 
@@ -827,9 +827,9 @@ def test_floordiv():
 class With_mod:
 
     def __mod__(self, other):
-        SINK2(other)  # Flow not found
-        SINK1(self)  # Flow not found
-        OK()  # Call not found
+        SINK2(other)
+        SINK1(self)
+        OK()
         return self
 
 
@@ -861,9 +861,9 @@ def test_divmod():
 class With_pow:
 
     def __pow__(self, other):
-        SINK2(other)  # Flow not found
-        SINK1(self)  # Flow not found
-        OK()  # Call not found
+        SINK2(other)
+        SINK1(self)
+        OK()
         return self
 
 
@@ -884,9 +884,9 @@ def test_pow_op():
 class With_lshift:
 
     def __lshift__(self, other):
-        SINK2(other)  # Flow not found
-        SINK1(self)  # Flow not found
-        OK()  # Call not found
+        SINK2(other)
+        SINK1(self)
+        OK()
         return self
 
 
@@ -901,9 +901,9 @@ def test_lshift():
 class With_rshift:
 
     def __rshift__(self, other):
-        SINK2(other)  # Flow not found
-        SINK1(self)  # Flow not found
-        OK()  # Call not found
+        SINK2(other)
+        SINK1(self)
+        OK()
         return self
 
 
@@ -918,9 +918,9 @@ def test_rshift():
 class With_and:
 
     def __and__(self, other):
-        SINK2(other)  # Flow not found
-        SINK1(self)  # Flow not found
-        OK()  # Call not found
+        SINK2(other)
+        SINK1(self)
+        OK()
         return self
 
 
@@ -935,9 +935,9 @@ def test_and():
 class With_xor:
 
     def __xor__(self, other):
-        SINK2(other)  # Flow not found
-        SINK1(self)  # Flow not found
-        OK()  # Call not found
+        SINK2(other)
+        SINK1(self)
+        OK()
         return self
 
 
@@ -952,9 +952,9 @@ def test_xor():
 class With_or:
 
     def __or__(self, other):
-        SINK2(other)  # Flow not found
-        SINK1(self)  # Flow not found
-        OK()  # Call not found
+        SINK2(other)
+        SINK1(self)
+        OK()
         return self
 
 
