@@ -177,9 +177,7 @@
 | vector.cpp:171:13:171:13 | vector.cpp:170:14:170:19 | AST only |
 | vector.cpp:180:13:180:13 | vector.cpp:179:14:179:19 | AST only |
 | vector.cpp:201:13:201:13 | vector.cpp:200:14:200:19 | AST only |
-| vector.cpp:242:7:242:8 | vector.cpp:238:17:238:30 | AST only |
 | vector.cpp:243:7:243:8 | vector.cpp:239:15:239:20 | AST only |
-| vector.cpp:273:8:273:9 | vector.cpp:269:18:269:31 | AST only |
 | vector.cpp:274:8:274:9 | vector.cpp:270:18:270:35 | AST only |
 | vector.cpp:275:8:275:9 | vector.cpp:271:18:271:34 | AST only |
 | vector.cpp:285:7:285:8 | vector.cpp:284:15:284:20 | AST only |

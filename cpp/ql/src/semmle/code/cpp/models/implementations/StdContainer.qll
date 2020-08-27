@@ -101,10 +101,8 @@ class StdSequenceContainerAssign extends TaintFunction {
    * value type of the container.
    */
   int getAValueTypeParameterIndex() {
-    getParameter(result).getUnspecifiedType() = getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
-    or
     getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
-      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType()
+      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

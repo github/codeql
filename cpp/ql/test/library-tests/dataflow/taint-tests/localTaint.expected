@@ -2246,12 +2246,8 @@
 | vector.cpp:237:2:237:3 | ref arg v1 | vector.cpp:249:13:249:14 | v1 |  |
 | vector.cpp:237:2:237:3 | ref arg v1 | vector.cpp:249:25:249:26 | v1 |  |
 | vector.cpp:237:2:237:3 | ref arg v1 | vector.cpp:277:1:277:1 | v1 |  |
-| vector.cpp:237:12:237:14 | 100 | vector.cpp:237:2:237:3 | ref arg v1 | TAINT |
-| vector.cpp:237:17:237:17 | 0 | vector.cpp:237:2:237:3 | ref arg v1 | TAINT |
 | vector.cpp:238:2:238:3 | ref arg v2 | vector.cpp:242:7:242:8 | v2 |  |
 | vector.cpp:238:2:238:3 | ref arg v2 | vector.cpp:277:1:277:1 | v2 |  |
-| vector.cpp:238:12:238:14 | 100 | vector.cpp:238:2:238:3 | ref arg v2 | TAINT |
-| vector.cpp:238:17:238:30 | call to source | vector.cpp:238:2:238:3 | ref arg v2 | TAINT |
 | vector.cpp:239:2:239:3 | ref arg v3 | vector.cpp:243:7:243:8 | v3 |  |
 | vector.cpp:239:2:239:3 | ref arg v3 | vector.cpp:250:13:250:14 | v3 |  |
 | vector.cpp:239:2:239:3 | ref arg v3 | vector.cpp:250:25:250:26 | v3 |  |
@@ -2318,8 +2314,6 @@
 | vector.cpp:267:28:267:29 | call to vector | vector.cpp:276:2:276:2 | v9 |  |
 | vector.cpp:269:3:269:4 | ref arg v7 | vector.cpp:273:8:273:9 | v7 |  |
 | vector.cpp:269:3:269:4 | ref arg v7 | vector.cpp:276:2:276:2 | v7 |  |
-| vector.cpp:269:13:269:15 | 100 | vector.cpp:269:3:269:4 | ref arg v7 | TAINT |
-| vector.cpp:269:18:269:31 | call to source | vector.cpp:269:3:269:4 | ref arg v7 | TAINT |
 | vector.cpp:270:3:270:4 | ref arg v8 | vector.cpp:274:8:274:9 | v8 |  |
 | vector.cpp:270:3:270:4 | ref arg v8 | vector.cpp:276:2:276:2 | v8 |  |
 | vector.cpp:270:18:270:35 | call to source | vector.cpp:270:3:270:4 | ref arg v8 | TAINT |
