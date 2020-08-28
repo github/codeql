@@ -1,0 +1,55 @@
+* SQL injection example
+** Setup and sample run
+  #+BEGIN_SRC sh
+    # Use a simple headline prompt 
+    PS1='
+    \033[32m---- SQL injection demo ----\[\033[33m\033[0m\]
+    $?:$ '
+
+    
+    # Build
+    ./build.sh
+
+    # Prepare db
+    ./admin rm-db
+    ./admin create-db
+    ./admin show-db
+
+    # Add regular user interactively
+    ./add-user 2>> users.log
+    First User
+
+    
+    # Regular user via "external" process
+    echo "User Outside" | ./add-user 2>> users.log
+    ./admin show-db
+
+    # Check
+    ./admin show-db
+
+    # Add Johnny Droptable 
+    ./add-user 2>> users.log
+    Johnny'); DROP TABLE users; --
+
+    
+    # And the problem:
+    ./admin show-db
+    
+    # Check the log
+
+  #+END_SRC
+
+** Build codeql database
+   #+BEGIN_SRC sh
+     # Build the db with source commit id.
+     export PATH=$HOME/local/vmsync/codeql224:"$PATH"
+     SRCDIR=$HOME/local/codeql-dataflow-sql-injection/
+     DB=$HOME/local/db/codeql-dataflow-sql-injection-$(cd $SRCDIR && git rev-parse --short HEAD)
+
+     echo $DB
+     test -d "$DB" && rm -fR "$DB"
+     mkdir -p "$DB"
+
+     cd $SRCDIR
+     codeql database create --language=cpp -s $SRCDIR  -j 8 -v $DB --command='./build.sh'
+   #+END_SRC

@@ -1,0 +1,21 @@
+#!/bin/bash
+rm-db () {
+    rm users.sqlite
+}
+
+create-db () {
+    echo '
+    CREATE TABLE users (
+        user_id INTEGER not null,
+        name TEXT NOT NULL
+    );
+    '  | sqlite3 users.sqlite 
+}        
+
+show-db () {
+    echo '
+    SELECT * FROM users;
+    ' | sqlite3 users.sqlite 
+}
+
+eval $@
