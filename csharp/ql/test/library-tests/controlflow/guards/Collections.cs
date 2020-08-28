@@ -100,7 +100,7 @@ public class Collections
     {
         foreach (var arg in args)
             ;
-        Console.WriteLine(args); // INCORRECT: guarded by `args` being empty
+        Console.WriteLine(args);
     }
 }
 

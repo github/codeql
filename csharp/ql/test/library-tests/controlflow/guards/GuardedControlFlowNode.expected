@@ -38,7 +38,6 @@
 | Collections.cs:67:13:67:13 | access to local variable x | Collections.cs:65:13:65:24 | ... == ... | Collections.cs:65:13:65:13 | access to local variable x | true |
 | Collections.cs:68:13:68:13 | access to local variable x | Collections.cs:65:13:65:24 | ... == ... | Collections.cs:65:13:65:13 | access to local variable x | true |
 | Collections.cs:96:31:96:34 | access to parameter args | Collections.cs:95:29:95:32 | access to parameter args | Collections.cs:95:29:95:32 | access to parameter args | non-empty |
-| Collections.cs:103:27:103:30 | access to parameter args | Collections.cs:101:29:101:32 | access to parameter args | Collections.cs:101:29:101:32 | access to parameter args | empty |
 | Guards.cs:12:13:12:13 | access to parameter s | Guards.cs:10:16:10:16 | access to parameter s | Guards.cs:10:16:10:16 | access to parameter s | non-null |
 | Guards.cs:12:13:12:13 | access to parameter s | Guards.cs:10:16:10:24 | ... == ... | Guards.cs:10:16:10:16 | access to parameter s | false |
 | Guards.cs:14:31:14:31 | access to parameter s | Guards.cs:10:16:10:16 | access to parameter s | Guards.cs:10:16:10:16 | access to parameter s | non-null |
