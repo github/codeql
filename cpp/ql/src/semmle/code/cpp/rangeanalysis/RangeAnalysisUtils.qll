@@ -352,16 +352,11 @@ private predicate typeBounds(ArithmeticType t, float lb, float ub) {
 }
 
 private Type stripReference(Type t) {
-  if t instanceof ReferenceType then
-    result = t.(ReferenceType).getBaseType()
-  else
-    result = t
+  if t instanceof ReferenceType then result = t.(ReferenceType).getBaseType() else result = t
 }
 
 /** Gets the type used by range analysis for the given `StackVariable`. */
-Type getVariableRangeType(StackVariable v) {
-  result = stripReference(v.getUnspecifiedType())
-}
+Type getVariableRangeType(StackVariable v) { result = stripReference(v.getUnspecifiedType()) }
 
 /**
  * Gets the lower bound for the unspecified type `t`.

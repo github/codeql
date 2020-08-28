@@ -1393,7 +1393,8 @@ bindingset[guard, v, branch]
 predicate nonNanGuardedVariable(ComparisonOperation guard, VariableAccess v, boolean branch) {
   getVariableRangeType(v.getTarget()) instanceof IntegralType
   or
-  getVariableRangeType(v.getTarget()) instanceof FloatingPointType and v instanceof NonNanVariableAccess
+  getVariableRangeType(v.getTarget()) instanceof FloatingPointType and
+  v instanceof NonNanVariableAccess
   or
   // The reason the following case is here is to ensure that when we say
   // `if (x > 5) { ...then... } else { ...else... }`
