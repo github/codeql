@@ -377,3 +377,28 @@ def test_swap():
     a, b = b, a
     SINK_F(a)
     SINK(b)
+
+
+def test_deep_callgraph():
+    # port of python/ql/test/library-tests/taint/general/deep.py
+
+    def f1(arg):
+        return arg
+
+    def f2(arg):
+        return f1(arg)
+
+    def f3(arg):
+        return f2(arg)
+
+    def f4(arg):
+        return f3(arg)
+
+    def f5(arg):
+        return f4(arg)
+
+    def f6(arg):
+        return f5(arg)
+
+    x = f6(SOURCE)
+    SINK(x) # Flow missing
