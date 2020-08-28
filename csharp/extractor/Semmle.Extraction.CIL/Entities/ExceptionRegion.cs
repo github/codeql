@@ -30,7 +30,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                IInstruction try_start, try_end, handler_start;
+                IInstruction? try_start, try_end, handler_start;
 
                 if (!jump_table.TryGetValue(r.TryOffset, out try_start))
                     throw new InternalError("Failed  to retrieve handler");
@@ -44,7 +44,7 @@ namespace Semmle.Extraction.CIL.Entities
 
                 if (r.FilterOffset != -1)
                 {
-                    IInstruction filter_start;
+                    IInstruction? filter_start;
                     if (!jump_table.TryGetValue(r.FilterOffset, out filter_start))
                         throw new InternalError("ExceptionRegion filter clause");
 
