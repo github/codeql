@@ -1,3 +1,22 @@
+| arrayassignment.cpp:16:7:16:7 | x | arrayassignment.cpp:14:9:14:14 | call to source |
+| arrayassignment.cpp:17:7:17:10 | * ... | arrayassignment.cpp:14:9:14:14 | call to source |
+| arrayassignment.cpp:18:7:18:11 | * ... | arrayassignment.cpp:14:9:14:14 | call to source |
+| arrayassignment.cpp:19:7:19:9 | (reference dereference) | arrayassignment.cpp:14:9:14:14 | call to source |
+| arrayassignment.cpp:31:7:31:7 | x | arrayassignment.cpp:29:8:29:13 | call to source |
+| arrayassignment.cpp:32:7:32:10 | * ... | arrayassignment.cpp:29:8:29:13 | call to source |
+| arrayassignment.cpp:33:7:33:9 | (reference dereference) | arrayassignment.cpp:29:8:29:13 | call to source |
+| arrayassignment.cpp:34:7:34:10 | (reference dereference) | arrayassignment.cpp:29:8:29:13 | call to source |
+| arrayassignment.cpp:56:7:56:8 | mi | arrayassignment.cpp:54:9:54:14 | call to source |
+| arrayassignment.cpp:57:10:57:15 | (reference dereference) | arrayassignment.cpp:54:9:54:14 | call to source |
+| arrayassignment.cpp:66:7:66:8 | mi | arrayassignment.cpp:64:13:64:18 | call to source |
+| arrayassignment.cpp:67:10:67:15 | (reference dereference) | arrayassignment.cpp:64:13:64:18 | call to source |
+| arrayassignment.cpp:101:7:101:18 | access to array | arrayassignment.cpp:99:17:99:22 | call to source |
+| arrayassignment.cpp:135:7:135:10 | (reference dereference) | arrayassignment.cpp:134:9:134:14 | call to source |
+| arrayassignment.cpp:136:7:136:13 | access to array | arrayassignment.cpp:134:9:134:14 | call to source |
+| arrayassignment.cpp:140:7:140:11 | * ... | arrayassignment.cpp:139:10:139:15 | call to source |
+| arrayassignment.cpp:141:7:141:13 | access to array | arrayassignment.cpp:139:10:139:15 | call to source |
+| arrayassignment.cpp:145:7:145:13 | access to array | arrayassignment.cpp:144:12:144:17 | call to source |
+| arrayassignment.cpp:146:7:146:13 | access to array | arrayassignment.cpp:144:12:144:17 | call to source |
 | format.cpp:157:7:157:22 | (int)... | format.cpp:147:12:147:25 | call to source |
 | format.cpp:157:7:157:22 | access to array | format.cpp:147:12:147:25 | call to source |
 | format.cpp:158:7:158:27 | ... + ... | format.cpp:148:16:148:30 | call to source |

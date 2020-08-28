@@ -41,7 +41,7 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is Folder folder && path == folder.path;
         }

@@ -55,7 +55,7 @@ namespace Semmle.Extraction.PDB
             return string.Format("({0},{1})-({2},{3})", StartLine, StartColumn, EndLine, EndColumn);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             var otherLocation = obj as Location;
 
@@ -91,7 +91,12 @@ namespace Semmle.Extraction.PDB
 
     class Method : IMethod
     {
-        public IEnumerable<SequencePoint> SequencePoints { get; set; }
+        public IEnumerable<SequencePoint> SequencePoints { get; }
+
+        public Method(IEnumerable<SequencePoint> sequencePoints)
+        {
+            SequencePoints = sequencePoints;
+        }
 
         public Location Location => SequencePoints.First().Location;
     }
@@ -111,7 +116,7 @@ namespace Semmle.Extraction.PDB
         /// null if the contents are unavailable.
         /// E.g. if the PDB file exists but the corresponding source files are missing.
         /// </summary>
-        string Contents { get; }
+        string? Contents { get; }
     }
 
     /// <summary>
@@ -131,7 +136,7 @@ namespace Semmle.Extraction.PDB
         /// </summary>
         /// <param name="methodHandle">The handle to query.</param>
         /// <returns>The method information, or null if the method does not have debug information.</returns>
-        IMethod GetMethod(MethodDebugInformationHandle methodHandle);
+        IMethod? GetMethod(MethodDebugInformationHandle methodHandle);
     }
 
     class PdbReader
@@ -140,11 +145,11 @@ namespace Semmle.Extraction.PDB
         /// Returns the PDB information associated with an assembly.
         /// </summary>
         /// <param name="assemblyPath">The path to the assembly.</param>
-        /// <param name="peReader">The PE reader for the assembky.</param>
+        /// <param name="peReader">The PE reader for the assembly.</param>
         /// <returns>A PdbReader, or null if no PDB information is available.</returns>
-        public static IPdb Create(string assemblyPath, PEReader peReader)
+        public static IPdb? Create(string assemblyPath, PEReader peReader)
         {
-            return (IPdb)MetadataPdbReader.CreateFromAssembly(assemblyPath, peReader) ??
+            return (IPdb?)MetadataPdbReader.CreateFromAssembly(assemblyPath, peReader) ??
                 NativePdbReader.CreateFromAssembly(assemblyPath, peReader);
         }
     }
