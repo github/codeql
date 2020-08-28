@@ -1830,6 +1830,10 @@ public class ASTExtractor {
     @Override
     public Label visit(TupleTypeExpr nd, Context c) {
       Label key = super.visit(nd, c);
+      if (nd.getElementNames() != null) {
+        // Element names are index -1, -2, -3...
+        visitAll(nd.getElementNames(), key, IdContext.typeLabel, -1, -1);
+      }
       visitAll(nd.getElementTypes(), key, IdContext.typeBind, 0);
       return key;
     }

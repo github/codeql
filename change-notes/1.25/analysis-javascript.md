@@ -30,7 +30,7 @@
   - [yargs](https://www.npmjs.com/package/yargs)
   - [webpack-dev-server](https://www.npmjs.com/package/webpack-dev-server)
 
-* TypeScript 3.9 is now supported.
+* TypeScript 4.0 is now supported.
 
 * TypeScript code embedded in HTML and Vue files is now extracted and analyzed.
 
