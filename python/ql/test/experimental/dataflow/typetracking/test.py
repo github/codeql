@@ -1,21 +1,49 @@
 def get_tracked():
-    x = tracked
-    return x
+    x = tracked # $tracked
+    return x # $tracked
 
-def use_tracked(x):
-    do_stuff(x)
+def use_tracked_foo(x): # $tracked
+    do_stuff(x) # $tracked
 
 def foo():
-    use_tracked(get_tracked())
+    use_tracked_foo(
+        get_tracked() # $tracked
+    )
+
+def use_tracked_bar(x): # $tracked
+    do_stuff(x) # $tracked
 
 def bar():
-    x = get_tracked()
-    use_tracked(x)
+    x = get_tracked() # $tracked
+    use_tracked_bar(x) # $tracked
+
+def use_tracked_baz(x): # $tracked
+    do_stuff(x) # $tracked
 
 def baz():
-    x = tracked
-    use_tracked(x)
+    x = tracked # $tracked
+    use_tracked_baz(x) # $tracked
 
-foo()
-bar()
-baz()
+def id(x): # $tracked
+    return x # $tracked
+
+def use_tracked_quux(x): # $f-:tracked
+    do_stuff(y) # call after return -- not tracked in here.
+
+def quux():
+    x = tracked # $tracked
+    y = id(x) # $tracked
+    use_tracked_quux(y) # not tracked out of call to id.
+
+g = None
+
+def write_g(x): # $tracked
+    g = x # $tracked
+
+def use_g():
+    do_stuff(g) # $f-:tracked // no global flow for now.
+
+def global_var_write_test():
+    x = tracked # $tracked
+    write_g(x) # $tracked
+    use_g()
