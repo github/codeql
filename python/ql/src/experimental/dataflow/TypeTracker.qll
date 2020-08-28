@@ -48,11 +48,11 @@ class StepSummary extends TStepSummary {
 module StepSummary {
   cached
   predicate step(Node pred, Node succ, StepSummary summary) {
-    exists(Node mid | simpleLocalFlowStep(pred, mid) and smallstep(mid, succ, summary))
+    exists(Node mid | EssaFlow::essaFlowStep*(pred, mid) and smallstep(mid, succ, summary))
   }
 
   predicate smallstep(Node pred, Node succ, StepSummary summary) {
-    simpleLocalFlowStep(pred, succ) and
+    EssaFlow::essaFlowStep(pred, succ) and
     summary = LevelStep()
     or
     callStep(pred, succ) and summary = CallStep()
@@ -69,22 +69,61 @@ module StepSummary {
   }
 }
 
+/** Holds if `pred` steps to `succ` by being passed as a parameter in a call. */
 predicate callStep(ArgumentNode pred, ParameterNode succ) {
+  // TODO: Support special methods?
   exists(DataFlowCall call, int i |
     pred.argumentOf(call, i) and succ.isParameterOf(call.getCallable(), i)
   )
 }
 
+/** Holds if `pred` steps to `succ` by being returned from a call. */
 predicate returnStep(ReturnNode pred, Node succ) {
   exists(DataFlowCall call |
-    pred.getEnclosingCallable() = call.getCallable() and succ = TCfgNode(call)
+    pred.getEnclosingCallable() = call.getCallable() and succ = TCfgNode(call.getNode())
   )
 }
 
-/** TODO: Implement these. */
-predicate basicStoreStep(Node pred, Node succ, string attr) { none() }
+/**
+ * Holds if `pred` is being written to the `attr` attribute of the object in `succ`.
+ *
+ * Note that the choice of `succ` does not have to make sense "chronologically".
+ * All we care about is whether the `attr` attribute of `succ` can have a specific type,
+ * and the assumption is that if a specific type appears here, then any access of that
+ * particular attribute can yield something of that particular type.
+ *
+ * Thus, in an example such as
+ *
+ * ```python
+ * def foo(y):
+ *    x = Foo()
+ *    bar(x)
+ *    x.attr = y
+ *    baz(x)
+ *
+ * def bar(x):
+ *    z = x.attr
+ * ```
+ * for the attribute write `x.attr = y`, we will have `attr` being the literal string `"attr"`,
+ * `pred` will be `y`, and `succ` will be the object `Foo()` created on the first line of the
+ * function. This means we will track the fact that `x.attr` can have the type of `y` into the
+ * assignment to `z` inside `bar`, even though this attribute write happens _after_ `bar` is called.
+ */
+predicate basicStoreStep(Node pred, Node succ, string attr) {
+  exists(AttributeAssignment a, Node var |
+    a.getName() = attr and
+    EssaFlow::essaFlowStep*(succ, var) and
+    var.asVar() = a.getInput() and
+    pred.asCfgNode() = a.getValue()
+  )
+}
 
-predicate basicLoadStep(Node pred, Node succ, string attr) { none() }
+/**
+ * Holds if `succ` is the result of accessing the `attr` attribute of `pred`.
+ */
+predicate basicLoadStep(Node pred, Node succ, string attr) {
+  exists(AttrNode s | succ.asCfgNode() = s and s.getObject(attr) = pred.asCfgNode())
+}
 
 /**
  * A utility class that is equivalent to `boolean` but does not require type joining.
@@ -181,6 +220,13 @@ class TypeTracker extends TTypeTracker {
   boolean hasCall() { result = hasCall }
 
   /**
+   * INTERNAL. DO NOT USE.
+   *
+   * Gets the property associated with this type tracker.
+   */
+  string getProp() { result = prop }
+
+  /**
    * Gets a type tracker that starts where this one has left off to allow continued
    * tracking.
    *
@@ -231,7 +277,7 @@ class TypeTracker extends TTypeTracker {
       result = this.append(summary)
     )
     or
-    simpleLocalFlowStep(pred, succ) and
+    EssaFlow::essaFlowStep(pred, succ) and
     result = this
   }
 }
