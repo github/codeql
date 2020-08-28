@@ -83,10 +83,10 @@ int ref_to_number(int &i, const int &ci, int &aliased) {
   int &alias = aliased; // no range analysis for either of the two aliased variables
 
   if (i >= 2)
-    return i; // BUG: lower bound should be 2
+    return i;
 
   if (ci >= 2)
-    return ci; // BUG: lower bound should be 2
+    return ci;
 
   if (aliased >= 2)
     return aliased;
@@ -94,8 +94,8 @@ int ref_to_number(int &i, const int &ci, int &aliased) {
   if (alias >= 2)
     return alias;
 
-  for (; i <= 12345; i++) {
-    i; // BUG: upper bound should be deduced (but subject to widening)
+  for (; i <= 12345; i++) { // test that widening works for references
+    i;
   }
 
   return 0;
