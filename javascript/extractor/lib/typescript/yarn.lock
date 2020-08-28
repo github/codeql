@@ -86,8 +86,8 @@ concat-map@0.0.1:
   resolved concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b
 
 diff@^3.2.0:
-  version "3.4.0"
-  resolved diff-3.4.0.tgz#b1d85507daf3964828de54b37d0d73ba67dda56c
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/diff/-/diff-3.5.0.tgz#800c0dd1e0a8bfbc95835c202ad220fe317e5a12"
 
 escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.5:
   version "1.0.5"
