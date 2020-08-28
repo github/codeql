@@ -72,6 +72,15 @@ module AllocationSizeOverflow {
     }
   }
 
+  /** A check of the allocation size, acting as a guard to prevent allocation-size overflow. */
+  class AllocationSizeCheck extends DataFlow::BarrierGuard, DataFlow::RelationalComparisonNode {
+    override predicate checks(Expr e, boolean branch) {
+      exists(DataFlow::Node lesser | this.leq(branch, lesser, _, _) and not lesser.isConst() |
+        globalValueNumber(DataFlow::exprNode(e)) = globalValueNumber(lesser)
+      )
+    }
+  }
+
   /**
    * An arithmetic operation that might overflow, and whose result is used to compute an
    * allocation size.
@@ -81,7 +90,8 @@ module AllocationSizeOverflow {
 
     DefaultSink() {
       this instanceof OverflowProneOperand and
-      localStep*(this, allocsz)
+      localStep*(this, allocsz) and
+      not exists(AllocationSizeCheck g | allocsz = g.getAGuardedNode())
     }
 
     override DataFlow::Node getAllocationSize() { result = allocsz }
@@ -165,7 +175,7 @@ module AllocationSizeOverflow {
 
   /**
    * Holds if the value of `pred` can flow into `succ` in one step, either through a call to `len`
-   * or through an arithmetic operation.
+   * or through an arithmetic operation (other than remainder).
    */
   predicate additionalStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(DataFlow::CallNode c |
@@ -174,7 +184,8 @@ module AllocationSizeOverflow {
       succ = c
     )
     or
-    succ.asExpr().(ArithmeticExpr).getAnOperand() = pred.asExpr()
+    succ.asExpr().(ArithmeticExpr).getAnOperand() = pred.asExpr() and
+    not succ.asExpr() instanceof RemExpr
   }
 
   /**

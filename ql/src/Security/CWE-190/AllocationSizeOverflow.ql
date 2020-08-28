@@ -21,5 +21,5 @@ where
   cfg.hasFlowPath(source, sink) and
   cfg.isSink(sink.getNode(), allocsz)
 select sink, source, sink,
-  "This operation, which is used in an $@, involves a potentially large $@ " + "and might overflow.",
+  "This operation, which is used in an $@, involves a potentially large $@ and might overflow.",
   allocsz, "allocation", source, "value"
