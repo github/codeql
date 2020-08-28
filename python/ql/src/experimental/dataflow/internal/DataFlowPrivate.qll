@@ -15,6 +15,32 @@ class DataFlowCfgNode extends ControlFlowNode {
   DataFlowCfgNode() { isExpressionNode(this) }
 }
 
+/** A data flow node which should have an associated post-update node. */
+abstract class PreUpdateNode extends Node { }
+
+/** An argument might have its value changed as a result of a call. */
+class ArgumentPreUpdateNode extends PreUpdateNode, ArgumentNode { }
+
+/** An object might have its value changed after a store. */
+class StorePreUpdateNode extends PreUpdateNode, CfgNode {
+  StorePreUpdateNode() {
+    exists(Attribute a |
+      node = a.getObject().getAFlowNode() and
+      a.getCtx() instanceof Store
+    )
+  }
+}
+
+/** A node marking the state change of an object after a read */
+class ReadPreUpdateNode extends PreUpdateNode, CfgNode {
+  ReadPreUpdateNode() {
+    exists(Attribute a |
+      node = a.getObject().getAFlowNode() and
+      a.getCtx() instanceof Load
+    )
+  }
+}
+
 /**
  * A node associated with an object after an operation that might have
  * changed its state.
@@ -24,12 +50,21 @@ class DataFlowCfgNode extends ControlFlowNode {
  * an update to the field.
  *
  * Nodes corresponding to AST elements, for example `ExprNode`, usually refer
- * to the value before the update with the exception of `ObjectCreation`,
- * which represents the value after the constructor has run.
+ * to the value before the update.
  */
-abstract class PostUpdateNode extends Node {
+class PostUpdateNode extends Node, TPostUpdateNode {
+  PreUpdateNode pre;
+
+  PostUpdateNode() { this = TPostUpdateNode(pre) }
+
   /** Gets the node before the state update. */
-  abstract Node getPreUpdateNode();
+  Node getPreUpdateNode() { result = pre }
+
+  override string toString() { result = "[post] " + pre.toString() }
+
+  override Scope getScope() { result = pre.getScope() }
+
+  override Location getLocation() { result = pre.getLocation() }
 }
 
 class DataFlowExpr = Expr;
@@ -98,7 +133,17 @@ module EssaFlow {
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   not nodeFrom.(EssaNode).getVar() instanceof GlobalSsaVariable and
   not nodeTo.(EssaNode).getVar() instanceof GlobalSsaVariable and
-  EssaFlow::essaFlowStep(nodeFrom, nodeTo)
+  EssaFlow::essaFlowStep(update(nodeFrom), nodeTo)
+}
+
+private Node update(Node node) {
+  exists(PostUpdateNode pun |
+    node = pun.getPreUpdateNode() and
+    result = pun
+  )
+  or
+  not exists(PostUpdateNode pun | node = pun.getPreUpdateNode()) and
+  result = node
 }
 
 // TODO: Make modules for these headings
