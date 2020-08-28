@@ -325,6 +325,10 @@
     "csharp/ql/src/experimental/ir/implementation/raw/gvn/internal/ValueNumberingImports.qll",
     "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/gvn/internal/ValueNumberingImports.qll"
   ],
+  "Inline Test Expectations": [
+    "cpp/ql/test/TestUtilities/InlineExpectationsTest.qll",
+    "python/ql/test/TestUtilities/InlineExpectationsTest.qll"
+  ],
   "XML": [
     "cpp/ql/src/semmle/code/cpp/XML.qll",
     "csharp/ql/src/semmle/code/csharp/XML.qll",

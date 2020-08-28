@@ -1,1 +1,3 @@
 | tst.ts:40:5:40:15 | unknownType | unknown |
+| tst.ts:47:8:47:8 | e | unknown |
+| tst.ts:48:14:48:14 | e | unknown |

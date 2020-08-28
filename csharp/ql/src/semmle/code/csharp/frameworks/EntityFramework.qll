@@ -8,7 +8,12 @@ private import semmle.code.csharp.frameworks.system.collections.Generic
 private import semmle.code.csharp.frameworks.Sql
 private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
 
+/**
+ * Definitions relating to the `System.ComponentModel.DataAnnotations`
+ * namespace.
+ */
 module DataAnnotations {
+  /** Class for `NotMappedAttribute`. */
   class NotMappedAttribute extends Attribute {
     NotMappedAttribute() {
       this
@@ -18,6 +23,10 @@ module DataAnnotations {
   }
 }
 
+/**
+ * Definitions relating to the `Microsoft.EntityFrameworkCore` or
+ * `System.Data.Entity` namespaces.
+ */
 module EntityFramework {
   /** An EF6 or EFCore namespace. */
   class EFNamespace extends Namespace {
@@ -43,12 +52,14 @@ module EntityFramework {
   class DbContext extends EFClass {
     DbContext() { this.getName() = "DbContext" }
 
+    /** Gets a `Find` or `FindAsync` method in the `DbContext`. */
     Method getAFindMethod() {
       result = this.getAMethod("Find")
       or
       result = this.getAMethod("FindAsync")
     }
 
+    /** Gets an `Update` method in the `DbContext`. */
     Method getAnUpdateMethod() { result = this.getAMethod("Update") }
   }
 
@@ -119,6 +130,7 @@ module EntityFramework {
       preservesValue = false
     }
 
+    /** Gets a conversion operator from `string` to `RawSqlString`. */
     ConversionOperator getAConversionTo() {
       result = this.getAMember() and
       result.getTargetType() instanceof RawSqlStringStruct and

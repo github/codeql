@@ -64,7 +64,7 @@ namespace Semmle.Util
         /// Enumerates a possibly null enumerable.
         /// If the enumerable is null, the list is empty.
         /// </summary>
-        public static IEnumerable<T> EnumerateNull<T>(this IEnumerable<T> items)
+        public static IEnumerable<T> EnumerateNull<T>(this IEnumerable<T>? items)
         {
             if (items == null) yield break;
             foreach (var item in items) yield return item;

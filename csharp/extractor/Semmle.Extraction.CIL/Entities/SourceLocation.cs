@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CIL.Entities
             trapFile.Write(location.EndColumn);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is PdbSourceLocation l && location.Equals(l.location);
         }
