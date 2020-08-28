@@ -366,3 +366,14 @@ def test_lambda_extra_keyword():
 def test_lambda_extra_keyword_flow():
     f_extra_keyword_flow = lambda **a : [*a][0] # return the name of the first extra keyword argument
     SINK(f_extra_keyword_flow(**{SOURCE: None})) # Flow missing
+
+
+def test_swap():
+    a = SOURCE
+    b = NONSOURCE
+    SINK(a)
+    SINK_F(b)
+
+    a, b = b, a
+    SINK_F(a)
+    SINK(b)

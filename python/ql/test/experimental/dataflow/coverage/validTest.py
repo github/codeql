@@ -1,8 +1,8 @@
-def check_output(s, f):
-    if s == "OK\n":
+def check_output(outtext, f):
+    if all(s == "OK" for s in outtext.splitlines()):
         pass
     else:
-        raise RuntimeError("Function failed", s, f)
+        raise RuntimeError("Function failed", outtext, f)
 
 def check_test_function(f):
     from io import StringIO
