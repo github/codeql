@@ -18,7 +18,7 @@ abstractValue
 | 0 | Collections.cs:78:36:78:36 | 0 |
 | 0 | Collections.cs:80:35:80:35 | 0 |
 | 0 | Collections.cs:81:36:81:36 | 0 |
-| 0 | Collections.cs:87:17:87:31 | 0 |
+| 0 | Collections.cs:87:17:87:32 | 0 |
 | 0 | Guards.cs:12:24:12:24 | 0 |
 | 0 | Guards.cs:78:26:78:26 | 0 |
 | 0 | Guards.cs:80:25:80:25 | 0 |
@@ -59,8 +59,8 @@ abstractValue
 | 1 | Guards.cs:331:17:331:19 | access to constant B |
 | 1 | Guards.cs:334:13:334:15 | access to constant B |
 | 1 | Guards.cs:335:18:335:18 | 1 |
-| 3 | Collections.cs:55:13:55:41 | 3 |
-| 3 | Collections.cs:63:17:63:45 | 3 |
+| 3 | Collections.cs:55:13:55:42 | 3 |
+| 3 | Collections.cs:63:17:63:46 | 3 |
 | 10 | Guards.cs:84:25:84:26 | 10 |
 | 10 | Guards.cs:86:26:86:27 | 10 |
 | empty | Collections.cs:54:13:54:16 | access to parameter args |
@@ -69,22 +69,22 @@ abstractValue
 | empty | Collections.cs:58:9:58:13 | ... = ... |
 | empty | Collections.cs:58:13:58:13 | access to local variable x |
 | empty | Collections.cs:65:13:65:13 | access to local variable x |
-| empty | Collections.cs:87:17:87:31 | array creation of type String[] |
-| empty | Collections.cs:87:30:87:31 | { ..., ... } |
-| empty | Collections.cs:88:22:88:23 | { ..., ... } |
+| empty | Collections.cs:87:17:87:32 | array creation of type String[] |
+| empty | Collections.cs:87:30:87:32 | { ..., ... } |
+| empty | Collections.cs:88:22:88:24 | { ..., ... } |
 | false | Guards.cs:178:16:178:20 | false |
 | false | Guards.cs:181:53:181:57 | false |
 | false | Guards.cs:217:18:217:22 | false |
 | false | Guards.cs:228:18:228:22 | false |
 | false | Guards.cs:295:18:295:22 | false |
 | false | Guards.cs:305:18:305:22 | false |
-| non-empty | Collections.cs:55:9:55:41 | ... = ... |
-| non-empty | Collections.cs:55:13:55:41 | array creation of type String[] |
-| non-empty | Collections.cs:55:25:55:41 | { ..., ... } |
+| non-empty | Collections.cs:55:9:55:42 | ... = ... |
+| non-empty | Collections.cs:55:13:55:42 | array creation of type String[] |
+| non-empty | Collections.cs:55:26:55:42 | { ..., ... } |
 | non-empty | Collections.cs:56:9:56:13 | ... = ... |
 | non-empty | Collections.cs:56:13:56:13 | access to local variable x |
-| non-empty | Collections.cs:63:17:63:45 | array creation of type String[] |
-| non-empty | Collections.cs:63:29:63:45 | { ..., ... } |
+| non-empty | Collections.cs:63:17:63:46 | array creation of type String[] |
+| non-empty | Collections.cs:63:30:63:46 | { ..., ... } |
 | non-empty | Collections.cs:68:13:68:13 | access to local variable x |
 | non-empty | Collections.cs:89:9:89:32 | ... = ... |
 | non-empty | Collections.cs:89:13:89:32 | array creation of type String[] |
@@ -155,11 +155,11 @@ abstractValue
 | non-null | Collections.cs:54:13:54:16 | access to parameter args |
 | non-null | Collections.cs:54:13:54:26 | call to method ToArray |
 | non-null | Collections.cs:55:9:55:9 | access to local variable x |
-| non-null | Collections.cs:55:9:55:41 | ... = ... |
-| non-null | Collections.cs:55:13:55:41 | array creation of type String[] |
-| non-null | Collections.cs:55:27:55:29 | "a" |
-| non-null | Collections.cs:55:32:55:34 | "b" |
-| non-null | Collections.cs:55:37:55:39 | "c" |
+| non-null | Collections.cs:55:9:55:42 | ... = ... |
+| non-null | Collections.cs:55:13:55:42 | array creation of type String[] |
+| non-null | Collections.cs:55:28:55:30 | "a" |
+| non-null | Collections.cs:55:33:55:35 | "b" |
+| non-null | Collections.cs:55:38:55:40 | "c" |
 | non-null | Collections.cs:56:9:56:9 | access to local variable x |
 | non-null | Collections.cs:56:9:56:13 | ... = ... |
 | non-null | Collections.cs:56:13:56:13 | access to local variable x |
@@ -169,11 +169,11 @@ abstractValue
 | non-null | Collections.cs:58:9:58:9 | access to local variable x |
 | non-null | Collections.cs:58:9:58:13 | ... = ... |
 | non-null | Collections.cs:58:13:58:13 | access to local variable x |
-| non-null | Collections.cs:63:17:63:45 | array creation of type String[] |
-| non-null | Collections.cs:63:17:63:54 | call to method ToList |
-| non-null | Collections.cs:63:31:63:33 | "a" |
-| non-null | Collections.cs:63:36:63:38 | "b" |
-| non-null | Collections.cs:63:41:63:43 | "c" |
+| non-null | Collections.cs:63:17:63:46 | array creation of type String[] |
+| non-null | Collections.cs:63:17:63:55 | call to method ToList |
+| non-null | Collections.cs:63:32:63:34 | "a" |
+| non-null | Collections.cs:63:37:63:39 | "b" |
+| non-null | Collections.cs:63:42:63:44 | "c" |
 | non-null | Collections.cs:64:9:64:9 | access to local variable x |
 | non-null | Collections.cs:65:13:65:13 | access to local variable x |
 | non-null | Collections.cs:67:13:67:13 | access to local variable x |
@@ -214,14 +214,20 @@ abstractValue
 | non-null | Collections.cs:82:24:82:30 | access to local function IsEmpty |
 | non-null | Collections.cs:82:24:82:30 | delegate creation of type Func<String,Boolean> |
 | non-null | Collections.cs:82:24:82:30 | this access |
-| non-null | Collections.cs:87:17:87:31 | array creation of type String[] |
-| non-null | Collections.cs:88:22:88:23 | array creation of type String[] |
+| non-null | Collections.cs:87:17:87:32 | array creation of type String[] |
+| non-null | Collections.cs:88:22:88:24 | array creation of type String[] |
 | non-null | Collections.cs:89:9:89:9 | access to local variable x |
 | non-null | Collections.cs:89:9:89:32 | ... = ... |
 | non-null | Collections.cs:89:13:89:32 | array creation of type String[] |
 | non-null | Collections.cs:89:28:89:30 | "a" |
 | non-null | Collections.cs:90:22:90:28 | array creation of type String[] |
 | non-null | Collections.cs:90:24:90:26 | "a" |
+| non-null | Collections.cs:95:29:95:32 | access to parameter args |
+| non-null | Collections.cs:96:13:96:19 | access to type Console |
+| non-null | Collections.cs:96:31:96:34 | access to parameter args |
+| non-null | Collections.cs:101:29:101:32 | access to parameter args |
+| non-null | Collections.cs:103:9:103:15 | access to type Console |
+| non-null | Collections.cs:103:27:103:30 | access to parameter args |
 | non-null | Guards.cs:12:13:12:13 | access to parameter s |
 | non-null | Guards.cs:14:13:14:19 | access to type Console |
 | non-null | Guards.cs:14:31:14:31 | access to parameter s |
