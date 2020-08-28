@@ -14,7 +14,7 @@ func testSanitizers(s string) {
 
 	{
 		newlength := len(jsonData) + 2 // OK: there is an upper bound check which dominates `make`
-		_ := newlength - 1
+		ignore(newlength - 1)
 		if newlength < 1000 {
 			ignore(make([]byte, newlength))
 		}
@@ -31,7 +31,7 @@ func testSanitizers(s string) {
 	{
 		newlength := len(jsonData) + 4 // NOT OK: there is an upper bound check but it doesn't dominate `make`
 		if newlength < 1000 {
-			_ := newlength + 2
+			ignore(newlength + 2)
 		}
 		ignore(make([]byte, newlength))
 	}
