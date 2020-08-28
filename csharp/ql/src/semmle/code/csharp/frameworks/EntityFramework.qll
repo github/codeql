@@ -8,7 +8,10 @@ private import semmle.code.csharp.frameworks.system.collections.Generic
 private import semmle.code.csharp.frameworks.Sql
 private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
 
-/** Definitions relating to the `System.ComponentModel.DataAnnotations`. */
+/**
+ * Definitions relating to the `System.ComponentModel.DataAnnotations`
+ * namespace.
+ */
 module DataAnnotations {
   /** Class for `NotMappedAttribute`. */
   class NotMappedAttribute extends Attribute {
@@ -22,7 +25,7 @@ module DataAnnotations {
 
 /**
  * Definitions relating to the `Microsoft.EntityFrameworkCore` or
- * `System.Data.Entity`.
+ * `System.Data.Entity` namespaces.
  */
 module EntityFramework {
   /** An EF6 or EFCore namespace. */

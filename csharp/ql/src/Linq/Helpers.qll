@@ -27,10 +27,10 @@ predicate isIEnumerableType(ValueOrRefType t) {
 }
 
 /**
- * Holds if `ForeachStmt` could be converted to a `.All()` call. That is,
- * the `ForeachStmt` contains a single `if` with a condition that accesses
- * the loop variable and with a body that assigns `false` to a variable and
- * `break`s out of the `foreach`.
+ * Holds if `foreach` statement `fes` could be converted to a `.All()` call.
+ * That is, the `ForeachStmt` contains a single `if` with a condition that
+ * accesses the loop variable and with a body that assigns `false` to a variable
+ * and `break`s out of the `foreach`.
  */
 predicate missedAllOpportunity(ForeachStmt fes) {
   exists(IfStmt is |
@@ -51,9 +51,10 @@ predicate missedAllOpportunity(ForeachStmt fes) {
 }
 
 /**
- * Holds if `ForeachStmt` could be converted to a `.Cast()` call. That is, the
- * loop variable is accessed only in the first statement of the block, and the
- * access is a cast. The first statement needs to be a `LocalVariableDeclStmt`.
+ * Holds if `foreach` statement `fes` could be converted to a `.Cast()` call.
+ * That is, the loop variable is accessed only in the first statement of the
+ * block, and the access is a cast. The first statement needs to be a
+ * `LocalVariableDeclStmt`.
  */
 predicate missedCastOpportunity(ForeachStmt fes, LocalVariableDeclStmt s) {
   s = firstStmt(fes) and
@@ -67,10 +68,10 @@ predicate missedCastOpportunity(ForeachStmt fes, LocalVariableDeclStmt s) {
 }
 
 /**
- * Holds if `ForeachStmt` could be converted to an `.OfType()` call. That is, the
- * loop variable is accessed only in the first statement of the block, and the
- * access is a cast with the `as` operator. The first statement needs to be a
- * `LocalVariableDeclStmt`.
+ * Holds if `foreach` statement `fes` could be converted to an `.OfType()` call.
+ * That is, the loop variable is accessed only in the first statement of the
+ * block, and the access is a cast with the `as` operator. The first statement
+ * needs to be a `LocalVariableDeclStmt`.
  */
 predicate missedOfTypeOpportunity(ForeachStmt fes, LocalVariableDeclStmt s) {
   s = firstStmt(fes) and
@@ -84,9 +85,10 @@ predicate missedOfTypeOpportunity(ForeachStmt fes, LocalVariableDeclStmt s) {
 }
 
 /**
- * Holds if `ForeachStmt` could be converted to a `.Select()` call. That is, the
- * loop variable is accessed only in the first statement of the block, and the
- * access is not a cast. The first statement needs to be a `LocalVariableDeclStmt`.
+ * Holds if `foreach` statement `fes` could be converted to a `.Select()` call.
+ * That is, the loop variable is accessed only in the first statement of the
+ * block, and the access is not a cast. The first statement needs to be a
+ * `LocalVariableDeclStmt`.
  */
 predicate missedSelectOpportunity(ForeachStmt fes, LocalVariableDeclStmt s) {
   s = firstStmt(fes) and
@@ -97,10 +99,10 @@ predicate missedSelectOpportunity(ForeachStmt fes, LocalVariableDeclStmt s) {
 }
 
 /**
- * Holds if `ForeachStmt` could be converted to a `.Where()` call. That is, first
- * statement of the loop is an `if`, which accesses the loop variable, and the body
- * of the `if` is either a `continue` or there's nothing else in the loop than the
- * `if`.
+ * Holds if `foreach` statement `fes` could be converted to a `.Where()` call.
+ * That is, first statement of the loop is an `if`, which accesses the loop
+ * variable, and the body of the `if` is either a `continue` or there's nothing
+ * else in the loop than the `if`.
  */
 predicate missedWhereOpportunity(ForeachStmt fes, IfStmt is) {
   // The very first thing the foreach loop does is test its iteration variable.

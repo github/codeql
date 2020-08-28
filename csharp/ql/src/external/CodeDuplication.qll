@@ -276,7 +276,7 @@ predicate mostlyDuplicateClass(Class c, Class other, string message) {
   )
 }
 
-/** Holds if the two files are similar or duplated. */
+/** Holds if the two files are similar or duplicated. */
 predicate fileLevelDuplication(File f, File other) {
   similarFiles(f, other, _) or duplicateFiles(f, other, _)
 }

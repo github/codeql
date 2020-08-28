@@ -223,8 +223,8 @@ predicate shareFieldOrProperty(ValueOrRefType t, Method m1, Method m2) {
 }
 
 /**
- * Holds if `Method` `m` is declared in `ValueOrRefType` `t`, and if there's a
- * `FieldAccess` or `PropertyAccess` in `m` that accesses `Declaration` `d`.
+ * Holds if the declaring type of method `m` is `t` and `m` accesses declaration
+ * `d`, which is either a field or a property.
  */
 predicate methodUsesFieldOrProperty(ValueOrRefType t, Method m, Declaration d) {
   m.getDeclaringType() = t and
