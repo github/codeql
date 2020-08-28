@@ -4,7 +4,8 @@ using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.Entities
 {
-    public abstract class SourceLocation : Location {
+    public abstract class SourceLocation : Location
+    {
         protected SourceLocation(Context cx, Microsoft.CodeAnalysis.Location? init) : base(cx, init)
         {
         }

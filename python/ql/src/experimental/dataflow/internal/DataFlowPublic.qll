@@ -2,7 +2,7 @@
  * Provides Python-specific definitions for use in the data flow library.
  */
 
-import python
+private import python
 private import DataFlowPrivate
 
 /**
@@ -20,7 +20,7 @@ newtype TNode =
   /** A node corresponding to an SSA variable. */
   TEssaNode(EssaVariable var) or
   /** A node corresponding to a control flow node. */
-  TCfgNode(ControlFlowNode node)
+  TCfgNode(DataFlowCfgNode node)
 
 /**
  * An element, viewed as a node in a data flow graph. Either an SSA variable
@@ -33,8 +33,15 @@ class Node extends TNode {
   /** Gets the scope of this node. */
   Scope getScope() { none() }
 
+  private DataFlowCallable getCallableScope(Scope s) {
+    result.getScope() = s
+    or
+    not exists(DataFlowCallable c | c.getScope() = s) and
+    result = getCallableScope(s.getEnclosingScope())
+  }
+
   /** Gets the enclosing callable of this node. */
-  DataFlowCallable getEnclosingCallable() { result.getScope() = this.getScope() }
+  DataFlowCallable getEnclosingCallable() { result = getCallableScope(this.getScope()) }
 
   /** Gets the location of this node */
   Location getLocation() { none() }
@@ -51,6 +58,15 @@ class Node extends TNode {
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
+
+  /** Convenience method for casting to EssaNode and calling getVar. */
+  EssaVariable asVar() { none() }
+
+  /** Convenience method for casting to CfgNode and calling getNode. */
+  ControlFlowNode asCfgNode() { none() }
+
+  /** Convenience method for casting to ExprNode and calling getNode and getNode again. */
+  Expr asExpr() { none() }
 }
 
 class EssaNode extends Node, TEssaNode {
@@ -59,6 +75,8 @@ class EssaNode extends Node, TEssaNode {
   EssaNode() { this = TEssaNode(var) }
 
   EssaVariable getVar() { result = var }
+
+  override EssaVariable asVar() { result = var }
 
   /** Gets a textual representation of this element. */
   override string toString() { result = var.toString() }
@@ -69,11 +87,13 @@ class EssaNode extends Node, TEssaNode {
 }
 
 class CfgNode extends Node, TCfgNode {
-  ControlFlowNode node;
+  DataFlowCfgNode node;
 
   CfgNode() { this = TCfgNode(node) }
 
   ControlFlowNode getNode() { result = node }
+
+  override ControlFlowNode asCfgNode() { result = node }
 
   /** Gets a textual representation of this element. */
   override string toString() { result = node.toString() }
@@ -90,10 +110,14 @@ class CfgNode extends Node, TCfgNode {
  * to multiple `ExprNode`s, just like it may correspond to multiple
  * `ControlFlow::Node`s.
  */
-class ExprNode extends Node { }
+class ExprNode extends CfgNode {
+  ExprNode() { isExpressionNode(node) }
+
+  override Expr asExpr() { result = node.getNode() }
+}
 
 /** Gets a node corresponding to expression `e`. */
-ExprNode exprNode(DataFlowExpr e) { none() }
+ExprNode exprNode(DataFlowExpr e) { result.getNode().getNode() = e }
 
 /**
  * The value of a parameter at function entry, viewed as a node in a data
@@ -138,6 +162,62 @@ class BarrierGuard extends Expr {
 /**
  * A reference contained in an object. This is either a field or a property.
  */
-class Content extends string {
-  Content() { this = "Content" }
+newtype TContent =
+  /** An element of a list. */
+  TListElementContent() or
+  /** An element of a set. */
+  TSetElementContent() or
+  /** An element of a tuple at a specifik index. */
+  TTupleElementContent(int index) { exists(any(TupleNode tn).getElement(index)) } or
+  /** An element of a dictionary under a specific key. */
+  TDictionaryElementContent(string key) {
+    key = any(KeyValuePair kvp).getKey().(StrConst).getS()
+    or
+    key = any(Keyword kw).getArg()
+  } or
+  /** An element of a dictionary at any key. */
+  TDictionaryElementAnyContent()
+
+class Content extends TContent {
+  /** Gets a textual representation of this element. */
+  string toString() { result = "Content" }
+}
+
+class ListElementContent extends TListElementContent, Content {
+  /** Gets a textual representation of this element. */
+  override string toString() { result = "List element" }
+}
+
+class SetElementContent extends TSetElementContent, Content {
+  /** Gets a textual representation of this element. */
+  override string toString() { result = "Set element" }
+}
+
+class TupleElementContent extends TTupleElementContent, Content {
+  int index;
+
+  TupleElementContent() { this = TTupleElementContent(index) }
+
+  /** Gets the index for this tuple element */
+  int getIndex() { result = index }
+
+  /** Gets a textual representation of this element. */
+  override string toString() { result = "Tuple element at index " + index.toString() }
+}
+
+class DictionaryElementContent extends TDictionaryElementContent, Content {
+  string key;
+
+  DictionaryElementContent() { this = TDictionaryElementContent(key) }
+
+  /** Gets the index for this tuple element */
+  string getKey() { result = key }
+
+  /** Gets a textual representation of this element. */
+  override string toString() { result = "Dictionary element at key " + key }
+}
+
+class DictionaryElementAnyContent extends TDictionaryElementAnyContent, Content {
+  /** Gets a textual representation of this element. */
+  override string toString() { result = "Any dictionary element" }
 }

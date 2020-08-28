@@ -10,6 +10,7 @@ import com.semmle.js.ast.jsx.JSXMemberExpression;
 import com.semmle.js.ast.jsx.JSXNamespacedName;
 import com.semmle.js.ast.jsx.JSXOpeningElement;
 import com.semmle.js.ast.jsx.JSXSpreadAttribute;
+import com.semmle.js.ast.jsx.JSXThisExpr;
 import com.semmle.ts.ast.ArrayTypeExpr;
 import com.semmle.ts.ast.ConditionalTypeExpr;
 import com.semmle.ts.ast.DecoratorList;
@@ -565,6 +566,11 @@ public class NodeCopier implements Visitor<Void, INode> {
   @Override
   public INode visit(JSXIdentifier nd, Void c) {
     return new JSXIdentifier(visit(nd.getLoc()), nd.getName());
+  }
+
+  @Override
+  public INode visit(JSXThisExpr nd, Void c) {
+    return new JSXThisExpr(visit(nd.getLoc()));
   }
 
   @Override

@@ -111,6 +111,7 @@ import com.semmle.js.ast.jsx.JSXIdentifier;
 import com.semmle.js.ast.jsx.JSXMemberExpression;
 import com.semmle.js.ast.jsx.JSXOpeningElement;
 import com.semmle.js.ast.jsx.JSXSpreadAttribute;
+import com.semmle.js.ast.jsx.JSXThisExpr;
 import com.semmle.js.parser.JSParser.Result;
 import com.semmle.ts.ast.ArrayTypeExpr;
 import com.semmle.ts.ast.ConditionalTypeExpr;
@@ -2377,7 +2378,7 @@ public class TypeScriptASTConverter {
           convertJSXName(me.getObject()),
           (JSXIdentifier) convertJSXName(me.getProperty()));
     }
-    if (e instanceof ThisExpression) return new JSXIdentifier(e.getLoc(), "this");
+    if (e instanceof ThisExpression) return new JSXThisExpr(e.getLoc());
     return (IJSXName) e;
   }
 

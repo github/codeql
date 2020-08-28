@@ -140,6 +140,12 @@ namespace Semmle.Extraction.CSharp
                         return ExitCode.Failed;
                     }
 
+                    // csc.exe (CSharpCompiler.cs) also provides CompilationOptions
+                    // .WithMetadataReferenceResolver(),
+                    // .WithXmlReferenceResolver() and
+                    // .WithSourceReferenceResolver().
+                    // These would be needed if we hadn't explicitly provided the source/references
+                    // already.
                     var compilation = CSharpCompilation.Create(
                         compilerArguments.CompilationName,
                         syntaxTrees,
@@ -147,11 +153,6 @@ namespace Semmle.Extraction.CSharp
                         compilerArguments.CompilationOptions.
                             WithAssemblyIdentityComparer(DesktopAssemblyIdentityComparer.Default).
                             WithStrongNameProvider(new DesktopStrongNameProvider(compilerArguments.KeyFileSearchPaths))
-                        // csc.exe (CSharpCompiler.cs) also provides WithMetadataReferenceResolver,
-                        // WithXmlReferenceResolver and
-                        // WithSourceReferenceResolver.
-                        // These would be needed if we hadn't explicitly provided the source/references
-                        // already.
                         );
 
                     analyser.EndInitialize(compilerArguments, commandLineArguments, compilation);

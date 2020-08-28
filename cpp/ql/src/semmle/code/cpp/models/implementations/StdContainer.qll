@@ -14,10 +14,7 @@ import semmle.code.cpp.models.interfaces.Taint
  */
 class StdSequenceContainerConstructor extends Constructor, TaintFunction {
   StdSequenceContainerConstructor() {
-    this.getDeclaringType().hasQualifiedName("std", "vector") or
-    this.getDeclaringType().hasQualifiedName("std", "deque") or
-    this.getDeclaringType().hasQualifiedName("std", "list") or
-    this.getDeclaringType().hasQualifiedName("std", "forward_list")
+    this.getDeclaringType().hasQualifiedName("std", ["vector", "deque", "list", "forward_list"])
   }
 
   /**
@@ -26,7 +23,7 @@ class StdSequenceContainerConstructor extends Constructor, TaintFunction {
    */
   int getAValueTypeParameterIndex() {
     getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
-      getDeclaringType().getTemplateArgument(0) // i.e. the `T` of this `std::vector<T>`
+      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -37,15 +34,31 @@ class StdSequenceContainerConstructor extends Constructor, TaintFunction {
 }
 
 /**
+ * The standard container function `data`.
+ */
+class StdSequenceContainerData extends TaintFunction {
+  StdSequenceContainerData() { this.hasQualifiedName("std", ["array", "vector"], "data") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from container itself (qualifier) to return value
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
+    or
+    // reverse flow from returned reference to the qualifier (for writes to
+    // `data`)
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
+  }
+}
+
+/**
  * The standard container functions `push_back` and `push_front`.
  */
 class StdSequenceContainerPush extends TaintFunction {
   StdSequenceContainerPush() {
     this.hasQualifiedName("std", "vector", "push_back") or
-    this.hasQualifiedName("std", "deque", "push_back") or
-    this.hasQualifiedName("std", "deque", "push_front") or
-    this.hasQualifiedName("std", "list", "push_back") or
-    this.hasQualifiedName("std", "list", "push_front") or
+    this.hasQualifiedName("std", "deque", ["push_back", "push_front"]) or
+    this.hasQualifiedName("std", "list", ["push_back", "push_front"]) or
     this.hasQualifiedName("std", "forward_list", "push_front")
   }
 
@@ -61,14 +74,10 @@ class StdSequenceContainerPush extends TaintFunction {
  */
 class StdSequenceContainerFrontBack extends TaintFunction {
   StdSequenceContainerFrontBack() {
-    this.hasQualifiedName("std", "array", "front") or
-    this.hasQualifiedName("std", "array", "back") or
-    this.hasQualifiedName("std", "vector", "front") or
-    this.hasQualifiedName("std", "vector", "back") or
-    this.hasQualifiedName("std", "deque", "front") or
-    this.hasQualifiedName("std", "deque", "back") or
-    this.hasQualifiedName("std", "list", "front") or
-    this.hasQualifiedName("std", "list", "back") or
+    this.hasQualifiedName("std", "array", ["front", "back"]) or
+    this.hasQualifiedName("std", "vector", ["front", "back"]) or
+    this.hasQualifiedName("std", "deque", ["front", "back"]) or
+    this.hasQualifiedName("std", "list", ["front", "back"]) or
     this.hasQualifiedName("std", "forward_list", "front")
   }
 
@@ -80,15 +89,35 @@ class StdSequenceContainerFrontBack extends TaintFunction {
 }
 
 /**
+ * The standard container function `assign`.
+ */
+class StdSequenceContainerAssign extends TaintFunction {
+  StdSequenceContainerAssign() {
+    this.hasQualifiedName("std", ["vector", "deque", "list", "forward_list"], "assign")
+  }
+
+  /**
+   * Gets the index of a parameter to this function that is a reference to the
+   * value type of the container.
+   */
+  int getAValueTypeParameterIndex() {
+    getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
+      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from parameter to string itself (qualifier) and return value
+    input.isParameterDeref(getAValueTypeParameterIndex()) and
+    output.isQualifierObject()
+  }
+}
+
+/**
  * The standard container `swap` functions.
  */
 class StdSequenceContainerSwap extends TaintFunction {
   StdSequenceContainerSwap() {
-    this.hasQualifiedName("std", "array", "swap") or
-    this.hasQualifiedName("std", "vector", "swap") or
-    this.hasQualifiedName("std", "deque", "swap") or
-    this.hasQualifiedName("std", "list", "swap") or
-    this.hasQualifiedName("std", "forward_list", "swap")
+    this.hasQualifiedName("std", ["array", "vector", "deque", "list", "forward_list"], "swap")
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -97,6 +126,25 @@ class StdSequenceContainerSwap extends TaintFunction {
     output.isParameterDeref(0)
     or
     input.isParameterDeref(0) and
+    output.isQualifierObject()
+  }
+}
+
+/**
+ * The standard container functions `at` and `operator[]`.
+ */
+class StdSequenceContainerAt extends TaintFunction {
+  StdSequenceContainerAt() {
+    this.hasQualifiedName("std", ["vector", "array", "deque"], ["at", "operator[]"])
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from qualifier to referenced return value
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
+    or
+    // reverse flow from returned reference to the qualifier
+    input.isReturnValueDeref() and
     output.isQualifierObject()
   }
 }

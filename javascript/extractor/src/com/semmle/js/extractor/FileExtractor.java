@@ -119,7 +119,7 @@ public class FileExtractor {
     JS(".js", ".jsx", ".mjs", ".cjs", ".es6", ".es") {
       @Override
       public IExtractor mkExtractor(ExtractorConfig config, ExtractorState state) {
-        return new ScriptExtractor(config);
+        return new ScriptExtractor(config, state);
       }
 
       @Override

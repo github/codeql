@@ -153,7 +153,7 @@ namespace Semmle.Extraction
             {
                 entity.WriteQuotedId(trapFile);
             }
-            catch(Exception ex)  // lgtm[cs/catch-of-all-exceptions]
+            catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
                 trapFile.WriteLine("\"");
                 extractor.Message(new Message("Unhandled exception generating id", entity.ToString() ?? "", null, ex.StackTrace));

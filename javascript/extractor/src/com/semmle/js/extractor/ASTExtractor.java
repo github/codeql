@@ -82,6 +82,7 @@ import com.semmle.js.ast.SwitchStatement;
 import com.semmle.js.ast.TaggedTemplateExpression;
 import com.semmle.js.ast.TemplateElement;
 import com.semmle.js.ast.TemplateLiteral;
+import com.semmle.js.ast.ThisExpression;
 import com.semmle.js.ast.ThrowStatement;
 import com.semmle.js.ast.TryStatement;
 import com.semmle.js.ast.UnaryExpression;
@@ -105,6 +106,7 @@ import com.semmle.js.ast.jsx.JSXMemberExpression;
 import com.semmle.js.ast.jsx.JSXNamespacedName;
 import com.semmle.js.ast.jsx.JSXOpeningElement;
 import com.semmle.js.ast.jsx.JSXSpreadAttribute;
+import com.semmle.js.ast.jsx.JSXThisExpr;
 import com.semmle.js.extractor.ExtractionMetrics.ExtractionPhase;
 import com.semmle.js.extractor.ExtractorConfig.Platform;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
@@ -1643,6 +1645,11 @@ public class ASTExtractor {
     @Override
     public Label visit(JSXIdentifier nd, Context c) {
       return visit((Identifier) nd, c);
+    }
+
+    @Override
+    public Label visit(JSXThisExpr nd, Context c) {
+      return visit((ThisExpression) nd, c);
     }
 
     @Override

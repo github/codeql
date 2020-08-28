@@ -11,12 +11,14 @@ namespace std
 
 	struct ptrdiff_t;
 
-	template <class iterator_category,
+	template <class Category,
 			  class value_type,
 			  class difference_type = ptrdiff_t,
 			  class pointer_type = value_type*,
 			  class reference_type = value_type&>
 	struct iterator {
+		typedef Category iterator_category;
+
 		iterator &operator++();
 		iterator operator++(int);
 		bool operator==(iterator other) const;
@@ -38,6 +40,9 @@ namespace std
 	template<class charT, class traits = char_traits<charT>, class Allocator = allocator<charT> >
 	class basic_string {
 	public:
+		using value_type = charT;
+		using reference = value_type&;
+		using const_reference = const value_type&;
 		typedef typename Allocator::size_type size_type;
 		static const size_type npos = -1;
 
@@ -58,6 +63,10 @@ namespace std
 		const_iterator cbegin() const;
 		const_iterator cend() const;
 
+		const_reference operator[](size_type pos) const;
+		reference operator[](size_type pos);
+		const_reference at(size_type n) const;
+		reference at(size_type n);
 		template<class T> basic_string& operator+=(const T& t);
 		basic_string& operator+=(const charT* s);
 		basic_string& append(const basic_string& str);
@@ -135,6 +144,10 @@ namespace std {
 
 		vector& operator=(const vector& x);
 		vector& operator=(vector&& x) noexcept/*(allocator_traits<Allocator>::propagate_on_container_move_assignment::value || allocator_traits<Allocator>::is_always_equal::value)*/;
+		template<class InputIterator, class IteratorCategory = typename InputIterator::iterator_category> void assign(InputIterator first, InputIterator last);
+			// use of `iterator_category` makes sure InputIterator is (probably) an iterator, and not an `int` or
+			// similar that should match a different overload (SFINAE).
+		void assign(size_type n, const T& u);
 
 		iterator begin() noexcept;
 		const_iterator begin() const noexcept;
