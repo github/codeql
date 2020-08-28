@@ -8,15 +8,33 @@ class StdBasicString extends TemplateClass {
 }
 
 /**
- * The `std::string` functions `c_str` and  `data`.
+ * The `std::string` function `c_str`.
  */
 class StdStringCStr extends TaintFunction {
-  StdStringCStr() { this.hasQualifiedName("std", "basic_string", ["c_str", "data"]) }
+  StdStringCStr() { this.hasQualifiedName("std", "basic_string", "c_str") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from string itself (qualifier) to return value
     input.isQualifierObject() and
-    output.isReturnValue()
+    output.isReturnValueDeref()
+  }
+}
+
+/**
+ * The `std::string` function `data`.
+ */
+class StdStringData extends TaintFunction {
+  StdStringData() { this.hasQualifiedName("std", "basic_string", "data") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from string itself (qualifier) to return value
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
+    or
+    // reverse flow from returned reference to the qualifier (for writes to
+    // `data`)
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
   }
 }
 
@@ -53,17 +71,18 @@ class StdStringAppend extends TaintFunction {
    * Gets the index of a parameter to this function that is a string (or
    * character).
    */
-  int getAStringParameter() {
+  int getAStringParameterIndex() {
     getParameter(result).getType() instanceof PointerType or
     getParameter(result).getType() instanceof ReferenceType or
-    getParameter(result).getType() = getDeclaringType().getTemplateArgument(0) // i.e. `std::basic_string::CharT`
+    getParameter(result).getUnspecifiedType() =
+      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. `std::basic_string::CharT`
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from string and parameter to string (qualifier) and return value
     (
       input.isQualifierObject() or
-      input.isParameterDeref(getAStringParameter())
+      input.isParameterDeref(getAStringParameterIndex())
     ) and
     (
       output.isQualifierObject() or
@@ -82,15 +101,16 @@ class StdStringAssign extends TaintFunction {
    * Gets the index of a parameter to this function that is a string (or
    * character).
    */
-  int getAStringParameter() {
+  int getAStringParameterIndex() {
     getParameter(result).getType() instanceof PointerType or
     getParameter(result).getType() instanceof ReferenceType or
-    getParameter(result).getType() = getDeclaringType().getTemplateArgument(0) // i.e. `std::basic_string::CharT`
+    getParameter(result).getUnspecifiedType() =
+      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. `std::basic_string::CharT`
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from parameter to string itself (qualifier) and return value
-    input.isParameterDeref(getAStringParameter()) and
+    input.isParameterDeref(getAStringParameterIndex()) and
     (
       output.isQualifierObject() or
       output.isReturnValueDeref()
