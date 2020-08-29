@@ -14,7 +14,7 @@
 //                     HttpClient client = HttpClient.newBuilder().build();
 //                     CompletableFuture<WebSocket> ws = client.newWebSocketBuilder()
 //                             .buildAsync(URI.create("ws://websocket.example.com"), null);
-//                     ws.get().sendText​(message, false);
+//                     ws.get().sendText(message, false);
 //                 } catch (Exception e) {
 //                     // TODO: handle exception
 //                 }
