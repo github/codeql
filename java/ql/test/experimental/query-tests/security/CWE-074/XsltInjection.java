@@ -15,6 +15,7 @@ import javax.xml.transform.stax.StAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xml.sax.InputSource;
 
@@ -33,6 +34,7 @@ public class XsltInjection {
     TransformerFactory.newInstance().newTemplates(source).newTransformer().transform(null, null);
   }
 
+  @RequestMapping
   public void testStreamSourceInjectedParam(@RequestParam String param) throws Exception {
     String xslt = "<xsl:stylesheet [...]" + param + "</xsl:stylesheet>";
     StreamSource source = new StreamSource(new StringReader(xslt));
@@ -95,6 +97,7 @@ public class XsltInjection {
     compiler.compile(source).load30().callTemplate(null, null);
   }
 
+  @RequestMapping
   public void testSaxonXsltPackage(@RequestParam String param, Socket socket) throws Exception {
     URI uri = new URI(param);
     StreamSource source = new StreamSource(socket.getInputStream());
