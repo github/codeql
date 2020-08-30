@@ -15,6 +15,7 @@ import javax.xml.transform.stax.StAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xml.sax.InputSource;
@@ -23,6 +24,7 @@ import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.XdmValue;
 import net.sf.saxon.s9api.XsltCompiler;
 
+@Controller
 public class XsltInjection {
   public void testStreamSourceInputStream(Socket socket) throws Exception {
     StreamSource source = new StreamSource(socket.getInputStream());
