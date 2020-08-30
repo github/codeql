@@ -4,6 +4,7 @@
 
 import javascript
 private import semmle.javascript.dataflow.InferredTypes
+private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 
 deprecated module GlobalAccessPath {
   /**
@@ -33,7 +34,7 @@ deprecated module GlobalAccessPath {
 /**
  * Provides predicates for associating access paths with data flow nodes.
  *
- * For example, `AccessPath.getAReferenceTo(x)` can be used to obtain the global access path
+ * For example, `AccessPath::getAReferenceTo(x)` can be used to obtain the global access path
  * that `x` refers to, as in the following sample:
  * ```
  * function f() {
@@ -58,7 +59,8 @@ module AccessPath {
       not this instanceof DataFlow::PropRead and
       not this instanceof PropertyProjection and
       not this instanceof Closure::ClosureNamespaceAccess and
-      not this = DataFlow::parameterNode(any(ImmediatelyInvokedFunctionExpr iife).getAParameter())
+      not this = DataFlow::parameterNode(any(ImmediatelyInvokedFunctionExpr iife).getAParameter()) and
+      not FlowSteps::identityFunctionStep(_, this)
     }
 
     /** Holds if this represents the root of the global access path. */
@@ -240,7 +242,7 @@ module AccessPath {
    * ```
    * function f(x) {
    *   x.foo.bar = class {};
-   *   x.foo = { bar: class() };
+   *   x.foo = { bar: class {} };
    *   let alias = x;
    *   alias.foo.bar = class {};
    * }
@@ -265,7 +267,7 @@ module AccessPath {
     or
     exists(FunctionDeclStmt fun |
       node = DataFlow::valueNode(fun) and
-      result = fun.getId().(GlobalVarDecl).getName() and
+      result = fun.getIdentifier().(GlobalVarDecl).getName() and
       root.isGlobal()
     )
     or
@@ -283,7 +285,7 @@ module AccessPath {
     or
     exists(NamespaceDeclaration decl |
       node = DataFlow::valueNode(decl) and
-      result = decl.getId().(GlobalVarDecl).getName() and
+      result = decl.getIdentifier().(GlobalVarDecl).getName() and
       root.isGlobal()
     )
   }
@@ -338,7 +340,7 @@ module AccessPath {
    * ```
    * function f(x) {
    *   x.foo.bar = class {};
-   *   x.foo = { bar: class() };
+   *   x.foo = { bar: class {} };
    *   let alias = x;
    *   alias.foo.bar = class {};
    * }
@@ -355,7 +357,7 @@ module AccessPath {
    * Only gets the immediate right-hand side of an assignment or property or a global declaration,
    * not nodes that transitively flow there.
    *
-   * For example, the class nodes below are all assignmetns to `foo.bar`:
+   * For example, the class nodes below are all assignments to `foo.bar`:
    * ```
    * foo.bar = class {};
    * foo = { bar: class {} };
@@ -418,5 +420,136 @@ module AccessPath {
     )
     or
     result = node.getALocalSource()
+  }
+
+  /**
+   * A module for reasoning dominating reads and writes to access-paths.
+   */
+  module DominatingPaths {
+    /**
+     * A classification of acccess paths into reads and writes.
+     */
+    cached
+    private newtype AccessPathKind =
+      AccessPathRead() or
+      AccessPathWrite()
+
+    /**
+     * Gets the `ranking`th access-path with `root` and `path` within `bb`.
+     * And the access-path has type `type`.
+     *
+     * Only has a result if there exists both a read and write of the access-path within `bb`.
+     */
+    private ControlFlowNode rankedAccessPath(
+      ReachableBasicBlock bb, Root root, string path, int ranking, AccessPathKind type
+    ) {
+      result =
+        rank[ranking](ControlFlowNode ref |
+          ref = getAccessTo(root, path, _) and
+          ref.getBasicBlock() = bb and
+          // Prunes the accesses where there does not exists a read and write within the same basicblock.
+          // This could be more precise, but doing it like this avoids massive joins.
+          hasRead(bb) and
+          hasWrite(bb)
+        |
+          ref order by any(int i | ref = bb.getNode(i))
+        ) and
+      result = getAccessTo(root, path, type)
+    }
+
+    /**
+     * Holds if there exists an access-path read inside the basic-block `bb`.
+     *
+     * INTERNAL: This predicate is only meant to be used inside `rankedAccessPath`.
+     */
+    pragma[noinline]
+    private predicate hasRead(ReachableBasicBlock bb) {
+      bb = getAccessTo(_, _, AccessPathRead()).getBasicBlock()
+    }
+
+    /**
+     * Holds if there exists an access-path write inside the basic-block `bb`.
+     *
+     * INTERNAL: This predicate is only meant to be used inside `rankedAccessPath`.
+     */
+    pragma[noinline]
+    private predicate hasWrite(ReachableBasicBlock bb) {
+      bb = getAccessTo(_, _, AccessPathRead()).getBasicBlock()
+    }
+
+    /**
+     * Gets a `ControlFlowNode` for an access to `path` from `root` with type `type`.
+     *
+     * This predicate uses both the AccessPath API, and the SourceNode API.
+     * This ensures that we have basic support for access-paths with ambiguous roots.
+     *
+     * There is only a result if both a read and a write of the access-path exists.
+     */
+    pragma[nomagic]
+    private ControlFlowNode getAccessTo(Root root, string path, AccessPathKind type) {
+      exists(getAReadNode(root, path)) and
+      exists(getAWriteNode(root, path)) and
+      (
+        type = AccessPathRead() and
+        result = getAReadNode(root, path)
+        or
+        type = AccessPathWrite() and
+        result = getAWriteNode(root, path)
+      )
+    }
+
+    /**
+     * Gets a `ControlFlowNode` for a read to `path` from `root`.
+     *
+     * Only used within `getAccessTo`.
+     */
+    private ControlFlowNode getAReadNode(Root root, string path) {
+      exists(DataFlow::PropRead read | read.asExpr() = result |
+        path = fromReference(read, root) or
+        read = root.getAPropertyRead(path)
+      )
+    }
+
+    /**
+     * Gets a `ControlFlowNode` for a write to `path` from `root`.
+     *
+     * Only used within `getAccessTo`.
+     */
+    private ControlFlowNode getAWriteNode(Root root, string path) {
+      result = root.getAPropertyWrite(path).getWriteNode()
+      or
+      exists(DataFlow::PropWrite write | path = fromRhs(write.getRhs(), root) |
+        result = write.getWriteNode()
+      )
+    }
+
+    /**
+     * Gets a basic-block where the access path defined by `root` and `path` is written to.
+     * And a read to the same access path exists.
+     */
+    private ReachableBasicBlock getAWriteBlock(Root root, string path) {
+      result = getAccessTo(root, path, AccessPathWrite()).getBasicBlock() and
+      exists(getAccessTo(root, path, AccessPathRead())) // helps performance
+    }
+
+    /**
+     * EXPERIMENTAL. This API may change in the future.
+     *
+     * Holds for `read` if there exists a previous write to the same access-path that dominates this read.
+     */
+    cached
+    predicate hasDominatingWrite(DataFlow::PropRead read) {
+      // within the same basic block.
+      exists(ReachableBasicBlock bb, Root root, string path, int ranking |
+        read.asExpr() = rankedAccessPath(bb, root, path, ranking, AccessPathRead()) and
+        exists(rankedAccessPath(bb, root, path, any(int prev | prev < ranking), AccessPathWrite()))
+      )
+      or
+      // across basic blocks.
+      exists(Root root, string path |
+        read.asExpr() = getAccessTo(root, path, AccessPathRead()) and
+        getAWriteBlock(root, path).strictlyDominates(read.getBasicBlock())
+      )
+    }
   }
 }

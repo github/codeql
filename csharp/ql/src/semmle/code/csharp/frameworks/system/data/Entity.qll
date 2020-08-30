@@ -5,6 +5,7 @@
 private import csharp as csharp
 private import semmle.code.csharp.frameworks.system.Data as Data
 
+/** Definitions relating to the `System.Data.Entity` namespace. */
 module SystemDataEntity {
   /** The `System.Data.Entity` namespace. */
   class Namespace extends csharp::Namespace {
@@ -78,6 +79,7 @@ module SystemDataEntity {
   }
 }
 
+/** Definitions relating to the `System.Data.Entity.Infrastructure` namespace. */
 module SystemDataEntityInfrastructure {
   /** The `System.Data.Entity.Infrastructure` namespace. */
   class Namespace extends csharp::Namespace {

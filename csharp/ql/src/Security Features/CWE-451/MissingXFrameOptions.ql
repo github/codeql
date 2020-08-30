@@ -16,11 +16,11 @@ import semmle.code.asp.WebConfig
 import semmle.code.csharp.frameworks.system.Web
 
 /**
- * Holds if there exists a `Web.config` file in the snapshot that adds an `X-Frame-Options` header.
+ * Holds if the `Web.config` file `webConfig` adds an `X-Frame-Options` header.
  */
-predicate hasWebConfigXFrameOptions() {
-  // Looking for an entry in a Web.config file that looks like this:
-  // ```
+predicate hasWebConfigXFrameOptions(WebConfigXML webConfig) {
+  // Looking for an entry in `webConfig` that looks like this:
+  // ```xml
   // <system.webServer>
   //   <httpProtocol>
   //    <customHeaders>
@@ -29,17 +29,13 @@ predicate hasWebConfigXFrameOptions() {
   //   </httpProtocol>
   // </system.webServer>
   // ```
-  exists(XMLElement element |
-    element =
-      any(WebConfigXML webConfig)
-          .getARootElement()
-          .getAChild("system.webServer")
-          .getAChild("httpProtocol")
-          .getAChild("customHeaders")
-          .getAChild("add")
-  |
-    element.getAttributeValue("name") = "X-Frame-Options"
-  )
+  webConfig
+      .getARootElement()
+      .getAChild("system.webServer")
+      .getAChild("httpProtocol")
+      .getAChild("customHeaders")
+      .getAChild("add")
+      .getAttributeValue("name") = "X-Frame-Options"
 }
 
 /**
@@ -57,6 +53,6 @@ predicate hasCodeXFrameOptions() {
 
 from WebConfigXML webConfig
 where
-  not hasWebConfigXFrameOptions() and
+  not hasWebConfigXFrameOptions(webConfig) and
   not hasCodeXFrameOptions()
 select webConfig, "Configuration file is missing the X-Frame-Options setting."

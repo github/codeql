@@ -67,6 +67,7 @@ test_getAFunctionValue
 | es2015.js:2:14:4:3 | () {\\n   ... ");\\n  } | es2015.js:2:14:4:3 | () {\\n   ... ");\\n  } |
 | es2015.js:6:5:6:16 | ExampleClass | es2015.js:2:14:4:3 | () {\\n   ... ");\\n  } |
 | es2015.js:8:2:12:1 | functio ... \\n  };\\n} | es2015.js:8:2:12:1 | functio ... \\n  };\\n} |
+| es2015.js:8:2:12:1 | return of anonymous function | es2015.js:9:10:11:3 | () => { ... ();\\n  } |
 | es2015.js:9:10:11:3 | () => { ... ();\\n  } | es2015.js:9:10:11:3 | () => { ... ();\\n  } |
 | es2015.js:10:5:10:20 | arguments.callee | es2015.js:8:2:12:1 | functio ... \\n  };\\n} |
 | es2015.js:10:5:10:22 | arguments.callee() | es2015.js:9:10:11:3 | () => { ... ();\\n  } |
@@ -90,6 +91,11 @@ test_getAFunctionValue
 | m.js:3:1:3:16 | module.exports.f | m.js:1:13:1:25 | function() {} |
 | n.js:2:1:2:3 | m.f | m.js:1:13:1:25 | function() {} |
 | n.js:5:1:5:4 | m2.f | m2.js:2:6:2:18 | function() {} |
+| non-strict.js:1:1:8:2 | (functi ... ode.\\n}) | non-strict.js:1:2:8:1 | functio ... mode.\\n} |
+| non-strict.js:1:2:8:1 | functio ... mode.\\n} | non-strict.js:1:2:8:1 | functio ... mode.\\n} |
+| non-strict.js:3:5:5:5 | functio ... ;\\n    } | non-strict.js:3:5:5:5 | functio ... ;\\n    } |
+| non-strict.js:3:14:3:16 | foo | non-strict.js:3:5:5:5 | functio ... ;\\n    } |
+| non-strict.js:7:10:7:12 | foo | non-strict.js:3:5:5:5 | functio ... ;\\n    } |
 | protoclass.js:3:1:5:1 | functio ... it();\\n} | protoclass.js:3:1:5:1 | functio ... it();\\n} |
 | protoclass.js:3:10:3:10 | F | protoclass.js:3:1:5:1 | functio ... it();\\n} |
 | protoclass.js:4:3:4:11 | this.init | protoclass.js:7:20:11:1 | functio ...  m();\\n} |
@@ -110,6 +116,12 @@ test_getAFunctionValue
 | reflection.js:7:1:7:3 | add | reflection.js:1:1:3:1 | functio ...  x+y;\\n} |
 | reflection.js:8:1:8:3 | add | reflection.js:1:1:3:1 | functio ...  x+y;\\n} |
 | reflection.js:8:1:8:9 | add.apply | reflection.js:5:15:5:39 | functio ... n 56; } |
+| strict2.js:2:1:10:2 | (functi ... ode.\\n}) | strict2.js:2:2:10:1 | functio ... mode.\\n} |
+| strict2.js:2:2:10:1 | functio ... mode.\\n} | strict2.js:2:2:10:1 | functio ... mode.\\n} |
+| strict2.js:5:5:7:5 | functio ... ;\\n    } | strict2.js:5:5:7:5 | functio ... ;\\n    } |
+| strict.js:1:1:8:2 | (functi ... ode.\\n}) | strict.js:1:2:8:1 | functio ... mode.\\n} |
+| strict.js:1:2:8:1 | functio ... mode.\\n} | strict.js:1:2:8:1 | functio ... mode.\\n} |
+| strict.js:3:5:5:5 | functio ... ;\\n    } | strict.js:3:5:5:5 | functio ... ;\\n    } |
 | tst3.js:1:1:1:22 | functio ... fn() {} | tst3.js:1:1:1:22 | functio ... fn() {} |
 | tst3.js:2:1:2:23 | functio ... n2() {} | tst3.js:2:1:2:23 | functio ... n2() {} |
 | tst.js:1:1:1:15 | function f() {} | tst.js:1:1:1:15 | function f() {} |
@@ -225,6 +237,8 @@ test_getNumArgument
 | n.js:2:1:2:5 | m.f() | 0 |
 | n.js:4:10:4:24 | require('./m2') | 1 |
 | n.js:5:1:5:6 | m2.f() | 0 |
+| non-strict.js:1:1:8:4 | (functi ... e.\\n})() | 0 |
+| non-strict.js:7:10:7:14 | foo() | 0 |
 | protoclass.js:4:3:4:13 | this.init() | 0 |
 | protoclass.js:8:3:8:15 | this.method() | 0 |
 | protoclass.js:9:11:9:32 | this.me ... d(this) | 1 |
@@ -233,6 +247,10 @@ test_getNumArgument
 | reflection.js:7:1:7:22 | add.cal ... 23, 19) | 3 |
 | reflection.js:7:1:7:22 | reflective call | 2 |
 | reflection.js:8:1:8:25 | add.app ... 3, 19]) | 2 |
+| strict2.js:2:1:10:4 | (functi ... e.\\n})() | 0 |
+| strict2.js:9:10:9:14 | foo() | 0 |
+| strict.js:1:1:8:4 | (functi ... e.\\n})() | 0 |
+| strict.js:7:10:7:14 | foo() | 0 |
 | tst.js:6:1:6:3 | f() | 0 |
 | tst.js:7:1:7:3 | g() | 0 |
 | tst.js:8:1:8:3 | h() | 0 |
@@ -321,6 +339,8 @@ test_getCalleeNode
 | n.js:2:1:2:5 | m.f() | n.js:2:1:2:3 | m.f |
 | n.js:4:10:4:24 | require('./m2') | n.js:4:10:4:16 | require |
 | n.js:5:1:5:6 | m2.f() | n.js:5:1:5:4 | m2.f |
+| non-strict.js:1:1:8:4 | (functi ... e.\\n})() | non-strict.js:1:1:8:2 | (functi ... ode.\\n}) |
+| non-strict.js:7:10:7:14 | foo() | non-strict.js:7:10:7:12 | foo |
 | protoclass.js:4:3:4:13 | this.init() | protoclass.js:4:3:4:11 | this.init |
 | protoclass.js:8:3:8:15 | this.method() | protoclass.js:8:3:8:13 | this.method |
 | protoclass.js:9:11:9:32 | this.me ... d(this) | protoclass.js:9:11:9:26 | this.method.bind |
@@ -330,6 +350,10 @@ test_getCalleeNode
 | reflection.js:7:1:7:22 | reflective call | reflection.js:7:1:7:3 | add |
 | reflection.js:8:1:8:25 | add.app ... 3, 19]) | reflection.js:8:1:8:9 | add.apply |
 | reflection.js:8:1:8:25 | reflective call | reflection.js:8:1:8:3 | add |
+| strict2.js:2:1:10:4 | (functi ... e.\\n})() | strict2.js:2:1:10:2 | (functi ... ode.\\n}) |
+| strict2.js:9:10:9:14 | foo() | strict2.js:9:10:9:12 | foo |
+| strict.js:1:1:8:4 | (functi ... e.\\n})() | strict.js:1:1:8:2 | (functi ... ode.\\n}) |
+| strict.js:7:10:7:14 | foo() | strict.js:7:10:7:12 | foo |
 | tst.js:6:1:6:3 | f() | tst.js:6:1:6:1 | f |
 | tst.js:7:1:7:3 | g() | tst.js:7:1:7:1 | g |
 | tst.js:8:1:8:3 | h() | tst.js:8:1:8:1 | h |
@@ -408,11 +432,15 @@ test_getACallee
 | m.js:3:1:3:18 | module.exports.f() | m.js:1:13:1:25 | function() {} |
 | n.js:2:1:2:5 | m.f() | m.js:1:13:1:25 | function() {} |
 | n.js:5:1:5:6 | m2.f() | m2.js:2:6:2:18 | function() {} |
+| non-strict.js:1:1:8:4 | (functi ... e.\\n})() | non-strict.js:1:2:8:1 | functio ... mode.\\n} |
+| non-strict.js:7:10:7:14 | foo() | non-strict.js:3:5:5:5 | functio ... ;\\n    } |
 | protoclass.js:4:3:4:13 | this.init() | protoclass.js:7:20:11:1 | functio ...  m();\\n} |
 | protoclass.js:8:3:8:15 | this.method() | protoclass.js:13:22:13:34 | function() {} |
 | reflection.js:7:1:7:22 | reflective call | reflection.js:1:1:3:1 | functio ...  x+y;\\n} |
 | reflection.js:8:1:8:25 | add.app ... 3, 19]) | reflection.js:5:15:5:39 | functio ... n 56; } |
 | reflection.js:8:1:8:25 | reflective call | reflection.js:1:1:3:1 | functio ...  x+y;\\n} |
+| strict2.js:2:1:10:4 | (functi ... e.\\n})() | strict2.js:2:2:10:1 | functio ... mode.\\n} |
+| strict.js:1:1:8:4 | (functi ... e.\\n})() | strict.js:1:2:8:1 | functio ... mode.\\n} |
 | tst.js:6:1:6:3 | f() | tst.js:1:1:1:15 | function f() {} |
 | tst.js:7:1:7:3 | g() | tst.js:2:9:2:21 | function() {} |
 | tst.js:8:1:8:3 | h() | tst.js:3:5:3:17 | function() {} |
@@ -463,6 +491,7 @@ test_getCalleeName
 | n.js:2:1:2:5 | m.f() | f |
 | n.js:4:10:4:24 | require('./m2') | require |
 | n.js:5:1:5:6 | m2.f() | f |
+| non-strict.js:7:10:7:14 | foo() | foo |
 | protoclass.js:4:3:4:13 | this.init() | init |
 | protoclass.js:8:3:8:15 | this.method() | method |
 | protoclass.js:9:11:9:32 | this.me ... d(this) | bind |
@@ -470,6 +499,8 @@ test_getCalleeName
 | reflection.js:4:5:4:12 | sneaky() | sneaky |
 | reflection.js:7:1:7:22 | add.cal ... 23, 19) | call |
 | reflection.js:8:1:8:25 | add.app ... 3, 19]) | apply |
+| strict2.js:9:10:9:14 | foo() | foo |
+| strict.js:7:10:7:14 | foo() | foo |
 | tst.js:6:1:6:3 | f() | f |
 | tst.js:7:1:7:3 | g() | g |
 | tst.js:8:1:8:3 | h() | h |

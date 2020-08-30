@@ -1,5 +1,5 @@
 /**
- * Provides an abstract class for modelling functions and expressions that
+ * Provides an abstract class for modeling functions and expressions that
  * allocate memory, such as the standard `malloc` function.  To use this QL
  * library, create one or more QL classes extending a class here with a
  * characteristic predicate that selects the functions or expressions you are
@@ -71,6 +71,11 @@ abstract class AllocationExpr extends Expr {
    * this is a `realloc` function.
    */
   Expr getReallocPtr() { none() }
+
+  /**
+   * Gets the type of the elements that are allocated, if it can be determined.
+   */
+  Type getAllocatedElementType() { none() }
 
   /**
    * Whether or not this allocation requires a corresponding deallocation of

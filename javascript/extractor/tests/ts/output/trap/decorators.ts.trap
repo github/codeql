@@ -311,10 +311,10 @@ scopenodes(#20001,#20112)
 scopenesting(#20112,#20000)
 isModule(#20001)
 isES2015Module(#20001)
-#20113=@"var;{fun};{#20112}"
-variables(#20113,"fun",#20112)
-#20114=@"var;{Class};{#20112}"
-variables(#20114,"Class",#20112)
+#20113=@"var;{Class};{#20112}"
+variables(#20113,"Class",#20112)
+#20114=@"var;{fun};{#20112}"
+variables(#20114,"fun",#20112)
 #20115=@"var;{Class2};{#20112}"
 variables(#20115,"Class2",#20112)
 #20116=@"local_type_name;{Class};{#20112}"
@@ -347,7 +347,7 @@ hasLocation(#20123,#20037)
 enclosingStmt(#20123,#20118)
 exprContainers(#20123,#20001)
 literals("Class","Class",#20123)
-decl(#20123,#20114)
+decl(#20123,#20113)
 typedecl(#20123,#20116)
 #20124=*
 scopes(#20124,10)
@@ -499,7 +499,7 @@ exprs(#20161,78,#20159,-1,"fun")
 hasLocation(#20161,#20086)
 exprContainers(#20161,#20159)
 literals("fun","fun",#20161)
-decl(#20161,#20113)
+decl(#20161,#20114)
 #20162=*
 scopes(#20162,1)
 scopenodes(#20159,#20162)

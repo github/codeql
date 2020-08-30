@@ -17,10 +17,10 @@ namespace Semmle.Extraction.CIL.Entities
     /// </summary>
     public sealed class Namespace : TypeContainer, INamespace
     {
-        public Namespace ParentNamespace;
+        public Namespace? ParentNamespace;
         public readonly string Name;
 
-        public bool IsGlobalNamespace => ParentNamespace == null;
+        public bool IsGlobalNamespace => ParentNamespace is null;
 
         public override string IdSuffix => ";namespace";
 
@@ -35,7 +35,7 @@ namespace Semmle.Extraction.CIL.Entities
             trapFile.Write(Name);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is Namespace ns && Name == ns.Name)
             {
@@ -63,7 +63,7 @@ namespace Semmle.Extraction.CIL.Entities
             return i == -1 ? fqn : fqn.Substring(i + 1);
         }
 
-        static Namespace createParentNamespace(Context cx, string fqn)
+        static Namespace? createParentNamespace(Context cx, string fqn)
         {
             if (fqn == "") return null;
             var i = fqn.LastIndexOf('.');
@@ -74,7 +74,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
         }
 
-        public Namespace(Context cx, string name, Namespace parent) : base(cx)
+        public Namespace(Context cx, string name, Namespace? parent) : base(cx)
         {
             Name = name;
             ParentNamespace = parent;
@@ -85,7 +85,7 @@ namespace Semmle.Extraction.CIL.Entities
             get
             {
                 yield return Tuples.namespaces(this, Name);
-                if (!IsGlobalNamespace)
+                if (ParentNamespace is object)
                     yield return Tuples.parent_namespace(this, ParentNamespace);
             }
         }

@@ -1,19 +1,91 @@
-| stl.cpp:71:7:71:7 | (const char *)... | stl.cpp:67:12:67:17 | call to source |
-| stl.cpp:71:7:71:7 | a | stl.cpp:67:12:67:17 | call to source |
+| arrayassignment.cpp:16:7:16:7 | x | arrayassignment.cpp:14:9:14:14 | call to source |
+| arrayassignment.cpp:17:7:17:10 | * ... | arrayassignment.cpp:14:9:14:14 | call to source |
+| arrayassignment.cpp:18:7:18:11 | * ... | arrayassignment.cpp:14:9:14:14 | call to source |
+| arrayassignment.cpp:19:7:19:9 | (reference dereference) | arrayassignment.cpp:14:9:14:14 | call to source |
+| arrayassignment.cpp:31:7:31:7 | x | arrayassignment.cpp:29:8:29:13 | call to source |
+| arrayassignment.cpp:32:7:32:10 | * ... | arrayassignment.cpp:29:8:29:13 | call to source |
+| arrayassignment.cpp:33:7:33:9 | (reference dereference) | arrayassignment.cpp:29:8:29:13 | call to source |
+| arrayassignment.cpp:34:7:34:10 | (reference dereference) | arrayassignment.cpp:29:8:29:13 | call to source |
+| arrayassignment.cpp:56:7:56:8 | mi | arrayassignment.cpp:54:9:54:14 | call to source |
+| arrayassignment.cpp:57:10:57:15 | (reference dereference) | arrayassignment.cpp:54:9:54:14 | call to source |
+| arrayassignment.cpp:66:7:66:8 | mi | arrayassignment.cpp:64:13:64:18 | call to source |
+| arrayassignment.cpp:67:10:67:15 | (reference dereference) | arrayassignment.cpp:64:13:64:18 | call to source |
+| arrayassignment.cpp:101:7:101:18 | access to array | arrayassignment.cpp:99:17:99:22 | call to source |
+| arrayassignment.cpp:135:7:135:10 | (reference dereference) | arrayassignment.cpp:134:9:134:14 | call to source |
+| arrayassignment.cpp:136:7:136:13 | access to array | arrayassignment.cpp:134:9:134:14 | call to source |
+| arrayassignment.cpp:140:7:140:11 | * ... | arrayassignment.cpp:139:10:139:15 | call to source |
+| arrayassignment.cpp:141:7:141:13 | access to array | arrayassignment.cpp:139:10:139:15 | call to source |
+| arrayassignment.cpp:145:7:145:13 | access to array | arrayassignment.cpp:144:12:144:17 | call to source |
+| arrayassignment.cpp:146:7:146:13 | access to array | arrayassignment.cpp:144:12:144:17 | call to source |
+| format.cpp:157:7:157:22 | (int)... | format.cpp:147:12:147:25 | call to source |
+| format.cpp:157:7:157:22 | access to array | format.cpp:147:12:147:25 | call to source |
+| format.cpp:158:7:158:27 | ... + ... | format.cpp:148:16:148:30 | call to source |
+| string.cpp:28:7:28:7 | (const char *)... | string.cpp:24:12:24:17 | call to source |
+| string.cpp:28:7:28:7 | a | string.cpp:24:12:24:17 | call to source |
+| string.cpp:55:7:55:8 | cs | string.cpp:50:19:50:24 | call to source |
+| string.cpp:55:7:55:8 | cs | string.cpp:50:19:50:26 | (const char *)... |
+| structlikeclass.cpp:38:8:38:9 | s4 | structlikeclass.cpp:33:8:33:13 | call to source |
+| structlikeclass.cpp:61:8:61:9 | s2 | structlikeclass.cpp:58:24:58:29 | call to source |
+| structlikeclass.cpp:62:8:62:20 | ... = ... | structlikeclass.cpp:62:13:62:18 | call to source |
+| swap1.cpp:73:12:73:16 | data1 | swap1.cpp:71:15:71:20 | call to source |
+| swap1.cpp:78:12:78:16 | data1 | swap1.cpp:71:15:71:20 | call to source |
+| swap1.cpp:79:12:79:16 | data1 | swap1.cpp:71:15:71:20 | call to source |
+| swap1.cpp:83:13:83:17 | data1 | swap1.cpp:82:16:82:21 | call to source |
+| swap1.cpp:88:13:88:17 | data1 | swap1.cpp:82:16:82:21 | call to source |
+| swap1.cpp:97:12:97:16 | data1 | swap1.cpp:95:15:95:20 | call to source |
+| swap1.cpp:102:12:102:16 | data1 | swap1.cpp:95:15:95:20 | call to source |
+| swap1.cpp:103:12:103:16 | data1 | swap1.cpp:95:15:95:20 | call to source |
+| swap1.cpp:111:20:111:24 | data1 | swap1.cpp:109:23:109:28 | call to source |
+| swap1.cpp:115:18:115:22 | data1 | swap1.cpp:109:23:109:28 | call to source |
+| swap1.cpp:124:12:124:16 | data1 | swap1.cpp:122:15:122:20 | call to source |
+| swap1.cpp:129:12:129:16 | data1 | swap1.cpp:122:15:122:20 | call to source |
+| swap1.cpp:130:12:130:16 | data1 | swap1.cpp:122:15:122:20 | call to source |
+| swap1.cpp:139:12:139:16 | data1 | swap1.cpp:137:15:137:20 | call to source |
+| swap1.cpp:144:12:144:16 | data1 | swap1.cpp:137:15:137:20 | call to source |
+| swap1.cpp:145:12:145:16 | data1 | swap1.cpp:137:15:137:20 | call to source |
+| swap2.cpp:73:12:73:16 | data1 | swap2.cpp:71:15:71:20 | call to source |
+| swap2.cpp:78:12:78:16 | data1 | swap2.cpp:71:15:71:20 | call to source |
+| swap2.cpp:79:12:79:16 | data1 | swap2.cpp:71:15:71:20 | call to source |
+| swap2.cpp:83:13:83:17 | data1 | swap2.cpp:82:16:82:21 | call to source |
+| swap2.cpp:88:13:88:17 | data1 | swap2.cpp:82:16:82:21 | call to source |
+| swap2.cpp:97:12:97:16 | data1 | swap2.cpp:95:15:95:20 | call to source |
+| swap2.cpp:102:12:102:16 | data1 | swap2.cpp:95:15:95:20 | call to source |
+| swap2.cpp:103:12:103:16 | data1 | swap2.cpp:95:15:95:20 | call to source |
+| swap2.cpp:111:20:111:24 | data1 | swap2.cpp:109:23:109:28 | call to source |
+| swap2.cpp:115:18:115:22 | data1 | swap2.cpp:109:23:109:28 | call to source |
+| swap2.cpp:124:12:124:16 | data1 | swap2.cpp:122:15:122:20 | call to source |
+| swap2.cpp:129:12:129:16 | data1 | swap2.cpp:122:15:122:20 | call to source |
+| swap2.cpp:130:12:130:16 | data1 | swap2.cpp:122:15:122:20 | call to source |
+| swap2.cpp:139:12:139:16 | data1 | swap2.cpp:137:15:137:20 | call to source |
+| swap2.cpp:144:12:144:16 | data1 | swap2.cpp:137:15:137:20 | call to source |
+| swap2.cpp:145:12:145:16 | data1 | swap2.cpp:137:15:137:20 | call to source |
 | taint.cpp:8:8:8:13 | clean1 | taint.cpp:4:27:4:33 | source1 |
 | taint.cpp:16:8:16:14 | source1 | taint.cpp:12:22:12:27 | call to source |
 | taint.cpp:17:8:17:16 | ++ ... | taint.cpp:12:22:12:27 | call to source |
+| taint.cpp:89:11:89:11 | b | taint.cpp:71:22:71:27 | call to source |
+| taint.cpp:90:11:90:11 | c | taint.cpp:72:7:72:12 | call to source |
+| taint.cpp:91:11:91:11 | d | taint.cpp:77:7:77:12 | call to source |
+| taint.cpp:93:11:93:11 | b | taint.cpp:71:22:71:27 | call to source |
+| taint.cpp:94:11:94:11 | c | taint.cpp:72:7:72:12 | call to source |
 | taint.cpp:109:7:109:13 | access to array | taint.cpp:105:12:105:17 | call to source |
+| taint.cpp:110:7:110:13 | access to array | taint.cpp:105:12:105:17 | call to source |
+| taint.cpp:111:7:111:13 | access to array | taint.cpp:106:12:106:17 | call to source |
+| taint.cpp:112:7:112:13 | access to array | taint.cpp:106:12:106:17 | call to source |
 | taint.cpp:129:7:129:9 | * ... | taint.cpp:120:11:120:16 | call to source |
 | taint.cpp:130:7:130:9 | * ... | taint.cpp:127:8:127:13 | call to source |
 | taint.cpp:134:7:134:9 | * ... | taint.cpp:120:11:120:16 | call to source |
 | taint.cpp:151:7:151:12 | call to select | taint.cpp:151:20:151:25 | call to source |
 | taint.cpp:167:8:167:13 | call to source | taint.cpp:167:8:167:13 | call to source |
 | taint.cpp:168:8:168:14 | tainted | taint.cpp:164:19:164:24 | call to source |
+| taint.cpp:181:8:181:9 | * ... | taint.cpp:185:11:185:16 | call to source |
 | taint.cpp:210:7:210:7 | x | taint.cpp:207:6:207:11 | call to source |
 | taint.cpp:215:7:215:7 | x | taint.cpp:207:6:207:11 | call to source |
 | taint.cpp:216:7:216:7 | y | taint.cpp:207:6:207:11 | call to source |
+| taint.cpp:229:3:229:6 | t | taint.cpp:223:10:223:15 | call to source |
+| taint.cpp:233:8:233:8 | call to operator() | taint.cpp:223:10:223:15 | call to source |
+| taint.cpp:244:3:244:6 | t | taint.cpp:223:10:223:15 | call to source |
 | taint.cpp:250:8:250:8 | a | taint.cpp:223:10:223:15 | call to source |
+| taint.cpp:256:8:256:8 | (reference dereference) | taint.cpp:223:10:223:15 | call to source |
 | taint.cpp:280:7:280:7 | t | taint.cpp:275:6:275:11 | call to source |
 | taint.cpp:289:7:289:7 | t | taint.cpp:275:6:275:11 | call to source |
 | taint.cpp:290:7:290:7 | x | taint.cpp:275:6:275:11 | call to source |
@@ -25,3 +97,5 @@
 | taint.cpp:430:9:430:14 | member | taint.cpp:428:13:428:18 | call to source |
 | taint.cpp:465:7:465:7 | x | taint.cpp:462:6:462:11 | call to source |
 | taint.cpp:470:7:470:7 | x | taint.cpp:462:6:462:11 | call to source |
+| taint.cpp:485:7:485:10 | line | taint.cpp:480:26:480:32 | source1 |
+| vector.cpp:162:8:162:15 | access to array | vector.cpp:161:14:161:19 | call to source |

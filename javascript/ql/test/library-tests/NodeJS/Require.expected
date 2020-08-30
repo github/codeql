@@ -11,8 +11,11 @@
 | d.js:7:1:7:14 | require('foo') |
 | e.js:5:1:5:18 | require("process") |
 | f.js:2:1:2:7 | r("fs") |
+| g.js:1:1:1:96 | (proces ... https") |
+| g.js:1:43:1:61 | require("electron") |
 | index.js:1:12:1:26 | require('path') |
 | index.js:2:1:2:41 | require ... b.js")) |
+| mjs-files/createRequire.mjs:4:26:4:49 | require ... erver') |
 | mjs-files/require-from-js.js:1:12:1:36 | require ... on-me') |
 | mjs-files/require-from-js.js:2:12:2:39 | require ... me.js') |
 | mjs-files/require-from-js.js:3:12:3:40 | require ... e.mjs') |

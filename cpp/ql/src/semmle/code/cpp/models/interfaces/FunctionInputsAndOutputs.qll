@@ -10,7 +10,8 @@ private newtype TFunctionInput =
   TInParameter(ParameterIndex i) or
   TInParameterDeref(ParameterIndex i) or
   TInQualifierObject() or
-  TInQualifierAddress()
+  TInQualifierAddress() or
+  TInReturnValueDeref()
 
 /**
  * An input to a function. This can be:
@@ -106,8 +107,47 @@ class FunctionInput extends TFunctionInput {
    *   (with type `C const *`) on entry to the function.
    */
   predicate isQualifierAddress() { none() }
+
+  /**
+   * Holds if this is the input value pointed to by the return value of a
+   * function, if the function returns a pointer, or the input value referred
+   * to by the return value of a function, if the function returns a reference.
+   *
+   * Example:
+   * ```
+   * char* getPointer();
+   * float& getReference();
+   * int getInt();
+   * ```
+   * - `isReturnValueDeref()` holds for the `FunctionInput` that represents the
+   *   value of `*getPointer()` (with type `char`).
+   * - `isReturnValueDeref()` holds for the `FunctionInput` that represents the
+   *   value of `getReference()` (with type `float`).
+   * - There is no `FunctionInput` of `getInt()` for which
+   *   `isReturnValueDeref()` holds because the return type of `getInt()` is
+   *   neither a pointer nor a reference.
+   *
+   * Note that data flows in through function return values are relatively
+   * rare, but they do occur when a function returns a reference to itself,
+   * part of itself, or one of its other inputs.
+   */
+  predicate isReturnValueDeref() { none() }
 }
 
+/**
+ * The input value of a parameter.
+ *
+ *  Example:
+ * ```
+ * void func(int n, char* p, float& r);
+ * ```
+ * - There is an `InParameter` representing the value of `n` (with type `int`) on entry to the
+ *   function.
+ * - There is an `InParameter` representing the value of `p` (with type `char*`) on entry to the
+ *   function.
+ * - There is an `InParameter` representing the "value" of the reference `r` (with type `float&`) on
+ *    entry to the function, _not_ the value of the referred-to `float`.
+ */
 class InParameter extends FunctionInput, TInParameter {
   ParameterIndex index;
 
@@ -121,6 +161,21 @@ class InParameter extends FunctionInput, TInParameter {
   override predicate isParameter(ParameterIndex i) { i = index }
 }
 
+/**
+ * The input value pointed to by a pointer parameter to a function, or the input value referred to
+ * by a reference parameter to a function.
+ *
+ * Example:
+ * ```
+ * void func(int n, char* p, float& r);
+ * ```
+ * - There is an `InParameterDeref` with `getIndex() = 1` that represents the value of `*p` (with
+ *   type `char`) on entry to the function.
+ * - There is an `InParameterDeref` with `getIndex() = 2` that represents the value of `r` (with
+ *   type `float`) on entry to the function.
+ * - There is no `InParameterDeref` representing the value of `n`, because `n` is neither a pointer
+ *   nor a reference.
+ */
 class InParameterDeref extends FunctionInput, TInParameterDeref {
   ParameterIndex index;
 
@@ -134,16 +189,68 @@ class InParameterDeref extends FunctionInput, TInParameterDeref {
   override predicate isParameterDeref(ParameterIndex i) { i = index }
 }
 
+/**
+ * The input value pointed to by the `this` pointer of an instance member function.
+ *
+ * Example:
+ * ```
+ * struct C {
+ *   void mfunc(int n, char* p, float& r) const;
+ * };
+ * ```
+ * - `InQualifierObject` represents the value of `*this` (with type `C const`) on entry to the
+ *   function.
+ */
 class InQualifierObject extends FunctionInput, TInQualifierObject {
   override string toString() { result = "InQualifierObject" }
 
   override predicate isQualifierObject() { any() }
 }
 
+/**
+ * The input value of the `this` pointer of an instance member function.
+ *
+ * Example:
+ * ```
+ * struct C {
+ *   void mfunc(int n, char* p, float& r) const;
+ * };
+ * ```
+ * - `InQualifierAddress` represents the value of `this` (with type `C const *`) on entry to the
+ *   function.
+ */
 class InQualifierAddress extends FunctionInput, TInQualifierAddress {
   override string toString() { result = "InQualifierAddress" }
 
   override predicate isQualifierAddress() { any() }
+}
+
+/**
+ * The input value pointed to by the return value of a function, if the
+ * function returns a pointer, or the input value referred to by the return
+ * value of a function, if the function returns a reference.
+ *
+ * Example:
+ * ```
+ * char* getPointer();
+ * float& getReference();
+ * int getInt();
+ * ```
+ * - `InReturnValueDeref` represents the value of `*getPointer()` (with type
+ *   `char`).
+ * - `InReturnValueDeref` represents the value of `getReference()` (with type
+ *   `float`).
+ * - `InReturnValueDeref` does not represent the return value of `getInt()`
+ *   because the return type of `getInt()` is neither a pointer nor a reference.
+ *
+ * Note that data flows in through function return values are relatively
+ * rare, but they do occur when a function returns a reference to itself,
+ * part of itself, or one of its other inputs.
+ */
+class InReturnValueDeref extends FunctionInput, TInReturnValueDeref {
+  override string toString() { result = "InReturnValueDeref" }
+
+  override predicate isReturnValueDeref() { any() }
 }
 
 private newtype TFunctionOutput =
@@ -265,6 +372,21 @@ class FunctionOutput extends TFunctionOutput {
   deprecated final predicate isOutReturnPointer() { isReturnValueDeref() }
 }
 
+/**
+ * The output value pointed to by a pointer parameter to a function, or the output value referred to
+ * by a reference parameter to a function.
+ *
+ * Example:
+ * ```
+ * void func(int n, char* p, float& r);
+ * ```
+ * - There is an `OutParameterDeref` with `getIndex()=1` that represents the value of `*p` (with
+ *   type `char`) on return from the function.
+ * - There is an `OutParameterDeref` with `getIndex()=2` that represents the value of `r` (with
+ *   type `float`) on return from the function.
+ * - There is no `OutParameterDeref` representing the value of `n`, because `n` is neither a
+ *   pointer nor a reference.
+ */
 class OutParameterDeref extends FunctionOutput, TOutParameterDeref {
   ParameterIndex index;
 
@@ -277,18 +399,62 @@ class OutParameterDeref extends FunctionOutput, TOutParameterDeref {
   override predicate isParameterDeref(ParameterIndex i) { i = index }
 }
 
+/**
+ * The output value pointed to by the `this` pointer of an instance member function.
+ *
+ * Example:
+ * ```
+ * struct C {
+ *   void mfunc(int n, char* p, float& r);
+ * };
+ * ```
+ * - The `OutQualifierObject` represents the value of `*this` (with type `C`) on return from the
+ *   function.
+ */
 class OutQualifierObject extends FunctionOutput, TOutQualifierObject {
   override string toString() { result = "OutQualifierObject" }
 
   override predicate isQualifierObject() { any() }
 }
 
+/**
+ * The value returned by a function.
+ *
+ * Example:
+ * ```
+ * int getInt();
+ * char* getPointer();
+ * float& getReference();
+ * ```
+ * - `OutReturnValue` represents the value returned by
+ *   `getInt()` (with type `int`).
+ * - `OutReturnValue` represents the value returned by
+ *   `getPointer()` (with type `char*`).
+ * - `OutReturnValue` represents the "value" of the reference returned by `getReference()` (with
+ *   type `float&`), _not_ the value of the referred-to `float`.
+ */
 class OutReturnValue extends FunctionOutput, TOutReturnValue {
   override string toString() { result = "OutReturnValue" }
 
   override predicate isReturnValue() { any() }
 }
 
+/**
+ * The output value pointed to by the return value of a function, if the function returns a pointer,
+ * or the output value referred to by the return value of a function, if the function returns a
+ * reference.
+ *
+ * Example:
+ * ```
+ * char* getPointer();
+ * float& getReference();
+ * int getInt();
+ * ```
+ * - `OutReturnValueDeref` represents the value of `*getPointer()` (with type `char`).
+ * - `OutReturnValueDeref` represents the value of `getReference()` (with type `float`).
+ * - `OutReturnValueDeref` does not represent the return value of `getInt()` because the return type
+ *   of `getInt()` is neither a pointer nor a reference.
+ */
 class OutReturnValueDeref extends FunctionOutput, TOutReturnValueDeref {
   override string toString() { result = "OutReturnValueDeref" }
 

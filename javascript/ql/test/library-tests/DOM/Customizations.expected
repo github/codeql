@@ -1,6 +1,11 @@
 test_documentRef
 | customization.js:2:13:2:31 | customGetDocument() |
+| nameditems.js:1:1:1:8 | document |
 test_locationRef
 | customization.js:3:3:3:14 | doc.location |
 test_domValueRef
 | customization.js:4:3:4:28 | doc.get ... 'test') |
+| nameditems.js:1:1:1:30 | documen ... ('foo') |
+| nameditems.js:1:1:2:19 | documen ... em('x') |
+| tst.js:49:3:49:8 | window |
+| tst.js:50:3:50:8 | window |

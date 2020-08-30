@@ -60,6 +60,12 @@ class Expr extends ExprParent, @expr {
   /** Gets the statement containing this expression, if any. */
   Stmt getEnclosingStmt() { statementEnclosingExpr(this, result) }
 
+  /**
+   * Gets a statement that directly or transitively contains this expression, if any.
+   * This is equivalent to `this.getEnclosingStmt().getEnclosingStmt*()`.
+   */
+  Stmt getAnEnclosingStmt() { result = this.getEnclosingStmt().getEnclosingStmt*() }
+
   /** Gets a child of this expression. */
   Expr getAChildExpr() { exprs(result, _, _, this, _) }
 
@@ -305,10 +311,6 @@ class CompileTimeConstantExpr extends Expr {
   /**
    * Gets the integer value of this expression, where possible.
    *
-   * All computations are performed on QL 32-bit `int`s, so no
-   * truncation is performed in the case of overflow within `byte` or `short`:
-   * `((byte)127)+((byte)1)` evaluates to 128 rather than to -128.
-   *
    * Note that this does not handle the following cases:
    *
    * - values of type `long`,
@@ -332,7 +334,10 @@ class CompileTimeConstantExpr extends Expr {
         else
           if cast.getType().hasName("short")
           then result = (val + 32768).bitAnd(65535) - 32768
-          else result = val
+          else
+            if cast.getType().hasName("char")
+            then result = val.bitAnd(65535)
+            else result = val
       )
       or
       result = this.(PlusExpr).getExpr().(CompileTimeConstantExpr).getIntValue()
@@ -413,7 +418,7 @@ class ArrayAccess extends Expr, @arrayaccess {
 /**
  * An array creation expression.
  *
- * For example, an expression such as `new String[3][2]` or
+ * For example, an expression such as `new String[2][3]` or
  * `new String[][] { { "a", "b", "c" } , { "d", "e", "f" } }`.
  *
  * In both examples, `String` is the type name. In the first
@@ -844,6 +849,7 @@ class EqualityTest extends BinaryExpr {
     this instanceof NEExpr
   }
 
+  /** Gets a boolean indicating whether this is `==` (true) or `!=` (false). */
   boolean polarity() {
     result = true and this instanceof EQExpr
     or
@@ -1050,6 +1056,18 @@ class MemberRefExpr extends FunctionalExpr, @memberref {
   override string toString() { result = "...::..." }
 }
 
+/** A conditional expression or a `switch` expression. */
+class ChooseExpr extends Expr {
+  ChooseExpr() { this instanceof ConditionalExpr or this instanceof SwitchExpr }
+
+  /** Gets a result expression of this `switch` or conditional expression. */
+  Expr getAResultExpr() {
+    result = this.(ConditionalExpr).getTrueExpr() or
+    result = this.(ConditionalExpr).getFalseExpr() or
+    result = this.(SwitchExpr).getAResult()
+  }
+}
+
 /**
  * A conditional expression of the form `a ? b : c`, where `a` is the condition,
  * `b` is the expression that is evaluated if the condition evaluates to `true`,
@@ -1225,7 +1243,7 @@ class VariableAssign extends VariableUpdate {
   }
 
   /**
-   * Gets the source of this assignment, if any.
+   * Gets the source (right-hand side) of this assignment, if any.
    *
    * An initialization in a `CatchClause` or `EnhancedForStmt` is implicit and
    * does not have a source.
@@ -1326,10 +1344,7 @@ class VarAccess extends Expr, @varaccess {
    */
   predicate isLValue() {
     exists(Assignment a | a.getDest() = this) or
-    exists(PreIncExpr e | e.getExpr() = this) or
-    exists(PreDecExpr e | e.getExpr() = this) or
-    exists(PostIncExpr e | e.getExpr() = this) or
-    exists(PostDecExpr e | e.getExpr() = this)
+    exists(UnaryAssignExpr e | e.getExpr() = this)
   }
 
   /**

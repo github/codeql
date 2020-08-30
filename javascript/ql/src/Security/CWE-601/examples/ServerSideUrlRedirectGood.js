@@ -1,3 +1,5 @@
+const app = require("express")();
+
 const VALID_REDIRECT = "http://cwe.mitre.org/data/definitions/601.html";
 
 app.get('/some/path', function(req, res) {

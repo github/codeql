@@ -3,8 +3,8 @@
  * @description A phi node should have at least two inputs.
  * @kind problem
  * @problem.severity error
- * @id java/sanity/too-few-phi-inputs
- * @tags sanity
+ * @id java/consistency/too-few-phi-inputs
+ * @tags consistency
  */
 
 import java

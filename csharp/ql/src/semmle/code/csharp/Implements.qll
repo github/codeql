@@ -21,7 +21,7 @@ private import Conversion
  *
  * Example:
  *
- * ```
+ * ```csharp
  * interface I { void M(); }
  *
  * class A { public void M() { } }
@@ -52,7 +52,7 @@ predicate implements(Virtualizable m1, Virtualizable m2, ValueOrRefType t) {
  *
  * Example:
  *
- * ```
+ * ```csharp
  * interface I { void M(); }
  *
  * class A { public void M() { } }
@@ -143,10 +143,10 @@ private predicate getACompatibleInterfaceAccessorAux(
  * of the interface `i`. Note that the class or struct need not be a
  * sub type of the interface in the inheritance hierarchy:
  *
- * ```
- * interface I { void M() }
+ * ```csharp
+ * interface I { void M(); }
  *
- * class A { public void M() }
+ * class A { public void M() { } }
  *
  * class B { }
  *
@@ -250,7 +250,7 @@ private module Gvn {
 
   private class LeafType extends Type {
     LeafType() {
-      not exists(this.getAChild()) and
+      not this instanceof Unification::GenericType and
       not this instanceof MethodTypeParameter and
       not this instanceof DynamicType
     }
@@ -259,7 +259,7 @@ private module Gvn {
   private newtype TGvnType =
     TLeafGvnType(LeafType t) or
     TMethodTypeParameterGvnType(int i) { i = any(MethodTypeParameter p).getIndex() } or
-    TConstructedGvnType(ConstructedGvnTypeList l)
+    TConstructedGvnType(ConstructedGvnTypeList l) { l.isFullyConstructed() }
 
   private newtype TConstructedGvnTypeList =
     TConstructedGvnTypeNil(Unification::CompoundTypeKind k) or
@@ -267,7 +267,9 @@ private module Gvn {
       gvnConstructedCons(_, _, _, head, tail)
     }
 
-  private ConstructedGvnTypeList gvnConstructed(Type t, Unification::CompoundTypeKind k, int i) {
+  private ConstructedGvnTypeList gvnConstructed(
+    Unification::GenericType t, Unification::CompoundTypeKind k, int i
+  ) {
     result = TConstructedGvnTypeNil(k) and
     i = -1 and
     k = Unification::getTypeKind(t)
@@ -278,14 +280,17 @@ private module Gvn {
   }
 
   pragma[noinline]
-  private GvnType gvnTypeChild(Type t, int i) { result = getGlobalValueNumber(t.getChild(i)) }
+  private GvnType gvnTypeArgument(Unification::GenericType t, int i) {
+    result = getGlobalValueNumber(t.getArgument(i))
+  }
 
   pragma[noinline]
   private predicate gvnConstructedCons(
-    Type t, Unification::CompoundTypeKind k, int i, GvnType head, ConstructedGvnTypeList tail
+    Unification::GenericType t, Unification::CompoundTypeKind k, int i, GvnType head,
+    ConstructedGvnTypeList tail
   ) {
     tail = gvnConstructed(t, k, i - 1) and
-    head = gvnTypeChild(t, i)
+    head = gvnTypeArgument(t, i)
   }
 
   /** Gets the global value number for a given type. */
@@ -319,12 +324,18 @@ private module Gvn {
   }
 
   private class ConstructedGvnTypeList extends TConstructedGvnTypeList {
+    Unification::CompoundTypeKind getKind() { this = gvnConstructed(_, result, _) }
+
     private int length() {
       this = TConstructedGvnTypeNil(_) and result = -1
       or
       exists(ConstructedGvnTypeList tail | this = TConstructedGvnTypeCons(_, tail) |
         result = tail.length() + 1
       )
+    }
+
+    predicate isFullyConstructed() {
+      this.getKind().getNumberOfTypeParameters() - 1 = this.length()
     }
 
     private GvnType getArg(int i) {
@@ -338,17 +349,71 @@ private module Gvn {
       )
     }
 
+    private Unification::GenericType getConstructedGenericDeclaringTypeAt(int i) {
+      i = 0 and
+      result = this.getKind().getConstructedSourceDeclaration()
+      or
+      result = this.getConstructedGenericDeclaringTypeAt(i - 1).getGenericDeclaringType()
+    }
+
+    private predicate isDeclaringTypeAt(int i) {
+      exists(this.getConstructedGenericDeclaringTypeAt(i - 1))
+    }
+
+    /**
+     * Gets the `j`th `toString()` part of the `i`th nested component of this
+     * constructed type, if any. The nested components are sorted in reverse
+     * order, while the individual parts are sorted in normal order.
+     */
+    language[monotonicAggregates]
+    private string toStringConstructedPart(int i, int j) {
+      this.isFullyConstructed() and
+      exists(Unification::GenericType t |
+        t = this.getConstructedGenericDeclaringTypeAt(i) and
+        exists(int offset, int children, string name |
+          offset = t.getNumberOfDeclaringArguments() and
+          children = t.getNumberOfArgumentsSelf() and
+          name = Unification::getNameNested(t) and
+          if children = 0
+          then
+            j = 0 and result = name
+            or
+            this.isDeclaringTypeAt(i) and j = 1 and result = "."
+          else (
+            j = 0 and result = name.prefix(name.length() - children - 1) + "<"
+            or
+            j in [1 .. 2 * children - 1] and
+            if j % 2 = 0
+            then result = ","
+            else result = this.getArg((j + 1) / 2 + offset - 1).toString()
+            or
+            j = 2 * children and
+            result = ">"
+            or
+            this.isDeclaringTypeAt(i) and
+            j = 2 * children + 1 and
+            result = "."
+          )
+        )
+      )
+    }
+
     language[monotonicAggregates]
     string toString() {
-      exists(Unification::CompoundTypeKind k, string args |
-        this = gvnConstructed(_, k, _) and
-        args =
-          concat(int i |
-            i in [0 .. k.getNumberOfTypeParameters() - 1]
+      this.isFullyConstructed() and
+      exists(Unification::CompoundTypeKind k | k = this.getKind() |
+        result = k.toStringBuiltin(this.getArg(0).toString())
+        or
+        result =
+          strictconcat(int i, int j |
+            exists(Unification::GenericType t, int children |
+              t = this.getConstructedGenericDeclaringTypeAt(i) and
+              children = t.getNumberOfArgumentsSelf() and
+              if children = 0 then j = 0 else j in [0 .. 2 * children]
+            )
           |
-            this.getArg(i).toString(), "," order by i
-          ) and
-        result = k.toString(args)
+            this.toStringConstructedPart(i, j) order by i desc, j
+          )
       )
     }
 

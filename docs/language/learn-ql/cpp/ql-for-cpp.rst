@@ -6,6 +6,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 .. toctree::
    :hidden:
 
+   basic-query-cpp
    introduce-libraries-cpp
    function-classes
    expressions-types
@@ -18,7 +19,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    value-numbering-hash-cons
 
 
--  `Basic C/C++ query <https://lgtm.com/help/lgtm/console/ql-cpp-basic-example>`__: Learn to write and run a simple CodeQL query using LGTM.
+-  :doc:`Basic query for C and C++ code <basic-query-cpp>`: Learn to write and run a simple CodeQL query using LGTM.
 
 -  :doc:`CodeQL library for C and C++ <introduce-libraries-cpp>`: When analyzing C or C++ code, you can use the large collection of classes in the CodeQL library for C and C++.
 
@@ -39,10 +40,3 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 -  :doc:`Using range analysis for C and C++ <range-analysis>`: You can use range analysis to determine the upper or lower bounds on an expression, or whether an expression could potentially over or underflow.
 
 -  :doc:`Hash consing and value numbering <value-numbering-hash-cons>`: You can use specialized CodeQL libraries to recognize expressions that are syntactically identical or compute the same value at runtime in C and C++ codebases.
-
-Further reading
----------------
-
--  For examples of how to query common C/C++ elements, see the `C/C++ cookbook <https://help.semmle.com/wiki/display/CBCPP>`__.
--  For the queries used in LGTM, display a `C/C++ query <https://lgtm.com/search?q=language%3Acpp&t=rules>`__ and click **Open in query console** to see the code used to find alerts.
--  For more information about the library for C/C++ see the `CodeQL library for C/C++ <https://help.semmle.com/qldoc/cpp>`__.

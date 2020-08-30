@@ -2,7 +2,7 @@
  * Provides support for intra-procedural tracking of a customizable
  * set of data flow nodes.
  *
- * Note that unlike `TrackedNodes`, this library only performs
+ * Note that unlike `TypeTracking.qll`, this library only performs
  * local tracking within a function.
  */
 
@@ -70,6 +70,7 @@ class SourceNode extends DataFlow::Node {
    * Holds if there is an assignment to property `propName` on this node,
    * and the right hand side of the assignment is `rhs`.
    */
+  pragma[nomagic]
   predicate hasPropertyWrite(string propName, DataFlow::Node rhs) {
     rhs = getAPropertyWrite(propName).getRhs()
   }
@@ -318,6 +319,9 @@ module SourceNode {
       this = DataFlow::destructuredModuleImportNode(_)
       or
       this = DataFlow::globalAccessPathRootPseudoNode()
+      or
+      // Include return nodes because they model the implicit Promise creation in async functions.
+      DataFlow::functionReturnNode(this, _)
     }
   }
 }

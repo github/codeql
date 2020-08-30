@@ -58,7 +58,7 @@
 | test.cpp:129:13:129:17 | array to pointer conversion | 125:c20-c24 126:c20-c24 129:c13-c17 |
 | test.cpp:129:13:129:17 | bar | 125:c20-c24 126:c20-c24 129:c13-c17 |
 | test.cpp:141:12:141:17 | call to getInt | 141:c12-c17 141:c29-c34 |
-| test.cpp:141:23:141:26 | this | 0:c0-c0 141:c23-c26 |
+| test.cpp:141:12:141:17 | this | 141:c12-c17 141:c23-c26 |
 | test.cpp:146:10:146:11 | ih | 146:c10-c11 146:c31-c32 |
 | test.cpp:146:13:146:25 | call to getDoubledInt | 146:c13-c25 146:c34-c46 |
 | test.cpp:150:3:150:3 | x | 150:c3-c3 150:c9-c9 151:c3-c3 151:c9-c9 152:c12-c12 |

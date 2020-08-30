@@ -51,7 +51,14 @@ class SafeKryo extends DataFlow2::Configuration {
 predicate unsafeDeserialization(MethodAccess ma, Expr sink) {
   exists(Method m | m = ma.getMethod() |
     m instanceof ObjectInputStreamReadObjectMethod and
-    sink = ma.getQualifier()
+    sink = ma.getQualifier() and
+    not exists(DataFlow::ExprNode node |
+      node.getExpr() = sink and
+      node
+          .getTypeBound()
+          .(RefType)
+          .hasQualifiedName("org.apache.commons.io.serialization", "ValidatingObjectInputStream")
+    )
     or
     m instanceof XMLDecoderReadObjectMethod and
     sink = ma.getQualifier()

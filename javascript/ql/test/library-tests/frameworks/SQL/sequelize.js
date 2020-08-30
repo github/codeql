@@ -7,3 +7,5 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 });
 sequelize.query('SELECT * FROM Products WHERE (name LIKE \'%' + criteria + '%\') AND deletedAt IS NULL) ORDER BY name');
 
+
+exports.sequelize = sequelize;

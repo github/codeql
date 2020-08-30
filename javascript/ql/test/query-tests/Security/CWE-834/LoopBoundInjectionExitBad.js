@@ -56,8 +56,8 @@ function returns(val) {
     }
 }
 
-function lodashThrow(val) { // NOT OK!
-	_.map(val, function (e) {
+function lodashThrow(val) {
+	_.map(val, function (e) { // NOT OK!
 		if (!e) {
 			try {
 				throw new Error(); // Does not prevent DoS.

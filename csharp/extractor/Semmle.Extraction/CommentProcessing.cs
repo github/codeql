@@ -26,17 +26,16 @@ namespace Semmle.Extraction.CommentProcessing
 
         private readonly Dictionary<Label, Key> duplicationGuardKeys = new Dictionary<Label, Key>();
 
-        private Key GetDuplicationGuardKey(Label label)
+        private Key? GetDuplicationGuardKey(Label label)
         {
-            Key duplicationGuardKey;
-            if (duplicationGuardKeys.TryGetValue(label, out duplicationGuardKey))
+            if (duplicationGuardKeys.TryGetValue(label, out var duplicationGuardKey))
                 return duplicationGuardKey;
             return null;
         }
 
         class LocationComparer : IComparer<Location>
         {
-            public int Compare(Location l1, Location l2) => CommentProcessor.Compare(l1, l2);
+            public int Compare(Location? l1, Location? l2) => CommentProcessor.Compare(l1, l2);
         }
 
         /// <summary>
@@ -45,8 +44,12 @@ namespace Semmle.Extraction.CommentProcessing
         /// <param name="l1">First location</param>
         /// <param name="l2">Second location</param>
         /// <returns>&lt;0 if l1 before l2, &gt;0 if l1 after l2, else 0.</returns>
-        static int Compare(Location l1, Location l2)
+        static int Compare(Location? l1, Location? l2)
         {
+            if (object.ReferenceEquals(l1, l2)) return 0;
+            if (l1 == null) return -1;
+            if (l2 == null) return 1;
+
             int diff = l1.SourceTree == l2.SourceTree ? 0 : l1.SourceTree.FilePath.CompareTo(l2.SourceTree.FilePath);
             if (diff != 0) return diff;
             diff = l1.SourceSpan.Start - l2.SourceSpan.Start;
@@ -60,7 +63,7 @@ namespace Semmle.Extraction.CommentProcessing
         /// <param name="elementLabel">The label of the element in the trap file.</param>
         /// <param name="duplicationGuardKey">The duplication guard key of the element, if any.</param>
         /// <param name="loc">The location of the element.</param>
-        public void AddElement(Label elementLabel, Key duplicationGuardKey, Location loc)
+        public void AddElement(Label elementLabel, Key? duplicationGuardKey, Location loc)
         {
             if (loc != null && loc.IsInSource)
                 elements[loc] = elementLabel;
@@ -244,7 +247,7 @@ namespace Semmle.Extraction.CommentProcessing
         /// Process comments up until nextElement.
         /// Group comments into blocks, and associate blocks with elements.
         /// </summary>
-        /// 
+        ///
         /// <param name="commentEnumerator">Enumerator for all comments in the program.</param>
         /// <param name="nextElement">The next element in the list.</param>
         /// <param name="elementStack">A stack of nested program elements.</param>
@@ -257,19 +260,24 @@ namespace Semmle.Extraction.CommentProcessing
             CommentBindingCallback cb
             )
         {
-            CommentBlock block = new CommentBlock();
+            CommentBlock? block = null;
 
             // Iterate comments until the commentEnumerator has gone past nextElement
             while (nextElement == null || Compare(commentEnumerator.Current.Value.Location, nextElement.Value.Key) < 0)
             {
+                if (block is null)
+                    block = new CommentBlock(commentEnumerator.Current.Value);
+
                 if (!block.CombinesWith(commentEnumerator.Current.Value))
                 {
                     // Start of a new block, so generate the bindings for the old block first.
                     GenerateBindings(block, elementStack, nextElement, cb);
-                    block = new CommentBlock();
+                    block = new CommentBlock(commentEnumerator.Current.Value);
                 }
-
-                block.AddCommentLine(commentEnumerator.Current.Value);
+                else
+                {
+                    block.AddCommentLine(commentEnumerator.Current.Value);
+                }
 
                 // Get the next comment.
                 if (!commentEnumerator.MoveNext())
@@ -280,7 +288,9 @@ namespace Semmle.Extraction.CommentProcessing
                 }
             }
 
-            GenerateBindings(block, elementStack, nextElement, cb);
+            if (!(block is null))
+                GenerateBindings(block, elementStack, nextElement, cb);
+
             return true;
         }
 
@@ -332,11 +342,17 @@ namespace Semmle.Extraction.CommentProcessing
 
     class CommentBlock : ICommentBlock
     {
-        private readonly List<ICommentLine> lines = new List<ICommentLine>();
+        private readonly List<ICommentLine> lines;
 
         public IEnumerable<ICommentLine> CommentLines => lines;
 
         public Location Location { get; private set; }
+
+        public CommentBlock(ICommentLine firstLine)
+        {
+            lines = new List<ICommentLine> { firstLine };
+            Location = firstLine.Location;
+        }
 
         /// <summary>
         ///     Determine whether commentlines should be merged.

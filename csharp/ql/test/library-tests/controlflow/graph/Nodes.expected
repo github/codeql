@@ -656,6 +656,7 @@ entryPoint
 | CompileTimeOperators.cs:15:10:15:15 | Typeof | CompileTimeOperators.cs:16:5:18:5 | {...} |
 | CompileTimeOperators.cs:20:12:20:17 | Nameof | CompileTimeOperators.cs:21:5:23:5 | {...} |
 | CompileTimeOperators.cs:28:10:28:10 | M | CompileTimeOperators.cs:29:5:41:5 | {...} |
+| ConditionalAccess.cs:1:7:1:23 | ConditionalAccess | ConditionalAccess.cs:30:32:30:32 | 0 |
 | ConditionalAccess.cs:3:12:3:13 | M1 | ConditionalAccess.cs:3:26:3:26 | access to parameter i |
 | ConditionalAccess.cs:5:10:5:11 | M2 | ConditionalAccess.cs:5:26:5:26 | access to parameter s |
 | ConditionalAccess.cs:7:10:7:11 | M3 | ConditionalAccess.cs:7:39:7:46 | ... ?? ... |
@@ -663,7 +664,9 @@ entryPoint
 | ConditionalAccess.cs:11:9:11:10 | M5 | ConditionalAccess.cs:12:5:17:5 | {...} |
 | ConditionalAccess.cs:19:12:19:13 | M6 | ConditionalAccess.cs:19:40:19:41 | access to parameter s1 |
 | ConditionalAccess.cs:21:10:21:11 | M7 | ConditionalAccess.cs:22:5:26:5 | {...} |
-| ConditionalAccess.cs:31:26:31:38 | CommaJoinWith | ConditionalAccess.cs:31:70:31:71 | access to parameter s1 |
+| ConditionalAccess.cs:30:10:30:12 | Out | ConditionalAccess.cs:30:32:30:32 | 0 |
+| ConditionalAccess.cs:32:10:32:11 | M8 | ConditionalAccess.cs:33:5:36:5 | {...} |
+| ConditionalAccess.cs:41:26:41:38 | CommaJoinWith | ConditionalAccess.cs:41:70:41:71 | access to parameter s1 |
 | Conditions.cs:3:10:3:19 | IncrOrDecr | Conditions.cs:4:5:9:5 | {...} |
 | Conditions.cs:11:9:11:10 | M1 | Conditions.cs:12:5:20:5 | {...} |
 | Conditions.cs:22:9:22:10 | M2 | Conditions.cs:23:5:31:5 | {...} |
@@ -717,13 +720,14 @@ entryPoint
 | Foreach.cs:24:10:24:11 | M4 | Foreach.cs:25:5:28:5 | {...} |
 | Foreach.cs:30:10:30:11 | M5 | Foreach.cs:31:5:34:5 | {...} |
 | Foreach.cs:36:10:36:11 | M6 | Foreach.cs:37:5:40:5 | {...} |
-| Initializers.cs:6:5:6:16 | Initializers | Initializers.cs:3:9:3:9 | this access |
-| Initializers.cs:8:5:8:16 | Initializers | Initializers.cs:3:9:3:9 | this access |
-| Initializers.cs:10:10:10:10 | M | Initializers.cs:11:5:14:5 | {...} |
-| Initializers.cs:18:11:18:23 | NoConstructor | Initializers.cs:20:23:20:23 | this access |
-| Initializers.cs:29:9:29:11 | Sub | Initializers.cs:29:17:29:20 | call to constructor NoConstructor |
-| Initializers.cs:31:9:31:11 | Sub | Initializers.cs:31:22:31:25 | call to constructor Sub |
-| Initializers.cs:33:9:33:11 | Sub | Initializers.cs:20:23:20:23 | this access |
+| Initializers.cs:8:5:8:16 | Initializers | Initializers.cs:5:9:5:9 | this access |
+| Initializers.cs:10:5:10:16 | Initializers | Initializers.cs:5:9:5:9 | this access |
+| Initializers.cs:12:10:12:10 | M | Initializers.cs:13:5:16:5 | {...} |
+| Initializers.cs:20:11:20:23 | NoConstructor | Initializers.cs:22:23:22:23 | this access |
+| Initializers.cs:31:9:31:11 | Sub | Initializers.cs:31:17:31:20 | call to constructor NoConstructor |
+| Initializers.cs:33:9:33:11 | Sub | Initializers.cs:33:22:33:25 | call to constructor Sub |
+| Initializers.cs:35:9:35:11 | Sub | Initializers.cs:22:23:22:23 | this access |
+| Initializers.cs:51:10:51:13 | Test | Initializers.cs:52:5:66:5 | {...} |
 | LoopUnrolling.cs:7:10:7:11 | M1 | LoopUnrolling.cs:8:5:13:5 | {...} |
 | LoopUnrolling.cs:15:10:15:11 | M2 | LoopUnrolling.cs:16:5:20:5 | {...} |
 | LoopUnrolling.cs:22:10:22:11 | M3 | LoopUnrolling.cs:23:5:27:5 | {...} |

@@ -1,3 +1,8 @@
+/**
+ * Provides predicates for reasoning about runtime call targets through virtual
+ * dispatch.
+ */
+
 import java
 import semmle.code.java.dataflow.TypeFlow
 private import DispatchFlow as DispatchFlow
@@ -27,6 +32,7 @@ Callable exactCallable(Call c) {
 
 private predicate implCount(MethodAccess m, int c) { strictcount(viableImpl(m)) = c }
 
+/** Gets a viable implementation of the target of the given `Call`. */
 Callable viableCallable(Call c) {
   result = viableImpl(c)
   or

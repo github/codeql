@@ -150,3 +150,45 @@ function assertIsString(val: any): asserts val is string {
       throw new AssertionError("Not a string!");
   }
 }
+
+// TypeScript 4.0
+ 
+// spreads in tuple type syntax can now be generic
+function tail<T extends any[]>(arr: readonly [any, ...T]) {
+    const [_ignored, ...rest] = arr;
+    return rest;
+}
+
+// spread in tuple in non-last position
+type Arr = readonly any[];
+function concat<T extends Arr, U extends Arr>(arr1: T, arr2: U): [...T, ...U] {
+    return [...arr1, ...arr2];
+}
+
+// labelled tuple elements
+function labelOnTupleElements(x: [first: number, second: number]): number {
+  let [a, b] = x;
+  return a + b;
+}
+
+// spread elements can occur anywhere in a tuple – not just at the end!
+type Strings = [string, string];
+type Numbers = [number, number];
+
+// [string, string, number, number]
+type StrStrNumNum = [...Strings, ...Numbers];
+var foo: StrStrNumNum;
+
+// Short-Circuiting Assignment Operators
+function shortAssignment() {
+  let a1 : number = parseInt("foo");
+  let a2 : number = parseInt("bar");
+  let a3 : number = a1 ||= a2;
+  let a4 = a2 &&= a3;
+  let a5 = a3 ??= a4;
+}
+
+// only label on some tuple elements (is a type-error)
+function weirdId(x: [first: number, number]): [number, second: number] {
+  return x;
+}

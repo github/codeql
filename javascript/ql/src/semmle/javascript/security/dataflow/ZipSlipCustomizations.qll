@@ -7,25 +7,23 @@
 import javascript
 
 module ZipSlip {
+  import TaintedPathCustomizations::TaintedPath as TaintedPath
+
   /**
    * A data flow source for unsafe archive extraction.
    */
-  abstract class Source extends DataFlow::Node { }
+  abstract class Source extends DataFlow::Node {
+    /** Gets a flow label denoting the type of value for which this is a source. */
+    TaintedPath::Label::PosixPath getAFlowLabel() { result.isRelative() }
+  }
 
   /**
    * A data flow sink for unsafe archive extraction.
    */
-  abstract class Sink extends DataFlow::Node { }
-
-  /**
-   * A sanitizer for unsafe archive extraction.
-   */
-  abstract class Sanitizer extends DataFlow::Node { }
-
-  /**
-   * A sanitizer guard for unsafe archive extraction.
-   */
-  abstract class SanitizerGuard extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode { }
+  abstract class Sink extends DataFlow::Node {
+    /** Gets a flow label denoting the type of value for which this is a sink. */
+    TaintedPath::Label::PosixPath getAFlowLabel() { any() }
+  }
 
   /**
    * Gets a node that can be a parsed archive.
@@ -47,11 +45,13 @@ module ZipSlip {
     )
   }
 
-  /** Gets a property that is used to get the filename part of an archive entry. */
+  /** Gets a property that is used to get a filename part of an archive entry. */
   private string getAFilenameProperty() {
     result = "path" // Used by library 'unzip'.
     or
     result = "name" // Used by library 'tar-stream'.
+    or
+    result = "linkname" // linked file name, used by 'tar-stream'.
   }
 
   /** An archive entry path access, as a source for unsafe archive extraction. */
@@ -105,36 +105,19 @@ module ZipSlip {
       // However, we want to consider even the bare `createWriteStream`
       // to be a zipslip vulnerability since it may truncate an
       // existing file.
-      this = DataFlow::moduleImport("fs").getAMemberCall("createWriteStream").getArgument(0)
+      this = NodeJSLib::FS::moduleMember("createWriteStream").getACall().getArgument(0)
+      or
+      // Not covered by `FileSystemWriteSink` because a later call
+      // to `fs.write` is required for a write to take place.
+      exists(DataFlow::CallNode call | this = call.getArgument(0) |
+        call = NodeJSLib::FS::moduleMember(["open", "openSync"]).getACall() and
+        call.getArgument(1).getStringValue().regexpMatch("(?i)w.{0,2}")
+      )
     }
   }
 
   /** A file path of a file write, as a sink for unsafe archive extraction. */
   class FileSystemWriteSink extends Sink {
     FileSystemWriteSink() { exists(FileSystemWriteAccess fsw | fsw.getAPathArgument() = this) }
-  }
-
-  /** An expression that sanitizes by calling path.basename */
-  class BasenameSanitizer extends Sanitizer {
-    BasenameSanitizer() { this = DataFlow::moduleImport("path").getAMemberCall("basename") }
-  }
-
-  /**
-   * Gets a string which is sufficient to exclude to make
-   * a filepath definitely not refer to parent directories.
-   */
-  private string getAParentDirName() { result = ".." or result = "../" }
-
-  /** A check that a path string does not include '..' */
-  class NoParentDirSanitizerGuard extends SanitizerGuard {
-    StringOps::Includes incl;
-
-    NoParentDirSanitizerGuard() { this = incl }
-
-    override predicate sanitizes(boolean outcome, Expr e) {
-      incl.getPolarity().booleanNot() = outcome and
-      incl.getBaseString().asExpr() = e and
-      incl.getSubstring().mayHaveStringValue(getAParentDirName())
-    }
   }
 }

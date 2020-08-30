@@ -1,0 +1,5 @@
+| test.py:1:19:1:19 | SSA variable x | test.py:2:7:2:7 | ControlFlowNode for x |
+| test.py:2:3:2:3 | SSA variable y | test.py:3:7:3:7 | ControlFlowNode for y |
+| test.py:2:7:2:7 | ControlFlowNode for x | test.py:2:3:2:3 | SSA variable y |
+| test.py:3:3:3:3 | SSA variable z | test.py:4:10:4:10 | ControlFlowNode for z |
+| test.py:3:7:3:7 | ControlFlowNode for y | test.py:3:3:3:3 | SSA variable z |

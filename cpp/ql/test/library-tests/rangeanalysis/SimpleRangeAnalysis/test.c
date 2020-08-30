@@ -422,5 +422,114 @@ void test17() {
   out(i); // 50
 
   i = 20 + (j -= 10);
-  out(i); // 60 [BUG: the analysis thinks it's 2^-31 .. 2^31-1]
+  out(i); // 60
+}
+
+// Tests for unsigned multiplication.
+int test_unsigned_mult01(unsigned int a, unsigned b) {
+  int total = 0;
+
+  if (3 <= a && a <= 11 && 5 <= b && b <= 23) {
+    int r = a*b;  // 15 .. 253
+    total += r;
+  }
+  if (3 <= a && a <= 11 && 0 <= b && b <= 23) {
+    int r = a*b;  // 0 .. 253
+    total += r;
+  }
+  if (3 <= a && a <= 11 && 13 <= b && b <= 23) {
+    int r = a*b;  // 39 .. 253
+    total += r;
+  }
+
+  return total;
+}
+
+int test_unsigned_mult02(unsigned b) {
+  int total = 0;
+
+  if (5 <= b && b <= 23) {
+    int r = 11*b;  // 55 .. 253
+    total += r;
+  }
+  if (0 <= b && b <= 23) {
+    int r = 11*b;  // 0 .. 253
+    total += r;
+  }
+  if (13 <= b && b <= 23) {
+    int r = 11*b;  // 143 .. 253
+    total += r;
+  }
+
+  return total;
+}
+
+unsigned long mult_rounding() {
+  unsigned long x, y, xy;
+  x = y = 1000000003UL; // 1e9 + 3
+  xy = x * y;
+  return xy; // BUG: upper bound should be >= 1000000006000000009UL
+}
+
+unsigned long mult_overflow() {
+  unsigned long x, y, xy;
+  x = 274177UL;
+  y = 67280421310721UL;
+  xy = x * y;
+  return xy; // BUG: upper bound should be >= 18446744073709551617UL
+}
+
+unsigned long mult_lower_bound(unsigned int ui, unsigned long ul) {
+  if (ui >= 10) {
+    unsigned long result = (unsigned long)ui * ui;
+    return result; // BUG: upper bound should be >= 18446744065119617025
+  }
+  if (ul >= 10) {
+    unsigned long result = ul * ul;
+    return result; // lower bound is correctly 0 (overflow is possible)
+  }
+  return 0;
+}
+
+unsigned long mul_assign(unsigned int ui) {
+  if (ui <= 10 && ui >= 2) {
+    ui *= ui + 0;
+    return ui; // 4 .. 100
+  }
+
+  unsigned int uiconst = 10;
+  uiconst *= 4;
+
+  unsigned long ulconst = 10;
+  ulconst *= 4;
+  return uiconst + ulconst; // 40 .. 40 for both
+}
+
+int mul_by_constant(int i, int j) {
+  if (i >= -1 && i <= 2) {
+    i = 5 * i;
+    out(i); // -5 .. 10
+
+    i = i * -3;
+    out(i); // -30 .. 15
+
+    i *= 7;
+    out(i); // -210 .. 105
+
+    i *= -11;
+    out(i); // -1155 .. 2310
+  }
+  if (i == -1) {
+    i = i * (int)0xffFFffFF; // fully converted literal is -1
+    out(i); // 1 .. 1
+  }
+  i = i * -1;
+  out(   i); // -2^31 .. 2^31-1
+
+  signed char sc = 1;
+  i = (*&sc *= 2);
+  out(sc); // demonstrate that we couldn't analyze the LHS of the `*=` above...
+  out(i); // -128 .. 127 // ... but we can still bound its result by its type.
+
+  return 0;
 }

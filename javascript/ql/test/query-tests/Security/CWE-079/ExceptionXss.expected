@@ -86,16 +86,16 @@ nodes
 | exception-xss.js:180:26:180:30 | error |
 | exception-xss.js:182:19:182:23 | error |
 | exception-xss.js:182:19:182:23 | error |
-| tst.js:304:9:304:16 | location |
-| tst.js:304:9:304:16 | location |
-| tst.js:305:10:305:10 | e |
-| tst.js:306:20:306:20 | e |
-| tst.js:306:20:306:20 | e |
-| tst.js:311:10:311:17 | location |
-| tst.js:311:10:311:17 | location |
-| tst.js:313:10:313:10 | e |
-| tst.js:314:20:314:20 | e |
-| tst.js:314:20:314:20 | e |
+| tst.js:301:9:301:16 | location |
+| tst.js:301:9:301:16 | location |
+| tst.js:302:10:302:10 | e |
+| tst.js:303:20:303:20 | e |
+| tst.js:303:20:303:20 | e |
+| tst.js:308:10:308:17 | location |
+| tst.js:308:10:308:17 | location |
+| tst.js:310:10:310:10 | e |
+| tst.js:311:20:311:20 | e |
+| tst.js:311:20:311:20 | e |
 edges
 | exception-xss.js:2:6:2:28 | foo | exception-xss.js:9:11:9:13 | foo |
 | exception-xss.js:2:6:2:28 | foo | exception-xss.js:15:9:15:11 | foo |
@@ -178,30 +178,30 @@ edges
 | exception-xss.js:180:10:180:22 | req.params.id | exception-xss.js:180:26:180:30 | error |
 | exception-xss.js:180:26:180:30 | error | exception-xss.js:182:19:182:23 | error |
 | exception-xss.js:180:26:180:30 | error | exception-xss.js:182:19:182:23 | error |
-| tst.js:304:9:304:16 | location | tst.js:305:10:305:10 | e |
-| tst.js:304:9:304:16 | location | tst.js:305:10:305:10 | e |
-| tst.js:305:10:305:10 | e | tst.js:306:20:306:20 | e |
-| tst.js:305:10:305:10 | e | tst.js:306:20:306:20 | e |
-| tst.js:311:10:311:17 | location | tst.js:313:10:313:10 | e |
-| tst.js:311:10:311:17 | location | tst.js:313:10:313:10 | e |
-| tst.js:313:10:313:10 | e | tst.js:314:20:314:20 | e |
-| tst.js:313:10:313:10 | e | tst.js:314:20:314:20 | e |
+| tst.js:301:9:301:16 | location | tst.js:302:10:302:10 | e |
+| tst.js:301:9:301:16 | location | tst.js:302:10:302:10 | e |
+| tst.js:302:10:302:10 | e | tst.js:303:20:303:20 | e |
+| tst.js:302:10:302:10 | e | tst.js:303:20:303:20 | e |
+| tst.js:308:10:308:17 | location | tst.js:310:10:310:10 | e |
+| tst.js:308:10:308:17 | location | tst.js:310:10:310:10 | e |
+| tst.js:310:10:310:10 | e | tst.js:311:20:311:20 | e |
+| tst.js:310:10:310:10 | e | tst.js:311:20:311:20 | e |
 #select
-| exception-xss.js:11:18:11:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:11:18:11:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:12:2:28 | document.location | user-provided value |
-| exception-xss.js:17:18:17:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:17:18:17:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:12:2:28 | document.location | user-provided value |
-| exception-xss.js:23:18:23:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:23:18:23:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:12:2:28 | document.location | user-provided value |
-| exception-xss.js:35:18:35:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:35:18:35:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:12:2:28 | document.location | user-provided value |
-| exception-xss.js:48:18:48:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:48:18:48:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:12:2:28 | document.location | user-provided value |
-| exception-xss.js:83:18:83:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:83:18:83:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:12:2:28 | document.location | user-provided value |
-| exception-xss.js:91:18:91:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:91:18:91:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:12:2:28 | document.location | user-provided value |
-| exception-xss.js:97:18:97:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:97:18:97:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:12:2:28 | document.location | user-provided value |
-| exception-xss.js:107:18:107:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:107:18:107:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:2:12:2:28 | document.location | user-provided value |
-| exception-xss.js:119:12:119:28 | "Exception: " + e | exception-xss.js:117:11:117:23 | req.params.id | exception-xss.js:119:12:119:28 | "Exception: " + e | Cross-site scripting vulnerability due to $@. | exception-xss.js:117:11:117:23 | req.params.id | user-provided value |
-| exception-xss.js:130:18:130:18 | e | exception-xss.js:125:45:125:61 | document.location | exception-xss.js:130:18:130:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:125:45:125:61 | document.location | user-provided value |
-| exception-xss.js:138:19:138:23 | error | exception-xss.js:136:10:136:22 | req.params.id | exception-xss.js:138:19:138:23 | error | Cross-site scripting vulnerability due to $@. | exception-xss.js:136:10:136:22 | req.params.id | user-provided value |
-| exception-xss.js:149:18:149:18 | e | exception-xss.js:146:12:146:28 | document.location | exception-xss.js:149:18:149:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:146:12:146:28 | document.location | user-provided value |
-| exception-xss.js:155:18:155:18 | e | exception-xss.js:146:12:146:28 | document.location | exception-xss.js:155:18:155:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:146:12:146:28 | document.location | user-provided value |
-| exception-xss.js:175:18:175:18 | e | exception-xss.js:146:12:146:28 | document.location | exception-xss.js:175:18:175:18 | e | Cross-site scripting vulnerability due to $@. | exception-xss.js:146:12:146:28 | document.location | user-provided value |
-| exception-xss.js:182:19:182:23 | error | exception-xss.js:180:10:180:22 | req.params.id | exception-xss.js:182:19:182:23 | error | Cross-site scripting vulnerability due to $@. | exception-xss.js:180:10:180:22 | req.params.id | user-provided value |
-| tst.js:306:20:306:20 | e | tst.js:304:9:304:16 | location | tst.js:306:20:306:20 | e | Cross-site scripting vulnerability due to $@. | tst.js:304:9:304:16 | location | user-provided value |
-| tst.js:314:20:314:20 | e | tst.js:311:10:311:17 | location | tst.js:314:20:314:20 | e | Cross-site scripting vulnerability due to $@. | tst.js:311:10:311:17 | location | user-provided value |
+| exception-xss.js:11:18:11:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:11:18:11:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
+| exception-xss.js:17:18:17:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:17:18:17:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
+| exception-xss.js:23:18:23:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:23:18:23:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
+| exception-xss.js:35:18:35:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:35:18:35:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
+| exception-xss.js:48:18:48:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:48:18:48:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
+| exception-xss.js:83:18:83:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:83:18:83:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
+| exception-xss.js:91:18:91:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:91:18:91:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
+| exception-xss.js:97:18:97:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:97:18:97:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
+| exception-xss.js:107:18:107:18 | e | exception-xss.js:2:12:2:28 | document.location | exception-xss.js:107:18:107:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:2:12:2:28 | document.location | Exception text |
+| exception-xss.js:119:12:119:28 | "Exception: " + e | exception-xss.js:117:11:117:23 | req.params.id | exception-xss.js:119:12:119:28 | "Exception: " + e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:117:11:117:23 | req.params.id | Exception text |
+| exception-xss.js:130:18:130:18 | e | exception-xss.js:125:45:125:61 | document.location | exception-xss.js:130:18:130:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:125:45:125:61 | document.location | Exception text |
+| exception-xss.js:138:19:138:23 | error | exception-xss.js:136:10:136:22 | req.params.id | exception-xss.js:138:19:138:23 | error | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:136:10:136:22 | req.params.id | Exception text |
+| exception-xss.js:149:18:149:18 | e | exception-xss.js:146:12:146:28 | document.location | exception-xss.js:149:18:149:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:146:12:146:28 | document.location | Exception text |
+| exception-xss.js:155:18:155:18 | e | exception-xss.js:146:12:146:28 | document.location | exception-xss.js:155:18:155:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:146:12:146:28 | document.location | Exception text |
+| exception-xss.js:175:18:175:18 | e | exception-xss.js:146:12:146:28 | document.location | exception-xss.js:175:18:175:18 | e | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:146:12:146:28 | document.location | Exception text |
+| exception-xss.js:182:19:182:23 | error | exception-xss.js:180:10:180:22 | req.params.id | exception-xss.js:182:19:182:23 | error | $@ is reinterpreted as HTML without escaping meta-characters. | exception-xss.js:180:10:180:22 | req.params.id | Exception text |
+| tst.js:303:20:303:20 | e | tst.js:301:9:301:16 | location | tst.js:303:20:303:20 | e | $@ is reinterpreted as HTML without escaping meta-characters. | tst.js:301:9:301:16 | location | Exception text |
+| tst.js:311:20:311:20 | e | tst.js:308:10:308:17 | location | tst.js:311:20:311:20 | e | $@ is reinterpreted as HTML without escaping meta-characters. | tst.js:308:10:308:17 | location | Exception text |

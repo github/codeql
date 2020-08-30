@@ -1,6 +1,8 @@
+/** Classes representing documentation comments. */
+
 import csharp
 
-class SourceDeclaration extends Declaration {
+private class SourceDeclaration extends Declaration {
   SourceDeclaration() { this.isSourceDeclaration() }
 }
 
@@ -59,10 +61,13 @@ predicate isDocumentationNeeded(Modifiable decl) {
 class ReturnsXmlComment extends XmlComment {
   ReturnsXmlComment() { getOpenTag(_) = "returns" }
 
+  /** Holds if the element in this comment has a body at offset `offset`. */
   predicate hasBody(int offset) { hasBody("returns", offset) }
 
+  /** Holds if the element in this comment is an opening tag at offset `offset`. */
   predicate isOpenTag(int offset) { "returns" = getOpenTag(offset) }
 
+  /** Holds if the element in this comment is an empty tag at offset `offset`. */
   predicate isEmptyTag(int offset) { "returns" = getEmptyTag(offset) }
 }
 
@@ -70,8 +75,10 @@ class ReturnsXmlComment extends XmlComment {
 class ExceptionXmlComment extends XmlComment {
   ExceptionXmlComment() { getOpenTag(_) = "exception" }
 
+  /** Gets a `cref` attribute at offset `offset`, if any. */
   string getCref(int offset) { result = getAttribute("exception", "cref", offset) }
 
+  /** Holds if the element in this comment has a body at offset `offset`. */
   predicate hasBody(int offset) { hasBody("exception", offset) }
 }
 
@@ -79,8 +86,10 @@ class ExceptionXmlComment extends XmlComment {
 class ParamXmlComment extends XmlComment {
   ParamXmlComment() { getOpenTag(_) = "param" }
 
+  /** Gets the name of this parameter at offset `offset`. */
   string getName(int offset) { getAttribute("param", "name", offset) = result }
 
+  /** Holds if the element in this comment has a body at offset `offset`. */
   predicate hasBody(int offset) { hasBody("param", offset) }
 }
 
@@ -88,8 +97,10 @@ class ParamXmlComment extends XmlComment {
 class TypeparamXmlComment extends XmlComment {
   TypeparamXmlComment() { getOpenTag(_) = "typeparam" }
 
+  /** Gets the `name` attribute of this element at offset `offset`. */
   string getName(int offset) { getAttribute("typeparam", "name", offset) = result }
 
+  /** Holds if the element in this comment has a body at offset `offset`. */
   predicate hasBody(int offset) { hasBody("typeparam", offset) }
 }
 
@@ -97,10 +108,13 @@ class TypeparamXmlComment extends XmlComment {
 class SummaryXmlComment extends XmlComment {
   SummaryXmlComment() { getOpenTag(_) = "summary" }
 
+  /** Holds if the element in this comment has a body at offset `offset`. */
   predicate hasBody(int offset) { hasBody("summary", offset) }
 
+  /** Holds if the element in this comment has an open tag at offset `offset`. */
   predicate isOpenTag(int offset) { "summary" = getOpenTag(offset) }
 
+  /** Holds if the element in this comment is empty at offset `offset`. */
   predicate isEmptyTag(int offset) { "summary" = getEmptyTag(offset) }
 }
 

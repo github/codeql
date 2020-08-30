@@ -14,40 +14,33 @@ var server = http.createServer(function(req, res) {
   // BAD: This could still read any file on the file system
   res.write(fs.readFileSync("/home/user/" + path));
 
-  // BAD: Insufficient sanitisation
   if (path.startsWith("/home/user/"))
-      res.write(fs.readFileSync(path));
+      res.write(fs.readFileSync(path)); // BAD: Insufficient sanitisation
 
-  // BAD: Insufficient sanitisation
   if (path.indexOf("secret") == -1)
-      res.write(fs.readFileSync(path));
+      res.write(fs.readFileSync(path)); // BAD: Insufficient sanitisation
 
-  // BAD: Insufficient sanitisation
   if (fs.existsSync(path))
-      res.write(fs.readFileSync(path));
+      res.write(fs.readFileSync(path)); // BAD: Insufficient sanitisation
 
-  // GOOD: Path is compared to white-list
   if (path === 'foo.txt')
-    res.write(fs.readFileSync(path));
+    res.write(fs.readFileSync(path)); // GOOD: Path is compared to white-list
 
-  // GOOD: Path is compared to white-list
   if (path === 'foo.txt' || path === 'bar.txt')
-    res.write(fs.readFileSync(path));
+    res.write(fs.readFileSync(path)); // GOOD: Path is compared to white-list
 
-  // BAD: Path is incompletely compared to white-list
   if (path === 'foo.txt' || path === 'bar.txt' || someOpaqueCondition())
-    res.write(fs.readFileSync(path));
+    res.write(fs.readFileSync(path)); // BAD: Path is incompletely compared to white-list
 
-  // GOOD: Path is sanitized
   path = sanitize(path);
-  res.write(fs.readFileSync(path));
+  res.write(fs.readFileSync(path)); // GOOD: Path is sanitized
 
   path = url.parse(req.url, true).query.path;
-  // BAD: taint is preserved
+  // GOOD: basename is safe
   res.write(fs.readFileSync(pathModule.basename(path)));
   // BAD: taint is preserved
   res.write(fs.readFileSync(pathModule.dirname(path)));
-  // BAD: taint is preserved
+  // GOOD: extname is safe
   res.write(fs.readFileSync(pathModule.extname(path)));
   // BAD: taint is preserved
   res.write(fs.readFileSync(pathModule.join(path)));

@@ -4,7 +4,7 @@ Query help files
 Query help files tell users the purpose of a query, and recommend how to solve the potential problem the query finds.
 
 This topic provides detailed information on the structure of query help files. 
-For more information about how to write useful query help in a style that is consistent with the standard CodeQL queries, see the `Query help style guide <https://github.com/Semmle/ql/blob/master/docs/query-help-style-guide.md>`__ on GitHub.
+For more information about how to write useful query help in a style that is consistent with the standard CodeQL queries, see the `Query help style guide <https://github.com/github/codeql/blob/master/docs/query-help-style-guide.md>`__ on GitHub.
 
 
 .. pull-quote::
@@ -12,8 +12,8 @@ For more information about how to write useful query help in a style that is con
    Note
  
    You can access the query help for CodeQL queries by visiting the `Built-in query pages <https://help.semmle.com/wiki/display/QL/Built-in+queries>`__.
-   You can also access the raw query help files in the `GitHub repository <https://github.com/semmle/ql>`__.
-   For example, see the `JavaScript security queries <https://github.com/Semmle/ql/tree/master/javascript/ql/src/Security>`__ and `C/C++ critical queries <https://github.com/Semmle/ql/tree/master/cpp/ql/src/Critical>`__. 
+   You can also access the raw query help files in the `GitHub repository <https://github.com/github/codeql>`__.
+   For example, see the `JavaScript security queries <https://github.com/github/codeql/tree/master/javascript/ql/src/Security>`__ and `C/C++ critical queries <https://github.com/github/codeql/tree/master/cpp/ql/src/Critical>`__. 
    
    For queries run by default on LGTM, there are several different ways to access the query help. For further information, see `Where do I see the query help for a query on LGTM? <https://lgtm.com/help/lgtm/query-help#where-query-help-in-lgtm>`__ in the LGTM user help.
    
@@ -169,7 +169,7 @@ The ``include`` element can be used as a section or block element. The content 
 Section-level include elements
 ------------------------------
 
-Section-level ``include`` elements can be located beneath the top-level ``qhelp`` element. For example, in `StoredXSS.qhelp <https://github.com/Semmle/ql/blob/master/csharp/ql/src/Security%20Features/CWE-079/StoredXSS.qhelp>`__, a full query help file is reused: 
+Section-level ``include`` elements can be located beneath the top-level ``qhelp`` element. For example, in `StoredXSS.qhelp <https://github.com/github/codeql/blob/master/csharp/ql/src/Security%20Features/CWE-079/StoredXSS.qhelp>`__, a full query help file is reused: 
 
 .. code-block:: xml 
    
@@ -177,12 +177,12 @@ Section-level ``include`` elements can be located beneath the top-level ``qhelp`
        <include src="XSS.qhelp" />
    </qhelp>
 
-In this example, the `XSS.qhelp <https://github.com/Semmle/ql/blob/master/csharp/ql/src/Security%20Features/CWE-079/XSS.qhelp>`__ file must conform to the standard for a full query help file as described above. That is, the ``qhelp`` element may only contain non-``fragment``, section-level elements.
+In this example, the `XSS.qhelp <https://github.com/github/codeql/blob/master/csharp/ql/src/Security%20Features/CWE-079/XSS.qhelp>`__ file must conform to the standard for a full query help file as described above. That is, the ``qhelp`` element may only contain non-``fragment``, section-level elements.
 
 Block-level include elements
 ----------------------------
 
-Block-level ``include`` elements can be included beneath section-level elements. For example, an ``include`` element is used beneath the ``overview`` section in `ThreadUnsafeICryptoTransform.qhelp <https://github.com/Semmle/ql/blob/master/csharp/ql/src/Likely%20Bugs/ThreadUnsafeICryptoTransform.qhelp>`__:
+Block-level ``include`` elements can be included beneath section-level elements. For example, an ``include`` element is used beneath the ``overview`` section in `ThreadUnsafeICryptoTransform.qhelp <https://github.com/github/codeql/blob/master/csharp/ql/src/Likely%20Bugs/ThreadUnsafeICryptoTransform.qhelp>`__:
 
 .. code-block:: xml 
    
@@ -193,7 +193,7 @@ Block-level ``include`` elements can be included beneath section-level elements.
        ...
    </qhelp>
 
-The included file, `ThreadUnsafeICryptoTransformOverview.qhelp <https://github.com/Semmle/ql/blob/master/csharp/ql/src/Likely%20Bugs/ThreadUnsafeICryptoTransformOverview.qhelp>`_, may only contain one or more ``fragment`` sections. For example:
+The included file, `ThreadUnsafeICryptoTransformOverview.qhelp <https://github.com/github/codeql/blob/master/csharp/ql/src/Likely%20Bugs/ThreadUnsafeICryptoTransformOverview.qhelp>`_, may only contain one or more ``fragment`` sections. For example:
 
 .. code-block:: xml 
 
@@ -206,8 +206,3 @@ The included file, `ThreadUnsafeICryptoTransformOverview.qhelp <https://github.
       </fragment>
    </qhelp>
 
-Further information
-===================
-
-- To learn more about contributing to the standard CodeQL queries and libraries, see our `Contributing guidelines <https://github.com/Semmle/ql/blob/master/CONTRIBUTING.md>`__ on GitHub. 
-- To learn more about writing custom queries, and how to format your code for clarity and consistency, see `Writing CodeQL queries <https://help.semmle.com/QL/learn-ql/writing-queries/writing-queries.html>`__.

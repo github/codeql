@@ -13,7 +13,7 @@ class Macro extends PreprocessorDirective, @ppd_define {
    */
   override string getHead() { preproctext(underlyingElement(this), result, _) }
 
-  override string getCanonicalQLClass() { result = "Macro" }
+  override string getAPrimaryQlClass() { result = "Macro" }
 
   /**
    * Gets the body of this macro. For example, `(((x)>(y))?(x):(y))` in
@@ -74,7 +74,7 @@ class MacroAccess extends Locatable, @macroinvocation {
    */
   override Location getLocation() { result = this.getOutermostMacroAccess().getActualLocation() }
 
-  override string getCanonicalQLClass() { result = "MacroAccess" }
+  override string getAPrimaryQlClass() { result = "MacroAccess" }
 
   /**
    * Gets the location of this macro access. For a nested access, where
@@ -147,7 +147,7 @@ class MacroAccess extends Locatable, @macroinvocation {
 class MacroInvocation extends MacroAccess {
   MacroInvocation() { macroinvocations(underlyingElement(this), _, _, 1) }
 
-  override string getCanonicalQLClass() { result = "MacroInvocation" }
+  override string getAPrimaryQlClass() { result = "MacroInvocation" }
 
   /**
    * Gets an element that occurs in this macro invocation or a nested macro
@@ -179,6 +179,11 @@ class MacroInvocation extends MacroAccess {
     result.(Stmt).getGeneratingMacro() = this
   }
 
+  /**
+   * Gets a function that includes an expression that is affected by this macro
+   * invocation. If the macro expansion includes the end of one function and
+   * the beginning of another, this predicate will get both.
+   */
   Function getEnclosingFunction() {
     result = this.getAnAffectedElement().(Expr).getEnclosingFunction()
   }

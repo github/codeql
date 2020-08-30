@@ -1,4 +1,5 @@
 | additional-promises.js:2:13:2:57 | new Pin ... ct) {}) |
+| flow2.js:4:2:4:31 | Promise ... lean"]) |
 | flow.js:7:11:7:59 | new Pro ... ource)) |
 | flow.js:10:11:10:58 | new Pro ... ource)) |
 | flow.js:13:11:13:58 | new Pro ... ource)) |
@@ -39,7 +40,7 @@
 | flow.js:86:23:86:70 | new Pro ... ource)) |
 | flow.js:89:3:89:27 | ("foo", ...  => {}) |
 | flow.js:91:21:91:68 | new Pro ... ource)) |
-| flow.js:100:28:100:75 | new Pro ... ource)) |
+| flow.js:100:34:100:81 | new Pro ... ource)) |
 | flow.js:103:2:103:48 | new Pro ... "BLA")) |
 | flow.js:103:2:103:76 | new Pro ... ource}) |
 | flow.js:105:2:105:48 | new Pro ... "BLA")) |

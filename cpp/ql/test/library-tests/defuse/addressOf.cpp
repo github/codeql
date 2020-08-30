@@ -63,3 +63,18 @@ void nonexamples(int *ptr, int &ref) {
     nonexamples(&*ptr, ref);
   }
 }
+
+
+namespace std {
+  template<typename T>
+  constexpr T *addressof(T &obj) noexcept {
+    return __builtin_addressof(obj);
+  }
+}
+
+void use_std_addressof() {
+  int x = 0;
+  int *y = std::addressof(x) + *std::addressof(x);
+}
+
+// semmle-extractor-options: --clang

@@ -1,3 +1,5 @@
+/** Provides classes and predicates related to Javadoc conventions. */
+
 import java
 
 /** Holds if the given `Javadoc` contains a minimum of a few characters of text. */
@@ -29,6 +31,7 @@ class DocuRefType extends RefType {
     this.isPublic()
   }
 
+  /** Holds if the Javadoc for this type contains a minimum of a few characters of text. */
   predicate hasAcceptableDocText() { acceptableDocText(this.getDoc().getJavadoc()) }
 }
 
@@ -46,8 +49,10 @@ class DocuCallable extends Callable {
     not this.getLocation() = this.getDeclaringType().getLocation()
   }
 
+  /** Holds if the Javadoc for this callable contains a minimum of a few characters of text. */
   predicate hasAcceptableDocText() { acceptableDocText(this.getDoc().getJavadoc()) }
 
+  /** Gets a string to identify whether this callable is a "method" or a "constructor". */
   string toMethodOrConstructorString() {
     this instanceof Method and result = "method"
     or

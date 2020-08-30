@@ -292,6 +292,4 @@ Have you found the thief?
 Further reading
 ---------------
 
--  Help the villagers track down another criminal in the :doc:`next tutorial <catch-the-fire-starter>`.
--  Find out more about the concepts you discovered in this tutorial in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
--  Explore the libraries that help you get data about code in :doc:`Learning CodeQL <../../index>`.
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

@@ -6,6 +6,7 @@
 
 import cpp
 
+pragma[inline]
 private predicate arithTypesMatch(Type arg, Type parm) {
   arg = parm
   or

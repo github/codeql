@@ -58,7 +58,7 @@ module Stages {
 
     cached
     private predicate forceCachingInSameStageRev() {
-      localAdditionalTaintStep(_, _)
+      defaultAdditionalTaintStep(_, _)
       or
       any(ArgumentNode n).argumentOf(_, _)
       or
@@ -67,6 +67,8 @@ module Stages {
       exists(any(DataFlow::Node n).getControlFlowNode())
       or
       exists(any(DataFlow::Node n).getType())
+      or
+      exists(any(NodeImpl n).getDataFlowType())
       or
       exists(any(DataFlow::Node n).getLocation())
       or

@@ -2,3 +2,16 @@
 - qlpack: codeql-javascript
 - apply: lgtm-selectors.yml
   from: codeql-suite-helpers
+# These are only for IDE use.
+- exclude:
+    tags contain:
+      - ide-contextual-queries/local-definitions
+      - ide-contextual-queries/local-references
+- query: Comments/FCommentedOutCode.ql
+- query: Metrics/Dependencies/ExternalDependencies.ql
+- query: Metrics/Dependencies/ExternalDependenciesSourceLinks.ql
+- query: Metrics/FLinesOfCode.ql
+- query: Metrics/FLinesOfComment.ql
+- query: Metrics/FLinesOfDuplicatedCode.ql
+- query: Metrics/FLinesOfSimilarCode.ql
+- query: Metrics/FNumberOfTests.ql

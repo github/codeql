@@ -31,7 +31,12 @@ module XssThroughDom {
 
     override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
       guard instanceof TypeTestGuard or
-      guard instanceof UnsafeJQuery::PropertyPresenceSanitizer
+      guard instanceof UnsafeJQuery::PropertyPresenceSanitizer or
+      guard instanceof DomBasedXss::SanitizerGuard
+    }
+
+    override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
+      DomBasedXss::isOptionallySanitizedEdge(pred, succ)
     }
   }
 
@@ -81,10 +86,7 @@ module XssThroughDom {
     DOMTextSource() {
       exists(DataFlow::PropRead read | read = this |
         read.getBase().getALocalSource() = DOM::domValueRef() and
-        exists(string propName | propName = ["innerText", "textContent", "value", "name"] |
-          read.getPropertyName() = propName or
-          read.getPropertyNameExpr().flow().mayHaveStringValue(propName)
-        )
+        read.mayHavePropertyName(["innerText", "textContent", "value", "name"])
       )
       or
       exists(DataFlow::MethodCallNode mcn | mcn = this |

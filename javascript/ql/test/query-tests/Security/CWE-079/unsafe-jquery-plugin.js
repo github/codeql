@@ -65,7 +65,7 @@
 	$.fn.my_plugin = function my_plugin(element, options) {
 		this.$element      = $(element);
 		this.options       = $.extend({}, options);
-		if (this.options.parent) this.$parent = $(this.options.parent) // NOT OK
+		if (this.options.parent) this.$parent = $(this.options.parent) // NOT OK - but not flagged [INCONSISTENCY]
 	};
 
 	$.fn.my_plugin = function my_plugin(options) {
@@ -103,7 +103,7 @@
 			menu: '<div></div>',
 			target: '.my_plugin'
 		}, options);
-		$(options.menu); // OK
+		$(options.menu); // OK - but is flagged [INCONSISTENCY]
 		$(options.target); // NOT OK
 	};
 
@@ -113,7 +113,7 @@
 	};
 	$.fn.my_plugin = function my_plugin(options) {
 		options = $.extend({}, $.fn.my_plugin.defaults, options);
-		$(options.menu); // OK
+		$(options.menu); // OK - but is flagged [INCONSISTENCY]
 		$(options.target); // NOT OK
 	};
 
@@ -152,9 +152,9 @@
 
 	$.fn.my_plugin = function my_plugin(options) {
 		let target = options.target;
-		target === DEFAULTS.target? $(target): $(document).find(target); // OK - but still flagged
-		options.target === DEFAULTS.target? $(options.target): $(document).find(options.target); // OK - but still flagged
-		options.targets.a === DEFAULTS.target? $(options.target.a): $(document).find(options.target.a); // OK - but still flagged
+		target === DEFAULTS.target? $(target): $(document).find(target); // OK
+		options.target === DEFAULTS.target? $(options.target): $(document).find(options.target); // OK
+		options.targets.a === DEFAULTS.target? $(options.target.a): $(document).find(options.target.a); // OK - but still flagged [INCONSISTENCY]
 	}
 
 	$.fn.my_plugin = function my_plugin(options) {

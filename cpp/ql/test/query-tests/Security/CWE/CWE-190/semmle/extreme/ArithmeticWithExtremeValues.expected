@@ -5,5 +5,4 @@
 | test.c:63:3:63:5 | sc8 | $@ flows to here and is used in arithmetic, potentially causing an underflow. | test.c:62:9:62:16 | - ... | Extreme value |
 | test.c:75:3:75:5 | sc1 | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:74:9:74:16 | 127 | Extreme value |
 | test.c:76:3:76:5 | sc1 | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:74:9:74:16 | 127 | Extreme value |
-| test.c:114:9:114:9 | x | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:108:17:108:23 | 2147483647 | Extreme value |
 | test.c:124:9:124:9 | x | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.c:118:17:118:23 | 2147483647 | Extreme value |

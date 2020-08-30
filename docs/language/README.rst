@@ -18,8 +18,7 @@ Project structure
 The documentation currently consists of the following Sphinx projects:
 
 - ``learn-ql``–help topics to help you learn CodeQL and write queries
-- ``ql-handbook``–a user-friendly guide to the QL language, which underlies CodeQL analysis
-- ``ql-spec``–formal descriptions of the QL language and QLDoc comments
+- ``ql-handbook``–an overview of important concepts in QL, the language that underlies CodeQL analysis
 - ``support``–the languages and frameworks currently supported in CodeQL analysis
 - ``ql-training``–source files for the CodeQL training and variant analysis examples slide decks
 
@@ -104,7 +103,7 @@ generates html slide shows in the ``<slides-output>`` directory when run from
 the ``ql-training`` source directory.
 
 For more information about creating slides for QL training and variant analysis 
-examples, see the `template slide deck <https://github.com/Semmle/ql/blob/master/docs/language/ql-training/template.rst>`__.
+examples, see the `template slide deck <https://github.com/github/codeql/blob/master/docs/language/ql-training/template.rst>`__.
 
 Viewing the current version of the CodeQL documentation
 *******************************************************

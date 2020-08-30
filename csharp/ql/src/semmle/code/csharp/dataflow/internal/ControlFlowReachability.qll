@@ -44,7 +44,7 @@ private ControlFlow::BasicBlock getABasicBlockInScope(ControlFlowScope scope, bo
  *
  * For example, in
  *
- * ```
+ * ```csharp
  * if (b)
  *     ....
  * var x = "foo";
@@ -173,15 +173,16 @@ abstract class ControlFlowReachabilityConfiguration extends string {
    * Holds if there is a control-flow path from `cfn1` to `cfn2`, where `cfn1` is a
    * control-flow node for `e1` and `cfn2` is a control-flow node for `e2`.
    */
+  pragma[nomagic]
   predicate hasExprPath(Expr e1, ControlFlow::Node cfn1, Expr e2, ControlFlow::Node cfn2) {
     exists(ControlFlow::BasicBlock bb, boolean isSuccessor, int i, int j |
       this.reachesBasicBlockExprBase(e1, e2, _, _, isSuccessor, cfn1, i, bb) and
       cfn2 = bb.getNode(j) and
       cfn2 = e2.getAControlFlowNode()
     |
-      isSuccessor = true and j > i
+      isSuccessor = true and j >= i
       or
-      isSuccessor = false and i > j
+      isSuccessor = false and i >= j
     )
     or
     exists(ControlFlow::BasicBlock bb |
@@ -195,6 +196,7 @@ abstract class ControlFlowReachabilityConfiguration extends string {
    * Holds if there is a control-flow path from `cfn` to `cfnDef`, where `cfn` is a
    * control-flow node for `e` and `cfnDef` is a control-flow node for `def`.
    */
+  pragma[nomagic]
   predicate hasDefPath(
     Expr e, ControlFlow::Node cfn, AssignableDefinition def, ControlFlow::Node cfnDef
   ) {
@@ -203,9 +205,9 @@ abstract class ControlFlowReachabilityConfiguration extends string {
       cfnDef = bb.getNode(j) and
       def.getAControlFlowNode() = cfnDef
     |
-      isSuccessor = true and j > i
+      isSuccessor = true and j >= i
       or
-      isSuccessor = false and i > j
+      isSuccessor = false and i >= j
     )
     or
     exists(ControlFlow::BasicBlock bb |
@@ -219,6 +221,7 @@ abstract class ControlFlowReachabilityConfiguration extends string {
    * Holds if there is a control-flow path from `n1` to `n2`. `n2` is either an
    * expression node or an SSA definition node.
    */
+  pragma[nomagic]
   predicate hasNodePath(ExprNode n1, Node n2) {
     exists(Expr e1, ControlFlow::Node cfn1, Expr e2, ControlFlow::Node cfn2 |
       this.hasExprPath(e1, cfn1, e2, cfn2)

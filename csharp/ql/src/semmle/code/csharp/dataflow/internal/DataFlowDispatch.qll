@@ -67,7 +67,6 @@ private predicate transitiveCapturedCallTarget(ControlFlow::Nodes::ElementNode c
 
 cached
 private module Cached {
-  private import CallContext
   private import semmle.code.csharp.Caching
 
   cached
@@ -107,7 +106,13 @@ private module Cached {
 
   /** Gets a viable run-time target for the call `call`. */
   cached
-  DataFlowCallable viableImpl(DataFlowCall call) { result = call.getARuntimeTarget() }
+  DataFlowCallable viableCallable(DataFlowCall call) { result = call.getARuntimeTarget() }
+}
+
+import Cached
+
+private module DispatchImpl {
+  private import CallContext
 
   /**
    * Gets a viable run-time target for the delegate call `call`, requiring
@@ -118,71 +123,46 @@ private module Cached {
   }
 
   /**
-   * Holds if the call context `ctx` reduces the set of viable run-time
-   * targets of call `call` in `c`.
+   * Holds if the set of viable implementations that can be called by `call`
+   * might be improved by knowing the call context. This is the case if the
+   * call is a delegate call, or if the qualifier accesses a parameter of
+   * the enclosing callable `c` (including the implicit `this` parameter).
    */
-  cached
-  predicate reducedViableImplInCallContext(DataFlowCall call, DataFlowCallable c, DataFlowCall ctx) {
-    c = viableImpl(ctx) and
+  predicate mayBenefitFromCallContext(DataFlowCall call, Callable c) {
     c = call.getEnclosingCallable() and
-    exists(CallContext cc | exists(viableDelegateCallable(call, cc)) |
-      not cc instanceof EmptyCallContext
+    (
+      exists(CallContext cc | exists(viableDelegateCallable(call, cc)) |
+        not cc instanceof EmptyCallContext
+      )
+      or
+      call.(NonDelegateDataFlowCall).getDispatchCall().mayBenefitFromCallContext()
     )
   }
 
-  private DotNet::Callable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
+  /**
+   * Gets a viable dispatch target of `call` in the context `ctx`. This is
+   * restricted to those `call`s for which a context might make a difference.
+   */
+  DotNet::Callable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
     exists(ArgumentCallContext cc | result = viableDelegateCallable(call, cc) |
       cc.isArgument(ctx.getExpr(), _)
     )
-  }
-
-  /**
-   * Gets a viable run-time target for the call `call` in the context
-   * `ctx`. This is restricted to those call nodes for which a context
-   * might make a difference.
-   */
-  cached
-  DotNet::Callable prunedViableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
-    result = viableImplInCallContext(call, ctx) and
-    reducedViableImplInCallContext(call, _, ctx)
-  }
-
-  /**
-   * Holds if flow returning from callable `c` to call `call` might return
-   * further and if this path restricts the set of call sites that can be
-   * returned to.
-   */
-  cached
-  predicate reducedViableImplInReturn(DataFlowCallable c, DataFlowCall call) {
-    exists(int tgts, int ctxtgts |
-      c = viableImpl(call) and
-      ctxtgts = strictcount(DataFlowCall ctx | c = viableImplInCallContext(call, ctx)) and
-      tgts = strictcount(DataFlowCall ctx | viableImpl(ctx) = call.getEnclosingCallable()) and
-      ctxtgts < tgts
-    )
-  }
-
-  /**
-   * Gets a viable run-time target for the call `call` in the context `ctx`.
-   * This is restricted to those call nodes and results for which the return
-   * flow from the result to `call` restricts the possible context `ctx`.
-   */
-  cached
-  DataFlowCallable prunedViableImplInCallContextReverse(DataFlowCall call, DataFlowCall ctx) {
-    result = viableImplInCallContext(call, ctx) and
-    reducedViableImplInReturn(result, call)
+    or
+    result =
+      call
+          .(NonDelegateDataFlowCall)
+          .getDispatchCall()
+          .getADynamicTargetInCallContext(ctx.(NonDelegateDataFlowCall).getDispatchCall())
   }
 }
 
-import Cached
+import DispatchImpl
 
 /**
  * Gets a node that can read the value returned from `call` with return kind
  * `kind`.
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { call = result.getCall(kind) }
-
-predicate viableCallable = viableImpl/1;
 
 /**
  * A return kind. A return kind describes how a value can be returned
@@ -278,6 +258,9 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
 
   NonDelegateDataFlowCall() { this = TNonDelegateCall(cfn, dc) }
 
+  /** Gets the underlying call. */
+  DispatchCall getDispatchCall() { result = dc }
+
   override DotNet::Callable getARuntimeTarget() {
     result = getCallableForDataFlow(dc.getADynamicTarget())
   }
@@ -346,11 +329,14 @@ class ImplicitDelegateDataFlowCall extends DelegateDataFlowCall, TImplicitDelega
   /** Gets the number of parameters of the supplied delegate. */
   int getNumberOfDelegateParameters() { result = arg.getDelegateType().getNumberOfParameters() }
 
+  /** Gets the type of the `i`th parameter of the supplied delegate. */
+  Type getDelegateParameterType(int i) { result = arg.getDelegateType().getParameter(i).getType() }
+
   /** Gets the return type of the supplied delegate. */
   Type getDelegateReturnType() { result = arg.getDelegateType().getReturnType() }
 
   override DotNet::Callable getARuntimeTarget(CallContext::CallContext cc) {
-    result = cfn.getElement().(DelegateArgumentToLibraryCallable).getARuntimeTarget(cc)
+    result = arg.getARuntimeTarget(cc)
   }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }

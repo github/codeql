@@ -125,7 +125,7 @@ class LocalVariableDeclExpr extends Expr, @local_var_decl_expr {
   /**
    * Gets the local variable being declared, if any. The only case where
    * no variable is declared is when a discard symbol is used, for example
-   * ```
+   * ```csharp
    * if (int.TryParse(s, out var _))
    *     ...
    * ```
@@ -165,6 +165,11 @@ class LocalVariableDeclExpr extends Expr, @local_var_decl_expr {
    * for example `M(out int x)`.
    */
   predicate isOutArgument() { expr_argument(this, 2) }
+
+  override string getAPrimaryQlClass() {
+    result = "LocalVariableDeclExpr" and
+    not this instanceof LocalVariableDeclAndInitExpr
+  }
 }
 
 /**
@@ -237,7 +242,7 @@ class TernaryOperation extends Operation, @ternary_op { }
 /**
  * A parenthesized expression, for example `(2 + 3)` in
  *
- * ```
+ * ```csharp
  * 4 * (2 + 3)
  * ```
  */
@@ -246,6 +251,8 @@ class ParenthesizedExpr extends Expr, @par_expr {
   Expr getExpr() { result = this.getChild(0) }
 
   override string toString() { result = "(...)" }
+
+  override string getAPrimaryQlClass() { result = "ParenthesizedExpr" }
 }
 
 /**
@@ -256,6 +263,8 @@ class CheckedExpr extends Expr, @checked_expr {
   Expr getExpr() { result = this.getChild(0) }
 
   override string toString() { result = "checked (...)" }
+
+  override string getAPrimaryQlClass() { result = "CheckedExpr" }
 }
 
 /**
@@ -266,6 +275,8 @@ class UncheckedExpr extends Expr, @unchecked_expr {
   Expr getExpr() { result = this.getChild(0) }
 
   override string toString() { result = "unchecked (...)" }
+
+  override string getAPrimaryQlClass() { result = "UncheckedExpr" }
 }
 
 cached
@@ -291,7 +302,7 @@ private predicate hasChildPattern(ControlFlowElement pm, Expr child) {
 /**
  * A pattern expression, for example `(_, false)` in
  *
- * ```
+ * ```csharp
  * (a,b) switch {
  *     (_, false) => true,
  *     _ => false
@@ -308,7 +319,7 @@ class PatternExpr extends Expr {
    * (transitively). For example, `_`, `false`, and `(_, false)` belong to the
    * pattern match `(_, false) => true` in
    *
-   * ```
+   * ```csharp
    * (a,b) switch {
    *     (_, false) => true,
    *     _ => false
@@ -319,11 +330,15 @@ class PatternExpr extends Expr {
 }
 
 /** A discard pattern, for example `_` in `x is (_, false)` */
-class DiscardPatternExpr extends DiscardExpr, PatternExpr { }
+class DiscardPatternExpr extends DiscardExpr, PatternExpr {
+  override string getAPrimaryQlClass() { result = "DiscardPatternExpr" }
+}
 
 /** A constant pattern, for example `false` in `x is (_, false)`. */
 class ConstantPatternExpr extends PatternExpr {
   ConstantPatternExpr() { this.hasValue() }
+
+  override string getAPrimaryQlClass() { result = "ConstantPatternExpr" }
 }
 
 /**
@@ -343,7 +358,9 @@ class TypePatternExpr extends PatternExpr {
 }
 
 /** A type access pattern, for example `string` in `x is string`. */
-class TypeAccessPatternExpr extends TypePatternExpr, TypeAccess { }
+class TypeAccessPatternExpr extends TypePatternExpr, TypeAccess {
+  override string getAPrimaryQlClass() { result = "TypeAccessPatternExpr" }
+}
 
 /** A pattern that may bind a variable, for example `string s` in `x is string s`. */
 class BindingPatternExpr extends PatternExpr {
@@ -362,6 +379,8 @@ class BindingPatternExpr extends PatternExpr {
 /** A variable declaration pattern, for example `string s` in `x is string s`. */
 class VariablePatternExpr extends BindingPatternExpr, LocalVariableDeclExpr {
   override LocalVariableDeclExpr getVariableDeclExpr() { result = this }
+
+  override string getAPrimaryQlClass() { result = "VariablePatternExpr" }
 }
 
 /**
@@ -370,6 +389,8 @@ class VariablePatternExpr extends BindingPatternExpr, LocalVariableDeclExpr {
  */
 class RecursivePatternExpr extends BindingPatternExpr, @recursive_pattern_expr {
   override string toString() { result = "{ ... }" }
+
+  override string getAPrimaryQlClass() { result = "RecursivePatternExpr" }
 
   /**
    * Gets the position patterns of this recursive pattern, if any.
@@ -398,6 +419,8 @@ class PropertyPatternExpr extends Expr, @property_pattern_expr {
 
   /** Gets the `n`th pattern. */
   PatternExpr getPattern(int n) { result = this.getChild(n) }
+
+  override string getAPrimaryQlClass() { result = "PropertyPatternExpr" }
 }
 
 /**
@@ -409,6 +432,8 @@ class LabeledPatternExpr extends PatternExpr {
 
   /** Gets the label of this pattern. */
   string getLabel() { exprorstmt_name(this, result) }
+
+  override string getAPrimaryQlClass() { result = "LabeledPatternExpr" }
 }
 
 /** A positional pattern. For example, `(int x, int y)`. */
@@ -417,6 +442,8 @@ class PositionalPatternExpr extends Expr, @positional_pattern_expr {
 
   /** Gets the `n`th pattern. */
   PatternExpr getPattern(int n) { result = this.getChild(n) }
+
+  override string getAPrimaryQlClass() { result = "PositionalPatternExpr" }
 }
 
 /**
@@ -439,65 +466,8 @@ class IsExpr extends Expr, PatternMatch, @is_expr {
   override PatternExpr getPattern() { result = this.getChild(1) }
 
   override string toString() { result = "... is ..." }
-}
 
-/** An `is` type expression, for example, `x is string` or `x is string s`. */
-deprecated class IsTypeExpr extends IsExpr {
-  TypeAccess typeAccess;
-
-  IsTypeExpr() { typeAccess = this.getChild(1) }
-
-  /**
-   * Gets the type being accessed in this `is` expression, for example `string`
-   * in `x is string`.
-   */
-  Type getCheckedType() { result = typeAccess.getTarget() }
-
-  /**
-   * Gets the type access in this `is` expression, for example `string` in
-   * `x is string`.
-   */
-  TypeAccess getTypeAccess() { result = typeAccess }
-}
-
-/** An `is` pattern expression, for example `x is string s`. */
-deprecated class IsPatternExpr extends IsExpr {
-  LocalVariableDeclExpr typeDecl;
-
-  IsPatternExpr() { typeDecl = this.getChild(2) }
-
-  /**
-   * Gets the local variable declaration in this `is` pattern expression.
-   * For example `string s` in `x is string s`.
-   */
-  LocalVariableDeclExpr getVariableDeclExpr() { result = typeDecl }
-
-  /**
-   * Gets the type being accessed in this `is` expression, for example `string`
-   * in `x is string`.
-   */
-  Type getCheckedType() { result = getTypeAccess().getTarget() }
-
-  /**
-   * Gets the type access in this `is` expression, for example `string` in
-   * `x is string`.
-   */
-  TypeAccess getTypeAccess() { result = this.getChild(1) }
-}
-
-/**
- * An `is` constant expression, for example `x is 5`.
- */
-deprecated class IsConstantExpr extends IsExpr {
-  ConstantPatternExpr constant;
-
-  IsConstantExpr() { constant = this.getPattern() }
-
-  /** Gets the constant expression, for example `5` in `x is 5`. */
-  Expr getConstant() { result = constant }
-
-  /** Gets the value of the constant, for example 5 in `x is 5`. */
-  string getConstantValue() { result = constant.getValue() }
+  override string getAPrimaryQlClass() { result = "IsExpr" }
 }
 
 /** A `switch` expression or statement. */
@@ -517,7 +487,7 @@ class Switch extends ControlFlowElement, @switch {
 
 /**
  * A `switch` expression, for example
- * ```
+ * ```csharp
  * (a,b) switch {
  *     (false, false) => true,
  *     _ => false
@@ -532,6 +502,8 @@ class SwitchExpr extends Expr, Switch, @switch_expr {
   override SwitchCaseExpr getCase(int n) { result = this.getChild(n) }
 
   override SwitchCaseExpr getACase() { result = this.getCase(_) }
+
+  override string getAPrimaryQlClass() { result = "SwitchExpr" }
 }
 
 /** A `case` expression or statement. */
@@ -569,6 +541,8 @@ class SwitchCaseExpr extends Expr, Case, @switch_case_expr {
     // should match all cases due to the type of the expression.
     this.getPattern() instanceof DiscardPatternExpr
   }
+
+  override string getAPrimaryQlClass() { result = "SwitchCaseExpr" }
 }
 
 /**
@@ -603,7 +577,7 @@ class Cast extends Expr {
  * An implicit cast. For example, the implicit cast from `string` to `object`
  * on line 3 in
  *
- * ```
+ * ```csharp
  * class C {
  *   void M1(object o) { }
  *   void M2(string s) => M1(s);
@@ -618,7 +592,7 @@ class ImplicitCast extends Cast {
  * An explicit cast. For example, the explicit cast from `object` to `string`
  * on line 2 in
  *
- * ```
+ * ```csharp
  * class C {
  *   string M1(object o) => (string) o;
  * }
@@ -633,6 +607,8 @@ class ExplicitCast extends Cast {
  */
 class AsExpr extends Cast, @as_expr {
   override string toString() { result = "... as ..." }
+
+  override string getAPrimaryQlClass() { result = "AsExpr" }
 }
 
 /**
@@ -640,6 +616,8 @@ class AsExpr extends Cast, @as_expr {
  */
 class CastExpr extends Cast, @cast_expr {
   override string toString() { result = "(...) ..." }
+
+  override string getAPrimaryQlClass() { result = "CastExpr" }
 }
 
 /**
@@ -653,6 +631,8 @@ class TypeofExpr extends Expr, @typeof_expr {
   TypeAccess getTypeAccess() { result = this.getChild(0) }
 
   override string toString() { result = "typeof(...)" }
+
+  override string getAPrimaryQlClass() { result = "TypeofExpr" }
 }
 
 /**
@@ -668,6 +648,8 @@ class DefaultValueExpr extends Expr, @default_expr {
   override string toString() {
     if exists(getTypeAccess()) then result = "default(...)" else result = "default"
   }
+
+  override string getAPrimaryQlClass() { result = "DefaultValueExpr" }
 }
 
 /**
@@ -683,13 +665,15 @@ class SizeofExpr extends UnaryOperation, @sizeof_expr {
   override string getOperator() { result = "sizeof(..)" }
 
   override string toString() { result = "sizeof(..)" }
+
+  override string getAPrimaryQlClass() { result = "SizeofExpr" }
 }
 
 /**
  * A pointer indirection operation, for example `*pn` on line 7,
  * `pa->M()` on line 13, and `cp[1]` on line 18 in
  *
- * ```
+ * ```csharp
  * struct A {
  *   public void M() { }
  *
@@ -721,12 +705,14 @@ class SizeofExpr extends UnaryOperation, @sizeof_expr {
  */
 class PointerIndirectionExpr extends UnaryOperation, @pointer_indirection_expr {
   override string getOperator() { result = "*" }
+
+  override string getAPrimaryQlClass() { result = "PointerIndirectionExpr" }
 }
 
 /**
  * An address-of expression, for example `&n` on line 4 in
  *
- * ```
+ * ```csharp
  * class A {
  *   unsafe int DirectDerefence() {
  *     int n = 10;
@@ -738,6 +724,8 @@ class PointerIndirectionExpr extends UnaryOperation, @pointer_indirection_expr {
  */
 class AddressOfExpr extends UnaryOperation, @address_of_expr {
   override string getOperator() { result = "&" }
+
+  override string getAPrimaryQlClass() { result = "AddressOfExpr" }
 }
 
 /**
@@ -748,12 +736,14 @@ class AwaitExpr extends Expr, @await_expr {
   Expr getExpr() { result = getChild(0) }
 
   override string toString() { result = "await ..." }
+
+  override string getAPrimaryQlClass() { result = "AwaitExpr" }
 }
 
 /**
  * A `nameof` expression, for example `nameof(s)` on line 3 in
  *
- * ```
+ * ```csharp
  * void M(string s) {
  *   if (s == null)
  *     throw new ArgumentNullException(nameof(s));
@@ -769,12 +759,14 @@ class NameOfExpr extends Expr, @nameof_expr {
    * `nameof(x.F)`.
    */
   Access getAccess() { result = this.getChild(0) }
+
+  override string getAPrimaryQlClass() { result = "NameOfExpr" }
 }
 
 /**
  * An interpolated string, for example `$"Hello, {name}!"` on line 2 in
  *
- * ```
+ * ```csharp
  * void Hello(string name) {
  *   Console.WriteLine($"Hello, {name}!");
  * }
@@ -782,6 +774,8 @@ class NameOfExpr extends Expr, @nameof_expr {
  */
 class InterpolatedStringExpr extends Expr, @interpolated_string_expr {
   override string toString() { result = "$\"...\"" }
+
+  override string getAPrimaryQlClass() { result = "InterpolatedStringExpr" }
 
   /**
    * Gets the insert at index `i` in this interpolated string, if any. For
@@ -846,6 +840,8 @@ class ThrowExpr extends Expr, ThrowElement, @throw_expr {
    */
   // overriden for more precise qldoc
   override Expr getExpr() { result = ThrowElement.super.getExpr() }
+
+  override string getAPrimaryQlClass() { result = "ThrowExpr" }
 }
 
 /**
@@ -922,8 +918,8 @@ private Expr getAnAssignOrForeachChild() {
  * An expression representing a tuple, for example
  * `(1, 2)` on line 2 or `(var x, var y)` on line 5 in
  *
- * ```
- * class {
+ * ```csharp
+ * class C {
  *   (int, int) F() => (1, 2);
  *
  *   void M() {
@@ -943,12 +939,14 @@ class TupleExpr extends Expr, @tuple_expr {
 
   /** Holds if this tuple is a read access. */
   predicate isReadAccess() { not this = getAnAssignOrForeachChild() }
+
+  override string getAPrimaryQlClass() { result = "TupleExpr" }
 }
 
 /**
  * A reference expression, for example `ref a[i]` on line 2 in
  *
- * ```
+ * ```csharp
  * ref int GetElement(int[] a, int i) {
  *   return ref a[i];
  * }
@@ -961,17 +959,21 @@ class RefExpr extends Expr, @ref_expr {
   override string toString() { result = "ref ..." }
 
   override Type getType() { result = getExpr().getType() }
+
+  override string getAPrimaryQlClass() { result = "RefExpr" }
 }
 
 /**
  * A discard expression, for example `_` in
  *
- * ```
+ * ```csharp
  * (var name, _, _) = GetDetails();
  * ```
  */
 class DiscardExpr extends Expr, @discard_expr {
   override string toString() { result = "_" }
+
+  override string getAPrimaryQlClass() { result = "DiscardExpr" }
 }
 
 private class UnknownExpr extends Expr, @unknown_expr {
@@ -980,7 +982,7 @@ private class UnknownExpr extends Expr, @unknown_expr {
 
 /**
  * A range expression, used to create a `System.Range`. For example
- * ```
+ * ```csharp
  * 1..3
  * 1..^1
  * 3..
@@ -1003,18 +1005,23 @@ class RangeExpr extends Expr, @range_expr {
 
   /** Holds if this range expression has a right hand operand. */
   predicate hasEnd() { exists(this.getEnd()) }
+
+  override string getAPrimaryQlClass() { result = "RangeExpr" }
 }
 
 /** An index expression, for example `^1` meaning "1 from the end". */
 class IndexExpr extends Expr, @index_expr {
+  /** Gets the sub expression of this index expression. */
   Expr getExpr() { result.getParent() = this }
 
   override string toString() { result = "^..." }
+
+  override string getAPrimaryQlClass() { result = "IndexExpr" }
 }
 
 /**
  * A nullable warning suppression expression, for example `x!` in
- * ```
+ * ```csharp
  * string GetName()
  * {
  *     string? x = ...;
@@ -1027,4 +1034,6 @@ class SuppressNullableWarningExpr extends Expr, @suppress_nullable_warning_expr 
   Expr getExpr() { result.getParent() = this }
 
   override string toString() { result = "...!" }
+
+  override string getAPrimaryQlClass() { result = "SuppressNullableWarningExpr" }
 }

@@ -142,6 +142,7 @@ class SsaReadPosition extends TSsaReadPosition {
   /** Holds if `v` is read at this position. */
   abstract predicate hasReadOfVar(SsaVariable v);
 
+  /** Gets a textual representation of this SSA read position. */
   abstract string toString();
 }
 

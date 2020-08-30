@@ -86,12 +86,12 @@ void class_field_test() {
 	mc1.myMethod();
 
 	sink(mc1.a);
-	sink(mc1.b); // tainted [NOT DETECTED with IR]
-	sink(mc1.c); // tainted [NOT DETECTED with IR]
-	sink(mc1.d); // tainted [NOT DETECTED with IR]
+	sink(mc1.b); // tainted
+	sink(mc1.c); // tainted
+	sink(mc1.d); // tainted
 	sink(mc2.a);
-	sink(mc2.b); // tainted [NOT DETECTED with IR]
-	sink(mc2.c); // tainted [NOT DETECTED with IR]
+	sink(mc2.b); // tainted
+	sink(mc2.c); // tainted
 	sink(mc2.d);
 }
 
@@ -197,9 +197,9 @@ void test_memcpy(int *source) {
 
 // --- std::swap ---
 
-namespace std {
-	template<class T> constexpr void swap(T& a, T& b);
-}
+#include "swap.h"
+
+
 
 void test_swap() {
 	int x, y;
@@ -469,4 +469,18 @@ void test_swop() {
 
 	sink(x); // clean [FALSE POSITIVE]
 	sink(y); // tainted
+}
+
+// --- getdelim ---
+
+struct FILE;
+
+int getdelim(char ** lineptr, size_t * n, int delimiter, FILE *stream);
+
+void test_getdelim(FILE* source1) {
+	char* line = nullptr;
+	size_t n;
+	getdelim(&line, &n, '\n', source1);
+
+	sink(line);
 }

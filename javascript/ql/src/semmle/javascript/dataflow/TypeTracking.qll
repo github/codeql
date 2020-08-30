@@ -1,7 +1,7 @@
 /**
  * Provides the `TypeTracker` class for tracking types interprocedurally.
  *
- * This provides an alternative to `DataFlow::TrackedNode` and `AbstractValue`
+ * This provides an alternative to `AbstractValue`
  * for tracking certain types interprocedurally without computing which source
  * a given value came from.
  */
@@ -335,5 +335,20 @@ abstract class AdditionalTypeTrackingStep extends DataFlow::Node {
   /**
    * Holds if type-tracking should step from `pred` to `succ`.
    */
-  abstract predicate step(DataFlow::Node pred, DataFlow::Node succ);
+  predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
+
+  /**
+   * Holds if type-tracking should step from `pred` into the `prop` property of `succ`.
+   */
+  predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) { none() }
+
+  /**
+   * Holds if type-tracking should step from the `prop` property of `pred` to `succ`.
+   */
+  predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
+
+  /**
+   * Holds if type-tracking should step from the `prop` property of `pred` to the same property in `succ`.
+   */
+  predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) { none() }
 }

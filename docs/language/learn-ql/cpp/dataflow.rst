@@ -139,6 +139,10 @@ Global data flow
 
 Global data flow tracks data flow throughout the entire program, and is therefore more powerful than local data flow. However, global data flow is less precise than local data flow, and the analysis typically requires significantly more time and memory to perform.
 
+.. pull-quote:: Note
+
+   .. include:: ../../reusables/path-problem.rst
+
 Using global data flow
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -295,13 +299,6 @@ Exercise 3: Write a class that represents flow sources from ``getenv``. (`Answer
 
 Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flows from ``getenv`` to ``gethostbyname``. (`Answer <#exercise-4>`__)
 
-Further reading
----------------
-
--  Try the worked examples in the following topics: :doc:`Refining a query to account for edge cases <private-field-initialization>` and :doc:`Detecting a potential buffer overflow <zero-space-terminator>`.
--  Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.
-
 Answers
 -------
 
@@ -389,3 +386,11 @@ Exercise 4
    from DataFlow::Node getenv, FunctionCall fc, GetenvToGethostbynameConfiguration cfg
    where cfg.hasFlow(getenv, DataFlow::exprNode(fc.getArgument(0)))
    select getenv.asExpr(), fc
+
+Further reading
+---------------
+
+- `Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-paths.html>`__
+
+.. include:: ../../reusables/cpp-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

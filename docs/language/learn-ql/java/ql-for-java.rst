@@ -6,6 +6,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 .. toctree::
    :hidden:
 
+   basic-query-java
    introduce-libraries-java
    dataflow
    types-class-hierarchy
@@ -16,7 +17,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    source-locations
    ast-class-reference
 
--  `Basic Java query <https://lgtm.com/help/lgtm/console/ql-java-basic-example>`__: Learn to write and run a simple CodeQL query using LGTM.
+-  :doc:`Basic query for Java code <basic-query-java>`: Learn to write and run a simple CodeQL query using LGTM.
 
 -  :doc:`CodeQL library for Java <introduce-libraries-java>`: When analyzing Java code, you can use the large collection of classes in the CodeQL library for Java.
 
@@ -34,12 +35,5 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 
 -  :doc:`Working with source locations <source-locations>`: You can use the location of entities within Java code to look for potential errors. Locations allow you to deduce the presence, or absence, of white space which, in some cases, may indicate a problem.
 
--  :doc:`Classes for working with Java code <ast-class-reference>`: CodeQL has a large selection of classes for working with Java statements and expressions.
+-  :doc:`Abstract syntax tree classes for working with Java programs <ast-class-reference>`: CodeQL has a large selection of classes for representing the abstract syntax tree of Java programs.
 
-
-Further reading
----------------
-
--  For examples of how to query common Java elements, see the `Java cookbook <https://help.semmle.com/wiki/display/CBJAVA>`__.
--  For the queries used in LGTM, display a `Java query <https://lgtm.com/search?q=language%3Ajava&t=rules>`__ and click **Open in query console** to see the code used to find alerts.
--  For more information about the library for Java see the `CodeQL library for Java <https://help.semmle.com/qldoc/java>`__.

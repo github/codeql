@@ -1,0 +1,178 @@
+test1
+| generics.cs:7:23:7:40 | GenericDelegate<> |
+test2
+| generics.cs:9:18:9:18 | A |
+test3
+| generics.cs:13:18:13:21 | A<X> | generics.cs:13:18:13:21 | A<> |
+test4
+test5
+test6
+| generics.cs:13:18:13:21 | A<T> | generics.cs:22:18:22:21 | B<> | generics.cs:22:18:22:21 | B<X> | generics.cs:25:23:25:24 | at |
+test7
+| Nesting.cs:1:14:1:18 | A<String> | Nesting.cs:6:18:6:22 | B<String> |
+| Nesting.cs:1:14:1:18 | A<String> | generics.cs:22:18:22:21 | B<String> |
+| generics.cs:13:18:13:21 | A<String> | Nesting.cs:6:18:6:22 | B<String> |
+| generics.cs:13:18:13:21 | A<String> | generics.cs:22:18:22:21 | B<String> |
+test8
+| generics.cs:22:18:22:21 | B<String> | generics.cs:31:21:31:29 | fooParams |
+test9
+| generics.cs:22:18:22:21 | B<String> | generics.cs:35:51:35:53 | set_Name | generics.cs:35:51:35:53 | set_Name |
+test10
+| generics.cs:22:18:22:21 | B<String> | generics.cs:37:41:37:47 | myEvent |
+test11
+| generics.cs:22:18:22:21 | B<String> | generics.cs:39:37:39:38 | ++ |
+test12
+| generics.cs:60:18:60:24 | Grid<Int32> | generics.cs:73:18:73:21 | Item |
+test13
+| generics.cs:60:18:60:24 | Grid<Int32> | generics.cs:68:20:68:23 | Item |
+| generics.cs:60:18:60:24 | Grid<Int32> | generics.cs:73:18:73:21 | Item |
+test14
+| generics.cs:60:18:60:24 | Grid<> | generics.cs:68:20:68:23 | Item |
+test15
+| generics.cs:7:23:7:40 | GenericDelegate<String> |
+test16
+| generics.cs:134:11:134:16 | Subtle | generics.cs:137:21:137:25 | fs |
+| generics.cs:134:11:134:16 | Subtle | generics.cs:139:21:139:25 | fs |
+| generics.cs:134:11:134:16 | Subtle | generics.cs:141:21:141:22 | fs |
+test17
+| generics.cs:134:11:134:16 | Subtle | generics.cs:137:24:137:24 | X | generics.cs:137:21:137:25 | fs | generics.cs:139:24:139:24 | X | generics.cs:139:21:139:25 | fs | 1 |
+| generics.cs:134:11:134:16 | Subtle | generics.cs:139:24:139:24 | X | generics.cs:139:21:139:25 | fs | generics.cs:137:24:137:24 | X | generics.cs:137:21:137:25 | fs | 2 |
+test18
+| Nesting.cs:1:14:1:18 | A<> | Nesting.cs:3:17:3:19 | MA1 | Nesting.cs:3:24:3:24 | x | 0 | T1 | 1 | 1 |
+| Nesting.cs:1:14:1:18 | A<> | Nesting.cs:4:17:4:23 | MA2 | Nesting.cs:4:28:4:28 | x | 0 | T1 | 2 | 2 |
+| Nesting.cs:1:14:1:18 | A<> | Nesting.cs:4:17:4:23 | MA2 | Nesting.cs:4:34:4:34 | y | 0 | T2 | 2 | 2 |
+| Nesting.cs:1:14:1:18 | A<Int32> | Nesting.cs:3:17:3:19 | MA1 | Nesting.cs:3:24:3:24 | x | 0 | Int32 | 1 | 1 |
+| Nesting.cs:1:14:1:18 | A<Int32> | Nesting.cs:4:17:4:23 | MA2 | Nesting.cs:4:28:4:28 | x | 0 | Int32 | 2 | 2 |
+| Nesting.cs:1:14:1:18 | A<Int32> | Nesting.cs:4:17:4:23 | MA2 | Nesting.cs:4:28:4:28 | x | 1 | Int32 | 2 | 2 |
+| Nesting.cs:1:14:1:18 | A<Int32> | Nesting.cs:4:17:4:23 | MA2 | Nesting.cs:4:34:4:34 | y | 0 | T2 | 2 | 2 |
+| Nesting.cs:1:14:1:18 | A<Int32> | Nesting.cs:4:17:4:23 | MA2 | Nesting.cs:4:34:4:34 | y | 1 | String | 2 | 2 |
+| Nesting.cs:1:14:1:18 | A<String> | Nesting.cs:3:17:3:19 | MA1 | Nesting.cs:3:24:3:24 | x | 0 | String | 1 | 1 |
+| Nesting.cs:1:14:1:18 | A<String> | Nesting.cs:4:17:4:23 | MA2 | Nesting.cs:4:28:4:28 | x | 0 | String | 2 | 2 |
+| Nesting.cs:1:14:1:18 | A<String> | Nesting.cs:4:17:4:23 | MA2 | Nesting.cs:4:28:4:28 | x | 1 | String | 2 | 2 |
+| Nesting.cs:1:14:1:18 | A<String> | Nesting.cs:4:17:4:23 | MA2 | Nesting.cs:4:34:4:34 | y | 0 | T2 | 2 | 2 |
+| Nesting.cs:1:14:1:18 | A<String> | Nesting.cs:4:17:4:23 | MA2 | Nesting.cs:4:34:4:34 | y | 1 | Int32 | 2 | 2 |
+| generics.cs:13:18:13:21 | A<> | generics.cs:18:18:18:23 | bar | generics.cs:18:27:18:27 | x | 0 | X | 2 | 2 |
+| generics.cs:13:18:13:21 | A<> | generics.cs:18:18:18:23 | bar | generics.cs:18:32:18:32 | t | 0 | T | 2 | 2 |
+| generics.cs:13:18:13:21 | A<Int32> | generics.cs:18:18:18:23 | bar | generics.cs:18:27:18:27 | x | 0 | X | 2 | 2 |
+| generics.cs:13:18:13:21 | A<Int32> | generics.cs:18:18:18:23 | bar | generics.cs:18:27:18:27 | x | 1 | Test | 2 | 2 |
+| generics.cs:13:18:13:21 | A<Int32> | generics.cs:18:18:18:23 | bar | generics.cs:18:32:18:32 | t | 0 | Int32 | 2 | 2 |
+| generics.cs:13:18:13:21 | A<Int32> | generics.cs:18:18:18:23 | bar | generics.cs:18:32:18:32 | t | 1 | Int32 | 2 | 2 |
+| generics.cs:13:18:13:21 | A<String> | generics.cs:18:18:18:23 | bar | generics.cs:18:27:18:27 | x | 0 | X | 2 | 2 |
+| generics.cs:13:18:13:21 | A<String> | generics.cs:18:18:18:23 | bar | generics.cs:18:27:18:27 | x | 1 | Int32 | 2 | 2 |
+| generics.cs:13:18:13:21 | A<String> | generics.cs:18:18:18:23 | bar | generics.cs:18:32:18:32 | t | 0 | String | 2 | 2 |
+| generics.cs:13:18:13:21 | A<String> | generics.cs:18:18:18:23 | bar | generics.cs:18:32:18:32 | t | 1 | String | 2 | 2 |
+test19
+| generics.cs:137:21:137:25 | fs | generics.cs:137:24:137:24 | X | 1 |
+| generics.cs:139:21:139:25 | fs | generics.cs:139:24:139:24 | X | 1 |
+test20
+test21
+| generics.cs:147:14:147:14 | E | generics.cs:145:11:145:18 | Param<> |
+test22
+| generics.cs:152:14:152:19 | CM1 | Double |
+| generics.cs:152:14:152:19 | CM1 | Int32 |
+| generics.cs:153:11:153:16 | CM2 | Double |
+| generics.cs:153:11:153:16 | CM2 | Int32 |
+| generics.cs:157:23:157:29 | CM3 | Double |
+| generics.cs:157:23:157:29 | CM3 | Double |
+test23
+| generics.cs:178:11:178:24 | Inheritance<> | generics.cs:173:15:173:26 | Interface<T> |
+| generics.cs:178:11:178:24 | Inheritance<Int32> | generics.cs:173:15:173:26 | Interface<Int32> |
+test24
+| generics.cs:188:15:188:39 | Interface2<,> | generics.cs:188:29:188:30 | T1 | in |
+| generics.cs:188:15:188:39 | Interface2<,> | generics.cs:188:37:188:38 | T2 | out |
+test25
+| generics.cs:157:23:157:29 | CM3 |
+test26
+test27
+| Nesting.cs:6:18:6:22 | B<Int32> | Nesting.cs:6:18:6:22 | B<> | Nesting.cs:6:18:6:22 | B<> |
+| Nesting.cs:6:18:6:22 | B<String> | Nesting.cs:6:18:6:22 | B<> | Nesting.cs:6:18:6:22 | B<> |
+| Nesting.cs:17:22:17:26 | D<Boolean> | Nesting.cs:17:22:17:26 | D<> | Nesting.cs:17:22:17:26 | D<> |
+| Nesting.cs:17:22:17:26 | D<Decimal> | Nesting.cs:17:22:17:26 | D<> | Nesting.cs:17:22:17:26 | D<> |
+| generics.cs:51:22:51:29 | Inner<String> | generics.cs:51:22:51:29 | Inner<> | generics.cs:51:22:51:29 | Inner<> |
+test28
+| Nesting.cs:4:17:4:23 | MA2 | A<>.MA2<T2>(T1, T2) |
+| Nesting.cs:4:17:4:23 | MA2 | A<Int32>.MA2<T2>(int, T2) |
+| Nesting.cs:4:17:4:23 | MA2 | A<String>.MA2<T2>(string, T2) |
+| Nesting.cs:6:18:6:22 | B<> | A<>.B<T3> |
+| Nesting.cs:6:18:6:22 | B<> | A<Int32>.B<T3> |
+| Nesting.cs:6:18:6:22 | B<> | A<String>.B<T3> |
+| Nesting.cs:9:21:9:27 | MB2 | A<>.B<>.MB2<T4>(T1, T3, T4) |
+| Nesting.cs:9:21:9:27 | MB2 | A<Int32>.B<String>.MB2<T4>(int, string, T4) |
+| Nesting.cs:9:21:9:27 | MB2 | A<String>.B<Int32>.MB2<T4>(string, int, T4) |
+| Nesting.cs:15:21:15:27 | MC2 | A<>.C.MC2<T5>(T1, T5) |
+| Nesting.cs:15:21:15:27 | MC2 | A<Int32>.C.MC2<T5>(int, T5) |
+| Nesting.cs:15:21:15:27 | MC2 | A<String>.C.MC2<T5>(string, T5) |
+| Nesting.cs:17:22:17:26 | D<> | A<>.C.D<T6> |
+| Nesting.cs:17:22:17:26 | D<> | A<Int32>.C.D<T6> |
+| Nesting.cs:17:22:17:26 | D<> | A<String>.C.D<T6> |
+| Nesting.cs:20:25:20:31 | MD2 | A<>.C.D<>.MD2<T7>(T1, T6, T7) |
+| Nesting.cs:20:25:20:31 | MD2 | A<Int32>.C.D<Boolean>.MD2<T7>(int, bool, T7) |
+| Nesting.cs:20:25:20:31 | MD2 | A<String>.C.D<Decimal>.MD2<T7>(string, decimal, T7) |
+| generics.cs:16:27:16:58 | GenericDelegateInGenericClass<> | generics.A<>.GenericDelegateInGenericClass<U>(T, U) |
+| generics.cs:16:27:16:58 | GenericDelegateInGenericClass<> | generics.A<Int32>.GenericDelegateInGenericClass<U>(int, U) |
+| generics.cs:16:27:16:58 | GenericDelegateInGenericClass<> | generics.A<String>.GenericDelegateInGenericClass<U>(string, U) |
+| generics.cs:18:18:18:23 | bar | generics.A<>.bar<X>(X, T) |
+| generics.cs:18:18:18:23 | bar | generics.A<Int32>.bar<X>(X, int) |
+| generics.cs:18:18:18:23 | bar | generics.A<String>.bar<X>(X, string) |
+| generics.cs:45:14:45:17 | f | generics.B<>.f<X>() |
+| generics.cs:45:14:45:17 | f | generics.B<Object>.f<X>() |
+| generics.cs:45:14:45:17 | f | generics.B<String>.f<X>() |
+| generics.cs:45:14:45:17 | f | generics.B<X>.f<X>() |
+| generics.cs:51:22:51:29 | Inner<> | generics.Outer<>.Inner<U> |
+| generics.cs:51:22:51:29 | Inner<> | generics.Outer<Object>.Inner<U> |
+| generics.cs:137:21:137:25 | fs | generics.Subtle.fs<X>(int) |
+| generics.cs:139:21:139:25 | fs | generics.Subtle.fs<X>(int, int) |
+| generics.cs:152:14:152:19 | CM1 | generics.ConstructedMethods.CM1<T>() |
+| generics.cs:153:11:153:16 | CM2 | generics.ConstructedMethods.CM2<T>(T) |
+| generics.cs:155:15:155:23 | Class<> | generics.ConstructedMethods.Class<T1> |
+| generics.cs:157:23:157:29 | CM3 | generics.ConstructedMethods.Class<>.CM3<T2>(T2, T1) |
+| generics.cs:157:23:157:29 | CM3 | generics.ConstructedMethods.Class<Double>.CM3<T2>(T2, double) |
+| generics.cs:157:23:157:29 | CM3 | generics.ConstructedMethods.Class<Int32>.CM3<T2>(T2, int) |
+test29
+| Nesting.cs:4:17:4:23 | MA2 | A<Int32>.MA2<string>(int, string) |
+| Nesting.cs:4:17:4:23 | MA2 | A<String>.MA2<int>(string, int) |
+| Nesting.cs:6:18:6:22 | B<Int32> | A<String>.B<Int32> |
+| Nesting.cs:6:18:6:22 | B<String> | A<Int32>.B<String> |
+| Nesting.cs:9:21:9:27 | MB2 | A<Int32>.B<String>.MB2<bool>(int, string, bool) |
+| Nesting.cs:9:21:9:27 | MB2 | A<String>.B<Int32>.MB2<bool>(string, int, bool) |
+| Nesting.cs:15:21:15:27 | MC2 | A<Int32>.C.MC2<bool>(int, bool) |
+| Nesting.cs:15:21:15:27 | MC2 | A<String>.C.MC2<bool>(string, bool) |
+| Nesting.cs:17:22:17:26 | D<Boolean> | A<Int32>.C.D<Boolean> |
+| Nesting.cs:17:22:17:26 | D<Decimal> | A<String>.C.D<Decimal> |
+| Nesting.cs:20:25:20:31 | MD2 | A<Int32>.C.D<Boolean>.MD2<string>(int, bool, string) |
+| Nesting.cs:20:25:20:31 | MD2 | A<String>.C.D<Decimal>.MD2<bool>(string, decimal, bool) |
+| generics.cs:18:18:18:23 | bar | generics.A<Int32>.bar<Test>(Test, int) |
+| generics.cs:18:18:18:23 | bar | generics.A<String>.bar<int>(int, string) |
+| generics.cs:51:22:51:29 | Inner<String> | generics.Outer<Object>.Inner<String> |
+| generics.cs:152:14:152:19 | CM1 | generics.ConstructedMethods.CM1<double>() |
+| generics.cs:152:14:152:19 | CM1 | generics.ConstructedMethods.CM1<int>() |
+| generics.cs:153:11:153:16 | CM2 | generics.ConstructedMethods.CM2<double>(double) |
+| generics.cs:153:11:153:16 | CM2 | generics.ConstructedMethods.CM2<int>(int) |
+| generics.cs:155:15:155:23 | Class<Double> | generics.ConstructedMethods.Class<Double> |
+| generics.cs:155:15:155:23 | Class<Int32> | generics.ConstructedMethods.Class<Int32> |
+| generics.cs:157:23:157:29 | CM3 | generics.ConstructedMethods.Class<Double>.CM3<double>(double, double) |
+| generics.cs:157:23:157:29 | CM3 | generics.ConstructedMethods.Class<Int32>.CM3<double>(double, int) |
+test30
+| Nesting.cs:3:17:3:19 | MA1 | A<Int32>.MA1(int) |
+| Nesting.cs:3:17:3:19 | MA1 | A<String>.MA1(string) |
+| Nesting.cs:8:21:8:23 | MB1 | A<Int32>.B<String>.MB1(int, string) |
+| Nesting.cs:8:21:8:23 | MB1 | A<String>.B<Int32>.MB1(string, int) |
+| Nesting.cs:12:18:12:18 | C | A<Int32>.C |
+| Nesting.cs:12:18:12:18 | C | A<String>.C |
+| Nesting.cs:14:21:14:23 | MC1 | A<Int32>.C.MC1(int) |
+| Nesting.cs:14:21:14:23 | MC1 | A<String>.C.MC1(string) |
+| Nesting.cs:19:25:19:27 | MD1 | A<Int32>.C.D<Boolean>.MD1(int, bool) |
+| Nesting.cs:19:25:19:27 | MD1 | A<String>.C.D<Decimal>.MD1(string, decimal) |
+| Nesting.cs:24:10:24:18 | Construct | A<Int32>.Construct() |
+| Nesting.cs:24:10:24:18 | Construct | A<String>.Construct() |
+| generics.cs:29:21:29:23 | foo | generics.B<Object>.foo() |
+| generics.cs:29:21:29:23 | foo | generics.B<String>.foo() |
+| generics.cs:29:21:29:23 | foo | generics.B<X>.foo() |
+| generics.cs:31:21:31:29 | fooParams | generics.B<Object>.fooParams(params Object[]) |
+| generics.cs:31:21:31:29 | fooParams | generics.B<String>.fooParams(params String[]) |
+| generics.cs:31:21:31:29 | fooParams | generics.B<X>.fooParams(params X[]) |
+| generics.cs:33:28:33:36 | staticFoo | generics.B<Object>.staticFoo() |
+| generics.cs:33:28:33:36 | staticFoo | generics.B<String>.staticFoo() |
+| generics.cs:33:28:33:36 | staticFoo | generics.B<X>.staticFoo() |
+| generics.cs:175:14:175:16 | set | generics.Interface<T>.set(T) |
+test31

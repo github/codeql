@@ -1,3 +1,7 @@
+/**
+ * Provides classes for working with C and C++ declarations.
+ */
+
 import semmle.code.cpp.Element
 import semmle.code.cpp.Specifier
 import semmle.code.cpp.Namespace
@@ -25,7 +29,7 @@ private import semmle.code.cpp.internal.QualifiedName as Q
  * `DeclarationEntry`, because they always have a unique source location.
  * `EnumConstant` and `FriendDecl` are both examples of this.
  */
-abstract class Declaration extends Locatable, @declaration {
+class Declaration extends Locatable, @declaration {
   /**
    * Gets the innermost namespace which contains this declaration.
    *
@@ -98,7 +102,12 @@ abstract class Declaration extends Locatable, @declaration {
     this.hasQualifiedName(namespaceQualifier, "", baseName)
   }
 
-  override string toString() { result = this.getName() }
+  /**
+   * Gets a description of this `Declaration` for display purposes.
+   */
+  string getDescription() { result = this.getName() }
+
+  final override string toString() { result = this.getDescription() }
 
   /**
    * Gets the name of this declaration.
@@ -115,7 +124,7 @@ abstract class Declaration extends Locatable, @declaration {
    * To test whether this declaration has a particular name in the global
    * namespace, use `hasGlobalName`.
    */
-  abstract string getName();
+  string getName() { none() } // overridden in subclasses
 
   /** Holds if this declaration has the given name. */
   predicate hasName(string name) { name = this.getName() }
@@ -131,7 +140,7 @@ abstract class Declaration extends Locatable, @declaration {
   }
 
   /** Gets a specifier of this declaration. */
-  abstract Specifier getASpecifier();
+  Specifier getASpecifier() { none() } // overridden in subclasses
 
   /** Holds if this declaration has a specifier with the given name. */
   predicate hasSpecifier(string name) { this.getASpecifier().hasName(name) }
@@ -147,7 +156,7 @@ abstract class Declaration extends Locatable, @declaration {
    * Gets the location of a declaration entry corresponding to this
    * declaration.
    */
-  abstract Location getADeclarationLocation();
+  Location getADeclarationLocation() { none() } // overridden in subclasses
 
   /**
    * Gets the declaration entry corresponding to this declaration that is a
@@ -156,7 +165,7 @@ abstract class Declaration extends Locatable, @declaration {
   DeclarationEntry getDefinition() { none() }
 
   /** Gets the location of the definition, if any. */
-  abstract Location getDefinitionLocation();
+  Location getDefinitionLocation() { none() } // overridden in subclasses
 
   /** Holds if the declaration has a definition. */
   predicate hasDefinition() { exists(this.getDefinition()) }
@@ -280,6 +289,8 @@ abstract class Declaration extends Locatable, @declaration {
   }
 }
 
+private class TDeclarationEntry = @var_decl or @type_decl or @fun_decl;
+
 /**
  * A C/C++ declaration entry. For example the following code contains five
  * declaration entries:
@@ -295,9 +306,9 @@ abstract class Declaration extends Locatable, @declaration {
  * See the comment above `Declaration` for an explanation of the relationship
  * between `Declaration` and `DeclarationEntry`.
  */
-abstract class DeclarationEntry extends Locatable {
+class DeclarationEntry extends Locatable, TDeclarationEntry {
   /** Gets a specifier associated with this declaration entry. */
-  abstract string getASpecifier();
+  string getASpecifier() { none() } // overridden in subclasses
 
   /**
    * Gets the name associated with the corresponding definition (where
@@ -320,10 +331,10 @@ abstract class DeclarationEntry extends Locatable {
    *  `I.getADeclarationEntry()` returns `D`
    *  but `D.getDeclaration()` only returns `C`
    */
-  abstract Declaration getDeclaration();
+  Declaration getDeclaration() { none() } // overridden in subclasses
 
   /** Gets the name associated with this declaration entry, if any. */
-  abstract string getName();
+  string getName() { none() } // overridden in subclasses
 
   /**
    * Gets the type associated with this declaration entry.
@@ -332,7 +343,7 @@ abstract class DeclarationEntry extends Locatable {
    * For function declarations, get the return type of the function.
    * For type declarations, get the type being declared.
    */
-  abstract Type getType();
+  Type getType() { none() } // overridden in subclasses
 
   /**
    * Gets the type associated with this declaration entry after specifiers
@@ -350,7 +361,7 @@ abstract class DeclarationEntry extends Locatable {
   predicate hasSpecifier(string specifier) { getASpecifier() = specifier }
 
   /** Holds if this declaration entry is a definition. */
-  abstract predicate isDefinition();
+  predicate isDefinition() { none() } // overridden in subclasses
 
   override string toString() {
     if isDefinition()
@@ -361,6 +372,8 @@ abstract class DeclarationEntry extends Locatable {
       else result = "declaration of " + getCanonicalName() + " as " + getName()
   }
 }
+
+private class TAccessHolder = @function or @usertype;
 
 /**
  * A declaration that can potentially have more C++ access rights than its
@@ -383,7 +396,7 @@ abstract class DeclarationEntry extends Locatable {
  * the informal phrase "_R_ occurs in a member or friend of class C", where
  * `AccessHolder` corresponds to this _R_.
  */
-abstract class AccessHolder extends Declaration {
+class AccessHolder extends Declaration, TAccessHolder {
   /**
    * Holds if `this` can access private members of class `c`.
    *
@@ -401,7 +414,7 @@ abstract class AccessHolder extends Declaration {
   /**
    * Gets the nearest enclosing `AccessHolder`.
    */
-  abstract AccessHolder getEnclosingAccessHolder();
+  AccessHolder getEnclosingAccessHolder() { none() } // overridden in subclasses
 
   /**
    * Holds if a base class `base` of `derived` _is accessible at_ `this` (N4140

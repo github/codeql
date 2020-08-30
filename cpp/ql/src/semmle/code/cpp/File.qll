@@ -1,9 +1,13 @@
+/**
+ * Provides classes representing files and folders.
+ */
+
 import semmle.code.cpp.Element
 import semmle.code.cpp.Declaration
 import semmle.code.cpp.metrics.MetricFile
 
 /** A file or folder. */
-abstract class Container extends Locatable, @container {
+class Container extends Locatable, @container {
   /**
    * Gets the absolute, canonical path of this container, using forward slashes
    * as path separator.
@@ -28,7 +32,7 @@ abstract class Container extends Locatable, @container {
    * a bare root prefix, that is, the path has no path segments. A container
    * whose absolute path has no segments is always a `Folder`, not a `File`.
    */
-  abstract string getAbsolutePath();
+  string getAbsolutePath() { none() } // overridden by subclasses
 
   /**
    * DEPRECATED: Use `getLocation` instead.
@@ -36,7 +40,7 @@ abstract class Container extends Locatable, @container {
    *
    * For more information see [Providing URLs](https://help.semmle.com/QL/learn-ql/ql/locations.html#providing-urls).
    */
-  abstract deprecated string getURL();
+  deprecated string getURL() { none() } // overridden by subclasses
 
   /**
    * Gets the relative path of this file or folder from the root folder of the
@@ -174,7 +178,7 @@ class Folder extends Container, @folder {
     result.hasLocationInfo(_, 0, 0, 0, 0)
   }
 
-  override string getCanonicalQLClass() { result = "Folder" }
+  override string getAPrimaryQlClass() { result = "Folder" }
 
   /**
    * DEPRECATED: Use `getLocation` instead.
@@ -242,7 +246,7 @@ class File extends Container, @file {
 
   override string toString() { result = Container.super.toString() }
 
-  override string getCanonicalQLClass() { result = "File" }
+  override string getAPrimaryQlClass() { result = "File" }
 
   override Location getLocation() {
     result.getContainer() = this and
@@ -260,18 +264,6 @@ class File extends Container, @file {
 
   /** Holds if this file was compiled as C++ (at any point). */
   predicate compiledAsCpp() { fileannotations(underlyingElement(this), 1, "compiled as c++", "1") }
-
-  /**
-   * DEPRECATED: Objective-C is no longer supported.
-   * Holds if this file was compiled as Objective C (at any point).
-   */
-  deprecated predicate compiledAsObjC() { none() }
-
-  /**
-   * DEPRECATED: Objective-C is no longer supported.
-   * Holds if this file was compiled as Objective C++ (at any point).
-   */
-  deprecated predicate compiledAsObjCpp() { none() }
 
   /**
    * Holds if this file was compiled by a Microsoft compiler (at any point).
@@ -317,14 +309,6 @@ class File extends Container, @file {
   }
 
   /**
-   * DEPRECATED: use `getParentContainer` instead.
-   * Gets the folder which contains this file.
-   */
-  deprecated Folder getParent() {
-    containerparent(unresolveElement(result), underlyingElement(this))
-  }
-
-  /**
    * Holds if this file may be from source. This predicate holds for all files
    * except the dummy file, whose name is the empty string, which contains
    * declarations that are built into the compiler.
@@ -342,28 +326,6 @@ class File extends Container, @file {
   MetricFile getMetrics() { result = this }
 
   /**
-   * DEPRECATED: Use `getAbsolutePath` instead.
-   * Gets the full name of this file, for example:
-   * "/usr/home/me/myprogram.c".
-   */
-  deprecated string getName() { files(underlyingElement(this), result, _, _, _) }
-
-  /**
-   * DEPRECATED: Use `getAbsolutePath` instead.
-   * Holds if this file has the specified full name.
-   *
-   * Example usage: `f.hasName("/usr/home/me/myprogram.c")`.
-   */
-  deprecated predicate hasName(string name) { name = this.getName() }
-
-  /**
-   * DEPRECATED: Use `getAbsolutePath` instead.
-   * Gets the full name of this file, for example
-   * "/usr/home/me/myprogram.c".
-   */
-  deprecated string getFullName() { result = this.getName() }
-
-  /**
    * Gets the remainder of the base name after the first dot character. Note
    * that the name of this predicate is in plural form, unlike `getExtension`,
    * which gets the remainder of the base name after the _last_ dot character.
@@ -376,22 +338,6 @@ class File extends Container, @file {
    * "tar.gz", while `getExtension` will have the result "gz".
    */
   string getExtensions() { files(underlyingElement(this), _, _, result, _) }
-
-  /**
-   * DEPRECATED: Use `getBaseName` instead.
-   * Gets the name and extension(s), but not path, of a file. For example,
-   * if the full name is "/path/to/filename.a.bcd" then the filename is
-   * "filename.a.bcd".
-   */
-  deprecated string getFileName() {
-    // [a/b.c/d/]fileName
-    //         ^ beginAfter
-    exists(string fullName, int beginAfter |
-      fullName = this.getName() and
-      beginAfter = max(int i | i = -1 or fullName.charAt(i) = "/" | i) and
-      result = fullName.suffix(beginAfter + 1)
-    )
-  }
 
   /**
    * Gets the short name of this file, that is, the prefix of its base name up
@@ -436,7 +382,7 @@ class HeaderFile extends File {
     exists(Include i | i.getIncludedFile() = this)
   }
 
-  override string getCanonicalQLClass() { result = "HeaderFile" }
+  override string getAPrimaryQlClass() { result = "HeaderFile" }
 
   /**
    * Holds if this header file does not contain any declaration entries or top level
@@ -462,7 +408,7 @@ class HeaderFile extends File {
 class CFile extends File {
   CFile() { exists(string ext | ext = this.getExtension().toLowerCase() | ext = "c" or ext = "i") }
 
-  override string getCanonicalQLClass() { result = "CFile" }
+  override string getAPrimaryQlClass() { result = "CFile" }
 }
 
 /**
@@ -490,7 +436,7 @@ class CppFile extends File {
     )
   }
 
-  override string getCanonicalQLClass() { result = "CppFile" }
+  override string getAPrimaryQlClass() { result = "CppFile" }
 }
 
 /**

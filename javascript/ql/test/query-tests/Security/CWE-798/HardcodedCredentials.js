@@ -2,12 +2,12 @@
     const pg = require('pg');
 
     const client = new pg.Client({
-        user: 'dbuser',
+        user: 'dbuser',  // NOT OK
         host: 'database.server.com',
         database: 'mydb',
-        password: 'abcdefgh',
+        password: 'abcdefgh',  // NOT OK
         port: 3211,
-    }); // NOT OK
+    });
     client.connect();
 })();
 
@@ -26,8 +26,8 @@
 
     basicAuth({users: { 'admin': 'abcdefgh' }});  // NOT OK
     var users = {};
-    users['unknown-admin-name'] = 'abcdefgh';
-    basicAuth({users: users})  // NOT OK
+    users['unknown-admin-name'] = 'abcdefgh'; // NOT OK
+    basicAuth({users: users});
 })();
 
 (function() {
@@ -43,26 +43,26 @@
     var config = new AWS.Config();
     config.update({ accessKeyId: 'username', secretAccessKey: 'abcdefgh'}); // NOT OK
     var o = {};
-    o.secretAccessKey = 'abcdefgh';
-    config.update(o); // NOT OK
+    o.secretAccessKey = 'abcdefgh'; // NOT OK
+    config.update(o);
 })();
 
 (function() {
     var request = require('request');
 
     request.get(url).auth('username', 'abcdefgh'); // NOT OK
-    request.get(url, { // NOT OK
+    request.get(url, {
         'auth': {
-            'user': 'username',
-            'pass': 'abcdefgh'
+            'user': 'username', // NOT OK
+            'pass': 'abcdefgh' // NOT OK
         }
     });
 
     request.get(url).auth(null, null, _, 'bearerToken'); // NOT OK
 
-    request.get(url, { // NOT OK
+    request.get(url, {
         'auth': {
-            'bearer': 'bearerToken'
+            'bearer': 'bearerToken' // NOT OK
         }
     });
 
@@ -70,10 +70,10 @@
     request.head(url).auth('username', 'abcdefgh'); // NOT OK
 
     request(url).auth('username', 'abcdefgh'); // NOT OK
-    request(url, { // NOT OK
+    request(url, {
         'auth': {
-            'user': 'username',
-            'pass': 'abcdefgh'
+            'user': 'username', // NOT OK
+            'pass': 'abcdefgh' // NOT OK
         }
     });
 })();
@@ -94,31 +94,31 @@
 
 (function() {
     var pkgcloud = require('pkgcloud');
-    pkgcloud.compute.createClient({ // NOT OK
-        account: 'x1',
-        keyId: 'x2',
-        storageAccount: 'x3',
-        username: 'x4',
-        key: 'abcdefgh',
-        apiKey: 'abcdefgh',
-        storageAccessKey: 'abcdefgh',
-        password: 'abcdefgh',
-        token: 'abcdefgh'
+    pkgcloud.compute.createClient({
+        account: 'x1', // NOT OK
+        keyId: 'x2',// NOT OK
+        storageAccount: 'x3', // NOT OK
+        username: 'x4', // NOT OK
+        key: 'abcdefgh', // NOT OK
+        apiKey: 'abcdefgh', // NOT OK
+        storageAccessKey: 'abcdefgh', // NOT OK
+        password: 'abcdefgh', // NOT OK
+        token: 'abcdefgh' // NOT OK
     });
     pkgcloud.compute.createClient({ // OK
         INNOCENT_DATA: '42'
     });
-    pkgcloud.providers.SOME_PROVIDER.compute.createClient({  // NOT OK
-        username: 'x5',
-        password: 'abcdefgh'
+    pkgcloud.providers.SOME_PROVIDER.compute.createClient({
+        username: 'x5', // NOT OK
+        password: 'abcdefgh' // NOT OK
     });
     pkgcloud.UNKNOWN_SERVICE.createClient({  // OK
         username: 'x6',
         password: 'abcdefgh'
     });
-    pkgcloud.providers.SOME_PROVIDER.UNKNOWN_SERVICE.createClient({  // OK
-        username: 'x7',
-        password: 'abcdefgh'
+    pkgcloud.providers.SOME_PROVIDER.UNKNOWN_SERVICE.createClient({
+        username: 'x7', // OK
+        password: 'abcdefgh' // OK
     });
     pkgcloud.compute.createClient({ // OK
         username: process.env.USERNAME,
@@ -163,3 +163,78 @@
 	var basicAuth = require('express-basic-auth');
 	basicAuth({users: { [adminName]: 'change_me' }});  // OK
 })();
+
+(async function () {
+    const base64 = require('base-64');
+    const fetch = require("node-fetch");
+
+    const USER = 'sdsdag';
+    const PASS = 'sdsdag';
+    const AUTH = base64.encode(`${USER}:${PASS}`);
+
+    const rsp = await fetch(ENDPOINT, {
+        method: 'get',
+        headers: new fetch.Headers({
+            "Authorization": `Basic ${AUTH}`,
+            "Content-Type": 'application/json'
+        })
+    });
+
+    fetch(ENDPOINT, {
+        method: 'post',
+        body: JSON.stringify(body),
+        headers: {
+            "Content-Type": 'application/json',
+            "Authorization": `Basic ${AUTH}`
+        },
+    })
+
+    var headers = new fetch.Headers({
+        "Content-Type": 'application/json'
+    });
+    headers.append("Authorization", `Basic ${AUTH}`)
+    fetch(ENDPOINT, {
+        method: 'get',
+        headers: headers
+    });
+
+    var headers2 = new fetch.Headers({
+        "Content-Type": 'application/json'
+    });
+    headers2.set("Authorization", `Basic ${AUTH}`)
+    fetch(ENDPOINT, {
+        method: 'get',
+        headers: headers2
+    });
+});
+
+(function () {
+    const base64 = require('base-64');
+
+    const USER = 'sdsdag';
+    const PASS = 'sdsdag';
+    const AUTH = base64.encode(`${USER}:${PASS}`);
+
+    // browser API
+    var headers = new Headers();
+    headers.append("Content-Type", 'application/json');
+    headers.append("Authorization", `Basic ${AUTH}`);
+    fetch(ENDPOINT, {
+        method: 'get',
+        headers: headers
+    });
+});
+
+(async function () {
+    import fetch from 'node-fetch';
+
+    const username = 'sdsdag';
+    const password = config.get('some_actually_secrect_password');
+    const response = await fetch(ENDPOINT, {
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Basic ' + Buffer.from(username + ':' + password).toString('base64'),
+      },
+    });
+})

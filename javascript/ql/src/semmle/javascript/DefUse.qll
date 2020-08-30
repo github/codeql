@@ -30,23 +30,23 @@ private predicate defn(ControlFlowNode def, Expr lhs, AST::ValueNode rhs) {
   or
   exists(VariableDeclarator vd | def = vd | lhs = vd.getBindingPattern() and rhs = vd.getInit())
   or
-  exists(Function f | def = f.getId() | lhs = def and rhs = f)
+  exists(Function f | def = f.getIdentifier() | lhs = def and rhs = f)
   or
   exists(ClassDefinition c | lhs = c.getIdentifier() | def = c and rhs = c and not c.isAmbient())
   or
-  exists(NamespaceDeclaration n | def = n | lhs = n.getId() and rhs = n)
+  exists(NamespaceDeclaration n | def = n | lhs = n.getIdentifier() and rhs = n)
   or
   exists(EnumDeclaration ed | def = ed.getIdentifier() | lhs = def and rhs = ed)
   or
-  exists(ImportEqualsDeclaration i | def = i | lhs = i.getId() and rhs = i.getImportedEntity())
+  exists(ImportEqualsDeclaration i | def = i |
+    lhs = i.getIdentifier() and rhs = i.getImportedEntity()
+  )
   or
   exists(ImportSpecifier i | def = i | lhs = i.getLocal() and rhs = i)
   or
   exists(EnumMember member | def = member.getIdentifier() |
     lhs = def and rhs = member.getInitializer()
   )
-  or
-  lhs = def and def.(Parameter).getDefault() = rhs
 }
 
 /**
@@ -151,7 +151,7 @@ class RValue extends RefExpr {
     or
     this = any(UpdateExpr u).getOperand().getUnderlyingReference()
     or
-    this = any(NamespaceDeclaration decl).getId()
+    this = any(NamespaceDeclaration decl).getIdentifier()
   }
 }
 

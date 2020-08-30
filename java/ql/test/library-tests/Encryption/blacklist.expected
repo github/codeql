@@ -1,5 +1,0 @@
-| Test.java:8:4:8:8 | "DES" |
-| Test.java:9:4:9:8 | "des" |
-| Test.java:10:4:10:17 | "des_function" |
-| Test.java:11:4:11:23 | "function_using_des" |
-| Test.java:12:4:12:19 | "EncryptWithDES" |

@@ -85,7 +85,7 @@ private class ES2015PromiseDefinition extends PromiseDefinition, DataFlow::NewNo
  */
 abstract class PromiseCreationCall extends DataFlow::CallNode {
   /**
-   * Gets the value this promise is resolved with.
+   * Gets a value this promise is resolved with.
    */
   abstract DataFlow::Node getValue();
 }
@@ -94,6 +94,16 @@ abstract class PromiseCreationCall extends DataFlow::CallNode {
  * A promise that is created using a `.resolve()` call.
  */
 abstract class ResolvedPromiseDefinition extends PromiseCreationCall { }
+
+/**
+ * A promise that is created using a `Promise.all(array)` call.
+ */
+abstract class PromiseAllCreation extends PromiseCreationCall {
+  /**
+   * Gets a node for the array of values given to the `Promise.all(array)` call.
+   */
+  abstract DataFlow::Node getArrayNode();
+}
 
 /**
  * A resolved promise created by the standard ECMAScript 2015 `Promise.resolve` function.
@@ -119,6 +129,15 @@ class AggregateES2015PromiseDefinition extends PromiseCreationCall {
   override DataFlow::Node getValue() {
     result = getArgument(0).getALocalSource().(DataFlow::ArrayCreationNode).getAnElement()
   }
+}
+
+/**
+ * An aggregated promise created using `Promise.all()`.
+ */
+class ES2015PromiseAllDefinition extends AggregateES2015PromiseDefinition, PromiseAllCreation {
+  ES2015PromiseAllDefinition() { this.getCalleeName() = "all" }
+
+  override DataFlow::Node getArrayNode() { result = getArgument(0) }
 }
 
 /**
@@ -166,18 +185,20 @@ module PromiseTypeTracking {
   /**
    * Gets the result from a single step through a promise, from `pred` to `result` summarized by `summary`.
    * This can be loading a resolved value from a promise, storing a value in a promise, or copying a resolved value from one promise to another.
+   *
+   * These type-tracking steps are already included in the default type-tracking steps (through `PreCallGraphStep`).
    */
   pragma[inline]
   DataFlow::Node promiseStep(DataFlow::Node pred, StepSummary summary) {
-    exists(PromiseFlowStep step, string field | field = Promises::valueProp() |
+    exists(string field | field = Promises::valueProp() |
       summary = LoadStep(field) and
-      step.load(pred, result, field)
+      PromiseFlow::loadStep(pred, result, field)
       or
       summary = StoreStep(field) and
-      step.store(pred, result, field)
+      PromiseFlow::storeStep(pred, result, field)
       or
       summary = CopyStep(field) and
-      step.loadStore(pred, result, field)
+      PromiseFlow::loadStoreStep(pred, result, field)
     )
   }
 
@@ -202,55 +223,25 @@ module PromiseTypeTracking {
   }
 }
 
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
+
 /**
- * An `AdditionalFlowStep` used to model a data-flow step related to promises.
+ * A step related to promises.
  *
- * The `loadStep`/`storeStep`/`loadStoreStep` methods are overloaded such that the new predicates
- * `load`/`store`/`loadStore` can be used in the `PromiseTypeTracking` module.
- * (Thereby avoiding conflicts with a "cousin" `AdditionalFlowStep` implementation.)
- *
- * The class is private and is only intended to be used inside the `PromiseTypeTracking` and `PromiseFlow` modules.
+ * These steps are for `await p`, `new Promise()`, `Promise.resolve()`,
+ * `Promise.then()`, `Promise.catch()`, and `Promise.finally()`.
  */
-abstract private class PromiseFlowStep extends DataFlow::AdditionalFlowStep {
-  final override predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
-
-  final override predicate step(
-    DataFlow::Node p, DataFlow::Node s, DataFlow::FlowLabel pl, DataFlow::FlowLabel sl
-  ) {
-    none()
+private class PromiseStep extends PreCallGraphStep {
+  override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
+    PromiseFlow::loadStep(obj, element, prop)
   }
 
-  /**
-   * Holds if the property `prop` of the object `pred` should be loaded into `succ`.
-   */
-  predicate load(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
-
-  final override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-    this.load(pred, succ, prop)
+  override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
+    PromiseFlow::storeStep(element, obj, prop)
   }
 
-  /**
-   * Holds if `pred` should be stored in the object `succ` under the property `prop`.
-   */
-  predicate store(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) { none() }
-
-  final override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
-    this.store(pred, succ, prop)
-  }
-
-  /**
-   * Holds if the property `prop` should be copied from the object `pred` to the object `succ`.
-   */
-  predicate loadStore(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
-
-  final override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-    this.loadStore(pred, succ, prop)
-  }
-
-  final override predicate loadStoreStep(
-    DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp
-  ) {
-    none()
+  override predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+    PromiseFlow::loadStoreStep(pred, succ, prop)
   }
 }
 
@@ -264,177 +255,143 @@ private module PromiseFlow {
   private predicate errorProp = Promises::errorProp/0;
 
   /**
-   * A flow step describing a promise definition.
-   *
-   * The resolved/rejected value is written to a pseudo-field on the promise.
+   * Holds if there is a step for loading a `value` from a `promise`.
+   * `prop` is either `valueProp()` if the value is a resolved value, or `errorProp()` if the promise has been rejected.
    */
-  class PromiseDefitionStep extends PromiseFlowStep {
-    PromiseDefinition promise;
-
-    PromiseDefitionStep() { this = promise }
-
-    override predicate store(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+  predicate loadStep(DataFlow::Node promise, DataFlow::Node value, string prop) {
+    // await promise.
+    exists(AwaitExpr await | await.getOperand() = promise.asExpr() |
       prop = valueProp() and
-      pred = promise.getResolveParameter().getACall().getArgument(0) and
-      succ = this
+      value.asExpr() = await
       or
       prop = errorProp() and
-      (
-        pred = promise.getRejectParameter().getACall().getArgument(0) or
-        pred = promise.getExecutor().getExceptionalReturn()
-      ) and
-      succ = this
-    }
+      value = await.getExceptionTarget()
+    )
+    or
+    // promise.then()
+    exists(DataFlow::MethodCallNode call |
+      call.getMethodName() = "then" and promise = call.getReceiver()
+    |
+      prop = valueProp() and
+      value = call.getCallback(0).getParameter(0)
+      or
+      prop = errorProp() and
+      value = call.getCallback(1).getParameter(0)
+    )
+    or
+    // promise.catch()
+    exists(DataFlow::MethodCallNode call | call.getMethodName() = "catch" |
+      prop = errorProp() and
+      promise = call.getReceiver() and
+      value = call.getCallback(0).getParameter(0)
+    )
+  }
 
-    override predicate loadStore(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+  /**
+   * Holds if there is a step for storing a `value` into a promise `obj`.
+   * `prop` is either `valueProp()` if the value is a resolved value, or `errorProp()` if the promise has been rejected.
+   */
+  predicate storeStep(DataFlow::Node value, DataFlow::SourceNode obj, string prop) {
+    // promise definition, e.g. `new Promise()`
+    exists(PromiseDefinition promise | obj = promise |
+      prop = valueProp() and
+      value = promise.getResolveParameter().getACall().getArgument(0)
+      or
+      prop = errorProp() and
+      value =
+        [promise.getRejectParameter().getACall().getArgument(0),
+            promise.getExecutor().getExceptionalReturn()]
+    )
+    or
+    // promise creation call, e.g. `Promise.resolve`.
+    exists(PromiseCreationCall promise | obj = promise |
+      not promise instanceof PromiseAllCreation and
+      prop = valueProp() and
+      value = promise.getValue()
+      or
+      prop = valueProp() and
+      value = promise.(PromiseAllCreation).getArrayNode()
+    )
+    or
+    // promise.then()
+    exists(DataFlow::MethodCallNode call | call.getMethodName() = "then" and obj = call |
+      prop = valueProp() and
+      value = call.getCallback([0 .. 1]).getAReturn()
+      or
+      prop = errorProp() and
+      value = call.getCallback([0 .. 1]).getExceptionalReturn()
+    )
+    or
+    // promise.catch()
+    exists(DataFlow::MethodCallNode call | call.getMethodName() = "catch" and obj = call |
+      prop = errorProp() and
+      value = call.getCallback(0).getExceptionalReturn()
+      or
+      prop = valueProp() and
+      value = call.getCallback(0).getAReturn()
+    )
+    or
+    // promise.finally()
+    exists(DataFlow::MethodCallNode call | call.getMethodName() = "finally" |
+      prop = errorProp() and
+      value = call.getCallback(0).getExceptionalReturn() and
+      obj = call
+    )
+  }
+
+  /**
+   * Holds if there is a step copying a resolved/rejected promise value from promise `pred` to promise `succ`.
+   * `prop` is either `valueProp()` if the value is a resolved value, or `errorProp()` if the promise has been rejected.
+   */
+  predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+    // promise definition, e.g. `new Promise()`
+    exists(PromiseDefinition promise | succ = promise |
       // Copy the value of a resolved promise to the value of this promise.
       prop = valueProp() and
-      pred = promise.getResolveParameter().getACall().getArgument(0) and
-      succ = this
-    }
-  }
-
-  /**
-   * A flow step describing the a Promise.resolve (and similar) call.
-   */
-  class CreationStep extends PromiseFlowStep {
-    PromiseCreationCall promise;
-
-    CreationStep() { this = promise }
-
-    override predicate store(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
-      prop = valueProp() and
-      pred = promise.getValue() and
-      succ = this
-    }
-
-    override predicate loadStore(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      pred = promise.getResolveParameter().getACall().getArgument(0)
+    )
+    or
+    // promise creation call, e.g. `Promise.resolve`.
+    exists(PromiseCreationCall promise | succ = promise |
       // Copy the value of a resolved promise to the value of this promise.
-      prop = valueProp() and
+      not promise instanceof PromiseAllCreation and
       pred = promise.getValue() and
-      succ = this
-    }
-  }
-
-  /**
-   * A load step loading the pseudo-field describing that the promise is rejected.
-   * The rejected value is thrown as a exception.
-   */
-  class AwaitStep extends PromiseFlowStep {
-    DataFlow::Node operand;
-    AwaitExpr await;
-
-    AwaitStep() {
-      this.getEnclosingExpr() = await and
-      operand.getEnclosingExpr() = await.getOperand()
-    }
-
-    override predicate load(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      prop = valueProp() and
-      succ = this and
-      pred = operand
+      prop = valueProp()
       or
+      pred = promise.(PromiseAllCreation).getArrayNode() and
+      prop = valueProp()
+    )
+    or
+    // promise.then()
+    exists(DataFlow::MethodCallNode call | call.getMethodName() = "then" and succ = call |
+      not exists(call.getArgument(1)) and
       prop = errorProp() and
-      succ = await.getExceptionTarget() and
-      pred = operand
-    }
-  }
-
-  /**
-   * A flow step describing the data-flow related to the `.then` method of a promise.
-   */
-  class ThenStep extends PromiseFlowStep, DataFlow::MethodCallNode {
-    ThenStep() { this.getMethodName() = "then" }
-
-    override predicate load(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      prop = valueProp() and
-      pred = getReceiver() and
-      succ = getCallback(0).getParameter(0)
-      or
-      prop = errorProp() and
-      pred = getReceiver() and
-      succ = getCallback(1).getParameter(0)
-    }
-
-    override predicate loadStore(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      not exists(this.getArgument(1)) and
-      prop = errorProp() and
-      pred = getReceiver() and
-      succ = this
+      pred = call.getReceiver()
       or
       // read the value of a resolved/rejected promise that is returned
       (prop = errorProp() or prop = valueProp()) and
-      pred = getCallback([0 .. 1]).getAReturn() and
-      succ = this
-    }
-
-    override predicate store(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+      pred = call.getCallback([0 .. 1]).getAReturn()
+    )
+    or
+    // promise.catch()
+    exists(DataFlow::MethodCallNode call | call.getMethodName() = "catch" and succ = call |
       prop = valueProp() and
-      pred = getCallback([0 .. 1]).getAReturn() and
-      succ = this
-      or
-      prop = errorProp() and
-      pred = getCallback([0 .. 1]).getExceptionalReturn() and
-      succ = this
-    }
-  }
-
-  /**
-   * A flow step describing the data-flow related to the `.catch` method of a promise.
-   */
-  class CatchStep extends PromiseFlowStep, DataFlow::MethodCallNode {
-    CatchStep() { this.getMethodName() = "catch" }
-
-    override predicate load(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      prop = errorProp() and
-      pred = getReceiver() and
-      succ = getCallback(0).getParameter(0)
-    }
-
-    override predicate loadStore(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-      prop = valueProp() and
-      pred = getReceiver().getALocalSource() and
-      succ = this
+      pred = call.getReceiver()
       or
       // read the value of a resolved/rejected promise that is returned
       (prop = errorProp() or prop = valueProp()) and
-      pred = getCallback(0).getAReturn() and
-      succ = this
-    }
-
-    override predicate store(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
-      prop = errorProp() and
-      pred = getCallback(0).getExceptionalReturn() and
-      succ = this
-      or
-      prop = valueProp() and
-      pred = getCallback(0).getAReturn() and
-      succ = this
-    }
-  }
-
-  /**
-   * A flow step describing the data-flow related to the `.finally` method of a promise.
-   */
-  class FinallyStep extends PromiseFlowStep, DataFlow::MethodCallNode {
-    FinallyStep() { this.getMethodName() = "finally" }
-
-    override predicate loadStore(DataFlow::Node pred, DataFlow::Node succ, string prop) {
+      pred = call.getCallback(0).getAReturn()
+    )
+    or
+    // promise.finally()
+    exists(DataFlow::MethodCallNode call | call.getMethodName() = "finally" and succ = call |
       (prop = valueProp() or prop = errorProp()) and
-      pred = getReceiver() and
-      succ = this
+      pred = call.getReceiver()
       or
       // read the value of a rejected promise that is returned
       prop = errorProp() and
-      pred = getCallback(0).getAReturn() and
-      succ = this
-    }
-
-    override predicate store(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
-      prop = errorProp() and
-      pred = getCallback(0).getExceptionalReturn() and
-      succ = this
-    }
+      pred = call.getCallback(0).getAReturn()
+    )
   }
 }
 
@@ -446,7 +403,11 @@ predicate promiseTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   pred = succ.(PromiseDefinition).getResolveParameter().getACall().getArgument(0)
   or
   // from `x` to `Promise.resolve(x)`
-  pred = succ.(PromiseCreationCall).getValue()
+  pred = succ.(PromiseCreationCall).getValue() and
+  not succ instanceof PromiseAllCreation
+  or
+  // from `arr` to `Promise.all(arr)`
+  pred = succ.(PromiseAllCreation).getArrayNode()
   or
   exists(DataFlow::MethodCallNode thn | thn.getMethodName() = "then" |
     // from `p` to `x` in `p.then(x => ...)`
@@ -495,6 +456,49 @@ private class PromiseTaintStep extends TaintTracking::AdditionalTaintStep {
 }
 
 /**
+ * Defines flow steps for return on async functions.
+ */
+private module AsyncReturnSteps {
+  private predicate valueProp = Promises::valueProp/0;
+
+  private predicate errorProp = Promises::errorProp/0;
+
+  private import semmle.javascript.dataflow.internal.FlowSteps
+
+  /**
+   * A data-flow step for ordinary and exceptional returns from async functions.
+   */
+  private class AsyncReturn extends PreCallGraphStep {
+    override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+      exists(DataFlow::FunctionNode f | f.getFunction().isAsync() |
+        // ordinary return
+        prop = valueProp() and
+        pred = f.getAReturn() and
+        succ = f.getReturnNode()
+        or
+        // exceptional return
+        prop = errorProp() and
+        localExceptionStepWithAsyncFlag(pred, succ, true)
+      )
+    }
+  }
+
+  /**
+   * A data-flow step for ordinary return from an async function in a taint configuration.
+   */
+  private class AsyncTaintReturn extends TaintTracking::AdditionalTaintStep, DataFlow::FunctionNode {
+    Function f;
+
+    AsyncTaintReturn() { this.getFunction() = f and f.isAsync() }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      returnExpr(f, pred, _) and
+      succ.(DataFlow::FunctionReturnNode).getFunction() = f
+    }
+  }
+}
+
+/**
  * Provides classes for working with the `bluebird` library (http://bluebirdjs.com).
  */
 module Bluebird {
@@ -531,6 +535,31 @@ module Bluebird {
 
     override DataFlow::Node getValue() {
       result = getArgument(0).getALocalSource().(DataFlow::ArrayCreationNode).getAnElement()
+    }
+  }
+
+  /**
+   * A promise created using `Promise.all`:
+   */
+  class BluebirdPromiseAllDefinition extends AggregateBluebirdPromiseDefinition, PromiseAllCreation {
+    BluebirdPromiseAllDefinition() { this.getCalleeName() = "all" }
+
+    override DataFlow::Node getArrayNode() { result = getArgument(0) }
+  }
+
+  /**
+   * An async function created using a call to `bluebird.coroutine`.
+   */
+  class BluebirdCoroutineDefinition extends DataFlow::CallNode {
+    BluebirdCoroutineDefinition() { this = bluebird().getAMemberCall("coroutine") }
+  }
+
+  private class BluebirdCoroutineDefinitionAsPartialInvoke extends DataFlow::PartialInvokeNode::Range,
+    BluebirdCoroutineDefinition {
+    override DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
+      boundArgs = 0 and
+      callback = getArgument(0) and
+      result = this
     }
   }
 }

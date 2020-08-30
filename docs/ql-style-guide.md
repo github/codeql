@@ -3,7 +3,7 @@
 ## Introduction
 
 This document describes how to format the code you contribute to this repository. It covers aspects such as layout, white-space, naming, and documentation. Adhering to consistent standards makes code easier to read and maintain. Of course, these are only guidelines, and can be overridden as the need arises on a case-by-case basis. Where existing code deviates from these guidelines, prefer consistency with the surrounding code.
-Note, if you use CodeQL for VS Code, you can autoformat your query in the [Editor](https://help.semmle.com/codeql/codeql-for-vscode/reference/editor.html#autoformatting).
+Note, if you use [CodeQL for Visual Studio Code](https://help.semmle.com/codeql/codeql-for-vscode/procedures/about-codeql-for-vscode.html), you can autoformat your query in the editor.
 
 Words in *italic* are defined in the [Glossary](#glossary).
 
@@ -214,79 +214,7 @@ class Type extends ... {
 
 ## Documentation
 
-General requirements:
-
-1. Documentation *must* adhere to the [QLDoc specification](https://help.semmle.com/QL/QLDocSpecification.html).
-1. Use `/** ... */` for documentation, even for single line comments.
-1. For single-line documentation, the `/**` and `*/` are written on the same line as the comment.
-1. For multi-line documentation, the `/**` and `*/` are written on separate lines. There is a `*` preceding each comment line, aligned on the first `*`.
-1. Use full sentences, with capital letters and full stops.
-1. Use American English.
-1. Documentation comments *should* be appropriate for users of the code.
-1. Documentation for maintainers of the code *must* use normal comments.
-
-Documentation for specific items:
-
-1. Public declarations *must* be documented.
-1. Non-public declarations *should* be documented.
-1. Declarations in query files *should* be documented.
-1. Library files (`.qll` files) *should* be have a documentation comment at the top of the file.
-1. Query files, except for tests, *must* have a QLDoc query documentation comment at the top of the file.
-1. Predicates that do not have a result *should* be documented `/** Holds if ... */`
-1. Predicates that have a result *should* be documented `/** Gets ... */`
-1. All predicate parameters *should* be referred to in the predicate documentation.
-1. Reference names, such as types and parameters, using backticks `` ` ``.
-1. Give examples of code in the target language, enclosed in ```` ``` ````  or `` ` ``.
-1. Classes *should* be documented in the singular, for example `/* An expression. */`
-1. Where a class denotes a generic concept with subclasses, list those subclasses.
-1. Declarations that are deprecated *should* be documented as `DEPRECATED: ...`
-1. Declarations that are for internal use *should* be documented as `INTERNAL: Do not use`.
-
-### Examples
-
-```ql
-/** Provides logic for determining constant expressions. */
-```
-
-```ql
-/**
- * Holds if the qualifier of this call has type `qualifierType`.
- * `isExactType` indicates whether the type is exact, that is, whether
- * the qualifier is guaranteed not to be a subtype of `qualifierType`.
- */
-```
-```ql
-/**
- * A delegate declaration, for example
- * ```
- * delegate void Logger(string text);
- * ```
- */
-class Delegate extends ...
-```
-
-```ql
-/**
- * An element that can be called.
- *
- * Either a method (`Method`), a constructor (`Constructor`), a destructor
- * (`Destructor`), an operator (`Operator`), an accessor (`Accessor`),
- * an anonymous function (`AnonymousFunctionExpr`), or a local function
- * (`LocalFunction`).
- */
-class Callable extends ...
-```
-
-```ql
-/** DEPRECATED: Use `getAnExpr()` instead. */
-deprecated Expr getInitializer()
-```
-
-```ql
-/**
- * INTERNAL: Do not use.
- */
-```
+For more information about documenting the code that you contribute to this repository, see the [QLDoc style guide](qldoc-style-guide.md).
 
 ## Formulas
 1. *Prefer* one *conjunct* per line.
@@ -417,16 +345,16 @@ deprecated Expr getInitializer()
 
 | Phrase      | Meaning  |
 |-------------|----------|
-| *[annotation](https://help.semmle.com/QL/QLLanguageSpecification.html#annotations)* | An additional specifier used to modify a declaration, such as `private`, `override`, `deprecated`, `pragma`, `bindingset`, or `cached`. |
+| *[annotation](https://help.semmle.com/QL/ql-handbook/language.html#annotations)* | An additional specifier used to modify a declaration, such as `private`, `override`, `deprecated`, `pragma`, `bindingset`, or `cached`. |
 | *body* | The text inside `{ }`, `( )`, or each section of an `if`-`then`-`else` or `from`-`where`-`select`. |
 | *binary operator* | An operator with two operands, such as comparison operators, `and`, `or`, `implies`, or arithmetic operators. |
 | *call* | A *formula* that invokes a predicate, e.g. `this.isStatic()` or `calls(a,b)`. |
-| *[conjunct](https://help.semmle.com/QL/QLLanguageSpecification.html#conjunctions)* | A formula that is an operand to an `and`. |
+| *[conjunct](https://help.semmle.com/QL/ql-handbook/language.html#conjunctions)* | A formula that is an operand to an `and`. |
 | *declaration* | A class, module, predicate, field or newtype. |
-| *[disjunct](https://help.semmle.com/QL/QLLanguageSpecification.html#disjunctions)* | A formula that is an operand to an `or`. |
-| *[formula](https://help.semmle.com/QL/QLLanguageSpecification.html#formulas)* | A logical expression, such as `A = B`, a *call*, a *quantifier*, `and`, `or`, `not`, `in` or `instanceof`. |
+| *[disjunct](https://help.semmle.com/QL/ql-handbook/language.html#disjunctions)* | A formula that is an operand to an `or`. |
+| *[formula](https://help.semmle.com/QL/ql-handbook/language.html#formulas)* | A logical expression, such as `A = B`, a *call*, a *quantifier*, `and`, `or`, `not`, `in` or `instanceof`. |
 | *should/should not/avoid/prefer* | Adhere to this rule wherever possible, where it makes sense. |
 | *may/can* | This is a reasonable alternative, to be used with discretion. |
 | *must/always/do not* | Always adhere to this rule. |
-| *[quantifier/aggregation](https://help.semmle.com/QL/QLLanguageSpecification.html#aggregations)* | `exists`, `count`, `strictcount`, `any`, `forall`, `forex` and so on. |
+| *[quantifier/aggregation](https://help.semmle.com/QL/ql-handbook/language.html#aggregations)* | `exists`, `count`, `strictcount`, `any`, `forall`, `forex` and so on. |
 | *variable* | A parameter to a predicate, a field, a from variable, or a variable introduced by a *quantifier* or *aggregation*. |

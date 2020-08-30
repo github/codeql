@@ -82,6 +82,7 @@ import com.semmle.js.ast.SwitchStatement;
 import com.semmle.js.ast.TaggedTemplateExpression;
 import com.semmle.js.ast.TemplateElement;
 import com.semmle.js.ast.TemplateLiteral;
+import com.semmle.js.ast.ThisExpression;
 import com.semmle.js.ast.ThrowStatement;
 import com.semmle.js.ast.TryStatement;
 import com.semmle.js.ast.UnaryExpression;
@@ -105,6 +106,7 @@ import com.semmle.js.ast.jsx.JSXMemberExpression;
 import com.semmle.js.ast.jsx.JSXNamespacedName;
 import com.semmle.js.ast.jsx.JSXOpeningElement;
 import com.semmle.js.ast.jsx.JSXSpreadAttribute;
+import com.semmle.js.ast.jsx.JSXThisExpr;
 import com.semmle.js.extractor.ExtractionMetrics.ExtractionPhase;
 import com.semmle.js.extractor.ExtractorConfig.Platform;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
@@ -669,7 +671,9 @@ public class ASTExtractor {
     public Label visit(Program nd, Context c) {
       contextManager.enterContainer(toplevelLabel);
 
-      isStrict = hasUseStrict(nd.getBody());
+      boolean prevIsStrict = isStrict;
+
+      isStrict = isStrict || hasUseStrict(nd.getBody());
 
       // Add platform-specific globals.
       scopeManager.addVariables(platform.getPredefinedGlobals());
@@ -714,6 +718,8 @@ public class ASTExtractor {
       contextManager.leaveContainer();
 
       emitNodeSymbol(nd, toplevelLabel);
+
+      isStrict = prevIsStrict;
 
       return toplevelLabel;
     }
@@ -1642,6 +1648,11 @@ public class ASTExtractor {
     }
 
     @Override
+    public Label visit(JSXThisExpr nd, Context c) {
+      return visit((ThisExpression) nd, c);
+    }
+
+    @Override
     public Label visit(JSXMemberExpression nd, Context c) {
       Label key = super.visit(nd, c);
       visit(nd.getObject(), key, 0);
@@ -1819,6 +1830,10 @@ public class ASTExtractor {
     @Override
     public Label visit(TupleTypeExpr nd, Context c) {
       Label key = super.visit(nd, c);
+      if (nd.getElementNames() != null) {
+        // Element names are index -1, -2, -3...
+        visitAll(nd.getElementNames(), key, IdContext.typeLabel, -1, -1);
+      }
       visitAll(nd.getElementTypes(), key, IdContext.typeBind, 0);
       return key;
     }

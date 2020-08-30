@@ -27,7 +27,7 @@ void bad1(wchar_t *wstr) {
 }
 
 void bad2(wchar_t *wstr) {
-    // BAD -- Not allocating space for '\0' terminator [NOT DETECTED]
+    // BAD -- Not allocating space for '\0' terminator
     wchar_t *wbuffer = (wchar_t *)malloc(wcslen(wstr) * sizeof(wchar_t));
     wcscpy(wbuffer, wstr);
     free(wbuffer);

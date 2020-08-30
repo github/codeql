@@ -1,3 +1,8 @@
+/**
+ * Provides classes for modeling accesses including variable accesses, enum
+ * constant accesses and function accesses.
+ */
+
 import semmle.code.cpp.exprs.Expr
 import semmle.code.cpp.Variable
 import semmle.code.cpp.Enum
@@ -6,9 +11,13 @@ private import semmle.code.cpp.dataflow.EscapesTree
 /**
  * A C/C++ access expression. This refers to a function, variable, or enum constant.
  */
-abstract class Access extends Expr, NameQualifiableElement {
+class Access extends Expr, NameQualifiableElement, @access {
+  // As `@access` is a union type containing `@routineexpr` (which describes function accesses
+  // that are called), we need to exclude function calls.
+  Access() { this instanceof @routineexpr implies not iscall(underlyingElement(this), _) }
+
   /** Gets the accessed function, variable, or enum constant. */
-  abstract Declaration getTarget();
+  Declaration getTarget() { none() } // overridden in subclasses
 
   override predicate mayBeImpure() { none() }
 
@@ -32,7 +41,7 @@ abstract class Access extends Expr, NameQualifiableElement {
  * ```
  */
 class EnumConstantAccess extends Access, @varaccess {
-  override string getCanonicalQLClass() { result = "EnumConstantAccess" }
+  override string getAPrimaryQlClass() { result = "EnumConstantAccess" }
 
   EnumConstantAccess() {
     exists(EnumConstant c | varbind(underlyingElement(this), unresolveElement(c)))
@@ -57,7 +66,7 @@ class EnumConstantAccess extends Access, @varaccess {
  * ```
  */
 class VariableAccess extends Access, @varaccess {
-  override string getCanonicalQLClass() { result = "VariableAccess" }
+  override string getAPrimaryQlClass() { result = "VariableAccess" }
 
   VariableAccess() {
     not exists(EnumConstant c | varbind(underlyingElement(this), unresolveElement(c)))
@@ -162,7 +171,7 @@ class VariableAccess extends Access, @varaccess {
  * ```
  */
 class FieldAccess extends VariableAccess {
-  override string getCanonicalQLClass() { result = "FieldAccess" }
+  override string getAPrimaryQlClass() { result = "FieldAccess" }
 
   FieldAccess() { exists(Field f | varbind(underlyingElement(this), unresolveElement(f))) }
 
@@ -190,7 +199,7 @@ class FieldAccess extends VariableAccess {
  * ```
  */
 class PointerFieldAccess extends FieldAccess {
-  override string getCanonicalQLClass() { result = "PointerFieldAccess" }
+  override string getAPrimaryQlClass() { result = "PointerFieldAccess" }
 
   PointerFieldAccess() {
     exists(PointerType t |
@@ -207,7 +216,7 @@ class PointerFieldAccess extends FieldAccess {
  * distinguish whether or not the type of `obj` is a reference type.
  */
 class DotFieldAccess extends FieldAccess {
-  override string getCanonicalQLClass() { result = "DotFieldAccess" }
+  override string getAPrimaryQlClass() { result = "DotFieldAccess" }
 
   DotFieldAccess() { exists(Class c | c = getQualifier().getFullyConverted().getUnspecifiedType()) }
 }
@@ -228,7 +237,7 @@ class DotFieldAccess extends FieldAccess {
  * ```
  */
 class ReferenceFieldAccess extends DotFieldAccess {
-  override string getCanonicalQLClass() { result = "ReferenceFieldAccess" }
+  override string getAPrimaryQlClass() { result = "ReferenceFieldAccess" }
 
   ReferenceFieldAccess() { exprHasReferenceConversion(this.getQualifier()) }
 }
@@ -249,7 +258,7 @@ class ReferenceFieldAccess extends DotFieldAccess {
  * ```
  */
 class ValueFieldAccess extends DotFieldAccess {
-  override string getCanonicalQLClass() { result = "ValueFieldAccess" }
+  override string getAPrimaryQlClass() { result = "ValueFieldAccess" }
 
   ValueFieldAccess() { not exprHasReferenceConversion(this.getQualifier()) }
 }
@@ -303,7 +312,7 @@ private predicate exprHasReferenceConversion(Expr e) { referenceConversion(e.get
  * `ImplicitThisFieldAccess`.
  */
 class ImplicitThisFieldAccess extends FieldAccess {
-  override string getCanonicalQLClass() { result = "ImplicitThisFieldAccess" }
+  override string getAPrimaryQlClass() { result = "ImplicitThisFieldAccess" }
 
   ImplicitThisFieldAccess() { not exists(this.getQualifier()) }
 }
@@ -328,7 +337,7 @@ class PointerToFieldLiteral extends ImplicitThisFieldAccess {
 
   override predicate isConstant() { any() }
 
-  override string getCanonicalQLClass() { result = "PointerToFieldLiteral" }
+  override string getAPrimaryQlClass() { result = "PointerToFieldLiteral" }
 }
 
 /**
@@ -338,14 +347,14 @@ class PointerToFieldLiteral extends ImplicitThisFieldAccess {
  * int myFunctionTarget(int);
  *
  * void myFunction() {
- *   int (*myFunctionPointer)(int) = &myTarget;
+ *   int (*myFunctionPointer)(int) = &myFunctionTarget;
  * }
  * ```
  */
 class FunctionAccess extends Access, @routineexpr {
   FunctionAccess() { not iscall(underlyingElement(this), _) }
 
-  override string getCanonicalQLClass() { result = "FunctionAccess" }
+  override string getAPrimaryQlClass() { result = "FunctionAccess" }
 
   /** Gets the accessed function. */
   override Function getTarget() { funbind(underlyingElement(this), unresolveElement(result)) }
@@ -395,7 +404,7 @@ class ParamAccessForType extends Expr, @param_ref {
  * ```
  */
 class TypeName extends Expr, @type_operand {
-  override string getCanonicalQLClass() { result = "TypeName" }
+  override string getAPrimaryQlClass() { result = "TypeName" }
 
   override string toString() { result = this.getType().getName() }
 }
@@ -414,7 +423,7 @@ class TypeName extends Expr, @type_operand {
  * `OverloadedArrayExpr`.
  */
 class ArrayExpr extends Expr, @subscriptexpr {
-  override string getCanonicalQLClass() { result = "ArrayExpr" }
+  override string getAPrimaryQlClass() { result = "ArrayExpr" }
 
   /**
    * Gets the array or pointer expression being subscripted.

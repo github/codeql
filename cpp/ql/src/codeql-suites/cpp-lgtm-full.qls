@@ -2,13 +2,17 @@
 - qlpack: codeql-cpp
 - apply: lgtm-selectors.yml
   from: codeql-suite-helpers
-# These queries are infeasible to compute on large projects:
+- apply: codeql-suites/exclude-slow-queries.yml
+  from: codeql-cpp 
+# These are only for IDE use.
 - exclude:
-    query path:
-      - Security/CWE/CWE-497/ExposedSystemData.ql
-      - Critical/DescriptorMayNotBeClosed.ql
-      - Critical/DescriptorNeverClosed.ql
-      - Critical/FileMayNotBeClosed.ql
-      - Critical/FileNeverClosed.ql
-      - Critical/MemoryMayNotBeFreed.ql
-      - Critical/MemoryNeverFreed.ql
+    tags contain:
+      - ide-contextual-queries/local-definitions
+      - ide-contextual-queries/local-references
+- query: Metrics/Dependencies/ExternalDependencies.ql
+- query: Metrics/Dependencies/ExternalDependenciesSourceLinks.ql
+- query: Metrics/Files/FLinesOfCode.ql
+- query: Metrics/Files/FLinesOfCommentedOutCode.ql
+- query: Metrics/Files/FLinesOfComments.ql
+- query: Metrics/Files/FLinesOfDuplicatedCode.ql
+- query: Metrics/Files/FNumberOfTests.ql

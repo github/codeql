@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>JavaMail is commonly used in Java applications to send emails. There are popular third-party libraries like Apache Commons Email which are built on JavaMail and facilitate integration. Authenticated mail sessions require user credentials and mail sessions can require SSL/TLS authentication. It is a common security vulnerability that host-specific certificate data is not validated or is incorrectly validated. Failing to validate the certificate makes the SSL session susceptible to a man-in-the-middle attack.</p>
+<p>This query checks whether SSL certificate is validated when username/password is sent in authenticator and when SSL is enabled.</p>
+<p>The query has code for both plain JavaMail invocation and mailing through Apache SimpleMail to make it more comprehensive.</p>
+</overview>
+
+<recommendation>
+<p>Validate SSL certificate when sensitive information is sent in email communications.</p>
+</recommendation>
+
+<example>
+<p>The following two examples show two ways of configuring secure emails through JavaMail or Apache SimpleMail. In the 'BAD' case,
+credentials are sent in an SSL session without certificate validation. In the 'GOOD' case, the certificate is validated.</p>
+<sample src="JavaMail.java" />
+<sample src="SimpleMail.java" />
+</example>
+
+<references>
+<li>
+  <a href="https://cwe.mitre.org/data/definitions/297.html">CWE-297</a>
+</li>
+<li>
+  Log4j2:
+  <a href="https://issues.apache.org/jira/browse/LOG4J2-2819">Add support for specifying an SSL configuration for SmtpAppender (CVE-2020-9488)</a>
+</li>
+<li>
+  SonarSource rule:
+  <a href="https://rules.sonarsource.com/java/tag/owasp/RSPEC-4499">SMTP SSL connection should check server identity</a>
+</li>
+</references>
+</qhelp>

@@ -33,13 +33,24 @@ test_SystemCommandExecution
 | exec.js:6:1:6:28 | cp.spaw ... "], cb) | exec.js:6:10:6:15 | "echo" |
 | exec.js:7:1:7:37 | cp.spaw ... here"]) | exec.js:7:14:7:19 | "echo" |
 test_ResponseExpr
+| createServer.js:2:35:2:37 | res | createServer.js:2:20:2:41 | functio ... res) {} |
+| createServer.js:3:38:3:40 | res | createServer.js:3:23:3:44 | functio ... res) {} |
+| createServer.js:4:37:4:39 | res | createServer.js:4:31:4:46 | (req, res) => {} |
+| src/http.js:4:46:4:48 | res | src/http.js:4:32:10:1 | functio ... .foo;\\n} |
 | src/http.js:7:3:7:5 | res | src/http.js:4:32:10:1 | functio ... .foo;\\n} |
+| src/http.js:12:33:12:35 | res | src/http.js:12:19:16:1 | functio ... ar");\\n} |
 | src/http.js:13:3:13:5 | res | src/http.js:12:19:16:1 | functio ... ar");\\n} |
 | src/http.js:14:3:14:5 | res | src/http.js:12:19:16:1 | functio ... ar");\\n} |
 | src/http.js:15:3:15:5 | res | src/http.js:12:19:16:1 | functio ... ar");\\n} |
+| src/http.js:55:25:55:27 | res | src/http.js:55:12:55:30 | function(req,res){} |
+| src/http.js:60:27:60:29 | res | src/http.js:60:14:60:32 | function(req,res){} |
+| src/http.js:62:33:62:35 | res | src/http.js:62:19:65:1 | functio ... r2");\\n} |
 | src/http.js:63:3:63:5 | res | src/http.js:62:19:65:1 | functio ... r2");\\n} |
 | src/http.js:64:3:64:5 | res | src/http.js:62:19:65:1 | functio ... r2");\\n} |
+| src/http.js:68:17:68:19 | res | src/http.js:68:12:68:27 | (req,res) => f() |
+| src/https.js:4:47:4:49 | res | src/https.js:4:33:10:1 | functio ... .foo;\\n} |
 | src/https.js:7:3:7:5 | res | src/https.js:4:33:10:1 | functio ... .foo;\\n} |
+| src/https.js:12:34:12:36 | res | src/https.js:12:20:16:1 | functio ... ar");\\n} |
 | src/https.js:13:3:13:5 | res | src/https.js:12:20:16:1 | functio ... ar");\\n} |
 | src/https.js:14:3:14:5 | res | src/https.js:12:20:16:1 | functio ... ar");\\n} |
 | src/https.js:15:3:15:5 | res | src/https.js:12:20:16:1 | functio ... ar");\\n} |
@@ -93,13 +104,24 @@ test_HeaderDefinition_getNameExpr
 | src/https.js:7:3:7:42 | res.wri ... rget }) | src/https.js:7:17:7:19 | 302 |
 | src/https.js:13:3:13:44 | res.set ... /html') | src/https.js:13:17:13:30 | 'Content-Type' |
 test_RouteHandler_getAResponseExpr
+| createServer.js:2:20:2:41 | functio ... res) {} | createServer.js:2:35:2:37 | res |
+| createServer.js:3:23:3:44 | functio ... res) {} | createServer.js:3:38:3:40 | res |
+| createServer.js:4:31:4:46 | (req, res) => {} | createServer.js:4:37:4:39 | res |
+| src/http.js:4:32:10:1 | functio ... .foo;\\n} | src/http.js:4:46:4:48 | res |
 | src/http.js:4:32:10:1 | functio ... .foo;\\n} | src/http.js:7:3:7:5 | res |
+| src/http.js:12:19:16:1 | functio ... ar");\\n} | src/http.js:12:33:12:35 | res |
 | src/http.js:12:19:16:1 | functio ... ar");\\n} | src/http.js:13:3:13:5 | res |
 | src/http.js:12:19:16:1 | functio ... ar");\\n} | src/http.js:14:3:14:5 | res |
 | src/http.js:12:19:16:1 | functio ... ar");\\n} | src/http.js:15:3:15:5 | res |
+| src/http.js:55:12:55:30 | function(req,res){} | src/http.js:55:25:55:27 | res |
+| src/http.js:60:14:60:32 | function(req,res){} | src/http.js:60:27:60:29 | res |
+| src/http.js:62:19:65:1 | functio ... r2");\\n} | src/http.js:62:33:62:35 | res |
 | src/http.js:62:19:65:1 | functio ... r2");\\n} | src/http.js:63:3:63:5 | res |
 | src/http.js:62:19:65:1 | functio ... r2");\\n} | src/http.js:64:3:64:5 | res |
+| src/http.js:68:12:68:27 | (req,res) => f() | src/http.js:68:17:68:19 | res |
+| src/https.js:4:33:10:1 | functio ... .foo;\\n} | src/https.js:4:47:4:49 | res |
 | src/https.js:4:33:10:1 | functio ... .foo;\\n} | src/https.js:7:3:7:5 | res |
+| src/https.js:12:20:16:1 | functio ... ar");\\n} | src/https.js:12:34:12:36 | res |
 | src/https.js:12:20:16:1 | functio ... ar");\\n} | src/https.js:13:3:13:5 | res |
 | src/https.js:12:20:16:1 | functio ... ar");\\n} | src/https.js:14:3:14:5 | res |
 | src/https.js:12:20:16:1 | functio ... ar");\\n} | src/https.js:15:3:15:5 | res |
@@ -127,10 +149,12 @@ test_RouteSetup_getARouteHandler
 | createServer.js:4:1:4:47 | require ...  => {}) | createServer.js:4:31:4:46 | (req, res) => {} |
 | src/http.js:4:14:10:2 | http.cr ... foo;\\n}) | src/http.js:4:32:10:1 | functio ... .foo;\\n} |
 | src/http.js:12:1:16:2 | http.cr ... r");\\n}) | src/http.js:12:19:16:1 | functio ... ar");\\n} |
+| src/http.js:57:1:57:31 | http.cr ... dler()) | src/http.js:54:1:56:1 | return of function getHandler |
 | src/http.js:57:1:57:31 | http.cr ... dler()) | src/http.js:55:12:55:30 | function(req,res){} |
 | src/http.js:57:1:57:31 | http.cr ... dler()) | src/http.js:57:19:57:30 | getHandler() |
 | src/http.js:60:1:60:33 | createS ... res){}) | src/http.js:60:14:60:32 | function(req,res){} |
 | src/http.js:62:1:65:2 | http.cr ... 2");\\n}) | src/http.js:62:19:65:1 | functio ... r2");\\n} |
+| src/http.js:70:1:70:36 | http.cr ... dler()) | src/http.js:67:1:69:1 | return of function getArrowHandler |
 | src/http.js:70:1:70:36 | http.cr ... dler()) | src/http.js:68:12:68:27 | (req,res) => f() |
 | src/http.js:70:1:70:36 | http.cr ... dler()) | src/http.js:70:19:70:35 | getArrowHandler() |
 | src/https.js:4:14:10:2 | https.c ... foo;\\n}) | src/https.js:4:33:10:1 | functio ... .foo;\\n} |
@@ -162,13 +186,24 @@ test_RouteHandler
 | src/https.js:4:33:10:1 | functio ... .foo;\\n} | src/https.js:4:14:10:2 | https.c ... foo;\\n}) |
 | src/https.js:12:20:16:1 | functio ... ar");\\n} | src/https.js:12:1:16:2 | https.c ... r");\\n}) |
 test_RequestExpr
+| createServer.js:2:30:2:32 | req | createServer.js:2:20:2:41 | functio ... res) {} |
+| createServer.js:3:33:3:35 | req | createServer.js:3:23:3:44 | functio ... res) {} |
+| createServer.js:4:32:4:34 | req | createServer.js:4:31:4:46 | (req, res) => {} |
+| src/http.js:4:41:4:43 | req | src/http.js:4:32:10:1 | functio ... .foo;\\n} |
 | src/http.js:6:26:6:28 | req | src/http.js:4:32:10:1 | functio ... .foo;\\n} |
 | src/http.js:8:3:8:5 | req | src/http.js:4:32:10:1 | functio ... .foo;\\n} |
 | src/http.js:9:3:9:5 | req | src/http.js:4:32:10:1 | functio ... .foo;\\n} |
+| src/http.js:12:28:12:30 | req | src/http.js:12:19:16:1 | functio ... ar");\\n} |
+| src/http.js:55:21:55:23 | req | src/http.js:55:12:55:30 | function(req,res){} |
+| src/http.js:60:23:60:25 | req | src/http.js:60:14:60:32 | function(req,res){} |
+| src/http.js:62:28:62:30 | req | src/http.js:62:19:65:1 | functio ... r2");\\n} |
 | src/http.js:63:17:63:19 | req | src/http.js:62:19:65:1 | functio ... r2");\\n} |
+| src/http.js:68:13:68:15 | req | src/http.js:68:12:68:27 | (req,res) => f() |
+| src/https.js:4:42:4:44 | req | src/https.js:4:33:10:1 | functio ... .foo;\\n} |
 | src/https.js:6:26:6:28 | req | src/https.js:4:33:10:1 | functio ... .foo;\\n} |
 | src/https.js:8:3:8:5 | req | src/https.js:4:33:10:1 | functio ... .foo;\\n} |
 | src/https.js:9:3:9:5 | req | src/https.js:4:33:10:1 | functio ... .foo;\\n} |
+| src/https.js:12:29:12:31 | req | src/https.js:12:20:16:1 | functio ... ar");\\n} |
 test_SystemCommandExecution_getAnArgumentForCommand
 | exec.js:3:1:3:38 | cp.exec ... "], cb) | exec.js:3:21:3:33 | ["--version"] |
 | exec.js:4:1:4:47 | cp.exec ... sion"]) | exec.js:4:23:4:46 | ["-c",  ... rsion"] |
@@ -179,10 +214,21 @@ test_Credentials
 | src/http.js:18:22:18:27 | "auth" | credentials |
 | src/https.js:18:23:18:28 | "auth" | credentials |
 test_RouteHandler_getARequestExpr
+| createServer.js:2:20:2:41 | functio ... res) {} | createServer.js:2:30:2:32 | req |
+| createServer.js:3:23:3:44 | functio ... res) {} | createServer.js:3:33:3:35 | req |
+| createServer.js:4:31:4:46 | (req, res) => {} | createServer.js:4:32:4:34 | req |
+| src/http.js:4:32:10:1 | functio ... .foo;\\n} | src/http.js:4:41:4:43 | req |
 | src/http.js:4:32:10:1 | functio ... .foo;\\n} | src/http.js:6:26:6:28 | req |
 | src/http.js:4:32:10:1 | functio ... .foo;\\n} | src/http.js:8:3:8:5 | req |
 | src/http.js:4:32:10:1 | functio ... .foo;\\n} | src/http.js:9:3:9:5 | req |
+| src/http.js:12:19:16:1 | functio ... ar");\\n} | src/http.js:12:28:12:30 | req |
+| src/http.js:55:12:55:30 | function(req,res){} | src/http.js:55:21:55:23 | req |
+| src/http.js:60:14:60:32 | function(req,res){} | src/http.js:60:23:60:25 | req |
+| src/http.js:62:19:65:1 | functio ... r2");\\n} | src/http.js:62:28:62:30 | req |
 | src/http.js:62:19:65:1 | functio ... r2");\\n} | src/http.js:63:17:63:19 | req |
+| src/http.js:68:12:68:27 | (req,res) => f() | src/http.js:68:13:68:15 | req |
+| src/https.js:4:33:10:1 | functio ... .foo;\\n} | src/https.js:4:42:4:44 | req |
 | src/https.js:4:33:10:1 | functio ... .foo;\\n} | src/https.js:6:26:6:28 | req |
 | src/https.js:4:33:10:1 | functio ... .foo;\\n} | src/https.js:8:3:8:5 | req |
 | src/https.js:4:33:10:1 | functio ... .foo;\\n} | src/https.js:9:3:9:5 | req |
+| src/https.js:12:20:16:1 | functio ... ar");\\n} | src/https.js:12:29:12:31 | req |

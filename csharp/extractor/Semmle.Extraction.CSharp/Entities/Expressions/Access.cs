@@ -18,7 +18,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     return ExprKind.FIELD_ACCESS;
 
                 case SymbolKind.Property:
-                    return ExprKind.PROPERTY_ACCESS;
+                    return symbol is IPropertySymbol prop && prop.IsIndexer ?
+                         ExprKind.INDEXER_ACCESS : ExprKind.PROPERTY_ACCESS;
 
                 case SymbolKind.Event:
                     return ExprKind.EVENT_ACCESS;

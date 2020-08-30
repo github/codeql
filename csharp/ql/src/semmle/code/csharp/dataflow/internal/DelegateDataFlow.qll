@@ -36,7 +36,7 @@ abstract private class DelegateFlowSink extends DataFlow::ExprNode {
    * context, if any. The call context records the *last* call required to
    * resolve the target, if any. Example:
    *
-   * ```
+   * ```csharp
    * public int M(Func<string, int> f, string x) {
    *   return f(x);
    * }
@@ -60,7 +60,7 @@ abstract private class DelegateFlowSink extends DataFlow::ExprNode {
    * Note that only the *last* call required is taken into account, hence if
    * `M` above is redefined as follows:
    *
-   * ```
+   * ```csharp
    * public int M(Func<string, int> f, string x) {
    *   return M2(f, x);
    * }
@@ -117,6 +117,9 @@ library class DelegateArgumentToLibraryCallable extends Expr {
 
   /** Gets the call that this argument belongs to. */
   Call getCall() { result = call }
+
+  /** Gets the index of this delegate argument in the call. */
+  int getArgumentIndex() { this = this.getCall().getArgument(result) }
 
   /** Gets the delegate type of this argument. */
   DelegateType getDelegateType() { result = dt }

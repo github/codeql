@@ -7,7 +7,7 @@
  * @id js/return-outside-function
  * @tags reliability
  *       correctness
- * @precision medium
+ * @precision low
  */
 
 import javascript

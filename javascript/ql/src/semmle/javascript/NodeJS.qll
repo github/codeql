@@ -153,6 +153,29 @@ private class RequireVariable extends Variable {
 private predicate moduleInFile(Module m, File f) { m.getFile() = f }
 
 /**
+ * Holds if `nd` may refer to `require`, either directly or modulo local data flow.
+ */
+cached
+private predicate isRequire(DataFlow::Node nd) {
+  nd.asExpr() = any(RequireVariable req).getAnAccess() and
+  // `mjs` files explicitly disallow `require`
+  not nd.getFile().getExtension() = "mjs"
+  or
+  isRequire(nd.getAPredecessor())
+  or
+  // `import { createRequire } from 'module';` support.
+  // specialized to ES2015 modules to avoid recursion in the `DataFlow::moduleImport()` predicate.
+  exists(ImportDeclaration imp | imp.getImportedPath().getValue() = "module" |
+    nd =
+      imp
+          .getImportedModuleNode()
+          .(DataFlow::SourceNode)
+          .getAPropertyRead("createRequire")
+          .getACall()
+  )
+}
+
+/**
  * A `require` import.
  *
  * Example:
@@ -162,12 +185,7 @@ private predicate moduleInFile(Module m, File f) { m.getFile() = f }
  * ```
  */
 class Require extends CallExpr, Import {
-  cached
-  Require() {
-    any(RequireVariable req).getAnAccess() = getCallee() and
-    // `mjs` files explicitly disallow `require`
-    not getFile().getExtension() = "mjs"
-  }
+  Require() { isRequire(getCallee().flow()) }
 
   override PathExpr getImportedPath() { result = getArgument(0) }
 
@@ -214,7 +232,7 @@ class Require extends CallExpr, Import {
    *
    * <ul>
    * <li> the file `c/p`;
-   * <li> the file `c/p.{tsx,ts,jsx,es6,es,mjs}`;
+   * <li> the file `c/p.{tsx,ts,jsx,es6,es,mjs,cjs}`;
    * <li> the file `c/p.js`;
    * <li> the file `c/p.json`;
    * <li> the file `c/p.node`;
@@ -223,12 +241,12 @@ class Require extends CallExpr, Import {
    *      <li> if `c/p/package.json` exists and specifies a `main` module `m`:
    *        <ul>
    *        <li> the file `c/p/m`;
-   *        <li> the file `c/p/m.{tsx,ts,jsx,es6,es,mjs}`;
+   *        <li> the file `c/p/m.{tsx,ts,jsx,es6,es,mjs,cjs}`;
    *        <li> the file `c/p/m.js`;
    *        <li> the file `c/p/m.json`;
    *        <li> the file `c/p/m.node`;
    *        </ul>
-   *      <li> the file `c/p/index.{tsx,ts,jsx,es6,es,mjs}`;
+   *      <li> the file `c/p/index.{tsx,ts,jsx,es6,es,mjs,cjs}`;
    *      <li> the file `c/p/index.js`;
    *      <li> the file `c/p/index.json`;
    *      <li> the file `c/p/index.node`.
@@ -257,8 +275,8 @@ private class RequirePath extends PathExprCandidate {
   RequirePath() {
     this = any(Require req).getArgument(0)
     or
-    exists(RequireVariable req, MethodCallExpr reqres |
-      reqres.getReceiver() = req.getAnAccess() and
+    exists(MethodCallExpr reqres |
+      isRequire(reqres.getReceiver().flow()) and
       reqres.getMethodName() = "resolve" and
       this = reqres.getArgument(0)
     )
@@ -266,14 +284,14 @@ private class RequirePath extends PathExprCandidate {
 }
 
 /** A constant path element appearing in a call to `require` or `require.resolve`. */
-private class ConstantRequirePathElement extends PathExprInModule, ConstantString {
+private class ConstantRequirePathElement extends PathExpr, ConstantString {
   ConstantRequirePathElement() { this = any(RequirePath rp).getAPart() }
 
   override string getValue() { result = getStringValue() }
 }
 
 /** A `__dirname` path expression. */
-private class DirNamePath extends PathExprInModule, VarAccess {
+private class DirNamePath extends PathExpr, VarAccess {
   DirNamePath() {
     getName() = "__dirname" and
     getVariable().getScope() instanceof ModuleScope
@@ -283,7 +301,7 @@ private class DirNamePath extends PathExprInModule, VarAccess {
 }
 
 /** A `__filename` path expression. */
-private class FileNamePath extends PathExprInModule, VarAccess {
+private class FileNamePath extends PathExpr, VarAccess {
   FileNamePath() {
     getName() = "__filename" and
     getVariable().getScope() instanceof ModuleScope
@@ -296,7 +314,7 @@ private class FileNamePath extends PathExprInModule, VarAccess {
  * A path expression of the form `path.join(p, "...")` where
  * `p` is also a path expression.
  */
-private class JoinedPath extends PathExprInModule, @callexpr {
+private class JoinedPath extends PathExpr, @callexpr {
   JoinedPath() {
     exists(MethodCallExpr call | call = this |
       call.getReceiver().(VarAccess).getName() = "path" and

@@ -18,9 +18,6 @@ import javascript
  * ```
  */
 class Stmt extends @stmt, ExprOrStmt, Documentable {
-  /** Gets the statement container (toplevel, function or namespace) to which this statement belongs. */
-  override StmtContainer getContainer() { stmtContainers(this, result) }
-
   /** Holds if this statement has an implicitly inserted semicolon. */
   predicate hasSemicolonInserted() {
     isSubjectToSemicolonInsertion() and
@@ -67,6 +64,13 @@ class Stmt extends @stmt, ExprOrStmt, Documentable {
   }
 }
 
+private class TControlStmt =
+  TLoopStmt or @ifstmt or @withstmt or @switchstmt or @trystmt or @catchclause;
+
+private class TLoopStmt = TEnhancedForLoop or @whilestmt or @dowhilestmt or @forstmt;
+
+private class TEnhancedForLoop = @forinstmt or @foreachstmt or @forofstmt;
+
 /**
  * A control statement, that is, is a loop, an if statement, a switch statement,
  * a with statement, a try statement, or a catch clause.
@@ -85,7 +89,7 @@ class Stmt extends @stmt, ExprOrStmt, Documentable {
  * }
  * ```
  */
-abstract class ControlStmt extends Stmt {
+class ControlStmt extends TControlStmt, Stmt {
   /** Gets a statement controlled by this control statement. */
   abstract Stmt getAControlledStmt();
 }
@@ -105,7 +109,7 @@ abstract class ControlStmt extends Stmt {
  * } while(++i < lines.length);
  * ```
  */
-abstract class LoopStmt extends ControlStmt {
+class LoopStmt extends TLoopStmt, ControlStmt {
   /** Gets the body of this loop. */
   abstract Stmt getBody();
 
@@ -453,6 +457,10 @@ class LabeledStmt extends @labeledstmt, Stmt {
   Stmt getStmt() { result = getChildStmt(1) }
 }
 
+private class TJumpStmt = TBreakOrContinueStmt or @returnstmt or @throwstmt;
+
+private class TBreakOrContinueStmt = @breakstmt or @continuestmt;
+
 /**
  * A statement that disrupts structured control flow, that is, a `continue` statement,
  * a `break` statement, a `throw` statement, or a `return` statement.
@@ -466,7 +474,7 @@ class LabeledStmt extends @labeledstmt, Stmt {
  * return -1;
  * ```
  */
-abstract class JumpStmt extends Stmt {
+class JumpStmt extends TJumpStmt, Stmt {
   /**
    * Gets the target of this jump.
    *
@@ -493,7 +501,7 @@ abstract class JumpStmt extends Stmt {
  * break;
  * ```
  */
-abstract class BreakOrContinueStmt extends JumpStmt {
+class BreakOrContinueStmt extends TBreakOrContinueStmt, JumpStmt {
   /** Gets the label this statement refers to, if any. */
   string getTargetLabel() { result = getChildExpr(0).(Identifier).getName() }
 
@@ -804,7 +812,7 @@ class ForStmt extends @forstmt, LoopStmt {
  * }
  * ```
  */
-abstract class EnhancedForLoop extends LoopStmt {
+class EnhancedForLoop extends TEnhancedForLoop, LoopStmt {
   /**
    * Gets the iterator of this `for`-`in` or `for`-`of` loop; this can be either a
    * pattern, a property reference, or a variable declaration statement.

@@ -224,5 +224,5 @@ The completed query will now identify cases where the result of ``strlen`` is st
 Further reading
 ---------------
 
--  Find out more about QL in the `QL language reference <https://help.semmle.com/QL/ql-handbook/index.html>`__.
--  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__ on LGTM.com.
+.. include:: ../../reusables/cpp-further-reading.rst
+.. include:: ../../reusables/codeql-ref-tools-further-reading.rst

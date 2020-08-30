@@ -52,7 +52,7 @@ class Assertion extends MethodCall {
    * Moreover, this assertion corresponds to multiple control flow nodes,
    * which is why
    *
-   * ```
+   * ```ql
    * exists(BasicBlock bb |
    *   bb.getANode() = this.getAControlFlowNode() |
    *   bb.immediatelyDominates(succ)
@@ -100,7 +100,7 @@ class Assertion extends MethodCall {
     or
     // Equivalent with
     //
-    // ```
+    // ```ql
     // exists(JoinBlockPredecessor pred | pred = bb.getAPredecessor() |
     //   this.strictlyDominatesSplit(pred)
     // ) and

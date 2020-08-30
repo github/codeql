@@ -17,7 +17,7 @@ class ObjectOrCollectionInitializer extends Expr, @objectorcollection_init_expr 
 /**
  * An object initializer, for example `{ X = 0, Y = 1 }` on line 6 in
  *
- * ```
+ * ```csharp
  * class A {
  *   int X;
  *   int Y;
@@ -34,7 +34,7 @@ class ObjectInitializer extends ObjectOrCollectionInitializer, @object_init_expr
    * is a member initializer of the object initializer `{ X = 0, Y = 1 }` on
    * line 6 in
    *
-   * ```
+   * ```csharp
    * class A {
    *   int X;
    *   int Y;
@@ -52,7 +52,7 @@ class ObjectInitializer extends ObjectOrCollectionInitializer, @object_init_expr
    * `Y = 1` is the second (`i = 1`) member initializer of the object initializer
    * `{ X = 0, Y = 1 }` on line 6 in
    *
-   * ```
+   * ```csharp
    * class A {
    *   int X;
    *   int Y;
@@ -73,12 +73,14 @@ class ObjectInitializer extends ObjectOrCollectionInitializer, @object_init_expr
 
   /** Holds if this object initializer has no member initializers. */
   predicate hasNoMemberInitializers() { not exists(this.getAMemberInitializer()) }
+
+  override string getAPrimaryQlClass() { result = "ObjectInitializer" }
 }
 
 /**
  * A member initializer, for example `X = 0` on line 6 in
  *
- * ```
+ * ```csharp
  * class A {
  *   int X;
  *   int Y;
@@ -94,12 +96,14 @@ class MemberInitializer extends AssignExpr {
 
   /** Gets the initialized member. */
   Member getInitializedMember() { result.getAnAccess() = this.getLValue() }
+
+  override string getAPrimaryQlClass() { result = "MemberInitializer" }
 }
 
 /**
  * A collection initializer, for example `{ {0, "a"}, {1, "b"} }` in
  *
- * ```
+ * ```csharp
  * var dict = new Dictionary<int, string>{
  *   {0, "a"},
  *   {1, "b"}
@@ -111,7 +115,7 @@ class CollectionInitializer extends ObjectOrCollectionInitializer, @collection_i
    * Gets an element initializer of this collection initializer, for example the
    * implicit call to `Add(0, "a")` on line 2 in
    *
-   * ```
+   * ```csharp
    * var dict = new Dictionary<int, string>{
    *   {0, "a"},
    *   {1, "b"}
@@ -125,7 +129,7 @@ class CollectionInitializer extends ObjectOrCollectionInitializer, @collection_i
    * example the second (`i = 1`) element initializer is the implicit call to
    * `Add(1, "b")` in
    *
-   * ```
+   * ```csharp
    * var dict = new Dictionary<int, string>{
    *   {0, "a"},
    *   {1, "b"}
@@ -142,13 +146,15 @@ class CollectionInitializer extends ObjectOrCollectionInitializer, @collection_i
 
   /** Holds if this collection initializer has no element initializers. */
   predicate hasNoElementInitializers() { not exists(this.getAnElementInitializer()) }
+
+  override string getAPrimaryQlClass() { result = "CollectionInitializer" }
 }
 
 /**
  * An element initializer, for example the implicit call to `Add(0, "a")`
  * on line 2 in
  *
- * ```
+ * ```csharp
  * var dict = new Dictionary<int, string>{
  *   {0, "a"},
  *   {1, "b"}
@@ -157,12 +163,14 @@ class CollectionInitializer extends ObjectOrCollectionInitializer, @collection_i
  */
 class ElementInitializer extends MethodCall {
   ElementInitializer() { this.getParent() instanceof CollectionInitializer }
+
+  override string getAPrimaryQlClass() { result = "ElementInitializer" }
 }
 
 /**
  * A constructor call, for example `new A()` on line 3 in
  *
- * ```
+ * ```csharp
  * class A {
  *   public static A Create() {
  *     return new A();
@@ -188,7 +196,7 @@ class ObjectCreation extends Call, LateBindableExpr, @object_creation_expr {
    * Gets the object initializer or collection initializer of this constructor
    * call, if any. For example `{ {0, "a"}, {1, "b"} }` in
    *
-   * ```
+   * ```csharp
    * var dict = new Dictionary<int, string>{
    *   {0, "a"},
    *   {1, "b"}
@@ -204,13 +212,17 @@ class ObjectCreation extends Call, LateBindableExpr, @object_creation_expr {
     then result = this.getArgument(i)
     else result = this.getArgument(i - 1)
   }
+
+  override string getAPrimaryQlClass() {
+    result = "ObjectCreation" and not this instanceof AnonymousObjectCreation
+  }
 }
 
 /**
  * An anonymous constructor call, for example
  * `new { First = x[0], Last = x[x.Length - 1] }` on line 2 in
  *
- * ```
+ * ```csharp
  * public IEnumerable<string> FirstLast(IEnumerable<string> list) {
  *   return list.Select(x => new { First = x[0], Last = x[x.Length - 1] }).
  *               Select(y => y.First + y.Last);
@@ -221,6 +233,8 @@ class AnonymousObjectCreation extends ObjectCreation {
   AnonymousObjectCreation() { this.getObjectType() instanceof AnonymousClass }
 
   override ObjectInitializer getInitializer() { result = this.getChild(-1) }
+
+  override string getAPrimaryQlClass() { result = "AnonymousObjectCreation" }
 }
 
 /**
@@ -245,7 +259,7 @@ class DelegateCreation extends Expr, @delegate_creation_expr {
 /**
  * An explicit delegate creation, for example `new D(M)` on line 6 in
  *
- * ```
+ * ```csharp
  * class A {
  *   delegate void D(int x);
  *
@@ -255,12 +269,14 @@ class DelegateCreation extends Expr, @delegate_creation_expr {
  * }
  * ```
  */
-class ExplicitDelegateCreation extends DelegateCreation, @explicit_delegate_creation_expr { }
+class ExplicitDelegateCreation extends DelegateCreation, @explicit_delegate_creation_expr {
+  override string getAPrimaryQlClass() { result = "ExplicitDelegateCreation" }
+}
 
 /**
  * An implicit delegate creation, for example the access to `M` on line 6 in
  *
- * ```
+ * ```csharp
  * class A {
  *   delegate void D(int x);
  *
@@ -270,12 +286,14 @@ class ExplicitDelegateCreation extends DelegateCreation, @explicit_delegate_crea
  * }
  * ```
  */
-class ImplicitDelegateCreation extends DelegateCreation, @implicit_delegate_creation_expr { }
+class ImplicitDelegateCreation extends DelegateCreation, @implicit_delegate_creation_expr {
+  override string getAPrimaryQlClass() { result = "ImplicitDelegateCreation" }
+}
 
 /**
  * An array initializer, for example `{ {0, 1}, {2, 3}, {4, 5} }` in
  *
- * ```
+ * ```csharp
  * var ints = new int[,] {
  *   {0, 1},
  *   {2, 3},
@@ -288,7 +306,7 @@ class ArrayInitializer extends Expr, @array_init_expr {
    * Gets an element of this array initializer, for example `{0, 1}` on line
    * 2 (itself an array initializer) in
    *
-   * ```
+   * ```csharp
    * var ints = new int[,] {
    *   {0, 1},
    *   {2, 3},
@@ -302,7 +320,7 @@ class ArrayInitializer extends Expr, @array_init_expr {
    * Gets the `i`th element of this array initializer, for example the second
    * (`i = 1`) element is `{2, 3}` on line 3 (itself an array initializer) in
    *
-   * ```
+   * ```csharp
    * var ints = new int[,] {
    *   {0, 1},
    *   {2, 3},
@@ -322,6 +340,8 @@ class ArrayInitializer extends Expr, @array_init_expr {
   predicate hasNoElements() { not exists(this.getAnElement()) }
 
   override string toString() { result = "{ ..., ... }" }
+
+  override string getAPrimaryQlClass() { result = "ArrayInitializer" }
 }
 
 /**
@@ -335,7 +355,7 @@ class ArrayCreation extends Expr, @array_creation_expr {
    * Gets a dimension's length argument of this array creation, for
    * example `5` in
    *
-   * ```
+   * ```csharp
    * new int[5, 10]
    * ```
    */
@@ -345,7 +365,7 @@ class ArrayCreation extends Expr, @array_creation_expr {
    * Gets the `i`th dimension's length argument of this array creation, for
    * example the second (`i = 1`) dimension's length is `10` in
    *
-   * ```
+   * ```csharp
    * new int[5, 10]
    * ```
    */
@@ -370,6 +390,8 @@ class ArrayCreation extends Expr, @array_creation_expr {
   predicate isImplicitlyTyped() { implicitly_typed_array_creation(this) }
 
   override string toString() { result = "array creation of type " + this.getType().getName() }
+
+  override string getAPrimaryQlClass() { result = "ArrayCreation" }
 }
 
 /**
@@ -377,6 +399,8 @@ class ArrayCreation extends Expr, @array_creation_expr {
  */
 class Stackalloc extends ArrayCreation {
   Stackalloc() { stackalloc_array_creation(this) }
+
+  override string getAPrimaryQlClass() { result = "Stackalloc" }
 }
 
 /**
@@ -405,6 +429,8 @@ class AnonymousFunctionExpr extends Expr, Callable, @anonymous_function_expr {
  */
 class LambdaExpr extends AnonymousFunctionExpr, @lambda_expr {
   override string toString() { result = "(...) => ..." }
+
+  override string getAPrimaryQlClass() { result = "LambdaExpr" }
 }
 
 /**
@@ -413,4 +439,6 @@ class LambdaExpr extends AnonymousFunctionExpr, @lambda_expr {
  */
 class AnonymousMethodExpr extends AnonymousFunctionExpr, @anonymous_method_expr {
   override string toString() { result = "delegate(...) { ... }" }
+
+  override string getAPrimaryQlClass() { result = "AnonymousMethodExpr" }
 }

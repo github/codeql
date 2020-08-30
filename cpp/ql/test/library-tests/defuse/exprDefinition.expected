@@ -1,6 +1,8 @@
 | addressOf.cpp:47:8:47:9 | f1 | addressOf.cpp:47:12:47:31 | [...](...){...} | addressOf.cpp:47:12:47:31 | [...](...){...} |
 | addressOf.cpp:49:8:49:9 | f2 | addressOf.cpp:49:12:49:39 | [...](...){...} | addressOf.cpp:49:12:49:39 | [...](...){...} |
 | addressOf.cpp:56:7:56:7 | a | addressOf.cpp:56:13:56:28 | {...} | addressOf.cpp:56:13:56:28 | {...} |
+| addressOf.cpp:76:7:76:7 | x | addressOf.cpp:76:10:76:11 | 0 | addressOf.cpp:76:10:76:11 | 0 |
+| addressOf.cpp:77:8:77:8 | y | addressOf.cpp:77:12:77:49 | ... + ... | addressOf.cpp:77:12:77:49 | ... + ... |
 | indirect_use.cpp:20:10:20:10 | p | indirect_use.cpp:20:14:20:15 | ip | indirect_use.cpp:20:14:20:15 | ip |
 | indirect_use.cpp:25:10:25:10 | p | indirect_use.cpp:25:14:25:19 | ... + ... | indirect_use.cpp:25:14:25:19 | ... + ... |
 | indirect_use.cpp:35:10:35:10 | p | indirect_use.cpp:35:14:35:15 | ip | indirect_use.cpp:35:14:35:15 | ip |

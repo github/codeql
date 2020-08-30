@@ -5,6 +5,7 @@ private import DataFlowDispatch
 private import DataFlowPrivate
 private import semmle.code.csharp.Caching
 private import semmle.code.csharp.controlflow.Guards
+private import semmle.code.csharp.Unification
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
@@ -38,26 +39,37 @@ class Node extends TNode {
 
   /** Gets the type of this node. */
   cached
-  DotNet::Type getType() { none() }
-
-  /** Gets an upper bound on the type of this node. */
-  DotNet::Type getTypeBound() { result = this.getType() } // stub implementation
+  final DotNet::Type getType() {
+    Stages::DataFlowStage::forceCachingInSameStage() and result = this.(NodeImpl).getTypeImpl()
+  }
 
   /** Gets the enclosing callable of this node. */
   cached
-  DataFlowCallable getEnclosingCallable() { none() }
+  final DataFlowCallable getEnclosingCallable() {
+    Stages::DataFlowStage::forceCachingInSameStage() and
+    result = unique(DataFlowCallable c | c = this.(NodeImpl).getEnclosingCallableImpl() | c)
+  }
 
   /** Gets the control flow node corresponding to this node, if any. */
   cached
-  ControlFlow::Node getControlFlowNode() { none() }
+  final ControlFlow::Node getControlFlowNode() {
+    Stages::DataFlowStage::forceCachingInSameStage() and
+    result = unique(ControlFlow::Node n | n = this.(NodeImpl).getControlFlowNodeImpl() | n)
+  }
 
   /** Gets a textual representation of this node. */
   cached
-  string toString() { none() }
+  final string toString() {
+    Stages::DataFlowStage::forceCachingInSameStage() and
+    result = this.(NodeImpl).toStringImpl()
+  }
 
   /** Gets the location of this node. */
   cached
-  Location getLocation() { none() }
+  final Location getLocation() {
+    Stages::DataFlowStage::forceCachingInSameStage() and
+    result = this.(NodeImpl).getLocationImpl()
+  }
 
   /**
    * Holds if this element is at the specified location.
@@ -98,31 +110,6 @@ class ExprNode extends Node {
     this = TExprNode(cfn) and
     result = cfn.getElement()
   }
-
-  override DataFlowCallable getEnclosingCallable() {
-    Stages::DataFlowStage::forceCachingInSameStage() and
-    result = this.getExpr().getEnclosingCallable()
-  }
-
-  override ControlFlow::Nodes::ElementNode getControlFlowNode() {
-    Stages::DataFlowStage::forceCachingInSameStage() and this = TExprNode(result)
-  }
-
-  override DotNet::Type getType() {
-    Stages::DataFlowStage::forceCachingInSameStage() and result = this.getExpr().getType()
-  }
-
-  override Location getLocation() {
-    Stages::DataFlowStage::forceCachingInSameStage() and result = this.getExpr().getLocation()
-  }
-
-  override string toString() {
-    Stages::DataFlowStage::forceCachingInSameStage() and
-    result = this.getControlFlowNode().toString()
-    or
-    this = TCilExprNode(_) and
-    result = "CIL expression"
-  }
 }
 
 /**
@@ -136,8 +123,7 @@ class ParameterNode extends Node {
     this.(SsaDefinitionNode).getDefinition() instanceof
       ImplicitCapturedParameterNodeImpl::SsaCapturedEntryDefinition or
     this = TInstanceParameterNode(_) or
-    this = TCilParameterNode(_) or
-    this = TTaintedParameterNode(_)
+    this = TCilParameterNode(_)
   }
 
   /** Gets the parameter corresponding to this node, if any. */
@@ -179,15 +165,7 @@ AssignableDefinitionNode assignableDefinitionNode(AssignableDefinition def) {
   result.getDefinition() = def
 }
 
-/**
- * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
- * (intra-procedural) step.
- */
-predicate localFlowStep(Node nodeFrom, Node nodeTo) {
-  simpleLocalFlowStep(nodeFrom, nodeTo)
-  or
-  extendedLocalFlowStep(nodeFrom, nodeTo)
-}
+predicate localFlowStep = localFlowStepImpl/2;
 
 /**
  * Holds if data flows from `source` to `sink` in zero or more local
@@ -230,4 +208,69 @@ class BarrierGuard extends Guard {
       this.controlsNode(result.getControlFlowNode(), e, v)
     )
   }
+}
+
+/**
+ * A reference contained in an object. This is either a field, a property,
+ * or an element in a collection.
+ */
+class Content extends TContent {
+  /** Gets a textual representation of this content. */
+  string toString() { none() }
+
+  /** Gets the location of this content. */
+  Location getLocation() { none() }
+
+  /** Gets the type of the object containing this content. */
+  deprecated Gvn::GvnType getContainerType() { none() }
+
+  /** Gets the type of this content. */
+  deprecated Gvn::GvnType getType() { none() }
+}
+
+/** A reference to a field. */
+class FieldContent extends Content, TFieldContent {
+  private Field f;
+
+  FieldContent() { this = TFieldContent(f) }
+
+  /** Gets the field that is referenced. */
+  Field getField() { result = f }
+
+  override string toString() { result = f.toString() }
+
+  override Location getLocation() { result = f.getLocation() }
+
+  deprecated override Gvn::GvnType getContainerType() {
+    result = Gvn::getGlobalValueNumber(f.getDeclaringType())
+  }
+
+  deprecated override Gvn::GvnType getType() { result = Gvn::getGlobalValueNumber(f.getType()) }
+}
+
+/** A reference to a property. */
+class PropertyContent extends Content, TPropertyContent {
+  private Property p;
+
+  PropertyContent() { this = TPropertyContent(p) }
+
+  /** Gets the property that is referenced. */
+  Property getProperty() { result = p }
+
+  override string toString() { result = p.toString() }
+
+  override Location getLocation() { result = p.getLocation() }
+
+  deprecated override Gvn::GvnType getContainerType() {
+    result = Gvn::getGlobalValueNumber(p.getDeclaringType())
+  }
+
+  deprecated override Gvn::GvnType getType() { result = Gvn::getGlobalValueNumber(p.getType()) }
+}
+
+/** A reference to an element in a collection. */
+class ElementContent extends Content, TElementContent {
+  override string toString() { result = "[]" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
 }

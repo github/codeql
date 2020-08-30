@@ -37,10 +37,48 @@ private class OrdinaryJQueryObject extends JQueryObjectInternal {
   OrdinaryJQueryObject() {
     exists(JQuery::MethodCall jq |
       this.flow().getALocalSource() = jq and
-      // `jQuery.val()` does _not_ return a jQuery object
-      jq.getMethodName() != "val"
+      returnsAJQueryObject(jq, jq.getMethodName())
     )
   }
+}
+
+/**
+ * Holds if the jQuery method call `call`, with name `methodName`, returns a JQuery object.
+ *
+ * The `call` parameter has type `DataFlow::CallNode` instead of `JQuery::MethodCall` to avoid non-monotonic recursion.
+ * The not is placed inside the predicate to avoid non-monotonic recursion.
+ */
+bindingset[methodName, call]
+private predicate returnsAJQueryObject(DataFlow::CallNode call, string methodName) {
+  not (
+    neverReturnsJQuery(methodName)
+    or
+    methodName = "val" and call.getNumArgument() = 0 // `jQuery.val()`
+    or
+    methodName = ["html", "text"] and call.getNumArgument() = 0 // `jQuery.html()`/`jQuery.text()`
+    or
+    // `jQuery.attr(key)`/`jQuery.prop(key)`
+    methodName = ["attr", "prop"] and
+    call.getNumArgument() = 1 and
+    call.getArgument(0).mayHaveStringValue(_)
+  )
+}
+
+/**
+ * Holds if a jQuery method named `name` never returns a JQuery object.
+ */
+private predicate neverReturnsJQuery(string name) {
+  forex(ExternalMemberDecl decl |
+    decl.getBaseName() = "jQuery" and
+    decl.getName() = name
+  |
+    not decl
+        .getDocumentation()
+        .getATagByTitle("return")
+        .getType()
+        .getAnUnderlyingType()
+        .hasQualifiedName("jQuery")
+  )
 }
 
 /**
@@ -552,7 +590,7 @@ module JQuery {
       // Handle basic dynamic method dispatch (e.g. `$element[html ? 'html' : 'text'](content)`)
       exists(DataFlow::PropRead read | read = this.getCalleeNode() |
         read.getBase().getALocalSource() = [dollar(), objectRef()] and
-        read.getPropertyNameExpr().flow().mayHaveStringValue(name)
+        read.mayHavePropertyName(name)
       )
       or
       // Handle contributed JQuery objects that aren't source nodes (usually parameter uses)
@@ -616,10 +654,7 @@ module JQuery {
         )
       ) and
       plugin = write.getRhs() and
-      (
-        pluginName = write.getPropertyName() or
-        write.getPropertyNameExpr().flow().mayHaveStringValue(pluginName)
-      )
+      write.mayHavePropertyName(pluginName)
     )
   }
 

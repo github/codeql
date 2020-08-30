@@ -16,7 +16,9 @@ import semmle.code.java.frameworks.android.XmlParsing
 import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.frameworks.android.Intent
-import semmle.code.java.frameworks.SpringWeb
+import semmle.code.java.frameworks.spring.SpringWeb
+import semmle.code.java.frameworks.spring.SpringController
+import semmle.code.java.frameworks.spring.SpringWebClient
 import semmle.code.java.frameworks.Guice
 import semmle.code.java.frameworks.struts.StrutsActions
 import semmle.code.java.frameworks.Thrift
@@ -103,9 +105,22 @@ private class MessageBodyReaderParameterSource extends RemoteFlowSource {
   override string getSourceType() { result = "MessageBodyReader parameter" }
 }
 
+private class SpringMultipartFileSource extends RemoteFlowSource {
+  SpringMultipartFileSource() {
+    exists(MethodAccess ma, Method m |
+      ma = this.asExpr() and
+      m = ma.getMethod() and
+      m.getDeclaringType().hasQualifiedName("org.springframework.web.multipart", "MultipartFile") and
+      m.getName().matches("get%")
+    )
+  }
+
+  override string getSourceType() { result = "Spring MultipartFile getter" }
+}
+
 private class SpringServletInputParameterSource extends RemoteFlowSource {
   SpringServletInputParameterSource() {
-    this.asParameter().getAnAnnotation() instanceof SpringServletInputAnnotation
+    this.asParameter() = any(SpringRequestMappingParameter srmp | srmp.isTaintedInput())
   }
 
   override string getSourceType() { result = "Spring servlet input parameter" }
@@ -152,9 +167,13 @@ deprecated class RemoteUserInput extends UserInput {
   RemoteUserInput() { this instanceof RemoteFlowSource }
 }
 
-/** Input that may be controlled by a local user. */
+/** A node with input that may be controlled by a local user. */
 abstract class LocalUserInput extends UserInput { }
 
+/**
+ * A node with input from the local environment, such as files, standard in,
+ * environment variables, and main method parameters.
+ */
 class EnvInput extends LocalUserInput {
   EnvInput() {
     // Parameters to a main method.
@@ -180,6 +199,7 @@ class EnvInput extends LocalUserInput {
   }
 }
 
+/** A node with input from a database. */
 class DatabaseInput extends LocalUserInput {
   DatabaseInput() { this.asExpr().(MethodAccess).getMethod() instanceof ResultSetGetStringMethod }
 }
@@ -197,6 +217,8 @@ private class RemoteTaintedMethod extends Method {
     this instanceof HttpServletRequestGetRequestURIMethod or
     this instanceof HttpServletRequestGetRequestURLMethod or
     this instanceof HttpServletRequestGetRemoteUserMethod or
+    this instanceof SpringWebRequestGetMethod or
+    this instanceof SpringRestTemplateResponseEntityMethod or
     this instanceof ServletRequestGetBodyMethod or
     this instanceof CookieGetValueMethod or
     this instanceof CookieGetNameMethod or
@@ -214,6 +236,22 @@ private class RemoteTaintedMethod extends Method {
   }
 }
 
+private class SpringWebRequestGetMethod extends Method {
+  SpringWebRequestGetMethod() {
+    exists(SpringWebRequest swr | this = swr.getAMethod() |
+      this.hasName("getDescription") or
+      this.hasName("getHeader") or
+      this.hasName("getHeaderNames") or
+      this.hasName("getHeaderValues") or
+      this.hasName("getParameter") or
+      this.hasName("getParameterMap") or
+      this.hasName("getParameterNames") or
+      this.hasName("getParameterValues")
+      // TODO consider getRemoteUser
+    )
+  }
+}
+
 private class EnvTaintedMethod extends Method {
   EnvTaintedMethod() {
     this instanceof MethodSystemGetenv or
@@ -222,10 +260,12 @@ private class EnvTaintedMethod extends Method {
   }
 }
 
+/** The type `java.net.InetAddress`. */
 class TypeInetAddr extends RefType {
   TypeInetAddr() { this.getQualifiedName() = "java.net.InetAddress" }
 }
 
+/** A reverse DNS method. */
 class ReverseDNSMethod extends Method {
   ReverseDNSMethod() {
     this.getDeclaringType() instanceof TypeInetAddr and

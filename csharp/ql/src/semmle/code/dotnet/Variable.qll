@@ -1,3 +1,5 @@
+/** Provides classes for .Net variables, such as fields and parameters. */
+
 import Declaration
 import Callable
 

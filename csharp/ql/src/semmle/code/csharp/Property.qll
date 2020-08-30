@@ -106,7 +106,7 @@ class DeclarationWithGetSetAccessors extends DeclarationWithAccessors, TopLevelE
 /**
  * A property, for example `P` on line 2 in
  *
- * ```
+ * ```csharp
  * class C {
  *   public int P { get; set; }
  * }
@@ -123,7 +123,7 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
    * Holds if this property is automatically implemented. For example, `P1`
    * on line 2 is automatically implemented, while `P2` on line 5 is not in
    *
-   * ```
+   * ```csharp
    * class C {
    *   public int P1 { get; set; }
    *
@@ -195,7 +195,7 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
    * Gets the initial value of this property, if any. For example, the initial
    * value of `P` on line 2 is `20` in
    *
-   * ```
+   * ```csharp
    * class C {
    *   public int P { get; set; } = 20;
    * }
@@ -207,7 +207,7 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
    * Holds if this property has an initial value. For example, the initial
    * value of `P` on line 2 is `20` in
    *
-   * ```
+   * ```csharp
    * class C {
    *   public int P { get; set; } = 20;
    * }
@@ -219,7 +219,7 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
    * Gets the expression body of this property, if any. For example, the expression
    * body of `P` on line 2 is `20` in
    *
-   * ```
+   * ```csharp
    * class C {
    *   public int P => 20;
    * }
@@ -232,12 +232,14 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
   override Getter getGetter() { result = DeclarationWithGetSetAccessors.super.getGetter() }
 
   override Setter getSetter() { result = DeclarationWithGetSetAccessors.super.getSetter() }
+
+  override string getAPrimaryQlClass() { result = "Property" }
 }
 
 /**
  * An indexer, for example `string this[int i]` on line 2 in
  *
- * ```
+ * ```csharp
  * class C {
  *   public string this[int i] {
  *     get { return i.ToString(); }
@@ -261,7 +263,7 @@ class Indexer extends DeclarationWithGetSetAccessors, Parameterizable, @indexer 
    * Gets the expression body of this indexer, if any. For example, the
    * expression body of the indexer on line 2 is `20` in
    *
-   * ```
+   * ```csharp
    * class C {
    *   public int this[int i] => 20;
    * }
@@ -298,6 +300,8 @@ class Indexer extends DeclarationWithGetSetAccessors, Parameterizable, @indexer 
   override Location getALocation() { indexer_location(this, result) }
 
   override string toStringWithTypes() { result = getName() + "[" + parameterTypesToString() + "]" }
+
+  override string getAPrimaryQlClass() { result = "Indexer" }
 }
 
 /**
@@ -314,7 +318,7 @@ class Accessor extends Callable, Modifiable, Attributable, @callable_accessor {
    * Gets the declaration that this accessor belongs to. For example, both
    * accessors on lines 3 and 4 belong to the property `P` on line 2 in
    *
-   * ```
+   * ```csharp
    * class C {
    *   public int P {
    *     get;
@@ -330,7 +334,7 @@ class Accessor extends Callable, Modifiable, Attributable, @callable_accessor {
    * the `get` accessor on line 3 has no access modifier and the `set` accessor
    * on line 4 has a `private` access modifier in
    *
-   * ```
+   * ```csharp
    * class C {
    *   public int P {
    *     get;
@@ -349,7 +353,7 @@ class Accessor extends Callable, Modifiable, Attributable, @callable_accessor {
    * has the modifiers `public` and `virtual`, and the `set` accessor on line 4
    * has the modifiers `private` and `virtual` in
    *
-   * ```
+   * ```csharp
    * class C {
    *   public virtual int P {
    *     get;
@@ -375,7 +379,7 @@ class Accessor extends Callable, Modifiable, Attributable, @callable_accessor {
 /**
  * A `get` accessor, for example `get { return p; }` in
  *
- * ```
+ * ```csharp
  * public class C {
  *   int p;
  *   public int P {
@@ -394,7 +398,7 @@ class Getter extends Accessor, @getter {
    * Gets the field used in the trival implementation of this getter, if any.
    * For example, the field `p` in
    *
-   * ```
+   * ```csharp
    * public class C {
    *   int p;
    *   public int P {
@@ -415,12 +419,14 @@ class Getter extends Accessor, @getter {
   override DeclarationWithGetSetAccessors getDeclaration() {
     result = Accessor.super.getDeclaration()
   }
+
+  override string getAPrimaryQlClass() { result = "Getter" }
 }
 
 /**
  * A `set` accessor, for example `set { p = value; }` in
  *
- * ```
+ * ```csharp
  * public class C {
  *   int p;
  *   public int P {
@@ -442,7 +448,7 @@ class Setter extends Accessor, @setter {
    * Gets the field used in the trival implementation of this setter, if any.
    * For example, the field `p` in
    *
-   * ```
+   * ```csharp
    * public class C {
    *   int p;
    *   public int P {
@@ -464,6 +470,8 @@ class Setter extends Accessor, @setter {
   override DeclarationWithGetSetAccessors getDeclaration() {
     result = Accessor.super.getDeclaration()
   }
+
+  override string getAPrimaryQlClass() { result = "Setter" }
 }
 
 /**
@@ -478,7 +486,7 @@ private ParameterAccess accessToValue() {
  * A property with a trivial getter and setter. For example, properties `P1`
  * and `P2` are trivial, while `P3` is not, in
  *
- * ```
+ * ```csharp
  * public class C {
  *   int p1;
  *   public int P1 {
@@ -536,7 +544,7 @@ class IndexerProperty extends Property {
     // too many indexer calls, for example the call to the indexer
     // setter at `dict[0]` in
     //
-    // ```
+    // ```csharp
     // class A
     // {
     //     Dictionary<int, string> dict;
@@ -554,4 +562,6 @@ class IndexerProperty extends Property {
     // ```
     result.getIndexer() = i
   }
+
+  override string getAPrimaryQlClass() { result = "IndexerProperty" }
 }

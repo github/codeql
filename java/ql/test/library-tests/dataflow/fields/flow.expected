@@ -26,3 +26,6 @@
 | E.java:2:32:2:43 | new Object(...) | E.java:21:10:21:24 | bh2.buf.content |
 | E.java:2:32:2:43 | new Object(...) | E.java:24:10:24:28 | p2.data.buf.content |
 | E.java:2:32:2:43 | new Object(...) | E.java:30:10:30:27 | p.data.buf.content |
+| F.java:5:14:5:25 | new Object(...) | F.java:20:10:20:17 | f.Field1 |
+| F.java:10:16:10:27 | new Object(...) | F.java:15:10:15:17 | f.Field1 |
+| F.java:24:9:24:20 | new Object(...) | F.java:33:10:33:17 | f.Field1 |
