@@ -9,15 +9,21 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     public class Parameter : CachedSymbol<IParameterSymbol>, IExpressionParentEntity
     {
-        protected IEntity Parent;
+        protected IEntity? Parent;
         protected readonly Parameter Original;
 
-        protected Parameter(Context cx, IParameterSymbol init, IEntity parent, Parameter original)
+        protected Parameter(Context cx, IParameterSymbol? init, IEntity? parent, Parameter? original)
             : base(cx, init)
         {
             Parent = parent;
             Original = original ?? this;
         }
+
+        public static Parameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter? original = null) =>
+            ParameterFactory.Instance.CreateEntity(cx, param, parent, original);
+
+        public static Parameter Create(Context cx, IParameterSymbol param) =>
+            ParameterFactory.Instance.CreateEntity(cx, param, null, null);
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => symbol.GetSymbolLocation();
 
@@ -64,12 +70,6 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
             }
         }
-
-        public static Parameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter original = null) =>
-            ParameterFactory.Instance.CreateEntity(cx, param, parent, original);
-
-        public static Parameter Create(Context cx, IParameterSymbol param) =>
-            ParameterFactory.Instance.CreateEntity(cx, param, null, null);
 
         public override void WriteId(TextWriter trapFile)
         {
@@ -120,7 +120,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     Select(d => d.GetSyntax()).
                     OfType<ParameterSyntax>().
                     Where(s => s.Type != null))
-                    TypeMention.Create(Context, syntax.Type, this, type);
+                    TypeMention.Create(Context, syntax.Type!, this, type);
 
             if (symbol.HasExplicitDefaultValue && Context.Defines(symbol))
             {
@@ -137,7 +137,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     if (method != null)
                     {
                         var i = method.Parameters.IndexOf(symbol);
-                        var indexer = (IPropertySymbol)method.AssociatedSymbol;
+                        var indexer = (IPropertySymbol?)method.AssociatedSymbol;
                         if (indexer != null)
                             defaultValue = GetParameterDefaultValue(indexer.Parameters[i]);
                     }
@@ -157,17 +157,17 @@ namespace Semmle.Extraction.CSharp.Entities
 
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
-        static EqualsValueClauseSyntax GetParameterDefaultValue(IParameterSymbol parameter)
+        static EqualsValueClauseSyntax? GetParameterDefaultValue(IParameterSymbol parameter)
         {
             var syntax = parameter.DeclaringSyntaxReferences.Select(@ref => @ref.GetSyntax()).OfType<ParameterSyntax>().FirstOrDefault();
             return syntax != null ? syntax.Default : null;
         }
 
-        class ParameterFactory : ICachedEntityFactory<(IParameterSymbol, IEntity, Parameter), Parameter>
+        class ParameterFactory : ICachedEntityFactory<(IParameterSymbol, IEntity?, Parameter?), Parameter>
         {
             public static readonly ParameterFactory Instance = new ParameterFactory();
 
-            public Parameter Create(Context cx, (IParameterSymbol, IEntity, Parameter) init) => new Parameter(cx, init.Item1, init.Item2, init.Item3);
+            public Parameter Create(Context cx, (IParameterSymbol, IEntity?, Parameter?) init) => new Parameter(cx, init.Item1, init.Item2, init.Item3);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
@@ -197,25 +197,27 @@ namespace Semmle.Extraction.CSharp.Entities
             return 98735267;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj != null && obj.GetType() == typeof(VarargsType);
         }
 
         public static VarargsType Create(Context cx) => VarargsTypeFactory.Instance.CreateNullableEntity(cx, null);
 
-        class VarargsTypeFactory : ICachedEntityFactory<string, VarargsType>
+        class VarargsTypeFactory : ICachedEntityFactory<string?, VarargsType>
         {
             public static readonly VarargsTypeFactory Instance = new VarargsTypeFactory();
 
-            public VarargsType Create(Context cx, string init) => new VarargsType(cx);
+            public VarargsType Create(Context cx, string? init) => new VarargsType(cx);
         }
     }
 
     class VarargsParam : Parameter
     {
+        new IEntity Parent;
+
         VarargsParam(Context cx, Method methodKey)
-            : base(cx, null, methodKey, null) { }
+            : base(cx, null, methodKey, null) { Parent = methodKey; }
 
         public override void Populate(TextWriter trapFile)
         {
@@ -232,7 +234,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return 9873567;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj != null && obj.GetType() == typeof(VarargsParam);
         }
@@ -249,12 +251,15 @@ namespace Semmle.Extraction.CSharp.Entities
 
     class ConstructedExtensionParameter : Parameter
     {
-        readonly ITypeSymbol ConstructedType;
+        readonly ITypeSymbol? ConstructedType;
+
+        new IEntity Parent;
 
         ConstructedExtensionParameter(Context cx, Method method, Parameter original)
             : base(cx, original.symbol, method, original)
         {
             ConstructedType = method.symbol.ReceiverType;
+            Parent = method;
         }
 
         public override void Populate(TextWriter trapFile)
@@ -264,9 +269,9 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.param_location(this, Original.Location);
         }
 
-        public override int GetHashCode() => symbol.GetHashCode() + 31 * ConstructedType.GetHashCode();
+        public override int GetHashCode() => (symbol, ConstructedType).GetHashCode();
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             var other = obj as ConstructedExtensionParameter;
             if (other == null || other.GetType() != typeof(ConstructedExtensionParameter))

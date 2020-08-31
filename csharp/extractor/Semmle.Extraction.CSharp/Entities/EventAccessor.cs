@@ -11,7 +11,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         /// Gets the event symbol associated with this accessor.
         /// </summary>
-        IEventSymbol EventSymbol => symbol.AssociatedSymbol as IEventSymbol;
+        IEventSymbol? EventSymbol => symbol.AssociatedSymbol as IEventSymbol;
 
         public override void Populate(TextWriter trapFile)
         {
@@ -31,12 +31,12 @@ namespace Semmle.Extraction.CSharp.Entities
             if (SymbolEqualityComparer.Default.Equals(symbol, @event.AddMethod))
             {
                 kind = 1;
-                unboundAccessor = Create(Context, @event.OriginalDefinition.AddMethod);
+                unboundAccessor = Create(Context, @event.OriginalDefinition.AddMethod!);
             }
             else if (SymbolEqualityComparer.Default.Equals(symbol, @event.RemoveMethod))
             {
                 kind = 2;
-                unboundAccessor = Create(Context, @event.OriginalDefinition.RemoveMethod);
+                unboundAccessor = Create(Context, @event.OriginalDefinition.RemoveMethod!);
             }
             else
             {

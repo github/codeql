@@ -64,7 +64,7 @@ namespace Semmle.Extraction.CSharp.Entities
             NullableParameters = method.GetAnnotatedTypeArguments().Select(a => new Nullability(a)).ToArray();
         }
 
-        public override bool Equals(object other)
+        public override bool Equals(object? other)
         {
             return other is Nullability n && Annotation == n.Annotation && NullableParameters.SequenceEqual(n.NullableParameters);
         }

@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Populators
         /// <param name="l1">The location to extend.</param>
         /// <param name="n2">The node to extend the location to.</param>
         /// <returns>Extended location.</returns>
-        public static Location ExtendLocation(this Location l1, SyntaxNode n2)
+        public static Location ExtendLocation(this Location l1, SyntaxNode? n2)
         {
             if (n2 == null)
             {

@@ -10,10 +10,10 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     class NamespaceDeclaration : FreshEntity
     {
-        private readonly NamespaceDeclaration Parent;
+        private readonly NamespaceDeclaration? Parent;
         private readonly NamespaceDeclarationSyntax Node;
 
-        public NamespaceDeclaration(Context cx, NamespaceDeclarationSyntax node, NamespaceDeclaration parent)
+        public NamespaceDeclaration(Context cx, NamespaceDeclarationSyntax node, NamespaceDeclaration? parent)
             : base(cx)
         {
             Node = node;
@@ -41,7 +41,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public static NamespaceDeclaration Create(Context cx, NamespaceDeclarationSyntax decl, NamespaceDeclaration parent) => new NamespaceDeclaration(cx, decl, parent);
+        public static NamespaceDeclaration Create(Context cx, NamespaceDeclarationSyntax decl, NamespaceDeclaration? parent) => new NamespaceDeclaration(cx, decl, parent);
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }

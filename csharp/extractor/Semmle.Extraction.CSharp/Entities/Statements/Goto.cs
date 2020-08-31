@@ -36,11 +36,11 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             switch (GetKind(Stmt))
             {
                 case StmtKind.GOTO:
-                    var target = ((IdentifierNameSyntax)Stmt.Expression).Identifier.Text;
+                    var target = ((IdentifierNameSyntax)Stmt.Expression!).Identifier.Text;
                     trapFile.exprorstmt_name(this, target);
                     break;
                 case StmtKind.GOTO_CASE:
-                    Expr = Expression.Create(cx, Stmt.Expression, this, 0);
+                    Expr = Expression.Create(cx, Stmt.Expression!, this, 0);
                     ConstantValue = Switch.LabelForValue(cx.GetModel(Stmt).GetConstantValue(Stmt.Expression).Value);
                     break;
                 case StmtKind.GOTO_DEFAULT:
@@ -49,9 +49,9 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             }
         }
 
-        public Expression Expr { get; private set; }
+        public Expression? Expr { get; private set; }
 
-        public object ConstantValue { get; private set; }
+        public object? ConstantValue { get; private set; }
 
         public bool IsDefault => ConstantValue == Switch.DefaultLabel;
     }

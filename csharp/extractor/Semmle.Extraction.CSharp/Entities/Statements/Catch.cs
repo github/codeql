@@ -16,16 +16,16 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         protected override void PopulateStatement(TextWriter trapFile)
         {
             bool isSpecificCatchClause = Stmt.Declaration != null;
-            bool hasVariableDeclaration = isSpecificCatchClause && Stmt.Declaration.Identifier.RawKind != 0;
+            bool hasVariableDeclaration = isSpecificCatchClause && Stmt.Declaration!.Identifier.RawKind != 0;
 
             if (hasVariableDeclaration) // A catch clause of the form 'catch(Ex ex) { ... }'
             {
-                var decl = Expressions.VariableDeclaration.Create(cx, Stmt.Declaration, false, this, 0);
+                var decl = Expressions.VariableDeclaration.Create(cx, Stmt.Declaration!, false, this, 0);
                 trapFile.catch_type(this, decl.Type.Type.TypeRef, true);
             }
             else if (isSpecificCatchClause) // A catch clause of the form 'catch(Ex) { ... }'
             {
-                trapFile.catch_type(this, Type.Create(cx, cx.GetType(Stmt.Declaration.Type)).Type.TypeRef, true);
+                trapFile.catch_type(this, Type.Create(cx, cx.GetType(Stmt.Declaration!.Type)).Type.TypeRef, true);
             }
             else // A catch clause of the form 'catch { ... }'
             {

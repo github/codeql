@@ -43,7 +43,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
         }
 
-        Access(ExpressionNodeInfo info, ISymbol symbol, bool implicitThis, IEntity target)
+        Access(ExpressionNodeInfo info, ISymbol symbol, bool implicitThis, IEntity? target)
             : base(info.SetKind(AccessKind(info.Context, symbol)))
         {
             if (!(target is null))
@@ -57,6 +57,6 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
         }
 
-        public static Expression Create(ExpressionNodeInfo info, ISymbol symbol, bool implicitThis, IEntity target) => new Access(info, symbol, implicitThis, target);
+        public static Expression Create(ExpressionNodeInfo info, ISymbol symbol, bool implicitThis, IEntity? target) => new Access(info, symbol, implicitThis, target);
     }
 }

@@ -35,9 +35,9 @@ namespace Semmle.Extraction
     public class AssemblyScope : IExtractionScope
     {
         readonly IAssemblySymbol assembly;
-        readonly string filepath;
+        readonly string? filepath;
 
-        public AssemblyScope(IAssemblySymbol symbol, string path, bool isOutput)
+        public AssemblyScope(IAssemblySymbol symbol, string? path, bool isOutput)
         {
             assembly = symbol;
             filepath = path;

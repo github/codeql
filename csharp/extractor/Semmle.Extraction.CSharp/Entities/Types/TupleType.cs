@@ -41,7 +41,7 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateType(trapFile);
             PopulateGenerics();
 
-            var underlyingType = NamedType.Create(Context, symbol.TupleUnderlyingType);
+            var underlyingType = NamedType.Create(Context, symbol.TupleUnderlyingType!);
             trapFile.tuple_underlying_type(this, underlyingType);
 
             int index = 0;

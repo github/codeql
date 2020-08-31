@@ -38,7 +38,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (symbol.HasUnmanagedTypeConstraint)
                 trapFile.general_type_parameter_constraints(constraints, 4);
 
-            ITypeSymbol baseType = symbol.HasValueTypeConstraint ?
+            ITypeSymbol? baseType = symbol.HasValueTypeConstraint ?
                     Context.Compilation.GetTypeByMetadataName(valueTypeName) :
                     Context.Compilation.ObjectType;
 
@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             foreach (var abase in symbol.GetAnnotatedTypeConstraints())
             {
-                if (abase.Symbol.TypeKind != TypeKind.Interface)
+                if (abase.Symbol?.TypeKind != TypeKind.Interface)
                     baseType = abase.Symbol;
                 var t = Create(Context, abase.Symbol);
                 trapFile.specific_type_parameter_constraints(constraints, t.TypeRef);

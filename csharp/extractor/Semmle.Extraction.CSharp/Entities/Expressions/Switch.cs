@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public static Expression Create(ExpressionNodeInfo info) => new Switch(info).TryPopulate();
 
-        public Expression SwitchedExpr { get; private set; }
+        public Expression? SwitchedExpr { get; private set; }
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
     class SwitchCase : Expression
     {
         internal SwitchCase(Context cx, SwitchExpressionArmSyntax arm, Switch parent, int child) :
-            base(new ExpressionInfo(cx, parent.SwitchedExpr.Type, cx.Create(arm.GetLocation()), ExprKind.SWITCH_CASE, parent, child, false, null))
+            base(new ExpressionInfo(cx, parent.SwitchedExpr!.Type, cx.Create(arm.GetLocation()), ExprKind.SWITCH_CASE, parent, child, false, null))
         {
             cx.CreatePattern(arm.Pattern, this, 0);
             if (arm.WhenClause is WhenClauseSyntax when)

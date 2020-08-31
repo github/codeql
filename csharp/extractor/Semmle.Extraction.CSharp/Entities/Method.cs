@@ -2,6 +2,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Populators;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 
@@ -24,7 +25,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 {
                     // Non-generic reduced extensions must be extracted exactly like the
                     // non-reduced counterparts
-                    parameters = symbol.ReducedFrom.Parameters;
+                    parameters = symbol.ReducedFrom!.Parameters;
                 }
                 else
                 {
@@ -94,7 +95,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 if (IsSourceDeclaration)
                     foreach (var syntax in symbol.DeclaringSyntaxReferences.Select(d => d.GetSyntax()).OfType<MethodDeclarationSyntax>())
-                        TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier.Name, this, explicitInterface);
+                        TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier!.Name, this, explicitInterface);
             }
 
             if (symbol.OverriddenMethod != null)
@@ -258,7 +259,8 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <param name="cx"></param>
         /// <param name="methodDecl"></param>
         /// <returns></returns>
-        public static Method Create(Context cx, IMethodSymbol methodDecl)
+        [return: NotNullIfNotNull(parameterName: "methodDecl")]
+        public static Method? Create(Context cx, IMethodSymbol? methodDecl)
         {
             if (methodDecl == null) return null;
 
@@ -303,7 +305,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public Method OriginalDefinition =>
             IsReducedExtension
-                ? Create(Context, symbol.ReducedFrom)
+                ? Create(Context, symbol.ReducedFrom!)
                 : Create(Context, symbol.OriginalDefinition);
 
         public override Microsoft.CodeAnalysis.Location FullLocation => ReportingLocation;

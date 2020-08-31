@@ -11,10 +11,10 @@ namespace Semmle.Extraction.CSharp.Populators
     public class TypeContainerVisitor : CSharpSyntaxVisitor
     {
         protected readonly Context cx;
-        protected readonly IEntity parent;
+        protected readonly IEntity? parent;
         protected readonly TextWriter trapFile;
 
-        public TypeContainerVisitor(Context cx, TextWriter trapFile, IEntity parent)
+        public TypeContainerVisitor(Context cx, TextWriter trapFile, IEntity? parent)
         {
             this.cx = cx;
             this.parent = parent;
@@ -66,19 +66,19 @@ namespace Semmle.Extraction.CSharp.Populators
 
     class TypeOrNamespaceVisitor : TypeContainerVisitor
     {
-        public TypeOrNamespaceVisitor(Context cx, TextWriter trapFile, IEntity parent)
+        public TypeOrNamespaceVisitor(Context cx, TextWriter trapFile, IEntity? parent)
             : base(cx, trapFile, parent) { }
 
         public override void VisitUsingDirective(UsingDirectiveSyntax usingDirective)
         {
             // Only deal with "using namespace" not "using X = Y"
             if (usingDirective.Alias == null)
-                new UsingDirective(cx, usingDirective, (NamespaceDeclaration)parent);
+                new UsingDirective(cx, usingDirective, (NamespaceDeclaration?)parent);
         }
 
         public override void VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
         {
-            NamespaceDeclaration.Create(cx, node, (NamespaceDeclaration)parent);
+            NamespaceDeclaration.Create(cx, node, (NamespaceDeclaration?)parent);
         }
     }
 

@@ -5,7 +5,7 @@ namespace Semmle.Extraction.Entities
 {
     public class Assembly : Location
     {
-        readonly string assemblyPath;
+        readonly string? assemblyPath;
         readonly IAssemblySymbol assembly;
 
         Assembly(Context cx, Microsoft.CodeAnalysis.Location? init)

@@ -76,8 +76,11 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             var trapFile = cx.TrapWriter.Writer;
             foreach (var sub in pp.Subpatterns)
             {
-                var p = cx.CreatePattern(sub.Pattern, this, child++);
-                trapFile.exprorstmt_name(p, sub.NameColon.Name.ToString());
+                if (!(sub.NameColon is null))
+                {
+                    var p = cx.CreatePattern(sub.Pattern, this, child++);
+                    trapFile.exprorstmt_name(p, sub.NameColon.Name.ToString());
+                }
             }
         }
     }

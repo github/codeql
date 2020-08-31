@@ -18,11 +18,16 @@ namespace Semmle.Extraction.CSharp.Populators
 
             public override LineCounts VisitMethodDeclaration(MethodDeclarationSyntax method)
             {
-                return Visit(method.Identifier, method.Body ?? (SyntaxNode)method.ExpressionBody);
+                return Visit(method.Identifier, method.Body ?? (SyntaxNode?)method.ExpressionBody);
             }
 
-            public LineCounts Visit(SyntaxToken identifier, SyntaxNode body)
+            public LineCounts Visit(SyntaxToken identifier, SyntaxNode? body)
             {
+                if (body is null)
+                {
+                    return Semmle.Util.LineCounter.ComputeLineCounts(string.Empty);
+                }
+
                 int start = identifier.GetLocation().SourceSpan.Start;
                 int end = body.GetLocation().SourceSpan.End - 1;
 
@@ -34,17 +39,17 @@ namespace Semmle.Extraction.CSharp.Populators
 
             public override LineCounts VisitConstructorDeclaration(ConstructorDeclarationSyntax method)
             {
-                return Visit(method.Identifier, (SyntaxNode)method.Body ?? method.ExpressionBody);
+                return Visit(method.Identifier, (SyntaxNode?)method.Body ?? method.ExpressionBody);
             }
 
             public override LineCounts VisitDestructorDeclaration(DestructorDeclarationSyntax method)
             {
-                return Visit(method.Identifier, (SyntaxNode)method.Body ?? method.ExpressionBody);
+                return Visit(method.Identifier, (SyntaxNode?)method.Body ?? method.ExpressionBody);
             }
 
             public override LineCounts VisitOperatorDeclaration(OperatorDeclarationSyntax node)
             {
-                return Visit(node.OperatorToken, node.Body ?? (SyntaxNode)node.ExpressionBody);
+                return Visit(node.OperatorToken, node.Body ?? (SyntaxNode?)node.ExpressionBody);
             }
         }
 

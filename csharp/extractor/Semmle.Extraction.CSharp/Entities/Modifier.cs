@@ -18,9 +18,9 @@ namespace Semmle.Extraction.CSharp.Entities
             name = m;
         }
 
-        public override bool Equals(Object obj)
+        public override bool Equals(Object? obj)
         {
-            return obj.GetType() == GetType() && name == ((ModifierKey)obj).name;
+            return obj != null && obj.GetType() == GetType() && name == ((ModifierKey)obj).name;
         }
 
         public override int GetHashCode() => 13 * name.GetHashCode();
@@ -31,7 +31,7 @@ namespace Semmle.Extraction.CSharp.Entities
         Modifier(Context cx, ModifierKey init)
             : base(cx, init) { }
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => null;
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => null;
 
         public override void WriteId(TextWriter trapFile)
         {
@@ -138,7 +138,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (symbol.Kind == SymbolKind.NamedType)
             {
-                INamedTypeSymbol nt = symbol as INamedTypeSymbol;
+                INamedTypeSymbol? nt = symbol as INamedTypeSymbol;
                 if (nt is null)
                     throw new InternalError(symbol, "Symbol kind is inconsistent with its type");
 

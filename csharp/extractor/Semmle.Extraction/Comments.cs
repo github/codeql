@@ -88,7 +88,7 @@ namespace Semmle.Extraction.CommentProcessing
         /// <param name="elementLabel">Label of the element.</param>
         /// <param name="duplicationGuardKey">The duplication guard key of the element, if any.</param>
         /// <param name="location">Location of the element.</param>
-        void AddElement(Label elementLabel, Key? duplicationGuardKey, Location location);
+        void AddElement(Label elementLabel, Key? duplicationGuardKey, Location? location);
 
         /// <summary>
         /// Registers a line of comment.

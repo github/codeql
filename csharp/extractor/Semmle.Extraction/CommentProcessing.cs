@@ -63,7 +63,7 @@ namespace Semmle.Extraction.CommentProcessing
         /// <param name="elementLabel">The label of the element in the trap file.</param>
         /// <param name="duplicationGuardKey">The duplication guard key of the element, if any.</param>
         /// <param name="loc">The location of the element.</param>
-        public void AddElement(Label elementLabel, Key? duplicationGuardKey, Location loc)
+        public void AddElement(Label elementLabel, Key? duplicationGuardKey, Location? loc)
         {
             if (loc != null && loc.IsInSource)
                 elements[loc] = elementLabel;

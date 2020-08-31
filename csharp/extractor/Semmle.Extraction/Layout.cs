@@ -73,7 +73,7 @@ namespace Semmle.Extraction
         /// </summary>
         /// <param name="sourceFile">The file to look up.</param>
         /// <returns>The relevant subproject, or null if not found.</returns>
-        public SubProject? LookupProjectOrNull(string sourceFile)
+        public SubProject? LookupProjectOrNull(string? sourceFile)
         {
             if (!useLayoutFile) return DefaultProject;
 
@@ -89,7 +89,7 @@ namespace Semmle.Extraction
         /// </summary>
         /// <param name="sourceFile">The file to look up.</param>
         /// <returns>The relevant subproject, or DefaultProject if not found.</returns>
-        public SubProject LookupProjectOrDefault(string sourceFile)
+        public SubProject LookupProjectOrDefault(string? sourceFile)
         {
             return LookupProjectOrNull(sourceFile) ?? DefaultProject;
         }
@@ -223,8 +223,11 @@ namespace Semmle.Extraction
             }
         }
 
-        public bool Matches(string path)
+        public bool Matches(string? path)
         {
+            if (path is null)
+                return false;
+
             bool matches = false;
             path = Condition.Normalise(path);
             foreach (Condition condition in conditions)

@@ -50,12 +50,12 @@ namespace Semmle.Extraction.CSharp.Entities
             if (SymbolEqualityComparer.Default.Equals(symbol, prop.GetMethod))
             {
                 kind = 1;
-                unboundAccessor = Create(Context, prop.OriginalDefinition.GetMethod);
+                unboundAccessor = Create(Context, prop.OriginalDefinition.GetMethod!);
             }
             else if (SymbolEqualityComparer.Default.Equals(symbol, prop.SetMethod))
             {
                 kind = 2;
-                unboundAccessor = Create(Context, prop.OriginalDefinition.SetMethod);
+                unboundAccessor = Create(Context, prop.OriginalDefinition.SetMethod!);
             }
             else
             {

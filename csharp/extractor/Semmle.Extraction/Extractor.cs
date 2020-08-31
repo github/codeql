@@ -74,7 +74,7 @@ namespace Semmle.Extraction
         /// The full path of the generated DLL/EXE.
         /// null if not specified.
         /// </summary>
-        string OutputPath { get; }
+        string? OutputPath { get; }
 
         /// <summary>
         /// The object used for logging.
@@ -111,7 +111,7 @@ namespace Semmle.Extraction
         /// </summary>
         /// <param name="standalone">If the extraction is standalone.</param>
         /// <param name="outputPath">The name of the output DLL/EXE, or null if not specified (standalone extraction).</param>
-        public Extractor(bool standalone, string outputPath, ILogger logger)
+        public Extractor(bool standalone, string? outputPath, ILogger logger)
         {
             Standalone = standalone;
             OutputPath = outputPath;
@@ -196,7 +196,7 @@ namespace Semmle.Extraction
 
         public IEnumerable<string> MissingNamespaces => missingNamespaces;
 
-        public string OutputPath
+        public string? OutputPath
         {
             get;
             private set;

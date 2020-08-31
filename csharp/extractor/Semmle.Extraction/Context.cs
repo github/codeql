@@ -60,7 +60,9 @@ namespace Semmle.Extraction
         /// <param name="factory">The entity factory.</param>
         /// <param name="init">The initializer for the entity.</param>
         /// <returns>The new/existing entity.</returns>
-        public Entity CreateNullableEntity<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init) where Entity : ICachedEntity
+        public Entity CreateNullableEntity<Type, Entity>(ICachedEntityFactory<Type?, Entity> factory, Type? init)
+            where Entity : ICachedEntity
+            where Type : class
         {
             return init == null ? CreateEntity2(factory, init) : CreateNonNullEntity(factory, init);
         }
@@ -71,9 +73,9 @@ namespace Semmle.Extraction
         /// <param name="factory">The entity factory.</param>
         /// <param name="init">The initializer for the entity.</param>
         /// <returns>The new/existing entity.</returns>
-        public Entity CreateEntityFromSymbol<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init)
+        public Entity CreateEntityFromSymbol<Type, Entity>(ICachedEntityFactory<Type?, Entity> factory, Type init)
             where Entity : ICachedEntity
-            where Type : ISymbol
+            where Type : class, ISymbol
         {
             return init == null ? CreateEntity2(factory, init) : CreateNonNullEntity(factory, init);
         }
@@ -468,7 +470,7 @@ namespace Semmle.Extraction
         /// <param name="cx">Extractor context.</param>
         /// <param name="entity">Program entity.</param>
         /// <param name="l">Location of the entity.</param>
-        public void BindComments(IEntity entity, Microsoft.CodeAnalysis.Location l)
+        public void BindComments(IEntity entity, Microsoft.CodeAnalysis.Location? l)
         {
             var duplicationGuardKey = tagStack.Count > 0 ? tagStack.Peek() : null;
             CommentGenerator.AddElement(entity.Label, duplicationGuardKey, l);

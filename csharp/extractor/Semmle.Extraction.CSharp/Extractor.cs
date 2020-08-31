@@ -83,22 +83,16 @@ namespace Semmle.Extraction.CSharp
                 {
                     var compilerVersion = new CompilerVersion(commandLineArguments);
 
-                    bool preserveSymlinks = Environment.GetEnvironmentVariable("SEMMLE_PRESERVE_SYMLINKS") == "true";
-                    var canonicalPathCache = CanonicalPathCache.Create(logger, 1000, preserveSymlinks ? CanonicalPathCache.Symlinks.Preserve : CanonicalPathCache.Symlinks.Follow);
-
-                    if (compilerVersion.SkipExtraction)
-                    {
-                        logger.Log(Severity.Warning, "  Unrecognized compiler '{0}' because {1}", compilerVersion.SpecifiedCompiler, compilerVersion.SkipReason);
-                        return ExitCode.Ok;
-                    }
-
                     var cwd = Directory.GetCurrentDirectory();
+
+#nullable disable
                     var compilerArguments = CSharpCommandLineParser.Default.Parse(
                         compilerVersion.ArgsWithResponse,
                         cwd,
                         compilerVersion.FrameworkPath,
                         compilerVersion.AdditionalReferenceDirectories
                         );
+#nullable enable
 
                     if (compilerArguments == null)
                     {
@@ -114,6 +108,9 @@ namespace Semmle.Extraction.CSharp
                         logger.Log(Severity.Info, "Skipping extraction since files have already been extracted");
                         return ExitCode.Ok;
                     }
+
+                    bool preserveSymlinks = Environment.GetEnvironmentVariable("SEMMLE_PRESERVE_SYMLINKS") == "true";
+                    var canonicalPathCache = CanonicalPathCache.Create(logger, 1000, preserveSymlinks ? CanonicalPathCache.Symlinks.Preserve : CanonicalPathCache.Symlinks.Follow);
 
                     var referenceTasks = ResolveReferences(compilerArguments, analyser, canonicalPathCache, references);
 
@@ -189,6 +186,11 @@ namespace Semmle.Extraction.CSharp
                     logger.Log(Severity.Info, "  Extraction took {0}", sw2.Elapsed);
 
                     return analyser.TotalErrors == 0 ? ExitCode.Ok : ExitCode.Errors;
+                }
+                catch (UnrecognizedCompilerException ex)
+                {
+                    logger.Log(Severity.Warning, $"  {ex.Message}");
+                    return ExitCode.Ok;
                 }
                 catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
                 {
@@ -287,7 +289,7 @@ namespace Semmle.Extraction.CSharp
         /// The constructed syntax trees will be added (thread-safely) to the supplied
         /// list <paramref name="ret"/>.
         /// </summary>
-        static IEnumerable<Action> ReadSyntaxTrees(IEnumerable<string> sources, Analyser analyser, CSharpParseOptions parseOptions, Encoding encoding, IList<SyntaxTree> ret)
+        static IEnumerable<Action> ReadSyntaxTrees(IEnumerable<string> sources, Analyser analyser, CSharpParseOptions? parseOptions, Encoding? encoding, IList<SyntaxTree> ret)
         {
             return sources.Select<string, Action>(path => () =>
             {

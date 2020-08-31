@@ -31,8 +31,8 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
                 // So instead, we have to do the lookup via GetEnclosingSymbol.
 
                 var m = cx.GetModel(Stmt);
-                var body = Stmt.Body == null ? Stmt.ExpressionBody : (CSharpSyntaxNode)Stmt.Body;
-                return m.GetEnclosingSymbol(body.GetLocation().SourceSpan.Start) as IMethodSymbol;
+                var body = Stmt.Body == null ? Stmt.ExpressionBody : (CSharpSyntaxNode?)Stmt.Body;
+                return (IMethodSymbol)m.GetEnclosingSymbol(body!.GetLocation().SourceSpan.Start);
             }
         }
 

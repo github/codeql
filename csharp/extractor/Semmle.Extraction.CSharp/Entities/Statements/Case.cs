@@ -68,20 +68,19 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         private CasePattern(Context cx, CasePatternSwitchLabelSyntax node, Switch parent, int child)
             : base(cx, node, parent, child) { }
 
-        private void PopulatePattern(PatternSyntax pattern, TypeSyntax optionalType, VariableDesignationSyntax designation)
+        private void PopulatePattern(PatternSyntax pattern, TypeSyntax? optionalType, VariableDesignationSyntax designation)
         {
-            var isVar = optionalType is null;
             switch (designation)
             {
                 case SingleVariableDesignationSyntax _:
                     if (cx.GetModel(pattern).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
                     {
                         var type = Type.Create(cx, symbol.GetAnnotatedType());
-                        Expressions.VariableDeclaration.Create(cx, symbol, type, optionalType, cx.Create(pattern.GetLocation()), isVar, this, 0);
+                        Expressions.VariableDeclaration.Create(cx, symbol, type, optionalType, cx.Create(pattern.GetLocation()), optionalType is null, this, 0);
                     }
                     break;
                 case DiscardDesignationSyntax discard:
-                    if (isVar)
+                    if (optionalType is null)
                         new Expressions.Discard(cx, discard, this, 0);
                     else
                         Expressions.TypeAccess.Create(cx, optionalType, this, 0);

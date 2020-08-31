@@ -110,7 +110,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        Extraction.Entities.Location location;
+        Extraction.Entities.Location? location;
 
         public override void Populate(TextWriter trapFile)
         {
@@ -119,7 +119,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.commentline_location(this, location);
         }
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => location.symbol;
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => location!.symbol;
 
         public override bool NeedsPopulation => true;
 

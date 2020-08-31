@@ -69,7 +69,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 {
                     var loc = Context.Create(initializer.GetLocation());
                     var simpleAssignExpr = new Expression(new ExpressionInfo(Context, Type, loc, ExprKind.SIMPLE_ASSIGN, this, child++, false, null));
-                    Expression.CreateFromNode(new ExpressionNodeInfo(Context, initializer.Initializer.Value, simpleAssignExpr, 0));
+                    Expression.CreateFromNode(new ExpressionNodeInfo(Context, initializer.Initializer!.Value, simpleAssignExpr, 0));
                     var access = new Expression(new ExpressionInfo(Context, Type, Location, ExprKind.FIELD_ACCESS, simpleAssignExpr, 1, false, null));
                     trapFile.expr_access(access, this);
                     if (!symbol.IsStatic)
@@ -85,7 +85,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 Where(n => n.EqualsValue != null))
             {
                 // Mark fields that have explicit initializers.
-                var expr = new Expression(new ExpressionInfo(Context, Type, Context.Create(initializer.EqualsValue.Value.FixedLocation()), Kinds.ExprKind.FIELD_ACCESS, this, child++, false, null));
+                var expr = new Expression(new ExpressionInfo(Context, Type, Context.Create(initializer.EqualsValue!.Value.FixedLocation()), Kinds.ExprKind.FIELD_ACCESS, this, child++, false, null));
                 trapFile.expr_access(expr, this);
             }
 

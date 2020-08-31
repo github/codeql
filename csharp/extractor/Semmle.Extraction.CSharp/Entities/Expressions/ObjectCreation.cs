@@ -42,7 +42,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
 
             var target = cx.GetModel(Syntax).GetSymbolInfo(Syntax);
-            var method = (IMethodSymbol)target.Symbol;
+            var method = (IMethodSymbol?)target.Symbol;
 
             if (method != null)
             {
@@ -105,7 +105,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         protected override void PopulateExpression(TextWriter trapFile)
         {
             var target = cx.GetSymbolInfo(Syntax);
-            var method = (IMethodSymbol)target.Symbol;
+            var method = (IMethodSymbol?)target.Symbol;
 
             if (method != null)
             {
@@ -113,7 +113,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
             var child = 0;
 
-            Expression objectInitializer = Syntax.Initializers.Any() ?
+            Expression? objectInitializer = Syntax.Initializers.Any() ?
                 new Expression(new ExpressionInfo(cx, Type, Location, ExprKind.OBJECT_INIT, this, -1, false, null)) :
                 null;
 
@@ -125,7 +125,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 var type = Entities.Type.Create(cx, property.GetAnnotatedType());
                 var loc = cx.Create(init.GetLocation());
 
-                var assignment = new Expression(new ExpressionInfo(cx, type, loc, ExprKind.SIMPLE_ASSIGN, objectInitializer, child++, false, null));
+                var assignment = new Expression(new ExpressionInfo(cx, type, loc, ExprKind.SIMPLE_ASSIGN, objectInitializer!, child++, false, null));
                 Create(cx, init.Expression, assignment, 0);
                 Property.Create(cx, property);
 

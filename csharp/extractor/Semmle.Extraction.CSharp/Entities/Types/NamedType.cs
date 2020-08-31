@@ -11,7 +11,7 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     class NamedType : Type<INamedTypeSymbol>
     {
-        NamedType(Context cx, INamedTypeSymbol init)
+        NamedType(Context cx, INamedTypeSymbol? init)
             : base(cx, init)
         {
             typeArgumentsLazy = new Lazy<Type[]>(() => symbol.TypeArguments.Select(t => Create(cx, t)).ToArray());
@@ -25,7 +25,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (symbol.TypeKind == TypeKind.Error)
             {
-                Context.Extractor.MissingType(symbol.ToString(), Context.FromSource);
+                Context.Extractor.MissingType(symbol.ToString()!, Context.FromSource);
                 return;
             }
 
@@ -145,7 +145,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static readonly NamedTypeFactory Instance = new NamedTypeFactory();
 
-            public NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init);
+            public NamedType Create(Context cx, INamedTypeSymbol? init) => new NamedType(cx, init);
         }
 
         public override Type TypeRef => NamedTypeRef.Create(Context, symbol);

@@ -6,6 +6,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Extraction.Entities;
 using System.IO;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -41,13 +42,13 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (initializer == null) return;
 
-            Type initializerType;
+            Type? initializerType;
             var symbolInfo = Context.GetSymbolInfo(initializer);
 
             switch (initializer.Kind())
             {
                 case SyntaxKind.BaseConstructorInitializer:
-                    initializerType = Type.Create(Context, symbol.ContainingType.BaseType);
+                    initializerType = Type.Create(Context, symbol.ContainingType.BaseType!);
                     break;
                 case SyntaxKind.ThisConstructorInitializer:
                     initializerType = ContainingType;
@@ -68,7 +69,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             var init = new Expression(initInfo);
 
-            var target = Constructor.Create(Context, (IMethodSymbol)symbolInfo.Symbol);
+            var target = Constructor.Create(Context, (IMethodSymbol?)symbolInfo.Symbol);
 
             if (target == null)
             {
@@ -96,7 +97,8 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public new static Constructor Create(Context cx, IMethodSymbol constructor)
+        [return: NotNullIfNotNull(parameterName: "constructor")]
+        public new static Constructor? Create(Context cx, IMethodSymbol? constructor)
         {
             if (constructor == null) return null;
 

@@ -112,8 +112,10 @@ namespace Semmle.Extraction
         public static Entity CreateEntity<Entity, T1, T2>(this ICachedEntityFactory<(T1, T2), Entity> factory, Context cx, T1 t1, T2 t2)
             where Entity : ICachedEntity => factory.CreateEntity2(cx, (t1, t2));
 
-        public static Entity CreateEntity<Entity, T1, T2, T3>(this ICachedEntityFactory<(T1, T2, T3), Entity> factory, Context cx, T1 t1, T2 t2, T3 t3)
-            where Entity : ICachedEntity => factory.CreateEntity2(cx, (t1, t2, t3));
+        public static Entity CreateEntity<Entity, T1, T2, T3>(this ICachedEntityFactory<(T1, T2?, T3?), Entity> factory, Context cx, T1 t1, T2? t2, T3? t3)
+            where Entity : ICachedEntity
+            where T2 : class
+            where T3 : class => factory.CreateEntity2(cx, (t1, t2, t3));
 
         public static Entity CreateEntity<Entity, T1, T2, T3, T4>(this ICachedEntityFactory<(T1, T2, T3, T4), Entity> factory, Context cx, T1 t1, T2 t2, T3 t3, T4 t4)
             where Entity : ICachedEntity => factory.CreateEntity2(cx, (t1, t2, t3, t4));
@@ -130,8 +132,9 @@ namespace Semmle.Extraction
         public static Entity CreateEntity<Type, Entity>(this ICachedEntityFactory<Type, Entity> factory, Context cx, Type init) where Type : notnull
             where Entity : ICachedEntity => cx.CreateNonNullEntity(factory, init);
 
-        public static Entity CreateNullableEntity<Type, Entity>(this ICachedEntityFactory<Type, Entity> factory, Context cx, Type init)
-            where Entity : ICachedEntity => cx.CreateNullableEntity(factory, init);
+        public static Entity CreateNullableEntity<Type, Entity>(this ICachedEntityFactory<Type?, Entity> factory, Context cx, Type? init)
+            where Entity : ICachedEntity
+            where Type : class => cx.CreateNullableEntity(factory, init);
 
         /// <summary>
         /// Creates and populates a new entity, but uses a different cache.
@@ -143,7 +146,8 @@ namespace Semmle.Extraction
         /// <param name="init">The initializer for the entity, which may be null.</param>
         /// <returns>The entity.</returns>
         public static Entity CreateEntity2<Type, Entity>(this ICachedEntityFactory<Type, Entity> factory, Context cx, Type init)
-            where Entity : ICachedEntity => cx.CreateEntity2(factory, init);
+            where Entity : ICachedEntity
+            => cx.CreateEntity2(factory, init);
 
         public static void DefineLabel(this IEntity entity, TextWriter trapFile, IExtractor extractor)
         {

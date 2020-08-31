@@ -11,9 +11,9 @@ namespace Semmle.Extraction.CSharp.Entities
     class UsingDirective : FreshEntity
     {
         readonly UsingDirectiveSyntax Node;
-        readonly NamespaceDeclaration Parent;
+        readonly NamespaceDeclaration? Parent;
 
-        public UsingDirective(Context cx, UsingDirectiveSyntax usingDirective, NamespaceDeclaration parent)
+        public UsingDirective(Context cx, UsingDirectiveSyntax usingDirective, NamespaceDeclaration? parent)
             : base(cx)
         {
             Node = usingDirective;
@@ -46,7 +46,7 @@ namespace Semmle.Extraction.CSharp.Entities
             else
             {
                 // A "using static"
-                Type m = Type.Create(cx, (ITypeSymbol)info.Symbol);
+                Type m = Type.Create(cx, (ITypeSymbol?)info.Symbol);
                 trapFile.using_static_directives(this, m.TypeRef);
                 trapFile.using_directive_location(this, cx.Create(ReportingLocation));
             }

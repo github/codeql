@@ -5,10 +5,10 @@ namespace Semmle.Extraction
     /// <summary>
     /// An abstract symbol, which encapsulates a data type (such as a C# symbol).
     /// </summary>
-    /// <typeparam name="Initializer">The type of the symbol.</typeparam>
-    public abstract class CachedEntity<Initializer> : ICachedEntity
+    /// <typeparam name="TInitializer">The type of the symbol.</typeparam>
+    public abstract class CachedEntity<TInitializer> : ICachedEntity
     {
-        public CachedEntity(Context context, Initializer init)
+        public CachedEntity(Context context, TInitializer init)
         {
             Context = context;
             symbol = init;
@@ -42,14 +42,14 @@ namespace Semmle.Extraction
             get;
         }
 
-        public Initializer symbol
+        public TInitializer symbol
         {
             get;
         }
 
         object? ICachedEntity.UnderlyingObject => symbol;
 
-        public Initializer UnderlyingObject => symbol;
+        public TInitializer UnderlyingObject => symbol;
 
         public abstract void WriteId(System.IO.TextWriter trapFile);
 
@@ -79,7 +79,7 @@ namespace Semmle.Extraction
 
         public override bool Equals(object? obj)
         {
-            var other = obj as CachedEntity<Initializer>;
+            var other = obj as CachedEntity<TInitializer>;
             return other?.GetType() == GetType() && Equals(other.symbol, symbol);
         }
 

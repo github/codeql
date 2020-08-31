@@ -49,7 +49,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
         }
 
-        public sealed override Microsoft.CodeAnalysis.Location ReportingLocation => base.ReportingLocation;
+        public sealed override Microsoft.CodeAnalysis.Location? ReportingLocation => base.ReportingLocation;
 
         static ExprKind GetKind(Context cx, ExpressionSyntax qualifier)
         {

@@ -15,10 +15,10 @@ namespace Semmle.Extraction.CSharp
     /// </summary>
     public struct AnnotatedTypeSymbol
     {
-        public ITypeSymbol Symbol;
+        public ITypeSymbol? Symbol;
         public NullableAnnotation Nullability;
 
-        public AnnotatedTypeSymbol(ITypeSymbol symbol, NullableAnnotation nullability)
+        public AnnotatedTypeSymbol(ITypeSymbol? symbol, NullableAnnotation nullability)
         {
             Symbol = symbol;
             Nullability = nullability;
@@ -33,7 +33,7 @@ namespace Semmle.Extraction.CSharp
         ///
         /// <param name="type">The type to disambiguate.</param>
         /// <returns></returns>
-        public static ITypeSymbol DisambiguateType(this ITypeSymbol type)
+        public static ITypeSymbol? DisambiguateType(this ITypeSymbol? type)
         {
             /* A type could not be determined.
              * Sometimes this happens due to a missing reference,
@@ -105,7 +105,7 @@ namespace Semmle.Extraction.CSharp
                     case TypeKind.Error:
                         var named = (INamedTypeSymbol)type;
                         if (named.IsTupleType)
-                            named = named.TupleUnderlyingType;
+                            named = named.TupleUnderlyingType!;
                         if (named.ContainingType != null && named.ContainingType.ContainsTypeParameters(cx, declaringGeneric))
                             return true;
                         return named.TypeArguments.Any(arg => arg.ContainsTypeParameters(cx, declaringGeneric));
@@ -114,7 +114,7 @@ namespace Semmle.Extraction.CSharp
                         return ptr.PointedAtType.ContainsTypeParameters(cx, declaringGeneric);
                     case TypeKind.TypeParameter:
                         var tp = (ITypeParameterSymbol)type;
-                        var declaringGen = tp.TypeParameterKind == TypeParameterKind.Method ? tp.DeclaringMethod : (ISymbol)tp.DeclaringType;
+                        var declaringGen = tp.TypeParameterKind == TypeParameterKind.Method ? tp.DeclaringMethod : (ISymbol?)tp.DeclaringType;
                         return SymbolEqualityComparer.Default.Equals(declaringGen, declaringGeneric);
                     default:
                         return false;
@@ -258,7 +258,7 @@ namespace Semmle.Extraction.CSharp
                 subTermAction(cx, trapFile, named.ConstructedFrom);
                 trapFile.Write('<');
                 // Encode the nullability of the type arguments in the label.
-                // Type arguments with different nullability can result in 
+                // Type arguments with different nullability can result in
                 // a constructed type with different nullability of its members and methods,
                 // so we need to create a distinct database entity for it.
                 trapFile.BuildList(",", named.GetAnnotatedTypeArguments(),
@@ -434,7 +434,7 @@ namespace Semmle.Extraction.CSharp
             return true;
         }
 
-        public static IEntity CreateEntity(this Context cx, ISymbol symbol)
+        public static IEntity? CreateEntity(this Context cx, ISymbol? symbol)
         {
             if (symbol == null) return null;
 

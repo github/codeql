@@ -8,9 +8,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
     class MemberAccess : Expression
     {
-        readonly IEntity Target;
+        readonly IEntity? Target;
 
-        private MemberAccess(ExpressionNodeInfo info, ExpressionSyntax qualifier, ISymbol target) : base(info)
+        private MemberAccess(ExpressionNodeInfo info, ExpressionSyntax qualifier, ISymbol? target) : base(info)
         {
             var trapFile = info.Context.TrapWriter.Writer;
             Qualifier = Create(cx, qualifier, this, -1);

@@ -219,8 +219,8 @@ namespace Semmle.Extraction.CSharp
             extractionTasks.Add(() => DoAnalyseCompilation(cwd, args));
         }
 
-        Entities.Compilation compilationEntity;
-        IDisposable compilationTrapFile;
+        Entities.Compilation? compilationEntity;
+        IDisposable? compilationTrapFile;
 
         void DoAnalyseCompilation(string cwd, string[] args)
         {
@@ -359,11 +359,12 @@ namespace Semmle.Extraction.CSharp
                 var sourcePath = tree.FilePath;
 
                 var projectLayout = layout.LookupProjectOrNull(sourcePath);
-                bool excluded = projectLayout == null;
-                string trapPath = excluded ? "" : projectLayout.GetTrapPath(Logger, sourcePath, options.TrapCompression);
+                string trapPath = projectLayout is null
+                    ? ""
+                    : projectLayout.GetTrapPath(Logger, sourcePath, options.TrapCompression);
                 bool upToDate = false;
 
-                if (!excluded)
+                if (projectLayout is object)
                 {
                     // compilation.Clone() is used to allow symbols to be garbage collected.
                     using (var trapWriter = projectLayout.CreateTrapWriter(Logger, sourcePath, false, options.TrapCompression))
@@ -381,7 +382,11 @@ namespace Semmle.Extraction.CSharp
                     }
                 }
 
-                ReportProgress(sourcePath, trapPath, stopwatch.Elapsed, excluded ? AnalysisAction.Excluded : upToDate ? AnalysisAction.UpToDate : AnalysisAction.Extracted);
+                ReportProgress(sourcePath, trapPath, stopwatch.Elapsed, projectLayout is null
+                    ? AnalysisAction.Excluded
+                    : upToDate
+                        ? AnalysisAction.UpToDate
+                        : AnalysisAction.Extracted);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {

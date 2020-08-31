@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.Entities
     {
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
-        private readonly AttributeData AttributeData;
+        private readonly AttributeData? AttributeData;
         private readonly IEntity Entity;
 
         public Attribute(Context cx, AttributeData attribute, IEntity entity)
@@ -23,27 +23,28 @@ namespace Semmle.Extraction.CSharp.Entities
             TryPopulate();
         }
 
+        public Attribute(Context cx, AttributeSyntax attribute, IEntity entity)
+            : base(cx)
+        {
+            var info = cx.GetSymbolInfo(attribute);
+            Entity = entity;
+            ExtractAttribute(cx.TrapWriter.Writer, attribute, info.Symbol?.ContainingType, entity);
+        }
+
         protected override void Populate(TextWriter trapFile)
         {
-            if (AttributeData.ApplicationSyntaxReference != null)
+            if (AttributeData?.ApplicationSyntaxReference != null)
             {
                 // !! Extract attributes from assemblies.
                 // This is harder because the "expression" entities presume the
                 // existence of a syntax tree. This is not the case for compiled
                 // attributes.
-                var syntax = AttributeData.ApplicationSyntaxReference.GetSyntax() as AttributeSyntax;
+                var syntax = (AttributeSyntax)AttributeData.ApplicationSyntaxReference.GetSyntax();
                 ExtractAttribute(cx.TrapWriter.Writer, syntax, AttributeData.AttributeClass, Entity);
             }
         }
 
-        public Attribute(Context cx, AttributeSyntax attribute, IEntity entity)
-            : base(cx)
-        {
-            var info = cx.GetSymbolInfo(attribute);
-            ExtractAttribute(cx.TrapWriter.Writer, attribute, info.Symbol.ContainingType, entity);
-        }
-
-        void ExtractAttribute(System.IO.TextWriter trapFile, AttributeSyntax syntax, ITypeSymbol attributeClass, IEntity entity)
+        void ExtractAttribute(System.IO.TextWriter trapFile, AttributeSyntax syntax, ITypeSymbol? attributeClass, IEntity entity)
         {
             var type = Type.Create(cx, attributeClass);
             trapFile.attributes(this, type.TypeRef, entity);

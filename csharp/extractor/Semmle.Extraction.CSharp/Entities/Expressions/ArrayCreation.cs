@@ -16,7 +16,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
     {
         protected ExplicitArrayCreation(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.ARRAY_CREATION)) { }
 
-        protected abstract ArrayTypeSyntax TypeSyntax { get; }
+        protected abstract ArrayTypeSyntax? TypeSyntax { get; }
 
         public abstract InitializerExpressionSyntax Initializer { get; }
 
@@ -86,7 +86,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected override ArrayTypeSyntax TypeSyntax => Syntax.Type;
 
-        public override InitializerExpressionSyntax Initializer => Syntax.Initializer;
+        public override InitializerExpressionSyntax? Initializer => Syntax.Initializer;
 
         public static Expression Create(ExpressionNodeInfo info) => new NormalArrayCreation(info).TryPopulate();
     }
@@ -95,9 +95,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
     {
         StackAllocArrayCreation(ExpressionNodeInfo info) : base(info) { }
 
-        protected override ArrayTypeSyntax TypeSyntax => Syntax.Type as ArrayTypeSyntax;
+        protected override ArrayTypeSyntax? TypeSyntax => Syntax.Type as ArrayTypeSyntax;
 
-        public override InitializerExpressionSyntax Initializer => Syntax.Initializer;
+        public override InitializerExpressionSyntax? Initializer => Syntax.Initializer;
 
         protected override void PopulateExpression(TextWriter trapFile)
         {

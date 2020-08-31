@@ -17,7 +17,7 @@ namespace Semmle.Extraction
             trapFile.WriteLabel(entity.Label.Value);
         }
 
-        public static void WriteSubId(this TextWriter trapFile, IEntity entity)
+        public static void WriteSubId(this TextWriter trapFile, IEntity? entity)
         {
             if (entity is null)
             {
@@ -94,7 +94,7 @@ namespace Semmle.Extraction
 
         private static bool NeedsTruncation(string s)
         {
-            // Optimization: only count the actual number of bytes if there is the possibility 
+            // Optimization: only count the actual number of bytes if there is the possibility
             // of the string exceeding maxStringBytes
             return encoding.GetMaxByteCount(s.Length) > maxStringBytes &&
                 encoding.GetByteCount(s) > maxStringBytes;

@@ -28,7 +28,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
 
             var child = -1;
-            string memberName = null;
+            string? memberName = null;
             var target = TargetSymbol;
             switch (Syntax.Expression)
             {
@@ -53,7 +53,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     if (target != null && !target.IsStatic)
                     {
                         // Implicit `this` qualifier; add explicitly
-                        var callingMethod = cx.GetModel(Syntax).GetEnclosingSymbol(Location.symbol.SourceSpan.Start) as IMethodSymbol;
+                        var callingMethod = GetCallingMethod();
 
                         if (callingMethod == null)
                             cx.ModelError(Syntax, "Couldn't determine implicit this type");
@@ -94,6 +94,14 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             trapFile.expr_call(this, targetKey);
         }
 
+        private IMethodSymbol? GetCallingMethod()
+        {
+            if (Location.symbol is null)
+                return null;
+
+            return cx.GetModel(Syntax).GetEnclosingSymbol(Location.symbol.SourceSpan.Start) as IMethodSymbol;
+        }
+
         static bool IsDynamicCall(ExpressionNodeInfo info)
         {
             // Either the qualifier (Expression) is dynamic,
@@ -105,7 +113,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public SymbolInfo SymbolInfo => info.SymbolInfo;
 
-        public IMethodSymbol TargetSymbol
+        public IMethodSymbol? TargetSymbol
         {
             get
             {

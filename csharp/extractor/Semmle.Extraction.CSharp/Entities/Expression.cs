@@ -67,7 +67,7 @@ namespace Semmle.Extraction.CSharp.Entities
             Type.Type.PopulateGenerics();
         }
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => Location.symbol;
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => Location.symbol;
 
         bool IExpressionParentEntity.IsTopLevelParent => false;
 
@@ -76,9 +76,9 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         /// <param name="obj">The value.</param>
         /// <returns>The string representation.</returns>
-        public static string ValueAsString(object value)
+        public static string ValueAsString(object? value)
         {
-            return value == null ? "null" : value is bool ? ((bool)value ? "true" : "false") : value.ToString();
+            return value == null ? "null" : value is bool ? ((bool)value ? "true" : "false") : value.ToString()!;
         }
 
         /// <summary>
@@ -355,7 +355,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// If the expression does not have a value, then this
         /// is null.
         /// </summary>
-        string ExprValue { get; }
+        string? ExprValue { get; }
 
         NullableFlowState FlowState { get; }
     }
@@ -372,10 +372,10 @@ namespace Semmle.Extraction.CSharp.Entities
         public IExpressionParentEntity Parent { get; }
         public int Child { get; }
         public bool IsCompilerGenerated { get; }
-        public string ExprValue { get; }
+        public string? ExprValue { get; }
 
         public ExpressionInfo(Context cx, AnnotatedType type, Extraction.Entities.Location location, ExprKind kind,
-            IExpressionParentEntity parent, int child, bool isCompilerGenerated, string value)
+            IExpressionParentEntity parent, int child, bool isCompilerGenerated, string? value)
         {
             Context = cx;
             Type = type;
@@ -451,7 +451,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        Microsoft.CodeAnalysis.Location location;
+        Microsoft.CodeAnalysis.Location? location;
 
         public Microsoft.CodeAnalysis.Location CodeAnalysisLocation
         {
@@ -469,7 +469,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public SemanticModel Model => Context.GetModel(Node);
 
-        public string ExprValue
+        public string? ExprValue
         {
             get
             {
@@ -494,7 +494,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        Extraction.Entities.Location cachedLocation;
+        Extraction.Entities.Location? cachedLocation;
 
         public Extraction.Entities.Location Location
         {

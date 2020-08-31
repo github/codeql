@@ -53,7 +53,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.explicitly_implements(this, explicitInterface.TypeRef);
 
                 foreach (var syntax in declSyntaxReferences)
-                    TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier.Name, this, explicitInterface);
+                    TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier!.Name, this, explicitInterface);
             }
 
             foreach (var l in Locations)
@@ -74,7 +74,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 {
                     Context.PopulateLater(() =>
                     {
-                        var loc = Context.Create(initializer.GetLocation());
+                        var loc = Context.Create(initializer!.GetLocation());
                         var annotatedType = new AnnotatedType(type, NullableAnnotation.None);
                         var simpleAssignExpr = new Expression(new ExpressionInfo(Context, annotatedType, loc, ExprKind.SIMPLE_ASSIGN, this, child++, false, null));
                         Expression.CreateFromNode(new ExpressionNodeInfo(Context, initializer.Value, simpleAssignExpr, 0));

@@ -32,8 +32,8 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             labelledStmt = Statement.Create(cx, Stmt.Statement, Parent, Child + 1);
         }
 
-        Statement labelledStmt;
+        Statement? labelledStmt;
 
-        public override int NumberOfStatements => 1 + labelledStmt.NumberOfStatements;
+        public override int NumberOfStatements => 1 + labelledStmt!.NumberOfStatements;
     }
 }

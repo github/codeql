@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -14,21 +15,13 @@ namespace Semmle.Extraction.CSharp
     public class CompilerVersion
     {
         const string csc_rsp = "csc.rsp";
-        readonly string specifiedFramework = null;
+        readonly string? specifiedFramework = null;
+        public readonly string[] ArgsWithResponse;
 
         /// <summary>
         /// The value specified by --compiler, or null.
         /// </summary>
-        public string SpecifiedCompiler
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Why was the candidate exe rejected as a compiler?
-        /// </summary>
-        public string SkipReason
+        public string? SpecifiedCompiler
         {
             get;
             private set;
@@ -47,8 +40,7 @@ namespace Semmle.Extraction.CSharp
             {
                 if (!File.Exists(SpecifiedCompiler))
                 {
-                    SkipExtractionBecause("the specified file does not exist");
-                    return;
+                    throw new UnrecognizedCompilerException(SpecifiedCompiler, "the specified file does not exist");
                 }
 
                 // Reads the file details from the .exe
@@ -62,7 +54,7 @@ namespace Semmle.Extraction.CSharp
                     { "csc.dll", "Microsoft" },
                     { "mcs.exe", "Novell" }
                 };
-                var mscorlibExists = File.Exists(Path.Combine(compilerDir, "mscorlib.dll"));
+                var mscorlibExists = File.Exists(Path.Combine(compilerDir ?? string.Empty, "mscorlib.dll"));
 
                 if (specifiedFramework == null && mscorlibExists)
                 {
@@ -71,24 +63,16 @@ namespace Semmle.Extraction.CSharp
 
                 if (!knownCompilerNames.TryGetValue(versionInfo.OriginalFilename, out var vendor))
                 {
-                    SkipExtractionBecause("the compiler name is not recognised");
-                    return;
+                    throw new UnrecognizedCompilerException(SpecifiedCompiler, "the compiler name is not recognised");
                 }
 
                 if (versionInfo.LegalCopyright == null || !versionInfo.LegalCopyright.Contains(vendor))
                 {
-                    SkipExtractionBecause($"the compiler isn't copyright {vendor}, but instead {versionInfo.LegalCopyright ?? "<null>"}");
-                    return;
+                    throw new UnrecognizedCompilerException(SpecifiedCompiler, $"the compiler isn't copyright {vendor}, but instead {versionInfo.LegalCopyright ?? "<null>"}");
                 }
             }
 
             ArgsWithResponse = AddDefaultResponse(CscRsp, options.CompilerArguments).ToArray();
-        }
-
-        void SkipExtractionBecause(string reason)
-        {
-            SkipExtraction = true;
-            SkipReason = reason;
         }
 
         /// <summary>
@@ -102,19 +86,9 @@ namespace Semmle.Extraction.CSharp
         string CscRsp => Path.Combine(FrameworkPath, csc_rsp);
 
         /// <summary>
-        /// Should we skip extraction?
-        /// Only if csc.exe was specified but it wasn't a compiler.
-        /// </summary>
-        public bool SkipExtraction
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
         /// Gets additional reference directories - the compiler directory.
         /// </summary>
-        public string AdditionalReferenceDirectories => SpecifiedCompiler != null ? Path.GetDirectoryName(SpecifiedCompiler) : null;
+        public string? AdditionalReferenceDirectories => SpecifiedCompiler != null ? Path.GetDirectoryName(SpecifiedCompiler) : null;
 
         /// <summary>
         /// Adds @csc.rsp to the argument list to mimic csc.exe.
@@ -133,7 +107,5 @@ namespace Semmle.Extraction.CSharp
         {
             return args.Any(arg => new[] { "/noconfig", "-noconfig" }.Contains(arg.ToLowerInvariant()));
         }
-
-        public readonly string[] ArgsWithResponse;
     }
 }

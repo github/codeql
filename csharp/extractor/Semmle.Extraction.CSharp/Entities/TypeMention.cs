@@ -12,9 +12,9 @@ namespace Semmle.Extraction.CSharp.Entities
         readonly TypeSyntax Syntax;
         readonly IEntity Parent;
         readonly Type Type;
-        readonly Microsoft.CodeAnalysis.Location Loc;
+        readonly Microsoft.CodeAnalysis.Location? Loc;
 
-        TypeMention(Context cx, TypeSyntax syntax, IEntity parent, Type type, Microsoft.CodeAnalysis.Location loc = null)
+        TypeMention(Context cx, TypeSyntax syntax, IEntity parent, Type type, Microsoft.CodeAnalysis.Location? loc = null)
             : base(cx)
         {
             Syntax = syntax;
@@ -112,14 +112,14 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.type_mention_location(this, cx.Create(loc));
         }
 
-        public static TypeMention Create(Context cx, TypeSyntax syntax, IEntity parent, Type type, Microsoft.CodeAnalysis.Location loc = null)
+        public static TypeMention Create(Context cx, TypeSyntax syntax, IEntity parent, Type type, Microsoft.CodeAnalysis.Location? loc = null)
         {
             var ret = new TypeMention(cx, syntax, parent, type, loc);
             cx.Try(syntax, null, () => ret.Populate(cx.TrapWriter.Writer));
             return ret;
         }
 
-        public static TypeMention Create(Context cx, TypeSyntax syntax, IEntity parent, AnnotatedType type, Microsoft.CodeAnalysis.Location loc = null) =>
+        public static TypeMention Create(Context cx, TypeSyntax syntax, IEntity parent, AnnotatedType type, Microsoft.CodeAnalysis.Location? loc = null) =>
             Create(cx, syntax, parent, type.Type, loc);
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;

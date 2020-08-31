@@ -8,7 +8,7 @@ namespace Semmle.Extraction.CSharp.Entities
         Namespace(Context cx, INamespaceSymbol init)
             : base(cx, init) { }
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => null;
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => null;
 
         public override void Populate(TextWriter trapFile)
         {
@@ -49,7 +49,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         string QualifiedName => symbol.ToDisplayString();
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is Namespace ns && QualifiedName == ns.QualifiedName;
         }
