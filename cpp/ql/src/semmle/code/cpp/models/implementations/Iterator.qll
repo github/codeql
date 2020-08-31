@@ -184,6 +184,9 @@ class IteratorCrementMemberOperator extends MemberFunction, DataFlowFunction, Ta
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierAddress() and
     output.isReturnValue()
+    or
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -234,6 +237,9 @@ class IteratorAssignArithmeticMemberOperator extends MemberFunction, DataFlowFun
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierAddress() and
     output.isReturnValue()
+    or
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
