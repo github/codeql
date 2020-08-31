@@ -23,5 +23,4 @@ postHasUniquePre
 uniquePostUpdate
 postIsInSameCallable
 reverseRead
-storeIsPostUpdate
 argHasPostUpdate

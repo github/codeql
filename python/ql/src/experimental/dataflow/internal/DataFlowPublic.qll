@@ -20,7 +20,9 @@ newtype TNode =
   /** A node corresponding to an SSA variable. */
   TEssaNode(EssaVariable var) or
   /** A node corresponding to a control flow node. */
-  TCfgNode(DataFlowCfgNode node)
+  TCfgNode(DataFlowCfgNode node) or
+  /** A node representing the value of an object after a state change */
+  TPostUpdateNode(PreUpdateNode pre)
 
 /**
  * An element, viewed as a node in a data flow graph. Either an SSA variable
