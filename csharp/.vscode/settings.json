@@ -3,5 +3,11 @@
     "dotnet-test-explorer.testProjectPath": "**/*Tests.@(csproj|vbproj|fsproj)",
     "dotnet-test-explorer.testArguments": "/property:GenerateTargetFrameworkAttribute=false",
     "csharp.supressBuildAssetsNotification": true,
-    "csharp.suppressDotnetRestoreNotification": true
+    "csharp.suppressDotnetRestoreNotification": true,
+    "[csharp]": {
+        "editor.defaultFormatter": "ms-dotnettools.csharp"
+    },
+    "omnisharp.enableMsBuildLoadProjectsOnDemand": true,
+    "omnisharp.enableEditorConfigSupport": true,
+    "omnisharp.enableRoslynAnalyzers": true,
 }

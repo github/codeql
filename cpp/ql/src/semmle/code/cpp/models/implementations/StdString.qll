@@ -15,18 +15,33 @@ class StdBasicString extends TemplateClass {
 }
 
 /**
- * The `std::string` functions `c_str` and  `data`.
+ * The `std::string` function `c_str`.
  */
 class StdStringCStr extends TaintFunction {
-  StdStringCStr() {
-    this.hasQualifiedName("std", "basic_string", "c_str") or
-    this.hasQualifiedName("std", "basic_string", "data")
-  }
+  StdStringCStr() { this.hasQualifiedName("std", "basic_string", "c_str") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from string itself (qualifier) to return value
     input.isQualifierObject() and
-    output.isReturnValue()
+    output.isReturnValueDeref()
+  }
+}
+
+/**
+ * The `std::string` function `data`.
+ */
+class StdStringData extends TaintFunction {
+  StdStringData() { this.hasQualifiedName("std", "basic_string", "data") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from string itself (qualifier) to return value
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
+    or
+    // reverse flow from returned reference to the qualifier (for writes to
+    // `data`)
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
   }
 }
 
@@ -56,33 +71,31 @@ class StdStringPlus extends TaintFunction {
  */
 class StdStringAppend extends TaintFunction {
   StdStringAppend() {
-    this.hasQualifiedName("std", "basic_string", "operator+=") or
-    this.hasQualifiedName("std", "basic_string", "append") or
-    this.hasQualifiedName("std", "basic_string", "insert") or
-    this.hasQualifiedName("std", "basic_string", "replace")
+    this.hasQualifiedName("std", "basic_string", ["operator+=", "append", "insert", "replace"])
   }
 
   /**
    * Gets the index of a parameter to this function that is a string (or
    * character).
    */
-  int getAStringParameter() {
+  int getAStringParameterIndex() {
     getParameter(result).getType() instanceof PointerType or
     getParameter(result).getType() instanceof ReferenceType or
-    getParameter(result).getType() = getDeclaringType().getTemplateArgument(0) // i.e. `std::basic_string::CharT`
+    getParameter(result).getUnspecifiedType() =
+      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. `std::basic_string::CharT`
   }
 
   /**
    * Gets the index of a parameter to this function that is an iterator.
    */
-  int getAnIteratorParameter() { getParameter(result).getType() instanceof Iterator }
+  int getAnIteratorParameterIndex() { getParameter(result).getType() instanceof Iterator }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from string and parameter to string (qualifier) and return value
     (
       input.isQualifierObject() or
-      input.isParameterDeref(getAStringParameter()) or
-      input.isParameter(getAnIteratorParameter())
+      input.isParameterDeref(getAStringParameterIndex()) or
+      input.isParameter(getAnIteratorParameterIndex())
     ) and
     (
       output.isQualifierObject() or
@@ -101,15 +114,16 @@ class StdStringAssign extends TaintFunction {
    * Gets the index of a parameter to this function that is a string (or
    * character).
    */
-  int getAStringParameter() {
+  int getAStringParameterIndex() {
     getParameter(result).getType() instanceof PointerType or
     getParameter(result).getType() instanceof ReferenceType or
-    getParameter(result).getType() = getDeclaringType().getTemplateArgument(0) // i.e. `std::basic_string::CharT`
+    getParameter(result).getUnspecifiedType() =
+      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. `std::basic_string::CharT`
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from parameter to string itself (qualifier) and return value
-    input.isParameterDeref(getAStringParameter()) and
+    input.isParameterDeref(getAStringParameterIndex()) and
     (
       output.isQualifierObject() or
       output.isReturnValueDeref()
@@ -177,6 +191,23 @@ class StdStringSwap extends TaintFunction {
     output.isParameterDeref(0)
     or
     input.isParameterDeref(0) and
+    output.isQualifierObject()
+  }
+}
+
+/**
+ * The `std::string` functions `at` and `operator[]`.
+ */
+class StdStringAt extends TaintFunction {
+  StdStringAt() { this.hasQualifiedName("std", "basic_string", ["at", "operator[]"]) }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from qualifier to referenced return value
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
+    or
+    // reverse flow from returned reference to the qualifier
+    input.isReturnValueDeref() and
     output.isQualifierObject()
   }
 }

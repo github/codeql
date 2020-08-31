@@ -5,6 +5,7 @@
  * hope to remove the false positive.
  */
 
+import python
 import experimental.dataflow.testConfig
 
 from DataFlow::Node source, DataFlow::Node sink

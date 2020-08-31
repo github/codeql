@@ -60,7 +60,6 @@ postHasUniquePre
 uniquePostUpdate
 postIsInSameCallable
 reverseRead
-storeIsPostUpdate
 argHasPostUpdate
 | builtin.cpp:15:31:15:35 | * ... | ArgumentNode is missing PostUpdateNode. |
 | conditional_destructors.cpp:30:9:30:13 | call to C1 | ArgumentNode is missing PostUpdateNode. |

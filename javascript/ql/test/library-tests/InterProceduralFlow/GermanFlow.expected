@@ -1,6 +1,15 @@
 | a.js:1:15:1:23 | "tainted" | b.js:4:13:4:40 | whoKnow ... Tainted |
 | a.js:1:15:1:23 | "tainted" | b.js:6:13:6:13 | x |
 | a.js:2:15:2:28 | "also tainted" | b.js:5:13:5:29 | notTaintedTrustMe |
+| async.js:2:16:2:23 | "source" | async.js:8:15:8:27 | await async() |
+| async.js:2:16:2:23 | "source" | async.js:13:15:13:20 | sync() |
+| async.js:2:16:2:23 | "source" | async.js:27:17:27:17 | e |
+| async.js:2:16:2:23 | "source" | async.js:36:17:36:17 | e |
+| async.js:2:16:2:23 | "source" | async.js:41:17:41:17 | e |
+| async.js:2:16:2:23 | "source" | async.js:54:17:54:36 | unpack(pack(source)) |
+| async.js:79:16:79:23 | "source" | async.js:80:14:80:36 | (await  ... ce))).p |
+| async.js:79:16:79:23 | "source" | async.js:92:15:92:30 | await (getP(o3)) |
+| async.js:96:18:96:25 | "source" | async.js:101:15:101:27 | await readP() |
 | callback.js:16:14:16:21 | "source" | callback.js:13:14:13:14 | x |
 | callback.js:17:15:17:23 | "source2" | callback.js:13:14:13:14 | x |
 | callback.js:27:15:27:23 | "source3" | callback.js:13:14:13:14 | x |

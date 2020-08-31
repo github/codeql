@@ -5,9 +5,9 @@ using namespace std;
 
 int source();
 
-namespace ns_char
+namespace ns_int
 {
-	char source();
+	int source();
 }
 
 void sink(int);
@@ -49,22 +49,22 @@ void test_element_taint(int x) {
 	sink(v1.back());
 
 	v2[0] = source();
-	sink(v2); // tainted [NOT DETECTED]
-	sink(v2[0]); // tainted [NOT DETECTED]
-	sink(v2[1]);
+	sink(v2); // tainted
+	sink(v2[0]); // tainted
+	sink(v2[1]); // [FALSE POSITIVE]
 	sink(v2[x]); // potentially tainted
 
 	v3 = v2;
-	sink(v3); // tainted [NOT DETECTED]
-	sink(v3[0]); // tainted [NOT DETECTED]
-	sink(v3[1]);
+	sink(v3); // tainted
+	sink(v3[0]); // tainted
+	sink(v3[1]); // [FALSE POSITIVE]
 	sink(v3[x]); // potentially tainted
 
 	v4[x] = source();
-	sink(v4); // tainted [NOT DETECTED]
+	sink(v4); // tainted
 	sink(v4[0]); // potentially tainted
 	sink(v4[1]); // potentially tainted
-	sink(v4[x]); // tainted [NOT DETECTED]
+	sink(v4[x]); // tainted
 
 	v5.push_back(source());
 	sink(v5); // tainted
@@ -72,8 +72,8 @@ void test_element_taint(int x) {
 	sink(v5.back()); // tainted
 
 	v6.data()[2] = source();
-	sink(v6); // tainted [NOT DETECTED]
-	sink(v6.data()[2]); // tainted [NOT DETECTED]
+	sink(v6); // tainted
+	sink(v6.data()[2]); // tainted
 
 	{
 		const std::vector<int> &v7c = v7; // (workaround because our iterators don't convert to const_iterator)
@@ -87,17 +87,17 @@ void test_element_taint(int x) {
 	{
 		const std::vector<int> &v8c = v8;
 		std::vector<int>::const_iterator it = v8c.begin();
-		v8.insert(it, 10, ns_char::source());
+		v8.insert(it, 10, ns_int::source());
 	}
 	sink(v8); // tainted [NOT DETECTED]
 	sink(v8.front()); // tainted [NOT DETECTED]
 	sink(v8.back());
 
 	v9.at(x) = source();
-	sink(v9); // tainted [NOT DETECTED]
+	sink(v9); // tainted
 	sink(v9.at(0)); // potentially tainted
 	sink(v9.at(1)); // potentially tainted
-	sink(v9.at(x)); // tainted [NOT DETECTED]
+	sink(v9.at(x)); // tainted
 }
 
 void test_vector_swap() {
@@ -140,4 +140,154 @@ void test_vector_clear() {
 	sink(v2); // tainted
 	sink(v3); // [FALSE POSITIVE]
 	sink(v4);
+}
+
+struct MyPair
+{
+	int a, b;
+};
+
+struct MyVectorContainer
+{
+	std::vector<int> vs;
+};
+
+void test_nested_vectors()
+{
+	{
+		int aa[10][20] = {0};
+
+		sink(aa[0][0]);
+		aa[0][0] = source();
+		sink(aa[0][0]); // tainted [IR ONLY]
+	}
+
+	{
+		std::vector<std::vector<int> > bb(30);
+
+		bb[0].push_back(0);
+		sink(bb[0][0]);
+		bb[0][0] = source();
+		sink(bb[0][0]); // tainted
+	}
+
+	{
+		std::vector<int> cc[40];
+
+		cc[0].push_back(0);
+		sink(cc[0][0]);
+		cc[0][0] = source();
+		sink(cc[0][0]); // tainted
+	}
+
+	{
+		std::vector<MyPair> dd;
+		MyPair mp = {0, 0};
+
+		dd.push_back(mp);
+		sink(dd[0].a);
+		sink(dd[0].b);
+		dd[0].a = source();
+		sink(dd[0].a); // tainted [NOT DETECTED]
+		sink(dd[0].b);
+	}
+
+	{
+		MyVectorContainer ee;
+
+		ee.vs.push_back(0);
+		sink(ee.vs[0]);
+		ee.vs[0] = source();
+		sink(ee.vs[0]); // tainted
+	}
+
+	{
+		std::vector<MyVectorContainer> ff;
+		MyVectorContainer mvc;
+
+		mvc.vs.push_back(0);
+		ff.push_back(mvc);
+		sink(ff[0].vs[0]);
+		ff[0].vs[0] = source();
+		sink(ff[0].vs[0]); // tainted [NOT DETECTED]
+	}
+}
+
+void sink(std::vector<int>::iterator &);
+
+typedef int myInt;
+typedef float myFloat;
+
+namespace ns_myFloat
+{
+	myFloat source();
+}
+
+namespace ns_ci_ptr
+{
+	const int *source();
+}
+
+void sink(std::vector<myFloat> &);
+void sink(std::vector<const int *> &);
+
+void test_vector_assign() {
+	std::vector<int> v1, v2, v3;
+
+	v1.assign(100, 0);
+	v2.assign(100, ns_int::source());
+	v3.push_back(source());
+
+	sink(v1);
+	sink(v2); // tainted
+	sink(v3); // tainted
+
+	{
+		std::vector<int> v4, v5, v6;
+		std::vector<int>::iterator i1, i2;
+	
+		v4.assign(v1.begin(), v1.end());
+		v5.assign(v3.begin(), v3.end());
+		i1 = v3.begin();
+		i1++;
+		i2 = i1;
+		i2++;
+		v6.assign(i1, i2);
+
+		sink(v4);
+		sink(v5); // tainted [NOT DETECTED]
+		sink(i1); // tainted [NOT DETECTED]
+		sink(i2); // tainted [NOT DETECTED]
+		sink(v6); // tainted [NOT DETECTED]
+	}
+
+	{
+		std::vector<myInt> v7;
+		std::vector<myFloat> v8;
+		std::vector<const int *> v9;
+
+		v7.assign(100, ns_int::source());
+		v8.assign(100, ns_myFloat::source());
+		v9.assign(100, ns_ci_ptr::source());
+
+		sink(v7); // tainted
+		sink(v8); // tainted
+		sink(v9); // tainted
+	}
+}
+
+void sink(int *);
+
+void test_data_more() {
+	std::vector<int> v1, v2;
+
+	v1.push_back(source());
+	sink(v1); // tainted
+	sink(v1.data()); // tainted
+	sink(v1.data()[2]); // tainted
+
+	*(v2.data()) = ns_int::source();
+	sink(v2); // tainted
+	sink(v2.data()); // tainted
+	sink(v2.data()[2]); // tainted
 }

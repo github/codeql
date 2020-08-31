@@ -450,15 +450,22 @@ Microsoft.NETCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
             Actions.GetEnvironmentVariable["ProgramFiles(x86)"] = @"C:\Program Files (x86)";
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"] = true;
             Actions.RunProcess[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -prerelease -legacy -property installationPath"] = 0;
-            Actions.RunProcessOut[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -prerelease -legacy -property installationPath"] = "C:\\VS1\nC:\\VS2";
-            Actions.RunProcessOut[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -prerelease -legacy -property installationVersion"] = "10.0\n11.0";
+            Actions.RunProcessOut[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -prerelease -legacy -property installationPath"] = "C:\\VS1\nC:\\VS2\nC:\\VS3";
             Actions.RunProcess[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -prerelease -legacy -property installationVersion"] = 0;
+            Actions.RunProcessOut[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -prerelease -legacy -property installationVersion"] = "10.0\n11.0\n16.0";
 
             var candidates = BuildTools.GetCandidateVcVarsFiles(Actions).ToArray();
             Assert.Equal("C:\\VS1\\VC\\vcvarsall.bat", candidates[0].Path);
             Assert.Equal(10, candidates[0].ToolsVersion);
             Assert.Equal("C:\\VS2\\VC\\vcvarsall.bat", candidates[1].Path);
             Assert.Equal(11, candidates[1].ToolsVersion);
+            Assert.Equal(@"C:\VS3\VC\Auxiliary\Build\vcvars32.bat", candidates[2].Path);
+            Assert.Equal(16, candidates[2].ToolsVersion);
+            Assert.Equal(@"C:\VS3\VC\Auxiliary\Build\vcvars64.bat", candidates[3].Path);
+            Assert.Equal(16, candidates[3].ToolsVersion);
+            Assert.Equal(@"C:\VS3\Common7\Tools\VsDevCmd.bat", candidates[4].Path);
+            Assert.Equal(16, candidates[4].ToolsVersion);
+            Assert.Equal(5, candidates.Length);
         }
 
         [Fact]

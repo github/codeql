@@ -33,7 +33,7 @@ namespace Semmle.Extraction.CIL.Entities
             trapFile.Write(index);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is Parameter param && method.Equals(param.method) && index == param.index;
         }

@@ -322,6 +322,33 @@ void test_string_substr()
 	sink(b.substr(0, b.length())); // tainted
 }
 
+void test_string_at()
+{
+	std::string a("123");
+	std::string b("123");
+	std::string c("123");
+
+	sink(a);
+	sink(b);
+	sink(c);
+
+	a[0] = ns_char::source();
+	b.at(0) = ns_char::source();
+	c[0] = a[0];
+
+	sink(a); // tainted
+	sink(b); // tainted
+	sink(c); // tainted
+}
+
+void test_string_data_more()
+{
+	std::string str("123");
+
+	str.data()[1] = ns_char::source();
+	sink(str); // tainted
+	sink(str.data()); // tainted
+}
 void test_string_iterators() {
 	// string append
 	{
