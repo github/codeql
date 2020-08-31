@@ -23,7 +23,7 @@ abstract class XssSanitizer extends DataFlow::Node { }
 abstract class XssAdditionalTaintStep extends TaintTracking2::Unit {
   /**
    * Holds if the step from `node1` to `node2` should be considered a taint
-   * step for all configurations.
+   * step for XSS taint configurations.
    */
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
@@ -119,7 +119,7 @@ private class ServletWriterSourceToWritingMethodFlowConfig extends TaintTracking
   }
 }
 
-/** A class representing methods that can be used to output data. */
+/** A method that can be used to output data to an output stream or writer. */
 private class WritingMethod extends Method {
   WritingMethod() {
     getDeclaringType().getASupertype*().hasQualifiedName("java.io", _) and
@@ -131,7 +131,7 @@ private class WritingMethod extends Method {
   }
 }
 
-/** A class representing methods that provides access to an output stream or writer. */
+/** An output stream or writer that writes to a servlet response. */
 class ServletWriterSource extends MethodAccess {
   ServletWriterSource() {
     this.getMethod() instanceof ServletResponseGetWriterMethod
