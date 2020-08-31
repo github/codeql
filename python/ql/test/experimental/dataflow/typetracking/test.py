@@ -47,3 +47,15 @@ def global_var_write_test():
     x = tracked # $tracked
     write_g(x) # $tracked
     use_g()
+
+def expects_int(x): # $int
+    do_int_stuff(x) # $int
+
+def expects_string(x): # $str
+    do_string_stuff(x) # $str
+
+def redefine_test():
+    x = int(5) # $int
+    expects_int(x) # $int
+    x = str("Hello") # $str
+    expects_string(x) # $str
