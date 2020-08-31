@@ -31,7 +31,9 @@ predicate hasDynamicHrefHostAttributeValue(DOM::ElementDefinition elem) {
       // fixed string with templating
       url.regexpMatch(Templating::getDelimiterMatchingRegexp()) and
       // ... that does not start with a fixed host or a relative path (common formats)
-      not url.regexpMatch("(?i)((https?:)?//)?[-a-z0-9.]*/.*")
+      not url.regexpMatch("(?i)((https?:)?//)?[-a-z0-9.]*/.*") and
+      // ... that is not a mailto: link
+      not url.regexpMatch("mailto:.*")
     )
   )
 }
