@@ -29,7 +29,7 @@ predicate hasDynamicHrefHostAttributeValue(DOM::ElementDefinition elem) {
     or
     exists(string url | url = attr.getStringValue() |
       // fixed string with templating
-      url.regexpMatch(Templating::getDelimiterMatchingRegexp()) and
+      url.regexpMatch(Templating::getDelimiterMatchingRegexpWithPrefix("[^?#]*")) and
       // ... that does not start with a fixed host or a relative path (common formats)
       not url.regexpMatch("(?i)((https?:)?//)?[-a-z0-9.]*/.*") and
       // ... that is not a mailto: link

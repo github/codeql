@@ -39,4 +39,15 @@ module Templating {
   string getDelimiterMatchingRegexp() {
     result = "(?s).*(" + concat("\\Q" + getADelimiter() + "\\E", "|") + ").*"
   }
+
+  /**
+   * Gets a regular expression that matches a string containing one
+   * of the known template delimiters identified by `getADelimiter()`,
+   * storing it in its first (and only) capture group.
+   * Where the string prior to the template delimiter matches the regexp `prefix`.
+   */
+  bindingset[prefix]
+  string getDelimiterMatchingRegexpWithPrefix(string prefix) {
+    result = "(?s)" + prefix + "(" + concat("\\Q" + getADelimiter() + "\\E", "|") + ").*"
+  }
 }

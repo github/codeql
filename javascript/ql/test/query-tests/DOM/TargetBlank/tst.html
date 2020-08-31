@@ -29,5 +29,10 @@
 <h1>OK: mailto is fine.</h1>
 <a target="_blank" href="mailto:{{var:mail}}">mail somone</a>
 
+<h1>OK: template elements after # or ? are fine.</h1>
+<a href="file.extension?#[% row.href %]" target="_blank">Example</a>
+<a href="file.extension?[% row.href %]" target="_blank">Example</a>
+<a href="file.extension#[% row.href %]" target="_blank">Example</a>
+
 </body>
 </html>
