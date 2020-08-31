@@ -150,40 +150,39 @@ predicate jsonStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
  * is currently very imprecise, as an example, since we model `dict.get`, we treat any
  * `<tainted object>.get(<arg>)` will be tainted, whether it's true or not.
  */
-predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
+predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::Node nodeTo) {
   // construction by literal
   // TODO: Not limiting the content argument here feels like a BIG hack, but we currently get nothing for free :|
   storeStep(nodeFrom, _, nodeTo)
   or
   // constructor call
-  exists(CallNode call | call = nodeTo.getNode() |
+  exists(CallNode call | call = nodeTo.asCfgNode() |
     call.getFunction().(NameNode).getId() in ["list", "set", "frozenset", "dict", "defaultdict",
           "tuple"] and
     call.getArg(0) = nodeFrom.getNode()
   )
   or
   // functions operating on collections
-  exists(CallNode call | call = nodeTo.getNode() |
+  exists(CallNode call | call = nodeTo.asCfgNode() |
     call.getFunction().(NameNode).getId() in ["sorted", "reversed", "iter", "next"] and
     call.getArg(0) = nodeFrom.getNode()
   )
   or
   // methods
-  exists(CallNode call, string name | call = nodeTo.getNode() |
+  exists(CallNode call, string name | call = nodeTo.asCfgNode() |
     name in ["copy",
           // general
           "pop",
           // dict
           "values", "items", "get", "popitem"] and
-    call.getFunction().(AttrNode).getObject(name) = nodeFrom.getNode()
+    call.getFunction().(AttrNode).getObject(name) = nodeFrom.asCfgNode()
   )
   or
   // list.append, set.add
-  // NOTE: this currently doesn't work, since there are no PostUpdateNodes
   exists(CallNode call, string name |
     name in ["append", "add"] and
     call.getFunction().(AttrNode).getObject(name) =
-      nodeTo.(PostUpdateNode).getPreUpdateNode().(DataFlow::CfgNode).getNode() and
+      nodeTo.(PostUpdateNode).getPreUpdateNode().asCfgNode() and
     call.getArg(0) = nodeFrom.getNode()
   )
 }
