@@ -17,7 +17,7 @@ class OptionalAttributeName extends string {
 /**
  * A description of a step on an inter-procedural data flow path.
  */
-newtype TStepSummary =
+private newtype TStepSummary =
   LevelStep() or
   CallStep() or
   ReturnStep() or
@@ -80,7 +80,7 @@ predicate callStep(ArgumentNode pred, ParameterNode succ) {
 /** Holds if `pred` steps to `succ` by being returned from a call. */
 predicate returnStep(ReturnNode pred, Node succ) {
   exists(DataFlowCall call |
-    pred.getEnclosingCallable() = call.getCallable() and succ = TCfgNode(call.getNode())
+    pred.getEnclosingCallable() = call.getCallable() and succ.asCfgNode() = call
   )
 }
 
@@ -128,7 +128,7 @@ predicate basicLoadStep(Node pred, Node succ, string attr) {
 /**
  * A utility class that is equivalent to `boolean` but does not require type joining.
  */
-class Boolean extends boolean {
+private class Boolean extends boolean {
   Boolean() { this = true or this = false }
 }
 
