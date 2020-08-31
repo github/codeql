@@ -22,8 +22,7 @@ private newtype TStepSummary =
   CallStep() or
   ReturnStep() or
   StoreStep(AttributeName attr) or
-  LoadStep(AttributeName attr) or
-  CopyStep(AttributeName attr)
+  LoadStep(AttributeName attr)
 
 /**
  * INTERNAL: Use `TypeTracker` or `TypeBackTracker` instead.
