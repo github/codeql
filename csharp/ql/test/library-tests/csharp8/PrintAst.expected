@@ -950,147 +950,72 @@ ranges.cs:
 #    9|               2: [IntLiteral] 3
 #    9|               3: [IntLiteral] 4
 #    9|           1: [LocalVariableAccess] access to local variable array
-#   10|       1: [LocalVariableDeclStmt] ... ...;
-#   10|         0: [LocalVariableDeclAndInitExpr] Int32[,] array2 = ...
-#   10|           0: [ArrayCreation] array creation of type Int32[,]
-#   10|             0: [IntLiteral] 2
-#   10|             1: [IntLiteral] 3
-#   10|           1: [LocalVariableAccess] access to local variable array2
+#   11|       1: [LocalVariableDeclStmt] ... ...;
+#   11|         0: [LocalVariableDeclAndInitExpr] Int32[] slice1 = ...
+#   11|           0: [ArrayAccess] access to array element
+#   11|             -1: [LocalVariableAccess] access to local variable array
+#   11|             0: [RangeExpr] ... .. ...
+#   11|               0: [OperatorCall] call to operator implicit conversion
+#   11|                 0: [IntLiteral] 1
+#   11|               1: [OperatorCall] call to operator implicit conversion
+#   11|                 0: [IntLiteral] 3
+#   11|           1: [LocalVariableAccess] access to local variable slice1
 #   12|       2: [LocalVariableDeclStmt] ... ...;
-#   12|         0: [LocalVariableDeclAndInitExpr] Int32 slice1 = ...
+#   12|         0: [LocalVariableDeclAndInitExpr] Int32[] slice2 = ...
 #   12|           0: [ArrayAccess] access to array element
 #   12|             -1: [LocalVariableAccess] access to local variable array
-#   12|             0: [OperatorCall] call to operator implicit conversion
-#   12|               0: [RangeExpr] ... .. ...
-#   12|                 0: [OperatorCall] call to operator implicit conversion
-#   12|                   0: [IntLiteral] 1
-#   12|                 1: [OperatorCall] call to operator implicit conversion
-#   12|                   0: [IntLiteral] 3
-#   12|           1: [LocalVariableAccess] access to local variable slice1
+#   12|             0: [RangeExpr] ... .. ...
+#   12|               0: [OperatorCall] call to operator implicit conversion
+#   12|                 0: [IntLiteral] 0
+#   12|               1: [IndexExpr] ^...
+#   12|                 0: [IntLiteral] 1
+#   12|           1: [LocalVariableAccess] access to local variable slice2
 #   13|       3: [LocalVariableDeclStmt] ... ...;
-#   13|         0: [LocalVariableDeclAndInitExpr] Int32 slice2 = ...
-#   13|           0: [ArrayAccess] access to array element
-#   13|             -1: [LocalVariableAccess] access to local variable array
-#   13|             0: [OperatorCall] call to operator implicit conversion
-#   13|               0: [RangeExpr] ... .. ...
-#   13|                 0: [OperatorCall] call to operator implicit conversion
-#   13|                   0: [IntLiteral] 0
-#   13|                 1: [IndexExpr] ^...
-#   13|                   0: [IntLiteral] 1
-#   13|           1: [LocalVariableAccess] access to local variable slice2
+#   13|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
+#   13|           0: [IntLiteral] 2
+#   13|           1: [LocalVariableAccess] access to local variable x
+#   13|         1: [LocalVariableDeclAndInitExpr] Int32 y = ...
+#   13|           0: [IntLiteral] 3
+#   13|           1: [LocalVariableAccess] access to local variable y
 #   14|       4: [LocalVariableDeclStmt] ... ...;
-#   14|         0: [LocalVariableDeclAndInitExpr] Int32 x = ...
-#   14|           0: [IntLiteral] 2
-#   14|           1: [LocalVariableAccess] access to local variable x
-#   14|         1: [LocalVariableDeclAndInitExpr] Int32 y = ...
-#   14|           0: [IntLiteral] 3
-#   14|           1: [LocalVariableAccess] access to local variable y
+#   14|         0: [LocalVariableDeclAndInitExpr] Int32[] slice3 = ...
+#   14|           0: [ArrayAccess] access to array element
+#   14|             -1: [LocalVariableAccess] access to local variable array
+#   14|             0: [RangeExpr] ... .. ...
+#   14|               0: [OperatorCall] call to operator implicit conversion
+#   14|                 0: [LocalVariableAccess] access to local variable x
+#   14|               1: [OperatorCall] call to operator implicit conversion
+#   14|                 0: [LocalVariableAccess] access to local variable y
+#   14|           1: [LocalVariableAccess] access to local variable slice3
 #   15|       5: [LocalVariableDeclStmt] ... ...;
-#   15|         0: [LocalVariableDeclAndInitExpr] Int32 slice3 = ...
+#   15|         0: [LocalVariableDeclAndInitExpr] Int32[] slice4 = ...
 #   15|           0: [ArrayAccess] access to array element
 #   15|             -1: [LocalVariableAccess] access to local variable array
-#   15|             0: [OperatorCall] call to operator implicit conversion
-#   15|               0: [RangeExpr] ... .. ...
-#   15|                 0: [OperatorCall] call to operator implicit conversion
-#   15|                   0: [LocalVariableAccess] access to local variable x
-#   15|                 1: [OperatorCall] call to operator implicit conversion
-#   15|                   0: [LocalVariableAccess] access to local variable y
-#   15|           1: [LocalVariableAccess] access to local variable slice3
+#   15|             0: [RangeExpr] ... .. ...
+#   15|               1: [OperatorCall] call to operator implicit conversion
+#   15|                 0: [LocalVariableAccess] access to local variable y
+#   15|           1: [LocalVariableAccess] access to local variable slice4
 #   16|       6: [LocalVariableDeclStmt] ... ...;
-#   16|         0: [LocalVariableDeclAndInitExpr] Int32 slice4 = ...
+#   16|         0: [LocalVariableDeclAndInitExpr] Int32[] slice5 = ...
 #   16|           0: [ArrayAccess] access to array element
 #   16|             -1: [LocalVariableAccess] access to local variable array
-#   16|             0: [OperatorCall] call to operator implicit conversion
-#   16|               0: [RangeExpr] ... .. ...
-#   16|                 1: [OperatorCall] call to operator implicit conversion
-#   16|                   0: [LocalVariableAccess] access to local variable y
-#   16|           1: [LocalVariableAccess] access to local variable slice4
+#   16|             0: [RangeExpr] ... .. ...
+#   16|               0: [OperatorCall] call to operator implicit conversion
+#   16|                 0: [LocalVariableAccess] access to local variable x
+#   16|           1: [LocalVariableAccess] access to local variable slice5
 #   17|       7: [LocalVariableDeclStmt] ... ...;
-#   17|         0: [LocalVariableDeclAndInitExpr] Int32 slice5 = ...
+#   17|         0: [LocalVariableDeclAndInitExpr] Int32[] slice6 = ...
 #   17|           0: [ArrayAccess] access to array element
 #   17|             -1: [LocalVariableAccess] access to local variable array
-#   17|             0: [OperatorCall] call to operator implicit conversion
-#   17|               0: [RangeExpr] ... .. ...
-#   17|                 0: [OperatorCall] call to operator implicit conversion
-#   17|                   0: [LocalVariableAccess] access to local variable x
-#   17|           1: [LocalVariableAccess] access to local variable slice5
+#   17|             0: [RangeExpr] ... .. ...
+#   17|           1: [LocalVariableAccess] access to local variable slice6
 #   18|       8: [LocalVariableDeclStmt] ... ...;
-#   18|         0: [LocalVariableDeclAndInitExpr] Int32 slice6 = ...
+#   18|         0: [LocalVariableDeclAndInitExpr] Int32[] slice7 = ...
 #   18|           0: [ArrayAccess] access to array element
 #   18|             -1: [LocalVariableAccess] access to local variable array
-#   18|             0: [OperatorCall] call to operator implicit conversion
-#   18|               0: [RangeExpr] ... .. ...
-#   18|           1: [LocalVariableAccess] access to local variable slice6
-#   19|       9: [LocalVariableDeclStmt] ... ...;
-#   19|         0: [LocalVariableDeclAndInitExpr] Int32 slice7 = ...
-#   19|           0: [ArrayAccess] access to array element
-#   19|             -1: [LocalVariableAccess] access to local variable array
-#   19|             0: [OperatorCall] call to operator implicit conversion
-#   19|               0: [RangeExpr] ... .. ...
-#   19|                 0: [IndexExpr] ^...
-#   19|                   0: [IntLiteral] 10
-#   19|                 1: [IndexExpr] ^...
-#   19|                   0: [IntLiteral] 5
-#   19|           1: [LocalVariableAccess] access to local variable slice7
-#   20|       10: [LocalVariableDeclStmt] ... ...;
-#   20|         0: [LocalVariableDeclAndInitExpr] Int32 slice8 = ...
-#   20|           0: [ArrayAccess] access to array element
-#   20|             -1: [LocalVariableAccess] access to local variable array2
-#   20|             0: [OperatorCall] call to operator implicit conversion
-#   20|               0: [RangeExpr] ... .. ...
-#   20|                 0: [OperatorCall] call to operator implicit conversion
-#   20|                   0: [IntLiteral] 1
-#   20|                 1: [OperatorCall] call to operator implicit conversion
-#   20|                   0: [IntLiteral] 2
-#   20|             1: [OperatorCall] call to operator implicit conversion
-#   20|               0: [RangeExpr] ... .. ...
-#   20|           1: [LocalVariableAccess] access to local variable slice8
-#   25| [NamespaceDeclaration] namespace ... { ... }
-#   27|   1: [Struct] Index
-#-----|     3: (Base types)
-#   27|       1: [Interface] IEquatable<Index>
-#   29|     17: [InstanceConstructor] Index
-#-----|       2: (Parameters)
-#   29|         0: [Parameter] value
-#   29|         1: [Parameter] fromEnd
-#   29|           1: [BoolLiteral] false
-#   29|       4: [BlockStmt] {...}
-#   30|     18: [ImplicitConversionOperator] implicit conversion
-#-----|       2: (Parameters)
-#   30|         0: [Parameter] value
-#   30|       4: [DefaultValueExpr] default(...)
-#   30|         0: [TypeAccess] access to type Index
-#   33|   2: [Struct] Range
-#-----|     3: (Base types)
-#   33|       1: [Interface] IEquatable<Range>
-#   35|     14: [InstanceConstructor] Range
-#-----|       2: (Parameters)
-#   35|         0: [Parameter] start
-#   35|         1: [Parameter] end
-#   35|       4: [ThrowExpr] throw ...
-#   35|         0: [NullLiteral] null
-#   36|     15: [Method] StartAt
-#-----|       2: (Parameters)
-#   36|         0: [Parameter] start
-#   36|       4: [ThrowExpr] throw ...
-#   36|         0: [NullLiteral] null
-#   37|     16: [Method] EndAt
-#-----|       2: (Parameters)
-#   37|         0: [Parameter] end
-#   37|       4: [ThrowExpr] throw ...
-#   37|         0: [NullLiteral] null
-#   38|     17: [Property] All
-#   38|       3: [Getter] get_All
-#   38|         4: [ThrowExpr] throw ...
-#   38|           0: [NullLiteral] null
-#   39|     18: [Method] Create
-#-----|       2: (Parameters)
-#   39|         0: [Parameter] start
-#   39|         1: [Parameter] end
-#   39|       4: [ThrowExpr] throw ...
-#   39|         0: [NullLiteral] null
-#   40|     19: [ImplicitConversionOperator] implicit conversion
-#-----|       2: (Parameters)
-#   40|         0: [Parameter] r
-#   40|       4: [ThrowExpr] throw ...
-#   40|         0: [NullLiteral] null
+#   18|             0: [RangeExpr] ... .. ...
+#   18|               0: [IndexExpr] ^...
+#   18|                 0: [IntLiteral] 10
+#   18|               1: [IndexExpr] ^...
+#   18|                 0: [IntLiteral] 5
+#   18|           1: [LocalVariableAccess] access to local variable slice7

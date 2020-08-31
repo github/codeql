@@ -288,7 +288,7 @@ namespace Semmle.Extraction.CSharp
                 }
                 else if (named.ContainingNamespace != null)
                 {
-                    if (cx.AddAssemblyTrapPrefix && !(named.ContainingAssembly is null))
+                    if (cx.ShouldAddAssemblyTrapPrefix && named.ContainingAssembly is object)
                         BuildAssembly(named.ContainingAssembly, trapFile);
                     named.ContainingNamespace.BuildNamespace(cx, trapFile);
                 }
@@ -354,7 +354,7 @@ namespace Semmle.Extraction.CSharp
                 // a base class, which in turn has `C1<C3<C4>>` as a base class. The latter has the original
                 // base class `C3<C4>` as a type argument, which would lead to infinite unfolding.
                 trapFile.Write(" : ");
-                @base.BuildOrWriteId(cx, trapFile, symbolBeingDefined, false);
+                @base.BuildOrWriteId(cx, trapFile, symbolBeingDefined, addBaseClass: false);
             }
         }
 

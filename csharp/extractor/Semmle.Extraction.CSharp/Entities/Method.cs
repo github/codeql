@@ -171,15 +171,11 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write('(');
             int index = 0;
 
-            if (method.MethodKind == MethodKind.ReducedExtension)
-            {
-                trapFile.WriteSeparator(",", ref index);
-                method.ReceiverType.BuildOrWriteId(cx, trapFile, method);
-                trapFile.Write(" ");
-                trapFile.Write(method.ReducedFrom.Parameters.First().Name);
-            }
+            var @params = method.MethodKind == MethodKind.ReducedExtension
+                ? method.ReducedFrom.Parameters
+                : method.Parameters;
 
-            foreach (var param in method.Parameters)
+            foreach (var param in @params)
             {
                 trapFile.WriteSeparator(",", ref index);
                 param.Type.BuildOrWriteId(cx, trapFile, method);

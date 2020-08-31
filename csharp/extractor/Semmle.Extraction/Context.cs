@@ -44,7 +44,7 @@ namespace Semmle.Extraction
         /// <summary>
         /// Holds if assembly information should be prefixed to TRAP labels.
         /// </summary>
-        public readonly bool AddAssemblyTrapPrefix;
+        public readonly bool ShouldAddAssemblyTrapPrefix;
 
         int GetNewId() => TrapWriter.IdCounter++;
 
@@ -241,7 +241,7 @@ namespace Semmle.Extraction
             Compilation = c;
             Scope = scope;
             TrapWriter = trapWriter;
-            AddAssemblyTrapPrefix = addAssemblyTrapPrefix;
+            ShouldAddAssemblyTrapPrefix = addAssemblyTrapPrefix;
         }
 
         public bool FromSource => Scope.FromSource;
