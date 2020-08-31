@@ -59,21 +59,27 @@ class Iterator extends Type {
 
 private predicate calledWithIteratorArgument(Operator op, int index) {
   exists(Type t |
-    t = op.getACallToThisFunction().getArgument(index).getUnspecifiedType()
-    |
-  t instanceof Iterator
-  or
-  t.(ReferenceType).getBaseType() instanceof Iterator
+    t =
+      op
+          .getACallToThisFunction()
+          .getArgument(index)
+          .getExplicitlyConverted()
+          .getType()
+          .stripTopLevelSpecifiers()
+  |
+    t instanceof Iterator
+    or
+    t.(ReferenceType).getBaseType() instanceof Iterator
   )
 }
+
 /**
  * A non-member prefix `operator*` function for an iterator type.
  */
 class IteratorPointerDereferenceOperator extends Operator, TaintFunction {
   IteratorPointerDereferenceOperator() {
     this.hasName("operator*") and
-    this.getACallToThisFunction().getArgument(0).getFullyConverted().getUnderlyingType() instanceof
-      Iterator
+    calledWithIteratorArgument(this, 0)
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
