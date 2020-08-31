@@ -18,10 +18,7 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public override IEntity VisitArrayType(IArrayTypeSymbol array) => ArrayType.Create(cx, array);
 
-        public override IEntity VisitMethod(IMethodSymbol methodDecl)
-        {
-            return Method.Create(cx, methodDecl);
-        }
+        public override IEntity VisitMethod(IMethodSymbol methodDecl) => Method.Create(cx, methodDecl);
 
         public override IEntity VisitField(IFieldSymbol field) => Field.Create(cx, field);
 

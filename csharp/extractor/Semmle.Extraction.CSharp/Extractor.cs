@@ -76,33 +76,30 @@ namespace Semmle.Extraction.CSharp
                 return ExitCode.Ok;
             }
 
+            var compilerVersion = new CompilerVersion(commandLineArguments);
+
+            var cwd = Directory.GetCurrentDirectory();
+
+            var compilerArguments = CSharpCommandLineParser.Default.Parse(
+                compilerVersion.ArgsWithResponse,
+                cwd,
+                compilerVersion.FrameworkPath,
+                compilerVersion.AdditionalReferenceDirectories
+                );
+
+            if (compilerArguments == null)
+            {
+                var sb = new StringBuilder();
+                sb.Append("  Failed to parse command line: ").AppendList(" ", args);
+                logger.Log(Severity.Error, sb.ToString());
+                return ExitCode.Failed;
+            }
+
             using (var analyser = new Analyser(new LogProgressMonitor(logger), logger))
             using (var references = new BlockingCollection<MetadataReference>())
             {
                 try
                 {
-                    var compilerVersion = new CompilerVersion(commandLineArguments);
-
-                    var cwd = Directory.GetCurrentDirectory();
-
-#nullable disable
-                    var compilerArguments = CSharpCommandLineParser.Default.Parse(
-                        compilerVersion.ArgsWithResponse,
-                        cwd,
-                        compilerVersion.FrameworkPath,
-                        compilerVersion.AdditionalReferenceDirectories
-                        );
-#nullable enable
-
-                    if (compilerArguments == null)
-                    {
-                        var sb = new StringBuilder();
-                        sb.Append("  Failed to parse command line: ").AppendList(" ", args);
-                        logger.Log(Severity.Error, sb.ToString());
-                        ++analyser.CompilationErrors;
-                        return ExitCode.Failed;
-                    }
-
                     if (!analyser.BeginInitialize(compilerVersion.ArgsWithResponse))
                     {
                         logger.Log(Severity.Info, "Skipping extraction since files have already been extracted");

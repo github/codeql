@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CSharp
 {
     /// <summary>
     /// An ITypeSymbol with nullability annotations.
-    /// Although a similar class has been implemented in Rolsyn,
+    /// Although a similar class has been implemented in Roslyn,
     /// https://github.com/dotnet/roslyn/blob/090e52e27c38ad8f1ea4d033114c2a107604ddaa/src/Compilers/CSharp/Portable/Symbols/TypeWithAnnotations.cs
     /// it is an internal struct that has not yet been exposed on the public interface.
     /// </summary>
@@ -46,9 +46,7 @@ namespace Semmle.Extraction.CSharp
              * The conservative option would be to resolve all error types as null.
              */
 
-            var errorType = type as IErrorTypeSymbol;
-
-            return errorType != null && errorType.CandidateSymbols.Any() ?
+            return type is IErrorTypeSymbol errorType && errorType.CandidateSymbols.Any() ?
                 errorType.CandidateSymbols.First() as ITypeSymbol :
                 type;
         }
@@ -76,12 +74,12 @@ namespace Semmle.Extraction.CSharp
                 Select(r => r.GetSyntax()).
                 OfType<Microsoft.CodeAnalysis.CSharp.Syntax.BaseMethodDeclarationSyntax>().
                 SelectMany(md => md.Modifiers);
-            var typeModifers =
+            var typeModifiers =
                 symbol.DeclaringSyntaxReferences.
                 Select(r => r.GetSyntax()).
                 OfType<Microsoft.CodeAnalysis.CSharp.Syntax.TypeDeclarationSyntax>().
                 SelectMany(cd => cd.Modifiers);
-            return methodModifiers.Concat(typeModifers).Select(m => m.Text);
+            return methodModifiers.Concat(typeModifiers).Select(m => m.Text);
         }
 
         /// <summary>
@@ -238,7 +236,7 @@ namespace Semmle.Extraction.CSharp
             }
             else if (named.ContainingNamespace != null)
             {
-                if (prefixAssembly)
+                if (prefixAssembly && named.ContainingAssembly is object)
                     BuildAssembly(named.ContainingAssembly, trapFile);
                 named.ContainingNamespace.BuildNamespace(cx, trapFile);
             }
@@ -395,11 +393,11 @@ namespace Semmle.Extraction.CSharp
         /// <returns>The list of parameters, or an empty list.</returns>
         public static IEnumerable<IParameterSymbol> GetParameters(this ISymbol parameterizable)
         {
-            if (parameterizable is IMethodSymbol)
-                return ((IMethodSymbol)parameterizable).Parameters;
+            if (parameterizable is IMethodSymbol method)
+                return method.Parameters;
 
-            if (parameterizable is IPropertySymbol)
-                return ((IPropertySymbol)parameterizable).Parameters;
+            if (parameterizable is IPropertySymbol property)
+                return property.Parameters;
 
             return Enumerable.Empty<IParameterSymbol>();
         }
@@ -425,12 +423,12 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         public static bool IsSourceDeclaration(this IParameterSymbol parameter)
         {
-            var method = parameter.ContainingSymbol as IMethodSymbol;
-            if (method != null)
+            if (parameter.ContainingSymbol is IMethodSymbol method)
                 return method.IsSourceDeclaration();
-            var property = parameter.ContainingSymbol as IPropertySymbol;
-            if (property != null && property.IsIndexer)
+
+            if (parameter.ContainingSymbol is IPropertySymbol property && property.IsIndexer)
                 return property.IsSourceDeclaration();
+
             return true;
         }
 

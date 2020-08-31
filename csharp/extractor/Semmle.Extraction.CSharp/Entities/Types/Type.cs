@@ -262,7 +262,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public void ExtractRecursive(TextWriter trapFile, IEntity parent)
+        public void ExtractRecursive(TextWriter trapFile, IEntity? parent)
         {
             if (symbol.ContainingSymbol.Kind == SymbolKind.Namespace && !symbol.ContainingNamespace.IsGlobalNamespace)
             {

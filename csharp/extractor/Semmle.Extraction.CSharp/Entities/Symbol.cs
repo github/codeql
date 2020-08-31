@@ -11,7 +11,7 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     public abstract class CachedSymbol<T> : CachedEntity<T> where T : class, ISymbol
     {
-        public CachedSymbol(Context cx, T? init)
+        public CachedSymbol(Context cx, T init)
             : base(cx, init) { }
 
         public virtual Type? ContainingType => symbol.ContainingType != null ? Type.Create(Context, symbol.ContainingType) : null;
