@@ -39,9 +39,9 @@ class StepSummary extends TStepSummary {
     or
     this instanceof ReturnStep and result = "return"
     or
-    exists(string prop | this = StoreStep(prop) | result = "store " + prop)
+    exists(string attr | this = StoreStep(attr) | result = "store " + attr)
     or
-    exists(string prop | this = LoadStep(prop) | result = "load " + prop)
+    exists(string attr | this = LoadStep(attr) | result = "load " + attr)
   }
 }
 
@@ -132,7 +132,7 @@ class Boolean extends boolean {
   Boolean() { this = true or this = false }
 }
 
-private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalAttributeName prop)
+private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalAttributeName attr)
 
 /**
  * Summary of the steps needed to track a value to a given dataflow node.
@@ -163,54 +163,54 @@ private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalAttributeN
  */
 class TypeTracker extends TTypeTracker {
   Boolean hasCall;
-  OptionalAttributeName prop;
+  OptionalAttributeName attr;
 
-  TypeTracker() { this = MkTypeTracker(hasCall, prop) }
+  TypeTracker() { this = MkTypeTracker(hasCall, attr) }
 
   /** Gets the summary resulting from appending `step` to this type-tracking summary. */
   cached
   TypeTracker append(StepSummary step) {
     step = LevelStep() and result = this
     or
-    step = CallStep() and result = MkTypeTracker(true, prop)
+    step = CallStep() and result = MkTypeTracker(true, attr)
     or
     step = ReturnStep() and hasCall = false and result = this
     or
-    step = LoadStep(prop) and result = MkTypeTracker(hasCall, "")
+    step = LoadStep(attr) and result = MkTypeTracker(hasCall, "")
     or
-    exists(string p | step = StoreStep(p) and prop = "" and result = MkTypeTracker(hasCall, p))
+    exists(string p | step = StoreStep(p) and attr = "" and result = MkTypeTracker(hasCall, p))
   }
 
   /** Gets a textual representation of this summary. */
   string toString() {
-    exists(string withCall, string withProp |
+    exists(string withCall, string withAttr |
       (if hasCall = true then withCall = "with" else withCall = "without") and
-      (if prop != "" then withProp = " with property " + prop else withProp = "") and
-      result = "type tracker " + withCall + " call steps" + withProp
+      (if attr != "" then withAttr = " with attribute " + attr else withAttr = "") and
+      result = "type tracker " + withCall + " call steps" + withAttr
     )
   }
 
   /**
    * Holds if this is the starting point of type tracking.
    */
-  predicate start() { hasCall = false and prop = "" }
+  predicate start() { hasCall = false and attr = "" }
 
   /**
-   * Holds if this is the starting point of type tracking, and the value starts in the property named `propName`.
-   * The type tracking only ends after the property has been loaded.
+   * Holds if this is the starting point of type tracking, and the value starts in the attribute named `attrName`.
+   * The type tracking only ends after the attribute has been loaded.
    */
-  predicate startInProp(AttributeName propName) { hasCall = false and prop = propName }
+  predicate startInAttr(AttributeName attrName) { hasCall = false and attr = attrName }
 
   /**
    * Holds if this is the starting point of type tracking
    * when tracking a parameter into a call, but not out of it.
    */
-  predicate call() { hasCall = true and prop = "" }
+  predicate call() { hasCall = true and attr = "" }
 
   /**
    * Holds if this is the end point of type tracking.
    */
-  predicate end() { prop = "" }
+  predicate end() { attr = "" }
 
   /**
    * INTERNAL. DO NOT USE.
@@ -222,17 +222,17 @@ class TypeTracker extends TTypeTracker {
   /**
    * INTERNAL. DO NOT USE.
    *
-   * Gets the property associated with this type tracker.
+   * Gets the attribute associated with this type tracker.
    */
-  string getProp() { result = prop }
+  string getAttr() { result = attr }
 
   /**
    * Gets a type tracker that starts where this one has left off to allow continued
    * tracking.
    *
-   * This predicate is only defined if the type has not been tracked into a property.
+   * This predicate is only defined if the type has not been tracked into an attribute.
    */
-  TypeTracker continue() { prop = "" and result = this }
+  TypeTracker continue() { attr = "" and result = this }
 
   /**
    * Gets the summary that corresponds to having taken a forwards
@@ -251,7 +251,7 @@ class TypeTracker extends TTypeTracker {
    * local, heap and/or inter-procedural step from `pred` to `succ`.
    *
    * Unlike `TypeTracker::step`, this predicate exposes all edges
-   * in the flow graph, and not just the edges between `SourceNode`s.
+   * in the flow graph, and not just the edges between `Node`s.
    * It may therefore be less performant.
    *
    * Type tracking predicates using small steps typically take the following form:
