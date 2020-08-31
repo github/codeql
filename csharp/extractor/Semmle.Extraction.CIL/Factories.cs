@@ -41,7 +41,7 @@ namespace Semmle.Extraction.CIL
                     e.WriteId(writer);
                     var id = writer.ToString();
 
-                    if (debugLabels.TryGetValue(id, out IExtractedEntity previousEntity))
+                    if (debugLabels.TryGetValue(id, out IExtractedEntity? previousEntity))
                     {
                         cx.Extractor.Message(new Message("Duplicate trap ID", id, null, severity: Util.Logging.Severity.Warning));
                     }

@@ -91,7 +91,7 @@ namespace Semmle.Extraction.CIL.Entities
             fd = cx.mdReader.GetFieldDefinition(handle);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is DefinitionField field && handle.Equals(field.handle);
         }
@@ -153,7 +153,7 @@ namespace Semmle.Extraction.CIL.Entities
             declType = (Type)cx.CreateGeneric(gc, mr.Parent);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is MemberReferenceField field && Handle.Equals(field.Handle);
         }

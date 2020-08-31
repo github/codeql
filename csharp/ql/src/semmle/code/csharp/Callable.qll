@@ -437,6 +437,9 @@ class Operator extends Callable, Member, Attributable, @operator {
 
   override string getName() { operators(this, _, result, _, _, _) }
 
+  /**
+   * Gets the metadata name of the operator, such as `op_implicit` or `op_RightShift`.
+   */
   string getFunctionName() { none() }
 
   override ValueOrRefType getDeclaringType() { operators(this, _, _, result, _, _) }

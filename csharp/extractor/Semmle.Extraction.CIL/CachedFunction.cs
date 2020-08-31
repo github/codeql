@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CIL
     /// </summary>
     /// <typeparam name="SrcType">The type of the source.</typeparam>
     /// <typeparam name="TargetType">The type of the generated object.</typeparam>
-    public class CachedFunction<SrcType, TargetType>
+    public class CachedFunction<SrcType, TargetType> where SrcType : notnull
     {
         readonly Func<SrcType, TargetType> generator;
         readonly Dictionary<SrcType, TargetType> cache;

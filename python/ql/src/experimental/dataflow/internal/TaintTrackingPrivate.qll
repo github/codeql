@@ -46,8 +46,8 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
  * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to concatenation.
  *
  * Note that since we cannot easily distinguish interesting types (like string, list, tuple),
- * we consider any `+` operation to propagate taint. After consulting with the JS team, this
- * doesn't sound like it is a big problem in practice.
+ * we consider any `+` operation to propagate taint. This is what is done in the JS libraries,
+ * and isn't a big problem in practice.
  */
 predicate concatStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
   exists(BinaryExprNode add | add = nodeTo.getNode() |

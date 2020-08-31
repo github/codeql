@@ -47,9 +47,9 @@ namespace Semmle.Extraction.CIL.Entities
             trapFile.Write(cx.assemblyPath.Replace("\\", "/"));
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            return GetType() == obj.GetType() && Equals(file, ((Assembly)obj).file);
+            return GetType() == obj?.GetType() && Equals(file, ((Assembly)obj).file);
         }
 
         public override int GetHashCode() => 7 * file.GetHashCode();
@@ -63,7 +63,7 @@ namespace Semmle.Extraction.CIL.Entities
             get
             {
                 yield return file;
-                yield return Tuples.assemblies(this, file, FullName, assemblyName.Name, assemblyName.Version.ToString());
+                yield return Tuples.assemblies(this, file, FullName, assemblyName.Name ?? string.Empty, assemblyName.Version?.ToString() ?? string.Empty);
 
                 if (cx.pdb != null)
                 {
@@ -75,7 +75,7 @@ namespace Semmle.Extraction.CIL.Entities
 
                 foreach (var handle in cx.mdReader.TypeDefinitions)
                 {
-                    IExtractionProduct product = null;
+                    IExtractionProduct? product = null;
                     try
                     {
                         product = cx.Create(handle);
@@ -92,7 +92,7 @@ namespace Semmle.Extraction.CIL.Entities
 
                 foreach (var handle in cx.mdReader.MethodDefinitions)
                 {
-                    IExtractionProduct product = null;
+                    IExtractionProduct? product = null;
                     try
                     {
                         product = cx.Create(handle);

@@ -3048,6 +3048,239 @@ nodes
 | torrents.js:7:25:7:27 | loc |
 | torrents.js:7:25:7:27 | loc |
 | torrents.js:7:25:7:27 | loc |
+| typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:24:9:30 | req.url |
+| typescript.ts:9:24:9:30 | req.url |
+| typescript.ts:9:24:9:30 | req.url |
+| typescript.ts:9:24:9:30 | req.url |
+| typescript.ts:9:24:9:30 | req.url |
+| typescript.ts:12:29:12:32 | path |
+| typescript.ts:12:29:12:32 | path |
+| typescript.ts:12:29:12:32 | path |
+| typescript.ts:12:29:12:32 | path |
+| typescript.ts:12:29:12:32 | path |
+| typescript.ts:12:29:12:32 | path |
+| typescript.ts:12:29:12:32 | path |
+| typescript.ts:12:29:12:32 | path |
+| typescript.ts:12:29:12:32 | path |
+| typescript.ts:12:29:12:32 | path |
+| typescript.ts:12:29:12:32 | path |
+| typescript.ts:12:29:12:32 | path |
+| typescript.ts:12:29:12:32 | path |
+| typescript.ts:12:29:12:32 | path |
+| typescript.ts:12:29:12:32 | path |
+| typescript.ts:12:29:12:32 | path |
+| typescript.ts:12:29:12:32 | path |
+| typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:15:20:18 | path |
+| typescript.ts:20:15:20:18 | path |
+| typescript.ts:20:15:20:18 | path |
+| typescript.ts:20:15:20:18 | path |
+| typescript.ts:20:15:20:18 | path |
+| typescript.ts:20:15:20:18 | path |
+| typescript.ts:20:15:20:18 | path |
+| typescript.ts:20:15:20:18 | path |
+| typescript.ts:20:15:20:18 | path |
+| typescript.ts:20:15:20:18 | path |
+| typescript.ts:20:15:20:18 | path |
+| typescript.ts:20:15:20:18 | path |
+| typescript.ts:20:15:20:18 | path |
+| typescript.ts:20:15:20:18 | path |
+| typescript.ts:20:15:20:18 | path |
+| typescript.ts:20:15:20:18 | path |
+| typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:15:23:18 | path |
+| typescript.ts:23:15:23:18 | path |
+| typescript.ts:23:15:23:18 | path |
+| typescript.ts:23:15:23:18 | path |
+| typescript.ts:23:15:23:18 | path |
+| typescript.ts:23:15:23:18 | path |
+| typescript.ts:23:15:23:18 | path |
+| typescript.ts:23:15:23:18 | path |
+| typescript.ts:23:15:23:18 | path |
+| typescript.ts:23:15:23:18 | path |
+| typescript.ts:23:15:23:18 | path |
+| typescript.ts:23:15:23:18 | path |
+| typescript.ts:23:15:23:18 | path |
+| typescript.ts:23:15:23:18 | path |
+| typescript.ts:23:15:23:18 | path |
+| typescript.ts:23:15:23:18 | path |
+| typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:15:30:18 | path |
+| typescript.ts:30:15:30:18 | path |
+| typescript.ts:30:15:30:18 | path |
+| typescript.ts:30:15:30:18 | path |
+| typescript.ts:30:15:30:18 | path |
+| typescript.ts:30:15:30:18 | path |
+| typescript.ts:30:15:30:18 | path |
+| typescript.ts:30:15:30:18 | path |
+| typescript.ts:30:15:30:18 | path |
+| typescript.ts:30:15:30:18 | path |
+| typescript.ts:30:15:30:18 | path |
+| typescript.ts:30:15:30:18 | path |
+| typescript.ts:30:15:30:18 | path |
+| typescript.ts:30:15:30:18 | path |
+| typescript.ts:30:15:30:18 | path |
+| typescript.ts:30:15:30:18 | path |
+| typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:32:29:32:33 | path6 |
 | views.js:1:43:1:55 | req.params[0] |
 | views.js:1:43:1:55 | req.params[0] |
 | views.js:1:43:1:55 | req.params[0] |
@@ -7362,6 +7595,310 @@ edges
 | torrents.js:6:24:6:27 | name | torrents.js:6:12:6:45 | dir + " ... t.data" |
 | torrents.js:6:24:6:27 | name | torrents.js:6:12:6:45 | dir + " ... t.data" |
 | torrents.js:6:24:6:27 | name | torrents.js:6:12:6:45 | dir + " ... t.data" |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:12:29:12:32 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:20:15:20:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:20:15:20:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:20:15:20:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:20:15:20:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:20:15:20:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:20:15:20:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:20:15:20:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:20:15:20:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:20:15:20:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:20:15:20:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:20:15:20:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:20:15:20:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:20:15:20:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:20:15:20:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:20:15:20:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:20:15:20:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:23:15:23:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:23:15:23:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:23:15:23:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:23:15:23:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:23:15:23:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:23:15:23:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:23:15:23:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:23:15:23:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:23:15:23:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:23:15:23:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:23:15:23:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:23:15:23:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:23:15:23:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:23:15:23:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:23:15:23:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:23:15:23:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:30:15:30:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:30:15:30:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:30:15:30:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:30:15:30:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:30:15:30:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:30:15:30:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:30:15:30:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:30:15:30:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:30:15:30:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:30:15:30:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:30:15:30:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:30:15:30:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:30:15:30:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:30:15:30:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:30:15:30:18 | path |
+| typescript.ts:9:7:9:48 | path | typescript.ts:30:15:30:18 | path |
+| typescript.ts:9:14:9:37 | url.par ... , true) | typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:37 | url.par ... , true) | typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:37 | url.par ... , true) | typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:37 | url.par ... , true) | typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:37 | url.par ... , true) | typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:37 | url.par ... , true) | typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:37 | url.par ... , true) | typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:37 | url.par ... , true) | typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:37 | url.par ... , true) | typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:37 | url.par ... , true) | typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:37 | url.par ... , true) | typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:37 | url.par ... , true) | typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:37 | url.par ... , true) | typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:37 | url.par ... , true) | typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:37 | url.par ... , true) | typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:37 | url.par ... , true) | typescript.ts:9:14:9:43 | url.par ... ).query |
+| typescript.ts:9:14:9:43 | url.par ... ).query | typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:43 | url.par ... ).query | typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:43 | url.par ... ).query | typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:43 | url.par ... ).query | typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:43 | url.par ... ).query | typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:43 | url.par ... ).query | typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:43 | url.par ... ).query | typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:43 | url.par ... ).query | typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:43 | url.par ... ).query | typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:43 | url.par ... ).query | typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:43 | url.par ... ).query | typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:43 | url.par ... ).query | typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:43 | url.par ... ).query | typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:43 | url.par ... ).query | typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:43 | url.par ... ).query | typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:43 | url.par ... ).query | typescript.ts:9:14:9:48 | url.par ... ry.path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path | typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path | typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path | typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path | typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path | typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path | typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path | typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path | typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path | typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path | typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path | typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path | typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path | typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path | typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path | typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:14:9:48 | url.par ... ry.path | typescript.ts:9:7:9:48 | path |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:7:20:18 | path3 | typescript.ts:21:39:21:43 | path3 |
+| typescript.ts:20:15:20:18 | path | typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:15:20:18 | path | typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:15:20:18 | path | typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:15:20:18 | path | typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:15:20:18 | path | typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:15:20:18 | path | typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:15:20:18 | path | typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:15:20:18 | path | typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:15:20:18 | path | typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:15:20:18 | path | typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:15:20:18 | path | typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:15:20:18 | path | typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:15:20:18 | path | typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:15:20:18 | path | typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:15:20:18 | path | typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:20:15:20:18 | path | typescript.ts:20:7:20:18 | path3 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:7:23:18 | path4 | typescript.ts:24:39:24:43 | path4 |
+| typescript.ts:23:15:23:18 | path | typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:15:23:18 | path | typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:15:23:18 | path | typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:15:23:18 | path | typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:15:23:18 | path | typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:15:23:18 | path | typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:15:23:18 | path | typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:15:23:18 | path | typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:15:23:18 | path | typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:15:23:18 | path | typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:15:23:18 | path | typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:15:23:18 | path | typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:15:23:18 | path | typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:15:23:18 | path | typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:15:23:18 | path | typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:23:15:23:18 | path | typescript.ts:23:7:23:18 | path4 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:7:30:18 | path6 | typescript.ts:32:29:32:33 | path6 |
+| typescript.ts:30:15:30:18 | path | typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:15:30:18 | path | typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:15:30:18 | path | typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:15:30:18 | path | typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:15:30:18 | path | typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:15:30:18 | path | typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:15:30:18 | path | typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:15:30:18 | path | typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:15:30:18 | path | typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:15:30:18 | path | typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:15:30:18 | path | typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:15:30:18 | path | typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:15:30:18 | path | typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:15:30:18 | path | typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:15:30:18 | path | typescript.ts:30:7:30:18 | path6 |
+| typescript.ts:30:15:30:18 | path | typescript.ts:30:7:30:18 | path6 |
 | views.js:1:43:1:55 | req.params[0] | views.js:1:43:1:55 | req.params[0] |
 #select
 | TaintedPath-es6.js:10:26:10:45 | join("public", path) | TaintedPath-es6.js:7:20:7:26 | req.url | TaintedPath-es6.js:10:26:10:45 | join("public", path) | This path depends on $@. | TaintedPath-es6.js:7:20:7:26 | req.url | a user-provided value |
@@ -7497,4 +8034,8 @@ edges
 | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever | tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever | This path depends on $@. | tainted-string-steps.js:6:24:6:30 | req.url | a user-provided value |
 | tainted-string-steps.js:27:18:27:36 | path.split(unknown) | tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:27:18:27:36 | path.split(unknown) | This path depends on $@. | tainted-string-steps.js:6:24:6:30 | req.url | a user-provided value |
 | torrents.js:7:25:7:27 | loc | torrents.js:5:13:5:38 | parseTo ... t).name | torrents.js:7:25:7:27 | loc | This path depends on $@. | torrents.js:5:13:5:38 | parseTo ... t).name | a user-provided value |
+| typescript.ts:12:29:12:32 | path | typescript.ts:9:24:9:30 | req.url | typescript.ts:12:29:12:32 | path | This path depends on $@. | typescript.ts:9:24:9:30 | req.url | a user-provided value |
+| typescript.ts:21:39:21:43 | path3 | typescript.ts:9:24:9:30 | req.url | typescript.ts:21:39:21:43 | path3 | This path depends on $@. | typescript.ts:9:24:9:30 | req.url | a user-provided value |
+| typescript.ts:24:39:24:43 | path4 | typescript.ts:9:24:9:30 | req.url | typescript.ts:24:39:24:43 | path4 | This path depends on $@. | typescript.ts:9:24:9:30 | req.url | a user-provided value |
+| typescript.ts:32:29:32:33 | path6 | typescript.ts:9:24:9:30 | req.url | typescript.ts:32:29:32:33 | path6 | This path depends on $@. | typescript.ts:9:24:9:30 | req.url | a user-provided value |
 | views.js:1:43:1:55 | req.params[0] | views.js:1:43:1:55 | req.params[0] | views.js:1:43:1:55 | req.params[0] | This path depends on $@. | views.js:1:43:1:55 | req.params[0] | a user-provided value |
