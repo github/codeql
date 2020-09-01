@@ -1495,7 +1495,7 @@ module DataFlow {
     )
     or
     // from returned expr to the FunctionReturnNode.
-    exists(Function f | f.isOrdinary() |
+    exists(Function f | not f.isAsyncOrGenerator() |
       DataFlow::functionReturnNode(succ, f) and pred = valueNode(f.getAReturnedExpr())
     )
   }

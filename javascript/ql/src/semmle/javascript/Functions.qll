@@ -204,8 +204,8 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   /** Holds if this function is an asynchronous function. */
   predicate isAsync() { isAsync(this) }
 
-  /** Holds if this function is not asynchronous and also not a generator. */
-  predicate isOrdinary() { not isAsync() and not isGenerator() }
+  /** Holds if this function is asynchronous or a generator. */
+  predicate isAsyncOrGenerator() { isAsync() or isGenerator() }
 
   /** Gets the enclosing function or toplevel of this function. */
   override StmtContainer getEnclosingContainer() { result = getEnclosingStmt().getContainer() }
