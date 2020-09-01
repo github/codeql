@@ -1,8 +1,8 @@
 private import python
 import experimental.dataflow.DataFlow
 
-predicate pointsToOrigin(DataFlow::DataFlowCfgNode pointer, DataFlow::DataFlowCfgNode pointed) {
-  pointed = pointer.pointsTo().getOrigin()
+predicate pointsToOrigin(DataFlow::DataFlowCfgNode pointer, DataFlow::DataFlowCfgNode origin) {
+  origin = pointer.pointsTo().getOrigin()
 }
 
 class PointsToConfiguration extends DataFlow::Configuration {
@@ -13,16 +13,16 @@ class PointsToConfiguration extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node node) { pointsToOrigin(node.asCfgNode(), _) }
 }
 
-predicate hasFlow(ControlFlowNode pointed, ControlFlowNode pointer) {
+predicate hasFlow(ControlFlowNode origin, ControlFlowNode pointer) {
   exists(PointsToConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink |
-    source.getNode().asCfgNode() = pointed and
+    source.getNode().asCfgNode() = origin and
     sink.getNode().asCfgNode() = pointer and
     config.hasFlowPath(source, sink)
   )
 }
 
-from DataFlow::DataFlowCfgNode pointer, DataFlow::DataFlowCfgNode pointed
+from DataFlow::DataFlowCfgNode pointer, DataFlow::DataFlowCfgNode origin
 where
-  pointsToOrigin(pointer, pointed) and
-  not hasFlow(pointed, pointer)
-select pointer, pointed
+  pointsToOrigin(pointer, origin) and
+  not hasFlow(origin, pointer)
+select origin, pointer
