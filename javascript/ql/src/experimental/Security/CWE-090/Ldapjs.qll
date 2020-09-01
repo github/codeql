@@ -33,9 +33,17 @@ module Ldapjs {
    * Gets a data flow node for the client `search` options.
    */
   class LdapjsSearchOptions extends DataFlow::SourceNode {
+    DataFlow::CallNode queryCall;
+
     LdapjsSearchOptions() {
-      this = any(LdapjsClient client).getAMemberCall("search").getArgument(1).getALocalSource()
+      queryCall = any(LdapjsClient client).getAMemberCall("search") and
+      this = queryCall.getArgument(1).getALocalSource()
     }
+
+    /**
+     * Gets the LDAP query call that these options are used in.
+     */
+    DataFlow::InvokeNode getQueryCall() { result = queryCall }
   }
 
   /**
