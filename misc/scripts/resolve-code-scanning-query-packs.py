@@ -88,12 +88,6 @@ def get_query_metadata(key, metadata, queryfile):
 def subprocess_run(cmd):
     return subprocess.run(cmd, shell=True, capture_output=True, text=True, env=os.environ.copy())
 
-
-
-print("Search path: " + codeql_search_path)
-print("Path: " + str(os.environ.copy()["PATH"]))
-
-
 # Check for `git`
 git_version = subprocess_run("git --version")
 if (git_version.returncode != 0):
