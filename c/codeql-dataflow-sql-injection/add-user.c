@@ -48,8 +48,10 @@ char* get_user_info() {
     setbuf( stdout, NULL );
     printf("*** Welcome to sql injection ***\n");
     printf("Please enter name: ");
-    count = read(STDIN_FILENO, buf, BUFSIZE);
+    count = read(STDIN_FILENO, buf, BUFSIZE - 1);
     if (count <= 0) abort();
+    // ensure the buffer is zero-terminated
+    buf[count] = '\0';
     /* strip trailing whitespace */
     while (count && isspace(buf[count-1])) {
         buf[count-1] = 0; --count;
