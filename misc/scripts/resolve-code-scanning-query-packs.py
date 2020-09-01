@@ -91,6 +91,11 @@ if (git_version.returncode != 0):
     print("Error: your system doesn't have 'git'. Aborting.", file=sys.stderr)
     sys.exit(1)
 
+codeql_version = subprocess.run("codeql --version", shell=True, capture_output=True, text=True)
+if (codeql_version.returncode != 0):
+    print("Error: couldn't invoke CodeQL CLI. Is it on the path? Aborting.", file=sys.stderr)
+    sys.exit(1)
+    
 # Extend CodeQL search path by detecting root of the current Git repo (if any). This means that you
 # can run this script from any location within the CodeQL git repository.
 git_toplevel_dir = subprocess.run("git rev-parse --show-toplevel", shell=True, capture_output=True, text=True)
