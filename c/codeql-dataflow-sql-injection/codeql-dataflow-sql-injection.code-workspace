@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "[codeql-dataflow-sql-injection-d5b28fb source archive]",
+			"uri": "codeql-zip-archive://0-66/Users/hohn/local/db/codeql-dataflow-sql-injection-d5b28fb/src.zip/"
+		}
+	]
+}

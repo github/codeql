@@ -1,0 +1,3 @@
+name: cpp_sql_injection
+version: 0.0.0
+libraryPathDependencies: codeql-cpp
