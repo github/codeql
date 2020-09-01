@@ -206,9 +206,9 @@ This program can be compiled and linked, and a simple sqlite db created via
 ./build.sh
 
 # Prepare db
-./admin rm-db
-./admin create-db
-./admin show-db
+./admin -r
+./admin -c 
+./admin -s
 ```
 
 Users can be added via `stdin` in several ways; the second is a pretend "server"
@@ -226,14 +226,14 @@ echo "User Outside" | ./add-user 2>> users.log
 Check the db and log:
 ```
 # Check
-./admin show-db
+./admin -s
 
 tail -4 users.log 
 ```
 
 Looks ok:
 ```
-0:$ ./admin show-db
+0:$ ./admin -s
 87797|First User
 87808|User Outside
 
@@ -252,8 +252,8 @@ Johnny'); DROP TABLE users; --
 And then we have this:
 ```sh
 # And the problem:
-./admin show-db
-0:$ ./admin show-db
+./admin -s
+0:$ ./admin -s
 Error: near line 2: no such table: users
 ```
 
