@@ -41,10 +41,10 @@ This ensures the meaning of the query cannot be changed by a malicious user.</p>
 
 <references>
 <li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/LDAP_Injection_Prevention_Cheat_Sheet.html">LDAP Injection Prevention Cheat Sheet</a>.</li>
-<li>Ldapjs documentation: <a href="http://ldapjs.org/index.html">Documentation</a>.</li>
-<li>Github repository: <a href="https://github.com/ldapjs/node-ldapjs">ldapjs</a>.</li>
+<li>LDAPjs: <a href="http://ldapjs.org/index.html">Documentation for LDAPjs</a>.</li>
+<li>Github: <a href="https://github.com/ldapjs/node-ldapjs">ldapjs</a>.</li>
 <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/LDAP_injection">LDAP injection</a>.</li>
 <li>BlackHat: <a href="https://www.blackhat.com/presentations/bh-europe-08/Alonso-Parada/Whitepaper/bh-eu-08-alonso-parada-WP.pdf">LDAP Injection and Blind LDAP Injection</a>.</li>
-<li><a href="https://ldap.com/2018/05/04/understanding-and-defending-against-ldap-injection-attacks/">Understanding and Defending Against LDAP Injection Attacks</a>.</li>
+<li>LDAP: <a href="https://ldap.com/2018/05/04/understanding-and-defending-against-ldap-injection-attacks/">Understanding and Defending Against LDAP Injection Attacks</a>.</li>
 </references>
 </qhelp>
