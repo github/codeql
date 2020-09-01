@@ -32,6 +32,7 @@ jobs:
       run: |
         pwd
         ls
+        ls codeql
         python codeql/misc/scripts/resolve-code-scanning-query-packs.py > output.csv
     - name: Upload query list
       uses: actions/upload-artifact@v2
