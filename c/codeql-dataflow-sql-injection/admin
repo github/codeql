@@ -1,5 +1,24 @@
 #!/bin/bash
-rm-db () {
+
+set -e
+
+script=$(basename "$0")
+
+GREEN='\033[0;32m'
+MAGENTA='\033[0;95m'
+NC='\033[0m'
+RED='\033[0;31m'
+YELLOW='\033[0;33m'
+
+help() {
+    echo -e "Usage: ./${script} [options]" \
+         "\n${YELLOW}Options: ${NC}" \
+         "\n\t -h  ${GREEN}Show Help ${NC}" \
+         "\n\t -c  ${MAGENTA}Creates a users table ${NC}" \
+         "\n\t -s  ${MAGENTA}Shows all records in the users table ${NC}" \
+         "\n\t -r  ${RED}Removes users table ${NC}" 
+}
+remove-db () {
     rm users.sqlite
 }
 
@@ -18,4 +37,19 @@ show-db () {
     ' | sqlite3 users.sqlite 
 }
 
-eval $@
+while getopts "h?csr" option
+do
+    case "${option}"
+    in
+        h|\?)
+            help
+            exit 0
+        ;;
+        c)  create-db
+        ;;
+        s)  show-db
+        ;;
+        r)  remove-db
+        ;;
+    esac
+done
