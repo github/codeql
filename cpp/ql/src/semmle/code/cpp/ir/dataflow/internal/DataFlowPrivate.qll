@@ -2,8 +2,6 @@ private import cpp
 private import DataFlowUtil
 private import semmle.code.cpp.ir.IR
 private import DataFlowDispatch
-private import semmle.code.cpp.ir.implementation.aliased_ssa.internal.AliasedSSA
-private import semmle.code.cpp.ir.internal.IntegerConstant
 
 /**
  * A data flow node that occurs as the argument of a call and is passed as-is
@@ -146,11 +144,23 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
  */
 predicate jumpStep(Node n1, Node n2) { none() }
 
+/**
+ * Gets the field corresponding to the bit range `[startBit..endBit)` of class `c`.
+ */
+private Field getField(Class c, int startBit, int endBit) {
+  result.getDeclaringType() = c and
+  startBit = 8 * result.getByteOffset() and
+  endBit = 8 * result.getType().getSize() + startBit
+  or
+  exists(Field f, Class cInner |
+    f = c.getAField() and
+    cInner = f.getUnderlyingType() and
+    result = getField(cInner, startBit - 8 * f.getByteOffset(), endBit - 8 * f.getByteOffset())
+  )
+}
+
 private newtype TContent =
-  TFieldContent(IntValue startBitOffset, IntValue endBitOffset) {
-    getDefInterval(_, startBitOffset, endBitOffset) or
-    getUseInterval(_, startBitOffset, endBitOffset)
-  } or
+  TFieldContent(Class c, int startBit, int endBit) { exists(getField(c, startBit, endBit)) } or
   TCollectionContent() or
   TArrayContent()
 
@@ -167,20 +177,18 @@ class Content extends TContent {
   }
 }
 
-private class FieldContent extends Content, TFieldContent {
-  IntValue startBitOffset;
-  IntValue endBitOffset;
+class FieldContent extends Content, TFieldContent {
+  Class c;
+  int startBit;
+  int endBit;
 
-  FieldContent() { this = TFieldContent(startBitOffset, endBitOffset) }
+  FieldContent() { this = TFieldContent(c, startBit, endBit) }
 
-  override string toString() {
-    result = "[" + startBitOffset.toString() + ".." + endBitOffset.toString() + ")"
-  }
+  override string toString() { result = getField().toString() }
 
-  predicate hasOffset(IntValue start, IntValue end) {
-    start = startBitOffset and
-    end = endBitOffset
-  }
+  predicate hasOffset(Class cl, int start, int end) { cl = c and start = startBit and end = endBit }
+
+  Field getField() { result = getField(c, startBit, endBit) }
 }
 
 private class CollectionContent extends Content, TCollectionContent {
@@ -192,21 +200,26 @@ private class ArrayContent extends Content, TArrayContent {
 }
 
 private predicate storeStepNoChi(Node node1, Content f, PostUpdateNode node2) {
-  exists(StoreInstruction store, IntValue startBitDef, IntValue endBitDef |
+  exists(StoreInstruction store |
     store = node2.asInstruction() and
-    getDefInterval(store, startBitDef, endBitDef) and
     store.getSourceValue() = node1.asInstruction() and
-    f.(FieldContent).hasOffset(startBitDef, endBitDef)
+    f.(FieldContent).getField() = store.getDestinationAddress().(FieldInstruction).getField()
   )
 }
 
 private predicate storeStepChi(Node node1, Content f, PostUpdateNode node2) {
-  exists(StoreInstruction store, ChiInstruction chi, IntValue startBitDef, IntValue endBitDef |
+  exists(StoreInstruction store, ChiInstruction chi |
     node1.asInstruction() = store and
-    getDefInterval(store, startBitDef, endBitDef) and
     node2.asInstruction() = chi and
     chi.getPartial() = store and
-    f.(FieldContent).hasOffset(startBitDef, endBitDef)
+    (
+      exists(int startBit, int endBit |
+        chi.getUpdatedInterval(startBit, endBit) and
+        f.(FieldContent).hasOffset(chi.getResultType(), startBit, endBit)
+      )
+      or
+      f.(FieldContent).getField() = store.getDestinationAddress().(FieldInstruction).getField()
+    )
   )
 }
 
@@ -226,11 +239,18 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
  * `node2`.
  */
 predicate readStep(Node node1, Content f, Node node2) {
-  exists(LoadInstruction load, IntValue startBitUse, IntValue endBitUse |
+  exists(LoadInstruction load |
     node2.asInstruction() = load and
     node1.asInstruction() = load.getSourceValueOperand().getAnyDef() and
-    getUseInterval(load, startBitUse, endBitUse) and
-    f.(FieldContent).hasOffset(startBitUse, endBitUse)
+    (
+      exists(Class c, int startBit, int endBit |
+        c = load.getSourceValueOperand().getAnyDef().getResultType() and
+        load.getSourceValueOperand().getUsedInterval(startBit, endBit) and
+        f.(FieldContent).hasOffset(c, startBit, endBit)
+      )
+      or
+      f.(FieldContent).getField() = load.getSourceAddress().(FieldInstruction).getField()
+    )
   )
 }
 

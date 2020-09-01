@@ -325,14 +325,15 @@ abstract private class PartialDefinitionNode extends PostUpdateNode {
 
 private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
   override ChiInstruction instr;
-  IntValue startBitDef;
-  IntValue endBitDef;
   StoreInstruction store;
 
   ExplicitFieldStoreQualifierNode() {
     not instr.isResultConflated() and
     instr.getPartial() = store and
-    getDefInterval(store, startBitDef, endBitDef)
+    (
+      instr.getUpdatedInterval(_, _) or
+      store.getDestinationAddress() instanceof FieldAddressInstruction
+    )
   }
 
   // By using an operand as the result of this predicate we avoid the dataflow inconsistency errors
@@ -359,11 +360,8 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
  */
 private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNode {
   override StoreInstruction instr;
-  IntValue startBitDef;
-  IntValue endBitDef;
 
   ExplicitSingleFieldStoreQualifierNode() {
-    getDefInterval(instr, startBitDef, endBitDef) and
     not exists(ChiInstruction chi | chi.getPartial() = instr) and
     // Without this condition any store would create a `PostUpdateNode`.
     instr.getDestinationAddress() instanceof FieldAddressInstruction
