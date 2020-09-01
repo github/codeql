@@ -13,8 +13,6 @@ edges
 | globalVars.c:9:7:9:11 | copy2 | globalVars.c:50:9:50:13 | copy2 |
 | globalVars.c:9:7:9:11 | copy2 | globalVars.c:50:9:50:13 | copy2 |
 | globalVars.c:9:7:9:11 | copy2 | globalVars.c:50:9:50:13 | copy2 |
-| globalVars.c:11:22:11:25 | *argv | globalVars.c:12:2:12:15 | Store |
-| globalVars.c:11:22:11:25 | argv | globalVars.c:11:22:11:25 | *argv |
 | globalVars.c:11:22:11:25 | argv | globalVars.c:12:2:12:15 | Store |
 | globalVars.c:12:2:12:15 | Store | globalVars.c:8:7:8:10 | copy |
 | globalVars.c:15:21:15:23 | val | globalVars.c:16:2:16:12 | Store |
@@ -31,7 +29,6 @@ edges
 nodes
 | globalVars.c:8:7:8:10 | copy | semmle.label | copy |
 | globalVars.c:9:7:9:11 | copy2 | semmle.label | copy2 |
-| globalVars.c:11:22:11:25 | *argv | semmle.label | *argv |
 | globalVars.c:11:22:11:25 | argv | semmle.label | argv |
 | globalVars.c:12:2:12:15 | Store | semmle.label | Store |
 | globalVars.c:15:21:15:23 | val | semmle.label | val |

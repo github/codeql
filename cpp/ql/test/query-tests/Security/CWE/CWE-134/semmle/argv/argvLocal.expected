@@ -5,18 +5,12 @@ edges
 | argvLocal.c:95:9:95:12 | argv | argvLocal.c:95:9:95:15 | access to array |
 | argvLocal.c:95:9:95:12 | argv | argvLocal.c:95:9:95:15 | access to array |
 | argvLocal.c:95:9:95:12 | argv | argvLocal.c:95:9:95:15 | access to array |
-| argvLocal.c:95:9:95:12 | argv | argvLocal.c:95:9:95:15 | access to array |
-| argvLocal.c:95:9:95:12 | argv | argvLocal.c:95:9:95:15 | access to array |
-| argvLocal.c:95:9:95:15 | access to array | argvLocal.c:95:9:95:15 | (const char *)... |
-| argvLocal.c:95:9:95:15 | access to array | argvLocal.c:95:9:95:15 | access to array |
 | argvLocal.c:96:15:96:18 | argv | argvLocal.c:96:15:96:21 | access to array |
 | argvLocal.c:96:15:96:18 | argv | argvLocal.c:96:15:96:21 | access to array |
 | argvLocal.c:96:15:96:18 | argv | argvLocal.c:96:15:96:21 | access to array |
 | argvLocal.c:96:15:96:18 | argv | argvLocal.c:96:15:96:21 | access to array |
 | argvLocal.c:100:7:100:10 | argv | argvLocal.c:101:9:101:10 | (const char *)... |
 | argvLocal.c:100:7:100:10 | argv | argvLocal.c:101:9:101:10 | (const char *)... |
-| argvLocal.c:100:7:100:10 | argv | argvLocal.c:101:9:101:10 | i1 |
-| argvLocal.c:100:7:100:10 | argv | argvLocal.c:101:9:101:10 | i1 |
 | argvLocal.c:100:7:100:10 | argv | argvLocal.c:101:9:101:10 | i1 |
 | argvLocal.c:100:7:100:10 | argv | argvLocal.c:101:9:101:10 | i1 |
 | argvLocal.c:100:7:100:10 | argv | argvLocal.c:101:9:101:10 | i1 |
@@ -31,18 +25,12 @@ edges
 | argvLocal.c:100:7:100:10 | argv | argvLocal.c:144:9:144:10 | i7 |
 | argvLocal.c:100:7:100:10 | argv | argvLocal.c:144:9:144:10 | i7 |
 | argvLocal.c:100:7:100:10 | argv | argvLocal.c:144:9:144:10 | i7 |
-| argvLocal.c:100:7:100:10 | argv | argvLocal.c:144:9:144:10 | i7 |
-| argvLocal.c:100:7:100:10 | argv | argvLocal.c:144:9:144:10 | i7 |
 | argvLocal.c:100:7:100:10 | argv | argvLocal.c:145:15:145:16 | i7 |
 | argvLocal.c:100:7:100:10 | argv | argvLocal.c:145:15:145:16 | i7 |
 | argvLocal.c:100:7:100:10 | argv | argvLocal.c:145:15:145:16 | i7 |
 | argvLocal.c:100:7:100:10 | argv | argvLocal.c:145:15:145:16 | i7 |
-| argvLocal.c:101:9:101:10 | i1 | argvLocal.c:101:9:101:10 | (const char *)... |
-| argvLocal.c:101:9:101:10 | i1 | argvLocal.c:101:9:101:10 | i1 |
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:106:9:106:13 | (const char *)... |
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:106:9:106:13 | (const char *)... |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:106:9:106:13 | access to array |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:106:9:106:13 | access to array |
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:106:9:106:13 | access to array |
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:106:9:106:13 | access to array |
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:106:9:106:13 | access to array |
@@ -57,16 +45,10 @@ edges
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:110:9:110:11 | * ... |
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:110:9:110:11 | * ... |
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:110:9:110:11 | * ... |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:110:9:110:11 | * ... |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:110:9:110:11 | * ... |
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:111:15:111:17 | * ... |
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:111:15:111:17 | * ... |
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:111:15:111:17 | * ... |
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:111:15:111:17 | * ... |
-| argvLocal.c:106:9:106:13 | access to array | argvLocal.c:106:9:106:13 | (const char *)... |
-| argvLocal.c:106:9:106:13 | access to array | argvLocal.c:106:9:106:13 | access to array |
-| argvLocal.c:110:9:110:11 | * ... | argvLocal.c:110:9:110:11 | (const char *)... |
-| argvLocal.c:110:9:110:11 | * ... | argvLocal.c:110:9:110:11 | * ... |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:116:9:116:10 | (const char *)... |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:116:9:116:10 | (const char *)... |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:116:9:116:10 | i3 |
@@ -143,22 +125,16 @@ edges
 | argvLocal.c:128:15:128:16 | printWrapper output argument | argvLocal.c:131:9:131:14 | ... + ... |
 | argvLocal.c:128:15:128:16 | printWrapper output argument | argvLocal.c:132:15:132:20 | ... + ... |
 | argvLocal.c:128:15:128:16 | printWrapper output argument | argvLocal.c:132:15:132:20 | ... + ... |
-| argvLocal.c:144:9:144:10 | i7 | argvLocal.c:144:9:144:10 | (const char *)... |
-| argvLocal.c:144:9:144:10 | i7 | argvLocal.c:144:9:144:10 | i7 |
 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:150:9:150:10 | (const char *)... |
 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:150:9:150:10 | (const char *)... |
 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:150:9:150:10 | i8 |
 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:150:9:150:10 | i8 |
 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:150:9:150:10 | i8 |
 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:150:9:150:10 | i8 |
-| argvLocal.c:149:11:149:14 | argv | argvLocal.c:150:9:150:10 | i8 |
-| argvLocal.c:149:11:149:14 | argv | argvLocal.c:150:9:150:10 | i8 |
 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:151:15:151:16 | i8 |
 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:151:15:151:16 | i8 |
 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:151:15:151:16 | i8 |
 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:151:15:151:16 | i8 |
-| argvLocal.c:150:9:150:10 | i8 | argvLocal.c:150:9:150:10 | (const char *)... |
-| argvLocal.c:150:9:150:10 | i8 | argvLocal.c:150:9:150:10 | i8 |
 | argvLocal.c:156:23:156:26 | argv | argvLocal.c:157:9:157:10 | (const char *)... |
 | argvLocal.c:156:23:156:26 | argv | argvLocal.c:157:9:157:10 | (const char *)... |
 | argvLocal.c:156:23:156:26 | argv | argvLocal.c:157:9:157:10 | i9 |
@@ -183,21 +159,12 @@ edges
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:169:18:169:20 | i10 |
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:169:18:169:20 | i10 |
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:169:18:169:20 | i10 |
-| argvLocal.c:168:18:168:21 | argv | argvLocal.c:169:18:169:20 | i10 |
-| argvLocal.c:168:18:168:21 | argv | argvLocal.c:169:18:169:20 | i10 |
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:15:170:26 | (char *)... |
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:15:170:26 | (char *)... |
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:24:170:26 | i10 |
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:24:170:26 | i10 |
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:24:170:26 | i10 |
 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:24:170:26 | i10 |
-| argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:24:170:26 | i10 |
-| argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:24:170:26 | i10 |
-| argvLocal.c:169:18:169:20 | i10 | argvLocal.c:169:9:169:20 | (char *)... |
-| argvLocal.c:169:18:169:20 | i10 | argvLocal.c:169:9:169:20 | (const char *)... |
-| argvLocal.c:169:18:169:20 | i10 | argvLocal.c:169:18:169:20 | i10 |
-| argvLocal.c:170:24:170:26 | i10 | argvLocal.c:170:15:170:26 | (char *)... |
-| argvLocal.c:170:24:170:26 | i10 | argvLocal.c:170:24:170:26 | i10 |
 nodes
 | argvLocal.c:9:25:9:31 | *correct | semmle.label | *correct |
 | argvLocal.c:9:25:9:31 | correct | semmle.label | correct |

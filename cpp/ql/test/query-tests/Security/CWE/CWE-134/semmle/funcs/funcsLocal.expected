@@ -17,14 +17,10 @@ edges
 | funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | i4 |
 | funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | i4 |
 | funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | i4 |
-| funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | i4 |
-| funcsLocal.c:31:13:31:17 | call to fgets | funcsLocal.c:32:9:32:10 | i4 |
 | funcsLocal.c:31:19:31:21 | fgets output argument | funcsLocal.c:32:9:32:10 | (const char *)... |
 | funcsLocal.c:31:19:31:21 | fgets output argument | funcsLocal.c:32:9:32:10 | i4 |
 | funcsLocal.c:31:19:31:21 | i41 | funcsLocal.c:32:9:32:10 | (const char *)... |
 | funcsLocal.c:31:19:31:21 | i41 | funcsLocal.c:32:9:32:10 | i4 |
-| funcsLocal.c:32:9:32:10 | i4 | funcsLocal.c:32:9:32:10 | (const char *)... |
-| funcsLocal.c:32:9:32:10 | i4 | funcsLocal.c:32:9:32:10 | i4 |
 | funcsLocal.c:36:7:36:8 | gets output argument | funcsLocal.c:37:9:37:10 | (const char *)... |
 | funcsLocal.c:36:7:36:8 | gets output argument | funcsLocal.c:37:9:37:10 | i5 |
 | funcsLocal.c:36:7:36:8 | i5 | funcsLocal.c:37:9:37:10 | (const char *)... |
@@ -35,14 +31,10 @@ edges
 | funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | i6 |
 | funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | i6 |
 | funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | i6 |
-| funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | i6 |
-| funcsLocal.c:41:13:41:16 | call to gets | funcsLocal.c:42:9:42:10 | i6 |
 | funcsLocal.c:41:18:41:20 | gets output argument | funcsLocal.c:42:9:42:10 | (const char *)... |
 | funcsLocal.c:41:18:41:20 | gets output argument | funcsLocal.c:42:9:42:10 | i6 |
 | funcsLocal.c:41:18:41:20 | i61 | funcsLocal.c:42:9:42:10 | (const char *)... |
 | funcsLocal.c:41:18:41:20 | i61 | funcsLocal.c:42:9:42:10 | i6 |
-| funcsLocal.c:42:9:42:10 | i6 | funcsLocal.c:42:9:42:10 | (const char *)... |
-| funcsLocal.c:42:9:42:10 | i6 | funcsLocal.c:42:9:42:10 | i6 |
 nodes
 | funcsLocal.c:16:8:16:9 | fread output argument | semmle.label | fread output argument |
 | funcsLocal.c:16:8:16:9 | i1 | semmle.label | i1 |
