@@ -525,20 +525,48 @@ private predicate getFieldSizeOfClass(Class c, Type type, int size) {
   )
 }
 
+private predicate initializeParameterOfType(InitializeIndirectionInstruction init, Type type) {
+  init.getParameter().getType().getUnspecifiedType().(DerivedType).getBaseType() =
+    type.getUnspecifiedType()
+}
+
+private predicate isSingleFieldClass(Type type, Class cTo) {
+  exists(int size |
+    cTo.getSize() = size and
+    getFieldSizeOfClass(cTo, type, size)
+  )
+}
+
 private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {
-  opTo.getAnyDef() = iFrom
+  // Propagate flow from an instruction to its exact uses.
+  opTo.getDef() = iFrom
+  or
+  opTo = any(ReadSideEffectInstruction read).getSideEffectOperand() and
+  not iFrom.isResultConflated() and
+  iFrom = opTo.getAnyDef()
+  or
+  exists(InitializeIndirectionInstruction init |
+    iFrom = init and
+    opTo.(LoadOperand).getAnyDef() = init and
+    initializeParameterOfType(init, opTo.getType())
+  )
+  or
+  exists(LoadInstruction load |
+    load.getSourceValueOperand() = opTo and
+    opTo.getAnyDef() = iFrom and
+    isSingleFieldClass(iFrom.getResultType(), opTo.getType())
+  )
 }
 
 cached
 private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo) {
-  iTo.(CopyInstruction).getSourceValueOperand() = opFrom and not opFrom.isDefinitionInexact()
+  iTo.(CopyInstruction).getSourceValueOperand() = opFrom
   or
-  iTo.(PhiInstruction).getAnInputOperand() = opFrom and not opFrom.isDefinitionInexact()
+  iTo.(PhiInstruction).getAnInputOperand() = opFrom
   or
   // A read side effect is almost never exact since we don't know exactly how
   // much memory the callee will read.
-  iTo.(ReadSideEffectInstruction).getSideEffectOperand() = opFrom and
-  not opFrom.getAnyDef().isResultConflated()
+  iTo.(ReadSideEffectInstruction).getSideEffectOperand() = opFrom
   or
   // Loading a single `int` from an `int *` parameter is not an exact load since
   // the parameter may point to an entire array rather than a single `int`. The
@@ -556,18 +584,15 @@ private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo
     // Check that the types match. Otherwise we can get flow from an object to
     // its fields, which leads to field conflation when there's flow from other
     // fields to the object elsewhere.
-    init.getParameter().getType().getUnspecifiedType().(DerivedType).getBaseType() =
-      iTo.getResultType().getUnspecifiedType()
+    initializeParameterOfType(init, iTo.getResultType())
   )
   or
   // Treat all conversions as flow, even conversions between different numeric types.
-  iTo.(ConvertInstruction).getUnaryOperand() = opFrom and not opFrom.isDefinitionInexact()
+  iTo.(ConvertInstruction).getUnaryOperand() = opFrom
   or
-  iTo.(CheckedConvertOrNullInstruction).getUnaryOperand() = opFrom and
-  not opFrom.isDefinitionInexact()
+  iTo.(CheckedConvertOrNullInstruction).getUnaryOperand() = opFrom
   or
-  iTo.(InheritanceConversionInstruction).getUnaryOperand() = opFrom and
-  not opFrom.isDefinitionInexact()
+  iTo.(InheritanceConversionInstruction).getUnaryOperand() = opFrom
   or
   // A chi instruction represents a point where a new value (the _partial_
   // operand) may overwrite an old value (the _total_ operand), but the alias
@@ -602,12 +627,7 @@ private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo
   or
   // Flow from stores to structs with a single field to a load of that field.
   iTo.(LoadInstruction).getSourceValueOperand() = opFrom and
-  exists(int size, Type type, Class cTo |
-    type = opFrom.getAnyDef().getResultType() and
-    cTo = iTo.getResultType() and
-    cTo.getSize() = size and
-    getFieldSizeOfClass(cTo, type, size)
-  )
+  isSingleFieldClass(opFrom.getAnyDef().getResultType(), iTo.getResultType())
   or
   // Flow through modeled functions
   modelFlow(opFrom, iTo)
