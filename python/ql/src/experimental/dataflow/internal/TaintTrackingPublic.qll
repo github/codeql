@@ -6,6 +6,8 @@
 private import python
 private import TaintTrackingPrivate
 private import experimental.dataflow.DataFlow
+// Need to import since frameworks can extend `AdditionalTaintStep`
+private import experimental.semmle.python.Frameworks
 
 // Local taint flow and helpers
 /**
