@@ -1,3 +1,5 @@
+/** Provides classes to reason about Cross-site scripting (XSS) vulnerabilities. */
+
 import java
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.frameworks.android.WebView
@@ -6,12 +8,27 @@ import semmle.code.java.frameworks.spring.SpringHttp
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking2
 
-/*
- * Definitions for XSS sinks
- */
-
+/** A sink that represent a method that outputs data without applying contextual output encoding. */
 abstract class XssSink extends DataFlow::Node { }
 
+/** A sanitizer that neutralizes dangerous characters that can be used to perform a XSS attack. */
+abstract class XssSanitizer extends DataFlow::Node { }
+
+/**
+ * A unit class for adding additional taint steps.
+ *
+ * Extend this class to add additional taint steps that should apply to the XSS
+ * taint configuration.
+ */
+abstract class XssAdditionalTaintStep extends TaintTracking2::Unit {
+  /**
+   * Holds if the step from `node1` to `node2` should be considered a taint
+   * step for XSS taint configurations.
+   */
+  abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
+}
+
+/** A default sink representing methods susceptible to XSS attacks. */
 private class DefaultXssSink extends XssSink {
   DefaultXssSink() {
     exists(HttpServletResponseSendErrorMethod m, MethodAccess ma |
@@ -80,6 +97,14 @@ private class DefaultXssSink extends XssSink {
   }
 }
 
+/** A default sanitizer that considers numeric and boolean typed data safe for writing to output. */
+private class DefaultXSSSanitizer extends XssSanitizer {
+  DefaultXSSSanitizer() {
+    this.getType() instanceof NumericType or this.getType() instanceof BooleanType
+  }
+}
+
+/** A configuration that tracks data from a servlet writer to an output method. */
 private class ServletWriterSourceToWritingMethodFlowConfig extends TaintTracking2::Configuration {
   ServletWriterSourceToWritingMethodFlowConfig() {
     this = "XSS::ServletWriterSourceToWritingMethodFlowConfig"
@@ -94,6 +119,7 @@ private class ServletWriterSourceToWritingMethodFlowConfig extends TaintTracking
   }
 }
 
+/** A method that can be used to output data to an output stream or writer. */
 private class WritingMethod extends Method {
   WritingMethod() {
     getDeclaringType().getASupertype*().hasQualifiedName("java.io", _) and
@@ -106,6 +132,7 @@ private class WritingMethod extends Method {
   }
 }
 
+/** An output stream or writer that writes to a servlet response. */
 class ServletWriterSource extends MethodAccess {
   ServletWriterSource() {
     this.getMethod() instanceof ServletResponseGetWriterMethod
