@@ -79,7 +79,7 @@ predicate callStep(ArgumentNode nodeFrom, ParameterNode nodeTo) {
 /** Holds if `nodeFrom` steps to `nodeTo` by being returned from a call. */
 predicate returnStep(ReturnNode nodeFrom, Node nodeTo) {
   exists(DataFlowCall call |
-    nodeFrom.getEnclosingCallable() = call.getCallable() and nodeTo.asCfgNode() = call
+    nodeFrom.getEnclosingCallable() = call.getCallable() and nodeTo.asCfgNode() = call.getNode()
   )
 }
 
