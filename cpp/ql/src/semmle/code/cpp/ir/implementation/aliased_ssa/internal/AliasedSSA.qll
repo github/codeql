@@ -556,22 +556,6 @@ private Overlap getVariableMemoryLocationOverlap(
       use.getEndBitOffset())
 }
 
-predicate getDefInterval(Instruction defInstr, IntValue startBitDef, IntValue endBitDef) {
-  exists(VariableMemoryLocation def |
-    def = getResultMemoryLocation(defInstr) and
-    startBitDef = def.getStartBitOffset() and
-    endBitDef = def.getEndBitOffset()
-  )
-}
-
-predicate getUseInterval(Instruction useInstr, IntValue startBitUse, IntValue endBitUse) {
-  exists(VariableMemoryLocation use |
-    use = getOperandMemoryLocation(useInstr.getAnOperand()) and
-    startBitUse = use.getStartBitOffset() and
-    endBitUse = use.getEndBitOffset()
-  )
-}
-
 MemoryLocation getResultMemoryLocation(Instruction instr) {
   exists(MemoryAccessKind kind, boolean isMayAccess |
     kind = instr.getResultMemoryAccess() and
@@ -633,3 +617,9 @@ MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
     )
   )
 }
+
+/** Gets the start bit offset of a `MemoryLocation`, if any. */
+int getStartBitOffset(VariableMemoryLocation location) { result = location.getStartBitOffset() }
+
+/** Gets the end bit offset of a `MemoryLocation`, if any. */
+int getEndBitOffset(VariableMemoryLocation location) { result = location.getEndBitOffset() }
