@@ -30,10 +30,10 @@ jobs:
       run: unzip -d codeql-cli codeql-linux64.zip
     - name: Build query list
       run: |
-        PATH="$PATH:codeql-cli/codeql" python codeql/misc/scripts/resolve-code-scanning-query-packs.py
+        PATH="$PATH:codeql-cli/codeql" python codeql/misc/scripts/resolve-code-scanning-query-packs.py > code-scanning-query-lists.csv
     - name: Upload query list
       uses: actions/upload-artifact@v2
       with:
-        name: query-list
-        path: output.csv
+        name: code-scanning-query-lists
+        path: code-scanning-query-lists.csv
     
