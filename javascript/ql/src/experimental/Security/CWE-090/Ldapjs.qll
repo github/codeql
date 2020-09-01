@@ -65,7 +65,14 @@ module Ldapjs {
    * A distinguished name (DN) used in a Client API call against the LDAP server.
    */
   class LdapjsDNArgument extends DataFlow::Node {
-    LdapjsDNArgument() { this = any(LdapjsClientAPICall clientAPIcall).getArgument(0) }
+    LdapjsClientAPICall queryCall;
+
+    LdapjsDNArgument() { this = queryCall.getArgument(0) }
+
+    /**
+     * Gets the LDAP query call that this DN is used in.
+     */
+    DataFlow::InvokeNode getQueryCall() { result = queryCall }
   }
 
   /**
