@@ -65,7 +65,7 @@ If you get stuck, try searching our documentation and blog posts for help and id
 - [Using the CodeQL extension for VS Code](https://help.semmle.com/codeql/codeql-for-vscode.html)
 
 ## Codeql Recap
-This is a brief review of codeql taken from the [full
+This is a brief review of CodeQL taken from the [full
 introduction](https://git.io/JJqdS).  For more details, see the [documentation
 links](#documentation-links).  We will revisit all of this during the tutorial.
 
@@ -89,7 +89,7 @@ select /* ... expressions ... */
 
 The `from` clause specifies some variables that will be used in the query. The
 `where` clause specifies some conditions on those variables in the form of logical
-formulas. The `select` clauses speciifes what the results should be, and can refer
+formulas. The `select` clauses specifies what the results should be, and can refer
 to variables defined in the `from` clause.
 
 The `from` clause is defined as a series of variable declarations, where each
@@ -580,7 +580,7 @@ the process of building and exploring the data flow path.
 One such feature is adding additional taint steps. This is useful if you use
 libraries which are not modelled by the default taint tracking. You can implement
 this by overriding `isAdditionalTaintStep` predicate. This has two parameters, the
-`from` and the `to` node, and essentially allows you to add extra edges into the
+`from` and the `to` node, and it essentially allows you to add extra edges into the
 taint tracking or data flow graph.
 
 A starting configuration can look like the following, with details to be filled
