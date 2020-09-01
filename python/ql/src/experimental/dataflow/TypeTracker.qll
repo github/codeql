@@ -46,48 +46,48 @@ class StepSummary extends TStepSummary {
 
 module StepSummary {
   cached
-  predicate step(Node pred, Node succ, StepSummary summary) {
-    exists(Node mid | EssaFlow::essaFlowStep*(pred, mid) and smallstep(mid, succ, summary))
+  predicate step(Node nodeFrom, Node nodeTo, StepSummary summary) {
+    exists(Node mid | EssaFlow::essaFlowStep*(nodeFrom, mid) and smallstep(mid, nodeTo, summary))
   }
 
-  predicate smallstep(Node pred, Node succ, StepSummary summary) {
-    EssaFlow::essaFlowStep(pred, succ) and
+  predicate smallstep(Node nodeFrom, Node nodeTo, StepSummary summary) {
+    EssaFlow::essaFlowStep(nodeFrom, nodeTo) and
     summary = LevelStep()
     or
-    callStep(pred, succ) and summary = CallStep()
+    callStep(nodeFrom, nodeTo) and summary = CallStep()
     or
-    returnStep(pred, succ) and
+    returnStep(nodeFrom, nodeTo) and
     summary = ReturnStep()
     or
     exists(string attr |
-      basicStoreStep(pred, succ, attr) and
+      basicStoreStep(nodeFrom, nodeTo, attr) and
       summary = StoreStep(attr)
       or
-      basicLoadStep(pred, succ, attr) and summary = LoadStep(attr)
+      basicLoadStep(nodeFrom, nodeTo, attr) and summary = LoadStep(attr)
     )
   }
 }
 
-/** Holds if `pred` steps to `succ` by being passed as a parameter in a call. */
-predicate callStep(ArgumentNode pred, ParameterNode succ) {
+/** Holds if `nodeFrom` steps to `nodeTo` by being passed as a parameter in a call. */
+predicate callStep(ArgumentNode nodeFrom, ParameterNode nodeTo) {
   // TODO: Support special methods?
   exists(DataFlowCall call, int i |
-    pred.argumentOf(call, i) and succ.isParameterOf(call.getCallable(), i)
+    nodeFrom.argumentOf(call, i) and nodeTo.isParameterOf(call.getCallable(), i)
   )
 }
 
-/** Holds if `pred` steps to `succ` by being returned from a call. */
-predicate returnStep(ReturnNode pred, Node succ) {
+/** Holds if `nodeFrom` steps to `nodeTo` by being returned from a call. */
+predicate returnStep(ReturnNode nodeFrom, Node nodeTo) {
   exists(DataFlowCall call |
-    pred.getEnclosingCallable() = call.getCallable() and succ.asCfgNode() = call
+    nodeFrom.getEnclosingCallable() = call.getCallable() and nodeTo.asCfgNode() = call
   )
 }
 
 /**
- * Holds if `pred` is being written to the `attr` attribute of the object in `succ`.
+ * Holds if `nodeFrom` is being written to the `attr` attribute of the object in `nodeTo`.
  *
- * Note that the choice of `succ` does not have to make sense "chronologically".
- * All we care about is whether the `attr` attribute of `succ` can have a specific type,
+ * Note that the choice of `nodeTo` does not have to make sense "chronologically".
+ * All we care about is whether the `attr` attribute of `nodeTo` can have a specific type,
  * and the assumption is that if a specific type appears here, then any access of that
  * particular attribute can yield something of that particular type.
  *
@@ -104,24 +104,24 @@ predicate returnStep(ReturnNode pred, Node succ) {
  *    z = x.attr
  * ```
  * for the attribute write `x.attr = y`, we will have `attr` being the literal string `"attr"`,
- * `pred` will be `y`, and `succ` will be the object `Foo()` created on the first line of the
+ * `nodeFrom` will be `y`, and `nodeTo` will be the object `Foo()` created on the first line of the
  * function. This means we will track the fact that `x.attr` can have the type of `y` into the
  * assignment to `z` inside `bar`, even though this attribute write happens _after_ `bar` is called.
  */
-predicate basicStoreStep(Node pred, Node succ, string attr) {
+predicate basicStoreStep(Node nodeFrom, Node nodeTo, string attr) {
   exists(AttributeAssignment a, Node var |
     a.getName() = attr and
-    EssaFlow::essaFlowStep*(succ, var) and
+    EssaFlow::essaFlowStep*(nodeTo, var) and
     var.asVar() = a.getInput() and
-    pred.asCfgNode() = a.getValue()
+    nodeFrom.asCfgNode() = a.getValue()
   )
 }
 
 /**
- * Holds if `succ` is the result of accessing the `attr` attribute of `pred`.
+ * Holds if `nodeTo` is the result of accessing the `attr` attribute of `nodeFrom`.
  */
-predicate basicLoadStep(Node pred, Node succ, string attr) {
-  exists(AttrNode s | succ.asCfgNode() = s and s.getObject(attr) = pred.asCfgNode())
+predicate basicLoadStep(Node nodeFrom, Node nodeTo, string attr) {
+  exists(AttrNode s | nodeTo.asCfgNode() = s and s.getObject(attr) = nodeFrom.asCfgNode())
 }
 
 /**
@@ -235,19 +235,19 @@ class TypeTracker extends TTypeTracker {
 
   /**
    * Gets the summary that corresponds to having taken a forwards
-   * heap and/or inter-procedural step from `pred` to `succ`.
+   * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
    */
   pragma[inline]
-  TypeTracker step(Node pred, Node succ) {
+  TypeTracker step(Node nodeFrom, Node nodeTo) {
     exists(StepSummary summary |
-      StepSummary::step(pred, succ, summary) and
+      StepSummary::step(nodeFrom, nodeTo, summary) and
       result = this.append(summary)
     )
   }
 
   /**
    * Gets the summary that corresponds to having taken a forwards
-   * local, heap and/or inter-procedural step from `pred` to `succ`.
+   * local, heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
    *
    * Unlike `TypeTracker::step`, this predicate exposes all edges
    * in the flow graph, and not just the edges between `Node`s.
@@ -270,13 +270,13 @@ class TypeTracker extends TTypeTracker {
    * ```
    */
   pragma[inline]
-  TypeTracker smallstep(Node pred, Node succ) {
+  TypeTracker smallstep(Node nodeFrom, Node nodeTo) {
     exists(StepSummary summary |
-      StepSummary::smallstep(pred, succ, summary) and
+      StepSummary::smallstep(nodeFrom, nodeTo, summary) and
       result = this.append(summary)
     )
     or
-    EssaFlow::essaFlowStep(pred, succ) and
+    EssaFlow::essaFlowStep(nodeFrom, nodeTo) and
     result = this
   }
 }
