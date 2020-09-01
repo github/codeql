@@ -5,7 +5,10 @@
 import javascript
 
 module Ldapjs {
-  string getLdapjsClientDNMethodName() {
+  /**
+   * Gets a method name on an LDAPjs client that accepts a DN as the first argument.
+   */
+  private string getLdapjsClientDNMethodName() {
     result = ["add", "bind", "compare", "del", "modify", "modifyDN", "search"]
   }
 
