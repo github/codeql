@@ -68,6 +68,7 @@
 | tst.ts:39:60:39:65 | number | number |
 | tst.ts:39:60:39:67 | number[] | number[] |
 | tst.ts:40:18:40:24 | unknown | unknown |
+| tst.ts:49:15:49:20 | string | string |
 | type_alias.ts:1:6:1:6 | B | boolean |
 | type_alias.ts:1:10:1:16 | boolean | boolean |
 | type_alias.ts:3:8:3:8 | B | boolean |
