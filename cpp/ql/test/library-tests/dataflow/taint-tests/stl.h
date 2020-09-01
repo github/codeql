@@ -1,6 +1,16 @@
 
 typedef unsigned long size_t;
 
+template<class T>
+struct remove_const { typedef T type; };
+
+template<class T>
+struct remove_const<const T> { typedef T type; };
+
+// `remove_const_t<T>` removes any `const` specifier from `T`
+template<class T>
+using remove_const_t = typename remove_const<T>::type;
+
 // --- iterator ---
 
 namespace std {
@@ -15,6 +25,9 @@ namespace std {
 			  class reference_type = value_type&>
 	struct iterator {
 		typedef Category iterator_category;
+
+		iterator();
+		iterator(iterator<Category, remove_const_t<value_type> > const &other); // non-const -> const conversion constructor
 
 		iterator &operator++();
 		iterator operator++(int);
@@ -45,13 +58,12 @@ namespace std
 
 	typedef size_t streamsize;
 
-
 	template <class T> class allocator {
 	public:
 		allocator() throw();
 		typedef size_t size_type;
 	};
-	
+
 	template<class charT, class traits = char_traits<charT>, class Allocator = allocator<charT> >
 	class basic_string {
 	public:

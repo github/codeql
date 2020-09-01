@@ -75,9 +75,9 @@ void test_element_taint(int x) {
 	sink(v6); // tainted
 	sink(v6.data()[2]); // tainted
 
+
 	{
-		const std::vector<int> &v7c = v7; // (workaround because our iterators don't convert to const_iterator)
-		std::vector<int>::const_iterator it = v7c.begin();
+		std::vector<int>::const_iterator it = v7.begin();
 		v7.insert(it, source());
 	}
 	sink(v7); // tainted [NOT DETECTED]

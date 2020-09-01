@@ -245,6 +245,8 @@
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
+| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
+| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
 | format.cpp:16:21:16:21 | s | format.cpp:22:22:22:22 | s |  |
 | format.cpp:16:31:16:31 | n | format.cpp:22:25:22:25 | n |  |
 | format.cpp:16:46:16:51 | format | format.cpp:22:28:22:33 | format |  |
@@ -459,12 +461,12 @@
 | standalone_iterators.cpp:51:37:51:43 | source1 | standalone_iterators.cpp:53:12:53:18 | source1 |  |
 | standalone_iterators.cpp:51:37:51:43 | source1 | standalone_iterators.cpp:54:14:54:20 | source1 |  |
 | standalone_iterators.cpp:53:12:53:18 | ref arg source1 | standalone_iterators.cpp:54:14:54:20 | source1 |  |
-| stl.h:156:30:156:40 | call to allocator | stl.h:156:21:156:41 | noexcept(...) | TAINT |
-| stl.h:156:30:156:40 | call to allocator | stl.h:156:21:156:41 | noexcept(...) | TAINT |
-| stl.h:156:30:156:40 | call to allocator | stl.h:156:21:156:41 | noexcept(...) | TAINT |
-| stl.h:156:30:156:40 | call to allocator | stl.h:156:21:156:41 | noexcept(...) | TAINT |
-| stl.h:156:30:156:40 | call to allocator | stl.h:156:21:156:41 | noexcept(...) | TAINT |
-| stl.h:156:53:156:63 | 0 | stl.h:156:46:156:64 | (no string representation) | TAINT |
+| stl.h:168:30:168:40 | call to allocator | stl.h:168:21:168:41 | noexcept(...) | TAINT |
+| stl.h:168:30:168:40 | call to allocator | stl.h:168:21:168:41 | noexcept(...) | TAINT |
+| stl.h:168:30:168:40 | call to allocator | stl.h:168:21:168:41 | noexcept(...) | TAINT |
+| stl.h:168:30:168:40 | call to allocator | stl.h:168:21:168:41 | noexcept(...) | TAINT |
+| stl.h:168:30:168:40 | call to allocator | stl.h:168:21:168:41 | noexcept(...) | TAINT |
+| stl.h:168:53:168:63 | 0 | stl.h:168:46:168:64 | (no string representation) | TAINT |
 | string.cpp:24:12:24:17 | call to source | string.cpp:28:7:28:7 | a |  |
 | string.cpp:25:16:25:20 | 123 | string.cpp:25:16:25:21 | call to basic_string | TAINT |
 | string.cpp:25:16:25:21 | call to basic_string | string.cpp:29:7:29:7 | b |  |
@@ -527,6 +529,7 @@
 | string.cpp:119:16:119:24 | call to basic_string | string.cpp:128:16:128:16 | s |  |
 | string.cpp:120:15:120:15 | (__begin) | string.cpp:120:15:120:15 | call to operator* | TAINT |
 | string.cpp:120:15:120:15 | (__begin) | string.cpp:120:15:120:15 | call to operator++ | TAINT |
+| string.cpp:120:15:120:15 | (__end) | string.cpp:120:15:120:15 | call to iterator |  |
 | string.cpp:120:15:120:15 | (__range) | string.cpp:120:15:120:15 | call to begin | TAINT |
 | string.cpp:120:15:120:15 | (__range) | string.cpp:120:15:120:15 | call to end | TAINT |
 | string.cpp:120:15:120:15 | call to begin | string.cpp:120:15:120:15 | (__begin) |  |
@@ -557,6 +560,7 @@
 | string.cpp:125:9:125:10 | it | string.cpp:125:8:125:8 | call to operator* | TAINT |
 | string.cpp:128:16:128:16 | (__begin) | string.cpp:128:16:128:16 | call to operator* | TAINT |
 | string.cpp:128:16:128:16 | (__begin) | string.cpp:128:16:128:16 | call to operator++ | TAINT |
+| string.cpp:128:16:128:16 | (__end) | string.cpp:128:16:128:16 | call to iterator |  |
 | string.cpp:128:16:128:16 | (__range) | string.cpp:128:16:128:16 | call to begin | TAINT |
 | string.cpp:128:16:128:16 | (__range) | string.cpp:128:16:128:16 | call to end | TAINT |
 | string.cpp:128:16:128:16 | call to begin | string.cpp:128:16:128:16 | (__begin) |  |
@@ -1874,6 +1878,7 @@
 | vector.cpp:17:26:17:32 | source1 | vector.cpp:17:21:17:33 | call to vector | TAINT |
 | vector.cpp:19:14:19:14 | (__begin) | vector.cpp:19:14:19:14 | call to operator* | TAINT |
 | vector.cpp:19:14:19:14 | (__begin) | vector.cpp:19:14:19:14 | call to operator++ | TAINT |
+| vector.cpp:19:14:19:14 | (__end) | vector.cpp:19:14:19:14 | call to iterator |  |
 | vector.cpp:19:14:19:14 | call to begin | vector.cpp:19:14:19:14 | (__begin) |  |
 | vector.cpp:19:14:19:14 | call to begin | vector.cpp:19:14:19:14 | (__begin) |  |
 | vector.cpp:19:14:19:14 | call to begin | vector.cpp:19:14:19:14 | (__begin) |  |
@@ -1902,6 +1907,7 @@
 | vector.cpp:24:9:24:10 | it | vector.cpp:24:8:24:8 | call to operator* | TAINT |
 | vector.cpp:27:15:27:15 | (__begin) | vector.cpp:27:15:27:15 | call to operator* | TAINT |
 | vector.cpp:27:15:27:15 | (__begin) | vector.cpp:27:15:27:15 | call to operator++ | TAINT |
+| vector.cpp:27:15:27:15 | (__end) | vector.cpp:27:15:27:15 | call to iterator |  |
 | vector.cpp:27:15:27:15 | call to begin | vector.cpp:27:15:27:15 | (__begin) |  |
 | vector.cpp:27:15:27:15 | call to begin | vector.cpp:27:15:27:15 | (__begin) |  |
 | vector.cpp:27:15:27:15 | call to begin | vector.cpp:27:15:27:15 | (__begin) |  |
@@ -1977,7 +1983,7 @@
 | vector.cpp:38:62:38:64 | call to vector | vector.cpp:75:7:75:8 | v6 |  |
 | vector.cpp:38:62:38:64 | call to vector | vector.cpp:76:7:76:8 | v6 |  |
 | vector.cpp:38:62:38:64 | call to vector | vector.cpp:101:1:101:1 | v6 |  |
-| vector.cpp:38:70:38:72 | call to vector | vector.cpp:79:33:79:34 | v7 |  |
+| vector.cpp:38:70:38:72 | call to vector | vector.cpp:80:41:80:42 | v7 |  |
 | vector.cpp:38:70:38:72 | call to vector | vector.cpp:81:3:81:4 | v7 |  |
 | vector.cpp:38:70:38:72 | call to vector | vector.cpp:83:7:83:8 | v7 |  |
 | vector.cpp:38:70:38:72 | call to vector | vector.cpp:84:7:84:8 | v7 |  |
@@ -2166,8 +2172,13 @@
 | vector.cpp:76:7:76:8 | v6 | vector.cpp:76:10:76:13 | call to data | TAINT |
 | vector.cpp:76:10:76:13 | call to data | vector.cpp:76:7:76:18 | access to array | TAINT |
 | vector.cpp:76:17:76:17 | 2 | vector.cpp:76:7:76:18 | access to array | TAINT |
-| vector.cpp:79:33:79:34 | v7 | vector.cpp:80:41:80:43 | v7c |  |
-| vector.cpp:80:45:80:49 | call to begin | vector.cpp:81:13:81:14 | it |  |
+| vector.cpp:80:40:80:50 | call to iterator | vector.cpp:81:13:81:14 | it |  |
+| vector.cpp:80:41:80:42 | ref arg v7 | vector.cpp:81:3:81:4 | v7 |  |
+| vector.cpp:80:41:80:42 | ref arg v7 | vector.cpp:83:7:83:8 | v7 |  |
+| vector.cpp:80:41:80:42 | ref arg v7 | vector.cpp:84:7:84:8 | v7 |  |
+| vector.cpp:80:41:80:42 | ref arg v7 | vector.cpp:85:7:85:8 | v7 |  |
+| vector.cpp:80:41:80:42 | ref arg v7 | vector.cpp:101:1:101:1 | v7 |  |
+| vector.cpp:80:44:80:48 | call to begin | vector.cpp:80:40:80:50 | call to iterator | TAINT |
 | vector.cpp:81:3:81:4 | ref arg v7 | vector.cpp:83:7:83:8 | v7 |  |
 | vector.cpp:81:3:81:4 | ref arg v7 | vector.cpp:84:7:84:8 | v7 |  |
 | vector.cpp:81:3:81:4 | ref arg v7 | vector.cpp:85:7:85:8 | v7 |  |
@@ -2590,6 +2601,8 @@
 | vector.cpp:254:3:254:4 | ref arg i2 | vector.cpp:260:8:260:9 | i2 |  |
 | vector.cpp:255:3:255:4 | ref arg v6 | vector.cpp:261:8:261:9 | v6 |  |
 | vector.cpp:255:3:255:4 | ref arg v6 | vector.cpp:262:2:262:2 | v6 |  |
+| vector.cpp:255:13:255:14 | i1 | vector.cpp:255:13:255:14 | call to iterator |  |
+| vector.cpp:255:17:255:18 | i2 | vector.cpp:255:17:255:18 | call to iterator |  |
 | vector.cpp:257:8:257:9 | ref arg v4 | vector.cpp:262:2:262:2 | v4 |  |
 | vector.cpp:258:8:258:9 | ref arg v5 | vector.cpp:262:2:262:2 | v5 |  |
 | vector.cpp:261:8:261:9 | ref arg v6 | vector.cpp:262:2:262:2 | v6 |  |
