@@ -1,5 +1,5 @@
 def check_output(outtext, f):
-    if all(s == "OK" for s in outtext.splitlines()):
+    if outtext and all(s == "OK" for s in outtext.splitlines()):
         pass
     else:
         raise RuntimeError("Function failed", outtext, f)
