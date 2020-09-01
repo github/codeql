@@ -30,7 +30,7 @@ jobs:
       run: unzip -d codeql-cli codeql-linux64.zip
     - name: Build code scanning query list
       run: |
-        PATH="$PATH:codeql-cli/codeql" python codeql/misc/scripts/generate-code-scanning-query-list.csv > code-scanning-query-list.csv
+        PATH="$PATH:codeql-cli/codeql" python codeql/misc/scripts/generate-code-scanning-query-list.py > code-scanning-query-list.csv
     - name: Upload code scanning query list
       uses: actions/upload-artifact@v2
       with:
