@@ -85,20 +85,23 @@ def get_query_metadata(key, metadata, queryfile):
     print("Warning: no '%s' metadata for query with ID '%s' (%s)" % (key, query_id, queryfile), file=sys.stderr)
     return ""
 
+def subprocess_run(cmd):
+    return subprocess.run(cmd, shell=True, capture_output=True, text=True, env=os.environ.copy())
+
 # Check for `git`
-git_version = subprocess.run("git --version", shell=True, capture_output=True, text=True)
+git_version = subprocess_run("git --version")
 if (git_version.returncode != 0):
-    print("Error: your system doesn't have 'git'. Aborting.", file=sys.stderr)
+    print("Error: couldn't invoke 'git'. Is it on the path? Aborting.", file=sys.stderr)
     sys.exit(1)
 
-codeql_version = subprocess.run("codeql --version", shell=True, capture_output=True, text=True)
+codeql_version = subprocess_run("codeql --version")
 if (codeql_version.returncode != 0):
-    print("Error: couldn't invoke CodeQL CLI. Is it on the path? Aborting.", file=sys.stderr)
+    print("Error: couldn't invoke CodeQL CLI 'codeql'. Is it on the path? Aborting.", file=sys.stderr)
     sys.exit(1)
     
 # Extend CodeQL search path by detecting root of the current Git repo (if any). This means that you
 # can run this script from any location within the CodeQL git repository.
-git_toplevel_dir = subprocess.run("git rev-parse --show-toplevel", shell=True, capture_output=True, text=True)
+git_toplevel_dir = subprocess_run("git rev-parse --show-toplevel")
 if git_toplevel_dir.returncode == 0:
     # Current working directory is in a Git repo. It might be the CodeQL repo. Add it to the search path.
     git_toplevel_dir = git_toplevel_dir.stdout.strip()
@@ -117,13 +120,11 @@ print("Search path: " + codeql_search_path)
 for lang in languages:
     for pack in packs:
         # Get absolute paths to queries in this pack by using 'codeql resolve queries'
-        queries_subp = subprocess.run(
-            "codeql resolve queries --search-path='%s' '%s-%s.qls'" % (codeql_search_path, lang, pack),
-            shell=True, capture_output=True, text=True)
+        queries_subp = subprocess_run(
+            "codeql resolve queries --search-path='%s' '%s-%s.qls'" % (codeql_search_path, lang, pack)
+        )
 
         if queries_subp.returncode != 0:
-            print(queries_subp.stdout, file=sys.stderr)
-            print(queries_subp.stderr, file=sys.stderr)
             print(
                 "Warning: couldn't find query pack '%s' for language '%s'. Do you have the right repositories in the right places (search path: '%s')?" % (pack, lang, codeql_search_path),
                 file=sys.stderr
@@ -132,9 +133,8 @@ for lang in languages:
 
         # Investigate metadata for every query by using 'codeql resolve metadata'
         for queryfile in queries_subp.stdout.strip().split("\n"):
-            query_metadata_json = subprocess.run(
-                "codeql resolve metadata '%s'" % queryfile,
-                shell=True, capture_output=True, text=True
+            query_metadata_json = subprocess_run(
+                "codeql resolve metadata '%s'" % queryfile
             ).stdout.strip()
             
             # Turn an absolute path to a query file into an nwo-prefixed path (e.g. github/codeql/java/ql/src/....)
