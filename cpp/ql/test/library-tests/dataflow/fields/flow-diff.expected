@@ -2,7 +2,6 @@
 | A.cpp:47:12:47:18 | new | A.cpp:49:13:49:13 | c | AST only |
 | A.cpp:64:21:64:28 | new | A.cpp:66:14:66:14 | c | AST only |
 | A.cpp:73:25:73:32 | new | A.cpp:75:14:75:14 | c | AST only |
-| A.cpp:98:12:98:18 | new | A.cpp:107:16:107:16 | a | AST only |
 | A.cpp:98:12:98:18 | new | A.cpp:120:16:120:16 | a | AST only |
 | A.cpp:142:14:142:20 | new | A.cpp:153:16:153:16 | c | AST only |
 | A.cpp:159:12:159:18 | new | A.cpp:165:26:165:29 | head | AST only |
