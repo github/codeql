@@ -51,17 +51,17 @@ def contrived_1():
     tainted_list = TAINTED_LIST[0:3]
     no_taint_list = [1,2,3]
 
-    # We don't handle this case currently, since we mark `d`, `e` and `f` as tainted.
     (a, b, c), (d, e, f) = tainted_list, no_taint_list
     ensure_tainted(a, b, c)
-    ensure_not_tainted(d, e, f)
+    ensure_not_tainted(d, e, f) # FP: we mark `d`, `e` and `f` as tainted.
 
 
 def contrived_2():
     # A contrived example. Don't know why anyone would ever actually do this.
 
-    # We currently only handle taint nested 2 levels.
-    [[[ (a,b,c) ]]] = [[[ TAINTED_LIST[0:3] ]]]
+    # Old taint tracking was only able to handle taint nested 2 levels in sequences,
+    # so would not mark a, b, c as tainted
+    [[[ (a, b, c) ]]] = [[[ TAINTED_LIST[0:3] ]]]
     ensure_tainted(a, b, c)
 
 

@@ -16,7 +16,7 @@ def test_construction():
     tainted_string = TAINTED_STRING
     tainted_list = [tainted_string]
     tainted_tuple = (tainted_string,)
-    tainted_set = {tainted_string} # TODO: set currently not handled
+    tainted_set = {tainted_string}
     tainted_dict = {'key': tainted_string}
 
     ensure_tainted(
@@ -30,13 +30,13 @@ def test_construction():
     ensure_tainted(
         list(tainted_list),
         list(tainted_tuple),
-        list(tainted_set), # TODO: set currently not handled
+        list(tainted_set),
         list(tainted_dict.values()),
-        list(tainted_dict.items()), # TODO: dict.items() currently not handled
+        list(tainted_dict.items()),
 
         tuple(tainted_list),
         set(tainted_list),
-        frozenset(tainted_list), # TODO: frozenset constructor currently not handled
+        frozenset(tainted_list),
     )
 
 
@@ -75,7 +75,7 @@ def test_dict_access(x):
 
     for v in tainted_dict.values():
         ensure_tainted(v)
-    for k, v in tainted_dict.items(): # TODO: dict.items() currently not handled
+    for k, v in tainted_dict.items():
         ensure_tainted(v)
 
 
