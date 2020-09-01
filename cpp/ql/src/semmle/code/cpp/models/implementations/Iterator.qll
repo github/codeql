@@ -57,7 +57,7 @@ class Iterator extends Type {
   }
 }
 
-private predicate calledWithIteratorArgument(Operator op, int index) {
+private FunctionInput getIteratorArgumentInput(Operator op, int index) {
   exists(Type t |
     t =
       op
@@ -67,9 +67,13 @@ private predicate calledWithIteratorArgument(Operator op, int index) {
           .getType()
           .stripTopLevelSpecifiers()
   |
-    t instanceof Iterator
-    or
-    t.(ReferenceType).getBaseType() instanceof Iterator
+    (
+      t instanceof Iterator or
+      t.(ReferenceType).getBaseType() instanceof Iterator
+    ) and
+    if op.getParameter(index).getUnspecifiedType() instanceof ReferenceType
+    then result.isParameterDeref(index)
+    else result.isParameter(index)
   )
 }
 
@@ -77,13 +81,15 @@ private predicate calledWithIteratorArgument(Operator op, int index) {
  * A non-member prefix `operator*` function for an iterator type.
  */
 class IteratorPointerDereferenceOperator extends Operator, TaintFunction {
+  FunctionInput iteratorInput;
+
   IteratorPointerDereferenceOperator() {
     this.hasName("operator*") and
-    calledWithIteratorArgument(this, 0)
+    iteratorInput = getIteratorArgumentInput(this, 0)
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameter(0) and
+    input = iteratorInput and
     output.isReturnValue()
   }
 }
@@ -92,13 +98,15 @@ class IteratorPointerDereferenceOperator extends Operator, TaintFunction {
  * A non-member `operator++` or `operator--` function for an iterator type.
  */
 class IteratorCrementOperator extends Operator, DataFlowFunction {
+  FunctionInput iteratorInput;
+
   IteratorCrementOperator() {
     this.hasName(["operator++", "operator--"]) and
-    calledWithIteratorArgument(this, 0)
+    iteratorInput = getIteratorArgumentInput(this, 0)
   }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameter(0) and
+    input = iteratorInput and
     output.isReturnValue()
   }
 }
@@ -107,16 +115,15 @@ class IteratorCrementOperator extends Operator, DataFlowFunction {
  * A non-member `operator+` function for an iterator type.
  */
 class IteratorAddOperator extends Operator, TaintFunction {
-  int iteratorIndex;
+  FunctionInput iteratorInput;
 
   IteratorAddOperator() {
     this.hasName("operator+") and
-    iteratorIndex = [0, 1] and
-    calledWithIteratorArgument(this, iteratorIndex)
+    iteratorInput = getIteratorArgumentInput(this, [0, 1])
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameter(iteratorIndex) and
+    input = iteratorInput and
     output.isReturnValue()
   }
 }
@@ -125,14 +132,16 @@ class IteratorAddOperator extends Operator, TaintFunction {
  * A non-member `operator-` function that takes a pointer difference type as its second argument.
  */
 class IteratorSubOperator extends Operator, TaintFunction {
+  FunctionInput iteratorInput;
+
   IteratorSubOperator() {
     this.hasName("operator-") and
-    calledWithIteratorArgument(this, 0) and
+    iteratorInput = getIteratorArgumentInput(this, 0) and
     this.getParameter(1).getUnspecifiedType() instanceof IntegralType // not an iterator difference
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameter(0) and
+    input = iteratorInput and
     output.isReturnValue()
   }
 }
