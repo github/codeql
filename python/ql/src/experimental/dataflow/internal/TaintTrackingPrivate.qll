@@ -128,7 +128,7 @@ predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeT
   )
   or
   // f-strings
-  nodeTo.getNode().getNode().(Fstring).getAValue() = nodeFrom.getNode().getNode()
+  nodeTo.asExpr().(Fstring).getAValue() = nodeFrom.asExpr()
   // TODO: Handle encode/decode from base64/quopri
   // TODO: Handle os.path.join
   // TODO: Handle functions in https://docs.python.org/3/library/binascii.html
@@ -210,7 +210,7 @@ predicate forStep(DataFlow::CfgNode nodeFrom, DataFlow::EssaNode nodeTo) {
   exists(EssaNodeDefinition defn, For for |
     for.getTarget().getAChildNode*() = defn.getDefiningNode().getNode() and
     nodeTo.getVar() = defn and
-    nodeFrom.getNode().getNode() = for.getIter()
+    nodeFrom.asExpr() = for.getIter()
   )
 }
 
@@ -223,6 +223,6 @@ predicate unpackingAssignmentStep(DataFlow::CfgNode nodeFrom, DataFlow::EssaNode
   exists(MultiAssignmentDefinition defn, Assign assign |
     assign.getATarget().contains(defn.getDefiningNode().getNode()) and
     nodeTo.getVar() = defn and
-    nodeFrom.getNode().getNode() = assign.getValue()
+    nodeFrom.asExpr() = assign.getValue()
   )
 }
