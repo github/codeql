@@ -1935,20 +1935,6 @@ stmtparents(
 ishandler(unique int block: @stmt_block ref);
 
 @cfgnode = @stmt | @expr | @function | @initialiser ;
-successors(
-    int from: @cfgnode ref,
-    int to: @cfgnode ref
-);
-
-truecond(
-    unique int from: @cfgnode ref,
-    int to: @cfgnode ref
-);
-
-falsecond(
-    unique int from: @cfgnode ref,
-    int to: @cfgnode ref
-);
 
 stmt_decl_bind(
     int stmt: @stmt_decl ref,

@@ -1376,8 +1376,6 @@ private module Cached {
   /**
    * Holds if `n2` is a successor of `n1` in the CFG. This includes also
    * true-successors and false-successors.
-   *
-   * This corresponds to the old `successors` dbscheme relation.
    */
   cached
   predicate qlCFGSuccessor(Node n1, Node n2) {
@@ -1390,9 +1388,8 @@ private module Cached {
   }
 
   /**
-   * Holds if `n2` is a true-successor of `n1` in the CFG.
-   *
-   * This corresponds to the old `truecond` dbscheme relation.
+   * Holds if `n2` is a control-flow node such that the control-flow
+   * edge `(n1, n2)` may be taken when `n1` is an expression that is true.
    */
   cached
   predicate qlCFGTrueSuccessor(Node n1, Node n2) {
@@ -1401,9 +1398,8 @@ private module Cached {
   }
 
   /**
-   * Holds if `n2` is a false-successor of `n1` in the CFG.
-   *
-   * This corresponds to the old `falsecond` dbscheme relation.
+   * Holds if `n2` is a control-flow node such that the control-flow
+   * edge `(n1, n2)` may be taken when `n1` is an expression that is false.
    */
   cached
   predicate qlCFGFalseSuccessor(Node n1, Node n2) {
