@@ -115,6 +115,7 @@ csvwriter.writerow([
 ])
 
 print("Search path: " + codeql_search_path)
+print("Path: " + str(os.environ.copy()["PATH"]))
 
 # Iterate over all languages and packs, and resolve which queries are part of those packs
 for lang in languages:
