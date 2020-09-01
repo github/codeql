@@ -101,7 +101,7 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
         // If we are reading a variable, check if it is
         // `strconv.IntSize`, and use 0 if it is.
         exists(DataFlow::Node rawBitSize | rawBitSize = ip.getTargetBitSizeInput().getNode(c) |
-          if rawBitSize = any(StrConv::IntSize intSize).getARead()
+          if rawBitSize = any(Strconv::IntSize intSize).getARead()
           then apparentBitSize = 0
           else apparentBitSize = rawBitSize.getIntValue()
         )

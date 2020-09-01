@@ -18,6 +18,8 @@ import semmle.go.frameworks.stdlib.MimeQuotedprintable
 import semmle.go.frameworks.stdlib.Path
 import semmle.go.frameworks.stdlib.PathFilepath
 import semmle.go.frameworks.stdlib.Reflect
+import semmle.go.frameworks.stdlib.Strconv
+import semmle.go.frameworks.stdlib.Strings
 import semmle.go.frameworks.stdlib.TextScanner
 import semmle.go.frameworks.stdlib.TextTabwriter
 import semmle.go.frameworks.stdlib.TextTemplate
@@ -480,41 +482,6 @@ module IntegerParser {
      * input is 0 then it means the bit size of `int` and `uint`.
      */
     FunctionInput getTargetBitSizeInput() { none() }
-  }
-}
-
-/**
- * Provides classes for some functions in the `strconv` package for
- * converting strings to numbers.
- */
-module StrConv {
-  /** The `Atoi` function. */
-  class Atoi extends IntegerParser::Range {
-    Atoi() { this.hasQualifiedName("strconv", "Atoi") }
-
-    override int getTargetBitSize() { result = 0 }
-  }
-
-  /** The `ParseInt` function. */
-  class ParseInt extends IntegerParser::Range {
-    ParseInt() { this.hasQualifiedName("strconv", "ParseInt") }
-
-    override FunctionInput getTargetBitSizeInput() { result.isParameter(2) }
-  }
-
-  /** The `ParseUint` function. */
-  class ParseUint extends IntegerParser::Range {
-    ParseUint() { this.hasQualifiedName("strconv", "ParseUint") }
-
-    override FunctionInput getTargetBitSizeInput() { result.isParameter(2) }
-  }
-
-  /**
-   * The `IntSize` constant, that gives the size in bits of an `int` or
-   * `uint` value on the current architecture (32 or 64).
-   */
-  class IntSize extends DeclaredConstant {
-    IntSize() { this.hasQualifiedName("strconv", "IntSize") }
   }
 }
 
