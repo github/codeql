@@ -42,9 +42,14 @@ module Ldapjs {
    * A filter used in a `search` operation against the LDAP server.
    */
   class LdapjsSearchFilter extends DataFlow::Node {
-    LdapjsSearchFilter() {
-      this = any(LdapjsSearchOptions options).getAPropertyWrite("filter").getRhs()
-    }
+    LdapjsSearchOptions options;
+
+    LdapjsSearchFilter() { this = options.getAPropertyWrite("filter").getRhs() }
+
+    /**
+     * Gets the LDAP query call that this filter is used in.
+     */
+    DataFlow::InvokeNode getQueryCall() { result = options.getQueryCall() }
   }
 
   /**
