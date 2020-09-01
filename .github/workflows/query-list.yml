@@ -1,4 +1,4 @@
-name: Build query list
+name: Build code scanning query list
 
 on:
   push:

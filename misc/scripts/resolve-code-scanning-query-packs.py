@@ -106,6 +106,8 @@ csvwriter.writerow([
     "Kind", "Severity", "Precision", "Tags"
 ])
 
+print("Search path: " + codeql_search_path)
+
 # Iterate over all languages and packs, and resolve which queries are part of those packs
 for lang in languages:
     for pack in packs:
@@ -115,8 +117,8 @@ for lang in languages:
             shell=True, capture_output=True, text=True)
 
         if queries_subp.returncode != 0:
-            print(queries_subp.stdout)
-            print(queries_subp.stderr)
+            print(queries_subp.stdout, file=sys.stderr)
+            print(queries_subp.stderr, file=sys.stderr)
             print(
                 "Warning: couldn't find query pack '%s' for language '%s'. Do you have the right repositories in the right places (search path: '%s')?" % (pack, lang, codeql_search_path),
                 file=sys.stderr
