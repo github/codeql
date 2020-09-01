@@ -99,12 +99,15 @@ namespace std
 		basic_string& append(const basic_string& str);
 		basic_string& append(const charT* s);
 		basic_string& append(size_type n, charT c);
-		template<class InputIterator>
-		/* constexpr */ basic_string& append(InputIterator first, InputIterator last);
+		template<class InputIterator> basic_string& append(InputIterator first, InputIterator last); 
 		basic_string& assign(const basic_string& str);
 		basic_string& assign(size_type n, charT c);
+		template<class InputIterator> basic_string& assign(InputIterator first, InputIterator last);
 		basic_string& insert(size_type pos, const basic_string& str);
 		basic_string& insert(size_type pos, size_type n, charT c);
+		basic_string& insert(size_type pos, const charT* s);
+		iterator insert(const_iterator p, size_type n, charT c);
+		template<class InputIterator> iterator insert(const_iterator p, InputIterator first, InputIterator last); 
 		basic_string& replace(size_type pos1, size_type n1, const basic_string& str);
 		basic_string& replace(size_type pos1, size_type n1, size_type n2, charT c);
 		size_type copy(charT* s, size_type n, size_type pos = 0) const;
@@ -203,6 +206,7 @@ namespace std {
 		iterator insert(const_iterator position, const T& x);
 		iterator insert(const_iterator position, T&& x);
 		iterator insert(const_iterator position, size_type n, const T& x);
+		template<class InputIterator> iterator insert(const_iterator position, InputIterator first, InputIterator last);
 
 		void swap(vector&) noexcept/*(allocator_traits<Allocator>::propagate_on_container_swap::value || allocator_traits<Allocator>::is_always_equal::value)*/;
 

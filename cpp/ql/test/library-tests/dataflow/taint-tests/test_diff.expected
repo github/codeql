@@ -131,6 +131,19 @@
 | string.cpp:407:8:407:8 | string.cpp:387:18:387:23 | AST only |
 | string.cpp:409:8:409:8 | string.cpp:387:18:387:23 | AST only |
 | string.cpp:413:8:413:8 | string.cpp:387:18:387:23 | AST only |
+| string.cpp:427:10:427:15 | string.cpp:422:14:422:19 | AST only |
+| string.cpp:428:7:428:8 | string.cpp:422:14:422:19 | AST only |
+| string.cpp:442:10:442:15 | string.cpp:442:32:442:46 | AST only |
+| string.cpp:443:8:443:8 | string.cpp:442:32:442:46 | AST only |
+| string.cpp:455:10:455:15 | string.cpp:450:18:450:23 | AST only |
+| string.cpp:456:8:456:8 | string.cpp:450:18:450:23 | AST only |
+| string.cpp:458:11:458:16 | string.cpp:450:18:450:23 | AST only |
+| string.cpp:459:8:459:9 | string.cpp:450:18:450:23 | AST only |
+| string.cpp:471:10:471:15 | string.cpp:466:18:466:23 | AST only |
+| string.cpp:472:8:472:8 | string.cpp:466:18:466:23 | AST only |
+| string.cpp:474:11:474:16 | string.cpp:466:18:466:23 | AST only |
+| string.cpp:475:8:475:9 | string.cpp:466:18:466:23 | AST only |
+| string.cpp:491:8:491:9 | string.cpp:482:18:482:23 | AST only |
 | structlikeclass.cpp:35:8:35:9 | structlikeclass.cpp:29:22:29:27 | AST only |
 | structlikeclass.cpp:36:8:36:9 | structlikeclass.cpp:30:24:30:29 | AST only |
 | structlikeclass.cpp:37:8:37:9 | structlikeclass.cpp:29:22:29:27 | AST only |
@@ -226,3 +239,4 @@
 | vector.cpp:290:7:290:8 | vector.cpp:289:17:289:30 | AST only |
 | vector.cpp:291:10:291:13 | vector.cpp:289:17:289:30 | AST only |
 | vector.cpp:292:7:292:18 | vector.cpp:289:17:289:30 | AST only |
+| vector.cpp:312:7:312:7 | vector.cpp:303:14:303:19 | AST only |

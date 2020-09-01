@@ -121,6 +121,19 @@
 | string.cpp:407:8:407:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
 | string.cpp:409:8:409:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
 | string.cpp:413:8:413:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:427:10:427:15 | call to insert | string.cpp:422:14:422:19 | call to source |
+| string.cpp:428:7:428:8 | s2 | string.cpp:422:14:422:19 | call to source |
+| string.cpp:442:10:442:15 | call to insert | string.cpp:442:32:442:46 | call to source |
+| string.cpp:443:8:443:8 | b | string.cpp:442:32:442:46 | call to source |
+| string.cpp:455:10:455:15 | call to insert | string.cpp:450:18:450:23 | call to source |
+| string.cpp:456:8:456:8 | d | string.cpp:450:18:450:23 | call to source |
+| string.cpp:458:11:458:16 | call to insert | string.cpp:450:18:450:23 | call to source |
+| string.cpp:459:8:459:9 | s2 | string.cpp:450:18:450:23 | call to source |
+| string.cpp:471:10:471:15 | call to append | string.cpp:466:18:466:23 | call to source |
+| string.cpp:472:8:472:8 | f | string.cpp:466:18:466:23 | call to source |
+| string.cpp:474:11:474:16 | call to append | string.cpp:466:18:466:23 | call to source |
+| string.cpp:475:8:475:9 | s4 | string.cpp:466:18:466:23 | call to source |
+| string.cpp:491:8:491:9 | s6 | string.cpp:482:18:482:23 | call to source |
 | structlikeclass.cpp:35:8:35:9 | s1 | structlikeclass.cpp:29:22:29:27 | call to source |
 | structlikeclass.cpp:36:8:36:9 | s2 | structlikeclass.cpp:30:24:30:29 | call to source |
 | structlikeclass.cpp:37:8:37:9 | s3 | structlikeclass.cpp:29:22:29:27 | call to source |
@@ -277,3 +290,4 @@
 | vector.cpp:290:7:290:8 | v2 | vector.cpp:289:17:289:30 | call to source |
 | vector.cpp:291:10:291:13 | call to data | vector.cpp:289:17:289:30 | call to source |
 | vector.cpp:292:7:292:18 | access to array | vector.cpp:289:17:289:30 | call to source |
+| vector.cpp:312:7:312:7 | d | vector.cpp:303:14:303:19 | call to source |

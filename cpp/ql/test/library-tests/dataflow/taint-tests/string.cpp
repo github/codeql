@@ -413,3 +413,81 @@ void test_string_iterators() {
 		sink(*i9); // tainted
 	}
 }
+
+void test_string_insert_more()
+{
+	std::string s1("aa");
+	std::string s2("bb");
+	char *cs1 = "cc";
+	char *cs2 = source();
+
+	sink(s1.insert(0, cs1));
+	sink(s1);
+
+	sink(s2.insert(0, cs2)); // tainted
+	sink(s2); // tainted
+}
+
+void sink(std::string::iterator);
+
+void test_string_iterator_methods()
+{
+	{
+		std::string a("aa");
+		std::string b("bb");
+
+		sink(a.insert(a.begin(), 10, 'x'));
+		sink(a);
+
+		sink(b.insert(b.begin(), 10, ns_char::source())); // tainted
+		sink(b); // tainted
+	}
+
+	{
+		std::string c("cc");
+		std::string d("dd");
+		std::string s1("11");
+		std::string s2(source());
+
+		sink(c.insert(c.end(), s1.begin(), s1.end()));
+		sink(c);
+
+		sink(d.insert(d.end(), s2.begin(), s2.end())); // tainted [NOT DETECTED]
+		sink(d); // tainted [NOT DETECTED]
+
+		sink(s2.insert(s2.end(), s1.begin(), s1.end())); // tainted
+		sink(s2); // tainted
+	}
+
+	{
+		std::string e("ee");
+		std::string f("ff");
+		std::string s3("33");
+		std::string s4(source());
+
+		sink(e.append(s3.begin(), s3.end()));
+		sink(e);
+
+		sink(f.append(s4.begin(), s4.end())); // tainted [NOT DETECTED]
+		sink(f); // tainted [NOT DETECTED]
+
+		sink(s4.append(s3.begin(), s3.end())); // tainted
+		sink(s4); // tainted
+	}
+
+	{
+		std::string g("gg");
+		std::string h("hh");
+		std::string s5("55");
+		std::string s6(source());
+
+		sink(g.assign(s5.cbegin(), s5.cend()));
+		sink(g);
+
+		sink(h.assign(s6.cbegin(), s6.cend())); // tainted [NOT DETECTED]
+		sink(h); // tainted [NOT DETECTED]
+
+		sink(s6.assign(s5.cbegin(), s5.cend()));
+		sink(s6); // [FALSE POSITIVE]
+	}
+}

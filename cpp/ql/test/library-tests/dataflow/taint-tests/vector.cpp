@@ -291,3 +291,23 @@ void test_data_more() {
 	sink(v2.data()); // tainted
 	sink(v2.data()[2]); // tainted
 }
+
+void sink(std::vector<int>::iterator);
+
+void test_vector_insert() {
+	std::vector<int> a;
+	std::vector<int> b;
+	std::vector<int> c;
+	std::vector<int> d;
+
+	d.push_back(source());
+
+	sink(a.insert(a.end(), b.begin(), b.end()));
+	sink(a);
+
+	sink(c.insert(c.end(), d.begin(), d.end())); // tainted [NOT DETECTED]
+	sink(c); // tainted [NOT DETECTED]
+
+	sink(d.insert(d.end(), a.begin(), a.end())); // tainted [NOT DETECTED]
+	sink(d); // tainted
+}
