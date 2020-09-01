@@ -1160,6 +1160,17 @@ private float getPhiLowerBounds(StackVariable v, RangeSsaDefinition phi) {
     if guardLB > defLB then result = guardLB else result = defLB
   )
   or
+  exists(VariableAccess access, float neConstant, float lower |
+    isNEPhi(v, phi, access, neConstant) and
+    lower = getFullyConvertedLowerBounds(access) and
+    if lower = neConstant then result = lower + 1 else result = lower
+  )
+  or
+  exists(VariableAccess access |
+    isUnsupportedGuardPhi(v, phi, access) and
+    result = getFullyConvertedLowerBounds(access)
+  )
+  or
   result = getDefLowerBounds(phi.getAPhiInput(v), v)
 }
 
@@ -1175,6 +1186,17 @@ private float getPhiUpperBounds(StackVariable v, RangeSsaDefinition phi) {
   |
     // Compute the minimum of `guardUB` and `defUB`.
     if guardUB < defUB then result = guardUB else result = defUB
+  )
+  or
+  exists(VariableAccess access, float neConstant, float upper |
+    isNEPhi(v, phi, access, neConstant) and
+    upper = getFullyConvertedUpperBounds(access) and
+    if upper = neConstant then result = upper - 1 else result = upper
+  )
+  or
+  exists(VariableAccess access |
+    isUnsupportedGuardPhi(v, phi, access) and
+    result = getFullyConvertedUpperBounds(access)
   )
   or
   result = getDefUpperBounds(phi.getAPhiInput(v), v)
@@ -1501,22 +1523,13 @@ private predicate linearBoundFromGuard(
   //   1. x <= upperbound(RHS)
   //   2. x >= lowerbound(RHS)
   //
-  // For x != RHS, we create trivial bounds:
-  //
-  //   1. x <= typeUpperBound(RHS.getUnspecifiedType())
-  //   2. x >= typeLowerBound(RHS.getUnspecifiedType())
-  //
-  exists(Expr lhs, Expr rhs, boolean isEQ |
+  exists(Expr lhs, Expr rhs |
     linearAccess(lhs, v, p, q) and
-    eqOpWithSwapAndNegate(guard, lhs, rhs, isEQ, branch) and
+    eqOpWithSwapAndNegate(guard, lhs, rhs, true, branch) and
+    getBounds(rhs, boundValue, isLowerBound) and
     strictness = Nonstrict()
-  |
-    // True branch
-    isEQ = true and getBounds(rhs, boundValue, isLowerBound)
-    or
-    // False branch: set the bounds to the min/max for the type.
-    isEQ = false and exprTypeBounds(rhs, boundValue, isLowerBound)
   )
+  // x != RHS and !x are handled elsewhere
 }
 
 /** Utility for `linearBoundFromGuard`. */
@@ -1531,6 +1544,42 @@ private predicate exprTypeBounds(Expr expr, float boundValue, boolean isLowerBou
   isLowerBound = true and boundValue = exprMinVal(expr.getFullyConverted())
   or
   isLowerBound = false and boundValue = exprMaxVal(expr.getFullyConverted())
+}
+
+/**
+ * Holds if `(v, phi)` ensures that `access` is not equal to `neConstant`. For
+ * example, the condition `if (x + 1 != 3)` ensures that `x` is not equal to 2.
+ * Only integral types are supported.
+ */
+private predicate isNEPhi(
+  Variable v, RangeSsaDefinition phi, VariableAccess access, float neConstant
+) {
+  exists(
+    ComparisonOperation cmp, boolean branch, Expr linearExpr, Expr rExpr, float p, float q, float r
+  |
+    access.getTarget() = v and
+    phi.isGuardPhi(access, cmp, branch) and
+    eqOpWithSwapAndNegate(cmp, linearExpr, rExpr, false, branch) and
+    v.getUnspecifiedType() instanceof IntegralOrEnumType and // Float `!=` is too imprecise
+    r = getValue(rExpr).toFloat() and
+    linearAccess(linearExpr, access, p, q) and
+    neConstant = (r - q) / p
+  )
+}
+
+/**
+ * Holds if `(v, phi)` constrains the value of `access` but in a way that
+ * doesn't allow this library to constrain the upper or lower bounds of
+ * `access`. An example is `if (x != y)` if neither `x` nor `y` is a
+ * compile-time constant.
+ */
+private predicate isUnsupportedGuardPhi(Variable v, RangeSsaDefinition phi, VariableAccess access) {
+  exists(ComparisonOperation cmp, boolean branch |
+    access.getTarget() = v and
+    phi.isGuardPhi(access, cmp, branch) and
+    eqOpWithSwapAndNegate(cmp, _, _, false, branch) and
+    not isNEPhi(v, phi, access, _)
+  )
 }
 
 cached

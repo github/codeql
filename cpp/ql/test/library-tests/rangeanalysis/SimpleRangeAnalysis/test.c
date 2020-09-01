@@ -543,7 +543,7 @@ int notequal_type_endpoint(unsigned n) {
   }
 
   if (n != 0) {
-    out(n); // 1 .. [BUG: lower bound is deduced to be 0]
+    out(n); // 1 ..
   } else {
     out(n); // 0 .. 0
   }
@@ -555,7 +555,7 @@ int notequal_type_endpoint(unsigned n) {
   }
 
   while (n != 0) {
-    n--; // 1 .. [BUG: lower bound is deduced to be 0]
+    n--; // 1 ..
   }
 
   out(n); // 0 .. 0
@@ -568,7 +568,7 @@ void notequal_refinement(short n) {
   if (n == 0) {
     out(n); // 0 .. 0
   } else {
-    out(n); // 1 .. [BUG: lower bound is deduced to be 0]
+    out(n); // 1 ..
   }
 
   if (n) {
@@ -578,7 +578,7 @@ void notequal_refinement(short n) {
   }
 
   while (n != 0) {
-    n--; // 1 .. [BUG: lower bound is deduced to be -32768]
+    n--; // 1 ..
   }
 
   out(n); // 0 .. 0
@@ -595,10 +595,10 @@ void notequal_variations(short n, float f) {
     if (2 * n - 10 == 0) { // Same as `n == 10/2` (modulo overflow)
       return;
     }
-    out(n); // 6 .. [BUG: lower bound is deduced to be 5]
+    out(n); // 6 ..
   }
 
   if (n != -32768 && n != -32767) {
-    out(n); // -32766 .. [BUG: lower bound is deduced to be -32768]
+    out(n); // -32766 ..
   }
 }
