@@ -9,11 +9,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Clone self
+    - name: Clone self (github/codeql)
       uses: actions/checkout@v2
       with:
         path: codeql 
-    - name: Clone go
+    - name: Clone github/codeql-go
       run: git clone https://github.com/github/codeql-go
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
@@ -28,12 +28,12 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
     - name: Unzip CodeQL CLI
       run: unzip -d codeql-cli codeql-linux64.zip
-    - name: Build query list
+    - name: Build code scanning query list
       run: |
-        PATH="$PATH:codeql-cli/codeql" python codeql/misc/scripts/resolve-code-scanning-query-packs.py > code-scanning-query-lists.csv
-    - name: Upload query list
+        PATH="$PATH:codeql-cli/codeql" python codeql/misc/scripts/generate-code-scanning-query-list.csv > code-scanning-query-list.csv
+    - name: Upload code scanning query list
       uses: actions/upload-artifact@v2
       with:
-        name: code-scanning-query-lists
-        path: code-scanning-query-lists.csv
+        name: code-scanning-query-list
+        path: code-scanning-query-list.csv
     
