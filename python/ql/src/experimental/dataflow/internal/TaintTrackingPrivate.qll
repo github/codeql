@@ -196,7 +196,7 @@ predicate copyStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
     (
       call.getFunction().(NameNode).getId() in ["copy", "deepcopy"]
       or
-      call.getFunction().(AttrNode).getObject("copy").(NameNode).getId() in ["copy", "deepcopy"]
+      call.getFunction().(AttrNode).getObject(["copy", "deepcopy"]).(NameNode).getId() = "copy"
     ) and
     call.getArg(0) = nodeFrom.getNode()
   )
