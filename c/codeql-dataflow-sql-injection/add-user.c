@@ -42,6 +42,7 @@ void abort_on_exec_error(int rc, sqlite3 *db, char* zErrMsg) {
 char* get_user_info() {
 #define BUFSIZE 1024
     char* buf = (char*) malloc(BUFSIZE * sizeof(char));
+    if(buf==NULL) abort();
     int count;
     // Disable buffering to avoid need for fflush
     // after printf().
@@ -92,6 +93,7 @@ int main(int argc, char* argv[]) {
     info = get_user_info();
     id = get_new_id();
     write_info(id, info);
+     free(info);
     /*
      * show_info(id);
      */
