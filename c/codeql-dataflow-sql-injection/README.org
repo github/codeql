@@ -41,7 +41,7 @@
    #+BEGIN_SRC sh
      # Build the db with source commit id.
      export PATH=$HOME/local/vmsync/codeql224:"$PATH"
-     SRCDIR=$HOME/local/codeql-dataflow-sql-injection/
+     SRCDIR=$HOME/local/codeql-training-material/c/codeql-dataflow-sql-injection
      DB=$HOME/local/db/codeql-dataflow-sql-injection-$(cd $SRCDIR && git rev-parse --short HEAD)
 
      echo $DB
