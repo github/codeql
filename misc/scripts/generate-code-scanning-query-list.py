@@ -94,6 +94,7 @@ if (git_version.returncode != 0):
     print("Error: couldn't invoke 'git'. Is it on the path? Aborting.", file=sys.stderr)
     sys.exit(1)
 
+# Check for `codeql`
 codeql_version = subprocess_run("codeql --version")
 if (codeql_version.returncode != 0):
     print("Error: couldn't invoke CodeQL CLI 'codeql'. Is it on the path? Aborting.", file=sys.stderr)
@@ -122,6 +123,8 @@ for lang in languages:
             "codeql resolve queries --search-path='%s' '%s-%s.qls'" % (codeql_search_path, lang, pack)
         )
 
+        # Resolving queries might go wrong if the github/codeql and github/codeql-go repositories are not
+        # on the search path.
         if queries_subp.returncode != 0:
             print(
                 "Warning: couldn't find query pack '%s' for language '%s'. Do you have the right repositories in the right places (search path: '%s')?" % (pack, lang, codeql_search_path),
