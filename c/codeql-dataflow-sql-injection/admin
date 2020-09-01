@@ -37,6 +37,11 @@ show-db () {
     ' | sqlite3 users.sqlite 
 }
 
+if [ $# == 0 ]; then 
+   help
+   exit 0
+fi
+
 while getopts "h?csr" option
 do
     case "${option}"
