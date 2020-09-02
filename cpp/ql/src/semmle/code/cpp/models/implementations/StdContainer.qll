@@ -90,11 +90,12 @@ class StdSequenceContainerFrontBack extends TaintFunction {
 }
 
 /**
- * The standard container function `insert`.
+ * The standard container functions `insert` and `insert_after`.
  */
 class StdSequenceContainerInsert extends TaintFunction {
   StdSequenceContainerInsert() {
-    this.hasQualifiedName("std", ["vector", "deque", "list"], "insert")
+    this.hasQualifiedName("std", ["vector", "deque", "list"], "insert") or
+    this.hasQualifiedName("std", ["forward_list"], "insert_after")
   }
 
   /**
