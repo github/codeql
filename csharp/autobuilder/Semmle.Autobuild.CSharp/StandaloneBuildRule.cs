@@ -11,10 +11,15 @@ namespace Semmle.Autobuild.CSharp
         {
             BuildScript GetCommand(string? solution)
             {
-                if (builder.SemmlePlatformTools is null)
+                string standalone;
+                if (!(builder.CodeQLExtractorLangRoot is null) && !(builder.CodeQlPlatform is null)) {
+                    standalone = builder.Actions.PathCombine(builder.CodeQLExtractorLangRoot, "tools", builder.CodeQlPlatform, "Semmle.Extraction.CSharp.Standalone");
+                } else if (!(builder.SemmlePlatformTools is null)) {
+                    standalone = builder.Actions.PathCombine(builder.SemmlePlatformTools, "csharp", "Semmle.Extraction.CSharp.Standalone");
+                } else {
                     return BuildScript.Failure;
+                }
 
-                var standalone = builder.Actions.PathCombine(builder.SemmlePlatformTools, "csharp", "Semmle.Extraction.CSharp.Standalone");
                 var cmd = new CommandBuilder(builder.Actions);
                 cmd.RunCommand(standalone);
 
