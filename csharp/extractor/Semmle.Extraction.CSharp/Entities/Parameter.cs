@@ -202,8 +202,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return obj != null && obj.GetType() == typeof(VarargsType);
         }
 
-        static readonly object cacheKey = new object();
-        public static VarargsType Create(Context cx) => VarargsTypeFactory.Instance.CreateEntity(cx, cacheKey, null);
+        public static VarargsType Create(Context cx) => VarargsTypeFactory.Instance.CreateEntity(cx, typeof(VarargsType), null);
 
         class VarargsTypeFactory : ICachedEntityFactory<string, VarargsType>
         {
@@ -238,8 +237,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return obj != null && obj.GetType() == typeof(VarargsParam);
         }
 
-        static readonly object cacheKey = new object();
-        public static VarargsParam Create(Context cx, Method method) => VarargsParamFactory.Instance.CreateEntity(cx, cacheKey, method);
+        public static VarargsParam Create(Context cx, Method method) => VarargsParamFactory.Instance.CreateEntity(cx, typeof(VarargsParam), method);
 
         class VarargsParamFactory : ICachedEntityFactory<Method, VarargsParam>
         {
@@ -266,27 +264,8 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.param_location(this, Original.Location);
         }
 
-        sealed class ConstructedExtensionParameterCacheKey
-        {
-            public readonly IParameterSymbol Parameter;
-            public readonly ITypeSymbol ConstructedType;
-            public ConstructedExtensionParameterCacheKey(IParameterSymbol parameter, ITypeSymbol constructedType)
-            {
-                Parameter = parameter;
-                ConstructedType = constructedType;
-            }
-
-            public override int GetHashCode() =>
-                (Parameter, ConstructedType).GetHashCode();
-
-            public override bool Equals(object obj) =>
-                obj is ConstructedExtensionParameterCacheKey k &&
-                SymbolEqualityComparer.Default.Equals(k.Parameter, Parameter) &&
-                SymbolEqualityComparer.Default.Equals(k.ConstructedType, ConstructedType);
-        }
-
         public static ConstructedExtensionParameter Create(Context cx, Method method, Parameter parameter) =>
-            ExtensionParamFactory.Instance.CreateEntity(cx, new ConstructedExtensionParameterCacheKey(parameter.symbol, method.symbol.ReceiverType), (method, parameter));
+            ExtensionParamFactory.Instance.CreateEntity(cx, (new SymbolEqualityWrapper(parameter.symbol), new SymbolEqualityWrapper(method.symbol.ReceiverType)), (method, parameter));
 
         class ExtensionParamFactory : ICachedEntityFactory<(Method, Parameter), ConstructedExtensionParameter>
         {

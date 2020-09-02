@@ -107,10 +107,25 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => GetLocations(symbol).FirstOrDefault();
 
+        bool IsAnonymousType() => symbol.IsAnonymousType || symbol.Name.Contains("__AnonymousType");
+
         public override void WriteId(TextWriter trapFile)
         {
-            symbol.BuildTypeId(Context, trapFile, symbol);
-            trapFile.Write(";type");
+            if (IsAnonymousType())
+                trapFile.Write('*');
+            else
+            {
+                symbol.BuildTypeId(Context, trapFile, symbol);
+                trapFile.Write(";type");
+            }
+        }
+
+        public override void WriteQuotedId(TextWriter trapFile)
+        {
+            if (IsAnonymousType())
+                trapFile.Write('*');
+            else
+                base.WriteQuotedId(trapFile);
         }
 
         /// <summary>
@@ -167,22 +182,10 @@ namespace Semmle.Extraction.CSharp.Entities
             referencedType = Type.Create(cx, symbol);
         }
 
-        sealed class NamedTypeRefCacheKey
-        {
-            public readonly INamedTypeSymbol Symbol;
-            public NamedTypeRefCacheKey(INamedTypeSymbol symbol) => Symbol = symbol;
-
-            public override int GetHashCode() =>
-                11 * Symbol.GetHashCode();
-
-            public override bool Equals(object obj) =>
-                obj is NamedTypeRefCacheKey k && SymbolEqualityComparer.IncludeNullability.Equals(k.Symbol, Symbol);
-        }
-
         public static NamedTypeRef Create(Context cx, INamedTypeSymbol type) =>
             // We need to use a different cache key than `type` to avoid mixing up
             // `NamedType`s and `NamedTypeRef`s
-            NamedTypeRefFactory.Instance.CreateEntity(cx, new NamedTypeRefCacheKey(type), type);
+            NamedTypeRefFactory.Instance.CreateEntity(cx, (typeof(NamedTypeRef), new SymbolEqualityWrapper(type)), type);
 
         class NamedTypeRefFactory : ICachedEntityFactory<INamedTypeSymbol, NamedTypeRef>
         {

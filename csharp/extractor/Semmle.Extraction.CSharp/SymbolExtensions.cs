@@ -212,7 +212,7 @@ namespace Semmle.Extraction.CSharp
             // #123 = @"C`1 : IEnumerable<__self___T>"
             // ``` 
             if (SymbolEqualityComparer.Default.Equals(symbol, symbolBeingDefined))
-                trapFile.Write($"__self__");
+                trapFile.Write("__self__");
             else if (symbol is ITypeSymbol type && type.IdDependsOn(cx, symbolBeingDefined))
                 type.BuildTypeId(cx, trapFile, symbolBeingDefined, addBaseClass);
             else
@@ -294,12 +294,7 @@ namespace Semmle.Extraction.CSharp
                 }
             }
 
-            if (named.IsAnonymousType)
-            {
-                AddContaining();
-                named.BuildAnonymousName(cx, trapFile, (s0, cx0, trapFile0) => BuildOrWriteId(s0, cx0, trapFile0, symbolBeingDefined, addBaseClass), true);
-            }
-            else if (named.TypeParameters.IsEmpty)
+            if (named.TypeParameters.IsEmpty)
             {
                 AddContaining();
                 trapFile.Write(named.Name);
@@ -310,20 +305,6 @@ namespace Semmle.Extraction.CSharp
                 trapFile.Write(named.Name);
                 trapFile.Write("`");
                 trapFile.Write(named.TypeParameters.Length);
-                // Some types such as `<>f__AnonymousType0` are not considered anonymous types by Roslyn,
-                // perhaps because they contain type parameters. We still need to treat them like anonymous
-                // types, though, by adding the underlying properties, in order to disambiguate them
-                if (named.Name.Contains("__AnonymousType"))
-                {
-                    trapFile.Write('<');
-                    trapFile.BuildList(",", named.GetMembers().OfType<IPropertySymbol>(), (prop, tb0) =>
-                        {
-                            tb0.Write(prop.Name);
-                            tb0.Write(" ");
-                            prop.Type.BuildOrWriteId(cx, tb0, symbolBeingDefined, addBaseClass);
-                        });
-                    trapFile.Write('>');
-                }
             }
             else
             {
@@ -364,22 +345,14 @@ namespace Semmle.Extraction.CSharp
             trapFile.Write('.');
         }
 
-        static void BuildAnonymousName(this INamedTypeSymbol type, Context cx, TextWriter trapFile, Action<ITypeSymbol, Context, TextWriter> subTermAction, bool includeParamName)
+        static void BuildAnonymousName(this INamedTypeSymbol type, Context cx, TextWriter trapFile)
         {
-            var buildParam = includeParamName
-                ? (prop, tb0) =>
-                {
-                    tb0.Write(prop.Name);
-                    tb0.Write(' ');
-                    subTermAction(prop.Type, cx, tb0);
-                }
-            : (Action<IPropertySymbol, TextWriter>)((prop, tb0) => subTermAction(prop.Type, cx, tb0));
             int memberCount = type.GetMembers().OfType<IPropertySymbol>().Count();
             int hackTypeNumber = memberCount == 1 ? 1 : 0;
             trapFile.Write("<>__AnonType");
             trapFile.Write(hackTypeNumber);
             trapFile.Write('<');
-            trapFile.BuildList(",", type.GetMembers().OfType<IPropertySymbol>(), buildParam);
+            trapFile.BuildList(",", type.GetMembers().OfType<IPropertySymbol>(), (prop, tb0) => BuildDisplayName(prop.Type, cx, tb0));
             trapFile.Write('>');
         }
 
@@ -444,11 +417,9 @@ namespace Semmle.Extraction.CSharp
             }
 
             if (namedType.IsAnonymousType)
-            {
-                namedType.BuildAnonymousName(cx, trapFile, (sub, cx0, tb0) => sub.BuildDisplayName(cx0, tb0), false);
-            }
-
-            trapFile.Write(namedType.Name);
+                namedType.BuildAnonymousName(cx, trapFile);
+            else
+                trapFile.Write(namedType.Name);
             if (namedType.IsGenericType && namedType.TypeKind != TypeKind.Error && namedType.TypeArguments.Any())
             {
                 trapFile.Write('<');

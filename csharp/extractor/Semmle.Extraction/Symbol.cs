@@ -1,4 +1,5 @@
 using System.IO;
+using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction
 {
@@ -74,5 +75,21 @@ namespace Semmle.Extraction
         }
 
         public abstract TrapStackBehaviour TrapStackBehaviour { get; }
+    }
+
+    /// <summary>
+    /// A class used to wrap an `ISymbol` object, which uses `SymbolEqualityComparer.Default`
+    /// for comparison.
+    /// </summary>
+    public sealed class SymbolEqualityWrapper
+    {
+        public ISymbol Symbol { get; }
+
+        public SymbolEqualityWrapper(ISymbol symbol) { Symbol = symbol; }
+
+        public override bool Equals(object? other) =>
+            other is SymbolEqualityWrapper sew && SymbolEqualityComparer.Default.Equals(Symbol, sew.Symbol);
+
+        public override int GetHashCode() => 11 * Symbol.GetHashCode();
     }
 }

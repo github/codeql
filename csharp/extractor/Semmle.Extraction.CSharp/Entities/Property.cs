@@ -1,3 +1,4 @@
+using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Entities.Expressions;
@@ -11,9 +12,13 @@ namespace Semmle.Extraction.CSharp.Entities
     class Property : CachedSymbol<IPropertySymbol>, IExpressionParentEntity
     {
         protected Property(Context cx, IPropertySymbol init)
-            : base(cx, init) { }
+            : base(cx, init)
+        {
+            type = new Lazy<Type>(() => Type.Create(Context, symbol.Type));
+        }
 
-        Type Type => Type.Create(Context, symbol.Type);
+        readonly Lazy<Type> type;
+        Type Type => type.Value;
 
         public override void WriteId(TextWriter trapFile)
         {

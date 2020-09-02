@@ -89,8 +89,7 @@ namespace Semmle.Extraction.Entities
 
         public static string PathAsDatabaseString(string path) => path.Replace('\\', '/');
 
-        static readonly object cacheKey = new object();
-        public static File Create(Context cx, string path) => FileFactory.Instance.CreateEntity(cx, (cacheKey, path), path);
+        public static File Create(Context cx, string path) => FileFactory.Instance.CreateEntity(cx, (typeof(File), path), path);
 
         public static File CreateGenerated(Context cx) => GeneratedFile.Create(cx);
 
@@ -112,7 +111,7 @@ namespace Semmle.Extraction.Entities
             }
 
             public static GeneratedFile Create(Context cx) =>
-                GeneratedFileFactory.Instance.CreateEntity(cx, cacheKey, null);
+                GeneratedFileFactory.Instance.CreateEntity(cx, typeof(GeneratedFile), null);
 
             class GeneratedFileFactory : ICachedEntityFactory<string?, GeneratedFile>
             {

@@ -27,8 +27,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return obj != null && obj.GetType() == typeof(NullType);
         }
 
-        static readonly object cacheKey = new object();
-        public static AnnotatedType Create(Context cx) => new AnnotatedType(NullTypeFactory.Instance.CreateEntity(cx, cacheKey, null), NullableAnnotation.None);
+        public static AnnotatedType Create(Context cx) => new AnnotatedType(NullTypeFactory.Instance.CreateEntity(cx, typeof(NullType), null), NullableAnnotation.None);
 
         class NullTypeFactory : ICachedEntityFactory<ITypeSymbol, NullType>
         {

@@ -56,17 +56,7 @@ private class ThrowingCall extends NonReturningCall {
 }
 
 /** Holds if accessor `a` has an auto-implementation. */
-private predicate hasAccessorAutoImplementation(Accessor a) {
-  exists(SourceLocation sl | sl = a.getALocation() |
-    not exists(ControlFlowElement cfe, Location l | sl.getFile() = l.getFile() |
-      stmt_parent_top_level(cfe, _, a) and
-      stmt_location(cfe, l)
-      or
-      expr_parent_top_level_adjusted(cfe, 0, a) and
-      expr_location(cfe, l)
-    )
-  )
-}
+private predicate hasAccessorAutoImplementation(Accessor a) { not a.hasBody() }
 
 abstract private class NonReturningCallable extends Callable {
   NonReturningCallable() {
