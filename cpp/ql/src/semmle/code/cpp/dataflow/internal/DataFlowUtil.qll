@@ -525,6 +525,19 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
     inner = nodeTo.(InnerPartialDefinitionNode).getPreUpdateNode().asExpr() and
     outer = nodeFrom.(PartialDefinitionNode).getPreUpdateNode().asExpr()
   )
+  or
+  // Reverse flow: data that flows from the post-update node of a reference
+  // returned by a function call, back into the qualifier of that function.
+  // This allows data to flow 'in' through references returned by a modeled
+  // function such as `operator[]`.
+  exists(DataFlowFunction f, Call call, FunctionInput inModel, FunctionOutput outModel |
+    call.getTarget() = f and
+    inModel.isReturnValueDeref() and
+    outModel.isQualifierObject() and
+    f.hasDataFlow(inModel, outModel) and
+    nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr() = call and
+    nodeTo.asDefiningArgument() = call.getQualifier()
+  )
 }
 
 /**

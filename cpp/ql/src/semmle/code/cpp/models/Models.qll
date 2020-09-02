@@ -4,6 +4,7 @@ private import implementations.Fread
 private import implementations.Gets
 private import implementations.IdentityFunction
 private import implementations.Inet
+private import implementations.Iterator
 private import implementations.MemberFunction
 private import implementations.Memcpy
 private import implementations.Memset
