@@ -33,7 +33,14 @@ class ConstantStateFlowConf extends DataFlow::Configuration {
   }
 
   override predicate isSource(DataFlow::Node source) {
-    source.isConst() and not DataFlow::isReturnedWithError(source)
+    source.isConst() and
+    not DataFlow::isReturnedWithError(source) and
+    // Avoid duplicate paths by not considering reads from constants as sources themselves:
+    (
+      source.asExpr() instanceof StringLit
+      or
+      source.asExpr() instanceof AddExpr
+    )
   }
 
   override predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
@@ -51,6 +58,21 @@ predicate isUrlTaintingConfigStep(DataFlow::Node pred, DataFlow::Node succ) {
 }
 
 /**
+ * Gets a URL or pseudo-URL that suggests an out-of-band OAuth2 flow or use of a transient
+ * local listener to receive an OAuth2 redirect.
+ */
+bindingset[result]
+string getAnOobOauth2Url() {
+  // The following are pseudo-URLs seen in the wild to indicate the authenticating site
+  // should display a code for the user to manually convey, rather than directing:
+  result in ["urn:ietf:wg:oauth:2.0:oob", "urn:ietf:wg:oauth:2.0:oob:auto", "oob", "code"] or
+  // Alternatively some non-web tools will create a temporary local webserver to handle the
+  // OAuth2 redirect:
+  result.matches("%://localhost%") or
+  result.matches("%://127.0.0.1%")
+}
+
+/**
  * A flow of a URL indicating the OAuth redirect doesn't point to a publicly
  * accessible address, to the receiver of an `AuthCodeURL` call.
  *
@@ -61,15 +83,14 @@ class PrivateUrlFlowsToAuthCodeUrlCall extends DataFlow::Configuration {
   PrivateUrlFlowsToAuthCodeUrlCall() { this = "PrivateUrlFlowsToConfig" }
 
   override predicate isSource(DataFlow::Node source) {
-    // The following are all common ways to indicate out-of-band OAuth2 flow, in which case
-    // the authenticating party does not redirect but presents a code for the user to copy
-    // instead.
-    source.getStringValue() in ["urn:ietf:wg:oauth:2.0:oob", "urn:ietf:wg:oauth:2.0:oob:auto",
-          "oob", "code"] or
-    // Alternatively some non-web tools will create a temporary local webserver to handle the
-    // OAuth2 redirect:
-    source.getStringValue().matches("%://localhost%") or
-    source.getStringValue().matches("%://127.0.0.1%")
+    source.getStringValue() = getAnOobOauth2Url() and
+    // Avoid duplicate paths by excluding constant variable references from
+    // themselves being sources:
+    (
+      source.asExpr() instanceof StringLit
+      or
+      source.asExpr() instanceof AddExpr
+    )
   }
 
   override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
