@@ -4,6 +4,7 @@
 
 private import python
 private import DataFlowPrivate
+import experimental.dataflow.TypeTracker
 
 /**
  * IPA type for data flow nodes.
@@ -69,6 +70,14 @@ class Node extends TNode {
 
   /** Convenience method for casting to ExprNode and calling getNode and getNode again. */
   Expr asExpr() { none() }
+
+  /**
+   * Gets a node that this node may flow to using one heap and/or interprocedural step.
+   *
+   * See `TypeTracker` for more details about how to use this.
+   */
+  pragma[inline]
+  Node track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
 }
 
 class EssaNode extends Node, TEssaNode {
