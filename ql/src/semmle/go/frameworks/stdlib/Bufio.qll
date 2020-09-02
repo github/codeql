@@ -11,19 +11,12 @@ module Bufio {
    */
   class NewScanner extends Function {
     NewScanner() { this.hasQualifiedName("bufio", "NewScanner") }
-  }
-
-  /**
-   * A call to `bufio.NewScanner`.
-   */
-  class NewScannerCall extends DataFlow::CallNode {
-    NewScannerCall() { this.getTarget() instanceof NewScanner }
 
     /**
-     * Returns the node corresponding to the `io.Reader`
+     * Gets the input corresponding to the `io.Reader`
      * argument provided in the call.
      */
-    DataFlow::Node getReader() { result = this.getArgument(0) }
+    FunctionInput getReader() { result.isParameter(0) }
   }
 
   private class FunctionModels extends TaintTracking::FunctionModel {

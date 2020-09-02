@@ -40,6 +40,17 @@ class ConstantStateFlowConf extends DataFlow::Configuration {
 }
 
 /**
+ * Holds if `pred` writes a URL to the `RedirectURL` field of the `succ` `Config` object.
+ *
+ * This propagates flow from the RedirectURL field to the whole Config object.
+ */
+predicate isUrlTaintingConfigStep(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(Write w, Field f | f.hasQualifiedName("golang.org/x/oauth2", "Config", "RedirectURL") |
+    w.writesField(succ.(DataFlow::PostUpdateNode).getPreUpdateNode(), f, pred)
+  )
+}
+
+/**
  * A flow of a URL indicating the OAuth redirect doesn't point to a publicly
  * accessible address, to the receiver of an `AuthCodeURL` call.
  *
@@ -53,23 +64,12 @@ class PrivateUrlFlowsToAuthCodeUrlCall extends DataFlow::Configuration {
     // The following are all common ways to indicate out-of-band OAuth2 flow, in which case
     // the authenticating party does not redirect but presents a code for the user to copy
     // instead.
-    source.asExpr().(StringLit).getValue() in ["urn:ietf:wg:oauth:2.0:oob",
-          "urn:ietf:wg:oauth:2.0:oob:auto", "oob", "code"] or
+    source.getStringValue() in ["urn:ietf:wg:oauth:2.0:oob", "urn:ietf:wg:oauth:2.0:oob:auto",
+          "oob", "code"] or
     // Alternatively some non-web tools will create a temporary local webserver to handle the
     // OAuth2 redirect:
-    source.asExpr().(StringLit).getValue().matches("%://localhost%") or
-    source.asExpr().(StringLit).getValue().matches("%://127.0.0.1%")
-  }
-
-  /**
-   * Holds if `pred` writes a URL to the `RedirectURL` field of the `succ` `Config` object.
-   *
-   * This propagates flow from the RedirectURL field to the whole Config object.
-   */
-  predicate isUrlTaintingConfigStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(Write w, Field f | f.hasQualifiedName("golang.org/x/oauth2", "Config", "RedirectURL") |
-      w.writesField(succ.(DataFlow::PostUpdateNode).getPreUpdateNode(), f, pred)
-    )
+    source.getStringValue().matches("%://localhost%") or
+    source.getStringValue().matches("%://127.0.0.1%")
   }
 
   override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
@@ -80,11 +80,7 @@ class PrivateUrlFlowsToAuthCodeUrlCall extends DataFlow::Configuration {
     TaintTracking::referenceStep(pred, succ)
     or
     // Propagate across Sprintf and similar calls
-    exists(DataFlow::CallNode c |
-      c = any(Fmt::Sprinter s).getACall() and
-      pred = c.getAnArgument() and
-      succ = c.getResult()
-    )
+    TaintTracking::functionModelStep(any(Fmt::Sprinter s), pred, succ)
   }
 
   predicate isSink(DataFlow::Node sink, DataFlow::CallNode call) {
@@ -113,8 +109,6 @@ class FlowToPrint extends DataFlow::Configuration {
   FlowToPrint() { this = "FlowToPrint" }
 
   predicate isSink(DataFlow::Node sink, DataFlow::CallNode call) {
-    exists(Fmt::Printer printer | call = printer.getACall() | sink = call.getArgument(_))
-    or
     exists(LoggerCall logCall | call = logCall | sink = logCall.getAMessageComponent())
   }
 
@@ -135,7 +129,9 @@ predicate resultFlowsToPrinter(DataFlow::CallNode authCodeURLCall) {
 
 /** Get a data-flow node that reads the value of `os.Stdin`. */
 DataFlow::Node getAStdinNode() {
-  result = any(ValueEntity v | v.hasQualifiedName("os", "Stdin")).getARead()
+  exists(ValueEntity v |
+    v.hasQualifiedName("os", "Stdin") and result = globalValueNumber(v.getARead()).getANode()
+  )
 }
 
 /**
@@ -143,18 +139,22 @@ DataFlow::Node getAStdinNode() {
  * instance wrapping `os.Stdin`.
  */
 DataFlow::CallNode getAScannerCall() {
-  result instanceof Fmt::ScannerCall or
-  result.(Fmt::FScannerCall).getReader() = getAStdinNode() or
-  result.(Bufio::NewScannerCall).getReader() = getAStdinNode()
+  result = any(Fmt::Scanner f).getACall()
+  or
+  exists(Fmt::FScanner f |
+    result = f.getACall() and f.getReader().getNode(result) = getAStdinNode()
+  )
+  or
+  exists(Bufio::NewScanner f |
+    result = f.getACall() and f.getReader().getNode(result) = getAStdinNode()
+  )
 }
 
 /**
  * Holds if the provided `CallNode` is within the same root as a call
  * to a scanner that reads from `os.Stdin`.
  */
-predicate containsCallToStdinScanner(FuncDef funcDef) {
-  exists(DataFlow::CallNode call | call = getAScannerCall() | call.getRoot() = funcDef)
-}
+predicate containsCallToStdinScanner(FuncDef funcDef) { getAScannerCall().getRoot() = funcDef }
 
 /**
  * Holds if the `authCodeURLCall` seems to be done within a terminal
