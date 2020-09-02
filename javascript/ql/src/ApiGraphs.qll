@@ -334,8 +334,7 @@ module API {
           exports(m, _, _)
           or
           exists(NodeModule nm | nm = mod |
-            exists(nm.getModuleVariable().getAnAccess()) or
-            exists(nm.getExportsVariable().getAnAccess())
+            exists(SSA::implicitInit([nm.getModuleVariable(), nm.getExportsVariable()]))
           )
         )
       } or
@@ -529,13 +528,13 @@ module API {
     cached
     predicate use(Feature nd, DataFlow::SourceNode ref) {
       exists(string m, Module mod | nd = MkModule(m) and mod = importableModule(m) |
-        ref = mod.(NodeModule).getModuleVariable().getAnAccess().flow()
+        ref = DataFlow::ssaDefinitionNode(SSA::implicitInit(mod.(NodeModule).getModuleVariable()))
         or
         ref = DataFlow::parameterNode(mod.(AmdModule).getDefine().getModuleParameter())
       )
       or
       exists(string m, Module mod | nd = MkModuleExport(m) and mod = importableModule(m) |
-        ref = mod.(NodeModule).getExportsVariable().getAnAccess().flow()
+        ref = DataFlow::ssaDefinitionNode(SSA::implicitInit(mod.(NodeModule).getExportsVariable()))
         or
         ref = DataFlow::parameterNode(mod.(AmdModule).getDefine().getExportsParameter())
       )
@@ -753,14 +752,14 @@ private module Label {
   string promised() { result = "promised" }
 }
 
+/**
+ * A CommonJS `module` or `exports` variable, considered as a source node.
+ */
 private class AdditionalSourceNode extends DataFlow::SourceNode::Range {
   AdditionalSourceNode() {
-    exists(NodeModule m, RValue v |
-      v = m.getModuleVariable().getAnAccess()
-      or
-      v = m.getExportsVariable().getAnAccess()
-    |
-      this = v.flow()
+    exists(NodeModule m, Variable v |
+      v in [m.getModuleVariable(), m.getExportsVariable()] and
+      this = DataFlow::ssaDefinitionNode(SSA::implicitInit(v))
     )
   }
 }
