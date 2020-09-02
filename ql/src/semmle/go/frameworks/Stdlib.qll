@@ -12,6 +12,8 @@ import semmle.go.frameworks.stdlib.CompressFlate
 import semmle.go.frameworks.stdlib.CompressGzip
 import semmle.go.frameworks.stdlib.CompressLzw
 import semmle.go.frameworks.stdlib.CompressZlib
+import semmle.go.frameworks.stdlib.Path
+import semmle.go.frameworks.stdlib.PathFilepath
 
 /** A `String()` method. */
 class StringMethod extends TaintTracking::FunctionModel, Method {
@@ -47,36 +49,6 @@ private class CopyFunction extends TaintTracking::FunctionModel {
 
   override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
     inp.isParameter(1) and outp.isParameter(0)
-  }
-}
-
-/** Provides models of commonly used functions in the `path/filepath` package. */
-module PathFilePath {
-  /** A path-manipulating function in the `path/filepath` package. */
-  private class PathManipulatingFunction extends TaintTracking::FunctionModel {
-    PathManipulatingFunction() {
-      exists(string fn | hasQualifiedName("path/filepath", fn) |
-        fn = "Abs" or
-        fn = "Base" or
-        fn = "Clean" or
-        fn = "Dir" or
-        fn = "EvalSymlinks" or
-        fn = "Ext" or
-        fn = "FromSlash" or
-        fn = "Glob" or
-        fn = "Join" or
-        fn = "Rel" or
-        fn = "Split" or
-        fn = "SplitList" or
-        fn = "ToSlash" or
-        fn = "VolumeName"
-      )
-    }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isParameter(_) and
-      outp.isResult(_)
-    }
   }
 }
 
@@ -487,28 +459,6 @@ module OS {
     Exit() { hasQualifiedName("os", "Exit") }
 
     override predicate mayReturnNormally() { none() }
-  }
-}
-
-/** Provides models of commonly used functions in the `path` package. */
-module Path {
-  /** A path-manipulating function in the `path` package. */
-  class PathManipulatingFunction extends TaintTracking::FunctionModel {
-    PathManipulatingFunction() {
-      exists(string fn | hasQualifiedName("path", fn) |
-        fn = "Base" or
-        fn = "Clean" or
-        fn = "Dir" or
-        fn = "Ext" or
-        fn = "Join" or
-        fn = "Split"
-      )
-    }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isParameter(_) and
-      outp.isResult(_)
-    }
   }
 }
 
