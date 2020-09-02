@@ -20,7 +20,7 @@ module LdapInjection {
     /**
      * Gets the LDAP query call that the sink flows into.
      */
-    abstract DataFlow::Node getQueryCallSink();
+    abstract DataFlow::Node getQueryCall();
   }
 
   /**
