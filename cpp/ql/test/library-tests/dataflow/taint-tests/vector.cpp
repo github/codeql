@@ -80,9 +80,9 @@ void test_element_taint(int x) {
 		std::vector<int>::const_iterator it = v7.begin();
 		v7.insert(it, source());
 	}
-	sink(v7); // tainted [NOT DETECTED]
-	sink(v7.front()); // tainted [NOT DETECTED]
-	sink(v7.back());
+	sink(v7); // tainted
+	sink(v7.front()); // tainted
+	sink(v7.back()); // [FALSE POSITIVE]
 
 	{
 		const std::vector<int> &v8c = v8;
@@ -305,9 +305,9 @@ void test_vector_insert() {
 	sink(a.insert(a.end(), b.begin(), b.end()));
 	sink(a);
 
-	sink(c.insert(c.end(), d.begin(), d.end())); // tainted [NOT DETECTED]
-	sink(c); // tainted [NOT DETECTED]
+	sink(c.insert(c.end(), d.begin(), d.end())); // tainted
+	sink(c); // tainted
 
-	sink(d.insert(d.end(), a.begin(), a.end())); // tainted [NOT DETECTED]
+	sink(d.insert(d.end(), a.begin(), a.end())); // tainted
 	sink(d); // tainted
 }

@@ -2388,6 +2388,9 @@
 | vector.cpp:81:3:81:4 | ref arg v7 | vector.cpp:84:7:84:8 | v7 |  |
 | vector.cpp:81:3:81:4 | ref arg v7 | vector.cpp:85:7:85:8 | v7 |  |
 | vector.cpp:81:3:81:4 | ref arg v7 | vector.cpp:101:1:101:1 | v7 |  |
+| vector.cpp:81:3:81:4 | v7 | vector.cpp:81:6:81:11 | call to insert | TAINT |
+| vector.cpp:81:17:81:22 | call to source | vector.cpp:81:3:81:4 | ref arg v7 | TAINT |
+| vector.cpp:81:17:81:22 | call to source | vector.cpp:81:6:81:11 | call to insert | TAINT |
 | vector.cpp:83:7:83:8 | ref arg v7 | vector.cpp:84:7:84:8 | v7 |  |
 | vector.cpp:83:7:83:8 | ref arg v7 | vector.cpp:85:7:85:8 | v7 |  |
 | vector.cpp:83:7:83:8 | ref arg v7 | vector.cpp:101:1:101:1 | v7 |  |
@@ -2403,6 +2406,7 @@
 | vector.cpp:90:3:90:4 | ref arg v8 | vector.cpp:93:7:93:8 | v8 |  |
 | vector.cpp:90:3:90:4 | ref arg v8 | vector.cpp:94:7:94:8 | v8 |  |
 | vector.cpp:90:3:90:4 | ref arg v8 | vector.cpp:101:1:101:1 | v8 |  |
+| vector.cpp:90:3:90:4 | v8 | vector.cpp:90:6:90:11 | call to insert | TAINT |
 | vector.cpp:92:7:92:8 | ref arg v8 | vector.cpp:93:7:93:8 | v8 |  |
 | vector.cpp:92:7:92:8 | ref arg v8 | vector.cpp:94:7:94:8 | v8 |  |
 | vector.cpp:92:7:92:8 | ref arg v8 | vector.cpp:101:1:101:1 | v8 |  |
@@ -2918,6 +2922,7 @@
 | vector.cpp:303:2:303:2 | ref arg d | vector.cpp:312:7:312:7 | d |  |
 | vector.cpp:303:2:303:2 | ref arg d | vector.cpp:313:1:313:1 | d |  |
 | vector.cpp:303:14:303:19 | call to source | vector.cpp:303:2:303:2 | ref arg d | TAINT |
+| vector.cpp:305:7:305:7 | a | vector.cpp:305:9:305:14 | call to insert | TAINT |
 | vector.cpp:305:7:305:7 | ref arg a | vector.cpp:306:7:306:7 | a |  |
 | vector.cpp:305:7:305:7 | ref arg a | vector.cpp:311:25:311:25 | a |  |
 | vector.cpp:305:7:305:7 | ref arg a | vector.cpp:311:36:311:36 | a |  |
@@ -2932,11 +2937,16 @@
 | vector.cpp:305:25:305:25 | b | vector.cpp:305:27:305:31 | call to begin | TAINT |
 | vector.cpp:305:25:305:25 | ref arg b | vector.cpp:305:36:305:36 | b |  |
 | vector.cpp:305:25:305:25 | ref arg b | vector.cpp:313:1:313:1 | b |  |
+| vector.cpp:305:27:305:31 | call to begin | vector.cpp:305:7:305:7 | ref arg a | TAINT |
+| vector.cpp:305:27:305:31 | call to begin | vector.cpp:305:9:305:14 | call to insert | TAINT |
 | vector.cpp:305:36:305:36 | b | vector.cpp:305:38:305:40 | call to end | TAINT |
 | vector.cpp:305:36:305:36 | ref arg b | vector.cpp:313:1:313:1 | b |  |
+| vector.cpp:305:38:305:40 | call to end | vector.cpp:305:7:305:7 | ref arg a | TAINT |
+| vector.cpp:305:38:305:40 | call to end | vector.cpp:305:9:305:14 | call to insert | TAINT |
 | vector.cpp:306:7:306:7 | ref arg a | vector.cpp:311:25:311:25 | a |  |
 | vector.cpp:306:7:306:7 | ref arg a | vector.cpp:311:36:311:36 | a |  |
 | vector.cpp:306:7:306:7 | ref arg a | vector.cpp:313:1:313:1 | a |  |
+| vector.cpp:308:7:308:7 | c | vector.cpp:308:9:308:14 | call to insert | TAINT |
 | vector.cpp:308:7:308:7 | ref arg c | vector.cpp:309:7:309:7 | c |  |
 | vector.cpp:308:7:308:7 | ref arg c | vector.cpp:313:1:313:1 | c |  |
 | vector.cpp:308:16:308:16 | c | vector.cpp:308:18:308:20 | call to end | TAINT |
@@ -2950,12 +2960,17 @@
 | vector.cpp:308:25:308:25 | ref arg d | vector.cpp:311:16:311:16 | d |  |
 | vector.cpp:308:25:308:25 | ref arg d | vector.cpp:312:7:312:7 | d |  |
 | vector.cpp:308:25:308:25 | ref arg d | vector.cpp:313:1:313:1 | d |  |
+| vector.cpp:308:27:308:31 | call to begin | vector.cpp:308:7:308:7 | ref arg c | TAINT |
+| vector.cpp:308:27:308:31 | call to begin | vector.cpp:308:9:308:14 | call to insert | TAINT |
 | vector.cpp:308:36:308:36 | d | vector.cpp:308:38:308:40 | call to end | TAINT |
 | vector.cpp:308:36:308:36 | ref arg d | vector.cpp:311:7:311:7 | d |  |
 | vector.cpp:308:36:308:36 | ref arg d | vector.cpp:311:16:311:16 | d |  |
 | vector.cpp:308:36:308:36 | ref arg d | vector.cpp:312:7:312:7 | d |  |
 | vector.cpp:308:36:308:36 | ref arg d | vector.cpp:313:1:313:1 | d |  |
+| vector.cpp:308:38:308:40 | call to end | vector.cpp:308:7:308:7 | ref arg c | TAINT |
+| vector.cpp:308:38:308:40 | call to end | vector.cpp:308:9:308:14 | call to insert | TAINT |
 | vector.cpp:309:7:309:7 | ref arg c | vector.cpp:313:1:313:1 | c |  |
+| vector.cpp:311:7:311:7 | d | vector.cpp:311:9:311:14 | call to insert | TAINT |
 | vector.cpp:311:7:311:7 | ref arg d | vector.cpp:312:7:312:7 | d |  |
 | vector.cpp:311:7:311:7 | ref arg d | vector.cpp:313:1:313:1 | d |  |
 | vector.cpp:311:16:311:16 | d | vector.cpp:311:18:311:20 | call to end | TAINT |
@@ -2966,6 +2981,10 @@
 | vector.cpp:311:25:311:25 | a | vector.cpp:311:27:311:31 | call to begin | TAINT |
 | vector.cpp:311:25:311:25 | ref arg a | vector.cpp:311:36:311:36 | a |  |
 | vector.cpp:311:25:311:25 | ref arg a | vector.cpp:313:1:313:1 | a |  |
+| vector.cpp:311:27:311:31 | call to begin | vector.cpp:311:7:311:7 | ref arg d | TAINT |
+| vector.cpp:311:27:311:31 | call to begin | vector.cpp:311:9:311:14 | call to insert | TAINT |
 | vector.cpp:311:36:311:36 | a | vector.cpp:311:38:311:40 | call to end | TAINT |
 | vector.cpp:311:36:311:36 | ref arg a | vector.cpp:313:1:313:1 | a |  |
+| vector.cpp:311:38:311:40 | call to end | vector.cpp:311:7:311:7 | ref arg d | TAINT |
+| vector.cpp:311:38:311:40 | call to end | vector.cpp:311:9:311:14 | call to insert | TAINT |
 | vector.cpp:312:7:312:7 | ref arg d | vector.cpp:313:1:313:1 | d |  |

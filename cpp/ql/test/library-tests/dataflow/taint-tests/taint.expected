@@ -263,6 +263,9 @@
 | vector.cpp:72:10:72:13 | call to back | vector.cpp:69:15:69:20 | call to source |
 | vector.cpp:75:7:75:8 | v6 | vector.cpp:74:17:74:22 | call to source |
 | vector.cpp:76:7:76:18 | access to array | vector.cpp:74:17:74:22 | call to source |
+| vector.cpp:83:7:83:8 | v7 | vector.cpp:81:17:81:22 | call to source |
+| vector.cpp:84:10:84:14 | call to front | vector.cpp:81:17:81:22 | call to source |
+| vector.cpp:85:10:85:13 | call to back | vector.cpp:81:17:81:22 | call to source |
 | vector.cpp:97:7:97:8 | v9 | vector.cpp:96:13:96:18 | call to source |
 | vector.cpp:98:10:98:11 | call to at | vector.cpp:96:13:96:18 | call to source |
 | vector.cpp:99:10:99:11 | call to at | vector.cpp:96:13:96:18 | call to source |
@@ -297,4 +300,7 @@
 | vector.cpp:290:7:290:8 | v2 | vector.cpp:289:17:289:30 | call to source |
 | vector.cpp:291:10:291:13 | call to data | vector.cpp:289:17:289:30 | call to source |
 | vector.cpp:292:7:292:18 | access to array | vector.cpp:289:17:289:30 | call to source |
+| vector.cpp:308:9:308:14 | call to insert | vector.cpp:303:14:303:19 | call to source |
+| vector.cpp:309:7:309:7 | c | vector.cpp:303:14:303:19 | call to source |
+| vector.cpp:311:9:311:14 | call to insert | vector.cpp:303:14:303:19 | call to source |
 | vector.cpp:312:7:312:7 | d | vector.cpp:303:14:303:19 | call to source |

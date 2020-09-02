@@ -90,6 +90,42 @@ class StdSequenceContainerFrontBack extends TaintFunction {
 }
 
 /**
+ * The standard container function `insert`.
+ */
+class StdSequenceContainerInsert extends TaintFunction {
+  StdSequenceContainerInsert() {
+    this.hasQualifiedName("std", ["vector", "deque", "list"], "insert")
+  }
+
+  /**
+   * Gets the index of a parameter to this function that is a reference to the
+   * value type of the container.
+   */
+  int getAValueTypeParameterIndex() {
+    getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
+      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
+  }
+
+  /**
+   * Gets the index of a parameter to this function that is an iterator.
+   */
+  int getAnIteratorParameterIndex() { getParameter(result).getType() instanceof Iterator }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from parameter to container itself (qualifier) and return value
+    (
+      input.isQualifierObject() or
+      input.isParameterDeref(getAValueTypeParameterIndex()) or
+      input.isParameter(getAnIteratorParameterIndex())
+    ) and
+    (
+      output.isQualifierObject() or
+      output.isReturnValueDeref()
+    )
+  }
+}
+
+/**
  * The standard container function `assign`.
  */
 class StdSequenceContainerAssign extends TaintFunction {
