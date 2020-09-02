@@ -38,8 +38,11 @@ module LdapInjection {
   /**
    * An LDAP filter for an API call that executes an operation against the LDAP server.
    */
-  class LdapjsSearchFilterAsSink extends Sink, LdapjsSearchFilter {
-    override DataFlow::InvokeNode getQueryCallSink() {
+  class LdapjsSearchFilterAsSink extends Sink {
+    LdapjsSearchFilterAsSink() {
+      this instanceof LdapjsSearchFilter
+    }
+    override DataFlow::InvokeNode getQueryCall() {
       result = this.(LdapjsSearchFilter).getQueryCall()
     }
   }
