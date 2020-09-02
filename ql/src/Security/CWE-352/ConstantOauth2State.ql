@@ -112,17 +112,15 @@ predicate privateUrlFlowsToAuthCodeUrlCall(DataFlow::CallNode call) {
 class FlowToPrint extends DataFlow::Configuration {
   FlowToPrint() { this = "FlowToPrint" }
 
-  predicate isSource(DataFlow::Node source, DataFlow::CallNode call) {
-    exists(AuthCodeURL m | call = m.getACall() | source = call.getResult())
-  }
-
   predicate isSink(DataFlow::Node sink, DataFlow::CallNode call) {
     exists(Fmt::Printer printer | call = printer.getACall() | sink = call.getArgument(_))
     or
     exists(LoggerCall logCall | call = logCall | sink = logCall.getAMessageComponent())
   }
 
-  override predicate isSource(DataFlow::Node source) { isSource(source, _) }
+  override predicate isSource(DataFlow::Node source) {
+    source = any(AuthCodeURL m).getACall().getResult()
+  }
 
   override predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
 }
@@ -131,7 +129,7 @@ class FlowToPrint extends DataFlow::Configuration {
 predicate resultFlowsToPrinter(DataFlow::CallNode authCodeURLCall) {
   exists(FlowToPrint cfg, DataFlow::PathNode source, DataFlow::PathNode sink |
     cfg.hasFlowPath(source, sink) and
-    cfg.isSource(source.getNode(), authCodeURLCall)
+    authCodeURLCall.getResult() = source.getNode()
   )
 }
 
