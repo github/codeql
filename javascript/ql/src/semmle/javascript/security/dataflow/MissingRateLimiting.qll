@@ -145,11 +145,8 @@ class BruteForceRateLimit extends RateLimiter {
  */
 class RouteHandlerLimitedByExpressLimiter extends RateLimitedRouteHandlerExpr {
   RouteHandlerLimitedByExpressLimiter() {
-    exists(API::Feature expressLimiter |
-      expressLimiter = API::moduleImport("express-limiter") and
-      expressLimiter.getParameter(0).getADefinition().getALocalSource().asExpr() =
-        this.getSetup().getRouter()
-    )
+    API::moduleImport("express-limiter").getParameter(0).getARhs().getALocalSource().asExpr() =
+      this.getSetup().getRouter()
   }
 }
 
@@ -179,7 +176,7 @@ class RateLimiterFlexibleRateLimiter extends DataFlow::FunctionNode {
       rateLimiterClass = API::moduleImport("rate-limiter-flexible").getMember(rateLimiterClassName) and
       rateLimiterConsume = rateLimiterClass.getInstance().getMember("consume") and
       request.getParameter() = getRouteHandlerParameter(getFunction(), "request") and
-      request.getAPropertyRead().flowsTo(rateLimiterConsume.getAParameter().getADefinition())
+      request.getAPropertyRead().flowsTo(rateLimiterConsume.getAParameter().getARhs())
     )
   }
 }

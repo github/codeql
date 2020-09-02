@@ -17,12 +17,18 @@ private import semmle.javascript.dataflow.internal.StepSummary
  */
 module API {
   /**
-   * An abstract representation of an API feature such as a parameter of a function exported by the
-   * package.
+   * An abstract representation of an API feature such as a function exported by an npm package,
+   * a parameter of such a function, or its result.
    */
   class Feature extends Impl::TFeature {
     /**
      * Gets a data-flow node corresponding to a use of this API feature.
+     *
+     * For example, `require('fs').readFileSync` is a use of the feature `readFileSync` from the
+     * `fs` module, and `require('fs').readFileSync(file)` is a use of the result of that function.
+     *
+     * As another example, in the assignment `exports.plusOne = (x) => x+1` the two references to
+     * `x` are uses of the feature corresponding to the first parameter of `plusOne`.
      */
     DataFlow::Node getAUse() {
       exists(DataFlow::SourceNode src | Impl::use(this, src) |
@@ -33,8 +39,18 @@ module API {
     /**
      * Gets a data-flow node corresponding to the right-hand side of a definition of this API
      * feature.
+     *
+     * For example, in the assignment `exports.plusOne = (x) => x+1`, the function expression
+     * `(x) => x+1` is the right-hand side of the  definition of the member feature `plusOne` of
+     * the enclosing module, and the expression `x+1` is the right-had side of the definition of
+     * its result.
+     *
+     * Note that for parameters, it is the arguments flowing into that parameter that count as
+     * right-hand sides of the definition, not the declaration of the parameter itself.
+     * Consequently, in `require('fs').readFileSync(file)`, `file` is the right-hand
+     * side of a definition of the first parameter of `readFileSync` from the `fs` module.
      */
-    DataFlow::Node getADefinition() { Impl::def(this, result) }
+    DataFlow::Node getARhs() { Impl::rhs(this, result) }
 
     /**
      * Gets a feature representing member `m` of this one.
@@ -57,7 +73,8 @@ module API {
     }
 
     /**
-     * Gets a feature representing an instance of this one.
+     * Gets a feature representing an instance of this one, that is, an object whose
+     * constructor is this feature.
      */
     Feature getInstance() { result = getASuccessor(Label::instance()) }
 
@@ -139,7 +156,7 @@ module API {
      * In other words, the value of a use of `that` may flow into the right-hand side of a
      * definition of this feature.
      */
-    predicate refersTo(Feature that) { this.getADefinition() = that.getAUse() }
+    predicate refersTo(Feature that) { this.getARhs() = that.getAUse() }
 
     /**
      * Gets the unique data-flow that gives rise to this feature, if any.
@@ -327,7 +344,7 @@ module API {
       MkAsyncFuncResult(DataFlow::FunctionNode f) {
         f = trackDefNode(_) and f.getFunction().isAsync() and hasSemantics(f)
       } or
-      MkDef(DataFlow::Node nd) { def(_, _, nd) } or
+      MkDef(DataFlow::Node nd) { rhs(_, _, nd) } or
       MkUse(DataFlow::SourceNode nd) { use(_, _, nd) } or
       MkCanonicalNameDef(CanonicalName n) { isDefined(n) } or
       MkCanonicalNameUse(CanonicalName n) { isUsed(n) } or
@@ -375,7 +392,7 @@ module API {
      * incoming edge from `base` labeled `lbl` in the API graph.
      */
     cached
-    predicate def(Feature base, string lbl, DataFlow::Node rhs) {
+    predicate rhs(Feature base, string lbl, DataFlow::Node rhs) {
       hasSemantics(rhs) and
       (
         base = MkRoot() and
@@ -388,7 +405,7 @@ module API {
         )
         or
         exists(DataFlow::Node def, DataFlow::SourceNode pred |
-          def(base, def) and pred = trackDefNode(def)
+          rhs(base, def) and pred = trackDefNode(def)
         |
           exists(DataFlow::PropWrite pw | pw = pred.getAPropertyWrite() |
             lbl = Label::memberFromRef(pw) and
@@ -441,7 +458,7 @@ module API {
      * Holds if `rhs` is the right-hand side of a definition of feature `nd`.
      */
     cached
-    predicate def(Feature nd, DataFlow::Node rhs) {
+    predicate rhs(Feature nd, DataFlow::Node rhs) {
       exists(string m | nd = MkModuleExport(m) | exports(m, rhs))
       or
       nd = MkDef(rhs)
@@ -480,7 +497,7 @@ module API {
         )
         or
         exists(DataFlow::Node def, DataFlow::FunctionNode fn |
-          def(base, def) and fn = trackDefNode(def)
+          rhs(base, def) and fn = trackDefNode(def)
         |
           exists(int i |
             lbl = Label::parameter(i) and
@@ -492,7 +509,7 @@ module API {
         )
         or
         exists(DataFlow::Node def, DataFlow::ClassNode cls, int i |
-          def(base, def) and cls = trackDefNode(def)
+          rhs(base, def) and cls = trackDefNode(def)
         |
           lbl = Label::parameter(i) and
           ref = cls.getConstructor().getParameter(i)
@@ -580,7 +597,7 @@ module API {
 
     private DataFlow::SourceNode trackDefNode(DataFlow::Node nd, DataFlow::TypeBackTracker t) {
       t.start() and
-      def(_, nd) and
+      rhs(_, nd) and
       result = nd.getALocalSource()
       or
       exists(DataFlow::TypeBackTracker t2 | result = trackDefNode(nd, t2).backtrack(t2, t))
@@ -627,12 +644,12 @@ module API {
       )
       or
       exists(DataFlow::Node rhs |
-        def(pred, lbl, rhs) and
+        rhs(pred, lbl, rhs) and
         succ = MkDef(rhs)
       )
       or
       exists(DataFlow::Node def |
-        def(pred, def) and
+        rhs(pred, def) and
         lbl = Label::instance() and
         succ = MkClassInstance(trackDefNode(def))
       )

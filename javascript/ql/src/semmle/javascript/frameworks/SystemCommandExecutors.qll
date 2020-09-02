@@ -45,15 +45,9 @@ private predicate execApi(string mod, int cmdArg, int optionsArg, boolean shell)
   )
   or
   shell = true and
-  (
-    mod = "exec" and
-    optionsArg = -2 and
-    cmdArg = 0
-    or
-    mod = "remote-exec" and
-    cmdArg = 1 and
-    optionsArg = -1
-  )
+  mod = "exec" and
+  optionsArg = -2 and
+  cmdArg = 0
 }
 
 private class SystemCommandExecutors extends SystemCommandExecution, DataFlow::InvokeNode {

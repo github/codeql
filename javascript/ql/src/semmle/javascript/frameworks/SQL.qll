@@ -81,7 +81,7 @@ private module MySql {
 
     Credentials() {
       exists(API::Feature call, string prop |
-        (call = createConnection() or call = createPool()) and
+        call in [createConnection(), createPool()] and
         call.getAUse().asExpr().(CallExpr).hasOptionArgument(0, prop, this) and
         (
           prop = "user" and kind = "user name"
