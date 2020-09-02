@@ -1,0 +1,4 @@
+| SignAnalysis.cs:428:23:428:24 | access to constant A |
+| SignAnalysis.cs:448:22:448:29 | Byte* to = ... |
+| SignAnalysis.cs:450:38:450:44 | (...) ... |
+| SignAnalysis.cs:450:43:450:44 | access to local variable to |

@@ -31,6 +31,33 @@ class Guard extends Expr {
   predicate controlsNode(ControlFlow::Nodes::ElementNode cfn, AccessOrCallExpr sub, AbstractValue v) {
     isGuardedByNode(cfn, this, sub, v)
   }
+
+  /**
+   * Holds if guard is an equality test between `e1` and `e2`. If the test is
+   * negated, that is `!=`, then `polarity` is false, otherwise `polarity` is
+   * true.
+   */
+  predicate isEquality(Expr e1, Expr e2, boolean polarity) {
+    exists(Expr exp1, Expr exp2 | equalityGuard(exp1, exp2, polarity) |
+      e1 = exp1 and e2 = exp2
+      or
+      e2 = exp1 and e1 = exp2
+    )
+  }
+
+  private predicate equalityGuard(Expr e1, Expr e2, boolean polarity) {
+    exists(ComparisonTest eqtest |
+      eqtest.getExpr() = this and
+      eqtest.getAnArgument() = e1 and
+      eqtest.getAnArgument() = e2 and
+      not e1 = e2 and
+      (
+        polarity = true and eqtest.getComparisonKind().isEquality()
+        or
+        polarity = false and eqtest.getComparisonKind().isInequality()
+      )
+    )
+  }
 }
 
 /** An abstract value. */

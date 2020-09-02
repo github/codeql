@@ -6,4 +6,4 @@
  * three-valued domain `{negative, zero, positive}`.
  */
 
-import semmle.code.java.dataflow.internal.rangeanalysis.SignAnalysisCommon
+import semmle.code.csharp.dataflow.internal.rangeanalysis.SignAnalysisCommon

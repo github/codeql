@@ -1,5 +1,5 @@
-import java
-import semmle.code.java.dataflow.SignAnalysis
+import csharp
+import semmle.code.csharp.dataflow.SignAnalysis
 
 string getASignString(Expr e) {
   positive(e) and
