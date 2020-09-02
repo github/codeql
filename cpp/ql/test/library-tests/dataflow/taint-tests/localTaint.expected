@@ -1192,13 +1192,25 @@
 | string.cpp:482:18:482:26 | call to basic_string | string.cpp:491:8:491:9 | s6 |  |
 | string.cpp:484:8:484:8 | ref arg g | string.cpp:485:8:485:8 | g |  |
 | string.cpp:484:17:484:18 | s5 | string.cpp:484:20:484:25 | call to cbegin | TAINT |
+| string.cpp:484:20:484:25 | call to cbegin | string.cpp:484:8:484:8 | ref arg g | TAINT |
+| string.cpp:484:20:484:25 | call to cbegin | string.cpp:484:10:484:15 | call to assign | TAINT |
 | string.cpp:484:30:484:31 | s5 | string.cpp:484:33:484:36 | call to cend | TAINT |
+| string.cpp:484:33:484:36 | call to cend | string.cpp:484:8:484:8 | ref arg g | TAINT |
+| string.cpp:484:33:484:36 | call to cend | string.cpp:484:10:484:15 | call to assign | TAINT |
 | string.cpp:487:8:487:8 | ref arg h | string.cpp:488:8:488:8 | h |  |
 | string.cpp:487:17:487:18 | s6 | string.cpp:487:20:487:25 | call to cbegin | TAINT |
+| string.cpp:487:20:487:25 | call to cbegin | string.cpp:487:8:487:8 | ref arg h | TAINT |
+| string.cpp:487:20:487:25 | call to cbegin | string.cpp:487:10:487:15 | call to assign | TAINT |
 | string.cpp:487:30:487:31 | s6 | string.cpp:487:33:487:36 | call to cend | TAINT |
+| string.cpp:487:33:487:36 | call to cend | string.cpp:487:8:487:8 | ref arg h | TAINT |
+| string.cpp:487:33:487:36 | call to cend | string.cpp:487:10:487:15 | call to assign | TAINT |
 | string.cpp:490:8:490:9 | ref arg s6 | string.cpp:491:8:491:9 | s6 |  |
 | string.cpp:490:18:490:19 | s5 | string.cpp:490:21:490:26 | call to cbegin | TAINT |
+| string.cpp:490:21:490:26 | call to cbegin | string.cpp:490:8:490:9 | ref arg s6 | TAINT |
+| string.cpp:490:21:490:26 | call to cbegin | string.cpp:490:11:490:16 | call to assign | TAINT |
 | string.cpp:490:31:490:32 | s5 | string.cpp:490:34:490:37 | call to cend | TAINT |
+| string.cpp:490:34:490:37 | call to cend | string.cpp:490:8:490:9 | ref arg s6 | TAINT |
+| string.cpp:490:34:490:37 | call to cend | string.cpp:490:11:490:16 | call to assign | TAINT |
 | stringstream.cpp:13:20:13:22 | call to basic_stringstream | stringstream.cpp:16:2:16:4 | ss1 |  |
 | stringstream.cpp:13:20:13:22 | call to basic_stringstream | stringstream.cpp:22:7:22:9 | ss1 |  |
 | stringstream.cpp:13:20:13:22 | call to basic_stringstream | stringstream.cpp:27:7:27:9 | ss1 |  |

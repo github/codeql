@@ -143,6 +143,8 @@
 | string.cpp:472:8:472:8 | string.cpp:466:18:466:23 | AST only |
 | string.cpp:474:11:474:16 | string.cpp:466:18:466:23 | AST only |
 | string.cpp:475:8:475:9 | string.cpp:466:18:466:23 | AST only |
+| string.cpp:487:10:487:15 | string.cpp:482:18:482:23 | AST only |
+| string.cpp:488:8:488:8 | string.cpp:482:18:482:23 | AST only |
 | string.cpp:491:8:491:9 | string.cpp:482:18:482:23 | AST only |
 | structlikeclass.cpp:35:8:35:9 | structlikeclass.cpp:29:22:29:27 | AST only |
 | structlikeclass.cpp:36:8:36:9 | structlikeclass.cpp:30:24:30:29 | AST only |

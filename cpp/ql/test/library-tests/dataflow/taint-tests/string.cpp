@@ -484,8 +484,8 @@ void test_string_iterator_methods()
 		sink(g.assign(s5.cbegin(), s5.cend()));
 		sink(g);
 
-		sink(h.assign(s6.cbegin(), s6.cend())); // tainted [NOT DETECTED]
-		sink(h); // tainted [NOT DETECTED]
+		sink(h.assign(s6.cbegin(), s6.cend())); // tainted
+		sink(h); // tainted
 
 		sink(s6.assign(s5.cbegin(), s5.cend()));
 		sink(s6); // [FALSE POSITIVE]
