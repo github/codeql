@@ -319,28 +319,12 @@ private predicate defDependsOnDef(
   // Definitions with a defining value.
   exists(Expr expr | assignmentDef(def, v, expr) | exprDependsOnDef(expr, srcDef, srcVar))
   or
-  exists(AssignAddExpr assignAdd |
-    def = assignAdd and
+  // Assignment operations with a defining value
+  exists(AssignOperation assignOp |
+    analyzableExpr(assignOp) and
+    def = assignOp and
     def.getAVariable() = v and
-    exprDependsOnDef(assignAdd.getAnOperand(), srcDef, srcVar)
-  )
-  or
-  exists(AssignSubExpr assignSub |
-    def = assignSub and
-    def.getAVariable() = v and
-    exprDependsOnDef(assignSub.getAnOperand(), srcDef, srcVar)
-  )
-  or
-  exists(UnsignedAssignMulExpr assignMul |
-    def = assignMul and
-    def.getAVariable() = v and
-    exprDependsOnDef(assignMul.getAnOperand(), srcDef, srcVar)
-  )
-  or
-  exists(AssignMulByConstantExpr assignMul |
-    def = assignMul and
-    def.getAVariable() = v and
-    exprDependsOnDef(assignMul.getLValue(), srcDef, srcVar)
+    exprDependsOnDef(assignOp, srcDef, srcVar)
   )
   or
   exists(CrementOperation crem |
@@ -1185,42 +1169,11 @@ private float getDefLowerBoundsImpl(RangeSsaDefinition def, StackVariable v) {
   // Definitions with a defining value.
   exists(Expr expr | assignmentDef(def, v, expr) | result = getFullyConvertedLowerBounds(expr))
   or
-  exists(AssignAddExpr assignAdd, RangeSsaDefinition nextDef, float lhsLB, float rhsLB |
-    def = assignAdd and
-    assignAdd.getLValue() = nextDef.getAUse(v) and
-    lhsLB = getDefLowerBounds(nextDef, v) and
-    rhsLB = getFullyConvertedLowerBounds(assignAdd.getRValue()) and
-    result = addRoundingDown(lhsLB, rhsLB)
-  )
-  or
-  exists(AssignSubExpr assignSub, RangeSsaDefinition nextDef, float lhsLB, float rhsUB |
-    def = assignSub and
-    assignSub.getLValue() = nextDef.getAUse(v) and
-    lhsLB = getDefLowerBounds(nextDef, v) and
-    rhsUB = getFullyConvertedUpperBounds(assignSub.getRValue()) and
-    result = addRoundingDown(lhsLB, -rhsUB)
-  )
-  or
-  exists(UnsignedAssignMulExpr assignMul, RangeSsaDefinition nextDef, float lhsLB, float rhsLB |
-    def = assignMul and
-    assignMul.getLValue() = nextDef.getAUse(v) and
-    lhsLB = getDefLowerBounds(nextDef, v) and
-    rhsLB = getFullyConvertedLowerBounds(assignMul.getRValue()) and
-    result = lhsLB * rhsLB
-  )
-  or
-  exists(AssignMulByPositiveConstantExpr assignMul, RangeSsaDefinition nextDef, float lhsLB |
-    def = assignMul and
-    assignMul.getLValue() = nextDef.getAUse(v) and
-    lhsLB = getDefLowerBounds(nextDef, v) and
-    result = lhsLB * assignMul.getConstant()
-  )
-  or
-  exists(AssignMulByNegativeConstantExpr assignMul, RangeSsaDefinition nextDef, float lhsUB |
-    def = assignMul and
-    assignMul.getLValue() = nextDef.getAUse(v) and
-    lhsUB = getDefUpperBounds(nextDef, v) and
-    result = lhsUB * assignMul.getConstant()
+  // Assignment operations with a defining value
+  exists(AssignOperation assignOp |
+    def = assignOp and
+    assignOp.getLValue() = v.getAnAccess() and
+    result = getTruncatedLowerBounds(assignOp)
   )
   or
   exists(IncrementOperation incr, float newLB |
@@ -1249,42 +1202,11 @@ private float getDefUpperBoundsImpl(RangeSsaDefinition def, StackVariable v) {
   // Definitions with a defining value.
   exists(Expr expr | assignmentDef(def, v, expr) | result = getFullyConvertedUpperBounds(expr))
   or
-  exists(AssignAddExpr assignAdd, RangeSsaDefinition nextDef, float lhsUB, float rhsUB |
-    def = assignAdd and
-    assignAdd.getLValue() = nextDef.getAUse(v) and
-    lhsUB = getDefUpperBounds(nextDef, v) and
-    rhsUB = getFullyConvertedUpperBounds(assignAdd.getRValue()) and
-    result = addRoundingUp(lhsUB, rhsUB)
-  )
-  or
-  exists(AssignSubExpr assignSub, RangeSsaDefinition nextDef, float lhsUB, float rhsLB |
-    def = assignSub and
-    assignSub.getLValue() = nextDef.getAUse(v) and
-    lhsUB = getDefUpperBounds(nextDef, v) and
-    rhsLB = getFullyConvertedLowerBounds(assignSub.getRValue()) and
-    result = addRoundingUp(lhsUB, -rhsLB)
-  )
-  or
-  exists(UnsignedAssignMulExpr assignMul, RangeSsaDefinition nextDef, float lhsUB, float rhsUB |
-    def = assignMul and
-    assignMul.getLValue() = nextDef.getAUse(v) and
-    lhsUB = getDefUpperBounds(nextDef, v) and
-    rhsUB = getFullyConvertedUpperBounds(assignMul.getRValue()) and
-    result = lhsUB * rhsUB
-  )
-  or
-  exists(AssignMulByPositiveConstantExpr assignMul, RangeSsaDefinition nextDef, float lhsUB |
-    def = assignMul and
-    assignMul.getLValue() = nextDef.getAUse(v) and
-    lhsUB = getDefUpperBounds(nextDef, v) and
-    result = lhsUB * assignMul.getConstant()
-  )
-  or
-  exists(AssignMulByNegativeConstantExpr assignMul, RangeSsaDefinition nextDef, float lhsLB |
-    def = assignMul and
-    assignMul.getLValue() = nextDef.getAUse(v) and
-    lhsLB = getDefLowerBounds(nextDef, v) and
-    result = lhsLB * assignMul.getConstant()
+  // Assignment operations with a defining value
+  exists(AssignOperation assignOp |
+    def = assignOp and
+    assignOp.getLValue() = v.getAnAccess() and
+    result = getTruncatedUpperBounds(assignOp)
   )
   or
   exists(IncrementOperation incr, float newUB |
