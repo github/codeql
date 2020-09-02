@@ -145,14 +145,9 @@ class StdStringAssign extends TaintFunction {
  */
 class StdStringBeginEnd extends TaintFunction {
   StdStringBeginEnd() {
-    this.hasQualifiedName("std", "basic_string", "begin") or
-    this.hasQualifiedName("std", "basic_string", "cbegin") or
-    this.hasQualifiedName("std", "basic_string", "rbegin") or
-    this.hasQualifiedName("std", "basic_string", "crbegin") or
-    this.hasQualifiedName("std", "basic_string", "end") or
-    this.hasQualifiedName("std", "basic_string", "cend") or
-    this.hasQualifiedName("std", "basic_string", "rend") or
-    this.hasQualifiedName("std", "basic_string", "crend")
+    this
+        .hasQualifiedName("std", "basic_string",
+          ["begin", "cbegin", "rbegin", "crbegin", "end", "cend", "rend", "crend"])
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
