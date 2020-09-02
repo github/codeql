@@ -525,11 +525,6 @@ private predicate getFieldSizeOfClass(Class c, Type type, int size) {
   )
 }
 
-private predicate initializeParameterOfType(InitializeIndirectionInstruction init, Type type) {
-  init.getParameter().getType().getUnspecifiedType().(DerivedType).getBaseType() =
-    type.getUnspecifiedType()
-}
-
 private predicate isSingleFieldClass(Type type, Class cTo) {
   exists(int size |
     cTo.getSize() = size and
@@ -545,12 +540,27 @@ private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {
   not iFrom.isResultConflated() and
   iFrom = opTo.getAnyDef()
   or
+  // Loading a single `int` from an `int *` parameter is not an exact load since
+  // the parameter may point to an entire array rather than a single `int`. The
+  // following rule ensures that any flow going into the
+  // `InitializeIndirectionInstruction`, even if it's for a different array
+  // element, will propagate to a load of the first element.
+  //
+  // Since we're linking `InitializeIndirectionInstruction` and
+  // `LoadInstruction` together directly, this rule will break if there's any
+  // reassignment of the parameter indirection, including a conditional one that
+  // leads to a phi node.
   exists(InitializeIndirectionInstruction init |
     iFrom = init and
     opTo.(LoadOperand).getAnyDef() = init and
-    initializeParameterOfType(init, opTo.getType())
+    // Check that the types match. Otherwise we can get flow from an object to
+    // its fields, which leads to field conflation when there's flow from other
+    // fields to the object elsewhere.
+    init.getParameter().getType().getUnspecifiedType().(DerivedType).getBaseType() =
+      opTo.getType().getUnspecifiedType()
   )
   or
+  // Flow from stores to structs with a single field to a load of that field.
   exists(LoadInstruction load |
     load.getSourceValueOperand() = opTo and
     opTo.getAnyDef() = iFrom and
@@ -567,25 +577,6 @@ private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo
   // A read side effect is almost never exact since we don't know exactly how
   // much memory the callee will read.
   iTo.(ReadSideEffectInstruction).getSideEffectOperand() = opFrom
-  or
-  // Loading a single `int` from an `int *` parameter is not an exact load since
-  // the parameter may point to an entire array rather than a single `int`. The
-  // following rule ensures that any flow going into the
-  // `InitializeIndirectionInstruction`, even if it's for a different array
-  // element, will propagate to a load of the first element.
-  //
-  // Since we're linking `InitializeIndirectionInstruction` and
-  // `LoadInstruction` together directly, this rule will break if there's any
-  // reassignment of the parameter indirection, including a conditional one that
-  // leads to a phi node.
-  exists(InitializeIndirectionInstruction init |
-    opFrom.getAnyDef() = init and
-    iTo.(LoadInstruction).getSourceValueOperand() = opFrom and
-    // Check that the types match. Otherwise we can get flow from an object to
-    // its fields, which leads to field conflation when there's flow from other
-    // fields to the object elsewhere.
-    initializeParameterOfType(init, iTo.getResultType())
-  )
   or
   // Treat all conversions as flow, even conversions between different numeric types.
   iTo.(ConvertInstruction).getUnaryOperand() = opFrom
@@ -624,10 +615,6 @@ private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo
     chi.getPartialOperand() = opFrom and
     not chi.isResultConflated()
   )
-  or
-  // Flow from stores to structs with a single field to a load of that field.
-  iTo.(LoadInstruction).getSourceValueOperand() = opFrom and
-  isSingleFieldClass(opFrom.getAnyDef().getResultType(), iTo.getResultType())
   or
   // Flow through modeled functions
   modelFlow(opFrom, iTo)
