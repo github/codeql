@@ -191,6 +191,7 @@
 | taint.cpp:447:9:447:17 | taint.cpp:445:14:445:28 | AST only |
 | taint.cpp:471:7:471:7 | taint.cpp:462:6:462:11 | AST only |
 | vector.cpp:20:8:20:8 | vector.cpp:16:43:16:49 | AST only |
+| vector.cpp:24:8:24:8 | vector.cpp:16:43:16:49 | AST only |
 | vector.cpp:28:8:28:8 | vector.cpp:16:43:16:49 | AST only |
 | vector.cpp:33:8:33:8 | vector.cpp:16:43:16:49 | AST only |
 | vector.cpp:52:7:52:8 | vector.cpp:51:10:51:15 | AST only |
@@ -232,6 +233,8 @@
 | vector.cpp:201:13:201:13 | vector.cpp:200:14:200:19 | AST only |
 | vector.cpp:242:7:242:8 | vector.cpp:238:17:238:30 | AST only |
 | vector.cpp:243:7:243:8 | vector.cpp:239:15:239:20 | AST only |
+| vector.cpp:259:8:259:9 | vector.cpp:239:15:239:20 | AST only |
+| vector.cpp:260:8:260:9 | vector.cpp:239:15:239:20 | AST only |
 | vector.cpp:273:8:273:9 | vector.cpp:269:18:269:31 | AST only |
 | vector.cpp:274:8:274:9 | vector.cpp:270:18:270:35 | AST only |
 | vector.cpp:275:8:275:9 | vector.cpp:271:18:271:34 | AST only |

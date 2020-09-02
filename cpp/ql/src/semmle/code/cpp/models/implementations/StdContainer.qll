@@ -3,6 +3,7 @@
  */
 
 import semmle.code.cpp.models.interfaces.Taint
+import semmle.code.cpp.models.implementations.Iterator
 
 /**
  * Additional model for standard container constructors that reference the
@@ -109,6 +110,26 @@ class StdSequenceContainerAssign extends TaintFunction {
     // flow from parameter to string itself (qualifier) and return value
     input.isParameterDeref(getAValueTypeParameterIndex()) and
     output.isQualifierObject()
+  }
+}
+
+/**
+ * The standard container `begin` and `end` functions and their
+ * variants.
+ */
+class StdSequenceContainerBeginEnd extends TaintFunction {
+  StdSequenceContainerBeginEnd() {
+    this
+        .hasQualifiedName("std", ["array", "vector", "deque", "list"],
+          ["begin", "cbegin", "rbegin", "crbegin", "end", "cend", "rend", "crend"]) or
+    this
+        .hasQualifiedName("std", "forward_list",
+          ["before_begin", "begin", "end", "cbefore_begin", "cbegin", "cend"])
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isQualifierObject() and
+    output.isReturnValue()
   }
 }
 

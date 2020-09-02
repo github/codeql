@@ -21,7 +21,7 @@ void test_range_based_for_loop_vector(int source1) {
 	}
 
 	for(std::vector<int>::iterator it = v.begin(); it != v.end(); ++it) {
-		sink(*it); // tainted [NOT DETECTED]
+		sink(*it); // tainted
 	}
 
 	for(int& x : v) {
@@ -256,8 +256,8 @@ void test_vector_assign() {
 
 		sink(v4);
 		sink(v5); // tainted [NOT DETECTED]
-		sink(i1); // tainted [NOT DETECTED]
-		sink(i2); // tainted [NOT DETECTED]
+		sink(i1); // tainted
+		sink(i2); // tainted
 		sink(v6); // tainted [NOT DETECTED]
 	}
 
