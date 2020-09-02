@@ -95,6 +95,24 @@ import ControlFlowGraphPublic
 class ControlFlowNodeBase extends ElementBase, @cfgnode { }
 
 /**
+ * DEPRECATED: Use `ControlFlowNode.getATrueSuccessor()` instead.
+ * Holds when `n2` is a control-flow node such that the control-flow
+ * edge `(n1, n2)` may be taken when `n1` is an expression that is true.
+ */
+deprecated predicate truecond_base(ControlFlowNodeBase n1, ControlFlowNodeBase n2) {
+  qlCFGTrueSuccessor(n1, n2)
+}
+
+/**
+ * DEPRECATED: Use `ControlFlowNode.getAFalseSuccessor()` instead.
+ * Holds when `n2` is a control-flow node such that the control-flow
+ * edge `(n1, n2)` may be taken when `n1` is an expression that is false.
+ */
+deprecated predicate falsecond_base(ControlFlowNodeBase n1, ControlFlowNodeBase n2) {
+  qlCFGFalseSuccessor(n1, n2)
+}
+
+/**
  * An abstract class that can be extended to add additional edges to the
  * control-flow graph. Instances of this class correspond to the source nodes
  * of such edges, and the predicate `getAnEdgeTarget` should be overridden to
