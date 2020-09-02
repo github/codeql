@@ -491,3 +491,17 @@ void test_string_iterator_methods()
 		sink(s6); // [FALSE POSITIVE]
 	}
 }
+
+void test_constructors_more() {
+	char *cs1 = "abc";
+	char *cs2 = source();
+	std::string s1(cs1);
+	std::string s2(cs2);
+	std::string s3(s1.begin(), s1.end());
+	std::string s4(s2.begin(), s2.end());
+
+	sink(s1);
+	sink(s2); // tainted
+	sink(s3);
+	sink(s4); // tainted [NOT DETECTED]
+}

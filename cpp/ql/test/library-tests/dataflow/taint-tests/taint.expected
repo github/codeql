@@ -136,6 +136,7 @@
 | string.cpp:487:10:487:15 | call to assign | string.cpp:482:18:482:23 | call to source |
 | string.cpp:488:8:488:8 | h | string.cpp:482:18:482:23 | call to source |
 | string.cpp:491:8:491:9 | s6 | string.cpp:482:18:482:23 | call to source |
+| string.cpp:504:7:504:8 | s2 | string.cpp:497:14:497:19 | call to source |
 | structlikeclass.cpp:35:8:35:9 | s1 | structlikeclass.cpp:29:22:29:27 | call to source |
 | structlikeclass.cpp:36:8:36:9 | s2 | structlikeclass.cpp:30:24:30:29 | call to source |
 | structlikeclass.cpp:37:8:37:9 | s3 | structlikeclass.cpp:29:22:29:27 | call to source |
@@ -304,3 +305,4 @@
 | vector.cpp:309:7:309:7 | c | vector.cpp:303:14:303:19 | call to source |
 | vector.cpp:311:9:311:14 | call to insert | vector.cpp:303:14:303:19 | call to source |
 | vector.cpp:312:7:312:7 | d | vector.cpp:303:14:303:19 | call to source |
+| vector.cpp:324:7:324:8 | v2 | vector.cpp:318:15:318:20 | call to source |

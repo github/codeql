@@ -75,6 +75,7 @@ namespace std
 
 		explicit basic_string(const Allocator& a = Allocator());
 		basic_string(const charT* s, const Allocator& a = Allocator());
+		template<class InputIterator> basic_string(InputIterator begin, InputIterator end, const Allocator& a = Allocator());
 
 		const charT* c_str() const;
 		charT* data() noexcept;
@@ -171,7 +172,10 @@ namespace std {
 		vector() noexcept(noexcept(Allocator())) : vector(Allocator()) { }
 		explicit vector(const Allocator&) noexcept;
 		explicit vector(size_type n, const Allocator& = Allocator());
-		vector(size_type n, const T& value, const Allocator& = Allocator()); 
+		vector(size_type n, const T& value, const Allocator& = Allocator());
+		template<class InputIterator, class IteratorCategory = typename InputIterator::iterator_category> vector(InputIterator first, InputIterator last, const Allocator& = Allocator());
+			// use of `iterator_category` makes sure InputIterator is (probably) an iterator, and not an `int` or
+			// similar that should match a different overload (SFINAE).
 		~vector();
 
 		vector& operator=(const vector& x);

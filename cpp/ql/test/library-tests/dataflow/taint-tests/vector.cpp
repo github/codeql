@@ -311,3 +311,17 @@ void test_vector_insert() {
 	sink(d.insert(d.end(), a.begin(), a.end())); // tainted
 	sink(d); // tainted
 }
+
+void test_constructors_more() {
+	std::vector<int> v1;
+	std::vector<int> v2;
+	v2.push_back(source());
+
+	std::vector<int> v3(v1.begin(), v1.end());
+	std::vector<int> v4(v2.begin(), v2.end());
+
+	sink(v1);
+	sink(v2); // tainted
+	sink(v3);
+	sink(v4); // tainted [NOT DETECTED]
+}
