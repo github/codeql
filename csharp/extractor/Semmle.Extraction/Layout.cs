@@ -61,7 +61,7 @@ namespace Semmle.Extraction
             /// </summary>
             /// <param name="srcFile">The source file.</param>
             /// <returns>A newly created TrapWriter.</returns>
-            public TrapWriter CreateTrapWriter(ILogger logger, string srcFile, bool discardDuplicates, TrapWriter.CompressionMode trapCompression) => 
+            public TrapWriter CreateTrapWriter(ILogger logger, string srcFile, bool discardDuplicates, TrapWriter.CompressionMode trapCompression) =>
                 new TrapWriter(logger, srcFile, TRAP_FOLDER, SOURCE_ARCHIVE, discardDuplicates, trapCompression);
         }
 
@@ -167,33 +167,7 @@ namespace Semmle.Extraction
 
     sealed class LayoutBlock
     {
-        struct Condition
-        {
-            private readonly bool include;
-            private readonly string prefix;
-
-            public bool Include => include;
-
-            public string Prefix => prefix;
-
-            public Condition(string line)
-            {
-                include = false;
-                if (line.StartsWith("-"))
-                    line = line.Substring(1);
-                else
-                    include = true;
-                prefix = Normalise(line.Trim());
-            }
-
-            static public string Normalise(string path)
-            {
-                path = Path.GetFullPath(path);
-                return path.Replace('\\', '/');
-            }
-        }
-
-        private readonly List<Condition> conditions = new List<Condition>();
+        private readonly List<FilePattern> filePatterns = new List<FilePattern>();
 
         public readonly Layout.SubProject Directories;
 
@@ -219,20 +193,20 @@ namespace Semmle.Extraction
             ReadVariable("ODASA_BUILD_ERROR_DIR", lines[i++]);
             while (i < lines.Length && !lines[i].StartsWith("#"))
             {
-                conditions.Add(new Condition(lines[i++]));
+                filePatterns.Add(new FilePattern(lines[i++]));
             }
         }
 
         public bool Matches(string path)
         {
             bool matches = false;
-            path = Condition.Normalise(path);
-            foreach (Condition condition in conditions)
+            path = FilePattern.Normalize(path);
+            foreach (var filePattern in filePatterns)
             {
-                if (condition.Include)
-                    matches |= path.StartsWith(condition.Prefix);
+                if (filePattern.Include)
+                    matches |= path.StartsWith(filePattern.Prefix);
                 else
-                    matches &= !path.StartsWith(condition.Prefix);
+                    matches &= !path.StartsWith(filePattern.Prefix);
             }
             return matches;
         }
