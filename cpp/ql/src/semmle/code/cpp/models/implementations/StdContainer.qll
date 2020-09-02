@@ -27,9 +27,17 @@ class StdSequenceContainerConstructor extends Constructor, TaintFunction {
       getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
   }
 
+  /**
+   * Gets the index of a parameter to this function that is an iterator.
+   */
+  int getAnIteratorParameterIndex() { getParameter(result).getType() instanceof Iterator }
+
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from any parameter of the value type to the returned object
-    input.isParameterDeref(getAValueTypeParameterIndex()) and
+    (
+      input.isParameterDeref(getAValueTypeParameterIndex()) or
+      input.isParameter(getAnIteratorParameterIndex())
+    ) and
     output.isReturnValue() // TODO: this should be `isQualifierObject` by our current definitions, but that flow is not yet supported.
   }
 }

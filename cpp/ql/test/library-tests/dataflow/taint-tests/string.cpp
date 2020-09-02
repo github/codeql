@@ -503,5 +503,5 @@ void test_constructors_more() {
 	sink(s1);
 	sink(s2); // tainted
 	sink(s3);
-	sink(s4); // tainted [NOT DETECTED]
+	sink(s4); // tainted
 }
