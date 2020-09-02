@@ -452,8 +452,8 @@ void test_string_iterator_methods()
 		sink(c.insert(c.end(), s1.begin(), s1.end()));
 		sink(c);
 
-		sink(d.insert(d.end(), s2.begin(), s2.end())); // tainted [NOT DETECTED]
-		sink(d); // tainted [NOT DETECTED]
+		sink(d.insert(d.end(), s2.begin(), s2.end())); // tainted
+		sink(d); // tainted
 
 		sink(s2.insert(s2.end(), s1.begin(), s1.end())); // tainted
 		sink(s2); // tainted
@@ -468,8 +468,8 @@ void test_string_iterator_methods()
 		sink(e.append(s3.begin(), s3.end()));
 		sink(e);
 
-		sink(f.append(s4.begin(), s4.end())); // tainted [NOT DETECTED]
-		sink(f); // tainted [NOT DETECTED]
+		sink(f.append(s4.begin(), s4.end())); // tainted
+		sink(f); // tainted
 
 		sink(s4.append(s3.begin(), s3.end())); // tainted
 		sink(s4); // tainted
