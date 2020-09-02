@@ -201,8 +201,8 @@ def flow_through_type_test_if_no_class():
 def flow_in_iteration():
     t = ITERABLE_SOURCE  # Seems to not be sunk anywhere
     for i in t:
-        i
-    return i
+        SINK(i)
+    SINK(i)
 
 def flow_in_generator():
     seq = [SOURCE]
