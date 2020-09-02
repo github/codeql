@@ -2781,17 +2781,21 @@
 | vector.cpp:249:13:249:14 | ref arg v1 | vector.cpp:249:25:249:26 | v1 |  |
 | vector.cpp:249:13:249:14 | ref arg v1 | vector.cpp:277:1:277:1 | v1 |  |
 | vector.cpp:249:13:249:14 | v1 | vector.cpp:249:16:249:20 | call to begin | TAINT |
+| vector.cpp:249:16:249:20 | call to begin | vector.cpp:249:3:249:4 | ref arg v4 | TAINT |
 | vector.cpp:249:25:249:26 | ref arg v1 | vector.cpp:277:1:277:1 | v1 |  |
 | vector.cpp:249:25:249:26 | v1 | vector.cpp:249:28:249:30 | call to end | TAINT |
+| vector.cpp:249:28:249:30 | call to end | vector.cpp:249:3:249:4 | ref arg v4 | TAINT |
 | vector.cpp:250:3:250:4 | ref arg v5 | vector.cpp:258:8:258:9 | v5 |  |
 | vector.cpp:250:3:250:4 | ref arg v5 | vector.cpp:262:2:262:2 | v5 |  |
 | vector.cpp:250:13:250:14 | ref arg v3 | vector.cpp:250:25:250:26 | v3 |  |
 | vector.cpp:250:13:250:14 | ref arg v3 | vector.cpp:251:8:251:9 | v3 |  |
 | vector.cpp:250:13:250:14 | ref arg v3 | vector.cpp:277:1:277:1 | v3 |  |
 | vector.cpp:250:13:250:14 | v3 | vector.cpp:250:16:250:20 | call to begin | TAINT |
+| vector.cpp:250:16:250:20 | call to begin | vector.cpp:250:3:250:4 | ref arg v5 | TAINT |
 | vector.cpp:250:25:250:26 | ref arg v3 | vector.cpp:251:8:251:9 | v3 |  |
 | vector.cpp:250:25:250:26 | ref arg v3 | vector.cpp:277:1:277:1 | v3 |  |
 | vector.cpp:250:25:250:26 | v3 | vector.cpp:250:28:250:30 | call to end | TAINT |
+| vector.cpp:250:28:250:30 | call to end | vector.cpp:250:3:250:4 | ref arg v5 | TAINT |
 | vector.cpp:251:8:251:9 | ref arg v3 | vector.cpp:277:1:277:1 | v3 |  |
 | vector.cpp:251:8:251:9 | v3 | vector.cpp:251:11:251:15 | call to begin | TAINT |
 | vector.cpp:251:11:251:15 | call to begin | vector.cpp:251:3:251:17 | ... = ... |  |
@@ -2812,7 +2816,9 @@
 | vector.cpp:254:3:254:4 | ref arg i2 | vector.cpp:260:8:260:9 | i2 |  |
 | vector.cpp:255:3:255:4 | ref arg v6 | vector.cpp:261:8:261:9 | v6 |  |
 | vector.cpp:255:3:255:4 | ref arg v6 | vector.cpp:262:2:262:2 | v6 |  |
+| vector.cpp:255:13:255:14 | call to iterator | vector.cpp:255:3:255:4 | ref arg v6 | TAINT |
 | vector.cpp:255:13:255:14 | i1 | vector.cpp:255:13:255:14 | call to iterator |  |
+| vector.cpp:255:17:255:18 | call to iterator | vector.cpp:255:3:255:4 | ref arg v6 | TAINT |
 | vector.cpp:255:17:255:18 | i2 | vector.cpp:255:17:255:18 | call to iterator |  |
 | vector.cpp:257:8:257:9 | ref arg v4 | vector.cpp:262:2:262:2 | v4 |  |
 | vector.cpp:258:8:258:9 | ref arg v5 | vector.cpp:262:2:262:2 | v5 |  |

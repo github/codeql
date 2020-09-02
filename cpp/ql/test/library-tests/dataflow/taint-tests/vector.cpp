@@ -255,10 +255,10 @@ void test_vector_assign() {
 		v6.assign(i1, i2);
 
 		sink(v4);
-		sink(v5); // tainted [NOT DETECTED]
+		sink(v5); // tainted
 		sink(i1); // tainted
 		sink(i2); // tainted
-		sink(v6); // tainted [NOT DETECTED]
+		sink(v6); // tainted
 	}
 
 	{

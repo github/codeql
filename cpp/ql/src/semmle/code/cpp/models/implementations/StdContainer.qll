@@ -106,9 +106,17 @@ class StdSequenceContainerAssign extends TaintFunction {
       getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
   }
 
+  /**
+   * Gets the index of a parameter to this function that is an iterator.
+   */
+  int getAnIteratorParameterIndex() { getParameter(result).getType() instanceof Iterator }
+
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // flow from parameter to string itself (qualifier) and return value
-    input.isParameterDeref(getAValueTypeParameterIndex()) and
+    // flow from parameter to container itself (qualifier)
+    (
+      input.isParameterDeref(getAValueTypeParameterIndex()) or
+      input.isParameter(getAnIteratorParameterIndex())
+    ) and
     output.isQualifierObject()
   }
 }
