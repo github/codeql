@@ -1,4 +1,11 @@
+/**
+ * Provides implementation classes modeling `std::string` and other
+ * instantiations of`std::basic_string`. See `semmle.code.cpp.models.Models`
+ * for usage information.
+ */
+
 import semmle.code.cpp.models.interfaces.Taint
+import semmle.code.cpp.models.implementations.Iterator
 
 /**
  * The `std::basic_string` template class.
@@ -78,11 +85,17 @@ class StdStringAppend extends TaintFunction {
       getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. `std::basic_string::CharT`
   }
 
+  /**
+   * Gets the index of a parameter to this function that is an iterator.
+   */
+  int getAnIteratorParameterIndex() { getParameter(result).getType() instanceof Iterator }
+
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from string and parameter to string (qualifier) and return value
     (
       input.isQualifierObject() or
-      input.isParameterDeref(getAStringParameterIndex())
+      input.isParameterDeref(getAStringParameterIndex()) or
+      input.isParameter(getAnIteratorParameterIndex())
     ) and
     (
       output.isQualifierObject() or
@@ -115,6 +128,28 @@ class StdStringAssign extends TaintFunction {
       output.isQualifierObject() or
       output.isReturnValueDeref()
     )
+  }
+}
+
+/**
+ * The standard functions `std::string.begin` and `std::string.end` and their
+ * variants.
+ */
+class StdStringBeginEnd extends TaintFunction {
+  StdStringBeginEnd() {
+    this.hasQualifiedName("std", "basic_string", "begin") or
+    this.hasQualifiedName("std", "basic_string", "cbegin") or
+    this.hasQualifiedName("std", "basic_string", "rbegin") or
+    this.hasQualifiedName("std", "basic_string", "crbegin") or
+    this.hasQualifiedName("std", "basic_string", "end") or
+    this.hasQualifiedName("std", "basic_string", "cend") or
+    this.hasQualifiedName("std", "basic_string", "rend") or
+    this.hasQualifiedName("std", "basic_string", "crend")
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isQualifierObject() and
+    output.isReturnValue()
   }
 }
 

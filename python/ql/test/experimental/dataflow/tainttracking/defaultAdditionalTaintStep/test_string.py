@@ -1,26 +1,19 @@
-import sys
+# Add taintlib to PATH so it can be imported during runtime without any hassle
+import sys; import os; sys.path.append(os.path.dirname(os.path.dirname((__file__))))
+from taintlib import *
 
-if sys.version_info[0] == 3:
-    unicode = str
-
-
-TAINTED_STRING = "TAINTED_STRING"
-TAINTED_BYTES = b"TAINTED_BYTES"
-
-
-def ensure_tainted(*args):
-    print("- ensure_tainted")
-    for i, arg in enumerate(args):
-        print("arg {}: {!r}".format(i, arg))
-
-
-def ensure_not_tainted(*args):
-    print("- ensure_not_tainted")
-    for i, arg in enumerate(args):
-        print("arg {}: {!r}".format(i, arg))
+# This has no runtime impact, but allows autocomplete to work
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from ..taintlib import *
 
 
 # Actual tests
+
+# Workaround for Python3 not having unicode
+import sys
+if sys.version_info[0] == 3:
+    unicode = str
 
 
 def str_operations():
@@ -41,6 +34,11 @@ def str_operations():
         bytes(tb),
         unicode(ts),
     )
+
+    aug_assignment = "safe"
+    ensure_not_tainted(aug_assignment)
+    aug_assignment += TAINTED_STRING
+    ensure_tainted(aug_assignment)
 
 
 def str_methods():
@@ -139,18 +137,6 @@ def binary_decode_encode():
 
         base64.b16encode(tb),
         base64.b16decode(base64.b16encode(tb)),
-
-        # # New in Python 3.4
-        # base64.a85encode(tb),
-        # base64.a85decode(base64.a85encode(tb)),
-
-        # # New in Python 3.4
-        # base64.b85encode(tb),
-        # base64.b85decode(base64.b85encode(tb)),
-
-        # # New in Python 3.1
-        # base64.encodebytes(tb),
-        # base64.decodebytes(base64.encodebytes(tb)),
 
         # deprecated since Python 3.1, but still works
         base64.encodestring(tb),

@@ -37,6 +37,12 @@
 | movableclass.cpp:55:8:55:9 | s2 | movableclass.cpp:52:23:52:28 | call to source |
 | movableclass.cpp:64:8:64:9 | s2 | movableclass.cpp:23:55:23:60 | call to source |
 | movableclass.cpp:65:11:65:11 | call to operator= | movableclass.cpp:65:13:65:18 | call to source |
+| standalone_iterators.cpp:40:10:40:10 | call to operator* | standalone_iterators.cpp:39:45:39:51 | source1 |
+| standalone_iterators.cpp:41:10:41:10 | call to operator* | standalone_iterators.cpp:39:45:39:51 | source1 |
+| standalone_iterators.cpp:42:10:42:10 | call to operator* | standalone_iterators.cpp:39:45:39:51 | source1 |
+| standalone_iterators.cpp:46:10:46:10 | call to operator* | standalone_iterators.cpp:45:39:45:45 | source1 |
+| standalone_iterators.cpp:47:10:47:10 | call to operator* | standalone_iterators.cpp:45:39:45:45 | source1 |
+| standalone_iterators.cpp:48:10:48:10 | call to operator* | standalone_iterators.cpp:45:39:45:45 | source1 |
 | string.cpp:28:7:28:7 | a | string.cpp:24:12:24:17 | call to source |
 | string.cpp:30:7:30:7 | c | string.cpp:26:16:26:21 | call to source |
 | string.cpp:32:9:32:13 | call to c_str | string.cpp:26:16:26:21 | call to source |
@@ -53,6 +59,7 @@
 | string.cpp:113:8:113:9 | s1 | string.cpp:109:32:109:37 | call to source |
 | string.cpp:114:8:114:9 | s2 | string.cpp:111:20:111:25 | call to source |
 | string.cpp:121:8:121:8 | c | string.cpp:119:16:119:21 | call to source |
+| string.cpp:125:8:125:8 | call to operator* | string.cpp:119:16:119:21 | call to source |
 | string.cpp:129:8:129:8 | c | string.cpp:119:16:119:21 | call to source |
 | string.cpp:134:8:134:8 | c | string.cpp:132:28:132:33 | call to source |
 | string.cpp:144:11:144:11 | call to operator+ | string.cpp:141:18:141:23 | call to source |
@@ -101,6 +108,19 @@
 | string.cpp:341:7:341:7 | c | string.cpp:335:9:335:23 | call to source |
 | string.cpp:349:7:349:9 | str | string.cpp:348:18:348:32 | call to source |
 | string.cpp:350:11:350:14 | call to data | string.cpp:348:18:348:32 | call to source |
+| string.cpp:361:11:361:16 | call to append | string.cpp:356:18:356:23 | call to source |
+| string.cpp:362:8:362:9 | s1 | string.cpp:356:18:356:23 | call to source |
+| string.cpp:380:8:380:8 | call to operator* | string.cpp:372:18:372:23 | call to source |
+| string.cpp:381:13:381:13 | call to operator[] | string.cpp:372:18:372:23 | call to source |
+| string.cpp:394:8:394:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:395:8:395:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:397:8:397:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:399:8:399:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:402:8:402:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:405:8:405:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:407:8:407:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:409:8:409:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:413:8:413:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
 | structlikeclass.cpp:35:8:35:9 | s1 | structlikeclass.cpp:29:22:29:27 | call to source |
 | structlikeclass.cpp:36:8:36:9 | s2 | structlikeclass.cpp:30:24:30:29 | call to source |
 | structlikeclass.cpp:37:8:37:9 | s3 | structlikeclass.cpp:29:22:29:27 | call to source |

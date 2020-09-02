@@ -122,7 +122,7 @@ void test_range_based_for_loop_string() {
 	}
 
 	for(std::string::iterator it = s.begin(); it != s.end(); ++it) {
-		sink(*it); // tainted [NOT DETECTED]
+		sink(*it); // tainted [NOT DETECTED by IR]
 	}
 
 	for(char& c : s) {
@@ -348,4 +348,68 @@ void test_string_data_more()
 	str.data()[1] = ns_char::source();
 	sink(str); // tainted
 	sink(str.data()); // tainted
+}
+void test_string_iterators() {
+	// string append
+	{
+		std::string s1("hello");
+		std::string s2(source());
+		std::string s3("hello");
+		std::string s4("world");
+
+		sink(s1);
+		sink(s1.append(s2.begin(), s2.end())); // tainted
+		sink(s1); // tainted
+
+		sink(s3);
+		sink(s3.append(s4.begin(), s4.end()));
+		sink(s3);
+	}
+
+	// dereference
+	{
+		std::string s1("hello");
+		std::string s2(source());
+
+		string::iterator iter1 = s1.begin();
+
+		sink(*iter1);
+		sink(iter1[1]);
+		string::iterator iter2 = s2.begin();
+
+		sink(*iter2); // tainted
+		sink(iter2[1]); // tainted
+	}
+
+	// arithmetic operators
+	{
+		std::string s1("hello");
+		std::string s2(source());
+
+		string::iterator i1 = s1.begin();
+
+		string::iterator i2 = s2.begin();
+		string::iterator i3, i4, i5, i6, i7, i8, i9;
+
+		sink(*(i2+1)); //tainted
+		sink(*(i2-1)); // tainted
+		i3 = i2;
+		sink(*(++i3)); // tainted
+		i4 = i2;
+		sink(*(--i4)); // tainted
+		i5 = i2;
+		i5++;
+		sink(*i5); // tainted
+		i6 = i2;
+		i6--;
+		sink(*i6); // tainted
+		i7 = i2;
+		sink(*(i7+=1)); // tainted
+		i8 = i2;
+		sink(*(i8-=1)); // tainted
+
+		i9 = s2.end();
+		--i9;
+		sink(*i9); // tainted
+	}
 }

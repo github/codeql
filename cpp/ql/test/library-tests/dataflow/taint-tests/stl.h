@@ -1,15 +1,12 @@
 
 typedef unsigned long size_t;
 
-// --- string ---
+// --- iterator ---
 
-namespace std
-{
-	template<class charT> struct char_traits;
-
-	typedef size_t streamsize;
-
+namespace std {
 	struct ptrdiff_t;
+
+	template<class I> struct iterator_traits;
 
 	template <class Category,
 			  class value_type,
@@ -21,15 +18,33 @@ namespace std
 
 		iterator &operator++();
 		iterator operator++(int);
+		iterator &operator--();
+		iterator operator--(int);
 		bool operator==(iterator other) const;
 		bool operator!=(iterator other) const;
 		reference_type operator*() const;
+		iterator operator+(int);
+		iterator operator-(int);
+		iterator &operator+=(int);
+		iterator &operator-=(int);
+		int operator-(iterator);
+		reference_type operator[](int);
 	};
 
 	struct input_iterator_tag {};
 	struct forward_iterator_tag : public input_iterator_tag {};
 	struct bidirectional_iterator_tag : public forward_iterator_tag {};
 	struct random_access_iterator_tag : public bidirectional_iterator_tag {};
+}
+
+// --- string ---
+
+namespace std
+{
+	template<class charT> struct char_traits;
+
+	typedef size_t streamsize;
+
 
 	template <class T> class allocator {
 	public:
@@ -72,6 +87,8 @@ namespace std
 		basic_string& append(const basic_string& str);
 		basic_string& append(const charT* s);
 		basic_string& append(size_type n, charT c);
+		template<class InputIterator>
+		/* constexpr */ basic_string& append(InputIterator first, InputIterator last);
 		basic_string& assign(const basic_string& str);
 		basic_string& assign(size_type n, charT c);
 		basic_string& insert(size_type pos, const basic_string& str);
