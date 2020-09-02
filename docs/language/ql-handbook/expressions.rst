@@ -160,8 +160,7 @@ Calls to predicates (with result)
 
 Calls to :ref:`predicates with results <predicates-with-result>` are themselves expressions,
 unlike calls to :ref:`predicates without results <predicates-without-result>` which are
-formulas. See :ref:`calls` in the :ref:`formulas` topic for more general information about
-calls.
+formulas. For more information, see ":ref:`calls`."
 
 A call to a predicate with result evaluates to the values of the ``result`` variable of the
 called predicate.
@@ -350,7 +349,7 @@ Let us apply these steps to the ``sum`` aggregate in the following query:
 #. Apply the aggregation function ``sum`` on the above values to get the final result ``60``.
 
 If we change ``<expression>`` to ``i + j`` in the above query, the query result is ``135`` since 
-applying ``i + j`` on all tuples results in following values: 
+applying ``i + j`` on all tuples results in following values:
 \ ``0, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 6, 2, 3, 4, 5, 6, 7, 3, 4, 5, 6, 7, 8, 4, 5, 6, 7, 8, 9``.
 
 Next, consider the following query:

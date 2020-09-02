@@ -6,16 +6,6 @@
  *
  */
 
-div.body h1 {
-    margin-top: 1em;
-}
-
-div.wrapper {
-    padding-top: 78px;
-    margin-bottom: 0px;
-    height: 637px;
-}
-
 /* -- HEADER ------------------------------------------------------------------------------- */
 
 div.header {
@@ -25,25 +15,17 @@ div.header {
     width: 100%;
     padding: 0 30px 30px 30px;
 }
-.textContainer {
-    margin: auto;
-}
-
-/*div.logocontainer {
-    width: 50%;
-}*/
 
 #siteBanner {
-    position: fixed;
     width: 100%;
-    height: 4.5rem; 
+    height: 80px; 
     margin: 0;
-    padding: 0 20px 0 30px;
-    background-color: #140f46;
     opacity: 0.95;
-    transform: translate3d(0px, 0px, 0px);
     z-index: 1;
+    transform: translate3d(0px, 0px, 0px);
+    position: relative;
 }
+
 #siteBanner input {
     border-width: 0;
     /*color: rgb(244, 244, 244);
@@ -52,81 +34,109 @@ div.header {
     letter-spacing: 0.1rem;
     /*width: 12rem;*/
 }
+
 #siteBanner input:focus, 
 #siteBanner textarea:focus, 
 #siteBanner select:focus{
     outline: none;
 }
-svg.Header-logo-white {
-    display: inline;
-}
-svg.Header-logo-purple {
-    display: none;
+
+div.logocontainer {
+    height: 72px;
+    width: 350px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
 }
 
 div.linkcontainer {
-   /*width: 50%;*/
-    margin-left: auto;
-    margin-top: -1.3rem;
-    padding-right: 50px;
+    width: 70%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    right: 15px;
 }
 
 div.linkbar {
     float:right;
 }
+
 .linkbar a {
-    color: White;
-    font-size: 18px;
+    color: black;
+    font-size: 20px;
     margin-left: 20px;
     text-decoration: none;
 }
-
 
 .linkbar a:hover {
     text-decoration: underline;
 }
-.small-bar {
-    float:right;
-    display:none;
-}
 
-.small-bar a {
-    color: White;
-    font-size: 18px;
-    margin-left: 20px;
-    text-decoration: none;
-}
-.small-bar a:hover {
-    text-decoration: underline;
-}
 
-#Header-logo {
-    text-decoration: none;
+/* CODEQL DOCUMENTATION AND SEARCHBOX BANNER ---------------------------------------------------------- */
+
+#title-banner {
+    background: #140f46;
+    height: 50px;
     position: relative;
-    width: 98px;
-    height: 20px;
 }
 
-#Header-logo > * {
-    margin-top: 1.7rem;
+#title-banner a {
+    color: white;
+    font-size: 32px;
+    text-decoration: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    left: 32px;
 }
 
-svg.Header-logo-white {
-    display: inline;
+#searchbox-title-banner {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    right: 32px;
 }
 
+#searchbox-navbar {
+    display: none;
+}
+
+#textfield {
+    position: relative;
+    float: left;
+}
+
+#searchbutton {
+   position: relative;
+   float: left;
+}
+
+/* -- WRAPPER CONTAINING NAVBAR AND MAIN BOX --------------------------------------------------*/
+
+div.wrapper {
+    margin-bottom: 0px;
+    height: 637px;
+}
 
 /* -- DOCUMENT ------------------------------------------------------------------------------- */
 
 div.document {
-    width: 100%;
+    width: 95%;
     padding: 0;
     margin: 0 0 30px 0;
 }
 
 div.documentwrapper {
     width: 90%;
-    box-shadow: 0.1rem 0.4rem 1.5rem #d0cee4;
     margin: 20px 20px 20px 20px;
     padding-bottom: 50px;
 }
@@ -140,17 +150,21 @@ div.privacy {
     padding-bottom: 20px;
 }
 
+div.body li {
+    margin: 0 0 0.5em 0; /* Increase spacing between list items */
+}
+
 /* -- SIDEBAR ------------------------------------------------------------------------------- */
 
 div.navBox {
-    overflow-y:auto;
     width:29%;
     padding-left: 25px;
-    position: fixed;
     height: calc(100% - 108px);
     z-index: 100;
     background-color: #FFFFFF;
     padding-top: 30px;
+    color: black;
+    float: left;
 }
 
 .navBox li {
@@ -163,6 +177,7 @@ div.navBox {
 
 .navBox ul li a {
     border-bottom: none;
+    color: black;
 }
 
 .navBox ul li a:hover {
@@ -175,15 +190,63 @@ div.navBox {
     text-decoration: underline;
 }
 
+/* -- SIDEBAR TOC ----------------------------------------------------------------------------------*/
+
+#toc h1 {
+   font-size: 20px;
+   font-weight: bold;
+   margin-left: 28px;
+}
+
 /* -- SMALL SCREEN ------------------------------------------------------------------------------- */
 
 @media screen and (max-width: 875px){ 
    
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: inherit;
+        width: 100%;
+    }
+
     #siteBanner {
         position: relative;
     }
+
+    div.logocontainer {
+        width: 200px;
+    }  
+
+    .linkcontainer a:not(:first-child) {  /* Only display Learn CodeQL link on small screen */
+        display: none;
+    }
+    
+    #title-banner a {
+        font-size: 5vw;
+    }
+
+    #searchbox-title-banner { /* Move searchbox from title banner to sidebar on small screen */
+        display: none;
+    }
+
+    #searchbox-navbar {
+       display: block; 
+       float: left;
+       margin-right: 20px;
+    }
+
+    div.navBox {
+        position: relative;
+        width: 95%;
+        border-color: #2f1695; 
+        padding-top: 10px;      
+    }
+    
+    #toc h1 { /* Slightly reposition the heading on small screens */
+        margin-left: 18px;
+    }
+    
     div.wrapper {
-        /*margin-top:-100px;*/
         flex-direction: column;
         height: 100%;
         width: 100%;
@@ -193,7 +256,7 @@ div.navBox {
         margin: 0 10px 0 10px;
         position: relative;
         height: 100%;
-        width: 100%;
+        width: 95%;
     } 
     div.documentwrapper {
         padding-left: 20px;
@@ -203,29 +266,10 @@ div.navBox {
         padding-left:0;
     }
 
-    div.navBox {
-        position: relative;
-        width: 100%;
-        border-color: #2f1695;       
-    }
-    body {
-        margin: 0;
-        padding: 0;
-        overflow: inherit;
-        width:95%;
-    }
-
     div.body {
         min-width: unset;
     }
-    div.linkbar {
-        display: none;
-    
-    } 
-    .small-bar {
-        display: inherit;
-    }
-    
+
     ul {
     margin: 10px 20px 10px 20px;
     }
@@ -337,6 +381,7 @@ pre {
     border: 1px solid #BBB;
     background: #F6F6F6;
     border-radius: 5px;
+    white-space: pre-wrap;
 }
 
 /*
@@ -354,6 +399,10 @@ pre {
 .highlight .kt { color: #7a65cd; font-weight: bold } /* built-in type keywords */
 .highlight .kr { color: #333; font-style: italic } /* annotations */
 
+div.context { /* hide rst search snippets */
+    display: none;
+}
+
 /* -- INDEX -------------------------------------------------------------------------------- */
 
 table.indextable li > a {
@@ -362,16 +411,6 @@ table.indextable li > a {
 
 
 /* -- FOOTER ------------------------------------------------------------------------------- */
-div.footer {
-    display: none;
-    /* background-color: #2F1695; */
-    /* color: #FFFFFF; */
-    /* padding: 30px; */
-    /* margin: 0; */
-    /* width: calc(100% - 60px); */  /* Allow for 2 x 30px of padding (at left & right side) */
-    /* position: fixed; */
-    /* bottom: 0; */
-}
 
 /* Adjust anchor targets to allow for the fixed banner */
 div.documentwrapper a[name], 
@@ -383,6 +422,12 @@ div.footnote-group :target::before
     display: block;
     height: 78px;      /* Height of banner */
     margin-top: -78px; /* Prevent this showing as a gap */      
+}
+
+/* make anchor highlighting more sensible */
+
+dt:target::before {
+    background-color: white;
 }
 
 /* -- CSV TABLE STYLING ------------------------------------------------------------------------------- */
