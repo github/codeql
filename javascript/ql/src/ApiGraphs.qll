@@ -10,7 +10,6 @@
  */
 
 import javascript
-private import semmle.javascript.dataflow.internal.StepSummary
 
 /**
  * Provides classes and predicates for working with APIs defined or used in a database.
@@ -418,7 +417,7 @@ module API {
           )
           or
           lbl = Label::promised() and
-          pred = PromiseTypeTracking::promiseStep(rhs, StoreStep(Promises::valueProp()))
+          PromiseFlow::storeStep(rhs, pred, Promises::valueProp())
         )
         or
         exists(DataFlow::ClassNode cls, string name |
@@ -492,7 +491,7 @@ module API {
           ref = pred.getAnInvocation()
           or
           lbl = Label::promised() and
-          ref = PromiseTypeTracking::promiseStep(pred, LoadStep(Promises::valueProp()))
+          PromiseFlow::loadStep(pred, ref, Promises::valueProp())
         )
         or
         exists(DataFlow::Node def, DataFlow::FunctionNode fn |
