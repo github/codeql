@@ -40,8 +40,8 @@ def test7(cond):
     if cond:
         SINK(t)
 
-def source2(arg):
-    return source(arg)
+def source2():
+    return source()
 
 def sink2(arg):
     sink(arg)
@@ -50,7 +50,7 @@ def sink3(cond, arg):
     if cond:
         sink(arg)
 
-def test8(cond):  # This flow is shadowed by previous tests, perhaps do a path query
+def test8(cond):
     t = source2()
     sink2(t)
 
