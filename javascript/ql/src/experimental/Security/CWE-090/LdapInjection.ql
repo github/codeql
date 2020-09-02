@@ -17,5 +17,4 @@ import LdapInjection::LdapInjection
 from LdapInjectionConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "$@ might include code from $@.",
-  sink.getNode().(Sink).getQueryCall(), "LDAP query call", source.getNode(),
-  "user-provided value"
+  sink.getNode().(Sink).getQueryCall(), "LDAP query call", source.getNode(), "user-provided value"
