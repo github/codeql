@@ -1964,7 +1964,7 @@ class ChiInstruction extends Instruction {
   final Instruction getPartial() { result = getPartialOperand().getDef() }
 
   /**
-   * Gets the bit range `[startBit, endBit)` updated by the partial operand of this `ChiInstruction`.
+   * Gets the bit range `[startBit, endBit)` updated by the partial operand of this `ChiInstruction`, relative to the start address of the total operand.
    */
   final predicate getUpdatedInterval(int startBit, int endBit) {
     Construction::getIntervalUpdatedByChi(this, startBit, endBit)

@@ -331,7 +331,7 @@ class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand, NonPhiMemoryOper
 
   /**
    * Holds if the operand totally overlaps with its definition and consumes the
-   * bit range `[startBitOffset, endBitOffset)`.
+   * bit range `[startBitOffset, endBitOffset)` relative to the start address of the definition.
    */
   predicate getUsedInterval(int startBitOffset, int endBitOffset) {
     Construction::getUsedInterval(this, startBitOffset, endBitOffset)
