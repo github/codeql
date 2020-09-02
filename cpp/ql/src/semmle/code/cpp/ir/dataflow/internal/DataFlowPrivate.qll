@@ -233,6 +233,9 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
   storeStepChi(node1, f, node2)
 }
 
+bindingset[result, i]
+private int unbindInt(int i) { i <= result and i >= result }
+
 /**
  * Holds if data can flow from `node1` to `node2` via a read of `f`.
  * Thus, `node1` references an object with a field `f` whose value ends up in
@@ -245,7 +248,7 @@ predicate readStep(Node node1, Content f, Node node2) {
     (
       exists(Class c, int startBit, int endBit |
         c = load.getSourceValueOperand().getAnyDef().getResultType() and
-        load.getSourceValueOperand().getUsedInterval(startBit, endBit) and
+        load.getSourceValueOperand().getUsedInterval(unbindInt(startBit), unbindInt(endBit)) and
         f.(FieldContent).hasOffset(c, startBit, endBit)
       )
       or
