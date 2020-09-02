@@ -177,7 +177,7 @@ class Content extends TContent {
   }
 }
 
-class FieldContent extends Content, TFieldContent {
+private class FieldContent extends Content, TFieldContent {
   Class c;
   int startBit;
   int endBit;
