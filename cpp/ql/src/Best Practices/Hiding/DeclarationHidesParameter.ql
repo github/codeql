@@ -12,6 +12,21 @@
 import cpp
 
 /**
+ * Gets the template that a function `f` is constructed from, or just `f` if it
+ * is not from a template instantiation.
+ */
+Function getConstructedFrom(Function f)
+{
+  exists(Function mid |
+    f.isConstructedFrom(mid) and
+    result = getConstructedFrom(mid)
+  ) or (
+    not f.isConstructedFrom(_) and
+    result = f
+  )
+}
+
+/**
  * Gets the parameter of `f` with name `name`, which has to come from the
  * _definition_ of `f` and not a prototype declaration.
  * We also exclude names from functions that have multiple definitions.
@@ -22,7 +37,7 @@ import cpp
 ParameterDeclarationEntry functionParameterNames(Function f, string name) {
   exists(FunctionDeclarationEntry fe |
     result.getFunctionDeclarationEntry() = fe and
-    fe.getFunction() = f and
+    getConstructedFrom(f).getDefinition() = fe and
     fe.getLocation() = f.getDefinitionLocation() and
     strictcount(f.getDefinitionLocation()) = 1 and
     result.getName() = name
