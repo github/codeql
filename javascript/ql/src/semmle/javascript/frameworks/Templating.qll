@@ -36,9 +36,7 @@ module Templating {
    * of the known template delimiters identified by `getADelimiter()`,
    * storing it in its first (and only) capture group.
    */
-  string getDelimiterMatchingRegexp() {
-    result = "(?s).*(" + concat("\\Q" + getADelimiter() + "\\E", "|") + ").*"
-  }
+  string getDelimiterMatchingRegexp() { result = getDelimiterMatchingRegexpWithPrefix(".*") }
 
   /**
    * Gets a regular expression that matches a string containing one
