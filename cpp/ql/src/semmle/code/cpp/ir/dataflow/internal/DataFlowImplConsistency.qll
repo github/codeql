@@ -123,8 +123,18 @@ module Consistency {
     n.getEnclosingCallable() != call.getEnclosingCallable()
   }
 
+  // This predicate helps the compiler forget that in some languages
+  // it is impossible for a result of `getPreUpdateNode` to be an
+  // instance of `PostUpdateNode`.
+  private Node getPre(PostUpdateNode n) {
+    result = n.getPreUpdateNode()
+    or
+    none()
+  }
+
   query predicate postIsNotPre(PostUpdateNode n, string msg) {
-    n.getPreUpdateNode() = n and msg = "PostUpdateNode should not equal its pre-update node."
+    getPre(n) = n and
+    msg = "PostUpdateNode should not equal its pre-update node."
   }
 
   query predicate postHasUniquePre(PostUpdateNode n, string msg) {
@@ -150,12 +160,6 @@ module Consistency {
   query predicate reverseRead(Node n, string msg) {
     exists(Node n2 | readStep(n, _, n2) and hasPost(n2) and not hasPost(n)) and
     msg = "Origin of readStep is missing a PostUpdateNode."
-  }
-
-  query predicate storeIsPostUpdate(Node n, string msg) {
-    storeStep(_, _, n) and
-    not n instanceof PostUpdateNode and
-    msg = "Store targets should be PostUpdateNodes."
   }
 
   query predicate argHasPostUpdate(ArgumentNode n, string msg) {

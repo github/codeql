@@ -2,8 +2,9 @@
  * Provides Python-specific definitions for use in the data flow library.
  */
 
-import python
+private import python
 private import DataFlowPrivate
+import experimental.dataflow.TypeTracker
 
 /**
  * IPA type for data flow nodes.
@@ -20,7 +21,9 @@ newtype TNode =
   /** A node corresponding to an SSA variable. */
   TEssaNode(EssaVariable var) or
   /** A node corresponding to a control flow node. */
-  TCfgNode(DataFlowCfgNode node)
+  TCfgNode(DataFlowCfgNode node) or
+  /** A node representing the value of an object after a state change */
+  TPostUpdateNode(PreUpdateNode pre)
 
 /**
  * An element, viewed as a node in a data flow graph. Either an SSA variable
@@ -67,6 +70,14 @@ class Node extends TNode {
 
   /** Convenience method for casting to ExprNode and calling getNode and getNode again. */
   Expr asExpr() { none() }
+
+  /**
+   * Gets a node that this node may flow to using one heap and/or interprocedural step.
+   *
+   * See `TypeTracker` for more details about how to use this.
+   */
+  pragma[inline]
+  Node track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
 }
 
 class EssaNode extends Node, TEssaNode {

@@ -112,7 +112,7 @@ Example finding mutually exclusive blocks within the same function
    )
    select b1, b2
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/671000028/>`__. This typically gives a very large number of results, because it is a common occurrence in normal control flow. It is, however, an example of the sort of control-flow analysis that is possible. Control-flow analyses such as this are an important aid to data flow analysis. For more information, see :doc:`Analyzing data flow and tracking tainted data in Python <taint-tracking>`.
+➤ `See this in the query console on LGTM.com <https://lgtm.com/query/671000028/>`__. This typically gives a very large number of results, because it is a common occurrence in normal control flow. It is, however, an example of the sort of control-flow analysis that is possible. Control-flow analyses such as this are an important aid to data flow analysis. For more information, see ":doc:`Analyzing data flow and tracking tainted data in Python <taint-tracking>`."
 
 Further reading
 ---------------

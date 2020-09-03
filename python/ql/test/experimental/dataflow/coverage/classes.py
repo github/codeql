@@ -93,7 +93,7 @@ class With_str:
 
     def __str__(self):
         SINK1(self)  # Flow not found
-        OK()  # Call not found  # Call not found
+        OK()  # Call not found
         return "Awesome"
 
 
@@ -108,7 +108,7 @@ class With_bytes:
 
     def __bytes__(self):
         SINK1(self)  # Flow not found
-        OK()  # Call not found  # Call not found
+        OK()  # Call not found
         return b"Awesome"
 
 
@@ -124,7 +124,7 @@ class With_format:
     def __format__(self, format_spec):
         SINK2(format_spec)  # Flow not found
         SINK1(self)  # Flow not found
-        OK()  # Call not found  # Call not found
+        OK()  # Call not found
         return "Awesome"
 
 
@@ -151,7 +151,7 @@ class With_lt:
     def __lt__(self, other):
         SINK2(other)  # Flow not found
         SINK1(self)  # Flow not found
-        OK()  # Call not found  # Call not found
+        OK()  # Call not found
         return ""
 
 

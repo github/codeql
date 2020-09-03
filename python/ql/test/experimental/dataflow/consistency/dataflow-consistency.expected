@@ -127,27 +127,4 @@ postHasUniquePre
 uniquePostUpdate
 postIsInSameCallable
 reverseRead
-storeIsPostUpdate
-| test.py:172:9:172:16 | ControlFlowNode for List | Store targets should be PostUpdateNodes. |
-| test.py:173:9:173:24 | ControlFlowNode for Dict | Store targets should be PostUpdateNodes. |
-| test.py:212:11:212:18 | ControlFlowNode for List | Store targets should be PostUpdateNodes. |
 argHasPostUpdate
-| test.py:25:10:25:10 | ControlFlowNode for t | ArgumentNode is missing PostUpdateNode. |
-| test.py:29:10:29:10 | ControlFlowNode for t | ArgumentNode is missing PostUpdateNode. |
-| test.py:48:19:48:21 | ControlFlowNode for arg | ArgumentNode is missing PostUpdateNode. |
-| test.py:51:10:51:12 | ControlFlowNode for arg | ArgumentNode is missing PostUpdateNode. |
-| test.py:55:14:55:16 | ControlFlowNode for arg | ArgumentNode is missing PostUpdateNode. |
-| test.py:59:11:59:11 | ControlFlowNode for t | ArgumentNode is missing PostUpdateNode. |
-| test.py:67:11:67:14 | ControlFlowNode for cond | ArgumentNode is missing PostUpdateNode. |
-| test.py:67:17:67:17 | ControlFlowNode for t | ArgumentNode is missing PostUpdateNode. |
-| test.py:74:11:74:14 | ControlFlowNode for cond | ArgumentNode is missing PostUpdateNode. |
-| test.py:74:17:74:17 | ControlFlowNode for t | ArgumentNode is missing PostUpdateNode. |
-| test.py:81:13:81:13 | ControlFlowNode for t | ArgumentNode is missing PostUpdateNode. |
-| test.py:86:13:86:13 | ControlFlowNode for t | ArgumentNode is missing PostUpdateNode. |
-| test.py:120:13:120:13 | ControlFlowNode for t | ArgumentNode is missing PostUpdateNode. |
-| test.py:121:12:121:12 | ControlFlowNode for t | ArgumentNode is missing PostUpdateNode. |
-| test.py:125:13:125:29 | ControlFlowNode for TAINT_FROM_ARG() | ArgumentNode is missing PostUpdateNode. |
-| test.py:178:15:178:15 | ControlFlowNode for l | ArgumentNode is missing PostUpdateNode. |
-| test.py:179:15:179:15 | ControlFlowNode for d | ArgumentNode is missing PostUpdateNode. |
-| test.py:200:19:200:19 | ControlFlowNode for t | ArgumentNode is missing PostUpdateNode. |
-| test.py:200:22:200:24 | ControlFlowNode for str | ArgumentNode is missing PostUpdateNode. |

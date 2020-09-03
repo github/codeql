@@ -193,6 +193,8 @@ namespace Semmle.Autobuild.Shared
             SemmleDist = Actions.GetEnvironmentVariable("SEMMLE_DIST");
             SemmlePlatformTools = Actions.GetEnvironmentVariable("SEMMLE_PLATFORM_TOOLS");
 
+            CodeQlPlatform = Actions.GetEnvironmentVariable("CODEQL_PLATFORM");
+
             JavaHome =
                 Actions.GetEnvironmentVariable("CODEQL_JAVA_HOME") ??
                 Actions.GetEnvironmentVariable("SEMMLE_JAVA_HOME") ??
@@ -271,7 +273,7 @@ namespace Semmle.Autobuild.Shared
         /// <summary>
         /// Value of CODEQL_EXTRACTOR_<LANG>_ROOT environment variable.
         /// </summary>
-        private string? CodeQLExtractorLangRoot { get; }
+        public string? CodeQLExtractorLangRoot { get; }
 
         /// <summary>
         /// Value of SEMMLE_DIST environment variable.
@@ -286,6 +288,11 @@ namespace Semmle.Autobuild.Shared
         /// Value of SEMMLE_PLATFORM_TOOLS environment variable.
         /// </summary>
         public string? SemmlePlatformTools { get; }
+
+        /// <summary>
+        /// Value of CODEQL_PLATFORM environment variable.
+        /// </summary>
+        public string? CodeQlPlatform { get; }
 
         /// <summary>
         /// The absolute path of the odasa executable.

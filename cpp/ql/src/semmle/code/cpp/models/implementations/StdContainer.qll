@@ -23,13 +23,31 @@ class StdSequenceContainerConstructor extends Constructor, TaintFunction {
    */
   int getAValueTypeParameterIndex() {
     getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
-      getDeclaringType().getTemplateArgument(0) // i.e. the `T` of this `std::vector<T>`
+      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from any parameter of the value type to the returned object
     input.isParameterDeref(getAValueTypeParameterIndex()) and
     output.isReturnValue() // TODO: this should be `isQualifierObject` by our current definitions, but that flow is not yet supported.
+  }
+}
+
+/**
+ * The standard container function `data`.
+ */
+class StdSequenceContainerData extends TaintFunction {
+  StdSequenceContainerData() { this.hasQualifiedName("std", ["array", "vector"], "data") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from container itself (qualifier) to return value
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
+    or
+    // reverse flow from returned reference to the qualifier (for writes to
+    // `data`)
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
   }
 }
 
@@ -67,6 +85,30 @@ class StdSequenceContainerFrontBack extends TaintFunction {
     // flow from object to returned reference
     input.isQualifierObject() and
     output.isReturnValueDeref()
+  }
+}
+
+/**
+ * The standard container function `assign`.
+ */
+class StdSequenceContainerAssign extends TaintFunction {
+  StdSequenceContainerAssign() {
+    this.hasQualifiedName("std", ["vector", "deque", "list", "forward_list"], "assign")
+  }
+
+  /**
+   * Gets the index of a parameter to this function that is a reference to the
+   * value type of the container.
+   */
+  int getAValueTypeParameterIndex() {
+    getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
+      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. the `T` of this `std::vector<T>`
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from parameter to string itself (qualifier) and return value
+    input.isParameterDeref(getAValueTypeParameterIndex()) and
+    output.isQualifierObject()
   }
 }
 

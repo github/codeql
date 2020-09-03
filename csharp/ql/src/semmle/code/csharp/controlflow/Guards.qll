@@ -212,7 +212,12 @@ module AbstractValues {
         c.isValidFor(cfe) and
         foreachEmptiness(fs, cfe) and
         e = fs.getIterableExpr()
-      )
+      ) and
+      // Only when taking the non-empty successor do we know that the original iterator
+      // expression was non-empty. When taking the empty successor, we may have already
+      // iterated through the `foreach` loop zero or more times, hence the iterator
+      // expression can be both empty and non-empty
+      this.isNonEmpty()
     }
 
     override EmptyCollectionValue getDualValue() {

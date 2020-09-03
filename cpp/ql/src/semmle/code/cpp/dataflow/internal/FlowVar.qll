@@ -120,14 +120,24 @@ private module PartialDefinitions {
       )
     }
 
-    predicate partiallyDefines(Variable v) { innerDefinedExpr = v.getAnAccess() }
+    deprecated predicate partiallyDefines(Variable v) { innerDefinedExpr = v.getAnAccess() }
 
-    predicate partiallyDefinesThis(ThisExpr e) { innerDefinedExpr = e }
+    deprecated predicate partiallyDefinesThis(ThisExpr e) { innerDefinedExpr = e }
 
     /**
      * Gets the subBasicBlock where this `PartialDefinition` is defined.
      */
     ControlFlowNode getSubBasicBlockStart() { result = node }
+
+    /**
+     * Holds if this `PartialDefinition` defines variable `v` at control-flow
+     * node `cfn`.
+     */
+    pragma[noinline]
+    predicate partiallyDefinesVariableAt(Variable v, ControlFlowNode cfn) {
+      innerDefinedExpr = v.getAnAccess() and
+      cfn = node
+    }
 
     /**
      * Holds if this partial definition may modify `inner` (or what it points
@@ -188,7 +198,7 @@ module FlowVar_internal {
   predicate fullySupportedSsaVariable(Variable v) {
     v = any(SsaDefinition def).getAVariable() and
     // A partially-defined variable is handled using the partial definitions logic.
-    not any(PartialDefinition p).partiallyDefines(v) and
+    not any(PartialDefinition p).partiallyDefinesVariableAt(v, _) and
     // SSA variables do not exist before their first assignment, but one
     // feature of this data flow library is to track where uninitialized data
     // ends up.
@@ -232,7 +242,7 @@ module FlowVar_internal {
         or
         assignmentLikeOperation(sbb, v, _, _)
         or
-        sbb = any(PartialDefinition p | p.partiallyDefines(v)).getSubBasicBlockStart()
+        exists(PartialDefinition p | p.partiallyDefinesVariableAt(v, sbb))
         or
         blockVarDefinedByVariable(sbb, v)
       )
@@ -363,8 +373,7 @@ module FlowVar_internal {
 
     override predicate definedPartiallyAt(Expr e) {
       exists(PartialDefinition p |
-        p.partiallyDefines(v) and
-        sbb = p.getSubBasicBlockStart() and
+        p.partiallyDefinesVariableAt(v, sbb) and
         p.definesExpressions(_, e)
       )
     }
@@ -427,7 +436,7 @@ module FlowVar_internal {
     /**
      * Gets a variable that is assigned in this loop and read outside the loop.
      */
-    private Variable getARelevantVariable() {
+    Variable getARelevantVariable() {
       result = this.getAVariableAssignedInLoop() and
       exists(VariableAccess va |
         va.getTarget() = result and
@@ -472,8 +481,14 @@ module FlowVar_internal {
         reachesWithoutAssignment(bb.getAPredecessor(), v) and
         this.bbInLoop(bb)
       ) and
-      not assignmentLikeOperation(bb.getANode(), v, _, _)
+      not assignsToVar(bb, v)
     }
+  }
+
+  pragma[noinline]
+  private predicate assignsToVar(BasicBlock bb, Variable v) {
+    assignmentLikeOperation(bb.getANode(), v, _, _) and
+    exists(AlwaysTrueUponEntryLoop loop | v = loop.getARelevantVariable())
   }
 
   /**
@@ -736,7 +751,7 @@ module FlowVar_internal {
       exists(Variable v | not fullySupportedSsaVariable(v) |
         assignmentLikeOperation(this, v, _, _)
         or
-        this = any(PartialDefinition p | p.partiallyDefines(v)).getSubBasicBlockStart()
+        exists(PartialDefinition p | p.partiallyDefinesVariableAt(v, this))
         // It is not necessary to cut the basic blocks at `Initializer` nodes
         // because the affected variable can have no _other_ value before its
         // initializer. It is not necessary to cut basic blocks at procedure

@@ -193,6 +193,18 @@ predicate readStep(Node node1, Content f, Node node2) {
     fr.getField() = f.(FieldContent).getField() and
     fr = node2.asExpr()
   )
+  or
+  exists(Record r, Method getter, Field recf, MethodAccess get |
+    getter.getDeclaringType() = r and
+    recf.getDeclaringType() = r and
+    getter.getNumberOfParameters() = 0 and
+    getter.getName() = recf.getName() and
+    not exists(getter.getBody()) and
+    recf = f.(FieldContent).getField() and
+    get.getMethod() = getter and
+    node1.asExpr() = get.getQualifier() and
+    node2.asExpr() = get
+  )
 }
 
 /**

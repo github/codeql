@@ -622,7 +622,9 @@ public class ScopeManager {
               nd.getReturnType().accept(this, c);
             }
             for (ITypeExpression paramType : nd.getParameterTypes()) {
-              paramType.accept(this, c);
+              if (paramType != null) {
+                paramType.accept(this, c);
+              }
             }
             // note: `infer` types may not occur in type parameter bounds.
             return null;

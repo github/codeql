@@ -107,12 +107,12 @@ values of a class are contained within the intersection of the base types (that 
 the :ref:`class domain type <domain-types>`). A class inherits all member predicates from its
 base types. 
 
-A class can extend multiple types. See :ref:`multiple-inheritance` below.
+A class can extend multiple types. For more information, see ":ref:`multiple-inheritance`."
 
 To be valid, a class:
   - Must not extend itself.
   - Must not extend a :ref:`final` class. 
-  - Must not extend types that are incompatible. (See :ref:`type-compatibility`.)
+  - Must not extend types that are incompatible. For more information, see ":ref:`type-compatibility`."
 
 You can also annotate a class. See the list of :ref:`annotations <annotations-overview>`
 available for classes.

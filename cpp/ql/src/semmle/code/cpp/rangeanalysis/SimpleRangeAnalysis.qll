@@ -319,28 +319,12 @@ private predicate defDependsOnDef(
   // Definitions with a defining value.
   exists(Expr expr | assignmentDef(def, v, expr) | exprDependsOnDef(expr, srcDef, srcVar))
   or
-  exists(AssignAddExpr assignAdd |
-    def = assignAdd and
+  // Assignment operations with a defining value
+  exists(AssignOperation assignOp |
+    analyzableExpr(assignOp) and
+    def = assignOp and
     def.getAVariable() = v and
-    exprDependsOnDef(assignAdd.getAnOperand(), srcDef, srcVar)
-  )
-  or
-  exists(AssignSubExpr assignSub |
-    def = assignSub and
-    def.getAVariable() = v and
-    exprDependsOnDef(assignSub.getAnOperand(), srcDef, srcVar)
-  )
-  or
-  exists(UnsignedAssignMulExpr assignMul |
-    def = assignMul and
-    def.getAVariable() = v and
-    exprDependsOnDef(assignMul.getAnOperand(), srcDef, srcVar)
-  )
-  or
-  exists(AssignMulByConstantExpr assignMul |
-    def = assignMul and
-    def.getAVariable() = v and
-    exprDependsOnDef(assignMul.getLValue(), srcDef, srcVar)
+    exprDependsOnDef(assignOp, srcDef, srcVar)
   )
   or
   exists(CrementOperation crem |
@@ -485,7 +469,7 @@ private predicate isRecursiveDef(RangeSsaDefinition def, StackVariable v) {
  * This predicate finds all the definitions in the first set.
  */
 private predicate assignmentDef(RangeSsaDefinition def, StackVariable v, Expr expr) {
-  v.getUnspecifiedType() instanceof ArithmeticType and
+  getVariableRangeType(v) instanceof ArithmeticType and
   (
     def = v.getInitializer().getExpr() and def = expr
     or
@@ -1185,42 +1169,11 @@ private float getDefLowerBoundsImpl(RangeSsaDefinition def, StackVariable v) {
   // Definitions with a defining value.
   exists(Expr expr | assignmentDef(def, v, expr) | result = getFullyConvertedLowerBounds(expr))
   or
-  exists(AssignAddExpr assignAdd, RangeSsaDefinition nextDef, float lhsLB, float rhsLB |
-    def = assignAdd and
-    assignAdd.getLValue() = nextDef.getAUse(v) and
-    lhsLB = getDefLowerBounds(nextDef, v) and
-    rhsLB = getFullyConvertedLowerBounds(assignAdd.getRValue()) and
-    result = addRoundingDown(lhsLB, rhsLB)
-  )
-  or
-  exists(AssignSubExpr assignSub, RangeSsaDefinition nextDef, float lhsLB, float rhsUB |
-    def = assignSub and
-    assignSub.getLValue() = nextDef.getAUse(v) and
-    lhsLB = getDefLowerBounds(nextDef, v) and
-    rhsUB = getFullyConvertedUpperBounds(assignSub.getRValue()) and
-    result = addRoundingDown(lhsLB, -rhsUB)
-  )
-  or
-  exists(UnsignedAssignMulExpr assignMul, RangeSsaDefinition nextDef, float lhsLB, float rhsLB |
-    def = assignMul and
-    assignMul.getLValue() = nextDef.getAUse(v) and
-    lhsLB = getDefLowerBounds(nextDef, v) and
-    rhsLB = getFullyConvertedLowerBounds(assignMul.getRValue()) and
-    result = lhsLB * rhsLB
-  )
-  or
-  exists(AssignMulByPositiveConstantExpr assignMul, RangeSsaDefinition nextDef, float lhsLB |
-    def = assignMul and
-    assignMul.getLValue() = nextDef.getAUse(v) and
-    lhsLB = getDefLowerBounds(nextDef, v) and
-    result = lhsLB * assignMul.getConstant()
-  )
-  or
-  exists(AssignMulByNegativeConstantExpr assignMul, RangeSsaDefinition nextDef, float lhsUB |
-    def = assignMul and
-    assignMul.getLValue() = nextDef.getAUse(v) and
-    lhsUB = getDefUpperBounds(nextDef, v) and
-    result = lhsUB * assignMul.getConstant()
+  // Assignment operations with a defining value
+  exists(AssignOperation assignOp |
+    def = assignOp and
+    assignOp.getLValue() = v.getAnAccess() and
+    result = getTruncatedLowerBounds(assignOp)
   )
   or
   exists(IncrementOperation incr, float newLB |
@@ -1249,42 +1202,11 @@ private float getDefUpperBoundsImpl(RangeSsaDefinition def, StackVariable v) {
   // Definitions with a defining value.
   exists(Expr expr | assignmentDef(def, v, expr) | result = getFullyConvertedUpperBounds(expr))
   or
-  exists(AssignAddExpr assignAdd, RangeSsaDefinition nextDef, float lhsUB, float rhsUB |
-    def = assignAdd and
-    assignAdd.getLValue() = nextDef.getAUse(v) and
-    lhsUB = getDefUpperBounds(nextDef, v) and
-    rhsUB = getFullyConvertedUpperBounds(assignAdd.getRValue()) and
-    result = addRoundingUp(lhsUB, rhsUB)
-  )
-  or
-  exists(AssignSubExpr assignSub, RangeSsaDefinition nextDef, float lhsUB, float rhsLB |
-    def = assignSub and
-    assignSub.getLValue() = nextDef.getAUse(v) and
-    lhsUB = getDefUpperBounds(nextDef, v) and
-    rhsLB = getFullyConvertedLowerBounds(assignSub.getRValue()) and
-    result = addRoundingUp(lhsUB, -rhsLB)
-  )
-  or
-  exists(UnsignedAssignMulExpr assignMul, RangeSsaDefinition nextDef, float lhsUB, float rhsUB |
-    def = assignMul and
-    assignMul.getLValue() = nextDef.getAUse(v) and
-    lhsUB = getDefUpperBounds(nextDef, v) and
-    rhsUB = getFullyConvertedUpperBounds(assignMul.getRValue()) and
-    result = lhsUB * rhsUB
-  )
-  or
-  exists(AssignMulByPositiveConstantExpr assignMul, RangeSsaDefinition nextDef, float lhsUB |
-    def = assignMul and
-    assignMul.getLValue() = nextDef.getAUse(v) and
-    lhsUB = getDefUpperBounds(nextDef, v) and
-    result = lhsUB * assignMul.getConstant()
-  )
-  or
-  exists(AssignMulByNegativeConstantExpr assignMul, RangeSsaDefinition nextDef, float lhsLB |
-    def = assignMul and
-    assignMul.getLValue() = nextDef.getAUse(v) and
-    lhsLB = getDefLowerBounds(nextDef, v) and
-    result = lhsLB * assignMul.getConstant()
+  // Assignment operations with a defining value
+  exists(AssignOperation assignOp |
+    def = assignOp and
+    assignOp.getLValue() = v.getAnAccess() and
+    result = getTruncatedUpperBounds(assignOp)
   )
   or
   exists(IncrementOperation incr, float newUB |
@@ -1329,7 +1251,7 @@ private float getDefLowerBounds(RangeSsaDefinition def, StackVariable v) {
       // recursion from exploding.
       result =
         max(float widenLB |
-          widenLB = wideningLowerBounds(v.getUnspecifiedType()) and
+          widenLB = wideningLowerBounds(getVariableRangeType(v)) and
           not widenLB > truncatedLB
         |
           widenLB
@@ -1359,7 +1281,7 @@ private float getDefUpperBounds(RangeSsaDefinition def, StackVariable v) {
       // from exploding.
       result =
         min(float widenUB |
-          widenUB = wideningUpperBounds(v.getUnspecifiedType()) and
+          widenUB = wideningUpperBounds(getVariableRangeType(v)) and
           not widenUB < truncatedUB
         |
           widenUB
@@ -1391,9 +1313,10 @@ private predicate unanalyzableDefBounds(RangeSsaDefinition def, StackVariable v,
  */
 bindingset[guard, v, branch]
 predicate nonNanGuardedVariable(ComparisonOperation guard, VariableAccess v, boolean branch) {
-  v.getUnspecifiedType() instanceof IntegralType
+  getVariableRangeType(v.getTarget()) instanceof IntegralType
   or
-  v.getUnspecifiedType() instanceof FloatingPointType and v instanceof NonNanVariableAccess
+  getVariableRangeType(v.getTarget()) instanceof FloatingPointType and
+  v instanceof NonNanVariableAccess
   or
   // The reason the following case is here is to ensure that when we say
   // `if (x > 5) { ...then... } else { ...else... }`
@@ -1418,7 +1341,7 @@ private predicate lowerBoundFromGuard(
     then
       if
         strictness = Nonstrict() or
-        not v.getUnspecifiedType() instanceof IntegralType
+        not getVariableRangeType(v.getTarget()) instanceof IntegralType
       then lb = childLB
       else lb = childLB + 1
     else lb = varMinVal(v.getTarget())
@@ -1440,7 +1363,7 @@ private predicate upperBoundFromGuard(
     then
       if
         strictness = Nonstrict() or
-        not v.getUnspecifiedType() instanceof IntegralType
+        not getVariableRangeType(v.getTarget()) instanceof IntegralType
       then ub = childUB
       else ub = childUB - 1
     else ub = varMaxVal(v.getTarget())

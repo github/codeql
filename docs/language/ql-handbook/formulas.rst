@@ -148,14 +148,13 @@ A call to a predicate can also contain a closure operator, namely ``*`` or ``+``
 ``a.isChildOf+(b)`` is a call to the :ref:`transitive closure <transitive-closures>` of 
 ``isChildOf()``, so it holds if ``a`` is a descendent of ``b``. 
 
-The predicate reference must resolve to exactly one predicate. See :ref:`name-resolution` for
-more information about how a predicate reference is resolved. 
+The predicate reference must resolve to exactly one predicate. For more information about how a predicate 
+reference is resolved, see ":ref:`name-resolution`." 
 
 If the call resolves to a predicate without result, then the call is a formula.
 
 It is also possible to call a predicate with result. This kind of call is an
-expression in QL, instead of a formula. See :ref:`calls-with-result` for the corresponding
-topic.
+expression in QL, instead of a formula. For more information, see ":ref:`calls-with-result`."
 
 .. _parenthesized-formulas:
 
@@ -251,7 +250,7 @@ Implicit quantifiers
 
 Implicitly quantified variables can be introduced using "don't care expressions." These are used 
 when you need to introduce a variable to use as an argument to a predicate call, but don't care 
-about its value. For further information, see :ref:`Don't-care expressions <dont-care>`.
+about its value. For further information, see ":ref:`Don't-care expressions <dont-care>`."
 
 .. _connectives:
 
@@ -305,7 +304,7 @@ The following query selects files that are not HTML files.
 
 .. note:: 
    You should be careful when using ``not`` in a recursive definition, as this could lead to
-   non-monotonic recursion. For more information, see the section on :ref:`non-monotonic-recursion`.
+   non-monotonic recursion. For more information, ":ref:`non-monotonic-recursion`."
 
 .. index:: if, then, else
 .. _conditional:

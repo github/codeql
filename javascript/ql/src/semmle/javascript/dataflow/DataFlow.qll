@@ -912,7 +912,7 @@ module DataFlow {
       function.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
-    override BasicBlock getBasicBlock() { result = function.(ExprOrStmt).getBasicBlock() }
+    override BasicBlock getBasicBlock() { result = function.getExit().getBasicBlock() }
 
     /**
      * Gets the function corresponding to this exceptional return node.
@@ -938,7 +938,7 @@ module DataFlow {
       function.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
-    override BasicBlock getBasicBlock() { result = function.(ExprOrStmt).getBasicBlock() }
+    override BasicBlock getBasicBlock() { result = function.getExit().getBasicBlock() }
 
     /**
      * Gets the function corresponding to this return node.
@@ -1495,7 +1495,7 @@ module DataFlow {
     )
     or
     // from returned expr to the FunctionReturnNode.
-    exists(Function f | not f.isAsync() |
+    exists(Function f | not f.isAsyncOrGenerator() |
       DataFlow::functionReturnNode(succ, f) and pred = valueNode(f.getAReturnedExpr())
     )
   }

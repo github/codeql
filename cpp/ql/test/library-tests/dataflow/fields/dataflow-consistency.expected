@@ -16,7 +16,6 @@ postHasUniquePre
 uniquePostUpdate
 postIsInSameCallable
 reverseRead
-storeIsPostUpdate
 argHasPostUpdate
 | A.cpp:41:15:41:21 | new | ArgumentNode is missing PostUpdateNode. |
 | A.cpp:55:12:55:19 | new | ArgumentNode is missing PostUpdateNode. |

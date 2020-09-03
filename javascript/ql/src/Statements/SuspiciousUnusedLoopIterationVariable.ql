@@ -45,11 +45,28 @@ predicate countingLoop(EnhancedForLoop efl) {
   )
 }
 
+/**
+ * Holds if `iter` is a non-last variable of array-destructuring in a for-loop.
+ * For example `foo` or `iter` in `for(const [foo, iter, bar] of array) {..}`.
+ */
+predicate isNonLastDestructedArrayElement(PurelyLocalVariable iter) {
+  exists(ArrayPattern pattern | pattern = any(EnhancedForLoop loop).getLValue() |
+    iter = pattern.getAVariable() and
+    iter =
+      pattern
+          .getElement([0 .. pattern.getSize() - 2])
+          .(BindingPattern)
+          .getABindingVarRef()
+          .getVariable()
+  )
+}
+
 from EnhancedForLoop efl, PurelyLocalVariable iter
 where
   iter = efl.getAnIterationVariable() and
   not exists(SsaExplicitDefinition ssa | ssa.defines(efl.getIteratorExpr(), iter)) and
   exists(ReachableBasicBlock body | body.getANode() = efl.getBody() | body.getASuccessor+() = body) and
   not countingLoop(efl) and
+  not isNonLastDestructedArrayElement(iter) and
   not iter.getName().toLowerCase().regexpMatch("(_|dummy|unused).*")
 select efl.getIterator(), "For loop variable " + iter.getName() + " is not used in the loop body."

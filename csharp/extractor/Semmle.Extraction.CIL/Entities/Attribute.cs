@@ -27,7 +27,7 @@ namespace Semmle.Extraction.CIL.Entities
             this.@object = @object;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is Attribute attribute && handle.Equals(attribute.handle);
         }
@@ -58,13 +58,15 @@ namespace Semmle.Extraction.CIL.Entities
                 for (int index = 0; index < decoded.FixedArguments.Length; ++index)
                 {
                     object value = decoded.FixedArguments[index].Value;
-                    yield return Tuples.cil_attribute_positional_argument(this, index, value == null ? "null" : value.ToString());
+                    var stringValue = value?.ToString();
+                    yield return Tuples.cil_attribute_positional_argument(this, index, stringValue ?? "null");
                 }
 
                 foreach (var p in decoded.NamedArguments)
                 {
                     object value = p.Value;
-                    yield return Tuples.cil_attribute_named_argument(this, p.Name, value == null ? "null" : value.ToString());
+                    var stringValue = value?.ToString();
+                    yield return Tuples.cil_attribute_named_argument(this, p.Name, stringValue ?? "null");
                 }
             }
         }

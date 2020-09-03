@@ -1,3 +1,8 @@
+| arrayassignment.cpp:33:7:33:9 | r_x | arrayassignment.cpp:29:8:29:13 | call to source |
+| arrayassignment.cpp:57:10:57:12 | call to get | arrayassignment.cpp:54:9:54:14 | call to source |
+| arrayassignment.cpp:67:10:67:12 | call to get | arrayassignment.cpp:64:13:64:18 | call to source |
+| arrayassignment.cpp:101:7:101:18 | access to array | arrayassignment.cpp:99:17:99:22 | call to source |
+| arrayassignment.cpp:135:7:135:10 | ref1 | arrayassignment.cpp:134:9:134:14 | call to source |
 | copyableclass.cpp:40:8:40:9 | s1 | copyableclass.cpp:34:22:34:27 | call to source |
 | copyableclass.cpp:41:8:41:9 | s2 | copyableclass.cpp:35:24:35:29 | call to source |
 | copyableclass.cpp:42:8:42:9 | s3 | copyableclass.cpp:34:22:34:27 | call to source |
@@ -32,6 +37,12 @@
 | movableclass.cpp:55:8:55:9 | s2 | movableclass.cpp:52:23:52:28 | call to source |
 | movableclass.cpp:64:8:64:9 | s2 | movableclass.cpp:23:55:23:60 | call to source |
 | movableclass.cpp:65:11:65:11 | call to operator= | movableclass.cpp:65:13:65:18 | call to source |
+| standalone_iterators.cpp:40:10:40:10 | call to operator* | standalone_iterators.cpp:39:45:39:51 | source1 |
+| standalone_iterators.cpp:41:10:41:10 | call to operator* | standalone_iterators.cpp:39:45:39:51 | source1 |
+| standalone_iterators.cpp:42:10:42:10 | call to operator* | standalone_iterators.cpp:39:45:39:51 | source1 |
+| standalone_iterators.cpp:46:10:46:10 | call to operator* | standalone_iterators.cpp:45:39:45:45 | source1 |
+| standalone_iterators.cpp:47:10:47:10 | call to operator* | standalone_iterators.cpp:45:39:45:45 | source1 |
+| standalone_iterators.cpp:48:10:48:10 | call to operator* | standalone_iterators.cpp:45:39:45:45 | source1 |
 | string.cpp:28:7:28:7 | a | string.cpp:24:12:24:17 | call to source |
 | string.cpp:30:7:30:7 | c | string.cpp:26:16:26:21 | call to source |
 | string.cpp:32:9:32:13 | call to c_str | string.cpp:26:16:26:21 | call to source |
@@ -48,6 +59,7 @@
 | string.cpp:113:8:113:9 | s1 | string.cpp:109:32:109:37 | call to source |
 | string.cpp:114:8:114:9 | s2 | string.cpp:111:20:111:25 | call to source |
 | string.cpp:121:8:121:8 | c | string.cpp:119:16:119:21 | call to source |
+| string.cpp:125:8:125:8 | call to operator* | string.cpp:119:16:119:21 | call to source |
 | string.cpp:129:8:129:8 | c | string.cpp:119:16:119:21 | call to source |
 | string.cpp:134:8:134:8 | c | string.cpp:132:28:132:33 | call to source |
 | string.cpp:144:11:144:11 | call to operator+ | string.cpp:141:18:141:23 | call to source |
@@ -94,6 +106,21 @@
 | string.cpp:339:7:339:7 | a | string.cpp:335:9:335:23 | call to source |
 | string.cpp:340:7:340:7 | b | string.cpp:336:12:336:26 | call to source |
 | string.cpp:341:7:341:7 | c | string.cpp:335:9:335:23 | call to source |
+| string.cpp:349:7:349:9 | str | string.cpp:348:18:348:32 | call to source |
+| string.cpp:350:11:350:14 | call to data | string.cpp:348:18:348:32 | call to source |
+| string.cpp:361:11:361:16 | call to append | string.cpp:356:18:356:23 | call to source |
+| string.cpp:362:8:362:9 | s1 | string.cpp:356:18:356:23 | call to source |
+| string.cpp:380:8:380:8 | call to operator* | string.cpp:372:18:372:23 | call to source |
+| string.cpp:381:13:381:13 | call to operator[] | string.cpp:372:18:372:23 | call to source |
+| string.cpp:394:8:394:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:395:8:395:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:397:8:397:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:399:8:399:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:402:8:402:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:405:8:405:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:407:8:407:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:409:8:409:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
+| string.cpp:413:8:413:8 | call to operator* | string.cpp:387:18:387:23 | call to source |
 | structlikeclass.cpp:35:8:35:9 | s1 | structlikeclass.cpp:29:22:29:27 | call to source |
 | structlikeclass.cpp:36:8:36:9 | s2 | structlikeclass.cpp:30:24:30:29 | call to source |
 | structlikeclass.cpp:37:8:37:9 | s3 | structlikeclass.cpp:29:22:29:27 | call to source |
@@ -218,6 +245,8 @@
 | vector.cpp:70:7:70:8 | v5 | vector.cpp:69:15:69:20 | call to source |
 | vector.cpp:71:10:71:14 | call to front | vector.cpp:69:15:69:20 | call to source |
 | vector.cpp:72:10:72:13 | call to back | vector.cpp:69:15:69:20 | call to source |
+| vector.cpp:75:7:75:8 | v6 | vector.cpp:74:17:74:22 | call to source |
+| vector.cpp:76:7:76:18 | access to array | vector.cpp:74:17:74:22 | call to source |
 | vector.cpp:97:7:97:8 | v9 | vector.cpp:96:13:96:18 | call to source |
 | vector.cpp:98:10:98:11 | call to at | vector.cpp:96:13:96:18 | call to source |
 | vector.cpp:99:10:99:11 | call to at | vector.cpp:96:13:96:18 | call to source |
@@ -237,3 +266,14 @@
 | vector.cpp:171:13:171:13 | call to operator[] | vector.cpp:170:14:170:19 | call to source |
 | vector.cpp:180:13:180:13 | call to operator[] | vector.cpp:179:14:179:19 | call to source |
 | vector.cpp:201:13:201:13 | call to operator[] | vector.cpp:200:14:200:19 | call to source |
+| vector.cpp:242:7:242:8 | v2 | vector.cpp:238:17:238:30 | call to source |
+| vector.cpp:243:7:243:8 | v3 | vector.cpp:239:15:239:20 | call to source |
+| vector.cpp:273:8:273:9 | v7 | vector.cpp:269:18:269:31 | call to source |
+| vector.cpp:274:8:274:9 | v8 | vector.cpp:270:18:270:35 | call to source |
+| vector.cpp:275:8:275:9 | v9 | vector.cpp:271:18:271:34 | call to source |
+| vector.cpp:285:7:285:8 | v1 | vector.cpp:284:15:284:20 | call to source |
+| vector.cpp:286:10:286:13 | call to data | vector.cpp:284:15:284:20 | call to source |
+| vector.cpp:287:7:287:18 | access to array | vector.cpp:284:15:284:20 | call to source |
+| vector.cpp:290:7:290:8 | v2 | vector.cpp:289:17:289:30 | call to source |
+| vector.cpp:291:10:291:13 | call to data | vector.cpp:289:17:289:30 | call to source |
+| vector.cpp:292:7:292:18 | access to array | vector.cpp:289:17:289:30 | call to source |

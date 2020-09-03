@@ -325,11 +325,60 @@
     "csharp/ql/src/experimental/ir/implementation/raw/gvn/internal/ValueNumberingImports.qll",
     "csharp/ql/src/experimental/ir/implementation/unaliased_ssa/gvn/internal/ValueNumberingImports.qll"
   ],
+  "Inline Test Expectations": [
+    "cpp/ql/test/TestUtilities/InlineExpectationsTest.qll",
+    "python/ql/test/TestUtilities/InlineExpectationsTest.qll"
+  ],
   "XML": [
     "cpp/ql/src/semmle/code/cpp/XML.qll",
     "csharp/ql/src/semmle/code/csharp/XML.qll",
     "java/ql/src/semmle/code/xml/XML.qll",
     "javascript/ql/src/semmle/javascript/XML.qll",
     "python/ql/src/semmle/python/xml/XML.qll"
+  ],
+  "DuplicationProblems.qhelp": [
+    "cpp/ql/src/Metrics/Files/DuplicationProblems.qhelp",
+    "csharp/ql/src/Metrics/Files/DuplicationProblems.qhelp",
+    "javascript/ql/src/Metrics/DuplicationProblems.qhelp",
+    "python/ql/src/Metrics/DuplicationProblems.qhelp"
+  ],
+  "CommentedOutCodeQuery.qhelp": [
+    "cpp/ql/src/Documentation/CommentedOutCodeQuery.qhelp",
+    "python/ql/src/Lexical/CommentedOutCodeQuery.qhelp",
+    "csharp/ql/src/Bad Practices/Comments/CommentedOutCodeQuery.qhelp",
+    "java/ql/src/Violations of Best Practice/Comments/CommentedOutCodeQuery.qhelp",
+    "javascript/ql/src/Comments/CommentedOutCodeQuery.qhelp"
+  ],
+  "FLinesOfCodeReferences.qhelp": [
+    "java/ql/src/Metrics/Files/FLinesOfCodeReferences.qhelp",
+    "javascript/ql/src/Metrics/FLinesOfCodeReferences.qhelp"
+  ],
+  "FCommentRatioCommon.qhelp": [
+    "java/ql/src/Metrics/Files/FCommentRatioCommon.qhelp",
+    "javascript/ql/src/Metrics/FCommentRatioCommon.qhelp"
+  ],
+  "FLinesOfCodeOverview.qhelp": [
+    "java/ql/src/Metrics/Files/FLinesOfCodeOverview.qhelp",
+    "javascript/ql/src/Metrics/FLinesOfCodeOverview.qhelp"
+  ],
+  "CommentedOutCodeMetricOverview.qhelp": [
+    "cpp/ql/src/Metrics/Files/CommentedOutCodeMetricOverview.qhelp",
+    "csharp/ql/src/Metrics/Files/CommentedOutCodeMetricOverview.qhelp",
+    "java/ql/src/Metrics/Files/CommentedOutCodeMetricOverview.qhelp",
+    "javascript/ql/src/Comments/CommentedOutCodeMetricOverview.qhelp",
+    "python/ql/src/Lexical/CommentedOutCodeMetricOverview.qhelp"
+  ],
+  "FLinesOfDuplicatedCodeCommon.qhelp": [
+    "cpp/ql/src/Metrics/Files/FLinesOfDuplicatedCodeCommon.qhelp",
+    "java/ql/src/Metrics/Files/FLinesOfDuplicatedCodeCommon.qhelp",
+    "javascript/ql/src/Metrics/FLinesOfDuplicatedCodeCommon.qhelp",
+    "python/ql/src/Metrics/FLinesOfDuplicatedCodeCommon.qhelp"
+  ],
+  "CommentedOutCodeReferences.qhelp": [
+    "cpp/ql/src/Metrics/Files/CommentedOutCodeReferences.qhelp",
+    "csharp/ql/src/Metrics/Files/CommentedOutCodeReferences.qhelp",
+    "java/ql/src/Metrics/Files/CommentedOutCodeReferences.qhelp",
+    "javascript/ql/src/Comments/CommentedOutCodeReferences.qhelp",
+    "python/ql/src/Lexical/CommentedOutCodeReferences.qhelp"
   ]
 }

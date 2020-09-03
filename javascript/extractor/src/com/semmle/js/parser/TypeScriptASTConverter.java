@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -586,6 +587,8 @@ public class TypeScriptASTConverter {
         return convertTryStatement(node, loc);
       case "TupleType":
         return convertTupleType(node, loc);
+      case "NamedTupleMember": 
+        return convertNamedTupleMember(node, loc);
       case "TypeAliasDeclaration":
         return convertTypeAliasDeclaration(node, loc);
       case "TypeAssertionExpression":
@@ -850,6 +853,9 @@ public class TypeScriptASTConverter {
       case ">>=":
       case "<<=":
       case ">>>=":
+      case "??=":
+      case "&&=":
+      case "||=":
         return new AssignmentExpression(loc, operator, convertLValue(left), right);
 
       default:
@@ -2178,7 +2184,22 @@ public class TypeScriptASTConverter {
   }
 
   private Node convertTupleType(JsonObject node, SourceLocation loc) throws ParseError {
-    return new TupleTypeExpr(loc, convertChildrenAsTypes(node, "elementTypes"));
+    List<Identifier> names = new ArrayList<>();
+
+    for (JsonElement element : node.get("elements").getAsJsonArray()) {
+      Identifier id = null;
+      if (getKind(element).equals("NamedTupleMember")) {
+        id = (Identifier)convertNode(element.getAsJsonObject().get("name").getAsJsonObject());
+      }
+      names.add(id);
+    }
+
+    return new TupleTypeExpr(loc, convertChildrenAsTypes(node, "elements"), names);
+  }
+
+  // This method just does a trivial forward to the type. The names have already been extracted in `convertTupleType`.
+  private Node convertNamedTupleMember(JsonObject node, SourceLocation loc) throws ParseError {
+    return convertChild(node, "type");
   }
 
   private Node convertTypeAliasDeclaration(JsonObject node, SourceLocation loc) throws ParseError {

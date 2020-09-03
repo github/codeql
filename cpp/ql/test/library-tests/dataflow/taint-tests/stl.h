@@ -1,6 +1,42 @@
 
 typedef unsigned long size_t;
 
+// --- iterator ---
+
+namespace std {
+	struct ptrdiff_t;
+
+	template<class I> struct iterator_traits;
+
+	template <class Category,
+			  class value_type,
+			  class difference_type = ptrdiff_t,
+			  class pointer_type = value_type*,
+			  class reference_type = value_type&>
+	struct iterator {
+		typedef Category iterator_category;
+
+		iterator &operator++();
+		iterator operator++(int);
+		iterator &operator--();
+		iterator operator--(int);
+		bool operator==(iterator other) const;
+		bool operator!=(iterator other) const;
+		reference_type operator*() const;
+		iterator operator+(int);
+		iterator operator-(int);
+		iterator &operator+=(int);
+		iterator &operator-=(int);
+		int operator-(iterator);
+		reference_type operator[](int);
+	};
+
+	struct input_iterator_tag {};
+	struct forward_iterator_tag : public input_iterator_tag {};
+	struct bidirectional_iterator_tag : public forward_iterator_tag {};
+	struct random_access_iterator_tag : public bidirectional_iterator_tag {};
+}
+
 // --- string ---
 
 namespace std
@@ -9,25 +45,6 @@ namespace std
 
 	typedef size_t streamsize;
 
-	struct ptrdiff_t;
-
-	template <class iterator_category,
-			  class value_type,
-			  class difference_type = ptrdiff_t,
-			  class pointer_type = value_type*,
-			  class reference_type = value_type&>
-	struct iterator {
-		iterator &operator++();
-		iterator operator++(int);
-		bool operator==(iterator other) const;
-		bool operator!=(iterator other) const;
-		reference_type operator*() const;
-	};
-
-	struct input_iterator_tag {};
-	struct forward_iterator_tag : public input_iterator_tag {};
-	struct bidirectional_iterator_tag : public forward_iterator_tag {};
-	struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 
 	template <class T> class allocator {
 	public:
@@ -70,6 +87,8 @@ namespace std
 		basic_string& append(const basic_string& str);
 		basic_string& append(const charT* s);
 		basic_string& append(size_type n, charT c);
+		template<class InputIterator>
+		/* constexpr */ basic_string& append(InputIterator first, InputIterator last);
 		basic_string& assign(const basic_string& str);
 		basic_string& assign(size_type n, charT c);
 		basic_string& insert(size_type pos, const basic_string& str);
@@ -142,6 +161,10 @@ namespace std {
 
 		vector& operator=(const vector& x);
 		vector& operator=(vector&& x) noexcept/*(allocator_traits<Allocator>::propagate_on_container_move_assignment::value || allocator_traits<Allocator>::is_always_equal::value)*/;
+		template<class InputIterator, class IteratorCategory = typename InputIterator::iterator_category> void assign(InputIterator first, InputIterator last);
+			// use of `iterator_category` makes sure InputIterator is (probably) an iterator, and not an `int` or
+			// similar that should match a different overload (SFINAE).
+		void assign(size_type n, const T& u);
 
 		iterator begin() noexcept;
 		const_iterator begin() const noexcept;
