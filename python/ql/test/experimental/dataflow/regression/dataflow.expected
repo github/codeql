@@ -17,8 +17,3 @@
 | test.py:178:9:178:14 | ControlFlowNode for SOURCE | test.py:186:14:186:14 | ControlFlowNode for t |
 | test.py:195:9:195:14 | ControlFlowNode for SOURCE | test.py:197:14:197:14 | ControlFlowNode for t |
 | test.py:195:9:195:14 | ControlFlowNode for SOURCE | test.py:199:14:199:14 | ControlFlowNode for t |
-| test.py:217:15:217:20 | ControlFlowNode for SOURCE | test.py:219:14:219:20 | ControlFlowNode for tainted |
-| test.py:217:15:217:20 | ControlFlowNode for SOURCE | test.py:220:10:220:16 | ControlFlowNode for tainted |
-| test.py:223:15:223:20 | ControlFlowNode for SOURCE | test.py:226:10:226:16 | ControlFlowNode for tainted |
-| test.py:229:15:229:20 | ControlFlowNode for SOURCE | test.py:231:14:231:20 | ControlFlowNode for tainted |
-| test.py:229:15:229:20 | ControlFlowNode for SOURCE | test.py:233:14:233:20 | ControlFlowNode for tainted |
