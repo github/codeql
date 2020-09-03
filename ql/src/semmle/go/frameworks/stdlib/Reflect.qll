@@ -13,19 +13,11 @@ module Reflect {
     FunctionModels() {
       // signature: func Append(s Value, x ...Value) Value
       hasQualifiedName("reflect", "Append") and
-      (
-        inp.isParameter(_) and outp.isResult()
-        or
-        inp.isParameter(any(int i | i >= 1)) and outp.isParameter(0)
-      )
+      (inp.isParameter(_) and outp.isResult())
       or
       // signature: func AppendSlice(s Value, t Value) Value
       hasQualifiedName("reflect", "AppendSlice") and
-      (
-        inp.isParameter(_) and outp.isResult()
-        or
-        inp.isParameter(1) and outp.isParameter(0)
-      )
+      (inp.isParameter(_) and outp.isResult())
       or
       // signature: func Copy(dst Value, src Value) int
       hasQualifiedName("reflect", "Copy") and
