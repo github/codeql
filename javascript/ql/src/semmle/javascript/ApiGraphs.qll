@@ -255,7 +255,7 @@ module API {
     abstract DataFlow::SourceNode getAUse();
 
     /** Gets a data-flow node that defines this entry point. */
-    abstract DataFlow::Node getADef();
+    abstract DataFlow::Node getARhs();
   }
 
   /**
@@ -363,7 +363,7 @@ module API {
       hasSemantics(rhs) and
       (
         base = MkRoot() and
-        rhs = lbl.(EntryPoint).getADef()
+        rhs = lbl.(EntryPoint).getARhs()
         or
         exists(string m, string prop |
           base = MkModuleExport(m) and
