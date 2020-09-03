@@ -50,7 +50,7 @@ def sink3(cond, arg):
     if cond:
         sink(arg)
 
-def test8(cond):
+def test8(cond):  # This test currently adds nothing, as we only track SOURCE -> SINK, and previous tests already add flow from line 10 to line 13
     t = source2()
     sink2(t)
 
