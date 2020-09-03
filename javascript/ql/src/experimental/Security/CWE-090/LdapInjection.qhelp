@@ -33,7 +33,7 @@ This ensures the meaning of the query cannot be changed by a malicious user.</p>
 
 <sample src="examples/example_good1.js" />
 
-<p>The third example the <code>username</code> is passed to an <code>OrFilter</code> filter before it is included in the search filters. 
+<p>In the fourth example the <code>username</code> is passed to an <code>OrFilter</code> filter before it is included in the search filters. 
 This ensures the meaning of the query cannot be changed by a malicious user.</p>
 
 <sample src="examples/example_good2.js" />
