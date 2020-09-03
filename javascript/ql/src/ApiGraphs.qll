@@ -218,8 +218,6 @@ module API {
         or
         this = Impl::MkCanonicalNameUse(n) and result = "use " + n
       )
-      or
-      exists(AdditionalFeature a | this = Impl::MkAdditionalFeature(a) and result = a.getId())
     }
 
     /**
@@ -259,9 +257,6 @@ module API {
     not result = moduleImport(_)
   }
 
-  /** Gets additional feature `a`. */
-  Feature additionalNode(AdditionalFeature a) { result = Impl::MkAdditionalFeature(a) }
-
   /**
    * An API entry point.
    *
@@ -277,23 +272,6 @@ module API {
 
     /** Gets a data-flow node that defines this entry point. */
     abstract DataFlow::Node getADef();
-  }
-
-  /**
-   * A custom feature that is not captured by the standard implementation of API graphs.
-   */
-  abstract class AdditionalFeature extends string {
-    bindingset[this]
-    AdditionalFeature() { any() }
-
-    /** Gets a feature to which this feature has an edge labeled with `lbl` in the API graph. */
-    abstract Feature getASuccessor(string lbl);
-
-    /** Gets a feature which has an edge labeled with `lbl` to this feature in the API graph. */
-    abstract Feature getAPredecessor(string lbl);
-
-    /** Gets a unique string describing this feature. */
-    abstract string getId();
   }
 
   /**
@@ -345,8 +323,7 @@ module API {
       MkDef(DataFlow::Node nd) { rhs(_, _, nd) } or
       MkUse(DataFlow::SourceNode nd) { use(_, _, nd) } or
       MkCanonicalNameDef(CanonicalName n) { isDefined(n) } or
-      MkCanonicalNameUse(CanonicalName n) { isUsed(n) } or
-      MkAdditionalFeature(AdditionalFeature a)
+      MkCanonicalNameUse(CanonicalName n) { isUsed(n) }
 
     private predicate hasSemantics(DataFlow::Node nd) { not nd.getTopLevel().isExterns() }
 
@@ -673,14 +650,6 @@ module API {
         f = trackDefNode(nd) and
         lbl = Label::return() and
         succ = MkAsyncFuncResult(f)
-      )
-      or
-      exists(AdditionalFeature a |
-        pred = MkAdditionalFeature(a) and
-        succ = a.getASuccessor(lbl)
-        or
-        pred = a.getAPredecessor(lbl) and
-        succ = MkAdditionalFeature(a)
       )
     }
 
