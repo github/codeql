@@ -15,15 +15,14 @@ import cpp
  * Gets the template that a function `f` is constructed from, or just `f` if it
  * is not from a template instantiation.
  */
-Function getConstructedFrom(Function f)
-{
+Function getConstructedFrom(Function f) {
   exists(Function mid |
     f.isConstructedFrom(mid) and
     result = getConstructedFrom(mid)
-  ) or (
-    not f.isConstructedFrom(_) and
-    result = f
   )
+  or
+  not f.isConstructedFrom(_) and
+  result = f
 }
 
 /**
