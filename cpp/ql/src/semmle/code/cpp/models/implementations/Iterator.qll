@@ -57,16 +57,20 @@ class Iterator extends Type {
   }
 }
 
+/**
+ * We use this instead of `getExplicitlyConverted` to ensure that the context can be pushed
+ * into `arg.getConversion*` and avoid a performance bottleneck.
+ */
+private Expr operatorConvertedArg(Operator op, int index) {
+  exists(Expr arg | arg = op.getACallToThisFunction().getArgument(index) |
+    result = arg.getConversion*() and
+    (result = arg or not result.(Cast).isImplicit()) and
+    not exists(Cast other | other = result.getConversion+() and not other.isImplicit())
+  )
+}
+
 private FunctionInput getIteratorArgumentInput(Operator op, int index) {
-  exists(Type t |
-    t =
-      op
-          .getACallToThisFunction()
-          .getArgument(index)
-          .getExplicitlyConverted()
-          .getType()
-          .stripTopLevelSpecifiers()
-  |
+  exists(Type t | t = operatorConvertedArg(op, index).getType().stripTopLevelSpecifiers() |
     (
       t instanceof Iterator or
       t.(ReferenceType).getBaseType() instanceof Iterator
