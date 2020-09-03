@@ -20,6 +20,14 @@
 
 import javascript
 
+class CustomEntryPoint extends API::EntryPoint {
+  CustomEntryPoint() { this = "CustomEntryPoint" }
+
+  override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef("CustomEntryPoint") }
+
+  override DataFlow::Node getARhs() { none() }
+}
+
 private DataFlow::Node getNode(API::Feature nd, string kind) {
   kind = "def" and
   result = nd.getARhs()
