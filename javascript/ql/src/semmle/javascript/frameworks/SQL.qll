@@ -3,7 +3,6 @@
  */
 
 import javascript
-private import ApiGraphs
 
 module SQL {
   /** A string-valued expression that is interpreted as a SQL command. */

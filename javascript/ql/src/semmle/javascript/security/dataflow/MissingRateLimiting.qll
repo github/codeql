@@ -24,7 +24,6 @@
 
 import javascript
 private import semmle.javascript.frameworks.ConnectExpressShared::ConnectExpressShared
-private import ApiGraphs
 
 // main concepts
 /**

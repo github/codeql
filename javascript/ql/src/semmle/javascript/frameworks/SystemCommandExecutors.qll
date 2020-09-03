@@ -4,7 +4,6 @@
  */
 
 import javascript
-private import ApiGraphs
 
 private predicate execApi(string mod, string fn, int cmdArg, int optionsArg, boolean shell) {
   mod = "cross-spawn" and
