@@ -189,35 +189,7 @@ module API {
      * Gets a textual representation of this feature.
      */
     string toString() {
-      this = Impl::MkRoot() and result = "root"
-      or
-      exists(string m |
-        this = Impl::MkModule(m) and result = "module " + m
-        or
-        this = Impl::MkModuleImport(m) and result = "import " + m
-        or
-        this = Impl::MkModuleExport(m) and result = "export " + m
-      )
-      or
-      exists(DataFlow::ClassNode cls |
-        this = Impl::MkClassInstance(cls) and result = "instance " + cls
-      )
-      or
-      exists(DataFlow::FunctionNode fn |
-        this = Impl::MkAsyncFuncResult(fn) and result = "result " + fn
-      )
-      or
-      exists(DataFlow::Node nd |
-        this = Impl::MkDef(nd) and result = "def " + getPath()
-        or
-        this = Impl::MkUse(nd) and result = "use " + getPath()
-      )
-      or
-      exists(CanonicalName n |
-        this = Impl::MkCanonicalNameDef(n) and result = "def " + n
-        or
-        this = Impl::MkCanonicalNameUse(n) and result = "use " + n
-      )
+      none() // defined in subclasses
     }
 
     /**
@@ -242,8 +214,23 @@ module API {
     }
   }
 
+  /** The root feature of an API graph. */
+  class Root extends Feature, Impl::MkRoot {
+    override string toString() { result = "root" }
+  }
+
+  /** A feature corresponding to a definition of an API component. */
+  class Definition extends Feature, Impl::TDef {
+    override string toString() { result = "def " + getPath() }
+  }
+
+  /** A feature corresponding to the use of an API component. */
+  class Use extends Feature, Impl::TUse {
+    override string toString() { result = "use " + getPath() }
+  }
+
   /** Gets the root feature. */
-  Feature root() { result = Impl::MkRoot() }
+  Root root() { any() }
 
   /** Gets a feature corresponding to an import of module `m`. */
   Feature moduleImport(string m) {
@@ -252,10 +239,7 @@ module API {
   }
 
   /** Gets a feature corresponding to an export of module `m`. */
-  Feature moduleExport(string m) {
-    result = Impl::MkModule(m).(Feature).getMember("exports") and
-    not result = moduleImport(_)
-  }
+  Feature moduleExport(string m) { result = Impl::MkModuleDef(m).(Feature).getMember("exports") }
 
   /**
    * An API entry point.
@@ -302,7 +286,8 @@ module API {
     cached
     newtype TFeature =
       MkRoot() or
-      MkModule(string m) { exists(MkModuleExport(m)) or exists(MkModuleImport(m)) } or
+      MkModuleDef(string m) { exists(MkModuleExport(m)) } or
+      MkModuleUse(string m) { exists(MkModuleImport(m)) } or
       MkModuleExport(string m) {
         exists(Module mod | mod = importableModule(m) |
           // exclude modules that don't actually export anything
@@ -324,6 +309,13 @@ module API {
       MkUse(DataFlow::Node nd) { use(_, _, nd) } or
       MkCanonicalNameDef(CanonicalName n) { isDefined(n) } or
       MkCanonicalNameUse(CanonicalName n) { isUsed(n) }
+
+    class TDef = MkModuleDef or TNonModuleDef;
+
+    class TNonModuleDef =
+      MkModuleExport or MkClassInstance or MkAsyncFuncResult or MkDef or MkCanonicalNameDef;
+
+    class TUse = MkModuleUse or MkModuleImport or MkUse or MkCanonicalNameUse;
 
     private predicate hasSemantics(DataFlow::Node nd) { not nd.getTopLevel().isExterns() }
 
@@ -458,6 +450,9 @@ module API {
         exists(DataFlow::SourceNode src, DataFlow::SourceNode pred |
           use(base, src) and pred = trackUseNode(src)
         |
+          // `module.exports` is special: it is a use of a def-node, not a use-node,
+          // so we want to exclude it here
+          (base instanceof TNonModuleDef or base instanceof TUse) and
           lbl = Label::memberFromRef(ref) and
           ref = pred.getAPropertyRead()
           or
@@ -503,7 +498,7 @@ module API {
      */
     cached
     predicate use(TFeature nd, DataFlow::Node ref) {
-      exists(string m, Module mod | nd = MkModule(m) and mod = importableModule(m) |
+      exists(string m, Module mod | nd = MkModuleDef(m) and mod = importableModule(m) |
         ref = DataFlow::ssaDefinitionNode(SSA::implicitInit(mod.(NodeModule).getModuleVariable()))
         or
         ref = DataFlow::parameterNode(mod.(AmdModule).getDefine().getModuleParameter())
@@ -513,6 +508,10 @@ module API {
         ref = DataFlow::ssaDefinitionNode(SSA::implicitInit(mod.(NodeModule).getExportsVariable()))
         or
         ref = DataFlow::parameterNode(mod.(AmdModule).getDefine().getExportsParameter())
+        or
+        exists(DataFlow::Node base | use(MkModuleDef(m), base) |
+          ref = trackUseNode(base).getAPropertyRead("exports")
+        )
       )
       or
       exists(string m |
@@ -600,16 +599,20 @@ module API {
     predicate edge(TFeature pred, string lbl, TFeature succ) {
       exists(string m |
         pred = MkRoot() and
-        lbl = Label::mod(m) and
-        succ = MkModule(m)
+        lbl = Label::mod(m)
+      |
+        succ = MkModuleDef(m)
+        or
+        succ = MkModuleUse(m)
       )
       or
       exists(string m |
-        pred = MkModule(m) and
-        lbl = Label::member("exports")
-      |
+        pred = MkModuleDef(m) and
+        lbl = Label::member("exports") and
         succ = MkModuleExport(m)
         or
+        pred = MkModuleUse(m) and
+        lbl = Label::member("exports") and
         succ = MkModuleImport(m)
       )
       or
