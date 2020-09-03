@@ -146,12 +146,13 @@ module Protobuf {
   }
 
   /**
-   * Additional taint step tainting a Message when taint is written to any of its fields.
+   * Additional taint step tainting a Message when taint is written to any of its fields and/or elements.
    */
   private class WriteMessageFieldStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      any(DataFlow::Write w)
-          .writesField(succ.(DataFlow::PostUpdateNode).getPreUpdateNode(), getAMessageField(), pred)
+      exists(DataFlow::ReadNode base | succ = DataFlow::getUnderlyingNode(base) |
+        any(DataFlow::Write w).writesField(base, getAMessageField(), pred)
+      )
     }
   }
 }

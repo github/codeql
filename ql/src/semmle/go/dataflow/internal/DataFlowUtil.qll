@@ -593,9 +593,19 @@ class ReadNode extends InstructionNode {
 /**
  * A data-flow node that reads the value of a field from a struct, or an element from an array, slice, map or string.
  */
-class ReadFromAggregateNode extends ReadNode {
+abstract class ReadFromAggregateNode extends ReadNode {
   /** Gets the data-flow node representing the base from which the field or element is read. */
   abstract Node getBase();
+}
+
+/**
+ * Gets the data-flow node representing the bottom of a stack of zero or more `ReadFromAggregateNode`s.
+ *
+ * For example, in the expression a.b[c].d[e], this would return the dataflow node for the read from `a`.
+ */
+Node getUnderlyingNode(ReadNode read) {
+  (result = read or result = read.(ReadFromAggregateNode).getBase+()) and
+  not result instanceof ReadFromAggregateNode
 }
 
 /**
