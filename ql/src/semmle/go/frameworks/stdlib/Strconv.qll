@@ -42,30 +42,15 @@ module Strconv {
     FunctionModels() {
       // signature: func AppendQuote(dst []byte, s string) []byte
       hasQualifiedName("strconv", "AppendQuote") and
-      (
-        inp.isParameter(_) and outp.isResult()
-        or
-        inp.isParameter(1) and
-        (outp.isParameter(0) or outp.isResult())
-      )
+      (inp.isParameter(_) and outp.isResult())
       or
       // signature: func AppendQuoteToASCII(dst []byte, s string) []byte
       hasQualifiedName("strconv", "AppendQuoteToASCII") and
-      (
-        inp.isParameter(_) and outp.isResult()
-        or
-        inp.isParameter(1) and
-        (outp.isParameter(0) or outp.isResult())
-      )
+      (inp.isParameter(_) and outp.isResult())
       or
       // signature: func AppendQuoteToGraphic(dst []byte, s string) []byte
       hasQualifiedName("strconv", "AppendQuoteToGraphic") and
-      (
-        inp.isParameter(_) and outp.isResult()
-        or
-        inp.isParameter(1) and
-        (outp.isParameter(0) or outp.isResult())
-      )
+      (inp.isParameter(_) and outp.isResult())
       or
       // signature: func Quote(s string) string
       hasQualifiedName("strconv", "Quote") and
