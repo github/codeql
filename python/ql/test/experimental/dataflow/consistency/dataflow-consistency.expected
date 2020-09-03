@@ -5,6 +5,7 @@ uniqueEnclosingCallable
 | module.py:2:8:2:13 | ControlFlowNode for Str | Node should have one enclosing callable but has 0. |
 | module.py:5:1:5:21 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
 | module.py:5:5:5:18 | GSSA Variable dangerous_func | Node should have one enclosing callable but has 0. |
+| module.py:9:9:9:14 | ControlFlowNode for SOURCE | Node should have one enclosing callable but has 0. |
 | module.py:10:1:10:5 | GSSA Variable safe2 | Node should have one enclosing callable but has 0. |
 | module.py:10:9:10:14 | ControlFlowNode for Str | Node should have one enclosing callable but has 0. |
 | test.py:6:1:6:12 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |

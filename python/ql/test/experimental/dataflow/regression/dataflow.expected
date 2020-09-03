@@ -15,5 +15,3 @@
 | test.py:178:9:178:14 | ControlFlowNode for SOURCE | test.py:182:16:182:16 | ControlFlowNode for t |
 | test.py:178:9:178:14 | ControlFlowNode for SOURCE | test.py:184:16:184:16 | ControlFlowNode for t |
 | test.py:178:9:178:14 | ControlFlowNode for SOURCE | test.py:186:14:186:14 | ControlFlowNode for t |
-| test.py:195:9:195:14 | ControlFlowNode for SOURCE | test.py:197:14:197:14 | ControlFlowNode for t |
-| test.py:195:9:195:14 | ControlFlowNode for SOURCE | test.py:199:14:199:14 | ControlFlowNode for t |

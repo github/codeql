@@ -1,6 +1,7 @@
 private import python
 private import DataFlowPublic
 import semmle.python.SpecialMethods
+private import semmle.python.essa.SsaCompute
 
 //--------
 // Data flow graph
@@ -97,12 +98,19 @@ module EssaFlow {
       contextManager.strictlyDominates(var)
     )
     or
-    // Use
+    // First use after definition
     //   `y = 42`
     //   `x = f(y)`
     //   nodeFrom is `y` on first line, essa var
     //   nodeTo is `y` on second line, cfg node
-    nodeFrom.(EssaNode).getVar().getASourceUse() = nodeTo.(CfgNode).getNode()
+    defToFirstUse(nodeFrom.asVar(), nodeTo.asCfgNode())
+    or
+    // Next use after use
+    //   `x = f(y)`
+    //   `z = y + 1`
+    //   nodeFrom is 'y' on first line, cfg node
+    //   nodeTo is `y` on second line, cfg node
+    useToNextUse(nodeFrom.asCfgNode(), nodeTo.asCfgNode())
     or
     // Refinements
     exists(EssaEdgeRefinement r |
@@ -120,6 +128,14 @@ module EssaFlow {
       nodeFrom.(EssaNode).getVar() = p.getAnInput()
     )
   }
+
+  predicate useToNextUse(NameNode nodeFrom, NameNode nodeTo) {
+    AdjacentUses::adjacentUseUseSameVar(nodeFrom, nodeTo)
+  }
+
+  predicate defToFirstUse(EssaVariable var, NameNode nodeTo) {
+    AdjacentUses::firstUse(var.getDefinition(), nodeTo)
+  }
 }
 
 //--------
@@ -136,6 +152,10 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   EssaFlow::essaFlowStep(update(nodeFrom), nodeTo)
 }
 
+/**
+ * If a node `n` has a post-update node `pun(n)`, we want forward flow to go from
+ * `pun(n)` rather than from `n`.
+ */
 private Node update(Node node) {
   exists(PostUpdateNode pun |
     node = pun.getPreUpdateNode() and
