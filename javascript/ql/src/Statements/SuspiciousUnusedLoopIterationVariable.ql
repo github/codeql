@@ -46,8 +46,8 @@ predicate countingLoop(EnhancedForLoop efl) {
 }
 
 /**
- * Holds if `iter` is the non-last variable of array-destructuring in a for-loop.
- * E.g. `for(const [foo, iter, bar] of array) {..}`.
+ * Holds if `iter` is a non-last variable of array-destructuring in a for-loop.
+ * For example `foo` or `iter` in `for(const [foo, iter, bar] of array) {..}`.
  */
 predicate isNonLastDestructedArrayElement(PurelyLocalVariable iter) {
   exists(ArrayPattern pattern | pattern = any(EnhancedForLoop loop).getLValue() |
