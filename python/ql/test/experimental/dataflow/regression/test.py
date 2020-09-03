@@ -40,8 +40,8 @@ def test7(cond):
     if cond:
         SINK(t)
 
-def source2(arg):
-    return source(arg)
+def source2():
+    return source()
 
 def sink2(arg):
     sink(arg)
@@ -50,7 +50,7 @@ def sink3(cond, arg):
     if cond:
         sink(arg)
 
-def test8(cond):  # This flow is shadowed by previous tests, perhaps do a path query
+def test8(cond):  # This test currently adds nothing, as we only track SOURCE -> SINK, and previous tests already add flow from line 10 to line 13
     t = source2()
     sink2(t)
 
@@ -201,8 +201,8 @@ def flow_through_type_test_if_no_class():
 def flow_in_iteration():
     t = ITERABLE_SOURCE  # Seems to not be sunk anywhere
     for i in t:
-        i
-    return i
+        SINK(i)
+    SINK(i)
 
 def flow_in_generator():
     seq = [SOURCE]
@@ -212,22 +212,3 @@ def flow_in_generator():
 def flow_from_generator():
     for x in flow_in_generator():
         SINK(x)  # Flow not found
-
-def const_eq_clears_taint():
-    tainted = SOURCE
-    if tainted == "safe":
-        SINK(tainted) # safe  # FP
-    SINK(tainted) # unsafe
-
-def const_eq_clears_taint2():
-    tainted = SOURCE
-    if tainted != "safe":
-        return
-    SINK(tainted) # safe  # FP
-
-def non_const_eq_preserves_taint(x):
-    tainted = SOURCE
-    if tainted == tainted:
-        SINK(tainted) # unsafe
-    if tainted == x:
-        SINK(tainted) # unsafe
