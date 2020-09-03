@@ -65,7 +65,7 @@
 	$.fn.my_plugin = function my_plugin(element, options) {
 		this.$element      = $(element);
 		this.options       = $.extend({}, options);
-		if (this.options.parent) this.$parent = $(this.options.parent) // NOT OK - but not flagged [INCONSISTENCY]
+		if (this.options.parent) this.$parent = $(this.options.parent) // NOT OK
 	};
 
 	$.fn.my_plugin = function my_plugin(options) {
