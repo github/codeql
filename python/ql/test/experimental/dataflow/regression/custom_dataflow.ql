@@ -7,19 +7,20 @@
  * hope to remove the false positive.
  */
 
+import python
 import experimental.dataflow.DataFlow
 
 class CustomTestConfiguration extends DataFlow::Configuration {
   CustomTestConfiguration() { this = "CustomTestConfiguration" }
 
   override predicate isSource(DataFlow::Node node) {
-    node.(DataFlow::CfgNode).getNode().(NameNode).getId() = "CUSTOM_SOURCE"
+    node.asCfgNode().(NameNode).getId() = "CUSTOM_SOURCE"
   }
 
   override predicate isSink(DataFlow::Node node) {
     exists(CallNode call |
       call.getFunction().(NameNode).getId() in ["CUSTOM_SINK", "CUSTOM_SINK_F"] and
-      node.(DataFlow::CfgNode).getNode() = call.getAnArg()
+      node.asCfgNode() = call.getAnArg()
     )
   }
 }
