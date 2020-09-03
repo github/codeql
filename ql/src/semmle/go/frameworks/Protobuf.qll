@@ -146,15 +146,25 @@ module Protobuf {
   }
 
   /**
+   * Gets the data-flow node representing the bottom of a stack of zero or more `ComponentReadNode`s.
+   *
+   * For example, in the expression a.b[c].d[e], this would return the dataflow node for the read from `a`.
+   */
+  DataFlow::Node getUnderlyingNode(DataFlow::ReadNode read) {
+    (result = read or result = read.(DataFlow::ComponentReadNode).getBase+()) and
+    not result instanceof DataFlow::ComponentReadNode
+  }
+
+  /**
    * Additional taint step tainting a Message when taint is written to any of its fields and/or elements.
    */
   private class WriteMessageFieldStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(DataFlow::ReadNode base | succ = DataFlow::getUnderlyingNode(base) |
+      exists(DataFlow::ReadNode base | succ = getUnderlyingNode(base) |
         any(DataFlow::Write w).writesField(base, getAMessageField(), pred)
       )
       or
-      exists(DataFlow::ReadNode base | succ = DataFlow::getUnderlyingNode(base) |
+      exists(DataFlow::ReadNode base | succ = getUnderlyingNode(base) |
         any(DataFlow::Write w).writesElement(base, _, pred) and
         [succ.getType(), succ.getType().getPointerType()] instanceof MessageType
       )

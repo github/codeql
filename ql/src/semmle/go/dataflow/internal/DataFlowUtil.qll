@@ -601,16 +601,6 @@ class ComponentReadNode extends ReadNode {
 }
 
 /**
- * Gets the data-flow node representing the bottom of a stack of zero or more `ComponentReadNode`s.
- *
- * For example, in the expression a.b[c].d[e], this would return the dataflow node for the read from `a`.
- */
-Node getUnderlyingNode(ReadNode read) {
-  (result = read or result = read.(ComponentReadNode).getBase+()) and
-  not result instanceof ComponentReadNode
-}
-
-/**
  * A data-flow node that reads an element of an array, map, slice or string.
  */
 class ElementReadNode extends ComponentReadNode {
