@@ -593,29 +593,28 @@ class ReadNode extends InstructionNode {
 /**
  * A data-flow node that reads the value of a field from a struct, or an element from an array, slice, map or string.
  */
-abstract class ReadFromAggregateNode extends ReadNode {
+class ComponentReadNode extends ReadNode {
+  override IR::ComponentReadInstruction insn;
+
   /** Gets the data-flow node representing the base from which the field or element is read. */
-  abstract Node getBase();
+  Node getBase() { result = instructionNode(insn.getBase()) }
 }
 
 /**
- * Gets the data-flow node representing the bottom of a stack of zero or more `ReadFromAggregateNode`s.
+ * Gets the data-flow node representing the bottom of a stack of zero or more `ComponentReadNode`s.
  *
  * For example, in the expression a.b[c].d[e], this would return the dataflow node for the read from `a`.
  */
 Node getUnderlyingNode(ReadNode read) {
-  (result = read or result = read.(ReadFromAggregateNode).getBase+()) and
-  not result instanceof ReadFromAggregateNode
+  (result = read or result = read.(ComponentReadNode).getBase+()) and
+  not result instanceof ComponentReadNode
 }
 
 /**
  * A data-flow node that reads an element of an array, map, slice or string.
  */
-class ElementReadNode extends ReadFromAggregateNode {
+class ElementReadNode extends ComponentReadNode {
   override IR::ElementReadInstruction insn;
-
-  /** Gets the data-flow node representing the base from which the element is read. */
-  override Node getBase() { result = instructionNode(insn.getBase()) }
 
   /** Gets the data-flow node representing the index of the element being read. */
   Node getIndex() { result = instructionNode(insn.getIndex()) }
@@ -762,11 +761,8 @@ class AddressOperationNode extends UnaryOperationNode, ExprNode {
 /**
  * A data-flow node that reads the value of a field.
  */
-class FieldReadNode extends ReadFromAggregateNode {
+class FieldReadNode extends ComponentReadNode {
   override IR::FieldReadInstruction insn;
-
-  /** Gets the base node from which the field is read. */
-  override Node getBase() { result = instructionNode(insn.getBase()) }
 
   /** Gets the field this node reads. */
   Field getField() { result = insn.getField() }
