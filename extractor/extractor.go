@@ -379,6 +379,10 @@ func normalizedPath(ast *ast.File, fset *token.FileSet) string {
 // extractFile extracts AST information for the given file
 func extractFile(ast *ast.File, pkg *packages.Package, fdSem *semaphore) error {
 	fset := pkg.Fset
+	if ast.Package == token.NoPos {
+		log.Printf("Skipping extracting a file without a 'package' declaration")
+		return nil
+	}
 	path := normalizedPath(ast, fset)
 
 	fdSem.acquire(3)
