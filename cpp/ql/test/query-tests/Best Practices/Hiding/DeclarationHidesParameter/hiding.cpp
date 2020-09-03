@@ -63,3 +63,19 @@ void testMacro(int i) {
 
 	for (int i = 0; i < 10; i++) {}; // local variable hides global variable
 }
+
+#include "hiding.h"
+
+void myClass::myCaller(void) {
+  this->myMethod(5, 6);
+}
+
+template <typename T>
+void myClass::myMethod(int arg1, T arg2) {
+	{
+		int protoArg1;
+		T protoArg2;
+		int arg1; // local variable hides global variable
+		T arg2; // local variable hides global variable
+	}
+}
