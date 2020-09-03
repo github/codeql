@@ -4,6 +4,7 @@ import go
 
 /** Provides models of commonly used functions and types in the protobuf packages. */
 module Protobuf {
+  /** Gets the name of a protobuf implementation package. */
   string protobufPackages() {
     result in ["github.com/golang/protobuf/proto", "google.golang.org/protobuf/proto"]
   }
