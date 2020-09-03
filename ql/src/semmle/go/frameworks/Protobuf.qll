@@ -4,9 +4,18 @@ import go
 
 /** Provides models of commonly used functions and types in the protobuf packages. */
 module Protobuf {
-  /** Gets the name of a protobuf implementation package. */
+  /** Gets the name of the modern protobuf top-level implementation package. */
+  string modernProtobufPackage() { result = "google.golang.org/protobuf/proto" }
+
+  /** Gets the name of the modern protobuf implementation's `protoiface` subpackage. */
+  string protobufIfacePackage() { result = "google.golang.org/protobuf/runtime/protoiface" }
+
+  /** Gets the name of the modern protobuf implementation's `protoreflect` subpackage. */
+  string protobufReflectPackage() { result = "google.golang.org/protobuf/reflect/protoreflect" }
+
+  /** Gets the name of a top-level protobuf implementation package. */
   string protobufPackages() {
-    result in ["github.com/golang/protobuf/proto", "google.golang.org/protobuf/proto"]
+    result in ["github.com/golang/protobuf/proto", modernProtobufPackage()]
   }
 
   /** The `Marshal` and `MarshalAppend` functions in the protobuf packages. */
@@ -17,7 +26,7 @@ module Protobuf {
       name = ["Marshal", "MarshalAppend"] and
       (
         this.hasQualifiedName(protobufPackages(), name) or
-        this.(Method).hasQualifiedName("google.golang.org/protobuf/proto", "MarshalOptions", name)
+        this.(Method).hasQualifiedName(modernProtobufPackage(), "MarshalOptions", name)
       )
     }
 
@@ -39,14 +48,11 @@ module Protobuf {
   }
 
   private Field inputMessageField() {
-    result
-        .hasQualifiedName("google.golang.org/protobuf/runtime/protoiface", "MarshalInput", "Message")
+    result.hasQualifiedName(protobufIfacePackage(), "MarshalInput", "Message")
   }
 
   private Method marshalStateMethod() {
-    result
-        .hasQualifiedName("google.golang.org/protobuf/runtime/protoiface", "MarshalOptions",
-          "MarshalState")
+    result.hasQualifiedName(protobufIfacePackage(), "MarshalOptions", "MarshalState")
   }
 
   /**
@@ -76,9 +82,7 @@ module Protobuf {
   class UnmarshalFunction extends TaintTracking::FunctionModel, UnmarshalingFunction::Range {
     UnmarshalFunction() {
       this.hasQualifiedName(protobufPackages(), "Unmarshal") or
-      this
-          .(Method)
-          .hasQualifiedName("google.golang.org/protobuf/proto", "UnmarshalOptions", "Unmarshal")
+      this.(Method).hasQualifiedName(modernProtobufPackage(), "UnmarshalOptions", "Unmarshal")
     }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
@@ -103,9 +107,7 @@ module Protobuf {
 
   /** A protobuf `Message` type. */
   class MessageType extends Type {
-    MessageType() {
-      this.implements("google.golang.org/protobuf/reflect/protoreflect", "ProtoMessage")
-    }
+    MessageType() { this.implements(protobufReflectPackage(), "ProtoMessage") }
   }
 
   /** The `Clone` function in the protobuf packages. */
