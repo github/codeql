@@ -665,6 +665,8 @@ module API {
     cached
     int distanceFromRoot(TFeature nd) = shortestDistances(MkRoot/0, edge/2)(_, nd, result)
   }
+
+  import Label as EdgeLabel
 }
 
 private module Label {
