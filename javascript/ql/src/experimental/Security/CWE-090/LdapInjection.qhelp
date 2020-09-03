@@ -28,7 +28,7 @@ queries, and search for a completely different set of values.
 <sample src="examples/example_bad2.js" />
 
 
-<p>The second example the <code>username</code> is sanitized before it is included in the search filters. 
+<p>In the third example the <code>username</code> is sanitized before it is included in the search filters. 
 This ensures the meaning of the query cannot be changed by a malicious user.</p>
 
 <sample src="examples/example_good1.js" />
