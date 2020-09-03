@@ -4,5 +4,7 @@
 | hiding.cpp:45:7:45:7 | a | Local variable 'a' hides a $@. | hiding.cpp:39:20:39:20 | definition of a | parameter of the same name |
 | hiding.cpp:47:7:47:7 | c | Local variable 'c' hides a $@. | hiding.cpp:39:34:39:34 | definition of c | parameter of the same name |
 | hiding.cpp:64:11:64:11 | i | Local variable 'i' hides a $@. | hiding.cpp:61:20:61:20 | definition of i | parameter of the same name |
+| hiding.cpp:76:7:76:15 | protoArg1 | Local variable 'protoArg1' hides a $@. | hiding.h:5:21:5:29 | definition of protoArg1 | parameter of the same name |
+| hiding.cpp:77:5:77:13 | protoArg2 | Local variable 'protoArg2' hides a $@. | hiding.h:5:34:5:42 | definition of protoArg2 | parameter of the same name |
 | hiding.cpp:78:7:78:10 | arg1 | Local variable 'arg1' hides a $@. | hiding.cpp:74:28:74:31 | definition of arg1 | parameter of the same name |
 | hiding.cpp:79:5:79:8 | arg2 | Local variable 'arg2' hides a $@. | hiding.cpp:74:36:74:39 | definition of arg2 | parameter of the same name |

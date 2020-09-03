@@ -24,7 +24,6 @@ ParameterDeclarationEntry functionParameterNames(Function f, string name) {
     result.getFunctionDeclarationEntry() = fe and
     fe.getFunction() = f and
     fe.getLocation() = f.getDefinitionLocation() and
-    result.getFile() = fe.getFile() and // Work around CPP-331
     strictcount(f.getDefinitionLocation()) = 1 and
     result.getName() = name
   )

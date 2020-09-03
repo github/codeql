@@ -73,8 +73,8 @@ void myClass::myCaller(void) {
 template <typename T>
 void myClass::myMethod(int arg1, T arg2) {
 	{
-		int protoArg1;
-		T protoArg2;
+		int protoArg1; // [FALSE POSITIVE]
+		T protoArg2; // [FALSE POSITIVE]
 		int arg1; // local variable hides global variable
 		T arg2; // local variable hides global variable
 	}
