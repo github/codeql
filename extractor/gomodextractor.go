@@ -168,7 +168,7 @@ func extractGoModComments(tw *trap.Writer, expr modfile.Expr, exprlbl trap.Label
 	var first bool = true
 	idx := 0
 	for _, comment := range allComments {
-		commentToken := strings.TrimSuffix(comment.Token, "\r")
+		commentToken := strings.TrimSuffix(strings.TrimSuffix(comment.Token, "\n"), "\r")
 		extractGoModComment(tw, comment, commentToken, grouplbl, idx)
 		idx++
 		commentEndCol := comment.Start.LineRune + (len(commentToken) - 1)
