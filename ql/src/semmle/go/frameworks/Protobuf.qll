@@ -49,28 +49,22 @@ module Protobuf {
   }
 
   /**
-   * Additional taint-flow step modelling flow from MarshalInput.Message to MarshalOutput,
-   * mediated by a MarshalOptions.MarshalState call.
+   * Additional taint-flow step modelling flow from `MarshalInput.Message` to `MarshalOutput`,
+   * mediated by a `MarshalOptions.MarshalState` call.
    *
-   * Note we can taint the whole MarshalOutput as it only has one field (Buf), and taint-
+   * Note we can taint the whole `MarshalOutput` as it only has one field (`Buf`), and taint-
    * tracking always considers a field of a tainted struct to itself be tainted.
    */
   private class MarshalStateStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(
-        DataFlow::Node marshalInput, DataFlow::Node passedMarshalInput,
-        DataFlow::CallNode marshalStateCall
-      |
+      exists(DataFlow::Node marshalInput, DataFlow::CallNode marshalStateCall |
         marshalStateCall = marshalStateMethod().getACall() and
         // pred -> marshalInput.Message
         any(DataFlow::Write w)
             .writesField(marshalInput.(DataFlow::PostUpdateNode).getPreUpdateNode(),
               inputMessageField(), pred) and
-        // marshalInput -> passedMarshalInput
-        passedMarshalInput.asExpr().getGlobalValueNumber() =
-          marshalInput.asExpr().getGlobalValueNumber() and
-        // passedMarshalInput -> marshalStateCall
-        marshalStateCall.getArgument(0) = passedMarshalInput and
+        // marshalInput -> marshalStateCall
+        marshalStateCall.getArgument(0) = globalValueNumber(marshalInput).getANode() and
         // marshalStateCall -> succ
         marshalStateCall.getResult() = succ
       )
