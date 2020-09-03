@@ -321,14 +321,14 @@ module API {
         f = trackDefNode(_) and f.getFunction().isAsync() and hasSemantics(f)
       } or
       MkDef(DataFlow::Node nd) { rhs(_, _, nd) } or
-      MkUse(DataFlow::SourceNode nd) { use(_, _, nd) } or
+      MkUse(DataFlow::Node nd) { use(_, _, nd) } or
       MkCanonicalNameDef(CanonicalName n) { isDefined(n) } or
       MkCanonicalNameUse(CanonicalName n) { isUsed(n) }
 
     private predicate hasSemantics(DataFlow::Node nd) { not nd.getTopLevel().isExterns() }
 
     /** Holds if `imp` is an import of module `m`. */
-    private predicate imports(DataFlow::SourceNode imp, string m) {
+    private predicate imports(DataFlow::Node imp, string m) {
       imp = DataFlow::moduleImport(m) and
       // path must not start with a dot or a slash
       m.regexpMatch("[^./].*") and
@@ -367,7 +367,7 @@ module API {
      * incoming edge from `base` labeled `lbl` in the API graph.
      */
     cached
-    predicate rhs(Feature base, string lbl, DataFlow::Node rhs) {
+    predicate rhs(TFeature base, string lbl, DataFlow::Node rhs) {
       hasSemantics(rhs) and
       (
         base = MkRoot() and
@@ -433,7 +433,7 @@ module API {
      * Holds if `rhs` is the right-hand side of a definition of feature `nd`.
      */
     cached
-    predicate rhs(Feature nd, DataFlow::Node rhs) {
+    predicate rhs(TFeature nd, DataFlow::Node rhs) {
       exists(string m | nd = MkModuleExport(m) | exports(m, rhs))
       or
       nd = MkDef(rhs)
@@ -449,7 +449,7 @@ module API {
      * `lbl` in the API graph.
      */
     cached
-    predicate use(Feature base, string lbl, DataFlow::SourceNode ref) {
+    predicate use(TFeature base, string lbl, DataFlow::Node ref) {
       hasSemantics(ref) and
       (
         base = MkRoot() and
@@ -502,7 +502,7 @@ module API {
      * Holds if `ref` is a use of feature `nd`.
      */
     cached
-    predicate use(Feature nd, DataFlow::SourceNode ref) {
+    predicate use(TFeature nd, DataFlow::Node ref) {
       exists(string m, Module mod | nd = MkModule(m) and mod = importableModule(m) |
         ref = DataFlow::ssaDefinitionNode(SSA::implicitInit(mod.(NodeModule).getModuleVariable()))
         or
