@@ -171,7 +171,9 @@ module UnsafeJQueryPlugin {
    * An argument that may act as a HTML fragment rather than a CSS selector, as a sink for remote unsafe jQuery plugins.
    */
   class AmbiguousHtmlOrSelectorArgumentAsSink extends Sink {
-    AmbiguousHtmlOrSelectorArgumentAsSink() { this instanceof AmbiguousHtmlOrSelectorArgument }
+    AmbiguousHtmlOrSelectorArgumentAsSink() {
+      this instanceof AmbiguousHtmlOrSelectorArgument and not isLikelyIntentionalHtmlSink(_, this)
+    }
   }
 
   /**
@@ -186,7 +188,7 @@ module UnsafeJQueryPlugin {
   /**
    * Holds if `plugin` likely expects `sink` to be treated as a HTML fragment.
    */
-  predicate isLikelyIntentionalHtmlSink(JQuery::JQueryPluginMethod plugin, Sink sink) {
+  predicate isLikelyIntentionalHtmlSink(JQuery::JQueryPluginMethod plugin, DataFlow::Node sink) {
     exists(DataFlow::PropWrite defaultDef, string default, DataFlow::PropRead finalRead |
       hasDefaultOption(plugin, defaultDef) and
       defaultDef.getPropertyName() = finalRead.getPropertyName() and

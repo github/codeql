@@ -103,7 +103,7 @@
 			menu: '<div></div>',
 			target: '.my_plugin'
 		}, options);
-		$(options.menu); // OK - but is flagged [INCONSISTENCY]
+		$(options.menu); // OK
 		$(options.target); // NOT OK
 	};
 
@@ -113,7 +113,7 @@
 	};
 	$.fn.my_plugin = function my_plugin(options) {
 		options = $.extend({}, $.fn.my_plugin.defaults, options);
-		$(options.menu); // OK - but is flagged [INCONSISTENCY]
+		$(options.menu); // OK
 		$(options.target); // NOT OK
 	};
 
