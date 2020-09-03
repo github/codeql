@@ -372,7 +372,7 @@ module API {
     private predicate isUsed(CanonicalName n) {
       exists(n.(TypeName).getAnAccess()) or
       exists(n.(Namespace).getAnAccess()) or
-      exists(InvokeExpr invk | ast_node_symbol(invk, n))
+      exists(InvokeExpr invk | invk.getResolvedCalleeName() = n)
     }
 
     private predicate isDefined(CanonicalName n) {

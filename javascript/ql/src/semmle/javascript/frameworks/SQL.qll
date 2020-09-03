@@ -213,7 +213,7 @@ private module MsSql {
     override TaggedTemplateExpr astNode;
 
     QueryTemplateExpr() {
-      mssql().getMember("query").getAUse().(DataFlow::SourceNode).flowsToExpr(astNode.getTag())
+      mssql().getMember("query").getAUse() = DataFlow::valueNode(astNode.getTag())
     }
 
     override DataFlow::Node getAQueryArgument() {
