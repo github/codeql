@@ -2067,7 +2067,7 @@ class UpdateExpr extends @updateexpr, Expr {
  * ++i
  * ```
  */
-class PreIncExpr extends @preincexpr, UpdateExpr {
+class PreIncExpr extends @preinc_expr, UpdateExpr {
   override predicate isPrefix() { any() }
 
   override string getOperator() { result = "++" }
