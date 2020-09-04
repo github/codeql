@@ -112,7 +112,7 @@ decl(#20031,#20030)
 #20032=@"var;{arguments};{#20029}"
 variables(#20032,"arguments",#20029)
 is_arguments_object(#20032)
-hasRestParameter(#20028)
+has_rest_parameter(#20028)
 #20033=*
 stmts(#20033,1,#20028,-2,"{ super(...args); }")
 hasLocation(#20033,#20026)

@@ -285,3 +285,8 @@ deprecated predicate unicodePropertyEscapeValue(RegExpUnicodePropertyEscape id, 
  * Use `Function#isGenerator()` instead.
  */ 
 deprecated predicate isGenerator(Function fun) { is_generator(fun) }
+/**
+ * Alias for the predicate `has_rest_parameter` defined in the .dbscheme.
+ * Use `Function#hasRestParameter()` instead.
+ */ 
+deprecated predicate hasRestParameter(Function fun) { has_rest_parameter(fun) }

@@ -11698,7 +11698,7 @@
 <dependencies/>
 </relation>
 <relation>
-<name>hasRestParameter</name>
+<name>has_rest_parameter</name>
 <cardinality>33</cardinality>
 <columnsizes>
 <e>

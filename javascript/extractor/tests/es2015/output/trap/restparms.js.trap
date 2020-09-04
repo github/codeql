@@ -113,7 +113,7 @@ decl(#20035,#20034)
 #20036=@"var;{arguments};{#20031}"
 variables(#20036,"arguments",#20031)
 is_arguments_object(#20036)
-hasRestParameter(#20029)
+has_rest_parameter(#20029)
 #20037=*
 stmts(#20037,1,#20029,-2,"{\n}")
 #20038=@"loc,{#10000},1,22,2,1"

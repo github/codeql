@@ -171,7 +171,7 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   }
 
   /** Holds if the last parameter of this function is a rest parameter. */
-  predicate hasRestParameter() { hasRestParameter(this) }
+  predicate hasRestParameter() { has_rest_parameter(this) }
 
   /**
    * Gets the last token of this function's parameter list, not including

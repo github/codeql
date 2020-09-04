@@ -440,7 +440,7 @@ scopenesting (unique int inner: @scope ref,
 @type_parameterized = @function | @classorinterface | @typealiasdeclaration | @mappedtypeexpr | @infertypeexpr;
 
 is_generator (int fun: @function ref);
-hasRestParameter (int fun: @function ref);
+has_rest_parameter (int fun: @function ref);
 isAsync (int fun: @function ref);
 
 // variables and lexically scoped type names
