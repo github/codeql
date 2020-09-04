@@ -230,7 +230,7 @@ class SelectiveImportDeclaration extends ImportDeclaration {
  * export x from 'a';               // default re-export declaration
  * ```
  */
-abstract class ExportDeclaration extends Stmt, @exportdeclaration {
+abstract class ExportDeclaration extends Stmt, @export_declaration {
   /** Gets the module to which this export declaration belongs. */
   ES2015Module getEnclosingModule() { this = result.getAnExport() }
 

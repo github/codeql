@@ -193,7 +193,7 @@ case @stmt.kind of
 
 @decl_stmt = @var_decl_stmt | @const_decl_stmt | @let_stmt | @legacy_let_stmt;
 
-@exportdeclaration = @export_all_declaration | @export_default_declaration | @export_named_declaration;
+@export_declaration = @export_all_declaration | @export_default_declaration | @export_named_declaration;
 
 @namespacedefinition = @namespace_declaration | @enum_declaration;
 @typedefinition = @classdefinition | @interface_declaration | @enum_declaration | @type_alias_declaration | @enum_member;
@@ -389,7 +389,7 @@ case @expr.kind of
 
 @exportspecifier = @named_export_specifier | @export_default_specifier | @export_namespace_specifier;
 
-@import_or_export_declaration = @import_declaration | @exportdeclaration;
+@import_or_export_declaration = @import_declaration | @export_declaration;
 
 @typeassertion = @as_type_assertion | @prefix_type_assertion;
 
