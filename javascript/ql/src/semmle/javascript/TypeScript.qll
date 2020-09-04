@@ -1205,7 +1205,7 @@ class TypeAssertion extends Expr, @typeassertion {
 /**
  * A type assertion specifically of the form `E as T` (as opposed to the `<T> E` syntax).
  */
-class AsTypeAssertion extends TypeAssertion, @astypeassertion { }
+class AsTypeAssertion extends TypeAssertion, @as_type_assertion { }
 
 /**
  * A type assertion specifically of the form `<T> E` (as opposed to the `E as T` syntax).
