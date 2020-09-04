@@ -167,3 +167,15 @@ func testTaintedMapFieldReadViaAlias() {
 
 	sinkString((*alias)[123]) // BAD
 }
+
+func testTaintedSubmessageInPlaceNonPointerBase() {
+	alert := query.Query_Alert{}
+
+	query := query.Query{}
+	query.Alerts = append(query.Alerts, &alert)
+	query.Alerts[0].Msg = getUntrustedString()
+
+	serialized, _ := proto.Marshal(query)
+
+	sinkBytes(serialized) // BAD (but not detected by our current analysis)
+}

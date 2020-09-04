@@ -140,12 +140,22 @@ module Protobuf {
   }
 
   /**
-   * Gets the data-flow node representing the bottom of a stack of zero or more `ComponentReadNode`s.
+   * Gets the base of `node`, looking through any dereference node found.
+   */
+  private DataFlow::Node getBaseLookingThroughDerefs(DataFlow::ComponentReadNode node) {
+    result = node.getBase().(DataFlow::PointerDereferenceNode).getOperand()
+    or
+    result = node.getBase() and not node.getBase() instanceof DataFlow::PointerDereferenceNode
+  }
+
+  /**
+   * Gets the data-flow node representing the bottom of a stack of zero or more `ComponentReadNode`s
+   * perhaps with interleaved dereferences.
    *
    * For example, in the expression a.b[c].d[e], this would return the dataflow node for the read from `a`.
    */
   DataFlow::Node getUnderlyingNode(DataFlow::ReadNode read) {
-    (result = read or result = read.(DataFlow::ComponentReadNode).getBase+()) and
+    (result = read or result = getBaseLookingThroughDerefs+(read)) and
     not result instanceof DataFlow::ComponentReadNode
   }
 
@@ -155,7 +165,9 @@ module Protobuf {
   private class WriteMessageFieldStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       [succ.getType(), succ.getType().getPointerType()] instanceof MessageType and
-      exists(DataFlow::ReadNode base | succ = getUnderlyingNode(base) |
+      exists(DataFlow::ReadNode base |
+        succ.(DataFlow::PostUpdateNode).getPreUpdateNode() = getUnderlyingNode(base)
+      |
         any(DataFlow::Write w).writesComponent(base, pred)
       )
     }
