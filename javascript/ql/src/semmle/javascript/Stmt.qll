@@ -935,7 +935,7 @@ class DebuggerStmt extends @debugger_stmt, Stmt {
  * }
  * ```
  */
-class FunctionDeclStmt extends @functiondeclstmt, Stmt, Function {
+class FunctionDeclStmt extends @function_decl_stmt, Stmt, Function {
   override Stmt getEnclosingStmt() { result = this }
 }
 

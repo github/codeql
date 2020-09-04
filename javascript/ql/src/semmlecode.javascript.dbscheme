@@ -166,7 +166,7 @@ case @stmt.kind of
 | 14 = @for_stmt
 | 15 = @for_in_stmt
 | 16 = @debugger_stmt
-| 17 = @functiondeclstmt
+| 17 = @function_decl_stmt
 | 18 = @vardeclstmt
 | 19 = @case
 | 20 = @catchclause
@@ -200,7 +200,7 @@ case @stmt.kind of
 
 is_instantiated(unique int decl: @namespace_declaration ref);
 
-@declarable_node = @declstmt | @namespace_declaration | @classdeclstmt | @functiondeclstmt | @enumdeclaration | @external_module_declaration | @global_augmentation_declaration | @field;
+@declarable_node = @declstmt | @namespace_declaration | @classdeclstmt | @function_decl_stmt | @enumdeclaration | @external_module_declaration | @global_augmentation_declaration | @field;
 has_declare_keyword(unique int stmt: @declarable_node ref);
 
 is_for_await_of(unique int forof: @forofstmt ref);
@@ -434,7 +434,7 @@ scopenesting (unique int inner: @scope ref,
               int outer: @scope ref);
 
 // functions
-@function = @functiondeclstmt | @function_expr | @arrow_function_expr;
+@function = @function_decl_stmt | @function_expr | @arrow_function_expr;
 
 @parameterized = @function | @catchclause;
 @type_parameterized = @function | @class_or_interface | @typealiasdeclaration | @mapped_typeexpr | @infer_typeexpr;
@@ -1130,7 +1130,7 @@ xmllocations(
 
 @xmllocatable = @xmlcharacters | @xmlelement | @xmlcomment | @xmlattribute | @xmldtd | @file | @xmlnamespace;
 
-@dataflownode = @expr | @functiondeclstmt | @classdeclstmt | @namespace_declaration | @enumdeclaration | @property;
+@dataflownode = @expr | @function_decl_stmt | @classdeclstmt | @namespace_declaration | @enumdeclaration | @property;
 
 @optionalchainable = @callexpr | @propaccess;
 
