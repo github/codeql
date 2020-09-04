@@ -304,7 +304,7 @@ class InterfaceDeclaration extends Stmt, InterfaceDefinition, @interfacedeclarat
 }
 
 /** An inline TypeScript interface type, such as `{x: number; y: number}`. */
-class InterfaceTypeExpr extends TypeExpr, InterfaceDefinition, @interfacetypeexpr {
+class InterfaceTypeExpr extends TypeExpr, InterfaceDefinition, @interface_typeexpr {
   override Identifier getIdentifier() { none() }
 
   override string describe() { result = "anonymous interface" }
