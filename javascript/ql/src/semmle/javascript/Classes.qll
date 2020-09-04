@@ -472,7 +472,7 @@ class MemberDeclaration extends @property, Documentable {
   /**
    * Holds if this member is static.
    */
-  predicate isStatic() { isStatic(this) }
+  predicate isStatic() { is_static(this) }
 
   /**
    * Holds if this member is abstract.

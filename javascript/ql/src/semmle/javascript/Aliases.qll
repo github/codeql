@@ -150,3 +150,8 @@ deprecated predicate isComputed(Property prop) { is_computed(prop) }
  * Use the `isMethod()` method on the `MemberDeclaration`/`Property` class instead.
  */ 
 deprecated predicate isMethod(Property prop) { is_method(prop) }
+/**
+ * Alias for the predicate `is_static` defined in the .dbscheme.
+ * Use `MemberDeclaration#isStatic()` instead.
+ */ 
+deprecated predicate isStatic(Property prop) { is_static(prop) }

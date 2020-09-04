@@ -184,7 +184,7 @@ locations_default(#20058,#10000,3,13,3,13)
 hasLocation(#20057,#20058)
 regexpConstValue(#20057,"A")
 is_method(#20045)
-isStatic(#20045)
+is_static(#20045)
 #20059=*
 properties(#20059,#20042,3,0,"constructor() {}")
 #20060=@"loc,{#10000},1,9,1,8"

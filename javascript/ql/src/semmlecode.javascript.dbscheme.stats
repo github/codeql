@@ -13539,7 +13539,7 @@
 <dependencies/>
 </relation>
 <relation>
-<name>isStatic</name>
+<name>is_static</name>
 <cardinality>36</cardinality>
 <columnsizes>
 <e>

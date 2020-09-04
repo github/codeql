@@ -470,7 +470,7 @@ hasLocation(#20161,#20065)
 enclosing_stmt(#20161,#20139)
 expr_containers(#20161,#20001)
 literals("y","y",#20161)
-isStatic(#20159)
+is_static(#20159)
 #20162=*
 properties(#20162,#20139,5,0,"f() {}")
 #20163=@"loc,{#10000},7,3,7,8"
@@ -535,7 +535,7 @@ locations_default(#20179,#10000,8,14,8,15)
 hasLocation(#20178,#20179)
 stmt_containers(#20178,#20174)
 is_method(#20171)
-isStatic(#20171)
+is_static(#20171)
 #20180=*
 stmts(#20180,26,#20001,1,"class B ... \n  z;\n}")
 #20181=@"loc,{#10000},11,1,18,1"

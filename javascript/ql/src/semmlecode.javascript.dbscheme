@@ -515,7 +515,7 @@ case @property.kind of
 
 is_computed (int id: @property ref);
 is_method   (int id: @property ref);
-isStatic   (int id: @property ref);
+is_static   (int id: @property ref);
 isAbstractMember (int id: @property ref);
 isConstEnum (int id: @enumdeclaration ref);
 isAbstractClass (int id: @classdeclstmt ref);

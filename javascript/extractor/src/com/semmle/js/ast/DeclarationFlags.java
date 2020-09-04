@@ -39,7 +39,7 @@ public class DeclarationFlags {
       Arrays.asList(
           "is_computed",
           "isAbstractMember",
-          "isStatic",
+          "is_static",
           "hasReadonlyKeyword",
           "hasPublicKeyword",
           "hasPrivateKeyword",
