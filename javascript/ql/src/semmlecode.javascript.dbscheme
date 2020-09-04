@@ -163,7 +163,7 @@ case @stmt.kind of
 | 11 = @try_stmt
 | 12 = @while_stmt
 | 13 = @do_while_stmt
-| 14 = @forstmt
+| 14 = @for_stmt
 | 15 = @forinstmt
 | 16 = @debuggerstmt
 | 17 = @functiondeclstmt

@@ -67,7 +67,7 @@ class Stmt extends @stmt, ExprOrStmt, Documentable {
 private class TControlStmt =
   TLoopStmt or @if_stmt or @with_stmt or @switch_stmt or @try_stmt or @catchclause;
 
-private class TLoopStmt = TEnhancedForLoop or @while_stmt or @do_while_stmt or @forstmt;
+private class TLoopStmt = TEnhancedForLoop or @while_stmt or @do_while_stmt or @for_stmt;
 
 private class TEnhancedForLoop = @forinstmt or @foreachstmt or @forofstmt;
 
@@ -782,7 +782,7 @@ class ExprOrVarDecl extends ASTNode {
  * }
  * ```
  */
-class ForStmt extends @forstmt, LoopStmt {
+class ForStmt extends @for_stmt, LoopStmt {
   /** Gets the init part of this `for` loop. */
   ExprOrVarDecl getInit() {
     result = getChildExpr(0) or
