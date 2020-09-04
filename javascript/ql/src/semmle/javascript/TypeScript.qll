@@ -2309,7 +2309,7 @@ class AnonymousInterfaceType extends Type, @objecttype { }
 /**
  * A type that refers to a type variable.
  */
-class TypeVariableType extends Type, @typevariabletype {
+class TypeVariableType extends Type, @typevariable_type {
   /**
    * Gets a syntactic declaration of this type variable.
    *
