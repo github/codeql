@@ -170,7 +170,7 @@ case @stmt.kind of
 | 18 = @var_decl_stmt
 | 19 = @case
 | 20 = @catch_clause
-| 21 = @forofstmt
+| 21 = @for_of_stmt
 | 22 = @constdeclstmt
 | 23 = @letstmt
 | 24 = @legacy_letstmt
@@ -203,7 +203,7 @@ is_instantiated(unique int decl: @namespace_declaration ref);
 @declarable_node = @declstmt | @namespace_declaration | @classdeclstmt | @function_decl_stmt | @enumdeclaration | @external_module_declaration | @global_augmentation_declaration | @field;
 has_declare_keyword(unique int stmt: @declarable_node ref);
 
-is_for_await_of(unique int forof: @forofstmt ref);
+is_for_await_of(unique int forof: @for_of_stmt ref);
 
 // expressions
 #keyset[parent, idx]
