@@ -1490,7 +1490,7 @@ class MappedTypeScope extends @mapped_type_scope, Scope {
  * Initializers of enum members are resolved in this scope since they can reference
  * previously-defined enum members by their unqualified name.
  */
-class EnumScope extends @enumscope, Scope {
+class EnumScope extends @enum_scope, Scope {
   override string toString() { result = "enum scope" }
 }
 
