@@ -268,7 +268,7 @@ case @expr.kind of
 | 29 = @gt_expr
 | 30 = @ge_expr
 | 31 = @lshift_expr
-| 32 = @rshiftexpr
+| 32 = @rshift_expr
 | 33 = @urshiftexpr
 | 34 = @addexpr
 | 35 = @subexpr
@@ -373,7 +373,7 @@ case @expr.kind of
 
 @comparison = @equality_test | @lt_expr | @le_expr | @gt_expr | @ge_expr;
 
-@binaryexpr = @comparison | @lshift_expr | @rshiftexpr | @urshiftexpr | @addexpr | @subexpr | @mulexpr | @divexpr | @modexpr | @expexpr | @bitorexpr | @xorexpr | @bitandexpr | @inexpr | @instanceofexpr | @logandexpr | @logorexpr | @nullishcoalescingexpr;
+@binaryexpr = @comparison | @lshift_expr | @rshift_expr | @urshiftexpr | @addexpr | @subexpr | @mulexpr | @divexpr | @modexpr | @expexpr | @bitorexpr | @xorexpr | @bitandexpr | @inexpr | @instanceofexpr | @logandexpr | @logorexpr | @nullishcoalescingexpr;
 
 @assignment = @assignexpr | @assignaddexpr | @assignsubexpr | @assignmulexpr | @assigndivexpr | @assignmodexpr | @assignexpexpr | @assignlshiftexpr | @assignrshiftexpr | @assignurshiftexpr | @assignorexpr | @assignxorexpr | @assignandexpr | @assignlogandexpr | @assignlogorexpr | @assignnullishcoalescingexpr;
 

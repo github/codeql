@@ -1484,7 +1484,7 @@ class LShiftExpr extends @lshift_expr, BinaryExpr {
  * r >> 8
  * ```
  */
-class RShiftExpr extends @rshiftexpr, BinaryExpr {
+class RShiftExpr extends @rshift_expr, BinaryExpr {
   override string getOperator() { result = ">>" }
 }
 
