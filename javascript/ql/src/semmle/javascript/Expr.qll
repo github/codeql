@@ -328,7 +328,7 @@ class Literal extends @literal, Expr {
  * (function() { console.log("Hello, world!"); }())
  * ```
  */
-class ParExpr extends @parexpr, Expr {
+class ParExpr extends @par_expr, Expr {
   /** Gets the expression within parentheses. */
   Expr getExpression() { result = this.getChildExpr(0) }
 

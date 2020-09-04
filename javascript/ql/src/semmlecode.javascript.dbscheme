@@ -298,7 +298,7 @@ case @expr.kind of
 | 60 = @postinc_expr
 | 61 = @predec_expr
 | 62 = @postdec_expr
-| 63 = @parexpr
+| 63 = @par_expr
 | 64 = @vardeclarator
 | 65 = @arrow_function_expr
 | 66 = @spreadelement
