@@ -210,3 +210,8 @@ deprecated predicate hasDefiniteAssignmentAssertion(ASTNode id) { has_definite_a
  * Use `Parameter#isDeclaredOptional()` instead.
  */ 
 deprecated predicate isOptionalParameterDeclaration(Parameter parameter) { is_optional_parameter_declaration(parameter) }
+/**
+ * Alias for the predicate `has_asserts_keyword` defined in the .dbscheme.
+ * Use `PredicateTypeExpr#hasAssertsKeyword() instead.
+ */ 
+deprecated predicate hasAssertsKeyword(PredicateTypeExpr node) { has_asserts_keyword(node) }

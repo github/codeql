@@ -645,7 +645,7 @@ case @type.kind of
 @unionorintersectiontype = @uniontype | @intersectiontype;
 @typevariabletype = @canonicaltypevariabletype | @lexicaltypevariabletype;
 
-hasAssertsKeyword(int node: @predicatetypeexpr ref);
+has_asserts_keyword(int node: @predicatetypeexpr ref);
 
 @typed_ast_node = @expr | @typeexpr | @function;
 ast_node_type(

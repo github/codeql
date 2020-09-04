@@ -7930,7 +7930,7 @@
 <dependencies/>
 </relation>
 <relation>
-<name>hasAssertsKeyword</name>
+<name>has_asserts_keyword</name>
 <cardinality>66</cardinality>
 <columnsizes>
 <e>
