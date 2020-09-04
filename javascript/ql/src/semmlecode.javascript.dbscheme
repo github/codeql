@@ -231,7 +231,7 @@ is_delegating (int yield: @yieldexpr ref);
 @expr_or_stmt = @expr | @stmt;
 @expr_or_type = @expr | @typeexpr;
 @exprparent = @expr_or_stmt | @property | @function_typeexpr;
-@arraylike = @array_expr | @arraypattern;
+@arraylike = @array_expr | @array_pattern;
 @type_annotation = @typeexpr | @jsdoc_type_expr;
 @node_in_stmt_container = @cfg_node | @type_annotation | @toplevel;
 
@@ -302,7 +302,7 @@ case @expr.kind of
 | 64 = @var_declarator
 | 65 = @arrow_function_expr
 | 66 = @spread_element
-| 67 = @arraypattern
+| 67 = @array_pattern
 | 68 = @objectpattern
 | 69 = @yieldexpr
 | 70 = @taggedtemplateexpr
@@ -379,7 +379,7 @@ case @expr.kind of
 
 @updateexpr = @preinc_expr | @postinc_expr | @predec_expr | @postdec_expr;
 
-@pattern = @varref | @arraypattern | @objectpattern;
+@pattern = @varref | @array_pattern | @objectpattern;
 
 @comprehensionexpr = @arraycomprehensionexpr | @generatorexpr;
 

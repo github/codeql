@@ -409,7 +409,7 @@ class BindingPattern extends @pattern, Expr {
   }
 }
 
-private class TDestructuringPattern = @arraypattern or @objectpattern;
+private class TDestructuringPattern = @array_pattern or @objectpattern;
 
 /**
  * A destructuring pattern, that is, either an array pattern or an object pattern.
@@ -478,7 +478,7 @@ class GlobalVarDecl extends VarDecl {
  * }
  * ```
  */
-class ArrayPattern extends DestructuringPattern, @arraypattern {
+class ArrayPattern extends DestructuringPattern, @array_pattern {
   /** Gets the `i`th element of this array pattern. */
   Expr getElement(int i) {
     i >= 0 and
