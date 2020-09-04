@@ -65,7 +65,7 @@ class Stmt extends @stmt, ExprOrStmt, Documentable {
 }
 
 private class TControlStmt =
-  TLoopStmt or @if_stmt or @with_stmt or @switch_stmt or @trystmt or @catchclause;
+  TLoopStmt or @if_stmt or @with_stmt or @switch_stmt or @try_stmt or @catchclause;
 
 private class TLoopStmt = TEnhancedForLoop or @whilestmt or @dowhilestmt or @forstmt;
 
@@ -677,7 +677,7 @@ class ThrowStmt extends @throw_stmt, JumpStmt {
  * }
  * ```
  */
-class TryStmt extends @trystmt, ControlStmt {
+class TryStmt extends @try_stmt, ControlStmt {
   /** Gets the body of this `try` statement. */
   BlockStmt getBody() { result = getChildStmt(0) }
 
