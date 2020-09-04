@@ -549,7 +549,7 @@ class TypeExpr extends ExprOrType, @typeexpr, TypeAnnotation {
 /**
  * Classes that are internally represented as a keyword type.
  */
-private class KeywordTypeExpr extends @keywordtypeexpr, TypeExpr {
+private class KeywordTypeExpr extends @keyword_typeexpr, TypeExpr {
   string getName() { literals(result, _, this) }
 
   override predicate isAny() { getName() = "any" }
