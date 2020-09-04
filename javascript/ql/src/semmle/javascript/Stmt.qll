@@ -65,7 +65,7 @@ class Stmt extends @stmt, ExprOrStmt, Documentable {
 }
 
 private class TControlStmt =
-  TLoopStmt or @ifstmt or @withstmt or @switchstmt or @trystmt or @catchclause;
+  TLoopStmt or @if_stmt or @withstmt or @switchstmt or @trystmt or @catchclause;
 
 private class TLoopStmt = TEnhancedForLoop or @whilestmt or @dowhilestmt or @forstmt;
 
@@ -406,7 +406,7 @@ class BundleDirective extends KnownDirective {
  * }
  * ```
  */
-class IfStmt extends @ifstmt, ControlStmt {
+class IfStmt extends @if_stmt, ControlStmt {
   /** Gets the condition of this `if` statement. */
   Expr getCondition() { result = getChildExpr(0) }
 

@@ -152,7 +152,7 @@ case @stmt.kind of
    0 = @empty_stmt
 |  1 = @block_stmt
 |  2 = @expr_stmt
-|  3 = @ifstmt
+|  3 = @if_stmt
 |  4 = @labeledstmt
 |  5 = @breakstmt
 |  6 = @continuestmt
