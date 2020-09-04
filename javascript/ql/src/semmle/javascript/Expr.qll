@@ -1704,7 +1704,7 @@ class InExpr extends @in_expr, BinaryExpr {
  * b instanceof Buffer
  * ```
  */
-class InstanceofExpr extends @instanceofexpr, BinaryExpr {
+class InstanceofExpr extends @instanceof_expr, BinaryExpr {
   override string getOperator() { result = "instanceof" }
 }
 

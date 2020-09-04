@@ -362,7 +362,7 @@
 <v>1135</v>
 </e>
 <e>
-<k>@instanceofexpr</k>
+<k>@instanceof_expr</k>
 <v>1184</v>
 </e>
 <e>
