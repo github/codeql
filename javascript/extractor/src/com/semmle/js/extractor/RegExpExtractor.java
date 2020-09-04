@@ -247,7 +247,7 @@ public class RegExpExtractor {
 
       if (nd.hasUpperBound()) {
         long hi = nd.getUpperBound();
-        if (inRange(hi)) trapwriter.addTuple("rangeQuantifierUpperBound", lbl, hi);
+        if (inRange(hi)) trapwriter.addTuple("range_quantifier_upper_bound", lbl, hi);
       }
 
       this.visit(nd.getOperand(), lbl, 0);

@@ -235,3 +235,8 @@ deprecated predicate isGreedy(RegExpQuantifier id) { is_greedy(id) }
  * Use `RegExpRange#getLowerBound()` instead.
  */ 
 deprecated predicate rangeQuantifierLowerBound(RegExpRange id, int lo) { range_quantifier_lower_bound(id, lo) }
+/**
+ * Alias for the predicate `range_quantifier_upper_bound` defined in the .dbscheme.
+ * Use `RegExpRange#getUpperBound() instead.
+ */ 
+deprecated predicate rangeQuantifierUpperBound(RegExpRange id, int hi) { range_quantifier_upper_bound(id, hi) }

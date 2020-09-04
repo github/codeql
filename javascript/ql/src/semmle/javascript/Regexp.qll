@@ -531,7 +531,7 @@ class RegExpRange extends RegExpQuantifier, @regexp_range {
    * For a term of the form `r{lo}`, both the lower and the upper bound
    * are `lo`.
    */
-  int getUpperBound() { rangeQuantifierUpperBound(this, result) }
+  int getUpperBound() { range_quantifier_upper_bound(this, result) }
 
   override predicate isNullable() {
     getAChild().isNullable() or

@@ -20167,7 +20167,7 @@
 </dependencies>
 </relation>
 <relation>
-<name>rangeQuantifierUpperBound</name>
+<name>range_quantifier_upper_bound</name>
 <cardinality>45</cardinality>
 <columnsizes>
 <e>

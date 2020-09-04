@@ -1088,7 +1088,7 @@ locations_default(#20376,#10000,15,2,15,5)
 hasLocation(#20375,#20376)
 is_greedy(#20375)
 range_quantifier_lower_bound(#20375,1)
-rangeQuantifierUpperBound(#20375,1)
+range_quantifier_upper_bound(#20375,1)
 #20377=*
 regexpterm(#20377,14,#20375,0,"a")
 #20378=@"loc,{#10000},15,2,15,2"
@@ -1135,7 +1135,7 @@ locations_default(#20388,#10000,17,2,17,7)
 hasLocation(#20387,#20388)
 is_greedy(#20387)
 range_quantifier_lower_bound(#20387,1)
-rangeQuantifierUpperBound(#20387,2)
+range_quantifier_upper_bound(#20387,2)
 #20389=*
 regexpterm(#20389,14,#20387,0,"a")
 #20390=@"loc,{#10000},17,2,17,2"
@@ -1158,7 +1158,7 @@ regexpterm(#20393,11,#20392,0,"a{1}?")
 locations_default(#20394,#10000,18,2,18,6)
 hasLocation(#20393,#20394)
 range_quantifier_lower_bound(#20393,1)
-rangeQuantifierUpperBound(#20393,1)
+range_quantifier_upper_bound(#20393,1)
 #20395=*
 regexpterm(#20395,14,#20393,0,"a")
 #20396=@"loc,{#10000},18,2,18,2"
@@ -1203,7 +1203,7 @@ regexpterm(#20405,11,#20404,0,"a{1,2}?")
 locations_default(#20406,#10000,20,2,20,8)
 hasLocation(#20405,#20406)
 range_quantifier_lower_bound(#20405,1)
-rangeQuantifierUpperBound(#20405,2)
+range_quantifier_upper_bound(#20405,2)
 #20407=*
 regexpterm(#20407,14,#20405,0,"a")
 #20408=@"loc,{#10000},20,2,20,2"
@@ -1672,7 +1672,7 @@ locations_default(#20543,#10000,37,2,37,3)
 hasLocation(#20542,#20543)
 is_greedy(#20542)
 range_quantifier_lower_bound(#20542,0)
-rangeQuantifierUpperBound(#20542,0)
+range_quantifier_upper_bound(#20542,0)
 #20544=*
 regexpterm(#20544,14,#20542,0,"a")
 #20545=@"loc,{#10000},37,2,37,2"
@@ -1711,7 +1711,7 @@ locations_default(#20555,#10000,38,2,38,3)
 hasLocation(#20554,#20555)
 is_greedy(#20554)
 range_quantifier_lower_bound(#20554,0)
-rangeQuantifierUpperBound(#20554,0)
+range_quantifier_upper_bound(#20554,0)
 #20556=*
 regexpterm(#20556,14,#20554,0,"a")
 #20557=@"loc,{#10000},38,2,38,2"
@@ -1758,7 +1758,7 @@ locations_default(#20569,#10000,39,2,39,4)
 hasLocation(#20568,#20569)
 is_greedy(#20568)
 range_quantifier_lower_bound(#20568,2)
-rangeQuantifierUpperBound(#20568,2)
+range_quantifier_upper_bound(#20568,2)
 #20570=*
 regexpterm(#20570,14,#20568,0,"a")
 #20571=@"loc,{#10000},39,2,39,2"
