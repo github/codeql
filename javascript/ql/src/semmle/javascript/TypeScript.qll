@@ -1291,7 +1291,7 @@ class LocalNamespaceAccess extends NamespaceAccess, LexicalAccess, Identifier, @
 /**
  * A qualified name that refers to a namespace from inside a type annotation.
  */
-class QualifiedNamespaceAccess extends NamespaceAccess, @qualifiednamespaceaccess {
+class QualifiedNamespaceAccess extends NamespaceAccess, @qualified_namespace_access {
   NamespaceAccess getQualifier() { result = getChildTypeExpr(0) }
 
   override Identifier getIdentifier() { result = getChildTypeExpr(1) }
