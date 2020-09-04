@@ -632,7 +632,7 @@ case @type.kind of
 | 17 = @intersection_type
 | 18 = @tuple_type
 | 19 = @lexical_type_variable_type
-| 20 = @thistype
+| 20 = @this_type
 | 21 = @numberliteraltype
 | 22 = @stringliteraltype
 | 23 = @unknowntype
