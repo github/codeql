@@ -196,7 +196,7 @@ case @stmt.kind of
 @export_declaration = @export_all_declaration | @export_default_declaration | @export_named_declaration;
 
 @namespace_definition = @namespace_declaration | @enum_declaration;
-@type_definition = @classdefinition | @interface_declaration | @enum_declaration | @type_alias_declaration | @enum_member;
+@type_definition = @class_definition | @interface_declaration | @enum_declaration | @type_alias_declaration | @enum_member;
 
 is_instantiated(unique int decl: @namespace_declaration ref);
 
@@ -393,9 +393,9 @@ case @expr.kind of
 
 @type_assertion = @as_type_assertion | @prefix_type_assertion;
 
-@classdefinition = @class_decl_stmt | @class_expr;
+@class_definition = @class_decl_stmt | @class_expr;
 @interfacedefinition = @interface_declaration | @interface_typeexpr;
-@class_or_interface = @classdefinition | @interfacedefinition;
+@class_or_interface = @class_definition | @interfacedefinition;
 
 @lexical_decl = @var_decl | @type_decl;
 @lexical_access = @varaccess | @local_type_access | @local_var_type_access | @local_namespace_access;
@@ -507,7 +507,7 @@ case @property.kind of
 | 9 = @parameter_field
 ;
 
-@property_parent = @obj_expr | @object_pattern | @classdefinition | @jsx_element | @interfacedefinition | @enum_declaration;
+@property_parent = @obj_expr | @object_pattern | @class_definition | @jsx_element | @interfacedefinition | @enum_declaration;
 @property_accessor = @property_getter | @property_setter;
 @call_signature = @function_call_signature | @constructor_call_signature;
 @field = @proper_field | @parameter_field;

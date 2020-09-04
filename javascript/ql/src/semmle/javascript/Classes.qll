@@ -155,7 +155,7 @@ class ClassOrInterface extends @class_or_interface, TypeParameterized {
  * };
  * ```
  */
-class ClassDefinition extends @classdefinition, ClassOrInterface, AST::ValueNode {
+class ClassDefinition extends @class_definition, ClassOrInterface, AST::ValueNode {
   /** Gets the variable holding this class. */
   Variable getVariable() { result = getIdentifier().getVariable() }
 
