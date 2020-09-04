@@ -18,7 +18,9 @@ jobs:
       with:
         path: codeql 
     - name: Clone github/codeql-go
-      run: git clone https://github.com/github/codeql-go
+      uses: actions/checkout@v2
+      with:
+        path: codeql-go
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
