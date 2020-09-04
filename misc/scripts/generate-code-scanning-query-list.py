@@ -47,9 +47,9 @@ def prefix_repo_nwo(filename):
     """
     dirname = os.path.dirname(filename)
 
-    git_toplevel_dir_subp = subprocess_run(["git", "-C", dirname, "rev-parse", "--show-toplevel"])
-
-    if git_toplevel_dir_subp.returncode != 0:
+    try:
+        git_toplevel_dir_subp = subprocess_run(["git", "-C", dirname, "rev-parse", "--show-toplevel"])
+    except:
         # Not a Git repo
         return filename
     
