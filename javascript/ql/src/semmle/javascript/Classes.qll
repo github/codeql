@@ -1046,7 +1046,7 @@ class FieldDeclaration extends MemberDeclaration, @field {
   predicate isOptional() { is_optional_member(this) }
 
   /** Holds if this is a TypeScript field marked as definitely assigned with the `!` operator. */
-  predicate hasDefiniteAssignmentAssertion() { hasDefiniteAssignmentAssertion(this) }
+  predicate hasDefiniteAssignmentAssertion() { has_definite_assignment_assertion(this) }
 }
 
 /**

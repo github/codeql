@@ -8018,7 +8018,7 @@
 <dependencies/>
 </relation>
 <relation>
-<name>hasDefiniteAssignmentAssertion</name>
+<name>has_definite_assignment_assertion</name>
 <cardinality>100</cardinality>
 <columnsizes>
 <e>

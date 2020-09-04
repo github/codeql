@@ -200,3 +200,8 @@ deprecated predicate hasTypeKeyword(ASTNode id) { has_type_keyword(id) }
  * Use `FieldDeclaration#isOptional()` instead.
  */ 
 deprecated predicate isOptionalMember(Property id) { is_optional_member(id) }
+/**
+ * Alias for the predicate `has_definite_assignment_assertion` defined in the .dbscheme.
+ * Use the `hasDefiniteAssignmentAssertion` method on the `FieldDeclaration`/`VariableDeclarator` classes instead.
+ */ 
+deprecated predicate hasDefiniteAssignmentAssertion(ASTNode id) { has_definite_assignment_assertion(id) }

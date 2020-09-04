@@ -645,7 +645,7 @@ class VariableDeclarator extends Expr, @vardeclarator {
   }
 
   /** Holds if this is a TypeScript variable marked as definitely assigned with the `!` operator. */
-  predicate hasDefiniteAssignmentAssertion() { hasDefiniteAssignmentAssertion(this) }
+  predicate hasDefiniteAssignmentAssertion() { has_definite_assignment_assertion(this) }
 
   /** Gets the declaration statement this declarator belongs to, if any. */
   DeclStmt getDeclStmt() { this = result.getADecl() }
