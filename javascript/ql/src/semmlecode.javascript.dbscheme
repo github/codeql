@@ -228,9 +228,9 @@ array_size (unique int ae: @arraylike ref,
 
 is_delegating (int yield: @yieldexpr ref);
 
-@exprorstmt = @expr | @stmt;
+@expr_or_stmt = @expr | @stmt;
 @exprortype = @expr | @typeexpr;
-@exprparent = @exprorstmt | @property | @functiontypeexpr;
+@exprparent = @expr_or_stmt | @property | @functiontypeexpr;
 @arraylike = @arrayexpr | @arraypattern;
 @type_annotation = @typeexpr | @jsdoc_type_expr;
 @node_in_stmt_container = @cfg_node | @type_annotation | @toplevel;

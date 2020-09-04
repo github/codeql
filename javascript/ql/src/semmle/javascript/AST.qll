@@ -350,7 +350,7 @@ class Externs extends TopLevel {
  * i = 9
  * ```
  */
-class ExprOrStmt extends @exprorstmt, ControlFlowNode, ASTNode { }
+class ExprOrStmt extends @expr_or_stmt, ControlFlowNode, ASTNode { }
 
 /**
  * A program element that contains statements, but isn't itself
