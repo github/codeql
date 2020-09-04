@@ -999,7 +999,7 @@ class NewExpr extends @new_expr, InvokeExpr { }
  * x.f()
  * ```
  */
-class CallExpr extends @callexpr, InvokeExpr {
+class CallExpr extends @call_expr, InvokeExpr {
   /**
    * Gets the expression specifying the receiver on which the function
    * is invoked, if any.

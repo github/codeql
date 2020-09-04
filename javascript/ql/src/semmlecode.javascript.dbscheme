@@ -249,7 +249,7 @@ case @expr.kind of
 | 10 = @seq_expr
 | 11 = @conditional_expr
 | 12 = @new_expr
-| 13 = @callexpr
+| 13 = @call_expr
 | 14 = @dotexpr
 | 15 = @indexexpr
 | 16 = @negexpr
@@ -365,7 +365,7 @@ case @expr.kind of
 
 @propaccess = @dotexpr | @indexexpr;
 
-@invokeexpr = @new_expr | @callexpr;
+@invokeexpr = @new_expr | @call_expr;
 
 @unaryexpr = @negexpr | @plusexpr | @lognotexpr | @bitnotexpr | @typeofexpr | @voidexpr | @deleteexpr | @spreadelement;
 
@@ -1132,7 +1132,7 @@ xmllocations(
 
 @dataflownode = @expr | @function_decl_stmt | @class_decl_stmt | @namespace_declaration | @enumdeclaration | @property;
 
-@optionalchainable = @callexpr | @propaccess;
+@optionalchainable = @call_expr | @propaccess;
 
 isOptionalChaining(int id: @optionalchainable ref);
 
