@@ -158,11 +158,13 @@
 | string.cpp:531:25:531:25 | string.cpp:531:15:531:20 | AST only |
 | string.cpp:534:8:534:8 | string.cpp:529:20:529:25 | AST only |
 | string.cpp:535:8:535:8 | string.cpp:529:20:529:25 | AST only |
+| string.cpp:536:8:536:8 | string.cpp:530:24:530:29 | AST only |
 | string.cpp:537:8:537:8 | string.cpp:531:15:531:20 | AST only |
 | string.cpp:549:11:549:16 | string.cpp:549:27:549:32 | AST only |
 | string.cpp:550:24:550:29 | string.cpp:550:31:550:36 | AST only |
 | string.cpp:554:8:554:8 | string.cpp:549:27:549:32 | AST only |
 | string.cpp:555:8:555:8 | string.cpp:549:27:549:32 | AST only |
+| string.cpp:556:8:556:8 | string.cpp:550:31:550:36 | AST only |
 | string.cpp:557:8:557:8 | string.cpp:551:18:551:23 | AST only |
 | structlikeclass.cpp:35:8:35:9 | structlikeclass.cpp:29:22:29:27 | AST only |
 | structlikeclass.cpp:36:8:36:9 | structlikeclass.cpp:30:24:30:29 | AST only |

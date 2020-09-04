@@ -164,6 +164,11 @@ class StdStringAppend extends TaintFunction {
       output.isQualifierObject() or
       output.isReturnValueDeref()
     )
+    or
+    // reverse flow from returned reference to the qualifier (for writes to
+    // the result)
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
   }
 }
 
@@ -199,6 +204,11 @@ class StdStringAssign extends TaintFunction {
       output.isQualifierObject() or
       output.isReturnValueDeref()
     )
+    or
+    // reverse flow from returned reference to the qualifier (for writes to
+    // the result)
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
   }
 }
 

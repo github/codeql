@@ -533,7 +533,7 @@ void test_string_return_assign() {
 		sink(b);
 		sink(c); // tainted
 		sink(d); // tainted
-		sink(e); // tainted [NOT DETECTED]
+		sink(e); // tainted
 		sink(f); // tainted
 	}
 
@@ -553,7 +553,7 @@ void test_string_return_assign() {
 		sink(b);
 		sink(c); // tainted
 		sink(d); // tainted
-		sink(e); // tainted [NOT DETECTED]
+		sink(e); // tainted
 		sink(f); // [FALSE POSITIVE]
 	}
 }

@@ -1295,6 +1295,7 @@
 | string.cpp:530:10:530:10 | e | string.cpp:530:12:530:12 | call to operator+= | TAINT |
 | string.cpp:530:10:530:10 | ref arg e | string.cpp:536:8:536:8 | e |  |
 | string.cpp:530:12:530:12 | call to operator+= | string.cpp:530:21:530:21 | call to operator+= | TAINT |
+| string.cpp:530:12:530:12 | ref arg call to operator+= | string.cpp:530:10:530:10 | ref arg e | TAINT |
 | string.cpp:530:15:530:18 | ee | string.cpp:530:10:530:10 | ref arg e | TAINT |
 | string.cpp:530:15:530:18 | ee | string.cpp:530:12:530:12 | call to operator+= | TAINT |
 | string.cpp:530:24:530:29 | call to source | string.cpp:530:12:530:12 | ref arg call to operator+= | TAINT |
@@ -1302,6 +1303,7 @@
 | string.cpp:531:10:531:10 | f | string.cpp:531:12:531:12 | call to operator+= | TAINT |
 | string.cpp:531:10:531:10 | ref arg f | string.cpp:537:8:537:8 | f |  |
 | string.cpp:531:12:531:12 | call to operator+= | string.cpp:531:25:531:25 | call to operator+= | TAINT |
+| string.cpp:531:12:531:12 | ref arg call to operator+= | string.cpp:531:10:531:10 | ref arg f | TAINT |
 | string.cpp:531:15:531:20 | call to source | string.cpp:531:10:531:10 | ref arg f | TAINT |
 | string.cpp:531:15:531:20 | call to source | string.cpp:531:12:531:12 | call to operator+= | TAINT |
 | string.cpp:531:28:531:31 | ff | string.cpp:531:12:531:12 | ref arg call to operator+= | TAINT |
@@ -1339,6 +1341,7 @@
 | string.cpp:549:27:549:34 | call to basic_string | string.cpp:549:18:549:18 | ref arg d | TAINT |
 | string.cpp:549:27:549:34 | call to basic_string | string.cpp:549:20:549:25 | call to assign | TAINT |
 | string.cpp:550:9:550:9 | ref arg e | string.cpp:556:8:556:8 | e |  |
+| string.cpp:550:11:550:16 | ref arg call to assign | string.cpp:550:9:550:9 | ref arg e | TAINT |
 | string.cpp:550:18:550:21 | call to basic_string | string.cpp:550:9:550:9 | ref arg e | TAINT |
 | string.cpp:550:18:550:21 | call to basic_string | string.cpp:550:11:550:16 | call to assign | TAINT |
 | string.cpp:550:18:550:21 | ee | string.cpp:550:18:550:21 | call to basic_string | TAINT |
@@ -1346,6 +1349,7 @@
 | string.cpp:550:31:550:38 | call to basic_string | string.cpp:550:11:550:16 | ref arg call to assign | TAINT |
 | string.cpp:550:31:550:38 | call to basic_string | string.cpp:550:24:550:29 | call to assign | TAINT |
 | string.cpp:551:9:551:9 | ref arg f | string.cpp:557:8:557:8 | f |  |
+| string.cpp:551:11:551:16 | ref arg call to assign | string.cpp:551:9:551:9 | ref arg f | TAINT |
 | string.cpp:551:18:551:23 | call to source | string.cpp:551:18:551:25 | call to basic_string | TAINT |
 | string.cpp:551:18:551:25 | call to basic_string | string.cpp:551:9:551:9 | ref arg f | TAINT |
 | string.cpp:551:18:551:25 | call to basic_string | string.cpp:551:11:551:16 | call to assign | TAINT |
