@@ -155,9 +155,7 @@ module UnsafeJQueryPlugin {
     /**
      * Gets the property read that is used to sanitize the base value.
      */
-    DataFlow::PropRead getPropRead() {
-      result = this
-    }
+    DataFlow::PropRead getPropRead() { result = this }
 
     override predicate sanitizes(boolean outcome, Expr e) {
       outcome = polarity and
