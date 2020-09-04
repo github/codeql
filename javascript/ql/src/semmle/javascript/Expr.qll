@@ -1613,7 +1613,7 @@ class MulExpr extends @mul_expr, BinaryExpr {
  * gg / ac
  * ```
  */
-class DivExpr extends @divexpr, BinaryExpr {
+class DivExpr extends @div_expr, BinaryExpr {
   override string getOperator() { result = "/" }
 }
 
