@@ -1889,7 +1889,7 @@ class UnionOrIntersectionType extends Type, @union_or_intersection_type {
  * Note that the `boolean` type is represented as the union `true | false`,
  * but is still displayed as `boolean` in string representations.
  */
-class UnionType extends UnionOrIntersectionType, @uniontype { }
+class UnionType extends UnionOrIntersectionType, @union_type { }
 
 /**
  * An intersection type, such as `T & {x: number}`.

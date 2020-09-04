@@ -615,7 +615,7 @@ case @type.kind of
   0 = @any_type
 | 1 = @string_type
 | 2 = @number_type
-| 3 = @uniontype
+| 3 = @union_type
 | 4 = @truetype
 | 5 = @falsetype
 | 6 = @typereference
@@ -642,7 +642,7 @@ case @type.kind of
 
 @booleanliteraltype = @truetype | @falsetype;
 @symbol_type = @plainsymboltype | @uniquesymboltype;
-@union_or_intersection_type = @uniontype | @intersectiontype;
+@union_or_intersection_type = @union_type | @intersectiontype;
 @typevariable_type = @canonicaltypevariabletype | @lexicaltypevariabletype;
 
 has_asserts_keyword(int node: @predicate_typeexpr ref);
