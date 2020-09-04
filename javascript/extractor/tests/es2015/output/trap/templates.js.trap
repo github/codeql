@@ -440,7 +440,7 @@ literals("values","values",#20164)
 decl(#20164,#20163)
 #20165=@"var;{arguments};{#20160}"
 variables(#20165,"arguments",#20160)
-isArgumentsObject(#20165)
+is_arguments_object(#20165)
 hasRestParameter(#20157)
 #20166=*
 stmts(#20166,1,#20157,-2,"{\n  ret ... , ');\n}")

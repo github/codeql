@@ -111,7 +111,7 @@ literals("args","args",#20031)
 decl(#20031,#20030)
 #20032=@"var;{arguments};{#20029}"
 variables(#20032,"arguments",#20029)
-isArgumentsObject(#20032)
+is_arguments_object(#20032)
 hasRestParameter(#20028)
 #20033=*
 stmts(#20033,1,#20028,-2,"{ super(...args); }")

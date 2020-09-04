@@ -426,7 +426,7 @@ scopenodes(#20146,#20148)
 scopenesting(#20148,#20142)
 #20149=@"var;{arguments};{#20148}"
 variables(#20149,"arguments",#20148)
-isArgumentsObject(#20149)
+is_arguments_object(#20149)
 #20150=*
 stmts(#20150,1,#20146,-2,"{\n    ctor;\n  }")
 #20151=@"loc,{#10000},2,17,4,3"
@@ -495,7 +495,7 @@ scopenodes(#20165,#20167)
 scopenesting(#20167,#20142)
 #20168=@"var;{arguments};{#20167}"
 variables(#20168,"arguments",#20167)
-isArgumentsObject(#20168)
+is_arguments_object(#20168)
 #20169=*
 stmts(#20169,1,#20165,-2,"{}")
 #20170=@"loc,{#10000},7,7,7,8"
@@ -527,7 +527,7 @@ scopenodes(#20174,#20176)
 scopenesting(#20176,#20142)
 #20177=@"var;{arguments};{#20176}"
 variables(#20177,"arguments",#20176)
-isArgumentsObject(#20177)
+is_arguments_object(#20177)
 #20178=*
 stmts(#20178,1,#20174,-2,"{}")
 #20179=@"loc,{#10000},8,14,8,15"
@@ -585,7 +585,7 @@ scopenodes(#20188,#20190)
 scopenesting(#20190,#20183)
 #20191=@"var;{arguments};{#20190}"
 variables(#20191,"arguments",#20190)
-isArgumentsObject(#20191)
+is_arguments_object(#20191)
 #20192=*
 stmts(#20192,1,#20188,-2,"{\n    b ... er;\n  }")
 #20193=@"loc,{#10000},12,17,16,3"

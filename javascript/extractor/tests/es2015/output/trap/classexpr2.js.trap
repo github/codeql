@@ -85,7 +85,7 @@ scopenodes(#20023,#20024)
 scopenesting(#20024,#20000)
 #20025=@"var;{arguments};{#20024}"
 variables(#20025,"arguments",#20024)
-isArgumentsObject(#20025)
+is_arguments_object(#20025)
 #20026=*
 stmts(#20026,1,#20023,-2,"{}")
 hasLocation(#20026,#20021)

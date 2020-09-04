@@ -290,7 +290,7 @@ scopenodes(#20092,#20099)
 scopenesting(#20099,#20089)
 #20100=@"var;{arguments};{#20099}"
 variables(#20100,"arguments",#20099)
-isArgumentsObject(#20100)
+is_arguments_object(#20100)
 #20101=*
 stmts(#20101,1,#20092,-2,"{}")
 hasLocation(#20101,#20097)
@@ -376,7 +376,7 @@ literals("args","args",#20120)
 decl(#20120,#20119)
 #20121=@"var;{arguments};{#20118}"
 variables(#20121,"arguments",#20118)
-isArgumentsObject(#20121)
+is_arguments_object(#20121)
 hasRestParameter(#20109)
 #20122=*
 stmts(#20122,1,#20109,-2,"{ super(...args); }")
@@ -459,7 +459,7 @@ scopenodes(#20134,#20139)
 scopenesting(#20139,#20131)
 #20140=@"var;{arguments};{#20139}"
 variables(#20140,"arguments",#20139)
-isArgumentsObject(#20140)
+is_arguments_object(#20140)
 #20141=*
 stmts(#20141,1,#20134,-2,"{}")
 hasLocation(#20141,#20137)

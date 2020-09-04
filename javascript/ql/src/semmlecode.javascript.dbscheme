@@ -459,7 +459,7 @@ local_namespace_names (unique int id: @local_namespace_name,
                        varchar(900) name: string ref,
                        int scope: @scope ref);
 
-isArgumentsObject (int id: @variable ref);
+is_arguments_object (int id: @variable ref);
 
 @lexical_name = @variable | @local_type_name | @local_namespace_name;
 

@@ -296,7 +296,7 @@ scopenodes(#20101,#20102)
 scopenesting(#20102,#20000)
 #20103=@"var;{arguments};{#20102}"
 variables(#20103,"arguments",#20102)
-isArgumentsObject(#20103)
+is_arguments_object(#20103)
 isMethod(#20098)
 isAbstractMember(#20098)
 #20104=*
@@ -329,7 +329,7 @@ literals("x","x",#20110)
 decl(#20110,#20109)
 #20111=@"var;{arguments};{#20108}"
 variables(#20111,"arguments",#20108)
-isArgumentsObject(#20111)
+is_arguments_object(#20111)
 #20112=*
 typeexprs(#20112,2,#20107,-3,"string")
 hasLocation(#20112,#20053)
@@ -420,7 +420,7 @@ scopenodes(#20131,#20132)
 scopenesting(#20132,#20121)
 #20133=@"var;{arguments};{#20132}"
 variables(#20133,"arguments",#20132)
-isArgumentsObject(#20133)
+is_arguments_object(#20133)
 isMethod(#20128)
 isAbstractMember(#20128)
 #20134=*

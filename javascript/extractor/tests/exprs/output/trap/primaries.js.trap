@@ -1251,7 +1251,7 @@ scopenodes(#20424,#20426)
 scopenesting(#20426,#20000)
 #20427=@"var;{arguments};{#20426}"
 variables(#20427,"arguments",#20426)
-isArgumentsObject(#20427)
+is_arguments_object(#20427)
 #20428=*
 stmts(#20428,1,#20424,-2,"{}")
 #20429=@"loc,{#10000},19,12,19,13"
@@ -1282,7 +1282,7 @@ scopenodes(#20433,#20435)
 scopenesting(#20435,#20000)
 #20436=@"var;{arguments};{#20435}"
 variables(#20436,"arguments",#20435)
-isArgumentsObject(#20436)
+is_arguments_object(#20436)
 #20437=*
 stmts(#20437,1,#20433,-2,"{}")
 #20438=@"loc,{#10000},20,12,20,13"
@@ -1321,7 +1321,7 @@ literals("v","v",#20446)
 decl(#20446,#20445)
 #20447=@"var;{arguments};{#20444}"
 variables(#20447,"arguments",#20444)
-isArgumentsObject(#20447)
+is_arguments_object(#20447)
 #20448=*
 stmts(#20448,1,#20442,-2,"{}")
 #20449=@"loc,{#10000},21,13,21,14"

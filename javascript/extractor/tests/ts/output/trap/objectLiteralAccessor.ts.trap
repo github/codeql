@@ -199,7 +199,7 @@ scopenodes(#20065,#20066)
 scopenesting(#20066,#20000)
 #20067=@"var;{arguments};{#20066}"
 variables(#20067,"arguments",#20066)
-isArgumentsObject(#20067)
+is_arguments_object(#20067)
 #20068=*
 stmts(#20068,1,#20065,-2,"{return 1}")
 #20069=@"loc,{#10000},2,13,2,22"
@@ -249,7 +249,7 @@ literals("v","v",#20079)
 decl(#20079,#20078)
 #20080=@"var;{arguments};{#20077}"
 variables(#20080,"arguments",#20077)
-isArgumentsObject(#20080)
+is_arguments_object(#20080)
 #20081=*
 stmts(#20081,1,#20076,-2,"{}")
 #20082=@"loc,{#10000},3,14,3,15"

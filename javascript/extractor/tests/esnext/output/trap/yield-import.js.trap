@@ -116,7 +116,7 @@ scopenodes(#20035,#20038)
 scopenesting(#20038,#20000)
 #20039=@"var;{arguments};{#20038}"
 variables(#20039,"arguments",#20038)
-isArgumentsObject(#20039)
+is_arguments_object(#20039)
 isGenerator(#20035)
 #20040=*
 stmts(#20040,1,#20035,-2,"{\n  yie ... foo"")\n}")

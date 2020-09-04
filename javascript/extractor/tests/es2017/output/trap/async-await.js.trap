@@ -231,7 +231,7 @@ literals("x","x",#20078)
 decl(#20078,#20077)
 #20079=@"var;{arguments};{#20076}"
 variables(#20079,"arguments",#20076)
-isArgumentsObject(#20079)
+is_arguments_object(#20079)
 isAsync(#20073)
 #20080=*
 stmts(#20080,1,#20073,-2,"{\n  try ... ;\n  }\n}")

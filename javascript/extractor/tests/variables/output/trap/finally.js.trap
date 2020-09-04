@@ -211,7 +211,7 @@ literals("x","x",#20071)
 decl(#20071,#20070)
 #20072=@"var;{arguments};{#20068}"
 variables(#20072,"arguments",#20068)
-isArgumentsObject(#20072)
+is_arguments_object(#20072)
 #20073=*
 stmts(#20073,1,#20065,-2,"{\n  fun ... }\n  }\n}")
 #20074=@"loc,{#10000},1,15,8,1"
@@ -238,7 +238,7 @@ scopenesting(#20078,#20068)
 variables(#20079,"x",#20078)
 #20080=@"var;{arguments};{#20078}"
 variables(#20080,"arguments",#20078)
-isArgumentsObject(#20080)
+is_arguments_object(#20080)
 #20081=*
 stmts(#20081,1,#20075,-2,"{\n    t ...   }\n  }")
 #20082=@"loc,{#10000},2,16,7,3"

@@ -144,7 +144,7 @@ scopenesting(#20047,#20000)
 variables(#20048,"x",#20047)
 #20049=@"var;{arguments};{#20047}"
 variables(#20049,"arguments",#20047)
-isArgumentsObject(#20049)
+is_arguments_object(#20049)
 #20050=*
 stmts(#20050,1,#20045,-2,"{\n\ttry  ... ly {}\n}")
 #20051=@"loc,{#10000},1,14,5,1"

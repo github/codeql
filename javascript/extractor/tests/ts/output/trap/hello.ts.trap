@@ -196,7 +196,7 @@ literals("person","person",#20068)
 decl(#20068,#20067)
 #20069=@"var;{arguments};{#20066}"
 variables(#20069,"arguments",#20066)
-isArgumentsObject(#20069)
+is_arguments_object(#20069)
 #20070=*
 typeexprs(#20070,2,#20063,-6,"string")
 hasLocation(#20070,#20023)

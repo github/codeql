@@ -107,7 +107,7 @@ scopenodes(#20031,#20034)
 scopenesting(#20034,#20027)
 #20035=@"var;{arguments};{#20034}"
 variables(#20035,"arguments",#20034)
-isArgumentsObject(#20035)
+is_arguments_object(#20035)
 isAsync(#20031)
 #20036=*
 stmts(#20036,1,#20031,-2,"{}")

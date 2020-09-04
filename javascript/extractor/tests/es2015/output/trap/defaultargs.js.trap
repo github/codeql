@@ -121,7 +121,7 @@ literals("y","y",#20039)
 decl(#20039,#20038)
 #20040=@"var;{arguments};{#20035}"
 variables(#20040,"arguments",#20035)
-isArgumentsObject(#20040)
+is_arguments_object(#20040)
 #20041=*
 exprs(#20041,34,#20033,-9,"x+19")
 #20042=@"loc,{#10000},1,17,1,20"

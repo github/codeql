@@ -185,7 +185,7 @@ scopenesting(#20063,#20000)
 variables(#20064,"index",#20063)
 #20065=@"var;{arguments};{#20063}"
 variables(#20065,"arguments",#20063)
-isArgumentsObject(#20065)
+is_arguments_object(#20065)
 isGenerator(#20061)
 #20066=*
 stmts(#20066,1,#20061,-2,"{\n  var ... ex++;\n}")

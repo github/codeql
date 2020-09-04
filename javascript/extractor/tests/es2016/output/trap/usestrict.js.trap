@@ -103,7 +103,7 @@ literals("a","a",#20033)
 decl(#20033,#20032)
 #20034=@"var;{arguments};{#20031}"
 variables(#20034,"arguments",#20031)
-isArgumentsObject(#20034)
+is_arguments_object(#20034)
 #20035=*
 exprs(#20035,3,#20029,-5,"2")
 hasLocation(#20035,#20015)

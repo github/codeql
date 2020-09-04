@@ -379,7 +379,7 @@ scopenodes(#20137,#20139)
 scopenesting(#20139,#20000)
 #20140=@"var;{arguments};{#20139}"
 variables(#20140,"arguments",#20139)
-isArgumentsObject(#20140)
+is_arguments_object(#20140)
 isGenerator(#20137)
 isAsync(#20137)
 #20141=*
@@ -430,7 +430,7 @@ scopenodes(#20150,#20152)
 scopenesting(#20152,#20146)
 #20153=@"var;{arguments};{#20152}"
 variables(#20153,"arguments",#20152)
-isArgumentsObject(#20153)
+is_arguments_object(#20153)
 isGenerator(#20150)
 isAsync(#20150)
 #20154=*
@@ -480,7 +480,7 @@ scopenodes(#20163,#20165)
 scopenesting(#20165,#20146)
 #20166=@"var;{arguments};{#20165}"
 variables(#20166,"arguments",#20165)
-isArgumentsObject(#20166)
+is_arguments_object(#20166)
 isGenerator(#20163)
 isAsync(#20163)
 #20167=*
@@ -513,7 +513,7 @@ scopenodes(#20172,#20173)
 scopenesting(#20173,#20146)
 #20174=@"var;{arguments};{#20173}"
 variables(#20174,"arguments",#20173)
-isArgumentsObject(#20174)
+is_arguments_object(#20174)
 #20175=*
 stmts(#20175,1,#20172,-2,"{}")
 hasLocation(#20175,#20170)
@@ -570,7 +570,7 @@ scopenodes(#20186,#20188)
 scopenesting(#20188,#20000)
 #20189=@"var;{arguments};{#20188}"
 variables(#20189,"arguments",#20188)
-isArgumentsObject(#20189)
+is_arguments_object(#20189)
 isGenerator(#20186)
 isAsync(#20186)
 #20190=*
@@ -618,7 +618,7 @@ scopenodes(#20198,#20200)
 scopenesting(#20200,#20000)
 #20201=@"var;{arguments};{#20200}"
 variables(#20201,"arguments",#20200)
-isArgumentsObject(#20201)
+is_arguments_object(#20201)
 isGenerator(#20198)
 isAsync(#20198)
 #20202=*

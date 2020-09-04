@@ -3227,7 +3227,7 @@ scopenodes(#21138,#21139)
 scopenesting(#21139,#20000)
 #21140=@"var;{arguments};{#21139}"
 variables(#21140,"arguments",#21139)
-isArgumentsObject(#21140)
+is_arguments_object(#21140)
 #21141=*
 typeexprs(#21141,2,#21138,-3,"number")
 hasLocation(#21141,#20420)
@@ -3269,7 +3269,7 @@ scopenodes(#21148,#21149)
 scopenesting(#21149,#20000)
 #21150=@"var;{arguments};{#21149}"
 variables(#21150,"arguments",#21149)
-isArgumentsObject(#21150)
+is_arguments_object(#21150)
 #21151=*
 typeexprs(#21151,0,#21148,-3,"Point")
 hasLocation(#21151,#20438)
@@ -3312,7 +3312,7 @@ scopenodes(#21158,#21159)
 scopenesting(#21159,#20000)
 #21160=@"var;{arguments};{#21159}"
 variables(#21160,"arguments",#21159)
-isArgumentsObject(#21160)
+is_arguments_object(#21160)
 #21161=*
 typeexprs(#21161,2,#21158,-3,"void")
 hasLocation(#21161,#20454)
@@ -3354,7 +3354,7 @@ scopenodes(#21168,#21169)
 scopenesting(#21169,#20000)
 #21170=@"var;{arguments};{#21169}"
 variables(#21170,"arguments",#21169)
-isArgumentsObject(#21170)
+is_arguments_object(#21170)
 #21171=*
 typeexprs(#21171,2,#21168,-3,"never")
 hasLocation(#21171,#20470)
@@ -3693,7 +3693,7 @@ literals("x","x",#21243)
 decl(#21243,#21242)
 #21244=@"var;{arguments};{#21240}"
 variables(#21244,"arguments",#21240)
-isArgumentsObject(#21244)
+is_arguments_object(#21244)
 #21245=*
 typeexprs(#21245,0,#21239,-3,"T")
 hasLocation(#21245,#20616)
@@ -3762,7 +3762,7 @@ literals("x","x",#21259)
 decl(#21259,#21258)
 #21260=@"var;{arguments};{#21256}"
 variables(#21260,"arguments",#21256)
-isArgumentsObject(#21260)
+is_arguments_object(#21260)
 #21261=*
 typeexprs(#21261,0,#21255,-3,"T")
 hasLocation(#21261,#20646)
@@ -4154,7 +4154,7 @@ literals("x","x",#21346)
 decl(#21346,#21345)
 #21347=@"var;{arguments};{#21344}"
 variables(#21347,"arguments",#21344)
-isArgumentsObject(#21347)
+is_arguments_object(#21347)
 #21348=*
 typeexprs(#21348,0,#21343,-3,"T")
 hasLocation(#21348,#20792)
@@ -4271,7 +4271,7 @@ literals("x","x",#21372)
 decl(#21372,#21371)
 #21373=@"var;{arguments};{#21370}"
 variables(#21373,"arguments",#21370)
-isArgumentsObject(#21373)
+is_arguments_object(#21373)
 #21374=*
 typeexprs(#21374,0,#21369,-3,"T")
 hasLocation(#21374,#20843)
@@ -4307,7 +4307,7 @@ scopenodes(#21363,#21379)
 scopenesting(#21379,#21353)
 #21380=@"var;{arguments};{#21379}"
 variables(#21380,"arguments",#21379)
-isArgumentsObject(#21380)
+is_arguments_object(#21380)
 #21381=*
 stmts(#21381,1,#21363,-2,"{}")
 hasLocation(#21381,#21377)
@@ -4351,7 +4351,7 @@ scopenodes(#21388,#21389)
 scopenesting(#21389,#21384)
 #21390=@"var;{arguments};{#21389}"
 variables(#21390,"arguments",#21389)
-isArgumentsObject(#21390)
+is_arguments_object(#21390)
 #21391=*
 stmts(#21391,1,#21388,-2,"{}")
 hasLocation(#21391,#21386)
@@ -4395,7 +4395,7 @@ scopenodes(#21398,#21399)
 scopenesting(#21399,#21394)
 #21400=@"var;{arguments};{#21399}"
 variables(#21400,"arguments",#21399)
-isArgumentsObject(#21400)
+is_arguments_object(#21400)
 #21401=*
 stmts(#21401,1,#21398,-2,"{}")
 hasLocation(#21401,#21396)
@@ -4425,7 +4425,7 @@ literals("pet","pet",#21406)
 decl(#21406,#21405)
 #21407=@"var;{arguments};{#21404}"
 variables(#21407,"arguments",#21404)
-isArgumentsObject(#21407)
+is_arguments_object(#21407)
 #21408=*
 typeexprs(#21408,20,#21402,-3,"pet is Fish")
 #21409=@"loc,{#10000},61,37,61,47"
@@ -4516,7 +4516,7 @@ literals("x","x",#21428)
 decl(#21428,#21427)
 #21429=@"var;{arguments};{#21426}"
 variables(#21429,"arguments",#21426)
-isArgumentsObject(#21429)
+is_arguments_object(#21429)
 #21430=*
 typeexprs(#21430,2,#21425,-3,"this")
 hasLocation(#21430,#20914)
@@ -4567,7 +4567,7 @@ scopenodes(#21440,#21441)
 scopenesting(#21441,#21421)
 #21442=@"var;{arguments};{#21441}"
 variables(#21442,"arguments",#21441)
-isArgumentsObject(#21442)
+is_arguments_object(#21442)
 #21443=*
 stmts(#21443,1,#21440,-2,"{}")
 hasLocation(#21443,#21438)

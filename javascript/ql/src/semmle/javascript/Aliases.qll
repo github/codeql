@@ -135,3 +135,8 @@ deprecated predicate arraySize(Expr ae, int sz) { array_size(ae, sz) }
  * Use `YieldExpr#isDelegating()` instead.
  */ 
 deprecated predicate isDelegating(YieldExpr yield) { is_delegating(yield) }
+/**
+ * Alias for the predicate `is_arguments_object` defined in the .dbscheme.
+ * Use the `ArgumentsVariable` class instead.
+ */ 
+deprecated predicate isArgumentsObject(Variable id) { is_arguments_object(id) }

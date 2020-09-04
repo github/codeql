@@ -514,7 +514,7 @@ scopenesting(#20171,#20000)
 variables(#20172,"x",#20171)
 #20173=@"var;{arguments};{#20171}"
 variables(#20173,"arguments",#20171)
-isArgumentsObject(#20173)
+is_arguments_object(#20173)
 #20174=*
 stmts(#20174,1,#20168,-2,"{\n\tvar x;\n\tx;\n}")
 #20175=@"loc,{#10000},8,14,11,1"
@@ -574,7 +574,7 @@ variables(#20187,"x",#20186)
 variables(#20188,"h",#20186)
 #20189=@"var;{arguments};{#20186}"
 variables(#20189,"arguments",#20186)
-isArgumentsObject(#20189)
+is_arguments_object(#20189)
 #20190=*
 stmts(#20190,1,#20183,-2,"{\n\tx;\n\t ... {}\n\t}\n}")
 #20191=@"loc,{#10000},12,14,19,1"
@@ -636,7 +636,7 @@ scopenodes(#20201,#20204)
 scopenesting(#20204,#20186)
 #20205=@"var;{arguments};{#20204}"
 variables(#20205,"arguments",#20204)
-isArgumentsObject(#20205)
+is_arguments_object(#20205)
 #20206=*
 stmts(#20206,1,#20201,-2,"{}")
 #20207=@"loc,{#10000},16,16,16,17"
@@ -675,7 +675,7 @@ literals("k","k",#20215)
 decl(#20215,#20214)
 #20216=@"var;{arguments};{#20213}"
 variables(#20216,"arguments",#20213)
-isArgumentsObject(#20216)
+is_arguments_object(#20216)
 #20217=*
 stmts(#20217,1,#20211,-2,"{}")
 #20218=@"loc,{#10000},17,17,17,18"

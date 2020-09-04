@@ -94,7 +94,7 @@ scopenodes(#20026,#20029)
 scopenesting(#20029,#20022)
 #20030=@"var;{arguments};{#20029}"
 variables(#20030,"arguments",#20029)
-isArgumentsObject(#20030)
+is_arguments_object(#20030)
 #20031=*
 stmts(#20031,1,#20026,-2,"{}")
 #20032=@"loc,{#10000},1,21,1,22"

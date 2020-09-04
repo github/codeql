@@ -571,7 +571,7 @@ scopenodes(#20204,#20206)
 scopenesting(#20206,#20196)
 #20207=@"var;{arguments};{#20206}"
 variables(#20207,"arguments",#20206)
-isArgumentsObject(#20207)
+is_arguments_object(#20207)
 #20208=*
 stmts(#20208,1,#20204,-2,"{}")
 #20209=@"loc,{#10000},8,15,8,16"
@@ -600,7 +600,7 @@ scopenodes(#20199,#20213)
 scopenesting(#20213,#20196)
 #20214=@"var;{arguments};{#20213}"
 variables(#20214,"arguments",#20213)
-isArgumentsObject(#20214)
+is_arguments_object(#20214)
 #20215=*
 stmts(#20215,1,#20199,-2,"{}")
 hasLocation(#20215,#20211)
@@ -624,7 +624,7 @@ scopenodes(#20216,#20219)
 scopenesting(#20219,#20000)
 #20220=@"var;{arguments};{#20219}"
 variables(#20220,"arguments",#20219)
-isArgumentsObject(#20220)
+is_arguments_object(#20220)
 #20221=*
 stmts(#20221,1,#20216,-2,"{\n  swi ... :\n  }\n}")
 #20222=@"loc,{#10000},11,14,15,1"

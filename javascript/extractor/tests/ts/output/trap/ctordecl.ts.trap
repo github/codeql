@@ -229,7 +229,7 @@ literals("x","x",#20075)
 decl(#20075,#20074)
 #20076=@"var;{arguments};{#20073}"
 variables(#20076,"arguments",#20073)
-isArgumentsObject(#20076)
+is_arguments_object(#20076)
 #20077=*
 typeexprs(#20077,2,#20067,-6,"string")
 hasLocation(#20077,#20035)
@@ -266,7 +266,7 @@ literals("x","x",#20084)
 decl(#20084,#20083)
 #20085=@"var;{arguments};{#20082}"
 variables(#20085,"arguments",#20082)
-isArgumentsObject(#20085)
+is_arguments_object(#20085)
 #20086=*
 typeexprs(#20086,2,#20081,-6,"any")
 hasLocation(#20086,#20049)

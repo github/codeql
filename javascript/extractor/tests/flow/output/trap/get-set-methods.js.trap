@@ -229,7 +229,7 @@ literals("v","v",#20077)
 decl(#20077,#20076)
 #20079=@"var;{arguments};{#20075}"
 variables(#20079,"arguments",#20075)
-isArgumentsObject(#20079)
+is_arguments_object(#20079)
 #20080=*
 stmts(#20080,1,#20073,-2,"{ }")
 #20081=@"loc,{#10000},2,18,2,20"
@@ -271,7 +271,7 @@ literals("v","v",#20089)
 decl(#20089,#20088)
 #20091=@"var;{arguments};{#20087}"
 variables(#20091,"arguments",#20087)
-isArgumentsObject(#20091)
+is_arguments_object(#20091)
 #20092=*
 stmts(#20092,1,#20085,-2,"{ }")
 #20093=@"loc,{#10000},3,18,3,20"
@@ -301,7 +301,7 @@ scopenodes(#20097,#20098)
 scopenesting(#20098,#20069)
 #20099=@"var;{arguments};{#20098}"
 variables(#20099,"arguments",#20098)
-isArgumentsObject(#20099)
+is_arguments_object(#20099)
 #20100=*
 stmts(#20100,1,#20097,-2,"{}")
 hasLocation(#20100,#20095)

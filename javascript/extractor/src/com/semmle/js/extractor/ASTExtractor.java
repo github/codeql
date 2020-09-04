@@ -948,7 +948,7 @@ public class ASTExtractor {
       if (!(nd instanceof ArrowFunctionExpression)) {
         if (!scopeManager.declaredInCurrentScope("arguments"))
           scopeManager.addVariables("arguments");
-        trapwriter.addTuple("isArgumentsObject", scopeManager.getVarKey("arguments"));
+        trapwriter.addTuple("is_arguments_object", scopeManager.getVarKey("arguments"));
       }
 
       // add return type at index -3

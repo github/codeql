@@ -204,7 +204,7 @@ scopenodes(#20069,#20072)
 scopenesting(#20072,#20000)
 #20073=@"var;{arguments};{#20072}"
 variables(#20073,"arguments",#20072)
-isArgumentsObject(#20073)
+is_arguments_object(#20073)
 isGenerator(#20069)
 isAsync(#20069)
 #20074=*
@@ -233,7 +233,7 @@ scopenesting(#20079,#20000)
 variables(#20080,"x",#20079)
 #20081=@"var;{arguments};{#20079}"
 variables(#20081,"arguments",#20079)
-isArgumentsObject(#20081)
+is_arguments_object(#20081)
 isAsync(#20076)
 #20082=*
 stmts(#20082,1,#20076,-2,"{\n  for ... o());\n}")

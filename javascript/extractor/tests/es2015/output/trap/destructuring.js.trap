@@ -514,7 +514,7 @@ decl(#20188,#20184)
 array_size(#20185,2)
 #20189=@"var;{arguments};{#20180}"
 variables(#20189,"arguments",#20180)
-isArgumentsObject(#20189)
+is_arguments_object(#20189)
 #20190=*
 stmts(#20190,1,#20177,-2,"{\n\tvar  ... );\n\t}\n}")
 #20191=@"loc,{#10000},1,20,8,1"
@@ -738,7 +738,7 @@ literals("z","z",#20245)
 decl(#20245,#20236)
 #20246=@"var;{arguments};{#20233}"
 variables(#20246,"arguments",#20233)
-isArgumentsObject(#20246)
+is_arguments_object(#20246)
 #20247=*
 stmts(#20247,1,#20230,-2,"{\n\tvar  ... rn w;\n}")
 #20248=@"loc,{#10000},10,25,13,1"

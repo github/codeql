@@ -204,7 +204,7 @@ class Variable extends @variable, LexicalName {
 
 /** An `arguments` variable of a function. */
 class ArgumentsVariable extends Variable {
-  ArgumentsVariable() { isArgumentsObject(this) }
+  ArgumentsVariable() { is_arguments_object(this) }
 
   override FunctionScope getScope() { result = Variable.super.getScope() }
 

@@ -237,7 +237,7 @@ scopenodes(#20075,#20076)
 scopenesting(#20076,#20071)
 #20077=@"var;{arguments};{#20076}"
 variables(#20077,"arguments",#20076)
-isArgumentsObject(#20077)
+is_arguments_object(#20077)
 #20078=*
 stmts(#20078,1,#20075,-2,"{}")
 hasLocation(#20078,#20073)
@@ -267,7 +267,7 @@ scopenodes(#20081,#20084)
 scopenesting(#20084,#20055)
 #20085=@"var;{arguments};{#20084}"
 variables(#20085,"arguments",#20084)
-isArgumentsObject(#20085)
+is_arguments_object(#20085)
 #20086=*
 stmts(#20086,1,#20081,-2,"{}")
 #20087=@"loc,{#10000},5,29,5,30"

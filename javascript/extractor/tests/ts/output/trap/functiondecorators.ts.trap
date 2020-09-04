@@ -715,7 +715,7 @@ literals("none","none",#20251)
 decl(#20251,#20250)
 #20252=@"var;{arguments};{#20249}"
 variables(#20252,"arguments",#20249)
-isArgumentsObject(#20252)
+is_arguments_object(#20252)
 #20253=*
 stmts(#20253,1,#20248,-2,"{}")
 #20254=@"loc,{#10000},6,12,6,13"
@@ -753,7 +753,7 @@ literals("a","a",#20261)
 decl(#20261,#20260)
 #20262=@"var;{arguments};{#20259}"
 variables(#20262,"arguments",#20259)
-isArgumentsObject(#20262)
+is_arguments_object(#20262)
 #20263=*
 exprs(#20263,104,#20258,-8,"@A")
 #20264=@"loc,{#10000},7,6,7,7"
@@ -807,7 +807,7 @@ literals("ab","ab",#20275)
 decl(#20275,#20274)
 #20276=@"var;{arguments};{#20273}"
 variables(#20276,"arguments",#20273)
-isArgumentsObject(#20276)
+is_arguments_object(#20276)
 #20277=*
 exprs(#20277,104,#20272,-8,"@A @B")
 #20278=@"loc,{#10000},8,6,8,10"
@@ -883,7 +883,7 @@ literals("a","a",#20295)
 decl(#20295,#20294)
 #20296=@"var;{arguments};{#20291}"
 variables(#20296,"arguments",#20291)
-isArgumentsObject(#20296)
+is_arguments_object(#20296)
 #20297=*
 exprs(#20297,104,#20290,-12,"@A")
 #20298=@"loc,{#10000},10,12,10,13"
@@ -945,7 +945,7 @@ literals("ab","ab",#20311)
 decl(#20311,#20310)
 #20312=@"var;{arguments};{#20307}"
 variables(#20312,"arguments",#20307)
-isArgumentsObject(#20312)
+is_arguments_object(#20312)
 #20313=*
 exprs(#20313,104,#20306,-12,"@A @B")
 #20314=@"loc,{#10000},11,12,11,16"
@@ -1021,7 +1021,7 @@ literals("b","b",#20331)
 decl(#20331,#20330)
 #20332=@"var;{arguments};{#20327}"
 variables(#20332,"arguments",#20327)
-isArgumentsObject(#20332)
+is_arguments_object(#20332)
 #20333=*
 exprs(#20333,104,#20326,-8,"@A")
 #20334=@"loc,{#10000},13,6,13,7"
@@ -1099,7 +1099,7 @@ literals("bc","bc",#20351)
 decl(#20351,#20350)
 #20352=@"var;{arguments};{#20347}"
 variables(#20352,"arguments",#20347)
-isArgumentsObject(#20352)
+is_arguments_object(#20352)
 #20353=*
 exprs(#20353,104,#20346,-8,"@A")
 #20354=@"loc,{#10000},14,6,14,7"
@@ -1175,7 +1175,7 @@ scopenodes(#20370,#20371)
 scopenesting(#20371,#20244)
 #20372=@"var;{arguments};{#20371}"
 variables(#20372,"arguments",#20371)
-isArgumentsObject(#20372)
+is_arguments_object(#20372)
 #20373=*
 stmts(#20373,1,#20370,-2,"{}")
 hasLocation(#20373,#20368)

@@ -143,7 +143,7 @@ literals("States","States",#20042)
 decl(#20042,#20041)
 #20043=@"var;{arguments};{#20036}"
 variables(#20043,"arguments",#20036)
-isArgumentsObject(#20043)
+is_arguments_object(#20043)
 #20044=*
 stmts(#20044,1,#20035,-2,"{ }")
 #20045=@"loc,{#10000},1,50,1,52"

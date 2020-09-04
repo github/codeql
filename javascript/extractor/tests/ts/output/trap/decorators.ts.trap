@@ -391,7 +391,7 @@ scopenodes(#20132,#20133)
 scopenesting(#20133,#20124)
 #20134=@"var;{arguments};{#20133}"
 variables(#20134,"arguments",#20133)
-isArgumentsObject(#20134)
+is_arguments_object(#20134)
 #20135=*
 typeexprs(#20135,2,#20132,-3,"number")
 hasLocation(#20135,#20053)
@@ -482,7 +482,7 @@ scopenodes(#20150,#20156)
 scopenesting(#20156,#20124)
 #20157=@"var;{arguments};{#20156}"
 variables(#20157,"arguments",#20156)
-isArgumentsObject(#20157)
+is_arguments_object(#20157)
 #20158=*
 stmts(#20158,1,#20150,-2,"{}")
 hasLocation(#20158,#20154)
@@ -506,7 +506,7 @@ scopenodes(#20159,#20162)
 scopenesting(#20162,#20112)
 #20163=@"var;{arguments};{#20162}"
 variables(#20163,"arguments",#20162)
-isArgumentsObject(#20163)
+is_arguments_object(#20163)
 #20164=*
 stmts(#20164,1,#20159,-2,"{}")
 #20165=@"loc,{#10000},11,16,11,17"
@@ -571,7 +571,7 @@ scopenodes(#20177,#20178)
 scopenesting(#20178,#20173)
 #20179=@"var;{arguments};{#20178}"
 variables(#20179,"arguments",#20178)
-isArgumentsObject(#20179)
+is_arguments_object(#20179)
 #20180=*
 stmts(#20180,1,#20177,-2,"{}")
 hasLocation(#20180,#20175)

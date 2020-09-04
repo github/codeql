@@ -323,7 +323,7 @@ literals("g","g",#20115)
 decl(#20115,#20114)
 #20116=@"var;{arguments};{#20113}"
 variables(#20116,"arguments",#20113)
-isArgumentsObject(#20116)
+is_arguments_object(#20116)
 #20117=*
 stmts(#20117,1,#20111,-2,"{\n\ttry  ... );\n\t}\n}")
 #20118=@"loc,{#10000},1,15,9,1"

@@ -328,7 +328,7 @@ scopenodes(#20106,#20107)
 scopenesting(#20107,#20087)
 #20108=@"var;{arguments};{#20107}"
 variables(#20108,"arguments",#20107)
-isArgumentsObject(#20108)
+is_arguments_object(#20108)
 #20109=*
 typeexprs(#20109,13,#20106,-3,"M.I")
 #20110=@"loc,{#10000},6,15,6,17"

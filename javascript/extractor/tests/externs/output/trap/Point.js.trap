@@ -515,7 +515,7 @@ literals("y","y",#20190)
 decl(#20190,#20189)
 #20191=@"var;{arguments};{#20186}"
 variables(#20191,"arguments",#20186)
-isArgumentsObject(#20191)
+is_arguments_object(#20191)
 #20192=*
 stmts(#20192,1,#20184,-2,"{}")
 #20193=@"loc,{#10000},1,22,1,23"
@@ -595,7 +595,7 @@ literals("dy","dy",#20210)
 decl(#20210,#20209)
 #20211=@"var;{arguments};{#20206}"
 variables(#20211,"arguments",#20206)
-isArgumentsObject(#20211)
+is_arguments_object(#20211)
 #20212=*
 stmts(#20212,1,#20204,-2,"{}")
 #20213=@"loc,{#10000},3,41,3,42"
@@ -758,7 +758,7 @@ scopenodes(#20246,#20248)
 scopenesting(#20248,#20000)
 #20249=@"var;{arguments};{#20248}"
 variables(#20249,"arguments",#20248)
-isArgumentsObject(#20249)
+is_arguments_object(#20249)
 #20250=*
 stmts(#20250,1,#20246,-2,"{}")
 #20251=@"loc,{#10000},8,24,8,25"

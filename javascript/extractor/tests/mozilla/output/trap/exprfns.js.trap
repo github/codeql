@@ -228,7 +228,7 @@ literals("x","x",#20079)
 decl(#20079,#20078)
 #20080=@"var;{arguments};{#20077}"
 variables(#20080,"arguments",#20077)
-isArgumentsObject(#20080)
+is_arguments_object(#20080)
 #20081=*
 exprs(#20081,63,#20075,-2,"(""result"")")
 #20082=@"loc,{#10000},1,14,1,23"
@@ -273,7 +273,7 @@ literals("b","b",#20092)
 decl(#20092,#20091)
 #20093=@"var;{arguments};{#20089}"
 variables(#20093,"arguments",#20089)
-isArgumentsObject(#20093)
+is_arguments_object(#20093)
 #20094=*
 stmts(#20094,1,#20088,-2,"{\n  if  ... )\n  }\n}")
 #20095=@"loc,{#10000},3,13,7,1"
@@ -325,7 +325,7 @@ literals("y","y",#20106)
 decl(#20106,#20105)
 #20107=@"var;{arguments};{#20104}"
 variables(#20107,"arguments",#20104)
-isArgumentsObject(#20107)
+is_arguments_object(#20107)
 #20108=*
 exprs(#20108,63,#20101,-2,"(""other result"")")
 #20109=@"loc,{#10000},5,18,5,33"

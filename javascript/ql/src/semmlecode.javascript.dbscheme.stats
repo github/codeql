@@ -12529,7 +12529,7 @@
 </dependencies>
 </relation>
 <relation>
-<name>isArgumentsObject</name>
+<name>is_arguments_object</name>
 <cardinality>116243</cardinality>
 <columnsizes>
 <e>

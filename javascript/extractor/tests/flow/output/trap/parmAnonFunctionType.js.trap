@@ -176,7 +176,7 @@ literals("g","g",#20060)
 decl(#20060,#20059)
 #20062=@"var;{arguments};{#20058}"
 variables(#20062,"arguments",#20058)
-isArgumentsObject(#20062)
+is_arguments_object(#20062)
 #20063=*
 stmts(#20063,1,#20055,-2,"{\n  g(42);\n}")
 #20064=@"loc,{#10000},1,35,3,1"

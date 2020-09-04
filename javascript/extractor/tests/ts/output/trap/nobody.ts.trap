@@ -717,7 +717,7 @@ scopenodes(#20255,#20258)
 scopenesting(#20258,#20000)
 #20259=@"var;{arguments};{#20258}"
 variables(#20259,"arguments",#20258)
-isArgumentsObject(#20259)
+is_arguments_object(#20259)
 #20260=*
 stmts(#20260,26,#20001,1,"abstrac ... mber;\n}")
 #20261=@"loc,{#10000},4,1,15,1"
@@ -759,7 +759,7 @@ scopenodes(#20267,#20268)
 scopenesting(#20268,#20263)
 #20269=@"var;{arguments};{#20268}"
 variables(#20269,"arguments",#20268)
-isArgumentsObject(#20269)
+is_arguments_object(#20269)
 isMethod(#20264)
 isAbstractMember(#20264)
 #20270=*
@@ -792,7 +792,7 @@ literals("x","x",#20276)
 decl(#20276,#20275)
 #20277=@"var;{arguments};{#20274}"
 variables(#20277,"arguments",#20274)
-isArgumentsObject(#20277)
+is_arguments_object(#20277)
 #20278=*
 typeexprs(#20278,2,#20273,-3,"number")
 hasLocation(#20278,#20119)
@@ -834,7 +834,7 @@ literals("x","x",#20286)
 decl(#20286,#20285)
 #20287=@"var;{arguments};{#20284}"
 variables(#20287,"arguments",#20284)
-isArgumentsObject(#20287)
+is_arguments_object(#20287)
 #20288=*
 typeexprs(#20288,2,#20283,-3,"string")
 hasLocation(#20288,#20137)
@@ -876,7 +876,7 @@ literals("x","x",#20296)
 decl(#20296,#20295)
 #20297=@"var;{arguments};{#20294}"
 variables(#20297,"arguments",#20294)
-isArgumentsObject(#20297)
+is_arguments_object(#20297)
 #20298=*
 typeexprs(#20298,2,#20293,-6,"any")
 hasLocation(#20298,#20149)
@@ -928,7 +928,7 @@ scopenodes(#20303,#20309)
 scopenesting(#20309,#20263)
 #20310=@"var;{arguments};{#20309}"
 variables(#20310,"arguments",#20309)
-isArgumentsObject(#20310)
+is_arguments_object(#20310)
 #20311=*
 stmts(#20311,1,#20303,-2,"{}")
 hasLocation(#20311,#20307)
@@ -977,7 +977,7 @@ scopenodes(#20320,#20321)
 scopenesting(#20321,#20316)
 #20322=@"var;{arguments};{#20321}"
 variables(#20322,"arguments",#20321)
-isArgumentsObject(#20322)
+is_arguments_object(#20322)
 isMethod(#20317)
 isAbstractMember(#20317)
 #20323=*
@@ -1010,7 +1010,7 @@ literals("x","x",#20329)
 decl(#20329,#20328)
 #20330=@"var;{arguments};{#20327}"
 variables(#20330,"arguments",#20327)
-isArgumentsObject(#20330)
+is_arguments_object(#20330)
 #20331=*
 typeexprs(#20331,2,#20326,-3,"number")
 hasLocation(#20331,#20202)
@@ -1052,7 +1052,7 @@ literals("x","x",#20339)
 decl(#20339,#20338)
 #20340=@"var;{arguments};{#20337}"
 variables(#20340,"arguments",#20337)
-isArgumentsObject(#20340)
+is_arguments_object(#20340)
 #20341=*
 typeexprs(#20341,2,#20336,-3,"string")
 hasLocation(#20341,#20220)
@@ -1094,7 +1094,7 @@ literals("x","x",#20349)
 decl(#20349,#20348)
 #20350=@"var;{arguments};{#20347}"
 variables(#20350,"arguments",#20347)
-isArgumentsObject(#20350)
+is_arguments_object(#20350)
 #20351=*
 typeexprs(#20351,2,#20346,-6,"any")
 hasLocation(#20351,#20232)
@@ -1146,7 +1146,7 @@ scopenodes(#20356,#20362)
 scopenesting(#20362,#20316)
 #20363=@"var;{arguments};{#20362}"
 variables(#20363,"arguments",#20362)
-isArgumentsObject(#20363)
+is_arguments_object(#20363)
 #20364=*
 stmts(#20364,1,#20356,-2,"{}")
 hasLocation(#20364,#20360)

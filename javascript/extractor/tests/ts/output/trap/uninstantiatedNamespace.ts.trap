@@ -805,7 +805,7 @@ scopenodes(#20269,#20270)
 scopenesting(#20270,#20257)
 #20271=@"var;{arguments};{#20270}"
 variables(#20271,"arguments",#20270)
-isArgumentsObject(#20271)
+is_arguments_object(#20271)
 #20272=*
 typeexprs(#20272,2,#20269,-3,"number")
 hasLocation(#20272,#20141)
