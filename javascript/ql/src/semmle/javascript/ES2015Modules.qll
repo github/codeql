@@ -274,7 +274,7 @@ abstract class ExportDeclaration extends Stmt, @exportdeclaration {
  * export * from 'a';          // bulk re-export declaration
  * ```
  */
-class BulkReExportDeclaration extends ReExportDeclaration, @exportalldeclaration {
+class BulkReExportDeclaration extends ReExportDeclaration, @export_all_declaration {
   /** Gets the name of the module from which this declaration re-exports. */
   override ConstantString getImportedPath() { result = getChildExpr(0) }
 
