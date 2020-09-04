@@ -1747,7 +1747,7 @@ class LogOrExpr extends @logor_expr, BinaryExpr {
  * x ?? f
  * ```
  */
-class NullishCoalescingExpr extends @nullishcoalescingexpr, BinaryExpr {
+class NullishCoalescingExpr extends @nullishcoalescing_expr, BinaryExpr {
   override string getOperator() { result = "??" }
 
   override ControlFlowNode getFirstControlFlowNode() { result = this }

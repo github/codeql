@@ -1402,7 +1402,7 @@
 <v>100</v>
 </e>
 <e>
-<k>@nullishcoalescingexpr</k>
+<k>@nullishcoalescing_expr</k>
 <v>100</v>
 </e>
 <e>
@@ -1462,7 +1462,7 @@
 <v>100</v>
 </e>
 <e>
-<k>@nullishcoalescingexpr</k>
+<k>@nullishcoalescing_expr</k>
 <v>100</v>
 </e>
 <e>

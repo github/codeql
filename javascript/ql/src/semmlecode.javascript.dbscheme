@@ -342,7 +342,7 @@ case @expr.kind of
 | 104 = @decorator_list
 | 105 = @non_null_assertion
 | 106 = @bigint_literal
-| 107 = @nullishcoalescingexpr
+| 107 = @nullishcoalescing_expr
 | 108 = @e4x_xml_anyname
 | 109 = @e4x_xml_static_attribute_selector
 | 110 = @e4x_xml_dynamic_attribute_selector
@@ -373,7 +373,7 @@ case @expr.kind of
 
 @comparison = @equality_test | @lt_expr | @le_expr | @gt_expr | @ge_expr;
 
-@binaryexpr = @comparison | @lshift_expr | @rshift_expr | @urshift_expr | @add_expr | @sub_expr | @mul_expr | @div_expr | @mod_expr | @exp_expr | @bitor_expr | @xor_expr | @bitand_expr | @in_expr | @instanceof_expr | @logand_expr | @logor_expr | @nullishcoalescingexpr;
+@binaryexpr = @comparison | @lshift_expr | @rshift_expr | @urshift_expr | @add_expr | @sub_expr | @mul_expr | @div_expr | @mod_expr | @exp_expr | @bitor_expr | @xor_expr | @bitand_expr | @in_expr | @instanceof_expr | @logand_expr | @logor_expr | @nullishcoalescing_expr;
 
 @assignment = @assign_expr | @assign_add_expr | @assign_sub_expr | @assign_mul_expr | @assign_div_expr | @assign_mod_expr | @assign_exp_expr | @assign_lshift_expr | @assign_rshift_expr | @assign_urshift_expr | @assign_or_expr | @assign_xor_expr | @assign_and_expr | @assignlogandexpr | @assignlogorexpr | @assignnullishcoalescingexpr;
 
