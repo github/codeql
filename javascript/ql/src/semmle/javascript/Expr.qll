@@ -849,7 +849,7 @@ class SeqExpr extends @seq_expr, Expr {
  * x == 0 ? 0 : 1/x
  * ```
  */
-class ConditionalExpr extends @conditionalexpr, Expr {
+class ConditionalExpr extends @conditional_expr, Expr {
   /** Gets the condition expression of this conditional. */
   Expr getCondition() { result = getChildExpr(0) }
 

@@ -247,7 +247,7 @@ case @expr.kind of
 |  8 = @obj_expr
 |  9 = @function_expr
 | 10 = @seq_expr
-| 11 = @conditionalexpr
+| 11 = @conditional_expr
 | 12 = @newexpr
 | 13 = @callexpr
 | 14 = @dotexpr
