@@ -134,4 +134,4 @@ class SlashStarComment extends @slashstar_comment, BlockComment { }
  * /** a JSDoc comment *&#47;
  * </pre>
  */
-class DocComment extends @doccomment, BlockComment { }
+class DocComment extends @doc_comment, BlockComment { }
