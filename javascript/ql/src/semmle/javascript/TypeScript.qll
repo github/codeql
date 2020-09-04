@@ -1210,7 +1210,7 @@ class AsTypeAssertion extends TypeAssertion, @astypeassertion { }
 /**
  * A type assertion specifically of the form `<T> E` (as opposed to the `E as T` syntax).
  */
-class PrefixTypeAssertion extends TypeAssertion, @prefixtypeassertion { }
+class PrefixTypeAssertion extends TypeAssertion, @prefix_type_assertion { }
 
 /**
  * A TypeScript expression of form `E!`, asserting that `E` is not null.

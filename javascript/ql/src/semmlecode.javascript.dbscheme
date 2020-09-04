@@ -336,7 +336,7 @@ case @expr.kind of
 | 98 = @external_module_reference
 | 99 = @dynamic_import
 | 100 = @expression_with_type_arguments
-| 101 = @prefixtypeassertion
+| 101 = @prefix_type_assertion
 | 102 = @astypeassertion
 | 103 = @export_varaccess
 | 104 = @decorator_list
@@ -391,7 +391,7 @@ case @expr.kind of
 
 @import_or_export_declaration = @import_declaration | @exportdeclaration;
 
-@typeassertion = @astypeassertion | @prefixtypeassertion;
+@typeassertion = @astypeassertion | @prefix_type_assertion;
 
 @classdefinition = @class_decl_stmt | @class_expr;
 @interfacedefinition = @interfacedeclaration | @interface_typeexpr;
