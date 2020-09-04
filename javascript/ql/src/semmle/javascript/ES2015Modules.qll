@@ -50,7 +50,7 @@ class ES2015Module extends Module {
  * import * as console from 'console';
  * ```
  */
-class ImportDeclaration extends Stmt, Import, @importdeclaration {
+class ImportDeclaration extends Stmt, Import, @import_declaration {
   override ES2015Module getEnclosingModule() { result = getTopLevel() }
 
   override PathExpr getImportedPath() { result = getChildExpr(-1) }

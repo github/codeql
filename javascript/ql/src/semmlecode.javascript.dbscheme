@@ -176,7 +176,7 @@ case @stmt.kind of
 | 24 = @legacy_let_stmt
 | 25 = @for_each_stmt
 | 26 = @class_decl_stmt
-| 27 = @importdeclaration
+| 27 = @import_declaration
 | 28 = @exportalldeclaration
 | 29 = @exportdefaultdeclaration
 | 30 = @exportnameddeclaration
@@ -389,7 +389,7 @@ case @expr.kind of
 
 @exportspecifier = @namedexportspecifier | @exportdefaultspecifier | @exportnamespacespecifier;
 
-@import_or_export_declaration = @importdeclaration | @exportdeclaration;
+@import_or_export_declaration = @import_declaration | @exportdeclaration;
 
 @typeassertion = @astypeassertion | @prefixtypeassertion;
 
@@ -695,7 +695,7 @@ case @symbol.kind of
 ;
 
 @type_with_symbol = @typereference | @typevariable_type | @typeoftype | @uniquesymboltype;
-@ast_node_with_symbol = @typedefinition | @namespacedefinition | @toplevel | @typeaccess | @namespace_access | @vardecl | @function | @invokeexpr | @importdeclaration | @externalmodulereference;
+@ast_node_with_symbol = @typedefinition | @namespacedefinition | @toplevel | @typeaccess | @namespace_access | @vardecl | @function | @invokeexpr | @import_declaration | @externalmodulereference;
 
 ast_node_symbol(
   unique int node: @ast_node_with_symbol ref,
