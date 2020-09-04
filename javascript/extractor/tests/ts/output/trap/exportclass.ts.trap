@@ -50,7 +50,7 @@ scopes(#20015,3)
 scopenodes(#20001,#20015)
 scopenesting(#20015,#20000)
 is_module(#20001)
-isES2015Module(#20001)
+is_es2015_module(#20001)
 #20016=*
 stmts(#20016,30,#20001,0,"export class {}")
 hasLocation(#20016,#20003)

@@ -82,3 +82,8 @@ deprecated predicate isModule(TopLevel toplevel) { is_module(toplevel) }
  * Use `NodeModule` from `NodeJS.qll` instead.
  */ 
 deprecated predicate isNodejs(TopLevel toplevel) { is_nodejs(toplevel) }
+/**
+ * Alias for the predicate `is_es2015_module` defined in the .dbscheme.
+ * Use `ES2015Module` from `ES2015Modules.qll` instead.
+ */ 
+deprecated predicate isES2015Module(TopLevel toplevel) { is_es2015_module(toplevel) }

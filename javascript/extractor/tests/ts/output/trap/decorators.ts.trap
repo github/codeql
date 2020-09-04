@@ -310,7 +310,7 @@ scopes(#20112,3)
 scopenodes(#20001,#20112)
 scopenesting(#20112,#20000)
 is_module(#20001)
-isES2015Module(#20001)
+is_es2015_module(#20001)
 #20113=@"var;{Class};{#20112}"
 variables(#20113,"Class",#20112)
 #20114=@"var;{fun};{#20112}"

@@ -128,7 +128,7 @@ case @toplevel.kind of
 
 is_module (int tl: @toplevel ref);
 is_nodejs (int tl: @toplevel ref);
-isES2015Module (int tl: @toplevel ref);
+is_es2015_module (int tl: @toplevel ref);
 isClosureModule (int tl: @toplevel ref);
 
 // statements

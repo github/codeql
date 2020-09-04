@@ -117,7 +117,7 @@ scopes(#20041,3)
 scopenodes(#20001,#20041)
 scopenesting(#20041,#20000)
 is_module(#20001)
-isES2015Module(#20001)
+is_es2015_module(#20001)
 #20042=@"var;{Something};{#20041}"
 variables(#20042,"Something",#20041)
 #20043=@"var;{importExport};{#20041}"

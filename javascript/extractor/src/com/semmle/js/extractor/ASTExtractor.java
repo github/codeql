@@ -700,7 +700,7 @@ public class ASTExtractor {
           trapwriter.addTuple("isClosureModule", toplevelLabel);
           break;
         case MODULE:
-          trapwriter.addTuple("isES2015Module", toplevelLabel);
+          trapwriter.addTuple("is_es2015_module", toplevelLabel);
           break;
         default:
           break;

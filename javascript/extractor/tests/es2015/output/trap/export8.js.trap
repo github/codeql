@@ -75,7 +75,7 @@ scopes(#20025,3)
 scopenodes(#20001,#20025)
 scopenesting(#20025,#20000)
 is_module(#20001)
-isES2015Module(#20001)
+is_es2015_module(#20001)
 #20026=*
 stmts(#20026,2,#20001,0,"foo = 42;")
 hasLocation(#20026,#20003)

@@ -65,7 +65,7 @@ scopes(#20021,3)
 scopenodes(#20001,#20021)
 scopenesting(#20021,#20000)
 is_module(#20001)
-isES2015Module(#20001)
+is_es2015_module(#20001)
 #20022=*
 stmts(#20022,2,#20001,0,"console ...  ES6"");")
 hasLocation(#20022,#20003)

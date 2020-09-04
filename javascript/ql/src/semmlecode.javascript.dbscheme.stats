@@ -9238,7 +9238,7 @@
 <dependencies/>
 </relation>
 <relation>
-<name>isES2015Module</name>
+<name>is_es2015_module</name>
 <cardinality>21</cardinality>
 <columnsizes>
 <e>

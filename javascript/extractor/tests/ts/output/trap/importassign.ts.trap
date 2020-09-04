@@ -70,7 +70,7 @@ scopes(#20023,3)
 scopenodes(#20001,#20023)
 scopenesting(#20023,#20000)
 is_module(#20001)
-isES2015Module(#20001)
+is_es2015_module(#20001)
 #20024=@"var;{x};{#20023}"
 variables(#20024,"x",#20023)
 #20025=@"local_type_name;{x};{#20023}"

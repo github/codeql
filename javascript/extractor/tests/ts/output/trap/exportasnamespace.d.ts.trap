@@ -96,7 +96,7 @@ scopes(#20033,3)
 scopenodes(#20001,#20033)
 scopenesting(#20033,#20000)
 is_module(#20001)
-isES2015Module(#20001)
+is_es2015_module(#20001)
 #20034=*
 stmts(#20034,30,#20001,0,"export  ...  foo();")
 hasLocation(#20034,#20003)

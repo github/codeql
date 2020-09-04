@@ -14,7 +14,7 @@ import javascript
  * ```
  */
 class ES2015Module extends Module {
-  ES2015Module() { isES2015Module(this) }
+  ES2015Module() { is_es2015_module(this) }
 
   override ModuleScope getScope() { result.getScopeElement() = this }
 
