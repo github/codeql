@@ -510,7 +510,7 @@ class ArrayExpr extends @arrayexpr, Expr {
   Expr getAnElement() { result = this.getAChildExpr() }
 
   /** Gets the number of elements in this array literal. */
-  int getSize() { arraySize(this, result) }
+  int getSize() { array_size(this, result) }
 
   /**
    * Holds if this array literal includes a trailing comma after the

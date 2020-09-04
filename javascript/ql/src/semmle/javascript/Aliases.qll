@@ -125,3 +125,8 @@ deprecated predicate enclosingStmt(ExprOrType expr, Stmt stmt) { enclosing_stmt(
  * Use `ASTNode#getContainer()` instead.
  */ 
 deprecated predicate exprContainers(ExprOrType expr, StmtContainer container) { expr_containers(expr, container) }
+/**
+ * Alias for the predicate `array_size` defined in the .dbscheme.
+ * Use `ArrayExpr#getSize()` instead.
+ */ 
+deprecated predicate arraySize(Expr ae, int sz) { array_size(ae, sz) }

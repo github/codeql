@@ -223,7 +223,7 @@ enclosing_stmt (unique int expr: @exprortype ref,
 expr_containers (unique int expr: @exprortype ref,
        int container: @stmt_container ref);
 
-arraySize (unique int ae: @arraylike ref,
+array_size (unique int ae: @arraylike ref,
        int sz: int ref);
 
 isDelegating (int yield: @yieldexpr ref);

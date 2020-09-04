@@ -504,7 +504,7 @@ class ArrayPattern extends DestructuringPattern, @arraypattern {
   predicate hasRest() { exists(getRest()) }
 
   /** Gets the number of elements in this array pattern, not including any rest pattern. */
-  int getSize() { arraySize(this, result) }
+  int getSize() { array_size(this, result) }
 
   /** Holds if the `i`th element of this array pattern is omitted. */
   predicate elementIsOmitted(int i) {

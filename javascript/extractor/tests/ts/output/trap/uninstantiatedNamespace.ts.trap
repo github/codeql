@@ -947,7 +947,7 @@ enclosing_stmt(#20302,#20284)
 expr_containers(#20302,#20212)
 literals("EmptyBlock","EmptyBlock",#20302)
 bind(#20302,#20217)
-arraySize(#20289,7)
+array_size(#20289,7)
 is_instantiated(#20212)
 #20303=*
 entry_cfg_node(#20303,#20001)

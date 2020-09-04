@@ -277,7 +277,7 @@ hasLocation(#20098,#20037)
 enclosing_stmt(#20098,#20092)
 expr_containers(#20098,#20001)
 literals("3","3",#20098)
-arraySize(#20094,3)
+array_size(#20094,3)
 #20099=*
 scopes(#20099,6)
 scopenodes(#20092,#20099)
@@ -394,7 +394,7 @@ locations_default(#20129,#10000,6,19,6,20)
 hasLocation(#20128,#20129)
 enclosing_stmt(#20128,#20126)
 expr_containers(#20128,#20118)
-arraySize(#20128,0)
+array_size(#20128,0)
 #20130=*
 stmts(#20130,18,#20126,0,"var x")
 #20131=@"loc,{#10000},6,10,6,14"

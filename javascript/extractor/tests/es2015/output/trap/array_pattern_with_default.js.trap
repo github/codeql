@@ -100,7 +100,7 @@ hasLocation(#20031,#20011)
 enclosing_stmt(#20031,#20024)
 expr_containers(#20031,#20001)
 literals("42","42",#20031)
-arraySize(#20027,1)
+array_size(#20027,1)
 #20032=*
 exprs(#20032,7,#20025,1,"[]")
 #20033=@"loc,{#10000},1,10,1,11"
@@ -108,7 +108,7 @@ locations_default(#20033,#10000,1,10,1,11)
 hasLocation(#20032,#20033)
 enclosing_stmt(#20032,#20024)
 expr_containers(#20032,#20001)
-arraySize(#20032,0)
+array_size(#20032,0)
 #20034=*
 entry_cfg_node(#20034,#20001)
 #20035=@"loc,{#10000},1,1,1,0"

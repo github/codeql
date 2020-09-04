@@ -136,7 +136,7 @@ literals("as","as",#20044)
 #20045=@"var;{as};{#20000}"
 variables(#20045,"as",#20000)
 bind(#20044,#20045)
-arraySize(#20038,2)
+array_size(#20038,2)
 #20046=*
 stmts(#20046,2,#20001,1,"new Array(...elts);")
 hasLocation(#20046,#20005)

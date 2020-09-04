@@ -69,7 +69,7 @@ hasLocation(#20021,#20011)
 enclosing_stmt(#20021,#20018)
 expr_containers(#20021,#20001)
 literals("1","1",#20021)
-arraySize(#20019,3)
+array_size(#20019,3)
 #20022=*
 entry_cfg_node(#20022,#20001)
 #20023=@"loc,{#10000},1,1,1,0"

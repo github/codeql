@@ -317,7 +317,7 @@ regexpterm(#20113,14,#20112,0,"abc")
 locations_default(#20114,#10000,1,14,1,16)
 hasLocation(#20113,#20114)
 regexpConstValue(#20113,"abc")
-arraySize(#20104,3)
+array_size(#20104,3)
 #20115=*
 exprs(#20115,0,#20102,1,"map")
 hasLocation(#20115,#20025)

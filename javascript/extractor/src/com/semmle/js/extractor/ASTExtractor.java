@@ -1092,7 +1092,7 @@ public class ASTExtractor {
     public Label visit(ArrayExpression nd, Context c) {
       Label key = super.visit(nd, c);
       visitAll(nd.getElements(), key, IdContext.varBind, 0);
-      trapwriter.addTuple("arraySize", key, nd.getElements().size());
+      trapwriter.addTuple("array_size", key, nd.getElements().size());
       return key;
     }
 
@@ -1102,7 +1102,7 @@ public class ASTExtractor {
       visitAll(nd.getElements(), key, c.idcontext, 0);
       visit(nd.getRest(), key, -1, c.idcontext);
       visitAll(nd.getDefaults(), key, IdContext.varBind, -2, -1);
-      trapwriter.addTuple("arraySize", key, nd.getElements().size());
+      trapwriter.addTuple("array_size", key, nd.getElements().size());
       return key;
     }
 

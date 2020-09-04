@@ -143,7 +143,7 @@ exprs(#20043,7,#20041,0,"[,]")
 hasLocation(#20043,#20042)
 enclosing_stmt(#20043,#20041)
 expr_containers(#20043,#20001)
-arraySize(#20043,1)
+array_size(#20043,1)
 #20044=*
 entry_cfg_node(#20044,#20001)
 #20045=@"loc,{#10000},1,1,1,0"

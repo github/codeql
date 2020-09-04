@@ -121,7 +121,7 @@ enclosing_stmt(#20039,#20033)
 expr_containers(#20039,#20001)
 literals("y","y",#20039)
 decl(#20039,#20032)
-arraySize(#20036,2)
+array_size(#20036,2)
 #20040=*
 exprs(#20040,7,#20034,1,"[1,2]")
 #20041=@"loc,{#10000},1,13,1,17"
@@ -141,7 +141,7 @@ hasLocation(#20043,#20025)
 enclosing_stmt(#20043,#20033)
 expr_containers(#20043,#20001)
 literals("2","2",#20043)
-arraySize(#20040,2)
+array_size(#20040,2)
 #20044=*
 entry_cfg_node(#20044,#20001)
 #20045=@"loc,{#10000},1,1,1,0"

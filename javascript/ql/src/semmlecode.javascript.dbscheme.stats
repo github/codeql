@@ -11393,7 +11393,7 @@
 </dependencies>
 </relation>
 <relation>
-<name>arraySize</name>
+<name>array_size</name>
 <cardinality>28188</cardinality>
 <columnsizes>
 <e>

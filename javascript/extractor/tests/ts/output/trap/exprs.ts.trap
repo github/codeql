@@ -301,7 +301,7 @@ enclosing_stmt(#20093,#20086)
 expr_containers(#20093,#20063)
 literals("y","y",#20093)
 bind(#20093,#20073)
-arraySize(#20090,2)
+array_size(#20090,2)
 #20094=*
 exprs(#20094,79,#20088,1,"z")
 hasLocation(#20094,#20055)

@@ -717,7 +717,7 @@ locations_default(#20224,#10000,13,1,13,2)
 hasLocation(#20223,#20224)
 enclosing_stmt(#20223,#20220)
 expr_containers(#20223,#20001)
-arraySize(#20223,0)
+array_size(#20223,0)
 #20225=*
 exprs(#20225,79,#20221,1,"Array")
 hasLocation(#20225,#20135)
