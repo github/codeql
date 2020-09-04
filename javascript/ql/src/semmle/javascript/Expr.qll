@@ -1114,7 +1114,7 @@ class DotExpr extends @dot_expr, PropAccess {
  * arguments[i]
  * ```
  */
-class IndexExpr extends @indexexpr, PropAccess {
+class IndexExpr extends @index_expr, PropAccess {
   /** Gets the expression specifying the name of the accessed property. */
   Expr getIndex() { result = getChildExpr(1) }
 
