@@ -369,9 +369,9 @@ case @expr.kind of
 
 @unaryexpr = @negexpr | @plusexpr | @lognotexpr | @bitnotexpr | @typeofexpr | @voidexpr | @deleteexpr | @spreadelement;
 
-@equalitytest = @eqexpr | @neqexpr | @eqqexpr | @neqqexpr;
+@equality_test = @eqexpr | @neqexpr | @eqqexpr | @neqqexpr;
 
-@comparison = @equalitytest | @ltexpr | @leexpr | @gtexpr | @geexpr;
+@comparison = @equality_test | @ltexpr | @leexpr | @gtexpr | @geexpr;
 
 @binaryexpr = @comparison | @lshiftexpr | @rshiftexpr | @urshiftexpr | @addexpr | @subexpr | @mulexpr | @divexpr | @modexpr | @expexpr | @bitorexpr | @xorexpr | @bitandexpr | @inexpr | @instanceofexpr | @logandexpr | @logorexpr | @nullishcoalescingexpr;
 

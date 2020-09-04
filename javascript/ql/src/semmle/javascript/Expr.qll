@@ -1342,7 +1342,7 @@ class Comparison extends @comparison, BinaryExpr { }
  * res !== res
  * ```
  */
-class EqualityTest extends @equalitytest, Comparison {
+class EqualityTest extends @equality_test, Comparison {
   /** Gets the polarity of this test: `true` for equalities, `false` for inequalities. */
   boolean getPolarity() {
     (this instanceof EqExpr or this instanceof StrictEqExpr) and
