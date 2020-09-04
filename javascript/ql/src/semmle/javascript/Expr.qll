@@ -396,7 +396,7 @@ class NumberLiteral extends @number_literal, Literal {
  * 9007199254740991n
  * ```
  */
-class BigIntLiteral extends @bigintliteral, Literal {
+class BigIntLiteral extends @bigint_literal, Literal {
   /**
    * Gets the integer value of this literal if it can be represented
    * as a QL integer value.

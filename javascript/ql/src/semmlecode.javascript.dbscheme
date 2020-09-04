@@ -341,7 +341,7 @@ case @expr.kind of
 | 103 = @export_varaccess
 | 104 = @decorator_list
 | 105 = @non_null_assertion
-| 106 = @bigintliteral
+| 106 = @bigint_literal
 | 107 = @nullishcoalescingexpr
 | 108 = @e4x_xml_anyname
 | 109 = @e4x_xml_static_attribute_selector
@@ -361,7 +361,7 @@ case @expr.kind of
 
 @identifier = @label | @varref | @typeidentifier;
 
-@literal = @null_literal | @boolean_literal | @number_literal | @string_literal | @regexp_literal | @bigintliteral;
+@literal = @null_literal | @boolean_literal | @number_literal | @string_literal | @regexp_literal | @bigint_literal;
 
 @propaccess = @dot_expr | @index_expr;
 
