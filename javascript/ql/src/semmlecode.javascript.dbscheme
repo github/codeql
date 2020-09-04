@@ -146,7 +146,7 @@ jump_targets (unique int jump: @stmt ref,
        int target: @stmt ref);
 
 @stmt_parent = @stmt | @toplevel | @function_expr | @arrow_function_expr;
-@stmt_container = @toplevel | @function | @namespace_declaration | @external_module_declaration | @globalaugmentationdeclaration;
+@stmt_container = @toplevel | @function | @namespace_declaration | @external_module_declaration | @global_augmentation_declaration;
 
 case @stmt.kind of
    0 = @emptystmt
@@ -188,7 +188,7 @@ case @stmt.kind of
 | 36 = @enumdeclaration
 | 37 = @external_module_declaration
 | 38 = @exportasnamespacedeclaration
-| 39 = @globalaugmentationdeclaration
+| 39 = @global_augmentation_declaration
 ;
 
 @declstmt = @vardeclstmt | @constdeclstmt | @letstmt | @legacy_letstmt;
@@ -200,7 +200,7 @@ case @stmt.kind of
 
 is_instantiated(unique int decl: @namespace_declaration ref);
 
-@declarable_node = @declstmt | @namespace_declaration | @classdeclstmt | @functiondeclstmt | @enumdeclaration | @external_module_declaration | @globalaugmentationdeclaration | @field;
+@declarable_node = @declstmt | @namespace_declaration | @classdeclstmt | @functiondeclstmt | @enumdeclaration | @external_module_declaration | @global_augmentation_declaration | @field;
 has_declare_keyword(unique int stmt: @declarable_node ref);
 
 is_for_await_of(unique int forof: @forofstmt ref);

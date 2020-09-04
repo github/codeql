@@ -163,7 +163,7 @@ class ExternalModuleDeclaration extends Stmt, StmtContainer, @external_module_de
 /**
  * A TypeScript declaration of form `declare global {...}`.
  */
-class GlobalAugmentationDeclaration extends Stmt, StmtContainer, @globalaugmentationdeclaration {
+class GlobalAugmentationDeclaration extends Stmt, StmtContainer, @global_augmentation_declaration {
   /** Gets the `i`th statement in this namespace. */
   Stmt getStmt(int i) {
     i >= 0 and
