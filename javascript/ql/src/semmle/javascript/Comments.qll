@@ -111,7 +111,7 @@ class SlashSlashComment extends @slashslashcomment, LineComment { }
  * /** a JSDoc comment *&#47;
  * </pre>
  */
-class BlockComment extends @blockcomment, Comment { }
+class BlockComment extends @block_comment, Comment { }
 
 /**
  * A C-style block comment which is not a JSDoc comment.

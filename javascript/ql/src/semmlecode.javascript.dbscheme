@@ -806,7 +806,7 @@ case @comment.kind of
 
 @html_comment = @htmlcommentstart | @htmlcommentend;
 @line_comment = @slashslashcomment | @html_comment;
-@blockcomment = @slashstarcomment | @doccomment;
+@block_comment = @slashstarcomment | @doccomment;
 
 // source lines
 lines (unique int id: @line,
