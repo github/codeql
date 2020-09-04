@@ -697,7 +697,7 @@ class LocalTypeAccess extends @local_type_access, TypeAccess, Identifier, Lexica
 /**
  * A qualified name that is used as part of a type, such as `http.ServerRequest`.
  */
-class QualifiedTypeAccess extends @qualifiedtypeaccess, TypeAccess {
+class QualifiedTypeAccess extends @qualified_type_access, TypeAccess {
   /**
    * Gets the qualifier in front of the name, such as `http` in `http.ServerRequest`.
    *
