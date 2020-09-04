@@ -417,7 +417,7 @@ class NewTargetExpr extends @newtarget_expr, Expr {
 /**
  * A scope induced by a named class expression or class expression with type parameters.
  */
-class ClassExprScope extends @classexprscope, Scope {
+class ClassExprScope extends @class_expr_scope, Scope {
   override string toString() { result = "class expression scope" }
 }
 
