@@ -782,7 +782,7 @@ class Parameter extends BindingPattern {
    * function f(x?: number) {}
    * ```
    */
-  predicate isDeclaredOptional() { isOptionalParameterDeclaration(this) }
+  predicate isDeclaredOptional() { is_optional_parameter_declaration(this) }
 }
 
 /**

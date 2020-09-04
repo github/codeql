@@ -205,3 +205,8 @@ deprecated predicate isOptionalMember(Property id) { is_optional_member(id) }
  * Use the `hasDefiniteAssignmentAssertion` method on the `FieldDeclaration`/`VariableDeclarator` classes instead.
  */ 
 deprecated predicate hasDefiniteAssignmentAssertion(ASTNode id) { has_definite_assignment_assertion(id) }
+/**
+ * Alias for the predicate `is_optional_parameter_declaration` defined in the .dbscheme.
+ * Use `Parameter#isDeclaredOptional()` instead.
+ */ 
+deprecated predicate isOptionalParameterDeclaration(Parameter parameter) { is_optional_parameter_declaration(parameter) }

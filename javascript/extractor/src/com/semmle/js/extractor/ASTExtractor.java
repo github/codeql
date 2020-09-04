@@ -939,7 +939,7 @@ public class ASTExtractor {
 
         // Extract optional parameters
         if (nd.getOptionalParameterIndices().contains(i)) {
-          trapwriter.addTuple("isOptionalParameterDeclaration", paramKey);
+          trapwriter.addTuple("is_optional_parameter_declaration", paramKey);
         }
         ++i;
       }

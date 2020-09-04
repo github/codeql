@@ -527,7 +527,7 @@ has_readonly_keyword (int id: @property ref);
 has_type_keyword (int id: @import_or_export_declaration ref);
 is_optional_member (int id: @property ref);
 has_definite_assignment_assertion (int id: @field_or_vardeclarator ref);
-isOptionalParameterDeclaration (unique int parameter: @pattern ref);
+is_optional_parameter_declaration (unique int parameter: @pattern ref);
 
 #keyset[constructor, param_index]
 parameter_fields(
