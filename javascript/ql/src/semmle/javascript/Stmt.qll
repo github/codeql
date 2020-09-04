@@ -459,7 +459,7 @@ class LabeledStmt extends @labeled_stmt, Stmt {
 
 private class TJumpStmt = TBreakOrContinueStmt or @returnstmt or @throwstmt;
 
-private class TBreakOrContinueStmt = @breakstmt or @continuestmt;
+private class TBreakOrContinueStmt = @break_stmt or @continuestmt;
 
 /**
  * A statement that disrupts structured control flow, that is, a `continue` statement,
@@ -524,7 +524,7 @@ class BreakOrContinueStmt extends TBreakOrContinueStmt, JumpStmt {
  * break;
  * ```
  */
-class BreakStmt extends @breakstmt, BreakOrContinueStmt { }
+class BreakStmt extends @break_stmt, BreakOrContinueStmt { }
 
 /**
  * A `continue` statement.
