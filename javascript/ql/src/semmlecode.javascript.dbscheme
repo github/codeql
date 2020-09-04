@@ -640,7 +640,7 @@ case @type.kind of
 | 25 = @bigint_literal_type
 ;
 
-@booleanliteraltype = @true_type | @false_type;
+@boolean_literal_type = @true_type | @false_type;
 @symbol_type = @plain_symbol_type | @unique_symbol_type;
 @union_or_intersection_type = @union_type | @intersection_type;
 @typevariable_type = @canonical_type_variable_type | @lexical_type_variable_type;
@@ -715,7 +715,7 @@ type_alias(
   unique int aliasType: @type ref,
   int underlyingType: @type ref);
 
-@literal_type = @string_literal_type | @number_literal_type | @booleanliteraltype | @bigint_literal_type;
+@literal_type = @string_literal_type | @number_literal_type | @boolean_literal_type | @bigint_literal_type;
 @type_with_literal_value = @string_literal_type | @number_literal_type | @bigint_literal_type;
 type_literal_value(
   unique int typ: @type_with_literal_value ref,

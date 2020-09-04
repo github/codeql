@@ -2023,7 +2023,7 @@ class LiteralType extends Type, @literal_type {
 /**
  * The boolean literal type `true` or `false`.
  */
-class BooleanLiteralType extends LiteralType, @booleanliteraltype {
+class BooleanLiteralType extends LiteralType, @boolean_literal_type {
   /**
    * Gets the boolean value represented by this type.
    */
