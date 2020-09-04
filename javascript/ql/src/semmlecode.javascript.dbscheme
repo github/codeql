@@ -296,7 +296,7 @@ case @expr.kind of
 | 58 = @assign_and_expr
 | 59 = @preinc_expr
 | 60 = @postinc_expr
-| 61 = @predecexpr
+| 61 = @predec_expr
 | 62 = @postdecexpr
 | 63 = @parexpr
 | 64 = @vardeclarator
@@ -377,7 +377,7 @@ case @expr.kind of
 
 @assignment = @assign_expr | @assign_add_expr | @assign_sub_expr | @assign_mul_expr | @assign_div_expr | @assign_mod_expr | @assignexpexpr | @assign_lshift_expr | @assign_rshift_expr | @assign_urshift_expr | @assign_or_expr | @assign_xor_expr | @assign_and_expr | @assignlogandexpr | @assignlogorexpr | @assignnullishcoalescingexpr;
 
-@updateexpr = @preinc_expr | @postinc_expr | @predecexpr | @postdecexpr;
+@updateexpr = @preinc_expr | @postinc_expr | @predec_expr | @postdecexpr;
 
 @pattern = @varref | @arraypattern | @objectpattern;
 
