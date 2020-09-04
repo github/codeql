@@ -565,7 +565,7 @@ case @typeexpr.kind of
 | 15 = @type_label
 | 16 = @typeof_typeexpr
 | 17 = @local_var_type_access
-| 18 = @qualifiedvartypeaccess
+| 18 = @qualified_var_type_access
 | 19 = @thisvartypeaccess
 | 20 = @predicatetypeexpr
 | 21 = @interfacetypeexpr
@@ -591,7 +591,7 @@ case @typeexpr.kind of
 @typeexpr_parent = @expr | @stmt | @property | @typeexpr;
 @literaltypeexpr = @string_literal_typeexpr | @number_literal_typeexpr | @boolean_literal_typeexpr | @bigintliteraltypeexpr;
 @typeaccess = @local_type_access | @qualified_type_access | @importtypeaccess;
-@vartypeaccess = @local_var_type_access | @qualifiedvartypeaccess | @thisvartypeaccess | @importvartypeaccess;
+@vartypeaccess = @local_var_type_access | @qualified_var_type_access | @thisvartypeaccess | @importvartypeaccess;
 @namespaceaccess = @localnamespaceaccess | @qualifiednamespaceaccess | @importnamespaceaccess;
 @importtypeexpr = @importtypeaccess | @importnamespaceaccess | @importvartypeaccess;
 
