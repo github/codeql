@@ -20618,7 +20618,7 @@
 </dependencies>
 </relation>
 <relation>
-<name>unicodePropertyEscapeName</name>
+<name>unicode_property_escapename</name>
 <cardinality>1573</cardinality>
 <columnsizes>
 <e>

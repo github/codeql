@@ -699,7 +699,7 @@ class RegExpUnicodePropertyEscape extends RegExpEscape, @regexp_unicode_property
    * Gets the name of this Unicode property; for example, `Number` for `\p{Number}` and
    * `Script` for `\p{Script=Greek}`.
    */
-  string getName() { unicodePropertyEscapeName(this, result) }
+  string getName() { unicode_property_escapename(this, result) }
 
   /**
    * Gets the value of this Unicode property, if any.

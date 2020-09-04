@@ -232,7 +232,7 @@ regexpterm(#20075,27,#20074,0,"\p{Number}")
 #20076=@"loc,{#10000},4,2,4,11"
 locations_default(#20076,#10000,4,2,4,11)
 hasLocation(#20075,#20076)
-unicodePropertyEscapeName(#20075,"Number")
+unicode_property_escapename(#20075,"Number")
 #20077=*
 stmts(#20077,2,#20001,4,"/\P{Script=Greek}/u;")
 hasLocation(#20077,#20011)
@@ -248,7 +248,7 @@ regexpterm(#20079,27,#20078,0,"\P{Script=Greek}")
 #20080=@"loc,{#10000},5,2,5,17"
 locations_default(#20080,#10000,5,2,5,17)
 hasLocation(#20079,#20080)
-unicodePropertyEscapeName(#20079,"Script")
+unicode_property_escapename(#20079,"Script")
 unicodePropertyEscapeValue(#20079,"Greek")
 #20081=*
 stmts(#20081,2,#20001,5,"/\k</;")
