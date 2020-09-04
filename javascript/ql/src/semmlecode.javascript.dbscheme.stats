@@ -830,7 +830,7 @@
 <v>100</v>
 </e>
 <e>
-<k>@readonlytypeexpr</k>
+<k>@readonly_typeexpr</k>
 <v>100</v>
 </e>
 <e>

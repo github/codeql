@@ -980,7 +980,7 @@ class RestTypeExpr extends @rest_typeexpr, TypeExpr {
 /**
  * A type of form `readonly T`, such as `readonly number[]`.
  */
-class ReadonlyTypeExpr extends @readonlytypeexpr, TypeExpr {
+class ReadonlyTypeExpr extends @readonly_typeexpr, TypeExpr {
   /** Gets the type `T` in `readonly T`. */
   TypeExpr getElementType() { result = getChildTypeExpr(0) }
 

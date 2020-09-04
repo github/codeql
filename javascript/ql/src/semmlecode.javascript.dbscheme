@@ -583,7 +583,7 @@ case @typeexpr.kind of
 | 33 = @optional_typeexpr
 | 34 = @rest_typeexpr
 | 35 = @bigint_literal_typeexpr
-| 36 = @readonlytypeexpr
+| 36 = @readonly_typeexpr
 ;
 
 @typeref = @typeaccess | @type_decl;
