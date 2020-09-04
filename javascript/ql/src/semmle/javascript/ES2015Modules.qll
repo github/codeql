@@ -157,7 +157,7 @@ class NamedImportSpecifier extends ImportSpecifier, @named_import_specifier { }
  *   from 'console';
  * ```
  */
-class ImportDefaultSpecifier extends ImportSpecifier, @importdefaultspecifier {
+class ImportDefaultSpecifier extends ImportSpecifier, @import_default_specifier {
   override string getImportedName() { result = "default" }
 }
 
