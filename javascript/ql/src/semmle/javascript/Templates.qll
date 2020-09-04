@@ -39,7 +39,7 @@ class TaggedTemplateExpr extends Expr, @tagged_template_expr {
  * `Hello, ${user.name}!`
  * ```
  */
-class TemplateLiteral extends Expr, @templateliteral {
+class TemplateLiteral extends Expr, @template_literal {
   /**
    * Gets the `i`th element of this template literal, which may either
    * be an interpolated expression or a constant template element.

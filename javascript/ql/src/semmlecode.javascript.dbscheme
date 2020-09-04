@@ -306,7 +306,7 @@ case @expr.kind of
 | 68 = @object_pattern
 | 69 = @yield_expr
 | 70 = @tagged_template_expr
-| 71 = @templateliteral
+| 71 = @template_literal
 | 72 = @templateelement
 | 73 = @arraycomprehensionexpr
 | 74 = @generatorexpr
