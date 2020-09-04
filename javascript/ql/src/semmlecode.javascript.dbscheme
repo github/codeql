@@ -178,7 +178,7 @@ case @stmt.kind of
 | 26 = @class_decl_stmt
 | 27 = @import_declaration
 | 28 = @export_all_declaration
-| 29 = @exportdefaultdeclaration
+| 29 = @export_default_declaration
 | 30 = @exportnameddeclaration
 | 31 = @namespace_declaration
 | 32 = @importequalsdeclaration
@@ -193,7 +193,7 @@ case @stmt.kind of
 
 @declstmt = @var_decl_stmt | @const_decl_stmt | @let_stmt | @legacy_let_stmt;
 
-@exportdeclaration = @export_all_declaration | @exportdefaultdeclaration | @exportnameddeclaration;
+@exportdeclaration = @export_all_declaration | @export_default_declaration | @exportnameddeclaration;
 
 @namespacedefinition = @namespace_declaration | @enumdeclaration;
 @typedefinition = @classdefinition | @interfacedeclaration | @enumdeclaration | @typealiasdeclaration | @enum_member;

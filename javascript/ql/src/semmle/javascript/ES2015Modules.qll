@@ -319,7 +319,7 @@ private predicate isShadowedFromBulkExport(BulkReExportDeclaration reExport, str
  * export default 42;
  * ```
  */
-class ExportDefaultDeclaration extends ExportDeclaration, @exportdefaultdeclaration {
+class ExportDefaultDeclaration extends ExportDeclaration, @export_default_declaration {
   /** Gets the operand statement or expression that is exported by this declaration. */
   ExprOrStmt getOperand() { result = getChild(0) }
 
