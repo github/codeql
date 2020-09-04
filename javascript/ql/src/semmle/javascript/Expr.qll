@@ -379,7 +379,7 @@ class BooleanLiteral extends @boolean_literal, Literal { }
  * 6.626e-34
  * ```
  */
-class NumberLiteral extends @numberliteral, Literal {
+class NumberLiteral extends @number_literal, Literal {
   /** Gets the integer value of this literal. */
   override int getIntValue() { result = getValue().toInt() }
 

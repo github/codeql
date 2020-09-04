@@ -239,7 +239,7 @@ case @expr.kind of
    0 = @label
 |  1 = @null_literal
 |  2 = @boolean_literal
-|  3 = @numberliteral
+|  3 = @number_literal
 |  4 = @stringliteral
 |  5 = @regexpliteral
 |  6 = @thisexpr
@@ -361,7 +361,7 @@ case @expr.kind of
 
 @identifier = @label | @varref | @typeidentifier;
 
-@literal = @null_literal | @boolean_literal | @numberliteral | @stringliteral | @regexpliteral | @bigintliteral;
+@literal = @null_literal | @boolean_literal | @number_literal | @stringliteral | @regexpliteral | @bigintliteral;
 
 @propaccess = @dotexpr | @indexexpr;
 
