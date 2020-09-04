@@ -163,7 +163,7 @@ locations_default(#20052,#10000,2,17,2,19)
 hasLocation(#20051,#20052)
 stmt_containers(#20051,#20045)
 isMethod(#20042)
-isComputed(#20042)
+is_computed(#20042)
 #20053=*
 properties(#20053,#20038,3,0,"constructor() {}")
 #20054=@"loc,{#10000},1,9,1,8"

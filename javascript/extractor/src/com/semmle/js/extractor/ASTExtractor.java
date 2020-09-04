@@ -1132,7 +1132,7 @@ public class ASTExtractor {
       visit(nd.getKey(), propkey, 0, nd.isComputed() ? IdContext.varBind : IdContext.label);
       visit(nd.getValue(), propkey, 1, c.idcontext);
       visit(nd.getDefaultValue(), propkey, 2, IdContext.varBind);
-      if (nd.isComputed()) trapwriter.addTuple("isComputed", propkey);
+      if (nd.isComputed()) trapwriter.addTuple("is_computed", propkey);
       if (nd.isMethod()) trapwriter.addTuple("isMethod", propkey);
       return propkey;
     }

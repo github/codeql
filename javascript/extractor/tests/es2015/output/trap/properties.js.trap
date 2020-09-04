@@ -327,7 +327,7 @@ hasLocation(#20107,#20051)
 enclosing_stmt(#20107,#20083)
 expr_containers(#20107,#20001)
 literals("23","23",#20107)
-isComputed(#20093)
+is_computed(#20093)
 #20108=*
 properties(#20108,#20091,1,0,"x")
 hasLocation(#20108,#20055)

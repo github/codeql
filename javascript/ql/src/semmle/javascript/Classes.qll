@@ -525,7 +525,7 @@ class MemberDeclaration extends @property, Documentable {
   }
 
   /** Holds if the name of this member is computed. */
-  predicate isComputed() { isComputed(this) }
+  predicate isComputed() { is_computed(this) }
 
   /** Gets the class or interface this member belongs to. */
   ClassOrInterface getDeclaringType() { properties(this, result, _, _, _) }

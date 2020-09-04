@@ -513,7 +513,7 @@ case @property.kind of
 @field = @proper_field | @parameter_field;
 @field_or_vardeclarator = @field | @vardeclarator;
 
-isComputed (int id: @property ref);
+is_computed (int id: @property ref);
 isMethod   (int id: @property ref);
 isStatic   (int id: @property ref);
 isAbstractMember (int id: @property ref);

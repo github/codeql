@@ -580,7 +580,7 @@ class PropertyPattern extends @property, ASTNode {
   }
 
   /** Holds if the name of this property pattern is computed. */
-  predicate isComputed() { isComputed(this) }
+  predicate isComputed() { is_computed(this) }
 
   /** Gets the expression specifying the name of the matched property. */
   Expr getNameExpr() { result = this.getChildExpr(0) }

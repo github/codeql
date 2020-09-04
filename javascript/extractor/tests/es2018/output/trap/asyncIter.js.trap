@@ -490,7 +490,7 @@ locations_default(#20168,#10000,5,35,5,36)
 hasLocation(#20167,#20168)
 stmt_containers(#20167,#20163)
 isMethod(#20156)
-isComputed(#20156)
+is_computed(#20156)
 #20169=*
 properties(#20169,#20143,4,0,"constructor() {}")
 #20170=@"loc,{#10000},3,9,3,8"
@@ -627,7 +627,7 @@ stmts(#20202,1,#20198,-2,"{}")
 locations_default(#20203,#10000,10,35,10,36)
 hasLocation(#20202,#20203)
 stmt_containers(#20202,#20198)
-isComputed(#20192)
+is_computed(#20192)
 isMethod(#20192)
 #20204=*
 entry_cfg_node(#20204,#20001)

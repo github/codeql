@@ -140,3 +140,8 @@ deprecated predicate isDelegating(YieldExpr yield) { is_delegating(yield) }
  * Use the `ArgumentsVariable` class instead.
  */ 
 deprecated predicate isArgumentsObject(Variable id) { is_arguments_object(id) }
+/**
+ * Alias for the predicate `is_computed` defined in the .dbscheme.
+ * Use the `isComputed()` method on the `MemberDeclaration`/`Property`/`PropertyPattern` class instead.
+ */ 
+deprecated predicate isComputed(Property prop) { is_computed(prop) }

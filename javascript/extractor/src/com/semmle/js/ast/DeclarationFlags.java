@@ -37,7 +37,7 @@ public class DeclarationFlags {
 
   public static final List<String> relationNames =
       Arrays.asList(
-          "isComputed",
+          "is_computed",
           "isAbstractMember",
           "isStatic",
           "hasReadonlyKeyword",

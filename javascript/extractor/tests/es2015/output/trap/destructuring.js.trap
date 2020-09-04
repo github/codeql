@@ -784,7 +784,7 @@ enclosing_stmt(#20258,#20249)
 expr_containers(#20258,#20230)
 literals("w","w",#20258)
 decl(#20258,#20234)
-isComputed(#20255)
+is_computed(#20255)
 #20259=*
 exprs(#20259,79,#20251,1,"z")
 hasLocation(#20259,#20162)

@@ -614,7 +614,7 @@ class Property extends @property, Documentable {
   }
 
   /** Holds if the name of this property is computed. */
-  predicate isComputed() { isComputed(this) }
+  predicate isComputed() { is_computed(this) }
 
   /** Holds if this property is defined using method syntax. */
   predicate isMethod() { isMethod(this) }
