@@ -231,7 +231,7 @@ is_delegating (int yield: @yieldexpr ref);
 @expr_or_stmt = @expr | @stmt;
 @expr_or_type = @expr | @typeexpr;
 @exprparent = @expr_or_stmt | @property | @function_typeexpr;
-@arraylike = @arrayexpr | @arraypattern;
+@arraylike = @array_expr | @arraypattern;
 @type_annotation = @typeexpr | @jsdoc_type_expr;
 @node_in_stmt_container = @cfg_node | @type_annotation | @toplevel;
 
@@ -243,7 +243,7 @@ case @expr.kind of
 |  4 = @string_literal
 |  5 = @regexp_literal
 |  6 = @this_expr
-|  7 = @arrayexpr
+|  7 = @array_expr
 |  8 = @objexpr
 |  9 = @function_expr
 | 10 = @seqexpr

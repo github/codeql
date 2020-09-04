@@ -502,7 +502,7 @@ class ThisExpr extends @this_expr, Expr {
  * [ 1, , [ 3, 4 ] ]
  * ```
  */
-class ArrayExpr extends @arrayexpr, Expr {
+class ArrayExpr extends @array_expr, Expr {
   /** Gets the `i`th element of this array literal. */
   Expr getElement(int i) { result = this.getChildExpr(i) }
 
