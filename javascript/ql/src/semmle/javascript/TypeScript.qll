@@ -854,7 +854,7 @@ class ParenthesizedTypeExpr extends @parenthesized_typeexpr, TypeExpr {
 /**
  * A tuple type such as `[number, string]`.
  */
-class TupleTypeExpr extends @tupletypeexpr, TypeExpr {
+class TupleTypeExpr extends @tuple_typeexpr, TypeExpr {
   /** Gets the `n`th element type in the tuple, starting at 0. */
   TypeExpr getElementType(int n) { result = getChildTypeExpr(n) and n >= 0 }
 
