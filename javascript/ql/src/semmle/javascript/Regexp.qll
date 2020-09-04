@@ -745,7 +745,7 @@ class RegExpBackRef extends RegExpTerm, @regexp_backref {
   /**
    * Gets the name of the capture group this back reference refers to, if any.
    */
-  string getName() { namedBackref(this, result) }
+  string getName() { named_backref(this, result) }
 
   /** Gets the capture group this back reference refers to. */
   RegExpGroup getGroup() {

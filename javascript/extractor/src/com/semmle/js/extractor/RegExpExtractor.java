@@ -157,7 +157,7 @@ public class RegExpExtractor {
     @Override
     public void visit(NamedBackReference nd) {
       Label lbl = extractTerm(nd, parent, idx);
-      trapwriter.addTuple("namedBackref", lbl, nd.getName());
+      trapwriter.addTuple("named_backref", lbl, nd.getName());
     }
 
     @Override

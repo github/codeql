@@ -265,3 +265,8 @@ deprecated predicate regexpConstValue(RegExpConstant id, string value) { regexp_
  * Use `RegExpCharacterClassEscape#getValue()` instead.
  */ 
 deprecated predicate charClassEscape(RegExpCharacterClassEscape id, string value) { char_class_escape(id, value) }
+/**
+ * Alias for the predicate `named_backref` defined in the .dbscheme.
+ * Use `RegExpBackRef#getName()` instead.
+ */ 
+deprecated predicate namedBackref(RegExpBackRef id, string name) { named_backref(id, name) }

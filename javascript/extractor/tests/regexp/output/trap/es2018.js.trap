@@ -171,7 +171,7 @@ regexpterm(#20057,22,#20043,3,"\k<ws>")
 #20058=@"loc,{#10000},1,16,1,21"
 locations_default(#20058,#10000,1,16,1,21)
 hasLocation(#20057,#20058)
-namedBackref(#20057,"ws")
+named_backref(#20057,"ws")
 #20059=*
 regexpterm(#20059,3,#20043,4,"$")
 #20060=@"loc,{#10000},1,22,1,22"
@@ -265,7 +265,7 @@ regexpterm(#20083,22,#20082,0,"\k<")
 #20084=@"loc,{#10000},6,2,6,4"
 locations_default(#20084,#10000,6,2,6,4)
 hasLocation(#20083,#20084)
-namedBackref(#20083,"")
+named_backref(#20083,"")
 #20085=*
 regexp_parse_errors(#20085,#20083,"expected identifier")
 #20086=@"loc,{#10000},6,5,6,5"

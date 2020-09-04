@@ -886,7 +886,7 @@ is_inverted (int id: @regexp_char_class ref);
 regexp_const_value (unique int id: @regexp_constant ref, varchar(1) value: string ref);
 char_class_escape (unique int id: @regexp_char_class_escape ref, varchar(1) value: string ref);
 backref (unique int id: @regexp_backref ref, int value: int ref);
-namedBackref (unique int id: @regexp_backref ref, string name: string ref);
+named_backref (unique int id: @regexp_backref ref, string name: string ref);
 unicodePropertyEscapeName (unique int id: @regexp_unicode_property_escape ref, string name: string ref);
 unicodePropertyEscapeValue (unique int id: @regexp_unicode_property_escape ref, string value: string ref);
 
