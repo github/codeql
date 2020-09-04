@@ -170,3 +170,8 @@ deprecated predicate isConstEnum(EnumDeclaration id) { is_const_enum(id) }
  * Use `ClassDefinition#isAbstract()` instead.
  */ 
 deprecated predicate isAbstractClass(ClassDeclStmt id) { is_abstract_class(id) }
+/**
+ * Alias for the predicate `has_public_keyword` defined in the .dbscheme.
+ * Use `MemberDeclaration#hasPublicKeyword() instead.
+ */ 
+deprecated predicate hasPublicKeyword(Property prop) { has_public_keyword(prop) }

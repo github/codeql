@@ -492,7 +492,7 @@ class MemberDeclaration extends @property, Documentable {
   /**
    * Holds if this is a TypeScript member explicitly annotated with the `public` keyword.
    */
-  predicate hasPublicKeyword() { hasPublicKeyword(this) }
+  predicate hasPublicKeyword() { has_public_keyword(this) }
 
   /**
    * Holds if this is a TypeScript member annotated with the `private` keyword.

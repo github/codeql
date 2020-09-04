@@ -7952,7 +7952,7 @@
 <dependencies/>
 </relation>
 <relation>
-<name>hasPublicKeyword</name>
+<name>has_public_keyword</name>
 <cardinality>9297</cardinality>
 <columnsizes>
 <e>

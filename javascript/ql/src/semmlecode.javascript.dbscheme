@@ -520,7 +520,7 @@ is_abstract_member (int id: @property ref);
 is_const_enum (int id: @enumdeclaration ref);
 is_abstract_class (int id: @classdeclstmt ref);
 
-hasPublicKeyword (int id: @property ref);
+has_public_keyword (int id: @property ref);
 hasPrivateKeyword (int id: @property ref);
 hasProtectedKeyword (int id: @property ref);
 hasReadonlyKeyword (int id: @property ref);

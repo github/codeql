@@ -41,7 +41,7 @@ public class DeclarationFlags {
           "is_abstract_member",
           "is_static",
           "hasReadonlyKeyword",
-          "hasPublicKeyword",
+          "has_public_keyword",
           "hasPrivateKeyword",
           "hasProtectedKeyword",
           "isOptionalMember",
