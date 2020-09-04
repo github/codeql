@@ -1458,7 +1458,7 @@ class GTExpr extends @gt_expr, Comparison {
  * x >= 0
  * ```
  */
-class GEExpr extends @geexpr, Comparison {
+class GEExpr extends @ge_expr, Comparison {
   override string getOperator() { result = ">=" }
 }
 
