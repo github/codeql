@@ -1213,7 +1213,7 @@ class BitNotExpr extends @bit_not_expr, UnaryExpr {
  * typeof A.prototype
  * ```
  */
-class TypeofExpr extends @typeofexpr, UnaryExpr {
+class TypeofExpr extends @typeof_expr, UnaryExpr {
   override string getOperator() { result = "typeof" }
 }
 
