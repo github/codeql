@@ -2150,7 +2150,7 @@ class YieldExpr extends @yield_expr, Expr {
  * (for (x of xs) x*x)
  * ```
  */
-class ComprehensionExpr extends @comprehensionexpr, Expr {
+class ComprehensionExpr extends @comprehension_expr, Expr {
   /** Gets the `n`th comprehension block in this comprehension. */
   ComprehensionBlock getBlock(int n) {
     exists(int idx |
