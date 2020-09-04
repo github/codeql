@@ -332,7 +332,7 @@ case @expr.kind of
 | 94 = @decorator
 | 95 = @export_default_specifier
 | 96 = @export_namespace_specifier
-| 97 = @bindexpr
+| 97 = @bind_expr
 | 98 = @externalmodulereference
 | 99 = @dynamicimport
 | 100 = @expression_with_type_arguments

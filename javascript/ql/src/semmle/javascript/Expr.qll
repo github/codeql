@@ -2672,7 +2672,7 @@ class Decoratable extends ASTNode {
  * ::b.f
  * ```
  */
-class FunctionBindExpr extends @bindexpr, Expr {
+class FunctionBindExpr extends @bind_expr, Expr {
   /**
    * Gets the object of this function bind expression; undefined for
    * expressions of the form `::b.f`.
