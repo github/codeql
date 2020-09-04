@@ -144,7 +144,7 @@ class ImportSpecifier extends Expr, @importspecifier {
  *   } from 'console';
  * ```
  */
-class NamedImportSpecifier extends ImportSpecifier, @namedimportspecifier { }
+class NamedImportSpecifier extends ImportSpecifier, @named_import_specifier { }
 
 /**
  * A default import specifier.
