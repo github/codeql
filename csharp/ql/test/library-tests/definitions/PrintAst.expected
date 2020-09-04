@@ -178,7 +178,7 @@ definitions.cs:
 #  101|       3: [AddEventAccessor] add_Click
 #-----|         2: (Parameters)
 #  101|           0: [Parameter] value
-#  101|       3: [RemoveEventAccessor] remove_Click
+#  101|       4: [RemoveEventAccessor] remove_Click
 #-----|         2: (Parameters)
 #  101|           0: [Parameter] value
 #  103|     7: [Method] M
@@ -257,7 +257,7 @@ definitions.cs:
 #  145|       3: [AddEventAccessor] add_EH
 #-----|         2: (Parameters)
 #  145|           0: [Parameter] value
-#  145|       3: [RemoveEventAccessor] remove_EH
+#  145|       4: [RemoveEventAccessor] remove_EH
 #-----|         2: (Parameters)
 #  145|           0: [Parameter] value
 #  146|     5: [Method] M

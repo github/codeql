@@ -189,7 +189,7 @@ NullableRefTypes.cs:
 #   48|     3: [AddEventAccessor] add_P
 #-----|       2: (Parameters)
 #   48|         0: [Parameter] value
-#   48|     3: [RemoveEventAccessor] remove_P
+#   48|     4: [RemoveEventAccessor] remove_P
 #-----|       2: (Parameters)
 #   48|         0: [Parameter] value
 #   51|   25: [Method] Q

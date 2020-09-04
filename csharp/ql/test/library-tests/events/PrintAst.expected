@@ -9,7 +9,7 @@ events.cs:
 #   13|       3: [AddEventAccessor] add_Click
 #-----|         2: (Parameters)
 #   13|           0: [Parameter] value
-#   13|       3: [RemoveEventAccessor] remove_Click
+#   13|       4: [RemoveEventAccessor] remove_Click
 #-----|         2: (Parameters)
 #   13|           0: [Parameter] value
 #   15|     6: [Method] OnClick
