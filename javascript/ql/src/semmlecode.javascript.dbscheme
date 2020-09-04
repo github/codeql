@@ -321,7 +321,7 @@ case @expr.kind of
 | 83 = @named_import_specifier
 | 84 = @import_default_specifier
 | 85 = @import_namespace_specifier
-| 86 = @namedexportspecifier
+| 86 = @named_export_specifier
 | 87 = @expexpr
 | 88 = @assignexpexpr
 | 89 = @jsxelement
@@ -387,7 +387,7 @@ case @expr.kind of
 
 @importspecifier = @named_import_specifier | @import_default_specifier | @import_namespace_specifier;
 
-@exportspecifier = @namedexportspecifier | @exportdefaultspecifier | @exportnamespacespecifier;
+@exportspecifier = @named_export_specifier | @exportdefaultspecifier | @exportnamespacespecifier;
 
 @import_or_export_declaration = @import_declaration | @exportdeclaration;
 

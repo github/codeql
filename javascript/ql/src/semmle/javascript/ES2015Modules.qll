@@ -518,7 +518,7 @@ class ExportSpecifier extends Expr, @exportspecifier {
  * };
  * ```
  */
-class NamedExportSpecifier extends ExportSpecifier, @namedexportspecifier { }
+class NamedExportSpecifier extends ExportSpecifier, @named_export_specifier { }
 
 /**
  * A default export specifier.
