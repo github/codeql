@@ -906,7 +906,7 @@ class MappedTypeExpr extends @mappedtypeexpr, TypeParameterized, TypeExpr {
  * A type of form `typeof E` where `E` is a possibly qualified name referring to a variable,
  * function, class, or namespace.
  */
-class TypeofTypeExpr extends @typeoftypeexpr, TypeExpr {
+class TypeofTypeExpr extends @typeof_typeexpr, TypeExpr {
   /**
    * Gets the `E` in `typeof E`, denoting the qualified the name of a
    * variable, function, class, or namespace whose type is to be extracted.

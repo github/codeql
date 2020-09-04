@@ -563,7 +563,7 @@ case @typeexpr.kind of
 | 13 = @qualified_type_access
 | 14 = @generic_typeexpr
 | 15 = @type_label
-| 16 = @typeoftypeexpr
+| 16 = @typeof_typeexpr
 | 17 = @localvartypeaccess
 | 18 = @qualifiedvartypeaccess
 | 19 = @thisvartypeaccess
