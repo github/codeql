@@ -579,7 +579,7 @@ case @typeexpr.kind of
 | 29 = @infer_typeexpr
 | 30 = @import_type_access
 | 31 = @import_namespace_access
-| 32 = @importvartypeaccess
+| 32 = @import_var_type_access
 | 33 = @optionaltypeexpr
 | 34 = @resttypeexpr
 | 35 = @bigintliteraltypeexpr
@@ -591,9 +591,9 @@ case @typeexpr.kind of
 @typeexpr_parent = @expr | @stmt | @property | @typeexpr;
 @literaltypeexpr = @string_literal_typeexpr | @number_literal_typeexpr | @boolean_literal_typeexpr | @bigintliteraltypeexpr;
 @typeaccess = @local_type_access | @qualified_type_access | @import_type_access;
-@vartypeaccess = @local_var_type_access | @qualified_var_type_access | @this_var_type_access | @importvartypeaccess;
+@vartypeaccess = @local_var_type_access | @qualified_var_type_access | @this_var_type_access | @import_var_type_access;
 @namespaceaccess = @local_namespace_access | @qualified_namespace_access | @import_namespace_access;
-@importtypeexpr = @import_type_access | @import_namespace_access | @importvartypeaccess;
+@importtypeexpr = @import_type_access | @import_namespace_access | @import_var_type_access;
 
 @functiontypeexpr = @plain_function_typeexpr | @constructor_typeexpr;
 

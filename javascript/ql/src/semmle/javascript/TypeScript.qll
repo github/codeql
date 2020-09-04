@@ -1318,7 +1318,7 @@ class ImportTypeExpr extends TypeExpr, @importtypeexpr {
   predicate isNamespaceAccess() { this instanceof @import_namespace_access }
 
   /** Holds if this import is used in the context of a variable type, such as `let x: typeof import("fs")`. */
-  predicate isVarTypeAccess() { this instanceof @importvartypeaccess }
+  predicate isVarTypeAccess() { this instanceof @import_var_type_access }
 }
 
 /**
@@ -1334,7 +1334,7 @@ class ImportNamespaceAccess extends NamespaceAccess, ImportTypeExpr, @import_nam
 /**
  * An import used in the context of a variable type, such as in `let x: typeof import("fs")`.
  */
-class ImportVarTypeAccess extends VarTypeAccess, ImportTypeExpr, @importvartypeaccess { }
+class ImportVarTypeAccess extends VarTypeAccess, ImportTypeExpr, @import_var_type_access { }
 
 /**
  * A TypeScript enum declaration, such as the following declaration:
