@@ -575,7 +575,7 @@ case @typeexpr.kind of
 | 25 = @local_namespace_access
 | 26 = @qualified_namespace_access
 | 27 = @mapped_typeexpr
-| 28 = @conditionaltypeexpr
+| 28 = @conditional_typeexpr
 | 29 = @infertypeexpr
 | 30 = @importtypeaccess
 | 31 = @importnamespaceaccess
