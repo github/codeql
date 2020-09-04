@@ -91,18 +91,22 @@ except Exception as e:
     raise e
 
 try: # Check for `codeql` on path
-    codeql_version = subprocess_run(["codeql","--vfersion"])
+    codeql_version = subprocess_run(["codeql","--version"])
 except Exception as e:
     print("Error: couldn't invoke CodeQL CLI 'codeql'. Is it on the path? Aborting.", file=sys.stderr)
     raise e
     
 # Extend CodeQL search path by detecting root of the current Git repo (if any). This means that you
 # can run this script from any location within the CodeQL git repository.
-git_toplevel_dir = subprocess_run(["git","rev-parse","--show-toplevel"])
-if git_toplevel_dir.returncode == 0:
+try:
+    git_toplevel_dir = subprocess_run(["git","rev-parse","--show-toplevel"])
+
     # Current working directory is in a Git repo. Add it to the search path, just in case it's the CodeQL repo
     git_toplevel_dir = git_toplevel_dir.stdout.strip()
     codeql_search_path += ":" + git_toplevel_dir + ":" + git_toplevel_dir + "/../codeql-go"
+except:
+    # git rev-parse --show-toplevel exited with non-zero exit code. We're not in a Git repo
+    pass
 
 # Create CSV writer and write CSV header to stdout
 csvwriter = csv.writer(sys.stdout)
@@ -115,13 +119,11 @@ csvwriter.writerow([
 for lang in languages:
     for pack in packs:
         # Get absolute paths to queries in this pack by using 'codeql resolve queries'
-        queries_subp = subprocess_run(["codeql","resolve","queries","--search-path", codeql_search_path, "%s-%s.qls" % (lang, pack)])
-
-        # Resolving queries might go wrong if the github/codeql and github/codeql-go repositories are not
-        # on the search path.
-        if queries_subp.returncode != 0:
-            print(queries_subp.stdout)
-            print(queries_subp.stderr)
+        try:
+            queries_subp = subprocess_run(["codeql","resolve","queries","--search-path", codeql_search_path, "%s-%s.qls" % (lang, pack)])
+        except Exception as e:
+            # Resolving queries might go wrong if the github/codeql and github/codeql-go repositories are not
+            # on the search path.
             print(
                 "Warning: couldn't find query pack '%s' for language '%s'. Do you have the right repositories in the right places (search path: '%s')?" % (pack, lang, codeql_search_path),
                 file=sys.stderr
