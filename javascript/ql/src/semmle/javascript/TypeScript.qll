@@ -1480,7 +1480,7 @@ class TypeAliasScope extends @type_alias_scope, Scope {
 /**
  * Scope induced by a mapped type expression, containing the type parameter declared as part of the type.
  */
-class MappedTypeScope extends @mappedtypescope, Scope {
+class MappedTypeScope extends @mapped_type_scope, Scope {
   override string toString() { result = "mapped type scope" }
 }
 

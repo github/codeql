@@ -422,7 +422,7 @@ case @scope.kind of
 | 10 = @class_decl_scope
 | 11 = @interface_scope
 | 12 = @type_alias_scope
-| 13 = @mappedtypescope
+| 13 = @mapped_type_scope
 | 14 = @enumscope
 | 15 = @externalmodulescope
 | 16 = @conditionaltypescope;
