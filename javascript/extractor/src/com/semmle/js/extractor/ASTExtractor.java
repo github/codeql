@@ -1944,7 +1944,7 @@ public class ASTExtractor {
       visitAll(nd.getMembers(), key, IdContext.varAndTypeDecl, 1, 1);
       scopeManager.leaveScope();
       if (nd.isConst()) {
-        trapwriter.addTuple("isConstEnum", key);
+        trapwriter.addTuple("is_const_enum", key);
       }
       if (nd.hasDeclareKeyword()) {
         trapwriter.addTuple("has_declare_keyword", key);

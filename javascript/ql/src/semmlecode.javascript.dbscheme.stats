@@ -8396,7 +8396,7 @@
 </dependencies>
 </relation>
 <relation>
-<name>isConstEnum</name>
+<name>is_const_enum</name>
 <cardinality>62</cardinality>
 <columnsizes>
 <e>

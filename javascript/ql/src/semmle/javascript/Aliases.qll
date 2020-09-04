@@ -160,3 +160,8 @@ deprecated predicate isStatic(Property prop) { is_static(prop) }
  * Use `MemberDeclaration#isAbstract()` instead.
  */ 
 deprecated predicate isAbstractMember(Property prop) { is_abstract_member(prop) }
+/**
+ * Alias for the predicate `is_const_enum` defined in the .dbscheme.
+ * Use `EnumDeclaration#isConst()` instead.
+ */ 
+deprecated predicate isConstEnum(EnumDeclaration id) { is_const_enum(id) }

@@ -1409,7 +1409,7 @@ class EnumDeclaration extends NamespaceDefinition, @enumdeclaration, AST::ValueN
   int getNumDecorator() { result = count(getADecorator()) }
 
   /** Holds if this enumeration is declared with the `const` keyword. */
-  predicate isConst() { isConstEnum(this) }
+  predicate isConst() { is_const_enum(this) }
 
   override ControlFlowNode getFirstControlFlowNode() { result = getIdentifier() }
 }
