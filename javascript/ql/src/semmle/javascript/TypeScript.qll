@@ -842,7 +842,7 @@ class IntersectionTypeExpr extends @intersection_typeexpr, TypeExpr {
 /**
  * A type expression enclosed in parentheses.
  */
-class ParenthesizedTypeExpr extends @parenthesizedtypeexpr, TypeExpr {
+class ParenthesizedTypeExpr extends @parenthesized_typeexpr, TypeExpr {
   /** Gets the type inside the parentheses. */
   TypeExpr getElementType() { result = getChildTypeExpr(0) }
 
