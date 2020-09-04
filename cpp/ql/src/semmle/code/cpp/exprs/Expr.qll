@@ -1283,7 +1283,6 @@ class CoAwaitExpr extends UnaryOperation, @co_await {
   override int getPrecedence() { result = 16 }
 }
 
-
 /**
  * A C/C++ co_yield expression
  * ```
