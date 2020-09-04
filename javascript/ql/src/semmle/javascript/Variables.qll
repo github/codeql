@@ -86,7 +86,7 @@ class BlockScope extends Scope, @block_scope {
 }
 
 /** A scope induced by a `for` statement. */
-class ForScope extends Scope, @forscope {
+class ForScope extends Scope, @for_scope {
   /** Gets the `for` statement that induces this scope. */
   ForStmt getLoop() { result = getScopeElement() }
 

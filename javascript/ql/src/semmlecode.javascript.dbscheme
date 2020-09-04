@@ -414,7 +414,7 @@ case @scope.kind of
 |  2 = @catch_scope
 |  3 = @module_scope
 |  4 = @block_scope
-|  5 = @forscope
+|  5 = @for_scope
 |  6 = @forinscope // for-of scopes work the same as for-in scopes
 |  7 = @comprehensionblockscope
 |  8 = @classexprscope
