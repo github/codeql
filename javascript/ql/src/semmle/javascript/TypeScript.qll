@@ -1315,7 +1315,7 @@ class ImportTypeExpr extends TypeExpr, @importtypeexpr {
   predicate isTypeAccess() { this instanceof @import_type_access }
 
   /** Holds if this import is used in the context of a namespace, such as in `let x: import("http").ServerRequest"`. */
-  predicate isNamespaceAccess() { this instanceof @importnamespaceaccess }
+  predicate isNamespaceAccess() { this instanceof @import_namespace_access }
 
   /** Holds if this import is used in the context of a variable type, such as `let x: typeof import("fs")`. */
   predicate isVarTypeAccess() { this instanceof @importvartypeaccess }
@@ -1329,7 +1329,7 @@ class ImportTypeAccess extends TypeAccess, ImportTypeExpr, @import_type_access {
 /**
  * An import used in the context of a namespace inside a type annotation, such as in `let x: import("http").ServerRequest`.
  */
-class ImportNamespaceAccess extends NamespaceAccess, ImportTypeExpr, @importnamespaceaccess { }
+class ImportNamespaceAccess extends NamespaceAccess, ImportTypeExpr, @import_namespace_access { }
 
 /**
  * An import used in the context of a variable type, such as in `let x: typeof import("fs")`.
