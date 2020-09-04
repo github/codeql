@@ -1497,7 +1497,7 @@ class RShiftExpr extends @rshift_expr, BinaryExpr {
  * u >>> v
  * ```
  */
-class URShiftExpr extends @urshiftexpr, BinaryExpr {
+class URShiftExpr extends @urshift_expr, BinaryExpr {
   override string getOperator() { result = ">>>" }
 }
 
