@@ -12,7 +12,7 @@ private import AbstractPropertiesImpl
 /**
  * Flow analysis for ECMAScript 2015 imports as variable definitions.
  */
-private class AnalyzedImportSpecifier extends AnalyzedVarDef, @importspecifier {
+private class AnalyzedImportSpecifier extends AnalyzedVarDef, @import_specifier {
   ImportDeclaration id;
 
   AnalyzedImportSpecifier() { this = id.getASpecifier() and exists(id.resolveImportedPath()) }

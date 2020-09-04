@@ -385,7 +385,7 @@ case @expr.kind of
 
 @comprehension_block = @for_in_comprehension_block | @for_of_comprehension_block;
 
-@importspecifier = @named_import_specifier | @import_default_specifier | @import_namespace_specifier;
+@import_specifier = @named_import_specifier | @import_default_specifier | @import_namespace_specifier;
 
 @exportspecifier = @named_export_specifier | @export_default_specifier | @export_namespace_specifier;
 

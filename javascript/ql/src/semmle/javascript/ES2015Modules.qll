@@ -106,7 +106,7 @@ private class LiteralImportPath extends PathExpr, ConstantString {
  *   from 'console';
  * ```
  */
-class ImportSpecifier extends Expr, @importspecifier {
+class ImportSpecifier extends Expr, @import_specifier {
   /** Gets the imported symbol; undefined for default and namespace import specifiers. */
   Identifier getImported() { result = getChildExpr(0) }
 
