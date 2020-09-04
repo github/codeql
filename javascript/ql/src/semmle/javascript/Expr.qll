@@ -1849,7 +1849,7 @@ class AssignExpr extends @assign_expr, Assignment {
 }
 
 private class TCompoundAssignExpr =
-  @assignaddexpr or @assignsubexpr or @assignmulexpr or @assigndivexpr or @assignmodexpr or
+  @assign_add_expr or @assignsubexpr or @assignmulexpr or @assigndivexpr or @assignmodexpr or
       @assignexpexpr or @assignlshiftexpr or @assignrshiftexpr or @assignurshiftexpr or
       @assignorexpr or @assignxorexpr or @assignandexpr or @assignlogandexpr or @assignlogorexpr or
       @assignnullishcoalescingexpr;
@@ -1875,7 +1875,7 @@ class CompoundAssignExpr extends TCompoundAssignExpr, Assignment { }
  * sum += element
  * ```
  */
-class AssignAddExpr extends @assignaddexpr, CompoundAssignExpr { }
+class AssignAddExpr extends @assign_add_expr, CompoundAssignExpr { }
 
 /**
  * A compound subtract-assign expression.
