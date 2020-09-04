@@ -2054,7 +2054,7 @@ class NumberLiteralType extends LiteralType, @number_literal_type {
 /**
  * A string literal as a static type.
  */
-class StringLiteralType extends LiteralType, @stringliteraltype {
+class StringLiteralType extends LiteralType, @string_literal_type {
   override string getStringValue() { type_literal_value(this, result) }
 }
 
