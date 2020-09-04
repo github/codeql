@@ -226,7 +226,7 @@ expr_containers (unique int expr: @expr_or_type ref,
 array_size (unique int ae: @arraylike ref,
        int sz: int ref);
 
-is_delegating (int yield: @yieldexpr ref);
+is_delegating (int yield: @yield_expr ref);
 
 @expr_or_stmt = @expr | @stmt;
 @expr_or_type = @expr | @typeexpr;
@@ -304,7 +304,7 @@ case @expr.kind of
 | 66 = @spread_element
 | 67 = @array_pattern
 | 68 = @object_pattern
-| 69 = @yieldexpr
+| 69 = @yield_expr
 | 70 = @taggedtemplateexpr
 | 71 = @templateliteral
 | 72 = @templateelement

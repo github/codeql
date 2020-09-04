@@ -2123,7 +2123,7 @@ class PostDecExpr extends @postdec_expr, UpdateExpr {
  * yield next
  * ```
  */
-class YieldExpr extends @yieldexpr, Expr {
+class YieldExpr extends @yield_expr, Expr {
   /** Gets the operand of this `yield` expression. */
   Expr getOperand() { result = getChildExpr(0) }
 
