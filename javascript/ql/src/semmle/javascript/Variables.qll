@@ -630,7 +630,7 @@ class PropertyPattern extends @property, ASTNode {
  *   y = z;  // variable declarator
  * ```
  */
-class VariableDeclarator extends Expr, @vardeclarator {
+class VariableDeclarator extends Expr, @var_declarator {
   /** Gets the pattern specifying the declared variable(s). */
   BindingPattern getBindingPattern() { result = this.getChildExpr(0) }
 

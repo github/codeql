@@ -299,7 +299,7 @@ case @expr.kind of
 | 61 = @predec_expr
 | 62 = @postdec_expr
 | 63 = @par_expr
-| 64 = @vardeclarator
+| 64 = @var_declarator
 | 65 = @arrow_function_expr
 | 66 = @spreadelement
 | 67 = @arraypattern
@@ -511,7 +511,7 @@ case @property.kind of
 @property_accessor = @property_getter | @property_setter;
 @call_signature = @function_call_signature | @constructor_call_signature;
 @field = @proper_field | @parameter_field;
-@field_or_vardeclarator = @field | @vardeclarator;
+@field_or_vardeclarator = @field | @var_declarator;
 
 is_computed (int id: @property ref);
 is_method   (int id: @property ref);
