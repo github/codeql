@@ -920,7 +920,7 @@ class ForEachStmt extends @foreachstmt, EnhancedForLoop { }
  * debugger;
  * ```
  */
-class DebuggerStmt extends @debuggerstmt, Stmt {
+class DebuggerStmt extends @debugger_stmt, Stmt {
   override predicate isSubjectToSemicolonInsertion() { any() }
 }
 
