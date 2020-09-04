@@ -90,7 +90,7 @@ successor(#20021,#20022)
 successor(#20019,#20025)
 successor(#20023,#20018)
 #20026=*
-jsParseErrors(#20026,#20001,"Error: Cannot use keyword 'class' as an identifier.","var class = 23;
+js_parse_errors(#20026,#20001,"Error: Cannot use keyword 'class' as an identifier.","var class = 23;
 ")
 #20027=@"loc,{#10000},1,5,1,5"
 locations_default(#20027,#10000,1,5,1,5)

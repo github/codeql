@@ -410,7 +410,7 @@ successor(#20126,#20079)
 successor(#20076,#20075)
 successor(#20113,#20076)
 #20129=*
-jsParseErrors(#20129,#20001,"Error: Missing function name","function(b) {
+js_parse_errors(#20129,#20001,"Error: Missing function name","function(b) {
 ")
 hasLocation(#20129,#20035)
 #20130=*

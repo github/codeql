@@ -819,7 +819,7 @@ indentation (int file: @file ref,
             int indentDepth: int ref);
 
 // JavaScript parse errors
-jsParseErrors (unique int id: @js_parse_error,
+js_parse_errors (unique int id: @js_parse_error,
         int toplevel: @toplevel ref,
         varchar(900) message: string ref,
         varchar(900) line: string ref);

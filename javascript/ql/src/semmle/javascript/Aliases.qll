@@ -215,3 +215,8 @@ deprecated predicate isOptionalParameterDeclaration(Parameter parameter) { is_op
  * Use `PredicateTypeExpr#hasAssertsKeyword() instead.
  */ 
 deprecated predicate hasAssertsKeyword(PredicateTypeExpr node) { has_asserts_keyword(node) }
+/**
+ * Alias for the predicate `js_parse_errors` defined in the .dbscheme.
+ * Use the `JSParseError` class instead.
+ */ 
+deprecated predicate jsParseErrors(JSParseError id, TopLevel toplevel, string message, string line) { js_parse_errors(id, toplevel, message, line) }

@@ -197,7 +197,7 @@ successor(#20057,#20041)
 successor(#20038,#20037)
 successor(#20054,#20038)
 #20059=*
-jsParseErrors(#20059,#20001,"Error: Assigning to arguments in strict mode","  arguments = 42;
+js_parse_errors(#20059,#20001,"Error: Assigning to arguments in strict mode","  arguments = 42;
 ")
 #20060=@"loc,{#10000},3,3,3,3"
 locations_default(#20060,#10000,3,3,3,3)

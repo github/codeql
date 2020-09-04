@@ -604,7 +604,7 @@ successor(#20133,#20115)
 successor(#20117,#20133)
 successor(#20169,#20117)
 #20191=*
-jsParseErrors(#20191,#20001,"Error: Missing function name","function() {}
+js_parse_errors(#20191,#20001,"Error: Missing function name","function() {}
 ")
 hasLocation(#20191,#20103)
 #20192=*

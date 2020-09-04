@@ -157,7 +157,7 @@ successor(#20046,#20035)
 successor(#20030,#20029)
 successor(#20043,#20030)
 #20048=*
-jsParseErrors(#20048,#20001,"Error: Illegal 'use strict' directive in function with non-simple parameter list","function f(a=2) { 'use strict'; }")
+js_parse_errors(#20048,#20001,"Error: Illegal 'use strict' directive in function with non-simple parameter list","function f(a=2) { 'use strict'; }")
 #20049=@"loc,{#10000},1,19,1,19"
 locations_default(#20049,#10000,1,19,1,19)
 hasLocation(#20048,#20049)

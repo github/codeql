@@ -105,7 +105,7 @@ successor(#20025,#20026)
 successor(#20022,#20030)
 successor(#20028,#20021)
 #20031=*
-jsParseErrors(#20031,#20001,"Error: Unexpected assignment pattern.","(x = 0) = y
+js_parse_errors(#20031,#20001,"Error: Unexpected assignment pattern.","(x = 0) = y
 ")
 hasLocation(#20031,#20007)
 #20032=*

@@ -18734,7 +18734,7 @@
 </dependencies>
 </relation>
 <relation>
-<name>jsParseErrors</name>
+<name>js_parse_errors</name>
 <cardinality>3</cardinality>
 <columnsizes>
 <e>

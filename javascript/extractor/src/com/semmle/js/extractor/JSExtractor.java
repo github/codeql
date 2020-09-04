@@ -130,7 +130,7 @@ public class JSExtractor {
       if (!config.isTolerateParseErrors()) throw parseError;
       Label key = trapwriter.freshLabel();
       String errorLine = textualExtractor.getLine(parseError.getPosition().getLine());
-      trapwriter.addTuple("jsParseErrors", key, toplevelLabel, "Error: " + parseError, errorLine);
+      trapwriter.addTuple("js_parse_errors", key, toplevelLabel, "Error: " + parseError, errorLine);
       locationManager.emitErrorLocation(
           key, parseError.getPosition(), textualExtractor.getNumLines());
       lexicalExtractor.extractLines(source, toplevelLabel);
