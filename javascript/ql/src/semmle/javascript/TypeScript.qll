@@ -1998,7 +1998,7 @@ class UnknownType extends Type, @unknowntype { }
 /**
  * The predefined `string` type.
  */
-class StringType extends Type, @stringtype { }
+class StringType extends Type, @string_type { }
 
 /**
  * The predefined `number` type.
