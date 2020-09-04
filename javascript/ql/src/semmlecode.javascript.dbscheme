@@ -184,7 +184,7 @@ case @stmt.kind of
 | 32 = @import_equals_declaration
 | 33 = @export_assign_declaration
 | 34 = @interface_declaration
-| 35 = @typealiasdeclaration
+| 35 = @type_alias_declaration
 | 36 = @enumdeclaration
 | 37 = @external_module_declaration
 | 38 = @exportasnamespacedeclaration
@@ -196,7 +196,7 @@ case @stmt.kind of
 @exportdeclaration = @export_all_declaration | @export_default_declaration | @export_named_declaration;
 
 @namespacedefinition = @namespace_declaration | @enumdeclaration;
-@typedefinition = @classdefinition | @interface_declaration | @enumdeclaration | @typealiasdeclaration | @enum_member;
+@typedefinition = @classdefinition | @interface_declaration | @enumdeclaration | @type_alias_declaration | @enum_member;
 
 is_instantiated(unique int decl: @namespace_declaration ref);
 
@@ -437,7 +437,7 @@ scopenesting (unique int inner: @scope ref,
 @function = @function_decl_stmt | @function_expr | @arrow_function_expr;
 
 @parameterized = @function | @catch_clause;
-@type_parameterized = @function | @class_or_interface | @typealiasdeclaration | @mapped_typeexpr | @infer_typeexpr;
+@type_parameterized = @function | @class_or_interface | @type_alias_declaration | @mapped_typeexpr | @infer_typeexpr;
 
 is_generator (int fun: @function ref);
 has_rest_parameter (int fun: @function ref);

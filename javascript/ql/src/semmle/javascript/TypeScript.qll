@@ -248,7 +248,7 @@ class ExportAsNamespaceDeclaration extends Stmt, @exportasnamespacedeclaration {
 /**
  * A type alias declaration, that is, a statement of form `type A = T`.
  */
-class TypeAliasDeclaration extends @typealiasdeclaration, TypeParameterized, Stmt {
+class TypeAliasDeclaration extends @type_alias_declaration, TypeParameterized, Stmt {
   /** Gets the name of this type alias as a string. */
   string getName() { result = getIdentifier().getName() }
 
