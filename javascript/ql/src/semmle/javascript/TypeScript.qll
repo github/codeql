@@ -2081,7 +2081,7 @@ class BigIntLiteralType extends LiteralType {
 class BooleanType extends UnionType {
   BooleanType() {
     getAnElementType() instanceof @true_type and
-    getAnElementType() instanceof @falsetype and
+    getAnElementType() instanceof @false_type and
     count(getAnElementType()) = 2
   }
 }
