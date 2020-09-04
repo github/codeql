@@ -241,7 +241,7 @@ case @expr.kind of
 |  2 = @boolean_literal
 |  3 = @number_literal
 |  4 = @string_literal
-|  5 = @regexpliteral
+|  5 = @regexp_literal
 |  6 = @thisexpr
 |  7 = @arrayexpr
 |  8 = @objexpr
@@ -361,7 +361,7 @@ case @expr.kind of
 
 @identifier = @label | @varref | @typeidentifier;
 
-@literal = @null_literal | @boolean_literal | @number_literal | @string_literal | @regexpliteral | @bigintliteral;
+@literal = @null_literal | @boolean_literal | @number_literal | @string_literal | @regexp_literal | @bigintliteral;
 
 @propaccess = @dotexpr | @indexexpr;
 
@@ -832,7 +832,7 @@ regexpterm (unique int id: @regexpterm,
         int idx: int ref,
         varchar(900) tostring: string ref);
         
-@regexpparent = @regexpterm | @regexpliteral | @string_literal;
+@regexpparent = @regexpterm | @regexp_literal | @string_literal;
 
 case @regexpterm.kind of
    0 = @regexp_alt

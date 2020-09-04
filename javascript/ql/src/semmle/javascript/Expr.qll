@@ -444,7 +444,7 @@ class StringLiteral extends @string_literal, Literal {
  * /(?i)ab*c(d|e)$/
  * ```
  */
-class RegExpLiteral extends @regexpliteral, Literal, RegExpParent {
+class RegExpLiteral extends @regexp_literal, Literal, RegExpParent {
   /** Gets the root term of this regular expression literal. */
   RegExpTerm getRoot() { this = result.getParent() }
 
