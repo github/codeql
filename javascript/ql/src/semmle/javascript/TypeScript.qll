@@ -758,7 +758,7 @@ class LiteralTypeExpr extends @literaltypeexpr, TypeExpr {
 class StringLiteralTypeExpr extends @string_literal_typeexpr, LiteralTypeExpr { }
 
 /** A number literal used as a type. */
-class NumberLiteralTypeExpr extends @numberliteraltypeexpr, LiteralTypeExpr {
+class NumberLiteralTypeExpr extends @number_literal_typeexpr, LiteralTypeExpr {
   /** Gets the integer value of this literal type. */
   int getIntValue() { result = getValue().toInt() }
 }
