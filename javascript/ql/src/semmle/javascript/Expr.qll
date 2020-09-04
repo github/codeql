@@ -1380,7 +1380,7 @@ class EqExpr extends @eq_expr, EqualityTest {
  * x != null
  * ```
  */
-class NEqExpr extends @neqexpr, EqualityTest {
+class NEqExpr extends @neq_expr, EqualityTest {
   override string getOperator() { result = "!=" }
 }
 
