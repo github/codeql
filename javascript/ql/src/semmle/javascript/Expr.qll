@@ -1096,7 +1096,7 @@ class PropAccess extends @propaccess, Expr {
  * Math.PI
  * ```
  */
-class DotExpr extends @dotexpr, PropAccess {
+class DotExpr extends @dot_expr, PropAccess {
   override string getPropertyName() { result = getProperty().getName() }
 
   /** Gets the identifier specifying the name of the accessed property. */

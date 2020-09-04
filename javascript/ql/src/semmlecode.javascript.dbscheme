@@ -250,7 +250,7 @@ case @expr.kind of
 | 11 = @conditional_expr
 | 12 = @new_expr
 | 13 = @call_expr
-| 14 = @dotexpr
+| 14 = @dot_expr
 | 15 = @indexexpr
 | 16 = @negexpr
 | 17 = @plusexpr
@@ -363,7 +363,7 @@ case @expr.kind of
 
 @literal = @null_literal | @boolean_literal | @number_literal | @string_literal | @regexp_literal | @bigintliteral;
 
-@propaccess = @dotexpr | @indexexpr;
+@propaccess = @dot_expr | @indexexpr;
 
 @invokeexpr = @new_expr | @call_expr;
 
