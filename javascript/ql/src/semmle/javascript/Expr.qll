@@ -1445,7 +1445,7 @@ class LEExpr extends @le_expr, Comparison {
  * a[j] > a[k]
  * ```
  */
-class GTExpr extends @gtexpr, Comparison {
+class GTExpr extends @gt_expr, Comparison {
   override string getOperator() { result = ">" }
 }
 
