@@ -87,3 +87,7 @@ deprecated predicate isNodejs(TopLevel toplevel) { is_nodejs(toplevel) }
  * Use `ES2015Module` from `ES2015Modules.qll` instead.
  */ 
 deprecated predicate isES2015Module(TopLevel toplevel) { is_es2015_module(toplevel) }
+/**
+ * Alias for the predicate `is_closure_module` defined in the .dbscheme.
+ */ 
+deprecated predicate isClosureModule(TopLevel toplevel) { is_closure_module(toplevel) }

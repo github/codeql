@@ -697,7 +697,7 @@ public class ASTExtractor {
       // Emit the specific source type.
       switch (sourceType) {
         case CLOSURE_MODULE:
-          trapwriter.addTuple("isClosureModule", toplevelLabel);
+          trapwriter.addTuple("is_closure_module", toplevelLabel);
           break;
         case MODULE:
           trapwriter.addTuple("is_es2015_module", toplevelLabel);

@@ -129,7 +129,7 @@ case @toplevel.kind of
 is_module (int tl: @toplevel ref);
 is_nodejs (int tl: @toplevel ref);
 is_es2015_module (int tl: @toplevel ref);
-isClosureModule (int tl: @toplevel ref);
+is_closure_module (int tl: @toplevel ref);
 
 // statements
 #keyset[parent, idx]
