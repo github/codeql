@@ -177,7 +177,7 @@ module UnsafeJQueryPlugin {
    */
   class AmbiguousHtmlOrSelectorArgumentAsSink extends Sink {
     AmbiguousHtmlOrSelectorArgumentAsSink() {
-      this instanceof AmbiguousHtmlOrSelectorArgument and not isLikelyIntentionalHtmlSink(_, this)
+      this instanceof AmbiguousHtmlOrSelectorArgument and not isLikelyIntentionalHtmlSink(this)
     }
   }
 
@@ -191,15 +191,16 @@ module UnsafeJQueryPlugin {
   }
 
   /**
-   * Holds if `plugin` likely expects `sink` to be treated as a HTML fragment.
+   * Holds if there exists a jQuery plugin that likely expects `sink` to be treated as a HTML fragment.
    */
-  predicate isLikelyIntentionalHtmlSink(JQuery::JQueryPluginMethod plugin, DataFlow::Node sink) {
-    exists(DataFlow::PropWrite defaultDef, string default, DataFlow::PropRead finalRead |
+  predicate isLikelyIntentionalHtmlSink(DataFlow::Node sink) {
+    exists(JQuery::JQueryPluginMethod plugin, DataFlow::PropWrite defaultDef, string default, DataFlow::PropRead finalRead |
       hasDefaultOption(plugin, defaultDef) and
       defaultDef.getPropertyName() = finalRead.getPropertyName() and
       defaultDef.getRhs().mayHaveStringValue(default) and
       default.regexpMatch("\\s*<.*") and
-      finalRead.flowsTo(sink)
+      finalRead.flowsTo(sink) and
+      sink.getTopLevel() = plugin.getTopLevel()
     )
   }
 }
