@@ -128,7 +128,7 @@ class TypeDefinition extends ASTNode, @typedefinition {
  * A TypeScript declaration of form `declare module "X" {...}` where `X`
  * is the name of an external module.
  */
-class ExternalModuleDeclaration extends Stmt, StmtContainer, @externalmoduledeclaration {
+class ExternalModuleDeclaration extends Stmt, StmtContainer, @external_module_declaration {
   /**
    * Gets the string literal denoting the module name, such as `"fs"` in:
    * ```
