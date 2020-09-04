@@ -244,7 +244,7 @@ case @expr.kind of
 |  5 = @regexp_literal
 |  6 = @this_expr
 |  7 = @array_expr
-|  8 = @objexpr
+|  8 = @obj_expr
 |  9 = @function_expr
 | 10 = @seqexpr
 | 11 = @conditionalexpr
@@ -507,7 +507,7 @@ case @property.kind of
 | 9 = @parameter_field
 ;
 
-@property_parent = @objexpr | @objectpattern | @classdefinition | @jsxelement | @interfacedefinition | @enumdeclaration;
+@property_parent = @obj_expr | @objectpattern | @classdefinition | @jsxelement | @interfacedefinition | @enumdeclaration;
 @property_accessor = @property_getter | @property_setter;
 @call_signature = @function_call_signature | @constructor_call_signature;
 @field = @proper_field | @parameter_field;

@@ -545,7 +545,7 @@ class ArrayExpr extends @array_expr, Expr {
  * };
  * ```
  */
-class ObjectExpr extends @objexpr, Expr {
+class ObjectExpr extends @obj_expr, Expr {
   /** Gets the `i`th property in this object literal. */
   Property getProperty(int i) { properties(result, this, i, _, _) }
 
