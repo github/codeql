@@ -174,7 +174,7 @@ case @stmt.kind of
 | 22 = @const_decl_stmt
 | 23 = @let_stmt
 | 24 = @legacy_let_stmt
-| 25 = @foreachstmt
+| 25 = @for_each_stmt
 | 26 = @classdeclstmt
 | 27 = @importdeclaration
 | 28 = @exportalldeclaration

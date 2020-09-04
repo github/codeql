@@ -154,7 +154,7 @@
 <v>1</v>
 </e>
 <e>
-<k>@foreachstmt</k>
+<k>@for_each_stmt</k>
 <v>1</v>
 </e>
 <e>
