@@ -805,7 +805,7 @@ case @comment.kind of
 | 4 = @htmlcommentend;
 
 @html_comment = @htmlcommentstart | @htmlcommentend;
-@linecomment = @slashslashcomment | @html_comment;
+@line_comment = @slashslashcomment | @html_comment;
 @blockcomment = @slashstarcomment | @doccomment;
 
 // source lines

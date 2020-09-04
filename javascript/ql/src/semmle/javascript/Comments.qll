@@ -53,7 +53,7 @@ class Comment extends @comment, Locatable {
  * &lt;!-- an HTML line comment
  * </pre>
  */
-class LineComment extends @linecomment, Comment { }
+class LineComment extends @line_comment, Comment { }
 
 /**
  * An HTML comment start/end token interpreted as a line comment.
