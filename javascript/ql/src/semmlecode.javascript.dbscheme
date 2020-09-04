@@ -419,7 +419,7 @@ case @scope.kind of
 |  7 = @comprehension_block_scope
 |  8 = @class_expr_scope
 |  9 = @namespace_scope
-| 10 = @classdeclscope
+| 10 = @class_decl_scope
 | 11 = @interfacescope
 | 12 = @typealiasscope
 | 13 = @mappedtypescope

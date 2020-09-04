@@ -424,7 +424,7 @@ class ClassExprScope extends @class_expr_scope, Scope {
 /**
  * A scope induced by a class declaration with type parameters.
  */
-class ClassDeclScope extends @classdeclscope, Scope {
+class ClassDeclScope extends @class_decl_scope, Scope {
   override string toString() { result = "class declaration scope" }
 }
 
