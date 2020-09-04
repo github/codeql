@@ -1226,7 +1226,7 @@ class TypeofExpr extends @typeof_expr, UnaryExpr {
  * void(0)
  * ```
  */
-class VoidExpr extends @voidexpr, UnaryExpr {
+class VoidExpr extends @void_expr, UnaryExpr {
   override string getOperator() { result = "void" }
 }
 
