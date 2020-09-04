@@ -550,7 +550,7 @@ case @typeexpr.kind of
   0 = @local_type_access
 | 1 = @type_decl
 | 2 = @keyword_typeexpr
-| 3 = @stringliteraltypeexpr
+| 3 = @string_literal_typeexpr
 | 4 = @numberliteraltypeexpr
 | 5 = @booleanliteraltypeexpr
 | 6 = @arraytypeexpr
@@ -589,7 +589,7 @@ case @typeexpr.kind of
 @typeref = @typeaccess | @type_decl;
 @typeidentifier = @type_decl | @local_type_access | @typelabel | @localvartypeaccess | @localnamespaceaccess;
 @typeexpr_parent = @expr | @stmt | @property | @typeexpr;
-@literaltypeexpr = @stringliteraltypeexpr | @numberliteraltypeexpr | @booleanliteraltypeexpr | @bigintliteraltypeexpr;
+@literaltypeexpr = @string_literal_typeexpr | @numberliteraltypeexpr | @booleanliteraltypeexpr | @bigintliteraltypeexpr;
 @typeaccess = @local_type_access | @qualifiedtypeaccess | @importtypeaccess;
 @vartypeaccess = @localvartypeaccess | @qualifiedvartypeaccess | @thisvartypeaccess | @importvartypeaccess;
 @namespaceaccess = @localnamespaceaccess | @qualifiednamespaceaccess | @importnamespaceaccess;

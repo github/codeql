@@ -755,7 +755,7 @@ class LiteralTypeExpr extends @literaltypeexpr, TypeExpr {
 }
 
 /** A string literal used as a type. */
-class StringLiteralTypeExpr extends @stringliteraltypeexpr, LiteralTypeExpr { }
+class StringLiteralTypeExpr extends @string_literal_typeexpr, LiteralTypeExpr { }
 
 /** A number literal used as a type. */
 class NumberLiteralTypeExpr extends @numberliteraltypeexpr, LiteralTypeExpr {
