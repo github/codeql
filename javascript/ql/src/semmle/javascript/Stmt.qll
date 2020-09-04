@@ -449,7 +449,7 @@ class IfStmt extends @if_stmt, ControlStmt {
  * }
  * ```
  */
-class LabeledStmt extends @labeledstmt, Stmt {
+class LabeledStmt extends @labeled_stmt, Stmt {
   /** Gets the label of this statement. */
   string getLabel() { result = getChildExpr(0).(Identifier).getName() }
 
