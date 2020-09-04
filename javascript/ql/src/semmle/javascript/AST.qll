@@ -150,7 +150,7 @@ class ASTNode extends @ast_node, NodeInStmtContainer {
       or
       has_declare_keyword(this)
       or
-      hasTypeKeyword(this)
+      has_type_keyword(this)
       or
       // An export such as `export declare function f()` should be seen as ambient.
       has_declare_keyword(this.(ExportNamedDeclaration).getOperand())

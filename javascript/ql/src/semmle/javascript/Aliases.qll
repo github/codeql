@@ -190,3 +190,8 @@ deprecated predicate hasProtectedKeyword(Property prop) { has_protected_keyword(
  * Use `FieldDeclaration#isReadonly()` instead.
  */ 
 deprecated predicate hasReadonlyKeyword(Property prop) { has_readonly_keyword(prop) }
+/**
+ * Alias for the predicate `has_type_keyword` defined in the .dbscheme.
+ * Use the `isTypeOnly` method on the `ImportDeclaration`/`ExportDeclaration` classes instead.
+ */ 
+deprecated predicate hasTypeKeyword(ASTNode id) { has_type_keyword(id) }

@@ -1575,7 +1575,7 @@ public class ASTExtractor {
           IdContext.export;
       visitAll(nd.getSpecifiers(), lbl, childContext, 0);
       if (nd.hasTypeKeyword()) {
-        trapwriter.addTuple("hasTypeKeyword", lbl);
+        trapwriter.addTuple("has_type_keyword", lbl);
       }
       return lbl;
     }
@@ -1596,7 +1596,7 @@ public class ASTExtractor {
       visitAll(nd.getSpecifiers(), lbl, childContext, 0);
       emitNodeSymbol(nd, lbl);
       if (nd.hasTypeKeyword()) {
-        trapwriter.addTuple("hasTypeKeyword", lbl);
+        trapwriter.addTuple("has_type_keyword", lbl);
       }
       return lbl;
     }
