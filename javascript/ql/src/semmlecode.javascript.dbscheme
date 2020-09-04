@@ -215,12 +215,12 @@ exprs (unique int id: @expr,
 
 literals (varchar(900) value: string ref,
        varchar(900) raw: string ref,
-       unique int expr: @exprortype ref);
+       unique int expr: @expr_or_type ref);
        
-enclosing_stmt (unique int expr: @exprortype ref,
+enclosing_stmt (unique int expr: @expr_or_type ref,
        int stmt: @stmt ref);
 
-expr_containers (unique int expr: @exprortype ref,
+expr_containers (unique int expr: @expr_or_type ref,
        int container: @stmt_container ref);
 
 array_size (unique int ae: @arraylike ref,
@@ -229,7 +229,7 @@ array_size (unique int ae: @arraylike ref,
 is_delegating (int yield: @yieldexpr ref);
 
 @expr_or_stmt = @expr | @stmt;
-@exprortype = @expr | @typeexpr;
+@expr_or_type = @expr | @typeexpr;
 @exprparent = @expr_or_stmt | @property | @functiontypeexpr;
 @arraylike = @arrayexpr | @arraypattern;
 @type_annotation = @typeexpr | @jsdoc_type_expr;

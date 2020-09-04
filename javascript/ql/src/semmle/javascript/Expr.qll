@@ -14,7 +14,7 @@ import javascript
  * string[]
  * ```
  */
-class ExprOrType extends @exprortype, Documentable {
+class ExprOrType extends @expr_or_type, Documentable {
   /** Gets the statement in which this expression or type appears. */
   Stmt getEnclosingStmt() { enclosing_stmt(this, result) }
 
