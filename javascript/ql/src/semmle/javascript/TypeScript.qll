@@ -1497,7 +1497,7 @@ class EnumScope extends @enum_scope, Scope {
 /**
  * Scope induced by a declaration of form `declare module "X" {...}`.
  */
-class ExternalModuleScope extends @externalmodulescope, Scope {
+class ExternalModuleScope extends @external_module_scope, Scope {
   override string toString() { result = "external module scope" }
 }
 

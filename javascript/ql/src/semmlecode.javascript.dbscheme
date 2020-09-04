@@ -424,7 +424,7 @@ case @scope.kind of
 | 12 = @type_alias_scope
 | 13 = @mapped_type_scope
 | 14 = @enum_scope
-| 15 = @externalmodulescope
+| 15 = @external_module_scope
 | 16 = @conditionaltypescope;
 
 scopenodes (unique int node: @ast_node ref,
