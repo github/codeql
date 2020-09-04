@@ -775,7 +775,7 @@ class SpreadProperty extends Property {
  * }
  * ```
  */
-class FunctionExpr extends @functionexpr, Expr, Function {
+class FunctionExpr extends @function_expr, Expr, Function {
   /** Holds if this function expression is a property setter. */
   predicate isSetter() { exists(PropertySetter s | s.getInit() = this) }
 

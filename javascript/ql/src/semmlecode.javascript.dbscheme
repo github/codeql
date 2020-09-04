@@ -145,7 +145,7 @@ stmt_containers (unique int stmt: @stmt ref,
 jump_targets (unique int jump: @stmt ref,
        int target: @stmt ref);
 
-@stmt_parent = @stmt | @toplevel | @functionexpr | @arrow_function_expr;
+@stmt_parent = @stmt | @toplevel | @function_expr | @arrow_function_expr;
 @stmt_container = @toplevel | @function | @namespacedeclaration | @externalmoduledeclaration | @globalaugmentationdeclaration;
 
 case @stmt.kind of
@@ -245,7 +245,7 @@ case @expr.kind of
 |  6 = @thisexpr
 |  7 = @arrayexpr
 |  8 = @objexpr
-|  9 = @functionexpr
+|  9 = @function_expr
 | 10 = @seqexpr
 | 11 = @conditionalexpr
 | 12 = @newexpr
@@ -434,7 +434,7 @@ scopenesting (unique int inner: @scope ref,
               int outer: @scope ref);
 
 // functions
-@function = @functiondeclstmt | @functionexpr | @arrow_function_expr;
+@function = @functiondeclstmt | @function_expr | @arrow_function_expr;
 
 @parameterized = @function | @catchclause;
 @type_parameterized = @function | @class_or_interface | @typealiasdeclaration | @mapped_typeexpr | @infer_typeexpr;
@@ -532,7 +532,7 @@ is_optional_parameter_declaration (unique int parameter: @pattern ref);
 #keyset[constructor, param_index]
 parameter_fields(
   unique int field: @parameter_field ref,
-  int constructor: @functionexpr ref,
+  int constructor: @function_expr ref,
   int param_index: int ref
 );
 
