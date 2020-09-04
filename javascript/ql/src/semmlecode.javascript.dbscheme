@@ -187,7 +187,7 @@ case @stmt.kind of
 | 35 = @type_alias_declaration
 | 36 = @enum_declaration
 | 37 = @external_module_declaration
-| 38 = @exportasnamespacedeclaration
+| 38 = @export_as_namespace_declaration
 | 39 = @global_augmentation_declaration
 ;
 

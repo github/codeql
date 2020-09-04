@@ -238,7 +238,7 @@ class ExportAssignDeclaration extends Stmt, @export_assign_declaration {
 }
 
 /** A TypeScript export of form `export as namespace X` where `X` is an identifier. */
-class ExportAsNamespaceDeclaration extends Stmt, @exportasnamespacedeclaration {
+class ExportAsNamespaceDeclaration extends Stmt, @export_as_namespace_declaration {
   /**
    * Gets the `X` in `export as namespace X`.
    */
