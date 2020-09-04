@@ -116,7 +116,7 @@ class ComprehensionBlockScope extends Scope, @comprehension_block_scope {
  * and currently does not include variables exported from other declarations
  * of the same namespace.
  */
-class NamespaceScope extends Scope, @namespacescope {
+class NamespaceScope extends Scope, @namespace_scope {
   override string toString() { result = "namespace scope" }
 }
 
