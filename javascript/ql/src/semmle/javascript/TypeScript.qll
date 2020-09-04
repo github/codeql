@@ -1312,7 +1312,7 @@ class ImportTypeExpr extends TypeExpr, @importtypeexpr {
   string getPath() { result = getPathExpr().(StringLiteralTypeExpr).getValue() }
 
   /** Holds if this import is used in the context of a type, such as in `let x: import("foo")`. */
-  predicate isTypeAccess() { this instanceof @importtypeaccess }
+  predicate isTypeAccess() { this instanceof @import_type_access }
 
   /** Holds if this import is used in the context of a namespace, such as in `let x: import("http").ServerRequest"`. */
   predicate isNamespaceAccess() { this instanceof @importnamespaceaccess }
@@ -1324,7 +1324,7 @@ class ImportTypeExpr extends TypeExpr, @importtypeexpr {
 /**
  * An import used in the context of a type, such as in `let x: import("foo")`.
  */
-class ImportTypeAccess extends TypeAccess, ImportTypeExpr, @importtypeaccess { }
+class ImportTypeAccess extends TypeAccess, ImportTypeExpr, @import_type_access { }
 
 /**
  * An import used in the context of a namespace inside a type annotation, such as in `let x: import("http").ServerRequest`.
