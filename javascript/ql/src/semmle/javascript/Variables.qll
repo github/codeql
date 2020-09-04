@@ -54,7 +54,7 @@ class LocalScope extends Scope {
 /**
  * A scope induced by a Node.js or ES2015 module
  */
-class ModuleScope extends Scope, @modulescope {
+class ModuleScope extends Scope, @module_scope {
   /** Gets the module that induces this scope. */
   Module getModule() { result = getScopeElement() }
 

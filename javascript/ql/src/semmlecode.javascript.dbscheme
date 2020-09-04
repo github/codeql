@@ -412,7 +412,7 @@ case @scope.kind of
    0 = @global_scope
 |  1 = @function_scope
 |  2 = @catch_scope
-|  3 = @modulescope
+|  3 = @module_scope
 |  4 = @blockscope
 |  5 = @forscope
 |  6 = @forinscope // for-of scopes work the same as for-in scopes
