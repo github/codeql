@@ -232,7 +232,7 @@ decl(#20078,#20077)
 #20079=@"var;{arguments};{#20076}"
 variables(#20079,"arguments",#20076)
 is_arguments_object(#20079)
-isAsync(#20073)
+is_async(#20073)
 #20080=*
 stmts(#20080,1,#20073,-2,"{\n  try ... ;\n  }\n}")
 #20081=@"loc,{#10000},1,30,7,1"

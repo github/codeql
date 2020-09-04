@@ -11709,7 +11709,7 @@
 <dependencies/>
 </relation>
 <relation>
-<name>isAsync</name>
+<name>is_async</name>
 <cardinality>50</cardinality>
 <columnsizes>
 <e>

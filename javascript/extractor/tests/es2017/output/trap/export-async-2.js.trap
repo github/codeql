@@ -96,7 +96,7 @@ scopenesting(#20030,#20025)
 #20031=@"var;{arguments};{#20030}"
 variables(#20031,"arguments",#20030)
 is_arguments_object(#20031)
-isAsync(#20028)
+is_async(#20028)
 #20032=*
 stmts(#20032,1,#20028,-2,"{}")
 #20033=@"loc,{#10000},1,34,1,35"

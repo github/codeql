@@ -109,7 +109,7 @@ hasLocation(#20034,#20015)
 expr_containers(#20034,#20030)
 literals("x","x",#20034)
 decl(#20034,#20033)
-isAsync(#20030)
+is_async(#20030)
 #20035=*
 exprs(#20035,79,#20030,-2,"x")
 hasLocation(#20035,#20023)

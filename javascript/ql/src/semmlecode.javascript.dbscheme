@@ -441,7 +441,7 @@ scopenesting (unique int inner: @scope ref,
 
 is_generator (int fun: @function ref);
 has_rest_parameter (int fun: @function ref);
-isAsync (int fun: @function ref);
+is_async (int fun: @function ref);
 
 // variables and lexically scoped type names
 #keyset[scope, name]

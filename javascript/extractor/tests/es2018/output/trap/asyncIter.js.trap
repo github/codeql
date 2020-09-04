@@ -381,7 +381,7 @@ scopenesting(#20139,#20000)
 variables(#20140,"arguments",#20139)
 is_arguments_object(#20140)
 is_generator(#20137)
-isAsync(#20137)
+is_async(#20137)
 #20141=*
 stmts(#20141,1,#20137,-2,"{}")
 #20142=@"loc,{#10000},1,27,1,28"
@@ -432,7 +432,7 @@ scopenesting(#20152,#20146)
 variables(#20153,"arguments",#20152)
 is_arguments_object(#20153)
 is_generator(#20150)
-isAsync(#20150)
+is_async(#20150)
 #20154=*
 stmts(#20154,1,#20150,-2,"{}")
 #20155=@"loc,{#10000},4,22,4,23"
@@ -482,7 +482,7 @@ scopenesting(#20165,#20146)
 variables(#20166,"arguments",#20165)
 is_arguments_object(#20166)
 is_generator(#20163)
-isAsync(#20163)
+is_async(#20163)
 #20167=*
 stmts(#20167,1,#20163,-2,"{}")
 #20168=@"loc,{#10000},5,35,5,36"
@@ -572,7 +572,7 @@ scopenesting(#20188,#20000)
 variables(#20189,"arguments",#20188)
 is_arguments_object(#20189)
 is_generator(#20186)
-isAsync(#20186)
+is_async(#20186)
 #20190=*
 stmts(#20190,1,#20186,-2,"{}")
 #20191=@"loc,{#10000},9,22,9,23"
@@ -620,7 +620,7 @@ scopenesting(#20200,#20000)
 variables(#20201,"arguments",#20200)
 is_arguments_object(#20201)
 is_generator(#20198)
-isAsync(#20198)
+is_async(#20198)
 #20202=*
 stmts(#20202,1,#20198,-2,"{}")
 #20203=@"loc,{#10000},10,35,10,36"

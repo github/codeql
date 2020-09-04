@@ -290,3 +290,8 @@ deprecated predicate isGenerator(Function fun) { is_generator(fun) }
  * Use `Function#hasRestParameter()` instead.
  */ 
 deprecated predicate hasRestParameter(Function fun) { has_rest_parameter(fun) }
+/**
+ * Alias for the predicate `is_async` defined in the .dbscheme.
+ * Use `Function#isAsync()` instead.
+ */ 
+deprecated predicate isAsync(Function fun) { is_async(fun) }
