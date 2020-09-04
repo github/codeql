@@ -335,7 +335,7 @@ case @expr.kind of
 | 97 = @bindexpr
 | 98 = @externalmodulereference
 | 99 = @dynamicimport
-| 100 = @expressionwithtypearguments
+| 100 = @expression_with_type_arguments
 | 101 = @prefixtypeassertion
 | 102 = @astypeassertion
 | 103 = @export_varaccess
