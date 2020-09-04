@@ -1665,7 +1665,7 @@ class BitOrExpr extends @bitor_expr, BinaryExpr {
  * x ^ 1
  * ```
  */
-class XOrExpr extends @xorexpr, BinaryExpr {
+class XOrExpr extends @xor_expr, BinaryExpr {
   override string getOperator() { result = "^" }
 }
 
