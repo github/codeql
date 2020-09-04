@@ -813,7 +813,7 @@ class UnionTypeExpr extends @union_typeexpr, TypeExpr {
 /**
  * A type of form `T[K]` where `T` and `K` are types.
  */
-class IndexedAccessTypeExpr extends @indexedaccesstypeexpr, TypeExpr {
+class IndexedAccessTypeExpr extends @indexed_access_typeexpr, TypeExpr {
   /** Gets the type `T` in `T[K]`, denoting the object type whose properties are to be extracted. */
   TypeExpr getObjectType() { result = getChildTypeExpr(0) }
 
