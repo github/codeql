@@ -353,7 +353,7 @@ private class ClassInitializedMember extends MemberDeclaration {
  * super
  * ```
  */
-class SuperExpr extends @superexpr, Expr {
+class SuperExpr extends @super_expr, Expr {
   override predicate isImpure() { none() }
 
   /**
