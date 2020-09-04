@@ -635,7 +635,7 @@ case @type.kind of
 | 20 = @this_type
 | 21 = @number_literal_type
 | 22 = @string_literal_type
-| 23 = @unknowntype
+| 23 = @unknown_type
 | 24 = @biginttype
 | 25 = @bigintliteraltype
 ;
