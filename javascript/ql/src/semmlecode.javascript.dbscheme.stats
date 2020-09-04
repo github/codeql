@@ -8007,7 +8007,7 @@
 <dependencies/>
 </relation>
 <relation>
-<name>isOptionalMember</name>
+<name>is_optional_member</name>
 <cardinality>3668</cardinality>
 <columnsizes>
 <e>

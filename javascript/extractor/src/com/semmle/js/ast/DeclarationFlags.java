@@ -44,7 +44,7 @@ public class DeclarationFlags {
           "has_public_keyword",
           "has_private_keyword",
           "has_protected_keyword",
-          "isOptionalMember",
+          "is_optional_member",
           "hasDefiniteAssignmentAssertion",
           "has_declare_keyword");
 

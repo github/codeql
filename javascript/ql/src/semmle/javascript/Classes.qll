@@ -1043,7 +1043,7 @@ class FieldDeclaration extends MemberDeclaration, @field {
   predicate isReadonly() { has_readonly_keyword(this) }
 
   /** Holds if this is a TypeScript field marked as optional with the `?` operator. */
-  predicate isOptional() { isOptionalMember(this) }
+  predicate isOptional() { is_optional_member(this) }
 
   /** Holds if this is a TypeScript field marked as definitely assigned with the `!` operator. */
   predicate hasDefiniteAssignmentAssertion() { hasDefiniteAssignmentAssertion(this) }

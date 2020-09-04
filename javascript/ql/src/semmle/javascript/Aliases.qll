@@ -195,3 +195,8 @@ deprecated predicate hasReadonlyKeyword(Property prop) { has_readonly_keyword(pr
  * Use the `isTypeOnly` method on the `ImportDeclaration`/`ExportDeclaration` classes instead.
  */ 
 deprecated predicate hasTypeKeyword(ASTNode id) { has_type_keyword(id) }
+/**
+ * Alias for the predicate `is_optional_member` defined in the .dbscheme.
+ * Use `FieldDeclaration#isOptional()` instead.
+ */ 
+deprecated predicate isOptionalMember(Property id) { is_optional_member(id) }
