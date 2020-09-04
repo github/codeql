@@ -2235,7 +2235,7 @@ class GeneratorExpr extends @generator_expr, ComprehensionExpr { }
  * ]
  * ```
  */
-class ComprehensionBlock extends @comprehensionblock, Expr {
+class ComprehensionBlock extends @comprehension_block, Expr {
   /** Gets the iterating variable or pattern of this comprehension block. */
   BindingPattern getIterator() { result = getChildExpr(0) }
 
