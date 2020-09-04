@@ -146,7 +146,7 @@ jump_targets (unique int jump: @stmt ref,
        int target: @stmt ref);
 
 @stmt_parent = @stmt | @toplevel | @function_expr | @arrow_function_expr;
-@stmt_container = @toplevel | @function | @namespacedeclaration | @externalmoduledeclaration | @globalaugmentationdeclaration;
+@stmt_container = @toplevel | @function | @namespace_declaration | @externalmoduledeclaration | @globalaugmentationdeclaration;
 
 case @stmt.kind of
    0 = @emptystmt
@@ -180,7 +180,7 @@ case @stmt.kind of
 | 28 = @exportalldeclaration
 | 29 = @exportdefaultdeclaration
 | 30 = @exportnameddeclaration
-| 31 = @namespacedeclaration
+| 31 = @namespace_declaration
 | 32 = @importequalsdeclaration
 | 33 = @exportassigndeclaration
 | 34 = @interfacedeclaration
@@ -195,12 +195,12 @@ case @stmt.kind of
 
 @exportdeclaration = @exportalldeclaration | @exportdefaultdeclaration | @exportnameddeclaration;
 
-@namespacedefinition = @namespacedeclaration | @enumdeclaration;
+@namespacedefinition = @namespace_declaration | @enumdeclaration;
 @typedefinition = @classdefinition | @interfacedeclaration | @enumdeclaration | @typealiasdeclaration | @enum_member;
 
-is_instantiated(unique int decl: @namespacedeclaration ref);
+is_instantiated(unique int decl: @namespace_declaration ref);
 
-@declarable_node = @declstmt | @namespacedeclaration | @classdeclstmt | @functiondeclstmt | @enumdeclaration | @externalmoduledeclaration | @globalaugmentationdeclaration | @field;
+@declarable_node = @declstmt | @namespace_declaration | @classdeclstmt | @functiondeclstmt | @enumdeclaration | @externalmoduledeclaration | @globalaugmentationdeclaration | @field;
 has_declare_keyword(unique int stmt: @declarable_node ref);
 
 is_for_await_of(unique int forof: @forofstmt ref);
@@ -1130,7 +1130,7 @@ xmllocations(
 
 @xmllocatable = @xmlcharacters | @xmlelement | @xmlcomment | @xmlattribute | @xmldtd | @file | @xmlnamespace;
 
-@dataflownode = @expr | @functiondeclstmt | @classdeclstmt | @namespacedeclaration | @enumdeclaration | @property;
+@dataflownode = @expr | @functiondeclstmt | @classdeclstmt | @namespace_declaration | @enumdeclaration | @property;
 
 @optionalchainable = @callexpr | @propaccess;
 

@@ -56,7 +56,7 @@ class NamespaceDefinition extends Stmt, @namespacedefinition, AST::ValueNode {
  * For example, `declare module "X" {...}` is an external module declaration.
  * These are represented by `ExternalModuleDeclaration`.
  */
-class NamespaceDeclaration extends NamespaceDefinition, StmtContainer, @namespacedeclaration {
+class NamespaceDeclaration extends NamespaceDefinition, StmtContainer, @namespace_declaration {
   /** Gets the name of this namespace. */
   override Identifier getIdentifier() { result = getChildExpr(-1) }
 
