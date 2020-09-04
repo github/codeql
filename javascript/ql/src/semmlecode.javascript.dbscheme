@@ -320,7 +320,7 @@ case @expr.kind of
 | 82 = @newtarget_expr
 | 83 = @named_import_specifier
 | 84 = @import_default_specifier
-| 85 = @importnamespacespecifier
+| 85 = @import_namespace_specifier
 | 86 = @namedexportspecifier
 | 87 = @expexpr
 | 88 = @assignexpexpr
@@ -385,7 +385,7 @@ case @expr.kind of
 
 @comprehensionblock = @for_in_comprehension_block | @for_of_comprehension_block;
 
-@importspecifier = @named_import_specifier | @import_default_specifier | @importnamespacespecifier;
+@importspecifier = @named_import_specifier | @import_default_specifier | @import_namespace_specifier;
 
 @exportspecifier = @namedexportspecifier | @exportdefaultspecifier | @exportnamespacespecifier;
 

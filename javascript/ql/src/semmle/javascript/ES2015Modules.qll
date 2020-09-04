@@ -172,7 +172,7 @@ class ImportDefaultSpecifier extends ImportSpecifier, @import_default_specifier 
  *   from 'console';
  * ```
  */
-class ImportNamespaceSpecifier extends ImportSpecifier, @importnamespacespecifier { }
+class ImportNamespaceSpecifier extends ImportSpecifier, @import_namespace_specifier { }
 
 /**
  * A bulk import that imports an entire module as a namespace.
