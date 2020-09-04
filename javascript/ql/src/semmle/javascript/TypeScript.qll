@@ -743,7 +743,7 @@ class GenericTypeExpr extends @generic_typeexpr, TypeExpr {
  *
  * Note that the `null` and `undefined` types are considered predefined types, not literal types.
  */
-class LiteralTypeExpr extends @literaltypeexpr, TypeExpr {
+class LiteralTypeExpr extends @literal_typeexpr, TypeExpr {
   /** Gets the value of this literal, as a string. */
   string getValue() { literals(result, _, this) }
 
