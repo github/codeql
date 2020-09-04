@@ -64,12 +64,11 @@ module Protobuf {
    */
   private class MarshalStateStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(DataFlow::Node marshalInput, DataFlow::CallNode marshalStateCall |
+      exists(DataFlow::PostUpdateNode marshalInput, DataFlow::CallNode marshalStateCall |
         marshalStateCall = marshalStateMethod().getACall() and
         // pred -> marshalInput.Message
         any(DataFlow::Write w)
-            .writesField(marshalInput.(DataFlow::PostUpdateNode).getPreUpdateNode(),
-              inputMessageField(), pred) and
+            .writesField(marshalInput.getPreUpdateNode(), inputMessageField(), pred) and
         // marshalInput -> marshalStateCall
         marshalStateCall.getArgument(0) = globalValueNumber(marshalInput).getANode() and
         // marshalStateCall -> succ
@@ -154,7 +153,7 @@ module Protobuf {
    *
    * For example, in the expression a.b[c].d[e], this would return the dataflow node for the read from `a`.
    */
-  DataFlow::Node getUnderlyingNode(DataFlow::ReadNode read) {
+  private DataFlow::Node getUnderlyingNode(DataFlow::ReadNode read) {
     (result = read or result = getBaseLookingThroughDerefs+(read)) and
     not result instanceof DataFlow::ComponentReadNode
   }
