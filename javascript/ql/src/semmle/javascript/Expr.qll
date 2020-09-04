@@ -1844,7 +1844,7 @@ class Assignment extends @assignment, Expr {
  * x = y
  * ```
  */
-class AssignExpr extends @assignexpr, Assignment {
+class AssignExpr extends @assign_expr, Assignment {
   override Expr getUnderlyingValue() { result = getRhs().getUnderlyingValue() }
 }
 

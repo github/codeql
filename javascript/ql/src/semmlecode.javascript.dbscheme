@@ -282,7 +282,7 @@ case @expr.kind of
 | 43 = @instanceof_expr
 | 44 = @logand_expr
 | 45 = @logor_expr
-| 47 = @assignexpr
+| 47 = @assign_expr
 | 48 = @assignaddexpr
 | 49 = @assignsubexpr
 | 50 = @assignmulexpr
@@ -375,7 +375,7 @@ case @expr.kind of
 
 @binaryexpr = @comparison | @lshift_expr | @rshift_expr | @urshift_expr | @add_expr | @sub_expr | @mul_expr | @div_expr | @mod_expr | @expexpr | @bitor_expr | @xor_expr | @bitand_expr | @in_expr | @instanceof_expr | @logand_expr | @logor_expr | @nullishcoalescingexpr;
 
-@assignment = @assignexpr | @assignaddexpr | @assignsubexpr | @assignmulexpr | @assigndivexpr | @assignmodexpr | @assignexpexpr | @assignlshiftexpr | @assignrshiftexpr | @assignurshiftexpr | @assignorexpr | @assignxorexpr | @assignandexpr | @assignlogandexpr | @assignlogorexpr | @assignnullishcoalescingexpr;
+@assignment = @assign_expr | @assignaddexpr | @assignsubexpr | @assignmulexpr | @assigndivexpr | @assignmodexpr | @assignexpexpr | @assignlshiftexpr | @assignrshiftexpr | @assignurshiftexpr | @assignorexpr | @assignxorexpr | @assignandexpr | @assignlogandexpr | @assignlogorexpr | @assignnullishcoalescingexpr;
 
 @updateexpr = @preincexpr | @postincexpr | @predecexpr | @postdecexpr;
 
