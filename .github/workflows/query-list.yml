@@ -5,7 +5,6 @@ on:
     branches:
      - master
      - 'rc/**'
-     - 'querylist-python'
 
 jobs:
   build:
