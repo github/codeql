@@ -671,7 +671,7 @@ class TypeAccess extends @typeaccess, TypeExpr, TypeRef {
 }
 
 /** An identifier that is used as part of a type, such as `Date`. */
-class LocalTypeAccess extends @localtypeaccess, TypeAccess, Identifier, LexicalAccess {
+class LocalTypeAccess extends @local_type_access, TypeAccess, Identifier, LexicalAccess {
   override predicate isStringy() { getName() = "String" }
 
   override predicate isNumbery() { getName() = "Number" }

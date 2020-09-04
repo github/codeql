@@ -398,7 +398,7 @@ case @expr.kind of
 @classorinterface = @classdefinition | @interfacedefinition;
 
 @lexical_decl = @vardecl | @typedecl;
-@lexical_access = @varaccess | @localtypeaccess | @localvartypeaccess | @localnamespaceaccess;
+@lexical_access = @varaccess | @local_type_access | @localvartypeaccess | @localnamespaceaccess;
 @lexical_ref = @lexical_decl | @lexical_access;
 
 @e4x_xml_attribute_selector = @e4x_xml_static_attribute_selector | @e4x_xml_dynamic_attribute_selector;
@@ -470,7 +470,7 @@ bind (unique int id: @bind_id ref,
 decl (unique int id: @vardecl ref,
       int decl: @variable ref);
 
-@typebind_id = @localtypeaccess | @export_varaccess;
+@typebind_id = @local_type_access | @export_varaccess;
 typebind (unique int id: @typebind_id ref,
           int decl: @local_type_name ref);
 
@@ -547,7 +547,7 @@ typeexprs (
 );
 
 case @typeexpr.kind of
-  0 = @localtypeaccess
+  0 = @local_type_access
 | 1 = @typedecl
 | 2 = @keywordtypeexpr
 | 3 = @stringliteraltypeexpr
@@ -587,10 +587,10 @@ case @typeexpr.kind of
 ;
 
 @typeref = @typeaccess | @typedecl;
-@typeidentifier = @typedecl | @localtypeaccess | @typelabel | @localvartypeaccess | @localnamespaceaccess;
+@typeidentifier = @typedecl | @local_type_access | @typelabel | @localvartypeaccess | @localnamespaceaccess;
 @typeexpr_parent = @expr | @stmt | @property | @typeexpr;
 @literaltypeexpr = @stringliteraltypeexpr | @numberliteraltypeexpr | @booleanliteraltypeexpr | @bigintliteraltypeexpr;
-@typeaccess = @localtypeaccess | @qualifiedtypeaccess | @importtypeaccess;
+@typeaccess = @local_type_access | @qualifiedtypeaccess | @importtypeaccess;
 @vartypeaccess = @localvartypeaccess | @qualifiedvartypeaccess | @thisvartypeaccess | @importvartypeaccess;
 @namespaceaccess = @localnamespaceaccess | @qualifiednamespaceaccess | @importnamespaceaccess;
 @importtypeexpr = @importtypeaccess | @importnamespaceaccess | @importvartypeaccess;
