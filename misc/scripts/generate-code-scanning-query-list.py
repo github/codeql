@@ -47,10 +47,7 @@ def prefix_repo_nwo(filename):
     """
     dirname = os.path.dirname(filename)
 
-    git_toplevel_dir_subp = subprocess.run(
-        "git -C '%s' rev-parse --show-toplevel"  % dirname,
-        shell=True, capture_output=True, text=True
-    )
+    git_toplevel_dir_subp = subprocess_run("git -C '%s' rev-parse --show-toplevel"  % dirname)
 
     if git_toplevel_dir_subp.returncode != 0:
         # Not a Git repo
@@ -58,14 +55,13 @@ def prefix_repo_nwo(filename):
     
     git_toplevel_dir = git_toplevel_dir_subp.stdout.strip()
     
-    # Detect 'github/codeql' and 'github/codeql-go' repositories by SHA of first commit
-    first_sha = subprocess.run(
-        "git -C '%s' rev-list --max-parents=0 HEAD" % dirname,
-        shell=True, capture_output=True, text=True
-    ).stdout.strip()
+    # Detect 'github/codeql' and 'github/codeql-go' repositories by checking the remote (it's a bit
+    # of a hack but will work in most cases, as long as the remotes have 'codeql' and 'codeql-go'
+    # in the URL
+    git_remotes = subprocess_run("git -C '%s' remote -v" % dirname).stdout.strip()
 
-    if first_sha == "b55526aa58a5b500fe5d1be2c7edd09075711d09": prefix = "github/codeql"
-    elif first_sha == "d14eb855fc88e086b587f6c9695b59eb230c79e7": prefix = "github/codeql-go"
+    if "codeql-go" in git_remotes: prefix = "github/codeql-go"
+    elif "codeql" in git_remotes: prefix = "github/codeql"
     else: prefix = os.path.basename(git_toplevel_dir)
 
     return os.path.join(prefix, filename[len(git_toplevel_dir)+1:])
