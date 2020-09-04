@@ -289,7 +289,7 @@ case @expr.kind of
 | 51 = @assign_div_expr
 | 52 = @assign_mod_expr
 | 53 = @assign_lshift_expr
-| 54 = @assignrshiftexpr
+| 54 = @assign_rshift_expr
 | 55 = @assignurshiftexpr
 | 56 = @assignorexpr
 | 57 = @assignxorexpr
@@ -375,7 +375,7 @@ case @expr.kind of
 
 @binaryexpr = @comparison | @lshift_expr | @rshift_expr | @urshift_expr | @add_expr | @sub_expr | @mul_expr | @div_expr | @mod_expr | @expexpr | @bitor_expr | @xor_expr | @bitand_expr | @in_expr | @instanceof_expr | @logand_expr | @logor_expr | @nullishcoalescingexpr;
 
-@assignment = @assign_expr | @assign_add_expr | @assign_sub_expr | @assign_mul_expr | @assign_div_expr | @assign_mod_expr | @assignexpexpr | @assign_lshift_expr | @assignrshiftexpr | @assignurshiftexpr | @assignorexpr | @assignxorexpr | @assignandexpr | @assignlogandexpr | @assignlogorexpr | @assignnullishcoalescingexpr;
+@assignment = @assign_expr | @assign_add_expr | @assign_sub_expr | @assign_mul_expr | @assign_div_expr | @assign_mod_expr | @assignexpexpr | @assign_lshift_expr | @assign_rshift_expr | @assignurshiftexpr | @assignorexpr | @assignxorexpr | @assignandexpr | @assignlogandexpr | @assignlogorexpr | @assignnullishcoalescingexpr;
 
 @updateexpr = @preincexpr | @postincexpr | @predecexpr | @postdecexpr;
 
