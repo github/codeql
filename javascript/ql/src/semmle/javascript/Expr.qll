@@ -1691,7 +1691,7 @@ class BitAndExpr extends @bitand_expr, BinaryExpr {
  * "leftpad" in String.prototype
  * ```
  */
-class InExpr extends @inexpr, BinaryExpr {
+class InExpr extends @in_expr, BinaryExpr {
   override string getOperator() { result = "in" }
 }
 
