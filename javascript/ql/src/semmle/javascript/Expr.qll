@@ -1432,7 +1432,7 @@ class LTExpr extends @lt_expr, Comparison {
  * x+1 <= a.length
  * ```
  */
-class LEExpr extends @leexpr, Comparison {
+class LEExpr extends @le_expr, Comparison {
   override string getOperator() { result = "<=" }
 }
 
