@@ -1866,7 +1866,7 @@ class Type extends @type {
 /**
  * A union type or intersection type, such as `string | number` or `T & U`.
  */
-class UnionOrIntersectionType extends Type, @unionorintersectiontype {
+class UnionOrIntersectionType extends Type, @union_or_intersection_type {
   /**
    * Gets the `i`th member of this union or intersection, starting at 0.
    */
