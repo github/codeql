@@ -697,7 +697,11 @@ class TypeAccess extends @typeaccess, TypeExpr, TypeRef {
     exists(ImportEqualsDeclaration imprt |
       moduleName = getImportName(imprt.getImportedEntity()) and
       this =
-        imprt.getIdentifier().(LocalNamespaceDecl).getLocalNamespaceName().getAMemberAccess(exportedName)
+        imprt
+            .getIdentifier()
+            .(LocalNamespaceDecl)
+            .getLocalNamespaceName()
+            .getAMemberAccess(exportedName)
     )
   }
 }
