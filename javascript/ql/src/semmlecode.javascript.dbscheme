@@ -715,7 +715,7 @@ type_alias(
   unique int aliasType: @type ref,
   int underlyingType: @type ref);
 
-@literaltype = @stringliteraltype | @numberliteraltype | @booleanliteraltype | @bigintliteraltype;
+@literal_type = @stringliteraltype | @numberliteraltype | @booleanliteraltype | @bigintliteraltype;
 @type_with_literal_value = @stringliteraltype | @numberliteraltype | @bigintliteraltype;
 type_literal_value(
   unique int typ: @type_with_literal_value ref,

@@ -2013,7 +2013,7 @@ class BigIntType extends Type, @biginttype { }
 /**
  * A boolean, number, or string literal type.
  */
-class LiteralType extends Type, @literaltype {
+class LiteralType extends Type, @literal_type {
   /**
    * Gets the string value of this literal.
    */
