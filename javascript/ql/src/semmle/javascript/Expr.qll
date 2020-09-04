@@ -1200,7 +1200,7 @@ class LogNotExpr extends @log_not_expr, UnaryExpr {
  * ~bitmask
  * ```
  */
-class BitNotExpr extends @bitnotexpr, UnaryExpr {
+class BitNotExpr extends @bit_not_expr, UnaryExpr {
   override string getOperator() { result = "~" }
 }
 
