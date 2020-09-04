@@ -409,7 +409,7 @@ class BindingPattern extends @pattern, Expr {
   }
 }
 
-private class TDestructuringPattern = @array_pattern or @objectpattern;
+private class TDestructuringPattern = @array_pattern or @object_pattern;
 
 /**
  * A destructuring pattern, that is, either an array pattern or an object pattern.
@@ -534,7 +534,7 @@ class ArrayPattern extends DestructuringPattern, @array_pattern {
  * }
  * ```
  */
-class ObjectPattern extends DestructuringPattern, @objectpattern {
+class ObjectPattern extends DestructuringPattern, @object_pattern {
   /** Gets the `i`th property pattern in this object pattern. */
   PropertyPattern getPropertyPattern(int i) { properties(result, this, i, _, _) }
 

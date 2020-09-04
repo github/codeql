@@ -303,7 +303,7 @@ case @expr.kind of
 | 65 = @arrow_function_expr
 | 66 = @spread_element
 | 67 = @array_pattern
-| 68 = @objectpattern
+| 68 = @object_pattern
 | 69 = @yieldexpr
 | 70 = @taggedtemplateexpr
 | 71 = @templateliteral
@@ -379,7 +379,7 @@ case @expr.kind of
 
 @updateexpr = @preinc_expr | @postinc_expr | @predec_expr | @postdec_expr;
 
-@pattern = @varref | @array_pattern | @objectpattern;
+@pattern = @varref | @array_pattern | @object_pattern;
 
 @comprehensionexpr = @arraycomprehensionexpr | @generatorexpr;
 
@@ -507,7 +507,7 @@ case @property.kind of
 | 9 = @parameter_field
 ;
 
-@property_parent = @obj_expr | @objectpattern | @classdefinition | @jsxelement | @interfacedefinition | @enumdeclaration;
+@property_parent = @obj_expr | @object_pattern | @classdefinition | @jsxelement | @interfacedefinition | @enumdeclaration;
 @property_accessor = @property_getter | @property_setter;
 @call_signature = @function_call_signature | @constructor_call_signature;
 @field = @proper_field | @parameter_field;
