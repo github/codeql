@@ -1342,7 +1342,7 @@ class ImportVarTypeAccess extends VarTypeAccess, ImportTypeExpr, @import_var_typ
  * enum Color { red = 1, green, blue }
  * ```
  */
-class EnumDeclaration extends NamespaceDefinition, @enumdeclaration, AST::ValueNode {
+class EnumDeclaration extends NamespaceDefinition, @enum_declaration, AST::ValueNode {
   /** Gets the name of this enum, such as `E` in `enum E { A, B }`. */
   override Identifier getIdentifier() { result = getChildExpr(0) }
 

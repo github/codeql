@@ -185,7 +185,7 @@ case @stmt.kind of
 | 33 = @export_assign_declaration
 | 34 = @interface_declaration
 | 35 = @type_alias_declaration
-| 36 = @enumdeclaration
+| 36 = @enum_declaration
 | 37 = @external_module_declaration
 | 38 = @exportasnamespacedeclaration
 | 39 = @global_augmentation_declaration
@@ -195,12 +195,12 @@ case @stmt.kind of
 
 @exportdeclaration = @export_all_declaration | @export_default_declaration | @export_named_declaration;
 
-@namespacedefinition = @namespace_declaration | @enumdeclaration;
-@typedefinition = @classdefinition | @interface_declaration | @enumdeclaration | @type_alias_declaration | @enum_member;
+@namespacedefinition = @namespace_declaration | @enum_declaration;
+@typedefinition = @classdefinition | @interface_declaration | @enum_declaration | @type_alias_declaration | @enum_member;
 
 is_instantiated(unique int decl: @namespace_declaration ref);
 
-@declarable_node = @declstmt | @namespace_declaration | @class_decl_stmt | @function_decl_stmt | @enumdeclaration | @external_module_declaration | @global_augmentation_declaration | @field;
+@declarable_node = @declstmt | @namespace_declaration | @class_decl_stmt | @function_decl_stmt | @enum_declaration | @external_module_declaration | @global_augmentation_declaration | @field;
 has_declare_keyword(unique int stmt: @declarable_node ref);
 
 is_for_await_of(unique int forof: @for_of_stmt ref);
@@ -507,7 +507,7 @@ case @property.kind of
 | 9 = @parameter_field
 ;
 
-@property_parent = @obj_expr | @object_pattern | @classdefinition | @jsx_element | @interfacedefinition | @enumdeclaration;
+@property_parent = @obj_expr | @object_pattern | @classdefinition | @jsx_element | @interfacedefinition | @enum_declaration;
 @property_accessor = @property_getter | @property_setter;
 @call_signature = @function_call_signature | @constructor_call_signature;
 @field = @proper_field | @parameter_field;
@@ -517,7 +517,7 @@ is_computed (int id: @property ref);
 is_method   (int id: @property ref);
 is_static   (int id: @property ref);
 is_abstract_member (int id: @property ref);
-is_const_enum (int id: @enumdeclaration ref);
+is_const_enum (int id: @enum_declaration ref);
 is_abstract_class (int id: @class_decl_stmt ref);
 
 has_public_keyword (int id: @property ref);
@@ -1130,7 +1130,7 @@ xmllocations(
 
 @xmllocatable = @xmlcharacters | @xmlelement | @xmlcomment | @xmlattribute | @xmldtd | @file | @xmlnamespace;
 
-@dataflownode = @expr | @function_decl_stmt | @class_decl_stmt | @namespace_declaration | @enumdeclaration | @property;
+@dataflownode = @expr | @function_decl_stmt | @class_decl_stmt | @namespace_declaration | @enum_declaration | @property;
 
 @optionalchainable = @call_expr | @propaccess;
 
