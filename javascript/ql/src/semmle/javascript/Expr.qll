@@ -352,7 +352,7 @@ class ParExpr extends @parexpr, Expr {
  * null
  * ```
  */
-class NullLiteral extends @nullliteral, Literal { }
+class NullLiteral extends @null_literal, Literal { }
 
 /**
  * A Boolean literal, that is, either `true` or `false`.

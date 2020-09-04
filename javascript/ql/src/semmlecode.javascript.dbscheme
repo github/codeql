@@ -237,7 +237,7 @@ is_delegating (int yield: @yieldexpr ref);
 
 case @expr.kind of
    0 = @label
-|  1 = @nullliteral
+|  1 = @null_literal
 |  2 = @booleanliteral
 |  3 = @numberliteral
 |  4 = @stringliteral
@@ -361,7 +361,7 @@ case @expr.kind of
 
 @identifier = @label | @varref | @typeidentifier;
 
-@literal = @nullliteral | @booleanliteral | @numberliteral | @stringliteral | @regexpliteral | @bigintliteral;
+@literal = @null_literal | @booleanliteral | @numberliteral | @stringliteral | @regexpliteral | @bigintliteral;
 
 @propaccess = @dotexpr | @indexexpr;
 
