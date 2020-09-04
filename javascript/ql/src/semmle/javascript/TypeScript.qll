@@ -2176,7 +2176,7 @@ class UniqueSymbolType extends SymbolType, @unique_symbol_type {
 /**
  * The `object` type.
  */
-class ObjectKeywordType extends Type, @objectkeywordtype { }
+class ObjectKeywordType extends Type, @objectkeyword_type { }
 
 /**
  * A type that refers to a class, interface, enum, or enum member.

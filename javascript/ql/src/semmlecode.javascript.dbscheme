@@ -628,7 +628,7 @@ case @type.kind of
 | 13 = @never_type
 | 14 = @plain_symbol_type
 | 15 = @unique_symbol_type
-| 16 = @objectkeywordtype
+| 16 = @objectkeyword_type
 | 17 = @intersectiontype
 | 18 = @tupletype
 | 19 = @lexicaltypevariabletype
