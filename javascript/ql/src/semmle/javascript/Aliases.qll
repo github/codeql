@@ -180,3 +180,8 @@ deprecated predicate hasPublicKeyword(Property prop) { has_public_keyword(prop) 
  * Use `MemberDeclaration#isPrivate() instead.
  */ 
 deprecated predicate hasPrivateKeyword(Property prop) { has_private_keyword(prop) }
+/**
+ * Alias for the predicate `has_protected_keyword` defined in the .dbscheme.
+ * Use `MemberDeclaration#isProtected() instead.
+ */ 
+deprecated predicate hasProtectedKeyword(Property prop) { has_protected_keyword(prop) }

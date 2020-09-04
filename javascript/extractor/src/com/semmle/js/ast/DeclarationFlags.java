@@ -43,7 +43,7 @@ public class DeclarationFlags {
           "hasReadonlyKeyword",
           "has_public_keyword",
           "has_private_keyword",
-          "hasProtectedKeyword",
+          "has_protected_keyword",
           "isOptionalMember",
           "hasDefiniteAssignmentAssertion",
           "has_declare_keyword");

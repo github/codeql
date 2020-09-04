@@ -7974,7 +7974,7 @@
 <dependencies/>
 </relation>
 <relation>
-<name>hasProtectedKeyword</name>
+<name>has_protected_keyword</name>
 <cardinality>1048</cardinality>
 <columnsizes>
 <e>

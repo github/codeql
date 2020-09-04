@@ -502,7 +502,7 @@ class MemberDeclaration extends @property, Documentable {
   /**
    * Holds if this is a TypeScript member annotated with the `protected` keyword.
    */
-  predicate isProtected() { hasProtectedKeyword(this) }
+  predicate isProtected() { has_protected_keyword(this) }
 
   /**
    * Gets the expression specifying the name of this member,
