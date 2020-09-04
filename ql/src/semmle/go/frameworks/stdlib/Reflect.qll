@@ -62,16 +62,8 @@ module Reflect {
       this.hasQualifiedName("reflect", "Value", "Addr") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (Value).Bool() bool
-      this.hasQualifiedName("reflect", "Value", "Bool") and
-      (inp.isReceiver() and outp.isResult())
-      or
       // signature: func (Value).Bytes() []byte
       this.hasQualifiedName("reflect", "Value", "Bytes") and
-      (inp.isReceiver() and outp.isResult())
-      or
-      // signature: func (Value).Complex() complex128
-      this.hasQualifiedName("reflect", "Value", "Complex") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (Value).Convert(t Type) Value
@@ -98,16 +90,8 @@ module Reflect {
       this.hasQualifiedName("reflect", "Value", "FieldByNameFunc") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (Value).Float() float64
-      this.hasQualifiedName("reflect", "Value", "Float") and
-      (inp.isReceiver() and outp.isResult())
-      or
       // signature: func (Value).Index(i int) Value
       this.hasQualifiedName("reflect", "Value", "Index") and
-      (inp.isReceiver() and outp.isResult())
-      or
-      // signature: func (Value).Int() int64
-      this.hasQualifiedName("reflect", "Value", "Int") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (Value).Interface() (i interface{})
@@ -154,24 +138,8 @@ module Reflect {
       this.hasQualifiedName("reflect", "Value", "Set") and
       (inp.isParameter(0) and outp.isReceiver())
       or
-      // signature: func (Value).SetBool(x bool)
-      this.hasQualifiedName("reflect", "Value", "SetBool") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
       // signature: func (Value).SetBytes(x []byte)
       this.hasQualifiedName("reflect", "Value", "SetBytes") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
-      // signature: func (Value).SetComplex(x complex128)
-      this.hasQualifiedName("reflect", "Value", "SetComplex") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
-      // signature: func (Value).SetFloat(x float64)
-      this.hasQualifiedName("reflect", "Value", "SetFloat") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
-      // signature: func (Value).SetInt(x int64)
-      this.hasQualifiedName("reflect", "Value", "SetInt") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (Value).SetMapIndex(key Value, elem Value)
@@ -184,10 +152,6 @@ module Reflect {
       or
       // signature: func (Value).SetString(x string)
       this.hasQualifiedName("reflect", "Value", "SetString") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
-      // signature: func (Value).SetUint(x uint64)
-      this.hasQualifiedName("reflect", "Value", "SetUint") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (Value).Slice(i int, j int) Value
@@ -209,10 +173,6 @@ module Reflect {
       // signature: func (Value).TrySend(x Value) bool
       this.hasQualifiedName("reflect", "Value", "TrySend") and
       (inp.isParameter(0) and outp.isReceiver())
-      or
-      // signature: func (Value).Uint() uint64
-      this.hasQualifiedName("reflect", "Value", "Uint") and
-      (inp.isReceiver() and outp.isResult())
       or
       // signature: func (Value).UnsafeAddr() uintptr
       this.hasQualifiedName("reflect", "Value", "UnsafeAddr") and

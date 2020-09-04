@@ -80,257 +80,192 @@ func TaintStepTest_ReflectValueAddr_B0I0O0(sourceCQL interface{}) interface{} {
 	return intoValue409
 }
 
-func TaintStepTest_ReflectValueBool_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue246 := sourceCQL.(reflect.Value)
-	intoBool898 := fromValue246.Bool()
-	return intoBool898
-}
-
 func TaintStepTest_ReflectValueBytes_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue598 := sourceCQL.(reflect.Value)
-	intoByte631 := fromValue598.Bytes()
-	return intoByte631
-}
-
-func TaintStepTest_ReflectValueComplex_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue165 := sourceCQL.(reflect.Value)
-	intoComplex128150 := fromValue165.Complex()
-	return intoComplex128150
+	fromValue246 := sourceCQL.(reflect.Value)
+	intoByte898 := fromValue246.Bytes()
+	return intoByte898
 }
 
 func TaintStepTest_ReflectValueConvert_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue340 := sourceCQL.(reflect.Value)
-	intoValue471 := fromValue340.Convert(nil)
-	return intoValue471
+	fromValue598 := sourceCQL.(reflect.Value)
+	intoValue631 := fromValue598.Convert(nil)
+	return intoValue631
 }
 
 func TaintStepTest_ReflectValueElem_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue290 := sourceCQL.(reflect.Value)
-	intoValue758 := fromValue290.Elem()
-	return intoValue758
+	fromValue165 := sourceCQL.(reflect.Value)
+	intoValue150 := fromValue165.Elem()
+	return intoValue150
 }
 
 func TaintStepTest_ReflectValueField_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue396 := sourceCQL.(reflect.Value)
-	intoValue707 := fromValue396.Field(0)
-	return intoValue707
+	fromValue340 := sourceCQL.(reflect.Value)
+	intoValue471 := fromValue340.Field(0)
+	return intoValue471
 }
 
 func TaintStepTest_ReflectValueFieldByIndex_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue912 := sourceCQL.(reflect.Value)
-	intoValue718 := fromValue912.FieldByIndex(nil)
-	return intoValue718
+	fromValue290 := sourceCQL.(reflect.Value)
+	intoValue758 := fromValue290.FieldByIndex(nil)
+	return intoValue758
 }
 
 func TaintStepTest_ReflectValueFieldByName_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue972 := sourceCQL.(reflect.Value)
-	intoValue633 := fromValue972.FieldByName("")
-	return intoValue633
+	fromValue396 := sourceCQL.(reflect.Value)
+	intoValue707 := fromValue396.FieldByName("")
+	return intoValue707
 }
 
 func TaintStepTest_ReflectValueFieldByNameFunc_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue316 := sourceCQL.(reflect.Value)
-	intoValue145 := fromValue316.FieldByNameFunc(nil)
-	return intoValue145
-}
-
-func TaintStepTest_ReflectValueFloat_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue817 := sourceCQL.(reflect.Value)
-	intoFloat64474 := fromValue817.Float()
-	return intoFloat64474
+	fromValue912 := sourceCQL.(reflect.Value)
+	intoValue718 := fromValue912.FieldByNameFunc(nil)
+	return intoValue718
 }
 
 func TaintStepTest_ReflectValueIndex_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue832 := sourceCQL.(reflect.Value)
-	intoValue378 := fromValue832.Index(0)
-	return intoValue378
-}
-
-func TaintStepTest_ReflectValueInt_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue541 := sourceCQL.(reflect.Value)
-	intoInt64139 := fromValue541.Int()
-	return intoInt64139
+	fromValue972 := sourceCQL.(reflect.Value)
+	intoValue633 := fromValue972.Index(0)
+	return intoValue633
 }
 
 func TaintStepTest_ReflectValueInterface_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue814 := sourceCQL.(reflect.Value)
-	intoInterface768 := fromValue814.Interface()
-	return intoInterface768
+	fromValue316 := sourceCQL.(reflect.Value)
+	intoInterface145 := fromValue316.Interface()
+	return intoInterface145
 }
 
 func TaintStepTest_ReflectValueInterfaceData_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue468 := sourceCQL.(reflect.Value)
-	intoUintptr736 := fromValue468.InterfaceData()
-	return intoUintptr736
+	fromValue817 := sourceCQL.(reflect.Value)
+	intoUintptr474 := fromValue817.InterfaceData()
+	return intoUintptr474
 }
 
 func TaintStepTest_ReflectValueMapIndex_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue516 := sourceCQL.(reflect.Value)
-	intoValue246 := fromValue516.MapIndex(reflect.Value{})
-	return intoValue246
+	fromValue832 := sourceCQL.(reflect.Value)
+	intoValue378 := fromValue832.MapIndex(reflect.Value{})
+	return intoValue378
 }
 
 func TaintStepTest_ReflectValueMapKeys_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue679 := sourceCQL.(reflect.Value)
-	intoValue736 := fromValue679.MapKeys()
-	return intoValue736
+	fromValue541 := sourceCQL.(reflect.Value)
+	intoValue139 := fromValue541.MapKeys()
+	return intoValue139
 }
 
 func TaintStepTest_ReflectValueMapRange_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue839 := sourceCQL.(reflect.Value)
-	intoMapIter273 := fromValue839.MapRange()
-	return intoMapIter273
+	fromValue814 := sourceCQL.(reflect.Value)
+	intoMapIter768 := fromValue814.MapRange()
+	return intoMapIter768
 }
 
 func TaintStepTest_ReflectValueMethod_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue982 := sourceCQL.(reflect.Value)
-	intoValue458 := fromValue982.Method(0)
-	return intoValue458
+	fromValue468 := sourceCQL.(reflect.Value)
+	intoValue736 := fromValue468.Method(0)
+	return intoValue736
 }
 
 func TaintStepTest_ReflectValueMethodByName_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue506 := sourceCQL.(reflect.Value)
-	intoValue213 := fromValue506.MethodByName("")
-	return intoValue213
+	fromValue516 := sourceCQL.(reflect.Value)
+	intoValue246 := fromValue516.MethodByName("")
+	return intoValue246
 }
 
 func TaintStepTest_ReflectValuePointer_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue468 := sourceCQL.(reflect.Value)
-	intoUintptr219 := fromValue468.Pointer()
-	return intoUintptr219
+	fromValue679 := sourceCQL.(reflect.Value)
+	intoUintptr736 := fromValue679.Pointer()
+	return intoUintptr736
 }
 
 func TaintStepTest_ReflectValueRecv_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue265 := sourceCQL.(reflect.Value)
-	intoValue971, _ := fromValue265.Recv()
-	return intoValue971
+	fromValue839 := sourceCQL.(reflect.Value)
+	intoValue273, _ := fromValue839.Recv()
+	return intoValue273
 }
 
 func TaintStepTest_ReflectValueSend_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue320 := sourceCQL.(reflect.Value)
-	var intoValue545 reflect.Value
-	intoValue545.Send(fromValue320)
-	return intoValue545
+	fromValue982 := sourceCQL.(reflect.Value)
+	var intoValue458 reflect.Value
+	intoValue458.Send(fromValue982)
+	return intoValue458
 }
 
 func TaintStepTest_ReflectValueSet_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue566 := sourceCQL.(reflect.Value)
-	var intoValue497 reflect.Value
-	intoValue497.Set(fromValue566)
-	return intoValue497
-}
-
-func TaintStepTest_ReflectValueSetBool_B0I0O0(sourceCQL interface{}) interface{} {
-	fromBool274 := sourceCQL.(bool)
-	var intoValue783 reflect.Value
-	intoValue783.SetBool(fromBool274)
-	return intoValue783
+	fromValue506 := sourceCQL.(reflect.Value)
+	var intoValue213 reflect.Value
+	intoValue213.Set(fromValue506)
+	return intoValue213
 }
 
 func TaintStepTest_ReflectValueSetBytes_B0I0O0(sourceCQL interface{}) interface{} {
-	fromByte905 := sourceCQL.([]byte)
-	var intoValue389 reflect.Value
-	intoValue389.SetBytes(fromByte905)
-	return intoValue389
-}
-
-func TaintStepTest_ReflectValueSetComplex_B0I0O0(sourceCQL interface{}) interface{} {
-	fromComplex128198 := sourceCQL.(complex128)
-	var intoValue477 reflect.Value
-	intoValue477.SetComplex(fromComplex128198)
-	return intoValue477
-}
-
-func TaintStepTest_ReflectValueSetFloat_B0I0O0(sourceCQL interface{}) interface{} {
-	fromFloat64544 := sourceCQL.(float64)
-	var intoValue382 reflect.Value
-	intoValue382.SetFloat(fromFloat64544)
-	return intoValue382
-}
-
-func TaintStepTest_ReflectValueSetInt_B0I0O0(sourceCQL interface{}) interface{} {
-	fromInt64715 := sourceCQL.(int64)
-	var intoValue179 reflect.Value
-	intoValue179.SetInt(fromInt64715)
-	return intoValue179
+	fromByte468 := sourceCQL.([]byte)
+	var intoValue219 reflect.Value
+	intoValue219.SetBytes(fromByte468)
+	return intoValue219
 }
 
 func TaintStepTest_ReflectValueSetMapIndex_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue366 := sourceCQL.(reflect.Value)
-	var intoValue648 reflect.Value
-	intoValue648.SetMapIndex(fromValue366, reflect.Value{})
-	return intoValue648
+	fromValue265 := sourceCQL.(reflect.Value)
+	var intoValue971 reflect.Value
+	intoValue971.SetMapIndex(fromValue265, reflect.Value{})
+	return intoValue971
 }
 
 func TaintStepTest_ReflectValueSetMapIndex_B0I1O0(sourceCQL interface{}) interface{} {
-	fromValue544 := sourceCQL.(reflect.Value)
-	var intoValue484 reflect.Value
-	intoValue484.SetMapIndex(reflect.Value{}, fromValue544)
-	return intoValue484
+	fromValue320 := sourceCQL.(reflect.Value)
+	var intoValue545 reflect.Value
+	intoValue545.SetMapIndex(reflect.Value{}, fromValue320)
+	return intoValue545
 }
 
 func TaintStepTest_ReflectValueSetPointer_B0I0O0(sourceCQL interface{}) interface{} {
-	fromPointer824 := sourceCQL.(unsafe.Pointer)
-	var intoValue754 reflect.Value
-	intoValue754.SetPointer(fromPointer824)
-	return intoValue754
+	fromPointer566 := sourceCQL.(unsafe.Pointer)
+	var intoValue497 reflect.Value
+	intoValue497.SetPointer(fromPointer566)
+	return intoValue497
 }
 
 func TaintStepTest_ReflectValueSetString_B0I0O0(sourceCQL interface{}) interface{} {
-	fromString680 := sourceCQL.(string)
-	var intoValue722 reflect.Value
-	intoValue722.SetString(fromString680)
-	return intoValue722
-}
-
-func TaintStepTest_ReflectValueSetUint_B0I0O0(sourceCQL interface{}) interface{} {
-	fromUint64506 := sourceCQL.(uint64)
-	var intoValue121 reflect.Value
-	intoValue121.SetUint(fromUint64506)
-	return intoValue121
+	fromString274 := sourceCQL.(string)
+	var intoValue783 reflect.Value
+	intoValue783.SetString(fromString274)
+	return intoValue783
 }
 
 func TaintStepTest_ReflectValueSlice_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue293 := sourceCQL.(reflect.Value)
-	intoValue151 := fromValue293.Slice(0, 0)
-	return intoValue151
+	fromValue905 := sourceCQL.(reflect.Value)
+	intoValue389 := fromValue905.Slice(0, 0)
+	return intoValue389
 }
 
 func TaintStepTest_ReflectValueSlice3_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue849 := sourceCQL.(reflect.Value)
-	intoValue322 := fromValue849.Slice3(0, 0, 0)
-	return intoValue322
+	fromValue198 := sourceCQL.(reflect.Value)
+	intoValue477 := fromValue198.Slice3(0, 0, 0)
+	return intoValue477
 }
 
 func TaintStepTest_ReflectValueString_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue339 := sourceCQL.(reflect.Value)
-	intoString478 := fromValue339.String()
-	return intoString478
+	fromValue544 := sourceCQL.(reflect.Value)
+	intoString382 := fromValue544.String()
+	return intoString382
 }
 
 func TaintStepTest_ReflectValueTryRecv_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue399 := sourceCQL.(reflect.Value)
-	intoValue426, _ := fromValue399.TryRecv()
-	return intoValue426
+	fromValue715 := sourceCQL.(reflect.Value)
+	intoValue179, _ := fromValue715.TryRecv()
+	return intoValue179
 }
 
 func TaintStepTest_ReflectValueTrySend_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue628 := sourceCQL.(reflect.Value)
-	var intoValue197 reflect.Value
-	intoValue197.TrySend(fromValue628)
-	return intoValue197
-}
-
-func TaintStepTest_ReflectValueUint_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue216 := sourceCQL.(reflect.Value)
-	intoUint64742 := fromValue216.Uint()
-	return intoUint64742
+	fromValue366 := sourceCQL.(reflect.Value)
+	var intoValue648 reflect.Value
+	intoValue648.TrySend(fromValue366)
+	return intoValue648
 }
 
 func TaintStepTest_ReflectValueUnsafeAddr_B0I0O0(sourceCQL interface{}) interface{} {
-	fromValue906 := sourceCQL.(reflect.Value)
-	intoUintptr620 := fromValue906.UnsafeAddr()
-	return intoUintptr620
+	fromValue544 := sourceCQL.(reflect.Value)
+	intoUintptr484 := fromValue544.UnsafeAddr()
+	return intoUintptr484
 }
 
 func RunAllTaints_Reflect() {
@@ -396,202 +331,152 @@ func RunAllTaints_Reflect() {
 	}
 	{
 		source := newSource(12)
-		out := TaintStepTest_ReflectValueBool_B0I0O0(source)
+		out := TaintStepTest_ReflectValueBytes_B0I0O0(source)
 		sink(12, out)
 	}
 	{
 		source := newSource(13)
-		out := TaintStepTest_ReflectValueBytes_B0I0O0(source)
+		out := TaintStepTest_ReflectValueConvert_B0I0O0(source)
 		sink(13, out)
 	}
 	{
 		source := newSource(14)
-		out := TaintStepTest_ReflectValueComplex_B0I0O0(source)
+		out := TaintStepTest_ReflectValueElem_B0I0O0(source)
 		sink(14, out)
 	}
 	{
 		source := newSource(15)
-		out := TaintStepTest_ReflectValueConvert_B0I0O0(source)
+		out := TaintStepTest_ReflectValueField_B0I0O0(source)
 		sink(15, out)
 	}
 	{
 		source := newSource(16)
-		out := TaintStepTest_ReflectValueElem_B0I0O0(source)
+		out := TaintStepTest_ReflectValueFieldByIndex_B0I0O0(source)
 		sink(16, out)
 	}
 	{
 		source := newSource(17)
-		out := TaintStepTest_ReflectValueField_B0I0O0(source)
+		out := TaintStepTest_ReflectValueFieldByName_B0I0O0(source)
 		sink(17, out)
 	}
 	{
 		source := newSource(18)
-		out := TaintStepTest_ReflectValueFieldByIndex_B0I0O0(source)
+		out := TaintStepTest_ReflectValueFieldByNameFunc_B0I0O0(source)
 		sink(18, out)
 	}
 	{
 		source := newSource(19)
-		out := TaintStepTest_ReflectValueFieldByName_B0I0O0(source)
+		out := TaintStepTest_ReflectValueIndex_B0I0O0(source)
 		sink(19, out)
 	}
 	{
 		source := newSource(20)
-		out := TaintStepTest_ReflectValueFieldByNameFunc_B0I0O0(source)
+		out := TaintStepTest_ReflectValueInterface_B0I0O0(source)
 		sink(20, out)
 	}
 	{
 		source := newSource(21)
-		out := TaintStepTest_ReflectValueFloat_B0I0O0(source)
+		out := TaintStepTest_ReflectValueInterfaceData_B0I0O0(source)
 		sink(21, out)
 	}
 	{
 		source := newSource(22)
-		out := TaintStepTest_ReflectValueIndex_B0I0O0(source)
+		out := TaintStepTest_ReflectValueMapIndex_B0I0O0(source)
 		sink(22, out)
 	}
 	{
 		source := newSource(23)
-		out := TaintStepTest_ReflectValueInt_B0I0O0(source)
+		out := TaintStepTest_ReflectValueMapKeys_B0I0O0(source)
 		sink(23, out)
 	}
 	{
 		source := newSource(24)
-		out := TaintStepTest_ReflectValueInterface_B0I0O0(source)
+		out := TaintStepTest_ReflectValueMapRange_B0I0O0(source)
 		sink(24, out)
 	}
 	{
 		source := newSource(25)
-		out := TaintStepTest_ReflectValueInterfaceData_B0I0O0(source)
+		out := TaintStepTest_ReflectValueMethod_B0I0O0(source)
 		sink(25, out)
 	}
 	{
 		source := newSource(26)
-		out := TaintStepTest_ReflectValueMapIndex_B0I0O0(source)
+		out := TaintStepTest_ReflectValueMethodByName_B0I0O0(source)
 		sink(26, out)
 	}
 	{
 		source := newSource(27)
-		out := TaintStepTest_ReflectValueMapKeys_B0I0O0(source)
+		out := TaintStepTest_ReflectValuePointer_B0I0O0(source)
 		sink(27, out)
 	}
 	{
 		source := newSource(28)
-		out := TaintStepTest_ReflectValueMapRange_B0I0O0(source)
+		out := TaintStepTest_ReflectValueRecv_B0I0O0(source)
 		sink(28, out)
 	}
 	{
 		source := newSource(29)
-		out := TaintStepTest_ReflectValueMethod_B0I0O0(source)
+		out := TaintStepTest_ReflectValueSend_B0I0O0(source)
 		sink(29, out)
 	}
 	{
 		source := newSource(30)
-		out := TaintStepTest_ReflectValueMethodByName_B0I0O0(source)
+		out := TaintStepTest_ReflectValueSet_B0I0O0(source)
 		sink(30, out)
 	}
 	{
 		source := newSource(31)
-		out := TaintStepTest_ReflectValuePointer_B0I0O0(source)
+		out := TaintStepTest_ReflectValueSetBytes_B0I0O0(source)
 		sink(31, out)
 	}
 	{
 		source := newSource(32)
-		out := TaintStepTest_ReflectValueRecv_B0I0O0(source)
+		out := TaintStepTest_ReflectValueSetMapIndex_B0I0O0(source)
 		sink(32, out)
 	}
 	{
 		source := newSource(33)
-		out := TaintStepTest_ReflectValueSend_B0I0O0(source)
+		out := TaintStepTest_ReflectValueSetMapIndex_B0I1O0(source)
 		sink(33, out)
 	}
 	{
 		source := newSource(34)
-		out := TaintStepTest_ReflectValueSet_B0I0O0(source)
+		out := TaintStepTest_ReflectValueSetPointer_B0I0O0(source)
 		sink(34, out)
 	}
 	{
 		source := newSource(35)
-		out := TaintStepTest_ReflectValueSetBool_B0I0O0(source)
+		out := TaintStepTest_ReflectValueSetString_B0I0O0(source)
 		sink(35, out)
 	}
 	{
 		source := newSource(36)
-		out := TaintStepTest_ReflectValueSetBytes_B0I0O0(source)
+		out := TaintStepTest_ReflectValueSlice_B0I0O0(source)
 		sink(36, out)
 	}
 	{
 		source := newSource(37)
-		out := TaintStepTest_ReflectValueSetComplex_B0I0O0(source)
+		out := TaintStepTest_ReflectValueSlice3_B0I0O0(source)
 		sink(37, out)
 	}
 	{
 		source := newSource(38)
-		out := TaintStepTest_ReflectValueSetFloat_B0I0O0(source)
+		out := TaintStepTest_ReflectValueString_B0I0O0(source)
 		sink(38, out)
 	}
 	{
 		source := newSource(39)
-		out := TaintStepTest_ReflectValueSetInt_B0I0O0(source)
+		out := TaintStepTest_ReflectValueTryRecv_B0I0O0(source)
 		sink(39, out)
 	}
 	{
 		source := newSource(40)
-		out := TaintStepTest_ReflectValueSetMapIndex_B0I0O0(source)
+		out := TaintStepTest_ReflectValueTrySend_B0I0O0(source)
 		sink(40, out)
 	}
 	{
 		source := newSource(41)
-		out := TaintStepTest_ReflectValueSetMapIndex_B0I1O0(source)
-		sink(41, out)
-	}
-	{
-		source := newSource(42)
-		out := TaintStepTest_ReflectValueSetPointer_B0I0O0(source)
-		sink(42, out)
-	}
-	{
-		source := newSource(43)
-		out := TaintStepTest_ReflectValueSetString_B0I0O0(source)
-		sink(43, out)
-	}
-	{
-		source := newSource(44)
-		out := TaintStepTest_ReflectValueSetUint_B0I0O0(source)
-		sink(44, out)
-	}
-	{
-		source := newSource(45)
-		out := TaintStepTest_ReflectValueSlice_B0I0O0(source)
-		sink(45, out)
-	}
-	{
-		source := newSource(46)
-		out := TaintStepTest_ReflectValueSlice3_B0I0O0(source)
-		sink(46, out)
-	}
-	{
-		source := newSource(47)
-		out := TaintStepTest_ReflectValueString_B0I0O0(source)
-		sink(47, out)
-	}
-	{
-		source := newSource(48)
-		out := TaintStepTest_ReflectValueTryRecv_B0I0O0(source)
-		sink(48, out)
-	}
-	{
-		source := newSource(49)
-		out := TaintStepTest_ReflectValueTrySend_B0I0O0(source)
-		sink(49, out)
-	}
-	{
-		source := newSource(50)
-		out := TaintStepTest_ReflectValueUint_B0I0O0(source)
-		sink(50, out)
-	}
-	{
-		source := newSource(51)
 		out := TaintStepTest_ReflectValueUnsafeAddr_B0I0O0(source)
-		sink(51, out)
+		sink(41, out)
 	}
 }
