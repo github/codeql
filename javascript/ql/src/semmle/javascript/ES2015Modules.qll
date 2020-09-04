@@ -351,7 +351,7 @@ class ExportDefaultDeclaration extends ExportDeclaration, @export_default_declar
  * export { x } from 'a';
  * ```
  */
-class ExportNamedDeclaration extends ExportDeclaration, @exportnameddeclaration {
+class ExportNamedDeclaration extends ExportDeclaration, @export_named_declaration {
   /** Gets the operand statement or expression that is exported by this declaration. */
   ExprOrStmt getOperand() { result = getChild(-1) }
 
