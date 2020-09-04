@@ -1174,7 +1174,7 @@ class NegExpr extends @neg_expr, UnaryExpr {
  * +x
  * ```
  */
-class PlusExpr extends @plusexpr, UnaryExpr {
+class PlusExpr extends @plus_expr, UnaryExpr {
   override string getOperator() { result = "+" }
 }
 

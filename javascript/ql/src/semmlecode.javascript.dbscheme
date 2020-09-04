@@ -253,7 +253,7 @@ case @expr.kind of
 | 14 = @dot_expr
 | 15 = @index_expr
 | 16 = @neg_expr
-| 17 = @plusexpr
+| 17 = @plus_expr
 | 18 = @lognotexpr
 | 19 = @bitnotexpr
 | 20 = @typeofexpr
@@ -367,7 +367,7 @@ case @expr.kind of
 
 @invokeexpr = @new_expr | @call_expr;
 
-@unaryexpr = @neg_expr | @plusexpr | @lognotexpr | @bitnotexpr | @typeofexpr | @voidexpr | @deleteexpr | @spreadelement;
+@unaryexpr = @neg_expr | @plus_expr | @lognotexpr | @bitnotexpr | @typeofexpr | @voidexpr | @deleteexpr | @spreadelement;
 
 @equality_test = @eqexpr | @neqexpr | @eqqexpr | @neqqexpr;
 
