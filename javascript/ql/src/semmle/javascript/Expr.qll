@@ -1851,7 +1851,7 @@ class AssignExpr extends @assign_expr, Assignment {
 private class TCompoundAssignExpr =
   @assign_add_expr or @assign_sub_expr or @assign_mul_expr or @assign_div_expr or @assign_mod_expr or
       @assignexpexpr or @assign_lshift_expr or @assign_rshift_expr or @assign_urshift_expr or
-      @assign_or_expr or @assignxorexpr or @assignandexpr or @assignlogandexpr or @assignlogorexpr or
+      @assign_or_expr or @assign_xor_expr or @assignandexpr or @assignlogandexpr or @assignlogorexpr or
       @assignnullishcoalescingexpr;
 
 /**
@@ -1985,7 +1985,7 @@ class AssignOrExpr extends @assign_or_expr, CompoundAssignExpr { }
  * bits ^= mask
  * ```
  */
-class AssignXOrExpr extends @assignxorexpr, CompoundAssignExpr { }
+class AssignXOrExpr extends @assign_xor_expr, CompoundAssignExpr { }
 
 /**
  * A compound bitwise-'and'-assign expression.
