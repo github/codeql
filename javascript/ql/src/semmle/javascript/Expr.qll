@@ -473,7 +473,7 @@ class RegExpLiteral extends @regexp_literal, Literal, RegExpParent {
  * this
  * ```
  */
-class ThisExpr extends @thisexpr, Expr {
+class ThisExpr extends @this_expr, Expr {
   override predicate isImpure() { none() }
 
   /**

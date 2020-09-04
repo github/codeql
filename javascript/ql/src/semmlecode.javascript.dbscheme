@@ -242,7 +242,7 @@ case @expr.kind of
 |  3 = @number_literal
 |  4 = @string_literal
 |  5 = @regexp_literal
-|  6 = @thisexpr
+|  6 = @this_expr
 |  7 = @arrayexpr
 |  8 = @objexpr
 |  9 = @function_expr
