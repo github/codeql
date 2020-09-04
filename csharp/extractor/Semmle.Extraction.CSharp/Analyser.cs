@@ -25,9 +25,12 @@ namespace Semmle.Extraction.CSharp
 
         public readonly ILogger Logger;
 
-        public Analyser(IProgressMonitor pm, ILogger logger)
+        public readonly bool AddAssemblyTrapPrefix;
+
+        public Analyser(IProgressMonitor pm, ILogger logger, bool addAssemblyTrapPrefix)
         {
             Logger = logger;
+            AddAssemblyTrapPrefix = addAssemblyTrapPrefix;
             Logger.Log(Severity.Info, "EXTRACTION STARTING at {0}", DateTime.Now);
             stopWatch.Start();
             progressMonitor = pm;
@@ -231,7 +234,7 @@ namespace Semmle.Extraction.CSharp
                 var projectLayout = layout.LookupProjectOrDefault(assemblyPath);
                 var trapWriter = projectLayout.CreateTrapWriter(Logger, assemblyPath, true, options.TrapCompression);
                 compilationTrapFile = trapWriter;  // Dispose later
-                var cx = extractor.CreateContext(compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath, true));
+                var cx = extractor.CreateContext(compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath, true), AddAssemblyTrapPrefix);
 
                 compilationEntity = new Entities.Compilation(cx, cwd, args);
             }
@@ -286,7 +289,7 @@ namespace Semmle.Extraction.CSharp
 
                         if (assembly != null)
                         {
-                            var cx = extractor.CreateContext(c, trapWriter, new AssemblyScope(assembly, assemblyPath, false));
+                            var cx = extractor.CreateContext(c, trapWriter, new AssemblyScope(assembly, assemblyPath, false), AddAssemblyTrapPrefix);
 
                             foreach (var module in assembly.Modules)
                             {
@@ -372,7 +375,7 @@ namespace Semmle.Extraction.CSharp
 
                         if (!upToDate)
                         {
-                            Context cx = extractor.CreateContext(compilation.Clone(), trapWriter, new SourceScope(tree));
+                            Context cx = extractor.CreateContext(compilation.Clone(), trapWriter, new SourceScope(tree), AddAssemblyTrapPrefix);
                             Populators.CompilationUnit.Extract(cx, tree.GetRoot());
                             cx.PopulateAll();
                             cx.ExtractComments(cx.CommentGenerator);

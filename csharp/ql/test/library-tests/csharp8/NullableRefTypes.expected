@@ -243,7 +243,7 @@ expressionTypes
 | NullableRefTypes.cs:19:33:19:36 | this access | MyClass! |
 | NullableRefTypes.cs:26:44:26:53 | throw ... | MyClass![]! |
 | NullableRefTypes.cs:26:50:26:53 | null | null |
-| NullableRefTypes.cs:27:44:27:53 | throw ... | MyClass![]! |
+| NullableRefTypes.cs:27:44:27:53 | throw ... | MyClass?[]! |
 | NullableRefTypes.cs:27:50:27:53 | null | null |
 | NullableRefTypes.cs:30:21:30:24 | null | null |
 | NullableRefTypes.cs:31:20:31:23 | this access | MyClass! |

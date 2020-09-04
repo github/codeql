@@ -41,42 +41,12 @@ namespace Semmle.Extraction
         /// </summary>
         public readonly TrapWriter TrapWriter;
 
+        /// <summary>
+        /// Holds if assembly information should be prefixed to TRAP labels.
+        /// </summary>
+        public readonly bool ShouldAddAssemblyTrapPrefix;
+
         int GetNewId() => TrapWriter.IdCounter++;
-
-        /// <summary>
-        /// Creates a new entity using the factory.
-        /// </summary>
-        /// <param name="factory">The entity factory.</param>
-        /// <param name="init">The initializer for the entity.</param>
-        /// <returns>The new/existing entity.</returns>
-        public Entity CreateEntity<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init) where Entity : ICachedEntity where Type : struct
-        {
-            return CreateNonNullEntity(factory, init);
-        }
-
-        /// <summary>
-        /// Creates a new entity using the factory.
-        /// </summary>
-        /// <param name="factory">The entity factory.</param>
-        /// <param name="init">The initializer for the entity.</param>
-        /// <returns>The new/existing entity.</returns>
-        public Entity CreateNullableEntity<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init) where Entity : ICachedEntity
-        {
-            return init == null ? CreateEntity2(factory, init) : CreateNonNullEntity(factory, init);
-        }
-
-        /// <summary>
-        /// Creates a new entity using the factory.
-        /// </summary>
-        /// <param name="factory">The entity factory.</param>
-        /// <param name="init">The initializer for the entity.</param>
-        /// <returns>The new/existing entity.</returns>
-        public Entity CreateEntityFromSymbol<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init)
-            where Entity : ICachedEntity
-            where Type : ISymbol
-        {
-            return init == null ? CreateEntity2(factory, init) : CreateNonNullEntity(factory, init);
-        }
 
         // A recursion guard against writing to the trap file whilst writing an id to the trap file.
         bool WritingLabel = false;
@@ -102,47 +72,6 @@ namespace Semmle.Extraction
             }
         }
 
-        /// <summary>
-        /// Creates a new entity using the factory.
-        /// Uses a different cache to <see cref="CreateEntity{Type, Entity}(ICachedEntityFactory{Type, Entity}, Type)"/>,
-        /// and can store null values.
-        /// </summary>
-        /// <param name="factory">The entity factory.</param>
-        /// <param name="init">The initializer for the entity.</param>
-        /// <returns>The new/existing entity.</returns>
-        public Entity CreateEntity2<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init) where Entity : ICachedEntity
-        {
-            using (StackGuard)
-            {
-                var entity = factory.Create(this, init);
-
-                if (entityLabelCache.TryGetValue(entity, out var label))
-                {
-                    entity.Label = label;
-                }
-                else
-                {
-                    label = GetNewLabel();
-                    entity.Label = label;
-                    entityLabelCache[entity] = label;
-
-                    DefineLabel(entity, TrapWriter.Writer, Extractor);
-
-                    if (entity.NeedsPopulation)
-                        Populate(init as ISymbol, entity);
-#if DEBUG_LABELS
-                    using (var id = new StringWriter())
-                    {
-                        entity.WriteId(id);
-                        CheckEntityHasUniqueLabel(id.ToString(), entity);
-                    }
-#endif
-
-                }
-                return entity;
-            }
-        }
-
 #if DEBUG_LABELS
         private void CheckEntityHasUniqueLabel(string id, ICachedEntity entity)
         {
@@ -159,12 +88,27 @@ namespace Semmle.Extraction
 
         public Label GetNewLabel() => new Label(GetNewId());
 
-        public Entity CreateNonNullEntity<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init)
+        public Entity CreateEntity<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, object cacheKey, Type init)
+            where Entity : ICachedEntity =>
+            cacheKey is ISymbol s ? CreateEntity(factory, s, init, symbolEntityCache) : CreateEntity(factory, cacheKey, init, objectEntityCache);
+
+        public Entity CreateEntityFromSymbol<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init)
+            where Type : ISymbol
+            where Entity : ICachedEntity => CreateEntity(factory, init, init, symbolEntityCache);
+
+        /// <summary>
+        /// Creates and populates a new entity, or returns the existing one from the cache.
+        /// </summary>
+        /// <param name="factory">The entity factory.</param>
+        /// <param name="cacheKey">The key used for caching.</param>
+        /// <param name="init">The initializer for the entity.</param>
+        /// <param name="dictionary">The dictionary to use for caching.</param>
+        /// <returns>The new/existing entity.</returns>
+        Entity CreateEntity<Type, CacheKeyType, Entity>(ICachedEntityFactory<Type, Entity> factory, CacheKeyType cacheKey, Type init, IDictionary<CacheKeyType, ICachedEntity> dictionary)
+            where CacheKeyType : notnull
             where Entity : ICachedEntity
         {
-            if (init is null) throw new ArgumentException("Unexpected null value", nameof(init));
-
-            if (objectEntityCache.TryGetValue(init, out var cached))
+            if (dictionary.TryGetValue(cacheKey, out var cached))
                 return (Entity)cached;
 
             using (StackGuard)
@@ -173,7 +117,7 @@ namespace Semmle.Extraction
                 var entity = factory.Create(this, init);
                 entity.Label = label;
 
-                objectEntityCache[init] = entity;
+                dictionary[cacheKey] = entity;
 
                 DefineLabel(entity, TrapWriter.Writer, Extractor);
                 if (entity.NeedsPopulation)
@@ -227,8 +171,9 @@ namespace Semmle.Extraction
 #if DEBUG_LABELS
         readonly Dictionary<string, ICachedEntity> idLabelCache = new Dictionary<string, ICachedEntity>();
 #endif
-        readonly Dictionary<object, ICachedEntity> objectEntityCache = new Dictionary<object, ICachedEntity>();
-        readonly Dictionary<ICachedEntity, Label> entityLabelCache = new Dictionary<ICachedEntity, Label>();
+
+        readonly IDictionary<object, ICachedEntity> objectEntityCache = new Dictionary<object, ICachedEntity>();
+        readonly IDictionary<ISymbol, ICachedEntity> symbolEntityCache = new Dictionary<ISymbol, ICachedEntity>(10000, SymbolEqualityComparer.IncludeNullability);
         readonly HashSet<Label> extractedGenerics = new HashSet<Label>();
 
         /// <summary>
@@ -289,12 +234,14 @@ namespace Semmle.Extraction
         /// <param name="c">The Roslyn compilation.</param>
         /// <param name="extractedEntity">Name of the source/dll file.</param>
         /// <param name="scope">Defines which symbols are included in the trap file (e.g. AssemblyScope or SourceScope)</param>
-        public Context(IExtractor e, Compilation c, TrapWriter trapWriter, IExtractionScope scope)
+        /// <param name="addAssemblyTrapPrefix">Whether to add assembly prefixes to TRAP labels.</param>
+        public Context(IExtractor e, Compilation c, TrapWriter trapWriter, IExtractionScope scope, bool addAssemblyTrapPrefix)
         {
             Extractor = e;
             Compilation = c;
             Scope = scope;
             TrapWriter = trapWriter;
+            ShouldAddAssemblyTrapPrefix = addAssemblyTrapPrefix;
         }
 
         public bool FromSource => Scope.FromSource;
@@ -423,8 +370,8 @@ namespace Semmle.Extraction
                     throw new InternalError("Unexpected TrapStackBehaviour");
             }
 
-            var a = duplicationGuard ?
-                (Action)(() => WithDuplicationGuard(new Key(entity, this.Create(entity.ReportingLocation)), () => entity.Populate(TrapWriter.Writer))) :
+            var a = duplicationGuard && this.Create(entity.ReportingLocation) is NonGeneratedSourceLocation loc ?
+                (Action)(() => WithDuplicationGuard(new Key(entity, loc), () => entity.Populate(TrapWriter.Writer))) :
                 (Action)(() => this.Try(null, optionalSymbol, () => entity.Populate(TrapWriter.Writer)));
 
             if (deferred)

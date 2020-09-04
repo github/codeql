@@ -43,7 +43,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static LocalVariable Create(Context cx, ISymbol local)
         {
-            return LocalVariableFactory.Instance.CreateEntity(cx, local);
+            return LocalVariableFactory.Instance.CreateEntityFromSymbol(cx, local);
         }
 
         void DefineConstantValue(TextWriter trapFile)
