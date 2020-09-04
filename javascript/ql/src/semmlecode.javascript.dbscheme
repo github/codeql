@@ -167,7 +167,7 @@ case @stmt.kind of
 | 15 = @for_in_stmt
 | 16 = @debugger_stmt
 | 17 = @function_decl_stmt
-| 18 = @vardeclstmt
+| 18 = @var_decl_stmt
 | 19 = @case
 | 20 = @catchclause
 | 21 = @forofstmt
@@ -191,7 +191,7 @@ case @stmt.kind of
 | 39 = @global_augmentation_declaration
 ;
 
-@declstmt = @vardeclstmt | @constdeclstmt | @letstmt | @legacy_letstmt;
+@declstmt = @var_decl_stmt | @constdeclstmt | @letstmt | @legacy_letstmt;
 
 @exportdeclaration = @exportalldeclaration | @exportdefaultdeclaration | @exportnameddeclaration;
 

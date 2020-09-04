@@ -973,7 +973,7 @@ class DeclStmt extends @declstmt, Stmt {
  * var count = 0;
  * ```
  */
-class VarDeclStmt extends @vardeclstmt, DeclStmt { }
+class VarDeclStmt extends @var_decl_stmt, DeclStmt { }
 
 /**
  * A `const` declaration statement.
