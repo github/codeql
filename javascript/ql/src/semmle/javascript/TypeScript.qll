@@ -314,7 +314,7 @@ class InterfaceTypeExpr extends TypeExpr, InterfaceDefinition, @interface_typeex
  * A TypeScript function type, such as `(x: string) => number` or a
  * constructor type such as `new (x: string) => Object`.
  */
-class FunctionTypeExpr extends TypeExpr, @functiontypeexpr {
+class FunctionTypeExpr extends TypeExpr, @function_typeexpr {
   /** Holds if this is a constructor type, such as `new (x: string) => Object`. */
   predicate isConstructor() { this instanceof ConstructorTypeExpr }
 

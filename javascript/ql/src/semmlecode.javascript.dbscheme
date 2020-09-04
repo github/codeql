@@ -230,7 +230,7 @@ is_delegating (int yield: @yieldexpr ref);
 
 @expr_or_stmt = @expr | @stmt;
 @expr_or_type = @expr | @typeexpr;
-@exprparent = @expr_or_stmt | @property | @functiontypeexpr;
+@exprparent = @expr_or_stmt | @property | @function_typeexpr;
 @arraylike = @arrayexpr | @arraypattern;
 @type_annotation = @typeexpr | @jsdoc_type_expr;
 @node_in_stmt_container = @cfg_node | @type_annotation | @toplevel;
@@ -595,7 +595,7 @@ case @typeexpr.kind of
 @namespace_access = @local_namespace_access | @qualified_namespace_access | @import_namespace_access;
 @import_typeexpr = @import_type_access | @import_namespace_access | @import_var_type_access;
 
-@functiontypeexpr = @plain_function_typeexpr | @constructor_typeexpr;
+@function_typeexpr = @plain_function_typeexpr | @constructor_typeexpr;
 
 // types
 types (
