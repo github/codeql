@@ -1150,7 +1150,7 @@ class TypeParameterized extends @type_parameterized, ASTNode {
 /**
  * A type parameter declared on a class, interface, function, or type alias.
  */
-class TypeParameter extends @typeparameter, TypeExpr {
+class TypeParameter extends @type_parameter, TypeExpr {
   /**
    * Gets the name of the type parameter as a string.
    */
