@@ -1187,7 +1187,7 @@ class PlusExpr extends @plus_expr, UnaryExpr {
  * !done
  * ```
  */
-class LogNotExpr extends @lognotexpr, UnaryExpr {
+class LogNotExpr extends @log_not_expr, UnaryExpr {
   override string getOperator() { result = "!" }
 }
 
