@@ -630,7 +630,7 @@ case @type.kind of
 | 15 = @unique_symbol_type
 | 16 = @objectkeyword_type
 | 17 = @intersection_type
-| 18 = @tupletype
+| 18 = @tuple_type
 | 19 = @lexicaltypevariabletype
 | 20 = @thistype
 | 21 = @numberliteraltype
