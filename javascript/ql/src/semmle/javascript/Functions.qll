@@ -164,7 +164,7 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
 
   /** Holds if this function is a generator function. */
   predicate isGenerator() {
-    isGenerator(this)
+    is_generator(this)
     or
     // we also support `yield` in non-generator functions
     exists(YieldExpr yield | this = yield.getEnclosingFunction())

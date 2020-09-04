@@ -889,7 +889,7 @@ public class ASTExtractor {
     }
 
     private void extractFunctionAttributes(IFunction nd, Label key) {
-      if (nd.isGenerator()) trapwriter.addTuple("isGenerator", key);
+      if (nd.isGenerator()) trapwriter.addTuple("is_generator", key);
       if (nd.hasRest()) trapwriter.addTuple("hasRestParameter", key);
       if (nd.isAsync()) trapwriter.addTuple("isAsync", key);
     }

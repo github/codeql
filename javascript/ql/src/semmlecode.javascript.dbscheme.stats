@@ -11687,7 +11687,7 @@
 </dependencies>
 </relation>
 <relation>
-<name>isGenerator</name>
+<name>is_generator</name>
 <cardinality>62</cardinality>
 <columnsizes>
 <e>

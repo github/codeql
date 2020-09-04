@@ -186,7 +186,7 @@ variables(#20064,"index",#20063)
 #20065=@"var;{arguments};{#20063}"
 variables(#20065,"arguments",#20063)
 is_arguments_object(#20065)
-isGenerator(#20061)
+is_generator(#20061)
 #20066=*
 stmts(#20066,1,#20061,-2,"{\n  var ... ex++;\n}")
 #20067=@"loc,{#10000},1,16,5,1"

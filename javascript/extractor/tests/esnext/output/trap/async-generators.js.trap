@@ -205,7 +205,7 @@ scopenesting(#20072,#20000)
 #20073=@"var;{arguments};{#20072}"
 variables(#20073,"arguments",#20072)
 is_arguments_object(#20073)
-isGenerator(#20069)
+is_generator(#20069)
 isAsync(#20069)
 #20074=*
 stmts(#20074,1,#20069,-2,"{\n}")

@@ -280,3 +280,8 @@ deprecated predicate unicodePropertyEscapeName(RegExpUnicodePropertyEscape id, s
  * Use `RegExpUnicodePropertyEscape#getValue()` instead.
  */ 
 deprecated predicate unicodePropertyEscapeValue(RegExpUnicodePropertyEscape id, string value) { unicode_property_escapevalue(id, value) }
+/**
+ * Alias for the predicate `is_generator` defined in the .dbscheme.
+ * Use `Function#isGenerator()` instead.
+ */ 
+deprecated predicate isGenerator(Function fun) { is_generator(fun) }

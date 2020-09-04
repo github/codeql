@@ -439,7 +439,7 @@ scopenesting (unique int inner: @scope ref,
 @parameterized = @function | @catchclause;
 @type_parameterized = @function | @classorinterface | @typealiasdeclaration | @mappedtypeexpr | @infertypeexpr;
 
-isGenerator (int fun: @function ref);
+is_generator (int fun: @function ref);
 hasRestParameter (int fun: @function ref);
 isAsync (int fun: @function ref);
 

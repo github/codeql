@@ -519,7 +519,7 @@ scopenesting(#20186,#20000)
 #20187=@"var;{arguments};{#20186}"
 variables(#20187,"arguments",#20186)
 is_arguments_object(#20187)
-isGenerator(#20184)
+is_generator(#20184)
 #20188=*
 stmts(#20188,1,#20184,-2,"{\n  yie ... >(x);\n}")
 #20189=@"loc,{#10000},3,32,5,1"
