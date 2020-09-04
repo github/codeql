@@ -420,7 +420,7 @@ case @scope.kind of
 |  8 = @class_expr_scope
 |  9 = @namespace_scope
 | 10 = @class_decl_scope
-| 11 = @interfacescope
+| 11 = @interface_scope
 | 12 = @typealiasscope
 | 13 = @mappedtypescope
 | 14 = @enumscope

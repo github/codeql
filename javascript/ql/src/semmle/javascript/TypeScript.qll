@@ -1464,7 +1464,7 @@ class EnumMember extends ASTNode, @enum_member {
  *
  * Interfaces that do not declare type parameters have no scope object.
  */
-class InterfaceScope extends @interfacescope, Scope {
+class InterfaceScope extends @interface_scope, Scope {
   override string toString() { result = "interface scope" }
 }
 
