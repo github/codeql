@@ -834,7 +834,7 @@
 <v>100</v>
 </e>
 <e>
-<k>@bigintliteraltypeexpr</k>
+<k>@bigint_literal_typeexpr</k>
 <v>100</v>
 </e>
 <e>

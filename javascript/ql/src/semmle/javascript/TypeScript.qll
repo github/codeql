@@ -771,7 +771,7 @@ class BooleanLiteralTypeExpr extends @boolean_literal_typeexpr, LiteralTypeExpr 
 }
 
 /** A bigint literal used as a TypeScript type annotation. */
-class BigIntLiteralTypeExpr extends @bigintliteraltypeexpr, LiteralTypeExpr {
+class BigIntLiteralTypeExpr extends @bigint_literal_typeexpr, LiteralTypeExpr {
   /** Gets the integer value of the bigint literal, if it can be represented as a QL integer. */
   int getIntValue() { result = getValue().toInt() }
 
