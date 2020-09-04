@@ -311,7 +311,7 @@ case @expr.kind of
 | 73 = @array_comprehension_expr
 | 74 = @generator_expr
 | 75 = @for_in_comprehension_block
-| 76 = @forofcomprehensionblock
+| 76 = @for_of_comprehension_block
 | 77 = @legacy_letexpr
 | 78 = @vardecl
 | 79 = @proper_varaccess
@@ -383,7 +383,7 @@ case @expr.kind of
 
 @comprehensionexpr = @array_comprehension_expr | @generator_expr;
 
-@comprehensionblock = @for_in_comprehension_block | @forofcomprehensionblock;
+@comprehensionblock = @for_in_comprehension_block | @for_of_comprehension_block;
 
 @importspecifier = @namedimportspecifier | @importdefaultspecifier | @importnamespacespecifier;
 

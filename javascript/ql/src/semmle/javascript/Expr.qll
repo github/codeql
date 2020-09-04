@@ -2274,7 +2274,7 @@ class ForInComprehensionBlock extends @for_in_comprehension_block, Comprehension
  * ]
  * ```
  */
-class ForOfComprehensionBlock extends @forofcomprehensionblock, ComprehensionBlock { }
+class ForOfComprehensionBlock extends @for_of_comprehension_block, ComprehensionBlock { }
 
 /**
  * A binary arithmetic expression using `+`, `-`, `/`, `%` or `**`.
