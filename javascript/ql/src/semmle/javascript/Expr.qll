@@ -1652,7 +1652,7 @@ class ExpExpr extends @expexpr, BinaryExpr {
  * O_RDWR | O_APPEND
  * ```
  */
-class BitOrExpr extends @bitorexpr, BinaryExpr {
+class BitOrExpr extends @bitor_expr, BinaryExpr {
   override string getOperator() { result = "|" }
 }
 
