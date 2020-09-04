@@ -317,7 +317,7 @@ case @expr.kind of
 | 79 = @proper_varaccess
 | 80 = @class_expr
 | 81 = @super_expr
-| 82 = @newtargetexpr
+| 82 = @newtarget_expr
 | 83 = @namedimportspecifier
 | 84 = @importdefaultspecifier
 | 85 = @importnamespacespecifier

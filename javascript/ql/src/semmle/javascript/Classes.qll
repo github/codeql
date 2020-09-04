@@ -410,7 +410,7 @@ class SuperPropAccess extends PropAccess {
  *
  * See also ECMAScript 2015 Language Specification, Chapter 12.3.8.
  */
-class NewTargetExpr extends @newtargetexpr, Expr {
+class NewTargetExpr extends @newtarget_expr, Expr {
   override predicate isImpure() { none() }
 }
 
