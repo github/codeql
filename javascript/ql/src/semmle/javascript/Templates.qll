@@ -11,7 +11,7 @@ import javascript
  * highlight `Hello, ${user.name}!`
  * ```
  */
-class TaggedTemplateExpr extends Expr, @taggedtemplateexpr {
+class TaggedTemplateExpr extends Expr, @tagged_template_expr {
   /** Gets the tagging expression of this tagged template. */
   Expr getTag() { result = getChildExpr(0) }
 
