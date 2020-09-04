@@ -2584,7 +2584,7 @@ class AwaitExpr extends @await_expr, Expr {
  * function.sent
  * ```
  */
-class FunctionSentExpr extends @functionsentexpr, Expr {
+class FunctionSentExpr extends @function_sent_expr, Expr {
   override predicate isImpure() { none() }
 }
 

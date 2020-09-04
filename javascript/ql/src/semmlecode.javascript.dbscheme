@@ -328,7 +328,7 @@ case @expr.kind of
 | 90 = @jsx_qualified_name
 | 91 = @jsx_empty_expr
 | 92 = @await_expr
-| 93 = @functionsentexpr
+| 93 = @function_sent_expr
 | 94 = @decorator
 | 95 = @exportdefaultspecifier
 | 96 = @exportnamespacespecifier
