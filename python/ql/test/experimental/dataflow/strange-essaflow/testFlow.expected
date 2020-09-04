@@ -1,0 +1,11 @@
+os_import
+| test.py:2:8:2:9 | GSSA Variable os |
+flowstep
+jumpStep
+| test.py:2:8:2:9 | GSSA Variable os | test.py:5:7:5:21 | ControlFlowNode for Flask() |
+| test.py:2:8:2:9 | GSSA Variable os | test.py:7:2:7:23 | ControlFlowNode for Attribute() |
+| test.py:2:8:2:9 | GSSA Variable os | test.py:7:2:7:23 | ControlFlowNode for Attribute()() |
+essaFlowStep
+| test.py:2:8:2:9 | GSSA Variable os | test.py:5:7:5:21 | ControlFlowNode for Flask() |
+| test.py:2:8:2:9 | GSSA Variable os | test.py:7:2:7:23 | ControlFlowNode for Attribute() |
+| test.py:2:8:2:9 | GSSA Variable os | test.py:7:2:7:23 | ControlFlowNode for Attribute()() |
