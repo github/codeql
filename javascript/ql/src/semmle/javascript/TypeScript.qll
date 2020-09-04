@@ -1281,7 +1281,8 @@ class NamespaceAccess extends TypeExpr, NamespaceRef, @namespace_access {
 /**
  * An identifier that refers to a namespace from inside a type annotation.
  */
-class LocalNamespaceAccess extends NamespaceAccess, LexicalAccess, Identifier, @local_namespace_access {
+class LocalNamespaceAccess extends NamespaceAccess, LexicalAccess, Identifier,
+  @local_namespace_access {
   override Identifier getIdentifier() { result = this }
 
   /** Gets the local name being accessed. */

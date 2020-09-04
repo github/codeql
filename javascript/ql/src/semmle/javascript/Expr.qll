@@ -1849,10 +1849,10 @@ class AssignExpr extends @assign_expr, Assignment {
 }
 
 private class TCompoundAssignExpr =
-  @assign_add_expr or @assign_sub_expr or @assign_mul_expr or @assign_div_expr or @assign_mod_expr or
-      @assign_exp_expr or @assign_lshift_expr or @assign_rshift_expr or @assign_urshift_expr or
-      @assign_or_expr or @assign_xor_expr or @assign_and_expr or @assignlogandexpr or @assignlogorexpr or
-      @assignnullishcoalescingexpr;
+  @assign_add_expr or @assign_sub_expr or @assign_mul_expr or @assign_div_expr or
+      @assign_mod_expr or @assign_exp_expr or @assign_lshift_expr or @assign_rshift_expr or
+      @assign_urshift_expr or @assign_or_expr or @assign_xor_expr or @assign_and_expr or
+      @assignlogandexpr or @assignlogorexpr or @assignnullishcoalescingexpr;
 
 /**
  * A compound assign expression.
