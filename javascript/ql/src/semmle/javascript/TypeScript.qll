@@ -1894,7 +1894,7 @@ class UnionType extends UnionOrIntersectionType, @union_type { }
 /**
  * An intersection type, such as `T & {x: number}`.
  */
-class IntersectionType extends UnionOrIntersectionType, @intersectiontype { }
+class IntersectionType extends UnionOrIntersectionType, @intersection_type { }
 
 /**
  * A type that describes a JavaScript `Array` object.
