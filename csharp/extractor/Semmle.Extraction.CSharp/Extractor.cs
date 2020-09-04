@@ -76,7 +76,7 @@ namespace Semmle.Extraction.CSharp
                 return ExitCode.Ok;
             }
 
-            using (var analyser = new Analyser(new LogProgressMonitor(logger), logger))
+            using (var analyser = new Analyser(new LogProgressMonitor(logger), logger, commandLineArguments.AssemblySensitiveTrap))
             using (var references = new BlockingCollection<MetadataReference>())
             {
                 try
@@ -140,6 +140,12 @@ namespace Semmle.Extraction.CSharp
                         return ExitCode.Failed;
                     }
 
+                    // csc.exe (CSharpCompiler.cs) also provides CompilationOptions
+                    // .WithMetadataReferenceResolver(),
+                    // .WithXmlReferenceResolver() and
+                    // .WithSourceReferenceResolver().
+                    // These would be needed if we hadn't explicitly provided the source/references
+                    // already.
                     var compilation = CSharpCompilation.Create(
                         compilerArguments.CompilationName,
                         syntaxTrees,
@@ -147,11 +153,6 @@ namespace Semmle.Extraction.CSharp
                         compilerArguments.CompilationOptions.
                             WithAssemblyIdentityComparer(DesktopAssemblyIdentityComparer.Default).
                             WithStrongNameProvider(new DesktopStrongNameProvider(compilerArguments.KeyFileSearchPaths))
-                        // csc.exe (CSharpCompiler.cs) also provides WithMetadataReferenceResolver,
-                        // WithXmlReferenceResolver and
-                        // WithSourceReferenceResolver.
-                        // These would be needed if we hadn't explicitly provided the source/references
-                        // already.
                         );
 
                     analyser.EndInitialize(compilerArguments, commandLineArguments, compilation);
@@ -317,7 +318,7 @@ namespace Semmle.Extraction.CSharp
             ILogger logger,
             CommonOptions options)
         {
-            using (var analyser = new Analyser(pm, logger))
+            using (var analyser = new Analyser(pm, logger, false))
             using (var references = new BlockingCollection<MetadataReference>())
             {
                 try

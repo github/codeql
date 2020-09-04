@@ -50,13 +50,25 @@ class Node extends TNode {
   /** Gets the type of this node. */
   Type getType() { none() } // overridden in subclasses
 
-  /** Gets the expression corresponding to this node, if any. */
+  /**
+   * Gets the expression corresponding to this node, if any. This predicate
+   * only has a result on nodes that represent the value of evaluating the
+   * expression. For data flowing _out of_ an expression, like when an
+   * argument is passed by reference, use `asDefiningArgument` instead of
+   * `asExpr`.
+   */
   Expr asExpr() { result = this.(ExprNode).getExpr() }
 
   /** Gets the parameter corresponding to this node, if any. */
   Parameter asParameter() { result = this.(ExplicitParameterNode).getParameter() }
 
-  /** Gets the argument that defines this `DefinitionByReferenceNode`, if any. */
+  /**
+   * Gets the argument that defines this `DefinitionByReferenceNode`, if any.
+   * This predicate should be used instead of `asExpr` when referring to the
+   * value of a reference argument _after_ the call has returned. For example,
+   * in `f(&x)`, this predicate will have `&x` as its result for the `Node`
+   * that represents the new value of `x`.
+   */
   Expr asDefiningArgument() { result = this.(DefinitionByReferenceNode).getArgument() }
 
   /**
@@ -383,7 +395,9 @@ class PreConstructorInitThis extends Node, TPreConstructorInitThis {
 }
 
 /**
- * Gets the `Node` corresponding to `e`.
+ * Gets the `Node` corresponding to the value of evaluating `e`. For data
+ * flowing _out of_ an expression, like when an argument is passed by
+ * reference, use `definitionByReferenceNodeFromArgument` instead.
  */
 ExprNode exprNode(Expr e) { result.getExpr() = e }
 
@@ -484,6 +498,17 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Expr -> Expr
   exprToExprStep_nocfg(nodeFrom.asExpr(), nodeTo.asExpr())
   or
+  // Assignment -> LValue post-update node
+  //
+  // This is used for assignments whose left-hand side is not a variable
+  // assignment or a storeStep but is still modeled by other means. It could be
+  // a call to `operator*` or `operator[]` where taint should flow to the
+  // post-update node of the qualifier.
+  exists(AssignExpr assign |
+    nodeFrom.asExpr() = assign and
+    nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr() = assign.getLValue()
+  )
+  or
   // Node -> FlowVar -> VariableAccess
   exists(FlowVar var |
     (
@@ -513,6 +538,19 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
     def.definesExpressions(inner, outer) and
     inner = nodeTo.(InnerPartialDefinitionNode).getPreUpdateNode().asExpr() and
     outer = nodeFrom.(PartialDefinitionNode).getPreUpdateNode().asExpr()
+  )
+  or
+  // Reverse flow: data that flows from the post-update node of a reference
+  // returned by a function call, back into the qualifier of that function.
+  // This allows data to flow 'in' through references returned by a modeled
+  // function such as `operator[]`.
+  exists(DataFlowFunction f, Call call, FunctionInput inModel, FunctionOutput outModel |
+    call.getTarget() = f and
+    inModel.isReturnValueDeref() and
+    outModel.isQualifierObject() and
+    f.hasDataFlow(inModel, outModel) and
+    nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr() = call and
+    nodeTo.asDefiningArgument() = call.getQualifier()
   )
 }
 

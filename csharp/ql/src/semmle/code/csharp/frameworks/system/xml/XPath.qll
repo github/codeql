@@ -3,6 +3,7 @@
 import csharp as csharp
 private import semmle.code.csharp.frameworks.system.Xml as xml
 
+/** Definitions relating to the `System.Xml.XPath` namespace. */
 module SystemXmlXPath {
   /** The `System.Xml.XPath` namespace. */
   class Namespace extends csharp::Namespace {

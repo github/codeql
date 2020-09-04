@@ -10,8 +10,8 @@ This topic offers some simple tips on how to avoid common problems that can affe
 Before reading the tips below, it is worth reiterating a few important points about CodeQL and the QL language:
 
 - CodeQL `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ and `classes <https://help.semmle.com/QL/ql-handbook/types.html#classes>`__ are evaluated to database `tables <https://en.wikipedia.org/wiki/Table_(database)>`__. Large predicates generate large tables with many rows, and are therefore expensive to compute.
-- The QL language is implemented using standard database operations and `relational algebra <https://en.wikipedia.org/wiki/Relational_algebra>`__ (such as join, projection, and union). For further information about query languages and databases, see `About the QL language <https://help.semmle.com/QL/learn-ql/about-ql.html>`__.
-- Queries are evaluated *bottom-up*, which means that a predicate is not evaluated until *all* of the predicates that it depends on are evaluated. For more information on query evaluation, see `Evaluation of QL programs <https://help.semmle.com/QL/ql-handbook/evaluation.html>`__. 
+- The QL language is implemented using standard database operations and `relational algebra <https://en.wikipedia.org/wiki/Relational_algebra>`__ (such as join, projection, and union). For more information about query languages and databases, see `About the QL language <https://help.semmle.com/QL/learn-ql/about-ql.html>`__.
+- Queries are evaluated *bottom-up*, which means that a predicate is not evaluated until *all* of the predicates that it depends on are evaluated. For more information on query evaluation, see "`Evaluation of QL programs <https://help.semmle.com/QL/ql-handbook/evaluation.html>`__." 
 
 Performance tips
 ----------------
@@ -54,7 +54,7 @@ To avoid making this mistake, ``this`` should be restricted in the member predic
 Use specific types
 ~~~~~~~~~~~~~~~~~~
 
-`Types <https://help.semmle.com/QL/ql-handbook/types.html>`__ provide an upper bound on the size of a relation. 
+"`Types <https://help.semmle.com/QL/ql-handbook/types.html>`__" provide an upper bound on the size of a relation. 
 This helps the query optimizer be more effective, so it's generally good to use the most specific types possible. For example::
 
   predicate foo(LoggingCall e)
@@ -90,7 +90,7 @@ Use ``getAQlClass()`` as a debugging tool, but don't include it in the final ver
 Avoid complex recursion
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-`Recursion <https://help.semmle.com/QL/ql-handbook/recursion.html>`__ is about self-referencing definitions.
+"`Recursion <https://help.semmle.com/QL/ql-handbook/recursion.html>`__" is about self-referencing definitions.
 It can be extremely powerful as long as it is used appropriately.
 On the whole, you should try to make recursive predicates as simple as possible.
 That is, you should define a *base case* that allows the predicate to *bottom out*, along with a single *recursive call*::

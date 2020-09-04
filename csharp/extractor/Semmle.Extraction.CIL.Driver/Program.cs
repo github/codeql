@@ -40,7 +40,7 @@ namespace Semmle.Extraction.CIL.Driver
                 return;
             }
 
-            var options = ExtractorOptions.ParseCommandLine(args);
+            var options = new ExtractorOptions(args);
             var layout = new Layout();
             var logger = new ConsoleLogger(options.Verbosity);
 

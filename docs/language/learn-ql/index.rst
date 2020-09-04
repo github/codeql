@@ -13,7 +13,7 @@ CodeQL is based on a powerful query language called QL. The following topics hel
 
    Important 
 
-   If you've previously used QL, you may notice slight changes in terms we use to describe some important concepts. For more information, see our note about :doc:`Recent terminology changes <terminology-note>`.
+   If you've previously used QL, you may notice slight changes in terms we use to describe some important concepts. For more information, see our note about ":doc:`Recent terminology changes <terminology-note>`."
 
 .. toctree::
    :maxdepth: 1

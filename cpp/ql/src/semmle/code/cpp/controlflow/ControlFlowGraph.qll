@@ -65,7 +65,7 @@ class ControlFlowNode extends Locatable, ControlFlowNodeBase {
    * taken when this expression is true.
    */
   ControlFlowNode getATrueSuccessor() {
-    truecond_base(this, result) and
+    qlCFGTrueSuccessor(this, result) and
     result = getASuccessor()
   }
 
@@ -74,7 +74,7 @@ class ControlFlowNode extends Locatable, ControlFlowNodeBase {
    * taken when this expression is false.
    */
   ControlFlowNode getAFalseSuccessor() {
-    falsecond_base(this, result) and
+    qlCFGFalseSuccessor(this, result) and
     result = getASuccessor()
   }
 
@@ -95,18 +95,20 @@ import ControlFlowGraphPublic
 class ControlFlowNodeBase extends ElementBase, @cfgnode { }
 
 /**
+ * DEPRECATED: Use `ControlFlowNode.getATrueSuccessor()` instead.
  * Holds when `n2` is a control-flow node such that the control-flow
  * edge `(n1, n2)` may be taken when `n1` is an expression that is true.
  */
-predicate truecond_base(ControlFlowNodeBase n1, ControlFlowNodeBase n2) {
+deprecated predicate truecond_base(ControlFlowNodeBase n1, ControlFlowNodeBase n2) {
   qlCFGTrueSuccessor(n1, n2)
 }
 
 /**
+ * DEPRECATED: Use `ControlFlowNode.getAFalseSuccessor()` instead.
  * Holds when `n2` is a control-flow node such that the control-flow
  * edge `(n1, n2)` may be taken when `n1` is an expression that is false.
  */
-predicate falsecond_base(ControlFlowNodeBase n1, ControlFlowNodeBase n2) {
+deprecated predicate falsecond_base(ControlFlowNodeBase n1, ControlFlowNodeBase n2) {
   qlCFGFalseSuccessor(n1, n2)
 }
 
@@ -134,7 +136,7 @@ abstract class AdditionalControlFlowEdge extends ControlFlowNodeBase {
 /**
  * Holds if there is a control-flow edge from `source` to `target` in either
  * the extractor-generated control-flow graph or in a subclass of
- * `AdditionalControlFlowEdge`. Use this relation instead of `successors`.
+ * `AdditionalControlFlowEdge`. Use this relation instead of `qlCFGSuccessor`.
  */
 predicate successors_extended(ControlFlowNodeBase source, ControlFlowNodeBase target) {
   qlCFGSuccessor(source, target)

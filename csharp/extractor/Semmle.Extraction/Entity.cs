@@ -109,41 +109,33 @@ namespace Semmle.Extraction
 
     public static class ICachedEntityFactoryExtensions
     {
-        public static Entity CreateEntity<Entity, T1, T2>(this ICachedEntityFactory<(T1, T2), Entity> factory, Context cx, T1 t1, T2 t2)
-            where Entity : ICachedEntity => factory.CreateEntity2(cx, (t1, t2));
-
-        public static Entity CreateEntity<Entity, T1, T2, T3>(this ICachedEntityFactory<(T1, T2, T3), Entity> factory, Context cx, T1 t1, T2 t2, T3 t3)
-            where Entity : ICachedEntity => factory.CreateEntity2(cx, (t1, t2, t3));
-
-        public static Entity CreateEntity<Entity, T1, T2, T3, T4>(this ICachedEntityFactory<(T1, T2, T3, T4), Entity> factory, Context cx, T1 t1, T2 t2, T3 t3, T4 t4)
-            where Entity : ICachedEntity => factory.CreateEntity2(cx, (t1, t2, t3, t4));
+        /// <summary>
+        /// Creates and populates a new entity, or returns the existing one from the cache,
+        /// based on the supplied cache key.
+        /// </summary>
+        /// <typeparam name="Type">The type used to construct the entity.</typeparam>
+        /// <typeparam name="Entity">The type of the entity to create.</typeparam>
+        /// <param name="factory">The factory used to construct the entity.</param>
+        /// <param name="cx">The extractor context.</param>
+        /// <param name="cacheKey">The key used for caching.</param>
+        /// <param name="init">The initializer for the entity.</param>
+        /// <returns>The entity.</returns>
+        public static Entity CreateEntity<Type, Entity>(this ICachedEntityFactory<Type, Entity> factory, Context cx, object cacheKey, Type init)
+            where Entity : ICachedEntity => cx.CreateEntity(factory, cacheKey, init);
 
         /// <summary>
-        /// Creates and populates a new entity, or returns the existing one from the cache.
+        /// Creates and populates a new entity from an `ISymbol`, or returns the existing one
+        /// from the cache.
         /// </summary>
-        /// <typeparam name="Type">The symbol type used to construct the entity.</typeparam>
+        /// <typeparam name="Type">The type used to construct the entity.</typeparam>
         /// <typeparam name="Entity">The type of the entity to create.</typeparam>
-        /// <param name="cx">The extractor context.</param>
         /// <param name="factory">The factory used to construct the entity.</param>
-        /// <param name="init">The initializer for the entity, which may not be null.</param>
-        /// <returns>The entity.</returns>
-        public static Entity CreateEntity<Type, Entity>(this ICachedEntityFactory<Type, Entity> factory, Context cx, Type init) where Type : notnull
-            where Entity : ICachedEntity => cx.CreateNonNullEntity(factory, init);
-
-        public static Entity CreateNullableEntity<Type, Entity>(this ICachedEntityFactory<Type, Entity> factory, Context cx, Type init)
-            where Entity : ICachedEntity => cx.CreateNullableEntity(factory, init);
-
-        /// <summary>
-        /// Creates and populates a new entity, but uses a different cache.
-        /// </summary>
-        /// <typeparam name="Type">The symbol type used to construct the entity.</typeparam>
-        /// <typeparam name="Entity">The type of the entity to create.</typeparam>
         /// <param name="cx">The extractor context.</param>
-        /// <param name="factory">The factory used to construct the entity.</param>
-        /// <param name="init">The initializer for the entity, which may be null.</param>
+        /// <param name="init">The initializer for the entity.</param>
         /// <returns>The entity.</returns>
-        public static Entity CreateEntity2<Type, Entity>(this ICachedEntityFactory<Type, Entity> factory, Context cx, Type init)
-            where Entity : ICachedEntity => cx.CreateEntity2(factory, init);
+        public static Entity CreateEntityFromSymbol<Type, Entity>(this ICachedEntityFactory<Type, Entity> factory, Context cx, Type init)
+            where Type : ISymbol
+            where Entity : ICachedEntity => cx.CreateEntityFromSymbol(factory, init);
 
         public static void DefineLabel(this IEntity entity, TextWriter trapFile, IExtractor extractor)
         {
@@ -153,10 +145,10 @@ namespace Semmle.Extraction
             {
                 entity.WriteQuotedId(trapFile);
             }
-            catch(Exception ex)  // lgtm[cs/catch-of-all-exceptions]
+            catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
                 trapFile.WriteLine("\"");
-                extractor.Message(new Message("Unhandled exception generating id", entity.ToString() ?? "", null, ex.StackTrace));
+                extractor.Message(new Message($"Unhandled exception generating id: {ex.Message}", entity.ToString() ?? "", null, ex.StackTrace));
             }
             trapFile.WriteLine();
         }

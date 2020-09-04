@@ -33,7 +33,7 @@ namespace Semmle.Autobuild.Shared
 
             if (vsTools == null && builder.Actions.IsWindows())
             {
-                builder.Log(Severity.Warning, "Could not find a suitable version of vcvarsall.bat");
+                builder.Log(Severity.Warning, "Could not find a suitable version of VsDevCmd.bat/vcvarsall.bat");
             }
 
             var nuget =

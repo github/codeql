@@ -6,7 +6,7 @@
     <overview>
         <p>
 
-            Sanitizing untrusted URLs is an important technique for
+            Sanitizing untrusted URLs is a common technique for
             preventing attacks such as request forgeries and malicious
             redirections. Often, this is done by checking that the host of a URL
             is in a set of allowed hosts.

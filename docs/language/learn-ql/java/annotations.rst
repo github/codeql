@@ -180,7 +180,7 @@ Finally, we use these classes to find calls to deprecated methods, excluding cal
 
 In our example, this query flags the call to ``A.m`` in ``A.r``, but not the one in ``A.n``.
 
-For more information about the class ``Call``, see :doc:`Navigating the call graph <call-graph>`.
+For more information about the class ``Call``, see ":doc:`Navigating the call graph <call-graph>`."
 
 Improvements
 ~~~~~~~~~~~~

@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>XSLT (Extensible Stylesheet Language Transformations) is a language for transforming XML
+documents into other XML documents or other formats. Processing of unvalidated XSLT stylesheet can
+let attacker to read arbitrary files from the filesystem or to execute arbitrary code.</p>
+</overview>
+
+<recommendation>
+<p>The general recommendation is to not process untrusted XSLT stylesheets. If user provided
+stylesheets must be processed, enable the secure processing mode.</p>
+</recommendation>
+
+<example>
+<p>In the following examples, the code accepts an XSLT stylesheet from the user and processes it.
+</p>
+
+<p>In the first example, the user provided XSLT stylesheet is parsed and processed.</p>
+
+<p>In the second example, secure processing mode is enabled.</p>
+
+<sample src="XsltInjection.java" />
+</example>
+
+<references>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/XSLT">XSLT</a>.</li>
+<li>Java Tutorial: <a href="https://docs.oracle.com/javase/tutorial/jaxp/xslt/transformingXML.html">Transforming XML Data with XSLT</a>.</li>
+<li><a href="https://blog.hunniccyber.com/ektron-cms-remote-code-execution-xslt-transform-injection-java/">XSLT Injection Basics</a>.</li>
+</references>
+</qhelp>

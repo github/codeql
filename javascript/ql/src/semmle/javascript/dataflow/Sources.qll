@@ -319,6 +319,9 @@ module SourceNode {
       this = DataFlow::destructuredModuleImportNode(_)
       or
       this = DataFlow::globalAccessPathRootPseudoNode()
+      or
+      // Include return nodes because they model the implicit Promise creation in async functions.
+      DataFlow::functionReturnNode(this, _)
     }
   }
 }

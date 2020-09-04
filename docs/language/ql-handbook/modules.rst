@@ -29,10 +29,9 @@ The name of a module can be any `identifier <https://help.semmle.com/QL/ql-spec/
 that starts with an uppercase or lowercase letter. 
 
 ``.ql`` or ``.qll`` files also implicitly define modules.
-Read more about the different :ref:`kinds of modules <kinds-of-modules>` below.
+For more information, see ":ref:`kinds-of-modules`."
 
-You can also annotate a module. See the list of :ref:`annotations <annotations-overview>`
-available for modules.
+You can also annotate a module. For more information, see of ":ref:`annotations-overview`."
 
 Note that you can only annotate :ref:`explicit modules <explicit-modules>`. 
 File modules cannot be annotated.
@@ -111,7 +110,7 @@ You can also define a module within another module. This is an explicit module d
 
 An explicit module is defined with the keyword ``module`` followed by 
 the module name, and then the module body enclosed in braces. It can contain any 
-of the elements listed in :ref:`module-bodies` below, apart from select clauses. 
+of the elements listed in ":ref:`module-bodies`" below, apart from select clauses. 
 
 For example, you could add the following QL snippet to the library file **OneTwoThreeLib.qll** 
 defined :ref:`above <library-modules>`::
@@ -177,7 +176,7 @@ You can import a module under a different name using the ``as`` keyword,
 for example ``import javascript as js``.
 
 The ``<module_expression>`` itself can be a module name, a selection, or a qualified
-reference. See :ref:`name-resolution` for more details.
+reference. For more information, see ":ref:`name-resolution`."
 
-For information about how import statements are looked up, see `Module resolution <https://help.semmle.com/QL/ql-spec/language.html#module-resolution>`__
+For information about how import statements are looked up, see "`Module resolution <https://help.semmle.com/QL/ql-spec/language.html#module-resolution>`__"
 in the QL language specification. 

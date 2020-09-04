@@ -53,7 +53,7 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         public new static EventAccessor Create(Context cx, IMethodSymbol symbol) =>
-            EventAccessorFactory.Instance.CreateEntity(cx, symbol);
+            EventAccessorFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
         class EventAccessorFactory : ICachedEntityFactory<IMethodSymbol, EventAccessor>
         {

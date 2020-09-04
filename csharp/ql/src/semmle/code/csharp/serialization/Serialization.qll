@@ -1,5 +1,14 @@
+/**
+ * Provides classes to identify any .Net serializable type such as types
+ * attributed with `SerializableAttribute` and types implementing the
+ * `ISerializable` interface.
+ */
+
 import csharp
 
+/**
+ * A constructor with `SerializationInfo` and `StreamingContext` parameters.
+ */
 class SerializationConstructor extends Constructor {
   SerializationConstructor() {
     this.getNumberOfParameters() = 2 and
@@ -89,18 +98,5 @@ class CustomBinarySerializableType extends BinarySerializableType {
   override Callable getADeserializationCallback() {
     result = super.getADeserializationCallback() or
     result.(SerializationConstructor).getDeclaringType() = this
-  }
-}
-
-class DangerousCallable extends Callable {
-  DangerousCallable() {
-    //files
-    this.(Method).getQualifiedName().matches("System.IO.File.Write%") or
-    this.(Method).getQualifiedName().matches("System.IO.File.%Copy%") or
-    this.(Method).getQualifiedName().matches("System.IO.File.%Move%") or
-    this.(Method).getQualifiedName().matches("System.IO.File.%Append%") or
-    this.(Method).getQualifiedName().matches("System.IO.%.%Delete%") or
-    //assembly
-    this.(Method).getQualifiedName().matches("System.Reflection.Assembly.%Load%")
   }
 }

@@ -122,7 +122,7 @@ void test_range_based_for_loop_string() {
 	}
 
 	for(std::string::iterator it = s.begin(); it != s.end(); ++it) {
-		sink(*it); // tainted [NOT DETECTED]
+		sink(*it); // tainted [NOT DETECTED by IR]
 	}
 
 	for(char& c : s) {
@@ -158,12 +158,12 @@ void test_string_append() {
 		sink(s5); // tainted
 
 		s6 = s3;
-		s6 += s4;
+		sink(s6 += s4); // tainted
 		sink(s6); // tainted
 
 		s7 = s3;
-		s7 += source();
-		s7 += " ";
+		sink(s7 += source()); // tainted
+		sink(s7 += " "); // tainted
 		sink(s7); // tainted
 
 		s8 = s3;
@@ -320,4 +320,240 @@ void test_string_substr()
 
 	sink(a.substr(0, a.length()));
 	sink(b.substr(0, b.length())); // tainted
+}
+
+void test_string_at()
+{
+	std::string a("123");
+	std::string b("123");
+	std::string c("123");
+
+	sink(a);
+	sink(b);
+	sink(c);
+
+	a[0] = ns_char::source();
+	b.at(0) = ns_char::source();
+	c[0] = a[0];
+
+	sink(a); // tainted
+	sink(b); // tainted
+	sink(c); // tainted
+}
+
+void test_string_data_more()
+{
+	std::string str("123");
+
+	str.data()[1] = ns_char::source();
+	sink(str); // tainted
+	sink(str.data()); // tainted
+}
+void test_string_iterators() {
+	// string append
+	{
+		std::string s1("hello");
+		std::string s2(source());
+		std::string s3("hello");
+		std::string s4("world");
+
+		sink(s1);
+		sink(s1.append(s2.begin(), s2.end())); // tainted
+		sink(s1); // tainted
+
+		sink(s3);
+		sink(s3.append(s4.begin(), s4.end()));
+		sink(s3);
+	}
+
+	// dereference
+	{
+		std::string s1("hello");
+		std::string s2(source());
+
+		string::iterator iter1 = s1.begin();
+
+		sink(*iter1);
+		sink(iter1[1]);
+		string::iterator iter2 = s2.begin();
+
+		sink(*iter2); // tainted
+		sink(iter2[1]); // tainted
+	}
+
+	// arithmetic operators
+	{
+		std::string s1("hello");
+		std::string s2(source());
+
+		string::iterator i1 = s1.begin();
+
+		string::iterator i2 = s2.begin();
+		string::iterator i3, i4, i5, i6, i7, i8, i9;
+
+		sink(*(i2+1)); //tainted
+		sink(*(i2-1)); // tainted
+		i3 = i2;
+		sink(*(++i3)); // tainted
+		i4 = i2;
+		sink(*(--i4)); // tainted
+		i5 = i2;
+		i5++;
+		sink(*i5); // tainted
+		i6 = i2;
+		i6--;
+		sink(*i6); // tainted
+		i7 = i2;
+		sink(*(i7+=1)); // tainted
+		i8 = i2;
+		sink(*(i8-=1)); // tainted
+
+		i9 = s2.end();
+		--i9;
+		sink(*i9); // tainted
+	}
+}
+
+void test_string_insert_more()
+{
+	std::string s1("aa");
+	std::string s2("bb");
+	char *cs1 = "cc";
+	char *cs2 = source();
+
+	sink(s1.insert(0, cs1));
+	sink(s1);
+
+	sink(s2.insert(0, cs2)); // tainted
+	sink(s2); // tainted
+}
+
+void sink(std::string::iterator);
+
+void test_string_iterator_methods()
+{
+	{
+		std::string a("aa");
+		std::string b("bb");
+
+		sink(a.insert(a.begin(), 10, 'x'));
+		sink(a);
+
+		sink(b.insert(b.begin(), 10, ns_char::source())); // tainted
+		sink(b); // tainted
+	}
+
+	{
+		std::string c("cc");
+		std::string d("dd");
+		std::string s1("11");
+		std::string s2(source());
+
+		sink(c.insert(c.end(), s1.begin(), s1.end()));
+		sink(c);
+
+		sink(d.insert(d.end(), s2.begin(), s2.end())); // tainted
+		sink(d); // tainted
+
+		sink(s2.insert(s2.end(), s1.begin(), s1.end())); // tainted
+		sink(s2); // tainted
+	}
+
+	{
+		std::string e("ee");
+		std::string f("ff");
+		std::string s3("33");
+		std::string s4(source());
+
+		sink(e.append(s3.begin(), s3.end()));
+		sink(e);
+
+		sink(f.append(s4.begin(), s4.end())); // tainted
+		sink(f); // tainted
+
+		sink(s4.append(s3.begin(), s3.end())); // tainted
+		sink(s4); // tainted
+	}
+
+	{
+		std::string g("gg");
+		std::string h("hh");
+		std::string s5("55");
+		std::string s6(source());
+
+		sink(g.assign(s5.cbegin(), s5.cend()));
+		sink(g);
+
+		sink(h.assign(s6.cbegin(), s6.cend())); // tainted
+		sink(h); // tainted
+
+		sink(s6.assign(s5.cbegin(), s5.cend()));
+		sink(s6); // [FALSE POSITIVE]
+	}
+}
+
+void test_constructors_more() {
+	char *cs1 = "abc";
+	char *cs2 = source();
+	std::string s1(cs1);
+	std::string s2(cs2);
+	std::string s3(s1.begin(), s1.end());
+	std::string s4(s2.begin(), s2.end());
+
+	sink(s1);
+	sink(s2); // tainted
+	sink(s3);
+	sink(s4); // tainted
+}
+
+void test_string_front_back() {
+	std::string a("aa");
+
+	sink(a.front());
+	sink(a.back());
+	a.push_back(ns_char::source());
+	sink(a.front()); // [FALSE POSITIVE]
+	sink(a.back()); // tainted
+}
+
+void test_string_return_assign() {
+	{
+		std::string a("aa");
+		std::string b("bb");
+		std::string c("cc");
+		std::string d("dd");
+		std::string e("ee");
+		std::string f("ff");
+
+		sink( a += (b += "bb") );
+		sink( c += (d += source()) ); // tainted
+		sink( (e += "ee") += source() ); // tainted
+		sink( (f += source()) += "ff" ); // tainted
+		sink(a);
+		sink(b);
+		sink(c); // tainted
+		sink(d); // tainted
+		sink(e); // tainted
+		sink(f); // tainted
+	}
+
+	{
+		std::string a("aa");
+		std::string b("bb");
+		std::string c("cc");
+		std::string d("dd");
+		std::string e("ee");
+		std::string f("ff");
+
+		sink( a.assign(b.assign("bb")) );
+		sink( c.assign(d.assign(source())) ); // tainted
+		sink( e.assign("ee").assign(source()) ); // tainted
+		sink( f.assign(source()).assign("ff") );
+		sink(a);
+		sink(b);
+		sink(c); // tainted
+		sink(d); // tainted
+		sink(e); // tainted
+		sink(f); // [FALSE POSITIVE]
+	}
 }

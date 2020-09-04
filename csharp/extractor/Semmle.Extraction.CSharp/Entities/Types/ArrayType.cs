@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";type");
         }
 
-        public static ArrayType Create(Context cx, IArrayTypeSymbol symbol) => ArrayTypeFactory.Instance.CreateEntity(cx, symbol);
+        public static ArrayType Create(Context cx, IArrayTypeSymbol symbol) => ArrayTypeFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
         class ArrayTypeFactory : ICachedEntityFactory<IArrayTypeSymbol, ArrayType>
         {

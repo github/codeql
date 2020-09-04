@@ -43,7 +43,7 @@ namespace Semmle.Extraction.Entities
         }
 
         public static Folder Create(Context cx, DirectoryInfo folder) =>
-            FolderFactory.Instance.CreateEntity2(cx, folder);
+            FolderFactory.Instance.CreateEntity(cx, folder, folder);
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => null;
 

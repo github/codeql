@@ -20,6 +20,7 @@
  * complex | `42j` (not supported yet)
  */
 
+private import python
 import experimental.dataflow.DataFlow
 
 class TestConfiguration extends DataFlow::Configuration {

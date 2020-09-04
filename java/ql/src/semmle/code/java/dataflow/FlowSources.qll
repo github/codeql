@@ -15,6 +15,7 @@ import semmle.code.java.frameworks.ApacheHttp
 import semmle.code.java.frameworks.android.XmlParsing
 import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.JaxWS
+import semmle.code.java.frameworks.javase.WebSocket
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.frameworks.spring.SpringWeb
 import semmle.code.java.frameworks.spring.SpringController
@@ -153,6 +154,14 @@ private class ThriftIfaceParameterSource extends RemoteFlowSource {
   }
 
   override string getSourceType() { result = "Thrift Iface parameter" }
+}
+
+private class WebSocketMessageParameterSource extends RemoteFlowSource {
+  WebSocketMessageParameterSource() {
+    exists(WebsocketOnText t | t.getParameter(1) = this.asParameter())
+  }
+
+  override string getSourceType() { result = "Websocket onText parameter" }
 }
 
 /** Class for `tainted` user input. */

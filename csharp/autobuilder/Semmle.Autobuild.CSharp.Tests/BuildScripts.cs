@@ -345,6 +345,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             Actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_SOURCE_ARCHIVE_DIR"] = "";
             Actions.GetEnvironmentVariable[$"CODEQL_EXTRACTOR_{codeqlUpperLanguage}_ROOT"] = $@"C:\codeql\{codeqlUpperLanguage.ToLowerInvariant()}";
             Actions.GetEnvironmentVariable["CODEQL_JAVA_HOME"] = @"C:\codeql\tools\java";
+            Actions.GetEnvironmentVariable["CODEQL_PLATFORM"] = isWindows ? "win64" : "linux64";
             Actions.GetEnvironmentVariable["SEMMLE_DIST"] = @"C:\odasa";
             Actions.GetEnvironmentVariable["SEMMLE_JAVA_HOME"] = @"C:\odasa\tools\java";
             Actions.GetEnvironmentVariable["SEMMLE_PLATFORM_TOOLS"] = @"C:\odasa\tools";
@@ -450,15 +451,22 @@ Microsoft.NETCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
             Actions.GetEnvironmentVariable["ProgramFiles(x86)"] = @"C:\Program Files (x86)";
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"] = true;
             Actions.RunProcess[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -prerelease -legacy -property installationPath"] = 0;
-            Actions.RunProcessOut[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -prerelease -legacy -property installationPath"] = "C:\\VS1\nC:\\VS2";
-            Actions.RunProcessOut[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -prerelease -legacy -property installationVersion"] = "10.0\n11.0";
+            Actions.RunProcessOut[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -prerelease -legacy -property installationPath"] = "C:\\VS1\nC:\\VS2\nC:\\VS3";
             Actions.RunProcess[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -prerelease -legacy -property installationVersion"] = 0;
+            Actions.RunProcessOut[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -prerelease -legacy -property installationVersion"] = "10.0\n11.0\n16.0";
 
             var candidates = BuildTools.GetCandidateVcVarsFiles(Actions).ToArray();
             Assert.Equal("C:\\VS1\\VC\\vcvarsall.bat", candidates[0].Path);
             Assert.Equal(10, candidates[0].ToolsVersion);
             Assert.Equal("C:\\VS2\\VC\\vcvarsall.bat", candidates[1].Path);
             Assert.Equal(11, candidates[1].ToolsVersion);
+            Assert.Equal(@"C:\VS3\VC\Auxiliary\Build\vcvars32.bat", candidates[2].Path);
+            Assert.Equal(16, candidates[2].ToolsVersion);
+            Assert.Equal(@"C:\VS3\VC\Auxiliary\Build\vcvars64.bat", candidates[3].Path);
+            Assert.Equal(16, candidates[3].ToolsVersion);
+            Assert.Equal(@"C:\VS3\Common7\Tools\VsDevCmd.bat", candidates[4].Path);
+            Assert.Equal(16, candidates[4].ToolsVersion);
+            Assert.Equal(5, candidates.Length);
         }
 
         [Fact]
@@ -490,7 +498,7 @@ Microsoft.NETCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
         [Fact]
         public void TestLinuxBuildlessExtractionSuccess()
         {
-            Actions.RunProcess[@"C:\odasa\tools/csharp/Semmle.Extraction.CSharp.Standalone --references:."] = 0;
+            Actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone --references:."] = 0;
             Actions.RunProcess[@"C:\codeql\tools\java/bin/java -jar C:\codeql\csharp/tools/extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
@@ -506,7 +514,7 @@ Microsoft.NETCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
         [Fact]
         public void TestLinuxBuildlessExtractionFailed()
         {
-            Actions.RunProcess[@"C:\odasa\tools/csharp/Semmle.Extraction.CSharp.Standalone --references:."] = 10;
+            Actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone --references:."] = 10;
             Actions.FileExists["csharp.log"] = true;
             Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
@@ -520,7 +528,7 @@ Microsoft.NETCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
         [Fact]
         public void TestLinuxBuildlessExtractionSolution()
         {
-            Actions.RunProcess[@"C:\odasa\tools/csharp/Semmle.Extraction.CSharp.Standalone foo.sln --references:."] = 0;
+            Actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone foo.sln --references:."] = 0;
             Actions.RunProcess[@"C:\codeql\tools\java/bin/java -jar C:\codeql\csharp/tools/extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
@@ -828,7 +836,7 @@ Microsoft.NETCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
         [Fact]
         public void TestSkipNugetBuildless()
         {
-            Actions.RunProcess[@"C:\odasa\tools/csharp/Semmle.Extraction.CSharp.Standalone foo.sln --references:. --skip-nuget"] = 0;
+            Actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone foo.sln --references:. --skip-nuget"] = 0;
             Actions.RunProcess[@"C:\codeql\tools\java/bin/java -jar C:\codeql\csharp/tools/extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"C:\odasa/tools/odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
