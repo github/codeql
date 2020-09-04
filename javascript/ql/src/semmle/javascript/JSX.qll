@@ -15,7 +15,7 @@ import javascript
  * <><h1>Title</h1>Some <b>text</b></>
  * ```
  */
-class JSXNode extends Expr, @jsxelement {
+class JSXNode extends Expr, @jsx_element {
   /** Gets the `i`th element in the body of this element or fragment. */
   Expr getBodyElement(int i) { i >= 0 and result = getChildExpr(-i - 2) }
 

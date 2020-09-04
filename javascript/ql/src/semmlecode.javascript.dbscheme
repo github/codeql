@@ -324,7 +324,7 @@ case @expr.kind of
 | 86 = @named_export_specifier
 | 87 = @exp_expr
 | 88 = @assign_exp_expr
-| 89 = @jsxelement
+| 89 = @jsx_element
 | 90 = @jsx_qualified_name
 | 91 = @jsx_empty_expr
 | 92 = @awaitexpr
@@ -507,7 +507,7 @@ case @property.kind of
 | 9 = @parameter_field
 ;
 
-@property_parent = @obj_expr | @object_pattern | @classdefinition | @jsxelement | @interfacedefinition | @enumdeclaration;
+@property_parent = @obj_expr | @object_pattern | @classdefinition | @jsx_element | @interfacedefinition | @enumdeclaration;
 @property_accessor = @property_getter | @property_setter;
 @call_signature = @function_call_signature | @constructor_call_signature;
 @field = @proper_field | @parameter_field;
