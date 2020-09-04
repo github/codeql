@@ -7941,7 +7941,7 @@
 <dependencies/>
 </relation>
 <relation>
-<name>isAbstractMember</name>
+<name>is_abstract_member</name>
 <cardinality>66</cardinality>
 <columnsizes>
 <e>

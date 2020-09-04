@@ -691,7 +691,7 @@ expr_containers(#20226,#20223)
 literals("I","I",#20226)
 typebind(#20226,#20163)
 is_method(#20220)
-isAbstractMember(#20220)
+is_abstract_member(#20220)
 #20227=*
 entry_cfg_node(#20227,#20001)
 #20228=@"loc,{#10000},1,1,1,0"

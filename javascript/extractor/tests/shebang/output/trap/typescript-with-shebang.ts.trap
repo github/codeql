@@ -108,7 +108,7 @@ hasLocation(#20034,#20017)
 enclosing_stmt(#20034,#20029)
 expr_containers(#20034,#20001)
 literals("x","x",#20034)
-isAbstractMember(#20032)
+is_abstract_member(#20032)
 #20035=*
 typeexprs(#20035,2,#20032,2,"number")
 hasLocation(#20035,#20021)

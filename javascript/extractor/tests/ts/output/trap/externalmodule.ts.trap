@@ -347,7 +347,7 @@ hasLocation(#20112,#20065)
 expr_containers(#20112,#20106)
 literals("I","I",#20112)
 is_method(#20103)
-isAbstractMember(#20103)
+is_abstract_member(#20103)
 #20113=*
 stmts(#20113,33,#20082,2,"export = M;")
 #20114=@"loc,{#10000},8,3,8,13"

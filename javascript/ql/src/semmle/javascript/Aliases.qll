@@ -155,3 +155,8 @@ deprecated predicate isMethod(Property prop) { is_method(prop) }
  * Use `MemberDeclaration#isStatic()` instead.
  */ 
 deprecated predicate isStatic(Property prop) { is_static(prop) }
+/**
+ * Alias for the predicate `is_abstract_member` defined in the .dbscheme.
+ * Use `MemberDeclaration#isAbstract()` instead.
+ */ 
+deprecated predicate isAbstractMember(Property prop) { is_abstract_member(prop) }

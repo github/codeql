@@ -479,7 +479,7 @@ class MemberDeclaration extends @property, Documentable {
    *
    * Abstract members occur only in TypeScript.
    */
-  predicate isAbstract() { isAbstractMember(this) }
+  predicate isAbstract() { is_abstract_member(this) }
 
   /**
    * Holds if this member is public, either because it has no access modifier or
