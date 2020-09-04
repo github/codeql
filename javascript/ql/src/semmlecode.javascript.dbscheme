@@ -798,14 +798,14 @@ comments (unique int id: @comment,
           varchar(900) tostring: string ref);
 
 case @comment.kind of
-  0 = @slashslashcomment
+  0 = @slashslash_comment
 | 1 = @slashstarcomment
 | 2 = @doccomment
 | 3 = @html_comment_start
 | 4 = @htmlcommentend;
 
 @html_comment = @html_comment_start | @htmlcommentend;
-@line_comment = @slashslashcomment | @html_comment;
+@line_comment = @slashslash_comment | @html_comment;
 @block_comment = @slashstarcomment | @doccomment;
 
 // source lines

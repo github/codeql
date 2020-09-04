@@ -98,7 +98,7 @@ class HtmlCommentEnd extends @htmlcommentend, HtmlLineComment { }
  * // a line comment
  * ```
  */
-class SlashSlashComment extends @slashslashcomment, LineComment { }
+class SlashSlashComment extends @slashslash_comment, LineComment { }
 
 /**
  * A block comment (which may be a JSDoc comment).
