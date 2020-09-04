@@ -141,7 +141,7 @@ class EmptyStmt extends @empty_stmt, Stmt { }
  * }
  * ```
  */
-class BlockStmt extends @blockstmt, Stmt {
+class BlockStmt extends @block_stmt, Stmt {
   /** Gets the `i`th statement in this block. */
   Stmt getStmt(int i) { result = getChildStmt(i) }
 
