@@ -572,7 +572,7 @@ class ReExportDefaultSpecifier extends ExportDefaultSpecifier {
  *   from 'a';
  * ```
  */
-class ExportNamespaceSpecifier extends ExportSpecifier, @exportnamespacespecifier { }
+class ExportNamespaceSpecifier extends ExportSpecifier, @export_namespace_specifier { }
 
 /**
  * An export declaration that re-exports declarations from another module.
