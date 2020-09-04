@@ -294,7 +294,7 @@ class ClassDeclStmt extends @class_decl_stmt, ClassDefinition, Stmt {
  * };
  * ```
  */
-class ClassExpr extends @classexpr, ClassDefinition, Expr {
+class ClassExpr extends @class_expr, ClassDefinition, Expr {
   override string getName() {
     result = ClassDefinition.super.getName()
     or

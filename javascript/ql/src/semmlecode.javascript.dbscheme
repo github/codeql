@@ -315,7 +315,7 @@ case @expr.kind of
 | 77 = @legacy_letexpr
 | 78 = @var_decl
 | 79 = @proper_varaccess
-| 80 = @classexpr
+| 80 = @class_expr
 | 81 = @superexpr
 | 82 = @newtargetexpr
 | 83 = @namedimportspecifier
@@ -393,7 +393,7 @@ case @expr.kind of
 
 @typeassertion = @astypeassertion | @prefixtypeassertion;
 
-@classdefinition = @class_decl_stmt | @classexpr;
+@classdefinition = @class_decl_stmt | @class_expr;
 @interfacedefinition = @interfacedeclaration | @interface_typeexpr;
 @class_or_interface = @classdefinition | @interfacedefinition;
 
