@@ -42,7 +42,7 @@ class ScopeElement extends ASTNode {
 }
 
 /** The global scope. */
-class GlobalScope extends Scope, @globalscope {
+class GlobalScope extends Scope, @global_scope {
   override string toString() { result = "global scope" }
 }
 

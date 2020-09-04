@@ -409,7 +409,7 @@ scopes (unique int id: @scope,
         int kind: int ref);
 
 case @scope.kind of
-   0 = @globalscope
+   0 = @global_scope
 |  1 = @functionscope
 |  2 = @catchscope
 |  3 = @modulescope
