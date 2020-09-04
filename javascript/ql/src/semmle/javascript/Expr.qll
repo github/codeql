@@ -1639,7 +1639,7 @@ class ModExpr extends @mod_expr, BinaryExpr {
  * p ** 10
  * ```
  */
-class ExpExpr extends @expexpr, BinaryExpr {
+class ExpExpr extends @exp_expr, BinaryExpr {
   override string getOperator() { result = "**" }
 }
 
