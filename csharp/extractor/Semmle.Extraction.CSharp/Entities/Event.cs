@@ -60,7 +60,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 TypeMention.Create(Context, syntaxType, this, type);
         }
 
-        public static Event Create(Context cx, IEventSymbol symbol) => EventFactory.Instance.CreateEntity(cx, symbol);
+        public static Event Create(Context cx, IEventSymbol symbol) => EventFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
         class EventFactory : ICachedEntityFactory<IEventSymbol, Event>
         {

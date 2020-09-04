@@ -12,7 +12,7 @@ calling convention for x86, it would be whatever value was in the AX/EAX registe
 assuming the function had a non-float return type that can fit in a machine word.
 </p>
 
-<include src="dataFlowWarning.qhelp" />
+<include src="../../Critical/dataFlowWarning.qhelp" />
 
 <!--/*FALSEPOSITIVE_WARNING*/-->
 

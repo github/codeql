@@ -76,7 +76,7 @@ namespace Semmle.Extraction.CSharp
                 return ExitCode.Ok;
             }
 
-            using (var analyser = new Analyser(new LogProgressMonitor(logger), logger))
+            using (var analyser = new Analyser(new LogProgressMonitor(logger), logger, commandLineArguments.AssemblySensitiveTrap))
             using (var references = new BlockingCollection<MetadataReference>())
             {
                 try
@@ -318,7 +318,7 @@ namespace Semmle.Extraction.CSharp
             ILogger logger,
             CommonOptions options)
         {
-            using (var analyser = new Analyser(pm, logger))
+            using (var analyser = new Analyser(pm, logger, false))
             using (var references = new BlockingCollection<MetadataReference>())
             {
                 try

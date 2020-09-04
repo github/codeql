@@ -319,28 +319,12 @@ private predicate defDependsOnDef(
   // Definitions with a defining value.
   exists(Expr expr | assignmentDef(def, v, expr) | exprDependsOnDef(expr, srcDef, srcVar))
   or
-  exists(AssignAddExpr assignAdd |
-    def = assignAdd and
+  // Assignment operations with a defining value
+  exists(AssignOperation assignOp |
+    analyzableExpr(assignOp) and
+    def = assignOp and
     def.getAVariable() = v and
-    exprDependsOnDef(assignAdd.getAnOperand(), srcDef, srcVar)
-  )
-  or
-  exists(AssignSubExpr assignSub |
-    def = assignSub and
-    def.getAVariable() = v and
-    exprDependsOnDef(assignSub.getAnOperand(), srcDef, srcVar)
-  )
-  or
-  exists(UnsignedAssignMulExpr assignMul |
-    def = assignMul and
-    def.getAVariable() = v and
-    exprDependsOnDef(assignMul.getAnOperand(), srcDef, srcVar)
-  )
-  or
-  exists(AssignMulByConstantExpr assignMul |
-    def = assignMul and
-    def.getAVariable() = v and
-    exprDependsOnDef(assignMul.getLValue(), srcDef, srcVar)
+    exprDependsOnDef(assignOp, srcDef, srcVar)
   )
   or
   exists(CrementOperation crem |
@@ -1160,6 +1144,17 @@ private float getPhiLowerBounds(StackVariable v, RangeSsaDefinition phi) {
     if guardLB > defLB then result = guardLB else result = defLB
   )
   or
+  exists(VariableAccess access, float neConstant, float lower |
+    isNEPhi(v, phi, access, neConstant) and
+    lower = getFullyConvertedLowerBounds(access) and
+    if lower = neConstant then result = lower + 1 else result = lower
+  )
+  or
+  exists(VariableAccess access |
+    isUnsupportedGuardPhi(v, phi, access) and
+    result = getFullyConvertedLowerBounds(access)
+  )
+  or
   result = getDefLowerBounds(phi.getAPhiInput(v), v)
 }
 
@@ -1177,6 +1172,17 @@ private float getPhiUpperBounds(StackVariable v, RangeSsaDefinition phi) {
     if guardUB < defUB then result = guardUB else result = defUB
   )
   or
+  exists(VariableAccess access, float neConstant, float upper |
+    isNEPhi(v, phi, access, neConstant) and
+    upper = getFullyConvertedUpperBounds(access) and
+    if upper = neConstant then result = upper - 1 else result = upper
+  )
+  or
+  exists(VariableAccess access |
+    isUnsupportedGuardPhi(v, phi, access) and
+    result = getFullyConvertedUpperBounds(access)
+  )
+  or
   result = getDefUpperBounds(phi.getAPhiInput(v), v)
 }
 
@@ -1185,42 +1191,11 @@ private float getDefLowerBoundsImpl(RangeSsaDefinition def, StackVariable v) {
   // Definitions with a defining value.
   exists(Expr expr | assignmentDef(def, v, expr) | result = getFullyConvertedLowerBounds(expr))
   or
-  exists(AssignAddExpr assignAdd, RangeSsaDefinition nextDef, float lhsLB, float rhsLB |
-    def = assignAdd and
-    assignAdd.getLValue() = nextDef.getAUse(v) and
-    lhsLB = getDefLowerBounds(nextDef, v) and
-    rhsLB = getFullyConvertedLowerBounds(assignAdd.getRValue()) and
-    result = addRoundingDown(lhsLB, rhsLB)
-  )
-  or
-  exists(AssignSubExpr assignSub, RangeSsaDefinition nextDef, float lhsLB, float rhsUB |
-    def = assignSub and
-    assignSub.getLValue() = nextDef.getAUse(v) and
-    lhsLB = getDefLowerBounds(nextDef, v) and
-    rhsUB = getFullyConvertedUpperBounds(assignSub.getRValue()) and
-    result = addRoundingDown(lhsLB, -rhsUB)
-  )
-  or
-  exists(UnsignedAssignMulExpr assignMul, RangeSsaDefinition nextDef, float lhsLB, float rhsLB |
-    def = assignMul and
-    assignMul.getLValue() = nextDef.getAUse(v) and
-    lhsLB = getDefLowerBounds(nextDef, v) and
-    rhsLB = getFullyConvertedLowerBounds(assignMul.getRValue()) and
-    result = lhsLB * rhsLB
-  )
-  or
-  exists(AssignMulByPositiveConstantExpr assignMul, RangeSsaDefinition nextDef, float lhsLB |
-    def = assignMul and
-    assignMul.getLValue() = nextDef.getAUse(v) and
-    lhsLB = getDefLowerBounds(nextDef, v) and
-    result = lhsLB * assignMul.getConstant()
-  )
-  or
-  exists(AssignMulByNegativeConstantExpr assignMul, RangeSsaDefinition nextDef, float lhsUB |
-    def = assignMul and
-    assignMul.getLValue() = nextDef.getAUse(v) and
-    lhsUB = getDefUpperBounds(nextDef, v) and
-    result = lhsUB * assignMul.getConstant()
+  // Assignment operations with a defining value
+  exists(AssignOperation assignOp |
+    def = assignOp and
+    assignOp.getLValue() = v.getAnAccess() and
+    result = getTruncatedLowerBounds(assignOp)
   )
   or
   exists(IncrementOperation incr, float newLB |
@@ -1249,42 +1224,11 @@ private float getDefUpperBoundsImpl(RangeSsaDefinition def, StackVariable v) {
   // Definitions with a defining value.
   exists(Expr expr | assignmentDef(def, v, expr) | result = getFullyConvertedUpperBounds(expr))
   or
-  exists(AssignAddExpr assignAdd, RangeSsaDefinition nextDef, float lhsUB, float rhsUB |
-    def = assignAdd and
-    assignAdd.getLValue() = nextDef.getAUse(v) and
-    lhsUB = getDefUpperBounds(nextDef, v) and
-    rhsUB = getFullyConvertedUpperBounds(assignAdd.getRValue()) and
-    result = addRoundingUp(lhsUB, rhsUB)
-  )
-  or
-  exists(AssignSubExpr assignSub, RangeSsaDefinition nextDef, float lhsUB, float rhsLB |
-    def = assignSub and
-    assignSub.getLValue() = nextDef.getAUse(v) and
-    lhsUB = getDefUpperBounds(nextDef, v) and
-    rhsLB = getFullyConvertedLowerBounds(assignSub.getRValue()) and
-    result = addRoundingUp(lhsUB, -rhsLB)
-  )
-  or
-  exists(UnsignedAssignMulExpr assignMul, RangeSsaDefinition nextDef, float lhsUB, float rhsUB |
-    def = assignMul and
-    assignMul.getLValue() = nextDef.getAUse(v) and
-    lhsUB = getDefUpperBounds(nextDef, v) and
-    rhsUB = getFullyConvertedUpperBounds(assignMul.getRValue()) and
-    result = lhsUB * rhsUB
-  )
-  or
-  exists(AssignMulByPositiveConstantExpr assignMul, RangeSsaDefinition nextDef, float lhsUB |
-    def = assignMul and
-    assignMul.getLValue() = nextDef.getAUse(v) and
-    lhsUB = getDefUpperBounds(nextDef, v) and
-    result = lhsUB * assignMul.getConstant()
-  )
-  or
-  exists(AssignMulByNegativeConstantExpr assignMul, RangeSsaDefinition nextDef, float lhsLB |
-    def = assignMul and
-    assignMul.getLValue() = nextDef.getAUse(v) and
-    lhsLB = getDefLowerBounds(nextDef, v) and
-    result = lhsLB * assignMul.getConstant()
+  // Assignment operations with a defining value
+  exists(AssignOperation assignOp |
+    def = assignOp and
+    assignOp.getLValue() = v.getAnAccess() and
+    result = getTruncatedUpperBounds(assignOp)
   )
   or
   exists(IncrementOperation incr, float newUB |
@@ -1501,22 +1445,13 @@ private predicate linearBoundFromGuard(
   //   1. x <= upperbound(RHS)
   //   2. x >= lowerbound(RHS)
   //
-  // For x != RHS, we create trivial bounds:
-  //
-  //   1. x <= typeUpperBound(RHS.getUnspecifiedType())
-  //   2. x >= typeLowerBound(RHS.getUnspecifiedType())
-  //
-  exists(Expr lhs, Expr rhs, boolean isEQ |
+  exists(Expr lhs, Expr rhs |
     linearAccess(lhs, v, p, q) and
-    eqOpWithSwapAndNegate(guard, lhs, rhs, isEQ, branch) and
+    eqOpWithSwapAndNegate(guard, lhs, rhs, true, branch) and
+    getBounds(rhs, boundValue, isLowerBound) and
     strictness = Nonstrict()
-  |
-    // True branch
-    isEQ = true and getBounds(rhs, boundValue, isLowerBound)
-    or
-    // False branch: set the bounds to the min/max for the type.
-    isEQ = false and exprTypeBounds(rhs, boundValue, isLowerBound)
   )
+  // x != RHS and !x are handled elsewhere
 }
 
 /** Utility for `linearBoundFromGuard`. */
@@ -1531,6 +1466,42 @@ private predicate exprTypeBounds(Expr expr, float boundValue, boolean isLowerBou
   isLowerBound = true and boundValue = exprMinVal(expr.getFullyConverted())
   or
   isLowerBound = false and boundValue = exprMaxVal(expr.getFullyConverted())
+}
+
+/**
+ * Holds if `(v, phi)` ensures that `access` is not equal to `neConstant`. For
+ * example, the condition `if (x + 1 != 3)` ensures that `x` is not equal to 2.
+ * Only integral types are supported.
+ */
+private predicate isNEPhi(
+  Variable v, RangeSsaDefinition phi, VariableAccess access, float neConstant
+) {
+  exists(
+    ComparisonOperation cmp, boolean branch, Expr linearExpr, Expr rExpr, float p, float q, float r
+  |
+    access.getTarget() = v and
+    phi.isGuardPhi(access, cmp, branch) and
+    eqOpWithSwapAndNegate(cmp, linearExpr, rExpr, false, branch) and
+    v.getUnspecifiedType() instanceof IntegralOrEnumType and // Float `!=` is too imprecise
+    r = getValue(rExpr).toFloat() and
+    linearAccess(linearExpr, access, p, q) and
+    neConstant = (r - q) / p
+  )
+}
+
+/**
+ * Holds if `(v, phi)` constrains the value of `access` but in a way that
+ * doesn't allow this library to constrain the upper or lower bounds of
+ * `access`. An example is `if (x != y)` if neither `x` nor `y` is a
+ * compile-time constant.
+ */
+private predicate isUnsupportedGuardPhi(Variable v, RangeSsaDefinition phi, VariableAccess access) {
+  exists(ComparisonOperation cmp, boolean branch |
+    access.getTarget() = v and
+    phi.isGuardPhi(access, cmp, branch) and
+    eqOpWithSwapAndNegate(cmp, _, _, false, branch) and
+    not isNEPhi(v, phi, access, _)
+  )
 }
 
 cached

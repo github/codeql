@@ -21,7 +21,7 @@ void test_range_based_for_loop_vector(int source1) {
 	}
 
 	for(std::vector<int>::iterator it = v.begin(); it != v.end(); ++it) {
-		sink(*it); // tainted [NOT DETECTED]
+		sink(*it); // tainted
 	}
 
 	for(int& x : v) {
@@ -75,14 +75,14 @@ void test_element_taint(int x) {
 	sink(v6); // tainted
 	sink(v6.data()[2]); // tainted
 
+
 	{
-		const std::vector<int> &v7c = v7; // (workaround because our iterators don't convert to const_iterator)
-		std::vector<int>::const_iterator it = v7c.begin();
+		std::vector<int>::const_iterator it = v7.begin();
 		v7.insert(it, source());
 	}
-	sink(v7); // tainted [NOT DETECTED]
-	sink(v7.front()); // tainted [NOT DETECTED]
-	sink(v7.back());
+	sink(v7); // tainted
+	sink(v7.front()); // tainted
+	sink(v7.back()); // [FALSE POSITIVE]
 
 	{
 		const std::vector<int> &v8c = v8;
@@ -255,10 +255,10 @@ void test_vector_assign() {
 		v6.assign(i1, i2);
 
 		sink(v4);
-		sink(v5); // tainted [NOT DETECTED]
-		sink(i1); // tainted [NOT DETECTED]
-		sink(i2); // tainted [NOT DETECTED]
-		sink(v6); // tainted [NOT DETECTED]
+		sink(v5); // tainted
+		sink(i1); // tainted
+		sink(i2); // tainted
+		sink(v6); // tainted
 	}
 
 	{
@@ -290,4 +290,38 @@ void test_data_more() {
 	sink(v2); // tainted
 	sink(v2.data()); // tainted
 	sink(v2.data()[2]); // tainted
+}
+
+void sink(std::vector<int>::iterator);
+
+void test_vector_insert() {
+	std::vector<int> a;
+	std::vector<int> b;
+	std::vector<int> c;
+	std::vector<int> d;
+
+	d.push_back(source());
+
+	sink(a.insert(a.end(), b.begin(), b.end()));
+	sink(a);
+
+	sink(c.insert(c.end(), d.begin(), d.end())); // tainted
+	sink(c); // tainted
+
+	sink(d.insert(d.end(), a.begin(), a.end())); // tainted
+	sink(d); // tainted
+}
+
+void test_constructors_more() {
+	std::vector<int> v1;
+	std::vector<int> v2;
+	v2.push_back(source());
+
+	std::vector<int> v3(v1.begin(), v1.end());
+	std::vector<int> v4(v2.begin(), v2.end());
+
+	sink(v1);
+	sink(v2); // tainted
+	sink(v3);
+	sink(v4); // tainted
 }

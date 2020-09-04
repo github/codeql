@@ -50,7 +50,7 @@ As an aside, note that the following query leads to a compile-time error::
     select i
 
 In theory, it would have infinitely many results, as the variable ``i`` is not constrained to a
-finite number of possible values. See :ref:`binding` for more information.
+finite number of possible values. For more informaion, see ":ref:`binding`."
 
 .. index:: variable; free, variable; bound
 .. _free-variables:
@@ -116,7 +116,7 @@ a non-negative number, then the final formula holds. On the other hand, if ``x``
 ``-9`` for example, then the formula doesn't hold. The variable ``y`` doesn't affect whether
 the formula holds or not.
 
-For more information about how assignments to free variables are computed, see :ref:`evaluation`.
+For more information about how assignments to free variables are computed, see ":ref:`evaluation`."
 
 .. rubric:: Footnotes
 

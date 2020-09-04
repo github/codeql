@@ -15,6 +15,43 @@ class StdBasicString extends TemplateClass {
 }
 
 /**
+ * Additional model for `std::string` constructors that reference the character
+ * type of the container, or an iterator.  For example construction from
+ * iterators:
+ * ```
+ * std::string b(a.begin(), a.end());
+ * ```
+ */
+class StdStringConstructor extends Constructor, TaintFunction {
+  StdStringConstructor() { this.getDeclaringType().hasQualifiedName("std", "basic_string") }
+
+  /**
+   * Gets the index of a parameter to this function that is a string (or
+   * character).
+   */
+  int getAStringParameterIndex() {
+    getParameter(result).getType() instanceof PointerType or // e.g. `std::basic_string::CharT *`
+    getParameter(result).getType() instanceof ReferenceType or // e.g. `std::basic_string &`
+    getParameter(result).getUnspecifiedType() =
+      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. `std::basic_string::CharT`
+  }
+
+  /**
+   * Gets the index of a parameter to this function that is an iterator.
+   */
+  int getAnIteratorParameterIndex() { getParameter(result).getType() instanceof Iterator }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // taint flow from any parameter of the value type to the returned object
+    (
+      input.isParameterDeref(getAStringParameterIndex()) or
+      input.isParameter(getAnIteratorParameterIndex())
+    ) and
+    output.isReturnValue() // TODO: this should be `isQualifierObject` by our current definitions, but that flow is not yet supported.
+  }
+}
+
+/**
  * The `std::string` function `c_str`.
  */
 class StdStringCStr extends TaintFunction {
@@ -79,8 +116,8 @@ class StdStringAppend extends TaintFunction {
    * character).
    */
   int getAStringParameterIndex() {
-    getParameter(result).getType() instanceof PointerType or
-    getParameter(result).getType() instanceof ReferenceType or
+    getParameter(result).getType() instanceof PointerType or // e.g. `std::basic_string::CharT *`
+    getParameter(result).getType() instanceof ReferenceType or // e.g. `std::basic_string &`
     getParameter(result).getUnspecifiedType() =
       getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. `std::basic_string::CharT`
   }
@@ -115,15 +152,23 @@ class StdStringAssign extends TaintFunction {
    * character).
    */
   int getAStringParameterIndex() {
-    getParameter(result).getType() instanceof PointerType or
-    getParameter(result).getType() instanceof ReferenceType or
+    getParameter(result).getType() instanceof PointerType or // e.g. `std::basic_string::CharT *`
+    getParameter(result).getType() instanceof ReferenceType or // e.g. `std::basic_string &`
     getParameter(result).getUnspecifiedType() =
       getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. `std::basic_string::CharT`
   }
 
+  /**
+   * Gets the index of a parameter to this function that is an iterator.
+   */
+  int getAnIteratorParameterIndex() { getParameter(result).getType() instanceof Iterator }
+
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from parameter to string itself (qualifier) and return value
-    input.isParameterDeref(getAStringParameterIndex()) and
+    (
+      input.isParameterDeref(getAStringParameterIndex()) or
+      input.isParameter(getAnIteratorParameterIndex())
+    ) and
     (
       output.isQualifierObject() or
       output.isReturnValueDeref()
@@ -137,14 +182,9 @@ class StdStringAssign extends TaintFunction {
  */
 class StdStringBeginEnd extends TaintFunction {
   StdStringBeginEnd() {
-    this.hasQualifiedName("std", "basic_string", "begin") or
-    this.hasQualifiedName("std", "basic_string", "cbegin") or
-    this.hasQualifiedName("std", "basic_string", "rbegin") or
-    this.hasQualifiedName("std", "basic_string", "crbegin") or
-    this.hasQualifiedName("std", "basic_string", "end") or
-    this.hasQualifiedName("std", "basic_string", "cend") or
-    this.hasQualifiedName("std", "basic_string", "rend") or
-    this.hasQualifiedName("std", "basic_string", "crend")
+    this
+        .hasQualifiedName("std", "basic_string",
+          ["begin", "cbegin", "rbegin", "crbegin", "end", "cend", "rend", "crend"])
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

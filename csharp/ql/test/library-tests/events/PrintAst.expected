@@ -6,10 +6,10 @@ events.cs:
 #    7|       1: [Parameter] e
 #   10|   2: [Class] Button
 #   13|     5: [Event] Click
-#   13|       3: [RemoveEventAccessor] remove_Click
+#   13|       3: [AddEventAccessor] add_Click
 #-----|         2: (Parameters)
 #   13|           0: [Parameter] value
-#   13|       3: [AddEventAccessor] add_Click
+#   13|       3: [RemoveEventAccessor] remove_Click
 #-----|         2: (Parameters)
 #   13|           0: [Parameter] value
 #   15|     6: [Method] OnClick

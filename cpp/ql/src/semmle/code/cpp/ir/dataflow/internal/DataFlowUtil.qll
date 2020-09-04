@@ -44,9 +44,14 @@ class Node extends TIRDataFlowNode {
   Operand asOperand() { result = this.(OperandNode).getOperand() }
 
   /**
-   * Gets the non-conversion expression corresponding to this node, if any. If
-   * this node strictly (in the sense of `asConvertedExpr`) corresponds to a
-   * `Conversion`, then the result is that `Conversion`'s non-`Conversion` base
+   * Gets the non-conversion expression corresponding to this node, if any.
+   * This predicate only has a result on nodes that represent the value of
+   * evaluating the expression. For data flowing _out of_ an expression, like
+   * when an argument is passed by reference, use `asDefiningArgument` instead
+   * of `asExpr`.
+   *
+   * If this node strictly (in the sense of `asConvertedExpr`) corresponds to
+   * a `Conversion`, then the result is the underlying non-`Conversion` base
    * expression.
    */
   Expr asExpr() { result = this.(ExprNode).getExpr() }
@@ -57,7 +62,13 @@ class Node extends TIRDataFlowNode {
    */
   Expr asConvertedExpr() { result = this.(ExprNode).getConvertedExpr() }
 
-  /** Gets the argument that defines this `DefinitionByReferenceNode`, if any. */
+  /**
+   * Gets the argument that defines this `DefinitionByReferenceNode`, if any.
+   * This predicate should be used instead of `asExpr` when referring to the
+   * value of a reference argument _after_ the call has returned. For example,
+   * in `f(&x)`, this predicate will have `&x` as its result for the `Node`
+   * that represents the new value of `x`.
+   */
   Expr asDefiningArgument() { result = this.(DefinitionByReferenceNode).getArgument() }
 
   /** Gets the positional parameter corresponding to this node, if any. */
@@ -392,7 +403,7 @@ private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNod
 class DefinitionByReferenceNode extends InstructionNode {
   override WriteSideEffectInstruction instr;
 
-  /** Gets the argument corresponding to this node. */
+  /** Gets the unconverted argument corresponding to this node. */
   Expr getArgument() {
     result =
       instr
@@ -476,20 +487,26 @@ class VariableNode extends Node, TVariableNode {
 InstructionNode instructionNode(Instruction instr) { result.getInstruction() = instr }
 
 /**
+ * DEPRECATED: use `definitionByReferenceNodeFromArgument` instead.
+ *
  * Gets the `Node` corresponding to a definition by reference of the variable
  * that is passed as `argument` of a call.
  */
-DefinitionByReferenceNode definitionByReferenceNode(Expr e) { result.getArgument() = e }
+deprecated DefinitionByReferenceNode definitionByReferenceNode(Expr e) { result.getArgument() = e }
 
 /**
- * Gets a `Node` corresponding to `e` or any of its conversions. There is no
- * result if `e` is a `Conversion`.
+ * Gets the `Node` corresponding to the value of evaluating `e` or any of its
+ * conversions. There is no result if `e` is a `Conversion`. For data flowing
+ * _out of_ an expression, like when an argument is passed by reference, use
+ * `definitionByReferenceNodeFromArgument` instead.
  */
 ExprNode exprNode(Expr e) { result.getExpr() = e }
 
 /**
- * Gets the `Node` corresponding to `e`, if any. Here, `e` may be a
- * `Conversion`.
+ * Gets the `Node` corresponding to the value of evaluating `e`. Here, `e` may
+ * be a `Conversion`. For data flowing _out of_ an expression, like when an
+ * argument is passed by reference, use
+ * `definitionByReferenceNodeFromArgument` instead.
  */
 ExprNode convertedExprNode(Expr e) { result.getConvertedExpr() = e }
 
@@ -497,6 +514,14 @@ ExprNode convertedExprNode(Expr e) { result.getConvertedExpr() = e }
  * Gets the `Node` corresponding to the value of `p` at function entry.
  */
 ExplicitParameterNode parameterNode(Parameter p) { result.getParameter() = p }
+
+/**
+ * Gets the `Node` corresponding to a definition by reference of the variable
+ * that is passed as unconverted `argument` of a call.
+ */
+DefinitionByReferenceNode definitionByReferenceNodeFromArgument(Expr argument) {
+  result.getArgument() = argument
+}
 
 /** Gets the `VariableNode` corresponding to the variable `v`. */
 VariableNode variableNode(Variable v) { result.getVariable() = v }

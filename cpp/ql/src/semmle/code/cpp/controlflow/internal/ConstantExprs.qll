@@ -1,5 +1,6 @@
 import cpp
 private import PrimitiveBasicBlocks
+private import semmle.code.cpp.controlflow.internal.CFG
 
 private class Node = ControlFlowNodeBase;
 
@@ -153,8 +154,8 @@ private predicate nonAnalyzableFunction(Function f) {
  */
 private predicate impossibleFalseEdge(Expr condition, Node succ) {
   conditionAlwaysTrue(condition) and
-  falsecond_base(condition, succ) and
-  not truecond_base(condition, succ)
+  qlCFGFalseSuccessor(condition, succ) and
+  not qlCFGTrueSuccessor(condition, succ)
 }
 
 /**
@@ -162,8 +163,8 @@ private predicate impossibleFalseEdge(Expr condition, Node succ) {
  */
 private predicate impossibleTrueEdge(Expr condition, Node succ) {
   conditionAlwaysFalse(condition) and
-  truecond_base(condition, succ) and
-  not falsecond_base(condition, succ)
+  qlCFGTrueSuccessor(condition, succ) and
+  not qlCFGFalseSuccessor(condition, succ)
 }
 
 /**
@@ -863,9 +864,9 @@ library class ConditionEvaluator extends ExprEvaluator {
   ConditionEvaluator() { this = 0 }
 
   override predicate interesting(Expr e) {
-    falsecond_base(e, _)
+    qlCFGFalseSuccessor(e, _)
     or
-    truecond_base(e, _)
+    qlCFGTrueSuccessor(e, _)
   }
 }
 

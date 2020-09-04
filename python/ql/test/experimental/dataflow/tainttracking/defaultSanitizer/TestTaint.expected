@@ -1,0 +1,5 @@
+| test.py:16 | fail | const_eq_clears_taint | ts |
+| test.py:18 | ok   | const_eq_clears_taint | ts |
+| test.py:24 | fail | const_eq_clears_taint2 | ts |
+| test.py:29 | ok   | non_const_eq_preserves_taint | ts |
+| test.py:31 | ok   | non_const_eq_preserves_taint | ts |

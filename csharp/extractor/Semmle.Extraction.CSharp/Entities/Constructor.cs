@@ -104,7 +104,7 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 case MethodKind.StaticConstructor:
                 case MethodKind.Constructor:
-                    return ConstructorFactory.Instance.CreateEntity(cx, constructor);
+                    return ConstructorFactory.Instance.CreateEntityFromSymbol(cx, constructor);
                 default:
                     throw new InternalError(constructor, "Attempt to create a Constructor from a symbol that isn't a constructor");
             }

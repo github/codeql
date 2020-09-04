@@ -1,6 +1,16 @@
 
 typedef unsigned long size_t;
 
+template<class T>
+struct remove_const { typedef T type; };
+
+template<class T>
+struct remove_const<const T> { typedef T type; };
+
+// `remove_const_t<T>` removes any `const` specifier from `T`
+template<class T>
+using remove_const_t = typename remove_const<T>::type;
+
 // --- iterator ---
 
 namespace std {
@@ -15,6 +25,9 @@ namespace std {
 			  class reference_type = value_type&>
 	struct iterator {
 		typedef Category iterator_category;
+
+		iterator();
+		iterator(iterator<Category, remove_const_t<value_type> > const &other); // non-const -> const conversion constructor
 
 		iterator &operator++();
 		iterator operator++(int);
@@ -45,13 +58,12 @@ namespace std
 
 	typedef size_t streamsize;
 
-
 	template <class T> class allocator {
 	public:
 		allocator() throw();
 		typedef size_t size_type;
 	};
-	
+
 	template<class charT, class traits = char_traits<charT>, class Allocator = allocator<charT> >
 	class basic_string {
 	public:
@@ -63,6 +75,7 @@ namespace std
 
 		explicit basic_string(const Allocator& a = Allocator());
 		basic_string(const charT* s, const Allocator& a = Allocator());
+		template<class InputIterator> basic_string(InputIterator begin, InputIterator end, const Allocator& a = Allocator());
 
 		const charT* c_str() const;
 		charT* data() noexcept;
@@ -87,12 +100,15 @@ namespace std
 		basic_string& append(const basic_string& str);
 		basic_string& append(const charT* s);
 		basic_string& append(size_type n, charT c);
-		template<class InputIterator>
-		/* constexpr */ basic_string& append(InputIterator first, InputIterator last);
+		template<class InputIterator> basic_string& append(InputIterator first, InputIterator last); 
 		basic_string& assign(const basic_string& str);
 		basic_string& assign(size_type n, charT c);
+		template<class InputIterator> basic_string& assign(InputIterator first, InputIterator last);
 		basic_string& insert(size_type pos, const basic_string& str);
 		basic_string& insert(size_type pos, size_type n, charT c);
+		basic_string& insert(size_type pos, const charT* s);
+		iterator insert(const_iterator p, size_type n, charT c);
+		template<class InputIterator> iterator insert(const_iterator p, InputIterator first, InputIterator last); 
 		basic_string& replace(size_type pos1, size_type n1, const basic_string& str);
 		basic_string& replace(size_type pos1, size_type n1, size_type n2, charT c);
 		size_type copy(charT* s, size_type n, size_type pos = 0) const;
@@ -156,7 +172,10 @@ namespace std {
 		vector() noexcept(noexcept(Allocator())) : vector(Allocator()) { }
 		explicit vector(const Allocator&) noexcept;
 		explicit vector(size_type n, const Allocator& = Allocator());
-		vector(size_type n, const T& value, const Allocator& = Allocator()); 
+		vector(size_type n, const T& value, const Allocator& = Allocator());
+		template<class InputIterator, class IteratorCategory = typename InputIterator::iterator_category> vector(InputIterator first, InputIterator last, const Allocator& = Allocator());
+			// use of `iterator_category` makes sure InputIterator is (probably) an iterator, and not an `int` or
+			// similar that should match a different overload (SFINAE).
 		~vector();
 
 		vector& operator=(const vector& x);
@@ -191,6 +210,7 @@ namespace std {
 		iterator insert(const_iterator position, const T& x);
 		iterator insert(const_iterator position, T&& x);
 		iterator insert(const_iterator position, size_type n, const T& x);
+		template<class InputIterator> iterator insert(const_iterator position, InputIterator first, InputIterator last);
 
 		void swap(vector&) noexcept/*(allocator_traits<Allocator>::propagate_on_container_swap::value || allocator_traits<Allocator>::is_always_equal::value)*/;
 

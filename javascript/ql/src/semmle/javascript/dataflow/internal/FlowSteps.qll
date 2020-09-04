@@ -71,6 +71,8 @@ predicate localExceptionStep(DataFlow::Node pred, DataFlow::Node succ) {
  */
 predicate localExceptionStepWithAsyncFlag(DataFlow::Node pred, DataFlow::Node succ, boolean async) {
   exists(DataFlow::Node target | target = getThrowTarget(pred) |
+    // this also covers generators - as the behavior of exceptions is close enough to the behavior of ordinary
+    // functions when it comes to exceptions (assuming that the iterator does not cross function boundaries).
     async = false and
     succ = target and
     not succ = any(DataFlow::FunctionNode f | f.getFunction().isAsync()).getExceptionalReturn()

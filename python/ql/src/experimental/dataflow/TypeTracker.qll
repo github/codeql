@@ -1,8 +1,8 @@
 /** Step Summaries and Type Tracking */
 
-import python
-import internal.DataFlowPublic
-import internal.DataFlowPrivate
+private import python
+private import internal.DataFlowPublic
+private import internal.DataFlowPrivate
 
 /** Any string that may appear as the name of an attribute or access path. */
 class AttributeName extends string {
@@ -144,7 +144,7 @@ private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalAttributeN
  * It is recommended that all uses of this type are written in the following form,
  * for tracking some type `myType`:
  * ```
- * Node myType(DataFlow::TypeTracker t) {
+ * DataFlow::Node myType(DataFlow::TypeTracker t) {
  *   t.start() and
  *   result = < source of myType >
  *   or
@@ -153,7 +153,7 @@ private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalAttributeN
  *   )
  * }
  *
- * DataFlow::SourceNode myType() { result = myType(DataFlow::TypeTracker::end()) }
+ * DataFlow::Node myType() { result = myType(DataFlow::TypeTracker::end()) }
  * ```
  *
  * Instead of `result = myType(t2).track(t2, t)`, you can also use the equivalent
@@ -279,4 +279,11 @@ class TypeTracker extends TTypeTracker {
     EssaFlow::essaFlowStep(nodeFrom, nodeTo) and
     result = this
   }
+}
+
+module TypeTracker {
+  /**
+   * Gets a valid end point of type tracking.
+   */
+  TypeTracker end() { result.end() }
 }

@@ -34,12 +34,12 @@ This query reports flow paths which:
 - Step through variables, function calls, properties, strings, arrays, promises, exceptions, and steps added by `isAdditionalTaintStep <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/TaintTracking.qll/predicate.TaintTracking$TaintTracking$Configuration$isAdditionalTaintStep.2.html>`__.
 - End at a node matched by `isSink <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/Configuration.qll/predicate.Configuration$Configuration$isSink.1.html>`__.
 
-See also: `Global data flow <https://help.semmle.com/QL/learn-ql/javascript/dataflow.html#global-data-flow>`__ and :doc:`Creating path queries <../writing-queries/path-queries>`.
+See also: "`Global data flow <https://help.semmle.com/QL/learn-ql/javascript/dataflow.html#global-data-flow>`__" and ":doc:`Creating path queries <../writing-queries/path-queries>`."
 
 DataFlow module
 ---------------
 
-Use data flow nodes to match program elements independently of syntax. See also: :doc:`Analyzing data flow in JavaScript and TypeScript <dataflow>`.
+Use data flow nodes to match program elements independently of syntax. See also: ":doc:`Analyzing data flow in JavaScript and TypeScript <dataflow>`."
 
 Predicates in the ``DataFlow::`` module:
 
@@ -56,7 +56,7 @@ Classes and member predicates in the ``DataFlow::`` module:
     - `getIntValue <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/DataFlow.qll/predicate.DataFlow$DataFlow$Node$getIntValue.0.html>`__ -- value of this node if it's is an integer constant
     - `getStringValue <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/DataFlow.qll/predicate.DataFlow$DataFlow$Node$getStringValue.0.html>`__ -- value of this node if it's is a string constant
     - `mayHaveBooleanValue <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/DataFlow.qll/predicate.DataFlow$DataFlow$Node$mayHaveBooleanValue.1.html>`__ -- check if the value is ``true`` or ``false``
-- `SourceNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/Sources.qll/type.Sources$SourceNode.html>`__  extends `Node <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/DataFlow.qll/type.DataFlow$DataFlow$Node.html>`__ -- function call, parameter, object creation, or reference to a property or global variable
+- `SourceNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/Sources.qll/type.Sources$SourceNode.html>`__ extends `Node <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/DataFlow.qll/type.DataFlow$DataFlow$Node.html>`__ -- function call, parameter, object creation, or reference to a property or global variable
     - `getACall <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/Sources.qll/predicate.Sources$SourceNode$getACall.0.html>`__ -- find calls with this as the callee
     - `getAnInstantiation <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/Sources.qll/predicate.Sources$SourceNode$getAnInstantiation.0.html>`__ -- find ``new``-calls with this as the callee
     - `getAnInvocation <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/Sources.qll/predicate.Sources$SourceNode$getAnInvocation.0.html>`__ -- find calls or ``new``-calls with this as the callee
@@ -142,7 +142,7 @@ Files
 AST nodes
 ---------
 
-See also: :doc:`Abstract syntax tree classes for working with JavaScript and TypeScript programs <ast-class-reference>`.
+See also: ":doc:`Abstract syntax tree classes for working with JavaScript and TypeScript programs <ast-class-reference>`."
 
 Conversion between DataFlow and AST nodes:
 
@@ -163,7 +163,7 @@ String matching
 Type tracking
 -------------
 
-See also: :doc:`Using type tracking for API modeling <type-tracking>`.
+See also: ":doc:`Using type tracking for API modeling <type-tracking>`."
 
 Use the following template to define forward type tracking predicates:
 
@@ -220,7 +220,8 @@ Troubleshooting
 Further reading
 ---------------
 
-- `Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-paths.html>`__
+- "`Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-paths.html>`__"
+
 
 .. include:: ../../reusables/javascript-further-reading.rst
 .. include:: ../../reusables/codeql-ref-tools-further-reading.rst

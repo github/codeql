@@ -9,7 +9,7 @@ About this article
 This article describes how data flow analysis is implemented in the CodeQL libraries for Java and includes examples to help you write your own data flow queries.
 The following sections describe how to use the libraries for local data flow, global data flow, and taint tracking.
 
-For a more general introduction to modeling data flow, see :doc:`About data flow analysis <../intro-to-data-flow>`.
+For a more general introduction to modeling data flow, see ":doc:`About data flow analysis <../intro-to-data-flow>`."
 
 Local data flow
 ---------------
@@ -358,7 +358,8 @@ Exercise 4
 Further reading
 ---------------
 
-- `Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-paths.html>`__
+- "`Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-paths.html>`__"
+
 
 .. include:: ../../reusables/java-further-reading.rst
 .. include:: ../../reusables/codeql-ref-tools-further-reading.rst

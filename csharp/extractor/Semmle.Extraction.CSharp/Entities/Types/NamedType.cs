@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp.Entities
             typeArgumentsLazy = new Lazy<Type[]>(() => symbol.TypeArguments.Select(t => Create(cx, t)).ToArray());
         }
 
-        public static NamedType Create(Context cx, INamedTypeSymbol type) => NamedTypeFactory.Instance.CreateEntity(cx, type);
+        public static NamedType Create(Context cx, INamedTypeSymbol type) => NamedTypeFactory.Instance.CreateEntityFromSymbol(cx, type);
 
         public override bool NeedsPopulation => base.NeedsPopulation || symbol.TypeKind == TypeKind.Error;
 
@@ -29,7 +29,8 @@ namespace Semmle.Extraction.CSharp.Entities
                 return;
             }
 
-            trapFile.typeref_type((NamedTypeRef)TypeRef, this);
+            if (UsesTypeRef)
+                trapFile.typeref_type((NamedTypeRef)TypeRef, this);
 
             if (symbol.IsGenericType)
             {
@@ -106,10 +107,25 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => GetLocations(symbol).FirstOrDefault();
 
+        bool IsAnonymousType() => symbol.IsAnonymousType || symbol.Name.Contains("__AnonymousType");
+
         public override void WriteId(TextWriter trapFile)
         {
-            symbol.BuildTypeId(Context, trapFile, (cx0, tb0, sub) => tb0.WriteSubId(Create(cx0, sub)));
-            trapFile.Write(";type");
+            if (IsAnonymousType())
+                trapFile.Write('*');
+            else
+            {
+                symbol.BuildTypeId(Context, trapFile, symbol);
+                trapFile.Write(";type");
+            }
+        }
+
+        public override void WriteQuotedId(TextWriter trapFile)
+        {
+            if (IsAnonymousType())
+                trapFile.Write('*');
+            else
+                base.WriteQuotedId(trapFile);
         }
 
         /// <summary>
@@ -148,7 +164,13 @@ namespace Semmle.Extraction.CSharp.Entities
             public NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init);
         }
 
-        public override Type TypeRef => NamedTypeRef.Create(Context, symbol);
+        // Do not create typerefs of constructed generics as they are always in the current trap file.
+        // Create typerefs for constructed error types in case they are fully defined elsewhere.
+        // We cannot use `!this.NeedsPopulation` because this would not be stable as it would depend on
+        // the assembly that was being extracted at the time.
+        bool UsesTypeRef => symbol.TypeKind == TypeKind.Error || SymbolEqualityComparer.Default.Equals(symbol.OriginalDefinition, symbol);
+
+        public override Type TypeRef => UsesTypeRef ? (Type)NamedTypeRef.Create(Context, symbol) : this;
     }
 
     class NamedTypeRef : Type<INamedTypeSymbol>
@@ -161,7 +183,9 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         public static NamedTypeRef Create(Context cx, INamedTypeSymbol type) =>
-            NamedTypeRefFactory.Instance.CreateEntity2(cx, type);
+            // We need to use a different cache key than `type` to avoid mixing up
+            // `NamedType`s and `NamedTypeRef`s
+            NamedTypeRefFactory.Instance.CreateEntity(cx, (typeof(NamedTypeRef), new SymbolEqualityWrapper(type)), type);
 
         class NamedTypeRefFactory : ICachedEntityFactory<INamedTypeSymbol, NamedTypeRef>
         {

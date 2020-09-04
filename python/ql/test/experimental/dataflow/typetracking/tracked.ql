@@ -1,8 +1,9 @@
 import python
+import experimental.dataflow.DataFlow
 import experimental.dataflow.TypeTracker
 import TestUtilities.InlineExpectationsTest
 
-Node tracked(TypeTracker t) {
+DataFlow::Node tracked(TypeTracker t) {
   t.start() and
   result.asCfgNode() = any(NameNode n | n.getId() = "tracked")
   or
@@ -15,7 +16,7 @@ class TrackedTest extends InlineExpectationsTest {
   override string getARelevantTag() { result = "tracked" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(Node e, TypeTracker t |
+    exists(DataFlow::Node e, TypeTracker t |
       e = tracked(t) and
       tag = "tracked" and
       location = e.getLocation() and
@@ -25,14 +26,14 @@ class TrackedTest extends InlineExpectationsTest {
   }
 }
 
-Node int_type(TypeTracker t) {
+DataFlow::Node int_type(TypeTracker t) {
   t.start() and
   result.asCfgNode() = any(CallNode c | c.getFunction().(NameNode).getId() = "int")
   or
   exists(TypeTracker t2 | result = int_type(t2).track(t2, t))
 }
 
-Node string_type(TypeTracker t) {
+DataFlow::Node string_type(TypeTracker t) {
   t.start() and
   result.asCfgNode() = any(CallNode c | c.getFunction().(NameNode).getId() = "str")
   or
@@ -45,7 +46,7 @@ class TrackedIntTest extends InlineExpectationsTest {
   override string getARelevantTag() { result = "int" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(Node e, TypeTracker t |
+    exists(DataFlow::Node e, TypeTracker t |
       e = int_type(t) and
       tag = "int" and
       location = e.getLocation() and
@@ -61,7 +62,7 @@ class TrackedStringTest extends InlineExpectationsTest {
   override string getARelevantTag() { result = "str" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(Node e, TypeTracker t |
+    exists(DataFlow::Node e, TypeTracker t |
       e = string_type(t) and
       tag = "str" and
       location = e.getLocation() and
