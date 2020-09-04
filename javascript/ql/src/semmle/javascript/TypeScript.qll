@@ -959,7 +959,7 @@ class IsTypeExpr extends PredicateTypeExpr {
 /**
  * An optional type element in a tuple type, such as `number?` in `[string, number?]`.
  */
-class OptionalTypeExpr extends @optionaltypeexpr, TypeExpr {
+class OptionalTypeExpr extends @optional_typeexpr, TypeExpr {
   /** Gets the type `T` in `T?` */
   TypeExpr getElementType() { result = getChildTypeExpr(0) }
 

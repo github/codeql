@@ -822,7 +822,7 @@
 <v>100</v>
 </e>
 <e>
-<k>@optionaltypeexpr</k>
+<k>@optional_typeexpr</k>
 <v>100</v>
 </e>
 <e>
