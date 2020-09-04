@@ -67,7 +67,7 @@ class Stmt extends @stmt, ExprOrStmt, Documentable {
 private class TControlStmt =
   TLoopStmt or @if_stmt or @with_stmt or @switch_stmt or @try_stmt or @catchclause;
 
-private class TLoopStmt = TEnhancedForLoop or @whilestmt or @dowhilestmt or @forstmt;
+private class TLoopStmt = TEnhancedForLoop or @while_stmt or @dowhilestmt or @forstmt;
 
 private class TEnhancedForLoop = @forinstmt or @foreachstmt or @forofstmt;
 
@@ -723,7 +723,7 @@ class TryStmt extends @try_stmt, ControlStmt {
  * }
  * ```
  */
-class WhileStmt extends @whilestmt, LoopStmt {
+class WhileStmt extends @while_stmt, LoopStmt {
   /** Gets the loop condition of this `while` loop. */
   Expr getExpr() { result = getChildExpr(0) }
 

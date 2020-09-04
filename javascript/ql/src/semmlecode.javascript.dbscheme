@@ -161,7 +161,7 @@ case @stmt.kind of
 |  9 = @return_stmt
 | 10 = @throw_stmt
 | 11 = @try_stmt
-| 12 = @whilestmt
+| 12 = @while_stmt
 | 13 = @dowhilestmt
 | 14 = @forstmt
 | 15 = @forinstmt
