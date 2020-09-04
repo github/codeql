@@ -143,7 +143,7 @@ successor(#20036,#20037)
 successor(#20034,#20038)
 successor(#20032,#20043)
 successor(#20041,#20031)
-isNodejs(#20001)
+is_nodejs(#20001)
 #20044=*
 lines(#20044,#20001,"#!/usr/bin/env node","
 ")

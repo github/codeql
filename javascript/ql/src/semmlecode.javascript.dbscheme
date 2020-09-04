@@ -127,7 +127,7 @@ case @toplevel.kind of
 |  3 = @javascript_url;
 
 is_module (int tl: @toplevel ref);
-isNodejs (int tl: @toplevel ref);
+is_nodejs (int tl: @toplevel ref);
 isES2015Module (int tl: @toplevel ref);
 isClosureModule (int tl: @toplevel ref);
 

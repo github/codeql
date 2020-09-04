@@ -9260,7 +9260,7 @@
 <dependencies/>
 </relation>
 <relation>
-<name>isNodejs</name>
+<name>is_nodejs</name>
 <cardinality>12</cardinality>
 <columnsizes>
 <e>

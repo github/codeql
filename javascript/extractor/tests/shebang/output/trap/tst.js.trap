@@ -117,7 +117,7 @@ successor(#20032,#20028)
 successor(#20030,#20032)
 successor(#20028,#20037)
 successor(#20035,#20027)
-isNodejs(#20001)
+is_nodejs(#20001)
 #20038=*
 lines(#20038,#20001,"#!/usr/bin/node","
 ")

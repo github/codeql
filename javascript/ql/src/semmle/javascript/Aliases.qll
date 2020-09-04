@@ -77,3 +77,8 @@ deprecated predicate isExterns(TopLevel toplevel) { is_externs(toplevel) }
  * Use the `Module` class in `Module.qll` instead.
  */ 
 deprecated predicate isModule(TopLevel toplevel) { is_module(toplevel) }
+/**
+ * Alias for the predicate `is_nodejs` defined in the .dbscheme.
+ * Use `NodeModule` from `NodeJS.qll` instead.
+ */ 
+deprecated predicate isNodejs(TopLevel toplevel) { is_nodejs(toplevel) }
