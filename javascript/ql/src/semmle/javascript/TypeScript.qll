@@ -180,7 +180,7 @@ class GlobalAugmentationDeclaration extends Stmt, StmtContainer, @global_augment
 }
 
 /** A TypeScript "import-equals" declaration. */
-class ImportEqualsDeclaration extends Stmt, @importequalsdeclaration {
+class ImportEqualsDeclaration extends Stmt, @import_equals_declaration {
   /**
    * DEPRECATED: Use `getIdentifier()` instead.
    *
