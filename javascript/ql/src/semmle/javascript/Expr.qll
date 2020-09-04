@@ -1367,7 +1367,7 @@ class EqualityTest extends @equality_test, Comparison {
  * "" == arg
  * ```
  */
-class EqExpr extends @eqexpr, EqualityTest {
+class EqExpr extends @eq_expr, EqualityTest {
   override string getOperator() { result = "==" }
 }
 
