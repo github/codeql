@@ -826,7 +826,7 @@ class IndexedAccessTypeExpr extends @indexed_access_typeexpr, TypeExpr {
  *
  * In general, there are can more than two operands to an intersection type.
  */
-class IntersectionTypeExpr extends @intersectiontypeexpr, TypeExpr {
+class IntersectionTypeExpr extends @intersection_typeexpr, TypeExpr {
   /** Gets the `n`th operand of the intersection type, starting at 0. */
   TypeExpr getElementType(int n) { result = getChildTypeExpr(n) }
 

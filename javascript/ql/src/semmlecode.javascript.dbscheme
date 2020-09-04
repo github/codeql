@@ -556,7 +556,7 @@ case @typeexpr.kind of
 | 6 = @array_typeexpr
 | 7 = @union_typeexpr
 | 8 = @indexed_access_typeexpr
-| 9 = @intersectiontypeexpr
+| 9 = @intersection_typeexpr
 | 10 = @parenthesizedtypeexpr
 | 11 = @tupletypeexpr
 | 12 = @keyoftypeexpr
