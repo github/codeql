@@ -301,7 +301,7 @@ case @expr.kind of
 | 63 = @par_expr
 | 64 = @var_declarator
 | 65 = @arrow_function_expr
-| 66 = @spreadelement
+| 66 = @spread_element
 | 67 = @arraypattern
 | 68 = @objectpattern
 | 69 = @yieldexpr
@@ -367,7 +367,7 @@ case @expr.kind of
 
 @invokeexpr = @new_expr | @call_expr;
 
-@unaryexpr = @neg_expr | @plus_expr | @log_not_expr | @bit_not_expr | @typeof_expr | @void_expr | @delete_expr | @spreadelement;
+@unaryexpr = @neg_expr | @plus_expr | @log_not_expr | @bit_not_expr | @typeof_expr | @void_expr | @delete_expr | @spread_element;
 
 @equality_test = @eq_expr | @neq_expr | @eqq_expr | @neqq_expr;
 

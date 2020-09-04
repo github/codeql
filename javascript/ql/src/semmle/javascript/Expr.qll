@@ -1256,7 +1256,7 @@ class DeleteExpr extends @delete_expr, UnaryExpr {
  * )
  * ```
  */
-class SpreadElement extends @spreadelement, UnaryExpr {
+class SpreadElement extends @spread_element, UnaryExpr {
   override string getOperator() { result = "..." }
 }
 
