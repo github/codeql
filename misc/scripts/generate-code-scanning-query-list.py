@@ -47,7 +47,7 @@ def prefix_repo_nwo(filename):
     """
     dirname = os.path.dirname(filename)
 
-    git_toplevel_dir_subp = subprocess_run("git -C '%s' rev-parse --show-toplevel"  % dirname)
+    git_toplevel_dir_subp = subprocess_run(["git", "-C", dirname, "rev-parse", "--show-toplevel"])
 
     if git_toplevel_dir_subp.returncode != 0:
         # Not a Git repo
@@ -58,7 +58,7 @@ def prefix_repo_nwo(filename):
     # Detect 'github/codeql' and 'github/codeql-go' repositories by checking the remote (it's a bit
     # of a hack but will work in most cases, as long as the remotes have 'codeql' and 'codeql-go'
     # in the URL
-    git_remotes = subprocess_run("git -C '%s' remote -v" % dirname).stdout.strip()
+    git_remotes = subprocess_run(["git","-C",dirname,"remote","-v"]).stdout.strip()
 
     if "codeql-go" in git_remotes: prefix = "github/codeql-go"
     elif "codeql" in git_remotes: prefix = "github/codeql"
@@ -82,25 +82,25 @@ def get_query_metadata(key, metadata, queryfile):
     return ""
 
 def subprocess_run(cmd):
-    return subprocess.run(cmd, shell=True, capture_output=True, text=True, env=os.environ.copy())
+    return subprocess.run(cmd, capture_output=True, text=True, env=os.environ.copy())
 
 # Check for `git`
-git_version = subprocess_run("git --version")
+git_version = subprocess_run(["git","--version"])
 if (git_version.returncode != 0):
     print("Error: couldn't invoke 'git'. Is it on the path? Aborting.", file=sys.stderr)
     sys.exit(1)
 
 # Check for `codeql`
-codeql_version = subprocess_run("codeql --version")
+codeql_version = subprocess_run(["codeql","--version"])
 if (codeql_version.returncode != 0):
     print("Error: couldn't invoke CodeQL CLI 'codeql'. Is it on the path? Aborting.", file=sys.stderr)
     sys.exit(1)
     
 # Extend CodeQL search path by detecting root of the current Git repo (if any). This means that you
 # can run this script from any location within the CodeQL git repository.
-git_toplevel_dir = subprocess_run("git rev-parse --show-toplevel")
+git_toplevel_dir = subprocess_run(["git","rev-parse","--show-toplevel"])
 if git_toplevel_dir.returncode == 0:
-    # Current working directory is in a Git repo. It might be the CodeQL repo. Add it to the search path.
+    # Current working directory is in a Git repo. Add it to the search path, just in case it's the CodeQL repo
     git_toplevel_dir = git_toplevel_dir.stdout.strip()
     codeql_search_path += ":" + git_toplevel_dir + ":" + git_toplevel_dir + "/../codeql-go"
 
@@ -115,13 +115,13 @@ csvwriter.writerow([
 for lang in languages:
     for pack in packs:
         # Get absolute paths to queries in this pack by using 'codeql resolve queries'
-        queries_subp = subprocess_run(
-            "codeql resolve queries --search-path='%s' '%s-%s.qls'" % (codeql_search_path, lang, pack)
-        )
+        queries_subp = subprocess_run(["codeql","resolve","queries","--search-path", codeql_search_path, "%s-%s.qls" % (lang, pack)])
 
         # Resolving queries might go wrong if the github/codeql and github/codeql-go repositories are not
         # on the search path.
         if queries_subp.returncode != 0:
+            print(queries_subp.stdout)
+            print(queries_subp.stderr)
             print(
                 "Warning: couldn't find query pack '%s' for language '%s'. Do you have the right repositories in the right places (search path: '%s')?" % (pack, lang, codeql_search_path),
                 file=sys.stderr
@@ -130,9 +130,7 @@ for lang in languages:
 
         # Investigate metadata for every query by using 'codeql resolve metadata'
         for queryfile in queries_subp.stdout.strip().split("\n"):
-            query_metadata_json = subprocess_run(
-                "codeql resolve metadata '%s'" % queryfile
-            ).stdout.strip()
+            query_metadata_json = subprocess_run(["codeql","resolve","metadata",queryfile]).stdout.strip()
             
             # Turn an absolute path to a query file into an nwo-prefixed path (e.g. github/codeql/java/ql/src/....)
             queryfile_nwo = prefix_repo_nwo(queryfile)
