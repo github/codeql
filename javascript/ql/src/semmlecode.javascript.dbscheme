@@ -416,7 +416,7 @@ case @scope.kind of
 |  4 = @block_scope
 |  5 = @for_scope
 |  6 = @for_in_scope // for-of scopes work the same as for-in scopes
-|  7 = @comprehensionblockscope
+|  7 = @comprehension_block_scope
 |  8 = @classexprscope
 |  9 = @namespacescope
 | 10 = @classdeclscope

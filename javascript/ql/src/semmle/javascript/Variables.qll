@@ -102,7 +102,7 @@ class ForInScope extends Scope, @for_in_scope {
 }
 
 /** A scope induced by a comprehension block. */
-class ComprehensionBlockScope extends Scope, @comprehensionblockscope {
+class ComprehensionBlockScope extends Scope, @comprehension_block_scope {
   /** Gets the comprehension block that induces this scope. */
   ComprehensionBlock getComprehensionBlock() { result = getScopeElement() }
 
