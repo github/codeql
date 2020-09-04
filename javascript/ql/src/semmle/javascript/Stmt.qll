@@ -995,7 +995,7 @@ class ConstDeclStmt extends @const_decl_stmt, DeclStmt { }
  * let i = 1, j = i-1;
  * ```
  */
-class LetStmt extends @letstmt, DeclStmt { }
+class LetStmt extends @let_stmt, DeclStmt { }
 
 /**
  * A legacy `let` statement, that is, a statement of the form `let(vardecls) stmt`.
