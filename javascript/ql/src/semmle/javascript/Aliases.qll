@@ -240,3 +240,8 @@ deprecated predicate rangeQuantifierLowerBound(RegExpRange id, int lo) { range_q
  * Use `RegExpRange#getUpperBound() instead.
  */ 
 deprecated predicate rangeQuantifierUpperBound(RegExpRange id, int hi) { range_quantifier_upper_bound(id, hi) }
+/**
+ * Alias for the predicate `is_capture` defined in the .dbscheme.
+ * Use `RegExpGroup#isCapture()` instead.
+ */ 
+deprecated predicate isCapture(RegExpGroup id, int number) { is_capture(id, number) }

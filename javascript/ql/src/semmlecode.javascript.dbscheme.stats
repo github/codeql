@@ -20240,7 +20240,7 @@
 </dependencies>
 </relation>
 <relation>
-<name>isCapture</name>
+<name>is_capture</name>
 <cardinality>1280</cardinality>
 <columnsizes>
 <e>

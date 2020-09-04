@@ -183,7 +183,7 @@ public class RegExpExtractor {
     @Override
     public void visit(Group nd) {
       Label lbl = extractTerm(nd, parent, idx);
-      if (nd.isCapture()) trapwriter.addTuple("isCapture", lbl, nd.getNumber());
+      if (nd.isCapture()) trapwriter.addTuple("is_capture", lbl, nd.getNumber());
       if (nd.isNamed()) trapwriter.addTuple("isNamedCapture", lbl, nd.getName());
       visit(nd.getOperand(), lbl, 0);
     }

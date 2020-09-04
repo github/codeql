@@ -565,7 +565,7 @@ class RegExpDot extends RegExpTerm, @regexp_dot {
  */
 class RegExpGroup extends RegExpTerm, @regexp_group {
   /** Holds if this is a capture group. */
-  predicate isCapture() { isCapture(this, _) }
+  predicate isCapture() { is_capture(this, _) }
 
   /**
    * Gets the index of this capture group within the enclosing regular
@@ -576,7 +576,7 @@ class RegExpGroup extends RegExpTerm, @regexp_group {
    * has index 2, and the group `(?:b)` has no index, since it is
    * not a capture group.
    */
-  int getNumber() { isCapture(this, result) }
+  int getNumber() { is_capture(this, result) }
 
   /** Holds if this is a named capture group. */
   predicate isNamed() { isNamedCapture(this, _) }
