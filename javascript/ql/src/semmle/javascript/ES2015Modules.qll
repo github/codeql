@@ -534,7 +534,7 @@ class NamedExportSpecifier extends ExportSpecifier, @named_export_specifier { }
  *   from 'a';
  * ```
  */
-class ExportDefaultSpecifier extends ExportSpecifier, @exportdefaultspecifier {
+class ExportDefaultSpecifier extends ExportSpecifier, @export_default_specifier {
   override string getExportedName() { result = "default" }
 }
 

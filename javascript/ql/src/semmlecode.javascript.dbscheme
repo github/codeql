@@ -330,7 +330,7 @@ case @expr.kind of
 | 92 = @await_expr
 | 93 = @function_sent_expr
 | 94 = @decorator
-| 95 = @exportdefaultspecifier
+| 95 = @export_default_specifier
 | 96 = @exportnamespacespecifier
 | 97 = @bindexpr
 | 98 = @externalmodulereference
@@ -387,7 +387,7 @@ case @expr.kind of
 
 @importspecifier = @named_import_specifier | @import_default_specifier | @import_namespace_specifier;
 
-@exportspecifier = @named_export_specifier | @exportdefaultspecifier | @exportnamespacespecifier;
+@exportspecifier = @named_export_specifier | @export_default_specifier | @exportnamespacespecifier;
 
 @import_or_export_declaration = @import_declaration | @exportdeclaration;
 
