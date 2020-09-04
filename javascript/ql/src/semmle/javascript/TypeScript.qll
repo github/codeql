@@ -6,7 +6,7 @@ import javascript
  * Declarations that declare an alias for a namespace (i.e. an import) are not
  * considered to be namespace definitions.
  */
-class NamespaceDefinition extends Stmt, @namespacedefinition, AST::ValueNode {
+class NamespaceDefinition extends Stmt, @namespace_definition, AST::ValueNode {
   /**
    * DEPRECATED: Use `getIdentifier()` instead.
    *
