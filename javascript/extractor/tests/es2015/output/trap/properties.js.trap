@@ -291,7 +291,7 @@ regexpterm(#20098,14,#20097,0,"prop")
 #20099=@"loc,{#10000},3,11,3,14"
 locations_default(#20099,#10000,3,11,3,14)
 hasLocation(#20098,#20099)
-regexpConstValue(#20098,"prop")
+regexp_const_value(#20098,"prop")
 #20100=*
 exprs(#20100,13,#20095,1,"Math.random()")
 #20101=@"loc,{#10000},3,19,3,31"

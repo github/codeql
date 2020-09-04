@@ -20447,7 +20447,7 @@
 <dependencies/>
 </relation>
 <relation>
-<name>regexpConstValue</name>
+<name>regexp_const_value</name>
 <cardinality>19032</cardinality>
 <columnsizes>
 <e>

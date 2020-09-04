@@ -545,7 +545,7 @@ regexpterm(#20192,14,#20191,0,"b&r")
 #20193=@"loc,{#10000},3,9,3,11"
 locations_default(#20193,#10000,3,9,3,11)
 hasLocation(#20192,#20193)
-regexpConstValue(#20192,"b&r")
+regexp_const_value(#20192,"b&r")
 #20194=*
 properties(#20194,#20182,1,3,"i={""a""+""b""}")
 #20195=@"loc,{#10000},3,18,3,28"
@@ -575,7 +575,7 @@ regexpterm(#20200,14,#20199,0,"a")
 #20201=@"loc,{#10000},3,22,3,22"
 locations_default(#20201,#10000,3,22,3,22)
 hasLocation(#20200,#20201)
-regexpConstValue(#20200,"a")
+regexp_const_value(#20200,"a")
 #20202=*
 exprs(#20202,4,#20197,1,"""b""")
 hasLocation(#20202,#20067)
@@ -587,7 +587,7 @@ regexpterm(#20203,14,#20202,0,"b")
 #20204=@"loc,{#10000},3,26,3,26"
 locations_default(#20204,#10000,3,26,3,26)
 hasLocation(#20203,#20204)
-regexpConstValue(#20203,"b")
+regexp_const_value(#20203,"b")
 #20205=*
 exprs(#20205,79,#20182,-2,"j")
 hasLocation(#20205,#20075)

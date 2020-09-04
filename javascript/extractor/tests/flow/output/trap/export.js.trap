@@ -239,7 +239,7 @@ regexpterm(#20086,14,#20085,0,"m")
 #20087=@"loc,{#10000},1,20,1,20"
 locations_default(#20087,#10000,1,20,1,20)
 hasLocation(#20086,#20087)
-regexpConstValue(#20086,"m")
+regexp_const_value(#20086,"m")
 #20088=*
 exprs(#20088,86,#20084,0,"a")
 hasLocation(#20088,#20017)
@@ -272,7 +272,7 @@ regexpterm(#20093,14,#20092,0,"m")
 #20094=@"loc,{#10000},2,16,2,16"
 locations_default(#20094,#10000,2,16,2,16)
 hasLocation(#20093,#20094)
-regexpConstValue(#20093,"m")
+regexp_const_value(#20093,"m")
 #20095=*
 entry_cfg_node(#20095,#20001)
 #20096=@"loc,{#10000},1,1,1,0"

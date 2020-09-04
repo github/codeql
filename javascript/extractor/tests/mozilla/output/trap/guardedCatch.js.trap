@@ -456,7 +456,7 @@ regexpterm(#20150,14,#20149,0,"error!")
 #20151=@"loc,{#10000},5,16,5,21"
 locations_default(#20151,#10000,5,16,5,21)
 hasLocation(#20150,#20151)
-regexpConstValue(#20150,"error!")
+regexp_const_value(#20150,"error!")
 #20152=*
 stmts(#20152,20,#20119,2,"catch ( ... !"");\n\t}")
 #20153=@"loc,{#10000},6,4,8,2"
@@ -526,7 +526,7 @@ regexpterm(#20168,14,#20167,0,"something else!")
 #20169=@"loc,{#10000},7,16,7,30"
 locations_default(#20169,#10000,7,16,7,30)
 hasLocation(#20168,#20169)
-regexpConstValue(#20168,"something else!")
+regexp_const_value(#20168,"something else!")
 #20170=*
 entry_cfg_node(#20170,#20001)
 #20171=@"loc,{#10000},1,1,1,0"

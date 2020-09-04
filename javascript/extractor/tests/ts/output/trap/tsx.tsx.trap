@@ -277,7 +277,7 @@ regexpterm(#20093,14,#20091,0,"
 #20094=@"loc,{#10000},2,4,2,6"
 locations_default(#20094,#10000,2,4,2,6)
 hasLocation(#20093,#20094)
-regexpConstValue(#20093,"
+regexp_const_value(#20093,"
   ")
 #20095=*
 exprs(#20095,89,#20079,-3,"<this.props.icon/>")
@@ -332,7 +332,7 @@ regexpterm(#20106,14,#20104,0,"
 #20107=@"loc,{#10000},3,4,3,6"
 locations_default(#20107,#10000,3,4,3,6)
 hasLocation(#20106,#20107)
-regexpConstValue(#20106,"
+regexp_const_value(#20106,"
   ")
 #20108=*
 exprs(#20108,89,#20079,-5,"<name-with-dashes/>")
@@ -364,7 +364,7 @@ regexpterm(#20114,14,#20112,0,"
 #20115=@"loc,{#10000},4,2,4,2"
 locations_default(#20115,#10000,4,2,4,2)
 hasLocation(#20114,#20115)
-regexpConstValue(#20114,"
+regexp_const_value(#20114,"
 ")
 #20116=*
 entry_cfg_node(#20116,#20001)

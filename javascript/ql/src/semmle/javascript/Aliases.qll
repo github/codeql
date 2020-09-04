@@ -255,3 +255,8 @@ deprecated predicate isNamedCapture(RegExpGroup id, string name) { is_named_capt
  * Use `RegExpCharacterClass#isInverted()` instead.
  */ 
 deprecated predicate isInverted(RegExpCharacterClass id) { is_inverted(id) }
+/**
+ * Alias for the predicate `regexp_const_value` defined in the .dbscheme.
+ * Use `RegExpConstant#getValue()` instead.
+ */ 
+deprecated predicate regexpConstValue(RegExpConstant id, string value) { regexp_const_value(id, value) }

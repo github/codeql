@@ -151,7 +151,7 @@ regexpterm(#20048,14,#20046,0,"test")
 #20049=@"loc,{#10000},1,15,1,18"
 locations_default(#20049,#10000,1,15,1,18)
 hasLocation(#20048,#20049)
-regexpConstValue(#20048,"test")
+regexp_const_value(#20048,"test")
 #20050=*
 regexpterm(#20050,12,#20046,1,".")
 #20051=@"loc,{#10000},1,19,1,19"
@@ -162,7 +162,7 @@ regexpterm(#20052,14,#20046,2,"x")
 #20053=@"loc,{#10000},1,20,1,20"
 locations_default(#20053,#10000,1,20,1,20)
 hasLocation(#20052,#20053)
-regexpConstValue(#20052,"x")
+regexp_const_value(#20052,"x")
 #20054=*
 stmts(#20054,2,#20001,1,"test.x = 5;")
 hasLocation(#20054,#20007)

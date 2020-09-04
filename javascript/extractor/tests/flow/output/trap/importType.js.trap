@@ -211,7 +211,7 @@ regexpterm(#20075,14,#20074,0,"m")
 #20076=@"loc,{#10000},1,43,1,43"
 locations_default(#20076,#10000,1,43,1,43)
 hasLocation(#20075,#20076)
-regexpConstValue(#20075,"m")
+regexp_const_value(#20075,"m")
 #20077=*
 exprs(#20077,83,#20073,0,"type")
 hasLocation(#20077,#20013)

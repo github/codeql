@@ -127,7 +127,7 @@ regexpterm(#20040,14,#20039,0,"Hello CommonJS")
 #20041=@"loc,{#10000},1,14,1,27"
 locations_default(#20041,#10000,1,14,1,27)
 hasLocation(#20040,#20041)
-regexpConstValue(#20040,"Hello CommonJS")
+regexp_const_value(#20040,"Hello CommonJS")
 #20042=*
 entry_cfg_node(#20042,#20001)
 #20043=@"loc,{#10000},1,1,1,0"

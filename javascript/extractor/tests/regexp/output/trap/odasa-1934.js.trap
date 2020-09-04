@@ -244,7 +244,7 @@ regexpterm(#20082,14,#20081,0,"x")
 #20083=@"loc,{#10000},4,4,4,4"
 locations_default(#20083,#10000,4,4,4,4)
 hasLocation(#20082,#20083)
-regexpConstValue(#20082,"x")
+regexp_const_value(#20082,"x")
 #20084=*
 exprs(#20084,44,#20077,1,"(r = /[ ... && r[0]")
 #20085=@"loc,{#10000},5,3,5,33"
@@ -309,7 +309,7 @@ regexpterm(#20100,15,#20098,0,"\x")
 #20101=@"loc,{#10000},5,10,5,11"
 locations_default(#20101,#10000,5,10,5,11)
 hasLocation(#20100,#20101)
-regexpConstValue(#20100," ")
+regexp_const_value(#20100," ")
 #20102=*
 regexp_parse_errors(#20102,#20096,"expected hexadecimal digit")
 #20103=@"loc,{#10000},5,12,5,12"
@@ -335,7 +335,7 @@ regexpterm(#20107,14,#20106,0,"x")
 #20108=@"loc,{#10000},5,22,5,22"
 locations_default(#20108,#10000,5,22,5,22)
 hasLocation(#20107,#20108)
-regexpConstValue(#20107,"x")
+regexp_const_value(#20107,"x")
 #20109=*
 exprs(#20109,15,#20084,1,"r[0]")
 #20110=@"loc,{#10000},5,30,5,33"
@@ -367,7 +367,7 @@ regexpterm(#20114,14,#20113,0,"Section 1")
 #20115=@"loc,{#10000},6,4,6,12"
 locations_default(#20115,#10000,6,4,6,12)
 hasLocation(#20114,#20115)
-regexpConstValue(#20114,"Section 1")
+regexp_const_value(#20114,"Section 1")
 #20116=*
 entry_cfg_node(#20116,#20001)
 #20117=@"loc,{#10000},1,1,1,0"

@@ -237,7 +237,7 @@ regexpterm(#20083,14,#20082,0,"fs")
 #20084=@"loc,{#10000},1,19,1,20"
 locations_default(#20084,#10000,1,19,1,20)
 hasLocation(#20083,#20084)
-regexpConstValue(#20083,"fs")
+regexp_const_value(#20083,"fs")
 #20085=*
 stmts(#20085,2,#20001,1,"y = 42;")
 hasLocation(#20085,#20005)

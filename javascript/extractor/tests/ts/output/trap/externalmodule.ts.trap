@@ -246,7 +246,7 @@ regexpterm(#20085,14,#20084,0,"X")
 #20086=@"loc,{#10000},1,17,1,17"
 locations_default(#20086,#10000,1,17,1,17)
 hasLocation(#20085,#20086)
-regexpConstValue(#20085,"X")
+regexp_const_value(#20085,"X")
 #20087=*
 scopes(#20087,15)
 scopenodes(#20082,#20087)

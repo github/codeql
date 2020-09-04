@@ -216,7 +216,7 @@ class RegExpEscape extends RegExpTerm, @regexp_escape { }
  */
 class RegExpConstant extends RegExpTerm, @regexp_constant {
   /** Gets the string matched by this constant term. */
-  string getValue() { regexpConstValue(this, result) }
+  string getValue() { regexp_const_value(this, result) }
 
   /**
    * Holds if this constant represents a valid Unicode character (as opposed

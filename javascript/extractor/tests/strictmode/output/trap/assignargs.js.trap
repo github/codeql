@@ -144,7 +144,7 @@ regexpterm(#20046,14,#20045,0,"use strict")
 #20047=@"loc,{#10000},2,4,2,13"
 locations_default(#20047,#10000,2,4,2,13)
 hasLocation(#20046,#20047)
-regexpConstValue(#20046,"use strict")
+regexp_const_value(#20046,"use strict")
 #20048=*
 stmts(#20048,2,#20041,1,"arguments = 42;")
 #20049=@"loc,{#10000},3,3,3,17"

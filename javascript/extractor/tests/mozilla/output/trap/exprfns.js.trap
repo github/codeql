@@ -245,7 +245,7 @@ regexpterm(#20084,14,#20083,0,"result")
 #20085=@"loc,{#10000},1,16,1,21"
 locations_default(#20085,#10000,1,16,1,21)
 hasLocation(#20084,#20085)
-regexpConstValue(#20084,"result")
+regexp_const_value(#20084,"result")
 #20086=*
 stmts(#20086,2,#20001,1,"functio ... )\n  }\n}")
 #20087=@"loc,{#10000},3,1,7,1"
@@ -342,7 +342,7 @@ regexpterm(#20111,14,#20110,0,"other result")
 #20112=@"loc,{#10000},5,20,5,31"
 locations_default(#20112,#10000,5,20,5,31)
 hasLocation(#20111,#20112)
-regexpConstValue(#20111,"other result")
+regexp_const_value(#20111,"other result")
 #20113=*
 entry_cfg_node(#20113,#20001)
 #20114=@"loc,{#10000},1,1,1,0"

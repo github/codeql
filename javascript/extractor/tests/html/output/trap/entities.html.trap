@@ -100,7 +100,7 @@ regexpterm(#20029,14,#20028,0,"Nope!")
 #20030=@"loc,{#10000},6,41,6,45"
 locations_default(#20030,#10000,6,41,6,45)
 hasLocation(#20029,#20030)
-regexpConstValue(#20029,"Nope!")
+regexp_const_value(#20029,"Nope!")
 #20031=*
 entry_cfg_node(#20031,#20001)
 #20032=@"loc,{#10000},6,29,6,28"

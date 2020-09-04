@@ -957,7 +957,7 @@ regexpterm(#20345,14,#20344,0,"Hello")
 #20346=@"loc,{#10000},10,2,10,6"
 locations_default(#20346,#10000,10,2,10,6)
 hasLocation(#20345,#20346)
-regexpConstValue(#20345,"Hello")
+regexp_const_value(#20345,"Hello")
 #20347=*
 stmts(#20347,2,#20001,10,"'world';")
 hasLocation(#20347,#20023)
@@ -973,7 +973,7 @@ regexpterm(#20349,14,#20348,0,"world")
 #20350=@"loc,{#10000},11,2,11,6"
 locations_default(#20350,#10000,11,2,11,6)
 hasLocation(#20349,#20350)
-regexpConstValue(#20349,"world")
+regexp_const_value(#20349,"world")
 #20351=*
 stmts(#20351,2,#20001,11,"""'what?'\x0a"";")
 hasLocation(#20351,#20025)
@@ -996,7 +996,7 @@ regexpterm(#20355,14,#20353,0,"'wha")
 #20356=@"loc,{#10000},12,2,12,5"
 locations_default(#20356,#10000,12,2,12,5)
 hasLocation(#20355,#20356)
-regexpConstValue(#20355,"'wha")
+regexp_const_value(#20355,"'wha")
 #20357=*
 regexpterm(#20357,10,#20353,1,"t?")
 #20358=@"loc,{#10000},12,6,12,7"
@@ -1008,14 +1008,14 @@ regexpterm(#20359,14,#20357,0,"t")
 #20360=@"loc,{#10000},12,6,12,6"
 locations_default(#20360,#10000,12,6,12,6)
 hasLocation(#20359,#20360)
-regexpConstValue(#20359,"t")
+regexp_const_value(#20359,"t")
 #20361=*
 regexpterm(#20361,14,#20353,2,"'
 ")
 #20362=@"loc,{#10000},12,8,12,12"
 locations_default(#20362,#10000,12,8,12,12)
 hasLocation(#20361,#20362)
-regexpConstValue(#20361,"'
+regexp_const_value(#20361,"'
 ")
 #20363=*
 stmts(#20363,2,#20001,12,"'""why?""\n';")
@@ -1039,7 +1039,7 @@ regexpterm(#20367,14,#20365,0,"""wh")
 #20368=@"loc,{#10000},13,2,13,4"
 locations_default(#20368,#10000,13,2,13,4)
 hasLocation(#20367,#20368)
-regexpConstValue(#20367,"""wh")
+regexp_const_value(#20367,"""wh")
 #20369=*
 regexpterm(#20369,10,#20365,1,"y?")
 #20370=@"loc,{#10000},13,5,13,6"
@@ -1051,14 +1051,14 @@ regexpterm(#20371,14,#20369,0,"y")
 #20372=@"loc,{#10000},13,5,13,5"
 locations_default(#20372,#10000,13,5,13,5)
 hasLocation(#20371,#20372)
-regexpConstValue(#20371,"y")
+regexp_const_value(#20371,"y")
 #20373=*
 regexpterm(#20373,14,#20365,2,"""
 ")
 #20374=@"loc,{#10000},13,7,13,9"
 locations_default(#20374,#10000,13,7,13,9)
 hasLocation(#20373,#20374)
-regexpConstValue(#20373,"""
+regexp_const_value(#20373,"""
 ")
 #20375=*
 stmts(#20375,2,#20001,13,"/^(need?le)+/gi;")
@@ -1102,7 +1102,7 @@ regexpterm(#20387,14,#20385,0,"nee")
 #20388=@"loc,{#10000},14,4,14,6"
 locations_default(#20388,#10000,14,4,14,6)
 hasLocation(#20387,#20388)
-regexpConstValue(#20387,"nee")
+regexp_const_value(#20387,"nee")
 #20389=*
 regexpterm(#20389,10,#20385,1,"d?")
 #20390=@"loc,{#10000},14,7,14,8"
@@ -1114,13 +1114,13 @@ regexpterm(#20391,14,#20389,0,"d")
 #20392=@"loc,{#10000},14,7,14,7"
 locations_default(#20392,#10000,14,7,14,7)
 hasLocation(#20391,#20392)
-regexpConstValue(#20391,"d")
+regexp_const_value(#20391,"d")
 #20393=*
 regexpterm(#20393,14,#20385,2,"le")
 #20394=@"loc,{#10000},14,9,14,10"
 locations_default(#20394,#10000,14,9,14,10)
 hasLocation(#20393,#20394)
-regexpConstValue(#20393,"le")
+regexp_const_value(#20393,"le")
 #20395=*
 stmts(#20395,2,#20001,14,"(23);")
 hasLocation(#20395,#20031)
@@ -1172,7 +1172,7 @@ regexpterm(#20405,14,#20404,0,"hi")
 #20406=@"loc,{#10000},16,13,16,14"
 locations_default(#20406,#10000,16,13,16,14)
 hasLocation(#20405,#20406)
-regexpConstValue(#20405,"hi")
+regexp_const_value(#20405,"hi")
 array_size(#20400,4)
 #20407=*
 stmts(#20407,2,#20001,16,"({ x: 2 ... ) {}});")
@@ -1399,7 +1399,7 @@ regexpterm(#20466,14,#20465,0,"hi")
 #20467=@"loc,{#10000},24,13,24,14"
 locations_default(#20467,#10000,24,13,24,14)
 hasLocation(#20466,#20467)
-regexpConstValue(#20466,"hi")
+regexp_const_value(#20466,"hi")
 #20468=*
 stmts(#20468,2,#20001,20,"String("""");")
 hasLocation(#20468,#20051)
@@ -1510,7 +1510,7 @@ regexpterm(#20493,14,#20492,0,"epytotorp")
 #20494=@"loc,{#10000},27,9,27,17"
 locations_default(#20494,#10000,27,9,27,17)
 hasLocation(#20493,#20494)
-regexpConstValue(#20493,"epytotorp")
+regexp_const_value(#20493,"epytotorp")
 #20495=*
 exprs(#20495,0,#20490,1,"reverse")
 hasLocation(#20495,#20275)

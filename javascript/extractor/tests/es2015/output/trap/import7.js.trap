@@ -160,7 +160,7 @@ regexpterm(#20054,14,#20053,0,"foo")
 #20055=@"loc,{#10000},1,16,1,18"
 locations_default(#20055,#10000,1,16,1,18)
 hasLocation(#20054,#20055)
-regexpConstValue(#20054,"foo")
+regexp_const_value(#20054,"foo")
 #20056=*
 exprs(#20056,84,#20052,0,"x")
 hasLocation(#20056,#20011)
@@ -190,7 +190,7 @@ regexpterm(#20060,14,#20059,0,"bar")
 #20061=@"loc,{#10000},2,9,2,11"
 locations_default(#20061,#10000,2,9,2,11)
 hasLocation(#20060,#20061)
-regexpConstValue(#20060,"bar")
+regexp_const_value(#20060,"bar")
 #20062=*
 stmts(#20062,27,#20001,2,"import  ...  'baz';")
 hasLocation(#20062,#20007)
@@ -206,7 +206,7 @@ regexpterm(#20064,14,#20063,0,"baz")
 #20065=@"loc,{#10000},3,25,3,27"
 locations_default(#20065,#10000,3,25,3,27)
 hasLocation(#20064,#20065)
-regexpConstValue(#20064,"baz")
+regexp_const_value(#20064,"baz")
 #20066=*
 exprs(#20066,83,#20062,0,"y as z")
 #20067=@"loc,{#10000},3,10,3,15"

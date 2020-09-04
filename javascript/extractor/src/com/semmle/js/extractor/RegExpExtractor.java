@@ -297,7 +297,7 @@ public class RegExpExtractor {
 
     private void visit(Literal nd) {
       Label lbl = extractTerm(nd, parent, idx);
-      trapwriter.addTuple("regexpConstValue", lbl, nd.getValue());
+      trapwriter.addTuple("regexp_const_value", lbl, nd.getValue());
     }
 
     @Override

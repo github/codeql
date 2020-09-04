@@ -839,7 +839,7 @@ regexpterm(#20266,14,#20265,0,"final")
 #20267=@"loc,{#10000},15,18,15,22"
 locations_default(#20267,#10000,15,18,15,22)
 hasLocation(#20266,#20267)
-regexpConstValue(#20266,"final")
+regexp_const_value(#20266,"final")
 #20268=*
 stmts(#20268,2,#20001,9,"'use strict';")
 hasLocation(#20268,#20036)
@@ -855,7 +855,7 @@ regexpterm(#20270,14,#20269,0,"use strict")
 #20271=@"loc,{#10000},17,2,17,11"
 locations_default(#20271,#10000,17,2,17,11)
 hasLocation(#20270,#20271)
-regexpConstValue(#20270,"use strict")
+regexp_const_value(#20270,"use strict")
 #20272=*
 entry_cfg_node(#20272,#20001)
 #20273=@"loc,{#10000},1,1,1,0"

@@ -292,7 +292,7 @@ regexpterm(#20107,14,#20106,0,"a")
 #20108=@"loc,{#10000},1,3,1,3"
 locations_default(#20108,#10000,1,3,1,3)
 hasLocation(#20107,#20108)
-regexpConstValue(#20107,"a")
+regexp_const_value(#20107,"a")
 #20109=*
 exprs(#20109,4,#20104,1,"""ab""")
 hasLocation(#20109,#20015)
@@ -304,7 +304,7 @@ regexpterm(#20110,14,#20109,0,"ab")
 #20111=@"loc,{#10000},1,8,1,9"
 locations_default(#20111,#10000,1,8,1,9)
 hasLocation(#20110,#20111)
-regexpConstValue(#20110,"ab")
+regexp_const_value(#20110,"ab")
 #20112=*
 exprs(#20112,4,#20104,2,"""abc""")
 hasLocation(#20112,#20019)
@@ -316,7 +316,7 @@ regexpterm(#20113,14,#20112,0,"abc")
 #20114=@"loc,{#10000},1,14,1,16"
 locations_default(#20114,#10000,1,14,1,16)
 hasLocation(#20113,#20114)
-regexpConstValue(#20113,"abc")
+regexp_const_value(#20113,"abc")
 array_size(#20104,3)
 #20115=*
 exprs(#20115,0,#20102,1,"map")
@@ -481,7 +481,7 @@ regexpterm(#20155,14,#20154,0,"Wake up!")
 #20156=@"loc,{#10000},3,27,3,34"
 locations_default(#20156,#10000,3,27,3,34)
 hasLocation(#20155,#20156)
-regexpConstValue(#20155,"Wake up!")
+regexp_const_value(#20155,"Wake up!")
 #20157=*
 exprs(#20157,3,#20139,1,"60000")
 hasLocation(#20157,#20091)

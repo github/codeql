@@ -472,7 +472,7 @@ regexpterm(#20173,14,#20172,0,"values: ")
 #20174=@"loc,{#10000},2,11,2,18"
 locations_default(#20174,#10000,2,11,2,18)
 hasLocation(#20173,#20174)
-regexpConstValue(#20173,"values: ")
+regexp_const_value(#20173,"values: ")
 #20175=*
 exprs(#20175,13,#20170,1,"values.join(', ')")
 #20176=@"loc,{#10000},2,23,2,39"
@@ -511,7 +511,7 @@ regexpterm(#20182,14,#20181,0,", ")
 #20183=@"loc,{#10000},2,36,2,37"
 locations_default(#20183,#10000,2,36,2,37)
 hasLocation(#20182,#20183)
-regexpConstValue(#20182,", ")
+regexp_const_value(#20182,", ")
 #20184=*
 stmts(#20184,18,#20001,1,"var x = 23;")
 hasLocation(#20184,#20011)

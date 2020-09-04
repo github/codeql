@@ -239,7 +239,7 @@ regexpterm(#20080,14,#20079,0,"Hello, ")
 #20081=@"loc,{#10000},2,13,2,19"
 locations_default(#20081,#10000,2,13,2,19)
 hasLocation(#20080,#20081)
-regexpConstValue(#20080,"Hello, ")
+regexp_const_value(#20080,"Hello, ")
 #20082=*
 exprs(#20082,79,#20077,1,"person")
 hasLocation(#20082,#20035)
@@ -258,7 +258,7 @@ regexpterm(#20084,14,#20083,0,"!")
 #20085=@"loc,{#10000},2,34,2,34"
 locations_default(#20085,#10000,2,34,2,34)
 hasLocation(#20084,#20085)
-regexpConstValue(#20084,"!")
+regexp_const_value(#20084,"!")
 #20086=*
 stmts(#20086,2,#20001,1,"alert(g ... rld""));")
 hasLocation(#20086,#20011)
@@ -304,7 +304,7 @@ regexpterm(#20095,14,#20094,0,"world")
 #20096=@"loc,{#10000},5,16,5,20"
 locations_default(#20096,#10000,5,16,5,20)
 hasLocation(#20095,#20096)
-regexpConstValue(#20095,"world")
+regexp_const_value(#20095,"world")
 #20097=*
 entry_cfg_node(#20097,#20001)
 #20098=@"loc,{#10000},1,1,1,0"
