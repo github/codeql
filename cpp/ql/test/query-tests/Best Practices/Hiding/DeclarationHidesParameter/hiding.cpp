@@ -1,7 +1,7 @@
 
 void f(int ii) {
     if (1) {
-        for(int ii = 1; ii < 10; ii++) { // local variable hides global variable
+        for(int ii = 1; ii < 10; ii++) { // local variable hides parameter of the same name
             ;
         }
     }
@@ -12,7 +12,7 @@ namespace foo {
     void f2(int ii, int kk) {
       try {
         for (ii = 0; ii < 3; ii++) {
-          int kk; // local variable hides global variable
+          int kk; // local variable hides parameter of the same name
         }
       }
       catch (int ee) {
@@ -25,7 +25,7 @@ void myFunction(int a, int b, int c);
 
 void myFunction(int a, int b, int _c) {
 	{
-		int a = a; // local variable hides global variable
+		int a = a; // local variable hides parameter of the same name
 		int _b = b;
 		int c = _c;
 
@@ -42,7 +42,7 @@ public:
 template<class T>
 void MyTemplateClass<T> :: myMethod(int a, int b, int _c) {
 	{
-		int a = a; // local variable hides global variable
+		int a = a; // local variable hides parameter of the same name
 		int _b = b;
 		int c = _c;
 
@@ -61,7 +61,7 @@ void test() {
 void testMacro(int i) {
 	MYMACRO;
 
-	for (int i = 0; i < 10; i++) {}; // local variable hides global variable
+	for (int i = 0; i < 10; i++) {}; // local variable hides parameter of the same name
 }
 
 #include "hiding.h"
@@ -75,7 +75,7 @@ void myClass::myMethod(int arg1, T arg2) {
 	{
 		int protoArg1;
 		T protoArg2;
-		int arg1; // local variable hides global variable
-		T arg2; // local variable hides global variable
+		int arg1; // local variable hides parameter of the same name
+		T arg2; // local variable hides parameter of the same name
 	}
 }
