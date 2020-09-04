@@ -799,14 +799,14 @@ comments (unique int id: @comment,
 
 case @comment.kind of
   0 = @slashslash_comment
-| 1 = @slashstarcomment
+| 1 = @slashstar_comment
 | 2 = @doccomment
 | 3 = @html_comment_start
 | 4 = @htmlcommentend;
 
 @html_comment = @html_comment_start | @htmlcommentend;
 @line_comment = @slashslash_comment | @html_comment;
-@block_comment = @slashstarcomment | @doccomment;
+@block_comment = @slashstar_comment | @doccomment;
 
 // source lines
 lines (unique int id: @line,

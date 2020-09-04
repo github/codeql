@@ -123,7 +123,7 @@ class BlockComment extends @block_comment, Comment { }
  *   (but not a JSDoc comment) *&#47;
  * </pre>
  */
-class SlashStarComment extends @slashstarcomment, BlockComment { }
+class SlashStarComment extends @slashstar_comment, BlockComment { }
 
 /**
  * A JSDoc comment.
