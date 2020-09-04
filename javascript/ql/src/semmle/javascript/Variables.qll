@@ -70,7 +70,7 @@ class FunctionScope extends Scope, @function_scope {
 }
 
 /** A scope induced by a catch clause. */
-class CatchScope extends Scope, @catchscope {
+class CatchScope extends Scope, @catch_scope {
   /** Gets the catch clause that induces this scope. */
   CatchClause getCatchClause() { result = getScopeElement() }
 
