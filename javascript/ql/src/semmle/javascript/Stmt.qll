@@ -457,7 +457,7 @@ class LabeledStmt extends @labeled_stmt, Stmt {
   Stmt getStmt() { result = getChildStmt(1) }
 }
 
-private class TJumpStmt = TBreakOrContinueStmt or @returnstmt or @throwstmt;
+private class TJumpStmt = TBreakOrContinueStmt or @return_stmt or @throwstmt;
 
 private class TBreakOrContinueStmt = @break_stmt or @continue_stmt;
 
@@ -616,7 +616,7 @@ class SwitchStmt extends @switch_stmt, ControlStmt {
  * return;
  * ```
  */
-class ReturnStmt extends @returnstmt, JumpStmt {
+class ReturnStmt extends @return_stmt, JumpStmt {
   /** Gets the expression specifying the returned value, if any. */
   Expr getExpr() { result = getChildExpr(0) }
 
