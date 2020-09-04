@@ -191,7 +191,7 @@ case @stmt.kind of
 | 39 = @global_augmentation_declaration
 ;
 
-@declstmt = @var_decl_stmt | @const_decl_stmt | @let_stmt | @legacy_let_stmt;
+@decl_stmt = @var_decl_stmt | @const_decl_stmt | @let_stmt | @legacy_let_stmt;
 
 @exportdeclaration = @export_all_declaration | @export_default_declaration | @export_named_declaration;
 
@@ -200,7 +200,7 @@ case @stmt.kind of
 
 is_instantiated(unique int decl: @namespace_declaration ref);
 
-@declarable_node = @declstmt | @namespace_declaration | @class_decl_stmt | @function_decl_stmt | @enum_declaration | @external_module_declaration | @global_augmentation_declaration | @field;
+@declarable_node = @decl_stmt | @namespace_declaration | @class_decl_stmt | @function_decl_stmt | @enum_declaration | @external_module_declaration | @global_augmentation_declaration | @field;
 has_declare_keyword(unique int stmt: @declarable_node ref);
 
 is_for_await_of(unique int forof: @for_of_stmt ref);

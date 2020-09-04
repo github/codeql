@@ -951,7 +951,7 @@ class FunctionDeclStmt extends @function_decl_stmt, Stmt, Function {
  * let i = 1, j = i-1;
  * ```
  */
-class DeclStmt extends @declstmt, Stmt {
+class DeclStmt extends @decl_stmt, Stmt {
   /** Gets the `i`th declarator in this declaration statement. */
   VariableDeclarator getDecl(int i) { result = getChildExpr(i) and i >= 0 }
 
