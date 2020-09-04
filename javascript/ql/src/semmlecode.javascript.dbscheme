@@ -637,7 +637,7 @@ case @type.kind of
 | 22 = @string_literal_type
 | 23 = @unknown_type
 | 24 = @bigint_type
-| 25 = @bigintliteraltype
+| 25 = @bigint_literal_type
 ;
 
 @booleanliteraltype = @true_type | @false_type;
@@ -715,8 +715,8 @@ type_alias(
   unique int aliasType: @type ref,
   int underlyingType: @type ref);
 
-@literal_type = @string_literal_type | @number_literal_type | @booleanliteraltype | @bigintliteraltype;
-@type_with_literal_value = @string_literal_type | @number_literal_type | @bigintliteraltype;
+@literal_type = @string_literal_type | @number_literal_type | @booleanliteraltype | @bigint_literal_type;
+@type_with_literal_value = @string_literal_type | @number_literal_type | @bigint_literal_type;
 type_literal_value(
   unique int typ: @type_with_literal_value ref,
   varchar(900) value: string ref);
