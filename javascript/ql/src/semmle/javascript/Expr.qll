@@ -1732,7 +1732,7 @@ class LogAndExpr extends @logand_expr, BinaryExpr {
  * x == null || x.f
  * ```
  */
-class LogOrExpr extends @logorexpr, BinaryExpr {
+class LogOrExpr extends @logor_expr, BinaryExpr {
   override string getOperator() { result = "||" }
 
   override ControlFlowNode getFirstControlFlowNode() { result = this }
