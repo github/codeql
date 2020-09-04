@@ -65,7 +65,7 @@ class Stmt extends @stmt, ExprOrStmt, Documentable {
 }
 
 private class TControlStmt =
-  TLoopStmt or @if_stmt or @withstmt or @switchstmt or @trystmt or @catchclause;
+  TLoopStmt or @if_stmt or @with_stmt or @switchstmt or @trystmt or @catchclause;
 
 private class TLoopStmt = TEnhancedForLoop or @whilestmt or @dowhilestmt or @forstmt;
 
@@ -549,7 +549,7 @@ class ContinueStmt extends @continue_stmt, BreakOrContinueStmt { }
  * }
  * ```
  */
-class WithStmt extends @withstmt, ControlStmt {
+class WithStmt extends @with_stmt, ControlStmt {
   /** Gets the controlling expression of this `with` statement. */
   Expr getExpr() { result = getChildExpr(0) }
 

@@ -156,7 +156,7 @@ case @stmt.kind of
 |  4 = @labeled_stmt
 |  5 = @break_stmt
 |  6 = @continue_stmt
-|  7 = @withstmt
+|  7 = @with_stmt
 |  8 = @switchstmt
 |  9 = @returnstmt
 | 10 = @throwstmt
