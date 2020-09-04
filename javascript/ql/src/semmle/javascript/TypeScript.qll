@@ -2129,7 +2129,7 @@ class UndefinedType extends Type, @undefined_type { }
 /**
  * The `null` type.
  */
-class NullType extends Type, @nulltype { }
+class NullType extends Type, @null_type { }
 
 /**
  * The `never` type.

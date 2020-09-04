@@ -624,7 +624,7 @@ case @type.kind of
 | 9 = @typeof_type
 | 10 = @void_type
 | 11 = @undefined_type
-| 12 = @nulltype
+| 12 = @null_type
 | 13 = @nevertype
 | 14 = @plainsymboltype
 | 15 = @uniquesymboltype
