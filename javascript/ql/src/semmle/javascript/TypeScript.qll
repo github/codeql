@@ -2369,7 +2369,7 @@ class CanonicalTypeVariableType extends TypeVariableType, @canonical_type_variab
  * - `<T>(x: T) => T`
  * - `<S, T>(x: S, y: T) => T`.
  */
-class LexicalTypeVariableType extends TypeVariableType, @lexicaltypevariabletype {
+class LexicalTypeVariableType extends TypeVariableType, @lexical_type_variable_type {
   override string getName() {
     types(this, _, result) // The toString value contains the name.
   }

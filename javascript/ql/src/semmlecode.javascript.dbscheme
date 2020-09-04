@@ -631,7 +631,7 @@ case @type.kind of
 | 16 = @objectkeyword_type
 | 17 = @intersection_type
 | 18 = @tuple_type
-| 19 = @lexicaltypevariabletype
+| 19 = @lexical_type_variable_type
 | 20 = @thistype
 | 21 = @numberliteraltype
 | 22 = @stringliteraltype
@@ -643,7 +643,7 @@ case @type.kind of
 @booleanliteraltype = @true_type | @false_type;
 @symbol_type = @plain_symbol_type | @unique_symbol_type;
 @union_or_intersection_type = @union_type | @intersection_type;
-@typevariable_type = @canonical_type_variable_type | @lexicaltypevariabletype;
+@typevariable_type = @canonical_type_variable_type | @lexical_type_variable_type;
 
 has_asserts_keyword(int node: @predicate_typeexpr ref);
 
