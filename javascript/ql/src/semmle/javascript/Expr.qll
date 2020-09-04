@@ -1626,7 +1626,7 @@ class DivExpr extends @div_expr, BinaryExpr {
  * n % 2
  * ```
  */
-class ModExpr extends @modexpr, BinaryExpr {
+class ModExpr extends @mod_expr, BinaryExpr {
   override string getOperator() { result = "%" }
 }
 
