@@ -69,7 +69,7 @@ stmt_containers(#20020,#20001)
 #20021=*
 exprs(#20021,4,#20020,-1,"'foo'")
 hasLocation(#20021,#20011)
-enclosingStmt(#20021,#20020)
+enclosing_stmt(#20021,#20020)
 exprContainers(#20021,#20001)
 literals("foo","'foo'",#20021)
 #20022=*
@@ -81,12 +81,12 @@ regexpConstValue(#20022,"foo")
 #20024=*
 exprs(#20024,84,#20020,0,"x")
 hasLocation(#20024,#20007)
-enclosingStmt(#20024,#20020)
+enclosing_stmt(#20024,#20020)
 exprContainers(#20024,#20001)
 #20025=*
 exprs(#20025,78,#20024,1,"x")
 hasLocation(#20025,#20007)
-enclosingStmt(#20025,#20020)
+enclosing_stmt(#20025,#20020)
 exprContainers(#20025,#20001)
 literals("x","x",#20025)
 decl(#20025,#20017)

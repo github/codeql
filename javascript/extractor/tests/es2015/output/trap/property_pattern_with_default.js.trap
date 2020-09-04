@@ -81,7 +81,7 @@ exprs(#20027,65,#20026,0,"({x = 1}) => x")
 #20028=@"loc,{#10000},1,1,1,14"
 locations_default(#20028,#10000,1,1,1,14)
 hasLocation(#20027,#20028)
-enclosingStmt(#20027,#20026)
+enclosing_stmt(#20027,#20026)
 exprContainers(#20027,#20001)
 #20029=*
 scopes(#20029,1)

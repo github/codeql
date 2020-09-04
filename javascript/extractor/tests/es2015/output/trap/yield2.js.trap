@@ -118,7 +118,7 @@ stmt_containers(#20036,#20029)
 #20038=*
 exprs(#20038,69,#20036,0,"yield")
 hasLocation(#20038,#20021)
-enclosingStmt(#20038,#20036)
+enclosing_stmt(#20038,#20036)
 exprContainers(#20038,#20029)
 #20039=*
 entry_cfg_node(#20039,#20001)

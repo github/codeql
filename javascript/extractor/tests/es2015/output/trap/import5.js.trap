@@ -79,7 +79,7 @@ stmt_containers(#20024,#20001)
 #20025=*
 exprs(#20025,4,#20024,-1,"'foo'")
 hasLocation(#20025,#20015)
-enclosingStmt(#20025,#20024)
+enclosing_stmt(#20025,#20024)
 exprContainers(#20025,#20001)
 literals("foo","'foo'",#20025)
 #20026=*
@@ -93,12 +93,12 @@ exprs(#20028,85,#20024,0,"* as foo")
 #20029=@"loc,{#10000},1,8,1,15"
 locations_default(#20029,#10000,1,8,1,15)
 hasLocation(#20028,#20029)
-enclosingStmt(#20028,#20024)
+enclosing_stmt(#20028,#20024)
 exprContainers(#20028,#20001)
 #20030=*
 exprs(#20030,78,#20028,1,"foo")
 hasLocation(#20030,#20011)
-enclosingStmt(#20030,#20024)
+enclosing_stmt(#20030,#20024)
 exprContainers(#20030,#20001)
 literals("foo","foo",#20030)
 decl(#20030,#20021)

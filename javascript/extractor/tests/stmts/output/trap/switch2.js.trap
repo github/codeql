@@ -244,7 +244,7 @@ stmt_containers(#20082,#20075)
 #20084=*
 exprs(#20084,79,#20082,-1,"x")
 hasLocation(#20084,#20035)
-enclosingStmt(#20084,#20082)
+enclosing_stmt(#20084,#20082)
 exprContainers(#20084,#20075)
 literals("x","x",#20084)
 #20085=@"var;{x};{#20000}"
@@ -259,7 +259,7 @@ stmt_containers(#20086,#20075)
 #20088=*
 exprs(#20088,3,#20086,-1,"0")
 hasLocation(#20088,#20043)
-enclosingStmt(#20088,#20086)
+enclosing_stmt(#20088,#20086)
 exprContainers(#20088,#20075)
 literals("0","0",#20088)
 #20089=*
@@ -277,7 +277,7 @@ stmt_containers(#20091,#20075)
 #20093=*
 exprs(#20093,3,#20091,0,"42")
 hasLocation(#20093,#20053)
-enclosingStmt(#20093,#20091)
+enclosing_stmt(#20093,#20091)
 exprContainers(#20093,#20075)
 literals("42","42",#20093)
 #20094=*
@@ -289,7 +289,7 @@ stmt_containers(#20094,#20075)
 #20096=*
 exprs(#20096,3,#20094,-1,"1")
 hasLocation(#20096,#20059)
-enclosingStmt(#20096,#20094)
+enclosing_stmt(#20096,#20094)
 exprContainers(#20096,#20075)
 literals("1","1",#20096)
 #20097=*
@@ -301,7 +301,7 @@ stmt_containers(#20097,#20075)
 #20099=*
 exprs(#20099,3,#20097,0,"56")
 hasLocation(#20099,#20065)
-enclosingStmt(#20099,#20097)
+enclosing_stmt(#20099,#20097)
 exprContainers(#20099,#20075)
 literals("56","56",#20099)
 #20100=*

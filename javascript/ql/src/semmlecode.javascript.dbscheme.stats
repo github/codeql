@@ -11187,7 +11187,7 @@
 </dependencies>
 </relation>
 <relation>
-<name>enclosingStmt</name>
+<name>enclosing_stmt</name>
 <cardinality>5372899</cardinality>
 <columnsizes>
 <e>

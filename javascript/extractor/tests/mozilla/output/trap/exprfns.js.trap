@@ -255,7 +255,7 @@ stmt_containers(#20086,#20001)
 #20088=*
 exprs(#20088,9,#20086,0,"functio ... )\n  }\n}")
 hasLocation(#20088,#20087)
-enclosingStmt(#20088,#20086)
+enclosing_stmt(#20088,#20086)
 exprContainers(#20088,#20001)
 #20089=*
 scopes(#20089,1)
@@ -289,7 +289,7 @@ stmt_containers(#20096,#20088)
 #20098=*
 exprs(#20098,79,#20096,0,"b")
 hasLocation(#20098,#20047)
-enclosingStmt(#20098,#20096)
+enclosing_stmt(#20098,#20096)
 exprContainers(#20098,#20088)
 literals("b","b",#20098)
 bind(#20098,#20091)

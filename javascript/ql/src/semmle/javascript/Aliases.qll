@@ -115,3 +115,8 @@ deprecated predicate hasDeclareKeyword(ASTNode stmt) { has_declare_keyword(stmt)
  * Use `ForOfStmt#isAwait()` instead.
  */ 
 deprecated predicate isForAwaitOf(ForOfStmt forof) { is_for_await_of(forof) }
+/**
+ * Alias for the predicate `enclosing_stmt` defined in the .dbscheme.
+ * Use `ExprOrType#getEnclosingStmt` instead.
+ */ 
+deprecated predicate enclosingStmt(ExprOrType expr, Stmt stmt) { enclosing_stmt(expr, stmt) }

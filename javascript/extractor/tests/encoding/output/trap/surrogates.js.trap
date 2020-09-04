@@ -216,7 +216,7 @@ stmt_containers(#20074,#20001)
 #20075=*
 exprs(#20075,4,#20074,0,"'\ud800'")
 hasLocation(#20075,#20032)
-enclosingStmt(#20075,#20074)
+enclosing_stmt(#20075,#20074)
 exprContainers(#20075,#20001)
 literals("?","'\ud800'",#20075)
 #20076=*
@@ -232,7 +232,7 @@ stmt_containers(#20078,#20001)
 #20079=*
 exprs(#20079,4,#20078,0,"'foo\ud800'")
 hasLocation(#20079,#20036)
-enclosingStmt(#20079,#20078)
+enclosing_stmt(#20079,#20078)
 exprContainers(#20079,#20001)
 literals("foo?","'foo\ud800'",#20079)
 #20080=*
@@ -248,7 +248,7 @@ stmt_containers(#20082,#20001)
 #20083=*
 exprs(#20083,4,#20082,0,"'\ud800bar'")
 hasLocation(#20083,#20040)
-enclosingStmt(#20083,#20082)
+enclosing_stmt(#20083,#20082)
 exprContainers(#20083,#20001)
 literals("?bar","'\ud800bar'",#20083)
 #20084=*
@@ -264,7 +264,7 @@ stmt_containers(#20086,#20001)
 #20087=*
 exprs(#20087,4,#20086,0,"'foo\ud800bar'")
 hasLocation(#20087,#20044)
-enclosingStmt(#20087,#20086)
+enclosing_stmt(#20087,#20086)
 exprContainers(#20087,#20001)
 literals("foo?bar","'foo\ud800bar'",#20087)
 #20088=*
@@ -280,7 +280,7 @@ stmt_containers(#20090,#20001)
 #20091=*
 exprs(#20091,5,#20090,0,"/\uD800/")
 hasLocation(#20091,#20048)
-enclosingStmt(#20091,#20090)
+enclosing_stmt(#20091,#20090)
 exprContainers(#20091,#20001)
 literals("/\uD800/","/\uD800/",#20091)
 #20092=*
@@ -296,7 +296,7 @@ stmt_containers(#20094,#20001)
 #20095=*
 exprs(#20095,5,#20094,0,"/foo\ud800/")
 hasLocation(#20095,#20052)
-enclosingStmt(#20095,#20094)
+enclosing_stmt(#20095,#20094)
 exprContainers(#20095,#20001)
 literals("/foo\ud800/","/foo\ud800/",#20095)
 #20096=*
@@ -323,7 +323,7 @@ stmt_containers(#20102,#20001)
 #20103=*
 exprs(#20103,5,#20102,0,"/\ud800bar/")
 hasLocation(#20103,#20056)
-enclosingStmt(#20103,#20102)
+enclosing_stmt(#20103,#20102)
 exprContainers(#20103,#20001)
 literals("/\ud800bar/","/\ud800bar/",#20103)
 #20104=*
@@ -350,7 +350,7 @@ stmt_containers(#20110,#20001)
 #20111=*
 exprs(#20111,5,#20110,0,"/foo\ud800bar/")
 hasLocation(#20111,#20060)
-enclosingStmt(#20111,#20110)
+enclosing_stmt(#20111,#20110)
 exprContainers(#20111,#20001)
 literals("/foo\ud800bar/","/foo\ud800bar/",#20111)
 #20112=*
@@ -383,7 +383,7 @@ stmt_containers(#20120,#20001)
 #20121=*
 exprs(#20121,4,#20120,0,"'\udc00\ud800'")
 hasLocation(#20121,#20064)
-enclosingStmt(#20121,#20120)
+enclosing_stmt(#20121,#20120)
 exprContainers(#20121,#20001)
 literals("??","'\udc00\ud800'",#20121)
 #20122=*
@@ -399,7 +399,7 @@ stmt_containers(#20124,#20001)
 #20125=*
 exprs(#20125,4,#20124,0,"'\uD834\uDF06'")
 hasLocation(#20125,#20068)
-enclosingStmt(#20125,#20124)
+enclosing_stmt(#20125,#20124)
 exprContainers(#20125,#20001)
 literals("𝌆","'\uD834\uDF06'",#20125)
 #20126=*

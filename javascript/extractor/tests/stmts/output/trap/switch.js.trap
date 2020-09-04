@@ -368,7 +368,7 @@ stmt_containers(#20130,#20001)
 #20132=*
 exprs(#20132,79,#20130,-1,"x")
 hasLocation(#20132,#20041)
-enclosingStmt(#20132,#20130)
+enclosing_stmt(#20132,#20130)
 exprContainers(#20132,#20001)
 literals("x","x",#20132)
 #20133=@"var;{x};{#20000}"
@@ -396,7 +396,7 @@ stmt_containers(#20138,#20001)
 #20140=*
 exprs(#20140,3,#20138,-1,"23")
 hasLocation(#20140,#20057)
-enclosingStmt(#20140,#20138)
+enclosing_stmt(#20140,#20138)
 exprContainers(#20140,#20001)
 literals("23","23",#20140)
 #20141=*
@@ -410,19 +410,19 @@ exprs(#20143,48,#20141,0,"x += 19")
 #20144=@"loc,{#10000},5,5,5,11"
 locations_default(#20144,#10000,5,5,5,11)
 hasLocation(#20143,#20144)
-enclosingStmt(#20143,#20141)
+enclosing_stmt(#20143,#20141)
 exprContainers(#20143,#20001)
 #20145=*
 exprs(#20145,79,#20143,0,"x")
 hasLocation(#20145,#20061)
-enclosingStmt(#20145,#20141)
+enclosing_stmt(#20145,#20141)
 exprContainers(#20145,#20001)
 literals("x","x",#20145)
 bind(#20145,#20133)
 #20146=*
 exprs(#20146,3,#20143,1,"19")
 hasLocation(#20146,#20065)
-enclosingStmt(#20146,#20141)
+enclosing_stmt(#20146,#20141)
 exprContainers(#20146,#20001)
 literals("19","19",#20146)
 #20147=*
@@ -459,7 +459,7 @@ stmt_containers(#20154,#20147)
 #20156=*
 exprs(#20156,79,#20154,-1,"x")
 hasLocation(#20156,#20084)
-enclosingStmt(#20156,#20154)
+enclosing_stmt(#20156,#20154)
 exprContainers(#20156,#20147)
 literals("x","x",#20156)
 bind(#20156,#20133)
@@ -472,7 +472,7 @@ stmt_containers(#20157,#20147)
 #20159=*
 exprs(#20159,3,#20157,-1,"0")
 hasLocation(#20159,#20092)
-enclosingStmt(#20159,#20157)
+enclosing_stmt(#20159,#20157)
 exprContainers(#20159,#20147)
 literals("0","0",#20159)
 #20160=*
@@ -484,7 +484,7 @@ stmt_containers(#20160,#20147)
 #20162=*
 exprs(#20162,3,#20160,0,"23")
 hasLocation(#20162,#20098)
-enclosingStmt(#20162,#20160)
+enclosing_stmt(#20162,#20160)
 exprContainers(#20162,#20147)
 literals("23","23",#20162)
 #20163=*
@@ -502,7 +502,7 @@ stmt_containers(#20165,#20147)
 #20167=*
 exprs(#20167,3,#20165,0,"42")
 hasLocation(#20167,#20108)
-enclosingStmt(#20167,#20165)
+enclosing_stmt(#20167,#20165)
 exprContainers(#20167,#20147)
 literals("42","42",#20167)
 #20168=*
@@ -514,7 +514,7 @@ stmt_containers(#20168,#20147)
 #20170=*
 exprs(#20170,3,#20168,-1,"1")
 hasLocation(#20170,#20114)
-enclosingStmt(#20170,#20168)
+enclosing_stmt(#20170,#20168)
 exprContainers(#20170,#20147)
 literals("1","1",#20170)
 #20171=*
@@ -526,7 +526,7 @@ stmt_containers(#20171,#20147)
 #20173=*
 exprs(#20173,3,#20171,0,"56")
 hasLocation(#20173,#20120)
-enclosingStmt(#20173,#20171)
+enclosing_stmt(#20173,#20171)
 exprContainers(#20173,#20147)
 literals("56","56",#20173)
 #20174=*

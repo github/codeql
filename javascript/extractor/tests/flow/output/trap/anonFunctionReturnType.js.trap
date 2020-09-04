@@ -108,12 +108,12 @@ exprs(#20038,64,#20037,0,"f = (vi ... n => {}")
 #20039=@"loc,{#10000},1,5,1,47"
 locations_default(#20039,#10000,1,5,1,47)
 hasLocation(#20038,#20039)
-enclosingStmt(#20038,#20037)
+enclosing_stmt(#20038,#20037)
 exprContainers(#20038,#20001)
 #20040=*
 exprs(#20040,78,#20038,0,"f")
 hasLocation(#20040,#20007)
-enclosingStmt(#20040,#20037)
+enclosing_stmt(#20040,#20037)
 exprContainers(#20040,#20001)
 literals("f","f",#20040)
 decl(#20040,#20036)
@@ -122,7 +122,7 @@ exprs(#20041,65,#20038,1,"(viewab ... n => {}")
 #20042=@"loc,{#10000},1,9,1,47"
 locations_default(#20042,#10000,1,9,1,47)
 hasLocation(#20041,#20042)
-enclosingStmt(#20041,#20037)
+enclosing_stmt(#20041,#20037)
 exprContainers(#20041,#20001)
 #20043=*
 scopes(#20043,1)

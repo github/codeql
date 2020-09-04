@@ -16,7 +16,7 @@ import javascript
  */
 class ExprOrType extends @exprortype, Documentable {
   /** Gets the statement in which this expression or type appears. */
-  Stmt getEnclosingStmt() { enclosingStmt(this, result) }
+  Stmt getEnclosingStmt() { enclosing_stmt(this, result) }
 
   /** Gets the function in which this expression or type appears, if any. */
   Function getEnclosingFunction() { result = getContainer() }
@@ -238,7 +238,7 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
   pragma[inline]
   private Stmt getRawEnclosingStmt(Expr e) {
     // For performance reasons, we need the enclosing statement without overrides
-    enclosingStmt(e, result)
+    enclosing_stmt(e, result)
   }
 
   /**

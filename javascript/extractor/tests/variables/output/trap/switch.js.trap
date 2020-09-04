@@ -180,7 +180,7 @@ stmt_containers(#20059,#20051)
 #20061=*
 exprs(#20061,3,#20059,-1,"0")
 hasLocation(#20061,#20029)
-enclosingStmt(#20061,#20059)
+enclosing_stmt(#20061,#20059)
 exprContainers(#20061,#20051)
 literals("0","0",#20061)
 #20062=*
@@ -198,12 +198,12 @@ stmt_containers(#20064,#20051)
 #20066=*
 exprs(#20066,64,#20064,0,"i")
 hasLocation(#20066,#20041)
-enclosingStmt(#20066,#20064)
+enclosing_stmt(#20066,#20064)
 exprContainers(#20066,#20051)
 #20067=*
 exprs(#20067,78,#20066,0,"i")
 hasLocation(#20067,#20041)
-enclosingStmt(#20067,#20064)
+enclosing_stmt(#20067,#20064)
 exprContainers(#20067,#20051)
 literals("i","i",#20067)
 decl(#20067,#20055)

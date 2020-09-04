@@ -79,7 +79,7 @@ exprs(#20025,9,#20023,0,"function () {}")
 #20026=@"loc,{#10000},1,16,1,29"
 locations_default(#20026,#10000,1,16,1,29)
 hasLocation(#20025,#20026)
-enclosingStmt(#20025,#20023)
+enclosing_stmt(#20025,#20023)
 exprContainers(#20025,#20001)
 #20027=*
 scopes(#20027,1)

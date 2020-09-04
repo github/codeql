@@ -128,7 +128,7 @@ stmt_containers(#20040,#20001)
 #20042=*
 exprs(#20042,7,#20040,0,"[,]")
 hasLocation(#20042,#20041)
-enclosingStmt(#20042,#20040)
+enclosing_stmt(#20042,#20040)
 exprContainers(#20042,#20001)
 arraySize(#20042,1)
 #20043=*

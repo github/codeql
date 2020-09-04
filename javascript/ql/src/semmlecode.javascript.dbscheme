@@ -217,7 +217,7 @@ literals (varchar(900) value: string ref,
        varchar(900) raw: string ref,
        unique int expr: @exprortype ref);
        
-enclosingStmt (unique int expr: @exprortype ref,
+enclosing_stmt (unique int expr: @exprortype ref,
        int stmt: @stmt ref);
 
 exprContainers (unique int expr: @exprortype ref,

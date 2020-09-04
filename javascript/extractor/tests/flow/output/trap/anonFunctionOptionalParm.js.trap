@@ -101,12 +101,12 @@ exprs(#20035,64,#20034,0,"f = (x?:int) => {}")
 #20036=@"loc,{#10000},1,5,1,22"
 locations_default(#20036,#10000,1,5,1,22)
 hasLocation(#20035,#20036)
-enclosingStmt(#20035,#20034)
+enclosing_stmt(#20035,#20034)
 exprContainers(#20035,#20001)
 #20037=*
 exprs(#20037,78,#20035,0,"f")
 hasLocation(#20037,#20007)
-enclosingStmt(#20037,#20034)
+enclosing_stmt(#20037,#20034)
 exprContainers(#20037,#20001)
 literals("f","f",#20037)
 decl(#20037,#20033)
@@ -115,7 +115,7 @@ exprs(#20038,65,#20035,1,"(x?:int) => {}")
 #20039=@"loc,{#10000},1,9,1,22"
 locations_default(#20039,#10000,1,9,1,22)
 hasLocation(#20038,#20039)
-enclosingStmt(#20038,#20034)
+enclosing_stmt(#20038,#20034)
 exprContainers(#20038,#20001)
 #20040=*
 scopes(#20040,1)

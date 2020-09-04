@@ -404,7 +404,7 @@ public class ASTExtractor {
       if (nd.hasLoc()) locationManager.emitNodeLocation(nd, lbl);
       Statement enclosingStmt = contextManager.getCurrentStatement();
       if (enclosingStmt != null)
-        trapwriter.addTuple("enclosingStmt", lbl, trapwriter.localID(enclosingStmt));
+        trapwriter.addTuple("enclosing_stmt", lbl, trapwriter.localID(enclosingStmt));
       trapwriter.addTuple("exprContainers", lbl, contextManager.getCurrentContainerKey());
       return lbl;
     }

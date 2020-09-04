@@ -50,7 +50,7 @@ stmt_containers(#20013,#20001)
 #20014=*
 exprs(#20014,4,#20013,-1,"'foo'")
 hasLocation(#20014,#20007)
-enclosingStmt(#20014,#20013)
+enclosing_stmt(#20014,#20013)
 exprContainers(#20014,#20001)
 literals("foo","'foo'",#20014)
 #20015=*

@@ -95,7 +95,7 @@ stmt_containers(#20030,#20001)
 #20032=*
 exprs(#20032,78,#20030,0,"C")
 hasLocation(#20032,#20011)
-enclosingStmt(#20032,#20030)
+enclosing_stmt(#20032,#20030)
 exprContainers(#20032,#20001)
 literals("C","C",#20032)
 decl(#20032,#20026)
@@ -112,13 +112,13 @@ hasLocation(#20034,#20035)
 #20036=*
 exprs(#20036,0,#20034,0,"constructor")
 hasLocation(#20036,#20035)
-enclosingStmt(#20036,#20030)
+enclosing_stmt(#20036,#20030)
 exprContainers(#20036,#20001)
 literals("constructor","constructor",#20036)
 #20037=*
 exprs(#20037,9,#20034,1,"() {}")
 hasLocation(#20037,#20035)
-enclosingStmt(#20037,#20030)
+enclosing_stmt(#20037,#20030)
 exprContainers(#20037,#20001)
 #20038=*
 scopes(#20038,1)
@@ -141,7 +141,7 @@ stmt_containers(#20041,#20001)
 #20043=*
 exprs(#20043,7,#20041,0,"[,]")
 hasLocation(#20043,#20042)
-enclosingStmt(#20043,#20041)
+enclosing_stmt(#20043,#20041)
 exprContainers(#20043,#20001)
 arraySize(#20043,1)
 #20044=*

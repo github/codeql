@@ -121,12 +121,12 @@ exprs(#20043,64,#20042,0,"f = asy ... t foo()")
 #20044=@"loc,{#10000},1,5,1,48"
 locations_default(#20044,#10000,1,5,1,48)
 hasLocation(#20043,#20044)
-enclosingStmt(#20043,#20042)
+enclosing_stmt(#20043,#20042)
 exprContainers(#20043,#20001)
 #20045=*
 exprs(#20045,78,#20043,0,"f")
 hasLocation(#20045,#20007)
-enclosingStmt(#20045,#20042)
+enclosing_stmt(#20045,#20042)
 exprContainers(#20045,#20001)
 literals("f","f",#20045)
 decl(#20045,#20041)
@@ -135,7 +135,7 @@ exprs(#20046,65,#20043,1,"async() ... t foo()")
 #20047=@"loc,{#10000},1,9,1,48"
 locations_default(#20047,#10000,1,9,1,48)
 hasLocation(#20046,#20047)
-enclosingStmt(#20046,#20042)
+enclosing_stmt(#20046,#20042)
 exprContainers(#20046,#20001)
 #20048=*
 scopes(#20048,1)

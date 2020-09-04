@@ -121,7 +121,7 @@ exprs(#20039,82,#20037,0,"new.source")
 #20040=@"loc,{#10000},2,3,2,12"
 locations_default(#20040,#10000,2,3,2,12)
 hasLocation(#20039,#20040)
-enclosingStmt(#20039,#20037)
+enclosing_stmt(#20039,#20037)
 exprContainers(#20039,#20031)
 #20041=*
 entry_cfg_node(#20041,#20001)

@@ -87,7 +87,7 @@ stmt_containers(#20027,#20001)
 #20028=*
 exprs(#20028,78,#20027,0,"x")
 hasLocation(#20028,#20007)
-enclosingStmt(#20028,#20027)
+enclosing_stmt(#20028,#20027)
 exprContainers(#20028,#20001)
 literals("x","x",#20028)
 decl(#20028,#20024)
@@ -98,12 +98,12 @@ exprs(#20029,98,#20027,1,"require ... ssign"")")
 #20030=@"loc,{#10000},1,12,1,36"
 locations_default(#20030,#10000,1,12,1,36)
 hasLocation(#20029,#20030)
-enclosingStmt(#20029,#20027)
+enclosing_stmt(#20029,#20027)
 exprContainers(#20029,#20001)
 #20031=*
 exprs(#20031,4,#20029,0,"""./exportassign""")
 hasLocation(#20031,#20015)
-enclosingStmt(#20031,#20027)
+enclosing_stmt(#20031,#20027)
 exprContainers(#20031,#20001)
 literals("./exportassign","""./exportassign""",#20031)
 #20032=*

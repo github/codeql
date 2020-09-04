@@ -133,19 +133,19 @@ stmt_containers(#20042,#20035)
 #20044=*
 exprs(#20044,69,#20042,0,"yield import(""foo"")")
 hasLocation(#20044,#20043)
-enclosingStmt(#20044,#20042)
+enclosing_stmt(#20044,#20042)
 exprContainers(#20044,#20035)
 #20045=*
 exprs(#20045,99,#20044,0,"import(""foo"")")
 #20046=@"loc,{#10000},2,9,2,21"
 locations_default(#20046,#10000,2,9,2,21)
 hasLocation(#20045,#20046)
-enclosingStmt(#20045,#20042)
+enclosing_stmt(#20045,#20042)
 exprContainers(#20045,#20035)
 #20047=*
 exprs(#20047,4,#20045,0,"""foo""")
 hasLocation(#20047,#20027)
-enclosingStmt(#20047,#20042)
+enclosing_stmt(#20047,#20042)
 exprContainers(#20047,#20035)
 literals("foo","""foo""",#20047)
 #20048=*

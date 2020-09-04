@@ -56,14 +56,14 @@ exprs(#20017,18,#20016,0,"!class {}")
 #20018=@"loc,{#10000},1,1,1,9"
 locations_default(#20018,#10000,1,1,1,9)
 hasLocation(#20017,#20018)
-enclosingStmt(#20017,#20016)
+enclosing_stmt(#20017,#20016)
 exprContainers(#20017,#20001)
 #20019=*
 exprs(#20019,80,#20017,0,"class {}")
 #20020=@"loc,{#10000},1,2,1,9"
 locations_default(#20020,#10000,1,2,1,9)
 hasLocation(#20019,#20020)
-enclosingStmt(#20019,#20016)
+enclosing_stmt(#20019,#20016)
 exprContainers(#20019,#20001)
 #20021=*
 properties(#20021,#20019,2,0,"constructor() {}")
@@ -73,13 +73,13 @@ hasLocation(#20021,#20022)
 #20023=*
 exprs(#20023,0,#20021,0,"constructor")
 hasLocation(#20023,#20022)
-enclosingStmt(#20023,#20016)
+enclosing_stmt(#20023,#20016)
 exprContainers(#20023,#20001)
 literals("constructor","constructor",#20023)
 #20024=*
 exprs(#20024,9,#20021,1,"() {}")
 hasLocation(#20024,#20022)
-enclosingStmt(#20024,#20016)
+enclosing_stmt(#20024,#20016)
 exprContainers(#20024,#20001)
 #20025=*
 scopes(#20025,1)

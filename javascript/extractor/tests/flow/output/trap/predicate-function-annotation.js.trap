@@ -352,7 +352,7 @@ stmt_containers(#20126,#20117)
 #20128=*
 exprs(#20128,79,#20126,0,"a")
 hasLocation(#20128,#20043)
-enclosingStmt(#20128,#20126)
+enclosing_stmt(#20128,#20126)
 exprContainers(#20128,#20117)
 literals("a","a",#20128)
 bind(#20128,#20121)
@@ -396,7 +396,7 @@ stmt_containers(#20138,#20001)
 #20140=*
 exprs(#20140,79,#20138,0,"b")
 hasLocation(#20140,#20070)
-enclosingStmt(#20140,#20138)
+enclosing_stmt(#20140,#20138)
 exprContainers(#20140,#20001)
 literals("b","b",#20140)
 #20141=@"var;{b};{#20000}"
@@ -411,7 +411,7 @@ exprs(#20143,65,#20142,0,"(c): bo ... ks => c")
 #20144=@"loc,{#10000},8,1,8,25"
 locations_default(#20144,#10000,8,1,8,25)
 hasLocation(#20143,#20144)
-enclosingStmt(#20143,#20142)
+enclosing_stmt(#20143,#20142)
 exprContainers(#20143,#20001)
 #20145=*
 scopes(#20145,1)
@@ -440,7 +440,7 @@ exprs(#20150,65,#20149,0,"(d): %checks => d")
 #20151=@"loc,{#10000},9,1,9,17"
 locations_default(#20151,#10000,9,1,9,17)
 hasLocation(#20150,#20151)
-enclosingStmt(#20150,#20149)
+enclosing_stmt(#20150,#20149)
 exprContainers(#20150,#20001)
 #20152=*
 scopes(#20152,1)

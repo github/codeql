@@ -62,7 +62,7 @@ stmt_containers(#20019,#20001)
 #20020=*
 exprs(#20020,79,#20019,-1,"x")
 hasLocation(#20020,#20009)
-enclosingStmt(#20020,#20019)
+enclosing_stmt(#20020,#20019)
 exprContainers(#20020,#20001)
 literals("x","x",#20020)
 #20021=@"var;{x};{#20000}"

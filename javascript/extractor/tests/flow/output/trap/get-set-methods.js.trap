@@ -186,7 +186,7 @@ stmt_containers(#20066,#20001)
 #20068=*
 exprs(#20068,78,#20066,0,"C")
 hasLocation(#20068,#20013)
-enclosingStmt(#20068,#20066)
+enclosing_stmt(#20068,#20066)
 exprContainers(#20068,#20001)
 literals("C","C",#20068)
 decl(#20068,#20064)
@@ -203,7 +203,7 @@ hasLocation(#20070,#20071)
 #20072=*
 exprs(#20072,0,#20070,0,"get")
 hasLocation(#20072,#20017)
-enclosingStmt(#20072,#20066)
+enclosing_stmt(#20072,#20066)
 exprContainers(#20072,#20001)
 literals("get","get",#20072)
 #20073=*
@@ -211,7 +211,7 @@ exprs(#20073,9,#20070,1,"(v: T) { }")
 #20074=@"loc,{#10000},2,11,2,20"
 locations_default(#20074,#10000,2,11,2,20)
 hasLocation(#20073,#20074)
-enclosingStmt(#20073,#20066)
+enclosing_stmt(#20073,#20066)
 exprContainers(#20073,#20001)
 #20075=*
 scopes(#20075,1)
@@ -245,7 +245,7 @@ hasLocation(#20082,#20083)
 #20084=*
 exprs(#20084,0,#20082,0,"set")
 hasLocation(#20084,#20039)
-enclosingStmt(#20084,#20066)
+enclosing_stmt(#20084,#20066)
 exprContainers(#20084,#20001)
 literals("set","set",#20084)
 #20085=*
@@ -253,7 +253,7 @@ exprs(#20085,9,#20082,1,"(v: T) { }")
 #20086=@"loc,{#10000},3,11,3,20"
 locations_default(#20086,#10000,3,11,3,20)
 hasLocation(#20085,#20086)
-enclosingStmt(#20085,#20066)
+enclosing_stmt(#20085,#20066)
 exprContainers(#20085,#20001)
 #20087=*
 scopes(#20087,1)
@@ -287,13 +287,13 @@ hasLocation(#20094,#20095)
 #20096=*
 exprs(#20096,0,#20094,0,"constructor")
 hasLocation(#20096,#20095)
-enclosingStmt(#20096,#20066)
+enclosing_stmt(#20096,#20066)
 exprContainers(#20096,#20001)
 literals("constructor","constructor",#20096)
 #20097=*
 exprs(#20097,9,#20094,1,"() {}")
 hasLocation(#20097,#20095)
-enclosingStmt(#20097,#20066)
+enclosing_stmt(#20097,#20066)
 exprContainers(#20097,#20001)
 #20098=*
 scopes(#20098,1)

@@ -84,19 +84,19 @@ stmt_containers(#20028,#20001)
 #20029=*
 exprs(#20029,47,#20028,0,"functio ... es) { }")
 hasLocation(#20029,#20003)
-enclosingStmt(#20029,#20028)
+enclosing_stmt(#20029,#20028)
 exprContainers(#20029,#20001)
 #20030=*
 exprs(#20030,14,#20029,0,"ISMTPOn ... Arrival")
 #20031=@"loc,{#10000},1,10,1,34"
 locations_default(#20031,#10000,1,10,1,34)
 hasLocation(#20030,#20031)
-enclosingStmt(#20030,#20028)
+enclosing_stmt(#20030,#20028)
 exprContainers(#20030,#20001)
 #20032=*
 exprs(#20032,79,#20030,0,"ISMTPOnArrival")
 hasLocation(#20032,#20007)
-enclosingStmt(#20032,#20028)
+enclosing_stmt(#20032,#20028)
 exprContainers(#20032,#20001)
 literals("ISMTPOnArrival","ISMTPOnArrival",#20032)
 #20033=@"var;{ISMTPOnArrival};{#20000}"
@@ -105,13 +105,13 @@ bind(#20032,#20033)
 #20034=*
 exprs(#20034,0,#20030,1,"OnArrival")
 hasLocation(#20034,#20011)
-enclosingStmt(#20034,#20028)
+enclosing_stmt(#20034,#20028)
 exprContainers(#20034,#20001)
 literals("OnArrival","OnArrival",#20034)
 #20035=*
 exprs(#20035,9,#20029,1,"functio ... es) { }")
 hasLocation(#20035,#20003)
-enclosingStmt(#20035,#20028)
+enclosing_stmt(#20035,#20028)
 exprContainers(#20035,#20001)
 #20036=*
 scopes(#20036,1)

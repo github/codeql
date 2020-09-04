@@ -136,7 +136,7 @@ stmt_containers(#20043,#20037)
 #20045=*
 exprs(#20045,4,#20043,0,"'use strict'")
 hasLocation(#20045,#20021)
-enclosingStmt(#20045,#20043)
+enclosing_stmt(#20045,#20043)
 exprContainers(#20045,#20037)
 literals("use strict","'use strict'",#20045)
 #20046=*
@@ -156,19 +156,19 @@ exprs(#20050,47,#20048,0,"arguments = 42")
 #20051=@"loc,{#10000},3,3,3,16"
 locations_default(#20051,#10000,3,3,3,16)
 hasLocation(#20050,#20051)
-enclosingStmt(#20050,#20048)
+enclosing_stmt(#20050,#20048)
 exprContainers(#20050,#20037)
 #20052=*
 exprs(#20052,79,#20050,0,"arguments")
 hasLocation(#20052,#20025)
-enclosingStmt(#20052,#20048)
+enclosing_stmt(#20052,#20048)
 exprContainers(#20052,#20037)
 literals("arguments","arguments",#20052)
 bind(#20052,#20040)
 #20053=*
 exprs(#20053,3,#20050,1,"42")
 hasLocation(#20053,#20029)
-enclosingStmt(#20053,#20048)
+enclosing_stmt(#20053,#20048)
 exprContainers(#20053,#20037)
 literals("42","42",#20053)
 #20054=*

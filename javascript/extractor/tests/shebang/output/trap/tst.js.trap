@@ -81,12 +81,12 @@ exprs(#20028,13,#20027,0,"alert(""Hi!"")")
 #20029=@"loc,{#10000},2,1,2,12"
 locations_default(#20029,#10000,2,1,2,12)
 hasLocation(#20028,#20029)
-enclosingStmt(#20028,#20027)
+enclosing_stmt(#20028,#20027)
 exprContainers(#20028,#20001)
 #20030=*
 exprs(#20030,79,#20028,-1,"alert")
 hasLocation(#20030,#20005)
-enclosingStmt(#20030,#20027)
+enclosing_stmt(#20030,#20027)
 exprContainers(#20030,#20001)
 literals("alert","alert",#20030)
 #20031=@"var;{alert};{#20000}"
@@ -95,7 +95,7 @@ bind(#20030,#20031)
 #20032=*
 exprs(#20032,4,#20028,0,"""Hi!""")
 hasLocation(#20032,#20009)
-enclosingStmt(#20032,#20027)
+enclosing_stmt(#20032,#20027)
 exprContainers(#20032,#20001)
 literals("Hi!","""Hi!""",#20032)
 #20033=*

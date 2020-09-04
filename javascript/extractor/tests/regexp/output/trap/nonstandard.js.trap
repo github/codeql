@@ -39,7 +39,7 @@ stmt_containers(#20010,#20001)
 #20011=*
 exprs(#20011,5,#20010,0,"/dice/y")
 hasLocation(#20011,#20005)
-enclosingStmt(#20011,#20010)
+enclosing_stmt(#20011,#20010)
 exprContainers(#20011,#20001)
 literals("/dice/y","/dice/y",#20011)
 #20012=*
