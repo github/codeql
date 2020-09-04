@@ -797,7 +797,7 @@ class ArrayTypeExpr extends @array_typeexpr, TypeExpr {
 /**
  * A union type, such as `string|number|boolean`.
  */
-class UnionTypeExpr extends @uniontypeexpr, TypeExpr {
+class UnionTypeExpr extends @union_typeexpr, TypeExpr {
   /** Gets the `n`th type in the union, starting at 0. */
   TypeExpr getElementType(int n) { result = getChildTypeExpr(n) }
 

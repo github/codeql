@@ -554,7 +554,7 @@ case @typeexpr.kind of
 | 4 = @number_literal_typeexpr
 | 5 = @boolean_literal_typeexpr
 | 6 = @array_typeexpr
-| 7 = @uniontypeexpr
+| 7 = @union_typeexpr
 | 8 = @indexedaccesstypeexpr
 | 9 = @intersectiontypeexpr
 | 10 = @parenthesizedtypeexpr
