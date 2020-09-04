@@ -2698,7 +2698,7 @@ class FunctionBindExpr extends @bind_expr, Expr {
  * import("fs")
  * ```
  */
-class DynamicImportExpr extends @dynamicimport, Expr, Import {
+class DynamicImportExpr extends @dynamic_import, Expr, Import {
   /** Gets the expression specifying the path of the imported module. */
   Expr getSource() { result = getChildExpr(0) }
 

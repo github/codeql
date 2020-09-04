@@ -334,7 +334,7 @@ case @expr.kind of
 | 96 = @export_namespace_specifier
 | 97 = @bind_expr
 | 98 = @external_module_reference
-| 99 = @dynamicimport
+| 99 = @dynamic_import
 | 100 = @expression_with_type_arguments
 | 101 = @prefixtypeassertion
 | 102 = @astypeassertion
