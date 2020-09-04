@@ -9227,7 +9227,7 @@
 <dependencies/>
 </relation>
 <relation>
-<name>isModule</name>
+<name>is_module</name>
 <cardinality>21</cardinality>
 <columnsizes>
 <e>

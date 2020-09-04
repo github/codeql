@@ -691,7 +691,7 @@ public class ASTExtractor {
         scopeManager.enterScope(3, moduleScopeKey, toplevelLabel);
         scopeManager.addVariables(
             sourceType.getPredefinedLocals(platform, locationManager.getSourceFileExtension()));
-        trapwriter.addTuple("isModule", toplevelLabel);
+        trapwriter.addTuple("is_module", toplevelLabel);
       }
 
       // Emit the specific source type.

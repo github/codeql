@@ -191,7 +191,7 @@ variables(#20071,"__filename",#20067)
 variables(#20072,"__dirname",#20067)
 #20073=@"var;{arguments};{#20067}"
 variables(#20073,"arguments",#20067)
-isModule(#20001)
+is_module(#20001)
 #20074=@"var;{fs};{#20067}"
 variables(#20074,"fs",#20067)
 #20075=*

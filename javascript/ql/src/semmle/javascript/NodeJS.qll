@@ -16,7 +16,7 @@ private import NodeModuleResolutionImpl
  */
 class NodeModule extends Module {
   NodeModule() {
-    isModule(this) and
+    is_module(this) and
     isNodejs(this)
   }
 

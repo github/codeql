@@ -54,7 +54,7 @@ hasLocation(#20001,#20016)
 scopes(#20017,3)
 scopenodes(#20001,#20017)
 scopenesting(#20017,#20000)
-isModule(#20001)
+is_module(#20001)
 isES2015Module(#20001)
 #20018=*
 stmts(#20018,29,#20001,0,"export  ... lass {}")

@@ -41,7 +41,7 @@ hasLocation(#20001,#20003)
 scopes(#20012,3)
 scopenodes(#20001,#20012)
 scopenesting(#20012,#20000)
-isModule(#20001)
+is_module(#20001)
 isES2015Module(#20001)
 #20013=*
 stmts(#20013,27,#20001,0,"import 'foo';")

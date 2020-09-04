@@ -164,7 +164,7 @@ hasLocation(#20001,#20057)
 scopes(#20058,3)
 scopenodes(#20001,#20058)
 scopenesting(#20058,#20000)
-isModule(#20001)
+is_module(#20001)
 isES2015Module(#20001)
 #20059=@"var;{Foo};{#20058}"
 variables(#20059,"Foo",#20058)

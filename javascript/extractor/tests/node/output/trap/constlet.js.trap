@@ -104,7 +104,7 @@ variables(#20037,"__filename",#20033)
 variables(#20038,"__dirname",#20033)
 #20039=@"var;{arguments};{#20033}"
 variables(#20039,"arguments",#20033)
-isModule(#20001)
+is_module(#20001)
 #20040=@"var;{x};{#20033}"
 variables(#20040,"x",#20033)
 #20041=@"var;{y};{#20033}"

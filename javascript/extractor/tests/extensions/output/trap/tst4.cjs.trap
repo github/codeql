@@ -84,7 +84,7 @@ variables(#20029,"__filename",#20025)
 variables(#20030,"__dirname",#20025)
 #20031=@"var;{arguments};{#20025}"
 variables(#20031,"arguments",#20025)
-isModule(#20001)
+is_module(#20001)
 #20032=*
 stmts(#20032,2,#20001,0,"console ... onJS"");")
 hasLocation(#20032,#20003)

@@ -126,7 +126,7 @@ case @toplevel.kind of
 |  2 = @event_handler
 |  3 = @javascript_url;
 
-isModule (int tl: @toplevel ref);
+is_module (int tl: @toplevel ref);
 isNodejs (int tl: @toplevel ref);
 isES2015Module (int tl: @toplevel ref);
 isClosureModule (int tl: @toplevel ref);

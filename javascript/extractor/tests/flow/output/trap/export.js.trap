@@ -222,7 +222,7 @@ hasLocation(#20001,#20082)
 scopes(#20083,3)
 scopenodes(#20001,#20083)
 scopenesting(#20083,#20000)
-isModule(#20001)
+is_module(#20001)
 isES2015Module(#20001)
 #20084=*
 stmts(#20084,30,#20001,0,"export  ... om ""m"";")

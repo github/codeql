@@ -72,3 +72,8 @@ class XorBitwiseExpr = XOrExpr;
  * Use `TopLevel#isExterns()` instead.
  */ 
 deprecated predicate isExterns(TopLevel toplevel) { is_externs(toplevel) }
+/**
+ * Alias for the predicate `is_module` defined in the .dbscheme.
+ * Use the `Module` class in `Module.qll` instead.
+ */ 
+deprecated predicate isModule(TopLevel toplevel) { is_module(toplevel) }

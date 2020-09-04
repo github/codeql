@@ -71,7 +71,7 @@ variables(#20024,"__filename",#20020)
 variables(#20025,"__dirname",#20020)
 #20026=@"var;{arguments};{#20020}"
 variables(#20026,"arguments",#20020)
-isModule(#20001)
+is_module(#20001)
 #20027=*
 stmts(#20027,2,#20001,0,"alert(""Hi!"");")
 hasLocation(#20027,#20003)
