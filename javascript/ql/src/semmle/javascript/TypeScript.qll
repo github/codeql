@@ -347,7 +347,7 @@ class FunctionTypeExpr extends TypeExpr, @functiontypeexpr {
 class ConstructorTypeExpr extends FunctionTypeExpr, @constructortypeexpr { }
 
 /** A function type that is not a constructor type, such as `(x: string) => number`. */
-class PlainFunctionTypeExpr extends FunctionTypeExpr, @plainfunctiontypeexpr { }
+class PlainFunctionTypeExpr extends FunctionTypeExpr, @plain_function_typeexpr { }
 
 /** A possibly qualified identifier that declares or refers to a type. */
 abstract class TypeRef extends ASTNode { }

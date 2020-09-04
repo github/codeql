@@ -570,7 +570,7 @@ case @typeexpr.kind of
 | 20 = @predicate_typeexpr
 | 21 = @interface_typeexpr
 | 22 = @type_parameter
-| 23 = @plainfunctiontypeexpr
+| 23 = @plain_function_typeexpr
 | 24 = @constructortypeexpr
 | 25 = @localnamespaceaccess
 | 26 = @qualifiednamespaceaccess
@@ -595,7 +595,7 @@ case @typeexpr.kind of
 @namespaceaccess = @localnamespaceaccess | @qualifiednamespaceaccess | @importnamespaceaccess;
 @importtypeexpr = @importtypeaccess | @importnamespaceaccess | @importvartypeaccess;
 
-@functiontypeexpr = @plainfunctiontypeexpr | @constructortypeexpr;
+@functiontypeexpr = @plain_function_typeexpr | @constructortypeexpr;
 
 // types
 types (
