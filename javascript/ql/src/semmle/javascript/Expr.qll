@@ -1717,7 +1717,7 @@ class InstanceofExpr extends @instanceof_expr, BinaryExpr {
  * x != null && x.f
  * ```
  */
-class LogAndExpr extends @logandexpr, BinaryExpr {
+class LogAndExpr extends @logand_expr, BinaryExpr {
   override string getOperator() { result = "&&" }
 
   override ControlFlowNode getFirstControlFlowNode() { result = this }
