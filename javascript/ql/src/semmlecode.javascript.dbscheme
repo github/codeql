@@ -246,7 +246,7 @@ case @expr.kind of
 |  7 = @array_expr
 |  8 = @obj_expr
 |  9 = @function_expr
-| 10 = @seqexpr
+| 10 = @seq_expr
 | 11 = @conditionalexpr
 | 12 = @newexpr
 | 13 = @callexpr

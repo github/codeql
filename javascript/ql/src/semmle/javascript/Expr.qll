@@ -822,7 +822,7 @@ class ArrowFunctionExpr extends @arrow_function_expr, Expr, Function {
  * x++, y++
  * ```
  */
-class SeqExpr extends @seqexpr, Expr {
+class SeqExpr extends @seq_expr, Expr {
   /** Gets the `i`th expression in this sequence. */
   Expr getOperand(int i) { result = getChildExpr(i) }
 
