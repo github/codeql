@@ -771,7 +771,7 @@ class RegExpBackRef extends RegExpTerm, @regexp_backref {
  */
 class RegExpCharacterClass extends RegExpTerm, @regexp_char_class {
   /** Holds if this is an inverted character class, that is, a term of the form `[^...]`. */
-  predicate isInverted() { isInverted(this) }
+  predicate isInverted() { is_inverted(this) }
 
   override predicate isNullable() { none() }
 

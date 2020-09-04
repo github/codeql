@@ -250,3 +250,8 @@ deprecated predicate isCapture(RegExpGroup id, int number) { is_capture(id, numb
  * Use `RegExpGroup#isNamed()` instead.
  */ 
 deprecated predicate isNamedCapture(RegExpGroup id, string name) { is_named_capture(id, name) }
+/**
+ * Alias for the predicate `is_inverted` defined in the .dbscheme.
+ * Use `RegExpCharacterClass#isInverted()` instead.
+ */ 
+deprecated predicate isInverted(RegExpCharacterClass id) { is_inverted(id) }

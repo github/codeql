@@ -333,7 +333,7 @@ public class RegExpExtractor {
     @Override
     public void visit(CharacterClass nd) {
       Label lbl = extractTerm(nd, parent, idx);
-      if (nd.isInverted()) trapwriter.addTuple("isInverted", lbl);
+      if (nd.isInverted()) trapwriter.addTuple("is_inverted", lbl);
       int i = 0;
       for (RegExpTerm element : nd.getElements()) visit(element, lbl, i++);
     }

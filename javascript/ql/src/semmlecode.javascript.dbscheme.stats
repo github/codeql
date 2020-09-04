@@ -20436,7 +20436,7 @@
 </dependencies>
 </relation>
 <relation>
-<name>isInverted</name>
+<name>is_inverted</name>
 <cardinality>458</cardinality>
 <columnsizes>
 <e>
