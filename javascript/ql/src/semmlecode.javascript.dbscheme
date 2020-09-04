@@ -641,7 +641,7 @@ case @type.kind of
 ;
 
 @booleanliteraltype = @truetype | @falsetype;
-@symboltype = @plainsymboltype | @uniquesymboltype;
+@symbol_type = @plainsymboltype | @uniquesymboltype;
 @unionorintersectiontype = @uniontype | @intersectiontype;
 @typevariabletype = @canonicaltypevariabletype | @lexicaltypevariabletype;
 
