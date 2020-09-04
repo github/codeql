@@ -344,7 +344,7 @@ class FunctionTypeExpr extends TypeExpr, @functiontypeexpr {
 }
 
 /** A constructor type, such as `new (x: string) => Object`. */
-class ConstructorTypeExpr extends FunctionTypeExpr, @constructortypeexpr { }
+class ConstructorTypeExpr extends FunctionTypeExpr, @constructor_typeexpr { }
 
 /** A function type that is not a constructor type, such as `(x: string) => number`. */
 class PlainFunctionTypeExpr extends FunctionTypeExpr, @plain_function_typeexpr { }
