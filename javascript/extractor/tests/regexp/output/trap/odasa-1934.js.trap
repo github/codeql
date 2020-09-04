@@ -311,12 +311,12 @@ locations_default(#20101,#10000,5,10,5,11)
 hasLocation(#20100,#20101)
 regexpConstValue(#20100," ")
 #20102=*
-regexpParseErrors(#20102,#20096,"expected hexadecimal digit")
+regexp_parse_errors(#20102,#20096,"expected hexadecimal digit")
 #20103=@"loc,{#10000},5,12,5,12"
 locations_default(#20103,#10000,5,12,5,12)
 hasLocation(#20102,#20103)
 #20104=*
-regexpParseErrors(#20104,#20096,"expected hexadecimal digit")
+regexp_parse_errors(#20104,#20096,"expected hexadecimal digit")
 hasLocation(#20104,#20103)
 #20105=*
 exprs(#20105,0,#20093,1,"exec")

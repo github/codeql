@@ -363,7 +363,7 @@ public class RegExpExtractor {
     for (Error err : res.getErrors()) {
       Label lbl = this.trapwriter.freshLabel();
       String msg = errmsgs[err.getCode()];
-      this.trapwriter.addTuple("regexpParseErrors", lbl, rootLbl, msg);
+      this.trapwriter.addTuple("regexp_parse_errors", lbl, rootLbl, msg);
       this.emitLocation(err, lbl);
     }
   }

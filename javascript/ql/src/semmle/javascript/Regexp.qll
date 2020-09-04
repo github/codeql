@@ -819,12 +819,12 @@ class RegExpCharacterRange extends RegExpTerm, @regexp_char_range {
 /** A parse error encountered while processing a regular expression literal. */
 class RegExpParseError extends Error, @regexp_parse_error {
   /** Gets the regular expression term that triggered the parse error. */
-  RegExpTerm getTerm() { regexpParseErrors(this, result, _) }
+  RegExpTerm getTerm() { regexp_parse_errors(this, result, _) }
 
   /** Gets the regular expression literal in which the parse error occurred. */
   RegExpLiteral getLiteral() { result = getTerm().getLiteral() }
 
-  override string getMessage() { regexpParseErrors(this, _, result) }
+  override string getMessage() { regexp_parse_errors(this, _, result) }
 
   override string toString() { result = getMessage() }
 }

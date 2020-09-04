@@ -220,3 +220,8 @@ deprecated predicate hasAssertsKeyword(PredicateTypeExpr node) { has_asserts_key
  * Use the `JSParseError` class instead.
  */ 
 deprecated predicate jsParseErrors(JSParseError id, TopLevel toplevel, string message, string line) { js_parse_errors(id, toplevel, message, line) }
+/**
+ * Alias for the predicate `regexp_parse_errors` defined in the .dbscheme.
+ * Use the `RegExpParseError` class instead.
+ */ 
+deprecated predicate regexpParseErrors(RegExpParseError id, RegExpTerm regexp, string message) { regexp_parse_errors(id, regexp, message) }

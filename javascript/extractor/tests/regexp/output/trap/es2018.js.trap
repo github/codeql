@@ -267,12 +267,12 @@ locations_default(#20084,#10000,6,2,6,4)
 hasLocation(#20083,#20084)
 namedBackref(#20083,"")
 #20085=*
-regexpParseErrors(#20085,#20083,"expected identifier")
+regexp_parse_errors(#20085,#20083,"expected identifier")
 #20086=@"loc,{#10000},6,5,6,5"
 locations_default(#20086,#10000,6,5,6,5)
 hasLocation(#20085,#20086)
 #20087=*
-regexpParseErrors(#20087,#20083,"expected '>'")
+regexp_parse_errors(#20087,#20083,"expected '>'")
 #20088=@"loc,{#10000},6,4,6,4"
 locations_default(#20088,#10000,6,4,6,4)
 hasLocation(#20087,#20088)

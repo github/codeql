@@ -19869,7 +19869,7 @@
 </dependencies>
 </relation>
 <relation>
-<name>regexpParseErrors</name>
+<name>regexp_parse_errors</name>
 <key>id</key>
 <cardinality>122</cardinality>
 <columnsizes>

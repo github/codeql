@@ -1319,7 +1319,7 @@ locations_default(#20436,#10000,26,2,26,4)
 hasLocation(#20435,#20436)
 backref(#20435,10)
 #20437=*
-regexpParseErrors(#20437,#20435,"invalid back reference")
+regexp_parse_errors(#20437,#20435,"invalid back reference")
 hasLocation(#20437,#20436)
 #20438=*
 stmts(#20438,2,#20001,26,"/\t\n\r\f\v/;")
@@ -1680,12 +1680,12 @@ locations_default(#20545,#10000,37,2,37,2)
 hasLocation(#20544,#20545)
 regexpConstValue(#20544,"a")
 #20546=*
-regexpParseErrors(#20546,#20542,"expected digit")
+regexp_parse_errors(#20546,#20542,"expected digit")
 #20547=@"loc,{#10000},37,4,37,4"
 locations_default(#20547,#10000,37,4,37,4)
 hasLocation(#20546,#20547)
 #20548=*
-regexpParseErrors(#20548,#20542,"expected '}'")
+regexp_parse_errors(#20548,#20542,"expected '}'")
 #20549=@"loc,{#10000},37,3,37,3"
 locations_default(#20549,#10000,37,3,37,3)
 hasLocation(#20548,#20549)
@@ -1731,15 +1731,15 @@ locations_default(#20561,#10000,38,5,38,5)
 hasLocation(#20560,#20561)
 regexpConstValue(#20560,"}")
 #20562=*
-regexpParseErrors(#20562,#20552,"expected digit")
+regexp_parse_errors(#20562,#20552,"expected digit")
 hasLocation(#20562,#20559)
 #20563=*
-regexpParseErrors(#20563,#20552,"expected '}'")
+regexp_parse_errors(#20563,#20552,"expected '}'")
 #20564=@"loc,{#10000},38,3,38,3"
 locations_default(#20564,#10000,38,3,38,3)
 hasLocation(#20563,#20564)
 #20565=*
-regexpParseErrors(#20565,#20552,"unexpected character")
+regexp_parse_errors(#20565,#20552,"unexpected character")
 hasLocation(#20565,#20561)
 #20566=*
 stmts(#20566,2,#20001,38,"/a{2/;")
@@ -1766,7 +1766,7 @@ locations_default(#20571,#10000,39,2,39,2)
 hasLocation(#20570,#20571)
 regexpConstValue(#20570,"a")
 #20572=*
-regexpParseErrors(#20572,#20568,"expected '}'")
+regexp_parse_errors(#20572,#20568,"expected '}'")
 #20573=@"loc,{#10000},39,4,39,4"
 locations_default(#20573,#10000,39,4,39,4)
 hasLocation(#20572,#20573)
@@ -1788,7 +1788,7 @@ hasLocation(#20576,#20577)
 regexpConstValue(#20576,"
 ")
 #20578=*
-regexpParseErrors(#20578,#20576,"unexpected end of regular expression")
+regexp_parse_errors(#20578,#20576,"unexpected end of regular expression")
 #20579=@"loc,{#10000},40,5,40,5"
 locations_default(#20579,#10000,40,5,40,5)
 hasLocation(#20578,#20579)
@@ -1809,7 +1809,7 @@ locations_default(#20583,#10000,41,2,41,4)
 hasLocation(#20582,#20583)
 regexpConstValue(#20582,"")
 #20584=*
-regexpParseErrors(#20584,#20582,"expected control letter")
+regexp_parse_errors(#20584,#20582,"expected control letter")
 #20585=@"loc,{#10000},41,4,41,4"
 locations_default(#20585,#10000,41,4,41,4)
 hasLocation(#20584,#20585)

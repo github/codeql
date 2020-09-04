@@ -864,7 +864,7 @@ case @regexpterm.kind of
 | 26 = @regexp_negative_lookbehind
 | 27 = @regexp_unicode_property_escape;
 
-regexpParseErrors (unique int id: @regexp_parse_error,
+regexp_parse_errors (unique int id: @regexp_parse_error,
     int regexp: @regexpterm ref,
     varchar(900) message: string ref);
 
