@@ -37,3 +37,4 @@ import semmle.code.csharp.dataflow.SSA
 
 /** Whether the source was extracted without a build command. */
 predicate extractionIsStandalone() { exists(SourceFile f | f.extractedStandalone()) }
+// test
