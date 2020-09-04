@@ -1678,7 +1678,7 @@ class XOrExpr extends @xor_expr, BinaryExpr {
  * flags & O_APPEND
  * ```
  */
-class BitAndExpr extends @bitandexpr, BinaryExpr {
+class BitAndExpr extends @bitand_expr, BinaryExpr {
   override string getOperator() { result = "&" }
 }
 
