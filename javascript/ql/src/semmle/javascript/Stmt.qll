@@ -65,7 +65,7 @@ class Stmt extends @stmt, ExprOrStmt, Documentable {
 }
 
 private class TControlStmt =
-  TLoopStmt or @if_stmt or @with_stmt or @switch_stmt or @try_stmt or @catchclause;
+  TLoopStmt or @if_stmt or @with_stmt or @switch_stmt or @try_stmt or @catch_clause;
 
 private class TLoopStmt = TEnhancedForLoop or @while_stmt or @do_while_stmt or @for_stmt;
 
@@ -1056,7 +1056,7 @@ class Case extends @case, Stmt {
  * }
  * ```
  */
-class CatchClause extends @catchclause, ControlStmt, Parameterized {
+class CatchClause extends @catch_clause, ControlStmt, Parameterized {
   /** Gets the body of this `catch` clause. */
   BlockStmt getBody() { result = getChildStmt(1) }
 

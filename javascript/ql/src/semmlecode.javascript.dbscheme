@@ -169,7 +169,7 @@ case @stmt.kind of
 | 17 = @function_decl_stmt
 | 18 = @var_decl_stmt
 | 19 = @case
-| 20 = @catchclause
+| 20 = @catch_clause
 | 21 = @forofstmt
 | 22 = @constdeclstmt
 | 23 = @letstmt
@@ -436,7 +436,7 @@ scopenesting (unique int inner: @scope ref,
 // functions
 @function = @function_decl_stmt | @function_expr | @arrow_function_expr;
 
-@parameterized = @function | @catchclause;
+@parameterized = @function | @catch_clause;
 @type_parameterized = @function | @class_or_interface | @typealiasdeclaration | @mapped_typeexpr | @infer_typeexpr;
 
 is_generator (int fun: @function ref);
