@@ -115,14 +115,14 @@ private class RemoteCommandExecutor extends SystemCommandExecution, DataFlow::In
     this = API::moduleImport("remote-exec").getReturn().getAUse() and
     cmdArg = 1
     or
-    exists(API::Feature ssh2, API::Feature client |
+    exists(API::Node ssh2, API::Node client |
       ssh2 = API::moduleImport("ssh2") and
       client in [ssh2, ssh2.getMember("Client")] and
       this = client.getInstance().getMember("exec").getReturn().getAUse() and
       cmdArg = 0
     )
     or
-    exists(API::Feature ssh2stream |
+    exists(API::Node ssh2stream |
       ssh2stream = API::moduleImport("ssh2-streams").getMember("SSH2Stream") and
       this = ssh2stream.getInstance().getMember("exec").getReturn().getAUse() and
       cmdArg = 1

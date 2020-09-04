@@ -29,16 +29,16 @@ module SQL {
  */
 private module MySql {
   /** Gets the package name `mysql` or `mysql2`. */
-  API::Feature mysql() { result = API::moduleImport(["mysql", "mysql2"]) }
+  API::Node mysql() { result = API::moduleImport(["mysql", "mysql2"]) }
 
   /** Gets a call to `mysql.createConnection`. */
-  API::Feature createConnection() { result = mysql().getMember("createConnection").getReturn() }
+  API::Node createConnection() { result = mysql().getMember("createConnection").getReturn() }
 
   /** Gets a call to `mysql.createPool`. */
-  API::Feature createPool() { result = mysql().getMember("createPool").getReturn() }
+  API::Node createPool() { result = mysql().getMember("createPool").getReturn() }
 
   /** Gets a data flow node that contains a freshly created MySQL connection instance. */
-  API::Feature connection() {
+  API::Node connection() {
     result = createConnection()
     or
     result = createPool().getMember("getConnection").getParameter(0).getParameter(1)
@@ -47,7 +47,7 @@ private module MySql {
   /** A call to the MySql `query` method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     QueryCall() {
-      exists(API::Feature recv | recv = createPool() or recv = connection() |
+      exists(API::Node recv | recv = createPool() or recv = connection() |
         this = recv.getMember("query").getReturn().getAUse()
       )
     }
@@ -79,7 +79,7 @@ private module MySql {
     string kind;
 
     Credentials() {
-      exists(API::Feature call, string prop |
+      exists(API::Node call, string prop |
         call in [createConnection(), createPool()] and
         call.getAUse().asExpr().(CallExpr).hasOptionArgument(0, prop, this) and
         (
@@ -99,10 +99,10 @@ private module MySql {
  */
 private module Postgres {
   /** Gets an expression of the form `new require('pg').Client()`. */
-  API::Feature newClient() { result = API::moduleImport("pg").getMember("Client").getInstance() }
+  API::Node newClient() { result = API::moduleImport("pg").getMember("Client").getInstance() }
 
   /** Gets a data flow node that holds a freshly created Postgres client instance. */
-  API::Feature client() {
+  API::Node client() {
     result = newClient()
     or
     // pool.connect(function(err, client) { ... })
@@ -110,7 +110,7 @@ private module Postgres {
   }
 
   /** Gets an expression that constructs a new connection pool. */
-  API::Feature newPool() {
+  API::Node newPool() {
     // new require('pg').Pool()
     result = API::moduleImport("pg").getMember("Pool").getInstance()
     or
@@ -155,14 +155,14 @@ private module Postgres {
  */
 private module Sqlite {
   /** Gets a reference to the `sqlite3` module. */
-  API::Feature sqlite() {
+  API::Node sqlite() {
     result = API::moduleImport("sqlite3")
     or
     result = sqlite().getMember("verbose").getReturn()
   }
 
   /** Gets an expression that constructs a Sqlite database instance. */
-  API::Feature newDb() {
+  API::Node newDb() {
     // new require('sqlite3').Database()
     result = sqlite().getMember("Database").getInstance()
   }
@@ -196,10 +196,10 @@ private module Sqlite {
  */
 private module MsSql {
   /** Gets a reference to the `mssql` module. */
-  API::Feature mssql() { result = API::moduleImport("mssql") }
+  API::Node mssql() { result = API::moduleImport("mssql") }
 
   /** Gets an expression that creates a request object. */
-  API::Feature request() {
+  API::Node request() {
     // new require('mssql').Request()
     result = mssql().getMember("Request").getInstance()
     or
@@ -274,10 +274,10 @@ private module MsSql {
  */
 private module Sequelize {
   /** Gets an import of the `sequelize` module. */
-  API::Feature sequelize() { result = API::moduleImport("sequelize") }
+  API::Node sequelize() { result = API::moduleImport("sequelize") }
 
   /** Gets an expression that creates an instance of the `Sequelize` class. */
-  API::Feature newSequelize() { result = sequelize().getInstance() }
+  API::Node newSequelize() { result = sequelize().getInstance() }
 
   /** A call to `Sequelize.query`. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
@@ -327,7 +327,7 @@ private module Spanner {
   /**
    * Gets a node that refers to the `Spanner` class
    */
-  API::Feature spanner() {
+  API::Node spanner() {
     // older versions
     result = API::moduleImport("@google-cloud/spanner")
     or
@@ -338,7 +338,7 @@ private module Spanner {
   /**
    * Gets a node that refers to an instance of the `Database` class.
    */
-  API::Feature database() {
+  API::Node database() {
     result =
       spanner().getReturn().getMember("instance").getReturn().getMember("database").getReturn()
   }
@@ -346,14 +346,14 @@ private module Spanner {
   /**
    * Gets a node that refers to an instance of the `v1.SpannerClient` class.
    */
-  API::Feature v1SpannerClient() {
+  API::Node v1SpannerClient() {
     result = spanner().getMember("v1").getMember("SpannerClient").getInstance()
   }
 
   /**
    * Gets a node that refers to a transaction object.
    */
-  API::Feature transaction() {
+  API::Node transaction() {
     result = database().getMember("runTransaction").getParameter(0).getParameter(1)
   }
 

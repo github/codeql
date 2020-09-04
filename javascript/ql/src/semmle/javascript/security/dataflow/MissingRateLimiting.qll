@@ -168,7 +168,7 @@ class RouteHandlerLimitedByExpressLimiter extends RateLimitedRouteHandlerExpr {
 class RateLimiterFlexibleRateLimiter extends DataFlow::FunctionNode {
   RateLimiterFlexibleRateLimiter() {
     exists(
-      string rateLimiterClassName, API::Feature rateLimiterClass, API::Feature rateLimiterConsume,
+      string rateLimiterClassName, API::Node rateLimiterClass, API::Node rateLimiterConsume,
       DataFlow::ParameterNode request
     |
       rateLimiterClassName.matches("RateLimiter%") and

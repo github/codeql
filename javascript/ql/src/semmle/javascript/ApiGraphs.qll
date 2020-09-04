@@ -1,12 +1,12 @@
 /**
  * Provides an implementation of  _API graphs_, which are an abstract representation of the API
- * surface of an NPM package.
+ * surface used and/or defined by a code base.
  *
- * The nodes of the API graph are called _features_, with labeled edges representing how features
- * relate to each other. For example, if one of the API features represents a function, then there
- * will be features corresponding to the function's parameters, which are connected to the function
- * feature by edges labeled `parameter <i>`. There are special _points-to_ edges labeled with the
- * empty string which express the fact that one feature is an alias for another.
+ * The nodes of the API graph represent definitions and uses of API components. The edges are
+ * directed and labeled; they specify how the components represented by nodes relate to each other.
+ * For example, if one of the nodes represents a definition of an API function, then there
+ * will be nodes corresponding to the function's parameters, which are connected to the function
+ * node by edges labeled `parameter <i>`.
  */
 
 import javascript
@@ -16,18 +16,18 @@ import javascript
  */
 module API {
   /**
-   * An abstract representation of an API feature such as a function exported by an npm package,
-   * a parameter of such a function, or its result.
+   * An abstract representation of a definition or use of an API component such as a function
+   * exported by an npm package, a parameter of such a function, or its result.
    */
-  class Feature extends Impl::TFeature {
+  class Node extends Impl::TNode {
     /**
-     * Gets a data-flow node corresponding to a use of this API feature.
+     * Gets a data-flow node corresponding to a use of the API component represented by this node.
      *
-     * For example, `require('fs').readFileSync` is a use of the feature `readFileSync` from the
+     * For example, `require('fs').readFileSync` is a use of the function `readFileSync` from the
      * `fs` module, and `require('fs').readFileSync(file)` is a use of the result of that function.
      *
      * As another example, in the assignment `exports.plusOne = (x) => x+1` the two references to
-     * `x` are uses of the feature corresponding to the first parameter of `plusOne`.
+     * `x` are uses of the first parameter of `plusOne`.
      */
     DataFlow::Node getAUse() {
       exists(DataFlow::SourceNode src | Impl::use(this, src) |
@@ -36,11 +36,11 @@ module API {
     }
 
     /**
-     * Gets a data-flow node corresponding to the right-hand side of a definition of this API
-     * feature.
+     * Gets a data-flow node corresponding to the right-hand side of a definition of the API
+     * component represented by this node.
      *
      * For example, in the assignment `exports.plusOne = (x) => x+1`, the function expression
-     * `(x) => x+1` is the right-hand side of the  definition of the member feature `plusOne` of
+     * `(x) => x+1` is the right-hand side of the  definition of the member `plusOne` of
      * the enclosing module, and the expression `x+1` is the right-had side of the definition of
      * its result.
      *
@@ -52,39 +52,48 @@ module API {
     DataFlow::Node getARhs() { Impl::rhs(this, result) }
 
     /**
-     * Gets a feature representing member `m` of this one.
+     * Gets a node representing member `m` of this API component.
+     *
+     * For example, modules have an `exports` member representing their exports, and objects have
+     * their properties as members.
      */
     bindingset[m]
     bindingset[result]
-    Feature getMember(string m) { result = getASuccessor(Label::member(m)) }
+    Node getMember(string m) { result = getASuccessor(Label::member(m)) }
 
     /**
-     * Gets a feature representing a member with a computed name of this one.
+     * Gets a node representing a member of this API component where the name of the member is
+     * not known statically.
      */
-    Feature getUnknownMember() { result = getASuccessor(Label::unknownMember()) }
+    Node getUnknownMember() { result = getASuccessor(Label::unknownMember()) }
 
     /**
-     * Gets a feature representing a member of this one.
+     * Gets a node representing a member of this API component where the name of the member may
+     * or may not be known statically.
      */
-    Feature getAMember() {
+    Node getAMember() {
       result = getASuccessor(Label::member(_)) or
       result = getUnknownMember()
     }
 
     /**
-     * Gets a feature representing an instance of this one, that is, an object whose
-     * constructor is this feature.
+     * Gets a node representing an instance of this API component, that is, an object whose
+     * constructor is the function represented by this node.
+     *
+     * For example, if this node represents a use of some class `A`, then there might be a node
+     * representing instances of `A`, typically corresponding to expressions `new A()` at the
+     * source level.
      */
-    Feature getInstance() { result = getASuccessor(Label::instance()) }
+    Node getInstance() { result = getASuccessor(Label::instance()) }
 
     /**
-     * Gets a feature representing the `i`th parameter of this one.
+     * Gets a node representing the `i`th parameter of the function represented by this node.
      */
     bindingset[i]
-    Feature getParameter(int i) { result = getASuccessor(Label::parameter(i)) }
+    Node getParameter(int i) { result = getASuccessor(Label::parameter(i)) }
 
     /**
-     * Gets the number of parameters of this feature.
+     * Gets the number of parameters of the function represented by this node.
      */
     int getNumParameter() {
       result =
@@ -92,73 +101,75 @@ module API {
     }
 
     /**
-     * Gets a feature representing the last parameter of this one.
+     * Gets a node representing the last parameter of the function represented by this node.
      */
-    Feature getLastParameter() { result = getParameter(getNumParameter() - 1) }
+    Node getLastParameter() { result = getParameter(getNumParameter() - 1) }
 
     /**
-     * Gets a feature representing the receiver of this one.
+     * Gets a node representing the receiver of the function represented by this node.
      */
-    Feature getReceiver() { result = getASuccessor(Label::receiver()) }
+    Node getReceiver() { result = getASuccessor(Label::receiver()) }
 
     /**
-     * Gets a feature representing a parameter or the receiver of this one.
+     * Gets a node representing a parameter or the receiver of the function represented by this
+     * node.
      */
-    Feature getAParameter() {
+    Node getAParameter() {
       result = getASuccessor(Label::parameterByStringIndex(_)) or
       result = getReceiver()
     }
 
     /**
-     * Gets a feature representing the result of this one.
+     * Gets a node representing the result of the function represented by this node.
      */
-    Feature getReturn() { result = getASuccessor(Label::return()) }
+    Node getReturn() { result = getASuccessor(Label::return()) }
 
     /**
-     * Gets a feature representing the promised value wrapped in this promise.
+     * Gets a node representing the promised value wrapped in the `Promise` object represented by
+     * this node.
      */
-    Feature getPromised() { result = getASuccessor(Label::promised()) }
+    Node getPromised() { result = getASuccessor(Label::promised()) }
 
     /**
      * Gets a string representation of the lexicographically least among all shortest access paths
-     * from the root to this feature.
+     * from the root to this node.
      */
     string getPath() { result = min(string p | p = getAPath(Impl::distanceFromRoot(this)) | p) }
 
     /**
-     * Gets a feature such that there is an edge in the API graph between this feature and the other
-     * one, and that edge is labeled with `lbl`. This predicate skips through points-to edges.
+     * Gets a node such that there is an edge in the API graph between this node and the other
+     * one, and that edge is labeled with `lbl`.
      */
-    Feature getASuccessor(string lbl) { Impl::edge(this, lbl, result) }
+    Node getASuccessor(string lbl) { Impl::edge(this, lbl, result) }
 
     /**
-     * Gets a feature such that there is an edge in the API graph between that other feature and
-     * this one, and that edge is labeled with `lbl`. This predicate skips through points-to edges.
+     * Gets a node such that there is an edge in the API graph between that other node and
+     * this one, and that edge is labeled with `lbl`
      */
-    Feature getAPredecessor(string lbl) { this = result.getASuccessor(lbl) }
+    Node getAPredecessor(string lbl) { this = result.getASuccessor(lbl) }
 
     /**
-     * Gets a feature such that there is an edge in the API graph between this feature and the other
-     * one, possibly skipping through points-to edges.
+     * Gets a node such that there is an edge in the API graph between this node and the other
+     * one.
      */
-    Feature getAPredecessor() { result = getAPredecessor(_) }
+    Node getAPredecessor() { result = getAPredecessor(_) }
 
     /**
-     * Gets a feature such that there is an edge in the API graph between that other feature and
-     * this one, possibly skipping through points-to edges.
+     * Gets a node such that there is an edge in the API graph between that other node and
+     * this one.
      */
-    Feature getASuccessor() { result = getASuccessor(_) }
+    Node getASuccessor() { result = getASuccessor(_) }
 
     /**
-     * Holds if this feature may take its value from `that` feature.
+     * Holds if this node may take its value from `that` node.
      *
      * In other words, the value of a use of `that` may flow into the right-hand side of a
-     * definition of this feature.
+     * definition of this node.
      */
-    predicate refersTo(Feature that) { this.getARhs() = that.getAUse() }
+    predicate refersTo(Node that) { this.getARhs() = that.getAUse() }
 
     /**
-     * Gets the unique data-flow that gives rise to this feature, if any.
+     * Gets the unique data-flow that gives rise to this node, if any.
      */
     private DataFlow::Node getRepresentativeNode() {
       this = Impl::MkClassInstance(result) or
@@ -168,10 +179,10 @@ module API {
     }
 
     /**
-     * Holds if this feature is located in file `path` between line `startline`, column `startcol`,
+     * Holds if this node is located in file `path` between line `startline`, column `startcol`,
      * and line `endline`, column `endcol`.
      *
-     * For features that do not have a meaningful location, `path` is the empty string and all other
+     * For nodes that do not have a meaningful location, `path` is the empty string and all other
      * parameters are zero.
      */
     predicate hasLocationInfo(string path, int startline, int startcol, int endline, int endcol) {
@@ -186,21 +197,21 @@ module API {
     }
 
     /**
-     * Gets a textual representation of this feature.
+     * Gets a textual representation of this node.
      */
     string toString() {
       none() // defined in subclasses
     }
 
     /**
-     * Gets a path of the given `length` from the root to this feature.
+     * Gets a path of the given `length` from the root to this node.
      */
     private string getAPath(int length) {
       this instanceof Impl::MkRoot and
       length = 0 and
       result = ""
       or
-      exists(Feature pred, string lbl, string predpath |
+      exists(Node pred, string lbl, string predpath |
         Impl::edge(pred, lbl, this) and
         lbl != "" and
         predpath = pred.getAPath(length - 1) and
@@ -214,32 +225,32 @@ module API {
     }
   }
 
-  /** The root feature of an API graph. */
-  class Root extends Feature, Impl::MkRoot {
+  /** The root node of an API graph. */
+  class Root extends Node, Impl::MkRoot {
     override string toString() { result = "root" }
   }
 
-  /** A feature corresponding to a definition of an API component. */
-  class Definition extends Feature, Impl::TDef {
+  /** A node corresponding to a definition of an API component. */
+  class Definition extends Node, Impl::TDef {
     override string toString() { result = "def " + getPath() }
   }
 
-  /** A feature corresponding to the use of an API component. */
-  class Use extends Feature, Impl::TUse {
+  /** A node corresponding to the use of an API component. */
+  class Use extends Node, Impl::TUse {
     override string toString() { result = "use " + getPath() }
   }
 
-  /** Gets the root feature. */
+  /** Gets the root node. */
   Root root() { any() }
 
-  /** Gets a feature corresponding to an import of module `m`. */
-  Feature moduleImport(string m) {
+  /** Gets a node corresponding to an import of module `m`. */
+  Node moduleImport(string m) {
     result = Impl::MkModuleImport(m) or
-    result = Impl::MkModuleImport(m).(Feature).getMember("default")
+    result = Impl::MkModuleImport(m).(Node).getMember("default")
   }
 
-  /** Gets a feature corresponding to an export of module `m`. */
-  Feature moduleExport(string m) { result = Impl::MkModuleDef(m).(Feature).getMember("exports") }
+  /** Gets a node corresponding to an export of module `m`. */
+  Node moduleExport(string m) { result = Impl::MkModuleDef(m).(Node).getMember("exports") }
 
   /**
    * An API entry point.
@@ -261,30 +272,29 @@ module API {
   /**
    * Provides the actual implementation of API graphs, cached for performance.
    *
-   * Ideally, we'd like features to correspond to (global) access paths, with edge labels
-   * corresponding to extending the access path by one element, or (in the case of points-to
-   * edges) recording alias information. We also want to be able to map features to their
-   * definitions and uses in the data-flow graph, and this should happen modulo
+   * Ideally, we'd like nodes to correspond to (global) access paths, with edge labels
+   * corresponding to extending the access path by one element. We also want to be able to map
+   * nodes to their definitions and uses in the data-flow graph, and this should happen modulo
    * (inter-procedural) data flow.
    *
    * This, however, is not easy to implement, since access paths can have unbounded length
-   * and we need some way of recognizing cycles to avoid non-termination. However, expressing
+   * and we need some way of recognizing cycles to avoid non-termination. Unfortunately, expressing
    * a condition like "this node hasn't been involved in constructing any predecessor of
-   * this feature in the API graph" without negative recursion is tricky.
+   * this node in the API graph" without negative recursion is tricky.
    *
-   * So instead most features are directly associated with a data-flow node, representing
-   * either a use or a definition of the feature. This ensures that we only have a finite
-   * number of features. However, we can now have multiple features with the same access
+   * So instead most nodes are directly associated with a data-flow node, representing
+   * either a use or a definition of an API component. This ensures that we only have a finite
+   * number of nodes. However, we can now have multiple nodes with the same access
    * path, which are essentially indistinguishable for a client of the API.
    *
-   * On the other hand, a single feature can have multiple access paths (which is, of
+   * On the other hand, a single node can have multiple access paths (which is, of
    * course, unavoidable). We pick as canonical the alphabetically least access path with
    * shortest length.
    */
   cached
   private module Impl {
     cached
-    newtype TFeature =
+    newtype TNode =
       MkRoot() or
       MkModuleDef(string m) { exists(MkModuleExport(m)) } or
       MkModuleUse(string m) { exists(MkModuleImport(m)) } or
@@ -355,11 +365,11 @@ module API {
     }
 
     /**
-     * Holds if `rhs` is the right-hand side of a definition of a feature that should have an
+     * Holds if `rhs` is the right-hand side of a definition of a node that should have an
      * incoming edge from `base` labeled `lbl` in the API graph.
      */
     cached
-    predicate rhs(TFeature base, string lbl, DataFlow::Node rhs) {
+    predicate rhs(TNode base, string lbl, DataFlow::Node rhs) {
       hasSemantics(rhs) and
       (
         base = MkRoot() and
@@ -422,10 +432,10 @@ module API {
     }
 
     /**
-     * Holds if `rhs` is the right-hand side of a definition of feature `nd`.
+     * Holds if `rhs` is the right-hand side of a definition of node `nd`.
      */
     cached
-    predicate rhs(TFeature nd, DataFlow::Node rhs) {
+    predicate rhs(TNode nd, DataFlow::Node rhs) {
       exists(string m | nd = MkModuleExport(m) | exports(m, rhs))
       or
       nd = MkDef(rhs)
@@ -437,11 +447,11 @@ module API {
     }
 
     /**
-     * Holds if `ref` is a use of a feature that should have an incoming edge from `base` labeled
+     * Holds if `ref` is a use of a node that should have an incoming edge from `base` labeled
      * `lbl` in the API graph.
      */
     cached
-    predicate use(TFeature base, string lbl, DataFlow::Node ref) {
+    predicate use(TNode base, string lbl, DataFlow::Node ref) {
       hasSemantics(ref) and
       (
         base = MkRoot() and
@@ -494,10 +504,10 @@ module API {
     }
 
     /**
-     * Holds if `ref` is a use of feature `nd`.
+     * Holds if `ref` is a use of node `nd`.
      */
     cached
-    predicate use(TFeature nd, DataFlow::Node ref) {
+    predicate use(TNode nd, DataFlow::Node ref) {
       exists(string m, Module mod | nd = MkModuleDef(m) and mod = importableModule(m) |
         ref = DataFlow::ssaDefinitionNode(SSA::implicitInit(mod.(NodeModule).getModuleVariable()))
         or
@@ -562,7 +572,7 @@ module API {
     }
 
     /**
-     * Gets a node that is inter-procedurally reachable from `nd`, which is a use of some feature.
+     * Gets a node that is inter-procedurally reachable from `nd`, which is a use of some node.
      */
     cached
     DataFlow::SourceNode trackUseNode(DataFlow::SourceNode nd) {
@@ -578,7 +588,7 @@ module API {
     }
 
     /**
-     * Gets a node that inter-procedurally flows into `nd`, which is a definition of some feature.
+     * Gets a node that inter-procedurally flows into `nd`, which is a definition of some node.
      */
     cached
     DataFlow::SourceNode trackDefNode(DataFlow::Node nd) {
@@ -596,7 +606,7 @@ module API {
      * Holds if there is an edge from `pred` to `succ` in the API graph that is labeled with `lbl`.
      */
     cached
-    predicate edge(TFeature pred, string lbl, TFeature succ) {
+    predicate edge(TNode pred, string lbl, TNode succ) {
       exists(string m |
         pred = MkRoot() and
         lbl = Label::mod(m)
@@ -659,11 +669,11 @@ module API {
     /**
      * Holds if there is an edge from `pred` to `succ` in the API graph.
      */
-    private predicate edge(TFeature pred, TFeature succ) { edge(pred, _, succ) }
+    private predicate edge(TNode pred, TNode succ) { edge(pred, _, succ) }
 
     /** Gets the shortest distance from the root to `nd` in the API graph. */
     cached
-    int distanceFromRoot(TFeature nd) = shortestDistances(MkRoot/0, edge/2)(_, nd, result)
+    int distanceFromRoot(TNode nd) = shortestDistances(MkRoot/0, edge/2)(_, nd, result)
   }
 
   import Label as EdgeLabel

@@ -20,7 +20,7 @@
 
 import javascript
 
-private DataFlow::Node getNode(API::Feature nd, string kind) {
+private DataFlow::Node getNode(API::Node nd, string kind) {
   kind = "def" and
   result = nd.getARhs()
   or
@@ -58,7 +58,7 @@ class Assertion extends Comment {
 
   int getPathLength() { result = max(int i | exists(getEdgeLabel(i))) + 1 }
 
-  API::Feature lookup(int i) {
+  API::Node lookup(int i) {
     i = getPathLength() and
     result = API::root()
     or
@@ -70,7 +70,7 @@ class Assertion extends Comment {
   predicate holds() { getLoc(getNode(lookup(0), expectedKind)) = expectedLoc }
 
   string tryExplainFailure() {
-    exists(int i, API::Feature nd, string prefix, string suffix |
+    exists(int i, API::Node nd, string prefix, string suffix |
       nd = lookup(i) and
       i > 0 and
       not exists(lookup([0 .. i - 1])) and
@@ -85,7 +85,7 @@ class Assertion extends Comment {
       result = prefix + " " + suffix
     )
     or
-    exists(API::Feature nd, string kind | nd = lookup(0) |
+    exists(API::Node nd, string kind | nd = lookup(0) |
       exists(getNode(nd, kind)) and
       not exists(getNode(nd, expectedKind)) and
       result = "Expected " + expectedKind + " node, but found " + kind + " node."
