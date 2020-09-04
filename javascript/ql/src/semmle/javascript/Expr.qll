@@ -2110,7 +2110,7 @@ class PreDecExpr extends @predec_expr, UpdateExpr {
  * i--
  * ```
  */
-class PostDecExpr extends @postdecexpr, UpdateExpr {
+class PostDecExpr extends @postdec_expr, UpdateExpr {
   override string getOperator() { result = "--" }
 }
 
