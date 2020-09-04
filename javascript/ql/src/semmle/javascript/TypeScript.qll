@@ -2349,7 +2349,7 @@ class TypeVariableType extends Type, @typevariable_type {
 /**
  * A type that refers to a type variable declared on a class, interface or function.
  */
-class CanonicalTypeVariableType extends TypeVariableType, @canonicaltypevariabletype {
+class CanonicalTypeVariableType extends TypeVariableType, @canonical_type_variable_type {
   override TypeName getHostType() { result = getCanonicalName().getParent() }
 
   override CanonicalName getCanonicalName() { type_symbol(this, result) }
