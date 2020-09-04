@@ -1600,7 +1600,7 @@ class SubExpr extends @sub_expr, BinaryExpr {
  * x * y
  * ```
  */
-class MulExpr extends @mulexpr, BinaryExpr {
+class MulExpr extends @mul_expr, BinaryExpr {
   override string getOperator() { result = "*" }
 }
 
