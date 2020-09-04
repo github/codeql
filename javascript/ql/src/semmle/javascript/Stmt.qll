@@ -457,7 +457,7 @@ class LabeledStmt extends @labeled_stmt, Stmt {
   Stmt getStmt() { result = getChildStmt(1) }
 }
 
-private class TJumpStmt = TBreakOrContinueStmt or @return_stmt or @throwstmt;
+private class TJumpStmt = TBreakOrContinueStmt or @return_stmt or @throw_stmt;
 
 private class TBreakOrContinueStmt = @break_stmt or @continue_stmt;
 
@@ -639,7 +639,7 @@ class ReturnStmt extends @return_stmt, JumpStmt {
  * throw new Error();
  * ```
  */
-class ThrowStmt extends @throwstmt, JumpStmt {
+class ThrowStmt extends @throw_stmt, JumpStmt {
   /** Gets the expression specifying the value to throw. */
   Expr getExpr() { result = getChildExpr(0) }
 

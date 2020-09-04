@@ -159,7 +159,7 @@ case @stmt.kind of
 |  7 = @with_stmt
 |  8 = @switch_stmt
 |  9 = @return_stmt
-| 10 = @throwstmt
+| 10 = @throw_stmt
 | 11 = @trystmt
 | 12 = @whilestmt
 | 13 = @dowhilestmt
