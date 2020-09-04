@@ -1419,7 +1419,7 @@ class StrictNEqExpr extends @neqq_expr, EqualityTest {
  * i < 10
  * ```
  */
-class LTExpr extends @ltexpr, Comparison {
+class LTExpr extends @lt_expr, Comparison {
   override string getOperator() { result = "<" }
 }
 

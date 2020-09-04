@@ -263,7 +263,7 @@ case @expr.kind of
 | 24 = @neq_expr
 | 25 = @eqq_expr
 | 26 = @neqq_expr
-| 27 = @ltexpr
+| 27 = @lt_expr
 | 28 = @leexpr
 | 29 = @gtexpr
 | 30 = @geexpr
@@ -371,7 +371,7 @@ case @expr.kind of
 
 @equality_test = @eq_expr | @neq_expr | @eqq_expr | @neqq_expr;
 
-@comparison = @equality_test | @ltexpr | @leexpr | @gtexpr | @geexpr;
+@comparison = @equality_test | @lt_expr | @leexpr | @gtexpr | @geexpr;
 
 @binaryexpr = @comparison | @lshiftexpr | @rshiftexpr | @urshiftexpr | @addexpr | @subexpr | @mulexpr | @divexpr | @modexpr | @expexpr | @bitorexpr | @xorexpr | @bitandexpr | @inexpr | @instanceofexpr | @logandexpr | @logorexpr | @nullishcoalescingexpr;
 
