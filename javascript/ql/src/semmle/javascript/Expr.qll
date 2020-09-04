@@ -1851,7 +1851,7 @@ class AssignExpr extends @assign_expr, Assignment {
 private class TCompoundAssignExpr =
   @assign_add_expr or @assign_sub_expr or @assign_mul_expr or @assign_div_expr or @assign_mod_expr or
       @assignexpexpr or @assign_lshift_expr or @assign_rshift_expr or @assign_urshift_expr or
-      @assignorexpr or @assignxorexpr or @assignandexpr or @assignlogandexpr or @assignlogorexpr or
+      @assign_or_expr or @assignxorexpr or @assignandexpr or @assignlogandexpr or @assignlogorexpr or
       @assignnullishcoalescingexpr;
 
 /**
@@ -1974,7 +1974,7 @@ class AssignURShiftExpr extends @assign_urshift_expr, CompoundAssignExpr { }
  * flags |= O_CREAT
  * ```
  */
-class AssignOrExpr extends @assignorexpr, CompoundAssignExpr { }
+class AssignOrExpr extends @assign_or_expr, CompoundAssignExpr { }
 
 /**
  * A compound exclusive-'or'-assign expression.
