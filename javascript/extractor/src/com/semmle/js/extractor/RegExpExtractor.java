@@ -287,7 +287,7 @@ public class RegExpExtractor {
     public void visit(UnicodePropertyEscape nd) {
       Label lbl = extractTerm(nd, parent, idx);
       trapwriter.addTuple("unicode_property_escapename", lbl, nd.getName());
-      if (nd.hasValue()) trapwriter.addTuple("unicodePropertyEscapeValue", lbl, nd.getValue());
+      if (nd.hasValue()) trapwriter.addTuple("unicode_property_escapevalue", lbl, nd.getValue());
     }
 
     @Override

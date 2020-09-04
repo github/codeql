@@ -249,7 +249,7 @@ regexpterm(#20079,27,#20078,0,"\P{Script=Greek}")
 locations_default(#20080,#10000,5,2,5,17)
 hasLocation(#20079,#20080)
 unicode_property_escapename(#20079,"Script")
-unicodePropertyEscapeValue(#20079,"Greek")
+unicode_property_escapevalue(#20079,"Greek")
 #20081=*
 stmts(#20081,2,#20001,5,"/\k</;")
 hasLocation(#20081,#20013)

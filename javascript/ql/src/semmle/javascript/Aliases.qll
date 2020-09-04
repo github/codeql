@@ -275,3 +275,8 @@ deprecated predicate namedBackref(RegExpBackRef id, string name) { named_backref
  * Use `RegExpUnicodePropertyEscape#getName()` instead.
  */ 
 deprecated predicate unicodePropertyEscapeName(RegExpUnicodePropertyEscape id, string name) { unicode_property_escapename(id, name) }
+/**
+ * Alias for the predicate `unicode_property_escapevalue` defined in the .dbscheme.
+ * Use `RegExpUnicodePropertyEscape#getValue()` instead.
+ */ 
+deprecated predicate unicodePropertyEscapeValue(RegExpUnicodePropertyEscape id, string value) { unicode_property_escapevalue(id, value) }

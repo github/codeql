@@ -707,7 +707,7 @@ class RegExpUnicodePropertyEscape extends RegExpEscape, @regexp_unicode_property
    * For example, the value of Unicode property `\p{Script=Greek}` is `Greek`, while
    * `\p{Number}` does not have a value.
    */
-  string getValue() { unicodePropertyEscapeValue(this, result) }
+  string getValue() { unicode_property_escapevalue(this, result) }
 
   override predicate isNullable() { none() }
 }

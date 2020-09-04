@@ -888,7 +888,7 @@ char_class_escape (unique int id: @regexp_char_class_escape ref, varchar(1) valu
 backref (unique int id: @regexp_backref ref, int value: int ref);
 named_backref (unique int id: @regexp_backref ref, string name: string ref);
 unicode_property_escapename (unique int id: @regexp_unicode_property_escape ref, string name: string ref);
-unicodePropertyEscapeValue (unique int id: @regexp_unicode_property_escape ref, string value: string ref);
+unicode_property_escapevalue (unique int id: @regexp_unicode_property_escape ref, string value: string ref);
 
 // tokens
 #keyset[toplevel, idx]
