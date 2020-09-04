@@ -153,7 +153,7 @@ regexpterm(#20051,20,#20049,0,"\s")
 #20052=@"loc,{#10000},1,9,1,10"
 locations_default(#20052,#10000,1,9,1,10)
 hasLocation(#20051,#20052)
-charClassEscape(#20051,"s")
+char_class_escape(#20051,"s")
 #20053=*
 regexpterm(#20053,9,#20043,2,"\w+")
 #20054=@"loc,{#10000},1,13,1,15"
@@ -165,7 +165,7 @@ regexpterm(#20055,20,#20053,0,"\w")
 #20056=@"loc,{#10000},1,13,1,14"
 locations_default(#20056,#10000,1,13,1,14)
 hasLocation(#20055,#20056)
-charClassEscape(#20055,"w")
+char_class_escape(#20055,"w")
 #20057=*
 regexpterm(#20057,22,#20043,3,"\k<ws>")
 #20058=@"loc,{#10000},1,16,1,21"

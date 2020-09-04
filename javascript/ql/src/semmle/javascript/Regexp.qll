@@ -679,7 +679,7 @@ class RegExpControlEscape extends RegExpCharEscape, @regexp_ctrl_escape { }
  */
 class RegExpCharacterClassEscape extends RegExpEscape, @regexp_char_class_escape {
   /** Gets the name of the character class; for example, `w` for `\w`. */
-  string getValue() { charClassEscape(this, result) }
+  string getValue() { char_class_escape(this, result) }
 
   override predicate isNullable() { none() }
 }

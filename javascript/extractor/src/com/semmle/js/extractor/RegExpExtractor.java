@@ -280,7 +280,7 @@ public class RegExpExtractor {
     @Override
     public void visit(CharacterClassEscape nd) {
       Label lbl = extractTerm(nd, parent, idx);
-      trapwriter.addTuple("charClassEscape", lbl, nd.getClassIdentifier());
+      trapwriter.addTuple("char_class_escape", lbl, nd.getClassIdentifier());
     }
 
     @Override

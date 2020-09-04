@@ -260,3 +260,8 @@ deprecated predicate isInverted(RegExpCharacterClass id) { is_inverted(id) }
  * Use `RegExpConstant#getValue()` instead.
  */ 
 deprecated predicate regexpConstValue(RegExpConstant id, string value) { regexp_const_value(id, value) }
+/**
+ * Alias for the predicate `char_class_escape` defined in the .dbscheme.
+ * Use `RegExpCharacterClassEscape#getValue()` instead.
+ */ 
+deprecated predicate charClassEscape(RegExpCharacterClassEscape id, string value) { char_class_escape(id, value) }

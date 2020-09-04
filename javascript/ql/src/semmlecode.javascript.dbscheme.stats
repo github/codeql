@@ -20545,7 +20545,7 @@
 </dependencies>
 </relation>
 <relation>
-<name>charClassEscape</name>
+<name>char_class_escape</name>
 <cardinality>1573</cardinality>
 <columnsizes>
 <e>

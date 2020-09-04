@@ -1414,13 +1414,13 @@ regexpterm(#20464,20,#20462,0,"\w")
 #20465=@"loc,{#10000},29,2,29,3"
 locations_default(#20465,#10000,29,2,29,3)
 hasLocation(#20464,#20465)
-charClassEscape(#20464,"w")
+char_class_escape(#20464,"w")
 #20466=*
 regexpterm(#20466,20,#20462,1,"\S")
 #20467=@"loc,{#10000},29,4,29,5"
 locations_default(#20467,#10000,29,4,29,5)
 hasLocation(#20466,#20467)
-charClassEscape(#20466,"S")
+char_class_escape(#20466,"S")
 #20468=*
 stmts(#20468,2,#20001,29,"/\\/;")
 hasLocation(#20468,#20061)
