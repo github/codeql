@@ -1471,7 +1471,7 @@ class GEExpr extends @ge_expr, Comparison {
  * 2 << i
  * ```
  */
-class LShiftExpr extends @lshiftexpr, BinaryExpr {
+class LShiftExpr extends @lshift_expr, BinaryExpr {
   override string getOperator() { result = "<<" }
 }
 
