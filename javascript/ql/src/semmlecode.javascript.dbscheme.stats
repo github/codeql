@@ -1382,7 +1382,7 @@
 <v>100</v>
 </e>
 <e>
-<k>@awaitexpr</k>
+<k>@await_expr</k>
 <v>100</v>
 </e>
 <e>

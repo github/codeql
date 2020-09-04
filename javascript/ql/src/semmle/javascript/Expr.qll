@@ -2560,7 +2560,7 @@ class ImmediatelyInvokedFunctionExpr extends Function {
  * await p()
  * ```
  */
-class AwaitExpr extends @awaitexpr, Expr {
+class AwaitExpr extends @await_expr, Expr {
   /** Gets the operand of this `await` expression. */
   Expr getOperand() { result = getChildExpr(0) }
 
