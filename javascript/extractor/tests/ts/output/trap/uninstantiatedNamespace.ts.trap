@@ -588,7 +588,7 @@ stmts(#20212,31,#20001,0,"namespa ... lock]\n}")
 #20213=@"loc,{#10000},1,1,25,1"
 locations_default(#20213,#10000,1,1,25,1)
 hasLocation(#20212,#20213)
-stmtContainers(#20212,#20001)
+stmt_containers(#20212,#20001)
 #20214=*
 exprs(#20214,78,#20212,-1,"Wrapper")
 hasLocation(#20214,#20059)
@@ -626,7 +626,7 @@ stmts(#20226,31,#20212,0,"namespace Empty {}")
 #20227=@"loc,{#10000},3,3,3,20"
 locations_default(#20227,#10000,3,3,3,20)
 hasLocation(#20226,#20227)
-stmtContainers(#20226,#20212)
+stmt_containers(#20226,#20212)
 #20228=*
 exprs(#20228,78,#20226,-1,"Empty")
 hasLocation(#20228,#20065)
@@ -643,7 +643,7 @@ stmts(#20230,31,#20212,1,"namespa ...  */\n  }")
 #20231=@"loc,{#10000},4,3,7,3"
 locations_default(#20231,#10000,4,3,7,3)
 hasLocation(#20230,#20231)
-stmtContainers(#20230,#20212)
+stmt_containers(#20230,#20212)
 #20232=*
 exprs(#20232,78,#20230,-1,"Comments")
 hasLocation(#20232,#20073)
@@ -660,7 +660,7 @@ stmts(#20234,31,#20212,2,"namespa ...  {}\n  }")
 #20235=@"loc,{#10000},8,3,10,3"
 locations_default(#20235,#10000,8,3,10,3)
 hasLocation(#20234,#20235)
-stmtContainers(#20234,#20212)
+stmt_containers(#20234,#20212)
 #20236=*
 exprs(#20236,78,#20234,-1,"Outer")
 hasLocation(#20236,#20081)
@@ -679,7 +679,7 @@ stmts(#20239,31,#20234,0,"namespace Inner {}")
 #20240=@"loc,{#10000},9,5,9,22"
 locations_default(#20240,#10000,9,5,9,22)
 hasLocation(#20239,#20240)
-stmtContainers(#20239,#20234)
+stmt_containers(#20239,#20234)
 #20241=*
 exprs(#20241,78,#20239,-1,"Inner")
 hasLocation(#20241,#20087)
@@ -696,7 +696,7 @@ stmts(#20243,31,#20212,3,"namespa ...  {}\n  }")
 #20244=@"loc,{#10000},11,3,13,3"
 locations_default(#20244,#10000,11,3,13,3)
 hasLocation(#20243,#20244)
-stmtContainers(#20243,#20212)
+stmt_containers(#20243,#20212)
 #20245=*
 exprs(#20245,78,#20243,-1,"Outer2")
 hasLocation(#20245,#20097)
@@ -715,13 +715,13 @@ stmts(#20248,30,#20243,0,"export  ... nner {}")
 #20249=@"loc,{#10000},12,5,12,29"
 locations_default(#20249,#10000,12,5,12,29)
 hasLocation(#20248,#20249)
-stmtContainers(#20248,#20243)
+stmt_containers(#20248,#20243)
 #20250=*
 stmts(#20250,31,#20248,-1,"namespace Inner {}")
 #20251=@"loc,{#10000},12,12,12,29"
 locations_default(#20251,#10000,12,12,12,29)
 hasLocation(#20250,#20251)
-stmtContainers(#20250,#20243)
+stmt_containers(#20250,#20243)
 #20252=*
 exprs(#20252,78,#20250,-1,"Inner")
 hasLocation(#20252,#20105)
@@ -738,7 +738,7 @@ stmts(#20254,31,#20212,4,"namespa ...   }\n  }")
 #20255=@"loc,{#10000},14,3,19,3"
 locations_default(#20255,#10000,14,3,19,3)
 hasLocation(#20254,#20255)
-stmtContainers(#20254,#20212)
+stmt_containers(#20254,#20212)
 #20256=*
 exprs(#20256,78,#20254,-1,"Interfaces")
 hasLocation(#20256,#20115)
@@ -757,7 +757,7 @@ stmts(#20259,34,#20254,0,"interfa ... ;\n    }")
 #20260=@"loc,{#10000},15,5,18,5"
 locations_default(#20260,#10000,15,5,18,5)
 hasLocation(#20259,#20260)
-stmtContainers(#20259,#20254)
+stmt_containers(#20259,#20254)
 #20261=*
 typeexprs(#20261,1,#20259,0,"I")
 hasLocation(#20261,#20121)
@@ -818,7 +818,7 @@ stmts(#20273,31,#20212,5,"namespa ... ent {;}")
 #20274=@"loc,{#10000},21,3,21,30"
 locations_default(#20274,#10000,21,3,21,30)
 hasLocation(#20273,#20274)
-stmtContainers(#20273,#20212)
+stmt_containers(#20273,#20212)
 #20275=*
 exprs(#20275,78,#20273,-1,"EmptyStatement")
 hasLocation(#20275,#20151)
@@ -834,14 +834,14 @@ scopenesting(#20276,#20215)
 #20277=*
 stmts(#20277,0,#20273,0,";")
 hasLocation(#20277,#20155)
-stmtContainers(#20277,#20273)
+stmt_containers(#20277,#20273)
 isInstantiated(#20273)
 #20278=*
 stmts(#20278,31,#20212,6,"namespa ... ck {{}}")
 #20279=@"loc,{#10000},22,3,22,27"
 locations_default(#20279,#10000,22,3,22,27)
 hasLocation(#20278,#20279)
-stmtContainers(#20278,#20212)
+stmt_containers(#20278,#20212)
 #20280=*
 exprs(#20280,78,#20278,-1,"EmptyBlock")
 hasLocation(#20280,#20161)
@@ -859,14 +859,14 @@ stmts(#20282,1,#20278,0,"{}")
 #20283=@"loc,{#10000},22,25,22,26"
 locations_default(#20283,#10000,22,25,22,26)
 hasLocation(#20282,#20283)
-stmtContainers(#20282,#20278)
+stmt_containers(#20282,#20278)
 isInstantiated(#20278)
 #20284=*
 stmts(#20284,18,#20212,7,"var x = ... yBlock]")
 #20285=@"loc,{#10000},24,3,24,82"
 locations_default(#20285,#10000,24,3,24,82)
 hasLocation(#20284,#20285)
-stmtContainers(#20284,#20212)
+stmt_containers(#20284,#20212)
 #20286=*
 exprs(#20286,64,#20284,0,"x = [Em ... yBlock]")
 #20287=@"loc,{#10000},24,7,24,82"

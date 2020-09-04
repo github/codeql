@@ -855,7 +855,7 @@ hasLocation(#20001,#20324)
 #20325=*
 stmts(#20325,2,#20001,0,"null;")
 hasLocation(#20325,#20003)
-stmtContainers(#20325,#20001)
+stmt_containers(#20325,#20001)
 #20326=*
 exprs(#20326,1,#20325,0,"null")
 hasLocation(#20326,#20063)
@@ -865,7 +865,7 @@ literals("null","null",#20326)
 #20327=*
 stmts(#20327,2,#20001,1,"true;")
 hasLocation(#20327,#20005)
-stmtContainers(#20327,#20001)
+stmt_containers(#20327,#20001)
 #20328=*
 exprs(#20328,2,#20327,0,"true")
 hasLocation(#20328,#20067)
@@ -875,7 +875,7 @@ literals("true","true",#20328)
 #20329=*
 stmts(#20329,2,#20001,2,"false;")
 hasLocation(#20329,#20007)
-stmtContainers(#20329,#20001)
+stmt_containers(#20329,#20001)
 #20330=*
 exprs(#20330,2,#20329,0,"false")
 hasLocation(#20330,#20071)
@@ -885,7 +885,7 @@ literals("false","false",#20330)
 #20331=*
 stmts(#20331,2,#20001,3,"23;")
 hasLocation(#20331,#20009)
-stmtContainers(#20331,#20001)
+stmt_containers(#20331,#20001)
 #20332=*
 exprs(#20332,3,#20331,0,"23")
 hasLocation(#20332,#20075)
@@ -895,7 +895,7 @@ literals("23","23",#20332)
 #20333=*
 stmts(#20333,2,#20001,4,"2.3;")
 hasLocation(#20333,#20011)
-stmtContainers(#20333,#20001)
+stmt_containers(#20333,#20001)
 #20334=*
 exprs(#20334,3,#20333,0,"2.3")
 hasLocation(#20334,#20079)
@@ -905,7 +905,7 @@ literals("2.3","2.3",#20334)
 #20335=*
 stmts(#20335,2,#20001,5,".42;")
 hasLocation(#20335,#20013)
-stmtContainers(#20335,#20001)
+stmt_containers(#20335,#20001)
 #20336=*
 exprs(#20336,3,#20335,0,".42")
 hasLocation(#20336,#20083)
@@ -915,7 +915,7 @@ literals("0.42",".42",#20336)
 #20337=*
 stmts(#20337,2,#20001,6,"7.6e23;")
 hasLocation(#20337,#20015)
-stmtContainers(#20337,#20001)
+stmt_containers(#20337,#20001)
 #20338=*
 exprs(#20338,3,#20337,0,"7.6e23")
 hasLocation(#20338,#20087)
@@ -925,7 +925,7 @@ literals("7.6E23","7.6e23",#20338)
 #20339=*
 stmts(#20339,2,#20001,7,"1E-42;")
 hasLocation(#20339,#20017)
-stmtContainers(#20339,#20001)
+stmt_containers(#20339,#20001)
 #20340=*
 exprs(#20340,3,#20339,0,"1E-42")
 hasLocation(#20340,#20091)
@@ -935,7 +935,7 @@ literals("1.0E-42","1E-42",#20340)
 #20341=*
 stmts(#20341,2,#20001,8,"0xdeadbeef;")
 hasLocation(#20341,#20019)
-stmtContainers(#20341,#20001)
+stmt_containers(#20341,#20001)
 #20342=*
 exprs(#20342,3,#20341,0,"0xdeadbeef")
 hasLocation(#20342,#20095)
@@ -945,7 +945,7 @@ literals("3735928559","0xdeadbeef",#20342)
 #20343=*
 stmts(#20343,2,#20001,9,"""Hello"";")
 hasLocation(#20343,#20021)
-stmtContainers(#20343,#20001)
+stmt_containers(#20343,#20001)
 #20344=*
 exprs(#20344,4,#20343,0,"""Hello""")
 hasLocation(#20344,#20099)
@@ -961,7 +961,7 @@ regexpConstValue(#20345,"Hello")
 #20347=*
 stmts(#20347,2,#20001,10,"'world';")
 hasLocation(#20347,#20023)
-stmtContainers(#20347,#20001)
+stmt_containers(#20347,#20001)
 #20348=*
 exprs(#20348,4,#20347,0,"'world'")
 hasLocation(#20348,#20103)
@@ -977,7 +977,7 @@ regexpConstValue(#20349,"world")
 #20351=*
 stmts(#20351,2,#20001,11,"""'what?'\x0a"";")
 hasLocation(#20351,#20025)
-stmtContainers(#20351,#20001)
+stmt_containers(#20351,#20001)
 #20352=*
 exprs(#20352,4,#20351,0,"""'what?'\x0a""")
 hasLocation(#20352,#20107)
@@ -1020,7 +1020,7 @@ regexpConstValue(#20361,"'
 #20363=*
 stmts(#20363,2,#20001,12,"'""why?""\n';")
 hasLocation(#20363,#20027)
-stmtContainers(#20363,#20001)
+stmt_containers(#20363,#20001)
 #20364=*
 exprs(#20364,4,#20363,0,"'""why?""\n'")
 hasLocation(#20364,#20111)
@@ -1063,7 +1063,7 @@ regexpConstValue(#20373,"""
 #20375=*
 stmts(#20375,2,#20001,13,"/^(need?le)+/gi;")
 hasLocation(#20375,#20029)
-stmtContainers(#20375,#20001)
+stmt_containers(#20375,#20001)
 #20376=*
 exprs(#20376,5,#20375,0,"/^(need?le)+/gi")
 hasLocation(#20376,#20115)
@@ -1124,7 +1124,7 @@ regexpConstValue(#20393,"le")
 #20395=*
 stmts(#20395,2,#20001,14,"(23);")
 hasLocation(#20395,#20031)
-stmtContainers(#20395,#20001)
+stmt_containers(#20395,#20001)
 #20396=*
 exprs(#20396,63,#20395,0,"(23)")
 #20397=@"loc,{#10000},15,1,15,4"
@@ -1141,7 +1141,7 @@ literals("23","23",#20398)
 #20399=*
 stmts(#20399,2,#20001,15,"[23, 42, , ""hi"" ];")
 hasLocation(#20399,#20033)
-stmtContainers(#20399,#20001)
+stmt_containers(#20399,#20001)
 #20400=*
 exprs(#20400,7,#20399,0,"[23, 42, , ""hi"" ]")
 #20401=@"loc,{#10000},16,1,16,17"
@@ -1179,7 +1179,7 @@ stmts(#20407,2,#20001,16,"({ x: 2 ... ) {}});")
 #20408=@"loc,{#10000},17,1,21,17"
 locations_default(#20408,#10000,17,1,21,17)
 hasLocation(#20407,#20408)
-stmtContainers(#20407,#20001)
+stmt_containers(#20407,#20001)
 #20409=*
 exprs(#20409,63,#20407,0,"({ x: 2 ... v) {}})")
 #20410=@"loc,{#10000},17,1,21,16"
@@ -1257,7 +1257,7 @@ stmts(#20428,1,#20424,-2,"{}")
 #20429=@"loc,{#10000},19,12,19,13"
 locations_default(#20429,#10000,19,12,19,13)
 hasLocation(#20428,#20429)
-stmtContainers(#20428,#20424)
+stmt_containers(#20428,#20424)
 #20430=*
 properties(#20430,#20411,3,1,"get p() {}")
 #20431=@"loc,{#10000},20,4,20,13"
@@ -1288,7 +1288,7 @@ stmts(#20437,1,#20433,-2,"{}")
 #20438=@"loc,{#10000},20,12,20,13"
 locations_default(#20438,#10000,20,12,20,13)
 hasLocation(#20437,#20438)
-stmtContainers(#20437,#20433)
+stmt_containers(#20437,#20433)
 #20439=*
 properties(#20439,#20411,4,2,"set p(v) {}")
 #20440=@"loc,{#10000},21,4,21,14"
@@ -1327,11 +1327,11 @@ stmts(#20448,1,#20442,-2,"{}")
 #20449=@"loc,{#10000},21,13,21,14"
 locations_default(#20449,#10000,21,13,21,14)
 hasLocation(#20448,#20449)
-stmtContainers(#20448,#20442)
+stmt_containers(#20448,#20442)
 #20450=*
 stmts(#20450,2,#20001,17,"new Array;")
 hasLocation(#20450,#20045)
-stmtContainers(#20450,#20001)
+stmt_containers(#20450,#20001)
 #20451=*
 exprs(#20451,12,#20450,0,"new Array")
 #20452=@"loc,{#10000},22,1,22,9"
@@ -1351,7 +1351,7 @@ bind(#20453,#20454)
 #20455=*
 stmts(#20455,2,#20001,18,"new Object();")
 hasLocation(#20455,#20047)
-stmtContainers(#20455,#20001)
+stmt_containers(#20455,#20001)
 #20456=*
 exprs(#20456,12,#20455,0,"new Object()")
 #20457=@"loc,{#10000},23,1,23,12"
@@ -1371,7 +1371,7 @@ bind(#20458,#20459)
 #20460=*
 stmts(#20460,2,#20001,19,"new String(""hi"");")
 hasLocation(#20460,#20049)
-stmtContainers(#20460,#20001)
+stmt_containers(#20460,#20001)
 #20461=*
 exprs(#20461,12,#20460,0,"new String(""hi"")")
 #20462=@"loc,{#10000},24,1,24,16"
@@ -1403,7 +1403,7 @@ regexpConstValue(#20466,"hi")
 #20468=*
 stmts(#20468,2,#20001,20,"String("""");")
 hasLocation(#20468,#20051)
-stmtContainers(#20468,#20001)
+stmt_containers(#20468,#20001)
 #20469=*
 exprs(#20469,13,#20468,0,"String("""")")
 #20470=@"loc,{#10000},25,1,25,10"
@@ -1432,7 +1432,7 @@ hasLocation(#20473,#20474)
 #20475=*
 stmts(#20475,2,#20001,21,"Object.create({});")
 hasLocation(#20475,#20053)
-stmtContainers(#20475,#20001)
+stmt_containers(#20475,#20001)
 #20476=*
 exprs(#20476,13,#20475,0,"Object.create({})")
 #20477=@"loc,{#10000},26,1,26,17"
@@ -1470,7 +1470,7 @@ exprContainers(#20482,#20001)
 #20484=*
 stmts(#20484,2,#20001,22,"String[ ... rse()];")
 hasLocation(#20484,#20055)
-stmtContainers(#20484,#20001)
+stmt_containers(#20484,#20001)
 #20485=*
 exprs(#20485,15,#20484,0,"String[ ... erse()]")
 #20486=@"loc,{#10000},27,1,27,29"
@@ -1520,7 +1520,7 @@ literals("reverse","reverse",#20495)
 #20496=*
 stmts(#20496,2,#20001,23,"[,,];")
 hasLocation(#20496,#20057)
-stmtContainers(#20496,#20001)
+stmt_containers(#20496,#20001)
 #20497=*
 exprs(#20497,7,#20496,0,"[,,]")
 #20498=@"loc,{#10000},28,1,28,4"
@@ -1532,7 +1532,7 @@ arraySize(#20497,2)
 #20499=*
 stmts(#20499,2,#20001,24,"[1,];")
 hasLocation(#20499,#20059)
-stmtContainers(#20499,#20001)
+stmt_containers(#20499,#20001)
 #20500=*
 exprs(#20500,7,#20499,0,"[1,]")
 #20501=@"loc,{#10000},29,1,29,4"
@@ -1550,7 +1550,7 @@ arraySize(#20500,1)
 #20503=*
 stmts(#20503,2,#20001,25,"({ z: 56, });")
 hasLocation(#20503,#20061)
-stmtContainers(#20503,#20001)
+stmt_containers(#20503,#20001)
 #20504=*
 exprs(#20504,63,#20503,0,"({ z: 56, })")
 #20505=@"loc,{#10000},30,1,30,12"

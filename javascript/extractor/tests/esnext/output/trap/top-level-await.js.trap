@@ -161,7 +161,7 @@ local_namespace_names(#20056,"language",#20053)
 #20058=*
 stmts(#20058,27,#20001,0,"import  ... tings';")
 hasLocation(#20058,#20003)
-stmtContainers(#20058,#20001)
+stmt_containers(#20058,#20001)
 #20059=*
 exprs(#20059,4,#20058,-1,"'settings'")
 hasLocation(#20059,#20017)
@@ -197,7 +197,7 @@ namespacedecl(#20064,#20056)
 #20065=*
 stmts(#20065,22,#20001,1,"const s ... age}`);")
 hasLocation(#20065,#20005)
-stmtContainers(#20065,#20001)
+stmt_containers(#20065,#20001)
 #20066=*
 exprs(#20066,64,#20065,0,"strings ... uage}`)")
 #20067=@"loc,{#10000},2,7,2,50"

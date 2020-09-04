@@ -149,7 +149,7 @@ stmts(#20051,17,#20001,0,"functio ... i;\n\t}\n}")
 #20052=@"loc,{#10000},1,1,6,1"
 locations_default(#20052,#10000,1,1,6,1)
 hasLocation(#20051,#20052)
-stmtContainers(#20051,#20001)
+stmt_containers(#20051,#20001)
 #20053=*
 exprs(#20053,78,#20051,-1,"g")
 hasLocation(#20053,#20017)
@@ -170,13 +170,13 @@ stmts(#20057,1,#20051,-2,"{\n\tswit ... i;\n\t}\n}")
 #20058=@"loc,{#10000},1,14,6,1"
 locations_default(#20058,#10000,1,14,6,1)
 hasLocation(#20057,#20058)
-stmtContainers(#20057,#20051)
+stmt_containers(#20057,#20051)
 #20059=*
 stmts(#20059,8,#20057,0,"switch  ... r i;\n\t}")
 #20060=@"loc,{#10000},2,2,5,2"
 locations_default(#20060,#10000,2,2,5,2)
 hasLocation(#20059,#20060)
-stmtContainers(#20059,#20051)
+stmt_containers(#20059,#20051)
 #20061=*
 exprs(#20061,3,#20059,-1,"0")
 hasLocation(#20061,#20029)
@@ -188,13 +188,13 @@ stmts(#20062,19,#20059,0,"default:\n\t\tvar i;")
 #20063=@"loc,{#10000},3,2,4,8"
 locations_default(#20063,#10000,3,2,4,8)
 hasLocation(#20062,#20063)
-stmtContainers(#20062,#20051)
+stmt_containers(#20062,#20051)
 #20064=*
 stmts(#20064,18,#20062,0,"var i;")
 #20065=@"loc,{#10000},4,3,4,8"
 locations_default(#20065,#10000,4,3,4,8)
 hasLocation(#20064,#20065)
-stmtContainers(#20064,#20051)
+stmt_containers(#20064,#20051)
 #20066=*
 exprs(#20066,64,#20064,0,"i")
 hasLocation(#20066,#20041)

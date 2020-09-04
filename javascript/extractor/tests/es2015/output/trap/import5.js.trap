@@ -75,7 +75,7 @@ local_namespace_names(#20023,"foo",#20020)
 #20024=*
 stmts(#20024,27,#20001,0,"import  ...  'foo';")
 hasLocation(#20024,#20003)
-stmtContainers(#20024,#20001)
+stmt_containers(#20024,#20001)
 #20025=*
 exprs(#20025,4,#20024,-1,"'foo'")
 hasLocation(#20025,#20015)

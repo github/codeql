@@ -142,7 +142,7 @@ variables(#20050,"cdr",#20000)
 #20051=*
 stmts(#20051,17,#20001,0,"functio ... n ys;\n}")
 hasLocation(#20051,#20049)
-stmtContainers(#20051,#20001)
+stmt_containers(#20051,#20001)
 #20052=*
 exprs(#20052,78,#20051,-1,"cdr")
 hasLocation(#20052,#20013)
@@ -171,13 +171,13 @@ stmts(#20058,1,#20051,-2,"{\n  var ... n ys;\n}")
 #20059=@"loc,{#10000},1,17,4,1"
 locations_default(#20059,#10000,1,17,4,1)
 hasLocation(#20058,#20059)
-stmtContainers(#20058,#20051)
+stmt_containers(#20058,#20051)
 #20060=*
 stmts(#20060,18,#20058,0,"var [, ...ys] = o;")
 #20061=@"loc,{#10000},2,3,2,20"
 locations_default(#20061,#10000,2,3,2,20)
 hasLocation(#20060,#20061)
-stmtContainers(#20060,#20051)
+stmt_containers(#20060,#20051)
 #20062=*
 exprs(#20062,64,#20060,0,"[, ...ys] = o")
 #20063=@"loc,{#10000},2,7,2,19"
@@ -212,7 +212,7 @@ stmts(#20068,9,#20058,1,"return ys;")
 #20069=@"loc,{#10000},3,3,3,12"
 locations_default(#20069,#10000,3,3,3,12)
 hasLocation(#20068,#20069)
-stmtContainers(#20068,#20051)
+stmt_containers(#20068,#20051)
 #20070=*
 exprs(#20070,79,#20068,0,"ys")
 hasLocation(#20070,#20043)

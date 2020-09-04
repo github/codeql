@@ -75,13 +75,13 @@ stmts(#20024,30,#20001,0,"export  ...  f() {}")
 #20025=@"loc,{#10000},1,1,1,22"
 locations_default(#20025,#10000,1,1,1,22)
 hasLocation(#20024,#20025)
-stmtContainers(#20024,#20001)
+stmt_containers(#20024,#20001)
 #20026=*
 stmts(#20026,17,#20024,-1,"function f() {}")
 #20027=@"loc,{#10000},1,8,1,22"
 locations_default(#20027,#10000,1,8,1,22)
 hasLocation(#20026,#20027)
-stmtContainers(#20026,#20001)
+stmt_containers(#20026,#20001)
 #20028=*
 exprs(#20028,78,#20026,-1,"f")
 hasLocation(#20028,#20009)
@@ -100,11 +100,11 @@ stmts(#20031,1,#20026,-2,"{}")
 #20032=@"loc,{#10000},1,21,1,22"
 locations_default(#20032,#10000,1,21,1,22)
 hasLocation(#20031,#20032)
-stmtContainers(#20031,#20026)
+stmt_containers(#20031,#20026)
 #20033=*
 stmts(#20033,0,#20001,1,";")
 hasLocation(#20033,#20019)
-stmtContainers(#20033,#20001)
+stmt_containers(#20033,#20001)
 #20034=*
 entry_cfg_node(#20034,#20001)
 #20035=@"loc,{#10000},1,1,1,0"

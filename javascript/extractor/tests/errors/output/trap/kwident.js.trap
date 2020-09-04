@@ -55,7 +55,7 @@ variables(#20017,"class",#20000)
 #20018=*
 stmts(#20018,18,#20001,0,"var class = 23;")
 hasLocation(#20018,#20003)
-stmtContainers(#20018,#20001)
+stmt_containers(#20018,#20001)
 #20019=*
 exprs(#20019,64,#20018,0,"class = 23")
 #20020=@"loc,{#10000},1,5,1,14"

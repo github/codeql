@@ -113,7 +113,7 @@ variables(#20038,"x",#20037)
 #20039=*
 stmts(#20039,2,#20001,0,"goog.de ... test');")
 hasLocation(#20039,#20003)
-stmtContainers(#20039,#20001)
+stmt_containers(#20039,#20001)
 #20040=*
 exprs(#20040,13,#20039,0,"goog.de ... 'test')")
 #20041=@"loc,{#10000},1,1,1,28"
@@ -158,13 +158,13 @@ regexpConstValue(#20048,"test")
 #20050=*
 stmts(#20050,30,#20001,1,"export let x = 5;")
 hasLocation(#20050,#20007)
-stmtContainers(#20050,#20001)
+stmt_containers(#20050,#20001)
 #20051=*
 stmts(#20051,23,#20050,-1,"let x = 5;")
 #20052=@"loc,{#10000},3,8,3,17"
 locations_default(#20052,#10000,3,8,3,17)
 hasLocation(#20051,#20052)
-stmtContainers(#20051,#20001)
+stmt_containers(#20051,#20001)
 #20053=*
 exprs(#20053,64,#20051,0,"x = 5")
 #20054=@"loc,{#10000},3,12,3,16"

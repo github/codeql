@@ -5683,7 +5683,7 @@ stmts(#22183,31,#20001,0,"namespa ...  any;\n}")
 #22184=@"loc,{#10000},1,1,70,1"
 locations_default(#22184,#10000,1,1,70,1)
 hasLocation(#22183,#22184)
-stmtContainers(#22183,#20001)
+stmt_containers(#22183,#20001)
 #22185=*
 exprs(#22185,78,#22183,-1,"ConditionalTypes1")
 hasLocation(#22185,#20285)
@@ -5773,7 +5773,7 @@ stmts(#22223,35,#22183,0,"type Ty ... bject"";")
 #22224=@"loc,{#10000},2,3,8,15"
 locations_default(#22224,#10000,2,3,8,15)
 hasLocation(#22223,#22224)
-stmtContainers(#22223,#22183)
+stmt_containers(#22223,#22183)
 #22225=*
 typeexprs(#22225,1,#22223,0,"TypeName")
 hasLocation(#22225,#20291)
@@ -5940,7 +5940,7 @@ stmts(#22256,35,#22183,1,"type T0 ... tring>;")
 #22257=@"loc,{#10000},10,3,10,29"
 locations_default(#22257,#10000,10,3,10,29)
 hasLocation(#22256,#22257)
-stmtContainers(#22256,#22183)
+stmt_containers(#22256,#22183)
 #22258=*
 typeexprs(#22258,1,#22256,0,"T0")
 hasLocation(#22258,#20367)
@@ -5973,7 +5973,7 @@ stmts(#22263,35,#22183,2,"type T1 ... e<""a"">;")
 #22264=@"loc,{#10000},11,3,11,26"
 locations_default(#22264,#10000,11,3,11,26)
 hasLocation(#22263,#22264)
-stmtContainers(#22263,#22183)
+stmt_containers(#22263,#22183)
 #22265=*
 typeexprs(#22265,1,#22263,0,"T1")
 hasLocation(#22265,#20383)
@@ -6006,7 +6006,7 @@ stmts(#22270,35,#22183,3,"type T2 ... <true>;")
 #22271=@"loc,{#10000},12,3,12,27"
 locations_default(#22271,#10000,12,3,12,27)
 hasLocation(#22270,#22271)
-stmtContainers(#22270,#22183)
+stmt_containers(#22270,#22183)
 #22272=*
 typeexprs(#22272,1,#22270,0,"T2")
 hasLocation(#22272,#20399)
@@ -6039,7 +6039,7 @@ stmts(#22277,35,#22183,4,"type T3 ...  void>;")
 #22278=@"loc,{#10000},13,3,13,33"
 locations_default(#22278,#10000,13,3,13,33)
 hasLocation(#22277,#22278)
-stmtContainers(#22277,#22183)
+stmt_containers(#22277,#22183)
 #22279=*
 typeexprs(#22279,1,#22277,0,"T3")
 hasLocation(#22279,#20415)
@@ -6090,7 +6090,7 @@ stmts(#22289,35,#22183,5,"type T4 ... ing[]>;")
 #22290=@"loc,{#10000},14,3,14,31"
 locations_default(#22290,#10000,14,3,14,31)
 hasLocation(#22289,#22290)
-stmtContainers(#22289,#22183)
+stmt_containers(#22289,#22183)
 #22291=*
 typeexprs(#22291,1,#22289,0,"T4")
 hasLocation(#22291,#20437)
@@ -6130,7 +6130,7 @@ stmts(#22298,35,#22183,6,"type T1 ... void)>;")
 #22299=@"loc,{#10000},17,3,17,45"
 locations_default(#22299,#10000,17,3,17,45)
 hasLocation(#22298,#22299)
-stmtContainers(#22298,#22183)
+stmt_containers(#22298,#22183)
 #22300=*
 typeexprs(#22300,1,#22298,0,"T10")
 hasLocation(#22300,#20457)
@@ -6201,7 +6201,7 @@ stmts(#22315,35,#22183,7,"type T1 ... fined>;")
 #22316=@"loc,{#10000},18,3,18,53"
 locations_default(#22316,#10000,18,3,18,53)
 hasLocation(#22315,#22316)
-stmtContainers(#22315,#22183)
+stmt_containers(#22315,#22183)
 #22317=*
 typeexprs(#22317,1,#22315,0,"T12")
 hasLocation(#22317,#20487)
@@ -6260,7 +6260,7 @@ stmts(#22328,35,#22183,8,"type T1 ... ber[]>;")
 #22329=@"loc,{#10000},19,3,19,43"
 locations_default(#22329,#10000,19,3,19,43)
 hasLocation(#22328,#22329)
-stmtContainers(#22328,#22183)
+stmt_containers(#22328,#22183)
 #22330=*
 typeexprs(#22330,1,#22328,0,"T11")
 hasLocation(#22330,#20515)
@@ -6320,7 +6320,7 @@ stmts(#22342,35,#22183,9,"type Bo ... e: T };")
 #22343=@"loc,{#10000},21,3,21,36"
 locations_default(#22343,#10000,21,3,21,36)
 hasLocation(#22342,#22343)
-stmtContainers(#22342,#22183)
+stmt_containers(#22342,#22183)
 #22344=*
 typeexprs(#22344,1,#22342,0,"BoxedValue")
 hasLocation(#22344,#20543)
@@ -6377,7 +6377,7 @@ stmts(#22355,35,#22183,10,"type Bo ...  T[] };")
 #22356=@"loc,{#10000},22,3,22,38"
 locations_default(#22356,#10000,22,3,22,38)
 hasLocation(#22355,#22356)
-stmtContainers(#22355,#22183)
+stmt_containers(#22355,#22183)
 #22357=*
 typeexprs(#22357,1,#22355,0,"BoxedArray")
 hasLocation(#22357,#20567)
@@ -6441,7 +6441,7 @@ stmts(#22370,35,#22183,11,"type Bo ... lue<T>;")
 #22371=@"loc,{#10000},23,3,23,74"
 locations_default(#22371,#10000,23,3,23,74)
 hasLocation(#22370,#22371)
-stmtContainers(#22370,#22183)
+stmt_containers(#22370,#22183)
 #22372=*
 typeexprs(#22372,1,#22370,0,"Boxed")
 hasLocation(#22372,#20595)
@@ -6554,7 +6554,7 @@ stmts(#22394,35,#22183,12,"type T2 ... tring>;")
 #22395=@"loc,{#10000},25,3,25,27"
 locations_default(#22395,#10000,25,3,25,27)
 hasLocation(#22394,#22395)
-stmtContainers(#22394,#22183)
+stmt_containers(#22394,#22183)
 #22396=*
 typeexprs(#22396,1,#22394,0,"T20")
 hasLocation(#22396,#20645)
@@ -6587,7 +6587,7 @@ stmts(#22401,35,#22183,13,"type T2 ... ber[]>;")
 #22402=@"loc,{#10000},26,3,26,29"
 locations_default(#22402,#10000,26,3,26,29)
 hasLocation(#22401,#22402)
-stmtContainers(#22401,#22183)
+stmt_containers(#22401,#22183)
 #22403=*
 typeexprs(#22403,1,#22401,0,"T21")
 hasLocation(#22403,#20661)
@@ -6627,7 +6627,7 @@ stmts(#22410,35,#22183,14,"type T2 ... ber[]>;")
 #22411=@"loc,{#10000},27,3,27,38"
 locations_default(#22411,#10000,27,3,27,38)
 hasLocation(#22410,#22411)
-stmtContainers(#22410,#22183)
+stmt_containers(#22410,#22183)
 #22412=*
 typeexprs(#22412,1,#22410,0,"T22")
 hasLocation(#22412,#20681)
@@ -6680,7 +6680,7 @@ stmts(#22422,35,#22183,15,"type Di ... er : T;")
 #22423=@"loc,{#10000},29,3,29,44"
 locations_default(#22423,#10000,29,3,29,44)
 hasLocation(#22422,#22423)
-stmtContainers(#22422,#22183)
+stmt_containers(#22422,#22183)
 #22424=*
 typeexprs(#22424,1,#22422,0,"Diff")
 hasLocation(#22424,#20705)
@@ -6759,7 +6759,7 @@ stmts(#22438,35,#22183,16,"type Fi ...  never;")
 #22439=@"loc,{#10000},30,3,30,46"
 locations_default(#22439,#10000,30,3,30,46)
 hasLocation(#22438,#22439)
-stmtContainers(#22438,#22183)
+stmt_containers(#22438,#22183)
 #22440=*
 typeexprs(#22440,1,#22438,0,"Filter")
 hasLocation(#22440,#20737)
@@ -6838,7 +6838,7 @@ stmts(#22454,35,#22183,17,"type T3 ... | ""f"">;")
 #22455=@"loc,{#10000},32,3,32,58"
 locations_default(#22455,#10000,32,3,32,58)
 hasLocation(#22454,#22455)
-stmtContainers(#22454,#22183)
+stmt_containers(#22454,#22183)
 #22456=*
 typeexprs(#22456,1,#22454,0,"T30")
 hasLocation(#22456,#20769)
@@ -6921,7 +6921,7 @@ stmts(#22471,35,#22183,18,"type T3 ... | ""f"">;")
 #22472=@"loc,{#10000},33,3,33,60"
 locations_default(#22472,#10000,33,3,33,60)
 hasLocation(#22471,#22472)
-stmtContainers(#22471,#22183)
+stmt_containers(#22471,#22183)
 #22473=*
 typeexprs(#22473,1,#22471,0,"T31")
 hasLocation(#22473,#20809)
@@ -7004,7 +7004,7 @@ stmts(#22488,35,#22183,19,"type T3 ... ction>;")
 #22489=@"loc,{#10000},34,3,34,60"
 locations_default(#22489,#10000,34,3,34,60)
 hasLocation(#22488,#22489)
-stmtContainers(#22488,#22183)
+stmt_containers(#22488,#22183)
 #22490=*
 typeexprs(#22490,1,#22488,0,"T32")
 hasLocation(#22490,#20849)
@@ -7087,7 +7087,7 @@ stmts(#22507,35,#22183,20,"type T3 ... ction>;")
 #22508=@"loc,{#10000},35,3,35,62"
 locations_default(#22508,#10000,35,3,35,62)
 hasLocation(#22507,#22508)
-stmtContainers(#22507,#22183)
+stmt_containers(#22507,#22183)
 #22509=*
 typeexprs(#22509,1,#22507,0,"T33")
 hasLocation(#22509,#20887)
@@ -7170,7 +7170,7 @@ stmts(#22526,35,#22183,21,"type No ... fined>;")
 #22527=@"loc,{#10000},37,3,37,50"
 locations_default(#22527,#10000,37,3,37,50)
 hasLocation(#22526,#22527)
-stmtContainers(#22526,#22183)
+stmt_containers(#22526,#22183)
 #22528=*
 typeexprs(#22528,1,#22526,0,"NonNullable")
 hasLocation(#22528,#20925)
@@ -7241,7 +7241,7 @@ stmts(#22541,35,#22183,22,"type T3 ... fined>;")
 #22542=@"loc,{#10000},39,3,39,54"
 locations_default(#22542,#10000,39,3,39,54)
 hasLocation(#22541,#22542)
-stmtContainers(#22541,#22183)
+stmt_containers(#22541,#22183)
 #22543=*
 typeexprs(#22543,1,#22541,0,"T34")
 hasLocation(#22543,#20955)
@@ -7293,7 +7293,7 @@ stmts(#22552,35,#22183,23,"type T3 ... fined>;")
 #22553=@"loc,{#10000},40,3,40,63"
 locations_default(#22553,#10000,40,3,40,63)
 hasLocation(#22552,#22553)
-stmtContainers(#22552,#22183)
+stmt_containers(#22552,#22183)
 #22554=*
 typeexprs(#22554,1,#22552,0,"T35")
 hasLocation(#22554,#20979)
@@ -7358,7 +7358,7 @@ stmts(#22566,17,#22183,24,"functio ...  Ok\n  }")
 #22567=@"loc,{#10000},42,3,44,3"
 locations_default(#22567,#10000,42,3,44,3)
 hasLocation(#22566,#22567)
-stmtContainers(#22566,#22183)
+stmt_containers(#22566,#22183)
 #22568=*
 exprs(#22568,78,#22566,-1,"f1")
 hasLocation(#22568,#21011)
@@ -7429,13 +7429,13 @@ stmts(#22583,1,#22566,-2,"{\n      ...  Ok\n  }")
 #22584=@"loc,{#10000},42,43,44,3"
 locations_default(#22584,#10000,42,43,44,3)
 hasLocation(#22583,#22584)
-stmtContainers(#22583,#22566)
+stmt_containers(#22583,#22566)
 #22585=*
 stmts(#22585,2,#22583,0,"x = y;")
 #22586=@"loc,{#10000},43,7,43,12"
 locations_default(#22586,#10000,43,7,43,12)
 hasLocation(#22585,#22586)
-stmtContainers(#22585,#22566)
+stmt_containers(#22585,#22566)
 #22587=*
 exprs(#22587,47,#22585,0,"x = y")
 #22588=@"loc,{#10000},43,7,43,11"
@@ -7462,7 +7462,7 @@ stmts(#22591,17,#22183,25,"functio ...  Ok\n  }")
 #22592=@"loc,{#10000},46,3,49,3"
 locations_default(#22592,#10000,46,3,49,3)
 hasLocation(#22591,#22592)
-stmtContainers(#22591,#22183)
+stmt_containers(#22591,#22183)
 #22593=*
 exprs(#22593,78,#22591,-1,"f2")
 hasLocation(#22593,#21057)
@@ -7551,7 +7551,7 @@ stmts(#22613,1,#22591,-2,"{\n      ...  Ok\n  }")
 #22614=@"loc,{#10000},46,70,49,3"
 locations_default(#22614,#10000,46,70,49,3)
 hasLocation(#22613,#22614)
-stmtContainers(#22613,#22591)
+stmt_containers(#22613,#22591)
 #22615=*
 scopes(#22615,4)
 scopenodes(#22613,#22615)
@@ -7563,7 +7563,7 @@ stmts(#22617,2,#22613,0,"x = y;")
 #22618=@"loc,{#10000},47,7,47,12"
 locations_default(#22618,#10000,47,7,47,12)
 hasLocation(#22617,#22618)
-stmtContainers(#22617,#22591)
+stmt_containers(#22617,#22591)
 #22619=*
 exprs(#22619,47,#22617,0,"x = y")
 #22620=@"loc,{#10000},47,7,47,11"
@@ -7590,7 +7590,7 @@ stmts(#22623,23,#22613,1,"let s2: string = y;")
 #22624=@"loc,{#10000},48,7,48,25"
 locations_default(#22624,#10000,48,7,48,25)
 hasLocation(#22623,#22624)
-stmtContainers(#22623,#22591)
+stmt_containers(#22623,#22591)
 #22625=*
 exprs(#22625,64,#22623,0,"s2: string = y")
 #22626=@"loc,{#10000},48,11,48,24"
@@ -7623,7 +7623,7 @@ stmts(#22630,35,#22183,26,"type Fu ... yof T];")
 #22631=@"loc,{#10000},51,3,51,97"
 locations_default(#22631,#10000,51,3,51,97)
 hasLocation(#22630,#22631)
-stmtContainers(#22630,#22183)
+stmt_containers(#22630,#22183)
 #22632=*
 typeexprs(#22632,1,#22630,0,"Functio ... tyNames")
 hasLocation(#22632,#21125)
@@ -7763,7 +7763,7 @@ stmts(#22661,35,#22183,27,"type Fu ... es<T>>;")
 #22662=@"loc,{#10000},52,3,52,65"
 locations_default(#22662,#10000,52,3,52,65)
 hasLocation(#22661,#22662)
-stmtContainers(#22661,#22183)
+stmt_containers(#22661,#22183)
 #22663=*
 typeexprs(#22663,1,#22661,0,"FunctionProperties")
 hasLocation(#22663,#21185)
@@ -7835,7 +7835,7 @@ stmts(#22676,35,#22183,28,"type No ... yof T];")
 #22677=@"loc,{#10000},54,3,54,100"
 locations_default(#22677,#10000,54,3,54,100)
 hasLocation(#22676,#22677)
-stmtContainers(#22676,#22183)
+stmt_containers(#22676,#22183)
 #22678=*
 typeexprs(#22678,1,#22676,0,"NonFunc ... tyNames")
 hasLocation(#22678,#21217)
@@ -7975,7 +7975,7 @@ stmts(#22707,35,#22183,29,"type No ... es<T>>;")
 #22708=@"loc,{#10000},55,3,55,71"
 locations_default(#22708,#10000,55,3,55,71)
 hasLocation(#22707,#22708)
-stmtContainers(#22707,#22183)
+stmt_containers(#22707,#22183)
 #22709=*
 typeexprs(#22709,1,#22707,0,"NonFunc ... perties")
 hasLocation(#22709,#21277)
@@ -8047,7 +8047,7 @@ stmts(#22722,34,#22183,30,"interfa ... id;\n  }")
 #22723=@"loc,{#10000},57,3,62,3"
 locations_default(#22723,#10000,57,3,62,3)
 hasLocation(#22722,#22723)
-stmtContainers(#22722,#22183)
+stmt_containers(#22722,#22183)
 #22724=*
 typeexprs(#22724,1,#22722,0,"Part")
 hasLocation(#22724,#21309)
@@ -8165,7 +8165,7 @@ stmts(#22749,35,#22183,31,"type T4 ... <Part>;")
 #22750=@"loc,{#10000},64,3,64,41"
 locations_default(#22750,#10000,64,3,64,41)
 hasLocation(#22749,#22750)
-stmtContainers(#22749,#22183)
+stmt_containers(#22749,#22183)
 #22751=*
 typeexprs(#22751,1,#22749,0,"T40")
 hasLocation(#22751,#21363)
@@ -8199,7 +8199,7 @@ stmts(#22756,35,#22183,32,"type T4 ... <Part>;")
 #22757=@"loc,{#10000},65,3,65,44"
 locations_default(#22757,#10000,65,3,65,44)
 hasLocation(#22756,#22757)
-stmtContainers(#22756,#22183)
+stmt_containers(#22756,#22183)
 #22758=*
 typeexprs(#22758,1,#22756,0,"T41")
 hasLocation(#22758,#21379)
@@ -8233,7 +8233,7 @@ stmts(#22763,35,#22183,33,"type T4 ... <Part>;")
 #22764=@"loc,{#10000},66,3,66,38"
 locations_default(#22764,#10000,66,3,66,38)
 hasLocation(#22763,#22764)
-stmtContainers(#22763,#22183)
+stmt_containers(#22763,#22183)
 #22765=*
 typeexprs(#22765,1,#22763,0,"T42")
 hasLocation(#22765,#21395)
@@ -8267,7 +8267,7 @@ stmts(#22770,35,#22183,34,"type T4 ... <Part>;")
 #22771=@"loc,{#10000},67,3,67,41"
 locations_default(#22771,#10000,67,3,67,41)
 hasLocation(#22770,#22771)
-stmtContainers(#22770,#22183)
+stmt_containers(#22770,#22183)
 #22772=*
 typeexprs(#22772,1,#22770,0,"T43")
 hasLocation(#22772,#21411)
@@ -8301,7 +8301,7 @@ stmts(#22777,35,#22183,35,"type Re ...  : any;")
 #22778=@"loc,{#10000},69,3,69,71"
 locations_default(#22778,#10000,69,3,69,71)
 hasLocation(#22777,#22778)
-stmtContainers(#22777,#22183)
+stmt_containers(#22777,#22183)
 #22779=*
 typeexprs(#22779,1,#22777,0,"ReturnType")
 hasLocation(#22779,#21427)
@@ -8421,7 +8421,7 @@ stmts(#22805,31,#20001,1,"namespa ...  any;\n}")
 #22806=@"loc,{#10000},72,1,101,1"
 locations_default(#22806,#10000,72,1,101,1)
 hasLocation(#22805,#22806)
-stmtContainers(#22805,#20001)
+stmt_containers(#22805,#20001)
 #22807=*
 exprs(#22807,78,#22805,-1,"ConditionalTypes2")
 hasLocation(#22807,#21476)
@@ -8471,7 +8471,7 @@ stmts(#22825,35,#22805,0,"type Un ... \n    T;")
 #22826=@"loc,{#10000},73,3,77,6"
 locations_default(#22826,#10000,73,3,77,6)
 hasLocation(#22825,#22826)
-stmtContainers(#22825,#22805)
+stmt_containers(#22825,#22805)
 #22827=*
 typeexprs(#22827,1,#22825,0,"Unpacked")
 hasLocation(#22827,#21482)
@@ -8710,7 +8710,7 @@ stmts(#22880,35,#22805,1,"type T0 ... tring>;")
 #22881=@"loc,{#10000},79,3,79,29"
 locations_default(#22881,#10000,79,3,79,29)
 hasLocation(#22880,#22881)
-stmtContainers(#22880,#22805)
+stmt_containers(#22880,#22805)
 #22882=*
 typeexprs(#22882,1,#22880,0,"T0")
 hasLocation(#22882,#21572)
@@ -8743,7 +8743,7 @@ stmts(#22887,35,#22805,2,"type T1 ... ing[]>;")
 #22888=@"loc,{#10000},80,3,80,31"
 locations_default(#22888,#10000,80,3,80,31)
 hasLocation(#22887,#22888)
-stmtContainers(#22887,#22805)
+stmt_containers(#22887,#22805)
 #22889=*
 typeexprs(#22889,1,#22887,0,"T1")
 hasLocation(#22889,#21588)
@@ -8783,7 +8783,7 @@ stmts(#22896,35,#22805,3,"type T2 ... tring>;")
 #22897=@"loc,{#10000},81,3,81,35"
 locations_default(#22897,#10000,81,3,81,35)
 hasLocation(#22896,#22897)
-stmtContainers(#22896,#22805)
+stmt_containers(#22896,#22805)
 #22898=*
 typeexprs(#22898,1,#22896,0,"T2")
 hasLocation(#22898,#21608)
@@ -8834,7 +8834,7 @@ stmts(#22908,35,#22805,4,"type T3 ... ring>>;")
 #22909=@"loc,{#10000},82,3,82,38"
 locations_default(#22909,#10000,82,3,82,38)
 hasLocation(#22908,#22909)
-stmtContainers(#22908,#22805)
+stmt_containers(#22908,#22805)
 #22910=*
 typeexprs(#22910,1,#22908,0,"T3")
 hasLocation(#22910,#21630)
@@ -8880,7 +8880,7 @@ stmts(#22918,35,#22805,5,"type T4 ... ng>[]>;")
 #22919=@"loc,{#10000},83,3,83,40"
 locations_default(#22919,#10000,83,3,83,40)
 hasLocation(#22918,#22919)
-stmtContainers(#22918,#22805)
+stmt_containers(#22918,#22805)
 #22920=*
 typeexprs(#22920,1,#22918,0,"T4")
 hasLocation(#22920,#21652)
@@ -8933,7 +8933,7 @@ stmts(#22930,35,#22805,6,"type T5 ... g>[]>>;")
 #22931=@"loc,{#10000},84,3,84,50"
 locations_default(#22931,#10000,84,3,84,50)
 hasLocation(#22930,#22931)
-stmtContainers(#22930,#22805)
+stmt_containers(#22930,#22805)
 #22932=*
 typeexprs(#22932,1,#22930,0,"T5")
 hasLocation(#22932,#21678)
@@ -9000,7 +9000,7 @@ stmts(#22945,35,#22805,7,"type Fo ...  never;")
 #22946=@"loc,{#10000},86,3,86,65"
 locations_default(#22946,#10000,86,3,86,65)
 hasLocation(#22945,#22946)
-stmtContainers(#22945,#22805)
+stmt_containers(#22945,#22805)
 #22947=*
 typeexprs(#22947,1,#22945,0,"Foo")
 hasLocation(#22947,#21710)
@@ -9124,7 +9124,7 @@ stmts(#22973,35,#22805,8,"type T1 ... ing }>;")
 #22974=@"loc,{#10000},87,3,87,43"
 locations_default(#22974,#10000,87,3,87,43)
 hasLocation(#22973,#22974)
-stmtContainers(#22973,#22805)
+stmt_containers(#22973,#22805)
 #22975=*
 typeexprs(#22975,1,#22973,0,"T10")
 hasLocation(#22975,#21758)
@@ -9194,7 +9194,7 @@ stmts(#22989,35,#22805,9,"type T1 ... ber }>;")
 #22990=@"loc,{#10000},88,3,88,43"
 locations_default(#22990,#10000,88,3,88,43)
 hasLocation(#22989,#22990)
-stmtContainers(#22989,#22805)
+stmt_containers(#22989,#22805)
 #22991=*
 typeexprs(#22991,1,#22989,0,"T11")
 hasLocation(#22991,#21790)
@@ -9264,7 +9264,7 @@ stmts(#23005,35,#22805,10,"type Ba ...  never;")
 #23006=@"loc,{#10000},90,3,90,91"
 locations_default(#23006,#10000,90,3,90,91)
 hasLocation(#23005,#23006)
-stmtContainers(#23005,#22805)
+stmt_containers(#23005,#22805)
 #23007=*
 typeexprs(#23007,1,#23005,0,"Bar")
 hasLocation(#23007,#21822)
@@ -9446,7 +9446,7 @@ stmts(#23049,35,#22805,11,"type T2 ... oid }>;")
 #23050=@"loc,{#10000},91,3,91,69"
 locations_default(#23050,#10000,91,3,91,69)
 hasLocation(#23049,#23050)
-stmtContainers(#23049,#22805)
+stmt_containers(#23049,#22805)
 #23051=*
 typeexprs(#23051,1,#23049,0,"T20")
 hasLocation(#23051,#21894)
@@ -9578,7 +9578,7 @@ stmts(#23081,35,#22805,12,"type T2 ... oid }>;")
 #23082=@"loc,{#10000},92,3,92,69"
 locations_default(#23082,#10000,92,3,92,69)
 hasLocation(#23081,#23082)
-stmtContainers(#23081,#22805)
+stmt_containers(#23081,#22805)
 #23083=*
 typeexprs(#23083,1,#23081,0,"T21")
 hasLocation(#23083,#21950)
@@ -9710,7 +9710,7 @@ stmts(#23113,17,#22805,13,"declare ... number;")
 #23114=@"loc,{#10000},94,3,94,42"
 locations_default(#23114,#10000,94,3,94,42)
 hasLocation(#23113,#23114)
-stmtContainers(#23113,#22805)
+stmt_containers(#23113,#22805)
 hasDeclareKeyword(#23113)
 #23115=*
 exprs(#23115,78,#23113,-1,"foo")
@@ -9750,7 +9750,7 @@ stmts(#23123,17,#22805,14,"declare ... string;")
 #23124=@"loc,{#10000},95,3,95,42"
 locations_default(#23124,#10000,95,3,95,42)
 hasLocation(#23123,#23124)
-stmtContainers(#23123,#22805)
+stmt_containers(#23123,#22805)
 hasDeclareKeyword(#23123)
 #23125=*
 exprs(#23125,78,#23123,-1,"foo")
@@ -9788,7 +9788,7 @@ stmts(#23132,17,#22805,15,"declare ... number;")
 #23133=@"loc,{#10000},96,3,96,60"
 locations_default(#23133,#10000,96,3,96,60)
 hasLocation(#23132,#23133)
-stmtContainers(#23132,#22805)
+stmt_containers(#23132,#22805)
 hasDeclareKeyword(#23132)
 #23134=*
 exprs(#23134,78,#23132,-1,"foo")
@@ -9848,7 +9848,7 @@ stmts(#23147,35,#22805,16,"type T3 ... f foo>;")
 #23148=@"loc,{#10000},97,3,97,36"
 locations_default(#23148,#10000,97,3,97,36)
 hasLocation(#23147,#23148)
-stmtContainers(#23147,#22805)
+stmt_containers(#23147,#22805)
 #23149=*
 typeexprs(#23149,1,#23147,0,"T30")
 hasLocation(#23149,#22080)
@@ -9889,7 +9889,7 @@ stmts(#23156,35,#22805,17,"type An ... => any;")
 #23157=@"loc,{#10000},99,3,99,45"
 locations_default(#23157,#10000,99,3,99,45)
 hasLocation(#23156,#23157)
-stmtContainers(#23156,#22805)
+stmt_containers(#23156,#22805)
 #23158=*
 typeexprs(#23158,1,#23156,0,"AnyFunction")
 hasLocation(#23158,#22098)
@@ -9946,7 +9946,7 @@ stmts(#23170,35,#22805,18,"type Re ...  : any;")
 #23171=@"loc,{#10000},100,3,100,91"
 locations_default(#23171,#10000,100,3,100,91)
 hasLocation(#23170,#23171)
-stmtContainers(#23170,#22805)
+stmt_containers(#23170,#22805)
 #23172=*
 typeexprs(#23172,1,#23170,0,"ReturnType")
 hasLocation(#23172,#22126)

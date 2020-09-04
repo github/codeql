@@ -49,7 +49,7 @@ local_type_names(#20015,"Point",#20000)
 #20016=*
 stmts(#20016,26,#20001,0,"class Point {}")
 hasLocation(#20016,#20003)
-stmtContainers(#20016,#20001)
+stmt_containers(#20016,#20001)
 #20017=*
 exprs(#20017,78,#20016,0,"Point")
 hasLocation(#20017,#20007)
@@ -88,7 +88,7 @@ isArgumentsObject(#20024)
 #20025=*
 stmts(#20025,1,#20022,-2,"{}")
 hasLocation(#20025,#20020)
-stmtContainers(#20025,#20022)
+stmt_containers(#20025,#20022)
 isMethod(#20019)
 #20026=*
 entry_cfg_node(#20026,#20001)

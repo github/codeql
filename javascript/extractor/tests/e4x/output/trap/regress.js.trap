@@ -53,7 +53,7 @@ hasLocation(#20001,#20016)
 #20017=*
 stmts(#20017,2,#20001,0,"[ x in y ]")
 hasLocation(#20017,#20003)
-stmtContainers(#20017,#20001)
+stmt_containers(#20017,#20001)
 #20018=*
 exprs(#20018,7,#20017,0,"[ x in y ]")
 hasLocation(#20018,#20003)

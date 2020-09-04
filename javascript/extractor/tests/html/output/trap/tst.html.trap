@@ -67,7 +67,7 @@ stmts(#20021,2,#20001,0,"alert("" ... rld!"");")
 #20022=@"loc,{#10000},6,13,6,35"
 locations_default(#20022,#10000,6,13,6,35)
 hasLocation(#20021,#20022)
-stmtContainers(#20021,#20001)
+stmt_containers(#20021,#20001)
 #20023=*
 exprs(#20023,13,#20021,0,"alert("" ... orld!"")")
 #20024=@"loc,{#10000},6,13,6,34"
@@ -127,7 +127,7 @@ hasLocation(#20032,#20034)
 #20038=*
 stmts(#20038,0,#20032,0,";")
 hasLocation(#20038,#20034)
-stmtContainers(#20038,#20032)
+stmt_containers(#20038,#20032)
 #20039=*
 entry_cfg_node(#20039,#20032)
 #20040=@"loc,{#10000},8,17,8,16"
@@ -190,7 +190,7 @@ hasLocation(#20042,#20044)
 #20061=*
 stmts(#20061,2,#20042,0,"void(alert('Nope!'))")
 hasLocation(#20061,#20044)
-stmtContainers(#20061,#20042)
+stmt_containers(#20061,#20042)
 #20062=*
 exprs(#20062,21,#20061,0,"void(alert('Nope!'))")
 hasLocation(#20062,#20044)
@@ -281,7 +281,7 @@ hasLocation(#20074,#20076)
 #20087=*
 stmts(#20087,2,#20074,0,"alert(' ... lick!')")
 hasLocation(#20087,#20076)
-stmtContainers(#20087,#20074)
+stmt_containers(#20087,#20074)
 #20088=*
 exprs(#20088,13,#20087,0,"alert(' ... lick!')")
 hasLocation(#20088,#20076)
@@ -351,7 +351,7 @@ hasLocation(#20096,#20098)
 #20107=*
 stmts(#20107,9,#20096,0,"return false;")
 hasLocation(#20107,#20098)
-stmtContainers(#20107,#20096)
+stmt_containers(#20107,#20096)
 #20108=*
 exprs(#20108,2,#20107,0,"false")
 hasLocation(#20108,#20102)

@@ -88,7 +88,7 @@ is_module(#20001)
 #20031=*
 stmts(#20031,2,#20001,0,"console ... rld!"");")
 hasLocation(#20031,#20003)
-stmtContainers(#20031,#20001)
+stmt_containers(#20031,#20001)
 #20032=*
 exprs(#20032,13,#20031,0,"console ... orld!"")")
 #20033=@"loc,{#10000},2,1,2,28"

@@ -121,7 +121,7 @@ local_type_names(#20041,"A",#20000)
 #20042=*
 stmts(#20042,26,#20001,0,"class A ... ;\n  }\n}")
 hasLocation(#20042,#20039)
-stmtContainers(#20042,#20001)
+stmt_containers(#20042,#20001)
 #20043=*
 exprs(#20043,78,#20042,0,"A")
 hasLocation(#20043,#20015)
@@ -164,13 +164,13 @@ stmts(#20052,1,#20048,-2,"{\n    r ... A"";\n  }")
 #20053=@"loc,{#10000},2,22,4,3"
 locations_default(#20053,#10000,2,22,4,3)
 hasLocation(#20052,#20053)
-stmtContainers(#20052,#20048)
+stmt_containers(#20052,#20048)
 #20054=*
 stmts(#20054,9,#20052,0,"return ""A"";")
 #20055=@"loc,{#10000},3,5,3,15"
 locations_default(#20055,#10000,3,5,3,15)
 hasLocation(#20054,#20055)
-stmtContainers(#20054,#20048)
+stmt_containers(#20054,#20048)
 #20056=*
 exprs(#20056,4,#20054,0,"""A""")
 hasLocation(#20056,#20031)
@@ -211,7 +211,7 @@ isArgumentsObject(#20064)
 #20065=*
 stmts(#20065,1,#20062,-2,"{}")
 hasLocation(#20065,#20060)
-stmtContainers(#20065,#20062)
+stmt_containers(#20065,#20062)
 isMethod(#20059)
 #20066=*
 entry_cfg_node(#20066,#20001)

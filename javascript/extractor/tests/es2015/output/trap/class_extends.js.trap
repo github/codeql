@@ -59,7 +59,7 @@ local_type_names(#20019,"Point",#20000)
 #20020=*
 stmts(#20020,26,#20001,0,"class P ... ject {}")
 hasLocation(#20020,#20003)
-stmtContainers(#20020,#20001)
+stmt_containers(#20020,#20001)
 #20021=*
 exprs(#20021,78,#20020,0,"Point")
 hasLocation(#20021,#20007)
@@ -116,11 +116,11 @@ hasRestParameter(#20028)
 #20033=*
 stmts(#20033,1,#20028,-2,"{ super(...args); }")
 hasLocation(#20033,#20026)
-stmtContainers(#20033,#20028)
+stmt_containers(#20033,#20028)
 #20034=*
 stmts(#20034,2,#20033,0,"super(...args);")
 hasLocation(#20034,#20026)
-stmtContainers(#20034,#20028)
+stmt_containers(#20034,#20028)
 #20035=*
 exprs(#20035,13,#20034,0,"super(...args)")
 hasLocation(#20035,#20026)

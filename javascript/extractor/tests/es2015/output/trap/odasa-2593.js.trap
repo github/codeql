@@ -112,7 +112,7 @@ variables(#20038,"test",#20000)
 #20039=*
 stmts(#20039,17,#20001,0,"functio ... nts);\n}")
 hasLocation(#20039,#20037)
-stmtContainers(#20039,#20001)
+stmt_containers(#20039,#20001)
 #20040=*
 exprs(#20040,78,#20039,-1,"test")
 hasLocation(#20040,#20013)
@@ -131,13 +131,13 @@ stmts(#20043,1,#20039,-2,"{\n    a ... nts);\n}")
 #20044=@"loc,{#10000},1,17,4,1"
 locations_default(#20044,#10000,1,17,4,1)
 hasLocation(#20043,#20044)
-stmtContainers(#20043,#20039)
+stmt_containers(#20043,#20039)
 #20045=*
 stmts(#20045,2,#20043,0,"arguments;")
 #20046=@"loc,{#10000},2,5,2,14"
 locations_default(#20046,#10000,2,5,2,14)
 hasLocation(#20045,#20046)
-stmtContainers(#20045,#20039)
+stmt_containers(#20045,#20039)
 #20047=*
 exprs(#20047,79,#20045,0,"arguments")
 hasLocation(#20047,#20021)
@@ -150,7 +150,7 @@ stmts(#20048,2,#20043,1,"let (arguments);")
 #20049=@"loc,{#10000},3,5,3,20"
 locations_default(#20049,#10000,3,5,3,20)
 hasLocation(#20048,#20049)
-stmtContainers(#20048,#20039)
+stmt_containers(#20048,#20039)
 #20050=*
 exprs(#20050,13,#20048,0,"let (arguments)")
 #20051=@"loc,{#10000},3,5,3,19"

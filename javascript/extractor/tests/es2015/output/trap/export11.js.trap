@@ -59,7 +59,7 @@ is_es2015_module(#20001)
 #20018=*
 stmts(#20018,29,#20001,0,"export  ... lass {}")
 hasLocation(#20018,#20003)
-stmtContainers(#20018,#20001)
+stmt_containers(#20018,#20001)
 #20019=*
 exprs(#20019,80,#20018,0,"class {}")
 #20020=@"loc,{#10000},1,16,1,23"
@@ -93,7 +93,7 @@ isArgumentsObject(#20026)
 #20027=*
 stmts(#20027,1,#20024,-2,"{}")
 hasLocation(#20027,#20022)
-stmtContainers(#20027,#20024)
+stmt_containers(#20027,#20024)
 isMethod(#20021)
 #20028=*
 entry_cfg_node(#20028,#20001)

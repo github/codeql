@@ -523,7 +523,7 @@ stmts(#20193,26,#20001,0,"class A ... nt {}\n}")
 #20194=@"loc,{#10000},6,1,9,1"
 locations_default(#20194,#10000,6,1,9,1)
 hasLocation(#20193,#20194)
-stmtContainers(#20193,#20001)
+stmt_containers(#20193,#20001)
 #20195=*
 exprs(#20195,78,#20193,0,"A")
 hasLocation(#20195,#20072)
@@ -577,7 +577,7 @@ stmts(#20208,1,#20204,-2,"{}")
 #20209=@"loc,{#10000},8,15,8,16"
 locations_default(#20209,#10000,8,15,8,16)
 hasLocation(#20208,#20209)
-stmtContainers(#20208,#20204)
+stmt_containers(#20208,#20204)
 isMethod(#20201)
 #20210=*
 properties(#20210,#20193,4,0,"constructor() {}")
@@ -604,14 +604,14 @@ isArgumentsObject(#20214)
 #20215=*
 stmts(#20215,1,#20199,-2,"{}")
 hasLocation(#20215,#20211)
-stmtContainers(#20215,#20199)
+stmt_containers(#20215,#20199)
 isMethod(#20210)
 #20216=*
 stmts(#20216,17,#20001,1,"functio ... :\n  }\n}")
 #20217=@"loc,{#10000},11,1,15,1"
 locations_default(#20217,#10000,11,1,15,1)
 hasLocation(#20216,#20217)
-stmtContainers(#20216,#20001)
+stmt_containers(#20216,#20001)
 #20218=*
 exprs(#20218,78,#20216,-1,"f")
 hasLocation(#20218,#20107)
@@ -630,13 +630,13 @@ stmts(#20221,1,#20216,-2,"{\n  swi ... :\n  }\n}")
 #20222=@"loc,{#10000},11,14,15,1"
 locations_default(#20222,#10000,11,14,15,1)
 hasLocation(#20221,#20222)
-stmtContainers(#20221,#20216)
+stmt_containers(#20221,#20216)
 #20223=*
 stmts(#20223,8,#20221,0,"switch( ... 2):\n  }")
 #20224=@"loc,{#10000},12,3,14,3"
 locations_default(#20224,#10000,12,3,14,3)
 hasLocation(#20223,#20224)
-stmtContainers(#20223,#20216)
+stmt_containers(#20223,#20216)
 #20225=*
 exprs(#20225,79,#20223,-1,"x")
 hasLocation(#20225,#20119)
@@ -651,7 +651,7 @@ stmts(#20227,19,#20223,0,"case (42):")
 #20228=@"loc,{#10000},13,3,13,12"
 locations_default(#20228,#10000,13,3,13,12)
 hasLocation(#20227,#20228)
-stmtContainers(#20227,#20216)
+stmt_containers(#20227,#20216)
 #20229=*
 exprs(#20229,63,#20227,-1,"(42)")
 #20230=@"loc,{#10000},13,8,13,11"

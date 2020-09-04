@@ -200,7 +200,7 @@ stmts(#20071,31,#20001,0,"namespa ... ;\n  }\n}")
 #20072=@"loc,{#10000},1,1,5,1"
 locations_default(#20072,#10000,1,1,5,1)
 hasLocation(#20071,#20072)
-stmtContainers(#20071,#20001)
+stmt_containers(#20071,#20001)
 #20073=*
 exprs(#20073,78,#20071,-1,"M")
 hasLocation(#20073,#20019)
@@ -222,13 +222,13 @@ stmts(#20077,30,#20071,0,"export  ... 42;\n  }")
 #20078=@"loc,{#10000},2,3,4,3"
 locations_default(#20078,#10000,2,3,4,3)
 hasLocation(#20077,#20078)
-stmtContainers(#20077,#20071)
+stmt_containers(#20077,#20071)
 #20079=*
 stmts(#20079,31,#20077,-1,"namespa ... 42;\n  }")
 #20080=@"loc,{#10000},2,10,4,3"
 locations_default(#20080,#10000,2,10,4,3)
 hasLocation(#20079,#20080)
-stmtContainers(#20079,#20071)
+stmt_containers(#20079,#20071)
 #20081=*
 exprs(#20081,78,#20079,-1,"N")
 hasLocation(#20081,#20027)
@@ -248,13 +248,13 @@ stmts(#20084,30,#20079,0,"export let x = 42;")
 #20085=@"loc,{#10000},3,5,3,22"
 locations_default(#20085,#10000,3,5,3,22)
 hasLocation(#20084,#20085)
-stmtContainers(#20084,#20079)
+stmt_containers(#20084,#20079)
 #20086=*
 stmts(#20086,23,#20084,-1,"let x = 42;")
 #20087=@"loc,{#10000},3,12,3,22"
 locations_default(#20087,#10000,3,12,3,22)
 hasLocation(#20086,#20087)
-stmtContainers(#20086,#20079)
+stmt_containers(#20086,#20079)
 #20088=*
 exprs(#20088,64,#20086,0,"x = 42")
 #20089=@"loc,{#10000},3,16,3,21"
@@ -280,7 +280,7 @@ isInstantiated(#20071)
 #20092=*
 stmts(#20092,32,#20001,1,"import x = M.N.x;")
 hasLocation(#20092,#20015)
-stmtContainers(#20092,#20001)
+stmt_containers(#20092,#20001)
 #20093=*
 exprs(#20093,78,#20092,0,"x")
 hasLocation(#20093,#20048)

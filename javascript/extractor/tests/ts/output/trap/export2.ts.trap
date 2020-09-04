@@ -54,7 +54,7 @@ is_es2015_module(#20001)
 #20016=*
 stmts(#20016,29,#20001,0,"export default 42;")
 hasLocation(#20016,#20003)
-stmtContainers(#20016,#20001)
+stmt_containers(#20016,#20001)
 #20017=*
 exprs(#20017,3,#20016,0,"42")
 hasLocation(#20017,#20009)

@@ -139,7 +139,7 @@ local_namespace_names(#20047,"importExport",#20041)
 #20048=*
 stmts(#20048,27,#20001,0,"import  ... where';")
 hasLocation(#20048,#20003)
-stmtContainers(#20048,#20001)
+stmt_containers(#20048,#20001)
 #20049=*
 exprs(#20049,4,#20048,-1,"'somewhere'")
 hasLocation(#20049,#20019)
@@ -171,13 +171,13 @@ namespacedecl(#20054,#20046)
 #20055=*
 stmts(#20055,30,#20001,1,"export  ... thingy;")
 hasLocation(#20055,#20007)
-stmtContainers(#20055,#20001)
+stmt_containers(#20055,#20001)
 #20056=*
 stmts(#20056,32,#20055,-1,"import  ... thingy;")
 #20057=@"loc,{#10000},3,8,3,46"
 locations_default(#20057,#10000,3,8,3,46)
 hasLocation(#20056,#20057)
-stmtContainers(#20056,#20001)
+stmt_containers(#20056,#20001)
 #20058=*
 exprs(#20058,78,#20056,0,"importExport")
 hasLocation(#20058,#20027)

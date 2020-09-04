@@ -175,7 +175,7 @@ stmts(#20061,26,#20001,0,"class F ... : int\n}")
 #20062=@"loc,{#10000},5,1,7,1"
 locations_default(#20062,#10000,5,1,7,1)
 hasLocation(#20061,#20062)
-stmtContainers(#20061,#20001)
+stmt_containers(#20061,#20001)
 #20063=*
 exprs(#20063,78,#20061,0,"Foo")
 hasLocation(#20063,#20043)
@@ -224,7 +224,7 @@ isArgumentsObject(#20073)
 #20074=*
 stmts(#20074,1,#20067,-2,"{}")
 hasLocation(#20074,#20070)
-stmtContainers(#20074,#20067)
+stmt_containers(#20074,#20067)
 isMethod(#20069)
 #20075=*
 entry_cfg_node(#20075,#20001)

@@ -182,7 +182,7 @@ stmts(#20066,26,#20001,0,"class C ... ) { }\n}")
 #20067=@"loc,{#10000},1,1,4,1"
 locations_default(#20067,#10000,1,1,4,1)
 hasLocation(#20066,#20067)
-stmtContainers(#20066,#20001)
+stmt_containers(#20066,#20001)
 #20068=*
 exprs(#20068,78,#20066,0,"C")
 hasLocation(#20068,#20013)
@@ -235,7 +235,7 @@ stmts(#20080,1,#20073,-2,"{ }")
 #20081=@"loc,{#10000},2,18,2,20"
 locations_default(#20081,#10000,2,18,2,20)
 hasLocation(#20080,#20081)
-stmtContainers(#20080,#20073)
+stmt_containers(#20080,#20073)
 isMethod(#20070)
 #20082=*
 properties(#20082,#20066,3,0,"set<T>(v: T) { }")
@@ -277,7 +277,7 @@ stmts(#20092,1,#20085,-2,"{ }")
 #20093=@"loc,{#10000},3,18,3,20"
 locations_default(#20093,#10000,3,18,3,20)
 hasLocation(#20092,#20093)
-stmtContainers(#20092,#20085)
+stmt_containers(#20092,#20085)
 isMethod(#20082)
 #20094=*
 properties(#20094,#20066,4,0,"constructor() {}")
@@ -305,7 +305,7 @@ isArgumentsObject(#20099)
 #20100=*
 stmts(#20100,1,#20097,-2,"{}")
 hasLocation(#20100,#20095)
-stmtContainers(#20100,#20097)
+stmt_containers(#20100,#20097)
 isMethod(#20094)
 #20101=*
 entry_cfg_node(#20101,#20001)

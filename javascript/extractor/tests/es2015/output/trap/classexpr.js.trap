@@ -55,7 +55,7 @@ hasLocation(#20001,#20003)
 #20018=*
 stmts(#20018,2,#20001,0,"(class Point {})")
 hasLocation(#20018,#20003)
-stmtContainers(#20018,#20001)
+stmt_containers(#20018,#20001)
 #20019=*
 exprs(#20019,63,#20018,0,"(class Point {})")
 hasLocation(#20019,#20003)
@@ -110,7 +110,7 @@ isArgumentsObject(#20031)
 #20032=*
 stmts(#20032,1,#20029,-2,"{}")
 hasLocation(#20032,#20027)
-stmtContainers(#20032,#20029)
+stmt_containers(#20032,#20029)
 isMethod(#20026)
 #20033=*
 entry_cfg_node(#20033,#20001)

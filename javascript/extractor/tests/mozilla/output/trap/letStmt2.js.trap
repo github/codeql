@@ -65,7 +65,7 @@ variables(#20021,"x",#20000)
 #20022=*
 stmts(#20022,24,#20001,0,"let (x = 0) 1")
 hasLocation(#20022,#20003)
-stmtContainers(#20022,#20001)
+stmt_containers(#20022,#20001)
 #20023=*
 scopes(#20023,4)
 scopenodes(#20022,#20023)
@@ -95,7 +95,7 @@ literals("0","0",#20028)
 #20029=*
 stmts(#20029,2,#20022,-1,"1")
 hasLocation(#20029,#20017)
-stmtContainers(#20029,#20001)
+stmt_containers(#20029,#20001)
 #20030=*
 exprs(#20030,3,#20029,0,"1")
 hasLocation(#20030,#20017)

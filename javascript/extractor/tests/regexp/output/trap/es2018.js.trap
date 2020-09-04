@@ -118,7 +118,7 @@ hasLocation(#20001,#20040)
 #20041=*
 stmts(#20041,2,#20001,0,"/^(?<ws ... <ws>$/;")
 hasLocation(#20041,#20003)
-stmtContainers(#20041,#20001)
+stmt_containers(#20041,#20001)
 #20042=*
 exprs(#20042,5,#20041,0,"/^(?<ws ... k<ws>$/")
 hasLocation(#20042,#20015)
@@ -180,7 +180,7 @@ hasLocation(#20059,#20060)
 #20061=*
 stmts(#20061,2,#20001,1,"/(?<=.)/;")
 hasLocation(#20061,#20005)
-stmtContainers(#20061,#20001)
+stmt_containers(#20061,#20001)
 #20062=*
 exprs(#20062,5,#20061,0,"/(?<=.)/")
 hasLocation(#20062,#20019)
@@ -200,7 +200,7 @@ hasLocation(#20065,#20066)
 #20067=*
 stmts(#20067,2,#20001,2,"/(?<!.)/;")
 hasLocation(#20067,#20007)
-stmtContainers(#20067,#20001)
+stmt_containers(#20067,#20001)
 #20068=*
 exprs(#20068,5,#20067,0,"/(?<!.)/")
 hasLocation(#20068,#20023)
@@ -220,7 +220,7 @@ hasLocation(#20071,#20072)
 #20073=*
 stmts(#20073,2,#20001,3,"/\p{Number}/u;")
 hasLocation(#20073,#20009)
-stmtContainers(#20073,#20001)
+stmt_containers(#20073,#20001)
 #20074=*
 exprs(#20074,5,#20073,0,"/\p{Number}/u")
 hasLocation(#20074,#20027)
@@ -236,7 +236,7 @@ unicodePropertyEscapeName(#20075,"Number")
 #20077=*
 stmts(#20077,2,#20001,4,"/\P{Script=Greek}/u;")
 hasLocation(#20077,#20011)
-stmtContainers(#20077,#20001)
+stmt_containers(#20077,#20001)
 #20078=*
 exprs(#20078,5,#20077,0,"/\P{Script=Greek}/u")
 hasLocation(#20078,#20031)
@@ -253,7 +253,7 @@ unicodePropertyEscapeValue(#20079,"Greek")
 #20081=*
 stmts(#20081,2,#20001,5,"/\k</;")
 hasLocation(#20081,#20013)
-stmtContainers(#20081,#20001)
+stmt_containers(#20081,#20001)
 #20082=*
 exprs(#20082,5,#20081,0,"/\k</")
 hasLocation(#20082,#20035)

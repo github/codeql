@@ -106,7 +106,7 @@ stmts(#20037,26,#20001,0,"abstrac ... F>\n  {}")
 #20038=@"loc,{#10000},1,1,2,4"
 locations_default(#20038,#10000,1,1,2,4)
 hasLocation(#20037,#20038)
-stmtContainers(#20037,#20001)
+stmt_containers(#20037,#20001)
 isAbstractClass(#20037)
 #20039=*
 exprs(#20039,78,#20037,0,"C")
@@ -183,11 +183,11 @@ hasRestParameter(#20050)
 #20055=*
 stmts(#20055,1,#20050,-2,"{ super(...args); }")
 hasLocation(#20055,#20048)
-stmtContainers(#20055,#20050)
+stmt_containers(#20055,#20050)
 #20056=*
 stmts(#20056,2,#20055,0,"super(...args);")
 hasLocation(#20056,#20048)
-stmtContainers(#20056,#20050)
+stmt_containers(#20056,#20050)
 #20057=*
 exprs(#20057,13,#20056,0,"super(...args)")
 hasLocation(#20057,#20048)

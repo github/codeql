@@ -315,7 +315,7 @@ stmts(#20117,17,#20001,0,"functio ... rn a;\n}")
 #20118=@"loc,{#10000},1,1,3,1"
 locations_default(#20118,#10000,1,1,3,1)
 hasLocation(#20117,#20118)
-stmtContainers(#20117,#20001)
+stmt_containers(#20117,#20001)
 #20119=*
 exprs(#20119,78,#20117,-1,"f")
 hasLocation(#20119,#20023)
@@ -342,13 +342,13 @@ stmts(#20124,1,#20117,-2,"{\n    return a;\n}")
 #20125=@"loc,{#10000},1,32,3,1"
 locations_default(#20125,#10000,1,32,3,1)
 hasLocation(#20124,#20125)
-stmtContainers(#20124,#20117)
+stmt_containers(#20124,#20117)
 #20126=*
 stmts(#20126,9,#20124,0,"return a;")
 #20127=@"loc,{#10000},2,5,2,13"
 locations_default(#20127,#10000,2,5,2,13)
 hasLocation(#20126,#20127)
-stmtContainers(#20126,#20117)
+stmt_containers(#20126,#20117)
 #20128=*
 exprs(#20128,79,#20126,0,"a")
 hasLocation(#20128,#20043)
@@ -361,7 +361,7 @@ stmts(#20129,17,#20001,1,"functio ... ecks {}")
 #20130=@"loc,{#10000},4,1,4,24"
 locations_default(#20130,#10000,4,1,4,24)
 hasLocation(#20129,#20130)
-stmtContainers(#20129,#20001)
+stmt_containers(#20129,#20001)
 #20131=*
 exprs(#20131,78,#20129,-1,"g")
 hasLocation(#20131,#20050)
@@ -380,19 +380,19 @@ stmts(#20134,1,#20129,-2,"{}")
 #20135=@"loc,{#10000},4,23,4,24"
 locations_default(#20135,#10000,4,23,4,24)
 hasLocation(#20134,#20135)
-stmtContainers(#20134,#20129)
+stmt_containers(#20134,#20129)
 #20136=*
 stmts(#20136,1,#20001,2,"{\n    return b;\n}")
 #20137=@"loc,{#10000},4,26,6,1"
 locations_default(#20137,#10000,4,26,6,1)
 hasLocation(#20136,#20137)
-stmtContainers(#20136,#20001)
+stmt_containers(#20136,#20001)
 #20138=*
 stmts(#20138,9,#20136,0,"return b;")
 #20139=@"loc,{#10000},5,5,5,13"
 locations_default(#20139,#10000,5,5,5,13)
 hasLocation(#20138,#20139)
-stmtContainers(#20138,#20001)
+stmt_containers(#20138,#20001)
 #20140=*
 exprs(#20140,79,#20138,0,"b")
 hasLocation(#20140,#20070)
@@ -405,7 +405,7 @@ bind(#20140,#20141)
 #20142=*
 stmts(#20142,2,#20001,3,"(c): bo ... s => c;")
 hasLocation(#20142,#20017)
-stmtContainers(#20142,#20001)
+stmt_containers(#20142,#20001)
 #20143=*
 exprs(#20143,65,#20142,0,"(c): bo ... ks => c")
 #20144=@"loc,{#10000},8,1,8,25"
@@ -434,7 +434,7 @@ bind(#20148,#20146)
 #20149=*
 stmts(#20149,2,#20001,4,"(d): %checks => d;")
 hasLocation(#20149,#20019)
-stmtContainers(#20149,#20001)
+stmt_containers(#20149,#20001)
 #20150=*
 exprs(#20150,65,#20149,0,"(d): %checks => d")
 #20151=@"loc,{#10000},9,1,9,17"

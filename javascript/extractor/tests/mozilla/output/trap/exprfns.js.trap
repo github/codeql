@@ -207,7 +207,7 @@ variables(#20074,"f",#20000)
 #20075=*
 stmts(#20075,17,#20001,0,"functio ... esult"")")
 hasLocation(#20075,#20003)
-stmtContainers(#20075,#20001)
+stmt_containers(#20075,#20001)
 #20076=*
 exprs(#20076,78,#20075,-1,"f")
 hasLocation(#20076,#20019)
@@ -251,7 +251,7 @@ stmts(#20086,2,#20001,1,"functio ... )\n  }\n}")
 #20087=@"loc,{#10000},3,1,7,1"
 locations_default(#20087,#10000,3,1,7,1)
 hasLocation(#20086,#20087)
-stmtContainers(#20086,#20001)
+stmt_containers(#20086,#20001)
 #20088=*
 exprs(#20088,9,#20086,0,"functio ... )\n  }\n}")
 hasLocation(#20088,#20087)
@@ -279,13 +279,13 @@ stmts(#20094,1,#20088,-2,"{\n  if  ... )\n  }\n}")
 #20095=@"loc,{#10000},3,13,7,1"
 locations_default(#20095,#10000,3,13,7,1)
 hasLocation(#20094,#20095)
-stmtContainers(#20094,#20088)
+stmt_containers(#20094,#20088)
 #20096=*
 stmts(#20096,3,#20094,0,"if (b)  ... t"")\n  }")
 #20097=@"loc,{#10000},4,3,6,3"
 locations_default(#20097,#10000,4,3,6,3)
 hasLocation(#20096,#20097)
-stmtContainers(#20096,#20088)
+stmt_containers(#20096,#20088)
 #20098=*
 exprs(#20098,79,#20096,0,"b")
 hasLocation(#20098,#20047)
@@ -298,13 +298,13 @@ stmts(#20099,1,#20096,1,"{\n    f ... t"")\n  }")
 #20100=@"loc,{#10000},4,10,6,3"
 locations_default(#20100,#10000,4,10,6,3)
 hasLocation(#20099,#20100)
-stmtContainers(#20099,#20088)
+stmt_containers(#20099,#20088)
 #20101=*
 stmts(#20101,17,#20099,0,"functio ... esult"")")
 #20102=@"loc,{#10000},5,5,5,33"
 locations_default(#20102,#10000,5,5,5,33)
 hasLocation(#20101,#20102)
-stmtContainers(#20101,#20088)
+stmt_containers(#20101,#20088)
 #20103=*
 exprs(#20103,78,#20101,-1,"g")
 hasLocation(#20103,#20055)

@@ -65,7 +65,7 @@ hasLocation(#20001,#20003)
 #20022=*
 stmts(#20022,2,#20001,0,"!class  ... s B {};")
 hasLocation(#20022,#20003)
-stmtContainers(#20022,#20001)
+stmt_containers(#20022,#20001)
 #20023=*
 exprs(#20023,18,#20022,0,"!class  ... ds B {}")
 #20024=@"loc,{#10000},1,1,1,21"
@@ -140,11 +140,11 @@ hasRestParameter(#20036)
 #20041=*
 stmts(#20041,1,#20036,-2,"{ super(...args); }")
 hasLocation(#20041,#20034)
-stmtContainers(#20041,#20036)
+stmt_containers(#20041,#20036)
 #20042=*
 stmts(#20042,2,#20041,0,"super(...args);")
 hasLocation(#20042,#20034)
-stmtContainers(#20042,#20036)
+stmt_containers(#20042,#20036)
 #20043=*
 exprs(#20043,13,#20042,0,"super(...args)")
 hasLocation(#20043,#20034)

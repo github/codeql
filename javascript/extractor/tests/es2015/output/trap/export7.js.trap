@@ -86,7 +86,7 @@ is_es2015_module(#20001)
 #20029=*
 stmts(#20029,30,#20001,0,"export  ...  'foo';")
 hasLocation(#20029,#20003)
-stmtContainers(#20029,#20001)
+stmt_containers(#20029,#20001)
 #20030=*
 exprs(#20030,4,#20029,-2,"'foo'")
 hasLocation(#20030,#20023)

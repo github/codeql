@@ -296,7 +296,7 @@ variables(#20110,"item",#20000)
 #20111=*
 stmts(#20111,18,#20001,0,"var sum = 0;")
 hasLocation(#20111,#20005)
-stmtContainers(#20111,#20001)
+stmt_containers(#20111,#20001)
 #20112=*
 exprs(#20112,64,#20111,0,"sum = 0")
 #20113=@"loc,{#10000},1,5,1,11"
@@ -320,7 +320,7 @@ literals("0","0",#20115)
 #20116=*
 stmts(#20116,18,#20001,1,"var obj ... p3: 8};")
 hasLocation(#20116,#20007)
-stmtContainers(#20116,#20001)
+stmt_containers(#20116,#20001)
 #20117=*
 exprs(#20117,64,#20116,0,"obj = { ... op3: 8}")
 #20118=@"loc,{#10000},2,5,2,41"
@@ -398,7 +398,7 @@ stmts(#20134,25,#20001,2,"for eac ... item;\n}")
 #20135=@"loc,{#10000},4,1,6,1"
 locations_default(#20135,#10000,4,1,6,1)
 hasLocation(#20134,#20135)
-stmtContainers(#20134,#20001)
+stmt_containers(#20134,#20001)
 #20136=*
 exprs(#20136,79,#20134,1,"obj")
 hasLocation(#20136,#20077)
@@ -411,7 +411,7 @@ stmts(#20137,18,#20134,0,"var item")
 #20138=@"loc,{#10000},4,11,4,18"
 locations_default(#20138,#10000,4,11,4,18)
 hasLocation(#20137,#20138)
-stmtContainers(#20137,#20001)
+stmt_containers(#20137,#20001)
 #20139=*
 exprs(#20139,64,#20137,0,"item")
 hasLocation(#20139,#20073)
@@ -429,13 +429,13 @@ stmts(#20141,1,#20134,2,"{\n  sum += item;\n}")
 #20142=@"loc,{#10000},4,28,6,1"
 locations_default(#20142,#10000,4,28,6,1)
 hasLocation(#20141,#20142)
-stmtContainers(#20141,#20001)
+stmt_containers(#20141,#20001)
 #20143=*
 stmts(#20143,2,#20141,0,"sum += item;")
 #20144=@"loc,{#10000},5,3,5,14"
 locations_default(#20144,#10000,5,3,5,14)
 hasLocation(#20143,#20144)
-stmtContainers(#20143,#20001)
+stmt_containers(#20143,#20001)
 #20145=*
 exprs(#20145,48,#20143,0,"sum += item")
 #20146=@"loc,{#10000},5,3,5,13"
@@ -462,7 +462,7 @@ stmts(#20149,2,#20001,3,"console.log(sum);")
 #20150=@"loc,{#10000},8,1,8,17"
 locations_default(#20150,#10000,8,1,8,17)
 hasLocation(#20149,#20150)
-stmtContainers(#20149,#20001)
+stmt_containers(#20149,#20001)
 #20151=*
 exprs(#20151,13,#20149,0,"console.log(sum)")
 #20152=@"loc,{#10000},8,1,8,16"

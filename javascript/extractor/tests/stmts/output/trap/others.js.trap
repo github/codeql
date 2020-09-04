@@ -124,7 +124,7 @@ stmts(#20044,7,#20001,0,"with(a) {\n}")
 #20045=@"loc,{#10000},1,1,2,1"
 locations_default(#20045,#10000,1,1,2,1)
 hasLocation(#20044,#20045)
-stmtContainers(#20044,#20001)
+stmt_containers(#20044,#20001)
 #20046=*
 exprs(#20046,79,#20044,0,"a")
 hasLocation(#20046,#20015)
@@ -139,15 +139,15 @@ stmts(#20048,1,#20044,1,"{\n}")
 #20049=@"loc,{#10000},1,9,2,1"
 locations_default(#20049,#10000,1,9,2,1)
 hasLocation(#20048,#20049)
-stmtContainers(#20048,#20001)
+stmt_containers(#20048,#20001)
 #20050=*
 stmts(#20050,16,#20001,1,"debugger;")
 hasLocation(#20050,#20007)
-stmtContainers(#20050,#20001)
+stmt_containers(#20050,#20001)
 #20051=*
 stmts(#20051,18,#20001,2,"var x = 23, y;")
 hasLocation(#20051,#20009)
-stmtContainers(#20051,#20001)
+stmt_containers(#20051,#20001)
 #20052=*
 exprs(#20052,64,#20051,0,"x = 23")
 #20053=@"loc,{#10000},4,5,4,10"

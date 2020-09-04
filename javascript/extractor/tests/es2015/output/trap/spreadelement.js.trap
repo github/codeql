@@ -103,7 +103,7 @@ hasLocation(#20001,#20036)
 #20037=*
 stmts(#20037,2,#20001,0,"[a, ...as];")
 hasLocation(#20037,#20003)
-stmtContainers(#20037,#20001)
+stmt_containers(#20037,#20001)
 #20038=*
 exprs(#20038,7,#20037,0,"[a, ...as]")
 #20039=@"loc,{#10000},1,1,1,10"
@@ -140,7 +140,7 @@ arraySize(#20038,2)
 #20046=*
 stmts(#20046,2,#20001,1,"new Array(...elts);")
 hasLocation(#20046,#20005)
-stmtContainers(#20046,#20001)
+stmt_containers(#20046,#20001)
 #20047=*
 exprs(#20047,12,#20046,0,"new Array(...elts)")
 #20048=@"loc,{#10000},2,1,2,18"

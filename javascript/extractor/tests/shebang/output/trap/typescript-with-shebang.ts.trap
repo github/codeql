@@ -89,7 +89,7 @@ stmts(#20029,34,#20001,0,"#!/usr/ ... mber;\n}")
 #20030=@"loc,{#10000},1,1,4,1"
 locations_default(#20030,#10000,1,1,4,1)
 hasLocation(#20029,#20030)
-stmtContainers(#20029,#20001)
+stmt_containers(#20029,#20001)
 #20031=*
 typeexprs(#20031,1,#20029,0,"Foo")
 hasLocation(#20031,#20013)

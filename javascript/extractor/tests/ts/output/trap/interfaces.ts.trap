@@ -266,7 +266,7 @@ stmts(#20095,34,#20001,0,"interfa ... mber;\n}")
 #20096=@"loc,{#10000},1,1,5,1"
 locations_default(#20096,#10000,1,1,5,1)
 hasLocation(#20095,#20096)
-stmtContainers(#20095,#20001)
+stmt_containers(#20095,#20001)
 #20097=*
 typeexprs(#20097,1,#20095,0,"MyInterface")
 hasLocation(#20097,#20027)
@@ -365,7 +365,7 @@ stmts(#20118,31,#20001,1,"namespa ... ;\n  }\n}")
 #20119=@"loc,{#10000},7,1,11,1"
 locations_default(#20119,#10000,7,1,11,1)
 hasLocation(#20118,#20119)
-stmtContainers(#20118,#20001)
+stmt_containers(#20118,#20001)
 #20120=*
 exprs(#20120,78,#20118,-1,"Foo")
 hasLocation(#20120,#20068)
@@ -384,13 +384,13 @@ stmts(#20123,30,#20118,0,"export  ... ();\n  }")
 #20124=@"loc,{#10000},8,3,10,3"
 locations_default(#20124,#10000,8,3,10,3)
 hasLocation(#20123,#20124)
-stmtContainers(#20123,#20118)
+stmt_containers(#20123,#20118)
 #20125=*
 stmts(#20125,34,#20123,-1,"interfa ... ();\n  }")
 #20126=@"loc,{#10000},8,10,10,3"
 locations_default(#20126,#10000,8,10,10,3)
 hasLocation(#20125,#20126)
-stmtContainers(#20125,#20118)
+stmt_containers(#20125,#20118)
 #20127=*
 typeexprs(#20127,1,#20125,0,"I")
 hasLocation(#20127,#20076)

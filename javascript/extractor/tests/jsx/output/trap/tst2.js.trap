@@ -65,7 +65,7 @@ hasLocation(#20001,#20003)
 #20022=*
 stmts(#20022,2,#20001,0,"<a>/b&gt;</a>")
 hasLocation(#20022,#20003)
-stmtContainers(#20022,#20001)
+stmt_containers(#20022,#20001)
 #20023=*
 exprs(#20023,89,#20022,0,"<a>/b&gt;</a>")
 hasLocation(#20023,#20003)

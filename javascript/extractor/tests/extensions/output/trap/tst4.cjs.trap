@@ -88,7 +88,7 @@ is_module(#20001)
 #20032=*
 stmts(#20032,2,#20001,0,"console ... onJS"");")
 hasLocation(#20032,#20003)
-stmtContainers(#20032,#20001)
+stmt_containers(#20032,#20001)
 #20033=*
 exprs(#20033,13,#20032,0,"console ... monJS"")")
 #20034=@"loc,{#10000},1,1,1,29"

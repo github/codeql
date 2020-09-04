@@ -198,7 +198,7 @@ variables(#20071,"r",#20000)
 #20072=*
 stmts(#20072,18,#20001,0,"var r;")
 hasLocation(#20072,#20003)
-stmtContainers(#20072,#20001)
+stmt_containers(#20072,#20001)
 #20073=*
 exprs(#20073,64,#20072,0,"r")
 hasLocation(#20073,#20019)
@@ -216,7 +216,7 @@ stmts(#20075,2,#20001,1,"reportC ... n 1""\n);")
 #20076=@"loc,{#10000},3,1,7,2"
 locations_default(#20076,#10000,3,1,7,2)
 hasLocation(#20075,#20076)
-stmtContainers(#20075,#20001)
+stmt_containers(#20075,#20001)
 #20077=*
 exprs(#20077,13,#20075,0,"reportC ... on 1""\n)")
 #20078=@"loc,{#10000},3,1,7,1"

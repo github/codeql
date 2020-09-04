@@ -60,7 +60,7 @@ hasLocation(#20001,#20003)
 #20020=*
 stmts(#20020,2,#20001,0,"void(alert(""Nope!""))")
 hasLocation(#20020,#20003)
-stmtContainers(#20020,#20001)
+stmt_containers(#20020,#20001)
 #20021=*
 exprs(#20021,21,#20020,0,"void(alert(""Nope!""))")
 hasLocation(#20021,#20003)

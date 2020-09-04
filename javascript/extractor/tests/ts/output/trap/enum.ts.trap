@@ -574,7 +574,7 @@ local_namespace_names(#20220,"StringLiteralEnumMember",#20000)
 #20221=*
 stmts(#20221,36,#20001,0,"enum Co ...  blue }")
 hasLocation(#20221,#20003)
-stmtContainers(#20221,#20001)
+stmt_containers(#20221,#20001)
 #20222=*
 exprs(#20222,78,#20221,0,"Color")
 hasLocation(#20222,#20041)
@@ -644,7 +644,7 @@ typedecl(#20237,#20229)
 #20238=*
 stmts(#20238,36,#20001,1,"declare ...  a, b }")
 hasLocation(#20238,#20007)
-stmtContainers(#20238,#20001)
+stmt_containers(#20238,#20001)
 #20239=*
 exprs(#20239,78,#20238,0,"DeclaredEnum")
 hasLocation(#20239,#20065)
@@ -692,7 +692,7 @@ hasDeclareKeyword(#20238)
 #20249=*
 stmts(#20249,36,#20001,2,"const e ... +2, b }")
 hasLocation(#20249,#20009)
-stmtContainers(#20249,#20001)
+stmt_containers(#20249,#20001)
 #20250=*
 exprs(#20250,78,#20249,0,"ConstEnum")
 hasLocation(#20250,#20081)
@@ -761,7 +761,7 @@ isConstEnum(#20249)
 #20265=*
 stmts(#20265,36,#20001,3,"declare ...  a, b }")
 hasLocation(#20265,#20011)
-stmtContainers(#20265,#20001)
+stmt_containers(#20265,#20001)
 #20266=*
 exprs(#20266,78,#20265,0,"DeclaredConstEnum")
 hasLocation(#20266,#20107)
@@ -810,7 +810,7 @@ hasDeclareKeyword(#20265)
 #20276=*
 stmts(#20276,17,#20001,4,"functio ... rn x; }")
 hasLocation(#20276,#20015)
-stmtContainers(#20276,#20001)
+stmt_containers(#20276,#20001)
 #20277=*
 exprs(#20277,78,#20276,-1,"foo")
 hasLocation(#20277,#20121)
@@ -837,13 +837,13 @@ stmts(#20282,1,#20276,-2,"{ return x; }")
 #20283=@"loc,{#10000},7,17,7,29"
 locations_default(#20283,#10000,7,17,7,29)
 hasLocation(#20282,#20283)
-stmtContainers(#20282,#20276)
+stmt_containers(#20282,#20276)
 #20284=*
 stmts(#20284,9,#20282,0,"return x;")
 #20285=@"loc,{#10000},7,19,7,27"
 locations_default(#20285,#10000,7,19,7,27)
 hasLocation(#20284,#20285)
-stmtContainers(#20284,#20276)
+stmt_containers(#20284,#20276)
 #20286=*
 exprs(#20286,79,#20284,0,"x")
 hasLocation(#20286,#20133)
@@ -856,7 +856,7 @@ stmts(#20287,36,#20001,5,"enum Co ...  + 2)\n}")
 #20288=@"loc,{#10000},9,1,11,1"
 locations_default(#20288,#10000,9,1,11,1)
 hasLocation(#20287,#20288)
-stmtContainers(#20287,#20001)
+stmt_containers(#20287,#20001)
 #20289=*
 exprs(#20289,78,#20287,0,"ComplexInitializer")
 hasLocation(#20289,#20141)
@@ -925,7 +925,7 @@ stmts(#20303,36,#20001,6,"enum St ... b = a\n}")
 #20304=@"loc,{#10000},13,1,16,1"
 locations_default(#20304,#10000,13,1,16,1)
 hasLocation(#20303,#20304)
-stmtContainers(#20303,#20001)
+stmt_containers(#20303,#20001)
 #20305=*
 exprs(#20305,78,#20303,0,"StringL ... mMember")
 hasLocation(#20305,#20164)
@@ -989,7 +989,7 @@ bind(#20318,#20307)
 #20319=*
 stmts(#20319,18,#20001,7,"var x : ... r.a = 2")
 hasLocation(#20319,#20037)
-stmtContainers(#20319,#20001)
+stmt_containers(#20319,#20001)
 #20320=*
 exprs(#20320,64,#20319,0,"x : Str ... r.a = 2")
 #20321=@"loc,{#10000},18,5,18,37"

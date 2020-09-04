@@ -591,7 +591,7 @@ local_type_names(#20223,"C",#20000)
 #20224=*
 stmts(#20224,18,#20001,0,"declare var A : any;")
 hasLocation(#20224,#20003)
-stmtContainers(#20224,#20001)
+stmt_containers(#20224,#20001)
 hasDeclareKeyword(#20224)
 #20225=*
 exprs(#20225,64,#20224,0,"A : any")
@@ -618,7 +618,7 @@ literals("any","any",#20229)
 #20230=*
 stmts(#20230,18,#20001,1,"declare var B : any;")
 hasLocation(#20230,#20005)
-stmtContainers(#20230,#20001)
+stmt_containers(#20230,#20001)
 hasDeclareKeyword(#20230)
 #20231=*
 exprs(#20231,64,#20230,0,"B : any")
@@ -645,7 +645,7 @@ literals("any","any",#20235)
 #20236=*
 stmts(#20236,18,#20001,2,"declare var C : any;")
 hasLocation(#20236,#20007)
-stmtContainers(#20236,#20001)
+stmt_containers(#20236,#20001)
 hasDeclareKeyword(#20236)
 #20237=*
 exprs(#20237,64,#20236,0,"C : any")
@@ -672,7 +672,7 @@ stmts(#20241,26,#20001,3,"class C ... c) {}\n}")
 #20242=@"loc,{#10000},5,1,15,1"
 locations_default(#20242,#10000,5,1,15,1)
 hasLocation(#20241,#20242)
-stmtContainers(#20241,#20001)
+stmt_containers(#20241,#20001)
 #20243=*
 exprs(#20243,78,#20241,0,"C")
 hasLocation(#20243,#20071)
@@ -721,7 +721,7 @@ stmts(#20253,1,#20248,-2,"{}")
 #20254=@"loc,{#10000},6,12,6,13"
 locations_default(#20254,#10000,6,12,6,13)
 hasLocation(#20253,#20254)
-stmtContainers(#20253,#20248)
+stmt_containers(#20253,#20248)
 isMethod(#20245)
 #20255=*
 properties(#20255,#20241,3,0,"m2(@A a) {}")
@@ -775,7 +775,7 @@ stmts(#20267,1,#20258,-2,"{}")
 #20268=@"loc,{#10000},7,12,7,13"
 locations_default(#20268,#10000,7,12,7,13)
 hasLocation(#20267,#20268)
-stmtContainers(#20267,#20258)
+stmt_containers(#20267,#20258)
 isMethod(#20255)
 #20269=*
 properties(#20269,#20241,4,0,"m3(@A @B ab) {}")
@@ -843,7 +843,7 @@ stmts(#20285,1,#20272,-2,"{}")
 #20286=@"loc,{#10000},8,16,8,17"
 locations_default(#20286,#10000,8,16,8,17)
 hasLocation(#20285,#20286)
-stmtContainers(#20285,#20272)
+stmt_containers(#20285,#20272)
 isMethod(#20269)
 #20287=*
 properties(#20287,#20241,5,0,"m4(none, @A a) {}")
@@ -905,7 +905,7 @@ stmts(#20301,1,#20290,-2,"{}")
 #20302=@"loc,{#10000},10,18,10,19"
 locations_default(#20302,#10000,10,18,10,19)
 hasLocation(#20301,#20302)
-stmtContainers(#20301,#20290)
+stmt_containers(#20301,#20290)
 isMethod(#20287)
 #20303=*
 properties(#20303,#20241,6,0,"m5(none ...  ab) {}")
@@ -981,7 +981,7 @@ stmts(#20321,1,#20306,-2,"{}")
 #20322=@"loc,{#10000},11,22,11,23"
 locations_default(#20322,#10000,11,22,11,23)
 hasLocation(#20321,#20322)
-stmtContainers(#20321,#20306)
+stmt_containers(#20321,#20306)
 isMethod(#20303)
 #20323=*
 properties(#20323,#20241,7,0,"m6(@A a, @B b) {}")
@@ -1059,7 +1059,7 @@ stmts(#20341,1,#20326,-2,"{}")
 #20342=@"loc,{#10000},13,18,13,19"
 locations_default(#20342,#10000,13,18,13,19)
 hasLocation(#20341,#20342)
-stmtContainers(#20341,#20326)
+stmt_containers(#20341,#20326)
 isMethod(#20323)
 #20343=*
 properties(#20343,#20241,8,0,"m7(@A a ...  bc) {}")
@@ -1151,7 +1151,7 @@ stmts(#20365,1,#20346,-2,"{}")
 #20366=@"loc,{#10000},14,22,14,23"
 locations_default(#20366,#10000,14,22,14,23)
 hasLocation(#20365,#20366)
-stmtContainers(#20365,#20346)
+stmt_containers(#20365,#20346)
 isMethod(#20343)
 #20367=*
 properties(#20367,#20241,9,0,"constructor() {}")
@@ -1179,7 +1179,7 @@ isArgumentsObject(#20372)
 #20373=*
 stmts(#20373,1,#20370,-2,"{}")
 hasLocation(#20373,#20368)
-stmtContainers(#20373,#20370)
+stmt_containers(#20373,#20370)
 isMethod(#20367)
 #20374=*
 entry_cfg_node(#20374,#20001)

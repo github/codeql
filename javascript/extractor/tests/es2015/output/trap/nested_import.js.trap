@@ -198,7 +198,7 @@ local_namespace_names(#20069,"x",#20064)
 #20071=*
 stmts(#20071,27,#20001,0,"import  ... om 'm';")
 hasLocation(#20071,#20003)
-stmtContainers(#20071,#20001)
+stmt_containers(#20071,#20001)
 #20072=*
 exprs(#20072,4,#20071,-1,"'m'")
 hasLocation(#20072,#20023)
@@ -236,7 +236,7 @@ stmts(#20078,3,#20001,1,"if (!x) ...  = y;\n}")
 #20079=@"loc,{#10000},2,1,5,1"
 locations_default(#20079,#10000,2,1,5,1)
 hasLocation(#20078,#20079)
-stmtContainers(#20078,#20001)
+stmt_containers(#20078,#20001)
 #20080=*
 exprs(#20080,18,#20078,0,"!x")
 #20081=@"loc,{#10000},2,5,2,6"
@@ -256,7 +256,7 @@ stmts(#20083,1,#20078,1,"{\n  imp ...  = y;\n}")
 #20084=@"loc,{#10000},2,9,5,1"
 locations_default(#20084,#10000,2,9,5,1)
 hasLocation(#20083,#20084)
-stmtContainers(#20083,#20001)
+stmt_containers(#20083,#20001)
 #20085=*
 scopes(#20085,4)
 scopenodes(#20083,#20085)
@@ -272,7 +272,7 @@ stmts(#20089,27,#20083,0,"import  ... om 'm';")
 #20090=@"loc,{#10000},3,3,3,24"
 locations_default(#20090,#10000,3,3,3,24)
 hasLocation(#20089,#20090)
-stmtContainers(#20089,#20001)
+stmt_containers(#20089,#20001)
 #20091=*
 exprs(#20091,4,#20089,-1,"'m'")
 hasLocation(#20091,#20049)
@@ -310,7 +310,7 @@ stmts(#20097,2,#20083,1,"x = y;")
 #20098=@"loc,{#10000},4,3,4,8"
 locations_default(#20098,#10000,4,3,4,8)
 hasLocation(#20097,#20098)
-stmtContainers(#20097,#20001)
+stmt_containers(#20097,#20001)
 #20099=*
 exprs(#20099,47,#20097,0,"x = y")
 #20100=@"loc,{#10000},4,3,4,7"

@@ -212,7 +212,7 @@ hasLocation(#20001,#20073)
 #20074=*
 stmts(#20074,2,#20001,0,"'\ud800';")
 hasLocation(#20074,#20010)
-stmtContainers(#20074,#20001)
+stmt_containers(#20074,#20001)
 #20075=*
 exprs(#20075,4,#20074,0,"'\ud800'")
 hasLocation(#20075,#20032)
@@ -228,7 +228,7 @@ regexpConstValue(#20076,"?")
 #20078=*
 stmts(#20078,2,#20001,1,"'foo\ud800';")
 hasLocation(#20078,#20012)
-stmtContainers(#20078,#20001)
+stmt_containers(#20078,#20001)
 #20079=*
 exprs(#20079,4,#20078,0,"'foo\ud800'")
 hasLocation(#20079,#20036)
@@ -244,7 +244,7 @@ regexpConstValue(#20080,"foo?")
 #20082=*
 stmts(#20082,2,#20001,2,"'\ud800bar';")
 hasLocation(#20082,#20014)
-stmtContainers(#20082,#20001)
+stmt_containers(#20082,#20001)
 #20083=*
 exprs(#20083,4,#20082,0,"'\ud800bar'")
 hasLocation(#20083,#20040)
@@ -260,7 +260,7 @@ regexpConstValue(#20084,"?bar")
 #20086=*
 stmts(#20086,2,#20001,3,"'foo\ud800bar';")
 hasLocation(#20086,#20016)
-stmtContainers(#20086,#20001)
+stmt_containers(#20086,#20001)
 #20087=*
 exprs(#20087,4,#20086,0,"'foo\ud800bar'")
 hasLocation(#20087,#20044)
@@ -276,7 +276,7 @@ regexpConstValue(#20088,"foo?bar")
 #20090=*
 stmts(#20090,2,#20001,4,"/\uD800/;")
 hasLocation(#20090,#20018)
-stmtContainers(#20090,#20001)
+stmt_containers(#20090,#20001)
 #20091=*
 exprs(#20091,5,#20090,0,"/\uD800/")
 hasLocation(#20091,#20048)
@@ -292,7 +292,7 @@ regexpConstValue(#20092,"?")
 #20094=*
 stmts(#20094,2,#20001,5,"/foo\ud800/;")
 hasLocation(#20094,#20020)
-stmtContainers(#20094,#20001)
+stmt_containers(#20094,#20001)
 #20095=*
 exprs(#20095,5,#20094,0,"/foo\ud800/")
 hasLocation(#20095,#20052)
@@ -319,7 +319,7 @@ regexpConstValue(#20100,"?")
 #20102=*
 stmts(#20102,2,#20001,6,"/\ud800bar/;")
 hasLocation(#20102,#20022)
-stmtContainers(#20102,#20001)
+stmt_containers(#20102,#20001)
 #20103=*
 exprs(#20103,5,#20102,0,"/\ud800bar/")
 hasLocation(#20103,#20056)
@@ -346,7 +346,7 @@ regexpConstValue(#20108,"bar")
 #20110=*
 stmts(#20110,2,#20001,7,"/foo\ud800bar/;")
 hasLocation(#20110,#20024)
-stmtContainers(#20110,#20001)
+stmt_containers(#20110,#20001)
 #20111=*
 exprs(#20111,5,#20110,0,"/foo\ud800bar/")
 hasLocation(#20111,#20060)
@@ -379,7 +379,7 @@ regexpConstValue(#20118,"bar")
 #20120=*
 stmts(#20120,2,#20001,8,"'\udc00\ud800';")
 hasLocation(#20120,#20027)
-stmtContainers(#20120,#20001)
+stmt_containers(#20120,#20001)
 #20121=*
 exprs(#20121,4,#20120,0,"'\udc00\ud800'")
 hasLocation(#20121,#20064)
@@ -395,7 +395,7 @@ regexpConstValue(#20122,"??")
 #20124=*
 stmts(#20124,2,#20001,9,"'\uD834\uDF06';")
 hasLocation(#20124,#20030)
-stmtContainers(#20124,#20001)
+stmt_containers(#20124,#20001)
 #20125=*
 exprs(#20125,4,#20124,0,"'\uD834\uDF06'")
 hasLocation(#20125,#20068)

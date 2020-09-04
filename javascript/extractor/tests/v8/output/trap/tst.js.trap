@@ -108,7 +108,7 @@ hasLocation(#20001,#20038)
 #20039=*
 stmts(#20039,2,#20001,0,"%CheckI ... ping();")
 hasLocation(#20039,#20003)
-stmtContainers(#20039,#20001)
+stmt_containers(#20039,#20001)
 #20040=*
 exprs(#20040,13,#20039,0,"%CheckI ... pping()")
 #20041=@"loc,{#10000},1,1,1,23"
@@ -130,7 +130,7 @@ bind(#20042,#20044)
 #20045=*
 stmts(#20045,2,#20001,1,"a%%NumberAdd(1, 2);")
 hasLocation(#20045,#20005)
-stmtContainers(#20045,#20001)
+stmt_containers(#20045,#20001)
 #20046=*
 exprs(#20046,38,#20045,0,"a%%NumberAdd(1, 2)")
 #20047=@"loc,{#10000},2,1,2,18"

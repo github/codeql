@@ -288,7 +288,7 @@ variables(#20109,"f",#20000)
 #20110=*
 stmts(#20110,17,#20001,0,"function f(p: T) {}")
 hasLocation(#20110,#20003)
-stmtContainers(#20110,#20001)
+stmt_containers(#20110,#20001)
 #20111=*
 exprs(#20111,78,#20110,-1,"f")
 hasLocation(#20111,#20013)
@@ -317,11 +317,11 @@ stmts(#20117,1,#20110,-2,"{}")
 #20118=@"loc,{#10000},1,18,1,19"
 locations_default(#20118,#10000,1,18,1,19)
 hasLocation(#20117,#20118)
-stmtContainers(#20117,#20110)
+stmt_containers(#20117,#20110)
 #20119=*
 stmts(#20119,17,#20001,1,"functio ... T[]) {}")
 hasLocation(#20119,#20005)
-stmtContainers(#20119,#20001)
+stmt_containers(#20119,#20001)
 #20120=*
 exprs(#20120,78,#20119,-1,"f")
 hasLocation(#20120,#20031)
@@ -350,11 +350,11 @@ stmts(#20126,1,#20119,-2,"{}")
 #20127=@"loc,{#10000},2,20,2,21"
 locations_default(#20127,#10000,2,20,2,21)
 hasLocation(#20126,#20127)
-stmtContainers(#20126,#20119)
+stmt_containers(#20126,#20119)
 #20128=*
 stmts(#20128,17,#20001,2,"functio ... ][]) {}")
 hasLocation(#20128,#20007)
-stmtContainers(#20128,#20001)
+stmt_containers(#20128,#20001)
 #20129=*
 exprs(#20129,78,#20128,-1,"f")
 hasLocation(#20129,#20053)
@@ -383,11 +383,11 @@ stmts(#20135,1,#20128,-2,"{}")
 #20136=@"loc,{#10000},3,22,3,23"
 locations_default(#20136,#10000,3,22,3,23)
 hasLocation(#20135,#20136)
-stmtContainers(#20135,#20128)
+stmt_containers(#20135,#20128)
 #20137=*
 stmts(#20137,17,#20001,3,"functio ... ][]) {}")
 hasLocation(#20137,#20009)
-stmtContainers(#20137,#20001)
+stmt_containers(#20137,#20001)
 #20138=*
 exprs(#20138,78,#20137,-1,"f")
 hasLocation(#20138,#20079)
@@ -416,7 +416,7 @@ stmts(#20144,1,#20137,-2,"{}")
 #20145=@"loc,{#10000},4,24,4,25"
 locations_default(#20145,#10000,4,24,4,25)
 hasLocation(#20144,#20145)
-stmtContainers(#20144,#20137)
+stmt_containers(#20144,#20137)
 #20146=*
 entry_cfg_node(#20146,#20001)
 #20147=@"loc,{#10000},1,1,1,0"

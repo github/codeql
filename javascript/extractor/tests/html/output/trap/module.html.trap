@@ -119,7 +119,7 @@ stmts(#20039,27,#20001,0,"import  ...  'bar';")
 #20040=@"loc,{#10000},5,13,5,34"
 locations_default(#20040,#10000,5,13,5,34)
 hasLocation(#20039,#20040)
-stmtContainers(#20039,#20001)
+stmt_containers(#20039,#20001)
 #20041=*
 exprs(#20041,4,#20039,-1,"'bar'")
 hasLocation(#20041,#20017)
@@ -151,7 +151,7 @@ stmts(#20046,2,#20001,1,"foo.baz();")
 #20047=@"loc,{#10000},6,13,6,22"
 locations_default(#20047,#10000,6,13,6,22)
 hasLocation(#20046,#20047)
-stmtContainers(#20046,#20001)
+stmt_containers(#20046,#20001)
 #20048=*
 exprs(#20048,13,#20046,0,"foo.baz()")
 #20049=@"loc,{#10000},6,13,6,21"

@@ -701,7 +701,7 @@ local_type_names(#20254,"C",#20000)
 #20255=*
 stmts(#20255,17,#20001,0,"declare ... on f();")
 hasLocation(#20255,#20020)
-stmtContainers(#20255,#20001)
+stmt_containers(#20255,#20001)
 hasDeclareKeyword(#20255)
 #20256=*
 exprs(#20256,78,#20255,-1,"f")
@@ -723,7 +723,7 @@ stmts(#20260,26,#20001,1,"abstrac ... mber;\n}")
 #20261=@"loc,{#10000},4,1,15,1"
 locations_default(#20261,#10000,4,1,15,1)
 hasLocation(#20260,#20261)
-stmtContainers(#20260,#20001)
+stmt_containers(#20260,#20001)
 isAbstractClass(#20260)
 #20262=*
 exprs(#20262,78,#20260,0,"C")
@@ -887,7 +887,7 @@ stmts(#20299,1,#20293,-2,"{}")
 #20300=@"loc,{#10000},11,13,11,14"
 locations_default(#20300,#10000,11,13,11,14)
 hasLocation(#20299,#20300)
-stmtContainers(#20299,#20293)
+stmt_containers(#20299,#20293)
 isMethod(#20290)
 #20301=*
 properties(#20301,#20260,6,8,"abstract x: number;")
@@ -932,14 +932,14 @@ isArgumentsObject(#20310)
 #20311=*
 stmts(#20311,1,#20303,-2,"{}")
 hasLocation(#20311,#20307)
-stmtContainers(#20311,#20303)
+stmt_containers(#20311,#20303)
 isMethod(#20306)
 #20312=*
 stmts(#20312,26,#20001,2,"declare ... mber;\n}")
 #20313=@"loc,{#10000},18,1,29,1"
 locations_default(#20313,#10000,18,1,29,1)
 hasLocation(#20312,#20313)
-stmtContainers(#20312,#20001)
+stmt_containers(#20312,#20001)
 hasDeclareKeyword(#20312)
 isAbstractClass(#20312)
 #20314=*
@@ -1105,7 +1105,7 @@ stmts(#20352,1,#20346,-2,"{}")
 #20353=@"loc,{#10000},25,13,25,14"
 locations_default(#20353,#10000,25,13,25,14)
 hasLocation(#20352,#20353)
-stmtContainers(#20352,#20346)
+stmt_containers(#20352,#20346)
 isMethod(#20343)
 #20354=*
 properties(#20354,#20312,6,8,"abstract x: number;")
@@ -1150,7 +1150,7 @@ isArgumentsObject(#20363)
 #20364=*
 stmts(#20364,1,#20356,-2,"{}")
 hasLocation(#20364,#20360)
-stmtContainers(#20364,#20356)
+stmt_containers(#20364,#20356)
 isMethod(#20359)
 #20365=*
 entry_cfg_node(#20365,#20001)

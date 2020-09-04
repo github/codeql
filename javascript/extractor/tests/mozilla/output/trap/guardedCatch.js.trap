@@ -302,7 +302,7 @@ variables(#20110,"f",#20000)
 #20111=*
 stmts(#20111,17,#20001,0,"functio ... );\n\t}\n}")
 hasLocation(#20111,#20109)
-stmtContainers(#20111,#20001)
+stmt_containers(#20111,#20001)
 #20112=*
 exprs(#20112,78,#20111,-1,"f")
 hasLocation(#20112,#20023)
@@ -329,25 +329,25 @@ stmts(#20117,1,#20111,-2,"{\n\ttry  ... );\n\t}\n}")
 #20118=@"loc,{#10000},1,15,9,1"
 locations_default(#20118,#10000,1,15,9,1)
 hasLocation(#20117,#20118)
-stmtContainers(#20117,#20111)
+stmt_containers(#20117,#20111)
 #20119=*
 stmts(#20119,11,#20117,0,"try {\n\t ... !"");\n\t}")
 #20120=@"loc,{#10000},2,2,8,2"
 locations_default(#20120,#10000,2,2,8,2)
 hasLocation(#20119,#20120)
-stmtContainers(#20119,#20111)
+stmt_containers(#20119,#20111)
 #20121=*
 stmts(#20121,1,#20119,0,"{\n\t\tg();\n\t}")
 #20122=@"loc,{#10000},2,6,4,2"
 locations_default(#20122,#10000,2,6,4,2)
 hasLocation(#20121,#20122)
-stmtContainers(#20121,#20111)
+stmt_containers(#20121,#20111)
 #20123=*
 stmts(#20123,2,#20121,0,"g();")
 #20124=@"loc,{#10000},3,3,3,6"
 locations_default(#20124,#10000,3,3,3,6)
 hasLocation(#20123,#20124)
-stmtContainers(#20123,#20111)
+stmt_containers(#20123,#20111)
 #20125=*
 exprs(#20125,13,#20123,0,"g()")
 #20126=@"loc,{#10000},3,3,3,5"
@@ -367,7 +367,7 @@ stmts(#20128,20,#20119,1,"catch ( ... !"");\n\t}")
 #20129=@"loc,{#10000},4,4,6,2"
 locations_default(#20129,#10000,4,4,6,2)
 hasLocation(#20128,#20129)
-stmtContainers(#20128,#20111)
+stmt_containers(#20128,#20111)
 #20130=*
 scopes(#20130,2)
 scopenodes(#20128,#20130)
@@ -409,13 +409,13 @@ stmts(#20138,1,#20128,1,"{\n\t\tcon ... !"");\n\t}")
 #20139=@"loc,{#10000},4,36,6,2"
 locations_default(#20139,#10000,4,36,6,2)
 hasLocation(#20138,#20139)
-stmtContainers(#20138,#20111)
+stmt_containers(#20138,#20111)
 #20140=*
 stmts(#20140,2,#20138,0,"console ... ror!"");")
 #20141=@"loc,{#10000},5,3,5,24"
 locations_default(#20141,#10000,5,3,5,24)
 hasLocation(#20140,#20141)
-stmtContainers(#20140,#20111)
+stmt_containers(#20140,#20111)
 #20142=*
 exprs(#20142,13,#20140,0,"console ... rror!"")")
 #20143=@"loc,{#10000},5,3,5,23"
@@ -462,7 +462,7 @@ stmts(#20152,20,#20119,2,"catch ( ... !"");\n\t}")
 #20153=@"loc,{#10000},6,4,8,2"
 locations_default(#20153,#10000,6,4,8,2)
 hasLocation(#20152,#20153)
-stmtContainers(#20152,#20111)
+stmt_containers(#20152,#20111)
 #20154=*
 scopes(#20154,2)
 scopenodes(#20152,#20154)
@@ -481,13 +481,13 @@ stmts(#20157,1,#20152,1,"{\n\t\tcon ... !"");\n\t}")
 #20158=@"loc,{#10000},6,14,8,2"
 locations_default(#20158,#10000,6,14,8,2)
 hasLocation(#20157,#20158)
-stmtContainers(#20157,#20111)
+stmt_containers(#20157,#20111)
 #20159=*
 stmts(#20159,2,#20157,0,"console ... lse!"");")
 #20160=@"loc,{#10000},7,3,7,33"
 locations_default(#20160,#10000,7,3,7,33)
 hasLocation(#20159,#20160)
-stmtContainers(#20159,#20111)
+stmt_containers(#20159,#20111)
 #20161=*
 exprs(#20161,13,#20159,0,"console ... else!"")")
 #20162=@"loc,{#10000},7,3,7,32"

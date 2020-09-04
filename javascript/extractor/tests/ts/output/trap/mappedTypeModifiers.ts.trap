@@ -696,7 +696,7 @@ stmts(#20265,31,#20001,0,"namespa ... ing }\n}")
 #20266=@"loc,{#10000},1,1,11,1"
 locations_default(#20266,#10000,1,1,11,1)
 hasLocation(#20265,#20266)
-stmtContainers(#20265,#20001)
+stmt_containers(#20265,#20001)
 #20267=*
 exprs(#20267,78,#20265,-1,"MappedTypeModifiers")
 hasLocation(#20267,#20037)
@@ -725,7 +725,7 @@ stmts(#20275,35,#20265,0,"type Mu ... T[P] };")
 #20276=@"loc,{#10000},2,3,2,65"
 locations_default(#20276,#10000,2,3,2,65)
 hasLocation(#20275,#20276)
-stmtContainers(#20275,#20265)
+stmt_containers(#20275,#20265)
 #20277=*
 typeexprs(#20277,1,#20275,0,"MutableRequired")
 hasLocation(#20277,#20043)
@@ -818,7 +818,7 @@ stmts(#20296,35,#20265,1,"type Re ... T[P] };")
 #20297=@"loc,{#10000},3,3,3,65"
 locations_default(#20297,#10000,3,3,3,65)
 hasLocation(#20296,#20297)
-stmtContainers(#20296,#20265)
+stmt_containers(#20296,#20265)
 #20298=*
 typeexprs(#20298,1,#20296,0,"ReadonlyPartial")
 hasLocation(#20298,#20091)
@@ -911,7 +911,7 @@ stmts(#20317,35,#20265,2,"type Re ... T[P] };")
 #20318=@"loc,{#10000},5,3,5,64"
 locations_default(#20318,#10000,5,3,5,64)
 hasLocation(#20317,#20318)
-stmtContainers(#20317,#20265)
+stmt_containers(#20317,#20265)
 #20319=*
 typeexprs(#20319,1,#20317,0,"ReadonlyPartial2")
 hasLocation(#20319,#20139)
@@ -1004,7 +1004,7 @@ stmts(#20338,35,#20265,3,"type Re ... T[P] };")
 #20339=@"loc,{#10000},7,3,7,48"
 locations_default(#20339,#10000,7,3,7,48)
 hasLocation(#20338,#20339)
-stmtContainers(#20338,#20265)
+stmt_containers(#20338,#20265)
 #20340=*
 typeexprs(#20340,1,#20338,0,"Required")
 hasLocation(#20340,#20183)
@@ -1097,7 +1097,7 @@ stmts(#20359,35,#20265,4,"type Fo ... ring };")
 #20360=@"loc,{#10000},9,3,9,28"
 locations_default(#20360,#10000,9,3,9,28)
 hasLocation(#20359,#20360)
-stmtContainers(#20359,#20265)
+stmt_containers(#20359,#20265)
 #20361=*
 typeexprs(#20361,1,#20359,0,"Foo")
 hasLocation(#20361,#20227)
@@ -1136,7 +1136,7 @@ stmts(#20368,35,#20265,5,"type Ba ... d<Foo>;")
 #20369=@"loc,{#10000},10,3,10,27"
 locations_default(#20369,#10000,10,3,10,27)
 hasLocation(#20368,#20369)
-stmtContainers(#20368,#20265)
+stmt_containers(#20368,#20265)
 #20370=*
 typeexprs(#20370,1,#20368,0,"Bar")
 hasLocation(#20370,#20247)

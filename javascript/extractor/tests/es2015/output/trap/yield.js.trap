@@ -170,7 +170,7 @@ variables(#20060,"foo",#20000)
 #20061=*
 stmts(#20061,17,#20001,0,"functio ... ex++;\n}")
 hasLocation(#20061,#20059)
-stmtContainers(#20061,#20001)
+stmt_containers(#20061,#20001)
 #20062=*
 exprs(#20062,78,#20061,-1,"foo")
 hasLocation(#20062,#20019)
@@ -192,13 +192,13 @@ stmts(#20066,1,#20061,-2,"{\n  var ... ex++;\n}")
 #20067=@"loc,{#10000},1,16,5,1"
 locations_default(#20067,#10000,1,16,5,1)
 hasLocation(#20066,#20067)
-stmtContainers(#20066,#20061)
+stmt_containers(#20066,#20061)
 #20068=*
 stmts(#20068,18,#20066,0,"var index = 0;")
 #20069=@"loc,{#10000},2,3,2,16"
 locations_default(#20069,#10000,2,3,2,16)
 hasLocation(#20068,#20069)
-stmtContainers(#20068,#20061)
+stmt_containers(#20068,#20061)
 #20070=*
 exprs(#20070,64,#20068,0,"index = 0")
 #20071=@"loc,{#10000},2,7,2,15"
@@ -224,7 +224,7 @@ stmts(#20074,12,#20066,1,"while(i ... ndex++;")
 #20075=@"loc,{#10000},3,3,4,18"
 locations_default(#20075,#10000,3,3,4,18)
 hasLocation(#20074,#20075)
-stmtContainers(#20074,#20061)
+stmt_containers(#20074,#20061)
 #20076=*
 exprs(#20076,28,#20074,0,"index <= 2")
 #20077=@"loc,{#10000},3,9,3,18"
@@ -250,7 +250,7 @@ stmts(#20080,2,#20074,1,"yield index++;")
 #20081=@"loc,{#10000},4,5,4,18"
 locations_default(#20081,#10000,4,5,4,18)
 hasLocation(#20080,#20081)
-stmtContainers(#20080,#20061)
+stmt_containers(#20080,#20061)
 #20082=*
 exprs(#20082,69,#20080,0,"yield index++")
 #20083=@"loc,{#10000},4,5,4,17"

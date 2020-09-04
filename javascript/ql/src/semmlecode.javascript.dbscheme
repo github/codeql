@@ -139,7 +139,7 @@ stmts (unique int id: @stmt,
        int idx: int ref,
        varchar(900) tostring: string ref);
 
-stmtContainers (unique int stmt: @stmt ref,
+stmt_containers (unique int stmt: @stmt ref,
        int container: @stmt_container ref);
        
 jumpTargets (unique int jump: @stmt ref,

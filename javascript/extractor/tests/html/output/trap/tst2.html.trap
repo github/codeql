@@ -42,7 +42,7 @@ variables(#20012,"hello",#20000)
 #20013=*
 stmts(#20013,18,#20001,0,"var hello;")
 hasLocation(#20013,#20003)
-stmtContainers(#20013,#20001)
+stmt_containers(#20013,#20001)
 #20014=*
 exprs(#20014,64,#20013,0,"hello")
 hasLocation(#20014,#20007)
@@ -101,7 +101,7 @@ variables(#20030,"world",#20000)
 #20031=*
 stmts(#20031,18,#20019,0,"var world;")
 hasLocation(#20031,#20021)
-stmtContainers(#20031,#20019)
+stmt_containers(#20031,#20019)
 #20032=*
 exprs(#20032,64,#20031,0,"world")
 hasLocation(#20032,#20025)
@@ -183,7 +183,7 @@ stmts(#20055,18,#20037,0,"var inAModule;")
 #20056=@"loc,{#10000},5,7,5,20"
 locations_default(#20056,#10000,5,7,5,20)
 hasLocation(#20055,#20056)
-stmtContainers(#20055,#20037)
+stmt_containers(#20055,#20037)
 #20057=*
 exprs(#20057,64,#20055,0,"inAModule")
 hasLocation(#20057,#20047)
@@ -275,7 +275,7 @@ stmts(#20083,27,#20061,0,"import f from ""f""")
 #20084=@"loc,{#10000},8,7,8,23"
 locations_default(#20084,#10000,8,7,8,23)
 hasLocation(#20083,#20084)
-stmtContainers(#20083,#20061)
+stmt_containers(#20083,#20061)
 #20085=*
 exprs(#20085,4,#20083,-1,"""f""")
 hasLocation(#20085,#20075)

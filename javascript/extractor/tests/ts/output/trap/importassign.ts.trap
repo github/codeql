@@ -83,7 +83,7 @@ local_namespace_names(#20026,"x",#20023)
 #20027=*
 stmts(#20027,32,#20001,0,"import  ... sign"");")
 hasLocation(#20027,#20003)
-stmtContainers(#20027,#20001)
+stmt_containers(#20027,#20001)
 #20028=*
 exprs(#20028,78,#20027,0,"x")
 hasLocation(#20028,#20007)

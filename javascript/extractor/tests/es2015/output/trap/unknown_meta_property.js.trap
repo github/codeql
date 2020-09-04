@@ -90,7 +90,7 @@ variables(#20030,"g",#20000)
 #20031=*
 stmts(#20031,17,#20001,0,"functio ... urce;\n}")
 hasLocation(#20031,#20029)
-stmtContainers(#20031,#20001)
+stmt_containers(#20031,#20001)
 #20032=*
 exprs(#20032,78,#20031,-1,"g")
 hasLocation(#20032,#20011)
@@ -109,13 +109,13 @@ stmts(#20035,1,#20031,-2,"{\n  new.source;\n}")
 #20036=@"loc,{#10000},1,14,3,1"
 locations_default(#20036,#10000,1,14,3,1)
 hasLocation(#20035,#20036)
-stmtContainers(#20035,#20031)
+stmt_containers(#20035,#20031)
 #20037=*
 stmts(#20037,2,#20035,0,"new.source;")
 #20038=@"loc,{#10000},2,3,2,13"
 locations_default(#20038,#10000,2,3,2,13)
 hasLocation(#20037,#20038)
-stmtContainers(#20037,#20031)
+stmt_containers(#20037,#20031)
 #20039=*
 exprs(#20039,82,#20037,0,"new.source")
 #20040=@"loc,{#10000},2,3,2,12"

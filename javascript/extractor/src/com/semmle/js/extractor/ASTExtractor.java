@@ -416,7 +416,7 @@ public class ASTExtractor {
       String tostring = lexicalExtractor.mkToString(nd);
       trapwriter.addTuple("stmts", lbl, kind, c.parent, c.childIndex, tostring);
       locationManager.emitNodeLocation(nd, lbl);
-      trapwriter.addTuple("stmtContainers", lbl, contextManager.getCurrentContainerKey());
+      trapwriter.addTuple("stmt_containers", lbl, contextManager.getCurrentContainerKey());
       contextManager.setCurrentStatement(nd);
       return lbl;
     }

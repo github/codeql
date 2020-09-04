@@ -11,13 +11,13 @@ cached
 private StmtContainer getStmtContainer(NodeInStmtContainer node) {
   exprContainers(node, result)
   or
-  stmtContainers(node, result)
+  stmt_containers(node, result)
   or
   // Properties
   exists(ASTNode parent | properties(node, parent, _, _, _) |
     exprContainers(parent, result)
     or
-    stmtContainers(parent, result)
+    stmt_containers(parent, result)
   )
   or
   // Synthetic CFG nodes
@@ -31,7 +31,7 @@ private StmtContainer getStmtContainer(NodeInStmtContainer node) {
   )
   or
   // JSDoc type annotations
-  stmtContainers(node.(JSDocTypeExpr).getEnclosingStmt(), result)
+  stmt_containers(node.(JSDocTypeExpr).getEnclosingStmt(), result)
 }
 
 /**

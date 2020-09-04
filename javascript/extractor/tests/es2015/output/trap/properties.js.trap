@@ -226,7 +226,7 @@ variables(#20082,"o",#20000)
 #20083=*
 stmts(#20083,18,#20001,0,"var x = ... \n    };")
 hasLocation(#20083,#20080)
-stmtContainers(#20083,#20001)
+stmt_containers(#20083,#20001)
 #20084=*
 exprs(#20084,64,#20083,0,"x = 42")
 #20085=@"loc,{#10000},1,5,1,10"
@@ -374,13 +374,13 @@ stmts(#20118,1,#20114,-2,"{ return 56; }")
 #20119=@"loc,{#10000},5,13,5,26"
 locations_default(#20119,#10000,5,13,5,26)
 hasLocation(#20118,#20119)
-stmtContainers(#20118,#20114)
+stmt_containers(#20118,#20114)
 #20120=*
 stmts(#20120,9,#20118,0,"return 56;")
 #20121=@"loc,{#10000},5,15,5,24"
 locations_default(#20121,#10000,5,15,5,24)
 hasLocation(#20120,#20121)
-stmtContainers(#20120,#20114)
+stmt_containers(#20120,#20114)
 #20122=*
 exprs(#20122,3,#20120,0,"56")
 hasLocation(#20122,#20069)

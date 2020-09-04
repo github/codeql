@@ -233,7 +233,7 @@ stmts(#20082,37,#20001,0,"declare ...  = M;\n}")
 #20083=@"loc,{#10000},1,1,9,1"
 locations_default(#20083,#10000,1,1,9,1)
 hasLocation(#20082,#20083)
-stmtContainers(#20082,#20001)
+stmt_containers(#20082,#20001)
 hasDeclareKeyword(#20082)
 #20084=*
 exprs(#20084,4,#20082,-1,"""X""")
@@ -260,7 +260,7 @@ stmts(#20090,31,#20082,0,"module  ...  {}\n  }")
 #20091=@"loc,{#10000},2,3,4,3"
 locations_default(#20091,#10000,2,3,4,3)
 hasLocation(#20090,#20091)
-stmtContainers(#20090,#20082)
+stmt_containers(#20090,#20082)
 #20092=*
 exprs(#20092,78,#20090,-1,"M")
 hasLocation(#20092,#20031)
@@ -279,13 +279,13 @@ stmts(#20095,30,#20090,0,"export  ... ce I {}")
 #20096=@"loc,{#10000},3,5,3,25"
 locations_default(#20096,#10000,3,5,3,25)
 hasLocation(#20095,#20096)
-stmtContainers(#20095,#20090)
+stmt_containers(#20095,#20090)
 #20097=*
 stmts(#20097,34,#20095,-1,"interface I {}")
 #20098=@"loc,{#10000},3,12,3,25"
 locations_default(#20098,#10000,3,12,3,25)
 hasLocation(#20097,#20098)
-stmtContainers(#20097,#20090)
+stmt_containers(#20097,#20090)
 #20099=*
 typeexprs(#20099,1,#20097,0,"I")
 hasLocation(#20099,#20039)
@@ -298,7 +298,7 @@ stmts(#20100,34,#20082,1,"interfa ... .I;\n  }")
 #20101=@"loc,{#10000},5,3,7,3"
 locations_default(#20101,#10000,5,3,7,3)
 hasLocation(#20100,#20101)
-stmtContainers(#20100,#20082)
+stmt_containers(#20100,#20082)
 #20102=*
 typeexprs(#20102,1,#20100,0,"M")
 hasLocation(#20102,#20049)
@@ -353,7 +353,7 @@ stmts(#20113,33,#20082,2,"export = M;")
 #20114=@"loc,{#10000},8,3,8,13"
 locations_default(#20114,#10000,8,3,8,13)
 hasLocation(#20113,#20114)
-stmtContainers(#20113,#20082)
+stmt_containers(#20113,#20082)
 #20115=*
 exprs(#20115,103,#20113,0,"M")
 hasLocation(#20115,#20075)

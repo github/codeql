@@ -63,13 +63,13 @@ variables(#20019,"x",#20018)
 #20020=*
 stmts(#20020,30,#20001,0,"export var x = 23;")
 hasLocation(#20020,#20003)
-stmtContainers(#20020,#20001)
+stmt_containers(#20020,#20001)
 #20021=*
 stmts(#20021,18,#20020,-1,"var x = 23;")
 #20022=@"loc,{#10000},1,8,1,18"
 locations_default(#20022,#10000,1,8,1,18)
 hasLocation(#20021,#20022)
-stmtContainers(#20021,#20001)
+stmt_containers(#20021,#20001)
 #20023=*
 exprs(#20023,64,#20021,0,"x = 23")
 #20024=@"loc,{#10000},1,12,1,17"

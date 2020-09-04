@@ -434,7 +434,7 @@ local_type_names(#20163,"I",#20000)
 #20164=*
 stmts(#20164,17,#20001,0,"functio ... ber) {}")
 hasLocation(#20164,#20003)
-stmtContainers(#20164,#20001)
+stmt_containers(#20164,#20001)
 #20165=*
 exprs(#20165,78,#20164,-1,"declaration")
 hasLocation(#20165,#20033)
@@ -471,11 +471,11 @@ stmts(#20172,1,#20164,-2,"{}")
 #20173=@"loc,{#10000},1,45,1,46"
 locations_default(#20173,#10000,1,45,1,46)
 hasLocation(#20172,#20173)
-stmtContainers(#20172,#20164)
+stmt_containers(#20172,#20164)
 #20174=*
 stmts(#20174,18,#20001,1,"var f = ... ber) {}")
 hasLocation(#20174,#20007)
-stmtContainers(#20174,#20001)
+stmt_containers(#20174,#20001)
 #20175=*
 exprs(#20175,64,#20174,0,"f = fun ... ber) {}")
 #20176=@"loc,{#10000},3,5,3,44"
@@ -527,11 +527,11 @@ stmts(#20186,1,#20178,-2,"{}")
 #20187=@"loc,{#10000},3,43,3,44"
 locations_default(#20187,#10000,3,43,3,44)
 hasLocation(#20186,#20187)
-stmtContainers(#20186,#20178)
+stmt_containers(#20186,#20178)
 #20188=*
 stmts(#20188,17,#20001,2,"declare ... umber);")
 hasLocation(#20188,#20011)
-stmtContainers(#20188,#20001)
+stmt_containers(#20188,#20001)
 hasDeclareKeyword(#20188)
 #20189=*
 exprs(#20189,78,#20188,-1,"ambient")
@@ -571,7 +571,7 @@ stmts(#20197,26,#20001,3,"class C ... C) {}\n}")
 #20198=@"loc,{#10000},7,1,9,1"
 locations_default(#20198,#10000,7,1,9,1)
 hasLocation(#20197,#20198)
-stmtContainers(#20197,#20001)
+stmt_containers(#20197,#20001)
 #20199=*
 exprs(#20199,78,#20197,0,"C")
 hasLocation(#20199,#20115)
@@ -618,7 +618,7 @@ stmts(#20208,1,#20204,-2,"{}")
 #20209=@"loc,{#10000},8,19,8,20"
 locations_default(#20209,#10000,8,19,8,20)
 hasLocation(#20208,#20209)
-stmtContainers(#20208,#20204)
+stmt_containers(#20208,#20204)
 isMethod(#20201)
 #20210=*
 properties(#20210,#20197,3,0,"constructor() {}")
@@ -646,14 +646,14 @@ isArgumentsObject(#20215)
 #20216=*
 stmts(#20216,1,#20213,-2,"{}")
 hasLocation(#20216,#20211)
-stmtContainers(#20216,#20213)
+stmt_containers(#20216,#20213)
 isMethod(#20210)
 #20217=*
 stmts(#20217,34,#20001,4,"interfa ... : I);\n}")
 #20218=@"loc,{#10000},11,1,13,1"
 locations_default(#20218,#10000,11,1,13,1)
 hasLocation(#20217,#20218)
-stmtContainers(#20217,#20001)
+stmt_containers(#20217,#20001)
 #20219=*
 typeexprs(#20219,1,#20217,0,"I")
 hasLocation(#20219,#20138)

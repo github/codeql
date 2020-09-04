@@ -31,7 +31,7 @@ hasLocation(#20001,#20007)
 #20008=*
 stmts(#20008,2,#20001,0,"42")
 hasLocation(#20008,#20003)
-stmtContainers(#20008,#20001)
+stmt_containers(#20008,#20001)
 #20009=*
 exprs(#20009,3,#20008,0,"42")
 hasLocation(#20009,#20003)

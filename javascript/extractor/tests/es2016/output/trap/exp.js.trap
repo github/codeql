@@ -63,7 +63,7 @@ hasLocation(#20001,#20020)
 #20021=*
 stmts(#20021,2,#20001,0,"1**0")
 hasLocation(#20021,#20003)
-stmtContainers(#20021,#20001)
+stmt_containers(#20021,#20001)
 #20022=*
 exprs(#20022,87,#20021,0,"1**0")
 hasLocation(#20022,#20003)
@@ -84,7 +84,7 @@ literals("0","0",#20024)
 #20025=*
 stmts(#20025,2,#20001,1,"x**=2")
 hasLocation(#20025,#20005)
-stmtContainers(#20025,#20001)
+stmt_containers(#20025,#20001)
 #20026=*
 exprs(#20026,88,#20025,0,"x**=2")
 hasLocation(#20026,#20005)

@@ -240,7 +240,7 @@ variables(#20090,"obj",#20000)
 #20091=*
 stmts(#20091,2,#20001,0,"process ... e.log);")
 hasLocation(#20091,#20003)
-stmtContainers(#20091,#20001)
+stmt_containers(#20091,#20001)
 #20092=*
 exprs(#20092,13,#20091,0,"process ... le.log)")
 #20093=@"loc,{#10000},1,1,1,31"
@@ -315,7 +315,7 @@ literals("log","log",#20108)
 #20109=*
 stmts(#20109,23,#20001,1,"let has ... operty;")
 hasLocation(#20109,#20007)
-stmtContainers(#20109,#20001)
+stmt_containers(#20109,#20001)
 #20110=*
 exprs(#20110,64,#20109,0,"hasOwnP ... roperty")
 #20111=@"loc,{#10000},3,5,3,48"
@@ -368,7 +368,7 @@ literals("hasOwnProperty","hasOwnProperty",#20120)
 #20121=*
 stmts(#20121,23,#20001,2,"let obj ...  100 };")
 hasLocation(#20121,#20009)
-stmtContainers(#20121,#20001)
+stmt_containers(#20121,#20001)
 #20122=*
 exprs(#20122,64,#20121,0,"obj = { x: 100 }")
 #20123=@"loc,{#10000},4,5,4,20"
@@ -410,7 +410,7 @@ literals("100","100",#20130)
 #20131=*
 stmts(#20131,2,#20001,3,"obj::ha ... p(""x"");")
 hasLocation(#20131,#20011)
-stmtContainers(#20131,#20001)
+stmt_containers(#20131,#20001)
 #20132=*
 exprs(#20132,13,#20131,0,"obj::hasOwnProp(""x"")")
 #20133=@"loc,{#10000},5,1,5,20"

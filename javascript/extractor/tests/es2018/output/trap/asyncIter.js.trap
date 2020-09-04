@@ -366,7 +366,7 @@ local_type_names(#20136,"C",#20000)
 #20137=*
 stmts(#20137,17,#20001,0,"async f ... Fn() {}")
 hasLocation(#20137,#20003)
-stmtContainers(#20137,#20001)
+stmt_containers(#20137,#20001)
 #20138=*
 exprs(#20138,78,#20137,-1,"asyncFn")
 hasLocation(#20138,#20031)
@@ -387,13 +387,13 @@ stmts(#20141,1,#20137,-2,"{}")
 #20142=@"loc,{#10000},1,27,1,28"
 locations_default(#20142,#10000,1,27,1,28)
 hasLocation(#20141,#20142)
-stmtContainers(#20141,#20137)
+stmt_containers(#20141,#20137)
 #20143=*
 stmts(#20143,26,#20001,1,"class C ... () {}\n}")
 #20144=@"loc,{#10000},3,1,6,1"
 locations_default(#20144,#10000,3,1,6,1)
 hasLocation(#20143,#20144)
-stmtContainers(#20143,#20001)
+stmt_containers(#20143,#20001)
 #20145=*
 exprs(#20145,78,#20143,0,"C")
 hasLocation(#20145,#20043)
@@ -438,7 +438,7 @@ stmts(#20154,1,#20150,-2,"{}")
 #20155=@"loc,{#10000},4,22,4,23"
 locations_default(#20155,#10000,4,22,4,23)
 hasLocation(#20154,#20155)
-stmtContainers(#20154,#20150)
+stmt_containers(#20154,#20150)
 isMethod(#20147)
 #20156=*
 properties(#20156,#20143,3,0,"async * ... r]() {}")
@@ -488,7 +488,7 @@ stmts(#20167,1,#20163,-2,"{}")
 #20168=@"loc,{#10000},5,35,5,36"
 locations_default(#20168,#10000,5,35,5,36)
 hasLocation(#20167,#20168)
-stmtContainers(#20167,#20163)
+stmt_containers(#20167,#20163)
 isMethod(#20156)
 isComputed(#20156)
 #20169=*
@@ -517,14 +517,14 @@ isArgumentsObject(#20174)
 #20175=*
 stmts(#20175,1,#20172,-2,"{}")
 hasLocation(#20175,#20170)
-stmtContainers(#20175,#20172)
+stmt_containers(#20175,#20172)
 isMethod(#20169)
 #20176=*
 stmts(#20176,18,#20001,2,"var o = ... () {}\n}")
 #20177=@"loc,{#10000},8,1,11,1"
 locations_default(#20177,#10000,8,1,11,1)
 hasLocation(#20176,#20177)
-stmtContainers(#20176,#20001)
+stmt_containers(#20176,#20001)
 #20178=*
 exprs(#20178,64,#20176,0,"o = {\n  ... () {}\n}")
 #20179=@"loc,{#10000},8,5,11,1"
@@ -578,7 +578,7 @@ stmts(#20190,1,#20186,-2,"{}")
 #20191=@"loc,{#10000},9,22,9,23"
 locations_default(#20191,#10000,9,22,9,23)
 hasLocation(#20190,#20191)
-stmtContainers(#20190,#20186)
+stmt_containers(#20190,#20186)
 isMethod(#20183)
 #20192=*
 properties(#20192,#20181,1,0,"async * ... r]() {}")
@@ -626,7 +626,7 @@ stmts(#20202,1,#20198,-2,"{}")
 #20203=@"loc,{#10000},10,35,10,36"
 locations_default(#20203,#10000,10,35,10,36)
 hasLocation(#20202,#20203)
-stmtContainers(#20202,#20198)
+stmt_containers(#20202,#20198)
 isComputed(#20192)
 isMethod(#20192)
 #20204=*

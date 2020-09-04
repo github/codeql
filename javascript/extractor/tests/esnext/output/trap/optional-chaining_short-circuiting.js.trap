@@ -866,7 +866,7 @@ hasLocation(#20001,#20327)
 #20328=*
 stmts(#20328,2,#20001,0,"a?.b.c(++x).d;")
 hasLocation(#20328,#20003)
-stmtContainers(#20328,#20001)
+stmt_containers(#20328,#20001)
 #20329=*
 exprs(#20329,14,#20328,0,"a?.b.c(++x).d")
 #20330=@"loc,{#10000},1,1,1,13"
@@ -942,7 +942,7 @@ literals("d","d",#20345)
 #20346=*
 stmts(#20346,2,#20001,1,"a?.b[3].c?.(x).d;")
 hasLocation(#20346,#20007)
-stmtContainers(#20346,#20001)
+stmt_containers(#20346,#20001)
 #20347=*
 exprs(#20347,14,#20346,0,"a?.b[3].c?.(x).d")
 #20348=@"loc,{#10000},3,1,3,16"
@@ -1021,7 +1021,7 @@ literals("d","d",#20362)
 #20363=*
 stmts(#20363,2,#20001,2,"(a?.b).c;")
 hasLocation(#20363,#20011)
-stmtContainers(#20363,#20001)
+stmt_containers(#20363,#20001)
 #20364=*
 exprs(#20364,14,#20363,0,"(a?.b).c")
 #20365=@"loc,{#10000},5,1,5,8"
@@ -1066,7 +1066,7 @@ literals("c","c",#20372)
 #20373=*
 stmts(#20373,2,#20001,3,"(a?.b.c).d;")
 hasLocation(#20373,#20015)
-stmtContainers(#20373,#20001)
+stmt_containers(#20373,#20001)
 #20374=*
 exprs(#20374,14,#20373,0,"(a?.b.c).d")
 #20375=@"loc,{#10000},7,1,7,10"
@@ -1124,7 +1124,7 @@ literals("d","d",#20385)
 #20386=*
 stmts(#20386,2,#20001,4,"a?.[b?.c?.d].e?.f;")
 hasLocation(#20386,#20019)
-stmtContainers(#20386,#20001)
+stmt_containers(#20386,#20001)
 #20387=*
 exprs(#20387,14,#20386,0,"a?.[b?.c?.d].e?.f")
 #20388=@"loc,{#10000},9,1,9,17"
@@ -1207,7 +1207,7 @@ isOptionalChaining(#20387)
 #20404=*
 stmts(#20404,2,#20001,5,"a?.()[b ... ?.().f;")
 hasLocation(#20404,#20023)
-stmtContainers(#20404,#20001)
+stmt_containers(#20404,#20001)
 #20405=*
 exprs(#20405,14,#20404,0,"a?.()[b ... e?.().f")
 #20406=@"loc,{#10000},11,1,11,28"
@@ -1318,7 +1318,7 @@ stmts(#20429,3,#20001,6,"if (a?. ... alse;\n}")
 #20430=@"loc,{#10000},13,1,17,1"
 locations_default(#20430,#10000,13,1,17,1)
 hasLocation(#20429,#20430)
-stmtContainers(#20429,#20001)
+stmt_containers(#20429,#20001)
 #20431=*
 exprs(#20431,14,#20429,0,"a?.b")
 #20432=@"loc,{#10000},13,5,13,8"
@@ -1345,13 +1345,13 @@ stmts(#20435,1,#20429,1,"{\n    true;\n}")
 #20436=@"loc,{#10000},13,11,15,1"
 locations_default(#20436,#10000,13,11,15,1)
 hasLocation(#20435,#20436)
-stmtContainers(#20435,#20001)
+stmt_containers(#20435,#20001)
 #20437=*
 stmts(#20437,2,#20435,0,"true;")
 #20438=@"loc,{#10000},14,5,14,9"
 locations_default(#20438,#10000,14,5,14,9)
 hasLocation(#20437,#20438)
-stmtContainers(#20437,#20001)
+stmt_containers(#20437,#20001)
 #20439=*
 exprs(#20439,2,#20437,0,"true")
 hasLocation(#20439,#20243)
@@ -1363,13 +1363,13 @@ stmts(#20440,1,#20429,2,"{\n    false;\n}")
 #20441=@"loc,{#10000},15,8,17,1"
 locations_default(#20441,#10000,15,8,17,1)
 hasLocation(#20440,#20441)
-stmtContainers(#20440,#20001)
+stmt_containers(#20440,#20001)
 #20442=*
 stmts(#20442,2,#20440,0,"false;")
 #20443=@"loc,{#10000},16,5,16,10"
 locations_default(#20443,#10000,16,5,16,10)
 hasLocation(#20442,#20443)
-stmtContainers(#20442,#20001)
+stmt_containers(#20442,#20001)
 #20444=*
 exprs(#20444,2,#20442,0,"false")
 hasLocation(#20444,#20253)
@@ -1381,7 +1381,7 @@ stmts(#20445,3,#20001,7,"if (!a? ... alse;\n}")
 #20446=@"loc,{#10000},19,1,23,1"
 locations_default(#20446,#10000,19,1,23,1)
 hasLocation(#20445,#20446)
-stmtContainers(#20445,#20001)
+stmt_containers(#20445,#20001)
 #20447=*
 exprs(#20447,18,#20445,0,"!a?.b")
 #20448=@"loc,{#10000},19,5,19,9"
@@ -1415,13 +1415,13 @@ stmts(#20453,1,#20445,1,"{\n    true;\n}")
 #20454=@"loc,{#10000},19,12,21,1"
 locations_default(#20454,#10000,19,12,21,1)
 hasLocation(#20453,#20454)
-stmtContainers(#20453,#20001)
+stmt_containers(#20453,#20001)
 #20455=*
 stmts(#20455,2,#20453,0,"true;")
 #20456=@"loc,{#10000},20,5,20,9"
 locations_default(#20456,#10000,20,5,20,9)
 hasLocation(#20455,#20456)
-stmtContainers(#20455,#20001)
+stmt_containers(#20455,#20001)
 #20457=*
 exprs(#20457,2,#20455,0,"true")
 hasLocation(#20457,#20274)
@@ -1433,13 +1433,13 @@ stmts(#20458,1,#20445,2,"{\n    false;\n}")
 #20459=@"loc,{#10000},21,8,23,1"
 locations_default(#20459,#10000,21,8,23,1)
 hasLocation(#20458,#20459)
-stmtContainers(#20458,#20001)
+stmt_containers(#20458,#20001)
 #20460=*
 stmts(#20460,2,#20458,0,"false;")
 #20461=@"loc,{#10000},22,5,22,10"
 locations_default(#20461,#10000,22,5,22,10)
 hasLocation(#20460,#20461)
-stmtContainers(#20460,#20001)
+stmt_containers(#20460,#20001)
 #20462=*
 exprs(#20462,2,#20460,0,"false")
 hasLocation(#20462,#20284)
@@ -1451,7 +1451,7 @@ stmts(#20463,3,#20001,8,"if (a?. ... alse;\n}")
 #20464=@"loc,{#10000},25,1,29,1"
 locations_default(#20464,#10000,25,1,29,1)
 hasLocation(#20463,#20464)
-stmtContainers(#20463,#20001)
+stmt_containers(#20463,#20001)
 #20465=*
 exprs(#20465,44,#20463,0,"a?.b && c?.d")
 #20466=@"loc,{#10000},25,5,25,16"
@@ -1508,13 +1508,13 @@ stmts(#20476,1,#20463,1,"{\n    true;\n}")
 #20477=@"loc,{#10000},25,19,27,1"
 locations_default(#20477,#10000,25,19,27,1)
 hasLocation(#20476,#20477)
-stmtContainers(#20476,#20001)
+stmt_containers(#20476,#20001)
 #20478=*
 stmts(#20478,2,#20476,0,"true;")
 #20479=@"loc,{#10000},26,5,26,9"
 locations_default(#20479,#10000,26,5,26,9)
 hasLocation(#20478,#20479)
-stmtContainers(#20478,#20001)
+stmt_containers(#20478,#20001)
 #20480=*
 exprs(#20480,2,#20478,0,"true")
 hasLocation(#20480,#20311)
@@ -1526,13 +1526,13 @@ stmts(#20481,1,#20463,2,"{\n    false;\n}")
 #20482=@"loc,{#10000},27,8,29,1"
 locations_default(#20482,#10000,27,8,29,1)
 hasLocation(#20481,#20482)
-stmtContainers(#20481,#20001)
+stmt_containers(#20481,#20001)
 #20483=*
 stmts(#20483,2,#20481,0,"false;")
 #20484=@"loc,{#10000},28,5,28,10"
 locations_default(#20484,#10000,28,5,28,10)
 hasLocation(#20483,#20484)
-stmtContainers(#20483,#20001)
+stmt_containers(#20483,#20001)
 #20485=*
 exprs(#20485,2,#20483,0,"false")
 hasLocation(#20485,#20321)

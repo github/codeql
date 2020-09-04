@@ -141,7 +141,7 @@ stmts(#20048,26,#20001,0,"class C ... 5;\n }\n}")
 #20049=@"loc,{#10000},1,1,6,1"
 locations_default(#20049,#10000,1,1,6,1)
 hasLocation(#20048,#20049)
-stmtContainers(#20048,#20001)
+stmt_containers(#20048,#20001)
 #20050=*
 exprs(#20050,78,#20048,0,"C")
 hasLocation(#20050,#20017)
@@ -194,13 +194,13 @@ stmts(#20062,1,#20054,-2,"{\n   th ... = 5;\n }")
 #20063=@"loc,{#10000},3,16,5,2"
 locations_default(#20063,#10000,3,16,5,2)
 hasLocation(#20062,#20063)
-stmtContainers(#20062,#20054)
+stmt_containers(#20062,#20054)
 #20064=*
 stmts(#20064,2,#20062,0,"this.#foo = 5;")
 #20065=@"loc,{#10000},4,4,4,17"
 locations_default(#20065,#10000,4,4,4,17)
 hasLocation(#20064,#20065)
-stmtContainers(#20064,#20054)
+stmt_containers(#20064,#20054)
 #20066=*
 exprs(#20066,47,#20064,0,"this.#foo = 5")
 #20067=@"loc,{#10000},4,4,4,16"

@@ -148,7 +148,7 @@ local_namespace_names(#20051,"z",#20045)
 #20052=*
 stmts(#20052,27,#20001,0,"import x from 'foo';")
 hasLocation(#20052,#20003)
-stmtContainers(#20052,#20001)
+stmt_containers(#20052,#20001)
 #20053=*
 exprs(#20053,4,#20052,-1,"'foo'")
 hasLocation(#20053,#20015)
@@ -178,7 +178,7 @@ namespacedecl(#20057,#20050)
 #20058=*
 stmts(#20058,27,#20001,1,"import 'bar';")
 hasLocation(#20058,#20005)
-stmtContainers(#20058,#20001)
+stmt_containers(#20058,#20001)
 #20059=*
 exprs(#20059,4,#20058,-1,"'bar'")
 hasLocation(#20059,#20021)
@@ -194,7 +194,7 @@ regexpConstValue(#20060,"bar")
 #20062=*
 stmts(#20062,27,#20001,2,"import  ...  'baz';")
 hasLocation(#20062,#20007)
-stmtContainers(#20062,#20001)
+stmt_containers(#20062,#20001)
 #20063=*
 exprs(#20063,4,#20062,-1,"'baz'")
 hasLocation(#20063,#20039)

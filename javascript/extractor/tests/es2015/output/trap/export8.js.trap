@@ -79,7 +79,7 @@ is_es2015_module(#20001)
 #20026=*
 stmts(#20026,2,#20001,0,"foo = 42;")
 hasLocation(#20026,#20003)
-stmtContainers(#20026,#20001)
+stmt_containers(#20026,#20001)
 #20027=*
 exprs(#20027,47,#20026,0,"foo = 42")
 #20028=@"loc,{#10000},1,1,1,8"
@@ -105,7 +105,7 @@ literals("42","42",#20031)
 #20032=*
 stmts(#20032,29,#20001,1,"export default foo;")
 hasLocation(#20032,#20005)
-stmtContainers(#20032,#20001)
+stmt_containers(#20032,#20001)
 #20033=*
 exprs(#20033,103,#20032,0,"foo")
 hasLocation(#20033,#20019)

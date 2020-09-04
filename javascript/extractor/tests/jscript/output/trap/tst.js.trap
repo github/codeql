@@ -80,7 +80,7 @@ hasLocation(#20001,#20003)
 #20028=*
 stmts(#20028,2,#20001,0,"functio ... es) { }")
 hasLocation(#20028,#20003)
-stmtContainers(#20028,#20001)
+stmt_containers(#20028,#20001)
 #20029=*
 exprs(#20029,47,#20028,0,"functio ... es) { }")
 hasLocation(#20029,#20003)
@@ -149,7 +149,7 @@ stmts(#20044,1,#20035,-2,"{ }")
 #20045=@"loc,{#10000},1,50,1,52"
 locations_default(#20045,#10000,1,50,1,52)
 hasLocation(#20044,#20045)
-stmtContainers(#20044,#20035)
+stmt_containers(#20044,#20035)
 #20046=*
 entry_cfg_node(#20046,#20001)
 #20047=@"loc,{#10000},1,1,1,0"

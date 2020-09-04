@@ -171,7 +171,7 @@ local_type_names(#20061,"A",#20000)
 #20062=*
 stmts(#20062,26,#20001,0,"class A ... y) {}\n}")
 hasLocation(#20062,#20059)
-stmtContainers(#20062,#20001)
+stmt_containers(#20062,#20001)
 #20063=*
 exprs(#20063,78,#20062,0,"A")
 hasLocation(#20063,#20015)
@@ -277,7 +277,7 @@ stmts(#20087,1,#20081,-2,"{}")
 #20088=@"loc,{#10000},4,22,4,23"
 locations_default(#20088,#10000,4,22,4,23)
 hasLocation(#20087,#20088)
-stmtContainers(#20087,#20081)
+stmt_containers(#20087,#20081)
 isMethod(#20078)
 #20089=*
 entry_cfg_node(#20089,#20001)

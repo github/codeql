@@ -222,7 +222,7 @@ local_type_names(#20079,"A",#20000)
 #20080=*
 stmts(#20080,26,#20001,0,"class A ... ;\n  }\n}")
 hasLocation(#20080,#20077)
-stmtContainers(#20080,#20001)
+stmt_containers(#20080,#20001)
 #20081=*
 exprs(#20081,78,#20080,0,"A")
 hasLocation(#20081,#20021)
@@ -265,13 +265,13 @@ stmts(#20090,1,#20086,-2,"{\n    r ... _x;\n  }")
 #20091=@"loc,{#10000},2,11,4,3"
 locations_default(#20091,#10000,2,11,4,3)
 hasLocation(#20090,#20091)
-stmtContainers(#20090,#20086)
+stmt_containers(#20090,#20086)
 #20092=*
 stmts(#20092,9,#20090,0,"return this._x;")
 #20093=@"loc,{#10000},3,5,3,19"
 locations_default(#20093,#10000,3,5,3,19)
 hasLocation(#20092,#20093)
-stmtContainers(#20092,#20086)
+stmt_containers(#20092,#20086)
 #20094=*
 exprs(#20094,14,#20092,0,"this._x")
 #20095=@"loc,{#10000},3,12,3,18"
@@ -329,13 +329,13 @@ stmts(#20107,1,#20101,-2,"{\n    t ... +v;\n  }")
 #20108=@"loc,{#10000},5,12,7,3"
 locations_default(#20108,#10000,5,12,7,3)
 hasLocation(#20107,#20108)
-stmtContainers(#20107,#20101)
+stmt_containers(#20107,#20101)
 #20109=*
 stmts(#20109,2,#20107,0,"this._x = +v;")
 #20110=@"loc,{#10000},6,5,6,17"
 locations_default(#20110,#10000,6,5,6,17)
 hasLocation(#20109,#20110)
-stmtContainers(#20109,#20101)
+stmt_containers(#20109,#20101)
 #20111=*
 exprs(#20111,47,#20109,0,"this._x = +v")
 #20112=@"loc,{#10000},6,5,6,16"
@@ -402,7 +402,7 @@ isArgumentsObject(#20125)
 #20126=*
 stmts(#20126,1,#20123,-2,"{}")
 hasLocation(#20126,#20121)
-stmtContainers(#20126,#20123)
+stmt_containers(#20126,#20123)
 isMethod(#20120)
 #20127=*
 entry_cfg_node(#20127,#20001)

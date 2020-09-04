@@ -85,13 +85,13 @@ stmts(#20028,29,#20001,0,"export  ... ss C {}")
 #20029=@"loc,{#10000},1,1,1,25"
 locations_default(#20029,#10000,1,1,1,25)
 hasLocation(#20028,#20029)
-stmtContainers(#20028,#20001)
+stmt_containers(#20028,#20001)
 #20030=*
 stmts(#20030,26,#20028,0,"class C {}")
 #20031=@"loc,{#10000},1,16,1,25"
 locations_default(#20031,#10000,1,16,1,25)
 hasLocation(#20030,#20031)
-stmtContainers(#20030,#20001)
+stmt_containers(#20030,#20001)
 #20032=*
 exprs(#20032,78,#20030,0,"C")
 hasLocation(#20032,#20011)
@@ -130,14 +130,14 @@ isArgumentsObject(#20039)
 #20040=*
 stmts(#20040,1,#20037,-2,"{}")
 hasLocation(#20040,#20035)
-stmtContainers(#20040,#20037)
+stmt_containers(#20040,#20037)
 isMethod(#20034)
 #20041=*
 stmts(#20041,2,#20001,1,"[,]")
 #20042=@"loc,{#10000},1,27,1,29"
 locations_default(#20042,#10000,1,27,1,29)
 hasLocation(#20041,#20042)
-stmtContainers(#20041,#20001)
+stmt_containers(#20041,#20001)
 #20043=*
 exprs(#20043,7,#20041,0,"[,]")
 hasLocation(#20043,#20042)

@@ -85,7 +85,7 @@ variables(#20029,"foo",#20000)
 #20030=*
 stmts(#20030,17,#20001,0,"functio ...  y}) {}")
 hasLocation(#20030,#20003)
-stmtContainers(#20030,#20001)
+stmt_containers(#20030,#20001)
 #20031=*
 exprs(#20031,78,#20030,-1,"foo")
 hasLocation(#20031,#20007)
@@ -142,7 +142,7 @@ stmts(#20044,1,#20030,-2,"{}")
 #20045=@"loc,{#10000},1,22,1,23"
 locations_default(#20045,#10000,1,22,1,23)
 hasLocation(#20044,#20045)
-stmtContainers(#20044,#20030)
+stmt_containers(#20044,#20030)
 #20046=*
 entry_cfg_node(#20046,#20001)
 #20047=@"loc,{#10000},1,1,1,0"

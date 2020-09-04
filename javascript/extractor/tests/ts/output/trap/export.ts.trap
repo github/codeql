@@ -166,13 +166,13 @@ local_type_names(#20059,"C",#20055)
 #20060=*
 stmts(#20060,30,#20001,0,"export  ... o = 42;")
 hasLocation(#20060,#20003)
-stmtContainers(#20060,#20001)
+stmt_containers(#20060,#20001)
 #20061=*
 stmts(#20061,22,#20060,-1,"const foo = 42;")
 #20062=@"loc,{#10000},1,8,1,22"
 locations_default(#20062,#10000,1,8,1,22)
 hasLocation(#20061,#20062)
-stmtContainers(#20061,#20001)
+stmt_containers(#20061,#20001)
 #20063=*
 exprs(#20063,64,#20061,0,"foo = 42")
 #20064=@"loc,{#10000},1,14,1,21"
@@ -196,13 +196,13 @@ literals("42","42",#20066)
 #20067=*
 stmts(#20067,30,#20001,1,"export class C {}")
 hasLocation(#20067,#20007)
-stmtContainers(#20067,#20001)
+stmt_containers(#20067,#20001)
 #20068=*
 stmts(#20068,26,#20067,-1,"class C {}")
 #20069=@"loc,{#10000},3,8,3,17"
 locations_default(#20069,#10000,3,8,3,17)
 hasLocation(#20068,#20069)
-stmtContainers(#20068,#20001)
+stmt_containers(#20068,#20001)
 #20070=*
 exprs(#20070,78,#20068,0,"C")
 hasLocation(#20070,#20029)
@@ -241,20 +241,20 @@ isArgumentsObject(#20077)
 #20078=*
 stmts(#20078,1,#20075,-2,"{}")
 hasLocation(#20078,#20073)
-stmtContainers(#20078,#20075)
+stmt_containers(#20078,#20075)
 isMethod(#20072)
 #20079=*
 stmts(#20079,29,#20001,2,"export  ...  f() {}")
 #20080=@"loc,{#10000},5,1,5,30"
 locations_default(#20080,#10000,5,1,5,30)
 hasLocation(#20079,#20080)
-stmtContainers(#20079,#20001)
+stmt_containers(#20079,#20001)
 #20081=*
 stmts(#20081,17,#20079,0,"function f() {}")
 #20082=@"loc,{#10000},5,16,5,30"
 locations_default(#20082,#10000,5,16,5,30)
 hasLocation(#20081,#20082)
-stmtContainers(#20081,#20001)
+stmt_containers(#20081,#20001)
 #20083=*
 exprs(#20083,78,#20081,-1,"f")
 hasLocation(#20083,#20041)
@@ -273,11 +273,11 @@ stmts(#20086,1,#20081,-2,"{}")
 #20087=@"loc,{#10000},5,29,5,30"
 locations_default(#20087,#10000,5,29,5,30)
 hasLocation(#20086,#20087)
-stmtContainers(#20086,#20081)
+stmt_containers(#20086,#20081)
 #20088=*
 stmts(#20088,0,#20001,3,";")
 hasLocation(#20088,#20051)
-stmtContainers(#20088,#20001)
+stmt_containers(#20088,#20001)
 #20089=*
 entry_cfg_node(#20089,#20001)
 #20090=@"loc,{#10000},1,1,1,0"

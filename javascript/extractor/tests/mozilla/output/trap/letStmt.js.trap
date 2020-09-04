@@ -263,7 +263,7 @@ variables(#20097,"y",#20000)
 #20098=*
 stmts(#20098,18,#20001,0,"var x = 42, y = 19;")
 hasLocation(#20098,#20003)
-stmtContainers(#20098,#20001)
+stmt_containers(#20098,#20001)
 #20099=*
 exprs(#20099,64,#20098,0,"x = 42")
 #20100=@"loc,{#10000},1,5,1,10"
@@ -309,7 +309,7 @@ stmts(#20107,24,#20001,1,"let (x  ... + y);\n}")
 #20108=@"loc,{#10000},3,1,5,1"
 locations_default(#20108,#10000,3,1,5,1)
 hasLocation(#20107,#20108)
-stmtContainers(#20107,#20001)
+stmt_containers(#20107,#20001)
 #20109=*
 scopes(#20109,4)
 scopenodes(#20107,#20109)
@@ -363,13 +363,13 @@ stmts(#20120,1,#20107,-1,"{\n  con ... + y);\n}")
 #20121=@"loc,{#10000},3,22,5,1"
 locations_default(#20121,#10000,3,22,5,1)
 hasLocation(#20120,#20121)
-stmtContainers(#20120,#20001)
+stmt_containers(#20120,#20001)
 #20122=*
 stmts(#20122,2,#20120,0,"console.log(x + y);")
 #20123=@"loc,{#10000},4,3,4,21"
 locations_default(#20123,#10000,4,3,4,21)
 hasLocation(#20122,#20123)
-stmtContainers(#20122,#20001)
+stmt_containers(#20122,#20001)
 #20124=*
 exprs(#20124,13,#20122,0,"console.log(x + y)")
 #20125=@"loc,{#10000},4,3,4,20"
@@ -423,7 +423,7 @@ bind(#20134,#20111)
 #20135=*
 stmts(#20135,2,#20001,2,"console.log(x - y);")
 hasLocation(#20135,#20015)
-stmtContainers(#20135,#20001)
+stmt_containers(#20135,#20001)
 #20136=*
 exprs(#20136,13,#20135,0,"console.log(x - y)")
 #20137=@"loc,{#10000},7,1,7,18"

@@ -227,7 +227,7 @@ is_es2015_module(#20001)
 #20084=*
 stmts(#20084,30,#20001,0,"export  ... om ""m"";")
 hasLocation(#20084,#20003)
-stmtContainers(#20084,#20001)
+stmt_containers(#20084,#20001)
 #20085=*
 exprs(#20085,4,#20084,-2,"""m""")
 hasLocation(#20085,#20023)
@@ -260,7 +260,7 @@ literals("a","a",#20090)
 #20091=*
 stmts(#20091,28,#20001,1,"export * from ""m"";")
 hasLocation(#20091,#20005)
-stmtContainers(#20091,#20001)
+stmt_containers(#20091,#20001)
 #20092=*
 exprs(#20092,4,#20091,0,"""m""")
 hasLocation(#20092,#20033)

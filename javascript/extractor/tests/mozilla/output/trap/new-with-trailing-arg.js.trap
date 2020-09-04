@@ -140,7 +140,7 @@ hasLocation(#20001,#20048)
 #20049=*
 stmts(#20049,2,#20001,0,"new A() ... ""bar"" }")
 hasLocation(#20049,#20008)
-stmtContainers(#20049,#20001)
+stmt_containers(#20049,#20001)
 #20050=*
 exprs(#20050,12,#20049,0,"new A() ... ""bar"" }")
 hasLocation(#20050,#20008)
@@ -188,7 +188,7 @@ regexpConstValue(#20059,"bar")
 #20061=*
 stmts(#20061,2,#20001,1,"new A()")
 hasLocation(#20061,#20013)
-stmtContainers(#20061,#20001)
+stmt_containers(#20061,#20001)
 #20062=*
 exprs(#20062,12,#20061,0,"new A()")
 hasLocation(#20062,#20013)
@@ -204,7 +204,7 @@ bind(#20063,#20052)
 #20064=*
 stmts(#20064,1,#20001,2,"{}")
 hasLocation(#20064,#20015)
-stmtContainers(#20064,#20001)
+stmt_containers(#20064,#20001)
 #20065=*
 entry_cfg_node(#20065,#20001)
 #20066=@"loc,{#10000},1,1,1,0"

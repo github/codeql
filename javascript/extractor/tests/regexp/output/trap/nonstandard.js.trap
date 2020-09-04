@@ -35,7 +35,7 @@ hasLocation(#20001,#20003)
 #20010=*
 stmts(#20010,2,#20001,0,"/dice/y;")
 hasLocation(#20010,#20003)
-stmtContainers(#20010,#20001)
+stmt_containers(#20010,#20001)
 #20011=*
 exprs(#20011,5,#20010,0,"/dice/y")
 hasLocation(#20011,#20005)

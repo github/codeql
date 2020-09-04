@@ -50,7 +50,7 @@ hasLocation(#20001,#20003)
 #20016=*
 stmts(#20016,2,#20001,0,"(class       {})")
 hasLocation(#20016,#20003)
-stmtContainers(#20016,#20001)
+stmt_containers(#20016,#20001)
 #20017=*
 exprs(#20017,63,#20016,0,"(class       {})")
 hasLocation(#20017,#20003)
@@ -89,7 +89,7 @@ isArgumentsObject(#20025)
 #20026=*
 stmts(#20026,1,#20023,-2,"{}")
 hasLocation(#20026,#20021)
-stmtContainers(#20026,#20023)
+stmt_containers(#20026,#20023)
 isMethod(#20020)
 #20027=*
 entry_cfg_node(#20027,#20001)

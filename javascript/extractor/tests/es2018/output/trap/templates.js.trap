@@ -381,7 +381,7 @@ stmts(#20143,2,#20001,0,"`foo`\n` ... \u25a0`")
 #20144=@"loc,{#10000},1,1,3,17"
 locations_default(#20144,#10000,1,1,3,17)
 hasLocation(#20143,#20144)
-stmtContainers(#20143,#20001)
+stmt_containers(#20143,#20001)
 #20145=*
 exprs(#20145,70,#20143,0,"`foo`\n` ... \u25a0`")
 hasLocation(#20145,#20144)
@@ -445,7 +445,7 @@ literals("■","\u25a0",#20156)
 #20157=*
 stmts(#20157,2,#20001,1,"foo `\u25a0`")
 hasLocation(#20157,#20009)
-stmtContainers(#20157,#20001)
+stmt_containers(#20157,#20001)
 #20158=*
 exprs(#20158,70,#20157,0,"foo `\u25a0`")
 hasLocation(#20158,#20009)
@@ -476,7 +476,7 @@ literals("■","\u25a0",#20163)
 #20164=*
 stmts(#20164,2,#20001,2,"foo `fo ... \u25a0`")
 hasLocation(#20164,#20011)
-stmtContainers(#20164,#20001)
+stmt_containers(#20164,#20001)
 #20165=*
 exprs(#20165,70,#20164,0,"foo `fo ... \u25a0`")
 hasLocation(#20165,#20011)
@@ -518,7 +518,7 @@ literals("■","\u25a0",#20171)
 #20172=*
 stmts(#20172,2,#20001,3,"foo `\unicode`")
 hasLocation(#20172,#20013)
-stmtContainers(#20172,#20001)
+stmt_containers(#20172,#20001)
 #20173=*
 exprs(#20173,70,#20172,0,"foo `\unicode`")
 hasLocation(#20173,#20013)
@@ -547,7 +547,7 @@ literals("","\unicode",#20177)
 #20178=*
 stmts(#20178,2,#20001,4,"foo `fo ... nicode`")
 hasLocation(#20178,#20015)
-stmtContainers(#20178,#20001)
+stmt_containers(#20178,#20001)
 #20179=*
 exprs(#20179,70,#20178,0,"foo `fo ... nicode`")
 hasLocation(#20179,#20015)
@@ -589,7 +589,7 @@ literals("","\unicode",#20185)
 #20186=*
 stmts(#20186,2,#20001,5,"foo `\u`")
 hasLocation(#20186,#20017)
-stmtContainers(#20186,#20001)
+stmt_containers(#20186,#20001)
 #20187=*
 exprs(#20187,70,#20186,0,"foo `\u`")
 hasLocation(#20187,#20017)
@@ -618,7 +618,7 @@ literals("","\u",#20191)
 #20192=*
 stmts(#20192,2,#20001,6,"foo `\u{`")
 hasLocation(#20192,#20019)
-stmtContainers(#20192,#20001)
+stmt_containers(#20192,#20001)
 #20193=*
 exprs(#20193,70,#20192,0,"foo `\u{`")
 hasLocation(#20193,#20019)
@@ -647,7 +647,7 @@ literals("","\u{",#20197)
 #20198=*
 stmts(#20198,2,#20001,7,"foo `\u{abcdx`")
 hasLocation(#20198,#20021)
-stmtContainers(#20198,#20001)
+stmt_containers(#20198,#20001)
 #20199=*
 exprs(#20199,70,#20198,0,"foo `\u{abcdx`")
 hasLocation(#20199,#20021)
@@ -676,7 +676,7 @@ literals("","\u{abcdx",#20203)
 #20204=*
 stmts(#20204,2,#20001,8,"foo `\u{abcdx}`")
 hasLocation(#20204,#20023)
-stmtContainers(#20204,#20001)
+stmt_containers(#20204,#20001)
 #20205=*
 exprs(#20205,70,#20204,0,"foo `\u{abcdx}`")
 hasLocation(#20205,#20023)
@@ -705,7 +705,7 @@ literals("","\u{abcdx}",#20209)
 #20210=*
 stmts(#20210,2,#20001,9,"foo `\unicode\\`")
 hasLocation(#20210,#20025)
-stmtContainers(#20210,#20001)
+stmt_containers(#20210,#20001)
 #20211=*
 exprs(#20211,70,#20210,0,"foo `\unicode\\`")
 hasLocation(#20211,#20025)

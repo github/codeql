@@ -53,7 +53,7 @@ hasLocation(#20001,#20016)
 #20017=*
 stmts(#20017,26,#20001,0,"declare class C {}")
 hasLocation(#20017,#20003)
-stmtContainers(#20017,#20001)
+stmt_containers(#20017,#20001)
 hasDeclareKeyword(#20017)
 #20018=*
 exprs(#20018,78,#20017,0,"C")
@@ -94,7 +94,7 @@ isArgumentsObject(#20026)
 #20027=*
 stmts(#20027,1,#20024,-2,"{}")
 hasLocation(#20027,#20022)
-stmtContainers(#20027,#20024)
+stmt_containers(#20027,#20024)
 isMethod(#20021)
 #20028=*
 entry_cfg_node(#20028,#20001)
