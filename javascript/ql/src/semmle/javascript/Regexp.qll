@@ -188,7 +188,7 @@ class RegExpTerm extends Locatable, @regexpterm {
  */
 class RegExpQuantifier extends RegExpTerm, @regexp_quantifier {
   /** Holds if the quantifier of this term is a greedy quantifier. */
-  predicate isGreedy() { isGreedy(this) }
+  predicate isGreedy() { is_greedy(this) }
 }
 
 /**

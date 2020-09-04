@@ -957,7 +957,7 @@ regexpterm(#20339,8,#20338,0,"a*")
 #20340=@"loc,{#10000},9,2,9,3"
 locations_default(#20340,#10000,9,2,9,3)
 hasLocation(#20339,#20340)
-isGreedy(#20339)
+is_greedy(#20339)
 #20341=*
 regexpterm(#20341,14,#20339,0,"a")
 #20342=@"loc,{#10000},9,2,9,2"
@@ -1000,7 +1000,7 @@ regexpterm(#20351,9,#20350,0,"a+")
 #20352=@"loc,{#10000},11,2,11,3"
 locations_default(#20352,#10000,11,2,11,3)
 hasLocation(#20351,#20352)
-isGreedy(#20351)
+is_greedy(#20351)
 #20353=*
 regexpterm(#20353,14,#20351,0,"a")
 #20354=@"loc,{#10000},11,2,11,2"
@@ -1043,7 +1043,7 @@ regexpterm(#20363,10,#20362,0,"a?")
 #20364=@"loc,{#10000},13,2,13,3"
 locations_default(#20364,#10000,13,2,13,3)
 hasLocation(#20363,#20364)
-isGreedy(#20363)
+is_greedy(#20363)
 #20365=*
 regexpterm(#20365,14,#20363,0,"a")
 #20366=@"loc,{#10000},13,2,13,2"
@@ -1086,7 +1086,7 @@ regexpterm(#20375,11,#20374,0,"a{1}")
 #20376=@"loc,{#10000},15,2,15,5"
 locations_default(#20376,#10000,15,2,15,5)
 hasLocation(#20375,#20376)
-isGreedy(#20375)
+is_greedy(#20375)
 rangeQuantifierLowerBound(#20375,1)
 rangeQuantifierUpperBound(#20375,1)
 #20377=*
@@ -1110,7 +1110,7 @@ regexpterm(#20381,11,#20380,0,"a{1,}")
 #20382=@"loc,{#10000},16,2,16,6"
 locations_default(#20382,#10000,16,2,16,6)
 hasLocation(#20381,#20382)
-isGreedy(#20381)
+is_greedy(#20381)
 rangeQuantifierLowerBound(#20381,1)
 #20383=*
 regexpterm(#20383,14,#20381,0,"a")
@@ -1133,7 +1133,7 @@ regexpterm(#20387,11,#20386,0,"a{1,2}")
 #20388=@"loc,{#10000},17,2,17,7"
 locations_default(#20388,#10000,17,2,17,7)
 hasLocation(#20387,#20388)
-isGreedy(#20387)
+is_greedy(#20387)
 rangeQuantifierLowerBound(#20387,1)
 rangeQuantifierUpperBound(#20387,2)
 #20389=*
@@ -1670,7 +1670,7 @@ regexpterm(#20542,11,#20541,0,"a{")
 #20543=@"loc,{#10000},37,2,37,3"
 locations_default(#20543,#10000,37,2,37,3)
 hasLocation(#20542,#20543)
-isGreedy(#20542)
+is_greedy(#20542)
 rangeQuantifierLowerBound(#20542,0)
 rangeQuantifierUpperBound(#20542,0)
 #20544=*
@@ -1709,7 +1709,7 @@ regexpterm(#20554,11,#20552,0,"a{")
 #20555=@"loc,{#10000},38,2,38,3"
 locations_default(#20555,#10000,38,2,38,3)
 hasLocation(#20554,#20555)
-isGreedy(#20554)
+is_greedy(#20554)
 rangeQuantifierLowerBound(#20554,0)
 rangeQuantifierUpperBound(#20554,0)
 #20556=*
@@ -1756,7 +1756,7 @@ regexpterm(#20568,11,#20567,0,"a{2")
 #20569=@"loc,{#10000},39,2,39,4"
 locations_default(#20569,#10000,39,2,39,4)
 hasLocation(#20568,#20569)
-isGreedy(#20568)
+is_greedy(#20568)
 rangeQuantifierLowerBound(#20568,2)
 rangeQuantifierUpperBound(#20568,2)
 #20570=*
@@ -1875,7 +1875,7 @@ regexpterm(#20602,8,#20596,2,"[^>]*")
 #20603=@"loc,{#10000},44,8,44,12"
 locations_default(#20603,#10000,44,8,44,12)
 hasLocation(#20602,#20603)
-isGreedy(#20602)
+is_greedy(#20602)
 #20604=*
 regexpterm(#20604,23,#20602,0,"[^>]")
 #20605=@"loc,{#10000},44,8,44,11"
@@ -1936,7 +1936,7 @@ regexpterm(#20624,9,#20622,0,"[^<]+")
 #20625=@"loc,{#10000},44,22,44,26"
 locations_default(#20625,#10000,44,22,44,26)
 hasLocation(#20624,#20625)
-isGreedy(#20624)
+is_greedy(#20624)
 #20626=*
 regexpterm(#20626,23,#20624,0,"[^<]")
 #20627=@"loc,{#10000},44,22,44,25"
@@ -1992,7 +1992,7 @@ regexpterm(#20644,8,#20638,2,"[^>]*")
 #20645=@"loc,{#10000},44,41,44,45"
 locations_default(#20645,#10000,44,41,44,45)
 hasLocation(#20644,#20645)
-isGreedy(#20644)
+is_greedy(#20644)
 #20646=*
 regexpterm(#20646,23,#20644,0,"[^>]")
 #20647=@"loc,{#10000},44,41,44,44"

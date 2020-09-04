@@ -219,7 +219,7 @@ public class RegExpExtractor {
 
     private void visit(Quantifier nd) {
       Label lbl = extractTerm(nd, parent, idx);
-      if (nd.isGreedy()) trapwriter.addTuple("isGreedy", lbl);
+      if (nd.isGreedy()) trapwriter.addTuple("is_greedy", lbl);
       visit(nd.getOperand(), lbl, 0);
     }
 
@@ -240,7 +240,7 @@ public class RegExpExtractor {
     @Override
     public void visit(Range nd) {
       Label lbl = extractTerm(nd, parent, idx);
-      if (nd.isGreedy()) trapwriter.addTuple("isGreedy", lbl);
+      if (nd.isGreedy()) trapwriter.addTuple("is_greedy", lbl);
 
       long lo = nd.getLowerBound();
       if (inRange(lo)) trapwriter.addTuple("rangeQuantifierLowerBound", lbl, lo);

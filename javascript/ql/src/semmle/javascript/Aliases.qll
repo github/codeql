@@ -225,3 +225,8 @@ deprecated predicate jsParseErrors(JSParseError id, TopLevel toplevel, string me
  * Use the `RegExpParseError` class instead.
  */ 
 deprecated predicate regexpParseErrors(RegExpParseError id, RegExpTerm regexp, string message) { regexp_parse_errors(id, regexp, message) }
+/**
+ * Alias for the predicate `is_greedy` defined in the .dbscheme.
+ * Use `RegExpQuantifier#isGreedy` instead.
+ */ 
+deprecated predicate isGreedy(RegExpQuantifier id) { is_greedy(id) }

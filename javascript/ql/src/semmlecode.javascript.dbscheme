@@ -877,7 +877,7 @@ regexp_parse_errors (unique int id: @regexp_parse_error,
 @regexp_subpattern = @regexp_lookahead | @regexp_lookbehind;
 @regexp_anchor = @regexp_dollar | @regexp_caret;
 
-isGreedy (int id: @regexp_quantifier ref);
+is_greedy (int id: @regexp_quantifier ref);
 rangeQuantifierLowerBound (unique int id: @regexp_range ref, int lo: int ref);
 rangeQuantifierUpperBound (unique int id: @regexp_range ref, int hi: int ref);
 isCapture (unique int id: @regexp_group ref, int number: int ref);

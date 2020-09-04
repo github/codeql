@@ -20061,7 +20061,7 @@
 </dependencies>
 </relation>
 <relation>
-<name>isGreedy</name>
+<name>is_greedy</name>
 <cardinality>2629</cardinality>
 <columnsizes>
 <e>
