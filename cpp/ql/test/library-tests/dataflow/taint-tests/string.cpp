@@ -512,8 +512,8 @@ void test_string_front_back() {
 	sink(a.front());
 	sink(a.back());
 	a.push_back(ns_char::source());
-	sink(a.front());
-	sink(a.back()); // tainted [NOT DETECTED]
+	sink(a.front()); // [FALSE POSITIVE]
+	sink(a.back()); // tainted
 }
 
 void test_string_return_assign() {

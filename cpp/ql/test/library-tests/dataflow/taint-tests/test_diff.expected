@@ -151,6 +151,8 @@
 | string.cpp:491:8:491:9 | string.cpp:482:18:482:23 | AST only |
 | string.cpp:504:7:504:8 | string.cpp:497:14:497:19 | AST only |
 | string.cpp:506:7:506:8 | string.cpp:497:14:497:19 | AST only |
+| string.cpp:515:9:515:13 | string.cpp:514:14:514:28 | AST only |
+| string.cpp:516:9:516:12 | string.cpp:514:14:514:28 | AST only |
 | string.cpp:529:11:529:11 | string.cpp:529:20:529:25 | AST only |
 | string.cpp:530:21:530:21 | string.cpp:530:24:530:29 | AST only |
 | string.cpp:531:25:531:25 | string.cpp:531:15:531:20 | AST only |

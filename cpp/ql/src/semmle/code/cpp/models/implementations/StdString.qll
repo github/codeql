@@ -1,6 +1,6 @@
 /**
  * Provides implementation classes modeling `std::string` and other
- * instantiations of`std::basic_string`. See `semmle.code.cpp.models.Models`
+ * instantiations of `std::basic_string`. See `semmle.code.cpp.models.Models`
  * for usage information.
  */
 
@@ -79,6 +79,32 @@ class StdStringData extends TaintFunction {
     // `data`)
     input.isReturnValueDeref() and
     output.isQualifierObject()
+  }
+}
+
+/**
+ * The `std::string` function `push_back`.
+ */
+class StdStringPush extends TaintFunction {
+  StdStringPush() { this.hasQualifiedName("std", "basic_string", "push_back") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from parameter to qualifier
+    input.isParameterDeref(0) and
+    output.isQualifierObject()
+  }
+}
+
+/**
+ * The `std::string` functions `front` and `back`.
+ */
+class StdStringFrontBack extends TaintFunction {
+  StdStringFrontBack() { this.hasQualifiedName("std", "basic_string", ["front", "back"]) }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from object to returned reference
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
   }
 }
 

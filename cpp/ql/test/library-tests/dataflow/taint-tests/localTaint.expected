@@ -1243,16 +1243,21 @@
 | string.cpp:510:16:510:20 | call to basic_string | string.cpp:514:2:514:2 | a |  |
 | string.cpp:510:16:510:20 | call to basic_string | string.cpp:515:7:515:7 | a |  |
 | string.cpp:510:16:510:20 | call to basic_string | string.cpp:516:7:516:7 | a |  |
+| string.cpp:512:7:512:7 | a | string.cpp:512:9:512:13 | call to front | TAINT |
 | string.cpp:512:7:512:7 | ref arg a | string.cpp:513:7:513:7 | a |  |
 | string.cpp:512:7:512:7 | ref arg a | string.cpp:514:2:514:2 | a |  |
 | string.cpp:512:7:512:7 | ref arg a | string.cpp:515:7:515:7 | a |  |
 | string.cpp:512:7:512:7 | ref arg a | string.cpp:516:7:516:7 | a |  |
+| string.cpp:513:7:513:7 | a | string.cpp:513:9:513:12 | call to back | TAINT |
 | string.cpp:513:7:513:7 | ref arg a | string.cpp:514:2:514:2 | a |  |
 | string.cpp:513:7:513:7 | ref arg a | string.cpp:515:7:515:7 | a |  |
 | string.cpp:513:7:513:7 | ref arg a | string.cpp:516:7:516:7 | a |  |
 | string.cpp:514:2:514:2 | ref arg a | string.cpp:515:7:515:7 | a |  |
 | string.cpp:514:2:514:2 | ref arg a | string.cpp:516:7:516:7 | a |  |
+| string.cpp:514:14:514:28 | call to source | string.cpp:514:2:514:2 | ref arg a | TAINT |
+| string.cpp:515:7:515:7 | a | string.cpp:515:9:515:13 | call to front | TAINT |
 | string.cpp:515:7:515:7 | ref arg a | string.cpp:516:7:516:7 | a |  |
+| string.cpp:516:7:516:7 | a | string.cpp:516:9:516:12 | call to back | TAINT |
 | string.cpp:521:17:521:20 | aa | string.cpp:521:17:521:21 | call to basic_string | TAINT |
 | string.cpp:521:17:521:21 | call to basic_string | string.cpp:528:9:528:9 | a |  |
 | string.cpp:521:17:521:21 | call to basic_string | string.cpp:532:8:532:8 | a |  |

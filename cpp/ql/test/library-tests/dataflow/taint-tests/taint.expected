@@ -141,6 +141,8 @@
 | string.cpp:491:8:491:9 | s6 | string.cpp:482:18:482:23 | call to source |
 | string.cpp:504:7:504:8 | s2 | string.cpp:497:14:497:19 | call to source |
 | string.cpp:506:7:506:8 | s4 | string.cpp:497:14:497:19 | call to source |
+| string.cpp:515:9:515:13 | call to front | string.cpp:514:14:514:28 | call to source |
+| string.cpp:516:9:516:12 | call to back | string.cpp:514:14:514:28 | call to source |
 | string.cpp:529:11:529:11 | call to operator+= | string.cpp:529:20:529:25 | call to source |
 | string.cpp:530:21:530:21 | call to operator+= | string.cpp:530:24:530:29 | call to source |
 | string.cpp:531:25:531:25 | call to operator+= | string.cpp:531:15:531:20 | call to source |
