@@ -410,7 +410,7 @@ scopes (unique int id: @scope,
 
 case @scope.kind of
    0 = @global_scope
-|  1 = @functionscope
+|  1 = @function_scope
 |  2 = @catchscope
 |  3 = @modulescope
 |  4 = @blockscope

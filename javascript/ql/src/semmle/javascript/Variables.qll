@@ -62,7 +62,7 @@ class ModuleScope extends Scope, @modulescope {
 }
 
 /** A scope induced by a function. */
-class FunctionScope extends Scope, @functionscope {
+class FunctionScope extends Scope, @function_scope {
   /** Gets the function that induces this scope. */
   Function getFunction() { result = getScopeElement() }
 
