@@ -1269,7 +1269,7 @@ class LocalNamespaceDecl extends VarDecl, NamespaceRef {
  * *Expressions* that refer to namespaces are represented as `VarAccess` and `PropAccess` expressions,
  * as opposed to `NamespaceAccess`.
  */
-class NamespaceAccess extends TypeExpr, NamespaceRef, @namespaceaccess {
+class NamespaceAccess extends TypeExpr, NamespaceRef, @namespace_access {
   Identifier getIdentifier() { none() }
 
   /**

@@ -592,7 +592,7 @@ case @typeexpr.kind of
 @literal_typeexpr = @string_literal_typeexpr | @number_literal_typeexpr | @boolean_literal_typeexpr | @bigint_literal_typeexpr;
 @typeaccess = @local_type_access | @qualified_type_access | @import_type_access;
 @vartypeaccess = @local_var_type_access | @qualified_var_type_access | @this_var_type_access | @import_var_type_access;
-@namespaceaccess = @local_namespace_access | @qualified_namespace_access | @import_namespace_access;
+@namespace_access = @local_namespace_access | @qualified_namespace_access | @import_namespace_access;
 @importtypeexpr = @import_type_access | @import_namespace_access | @import_var_type_access;
 
 @functiontypeexpr = @plain_function_typeexpr | @constructor_typeexpr;
@@ -695,7 +695,7 @@ case @symbol.kind of
 ;
 
 @type_with_symbol = @typereference | @typevariabletype | @typeoftype | @uniquesymboltype;
-@ast_node_with_symbol = @typedefinition | @namespacedefinition | @toplevel | @typeaccess | @namespaceaccess | @vardecl | @function | @invokeexpr | @importdeclaration | @externalmodulereference;
+@ast_node_with_symbol = @typedefinition | @namespacedefinition | @toplevel | @typeaccess | @namespace_access | @vardecl | @function | @invokeexpr | @importdeclaration | @externalmodulereference;
 
 ast_node_symbol(
   unique int node: @ast_node_with_symbol ref,
