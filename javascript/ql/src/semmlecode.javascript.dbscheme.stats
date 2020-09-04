@@ -7908,7 +7908,7 @@
 <dependencies/>
 </relation>
 <relation>
-<name>isInstantiated</name>
+<name>is_instantiated</name>
 <cardinality>5</cardinality>
 <columnsizes>
 <e>

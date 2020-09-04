@@ -83,7 +83,7 @@ class NamespaceDeclaration extends NamespaceDefinition, StmtContainer, @namespac
    * A namespace that is empty or only contains interfaces and type aliases is not instantiated,
    * and thus has no namespace object at runtime and is not associated with a variable.
    */
-  predicate isInstantiated() { isInstantiated(this) }
+  predicate isInstantiated() { is_instantiated(this) }
 
   override ControlFlowNode getFirstControlFlowNode() {
     if hasDeclareKeyword(this) then result = this else result = getIdentifier()

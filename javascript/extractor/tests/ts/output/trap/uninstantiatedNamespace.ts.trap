@@ -835,7 +835,7 @@ scopenesting(#20276,#20215)
 stmts(#20277,0,#20273,0,";")
 hasLocation(#20277,#20155)
 stmt_containers(#20277,#20273)
-isInstantiated(#20273)
+is_instantiated(#20273)
 #20278=*
 stmts(#20278,31,#20212,6,"namespa ... ck {{}}")
 #20279=@"loc,{#10000},22,3,22,27"
@@ -860,7 +860,7 @@ stmts(#20282,1,#20278,0,"{}")
 locations_default(#20283,#10000,22,25,22,26)
 hasLocation(#20282,#20283)
 stmt_containers(#20282,#20278)
-isInstantiated(#20278)
+is_instantiated(#20278)
 #20284=*
 stmts(#20284,18,#20212,7,"var x = ... yBlock]")
 #20285=@"loc,{#10000},24,3,24,82"
@@ -948,7 +948,7 @@ exprContainers(#20302,#20212)
 literals("EmptyBlock","EmptyBlock",#20302)
 bind(#20302,#20217)
 arraySize(#20289,7)
-isInstantiated(#20212)
+is_instantiated(#20212)
 #20303=*
 entry_cfg_node(#20303,#20001)
 #20304=@"loc,{#10000},1,1,1,0"

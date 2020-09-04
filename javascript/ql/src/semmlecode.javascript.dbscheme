@@ -198,7 +198,7 @@ case @stmt.kind of
 @namespacedefinition = @namespacedeclaration | @enumdeclaration;
 @typedefinition = @classdefinition | @interfacedeclaration | @enumdeclaration | @typealiasdeclaration | @enum_member;
 
-isInstantiated(unique int decl: @namespacedeclaration ref);
+is_instantiated(unique int decl: @namespacedeclaration ref);
 
 @declarablenode = @declstmt | @namespacedeclaration | @classdeclstmt | @functiondeclstmt | @enumdeclaration | @externalmoduledeclaration | @globalaugmentationdeclaration | @field;
 hasDeclareKeyword(unique int stmt: @declarablenode ref);

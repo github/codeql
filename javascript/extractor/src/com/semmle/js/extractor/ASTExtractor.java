@@ -1375,7 +1375,7 @@ public class ASTExtractor {
       contextManager.leaveContainer();
       scopeManager.leaveScope();
       if (nd.isInstantiated()) {
-        trapwriter.addTuple("isInstantiated", lbl);
+        trapwriter.addTuple("is_instantiated", lbl);
       }
       return lbl;
     }

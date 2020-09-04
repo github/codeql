@@ -8415,7 +8415,7 @@ hasLocation(#22804,#21469)
 enclosingStmt(#22804,#22777)
 exprContainers(#22804,#22183)
 literals("any","any",#22804)
-isInstantiated(#22183)
+is_instantiated(#22183)
 #22805=*
 stmts(#22805,31,#20001,1,"namespa ...  any;\n}")
 #22806=@"loc,{#10000},72,1,101,1"
@@ -10069,7 +10069,7 @@ hasLocation(#23199,#22172)
 enclosingStmt(#23199,#23170)
 exprContainers(#23199,#22805)
 literals("any","any",#23199)
-isInstantiated(#22805)
+is_instantiated(#22805)
 #23200=*
 entry_cfg_node(#23200,#20001)
 #23201=@"loc,{#10000},1,1,1,0"

@@ -101,3 +101,8 @@ deprecated predicate stmtContainers(Stmt stmt, StmtContainer container) { stmt_c
  * Use `JumpStmt#getTarget()` instead.
  */ 
 deprecated predicate jumpTargets(Stmt jump, Stmt target) { jump_targets(jump, target) }
+/**
+ * Alias for the predicate `is_instantiated` defined in the .dbscheme.
+ * Use `NamespaceDeclaration#isInstantiated() instead.`
+ */ 
+deprecated predicate isInstantiated(NamespaceDeclaration decl) { is_instantiated(decl) }
