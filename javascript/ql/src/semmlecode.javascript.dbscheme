@@ -627,7 +627,7 @@ case @type.kind of
 | 12 = @null_type
 | 13 = @never_type
 | 14 = @plain_symbol_type
-| 15 = @uniquesymboltype
+| 15 = @unique_symbol_type
 | 16 = @objectkeywordtype
 | 17 = @intersectiontype
 | 18 = @tupletype
@@ -641,7 +641,7 @@ case @type.kind of
 ;
 
 @booleanliteraltype = @true_type | @false_type;
-@symbol_type = @plain_symbol_type | @uniquesymboltype;
+@symbol_type = @plain_symbol_type | @unique_symbol_type;
 @union_or_intersection_type = @union_type | @intersectiontype;
 @typevariable_type = @canonical_type_variable_type | @lexicaltypevariabletype;
 
@@ -694,7 +694,7 @@ case @symbol.kind of
 | 2 = @other_symbol
 ;
 
-@type_with_symbol = @type_reference | @typevariable_type | @typeof_type | @uniquesymboltype;
+@type_with_symbol = @type_reference | @typevariable_type | @typeof_type | @unique_symbol_type;
 @ast_node_with_symbol = @typedefinition | @namespacedefinition | @toplevel | @typeaccess | @namespace_access | @var_decl | @function | @invokeexpr | @import_declaration | @external_module_reference;
 
 ast_node_symbol(

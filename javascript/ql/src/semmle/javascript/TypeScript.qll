@@ -2149,7 +2149,7 @@ class PlainSymbolType extends SymbolType, @plain_symbol_type { }
 /**
  * A `unique symbol` type.
  */
-class UniqueSymbolType extends SymbolType, @uniquesymboltype {
+class UniqueSymbolType extends SymbolType, @unique_symbol_type {
   /**
    * Gets the canonical name of the variable exposing the symbol.
    */
