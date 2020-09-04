@@ -437,7 +437,7 @@ scopenesting (unique int inner: @scope ref,
 @function = @functiondeclstmt | @functionexpr | @arrowfunctionexpr;
 
 @parameterized = @function | @catchclause;
-@type_parameterized = @function | @classorinterface | @typealiasdeclaration | @mappedtypeexpr | @infertypeexpr;
+@type_parameterized = @function | @classorinterface | @typealiasdeclaration | @mapped_typeexpr | @infertypeexpr;
 
 is_generator (int fun: @function ref);
 has_rest_parameter (int fun: @function ref);
@@ -574,7 +574,7 @@ case @typeexpr.kind of
 | 24 = @constructor_typeexpr
 | 25 = @local_namespace_access
 | 26 = @qualified_namespace_access
-| 27 = @mappedtypeexpr
+| 27 = @mapped_typeexpr
 | 28 = @conditionaltypeexpr
 | 29 = @infertypeexpr
 | 30 = @importtypeaccess

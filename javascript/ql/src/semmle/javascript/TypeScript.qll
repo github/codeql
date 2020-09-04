@@ -886,7 +886,7 @@ class KeyofTypeExpr extends @keyof_typeexpr, TypeExpr {
  * A type of form `{ [K in C]: T }` where `K in C` declares a type parameter with `C`
  * as the bound, and `T` is a type that may refer to `K`.
  */
-class MappedTypeExpr extends @mappedtypeexpr, TypeParameterized, TypeExpr {
+class MappedTypeExpr extends @mapped_typeexpr, TypeParameterized, TypeExpr {
   /**
    * Gets the `K in C` part from `{ [K in C]: T }`.
    */
