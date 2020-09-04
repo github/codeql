@@ -7919,7 +7919,7 @@
 <dependencies/>
 </relation>
 <relation>
-<name>hasDeclareKeyword</name>
+<name>has_declare_keyword</name>
 <cardinality>66</cardinality>
 <columnsizes>
 <e>

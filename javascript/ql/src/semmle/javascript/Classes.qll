@@ -276,7 +276,7 @@ class ClassDefinition extends @classdefinition, ClassOrInterface, AST::ValueNode
  */
 class ClassDeclStmt extends @classdeclstmt, ClassDefinition, Stmt {
   override ControlFlowNode getFirstControlFlowNode() {
-    if hasDeclareKeyword(this) then result = this else result = getIdentifier()
+    if has_declare_keyword(this) then result = this else result = getIdentifier()
   }
 }
 

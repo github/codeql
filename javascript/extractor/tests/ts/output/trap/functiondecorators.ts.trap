@@ -592,7 +592,7 @@ local_type_names(#20223,"C",#20000)
 stmts(#20224,18,#20001,0,"declare var A : any;")
 hasLocation(#20224,#20003)
 stmt_containers(#20224,#20001)
-hasDeclareKeyword(#20224)
+has_declare_keyword(#20224)
 #20225=*
 exprs(#20225,64,#20224,0,"A : any")
 #20226=@"loc,{#10000},1,13,1,19"
@@ -619,7 +619,7 @@ literals("any","any",#20229)
 stmts(#20230,18,#20001,1,"declare var B : any;")
 hasLocation(#20230,#20005)
 stmt_containers(#20230,#20001)
-hasDeclareKeyword(#20230)
+has_declare_keyword(#20230)
 #20231=*
 exprs(#20231,64,#20230,0,"B : any")
 #20232=@"loc,{#10000},2,13,2,19"
@@ -646,7 +646,7 @@ literals("any","any",#20235)
 stmts(#20236,18,#20001,2,"declare var C : any;")
 hasLocation(#20236,#20007)
 stmt_containers(#20236,#20001)
-hasDeclareKeyword(#20236)
+has_declare_keyword(#20236)
 #20237=*
 exprs(#20237,64,#20236,0,"C : any")
 #20238=@"loc,{#10000},3,13,3,19"

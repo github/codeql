@@ -106,3 +106,7 @@ deprecated predicate jumpTargets(Stmt jump, Stmt target) { jump_targets(jump, ta
  * Use `NamespaceDeclaration#isInstantiated() instead.`
  */ 
 deprecated predicate isInstantiated(NamespaceDeclaration decl) { is_instantiated(decl) }
+/**
+ * Alias for the predicate `has_declare_keyword` defined in the .dbscheme.
+ */ 
+deprecated predicate hasDeclareKeyword(ASTNode stmt) { has_declare_keyword(stmt) }

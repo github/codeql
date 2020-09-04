@@ -822,7 +822,7 @@ public class ASTExtractor {
     public Label visit(VariableDeclaration nd, Context c) {
       Label key = super.visit(nd, c);
       if (nd.hasDeclareKeyword()) {
-        trapwriter.addTuple("hasDeclareKeyword", key);
+        trapwriter.addTuple("has_declare_keyword", key);
       }
       visitAll(nd.getDeclarations(), key);
       return key;
@@ -881,7 +881,7 @@ public class ASTExtractor {
     public Label visit(FunctionDeclaration nd, Context c) {
       Label key = super.visit(nd, c);
       if (nd.hasDeclareKeyword()) {
-        trapwriter.addTuple("hasDeclareKeyword", key);
+        trapwriter.addTuple("has_declare_keyword", key);
       }
       extractFunction(nd, key);
       emitStaticType(nd, key);
@@ -1284,7 +1284,7 @@ public class ASTExtractor {
     public Label visit(ClassDeclaration nd, Context c) {
       Label lbl = super.visit(nd, c);
       if (nd.hasDeclareKeyword()) {
-        trapwriter.addTuple("hasDeclareKeyword", lbl);
+        trapwriter.addTuple("has_declare_keyword", lbl);
       }
       if (nd.hasAbstractKeyword()) {
         trapwriter.addTuple("isAbstractClass", lbl);
@@ -1361,7 +1361,7 @@ public class ASTExtractor {
           nd.isInstantiated() ? IdContext.varAndNamespaceDecl : IdContext.namespaceDecl;
       visit(nd.getName(), lbl, -1, context);
       if (nd.hasDeclareKeyword()) {
-        trapwriter.addTuple("hasDeclareKeyword", lbl);
+        trapwriter.addTuple("has_declare_keyword", lbl);
       }
       DeclaredNames hoistedVars =
           scopeManager.collectDeclaredNames(nd.getBody(), isStrict, false, DeclKind.none);
@@ -1539,7 +1539,7 @@ public class ASTExtractor {
       }
 
       if (nd.hasDeclareKeyword()) {
-        trapwriter.addTuple("hasDeclareKeyword", methkey);
+        trapwriter.addTuple("has_declare_keyword", methkey);
       }
 
       return methkey;
@@ -1947,7 +1947,7 @@ public class ASTExtractor {
         trapwriter.addTuple("isConstEnum", key);
       }
       if (nd.hasDeclareKeyword()) {
-        trapwriter.addTuple("hasDeclareKeyword", key);
+        trapwriter.addTuple("has_declare_keyword", key);
       }
       emitNodeSymbol(nd, key);
       return key;
@@ -1968,7 +1968,7 @@ public class ASTExtractor {
     @Override
     public Label visit(ExternalModuleDeclaration nd, Context c) {
       Label key = super.visit(nd, c);
-      trapwriter.addTuple("hasDeclareKeyword", key);
+      trapwriter.addTuple("has_declare_keyword", key);
       visit(nd.getName(), key, -1, IdContext.label);
       DeclaredNames hoistedVars =
           scopeManager.collectDeclaredNames(nd.getBody(), isStrict, false, DeclKind.none);
@@ -2013,7 +2013,7 @@ public class ASTExtractor {
       // The fake scope does not exist at the QL level, as it is indistinguishable
       // from the global scope.
       Label key = super.visit(nd, c);
-      trapwriter.addTuple("hasDeclareKeyword", key);
+      trapwriter.addTuple("has_declare_keyword", key);
       DeclaredNames hoistedVars =
           scopeManager.collectDeclaredNames(nd.getBody(), isStrict, false, DeclKind.none);
       DeclaredNames lexicalVars =

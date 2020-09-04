@@ -107,7 +107,7 @@ stmts(#20035,17,#20034,-1,"declare ...  foo();")
 locations_default(#20036,#10000,1,8,1,30)
 hasLocation(#20035,#20036)
 stmt_containers(#20035,#20001)
-hasDeclareKeyword(#20035)
+has_declare_keyword(#20035)
 #20037=*
 exprs(#20037,78,#20035,-1,"foo")
 hasLocation(#20037,#20013)

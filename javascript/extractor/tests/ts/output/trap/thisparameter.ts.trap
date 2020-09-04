@@ -532,7 +532,7 @@ stmt_containers(#20186,#20178)
 stmts(#20188,17,#20001,2,"declare ... umber);")
 hasLocation(#20188,#20011)
 stmt_containers(#20188,#20001)
-hasDeclareKeyword(#20188)
+has_declare_keyword(#20188)
 #20189=*
 exprs(#20189,78,#20188,-1,"ambient")
 hasLocation(#20189,#20091)

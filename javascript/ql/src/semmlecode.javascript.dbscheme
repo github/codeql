@@ -201,7 +201,7 @@ case @stmt.kind of
 is_instantiated(unique int decl: @namespacedeclaration ref);
 
 @declarablenode = @declstmt | @namespacedeclaration | @classdeclstmt | @functiondeclstmt | @enumdeclaration | @externalmoduledeclaration | @globalaugmentationdeclaration | @field;
-hasDeclareKeyword(unique int stmt: @declarablenode ref);
+has_declare_keyword(unique int stmt: @declarablenode ref);
 
 isForAwaitOf(unique int forof: @forofstmt ref);
 

@@ -46,7 +46,7 @@ public class DeclarationFlags {
           "hasProtectedKeyword",
           "isOptionalMember",
           "hasDefiniteAssignmentAssertion",
-          "hasDeclareKeyword");
+          "has_declare_keyword");
 
   public static boolean isComputed(int flags) {
     return (flags & computed) != 0;

@@ -148,12 +148,12 @@ class ASTNode extends @ast_node, NodeInStmtContainer {
       or
       this instanceof InterfaceDeclaration
       or
-      hasDeclareKeyword(this)
+      has_declare_keyword(this)
       or
       hasTypeKeyword(this)
       or
       // An export such as `export declare function f()` should be seen as ambient.
-      hasDeclareKeyword(this.(ExportNamedDeclaration).getOperand())
+      has_declare_keyword(this.(ExportNamedDeclaration).getOperand())
       or
       exists(Function f |
         this = f and

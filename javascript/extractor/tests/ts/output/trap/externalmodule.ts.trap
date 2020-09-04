@@ -234,7 +234,7 @@ stmts(#20082,37,#20001,0,"declare ...  = M;\n}")
 locations_default(#20083,#10000,1,1,9,1)
 hasLocation(#20082,#20083)
 stmt_containers(#20082,#20001)
-hasDeclareKeyword(#20082)
+has_declare_keyword(#20082)
 #20084=*
 exprs(#20084,4,#20082,-1,"""X""")
 hasLocation(#20084,#20025)

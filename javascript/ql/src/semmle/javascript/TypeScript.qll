@@ -86,7 +86,7 @@ class NamespaceDeclaration extends NamespaceDefinition, StmtContainer, @namespac
   predicate isInstantiated() { is_instantiated(this) }
 
   override ControlFlowNode getFirstControlFlowNode() {
-    if hasDeclareKeyword(this) then result = this else result = getIdentifier()
+    if has_declare_keyword(this) then result = this else result = getIdentifier()
   }
 }
 
