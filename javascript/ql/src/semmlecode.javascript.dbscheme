@@ -151,7 +151,7 @@ jump_targets (unique int jump: @stmt ref,
 case @stmt.kind of
    0 = @empty_stmt
 |  1 = @block_stmt
-|  2 = @exprstmt
+|  2 = @expr_stmt
 |  3 = @ifstmt
 |  4 = @labeledstmt
 |  5 = @breakstmt

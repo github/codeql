@@ -165,7 +165,7 @@ class BlockStmt extends @block_stmt, Stmt {
  * console.log("Restart.");
  * ```
  */
-class ExprStmt extends @exprstmt, Stmt {
+class ExprStmt extends @expr_stmt, Stmt {
   /** Gets the expression of this expression statement. */
   Expr getExpr() { result = getChildExpr(0) }
 
