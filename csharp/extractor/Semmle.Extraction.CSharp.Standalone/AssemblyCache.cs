@@ -94,7 +94,7 @@ namespace Semmle.BuildAnalyser
         {
             // Fast path if we've already seen this before.
             if (failedAssemblyInfoIds.Contains(id))
-                return AssemblyInfo.Invalid;
+                throw new AssemblyLoadException();
 
             string assemblyName;
             (id, assemblyName) = AssemblyInfo.ComputeSanitizedAssemblyInfo(id);
@@ -147,8 +147,7 @@ namespace Semmle.BuildAnalyser
 
             failedAssemblyInfoIds.Add(id);   // Fail early next time
 
-            return AssemblyInfo.Invalid;
-
+            throw new AssemblyLoadException();
         }
 
         /// <summary>
@@ -175,7 +174,7 @@ namespace Semmle.BuildAnalyser
                 return info;
             }
 
-            return AssemblyInfo.Invalid;
+            throw new AssemblyLoadException();
         }
 
         readonly Queue<string> pendingDllsToIndex = new Queue<string>();

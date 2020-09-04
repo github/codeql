@@ -76,21 +76,7 @@ namespace Semmle.BuildAnalyser
             }
         }
 
-        /// <summary>
-        /// Get an invalid assembly info.
-        /// </summary>
-        public static AssemblyInfo Invalid { get; } = new AssemblyInfo();
-
-        // Constructs a partial AssemblyInfo for the above Invalid instance.
-        private AssemblyInfo()
-        {
-            // Initializing non null fields.
-            Name = string.Empty;
-            Filename = string.Empty;
-        }
-
-        // Constructs only a partial AssemblyInfo, FileName is not specified
-        private AssemblyInfo(string id) : this()
+        private AssemblyInfo(string id, string filename)
         {
             var sections = id.Split(new string[] { ", " }, StringSplitOptions.None);
 
@@ -106,10 +92,7 @@ namespace Semmle.BuildAnalyser
                     PublicKeyToken = section.Substring(15);
                 // else: Some other field like processorArchitecture - ignore.
             }
-        }
 
-        private AssemblyInfo(string id, string filename) : this(id)
-        {
             Filename = filename;
         }
 
@@ -142,7 +125,7 @@ namespace Semmle.BuildAnalyser
         /// </summary>
         public static (string id, string name) ComputeSanitizedAssemblyInfo(string id)
         {
-            var assembly = new AssemblyInfo(id);
+            var assembly = new AssemblyInfo(id, string.Empty);
             return (assembly.Id, assembly.Name);
         }
 
