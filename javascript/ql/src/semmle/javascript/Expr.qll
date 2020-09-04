@@ -1239,7 +1239,7 @@ class VoidExpr extends @void_expr, UnaryExpr {
  * delete elt[_expando]
  * ```
  */
-class DeleteExpr extends @deleteexpr, UnaryExpr {
+class DeleteExpr extends @delete_expr, UnaryExpr {
   override string getOperator() { result = "delete" }
 
   override predicate isImpure() { any() }
