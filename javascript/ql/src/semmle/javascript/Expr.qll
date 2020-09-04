@@ -1406,7 +1406,7 @@ class StrictEqExpr extends @eqq_expr, EqualityTest {
  * res !== res
  * ```
  */
-class StrictNEqExpr extends @neqqexpr, EqualityTest {
+class StrictNEqExpr extends @neqq_expr, EqualityTest {
   override string getOperator() { result = "!==" }
 }
 
