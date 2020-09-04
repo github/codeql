@@ -350,7 +350,7 @@ case @expr.kind of
 | 112 = @e4x_xml_static_qualident
 | 113 = @e4x_xml_dynamic_qualident
 | 114 = @e4x_xml_dotdotexpr
-| 115 = @importmetaexpr
+| 115 = @import_meta_expr
 | 116 = @assignlogandexpr
 | 117 = @assignlogorexpr
 | 118 = @assignnullishcoalescingexpr

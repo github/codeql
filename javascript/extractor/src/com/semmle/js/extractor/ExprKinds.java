@@ -262,7 +262,7 @@ public class ExprKinds {
               @Override
               public Integer visit(MetaProperty nd, Void c) {
                 if (nd.getMeta().getName().equals("new")) return 82; // @newtarget_expr
-                if (nd.getMeta().getName().equals("import")) return 115; // @importmetaexpr
+                if (nd.getMeta().getName().equals("import")) return 115; // @import_meta_expr
                 return 93; // @function_sent_expr
               }
 
