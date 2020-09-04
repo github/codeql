@@ -1473,7 +1473,7 @@ class InterfaceScope extends @interface_scope, Scope {
  *
  * Type aliases that do not declare type parameters have no scope object.
  */
-class TypeAliasScope extends @typealiasscope, Scope {
+class TypeAliasScope extends @type_alias_scope, Scope {
   override string toString() { result = "type alias scope" }
 }
 

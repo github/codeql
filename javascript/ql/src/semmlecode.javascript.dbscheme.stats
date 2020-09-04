@@ -678,7 +678,7 @@
 <v>200</v>
 </e>
 <e>
-<k>@typealiasscope</k>
+<k>@type_alias_scope</k>
 <v>11</v>
 </e>
 <e>
