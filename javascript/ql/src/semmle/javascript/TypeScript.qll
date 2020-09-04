@@ -716,7 +716,7 @@ class QualifiedTypeAccess extends @qualified_type_access, TypeAccess {
  * For convenience, the methods for accessing type arguments are also made available
  * on the `TypeAccess` class.
  */
-class GenericTypeExpr extends @generictypeexpr, TypeExpr {
+class GenericTypeExpr extends @generic_typeexpr, TypeExpr {
   /** Gets the name of the type, such as `Array` in `Array<number>`. */
   TypeAccess getTypeAccess() { result = getChildTypeExpr(-1) }
 
