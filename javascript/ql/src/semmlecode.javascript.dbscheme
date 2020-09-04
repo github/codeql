@@ -149,7 +149,7 @@ jump_targets (unique int jump: @stmt ref,
 @stmt_container = @toplevel | @function | @namespace_declaration | @external_module_declaration | @global_augmentation_declaration;
 
 case @stmt.kind of
-   0 = @emptystmt
+   0 = @empty_stmt
 |  1 = @blockstmt
 |  2 = @exprstmt
 |  3 = @ifstmt

@@ -128,7 +128,7 @@ class LoopStmt extends TLoopStmt, ControlStmt {
  * ;
  * ```
  */
-class EmptyStmt extends @emptystmt, Stmt { }
+class EmptyStmt extends @empty_stmt, Stmt { }
 
 /**
  * A block of statements.
