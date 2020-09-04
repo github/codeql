@@ -68,7 +68,7 @@ class TemplateLiteral extends Expr, @template_literal {
  * `Hello, ${user.name}!` // "Hello, " and "!" are constant template elements
  * ```
  */
-class TemplateElement extends Expr, @templateelement {
+class TemplateElement extends Expr, @template_element {
   /**
    * Holds if this template element has a "cooked" value.
    *

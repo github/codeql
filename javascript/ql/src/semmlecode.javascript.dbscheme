@@ -307,7 +307,7 @@ case @expr.kind of
 | 69 = @yield_expr
 | 70 = @tagged_template_expr
 | 71 = @template_literal
-| 72 = @templateelement
+| 72 = @template_element
 | 73 = @arraycomprehensionexpr
 | 74 = @generatorexpr
 | 75 = @forincomprehensionblock
