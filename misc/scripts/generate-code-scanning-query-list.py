@@ -82,19 +82,19 @@ def get_query_metadata(key, metadata, queryfile):
     return ""
 
 def subprocess_run(cmd):
-    return subprocess.run(cmd, capture_output=True, text=True, env=os.environ.copy())
+    return subprocess.run(cmd, capture_output=True, text=True, env=os.environ.copy(), check=True)
 
-# Check for `git`
-git_version = subprocess_run(["git","--version"])
-if (git_version.returncode != 0):
+try: # Check for `git` on path
+    git_version = subprocess_run(["git","--version"])
+except Exception as e:
     print("Error: couldn't invoke 'git'. Is it on the path? Aborting.", file=sys.stderr)
-    sys.exit(1)
+    raise e
 
-# Check for `codeql`
-codeql_version = subprocess_run(["codeql","--version"])
-if (codeql_version.returncode != 0):
+try: # Check for `codeql` on path
+    codeql_version = subprocess_run(["codeql","--vfersion"])
+except Exception as e:
     print("Error: couldn't invoke CodeQL CLI 'codeql'. Is it on the path? Aborting.", file=sys.stderr)
-    sys.exit(1)
+    raise e
     
 # Extend CodeQL search path by detecting root of the current Git repo (if any). This means that you
 # can run this script from any location within the CodeQL git repository.
