@@ -2181,7 +2181,7 @@ class ObjectKeywordType extends Type, @objectkeywordtype { }
 /**
  * A type that refers to a class, interface, enum, or enum member.
  */
-class TypeReference extends Type, @typereference {
+class TypeReference extends Type, @type_reference {
   /**
    * Gets the canonical name of the type being referenced.
    */

@@ -618,7 +618,7 @@ case @type.kind of
 | 3 = @union_type
 | 4 = @true_type
 | 5 = @false_type
-| 6 = @typereference
+| 6 = @type_reference
 | 7 = @objecttype
 | 8 = @canonicaltypevariabletype
 | 9 = @typeoftype
@@ -694,7 +694,7 @@ case @symbol.kind of
 | 2 = @other_symbol
 ;
 
-@type_with_symbol = @typereference | @typevariable_type | @typeoftype | @uniquesymboltype;
+@type_with_symbol = @type_reference | @typevariable_type | @typeoftype | @uniquesymboltype;
 @ast_node_with_symbol = @typedefinition | @namespacedefinition | @toplevel | @typeaccess | @namespace_access | @var_decl | @function | @invokeexpr | @import_declaration | @external_module_reference;
 
 ast_node_symbol(
@@ -778,7 +778,7 @@ base_type_names(
 
 self_types(
   int typeName: @symbol ref,
-  int selfType: @typereference ref
+  int selfType: @type_reference ref
 );
 
 tuple_type_min_length(
