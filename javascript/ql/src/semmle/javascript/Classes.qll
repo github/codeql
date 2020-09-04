@@ -497,7 +497,7 @@ class MemberDeclaration extends @property, Documentable {
   /**
    * Holds if this is a TypeScript member annotated with the `private` keyword.
    */
-  predicate isPrivate() { hasPrivateKeyword(this) }
+  predicate isPrivate() { has_private_keyword(this) }
 
   /**
    * Holds if this is a TypeScript member annotated with the `protected` keyword.

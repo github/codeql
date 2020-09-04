@@ -42,7 +42,7 @@ public class DeclarationFlags {
           "is_static",
           "hasReadonlyKeyword",
           "has_public_keyword",
-          "hasPrivateKeyword",
+          "has_private_keyword",
           "hasProtectedKeyword",
           "isOptionalMember",
           "hasDefiniteAssignmentAssertion",

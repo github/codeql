@@ -175,3 +175,8 @@ deprecated predicate isAbstractClass(ClassDeclStmt id) { is_abstract_class(id) }
  * Use `MemberDeclaration#hasPublicKeyword() instead.
  */ 
 deprecated predicate hasPublicKeyword(Property prop) { has_public_keyword(prop) }
+/**
+ * Alias for the predicate `has_private_keyword` defined in the .dbscheme.
+ * Use `MemberDeclaration#isPrivate() instead.
+ */ 
+deprecated predicate hasPrivateKeyword(Property prop) { has_private_keyword(prop) }

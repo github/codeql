@@ -7963,7 +7963,7 @@
 <dependencies/>
 </relation>
 <relation>
-<name>hasPrivateKeyword</name>
+<name>has_private_keyword</name>
 <cardinality>11391</cardinality>
 <columnsizes>
 <e>
