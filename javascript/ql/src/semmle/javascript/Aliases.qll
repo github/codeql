@@ -64,3 +64,6 @@ class ThisAccess = ThisExpr;
 class VariableAccess = VarAccess;
 
 class XorBitwiseExpr = XOrExpr;
+
+// Aliases for deprecated predicates from the dbscheme
+ 
