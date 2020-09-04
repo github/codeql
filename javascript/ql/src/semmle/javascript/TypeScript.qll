@@ -1070,7 +1070,7 @@ class ConditionalTypeExpr extends @conditional_typeexpr, TypeExpr {
 /**
  * A type annotation of form `infer R`.
  */
-class InferTypeExpr extends @infertypeexpr, TypeParameterized, TypeExpr {
+class InferTypeExpr extends @infer_typeexpr, TypeParameterized, TypeExpr {
   /**
    * Gets the type parameter capturing the matched type, such as `R` in `infer R`.
    */
