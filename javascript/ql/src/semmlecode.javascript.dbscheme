@@ -175,7 +175,7 @@ case @stmt.kind of
 | 23 = @let_stmt
 | 24 = @legacy_let_stmt
 | 25 = @for_each_stmt
-| 26 = @classdeclstmt
+| 26 = @class_decl_stmt
 | 27 = @importdeclaration
 | 28 = @exportalldeclaration
 | 29 = @exportdefaultdeclaration
@@ -200,7 +200,7 @@ case @stmt.kind of
 
 is_instantiated(unique int decl: @namespace_declaration ref);
 
-@declarable_node = @declstmt | @namespace_declaration | @classdeclstmt | @function_decl_stmt | @enumdeclaration | @external_module_declaration | @global_augmentation_declaration | @field;
+@declarable_node = @declstmt | @namespace_declaration | @class_decl_stmt | @function_decl_stmt | @enumdeclaration | @external_module_declaration | @global_augmentation_declaration | @field;
 has_declare_keyword(unique int stmt: @declarable_node ref);
 
 is_for_await_of(unique int forof: @for_of_stmt ref);
@@ -393,7 +393,7 @@ case @expr.kind of
 
 @typeassertion = @astypeassertion | @prefixtypeassertion;
 
-@classdefinition = @classdeclstmt | @classexpr;
+@classdefinition = @class_decl_stmt | @classexpr;
 @interfacedefinition = @interfacedeclaration | @interface_typeexpr;
 @class_or_interface = @classdefinition | @interfacedefinition;
 
@@ -518,7 +518,7 @@ is_method   (int id: @property ref);
 is_static   (int id: @property ref);
 is_abstract_member (int id: @property ref);
 is_const_enum (int id: @enumdeclaration ref);
-is_abstract_class (int id: @classdeclstmt ref);
+is_abstract_class (int id: @class_decl_stmt ref);
 
 has_public_keyword (int id: @property ref);
 has_private_keyword (int id: @property ref);
@@ -1130,7 +1130,7 @@ xmllocations(
 
 @xmllocatable = @xmlcharacters | @xmlelement | @xmlcomment | @xmlattribute | @xmldtd | @file | @xmlnamespace;
 
-@dataflownode = @expr | @function_decl_stmt | @classdeclstmt | @namespace_declaration | @enumdeclaration | @property;
+@dataflownode = @expr | @function_decl_stmt | @class_decl_stmt | @namespace_declaration | @enumdeclaration | @property;
 
 @optionalchainable = @callexpr | @propaccess;
 
