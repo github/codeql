@@ -136,7 +136,7 @@ public class JSExtractor {
       lexicalExtractor.extractLines(source, toplevelLabel);
     }
 
-    if (config.isExterns()) textualExtractor.getTrapwriter().addTuple("isExterns", toplevelLabel);
+    if (config.isExterns()) textualExtractor.getTrapwriter().addTuple("is_externs", toplevelLabel);
     if (platform == Platform.NODE && sourceType == SourceType.COMMONJS_MODULE)
       textualExtractor.getTrapwriter().addTuple("isNodejs", toplevelLabel);
 

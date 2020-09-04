@@ -118,7 +118,7 @@ filetype(
 toplevels (unique int id: @toplevel,
            int kind: int ref);
 
-isExterns (int toplevel: @toplevel ref);
+is_externs (int toplevel: @toplevel ref);
 
 case @toplevel.kind of
    0 = @script

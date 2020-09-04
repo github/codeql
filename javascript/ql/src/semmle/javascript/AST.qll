@@ -221,7 +221,7 @@ class TopLevel extends @toplevel, StmtContainer {
   /** Holds if this toplevel is an externs definitions file. */
   predicate isExterns() {
     // either it was explicitly extracted as an externs file...
-    isExterns(this)
+    is_externs(this)
     or
     // ...or it has a comment with an `@externs` tag in it
     exists(JSDocTag externs |

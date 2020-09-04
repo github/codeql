@@ -67,3 +67,8 @@ class XorBitwiseExpr = XOrExpr;
 
 // Aliases for deprecated predicates from the dbscheme
  
+/**
+ * Alias for the predicate `is_externs` defined in the .dbscheme.
+ * Use `TopLevel#isExterns()` instead.
+ */ 
+deprecated predicate isExterns(TopLevel toplevel) { is_externs(toplevel) }

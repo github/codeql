@@ -7897,7 +7897,7 @@
 </dependencies>
 </relation>
 <relation>
-<name>isExterns</name>
+<name>is_externs</name>
 <cardinality>44</cardinality>
 <columnsizes>
 <e>
