@@ -509,7 +509,7 @@ class BreakOrContinueStmt extends TBreakOrContinueStmt, JumpStmt {
   predicate hasTargetLabel() { exists(getTargetLabel()) }
 
   /** Gets the statement this statement breaks out of or continues with. */
-  override Stmt getTarget() { jumpTargets(this, result) }
+  override Stmt getTarget() { jump_targets(this, result) }
 
   override predicate isSubjectToSemicolonInsertion() { any() }
 }

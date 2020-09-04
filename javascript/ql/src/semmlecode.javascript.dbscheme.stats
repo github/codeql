@@ -10133,7 +10133,7 @@
 </dependencies>
 </relation>
 <relation>
-<name>jumpTargets</name>
+<name>jump_targets</name>
 <cardinality>11791</cardinality>
 <columnsizes>
 <e>

@@ -386,7 +386,7 @@ stmts(#20136,5,#20134,0,"break;")
 locations_default(#20137,#10000,3,5,3,10)
 hasLocation(#20136,#20137)
 stmt_containers(#20136,#20001)
-jumpTargets(#20136,#20130)
+jump_targets(#20136,#20130)
 #20138=*
 stmts(#20138,19,#20130,1,"case 23 ...  += 19;")
 #20139=@"loc,{#10000},4,1,5,12"

@@ -1222,7 +1222,7 @@ public class ASTExtractor {
       Label key = super.visit(nd, c);
       visit(nd.getLabel(), key, 0, IdContext.label);
       Label targetKey = trapwriter.localID(contextManager.getTarget(nd));
-      trapwriter.addTuple("jumpTargets", key, targetKey);
+      trapwriter.addTuple("jump_targets", key, targetKey);
       return key;
     }
 

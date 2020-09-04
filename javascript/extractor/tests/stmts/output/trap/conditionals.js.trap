@@ -313,7 +313,7 @@ stmts(#20102,5,#20098,0,"break;")
 locations_default(#20103,#10000,10,5,10,10)
 hasLocation(#20102,#20103)
 stmt_containers(#20102,#20001)
-jumpTargets(#20102,#20093)
+jump_targets(#20102,#20093)
 #20104=*
 stmts(#20104,19,#20093,2,"default:")
 hasLocation(#20104,#20023)

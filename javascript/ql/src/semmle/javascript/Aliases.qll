@@ -96,3 +96,8 @@ deprecated predicate isClosureModule(TopLevel toplevel) { is_closure_module(topl
  * Use `ASTNode#getContainer()` instead.
  */ 
 deprecated predicate stmtContainers(Stmt stmt, StmtContainer container) { stmt_containers(stmt, container) }
+/**
+ * Alias for the predicate `jump_targets` defined in the .dbscheme.
+ * Use `JumpStmt#getTarget()` instead.
+ */ 
+deprecated predicate jumpTargets(Stmt jump, Stmt target) { jump_targets(jump, target) }

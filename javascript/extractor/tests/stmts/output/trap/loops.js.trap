@@ -718,7 +718,7 @@ hasLocation(#20258,#20097)
 enclosingStmt(#20258,#20256)
 exprContainers(#20258,#20001)
 literals("outer","outer",#20258)
-jumpTargets(#20256,#20237)
+jump_targets(#20256,#20237)
 #20259=*
 stmts(#20259,3,#20252,2,"if (e)\n ... ntinue;")
 #20260=@"loc,{#10000},7,14,10,21"
@@ -746,14 +746,14 @@ hasLocation(#20265,#20113)
 enclosingStmt(#20265,#20263)
 exprContainers(#20265,#20001)
 literals("outer","outer",#20265)
-jumpTargets(#20263,#20237)
+jump_targets(#20263,#20237)
 #20266=*
 stmts(#20266,6,#20259,2,"continue;")
 #20267=@"loc,{#10000},10,13,10,21"
 locations_default(#20267,#10000,10,13,10,21)
 hasLocation(#20266,#20267)
 stmt_containers(#20266,#20001)
-jumpTargets(#20266,#20250)
+jump_targets(#20266,#20250)
 #20268=*
 stmts(#20268,13,#20001,2,"do {\n   ... ile(a);")
 #20269=@"loc,{#10000},13,1,15,11"

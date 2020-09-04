@@ -1064,7 +1064,7 @@ stmts(#20369,6,#20365,3,"continue;")
 locations_default(#20370,#10000,13,5,13,13)
 hasLocation(#20369,#20370)
 stmt_containers(#20369,#20001)
-jumpTargets(#20369,#20365)
+jump_targets(#20369,#20365)
 #20371=*
 stmts(#20371,17,#20001,2,"functio ...  (p);\n}")
 #20372=@"loc,{#10000},15,1,18,1"

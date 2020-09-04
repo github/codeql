@@ -142,7 +142,7 @@ stmts (unique int id: @stmt,
 stmt_containers (unique int stmt: @stmt ref,
        int container: @stmt_container ref);
        
-jumpTargets (unique int jump: @stmt ref,
+jump_targets (unique int jump: @stmt ref,
        int target: @stmt ref);
 
 @stmtparent = @stmt | @toplevel | @functionexpr | @arrowfunctionexpr;
