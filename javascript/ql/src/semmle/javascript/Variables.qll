@@ -78,7 +78,7 @@ class CatchScope extends Scope, @catch_scope {
 }
 
 /** A scope induced by a block of statements. */
-class BlockScope extends Scope, @blockscope {
+class BlockScope extends Scope, @block_scope {
   /** Gets the block of statements that induces this scope. */
   BlockStmt getBlock() { result = getScopeElement() }
 

@@ -413,7 +413,7 @@ case @scope.kind of
 |  1 = @function_scope
 |  2 = @catch_scope
 |  3 = @module_scope
-|  4 = @blockscope
+|  4 = @block_scope
 |  5 = @forscope
 |  6 = @forinscope // for-of scopes work the same as for-in scopes
 |  7 = @comprehensionblockscope
