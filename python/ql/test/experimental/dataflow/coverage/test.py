@@ -6,7 +6,7 @@
 #
 # Functions whose name ends with "_with_local_flow" will also be tested for local flow.
 #
-# All functions starting with "test_" should run and print `"OK"`.
+# All functions starting with "test_" should run and execute `print("OK")` one or more times.
 # This can be checked by running validTest.py.
 
 # These are defined so that we can evaluate the test code.

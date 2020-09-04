@@ -5,7 +5,7 @@
 # These tests should cover all the class calls that we hope to support.
 # It is based on https://docs.python.org/3/reference/datamodel.html, and headings refer there.
 #
-# All functions starting with "test_" should run and print `"OK"`.
+# All functions starting with "test_" should run and execute `print("OK")` one or more times.
 # This can be checked by running validTest.py.
 
 import asyncio
