@@ -924,7 +924,7 @@ class TypeofTypeExpr extends @typeof_typeexpr, TypeExpr {
  * function f(x): asserts x {}
  * ```
  */
-class PredicateTypeExpr extends @predicatetypeexpr, TypeExpr {
+class PredicateTypeExpr extends @predicate_typeexpr, TypeExpr {
   /**
    * Gets the parameter name or `this` token `E` in `E is T`.
    */
