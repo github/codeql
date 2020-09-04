@@ -144,7 +144,7 @@ private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalAttributeN
  * It is recommended that all uses of this type are written in the following form,
  * for tracking some type `myType`:
  * ```
- * Node myType(DataFlow::TypeTracker t) {
+ * DataFlow::Node myType(DataFlow::TypeTracker t) {
  *   t.start() and
  *   result = < source of myType >
  *   or
@@ -153,7 +153,7 @@ private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalAttributeN
  *   )
  * }
  *
- * DataFlow::SourceNode myType() { result = myType(DataFlow::TypeTracker::end()) }
+ * DataFlow::Node myType() { result = myType(DataFlow::TypeTracker::end()) }
  * ```
  *
  * Instead of `result = myType(t2).track(t2, t)`, you can also use the equivalent
