@@ -789,7 +789,7 @@ class BigIntLiteralTypeExpr extends @bigintliteraltypeexpr, LiteralTypeExpr {
  * Named types such as `Array<number>` and tuple types such as `[number, string]`
  * are not array type expressions.
  */
-class ArrayTypeExpr extends @arraytypeexpr, TypeExpr {
+class ArrayTypeExpr extends @array_typeexpr, TypeExpr {
   /** Gets the type of the array elements. */
   TypeExpr getElementType() { result = getChildTypeExpr(0) }
 }

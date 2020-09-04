@@ -553,7 +553,7 @@ case @typeexpr.kind of
 | 3 = @string_literal_typeexpr
 | 4 = @number_literal_typeexpr
 | 5 = @boolean_literal_typeexpr
-| 6 = @arraytypeexpr
+| 6 = @array_typeexpr
 | 7 = @uniontypeexpr
 | 8 = @indexedaccesstypeexpr
 | 9 = @intersectiontypeexpr
