@@ -626,7 +626,7 @@ case @type.kind of
 | 11 = @undefined_type
 | 12 = @null_type
 | 13 = @never_type
-| 14 = @plainsymboltype
+| 14 = @plain_symbol_type
 | 15 = @uniquesymboltype
 | 16 = @objectkeywordtype
 | 17 = @intersectiontype
@@ -641,7 +641,7 @@ case @type.kind of
 ;
 
 @booleanliteraltype = @true_type | @false_type;
-@symbol_type = @plainsymboltype | @uniquesymboltype;
+@symbol_type = @plain_symbol_type | @uniquesymboltype;
 @union_or_intersection_type = @union_type | @intersectiontype;
 @typevariable_type = @canonical_type_variable_type | @lexicaltypevariabletype;
 
