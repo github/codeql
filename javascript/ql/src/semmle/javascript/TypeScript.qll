@@ -1085,7 +1085,7 @@ class InferTypeExpr extends @infer_typeexpr, TypeParameterized, TypeExpr {
  * A scope induced by a conditional type expression whose `extends` type
  * contains `infer` types.
  */
-class ConditionalTypeScope extends @conditionaltypescope, Scope {
+class ConditionalTypeScope extends @conditional_type_scope, Scope {
   /** Gets the conditional type expression that induced this scope. */
   ConditionalTypeExpr getConditionalTypeExpr() { result = Scope.super.getScopeElement() }
 }
