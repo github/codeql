@@ -94,7 +94,7 @@ class ForScope extends Scope, @for_scope {
 }
 
 /** A scope induced by a `for`-`in` or `for`-`of` statement. */
-class ForInScope extends Scope, @forinscope {
+class ForInScope extends Scope, @for_in_scope {
   /** Gets the `for`-`in` or `for`-`of` statement that induces this scope. */
   EnhancedForLoop getLoop() { result = getScopeElement() }
 
