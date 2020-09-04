@@ -1008,7 +1008,7 @@ class LetStmt extends @let_stmt, DeclStmt { }
  * }
  * ```
  */
-class LegacyLetStmt extends @legacy_letstmt, DeclStmt {
+class LegacyLetStmt extends @legacy_let_stmt, DeclStmt {
   /** Gets the statement this let statement scopes over. */
   Stmt getBody() { result = getChildStmt(-1) }
 

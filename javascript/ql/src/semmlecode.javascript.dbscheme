@@ -173,7 +173,7 @@ case @stmt.kind of
 | 21 = @for_of_stmt
 | 22 = @const_decl_stmt
 | 23 = @let_stmt
-| 24 = @legacy_letstmt
+| 24 = @legacy_let_stmt
 | 25 = @foreachstmt
 | 26 = @classdeclstmt
 | 27 = @importdeclaration
@@ -191,7 +191,7 @@ case @stmt.kind of
 | 39 = @global_augmentation_declaration
 ;
 
-@declstmt = @var_decl_stmt | @const_decl_stmt | @let_stmt | @legacy_letstmt;
+@declstmt = @var_decl_stmt | @const_decl_stmt | @let_stmt | @legacy_let_stmt;
 
 @exportdeclaration = @exportalldeclaration | @exportdefaultdeclaration | @exportnameddeclaration;
 
