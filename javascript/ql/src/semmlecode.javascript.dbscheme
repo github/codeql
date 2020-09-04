@@ -171,7 +171,7 @@ case @stmt.kind of
 | 19 = @case
 | 20 = @catch_clause
 | 21 = @for_of_stmt
-| 22 = @constdeclstmt
+| 22 = @const_decl_stmt
 | 23 = @letstmt
 | 24 = @legacy_letstmt
 | 25 = @foreachstmt
@@ -191,7 +191,7 @@ case @stmt.kind of
 | 39 = @global_augmentation_declaration
 ;
 
-@declstmt = @var_decl_stmt | @constdeclstmt | @letstmt | @legacy_letstmt;
+@declstmt = @var_decl_stmt | @const_decl_stmt | @letstmt | @legacy_letstmt;
 
 @exportdeclaration = @exportalldeclaration | @exportdefaultdeclaration | @exportnameddeclaration;
 

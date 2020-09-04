@@ -984,7 +984,7 @@ class VarDeclStmt extends @var_decl_stmt, DeclStmt { }
  * const fs = require('fs');
  * ```
  */
-class ConstDeclStmt extends @constdeclstmt, DeclStmt { }
+class ConstDeclStmt extends @const_decl_stmt, DeclStmt { }
 
 /**
  * A `let` declaration statement.
