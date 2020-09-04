@@ -398,7 +398,7 @@
 <v>17</v>
 </e>
 <e>
-<k>@assignlshiftexpr</k>
+<k>@assign_lshift_expr</k>
 <v>57</v>
 </e>
 <e>
