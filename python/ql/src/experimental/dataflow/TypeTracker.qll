@@ -1,8 +1,8 @@
 /** Step Summaries and Type Tracking */
 
-import python
-import internal.DataFlowPublic
-import internal.DataFlowPrivate
+private import python
+private import internal.DataFlowPublic
+private import internal.DataFlowPrivate
 
 /** Any string that may appear as the name of an attribute or access path. */
 class AttributeName extends string {
