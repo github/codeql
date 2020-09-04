@@ -633,7 +633,7 @@ case @type.kind of
 | 18 = @tuple_type
 | 19 = @lexical_type_variable_type
 | 20 = @this_type
-| 21 = @numberliteraltype
+| 21 = @number_literal_type
 | 22 = @stringliteraltype
 | 23 = @unknowntype
 | 24 = @biginttype
@@ -715,8 +715,8 @@ type_alias(
   unique int aliasType: @type ref,
   int underlyingType: @type ref);
 
-@literal_type = @stringliteraltype | @numberliteraltype | @booleanliteraltype | @bigintliteraltype;
-@type_with_literal_value = @stringliteraltype | @numberliteraltype | @bigintliteraltype;
+@literal_type = @stringliteraltype | @number_literal_type | @booleanliteraltype | @bigintliteraltype;
+@type_with_literal_value = @stringliteraltype | @number_literal_type | @bigintliteraltype;
 type_literal_value(
   unique int typ: @type_with_literal_value ref,
   varchar(900) value: string ref);

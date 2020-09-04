@@ -2037,7 +2037,7 @@ class BooleanLiteralType extends LiteralType, @booleanliteraltype {
 /**
  * A number literal as a static type.
  */
-class NumberLiteralType extends LiteralType, @numberliteraltype {
+class NumberLiteralType extends LiteralType, @number_literal_type {
   override string getStringValue() { type_literal_value(this, result) }
 
   /**
