@@ -391,7 +391,7 @@ case @expr.kind of
 
 @import_or_export_declaration = @import_declaration | @export_declaration;
 
-@typeassertion = @as_type_assertion | @prefix_type_assertion;
+@type_assertion = @as_type_assertion | @prefix_type_assertion;
 
 @classdefinition = @class_decl_stmt | @class_expr;
 @interfacedefinition = @interface_declaration | @interface_typeexpr;

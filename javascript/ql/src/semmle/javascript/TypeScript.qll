@@ -1186,7 +1186,7 @@ class TypeParameter extends @type_parameter, TypeExpr {
  * A type assertion, also known as an unchecked type cast, is a TypeScript expression
  * of form `E as T` or `<T> E` where `E` is an expression and `T` is a type.
  */
-class TypeAssertion extends Expr, @typeassertion {
+class TypeAssertion extends Expr, @type_assertion {
   /** Gets the expression whose type to assert, that is, the `E` in `E as T` or `<T> E`. */
   Expr getExpression() { result = getChildExpr(0) }
 
