@@ -65,7 +65,7 @@ class LineComment extends @linecomment, Comment { }
  * --> also an HTML line comment
  * ```
  */
-class HtmlLineComment extends @htmlcomment, LineComment { }
+class HtmlLineComment extends @html_comment, LineComment { }
 
 /**
  * An HTML comment start token interpreted as a line comment.
