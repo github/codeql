@@ -802,7 +802,7 @@ class FunctionExpr extends @functionexpr, Expr, Function {
  * var greet =
  *   () => console.log("Hi!");  // arrow function expression
  */
-class ArrowFunctionExpr extends @arrowfunctionexpr, Expr, Function {
+class ArrowFunctionExpr extends @arrow_function_expr, Expr, Function {
   /** Gets the statement in which this expression appears. */
   override Stmt getEnclosingStmt() { result = Expr.super.getEnclosingStmt() }
 

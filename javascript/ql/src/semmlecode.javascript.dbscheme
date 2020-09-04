@@ -145,7 +145,7 @@ stmt_containers (unique int stmt: @stmt ref,
 jump_targets (unique int jump: @stmt ref,
        int target: @stmt ref);
 
-@stmt_parent = @stmt | @toplevel | @functionexpr | @arrowfunctionexpr;
+@stmt_parent = @stmt | @toplevel | @functionexpr | @arrow_function_expr;
 @stmt_container = @toplevel | @function | @namespacedeclaration | @externalmoduledeclaration | @globalaugmentationdeclaration;
 
 case @stmt.kind of
@@ -300,7 +300,7 @@ case @expr.kind of
 | 62 = @postdecexpr
 | 63 = @parexpr
 | 64 = @vardeclarator
-| 65 = @arrowfunctionexpr
+| 65 = @arrow_function_expr
 | 66 = @spreadelement
 | 67 = @arraypattern
 | 68 = @objectpattern
@@ -434,7 +434,7 @@ scopenesting (unique int inner: @scope ref,
               int outer: @scope ref);
 
 // functions
-@function = @functiondeclstmt | @functionexpr | @arrowfunctionexpr;
+@function = @functiondeclstmt | @functionexpr | @arrow_function_expr;
 
 @parameterized = @function | @catchclause;
 @type_parameterized = @function | @class_or_interface | @typealiasdeclaration | @mapped_typeexpr | @infer_typeexpr;
