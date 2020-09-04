@@ -107,28 +107,18 @@ module Fmt {
     Scanner() { this.hasQualifiedName("fmt", ["Scan", "Scanf", "Scanln"]) }
   }
 
-  /** A call to a `Scanner`. */
-  class ScannerCall extends DataFlow::CallNode {
-    ScannerCall() { this.getTarget() instanceof Scanner }
-  }
-
   /**
    * The `Fscan` function or one of its variants,
    * all of which read from a specified io.Reader
    */
   class FScanner extends Function {
     FScanner() { this.hasQualifiedName("fmt", ["Fscan", "Fscanf", "Fscanln"]) }
-  }
-
-  /** A call to a `FScanner`. */
-  class FScannerCall extends DataFlow::CallNode {
-    FScannerCall() { this.getTarget() instanceof FScanner }
 
     /**
      * Returns the node corresponding to the io.Reader
      * argument provided in the call.
      */
-    DataFlow::Node getReader() { result = this.getArgument(0) }
+    FunctionInput getReader() { result.isParameter(0) }
   }
 }
 

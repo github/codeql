@@ -876,6 +876,20 @@ Node extractTupleElement(Node t, int i) {
 }
 
 /**
+ * Holds if `node` refers to a value returned alongside a non-nil error value.
+ *
+ * For example, `0` in `func tryGetInt() (int, error) { return 0, errors.New("no good") }`
+ */
+predicate isReturnedWithError(Node node) {
+  exists(ReturnStmt ret, int nodeArg, int errorArg |
+    ret.getExpr(nodeArg) = node.asExpr() and
+    nodeArg != errorArg and
+    ret.getExpr(errorArg).getType() instanceof ErrorType
+    // That last condition implies ret.getExpr(errorArg) is non-nil, since nil doesn't implement `error`
+  )
+}
+
+/**
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
  * (intra-procedural) step.
  */
