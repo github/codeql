@@ -158,12 +158,12 @@ void test_string_append() {
 		sink(s5); // tainted
 
 		s6 = s3;
-		s6 += s4;
+		sink(s6 += s4); // tainted
 		sink(s6); // tainted
 
 		s7 = s3;
-		s7 += source();
-		s7 += " ";
+		sink(s7 += source()); // tainted
+		sink(s7 += " "); // tainted
 		sink(s7); // tainted
 
 		s8 = s3;
@@ -504,4 +504,56 @@ void test_constructors_more() {
 	sink(s2); // tainted
 	sink(s3);
 	sink(s4); // tainted
+}
+
+void test_string_front_back() {
+	std::string a("aa");
+
+	sink(a.front());
+	sink(a.back());
+	a.push_back(ns_char::source());
+	sink(a.front()); // [FALSE POSITIVE]
+	sink(a.back()); // tainted
+}
+
+void test_string_return_assign() {
+	{
+		std::string a("aa");
+		std::string b("bb");
+		std::string c("cc");
+		std::string d("dd");
+		std::string e("ee");
+		std::string f("ff");
+
+		sink( a += (b += "bb") );
+		sink( c += (d += source()) ); // tainted
+		sink( (e += "ee") += source() ); // tainted
+		sink( (f += source()) += "ff" ); // tainted
+		sink(a);
+		sink(b);
+		sink(c); // tainted
+		sink(d); // tainted
+		sink(e); // tainted
+		sink(f); // tainted
+	}
+
+	{
+		std::string a("aa");
+		std::string b("bb");
+		std::string c("cc");
+		std::string d("dd");
+		std::string e("ee");
+		std::string f("ff");
+
+		sink( a.assign(b.assign("bb")) );
+		sink( c.assign(d.assign(source())) ); // tainted
+		sink( e.assign("ee").assign(source()) ); // tainted
+		sink( f.assign(source()).assign("ff") );
+		sink(a);
+		sink(b);
+		sink(c); // tainted
+		sink(d); // tainted
+		sink(e); // tainted
+		sink(f); // [FALSE POSITIVE]
+	}
 }

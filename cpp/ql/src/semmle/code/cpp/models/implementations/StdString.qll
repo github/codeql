@@ -1,6 +1,6 @@
 /**
  * Provides implementation classes modeling `std::string` and other
- * instantiations of`std::basic_string`. See `semmle.code.cpp.models.Models`
+ * instantiations of `std::basic_string`. See `semmle.code.cpp.models.Models`
  * for usage information.
  */
 
@@ -83,6 +83,32 @@ class StdStringData extends TaintFunction {
 }
 
 /**
+ * The `std::string` function `push_back`.
+ */
+class StdStringPush extends TaintFunction {
+  StdStringPush() { this.hasQualifiedName("std", "basic_string", "push_back") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from parameter to qualifier
+    input.isParameterDeref(0) and
+    output.isQualifierObject()
+  }
+}
+
+/**
+ * The `std::string` functions `front` and `back`.
+ */
+class StdStringFrontBack extends TaintFunction {
+  StdStringFrontBack() { this.hasQualifiedName("std", "basic_string", ["front", "back"]) }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from object to returned reference
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
+  }
+}
+
+/**
  * The `std::string` function `operator+`.
  */
 class StdStringPlus extends TaintFunction {
@@ -138,6 +164,11 @@ class StdStringAppend extends TaintFunction {
       output.isQualifierObject() or
       output.isReturnValueDeref()
     )
+    or
+    // reverse flow from returned reference to the qualifier (for writes to
+    // the result)
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
   }
 }
 
@@ -173,6 +204,11 @@ class StdStringAssign extends TaintFunction {
       output.isQualifierObject() or
       output.isReturnValueDeref()
     )
+    or
+    // reverse flow from returned reference to the qualifier (for writes to
+    // the result)
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
   }
 }
 
