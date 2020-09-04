@@ -280,3 +280,10 @@ class TypeTracker extends TTypeTracker {
     result = this
   }
 }
+
+module TypeTracker {
+  /**
+   * Gets a valid end point of type tracking.
+   */
+  TypeTracker end() { result.end() }
+}
