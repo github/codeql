@@ -28,7 +28,7 @@ import javascript
  * }
  * ```
  */
-class ClassOrInterface extends @classorinterface, TypeParameterized {
+class ClassOrInterface extends @class_or_interface, TypeParameterized {
   /** Gets the identifier naming the declared type, if any. */
   Identifier getIdentifier() { none() } // Overridden in subtypes.
 

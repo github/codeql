@@ -395,7 +395,7 @@ case @expr.kind of
 
 @classdefinition = @classdeclstmt | @classexpr;
 @interfacedefinition = @interfacedeclaration | @interface_typeexpr;
-@classorinterface = @classdefinition | @interfacedefinition;
+@class_or_interface = @classdefinition | @interfacedefinition;
 
 @lexical_decl = @vardecl | @type_decl;
 @lexical_access = @varaccess | @local_type_access | @local_var_type_access | @local_namespace_access;
@@ -437,7 +437,7 @@ scopenesting (unique int inner: @scope ref,
 @function = @functiondeclstmt | @functionexpr | @arrowfunctionexpr;
 
 @parameterized = @function | @catchclause;
-@type_parameterized = @function | @classorinterface | @typealiasdeclaration | @mapped_typeexpr | @infer_typeexpr;
+@type_parameterized = @function | @class_or_interface | @typealiasdeclaration | @mapped_typeexpr | @infer_typeexpr;
 
 is_generator (int fun: @function ref);
 has_rest_parameter (int fun: @function ref);
