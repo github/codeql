@@ -135,7 +135,7 @@ is_closure_module (int tl: @toplevel ref);
 #keyset[parent, idx]
 stmts (unique int id: @stmt, 
        int kind: int ref,
-       int parent: @stmtparent ref, 
+       int parent: @stmt_parent ref, 
        int idx: int ref,
        varchar(900) tostring: string ref);
 
@@ -145,7 +145,7 @@ stmt_containers (unique int stmt: @stmt ref,
 jump_targets (unique int jump: @stmt ref,
        int target: @stmt ref);
 
-@stmtparent = @stmt | @toplevel | @functionexpr | @arrowfunctionexpr;
+@stmt_parent = @stmt | @toplevel | @functionexpr | @arrowfunctionexpr;
 @stmt_container = @toplevel | @function | @namespacedeclaration | @externalmoduledeclaration | @globalaugmentationdeclaration;
 
 case @stmt.kind of
