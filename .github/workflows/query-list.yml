@@ -2,6 +2,10 @@ name: Build code scanning query list
 
 on:
   push:
+    branches:
+     - master
+     - 'rc/**'
+     - 'querylist-python'
 
 jobs:
   build:
