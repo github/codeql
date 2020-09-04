@@ -1511,7 +1511,7 @@ class URShiftExpr extends @urshift_expr, BinaryExpr {
  * msg + "\n"
  * ```
  */
-class AddExpr extends @addexpr, BinaryExpr {
+class AddExpr extends @add_expr, BinaryExpr {
   override string getOperator() { result = "+" }
 }
 
