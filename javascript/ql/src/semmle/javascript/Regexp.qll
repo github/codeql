@@ -579,10 +579,10 @@ class RegExpGroup extends RegExpTerm, @regexp_group {
   int getNumber() { is_capture(this, result) }
 
   /** Holds if this is a named capture group. */
-  predicate isNamed() { isNamedCapture(this, _) }
+  predicate isNamed() { is_named_capture(this, _) }
 
   /** Gets the name of this capture group, if any. */
-  string getName() { isNamedCapture(this, result) }
+  string getName() { is_named_capture(this, result) }
 
   override predicate isNullable() { getAChild().isNullable() }
 

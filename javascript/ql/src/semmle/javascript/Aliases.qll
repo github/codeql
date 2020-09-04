@@ -245,3 +245,8 @@ deprecated predicate rangeQuantifierUpperBound(RegExpRange id, int hi) { range_q
  * Use `RegExpGroup#isCapture()` instead.
  */ 
 deprecated predicate isCapture(RegExpGroup id, int number) { is_capture(id, number) }
+/**
+ * Alias for the predicate `is_named_capture` defined in the .dbscheme.
+ * Use `RegExpGroup#isNamed()` instead.
+ */ 
+deprecated predicate isNamedCapture(RegExpGroup id, string name) { is_named_capture(id, name) }

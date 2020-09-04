@@ -881,7 +881,7 @@ is_greedy (int id: @regexp_quantifier ref);
 range_quantifier_lower_bound (unique int id: @regexp_range ref, int lo: int ref);
 range_quantifier_upper_bound (unique int id: @regexp_range ref, int hi: int ref);
 is_capture (unique int id: @regexp_group ref, int number: int ref);
-isNamedCapture (unique int id: @regexp_group ref, string name: string ref);
+is_named_capture (unique int id: @regexp_group ref, string name: string ref);
 isInverted (int id: @regexp_char_class ref);
 regexpConstValue (unique int id: @regexp_constant ref, varchar(1) value: string ref);
 charClassEscape (unique int id: @regexp_char_class_escape ref, varchar(1) value: string ref);
