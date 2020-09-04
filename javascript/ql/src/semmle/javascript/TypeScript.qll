@@ -877,7 +877,7 @@ class TupleTypeExpr extends @tuple_typeexpr, TypeExpr {
 /**
  * A type of form `keyof T` where `T` is a type.
  */
-class KeyofTypeExpr extends @keyoftypeexpr, TypeExpr {
+class KeyofTypeExpr extends @keyof_typeexpr, TypeExpr {
   /** Gets the type `T` in `keyof T`, denoting the object type whose property names are to be extracted. */
   TypeExpr getElementType() { result = getChildTypeExpr(0) }
 }

@@ -559,7 +559,7 @@ case @typeexpr.kind of
 | 9 = @intersection_typeexpr
 | 10 = @parenthesized_typeexpr
 | 11 = @tuple_typeexpr
-| 12 = @keyoftypeexpr
+| 12 = @keyof_typeexpr
 | 13 = @qualifiedtypeaccess
 | 14 = @generictypeexpr
 | 15 = @typelabel
