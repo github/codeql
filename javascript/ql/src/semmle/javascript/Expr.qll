@@ -364,7 +364,7 @@ class NullLiteral extends @null_literal, Literal { }
  * false
  * ```
  */
-class BooleanLiteral extends @booleanliteral, Literal { }
+class BooleanLiteral extends @boolean_literal, Literal { }
 
 /**
  * A numeric literal.
