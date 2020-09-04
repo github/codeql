@@ -209,7 +209,7 @@ is_for_await_of(unique int forof: @for_of_stmt ref);
 #keyset[parent, idx]
 exprs (unique int id: @expr,
        int kind: int ref,
-       int parent: @exprparent ref,
+       int parent: @expr_parent ref,
        int idx: int ref,
        varchar(900) tostring: string ref);
 
@@ -230,7 +230,7 @@ is_delegating (int yield: @yield_expr ref);
 
 @expr_or_stmt = @expr | @stmt;
 @expr_or_type = @expr | @typeexpr;
-@exprparent = @expr_or_stmt | @property | @function_typeexpr;
+@expr_parent = @expr_or_stmt | @property | @function_typeexpr;
 @arraylike = @array_expr | @array_pattern;
 @type_annotation = @typeexpr | @jsdoc_type_expr;
 @node_in_stmt_container = @cfg_node | @type_annotation | @toplevel;
@@ -976,7 +976,7 @@ case @guard_node.kind of
 @condition_guard = @falsy_guard | @truthy_guard;
 
 @synthetic_cfg_node = @entry_node | @exit_node | @guard_node;
-@cfg_node = @synthetic_cfg_node | @exprparent;
+@cfg_node = @synthetic_cfg_node | @expr_parent;
 
 successor (int pred: @cfg_node ref, int succ: @cfg_node ref);
 
