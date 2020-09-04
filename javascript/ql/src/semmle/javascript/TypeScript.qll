@@ -2304,7 +2304,7 @@ class TypeAliasReference extends TypeReference {
 /**
  * An anonymous interface type, such as `{ x: number }`.
  */
-class AnonymousInterfaceType extends Type, @objecttype { }
+class AnonymousInterfaceType extends Type, @object_type { }
 
 /**
  * A type that refers to a type variable.

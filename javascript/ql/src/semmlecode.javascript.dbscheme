@@ -619,7 +619,7 @@ case @type.kind of
 | 4 = @true_type
 | 5 = @false_type
 | 6 = @type_reference
-| 7 = @objecttype
+| 7 = @object_type
 | 8 = @canonicaltypevariabletype
 | 9 = @typeoftype
 | 10 = @voidtype
