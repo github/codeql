@@ -200,8 +200,8 @@ case @stmt.kind of
 
 is_instantiated(unique int decl: @namespacedeclaration ref);
 
-@declarablenode = @declstmt | @namespacedeclaration | @classdeclstmt | @functiondeclstmt | @enumdeclaration | @externalmoduledeclaration | @globalaugmentationdeclaration | @field;
-has_declare_keyword(unique int stmt: @declarablenode ref);
+@declarable_node = @declstmt | @namespacedeclaration | @classdeclstmt | @functiondeclstmt | @enumdeclaration | @externalmoduledeclaration | @globalaugmentationdeclaration | @field;
+has_declare_keyword(unique int stmt: @declarable_node ref);
 
 is_for_await_of(unique int forof: @forofstmt ref);
 
