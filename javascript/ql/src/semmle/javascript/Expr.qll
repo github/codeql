@@ -2260,7 +2260,7 @@ class ComprehensionBlock extends @comprehensionblock, Expr {
  * ]
  * ```
  */
-class ForInComprehensionBlock extends @forincomprehensionblock, ComprehensionBlock { }
+class ForInComprehensionBlock extends @for_in_comprehension_block, ComprehensionBlock { }
 
 /**
  * A `for`-`of` comprehension block in a comprehension expression.
