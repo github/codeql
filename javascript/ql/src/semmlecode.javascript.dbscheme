@@ -182,7 +182,7 @@ case @stmt.kind of
 | 30 = @export_named_declaration
 | 31 = @namespace_declaration
 | 32 = @import_equals_declaration
-| 33 = @exportassigndeclaration
+| 33 = @export_assign_declaration
 | 34 = @interfacedeclaration
 | 35 = @typealiasdeclaration
 | 36 = @enumdeclaration

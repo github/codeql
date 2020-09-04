@@ -232,7 +232,7 @@ private class LiteralExternalModulePath extends PathExpr, ConstantString {
 }
 
 /** A TypeScript "export-assign" declaration. */
-class ExportAssignDeclaration extends Stmt, @exportassigndeclaration {
+class ExportAssignDeclaration extends Stmt, @export_assign_declaration {
   /** Gets the expression exported by this declaration. */
   Expr getExpression() { result = getChildExpr(0) }
 }
