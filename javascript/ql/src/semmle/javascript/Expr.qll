@@ -986,7 +986,7 @@ class InvokeExpr extends @invokeexpr, Expr {
  * new Array(16)
  * ```
  */
-class NewExpr extends @newexpr, InvokeExpr { }
+class NewExpr extends @new_expr, InvokeExpr { }
 
 /**
  * A function call expression.

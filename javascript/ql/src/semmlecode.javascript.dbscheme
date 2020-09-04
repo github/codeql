@@ -248,7 +248,7 @@ case @expr.kind of
 |  9 = @function_expr
 | 10 = @seq_expr
 | 11 = @conditional_expr
-| 12 = @newexpr
+| 12 = @new_expr
 | 13 = @callexpr
 | 14 = @dotexpr
 | 15 = @indexexpr
@@ -365,7 +365,7 @@ case @expr.kind of
 
 @propaccess = @dotexpr | @indexexpr;
 
-@invokeexpr = @newexpr | @callexpr;
+@invokeexpr = @new_expr | @callexpr;
 
 @unaryexpr = @negexpr | @plusexpr | @lognotexpr | @bitnotexpr | @typeofexpr | @voidexpr | @deleteexpr | @spreadelement;
 
