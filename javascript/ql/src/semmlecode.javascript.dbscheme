@@ -621,7 +621,7 @@ case @type.kind of
 | 6 = @type_reference
 | 7 = @object_type
 | 8 = @canonical_type_variable_type
-| 9 = @typeoftype
+| 9 = @typeof_type
 | 10 = @voidtype
 | 11 = @undefinedtype
 | 12 = @nulltype
@@ -694,7 +694,7 @@ case @symbol.kind of
 | 2 = @other_symbol
 ;
 
-@type_with_symbol = @type_reference | @typevariable_type | @typeoftype | @uniquesymboltype;
+@type_with_symbol = @type_reference | @typevariable_type | @typeof_type | @uniquesymboltype;
 @ast_node_with_symbol = @typedefinition | @namespacedefinition | @toplevel | @typeaccess | @namespace_access | @var_decl | @function | @invokeexpr | @import_declaration | @external_module_reference;
 
 ast_node_symbol(

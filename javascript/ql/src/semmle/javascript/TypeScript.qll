@@ -2399,7 +2399,7 @@ class ThisType extends Type, @thistype {
  * The type of a named value, `typeof X`, typically denoting the type of
  * a class constructor, namespace object, enum object, or module object.
  */
-class TypeofType extends Type, @typeoftype {
+class TypeofType extends Type, @typeof_type {
   /**
    * Gets the canonical name of the named value.
    */
