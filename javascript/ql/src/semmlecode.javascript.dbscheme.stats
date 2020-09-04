@@ -11471,7 +11471,7 @@
 </dependencies>
 </relation>
 <relation>
-<name>isDelegating</name>
+<name>is_delegating</name>
 <cardinality>4</cardinality>
 <columnsizes>
 <e>

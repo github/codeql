@@ -564,7 +564,7 @@ literals("x","x",#20198)
 #20199=@"var;{x};{#20000}"
 variables(#20199,"x",#20000)
 bind(#20198,#20199)
-isDelegating(#20192)
+is_delegating(#20192)
 #20200=*
 stmts(#20200,2,#20001,3,"f4<T6>(v1);")
 hasLocation(#20200,#20013)

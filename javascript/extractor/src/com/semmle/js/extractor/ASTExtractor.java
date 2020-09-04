@@ -810,7 +810,7 @@ public class ASTExtractor {
     public Label visit(YieldExpression nd, Context c) {
       Label key = super.visit(nd, c);
       visit(nd.getArgument(), key, 0);
-      if (nd.isDelegating()) trapwriter.addTuple("isDelegating", key);
+      if (nd.isDelegating()) trapwriter.addTuple("is_delegating", key);
       return key;
     }
 

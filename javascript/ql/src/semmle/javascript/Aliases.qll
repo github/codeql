@@ -130,3 +130,8 @@ deprecated predicate exprContainers(ExprOrType expr, StmtContainer container) { 
  * Use `ArrayExpr#getSize()` instead.
  */ 
 deprecated predicate arraySize(Expr ae, int sz) { array_size(ae, sz) }
+/**
+ * Alias for the predicate `is_delegating` defined in the .dbscheme.
+ * Use `YieldExpr#isDelegating()` instead.
+ */ 
+deprecated predicate isDelegating(YieldExpr yield) { is_delegating(yield) }

@@ -2128,7 +2128,7 @@ class YieldExpr extends @yieldexpr, Expr {
   Expr getOperand() { result = getChildExpr(0) }
 
   /** Holds if this is a `yield*` expression. */
-  predicate isDelegating() { isDelegating(this) }
+  predicate isDelegating() { is_delegating(this) }
 
   override predicate isImpure() { any() }
 

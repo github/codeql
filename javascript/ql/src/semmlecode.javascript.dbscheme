@@ -226,7 +226,7 @@ expr_containers (unique int expr: @exprortype ref,
 array_size (unique int ae: @arraylike ref,
        int sz: int ref);
 
-isDelegating (int yield: @yieldexpr ref);
+is_delegating (int yield: @yieldexpr ref);
 
 @exprorstmt = @expr | @stmt;
 @exprortype = @expr | @typeexpr;
