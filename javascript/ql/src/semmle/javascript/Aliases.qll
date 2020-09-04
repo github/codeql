@@ -165,3 +165,8 @@ deprecated predicate isAbstractMember(Property prop) { is_abstract_member(prop) 
  * Use `EnumDeclaration#isConst()` instead.
  */ 
 deprecated predicate isConstEnum(EnumDeclaration id) { is_const_enum(id) }
+/**
+ * Alias for the predicate `is_abstract_class` defined in the .dbscheme.
+ * Use `ClassDefinition#isAbstract()` instead.
+ */ 
+deprecated predicate isAbstractClass(ClassDeclStmt id) { is_abstract_class(id) }

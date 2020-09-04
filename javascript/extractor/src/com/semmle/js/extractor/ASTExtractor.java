@@ -1287,7 +1287,7 @@ public class ASTExtractor {
         trapwriter.addTuple("has_declare_keyword", lbl);
       }
       if (nd.hasAbstractKeyword()) {
-        trapwriter.addTuple("isAbstractClass", lbl);
+        trapwriter.addTuple("is_abstract_class", lbl);
       }
       return visit(nd.getClassDef(), lbl, nd, false);
     }

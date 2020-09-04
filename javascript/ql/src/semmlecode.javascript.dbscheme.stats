@@ -8407,7 +8407,7 @@
 <dependencies/>
 </relation>
 <relation>
-<name>isAbstractClass</name>
+<name>is_abstract_class</name>
 <cardinality>116</cardinality>
 <columnsizes>
 <e>

@@ -215,7 +215,7 @@ class ClassDefinition extends @classdefinition, ClassOrInterface, AST::ValueNode
   /**
    * Holds if this class has the `abstract` modifier.
    */
-  override predicate isAbstract() { isAbstractClass(this) }
+  override predicate isAbstract() { is_abstract_class(this) }
 
   override string describe() {
     if exists(inferNameFromVarDef())

@@ -107,7 +107,7 @@ stmts(#20037,26,#20001,0,"abstrac ... F>\n  {}")
 locations_default(#20038,#10000,1,1,2,4)
 hasLocation(#20037,#20038)
 stmt_containers(#20037,#20001)
-isAbstractClass(#20037)
+is_abstract_class(#20037)
 #20039=*
 exprs(#20039,78,#20037,0,"C")
 hasLocation(#20039,#20011)

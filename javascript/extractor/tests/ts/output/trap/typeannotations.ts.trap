@@ -4175,7 +4175,7 @@ stmts(#21350,26,#20001,44,"abstrac ... ): T;\n}")
 locations_default(#21351,#10000,54,1,57,1)
 hasLocation(#21350,#21351)
 stmt_containers(#21350,#20001)
-isAbstractClass(#21350)
+is_abstract_class(#21350)
 #21352=*
 exprs(#21352,78,#21350,0,"GenericClass")
 hasLocation(#21352,#20801)

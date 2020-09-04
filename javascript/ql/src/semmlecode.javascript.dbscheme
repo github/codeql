@@ -518,7 +518,7 @@ is_method   (int id: @property ref);
 is_static   (int id: @property ref);
 is_abstract_member (int id: @property ref);
 is_const_enum (int id: @enumdeclaration ref);
-isAbstractClass (int id: @classdeclstmt ref);
+is_abstract_class (int id: @classdeclstmt ref);
 
 hasPublicKeyword (int id: @property ref);
 hasPrivateKeyword (int id: @property ref);
