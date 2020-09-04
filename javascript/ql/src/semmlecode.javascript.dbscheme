@@ -801,10 +801,10 @@ case @comment.kind of
   0 = @slashslashcomment
 | 1 = @slashstarcomment
 | 2 = @doccomment
-| 3 = @htmlcommentstart
+| 3 = @html_comment_start
 | 4 = @htmlcommentend;
 
-@html_comment = @htmlcommentstart | @htmlcommentend;
+@html_comment = @html_comment_start | @htmlcommentend;
 @line_comment = @slashslashcomment | @html_comment;
 @block_comment = @slashstarcomment | @doccomment;
 
