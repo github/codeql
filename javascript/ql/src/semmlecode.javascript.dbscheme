@@ -313,7 +313,7 @@ case @expr.kind of
 | 75 = @for_in_comprehension_block
 | 76 = @for_of_comprehension_block
 | 77 = @legacy_letexpr
-| 78 = @vardecl
+| 78 = @var_decl
 | 79 = @proper_varaccess
 | 80 = @classexpr
 | 81 = @superexpr
@@ -357,7 +357,7 @@ case @expr.kind of
 ;
 
 @varaccess = @proper_varaccess | @export_varaccess;
-@varref = @vardecl | @varaccess;
+@varref = @var_decl | @varaccess;
 
 @identifier = @label | @varref | @typeidentifier;
 
@@ -397,7 +397,7 @@ case @expr.kind of
 @interfacedefinition = @interfacedeclaration | @interface_typeexpr;
 @class_or_interface = @classdefinition | @interfacedefinition;
 
-@lexical_decl = @vardecl | @type_decl;
+@lexical_decl = @var_decl | @type_decl;
 @lexical_access = @varaccess | @local_type_access | @local_var_type_access | @local_namespace_access;
 @lexical_ref = @lexical_decl | @lexical_access;
 
@@ -467,18 +467,18 @@ is_arguments_object (int id: @variable ref);
 bind (unique int id: @bind_id ref,
       int decl: @variable ref);
 
-decl (unique int id: @vardecl ref,
+decl (unique int id: @var_decl ref,
       int decl: @variable ref);
 
 @typebind_id = @local_type_access | @export_varaccess;
 typebind (unique int id: @typebind_id ref,
           int decl: @local_type_name ref);
 
-@typedecl_id = @type_decl | @vardecl;
+@typedecl_id = @type_decl | @var_decl;
 typedecl (unique int id: @typedecl_id ref,
           int decl: @local_type_name ref);
 
-namespacedecl (unique int id: @vardecl ref,
+namespacedecl (unique int id: @var_decl ref,
                int decl: @local_namespace_name ref);
 
 @namespacebind_id = @local_namespace_access | @export_varaccess;
@@ -695,7 +695,7 @@ case @symbol.kind of
 ;
 
 @type_with_symbol = @typereference | @typevariable_type | @typeoftype | @uniquesymboltype;
-@ast_node_with_symbol = @typedefinition | @namespacedefinition | @toplevel | @typeaccess | @namespace_access | @vardecl | @function | @invokeexpr | @import_declaration | @externalmodulereference;
+@ast_node_with_symbol = @typedefinition | @namespacedefinition | @toplevel | @typeaccess | @namespace_access | @var_decl | @function | @invokeexpr | @import_declaration | @externalmodulereference;
 
 ast_node_symbol(
   unique int node: @ast_node_with_symbol ref,

@@ -439,7 +439,7 @@ class DestructuringPattern extends TDestructuringPattern, BindingPattern {
  *   o = null;
  * }
  */
-class VarDecl extends @vardecl, VarRef, LexicalDecl {
+class VarDecl extends @var_decl, VarRef, LexicalDecl {
   override Variable getVariable() { decl(this, result) }
 
   override predicate isLValue() {

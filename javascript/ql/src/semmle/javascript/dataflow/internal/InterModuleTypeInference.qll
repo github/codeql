@@ -278,7 +278,7 @@ private class AnalyzedAmdImport extends AnalyzedPropertyRead, DataFlow::Node {
 /**
  * Flow analysis for parameters corresponding to AMD imports.
  */
-private class AnalyzedAmdParameter extends AnalyzedVarDef, @vardecl {
+private class AnalyzedAmdParameter extends AnalyzedVarDef, @var_decl {
   AnalyzedAmdImport imp;
 
   AnalyzedAmdParameter() { imp = DataFlow::parameterNode(this) }
