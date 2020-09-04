@@ -2216,7 +2216,7 @@ class ArrayComprehensionExpr extends @array_comprehension_expr, ComprehensionExp
  * (for (x of xs) x*x)
  * ```
  */
-class GeneratorExpr extends @generatorexpr, ComprehensionExpr { }
+class GeneratorExpr extends @generator_expr, ComprehensionExpr { }
 
 /**
  * A comprehension block in a comprehension expression.

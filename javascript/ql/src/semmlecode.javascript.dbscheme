@@ -309,7 +309,7 @@ case @expr.kind of
 | 71 = @template_literal
 | 72 = @template_element
 | 73 = @array_comprehension_expr
-| 74 = @generatorexpr
+| 74 = @generator_expr
 | 75 = @forincomprehensionblock
 | 76 = @forofcomprehensionblock
 | 77 = @legacy_letexpr
@@ -381,7 +381,7 @@ case @expr.kind of
 
 @pattern = @varref | @array_pattern | @object_pattern;
 
-@comprehensionexpr = @array_comprehension_expr | @generatorexpr;
+@comprehensionexpr = @array_comprehension_expr | @generator_expr;
 
 @comprehensionblock = @forincomprehensionblock | @forofcomprehensionblock;
 
