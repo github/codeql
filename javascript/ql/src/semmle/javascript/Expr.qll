@@ -1159,7 +1159,7 @@ class UnaryExpr extends @unaryexpr, Expr {
  * -x
  * ```
  */
-class NegExpr extends @negexpr, UnaryExpr {
+class NegExpr extends @neg_expr, UnaryExpr {
   override string getOperator() { result = "-" }
 
   override int getIntValue() { result = -getOperand().getIntValue() }
