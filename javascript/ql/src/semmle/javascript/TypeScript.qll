@@ -96,7 +96,7 @@ class NamespaceDeclaration extends NamespaceDefinition, StmtContainer, @namespac
  * Note that imports and type parameters are not type definitions.  Consider using `TypeDecl` to capture
  * a wider class of type declarations.
  */
-class TypeDefinition extends ASTNode, @typedefinition {
+class TypeDefinition extends ASTNode, @type_definition {
   /**
    * Gets the identifier naming the type.
    */
