@@ -7985,7 +7985,7 @@
 <dependencies/>
 </relation>
 <relation>
-<name>hasReadonlyKeyword</name>
+<name>has_readonly_keyword</name>
 <cardinality>2338</cardinality>
 <columnsizes>
 <e>

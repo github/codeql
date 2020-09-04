@@ -523,7 +523,7 @@ is_abstract_class (int id: @classdeclstmt ref);
 has_public_keyword (int id: @property ref);
 has_private_keyword (int id: @property ref);
 has_protected_keyword (int id: @property ref);
-hasReadonlyKeyword (int id: @property ref);
+has_readonly_keyword (int id: @property ref);
 hasTypeKeyword (int id: @import_or_export_declaration ref);
 isOptionalMember (int id: @property ref);
 hasDefiniteAssignmentAssertion (int id: @field_or_vardeclarator ref);

@@ -40,7 +40,7 @@ public class DeclarationFlags {
           "is_computed",
           "is_abstract_member",
           "is_static",
-          "hasReadonlyKeyword",
+          "has_readonly_keyword",
           "has_public_keyword",
           "has_private_keyword",
           "has_protected_keyword",

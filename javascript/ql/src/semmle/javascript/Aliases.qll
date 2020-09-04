@@ -185,3 +185,8 @@ deprecated predicate hasPrivateKeyword(Property prop) { has_private_keyword(prop
  * Use `MemberDeclaration#isProtected() instead.
  */ 
 deprecated predicate hasProtectedKeyword(Property prop) { has_protected_keyword(prop) }
+/**
+ * Alias for the predicate `has_readonly_keyword` defined in the .dbscheme.
+ * Use `FieldDeclaration#isReadonly()` instead.
+ */ 
+deprecated predicate hasReadonlyKeyword(Property prop) { has_readonly_keyword(prop) }
