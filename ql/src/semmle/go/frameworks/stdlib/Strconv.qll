@@ -56,18 +56,6 @@ module Strconv {
       hasQualifiedName("strconv", "Quote") and
       (inp.isParameter(0) and outp.isResult())
       or
-      // signature: func QuoteRune(r rune) string
-      hasQualifiedName("strconv", "QuoteRune") and
-      (inp.isParameter(0) and outp.isResult())
-      or
-      // signature: func QuoteRuneToASCII(r rune) string
-      hasQualifiedName("strconv", "QuoteRuneToASCII") and
-      (inp.isParameter(0) and outp.isResult())
-      or
-      // signature: func QuoteRuneToGraphic(r rune) string
-      hasQualifiedName("strconv", "QuoteRuneToGraphic") and
-      (inp.isParameter(0) and outp.isResult())
-      or
       // signature: func QuoteToASCII(s string) string
       hasQualifiedName("strconv", "QuoteToASCII") and
       (inp.isParameter(0) and outp.isResult())
@@ -82,7 +70,7 @@ module Strconv {
       or
       // signature: func UnquoteChar(s string, quote byte) (value rune, multibyte bool, tail string, err error)
       hasQualifiedName("strconv", "UnquoteChar") and
-      (inp.isParameter(0) and outp.isResult([0, 2]))
+      (inp.isParameter(0) and outp.isResult(2))
     }
 
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

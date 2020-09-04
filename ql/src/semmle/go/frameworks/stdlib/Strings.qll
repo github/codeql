@@ -150,10 +150,6 @@ module Strings {
       this.hasQualifiedName("strings", "Builder", "Write") and
       (inp.isParameter(0) and outp.isReceiver())
       or
-      // signature: func (*Builder).WriteByte(c byte) error
-      this.hasQualifiedName("strings", "Builder", "WriteByte") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
       // signature: func (*Builder).WriteString(s string) (int, error)
       this.hasQualifiedName("strings", "Builder", "WriteString") and
       (inp.isParameter(0) and outp.isReceiver())
@@ -165,14 +161,6 @@ module Strings {
       // signature: func (*Reader).ReadAt(b []byte, off int64) (n int, err error)
       this.hasQualifiedName("strings", "Reader", "ReadAt") and
       (inp.isReceiver() and outp.isParameter(0))
-      or
-      // signature: func (*Reader).ReadByte() (byte, error)
-      this.hasQualifiedName("strings", "Reader", "ReadByte") and
-      (inp.isReceiver() and outp.isResult(0))
-      or
-      // signature: func (*Reader).ReadRune() (ch rune, size int, err error)
-      this.hasQualifiedName("strings", "Reader", "ReadRune") and
-      (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (*Reader).Reset(s string)
       this.hasQualifiedName("strings", "Reader", "Reset") and

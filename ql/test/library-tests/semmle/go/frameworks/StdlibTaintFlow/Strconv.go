@@ -46,52 +46,28 @@ func TaintStepTest_StrconvQuote_B0I0O0(sourceCQL interface{}) interface{} {
 	return intoString584
 }
 
-func TaintStepTest_StrconvQuoteRune_B0I0O0(sourceCQL interface{}) interface{} {
-	fromRune991 := sourceCQL.(rune)
-	intoString881 := strconv.QuoteRune(fromRune991)
+func TaintStepTest_StrconvQuoteToASCII_B0I0O0(sourceCQL interface{}) interface{} {
+	fromString991 := sourceCQL.(string)
+	intoString881 := strconv.QuoteToASCII(fromString991)
 	return intoString881
 }
 
-func TaintStepTest_StrconvQuoteRuneToASCII_B0I0O0(sourceCQL interface{}) interface{} {
-	fromRune186 := sourceCQL.(rune)
-	intoString284 := strconv.QuoteRuneToASCII(fromRune186)
+func TaintStepTest_StrconvQuoteToGraphic_B0I0O0(sourceCQL interface{}) interface{} {
+	fromString186 := sourceCQL.(string)
+	intoString284 := strconv.QuoteToGraphic(fromString186)
 	return intoString284
 }
 
-func TaintStepTest_StrconvQuoteRuneToGraphic_B0I0O0(sourceCQL interface{}) interface{} {
-	fromRune908 := sourceCQL.(rune)
-	intoString137 := strconv.QuoteRuneToGraphic(fromRune908)
+func TaintStepTest_StrconvUnquote_B0I0O0(sourceCQL interface{}) interface{} {
+	fromString908 := sourceCQL.(string)
+	intoString137, _ := strconv.Unquote(fromString908)
 	return intoString137
 }
 
-func TaintStepTest_StrconvQuoteToASCII_B0I0O0(sourceCQL interface{}) interface{} {
-	fromString494 := sourceCQL.(string)
-	intoString873 := strconv.QuoteToASCII(fromString494)
-	return intoString873
-}
-
-func TaintStepTest_StrconvQuoteToGraphic_B0I0O0(sourceCQL interface{}) interface{} {
-	fromString599 := sourceCQL.(string)
-	intoString409 := strconv.QuoteToGraphic(fromString599)
-	return intoString409
-}
-
-func TaintStepTest_StrconvUnquote_B0I0O0(sourceCQL interface{}) interface{} {
-	fromString246 := sourceCQL.(string)
-	intoString898, _ := strconv.Unquote(fromString246)
-	return intoString898
-}
-
 func TaintStepTest_StrconvUnquoteChar_B0I0O0(sourceCQL interface{}) interface{} {
-	fromString598 := sourceCQL.(string)
-	intoRune631, _, _, _ := strconv.UnquoteChar(fromString598, 0)
-	return intoRune631
-}
-
-func TaintStepTest_StrconvUnquoteChar_B0I0O1(sourceCQL interface{}) interface{} {
-	fromString165 := sourceCQL.(string)
-	_, _, intoString150, _ := strconv.UnquoteChar(fromString165, 0)
-	return intoString150
+	fromString494 := sourceCQL.(string)
+	_, _, intoString873, _ := strconv.UnquoteChar(fromString494, 0)
+	return intoString873
 }
 
 func RunAllTaints_Strconv() {
@@ -132,42 +108,22 @@ func RunAllTaints_Strconv() {
 	}
 	{
 		source := newSource(7)
-		out := TaintStepTest_StrconvQuoteRune_B0I0O0(source)
+		out := TaintStepTest_StrconvQuoteToASCII_B0I0O0(source)
 		sink(7, out)
 	}
 	{
 		source := newSource(8)
-		out := TaintStepTest_StrconvQuoteRuneToASCII_B0I0O0(source)
+		out := TaintStepTest_StrconvQuoteToGraphic_B0I0O0(source)
 		sink(8, out)
 	}
 	{
 		source := newSource(9)
-		out := TaintStepTest_StrconvQuoteRuneToGraphic_B0I0O0(source)
+		out := TaintStepTest_StrconvUnquote_B0I0O0(source)
 		sink(9, out)
 	}
 	{
 		source := newSource(10)
-		out := TaintStepTest_StrconvQuoteToASCII_B0I0O0(source)
-		sink(10, out)
-	}
-	{
-		source := newSource(11)
-		out := TaintStepTest_StrconvQuoteToGraphic_B0I0O0(source)
-		sink(11, out)
-	}
-	{
-		source := newSource(12)
-		out := TaintStepTest_StrconvUnquote_B0I0O0(source)
-		sink(12, out)
-	}
-	{
-		source := newSource(13)
 		out := TaintStepTest_StrconvUnquoteChar_B0I0O0(source)
-		sink(13, out)
-	}
-	{
-		source := newSource(14)
-		out := TaintStepTest_StrconvUnquoteChar_B0I0O1(source)
-		sink(14, out)
+		sink(10, out)
 	}
 }
