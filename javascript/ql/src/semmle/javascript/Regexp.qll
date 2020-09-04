@@ -522,7 +522,7 @@ class RegExpOpt extends RegExpQuantifier, @regexp_opt {
  */
 class RegExpRange extends RegExpQuantifier, @regexp_range {
   /** Gets the lower bound of the range. */
-  int getLowerBound() { rangeQuantifierLowerBound(this, result) }
+  int getLowerBound() { range_quantifier_lower_bound(this, result) }
 
   /**
    * Gets the upper bound of the range, if any.

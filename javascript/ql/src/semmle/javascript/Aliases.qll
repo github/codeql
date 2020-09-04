@@ -230,3 +230,8 @@ deprecated predicate regexpParseErrors(RegExpParseError id, RegExpTerm regexp, s
  * Use `RegExpQuantifier#isGreedy` instead.
  */ 
 deprecated predicate isGreedy(RegExpQuantifier id) { is_greedy(id) }
+/**
+ * Alias for the predicate `range_quantifier_lower_bound` defined in the .dbscheme.
+ * Use `RegExpRange#getLowerBound()` instead.
+ */ 
+deprecated predicate rangeQuantifierLowerBound(RegExpRange id, int lo) { range_quantifier_lower_bound(id, lo) }

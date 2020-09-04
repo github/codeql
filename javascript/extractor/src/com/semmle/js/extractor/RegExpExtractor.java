@@ -243,7 +243,7 @@ public class RegExpExtractor {
       if (nd.isGreedy()) trapwriter.addTuple("is_greedy", lbl);
 
       long lo = nd.getLowerBound();
-      if (inRange(lo)) trapwriter.addTuple("rangeQuantifierLowerBound", lbl, lo);
+      if (inRange(lo)) trapwriter.addTuple("range_quantifier_lower_bound", lbl, lo);
 
       if (nd.hasUpperBound()) {
         long hi = nd.getUpperBound();

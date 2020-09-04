@@ -20084,7 +20084,7 @@
 </relation>
 
 <relation>
-<name>rangeQuantifierLowerBound</name>
+<name>range_quantifier_lower_bound</name>
 <cardinality>146</cardinality>
 <columnsizes>
 <e>
