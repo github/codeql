@@ -261,7 +261,7 @@ case @expr.kind of
 | 22 = @delete_expr
 | 23 = @eq_expr
 | 24 = @neq_expr
-| 25 = @eqqexpr
+| 25 = @eqq_expr
 | 26 = @neqqexpr
 | 27 = @ltexpr
 | 28 = @leexpr
@@ -369,7 +369,7 @@ case @expr.kind of
 
 @unaryexpr = @neg_expr | @plus_expr | @log_not_expr | @bit_not_expr | @typeof_expr | @void_expr | @delete_expr | @spreadelement;
 
-@equality_test = @eq_expr | @neq_expr | @eqqexpr | @neqqexpr;
+@equality_test = @eq_expr | @neq_expr | @eqq_expr | @neqqexpr;
 
 @comparison = @equality_test | @ltexpr | @leexpr | @gtexpr | @geexpr;
 

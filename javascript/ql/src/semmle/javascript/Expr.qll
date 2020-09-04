@@ -1393,7 +1393,7 @@ class NEqExpr extends @neq_expr, EqualityTest {
  * recv === undefined
  * ```
  */
-class StrictEqExpr extends @eqqexpr, EqualityTest {
+class StrictEqExpr extends @eqq_expr, EqualityTest {
   override string getOperator() { result = "===" }
 }
 
