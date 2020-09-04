@@ -103,7 +103,7 @@ stmt_containers(#20033,#20001)
 #20035=*
 exprs(#20035,78,#20033,-1,"f")
 hasLocation(#20035,#20011)
-exprContainers(#20035,#20033)
+expr_containers(#20035,#20033)
 literals("f","f",#20035)
 decl(#20035,#20030)
 #20036=*
@@ -129,7 +129,7 @@ stmt_containers(#20040,#20001)
 exprs(#20042,7,#20040,0,"[,]")
 hasLocation(#20042,#20041)
 enclosing_stmt(#20042,#20040)
-exprContainers(#20042,#20001)
+expr_containers(#20042,#20001)
 arraySize(#20042,1)
 #20043=*
 entry_cfg_node(#20043,#20001)

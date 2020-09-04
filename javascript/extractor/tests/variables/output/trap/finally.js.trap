@@ -192,7 +192,7 @@ stmt_containers(#20065,#20001)
 #20067=*
 exprs(#20067,78,#20065,-1,"f")
 hasLocation(#20067,#20021)
-exprContainers(#20067,#20065)
+expr_containers(#20067,#20065)
 literals("f","f",#20067)
 decl(#20067,#20064)
 #20068=*
@@ -206,7 +206,7 @@ variables(#20070,"x",#20068)
 #20071=*
 exprs(#20071,78,#20065,0,"x")
 hasLocation(#20071,#20025)
-exprContainers(#20071,#20065)
+expr_containers(#20071,#20065)
 literals("x","x",#20071)
 decl(#20071,#20070)
 #20072=@"var;{arguments};{#20068}"
@@ -227,7 +227,7 @@ stmt_containers(#20075,#20065)
 #20077=*
 exprs(#20077,78,#20075,-1,"g")
 hasLocation(#20077,#20033)
-exprContainers(#20077,#20075)
+expr_containers(#20077,#20075)
 literals("g","g",#20077)
 decl(#20077,#20069)
 #20078=*
@@ -273,12 +273,12 @@ stmt_containers(#20089,#20075)
 exprs(#20091,64,#20089,0,"x")
 hasLocation(#20091,#20053)
 enclosing_stmt(#20091,#20089)
-exprContainers(#20091,#20075)
+expr_containers(#20091,#20075)
 #20092=*
 exprs(#20092,78,#20091,0,"x")
 hasLocation(#20092,#20053)
 enclosing_stmt(#20092,#20089)
-exprContainers(#20092,#20075)
+expr_containers(#20092,#20075)
 literals("x","x",#20092)
 decl(#20092,#20079)
 #20093=*

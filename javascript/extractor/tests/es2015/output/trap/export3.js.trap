@@ -90,7 +90,7 @@ stmt_containers(#20028,#20001)
 #20030=*
 exprs(#20030,78,#20028,-1,"f")
 hasLocation(#20030,#20011)
-exprContainers(#20030,#20028)
+expr_containers(#20030,#20028)
 literals("f","f",#20030)
 decl(#20030,#20025)
 #20031=*

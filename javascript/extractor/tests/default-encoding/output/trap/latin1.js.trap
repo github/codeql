@@ -79,7 +79,7 @@ stmt_containers(#20026,#20001)
 #20027=*
 exprs(#20027,78,#20026,-1,"f")
 hasLocation(#20027,#20007)
-exprContainers(#20027,#20026)
+expr_containers(#20027,#20026)
 literals("f","f",#20027)
 decl(#20027,#20025)
 #20028=*
@@ -91,7 +91,7 @@ variables(#20029,"ä",#20028)
 #20030=*
 exprs(#20030,78,#20026,0,"\u00e4")
 hasLocation(#20030,#20011)
-exprContainers(#20030,#20026)
+expr_containers(#20030,#20026)
 literals("ä","ä",#20030)
 decl(#20030,#20029)
 #20031=@"var;{ö};{#20028}"
@@ -99,7 +99,7 @@ variables(#20031,"ö",#20028)
 #20032=*
 exprs(#20032,78,#20026,1,"\u00f6")
 hasLocation(#20032,#20015)
-exprContainers(#20032,#20026)
+expr_containers(#20032,#20026)
 literals("ö","ö",#20032)
 decl(#20032,#20031)
 #20033=@"var;{arguments};{#20028}"

@@ -292,7 +292,7 @@ stmt_containers(#20110,#20001)
 #20111=*
 exprs(#20111,78,#20110,-1,"f")
 hasLocation(#20111,#20013)
-exprContainers(#20111,#20110)
+expr_containers(#20111,#20110)
 literals("f","f",#20111)
 decl(#20111,#20109)
 #20112=*
@@ -306,7 +306,7 @@ exprs(#20114,78,#20110,0,"p: T")
 #20115=@"loc,{#10000},1,12,1,15"
 locations_default(#20115,#10000,1,12,1,15)
 hasLocation(#20114,#20115)
-exprContainers(#20114,#20110)
+expr_containers(#20114,#20110)
 literals("p","p",#20114)
 decl(#20114,#20113)
 #20116=@"var;{arguments};{#20112}"
@@ -325,7 +325,7 @@ stmt_containers(#20119,#20001)
 #20120=*
 exprs(#20120,78,#20119,-1,"f")
 hasLocation(#20120,#20031)
-exprContainers(#20120,#20119)
+expr_containers(#20120,#20119)
 literals("f","f",#20120)
 decl(#20120,#20109)
 #20121=*
@@ -339,7 +339,7 @@ exprs(#20123,78,#20119,0,"p: T[]")
 #20124=@"loc,{#10000},2,12,2,17"
 locations_default(#20124,#10000,2,12,2,17)
 hasLocation(#20123,#20124)
-exprContainers(#20123,#20119)
+expr_containers(#20123,#20119)
 literals("p","p",#20123)
 decl(#20123,#20122)
 #20125=@"var;{arguments};{#20121}"
@@ -358,7 +358,7 @@ stmt_containers(#20128,#20001)
 #20129=*
 exprs(#20129,78,#20128,-1,"f")
 hasLocation(#20129,#20053)
-exprContainers(#20129,#20128)
+expr_containers(#20129,#20128)
 literals("f","f",#20129)
 decl(#20129,#20109)
 #20130=*
@@ -372,7 +372,7 @@ exprs(#20132,78,#20128,0,"p: T[][]")
 #20133=@"loc,{#10000},3,12,3,19"
 locations_default(#20133,#10000,3,12,3,19)
 hasLocation(#20132,#20133)
-exprContainers(#20132,#20128)
+expr_containers(#20132,#20128)
 literals("p","p",#20132)
 decl(#20132,#20131)
 #20134=@"var;{arguments};{#20130}"
@@ -391,7 +391,7 @@ stmt_containers(#20137,#20001)
 #20138=*
 exprs(#20138,78,#20137,-1,"f")
 hasLocation(#20138,#20079)
-exprContainers(#20138,#20137)
+expr_containers(#20138,#20137)
 literals("f","f",#20138)
 decl(#20138,#20109)
 #20139=*
@@ -405,7 +405,7 @@ exprs(#20141,78,#20137,0,"p: T[][][]")
 #20142=@"loc,{#10000},4,12,4,21"
 locations_default(#20142,#10000,4,12,4,21)
 hasLocation(#20141,#20142)
-exprContainers(#20141,#20137)
+expr_containers(#20141,#20137)
 literals("p","p",#20141)
 decl(#20141,#20140)
 #20143=@"var;{arguments};{#20139}"

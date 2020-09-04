@@ -405,7 +405,7 @@ public class ASTExtractor {
       Statement enclosingStmt = contextManager.getCurrentStatement();
       if (enclosingStmt != null)
         trapwriter.addTuple("enclosing_stmt", lbl, trapwriter.localID(enclosingStmt));
-      trapwriter.addTuple("exprContainers", lbl, contextManager.getCurrentContainerKey());
+      trapwriter.addTuple("expr_containers", lbl, contextManager.getCurrentContainerKey());
       return lbl;
     }
 

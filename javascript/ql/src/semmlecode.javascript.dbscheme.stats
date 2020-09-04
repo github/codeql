@@ -11280,7 +11280,7 @@
 </dependencies>
 </relation>
 <relation>
-<name>exprContainers</name>
+<name>expr_containers</name>
 <cardinality>5495305</cardinality>
 <columnsizes>
 <e>

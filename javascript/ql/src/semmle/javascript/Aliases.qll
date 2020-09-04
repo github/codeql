@@ -120,3 +120,8 @@ deprecated predicate isForAwaitOf(ForOfStmt forof) { is_for_await_of(forof) }
  * Use `ExprOrType#getEnclosingStmt` instead.
  */ 
 deprecated predicate enclosingStmt(ExprOrType expr, Stmt stmt) { enclosing_stmt(expr, stmt) }
+/**
+ * Alias for the predicate `expr_containers` defined in the .dbscheme.
+ * Use `ASTNode#getContainer()` instead.
+ */ 
+deprecated predicate exprContainers(ExprOrType expr, StmtContainer container) { expr_containers(expr, container) }

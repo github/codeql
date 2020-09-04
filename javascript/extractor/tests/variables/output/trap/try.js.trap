@@ -133,7 +133,7 @@ stmt_containers(#20045,#20001)
 #20046=*
 exprs(#20046,78,#20045,-1,"f")
 hasLocation(#20046,#20015)
-exprContainers(#20046,#20045)
+expr_containers(#20046,#20045)
 literals("f","f",#20046)
 decl(#20046,#20044)
 #20047=*
@@ -173,12 +173,12 @@ stmt_containers(#20056,#20045)
 exprs(#20058,64,#20056,0,"x")
 hasLocation(#20058,#20029)
 enclosing_stmt(#20058,#20056)
-exprContainers(#20058,#20045)
+expr_containers(#20058,#20045)
 #20059=*
 exprs(#20059,78,#20058,0,"x")
 hasLocation(#20059,#20029)
 enclosing_stmt(#20059,#20056)
-exprContainers(#20059,#20045)
+expr_containers(#20059,#20045)
 literals("x","x",#20059)
 decl(#20059,#20048)
 #20060=*

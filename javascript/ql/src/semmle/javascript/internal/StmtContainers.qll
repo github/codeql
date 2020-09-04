@@ -9,13 +9,13 @@ private import javascript
 
 cached
 private StmtContainer getStmtContainer(NodeInStmtContainer node) {
-  exprContainers(node, result)
+  expr_containers(node, result)
   or
   stmt_containers(node, result)
   or
   // Properties
   exists(ASTNode parent | properties(node, parent, _, _, _) |
-    exprContainers(parent, result)
+    expr_containers(parent, result)
     or
     stmt_containers(parent, result)
   )
@@ -27,7 +27,7 @@ private StmtContainer getStmtContainer(NodeInStmtContainer node) {
   or
   exists(Expr test |
     guard_node(node, _, test) and
-    exprContainers(test, result)
+    expr_containers(test, result)
   )
   or
   // JSDoc type annotations

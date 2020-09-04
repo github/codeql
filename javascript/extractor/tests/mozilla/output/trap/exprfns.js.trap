@@ -211,7 +211,7 @@ stmt_containers(#20075,#20001)
 #20076=*
 exprs(#20076,78,#20075,-1,"f")
 hasLocation(#20076,#20019)
-exprContainers(#20076,#20075)
+expr_containers(#20076,#20075)
 literals("f","f",#20076)
 decl(#20076,#20074)
 #20077=*
@@ -223,7 +223,7 @@ variables(#20078,"x",#20077)
 #20079=*
 exprs(#20079,78,#20075,0,"x")
 hasLocation(#20079,#20023)
-exprContainers(#20079,#20075)
+expr_containers(#20079,#20075)
 literals("x","x",#20079)
 decl(#20079,#20078)
 #20080=@"var;{arguments};{#20077}"
@@ -234,11 +234,11 @@ exprs(#20081,63,#20075,-2,"(""result"")")
 #20082=@"loc,{#10000},1,14,1,23"
 locations_default(#20082,#10000,1,14,1,23)
 hasLocation(#20081,#20082)
-exprContainers(#20081,#20075)
+expr_containers(#20081,#20075)
 #20083=*
 exprs(#20083,4,#20081,0,"""result""")
 hasLocation(#20083,#20029)
-exprContainers(#20083,#20075)
+expr_containers(#20083,#20075)
 literals("result","""result""",#20083)
 #20084=*
 regexpterm(#20084,14,#20083,0,"result")
@@ -256,7 +256,7 @@ stmt_containers(#20086,#20001)
 exprs(#20088,9,#20086,0,"functio ... )\n  }\n}")
 hasLocation(#20088,#20087)
 enclosing_stmt(#20088,#20086)
-exprContainers(#20088,#20001)
+expr_containers(#20088,#20001)
 #20089=*
 scopes(#20089,1)
 scopenodes(#20088,#20089)
@@ -268,7 +268,7 @@ variables(#20091,"b",#20089)
 #20092=*
 exprs(#20092,78,#20088,0,"b")
 hasLocation(#20092,#20037)
-exprContainers(#20092,#20088)
+expr_containers(#20092,#20088)
 literals("b","b",#20092)
 decl(#20092,#20091)
 #20093=@"var;{arguments};{#20089}"
@@ -290,7 +290,7 @@ stmt_containers(#20096,#20088)
 exprs(#20098,79,#20096,0,"b")
 hasLocation(#20098,#20047)
 enclosing_stmt(#20098,#20096)
-exprContainers(#20098,#20088)
+expr_containers(#20098,#20088)
 literals("b","b",#20098)
 bind(#20098,#20091)
 #20099=*
@@ -308,7 +308,7 @@ stmt_containers(#20101,#20088)
 #20103=*
 exprs(#20103,78,#20101,-1,"g")
 hasLocation(#20103,#20055)
-exprContainers(#20103,#20101)
+expr_containers(#20103,#20101)
 literals("g","g",#20103)
 decl(#20103,#20090)
 #20104=*
@@ -320,7 +320,7 @@ variables(#20105,"y",#20104)
 #20106=*
 exprs(#20106,78,#20101,0,"y")
 hasLocation(#20106,#20059)
-exprContainers(#20106,#20101)
+expr_containers(#20106,#20101)
 literals("y","y",#20106)
 decl(#20106,#20105)
 #20107=@"var;{arguments};{#20104}"
@@ -331,11 +331,11 @@ exprs(#20108,63,#20101,-2,"(""other result"")")
 #20109=@"loc,{#10000},5,18,5,33"
 locations_default(#20109,#10000,5,18,5,33)
 hasLocation(#20108,#20109)
-exprContainers(#20108,#20101)
+expr_containers(#20108,#20101)
 #20110=*
 exprs(#20110,4,#20108,0,"""other result""")
 hasLocation(#20110,#20065)
-exprContainers(#20110,#20101)
+expr_containers(#20110,#20101)
 literals("other result","""other result""",#20110)
 #20111=*
 regexpterm(#20111,14,#20110,0,"other result")

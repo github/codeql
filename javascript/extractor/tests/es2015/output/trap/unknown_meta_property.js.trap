@@ -94,7 +94,7 @@ stmt_containers(#20031,#20001)
 #20032=*
 exprs(#20032,78,#20031,-1,"g")
 hasLocation(#20032,#20011)
-exprContainers(#20032,#20031)
+expr_containers(#20032,#20031)
 literals("g","g",#20032)
 decl(#20032,#20030)
 #20033=*
@@ -122,7 +122,7 @@ exprs(#20039,82,#20037,0,"new.source")
 locations_default(#20040,#10000,2,3,2,12)
 hasLocation(#20039,#20040)
 enclosing_stmt(#20039,#20037)
-exprContainers(#20039,#20031)
+expr_containers(#20039,#20031)
 #20041=*
 entry_cfg_node(#20041,#20001)
 #20042=@"loc,{#10000},1,1,1,0"

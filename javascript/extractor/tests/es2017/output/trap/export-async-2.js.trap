@@ -88,7 +88,7 @@ exprs(#20028,9,#20026,0,"async function () {}")
 locations_default(#20029,#10000,1,16,1,35)
 hasLocation(#20028,#20029)
 enclosing_stmt(#20028,#20026)
-exprContainers(#20028,#20001)
+expr_containers(#20028,#20001)
 #20030=*
 scopes(#20030,1)
 scopenodes(#20028,#20030)

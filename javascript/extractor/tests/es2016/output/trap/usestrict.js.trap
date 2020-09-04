@@ -86,7 +86,7 @@ stmt_containers(#20029,#20001)
 #20030=*
 exprs(#20030,78,#20029,-1,"f")
 hasLocation(#20030,#20007)
-exprContainers(#20030,#20029)
+expr_containers(#20030,#20029)
 literals("f","f",#20030)
 decl(#20030,#20028)
 #20031=*
@@ -98,7 +98,7 @@ variables(#20032,"a",#20031)
 #20033=*
 exprs(#20033,78,#20029,0,"a")
 hasLocation(#20033,#20011)
-exprContainers(#20033,#20029)
+expr_containers(#20033,#20029)
 literals("a","a",#20033)
 decl(#20033,#20032)
 #20034=@"var;{arguments};{#20031}"
@@ -107,7 +107,7 @@ isArgumentsObject(#20034)
 #20035=*
 exprs(#20035,3,#20029,-5,"2")
 hasLocation(#20035,#20015)
-exprContainers(#20035,#20029)
+expr_containers(#20035,#20029)
 literals("2","2",#20035)
 #20036=*
 stmts(#20036,1,#20029,-2,"{ 'use strict'; }")
@@ -125,7 +125,7 @@ stmt_containers(#20038,#20029)
 exprs(#20040,4,#20038,0,"'use strict'")
 hasLocation(#20040,#20021)
 enclosing_stmt(#20040,#20038)
-exprContainers(#20040,#20029)
+expr_containers(#20040,#20029)
 literals("use strict","'use strict'",#20040)
 #20041=*
 regexpterm(#20041,14,#20040,0,"use strict")

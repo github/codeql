@@ -40,7 +40,7 @@ stmt_containers(#20010,#20001)
 exprs(#20011,5,#20010,0,"/dice/y")
 hasLocation(#20011,#20005)
 enclosing_stmt(#20011,#20010)
-exprContainers(#20011,#20001)
+expr_containers(#20011,#20001)
 literals("/dice/y","/dice/y",#20011)
 #20012=*
 regexpterm(#20012,14,#20011,0,"dice")

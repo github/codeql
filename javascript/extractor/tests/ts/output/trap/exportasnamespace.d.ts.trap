@@ -111,7 +111,7 @@ has_declare_keyword(#20035)
 #20037=*
 exprs(#20037,78,#20035,-1,"foo")
 hasLocation(#20037,#20013)
-exprContainers(#20037,#20035)
+expr_containers(#20037,#20035)
 literals("foo","foo",#20037)
 #20038=@"var;{foo};{#20000}"
 variables(#20038,"foo",#20000)
@@ -131,7 +131,7 @@ stmt_containers(#20041,#20001)
 exprs(#20042,0,#20041,0,"bar")
 hasLocation(#20042,#20027)
 enclosing_stmt(#20042,#20041)
-exprContainers(#20042,#20001)
+expr_containers(#20042,#20001)
 literals("bar","bar",#20042)
 #20043=*
 entry_cfg_node(#20043,#20001)

@@ -59,7 +59,7 @@ stmt_containers(#20016,#20001)
 exprs(#20017,3,#20016,0,"42")
 hasLocation(#20017,#20009)
 enclosing_stmt(#20017,#20016)
-exprContainers(#20017,#20001)
+expr_containers(#20017,#20001)
 literals("42","42",#20017)
 #20018=*
 entry_cfg_node(#20018,#20001)

@@ -107,7 +107,7 @@ stmt_containers(#20035,#20001)
 #20037=*
 exprs(#20037,78,#20035,-1,"f")
 hasLocation(#20037,#20013)
-exprContainers(#20037,#20035)
+expr_containers(#20037,#20035)
 literals("f","f",#20037)
 decl(#20037,#20034)
 #20038=*
@@ -134,19 +134,19 @@ stmt_containers(#20042,#20035)
 exprs(#20044,69,#20042,0,"yield import(""foo"")")
 hasLocation(#20044,#20043)
 enclosing_stmt(#20044,#20042)
-exprContainers(#20044,#20035)
+expr_containers(#20044,#20035)
 #20045=*
 exprs(#20045,99,#20044,0,"import(""foo"")")
 #20046=@"loc,{#10000},2,9,2,21"
 locations_default(#20046,#10000,2,9,2,21)
 hasLocation(#20045,#20046)
 enclosing_stmt(#20045,#20042)
-exprContainers(#20045,#20035)
+expr_containers(#20045,#20035)
 #20047=*
 exprs(#20047,4,#20045,0,"""foo""")
 hasLocation(#20047,#20027)
 enclosing_stmt(#20047,#20042)
-exprContainers(#20047,#20035)
+expr_containers(#20047,#20035)
 literals("foo","""foo""",#20047)
 #20048=*
 regexpterm(#20048,14,#20047,0,"foo")
