@@ -760,7 +760,7 @@ scopenesting(#20268,#20263)
 #20269=@"var;{arguments};{#20268}"
 variables(#20269,"arguments",#20268)
 is_arguments_object(#20269)
-isMethod(#20264)
+is_method(#20264)
 isAbstractMember(#20264)
 #20270=*
 properties(#20270,#20260,3,0,"g(x: nu ... number;")
@@ -803,7 +803,7 @@ typeexprs(#20279,2,#20273,-6,"number")
 hasLocation(#20279,#20113)
 expr_containers(#20279,#20273)
 literals("number","number",#20279)
-isMethod(#20270)
+is_method(#20270)
 #20280=*
 properties(#20280,#20260,4,0,"g(x: st ... string;")
 #20281=@"loc,{#10000},10,3,10,23"
@@ -845,7 +845,7 @@ typeexprs(#20289,2,#20283,-6,"string")
 hasLocation(#20289,#20131)
 expr_containers(#20289,#20283)
 literals("string","string",#20289)
-isMethod(#20280)
+is_method(#20280)
 #20290=*
 properties(#20290,#20260,5,0,"g(x: any) {}")
 #20291=@"loc,{#10000},11,3,11,14"
@@ -888,7 +888,7 @@ stmts(#20299,1,#20293,-2,"{}")
 locations_default(#20300,#10000,11,13,11,14)
 hasLocation(#20299,#20300)
 stmt_containers(#20299,#20293)
-isMethod(#20290)
+is_method(#20290)
 #20301=*
 properties(#20301,#20260,6,8,"abstract x: number;")
 #20302=@"loc,{#10000},14,3,14,21"
@@ -933,7 +933,7 @@ is_arguments_object(#20310)
 stmts(#20311,1,#20303,-2,"{}")
 hasLocation(#20311,#20307)
 stmt_containers(#20311,#20303)
-isMethod(#20306)
+is_method(#20306)
 #20312=*
 stmts(#20312,26,#20001,2,"declare ... mber;\n}")
 #20313=@"loc,{#10000},18,1,29,1"
@@ -978,7 +978,7 @@ scopenesting(#20321,#20316)
 #20322=@"var;{arguments};{#20321}"
 variables(#20322,"arguments",#20321)
 is_arguments_object(#20322)
-isMethod(#20317)
+is_method(#20317)
 isAbstractMember(#20317)
 #20323=*
 properties(#20323,#20312,3,0,"g(x: nu ... number;")
@@ -1021,7 +1021,7 @@ typeexprs(#20332,2,#20326,-6,"number")
 hasLocation(#20332,#20196)
 expr_containers(#20332,#20326)
 literals("number","number",#20332)
-isMethod(#20323)
+is_method(#20323)
 #20333=*
 properties(#20333,#20312,4,0,"g(x: st ... string;")
 #20334=@"loc,{#10000},24,3,24,23"
@@ -1063,7 +1063,7 @@ typeexprs(#20342,2,#20336,-6,"string")
 hasLocation(#20342,#20214)
 expr_containers(#20342,#20336)
 literals("string","string",#20342)
-isMethod(#20333)
+is_method(#20333)
 #20343=*
 properties(#20343,#20312,5,0,"g(x: any) {}")
 #20344=@"loc,{#10000},25,3,25,14"
@@ -1106,7 +1106,7 @@ stmts(#20352,1,#20346,-2,"{}")
 locations_default(#20353,#10000,25,13,25,14)
 hasLocation(#20352,#20353)
 stmt_containers(#20352,#20346)
-isMethod(#20343)
+is_method(#20343)
 #20354=*
 properties(#20354,#20312,6,8,"abstract x: number;")
 #20355=@"loc,{#10000},28,3,28,21"
@@ -1151,7 +1151,7 @@ is_arguments_object(#20363)
 stmts(#20364,1,#20356,-2,"{}")
 hasLocation(#20364,#20360)
 stmt_containers(#20364,#20356)
-isMethod(#20359)
+is_method(#20359)
 #20365=*
 entry_cfg_node(#20365,#20001)
 #20366=@"loc,{#10000},2,1,2,0"

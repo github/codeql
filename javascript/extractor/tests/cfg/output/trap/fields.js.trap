@@ -448,7 +448,7 @@ literals("ctor","ctor",#20154)
 #20155=@"var;{ctor};{#20000}"
 variables(#20155,"ctor",#20000)
 bind(#20154,#20155)
-isMethod(#20143)
+is_method(#20143)
 #20156=*
 properties(#20156,#20139,3,8,"x;")
 #20157=@"loc,{#10000},5,3,5,4"
@@ -502,7 +502,7 @@ stmts(#20169,1,#20165,-2,"{}")
 locations_default(#20170,#10000,7,7,7,8)
 hasLocation(#20169,#20170)
 stmt_containers(#20169,#20165)
-isMethod(#20162)
+is_method(#20162)
 #20171=*
 properties(#20171,#20139,6,0,"static g() {}")
 #20172=@"loc,{#10000},8,3,8,15"
@@ -534,7 +534,7 @@ stmts(#20178,1,#20174,-2,"{}")
 locations_default(#20179,#10000,8,14,8,15)
 hasLocation(#20178,#20179)
 stmt_containers(#20178,#20174)
-isMethod(#20171)
+is_method(#20171)
 isStatic(#20171)
 #20180=*
 stmts(#20180,26,#20001,1,"class B ... \n  z;\n}")
@@ -640,7 +640,7 @@ literals("after","after",#20205)
 #20206=@"var;{after};{#20000}"
 variables(#20206,"after",#20000)
 bind(#20205,#20206)
-isMethod(#20185)
+is_method(#20185)
 #20207=*
 properties(#20207,#20180,3,8,"z;")
 #20208=@"loc,{#10000},17,3,17,4"

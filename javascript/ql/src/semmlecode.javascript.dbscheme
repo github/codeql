@@ -514,7 +514,7 @@ case @property.kind of
 @field_or_vardeclarator = @field | @vardeclarator;
 
 is_computed (int id: @property ref);
-isMethod   (int id: @property ref);
+is_method   (int id: @property ref);
 isStatic   (int id: @property ref);
 isAbstractMember (int id: @property ref);
 isConstEnum (int id: @enumdeclaration ref);

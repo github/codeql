@@ -619,7 +619,7 @@ stmts(#20208,1,#20204,-2,"{}")
 locations_default(#20209,#10000,8,19,8,20)
 hasLocation(#20208,#20209)
 stmt_containers(#20208,#20204)
-isMethod(#20201)
+is_method(#20201)
 #20210=*
 properties(#20210,#20197,3,0,"constructor() {}")
 #20211=@"loc,{#10000},7,9,7,8"
@@ -647,7 +647,7 @@ is_arguments_object(#20215)
 stmts(#20216,1,#20213,-2,"{}")
 hasLocation(#20216,#20211)
 stmt_containers(#20216,#20213)
-isMethod(#20210)
+is_method(#20210)
 #20217=*
 stmts(#20217,34,#20001,4,"interfa ... : I);\n}")
 #20218=@"loc,{#10000},11,1,13,1"
@@ -690,7 +690,7 @@ hasLocation(#20226,#20150)
 expr_containers(#20226,#20223)
 literals("I","I",#20226)
 typebind(#20226,#20163)
-isMethod(#20220)
+is_method(#20220)
 isAbstractMember(#20220)
 #20227=*
 entry_cfg_node(#20227,#20001)

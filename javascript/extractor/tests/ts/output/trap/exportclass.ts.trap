@@ -88,7 +88,7 @@ is_arguments_object(#20024)
 stmts(#20025,1,#20022,-2,"{}")
 hasLocation(#20025,#20020)
 stmt_containers(#20025,#20022)
-isMethod(#20019)
+is_method(#20019)
 #20026=*
 entry_cfg_node(#20026,#20001)
 #20027=@"loc,{#10000},1,1,1,0"

@@ -1133,7 +1133,7 @@ public class ASTExtractor {
       visit(nd.getValue(), propkey, 1, c.idcontext);
       visit(nd.getDefaultValue(), propkey, 2, IdContext.varBind);
       if (nd.isComputed()) trapwriter.addTuple("is_computed", propkey);
-      if (nd.isMethod()) trapwriter.addTuple("isMethod", propkey);
+      if (nd.isMethod()) trapwriter.addTuple("is_method", propkey);
       return propkey;
     }
 
@@ -1520,7 +1520,7 @@ public class ASTExtractor {
       if (ctor != null) contextManager.leaveContainer();
 
       if (nd instanceof MethodDefinition && !nd.isCallSignature() && !nd.isIndexSignature())
-        trapwriter.addTuple("isMethod", methkey);
+        trapwriter.addTuple("is_method", methkey);
       // Emit tuples for isStatic, isAbstract, isComputed, etc
       for (int i = 0; i < DeclarationFlags.numberOfFlags; ++i) {
         if (DeclarationFlags.hasNthFlag(nd.getFlags(), i)) {

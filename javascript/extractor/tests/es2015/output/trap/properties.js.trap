@@ -387,7 +387,7 @@ hasLocation(#20122,#20069)
 enclosing_stmt(#20122,#20120)
 expr_containers(#20122,#20114)
 literals("56","56",#20122)
-isMethod(#20111)
+is_method(#20111)
 #20123=*
 entry_cfg_node(#20123,#20001)
 #20124=@"loc,{#10000},1,1,1,0"

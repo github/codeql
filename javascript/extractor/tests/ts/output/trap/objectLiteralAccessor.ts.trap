@@ -218,7 +218,7 @@ hasLocation(#20072,#20031)
 enclosing_stmt(#20072,#20070)
 expr_containers(#20072,#20065)
 literals("1","1",#20072)
-isMethod(#20062)
+is_method(#20062)
 #20073=*
 properties(#20073,#20060,1,2,"set foo(v) {}")
 #20074=@"loc,{#10000},3,3,3,15"
@@ -256,7 +256,7 @@ stmts(#20081,1,#20076,-2,"{}")
 locations_default(#20082,#10000,3,14,3,15)
 hasLocation(#20081,#20082)
 stmt_containers(#20081,#20076)
-isMethod(#20073)
+is_method(#20073)
 #20083=*
 entry_cfg_node(#20083,#20001)
 #20084=@"loc,{#10000},1,1,1,0"

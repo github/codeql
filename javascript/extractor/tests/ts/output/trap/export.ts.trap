@@ -242,7 +242,7 @@ is_arguments_object(#20077)
 stmts(#20078,1,#20075,-2,"{}")
 hasLocation(#20078,#20073)
 stmt_containers(#20078,#20075)
-isMethod(#20072)
+is_method(#20072)
 #20079=*
 stmts(#20079,29,#20001,2,"export  ...  f() {}")
 #20080=@"loc,{#10000},5,1,5,30"

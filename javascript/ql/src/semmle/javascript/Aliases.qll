@@ -145,3 +145,8 @@ deprecated predicate isArgumentsObject(Variable id) { is_arguments_object(id) }
  * Use the `isComputed()` method on the `MemberDeclaration`/`Property`/`PropertyPattern` class instead.
  */ 
 deprecated predicate isComputed(Property prop) { is_computed(prop) }
+/**
+ * Alias for the predicate `is_method` defined in the .dbscheme.
+ * Use the `isMethod()` method on the `MemberDeclaration`/`Property` class instead.
+ */ 
+deprecated predicate isMethod(Property prop) { is_method(prop) }

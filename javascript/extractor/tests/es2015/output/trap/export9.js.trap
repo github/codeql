@@ -131,7 +131,7 @@ is_arguments_object(#20039)
 stmts(#20040,1,#20037,-2,"{}")
 hasLocation(#20040,#20035)
 stmt_containers(#20040,#20037)
-isMethod(#20034)
+is_method(#20034)
 #20041=*
 stmts(#20041,2,#20001,1,"[,]")
 #20042=@"loc,{#10000},1,27,1,29"

@@ -617,7 +617,7 @@ class Property extends @property, Documentable {
   predicate isComputed() { is_computed(this) }
 
   /** Holds if this property is defined using method syntax. */
-  predicate isMethod() { isMethod(this) }
+  predicate isMethod() { is_method(this) }
 
   /** Holds if this property is defined using shorthand syntax. */
   predicate isShorthand() { getNameExpr().getLocation() = getInit().getLocation() }

@@ -578,7 +578,7 @@ stmts(#20208,1,#20204,-2,"{}")
 locations_default(#20209,#10000,8,15,8,16)
 hasLocation(#20208,#20209)
 stmt_containers(#20208,#20204)
-isMethod(#20201)
+is_method(#20201)
 #20210=*
 properties(#20210,#20193,4,0,"constructor() {}")
 #20211=@"loc,{#10000},6,12,6,11"
@@ -605,7 +605,7 @@ is_arguments_object(#20214)
 stmts(#20215,1,#20199,-2,"{}")
 hasLocation(#20215,#20211)
 stmt_containers(#20215,#20199)
-isMethod(#20210)
+is_method(#20210)
 #20216=*
 stmts(#20216,17,#20001,1,"functio ... :\n  }\n}")
 #20217=@"loc,{#10000},11,1,15,1"

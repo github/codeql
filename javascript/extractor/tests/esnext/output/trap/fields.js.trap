@@ -295,7 +295,7 @@ is_arguments_object(#20100)
 stmts(#20101,1,#20092,-2,"{}")
 hasLocation(#20101,#20097)
 stmt_containers(#20101,#20092)
-isMethod(#20096)
+is_method(#20096)
 #20102=*
 stmts(#20102,26,#20001,1,"class B ... er.x;\n}")
 #20103=@"loc,{#10000},5,1,7,1"
@@ -408,7 +408,7 @@ enclosing_stmt(#20127,#20123)
 expr_containers(#20127,#20109)
 literals("args","args",#20127)
 bind(#20127,#20119)
-isMethod(#20115)
+is_method(#20115)
 #20128=*
 stmts(#20128,26,#20001,2,"class C {\n  async;\n}")
 #20129=@"loc,{#10000},9,1,11,1"
@@ -464,7 +464,7 @@ is_arguments_object(#20140)
 stmts(#20141,1,#20134,-2,"{}")
 hasLocation(#20141,#20137)
 stmt_containers(#20141,#20134)
-isMethod(#20136)
+is_method(#20136)
 #20142=*
 entry_cfg_node(#20142,#20001)
 #20143=@"loc,{#10000},1,1,1,0"

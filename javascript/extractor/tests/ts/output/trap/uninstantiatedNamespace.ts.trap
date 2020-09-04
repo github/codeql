@@ -811,7 +811,7 @@ typeexprs(#20272,2,#20269,-3,"number")
 hasLocation(#20272,#20141)
 expr_containers(#20272,#20269)
 literals("number","number",#20272)
-isMethod(#20266)
+is_method(#20266)
 isAbstractMember(#20266)
 #20273=*
 stmts(#20273,31,#20212,5,"namespa ... ent {;}")

@@ -8158,7 +8158,7 @@ typeexprs(#22748,2,#22742,-6,"string")
 hasLocation(#22748,#21349)
 expr_containers(#22748,#22742)
 literals("string","string",#22748)
-isMethod(#22739)
+is_method(#22739)
 isAbstractMember(#22739)
 #22749=*
 stmts(#22749,35,#22183,31,"type T4 ... <Part>;")

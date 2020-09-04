@@ -290,7 +290,7 @@ hasLocation(#20097,#20041)
 enclosing_stmt(#20097,#20092)
 expr_containers(#20097,#20086)
 literals("_x","_x",#20097)
-isMethod(#20083)
+is_method(#20083)
 #20098=*
 properties(#20098,#20080,3,2,"set x(v ... +v;\n  }")
 #20099=@"loc,{#10000},5,3,7,3"
@@ -375,7 +375,7 @@ enclosing_stmt(#20119,#20109)
 expr_containers(#20119,#20101)
 literals("v","v",#20119)
 bind(#20119,#20104)
-isMethod(#20098)
+is_method(#20098)
 #20120=*
 properties(#20120,#20080,4,0,"constructor() {}")
 #20121=@"loc,{#10000},1,9,1,8"
@@ -403,7 +403,7 @@ is_arguments_object(#20125)
 stmts(#20126,1,#20123,-2,"{}")
 hasLocation(#20126,#20121)
 stmt_containers(#20126,#20123)
-isMethod(#20120)
+is_method(#20120)
 #20127=*
 entry_cfg_node(#20127,#20001)
 #20128=@"loc,{#10000},1,1,1,0"

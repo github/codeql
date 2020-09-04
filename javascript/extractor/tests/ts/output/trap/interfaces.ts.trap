@@ -297,7 +297,7 @@ scopenesting(#20102,#20000)
 #20103=@"var;{arguments};{#20102}"
 variables(#20103,"arguments",#20102)
 is_arguments_object(#20103)
-isMethod(#20098)
+is_method(#20098)
 isAbstractMember(#20098)
 #20104=*
 properties(#20104,#20095,3,0,"bar(x:  ... string;")
@@ -340,7 +340,7 @@ typeexprs(#20113,2,#20107,-6,"number")
 hasLocation(#20113,#20047)
 expr_containers(#20113,#20107)
 literals("number","number",#20113)
-isMethod(#20104)
+is_method(#20104)
 isAbstractMember(#20104)
 #20114=*
 properties(#20114,#20095,4,8,"field: number;")
@@ -421,7 +421,7 @@ scopenesting(#20132,#20121)
 #20133=@"var;{arguments};{#20132}"
 variables(#20133,"arguments",#20132)
 is_arguments_object(#20133)
-isMethod(#20128)
+is_method(#20128)
 isAbstractMember(#20128)
 #20134=*
 entry_cfg_node(#20134,#20001)

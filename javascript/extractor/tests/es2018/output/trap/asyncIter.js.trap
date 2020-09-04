@@ -439,7 +439,7 @@ stmts(#20154,1,#20150,-2,"{}")
 locations_default(#20155,#10000,4,22,4,23)
 hasLocation(#20154,#20155)
 stmt_containers(#20154,#20150)
-isMethod(#20147)
+is_method(#20147)
 #20156=*
 properties(#20156,#20143,3,0,"async * ... r]() {}")
 #20157=@"loc,{#10000},5,3,5,36"
@@ -489,7 +489,7 @@ stmts(#20167,1,#20163,-2,"{}")
 locations_default(#20168,#10000,5,35,5,36)
 hasLocation(#20167,#20168)
 stmt_containers(#20167,#20163)
-isMethod(#20156)
+is_method(#20156)
 is_computed(#20156)
 #20169=*
 properties(#20169,#20143,4,0,"constructor() {}")
@@ -518,7 +518,7 @@ is_arguments_object(#20174)
 stmts(#20175,1,#20172,-2,"{}")
 hasLocation(#20175,#20170)
 stmt_containers(#20175,#20172)
-isMethod(#20169)
+is_method(#20169)
 #20176=*
 stmts(#20176,18,#20001,2,"var o = ... () {}\n}")
 #20177=@"loc,{#10000},8,1,11,1"
@@ -579,7 +579,7 @@ stmts(#20190,1,#20186,-2,"{}")
 locations_default(#20191,#10000,9,22,9,23)
 hasLocation(#20190,#20191)
 stmt_containers(#20190,#20186)
-isMethod(#20183)
+is_method(#20183)
 #20192=*
 properties(#20192,#20181,1,0,"async * ... r]() {}")
 #20193=@"loc,{#10000},10,3,10,36"
@@ -628,7 +628,7 @@ locations_default(#20203,#10000,10,35,10,36)
 hasLocation(#20202,#20203)
 stmt_containers(#20202,#20198)
 is_computed(#20192)
-isMethod(#20192)
+is_method(#20192)
 #20204=*
 entry_cfg_node(#20204,#20001)
 #20205=@"loc,{#10000},1,1,1,0"

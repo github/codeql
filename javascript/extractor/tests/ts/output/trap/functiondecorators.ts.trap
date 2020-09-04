@@ -722,7 +722,7 @@ stmts(#20253,1,#20248,-2,"{}")
 locations_default(#20254,#10000,6,12,6,13)
 hasLocation(#20253,#20254)
 stmt_containers(#20253,#20248)
-isMethod(#20245)
+is_method(#20245)
 #20255=*
 properties(#20255,#20241,3,0,"m2(@A a) {}")
 #20256=@"loc,{#10000},7,3,7,13"
@@ -776,7 +776,7 @@ stmts(#20267,1,#20258,-2,"{}")
 locations_default(#20268,#10000,7,12,7,13)
 hasLocation(#20267,#20268)
 stmt_containers(#20267,#20258)
-isMethod(#20255)
+is_method(#20255)
 #20269=*
 properties(#20269,#20241,4,0,"m3(@A @B ab) {}")
 #20270=@"loc,{#10000},8,3,8,17"
@@ -844,7 +844,7 @@ stmts(#20285,1,#20272,-2,"{}")
 locations_default(#20286,#10000,8,16,8,17)
 hasLocation(#20285,#20286)
 stmt_containers(#20285,#20272)
-isMethod(#20269)
+is_method(#20269)
 #20287=*
 properties(#20287,#20241,5,0,"m4(none, @A a) {}")
 #20288=@"loc,{#10000},10,3,10,19"
@@ -906,7 +906,7 @@ stmts(#20301,1,#20290,-2,"{}")
 locations_default(#20302,#10000,10,18,10,19)
 hasLocation(#20301,#20302)
 stmt_containers(#20301,#20290)
-isMethod(#20287)
+is_method(#20287)
 #20303=*
 properties(#20303,#20241,6,0,"m5(none ...  ab) {}")
 #20304=@"loc,{#10000},11,3,11,23"
@@ -982,7 +982,7 @@ stmts(#20321,1,#20306,-2,"{}")
 locations_default(#20322,#10000,11,22,11,23)
 hasLocation(#20321,#20322)
 stmt_containers(#20321,#20306)
-isMethod(#20303)
+is_method(#20303)
 #20323=*
 properties(#20323,#20241,7,0,"m6(@A a, @B b) {}")
 #20324=@"loc,{#10000},13,3,13,19"
@@ -1060,7 +1060,7 @@ stmts(#20341,1,#20326,-2,"{}")
 locations_default(#20342,#10000,13,18,13,19)
 hasLocation(#20341,#20342)
 stmt_containers(#20341,#20326)
-isMethod(#20323)
+is_method(#20323)
 #20343=*
 properties(#20343,#20241,8,0,"m7(@A a ...  bc) {}")
 #20344=@"loc,{#10000},14,3,14,23"
@@ -1152,7 +1152,7 @@ stmts(#20365,1,#20346,-2,"{}")
 locations_default(#20366,#10000,14,22,14,23)
 hasLocation(#20365,#20366)
 stmt_containers(#20365,#20346)
-isMethod(#20343)
+is_method(#20343)
 #20367=*
 properties(#20367,#20241,9,0,"constructor() {}")
 #20368=@"loc,{#10000},5,9,5,8"
@@ -1180,7 +1180,7 @@ is_arguments_object(#20372)
 stmts(#20373,1,#20370,-2,"{}")
 hasLocation(#20373,#20368)
 stmt_containers(#20373,#20370)
-isMethod(#20367)
+is_method(#20367)
 #20374=*
 entry_cfg_node(#20374,#20001)
 #20375=@"loc,{#10000},1,1,1,0"

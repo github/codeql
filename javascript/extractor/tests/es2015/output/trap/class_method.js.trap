@@ -194,7 +194,7 @@ hasLocation(#20061,#20033)
 enclosing_stmt(#20061,#20056)
 expr_containers(#20061,#20050)
 literals("x","x",#20061)
-isMethod(#20047)
+is_method(#20047)
 #20062=*
 properties(#20062,#20044,3,0,"constructor() {}")
 #20063=@"loc,{#10000},1,9,1,8"
@@ -222,7 +222,7 @@ is_arguments_object(#20067)
 stmts(#20068,1,#20065,-2,"{}")
 hasLocation(#20068,#20063)
 stmt_containers(#20068,#20065)
-isMethod(#20062)
+is_method(#20062)
 #20069=*
 entry_cfg_node(#20069,#20001)
 #20070=@"loc,{#10000},1,1,1,0"

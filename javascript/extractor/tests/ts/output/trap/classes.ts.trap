@@ -210,7 +210,7 @@ enclosing_stmt(#20060,#20056)
 expr_containers(#20060,#20050)
 literals("args","args",#20060)
 bind(#20060,#20052)
-isMethod(#20047)
+is_method(#20047)
 #20061=*
 entry_cfg_node(#20061,#20001)
 #20062=@"loc,{#10000},1,1,1,0"

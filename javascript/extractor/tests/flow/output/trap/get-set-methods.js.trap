@@ -236,7 +236,7 @@ stmts(#20080,1,#20073,-2,"{ }")
 locations_default(#20081,#10000,2,18,2,20)
 hasLocation(#20080,#20081)
 stmt_containers(#20080,#20073)
-isMethod(#20070)
+is_method(#20070)
 #20082=*
 properties(#20082,#20066,3,0,"set<T>(v: T) { }")
 #20083=@"loc,{#10000},3,5,3,20"
@@ -278,7 +278,7 @@ stmts(#20092,1,#20085,-2,"{ }")
 locations_default(#20093,#10000,3,18,3,20)
 hasLocation(#20092,#20093)
 stmt_containers(#20092,#20085)
-isMethod(#20082)
+is_method(#20082)
 #20094=*
 properties(#20094,#20066,4,0,"constructor() {}")
 #20095=@"loc,{#10000},1,9,1,8"
@@ -306,7 +306,7 @@ is_arguments_object(#20099)
 stmts(#20100,1,#20097,-2,"{}")
 hasLocation(#20100,#20095)
 stmt_containers(#20100,#20097)
-isMethod(#20094)
+is_method(#20094)
 #20101=*
 entry_cfg_node(#20101,#20001)
 #20102=@"loc,{#10000},1,1,1,0"

@@ -646,7 +646,7 @@ class MemberSignature extends MemberDeclaration {
  * Note that TypeScript call signatures are not considered methods.
  */
 class MethodDeclaration extends MemberDeclaration {
-  MethodDeclaration() { isMethod(this) }
+  MethodDeclaration() { is_method(this) }
 
   /**
    * Gets the body of this method.

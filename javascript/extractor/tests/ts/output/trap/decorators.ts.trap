@@ -427,7 +427,7 @@ hasLocation(#20143,#20063)
 enclosing_stmt(#20143,#20138)
 expr_containers(#20143,#20132)
 literals("field","field",#20143)
-isMethod(#20125)
+is_method(#20125)
 #20144=*
 properties(#20144,#20118,3,8,"field: number;")
 #20145=@"loc,{#10000},7,3,7,16"
@@ -487,7 +487,7 @@ is_arguments_object(#20157)
 stmts(#20158,1,#20150,-2,"{}")
 hasLocation(#20158,#20154)
 stmt_containers(#20158,#20150)
-isMethod(#20153)
+is_method(#20153)
 #20159=*
 stmts(#20159,17,#20001,1,"@functi ... un() {}")
 #20160=@"loc,{#10000},10,1,11,17"
@@ -576,7 +576,7 @@ is_arguments_object(#20179)
 stmts(#20180,1,#20177,-2,"{}")
 hasLocation(#20180,#20175)
 stmt_containers(#20180,#20177)
-isMethod(#20174)
+is_method(#20174)
 #20181=*
 entry_cfg_node(#20181,#20001)
 #20182=@"loc,{#10000},1,1,1,0"
