@@ -325,7 +325,7 @@ case @expr.kind of
 | 87 = @expexpr
 | 88 = @assignexpexpr
 | 89 = @jsxelement
-| 90 = @jsxqualifiedname
+| 90 = @jsx_qualified_name
 | 91 = @jsxemptyexpr
 | 92 = @awaitexpr
 | 93 = @functionsentexpr

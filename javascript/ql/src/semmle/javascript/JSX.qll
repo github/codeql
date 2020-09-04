@@ -153,7 +153,7 @@ class JSXSpreadAttribute extends JSXAttribute {
  * html:href
  * ```
  */
-class JSXQualifiedName extends Expr, @jsxqualifiedname {
+class JSXQualifiedName extends Expr, @jsx_qualified_name {
   /** Gets the namespace component of this qualified name. */
   Identifier getNamespace() { result = getChildExpr(0) }
 
