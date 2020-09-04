@@ -20,13 +20,6 @@ as long as you run the script from one of the following locations:
 languages = [ "cpp", "csharp", "go", "java", "javascript", "python"]
 packs = [ "code-scanning", "security-and-quality", "security-extended" ]
 
-# Define CodeQL search path so it'll find the CodeQL repositories:
-#  - anywhere in the current Git clone (including current working directory)
-#  - the 'codeql' subdirectory of the cwd
-#
-# (and assumes the codeql-go repo is in a similar location)
-codeql_search_path = "./codeql:./codeql-go:"   # will be extended further down
-
 
 def prefix_repo_nwo(filename):
     """
@@ -74,6 +67,7 @@ def single_spaces(input):
     """
     return " ".join(input.split())
 
+
 def get_query_metadata(key, metadata, queryfile):
     """Returns query metadata or prints a warning to stderr if a particular piece of metadata is not available."""
     if key in metadata: return single_spaces(metadata[key])
@@ -81,8 +75,12 @@ def get_query_metadata(key, metadata, queryfile):
     print("Warning: no '%s' metadata for query with ID '%s' (%s)" % (key, query_id, queryfile), file=sys.stderr)
     return ""
 
+
 def subprocess_run(cmd):
+    """Runs a command through subprocess.run, with a few tweaks. Raises an Exception if exit code != 0."""
     return subprocess.run(cmd, capture_output=True, text=True, env=os.environ.copy(), check=True)
+
+
 
 try: # Check for `git` on path
     git_version = subprocess_run(["git","--version"])
@@ -95,6 +93,13 @@ try: # Check for `codeql` on path
 except Exception as e:
     print("Error: couldn't invoke CodeQL CLI 'codeql'. Is it on the path? Aborting.", file=sys.stderr)
     raise e
+
+# Define CodeQL search path so it'll find the CodeQL repositories:
+#  - anywhere in the current Git clone (including current working directory)
+#  - the 'codeql' subdirectory of the cwd
+#
+# (and assumes the codeql-go repo is in a similar location)
+codeql_search_path = "./codeql:./codeql-go:"   # will be extended further down
     
 # Extend CodeQL search path by detecting root of the current Git repo (if any). This means that you
 # can run this script from any location within the CodeQL git repository.
