@@ -1587,7 +1587,7 @@ private Expr getAnAddOperand(AddExpr add) { result = add.getAnOperand().getUnder
  * w - len
  * ```
  */
-class SubExpr extends @subexpr, BinaryExpr {
+class SubExpr extends @sub_expr, BinaryExpr {
   override string getOperator() { result = "-" }
 }
 
