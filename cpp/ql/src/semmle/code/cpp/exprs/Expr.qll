@@ -453,12 +453,19 @@ class Expr extends StmtParent, @expr {
    * cast from B to C. Only (1) and (2) would be included.
    */
   Expr getExplicitlyConverted() {
-    // result is this or one of its conversions
-    result = this.getConversion*() and
-    // result is not an implicit conversion - it's either the expr or an explicit cast
-    (result = this or not result.(Cast).isImplicit()) and
-    // there is no further explicit conversion after result
-    not exists(Cast other | other = result.getConversion+() and not other.isImplicit())
+    if this.hasConversion()
+    then
+    if this.hasExplicitConversion()
+    then
+     result = this.getConversion().getExplicitlyConverted()
+    else
+      if this.getImplicitlyConverted().hasExplicitConversion()
+      then
+        result = this.getImplicitlyConverted().getConversion().getExplicitlyConverted()
+      else
+        result = this
+    else
+    result = this
   }
 
   /**
