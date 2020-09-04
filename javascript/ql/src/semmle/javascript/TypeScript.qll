@@ -1300,7 +1300,7 @@ class QualifiedNamespaceAccess extends NamespaceAccess, @qualified_namespace_acc
 /**
  * An import inside a type annotation, such as in `import("http").ServerRequest`.
  */
-class ImportTypeExpr extends TypeExpr, @importtypeexpr {
+class ImportTypeExpr extends TypeExpr, @import_typeexpr {
   /**
    * Gets the string literal with the imported path, such as `"http"` in `import("http")`.
    */

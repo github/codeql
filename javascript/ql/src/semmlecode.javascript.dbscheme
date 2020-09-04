@@ -593,7 +593,7 @@ case @typeexpr.kind of
 @typeaccess = @local_type_access | @qualified_type_access | @import_type_access;
 @vartypeaccess = @local_var_type_access | @qualified_var_type_access | @this_var_type_access | @import_var_type_access;
 @namespace_access = @local_namespace_access | @qualified_namespace_access | @import_namespace_access;
-@importtypeexpr = @import_type_access | @import_namespace_access | @import_var_type_access;
+@import_typeexpr = @import_type_access | @import_namespace_access | @import_var_type_access;
 
 @functiontypeexpr = @plain_function_typeexpr | @constructor_typeexpr;
 
