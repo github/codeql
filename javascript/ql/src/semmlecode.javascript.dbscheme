@@ -614,7 +614,7 @@ type_child (
 case @type.kind of
   0 = @any_type
 | 1 = @string_type
-| 2 = @numbertype
+| 2 = @number_type
 | 3 = @uniontype
 | 4 = @truetype
 | 5 = @falsetype
