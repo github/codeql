@@ -422,7 +422,7 @@ class BigIntLiteral extends @bigintliteral, Literal {
  * 'Hello, "world"!'
  * ```
  */
-class StringLiteral extends @stringliteral, Literal {
+class StringLiteral extends @string_literal, Literal {
   /**
    * Gets the value of this string literal parsed as a regular expression, if possible.
    *
