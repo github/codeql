@@ -110,3 +110,8 @@ deprecated predicate isInstantiated(NamespaceDeclaration decl) { is_instantiated
  * Alias for the predicate `has_declare_keyword` defined in the .dbscheme.
  */ 
 deprecated predicate hasDeclareKeyword(ASTNode stmt) { has_declare_keyword(stmt) }
+/**
+ * Alias for the predicate `is_for_await_of` defined in the .dbscheme.
+ * Use `ForOfStmt#isAwait()` instead.
+ */ 
+deprecated predicate isForAwaitOf(ForOfStmt forof) { is_for_await_of(forof) }

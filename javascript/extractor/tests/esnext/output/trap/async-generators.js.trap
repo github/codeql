@@ -283,7 +283,7 @@ decl(#20092,#20080)
 stmts(#20093,0,#20084,2,";")
 hasLocation(#20093,#20062)
 stmt_containers(#20093,#20076)
-isForAwaitOf(#20084)
+is_for_await_of(#20084)
 #20094=*
 entry_cfg_node(#20094,#20001)
 #20095=@"loc,{#10000},1,1,1,0"

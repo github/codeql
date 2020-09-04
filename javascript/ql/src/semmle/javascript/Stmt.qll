@@ -895,7 +895,7 @@ class ForOfStmt extends @forofstmt, EnhancedForLoop {
   /**
    * Holds if this is a `for-await-of` statement.
    */
-  predicate isAwait() { isForAwaitOf(this) }
+  predicate isAwait() { is_for_await_of(this) }
 }
 
 /**

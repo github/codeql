@@ -1084,7 +1084,7 @@ public class ASTExtractor {
       contextManager.leaveLoopStmt();
       if (!lexicals.isEmpty()) scopeManager.leaveScope();
       if (nd instanceof ForOfStatement && ((ForOfStatement) nd).isAwait())
-        trapwriter.addTuple("isForAwaitOf", key);
+        trapwriter.addTuple("is_for_await_of", key);
       return key;
     }
 

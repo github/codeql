@@ -9216,7 +9216,7 @@
 </dependencies>
 </relation>
 <relation>
-<name>isForAwaitOf</name>
+<name>is_for_await_of</name>
 <cardinality>1</cardinality>
 <columnsizes>
 <e>
