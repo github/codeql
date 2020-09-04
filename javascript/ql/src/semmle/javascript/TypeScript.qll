@@ -764,7 +764,7 @@ class NumberLiteralTypeExpr extends @number_literal_typeexpr, LiteralTypeExpr {
 }
 
 /** A boolean literal used as a type. */
-class BooleanLiteralTypeExpr extends @booleanliteraltypeexpr, LiteralTypeExpr {
+class BooleanLiteralTypeExpr extends @boolean_literal_typeexpr, LiteralTypeExpr {
   predicate isTrue() { getValue() = "true" }
 
   predicate isFalse() { getValue() = "false" }
