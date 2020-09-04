@@ -394,8 +394,8 @@ case @expr.kind of
 @type_assertion = @as_type_assertion | @prefix_type_assertion;
 
 @class_definition = @class_decl_stmt | @class_expr;
-@interfacedefinition = @interface_declaration | @interface_typeexpr;
-@class_or_interface = @class_definition | @interfacedefinition;
+@interface_definition = @interface_declaration | @interface_typeexpr;
+@class_or_interface = @class_definition | @interface_definition;
 
 @lexical_decl = @var_decl | @type_decl;
 @lexical_access = @varaccess | @local_type_access | @local_var_type_access | @local_namespace_access;
@@ -507,7 +507,7 @@ case @property.kind of
 | 9 = @parameter_field
 ;
 
-@property_parent = @obj_expr | @object_pattern | @class_definition | @jsx_element | @interfacedefinition | @enum_declaration;
+@property_parent = @obj_expr | @object_pattern | @class_definition | @jsx_element | @interface_definition | @enum_declaration;
 @property_accessor = @property_getter | @property_setter;
 @call_signature = @function_call_signature | @constructor_call_signature;
 @field = @proper_field | @parameter_field;

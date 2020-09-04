@@ -272,7 +272,7 @@ class TypeAliasDeclaration extends @type_alias_declaration, TypeParameterized, S
 /**
  * A TypeScript interface declaration, inline interface type, or function type.
  */
-class InterfaceDefinition extends @interfacedefinition, ClassOrInterface {
+class InterfaceDefinition extends @interface_definition, ClassOrInterface {
   override predicate isAbstract() { any() }
 }
 
