@@ -969,7 +969,7 @@ class OptionalTypeExpr extends @optional_typeexpr, TypeExpr {
 /**
  * A rest element in a tuple type, such as `...string[]` in `[number, ...string[]]`.
  */
-class RestTypeExpr extends @resttypeexpr, TypeExpr {
+class RestTypeExpr extends @rest_typeexpr, TypeExpr {
   /** Gets the type `T[]` in `...T[]`, such as `string[]` in `[number, ...string[]]`. */
   TypeExpr getArrayType() { result = getChildTypeExpr(0) }
 

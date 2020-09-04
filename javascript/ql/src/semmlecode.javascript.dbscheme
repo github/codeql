@@ -581,7 +581,7 @@ case @typeexpr.kind of
 | 31 = @import_namespace_access
 | 32 = @import_var_type_access
 | 33 = @optional_typeexpr
-| 34 = @resttypeexpr
+| 34 = @rest_typeexpr
 | 35 = @bigintliteraltypeexpr
 | 36 = @readonlytypeexpr
 ;
