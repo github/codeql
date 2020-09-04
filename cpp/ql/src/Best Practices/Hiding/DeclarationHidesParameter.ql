@@ -29,6 +29,11 @@ Function getConstructedFrom(Function f) {
  * This should not happen in a single application but since we
  * have a system wide view it is likely to happen for instance for
  * the main function.
+ *
+ * Note: we use `getConstructedFrom` to ensure that we look at template
+ * functions rather than their instantiations. We get better results this way
+ * as the instantiation is artificial and may have inherited parameter names
+ * from the declaration rather than the definition.
  */
 ParameterDeclarationEntry functionParameterNames(Function f, string name) {
   exists(FunctionDeclarationEntry fe |
