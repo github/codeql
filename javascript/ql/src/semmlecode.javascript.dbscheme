@@ -183,7 +183,7 @@ case @stmt.kind of
 | 31 = @namespace_declaration
 | 32 = @import_equals_declaration
 | 33 = @export_assign_declaration
-| 34 = @interfacedeclaration
+| 34 = @interface_declaration
 | 35 = @typealiasdeclaration
 | 36 = @enumdeclaration
 | 37 = @external_module_declaration
@@ -196,7 +196,7 @@ case @stmt.kind of
 @exportdeclaration = @export_all_declaration | @export_default_declaration | @export_named_declaration;
 
 @namespacedefinition = @namespace_declaration | @enumdeclaration;
-@typedefinition = @classdefinition | @interfacedeclaration | @enumdeclaration | @typealiasdeclaration | @enum_member;
+@typedefinition = @classdefinition | @interface_declaration | @enumdeclaration | @typealiasdeclaration | @enum_member;
 
 is_instantiated(unique int decl: @namespace_declaration ref);
 
@@ -394,7 +394,7 @@ case @expr.kind of
 @typeassertion = @as_type_assertion | @prefix_type_assertion;
 
 @classdefinition = @class_decl_stmt | @class_expr;
-@interfacedefinition = @interfacedeclaration | @interface_typeexpr;
+@interfacedefinition = @interface_declaration | @interface_typeexpr;
 @class_or_interface = @classdefinition | @interfacedefinition;
 
 @lexical_decl = @var_decl | @type_decl;

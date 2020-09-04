@@ -277,7 +277,7 @@ class InterfaceDefinition extends @interfacedefinition, ClassOrInterface {
 }
 
 /** A TypeScript interface declaration. */
-class InterfaceDeclaration extends Stmt, InterfaceDefinition, @interfacedeclaration {
+class InterfaceDeclaration extends Stmt, InterfaceDefinition, @interface_declaration {
   override Identifier getIdentifier() { result = getChildTypeExpr(0) }
 
   override TypeParameter getTypeParameter(int n) {
