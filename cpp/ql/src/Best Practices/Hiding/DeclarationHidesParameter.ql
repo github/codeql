@@ -16,10 +16,7 @@ import cpp
  * is not from a template instantiation.
  */
 Function getConstructedFrom(Function f) {
-  exists(Function mid |
-    f.isConstructedFrom(mid) and
-    result = getConstructedFrom(mid)
-  )
+  f.isConstructedFrom(result)
   or
   not f.isConstructedFrom(_) and
   result = f
