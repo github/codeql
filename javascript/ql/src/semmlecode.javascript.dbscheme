@@ -612,7 +612,7 @@ type_child (
 );
 
 case @type.kind of
-  0 = @anytype
+  0 = @any_type
 | 1 = @stringtype
 | 2 = @numbertype
 | 3 = @uniontype
