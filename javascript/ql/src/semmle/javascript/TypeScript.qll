@@ -207,7 +207,7 @@ class ImportEqualsDeclaration extends Stmt, @import_equals_declaration {
  * and the compiled output depends on the `--module` flag passed to the
  * TypeScript compiler.
  */
-class ExternalModuleReference extends Expr, Import, @externalmodulereference {
+class ExternalModuleReference extends Expr, Import, @external_module_reference {
   /** Gets the expression specifying the module. */
   Expr getExpression() { result = getChildExpr(0) }
 

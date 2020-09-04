@@ -574,7 +574,7 @@
 <v>100</v>
 </e>
 <e>
-<k>@externalmodulereference</k>
+<k>@external_module_reference</k>
 <v>5</v>
 </e>
 <e>

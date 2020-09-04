@@ -333,7 +333,7 @@ case @expr.kind of
 | 95 = @export_default_specifier
 | 96 = @export_namespace_specifier
 | 97 = @bind_expr
-| 98 = @externalmodulereference
+| 98 = @external_module_reference
 | 99 = @dynamicimport
 | 100 = @expression_with_type_arguments
 | 101 = @prefixtypeassertion
@@ -695,7 +695,7 @@ case @symbol.kind of
 ;
 
 @type_with_symbol = @typereference | @typevariable_type | @typeoftype | @uniquesymboltype;
-@ast_node_with_symbol = @typedefinition | @namespacedefinition | @toplevel | @typeaccess | @namespace_access | @var_decl | @function | @invokeexpr | @import_declaration | @externalmodulereference;
+@ast_node_with_symbol = @typedefinition | @namespacedefinition | @toplevel | @typeaccess | @namespace_access | @var_decl | @function | @invokeexpr | @import_declaration | @external_module_reference;
 
 ast_node_symbol(
   unique int node: @ast_node_with_symbol ref,
