@@ -1010,7 +1010,7 @@ class VarTypeAccess extends @vartypeaccess, TypeExpr { }
  *
  * This can occur as part of the operand to a `typeof` type or as the first operand to an `is` type.
  */
-class LocalVarTypeAccess extends @localvartypeaccess, VarTypeAccess, LexicalAccess, Identifier {
+class LocalVarTypeAccess extends @local_var_type_access, VarTypeAccess, LexicalAccess, Identifier {
   /** Gets the variable being referenced, or nothing if this is a `this` keyword. */
   Variable getVariable() { bind(this, result) }
 }
