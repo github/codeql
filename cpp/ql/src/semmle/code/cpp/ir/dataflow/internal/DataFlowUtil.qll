@@ -10,8 +10,6 @@ private import semmle.code.cpp.ir.ValueNumbering
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.models.interfaces.DataFlow
-private import semmle.code.cpp.ir.implementation.aliased_ssa.internal.AliasedSSA
-private import semmle.code.cpp.ir.internal.IntegerConstant
 
 private newtype TIRDataFlowNode =
   TInstructionNode(Instruction i) or
