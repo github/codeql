@@ -12,6 +12,7 @@ import semmle.go.frameworks.stdlib.CompressFlate
 import semmle.go.frameworks.stdlib.CompressGzip
 import semmle.go.frameworks.stdlib.CompressLzw
 import semmle.go.frameworks.stdlib.CompressZlib
+import semmle.go.frameworks.stdlib.Mime
 import semmle.go.frameworks.stdlib.Path
 import semmle.go.frameworks.stdlib.PathFilepath
 
