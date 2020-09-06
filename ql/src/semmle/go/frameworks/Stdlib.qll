@@ -707,41 +707,6 @@ module Log {
   }
 }
 
-/** Provides models of some functions in the `encoding/json` package. */
-module EncodingJson {
-  /** The `Marshal` or `MarshalIndent` function in the `encoding/json` package. */
-  class MarshalFunction extends TaintTracking::FunctionModel, MarshalingFunction::Range {
-    MarshalFunction() {
-      this.hasQualifiedName("encoding/json", "Marshal") or
-      this.hasQualifiedName("encoding/json", "MarshalIndent")
-    }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp = getAnInput() and outp = getOutput()
-    }
-
-    override FunctionInput getAnInput() { result.isParameter(0) }
-
-    override FunctionOutput getOutput() { result.isResult(0) }
-
-    override string getFormat() { result = "JSON" }
-  }
-
-  private class UnmarshalFunction extends TaintTracking::FunctionModel, UnmarshalingFunction::Range {
-    UnmarshalFunction() { this.hasQualifiedName("encoding/json", "Unmarshal") }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp = getAnInput() and outp = getOutput()
-    }
-
-    override FunctionInput getAnInput() { result.isParameter(0) }
-
-    override FunctionOutput getOutput() { result.isParameter(1) }
-
-    override string getFormat() { result = "JSON" }
-  }
-}
-
 /** Provides models of some functions in the `crypto/cipher` package. */
 module CryptoCipher {
   private class AeadOpenFunction extends TaintTracking::FunctionModel, Method {

@@ -6,6 +6,44 @@ import go
 
 /** Provides models of commonly used functions in the `encoding/json` package. */
 module EncodingJson {
+  private class Escape extends EscapeFunction::Range {
+    Escape() { hasQualifiedName("encoding/json", "HTMLEscape") }
+
+    override string kind() { result = "html" }
+  }
+
+  /** The `Marshal` or `MarshalIndent` function in the `encoding/json` package. */
+  class MarshalFunction extends TaintTracking::FunctionModel, MarshalingFunction::Range {
+    MarshalFunction() {
+      this.hasQualifiedName("encoding/json", "Marshal") or
+      this.hasQualifiedName("encoding/json", "MarshalIndent")
+    }
+
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
+      inp = getAnInput() and outp = getOutput()
+    }
+
+    override FunctionInput getAnInput() { result.isParameter(0) }
+
+    override FunctionOutput getOutput() { result.isResult(0) }
+
+    override string getFormat() { result = "JSON" }
+  }
+
+  private class UnmarshalFunction extends TaintTracking::FunctionModel, UnmarshalingFunction::Range {
+    UnmarshalFunction() { this.hasQualifiedName("encoding/json", "Unmarshal") }
+
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
+      inp = getAnInput() and outp = getOutput()
+    }
+
+    override FunctionInput getAnInput() { result.isParameter(0) }
+
+    override FunctionOutput getOutput() { result.isParameter(1) }
+
+    override string getFormat() { result = "JSON" }
+  }
+
   private class FunctionModels extends TaintTracking::FunctionModel {
     FunctionInput inp;
     FunctionOutput outp;
