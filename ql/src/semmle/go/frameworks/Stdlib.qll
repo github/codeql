@@ -15,6 +15,7 @@ import semmle.go.frameworks.stdlib.CompressZlib
 import semmle.go.frameworks.stdlib.Path
 import semmle.go.frameworks.stdlib.PathFilepath
 import semmle.go.frameworks.stdlib.TextScanner
+import semmle.go.frameworks.stdlib.TextTabwriter
 
 /** A `String()` method. */
 class StringMethod extends TaintTracking::FunctionModel, Method {
