@@ -16,6 +16,7 @@ import semmle.go.frameworks.stdlib.Mime
 import semmle.go.frameworks.stdlib.MimeMultipart
 import semmle.go.frameworks.stdlib.MimeQuotedprintable
 import semmle.go.frameworks.stdlib.Encoding
+import semmle.go.frameworks.stdlib.EncodingAscii85
 import semmle.go.frameworks.stdlib.Path
 import semmle.go.frameworks.stdlib.PathFilepath
 import semmle.go.frameworks.stdlib.Reflect
