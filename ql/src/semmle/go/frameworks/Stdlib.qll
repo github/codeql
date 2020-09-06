@@ -24,6 +24,7 @@ import semmle.go.frameworks.stdlib.EncodingBinary
 import semmle.go.frameworks.stdlib.EncodingCsv
 import semmle.go.frameworks.stdlib.EncodingGob
 import semmle.go.frameworks.stdlib.EncodingHex
+import semmle.go.frameworks.stdlib.EncodingJson
 import semmle.go.frameworks.stdlib.Path
 import semmle.go.frameworks.stdlib.PathFilepath
 import semmle.go.frameworks.stdlib.Reflect
