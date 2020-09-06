@@ -20,6 +20,7 @@ import semmle.go.frameworks.stdlib.EncodingAscii85
 import semmle.go.frameworks.stdlib.EncodingAsn1
 import semmle.go.frameworks.stdlib.EncodingBase32
 import semmle.go.frameworks.stdlib.EncodingBase64
+import semmle.go.frameworks.stdlib.EncodingBinary
 import semmle.go.frameworks.stdlib.Path
 import semmle.go.frameworks.stdlib.PathFilepath
 import semmle.go.frameworks.stdlib.Reflect
