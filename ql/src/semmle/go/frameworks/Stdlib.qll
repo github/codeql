@@ -578,48 +578,6 @@ module Strings {
   }
 }
 
-/** Provides models of commonly used functions in the `text/template` package. */
-module Template {
-  private class TemplateEscape extends EscapeFunction::Range {
-    string kind;
-
-    TemplateEscape() {
-      exists(string fn |
-        fn.matches("HTMLEscape%") and kind = "html"
-        or
-        fn.matches("JSEscape%") and kind = "js"
-        or
-        fn.matches("URLQueryEscape%") and kind = "url"
-      |
-        this.hasQualifiedName("text/template", fn)
-        or
-        this.hasQualifiedName("html/template", fn)
-      )
-    }
-
-    override string kind() { result = kind }
-  }
-
-  private class TextTemplateInstantiation extends TemplateInstantiation::Range,
-    DataFlow::MethodCallNode {
-    int dataArg;
-
-    TextTemplateInstantiation() {
-      exists(string m | getTarget().hasQualifiedName("text/template", "Template", m) |
-        m = "Execute" and
-        dataArg = 1
-        or
-        m = "ExecuteTemplate" and
-        dataArg = 2
-      )
-    }
-
-    override DataFlow::Node getTemplateArgument() { result = this.getReceiver() }
-
-    override DataFlow::Node getADataArgument() { result = this.getArgument(dataArg) }
-  }
-}
-
 /** Provides models of commonly used functions in the `net/url` package. */
 module URL {
   /** The `PathEscape` or `QueryEscape` function. */
