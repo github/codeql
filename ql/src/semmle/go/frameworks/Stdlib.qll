@@ -741,18 +741,6 @@ module EncodingJson {
   }
 }
 
-/** Provides models of some functions in the `encoding/hex` package. */
-module EncodingHex {
-  private class DecodeStringFunction extends TaintTracking::FunctionModel {
-    DecodeStringFunction() { this.hasQualifiedName("encoding/hex", "DecodeString") }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isParameter(0) and
-      outp.isResult(0)
-    }
-  }
-}
-
 /** Provides models of some functions in the `crypto/cipher` package. */
 module CryptoCipher {
   private class AeadOpenFunction extends TaintTracking::FunctionModel, Method {
