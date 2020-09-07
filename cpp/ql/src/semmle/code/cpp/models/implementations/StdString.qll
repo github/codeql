@@ -1,7 +1,7 @@
 /**
- * Provides implementation classes modeling `std::string` and other
- * instantiations of `std::basic_string`. See `semmle.code.cpp.models.Models`
- * for usage information.
+ * Provides implementation classes modeling `std::string` (and other
+ * instantiations of `std::basic_string`) and `std::stringstream`. See
+ * `semmle.code.cpp.models.Models` for usage information.
  */
 
 import semmle.code.cpp.models.interfaces.Taint
