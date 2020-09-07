@@ -194,7 +194,10 @@ module UnsafeJQueryPlugin {
    * Holds if there exists a jQuery plugin that likely expects `sink` to be treated as a HTML fragment.
    */
   predicate isLikelyIntentionalHtmlSink(DataFlow::Node sink) {
-    exists(JQuery::JQueryPluginMethod plugin, DataFlow::PropWrite defaultDef, string default, DataFlow::PropRead finalRead |
+    exists(
+      JQuery::JQueryPluginMethod plugin, DataFlow::PropWrite defaultDef, string default,
+      DataFlow::PropRead finalRead
+    |
       hasDefaultOption(plugin, defaultDef) and
       defaultDef.getPropertyName() = finalRead.getPropertyName() and
       defaultDef.getRhs().mayHaveStringValue(default) and
