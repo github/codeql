@@ -6,7 +6,7 @@
 #
 # Functions whose name ends with "_with_local_flow" will also be tested for local flow.
 #
-# All functions starting with "test_" should run and print `"OK"`.
+# All functions starting with "test_" should run and execute `print("OK")` one or more times.
 # This can be checked by running validTest.py.
 
 # These are defined so that we can evaluate the test code.
@@ -366,3 +366,39 @@ def test_lambda_extra_keyword():
 def test_lambda_extra_keyword_flow():
     f_extra_keyword_flow = lambda **a : [*a][0] # return the name of the first extra keyword argument
     SINK(f_extra_keyword_flow(**{SOURCE: None})) # Flow missing
+
+
+def test_swap():
+    a = SOURCE
+    b = NONSOURCE
+    SINK(a)
+    SINK_F(b)
+
+    a, b = b, a
+    SINK_F(a)
+    SINK(b)
+
+
+def test_deep_callgraph():
+    # port of python/ql/test/library-tests/taint/general/deep.py
+
+    def f1(arg):
+        return arg
+
+    def f2(arg):
+        return f1(arg)
+
+    def f3(arg):
+        return f2(arg)
+
+    def f4(arg):
+        return f3(arg)
+
+    def f5(arg):
+        return f4(arg)
+
+    def f6(arg):
+        return f5(arg)
+
+    x = f6(SOURCE)
+    SINK(x) # Flow missing

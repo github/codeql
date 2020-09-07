@@ -533,3 +533,72 @@ int mul_by_constant(int i, int j) {
 
   return 0;
 }
+
+
+int notequal_type_endpoint(unsigned n) {
+  out(n); // 0 ..
+
+  if (n > 0) {
+    out(n); // 1 ..
+  }
+
+  if (n != 0) {
+    out(n); // 1 ..
+  } else {
+    out(n); // 0 .. 0
+  }
+
+  if (!n) {
+    out(n); // 0 .. 0
+  } else {
+    out(n); // 1 .. [BUG: lower bound is deduced to be 0]
+  }
+
+  while (n != 0) {
+    n--; // 1 ..
+  }
+
+  out(n); // 0 .. 0
+}
+
+void notequal_refinement(short n) {
+  if (n < 0)
+    return;
+
+  if (n == 0) {
+    out(n); // 0 .. 0
+  } else {
+    out(n); // 1 ..
+  }
+
+  if (n) {
+    out(n); // 1 .. [BUG: lower bound is deduced to be 0]
+  } else {
+    out(n); // 0 .. 0
+  }
+
+  while (n != 0) {
+    n--; // 1 ..
+  }
+
+  out(n); // 0 .. 0
+}
+
+void notequal_variations(short n, float f) {
+  if (n != 0) {
+    if (n >= 0) {
+      out(n); // 1 .. [BUG: we can't handle `!=` coming first]
+    }
+  }
+
+  if (n >= 5) {
+    if (2 * n - 10 == 0) { // Same as `n == 10/2` (modulo overflow)
+      return;
+    }
+    out(n); // 6 ..
+  }
+
+  if (n != -32768 && n != -32767) {
+    out(n); // -32766 ..
+  }
+}

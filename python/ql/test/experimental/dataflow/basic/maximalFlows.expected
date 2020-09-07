@@ -1,7 +1,3 @@
-| test.py:0:0:0:0 | GSSA Variable __name__ | test.py:7:1:7:1 | GSSA Variable b |
-| test.py:0:0:0:0 | GSSA Variable __package__ | test.py:7:1:7:1 | GSSA Variable b |
-| test.py:0:0:0:0 | GSSA Variable b | test.py:7:1:7:1 | GSSA Variable b |
-| test.py:1:5:1:17 | GSSA Variable obfuscated_id | test.py:7:1:7:1 | GSSA Variable b |
 | test.py:1:19:1:19 | SSA variable x | test.py:4:10:4:10 | ControlFlowNode for z |
 | test.py:1:19:1:19 | SSA variable x | test.py:7:1:7:1 | GSSA Variable b |
 | test.py:2:3:2:3 | SSA variable y | test.py:4:10:4:10 | ControlFlowNode for z |

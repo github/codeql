@@ -33,3 +33,4 @@
 
 
 ## Changes to libraries
+* The predicate `TypeAnnotation.hasQualifiedName` now works in more cases when the imported library was not present during extraction.
