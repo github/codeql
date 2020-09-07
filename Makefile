@@ -31,11 +31,11 @@ DATAFLOW_BRANCH=master
 
 autoformat:
 	find ql/src -name "*.ql" -or -name "*.qll" | xargs codeql query format -qq -i
-	git ls-files | grep \\.go$$ | xargs grep -L "//\s*autoformat-ignore" | xargs gofmt -w
+	git ls-files | grep \\.go$$ | grep -v ^vendor/ | xargs grep -L "//\s*autoformat-ignore" | xargs gofmt -w
 
 check-formatting:
 	find ql/src -name "*.ql" -or -name "*.qll" | xargs codeql query format --check-only
-	test -z "$$(git ls-files | grep \\.go$ | xargs grep -L "//\s*autoformat-ignore" | xargs gofmt -l)"
+	test -z "$$(git ls-files | grep \\.go$ | grep -v ^vendor/ | xargs grep -L "//\s*autoformat-ignore" | xargs gofmt -l)"
 
 tools: $(addsuffix $(EXE),$(addprefix tools/bin/,$(BINARIES))) tools/tokenizer.jar
 
