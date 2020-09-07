@@ -1,0 +1,6 @@
+# github.com/golang/protobuf v1.4.2
+## explicit
+github.com/golang/protobuf
+# google.golang.org/protobuf v1.23.0
+## explicit
+google.golang.org/protobuf

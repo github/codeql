@@ -254,21 +254,30 @@ module IR {
   }
 
   /**
+   * An IR instruction that reads a component from a composite object.
+   *
+   * This is either a field of a struct, or an element of an array, map, slice or string.
+   */
+  class ComponentReadInstruction extends ReadInstruction, EvalInstruction {
+    ComponentReadInstruction() {
+      e instanceof IndexExpr
+      or
+      e.(SelectorExpr).getBase() instanceof ValueExpr and
+      not e.(SelectorExpr).getSelector() = any(Method method).getAReference()
+    }
+
+    /** Gets the instruction computing the base value on which the field or element is read. */
+    Instruction getBase() { result = selectorBase(e) }
+  }
+
+  /**
    * An IR instruction that reads the value of a field.
    *
    * On snapshots with incomplete type information, method expressions may sometimes be
    * misclassified as field reads.
    */
-  class FieldReadInstruction extends ReadInstruction, EvalInstruction {
+  class FieldReadInstruction extends ComponentReadInstruction {
     override SelectorExpr e;
-
-    FieldReadInstruction() {
-      e.getBase() instanceof ValueExpr and
-      not e.getSelector() = any(Method method).getAReference()
-    }
-
-    /** Gets the instruction computing the base value on which the field is read. */
-    Instruction getBase() { result = selectorBase(e) }
 
     /** Gets the field being read. */
     Field getField() { e.getSelector() = result.getAReference() }
@@ -299,11 +308,8 @@ module IR {
   /**
    * An IR instruction that reads an element of an array, slice, map or string.
    */
-  class ElementReadInstruction extends ReadInstruction, EvalInstruction {
+  class ElementReadInstruction extends ComponentReadInstruction {
     override IndexExpr e;
-
-    /** Gets the instruction computing the base value on which the element is looked up. */
-    Instruction getBase() { result = selectorBase(e) }
 
     /** Gets the instruction computing the index of the element being looked up. */
     Instruction getIndex() { result = evalExprInstruction(e.getIndex()) }
