@@ -229,7 +229,7 @@ generics.cs:
 #   37|       3: [AddEventAccessor] add_myEvent
 #-----|         2: (Parameters)
 #   37|           0: [Parameter] value
-#   37|       3: [RemoveEventAccessor] remove_myEvent
+#   37|       4: [RemoveEventAccessor] remove_myEvent
 #-----|         2: (Parameters)
 #   37|           0: [Parameter] value
 #   39|     12: [IncrementOperator] ++
