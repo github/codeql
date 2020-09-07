@@ -19,7 +19,7 @@ module API {
    * An abstract representation of a definition or use of an API component such as a function
    * exported by an npm package, a parameter of such a function, or its result.
    */
-  class Node extends Impl::TNode {
+  class Node extends Impl::TApiNode {
     /**
      * Gets a data-flow node corresponding to a use of the API component represented by this node.
      *
@@ -294,7 +294,7 @@ module API {
   cached
   private module Impl {
     cached
-    newtype TNode =
+    newtype TApiNode =
       MkRoot() or
       MkModuleDef(string m) { exists(MkModuleExport(m)) } or
       MkModuleUse(string m) { exists(MkModuleImport(m)) } or
@@ -369,7 +369,7 @@ module API {
      * incoming edge from `base` labeled `lbl` in the API graph.
      */
     cached
-    predicate rhs(TNode base, string lbl, DataFlow::Node rhs) {
+    predicate rhs(TApiNode base, string lbl, DataFlow::Node rhs) {
       hasSemantics(rhs) and
       (
         base = MkRoot() and
@@ -435,7 +435,7 @@ module API {
      * Holds if `rhs` is the right-hand side of a definition of node `nd`.
      */
     cached
-    predicate rhs(TNode nd, DataFlow::Node rhs) {
+    predicate rhs(TApiNode nd, DataFlow::Node rhs) {
       exists(string m | nd = MkModuleExport(m) | exports(m, rhs))
       or
       nd = MkDef(rhs)
@@ -451,7 +451,7 @@ module API {
      * `lbl` in the API graph.
      */
     cached
-    predicate use(TNode base, string lbl, DataFlow::Node ref) {
+    predicate use(TApiNode base, string lbl, DataFlow::Node ref) {
       hasSemantics(ref) and
       (
         base = MkRoot() and
@@ -507,7 +507,7 @@ module API {
      * Holds if `ref` is a use of node `nd`.
      */
     cached
-    predicate use(TNode nd, DataFlow::Node ref) {
+    predicate use(TApiNode nd, DataFlow::Node ref) {
       exists(string m, Module mod | nd = MkModuleDef(m) and mod = importableModule(m) |
         ref = DataFlow::ssaDefinitionNode(SSA::implicitInit(mod.(NodeModule).getModuleVariable()))
         or
@@ -606,7 +606,7 @@ module API {
      * Holds if there is an edge from `pred` to `succ` in the API graph that is labeled with `lbl`.
      */
     cached
-    predicate edge(TNode pred, string lbl, TNode succ) {
+    predicate edge(TApiNode pred, string lbl, TApiNode succ) {
       exists(string m |
         pred = MkRoot() and
         lbl = Label::mod(m)
@@ -669,11 +669,11 @@ module API {
     /**
      * Holds if there is an edge from `pred` to `succ` in the API graph.
      */
-    private predicate edge(TNode pred, TNode succ) { edge(pred, _, succ) }
+    private predicate edge(TApiNode pred, TApiNode succ) { edge(pred, _, succ) }
 
     /** Gets the shortest distance from the root to `nd` in the API graph. */
     cached
-    int distanceFromRoot(TNode nd) = shortestDistances(MkRoot/0, edge/2)(_, nd, result)
+    int distanceFromRoot(TApiNode nd) = shortestDistances(MkRoot/0, edge/2)(_, nd, result)
   }
 
   import Label as EdgeLabel
