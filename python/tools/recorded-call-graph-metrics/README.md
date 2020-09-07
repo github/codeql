@@ -4,7 +4,7 @@ also known as _call graph tracing_.
 
 Execute a python program and for each call being made, record the call and callee. This allows us to compare call graph resolution from static analysis with actual data -- that is, can we statically determine the target of each actual call correctly.
 
-Using the call graph tracer does incur heave toll on the performance. Expect 10x longer to execute program.
+Using the call graph tracer does incur a heavy toll on the performance. Expect 10x longer to execute the program.
 
 Number of calls recorded vary a little from run to run. I have not been able to pinpoint why.
 
@@ -25,7 +25,7 @@ $ head -n 100 projects/*/Metrics.txt
 
 ### Expanding set of projects
 
-It should be fairly straight forward to expand the set of projects. Most projects use `tox` for running their tests against multiple python versions. I didn't look into any kind of integration, but have manually picked out the instructions required to get going.
+It should be fairly straightforward to expand the set of projects. Most projects use `tox` for running their tests against multiple python versions. I didn't look into any kind of integration, but have manually picked out the instructions required to get going.
 
 As an example, compare the [`tox.ini`](https://github.com/pallets/flask/blob/21c3df31de4bc2f838c945bd37d185210d9bab1a/tox.ini) file from flask with the configuration
 

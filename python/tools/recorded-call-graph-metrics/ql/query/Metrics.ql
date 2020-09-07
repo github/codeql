@@ -1,6 +1,6 @@
 import lib.RecordedCalls
 
-// colum i is just used for sorting
+// column i is just used for sorting
 from string text, float number, float ratio, int i
 where
   exists(int all_rcs | all_rcs = count(XMLRecordedCall rc) and ratio = number / all_rcs |

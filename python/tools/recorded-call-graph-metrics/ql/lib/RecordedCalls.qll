@@ -179,7 +179,7 @@ class IdentifiedRecordedCall extends XMLRecordedCall {
     // - all these calls were recorded
     //
     // without this `strictcount`, in the case `func(); func(); func()`, if 1 of the calls
-    // is not recorded, we woulld still mark the other two recorded calls as valid
+    // is not recorded, we would still mark the other two recorded calls as valid
     // (which is not following the rules above). + 1 to count `this` as well.
     strictcount(this.getACall()) = strictcount(this.getOtherWithSameSetOfCalls()) + 1 and
     forex(XMLRecordedCall rc | rc = this.getOtherWithSameSetOfCalls() |
