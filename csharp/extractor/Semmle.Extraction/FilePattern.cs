@@ -1,34 +1,125 @@
-using System.IO;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Diagnostics.CodeAnalysis;
+using Semmle.Util;
 
 namespace Semmle.Extraction
 {
+    public sealed class InvalidFilePatternException : Exception
+    {
+        public InvalidFilePatternException(string pattern, string message) :
+            base($"Invalid file pattern '{pattern}': {message}")
+        { }
+    }
+
     /// <summary>
     /// An file pattern, as used in either an extractor layout file or
     /// a path transformer file.
     /// </summary>
-    class FilePattern
+    public sealed class FilePattern
     {
-        private readonly bool include;
-        private readonly string prefix;
+        /// <summary>
+        /// Whether this is an inclusion pattern.
+        /// </summary>
+        public bool Include { get; }
 
-        public bool Include => include;
-
-        public string Prefix => prefix;
-
-        public FilePattern(string line)
+        public FilePattern(string pattern)
         {
-            include = false;
-            if (line.StartsWith("-"))
-                line = line.Substring(1);
+            Include = false;
+            if (pattern.StartsWith("-"))
+                pattern = pattern.Substring(1);
             else
-                include = true;
-            prefix = Normalize(line.Trim());
+                Include = true;
+            pattern = FileUtils.ConvertToUnix(pattern.Trim()).TrimStart('/');
+            RegexPattern = BuildRegex(pattern).ToString();
         }
 
-        static public string Normalize(string path)
+        /// <summary>
+        /// Constructs a regex string from a file pattern. Throws
+        /// `InvalidFilePatternException` for invalid patterns.
+        /// </summary>
+        static StringBuilder BuildRegex(string pattern)
         {
-            path = Path.GetFullPath(path);
-            return path.Replace('\\', '/');
+            bool HasCharAt(int i, Predicate<char> p) =>
+                i >= 0 && i < pattern.Length && p(pattern[i]);
+            var sb = new StringBuilder();
+            var i = 0;
+            var seenDoubleSlash = false;
+            sb.Append('^');
+            while (i < pattern.Length)
+            {
+                if (pattern[i] == '/')
+                {
+                    if (HasCharAt(i + 1, c => c == '/'))
+                    {
+                        if (seenDoubleSlash)
+                            throw new InvalidFilePatternException(pattern, "'//' is allowed at most once.");
+                        sb.Append("(?<doubleslash>/)");
+                        i += 2;
+                        seenDoubleSlash = true;
+                    }
+                    else
+                    {
+                        sb.Append('/');
+                        i++;
+                    }
+                }
+                else if (pattern[i] == '*')
+                {
+                    if (HasCharAt(i + 1, c => c == '*'))
+                    {
+                        if (HasCharAt(i - 1, c => c != '/'))
+                            throw new InvalidFilePatternException(pattern, "'**' preceeded by non-`/` character.");
+                        if (HasCharAt(i + 2, c => c != '/'))
+                            throw new InvalidFilePatternException(pattern, "'**' succeeded by non-`/` character");
+                        sb.Append(".*");
+                        i += 2;
+                    }
+                    else
+                    {
+                        sb.Append("[^/]*");
+                        i++;
+                    }
+                }
+                else
+                    sb.Append(Regex.Escape(pattern[i++].ToString()));
+            }
+            return sb.Append(".*");
+        }
+
+
+        /// <summary>
+        /// The regex pattern compiled from this file pattern.
+        /// </summary>
+        public string RegexPattern { get; }
+
+        /// <summary>
+        /// Returns `true` if the set of file patterns `patterns` match the path `path`.
+        /// If so, `transformerSuffix` will contain the part of `path` that needs to be
+        /// suffixed when using path transformers.
+        /// </summary>
+        public static bool Matches(IEnumerable<FilePattern> patterns, string path, [NotNullWhen(true)] out string? transformerSuffix)
+        {
+            path = FileUtils.ConvertToUnix(path).TrimStart('/');
+            Match? lastMatch = null;
+            foreach (var pattern in patterns)
+            {
+                var m = new Regex(pattern.RegexPattern).Match(path);
+                if (m.Success)
+                    lastMatch = pattern.Include ? m : null;
+            }
+            if (lastMatch is Match)
+            {
+                transformerSuffix = lastMatch.Groups.TryGetValue("doubleslash", out var group)
+                    ? path.Substring(group.Index)
+                    : path;
+                return true;
+            }
+
+            transformerSuffix = null;
+            return false;
         }
     }
 }

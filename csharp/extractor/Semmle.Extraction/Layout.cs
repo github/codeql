@@ -197,18 +197,6 @@ namespace Semmle.Extraction
             }
         }
 
-        public bool Matches(string path)
-        {
-            bool matches = false;
-            path = FilePattern.Normalize(path);
-            foreach (var filePattern in filePatterns)
-            {
-                if (filePattern.Include)
-                    matches |= path.StartsWith(filePattern.Prefix);
-                else
-                    matches &= !path.StartsWith(filePattern.Prefix);
-            }
-            return matches;
-        }
+        public bool Matches(string path) => FilePattern.Matches(filePatterns, path, out var _);
     }
 }
