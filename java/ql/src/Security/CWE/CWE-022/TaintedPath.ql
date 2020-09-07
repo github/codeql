@@ -18,10 +18,30 @@ import semmle.code.java.security.PathCreation
 import DataFlow::PathGraph
 import TaintedPathCommon
 
-class ContainsDotDotSanitizer extends DataFlow::BarrierGuard {
+class FilterMethod extends Method {
+  FilterMethod() {
+    this.hasName("contains") and
+    (
+      this.getAParameter().getAnArgument().(StringLiteral).getValue() = ".." or
+      this.getAParameter().getAnArgument().(StringLiteral).getValue() = "."
+    )
+  }
+}
+
+class ContainsDotDotSanitizer extends DataFlow::ExprNode {
   ContainsDotDotSanitizer() {
-    this.(MethodAccess).getMethod().hasName("contains") and
-    this.(MethodAccess).getAnArgument().(StringLiteral).getValue() = ".."
+    exists(MethodAccess ma, Argument p, Method m|
+      m instanceof FilterMethod and
+      ma.getMethod().calls(m) and
+      ma.getAnArgument() = p and
+      p = this.asExpr()
+    )
+  }
+}
+
+class ContainsDotDotBarrierGuard extends DataFlow::BarrierGuard {
+  ContainsDotDotBarrierGuard() {
+    this.(MethodAccess).getMethod() instanceof FilterMethod
   }
 
   override predicate checks(Expr e, boolean branch) {
@@ -36,6 +56,7 @@ class TaintedPathConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     exists(Expr e | e = sink.asExpr() | e = any(PathCreation p).getAnInput() and not guarded(e))
+    or sink instanceof ContainsDotDotSanitizer
   }
 
   override predicate isSanitizer(DataFlow::Node node) {
@@ -43,7 +64,7 @@ class TaintedPathConfig extends TaintTracking::Configuration {
   }
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof ContainsDotDotSanitizer
+    guard instanceof ContainsDotDotBarrierGuard
   }
 }
 
