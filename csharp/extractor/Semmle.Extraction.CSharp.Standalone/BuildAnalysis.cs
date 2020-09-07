@@ -184,6 +184,7 @@ namespace Semmle.BuildAnalyser
                 }
                 catch (AssemblyLoadException)
                 {
+                    progressMonitor.Warning($"Could not load assembly information from {usedReference.Key}");
                 }
             }
 
