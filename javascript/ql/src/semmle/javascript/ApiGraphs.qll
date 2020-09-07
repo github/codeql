@@ -350,15 +350,13 @@ module API {
 
     private predicate isUsed(CanonicalName n) {
       exists(n.(TypeName).getAnAccess()) or
-      exists(n.(Namespace).getAnAccess()) or
-      exists(InvokeExpr invk | invk.getResolvedCalleeName() = n)
+      exists(n.(Namespace).getAnAccess())
     }
 
     private predicate isDefined(CanonicalName n) {
       exists(ASTNode def |
         def = n.(TypeName).getADefinition() or
-        def = n.(Namespace).getADefinition() or
-        def = n.(CanonicalFunctionName).getADefinition()
+        def = n.(Namespace).getADefinition()
       |
         not def.isAmbient()
       )
