@@ -222,6 +222,29 @@ namespace Semmle.Util
             this.pathStrategy = pathStrategy;
         }
 
+
+        /// <summary>
+        /// Create a CanonicalPathCache.
+        /// </summary>
+        ///
+        /// <remarks>
+        /// Creates the appropriate PathStrategy object which encapsulates
+        /// the correct algorithm. Falls back to different implementations
+        /// depending on platform.
+        /// </remarks>
+        ///
+        /// <param name="maxCapacity">Size of the cache.</param>
+        /// <param name="symlinks">Policy for following symlinks.</param>
+        /// <returns>A new CanonicalPathCache.</returns>
+        public static CanonicalPathCache Create(ILogger logger, int maxCapacity)
+        {
+            var preserveSymlinks =
+                Environment.GetEnvironmentVariable("CODEQL_PRESERVE_SYMLINKS") == "true" ||
+                Environment.GetEnvironmentVariable("SEMMLE_PRESERVE_SYMLINKS") == "true";
+            return Create(logger, maxCapacity, preserveSymlinks ? CanonicalPathCache.Symlinks.Preserve : CanonicalPathCache.Symlinks.Follow);
+
+        }
+
         /// <summary>
         /// Create a CanonicalPathCache.
         /// </summary>

@@ -54,14 +54,15 @@ namespace Semmle.Extraction
             /// </summary>
             /// <param name="srcFile">The source file.</param>
             /// <returns>The full filepath of the trap file.</returns>
-            public string GetTrapPath(ILogger logger, string srcFile, TrapWriter.CompressionMode trapCompression) => TrapWriter.TrapPath(logger, TRAP_FOLDER, srcFile, trapCompression);
+            public string GetTrapPath(ILogger logger, PathTransformer.ITransformedPath srcFile, TrapWriter.CompressionMode trapCompression) =>
+                TrapWriter.TrapPath(logger, TRAP_FOLDER, srcFile, trapCompression);
 
             /// <summary>
             /// Creates a trap writer for a given source/assembly file.
             /// </summary>
             /// <param name="srcFile">The source file.</param>
             /// <returns>A newly created TrapWriter.</returns>
-            public TrapWriter CreateTrapWriter(ILogger logger, string srcFile, bool discardDuplicates, TrapWriter.CompressionMode trapCompression) =>
+            public TrapWriter CreateTrapWriter(ILogger logger, PathTransformer.ITransformedPath srcFile, bool discardDuplicates, TrapWriter.CompressionMode trapCompression) =>
                 new TrapWriter(logger, srcFile, TRAP_FOLDER, SOURCE_ARCHIVE, discardDuplicates, trapCompression);
         }
 
@@ -73,7 +74,7 @@ namespace Semmle.Extraction
         /// </summary>
         /// <param name="sourceFile">The file to look up.</param>
         /// <returns>The relevant subproject, or null if not found.</returns>
-        public SubProject? LookupProjectOrNull(string sourceFile)
+        public SubProject? LookupProjectOrNull(PathTransformer.ITransformedPath sourceFile)
         {
             if (!useLayoutFile) return DefaultProject;
 
@@ -89,7 +90,7 @@ namespace Semmle.Extraction
         /// </summary>
         /// <param name="sourceFile">The file to look up.</param>
         /// <returns>The relevant subproject, or DefaultProject if not found.</returns>
-        public SubProject LookupProjectOrDefault(string sourceFile)
+        public SubProject LookupProjectOrDefault(PathTransformer.ITransformedPath sourceFile)
         {
             return LookupProjectOrNull(sourceFile) ?? DefaultProject;
         }
@@ -134,7 +135,7 @@ namespace Semmle.Extraction
         /// </summary>
         /// <param name="path">The absolute path of the file to query.</param>
         /// <returns>True iff there is no layout file or the layout file specifies the file.</returns>
-        public bool FileInLayout(string path) => LookupProjectOrNull(path) != null;
+        public bool FileInLayout(PathTransformer.ITransformedPath path) => LookupProjectOrNull(path) != null;
 
         void ReadLayoutFile(string layout)
         {
@@ -197,6 +198,6 @@ namespace Semmle.Extraction
             }
         }
 
-        public bool Matches(string path) => FilePattern.Matches(filePatterns, path, out var _);
+        public bool Matches(PathTransformer.ITransformedPath path) => FilePattern.Matches(filePatterns, path.Value, out var _);
     }
 }

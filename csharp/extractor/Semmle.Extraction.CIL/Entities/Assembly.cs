@@ -5,6 +5,7 @@ using Semmle.Util.Logging;
 using System;
 using Semmle.Extraction.Entities;
 using System.IO;
+using Semmle.Util;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -134,9 +135,12 @@ namespace Semmle.Extraction.CIL.Entities
             extracted = false;
             try
             {
-                var extractor = new Extractor(false, assemblyPath, logger);
-                var project = layout.LookupProjectOrDefault(assemblyPath);
-                using (var trapWriter = project.CreateTrapWriter(logger, assemblyPath + ".cil", true, trapCompression))
+                var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
+                var pathTransformer = new PathTransformer(canonicalPathCache);
+                var extractor = new Extractor(false, assemblyPath, logger, pathTransformer);
+                var transformedAssemblyPath = pathTransformer.Transform(assemblyPath);
+                var project = layout.LookupProjectOrDefault(transformedAssemblyPath);
+                using (var trapWriter = project.CreateTrapWriter(logger, transformedAssemblyPath.WithSuffix(".cil"), true, trapCompression))
                 {
                     trapFile = trapWriter.TrapFile;
                     if (nocache || !System.IO.File.Exists(trapFile))

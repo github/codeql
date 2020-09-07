@@ -201,7 +201,7 @@ namespace Semmle.Extraction.CIL
 
         #region Locations
         readonly CachedFunction<PDB.ISourceFile, PdbSourceFile> sourceFiles;
-        readonly CachedFunction<string, Folder> folders;
+        readonly CachedFunction<PathTransformer.ITransformedPath, Folder> folders;
         readonly CachedFunction<PDB.Location, PdbSourceLocation> sourceLocations;
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace Semmle.Extraction.CIL
         /// </summary>
         /// <param name="path">The path of the folder.</param>
         /// <returns>A folder entity.</returns>
-        public Folder CreateFolder(string path) => folders[path];
+        public Folder CreateFolder(PathTransformer.ITransformedPath path) => folders[path];
 
         /// <summary>
         /// Creates a source location.
