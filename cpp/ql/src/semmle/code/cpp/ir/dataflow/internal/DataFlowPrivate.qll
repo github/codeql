@@ -145,9 +145,9 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
 predicate jumpStep(Node n1, Node n2) { none() }
 
 /**
- * Gets the field corresponding to the bit range `[startBit..endBit)` of class `c`.
+ * Gets a field corresponding to the bit range `[startBit..endBit)` of class `c`, if any.
  */
-private Field getField(Class c, int startBit, int endBit) {
+private Field getAField(Class c, int startBit, int endBit) {
   result.getDeclaringType() = c and
   startBit = 8 * result.getByteOffset() and
   endBit = 8 * result.getType().getSize() + startBit
@@ -155,12 +155,12 @@ private Field getField(Class c, int startBit, int endBit) {
   exists(Field f, Class cInner |
     f = c.getAField() and
     cInner = f.getUnderlyingType() and
-    result = getField(cInner, startBit - 8 * f.getByteOffset(), endBit - 8 * f.getByteOffset())
+    result = getAField(cInner, startBit - 8 * f.getByteOffset(), endBit - 8 * f.getByteOffset())
   )
 }
 
 private newtype TContent =
-  TFieldContent(Class c, int startBit, int endBit) { exists(getField(c, startBit, endBit)) } or
+  TFieldContent(Class c, int startBit, int endBit) { exists(getAField(c, startBit, endBit)) } or
   TCollectionContent() or
   TArrayContent()
 
@@ -185,11 +185,11 @@ private class FieldContent extends Content, TFieldContent {
   FieldContent() { this = TFieldContent(c, startBit, endBit) }
 
   // Ensure that there's just 1 result for `toString`.
-  override string toString() { result = min(Field f | f = getField() | f.toString()) }
+  override string toString() { result = min(Field f | f = getAField() | f.toString()) }
 
   predicate hasOffset(Class cl, int start, int end) { cl = c and start = startBit and end = endBit }
 
-  Field getField() { result = getField(c, startBit, endBit) }
+  Field getAField() { result = getAField(c, startBit, endBit) }
 }
 
 private class CollectionContent extends Content, TCollectionContent {
@@ -204,7 +204,7 @@ private predicate storeStepNoChi(Node node1, Content f, PostUpdateNode node2) {
   exists(StoreInstruction store, Class c |
     store = node2.asInstruction() and
     store.getSourceValue() = node1.asInstruction() and
-    getWrittenField(store, f.(FieldContent).getField(), c) and
+    getWrittenField(store, f.(FieldContent).getAField(), c) and
     f.(FieldContent).hasOffset(c, _, _)
   )
 }
@@ -230,7 +230,7 @@ private predicate storeStepChi(Node node1, Content f, PostUpdateNode node2) {
         f.(FieldContent).hasOffset(c, startBit, endBit)
       )
       or
-      getWrittenField(store, f.(FieldContent).getField(), c) and
+      getWrittenField(store, f.(FieldContent).getAField(), c) and
       f.(FieldContent).hasOffset(c, _, _)
     )
   )
@@ -274,7 +274,7 @@ predicate readStep(Node node1, Content f, Node node2) {
         f.(FieldContent).hasOffset(c, startBit, endBit)
       )
       or
-      getLoadedField(load, f.(FieldContent).getField(), c) and
+      getLoadedField(load, f.(FieldContent).getAField(), c) and
       f.(FieldContent).hasOffset(c, _, _)
     )
   )
