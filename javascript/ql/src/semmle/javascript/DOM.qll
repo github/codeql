@@ -78,7 +78,7 @@ module DOM {
   /**
    * A JSX element, viewed as an `ElementDefinition`.
    */
-  private class JsxElementDefinition extends ElementDefinition, @jsxelement {
+  private class JsxElementDefinition extends ElementDefinition, @jsx_element {
     JsxElementDefinition() { this instanceof JSXElement }
 
     override string getName() { result = this.(JSXElement).getName() }

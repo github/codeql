@@ -14,7 +14,7 @@ import javascript
  * ```
  */
 class ES2015Module extends Module {
-  ES2015Module() { isES2015Module(this) }
+  ES2015Module() { is_es2015_module(this) }
 
   override ModuleScope getScope() { result.getScopeElement() = this }
 
@@ -50,7 +50,7 @@ class ES2015Module extends Module {
  * import * as console from 'console';
  * ```
  */
-class ImportDeclaration extends Stmt, Import, @importdeclaration {
+class ImportDeclaration extends Stmt, Import, @import_declaration {
   override ES2015Module getEnclosingModule() { result = getTopLevel() }
 
   override PathExpr getImportedPath() { result = getChildExpr(-1) }
@@ -78,7 +78,7 @@ class ImportDeclaration extends Stmt, Import, @importdeclaration {
   }
 
   /** Holds if this is declared with the `type` keyword, so it only imports types. */
-  predicate isTypeOnly() { hasTypeKeyword(this) }
+  predicate isTypeOnly() { has_type_keyword(this) }
 }
 
 /** A literal path expression appearing in an `import` declaration. */
@@ -106,7 +106,7 @@ private class LiteralImportPath extends PathExpr, ConstantString {
  *   from 'console';
  * ```
  */
-class ImportSpecifier extends Expr, @importspecifier {
+class ImportSpecifier extends Expr, @import_specifier {
   /** Gets the imported symbol; undefined for default and namespace import specifiers. */
   Identifier getImported() { result = getChildExpr(0) }
 
@@ -144,7 +144,7 @@ class ImportSpecifier extends Expr, @importspecifier {
  *   } from 'console';
  * ```
  */
-class NamedImportSpecifier extends ImportSpecifier, @namedimportspecifier { }
+class NamedImportSpecifier extends ImportSpecifier, @named_import_specifier { }
 
 /**
  * A default import specifier.
@@ -157,7 +157,7 @@ class NamedImportSpecifier extends ImportSpecifier, @namedimportspecifier { }
  *   from 'console';
  * ```
  */
-class ImportDefaultSpecifier extends ImportSpecifier, @importdefaultspecifier {
+class ImportDefaultSpecifier extends ImportSpecifier, @import_default_specifier {
   override string getImportedName() { result = "default" }
 }
 
@@ -172,7 +172,7 @@ class ImportDefaultSpecifier extends ImportSpecifier, @importdefaultspecifier {
  *   from 'console';
  * ```
  */
-class ImportNamespaceSpecifier extends ImportSpecifier, @importnamespacespecifier { }
+class ImportNamespaceSpecifier extends ImportSpecifier, @import_namespace_specifier { }
 
 /**
  * A bulk import that imports an entire module as a namespace.
@@ -230,7 +230,7 @@ class SelectiveImportDeclaration extends ImportDeclaration {
  * export x from 'a';               // default re-export declaration
  * ```
  */
-abstract class ExportDeclaration extends Stmt, @exportdeclaration {
+abstract class ExportDeclaration extends Stmt, @export_declaration {
   /** Gets the module to which this export declaration belongs. */
   ES2015Module getEnclosingModule() { this = result.getAnExport() }
 
@@ -261,7 +261,7 @@ abstract class ExportDeclaration extends Stmt, @exportdeclaration {
   abstract DataFlow::Node getSourceNode(string name);
 
   /** Holds if is declared with the `type` keyword, so only types are exported. */
-  predicate isTypeOnly() { hasTypeKeyword(this) }
+  predicate isTypeOnly() { has_type_keyword(this) }
 }
 
 /**
@@ -274,7 +274,7 @@ abstract class ExportDeclaration extends Stmt, @exportdeclaration {
  * export * from 'a';          // bulk re-export declaration
  * ```
  */
-class BulkReExportDeclaration extends ReExportDeclaration, @exportalldeclaration {
+class BulkReExportDeclaration extends ReExportDeclaration, @export_all_declaration {
   /** Gets the name of the module from which this declaration re-exports. */
   override ConstantString getImportedPath() { result = getChildExpr(0) }
 
@@ -319,7 +319,7 @@ private predicate isShadowedFromBulkExport(BulkReExportDeclaration reExport, str
  * export default 42;
  * ```
  */
-class ExportDefaultDeclaration extends ExportDeclaration, @exportdefaultdeclaration {
+class ExportDefaultDeclaration extends ExportDeclaration, @export_default_declaration {
   /** Gets the operand statement or expression that is exported by this declaration. */
   ExprOrStmt getOperand() { result = getChild(0) }
 
@@ -351,7 +351,7 @@ class ExportDefaultDeclaration extends ExportDeclaration, @exportdefaultdeclarat
  * export { x } from 'a';
  * ```
  */
-class ExportNamedDeclaration extends ExportDeclaration, @exportnameddeclaration {
+class ExportNamedDeclaration extends ExportDeclaration, @export_named_declaration {
   /** Gets the operand statement or expression that is exported by this declaration. */
   ExprOrStmt getOperand() { result = getChild(-1) }
 
@@ -518,7 +518,7 @@ class ExportSpecifier extends Expr, @exportspecifier {
  * };
  * ```
  */
-class NamedExportSpecifier extends ExportSpecifier, @namedexportspecifier { }
+class NamedExportSpecifier extends ExportSpecifier, @named_export_specifier { }
 
 /**
  * A default export specifier.
@@ -534,7 +534,7 @@ class NamedExportSpecifier extends ExportSpecifier, @namedexportspecifier { }
  *   from 'a';
  * ```
  */
-class ExportDefaultSpecifier extends ExportSpecifier, @exportdefaultspecifier {
+class ExportDefaultSpecifier extends ExportSpecifier, @export_default_specifier {
   override string getExportedName() { result = "default" }
 }
 
@@ -572,7 +572,7 @@ class ReExportDefaultSpecifier extends ExportDefaultSpecifier {
  *   from 'a';
  * ```
  */
-class ExportNamespaceSpecifier extends ExportSpecifier, @exportnamespacespecifier { }
+class ExportNamespaceSpecifier extends ExportSpecifier, @export_namespace_specifier { }
 
 /**
  * An export declaration that re-exports declarations from another module.

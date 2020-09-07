@@ -118,7 +118,7 @@ filetype(
 toplevels (unique int id: @toplevel,
            int kind: int ref);
 
-is_externs (int toplevel: @toplevel ref);
+isExterns (int toplevel: @toplevel ref);
 
 case @toplevel.kind of
    0 = @script
@@ -126,223 +126,223 @@ case @toplevel.kind of
 |  2 = @event_handler
 |  3 = @javascript_url;
 
-is_module (int tl: @toplevel ref);
-is_nodejs (int tl: @toplevel ref);
-is_es2015_module (int tl: @toplevel ref);
-is_closure_module (int tl: @toplevel ref);
+isModule (int tl: @toplevel ref);
+isNodejs (int tl: @toplevel ref);
+isES2015Module (int tl: @toplevel ref);
+isClosureModule (int tl: @toplevel ref);
 
 // statements
 #keyset[parent, idx]
 stmts (unique int id: @stmt, 
        int kind: int ref,
-       int parent: @stmt_parent ref, 
+       int parent: @stmtparent ref, 
        int idx: int ref,
        varchar(900) tostring: string ref);
 
-stmt_containers (unique int stmt: @stmt ref,
+stmtContainers (unique int stmt: @stmt ref,
        int container: @stmt_container ref);
        
-jump_targets (unique int jump: @stmt ref,
+jumpTargets (unique int jump: @stmt ref,
        int target: @stmt ref);
 
-@stmt_parent = @stmt | @toplevel | @function_expr | @arrow_function_expr;
-@stmt_container = @toplevel | @function | @namespace_declaration | @external_module_declaration | @global_augmentation_declaration;
+@stmtparent = @stmt | @toplevel | @functionexpr | @arrowfunctionexpr;
+@stmt_container = @toplevel | @function | @namespacedeclaration | @externalmoduledeclaration | @globalaugmentationdeclaration;
 
 case @stmt.kind of
-   0 = @empty_stmt
-|  1 = @block_stmt
-|  2 = @expr_stmt
-|  3 = @if_stmt
-|  4 = @labeled_stmt
-|  5 = @break_stmt
-|  6 = @continue_stmt
-|  7 = @with_stmt
-|  8 = @switch_stmt
-|  9 = @return_stmt
-| 10 = @throw_stmt
-| 11 = @try_stmt
-| 12 = @while_stmt
-| 13 = @do_while_stmt
-| 14 = @for_stmt
-| 15 = @for_in_stmt
-| 16 = @debugger_stmt
-| 17 = @function_decl_stmt
-| 18 = @var_decl_stmt
+   0 = @emptystmt
+|  1 = @blockstmt
+|  2 = @exprstmt
+|  3 = @ifstmt
+|  4 = @labeledstmt
+|  5 = @breakstmt
+|  6 = @continuestmt
+|  7 = @withstmt
+|  8 = @switchstmt
+|  9 = @returnstmt
+| 10 = @throwstmt
+| 11 = @trystmt
+| 12 = @whilestmt
+| 13 = @dowhilestmt
+| 14 = @forstmt
+| 15 = @forinstmt
+| 16 = @debuggerstmt
+| 17 = @functiondeclstmt
+| 18 = @vardeclstmt
 | 19 = @case
-| 20 = @catch_clause
-| 21 = @for_of_stmt
-| 22 = @const_decl_stmt
-| 23 = @let_stmt
-| 24 = @legacy_let_stmt
-| 25 = @for_each_stmt
-| 26 = @class_decl_stmt
-| 27 = @import_declaration
-| 28 = @export_all_declaration
-| 29 = @export_default_declaration
-| 30 = @export_named_declaration
-| 31 = @namespace_declaration
-| 32 = @import_equals_declaration
-| 33 = @export_assign_declaration
-| 34 = @interface_declaration
-| 35 = @type_alias_declaration
-| 36 = @enum_declaration
-| 37 = @external_module_declaration
-| 38 = @export_as_namespace_declaration
-| 39 = @global_augmentation_declaration
+| 20 = @catchclause
+| 21 = @forofstmt
+| 22 = @constdeclstmt
+| 23 = @letstmt
+| 24 = @legacy_letstmt
+| 25 = @foreachstmt
+| 26 = @classdeclstmt
+| 27 = @importdeclaration
+| 28 = @exportalldeclaration
+| 29 = @exportdefaultdeclaration
+| 30 = @exportnameddeclaration
+| 31 = @namespacedeclaration
+| 32 = @importequalsdeclaration
+| 33 = @exportassigndeclaration
+| 34 = @interfacedeclaration
+| 35 = @typealiasdeclaration
+| 36 = @enumdeclaration
+| 37 = @externalmoduledeclaration
+| 38 = @exportasnamespacedeclaration
+| 39 = @globalaugmentationdeclaration
 ;
 
-@decl_stmt = @var_decl_stmt | @const_decl_stmt | @let_stmt | @legacy_let_stmt;
+@declstmt = @vardeclstmt | @constdeclstmt | @letstmt | @legacy_letstmt;
 
-@export_declaration = @export_all_declaration | @export_default_declaration | @export_named_declaration;
+@exportdeclaration = @exportalldeclaration | @exportdefaultdeclaration | @exportnameddeclaration;
 
-@namespace_definition = @namespace_declaration | @enum_declaration;
-@type_definition = @class_definition | @interface_declaration | @enum_declaration | @type_alias_declaration | @enum_member;
+@namespacedefinition = @namespacedeclaration | @enumdeclaration;
+@typedefinition = @classdefinition | @interfacedeclaration | @enumdeclaration | @typealiasdeclaration | @enum_member;
 
-is_instantiated(unique int decl: @namespace_declaration ref);
+isInstantiated(unique int decl: @namespacedeclaration ref);
 
-@declarable_node = @decl_stmt | @namespace_declaration | @class_decl_stmt | @function_decl_stmt | @enum_declaration | @external_module_declaration | @global_augmentation_declaration | @field;
-has_declare_keyword(unique int stmt: @declarable_node ref);
+@declarablenode = @declstmt | @namespacedeclaration | @classdeclstmt | @functiondeclstmt | @enumdeclaration | @externalmoduledeclaration | @globalaugmentationdeclaration | @field;
+hasDeclareKeyword(unique int stmt: @declarablenode ref);
 
-is_for_await_of(unique int forof: @for_of_stmt ref);
+isForAwaitOf(unique int forof: @forofstmt ref);
 
 // expressions
 #keyset[parent, idx]
 exprs (unique int id: @expr,
        int kind: int ref,
-       int parent: @expr_parent ref,
+       int parent: @exprparent ref,
        int idx: int ref,
        varchar(900) tostring: string ref);
 
 literals (varchar(900) value: string ref,
        varchar(900) raw: string ref,
-       unique int expr: @expr_or_type ref);
+       unique int expr: @exprortype ref);
        
-enclosing_stmt (unique int expr: @expr_or_type ref,
+enclosingStmt (unique int expr: @exprortype ref,
        int stmt: @stmt ref);
 
-expr_containers (unique int expr: @expr_or_type ref,
+exprContainers (unique int expr: @exprortype ref,
        int container: @stmt_container ref);
 
-array_size (unique int ae: @arraylike ref,
+arraySize (unique int ae: @arraylike ref,
        int sz: int ref);
 
-is_delegating (int yield: @yield_expr ref);
+isDelegating (int yield: @yieldexpr ref);
 
-@expr_or_stmt = @expr | @stmt;
-@expr_or_type = @expr | @typeexpr;
-@expr_parent = @expr_or_stmt | @property | @function_typeexpr;
-@arraylike = @array_expr | @array_pattern;
+@exprorstmt = @expr | @stmt;
+@exprortype = @expr | @typeexpr;
+@exprparent = @exprorstmt | @property | @functiontypeexpr;
+@arraylike = @arrayexpr | @arraypattern;
 @type_annotation = @typeexpr | @jsdoc_type_expr;
 @node_in_stmt_container = @cfg_node | @type_annotation | @toplevel;
 
 case @expr.kind of
    0 = @label
-|  1 = @null_literal
-|  2 = @boolean_literal
-|  3 = @number_literal
-|  4 = @string_literal
-|  5 = @regexp_literal
-|  6 = @this_expr
-|  7 = @array_expr
-|  8 = @obj_expr
-|  9 = @function_expr
-| 10 = @seq_expr
-| 11 = @conditional_expr
-| 12 = @new_expr
-| 13 = @call_expr
-| 14 = @dot_expr
-| 15 = @index_expr
-| 16 = @neg_expr
-| 17 = @plus_expr
-| 18 = @log_not_expr
-| 19 = @bit_not_expr
-| 20 = @typeof_expr
-| 21 = @void_expr
-| 22 = @delete_expr
-| 23 = @eq_expr
-| 24 = @neq_expr
-| 25 = @eqq_expr
-| 26 = @neqq_expr
-| 27 = @lt_expr
-| 28 = @le_expr
-| 29 = @gt_expr
-| 30 = @ge_expr
-| 31 = @lshift_expr
-| 32 = @rshift_expr
-| 33 = @urshift_expr
-| 34 = @add_expr
-| 35 = @sub_expr
-| 36 = @mul_expr
-| 37 = @div_expr
-| 38 = @mod_expr
-| 39 = @bitor_expr
-| 40 = @xor_expr
-| 41 = @bitand_expr
-| 42 = @in_expr
-| 43 = @instanceof_expr
-| 44 = @logand_expr
-| 45 = @logor_expr
-| 47 = @assign_expr
-| 48 = @assign_add_expr
-| 49 = @assign_sub_expr
-| 50 = @assign_mul_expr
-| 51 = @assign_div_expr
-| 52 = @assign_mod_expr
-| 53 = @assign_lshift_expr
-| 54 = @assign_rshift_expr
-| 55 = @assign_urshift_expr
-| 56 = @assign_or_expr
-| 57 = @assign_xor_expr
-| 58 = @assign_and_expr
-| 59 = @preinc_expr
-| 60 = @postinc_expr
-| 61 = @predec_expr
-| 62 = @postdec_expr
-| 63 = @par_expr
-| 64 = @var_declarator
-| 65 = @arrow_function_expr
-| 66 = @spread_element
-| 67 = @array_pattern
-| 68 = @object_pattern
-| 69 = @yield_expr
-| 70 = @tagged_template_expr
-| 71 = @template_literal
-| 72 = @template_element
-| 73 = @array_comprehension_expr
-| 74 = @generator_expr
-| 75 = @for_in_comprehension_block
-| 76 = @for_of_comprehension_block
+|  1 = @nullliteral
+|  2 = @booleanliteral
+|  3 = @numberliteral
+|  4 = @stringliteral
+|  5 = @regexpliteral
+|  6 = @thisexpr
+|  7 = @arrayexpr
+|  8 = @objexpr
+|  9 = @functionexpr
+| 10 = @seqexpr
+| 11 = @conditionalexpr
+| 12 = @newexpr
+| 13 = @callexpr
+| 14 = @dotexpr
+| 15 = @indexexpr
+| 16 = @negexpr
+| 17 = @plusexpr
+| 18 = @lognotexpr
+| 19 = @bitnotexpr
+| 20 = @typeofexpr
+| 21 = @voidexpr
+| 22 = @deleteexpr
+| 23 = @eqexpr
+| 24 = @neqexpr
+| 25 = @eqqexpr
+| 26 = @neqqexpr
+| 27 = @ltexpr
+| 28 = @leexpr
+| 29 = @gtexpr
+| 30 = @geexpr
+| 31 = @lshiftexpr
+| 32 = @rshiftexpr
+| 33 = @urshiftexpr
+| 34 = @addexpr
+| 35 = @subexpr
+| 36 = @mulexpr
+| 37 = @divexpr
+| 38 = @modexpr
+| 39 = @bitorexpr
+| 40 = @xorexpr
+| 41 = @bitandexpr
+| 42 = @inexpr
+| 43 = @instanceofexpr
+| 44 = @logandexpr
+| 45 = @logorexpr
+| 47 = @assignexpr
+| 48 = @assignaddexpr
+| 49 = @assignsubexpr
+| 50 = @assignmulexpr
+| 51 = @assigndivexpr
+| 52 = @assignmodexpr
+| 53 = @assignlshiftexpr
+| 54 = @assignrshiftexpr
+| 55 = @assignurshiftexpr
+| 56 = @assignorexpr
+| 57 = @assignxorexpr
+| 58 = @assignandexpr
+| 59 = @preincexpr
+| 60 = @postincexpr
+| 61 = @predecexpr
+| 62 = @postdecexpr
+| 63 = @parexpr
+| 64 = @vardeclarator
+| 65 = @arrowfunctionexpr
+| 66 = @spreadelement
+| 67 = @arraypattern
+| 68 = @objectpattern
+| 69 = @yieldexpr
+| 70 = @taggedtemplateexpr
+| 71 = @templateliteral
+| 72 = @templateelement
+| 73 = @arraycomprehensionexpr
+| 74 = @generatorexpr
+| 75 = @forincomprehensionblock
+| 76 = @forofcomprehensionblock
 | 77 = @legacy_letexpr
-| 78 = @var_decl
+| 78 = @vardecl
 | 79 = @proper_varaccess
-| 80 = @class_expr
-| 81 = @super_expr
-| 82 = @newtarget_expr
-| 83 = @named_import_specifier
-| 84 = @import_default_specifier
-| 85 = @import_namespace_specifier
-| 86 = @named_export_specifier
-| 87 = @exp_expr
-| 88 = @assign_exp_expr
-| 89 = @jsx_element
-| 90 = @jsx_qualified_name
-| 91 = @jsx_empty_expr
-| 92 = @await_expr
-| 93 = @function_sent_expr
+| 80 = @classexpr
+| 81 = @superexpr
+| 82 = @newtargetexpr
+| 83 = @namedimportspecifier
+| 84 = @importdefaultspecifier
+| 85 = @importnamespacespecifier
+| 86 = @namedexportspecifier
+| 87 = @expexpr
+| 88 = @assignexpexpr
+| 89 = @jsxelement
+| 90 = @jsxqualifiedname
+| 91 = @jsxemptyexpr
+| 92 = @awaitexpr
+| 93 = @functionsentexpr
 | 94 = @decorator
-| 95 = @export_default_specifier
-| 96 = @export_namespace_specifier
-| 97 = @bind_expr
-| 98 = @external_module_reference
-| 99 = @dynamic_import
-| 100 = @expression_with_type_arguments
-| 101 = @prefix_type_assertion
-| 102 = @as_type_assertion
+| 95 = @exportdefaultspecifier
+| 96 = @exportnamespacespecifier
+| 97 = @bindexpr
+| 98 = @externalmodulereference
+| 99 = @dynamicimport
+| 100 = @expressionwithtypearguments
+| 101 = @prefixtypeassertion
+| 102 = @astypeassertion
 | 103 = @export_varaccess
 | 104 = @decorator_list
 | 105 = @non_null_assertion
-| 106 = @bigint_literal
-| 107 = @nullishcoalescing_expr
+| 106 = @bigintliteral
+| 107 = @nullishcoalescingexpr
 | 108 = @e4x_xml_anyname
 | 109 = @e4x_xml_static_attribute_selector
 | 110 = @e4x_xml_dynamic_attribute_selector
@@ -350,55 +350,55 @@ case @expr.kind of
 | 112 = @e4x_xml_static_qualident
 | 113 = @e4x_xml_dynamic_qualident
 | 114 = @e4x_xml_dotdotexpr
-| 115 = @import_meta_expr
+| 115 = @importmetaexpr
 | 116 = @assignlogandexpr
 | 117 = @assignlogorexpr
 | 118 = @assignnullishcoalescingexpr
 ;
 
 @varaccess = @proper_varaccess | @export_varaccess;
-@varref = @var_decl | @varaccess;
+@varref = @vardecl | @varaccess;
 
-@identifier = @label | @varref | @type_identifier;
+@identifier = @label | @varref | @typeidentifier;
 
-@literal = @null_literal | @boolean_literal | @number_literal | @string_literal | @regexp_literal | @bigint_literal;
+@literal = @nullliteral | @booleanliteral | @numberliteral | @stringliteral | @regexpliteral | @bigintliteral;
 
-@propaccess = @dot_expr | @index_expr;
+@propaccess = @dotexpr | @indexexpr;
 
-@invokeexpr = @new_expr | @call_expr;
+@invokeexpr = @newexpr | @callexpr;
 
-@unaryexpr = @neg_expr | @plus_expr | @log_not_expr | @bit_not_expr | @typeof_expr | @void_expr | @delete_expr | @spread_element;
+@unaryexpr = @negexpr | @plusexpr | @lognotexpr | @bitnotexpr | @typeofexpr | @voidexpr | @deleteexpr | @spreadelement;
 
-@equality_test = @eq_expr | @neq_expr | @eqq_expr | @neqq_expr;
+@equalitytest = @eqexpr | @neqexpr | @eqqexpr | @neqqexpr;
 
-@comparison = @equality_test | @lt_expr | @le_expr | @gt_expr | @ge_expr;
+@comparison = @equalitytest | @ltexpr | @leexpr | @gtexpr | @geexpr;
 
-@binaryexpr = @comparison | @lshift_expr | @rshift_expr | @urshift_expr | @add_expr | @sub_expr | @mul_expr | @div_expr | @mod_expr | @exp_expr | @bitor_expr | @xor_expr | @bitand_expr | @in_expr | @instanceof_expr | @logand_expr | @logor_expr | @nullishcoalescing_expr;
+@binaryexpr = @comparison | @lshiftexpr | @rshiftexpr | @urshiftexpr | @addexpr | @subexpr | @mulexpr | @divexpr | @modexpr | @expexpr | @bitorexpr | @xorexpr | @bitandexpr | @inexpr | @instanceofexpr | @logandexpr | @logorexpr | @nullishcoalescingexpr;
 
-@assignment = @assign_expr | @assign_add_expr | @assign_sub_expr | @assign_mul_expr | @assign_div_expr | @assign_mod_expr | @assign_exp_expr | @assign_lshift_expr | @assign_rshift_expr | @assign_urshift_expr | @assign_or_expr | @assign_xor_expr | @assign_and_expr | @assignlogandexpr | @assignlogorexpr | @assignnullishcoalescingexpr;
+@assignment = @assignexpr | @assignaddexpr | @assignsubexpr | @assignmulexpr | @assigndivexpr | @assignmodexpr | @assignexpexpr | @assignlshiftexpr | @assignrshiftexpr | @assignurshiftexpr | @assignorexpr | @assignxorexpr | @assignandexpr | @assignlogandexpr | @assignlogorexpr | @assignnullishcoalescingexpr;
 
-@updateexpr = @preinc_expr | @postinc_expr | @predec_expr | @postdec_expr;
+@updateexpr = @preincexpr | @postincexpr | @predecexpr | @postdecexpr;
 
-@pattern = @varref | @array_pattern | @object_pattern;
+@pattern = @varref | @arraypattern | @objectpattern;
 
-@comprehension_expr = @array_comprehension_expr | @generator_expr;
+@comprehensionexpr = @arraycomprehensionexpr | @generatorexpr;
 
-@comprehension_block = @for_in_comprehension_block | @for_of_comprehension_block;
+@comprehensionblock = @forincomprehensionblock | @forofcomprehensionblock;
 
-@import_specifier = @named_import_specifier | @import_default_specifier | @import_namespace_specifier;
+@importspecifier = @namedimportspecifier | @importdefaultspecifier | @importnamespacespecifier;
 
-@exportspecifier = @named_export_specifier | @export_default_specifier | @export_namespace_specifier;
+@exportspecifier = @namedexportspecifier | @exportdefaultspecifier | @exportnamespacespecifier;
 
-@import_or_export_declaration = @import_declaration | @export_declaration;
+@import_or_export_declaration = @importdeclaration | @exportdeclaration;
 
-@type_assertion = @as_type_assertion | @prefix_type_assertion;
+@typeassertion = @astypeassertion | @prefixtypeassertion;
 
-@class_definition = @class_decl_stmt | @class_expr;
-@interface_definition = @interface_declaration | @interface_typeexpr;
-@class_or_interface = @class_definition | @interface_definition;
+@classdefinition = @classdeclstmt | @classexpr;
+@interfacedefinition = @interfacedeclaration | @interfacetypeexpr;
+@classorinterface = @classdefinition | @interfacedefinition;
 
-@lexical_decl = @var_decl | @type_decl;
-@lexical_access = @varaccess | @local_type_access | @local_var_type_access | @local_namespace_access;
+@lexical_decl = @vardecl | @typedecl;
+@lexical_access = @varaccess | @localtypeaccess | @localvartypeaccess | @localnamespaceaccess;
 @lexical_ref = @lexical_decl | @lexical_access;
 
 @e4x_xml_attribute_selector = @e4x_xml_static_attribute_selector | @e4x_xml_dynamic_attribute_selector;
@@ -409,23 +409,23 @@ scopes (unique int id: @scope,
         int kind: int ref);
 
 case @scope.kind of
-   0 = @global_scope
-|  1 = @function_scope
-|  2 = @catch_scope
-|  3 = @module_scope
-|  4 = @block_scope
-|  5 = @for_scope
-|  6 = @for_in_scope // for-of scopes work the same as for-in scopes
-|  7 = @comprehension_block_scope
-|  8 = @class_expr_scope
-|  9 = @namespace_scope
-| 10 = @class_decl_scope
-| 11 = @interface_scope
-| 12 = @type_alias_scope
-| 13 = @mapped_type_scope
-| 14 = @enum_scope
-| 15 = @external_module_scope
-| 16 = @conditional_type_scope;
+   0 = @globalscope
+|  1 = @functionscope
+|  2 = @catchscope
+|  3 = @modulescope
+|  4 = @blockscope
+|  5 = @forscope
+|  6 = @forinscope // for-of scopes work the same as for-in scopes
+|  7 = @comprehensionblockscope
+|  8 = @classexprscope
+|  9 = @namespacescope
+| 10 = @classdeclscope
+| 11 = @interfacescope
+| 12 = @typealiasscope
+| 13 = @mappedtypescope
+| 14 = @enumscope
+| 15 = @externalmodulescope
+| 16 = @conditionaltypescope;
 
 scopenodes (unique int node: @ast_node ref,
             int scope: @scope ref);
@@ -434,14 +434,14 @@ scopenesting (unique int inner: @scope ref,
               int outer: @scope ref);
 
 // functions
-@function = @function_decl_stmt | @function_expr | @arrow_function_expr;
+@function = @functiondeclstmt | @functionexpr | @arrowfunctionexpr;
 
-@parameterized = @function | @catch_clause;
-@type_parameterized = @function | @class_or_interface | @type_alias_declaration | @mapped_typeexpr | @infer_typeexpr;
+@parameterized = @function | @catchclause;
+@type_parameterized = @function | @classorinterface | @typealiasdeclaration | @mappedtypeexpr | @infertypeexpr;
 
-is_generator (int fun: @function ref);
-has_rest_parameter (int fun: @function ref);
-is_async (int fun: @function ref);
+isGenerator (int fun: @function ref);
+hasRestParameter (int fun: @function ref);
+isAsync (int fun: @function ref);
 
 // variables and lexically scoped type names
 #keyset[scope, name]
@@ -459,29 +459,29 @@ local_namespace_names (unique int id: @local_namespace_name,
                        varchar(900) name: string ref,
                        int scope: @scope ref);
 
-is_arguments_object (int id: @variable ref);
+isArgumentsObject (int id: @variable ref);
 
 @lexical_name = @variable | @local_type_name | @local_namespace_name;
 
-@bind_id = @varaccess | @local_var_type_access;
+@bind_id = @varaccess | @localvartypeaccess;
 bind (unique int id: @bind_id ref,
       int decl: @variable ref);
 
-decl (unique int id: @var_decl ref,
+decl (unique int id: @vardecl ref,
       int decl: @variable ref);
 
-@typebind_id = @local_type_access | @export_varaccess;
+@typebind_id = @localtypeaccess | @export_varaccess;
 typebind (unique int id: @typebind_id ref,
           int decl: @local_type_name ref);
 
-@typedecl_id = @type_decl | @var_decl;
+@typedecl_id = @typedecl | @vardecl;
 typedecl (unique int id: @typedecl_id ref,
           int decl: @local_type_name ref);
 
-namespacedecl (unique int id: @var_decl ref,
+namespacedecl (unique int id: @vardecl ref,
                int decl: @local_namespace_name ref);
 
-@namespacebind_id = @local_namespace_access | @export_varaccess;
+@namespacebind_id = @localnamespaceaccess | @export_varaccess;
 namespacebind (unique int id: @namespacebind_id ref,
                int decl: @local_namespace_name ref);
 
@@ -507,32 +507,32 @@ case @property.kind of
 | 9 = @parameter_field
 ;
 
-@property_parent = @obj_expr | @object_pattern | @class_definition | @jsx_element | @interface_definition | @enum_declaration;
+@property_parent = @objexpr | @objectpattern | @classdefinition | @jsxelement | @interfacedefinition | @enumdeclaration;
 @property_accessor = @property_getter | @property_setter;
 @call_signature = @function_call_signature | @constructor_call_signature;
 @field = @proper_field | @parameter_field;
-@field_or_vardeclarator = @field | @var_declarator;
+@field_or_vardeclarator = @field | @vardeclarator;
 
-is_computed (int id: @property ref);
-is_method   (int id: @property ref);
-is_static   (int id: @property ref);
-is_abstract_member (int id: @property ref);
-is_const_enum (int id: @enum_declaration ref);
-is_abstract_class (int id: @class_decl_stmt ref);
+isComputed (int id: @property ref);
+isMethod   (int id: @property ref);
+isStatic   (int id: @property ref);
+isAbstractMember (int id: @property ref);
+isConstEnum (int id: @enumdeclaration ref);
+isAbstractClass (int id: @classdeclstmt ref);
 
-has_public_keyword (int id: @property ref);
-has_private_keyword (int id: @property ref);
-has_protected_keyword (int id: @property ref);
-has_readonly_keyword (int id: @property ref);
-has_type_keyword (int id: @import_or_export_declaration ref);
-is_optional_member (int id: @property ref);
-has_definite_assignment_assertion (int id: @field_or_vardeclarator ref);
-is_optional_parameter_declaration (unique int parameter: @pattern ref);
+hasPublicKeyword (int id: @property ref);
+hasPrivateKeyword (int id: @property ref);
+hasProtectedKeyword (int id: @property ref);
+hasReadonlyKeyword (int id: @property ref);
+hasTypeKeyword (int id: @import_or_export_declaration ref);
+isOptionalMember (int id: @property ref);
+hasDefiniteAssignmentAssertion (int id: @field_or_vardeclarator ref);
+isOptionalParameterDeclaration (unique int parameter: @pattern ref);
 
 #keyset[constructor, param_index]
 parameter_fields(
   unique int field: @parameter_field ref,
-  int constructor: @function_expr ref,
+  int constructor: @functionexpr ref,
   int param_index: int ref
 );
 
@@ -547,55 +547,55 @@ typeexprs (
 );
 
 case @typeexpr.kind of
-  0 = @local_type_access
-| 1 = @type_decl
-| 2 = @keyword_typeexpr
-| 3 = @string_literal_typeexpr
-| 4 = @number_literal_typeexpr
-| 5 = @boolean_literal_typeexpr
-| 6 = @array_typeexpr
-| 7 = @union_typeexpr
-| 8 = @indexed_access_typeexpr
-| 9 = @intersection_typeexpr
-| 10 = @parenthesized_typeexpr
-| 11 = @tuple_typeexpr
-| 12 = @keyof_typeexpr
-| 13 = @qualified_type_access
-| 14 = @generic_typeexpr
-| 15 = @type_label
-| 16 = @typeof_typeexpr
-| 17 = @local_var_type_access
-| 18 = @qualified_var_type_access
-| 19 = @this_var_type_access
-| 20 = @predicate_typeexpr
-| 21 = @interface_typeexpr
-| 22 = @type_parameter
-| 23 = @plain_function_typeexpr
-| 24 = @constructor_typeexpr
-| 25 = @local_namespace_access
-| 26 = @qualified_namespace_access
-| 27 = @mapped_typeexpr
-| 28 = @conditional_typeexpr
-| 29 = @infer_typeexpr
-| 30 = @import_type_access
-| 31 = @import_namespace_access
-| 32 = @import_var_type_access
-| 33 = @optional_typeexpr
-| 34 = @rest_typeexpr
-| 35 = @bigint_literal_typeexpr
-| 36 = @readonly_typeexpr
+  0 = @localtypeaccess
+| 1 = @typedecl
+| 2 = @keywordtypeexpr
+| 3 = @stringliteraltypeexpr
+| 4 = @numberliteraltypeexpr
+| 5 = @booleanliteraltypeexpr
+| 6 = @arraytypeexpr
+| 7 = @uniontypeexpr
+| 8 = @indexedaccesstypeexpr
+| 9 = @intersectiontypeexpr
+| 10 = @parenthesizedtypeexpr
+| 11 = @tupletypeexpr
+| 12 = @keyoftypeexpr
+| 13 = @qualifiedtypeaccess
+| 14 = @generictypeexpr
+| 15 = @typelabel
+| 16 = @typeoftypeexpr
+| 17 = @localvartypeaccess
+| 18 = @qualifiedvartypeaccess
+| 19 = @thisvartypeaccess
+| 20 = @predicatetypeexpr
+| 21 = @interfacetypeexpr
+| 22 = @typeparameter
+| 23 = @plainfunctiontypeexpr
+| 24 = @constructortypeexpr
+| 25 = @localnamespaceaccess
+| 26 = @qualifiednamespaceaccess
+| 27 = @mappedtypeexpr
+| 28 = @conditionaltypeexpr
+| 29 = @infertypeexpr
+| 30 = @importtypeaccess
+| 31 = @importnamespaceaccess
+| 32 = @importvartypeaccess
+| 33 = @optionaltypeexpr
+| 34 = @resttypeexpr
+| 35 = @bigintliteraltypeexpr
+| 36 = @readonlytypeexpr
 ;
 
-@typeref = @typeaccess | @type_decl;
-@type_identifier = @type_decl | @local_type_access | @type_label | @local_var_type_access | @local_namespace_access;
+@typeref = @typeaccess | @typedecl;
+@typeidentifier = @typedecl | @localtypeaccess | @typelabel | @localvartypeaccess | @localnamespaceaccess;
 @typeexpr_parent = @expr | @stmt | @property | @typeexpr;
-@literal_typeexpr = @string_literal_typeexpr | @number_literal_typeexpr | @boolean_literal_typeexpr | @bigint_literal_typeexpr;
-@typeaccess = @local_type_access | @qualified_type_access | @import_type_access;
-@vartypeaccess = @local_var_type_access | @qualified_var_type_access | @this_var_type_access | @import_var_type_access;
-@namespace_access = @local_namespace_access | @qualified_namespace_access | @import_namespace_access;
-@import_typeexpr = @import_type_access | @import_namespace_access | @import_var_type_access;
+@literaltypeexpr = @stringliteraltypeexpr | @numberliteraltypeexpr | @booleanliteraltypeexpr | @bigintliteraltypeexpr;
+@typeaccess = @localtypeaccess | @qualifiedtypeaccess | @importtypeaccess;
+@vartypeaccess = @localvartypeaccess | @qualifiedvartypeaccess | @thisvartypeaccess | @importvartypeaccess;
+@namespaceaccess = @localnamespaceaccess | @qualifiednamespaceaccess | @importnamespaceaccess;
+@importtypeexpr = @importtypeaccess | @importnamespaceaccess | @importvartypeaccess;
 
-@function_typeexpr = @plain_function_typeexpr | @constructor_typeexpr;
+@functiontypeexpr = @plainfunctiontypeexpr | @constructortypeexpr;
 
 // types
 types (
@@ -612,40 +612,40 @@ type_child (
 );
 
 case @type.kind of
-  0 = @any_type
-| 1 = @string_type
-| 2 = @number_type
-| 3 = @union_type
-| 4 = @true_type
-| 5 = @false_type
-| 6 = @type_reference
-| 7 = @object_type
-| 8 = @canonical_type_variable_type
-| 9 = @typeof_type
-| 10 = @void_type
-| 11 = @undefined_type
-| 12 = @null_type
-| 13 = @never_type
-| 14 = @plain_symbol_type
-| 15 = @unique_symbol_type
-| 16 = @objectkeyword_type
-| 17 = @intersection_type
-| 18 = @tuple_type
-| 19 = @lexical_type_variable_type
-| 20 = @this_type
-| 21 = @number_literal_type
-| 22 = @string_literal_type
-| 23 = @unknown_type
-| 24 = @bigint_type
-| 25 = @bigint_literal_type
+  0 = @anytype
+| 1 = @stringtype
+| 2 = @numbertype
+| 3 = @uniontype
+| 4 = @truetype
+| 5 = @falsetype
+| 6 = @typereference
+| 7 = @objecttype
+| 8 = @canonicaltypevariabletype
+| 9 = @typeoftype
+| 10 = @voidtype
+| 11 = @undefinedtype
+| 12 = @nulltype
+| 13 = @nevertype
+| 14 = @plainsymboltype
+| 15 = @uniquesymboltype
+| 16 = @objectkeywordtype
+| 17 = @intersectiontype
+| 18 = @tupletype
+| 19 = @lexicaltypevariabletype
+| 20 = @thistype
+| 21 = @numberliteraltype
+| 22 = @stringliteraltype
+| 23 = @unknowntype
+| 24 = @biginttype
+| 25 = @bigintliteraltype
 ;
 
-@boolean_literal_type = @true_type | @false_type;
-@symbol_type = @plain_symbol_type | @unique_symbol_type;
-@union_or_intersection_type = @union_type | @intersection_type;
-@typevariable_type = @canonical_type_variable_type | @lexical_type_variable_type;
+@booleanliteraltype = @truetype | @falsetype;
+@symboltype = @plainsymboltype | @uniquesymboltype;
+@unionorintersectiontype = @uniontype | @intersectiontype;
+@typevariabletype = @canonicaltypevariabletype | @lexicaltypevariabletype;
 
-has_asserts_keyword(int node: @predicate_typeexpr ref);
+hasAssertsKeyword(int node: @predicatetypeexpr ref);
 
 @typed_ast_node = @expr | @typeexpr | @function;
 ast_node_type(
@@ -694,8 +694,8 @@ case @symbol.kind of
 | 2 = @other_symbol
 ;
 
-@type_with_symbol = @type_reference | @typevariable_type | @typeof_type | @unique_symbol_type;
-@ast_node_with_symbol = @type_definition | @namespace_definition | @toplevel | @typeaccess | @namespace_access | @var_decl | @function | @invokeexpr | @import_declaration | @external_module_reference;
+@type_with_symbol = @typereference | @typevariabletype | @typeoftype | @uniquesymboltype;
+@ast_node_with_symbol = @typedefinition | @namespacedefinition | @toplevel | @typeaccess | @namespaceaccess | @vardecl | @function | @invokeexpr | @importdeclaration | @externalmodulereference;
 
 ast_node_symbol(
   unique int node: @ast_node_with_symbol ref,
@@ -715,8 +715,8 @@ type_alias(
   unique int aliasType: @type ref,
   int underlyingType: @type ref);
 
-@literal_type = @string_literal_type | @number_literal_type | @boolean_literal_type | @bigint_literal_type;
-@type_with_literal_value = @string_literal_type | @number_literal_type | @bigint_literal_type;
+@literaltype = @stringliteraltype | @numberliteraltype | @booleanliteraltype | @bigintliteraltype;
+@type_with_literal_value = @stringliteraltype | @numberliteraltype | @bigintliteraltype;
 type_literal_value(
   unique int typ: @type_with_literal_value ref,
   varchar(900) value: string ref);
@@ -778,7 +778,7 @@ base_type_names(
 
 self_types(
   int typeName: @symbol ref,
-  int selfType: @type_reference ref
+  int selfType: @typereference ref
 );
 
 tuple_type_min_length(
@@ -798,15 +798,15 @@ comments (unique int id: @comment,
           varchar(900) tostring: string ref);
 
 case @comment.kind of
-  0 = @slashslash_comment
-| 1 = @slashstar_comment
-| 2 = @doc_comment
-| 3 = @html_comment_start
+  0 = @slashslashcomment
+| 1 = @slashstarcomment
+| 2 = @doccomment
+| 3 = @htmlcommentstart
 | 4 = @htmlcommentend;
 
-@html_comment = @html_comment_start | @htmlcommentend;
-@line_comment = @slashslash_comment | @html_comment;
-@block_comment = @slashstar_comment | @doc_comment;
+@htmlcomment = @htmlcommentstart | @htmlcommentend;
+@linecomment = @slashslashcomment | @htmlcomment;
+@blockcomment = @slashstarcomment | @doccomment;
 
 // source lines
 lines (unique int id: @line,
@@ -819,7 +819,7 @@ indentation (int file: @file ref,
             int indentDepth: int ref);
 
 // JavaScript parse errors
-js_parse_errors (unique int id: @js_parse_error,
+jsParseErrors (unique int id: @js_parse_error,
         int toplevel: @toplevel ref,
         varchar(900) message: string ref,
         varchar(900) line: string ref);
@@ -832,7 +832,7 @@ regexpterm (unique int id: @regexpterm,
         int idx: int ref,
         varchar(900) tostring: string ref);
         
-@regexpparent = @regexpterm | @regexp_literal | @string_literal;
+@regexpparent = @regexpterm | @regexpliteral | @stringliteral;
 
 case @regexpterm.kind of
    0 = @regexp_alt
@@ -864,7 +864,7 @@ case @regexpterm.kind of
 | 26 = @regexp_negative_lookbehind
 | 27 = @regexp_unicode_property_escape;
 
-regexp_parse_errors (unique int id: @regexp_parse_error,
+regexpParseErrors (unique int id: @regexp_parse_error,
     int regexp: @regexpterm ref,
     varchar(900) message: string ref);
 
@@ -877,18 +877,18 @@ regexp_parse_errors (unique int id: @regexp_parse_error,
 @regexp_subpattern = @regexp_lookahead | @regexp_lookbehind;
 @regexp_anchor = @regexp_dollar | @regexp_caret;
 
-is_greedy (int id: @regexp_quantifier ref);
-range_quantifier_lower_bound (unique int id: @regexp_range ref, int lo: int ref);
-range_quantifier_upper_bound (unique int id: @regexp_range ref, int hi: int ref);
-is_capture (unique int id: @regexp_group ref, int number: int ref);
-is_named_capture (unique int id: @regexp_group ref, string name: string ref);
-is_inverted (int id: @regexp_char_class ref);
-regexp_const_value (unique int id: @regexp_constant ref, varchar(1) value: string ref);
-char_class_escape (unique int id: @regexp_char_class_escape ref, varchar(1) value: string ref);
+isGreedy (int id: @regexp_quantifier ref);
+rangeQuantifierLowerBound (unique int id: @regexp_range ref, int lo: int ref);
+rangeQuantifierUpperBound (unique int id: @regexp_range ref, int hi: int ref);
+isCapture (unique int id: @regexp_group ref, int number: int ref);
+isNamedCapture (unique int id: @regexp_group ref, string name: string ref);
+isInverted (int id: @regexp_char_class ref);
+regexpConstValue (unique int id: @regexp_constant ref, varchar(1) value: string ref);
+charClassEscape (unique int id: @regexp_char_class_escape ref, varchar(1) value: string ref);
 backref (unique int id: @regexp_backref ref, int value: int ref);
-named_backref (unique int id: @regexp_backref ref, string name: string ref);
-unicode_property_escapename (unique int id: @regexp_unicode_property_escape ref, string name: string ref);
-unicode_property_escapevalue (unique int id: @regexp_unicode_property_escape ref, string value: string ref);
+namedBackref (unique int id: @regexp_backref ref, string name: string ref);
+unicodePropertyEscapeName (unique int id: @regexp_unicode_property_escape ref, string name: string ref);
+unicodePropertyEscapeValue (unique int id: @regexp_unicode_property_escape ref, string value: string ref);
 
 // tokens
 #keyset[toplevel, idx]
@@ -976,7 +976,7 @@ case @guard_node.kind of
 @condition_guard = @falsy_guard | @truthy_guard;
 
 @synthetic_cfg_node = @entry_node | @exit_node | @guard_node;
-@cfg_node = @synthetic_cfg_node | @expr_parent;
+@cfg_node = @synthetic_cfg_node | @exprparent;
 
 successor (int pred: @cfg_node ref, int succ: @cfg_node ref);
 
@@ -1130,9 +1130,9 @@ xmllocations(
 
 @xmllocatable = @xmlcharacters | @xmlelement | @xmlcomment | @xmlattribute | @xmldtd | @file | @xmlnamespace;
 
-@dataflownode = @expr | @function_decl_stmt | @class_decl_stmt | @namespace_declaration | @enum_declaration | @property;
+@dataflownode = @expr | @functiondeclstmt | @classdeclstmt | @namespacedeclaration | @enumdeclaration | @property;
 
-@optionalchainable = @call_expr | @propaccess;
+@optionalchainable = @callexpr | @propaccess;
 
 isOptionalChaining(int id: @optionalchainable ref);
 
