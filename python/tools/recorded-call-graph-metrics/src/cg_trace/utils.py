@@ -11,7 +11,6 @@ def better_compare_for_dataclass(cls):
     ]:
         old = getattr(cls, op)
 
-        # Fix loop variable capture (py/loop-variable-capture)
         def new(self, other, op=op, old=old):
             if type(self) == type(other):
                 return old(self, other)
