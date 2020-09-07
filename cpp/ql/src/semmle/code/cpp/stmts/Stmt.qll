@@ -25,10 +25,10 @@ class Stmt extends StmtParent, @stmt {
   /**
    * Gets the nearest enclosing block of this statement in the source, if any.
    */
-  Block getEnclosingBlock() {
+  BlockStmt getEnclosingBlock() {
     if
-      getParentStmt() instanceof Block and
-      not getParentStmt().(Block).getLocation() instanceof UnknownLocation
+      getParentStmt() instanceof BlockStmt and
+      not getParentStmt().(BlockStmt).getLocation() instanceof UnknownLocation
     then result = getParentStmt()
     else result = getParentStmt().getEnclosingBlock()
   }
@@ -53,7 +53,7 @@ class Stmt extends StmtParent, @stmt {
    * to trace the flow of control instead.
    */
   Stmt getFollowingStmt() {
-    exists(Block b, int i |
+    exists(BlockStmt b, int i |
       this = b.getStmt(i) and
       result = b.getStmt(i + 1)
     )
@@ -240,7 +240,7 @@ class IfStmt extends ConditionalStmt, @stmt_if {
    * ```
    * if (b) { x = 1; }
    * ```
-   * the result is the `Block` `{ x = 1; }`.
+   * the result is the `BlockStmt` `{ x = 1; }`.
    */
   Stmt getThen() { if_then(underlyingElement(this), unresolveElement(result)) }
 
@@ -251,7 +251,7 @@ class IfStmt extends ConditionalStmt, @stmt_if {
    * ```
    * if (b) { x = 1; } else { x = 2; }
    * ```
-   * the result is the `Block` `{ x = 2; }`, and for
+   * the result is the `BlockStmt` `{ x = 2; }`, and for
    * ```
    * if (b) { x = 1; }
    * ```
@@ -326,7 +326,7 @@ class ConstexprIfStmt extends ConditionalStmt, @stmt_constexpr_if {
    * ```
    * if constexpr (b) { x = 1; }
    * ```
-   * the result is the `Block` `{ x = 1; }`.
+   * the result is the `BlockStmt` `{ x = 1; }`.
    */
   Stmt getThen() { constexpr_if_then(underlyingElement(this), unresolveElement(result)) }
 
@@ -337,7 +337,7 @@ class ConstexprIfStmt extends ConditionalStmt, @stmt_constexpr_if {
    * ```
    * if constexpr (b) { x = 1; } else { x = 2; }
    * ```
-   * the result is the `Block` `{ x = 2; }`, and for
+   * the result is the `BlockStmt` `{ x = 2; }`, and for
    * ```
    * if constexpr (b) { x = 1; }
    * ```
@@ -781,7 +781,7 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
    * ```
    * for (int x : xs) { y += x; }
    * ```
-   * the result is the `Block` `{ y += x; }`.
+   * the result is the `BlockStmt` `{ y += x; }`.
    */
   override Stmt getStmt() { result = this.getChild(5) }
 
@@ -1168,7 +1168,7 @@ class SwitchCase extends Stmt, @stmt_switch_case {
    * DEPRECATED: use `SwitchCase.getAStmt` or `ControlFlowNode.getASuccessor`
    * rather than this predicate.
    *
-   * Gets the `Block` statement immediately following this 'switch case'
+   * Gets the `BlockStmt` statement immediately following this 'switch case'
    * statement, if any.
    *
    * For example, for
@@ -1189,7 +1189,7 @@ class SwitchCase extends Stmt, @stmt_switch_case {
    * the `case 7:` has result `{ x = 2; break; }`, `default:` has result
    * `{ x = 3; }`, and the others have no result.
    */
-  deprecated Block getLabelledStmt() {
+  deprecated BlockStmt getLabelledStmt() {
     exists(int i, Stmt parent |
       this = parent.getChild(i) and
       result = parent.getChild(i + 1)
@@ -1270,7 +1270,7 @@ class SwitchCase extends Stmt, @stmt_switch_case {
    * `default:` has results `{ x = 3; }, `x = 4;` and `break;`.
    */
   Stmt getAStmt() {
-    exists(Block b, int i, int j |
+    exists(BlockStmt b, int i, int j |
       b.getStmt(i) = this and
       b.getStmt(j) = result and
       i < j and
@@ -1309,8 +1309,8 @@ class SwitchCase extends Stmt, @stmt_switch_case {
     exists(Stmt lastStmt |
       lastStmt = this.getAStmt() and
       not lastStmt.getFollowingStmt() = this.getAStmt() and
-      if lastStmt instanceof Block
-      then result = lastStmt.(Block).getLastStmtIn()
+      if lastStmt instanceof BlockStmt
+      then result = lastStmt.(BlockStmt).getLastStmtIn()
       else result = lastStmt
     )
   }
@@ -1467,7 +1467,7 @@ class SwitchStmt extends ConditionalStmt, @stmt_switch {
   /**
    * Gets the body statement of this 'switch' statement.
    *
-   * In almost all cases the result will be a `Block`, but there are
+   * In almost all cases the result will be a `BlockStmt`, but there are
    * other syntactically valid constructions.
    *
    * For example, for
@@ -1798,7 +1798,7 @@ class FunctionTryStmt extends TryStmt {
  * }
  * ```
  */
-class CatchBlock extends Block {
+class CatchBlock extends BlockStmt {
   override string getAPrimaryQlClass() { result = "CatchBlock" }
 
   CatchBlock() { ishandler(underlyingElement(this)) }
@@ -1864,7 +1864,7 @@ class MicrosoftTryExceptStmt extends MicrosoftTryStmt {
   /** Gets the expression guarding the `__except` statement. */
   Expr getCondition() { result = getChild(1) }
 
-  /** Gets the `__except` statement (usually a `Block`). */
+  /** Gets the `__except` statement (usually a `BlockStmt`). */
   Stmt getExcept() { result = getChild(2) }
 
   override string getAPrimaryQlClass() { result = "MicrosoftTryExceptStmt" }
@@ -1888,7 +1888,7 @@ class MicrosoftTryFinallyStmt extends MicrosoftTryStmt {
 
   override string toString() { result = "__try { ... } __finally { ... }" }
 
-  /** Gets the `__finally` statement (usually a `Block`). */
+  /** Gets the `__finally` statement (usually a `BlockStmt`). */
   Stmt getFinally() { result = getChild(1) }
 
   override string getAPrimaryQlClass() { result = "MicrosoftTryFinallyStmt" }
@@ -2047,7 +2047,7 @@ class VlaDeclStmt extends Stmt, @stmt_vla_decl {
    * declaration statement.
    */
   int getNumberOfVlaDimensionStmts() {
-    exists(Block b, int j |
+    exists(BlockStmt b, int j |
       this = b.getStmt(j) and
       result =
         j - 1 -
@@ -2064,7 +2064,7 @@ class VlaDeclStmt extends Stmt, @stmt_vla_decl {
    */
   VlaDimensionStmt getVlaDimensionStmt(int i) {
     i in [0 .. this.getNumberOfVlaDimensionStmts() - 1] and
-    exists(Block b, int j |
+    exists(BlockStmt b, int j |
       this = b.getStmt(j) and
       result = b.getStmt(j - this.getNumberOfVlaDimensionStmts() + i)
     )
