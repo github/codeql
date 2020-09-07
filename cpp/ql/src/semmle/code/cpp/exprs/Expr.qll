@@ -1270,7 +1270,7 @@ class SpaceshipExpr extends BinaryOperation, @spaceshipexpr {
 }
 
 /**
- * A C/C++ co_await expression
+ * A C/C++ `co_await` expression.
  * ```
  * co_await foo();
  * ```
@@ -1284,7 +1284,7 @@ class CoAwaitExpr extends UnaryOperation, @co_await {
 }
 
 /**
- * A C/C++ co_yield expression
+ * A C/C++ `co_yield` expression.
  * ```
  * co_yield 1;
  * ```

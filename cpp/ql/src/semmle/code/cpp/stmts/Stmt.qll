@@ -663,7 +663,7 @@ class LabelStmt extends Stmt, @stmt_label {
 }
 
 /**
- * A C/C++ 'co_return' statement.
+ * A C/C++ `co_return` statement.
  *
  * For example:
  * ```
