@@ -303,8 +303,8 @@ class StdOStreamOut extends DataFlowFunction, TaintFunction {
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to return value
-    input.isQualifierObject() and
-    output.isReturnValueDeref()
+    input.isQualifierAddress() and
+    output.isReturnValue()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -335,7 +335,7 @@ class StdOStreamOutNonMember extends DataFlowFunction, TaintFunction {
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     // flow from first parameter to return value
     input.isParameter(0) and
-    output.isReturnValueDeref()
+    output.isReturnValue()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
