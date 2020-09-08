@@ -20,7 +20,7 @@ abstract class XssSanitizer extends DataFlow::Node { }
  * Extend this class to add additional taint steps that should apply to the XSS
  * taint configuration.
  */
-abstract class XssAdditionalTaintStep extends TaintTracking2::Unit {
+class XssAdditionalTaintStep extends Unit {
   /**
    * Holds if the step from `node1` to `node2` should be considered a taint
    * step for XSS taint configurations.
