@@ -298,8 +298,14 @@ class StdBasicOStream extends TemplateClass {
 /**
  * The `std::ostream` function `operator<<` (defined as a member function).
  */
-class StdOStreamOut extends TaintFunction {
+class StdOStreamOut extends DataFlowFunction, TaintFunction {
   StdOStreamOut() { this.hasQualifiedName("std", "basic_ostream", "operator<<") }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    // flow from qualifier to return value
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
+  }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from parameter to qualifier
@@ -308,10 +314,6 @@ class StdOStreamOut extends TaintFunction {
     or
     // flow from parameter to return value
     input.isParameter(0) and
-    output.isReturnValueDeref()
-    or
-    // flow from qualifier to return value
-    input.isQualifierObject() and
     output.isReturnValueDeref()
     or
     // reverse flow from returned reference to the qualifier
@@ -323,11 +325,17 @@ class StdOStreamOut extends TaintFunction {
 /**
  * The `std::ostream` function `operator<<` (defined as a non-member function).
  */
-class StdOStreamOutNonMember extends TaintFunction {
+class StdOStreamOutNonMember extends DataFlowFunction, TaintFunction {
   StdOStreamOutNonMember() {
     this.hasQualifiedName("std", "operator<<") and
     this.getUnspecifiedType().(ReferenceType).getBaseType() =
       any(StdBasicOStream s).getAnInstantiation()
+  }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    // flow from first parameter to return value
+    input.isParameter(0) and
+    output.isReturnValueDeref()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -337,10 +345,6 @@ class StdOStreamOutNonMember extends TaintFunction {
     or
     // flow from second parameter to return value
     input.isParameter(1) and
-    output.isReturnValueDeref()
-    or
-    // flow from first parameter to return value
-    input.isParameter(0) and
     output.isReturnValueDeref()
     or
     // reverse flow from returned reference to the first parameter
