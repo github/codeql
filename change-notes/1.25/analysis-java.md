@@ -6,12 +6,6 @@ The following changes in version 1.25 affect Java analysis in all applications.
 
 The Java autobuilder has been improved to detect more Gradle Java versions.
 
-## New queries
-
-| **Query**                   | **Tags**  | **Purpose**                                                        |
-|-----------------------------|-----------|--------------------------------------------------------------------|
-
-
 ## Changes to existing queries
 
 | **Query**                    | **Expected impact**    | **Change**                        |
