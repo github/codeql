@@ -58,35 +58,35 @@ hasLocation(#20001,#20018)
 #20019=*
 stmts(#20019,2,#20001,0,"({ async });")
 hasLocation(#20019,#20003)
-stmtContainers(#20019,#20001)
+stmt_containers(#20019,#20001)
 #20020=*
 exprs(#20020,63,#20019,0,"({ async })")
 #20021=@"loc,{#10000},1,1,1,11"
 locations_default(#20021,#10000,1,1,1,11)
 hasLocation(#20020,#20021)
-enclosingStmt(#20020,#20019)
-exprContainers(#20020,#20001)
+enclosing_stmt(#20020,#20019)
+expr_containers(#20020,#20001)
 #20022=*
 exprs(#20022,8,#20020,0,"{ async }")
 #20023=@"loc,{#10000},1,2,1,10"
 locations_default(#20023,#10000,1,2,1,10)
 hasLocation(#20022,#20023)
-enclosingStmt(#20022,#20019)
-exprContainers(#20022,#20001)
+enclosing_stmt(#20022,#20019)
+expr_containers(#20022,#20001)
 #20024=*
 properties(#20024,#20022,0,0,"async")
 hasLocation(#20024,#20009)
 #20025=*
 exprs(#20025,0,#20024,0,"async")
 hasLocation(#20025,#20009)
-enclosingStmt(#20025,#20019)
-exprContainers(#20025,#20001)
+enclosing_stmt(#20025,#20019)
+expr_containers(#20025,#20001)
 literals("async","async",#20025)
 #20026=*
 exprs(#20026,79,#20024,1,"async")
 hasLocation(#20026,#20009)
-enclosingStmt(#20026,#20019)
-exprContainers(#20026,#20001)
+enclosing_stmt(#20026,#20019)
+expr_containers(#20026,#20001)
 literals("async","async",#20026)
 #20027=@"var;{async};{#20000}"
 variables(#20027,"async",#20000)
