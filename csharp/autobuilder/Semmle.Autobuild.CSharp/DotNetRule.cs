@@ -7,6 +7,7 @@ using System.IO;
 using Semmle.Util;
 using System.Text.RegularExpressions;
 using Semmle.Autobuild.Shared;
+using System.Net;
 
 namespace Semmle.Autobuild.CSharp
 {
@@ -229,11 +230,7 @@ Invoke-Command -ScriptBlock $ScriptBlock";
                     }
                     else
                     {
-                        var curl = new CommandBuilder(builder.Actions).
-                            RunCommand("curl").
-                            Argument("-L").
-                            Argument("-sO").
-                            Argument("https://dot.net/v1/dotnet-install.sh");
+                        var downloadDotNetInstallSh = BuildScript.DownloadFile("https://dot.net/v1/dotnet-install.sh", "dotnet-install.sh");
 
                         var chmod = new CommandBuilder(builder.Actions).
                             RunCommand("chmod").
@@ -253,7 +250,7 @@ Invoke-Command -ScriptBlock $ScriptBlock";
                             RunCommand("rm").
                             Argument("dotnet-install.sh");
 
-                        return curl.Script & chmod.Script & install.Script & BuildScript.Try(removeScript.Script);
+                        return downloadDotNetInstallSh & chmod.Script & install.Script & BuildScript.Try(removeScript.Script);
                     }
                 });
         }

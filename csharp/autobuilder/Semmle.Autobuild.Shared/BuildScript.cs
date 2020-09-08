@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 
 namespace Semmle.Autobuild.Shared
 {
@@ -191,6 +192,25 @@ namespace Semmle.Autobuild.Shared
         /// </summary>
         public static BuildScript Create(Func<IBuildActions, int> func) =>
             new ReturnBuildCommand(func);
+
+        /// <summary>
+        /// Creates a build script that downloads the specified file.
+        /// </summary>
+        public static BuildScript DownloadFile(string address, string fileName) =>
+            Create(actions =>
+            {
+                if (actions.GetDirectoryName(fileName) is string dir && !string.IsNullOrWhiteSpace(dir))
+                    actions.CreateDirectory(dir);
+                try
+                {
+                    actions.DownloadFile(address, fileName);
+                    return 0;
+                }
+                catch (WebException)
+                {
+                    return 1;
+                }
+            });
 
         /// <summary>
         /// Creates a build script that runs <paramref name="s1"/>, followed by running the script
