@@ -459,10 +459,8 @@ class Expr extends StmtParent, @expr {
     // cheaply. Then, if there is an explicit conversion following the implict
     // conversion sequence, recurse to handle multiple explicit conversions.
     if this.getImplicitlyConverted().hasExplicitConversion()
-    then
-      result = this.getImplicitlyConverted().getConversion().getExplicitlyConverted()
-    else
-      result = this
+    then result = this.getImplicitlyConverted().getConversion().getExplicitlyConverted()
+    else result = this
   }
 
   /**
