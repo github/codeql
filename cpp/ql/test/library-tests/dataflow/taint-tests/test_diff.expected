@@ -48,6 +48,10 @@
 | movableclass.cpp:55:8:55:9 | movableclass.cpp:52:23:52:28 | AST only |
 | movableclass.cpp:64:8:64:9 | movableclass.cpp:23:55:23:60 | AST only |
 | movableclass.cpp:65:11:65:11 | movableclass.cpp:65:13:65:18 | AST only |
+| smart_pointer.cpp:12:10:12:10 | smart_pointer.cpp:11:52:11:57 | AST only |
+| smart_pointer.cpp:13:10:13:10 | smart_pointer.cpp:11:52:11:57 | AST only |
+| smart_pointer.cpp:24:10:24:10 | smart_pointer.cpp:23:52:23:57 | AST only |
+| smart_pointer.cpp:25:10:25:10 | smart_pointer.cpp:23:52:23:57 | AST only |
 | standalone_iterators.cpp:40:10:40:10 | standalone_iterators.cpp:39:45:39:51 | AST only |
 | standalone_iterators.cpp:41:10:41:10 | standalone_iterators.cpp:39:45:39:51 | AST only |
 | standalone_iterators.cpp:42:10:42:10 | standalone_iterators.cpp:39:45:39:51 | AST only |
