@@ -55,26 +55,26 @@ variables(#20017,"class",#20000)
 #20018=*
 stmts(#20018,18,#20001,0,"var class = 23;")
 hasLocation(#20018,#20003)
-stmtContainers(#20018,#20001)
+stmt_containers(#20018,#20001)
 #20019=*
 exprs(#20019,64,#20018,0,"class = 23")
 #20020=@"loc,{#10000},1,5,1,14"
 locations_default(#20020,#10000,1,5,1,14)
 hasLocation(#20019,#20020)
-enclosingStmt(#20019,#20018)
-exprContainers(#20019,#20001)
+enclosing_stmt(#20019,#20018)
+expr_containers(#20019,#20001)
 #20021=*
 exprs(#20021,78,#20019,0,"class")
 hasLocation(#20021,#20007)
-enclosingStmt(#20021,#20018)
-exprContainers(#20021,#20001)
+enclosing_stmt(#20021,#20018)
+expr_containers(#20021,#20001)
 literals("class","class",#20021)
 decl(#20021,#20017)
 #20022=*
 exprs(#20022,3,#20019,1,"23")
 hasLocation(#20022,#20011)
-enclosingStmt(#20022,#20018)
-exprContainers(#20022,#20001)
+enclosing_stmt(#20022,#20018)
+expr_containers(#20022,#20001)
 literals("23","23",#20022)
 #20023=*
 entry_cfg_node(#20023,#20001)
@@ -90,7 +90,7 @@ successor(#20021,#20022)
 successor(#20019,#20025)
 successor(#20023,#20018)
 #20026=*
-jsParseErrors(#20026,#20001,"Error: Cannot use keyword 'class' as an identifier.","var class = 23;
+js_parse_errors(#20026,#20001,"Error: Cannot use keyword 'class' as an identifier.","var class = 23;
 ")
 #20027=@"loc,{#10000},1,5,1,5"
 locations_default(#20027,#10000,1,5,1,5)

@@ -35,7 +35,7 @@ namespace Semmle.Extraction.CSharp.Entities
             Context.TrapWriter.Writer.commentblock_binding(this, entity, binding);
         }
 
-        public static CommentBlock Create(Context cx, ICommentBlock block) => CommentBlockFactory.Instance.CreateEntity(cx, block);
+        public static CommentBlock Create(Context cx, ICommentBlock block) => CommentBlockFactory.Instance.CreateEntity(cx, block, block);
 
         class CommentBlockFactory : ICachedEntityFactory<ICommentBlock, CommentBlock>
         {

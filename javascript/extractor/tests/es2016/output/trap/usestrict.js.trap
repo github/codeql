@@ -82,11 +82,11 @@ variables(#20028,"f",#20000)
 #20029=*
 stmts(#20029,17,#20001,0,"functio ... ict'; }")
 hasLocation(#20029,#20003)
-stmtContainers(#20029,#20001)
+stmt_containers(#20029,#20001)
 #20030=*
 exprs(#20030,78,#20029,-1,"f")
 hasLocation(#20030,#20007)
-exprContainers(#20030,#20029)
+expr_containers(#20030,#20029)
 literals("f","f",#20030)
 decl(#20030,#20028)
 #20031=*
@@ -98,41 +98,41 @@ variables(#20032,"a",#20031)
 #20033=*
 exprs(#20033,78,#20029,0,"a")
 hasLocation(#20033,#20011)
-exprContainers(#20033,#20029)
+expr_containers(#20033,#20029)
 literals("a","a",#20033)
 decl(#20033,#20032)
 #20034=@"var;{arguments};{#20031}"
 variables(#20034,"arguments",#20031)
-isArgumentsObject(#20034)
+is_arguments_object(#20034)
 #20035=*
 exprs(#20035,3,#20029,-5,"2")
 hasLocation(#20035,#20015)
-exprContainers(#20035,#20029)
+expr_containers(#20035,#20029)
 literals("2","2",#20035)
 #20036=*
 stmts(#20036,1,#20029,-2,"{ 'use strict'; }")
 #20037=@"loc,{#10000},1,17,1,33"
 locations_default(#20037,#10000,1,17,1,33)
 hasLocation(#20036,#20037)
-stmtContainers(#20036,#20029)
+stmt_containers(#20036,#20029)
 #20038=*
 stmts(#20038,2,#20036,0,"'use strict';")
 #20039=@"loc,{#10000},1,19,1,31"
 locations_default(#20039,#10000,1,19,1,31)
 hasLocation(#20038,#20039)
-stmtContainers(#20038,#20029)
+stmt_containers(#20038,#20029)
 #20040=*
 exprs(#20040,4,#20038,0,"'use strict'")
 hasLocation(#20040,#20021)
-enclosingStmt(#20040,#20038)
-exprContainers(#20040,#20029)
+enclosing_stmt(#20040,#20038)
+expr_containers(#20040,#20029)
 literals("use strict","'use strict'",#20040)
 #20041=*
 regexpterm(#20041,14,#20040,0,"use strict")
 #20042=@"loc,{#10000},1,20,1,29"
 locations_default(#20042,#10000,1,20,1,29)
 hasLocation(#20041,#20042)
-regexpConstValue(#20041,"use strict")
+regexp_const_value(#20041,"use strict")
 #20043=*
 entry_cfg_node(#20043,#20001)
 #20044=@"loc,{#10000},1,1,1,0"
@@ -157,7 +157,7 @@ successor(#20046,#20035)
 successor(#20030,#20029)
 successor(#20043,#20030)
 #20048=*
-jsParseErrors(#20048,#20001,"Error: Illegal 'use strict' directive in function with non-simple parameter list","function f(a=2) { 'use strict'; }")
+js_parse_errors(#20048,#20001,"Error: Illegal 'use strict' directive in function with non-simple parameter list","function f(a=2) { 'use strict'; }")
 #20049=@"loc,{#10000},1,19,1,19"
 locations_default(#20049,#10000,1,19,1,19)
 hasLocation(#20048,#20049)

@@ -1,3 +1,4 @@
+using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Entities.Expressions;
@@ -11,10 +12,18 @@ namespace Semmle.Extraction.CSharp.Entities
     class Property : CachedSymbol<IPropertySymbol>, IExpressionParentEntity
     {
         protected Property(Context cx, IPropertySymbol init)
-            : base(cx, init) { }
+            : base(cx, init)
+        {
+            type = new Lazy<Type>(() => Type.Create(Context, symbol.Type));
+        }
+
+        readonly Lazy<Type> type;
+        Type Type => type.Value;
 
         public override void WriteId(TextWriter trapFile)
         {
+            trapFile.WriteSubId(Type);
+            trapFile.Write(" ");
             trapFile.WriteSubId(ContainingType);
             trapFile.Write('.');
             Method.AddExplicitInterfaceQualifierToId(Context, trapFile, symbol.ExplicitInterfaceImplementations);
@@ -31,7 +40,7 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateNullability(trapFile, symbol.GetAnnotatedType());
             PopulateRefKind(trapFile, symbol.RefKind);
 
-            var type = Type.Create(Context, symbol.Type);
+            var type = Type;
             trapFile.properties(this, symbol.GetName(), ContainingType, type.TypeRef, Create(Context, symbol.OriginalDefinition));
 
             var getter = symbol.GetMethod;
@@ -113,7 +122,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             bool isIndexer = prop.IsIndexer || prop.Parameters.Any();
 
-            return isIndexer ? Indexer.Create(cx, prop) : PropertyFactory.Instance.CreateEntity(cx, prop);
+            return isIndexer ? Indexer.Create(cx, prop) : PropertyFactory.Instance.CreateEntityFromSymbol(cx, prop);
         }
 
         public void VisitDeclaration(Context cx, PropertyDeclarationSyntax p)

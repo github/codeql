@@ -175,10 +175,10 @@ definitions.cs:
 #   97|   5: [Class] A
 #   99|     5: [DelegateType] EventHandler
 #  101|     6: [Event] Click
-#  101|       3: [RemoveEventAccessor] remove_Click
+#  101|       3: [AddEventAccessor] add_Click
 #-----|         2: (Parameters)
 #  101|           0: [Parameter] value
-#  101|       3: [AddEventAccessor] add_Click
+#  101|       4: [RemoveEventAccessor] remove_Click
 #-----|         2: (Parameters)
 #  101|           0: [Parameter] value
 #  103|     7: [Method] M
@@ -254,10 +254,10 @@ definitions.cs:
 #  140|               0: [TypeAccess] access to type E*
 #  143|   11: [Interface] I4
 #  145|     4: [Event] EH
-#  145|       3: [RemoveEventAccessor] remove_EH
+#  145|       3: [AddEventAccessor] add_EH
 #-----|         2: (Parameters)
 #  145|           0: [Parameter] value
-#  145|       3: [AddEventAccessor] add_EH
+#  145|       4: [RemoveEventAccessor] remove_EH
 #-----|         2: (Parameters)
 #  145|           0: [Parameter] value
 #  146|     5: [Method] M

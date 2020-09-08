@@ -49,13 +49,6 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override void WriteId(TextWriter trapFile)
-        {
-            AddSignatureTypeToId(Context, trapFile, symbol, symbol.ReturnType); // Needed for op_explicit(), which differs only by return type.
-            trapFile.Write(' ');
-            BuildMethodId(this, trapFile);
-        }
-
         /// <summary>
         /// For some reason, some operators are missing from the Roslyn database of mscorlib.
         /// This method returns <code>true</code> for such operators.
@@ -68,7 +61,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (containingType != null)
             {
                 var containingNamedType = containingType as INamedTypeSymbol;
-                return containingNamedType == null || !containingNamedType.MemberNames.Contains(symbol.Name);
+                return containingNamedType == null || !containingNamedType.GetMembers(symbol.Name).Contains(symbol);
             }
 
             var pointerType = symbol.Parameters.Select(p => p.Type).OfType<IPointerTypeSymbol>().FirstOrDefault();
@@ -190,7 +183,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return result;
         }
 
-        public new static UserOperator Create(Context cx, IMethodSymbol symbol) => UserOperatorFactory.Instance.CreateEntity(cx, symbol);
+        public new static UserOperator Create(Context cx, IMethodSymbol symbol) => UserOperatorFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 
         class UserOperatorFactory : ICachedEntityFactory<IMethodSymbol, UserOperator>
         {

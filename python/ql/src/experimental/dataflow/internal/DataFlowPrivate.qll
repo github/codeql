@@ -102,7 +102,7 @@ module EssaFlow {
     //   `x = f(y)`
     //   nodeFrom is `y` on first line, essa var
     //   nodeTo is `y` on second line, cfg node
-    nodeFrom.(EssaNode).getVar().getAUse() = nodeTo.(CfgNode).getNode()
+    nodeFrom.(EssaNode).getVar().getASourceUse() = nodeTo.(CfgNode).getNode()
     or
     // Refinements
     exists(EssaEdgeRefinement r |

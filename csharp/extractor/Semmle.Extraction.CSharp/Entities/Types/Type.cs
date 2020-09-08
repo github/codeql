@@ -100,17 +100,12 @@ namespace Semmle.Extraction.CSharp.Entities
 
             // Visit base types
             var baseTypes = new List<Type>();
-            if (symbol.BaseType != null)
+            if (symbol.GetNonObjectBaseType(Context) is INamedTypeSymbol @base)
             {
-                Type baseKey = Create(Context, symbol.BaseType);
+                Type baseKey = Create(Context, @base);
                 trapFile.extend(this, baseKey.TypeRef);
                 if (symbol.TypeKind != TypeKind.Struct)
                     baseTypes.Add(baseKey);
-            }
-
-            if (symbol.TypeKind == TypeKind.Interface)
-            {
-                trapFile.extend(this, Create(Context, Context.Compilation.ObjectType));
             }
 
             if (!(base.symbol is IArrayTypeSymbol))
@@ -298,7 +293,9 @@ namespace Semmle.Extraction.CSharp.Entities
                 : base(cx, init, parent, original) { }
 
             new public static DelegateTypeParameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter original = null) =>
-                DelegateTypeParameterFactory.Instance.CreateEntity(cx, (param, parent, original));
+                // We need to use a different cache key than `param` to avoid mixing up
+                // `DelegateTypeParameter`s and `Parameter`s
+                DelegateTypeParameterFactory.Instance.CreateEntity(cx, (typeof(DelegateTypeParameter), new SymbolEqualityWrapper(param)), (param, parent, original));
 
             class DelegateTypeParameterFactory : ICachedEntityFactory<(IParameterSymbol, IEntity, Parameter), DelegateTypeParameter>
             {
@@ -324,6 +321,14 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as Type;
+            return other?.GetType() == GetType() && SymbolEqualityComparer.IncludeNullability.Equals(other.symbol, symbol);
+        }
+
+        public override int GetHashCode() => SymbolEqualityComparer.IncludeNullability.GetHashCode(symbol);
     }
 
     abstract class Type<T> : Type where T : ITypeSymbol

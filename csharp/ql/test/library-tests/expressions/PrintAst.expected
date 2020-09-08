@@ -938,10 +938,10 @@ expressions.cs:
 #  224|       1: [Parameter] e
 #  226|   7: [Class] Button
 #  229|     5: [Event] Click
-#  229|       3: [RemoveEventAccessor] remove_Click
+#  229|       3: [AddEventAccessor] add_Click
 #-----|         2: (Parameters)
 #  229|           0: [Parameter] value
-#  229|       3: [AddEventAccessor] add_Click
+#  229|       4: [RemoveEventAccessor] remove_Click
 #-----|         2: (Parameters)
 #  229|           0: [Parameter] value
 #  231|     6: [Method] OnClick

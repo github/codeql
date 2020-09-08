@@ -93,26 +93,26 @@ hasLocation(#20001,#20032)
 #20033=*
 stmts(#20033,2,#20001,0,"a && b && c;")
 hasLocation(#20033,#20003)
-stmtContainers(#20033,#20001)
+stmt_containers(#20033,#20001)
 #20034=*
 exprs(#20034,44,#20033,0,"a && b && c")
 #20035=@"loc,{#10000},1,1,1,11"
 locations_default(#20035,#10000,1,1,1,11)
 hasLocation(#20034,#20035)
-enclosingStmt(#20034,#20033)
-exprContainers(#20034,#20001)
+enclosing_stmt(#20034,#20033)
+expr_containers(#20034,#20001)
 #20036=*
 exprs(#20036,44,#20034,0,"a && b")
 #20037=@"loc,{#10000},1,1,1,6"
 locations_default(#20037,#10000,1,1,1,6)
 hasLocation(#20036,#20037)
-enclosingStmt(#20036,#20033)
-exprContainers(#20036,#20001)
+enclosing_stmt(#20036,#20033)
+expr_containers(#20036,#20001)
 #20038=*
 exprs(#20038,79,#20036,0,"a")
 hasLocation(#20038,#20007)
-enclosingStmt(#20038,#20033)
-exprContainers(#20038,#20001)
+enclosing_stmt(#20038,#20033)
+expr_containers(#20038,#20001)
 literals("a","a",#20038)
 #20039=@"var;{a};{#20000}"
 variables(#20039,"a",#20000)
@@ -120,8 +120,8 @@ bind(#20038,#20039)
 #20040=*
 exprs(#20040,79,#20036,1,"b")
 hasLocation(#20040,#20011)
-enclosingStmt(#20040,#20033)
-exprContainers(#20040,#20001)
+enclosing_stmt(#20040,#20033)
+expr_containers(#20040,#20001)
 literals("b","b",#20040)
 #20041=@"var;{b};{#20000}"
 variables(#20041,"b",#20000)
@@ -129,8 +129,8 @@ bind(#20040,#20041)
 #20042=*
 exprs(#20042,79,#20034,1,"c")
 hasLocation(#20042,#20015)
-enclosingStmt(#20042,#20033)
-exprContainers(#20042,#20001)
+enclosing_stmt(#20042,#20033)
+expr_containers(#20042,#20001)
 literals("c","c",#20042)
 #20043=@"var;{c};{#20000}"
 variables(#20043,"c",#20000)
@@ -138,26 +138,26 @@ bind(#20042,#20043)
 #20044=*
 stmts(#20044,2,#20001,1,"x || y || z;")
 hasLocation(#20044,#20005)
-stmtContainers(#20044,#20001)
+stmt_containers(#20044,#20001)
 #20045=*
 exprs(#20045,45,#20044,0,"x || y || z")
 #20046=@"loc,{#10000},2,1,2,11"
 locations_default(#20046,#10000,2,1,2,11)
 hasLocation(#20045,#20046)
-enclosingStmt(#20045,#20044)
-exprContainers(#20045,#20001)
+enclosing_stmt(#20045,#20044)
+expr_containers(#20045,#20001)
 #20047=*
 exprs(#20047,45,#20045,0,"x || y")
 #20048=@"loc,{#10000},2,1,2,6"
 locations_default(#20048,#10000,2,1,2,6)
 hasLocation(#20047,#20048)
-enclosingStmt(#20047,#20044)
-exprContainers(#20047,#20001)
+enclosing_stmt(#20047,#20044)
+expr_containers(#20047,#20001)
 #20049=*
 exprs(#20049,79,#20047,0,"x")
 hasLocation(#20049,#20019)
-enclosingStmt(#20049,#20044)
-exprContainers(#20049,#20001)
+enclosing_stmt(#20049,#20044)
+expr_containers(#20049,#20001)
 literals("x","x",#20049)
 #20050=@"var;{x};{#20000}"
 variables(#20050,"x",#20000)
@@ -165,8 +165,8 @@ bind(#20049,#20050)
 #20051=*
 exprs(#20051,79,#20047,1,"y")
 hasLocation(#20051,#20023)
-enclosingStmt(#20051,#20044)
-exprContainers(#20051,#20001)
+enclosing_stmt(#20051,#20044)
+expr_containers(#20051,#20001)
 literals("y","y",#20051)
 #20052=@"var;{y};{#20000}"
 variables(#20052,"y",#20000)
@@ -174,8 +174,8 @@ bind(#20051,#20052)
 #20053=*
 exprs(#20053,79,#20045,1,"z")
 hasLocation(#20053,#20027)
-enclosingStmt(#20053,#20044)
-exprContainers(#20053,#20001)
+enclosing_stmt(#20053,#20044)
+expr_containers(#20053,#20001)
 literals("z","z",#20053)
 #20054=@"var;{z};{#20000}"
 variables(#20054,"z",#20000)

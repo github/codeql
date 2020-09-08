@@ -14,7 +14,7 @@ toplevels(#20001,0)
 locations_default(#20002,#10000,1,1,1,1)
 hasLocation(#20001,#20002)
 #20003=*
-jsParseErrors(#20003,#20001,"Error: Unexpected character '​' (U+200B)","​
+js_parse_errors(#20003,#20001,"Error: Unexpected character '​' (U+200B)","​
 ")
 hasLocation(#20003,#20002)
 #20004=*

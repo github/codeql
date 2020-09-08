@@ -312,7 +312,7 @@ events.cs:
 #    6|     3: [AddEventAccessor] add_MyEvent
 #-----|       2: (Parameters)
 #    6|         0: [Parameter] value
-#    6|     3: [RemoveEventAccessor] remove_MyEvent
+#    6|     4: [RemoveEventAccessor] remove_MyEvent
 #-----|       2: (Parameters)
 #    6|         0: [Parameter] value
 #    8|   7: [InstanceConstructor] Events

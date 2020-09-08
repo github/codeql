@@ -41,7 +41,7 @@
 | Program.cs:75:5:75:7 | Int32 |
 | Program.cs:87:5:87:8 | Void |
 | Program.cs:89:9:89:14 | Object |
-| Program.cs:90:20:90:25 | String |
+| Program.cs:90:21:90:26 | String |
 | Program.cs:92:13:92:15 | String |
 | Program.cs:101:16:101:21 | Object |
 | Program.cs:104:5:104:8 | Void |
@@ -63,11 +63,11 @@
 | Program.cs:135:25:135:30 | Object |
 | Program.cs:135:33:135:38 | String |
 | Program.cs:135:41:135:46 | Object |
-| Program.cs:137:10:137:15 | Object |
+| Program.cs:137:9:137:14 | Object |
 | Program.cs:142:27:142:27 | T |
-| Program.cs:142:30:142:40 | DynamicType |
+| Program.cs:142:31:142:41 | DynamicType |
 | Program.cs:146:27:146:27 | T |
-| Program.cs:146:30:146:40 | DynamicType |
+| Program.cs:146:31:146:41 | DynamicType |
 | Program.cs:156:15:156:35 | TEmbeddedTypesManager |
 | Program.cs:156:39:156:58 | EmbeddedTypesManager<,> |
 | Program.cs:156:60:156:80 | TEmbeddedTypesManager |
@@ -81,7 +81,7 @@
 | Program.cs:164:5:164:12 | Int32*[][] |
 | Program.cs:169:5:169:10 | String |
 | Program.cs:174:5:174:8 | Void |
-| Program.cs:176:17:176:19 | IDisposable |
+| Program.cs:176:18:176:20 | IDisposable |
 | Program.cs:185:5:185:17 | (Int32,Object) |
 | Program.cs:185:6:185:8 | Int32 |
 | Program.cs:185:11:185:16 | Object |
@@ -91,3 +91,11 @@
 | Program.cs:187:9:187:25 | Nullable<(Object,Object)> |
 | Program.cs:187:10:187:15 | Object |
 | Program.cs:187:18:187:23 | Object |
+| Program.cs:194:15:194:16 | C2<C4<T>> |
+| Program.cs:194:18:194:19 | C4<T> |
+| Program.cs:194:21:194:21 | T |
+| Program.cs:196:15:196:16 | C2<C3<T>> |
+| Program.cs:196:18:196:19 | C3<T> |
+| Program.cs:196:21:196:21 | T |
+| Program.cs:198:12:198:13 | C4<C5> |
+| Program.cs:198:15:198:16 | C5 |
