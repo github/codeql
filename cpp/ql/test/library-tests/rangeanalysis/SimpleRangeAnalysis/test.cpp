@@ -100,3 +100,23 @@ int ref_to_number(int &i, const int &ci, int &aliased) {
 
   return 0;
 }
+
+void notequal_refinement(short n) {
+  if (n < 0)
+    return;
+
+  if (n) {
+    n; // 1 .. [BUG: lower bound is deduced to be 0]
+  } else {
+    n; // 0 .. 0 [BUG: upper bound is deduced to be 32767]
+  }
+
+  if (!n) {
+    n; // 0 .. 0 [BUG: upper bound is deduced to be 32767]
+  } else {
+    n; // 1 .. [BUG: lower bound is deduced to be 0]
+  }
+
+  n  ? n : n; // ? 1..  : 0..0 [BUG: no useful bounds]
+  !n ? n : n; // ? 0..0 : 1..  [BUG: no useful bounds]
+}

@@ -549,7 +549,7 @@ int notequal_type_endpoint(unsigned n) {
   }
 
   if (!n) {
-    out(n); // 0 .. 0
+    out(n); // 0 .. 0 [BUG: upper bound is deduced to be 2^32-1]
   } else {
     out(n); // 1 .. [BUG: lower bound is deduced to be 0]
   }
@@ -574,7 +574,7 @@ void notequal_refinement(short n) {
   if (n) {
     out(n); // 1 .. [BUG: lower bound is deduced to be 0]
   } else {
-    out(n); // 0 .. 0
+    out(n); // 0 .. 0 [BUG: upper bound is deduced to be 32767]
   }
 
   while (n != 0) {
@@ -600,5 +600,42 @@ void notequal_variations(short n, float f) {
 
   if (n != -32768 && n != -32767) {
     out(n); // -32766 ..
+  }
+
+  if (n >= 0) {
+    n  ? n : n; // ? 1..  : 0..0 [BUG: no useful bounds]
+    !n ? n : n; // ? 0..0 : 1..  [BUG: no useful bounds]
+  }
+}
+
+void two_bounds_from_one_test(short ss, unsigned short us) {
+  // These tests demonstrate how the range analysis is often able to deduce
+  // both an upper bound and a lower bound even when there is only one
+  // inequality in the source. For example `signedInt < 4U` establishes that
+  // `signedInt >= 0` since if `signedInt` were negative then it would be
+  // greater than 4 in the unsigned comparison.
+
+  if (ss < sizeof(int)) { // Lower bound added in `linearBoundFromGuard`
+    out(ss); // 0 .. 3
+  }
+
+  if (ss < 0x8001) { // Lower bound removed in `getDefLowerBounds`
+    out(ss); // -32768 .. 32767
+  }
+
+  if ((short)us >= 0) {
+    out(us); // 0 .. 32767
+  }
+
+  if ((short)us >= -1) {
+    out(us); // 0 .. 65535
+  }
+
+  if (ss >= sizeof(int)) { // test is true for negative numbers
+    out(ss); // -32768 .. 32767
+  }
+
+  if (ss + 1 < sizeof(int)) {
+    out(ss); // -1 .. 2
   }
 }
