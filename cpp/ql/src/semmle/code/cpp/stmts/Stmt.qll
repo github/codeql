@@ -663,6 +663,67 @@ class LabelStmt extends Stmt, @stmt_label {
 }
 
 /**
+ * A C/C++ `co_return` statement.
+ *
+ * For example:
+ * ```
+ * co_return 1+2;
+ * ```
+ * or
+ * ```
+ * co_return;
+ * ```
+ */
+class CoReturnStmt extends Stmt, @stmt_co_return {
+  override string getAPrimaryQlClass() { result = "CoReturnStmt" }
+
+  /**
+   * Gets the operand of this 'co_return' statement.
+   *
+   * For example, for
+   * ```
+   * co_return 1+2;
+   * ```
+   * the operand is a function call `return_value(1+2)`, and for
+   * ```
+   * co_return;
+   * ```
+   * the operand is a function call `return_void()`.
+   */
+  FunctionCall getOperand() { result = this.getChild(0) }
+
+  /**
+   * Gets the expression of this 'co_return' statement, if any.
+   *
+   * For example, for
+   * ```
+   * co_return 1+2;
+   * ```
+   * the result is `1+2`, and there is no result for
+   * ```
+   * co_return;
+   * ```
+   */
+  Expr getExpr() { result = this.getOperand().getArgument(0) }
+
+  /**
+   * Holds if this 'co_return' statement has an expression.
+   *
+   * For example, this holds for
+   * ```
+   * co_return 1+2;
+   * ```
+   * but not for
+   * ```
+   * co_return;
+   * ```
+   */
+  predicate hasExpr() { exists(this.getExpr()) }
+
+  override string toString() { result = "co_return ..." }
+}
+
+/**
  * A C/C++ 'return' statement.
  *
  * For example:

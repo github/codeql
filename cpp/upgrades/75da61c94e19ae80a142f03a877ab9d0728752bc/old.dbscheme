@@ -1228,8 +1228,6 @@ funbind(
             | @builtinaddressof
             | @vec_fill
             | @un_log_op_expr
-            | @co_await
-            | @co_yield
             ;
 
 @bin_log_op_expr = @andlogicalexpr | @orlogicalexpr;
@@ -1649,8 +1647,6 @@ case @expr.kind of
 | 324 = @builtinconvertvector
 | 325 = @builtincomplex
 | 326 = @spaceshipexpr
-| 327 = @co_await
-| 328 = @co_yield
 ;
 
 @var_args_expr = @vastartexpr
@@ -1855,7 +1851,6 @@ case @stmt.kind of
 |  33 = @stmt_handler
 // ...  34 @stmt_finally_end deprecated
 |  35 = @stmt_constexpr_if
-|  37 = @stmt_co_return
 ;
 
 type_vla(
