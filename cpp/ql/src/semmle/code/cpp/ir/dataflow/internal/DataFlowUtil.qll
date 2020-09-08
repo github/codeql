@@ -377,6 +377,37 @@ private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNod
   }
 }
 
+private class ArrayStoreNode extends PartialDefinitionNode {
+  override ChiInstruction instr;
+  PointerAddInstruction add;
+
+  ArrayStoreNode() {
+    not instr.isResultConflated() and
+    exists(StoreInstruction store |
+      instr.getPartial() = store and
+      add = store.getDestinationAddress()
+    )
+  }
+
+  override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
+
+  override Expr getDefinedExpr() { result = add.getLeft().getUnconvertedResultExpression() }
+}
+
+private class PointerStoreNode extends PostUpdateNode {
+  override ChiInstruction instr;
+
+  PointerStoreNode() {
+    not instr.isResultConflated() and
+    exists(StoreInstruction store |
+      instr.getPartial() = store and
+      store.getDestinationAddress().(CopyValueInstruction).getUnary() instanceof LoadInstruction
+    )
+  }
+
+  override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
+}
+
 /**
  * A node that represents the value of a variable after a function call that
  * may have changed the variable because it's passed by reference.

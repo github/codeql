@@ -181,24 +181,41 @@ private class CollectionContent extends Content, TCollectionContent {
 }
 
 private class ArrayContent extends Content, TArrayContent {
-  override string toString() { result = "array" }
+  ArrayContent() { this = TArrayContent() }
+
+  override string toString() { result = "array content" }
 }
 
-private predicate storeStepNoChi(Node node1, Content f, PostUpdateNode node2) {
+private predicate fieldStoreStepNoChi(Node node1, FieldContent f, PostUpdateNode node2) {
   exists(FieldAddressInstruction fa, StoreInstruction store |
     store = node2.asInstruction() and
     store.getDestinationAddress() = fa and
     store.getSourceValue() = node1.asInstruction() and
-    f.(FieldContent).getField() = fa.getField()
+    f.getField() = fa.getField()
   )
 }
 
-private predicate storeStepChi(Node node1, Content f, PostUpdateNode node2) {
+private predicate fieldStoreStepChi(Node node1, FieldContent f, PostUpdateNode node2) {
   exists(FieldAddressInstruction fa, StoreInstruction store |
     node1.asInstruction() = store and
     store.getDestinationAddress() = fa and
     node2.asInstruction().(ChiInstruction).getPartial() = store and
-    f.(FieldContent).getField() = fa.getField()
+    f.getField() = fa.getField()
+  )
+}
+
+private predicate arrayStoreStepChi(Node node1, Content a, PostUpdateNode node2) {
+  a instanceof ArrayContent and
+  exists(StoreInstruction store |
+    node1.asInstruction() = store and
+    (
+      // `x[i] = taint()`
+      store.getDestinationAddress() instanceof PointerAddInstruction
+      or
+      // `*p = taint()`
+      store.getDestinationAddress().(CopyValueInstruction).getUnary() instanceof LoadInstruction
+    ) and
+    node2.asInstruction().(ChiInstruction).getPartial() = store
   )
 }
 
@@ -208,8 +225,26 @@ private predicate storeStepChi(Node node1, Content f, PostUpdateNode node2) {
  * value of `node1`.
  */
 predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
-  storeStepNoChi(node1, f, node2) or
-  storeStepChi(node1, f, node2)
+  fieldStoreStepNoChi(node1, f, node2) or
+  fieldStoreStepChi(node1, f, node2) or
+  arrayStoreStepChi(node1, f, node2)
+}
+
+private predicate fieldReadStep(Node node1, FieldContent f, Node node2) {
+  exists(FieldAddressInstruction fa, LoadInstruction load |
+    load.getSourceAddress() = fa and
+    node1.asInstruction() = load.getSourceValueOperand().getAnyDef() and
+    fa.getField() = f.(FieldContent).getField() and
+    load = node2.asInstruction()
+  )
+}
+
+private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
+  a = TArrayContent() and
+  exists(LoadInstruction load |
+    node1.asInstruction() = load.getSourceValueOperand().getAnyDef() and
+    load = node2.asInstruction()
+  )
 }
 
 /**
@@ -218,12 +253,8 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
  * `node2`.
  */
 predicate readStep(Node node1, Content f, Node node2) {
-  exists(FieldAddressInstruction fa, LoadInstruction load |
-    load.getSourceAddress() = fa and
-    node1.asInstruction() = load.getSourceValueOperand().getAnyDef() and
-    fa.getField() = f.(FieldContent).getField() and
-    load = node2.asInstruction()
-  )
+  fieldReadStep(node1, f, node2) or
+  arrayReadStep(node1, f, node2)
 }
 
 /**
