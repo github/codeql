@@ -31,10 +31,10 @@ namespace Semmle.Extraction.Tests
             var pathTransformer = new PathTransformer(new PathCacheStub(), spec);
 
             // Windows-style matching
-            Assert.Equal(@"C:\bar.cs", pathTransformer.Transform(@"C:\bar.cs").Value);
+            Assert.Equal(@"C:/bar.cs", pathTransformer.Transform(@"C:\bar.cs").Value);
             Assert.Equal("D:/src/file.cs", pathTransformer.Transform(@"C:\agent42\src\file.cs").Value);
             Assert.Equal("D:/src/file.cs", pathTransformer.Transform(@"C:\agent43\src\file.cs").Value);
-            Assert.Equal(@"C:\agent43\src\external\file.cs", pathTransformer.Transform(@"C:\agent43\src\external\file.cs").Value);
+            Assert.Equal(@"C:/agent43/src/external/file.cs", pathTransformer.Transform(@"C:\agent43\src\external\file.cs").Value);
 
             // Linux-style matching
             Assert.Equal(@"src2/src/file.cs", pathTransformer.Transform(@"/agent/src/file.cs").Value);

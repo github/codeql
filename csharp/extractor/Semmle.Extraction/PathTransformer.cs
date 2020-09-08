@@ -154,13 +154,12 @@ namespace Semmle.Extraction
 
         public TransformerSection(string[] lines, ref int i)
         {
-            name = lines[i++].Substring(1);
-            while (i < lines.Length && !lines[i].StartsWith("#"))
+            name = lines[i++].Substring(1); // skip the '#'
+            for (; i < lines.Length && !lines[i].StartsWith("#"); i++)
             {
-                if (string.IsNullOrEmpty(lines[i]))
-                    i++;
-                else
-                    filePatterns.Add(new FilePattern(lines[i++]));
+                var line = lines[i];
+                if (!string.IsNullOrWhiteSpace(line))
+                    filePatterns.Add(new FilePattern(line));
             }
         }
 

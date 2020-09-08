@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Diagnostics.CodeAnalysis;
@@ -15,7 +16,7 @@ namespace Semmle.Extraction
     }
 
     /// <summary>
-    /// An file pattern, as used in either an extractor layout file or
+    /// A file pattern, as used in either an extractor layout file or
     /// a path transformer file.
     /// </summary>
     public sealed class FilePattern
@@ -27,11 +28,12 @@ namespace Semmle.Extraction
 
         public FilePattern(string pattern)
         {
-            Include = false;
+            Include = true;
             if (pattern.StartsWith("-"))
+            {
                 pattern = pattern.Substring(1);
-            else
-                Include = true;
+                Include = false;
+            }
             pattern = FileUtils.ConvertToUnix(pattern.Trim()).TrimStart('/');
             RegexPattern = BuildRegex(pattern).ToString();
         }
@@ -103,19 +105,23 @@ namespace Semmle.Extraction
         public static bool Matches(IEnumerable<FilePattern> patterns, string path, [NotNullWhen(true)] out string? transformerSuffix)
         {
             path = FileUtils.ConvertToUnix(path).TrimStart('/');
-            Match? lastMatch = null;
-            foreach (var pattern in patterns)
+
+            foreach (var pattern in patterns.Reverse())
             {
                 var m = new Regex(pattern.RegexPattern).Match(path);
                 if (m.Success)
-                    lastMatch = pattern.Include ? m : null;
-            }
-            if (lastMatch is Match)
-            {
-                transformerSuffix = lastMatch.Groups.TryGetValue("doubleslash", out var group)
-                    ? path.Substring(group.Index)
-                    : path;
-                return true;
+                {
+                    if (pattern.Include)
+                    {
+                        transformerSuffix = m.Groups.TryGetValue("doubleslash", out var group)
+                            ? path.Substring(group.Index)
+                            : path;
+                        return true;
+                    }
+
+                    transformerSuffix = null;
+                    return false;
+                }
             }
 
             transformerSuffix = null;
