@@ -187,12 +187,6 @@ private predicate exprToExprStep(Expr exprIn, Expr exprOut) {
       exprIn = call.getQualifier()
     )
   )
-  or
-  exists(Variable iterator, Variable collection |
-    assignmentViaIterator(iterator, exprIn) and
-    isIteratorForCollection(iterator, collection) and
-    collection.getAnAccess() = exprOut
-  )
 }
 
 private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
@@ -255,28 +249,18 @@ private predicate exprToPartialDefinitionStep(Expr exprIn, Expr exprOut) {
       exprIn = call.getArgument(argInIndex)
     )
   )
-}
-
-private predicate isIteratorForCollection(Variable iterator, Variable collection) {
-  exists(Call beginOrEnd |
-    beginOrEnd.getTarget() instanceof BeginOrEndFunction and
-    beginOrEnd.getQualifier() = collection.getAnAccess() and
-    iterator.getAnAssignedValue() = beginOrEnd
+  or
+  exists(Assignment a |
+    iteratorDereference(exprOut) and
+    a.getLValue() = exprOut and
+    a.getRValue() = exprIn
   )
 }
 
-private predicate assignmentViaIterator(Variable iterator, Expr rvalue) {
-  exists(Assignment a, Call c |
-    c.getTarget() instanceof IteratorArrayMemberOperator and
-    c.getQualifier() = iterator.getAnAccess()
+private predicate iteratorDereference(Call c) {
+    c.getTarget() instanceof IteratorArrayMemberOperator
     or
-    c.getTarget() instanceof IteratorPointerDereferenceMemberOperator and
-    c.getQualifier() = iterator.getAnAccess()
+    c.getTarget() instanceof IteratorPointerDereferenceMemberOperator
     or
-    c.getTarget() instanceof IteratorPointerDereferenceOperator and
-    c.getArgument(0) = iterator.getAnAccess()
-    |
-    c = a.getLValue() and
-    rvalue = a.getRValue()
-  )
+    c.getTarget() instanceof IteratorPointerDereferenceOperator
 }

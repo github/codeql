@@ -330,8 +330,8 @@ void taint_vector_output_iterator(std::vector<int>::iterator iter) {
 	*iter = source();
 }
 
-void test_vector_output_iterator() {
-	std::vector<int> v1(10), v2(10), v3(10), v4(10);
+void test_vector_output_iterator(int b) {
+	std::vector<int> v1(10), v2(10), v3(10), v4(10), v5(10), v6(10), v7(10), v8(10);
 
 	std::vector<int>::iterator i1 = v1.begin();
 	*i1 = source();
@@ -351,4 +351,32 @@ void test_vector_output_iterator() {
 		*it = source();
 	}
 	sink(v4); // tainted [NOT DETECTED by IR]
+	
+	std::vector<int>::iterator i5 = v5.begin();
+	*i5 = source();
+	sink(v5); // tainted [NOT DETECTED by IR]
+	*i5 = 1;
+	sink(v5); // tainted [NOT DETECTED by IR]
+
+	std::vector<int>::iterator i6 = v6.begin();
+	*i6 = source();
+	sink(v6); // tainted [NOT DETECTED by IR]
+	v6 = std::vector<int>(10);
+	sink(v6); // [FALSE POSITIVE in AST]
+
+	std::vector<int>::iterator i7 = v7.begin();
+	if(b) {
+		*i7 = source();
+		sink(v7); // tainted [NOT DETECTED by IR]
+	} else {
+		*i7 = 1;
+		sink(v7);
+	}
+	sink(v7); // tainted [NOT DETECTED by IR]
+
+	std::vector<int>::iterator i8 = v8.begin();
+	*i8 = source();
+	sink(v8); // tainted [NOT DETECTED by IR]
+	*i8 = 1;
+	sink(v8);
 }

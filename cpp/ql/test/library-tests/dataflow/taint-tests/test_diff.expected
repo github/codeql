@@ -278,3 +278,11 @@
 | vector.cpp:338:7:338:8 | vector.cpp:337:8:337:13 | AST only |
 | vector.cpp:343:7:343:8 | vector.cpp:341:9:341:14 | AST only |
 | vector.cpp:353:7:353:8 | vector.cpp:351:9:351:14 | AST only |
+| vector.cpp:357:7:357:8 | vector.cpp:356:8:356:13 | AST only |
+| vector.cpp:359:7:359:8 | vector.cpp:356:8:356:13 | AST only |
+| vector.cpp:363:7:363:8 | vector.cpp:362:8:362:13 | AST only |
+| vector.cpp:365:7:365:8 | vector.cpp:362:8:362:13 | AST only |
+| vector.cpp:370:8:370:9 | vector.cpp:369:9:369:14 | AST only |
+| vector.cpp:375:7:375:8 | vector.cpp:369:9:369:14 | AST only |
+| vector.cpp:379:7:379:8 | vector.cpp:378:8:378:13 | AST only |
+| vector.cpp:381:7:381:8 | vector.cpp:378:8:378:13 | AST only |

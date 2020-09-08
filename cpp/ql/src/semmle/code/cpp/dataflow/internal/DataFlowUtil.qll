@@ -283,18 +283,30 @@ abstract class PostUpdateNode extends Node {
   override Location getLocation() { result = getPreUpdateNode().getLocation() }
 }
 
-private class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNode {
+private abstract class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNode {
   PartialDefinition pd;
 
-  PartialDefinitionNode() { this = TPartialDefinitionNode(pd) }
-
-  override Node getPreUpdateNode() { pd.definesExpressions(_, result.asExpr()) }
+  PartialDefinitionNode() {
+    this = TPartialDefinitionNode(pd)
+  }
 
   override Location getLocation() { result = pd.getActualLocation() }
 
   PartialDefinition getPartialDefinition() { result = pd }
 
   override string toString() { result = getPreUpdateNode().toString() + " [post update]" }
+}
+
+private class VariablePartialDefinitionNode extends PartialDefinitionNode {
+  override VariablePartialDefinition pd;
+
+  override Node getPreUpdateNode() { pd.definesExpressions(_, result.asExpr()) }
+}
+
+private class IteratorPartialDefinitionNode extends PartialDefinitionNode {
+  override IteratorPartialDefinition pd;
+
+  override Node getPreUpdateNode() { pd.definesExpressions(_, result.asExpr()) }
 }
 
 /**

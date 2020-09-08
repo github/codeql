@@ -6,6 +6,7 @@ import cpp
 private import semmle.code.cpp.controlflow.SSA
 private import semmle.code.cpp.dataflow.internal.SubBasicBlocks
 private import semmle.code.cpp.dataflow.internal.AddressFlow
+private import semmle.code.cpp.models.implementations.Iterator
 
 /**
  * A conceptual variable that is assigned only once, like an SSA variable. This
@@ -109,20 +110,16 @@ class FlowVar extends TFlowVar {
  */
 private module PartialDefinitions {
   class PartialDefinition extends Expr {
-    Expr innerDefinedExpr;
     ControlFlowNode node;
 
     PartialDefinition() {
-      exists(Expr convertedInner |
-        valueToUpdate(convertedInner, this.getFullyConverted(), node) and
-        innerDefinedExpr = convertedInner.getUnconverted() and
-        not this instanceof Conversion
-      )
+      valueToUpdate(_, this.getFullyConverted(), node) and
+      not this instanceof Conversion
     }
 
-    deprecated predicate partiallyDefines(Variable v) { innerDefinedExpr = v.getAnAccess() }
+    deprecated predicate partiallyDefines(Variable v) { none() }
 
-    deprecated predicate partiallyDefinesThis(ThisExpr e) { innerDefinedExpr = e }
+    deprecated predicate partiallyDefinesThis(ThisExpr e) { none() }
 
     /**
      * Gets the subBasicBlock where this `PartialDefinition` is defined.
@@ -133,10 +130,9 @@ private module PartialDefinitions {
      * Holds if this `PartialDefinition` defines variable `v` at control-flow
      * node `cfn`.
      */
-    pragma[noinline]
+    pragma[noinline] // does this work with a dispred?
     predicate partiallyDefinesVariableAt(Variable v, ControlFlowNode cfn) {
-      innerDefinedExpr = v.getAnAccess() and
-      cfn = node
+      none()
     }
 
     /**
@@ -147,10 +143,7 @@ private module PartialDefinitions {
      * - `inner` = `... .x`, `outer` = `&...`
      * - `inner` = `a`, `outer` = `*`
      */
-    predicate definesExpressions(Expr inner, Expr outer) {
-      inner = innerDefinedExpr and
-      outer = this
-    }
+    predicate definesExpressions(Expr inner, Expr outer) { none() }
 
     /**
      * Gets the location of this element, adjusted to avoid unknown locations
@@ -163,6 +156,68 @@ private module PartialDefinitions {
       result = this.getParent().getLocation()
       or
       result = this.getLocation() and not result instanceof UnknownLocation
+    }
+  }
+
+  class IteratorPartialDefinition extends PartialDefinition {
+    Variable collection;
+    Call innerDefinedExpr;
+
+    IteratorPartialDefinition() {
+      exists(Expr convertedInner |
+        valueToUpdate(convertedInner, this.getFullyConverted(), node) and
+        innerDefinedExpr = convertedInner.getUnconverted() and
+        innerDefinedExpr.getQualifier() = getAnIteratorAccess(collection) and
+        innerDefinedExpr.getTarget() instanceof IteratorPointerDereferenceMemberOperator
+      )
+    }
+
+    deprecated override predicate partiallyDefines(Variable v) { v = collection }
+
+    deprecated override predicate partiallyDefinesThis(ThisExpr e) { none() }
+
+    override predicate definesExpressions(Expr inner, Expr outer) {
+      inner = innerDefinedExpr and
+      outer = this
+    }
+    
+    override predicate partiallyDefinesVariableAt(Variable v, ControlFlowNode cfn) {
+      v = collection and
+      cfn = node
+    }
+  }
+
+  class VariablePartialDefinition extends PartialDefinition {
+    Expr innerDefinedExpr;
+
+    VariablePartialDefinition() {
+      exists(Expr convertedInner |
+        valueToUpdate(convertedInner, this.getFullyConverted(), node) and
+        innerDefinedExpr = convertedInner.getUnconverted() and
+        not this instanceof Conversion
+      )
+    }
+
+    deprecated override predicate partiallyDefines(Variable v) { innerDefinedExpr = v.getAnAccess() }
+
+    deprecated override predicate partiallyDefinesThis(ThisExpr e) { innerDefinedExpr = e }
+
+    /**
+     * Holds if this partial definition may modify `inner` (or what it points
+     * to) through `outer`. These expressions will never be `Conversion`s.
+     *
+     * For example, in `f(& (*a).x)`, there are two results:
+     * - `inner` = `... .x`, `outer` = `&...`
+     * - `inner` = `a`, `outer` = `*`
+     */
+    override predicate definesExpressions(Expr inner, Expr outer) {
+      inner = innerDefinedExpr and
+      outer = this
+    }
+    
+    override predicate partiallyDefinesVariableAt(Variable v, ControlFlowNode cfn) {
+      innerDefinedExpr = v.getAnAccess() and
+      cfn = node
     }
   }
 
@@ -686,9 +741,7 @@ module FlowVar_internal {
    * `node instanceof Initializer` is covered by `initializer` instead of this
    * predicate.
    */
-  predicate assignmentLikeOperation(
-    ControlFlowNode node, Variable v, Expr assignedExpr
-  ) {
+  predicate assignmentLikeOperation(ControlFlowNode node, Variable v, Expr assignedExpr) {
     // Together, the two following cases cover `Assignment`
     node =
       any(AssignExpr ae |
@@ -713,6 +766,15 @@ module FlowVar_internal {
         v.getAnAccess() = op.getOperand() and
         assignedExpr = op
       )
+  }
+
+  Expr getAnIteratorAccess(Variable collection) {
+    exists(Call c, SsaDefinition def, Variable iterator |
+      c.getQualifier() = collection.getAnAccess() and
+      c.getTarget() instanceof BeginOrEndFunction and
+      def.getAnUltimateDefiningValue(iterator) = c and
+      result = def.getAUse(iterator)
+    )
   }
 
   /**
