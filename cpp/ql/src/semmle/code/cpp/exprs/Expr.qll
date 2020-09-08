@@ -402,7 +402,7 @@ class Expr extends StmtParent, @expr {
    */
   predicate hasImplicitConversion() {
     exists(Expr e |
-      exprconv(underlyingElement(this), unresolveElement(e)) and e.(Cast).isImplicit()
+      exprconv(underlyingElement(this), unresolveElement(e)) and e.(Conversion).isImplicit()
     )
   }
 
@@ -414,7 +414,7 @@ class Expr extends StmtParent, @expr {
    */
   predicate hasExplicitConversion() {
     exists(Expr e |
-      exprconv(underlyingElement(this), unresolveElement(e)) and not e.(Cast).isImplicit()
+      exprconv(underlyingElement(this), unresolveElement(e)) and not e.(Conversion).isImplicit()
     )
   }
 
