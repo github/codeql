@@ -20,7 +20,6 @@ from
   JQuery::JQueryPluginMethod plugin
 where
   cfg.hasFlowPath(source, sink) and
-  source.getNode().(Source).getPlugin() = plugin and
-  not isLikelyIntentionalHtmlSink(plugin, sink.getNode())
+  source.getNode().(Source).getPlugin() = plugin
 select sink.getNode(), source, sink, "Potential XSS vulnerability in the $@.", plugin,
   "'$.fn." + plugin.getPluginName() + "' plugin"

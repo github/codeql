@@ -65,7 +65,7 @@
 	$.fn.my_plugin = function my_plugin(element, options) {
 		this.$element      = $(element);
 		this.options       = $.extend({}, options);
-		if (this.options.parent) this.$parent = $(this.options.parent) // NOT OK - but not flagged [INCONSISTENCY]
+		if (this.options.parent) this.$parent = $(this.options.parent) // NOT OK
 	};
 
 	$.fn.my_plugin = function my_plugin(options) {
@@ -103,7 +103,7 @@
 			menu: '<div></div>',
 			target: '.my_plugin'
 		}, options);
-		$(options.menu); // OK - but is flagged [INCONSISTENCY]
+		$(options.menu); // OK
 		$(options.target); // NOT OK
 	};
 
@@ -113,7 +113,7 @@
 	};
 	$.fn.my_plugin = function my_plugin(options) {
 		options = $.extend({}, $.fn.my_plugin.defaults, options);
-		$(options.menu); // OK - but is flagged [INCONSISTENCY]
+		$(options.menu); // OK
 		$(options.target); // NOT OK
 	};
 
@@ -154,7 +154,7 @@
 		let target = options.target;
 		target === DEFAULTS.target? $(target): $(document).find(target); // OK
 		options.target === DEFAULTS.target? $(options.target): $(document).find(options.target); // OK
-		options.targets.a === DEFAULTS.target? $(options.target.a): $(document).find(options.target.a); // OK - but still flagged [INCONSISTENCY]
+		options.targets.a === DEFAULTS.target? $(options.target.a): $(document).find(options.target.a); // OK - should be sanitized by `MembershipTestSanitizer` - but still flagged because `AccessPath` can't handle these deeply nested properties [INCONSISTENCY]
 	}
 
 	$.fn.my_plugin = function my_plugin(options) {

@@ -1268,3 +1268,31 @@ class SpaceshipExpr extends BinaryOperation, @spaceshipexpr {
 
   override string getOperator() { result = "<=>" }
 }
+
+/**
+ * A C/C++ `co_await` expression.
+ * ```
+ * co_await foo();
+ * ```
+ */
+class CoAwaitExpr extends UnaryOperation, @co_await {
+  override string getAPrimaryQlClass() { result = "CoAwaitExpr" }
+
+  override string getOperator() { result = "co_await" }
+
+  override int getPrecedence() { result = 16 }
+}
+
+/**
+ * A C/C++ `co_yield` expression.
+ * ```
+ * co_yield 1;
+ * ```
+ */
+class CoYieldExpr extends UnaryOperation, @co_yield {
+  override string getAPrimaryQlClass() { result = "CoYieldExpr" }
+
+  override string getOperator() { result = "co_yield" }
+
+  override int getPrecedence() { result = 2 }
+}

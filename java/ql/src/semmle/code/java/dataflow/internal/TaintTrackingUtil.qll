@@ -54,12 +54,6 @@ predicate localAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   )
 }
 
-private newtype TUnit = TMkUnit()
-
-class Unit extends TUnit {
-  string toString() { result = "unit" }
-}
-
 /**
  * A unit class for adding additional taint steps.
  *

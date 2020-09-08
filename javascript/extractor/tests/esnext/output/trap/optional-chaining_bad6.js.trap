@@ -14,7 +14,7 @@ toplevels(#20001,0)
 locations_default(#20002,#10000,1,1,1,1)
 hasLocation(#20001,#20002)
 #20003=*
-jsParseErrors(#20003,#20001,"Error: An optional chain may not be used in a `new` expression.","new a.b?.c();
+js_parse_errors(#20003,#20001,"Error: An optional chain may not be used in a `new` expression.","new a.b?.c();
 ")
 #20004=@"loc,{#10000},1,5,1,5"
 locations_default(#20004,#10000,1,5,1,5)
