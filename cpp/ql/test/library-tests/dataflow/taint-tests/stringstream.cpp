@@ -29,16 +29,16 @@ void test_stringstream_string(int amount)
 	std::string t(source());
 
 	sink(ss1 << "1234");
-	sink(ss2 << source()); // tainted [NOT DETECTED]
-	sink(ss3 << "123" << source()); // tainted [NOT DETECTED]
-	sink(ss4 << source() << "456"); // tainted [NOT DETECTED]
-	sink(ss5 << t); // tainted [NOT DETECTED]
+	sink(ss2 << source()); // tainted
+	sink(ss3 << "123" << source()); // tainted
+	sink(ss4 << source() << "456"); // tainted
+	sink(ss5 << t); // tainted
 
 	sink(ss1);
-	sink(ss2); // tainted [NOT DETECTED]
+	sink(ss2); // tainted
 	sink(ss3); // tainted [NOT DETECTED]
-	sink(ss4); // tainted [NOT DETECTED]
-	sink(ss5); // tainted [NOT DETECTED]
+	sink(ss4); // tainted
+	sink(ss5); // tainted
 	sink(ss1.str());
 	sink(ss2.str()); // tainted [NOT DETECTED]
 	sink(ss3.str()); // tainted [NOT DETECTED]
@@ -73,12 +73,12 @@ void test_stringstream_int(int source)
 	int v1 = 0, v2 = 0;
 
 	sink(ss1 << 1234);
-	sink(ss2 << source); // tainted [NOT DETECTED]
+	sink(ss2 << source); // tainted
 	sink(ss1 >> v1);
 	sink(ss2 >> v2); // tainted [NOT DETECTED]
 
 	sink(ss1);
-	sink(ss2); // tainted [NOT DETECTED]
+	sink(ss2); // tainted
 	sink(ss1.str());
 	sink(ss2.str()); // tainted [NOT DETECTED]
 	sink(v1);
@@ -140,7 +140,7 @@ void test_stringstream_in()
 	char c1 = 0, c2 = 0, c3 = 0, c4 = 0, c5 = 0, c6 = 0;
 
 	sink(ss1 << "abc");
-	sink(ss2 << source()); // tainted [NOT DETECTED]
+	sink(ss2 << source()); // tainted
 
 	sink(ss1 >> s1);
 	sink(ss2 >> s2); // tainted [NOT DETECTED]

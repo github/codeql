@@ -287,3 +287,56 @@ class StdStringAt extends TaintFunction {
     output.isQualifierObject()
   }
 }
+
+/**
+ * The `std::basic_ostream` template class.
+ */
+class StdBasicOStream extends TemplateClass {
+  StdBasicOStream() { this.hasQualifiedName("std", "basic_ostream") }
+}
+
+/**
+ * The `std::ostream` function `operator<<` (defined as a member function).
+ */
+class StdOStreamOut extends TaintFunction {
+  StdOStreamOut() { this.hasQualifiedName("std", "basic_ostream", "operator<<") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from parameter to qualifier
+    input.isParameter(0) and
+    output.isQualifierObject()
+    or
+    // flow from parameter to return value
+    input.isParameter(0) and
+    output.isReturnValueDeref()
+    or
+    // flow from qualifier to return value
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
+  }
+}
+
+/**
+ * The `std::ostream` function `operator<<` (defined as a non-member function).
+ */
+class StdOStreamOutNonMember extends TaintFunction {
+  StdOStreamOutNonMember() {
+    this.hasQualifiedName("std", "operator<<") and
+    this.getUnspecifiedType().(ReferenceType).getBaseType() =
+      any(StdBasicOStream s).getAnInstantiation()
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from second parameter to first parameter
+    input.isParameter(1) and
+    output.isParameterDeref(0)
+    or
+    // flow from second parameter to return value
+    input.isParameter(1) and
+    output.isReturnValueDeref()
+    or
+    // flow from first parameter to return value
+    input.isParameter(0) and
+    output.isReturnValueDeref()
+  }
+}
