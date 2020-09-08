@@ -416,6 +416,15 @@ class ReceiverNode extends ParameterNode {
   predicate isReceiverOf(MethodDecl m) { parm.isReceiverOf(m) }
 }
 
+private Node getADirectlyWrittenNode() {
+  exists(Write w | w.writesField(result, _, _) or w.writesElement(result, _, _))
+}
+
+private Node getAWrittenNode() {
+  result = getADirectlyWrittenNode() or
+  result = getADirectlyWrittenNode().(ComponentReadNode).getBase+()
+}
+
 /**
  * A node associated with an object after an operation that might have
  * changed its state.
@@ -439,12 +448,10 @@ class PostUpdateNode extends Node {
       or
       preupd = any(PointerDereferenceNode deref).getOperand()
       or
-      exists(Write w, DataFlow::Node base |
-        w.writesField(base, _, _) or w.writesElement(base, _, _)
-      |
-        preupd = base
+      exists(Node written | written = getAWrittenNode() |
+        preupd = written
         or
-        preupd = base.(PointerDereferenceNode).getOperand()
+        preupd = written.(PointerDereferenceNode).getOperand()
       )
       or
       preupd instanceof ArgumentNode and
