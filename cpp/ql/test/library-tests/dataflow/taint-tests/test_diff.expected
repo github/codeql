@@ -171,6 +171,7 @@
 | stringstream.cpp:34:23:34:23 | stringstream.cpp:34:14:34:19 | AST only |
 | stringstream.cpp:35:11:35:11 | stringstream.cpp:29:16:29:21 | AST only |
 | stringstream.cpp:38:7:38:9 | stringstream.cpp:32:14:32:19 | AST only |
+| stringstream.cpp:39:7:39:9 | stringstream.cpp:33:23:33:28 | AST only |
 | stringstream.cpp:40:7:40:9 | stringstream.cpp:34:14:34:19 | AST only |
 | stringstream.cpp:41:7:41:9 | stringstream.cpp:29:16:29:21 | AST only |
 | stringstream.cpp:76:11:76:11 | stringstream.cpp:70:32:70:37 | AST only |

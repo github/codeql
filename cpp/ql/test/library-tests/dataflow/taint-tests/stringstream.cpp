@@ -36,7 +36,7 @@ void test_stringstream_string(int amount)
 
 	sink(ss1);
 	sink(ss2); // tainted
-	sink(ss3); // tainted [NOT DETECTED]
+	sink(ss3); // tainted
 	sink(ss4); // tainted
 	sink(ss5); // tainted
 	sink(ss1.str());

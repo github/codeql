@@ -313,6 +313,10 @@ class StdOStreamOut extends TaintFunction {
     // flow from qualifier to return value
     input.isQualifierObject() and
     output.isReturnValueDeref()
+    or
+    // reverse flow from returned reference to the qualifier
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
   }
 }
 
@@ -338,5 +342,9 @@ class StdOStreamOutNonMember extends TaintFunction {
     // flow from first parameter to return value
     input.isParameter(0) and
     output.isReturnValueDeref()
+    or
+    // reverse flow from returned reference to the first parameter
+    input.isReturnValueDeref() and
+    output.isParameterDeref(0)
   }
 }

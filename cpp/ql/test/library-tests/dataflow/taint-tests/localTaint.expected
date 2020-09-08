@@ -1406,6 +1406,7 @@
 | stringstream.cpp:33:7:33:9 | ref arg ss3 | stringstream.cpp:44:7:44:9 | ss3 |  |
 | stringstream.cpp:33:7:33:9 | ss3 | stringstream.cpp:33:11:33:11 | call to operator<< | TAINT |
 | stringstream.cpp:33:11:33:11 | call to operator<< | stringstream.cpp:33:20:33:20 | call to operator<< | TAINT |
+| stringstream.cpp:33:11:33:11 | ref arg call to operator<< | stringstream.cpp:33:7:33:9 | ref arg ss3 | TAINT |
 | stringstream.cpp:33:14:33:18 | 123 | stringstream.cpp:33:7:33:9 | ref arg ss3 | TAINT |
 | stringstream.cpp:33:14:33:18 | 123 | stringstream.cpp:33:11:33:11 | call to operator<< | TAINT |
 | stringstream.cpp:33:23:33:28 | call to source | stringstream.cpp:33:11:33:11 | ref arg call to operator<< | TAINT |
@@ -1414,6 +1415,7 @@
 | stringstream.cpp:34:7:34:9 | ref arg ss4 | stringstream.cpp:45:7:45:9 | ss4 |  |
 | stringstream.cpp:34:7:34:9 | ss4 | stringstream.cpp:34:11:34:11 | call to operator<< | TAINT |
 | stringstream.cpp:34:11:34:11 | call to operator<< | stringstream.cpp:34:23:34:23 | call to operator<< | TAINT |
+| stringstream.cpp:34:11:34:11 | ref arg call to operator<< | stringstream.cpp:34:7:34:9 | ref arg ss4 | TAINT |
 | stringstream.cpp:34:14:34:19 | call to source | stringstream.cpp:34:7:34:9 | ref arg ss4 | TAINT |
 | stringstream.cpp:34:14:34:19 | call to source | stringstream.cpp:34:11:34:11 | call to operator<< | TAINT |
 | stringstream.cpp:34:26:34:30 | 456 | stringstream.cpp:34:11:34:11 | ref arg call to operator<< | TAINT |
