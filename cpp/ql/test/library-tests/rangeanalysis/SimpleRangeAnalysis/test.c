@@ -549,9 +549,9 @@ int notequal_type_endpoint(unsigned n) {
   }
 
   if (!n) {
-    out(n); // 0 .. 0 [BUG: upper bound is deduced to be 2^32-1]
+    out(n); // 0 .. 0
   } else {
-    out(n); // 1 .. [BUG: lower bound is deduced to be 0]
+    out(n); // 1 ..
   }
 
   while (n != 0) {
@@ -572,9 +572,9 @@ void notequal_refinement(short n) {
   }
 
   if (n) {
-    out(n); // 1 .. [BUG: lower bound is deduced to be 0]
+    out(n); // 1 ..
   } else {
-    out(n); // 0 .. 0 [BUG: upper bound is deduced to be 32767]
+    out(n); // 0 .. 0
   }
 
   while (n != 0) {
@@ -603,8 +603,8 @@ void notequal_variations(short n, float f) {
   }
 
   if (n >= 0) {
-    n  ? n : n; // ? 1..  : 0..0 [BUG: no useful bounds]
-    !n ? n : n; // ? 0..0 : 1..  [BUG: no useful bounds]
+    n  ? n : n; // ? 1..  : 0..0
+    !n ? n : n; // ? 0..0 : 1..
   }
 }
 

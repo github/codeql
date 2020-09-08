@@ -106,17 +106,17 @@ void notequal_refinement(short n) {
     return;
 
   if (n) {
-    n; // 1 .. [BUG: lower bound is deduced to be 0]
+    n; // 1 ..
   } else {
-    n; // 0 .. 0 [BUG: upper bound is deduced to be 32767]
+    n; // 0 .. 0
   }
 
   if (!n) {
-    n; // 0 .. 0 [BUG: upper bound is deduced to be 32767]
+    n; // 0 .. 0
   } else {
-    n; // 1 .. [BUG: lower bound is deduced to be 0]
+    n; // 1 ..
   }
 
-  n  ? n : n; // ? 1..  : 0..0 [BUG: no useful bounds]
-  !n ? n : n; // ? 0..0 : 1..  [BUG: no useful bounds]
+  n  ? n : n; // ? 1..  : 0..0
+  !n ? n : n; // ? 0..0 : 1..
 }
