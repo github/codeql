@@ -350,8 +350,8 @@ void test_outparams()
 	sink(t); // tainted
 	sink(a); // tainted
 	sink(b); // tainted
-	sink(c); // tainted [NOT DETECTED]
-	sink(d); // tainted [NOT DETECTED]
+	sink(c); // tainted
+	sink(d); // tainted
 	sink(e);
 }
 

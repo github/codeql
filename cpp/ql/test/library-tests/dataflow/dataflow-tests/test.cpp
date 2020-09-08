@@ -468,5 +468,5 @@ void intOutparamSource(int *p) {
 void viaOutparam() {
   int x = 0;
   intOutparamSource(&x);
-  sink(x); // tainted [FALSE NEGATIVE]
+  sink(x); // tainted [FALSE NEGATIVE in AST]
 }

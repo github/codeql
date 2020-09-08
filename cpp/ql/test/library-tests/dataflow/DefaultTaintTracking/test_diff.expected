@@ -16,7 +16,6 @@
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:91:31:91:33 | ret | AST only |
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:92:5:92:8 | * ... | AST only |
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:92:6:92:8 | ret | AST only |
-| defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:96:11:96:12 | p2 | IR only |
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:98:10:98:11 | (const char *)... | IR only |
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:98:10:98:11 | p2 | IR only |
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | shared.h:5:23:5:31 | sinkparam | IR only |
@@ -26,39 +25,16 @@
 | defaulttainttracking.cpp:133:9:133:14 | call to getenv | defaulttainttracking.cpp:134:10:134:10 | x | IR only |
 | defaulttainttracking.cpp:133:9:133:14 | call to getenv | shared.h:6:15:6:23 | sinkparam | IR only |
 | defaulttainttracking.cpp:140:11:140:16 | call to getenv | defaulttainttracking.cpp:140:7:140:7 | x | AST only |
-| defaulttainttracking.cpp:140:11:140:16 | call to getenv | defaulttainttracking.cpp:143:23:143:24 | pp | IR only |
-| defaulttainttracking.cpp:140:11:140:16 | call to getenv | defaulttainttracking.cpp:144:8:144:9 | pp | IR only |
-| defaulttainttracking.cpp:140:11:140:16 | call to getenv | defaulttainttracking.cpp:150:13:150:14 | & ... | IR only |
-| defaulttainttracking.cpp:140:11:140:16 | call to getenv | defaulttainttracking.cpp:153:11:153:15 | p#0 | IR only |
-| defaulttainttracking.cpp:140:11:140:16 | call to getenv | defaulttainttracking.cpp:154:11:154:15 | p#0 | IR only |
-| defaulttainttracking.cpp:140:11:140:16 | call to getenv | defaulttainttracking.cpp:162:50:162:50 | p | IR only |
-| defaulttainttracking.cpp:140:11:140:16 | call to getenv | defaulttainttracking.cpp:164:8:164:8 | p | IR only |
-| defaulttainttracking.cpp:140:11:140:16 | call to getenv | defaulttainttracking.cpp:165:8:165:9 | & ... | IR only |
 | defaulttainttracking.cpp:140:11:140:16 | call to getenv | defaulttainttracking.cpp:166:10:166:10 | x | IR only |
-| defaulttainttracking.cpp:140:11:140:16 | call to getenv | defaulttainttracking.cpp:187:8:187:9 | pp | IR only |
 | defaulttainttracking.cpp:140:11:140:16 | call to getenv | shared.h:6:15:6:23 | sinkparam | IR only |
 | defaulttainttracking.cpp:157:9:157:14 | call to getenv | defaulttainttracking.cpp:157:5:157:5 | x | AST only |
 | defaulttainttracking.cpp:157:9:157:14 | call to getenv | defaulttainttracking.cpp:159:10:159:10 | x | IR only |
 | defaulttainttracking.cpp:157:9:157:14 | call to getenv | shared.h:6:15:6:23 | sinkparam | IR only |
-| defaulttainttracking.cpp:170:11:170:16 | call to getenv | defaulttainttracking.cpp:153:11:153:15 | p#0 | IR only |
 | defaulttainttracking.cpp:170:11:170:16 | call to getenv | defaulttainttracking.cpp:170:7:170:7 | x | AST only |
-| defaulttainttracking.cpp:170:11:170:16 | call to getenv | defaulttainttracking.cpp:171:8:171:9 | pp | IR only |
-| defaulttainttracking.cpp:181:11:181:16 | call to getenv | defaulttainttracking.cpp:153:11:153:15 | p#0 | IR only |
-| defaulttainttracking.cpp:181:11:181:16 | call to getenv | defaulttainttracking.cpp:154:11:154:15 | p#0 | IR only |
-| defaulttainttracking.cpp:181:11:181:16 | call to getenv | defaulttainttracking.cpp:175:33:175:34 | pp | IR only |
-| defaulttainttracking.cpp:181:11:181:16 | call to getenv | defaulttainttracking.cpp:176:8:176:9 | pp | IR only |
-| defaulttainttracking.cpp:181:11:181:16 | call to getenv | defaulttainttracking.cpp:177:8:177:10 | * ... | IR only |
-| defaulttainttracking.cpp:181:11:181:16 | call to getenv | defaulttainttracking.cpp:177:9:177:10 | pp | IR only |
 | defaulttainttracking.cpp:181:11:181:16 | call to getenv | defaulttainttracking.cpp:181:7:181:7 | x | AST only |
-| defaulttainttracking.cpp:181:11:181:16 | call to getenv | defaulttainttracking.cpp:182:23:182:24 | pp | IR only |
 | defaulttainttracking.cpp:195:11:195:16 | call to getenv | defaulttainttracking.cpp:195:7:195:7 | x | AST only |
-| defaulttainttracking.cpp:201:13:201:18 | call to getenv | defaulttainttracking.cpp:153:11:153:15 | p#0 | IR only |
 | defaulttainttracking.cpp:201:13:201:18 | call to getenv | defaulttainttracking.cpp:201:9:201:9 | x | AST only |
-| defaulttainttracking.cpp:201:13:201:18 | call to getenv | defaulttainttracking.cpp:203:8:203:9 | pp | IR only |
-| defaulttainttracking.cpp:208:27:208:32 | call to getenv | defaulttainttracking.cpp:153:11:153:15 | p#0 | IR only |
 | defaulttainttracking.cpp:208:27:208:32 | call to getenv | defaulttainttracking.cpp:208:23:208:23 | x | AST only |
-| defaulttainttracking.cpp:208:27:208:32 | call to getenv | defaulttainttracking.cpp:209:8:209:9 | pp | IR only |
-| defaulttainttracking.cpp:208:27:208:32 | call to getenv | defaulttainttracking.cpp:210:8:210:23 | ... + ... | IR only |
 | globals.cpp:13:15:13:20 | call to getenv | globals.cpp:13:5:13:11 | global1 | AST only |
 | globals.cpp:23:15:23:20 | call to getenv | globals.cpp:23:5:23:11 | global2 | AST only |
 | stl.cpp:62:25:62:30 | call to getenv | stl.cpp:62:7:62:12 | source | AST only |

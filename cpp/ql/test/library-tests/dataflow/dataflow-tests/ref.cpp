@@ -56,13 +56,13 @@ namespace withoutFields {
     sink(x1); // flow [FALSE POSITIVE from uninitialized]
 
     notAssign(x2, source());
-    sink(x2); // no flow [FALSE POSITIVE from uninitialized]
+    sink(x2); // no flow [FALSE POSITIVE from uninitialized, FALSE POSITIVE by IR]
 
     sourceToParamWrapper(x3);
     sink(x3); // flow [FALSE POSITIVE from uninitialized]
 
     notSource(x4);
-    sink(x4); // no flow [FALSE POSITIVE from uninitialized]
+    sink(x4); // no flow [FALSE POSITIVE from uninitialized, FALSE POSITIVE by IR]
   }
 }
 
