@@ -32,7 +32,7 @@ class StorePreUpdateNode extends PreUpdateNode, CfgNode {
   }
 }
 
-/** A node marking the state change of an object after a read */
+/** A node marking the state change of an object after a read. */
 class ReadPreUpdateNode extends PreUpdateNode, CfgNode {
   ReadPreUpdateNode() {
     exists(Attribute a |
@@ -147,9 +147,12 @@ module EssaFlow {
  * excludes SSA flow through instance fields.
  */
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  not nodeFrom.(EssaNode).getVar() instanceof GlobalSsaVariable and
-  not nodeTo.(EssaNode).getVar() instanceof GlobalSsaVariable and
-  EssaFlow::essaFlowStep(update(nodeFrom), nodeTo)
+  exists(Node preUpdate |
+    not preUpdate.(EssaNode).getVar() instanceof GlobalSsaVariable and
+    not nodeTo.(EssaNode).getVar() instanceof GlobalSsaVariable and
+    EssaFlow::essaFlowStep(preUpdate, nodeTo) and
+    nodeFrom = update(preUpdate)
+  )
 }
 
 /**
