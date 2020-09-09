@@ -1,6 +1,6 @@
 /**
  * Provides implementation classes modeling `std::string` (and other
- * instantiations of `std::basic_string`) and `std::stringstream`. See
+ * instantiations of `std::basic_string`) and `std::ostream`. See
  * `semmle.code.cpp.models.Models` for usage information.
  */
 
