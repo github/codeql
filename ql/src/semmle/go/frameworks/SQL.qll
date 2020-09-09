@@ -168,7 +168,8 @@ module SQL {
         meth.hasQualifiedName(package, "DB", name) and
         this = meth.getACall().getArgument(0) and
         package in ["github.com/jinzhu/gorm", "github.com/go-gorm/gorm", "gorm.io/gorm"] and
-        name in ["Where", "Raw", "Order", "Not", "Or", "Select", "Table", "Group", "Having", "Joins"]
+        name in ["Where", "Raw", "Order", "Not", "Or", "Select", "Table", "Group", "Having",
+              "Joins", "Exec", "Distinct", "Pluck"]
       )
     }
   }
