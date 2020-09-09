@@ -13,42 +13,19 @@ func TaintStepTest_EncodingBase32NewDecoder_B0I0O0(sourceCQL interface{}) interf
 	return intoReader414
 }
 
-func TaintStepTest_EncodingBase32NewEncoder_B0I0O0(sourceCQL interface{}) interface{} {
-	fromWriteCloser518 := sourceCQL.(io.WriteCloser)
-	var intoWriter650 io.Writer
-	intermediateCQL := base32.NewEncoder(nil, intoWriter650)
-	link(fromWriteCloser518, intermediateCQL)
-	return intoWriter650
-}
-
 func TaintStepTest_EncodingBase32EncodingDecode_B0I0O0(sourceCQL interface{}) interface{} {
-	fromByte784 := sourceCQL.([]byte)
-	var intoByte957 []byte
+	fromByte518 := sourceCQL.([]byte)
+	var intoByte650 []byte
 	var mediumObjCQL base32.Encoding
-	mediumObjCQL.Decode(intoByte957, fromByte784)
-	return intoByte957
+	mediumObjCQL.Decode(intoByte650, fromByte518)
+	return intoByte650
 }
 
 func TaintStepTest_EncodingBase32EncodingDecodeString_B0I0O0(sourceCQL interface{}) interface{} {
-	fromString520 := sourceCQL.(string)
+	fromString784 := sourceCQL.(string)
 	var mediumObjCQL base32.Encoding
-	intoByte443, _ := mediumObjCQL.DecodeString(fromString520)
-	return intoByte443
-}
-
-func TaintStepTest_EncodingBase32EncodingEncode_B0I0O0(sourceCQL interface{}) interface{} {
-	fromByte127 := sourceCQL.([]byte)
-	var intoByte483 []byte
-	var mediumObjCQL base32.Encoding
-	mediumObjCQL.Encode(intoByte483, fromByte127)
-	return intoByte483
-}
-
-func TaintStepTest_EncodingBase32EncodingEncodeToString_B0I0O0(sourceCQL interface{}) interface{} {
-	fromByte989 := sourceCQL.([]byte)
-	var mediumObjCQL base32.Encoding
-	intoString982 := mediumObjCQL.EncodeToString(fromByte989)
-	return intoString982
+	intoByte957, _ := mediumObjCQL.DecodeString(fromString784)
+	return intoByte957
 }
 
 func RunAllTaints_EncodingBase32() {
@@ -59,27 +36,12 @@ func RunAllTaints_EncodingBase32() {
 	}
 	{
 		source := newSource(1)
-		out := TaintStepTest_EncodingBase32NewEncoder_B0I0O0(source)
+		out := TaintStepTest_EncodingBase32EncodingDecode_B0I0O0(source)
 		sink(1, out)
 	}
 	{
 		source := newSource(2)
-		out := TaintStepTest_EncodingBase32EncodingDecode_B0I0O0(source)
-		sink(2, out)
-	}
-	{
-		source := newSource(3)
 		out := TaintStepTest_EncodingBase32EncodingDecodeString_B0I0O0(source)
-		sink(3, out)
-	}
-	{
-		source := newSource(4)
-		out := TaintStepTest_EncodingBase32EncodingEncode_B0I0O0(source)
-		sink(4, out)
-	}
-	{
-		source := newSource(5)
-		out := TaintStepTest_EncodingBase32EncodingEncodeToString_B0I0O0(source)
-		sink(5, out)
+		sink(2, out)
 	}
 }
