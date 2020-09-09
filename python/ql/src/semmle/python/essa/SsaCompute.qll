@@ -450,7 +450,7 @@ private module SsaComputeImpl {
       exists(SsaSourceVariable v, BasicBlock b1, int i1, BasicBlock b2, int i2 |
         adjacentVarRefs(v, b1, i1, b2, i2) and
         definesAt(def, v, b1, i1) and
-        variableUse(v, use, b2, i2)
+        variableSourceUse(v, use, b2, i2)
       )
       or
       exists(

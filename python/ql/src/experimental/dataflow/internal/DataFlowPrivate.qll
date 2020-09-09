@@ -385,15 +385,22 @@ string ppReprType(DataFlowType t) { none() }
  * another. Additional steps specified by the configuration are *not*
  * taken into account.
  */
-predicate jumpStep(Node pred, Node succ) {
+predicate jumpStep(Node nodeFrom, Node nodeTo) {
   // As we have ESSA variables for global variables,
   // we include ESSA flow steps involving global variables.
   (
-    pred.(EssaNode).getVar() instanceof GlobalSsaVariable
+    nodeFrom.(EssaNode).getVar() instanceof GlobalSsaVariable
     or
-    succ.(EssaNode).getVar() instanceof GlobalSsaVariable
+    nodeTo.(EssaNode).getVar() instanceof GlobalSsaVariable
   ) and
-  EssaFlow::essaFlowStep(pred, succ)
+  (
+    EssaFlow::essaFlowStep(nodeFrom, nodeTo)
+    or
+    // As jump steps do not respect chronology,
+    // we add jump steps for each def-use pair.
+    nodeFrom.asVar() instanceof GlobalSsaVariable and
+    nodeTo.asCfgNode() = nodeFrom.asVar().getASourceUse()
+  )
 }
 
 //--------
