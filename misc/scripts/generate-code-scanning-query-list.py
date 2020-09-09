@@ -83,13 +83,13 @@ def subprocess_run(cmd):
 
 
 try: # Check for `git` on path
-    git_version = subprocess_run(["git","--version"])
+    subprocess_run(["git","--version"])
 except Exception as e:
     print("Error: couldn't invoke 'git'. Is it on the path? Aborting.", file=sys.stderr)
     raise e
 
 try: # Check for `codeql` on path
-    codeql_version = subprocess_run(["codeql","--version"])
+    subprocess_run(["codeql","--version"])
 except Exception as e:
     print("Error: couldn't invoke CodeQL CLI 'codeql'. Is it on the path? Aborting.", file=sys.stderr)
     raise e
