@@ -38,6 +38,38 @@
 | string.cpp:28:7:28:7 | a | string.cpp:24:12:24:17 | call to source |
 | string.cpp:55:7:55:8 | cs | string.cpp:50:19:50:24 | call to source |
 | string.cpp:55:7:55:8 | cs | string.cpp:50:19:50:26 | (const char *)... |
+| stringstream.cpp:32:11:32:11 | call to operator<< | stringstream.cpp:32:14:32:19 | call to source |
+| stringstream.cpp:32:11:32:11 | call to operator<< | stringstream.cpp:32:14:32:21 | (const char *)... |
+| stringstream.cpp:32:11:32:22 | (const basic_ostream<char, char_traits<char>>)... | stringstream.cpp:32:14:32:19 | call to source |
+| stringstream.cpp:32:11:32:22 | (const basic_ostream<char, char_traits<char>>)... | stringstream.cpp:32:14:32:21 | (const char *)... |
+| stringstream.cpp:32:11:32:22 | (reference dereference) | stringstream.cpp:32:14:32:19 | call to source |
+| stringstream.cpp:32:11:32:22 | (reference dereference) | stringstream.cpp:32:14:32:21 | (const char *)... |
+| stringstream.cpp:32:11:32:22 | (reference to) | stringstream.cpp:32:14:32:19 | call to source |
+| stringstream.cpp:32:11:32:22 | (reference to) | stringstream.cpp:32:14:32:21 | (const char *)... |
+| stringstream.cpp:33:20:33:20 | call to operator<< | stringstream.cpp:33:23:33:28 | call to source |
+| stringstream.cpp:33:20:33:20 | call to operator<< | stringstream.cpp:33:23:33:30 | (const char *)... |
+| stringstream.cpp:33:20:33:31 | (const basic_ostream<char, char_traits<char>>)... | stringstream.cpp:33:23:33:28 | call to source |
+| stringstream.cpp:33:20:33:31 | (const basic_ostream<char, char_traits<char>>)... | stringstream.cpp:33:23:33:30 | (const char *)... |
+| stringstream.cpp:33:20:33:31 | (reference dereference) | stringstream.cpp:33:23:33:28 | call to source |
+| stringstream.cpp:33:20:33:31 | (reference dereference) | stringstream.cpp:33:23:33:30 | (const char *)... |
+| stringstream.cpp:33:20:33:31 | (reference to) | stringstream.cpp:33:23:33:28 | call to source |
+| stringstream.cpp:33:20:33:31 | (reference to) | stringstream.cpp:33:23:33:30 | (const char *)... |
+| stringstream.cpp:34:23:34:23 | call to operator<< | stringstream.cpp:34:14:34:19 | call to source |
+| stringstream.cpp:34:23:34:23 | call to operator<< | stringstream.cpp:34:14:34:21 | (const char *)... |
+| stringstream.cpp:34:23:34:31 | (const basic_ostream<char, char_traits<char>>)... | stringstream.cpp:34:14:34:19 | call to source |
+| stringstream.cpp:34:23:34:31 | (const basic_ostream<char, char_traits<char>>)... | stringstream.cpp:34:14:34:21 | (const char *)... |
+| stringstream.cpp:34:23:34:31 | (reference dereference) | stringstream.cpp:34:14:34:19 | call to source |
+| stringstream.cpp:34:23:34:31 | (reference dereference) | stringstream.cpp:34:14:34:21 | (const char *)... |
+| stringstream.cpp:34:23:34:31 | (reference to) | stringstream.cpp:34:14:34:19 | call to source |
+| stringstream.cpp:34:23:34:31 | (reference to) | stringstream.cpp:34:14:34:21 | (const char *)... |
+| stringstream.cpp:143:11:143:11 | call to operator<< | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:143:11:143:11 | call to operator<< | stringstream.cpp:143:14:143:21 | (const char *)... |
+| stringstream.cpp:143:11:143:22 | (const basic_ostream<char, char_traits<char>>)... | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:143:11:143:22 | (const basic_ostream<char, char_traits<char>>)... | stringstream.cpp:143:14:143:21 | (const char *)... |
+| stringstream.cpp:143:11:143:22 | (reference dereference) | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:143:11:143:22 | (reference dereference) | stringstream.cpp:143:14:143:21 | (const char *)... |
+| stringstream.cpp:143:11:143:22 | (reference to) | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:143:11:143:22 | (reference to) | stringstream.cpp:143:14:143:21 | (const char *)... |
 | structlikeclass.cpp:35:8:35:9 | s1 | structlikeclass.cpp:29:22:29:27 | call to source |
 | structlikeclass.cpp:36:8:36:9 | s2 | structlikeclass.cpp:30:24:30:29 | call to source |
 | structlikeclass.cpp:37:8:37:9 | s3 | structlikeclass.cpp:29:22:29:27 | call to source |

@@ -42,7 +42,7 @@ predicate hasTypeTest(Variable v) {
  */
 class ReferenceEquals extends EqualsMethod {
   ReferenceEquals() {
-    exists(Block b, ReturnStmt ret, EQExpr eq |
+    exists(BlockStmt b, ReturnStmt ret, EQExpr eq |
       this.getBody() = b and
       b.getStmt(0) = ret and
       ret.getResult() = eq and

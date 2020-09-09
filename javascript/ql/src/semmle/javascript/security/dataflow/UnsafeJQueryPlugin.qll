@@ -29,7 +29,8 @@ module UnsafeJQueryPlugin {
 
     override predicate isAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
       // jQuery plugins tend to be implemented as classes that store data in fields initialized by the constructor.
-      DataFlow::localFieldStep(src, sink)
+      DataFlow::localFieldStep(src, sink) or
+      aliasPropertyPresenceStep(src, sink)
     }
 
     override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
@@ -50,5 +51,21 @@ module UnsafeJQueryPlugin {
       node instanceof IsElementSanitizer or
       node instanceof PropertyPresenceSanitizer
     }
+  }
+
+  /**
+   * Holds if there is a taint-step from `src` to `sink`,
+   * where `src` is a property read that acts as a sanitizer for the base,
+   * and `sink` is that same property read from the same base.
+   *
+   * For an condition like `if(foo.bar) {...}`, the base `foo` is sanitized but the property `foo.bar` is not.
+   * With this taint-step we regain that `foo.bar` is tainted, because `PropertyPresenceSanitizer` could remove it.
+   */
+  private predicate aliasPropertyPresenceStep(DataFlow::Node src, DataFlow::Node sink) {
+    exists(PropertyPresenceSanitizer sanitizer, DataFlow::PropRead read | read = src |
+      read = sanitizer.getPropRead() and
+      sink = AccessPath::getAnAliasedSourceNode(read) and
+      read.getBasicBlock().(ReachableBasicBlock).strictlyDominates(sink.getBasicBlock())
+    )
   }
 }

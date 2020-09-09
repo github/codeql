@@ -16,5 +16,5 @@ import java
 from FinalizeMethod finalize
 where
   finalize.fromSource() and
-  not exists(Stmt s | s.getEnclosingCallable() = finalize | not s instanceof Block)
+  not exists(Stmt s | s.getEnclosingCallable() = finalize | not s instanceof BlockStmt)
 select finalize, "Empty finalize method."

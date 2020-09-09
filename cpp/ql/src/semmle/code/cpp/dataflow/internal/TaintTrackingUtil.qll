@@ -90,10 +90,17 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   exists(TaintFunction f, Call call, FunctionInput inModel, FunctionOutput outModel |
     call.getTarget() = f and
     inModel.isReturnValueDeref() and
-    outModel.isQualifierObject() and
-    f.hasTaintFlow(inModel, outModel) and
     nodeFrom.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = call and
-    nodeTo.asDefiningArgument() = call.getQualifier()
+    f.hasTaintFlow(inModel, outModel) and
+    (
+      outModel.isQualifierObject() and
+      nodeTo.asDefiningArgument() = call.getQualifier()
+      or
+      exists(int argOutIndex |
+        outModel.isParameterDeref(argOutIndex) and
+        nodeTo.asDefiningArgument() = call.getArgument(argOutIndex)
+      )
+    )
   )
 }
 

@@ -27,7 +27,7 @@ class Expr extends StmtParent, @expr {
   Function getEnclosingFunction() { result = exprEnclosingElement(this) }
 
   /** Gets the nearest enclosing set of curly braces around this expression in the source, if any. */
-  Block getEnclosingBlock() { result = getEnclosingStmt().getEnclosingBlock() }
+  BlockStmt getEnclosingBlock() { result = getEnclosingStmt().getEnclosingBlock() }
 
   override Stmt getEnclosingStmt() {
     result = this.getParent().(Expr).getEnclosingStmt()
@@ -1109,7 +1109,7 @@ class StmtExpr extends Expr, @expr_stmt {
 /** Get the result expression of a statement. (Helper function for StmtExpr.) */
 private Expr getStmtResultExpr(Stmt stmt) {
   result = stmt.(ExprStmt).getExpr() or
-  result = getStmtResultExpr(stmt.(Block).getLastStmt())
+  result = getStmtResultExpr(stmt.(BlockStmt).getLastStmt())
 }
 
 /**
@@ -1267,4 +1267,32 @@ class SpaceshipExpr extends BinaryOperation, @spaceshipexpr {
   override int getPrecedence() { result = 11 }
 
   override string getOperator() { result = "<=>" }
+}
+
+/**
+ * A C/C++ `co_await` expression.
+ * ```
+ * co_await foo();
+ * ```
+ */
+class CoAwaitExpr extends UnaryOperation, @co_await {
+  override string getAPrimaryQlClass() { result = "CoAwaitExpr" }
+
+  override string getOperator() { result = "co_await" }
+
+  override int getPrecedence() { result = 16 }
+}
+
+/**
+ * A C/C++ `co_yield` expression.
+ * ```
+ * co_yield 1;
+ * ```
+ */
+class CoYieldExpr extends UnaryOperation, @co_yield {
+  override string getAPrimaryQlClass() { result = "CoYieldExpr" }
+
+  override string getOperator() { result = "co_yield" }
+
+  override int getPrecedence() { result = 2 }
 }

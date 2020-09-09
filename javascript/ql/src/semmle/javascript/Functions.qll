@@ -164,14 +164,14 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
 
   /** Holds if this function is a generator function. */
   predicate isGenerator() {
-    isGenerator(this)
+    is_generator(this)
     or
     // we also support `yield` in non-generator functions
     exists(YieldExpr yield | this = yield.getEnclosingFunction())
   }
 
   /** Holds if the last parameter of this function is a rest parameter. */
-  predicate hasRestParameter() { hasRestParameter(this) }
+  predicate hasRestParameter() { has_rest_parameter(this) }
 
   /**
    * Gets the last token of this function's parameter list, not including
@@ -202,7 +202,7 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   predicate hasTrailingComma() { lastTokenOfParameterList().getNextToken().getValue() = "," }
 
   /** Holds if this function is an asynchronous function. */
-  predicate isAsync() { isAsync(this) }
+  predicate isAsync() { is_async(this) }
 
   /** Holds if this function is asynchronous or a generator. */
   predicate isAsyncOrGenerator() { isAsync() or isGenerator() }

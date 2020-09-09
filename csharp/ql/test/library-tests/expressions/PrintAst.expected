@@ -941,7 +941,7 @@ expressions.cs:
 #  229|       3: [AddEventAccessor] add_Click
 #-----|         2: (Parameters)
 #  229|           0: [Parameter] value
-#  229|       3: [RemoveEventAccessor] remove_Click
+#  229|       4: [RemoveEventAccessor] remove_Click
 #-----|         2: (Parameters)
 #  229|           0: [Parameter] value
 #  231|     6: [Method] OnClick
