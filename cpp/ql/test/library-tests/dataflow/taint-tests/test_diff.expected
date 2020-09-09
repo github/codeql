@@ -180,8 +180,15 @@
 | stringstream.cpp:39:7:39:9 | stringstream.cpp:33:23:33:28 | AST only |
 | stringstream.cpp:40:7:40:9 | stringstream.cpp:34:14:34:19 | AST only |
 | stringstream.cpp:41:7:41:9 | stringstream.cpp:29:16:29:21 | AST only |
+| stringstream.cpp:43:11:43:13 | stringstream.cpp:32:14:32:19 | AST only |
+| stringstream.cpp:44:11:44:13 | stringstream.cpp:33:23:33:28 | AST only |
+| stringstream.cpp:45:11:45:13 | stringstream.cpp:34:14:34:19 | AST only |
+| stringstream.cpp:46:11:46:13 | stringstream.cpp:29:16:29:21 | AST only |
+| stringstream.cpp:52:7:52:9 | stringstream.cpp:49:10:49:15 | AST only |
+| stringstream.cpp:53:7:53:9 | stringstream.cpp:50:10:50:15 | AST only |
 | stringstream.cpp:76:11:76:11 | stringstream.cpp:70:32:70:37 | AST only |
 | stringstream.cpp:81:7:81:9 | stringstream.cpp:70:32:70:37 | AST only |
+| stringstream.cpp:83:11:83:13 | stringstream.cpp:70:32:70:37 | AST only |
 | stringstream.cpp:143:11:143:11 | stringstream.cpp:143:14:143:21 | IR only |
 | stringstream.cpp:143:11:143:22 | stringstream.cpp:143:14:143:19 | IR only |
 | stringstream.cpp:143:11:143:22 | stringstream.cpp:143:14:143:21 | IR only |

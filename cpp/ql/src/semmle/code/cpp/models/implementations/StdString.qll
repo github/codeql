@@ -352,3 +352,20 @@ class StdOStreamOutNonMember extends DataFlowFunction, TaintFunction {
     output.isParameterDeref(0)
   }
 }
+
+/**
+ * The `std::stringstream` function `str`.
+ */
+class StdStringStreamStr extends TaintFunction {
+  StdStringStreamStr() { this.hasQualifiedName("std", "basic_stringstream", "str") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from qualifier to return value (if any)
+    input.isQualifierObject() and
+    output.isReturnValue()
+    or
+    // flow from first parameter (if any) to qualifier
+    input.isParameterDeref(0) and
+    output.isQualifierObject()
+  }
+}

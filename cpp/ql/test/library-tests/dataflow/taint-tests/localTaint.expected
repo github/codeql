@@ -1425,16 +1425,29 @@
 | stringstream.cpp:35:7:35:9 | ss5 | stringstream.cpp:35:11:35:11 | call to operator<< |  |
 | stringstream.cpp:35:14:35:14 | t | stringstream.cpp:35:7:35:9 | ref arg ss5 | TAINT |
 | stringstream.cpp:35:14:35:14 | t | stringstream.cpp:35:11:35:11 | call to operator<< | TAINT |
+| stringstream.cpp:42:7:42:9 | ss1 | stringstream.cpp:42:11:42:13 | call to str | TAINT |
+| stringstream.cpp:43:7:43:9 | ss2 | stringstream.cpp:43:11:43:13 | call to str | TAINT |
+| stringstream.cpp:44:7:44:9 | ss3 | stringstream.cpp:44:11:44:13 | call to str | TAINT |
+| stringstream.cpp:45:7:45:9 | ss4 | stringstream.cpp:45:11:45:13 | call to str | TAINT |
+| stringstream.cpp:46:7:46:9 | ss5 | stringstream.cpp:46:11:46:13 | call to str | TAINT |
 | stringstream.cpp:48:2:48:4 | ref arg ss6 | stringstream.cpp:49:2:49:4 | ss6 |  |
 | stringstream.cpp:48:2:48:4 | ref arg ss6 | stringstream.cpp:52:7:52:9 | ss6 |  |
+| stringstream.cpp:48:2:48:4 | ss6 | stringstream.cpp:48:6:48:8 | call to str | TAINT |
 | stringstream.cpp:48:10:48:14 | abc | stringstream.cpp:48:10:48:14 | call to basic_string | TAINT |
+| stringstream.cpp:48:10:48:14 | call to basic_string | stringstream.cpp:48:2:48:4 | ref arg ss6 | TAINT |
 | stringstream.cpp:49:2:49:4 | ref arg ss6 | stringstream.cpp:52:7:52:9 | ss6 |  |
+| stringstream.cpp:49:2:49:4 | ss6 | stringstream.cpp:49:6:49:8 | call to str | TAINT |
 | stringstream.cpp:49:10:49:15 | call to source | stringstream.cpp:49:10:49:17 | call to basic_string | TAINT |
+| stringstream.cpp:49:10:49:17 | call to basic_string | stringstream.cpp:49:2:49:4 | ref arg ss6 | TAINT |
 | stringstream.cpp:50:2:50:4 | ref arg ss7 | stringstream.cpp:51:2:51:4 | ss7 |  |
 | stringstream.cpp:50:2:50:4 | ref arg ss7 | stringstream.cpp:53:7:53:9 | ss7 |  |
+| stringstream.cpp:50:2:50:4 | ss7 | stringstream.cpp:50:6:50:8 | call to str | TAINT |
 | stringstream.cpp:50:10:50:15 | call to source | stringstream.cpp:50:10:50:17 | call to basic_string | TAINT |
+| stringstream.cpp:50:10:50:17 | call to basic_string | stringstream.cpp:50:2:50:4 | ref arg ss7 | TAINT |
 | stringstream.cpp:51:2:51:4 | ref arg ss7 | stringstream.cpp:53:7:53:9 | ss7 |  |
+| stringstream.cpp:51:2:51:4 | ss7 | stringstream.cpp:51:6:51:8 | call to str | TAINT |
 | stringstream.cpp:51:10:51:14 | abc | stringstream.cpp:51:10:51:14 | call to basic_string | TAINT |
+| stringstream.cpp:51:10:51:14 | call to basic_string | stringstream.cpp:51:2:51:4 | ref arg ss7 | TAINT |
 | stringstream.cpp:55:7:55:9 | ref arg ss8 | stringstream.cpp:58:7:58:9 | ss8 |  |
 | stringstream.cpp:56:7:56:9 | ref arg ss9 | stringstream.cpp:59:7:59:9 | ss9 |  |
 | stringstream.cpp:57:7:57:10 | ref arg ss10 | stringstream.cpp:60:7:60:10 | ss10 |  |
@@ -1470,6 +1483,8 @@
 | stringstream.cpp:78:7:78:9 | ref arg ss2 | stringstream.cpp:81:7:81:9 | ss2 |  |
 | stringstream.cpp:78:7:78:9 | ref arg ss2 | stringstream.cpp:83:7:83:9 | ss2 |  |
 | stringstream.cpp:78:14:78:15 | ref arg v2 | stringstream.cpp:85:7:85:8 | v2 |  |
+| stringstream.cpp:82:7:82:9 | ss1 | stringstream.cpp:82:11:82:13 | call to str | TAINT |
+| stringstream.cpp:83:7:83:9 | ss2 | stringstream.cpp:83:11:83:13 | call to str | TAINT |
 | stringstream.cpp:90:18:90:23 | call to basic_string | stringstream.cpp:92:24:92:25 | s1 |  |
 | stringstream.cpp:90:19:90:23 | abc | stringstream.cpp:90:18:90:23 | call to basic_string | TAINT |
 | stringstream.cpp:91:18:91:26 | call to basic_string | stringstream.cpp:93:24:93:25 | s2 |  |
