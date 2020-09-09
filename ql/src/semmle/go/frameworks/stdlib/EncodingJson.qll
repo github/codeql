@@ -13,14 +13,10 @@ module EncodingJson {
   }
 
   /** The `Marshal` or `MarshalIndent` function in the `encoding/json` package. */
-  class MarshalFunction extends TaintTracking::FunctionModel, MarshalingFunction::Range {
+  class MarshalFunction extends MarshalingFunction::Range {
     MarshalFunction() {
       this.hasQualifiedName("encoding/json", "Marshal") or
       this.hasQualifiedName("encoding/json", "MarshalIndent")
-    }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp = getAnInput() and outp = getOutput()
     }
 
     override FunctionInput getAnInput() { result.isParameter(0) }
@@ -30,12 +26,8 @@ module EncodingJson {
     override string getFormat() { result = "JSON" }
   }
 
-  private class UnmarshalFunction extends TaintTracking::FunctionModel, UnmarshalingFunction::Range {
+  private class UnmarshalFunction extends UnmarshalingFunction::Range {
     UnmarshalFunction() { this.hasQualifiedName("encoding/json", "Unmarshal") }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp = getAnInput() and outp = getOutput()
-    }
 
     override FunctionInput getAnInput() { result.isParameter(0) }
 
