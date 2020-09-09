@@ -1,15 +1,21 @@
 import semmle.code.cpp.models.interfaces.Taint
 
+/**
+ * The `std::shared_ptr` and `std::unique_ptr` template classes.
+ */
 class UniqueOrSharedPtr extends Class {
   UniqueOrSharedPtr() { this.hasQualifiedName("std", ["shared_ptr", "unique_ptr"]) }
 }
 
+/**
+ * The `std::make_shared` and `std::make_unique` template functions.
+ */
 class MakeUniqueOrShared extends TaintFunction {
   MakeUniqueOrShared() { this.hasQualifiedName("std", ["make_shared", "make_unique"]) }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // Exclude the `template<class T> shared_ptr<T[]> make_shared(std::size_t)` specialization
-    // since we don't want to propagate taint via the size of the allocation.
+    // Exclude the specializations of `std::make_shared` and `std::make_unique` that allocate arrays
+    // since these just take a size argument, which we don't want to propagate taint through.
     not this.isArray() and
     input.isParameter(_) and
     output.isReturnValue()
