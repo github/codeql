@@ -132,16 +132,33 @@ namespace std
 	template <class charT, class traits = char_traits<charT> >
 	class basic_istream /*: virtual public basic_ios<charT,traits> - not needed for this test */ {
 	public:
-		basic_istream<charT,traits>& operator>>(int& n);
+		using char_type = charT;
+		using int_type = int; //typename traits::int_type;
+
+		basic_istream<charT, traits>& operator>>(int& n);
+
+		int_type get();
+		basic_istream<charT, traits>& get(char_type& c);
+		basic_istream<charT, traits>& get(char_type* s, streamsize n);
+		int_type peek();
+		basic_istream<charT, traits>& read (char_type* s, streamsize n);
+		streamsize readsome(char_type* s, streamsize n);
+		basic_istream<charT, traits>& putback(char_type c);
+
 	};
+
+	template<class charT, class traits> basic_istream<charT, traits>& operator>>(basic_istream<charT, traits>&, charT*);
+	template<class charT, class traits, class Allocator> basic_istream<charT, traits>& operator>>(basic_istream<charT, traits>& is, basic_string<charT, traits, Allocator>& str); 
 
 	template <class charT, class traits = char_traits<charT> >
 	class basic_ostream /*: virtual public basic_ios<charT,traits> - not needed for this test */ {
 	public:
 		typedef charT char_type;
-		basic_ostream<charT,traits>& write(const char_type* s, streamsize n);
 
 		basic_ostream<charT, traits>& operator<<(int n);
+
+		basic_ostream<charT, traits>& put(char_type c);
+		basic_ostream<charT, traits>& write(const char_type* s, streamsize n);
 	};
 
 	template<class charT, class traits> basic_ostream<charT,traits>& operator<<(basic_ostream<charT,traits>&, const charT*);
@@ -156,8 +173,16 @@ namespace std
 	class basic_stringstream : public basic_iostream<charT, traits> {
 	public:
 		explicit basic_stringstream(/*ios_base::openmode which = ios_base::out|ios_base::in - not needed for this test*/);
+		explicit basic_stringstream( const basic_string<charT, traits, Allocator>& str/*, ios_base::openmode which = ios_base::out | ios_base::in*/);
+		basic_stringstream(const basic_stringstream& rhs) = delete;
+		basic_stringstream(basic_stringstream&& rhs);
+		basic_stringstream& operator=(const basic_stringstream& rhs) = delete;
+		basic_stringstream& operator=(basic_stringstream&& rhs);
+
+		void swap(basic_stringstream& rhs);
 
 		basic_string<charT, traits, Allocator> str() const;
+		void str(const basic_string<charT, traits, Allocator>& str);
 	};
 
 	using stringstream = basic_stringstream<char>;

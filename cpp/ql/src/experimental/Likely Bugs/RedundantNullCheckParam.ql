@@ -13,7 +13,7 @@
 
 import cpp
 
-predicate blockDominates(Block check, Block access) {
+predicate blockDominates(BlockStmt check, BlockStmt access) {
   check.getLocation().getStartLine() <= access.getLocation().getStartLine() and
   check.getLocation().getEndLine() >= access.getLocation().getEndLine()
 }

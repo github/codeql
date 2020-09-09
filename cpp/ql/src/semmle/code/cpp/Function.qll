@@ -268,7 +268,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * block, this gives the block guarded by the try statement. See
    * `FunctionTryStmt` for further information.
    */
-  Block getBlock() { result.getParentScope() = this }
+  BlockStmt getBlock() { result.getParentScope() = this }
 
   /** Holds if this function has an entry point. */
   predicate hasEntryPoint() { exists(getEntryPoint()) }
@@ -276,7 +276,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   /**
    * Gets the first node in this function's control flow graph.
    *
-   * For most functions, this first node will be the `Block` returned by
+   * For most functions, this first node will be the `BlockStmt` returned by
    * `getBlock`. However in C++, the first node can also be a
    * `FunctionTryStmt`.
    */
@@ -564,7 +564,7 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
    * If this is a function definition, get the block containing the
    * function body.
    */
-  Block getBlock() {
+  BlockStmt getBlock() {
     this.isDefinition() and
     result = getFunction().getBlock() and
     result.getFile() = this.getFile()
@@ -576,7 +576,7 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
    */
   pragma[noopt]
   int getNumberOfLines() {
-    exists(Block b, Location l, int start, int end, int diff | b = getBlock() |
+    exists(BlockStmt b, Location l, int start, int end, int diff | b = getBlock() |
       l = b.getLocation() and
       start = l.getStartLine() and
       end = l.getEndLine() and

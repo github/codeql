@@ -9,6 +9,6 @@
 
 import cpp
 
-from Block blk
+from BlockStmt blk
 where blk.getNumStmt() = 0
 select blk

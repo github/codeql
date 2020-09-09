@@ -71,7 +71,7 @@ bad_asts.cpp:
 #    9|   params: 
 #    9|     0: [Parameter] y
 #    9|         Type = [IntType] int
-#    9|   body: [Block] { ... }
+#    9|   body: [BlockStmt] { ... }
 #   10|     0: [ReturnStmt] return ...
 #   10|       0: [AddExpr] ... + ...
 #   10|           Type = [IntType] int
@@ -96,7 +96,7 @@ bad_asts.cpp:
 #    9|   params: 
 #    9|     0: [Parameter] y
 #    9|         Type = [IntType] int
-#    9|   body: [Block] { ... }
+#    9|   body: [BlockStmt] { ... }
 #   10|     0: [ReturnStmt] return ...
 #   10|       0: [AddExpr] ... + ...
 #   10|           Type = [IntType] int
@@ -119,7 +119,7 @@ bad_asts.cpp:
 #   10|             ValueCategory = prvalue(load)
 #   14| [TopLevelFunction] void Bad::CallBadMemberFunction()
 #   14|   params: 
-#   14|   body: [Block] { ... }
+#   14|   body: [BlockStmt] { ... }
 #   15|     0: [DeclStmt] declaration
 #   15|       0: [VariableDeclarationEntry] definition of s
 #   15|           Type = [Struct] S
@@ -164,7 +164,7 @@ bad_asts.cpp:
 #   19|       0: [Literal] Unknown literal
 #   19|           Type = [IntType] int
 #   19|           ValueCategory = prvalue
-#   19|   body: [Block] { ... }
+#   19|   body: [BlockStmt] { ... }
 #   19|     0: [ReturnStmt] return ...
 #   19| [MoveConstructor] void Bad::Point::Point(Bad::Point&&)
 #   19|   params: 
@@ -173,13 +173,13 @@ bad_asts.cpp:
 #   22| [Constructor] void Bad::Point::Point()
 #   22|   params: 
 #   22|   initializations: 
-#   22|   body: [Block] { ... }
+#   22|   body: [BlockStmt] { ... }
 #   23|     0: [ReturnStmt] return ...
 #   26| [TopLevelFunction] void Bad::CallCopyConstructor(Bad::Point const&)
 #   26|   params: 
 #   26|     0: [Parameter] a
 #   26|         Type = [LValueReferenceType] const Point &
-#   26|   body: [Block] { ... }
+#   26|   body: [BlockStmt] { ... }
 #   27|     0: [DeclStmt] declaration
 #   27|       0: [VariableDeclarationEntry] definition of b
 #   27|           Type = [Struct] Point
@@ -197,7 +197,7 @@ bad_asts.cpp:
 #   28|     1: [ReturnStmt] return ...
 #   30| [TopLevelFunction] void Bad::errorExpr()
 #   30|   params: 
-#   30|   body: [Block] { ... }
+#   30|   body: [BlockStmt] { ... }
 #   31|     0: [DeclStmt] declaration
 #   31|       0: [VariableDeclarationEntry] definition of intref
 #   31|           Type = [LValueReferenceType] int &
@@ -226,7 +226,7 @@ bad_asts.cpp:
 clang.cpp:
 #    5| [TopLevelFunction] int* globalIntAddress()
 #    5|   params: 
-#    5|   body: [Block] { ... }
+#    5|   body: [BlockStmt] { ... }
 #    6|     0: [ReturnStmt] return ...
 #    6|       0: [BuiltInOperationBuiltInAddressOf] __builtin_addressof ...
 #    6|           Type = [IntPointerType] int *
@@ -237,7 +237,7 @@ clang.cpp:
 complex.c:
 #    1| [TopLevelFunction] void complex_literals()
 #    1|   params: 
-#    1|   body: [Block] { ... }
+#    1|   body: [BlockStmt] { ... }
 #    2|     0: [DeclStmt] declaration
 #    2|       0: [VariableDeclarationEntry] definition of cf
 #    2|           Type = [ArithmeticType] _Complex float
@@ -354,7 +354,7 @@ complex.c:
 #   12|     9: [ReturnStmt] return ...
 #   14| [TopLevelFunction] void complex_arithmetic()
 #   14|   params: 
-#   14|   body: [Block] { ... }
+#   14|   body: [BlockStmt] { ... }
 #   15|     0: [DeclStmt] declaration
 #   15|       0: [VariableDeclarationEntry] definition of f1
 #   15|           Type = [FloatType] float
@@ -741,7 +741,7 @@ complex.c:
 #   56|     29: [ReturnStmt] return ...
 #   58| [TopLevelFunction] void complex_conversions()
 #   58|   params: 
-#   58|   body: [Block] { ... }
+#   58|   body: [BlockStmt] { ... }
 #   59|     0: [DeclStmt] declaration
 #   59|       0: [VariableDeclarationEntry] definition of f
 #   59|           Type = [FloatType] float
@@ -1718,7 +1718,7 @@ complex.c:
 ir.cpp:
 #    1| [TopLevelFunction] void Constants()
 #    1|   params: 
-#    1|   body: [Block] { ... }
+#    1|   body: [BlockStmt] { ... }
 #    2|     0: [DeclStmt] declaration
 #    2|       0: [VariableDeclarationEntry] definition of c_i
 #    2|           Type = [PlainCharType] char
@@ -2035,7 +2035,7 @@ ir.cpp:
 #   41|     28: [ReturnStmt] return ...
 #   43| [TopLevelFunction] void Foo()
 #   43|   params: 
-#   43|   body: [Block] { ... }
+#   43|   body: [BlockStmt] { ... }
 #   44|     0: [DeclStmt] declaration
 #   44|       0: [VariableDeclarationEntry] definition of x
 #   44|           Type = [IntType] int
@@ -2116,7 +2116,7 @@ ir.cpp:
 #   50|         Type = [IntType] int
 #   50|     1: [Parameter] y
 #   50|         Type = [IntType] int
-#   50|   body: [Block] { ... }
+#   50|   body: [BlockStmt] { ... }
 #   51|     0: [DeclStmt] declaration
 #   51|       0: [VariableDeclarationEntry] definition of z
 #   51|           Type = [IntType] int
@@ -2457,7 +2457,7 @@ ir.cpp:
 #   87|         Type = [IntType] int
 #   87|     1: [Parameter] y
 #   87|         Type = [IntType] int
-#   87|   body: [Block] { ... }
+#   87|   body: [BlockStmt] { ... }
 #   88|     0: [DeclStmt] declaration
 #   88|       0: [VariableDeclarationEntry] definition of b
 #   88|           Type = [BoolType] bool
@@ -2562,7 +2562,7 @@ ir.cpp:
 #   98|   params: 
 #   98|     0: [Parameter] x
 #   98|         Type = [IntType] int
-#   98|   body: [Block] { ... }
+#   98|   body: [BlockStmt] { ... }
 #   99|     0: [DeclStmt] declaration
 #   99|       0: [VariableDeclarationEntry] definition of y
 #   99|           Type = [IntType] int
@@ -2623,7 +2623,7 @@ ir.cpp:
 #  107|   params: 
 #  107|     0: [Parameter] x
 #  107|         Type = [IntType] int
-#  107|   body: [Block] { ... }
+#  107|   body: [BlockStmt] { ... }
 #  108|     0: [DeclStmt] declaration
 #  108|       0: [VariableDeclarationEntry] definition of p
 #  108|           Type = [IntPointerType] int *
@@ -2672,7 +2672,7 @@ ir.cpp:
 #  114|         Type = [DoubleType] double
 #  114|     1: [Parameter] y
 #  114|         Type = [DoubleType] double
-#  114|   body: [Block] { ... }
+#  114|   body: [BlockStmt] { ... }
 #  115|     0: [DeclStmt] declaration
 #  115|       0: [VariableDeclarationEntry] definition of z
 #  115|           Type = [DoubleType] double
@@ -2823,7 +2823,7 @@ ir.cpp:
 #  133|         Type = [DoubleType] double
 #  133|     1: [Parameter] y
 #  133|         Type = [DoubleType] double
-#  133|   body: [Block] { ... }
+#  133|   body: [BlockStmt] { ... }
 #  134|     0: [DeclStmt] declaration
 #  134|       0: [VariableDeclarationEntry] definition of b
 #  134|           Type = [BoolType] bool
@@ -2928,7 +2928,7 @@ ir.cpp:
 #  144|   params: 
 #  144|     0: [Parameter] x
 #  144|         Type = [FloatType] float
-#  144|   body: [Block] { ... }
+#  144|   body: [BlockStmt] { ... }
 #  145|     0: [DeclStmt] declaration
 #  145|       0: [VariableDeclarationEntry] definition of y
 #  145|           Type = [FloatType] float
@@ -2991,7 +2991,7 @@ ir.cpp:
 #  153|         Type = [IntPointerType] int *
 #  153|     1: [Parameter] i
 #  153|         Type = [IntType] int
-#  153|   body: [Block] { ... }
+#  153|   body: [BlockStmt] { ... }
 #  154|     0: [DeclStmt] declaration
 #  154|       0: [VariableDeclarationEntry] definition of q
 #  154|           Type = [IntPointerType] int *
@@ -3134,7 +3134,7 @@ ir.cpp:
 #  171|         Type = [IntPointerType] int *
 #  171|     1: [Parameter] i
 #  171|         Type = [IntType] int
-#  171|   body: [Block] { ... }
+#  171|   body: [BlockStmt] { ... }
 #  172|     0: [DeclStmt] declaration
 #  172|       0: [VariableDeclarationEntry] definition of x
 #  172|           Type = [IntType] int
@@ -3286,7 +3286,7 @@ ir.cpp:
 #  187|   params: 
 #  187|     0: [Parameter] i
 #  187|         Type = [IntType] int
-#  187|   body: [Block] { ... }
+#  187|   body: [BlockStmt] { ... }
 #  188|     0: [DeclStmt] declaration
 #  188|       0: [VariableDeclarationEntry] definition of c
 #  188|           Type = [PlainCharType] char
@@ -3339,7 +3339,7 @@ ir.cpp:
 #  193|         Type = [IntPointerType] int *
 #  193|     1: [Parameter] q
 #  193|         Type = [IntPointerType] int *
-#  193|   body: [Block] { ... }
+#  193|   body: [BlockStmt] { ... }
 #  194|     0: [DeclStmt] declaration
 #  194|       0: [VariableDeclarationEntry] definition of b
 #  194|           Type = [BoolType] bool
@@ -3444,7 +3444,7 @@ ir.cpp:
 #  204|   params: 
 #  204|     0: [Parameter] p
 #  204|         Type = [IntPointerType] int *
-#  204|   body: [Block] { ... }
+#  204|   body: [BlockStmt] { ... }
 #  205|     0: [DeclStmt] declaration
 #  205|       0: [VariableDeclarationEntry] definition of q
 #  205|           Type = [IntPointerType] int *
@@ -3503,7 +3503,7 @@ ir.cpp:
 #  211|     5: [ReturnStmt] return ...
 #  213| [TopLevelFunction] void CompoundAssignment()
 #  213|   params: 
-#  213|   body: [Block] { ... }
+#  213|   body: [BlockStmt] { ... }
 #  215|     0: [DeclStmt] declaration
 #  215|       0: [VariableDeclarationEntry] definition of x
 #  215|           Type = [IntType] int
@@ -3584,7 +3584,7 @@ ir.cpp:
 #  228|     7: [ReturnStmt] return ...
 #  230| [TopLevelFunction] void UninitializedVariables()
 #  230|   params: 
-#  230|   body: [Block] { ... }
+#  230|   body: [BlockStmt] { ... }
 #  231|     0: [DeclStmt] declaration
 #  231|       0: [VariableDeclarationEntry] definition of x
 #  231|           Type = [IntType] int
@@ -3602,7 +3602,7 @@ ir.cpp:
 #  235|         Type = [IntType] int
 #  235|     1: [Parameter] y
 #  235|         Type = [IntType] int
-#  235|   body: [Block] { ... }
+#  235|   body: [BlockStmt] { ... }
 #  236|     0: [ReturnStmt] return ...
 #  236|       0: [RemExpr] ... % ...
 #  236|           Type = [IntType] int
@@ -3621,17 +3621,17 @@ ir.cpp:
 #  239|         Type = [IntType] int
 #  239|     2: [Parameter] y
 #  239|         Type = [IntType] int
-#  239|   body: [Block] { ... }
+#  239|   body: [BlockStmt] { ... }
 #  240|     0: [IfStmt] if (...) ... 
 #  240|       0: [VariableAccess] b
 #  240|           Type = [BoolType] bool
 #  240|           ValueCategory = prvalue(load)
-#  240|       1: [Block] { ... }
+#  240|       1: [BlockStmt] { ... }
 #  243|     1: [IfStmt] if (...) ... 
 #  243|       0: [VariableAccess] b
 #  243|           Type = [BoolType] bool
 #  243|           ValueCategory = prvalue(load)
-#  243|       1: [Block] { ... }
+#  243|       1: [BlockStmt] { ... }
 #  244|         0: [ExprStmt] ExprStmt
 #  244|           0: [AssignExpr] ... = ...
 #  244|               Type = [IntType] int
@@ -3680,7 +3680,7 @@ ir.cpp:
 #  253|   params: 
 #  253|     0: [Parameter] n
 #  253|         Type = [IntType] int
-#  253|   body: [Block] { ... }
+#  253|   body: [BlockStmt] { ... }
 #  254|     0: [WhileStmt] while (...) ...
 #  254|       0: [GTExpr] ... > ...
 #  254|           Type = [BoolType] bool
@@ -3692,7 +3692,7 @@ ir.cpp:
 #  254|             Type = [IntType] int
 #  254|             Value = [Literal] 0
 #  254|             ValueCategory = prvalue
-#  254|       1: [Block] { ... }
+#  254|       1: [BlockStmt] { ... }
 #  255|         0: [ExprStmt] ExprStmt
 #  255|           0: [AssignSubExpr] ... -= ...
 #  255|               Type = [IntType] int
@@ -3709,7 +3709,7 @@ ir.cpp:
 #  259|   params: 
 #  259|     0: [Parameter] n
 #  259|         Type = [IntType] int
-#  259|   body: [Block] { ... }
+#  259|   body: [BlockStmt] { ... }
 #  260|     0: [DoStmt] do (...) ...
 #  262|       0: [GTExpr] ... > ...
 #  262|           Type = [BoolType] bool
@@ -3721,7 +3721,7 @@ ir.cpp:
 #  262|             Type = [IntType] int
 #  262|             Value = [Literal] 0
 #  262|             ValueCategory = prvalue
-#  260|       1: [Block] { ... }
+#  260|       1: [BlockStmt] { ... }
 #  261|         0: [ExprStmt] ExprStmt
 #  261|           0: [AssignSubExpr] ... -= ...
 #  261|               Type = [IntType] int
@@ -3736,16 +3736,16 @@ ir.cpp:
 #  263|     1: [ReturnStmt] return ...
 #  265| [TopLevelFunction] void For_Empty()
 #  265|   params: 
-#  265|   body: [Block] { ... }
+#  265|   body: [BlockStmt] { ... }
 #  266|     0: [DeclStmt] declaration
 #  266|       0: [VariableDeclarationEntry] definition of j
 #  266|           Type = [IntType] int
 #  267|     1: [ForStmt] for(...;...;...) ...
-#  267|       3: [Block] { ... }
+#  267|       3: [BlockStmt] { ... }
 #  268|         0: [EmptyStmt] ;
 #  272| [TopLevelFunction] void For_Init()
 #  272|   params: 
-#  272|   body: [Block] { ... }
+#  272|   body: [BlockStmt] { ... }
 #  273|     0: [ForStmt] for(...;...;...) ...
 #  273|       0: [DeclStmt] declaration
 #  273|         0: [VariableDeclarationEntry] definition of i
@@ -3755,11 +3755,11 @@ ir.cpp:
 #  273|                 Type = [IntType] int
 #  273|                 Value = [Literal] 0
 #  273|                 ValueCategory = prvalue
-#  273|       3: [Block] { ... }
+#  273|       3: [BlockStmt] { ... }
 #  274|         0: [EmptyStmt] ;
 #  278| [TopLevelFunction] void For_Condition()
 #  278|   params: 
-#  278|   body: [Block] { ... }
+#  278|   body: [BlockStmt] { ... }
 #  279|     0: [DeclStmt] declaration
 #  279|       0: [VariableDeclarationEntry] definition of i
 #  279|           Type = [IntType] int
@@ -3779,12 +3779,12 @@ ir.cpp:
 #  280|             Type = [IntType] int
 #  280|             Value = [Literal] 10
 #  280|             ValueCategory = prvalue
-#  280|       3: [Block] { ... }
+#  280|       3: [BlockStmt] { ... }
 #  281|         0: [EmptyStmt] ;
 #  283|     2: [ReturnStmt] return ...
 #  285| [TopLevelFunction] void For_Update()
 #  285|   params: 
-#  285|   body: [Block] { ... }
+#  285|   body: [BlockStmt] { ... }
 #  286|     0: [DeclStmt] declaration
 #  286|       0: [VariableDeclarationEntry] definition of i
 #  286|           Type = [IntType] int
@@ -3804,11 +3804,11 @@ ir.cpp:
 #  287|             Type = [IntType] int
 #  287|             Value = [Literal] 1
 #  287|             ValueCategory = prvalue
-#  287|       3: [Block] { ... }
+#  287|       3: [BlockStmt] { ... }
 #  288|         0: [EmptyStmt] ;
 #  292| [TopLevelFunction] void For_InitCondition()
 #  292|   params: 
-#  292|   body: [Block] { ... }
+#  292|   body: [BlockStmt] { ... }
 #  293|     0: [ForStmt] for(...;...;...) ...
 #  293|       0: [DeclStmt] declaration
 #  293|         0: [VariableDeclarationEntry] definition of i
@@ -3828,12 +3828,12 @@ ir.cpp:
 #  293|             Type = [IntType] int
 #  293|             Value = [Literal] 10
 #  293|             ValueCategory = prvalue
-#  293|       3: [Block] { ... }
+#  293|       3: [BlockStmt] { ... }
 #  294|         0: [EmptyStmt] ;
 #  296|     1: [ReturnStmt] return ...
 #  298| [TopLevelFunction] void For_InitUpdate()
 #  298|   params: 
-#  298|   body: [Block] { ... }
+#  298|   body: [BlockStmt] { ... }
 #  299|     0: [ForStmt] for(...;...;...) ...
 #  299|       0: [DeclStmt] declaration
 #  299|         0: [VariableDeclarationEntry] definition of i
@@ -3853,11 +3853,11 @@ ir.cpp:
 #  299|             Type = [IntType] int
 #  299|             Value = [Literal] 1
 #  299|             ValueCategory = prvalue
-#  299|       3: [Block] { ... }
+#  299|       3: [BlockStmt] { ... }
 #  300|         0: [EmptyStmt] ;
 #  304| [TopLevelFunction] void For_ConditionUpdate()
 #  304|   params: 
-#  304|   body: [Block] { ... }
+#  304|   body: [BlockStmt] { ... }
 #  305|     0: [DeclStmt] declaration
 #  305|       0: [VariableDeclarationEntry] definition of i
 #  305|           Type = [IntType] int
@@ -3887,12 +3887,12 @@ ir.cpp:
 #  306|             Type = [IntType] int
 #  306|             Value = [Literal] 1
 #  306|             ValueCategory = prvalue
-#  306|       3: [Block] { ... }
+#  306|       3: [BlockStmt] { ... }
 #  307|         0: [EmptyStmt] ;
 #  309|     2: [ReturnStmt] return ...
 #  311| [TopLevelFunction] void For_InitConditionUpdate()
 #  311|   params: 
-#  311|   body: [Block] { ... }
+#  311|   body: [BlockStmt] { ... }
 #  312|     0: [ForStmt] for(...;...;...) ...
 #  312|       0: [DeclStmt] declaration
 #  312|         0: [VariableDeclarationEntry] definition of i
@@ -3922,12 +3922,12 @@ ir.cpp:
 #  312|             Type = [IntType] int
 #  312|             Value = [Literal] 1
 #  312|             ValueCategory = prvalue
-#  312|       3: [Block] { ... }
+#  312|       3: [BlockStmt] { ... }
 #  313|         0: [EmptyStmt] ;
 #  315|     1: [ReturnStmt] return ...
 #  317| [TopLevelFunction] void For_Break()
 #  317|   params: 
-#  317|   body: [Block] { ... }
+#  317|   body: [BlockStmt] { ... }
 #  318|     0: [ForStmt] for(...;...;...) ...
 #  318|       0: [DeclStmt] declaration
 #  318|         0: [VariableDeclarationEntry] definition of i
@@ -3957,7 +3957,7 @@ ir.cpp:
 #  318|             Type = [IntType] int
 #  318|             Value = [Literal] 1
 #  318|             ValueCategory = prvalue
-#  318|       3: [Block] { ... }
+#  318|       3: [BlockStmt] { ... }
 #  319|         0: [IfStmt] if (...) ... 
 #  319|           0: [EQExpr] ... == ...
 #  319|               Type = [BoolType] bool
@@ -3969,13 +3969,13 @@ ir.cpp:
 #  319|                 Type = [IntType] int
 #  319|                 Value = [Literal] 5
 #  319|                 ValueCategory = prvalue
-#  319|           1: [Block] { ... }
+#  319|           1: [BlockStmt] { ... }
 #  320|             0: [BreakStmt] break;
 #  322|     1: [LabelStmt] label ...:
 #  323|     2: [ReturnStmt] return ...
 #  325| [TopLevelFunction] void For_Continue_Update()
 #  325|   params: 
-#  325|   body: [Block] { ... }
+#  325|   body: [BlockStmt] { ... }
 #  326|     0: [ForStmt] for(...;...;...) ...
 #  326|       0: [DeclStmt] declaration
 #  326|         0: [VariableDeclarationEntry] definition of i
@@ -4005,7 +4005,7 @@ ir.cpp:
 #  326|             Type = [IntType] int
 #  326|             Value = [Literal] 1
 #  326|             ValueCategory = prvalue
-#  326|       3: [Block] { ... }
+#  326|       3: [BlockStmt] { ... }
 #  327|         0: [IfStmt] if (...) ... 
 #  327|           0: [EQExpr] ... == ...
 #  327|               Type = [BoolType] bool
@@ -4017,13 +4017,13 @@ ir.cpp:
 #  327|                 Type = [IntType] int
 #  327|                 Value = [Literal] 5
 #  327|                 ValueCategory = prvalue
-#  327|           1: [Block] { ... }
+#  327|           1: [BlockStmt] { ... }
 #  328|             0: [ContinueStmt] continue;
 #  326|         1: [LabelStmt] label ...:
 #  331|     1: [ReturnStmt] return ...
 #  333| [TopLevelFunction] void For_Continue_NoUpdate()
 #  333|   params: 
-#  333|   body: [Block] { ... }
+#  333|   body: [BlockStmt] { ... }
 #  334|     0: [ForStmt] for(...;...;...) ...
 #  334|       0: [DeclStmt] declaration
 #  334|         0: [VariableDeclarationEntry] definition of i
@@ -4043,7 +4043,7 @@ ir.cpp:
 #  334|             Type = [IntType] int
 #  334|             Value = [Literal] 10
 #  334|             ValueCategory = prvalue
-#  334|       3: [Block] { ... }
+#  334|       3: [BlockStmt] { ... }
 #  335|         0: [IfStmt] if (...) ... 
 #  335|           0: [EQExpr] ... == ...
 #  335|               Type = [BoolType] bool
@@ -4055,7 +4055,7 @@ ir.cpp:
 #  335|                 Type = [IntType] int
 #  335|                 Value = [Literal] 5
 #  335|                 ValueCategory = prvalue
-#  335|           1: [Block] { ... }
+#  335|           1: [BlockStmt] { ... }
 #  336|             0: [ContinueStmt] continue;
 #  334|         1: [LabelStmt] label ...:
 #  339|     1: [ReturnStmt] return ...
@@ -4063,7 +4063,7 @@ ir.cpp:
 #  341|   params: 
 #  341|     0: [Parameter] p
 #  341|         Type = [IntPointerType] int *
-#  341|   body: [Block] { ... }
+#  341|   body: [BlockStmt] { ... }
 #  342|     0: [ExprStmt] ExprStmt
 #  342|       0: [AssignExpr] ... = ...
 #  342|           Type = [IntType] int
@@ -4087,7 +4087,7 @@ ir.cpp:
 #  343|             ValueCategory = prvalue(load)
 #  348| [TopLevelFunction] int* AddressOf()
 #  348|   params: 
-#  348|   body: [Block] { ... }
+#  348|   body: [BlockStmt] { ... }
 #  349|     0: [ReturnStmt] return ...
 #  349|       0: [AddressOfExpr] & ...
 #  349|           Type = [IntPointerType] int *
@@ -4099,7 +4099,7 @@ ir.cpp:
 #  352|   params: 
 #  352|     0: [Parameter] n
 #  352|         Type = [IntType] int
-#  352|   body: [Block] { ... }
+#  352|   body: [BlockStmt] { ... }
 #  353|     0: [WhileStmt] while (...) ...
 #  353|       0: [GTExpr] ... > ...
 #  353|           Type = [BoolType] bool
@@ -4111,7 +4111,7 @@ ir.cpp:
 #  353|             Type = [IntType] int
 #  353|             Value = [Literal] 0
 #  353|             ValueCategory = prvalue
-#  353|       1: [Block] { ... }
+#  353|       1: [BlockStmt] { ... }
 #  354|         0: [IfStmt] if (...) ... 
 #  354|           0: [EQExpr] ... == ...
 #  354|               Type = [BoolType] bool
@@ -4141,7 +4141,7 @@ ir.cpp:
 #  360|   params: 
 #  360|     0: [Parameter] n
 #  360|         Type = [IntType] int
-#  360|   body: [Block] { ... }
+#  360|   body: [BlockStmt] { ... }
 #  361|     0: [DoStmt] do (...) ...
 #  366|       0: [GTExpr] ... > ...
 #  366|           Type = [BoolType] bool
@@ -4153,7 +4153,7 @@ ir.cpp:
 #  366|             Type = [IntType] int
 #  366|             Value = [Literal] 0
 #  366|             ValueCategory = prvalue
-#  361|       1: [Block] { ... }
+#  361|       1: [BlockStmt] { ... }
 #  362|         0: [IfStmt] if (...) ... 
 #  362|           0: [EQExpr] ... == ...
 #  362|               Type = [BoolType] bool
@@ -4165,7 +4165,7 @@ ir.cpp:
 #  362|                 Type = [IntType] int
 #  362|                 Value = [Literal] 1
 #  362|                 ValueCategory = prvalue
-#  362|           1: [Block] { ... }
+#  362|           1: [BlockStmt] { ... }
 #  363|             0: [ContinueStmt] continue;
 #  365|         1: [ExprStmt] ExprStmt
 #  365|           0: [AssignSubExpr] ... -= ...
@@ -4190,7 +4190,7 @@ ir.cpp:
 #  370|         Type = [IntType] int
 #  372| [TopLevelFunction] void Call()
 #  372|   params: 
-#  372|   body: [Block] { ... }
+#  372|   body: [BlockStmt] { ... }
 #  373|     0: [ExprStmt] ExprStmt
 #  373|       0: [FunctionCall] call to VoidFunc
 #  373|           Type = [VoidType] void
@@ -4202,7 +4202,7 @@ ir.cpp:
 #  376|         Type = [IntType] int
 #  376|     1: [Parameter] y
 #  376|         Type = [IntType] int
-#  376|   body: [Block] { ... }
+#  376|   body: [BlockStmt] { ... }
 #  377|     0: [ReturnStmt] return ...
 #  377|       0: [FunctionCall] call to Add
 #  377|           Type = [IntType] int
@@ -4219,7 +4219,7 @@ ir.cpp:
 #  380|         Type = [IntType] int
 #  380|     1: [Parameter] y
 #  380|         Type = [IntType] int
-#  380|   body: [Block] { ... }
+#  380|   body: [BlockStmt] { ... }
 #  381|     0: [ReturnStmt] return ...
 #  381|       0: [CommaExpr] ... , ...
 #  381|           Type = [IntType] int
@@ -4240,7 +4240,7 @@ ir.cpp:
 #  384|   params: 
 #  384|     0: [Parameter] x
 #  384|         Type = [IntType] int
-#  384|   body: [Block] { ... }
+#  384|   body: [BlockStmt] { ... }
 #  385|     0: [DeclStmt] declaration
 #  385|       0: [VariableDeclarationEntry] definition of y
 #  385|           Type = [IntType] int
@@ -4248,7 +4248,7 @@ ir.cpp:
 #  386|       0: [VariableAccess] x
 #  386|           Type = [IntType] int
 #  386|           ValueCategory = prvalue(load)
-#  386|       1: [Block] { ... }
+#  386|       1: [BlockStmt] { ... }
 #  387|         0: [ExprStmt] ExprStmt
 #  387|           0: [AssignExpr] ... = ...
 #  387|               Type = [IntType] int
@@ -4386,14 +4386,14 @@ ir.cpp:
 #  422|   params: 
 #  422|     0: [Parameter] pt
 #  422|         Type = [Struct] Point
-#  422|   body: [Block] { ... }
+#  422|   body: [BlockStmt] { ... }
 #  423|     0: [ReturnStmt] return ...
 #  423|       0: [VariableAccess] pt
 #  423|           Type = [Struct] Point
 #  423|           ValueCategory = prvalue(load)
 #  426| [TopLevelFunction] void FieldAccess()
 #  426|   params: 
-#  426|   body: [Block] { ... }
+#  426|   body: [BlockStmt] { ... }
 #  427|     0: [DeclStmt] declaration
 #  427|       0: [VariableDeclarationEntry] definition of pt
 #  427|           Type = [Struct] Point
@@ -4447,7 +4447,7 @@ ir.cpp:
 #  433|         Type = [BoolType] bool
 #  433|     1: [Parameter] b
 #  433|         Type = [BoolType] bool
-#  433|   body: [Block] { ... }
+#  433|   body: [BlockStmt] { ... }
 #  434|     0: [DeclStmt] declaration
 #  434|       0: [VariableDeclarationEntry] definition of x
 #  434|           Type = [IntType] int
@@ -4461,7 +4461,7 @@ ir.cpp:
 #  435|         1: [VariableAccess] b
 #  435|             Type = [BoolType] bool
 #  435|             ValueCategory = prvalue(load)
-#  435|       1: [Block] { ... }
+#  435|       1: [BlockStmt] { ... }
 #  436|         0: [ExprStmt] ExprStmt
 #  436|           0: [AssignExpr] ... = ...
 #  436|               Type = [IntType] int
@@ -4483,7 +4483,7 @@ ir.cpp:
 #  439|         1: [VariableAccess] b
 #  439|             Type = [BoolType] bool
 #  439|             ValueCategory = prvalue(load)
-#  439|       1: [Block] { ... }
+#  439|       1: [BlockStmt] { ... }
 #  440|         0: [ExprStmt] ExprStmt
 #  440|           0: [AssignExpr] ... = ...
 #  440|               Type = [IntType] int
@@ -4495,7 +4495,7 @@ ir.cpp:
 #  440|                 Type = [IntType] int
 #  440|                 Value = [Literal] 1
 #  440|                 ValueCategory = prvalue
-#  442|       2: [Block] { ... }
+#  442|       2: [BlockStmt] { ... }
 #  443|         0: [ExprStmt] ExprStmt
 #  443|           0: [AssignExpr] ... = ...
 #  443|               Type = [IntType] int
@@ -4514,7 +4514,7 @@ ir.cpp:
 #  447|         Type = [BoolType] bool
 #  447|     1: [Parameter] b
 #  447|         Type = [BoolType] bool
-#  447|   body: [Block] { ... }
+#  447|   body: [BlockStmt] { ... }
 #  448|     0: [DeclStmt] declaration
 #  448|       0: [VariableDeclarationEntry] definition of x
 #  448|           Type = [IntType] int
@@ -4528,7 +4528,7 @@ ir.cpp:
 #  449|         1: [VariableAccess] b
 #  449|             Type = [BoolType] bool
 #  449|             ValueCategory = prvalue(load)
-#  449|       1: [Block] { ... }
+#  449|       1: [BlockStmt] { ... }
 #  450|         0: [ExprStmt] ExprStmt
 #  450|           0: [AssignExpr] ... = ...
 #  450|               Type = [IntType] int
@@ -4550,7 +4550,7 @@ ir.cpp:
 #  453|         1: [VariableAccess] b
 #  453|             Type = [BoolType] bool
 #  453|             ValueCategory = prvalue(load)
-#  453|       1: [Block] { ... }
+#  453|       1: [BlockStmt] { ... }
 #  454|         0: [ExprStmt] ExprStmt
 #  454|           0: [AssignExpr] ... = ...
 #  454|               Type = [IntType] int
@@ -4562,7 +4562,7 @@ ir.cpp:
 #  454|                 Type = [IntType] int
 #  454|                 Value = [Literal] 1
 #  454|                 ValueCategory = prvalue
-#  456|       2: [Block] { ... }
+#  456|       2: [BlockStmt] { ... }
 #  457|         0: [ExprStmt] ExprStmt
 #  457|           0: [AssignExpr] ... = ...
 #  457|               Type = [IntType] int
@@ -4581,7 +4581,7 @@ ir.cpp:
 #  461|         Type = [BoolType] bool
 #  461|     1: [Parameter] b
 #  461|         Type = [BoolType] bool
-#  461|   body: [Block] { ... }
+#  461|   body: [BlockStmt] { ... }
 #  462|     0: [DeclStmt] declaration
 #  462|       0: [VariableDeclarationEntry] definition of x
 #  462|           Type = [IntType] int
@@ -4592,7 +4592,7 @@ ir.cpp:
 #  463|         0: [VariableAccess] a
 #  463|             Type = [BoolType] bool
 #  463|             ValueCategory = prvalue(load)
-#  463|       1: [Block] { ... }
+#  463|       1: [BlockStmt] { ... }
 #  464|         0: [ExprStmt] ExprStmt
 #  464|           0: [AssignExpr] ... = ...
 #  464|               Type = [IntType] int
@@ -4620,7 +4620,7 @@ ir.cpp:
 #  467|             1: [VariableAccess] b
 #  467|                 Type = [BoolType] bool
 #  467|                 ValueCategory = prvalue(load)
-#  467|       1: [Block] { ... }
+#  467|       1: [BlockStmt] { ... }
 #  468|         0: [ExprStmt] ExprStmt
 #  468|           0: [AssignExpr] ... = ...
 #  468|               Type = [IntType] int
@@ -4632,7 +4632,7 @@ ir.cpp:
 #  468|                 Type = [IntType] int
 #  468|                 Value = [Literal] 2
 #  468|                 ValueCategory = prvalue
-#  470|       2: [Block] { ... }
+#  470|       2: [BlockStmt] { ... }
 #  471|         0: [ExprStmt] ExprStmt
 #  471|           0: [AssignExpr] ... = ...
 #  471|               Type = [IntType] int
@@ -4651,7 +4651,7 @@ ir.cpp:
 #  475|         Type = [BoolType] bool
 #  475|     1: [Parameter] b
 #  475|         Type = [BoolType] bool
-#  475|   body: [Block] { ... }
+#  475|   body: [BlockStmt] { ... }
 #  476|     0: [DeclStmt] declaration
 #  476|       0: [VariableDeclarationEntry] definition of x
 #  476|           Type = [BoolType] bool
@@ -4718,7 +4718,7 @@ ir.cpp:
 #  482|         Type = [IntType] int
 #  482|     2: [Parameter] y
 #  482|         Type = [IntType] int
-#  482|   body: [Block] { ... }
+#  482|   body: [BlockStmt] { ... }
 #  483|     0: [DeclStmt] declaration
 #  483|       0: [VariableDeclarationEntry] definition of z
 #  483|           Type = [IntType] int
@@ -4740,7 +4740,7 @@ ir.cpp:
 #  486|   params: 
 #  486|     0: [Parameter] a
 #  486|         Type = [BoolType] bool
-#  486|   body: [Block] { ... }
+#  486|   body: [BlockStmt] { ... }
 #  487|     0: [DeclStmt] declaration
 #  487|       0: [VariableDeclarationEntry] definition of x
 #  487|           Type = [IntType] int
@@ -4775,7 +4775,7 @@ ir.cpp:
 #  492|   params: 
 #  492|     0: [Parameter] a
 #  492|         Type = [BoolType] bool
-#  492|   body: [Block] { ... }
+#  492|   body: [BlockStmt] { ... }
 #  493|     0: [ExprStmt] ExprStmt
 #  493|       0: [ConditionalExpr] ... ? ... : ...
 #  493|           Type = [VoidType] void
@@ -4792,7 +4792,7 @@ ir.cpp:
 #  494|     1: [ReturnStmt] return ...
 #  496| [TopLevelFunction] void Nullptr()
 #  496|   params: 
-#  496|   body: [Block] { ... }
+#  496|   body: [BlockStmt] { ... }
 #  497|     0: [DeclStmt] declaration
 #  497|       0: [VariableDeclarationEntry] definition of p
 #  497|           Type = [IntPointerType] int *
@@ -4858,7 +4858,7 @@ ir.cpp:
 #  503|         Type = [IntType] int
 #  503|     1: [Parameter] f
 #  503|         Type = [FloatType] float
-#  503|   body: [Block] { ... }
+#  503|   body: [BlockStmt] { ... }
 #  504|     0: [DeclStmt] declaration
 #  504|       0: [VariableDeclarationEntry] definition of pt1
 #  504|           Type = [Struct] Point
@@ -4916,7 +4916,7 @@ ir.cpp:
 #  512|         Type = [IntType] int
 #  512|     1: [Parameter] f
 #  512|         Type = [FloatType] float
-#  512|   body: [Block] { ... }
+#  512|   body: [BlockStmt] { ... }
 #  513|     0: [DeclStmt] declaration
 #  513|       0: [VariableDeclarationEntry] definition of r1
 #  513|           Type = [Struct] Rect
@@ -5003,7 +5003,7 @@ ir.cpp:
 #  519|         Type = [IntType] int
 #  519|     1: [Parameter] f
 #  519|         Type = [FloatType] float
-#  519|   body: [Block] { ... }
+#  519|   body: [BlockStmt] { ... }
 #  520|     0: [DeclStmt] declaration
 #  520|       0: [VariableDeclarationEntry] definition of a1
 #  520|           Type = [ArrayType] int[3]
@@ -5057,7 +5057,7 @@ ir.cpp:
 #  530|         Type = [IntType] int
 #  530|     1: [Parameter] f
 #  530|         Type = [FloatType] float
-#  530|   body: [Block] { ... }
+#  530|   body: [BlockStmt] { ... }
 #  531|     0: [DeclStmt] declaration
 #  531|       0: [VariableDeclarationEntry] definition of u1
 #  531|           Type = [Union] U
@@ -5079,7 +5079,7 @@ ir.cpp:
 #  535|         Type = [IntType] int
 #  535|     1: [Parameter] y
 #  535|         Type = [IntType] int
-#  535|   body: [Block] { ... }
+#  535|   body: [BlockStmt] { ... }
 #  536|     0: [IfStmt] if (...) ... 
 #  536|       0: [LTExpr] ... < ...
 #  536|           Type = [BoolType] bool
@@ -5090,7 +5090,7 @@ ir.cpp:
 #  536|         1: [VariableAccess] y
 #  536|             Type = [IntType] int
 #  536|             ValueCategory = prvalue(load)
-#  536|       1: [Block] { ... }
+#  536|       1: [BlockStmt] { ... }
 #  537|         0: [ReturnStmt] return ...
 #  540|     1: [ExprStmt] ExprStmt
 #  540|       0: [AssignExpr] ... = ...
@@ -5109,7 +5109,7 @@ ir.cpp:
 #  543|         Type = [IntType] int
 #  543|     1: [Parameter] y
 #  543|         Type = [IntType] int
-#  543|   body: [Block] { ... }
+#  543|   body: [BlockStmt] { ... }
 #  544|     0: [IfStmt] if (...) ... 
 #  544|       0: [LTExpr] ... < ...
 #  544|           Type = [BoolType] bool
@@ -5120,7 +5120,7 @@ ir.cpp:
 #  544|         1: [VariableAccess] y
 #  544|             Type = [IntType] int
 #  544|             ValueCategory = prvalue(load)
-#  544|       1: [Block] { ... }
+#  544|       1: [BlockStmt] { ... }
 #  545|         0: [ReturnStmt] return ...
 #  545|           0: [VariableAccess] x
 #  545|               Type = [IntType] int
@@ -5139,7 +5139,7 @@ ir.cpp:
 #  551|   params: 
 #  551|     0: [Parameter] pfn
 #  551|         Type = [FunctionPointerType] ..(*)(..)
-#  551|   body: [Block] { ... }
+#  551|   body: [BlockStmt] { ... }
 #  552|     0: [ReturnStmt] return ...
 #  552|       0: [VariableCall] call to expression
 #  552|           Type = [IntType] int
@@ -5155,7 +5155,7 @@ ir.cpp:
 #  560|   params: 
 #  560|     0: [Parameter] e
 #  560|         Type = [CTypedefType] E
-#  560|   body: [Block] { ... }
+#  560|   body: [BlockStmt] { ... }
 #  561|     0: [SwitchStmt] switch (...) ... 
 #  561|       0: [CStyleCast] (int)...
 #  561|           Conversion = [IntegralConversion] integral conversion
@@ -5164,7 +5164,7 @@ ir.cpp:
 #  561|         expr: [VariableAccess] e
 #  561|             Type = [CTypedefType] E
 #  561|             ValueCategory = prvalue(load)
-#  561|       1: [Block] { ... }
+#  561|       1: [BlockStmt] { ... }
 #  562|         0: [SwitchCase] case ...:
 #  562|           0: [CStyleCast] (int)...
 #  562|               Conversion = [IntegralConversion] integral conversion
@@ -5207,7 +5207,7 @@ ir.cpp:
 #  567|                 ValueCategory = prvalue
 #  571| [TopLevelFunction] void InitArray()
 #  571|   params: 
-#  571|   body: [Block] { ... }
+#  571|   body: [BlockStmt] { ... }
 #  572|     0: [DeclStmt] declaration
 #  572|       0: [VariableDeclarationEntry] definition of a_pad
 #  572|           Type = [ArrayType] char[32]
@@ -5306,7 +5306,7 @@ ir.cpp:
 #  582|         Type = [PointerType] const char *
 #  584| [TopLevelFunction] void VarArgs()
 #  584|   params: 
-#  584|   body: [Block] { ... }
+#  584|   body: [BlockStmt] { ... }
 #  585|     0: [ExprStmt] ExprStmt
 #  585|       0: [FunctionCall] call to VarArgFunction
 #  585|           Type = [VoidType] void
@@ -5336,7 +5336,7 @@ ir.cpp:
 #  588|         Type = [IntType] int
 #  590| [TopLevelFunction] void SetFuncPtr()
 #  590|   params: 
-#  590|   body: [Block] { ... }
+#  590|   body: [BlockStmt] { ... }
 #  591|     0: [DeclStmt] declaration
 #  591|       0: [VariableDeclarationEntry] definition of pfn
 #  591|           Type = [FunctionPointerType] ..(*)(..)
@@ -5421,7 +5421,7 @@ ir.cpp:
 #  613|   params: 
 #  615| [TopLevelFunction] void DeclareObject()
 #  615|   params: 
-#  615|   body: [Block] { ... }
+#  615|   body: [BlockStmt] { ... }
 #  616|     0: [DeclStmt] declaration
 #  616|       0: [VariableDeclarationEntry] definition of s1
 #  616|           Type = [Struct] String
@@ -5473,7 +5473,7 @@ ir.cpp:
 #  622|         Type = [PointerType] String *
 #  622|     2: [Parameter] s
 #  622|         Type = [Struct] String
-#  622|   body: [Block] { ... }
+#  622|   body: [BlockStmt] { ... }
 #  623|     0: [ExprStmt] ExprStmt
 #  623|       0: [FunctionCall] call to c_str
 #  623|           Type = [PointerType] const char *
@@ -5529,7 +5529,7 @@ ir.cpp:
 #-----|         Type = [RValueReferenceType] C &&
 #  628| [Destructor] void C::~C()
 #  628|   params: 
-#-----|   body: [Block] { ... }
+#-----|   body: [BlockStmt] { ... }
 #-----|     0: [ReturnStmt] return ...
 #  628|   destructions: 
 #  628|     0: [DestructorFieldDestruction] destructor field destruction of m_f
@@ -5554,7 +5554,7 @@ ir.cpp:
 #  630|   params: 
 #  630|     0: [Parameter] x
 #  630|         Type = [IntType] int
-#  630|   body: [Block] { ... }
+#  630|   body: [BlockStmt] { ... }
 #  631|     0: [ReturnStmt] return ...
 #  631|       0: [VariableAccess] x
 #  631|           Type = [IntType] int
@@ -5563,7 +5563,7 @@ ir.cpp:
 #  634|   params: 
 #  634|     0: [Parameter] x
 #  634|         Type = [IntType] int
-#  634|   body: [Block] { ... }
+#  634|   body: [BlockStmt] { ... }
 #  635|     0: [ReturnStmt] return ...
 #  635|       0: [VariableAccess] x
 #  635|           Type = [IntType] int
@@ -5572,14 +5572,14 @@ ir.cpp:
 #  638|   params: 
 #  638|     0: [Parameter] x
 #  638|         Type = [IntType] int
-#  638|   body: [Block] { ... }
+#  638|   body: [BlockStmt] { ... }
 #  639|     0: [ReturnStmt] return ...
 #  639|       0: [VariableAccess] x
 #  639|           Type = [IntType] int
 #  639|           ValueCategory = prvalue(load)
 #  642| [MemberFunction] void C::FieldAccess()
 #  642|   params: 
-#  642|   body: [Block] { ... }
+#  642|   body: [BlockStmt] { ... }
 #  643|     0: [ExprStmt] ExprStmt
 #  643|       0: [AssignExpr] ... = ...
 #  643|           Type = [IntType] int
@@ -5679,7 +5679,7 @@ ir.cpp:
 #  650|     7: [ReturnStmt] return ...
 #  652| [MemberFunction] void C::MethodCalls()
 #  652|   params: 
-#  652|   body: [Block] { ... }
+#  652|   body: [BlockStmt] { ... }
 #  653|     0: [ExprStmt] ExprStmt
 #  653|       0: [FunctionCall] call to InstanceMemberFunction
 #  653|           Type = [IntType] int
@@ -5768,13 +5768,13 @@ ir.cpp:
 #  662|               Type = [ArrayType] const char[5]
 #  662|               Value = [StringLiteral] "test"
 #  662|               ValueCategory = lvalue
-#  663|   body: [Block] { ... }
+#  663|   body: [BlockStmt] { ... }
 #  664|     0: [ReturnStmt] return ...
 #  675| [TopLevelFunction] int DerefReference(int&)
 #  675|   params: 
 #  675|     0: [Parameter] r
 #  675|         Type = [LValueReferenceType] int &
-#  675|   body: [Block] { ... }
+#  675|   body: [BlockStmt] { ... }
 #  676|     0: [ReturnStmt] return ...
 #  676|       0: [ReferenceDereferenceExpr] (reference dereference)
 #  676|           Type = [IntType] int
@@ -5784,7 +5784,7 @@ ir.cpp:
 #  676|             ValueCategory = prvalue(load)
 #  679| [TopLevelFunction] int& TakeReference()
 #  679|   params: 
-#  679|   body: [Block] { ... }
+#  679|   body: [BlockStmt] { ... }
 #  680|     0: [ReturnStmt] return ...
 #  680|       0: [ReferenceToExpr] (reference to)
 #  680|           Type = [LValueReferenceType] int &
@@ -5798,7 +5798,7 @@ ir.cpp:
 #  685|   params: 
 #  685|     0: [Parameter] x
 #  685|         Type = [IntType] int
-#  685|   body: [Block] { ... }
+#  685|   body: [BlockStmt] { ... }
 #  686|     0: [DeclStmt] declaration
 #  686|       0: [VariableDeclarationEntry] definition of r
 #  686|           Type = [LValueReferenceType] int &
@@ -5842,7 +5842,7 @@ ir.cpp:
 #  689|     3: [ReturnStmt] return ...
 #  691| [TopLevelFunction] void ArrayReferences()
 #  691|   params: 
-#  691|   body: [Block] { ... }
+#  691|   body: [BlockStmt] { ... }
 #  692|     0: [DeclStmt] declaration
 #  692|       0: [VariableDeclarationEntry] definition of a
 #  692|           Type = [ArrayType] int[10]
@@ -5879,7 +5879,7 @@ ir.cpp:
 #  695|     3: [ReturnStmt] return ...
 #  697| [TopLevelFunction] void FunctionReferences()
 #  697|   params: 
-#  697|   body: [Block] { ... }
+#  697|   body: [BlockStmt] { ... }
 #  698|     0: [DeclStmt] declaration
 #  698|       0: [VariableDeclarationEntry] definition of rfn
 #  698|           Type = [FunctionReferenceType] ..(&)(..)
@@ -5921,7 +5921,7 @@ ir.cpp:
 #  704|         Type = [TemplateParameter] T
 #  704|     1: [Parameter] y
 #  704|         Type = [TemplateParameter] T
-#  704|   body: [Block] { ... }
+#  704|   body: [BlockStmt] { ... }
 #  705|     0: [ReturnStmt] return ...
 #  705|       0: [ConditionalExpr] ... ? ... : ...
 #  705|           Type = [UnknownType] unknown
@@ -5954,7 +5954,7 @@ ir.cpp:
 #  704|         Type = [IntType] int
 #  704|     1: [Parameter] y
 #  704|         Type = [IntType] int
-#  704|   body: [Block] { ... }
+#  704|   body: [BlockStmt] { ... }
 #  705|     0: [ReturnStmt] return ...
 #  705|       0: [ConditionalExpr] ... ? ... : ...
 #  705|           Type = [IntType] int
@@ -5983,7 +5983,7 @@ ir.cpp:
 #  708|         Type = [IntType] int
 #  708|     1: [Parameter] y
 #  708|         Type = [IntType] int
-#  708|   body: [Block] { ... }
+#  708|   body: [BlockStmt] { ... }
 #  709|     0: [ReturnStmt] return ...
 #  709|       0: [FunctionCall] call to min
 #  709|           Type = [IntType] int
@@ -6008,7 +6008,7 @@ ir.cpp:
 #  715|         Type = [TemplateParameter] U
 #  715|     1: [Parameter] y
 #  715|         Type = [TemplateParameter] V
-#  715|   body: [Block] { ... }
+#  715|   body: [BlockStmt] { ... }
 #  716|     0: [ReturnStmt] return ...
 #  716|       0: [Literal] 0
 #  716|           Type = [TemplateParameter] T
@@ -6026,7 +6026,7 @@ ir.cpp:
 #  715|         Type = [VoidPointerType] void *
 #  715|     1: [Parameter] y
 #  715|         Type = [PlainCharType] char
-#  715|   body: [Block] { ... }
+#  715|   body: [BlockStmt] { ... }
 #  716|     0: [ReturnStmt] return ...
 #  716|       0: [Literal] 0
 #  716|           Type = [LongType] long
@@ -6034,7 +6034,7 @@ ir.cpp:
 #  716|           ValueCategory = prvalue
 #  720| [TopLevelFunction] double CallNestedTemplateFunc()
 #  720|   params: 
-#  720|   body: [Block] { ... }
+#  720|   body: [BlockStmt] { ... }
 #  721|     0: [ReturnStmt] return ...
 #  721|       0: [CStyleCast] (double)...
 #  721|           Conversion = [IntegralToFloatingPointConversion] integral to floating point conversion
@@ -6060,9 +6060,9 @@ ir.cpp:
 #  724|   params: 
 #  724|     0: [Parameter] b
 #  724|         Type = [BoolType] bool
-#  724|   body: [Block] { ... }
+#  724|   body: [BlockStmt] { ... }
 #  725|     0: [TryStmt] try { ... }
-#  725|       0: [Block] { ... }
+#  725|       0: [BlockStmt] { ... }
 #  726|         0: [DeclStmt] declaration
 #  726|           0: [VariableDeclarationEntry] definition of x
 #  726|               Type = [IntType] int
@@ -6075,7 +6075,7 @@ ir.cpp:
 #  727|           0: [VariableAccess] b
 #  727|               Type = [BoolType] bool
 #  727|               ValueCategory = prvalue(load)
-#  727|           1: [Block] { ... }
+#  727|           1: [BlockStmt] { ... }
 #  728|             0: [ExprStmt] ExprStmt
 #  728|               0: [ThrowExpr] throw ...
 #  728|                   Type = [PointerType] const char *
@@ -6098,7 +6098,7 @@ ir.cpp:
 #  730|                   Type = [IntType] int
 #  730|                   Value = [Literal] 2
 #  730|                   ValueCategory = prvalue
-#  730|             1: [Block] { ... }
+#  730|             1: [BlockStmt] { ... }
 #  731|               0: [ExprStmt] ExprStmt
 #  731|                 0: [AssignExpr] ... = ...
 #  731|                     Type = [IntType] int
@@ -6165,7 +6165,7 @@ ir.cpp:
 #  745|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const Base &
-#-----|   body: [Block] { ... }
+#-----|   body: [BlockStmt] { ... }
 #-----|     0: [ExprStmt] ExprStmt
 #-----|       0: [ReferenceDereferenceExpr] (reference dereference)
 #-----|           Type = [Struct] String
@@ -6215,7 +6215,7 @@ ir.cpp:
 #  745|       0: [ConstructorCall] call to String
 #  745|           Type = [VoidType] void
 #  745|           ValueCategory = prvalue
-#  745|   body: [Block] { ... }
+#  745|   body: [BlockStmt] { ... }
 #  745|     0: [ReturnStmt] return ...
 #  748| [Constructor] void Base::Base()
 #  748|   params: 
@@ -6226,11 +6226,11 @@ ir.cpp:
 #  748|       0: [ConstructorCall] call to String
 #  748|           Type = [VoidType] void
 #  748|           ValueCategory = prvalue
-#  748|   body: [Block] { ... }
+#  748|   body: [BlockStmt] { ... }
 #  749|     0: [ReturnStmt] return ...
 #  750| [Destructor] void Base::~Base()
 #  750|   params: 
-#  750|   body: [Block] { ... }
+#  750|   body: [BlockStmt] { ... }
 #  751|     0: [ReturnStmt] return ...
 #  750|   destructions: 
 #  751|     0: [DestructorFieldDestruction] destructor field destruction of base_s
@@ -6246,7 +6246,7 @@ ir.cpp:
 #  754|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const Middle &
-#-----|   body: [Block] { ... }
+#-----|   body: [BlockStmt] { ... }
 #-----|     0: [ExprStmt] ExprStmt
 #-----|       0: [ReferenceDereferenceExpr] (reference dereference)
 #-----|           Type = [Struct,VirtualBaseClass] Base
@@ -6334,11 +6334,11 @@ ir.cpp:
 #  757|       0: [ConstructorCall] call to String
 #  757|           Type = [VoidType] void
 #  757|           ValueCategory = prvalue
-#  757|   body: [Block] { ... }
+#  757|   body: [BlockStmt] { ... }
 #  758|     0: [ReturnStmt] return ...
 #  759| [Destructor] void Middle::~Middle()
 #  759|   params: 
-#  759|   body: [Block] { ... }
+#  759|   body: [BlockStmt] { ... }
 #  760|     0: [ReturnStmt] return ...
 #  759|   destructions: 
 #  760|     0: [DestructorFieldDestruction] destructor field destruction of middle_s
@@ -6357,7 +6357,7 @@ ir.cpp:
 #  763|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const Derived &
-#-----|   body: [Block] { ... }
+#-----|   body: [BlockStmt] { ... }
 #-----|     0: [ExprStmt] ExprStmt
 #-----|       0: [ReferenceDereferenceExpr] (reference dereference)
 #-----|           Type = [Struct] Middle
@@ -6445,11 +6445,11 @@ ir.cpp:
 #  766|       0: [ConstructorCall] call to String
 #  766|           Type = [VoidType] void
 #  766|           ValueCategory = prvalue
-#  766|   body: [Block] { ... }
+#  766|   body: [BlockStmt] { ... }
 #  767|     0: [ReturnStmt] return ...
 #  768| [Destructor] void Derived::~Derived()
 #  768|   params: 
-#  768|   body: [Block] { ... }
+#  768|   body: [BlockStmt] { ... }
 #  769|     0: [ReturnStmt] return ...
 #  768|   destructions: 
 #  769|     0: [DestructorFieldDestruction] destructor field destruction of derived_s
@@ -6484,11 +6484,11 @@ ir.cpp:
 #  775|       0: [ConstructorCall] call to String
 #  775|           Type = [VoidType] void
 #  775|           ValueCategory = prvalue
-#  775|   body: [Block] { ... }
+#  775|   body: [BlockStmt] { ... }
 #  776|     0: [ReturnStmt] return ...
 #  777| [Destructor] void MiddleVB1::~MiddleVB1()
 #  777|   params: 
-#  777|   body: [Block] { ... }
+#  777|   body: [BlockStmt] { ... }
 #  778|     0: [ReturnStmt] return ...
 #  777|   destructions: 
 #  778|     0: [DestructorFieldDestruction] destructor field destruction of middlevb1_s
@@ -6523,11 +6523,11 @@ ir.cpp:
 #  784|       0: [ConstructorCall] call to String
 #  784|           Type = [VoidType] void
 #  784|           ValueCategory = prvalue
-#  784|   body: [Block] { ... }
+#  784|   body: [BlockStmt] { ... }
 #  785|     0: [ReturnStmt] return ...
 #  786| [Destructor] void MiddleVB2::~MiddleVB2()
 #  786|   params: 
-#  786|   body: [Block] { ... }
+#  786|   body: [BlockStmt] { ... }
 #  787|     0: [ReturnStmt] return ...
 #  786|   destructions: 
 #  787|     0: [DestructorFieldDestruction] destructor field destruction of middlevb2_s
@@ -6568,11 +6568,11 @@ ir.cpp:
 #  793|       0: [ConstructorCall] call to String
 #  793|           Type = [VoidType] void
 #  793|           ValueCategory = prvalue
-#  793|   body: [Block] { ... }
+#  793|   body: [BlockStmt] { ... }
 #  794|     0: [ReturnStmt] return ...
 #  795| [Destructor] void DerivedVB::~DerivedVB()
 #  795|   params: 
-#  795|   body: [Block] { ... }
+#  795|   body: [BlockStmt] { ... }
 #  796|     0: [ReturnStmt] return ...
 #  795|   destructions: 
 #  796|     0: [DestructorFieldDestruction] destructor field destruction of derivedvb_s
@@ -6595,7 +6595,7 @@ ir.cpp:
 #  796|         ValueCategory = prvalue
 #  799| [TopLevelFunction] void HierarchyConversions()
 #  799|   params: 
-#  799|   body: [Block] { ... }
+#  799|   body: [BlockStmt] { ... }
 #  800|     0: [DeclStmt] declaration
 #  800|       0: [VariableDeclarationEntry] definition of b
 #  800|           Type = [Struct,VirtualBaseClass] Base
@@ -7201,7 +7201,7 @@ ir.cpp:
 #  842| [Constructor] void PolymorphicBase::PolymorphicBase()
 #  842|   params: 
 #  842|   initializations: 
-#  842|   body: [Block] { ... }
+#  842|   body: [BlockStmt] { ... }
 #  842|     0: [ReturnStmt] return ...
 #  842| [CopyConstructor] void PolymorphicBase::PolymorphicBase(PolymorphicBase const&)
 #  842|   params: 
@@ -7223,7 +7223,7 @@ ir.cpp:
 #  846|     0: [ConstructorDirectInit] call to PolymorphicBase
 #  846|         Type = [VoidType] void
 #  846|         ValueCategory = prvalue
-#  846|   body: [Block] { ... }
+#  846|   body: [BlockStmt] { ... }
 #  846|     0: [ReturnStmt] return ...
 #  846| [CopyConstructor] void PolymorphicDerived::PolymorphicDerived(PolymorphicDerived const&)
 #  846|   params: 
@@ -7235,7 +7235,7 @@ ir.cpp:
 #-----|         Type = [RValueReferenceType] PolymorphicDerived &&
 #  846| [Destructor,VirtualFunction] void PolymorphicDerived::~PolymorphicDerived()
 #  846|   params: 
-#-----|   body: [Block] { ... }
+#-----|   body: [BlockStmt] { ... }
 #-----|     0: [ReturnStmt] return ...
 #  846|   destructions: 
 #  846|     0: [DestructorDirectDestruction] call to ~PolymorphicBase
@@ -7243,7 +7243,7 @@ ir.cpp:
 #  846|         ValueCategory = prvalue
 #  849| [TopLevelFunction] void DynamicCast()
 #  849|   params: 
-#  849|   body: [Block] { ... }
+#  849|   body: [BlockStmt] { ... }
 #  850|     0: [DeclStmt] declaration
 #  850|       0: [VariableDeclarationEntry] definition of b
 #  850|           Type = [Struct] PolymorphicBase
@@ -7370,11 +7370,11 @@ ir.cpp:
 #  868|             Type = [ArrayType] const char[1]
 #  868|             Value = [StringLiteral] ""
 #  868|             ValueCategory = lvalue
-#  868|   body: [Block] { ... }
+#  868|   body: [BlockStmt] { ... }
 #  869|     0: [ReturnStmt] return ...
 #  871| [TopLevelFunction] void ArrayConversions()
 #  871|   params: 
-#  871|   body: [Block] { ... }
+#  871|   body: [BlockStmt] { ... }
 #  872|     0: [DeclStmt] declaration
 #  872|       0: [VariableDeclarationEntry] definition of a
 #  872|           Type = [ArrayType] char[5]
@@ -7513,7 +7513,7 @@ ir.cpp:
 #  883|         Type = [FunctionPointerType] ..(*)(..)
 #  883|     1: [Parameter] p
 #  883|         Type = [VoidPointerType] void *
-#  883|   body: [Block] { ... }
+#  883|   body: [BlockStmt] { ... }
 #  884|     0: [ExprStmt] ExprStmt
 #  884|       0: [AssignExpr] ... = ...
 #  884|           Type = [VoidPointerType] void *
@@ -7549,7 +7549,7 @@ ir.cpp:
 #  888|         Type = [IntType] int
 #  888|     1: [Parameter] args
 #  888|         Type = [ArrayType] __va_list_tag[1]
-#  888|   body: [Block] { ... }
+#  888|   body: [BlockStmt] { ... }
 #  889|     0: [DeclStmt] declaration
 #  889|       0: [VariableDeclarationEntry] definition of args2
 #  889|           Type = [ArrayType] __va_list_tag[1]
@@ -7605,7 +7605,7 @@ ir.cpp:
 #  896|   params: 
 #  896|     0: [Parameter] x
 #  896|         Type = [IntType] int
-#  896|   body: [Block] { ... }
+#  896|   body: [BlockStmt] { ... }
 #  897|     0: [DeclStmt] declaration
 #  897|       0: [VariableDeclarationEntry] definition of args
 #  897|           Type = [ArrayType] __va_list_tag[1]
@@ -7709,7 +7709,7 @@ ir.cpp:
 #  909|   params: 
 #  909|     0: [Parameter] x
 #  909|         Type = [IntType] int
-#  909|   body: [Block] { ... }
+#  909|   body: [BlockStmt] { ... }
 #  910|     0: [ExprStmt] ExprStmt
 #  910|       0: [CStyleCast] (void)...
 #  910|           Conversion = [VoidConversion] conversion to void
@@ -7723,7 +7723,7 @@ ir.cpp:
 #  913|   params: 
 #  913|     0: [Parameter] x
 #  913|         Type = [IntType] int
-#  913|   body: [Block] { ... }
+#  913|   body: [BlockStmt] { ... }
 #  914|     0: [DeclStmt] declaration
 #  914|       0: [VariableDeclarationEntry] definition of a
 #  914|           Type = [BoolType] bool
@@ -7876,7 +7876,7 @@ ir.cpp:
 #  946|         Type = [DoubleType] double
 #  949| [TopLevelFunction] void OperatorNew()
 #  949|   params: 
-#  949|   body: [Block] { ... }
+#  949|   body: [BlockStmt] { ... }
 #  950|     0: [ExprStmt] ExprStmt
 #  950|       0: [NewExpr] new
 #  950|           Type = [IntPointerType] int *
@@ -7969,7 +7969,7 @@ ir.cpp:
 #  959|   params: 
 #  959|     0: [Parameter] n
 #  959|         Type = [IntType] int
-#  959|   body: [Block] { ... }
+#  959|   body: [BlockStmt] { ... }
 #  960|     0: [ExprStmt] ExprStmt
 #  960|       0: [NewArrayExpr] new[]
 #  960|           Type = [IntPointerType] int *
@@ -8078,7 +8078,7 @@ ir.cpp:
 #  968|     8: [ReturnStmt] return ...
 #  970| [TopLevelFunction] int designatedInit()
 #  970|   params: 
-#  970|   body: [Block] { ... }
+#  970|   body: [BlockStmt] { ... }
 #  971|     0: [DeclStmt] declaration
 #  971|       0: [VariableDeclarationEntry] definition of a1
 #  971|           Type = [ArrayType] int[1000]
@@ -8114,7 +8114,7 @@ ir.cpp:
 #  975|         Type = [IntType] int
 #  975|     1: [Parameter] y
 #  975|         Type = [IntType] int
-#  975|   body: [Block] { ... }
+#  975|   body: [BlockStmt] { ... }
 #  976|     0: [IfStmt] if (...) ... 
 #  976|       0: [ConditionDeclExpr] (condition decl)
 #  976|           Type = [BoolType] bool
@@ -8122,7 +8122,7 @@ ir.cpp:
 #  976|         0: [VariableAccess] b
 #  976|             Type = [BoolType] bool
 #  976|             ValueCategory = prvalue(load)
-#  976|       1: [Block] { ... }
+#  976|       1: [BlockStmt] { ... }
 #  977|         0: [ExprStmt] ExprStmt
 #  977|           0: [AssignExpr] ... = ...
 #  977|               Type = [IntType] int
@@ -8145,7 +8145,7 @@ ir.cpp:
 #  979|             expr: [VariableAccess] z
 #  979|                 Type = [IntType] int
 #  979|                 ValueCategory = prvalue(load)
-#  979|         1: [Block] { ... }
+#  979|         1: [BlockStmt] { ... }
 #  980|           0: [ExprStmt] ExprStmt
 #  980|             0: [AssignExpr] ... = ...
 #  980|                 Type = [IntType] int
@@ -8168,7 +8168,7 @@ ir.cpp:
 #  982|               expr: [VariableAccess] p
 #  982|                   Type = [IntPointerType] int *
 #  982|                   ValueCategory = prvalue(load)
-#  982|           1: [Block] { ... }
+#  982|           1: [BlockStmt] { ... }
 #  983|             0: [ExprStmt] ExprStmt
 #  983|               0: [AssignExpr] ... = ...
 #  983|                   Type = [IntType] int
@@ -8190,7 +8190,7 @@ ir.cpp:
 #  987|         Type = [IntType] int
 #  987|     1: [Parameter] y
 #  987|         Type = [IntType] int
-#  987|   body: [Block] { ... }
+#  987|   body: [BlockStmt] { ... }
 #  988|     0: [WhileStmt] while (...) ...
 #  988|       0: [ConditionDeclExpr] (condition decl)
 #  988|           Type = [BoolType] bool
@@ -8198,7 +8198,7 @@ ir.cpp:
 #  988|         0: [VariableAccess] b
 #  988|             Type = [BoolType] bool
 #  988|             ValueCategory = prvalue(load)
-#  988|       1: [Block] { ... }
+#  988|       1: [BlockStmt] { ... }
 #  990|     1: [WhileStmt] while (...) ...
 #  990|       0: [ConditionDeclExpr] (condition decl)
 #  990|           Type = [BoolType] bool
@@ -8210,7 +8210,7 @@ ir.cpp:
 #  990|           expr: [VariableAccess] z
 #  990|               Type = [IntType] int
 #  990|               ValueCategory = prvalue(load)
-#  990|       1: [Block] { ... }
+#  990|       1: [BlockStmt] { ... }
 #  992|     2: [WhileStmt] while (...) ...
 #  992|       0: [ConditionDeclExpr] (condition decl)
 #  992|           Type = [BoolType] bool
@@ -8222,7 +8222,7 @@ ir.cpp:
 #  992|           expr: [VariableAccess] p
 #  992|               Type = [IntPointerType] int *
 #  992|               ValueCategory = prvalue(load)
-#  992|       1: [Block] { ... }
+#  992|       1: [BlockStmt] { ... }
 #  994|     3: [ReturnStmt] return ...
 #  996| [TopLevelFunction] int PointerDecay(int[], int(float))
 #  996|   params: 
@@ -8230,7 +8230,7 @@ ir.cpp:
 #  996|         Type = [ArrayType] int[]
 #  996|     1: [Parameter] fn
 #  996|         Type = [RoutineType] ..()(..)
-#  996|   body: [Block] { ... }
+#  996|   body: [BlockStmt] { ... }
 #  997|     0: [ReturnStmt] return ...
 #  997|       0: [AddExpr] ... + ...
 #  997|           Type = [IntType] int
@@ -8268,7 +8268,7 @@ ir.cpp:
 # 1000|         Type = [IntType] int
 # 1000|     2: [Parameter] z
 # 1000|         Type = [IntType] int
-# 1000|   body: [Block] { ... }
+# 1000|   body: [BlockStmt] { ... }
 # 1001|     0: [DeclStmt] declaration
 # 1001|       0: [VariableDeclarationEntry] definition of x
 # 1001|           Type = [IntType] int
@@ -8282,7 +8282,7 @@ ir.cpp:
 # 1011|           ValueCategory = prvalue
 # 1015| [TopLevelFunction] void OperatorDelete()
 # 1015|   params: 
-# 1015|   body: [Block] { ... }
+# 1015|   body: [BlockStmt] { ... }
 # 1016|     0: [ExprStmt] ExprStmt
 # 1016|       0: [DeleteExpr] delete
 # 1016|           Type = [VoidType] void
@@ -8360,7 +8360,7 @@ ir.cpp:
 # 1021|     5: [ReturnStmt] return ...
 # 1024| [TopLevelFunction] void OperatorDeleteArray()
 # 1024|   params: 
-# 1024|   body: [Block] { ... }
+# 1024|   body: [BlockStmt] { ... }
 # 1025|     0: [ExprStmt] ExprStmt
 # 1025|       0: [DeleteArrayExpr] delete[]
 # 1025|           Type = [VoidType] void
@@ -8446,7 +8446,7 @@ ir.cpp:
 #-----|         Type = [RValueReferenceType] EmptyStruct &&
 # 1034| [TopLevelFunction] void EmptyStructInit()
 # 1034|   params: 
-# 1034|   body: [Block] { ... }
+# 1034|   body: [BlockStmt] { ... }
 # 1035|     0: [DeclStmt] declaration
 # 1035|       0: [VariableDeclarationEntry] definition of s
 # 1035|           Type = [Struct] EmptyStruct
@@ -8473,11 +8473,11 @@ ir.cpp:
 # 1038|   params: 
 # 1038| [ConstMemberFunction] void (lambda [] type at line 1038, col. 12)::operator()() const
 # 1038|   params: 
-# 1038|   body: [Block] { ... }
+# 1038|   body: [BlockStmt] { ... }
 # 1038|     0: [ReturnStmt] return ...
 # 1038| [ConstMemberFunction,ConversionOperator] void(* (lambda [] type at line 1038, col. 12)::operator void (*)()() const)()
 # 1038|   params: 
-#-----|   body: [Block] { ... }
+#-----|   body: [BlockStmt] { ... }
 # 1038|     0: [ReturnStmt] return ...
 # 1038|       0: [FunctionAccess] _FUN
 # 1038|           Type = [FunctionPointerType] ..(*)(..)
@@ -8488,7 +8488,7 @@ ir.cpp:
 # 1040|         Type = [IntType] int
 # 1040|     1: [Parameter] s
 # 1040|         Type = [LValueReferenceType] const String &
-# 1040|   body: [Block] { ... }
+# 1040|   body: [BlockStmt] { ... }
 # 1041|     0: [DeclStmt] declaration
 # 1041|       0: [VariableDeclarationEntry] definition of lambda_empty
 # 1041|           Type = [Closure,LocalClass] decltype([...](...){...})
@@ -8807,7 +8807,7 @@ ir.cpp:
 # 1041|   params: 
 # 1041|     0: [Parameter] f
 # 1041|         Type = [FloatType] float
-# 1041|   body: [Block] { ... }
+# 1041|   body: [BlockStmt] { ... }
 # 1041|     0: [ReturnStmt] return ...
 # 1041|       0: [CharLiteral] 65
 # 1041|           Type = [PlainCharType] char
@@ -8815,7 +8815,7 @@ ir.cpp:
 # 1041|           ValueCategory = prvalue
 # 1041| [ConstMemberFunction,ConversionOperator] char(* (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)::operator char (*)(float)() const)(float)
 # 1041|   params: 
-#-----|   body: [Block] { ... }
+#-----|   body: [BlockStmt] { ... }
 # 1041|     0: [ReturnStmt] return ...
 # 1041|       0: [FunctionAccess] _FUN
 # 1041|           Type = [FunctionPointerType] ..(*)(..)
@@ -8838,7 +8838,7 @@ ir.cpp:
 # 1043|   params: 
 # 1043|     0: [Parameter] f
 # 1043|         Type = [FloatType] float
-# 1043|   body: [Block] { ... }
+# 1043|   body: [BlockStmt] { ... }
 # 1043|     0: [ReturnStmt] return ...
 # 1043|       0: [ArrayExpr] access to array
 # 1043|           Type = [PlainCharType] char
@@ -8880,7 +8880,7 @@ ir.cpp:
 # 1045|   params: 
 # 1045| [Destructor] void (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 21)::~<unnamed>()
 # 1045|   params: 
-#-----|   body: [Block] { ... }
+#-----|   body: [BlockStmt] { ... }
 #-----|     0: [ReturnStmt] return ...
 # 1045|   destructions: 
 # 1045|     0: [DestructorFieldDestruction] destructor field destruction of s
@@ -8896,7 +8896,7 @@ ir.cpp:
 # 1045|   params: 
 # 1045|     0: [Parameter] f
 # 1045|         Type = [FloatType] float
-# 1045|   body: [Block] { ... }
+# 1045|   body: [BlockStmt] { ... }
 # 1045|     0: [ReturnStmt] return ...
 # 1045|       0: [ArrayExpr] access to array
 # 1045|           Type = [PlainCharType] char
@@ -8934,7 +8934,7 @@ ir.cpp:
 # 1047|   params: 
 # 1047|     0: [Parameter] f
 # 1047|         Type = [FloatType] float
-# 1047|   body: [Block] { ... }
+# 1047|   body: [BlockStmt] { ... }
 # 1047|     0: [ReturnStmt] return ...
 # 1047|       0: [ArrayExpr] access to array
 # 1047|           Type = [PlainCharType] char
@@ -8971,7 +8971,7 @@ ir.cpp:
 # 1049|   params: 
 # 1049| [Destructor] void (void Lambda(int, String const&))::(lambda [] type at line 1049, col. 30)::~<unnamed>()
 # 1049|   params: 
-#-----|   body: [Block] { ... }
+#-----|   body: [BlockStmt] { ... }
 #-----|     0: [ReturnStmt] return ...
 # 1049|   destructions: 
 # 1049|     0: [DestructorFieldDestruction] destructor field destruction of s
@@ -8987,7 +8987,7 @@ ir.cpp:
 # 1049|   params: 
 # 1049|     0: [Parameter] f
 # 1049|         Type = [FloatType] float
-# 1049|   body: [Block] { ... }
+# 1049|   body: [BlockStmt] { ... }
 # 1049|     0: [ReturnStmt] return ...
 # 1049|       0: [ArrayExpr] access to array
 # 1049|           Type = [PlainCharType] char
@@ -9023,7 +9023,7 @@ ir.cpp:
 # 1051|   params: 
 # 1051|     0: [Parameter] f
 # 1051|         Type = [FloatType] float
-# 1051|   body: [Block] { ... }
+# 1051|   body: [BlockStmt] { ... }
 # 1051|     0: [ReturnStmt] return ...
 # 1051|       0: [ArrayExpr] access to array
 # 1051|           Type = [PlainCharType] char
@@ -9064,7 +9064,7 @@ ir.cpp:
 # 1054|   params: 
 # 1054|     0: [Parameter] f
 # 1054|         Type = [FloatType] float
-# 1054|   body: [Block] { ... }
+# 1054|   body: [BlockStmt] { ... }
 # 1054|     0: [ReturnStmt] return ...
 # 1054|       0: [ArrayExpr] access to array
 # 1054|           Type = [PlainCharType] char
@@ -9164,7 +9164,7 @@ ir.cpp:
 # 1077|   params: 
 # 1077|     0: [Parameter] v
 # 1077|         Type = [LValueReferenceType] const vector<int> &
-# 1077|   body: [Block] { ... }
+# 1077|   body: [BlockStmt] { ... }
 # 1078|     0: [RangeBasedForStmt] for(...:...) ...
 # 1078|       0: [DeclStmt] declaration
 # 1078|       1: [DeclStmt] declaration
@@ -9191,7 +9191,7 @@ ir.cpp:
 # 1078|               Type = [NestedStruct] iterator
 # 1078|               ValueCategory = lvalue
 # 1078|       4: [DeclStmt] declaration
-# 1078|       5: [Block] { ... }
+# 1078|       5: [BlockStmt] { ... }
 # 1079|         0: [IfStmt] if (...) ... 
 # 1079|           0: [GTExpr] ... > ...
 # 1079|               Type = [BoolType] bool
@@ -9203,7 +9203,7 @@ ir.cpp:
 # 1079|                 Type = [IntType] int
 # 1079|                 Value = [Literal] 0
 # 1079|                 ValueCategory = prvalue
-# 1079|           1: [Block] { ... }
+# 1079|           1: [BlockStmt] { ... }
 # 1080|             0: [ContinueStmt] continue;
 # 1078|         1: [LabelStmt] label ...:
 # 1084|     1: [RangeBasedForStmt] for(...:...) ...
@@ -9232,7 +9232,7 @@ ir.cpp:
 # 1084|               Type = [NestedStruct] iterator
 # 1084|               ValueCategory = lvalue
 # 1084|       4: [DeclStmt] declaration
-# 1084|       5: [Block] { ... }
+# 1084|       5: [BlockStmt] { ... }
 # 1085|         0: [IfStmt] if (...) ... 
 # 1085|           0: [LTExpr] ... < ...
 # 1085|               Type = [BoolType] bool
@@ -9247,7 +9247,7 @@ ir.cpp:
 # 1085|                 Type = [IntType] int
 # 1085|                 Value = [Literal] 5
 # 1085|                 ValueCategory = prvalue
-# 1085|           1: [Block] { ... }
+# 1085|           1: [BlockStmt] { ... }
 # 1086|             0: [BreakStmt] break;
 # 1088|     2: [LabelStmt] label ...:
 # 1089|     3: [ReturnStmt] return ...
@@ -9255,7 +9255,7 @@ ir.cpp:
 # 1108|   params: 
 # 1108|     0: [Parameter] x
 # 1108|         Type = [IntType] int
-# 1108|   body: [Block] { ... }
+# 1108|   body: [BlockStmt] { ... }
 # 1109|     0: [AsmStmt] asm statement
 # 1110|     1: [ReturnStmt] return ...
 # 1110|       0: [VariableAccess] x
@@ -9271,7 +9271,7 @@ ir.cpp:
 # 1113|         Type = [LValueReferenceType] unsigned int &
 # 1113|     3: [Parameter] d
 # 1113|         Type = [IntType] unsigned int
-# 1114|   body: [Block] { ... }
+# 1114|   body: [BlockStmt] { ... }
 # 1115|     0: [AsmStmt] asm statement
 # 1118|       0: [ReferenceDereferenceExpr] (reference dereference)
 # 1118|           Type = [IntType] unsigned int
@@ -9294,7 +9294,7 @@ ir.cpp:
 # 1120|     1: [ReturnStmt] return ...
 # 1122| [TopLevelFunction] void ExternDeclarations()
 # 1122|   params: 
-# 1123|   body: [Block] { ... }
+# 1123|   body: [BlockStmt] { ... }
 # 1124|     0: [DeclStmt] declaration
 # 1124|       0: [VariableDeclarationEntry] declaration of g
 # 1124|           Type = [IntType] int
@@ -9331,7 +9331,7 @@ ir.cpp:
 # 1127|         Type = [FloatType] float
 # 1137| [TopLevelFunction] void ExternDeclarationsInMacro()
 # 1137|   params: 
-# 1138|   body: [Block] { ... }
+# 1138|   body: [BlockStmt] { ... }
 # 1139|     0: [DeclStmt] declaration
 # 1139|       0: [VariableDeclarationEntry] declaration of g
 # 1139|           Type = [IntType] int
@@ -9360,7 +9360,7 @@ ir.cpp:
 # 1139|         0: [VariableAccess] i
 # 1139|             Type = [IntType] int
 # 1139|             ValueCategory = lvalue
-# 1139|       3: [Block] { ... }
+# 1139|       3: [BlockStmt] { ... }
 # 1139|         0: [DeclStmt] declaration
 # 1139|           0: [VariableDeclarationEntry] declaration of g
 # 1139|               Type = [IntType] int
@@ -9370,9 +9370,9 @@ ir.cpp:
 # 1142|   params: 
 # 1142|     0: [Parameter] b
 # 1142|         Type = [BoolType] bool
-# 1142|   body: [Block] { ... }
+# 1142|   body: [BlockStmt] { ... }
 # 1143|     0: [TryStmt] try { ... }
-# 1143|       0: [Block] { ... }
+# 1143|       0: [BlockStmt] { ... }
 # 1144|         0: [DeclStmt] declaration
 # 1144|           0: [VariableDeclarationEntry] definition of x
 # 1144|               Type = [IntType] int
@@ -9385,7 +9385,7 @@ ir.cpp:
 # 1145|           0: [VariableAccess] b
 # 1145|               Type = [BoolType] bool
 # 1145|               ValueCategory = prvalue(load)
-# 1145|           1: [Block] { ... }
+# 1145|           1: [BlockStmt] { ... }
 # 1146|             0: [ExprStmt] ExprStmt
 # 1146|               0: [ThrowExpr] throw ...
 # 1146|                   Type = [PointerType] const char *
@@ -9408,7 +9408,7 @@ ir.cpp:
 # 1148|                   Type = [IntType] int
 # 1148|                   Value = [Literal] 2
 # 1148|                   ValueCategory = prvalue
-# 1148|             1: [Block] { ... }
+# 1148|             1: [BlockStmt] { ... }
 # 1149|               0: [ExprStmt] ExprStmt
 # 1149|                 0: [AssignExpr] ... = ...
 # 1149|                     Type = [IntType] int
@@ -9469,7 +9469,7 @@ ir.cpp:
 # 1162|   params: 
 # 1162|     0: [Parameter] i
 # 1162|         Type = [IntType] int
-# 1162|   body: [Block] { ... }
+# 1162|   body: [BlockStmt] { ... }
 # 1163|     0: [DeclStmt] declaration
 # 1163|       0: [VariableDeclarationEntry] definition of vi4
 # 1163|           Type = [SpecifiedType] __attribute((vector_size(16UL))) int
@@ -9588,7 +9588,7 @@ ir.cpp:
 # 1172|   params: 
 # 1172|     0: [Parameter] x
 # 1172|         Type = [IntType] int
-# 1172|   body: [Block] { ... }
+# 1172|   body: [BlockStmt] { ... }
 # 1173|     0: [DeclStmt] declaration
 # 1173|       0: [VariableDeclarationEntry] definition of y
 # 1173|           Type = [IntType] int
@@ -9631,7 +9631,7 @@ ir.cpp:
 # 1175|           ValueCategory = prvalue(load)
 # 1178| [TopLevelFunction] String ReturnObjectImpl()
 # 1178|   params: 
-# 1178|   body: [Block] { ... }
+# 1178|   body: [BlockStmt] { ... }
 # 1179|     0: [ReturnStmt] return ...
 # 1179|       0: [ConstructorCall] call to String
 # 1179|           Type = [Struct] String
@@ -9647,7 +9647,7 @@ ir.cpp:
 # 1182|   params: 
 # 1182|     0: [Parameter] x
 # 1182|         Type = [IntType] int
-# 1182|   body: [Block] { ... }
+# 1182|   body: [BlockStmt] { ... }
 # 1183|     0: [DeclStmt] declaration
 # 1183|       0: [VariableDeclarationEntry] definition of y
 # 1183|           Type = [IntType] int
@@ -9660,7 +9660,7 @@ ir.cpp:
 # 1184|       0: [VariableAccess] x
 # 1184|           Type = [IntType] int
 # 1184|           ValueCategory = prvalue(load)
-# 1184|       1: [Block] { ... }
+# 1184|       1: [BlockStmt] { ... }
 # 1185|         0: [SwitchCase] case ...:
 # 1185|           0: [Literal] 1
 # 1185|               Type = [IntType] int
@@ -9689,7 +9689,7 @@ ir.cpp:
 # 1191|   params: 
 # 1191|     0: [Parameter] x
 # 1191|         Type = [IntType] int
-# 1191|   body: [Block] { ... }
+# 1191|   body: [BlockStmt] { ... }
 # 1192|     0: [DeclStmt] declaration
 # 1192|       0: [VariableDeclarationEntry] definition of y
 # 1192|           Type = [IntType] int
@@ -9702,7 +9702,7 @@ ir.cpp:
 # 1193|       0: [VariableAccess] x
 # 1193|           Type = [IntType] int
 # 1193|           ValueCategory = prvalue(load)
-# 1193|       1: [Block] { ... }
+# 1193|       1: [BlockStmt] { ... }
 # 1194|         0: [SwitchCase] case ...:
 # 1194|           0: [Literal] 1
 # 1194|               Type = [IntType] int
@@ -9747,7 +9747,7 @@ ir.cpp:
 # 1202|   params: 
 # 1202|     0: [Parameter] x
 # 1202|         Type = [IntType] int
-# 1202|   body: [Block] { ... }
+# 1202|   body: [BlockStmt] { ... }
 # 1203|     0: [DeclStmt] declaration
 # 1203|       0: [VariableDeclarationEntry] definition of y
 # 1203|           Type = [IntType] int
@@ -9760,7 +9760,7 @@ ir.cpp:
 # 1204|       0: [VariableAccess] x
 # 1204|           Type = [IntType] int
 # 1204|           ValueCategory = prvalue(load)
-# 1204|       1: [Block] { ... }
+# 1204|       1: [BlockStmt] { ... }
 # 1205|         0: [SwitchCase] case ...:
 # 1205|           0: [Literal] 1
 # 1205|               Type = [IntType] int
@@ -9807,7 +9807,7 @@ ir.cpp:
 # 1214|   params: 
 # 1214|     0: [Parameter] x
 # 1214|         Type = [IntType] int
-# 1214|   body: [Block] { ... }
+# 1214|   body: [BlockStmt] { ... }
 # 1215|     0: [DeclStmt] declaration
 # 1215|       0: [VariableDeclarationEntry] definition of y
 # 1215|           Type = [IntType] int
@@ -9820,7 +9820,7 @@ ir.cpp:
 # 1216|       0: [VariableAccess] x
 # 1216|           Type = [IntType] int
 # 1216|           ValueCategory = prvalue(load)
-# 1216|       1: [Block] { ... }
+# 1216|       1: [BlockStmt] { ... }
 # 1217|         0: [SwitchCase] case ...:
 # 1217|           0: [Literal] 1
 # 1217|               Type = [IntType] int
@@ -9880,7 +9880,7 @@ ir.cpp:
 # 1231|   params: 
 # 1231|     0: [Parameter] x
 # 1231|         Type = [IntType] int
-# 1231|   body: [Block] { ... }
+# 1231|   body: [BlockStmt] { ... }
 # 1232|     0: [DeclStmt] declaration
 # 1232|       0: [VariableDeclarationEntry] definition of a
 # 1232|           Type = [IntType] int
@@ -9944,7 +9944,7 @@ ir.cpp:
 # 1240|   params: 
 # 1240|     0: [Parameter] dynamic
 # 1240|         Type = [PointerType] const char *
-# 1240|   body: [Block] { ... }
+# 1240|   body: [BlockStmt] { ... }
 # 1241|     0: [DeclStmt] declaration
 # 1241|       0: [VariableDeclarationEntry] definition of a
 # 1241|           Type = [Struct] String
@@ -9995,7 +9995,7 @@ ir.cpp:
 # 1251|         Type = [CharPointerType] char *
 # 1251|     1: [Parameter] s2
 # 1251|         Type = [CharPointerType] char *
-# 1251|   body: [Block] { ... }
+# 1251|   body: [BlockStmt] { ... }
 # 1252|     0: [DeclStmt] declaration
 # 1252|       0: [VariableDeclarationEntry] definition of buffer
 # 1252|           Type = [ArrayType] char[1024]
@@ -10061,7 +10061,7 @@ ir.cpp:
 # 1261|         Type = [PointerType] A *
 # 1261|     1: [Parameter] x
 # 1261|         Type = [IntType] int
-# 1261|   body: [Block] { ... }
+# 1261|   body: [BlockStmt] { ... }
 # 1262|     0: [ExprStmt] ExprStmt
 # 1262|       0: [AssignExpr] ... = ...
 # 1262|           Type = [IntType] int
@@ -10086,7 +10086,7 @@ ir.cpp:
 # 1270|         Type = [IntType] int
 # 1270|     1: [Parameter] a_arg
 # 1270|         Type = [PointerType] A *
-# 1270|   body: [Block] { ... }
+# 1270|   body: [BlockStmt] { ... }
 # 1271|     0: [DeclStmt] declaration
 # 1271|       0: [VariableDeclarationEntry] definition of c
 # 1271|           Type = [Class] C
@@ -10237,12 +10237,12 @@ ir.cpp:
 # 1289|         Type = [BoolType] bool
 # 1289|     1: [Parameter] x
 # 1289|         Type = [IntType] int
-# 1289|   body: [Block] { ... }
+# 1289|   body: [BlockStmt] { ... }
 # 1290|     0: [IfStmt] if (...) ... 
 # 1290|       0: [VariableAccess] b
 # 1290|           Type = [BoolType] bool
 # 1290|           ValueCategory = prvalue(load)
-# 1290|       1: [Block] { ... }
+# 1290|       1: [BlockStmt] { ... }
 # 1291|         0: [ReturnStmt] return ...
 # 1291|           0: [VariableAccess] x
 # 1291|               Type = [IntType] int
@@ -10254,7 +10254,7 @@ ir.cpp:
 # 1295|         Type = [IntType] int
 # 1295|     1: [Parameter] y
 # 1295|         Type = [IntType] int
-# 1295|   body: [Block] { ... }
+# 1295|   body: [BlockStmt] { ... }
 # 1296|     0: [ReturnStmt] return ...
 # 1296|       0: [FunctionCall] call to IntegerOps
 # 1296|           Type = [VoidType] void
@@ -10273,7 +10273,7 @@ ir.cpp:
 # 1299|         Type = [IntType] int
 # 1299|     2: [Parameter] y
 # 1299|         Type = [LongType] long
-# 1299|   body: [Block] { ... }
+# 1299|   body: [BlockStmt] { ... }
 # 1300|     0: [DeclStmt] declaration
 # 1300|       0: [VariableDeclarationEntry] definition of z
 # 1300|           Type = [IntType] int
@@ -10463,7 +10463,7 @@ ir.cpp:
 # 1314|         Type = [IntType] int
 # 1314|     1: [Parameter] y
 # 1314|         Type = [IntType] int
-# 1314|   body: [Block] { ... }
+# 1314|   body: [BlockStmt] { ... }
 # 1315|     0: [ReturnStmt] return ...
 # 1315|       0: [ConditionalExpr] ... ? ... : ...
 # 1315|           Type = [IntType] int
@@ -10493,7 +10493,7 @@ ir.cpp:
 # 1320|   params: 
 # 1320|     0: [Parameter] p
 # 1320|         Type = [IntPointerType] int *
-# 1321|   body: [Block] { ... }
+# 1321|   body: [BlockStmt] { ... }
 # 1322|     0: [ExprStmt] ExprStmt
 # 1322|       0: [NewExpr] new
 # 1322|           Type = [IntPointerType] int *
@@ -10538,11 +10538,11 @@ perf-regression.cpp:
 #    6|       0: [ArrayAggregateLiteral] {...}
 #    6|           Type = [ArrayType] char[1073741824]
 #    6|           ValueCategory = prvalue
-#    6|   body: [Block] { ... }
+#    6|   body: [BlockStmt] { ... }
 #    6|     0: [ReturnStmt] return ...
 #    9| [TopLevelFunction] int main()
 #    9|   params: 
-#    9|   body: [Block] { ... }
+#    9|   body: [BlockStmt] { ... }
 #   10|     0: [DeclStmt] declaration
 #   10|       0: [VariableDeclarationEntry] definition of big
 #   10|           Type = [PointerType] Big *
@@ -10579,7 +10579,7 @@ struct_init.cpp:
 #   16|   params: 
 #   16|     0: [Parameter] info
 #   16|         Type = [PointerType] Info *
-#   16|   body: [Block] { ... }
+#   16|   body: [BlockStmt] { ... }
 #   17|     0: [ExprStmt] ExprStmt
 #   17|       0: [AssignExpr] ... = ...
 #   17|           Type = [PointerType] Info *
@@ -10593,7 +10593,7 @@ struct_init.cpp:
 #   18|     1: [ReturnStmt] return ...
 #   20| [TopLevelFunction] void declare_static_infos()
 #   20|   params: 
-#   20|   body: [Block] { ... }
+#   20|   body: [BlockStmt] { ... }
 #   21|     0: [DeclStmt] declaration
 #   21|       0: [VariableDeclarationEntry] definition of static_infos
 #   21|           Type = [ArrayType] Info[]
@@ -10643,7 +10643,7 @@ struct_init.cpp:
 #   26|     2: [ReturnStmt] return ...
 #   28| [TopLevelFunction] void declare_local_infos()
 #   28|   params: 
-#   28|   body: [Block] { ... }
+#   28|   body: [BlockStmt] { ... }
 #   29|     0: [DeclStmt] declaration
 #   29|       0: [VariableDeclarationEntry] definition of local_infos
 #   29|           Type = [ArrayType] Info[]
@@ -10695,7 +10695,7 @@ struct_init.cpp:
 #   36|   params: 
 #   36|     0: [Parameter] name1
 #   36|         Type = [PointerType] const char *
-#   36|   body: [Block] { ... }
+#   36|   body: [BlockStmt] { ... }
 #   37|     0: [DeclStmt] declaration
 #   37|       0: [VariableDeclarationEntry] definition of static_infos
 #   37|           Type = [ArrayType] Info[]

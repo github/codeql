@@ -1,7 +1,7 @@
 /**
- * Provides implementation classes modeling `std::string` and other
- * instantiations of `std::basic_string`. See `semmle.code.cpp.models.Models`
- * for usage information.
+ * Provides implementation classes modeling `std::string` (and other
+ * instantiations of `std::basic_string`) and `std::ostream`. See
+ * `semmle.code.cpp.models.Models` for usage information.
  */
 
 import semmle.code.cpp.models.interfaces.Taint
@@ -285,5 +285,70 @@ class StdStringAt extends TaintFunction {
     // reverse flow from returned reference to the qualifier
     input.isReturnValueDeref() and
     output.isQualifierObject()
+  }
+}
+
+/**
+ * The `std::basic_ostream` template class.
+ */
+class StdBasicOStream extends TemplateClass {
+  StdBasicOStream() { this.hasQualifiedName("std", "basic_ostream") }
+}
+
+/**
+ * The `std::ostream` function `operator<<` (defined as a member function).
+ */
+class StdOStreamOut extends DataFlowFunction, TaintFunction {
+  StdOStreamOut() { this.hasQualifiedName("std", "basic_ostream", "operator<<") }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    // flow from qualifier to return value
+    input.isQualifierAddress() and
+    output.isReturnValue()
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from parameter to qualifier
+    input.isParameter(0) and
+    output.isQualifierObject()
+    or
+    // flow from parameter to return value
+    input.isParameter(0) and
+    output.isReturnValueDeref()
+    or
+    // reverse flow from returned reference to the qualifier
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
+  }
+}
+
+/**
+ * The `std::ostream` function `operator<<` (defined as a non-member function).
+ */
+class StdOStreamOutNonMember extends DataFlowFunction, TaintFunction {
+  StdOStreamOutNonMember() {
+    this.hasQualifiedName("std", "operator<<") and
+    this.getUnspecifiedType().(ReferenceType).getBaseType() =
+      any(StdBasicOStream s).getAnInstantiation()
+  }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    // flow from first parameter to return value
+    input.isParameter(0) and
+    output.isReturnValue()
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from second parameter to first parameter
+    input.isParameter(1) and
+    output.isParameterDeref(0)
+    or
+    // flow from second parameter to return value
+    input.isParameter(1) and
+    output.isReturnValueDeref()
+    or
+    // reverse flow from returned reference to the first parameter
+    input.isReturnValueDeref() and
+    output.isParameterDeref(0)
   }
 }

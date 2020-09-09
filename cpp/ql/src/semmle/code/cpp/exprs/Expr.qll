@@ -27,7 +27,7 @@ class Expr extends StmtParent, @expr {
   Function getEnclosingFunction() { result = exprEnclosingElement(this) }
 
   /** Gets the nearest enclosing set of curly braces around this expression in the source, if any. */
-  Block getEnclosingBlock() { result = getEnclosingStmt().getEnclosingBlock() }
+  BlockStmt getEnclosingBlock() { result = getEnclosingStmt().getEnclosingBlock() }
 
   override Stmt getEnclosingStmt() {
     result = this.getParent().(Expr).getEnclosingStmt()
@@ -1109,7 +1109,7 @@ class StmtExpr extends Expr, @expr_stmt {
 /** Get the result expression of a statement. (Helper function for StmtExpr.) */
 private Expr getStmtResultExpr(Stmt stmt) {
   result = stmt.(ExprStmt).getExpr() or
-  result = getStmtResultExpr(stmt.(Block).getLastStmt())
+  result = getStmtResultExpr(stmt.(BlockStmt).getLastStmt())
 }
 
 /**

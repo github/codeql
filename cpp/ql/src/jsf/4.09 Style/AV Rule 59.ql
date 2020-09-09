@@ -13,7 +13,7 @@ import cpp
 
 from Stmt parent, Stmt child
 where
-  not child instanceof Block and
+  not child instanceof BlockStmt and
   (
     child = parent.(IfStmt).getThen()
     or

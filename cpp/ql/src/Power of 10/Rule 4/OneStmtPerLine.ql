@@ -14,7 +14,7 @@ import cpp
 class OneLineStmt extends Stmt {
   OneLineStmt() {
     this.getLocation().getStartLine() = this.getLocation().getEndLine() and
-    not this instanceof Block and
+    not this instanceof BlockStmt and
     not exists(ForStmt for | this = for.getInitialization()) and
     (
       // Either this statement is not touched by a macro at all...
