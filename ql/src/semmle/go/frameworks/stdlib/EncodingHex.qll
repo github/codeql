@@ -19,29 +19,9 @@ module EncodingHex {
       hasQualifiedName("encoding/hex", "DecodeString") and
       (inp.isParameter(0) and outp.isResult(0))
       or
-      // signature: func Dump(data []byte) string
-      hasQualifiedName("encoding/hex", "Dump") and
-      (inp.isParameter(0) and outp.isResult())
-      or
-      // signature: func Dumper(w io.Writer) io.WriteCloser
-      hasQualifiedName("encoding/hex", "Dumper") and
-      (inp.isResult() and outp.isParameter(0))
-      or
-      // signature: func Encode(dst []byte, src []byte) int
-      hasQualifiedName("encoding/hex", "Encode") and
-      (inp.isParameter(1) and outp.isParameter(0))
-      or
-      // signature: func EncodeToString(src []byte) string
-      hasQualifiedName("encoding/hex", "EncodeToString") and
-      (inp.isParameter(0) and outp.isResult())
-      or
       // signature: func NewDecoder(r io.Reader) io.Reader
       hasQualifiedName("encoding/hex", "NewDecoder") and
       (inp.isParameter(0) and outp.isResult())
-      or
-      // signature: func NewEncoder(w io.Writer) io.Writer
-      hasQualifiedName("encoding/hex", "NewEncoder") and
-      (inp.isResult() and outp.isParameter(0))
     }
 
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
