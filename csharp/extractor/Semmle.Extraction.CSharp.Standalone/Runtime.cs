@@ -66,15 +66,7 @@ namespace Semmle.Extraction.CSharp.Standalone
         /// <summary>
         /// Gets the .NET runtime location to use for extraction
         /// </summary>
-        public static string GetRuntime(bool useSelfContained)
-        {
-            if (useSelfContained)
-            {
-                return ExecutingRuntime;
-            }
-
-            return Runtimes.First();
-        }
+        public static string GetRuntime(bool useSelfContained) => useSelfContained ? ExecutingRuntime : Runtimes.First();
 
         private static IEnumerable<string> Runtimes
         {
