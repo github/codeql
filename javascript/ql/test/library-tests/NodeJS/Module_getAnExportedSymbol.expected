@@ -1,4 +1,7 @@
 | b.js:1:1:8:0 | <toplevel> | sneaky |
 | d.js:1:1:7:15 | <toplevel> | baz |
+| reexport/a.js:1:1:3:1 | <toplevel> | foo |
+| reexport/b.js:1:1:6:1 | <toplevel> | bar |
+| reexport/b.js:1:1:6:1 | <toplevel> | foo |
 | sub/c.js:1:1:4:0 | <toplevel> | foo |
 | sub/f.js:1:1:4:17 | <toplevel> | bar |

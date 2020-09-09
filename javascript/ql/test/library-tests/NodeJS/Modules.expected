@@ -4,5 +4,7 @@
 | e.js:1:1:6:0 | <toplevel> | e.js:0:0:0:0 | e.js | e.js | e |
 | index.js:1:1:3:0 | <toplevel> | index.js:0:0:0:0 | index.js | index.js | index |
 | mjs-files/require-from-js.js:1:1:4:0 | <toplevel> | mjs-files/require-from-js.js:0:0:0:0 | mjs-files/require-from-js.js | mjs-files/require-from-js.js | require-from-js |
+| reexport/a.js:1:1:3:1 | <toplevel> | reexport/a.js:0:0:0:0 | reexport/a.js | reexport/a.js | a |
+| reexport/b.js:1:1:6:1 | <toplevel> | reexport/b.js:0:0:0:0 | reexport/b.js | reexport/b.js | b |
 | sub/c.js:1:1:4:0 | <toplevel> | sub/c.js:0:0:0:0 | sub/c.js | sub/c.js | c |
 | sub/f.js:1:1:4:17 | <toplevel> | sub/f.js:0:0:0:0 | sub/f.js | sub/f.js | f |

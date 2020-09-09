@@ -55,6 +55,22 @@ class NodeModule extends Module {
       name = pwn.getPropertyName()
     )
     or
+    // a re-export using spread-operator. E.g. `const foo = require("./foo"); module.exports = {bar: bar, ...foo};`
+    exists(ObjectExpr obj | obj.analyze().getAValue() = getAModuleExportsValue() |
+      obj
+          .getAProperty()
+          .(SpreadProperty)
+          .getInit()
+          .(SpreadElement)
+          .getOperand()
+          .flow()
+          .getALocalSource()
+          .asExpr()
+          .(Import)
+          .getImportedModule()
+          .exports(name, export)
+    )
+    or
     // an externs definition (where appropriate)
     exists(PropAccess pacc | export = pacc |
       pacc.getBase().analyze().getAValue() = getAModuleExportsValue() and
