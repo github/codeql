@@ -77,6 +77,7 @@ edges
 | test.py:335:12:335:17 | ControlFlowNode for SOURCE | test.py:335:10:335:18 | ControlFlowNode for f() |
 | test.py:339:28:339:33 | ControlFlowNode for SOURCE | test.py:339:10:339:34 | ControlFlowNode for second() |
 | test.py:372:9:372:14 | ControlFlowNode for SOURCE | test.py:374:10:374:10 | ControlFlowNode for a |
+| test.py:372:9:372:14 | ControlFlowNode for SOURCE | test.py:379:10:379:10 | ControlFlowNode for b |
 nodes
 | datamodel.py:13:1:13:6 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
 | datamodel.py:13:10:13:17 | ControlFlowNode for Str | semmle.label | ControlFlowNode for Str |
@@ -181,6 +182,7 @@ nodes
 | test.py:339:28:339:33 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:372:9:372:14 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:374:10:374:10 | ControlFlowNode for a | semmle.label | ControlFlowNode for a |
+| test.py:379:10:379:10 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
 #select
 | datamodel.py:38:6:38:17 | ControlFlowNode for f() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:38:6:38:17 | ControlFlowNode for f() | <message> |
 | datamodel.py:38:6:38:17 | ControlFlowNode for f() | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | datamodel.py:38:6:38:17 | ControlFlowNode for f() | <message> |
@@ -216,3 +218,4 @@ nodes
 | test.py:335:10:335:18 | ControlFlowNode for f() | test.py:335:12:335:17 | ControlFlowNode for SOURCE | test.py:335:10:335:18 | ControlFlowNode for f() | <message> |
 | test.py:339:10:339:34 | ControlFlowNode for second() | test.py:339:28:339:33 | ControlFlowNode for SOURCE | test.py:339:10:339:34 | ControlFlowNode for second() | <message> |
 | test.py:374:10:374:10 | ControlFlowNode for a | test.py:372:9:372:14 | ControlFlowNode for SOURCE | test.py:374:10:374:10 | ControlFlowNode for a | <message> |
+| test.py:379:10:379:10 | ControlFlowNode for b | test.py:372:9:372:14 | ControlFlowNode for SOURCE | test.py:379:10:379:10 | ControlFlowNode for b | <message> |

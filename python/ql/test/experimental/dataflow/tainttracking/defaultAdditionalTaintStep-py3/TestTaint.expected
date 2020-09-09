@@ -1,9 +1,9 @@
 | test_collections.py:16 | ok   | test_access | tainted_list.copy() |
 | test_collections.py:24 | ok   | list_clear | tainted_list |
-| test_collections.py:27 | ok   | list_clear | tainted_list |
+| test_collections.py:27 | fail | list_clear | tainted_list |
 | test_string.py:17 | ok   | str_methods | ts.casefold() |
-| test_string.py:19 | fail | str_methods | ts.format_map(..) |
-| test_string.py:20 | fail | str_methods | "{unsafe}".format_map(..) |
+| test_string.py:19 | ok   | str_methods | ts.format_map(..) |
+| test_string.py:20 | ok   | str_methods | "{unsafe}".format_map(..) |
 | test_string.py:31 | fail | binary_decode_encode | base64.a85encode(..) |
 | test_string.py:32 | fail | binary_decode_encode | base64.a85decode(..) |
 | test_string.py:35 | fail | binary_decode_encode | base64.b85encode(..) |

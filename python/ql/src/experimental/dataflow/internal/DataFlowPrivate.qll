@@ -154,7 +154,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
 
 /**
  * If a node `n` has a post-update node `pun(n)`, we want forward flow to go from
- * `pun(n)` rather than from `n`.
+ * `pun(n)` as well as from `n`.
  */
 private Node update(Node node) {
   exists(PostUpdateNode pun |
@@ -162,7 +162,6 @@ private Node update(Node node) {
     result = pun
   )
   or
-  not exists(PostUpdateNode pun | node = pun.getPreUpdateNode()) and
   result = node
 }
 
