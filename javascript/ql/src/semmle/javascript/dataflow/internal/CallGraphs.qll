@@ -4,6 +4,7 @@
 
 private import javascript
 private import semmle.javascript.dataflow.internal.StepSummary
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
 
 cached
 module CallGraph {
@@ -47,6 +48,10 @@ module CallGraph {
     imprecision = 0 and
     t.start() and
     AccessPath::step(function, result)
+    or
+    t.start() and
+    imprecision = 0 and
+    PreCallGraphStep::step(any(DataFlow::Node n | function.flowsTo(n)), result)
     or
     imprecision = 0 and
     exists(DataFlow::ClassNode cls |
