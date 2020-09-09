@@ -130,10 +130,9 @@ private module PartialDefinitions {
      * Holds if this `PartialDefinition` defines variable `v` at control-flow
      * node `cfn`.
      */
-    pragma[noinline] // does this work with a dispred?
-    predicate partiallyDefinesVariableAt(Variable v, ControlFlowNode cfn) {
-      none()
-    }
+    // does this work with a dispred?
+    pragma[noinline]
+    predicate partiallyDefinesVariableAt(Variable v, ControlFlowNode cfn) { none() }
 
     /**
      * Holds if this partial definition may modify `inner` (or what it points
@@ -180,7 +179,7 @@ private module PartialDefinitions {
       inner = innerDefinedExpr and
       outer = this
     }
-    
+
     override predicate partiallyDefinesVariableAt(Variable v, ControlFlowNode cfn) {
       v = collection and
       cfn = node
@@ -198,7 +197,9 @@ private module PartialDefinitions {
       )
     }
 
-    deprecated override predicate partiallyDefines(Variable v) { innerDefinedExpr = v.getAnAccess() }
+    deprecated override predicate partiallyDefines(Variable v) {
+      innerDefinedExpr = v.getAnAccess()
+    }
 
     deprecated override predicate partiallyDefinesThis(ThisExpr e) { innerDefinedExpr = e }
 
@@ -214,7 +215,7 @@ private module PartialDefinitions {
       inner = innerDefinedExpr and
       outer = this
     }
-    
+
     override predicate partiallyDefinesVariableAt(Variable v, ControlFlowNode cfn) {
       innerDefinedExpr = v.getAnAccess() and
       cfn = node
