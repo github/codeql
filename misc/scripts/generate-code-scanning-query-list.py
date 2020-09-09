@@ -99,7 +99,7 @@ except Exception as e:
 #  - the 'codeql' subdirectory of the cwd
 #
 # (and assumes the codeql-go repo is in a similar location)
-codeql_search_path = "./codeql:./codeql-go:"   # will be extended further down
+codeql_search_path = "./codeql:./codeql-go:."   # will be extended further down
     
 # Extend CodeQL search path by detecting root of the current Git repo (if any). This means that you
 # can run this script from any location within the CodeQL git repository.
