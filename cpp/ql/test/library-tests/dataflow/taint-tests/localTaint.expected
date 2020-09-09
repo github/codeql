@@ -3269,7 +3269,7 @@
 | vector.cpp:350:38:350:39 | v4 | vector.cpp:350:41:350:45 | call to begin | TAINT |
 | vector.cpp:350:41:350:45 | call to begin | vector.cpp:350:50:350:51 | it |  |
 | vector.cpp:350:41:350:45 | call to begin | vector.cpp:350:68:350:69 | it |  |
-| vector.cpp:350:41:350:45 | call to begin | vector.cpp:351:4:351:5 | it |  |
+| vector.cpp:350:41:350:45 | call to begin | vector.cpp:351:32:351:33 | it |  |
 | vector.cpp:350:56:350:57 | ref arg v4 | vector.cpp:350:56:350:57 | v4 |  |
 | vector.cpp:350:56:350:57 | ref arg v4 | vector.cpp:353:7:353:8 | v4 |  |
 | vector.cpp:350:56:350:57 | ref arg v4 | vector.cpp:382:1:382:1 | v4 |  |
@@ -3277,14 +3277,8 @@
 | vector.cpp:350:68:350:69 | it | vector.cpp:350:66:350:66 | call to operator++ | TAINT |
 | vector.cpp:350:68:350:69 | ref arg it | vector.cpp:350:50:350:51 | it |  |
 | vector.cpp:350:68:350:69 | ref arg it | vector.cpp:350:68:350:69 | it |  |
-| vector.cpp:350:68:350:69 | ref arg it | vector.cpp:351:4:351:5 | it |  |
-| vector.cpp:351:3:351:3 | call to operator* [post update] | vector.cpp:350:56:350:57 | v4 |  |
-| vector.cpp:351:3:351:3 | call to operator* [post update] | vector.cpp:353:7:353:8 | v4 |  |
-| vector.cpp:351:3:351:3 | call to operator* [post update] | vector.cpp:382:1:382:1 | v4 |  |
-| vector.cpp:351:3:351:16 | ... = ... | vector.cpp:351:3:351:3 | call to operator* [post update] |  |
-| vector.cpp:351:4:351:5 | it | vector.cpp:351:3:351:3 | call to operator* | TAINT |
-| vector.cpp:351:9:351:14 | call to source | vector.cpp:351:3:351:3 | call to operator* [post update] | TAINT |
-| vector.cpp:351:9:351:14 | call to source | vector.cpp:351:3:351:16 | ... = ... |  |
+| vector.cpp:350:68:350:69 | ref arg it | vector.cpp:351:32:351:33 | it |  |
+| vector.cpp:351:32:351:33 | it | vector.cpp:351:32:351:33 | call to iterator |  |
 | vector.cpp:353:7:353:8 | ref arg v4 | vector.cpp:382:1:382:1 | v4 |  |
 | vector.cpp:355:34:355:35 | ref arg v5 | vector.cpp:357:7:357:8 | v5 |  |
 | vector.cpp:355:34:355:35 | ref arg v5 | vector.cpp:359:7:359:8 | v5 |  |

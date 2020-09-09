@@ -348,7 +348,7 @@ void test_vector_output_iterator(int b) {
 	sink(v3); // tainted [NOT DETECTED]
 
 	for(std::vector<int>::iterator it = v4.begin(); it != v4.end(); ++it) {
-		*it = source();
+		taint_vector_output_iterator(it);
 	}
 	sink(v4); // tainted [NOT DETECTED by IR]
 	

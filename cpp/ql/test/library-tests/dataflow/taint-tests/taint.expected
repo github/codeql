@@ -328,7 +328,6 @@
 | vector.cpp:326:7:326:8 | v4 | vector.cpp:318:15:318:20 | call to source |
 | vector.cpp:338:7:338:8 | v1 | vector.cpp:337:8:337:13 | call to source |
 | vector.cpp:343:7:343:8 | v2 | vector.cpp:341:9:341:14 | call to source |
-| vector.cpp:353:7:353:8 | v4 | vector.cpp:351:9:351:14 | call to source |
 | vector.cpp:357:7:357:8 | v5 | vector.cpp:356:8:356:13 | call to source |
 | vector.cpp:359:7:359:8 | v5 | vector.cpp:356:8:356:13 | call to source |
 | vector.cpp:363:7:363:8 | v6 | vector.cpp:362:8:362:13 | call to source |
