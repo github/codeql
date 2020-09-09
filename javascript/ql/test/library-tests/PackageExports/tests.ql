@@ -6,3 +6,7 @@ query PackageJSON getTopmostPackageJSON() { result = Exports::getTopmostPackageJ
 query DataFlow::Node getAValueExportedBy(PackageJSON json) {
   result = Exports::getAValueExportedBy(json)
 }
+
+query DataFlow::Node getAnExportedValue(Module mod, string name) {
+  result = Exports::getAnExportedValue(mod, name)
+}
