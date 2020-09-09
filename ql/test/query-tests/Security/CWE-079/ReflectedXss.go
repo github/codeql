@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 )
@@ -17,4 +18,26 @@ func serve() {
 		}
 	})
 	http.ListenAndServe(":80", nil)
+}
+
+func encode(s string) ([]byte, error) {
+
+	return json.Marshal(s)
+
+}
+
+func ServeJsonIndirect(w http.ResponseWriter, r http.Request) {
+
+	tainted := r.Header.Get("Origin")
+	noLongerTainted, _ := encode(tainted)
+	w.Write(noLongerTainted)
+
+}
+
+func ServeJsonDirect(w http.ResponseWriter, r http.Request) {
+
+	tainted := r.Header.Get("Origin")
+	noLongerTainted, _ := json.Marshal(tainted)
+	w.Write(noLongerTainted)
+
 }

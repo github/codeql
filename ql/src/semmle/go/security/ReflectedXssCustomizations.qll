@@ -76,9 +76,6 @@ module ReflectedXss {
         // https://mimesniff.spec.whatwg.org/#whitespace-byte) cannot cause an HTML content type to
         // be detected.
         pred.getStringValue().regexpMatch("(?s)[\\t\\n\\x0c\\r ]*+[^<].*")
-        or
-        // json data cannot begin with `<`
-        exists(EncodingJson::MarshalFunction mf | pred = mf.getOutput().getNode(mf.getACall()))
       )
     )
   }
@@ -115,6 +112,18 @@ module ReflectedXss {
       this.getAnOperand().isConst() and
       e = this.getAnOperand().asExpr() and
       outcome = this.getPolarity()
+    }
+  }
+
+  /**
+   * A JSON marshaler, acting to sanitize a possible XSS vulnerability because the
+   * marshaled value is very unlikely to be returned as an HTML content-type.
+   */
+  class JsonMarshalSanitizer extends Sanitizer {
+    JsonMarshalSanitizer() {
+      exists(MarshalingFunction mf | mf.getFormat() = "JSON" |
+        this = mf.getOutput().getNode(mf.getACall())
+      )
     }
   }
 }
