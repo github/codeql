@@ -11,6 +11,7 @@ class CustomSanitizerOverrides extends TestTaintTrackingConfiguration {
   }
 
   override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    // TODO: Future work for when BarrierGuard is implemented properly
     // exists(Call call |
     //   call.getFunc().(Name).getId() = "emulated_is_safe" and
     // )
