@@ -414,6 +414,28 @@ function_entry_point(int id: @function ref, unique int entry_point: @stmt ref);
 
 function_return_type(int id: @function ref, int return_type: @type ref);
 
+/** If `function` is a coroutine, then this gives the
+    std::experimental::resumable_traits instance associated with it,
+    and the variables representing the `handle` and `promise` for it. */
+coroutine(
+  unique int function: @function ref,
+  int traits: @type ref,
+  int handle: @variable ref,
+  int promise: @variable ref
+);
+
+/** The `new` function used for allocating the coroutine state, if any. */
+coroutine_new(
+  unique int function: @function ref,
+  int new: @function ref
+);
+
+/** The `delete` function used for deallocating the coroutine state, if any. */
+coroutine_delete(
+  unique int function: @function ref,
+  int delete: @function ref
+);
+
 purefunctions(unique int id: @function ref);
 
 function_deleted(unique int id: @function ref);
