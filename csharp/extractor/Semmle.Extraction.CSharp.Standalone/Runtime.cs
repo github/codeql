@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp.Standalone
         /// <summary>
         /// Locates .NET Core Runtimes.
         /// </summary>
-        public static IEnumerable<string> CoreRuntimes
+        private static IEnumerable<string> CoreRuntimes
         {
             get
             {
@@ -37,7 +37,7 @@ namespace Semmle.Extraction.CSharp.Standalone
         /// Locates .NET Desktop Runtimes.
         /// This includes Mono and Microsoft.NET.
         /// </summary>
-        public static IEnumerable<string> DesktopRuntimes
+        private static IEnumerable<string> DesktopRuntimes
         {
             get
             {
@@ -63,7 +63,12 @@ namespace Semmle.Extraction.CSharp.Standalone
             }
         }
 
-        public static IEnumerable<string> Runtimes
+        /// <summary>
+        /// Gets the .NET runtime location to use for extraction
+        /// </summary>
+        public static string GetRuntime(bool useSelfContained) => useSelfContained ? ExecutingRuntime : Runtimes.First();
+
+        private static IEnumerable<string> Runtimes
         {
             get
             {
