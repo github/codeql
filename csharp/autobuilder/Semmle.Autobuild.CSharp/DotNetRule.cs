@@ -7,7 +7,6 @@ using System.IO;
 using Semmle.Util;
 using System.Text.RegularExpressions;
 using Semmle.Autobuild.Shared;
-using System.Net;
 
 namespace Semmle.Autobuild.CSharp
 {
@@ -230,7 +229,10 @@ Invoke-Command -ScriptBlock $ScriptBlock";
                     }
                     else
                     {
-                        var downloadDotNetInstallSh = BuildScript.DownloadFile("https://dot.net/v1/dotnet-install.sh", "dotnet-install.sh");
+                        var downloadDotNetInstallSh = BuildScript.DownloadFile(
+                            "https://dot.net/v1/dotnet-install.sh",
+                            "dotnet-install.sh",
+                            e => builder.Log(Severity.Warning, $"Failed to download 'dotnet-install.sh': {e.Message}"));
 
                         var chmod = new CommandBuilder(builder.Actions).
                             RunCommand("chmod").

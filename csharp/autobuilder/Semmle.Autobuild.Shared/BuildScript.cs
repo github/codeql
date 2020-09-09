@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
 
 namespace Semmle.Autobuild.Shared
 {
@@ -196,7 +195,7 @@ namespace Semmle.Autobuild.Shared
         /// <summary>
         /// Creates a build script that downloads the specified file.
         /// </summary>
-        public static BuildScript DownloadFile(string address, string fileName) =>
+        public static BuildScript DownloadFile(string address, string fileName, Action<Exception> exceptionCallback) =>
             Create(actions =>
             {
                 if (actions.GetDirectoryName(fileName) is string dir && !string.IsNullOrWhiteSpace(dir))
@@ -206,8 +205,9 @@ namespace Semmle.Autobuild.Shared
                     actions.DownloadFile(address, fileName);
                     return 0;
                 }
-                catch (WebException)
+                catch (Exception e)
                 {
+                    exceptionCallback(e);
                     return 1;
                 }
             });

@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Xml;
-using System.Net;
+using System.Net.Http;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 
 namespace Semmle.Autobuild.Shared
 {
@@ -216,11 +217,17 @@ namespace Semmle.Autobuild.Shared
 
         public string EnvironmentExpandEnvironmentVariables(string s) => Environment.ExpandEnvironmentVariables(s);
 
-        public void DownloadFile(string address, string fileName)
+        static async Task DownloadFileAsync(string address, string filename)
         {
-            using var webClient = new WebClient();
-            webClient.DownloadFile(address, fileName);
+            using var httpClient = new HttpClient();
+            using var request = new HttpRequestMessage(HttpMethod.Get, address);
+            using var contentStream = await (await httpClient.SendAsync(request)).Content.ReadAsStreamAsync();
+            using var stream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
+            await contentStream.CopyToAsync(stream);
         }
+
+        public void DownloadFile(string address, string fileName) =>
+            DownloadFileAsync(address, fileName).Wait();
 
         public static readonly IBuildActions Instance = new SystemBuildActions();
     }

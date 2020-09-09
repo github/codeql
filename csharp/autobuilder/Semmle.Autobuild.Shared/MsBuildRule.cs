@@ -1,6 +1,5 @@
 using Semmle.Util.Logging;
 using System.Linq;
-using System.Net;
 
 namespace Semmle.Autobuild.Shared
 {
@@ -168,7 +167,10 @@ namespace Semmle.Autobuild.Shared
                 return 0;
             })
             &
-            BuildScript.DownloadFile("https://dist.nuget.org/win-x86-commandline/latest/nuget.exe", path)
+            BuildScript.DownloadFile(
+                "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe",
+                path,
+                e => builder.Log(Severity.Warning, $"Failed to download 'nuget.exe': {e.Message}"))
             &
             BuildScript.Create(_ =>
             {
