@@ -76,7 +76,7 @@ abstract class Configuration extends DataFlow::Configuration {
 
   final override predicate isBarrier(DataFlow::Node node) {
     isSanitizer(node) or
-    defaultTaintBarrier(node)
+    defaultTaintSanitizer(node)
   }
 
   /** Holds if data flow into `node` is prohibited. */
