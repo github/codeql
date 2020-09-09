@@ -31,10 +31,31 @@
 | defaulttainttracking.cpp:140:11:140:16 | call to getenv | defaulttainttracking.cpp:150:13:150:14 | & ... | IR only |
 | globals.cpp:13:15:13:20 | call to getenv | globals.cpp:13:5:13:11 | global1 | AST only |
 | globals.cpp:23:15:23:20 | call to getenv | globals.cpp:23:5:23:11 | global2 | AST only |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:43:78:43:104 | p#0 | IR only |
 | stl.cpp:62:25:62:30 | call to getenv | stl.cpp:62:7:62:12 | source | AST only |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:64:36:64:36 | s | IR only |
 | stl.cpp:62:25:62:30 | call to getenv | stl.cpp:70:16:70:24 | call to basic_string | IR only |
 | stl.cpp:62:25:62:30 | call to getenv | stl.cpp:82:16:82:24 | call to basic_string | IR only |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:85:6:85:6 | call to operator<< | IR only |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:85:6:85:17 | (reference dereference) | IR only |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:86:15:86:15 | call to operator<< | IR only |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:86:15:86:26 | (reference dereference) | IR only |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:87:6:87:6 | call to operator<< | IR only |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:87:6:87:19 | (reference dereference) | IR only |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:87:6:87:19 | (reference to) | IR only |
 | stl.cpp:62:25:62:30 | call to getenv | stl.cpp:87:9:87:16 | (const char *)... | IR only |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:87:18:87:18 | call to operator<< | IR only |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:87:18:87:26 | (reference dereference) | IR only |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:91:7:91:9 | (const stringstream)... | IR only |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:91:7:91:9 | (reference to) | IR only |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:91:7:91:9 | ss2 | IR only |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:93:7:93:9 | (const stringstream)... | IR only |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:93:7:93:9 | (reference to) | IR only |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:93:7:93:9 | ss4 | IR only |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:96:7:96:9 | (const basic_stringstream<char, char_traits<char>, allocator<char>>)... | IR only |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:96:7:96:9 | ss2 | IR only |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:98:7:98:9 | (const basic_stringstream<char, char_traits<char>, allocator<char>>)... | IR only |
+| stl.cpp:62:25:62:30 | call to getenv | stl.cpp:98:7:98:9 | ss4 | IR only |
 | stl.cpp:62:25:62:30 | call to getenv | stl.cpp:117:7:117:16 | user_input | AST only |
 | stl.cpp:62:25:62:30 | call to getenv | stl.cpp:125:16:125:28 | call to basic_string | IR only |
 | stl.cpp:62:25:62:30 | call to getenv | stl.cpp:128:9:128:13 | path2 | IR only |
