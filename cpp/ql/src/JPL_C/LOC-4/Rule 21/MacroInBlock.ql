@@ -12,7 +12,7 @@
 import cpp
 
 int lineInBlock(File f) {
-  exists(Block block, Location blockLocation |
+  exists(BlockStmt block, Location blockLocation |
     block.getFile() = f and blockLocation = block.getLocation()
   |
     result in [blockLocation.getStartLine() .. blockLocation.getEndLine()]

@@ -20,6 +20,7 @@ The following changes in version 1.26 affect C/C++ analysis in all applications.
 
 ## Changes to libraries
 
+* The QL class `Block`, denoting the `{ ... }` statement, is renamed to `BlockStmt`.
 * The models library now models many taint flows through `std::array`, `std::vector`, `std::deque`, `std::list` and `std::forward_list`.
 * The models library now models many more taint flows through `std::string`.
 * The `SimpleRangeAnalysis` library now supports multiplications of the form
