@@ -88,7 +88,7 @@ namespace Semmle.BuildAnalyser
                     nuget = new NugetPackages(sourceDir.FullName, PackageDirectory);
                     ReadNugetFiles();
                 }
-                catch(FileNotFoundException)
+                catch (FileNotFoundException)
                 {
                     progressMonitor.MissingNuGet();
                 }
@@ -97,7 +97,9 @@ namespace Semmle.BuildAnalyser
             // Find DLLs in the .Net Framework
             if (options.ScanNetFrameworkDlls)
             {
-                dllDirNames.Add(Runtime.Runtimes.First());
+                var runtimeLocation = Runtime.GetRuntime(options.UseSelfContainedDotnet);
+                progressMonitor.Log(Util.Logging.Severity.Debug, $"Runtime location selected: {runtimeLocation}");
+                dllDirNames.Add(runtimeLocation);
             }
 
             // These files can sometimes prevent `dotnet restore` from working correctly.
@@ -279,7 +281,7 @@ namespace Semmle.BuildAnalyser
 
         void AnalyseProject(FileInfo project)
         {
-            if(!project.Exists)
+            if (!project.Exists)
             {
                 progressMonitor.MissingProject(project.FullName);
                 return;
@@ -323,7 +325,7 @@ namespace Semmle.BuildAnalyser
         void Restore(string projectOrSolution)
         {
             int exit = DotNet.RestoreToDirectory(projectOrSolution, PackageDirectory.DirInfo.FullName);
-            switch(exit)
+            switch (exit)
             {
                 case 0:
                 case 1:
@@ -342,7 +344,7 @@ namespace Semmle.BuildAnalyser
 
         public void AnalyseSolutions(IEnumerable<string> solutions)
         {
-            Parallel.ForEach(solutions, new ParallelOptions { MaxDegreeOfParallelism = 4 } , solutionFile =>
+            Parallel.ForEach(solutions, new ParallelOptions { MaxDegreeOfParallelism = 4 }, solutionFile =>
             {
                 try
                 {
