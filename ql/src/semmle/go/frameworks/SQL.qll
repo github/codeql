@@ -161,12 +161,13 @@ module SQL {
     }
   }
 
-  /** A model for sinks of github.com/jinzhu/gorm. */
+  /** A model for sinks of GORM. */
   private class GormSink extends SQL::QueryString::Range {
     GormSink() {
-      exists(Method meth, string name |
-        meth.hasQualifiedName("github.com/jinzhu/gorm", "DB", name) and
+      exists(Method meth, string package, string name |
+        meth.hasQualifiedName(package, "DB", name) and
         this = meth.getACall().getArgument(0) and
+        package in ["github.com/jinzhu/gorm", "github.com/go-gorm/gorm", "gorm.io/gorm"] and
         name in ["Where", "Raw", "Order", "Not", "Or", "Select", "Table", "Group", "Having", "Joins"]
       )
     }
