@@ -46,3 +46,15 @@ DataFlow::SourceNode dataValue(DataFlow::TypeTracker t) {
 }
 
 query DataFlow::SourceNode dataValue() { result = dataValue(DataFlow::TypeTracker::end()) }
+
+DataFlow::SourceNode reexport(DataFlow::TypeTracker t, DataFlow::FunctionNode func) {
+  t.start() and
+  func = result and
+  func.getFile().getParentContainer().getBaseName() = "reexport"
+  or
+  exists(DataFlow::TypeTracker t2 | result = reexport(t2, func).track(t2, t))
+}
+
+query DataFlow::SourceNode reexport(DataFlow::FunctionNode func) {
+  result = reexport(DataFlow::TypeTracker::end(), func)
+}

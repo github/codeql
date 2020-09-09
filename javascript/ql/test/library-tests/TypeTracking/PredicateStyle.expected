@@ -70,3 +70,8 @@ dataValue
 | tst.js:51:30:51:33 | data |
 | tst.js:58:16:58:16 | x |
 | tst.js:68:16:68:19 | data |
+reexport
+| reexport/a.js:2:10:2:26 | function foo() {} | reexport/a.js:2:10:2:26 | function foo() {} |
+| reexport/a.js:2:10:2:26 | function foo() {} | reexport/test.js:3:13:3:17 | b.foo |
+| reexport/b.js:4:10:4:26 | function bar() {} | reexport/b.js:4:10:4:26 | function bar() {} |
+| reexport/b.js:4:10:4:26 | function bar() {} | reexport/test.js:4:13:4:17 | b.bar |

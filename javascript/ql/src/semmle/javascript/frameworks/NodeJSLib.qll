@@ -638,6 +638,20 @@ module NodeJSLib {
     }
   }
 
+  private import semmle.javascript.PackageExports as Exports
+
+  /**
+   * A direct step from an named export to a property-read reading the exported value.
+   */
+  private class ExportsStep extends PreCallGraphStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(Import imp, string name |
+        succ = DataFlow::valueNode(imp).(DataFlow::SourceNode).getAPropertyRead(name) and
+        pred = Exports::getAnExportedValue(imp.getImportedModule(), name)
+      )
+    }
+  }
+
   /**
    * A call to a method from module `child_process`.
    */
