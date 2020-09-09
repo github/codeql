@@ -44,3 +44,18 @@ class UniqueOrSharedDereferenceMemberOperator extends MemberFunction, TaintFunct
     output.isReturnValueDeref()
   }
 }
+
+/**
+ * The `std::shared_ptr` or `std::unique_ptr` function `get`.
+ */
+class UniqueOrSharedGet extends TaintFunction {
+  UniqueOrSharedGet() {
+    this.hasName("get") and
+    this.getDeclaringType() instanceof UniqueOrSharedPtr
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isQualifierObject() and
+    output.isReturnValue()
+  }
+}

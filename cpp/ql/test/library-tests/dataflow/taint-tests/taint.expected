@@ -41,6 +41,8 @@
 | smart_pointer.cpp:13:10:13:10 | p | smart_pointer.cpp:11:52:11:57 | call to source |
 | smart_pointer.cpp:24:10:24:10 | call to operator* | smart_pointer.cpp:23:52:23:57 | call to source |
 | smart_pointer.cpp:25:10:25:10 | p | smart_pointer.cpp:23:52:23:57 | call to source |
+| smart_pointer.cpp:52:12:52:14 | call to get | smart_pointer.cpp:51:52:51:57 | call to source |
+| smart_pointer.cpp:57:12:57:14 | call to get | smart_pointer.cpp:56:52:56:57 | call to source |
 | standalone_iterators.cpp:40:10:40:10 | call to operator* | standalone_iterators.cpp:39:45:39:51 | source1 |
 | standalone_iterators.cpp:41:10:41:10 | call to operator* | standalone_iterators.cpp:39:45:39:51 | source1 |
 | standalone_iterators.cpp:42:10:42:10 | call to operator* | standalone_iterators.cpp:39:45:39:51 | source1 |

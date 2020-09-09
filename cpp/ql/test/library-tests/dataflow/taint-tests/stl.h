@@ -241,6 +241,8 @@ namespace std {
 
 		T& operator*() const noexcept;
 		T* operator->() const noexcept;
+
+		T* get() const noexcept;
 	};
 
 	template<typename T>
@@ -254,6 +256,8 @@ namespace std {
 
 		T& operator*() const;
 		T* operator->() const noexcept;
+
+		T* get() const noexcept;
 	};
 
 	template<typename T, class... Args> unique_ptr<T> make_unique(Args&&...);
