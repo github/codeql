@@ -20,6 +20,7 @@ jobs:
     - name: Clone github/codeql-go
       uses: actions/checkout@v2
       with:
+        repository: 'github/codeql-go'
         path: codeql-go
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
