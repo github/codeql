@@ -10,3 +10,5 @@ query DataFlow::Node getAValueExportedBy(PackageJSON json) {
 query DataFlow::Node getAnExportedValue(Module mod, string name) {
   result = Exports::getAnExportedValue(mod, name)
 }
+
+query Module exports(string name, ASTNode export) { result.exports(name, export) }
