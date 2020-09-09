@@ -332,11 +332,12 @@ final class DeclarationWithAccessorsNode extends ElementNode {
     result.(ElementNode).getElement() = declaration.(Property).getInitializer().getParent()
     or
     result.(ElementNode).getElement() =
-      rank[childIndex - 2](Element a, string file, int line, int column |
+      rank[childIndex - 2](Element a, string file, int line, int column, string name |
         a = declaration.getAnAccessor() and
-        locationSortKeys(a, file, line, column)
+        locationSortKeys(a, file, line, column) and
+        name = a.toString()
       |
-        a order by file, line, column
+        a order by file, line, column, name
       )
   }
 }

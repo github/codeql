@@ -182,7 +182,7 @@ private int switchCaseRangeEnd(SwitchCase sc) {
  * body `switchBlock`. There may be several such expressions: for example, if
  * the condition is `(x ? y : z)` then the result is {`y`, `z`}.
  */
-private Node getASwitchExpr(SwitchStmt switch, Block switchBlock) {
+private Node getASwitchExpr(SwitchStmt switch, BlockStmt switchBlock) {
   switch.getStmt() = switchBlock and
   successors_extended(result, switchBlock)
 }
@@ -192,7 +192,7 @@ private Node getASwitchExpr(SwitchStmt switch, Block switchBlock) {
  * from `switchBlock` to `sc` is impossible. This considers only non-`default`
  * switch cases.
  */
-private predicate impossibleSwitchEdge(Block switchBlock, SwitchCase sc) {
+private predicate impossibleSwitchEdge(BlockStmt switchBlock, SwitchCase sc) {
   not sc instanceof DefaultCase and
   exists(SwitchStmt switch |
     switch = sc.getSwitchStmt() and
@@ -215,7 +215,7 @@ private predicate impossibleSwitchEdge(Block switchBlock, SwitchCase sc) {
  * If a switch provably always chooses a non-default case, then the edge to
  * the default case is impossible.
  */
-private predicate impossibleDefaultSwitchEdge(Block switchBlock, DefaultCase dc) {
+private predicate impossibleDefaultSwitchEdge(BlockStmt switchBlock, DefaultCase dc) {
   exists(SwitchStmt switch |
     switch = dc.getSwitchStmt() and
     switch.getStmt() = switchBlock and

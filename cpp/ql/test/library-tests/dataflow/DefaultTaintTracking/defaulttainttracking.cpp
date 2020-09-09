@@ -149,3 +149,63 @@ void test_conflated_fields2() {
   taint_x(&p);
   y_to_sink(&p);
 }
+
+void sink(Point*);
+void sink(Point);
+
+void test_field_to_obj_taint_object(Point p) {
+  p.x = getenv("VAR")[0];
+  sink(p); // not tainted
+  sink(p.x); // tainted
+}
+
+void test_field_to_obj_taint_object_addrof(Point p) {
+  taint_x(&p);
+  sink(p); // tainted [field -> object]
+  sink(&p); // tainted [field -> object]
+  sink(p.x); // tainted
+}
+
+void test_field_to_obj_taint_pointer(Point* pp) {
+  pp->x = getenv("VAR")[0];
+  sink(pp); // tainted [field -> object]
+  sink(*pp); // not tainted
+}
+
+void call_sink_on_object(Point* pp) {
+  sink(pp); // tainted [field -> object]
+  sink(*pp); // tainted [field -> object]
+}
+
+void test_field_to_obj_taint_call_sink(Point* pp) {
+  pp->x = getenv("VAR")[0];
+  call_sink_on_object(pp);
+}
+
+void test_field_to_obj_taint_through_setter(Point* pp) {
+  taint_x(pp);
+  sink(pp); // tainted [field -> object]
+  sink(*pp); // not tainted
+}
+
+Point* getPoint();
+
+void test_field_to_obj_local_variable() {
+  Point* pp = getPoint();
+  pp->x = getenv("VAR")[0];
+  sink(pp); // not tainted
+  sink(*pp); // not tainted
+}
+
+void test_field_to_obj_taint_array(Point* pp, int i) {
+  pp[0].x = getenv("VAR")[0];
+  sink(pp[i]); // not tainted
+  sink(pp); // tainted [field -> object]
+  sink(*pp); // not tainted
+}
+
+void test_field_to_obj_test_pointer_arith(Point* pp) {
+  (pp + sizeof(*pp))->x = getenv("VAR")[0];
+  sink(pp); // tainted [field -> object]
+  sink(pp + sizeof(*pp)); // tainted [field -> object]
+}

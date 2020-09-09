@@ -98,7 +98,7 @@ class Parameter extends LocalScopeVariable, @parameter {
    * DEPRECATED: this method was used in a previous implementation of
    * getName, but is no longer in use.
    */
-  deprecated string getNameInBlock(Block b) {
+  deprecated string getNameInBlock(BlockStmt b) {
     exists(ParameterDeclarationEntry pde |
       pde.getFunctionDeclarationEntry().getBlock() = b and
       this.getFunction().getBlock() = b and
@@ -127,7 +127,7 @@ class Parameter extends LocalScopeVariable, @parameter {
    * Gets the catch block to which this parameter belongs, if it is a catch
    * block parameter.
    */
-  Block getCatchBlock() { params(underlyingElement(this), unresolveElement(result), _, _) }
+  BlockStmt getCatchBlock() { params(underlyingElement(this), unresolveElement(result), _, _) }
 
   /**
    * Gets the zero-based index of this parameter.

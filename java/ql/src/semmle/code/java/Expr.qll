@@ -1022,7 +1022,7 @@ class LambdaExpr extends FunctionalExpr, @lambdaexpr {
   }
 
   /** Gets the body of this lambda expression, if it is a statement. */
-  Block getStmtBody() { hasStmtBody() and result = asMethod().getBody() }
+  BlockStmt getStmtBody() { hasStmtBody() and result = asMethod().getBody() }
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "...->..." }

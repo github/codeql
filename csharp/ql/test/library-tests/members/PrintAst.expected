@@ -36,7 +36,7 @@ Members.cs:
 #   20|         3: [AddEventAccessor] add_Event
 #-----|           2: (Parameters)
 #   20|             0: [Parameter] value
-#   20|         3: [RemoveEventAccessor] remove_Event
+#   20|         4: [RemoveEventAccessor] remove_Event
 #-----|           2: (Parameters)
 #   20|             0: [Parameter] value
 #   24|     6: [Method] Method
@@ -64,7 +64,7 @@ Members.cs:
 #   32|       3: [AddEventAccessor] add_Event
 #-----|         2: (Parameters)
 #   32|           0: [Parameter] value
-#   32|       3: [RemoveEventAccessor] remove_Event
+#   32|       4: [RemoveEventAccessor] remove_Event
 #-----|         2: (Parameters)
 #   32|           0: [Parameter] value
 #   35|   3: [Class] Class2
@@ -99,7 +99,7 @@ Members.cs:
 #   43|         3: [AddEventAccessor] add_Event
 #-----|           2: (Parameters)
 #   43|             0: [Parameter] value
-#   43|         3: [RemoveEventAccessor] remove_Event
+#   43|         4: [RemoveEventAccessor] remove_Event
 #-----|           2: (Parameters)
 #   43|             0: [Parameter] value
 #   46|     6: [Method] Method
@@ -127,7 +127,7 @@ Members.cs:
 #   50|       3: [AddEventAccessor] add_Event
 #-----|         2: (Parameters)
 #   50|           0: [Parameter] value
-#   50|       3: [RemoveEventAccessor] remove_Event
+#   50|       4: [RemoveEventAccessor] remove_Event
 #-----|         2: (Parameters)
 #   50|           0: [Parameter] value
 #   54|   4: [Interface] Interface
@@ -151,7 +151,7 @@ Members.cs:
 #   59|       3: [AddEventAccessor] add_Event
 #-----|         2: (Parameters)
 #   59|           0: [Parameter] value
-#   59|       3: [RemoveEventAccessor] remove_Event
+#   59|       4: [RemoveEventAccessor] remove_Event
 #-----|         2: (Parameters)
 #   59|           0: [Parameter] value
 #   62|   5: [Interface] Interface2
@@ -175,7 +175,7 @@ Members.cs:
 #   67|       3: [AddEventAccessor] add_Event
 #-----|         2: (Parameters)
 #   67|           0: [Parameter] value
-#   67|       3: [RemoveEventAccessor] remove_Event
+#   67|       4: [RemoveEventAccessor] remove_Event
 #-----|         2: (Parameters)
 #   67|           0: [Parameter] value
 #   71|   6: [Enum] Enum

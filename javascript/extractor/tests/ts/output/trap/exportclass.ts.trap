@@ -49,18 +49,18 @@ hasLocation(#20001,#20014)
 scopes(#20015,3)
 scopenodes(#20001,#20015)
 scopenesting(#20015,#20000)
-isModule(#20001)
-isES2015Module(#20001)
+is_module(#20001)
+is_es2015_module(#20001)
 #20016=*
 stmts(#20016,30,#20001,0,"export class {}")
 hasLocation(#20016,#20003)
-stmtContainers(#20016,#20001)
+stmt_containers(#20016,#20001)
 #20017=*
 stmts(#20017,26,#20016,-1,"class {}")
 #20018=@"loc,{#10000},1,8,1,15"
 locations_default(#20018,#10000,1,8,1,15)
 hasLocation(#20017,#20018)
-stmtContainers(#20017,#20001)
+stmt_containers(#20017,#20001)
 #20019=*
 properties(#20019,#20017,2,0,"constructor() {}")
 #20020=@"loc,{#10000},1,6,1,5"
@@ -69,26 +69,26 @@ hasLocation(#20019,#20020)
 #20021=*
 exprs(#20021,0,#20019,0,"constructor")
 hasLocation(#20021,#20020)
-enclosingStmt(#20021,#20017)
-exprContainers(#20021,#20001)
+enclosing_stmt(#20021,#20017)
+expr_containers(#20021,#20001)
 literals("constructor","constructor",#20021)
 #20022=*
 exprs(#20022,9,#20019,1,"() {}")
 hasLocation(#20022,#20020)
-enclosingStmt(#20022,#20017)
-exprContainers(#20022,#20001)
+enclosing_stmt(#20022,#20017)
+expr_containers(#20022,#20001)
 #20023=*
 scopes(#20023,1)
 scopenodes(#20022,#20023)
 scopenesting(#20023,#20015)
 #20024=@"var;{arguments};{#20023}"
 variables(#20024,"arguments",#20023)
-isArgumentsObject(#20024)
+is_arguments_object(#20024)
 #20025=*
 stmts(#20025,1,#20022,-2,"{}")
 hasLocation(#20025,#20020)
-stmtContainers(#20025,#20022)
-isMethod(#20019)
+stmt_containers(#20025,#20022)
+is_method(#20019)
 #20026=*
 entry_cfg_node(#20026,#20001)
 #20027=@"loc,{#10000},1,1,1,0"

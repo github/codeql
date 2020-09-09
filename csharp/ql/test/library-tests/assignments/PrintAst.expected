@@ -50,6 +50,6 @@ Assignments.cs:
 #   23|     3: [AddEventAccessor] add_Event
 #-----|       2: (Parameters)
 #   23|         0: [Parameter] value
-#   23|     3: [RemoveEventAccessor] remove_Event
+#   23|     4: [RemoveEventAccessor] remove_Event
 #-----|       2: (Parameters)
 #   23|         0: [Parameter] value

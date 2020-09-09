@@ -91,6 +91,13 @@ namespace std
 		const_iterator cbegin() const;
 		const_iterator cend() const;
 
+		void push_back(charT c);
+
+		const charT& front() const;
+		charT& front();
+		const charT& back() const;
+		charT& back();
+
 		const_reference operator[](size_type pos) const;
 		reference operator[](size_type pos);
 		const_reference at(size_type n) const;
