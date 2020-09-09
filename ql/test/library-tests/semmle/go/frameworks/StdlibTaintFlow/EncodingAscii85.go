@@ -14,25 +14,10 @@ func TaintStepTest_EncodingAscii85Decode_B0I0O0(sourceCQL interface{}) interface
 	return intoByte414
 }
 
-func TaintStepTest_EncodingAscii85Encode_B0I0O0(sourceCQL interface{}) interface{} {
-	fromByte518 := sourceCQL.([]byte)
-	var intoByte650 []byte
-	ascii85.Encode(intoByte650, fromByte518)
-	return intoByte650
-}
-
 func TaintStepTest_EncodingAscii85NewDecoder_B0I0O0(sourceCQL interface{}) interface{} {
-	fromReader784 := sourceCQL.(io.Reader)
-	intoReader957 := ascii85.NewDecoder(fromReader784)
-	return intoReader957
-}
-
-func TaintStepTest_EncodingAscii85NewEncoder_B0I0O0(sourceCQL interface{}) interface{} {
-	fromWriteCloser520 := sourceCQL.(io.WriteCloser)
-	var intoWriter443 io.Writer
-	intermediateCQL := ascii85.NewEncoder(intoWriter443)
-	link(fromWriteCloser520, intermediateCQL)
-	return intoWriter443
+	fromReader518 := sourceCQL.(io.Reader)
+	intoReader650 := ascii85.NewDecoder(fromReader518)
+	return intoReader650
 }
 
 func RunAllTaints_EncodingAscii85() {
@@ -43,17 +28,7 @@ func RunAllTaints_EncodingAscii85() {
 	}
 	{
 		source := newSource(1)
-		out := TaintStepTest_EncodingAscii85Encode_B0I0O0(source)
-		sink(1, out)
-	}
-	{
-		source := newSource(2)
 		out := TaintStepTest_EncodingAscii85NewDecoder_B0I0O0(source)
-		sink(2, out)
-	}
-	{
-		source := newSource(3)
-		out := TaintStepTest_EncodingAscii85NewEncoder_B0I0O0(source)
-		sink(3, out)
+		sink(1, out)
 	}
 }
