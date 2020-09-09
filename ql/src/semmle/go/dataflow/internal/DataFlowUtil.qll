@@ -420,10 +420,13 @@ private Node getADirectlyWrittenNode() {
   exists(Write w | w.writesField(result, _, _) or w.writesElement(result, _, _))
 }
 
-private Node getAWrittenNode() {
-  result = getADirectlyWrittenNode() or
-  result = getADirectlyWrittenNode().(ComponentReadNode).getBase+()
+private DataFlow::Node getAccessPathPredecessor(DataFlow::Node node) {
+  result = node.(PointerDereferenceNode).getOperand()
+  or
+  result = node.(ComponentReadNode).getBase()
 }
+
+private Node getAWrittenNode() { result = getAccessPathPredecessor*(getADirectlyWrittenNode()) }
 
 /**
  * A node associated with an object after an operation that might have
@@ -448,11 +451,7 @@ class PostUpdateNode extends Node {
       or
       preupd = any(PointerDereferenceNode deref).getOperand()
       or
-      exists(Node written | written = getAWrittenNode() |
-        preupd = written
-        or
-        preupd = written.(PointerDereferenceNode).getOperand()
-      )
+      preupd = getAWrittenNode()
       or
       preupd instanceof ArgumentNode and
       mutableType(preupd.getType())
