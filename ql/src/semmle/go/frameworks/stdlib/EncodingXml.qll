@@ -7,14 +7,10 @@ import go
 /** Provides models of commonly used functions in the `encoding/xml` package. */
 module EncodingXml {
   /** The `Marshal` or `MarshalIndent` function in the `encoding/xml` package. */
-  class MarshalFunction extends TaintTracking::FunctionModel, MarshalingFunction::Range {
+  private class MarshalFunction extends MarshalingFunction::Range {
     MarshalFunction() {
       this.hasQualifiedName("encoding/xml", "Marshal") or
       this.hasQualifiedName("encoding/xml", "MarshalIndent")
-    }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp = getAnInput() and outp = getOutput()
     }
 
     override FunctionInput getAnInput() { result.isParameter(0) }
@@ -24,12 +20,8 @@ module EncodingXml {
     override string getFormat() { result = "XML" }
   }
 
-  private class UnmarshalFunction extends TaintTracking::FunctionModel, UnmarshalingFunction::Range {
+  private class UnmarshalFunction extends UnmarshalingFunction::Range {
     UnmarshalFunction() { this.hasQualifiedName("encoding/xml", "Unmarshal") }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp = getAnInput() and outp = getOutput()
-    }
 
     override FunctionInput getAnInput() { result.isParameter(0) }
 
