@@ -436,8 +436,8 @@ private module SsaComputeImpl {
     predicate adjacentUseUseSameVar(ControlFlowNode use1, ControlFlowNode use2) {
       exists(SsaSourceVariable v, BasicBlock b1, int i1, BasicBlock b2, int i2 |
         adjacentVarRefs(v, b1, i1, b2, i2) and
-        variableUse(v, use1, b1, i1) and
-        variableUse(v, use2, b2, i2)
+        variableSourceUse(v, use1, b1, i1) and
+        variableSourceUse(v, use2, b2, i2)
       )
     }
 
@@ -465,6 +465,10 @@ private module SsaComputeImpl {
       )
     }
 
+    /**
+     * Holds if `def` defines `v` at the specified position.
+     * Phi nodes are placed at index -1.
+     */
     cached
     predicate definesAt(EssaDefinition def, SsaSourceVariable v, BasicBlock b, int i) {
       exists(ControlFlowNode defNode |
