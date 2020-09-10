@@ -296,10 +296,11 @@ class StdBasicOStream extends TemplateClass {
 }
 
 /**
- * The `std::ostream` function `operator<<` (defined as a member function).
+ * The `std::ostream` functions `operator<<` (defined as a member function),
+ * `put` and `write`.
  */
 class StdOStreamOut extends DataFlowFunction, TaintFunction {
-  StdOStreamOut() { this.hasQualifiedName("std", "basic_ostream", "operator<<") }
+  StdOStreamOut() { this.hasQualifiedName("std", "basic_ostream", ["operator<<", "put", "write"]) }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to return value
@@ -308,11 +309,11 @@ class StdOStreamOut extends DataFlowFunction, TaintFunction {
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // flow from parameter to qualifier
+    // flow from first parameter to qualifier
     input.isParameter(0) and
     output.isQualifierObject()
     or
-    // flow from parameter to return value
+    // flow from first parameter to return value
     input.isParameter(0) and
     output.isReturnValueDeref()
     or
@@ -358,7 +359,9 @@ class StdOStreamOutNonMember extends DataFlowFunction, TaintFunction {
  * input parameter.
  */
 class StdStringStreamConstructor extends Constructor, TaintFunction {
-  StdStringStreamConstructor() { this.getDeclaringType().hasQualifiedName("std", "basic_stringstream") }
+  StdStringStreamConstructor() {
+    this.getDeclaringType().hasQualifiedName("std", "basic_stringstream")
+  }
 
   /**
    * Gets the index of a parameter to this function that is a string.

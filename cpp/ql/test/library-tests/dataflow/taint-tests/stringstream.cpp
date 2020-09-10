@@ -53,18 +53,18 @@ void test_stringstream_string(int amount)
 	sink(ss7); // [FALSE POSITIVE]
 
 	sink(ss8.put('a'));
-	sink(ss9.put(ns_char::source())); // tainted [NOT DETECTED]
+	sink(ss9.put(ns_char::source())); // tainted
 	sink(ss10.put('a').put(ns_char::source()).put('z')); // tainted [NOT DETECTED]
 	sink(ss8);
-	sink(ss9); // tainted [NOT DETECTED]
-	sink(ss10); // tainted [NOT DETECTED]
+	sink(ss9); // tainted
+	sink(ss10); // tainted
 
 	sink(ss11.write("begin", 5));
-	sink(ss12.write(source(), 5)); // tainted [NOT DETECTED]
+	sink(ss12.write(source(), 5)); // tainted
 	sink(ss13.write("begin", 5).write(source(), amount).write("end", 3)); // tainted [NOT DETECTED]
 	sink(ss11);
-	sink(ss12); // tainted [NOT DETECTED]
-	sink(ss13); // tainted [NOT DETECTED]
+	sink(ss12); // tainted
+	sink(ss13); // tainted
 }
 
 void test_stringstream_int(int source)
