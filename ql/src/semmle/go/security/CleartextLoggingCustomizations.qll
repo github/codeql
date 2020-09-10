@@ -183,4 +183,22 @@ module CleartextLogging {
 
     override string describe() { result = "HTTP request headers" }
   }
+
+  /**
+   * The first element of a split by ' '  or ':', often sanitizing a username/password pair
+   * or the "Method value" syntax used in the HTTP Authorization header.
+   */
+  private class NonSensitiveAuthorizationElement extends Barrier, DataFlow::ElementReadNode {
+    NonSensitiveAuthorizationElement() {
+      exists(DataFlow::CallNode splitCall, DataFlow::Node splitAlias |
+        splitCall
+            .getTarget()
+            .hasQualifiedName("strings", ["Split", "SplitN", "SplitAfter", "SplitAfterN"]) and
+        splitCall.getArgument(1).getStringValue() = [" ", ":"] and
+        DataFlow::localFlow(splitCall.getResult(), splitAlias) and
+        this.getBase() = splitAlias
+      ) and
+      this.getIndex().getIntValue() = 0
+    }
+  }
 }
