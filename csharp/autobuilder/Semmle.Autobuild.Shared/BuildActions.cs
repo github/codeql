@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Xml;
+using System.Net.Http;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 
 namespace Semmle.Autobuild.Shared
 {
@@ -59,6 +62,11 @@ namespace Semmle.Autobuild.Shared
         void DirectoryDelete(string dir, bool recursive);
 
         /// <summary>
+        /// Creates all directories and subdirectories in the specified path unless they already exist.
+        /// </summary>
+        void CreateDirectory(string path);
+
+        /// <summary>
         /// Gets an environment variable, Environment.GetEnvironmentVariable().
         /// </summary>
         /// <param name="name">The name of the variable.</param>
@@ -103,6 +111,17 @@ namespace Semmle.Autobuild.Shared
         string GetFullPath(string path);
 
         /// <summary>
+        /// Returns the file name and extension of the specified path string.
+        /// </summary>
+        [return: NotNullIfNotNull("path")]
+        string? GetFileName(string? path);
+
+        /// <summary>
+        /// Returns the directory information for the specified path string.
+        /// </summary>
+        string? GetDirectoryName(string? path);
+
+        /// <summary>
         /// Writes contents to file, File.WriteAllText().
         /// </summary>
         /// <param name="filename">The filename.</param>
@@ -114,11 +133,12 @@ namespace Semmle.Autobuild.Shared
         /// </summary>
         XmlDocument LoadXml(string filename);
 
-        /// <summary>
-        /// Expand all Windows-style environment variables in <paramref name="s"/>,
-        /// Environment.ExpandEnvironmentVariables()
-        /// </summary>
         string EnvironmentExpandEnvironmentVariables(string s);
+
+        /// <summary>
+        /// Downloads the resource with the specified URI to a local file.
+        /// </summary>
+        void DownloadFile(string address, string fileName);
     }
 
     /// <summary>
@@ -166,6 +186,8 @@ namespace Semmle.Autobuild.Shared
 
         bool IBuildActions.DirectoryExists(string dir) => Directory.Exists(dir);
 
+        void IBuildActions.CreateDirectory(string path) => Directory.CreateDirectory(path);
+
         string? IBuildActions.GetEnvironmentVariable(string name) => Environment.GetEnvironmentVariable(name);
 
         string IBuildActions.GetCurrentDirectory() => Directory.GetCurrentDirectory();
@@ -189,7 +211,23 @@ namespace Semmle.Autobuild.Shared
 
         string IBuildActions.GetFullPath(string path) => Path.GetFullPath(path);
 
+        string? IBuildActions.GetFileName(string? path) => Path.GetFileName(path);
+
+        string? IBuildActions.GetDirectoryName(string? path) => Path.GetDirectoryName(path);
+
         public string EnvironmentExpandEnvironmentVariables(string s) => Environment.ExpandEnvironmentVariables(s);
+
+        static async Task DownloadFileAsync(string address, string filename)
+        {
+            using var httpClient = new HttpClient();
+            using var request = new HttpRequestMessage(HttpMethod.Get, address);
+            using var contentStream = await (await httpClient.SendAsync(request)).Content.ReadAsStreamAsync();
+            using var stream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true);
+            await contentStream.CopyToAsync(stream);
+        }
+
+        public void DownloadFile(string address, string fileName) =>
+            DownloadFileAsync(address, fileName).Wait();
 
         public static readonly IBuildActions Instance = new SystemBuildActions();
     }
