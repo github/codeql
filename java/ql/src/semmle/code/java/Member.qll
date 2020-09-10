@@ -411,6 +411,8 @@ class Method extends Callable, @method {
     not isFinal() and
     not getDeclaringType().isFinal()
   }
+
+  override string getAPrimaryQlClass() { result = "Method" }
 }
 
 /** A method that is the same as its source declaration. */
@@ -504,6 +506,8 @@ class Constructor extends Callable, @constructor {
   override Constructor getSourceDeclaration() { constrs(this, _, _, _, _, result) }
 
   override string getSignature() { constrs(this, _, result, _, _, _) }
+
+  override string getAPrimaryQlClass() { result = "Constructor" }
 }
 
 /**
@@ -548,6 +552,8 @@ class FieldDeclaration extends ExprParent, @fielddecl, Annotatable {
     then result = this.getTypeAccess() + " " + this.getField(0) + ";"
     else result = this.getTypeAccess() + " " + this.getField(0) + ", ...;"
   }
+
+  override string getAPrimaryQlClass() { result = "FieldDeclaration" }
 }
 
 /** A class or instance field. */
