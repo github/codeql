@@ -194,7 +194,7 @@ private module SsaComputeImpl {
     defUseRank(v, b, rankix, i)
   }
 
-  /** A `VarAccess` `use` of `v` in `b` at index `i`. */
+  /** A variable access `use` of `v` in `b` at index `i`. */
   cached
   predicate variableUse(SsaSourceVariable v, ControlFlowNode use, BasicBlock b, int i) {
     (v.getAUse() = use or v.hasRefinement(use, _)) and
@@ -360,7 +360,7 @@ private module SsaComputeImpl {
       i = rank[rankix](int j | variableDefine(v, _, b, j) or variableSourceUse(v, _, b, j))
     }
 
-    /** A `VarAccess` `use` of `v` in `b` at index `i`. */
+    /** A variable access `use` of `v` in `b` at index `i`. */
     cached
     predicate variableSourceUse(SsaSourceVariable v, ControlFlowNode use, BasicBlock b, int i) {
       v.getASourceUse() = use and
@@ -386,12 +386,12 @@ private module SsaComputeImpl {
     }
 
     /**
-     * Holds if `b2` is a transitive successor of `b1` and `v` occurs in `b1` [and
-     * in `b2` or one of its transitive successors]? but not in any block on the path
+     * Holds if `b2` is a transitive successor of `b1` and `v` occurs in `b1` and
+     * in `b2` or one of its transitive successors but not in any block on the path
      * between `b1` and `b2`.
      */
     private predicate varBlockReaches(SsaSourceVariable v, BasicBlock b1, BasicBlock b2) {
-      varOccursInBlock(v, b1) and 
+      varOccursInBlock(v, b1) and
       b2 = b1.getASuccessor() and
       blockPrecedesVar(v, b2)
       or
