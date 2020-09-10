@@ -97,14 +97,14 @@ void test_stringstream_constructors()
 	std::stringstream ss6;
 
 	sink(ss5 = std::stringstream("abc"));
-	sink(ss6 = std::stringstream(source())); // tainted [NOT DETECTED]
+	sink(ss6 = std::stringstream(source())); // tainted
 
 	sink(ss1);
-	sink(ss2); // tainted [NOT DETECTED]
+	sink(ss2); // tainted
 	sink(ss3);
-	sink(ss4); // tainted [NOT DETECTED]
+	sink(ss4); // tainted
 	sink(ss5);
-	sink(ss6); // tainted [NOT DETECTED]
+	sink(ss6); // tainted
 }
 
 void test_stringstream_swap()
@@ -118,9 +118,9 @@ void test_stringstream_swap()
 	ss4.swap(ss3);
 
 	sink(ss1); // tainted [NOT DETECTED]
-	sink(ss2);
+	sink(ss2); // [FALSE POSITIVE]
 	sink(ss3); // tainted [NOT DETECTED]
-	sink(ss4);
+	sink(ss4); // [FALSE POSITIVE]
 }
 
 void test_stringstream_in()

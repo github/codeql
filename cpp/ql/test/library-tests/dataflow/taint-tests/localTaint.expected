@@ -1489,12 +1489,16 @@
 | stringstream.cpp:90:19:90:23 | abc | stringstream.cpp:90:18:90:23 | call to basic_string | TAINT |
 | stringstream.cpp:91:18:91:26 | call to basic_string | stringstream.cpp:93:24:93:25 | s2 |  |
 | stringstream.cpp:91:19:91:24 | call to source | stringstream.cpp:91:18:91:26 | call to basic_string | TAINT |
+| stringstream.cpp:92:24:92:25 | s1 | stringstream.cpp:92:24:92:26 | call to basic_stringstream | TAINT |
 | stringstream.cpp:92:24:92:26 | call to basic_stringstream | stringstream.cpp:102:7:102:9 | ss1 |  |
+| stringstream.cpp:93:24:93:25 | s2 | stringstream.cpp:93:24:93:26 | call to basic_stringstream | TAINT |
 | stringstream.cpp:93:24:93:26 | call to basic_stringstream | stringstream.cpp:103:7:103:9 | ss2 |  |
 | stringstream.cpp:94:25:94:49 | call to basic_stringstream | stringstream.cpp:104:7:104:9 | ss3 |  |
 | stringstream.cpp:94:44:94:48 | abc | stringstream.cpp:94:44:94:48 | call to basic_string | TAINT |
+| stringstream.cpp:94:44:94:48 | call to basic_string | stringstream.cpp:94:25:94:49 | call to basic_stringstream | TAINT |
 | stringstream.cpp:95:25:95:52 | call to basic_stringstream | stringstream.cpp:105:7:105:9 | ss4 |  |
 | stringstream.cpp:95:44:95:49 | call to source | stringstream.cpp:95:44:95:51 | call to basic_string | TAINT |
+| stringstream.cpp:95:44:95:51 | call to basic_string | stringstream.cpp:95:25:95:52 | call to basic_stringstream | TAINT |
 | stringstream.cpp:96:20:96:22 | call to basic_stringstream | stringstream.cpp:99:7:99:9 | ss5 |  |
 | stringstream.cpp:96:20:96:22 | call to basic_stringstream | stringstream.cpp:106:7:106:9 | ss5 |  |
 | stringstream.cpp:97:20:97:22 | call to basic_stringstream | stringstream.cpp:100:7:100:9 | ss6 |  |
@@ -1503,20 +1507,26 @@
 | stringstream.cpp:99:13:99:36 | call to basic_stringstream | stringstream.cpp:99:7:99:9 | ref arg ss5 | TAINT |
 | stringstream.cpp:99:13:99:36 | call to basic_stringstream | stringstream.cpp:99:11:99:11 | call to operator= | TAINT |
 | stringstream.cpp:99:31:99:35 | abc | stringstream.cpp:99:31:99:35 | call to basic_string | TAINT |
+| stringstream.cpp:99:31:99:35 | call to basic_string | stringstream.cpp:99:13:99:36 | call to basic_stringstream | TAINT |
 | stringstream.cpp:100:7:100:9 | ref arg ss6 | stringstream.cpp:107:7:107:9 | ss6 |  |
 | stringstream.cpp:100:13:100:39 | call to basic_stringstream | stringstream.cpp:100:7:100:9 | ref arg ss6 | TAINT |
 | stringstream.cpp:100:13:100:39 | call to basic_stringstream | stringstream.cpp:100:11:100:11 | call to operator= | TAINT |
 | stringstream.cpp:100:31:100:36 | call to source | stringstream.cpp:100:31:100:38 | call to basic_string | TAINT |
+| stringstream.cpp:100:31:100:38 | call to basic_string | stringstream.cpp:100:13:100:39 | call to basic_stringstream | TAINT |
 | stringstream.cpp:112:24:112:28 | abc | stringstream.cpp:112:24:112:28 | call to basic_string | TAINT |
+| stringstream.cpp:112:24:112:28 | call to basic_string | stringstream.cpp:112:24:112:29 | call to basic_stringstream | TAINT |
 | stringstream.cpp:112:24:112:29 | call to basic_stringstream | stringstream.cpp:117:2:117:4 | ss1 |  |
 | stringstream.cpp:112:24:112:29 | call to basic_stringstream | stringstream.cpp:120:7:120:9 | ss1 |  |
 | stringstream.cpp:113:24:113:29 | call to source | stringstream.cpp:113:24:113:31 | call to basic_string | TAINT |
+| stringstream.cpp:113:24:113:31 | call to basic_string | stringstream.cpp:113:24:113:32 | call to basic_stringstream | TAINT |
 | stringstream.cpp:113:24:113:32 | call to basic_stringstream | stringstream.cpp:117:11:117:13 | ss2 |  |
 | stringstream.cpp:113:24:113:32 | call to basic_stringstream | stringstream.cpp:121:7:121:9 | ss2 |  |
 | stringstream.cpp:114:24:114:28 | abc | stringstream.cpp:114:24:114:28 | call to basic_string | TAINT |
+| stringstream.cpp:114:24:114:28 | call to basic_string | stringstream.cpp:114:24:114:29 | call to basic_stringstream | TAINT |
 | stringstream.cpp:114:24:114:29 | call to basic_stringstream | stringstream.cpp:118:11:118:13 | ss3 |  |
 | stringstream.cpp:114:24:114:29 | call to basic_stringstream | stringstream.cpp:122:7:122:9 | ss3 |  |
 | stringstream.cpp:115:24:115:29 | call to source | stringstream.cpp:115:24:115:31 | call to basic_string | TAINT |
+| stringstream.cpp:115:24:115:31 | call to basic_string | stringstream.cpp:115:24:115:32 | call to basic_stringstream | TAINT |
 | stringstream.cpp:115:24:115:32 | call to basic_stringstream | stringstream.cpp:118:2:118:4 | ss4 |  |
 | stringstream.cpp:115:24:115:32 | call to basic_stringstream | stringstream.cpp:123:7:123:9 | ss4 |  |
 | stringstream.cpp:117:2:117:4 | ref arg ss1 | stringstream.cpp:120:7:120:9 | ss1 |  |

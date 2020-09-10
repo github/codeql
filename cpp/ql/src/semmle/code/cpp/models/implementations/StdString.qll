@@ -354,6 +354,27 @@ class StdOStreamOutNonMember extends DataFlowFunction, TaintFunction {
 }
 
 /**
+ * Additional model for `std::stringstream` constructors that take a string
+ * input parameter.
+ */
+class StdStringStreamConstructor extends Constructor, TaintFunction {
+  StdStringStreamConstructor() { this.getDeclaringType().hasQualifiedName("std", "basic_stringstream") }
+
+  /**
+   * Gets the index of a parameter to this function that is a string.
+   */
+  int getAStringParameterIndex() {
+    getParameter(result).getType() instanceof ReferenceType // `const std::basic_string &`
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // taint flow from any parameter of string type to the returned object
+    input.isParameterDeref(getAStringParameterIndex()) and
+    output.isReturnValue() // TODO: this should be `isQualifierObject` by our current definitions, but that flow is not yet supported.
+  }
+}
+
+/**
  * The `std::stringstream` function `str`.
  */
 class StdStringStreamStr extends TaintFunction {
