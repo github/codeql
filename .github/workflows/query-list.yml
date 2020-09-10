@@ -3,7 +3,7 @@ name: Build code scanning query list
 on:
   push:
     branches:
-     - master
+     - main
      - 'rc/**'
      - querylist-python
 
