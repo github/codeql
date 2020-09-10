@@ -461,6 +461,10 @@ predicate comprehensionStoreStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
   // Dictionary
   nodeTo.getNode().getNode().(DictComp).getElt() = nodeFrom.getNode().getNode() and
   c instanceof DictionaryElementAnyContent
+  or
+  // Generator
+  nodeTo.getNode().getNode().(GeneratorExp).getElt() = nodeFrom.getNode().getNode() and
+  c instanceof ListElementContent
 }
 
 /**
@@ -538,33 +542,23 @@ predicate comprehensionReadStep(CfgNode nodeFrom, Content c, EssaNode nodeTo) {
   //   nodeFrom is `l`, cfg node
   //   nodeTo is `x`, essa var
   //   c denotes element of list or set
-  exists(For f, Comp comp |
-    f = getCompFor(comp) and
-    nodeFrom.getNode().getNode() = getCompIter(comp) and
+  exists(Comp comp |
+    // outermost for
+    nodeFrom.getNode().getNode() = comp.getIterable() and
     nodeTo.getVar().getDefinition().(AssignmentDefinition).getDefiningNode().getNode() =
-      f.getTarget() and
-    (
-      c instanceof ListElementContent
-      or
-      c instanceof SetElementContent
+      comp.getIterationVariable(0).getAStore()
+    or
+    // an inner for
+    exists(int n | n > 0 |
+      nodeFrom.getNode().getNode() = comp.getNthInnerLoop(n).getIter() and
+      nodeTo.getVar().getDefinition().(AssignmentDefinition).getDefiningNode().getNode() =
+        comp.getNthInnerLoop(n).getTarget()
     )
-  )
-}
-
-/** This seems to compensate for extractor shortcomings */
-For getCompFor(Comp c) {
-  c.contains(result) and
-  c.getFunction() = result.getScope()
-}
-
-/** This seems to compensate for extractor shortcomings */
-AstNode getCompIter(Comp c) {
-  c.contains(result) and
-  c.getScope() = result.getScope() and
-  not result = c.getFunction() and
-  not exists(AstNode between |
-    c.contains(between) and
-    between.contains(result)
+  ) and
+  (
+    c instanceof ListElementContent
+    or
+    c instanceof SetElementContent
   )
 }
 
