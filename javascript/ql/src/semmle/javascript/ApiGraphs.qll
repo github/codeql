@@ -169,9 +169,9 @@ module API {
     predicate refersTo(Node that) { this.getARhs() = that.getAUse() }
 
     /**
-     * Gets the unique data-flow that gives rise to this node, if any.
+     * Gets the data-flow node that gives rise to this node, if any.
      */
-    private DataFlow::Node getRepresentativeNode() {
+    DataFlow::Node getInducingNode() {
       this = Impl::MkClassInstance(result) or
       this = Impl::MkUse(result) or
       this = Impl::MkDef(result) or
@@ -186,9 +186,9 @@ module API {
      * parameters are zero.
      */
     predicate hasLocationInfo(string path, int startline, int startcol, int endline, int endcol) {
-      getRepresentativeNode().hasLocationInfo(path, startline, startcol, endline, endcol)
+      getInducingNode().hasLocationInfo(path, startline, startcol, endline, endcol)
       or
-      not exists(getRepresentativeNode()) and
+      not exists(getInducingNode()) and
       path = "" and
       startline = 0 and
       startcol = 0 and
