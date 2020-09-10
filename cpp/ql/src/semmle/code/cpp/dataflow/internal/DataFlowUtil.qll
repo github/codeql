@@ -629,14 +629,21 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
   // `ClassAggregateLiteral` (`{ capture1, ..., captureN }`).
   toExpr.(LambdaExpression).getInitializer() = fromExpr
   or
+  // Data flow through a function model.
   toExpr =
     any(Call call |
-      exists(DataFlowFunction f, FunctionInput inModel, FunctionOutput outModel, int iIn |
-        call.getTarget() = f and
+      exists(DataFlowFunction f, FunctionInput inModel, FunctionOutput outModel |
         f.hasDataFlow(inModel, outModel) and
-        outModel.isReturnValue() and
-        inModel.isParameter(iIn) and
-        fromExpr = call.getArgument(iIn)
+        (
+          exists(int iIn |
+            inModel.isParameter(iIn) and
+            fromExpr = call.getArgument(iIn)
+          ) or
+          inModel.isQualifierObject() and
+          fromExpr = call.getQualifier()
+        ) and
+        call.getTarget() = f and
+        outModel.isReturnValue()
       )
     )
 }
