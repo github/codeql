@@ -4,6 +4,7 @@ import csv
 import sys
 import os
 
+
 """
 This script collects CodeQL queries that are part of code scanning query packs
 and prints CSV data to stdout that describes which packs contain which queries.
