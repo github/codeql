@@ -678,7 +678,7 @@ Microsoft.NETCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
             Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --auto C:\Project\build.bat"] = 0;
-            Actions.RunProcessWorkingDirectory[@"cmd.exe /C C:\odasa\tools\odasa index --auto C:\Project\build.bat"] = "";
+            Actions.RunProcessWorkingDirectory[@"cmd.exe /C C:\odasa\tools\odasa index --auto C:\Project\build.bat"] = @"C:\Project";
             Actions.RunProcess[@"cmd.exe /C C:\codeql\tools\java\bin\java -jar C:\codeql\csharp\tools\extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
@@ -695,7 +695,7 @@ Microsoft.NETCore.App 2.2.5 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
             Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --auto C:\Project\build.bat"] = 1;
-            Actions.RunProcessWorkingDirectory[@"cmd.exe /C C:\odasa\tools\odasa index --auto C:\Project\build.bat"] = "";
+            Actions.RunProcessWorkingDirectory[@"cmd.exe /C C:\odasa\tools\odasa index --auto C:\Project\build.bat"] = @"C:\Project";
             Actions.RunProcess[@"cmd.exe /C C:\codeql\tools\java\bin\java -jar C:\codeql\csharp\tools\extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --xml --extensions config"] = 0;
             Actions.FileExists["csharp.log"] = true;
@@ -1031,7 +1031,7 @@ Microsoft.NETCore.App 2.1.4 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
             Actions.RunProcess[@"cmd.exe /C C:\codeql\tools\java\bin\java -jar C:\codeql\csharp\tools\extractor-asp.jar ."] = 0;
             Actions.RunProcess[@"cmd.exe /C C:\odasa\tools\odasa index --xml --extensions config csproj props xml"] = 0;
             Actions.FileExists["csharp.log"] = true;
-            Actions.FileExists[@"a\test.csproj"] = true;
+            Actions.FileExists[@"C:\Project\a\test.csproj"] = true;
             Actions.FileExists[@"C:\Project\dirs.proj"] = true;
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"] = false;
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"] = false;
@@ -1053,7 +1053,7 @@ Microsoft.NETCore.App 2.1.4 [/usr/local/share/dotnet/shared/Microsoft.NETCore.Ap
       <Compile Include=""test.cs"" />
     </ItemGroup>
   </Project>");
-            Actions.LoadXml[@"a\test.csproj"] = csproj;
+            Actions.LoadXml[@"C:\Project\a\test.csproj"] = csproj;
 
             var dirsproj = new XmlDocument();
             dirsproj.LoadXml(@"<Project DefaultTargets=""Build"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"" ToolsVersion=""3.5"">
