@@ -5,7 +5,10 @@ on:
     branches:
      - master
      - 'rc/**'
-     - querylist-python
+    pull_request:
+      paths:
+        - '.github/workflows/query-list.yml'
+        - 'misc/scripts/generate-code-scanning-query-list.py'
 
 jobs:
   build:
