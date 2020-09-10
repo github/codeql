@@ -13,6 +13,7 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/github/codeql-go/extractor/autobuilder"
 	"github.com/github/codeql-go/extractor/util"
 )
 
@@ -403,13 +404,8 @@ func main() {
 	inst := util.Getenv("CODEQL_EXTRACTOR_GO_BUILD_COMMAND", "LGTM_INDEX_BUILD_COMMAND")
 	shouldInstallDependencies := false
 	if inst == "" {
-		// if there is a build file, run the corresponding build tool
-		buildSucceeded := tryBuild("Makefile", "make") ||
-			tryBuild("makefile", "make") ||
-			tryBuild("GNUmakefile", "make") ||
-			tryBuild("build.ninja", "ninja") ||
-			tryBuild("build", "./build") ||
-			tryBuild("build.sh", "./build.sh")
+		// try to build the project
+		buildSucceeded := autobuilder.Autobuild()
 
 		if !buildSucceeded {
 			// Build failed; we'll try to install dependencies ourselves
