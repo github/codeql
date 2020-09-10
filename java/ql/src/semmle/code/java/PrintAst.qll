@@ -89,7 +89,9 @@ private newtype TPrintAstNode =
   TElementNode(Element el) { shouldPrint(el, _) } or
   TAnnotationsNode(Annotatable ann) { shouldPrint(ann, _) and ann.hasAnnotation() } or
   TParametersNode(Callable c) { shouldPrint(c, _) and not c.hasNoParameters() } or
-  TBaseTypesNode(ClassOrInterface ty) { shouldPrint(ty, _) }
+  TBaseTypesNode(ClassOrInterface ty) { shouldPrint(ty, _) } or
+  TGenericTypeNode(GenericType ty) { shouldPrint(ty, _) } or 
+  TGenericCallableNode(GenericCallable c) { shouldPrint(c, _) }
 
 /**
  * A node in the output tree.
@@ -221,12 +223,15 @@ final class CallableNode extends ElementNode {
     result.(AnnotationsNode).getAnnotated() = callable
     or
     childIndex = 1 and
-    result.(ElementNode).getElement().(Expr).isNthChildOf(callable, -1) // return type
+    result.(GenericCallableNode).getCallable() = callable
     or
     childIndex = 2 and
-    result.(ParametersNode).getCallable() = callable
+    result.(ElementNode).getElement().(Expr).isNthChildOf(callable, -1) // return type
     or
     childIndex = 3 and
+    result.(ParametersNode).getCallable() = callable
+    or
+    childIndex = 4 and
     result.(ElementNode).getElement() = callable.getBody()
   }
 }
@@ -273,9 +278,12 @@ final class ClassInterfaceNode extends ElementNode {
   }
 
   override PrintAstNode getChild(int childIndex) {
-    // TODO: generic params, javadoc?
-    childIndex = -2 and
+    // TODO: javadoc
+    childIndex = -3 and
     result.(AnnotationsNode).getAnnotated() = ty
+    or
+    childIndex = -2 and
+    result.(GenericTypeNode).getType() = ty
     or
     childIndex = -1 and
     result.(BaseTypesNode).getClassOrInterface() = ty
@@ -339,6 +347,17 @@ final class CompilationUnitNode extends ElementNode {
  */
 final class ImportNode extends ElementNode {
   ImportNode() { element instanceof Import }
+}
+
+/** 
+ * A node representing a `TypeVariable`.
+ */
+final class TypeVariableNode extends ElementNode {
+  TypeVariableNode() { element instanceof TypeVariable }
+
+  override ElementNode getChild(int childIndex) {
+    result.getElement().(Expr).isNthChildOf(element, childIndex)
+  }
 }
 
 /**
@@ -406,6 +425,42 @@ final class BaseTypesNode extends PrintAstNode, TBaseTypesNode {
   }
 
   ClassOrInterface getClassOrInterface() { result = ty }
+}
+
+/**
+ * A node representing the type parameters of a `Class` or `Interface`.
+ * Only rendered when the type in question is indeed generic.
+ */
+final class GenericTypeNode extends PrintAstNode, TGenericTypeNode {
+  GenericType ty;
+
+  GenericTypeNode() { this = TGenericTypeNode(ty) }
+
+  override string toString() { result = "(Generic Parameters)" }
+
+  override ElementNode getChild(int childIndex) {
+    result.getElement().(TypeVariable) = ty.getTypeParameter(childIndex)
+  }
+
+  GenericType getType() { result = ty }
+}
+
+/**
+ * A node representing the type parameters of a `Callable`.
+ * Only rendered when the callable in question is indeed generic.
+ */
+final class GenericCallableNode extends PrintAstNode, TGenericCallableNode {
+  GenericCallable c;
+
+  GenericCallableNode() { this = TGenericCallableNode(c) }
+
+  override string toString() { result = "(Generic Parameters)" }
+
+  override ElementNode getChild(int childIndex) {
+    result.getElement().(TypeVariable) = c.getTypeParameter(childIndex)
+  }
+
+  GenericCallable getCallable() { result = c }
 }
 
 /** Holds if `node` belongs to the output tree, and its property `key` has the given `value`. */

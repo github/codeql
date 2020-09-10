@@ -180,6 +180,8 @@ class TypeVariable extends BoundedType, @typevariable {
     or
     result = getASuppliedType().(TypeVariable).getAnUltimatelySuppliedType()
   }
+
+  override string getAPrimaryQlClass() { result = "TypeVariable" }
 }
 
 /**
