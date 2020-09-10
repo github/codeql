@@ -55,10 +55,13 @@ private class ThrowingCall extends NonReturningCall {
   override ThrowCompletion getACompletion() { result = c }
 }
 
+/** Holds if accessor `a` has an auto-implementation. */
+private predicate hasAccessorAutoImplementation(Accessor a) { not a.hasBody() }
+
 abstract private class NonReturningCallable extends Callable {
   NonReturningCallable() {
     not exists(ReturnStmt ret | ret.getEnclosingCallable() = this) and
-    not hasAccessorAutoImplementation(this, _) and
+    not hasAccessorAutoImplementation(this) and
     not exists(Virtualizable v | v.isOverridableOrImplementable() |
       v = this or
       v = this.(Accessor).getDeclaration()
@@ -80,7 +83,7 @@ private class DirectlyExitingCallable extends ExitingCallable {
 
 private class IndirectlyExitingCallable extends ExitingCallable {
   IndirectlyExitingCallable() {
-    forex(ControlFlowElement body | body = this.getABody() | body = getAnExitingElement())
+    forex(ControlFlowElement body | body = this.getBody() | body = getAnExitingElement())
   }
 }
 
@@ -104,11 +107,11 @@ private Stmt getAnExitingStmt() {
 
 private class ThrowingCallable extends NonReturningCallable {
   ThrowingCallable() {
-    forex(ControlFlowElement body | body = this.getABody() | body = getAThrowingElement(_))
+    forex(ControlFlowElement body | body = this.getBody() | body = getAThrowingElement(_))
   }
 
   /** Gets a valid completion for a call to this throwing callable. */
-  ThrowCompletion getACallCompletion() { this.getABody() = getAThrowingElement(result) }
+  ThrowCompletion getACallCompletion() { this.getBody() = getAThrowingElement(result) }
 }
 
 private predicate directlyThrows(ThrowElement te, ThrowCompletion c) {

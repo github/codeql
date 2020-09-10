@@ -1,14 +1,15 @@
 /** Provides classes for types. */
 
-import Location
-import Namespace
 import Callable
-import Property
 import Event
 import Generics
+import Location
+import Namespace
+import Property
 private import Conversion
-private import semmle.code.csharp.metrics.Coupling
 private import dotnet
+private import semmle.code.csharp.metrics.Coupling
+private import TypeRef
 
 /**
  * A type.
@@ -44,6 +45,9 @@ class Type extends DotNet::Type, Member, TypeContainer, @type {
   /** Holds if this type is a value type, or a type parameter that is a value type. */
   predicate isValueType() { none() }
 }
+
+pragma[nomagic]
+private predicate isObjectClass(Class c) { c instanceof ObjectType }
 
 /**
  * A value or reference type.
@@ -111,7 +115,15 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
   }
 
   /** Gets the immediate base class of this class, if any. */
-  Class getBaseClass() { extend(this, getTypeRef(result)) }
+  final Class getBaseClass() {
+    extend(this, getTypeRef(result))
+    or
+    not extend(this, _) and
+    not isObjectClass(this) and
+    not this instanceof DynamicType and
+    not this instanceof NullType and
+    isObjectClass(result)
+  }
 
   /** Gets an immediate base interface of this type, if any. */
   Interface getABaseInterface() { implement(this, getTypeRef(result)) }
@@ -1001,16 +1013,4 @@ class TypeMention extends @type_mention {
 
   /** Gets the location of this type mention. */
   Location getLocation() { type_mention_location(this, result) }
-}
-
-/**
- * INTERNAL: Do not use.
- * Gets a type reference for a given type `type`.
- * This is used for extensionals that can be supplied
- * as either type references or types.
- */
-@type_or_ref getTypeRef(@type type) {
-  result = type
-  or
-  typeref_type(result, type)
 }

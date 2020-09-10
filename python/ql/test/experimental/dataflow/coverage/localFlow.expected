@@ -1,24 +1,14 @@
-| test.py:36:5:36:5 | SSA variable x | test.py:35:1:35:33 | Exit node for Function test_tuple_with_local_flow |
 | test.py:36:5:36:5 | SSA variable x | test.py:37:9:37:9 | ControlFlowNode for x |
 | test.py:36:10:36:26 | ControlFlowNode for Tuple | test.py:36:5:36:5 | SSA variable x |
 | test.py:37:5:37:5 | SSA variable y | test.py:38:5:38:11 | SSA variable y |
 | test.py:37:5:37:5 | SSA variable y | test.py:38:10:38:10 | ControlFlowNode for y |
 | test.py:37:9:37:12 | ControlFlowNode for Subscript | test.py:37:5:37:5 | SSA variable y |
-| test.py:38:5:38:11 | SSA variable y | test.py:35:1:35:33 | Exit node for Function test_tuple_with_local_flow |
-| test.py:189:5:189:5 | SSA variable x | test.py:188:1:188:53 | Exit node for Function test_nested_comprehension_deep_with_local_flow |
 | test.py:189:5:189:5 | SSA variable x | test.py:190:10:190:10 | ControlFlowNode for x |
-| test.py:189:9:189:68 | ControlFlowNode for For | test.py:189:16:189:16 | SSA variable v |
-| test.py:189:9:189:68 | ControlFlowNode for For | test.py:189:40:189:40 | SSA variable u |
-| test.py:189:9:189:68 | ControlFlowNode for For | test.py:189:51:189:51 | SSA variable z |
-| test.py:189:9:189:68 | ControlFlowNode for For | test.py:189:62:189:62 | SSA variable y |
 | test.py:189:9:189:68 | ControlFlowNode for ListComp | test.py:189:5:189:5 | SSA variable x |
-| test.py:189:9:189:68 | SSA variable u | test.py:189:9:189:68 | Exit node for Function listcomp |
 | test.py:189:9:189:68 | SSA variable u | test.py:189:9:189:68 | SSA variable u |
 | test.py:189:9:189:68 | SSA variable u | test.py:189:9:189:68 | SSA variable u |
 | test.py:189:9:189:68 | SSA variable u | test.py:189:9:189:68 | SSA variable u |
-| test.py:189:9:189:68 | SSA variable v | test.py:189:9:189:68 | Exit node for Function listcomp |
 | test.py:189:9:189:68 | SSA variable v | test.py:189:9:189:68 | SSA variable v |
-| test.py:189:9:189:68 | SSA variable y | test.py:189:9:189:68 | Exit node for Function listcomp |
 | test.py:189:9:189:68 | SSA variable y | test.py:189:9:189:68 | SSA variable y |
 | test.py:189:9:189:68 | SSA variable y | test.py:189:9:189:68 | SSA variable y |
 | test.py:189:9:189:68 | SSA variable y | test.py:189:9:189:68 | SSA variable y |
@@ -26,7 +16,6 @@
 | test.py:189:9:189:68 | SSA variable y | test.py:189:9:189:68 | SSA variable y |
 | test.py:189:9:189:68 | SSA variable y | test.py:189:9:189:68 | SSA variable y |
 | test.py:189:9:189:68 | SSA variable y | test.py:189:9:189:68 | SSA variable y |
-| test.py:189:9:189:68 | SSA variable z | test.py:189:9:189:68 | Exit node for Function listcomp |
 | test.py:189:9:189:68 | SSA variable z | test.py:189:9:189:68 | SSA variable z |
 | test.py:189:9:189:68 | SSA variable z | test.py:189:9:189:68 | SSA variable z |
 | test.py:189:9:189:68 | SSA variable z | test.py:189:9:189:68 | SSA variable z |

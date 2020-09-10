@@ -1,5 +1,6 @@
 import cpp
 private import PrimitiveBasicBlocks
+private import semmle.code.cpp.controlflow.internal.CFG
 
 private class Node = ControlFlowNodeBase;
 
@@ -153,8 +154,8 @@ private predicate nonAnalyzableFunction(Function f) {
  */
 private predicate impossibleFalseEdge(Expr condition, Node succ) {
   conditionAlwaysTrue(condition) and
-  falsecond_base(condition, succ) and
-  not truecond_base(condition, succ)
+  qlCFGFalseSuccessor(condition, succ) and
+  not qlCFGTrueSuccessor(condition, succ)
 }
 
 /**
@@ -162,8 +163,8 @@ private predicate impossibleFalseEdge(Expr condition, Node succ) {
  */
 private predicate impossibleTrueEdge(Expr condition, Node succ) {
   conditionAlwaysFalse(condition) and
-  truecond_base(condition, succ) and
-  not falsecond_base(condition, succ)
+  qlCFGTrueSuccessor(condition, succ) and
+  not qlCFGFalseSuccessor(condition, succ)
 }
 
 /**
@@ -181,7 +182,7 @@ private int switchCaseRangeEnd(SwitchCase sc) {
  * body `switchBlock`. There may be several such expressions: for example, if
  * the condition is `(x ? y : z)` then the result is {`y`, `z`}.
  */
-private Node getASwitchExpr(SwitchStmt switch, Block switchBlock) {
+private Node getASwitchExpr(SwitchStmt switch, BlockStmt switchBlock) {
   switch.getStmt() = switchBlock and
   successors_extended(result, switchBlock)
 }
@@ -191,7 +192,7 @@ private Node getASwitchExpr(SwitchStmt switch, Block switchBlock) {
  * from `switchBlock` to `sc` is impossible. This considers only non-`default`
  * switch cases.
  */
-private predicate impossibleSwitchEdge(Block switchBlock, SwitchCase sc) {
+private predicate impossibleSwitchEdge(BlockStmt switchBlock, SwitchCase sc) {
   not sc instanceof DefaultCase and
   exists(SwitchStmt switch |
     switch = sc.getSwitchStmt() and
@@ -214,7 +215,7 @@ private predicate impossibleSwitchEdge(Block switchBlock, SwitchCase sc) {
  * If a switch provably always chooses a non-default case, then the edge to
  * the default case is impossible.
  */
-private predicate impossibleDefaultSwitchEdge(Block switchBlock, DefaultCase dc) {
+private predicate impossibleDefaultSwitchEdge(BlockStmt switchBlock, DefaultCase dc) {
   exists(SwitchStmt switch |
     switch = dc.getSwitchStmt() and
     switch.getStmt() = switchBlock and
@@ -863,9 +864,9 @@ library class ConditionEvaluator extends ExprEvaluator {
   ConditionEvaluator() { this = 0 }
 
   override predicate interesting(Expr e) {
-    falsecond_base(e, _)
+    qlCFGFalseSuccessor(e, _)
     or
-    truecond_base(e, _)
+    qlCFGTrueSuccessor(e, _)
   }
 }
 

@@ -79,6 +79,9 @@ public class ExprKinds {
     binOpKinds.put("**", 87);
     binOpKinds.put("**=", 88);
     binOpKinds.put("??", 107);
+    binOpKinds.put("&&=", 116);
+    binOpKinds.put("||=", 117);
+    binOpKinds.put("??=", 118);
   }
 
   private static final Map<String, Integer> unOpKinds = new LinkedHashMap<String, Integer>();
@@ -258,9 +261,9 @@ public class ExprKinds {
 
               @Override
               public Integer visit(MetaProperty nd, Void c) {
-                if (nd.getMeta().getName().equals("new")) return 82; // @newtargetexpr
-                if (nd.getMeta().getName().equals("import")) return 115; // @importmetaexpr
-                return 93; // @functionsentexpr
+                if (nd.getMeta().getName().equals("new")) return 82; // @newtarget_expr
+                if (nd.getMeta().getName().equals("import")) return 115; // @import_meta_expr
+                return 93; // @function_sent_expr
               }
 
               @Override

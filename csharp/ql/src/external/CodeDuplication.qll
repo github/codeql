@@ -66,9 +66,9 @@ class SimilarBlock extends Copy, @similarity {
   }
 }
 
-Method sourceMethod() { method_location(result, _) and numlines(result, _, _, _) }
+private Method sourceMethod() { method_location(result, _) and numlines(result, _, _, _) }
 
-int numberOfSourceMethods(Class c) {
+private int numberOfSourceMethods(Class c) {
   result = count(Method m | m = sourceMethod() and m.getDeclaringType() = c)
 }
 
@@ -97,6 +97,7 @@ private predicate duplicateStatement(Method m1, Method m2, Stmt s1, Stmt s2) {
   )
 }
 
+/** Holds if `duplicate` number of statements are duplicated in the methods. */
 predicate duplicateStatements(Method m1, Method m2, int duplicate, int total) {
   duplicate = strictcount(Stmt s | duplicateStatement(m1, m2, s, _)) and
   total = strictcount(statementInMethod(m1))
@@ -109,7 +110,7 @@ predicate duplicateMethod(Method m, Method other) {
   exists(int total | duplicateStatements(m, other, total, total))
 }
 
-predicate similarLines(File f, int line) {
+private predicate similarLines(File f, int line) {
   exists(SimilarBlock b | b.sourceFile() = f and line in [b.sourceStartLine() .. b.sourceEndLine()])
 }
 
@@ -148,7 +149,7 @@ private predicate similarLinesCovered(File f, int coveredLines, File otherFile) 
   )
 }
 
-predicate duplicateLines(File f, int line) {
+private predicate duplicateLines(File f, int line) {
   exists(DuplicateBlock b |
     b.sourceFile() = f and line in [b.sourceStartLine() .. b.sourceEndLine()]
   )
@@ -189,6 +190,7 @@ private predicate duplicateLinesCovered(File f, int coveredLines, File otherFile
   )
 }
 
+/** Holds if the two files are not duplicated but have more than 80% similar lines. */
 predicate similarFiles(File f, File other, int percent) {
   exists(int covered, int total |
     similarLinesCovered(f, covered, other) and
@@ -199,6 +201,7 @@ predicate similarFiles(File f, File other, int percent) {
   not duplicateFiles(f, other, _)
 }
 
+/** Holds if the two files have more than 70% duplicated lines. */
 predicate duplicateFiles(File f, File other, int percent) {
   exists(int covered, int total |
     duplicateLinesCovered(f, covered, other) and
@@ -209,7 +212,7 @@ predicate duplicateFiles(File f, File other, int percent) {
 }
 
 pragma[noopt]
-predicate duplicateAnonymousClass(AnonymousClass c, AnonymousClass other) {
+private predicate duplicateAnonymousClass(AnonymousClass c, AnonymousClass other) {
   exists(int numDup |
     numDup =
       strictcount(Method m1 |
@@ -248,6 +251,7 @@ private predicate mostlyDuplicateClassBase(Class c, Class other, int numDup, int
   not other instanceof AnonymousClass
 }
 
+/** Holds if the methods in the two classes are more than 80% duplicated. */
 predicate mostlyDuplicateClass(Class c, Class other, string message) {
   exists(int numDup, int total |
     mostlyDuplicateClassBase(c, other, numDup, total) and
@@ -272,19 +276,28 @@ predicate mostlyDuplicateClass(Class c, Class other, string message) {
   )
 }
 
+/** Holds if the two files are similar or duplicated. */
 predicate fileLevelDuplication(File f, File other) {
   similarFiles(f, other, _) or duplicateFiles(f, other, _)
 }
 
+/**
+ * Holds if the two classes are duplicated anonymous classes or more than 80% of
+ * their methods are duplicated.
+ */
 predicate classLevelDuplication(Class c, Class other) {
   duplicateAnonymousClass(c, other) or mostlyDuplicateClass(c, other, _)
 }
 
-Element whitelistedDuplicateElement() {
+private Element whitelistedDuplicateElement() {
   result instanceof UsingNamespaceDirective or
   result instanceof UsingStaticDirective
 }
 
+/**
+ * Holds if the `line` in the `file` contains an element, such as a `using`
+ * directive, that is not considered for code duplication.
+ */
 predicate whitelistedLineForDuplication(File file, int line) {
   exists(Location loc | loc = whitelistedDuplicateElement().getLocation() |
     line = loc.getStartLine() and file = loc.getFile()

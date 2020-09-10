@@ -136,7 +136,7 @@ The CodeQL class `ClassOrInterface <https://help.semmle.com/qldoc/javascript/sem
 
 Note that the superclass of a class is an expression, not a type annotation. If the superclass has type arguments, it will be an expression of kind `ExpressionWithTypeArguments <https://help.semmle.com/qldoc/javascript/semmle/javascript/TypeScript.qll/type.TypeScript$ExpressionWithTypeArguments.html>`__.
 
-Also see the documentation for classes in the `CodeQL libraries for JavaScript <introduce-libraries-js#classes>`__.
+Also see the documentation for classes in the "`CodeQL libraries for JavaScript <introduce-libraries-js#classes>`__."
 
 To select the type references to a class or an interface, use ``getTypeName()``.
 

@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CSharp.Entities
         DynamicType(Context cx, IDynamicTypeSymbol init)
             : base(cx, init) { }
 
-        public static DynamicType Create(Context cx, IDynamicTypeSymbol type) => DynamicTypeFactory.Instance.CreateEntity(cx, type);
+        public static DynamicType Create(Context cx, IDynamicTypeSymbol type) => DynamicTypeFactory.Instance.CreateEntityFromSymbol(cx, type);
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => Context.Compilation.ObjectType.Locations.FirstOrDefault();
 

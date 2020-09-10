@@ -4,10 +4,10 @@ private import experimental.dataflow.internal.DataFlowPrivate
 private import experimental.dataflow.internal.TaintTrackingPublic
 
 /**
- * Holds if `node` should be a barrier in all global taint flow configurations
+ * Holds if `node` should be a sanitizer in all global taint flow configurations
  * but not in local taint.
  */
-predicate defaultTaintBarrier(DataFlow::Node node) { none() }
+predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
 
 /**
  * Holds if the additional step from `nodeFrom` to `nodeTo` should be included in all
@@ -30,14 +30,24 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   subscriptStep(nodeFrom, nodeTo)
   or
   stringManipulation(nodeFrom, nodeTo)
+  or
+  jsonStep(nodeFrom, nodeTo)
+  or
+  containerStep(nodeFrom, nodeTo)
+  or
+  copyStep(nodeFrom, nodeTo)
+  or
+  forStep(nodeFrom, nodeTo)
+  or
+  unpackingAssignmentStep(nodeFrom, nodeTo)
 }
 
 /**
  * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to concatenation.
  *
  * Note that since we cannot easily distinguish interesting types (like string, list, tuple),
- * we consider any `+` operation to propagate taint. After consulting with the JS team, this
- * doesn't sound like it is a big problem in practice.
+ * we consider any `+` operation to propagate taint. This is what is done in the JS libraries,
+ * and isn't a big problem in practice.
  */
 predicate concatStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
   exists(BinaryExprNode add | add = nodeTo.getNode() |
@@ -118,8 +128,101 @@ predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeT
   )
   or
   // f-strings
-  nodeTo.getNode().getNode().(Fstring).getAValue() = nodeFrom.getNode().getNode()
+  nodeTo.asExpr().(Fstring).getAValue() = nodeFrom.asExpr()
   // TODO: Handle encode/decode from base64/quopri
   // TODO: Handle os.path.join
   // TODO: Handle functions in https://docs.python.org/3/library/binascii.html
+}
+
+/**
+ * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to JSON encoding/decoding.
+ */
+predicate jsonStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
+  exists(CallNode call | call = nodeTo.getNode() |
+    call.getFunction().(AttrNode).getObject(["load", "loads", "dumps"]).(NameNode).getId() = "json" and
+    call.getArg(0) = nodeFrom.getNode()
+  )
+}
+
+/**
+ * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to containers
+ * (lists/sets/dictionaries): literals, constructor invocation, methods. Note that this
+ * is currently very imprecise, as an example, since we model `dict.get`, we treat any
+ * `<tainted object>.get(<arg>)` will be tainted, whether it's true or not.
+ */
+predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::Node nodeTo) {
+  // construction by literal
+  // TODO: Not limiting the content argument here feels like a BIG hack, but we currently get nothing for free :|
+  storeStep(nodeFrom, _, nodeTo)
+  or
+  // constructor call
+  exists(CallNode call | call = nodeTo.asCfgNode() |
+    call.getFunction().(NameNode).getId() in ["list", "set", "frozenset", "dict", "defaultdict",
+          "tuple"] and
+    call.getArg(0) = nodeFrom.getNode()
+  )
+  or
+  // functions operating on collections
+  exists(CallNode call | call = nodeTo.asCfgNode() |
+    call.getFunction().(NameNode).getId() in ["sorted", "reversed", "iter", "next"] and
+    call.getArg(0) = nodeFrom.getNode()
+  )
+  or
+  // methods
+  exists(CallNode call, string name | call = nodeTo.asCfgNode() |
+    name in ["copy",
+          // general
+          "pop",
+          // dict
+          "values", "items", "get", "popitem"] and
+    call.getFunction().(AttrNode).getObject(name) = nodeFrom.asCfgNode()
+  )
+  or
+  // list.append, set.add
+  exists(CallNode call, string name |
+    name in ["append", "add"] and
+    call.getFunction().(AttrNode).getObject(name) =
+      nodeTo.(PostUpdateNode).getPreUpdateNode().asCfgNode() and
+    call.getArg(0) = nodeFrom.getNode()
+  )
+}
+
+/**
+ * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to copying.
+ */
+predicate copyStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
+  exists(CallNode call | call = nodeTo.getNode() |
+    // Fully qualified: copy.copy, copy.deepcopy
+    (
+      call.getFunction().(NameNode).getId() in ["copy", "deepcopy"]
+      or
+      call.getFunction().(AttrNode).getObject(["copy", "deepcopy"]).(NameNode).getId() = "copy"
+    ) and
+    call.getArg(0) = nodeFrom.getNode()
+  )
+}
+
+/**
+ * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to `for`-iteration,
+ * for example `for x in xs`, or `for x,y in points`.
+ */
+predicate forStep(DataFlow::CfgNode nodeFrom, DataFlow::EssaNode nodeTo) {
+  exists(EssaNodeDefinition defn, For for |
+    for.getTarget().getAChildNode*() = defn.getDefiningNode().getNode() and
+    nodeTo.getVar() = defn and
+    nodeFrom.asExpr() = for.getIter()
+  )
+}
+
+/**
+ * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to iterable unpacking.
+ * Only handles normal assignment (`x,y = calc_point()`), since `for x,y in points` is handled by `forStep`.
+ */
+predicate unpackingAssignmentStep(DataFlow::CfgNode nodeFrom, DataFlow::EssaNode nodeTo) {
+  // `a, b = myiterable` or `head, *tail = myiterable` (only Python 3)
+  exists(MultiAssignmentDefinition defn, Assign assign |
+    assign.getATarget().contains(defn.getDefiningNode().getNode()) and
+    nodeTo.getVar() = defn and
+    nodeFrom.asExpr() = assign.getValue()
+  )
 }

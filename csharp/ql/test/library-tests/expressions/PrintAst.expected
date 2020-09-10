@@ -938,10 +938,10 @@ expressions.cs:
 #  224|       1: [Parameter] e
 #  226|   7: [Class] Button
 #  229|     5: [Event] Click
-#  229|       3: [RemoveEventAccessor] remove_Click
+#  229|       3: [AddEventAccessor] add_Click
 #-----|         2: (Parameters)
 #  229|           0: [Parameter] value
-#  229|       3: [AddEventAccessor] add_Click
+#  229|       4: [RemoveEventAccessor] remove_Click
 #-----|         2: (Parameters)
 #  229|           0: [Parameter] value
 #  231|     6: [Method] OnClick
@@ -1491,333 +1491,467 @@ expressions.cs:
 #  432|         0: [Parameter] x
 #  432|         1: [Parameter] y
 #  433|     7: [DelegateType] Unit
-#  435|     8: [Method] MainAnonymousFunctions
+#  435|     8: [Method] MultiDimensionalArrayCreations
 #  436|       4: [BlockStmt] {...}
 #  437|         0: [LocalVariableDeclStmt] ... ...;
-#  437|           0: [LocalVariableDeclAndInitExpr] Func<Int16,Byte> f1 = ...
-#  437|             0: [LambdaExpr] (...) => ...
-#  437|               0: [CastExpr] (...) ...
-#  437|                 0: [AddExpr] ... + ...
-#  437|                   0: [CastExpr] (...) ...
-#  437|                     0: [ParameterAccess] access to parameter x
-#  437|                   1: [IntLiteral] 1
-#  437|                 1: [TypeAccess] access to type Byte
+#  437|           0: [LocalVariableDeclAndInitExpr] Object o = ...
+#  437|             0: [ArrayCreation] array creation of type Int32[,]
+#  437|               -1: [ArrayInitializer] { ..., ... }
+#  437|                 0: [ArrayInitializer] { ..., ... }
+#  437|                   0: [IntLiteral] 1
+#  437|                   1: [IntLiteral] 2
+#  437|                 1: [ArrayInitializer] { ..., ... }
+#  437|                   0: [IntLiteral] 3
+#  437|                   1: [IntLiteral] 4
+#  437|                 2: [ArrayInitializer] { ..., ... }
+#  437|                   0: [IntLiteral] 5
+#  437|                   1: [IntLiteral] 6
+#  437|             1: [LocalVariableAccess] access to local variable o
+#  438|         1: [ExprStmt] ...;
+#  438|           0: [AssignExpr] ... = ...
+#  438|             0: [ArrayCreation] array creation of type Int32[,,]
+#  438|               -1: [ArrayInitializer] { ..., ... }
+#  438|                 0: [ArrayInitializer] { ..., ... }
+#  438|                   0: [ArrayInitializer] { ..., ... }
+#  438|                     0: [IntLiteral] 1
+#  438|                     1: [IntLiteral] 2
+#  438|                     2: [IntLiteral] 3
+#  438|                   1: [ArrayInitializer] { ..., ... }
+#  438|                     0: [IntLiteral] 4
+#  438|                     1: [IntLiteral] 5
+#  438|                     2: [IntLiteral] 6
+#  438|                 1: [ArrayInitializer] { ..., ... }
+#  438|                   0: [ArrayInitializer] { ..., ... }
+#  438|                     0: [IntLiteral] 7
+#  438|                     1: [IntLiteral] 8
+#  438|                     2: [IntLiteral] 9
+#  438|                   1: [ArrayInitializer] { ..., ... }
+#  438|                     0: [IntLiteral] 10
+#  438|                     1: [IntLiteral] 11
+#  438|                     2: [IntLiteral] 12
+#  438|             1: [LocalVariableAccess] access to local variable o
+#  439|         2: [ExprStmt] ...;
+#  439|           0: [AssignExpr] ... = ...
+#  439|             0: [ArrayCreation] array creation of type Int32[,][,]
+#  440|               -1: [ArrayInitializer] { ..., ... }
+#  441|                 0: [ArrayInitializer] { ..., ... }
+#  441|                   0: [ArrayCreation] array creation of type Int32[,]
+#  441|                     -1: [ArrayInitializer] { ..., ... }
+#  441|                       0: [ArrayInitializer] { ..., ... }
+#  441|                         0: [IntLiteral] 1
+#  441|                         1: [IntLiteral] 3
+#  441|                       1: [ArrayInitializer] { ..., ... }
+#  441|                         0: [IntLiteral] 5
+#  441|                         1: [IntLiteral] 7
+#  441|                   1: [ArrayCreation] array creation of type Int32[,]
+#  441|                     -1: [ArrayInitializer] { ..., ... }
+#  441|                       0: [ArrayInitializer] { ..., ... }
+#  441|                         0: [IntLiteral] 0
+#  441|                         1: [IntLiteral] 2
+#  441|                       1: [ArrayInitializer] { ..., ... }
+#  441|                         0: [IntLiteral] 4
+#  441|                         1: [IntLiteral] 6
+#  441|                       2: [ArrayInitializer] { ..., ... }
+#  441|                         0: [IntLiteral] 8
+#  441|                         1: [IntLiteral] 10
+#  441|                   2: [ArrayCreation] array creation of type Int32[,]
+#  441|                     -1: [ArrayInitializer] { ..., ... }
+#  441|                       0: [ArrayInitializer] { ..., ... }
+#  441|                         0: [IntLiteral] 11
+#  441|                         1: [IntLiteral] 22
+#  441|                       1: [ArrayInitializer] { ..., ... }
+#  441|                         0: [IntLiteral] 99
+#  441|                         1: [IntLiteral] 88
+#  441|                       2: [ArrayInitializer] { ..., ... }
+#  441|                         0: [IntLiteral] 0
+#  441|                         1: [IntLiteral] 9
+#  442|                 1: [ArrayInitializer] { ..., ... }
+#  442|                   0: [ArrayCreation] array creation of type Int32[,]
+#  442|                     -1: [ArrayInitializer] { ..., ... }
+#  442|                       0: [ArrayInitializer] { ..., ... }
+#  442|                         0: [IntLiteral] 1
+#  442|                         1: [IntLiteral] 3
+#  442|                       1: [ArrayInitializer] { ..., ... }
+#  442|                         0: [IntLiteral] 5
+#  442|                         1: [IntLiteral] 7
+#  442|                   1: [ArrayCreation] array creation of type Int32[,]
+#  442|                     -1: [ArrayInitializer] { ..., ... }
+#  442|                       0: [ArrayInitializer] { ..., ... }
+#  442|                         0: [IntLiteral] 0
+#  442|                         1: [IntLiteral] 2
+#  442|                       1: [ArrayInitializer] { ..., ... }
+#  442|                         0: [IntLiteral] 4
+#  442|                         1: [IntLiteral] 6
+#  442|                       2: [ArrayInitializer] { ..., ... }
+#  442|                         0: [IntLiteral] 8
+#  442|                         1: [IntLiteral] 10
+#  442|                   2: [ArrayCreation] array creation of type Int32[,]
+#  442|                     -1: [ArrayInitializer] { ..., ... }
+#  442|                       0: [ArrayInitializer] { ..., ... }
+#  442|                         0: [IntLiteral] 11
+#  442|                         1: [IntLiteral] 22
+#  442|                       1: [ArrayInitializer] { ..., ... }
+#  442|                         0: [IntLiteral] 99
+#  442|                         1: [IntLiteral] 88
+#  442|                       2: [ArrayInitializer] { ..., ... }
+#  442|                         0: [IntLiteral] 0
+#  442|                         1: [IntLiteral] 9
+#  439|             1: [LocalVariableAccess] access to local variable o
+#  444|         3: [ExprStmt] ...;
+#  444|           0: [AssignExpr] ... = ...
+#  444|             0: [ArrayCreation] array creation of type Int32[,][]
+#  444|               -1: [ArrayInitializer] { ..., ... }
+#  444|                 0: [ArrayCreation] array creation of type Int32[,]
+#  444|                   -1: [ArrayInitializer] { ..., ... }
+#  444|                     0: [ArrayInitializer] { ..., ... }
+#  444|                       0: [IntLiteral] 1
+#  444|                       1: [IntLiteral] 2
+#  444|                 1: [ArrayCreation] array creation of type Int32[,]
+#  444|                   -1: [ArrayInitializer] { ..., ... }
+#  444|                     0: [ArrayInitializer] { ..., ... }
+#  444|                       0: [IntLiteral] 1
+#  444|                       1: [IntLiteral] 2
+#  444|                       2: [IntLiteral] 3
+#  444|                     1: [ArrayInitializer] { ..., ... }
+#  444|                       0: [IntLiteral] 1
+#  444|                       1: [IntLiteral] 2
+#  444|                       2: [IntLiteral] 3
+#  444|                     2: [ArrayInitializer] { ..., ... }
+#  444|                       0: [IntLiteral] 1
+#  444|                       1: [IntLiteral] 2
+#  444|                       2: [IntLiteral] 3
+#  444|                     3: [ArrayInitializer] { ..., ... }
+#  444|                       0: [IntLiteral] 1
+#  444|                       1: [IntLiteral] 2
+#  444|                       2: [IntLiteral] 3
+#  444|             1: [LocalVariableAccess] access to local variable o
+#  447|     9: [Method] MainAnonymousFunctions
+#  448|       4: [BlockStmt] {...}
+#  449|         0: [LocalVariableDeclStmt] ... ...;
+#  449|           0: [LocalVariableDeclAndInitExpr] Func<Int16,Byte> f1 = ...
+#  449|             0: [LambdaExpr] (...) => ...
+#  449|               0: [CastExpr] (...) ...
+#  449|                 0: [AddExpr] ... + ...
+#  449|                   0: [CastExpr] (...) ...
+#  449|                     0: [ParameterAccess] access to parameter x
+#  449|                   1: [IntLiteral] 1
+#  449|                 1: [TypeAccess] access to type Byte
 #-----|               2: (Parameters)
-#  437|                 0: [Parameter] x
-#  437|             1: [LocalVariableAccess] access to local variable f1
-#  438|         1: [LocalVariableDeclStmt] ... ...;
-#  438|           0: [LocalVariableDeclAndInitExpr] Func<Int32,Double> f2 = ...
-#  438|             0: [LambdaExpr] (...) => ...
-#  438|               0: [BlockStmt] {...}
-#  438|                 0: [ReturnStmt] return ...;
-#  438|                   0: [CastExpr] (...) ...
-#  438|                     0: [AddExpr] ... + ...
-#  438|                       0: [ParameterAccess] access to parameter x
-#  438|                       1: [IntLiteral] 1
+#  449|                 0: [Parameter] x
+#  449|             1: [LocalVariableAccess] access to local variable f1
+#  450|         1: [LocalVariableDeclStmt] ... ...;
+#  450|           0: [LocalVariableDeclAndInitExpr] Func<Int32,Double> f2 = ...
+#  450|             0: [LambdaExpr] (...) => ...
+#  450|               0: [BlockStmt] {...}
+#  450|                 0: [ReturnStmt] return ...;
+#  450|                   0: [CastExpr] (...) ...
+#  450|                     0: [AddExpr] ... + ...
+#  450|                       0: [ParameterAccess] access to parameter x
+#  450|                       1: [IntLiteral] 1
 #-----|               2: (Parameters)
-#  438|                 0: [Parameter] x
-#  438|             1: [LocalVariableAccess] access to local variable f2
-#  439|         2: [LocalVariableDeclStmt] ... ...;
-#  439|           0: [LocalVariableDeclAndInitExpr] Func<Int32,Int32> f3 = ...
-#  439|             0: [LambdaExpr] (...) => ...
-#  439|               0: [AddExpr] ... + ...
-#  439|                 0: [ParameterAccess] access to parameter x
-#  439|                 1: [IntLiteral] 1
+#  450|                 0: [Parameter] x
+#  450|             1: [LocalVariableAccess] access to local variable f2
+#  451|         2: [LocalVariableDeclStmt] ... ...;
+#  451|           0: [LocalVariableDeclAndInitExpr] Func<Int32,Int32> f3 = ...
+#  451|             0: [LambdaExpr] (...) => ...
+#  451|               0: [AddExpr] ... + ...
+#  451|                 0: [ParameterAccess] access to parameter x
+#  451|                 1: [IntLiteral] 1
 #-----|               2: (Parameters)
-#  439|                 0: [Parameter] x
-#  439|             1: [LocalVariableAccess] access to local variable f3
-#  440|         3: [LocalVariableDeclStmt] ... ...;
-#  440|           0: [LocalVariableDeclAndInitExpr] Func<Int32,String> f4 = ...
-#  440|             0: [LambdaExpr] (...) => ...
-#  440|               0: [BlockStmt] {...}
-#  440|                 0: [ReturnStmt] return ...;
-#  440|                   0: [AddExpr] ... + ...
-#  440|                     0: [CastExpr] (...) ...
-#  440|                       0: [ParameterAccess] access to parameter x
-#  440|                     1: [StringLiteral] ""
+#  451|                 0: [Parameter] x
+#  451|             1: [LocalVariableAccess] access to local variable f3
+#  452|         3: [LocalVariableDeclStmt] ... ...;
+#  452|           0: [LocalVariableDeclAndInitExpr] Func<Int32,String> f4 = ...
+#  452|             0: [LambdaExpr] (...) => ...
+#  452|               0: [BlockStmt] {...}
+#  452|                 0: [ReturnStmt] return ...;
+#  452|                   0: [AddExpr] ... + ...
+#  452|                     0: [CastExpr] (...) ...
+#  452|                       0: [ParameterAccess] access to parameter x
+#  452|                     1: [StringLiteral] ""
 #-----|               2: (Parameters)
-#  440|                 0: [Parameter] x
-#  440|             1: [LocalVariableAccess] access to local variable f4
-#  441|         4: [LocalVariableDeclStmt] ... ...;
-#  441|           0: [LocalVariableDeclAndInitExpr] S f5 = ...
-#  441|             0: [LambdaExpr] (...) => ...
-#  441|               0: [MulExpr] ... * ...
-#  441|                 0: [ParameterAccess] access to parameter x
-#  441|                 1: [ParameterAccess] access to parameter y
+#  452|                 0: [Parameter] x
+#  452|             1: [LocalVariableAccess] access to local variable f4
+#  453|         4: [LocalVariableDeclStmt] ... ...;
+#  453|           0: [LocalVariableDeclAndInitExpr] S f5 = ...
+#  453|             0: [LambdaExpr] (...) => ...
+#  453|               0: [MulExpr] ... * ...
+#  453|                 0: [ParameterAccess] access to parameter x
+#  453|                 1: [ParameterAccess] access to parameter y
 #-----|               2: (Parameters)
-#  441|                 0: [Parameter] x
-#  441|                 1: [Parameter] y
-#  441|             1: [LocalVariableAccess] access to local variable f5
-#  442|         5: [LocalVariableDeclStmt] ... ...;
-#  442|           0: [LocalVariableDeclAndInitExpr] Unit f6 = ...
-#  442|             0: [LambdaExpr] (...) => ...
-#  442|               0: [MethodCall] call to method WriteLine
-#  442|                 -1: [TypeAccess] access to type Console
-#  442|             1: [LocalVariableAccess] access to local variable f6
-#  443|         6: [LocalVariableDeclStmt] ... ...;
-#  443|           0: [LocalVariableDeclAndInitExpr] Func<Int32,Int32> f7 = ...
-#  443|             0: [AnonymousMethodExpr] delegate(...) { ... }
-#  443|               0: [BlockStmt] {...}
-#  443|                 0: [ReturnStmt] return ...;
-#  443|                   0: [AddExpr] ... + ...
-#  443|                     0: [ParameterAccess] access to parameter x
-#  443|                     1: [IntLiteral] 1
+#  453|                 0: [Parameter] x
+#  453|                 1: [Parameter] y
+#  453|             1: [LocalVariableAccess] access to local variable f5
+#  454|         5: [LocalVariableDeclStmt] ... ...;
+#  454|           0: [LocalVariableDeclAndInitExpr] Unit f6 = ...
+#  454|             0: [LambdaExpr] (...) => ...
+#  454|               0: [MethodCall] call to method WriteLine
+#  454|                 -1: [TypeAccess] access to type Console
+#  454|             1: [LocalVariableAccess] access to local variable f6
+#  455|         6: [LocalVariableDeclStmt] ... ...;
+#  455|           0: [LocalVariableDeclAndInitExpr] Func<Int32,Int32> f7 = ...
+#  455|             0: [AnonymousMethodExpr] delegate(...) { ... }
+#  455|               0: [BlockStmt] {...}
+#  455|                 0: [ReturnStmt] return ...;
+#  455|                   0: [AddExpr] ... + ...
+#  455|                     0: [ParameterAccess] access to parameter x
+#  455|                     1: [IntLiteral] 1
 #-----|               2: (Parameters)
-#  443|                 0: [Parameter] x
-#  443|             1: [LocalVariableAccess] access to local variable f7
-#  444|         7: [LocalVariableDeclStmt] ... ...;
-#  444|           0: [LocalVariableDeclAndInitExpr] Int32 j = ...
-#  444|             0: [IntLiteral] 0
-#  444|             1: [LocalVariableAccess] access to local variable j
-#  445|         8: [LocalVariableDeclStmt] ... ...;
-#  445|           0: [LocalVariableDeclAndInitExpr] Func<Int32> f8 = ...
-#  445|             0: [AnonymousMethodExpr] delegate(...) { ... }
-#  445|               0: [BlockStmt] {...}
-#  445|                 0: [ReturnStmt] return ...;
-#  445|                   0: [AddExpr] ... + ...
-#  445|                     0: [LocalVariableAccess] access to local variable j
-#  445|                     1: [IntLiteral] 1
-#  445|             1: [LocalVariableAccess] access to local variable f8
-#  450|   18: [Class] OperatorCalls
-#  452|     5: [Method] delegateCombine
+#  455|                 0: [Parameter] x
+#  455|             1: [LocalVariableAccess] access to local variable f7
+#  456|         7: [LocalVariableDeclStmt] ... ...;
+#  456|           0: [LocalVariableDeclAndInitExpr] Int32 j = ...
+#  456|             0: [IntLiteral] 0
+#  456|             1: [LocalVariableAccess] access to local variable j
+#  457|         8: [LocalVariableDeclStmt] ... ...;
+#  457|           0: [LocalVariableDeclAndInitExpr] Func<Int32> f8 = ...
+#  457|             0: [AnonymousMethodExpr] delegate(...) { ... }
+#  457|               0: [BlockStmt] {...}
+#  457|                 0: [ReturnStmt] return ...;
+#  457|                   0: [AddExpr] ... + ...
+#  457|                     0: [LocalVariableAccess] access to local variable j
+#  457|                     1: [IntLiteral] 1
+#  457|             1: [LocalVariableAccess] access to local variable f8
+#  462|   18: [Class] OperatorCalls
+#  464|     5: [Method] delegateCombine
 #-----|       2: (Parameters)
-#  452|         0: [Parameter] fun
-#  453|       4: [BlockStmt] {...}
-#  454|         0: [LocalVariableDeclStmt] ... ...;
-#  454|           0: [LocalVariableDeclAndInitExpr] MyDelegate PropertyChanged = ...
-#  454|             0: [NullLiteral] null
-#  454|             1: [LocalVariableAccess] access to local variable PropertyChanged
-#  455|         1: [ExprStmt] ...;
-#  455|           0: [AssignAddExpr] ... += ...
-#  455|             0: [ParameterAccess] access to parameter fun
-#  455|             1: [LocalVariableAccess] access to local variable PropertyChanged
-#  458|     6: [Method] addition
+#  464|         0: [Parameter] fun
+#  465|       4: [BlockStmt] {...}
+#  466|         0: [LocalVariableDeclStmt] ... ...;
+#  466|           0: [LocalVariableDeclAndInitExpr] MyDelegate PropertyChanged = ...
+#  466|             0: [NullLiteral] null
+#  466|             1: [LocalVariableAccess] access to local variable PropertyChanged
+#  467|         1: [ExprStmt] ...;
+#  467|           0: [AssignAddExpr] ... += ...
+#  467|             0: [ParameterAccess] access to parameter fun
+#  467|             1: [LocalVariableAccess] access to local variable PropertyChanged
+#  470|     6: [Method] addition
 #-----|       2: (Parameters)
-#  458|         0: [Parameter] a
-#  458|         1: [Parameter] b
-#  458|         2: [Parameter] c
-#  459|       4: [BlockStmt] {...}
-#  460|         0: [LocalVariableDeclStmt] ... ...;
-#  460|           0: [LocalVariableDeclAndInitExpr] Num result = ...
-#  460|             0: [OperatorCall] call to operator +
-#  460|               0: [ParameterAccess] access to parameter a
-#  460|               1: [ParameterAccess] access to parameter b
-#  460|             1: [LocalVariableAccess] access to local variable result
-#  461|         1: [ExprStmt] ...;
-#  461|           0: [AssignAddExpr] ... += ...
-#  461|             0: [ParameterAccess] access to parameter c
-#  461|             1: [LocalVariableAccess] access to local variable result
-#  462|         2: [ReturnStmt] return ...;
-#  462|           0: [LocalVariableAccess] access to local variable result
-#  464|     7: [Class] Num
-#  466|       4: [Field] value
-#  468|       5: [InstanceConstructor] Num
+#  470|         0: [Parameter] a
+#  470|         1: [Parameter] b
+#  470|         2: [Parameter] c
+#  471|       4: [BlockStmt] {...}
+#  472|         0: [LocalVariableDeclStmt] ... ...;
+#  472|           0: [LocalVariableDeclAndInitExpr] Num result = ...
+#  472|             0: [OperatorCall] call to operator +
+#  472|               0: [ParameterAccess] access to parameter a
+#  472|               1: [ParameterAccess] access to parameter b
+#  472|             1: [LocalVariableAccess] access to local variable result
+#  473|         1: [ExprStmt] ...;
+#  473|           0: [AssignAddExpr] ... += ...
+#  473|             0: [ParameterAccess] access to parameter c
+#  473|             1: [LocalVariableAccess] access to local variable result
+#  474|         2: [ReturnStmt] return ...;
+#  474|           0: [LocalVariableAccess] access to local variable result
+#  476|     7: [Class] Num
+#  478|       4: [Field] value
+#  480|       5: [InstanceConstructor] Num
 #-----|         2: (Parameters)
-#  468|           0: [Parameter] value
-#  469|         4: [BlockStmt] {...}
-#  470|           0: [ExprStmt] ...;
-#  470|             0: [AssignExpr] ... = ...
-#  470|               0: [ParameterAccess] access to parameter value
-#  470|               1: [FieldAccess] access to field value
-#  470|                 -1: [ThisAccess] this access
-#  473|       6: [AddOperator] +
+#  480|           0: [Parameter] value
+#  481|         4: [BlockStmt] {...}
+#  482|           0: [ExprStmt] ...;
+#  482|             0: [AssignExpr] ... = ...
+#  482|               0: [ParameterAccess] access to parameter value
+#  482|               1: [FieldAccess] access to field value
+#  482|                 -1: [ThisAccess] this access
+#  485|       6: [AddOperator] +
 #-----|         2: (Parameters)
-#  473|           0: [Parameter] c1
-#  473|           1: [Parameter] c2
-#  474|         4: [BlockStmt] {...}
-#  475|           0: [ReturnStmt] return ...;
-#  475|             0: [ObjectCreation] object creation of type Num
-#  475|               0: [AddExpr] ... + ...
-#  475|                 0: [FieldAccess] access to field value
-#  475|                   -1: [ParameterAccess] access to parameter c1
-#  475|                 1: [FieldAccess] access to field value
-#  475|                   -1: [ParameterAccess] access to parameter c2
-#  479|     8: [DelegateType] MyDelegate
+#  485|           0: [Parameter] c1
+#  485|           1: [Parameter] c2
+#  486|         4: [BlockStmt] {...}
+#  487|           0: [ReturnStmt] return ...;
+#  487|             0: [ObjectCreation] object creation of type Num
+#  487|               0: [AddExpr] ... + ...
+#  487|                 0: [FieldAccess] access to field value
+#  487|                   -1: [ParameterAccess] access to parameter c1
+#  487|                 1: [FieldAccess] access to field value
+#  487|                   -1: [ParameterAccess] access to parameter c2
+#  491|     8: [DelegateType] MyDelegate
 #-----|       2: (Parameters)
-#  479|         0: [Parameter] e
-#  482|   19: [Class] ExpressionDepth
-#  484|     5: [Field] d
-#  484|       1: [AssignExpr] ... = ...
-#  484|         0: [AddExpr] ... + ...
-#  484|           0: [AddExpr] ... + ...
-#  484|             0: [AddExpr] ... + ...
-#  484|               0: [AddExpr] ... + ...
-#  484|                 0: [AddExpr] ... + ...
-#  484|                   0: [AddExpr] ... + ...
-#  484|                     0: [AddExpr] ... + ...
-#  484|                       0: [AddExpr] ... + ...
-#  484|                         0: [AddExpr] ... + ...
-#  484|                           0: [AddExpr] ... + ...
-#  484|                             0: [AddExpr] ... + ...
-#  484|                               0: [AddExpr] ... + ...
-#  484|                                 0: [AddExpr] ... + ...
-#  484|                                   0: [AddExpr] ... + ...
-#  484|                                     0: [AddExpr] ... + ...
-#  484|                                       0: [AddExpr] ... + ...
-#  484|                                         0: [AddExpr] ... + ...
-#  484|                                           0: [AddExpr] ... + ...
-#  484|                                             0: [AddExpr] ... + ...
-#  484|                                               0: [AddExpr] ... + ...
-#  484|                                                 0: [AddExpr] ... + ...
-#  484|                                                   0: [AddExpr] ... + ...
-#  484|                                                     0: [AddExpr] ... + ...
-#  484|                                                       0: [AddExpr] ... + ...
-#  484|                                                         0: [AddExpr] ... + ...
-#  484|                                                           0: [AddExpr] ... + ...
-#  484|                                                             0: [AddExpr] ... + ...
-#  484|                                                               0: [AddExpr] ... + ...
-#  484|                                                                 0: [AddExpr] ... + ...
-#  484|                                                                   0: [AddExpr] ... + ...
-#  484|                                                                     0: [AddExpr] ... + ...
-#  484|                                                                       0: [AddExpr] ... + ...
-#  484|                                                                         0: [AddExpr] ... + ...
-#  484|                                                                           0: [AddExpr] ... + ...
-#  484|                                                                             0: [AddExpr] ... + ...
-#  484|                                                                               0: [AddExpr] ... + ...
-#  484|                                                                                 0: [AddExpr] ... + ...
-#  484|                                                                                   0: [AddExpr] ... + ...
-#  484|                                                                                     0: [AddExpr] ... + ...
-#  484|                                                                                       0: [AddExpr] ... + ...
-#  484|                                                                                         0: [AddExpr] ... + ...
-#  484|                                                                                           0: [AddExpr] ... + ...
-#  484|                                                                                             0: [AddExpr] ... + ...
-#  484|                                                                                               0: [AddExpr] ... + ...
-#  484|                                                                                                 0: [AddExpr] ... + ...
-#  484|                                                                                                   0: [AddExpr] ... + ...
-#  484|                                                                                                     0: [AddExpr] ... + ...
-#  484|                                                                                                       0: [AddExpr] ... + ...
-#  484|                                                                                                         0: [AddExpr] ... + ...
-#  484|                                                                                                           0: [AddExpr] ... + ...
-#  484|                                                                                                             0: [AddExpr] ... + ...
-#  484|                                                                                                               0: [AddExpr] ... + ...
-#  484|                                                                                                                 0: [AddExpr] ... + ...
-#  484|                                                                                                                   0: [AddExpr] ... + ...
-#  484|                                                                                                                     0: [AddExpr] ... + ...
-#  484|                                                                                                                       0: [AddExpr] ... + ...
-#  484|                                                                                                                         0: [AddExpr] ... + ...
-#  484|                                                                                                                           0: [AddExpr] ... + ...
-#  484|                                                                                                                             0: [AddExpr] ... + ...
-#  484|                                                                                                                               0: [AddExpr] ... + ...
-#  484|                                                                                                                                 0: [AddExpr] ... + ...
-#  484|                                                                                                                                   0: [AddExpr] ... + ...
-#  484|                                                                                                                                     0: [AddExpr] ... + ...
-#  484|                                                                                                                                       0: [AddExpr] ... + ...
-#  484|                                                                                                                                         0: [AddExpr] ... + ...
-#  484|                                                                                                                                           0: [AddExpr] ... + ...
-#  484|                                                                                                                                             0: [AddExpr] ... + ...
-#  484|                                                                                                                                               0: [AddExpr] ... + ...
-#  484|                                                                                                                                                 0: [AddExpr] ... + ...
-#  484|                                                                                                                                                   0: [AddExpr] ... + ...
-#  484|                                                                                                                                                     0: [AddExpr] ... + ...
-#  484|                                                                                                                                                       0: [AddExpr] ... + ...
-#  484|                                                                                                                                                         0: [AddExpr] ... + ...
-#  484|                                                                                                                                                           0: [AddExpr] ... + ...
-#  484|                                                                                                                                                             0: [AddExpr] ... + ...
-#  484|                                                                                                                                                               0: [AddExpr] ... + ...
-#  484|                                                                                                                                                                 0: [AddExpr] ... + ...
-#  484|                                                                                                                                                                   0: [AddExpr] ... + ...
-#  484|                                                                                                                                                                     0: [AddExpr] ... + ...
-#  484|                                                                                                                                                                       0: [IntLiteral] 1
-#  484|                                                                                                                                                                       1: [IntLiteral] 1
-#  484|                                                                                                                                                                     1: [IntLiteral] 1
-#  484|                                                                                                                                                                   1: [IntLiteral] 1
-#  484|                                                                                                                                                                 1: [IntLiteral] 1
-#  484|                                                                                                                                                               1: [IntLiteral] 1
-#  484|                                                                                                                                                             1: [IntLiteral] 1
-#  484|                                                                                                                                                           1: [IntLiteral] 1
-#  484|                                                                                                                                                         1: [IntLiteral] 1
-#  484|                                                                                                                                                       1: [IntLiteral] 1
-#  484|                                                                                                                                                     1: [IntLiteral] 1
-#  484|                                                                                                                                                   1: [IntLiteral] 1
-#  484|                                                                                                                                                 1: [IntLiteral] 1
-#  484|                                                                                                                                               1: [IntLiteral] 1
-#  484|                                                                                                                                             1: [IntLiteral] 1
-#  484|                                                                                                                                           1: [IntLiteral] 1
-#  484|                                                                                                                                         1: [IntLiteral] 1
-#  484|                                                                                                                                       1: [IntLiteral] 1
-#  484|                                                                                                                                     1: [IntLiteral] 1
-#  484|                                                                                                                                   1: [IntLiteral] 1
-#  484|                                                                                                                                 1: [IntLiteral] 1
-#  484|                                                                                                                               1: [IntLiteral] 1
-#  484|                                                                                                                             1: [IntLiteral] 1
-#  484|                                                                                                                           1: [IntLiteral] 1
-#  484|                                                                                                                         1: [IntLiteral] 1
-#  484|                                                                                                                       1: [IntLiteral] 1
-#  484|                                                                                                                     1: [IntLiteral] 1
-#  484|                                                                                                                   1: [IntLiteral] 1
-#  484|                                                                                                                 1: [IntLiteral] 1
-#  484|                                                                                                               1: [IntLiteral] 1
-#  484|                                                                                                             1: [IntLiteral] 1
-#  484|                                                                                                           1: [IntLiteral] 1
-#  484|                                                                                                         1: [IntLiteral] 1
-#  484|                                                                                                       1: [IntLiteral] 1
-#  484|                                                                                                     1: [IntLiteral] 1
-#  484|                                                                                                   1: [IntLiteral] 1
-#  484|                                                                                                 1: [IntLiteral] 1
-#  484|                                                                                               1: [IntLiteral] 1
-#  484|                                                                                             1: [IntLiteral] 1
-#  484|                                                                                           1: [IntLiteral] 1
-#  485|                                                                                         1: [IntLiteral] 1
-#  485|                                                                                       1: [IntLiteral] 1
-#  485|                                                                                     1: [IntLiteral] 1
-#  485|                                                                                   1: [IntLiteral] 1
-#  485|                                                                                 1: [IntLiteral] 1
-#  485|                                                                               1: [IntLiteral] 1
-#  485|                                                                             1: [IntLiteral] 1
-#  485|                                                                           1: [IntLiteral] 1
-#  485|                                                                         1: [IntLiteral] 1
-#  485|                                                                       1: [IntLiteral] 1
-#  485|                                                                     1: [IntLiteral] 1
-#  485|                                                                   1: [IntLiteral] 1
-#  485|                                                                 1: [IntLiteral] 1
-#  485|                                                               1: [IntLiteral] 1
-#  485|                                                             1: [IntLiteral] 1
-#  485|                                                           1: [IntLiteral] 1
-#  485|                                                         1: [IntLiteral] 1
-#  485|                                                       1: [IntLiteral] 1
-#  485|                                                     1: [IntLiteral] 1
-#  485|                                                   1: [IntLiteral] 1
-#  485|                                                 1: [IntLiteral] 1
-#  485|                                               1: [IntLiteral] 1
-#  485|                                             1: [IntLiteral] 1
-#  485|                                           1: [IntLiteral] 1
-#  485|                                         1: [IntLiteral] 1
-#  485|                                       1: [IntLiteral] 1
-#  485|                                     1: [IntLiteral] 1
-#  485|                                   1: [IntLiteral] 1
-#  485|                                 1: [IntLiteral] 1
-#  485|                               1: [IntLiteral] 1
-#  485|                             1: [IntLiteral] 1
-#  485|                           1: [IntLiteral] 1
-#  485|                         1: [IntLiteral] 1
-#  485|                       1: [IntLiteral] 1
-#  485|                     1: [IntLiteral] 1
-#  485|                   1: [IntLiteral] 1
-#  485|                 1: [IntLiteral] 1
-#  485|               1: [IntLiteral] 1
-#  485|             1: [IntLiteral] 1
-#  485|           1: [IntLiteral] 1
-#  484|         1: [MemberConstantAccess] access to constant d
-#  488|   20: [Class] TupleExprs
-#  490|     5: [Method] Test
-#  491|       4: [BlockStmt] {...}
-#  492|         0: [LocalVariableDeclStmt] ... ...;
-#  492|           0: [LocalVariableDeclAndInitExpr] (Int32,String) a = ...
-#  492|             0: [DefaultValueExpr] default(...)
-#  492|               0: [TypeAccess] access to type (Int32,String)
-#  492|             1: [LocalVariableAccess] access to local variable a
-#  493|         1: [LocalVariableDeclStmt] ... ...;
-#  493|           0: [LocalVariableDeclAndInitExpr] (Boolean,Int32[],Object) b = ...
-#  493|             0: [DefaultValueExpr] default(...)
-#  493|               0: [TypeAccess] access to type (Boolean,Int32[],Object)
-#  493|             1: [LocalVariableAccess] access to local variable b
-#  494|         2: [LocalVariableDeclStmt] ... ...;
-#  494|           0: [LocalVariableDeclAndInitExpr] Type x = ...
-#  494|             0: [TypeofExpr] typeof(...)
-#  494|               0: [TypeAccess] access to type (Int32,String)
-#  494|             1: [LocalVariableAccess] access to local variable x
-#  495|         3: [LocalVariableDeclStmt] ... ...;
-#  495|           0: [LocalVariableDeclAndInitExpr] Type y = ...
-#  495|             0: [TypeofExpr] typeof(...)
-#  495|               0: [TypeAccess] access to type (Boolean,Int32[],dynamic)
-#  495|             1: [LocalVariableAccess] access to local variable y
+#  491|         0: [Parameter] e
+#  494|   19: [Class] ExpressionDepth
+#  496|     5: [Field] d
+#  496|       1: [AssignExpr] ... = ...
+#  496|         0: [AddExpr] ... + ...
+#  496|           0: [AddExpr] ... + ...
+#  496|             0: [AddExpr] ... + ...
+#  496|               0: [AddExpr] ... + ...
+#  496|                 0: [AddExpr] ... + ...
+#  496|                   0: [AddExpr] ... + ...
+#  496|                     0: [AddExpr] ... + ...
+#  496|                       0: [AddExpr] ... + ...
+#  496|                         0: [AddExpr] ... + ...
+#  496|                           0: [AddExpr] ... + ...
+#  496|                             0: [AddExpr] ... + ...
+#  496|                               0: [AddExpr] ... + ...
+#  496|                                 0: [AddExpr] ... + ...
+#  496|                                   0: [AddExpr] ... + ...
+#  496|                                     0: [AddExpr] ... + ...
+#  496|                                       0: [AddExpr] ... + ...
+#  496|                                         0: [AddExpr] ... + ...
+#  496|                                           0: [AddExpr] ... + ...
+#  496|                                             0: [AddExpr] ... + ...
+#  496|                                               0: [AddExpr] ... + ...
+#  496|                                                 0: [AddExpr] ... + ...
+#  496|                                                   0: [AddExpr] ... + ...
+#  496|                                                     0: [AddExpr] ... + ...
+#  496|                                                       0: [AddExpr] ... + ...
+#  496|                                                         0: [AddExpr] ... + ...
+#  496|                                                           0: [AddExpr] ... + ...
+#  496|                                                             0: [AddExpr] ... + ...
+#  496|                                                               0: [AddExpr] ... + ...
+#  496|                                                                 0: [AddExpr] ... + ...
+#  496|                                                                   0: [AddExpr] ... + ...
+#  496|                                                                     0: [AddExpr] ... + ...
+#  496|                                                                       0: [AddExpr] ... + ...
+#  496|                                                                         0: [AddExpr] ... + ...
+#  496|                                                                           0: [AddExpr] ... + ...
+#  496|                                                                             0: [AddExpr] ... + ...
+#  496|                                                                               0: [AddExpr] ... + ...
+#  496|                                                                                 0: [AddExpr] ... + ...
+#  496|                                                                                   0: [AddExpr] ... + ...
+#  496|                                                                                     0: [AddExpr] ... + ...
+#  496|                                                                                       0: [AddExpr] ... + ...
+#  496|                                                                                         0: [AddExpr] ... + ...
+#  496|                                                                                           0: [AddExpr] ... + ...
+#  496|                                                                                             0: [AddExpr] ... + ...
+#  496|                                                                                               0: [AddExpr] ... + ...
+#  496|                                                                                                 0: [AddExpr] ... + ...
+#  496|                                                                                                   0: [AddExpr] ... + ...
+#  496|                                                                                                     0: [AddExpr] ... + ...
+#  496|                                                                                                       0: [AddExpr] ... + ...
+#  496|                                                                                                         0: [AddExpr] ... + ...
+#  496|                                                                                                           0: [AddExpr] ... + ...
+#  496|                                                                                                             0: [AddExpr] ... + ...
+#  496|                                                                                                               0: [AddExpr] ... + ...
+#  496|                                                                                                                 0: [AddExpr] ... + ...
+#  496|                                                                                                                   0: [AddExpr] ... + ...
+#  496|                                                                                                                     0: [AddExpr] ... + ...
+#  496|                                                                                                                       0: [AddExpr] ... + ...
+#  496|                                                                                                                         0: [AddExpr] ... + ...
+#  496|                                                                                                                           0: [AddExpr] ... + ...
+#  496|                                                                                                                             0: [AddExpr] ... + ...
+#  496|                                                                                                                               0: [AddExpr] ... + ...
+#  496|                                                                                                                                 0: [AddExpr] ... + ...
+#  496|                                                                                                                                   0: [AddExpr] ... + ...
+#  496|                                                                                                                                     0: [AddExpr] ... + ...
+#  496|                                                                                                                                       0: [AddExpr] ... + ...
+#  496|                                                                                                                                         0: [AddExpr] ... + ...
+#  496|                                                                                                                                           0: [AddExpr] ... + ...
+#  496|                                                                                                                                             0: [AddExpr] ... + ...
+#  496|                                                                                                                                               0: [AddExpr] ... + ...
+#  496|                                                                                                                                                 0: [AddExpr] ... + ...
+#  496|                                                                                                                                                   0: [AddExpr] ... + ...
+#  496|                                                                                                                                                     0: [AddExpr] ... + ...
+#  496|                                                                                                                                                       0: [AddExpr] ... + ...
+#  496|                                                                                                                                                         0: [AddExpr] ... + ...
+#  496|                                                                                                                                                           0: [AddExpr] ... + ...
+#  496|                                                                                                                                                             0: [AddExpr] ... + ...
+#  496|                                                                                                                                                               0: [AddExpr] ... + ...
+#  496|                                                                                                                                                                 0: [AddExpr] ... + ...
+#  496|                                                                                                                                                                   0: [AddExpr] ... + ...
+#  496|                                                                                                                                                                     0: [AddExpr] ... + ...
+#  496|                                                                                                                                                                       0: [IntLiteral] 1
+#  496|                                                                                                                                                                       1: [IntLiteral] 1
+#  496|                                                                                                                                                                     1: [IntLiteral] 1
+#  496|                                                                                                                                                                   1: [IntLiteral] 1
+#  496|                                                                                                                                                                 1: [IntLiteral] 1
+#  496|                                                                                                                                                               1: [IntLiteral] 1
+#  496|                                                                                                                                                             1: [IntLiteral] 1
+#  496|                                                                                                                                                           1: [IntLiteral] 1
+#  496|                                                                                                                                                         1: [IntLiteral] 1
+#  496|                                                                                                                                                       1: [IntLiteral] 1
+#  496|                                                                                                                                                     1: [IntLiteral] 1
+#  496|                                                                                                                                                   1: [IntLiteral] 1
+#  496|                                                                                                                                                 1: [IntLiteral] 1
+#  496|                                                                                                                                               1: [IntLiteral] 1
+#  496|                                                                                                                                             1: [IntLiteral] 1
+#  496|                                                                                                                                           1: [IntLiteral] 1
+#  496|                                                                                                                                         1: [IntLiteral] 1
+#  496|                                                                                                                                       1: [IntLiteral] 1
+#  496|                                                                                                                                     1: [IntLiteral] 1
+#  496|                                                                                                                                   1: [IntLiteral] 1
+#  496|                                                                                                                                 1: [IntLiteral] 1
+#  496|                                                                                                                               1: [IntLiteral] 1
+#  496|                                                                                                                             1: [IntLiteral] 1
+#  496|                                                                                                                           1: [IntLiteral] 1
+#  496|                                                                                                                         1: [IntLiteral] 1
+#  496|                                                                                                                       1: [IntLiteral] 1
+#  496|                                                                                                                     1: [IntLiteral] 1
+#  496|                                                                                                                   1: [IntLiteral] 1
+#  496|                                                                                                                 1: [IntLiteral] 1
+#  496|                                                                                                               1: [IntLiteral] 1
+#  496|                                                                                                             1: [IntLiteral] 1
+#  496|                                                                                                           1: [IntLiteral] 1
+#  496|                                                                                                         1: [IntLiteral] 1
+#  496|                                                                                                       1: [IntLiteral] 1
+#  496|                                                                                                     1: [IntLiteral] 1
+#  496|                                                                                                   1: [IntLiteral] 1
+#  496|                                                                                                 1: [IntLiteral] 1
+#  496|                                                                                               1: [IntLiteral] 1
+#  496|                                                                                             1: [IntLiteral] 1
+#  496|                                                                                           1: [IntLiteral] 1
+#  497|                                                                                         1: [IntLiteral] 1
+#  497|                                                                                       1: [IntLiteral] 1
+#  497|                                                                                     1: [IntLiteral] 1
+#  497|                                                                                   1: [IntLiteral] 1
+#  497|                                                                                 1: [IntLiteral] 1
+#  497|                                                                               1: [IntLiteral] 1
+#  497|                                                                             1: [IntLiteral] 1
+#  497|                                                                           1: [IntLiteral] 1
+#  497|                                                                         1: [IntLiteral] 1
+#  497|                                                                       1: [IntLiteral] 1
+#  497|                                                                     1: [IntLiteral] 1
+#  497|                                                                   1: [IntLiteral] 1
+#  497|                                                                 1: [IntLiteral] 1
+#  497|                                                               1: [IntLiteral] 1
+#  497|                                                             1: [IntLiteral] 1
+#  497|                                                           1: [IntLiteral] 1
+#  497|                                                         1: [IntLiteral] 1
+#  497|                                                       1: [IntLiteral] 1
+#  497|                                                     1: [IntLiteral] 1
+#  497|                                                   1: [IntLiteral] 1
+#  497|                                                 1: [IntLiteral] 1
+#  497|                                               1: [IntLiteral] 1
+#  497|                                             1: [IntLiteral] 1
+#  497|                                           1: [IntLiteral] 1
+#  497|                                         1: [IntLiteral] 1
+#  497|                                       1: [IntLiteral] 1
+#  497|                                     1: [IntLiteral] 1
+#  497|                                   1: [IntLiteral] 1
+#  497|                                 1: [IntLiteral] 1
+#  497|                               1: [IntLiteral] 1
+#  497|                             1: [IntLiteral] 1
+#  497|                           1: [IntLiteral] 1
+#  497|                         1: [IntLiteral] 1
+#  497|                       1: [IntLiteral] 1
+#  497|                     1: [IntLiteral] 1
+#  497|                   1: [IntLiteral] 1
+#  497|                 1: [IntLiteral] 1
+#  497|               1: [IntLiteral] 1
+#  497|             1: [IntLiteral] 1
+#  497|           1: [IntLiteral] 1
+#  496|         1: [MemberConstantAccess] access to constant d
+#  500|   20: [Class] TupleExprs
+#  502|     5: [Method] Test
+#  503|       4: [BlockStmt] {...}
+#  504|         0: [LocalVariableDeclStmt] ... ...;
+#  504|           0: [LocalVariableDeclAndInitExpr] (Int32,String) a = ...
+#  504|             0: [DefaultValueExpr] default(...)
+#  504|               0: [TypeAccess] access to type (Int32,String)
+#  504|             1: [LocalVariableAccess] access to local variable a
+#  505|         1: [LocalVariableDeclStmt] ... ...;
+#  505|           0: [LocalVariableDeclAndInitExpr] (Boolean,Int32[],Object) b = ...
+#  505|             0: [DefaultValueExpr] default(...)
+#  505|               0: [TypeAccess] access to type (Boolean,Int32[],Object)
+#  505|             1: [LocalVariableAccess] access to local variable b
+#  506|         2: [LocalVariableDeclStmt] ... ...;
+#  506|           0: [LocalVariableDeclAndInitExpr] Type x = ...
+#  506|             0: [TypeofExpr] typeof(...)
+#  506|               0: [TypeAccess] access to type (Int32,String)
+#  506|             1: [LocalVariableAccess] access to local variable x
+#  507|         3: [LocalVariableDeclStmt] ... ...;
+#  507|           0: [LocalVariableDeclAndInitExpr] Type y = ...
+#  507|             0: [TypeofExpr] typeof(...)
+#  507|               0: [TypeAccess] access to type (Boolean,Int32[],dynamic)
+#  507|             1: [LocalVariableAccess] access to local variable y

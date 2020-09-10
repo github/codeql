@@ -404,8 +404,8 @@ public class ASTExtractor {
       if (nd.hasLoc()) locationManager.emitNodeLocation(nd, lbl);
       Statement enclosingStmt = contextManager.getCurrentStatement();
       if (enclosingStmt != null)
-        trapwriter.addTuple("enclosingStmt", lbl, trapwriter.localID(enclosingStmt));
-      trapwriter.addTuple("exprContainers", lbl, contextManager.getCurrentContainerKey());
+        trapwriter.addTuple("enclosing_stmt", lbl, trapwriter.localID(enclosingStmt));
+      trapwriter.addTuple("expr_containers", lbl, contextManager.getCurrentContainerKey());
       return lbl;
     }
 
@@ -416,7 +416,7 @@ public class ASTExtractor {
       String tostring = lexicalExtractor.mkToString(nd);
       trapwriter.addTuple("stmts", lbl, kind, c.parent, c.childIndex, tostring);
       locationManager.emitNodeLocation(nd, lbl);
-      trapwriter.addTuple("stmtContainers", lbl, contextManager.getCurrentContainerKey());
+      trapwriter.addTuple("stmt_containers", lbl, contextManager.getCurrentContainerKey());
       contextManager.setCurrentStatement(nd);
       return lbl;
     }
@@ -691,16 +691,16 @@ public class ASTExtractor {
         scopeManager.enterScope(3, moduleScopeKey, toplevelLabel);
         scopeManager.addVariables(
             sourceType.getPredefinedLocals(platform, locationManager.getSourceFileExtension()));
-        trapwriter.addTuple("isModule", toplevelLabel);
+        trapwriter.addTuple("is_module", toplevelLabel);
       }
 
       // Emit the specific source type.
       switch (sourceType) {
         case CLOSURE_MODULE:
-          trapwriter.addTuple("isClosureModule", toplevelLabel);
+          trapwriter.addTuple("is_closure_module", toplevelLabel);
           break;
         case MODULE:
-          trapwriter.addTuple("isES2015Module", toplevelLabel);
+          trapwriter.addTuple("is_es2015_module", toplevelLabel);
           break;
         default:
           break;
@@ -810,7 +810,7 @@ public class ASTExtractor {
     public Label visit(YieldExpression nd, Context c) {
       Label key = super.visit(nd, c);
       visit(nd.getArgument(), key, 0);
-      if (nd.isDelegating()) trapwriter.addTuple("isDelegating", key);
+      if (nd.isDelegating()) trapwriter.addTuple("is_delegating", key);
       return key;
     }
 
@@ -822,7 +822,7 @@ public class ASTExtractor {
     public Label visit(VariableDeclaration nd, Context c) {
       Label key = super.visit(nd, c);
       if (nd.hasDeclareKeyword()) {
-        trapwriter.addTuple("hasDeclareKeyword", key);
+        trapwriter.addTuple("has_declare_keyword", key);
       }
       visitAll(nd.getDeclarations(), key);
       return key;
@@ -881,7 +881,7 @@ public class ASTExtractor {
     public Label visit(FunctionDeclaration nd, Context c) {
       Label key = super.visit(nd, c);
       if (nd.hasDeclareKeyword()) {
-        trapwriter.addTuple("hasDeclareKeyword", key);
+        trapwriter.addTuple("has_declare_keyword", key);
       }
       extractFunction(nd, key);
       emitStaticType(nd, key);
@@ -889,9 +889,9 @@ public class ASTExtractor {
     }
 
     private void extractFunctionAttributes(IFunction nd, Label key) {
-      if (nd.isGenerator()) trapwriter.addTuple("isGenerator", key);
-      if (nd.hasRest()) trapwriter.addTuple("hasRestParameter", key);
-      if (nd.isAsync()) trapwriter.addTuple("isAsync", key);
+      if (nd.isGenerator()) trapwriter.addTuple("is_generator", key);
+      if (nd.hasRest()) trapwriter.addTuple("has_rest_parameter", key);
+      if (nd.isAsync()) trapwriter.addTuple("is_async", key);
     }
 
     @Override
@@ -939,7 +939,7 @@ public class ASTExtractor {
 
         // Extract optional parameters
         if (nd.getOptionalParameterIndices().contains(i)) {
-          trapwriter.addTuple("isOptionalParameterDeclaration", paramKey);
+          trapwriter.addTuple("is_optional_parameter_declaration", paramKey);
         }
         ++i;
       }
@@ -948,7 +948,7 @@ public class ASTExtractor {
       if (!(nd instanceof ArrowFunctionExpression)) {
         if (!scopeManager.declaredInCurrentScope("arguments"))
           scopeManager.addVariables("arguments");
-        trapwriter.addTuple("isArgumentsObject", scopeManager.getVarKey("arguments"));
+        trapwriter.addTuple("is_arguments_object", scopeManager.getVarKey("arguments"));
       }
 
       // add return type at index -3
@@ -1084,7 +1084,7 @@ public class ASTExtractor {
       contextManager.leaveLoopStmt();
       if (!lexicals.isEmpty()) scopeManager.leaveScope();
       if (nd instanceof ForOfStatement && ((ForOfStatement) nd).isAwait())
-        trapwriter.addTuple("isForAwaitOf", key);
+        trapwriter.addTuple("is_for_await_of", key);
       return key;
     }
 
@@ -1092,7 +1092,7 @@ public class ASTExtractor {
     public Label visit(ArrayExpression nd, Context c) {
       Label key = super.visit(nd, c);
       visitAll(nd.getElements(), key, IdContext.varBind, 0);
-      trapwriter.addTuple("arraySize", key, nd.getElements().size());
+      trapwriter.addTuple("array_size", key, nd.getElements().size());
       return key;
     }
 
@@ -1102,7 +1102,7 @@ public class ASTExtractor {
       visitAll(nd.getElements(), key, c.idcontext, 0);
       visit(nd.getRest(), key, -1, c.idcontext);
       visitAll(nd.getDefaults(), key, IdContext.varBind, -2, -1);
-      trapwriter.addTuple("arraySize", key, nd.getElements().size());
+      trapwriter.addTuple("array_size", key, nd.getElements().size());
       return key;
     }
 
@@ -1132,8 +1132,8 @@ public class ASTExtractor {
       visit(nd.getKey(), propkey, 0, nd.isComputed() ? IdContext.varBind : IdContext.label);
       visit(nd.getValue(), propkey, 1, c.idcontext);
       visit(nd.getDefaultValue(), propkey, 2, IdContext.varBind);
-      if (nd.isComputed()) trapwriter.addTuple("isComputed", propkey);
-      if (nd.isMethod()) trapwriter.addTuple("isMethod", propkey);
+      if (nd.isComputed()) trapwriter.addTuple("is_computed", propkey);
+      if (nd.isMethod()) trapwriter.addTuple("is_method", propkey);
       return propkey;
     }
 
@@ -1222,7 +1222,7 @@ public class ASTExtractor {
       Label key = super.visit(nd, c);
       visit(nd.getLabel(), key, 0, IdContext.label);
       Label targetKey = trapwriter.localID(contextManager.getTarget(nd));
-      trapwriter.addTuple("jumpTargets", key, targetKey);
+      trapwriter.addTuple("jump_targets", key, targetKey);
       return key;
     }
 
@@ -1284,10 +1284,10 @@ public class ASTExtractor {
     public Label visit(ClassDeclaration nd, Context c) {
       Label lbl = super.visit(nd, c);
       if (nd.hasDeclareKeyword()) {
-        trapwriter.addTuple("hasDeclareKeyword", lbl);
+        trapwriter.addTuple("has_declare_keyword", lbl);
       }
       if (nd.hasAbstractKeyword()) {
-        trapwriter.addTuple("isAbstractClass", lbl);
+        trapwriter.addTuple("is_abstract_class", lbl);
       }
       return visit(nd.getClassDef(), lbl, nd, false);
     }
@@ -1361,7 +1361,7 @@ public class ASTExtractor {
           nd.isInstantiated() ? IdContext.varAndNamespaceDecl : IdContext.namespaceDecl;
       visit(nd.getName(), lbl, -1, context);
       if (nd.hasDeclareKeyword()) {
-        trapwriter.addTuple("hasDeclareKeyword", lbl);
+        trapwriter.addTuple("has_declare_keyword", lbl);
       }
       DeclaredNames hoistedVars =
           scopeManager.collectDeclaredNames(nd.getBody(), isStrict, false, DeclKind.none);
@@ -1375,7 +1375,7 @@ public class ASTExtractor {
       contextManager.leaveContainer();
       scopeManager.leaveScope();
       if (nd.isInstantiated()) {
-        trapwriter.addTuple("isInstantiated", lbl);
+        trapwriter.addTuple("is_instantiated", lbl);
       }
       return lbl;
     }
@@ -1520,7 +1520,7 @@ public class ASTExtractor {
       if (ctor != null) contextManager.leaveContainer();
 
       if (nd instanceof MethodDefinition && !nd.isCallSignature() && !nd.isIndexSignature())
-        trapwriter.addTuple("isMethod", methkey);
+        trapwriter.addTuple("is_method", methkey);
       // Emit tuples for isStatic, isAbstract, isComputed, etc
       for (int i = 0; i < DeclarationFlags.numberOfFlags; ++i) {
         if (DeclarationFlags.hasNthFlag(nd.getFlags(), i)) {
@@ -1539,7 +1539,7 @@ public class ASTExtractor {
       }
 
       if (nd.hasDeclareKeyword()) {
-        trapwriter.addTuple("hasDeclareKeyword", methkey);
+        trapwriter.addTuple("has_declare_keyword", methkey);
       }
 
       return methkey;
@@ -1575,7 +1575,7 @@ public class ASTExtractor {
           IdContext.export;
       visitAll(nd.getSpecifiers(), lbl, childContext, 0);
       if (nd.hasTypeKeyword()) {
-        trapwriter.addTuple("hasTypeKeyword", lbl);
+        trapwriter.addTuple("has_type_keyword", lbl);
       }
       return lbl;
     }
@@ -1596,7 +1596,7 @@ public class ASTExtractor {
       visitAll(nd.getSpecifiers(), lbl, childContext, 0);
       emitNodeSymbol(nd, lbl);
       if (nd.hasTypeKeyword()) {
-        trapwriter.addTuple("hasTypeKeyword", lbl);
+        trapwriter.addTuple("has_type_keyword", lbl);
       }
       return lbl;
     }
@@ -1830,6 +1830,10 @@ public class ASTExtractor {
     @Override
     public Label visit(TupleTypeExpr nd, Context c) {
       Label key = super.visit(nd, c);
+      if (nd.getElementNames() != null) {
+        // Element names are index -1, -2, -3...
+        visitAll(nd.getElementNames(), key, IdContext.typeLabel, -1, -1);
+      }
       visitAll(nd.getElementTypes(), key, IdContext.typeBind, 0);
       return key;
     }
@@ -1862,7 +1866,7 @@ public class ASTExtractor {
       visit(nd.getExpression(), key, 0, IdContext.varInTypeBind);
       visit(nd.getTypeExpr(), key, 1, IdContext.typeBind);
       if (nd.hasAssertsKeyword()) {
-        trapwriter.addTuple("hasAssertsKeyword", key);
+        trapwriter.addTuple("has_asserts_keyword", key);
       }
       return key;
     }
@@ -1940,10 +1944,10 @@ public class ASTExtractor {
       visitAll(nd.getMembers(), key, IdContext.varAndTypeDecl, 1, 1);
       scopeManager.leaveScope();
       if (nd.isConst()) {
-        trapwriter.addTuple("isConstEnum", key);
+        trapwriter.addTuple("is_const_enum", key);
       }
       if (nd.hasDeclareKeyword()) {
-        trapwriter.addTuple("hasDeclareKeyword", key);
+        trapwriter.addTuple("has_declare_keyword", key);
       }
       emitNodeSymbol(nd, key);
       return key;
@@ -1964,7 +1968,7 @@ public class ASTExtractor {
     @Override
     public Label visit(ExternalModuleDeclaration nd, Context c) {
       Label key = super.visit(nd, c);
-      trapwriter.addTuple("hasDeclareKeyword", key);
+      trapwriter.addTuple("has_declare_keyword", key);
       visit(nd.getName(), key, -1, IdContext.label);
       DeclaredNames hoistedVars =
           scopeManager.collectDeclaredNames(nd.getBody(), isStrict, false, DeclKind.none);
@@ -2009,7 +2013,7 @@ public class ASTExtractor {
       // The fake scope does not exist at the QL level, as it is indistinguishable
       // from the global scope.
       Label key = super.visit(nd, c);
-      trapwriter.addTuple("hasDeclareKeyword", key);
+      trapwriter.addTuple("has_declare_keyword", key);
       DeclaredNames hoistedVars =
           scopeManager.collectDeclaredNames(nd.getBody(), isStrict, false, DeclKind.none);
       DeclaredNames lexicalVars =

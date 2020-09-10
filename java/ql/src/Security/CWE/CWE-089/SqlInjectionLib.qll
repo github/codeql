@@ -16,6 +16,10 @@ private class QueryInjectionFlowConfig extends TaintTracking::Configuration {
     node.getType() instanceof BoxedType or
     node.getType() instanceof NumberType
   }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    any(AdditionalQueryInjectionTaintStep s).step(node1, node2)
+  }
 }
 
 /**

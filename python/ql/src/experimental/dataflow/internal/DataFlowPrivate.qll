@@ -1,5 +1,6 @@
 private import python
 private import DataFlowPublic
+import semmle.python.SpecialMethods
 
 //--------
 // Data flow graph
@@ -7,6 +8,39 @@ private import DataFlowPublic
 //--------
 // Nodes
 //--------
+predicate isExpressionNode(ControlFlowNode node) { node.getNode() instanceof Expr }
+
+/** A control flow node which is also a dataflow node */
+class DataFlowCfgNode extends ControlFlowNode {
+  DataFlowCfgNode() { isExpressionNode(this) }
+}
+
+/** A data flow node which should have an associated post-update node. */
+abstract class PreUpdateNode extends Node { }
+
+/** An argument might have its value changed as a result of a call. */
+class ArgumentPreUpdateNode extends PreUpdateNode, ArgumentNode { }
+
+/** An object might have its value changed after a store. */
+class StorePreUpdateNode extends PreUpdateNode, CfgNode {
+  StorePreUpdateNode() {
+    exists(Attribute a |
+      node = a.getObject().getAFlowNode() and
+      a.getCtx() instanceof Store
+    )
+  }
+}
+
+/** A node marking the state change of an object after a read */
+class ReadPreUpdateNode extends PreUpdateNode, CfgNode {
+  ReadPreUpdateNode() {
+    exists(Attribute a |
+      node = a.getObject().getAFlowNode() and
+      a.getCtx() instanceof Load
+    )
+  }
+}
+
 /**
  * A node associated with an object after an operation that might have
  * changed its state.
@@ -16,12 +50,21 @@ private import DataFlowPublic
  * an update to the field.
  *
  * Nodes corresponding to AST elements, for example `ExprNode`, usually refer
- * to the value before the update with the exception of `ObjectCreation`,
- * which represents the value after the constructor has run.
+ * to the value before the update.
  */
-abstract class PostUpdateNode extends Node {
+class PostUpdateNode extends Node, TPostUpdateNode {
+  PreUpdateNode pre;
+
+  PostUpdateNode() { this = TPostUpdateNode(pre) }
+
   /** Gets the node before the state update. */
-  abstract Node getPreUpdateNode();
+  Node getPreUpdateNode() { result = pre }
+
+  override string toString() { result = "[post] " + pre.toString() }
+
+  override Scope getScope() { result = pre.getScope() }
+
+  override Location getLocation() { result = pre.getLocation() }
 }
 
 class DataFlowExpr = Expr;
@@ -59,7 +102,7 @@ module EssaFlow {
     //   `x = f(y)`
     //   nodeFrom is `y` on first line, essa var
     //   nodeTo is `y` on second line, cfg node
-    nodeFrom.(EssaNode).getVar().getAUse() = nodeTo.(CfgNode).getNode()
+    nodeFrom.(EssaNode).getVar().getASourceUse() = nodeTo.(CfgNode).getNode()
     or
     // Refinements
     exists(EssaEdgeRefinement r |
@@ -90,7 +133,17 @@ module EssaFlow {
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   not nodeFrom.(EssaNode).getVar() instanceof GlobalSsaVariable and
   not nodeTo.(EssaNode).getVar() instanceof GlobalSsaVariable and
-  EssaFlow::essaFlowStep(nodeFrom, nodeTo)
+  EssaFlow::essaFlowStep(update(nodeFrom), nodeTo)
+}
+
+private Node update(Node node) {
+  exists(PostUpdateNode pun |
+    node = pun.getPreUpdateNode() and
+    result = pun
+  )
+  or
+  not exists(PostUpdateNode pun | node = pun.getPreUpdateNode()) and
+  result = node
 }
 
 // TODO: Make modules for these headings
@@ -157,17 +210,67 @@ class DataFlowClassValue extends DataFlowCallable, TClassValue {
   override string getName() { result = c.getName() }
 }
 
-/** Represents a call to a callable */
-class DataFlowCall extends CallNode {
-  DataFlowCallable callable;
+newtype TDataFlowCall =
+  TCallNode(CallNode call) or
+  TSpecialCall(SpecialMethodCallNode special)
 
-  DataFlowCall() { this = callable.getACall() }
+abstract class DataFlowCall extends TDataFlowCall {
+  /** Gets a textual representation of this element. */
+  abstract string toString();
 
   /** Get the callable to which this call goes. */
-  DataFlowCallable getCallable() { result = callable }
+  abstract DataFlowCallable getCallable();
+
+  /** Get the specified argument to this call. */
+  abstract ControlFlowNode getArg(int n);
+
+  /** Get the control flow node representing this call. */
+  abstract ControlFlowNode getNode();
 
   /** Gets the enclosing callable of this call. */
-  DataFlowCallable getEnclosingCallable() { result.getScope() = this.getNode().getScope() }
+  abstract DataFlowCallable getEnclosingCallable();
+}
+
+/** Represents a call to a callable. */
+class CallNodeCall extends DataFlowCall, TCallNode {
+  CallNode call;
+  DataFlowCallable callable;
+
+  CallNodeCall() {
+    this = TCallNode(call) and
+    call = callable.getACall()
+  }
+
+  override string toString() { result = call.toString() }
+
+  override ControlFlowNode getArg(int n) { result = call.getArg(n) }
+
+  override ControlFlowNode getNode() { result = call }
+
+  override DataFlowCallable getCallable() { result = callable }
+
+  override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getNode().getScope() }
+}
+
+/** Represents a call to a special method. */
+class SpecialCall extends DataFlowCall, TSpecialCall {
+  SpecialMethodCallNode special;
+
+  SpecialCall() { this = TSpecialCall(special) }
+
+  override string toString() { result = special.toString() }
+
+  override ControlFlowNode getArg(int n) { result = special.(SpecialMethod::Potential).getArg(n) }
+
+  override ControlFlowNode getNode() { result = special }
+
+  override DataFlowCallable getCallable() {
+    result = TCallableValue(special.getResolvedSpecialMethod())
+  }
+
+  override DataFlowCallable getEnclosingCallable() {
+    result.getScope() = special.getNode().getScope()
+  }
 }
 
 /** A data flow node that represents a call argument. */
@@ -220,7 +323,7 @@ class OutNode extends CfgNode {
  * `kind`.
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
-  call = result.getNode() and
+  call.getNode() = result.getNode() and
   kind = TNormalReturnKind()
 }
 

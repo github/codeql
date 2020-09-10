@@ -2,8 +2,9 @@
  * Provides Python-specific definitions for use in the data flow library.
  */
 
-import python
+private import python
 private import DataFlowPrivate
+import experimental.dataflow.TypeTracker
 
 /**
  * IPA type for data flow nodes.
@@ -20,7 +21,9 @@ newtype TNode =
   /** A node corresponding to an SSA variable. */
   TEssaNode(EssaVariable var) or
   /** A node corresponding to a control flow node. */
-  TCfgNode(ControlFlowNode node)
+  TCfgNode(DataFlowCfgNode node) or
+  /** A node representing the value of an object after a state change */
+  TPostUpdateNode(PreUpdateNode pre)
 
 /**
  * An element, viewed as a node in a data flow graph. Either an SSA variable
@@ -58,6 +61,23 @@ class Node extends TNode {
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
+
+  /** Convenience method for casting to EssaNode and calling getVar. */
+  EssaVariable asVar() { none() }
+
+  /** Convenience method for casting to CfgNode and calling getNode. */
+  ControlFlowNode asCfgNode() { none() }
+
+  /** Convenience method for casting to ExprNode and calling getNode and getNode again. */
+  Expr asExpr() { none() }
+
+  /**
+   * Gets a node that this node may flow to using one heap and/or interprocedural step.
+   *
+   * See `TypeTracker` for more details about how to use this.
+   */
+  pragma[inline]
+  Node track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
 }
 
 class EssaNode extends Node, TEssaNode {
@@ -66,6 +86,8 @@ class EssaNode extends Node, TEssaNode {
   EssaNode() { this = TEssaNode(var) }
 
   EssaVariable getVar() { result = var }
+
+  override EssaVariable asVar() { result = var }
 
   /** Gets a textual representation of this element. */
   override string toString() { result = var.toString() }
@@ -76,11 +98,13 @@ class EssaNode extends Node, TEssaNode {
 }
 
 class CfgNode extends Node, TCfgNode {
-  ControlFlowNode node;
+  DataFlowCfgNode node;
 
   CfgNode() { this = TCfgNode(node) }
 
   ControlFlowNode getNode() { result = node }
+
+  override ControlFlowNode asCfgNode() { result = node }
 
   /** Gets a textual representation of this element. */
   override string toString() { result = node.toString() }
@@ -97,10 +121,14 @@ class CfgNode extends Node, TCfgNode {
  * to multiple `ExprNode`s, just like it may correspond to multiple
  * `ControlFlow::Node`s.
  */
-class ExprNode extends Node { }
+class ExprNode extends CfgNode {
+  ExprNode() { isExpressionNode(node) }
+
+  override Expr asExpr() { result = node.getNode() }
+}
 
 /** Gets a node corresponding to expression `e`. */
-ExprNode exprNode(DataFlowExpr e) { none() }
+ExprNode exprNode(DataFlowExpr e) { result.getNode().getNode() = e }
 
 /**
  * The value of a parameter at function entry, viewed as a node in a data

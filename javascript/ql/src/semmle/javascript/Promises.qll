@@ -249,7 +249,7 @@ private class PromiseStep extends PreCallGraphStep {
  * This module defines how data-flow propagates into and out of a Promise.
  * The data-flow is based on pseudo-properties rather than tainting the Promise object (which is what `PromiseTaintStep` does).
  */
-private module PromiseFlow {
+module PromiseFlow {
   private predicate valueProp = Promises::valueProp/0;
 
   private predicate errorProp = Promises::errorProp/0;

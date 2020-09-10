@@ -27,6 +27,7 @@ import semmle.javascript.Extend
 import semmle.javascript.Externs
 import semmle.javascript.Files
 import semmle.javascript.Functions
+import semmle.javascript.Generators
 import semmle.javascript.GlobalAccessPaths
 import semmle.javascript.HTML
 import semmle.javascript.HtmlSanitizers

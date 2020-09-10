@@ -6,7 +6,8 @@ class TestTaintTrackingConfiguration extends TaintTracking::Configuration {
   TestTaintTrackingConfiguration() { this = "TestTaintTrackingConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
-    source.(DataFlow::CfgNode).getNode().(NameNode).getId() in ["TAINTED_STRING", "TAINTED_BYTES"]
+    source.(DataFlow::CfgNode).getNode().(NameNode).getId() in ["TAINTED_STRING", "TAINTED_BYTES",
+          "TAINTED_LIST", "TAINTED_DICT"]
   }
 
   override predicate isSink(DataFlow::Node sink) {
@@ -44,7 +45,8 @@ private string repr(Expr e) {
 
 query predicate test_taint(string arg_location, string test_res, string function_name, string repr) {
   exists(Call call, Expr arg, boolean expected_taint, boolean has_taint |
-    call.getLocation().getFile().getShortName() = "test.py" and
+    // only consider files that are extracted as part of the test
+    exists(call.getLocation().getFile().getRelativePath()) and
     (
       call.getFunc().(Name).getId() = "ensure_tainted" and
       expected_taint = true

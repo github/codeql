@@ -52,26 +52,26 @@ variables(#20016,"answer",#20000)
 #20017=*
 stmts(#20017,22,#20001,0,"const answer = 42;")
 hasLocation(#20017,#20003)
-stmtContainers(#20017,#20001)
+stmt_containers(#20017,#20001)
 #20018=*
 exprs(#20018,64,#20017,0,"answer = 42")
 #20019=@"loc,{#10000},1,7,1,17"
 locations_default(#20019,#10000,1,7,1,17)
 hasLocation(#20018,#20019)
-enclosingStmt(#20018,#20017)
-exprContainers(#20018,#20001)
+enclosing_stmt(#20018,#20017)
+expr_containers(#20018,#20001)
 #20020=*
 exprs(#20020,78,#20018,0,"answer")
 hasLocation(#20020,#20007)
-enclosingStmt(#20020,#20017)
-exprContainers(#20020,#20001)
+enclosing_stmt(#20020,#20017)
+expr_containers(#20020,#20001)
 literals("answer","answer",#20020)
 decl(#20020,#20016)
 #20021=*
 exprs(#20021,3,#20018,1,"42")
 hasLocation(#20021,#20011)
-enclosingStmt(#20021,#20017)
-exprContainers(#20021,#20001)
+enclosing_stmt(#20021,#20017)
+expr_containers(#20021,#20001)
 literals("42","42",#20021)
 #20022=*
 entry_cfg_node(#20022,#20001)

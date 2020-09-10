@@ -229,11 +229,10 @@ Invoke-Command -ScriptBlock $ScriptBlock";
                     }
                     else
                     {
-                        var curl = new CommandBuilder(builder.Actions).
-                            RunCommand("curl").
-                            Argument("-L").
-                            Argument("-sO").
-                            Argument("https://dot.net/v1/dotnet-install.sh");
+                        var downloadDotNetInstallSh = BuildScript.DownloadFile(
+                            "https://dot.net/v1/dotnet-install.sh",
+                            "dotnet-install.sh",
+                            e => builder.Log(Severity.Warning, $"Failed to download 'dotnet-install.sh': {e.Message}"));
 
                         var chmod = new CommandBuilder(builder.Actions).
                             RunCommand("chmod").
@@ -253,7 +252,7 @@ Invoke-Command -ScriptBlock $ScriptBlock";
                             RunCommand("rm").
                             Argument("dotnet-install.sh");
 
-                        return curl.Script & chmod.Script & install.Script & BuildScript.Try(removeScript.Script);
+                        return downloadDotNetInstallSh & chmod.Script & install.Script & BuildScript.Try(removeScript.Script);
                     }
                 });
         }

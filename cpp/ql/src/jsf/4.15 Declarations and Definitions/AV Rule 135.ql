@@ -29,7 +29,7 @@ predicate localShadowsParameter(LocalVariable lv, Parameter p) {
 
 from Variable v, Variable shadowed
 where
-  not v.getParentScope().(Block).isInMacroExpansion() and
+  not v.getParentScope().(BlockStmt).isInMacroExpansion() and
   (
     v.(LocalVariableOrParameter).shadowsGlobal(shadowed.(GlobalVariable)) or
     localShadowsParameter(v, shadowed) or

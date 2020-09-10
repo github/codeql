@@ -4,7 +4,8 @@ using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.Entities
 {
-    public abstract class SourceLocation : Location {
+    public abstract class SourceLocation : Location
+    {
         protected SourceLocation(Context cx, Microsoft.CodeAnalysis.Location? init) : base(cx, init)
         {
         }
@@ -22,7 +23,7 @@ namespace Semmle.Extraction.Entities
             FileEntity = File.Create(Context, Position.Path);
         }
 
-        public new static Location Create(Context cx, Microsoft.CodeAnalysis.Location? loc) => SourceLocationFactory.Instance.CreateNullableEntity(cx, loc);
+        public new static Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) => SourceLocationFactory.Instance.CreateEntity(cx, loc, loc);
 
         public override void Populate(TextWriter trapFile)
         {
@@ -54,11 +55,11 @@ namespace Semmle.Extraction.Entities
             trapFile.Write(Position.Span.End.Character);
         }
 
-        class SourceLocationFactory : ICachedEntityFactory<Microsoft.CodeAnalysis.Location?, SourceLocation>
+        class SourceLocationFactory : ICachedEntityFactory<Microsoft.CodeAnalysis.Location, SourceLocation>
         {
             public static readonly SourceLocationFactory Instance = new SourceLocationFactory();
 
-            public SourceLocation Create(Context cx, Microsoft.CodeAnalysis.Location? init) => new NonGeneratedSourceLocation(cx, init);
+            public SourceLocation Create(Context cx, Microsoft.CodeAnalysis.Location init) => new NonGeneratedSourceLocation(cx, init);
         }
     }
 }

@@ -53,7 +53,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.type_nullability(this, n);
             }
 
-            if(Info.FlowState != NullableFlowState.None)
+            if (Info.FlowState != NullableFlowState.None)
             {
                 trapFile.expr_flowstate(this, (int)Info.FlowState);
             }
@@ -292,7 +292,7 @@ namespace Semmle.Extraction.CSharp.Entities
         protected Expression(ExpressionNodeInfo info)
             : base(info)
         {
-           Syntax = (SyntaxNode)info.Node;
+            Syntax = (SyntaxNode)info.Node;
         }
 
         /// <summary>
@@ -307,7 +307,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected new Expression TryPopulate()
         {
-            cx.Try(Syntax, null, ()=>PopulateExpression(cx.TrapWriter.Writer));
+            cx.Try(Syntax, null, () => PopulateExpression(cx.TrapWriter.Writer));
             return this;
         }
     }

@@ -1,4 +1,11 @@
+/**
+ * Provides implementation classes modeling `std::string` (and other
+ * instantiations of `std::basic_string`) and `std::ostream`. See
+ * `semmle.code.cpp.models.Models` for usage information.
+ */
+
 import semmle.code.cpp.models.interfaces.Taint
+import semmle.code.cpp.models.implementations.Iterator
 
 /**
  * The `std::basic_string` template class.
@@ -8,18 +15,96 @@ class StdBasicString extends TemplateClass {
 }
 
 /**
- * The `std::string` functions `c_str` and  `data`.
+ * Additional model for `std::string` constructors that reference the character
+ * type of the container, or an iterator.  For example construction from
+ * iterators:
+ * ```
+ * std::string b(a.begin(), a.end());
+ * ```
+ */
+class StdStringConstructor extends Constructor, TaintFunction {
+  StdStringConstructor() { this.getDeclaringType().hasQualifiedName("std", "basic_string") }
+
+  /**
+   * Gets the index of a parameter to this function that is a string (or
+   * character).
+   */
+  int getAStringParameterIndex() {
+    getParameter(result).getType() instanceof PointerType or // e.g. `std::basic_string::CharT *`
+    getParameter(result).getType() instanceof ReferenceType or // e.g. `std::basic_string &`
+    getParameter(result).getUnspecifiedType() =
+      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. `std::basic_string::CharT`
+  }
+
+  /**
+   * Gets the index of a parameter to this function that is an iterator.
+   */
+  int getAnIteratorParameterIndex() { getParameter(result).getType() instanceof Iterator }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // taint flow from any parameter of the value type to the returned object
+    (
+      input.isParameterDeref(getAStringParameterIndex()) or
+      input.isParameter(getAnIteratorParameterIndex())
+    ) and
+    output.isReturnValue() // TODO: this should be `isQualifierObject` by our current definitions, but that flow is not yet supported.
+  }
+}
+
+/**
+ * The `std::string` function `c_str`.
  */
 class StdStringCStr extends TaintFunction {
-  StdStringCStr() {
-    this.hasQualifiedName("std", "basic_string", "c_str") or
-    this.hasQualifiedName("std", "basic_string", "data")
-  }
+  StdStringCStr() { this.hasQualifiedName("std", "basic_string", "c_str") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from string itself (qualifier) to return value
     input.isQualifierObject() and
-    output.isReturnValue()
+    output.isReturnValueDeref()
+  }
+}
+
+/**
+ * The `std::string` function `data`.
+ */
+class StdStringData extends TaintFunction {
+  StdStringData() { this.hasQualifiedName("std", "basic_string", "data") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from string itself (qualifier) to return value
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
+    or
+    // reverse flow from returned reference to the qualifier (for writes to
+    // `data`)
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
+  }
+}
+
+/**
+ * The `std::string` function `push_back`.
+ */
+class StdStringPush extends TaintFunction {
+  StdStringPush() { this.hasQualifiedName("std", "basic_string", "push_back") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from parameter to qualifier
+    input.isParameterDeref(0) and
+    output.isQualifierObject()
+  }
+}
+
+/**
+ * The `std::string` functions `front` and `back`.
+ */
+class StdStringFrontBack extends TaintFunction {
+  StdStringFrontBack() { this.hasQualifiedName("std", "basic_string", ["front", "back"]) }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from object to returned reference
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
   }
 }
 
@@ -49,32 +134,41 @@ class StdStringPlus extends TaintFunction {
  */
 class StdStringAppend extends TaintFunction {
   StdStringAppend() {
-    this.hasQualifiedName("std", "basic_string", "operator+=") or
-    this.hasQualifiedName("std", "basic_string", "append") or
-    this.hasQualifiedName("std", "basic_string", "insert") or
-    this.hasQualifiedName("std", "basic_string", "replace")
+    this.hasQualifiedName("std", "basic_string", ["operator+=", "append", "insert", "replace"])
   }
 
   /**
    * Gets the index of a parameter to this function that is a string (or
    * character).
    */
-  int getAStringParameter() {
-    getParameter(result).getType() instanceof PointerType or
-    getParameter(result).getType() instanceof ReferenceType or
-    getParameter(result).getType() = getDeclaringType().getTemplateArgument(0) // i.e. `std::basic_string::CharT`
+  int getAStringParameterIndex() {
+    getParameter(result).getType() instanceof PointerType or // e.g. `std::basic_string::CharT *`
+    getParameter(result).getType() instanceof ReferenceType or // e.g. `std::basic_string &`
+    getParameter(result).getUnspecifiedType() =
+      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. `std::basic_string::CharT`
   }
+
+  /**
+   * Gets the index of a parameter to this function that is an iterator.
+   */
+  int getAnIteratorParameterIndex() { getParameter(result).getType() instanceof Iterator }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from string and parameter to string (qualifier) and return value
     (
       input.isQualifierObject() or
-      input.isParameterDeref(getAStringParameter())
+      input.isParameterDeref(getAStringParameterIndex()) or
+      input.isParameter(getAnIteratorParameterIndex())
     ) and
     (
       output.isQualifierObject() or
       output.isReturnValueDeref()
     )
+    or
+    // reverse flow from returned reference to the qualifier (for writes to
+    // the result)
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
   }
 }
 
@@ -88,19 +182,50 @@ class StdStringAssign extends TaintFunction {
    * Gets the index of a parameter to this function that is a string (or
    * character).
    */
-  int getAStringParameter() {
-    getParameter(result).getType() instanceof PointerType or
-    getParameter(result).getType() instanceof ReferenceType or
-    getParameter(result).getType() = getDeclaringType().getTemplateArgument(0) // i.e. `std::basic_string::CharT`
+  int getAStringParameterIndex() {
+    getParameter(result).getType() instanceof PointerType or // e.g. `std::basic_string::CharT *`
+    getParameter(result).getType() instanceof ReferenceType or // e.g. `std::basic_string &`
+    getParameter(result).getUnspecifiedType() =
+      getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType() // i.e. `std::basic_string::CharT`
   }
+
+  /**
+   * Gets the index of a parameter to this function that is an iterator.
+   */
+  int getAnIteratorParameterIndex() { getParameter(result).getType() instanceof Iterator }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from parameter to string itself (qualifier) and return value
-    input.isParameterDeref(getAStringParameter()) and
+    (
+      input.isParameterDeref(getAStringParameterIndex()) or
+      input.isParameter(getAnIteratorParameterIndex())
+    ) and
     (
       output.isQualifierObject() or
       output.isReturnValueDeref()
     )
+    or
+    // reverse flow from returned reference to the qualifier (for writes to
+    // the result)
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
+  }
+}
+
+/**
+ * The standard functions `std::string.begin` and `std::string.end` and their
+ * variants.
+ */
+class StdStringBeginEnd extends TaintFunction {
+  StdStringBeginEnd() {
+    this
+        .hasQualifiedName("std", "basic_string",
+          ["begin", "cbegin", "rbegin", "crbegin", "end", "cend", "rend", "crend"])
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isQualifierObject() and
+    output.isReturnValue()
   }
 }
 
@@ -143,5 +268,87 @@ class StdStringSwap extends TaintFunction {
     or
     input.isParameterDeref(0) and
     output.isQualifierObject()
+  }
+}
+
+/**
+ * The `std::string` functions `at` and `operator[]`.
+ */
+class StdStringAt extends TaintFunction {
+  StdStringAt() { this.hasQualifiedName("std", "basic_string", ["at", "operator[]"]) }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from qualifier to referenced return value
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
+    or
+    // reverse flow from returned reference to the qualifier
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
+  }
+}
+
+/**
+ * The `std::basic_ostream` template class.
+ */
+class StdBasicOStream extends TemplateClass {
+  StdBasicOStream() { this.hasQualifiedName("std", "basic_ostream") }
+}
+
+/**
+ * The `std::ostream` function `operator<<` (defined as a member function).
+ */
+class StdOStreamOut extends DataFlowFunction, TaintFunction {
+  StdOStreamOut() { this.hasQualifiedName("std", "basic_ostream", "operator<<") }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    // flow from qualifier to return value
+    input.isQualifierAddress() and
+    output.isReturnValue()
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from parameter to qualifier
+    input.isParameter(0) and
+    output.isQualifierObject()
+    or
+    // flow from parameter to return value
+    input.isParameter(0) and
+    output.isReturnValueDeref()
+    or
+    // reverse flow from returned reference to the qualifier
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
+  }
+}
+
+/**
+ * The `std::ostream` function `operator<<` (defined as a non-member function).
+ */
+class StdOStreamOutNonMember extends DataFlowFunction, TaintFunction {
+  StdOStreamOutNonMember() {
+    this.hasQualifiedName("std", "operator<<") and
+    this.getUnspecifiedType().(ReferenceType).getBaseType() =
+      any(StdBasicOStream s).getAnInstantiation()
+  }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    // flow from first parameter to return value
+    input.isParameter(0) and
+    output.isReturnValue()
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from second parameter to first parameter
+    input.isParameter(1) and
+    output.isParameterDeref(0)
+    or
+    // flow from second parameter to return value
+    input.isParameter(1) and
+    output.isReturnValueDeref()
+    or
+    // reverse flow from returned reference to the first parameter
+    input.isReturnValueDeref() and
+    output.isParameterDeref(0)
   }
 }

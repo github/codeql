@@ -469,7 +469,7 @@ private class PpWildcardTypeAccess extends PpAst, WildcardTypeAccess {
  * Statements
  */
 
-private class PpBlock extends PpAst, Block {
+private class PpBlock extends PpAst, BlockStmt {
   override string getPart(int i) {
     i = 0 and result = "{"
     or
@@ -493,26 +493,26 @@ private class PpIfStmt extends PpAst, IfStmt {
     or
     i = 2 and result = ")"
     or
-    i = 3 and result = " " and this.getThen() instanceof Block
+    i = 3 and result = " " and this.getThen() instanceof BlockStmt
     or
     exists(this.getElse()) and
     (
-      i = 5 and result = " " and this.getThen() instanceof Block
+      i = 5 and result = " " and this.getThen() instanceof BlockStmt
       or
       i = 6 and result = "else"
       or
-      i = 7 and result = " " and this.getElse() instanceof Block
+      i = 7 and result = " " and this.getElse() instanceof BlockStmt
     )
   }
 
   override predicate newline(int i) {
-    i = 3 and not this.getThen() instanceof Block
+    i = 3 and not this.getThen() instanceof BlockStmt
     or
     exists(this.getElse()) and
     (
-      i = 5 and not this.getThen() instanceof Block
+      i = 5 and not this.getThen() instanceof BlockStmt
       or
-      i = 7 and not this.getElse() instanceof Block
+      i = 7 and not this.getElse() instanceof BlockStmt
     )
   }
 
@@ -525,9 +525,9 @@ private class PpIfStmt extends PpAst, IfStmt {
   }
 
   override predicate indents(int i) {
-    i = 4 and not this.getThen() instanceof Block
+    i = 4 and not this.getThen() instanceof BlockStmt
     or
-    i = 8 and not this.getElse() instanceof Block
+    i = 8 and not this.getElse() instanceof BlockStmt
   }
 }
 
@@ -549,7 +549,7 @@ private class PpForStmt extends PpAst, ForStmt {
     or
     i = 1 + lastUpdateIndex() and result = ")"
     or
-    i = 2 + lastUpdateIndex() and result = " " and this.getStmt() instanceof Block
+    i = 2 + lastUpdateIndex() and result = " " and this.getStmt() instanceof BlockStmt
   }
 
   private int lastInitIndex() { result = 3 + 2 * max(int j | exists(this.getInit(j))) }
@@ -559,7 +559,7 @@ private class PpForStmt extends PpAst, ForStmt {
   }
 
   override predicate newline(int i) {
-    i = 2 + lastUpdateIndex() and not this.getStmt() instanceof Block
+    i = 2 + lastUpdateIndex() and not this.getStmt() instanceof BlockStmt
   }
 
   override PpAst getChild(int i) {
@@ -575,7 +575,7 @@ private class PpForStmt extends PpAst, ForStmt {
   }
 
   override predicate indents(int i) {
-    i = 3 + lastUpdateIndex() and not this.getStmt() instanceof Block
+    i = 3 + lastUpdateIndex() and not this.getStmt() instanceof BlockStmt
   }
 }
 
@@ -588,7 +588,7 @@ private class PpEnhancedForStmt extends PpAst, EnhancedForStmt {
     i = 4 and result = " : "
     or
     i = 6 and
-    if this.getStmt() instanceof Block then result = ") " else result = ")"
+    if this.getStmt() instanceof BlockStmt then result = ") " else result = ")"
   }
 
   override PpAst getChild(int i) {
@@ -601,7 +601,7 @@ private class PpEnhancedForStmt extends PpAst, EnhancedForStmt {
     i = 7 and result = this.getStmt()
   }
 
-  override predicate indents(int i) { i = 7 and not this.getStmt() instanceof Block }
+  override predicate indents(int i) { i = 7 and not this.getStmt() instanceof BlockStmt }
 }
 
 private class PpWhileStmt extends PpAst, WhileStmt {
@@ -610,10 +610,10 @@ private class PpWhileStmt extends PpAst, WhileStmt {
     or
     i = 2 and result = ")"
     or
-    i = 3 and result = " " and this.getStmt() instanceof Block
+    i = 3 and result = " " and this.getStmt() instanceof BlockStmt
   }
 
-  override predicate newline(int i) { i = 3 and not this.getStmt() instanceof Block }
+  override predicate newline(int i) { i = 3 and not this.getStmt() instanceof BlockStmt }
 
   override PpAst getChild(int i) {
     i = 1 and result = this.getCondition()
@@ -621,21 +621,21 @@ private class PpWhileStmt extends PpAst, WhileStmt {
     i = 4 and result = this.getStmt()
   }
 
-  override predicate indents(int i) { i = 4 and not this.getStmt() instanceof Block }
+  override predicate indents(int i) { i = 4 and not this.getStmt() instanceof BlockStmt }
 }
 
 private class PpDoStmt extends PpAst, DoStmt {
   override string getPart(int i) {
     i = 0 and result = "do"
     or
-    i in [1, 3] and result = " " and this.getStmt() instanceof Block
+    i in [1, 3] and result = " " and this.getStmt() instanceof BlockStmt
     or
     i = 4 and result = "while ("
     or
     i = 6 and result = ");"
   }
 
-  override predicate newline(int i) { i in [1, 3] and not this.getStmt() instanceof Block }
+  override predicate newline(int i) { i in [1, 3] and not this.getStmt() instanceof BlockStmt }
 
   override PpAst getChild(int i) {
     i = 2 and result = this.getStmt()
@@ -643,7 +643,7 @@ private class PpDoStmt extends PpAst, DoStmt {
     i = 5 and result = this.getCondition()
   }
 
-  override predicate indents(int i) { i = 2 and not this.getStmt() instanceof Block }
+  override predicate indents(int i) { i = 2 and not this.getStmt() instanceof BlockStmt }
 }
 
 private class PpTryStmt extends PpAst, TryStmt {

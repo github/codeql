@@ -1,35 +1,55 @@
+/** Provides classes to reason about Cross-site scripting (XSS) vulnerabilities. */
+
 import java
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.frameworks.android.WebView
 import semmle.code.java.frameworks.spring.SpringController
 import semmle.code.java.frameworks.spring.SpringHttp
-import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking2
 
-/*
- * Definitions for XSS sinks
+/** A sink that represent a method that outputs data without applying contextual output encoding. */
+abstract class XssSink extends DataFlow::Node { }
+
+/** A sanitizer that neutralizes dangerous characters that can be used to perform a XSS attack. */
+abstract class XssSanitizer extends DataFlow::Node { }
+
+/**
+ * A unit class for adding additional taint steps.
+ *
+ * Extend this class to add additional taint steps that should apply to the XSS
+ * taint configuration.
  */
+class XssAdditionalTaintStep extends Unit {
+  /**
+   * Holds if the step from `node1` to `node2` should be considered a taint
+   * step for XSS taint configurations.
+   */
+  abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
+}
 
-class XssSink extends DataFlow::ExprNode {
-  XssSink() {
+/** A default sink representing methods susceptible to XSS attacks. */
+private class DefaultXssSink extends XssSink {
+  DefaultXssSink() {
     exists(HttpServletResponseSendErrorMethod m, MethodAccess ma |
       ma.getMethod() = m and
-      this.getExpr() = ma.getArgument(1)
+      this.asExpr() = ma.getArgument(1)
     )
     or
     exists(ServletWriterSourceToWritingMethodFlowConfig writer, MethodAccess ma |
       ma.getMethod() instanceof WritingMethod and
       writer.hasFlowToExpr(ma.getQualifier()) and
-      this.getExpr() = ma.getArgument(_)
+      this.asExpr() = ma.getArgument(_)
     )
     or
     exists(Method m |
       m.getDeclaringType() instanceof TypeWebView and
       (
-        m.getAReference().getArgument(0) = this.getExpr() and m.getName() = "loadData"
+        m.getAReference().getArgument(0) = this.asExpr() and m.getName() = "loadData"
         or
-        m.getAReference().getArgument(0) = this.getExpr() and m.getName() = "loadUrl"
+        m.getAReference().getArgument(0) = this.asExpr() and m.getName() = "loadUrl"
         or
-        m.getAReference().getArgument(1) = this.getExpr() and m.getName() = "loadDataWithBaseURL"
+        m.getAReference().getArgument(1) = this.asExpr() and m.getName() = "loadDataWithBaseURL"
       )
     )
     or
@@ -77,7 +97,15 @@ class XssSink extends DataFlow::ExprNode {
   }
 }
 
-class ServletWriterSourceToWritingMethodFlowConfig extends TaintTracking::Configuration {
+/** A default sanitizer that considers numeric and boolean typed data safe for writing to output. */
+private class DefaultXSSSanitizer extends XssSanitizer {
+  DefaultXSSSanitizer() {
+    this.getType() instanceof NumericType or this.getType() instanceof BooleanType
+  }
+}
+
+/** A configuration that tracks data from a servlet writer to an output method. */
+private class ServletWriterSourceToWritingMethodFlowConfig extends TaintTracking2::Configuration {
   ServletWriterSourceToWritingMethodFlowConfig() {
     this = "XSS::ServletWriterSourceToWritingMethodFlowConfig"
   }
@@ -91,7 +119,8 @@ class ServletWriterSourceToWritingMethodFlowConfig extends TaintTracking::Config
   }
 }
 
-class WritingMethod extends Method {
+/** A method that can be used to output data to an output stream or writer. */
+private class WritingMethod extends Method {
   WritingMethod() {
     getDeclaringType().getASupertype*().hasQualifiedName("java.io", _) and
     (
@@ -103,6 +132,7 @@ class WritingMethod extends Method {
   }
 }
 
+/** An output stream or writer that writes to a servlet response. */
 class ServletWriterSource extends MethodAccess {
   ServletWriterSource() {
     this.getMethod() instanceof ServletResponseGetWriterMethod
