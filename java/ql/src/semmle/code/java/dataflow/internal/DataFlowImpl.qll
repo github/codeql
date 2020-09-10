@@ -2098,7 +2098,7 @@ private class SummaryCtxSome extends SummaryCtx, TSummaryCtxSome {
 
 private newtype TAccessPath =
   TAccessPathNil(DataFlowType t) or
-  TAccessPathCons(TypedContent head, AccessPath tail) { pathStoreStep(_, _, tail, _, head, _) }
+  TAccessPathCons(TypedContent head, AccessPath tail) { flowConsCand(head, tail.getApprox(), _) }
 
 private newtype TPathNode =
   TPathNodeMid(
