@@ -57,6 +57,16 @@ private predicate isNotNeeded(Element el) {
       not isInitBlock(im.getDeclaringType(), e.getParent*())
     )
   )
+  or
+  exists(Constructor c | c.isDefaultConstructor() | 
+    el = c
+    or
+    el.(ExprOrStmt).getEnclosingCallable() = c
+  )
+  or
+  isNotNeeded(el.(Expr).getParent*().(Annotation).getAnnotatedElement())
+  or
+  isNotNeeded(el.(Parameter).getCallable())
 }
 
 /**
@@ -87,7 +97,7 @@ private predicate locationSortKeys(Element ast, string file, int line, int colum
  */
 private newtype TPrintAstNode =
   TElementNode(Element el) { shouldPrint(el, _) } or
-  TAnnotationsNode(Annotatable ann) { shouldPrint(ann, _) and ann.hasAnnotation() } or
+  TAnnotationsNode(Annotatable ann) { shouldPrint(ann, _) and ann.hasAnnotation() and not partOfAnnotation(ann)} or
   TParametersNode(Callable c) { shouldPrint(c, _) and not c.hasNoParameters() } or
   TBaseTypesNode(ClassOrInterface ty) { shouldPrint(ty, _) } or
   TGenericTypeNode(GenericType ty) { shouldPrint(ty, _) } or 
@@ -185,6 +195,24 @@ abstract class ElementNode extends PrintAstNode, TElementNode {
   final Element getElement() { result = element }
 }
 
+private predicate partOfAnnotation(Expr e) {
+  e instanceof Annotation
+  or
+  e instanceof ArrayInit and 
+  partOfAnnotation(e.getParent())
+}
+
+private Expr getAnAnnotationChild(Expr e) {
+  partOfAnnotation(e) and
+  (
+    result = e.(Annotation).getValue(_)
+    or
+    result = e.(ArrayInit).getAnInit()
+    or
+    result = e.(ArrayInit).(Annotatable).getAnAnnotation()
+  )
+}
+
 /**
  * An node representing an `Expr` or a `Stmt`.
  */
@@ -193,7 +221,8 @@ final class ExprStmtNode extends ElementNode {
 
   override PrintAstNode getChild(int childIndex) {
     exists(Element el | result.(ElementNode).getElement() = el |
-      el.(Expr).isNthChildOf(element, childIndex)
+      el.(Expr).isNthChildOf(element, childIndex) and
+      not partOfAnnotation(element)
       or
       el.(Stmt).isNthChildOf(element, childIndex)
       or
@@ -202,10 +231,19 @@ final class ExprStmtNode extends ElementNode {
       or
       childIndex = 0 and
       el = element.(LocalClassDeclStmt).getLocalClass()
+      or
+      partOfAnnotation(element) and
+      el = rank[childIndex](Element ch, string file, int line, int column |
+        ch = getAnAnnotationChild(element) and locationSortKeys(ch, file, line, column)
+      |
+        ch order by file, line, column
+      )
     )
     or
-    childIndex = -2 and
-    result.(AnnotationsNode).getAnnotated() = element.(LocalVariableDeclExpr).getVariable()
+    exists(Element el | result.(AnnotationsNode).getAnnotated() = el |
+      childIndex = -2 and
+      el = element.(LocalVariableDeclExpr).getVariable()
+    )
   }
 }
 
@@ -253,7 +291,7 @@ final class ParameterNode extends ElementNode {
   }
 }
 
-private predicate isInitBlock(Class c, Block b) {
+private predicate isInitBlock(Class c, BlockStmt b) {
   exists(InitializerMethod m | b.getParent() = m.getBody() and m.getDeclaringType() = c)
 }
 
@@ -367,7 +405,7 @@ final class TypeVariableNode extends ElementNode {
 final class AnnotationsNode extends PrintAstNode, TAnnotationsNode {
   Annotatable ann;
 
-  AnnotationsNode() { this = TAnnotationsNode(ann) }
+  AnnotationsNode() { this = TAnnotationsNode(ann) and not isNotNeeded(ann) }
 
   override string toString() { result = "(Annotations)" }
 
@@ -395,7 +433,7 @@ final class AnnotationsNode extends PrintAstNode, TAnnotationsNode {
 final class ParametersNode extends PrintAstNode, TParametersNode {
   Callable c;
 
-  ParametersNode() { this = TParametersNode(c) }
+  ParametersNode() { this = TParametersNode(c) and not isNotNeeded(c) }
 
   override string toString() { result = "(Parameters)" }
 
