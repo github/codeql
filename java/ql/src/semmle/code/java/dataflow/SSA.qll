@@ -779,7 +779,9 @@ private module SsaImpl {
      * between `b1` and `b2`.
      */
     private predicate varBlockReaches(TrackedVar v, BasicBlock b1, BasicBlock b2) {
-      varOccursInBlock(v, b1) and b2 = b1.getABBSuccessor()
+      varOccursInBlock(v, b1) and
+      b2 = b1.getABBSuccessor() and
+      blockPrecedesVar(v, b2)
       or
       exists(BasicBlock mid |
         varBlockReaches(v, b1, mid) and
