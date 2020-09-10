@@ -30,7 +30,7 @@ namespace Semmle.Extraction
 
             string NameWithoutExtension { get; }
 
-            ITransformedPath? ParentDirectory { get; }
+            ITransformedPath ParentDirectory { get; }
 
             ITransformedPath WithSuffix(string suffix);
 
@@ -48,7 +48,7 @@ namespace Semmle.Extraction
 
             public string NameWithoutExtension => Path.GetFileNameWithoutExtension(value);
 
-            public ITransformedPath? ParentDirectory
+            public ITransformedPath ParentDirectory
             {
                 get
                 {
@@ -77,7 +77,7 @@ namespace Semmle.Extraction
 
             public override int GetHashCode() => 11 * value.GetHashCode();
 
-            public override bool Equals(object? obj) => obj is TransformedPath tp && tp.value == value;
+            public override bool Equals(object obj) => obj is TransformedPath tp && tp.value == value;
 
             public override string ToString() => value;
         }
@@ -101,7 +101,7 @@ namespace Semmle.Extraction
         /// Creates a path transformer based on the specification in `lines`.
         /// Throws `InvalidPathTransformerException` for invalid specifications.
         /// </summary>
-        public PathTransformer(IPathCache pathCache, string[]? lines)
+        public PathTransformer(IPathCache pathCache, string[] lines)
         {
             if (lines is null)
             {
@@ -163,7 +163,7 @@ namespace Semmle.Extraction
             }
         }
 
-        public bool Matches(string path, [NotNullWhen(true)] out string? transformed)
+        public bool Matches(string path, [NotNullWhen(true)] out string transformed)
         {
             if (FilePattern.Matches(filePatterns, path, out var suffix))
             {

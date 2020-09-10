@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Diagnostics.CodeAnalysis;
 using Semmle.Util;
 
 namespace Semmle.Extraction
@@ -102,7 +101,7 @@ namespace Semmle.Extraction
         /// If so, `transformerSuffix` will contain the part of `path` that needs to be
         /// suffixed when using path transformers.
         /// </summary>
-        public static bool Matches(IEnumerable<FilePattern> patterns, string path, [NotNullWhen(true)] out string? transformerSuffix)
+        public static bool Matches(IEnumerable<FilePattern> patterns, string path, out string transformerSuffix)
         {
             path = FileUtils.ConvertToUnix(path).TrimStart('/');
 
