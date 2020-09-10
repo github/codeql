@@ -5,10 +5,10 @@ on:
     branches:
      - main
      - 'rc/**'
-    pull_request:
-      paths:
-        - '.github/workflows/query-list.yml'
-        - 'misc/scripts/generate-code-scanning-query-list.py'
+  pull_request:
+    paths:
+      - '.github/workflows/query-list.yml'
+      - 'misc/scripts/generate-code-scanning-query-list.py'
 
 jobs:
   build:
