@@ -14,6 +14,7 @@ import semmle.go.frameworks.stdlib.CompressLzw
 import semmle.go.frameworks.stdlib.CompressZlib
 import semmle.go.frameworks.stdlib.Path
 import semmle.go.frameworks.stdlib.PathFilepath
+import semmle.go.frameworks.stdlib.Reflect
 
 /** A `String()` method. */
 class StringMethod extends TaintTracking::FunctionModel, Method {
