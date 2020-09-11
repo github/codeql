@@ -1249,70 +1249,6 @@ private float getDefUpperBoundsImpl(RangeSsaDefinition def, StackVariable v) {
 }
 
 /**
- * Get the lower bounds for a `RangeSsaDefinition`. Most of the work is
- * done by `getDefLowerBoundsImpl`, but this is where widening is applied
- * to prevent the analysis from exploding due to a recursive definition.
- */
-private float getDefLowerBounds(RangeSsaDefinition def, StackVariable v) {
-  exists(float newLB, float truncatedLB |
-    newLB = getDefLowerBoundsImpl(def, v) and
-    if varMinVal(v) <= newLB and newLB <= varMaxVal(v)
-    then truncatedLB = newLB
-    else truncatedLB = varMinVal(v)
-  |
-    // Widening: check whether the new lower bound is from a source which
-    // depends recursively on the current definition.
-    if isRecursiveDef(def, v)
-    then
-      // The new lower bound is from a recursive source, so we round
-      // down to one of a limited set of values to prevent the
-      // recursion from exploding.
-      result =
-        max(float widenLB |
-          widenLB = wideningLowerBounds(getVariableRangeType(v)) and
-          not widenLB > truncatedLB
-        |
-          widenLB
-        )
-    else result = truncatedLB
-  )
-  or
-  // The definition might overflow positively and wrap. If so, the lower
-  // bound is `typeLowerBound`.
-  defMightOverflowPositively(def, v) and result = varMinVal(v)
-}
-
-/** See comment for `getDefLowerBounds`, above. */
-private float getDefUpperBounds(RangeSsaDefinition def, StackVariable v) {
-  exists(float newUB, float truncatedUB |
-    newUB = getDefUpperBoundsImpl(def, v) and
-    if varMinVal(v) <= newUB and newUB <= varMaxVal(v)
-    then truncatedUB = newUB
-    else truncatedUB = varMaxVal(v)
-  |
-    // Widening: check whether the new upper bound is from a source which
-    // depends recursively on the current definition.
-    if isRecursiveDef(def, v)
-    then
-      // The new upper bound is from a recursive source, so we round
-      // up to one of a fixed set of values to prevent the recursion
-      // from exploding.
-      result =
-        min(float widenUB |
-          widenUB = wideningUpperBounds(getVariableRangeType(v)) and
-          not widenUB < truncatedUB
-        |
-          widenUB
-        )
-    else result = truncatedUB
-  )
-  or
-  // The definition might overflow negatively and wrap. If so, the upper
-  // bound is `typeUpperBound`.
-  defMightOverflowNegatively(def, v) and result = varMaxVal(v)
-}
-
-/**
  * Helper for `getDefLowerBounds` and `getDefUpperBounds`. Find the set of
  * unanalyzable definitions (such as function parameters) and make their
  * bounds unknown.
@@ -1687,6 +1623,70 @@ module SimpleRangeAnalysisInternal {
    */
   float getFullyConvertedUpperBounds(Expr expr) {
     result = getTruncatedUpperBounds(expr.getFullyConverted())
+  }
+
+  /**
+   * Get the lower bounds for a `RangeSsaDefinition`. Most of the work is
+   * done by `getDefLowerBoundsImpl`, but this is where widening is applied
+   * to prevent the analysis from exploding due to a recursive definition.
+   */
+  float getDefLowerBounds(RangeSsaDefinition def, StackVariable v) {
+    exists(float newLB, float truncatedLB |
+      newLB = getDefLowerBoundsImpl(def, v) and
+      if varMinVal(v) <= newLB and newLB <= varMaxVal(v)
+      then truncatedLB = newLB
+      else truncatedLB = varMinVal(v)
+    |
+      // Widening: check whether the new lower bound is from a source which
+      // depends recursively on the current definition.
+      if isRecursiveDef(def, v)
+      then
+        // The new lower bound is from a recursive source, so we round
+        // down to one of a limited set of values to prevent the
+        // recursion from exploding.
+        result =
+          max(float widenLB |
+            widenLB = wideningLowerBounds(getVariableRangeType(v)) and
+            not widenLB > truncatedLB
+          |
+            widenLB
+          )
+      else result = truncatedLB
+    )
+    or
+    // The definition might overflow positively and wrap. If so, the lower
+    // bound is `typeLowerBound`.
+    defMightOverflowPositively(def, v) and result = varMinVal(v)
+  }
+
+  /** See comment for `getDefLowerBounds`, above. */
+  float getDefUpperBounds(RangeSsaDefinition def, StackVariable v) {
+    exists(float newUB, float truncatedUB |
+      newUB = getDefUpperBoundsImpl(def, v) and
+      if varMinVal(v) <= newUB and newUB <= varMaxVal(v)
+      then truncatedUB = newUB
+      else truncatedUB = varMaxVal(v)
+    |
+      // Widening: check whether the new upper bound is from a source which
+      // depends recursively on the current definition.
+      if isRecursiveDef(def, v)
+      then
+        // The new upper bound is from a recursive source, so we round
+        // up to one of a fixed set of values to prevent the recursion
+        // from exploding.
+        result =
+          min(float widenUB |
+            widenUB = wideningUpperBounds(getVariableRangeType(v)) and
+            not widenUB < truncatedUB
+          |
+            widenUB
+          )
+      else result = truncatedUB
+    )
+    or
+    // The definition might overflow negatively and wrap. If so, the upper
+    // bound is `typeUpperBound`.
+    defMightOverflowNegatively(def, v) and result = varMaxVal(v)
   }
 }
 
