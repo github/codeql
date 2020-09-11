@@ -622,6 +622,8 @@ class Field extends Member, ExprParent, @field, Variable {
 
   /** Cast this field to a class that provides access to metrics information. */
   MetricField getMetrics() { result = this }
+
+  override string getAPrimaryQlClass() { result = "Field" }
 }
 
 /** An instance field. */

@@ -523,7 +523,7 @@ class SynchronizedStmt extends Stmt, @synchronizedstmt {
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   override string getHalsteadID() { result = "SynchronizedStmt" }
 
-  override string getAPrimaryQlClass() { result = "SynchonizedStmt" }
+  override string getAPrimaryQlClass() { result = "SynchronizedStmt" }
 }
 
 /** A `return` statement. */
@@ -683,7 +683,7 @@ class ContinueStmt extends Stmt, @continuestmt {
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   override string getHalsteadID() { result = "ContinueStmt" }
 
-  override string getAPrimaryQlClass() { result = "ContinusStmt" }
+  override string getAPrimaryQlClass() { result = "ContinueStmt" }
 }
 
 /** The empty statement. */

@@ -764,7 +764,7 @@ class URShiftExpr extends BinaryExpr, @urshiftexpr {
 class AndBitwiseExpr extends BinaryExpr, @andbitexpr {
   override string getOp() { result = " & " }
 
-  override string getAPrimaryQlClass() { result = "AddBitwiseExpr" }
+  override string getAPrimaryQlClass() { result = "AndBitwiseExpr" }
 }
 
 /** A binary expression using the `|` operator. */
@@ -778,7 +778,7 @@ class OrBitwiseExpr extends BinaryExpr, @orbitexpr {
 class XorBitwiseExpr extends BinaryExpr, @xorbitexpr {
   override string getOp() { result = " ^ " }
 
-  override string getAPrimaryQlClass() { result = "?XorBitwiseExpr" }
+  override string getAPrimaryQlClass() { result = "XorBitwiseExpr" }
 }
 
 /** A binary expression using the `&&` operator. */
@@ -1647,7 +1647,7 @@ class ArrayTypeAccess extends Expr, @arraytypeaccess {
   /** Gets a printable representation of this expression. */
   override string toString() { result = "...[]" }
 
-  override string getAPrimaryQlClass() { result = "ArrayTypeAccss" }
+  override string getAPrimaryQlClass() { result = "ArrayTypeAccess" }
 }
 
 /**

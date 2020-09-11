@@ -250,6 +250,8 @@ class Wildcard extends BoundedType, @wildcard {
     not hasLowerBound() and
     wildcards(this, "?", _)
   }
+
+  override string getAPrimaryQlClass() { result = "Wildcard" }
 }
 
 /**

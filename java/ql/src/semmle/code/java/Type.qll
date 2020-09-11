@@ -318,6 +318,8 @@ class Array extends RefType, @array {
    * Gets the JVM descriptor for this type, as used in bytecode.
    */
   override string getTypeDescriptor() { result = "[" + this.getComponentType().getTypeDescriptor() }
+
+  override string getAPrimaryQlClass() { result = "Array" }
 }
 
 /**
@@ -877,11 +879,15 @@ class PrimitiveType extends Type, @primitive {
     getName().regexpMatch("(float|double|int|short|byte|long)") and
     result.getLiteral().regexpMatch("0(\\.0)?+[lLfFdD]?+")
   }
+
+  override string getAPrimaryQlClass() { result = "PrimitiveType" }
 }
 
 /** The type of the `null` literal. */
 class NullType extends Type, @primitive {
   NullType() { this.hasName("<nulltype>") }
+
+  override string getAPrimaryQlClass() { result = "NullType" }
 }
 
 /** The `void` type. */
@@ -892,6 +898,8 @@ class VoidType extends Type, @primitive {
    * Gets the JVM descriptor for this type, as used in bytecode.
    */
   override string getTypeDescriptor() { result = "V" }
+
+  override string getAPrimaryQlClass() { result = "VoidType" }
 }
 
 /**
