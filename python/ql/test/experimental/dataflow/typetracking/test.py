@@ -38,6 +38,7 @@ def quux():
 g = None
 
 def write_g(x): # $tracked
+    global g
     g = x # $tracked
 
 def use_g():
