@@ -31,7 +31,7 @@
 | PointlessComparison.c:126:12:126:18 | ... >= ... | Comparison is always true because a >= 20. |
 | PointlessComparison.c:129:12:129:16 | ... > ... | Comparison is always false because a <= 3. |
 | PointlessComparison.c:197:7:197:11 | ... < ... | Comparison is always false because x >= 0. |
-| PointlessComparison.c:264:12:264:22 | ... >= ... | Comparison is always true because dbl >= 0 and -0 >= - .... |
+| PointlessComparison.c:264:12:264:22 | ... >= ... | Comparison is always true because dbl >= 0 and 0 >= - .... |
 | PointlessComparison.c:273:9:273:18 | ... > ... | Comparison is always false because c <= 0. |
 | PointlessComparison.c:283:13:283:19 | ... >= ... | Comparison is always true because c >= 11. |
 | PointlessComparison.c:294:9:294:16 | ... >= ... | Comparison is always false because ui1 <= 0. |
@@ -50,7 +50,4 @@
 | PointlessComparison.cpp:43:6:43:29 | ... >= ... | Comparison is always true because ... >> ... >= 140737488355327.5. |
 | PointlessComparison.cpp:44:6:44:28 | ... >= ... | Comparison is always true because ... >> ... >= 140737488355327.5. |
 | RegressionTests.cpp:57:7:57:22 | ... <= ... | Comparison is always true because * ... <= 4294967295. |
-| RegressionTests.cpp:89:7:89:14 | ... == ... | Comparison is always false because val <= -0. |
-| RegressionTests.cpp:107:7:107:14 | ... == ... | Comparison is always false because val <= -0. |
-| RegressionTests.cpp:116:7:116:14 | ... == ... | Comparison is always false because val <= -0. |
 | Templates.cpp:9:10:9:24 | ... <= ... | Comparison is always true because local <= 32767. |

@@ -86,7 +86,7 @@ void negativeZero1(int val) {
   {
     val = -val;
   }
-  if (val == 0) // GOOD [FALSE POSITIVE]
+  if (val == 0) // GOOD [NO LONGER REPORTED]
     ;
 }
 
@@ -104,7 +104,7 @@ void negativeZero3(int val) {
   {
     val *= -1;
   }
-  if (val == 0) // GOOD [FALSE POSITIVE]
+  if (val == 0) // GOOD [NO LONGER REPORTED]
     ;
 }
 
@@ -113,6 +113,6 @@ void negativeZero4(int val) {
   {
     val = val * -1;
   }
-  if (val == 0) // GOOD [FALSE POSITIVE]
+  if (val == 0) // GOOD [NO LONGER REPORTED]
     ;
 }

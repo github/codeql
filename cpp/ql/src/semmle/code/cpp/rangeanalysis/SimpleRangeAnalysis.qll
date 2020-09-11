@@ -570,7 +570,7 @@ private float getTruncatedLowerBounds(Expr expr) {
     else (
       // Some of the bounds computed by getLowerBoundsImpl might
       // overflow, so we replace invalid bounds with exprMinVal.
-      exists(float newLB | newLB = getLowerBoundsImpl(expr) |
+      exists(float newLB | newLB = normalizeFloatUp(getLowerBoundsImpl(expr)) |
         if exprMinVal(expr) <= newLB and newLB <= exprMaxVal(expr)
         then result = newLB
         else result = exprMinVal(expr)
@@ -617,7 +617,7 @@ private float getTruncatedUpperBounds(Expr expr) {
       // Some of the bounds computed by `getUpperBoundsImpl`
       // might overflow, so we replace invalid bounds with
       // `exprMaxVal`.
-      exists(float newUB | newUB = getUpperBoundsImpl(expr) |
+      exists(float newUB | newUB = normalizeFloatUp(getUpperBoundsImpl(expr)) |
         if exprMinVal(expr) <= newUB and newUB <= exprMaxVal(expr)
         then result = newUB
         else result = exprMaxVal(expr)
