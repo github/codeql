@@ -15,6 +15,9 @@ import semmle.go.frameworks.stdlib.CompressZlib
 import semmle.go.frameworks.stdlib.Path
 import semmle.go.frameworks.stdlib.PathFilepath
 import semmle.go.frameworks.stdlib.Reflect
+import semmle.go.frameworks.stdlib.TextScanner
+import semmle.go.frameworks.stdlib.TextTabwriter
+import semmle.go.frameworks.stdlib.TextTemplate
 
 /** A `String()` method. */
 class StringMethod extends TaintTracking::FunctionModel, Method {
@@ -573,48 +576,6 @@ module Strings {
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(0) and outp.isResult()
     }
-  }
-}
-
-/** Provides models of commonly used functions in the `text/template` package. */
-module Template {
-  private class TemplateEscape extends EscapeFunction::Range {
-    string kind;
-
-    TemplateEscape() {
-      exists(string fn |
-        fn.matches("HTMLEscape%") and kind = "html"
-        or
-        fn.matches("JSEscape%") and kind = "js"
-        or
-        fn.matches("URLQueryEscape%") and kind = "url"
-      |
-        this.hasQualifiedName("text/template", fn)
-        or
-        this.hasQualifiedName("html/template", fn)
-      )
-    }
-
-    override string kind() { result = kind }
-  }
-
-  private class TextTemplateInstantiation extends TemplateInstantiation::Range,
-    DataFlow::MethodCallNode {
-    int dataArg;
-
-    TextTemplateInstantiation() {
-      exists(string m | getTarget().hasQualifiedName("text/template", "Template", m) |
-        m = "Execute" and
-        dataArg = 1
-        or
-        m = "ExecuteTemplate" and
-        dataArg = 2
-      )
-    }
-
-    override DataFlow::Node getTemplateArgument() { result = this.getReceiver() }
-
-    override DataFlow::Node getADataArgument() { result = this.getArgument(dataArg) }
   }
 }
 
