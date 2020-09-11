@@ -642,6 +642,9 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
           or
           inModel.isQualifierObject() and
           fromExpr = call.getQualifier()
+          or
+          inModel.isQualifierAddress() and
+          fromExpr = call.getQualifier()
         ) and
         call.getTarget() = f and
         outModel.isReturnValue()

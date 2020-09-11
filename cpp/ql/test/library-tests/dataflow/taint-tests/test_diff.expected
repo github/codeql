@@ -187,9 +187,11 @@
 | stringstream.cpp:52:7:52:9 | stringstream.cpp:49:10:49:15 | AST only |
 | stringstream.cpp:53:7:53:9 | stringstream.cpp:50:10:50:15 | AST only |
 | stringstream.cpp:56:11:56:13 | stringstream.cpp:56:15:56:29 | AST only |
+| stringstream.cpp:57:44:57:46 | stringstream.cpp:57:25:57:39 | AST only |
 | stringstream.cpp:59:7:59:9 | stringstream.cpp:56:15:56:29 | AST only |
 | stringstream.cpp:60:7:60:10 | stringstream.cpp:57:25:57:39 | AST only |
 | stringstream.cpp:63:12:63:16 | stringstream.cpp:63:18:63:23 | AST only |
+| stringstream.cpp:64:54:64:58 | stringstream.cpp:64:36:64:41 | AST only |
 | stringstream.cpp:66:7:66:10 | stringstream.cpp:63:18:63:23 | AST only |
 | stringstream.cpp:67:7:67:10 | stringstream.cpp:64:36:64:41 | AST only |
 | stringstream.cpp:76:11:76:11 | stringstream.cpp:70:32:70:37 | AST only |
