@@ -2101,23 +2101,19 @@ private newtype TAccessPath =
   TAccessPathCons(TypedContent head, AccessPath tail) { flowConsCand(head, tail.getApprox(), _) }
 
 private newtype TPathNode =
-  TPathNodeMid(
-    Node node, CallContext cc, SummaryCtx sc, AccessPath ap, AccessPathApprox apa,
-    Configuration config
-  ) {
+  TPathNodeMid(Node node, CallContext cc, SummaryCtx sc, AccessPath ap, Configuration config) {
     // A PathNode is introduced by a source ...
     flow(node, config) and
     config.isSource(node) and
     cc instanceof CallContextAny and
     sc instanceof SummaryCtxNone and
-    ap = TAccessPathNil(getNodeType(node)) and
-    apa = TNil(getNodeType(node))
+    ap = TAccessPathNil(getNodeType(node))
     or
     // ... or a step from an existing PathNode to another node.
     exists(PathNodeMid mid |
-      pathStep(mid, node, cc, sc, ap, apa) and
+      pathStep(mid, node, cc, sc, ap) and
       config = mid.getConfiguration() and
-      flow(node, _, _, apa, unbind(config))
+      flow(node, _, _, ap.getApprox(), unbind(config))
     )
   } or
   TPathNodeSink(Node node, Configuration config) {
@@ -2129,7 +2125,7 @@ private newtype TPathNode =
       or
       // ... or a sink that can be reached from a source
       exists(PathNodeMid mid |
-        pathStep(mid, node, _, _, _, TNil(_)) and
+        pathStep(mid, node, _, _, TAccessPathNil(_)) and
         config = unbind(mid.getConfiguration())
       )
     )
@@ -2340,10 +2336,9 @@ private class PathNodeMid extends PathNodeImpl, TPathNodeMid {
   CallContext cc;
   SummaryCtx sc;
   AccessPath ap;
-  AccessPathApprox apa;
   Configuration config;
 
-  PathNodeMid() { this = TPathNodeMid(node, cc, sc, ap, apa, config) }
+  PathNodeMid() { this = TPathNodeMid(node, cc, sc, ap, config) }
 
   override Node getNode() { result = node }
 
@@ -2353,13 +2348,10 @@ private class PathNodeMid extends PathNodeImpl, TPathNodeMid {
 
   AccessPath getAp() { result = ap }
 
-  AccessPathApprox getApa() { result = apa }
-
   override Configuration getConfiguration() { result = config }
 
   private PathNodeMid getSuccMid() {
-    pathStep(this, result.getNode(), result.getCallContext(), result.getSummaryCtx(),
-      result.getAp(), _) and
+    pathStep(this, result.getNode(), result.getCallContext(), result.getSummaryCtx(), result.getAp()) and
     result.getConfiguration() = unbind(this.getConfiguration())
   }
 
@@ -2371,7 +2363,7 @@ private class PathNodeMid extends PathNodeImpl, TPathNodeMid {
     exists(PathNodeMid mid, PathNodeSink sink |
       mid = getSuccMid() and
       mid.getNode() = sink.getNode() and
-      mid.getApa() instanceof AccessPathApproxNil and
+      mid.getAp() instanceof AccessPathNil and
       sink.getConfiguration() = unbind(mid.getConfiguration()) and
       result = sink
     )
@@ -2381,7 +2373,7 @@ private class PathNodeMid extends PathNodeImpl, TPathNodeMid {
     config.isSource(node) and
     cc instanceof CallContextAny and
     sc instanceof SummaryCtxNone and
-    apa instanceof AccessPathApproxNil
+    ap instanceof AccessPathNil
   }
 }
 
@@ -2409,33 +2401,22 @@ private class PathNodeSink extends PathNodeImpl, TPathNodeSink {
  * Holds if data may flow from `mid` to `node`. The last step in or out of
  * a callable is recorded by `cc`.
  */
-private predicate pathStep(
-  PathNodeMid mid, Node node, CallContext cc, SummaryCtx sc, AccessPath ap, AccessPathApprox apa
-) {
+private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, SummaryCtx sc, AccessPath ap) {
   pathStepSameAp(mid, node, cc, sc) and
-  ap = mid.getAp() and
-  apa = mid.getApa()
+  ap = mid.getAp()
   or
   exists(DataFlowType t |
     pathStepEmptyAp(mid, node, cc, sc, t) and
-    ap = TAccessPathNil(t) and
-    apa = TNil(t)
+    ap = TAccessPathNil(t)
   )
   or
-  exists(TypedContent tc, AccessPathApprox apa0 |
-    pathStoreStep(mid, node, ap.pop(tc), apa0, tc, cc) and
-    // Same as `apa = ap.getApprox()`, but avoids mutual recursion
-    apa0 = apa.pop(tc)
-  ) and
+  exists(TypedContent tc | pathStoreStep(mid, node, ap.pop(tc), tc, cc)) and
   sc = mid.getSummaryCtx()
   or
   exists(TypedContent tc | pathReadStep(mid, node, ap.push(tc), tc, cc)) and
-  sc = mid.getSummaryCtx() and
-  // Here the approximation cannot be created from the approximation before
-  // the read, so we must use `getApprox()`
-  apa = ap.getApprox()
+  sc = mid.getSummaryCtx()
   or
-  pathThroughCallable(mid, node, cc, ap, apa) and
+  pathThroughCallable(mid, node, cc, ap) and
   sc = mid.getSummaryCtx()
 }
 
@@ -2504,10 +2485,9 @@ private predicate storeCand(Node node1, TypedContent tc, Node node2, Configurati
 
 pragma[nomagic]
 private predicate pathStoreStep(
-  PathNodeMid mid, Node node, AccessPath ap0, AccessPathApprox apa0, TypedContent tc, CallContext cc
+  PathNodeMid mid, Node node, AccessPath ap0, TypedContent tc, CallContext cc
 ) {
   ap0 = mid.getAp() and
-  apa0 = mid.getApa() and
   storeCand(mid.getNode(), tc, node, mid.getConfiguration()) and
   cc = mid.getCallContext()
 }
@@ -2519,7 +2499,7 @@ private predicate pathOutOfCallable0(
   pos = getReturnPosition(mid.getNode()) and
   innercc = mid.getCallContext() and
   innercc instanceof CallContextNoCall and
-  apa = mid.getApa() and
+  apa = mid.getAp().getApprox() and
   config = mid.getConfiguration()
 }
 
@@ -2570,7 +2550,7 @@ private predicate pathIntoArg(
     cc = mid.getCallContext() and
     arg.argumentOf(call, i) and
     ap = mid.getAp() and
-    apa = mid.getApa()
+    apa = ap.getApprox()
   )
 }
 
@@ -2653,7 +2633,7 @@ private predicate paramFlowsThrough(
     sc = mid.getSummaryCtx() and
     config = mid.getConfiguration() and
     ap = mid.getAp() and
-    apa = mid.getApa() and
+    apa = ap.getApprox() and
     pos = sc.getParameterPos() and
     not kind.(ParamUpdateReturnKind).getPosition() = pos
   )
@@ -2675,10 +2655,8 @@ private predicate pathThroughCallable0(
  * The context `cc` is restored to its value prior to entering the callable.
  */
 pragma[noinline]
-private predicate pathThroughCallable(
-  PathNodeMid mid, Node out, CallContext cc, AccessPath ap, AccessPathApprox apa
-) {
-  exists(DataFlowCall call, ReturnKindExt kind |
+private predicate pathThroughCallable(PathNodeMid mid, Node out, CallContext cc, AccessPath ap) {
+  exists(DataFlowCall call, ReturnKindExt kind, AccessPathApprox apa |
     pathThroughCallable0(call, mid, kind, cc, ap, apa) and
     out = getAnOutNodeFlow(kind, call, apa, unbind(mid.getConfiguration()))
   )
