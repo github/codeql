@@ -1,9 +1,17 @@
 test_taint
 | test.py:22 | ok   | test_custom_sanitizer | s |
-| test.py:36 | fail | test_custom_sanitizer_guard | s |
+| test.py:36 | ok   | test_custom_sanitizer_guard | s |
 | test.py:38 | ok   | test_custom_sanitizer_guard | s |
 | test.py:49 | ok   | test_escape | s2 |
 isSanitizer
 | TestTaintTrackingConfiguration | test.py:21:39:21:39 | ControlFlowNode for s |
 | TestTaintTrackingConfiguration | test.py:48:10:48:29 | ControlFlowNode for emulated_escaping() |
 isSanitizerGuard
+| TestTaintTrackingConfiguration | test.py:35:8:35:26 | ControlFlowNode for emulated_is_safe() |
+sanitizerGuardControls
+| TestTaintTrackingConfiguration | test.py:35:8:35:26 | ControlFlowNode for emulated_is_safe() | test.py:36:9:36:26 | ControlFlowNode for ensure_not_tainted | true |
+| TestTaintTrackingConfiguration | test.py:35:8:35:26 | ControlFlowNode for emulated_is_safe() | test.py:36:9:36:29 | ControlFlowNode for ensure_not_tainted() | true |
+| TestTaintTrackingConfiguration | test.py:35:8:35:26 | ControlFlowNode for emulated_is_safe() | test.py:36:28:36:28 | ControlFlowNode for s | true |
+| TestTaintTrackingConfiguration | test.py:35:8:35:26 | ControlFlowNode for emulated_is_safe() | test.py:38:9:38:22 | ControlFlowNode for ensure_tainted | false |
+| TestTaintTrackingConfiguration | test.py:35:8:35:26 | ControlFlowNode for emulated_is_safe() | test.py:38:9:38:25 | ControlFlowNode for ensure_tainted() | false |
+| TestTaintTrackingConfiguration | test.py:35:8:35:26 | ControlFlowNode for emulated_is_safe() | test.py:38:24:38:24 | ControlFlowNode for s | false |

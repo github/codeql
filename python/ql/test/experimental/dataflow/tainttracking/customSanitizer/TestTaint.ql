@@ -1,5 +1,19 @@
 import experimental.dataflow.tainttracking.TestTaintLib
 
+class IsSafeCheck extends DataFlow::BarrierGuard {
+  Variable v;
+
+  IsSafeCheck() {
+    this.(CallNode).getNode().getFunc().(Name).getId() = "emulated_is_safe" and
+    this.(CallNode).getAnArg().(NameNode).uses(v)
+  }
+
+  override predicate checks(ControlFlowNode node, boolean testIsTrue) {
+    node.(NameNode).uses(v) and
+    testIsTrue = true
+  }
+}
+
 class CustomSanitizerOverrides extends TestTaintTrackingConfiguration {
   override predicate isSanitizer(DataFlow::Node node) {
     exists(Call call |
@@ -10,13 +24,7 @@ class CustomSanitizerOverrides extends TestTaintTrackingConfiguration {
     node.asExpr().(Call).getFunc().(Name).getId() = "emulated_escaping"
   }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    // TODO: Future work for when BarrierGuard is implemented properly
-    // exists(Call call |
-    //   call.getFunc().(Name).getId() = "emulated_is_safe" and
-    // )
-    none()
-  }
+  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) { guard instanceof IsSafeCheck }
 }
 
 query predicate isSanitizer(TestTaintTrackingConfiguration conf, DataFlow::Node node) {
@@ -27,4 +35,13 @@ query predicate isSanitizer(TestTaintTrackingConfiguration conf, DataFlow::Node 
 query predicate isSanitizerGuard(TestTaintTrackingConfiguration conf, DataFlow::BarrierGuard guard) {
   exists(guard.getLocation().getFile().getRelativePath()) and
   conf.isSanitizerGuard(guard)
+}
+
+query predicate sanitizerGuardControls(
+  TestTaintTrackingConfiguration conf, DataFlow::BarrierGuard guard, ControlFlowNode node,
+  boolean testIsTrue
+) {
+  exists(guard.getLocation().getFile().getRelativePath()) and
+  conf.isSanitizerGuard(guard) and
+  guard.controlsNode(node, testIsTrue)
 }

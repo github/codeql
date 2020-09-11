@@ -149,6 +149,19 @@ class ParameterNode extends EssaNode {
 }
 
 /**
+ * A node that controls whether other nodes are evaluated.
+ */
+class GuardNode extends ControlFlowNode {
+  ConditionBlock conditionBlock;
+
+  GuardNode() { this = conditionBlock.getLastNode() }
+
+  predicate controlsNode(ControlFlowNode node, boolean testIsTrue) {
+    conditionBlock.controls(node.getBasicBlock(), testIsTrue)
+  }
+}
+
+/**
  * A guard that validates some expression.
  *
  * To use this in a configuration, extend the class and provide a
@@ -157,16 +170,16 @@ class ParameterNode extends EssaNode {
  *
  * It is important that all extending classes in scope are disjoint.
  */
-class BarrierGuard extends Expr {
-  // /** Holds if this guard validates `e` upon evaluating to `v`. */
-  // abstract predicate checks(Expr e, AbstractValue v);
+class BarrierGuard extends GuardNode {
+  /** Holds if this guard validates `e` upon evaluating to `v`. */
+  abstract predicate checks(ControlFlowNode node, boolean testIsTrue);
+
   /** Gets a node guarded by this guard. */
   final ExprNode getAGuardedNode() {
-    none()
-    // exists(Expr e, AbstractValue v |
-    //   this.checks(e, v) and
-    //   this.controlsNode(result.getControlFlowNode(), e, v)
-    // )
+    exists(boolean testIsTrue |
+      this.checks(result.asCfgNode(), testIsTrue) and
+      this.controlsNode(result.asCfgNode(), testIsTrue)
+    )
   }
 }
 
