@@ -416,6 +416,18 @@ class ReceiverNode extends ParameterNode {
   predicate isReceiverOf(MethodDecl m) { parm.isReceiverOf(m) }
 }
 
+private Node getADirectlyWrittenNode() {
+  exists(Write w | w.writesField(result, _, _) or w.writesElement(result, _, _))
+}
+
+private DataFlow::Node getAccessPathPredecessor(DataFlow::Node node) {
+  result = node.(PointerDereferenceNode).getOperand()
+  or
+  result = node.(ComponentReadNode).getBase()
+}
+
+private Node getAWrittenNode() { result = getAccessPathPredecessor*(getADirectlyWrittenNode()) }
+
 /**
  * A node associated with an object after an operation that might have
  * changed its state.
@@ -439,13 +451,7 @@ class PostUpdateNode extends Node {
       or
       preupd = any(PointerDereferenceNode deref).getOperand()
       or
-      exists(Write w, DataFlow::Node base |
-        w.writesField(base, _, _) or w.writesElement(base, _, _)
-      |
-        preupd = base
-        or
-        preupd = base.(PointerDereferenceNode).getOperand()
-      )
+      preupd = getAWrittenNode()
       or
       preupd instanceof ArgumentNode and
       mutableType(preupd.getType())
@@ -591,13 +597,20 @@ class ReadNode extends InstructionNode {
 }
 
 /**
+ * A data-flow node that reads the value of a field from a struct, or an element from an array, slice, map or string.
+ */
+class ComponentReadNode extends ReadNode {
+  override IR::ComponentReadInstruction insn;
+
+  /** Gets the data-flow node representing the base from which the field or element is read. */
+  Node getBase() { result = instructionNode(insn.getBase()) }
+}
+
+/**
  * A data-flow node that reads an element of an array, map, slice or string.
  */
-class ElementReadNode extends ReadNode {
+class ElementReadNode extends ComponentReadNode {
   override IR::ElementReadInstruction insn;
-
-  /** Gets the data-flow node representing the base from which the element is read. */
-  Node getBase() { result = instructionNode(insn.getBase()) }
 
   /** Gets the data-flow node representing the index of the element being read. */
   Node getIndex() { result = instructionNode(insn.getIndex()) }
@@ -744,11 +757,8 @@ class AddressOperationNode extends UnaryOperationNode, ExprNode {
 /**
  * A data-flow node that reads the value of a field.
  */
-class FieldReadNode extends ReadNode {
+class FieldReadNode extends ComponentReadNode {
   override IR::FieldReadInstruction insn;
-
-  /** Gets the base node from which the field is read. */
-  Node getBase() { result = instructionNode(insn.getBase()) }
 
   /** Gets the field this node reads. */
   Field getField() { result = insn.getField() }

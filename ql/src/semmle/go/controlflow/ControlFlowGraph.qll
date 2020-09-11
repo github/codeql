@@ -165,6 +165,13 @@ module ControlFlow {
         self.getRhs() = rhs.asInstruction()
       )
     }
+
+    /**
+     * Holds if this node sets any field or element of `base` to `rhs`.
+     */
+    predicate writesComponent(DataFlow::Node base, DataFlow::Node rhs) {
+      writesElement(base, _, rhs) or writesField(base, _, rhs)
+    }
   }
 
   /**

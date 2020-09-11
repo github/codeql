@@ -1,3 +1,6 @@
-# github.com/jinzhu/gorm v1.9.15
+# github.com/jinzhu/gorm v1.9.16
 ## explicit
 github.com/jinzhu/gorm
+# gorm.io/gorm v1.20.0
+## explicit
+gorm.io/gorm

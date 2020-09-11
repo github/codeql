@@ -6,6 +6,44 @@ edges
 | stdlib.go:44:13:44:18 | selection of Form : Values | stdlib.go:46:23:46:28 | target |
 | stdlib.go:64:13:64:18 | selection of Form : Values | stdlib.go:67:23:67:40 | ...+... |
 | stdlib.go:89:13:89:18 | selection of Form : Values | stdlib.go:92:23:92:28 | target |
+| stdlib.go:107:54:107:54 | definition of r [pointer, URL, ... (3)] | stdlib.go:112:4:112:4 | r [pointer, URL, ... (3)] |
+| stdlib.go:107:54:107:54 | definition of r [pointer, URL, ... (3)] | stdlib.go:112:4:112:4 | r [pointer, URL, ... (3)] |
+| stdlib.go:107:54:107:54 | definition of r [pointer, URL] | stdlib.go:112:4:112:4 | r [pointer, URL] |
+| stdlib.go:107:54:107:54 | definition of r [pointer, URL] | stdlib.go:112:4:112:4 | r [pointer, URL] |
+| stdlib.go:107:54:107:54 | definition of r [pointer, URL] | stdlib.go:113:24:113:24 | r [pointer, URL] |
+| stdlib.go:107:54:107:54 | definition of r [pointer, URL] | stdlib.go:113:24:113:24 | r [pointer, URL] |
+| stdlib.go:112:4:112:4 | implicit dereference [URL, pointer] | stdlib.go:107:54:107:54 | definition of r [pointer, URL, ... (3)] |
+| stdlib.go:112:4:112:4 | implicit dereference [URL, pointer] | stdlib.go:107:54:107:54 | definition of r [pointer, URL, ... (3)] |
+| stdlib.go:112:4:112:4 | implicit dereference [URL, pointer] | stdlib.go:112:4:112:8 | selection of URL [pointer] : URL |
+| stdlib.go:112:4:112:4 | implicit dereference [URL, pointer] | stdlib.go:112:4:112:8 | selection of URL [pointer] : URL |
+| stdlib.go:112:4:112:4 | implicit dereference [URL] : pointer type | stdlib.go:107:54:107:54 | definition of r [pointer, URL] |
+| stdlib.go:112:4:112:4 | implicit dereference [URL] : pointer type | stdlib.go:107:54:107:54 | definition of r [pointer, URL] |
+| stdlib.go:112:4:112:4 | implicit dereference [URL] : pointer type | stdlib.go:112:4:112:8 | selection of URL : pointer type |
+| stdlib.go:112:4:112:4 | implicit dereference [URL] : pointer type | stdlib.go:112:4:112:8 | selection of URL : pointer type |
+| stdlib.go:112:4:112:4 | r [pointer, URL, ... (3)] | stdlib.go:112:4:112:4 | implicit dereference [URL, pointer] |
+| stdlib.go:112:4:112:4 | r [pointer, URL, ... (3)] | stdlib.go:112:4:112:4 | implicit dereference [URL, pointer] |
+| stdlib.go:112:4:112:4 | r [pointer, URL] | stdlib.go:112:4:112:4 | implicit dereference [URL] : pointer type |
+| stdlib.go:112:4:112:4 | r [pointer, URL] | stdlib.go:112:4:112:4 | implicit dereference [URL] : pointer type |
+| stdlib.go:112:4:112:8 | implicit dereference : URL | stdlib.go:112:4:112:8 | implicit dereference : URL |
+| stdlib.go:112:4:112:8 | implicit dereference : URL | stdlib.go:112:4:112:8 | implicit dereference : URL |
+| stdlib.go:112:4:112:8 | implicit dereference : URL | stdlib.go:112:4:112:8 | selection of URL : pointer type |
+| stdlib.go:112:4:112:8 | implicit dereference : URL | stdlib.go:112:4:112:8 | selection of URL : pointer type |
+| stdlib.go:112:4:112:8 | implicit dereference : URL | stdlib.go:112:4:112:8 | selection of URL [pointer] : URL |
+| stdlib.go:112:4:112:8 | implicit dereference : URL | stdlib.go:112:4:112:8 | selection of URL [pointer] : URL |
+| stdlib.go:112:4:112:8 | selection of URL : pointer type | stdlib.go:112:4:112:4 | implicit dereference [URL] : pointer type |
+| stdlib.go:112:4:112:8 | selection of URL : pointer type | stdlib.go:112:4:112:4 | implicit dereference [URL] : pointer type |
+| stdlib.go:112:4:112:8 | selection of URL : pointer type | stdlib.go:112:4:112:8 | implicit dereference : URL |
+| stdlib.go:112:4:112:8 | selection of URL : pointer type | stdlib.go:112:4:112:8 | implicit dereference : URL |
+| stdlib.go:112:4:112:8 | selection of URL : pointer type | stdlib.go:112:4:112:8 | selection of URL : pointer type |
+| stdlib.go:112:4:112:8 | selection of URL : pointer type | stdlib.go:112:4:112:8 | selection of URL : pointer type |
+| stdlib.go:112:4:112:8 | selection of URL [pointer] : URL | stdlib.go:112:4:112:4 | implicit dereference [URL, pointer] |
+| stdlib.go:112:4:112:8 | selection of URL [pointer] : URL | stdlib.go:112:4:112:4 | implicit dereference [URL, pointer] |
+| stdlib.go:112:4:112:8 | selection of URL [pointer] : URL | stdlib.go:112:4:112:8 | implicit dereference : URL |
+| stdlib.go:112:4:112:8 | selection of URL [pointer] : URL | stdlib.go:112:4:112:8 | implicit dereference : URL |
+| stdlib.go:113:24:113:24 | implicit dereference [URL] : pointer type | stdlib.go:113:24:113:28 | selection of URL : pointer type |
+| stdlib.go:113:24:113:24 | implicit dereference [URL] : pointer type | stdlib.go:113:24:113:28 | selection of URL : pointer type |
+| stdlib.go:113:24:113:24 | r [pointer, URL] | stdlib.go:113:24:113:24 | implicit dereference [URL] : pointer type |
+| stdlib.go:113:24:113:24 | r [pointer, URL] | stdlib.go:113:24:113:24 | implicit dereference [URL] : pointer type |
 | stdlib.go:113:24:113:28 | selection of URL : pointer type | stdlib.go:113:24:113:37 | call to String |
 | stdlib.go:113:24:113:28 | selection of URL : pointer type | stdlib.go:113:24:113:37 | call to String |
 | stdlib.go:146:13:146:18 | selection of Form : Values | stdlib.go:152:23:152:28 | target |
@@ -37,6 +75,28 @@ nodes
 | stdlib.go:67:23:67:40 | ...+... | semmle.label | ...+... |
 | stdlib.go:89:13:89:18 | selection of Form : Values | semmle.label | selection of Form : Values |
 | stdlib.go:92:23:92:28 | target | semmle.label | target |
+| stdlib.go:107:54:107:54 | definition of r [pointer, URL, ... (3)] | semmle.label | definition of r [pointer, URL, ... (3)] |
+| stdlib.go:107:54:107:54 | definition of r [pointer, URL, ... (3)] | semmle.label | definition of r [pointer, URL, ... (3)] |
+| stdlib.go:107:54:107:54 | definition of r [pointer, URL] | semmle.label | definition of r [pointer, URL] |
+| stdlib.go:107:54:107:54 | definition of r [pointer, URL] | semmle.label | definition of r [pointer, URL] |
+| stdlib.go:112:4:112:4 | implicit dereference [URL, pointer] | semmle.label | implicit dereference [URL, pointer] |
+| stdlib.go:112:4:112:4 | implicit dereference [URL, pointer] | semmle.label | implicit dereference [URL, pointer] |
+| stdlib.go:112:4:112:4 | implicit dereference [URL] : pointer type | semmle.label | implicit dereference [URL] : pointer type |
+| stdlib.go:112:4:112:4 | implicit dereference [URL] : pointer type | semmle.label | implicit dereference [URL] : pointer type |
+| stdlib.go:112:4:112:4 | r [pointer, URL, ... (3)] | semmle.label | r [pointer, URL, ... (3)] |
+| stdlib.go:112:4:112:4 | r [pointer, URL, ... (3)] | semmle.label | r [pointer, URL, ... (3)] |
+| stdlib.go:112:4:112:4 | r [pointer, URL] | semmle.label | r [pointer, URL] |
+| stdlib.go:112:4:112:4 | r [pointer, URL] | semmle.label | r [pointer, URL] |
+| stdlib.go:112:4:112:8 | implicit dereference : URL | semmle.label | implicit dereference : URL |
+| stdlib.go:112:4:112:8 | implicit dereference : URL | semmle.label | implicit dereference : URL |
+| stdlib.go:112:4:112:8 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
+| stdlib.go:112:4:112:8 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
+| stdlib.go:112:4:112:8 | selection of URL [pointer] : URL | semmle.label | selection of URL [pointer] : URL |
+| stdlib.go:112:4:112:8 | selection of URL [pointer] : URL | semmle.label | selection of URL [pointer] : URL |
+| stdlib.go:113:24:113:24 | implicit dereference [URL] : pointer type | semmle.label | implicit dereference [URL] : pointer type |
+| stdlib.go:113:24:113:24 | implicit dereference [URL] : pointer type | semmle.label | implicit dereference [URL] : pointer type |
+| stdlib.go:113:24:113:24 | r [pointer, URL] | semmle.label | r [pointer, URL] |
+| stdlib.go:113:24:113:24 | r [pointer, URL] | semmle.label | r [pointer, URL] |
 | stdlib.go:113:24:113:28 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
 | stdlib.go:113:24:113:28 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
 | stdlib.go:113:24:113:37 | call to String | semmle.label | call to String |
