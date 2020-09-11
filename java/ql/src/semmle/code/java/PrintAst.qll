@@ -72,7 +72,7 @@ private predicate isNotNeeded(Element el) {
 /**
  * Retrieves the canonical QL class(es) for entity `el`
  */
-private string getQlClass(Element el) {
+private string getQlClass(Top el) {
   result = "[" + concat(el.getAPrimaryQlClass(), ",") + "] "
   // Alternative implementation -- do not delete. It is useful for QL class discovery.
   // result = "[" + concat(el.getAQlClass(), ",") + "] "
@@ -101,7 +101,9 @@ private newtype TPrintAstNode =
   TParametersNode(Callable c) { shouldPrint(c, _) and not c.hasNoParameters() } or
   TBaseTypesNode(ClassOrInterface ty) { shouldPrint(ty, _) } or
   TGenericTypeNode(GenericType ty) { shouldPrint(ty, _) } or 
-  TGenericCallableNode(GenericCallable c) { shouldPrint(c, _) }
+  TGenericCallableNode(GenericCallable c) { shouldPrint(c, _) } or
+  TJavadocNode(Javadoc jd) { exists(Documentable d | d.getJavadoc() = jd | shouldPrint(d, _)) } or
+  TJavadocElementNode(JavadocElement jd) { exists(Documentable d | d.getJavadoc() = jd.getParent*() | shouldPrint(d, _)) }
 
 /**
  * A node in the output tree.
@@ -256,20 +258,22 @@ final class CallableNode extends ElementNode {
   CallableNode() { callable = element }
 
   override PrintAstNode getChild(int childIndex) {
-    // TODO: javadoc
     childIndex = 0 and
-    result.(AnnotationsNode).getAnnotated() = callable
+    result.(JavadocNode).getJavadoc().getCommentedElement() = callable
     or
     childIndex = 1 and
-    result.(GenericCallableNode).getCallable() = callable
+    result.(AnnotationsNode).getAnnotated() = callable
     or
     childIndex = 2 and
-    result.(ElementNode).getElement().(Expr).isNthChildOf(callable, -1) // return type
+    result.(GenericCallableNode).getCallable() = callable
     or
     childIndex = 3 and
-    result.(ParametersNode).getCallable() = callable
+    result.(ElementNode).getElement().(Expr).isNthChildOf(callable, -1) // return type
     or
     childIndex = 4 and
+    result.(ParametersNode).getCallable() = callable
+    or
+    childIndex = 5 and
     result.(ElementNode).getElement() = callable.getBody()
   }
 }
@@ -316,7 +320,9 @@ final class ClassInterfaceNode extends ElementNode {
   }
 
   override PrintAstNode getChild(int childIndex) {
-    // TODO: javadoc
+    childIndex = -4 and
+    result.(JavadocNode).getJavadoc().getCommentedElement() = ty
+    or
     childIndex = -3 and
     result.(AnnotationsNode).getAnnotated() = ty
     or
@@ -371,6 +377,7 @@ final class CompilationUnitNode extends ElementNode {
   }
 
   override PrintAstNode getChild(int childIndex) {
+    childIndex >= 0 and
     result.(ElementNode).getElement() =
       rank[childIndex](Element e, string file, int line, int column |
         e = getADeclaration() and locationSortKeys(e, file, line, column)
@@ -499,6 +506,45 @@ final class GenericCallableNode extends PrintAstNode, TGenericCallableNode {
   }
 
   GenericCallable getCallable() { result = c }
+}
+
+/**
+ * A node representing a `Javadoc`. 
+ * Only rendered if it is the javadoc of some `Documentable`.
+ */
+final class JavadocNode extends PrintAstNode, TJavadocNode {
+  Javadoc jd;
+
+  JavadocNode() { this = TJavadocNode(jd) }
+
+  override JavadocElementNode getChild(int childIndex) {
+    result.getJavadocElement() = jd.getChild(childIndex)
+  }
+
+  override string toString() { result = getQlClass(jd) + jd.toString() }
+
+  override Location getLocation() { result = jd.getLocation() }
+
+  Javadoc getJavadoc() { result = jd }
+}
+
+/** A node representing a `JavadocElement`. 
+ * Only rendered if it is part of the javadoc of some `Documentable`.
+ */
+final class JavadocElementNode extends PrintAstNode, TJavadocElementNode {
+  JavadocElement jd;
+
+  JavadocElementNode() { this = TJavadocElementNode(jd) }
+
+  override JavadocElementNode getChild(int childIndex) {
+    result.getJavadocElement() = jd.(JavadocParent).getChild(childIndex)
+  }
+
+  override string toString() { result = getQlClass(jd) + jd.toString() }
+
+  override Location getLocation() { result = jd.getLocation() }
+
+  JavadocElement getJavadocElement() { result = jd }
 }
 
 /** Holds if `node` belongs to the output tree, and its property `key` has the given `value`. */
