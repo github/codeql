@@ -102,6 +102,7 @@ private newtype TPrintAstNode =
   TBaseTypesNode(ClassOrInterface ty) { shouldPrint(ty, _) } or
   TGenericTypeNode(GenericType ty) { shouldPrint(ty, _) } or 
   TGenericCallableNode(GenericCallable c) { shouldPrint(c, _) } or
+  TDocumentableNode(Documentable d) { shouldPrint(d, _) and exists(d.getJavadoc()) } or
   TJavadocNode(Javadoc jd) { exists(Documentable d | d.getJavadoc() = jd | shouldPrint(d, _)) } or
   TJavadocElementNode(JavadocElement jd) { exists(Documentable d | d.getJavadoc() = jd.getParent*() | shouldPrint(d, _)) }
 
@@ -259,7 +260,7 @@ final class CallableNode extends ElementNode {
 
   override PrintAstNode getChild(int childIndex) {
     childIndex = 0 and
-    result.(JavadocNode).getJavadoc().getCommentedElement() = callable
+    result.(DocumentableNode).getDocumentable() = callable
     or
     childIndex = 1 and
     result.(AnnotationsNode).getAnnotated() = callable
@@ -321,7 +322,7 @@ final class ClassInterfaceNode extends ElementNode {
 
   override PrintAstNode getChild(int childIndex) {
     childIndex = -4 and
-    result.(JavadocNode).getJavadoc().getCommentedElement() = ty
+    result.(DocumentableNode).getDocumentable() = ty
     or
     childIndex = -3 and
     result.(AnnotationsNode).getAnnotated() = ty
@@ -351,6 +352,9 @@ final class FieldDeclNode extends ElementNode {
   FieldDeclNode() { decl = element }
 
   override PrintAstNode getChild(int childIndex) {
+    childIndex = -3 and
+    result.(DocumentableNode).getDocumentable() = decl.getAField()
+    or
     childIndex = -2 and
     result.(AnnotationsNode).getAnnotated() = decl.getAField()
     or
@@ -416,7 +420,7 @@ final class AnnotationsNode extends PrintAstNode, TAnnotationsNode {
 
   override string toString() { result = "(Annotations)" }
 
-  override Location getLocation() { result = ann.getLocation() }
+  override Location getLocation() { none() }
 
   override ElementNode getChild(int childIndex) {
     result.getElement() =
@@ -444,7 +448,7 @@ final class ParametersNode extends PrintAstNode, TParametersNode {
 
   override string toString() { result = "(Parameters)" }
 
-  override Location getLocation() { result = c.getLocation() }
+  override Location getLocation() { none() }
 
   override ElementNode getChild(int childIndex) { result.getElement() = c.getParameter(childIndex) }
 
@@ -465,10 +469,15 @@ final class BaseTypesNode extends PrintAstNode, TBaseTypesNode {
 
   override string toString() { result = "(Base Types)" }
 
+  override Location getLocation() { none() }
+
   override ElementNode getChild(int childIndex) {
     result.getElement().(TypeAccess).isNthChildOf(ty, -2 - childIndex)
   }
 
+  /**
+   * Gets the underlying `Class` or `Interface`.
+   */
   ClassOrInterface getClassOrInterface() { result = ty }
 }
 
@@ -483,10 +492,15 @@ final class GenericTypeNode extends PrintAstNode, TGenericTypeNode {
 
   override string toString() { result = "(Generic Parameters)" }
 
+  override Location getLocation() { none() }
+
   override ElementNode getChild(int childIndex) {
     result.getElement().(TypeVariable) = ty.getTypeParameter(childIndex)
   }
 
+  /**
+   * Gets the underlying `GenericType`.
+   */
   GenericType getType() { result = ty }
 }
 
@@ -505,7 +519,38 @@ final class GenericCallableNode extends PrintAstNode, TGenericCallableNode {
     result.getElement().(TypeVariable) = c.getTypeParameter(childIndex)
   }
 
+  /**
+   * Gets the underlying `GenericCallable`.
+   */
   GenericCallable getCallable() { result = c }
+}
+
+/**
+ * A node representing the documentation of a `Documentable`. 
+ * Only rendered if there is at least one `Javadoc` attatched to it.
+ */
+final class DocumentableNode extends PrintAstNode, TDocumentableNode {
+  Documentable d;
+
+  DocumentableNode() { this = TDocumentableNode(d) }
+
+  override string toString() { result = "(Javadoc)" }
+
+  override Location getLocation() { none() }
+
+  override JavadocNode getChild(int childIndex) {
+    result.getJavadoc() =
+      rank[childIndex](Javadoc jd, string file, int line, int column |
+        jd.getCommentedElement() = d and jd.getLocation().hasLocationInfo(file, line, column, _, _)
+      |  
+        jd order by file, line, column
+      )
+  }
+
+  /**
+   * Gets the underlying `Documentable`.
+   */
+  Documentable getDocumentable() { result = d }
 }
 
 /**
@@ -517,14 +562,17 @@ final class JavadocNode extends PrintAstNode, TJavadocNode {
 
   JavadocNode() { this = TJavadocNode(jd) }
 
-  override JavadocElementNode getChild(int childIndex) {
-    result.getJavadocElement() = jd.getChild(childIndex)
-  }
-
   override string toString() { result = getQlClass(jd) + jd.toString() }
 
   override Location getLocation() { result = jd.getLocation() }
 
+  override JavadocElementNode getChild(int childIndex) {
+    result.getJavadocElement() = jd.getChild(childIndex)
+  }
+
+  /**
+   * Gets the `Javadoc` represented by this node.
+   */
   Javadoc getJavadoc() { result = jd }
 }
 
@@ -536,14 +584,17 @@ final class JavadocElementNode extends PrintAstNode, TJavadocElementNode {
 
   JavadocElementNode() { this = TJavadocElementNode(jd) }
 
-  override JavadocElementNode getChild(int childIndex) {
-    result.getJavadocElement() = jd.(JavadocParent).getChild(childIndex)
-  }
-
   override string toString() { result = getQlClass(jd) + jd.toString() }
 
   override Location getLocation() { result = jd.getLocation() }
 
+  override JavadocElementNode getChild(int childIndex) {
+    result.getJavadocElement() = jd.(JavadocParent).getChild(childIndex)
+  }
+
+  /**
+   * Gets the `JavadocElement` represented by this node.
+   */
   JavadocElement getJavadocElement() { result = jd }
 }
 
