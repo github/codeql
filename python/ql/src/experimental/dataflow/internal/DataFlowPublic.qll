@@ -176,8 +176,10 @@ class BarrierGuard extends GuardNode {
 
   /** Gets a node guarded by this guard. */
   final ExprNode getAGuardedNode() {
-    exists(boolean testIsTrue |
-      this.checks(result.asCfgNode(), testIsTrue) and
+    exists(Variable v, NameNode n, boolean testIsTrue |
+      n.uses(v) and
+      this.checks(n, testIsTrue) and
+      result.asCfgNode().(NameNode).uses(v) and
       this.controlsNode(result.asCfgNode(), testIsTrue)
     )
   }
