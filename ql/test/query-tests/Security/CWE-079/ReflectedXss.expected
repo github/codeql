@@ -1,5 +1,5 @@
 edges
-| ReflectedXss.go:11:15:11:20 | selection of Form : Values | ReflectedXss.go:14:44:14:51 | username |
+| ReflectedXss.go:12:15:12:20 | selection of Form : Values | ReflectedXss.go:15:44:15:51 | username |
 | contenttype.go:11:11:11:16 | selection of Form : Values | contenttype.go:17:11:17:22 | type conversion |
 | contenttype.go:49:11:49:16 | selection of Form : Values | contenttype.go:53:34:53:37 | data |
 | contenttype.go:63:10:63:28 | call to FormValue : string | contenttype.go:64:52:64:55 | data |
@@ -15,8 +15,8 @@ edges
 | websocketXss.go:50:3:50:10 | definition of gorilla2 : slice type | websocketXss.go:52:24:52:31 | gorilla2 |
 | websocketXss.go:54:3:54:38 | ... := ...[1] : slice type | websocketXss.go:55:24:55:31 | gorilla3 |
 nodes
-| ReflectedXss.go:11:15:11:20 | selection of Form : Values | semmle.label | selection of Form : Values |
-| ReflectedXss.go:14:44:14:51 | username | semmle.label | username |
+| ReflectedXss.go:12:15:12:20 | selection of Form : Values | semmle.label | selection of Form : Values |
+| ReflectedXss.go:15:44:15:51 | username | semmle.label | username |
 | contenttype.go:11:11:11:16 | selection of Form : Values | semmle.label | selection of Form : Values |
 | contenttype.go:17:11:17:22 | type conversion | semmle.label | type conversion |
 | contenttype.go:49:11:49:16 | selection of Form : Values | semmle.label | selection of Form : Values |
@@ -46,7 +46,7 @@ nodes
 | websocketXss.go:54:3:54:38 | ... := ...[1] : slice type | semmle.label | ... := ...[1] : slice type |
 | websocketXss.go:55:24:55:31 | gorilla3 | semmle.label | gorilla3 |
 #select
-| ReflectedXss.go:14:44:14:51 | username | ReflectedXss.go:11:15:11:20 | selection of Form : Values | ReflectedXss.go:14:44:14:51 | username | Cross-site scripting vulnerability due to $@. | ReflectedXss.go:11:15:11:20 | selection of Form | user-provided value |
+| ReflectedXss.go:15:44:15:51 | username | ReflectedXss.go:12:15:12:20 | selection of Form : Values | ReflectedXss.go:15:44:15:51 | username | Cross-site scripting vulnerability due to $@. | ReflectedXss.go:12:15:12:20 | selection of Form | user-provided value |
 | contenttype.go:17:11:17:22 | type conversion | contenttype.go:11:11:11:16 | selection of Form : Values | contenttype.go:17:11:17:22 | type conversion | Cross-site scripting vulnerability due to $@. | contenttype.go:11:11:11:16 | selection of Form | user-provided value |
 | contenttype.go:53:34:53:37 | data | contenttype.go:49:11:49:16 | selection of Form : Values | contenttype.go:53:34:53:37 | data | Cross-site scripting vulnerability due to $@. | contenttype.go:49:11:49:16 | selection of Form | user-provided value |
 | contenttype.go:64:52:64:55 | data | contenttype.go:63:10:63:28 | call to FormValue : string | contenttype.go:64:52:64:55 | data | Cross-site scripting vulnerability due to $@. | contenttype.go:63:10:63:28 | call to FormValue | user-provided value |
