@@ -12,6 +12,7 @@
 | testDeprecatedApi.go:143:20:143:39 | call to getUntrustedString : string | testDeprecatedApi.go:148:12:148:21 | serialized |
 | testDeprecatedApi.go:152:25:152:43 | call to getUntrustedBytes : slice type | testDeprecatedApi.go:157:13:157:36 | index expression |
 | testDeprecatedApi.go:161:25:161:43 | call to getUntrustedBytes : slice type | testDeprecatedApi.go:168:13:168:25 | index expression |
+| testDeprecatedApi.go:176:24:176:43 | call to getUntrustedString : string | testDeprecatedApi.go:180:12:180:21 | serialized |
 | testModernApi.go:11:22:11:41 | call to getUntrustedString : string | testModernApi.go:15:12:15:21 | serialized |
 | testModernApi.go:20:22:20:41 | call to getUntrustedString : string | testModernApi.go:26:12:26:21 | serialized |
 | testModernApi.go:30:25:30:43 | call to getUntrustedBytes : slice type | testModernApi.go:34:13:34:29 | selection of Description |
@@ -29,3 +30,4 @@
 | testModernApi.go:200:20:200:39 | call to getUntrustedString : string | testModernApi.go:205:12:205:21 | serialized |
 | testModernApi.go:209:25:209:43 | call to getUntrustedBytes : slice type | testModernApi.go:214:13:214:36 | index expression |
 | testModernApi.go:218:25:218:43 | call to getUntrustedBytes : slice type | testModernApi.go:225:13:225:25 | index expression |
+| testModernApi.go:233:24:233:43 | call to getUntrustedString : string | testModernApi.go:237:12:237:21 | serialized |
