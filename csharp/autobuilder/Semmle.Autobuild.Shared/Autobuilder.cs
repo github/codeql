@@ -68,7 +68,7 @@ namespace Semmle.Autobuild.Shared
         /// <param name="name">The filename to find.</param>
         /// <returns>Possibly empty sequence of paths with the given filename.</returns>
         public IEnumerable<(string, int)> GetFilename(string name) =>
-            Paths.Where(p => Path.GetFileName(p.Item1) == name);
+            Paths.Where(p => Actions.GetFileName(p.Item1) == name);
 
         /// <summary>
         /// Holds if a given path, relative to the root of the source directory

@@ -60,7 +60,7 @@ class Stmt extends StmtParent, ExprParent, @stmt {
 class StmtParent extends @stmtparent, Top { }
 
 /** A block of statements. */
-class Block extends Stmt, @block {
+class BlockStmt extends Stmt, @block {
   /** Gets a statement that is an immediate child of this block. */
   Stmt getAStmt() { result.getParent() = this }
 
@@ -77,11 +77,17 @@ class Block extends Stmt, @block {
   override string pp() { result = "{ ... }" }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
-  override string getHalsteadID() { result = "Block" }
+  override string getHalsteadID() { result = "BlockStmt" }
 }
 
+/**
+ * DEPRECATED: This is now called `BlockStmt` to avoid confusion with
+ * `BasicBlock`.
+ */
+deprecated class Block = BlockStmt;
+
 /** A block with only a single statement. */
-class SingletonBlock extends Block {
+class SingletonBlock extends BlockStmt {
   SingletonBlock() { this.getNumStmt() = 1 }
 
   /** Gets the single statement in this block. */
@@ -304,7 +310,7 @@ class TryStmt extends Stmt, @trystmt {
   }
 
   /** Gets the `finally` block, if any. */
-  Block getFinally() { result.isNthChildOf(this, -2) }
+  BlockStmt getFinally() { result.isNthChildOf(this, -2) }
 
   /** Gets a resource variable declaration, if any. */
   LocalVariableDeclStmt getAResourceDecl() { result.getParent() = this and result.getIndex() <= -3 }
@@ -348,7 +354,7 @@ class TryStmt extends Stmt, @trystmt {
 /** A `catch` clause in a `try` statement. */
 class CatchClause extends Stmt, @catchclause {
   /** Gets the block of this `catch` clause. */
-  Block getBlock() { result.getParent() = this }
+  BlockStmt getBlock() { result.getParent() = this }
 
   /** Gets the `try` statement in which this `catch` clause occurs. */
   TryStmt getTry() { this = result.getACatchClause() }

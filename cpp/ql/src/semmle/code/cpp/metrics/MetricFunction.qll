@@ -334,7 +334,7 @@ private predicate branchingExpr(Expr expr) {
  * Gets the number of branching statements and expressions in a block. This is
  * for computing cyclomatic complexity.
  */
-int cyclomaticComplexityBranches(Block b) {
+int cyclomaticComplexityBranches(BlockStmt b) {
   result =
     count(Stmt stmt |
         branchingStmt(stmt) and
@@ -373,7 +373,7 @@ private predicate skipParent(Stmt s) {
   exists(Stmt parent | parent = s.getParentStmt() |
     s instanceof IfStmt and parent.(IfStmt).getElse() = s
     or
-    parent instanceof Block
+    parent instanceof BlockStmt
     or
     exists(File f, int startLine, int startCol |
       startsAt(s, f, startLine, startCol) and

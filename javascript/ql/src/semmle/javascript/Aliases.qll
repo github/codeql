@@ -13,7 +13,10 @@ class ArrayAccess = IndexExpr;
 
 class AssignOp = CompoundAssignExpr;
 
-class Block = BlockStmt;
+/**
+ * DEPRECATED: The name `BlockStmt` is now preferred in all languages.
+ */
+deprecated class Block = BlockStmt;
 
 class BoolLiteral = BooleanLiteral;
 

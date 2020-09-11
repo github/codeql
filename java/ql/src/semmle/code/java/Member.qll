@@ -215,7 +215,7 @@ class Callable extends StmtParent, Member, @callable {
   Call getAReference() { result.getCallee() = this }
 
   /** Gets the body of this callable, if any. */
-  Block getBody() { result.getParent() = this }
+  BlockStmt getBody() { result.getParent() = this }
 
   /**
    * Gets the source declaration of this callable.

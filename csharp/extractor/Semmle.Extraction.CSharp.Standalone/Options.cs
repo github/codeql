@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Standalone
     {
         public override bool handleFlag(string key, bool value)
         {
-            switch(key)
+            switch (key)
             {
                 case "silent":
                     Verbosity = value ? Verbosity.Off : Verbosity.Info;
@@ -36,6 +36,9 @@ namespace Semmle.Extraction.CSharp.Standalone
                 case "skip-dotnet":
                     ScanNetFrameworkDlls = !value;
                     return true;
+                case "self-contained-dotnet":
+                    UseSelfContainedDotnet = value;
+                    return true;
                 default:
                     return base.handleFlag(key, value);
             }
@@ -43,7 +46,7 @@ namespace Semmle.Extraction.CSharp.Standalone
 
         public override bool handleOption(string key, string value)
         {
-            switch(key)
+            switch (key)
             {
                 case "exclude":
                     Excludes.Add(value);
@@ -135,6 +138,11 @@ namespace Semmle.Extraction.CSharp.Standalone
         public bool Help = false;
 
         /// <summary>
+        /// Whether to use the packaged dotnet runtime.
+        /// </summary>
+        public bool UseSelfContainedDotnet = false;
+
+        /// <summary>
         /// Determine whether the given path should be excluded.
         /// </summary>
         /// <param name="path">The path to query.</param>
@@ -162,6 +170,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             output.WriteLine("    --threads:nnn    Specify number of threads (default=CPU cores)");
             output.WriteLine("    --verbose        Produce more output");
             output.WriteLine("    --pdb            Cross-reference information from PDBs where available");
+            output.WriteLine("    --self-contained-dotnet    Use the .Net Framework packaged with the extractor");
         }
 
         private Options()

@@ -50,7 +50,7 @@
 | test_collections.py:149 | ok   | list_index_aug_assign | my_list |
 | test_collections.py:152 | fail | list_index_aug_assign | my_list |
 | test_collections.py:159 | ok   | list_append | my_list |
-| test_collections.py:162 | fail | list_append | my_list |
+| test_collections.py:162 | ok   | list_append | my_list |
 | test_collections.py:169 | ok   | list_extend | my_list |
 | test_collections.py:172 | fail | list_extend | my_list |
 | test_collections.py:179 | ok   | dict_update_dict | my_dict |
@@ -63,7 +63,7 @@
 | test_collections.py:212 | fail | dict_manual_update | my_dict |
 | test_collections.py:220 | fail | dict_merge | merged |
 | test_collections.py:227 | ok   | set_add | my_set |
-| test_collections.py:230 | fail | set_add | my_set |
+| test_collections.py:230 | ok   | set_add | my_set |
 | test_json.py:26 | ok   | test | json.dumps(..) |
 | test_json.py:27 | ok   | test | json.loads(..) |
 | test_json.py:34 | fail | test | tainted_filelike |

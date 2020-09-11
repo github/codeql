@@ -37,6 +37,12 @@
 | movableclass.cpp:55:8:55:9 | s2 | movableclass.cpp:52:23:52:28 | call to source |
 | movableclass.cpp:64:8:64:9 | s2 | movableclass.cpp:23:55:23:60 | call to source |
 | movableclass.cpp:65:11:65:11 | call to operator= | movableclass.cpp:65:13:65:18 | call to source |
+| smart_pointer.cpp:12:10:12:10 | call to operator* | smart_pointer.cpp:11:52:11:57 | call to source |
+| smart_pointer.cpp:13:10:13:10 | p | smart_pointer.cpp:11:52:11:57 | call to source |
+| smart_pointer.cpp:24:10:24:10 | call to operator* | smart_pointer.cpp:23:52:23:57 | call to source |
+| smart_pointer.cpp:25:10:25:10 | p | smart_pointer.cpp:23:52:23:57 | call to source |
+| smart_pointer.cpp:52:12:52:14 | call to get | smart_pointer.cpp:51:52:51:57 | call to source |
+| smart_pointer.cpp:57:12:57:14 | call to get | smart_pointer.cpp:56:52:56:57 | call to source |
 | standalone_iterators.cpp:40:10:40:10 | call to operator* | standalone_iterators.cpp:39:45:39:51 | source1 |
 | standalone_iterators.cpp:41:10:41:10 | call to operator* | standalone_iterators.cpp:39:45:39:51 | source1 |
 | standalone_iterators.cpp:42:10:42:10 | call to operator* | standalone_iterators.cpp:39:45:39:51 | source1 |
@@ -156,6 +162,17 @@
 | string.cpp:555:8:555:8 | d | string.cpp:549:27:549:32 | call to source |
 | string.cpp:556:8:556:8 | e | string.cpp:550:31:550:36 | call to source |
 | string.cpp:557:8:557:8 | f | string.cpp:551:18:551:23 | call to source |
+| stringstream.cpp:32:11:32:11 | call to operator<< | stringstream.cpp:32:14:32:19 | call to source |
+| stringstream.cpp:33:20:33:20 | call to operator<< | stringstream.cpp:33:23:33:28 | call to source |
+| stringstream.cpp:34:23:34:23 | call to operator<< | stringstream.cpp:34:14:34:19 | call to source |
+| stringstream.cpp:35:11:35:11 | call to operator<< | stringstream.cpp:29:16:29:21 | call to source |
+| stringstream.cpp:38:7:38:9 | ss2 | stringstream.cpp:32:14:32:19 | call to source |
+| stringstream.cpp:39:7:39:9 | ss3 | stringstream.cpp:33:23:33:28 | call to source |
+| stringstream.cpp:40:7:40:9 | ss4 | stringstream.cpp:34:14:34:19 | call to source |
+| stringstream.cpp:41:7:41:9 | ss5 | stringstream.cpp:29:16:29:21 | call to source |
+| stringstream.cpp:76:11:76:11 | call to operator<< | stringstream.cpp:70:32:70:37 | source |
+| stringstream.cpp:81:7:81:9 | ss2 | stringstream.cpp:70:32:70:37 | source |
+| stringstream.cpp:143:11:143:11 | call to operator<< | stringstream.cpp:143:14:143:19 | call to source |
 | structlikeclass.cpp:35:8:35:9 | s1 | structlikeclass.cpp:29:22:29:27 | call to source |
 | structlikeclass.cpp:36:8:36:9 | s2 | structlikeclass.cpp:30:24:30:29 | call to source |
 | structlikeclass.cpp:37:8:37:9 | s3 | structlikeclass.cpp:29:22:29:27 | call to source |
