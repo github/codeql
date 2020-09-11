@@ -638,7 +638,8 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
           exists(int iIn |
             inModel.isParameter(iIn) and
             fromExpr = call.getArgument(iIn)
-          ) or
+          )
+          or
           inModel.isQualifierObject() and
           fromExpr = call.getQualifier()
         ) and
