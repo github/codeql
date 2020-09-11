@@ -427,11 +427,11 @@ private predicate exprDependsOnDef(Expr e, RangeSsaDefinition srcDef, StackVaria
 private predicate phiDependsOnDef(
   RangeSsaDefinition phi, StackVariable v, RangeSsaDefinition srcDef, StackVariable srcVar
 ) {
-  exists(VariableAccess access, ComparisonOperation guard |
+  exists(VariableAccess access, Expr guard |
     access = v.getAnAccess() and
     phi.isGuardPhi(access, guard, _)
   |
-    exprDependsOnDef(guard.getAnOperand(), srcDef, srcVar) or
+    exprDependsOnDef(guard.(ComparisonOperation).getAnOperand(), srcDef, srcVar) or
     exprDependsOnDef(access, srcDef, srcVar)
   )
   or
@@ -1132,9 +1132,7 @@ private float boolConversionUpperBound(Expr expr) {
  * use the guard to deduce that the lower bound is 2 inside the block.
  */
 private float getPhiLowerBounds(StackVariable v, RangeSsaDefinition phi) {
-  exists(
-    VariableAccess access, ComparisonOperation guard, boolean branch, float defLB, float guardLB
-  |
+  exists(VariableAccess access, Expr guard, boolean branch, float defLB, float guardLB |
     access = v.getAnAccess() and
     phi.isGuardPhi(access, guard, branch) and
     lowerBoundFromGuard(guard, access, guardLB, branch) and
@@ -1146,13 +1144,13 @@ private float getPhiLowerBounds(StackVariable v, RangeSsaDefinition phi) {
   or
   exists(VariableAccess access, float neConstant, float lower |
     isNEPhi(v, phi, access, neConstant) and
-    lower = getFullyConvertedLowerBounds(access) and
+    lower = getTruncatedLowerBounds(access) and
     if lower = neConstant then result = lower + 1 else result = lower
   )
   or
   exists(VariableAccess access |
     isUnsupportedGuardPhi(v, phi, access) and
-    result = getFullyConvertedLowerBounds(access)
+    result = getTruncatedLowerBounds(access)
   )
   or
   result = getDefLowerBounds(phi.getAPhiInput(v), v)
@@ -1160,9 +1158,7 @@ private float getPhiLowerBounds(StackVariable v, RangeSsaDefinition phi) {
 
 /** See comment for `getPhiLowerBounds`, above. */
 private float getPhiUpperBounds(StackVariable v, RangeSsaDefinition phi) {
-  exists(
-    VariableAccess access, ComparisonOperation guard, boolean branch, float defUB, float guardUB
-  |
+  exists(VariableAccess access, Expr guard, boolean branch, float defUB, float guardUB |
     access = v.getAnAccess() and
     phi.isGuardPhi(access, guard, branch) and
     upperBoundFromGuard(guard, access, guardUB, branch) and
@@ -1174,13 +1170,13 @@ private float getPhiUpperBounds(StackVariable v, RangeSsaDefinition phi) {
   or
   exists(VariableAccess access, float neConstant, float upper |
     isNEPhi(v, phi, access, neConstant) and
-    upper = getFullyConvertedUpperBounds(access) and
+    upper = getTruncatedUpperBounds(access) and
     if upper = neConstant then result = upper - 1 else result = upper
   )
   or
   exists(VariableAccess access |
     isUnsupportedGuardPhi(v, phi, access) and
-    result = getFullyConvertedUpperBounds(access)
+    result = getTruncatedUpperBounds(access)
   )
   or
   result = getDefUpperBounds(phi.getAPhiInput(v), v)
@@ -1334,7 +1330,7 @@ private predicate unanalyzableDefBounds(RangeSsaDefinition def, StackVariable v,
  * inferences about `v`.
  */
 bindingset[guard, v, branch]
-predicate nonNanGuardedVariable(ComparisonOperation guard, VariableAccess v, boolean branch) {
+predicate nonNanGuardedVariable(Expr guard, VariableAccess v, boolean branch) {
   getVariableRangeType(v.getTarget()) instanceof IntegralType
   or
   getVariableRangeType(v.getTarget()) instanceof FloatingPointType and
@@ -1353,9 +1349,7 @@ predicate nonNanGuardedVariable(ComparisonOperation guard, VariableAccess v, boo
  * predicate uses the bounds information for `r` to compute a lower bound
  * for `v`.
  */
-private predicate lowerBoundFromGuard(
-  ComparisonOperation guard, VariableAccess v, float lb, boolean branch
-) {
+private predicate lowerBoundFromGuard(Expr guard, VariableAccess v, float lb, boolean branch) {
   exists(float childLB, RelationStrictness strictness |
     boundFromGuard(guard, v, childLB, true, strictness, branch)
   |
@@ -1375,9 +1369,7 @@ private predicate lowerBoundFromGuard(
  * predicate uses the bounds information for `r` to compute a upper bound
  * for `v`.
  */
-private predicate upperBoundFromGuard(
-  ComparisonOperation guard, VariableAccess v, float ub, boolean branch
-) {
+private predicate upperBoundFromGuard(Expr guard, VariableAccess v, float ub, boolean branch) {
   exists(float childUB, RelationStrictness strictness |
     boundFromGuard(guard, v, childUB, false, strictness, branch)
   |
@@ -1397,7 +1389,7 @@ private predicate upperBoundFromGuard(
  * `linearBoundFromGuard`.
  */
 private predicate boundFromGuard(
-  ComparisonOperation guard, VariableAccess v, float boundValue, boolean isLowerBound,
+  Expr guard, VariableAccess v, float boundValue, boolean isLowerBound,
   RelationStrictness strictness, boolean branch
 ) {
   exists(float p, float q, float r, boolean isLB |
@@ -1409,6 +1401,15 @@ private predicate boundFromGuard(
     p > 0 and isLowerBound = isLB
     or
     p < 0 and isLowerBound = isLB.booleanNot()
+  )
+  or
+  // When `!e` is true, we know that `0 <= e <= 0`
+  exists(float p, float q, Expr e |
+    linearAccess(e, v, p, q) and
+    eqZeroWithNegate(guard, e, true, branch) and
+    boundValue = (0.0 - q) / p and
+    isLowerBound = [false, true] and
+    strictness = Nonstrict()
   )
 }
 
@@ -1487,6 +1488,15 @@ private predicate isNEPhi(
     linearAccess(linearExpr, access, p, q) and
     neConstant = (r - q) / p
   )
+  or
+  exists(Expr op, boolean branch, Expr linearExpr, float p, float q |
+    access.getTarget() = v and
+    phi.isGuardPhi(access, op, branch) and
+    eqZeroWithNegate(op, linearExpr, false, branch) and
+    v.getUnspecifiedType() instanceof IntegralOrEnumType and // Float `!` is too imprecise
+    linearAccess(linearExpr, access, p, q) and
+    neConstant = (0.0 - q) / p
+  )
 }
 
 /**
@@ -1496,10 +1506,13 @@ private predicate isNEPhi(
  * compile-time constant.
  */
 private predicate isUnsupportedGuardPhi(Variable v, RangeSsaDefinition phi, VariableAccess access) {
-  exists(ComparisonOperation cmp, boolean branch |
+  exists(Expr cmp, boolean branch |
+    eqOpWithSwapAndNegate(cmp, _, _, false, branch)
+    or
+    eqZeroWithNegate(cmp, _, false, branch)
+  |
     access.getTarget() = v and
     phi.isGuardPhi(access, cmp, branch) and
-    eqOpWithSwapAndNegate(cmp, _, _, false, branch) and
     not isNEPhi(v, phi, access, _)
   )
 }
