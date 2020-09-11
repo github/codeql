@@ -1,0 +1,6 @@
+{
+    "name": "async-await",
+    "dependencies": {
+        "fs-extra": "*"
+    }
+}
