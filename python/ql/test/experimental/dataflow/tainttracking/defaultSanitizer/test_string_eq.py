@@ -14,8 +14,11 @@ def const_eq_clears_taint():
     ts = TAINTED_STRING
     if ts == "safe":
         ensure_not_tainted(ts)
+    else:
+        ensure_tainted(ts)
     # ts should still be tainted after exiting the if block
     ensure_tainted(ts)
+
 
 def const_eq_clears_taint2():
     ts = TAINTED_STRING
@@ -23,12 +26,27 @@ def const_eq_clears_taint2():
         return
     ensure_not_tainted(ts)
 
+
 def non_const_eq_preserves_taint(x="foo"):
     ts = TAINTED_STRING
     if ts == ts:
         ensure_tainted(ts)
     if ts == x:
         ensure_tainted(ts)
+
+
+def is_safe(x):
+    return x == "safe"
+
+
+def const_eq_through_func():
+    ts = TAINTED_STRING
+    if is_safe(ts):
+        ensure_not_tainted(ts)
+    else:
+        ensure_tainted(ts)
+    # ts should still be tainted after exiting the if block
+    ensure_tainted(ts)
 
 
 # Make tests runable

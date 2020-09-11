@@ -4,10 +4,10 @@ private import experimental.dataflow.internal.DataFlowPrivate
 private import experimental.dataflow.internal.TaintTrackingPublic
 
 /**
- * Holds if `node` should be a barrier in all global taint flow configurations
+ * Holds if `node` should be a sanitizer in all global taint flow configurations
  * but not in local taint.
  */
-predicate defaultTaintBarrier(DataFlow::Node node) { none() }
+predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
 
 /**
  * Holds if the additional step from `nodeFrom` to `nodeTo` should be included in all

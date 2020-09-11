@@ -249,3 +249,43 @@ namespace std {
 		void clear() noexcept;
 	};
 }
+
+// --- make_shared / make_unique ---
+
+namespace std {
+	template<typename T>
+	class shared_ptr {
+	public:
+		shared_ptr() noexcept;
+		explicit shared_ptr(T*);
+		template<class U> shared_ptr(const shared_ptr<U>&) noexcept;
+		template<class U> shared_ptr(shared_ptr<U>&&) noexcept;
+
+		shared_ptr<T>& operator=(const shared_ptr<T>&) noexcept;
+		shared_ptr<T>& operator=(shared_ptr<T>&&) noexcept;
+
+		T& operator*() const noexcept;
+		T* operator->() const noexcept;
+
+		T* get() const noexcept;
+	};
+
+	template<typename T>
+	class unique_ptr {
+	public:
+		constexpr unique_ptr() noexcept;
+		explicit unique_ptr(T*) noexcept;
+		unique_ptr(unique_ptr<T>&&) noexcept;
+
+		unique_ptr<T>& operator=(unique_ptr<T>&&) noexcept;
+
+		T& operator*() const;
+		T* operator->() const noexcept;
+
+		T* get() const noexcept;
+	};
+
+	template<typename T, class... Args> unique_ptr<T> make_unique(Args&&...);
+
+	template<typename T, class... Args> shared_ptr<T> make_shared(Args&&...);
+}
