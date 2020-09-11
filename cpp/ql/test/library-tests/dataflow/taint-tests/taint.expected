@@ -171,11 +171,9 @@
 | stringstream.cpp:52:7:52:9 | ss6 | stringstream.cpp:49:10:49:15 | call to source |
 | stringstream.cpp:53:7:53:9 | ss7 | stringstream.cpp:50:10:50:15 | call to source |
 | stringstream.cpp:56:11:56:13 | call to put | stringstream.cpp:56:15:56:29 | call to source |
-| stringstream.cpp:57:44:57:46 | call to put | stringstream.cpp:57:25:57:39 | call to source |
 | stringstream.cpp:59:7:59:9 | ss9 | stringstream.cpp:56:15:56:29 | call to source |
 | stringstream.cpp:60:7:60:10 | ss10 | stringstream.cpp:57:25:57:39 | call to source |
 | stringstream.cpp:63:12:63:16 | call to write | stringstream.cpp:63:18:63:23 | call to source |
-| stringstream.cpp:64:54:64:58 | call to write | stringstream.cpp:64:36:64:41 | call to source |
 | stringstream.cpp:66:7:66:10 | ss12 | stringstream.cpp:63:18:63:23 | call to source |
 | stringstream.cpp:67:7:67:10 | ss13 | stringstream.cpp:64:36:64:41 | call to source |
 | stringstream.cpp:76:11:76:11 | call to operator<< | stringstream.cpp:70:32:70:37 | source |
