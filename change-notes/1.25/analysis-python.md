@@ -5,5 +5,5 @@
 * Added taint modeling of routed parameters in Flask.
 * Improved modeling of built-in methods on strings for taint tracking.
 * Improved classification of test files.
-* New class `BoundMethodValue` exposing information about a bound method.
+* New class `BoundMethodValue` represents a bound method during runtime.
 * The query `py/command-line-injection` now recognizes command execution with the `fabric` and `invoke` Python libraries.
