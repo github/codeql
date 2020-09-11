@@ -289,6 +289,63 @@ class StdStringAt extends TaintFunction {
 }
 
 /**
+ * The `std::basic_istream` template class.
+ */
+class StdBasicIStream extends TemplateClass {
+  StdBasicIStream() { this.hasQualifiedName("std", "basic_istream") }
+}
+
+/**
+ * The `std::istream` function `operator>>` (defined as a member function).
+ */
+class StdIStreamIn extends DataFlowFunction, TaintFunction {
+  StdIStreamIn() { this.hasQualifiedName("std", "basic_istream", "operator>>") }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    // flow from qualifier to return value
+    input.isQualifierObject() and
+    output.isReturnValue()
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from qualifier to first parameter
+    input.isQualifierObject() and
+    output.isParameterDeref(0)
+    or
+    // reverse flow from returned reference to the qualifier
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
+  }
+}
+
+/**
+ * The `std::istream` function `operator>>` (defined as a non-member function).
+ */
+class StdIStreamInNonMember extends DataFlowFunction, TaintFunction {
+  StdIStreamInNonMember() {
+    this.hasQualifiedName("std", "operator>>") and
+    this.getUnspecifiedType().(ReferenceType).getBaseType() =
+      any(StdBasicIStream s).getAnInstantiation()
+  }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    // flow from first parameter to return value
+    input.isParameter(0) and
+    output.isReturnValue()
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from first parameter to second parameter
+    input.isParameterDeref(0) and
+    output.isParameterDeref(1)
+    or
+    // reverse flow from returned reference to the first parameter
+    input.isReturnValueDeref() and
+    output.isParameterDeref(0)
+  }
+}
+
+/**
  * The `std::basic_ostream` template class.
  */
 class StdBasicOStream extends TemplateClass {

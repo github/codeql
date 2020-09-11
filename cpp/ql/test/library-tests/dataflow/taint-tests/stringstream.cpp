@@ -75,14 +75,14 @@ void test_stringstream_int(int source)
 	sink(ss1 << 1234);
 	sink(ss2 << source); // tainted
 	sink(ss1 >> v1);
-	sink(ss2 >> v2); // tainted [NOT DETECTED]
+	sink(ss2 >> v2); // tainted
 
 	sink(ss1);
 	sink(ss2); // tainted
 	sink(ss1.str());
 	sink(ss2.str()); // tainted
 	sink(v1);
-	sink(v2); // tainted [NOT DETECTED]
+	sink(v2); // tainted
 }
 
 void test_stringstream_constructors()
@@ -143,20 +143,20 @@ void test_stringstream_in()
 	sink(ss2 << source()); // tainted
 
 	sink(ss1 >> s1);
-	sink(ss2 >> s2); // tainted [NOT DETECTED]
-	sink(ss2 >> s3 >> s4); // tainted [NOT DETECTED]
+	sink(ss2 >> s2); // tainted
+	sink(ss2 >> s3 >> s4); // tainted
 	sink(s1);
-	sink(s2); // tainted [NOT DETECTED]
-	sink(s3); // tainted [NOT DETECTED]
-	sink(s4); // tainted [NOT DETECTED]
+	sink(s2); // tainted
+	sink(s3); // tainted
+	sink(s4); // tainted
 
 	sink(ss1 >> b1);
-	sink(ss2 >> b2);
-	sink(ss2 >> b3 >> b4);
+	sink(ss2 >> b2); // tainted
+	sink(ss2 >> b3 >> b4); // tainted
 	sink(b1);
-	sink(b2); // tainted [NOT DETECTED]
-	sink(b3); // tainted [NOT DETECTED]
-	sink(b4); // tainted [NOT DETECTED]
+	sink(b2); // tainted
+	sink(b3); // tainted
+	sink(b4); // tainted
 
 	sink(ss1.read(b5, 100));
 	sink(ss2.read(b6, 100)); // tainted [NOT DETECTED]
