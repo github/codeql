@@ -21,6 +21,7 @@ import semmle.go.frameworks.stdlib.Reflect
 import semmle.go.frameworks.stdlib.Strconv
 import semmle.go.frameworks.stdlib.Strings
 import semmle.go.frameworks.stdlib.Sync
+import semmle.go.frameworks.stdlib.SyncAtomic
 import semmle.go.frameworks.stdlib.TextScanner
 import semmle.go.frameworks.stdlib.TextTabwriter
 import semmle.go.frameworks.stdlib.TextTemplate
