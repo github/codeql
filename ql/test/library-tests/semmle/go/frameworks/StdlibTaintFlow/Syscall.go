@@ -84,9 +84,9 @@ func RunAllTaints_Syscall() {
 		sink(3, out)
 	}
 	{
-		source := newSource(4)
-		out := TaintStepTest_SyscallStringSlicePtr_B0I0O0(source)
-		sink(4, out)
+		//source := newSource(4)
+		//out := TaintStepTest_SyscallStringSlicePtr_B0I0O0(source)
+		//sink(4, out)
 	}
 	{
 		source := newSource(5)
