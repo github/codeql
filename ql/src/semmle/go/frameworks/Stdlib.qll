@@ -20,6 +20,7 @@ import semmle.go.frameworks.stdlib.PathFilepath
 import semmle.go.frameworks.stdlib.Reflect
 import semmle.go.frameworks.stdlib.Strconv
 import semmle.go.frameworks.stdlib.Strings
+import semmle.go.frameworks.stdlib.Sort
 import semmle.go.frameworks.stdlib.TextScanner
 import semmle.go.frameworks.stdlib.TextTabwriter
 import semmle.go.frameworks.stdlib.TextTemplate
