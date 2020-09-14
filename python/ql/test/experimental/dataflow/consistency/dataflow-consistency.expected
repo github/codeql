@@ -1,4 +1,27 @@
 uniqueEnclosingCallable
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable C in Module test | Node should have one enclosing callable but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable CUSTOM_SINK in Module test | Node should have one enclosing callable but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable CUSTOM_SOURCE in Module test | Node should have one enclosing callable but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable FALSEY in Module test | Node should have one enclosing callable but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable ITERABLE_SOURCE in Module test | Node should have one enclosing callable but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable SANITIZE in Module test | Node should have one enclosing callable but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test | Node should have one enclosing callable but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module module | Node should have one enclosing callable but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | Node should have one enclosing callable but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable TAINT_FROM_ARG in Module test | Node should have one enclosing callable but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable dict in Module test | Node should have one enclosing callable but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable flow_in_generator in Module test | Node should have one enclosing callable but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable hub in Module test | Node should have one enclosing callable but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable isinstance in Module test | Node should have one enclosing callable but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable list in Module test | Node should have one enclosing callable but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable module in Module test | Node should have one enclosing callable but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable sink2 in Module test | Node should have one enclosing callable but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable sink3 in Module test | Node should have one enclosing callable but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable sink in Module test | Node should have one enclosing callable but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable source2 in Module test | Node should have one enclosing callable but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable source in Module test | Node should have one enclosing callable but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable str in Module test | Node should have one enclosing callable but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable x_sink in Module test | Node should have one enclosing callable but has 0. |
 | module.py:1:1:1:9 | GSSA Variable dangerous | Node should have one enclosing callable but has 0. |
 | module.py:1:13:1:18 | ControlFlowNode for SOURCE | Node should have one enclosing callable but has 0. |
 | module.py:2:1:2:4 | GSSA Variable safe | Node should have one enclosing callable but has 0. |
@@ -72,6 +95,7 @@ uniqueEnclosingCallable
 | test.py:148:5:148:10 | GSSA Variable test22 | Node should have one enclosing callable but has 0. |
 | test.py:159:20:159:38 | ControlFlowNode for ImportMember | Node should have one enclosing callable but has 0. |
 | test.py:159:33:159:38 | GSSA Variable unsafe | Node should have one enclosing callable but has 0. |
+| test.py:160:1:160:4 | ControlFlowNode for SINK | Node should have one enclosing callable but has 0. |
 | test.py:160:1:160:12 | GSSA Variable unsafe | Node should have one enclosing callable but has 0. |
 | test.py:160:6:160:11 | ControlFlowNode for unsafe | Node should have one enclosing callable but has 0. |
 | test.py:162:1:162:13 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
@@ -100,7 +124,31 @@ uniqueEnclosingCallable
 | test.py:232:5:232:32 | GSSA Variable non_const_eq_preserves_taint | Node should have one enclosing callable but has 0. |
 uniqueType
 uniqueNodeLocation
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable C in Module test | Node should have one location but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable CUSTOM_SINK in Module test | Node should have one location but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable CUSTOM_SOURCE in Module test | Node should have one location but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable FALSEY in Module test | Node should have one location but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable ITERABLE_SOURCE in Module test | Node should have one location but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable SANITIZE in Module test | Node should have one location but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test | Node should have one location but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module module | Node should have one location but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | Node should have one location but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable TAINT_FROM_ARG in Module test | Node should have one location but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable dict in Module test | Node should have one location but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable flow_in_generator in Module test | Node should have one location but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable hub in Module test | Node should have one location but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable isinstance in Module test | Node should have one location but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable list in Module test | Node should have one location but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable module in Module test | Node should have one location but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable sink2 in Module test | Node should have one location but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable sink3 in Module test | Node should have one location but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable sink in Module test | Node should have one location but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable source2 in Module test | Node should have one location but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable source in Module test | Node should have one location but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable str in Module test | Node should have one location but has 0. |
+| file://:0:0:0:0 | ModuleVariableNode for Global Variable x_sink in Module test | Node should have one location but has 0. |
 missingLocation
+| Nodes without location: 23 |
 uniqueNodeToString
 missingToString
 parameterCallable

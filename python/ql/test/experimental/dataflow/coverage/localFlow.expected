@@ -1,8 +1,13 @@
+| test.py:35:1:35:33 | GSSA Variable NONSOURCE | test.py:36:10:36:18 | ControlFlowNode for NONSOURCE |
+| test.py:35:1:35:33 | GSSA Variable SINK | test.py:38:5:38:8 | ControlFlowNode for SINK |
+| test.py:35:1:35:33 | GSSA Variable SOURCE | test.py:36:21:36:26 | ControlFlowNode for SOURCE |
 | test.py:36:5:36:5 | SSA variable x | test.py:37:9:37:9 | ControlFlowNode for x |
 | test.py:36:10:36:26 | ControlFlowNode for Tuple | test.py:36:5:36:5 | SSA variable x |
 | test.py:37:5:37:5 | SSA variable y | test.py:38:5:38:11 | SSA variable y |
 | test.py:37:5:37:5 | SSA variable y | test.py:38:10:38:10 | ControlFlowNode for y |
 | test.py:37:9:37:12 | ControlFlowNode for Subscript | test.py:37:5:37:5 | SSA variable y |
+| test.py:188:1:188:53 | GSSA Variable SINK | test.py:190:5:190:8 | ControlFlowNode for SINK |
+| test.py:188:1:188:53 | GSSA Variable SOURCE | test.py:189:25:189:30 | ControlFlowNode for SOURCE |
 | test.py:189:5:189:5 | SSA variable x | test.py:190:10:190:10 | ControlFlowNode for x |
 | test.py:189:9:189:68 | ControlFlowNode for ListComp | test.py:189:5:189:5 | SSA variable x |
 | test.py:189:9:189:68 | SSA variable u | test.py:189:9:189:68 | SSA variable u |

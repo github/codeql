@@ -1,16 +1,7 @@
 edges
-| datamodel.py:13:1:13:6 | GSSA Variable SOURCE | datamodel.py:38:6:38:17 | GSSA Variable SOURCE |
-| datamodel.py:13:1:13:6 | GSSA Variable SOURCE | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE |
-| datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:13:1:13:6 | GSSA Variable SOURCE |
-| datamodel.py:38:6:38:17 | GSSA Variable SOURCE | datamodel.py:71:6:71:24 | GSSA Variable SOURCE |
-| datamodel.py:38:6:38:17 | GSSA Variable SOURCE | datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE |
 | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | datamodel.py:38:6:38:17 | ControlFlowNode for f() |
-| datamodel.py:71:6:71:24 | GSSA Variable SOURCE | datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE |
-| datamodel.py:71:6:71:24 | GSSA Variable SOURCE | datamodel.py:80:6:80:26 | GSSA Variable SOURCE |
-| datamodel.py:71:6:71:24 | GSSA Variable SOURCE | datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE |
 | datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() |
 | datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() |
-| datamodel.py:80:6:80:26 | GSSA Variable SOURCE | datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE |
 | datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() |
 | datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() |
 | test.py:36:10:36:26 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:37:9:37:9 | ControlFlowNode for x [Tuple element at index 1] |
@@ -112,18 +103,13 @@ edges
 | test.py:504:9:504:14 | ControlFlowNode for SOURCE | test.py:506:10:506:10 | ControlFlowNode for a |
 | test.py:504:9:504:14 | ControlFlowNode for SOURCE | test.py:511:10:511:10 | ControlFlowNode for b |
 nodes
-| datamodel.py:13:1:13:6 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
-| datamodel.py:13:10:13:17 | ControlFlowNode for Str | semmle.label | ControlFlowNode for Str |
 | datamodel.py:38:6:38:17 | ControlFlowNode for f() | semmle.label | ControlFlowNode for f() |
-| datamodel.py:38:6:38:17 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
 | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| datamodel.py:71:6:71:24 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
 | datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| datamodel.py:80:6:80:26 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
 | datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
@@ -253,15 +239,10 @@ nodes
 | test.py:506:10:506:10 | ControlFlowNode for a | semmle.label | ControlFlowNode for a |
 | test.py:511:10:511:10 | ControlFlowNode for b | semmle.label | ControlFlowNode for b |
 #select
-| datamodel.py:38:6:38:17 | ControlFlowNode for f() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:38:6:38:17 | ControlFlowNode for f() | <message> |
 | datamodel.py:38:6:38:17 | ControlFlowNode for f() | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | datamodel.py:38:6:38:17 | ControlFlowNode for f() | <message> |
-| datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | <message> |
 | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE | datamodel.py:71:6:71:24 | ControlFlowNode for Attribute() | <message> |
-| datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() | <message> |
 | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() | datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE | datamodel.py:72:6:72:27 | ControlFlowNode for Attribute() | <message> |
-| datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() | <message> |
 | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() | datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() | <message> |
-| datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | <message> |
 | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | <message> |
 | test.py:38:10:38:10 | ControlFlowNode for y | test.py:36:21:36:26 | ControlFlowNode for SOURCE | test.py:38:10:38:10 | ControlFlowNode for y | <message> |
 | test.py:51:10:51:10 | ControlFlowNode for x | test.py:50:9:50:14 | ControlFlowNode for SOURCE | test.py:51:10:51:10 | ControlFlowNode for x | <message> |
