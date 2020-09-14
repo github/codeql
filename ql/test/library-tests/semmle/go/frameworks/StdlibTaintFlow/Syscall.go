@@ -28,12 +28,6 @@ func TaintStepTest_SyscallStringByteSlice_B0I0O0(sourceCQL interface{}) interfac
 	return intoByte443
 }
 
-func TaintStepTest_SyscallStringSlicePtr_B0I0O0(sourceCQL interface{}) interface{} {
-	fromString127 := sourceCQL.([]string)
-	intoByte483 := syscall.StringSlicePtr(fromString127)
-	return intoByte483
-}
-
 func TaintStepTest_SyscallRawConnRead_B0I0O0(sourceCQL interface{}) interface{} {
 	fromRawConn989 := sourceCQL.(syscall.RawConn)
 	var intoFuncfdUintptrdoneBool982 func(uintptr) bool
@@ -82,11 +76,6 @@ func RunAllTaints_Syscall() {
 		source := newSource(3)
 		out := TaintStepTest_SyscallStringByteSlice_B0I0O0(source)
 		sink(3, out)
-	}
-	{
-		//source := newSource(4)
-		//out := TaintStepTest_SyscallStringSlicePtr_B0I0O0(source)
-		//sink(4, out)
 	}
 	{
 		source := newSource(5)
