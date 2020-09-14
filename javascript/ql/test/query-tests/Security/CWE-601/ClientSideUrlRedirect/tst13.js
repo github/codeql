@@ -43,6 +43,10 @@ function foo() {
     var el = document.createElement("script");
     el.src = payload;
     document.body.appendChild(el); // NOT OK
-
-    importScripts(payload); // NOT OK
 }
+
+(function () {
+    self.onmessage = function (e) {
+        importScripts(e); // NOT OK
+    }
+})();
