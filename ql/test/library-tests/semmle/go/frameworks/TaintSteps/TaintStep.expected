@@ -75,6 +75,8 @@
 | main.go:13:14:13:52 | call to MarshalIndent | main.go:13:2:13:52 | ... := ...[0] |
 | main.go:13:14:13:52 | call to MarshalIndent | main.go:13:2:13:52 | ... := ...[1] |
 | main.go:13:33:13:33 | v | main.go:13:2:13:52 | ... := ...[0] |
+| main.go:13:36:13:45 | "/*JSON*/" | main.go:13:2:13:52 | ... := ...[0] |
+| main.go:13:48:13:51 | "  " | main.go:13:2:13:52 | ... := ...[0] |
 | main.go:14:25:14:25 | b | main.go:14:9:14:41 | slice literal |
 | main.go:14:28:14:30 | err | main.go:14:9:14:41 | slice literal |
 | main.go:14:33:14:34 | b2 | main.go:14:9:14:41 | slice literal |

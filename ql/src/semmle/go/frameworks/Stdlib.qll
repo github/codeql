@@ -15,6 +15,18 @@ import semmle.go.frameworks.stdlib.CompressZlib
 import semmle.go.frameworks.stdlib.Mime
 import semmle.go.frameworks.stdlib.MimeMultipart
 import semmle.go.frameworks.stdlib.MimeQuotedprintable
+import semmle.go.frameworks.stdlib.Encoding
+import semmle.go.frameworks.stdlib.EncodingAscii85
+import semmle.go.frameworks.stdlib.EncodingAsn1
+import semmle.go.frameworks.stdlib.EncodingBase32
+import semmle.go.frameworks.stdlib.EncodingBase64
+import semmle.go.frameworks.stdlib.EncodingBinary
+import semmle.go.frameworks.stdlib.EncodingCsv
+import semmle.go.frameworks.stdlib.EncodingGob
+import semmle.go.frameworks.stdlib.EncodingHex
+import semmle.go.frameworks.stdlib.EncodingJson
+import semmle.go.frameworks.stdlib.EncodingPem
+import semmle.go.frameworks.stdlib.EncodingXml
 import semmle.go.frameworks.stdlib.Path
 import semmle.go.frameworks.stdlib.PathFilepath
 import semmle.go.frameworks.stdlib.Reflect
@@ -694,53 +706,6 @@ module Log {
     FatalLogFunction() { exists(string fn | fn.matches("Fatal%") | hasQualifiedName("log", fn)) }
 
     override predicate mayReturnNormally() { none() }
-  }
-}
-
-/** Provides models of some functions in the `encoding/json` package. */
-module EncodingJson {
-  /** The `Marshal` or `MarshalIndent` function in the `encoding/json` package. */
-  class MarshalFunction extends TaintTracking::FunctionModel, MarshalingFunction::Range {
-    MarshalFunction() {
-      this.hasQualifiedName("encoding/json", "Marshal") or
-      this.hasQualifiedName("encoding/json", "MarshalIndent")
-    }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp = getAnInput() and outp = getOutput()
-    }
-
-    override FunctionInput getAnInput() { result.isParameter(0) }
-
-    override FunctionOutput getOutput() { result.isResult(0) }
-
-    override string getFormat() { result = "JSON" }
-  }
-
-  private class UnmarshalFunction extends TaintTracking::FunctionModel, UnmarshalingFunction::Range {
-    UnmarshalFunction() { this.hasQualifiedName("encoding/json", "Unmarshal") }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp = getAnInput() and outp = getOutput()
-    }
-
-    override FunctionInput getAnInput() { result.isParameter(0) }
-
-    override FunctionOutput getOutput() { result.isParameter(1) }
-
-    override string getFormat() { result = "JSON" }
-  }
-}
-
-/** Provides models of some functions in the `encoding/hex` package. */
-module EncodingHex {
-  private class DecodeStringFunction extends TaintTracking::FunctionModel {
-    DecodeStringFunction() { this.hasQualifiedName("encoding/hex", "DecodeString") }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isParameter(0) and
-      outp.isResult(0)
-    }
   }
 }
 
