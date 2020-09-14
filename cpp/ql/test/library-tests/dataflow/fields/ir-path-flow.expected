@@ -60,6 +60,10 @@ edges
 | aliasing.cpp:79:11:79:20 | call to user_input | aliasing.cpp:80:12:80:13 | m1 |
 | aliasing.cpp:86:10:86:19 | call to user_input | aliasing.cpp:87:12:87:13 | m1 |
 | aliasing.cpp:92:12:92:21 | call to user_input | aliasing.cpp:93:12:93:13 | m1 |
+| aliasing.cpp:98:3:98:21 | Chi [m1] | aliasing.cpp:100:14:100:14 | Store [m1] |
+| aliasing.cpp:98:3:98:21 | Store | aliasing.cpp:98:3:98:21 | Chi [m1] |
+| aliasing.cpp:98:10:98:19 | call to user_input | aliasing.cpp:98:3:98:21 | Store |
+| aliasing.cpp:100:14:100:14 | Store [m1] | aliasing.cpp:102:8:102:10 | * ... |
 | by_reference.cpp:50:3:50:3 | setDirectly output argument [a] | by_reference.cpp:51:8:51:8 | Argument -1 indirection [a] |
 | by_reference.cpp:50:17:50:26 | call to user_input | by_reference.cpp:50:3:50:3 | setDirectly output argument [a] |
 | by_reference.cpp:51:8:51:8 | Argument -1 indirection [a] | by_reference.cpp:51:10:51:20 | call to getDirectly |
@@ -247,6 +251,11 @@ nodes
 | aliasing.cpp:87:12:87:13 | m1 | semmle.label | m1 |
 | aliasing.cpp:92:12:92:21 | call to user_input | semmle.label | call to user_input |
 | aliasing.cpp:93:12:93:13 | m1 | semmle.label | m1 |
+| aliasing.cpp:98:3:98:21 | Chi [m1] | semmle.label | Chi [m1] |
+| aliasing.cpp:98:3:98:21 | Store | semmle.label | Store |
+| aliasing.cpp:98:10:98:19 | call to user_input | semmle.label | call to user_input |
+| aliasing.cpp:100:14:100:14 | Store [m1] | semmle.label | Store [m1] |
+| aliasing.cpp:102:8:102:10 | * ... | semmle.label | * ... |
 | by_reference.cpp:50:3:50:3 | setDirectly output argument [a] | semmle.label | setDirectly output argument [a] |
 | by_reference.cpp:50:17:50:26 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:51:8:51:8 | Argument -1 indirection [a] | semmle.label | Argument -1 indirection [a] |
@@ -385,6 +394,7 @@ nodes
 | aliasing.cpp:80:12:80:13 | m1 | aliasing.cpp:79:11:79:20 | call to user_input | aliasing.cpp:80:12:80:13 | m1 | m1 flows from $@ | aliasing.cpp:79:11:79:20 | call to user_input | call to user_input |
 | aliasing.cpp:87:12:87:13 | m1 | aliasing.cpp:86:10:86:19 | call to user_input | aliasing.cpp:87:12:87:13 | m1 | m1 flows from $@ | aliasing.cpp:86:10:86:19 | call to user_input | call to user_input |
 | aliasing.cpp:93:12:93:13 | m1 | aliasing.cpp:92:12:92:21 | call to user_input | aliasing.cpp:93:12:93:13 | m1 | m1 flows from $@ | aliasing.cpp:92:12:92:21 | call to user_input | call to user_input |
+| aliasing.cpp:102:8:102:10 | * ... | aliasing.cpp:98:10:98:19 | call to user_input | aliasing.cpp:102:8:102:10 | * ... | * ... flows from $@ | aliasing.cpp:98:10:98:19 | call to user_input | call to user_input |
 | by_reference.cpp:51:10:51:20 | call to getDirectly | by_reference.cpp:50:17:50:26 | call to user_input | by_reference.cpp:51:10:51:20 | call to getDirectly | call to getDirectly flows from $@ | by_reference.cpp:50:17:50:26 | call to user_input | call to user_input |
 | by_reference.cpp:57:10:57:22 | call to getIndirectly | by_reference.cpp:56:19:56:28 | call to user_input | by_reference.cpp:57:10:57:22 | call to getIndirectly | call to getIndirectly flows from $@ | by_reference.cpp:56:19:56:28 | call to user_input | call to user_input |
 | by_reference.cpp:63:10:63:28 | call to getThroughNonMember | by_reference.cpp:62:25:62:34 | call to user_input | by_reference.cpp:63:10:63:28 | call to getThroughNonMember | call to getThroughNonMember flows from $@ | by_reference.cpp:62:25:62:34 | call to user_input | call to user_input |

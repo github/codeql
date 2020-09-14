@@ -617,3 +617,9 @@ MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
     )
   )
 }
+
+/** Gets the start bit offset of a `MemoryLocation`, if any. */
+int getStartBitOffset(VariableMemoryLocation location) { result = location.getStartBitOffset() }
+
+/** Gets the end bit offset of a `MemoryLocation`, if any. */
+int getEndBitOffset(VariableMemoryLocation location) { result = location.getEndBitOffset() }
