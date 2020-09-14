@@ -120,7 +120,7 @@ namespace Semmle.Extraction.CSharp.Standalone
         /// <summary>
         /// The solution file to analyse, or null if not specified.
         /// </summary>
-        public string SolutionFile;
+        public string? SolutionFile;
 
         /// <summary>
         /// Whether the extraction phase should be skipped (dry-run).
