@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"strings"
 )
 
 func serve1() {
@@ -15,6 +16,22 @@ func serve1() {
 
 		// ...
 		use(pw)
+	})
+	http.ListenAndServe(":80", nil)
+}
+
+func serveauth() {
+	http.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
+		authhdr := r.Header.Get("authorization")
+		fields := strings.Split(authhdr, " ")
+
+		log.Printf("Auth method is %s.\n", fields[0])
+
+		tokenparts := strings.Split(fields[1], ":")
+		log.Printf("Username is %s.\n", tokenparts[0])
+
+		// ...
+		use(tokenparts[1])
 	})
 	http.ListenAndServe(":80", nil)
 }
