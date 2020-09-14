@@ -78,10 +78,10 @@ predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
 }
 
 /**
- * Holds if `node` should be a barrier in all global taint flow configurations
+ * Holds if `node` should be a sanitizer in all global taint flow configurations
  * but not in local taint.
  */
-predicate defaultTaintBarrier(DataFlow::Node node) {
+predicate defaultTaintSanitizer(DataFlow::Node node) {
   // Ignore paths through test code.
   node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass or
   node.asExpr() instanceof ValidatedVariableAccess

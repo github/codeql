@@ -117,7 +117,7 @@ namespace Semmle.Extraction.CSharp
                         case TypeKind.Delegate:
                         case TypeKind.Error:
                             var named = (INamedTypeSymbol)type;
-                            if (named.IsTupleType)
+                            if (named.IsTupleType && named.TupleUnderlyingType is object)
                                 named = named.TupleUnderlyingType;
                             if (IdDependsOnImpl(named.ContainingType))
                                 return true;
@@ -152,10 +152,11 @@ namespace Semmle.Extraction.CSharp
         /// <param name="cx">The extraction context.</param>
         /// <param name="trapFile">The trap builder used to store the result.</param>
         /// <param name="symbolBeingDefined">The outer symbol being defined (to avoid recursive ids).</param>
-        public static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined) =>
-            type.BuildTypeId(cx, trapFile, symbolBeingDefined, true);
+        /// <param name="constructUnderlyingTupleType">Whether to build a type ID for the underlying `System.ValueTuple` struct in the case of tuple types.</param>
+        public static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool constructUnderlyingTupleType = false) =>
+            type.BuildTypeId(cx, trapFile, symbolBeingDefined, true, constructUnderlyingTupleType);
 
-        static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass)
+        static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType)
         {
             using (cx.StackGuard)
             {
@@ -173,7 +174,7 @@ namespace Semmle.Extraction.CSharp
                     case TypeKind.Delegate:
                     case TypeKind.Error:
                         var named = (INamedTypeSymbol)type;
-                        named.BuildNamedTypeId(cx, trapFile, symbolBeingDefined, addBaseClass);
+                        named.BuildNamedTypeId(cx, trapFile, symbolBeingDefined, addBaseClass, constructUnderlyingTupleType);
                         return;
                     case TypeKind.Pointer:
                         var ptr = (IPointerTypeSymbol)type;
@@ -195,7 +196,7 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        static void BuildOrWriteId(this ISymbol symbol, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass)
+        static void BuildOrWriteId(this ISymbol symbol, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType = false)
         {
             // We need to keep track of the symbol being defined in order to avoid cyclic labels.
             // For example, in
@@ -210,11 +211,13 @@ namespace Semmle.Extraction.CSharp
             //
             // ```
             // #123 = @"C`1 : IEnumerable<__self___T>"
-            // ``` 
+            // ```
             if (SymbolEqualityComparer.Default.Equals(symbol, symbolBeingDefined))
                 trapFile.Write("__self__");
             else if (symbol is ITypeSymbol type && type.IdDependsOn(cx, symbolBeingDefined))
-                type.BuildTypeId(cx, trapFile, symbolBeingDefined, addBaseClass);
+                type.BuildTypeId(cx, trapFile, symbolBeingDefined, addBaseClass, constructUnderlyingTupleType);
+            else if (symbol is INamedTypeSymbol namedType && namedType.IsTupleType && constructUnderlyingTupleType)
+                trapFile.WriteSubId(NamedType.CreateNamedTypeFromTupleType(cx, namedType));
             else
                 trapFile.WriteSubId(CreateEntity(cx, symbol));
         }
@@ -262,9 +265,9 @@ namespace Semmle.Extraction.CSharp
             trapFile.Write("::");
         }
 
-        static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass)
+        static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, TextWriter trapFile, ISymbol symbolBeingDefined, bool addBaseClass, bool constructUnderlyingTupleType)
         {
-            if (named.IsTupleType)
+            if (!constructUnderlyingTupleType && named.IsTupleType)
             {
                 trapFile.Write('(');
                 trapFile.BuildList(",", named.TupleElements,
@@ -308,10 +311,10 @@ namespace Semmle.Extraction.CSharp
             }
             else
             {
-                named.ConstructedFrom.BuildOrWriteId(cx, trapFile, symbolBeingDefined, addBaseClass);
+                named.ConstructedFrom.BuildOrWriteId(cx, trapFile, symbolBeingDefined, addBaseClass, constructUnderlyingTupleType);
                 trapFile.Write('<');
                 // Encode the nullability of the type arguments in the label.
-                // Type arguments with different nullability can result in 
+                // Type arguments with different nullability can result in
                 // a constructed type with different nullability of its members and methods,
                 // so we need to create a distinct database entity for it.
                 trapFile.BuildList(",", named.GetAnnotatedTypeArguments(),
@@ -360,7 +363,7 @@ namespace Semmle.Extraction.CSharp
         /// Constructs a display name string for this type symbol.
         /// </summary>
         /// <param name="trapFile">The trap builder used to store the result.</param>
-        public static void BuildDisplayName(this ITypeSymbol type, Context cx, TextWriter trapFile)
+        public static void BuildDisplayName(this ITypeSymbol type, Context cx, TextWriter trapFile, bool constructUnderlyingTupleType = false)
         {
             using (cx.StackGuard)
             {
@@ -384,7 +387,7 @@ namespace Semmle.Extraction.CSharp
                     case TypeKind.Delegate:
                     case TypeKind.Error:
                         var named = (INamedTypeSymbol)type;
-                        named.BuildNamedTypeDisplayName(cx, trapFile);
+                        named.BuildNamedTypeDisplayName(cx, trapFile, constructUnderlyingTupleType);
                         return;
                     case TypeKind.Pointer:
                         var ptr = (IPointerTypeSymbol)type;
@@ -403,9 +406,9 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        public static void BuildNamedTypeDisplayName(this INamedTypeSymbol namedType, Context cx, TextWriter trapFile)
+        public static void BuildNamedTypeDisplayName(this INamedTypeSymbol namedType, Context cx, TextWriter trapFile, bool constructUnderlyingTupleType)
         {
-            if (namedType.IsTupleType)
+            if (!constructUnderlyingTupleType && namedType.IsTupleType)
             {
                 trapFile.Write('(');
                 trapFile.BuildList(",", namedType.TupleElements.Select(f => f.Type),

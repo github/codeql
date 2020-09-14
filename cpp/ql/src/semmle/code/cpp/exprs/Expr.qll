@@ -402,7 +402,7 @@ class Expr extends StmtParent, @expr {
    */
   predicate hasImplicitConversion() {
     exists(Expr e |
-      exprconv(underlyingElement(this), unresolveElement(e)) and e.(Cast).isImplicit()
+      exprconv(underlyingElement(this), unresolveElement(e)) and e.(Conversion).isImplicit()
     )
   }
 
@@ -414,7 +414,7 @@ class Expr extends StmtParent, @expr {
    */
   predicate hasExplicitConversion() {
     exists(Expr e |
-      exprconv(underlyingElement(this), unresolveElement(e)) and not e.(Cast).isImplicit()
+      exprconv(underlyingElement(this), unresolveElement(e)) and not e.(Conversion).isImplicit()
     )
   }
 
@@ -453,12 +453,14 @@ class Expr extends StmtParent, @expr {
    * cast from B to C. Only (1) and (2) would be included.
    */
   Expr getExplicitlyConverted() {
-    // result is this or one of its conversions
-    result = this.getConversion*() and
-    // result is not an implicit conversion - it's either the expr or an explicit cast
-    (result = this or not result.(Cast).isImplicit()) and
-    // there is no further explicit conversion after result
-    not exists(Cast other | other = result.getConversion+() and not other.isImplicit())
+    // For performance, we avoid a full transitive closure over `getConversion`.
+    // Since there can be several implicit conversions before and after an
+    // explicit conversion, use `getImplicitlyConverted` to step over them
+    // cheaply. Then, if there is an explicit conversion following the implict
+    // conversion sequence, recurse to handle multiple explicit conversions.
+    if this.getImplicitlyConverted().hasExplicitConversion()
+    then result = this.getImplicitlyConverted().getConversion().getExplicitlyConverted()
+    else result = this
   }
 
   /**

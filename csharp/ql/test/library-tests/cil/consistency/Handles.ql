@@ -17,10 +17,18 @@ query predicate tooManyHandles(string s) {
   )
 }
 
+private class UniqueMetadataEntity extends MetadataEntity {
+  UniqueMetadataEntity() {
+    // Tuple types such as `(,)` and `ValueTuple`2` share the same handle
+    not this instanceof TupleType and
+    not this.getQualifiedName().matches("System.ValueTuple%")
+  }
+}
+
 query predicate tooManyMatchingHandles(string s) {
-  exists(MetadataEntity e, Assembly a, int handle |
+  exists(UniqueMetadataEntity e, Assembly a, int handle |
     metadata_handle(e, a, handle) and
-    strictcount(MetadataEntity e2 | metadata_handle(e2, a, handle)) > 2 and
+    strictcount(UniqueMetadataEntity e2 | metadata_handle(e2, a, handle)) > 2 and
     s = e.getQualifiedName()
   )
 }

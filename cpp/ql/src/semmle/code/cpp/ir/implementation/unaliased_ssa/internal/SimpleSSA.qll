@@ -79,3 +79,9 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
 MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
   result = getMemoryLocation(getAddressOperandAllocation(operand.getAddressOperand()))
 }
+
+/** Gets the start bit offset of a `MemoryLocation`, if any. */
+int getStartBitOffset(MemoryLocation location) { none() }
+
+/** Gets the end bit offset of a `MemoryLocation`, if any. */
+int getEndBitOffset(MemoryLocation location) { none() }

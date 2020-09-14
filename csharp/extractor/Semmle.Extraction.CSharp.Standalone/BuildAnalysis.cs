@@ -49,7 +49,6 @@ namespace Semmle.BuildAnalyser
     class BuildAnalysis : IBuildAnalysis, IDisposable
     {
         private readonly AssemblyCache assemblyCache;
-        private readonly NugetPackages nuget;
         private readonly IProgressMonitor progressMonitor;
         private readonly IDictionary<string, bool> usedReferences = new ConcurrentDictionary<string, bool>();
         private readonly IDictionary<string, bool> sources = new ConcurrentDictionary<string, bool>();
@@ -85,10 +84,10 @@ namespace Semmle.BuildAnalyser
             {
                 try
                 {
-                    nuget = new NugetPackages(sourceDir.FullName, PackageDirectory);
-                    ReadNugetFiles();
+                    var nuget = new NugetPackages(sourceDir.FullName, PackageDirectory);
+                    nuget.InstallPackages(progressMonitor);
                 }
-                catch(FileNotFoundException)
+                catch (FileNotFoundException)
                 {
                     progressMonitor.MissingNuGet();
                 }
@@ -97,7 +96,9 @@ namespace Semmle.BuildAnalyser
             // Find DLLs in the .Net Framework
             if (options.ScanNetFrameworkDlls)
             {
-                dllDirNames.Add(Runtime.Runtimes.First());
+                var runtimeLocation = Runtime.GetRuntime(options.UseSelfContainedDotnet);
+                progressMonitor.Log(Util.Logging.Severity.Debug, $"Runtime location selected: {runtimeLocation}");
+                dllDirNames.Add(runtimeLocation);
             }
 
             // These files can sometimes prevent `dotnet restore` from working correctly.
@@ -173,10 +174,21 @@ namespace Semmle.BuildAnalyser
         /// </summary>
         void ResolveConflicts()
         {
-            var sortedReferences = usedReferences.
-                Select(r => assemblyCache.GetAssemblyInfo(r.Key)).
-                OrderBy(r => r.Version).
-                ToArray();
+            var sortedReferences = new List<AssemblyInfo>();
+            foreach (var usedReference in usedReferences)
+            {
+                try
+                {
+                    var assemblyInfo = assemblyCache.GetAssemblyInfo(usedReference.Key);
+                    sortedReferences.Add(assemblyInfo);
+                }
+                catch (AssemblyLoadException)
+                {
+                    progressMonitor.Log(Util.Logging.Severity.Warning, $"Could not load assembly information from {usedReference.Key}");
+                }
+            }
+
+            sortedReferences = sortedReferences.OrderBy(r => r.Version).ToList();
 
             Dictionary<string, AssemblyInfo> finalAssemblyList = new Dictionary<string, AssemblyInfo>();
 
@@ -199,15 +211,6 @@ namespace Semmle.BuildAnalyser
                     ++conflictedReferences;
                 }
             }
-        }
-
-        /// <summary>
-        /// Find and restore NuGet packages.
-        /// </summary>
-        void ReadNugetFiles()
-        {
-            nuget.FindPackages();
-            nuget.InstallPackages(progressMonitor);
         }
 
         /// <summary>
@@ -279,7 +282,7 @@ namespace Semmle.BuildAnalyser
 
         void AnalyseProject(FileInfo project)
         {
-            if(!project.Exists)
+            if (!project.Exists)
             {
                 progressMonitor.MissingProject(project.FullName);
                 return;
@@ -291,14 +294,14 @@ namespace Semmle.BuildAnalyser
 
                 foreach (var @ref in csProj.References)
                 {
-                    AssemblyInfo resolved = assemblyCache.ResolveReference(@ref);
-                    if (!resolved.Valid)
+                    try
+                    {
+                        AssemblyInfo resolved = assemblyCache.ResolveReference(@ref);
+                        UseReference(resolved.Filename);
+                    }
+                    catch (AssemblyLoadException)
                     {
                         UnresolvedReference(@ref, project.FullName);
-                    }
-                    else
-                    {
-                        UseReference(resolved.Filename);
                     }
                 }
 
@@ -323,7 +326,7 @@ namespace Semmle.BuildAnalyser
         void Restore(string projectOrSolution)
         {
             int exit = DotNet.RestoreToDirectory(projectOrSolution, PackageDirectory.DirInfo.FullName);
-            switch(exit)
+            switch (exit)
             {
                 case 0:
                 case 1:
@@ -342,7 +345,7 @@ namespace Semmle.BuildAnalyser
 
         public void AnalyseSolutions(IEnumerable<string> solutions)
         {
-            Parallel.ForEach(solutions, new ParallelOptions { MaxDegreeOfParallelism = 4 } , solutionFile =>
+            Parallel.ForEach(solutions, new ParallelOptions { MaxDegreeOfParallelism = 4 }, solutionFile =>
             {
                 try
                 {

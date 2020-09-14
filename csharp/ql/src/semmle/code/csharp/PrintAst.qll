@@ -46,6 +46,8 @@ private predicate isNotNeeded(Element e) {
   or
   e instanceof AnonymousClass
   or
+  e instanceof TupleType
+  or
   isNotNeeded(e.(Declaration).getDeclaringType())
   or
   isNotNeeded(e.(Parameter).getDeclaringElement())
