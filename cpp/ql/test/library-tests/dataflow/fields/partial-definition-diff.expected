@@ -158,6 +158,8 @@
 | aliasing.cpp:92:3:92:3 | w | AST only |
 | aliasing.cpp:92:7:92:8 | m1 | AST only |
 | aliasing.cpp:98:5:98:6 | m1 | AST only |
+| arrays.cpp:6:3:6:8 | access to array | AST only |
+| arrays.cpp:15:3:15:10 | * ... | AST only |
 | arrays.cpp:36:3:36:3 | o | AST only |
 | arrays.cpp:36:5:36:10 | nested | AST only |
 | arrays.cpp:36:19:36:22 | data | AST only |
@@ -213,6 +215,8 @@
 | by_reference.cpp:69:8:69:20 | call to nonMemberGetA | AST only |
 | by_reference.cpp:84:10:84:10 | a | AST only |
 | by_reference.cpp:88:9:88:9 | a | AST only |
+| by_reference.cpp:92:3:92:5 | * ... | AST only |
+| by_reference.cpp:96:3:96:4 | pa | AST only |
 | by_reference.cpp:102:21:102:39 | & ... | AST only |
 | by_reference.cpp:102:22:102:26 | outer | AST only |
 | by_reference.cpp:103:21:103:25 | outer | AST only |

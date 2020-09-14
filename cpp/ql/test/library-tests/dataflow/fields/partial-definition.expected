@@ -187,6 +187,8 @@
 | aliasing.cpp:92:7:92:8 | m1 |
 | aliasing.cpp:98:3:98:3 | s |
 | aliasing.cpp:98:5:98:6 | m1 |
+| arrays.cpp:6:3:6:8 | access to array |
+| arrays.cpp:15:3:15:10 | * ... |
 | arrays.cpp:36:3:36:3 | o |
 | arrays.cpp:36:3:36:17 | access to array |
 | arrays.cpp:36:5:36:10 | nested |
@@ -247,6 +249,8 @@
 | by_reference.cpp:84:10:84:10 | a |
 | by_reference.cpp:88:3:88:7 | inner |
 | by_reference.cpp:88:9:88:9 | a |
+| by_reference.cpp:92:3:92:5 | * ... |
+| by_reference.cpp:96:3:96:4 | pa |
 | by_reference.cpp:102:21:102:39 | & ... |
 | by_reference.cpp:102:22:102:26 | outer |
 | by_reference.cpp:103:21:103:25 | outer |

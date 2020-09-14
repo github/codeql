@@ -6,6 +6,7 @@ private import cpp
 private import semmle.code.cpp.dataflow.internal.FlowVar
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.controlflow.Guards
+private import semmle.code.cpp.dataflow.internal.AddressFlow
 
 cached
 private newtype TNode =
@@ -609,6 +610,15 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
   toExpr = any(StmtExpr stmtExpr | fromExpr = stmtExpr.getResultExpr())
   or
   toExpr.(AddressOfExpr).getOperand() = fromExpr
+  or
+  // This rule enables flow from an array to its elements. Example: `a` to
+  // `a[i]` or `*a`, where `a` is an array type. It does not enable flow from a
+  // pointer to its indirection as in `p[i]` where `p` is a pointer type.
+  exists(Expr toConverted |
+    variablePartiallyAccessed(fromExpr, toConverted) and
+    toExpr = toConverted.getUnconverted() and
+    not toExpr = fromExpr
+  )
   or
   toExpr.(BuiltInOperationBuiltInAddressOf).getOperand() = fromExpr
   or
