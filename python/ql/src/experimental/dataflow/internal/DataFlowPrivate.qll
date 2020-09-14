@@ -130,7 +130,7 @@ module EssaFlow {
   }
 
   predicate useToNextUse(NameNode nodeFrom, NameNode nodeTo) {
-    AdjacentUses::adjacentUseUseSameVar(nodeFrom, nodeTo)
+    AdjacentUses::adjacentUseUse(nodeFrom, nodeTo)
   }
 
   predicate defToFirstUse(EssaVariable var, NameNode nodeTo) {

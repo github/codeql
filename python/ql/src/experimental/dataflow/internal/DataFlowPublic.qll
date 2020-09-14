@@ -5,6 +5,7 @@
 private import python
 private import DataFlowPrivate
 import experimental.dataflow.TypeTracker
+private import semmle.python.essa.SsaCompute
 
 /**
  * IPA type for data flow nodes.
@@ -176,10 +177,10 @@ class BarrierGuard extends GuardNode {
 
   /** Gets a node guarded by this guard. */
   final ExprNode getAGuardedNode() {
-    exists(Variable v, NameNode n, boolean testIsTrue |
-      n.uses(v) and
-      this.checks(n, testIsTrue) and
-      result.asCfgNode().(NameNode).uses(v) and
+    exists(EssaDefinition def, ControlFlowNode node, boolean testIsTrue |
+      AdjacentUses::aUse(def, node) and
+      this.checks(node, testIsTrue) and
+      AdjacentUses::aUse(def, result.asCfgNode()) and
       this.controlsNode(result.asCfgNode(), testIsTrue)
     )
   }

@@ -40,3 +40,11 @@ query predicate sanitizerGuardControls(
   conf.isSanitizerGuard(guard) and
   guard.controlsNode(node, testIsTrue)
 }
+
+query predicate sanitizerGuardedNode(
+  TestTaintTrackingConfiguration conf, DataFlow::BarrierGuard guard, DataFlow::ExprNode node
+) {
+  exists(guard.getLocation().getFile().getRelativePath()) and
+  conf.isSanitizerGuard(guard) and
+  node = guard.getAGuardedNode()
+}
