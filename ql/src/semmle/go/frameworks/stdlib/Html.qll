@@ -7,11 +7,9 @@ import go
 /** Provides models of commonly used functions in the `html` package. */
 module Html {
   private class Escape extends EscapeFunction::Range {
-    string kind;
+    Escape() { hasQualifiedName("html", "EscapeString") }
 
-    Escape() { hasQualifiedName("html", "EscapeString") and kind = "html" }
-
-    override string kind() { result = kind }
+    override string kind() { result = "html" }
   }
 
   private class FunctionModels extends TaintTracking::FunctionModel {
