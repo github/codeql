@@ -692,7 +692,7 @@ overrides(
   int base_id: @callable ref);
 
 explicitly_implements(
-  int id: @member ref,
+  unique int id: @member ref,
   int interface_id: @interface_or_ref ref);
 
 local_functions(

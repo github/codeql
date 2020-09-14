@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 symbol.ContainingType != null && ConstructedOrParentIsConstructed(symbol.ContainingType);
         }
 
-        static Kinds.TypeKind GetClassType(Context cx, ITypeSymbol t)
+        static Kinds.TypeKind GetClassType(Context cx, ITypeSymbol t, bool constructUnderlyingTupleType)
         {
             switch (t.SpecialType)
             {
@@ -72,7 +72,9 @@ namespace Semmle.Extraction.CSharp.Entities
                     {
                         case TypeKind.Class: return Kinds.TypeKind.CLASS;
                         case TypeKind.Struct:
-                            return ((INamedTypeSymbol)t).IsTupleType ? Kinds.TypeKind.TUPLE : Kinds.TypeKind.STRUCT;
+                            return ((INamedTypeSymbol)t).IsTupleType && !constructUnderlyingTupleType
+                                ? Kinds.TypeKind.TUPLE
+                                : Kinds.TypeKind.STRUCT;
                         case TypeKind.Interface: return Kinds.TypeKind.INTERFACE;
                         case TypeKind.Array: return Kinds.TypeKind.ARRAY;
                         case TypeKind.Enum: return Kinds.TypeKind.ENUM;
@@ -85,7 +87,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        protected void PopulateType(TextWriter trapFile)
+        protected void PopulateType(TextWriter trapFile, bool constructUnderlyingTupleType = false)
         {
             PopulateMetadataHandle(trapFile);
             PopulateAttributes();
@@ -93,9 +95,9 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write("types(");
             trapFile.WriteColumn(this);
             trapFile.Write(',');
-            trapFile.WriteColumn((int)GetClassType(Context, symbol));
+            trapFile.WriteColumn((int)GetClassType(Context, symbol, constructUnderlyingTupleType));
             trapFile.Write(",\"");
-            symbol.BuildDisplayName(Context, trapFile);
+            symbol.BuildDisplayName(Context, trapFile, constructUnderlyingTupleType);
             trapFile.WriteLine("\")");
 
             // Visit base types

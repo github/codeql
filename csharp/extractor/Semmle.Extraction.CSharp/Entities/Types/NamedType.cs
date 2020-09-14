@@ -11,13 +11,24 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     class NamedType : Type<INamedTypeSymbol>
     {
-        NamedType(Context cx, INamedTypeSymbol init)
+        NamedType(Context cx, INamedTypeSymbol init, bool constructUnderlyingTupleType)
             : base(cx, init)
         {
             typeArgumentsLazy = new Lazy<Type[]>(() => symbol.TypeArguments.Select(t => Create(cx, t)).ToArray());
+            this.constructUnderlyingTupleType = constructUnderlyingTupleType;
         }
 
-        public static NamedType Create(Context cx, INamedTypeSymbol type) => NamedTypeFactory.Instance.CreateEntityFromSymbol(cx, type);
+        public static NamedType Create(Context cx, INamedTypeSymbol type) =>
+            NamedTypeFactory.Instance.CreateEntityFromSymbol(cx, type);
+
+        /// <summary>
+        /// Creates a named type entity from a tuple type. Unlike `Create`, this
+        /// will create an entity for the underlying `System.ValueTuple` struct.
+        /// For example, `(int, string)` will result in an entity for
+        /// `System.ValueTuple<int, string>`.
+        /// </summary>
+        public static NamedType CreateNamedTypeFromTupleType(Context cx, INamedTypeSymbol type) =>
+            UnderlyingTupleTypeFactory.Instance.CreateEntity(cx, (new SymbolEqualityWrapper(type), typeof(TupleType)), type);
 
         public override bool NeedsPopulation => base.NeedsPopulation || symbol.TypeKind == TypeKind.Error;
 
@@ -51,7 +62,10 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
                 else
                 {
-                    trapFile.constructed_generic(this, Type.Create(Context, symbol.ConstructedFrom).TypeRef);
+                    var unbound = constructUnderlyingTupleType
+                        ? CreateNamedTypeFromTupleType(Context, symbol.ConstructedFrom)
+                        : Type.Create(Context, symbol.ConstructedFrom);
+                    trapFile.constructed_generic(this, unbound.TypeRef);
 
                     for (int i = 0; i < symbol.TypeArguments.Length; ++i)
                     {
@@ -60,7 +74,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
             }
 
-            PopulateType(trapFile);
+            PopulateType(trapFile, constructUnderlyingTupleType);
 
             if (symbol.EnumUnderlyingType != null)
             {
@@ -76,6 +90,8 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         readonly Lazy<Type[]> typeArgumentsLazy;
+        private readonly bool constructUnderlyingTupleType;
+
         public Type[] TypeArguments => typeArgumentsLazy.Value;
 
         public override IEnumerable<Type> TypeMentions => TypeArguments;
@@ -115,7 +131,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.Write('*');
             else
             {
-                symbol.BuildTypeId(Context, trapFile, symbol);
+                symbol.BuildTypeId(Context, trapFile, symbol, constructUnderlyingTupleType);
                 trapFile.Write(";type");
             }
         }
@@ -161,7 +177,14 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             public static readonly NamedTypeFactory Instance = new NamedTypeFactory();
 
-            public NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init);
+            public NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init, false);
+        }
+
+        class UnderlyingTupleTypeFactory : ICachedEntityFactory<INamedTypeSymbol, NamedType>
+        {
+            public static readonly UnderlyingTupleTypeFactory Instance = new UnderlyingTupleTypeFactory();
+
+            public NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init, true);
         }
 
         // Do not create typerefs of constructed generics as they are always in the current trap file.
