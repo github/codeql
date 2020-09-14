@@ -19,9 +19,7 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         public static NamedType Create(Context cx, INamedTypeSymbol type) =>
-            type.IsTupleType
-            ? NamedTupleTypeFactory.Instance.CreateEntity(cx, (type, false), (type, false))
-            : NamedTypeFactory.Instance.CreateEntityFromSymbol(cx, type);
+            NamedTypeFactory.Instance.CreateEntityFromSymbol(cx, type);
 
         /// <summary>
         /// Creates a named type entity from a tuple type. Unlike `Create`, this
@@ -30,7 +28,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// `System.ValueTuple<int, string>`.
         /// </summary>
         public static NamedType CreateNamedTypeFromTupleType(Context cx, INamedTypeSymbol type) =>
-            NamedTupleTypeFactory.Instance.CreateEntity(cx, (type, true), (type, true));
+            UnderlyingTupleTypeFactory.Instance.CreateEntity(cx, (new SymbolEqualityWrapper(type), typeof(TupleType)), type);
 
         public override bool NeedsPopulation => base.NeedsPopulation || symbol.TypeKind == TypeKind.Error;
 
@@ -182,11 +180,11 @@ namespace Semmle.Extraction.CSharp.Entities
             public NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init, false);
         }
 
-        class NamedTupleTypeFactory : ICachedEntityFactory<(INamedTypeSymbol, bool), NamedType>
+        class UnderlyingTupleTypeFactory : ICachedEntityFactory<INamedTypeSymbol, NamedType>
         {
-            public static readonly NamedTupleTypeFactory Instance = new NamedTupleTypeFactory();
+            public static readonly UnderlyingTupleTypeFactory Instance = new UnderlyingTupleTypeFactory();
 
-            public NamedType Create(Context cx, (INamedTypeSymbol, bool) init) => new NamedType(cx, init.Item1, init.Item2);
+            public NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init, true);
         }
 
         // Do not create typerefs of constructed generics as they are always in the current trap file.
