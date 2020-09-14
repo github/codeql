@@ -158,9 +158,7 @@ class GuardNode extends ControlFlowNode {
   GuardNode() { this = conditionBlock.getLastNode() }
 
   /** Holds if this guard controls block `b` upon evaluating to `branch`. */
-  predicate controlsBlock(BasicBlock b, boolean branch) {
-    conditionBlock.controls(b, branch)
-  }
+  predicate controlsBlock(BasicBlock b, boolean branch) { conditionBlock.controls(b, branch) }
 }
 
 /**
