@@ -172,8 +172,8 @@ class GuardNode extends ControlFlowNode {
  * It is important that all extending classes in scope are disjoint.
  */
 class BarrierGuard extends GuardNode {
-  /** Holds if this guard validates `e` upon evaluating to `v`. */
-  abstract predicate checks(ControlFlowNode node, boolean testIsTrue);
+  /** Holds if this guard validates `node` upon evaluating to `branch`. */
+  abstract predicate checks(ControlFlowNode node, boolean branch);
 
   /** Gets a node guarded by this guard. */
   final ExprNode getAGuardedNode() {
