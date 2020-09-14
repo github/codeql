@@ -92,7 +92,7 @@ class JavadocTag extends JavadocElement, JavadocParent, @javadocTag {
   /** Gets the text associated with this Javadoc tag. */
   override string getText() { result = this.getChild(0).toString() }
 
-  override string getAPrimaryQlClass() { result = "Javadoc" }
+  override string getAPrimaryQlClass() { result = "JavadocTag" }
 }
 
 /** A Javadoc `@param` tag. */

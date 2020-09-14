@@ -51,7 +51,7 @@ class ImportOnDemandFromType extends Import {
 
   override string toString() { result = "import " + this.getTypeHoldingImport().toString() + ".*" }
 
-  override string getAPrimaryQlClass() { result = "ImportOnDemandFromTypw" }
+  override string getAPrimaryQlClass() { result = "ImportOnDemandFromType" }
 }
 
 /**

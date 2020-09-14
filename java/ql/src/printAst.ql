@@ -2,7 +2,7 @@
  * @name Print AST
  * @description Outputs a representation of a file's Abstract Syntax Tree. This
  *              query is used by the VS Code extension.
- * @id csharp/print-ast
+ * @id java/print-ast
  * @kind graph
  * @tags ide-contextual-queries/print-ast
  */

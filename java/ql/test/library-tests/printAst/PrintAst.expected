@@ -6,7 +6,7 @@ A.java:
 #    1|         0: [JavadocText] Another javadoc
 #    3|       2: [Javadoc] /** A class ... */
 #    4|         0: [JavadocText] A class
-#    6|         1: [Javadoc] @author
+#    6|         1: [JavadocTag] @author
 #    6|           0: [JavadocText] someone
 #    9|     3: [Interface] Ann1
 #   10|       1: [Method] value

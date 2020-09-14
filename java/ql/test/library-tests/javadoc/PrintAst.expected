@@ -24,6 +24,6 @@ javadoc/Test.java:
 #   18|     6: [Method] h
 #-----|       0: (Javadoc)
 #   17|         1: [Javadoc] /** @deprecated */
-#   17|           0: [Javadoc] @deprecated
+#   17|           0: [JavadocTag] @deprecated
 #   18|       3: [TypeAccess] void
 #   18|       5: [BlockStmt] stmt
