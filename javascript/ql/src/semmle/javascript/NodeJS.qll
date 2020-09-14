@@ -42,6 +42,24 @@ class NodeModule extends Module {
     )
   }
 
+  /**
+   * Gets an expression that is an alias for `module.exports`.
+   * For performance this predicate only computes relevant expressions.
+   * So if using this predicate - consider expanding the list of relevant expressions.
+   */
+  pragma[noinline]
+  private DataFlow::Node getAModuleExportsNode() {
+    (
+      // A bit of manual magic
+      result = any(DataFlow::PropWrite w | exists(w.getPropertyName())).getBase()
+      or
+      result = DataFlow::valueNode(any(PropAccess p | exists(p.getPropertyName())).getBase())
+      or
+      result = DataFlow::valueNode(any(ObjectExpr obj))
+    ) and
+    result.analyze().getAValue() = getAModuleExportsValue()
+  }
+
   /** Gets a symbol exported by this module. */
   override string getAnExportedSymbol() {
     result = super.getAnExportedSymbol() or
@@ -51,12 +69,12 @@ class NodeModule extends Module {
   override predicate exports(string name, ASTNode export) {
     // a property write whose base is `exports` or `module.exports`
     exists(DataFlow::PropWrite pwn | export = pwn.getAstNode() |
-      pwn.getBase().analyze().getAValue() = getAModuleExportsValue() and
+      pwn.getBase() = getAModuleExportsNode() and
       name = pwn.getPropertyName()
     )
     or
     // a re-export using spread-operator. E.g. `const foo = require("./foo"); module.exports = {bar: bar, ...foo};`
-    exists(ObjectExpr obj | obj.analyze().getAValue() = getAModuleExportsValue() |
+    exists(ObjectExpr obj | obj = getAModuleExportsNode().asExpr() |
       obj
           .getAProperty()
           .(SpreadProperty)
@@ -73,7 +91,7 @@ class NodeModule extends Module {
     or
     // an externs definition (where appropriate)
     exists(PropAccess pacc | export = pacc |
-      pacc.getBase().analyze().getAValue() = getAModuleExportsValue() and
+      pacc.getBase() = getAModuleExportsNode().asExpr() and
       name = pacc.getPropertyName() and
       isExterns() and
       exists(pacc.getDocumentation())
