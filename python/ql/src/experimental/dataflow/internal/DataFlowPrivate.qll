@@ -158,8 +158,6 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // If there is ESSA-flow out of a node `node`, we want flow
   // both out of `node` and any post-update node of `node`.
   exists(Node node |
-    not node.(EssaNode).getVar() instanceof GlobalSsaVariable and
-    not nodeTo.(EssaNode).getVar() instanceof GlobalSsaVariable and
     EssaFlow::essaFlowStep(node, nodeTo) and
     nodeFrom = update(node)
   )
