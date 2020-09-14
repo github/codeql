@@ -257,15 +257,6 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
   i2.(ChiInstruction).getPartial() = i1.(WriteSideEffectInstruction) and
   not i2.isResultConflated()
   or
-  // Flow from an element to an array or union that contains it.
-  i2.(ChiInstruction).getPartial() = i1 and
-  not i2.isResultConflated() and
-  exists(Type t | i2.getResultLanguageType().hasType(t, false) |
-    t instanceof Union
-    or
-    t instanceof ArrayType
-  )
-  or
   exists(BinaryInstruction bin |
     bin = i2 and
     predictableInstruction(i2.getAnOperand().getDef()) and
