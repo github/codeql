@@ -18,8 +18,6 @@ module TextTemplate {
         fn.matches("URLQueryEscape%") and kind = "url"
       |
         this.hasQualifiedName("text/template", fn)
-        or
-        this.hasQualifiedName("html/template", fn)
       )
     }
 

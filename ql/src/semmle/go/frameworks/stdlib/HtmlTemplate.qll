@@ -6,6 +6,24 @@ import go
 
 /** Provides models of commonly used functions in the `html/template` package. */
 module HtmlTemplate {
+  private class TemplateEscape extends EscapeFunction::Range {
+    string kind;
+
+    TemplateEscape() {
+      exists(string fn |
+        fn.matches("HTMLEscape%") and kind = "html"
+        or
+        fn.matches("JSEscape%") and kind = "js"
+        or
+        fn.matches("URLQueryEscape%") and kind = "url"
+      |
+        this.hasQualifiedName("html/template", fn)
+      )
+    }
+
+    override string kind() { result = kind }
+  }
+
   private class FunctionModels extends TaintTracking::FunctionModel {
     FunctionInput inp;
     FunctionOutput outp;
