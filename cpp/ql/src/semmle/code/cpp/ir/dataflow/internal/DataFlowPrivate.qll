@@ -281,7 +281,7 @@ private predicate getLoadedField(LoadInstruction load, Field f, Class c) {
  * Thus, `node1` references an object with a field `f` whose value ends up in
  * `node2`.
  */
-predicate fieldReadStep(Node node1, FieldContent f, Node node2) {
+private predicate fieldReadStep(Node node1, FieldContent f, Node node2) {
   exists(LoadInstruction load |
     node2.asInstruction() = load and
     node1.asInstruction() = load.getSourceValueOperand().getAnyDef() and
