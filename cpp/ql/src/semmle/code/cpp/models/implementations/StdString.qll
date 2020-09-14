@@ -256,10 +256,13 @@ class StdStringSubstr extends TaintFunction {
 }
 
 /**
- * The standard function `std::string.swap`.
+ * The standard functions `std::string.swap` and `std::stringstream::swap`.
  */
 class StdStringSwap extends TaintFunction {
-  StdStringSwap() { this.hasQualifiedName("std", "basic_string", "swap") }
+  StdStringSwap() {
+    this.hasQualifiedName("std", "basic_string", "swap") or
+    this.hasQualifiedName("std", "basic_stringstream", "swap")
+  }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // str1.swap(str2)

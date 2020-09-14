@@ -196,7 +196,9 @@
 | stringstream.cpp:103:7:103:9 | stringstream.cpp:91:19:91:24 | AST only |
 | stringstream.cpp:105:7:105:9 | stringstream.cpp:95:44:95:49 | AST only |
 | stringstream.cpp:107:7:107:9 | stringstream.cpp:100:31:100:36 | AST only |
+| stringstream.cpp:120:7:120:9 | stringstream.cpp:113:24:113:29 | AST only |
 | stringstream.cpp:121:7:121:9 | stringstream.cpp:113:24:113:29 | AST only |
+| stringstream.cpp:122:7:122:9 | stringstream.cpp:115:24:115:29 | AST only |
 | stringstream.cpp:123:7:123:9 | stringstream.cpp:115:24:115:29 | AST only |
 | stringstream.cpp:143:11:143:11 | stringstream.cpp:143:14:143:21 | IR only |
 | stringstream.cpp:143:11:143:22 | stringstream.cpp:143:14:143:19 | IR only |

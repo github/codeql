@@ -117,9 +117,9 @@ void test_stringstream_swap()
 	ss1.swap(ss2);
 	ss4.swap(ss3);
 
-	sink(ss1); // tainted [NOT DETECTED]
+	sink(ss1); // tainted
 	sink(ss2); // [FALSE POSITIVE]
-	sink(ss3); // tainted [NOT DETECTED]
+	sink(ss3); // tainted
 	sink(ss4); // [FALSE POSITIVE]
 }
 
