@@ -222,6 +222,8 @@
 | stringstream.cpp:181:7:181:8 | stringstream.cpp:143:14:143:19 | AST only |
 | stringstream.cpp:183:7:183:8 | stringstream.cpp:143:14:143:19 | AST only |
 | stringstream.cpp:185:7:185:8 | stringstream.cpp:143:14:143:19 | AST only |
+| stringstream.cpp:196:10:196:16 | stringstream.cpp:196:18:196:32 | AST only |
+| stringstream.cpp:197:10:197:12 | stringstream.cpp:196:18:196:32 | AST only |
 | swap1.cpp:78:12:78:16 | swap1.cpp:69:23:69:23 | AST only |
 | swap1.cpp:87:13:87:17 | swap1.cpp:82:16:82:21 | AST only |
 | swap1.cpp:88:13:88:17 | swap1.cpp:81:27:81:28 | AST only |

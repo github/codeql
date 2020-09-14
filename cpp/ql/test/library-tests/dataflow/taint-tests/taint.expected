@@ -220,6 +220,8 @@
 | stringstream.cpp:181:7:181:8 | c2 | stringstream.cpp:143:14:143:19 | call to source |
 | stringstream.cpp:183:7:183:8 | c4 | stringstream.cpp:143:14:143:19 | call to source |
 | stringstream.cpp:185:7:185:8 | c6 | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:196:10:196:16 | call to putback | stringstream.cpp:196:18:196:32 | call to source |
+| stringstream.cpp:197:10:197:12 | call to get | stringstream.cpp:196:18:196:32 | call to source |
 | structlikeclass.cpp:35:8:35:9 | s1 | structlikeclass.cpp:29:22:29:27 | call to source |
 | structlikeclass.cpp:36:8:36:9 | s2 | structlikeclass.cpp:30:24:30:29 | call to source |
 | structlikeclass.cpp:37:8:37:9 | s3 | structlikeclass.cpp:29:22:29:27 | call to source |

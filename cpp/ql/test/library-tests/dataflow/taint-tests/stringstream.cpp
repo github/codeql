@@ -193,6 +193,6 @@ void test_stringstream_putback()
 	sink(ss.get());
 	sink(ss.putback('b'));
 	sink(ss.get());
-	sink(ss.putback(ns_char::source())); // tainted [NOT DETECTED]
-	sink(ss.get()); // tainted [NOT DETECTED]
+	sink(ss.putback(ns_char::source())); // tainted
+	sink(ss.get()); // tainted
 }

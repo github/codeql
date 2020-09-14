@@ -409,10 +409,13 @@ class StdBasicOStream extends TemplateClass {
 
 /**
  * The `std::ostream` functions `operator<<` (defined as a member function),
- * `put` and `write`.
+ * `put` and `write` and `std::istream::putback`.
  */
 class StdOStreamOut extends DataFlowFunction, TaintFunction {
-  StdOStreamOut() { this.hasQualifiedName("std", "basic_ostream", ["operator<<", "put", "write"]) }
+  StdOStreamOut() {
+    this.hasQualifiedName("std", "basic_ostream", ["operator<<", "put", "write"]) or
+    this.hasQualifiedName("std", "basic_istream", "putback")
+  }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to return value

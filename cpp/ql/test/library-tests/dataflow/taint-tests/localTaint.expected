@@ -1881,10 +1881,16 @@
 | stringstream.cpp:194:7:194:8 | ref arg ss | stringstream.cpp:195:7:195:8 | ss |  |
 | stringstream.cpp:194:7:194:8 | ref arg ss | stringstream.cpp:196:7:196:8 | ss |  |
 | stringstream.cpp:194:7:194:8 | ref arg ss | stringstream.cpp:197:7:197:8 | ss |  |
+| stringstream.cpp:194:7:194:8 | ss | stringstream.cpp:194:10:194:16 | call to putback |  |
+| stringstream.cpp:194:18:194:20 | 98 | stringstream.cpp:194:7:194:8 | ref arg ss | TAINT |
+| stringstream.cpp:194:18:194:20 | 98 | stringstream.cpp:194:10:194:16 | call to putback | TAINT |
 | stringstream.cpp:195:7:195:8 | ref arg ss | stringstream.cpp:196:7:196:8 | ss |  |
 | stringstream.cpp:195:7:195:8 | ref arg ss | stringstream.cpp:197:7:197:8 | ss |  |
 | stringstream.cpp:195:7:195:8 | ss | stringstream.cpp:195:10:195:12 | call to get | TAINT |
 | stringstream.cpp:196:7:196:8 | ref arg ss | stringstream.cpp:197:7:197:8 | ss |  |
+| stringstream.cpp:196:7:196:8 | ss | stringstream.cpp:196:10:196:16 | call to putback |  |
+| stringstream.cpp:196:18:196:32 | call to source | stringstream.cpp:196:7:196:8 | ref arg ss | TAINT |
+| stringstream.cpp:196:18:196:32 | call to source | stringstream.cpp:196:10:196:16 | call to putback | TAINT |
 | stringstream.cpp:197:7:197:8 | ss | stringstream.cpp:197:10:197:12 | call to get | TAINT |
 | structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
 | structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |
