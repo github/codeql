@@ -42,7 +42,7 @@ typeaccesses/TA.java:
 #    7|           0: [NullLiteral] null
 #    8|     4: [Method] method2
 #    8|       3: [TypeAccess] void
-#    8|       4: (Parameters)
+#-----|       4: (Parameters)
 #    8|         0: [Parameter] param
 #    8|           0: [TypeAccess] ArrayList<TA>
 #    8|             0: [TypeAccess] TA

@@ -3,7 +3,7 @@ Test.java:
 #    1|   1: [Class] Test
 #    2|     2: [Method] foo
 #    2|       3: [TypeAccess] void
-#    2|       4: (Parameters)
+#-----|       4: (Parameters)
 #    2|         0: [Parameter] s
 #    2|           0: [TypeAccess] String
 #    2|       5: [BlockStmt] stmt

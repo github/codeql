@@ -4,14 +4,14 @@ reflection/ReflectiveAccess.java:
 #    5|   2: [Class] ReflectiveAccess
 #    6|     2: [Interface] TestAnnotation
 #   10|     3: [Class] TestClass
-#   10|       -3: (Annotations)
+#-----|       -3: (Annotations)
 #    9|         1: [Annotation] TestAnnotation
 #   13|     4: [Method] getAnnotation
 #-----|       2: (Generic Parameters)
 #   13|         0: [TypeVariable] A
 #   13|           0: [TypeAccess] Annotation
 #   13|       3: [TypeAccess] A
-#   13|       4: (Parameters)
+#-----|       4: (Parameters)
 #   13|         0: [Parameter] classContainingAnnotation
 #   13|           0: [TypeAccess] Class<?>
 #   13|             0: [WildcardTypeAccess] ? ...
@@ -25,7 +25,7 @@ reflection/ReflectiveAccess.java:
 #   14|             0: [VarAccess] annotationClass
 #   17|     5: [Method] main
 #   17|       3: [TypeAccess] void
-#   17|       4: (Parameters)
+#-----|       4: (Parameters)
 #   17|         0: [Parameter] args
 #   17|           0: [ArrayTypeAccess] ...[]
 #   17|             0: [TypeAccess] String

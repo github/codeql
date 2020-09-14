@@ -20,7 +20,7 @@ Test.java:
 #    4|         0: [ClassInstanceExpr] new (...)
 #    4|           -4: [AnonymousClass] new NonFinalEnum(...) { ... }
 #    4|             2: [Method] toString
-#    4|               1: (Annotations)
+#-----|               1: (Annotations)
 #    4|                 1: [Annotation] Override
 #    4|               3: [TypeAccess] String
 #    4|               5: [BlockStmt] stmt

@@ -13,7 +13,7 @@ arrays/B.java:
 #    3|   1: [Class] B
 #    4|     2: [Method] m
 #    4|       3: [TypeAccess] void
-#    4|       4: (Parameters)
+#-----|       4: (Parameters)
 #    4|         0: [Parameter] a
 #    4|           0: [TypeAccess] A
 #    4|       5: [BlockStmt] stmt

@@ -5,7 +5,7 @@ MultiCatch.java:
 #    6|   3: [Class] MultiCatch
 #    7|     2: [Method] multiCatch
 #    7|       3: [TypeAccess] void
-#    7|       4: (Parameters)
+#-----|       4: (Parameters)
 #    7|         0: [Parameter] b
 #    7|           0: [TypeAccess] boolean
 #    8|       5: [BlockStmt] stmt
@@ -32,7 +32,7 @@ MultiCatch.java:
 #   18|                 0: [VarAccess] e
 #   22|     3: [Method] multiCatch2
 #   22|       3: [TypeAccess] void
-#   22|       4: (Parameters)
+#-----|       4: (Parameters)
 #   22|         0: [Parameter] b
 #   22|           0: [TypeAccess] boolean
 #   22|         1: [Parameter] c

@@ -30,7 +30,7 @@ class A {
    @Ann1(
        value="a", 
        nest={
-         @Ann2(2),
+         @Ann2,
          @Ann2(7)
        })
    String doSomethingElse() { return "c"; }

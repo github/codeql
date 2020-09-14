@@ -46,7 +46,7 @@ private class ExprOrStmt extends Element {
   }
 }
 
-/** Holds if the given element does not need to be rendered in the AST, due to being  compiler-generated. */
+/** Holds if the given element does not need to be rendered in the AST, due to being compiler-generated. */
 private predicate isNotNeeded(Element el) {
   exists(InitializerMethod im |
     el = im
@@ -58,15 +58,31 @@ private predicate isNotNeeded(Element el) {
     )
   )
   or
-  exists(Constructor c | c.isDefaultConstructor() | 
+  exists(Constructor c | c.isDefaultConstructor() |
     el = c
     or
     el.(ExprOrStmt).getEnclosingCallable() = c
   )
   or
+  exists(Constructor c, int sline, int eline, int scol, int ecol |
+    el.(ExprOrStmt).getEnclosingCallable() = c
+  |
+    el.getLocation().hasLocationInfo(_, sline, eline, scol, ecol) and
+    c.getLocation().hasLocationInfo(_, sline, eline, scol, ecol)
+    // simply comparing their getLocation() doesn't work as they have distinct but equivalent locations
+  )
+  or
   isNotNeeded(el.(Expr).getParent*().(Annotation).getAnnotatedElement())
   or
   isNotNeeded(el.(Parameter).getCallable())
+}
+
+/** Holds if the given field would have the same javadoc and annotations as another field declared in the same declaration */
+private predicate duplicateMetadata(Field f) {
+  exists(FieldDeclaration fd |
+    f = fd.getAField() and
+    not f = fd.getField(0)
+  )
 }
 
 /**
@@ -97,14 +113,18 @@ private predicate locationSortKeys(Element ast, string file, int line, int colum
  */
 private newtype TPrintAstNode =
   TElementNode(Element el) { shouldPrint(el, _) } or
-  TAnnotationsNode(Annotatable ann) { shouldPrint(ann, _) and ann.hasAnnotation() and not partOfAnnotation(ann)} or
+  TAnnotationsNode(Annotatable ann) {
+    shouldPrint(ann, _) and ann.hasAnnotation() and not partOfAnnotation(ann)
+  } or
   TParametersNode(Callable c) { shouldPrint(c, _) and not c.hasNoParameters() } or
   TBaseTypesNode(ClassOrInterface ty) { shouldPrint(ty, _) } or
-  TGenericTypeNode(GenericType ty) { shouldPrint(ty, _) } or 
+  TGenericTypeNode(GenericType ty) { shouldPrint(ty, _) } or
   TGenericCallableNode(GenericCallable c) { shouldPrint(c, _) } or
   TDocumentableNode(Documentable d) { shouldPrint(d, _) and exists(d.getJavadoc()) } or
   TJavadocNode(Javadoc jd) { exists(Documentable d | d.getJavadoc() = jd | shouldPrint(d, _)) } or
-  TJavadocElementNode(JavadocElement jd) { exists(Documentable d | d.getJavadoc() = jd.getParent*() | shouldPrint(d, _)) }
+  TJavadocElementNode(JavadocElement jd) {
+    exists(Documentable d | d.getJavadoc() = jd.getParent*() | shouldPrint(d, _))
+  }
 
 /**
  * A node in the output tree.
@@ -201,7 +221,7 @@ abstract class ElementNode extends PrintAstNode, TElementNode {
 private predicate partOfAnnotation(Expr e) {
   e instanceof Annotation
   or
-  e instanceof ArrayInit and 
+  e instanceof ArrayInit and
   partOfAnnotation(e.getParent())
 }
 
@@ -236,11 +256,12 @@ final class ExprStmtNode extends ElementNode {
       el = element.(LocalClassDeclStmt).getLocalClass()
       or
       partOfAnnotation(element) and
-      el = rank[childIndex](Element ch, string file, int line, int column |
-        ch = getAnAnnotationChild(element) and locationSortKeys(ch, file, line, column)
-      |
-        ch order by file, line, column
-      )
+      el =
+        rank[childIndex](Element ch, string file, int line, int column |
+          ch = getAnAnnotationChild(element) and locationSortKeys(ch, file, line, column)
+        |
+          ch order by file, line, column
+        )
     )
     or
     exists(Element el | result.(AnnotationsNode).getAnnotated() = el |
@@ -292,7 +313,7 @@ final class ParameterNode extends ElementNode {
     result.(AnnotationsNode).getAnnotated() = p
     or
     childIndex = 0 and
-    result.(ElementNode).getElement().(Expr).getParent() = p
+    result.(ElementNode).getElement().(Expr).isNthChildOf(p, -1) // type
   }
 }
 
@@ -353,10 +374,10 @@ final class FieldDeclNode extends ElementNode {
 
   override PrintAstNode getChild(int childIndex) {
     childIndex = -3 and
-    result.(DocumentableNode).getDocumentable() = decl.getAField()
+    result.(DocumentableNode).getDocumentable() = decl.getField(0)
     or
     childIndex = -2 and
-    result.(AnnotationsNode).getAnnotated() = decl.getAField()
+    result.(AnnotationsNode).getAnnotated() = decl.getField(0)
     or
     childIndex = -1 and
     result.(ElementNode).getElement() = decl.getTypeAccess()
@@ -398,7 +419,7 @@ final class ImportNode extends ElementNode {
   ImportNode() { element instanceof Import }
 }
 
-/** 
+/**
  * A node representing a `TypeVariable`.
  */
 final class TypeVariableNode extends ElementNode {
@@ -416,7 +437,9 @@ final class TypeVariableNode extends ElementNode {
 final class AnnotationsNode extends PrintAstNode, TAnnotationsNode {
   Annotatable ann;
 
-  AnnotationsNode() { this = TAnnotationsNode(ann) and not isNotNeeded(ann) }
+  AnnotationsNode() {
+    this = TAnnotationsNode(ann) and not isNotNeeded(ann) and not duplicateMetadata(ann)
+  }
 
   override string toString() { result = "(Annotations)" }
 
@@ -526,13 +549,13 @@ final class GenericCallableNode extends PrintAstNode, TGenericCallableNode {
 }
 
 /**
- * A node representing the documentation of a `Documentable`. 
+ * A node representing the documentation of a `Documentable`.
  * Only rendered if there is at least one `Javadoc` attatched to it.
  */
 final class DocumentableNode extends PrintAstNode, TDocumentableNode {
   Documentable d;
 
-  DocumentableNode() { this = TDocumentableNode(d) }
+  DocumentableNode() { this = TDocumentableNode(d) and not duplicateMetadata(d) }
 
   override string toString() { result = "(Javadoc)" }
 
@@ -542,7 +565,7 @@ final class DocumentableNode extends PrintAstNode, TDocumentableNode {
     result.getJavadoc() =
       rank[childIndex](Javadoc jd, string file, int line, int column |
         jd.getCommentedElement() = d and jd.getLocation().hasLocationInfo(file, line, column, _, _)
-      |  
+      |
         jd order by file, line, column
       )
   }
@@ -554,7 +577,7 @@ final class DocumentableNode extends PrintAstNode, TDocumentableNode {
 }
 
 /**
- * A node representing a `Javadoc`. 
+ * A node representing a `Javadoc`.
  * Only rendered if it is the javadoc of some `Documentable`.
  */
 final class JavadocNode extends PrintAstNode, TJavadocNode {
@@ -576,7 +599,8 @@ final class JavadocNode extends PrintAstNode, TJavadocNode {
   Javadoc getJavadoc() { result = jd }
 }
 
-/** A node representing a `JavadocElement`. 
+/**
+ * A node representing a `JavadocElement`.
  * Only rendered if it is part of the javadoc of some `Documentable`.
  */
 final class JavadocElementNode extends PrintAstNode, TJavadocElementNode {

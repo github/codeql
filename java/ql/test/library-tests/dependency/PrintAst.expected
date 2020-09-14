@@ -18,7 +18,7 @@ dependency/A.java:
 #   15|     2: [Class] E
 #   16|       2: [Method] m
 #   16|         3: [TypeAccess] C
-#   16|         4: (Parameters)
+#-----|         4: (Parameters)
 #   16|           0: [Parameter] f
 #   16|             0: [TypeAccess] A<F>
 #   16|               0: [TypeAccess] F
@@ -35,7 +35,7 @@ dependency/A.java:
 #   27|         0: [TypeVariable] T
 #   27|           0: [TypeAccess] String
 #   27|       3: [TypeAccess] T
-#   27|       4: (Parameters)
+#-----|       4: (Parameters)
 #   27|         0: [Parameter] t
 #   27|           0: [TypeAccess] T
 #   27|       5: [BlockStmt] stmt
@@ -43,7 +43,7 @@ dependency/A.java:
 #   27|           0: [VarAccess] t
 #   28|     3: [Method] test2
 #   28|       3: [TypeAccess] void
-#   28|       4: (Parameters)
+#-----|       4: (Parameters)
 #   28|         0: [Parameter] t
 #   28|           0: [TypeAccess] Collection<? extends Number>
 #   28|             0: [WildcardTypeAccess] ? ...

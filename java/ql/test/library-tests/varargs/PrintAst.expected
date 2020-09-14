@@ -3,21 +3,21 @@ varargs/Test.java:
 #    3|   1: [Class] Test
 #    4|     3: [Method] f
 #    4|       3: [TypeAccess] void
-#    4|       4: (Parameters)
+#-----|       4: (Parameters)
 #    4|         0: [Parameter] is
 #    4|           0: [ArrayTypeAccess] ...[]
 #    4|             0: [TypeAccess] int
 #    4|       5: [BlockStmt] stmt
 #    5|     4: [Method] g
 #    5|       3: [TypeAccess] void
-#    5|       4: (Parameters)
+#-----|       4: (Parameters)
 #    5|         0: [Parameter] os
 #    5|           0: [ArrayTypeAccess] ...[]
 #    5|             0: [TypeAccess] Object
 #    5|       5: [BlockStmt] stmt
 #    6|     5: [Method] h
 #    6|       3: [TypeAccess] void
-#    6|       4: (Parameters)
+#-----|       4: (Parameters)
 #    6|         0: [Parameter] s
 #    6|           0: [TypeAccess] String
 #    6|         1: [Parameter] ss
@@ -26,21 +26,21 @@ varargs/Test.java:
 #    6|       5: [BlockStmt] stmt
 #    8|     6: [Method] ff
 #    8|       3: [TypeAccess] void
-#    8|       4: (Parameters)
+#-----|       4: (Parameters)
 #    8|         0: [Parameter] is
 #    8|           0: [ArrayTypeAccess] ...[]
 #    8|             0: [TypeAccess] int
 #    8|       5: [BlockStmt] stmt
 #    9|     7: [Method] gg
 #    9|       3: [TypeAccess] void
-#    9|       4: (Parameters)
+#-----|       4: (Parameters)
 #    9|         0: [Parameter] os
 #    9|           0: [ArrayTypeAccess] ...[]
 #    9|             0: [TypeAccess] Object
 #    9|       5: [BlockStmt] stmt
 #   10|     8: [Method] hh
 #   10|       3: [TypeAccess] void
-#   10|       4: (Parameters)
+#-----|       4: (Parameters)
 #   10|         0: [Parameter] s
 #   10|           0: [TypeAccess] String
 #   10|         1: [Parameter] ss

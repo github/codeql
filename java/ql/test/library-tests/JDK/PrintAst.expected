@@ -3,7 +3,7 @@ jdk/A.java:
 #    3|   1: [Class] A
 #    4|     2: [Method] main
 #    4|       3: [TypeAccess] void
-#    4|       4: (Parameters)
+#-----|       4: (Parameters)
 #    4|         0: [Parameter] args
 #    4|           0: [ArrayTypeAccess] ...[]
 #    4|             0: [TypeAccess] String
@@ -11,7 +11,7 @@ jdk/A.java:
 #    7|   2: [Class] B
 #    8|     2: [Method] main
 #    8|       3: [TypeAccess] void
-#    8|       4: (Parameters)
+#-----|       4: (Parameters)
 #    8|         0: [Parameter] args
 #    8|           0: [ArrayTypeAccess] ...[]
 #    8|             0: [TypeAccess] String
@@ -19,7 +19,7 @@ jdk/A.java:
 #   11|   3: [Class] C
 #   12|     2: [Method] main
 #   12|       3: [TypeAccess] void
-#   12|       4: (Parameters)
+#-----|       4: (Parameters)
 #   12|         0: [Parameter] args
 #   12|           0: [ArrayTypeAccess] ...[]
 #   12|             0: [TypeAccess] String
@@ -27,7 +27,7 @@ jdk/A.java:
 #   15|   4: [Class] D
 #   16|     2: [Method] main
 #   16|       3: [TypeAccess] int
-#   16|       4: (Parameters)
+#-----|       4: (Parameters)
 #   16|         0: [Parameter] args
 #   16|           0: [ArrayTypeAccess] ...[]
 #   16|             0: [TypeAccess] String
@@ -37,7 +37,7 @@ jdk/A.java:
 #   19|   5: [Class] E
 #   20|     2: [Method] main
 #   20|       3: [TypeAccess] void
-#   20|       4: (Parameters)
+#-----|       4: (Parameters)
 #   20|         0: [Parameter] argc
 #   20|           0: [TypeAccess] int
 #   20|         1: [Parameter] args
@@ -47,14 +47,14 @@ jdk/A.java:
 #   23|   6: [Class] F
 #   24|     2: [Method] main
 #   24|       3: [TypeAccess] void
-#   24|       4: (Parameters)
+#-----|       4: (Parameters)
 #   24|         0: [Parameter] arg
 #   24|           0: [TypeAccess] String
 #   24|       5: [BlockStmt] stmt
 #   27|   7: [Class] G
 #   28|     2: [Method] main
 #   28|       3: [TypeAccess] void
-#   28|       4: (Parameters)
+#-----|       4: (Parameters)
 #   28|         0: [Parameter] args
 #   28|           0: [ArrayTypeAccess] ...[]
 #   28|             0: [ArrayTypeAccess] ...[]
