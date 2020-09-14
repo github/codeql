@@ -23,7 +23,9 @@ newtype TNode =
   /** A node corresponding to a control flow node. */
   TCfgNode(DataFlowCfgNode node) or
   /** A node representing the value of an object after a state change */
-  TPostUpdateNode(PreUpdateNode pre)
+  TPostUpdateNode(PreUpdateNode pre) or
+  /** A node representing a global (module-level) variable in a specific module */
+  TModuleVariableNode(Module m, GlobalVariable v) { v.getScope() = m and v.escapes() }
 
 /**
  * An element, viewed as a node in a data flow graph. Either an SSA variable
@@ -146,6 +148,35 @@ class ParameterNode extends EssaNode {
   }
 
   override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
+}
+
+class ModuleVariableNode extends Node, TModuleVariableNode {
+  Module mod;
+  GlobalVariable var;
+
+  ModuleVariableNode() { this = TModuleVariableNode(mod, var) }
+
+  override Scope getScope() { result = mod }
+
+  override string toString() {
+    result = "ModuleVariableNode for " + var.toString() + " in " + mod.toString()
+  }
+
+  /** Gets the module in which this variable appears. */
+  Module getModule() { result = mod }
+
+  /** Gets the global variable corresponding to this node. */
+  GlobalVariable getVariable() { result = var }
+
+  /** Gets a node that reads this variable. */
+  Node getARead() { result.asCfgNode() = var.getALoad().getAFlowNode() }
+
+  /** Gets an `EssaNode` that corresponds to an assignment of this global variable. */
+  Node getAWrite() {
+    exists(DefinitionNode defn |
+      result.asVar().getDefinition().(EssaNodeDefinition).definedBy(var, defn)
+    )
+  }
 }
 
 /**
