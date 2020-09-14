@@ -11,11 +11,12 @@ namespace Semmle.Extraction.Entities
             : base(cx, path)
         {
             OriginalPath = path;
-            TransformedPath = Context.Extractor.PathTransformer.Transform(OriginalPath);
+            TransformedPathLazy = new Lazy<PathTransformer.ITransformedPath>(() => Context.Extractor.PathTransformer.Transform(OriginalPath));
         }
 
         readonly string OriginalPath;
-        readonly PathTransformer.ITransformedPath TransformedPath;
+        readonly Lazy<PathTransformer.ITransformedPath> TransformedPathLazy;
+        PathTransformer.ITransformedPath TransformedPath => TransformedPathLazy.Value;
 
         public override bool NeedsPopulation => Context.DefinesFile(OriginalPath) || OriginalPath == Context.Extractor.OutputPath;
 
