@@ -38,7 +38,7 @@ query predicate sanitizerGuardControls(
 ) {
   exists(guard.getLocation().getFile().getRelativePath()) and
   conf.isSanitizerGuard(guard) and
-  guard.controlsNode(node, testIsTrue)
+  guard.controlsBlock(node.getBasicBlock(), testIsTrue)
 }
 
 query predicate sanitizerGuardedNode(

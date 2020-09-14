@@ -157,8 +157,8 @@ class GuardNode extends ControlFlowNode {
 
   GuardNode() { this = conditionBlock.getLastNode() }
 
-  predicate controlsNode(ControlFlowNode node, boolean testIsTrue) {
-    conditionBlock.controls(node.getBasicBlock(), testIsTrue)
+  predicate controlsBlock(BasicBlock b, boolean testIsTrue) {
+    conditionBlock.controls(b, testIsTrue)
   }
 }
 
@@ -181,7 +181,7 @@ class BarrierGuard extends GuardNode {
       AdjacentUses::aUse(def, node) and
       this.checks(node, testIsTrue) and
       AdjacentUses::aUse(def, result.asCfgNode()) and
-      this.controlsNode(result.asCfgNode(), testIsTrue)
+      this.controlsBlock(result.asCfgNode().getBasicBlock(), testIsTrue)
     )
   }
 }
