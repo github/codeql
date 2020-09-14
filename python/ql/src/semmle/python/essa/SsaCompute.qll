@@ -506,12 +506,10 @@ private module SsaComputeImpl {
      * Holds if the value defined at `def` can reach `use`, possibly through phi nodes.
      */
     cached
-    predicate aUse(EssaDefinition def, ControlFlowNode use) {
-      firstUse(def, use)
-      or
+    predicate useOfDef(EssaDefinition def, ControlFlowNode use) {
       exists(ControlFlowNode firstUse |
         firstUse(def, firstUse) and
-        adjacentUseUse(firstUse, use)
+        adjacentUseUse*(firstUse, use)
       )
     }
   }
