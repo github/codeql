@@ -64,6 +64,11 @@ edges
 | aliasing.cpp:98:3:98:21 | Store | aliasing.cpp:98:3:98:21 | Chi [m1] |
 | aliasing.cpp:98:10:98:19 | call to user_input | aliasing.cpp:98:3:98:21 | Store |
 | aliasing.cpp:100:14:100:14 | Store [m1] | aliasing.cpp:102:8:102:10 | * ... |
+| arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:7:8:7:13 | access to array |
+| arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:9:8:9:11 | * ... |
+| arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:10:8:10:15 | * ... |
+| arrays.cpp:15:14:15:23 | call to user_input | arrays.cpp:16:8:16:13 | access to array |
+| arrays.cpp:36:26:36:35 | call to user_input | arrays.cpp:37:24:37:27 | data |
 | by_reference.cpp:50:3:50:3 | setDirectly output argument [a] | by_reference.cpp:51:8:51:8 | Argument -1 indirection [a] |
 | by_reference.cpp:50:17:50:26 | call to user_input | by_reference.cpp:50:3:50:3 | setDirectly output argument [a] |
 | by_reference.cpp:51:8:51:8 | Argument -1 indirection [a] | by_reference.cpp:51:10:51:20 | call to getDirectly |
@@ -256,6 +261,14 @@ nodes
 | aliasing.cpp:98:10:98:19 | call to user_input | semmle.label | call to user_input |
 | aliasing.cpp:100:14:100:14 | Store [m1] | semmle.label | Store [m1] |
 | aliasing.cpp:102:8:102:10 | * ... | semmle.label | * ... |
+| arrays.cpp:6:12:6:21 | call to user_input | semmle.label | call to user_input |
+| arrays.cpp:7:8:7:13 | access to array | semmle.label | access to array |
+| arrays.cpp:9:8:9:11 | * ... | semmle.label | * ... |
+| arrays.cpp:10:8:10:15 | * ... | semmle.label | * ... |
+| arrays.cpp:15:14:15:23 | call to user_input | semmle.label | call to user_input |
+| arrays.cpp:16:8:16:13 | access to array | semmle.label | access to array |
+| arrays.cpp:36:26:36:35 | call to user_input | semmle.label | call to user_input |
+| arrays.cpp:37:24:37:27 | data | semmle.label | data |
 | by_reference.cpp:50:3:50:3 | setDirectly output argument [a] | semmle.label | setDirectly output argument [a] |
 | by_reference.cpp:50:17:50:26 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:51:8:51:8 | Argument -1 indirection [a] | semmle.label | Argument -1 indirection [a] |
@@ -395,6 +408,11 @@ nodes
 | aliasing.cpp:87:12:87:13 | m1 | aliasing.cpp:86:10:86:19 | call to user_input | aliasing.cpp:87:12:87:13 | m1 | m1 flows from $@ | aliasing.cpp:86:10:86:19 | call to user_input | call to user_input |
 | aliasing.cpp:93:12:93:13 | m1 | aliasing.cpp:92:12:92:21 | call to user_input | aliasing.cpp:93:12:93:13 | m1 | m1 flows from $@ | aliasing.cpp:92:12:92:21 | call to user_input | call to user_input |
 | aliasing.cpp:102:8:102:10 | * ... | aliasing.cpp:98:10:98:19 | call to user_input | aliasing.cpp:102:8:102:10 | * ... | * ... flows from $@ | aliasing.cpp:98:10:98:19 | call to user_input | call to user_input |
+| arrays.cpp:7:8:7:13 | access to array | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:7:8:7:13 | access to array | access to array flows from $@ | arrays.cpp:6:12:6:21 | call to user_input | call to user_input |
+| arrays.cpp:9:8:9:11 | * ... | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:9:8:9:11 | * ... | * ... flows from $@ | arrays.cpp:6:12:6:21 | call to user_input | call to user_input |
+| arrays.cpp:10:8:10:15 | * ... | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:10:8:10:15 | * ... | * ... flows from $@ | arrays.cpp:6:12:6:21 | call to user_input | call to user_input |
+| arrays.cpp:16:8:16:13 | access to array | arrays.cpp:15:14:15:23 | call to user_input | arrays.cpp:16:8:16:13 | access to array | access to array flows from $@ | arrays.cpp:15:14:15:23 | call to user_input | call to user_input |
+| arrays.cpp:37:24:37:27 | data | arrays.cpp:36:26:36:35 | call to user_input | arrays.cpp:37:24:37:27 | data | data flows from $@ | arrays.cpp:36:26:36:35 | call to user_input | call to user_input |
 | by_reference.cpp:51:10:51:20 | call to getDirectly | by_reference.cpp:50:17:50:26 | call to user_input | by_reference.cpp:51:10:51:20 | call to getDirectly | call to getDirectly flows from $@ | by_reference.cpp:50:17:50:26 | call to user_input | call to user_input |
 | by_reference.cpp:57:10:57:22 | call to getIndirectly | by_reference.cpp:56:19:56:28 | call to user_input | by_reference.cpp:57:10:57:22 | call to getIndirectly | call to getIndirectly flows from $@ | by_reference.cpp:56:19:56:28 | call to user_input | call to user_input |
 | by_reference.cpp:63:10:63:28 | call to getThroughNonMember | by_reference.cpp:62:25:62:34 | call to user_input | by_reference.cpp:63:10:63:28 | call to getThroughNonMember | call to getThroughNonMember flows from $@ | by_reference.cpp:62:25:62:34 | call to user_input | call to user_input |

@@ -187,6 +187,42 @@
 | aliasing.cpp:92:7:92:8 | m1 |
 | aliasing.cpp:98:3:98:3 | s |
 | aliasing.cpp:98:5:98:6 | m1 |
+| arrays.cpp:36:3:36:3 | o |
+| arrays.cpp:36:3:36:17 | access to array |
+| arrays.cpp:36:5:36:10 | nested |
+| arrays.cpp:36:19:36:22 | data |
+| arrays.cpp:37:8:37:8 | o |
+| arrays.cpp:37:8:37:22 | access to array |
+| arrays.cpp:37:10:37:15 | nested |
+| arrays.cpp:37:24:37:27 | data |
+| arrays.cpp:38:8:38:8 | o |
+| arrays.cpp:38:8:38:22 | access to array |
+| arrays.cpp:38:10:38:15 | nested |
+| arrays.cpp:38:24:38:27 | data |
+| arrays.cpp:42:3:42:3 | o |
+| arrays.cpp:42:3:42:20 | access to array |
+| arrays.cpp:42:5:42:12 | indirect |
+| arrays.cpp:42:22:42:25 | data |
+| arrays.cpp:43:8:43:8 | o |
+| arrays.cpp:43:8:43:25 | access to array |
+| arrays.cpp:43:10:43:17 | indirect |
+| arrays.cpp:43:27:43:30 | data |
+| arrays.cpp:44:8:44:8 | o |
+| arrays.cpp:44:8:44:25 | access to array |
+| arrays.cpp:44:10:44:17 | indirect |
+| arrays.cpp:44:27:44:30 | data |
+| arrays.cpp:48:3:48:3 | o |
+| arrays.cpp:48:3:48:20 | access to array |
+| arrays.cpp:48:5:48:12 | indirect |
+| arrays.cpp:48:22:48:25 | data |
+| arrays.cpp:49:8:49:8 | o |
+| arrays.cpp:49:8:49:25 | access to array |
+| arrays.cpp:49:10:49:17 | indirect |
+| arrays.cpp:49:27:49:30 | data |
+| arrays.cpp:50:8:50:8 | o |
+| arrays.cpp:50:8:50:25 | access to array |
+| arrays.cpp:50:10:50:17 | indirect |
+| arrays.cpp:50:27:50:30 | data |
 | by_reference.cpp:12:5:12:5 | s |
 | by_reference.cpp:12:8:12:8 | a |
 | by_reference.cpp:16:5:16:8 | this |

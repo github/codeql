@@ -1,13 +1,14 @@
 uniqueEnclosingCallable
 uniqueType
 uniqueNodeLocation
-| D.cpp:1:17:1:17 | o | Node should have one location but has 3. |
-| by_reference.cpp:1:17:1:17 | o | Node should have one location but has 3. |
+| D.cpp:1:17:1:17 | o | Node should have one location but has 4. |
+| arrays.cpp:1:17:1:17 | o | Node should have one location but has 4. |
+| by_reference.cpp:1:17:1:17 | o | Node should have one location but has 4. |
 | file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
 | file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
 | file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
 | file://:0:0:0:0 | p#0 | Node should have one location but has 0. |
-| qualifiers.cpp:1:17:1:17 | o | Node should have one location but has 3. |
+| qualifiers.cpp:1:17:1:17 | o | Node should have one location but has 4. |
 missingLocation
 | Nodes without location: 4 |
 uniqueNodeToString
