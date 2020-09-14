@@ -24,10 +24,6 @@ module Sync {
         (outp.isReceiver() or outp.isResult(0))
       )
       or
-      // signature: func (*Map).Range(f func(key interface{}, value interface{}) bool)
-      this.hasQualifiedName("sync", "Map", "Range") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
       // signature: func (*Map).Store(key interface{}, value interface{})
       this.hasQualifiedName("sync", "Map", "Store") and
       (inp.isParameter(_) and outp.isReceiver())

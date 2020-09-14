@@ -44,38 +44,31 @@ func TaintStepTest_SyncMapLoadOrStore_B1I1O1(sourceCQL interface{}) interface{} 
 	return intoInterface982
 }
 
-func TaintStepTest_SyncMapRange_B0I0O0(sourceCQL interface{}) interface{} {
-	fromMap417 := sourceCQL.(sync.Map)
-	var intoFunckeyInterfaceValueInterfaceBool584 func(interface{}, interface{}) bool
-	fromMap417.Range(intoFunckeyInterfaceValueInterfaceBool584)
-	return intoFunckeyInterfaceValueInterfaceBool584
-}
-
 func TaintStepTest_SyncMapStore_B0I0O0(sourceCQL interface{}) interface{} {
-	fromInterface991 := sourceCQL.(interface{})
-	var intoMap881 sync.Map
-	intoMap881.Store(fromInterface991, nil)
-	return intoMap881
+	fromInterface417 := sourceCQL.(interface{})
+	var intoMap584 sync.Map
+	intoMap584.Store(fromInterface417, nil)
+	return intoMap584
 }
 
 func TaintStepTest_SyncMapStore_B0I1O0(sourceCQL interface{}) interface{} {
-	fromInterface186 := sourceCQL.(interface{})
-	var intoMap284 sync.Map
-	intoMap284.Store(nil, fromInterface186)
-	return intoMap284
+	fromInterface991 := sourceCQL.(interface{})
+	var intoMap881 sync.Map
+	intoMap881.Store(nil, fromInterface991)
+	return intoMap881
 }
 
 func TaintStepTest_SyncPoolGet_B0I0O0(sourceCQL interface{}) interface{} {
-	fromPool908 := sourceCQL.(sync.Pool)
-	intoInterface137 := fromPool908.Get()
-	return intoInterface137
+	fromPool186 := sourceCQL.(sync.Pool)
+	intoInterface284 := fromPool186.Get()
+	return intoInterface284
 }
 
 func TaintStepTest_SyncPoolPut_B0I0O0(sourceCQL interface{}) interface{} {
-	fromInterface494 := sourceCQL.(interface{})
-	var intoPool873 sync.Pool
-	intoPool873.Put(fromInterface494)
-	return intoPool873
+	fromInterface908 := sourceCQL.(interface{})
+	var intoPool137 sync.Pool
+	intoPool137.Put(fromInterface908)
+	return intoPool137
 }
 
 func RunAllTaints_Sync() {
@@ -111,27 +104,22 @@ func RunAllTaints_Sync() {
 	}
 	{
 		source := newSource(6)
-		out := TaintStepTest_SyncMapRange_B0I0O0(source)
+		out := TaintStepTest_SyncMapStore_B0I0O0(source)
 		sink(6, out)
 	}
 	{
 		source := newSource(7)
-		out := TaintStepTest_SyncMapStore_B0I0O0(source)
+		out := TaintStepTest_SyncMapStore_B0I1O0(source)
 		sink(7, out)
 	}
 	{
 		source := newSource(8)
-		out := TaintStepTest_SyncMapStore_B0I1O0(source)
+		out := TaintStepTest_SyncPoolGet_B0I0O0(source)
 		sink(8, out)
 	}
 	{
 		source := newSource(9)
-		out := TaintStepTest_SyncPoolGet_B0I0O0(source)
-		sink(9, out)
-	}
-	{
-		source := newSource(10)
 		out := TaintStepTest_SyncPoolPut_B0I0O0(source)
-		sink(10, out)
+		sink(9, out)
 	}
 }
