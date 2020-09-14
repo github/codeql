@@ -92,3 +92,12 @@ void nestedAssign() {
   w.s.m1 = user_input();
   sink(w.s.m1); // $ast,ir
 }
+
+void addressOfField() {
+  S s;
+  s.m1 = user_input();
+
+  S s_copy = s;
+  int* px = &s_copy.m1;
+  sink(*px); // $f-:ast $ir
+}

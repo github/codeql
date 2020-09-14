@@ -335,12 +335,14 @@ abstract private class PartialDefinitionNode extends PostUpdateNode {
 
 private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
   override ChiInstruction instr;
-  FieldAddressInstruction field;
+  StoreInstruction store;
 
   ExplicitFieldStoreQualifierNode() {
     not instr.isResultConflated() and
-    exists(StoreInstruction store |
-      instr.getPartial() = store and field = store.getDestinationAddress()
+    instr.getPartial() = store and
+    (
+      instr.getUpdatedInterval(_, _) or
+      store.getDestinationAddress() instanceof FieldAddressInstruction
     )
   }
 
@@ -351,7 +353,12 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
   override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
 
   override Expr getDefinedExpr() {
-    result = field.getObjectAddress().getUnconvertedResultExpression()
+    result =
+      store
+          .getDestinationAddress()
+          .(FieldAddressInstruction)
+          .getObjectAddress()
+          .getUnconvertedResultExpression()
   }
 }
 
@@ -363,17 +370,22 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
  */
 private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNode {
   override StoreInstruction instr;
-  FieldAddressInstruction field;
 
   ExplicitSingleFieldStoreQualifierNode() {
-    field = instr.getDestinationAddress() and
-    not exists(ChiInstruction chi | chi.getPartial() = instr)
+    not exists(ChiInstruction chi | chi.getPartial() = instr) and
+    // Without this condition any store would create a `PostUpdateNode`.
+    instr.getDestinationAddress() instanceof FieldAddressInstruction
   }
 
   override Node getPreUpdateNode() { none() }
 
   override Expr getDefinedExpr() {
-    result = field.getObjectAddress().getUnconvertedResultExpression()
+    result =
+      instr
+          .getDestinationAddress()
+          .(FieldAddressInstruction)
+          .getObjectAddress()
+          .getUnconvertedResultExpression()
   }
 }
 

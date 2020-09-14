@@ -258,7 +258,7 @@ void test_lambdas()
 		c = source();
 	};
 	e(t, u, w);
-	sink(w); // tainted
+	sink(w); // tainted [NOT DETECTED]
 }
 
 // --- taint through return value ---
@@ -468,7 +468,7 @@ void test_swop() {
 	swop(x, y);
 
 	sink(x); // clean [FALSE POSITIVE]
-	sink(y); // tainted
+	sink(y); // tainted [NOT DETECTED by IR]
 }
 
 // --- getdelim ---

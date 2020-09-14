@@ -144,8 +144,23 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
  */
 predicate jumpStep(Node n1, Node n2) { none() }
 
+/**
+ * Gets a field corresponding to the bit range `[startBit..endBit)` of class `c`, if any.
+ */
+private Field getAField(Class c, int startBit, int endBit) {
+  result.getDeclaringType() = c and
+  startBit = 8 * result.getByteOffset() and
+  endBit = 8 * result.getType().getSize() + startBit
+  or
+  exists(Field f, Class cInner |
+    f = c.getAField() and
+    cInner = f.getUnderlyingType() and
+    result = getAField(cInner, startBit - 8 * f.getByteOffset(), endBit - 8 * f.getByteOffset())
+  )
+}
+
 private newtype TContent =
-  TFieldContent(Field f) or
+  TFieldContent(Class c, int startBit, int endBit) { exists(getAField(c, startBit, endBit)) } or
   TCollectionContent() or
   TArrayContent()
 
@@ -163,17 +178,18 @@ class Content extends TContent {
 }
 
 private class FieldContent extends Content, TFieldContent {
-  Field f;
+  Class c;
+  int startBit;
+  int endBit;
 
-  FieldContent() { this = TFieldContent(f) }
+  FieldContent() { this = TFieldContent(c, startBit, endBit) }
 
-  Field getField() { result = f }
+  // Ensure that there's just 1 result for `toString`.
+  override string toString() { result = min(Field f | f = getAField() | f.toString()) }
 
-  override string toString() { result = f.toString() }
+  predicate hasOffset(Class cl, int start, int end) { cl = c and start = startBit and end = endBit }
 
-  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
-  }
+  Field getAField() { result = getAField(c, startBit, endBit) }
 }
 
 private class CollectionContent extends Content, TCollectionContent {
@@ -187,25 +203,43 @@ private class ArrayContent extends Content, TArrayContent {
 }
 
 private predicate fieldStoreStepNoChi(Node node1, FieldContent f, PostUpdateNode node2) {
-  exists(FieldAddressInstruction fa, StoreInstruction store |
+  exists(StoreInstruction store, Class c |
     store = node2.asInstruction() and
-    store.getDestinationAddress() = fa and
     store.getSourceValue() = node1.asInstruction() and
-    f.getField() = fa.getField()
+    getWrittenField(store, f.(FieldContent).getAField(), c) and
+    f.hasOffset(c, _, _)
+  )
+}
+
+pragma[noinline]
+private predicate getWrittenField(StoreInstruction store, Field f, Class c) {
+  exists(FieldAddressInstruction fa |
+    fa = store.getDestinationAddress() and
+    f = fa.getField() and
+    c = f.getDeclaringType()
   )
 }
 
 private predicate fieldStoreStepChi(Node node1, FieldContent f, PostUpdateNode node2) {
-  exists(FieldAddressInstruction fa, StoreInstruction store |
+  exists(StoreInstruction store, ChiInstruction chi |
     node1.asInstruction() = store and
-    store.getDestinationAddress() = fa and
-    node2.asInstruction().(ChiInstruction).getPartial() = store and
-    f.getField() = fa.getField()
+    node2.asInstruction() = chi and
+    chi.getPartial() = store and
+    exists(Class c |
+      c = chi.getResultType() and
+      exists(int startBit, int endBit |
+        chi.getUpdatedInterval(startBit, endBit) and
+        f.hasOffset(c, startBit, endBit)
+      )
+      or
+      getWrittenField(store, f.getAField(), c) and
+      f.hasOffset(c, _, _)
+    )
   )
 }
 
-private predicate arrayStoreStepChi(Node node1, Content a, PostUpdateNode node2) {
-  a instanceof ArrayContent and
+private predicate arrayStoreStepChi(Node node1, ArrayContent a, PostUpdateNode node2) {
+  a = TArrayContent() and
   exists(StoreInstruction store |
     node1.asInstruction() = store and
     (
@@ -230,12 +264,37 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
   arrayStoreStepChi(node1, f, node2)
 }
 
-private predicate fieldReadStep(Node node1, FieldContent f, Node node2) {
-  exists(FieldAddressInstruction fa, LoadInstruction load |
-    load.getSourceAddress() = fa and
+bindingset[result, i]
+private int unbindInt(int i) { i <= result and i >= result }
+
+pragma[noinline]
+private predicate getLoadedField(LoadInstruction load, Field f, Class c) {
+  exists(FieldAddressInstruction fa |
+    fa = load.getSourceAddress() and
+    f = fa.getField() and
+    c = f.getDeclaringType()
+  )
+}
+
+/**
+ * Holds if data can flow from `node1` to `node2` via a read of `f`.
+ * Thus, `node1` references an object with a field `f` whose value ends up in
+ * `node2`.
+ */
+predicate fieldReadStep(Node node1, FieldContent f, Node node2) {
+  exists(LoadInstruction load |
+    node2.asInstruction() = load and
     node1.asInstruction() = load.getSourceValueOperand().getAnyDef() and
-    fa.getField() = f.(FieldContent).getField() and
-    load = node2.asInstruction()
+    exists(Class c |
+      c = load.getSourceValueOperand().getAnyDef().getResultType() and
+      exists(int startBit, int endBit |
+        load.getSourceValueOperand().getUsedInterval(unbindInt(startBit), unbindInt(endBit)) and
+        f.hasOffset(c, startBit, endBit)
+      )
+      or
+      getLoadedField(load, f.getAField(), c) and
+      f.hasOffset(c, _, _)
+    )
   )
 }
 

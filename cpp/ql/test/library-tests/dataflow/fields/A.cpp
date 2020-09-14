@@ -104,7 +104,7 @@ public:
   {
     if (C1 *c1 = dynamic_cast<C1 *>(c))
     {
-      sink(c1->a); // $ast $ir
+      sink(c1->a); // $ast,ir
     }
     C *cc;
     if (C2 *c2 = dynamic_cast<C2 *>(c))
