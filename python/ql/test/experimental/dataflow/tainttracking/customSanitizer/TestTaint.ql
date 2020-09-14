@@ -34,11 +34,11 @@ query predicate isSanitizerGuard(TestTaintTrackingConfiguration conf, DataFlow::
 
 query predicate sanitizerGuardControls(
   TestTaintTrackingConfiguration conf, DataFlow::BarrierGuard guard, ControlFlowNode node,
-  boolean testIsTrue
+  boolean branch
 ) {
   exists(guard.getLocation().getFile().getRelativePath()) and
   conf.isSanitizerGuard(guard) and
-  guard.controlsBlock(node.getBasicBlock(), testIsTrue)
+  guard.controlsBlock(node.getBasicBlock(), branch)
 }
 
 query predicate sanitizerGuardedNode(

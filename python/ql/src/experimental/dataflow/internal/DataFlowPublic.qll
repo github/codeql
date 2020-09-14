@@ -177,11 +177,11 @@ class BarrierGuard extends GuardNode {
 
   /** Gets a node guarded by this guard. */
   final ExprNode getAGuardedNode() {
-    exists(EssaDefinition def, ControlFlowNode node, boolean testIsTrue |
+    exists(EssaDefinition def, ControlFlowNode node, boolean branch |
       AdjacentUses::aUse(def, node) and
-      this.checks(node, testIsTrue) and
+      this.checks(node, branch) and
       AdjacentUses::aUse(def, result.asCfgNode()) and
-      this.controlsBlock(result.asCfgNode().getBasicBlock(), testIsTrue)
+      this.controlsBlock(result.asCfgNode().getBasicBlock(), branch)
     )
   }
 }
