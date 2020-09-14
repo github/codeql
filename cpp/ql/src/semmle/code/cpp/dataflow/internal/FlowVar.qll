@@ -109,11 +109,10 @@ class FlowVar extends TFlowVar {
  * ```
  */
 private module PartialDefinitions {
-  class PartialDefinition extends Expr {
+  abstract class PartialDefinition extends Expr {
     ControlFlowNode node;
 
     PartialDefinition() {
-      valueToUpdate(_, this.getFullyConverted(), node) and
       not this instanceof Conversion
     }
 
@@ -160,14 +159,39 @@ private module PartialDefinitions {
 
   class IteratorPartialDefinition extends PartialDefinition {
     Variable collection;
-    Call innerDefinedExpr;
+    Expr innerDefinedExpr;
 
     IteratorPartialDefinition() {
       exists(Expr convertedInner |
         valueToUpdate(convertedInner, this.getFullyConverted(), node) and
         innerDefinedExpr = convertedInner.getUnconverted() and
-        innerDefinedExpr.getQualifier() = getAnIteratorAccess(collection) and
-        innerDefinedExpr.getTarget() instanceof IteratorPointerDereferenceMemberOperator
+        (
+          innerDefinedExpr.(Call).getQualifier() = getAnIteratorAccess(collection)
+          or
+          innerDefinedExpr.(Call).getQualifier() = collection.getAnAccess() and
+          collection instanceof IteratorParameter
+        ) and
+        innerDefinedExpr.(Call).getTarget() instanceof IteratorPointerDereferenceMemberOperator
+      )
+      or
+      // iterators passed by value without a copy constructor
+      exists(Call call |
+        call = node and
+        call.getAnArgument() = innerDefinedExpr and
+        innerDefinedExpr = this and
+        this = getAnIteratorAccess(collection) and
+        not call.getTarget() instanceof IteratorPointerDereferenceMemberOperator
+      )
+      or
+      // iterators passed by value with a copy constructor
+      exists(Call call, ConstructorCall copy |
+        copy.getTarget() instanceof CopyConstructor and
+        call = node and
+        call.getAnArgument() = copy and
+        copy.getArgument(0) = getAnIteratorAccess(collection) and
+        innerDefinedExpr = this and
+        this = copy and
+        not call.getTarget() instanceof IteratorPointerDereferenceMemberOperator
       )
     }
 
@@ -267,7 +291,8 @@ module FlowVar_internal {
     // The SSA library has a theoretically accurate treatment of reference types,
     // treating them as immutable, but for data flow it gives better results in
     // practice to make the variable synonymous with its contents.
-    not v.getUnspecifiedType() instanceof ReferenceType
+    not v.getUnspecifiedType() instanceof ReferenceType and
+    not v instanceof IteratorParameter
   }
 
   /**
@@ -616,6 +641,8 @@ module FlowVar_internal {
       refType = p.getUnderlyingType() and
       not refType.getBaseType().isConst()
     )
+    or
+    p instanceof IteratorParameter
   }
 
   /**
@@ -776,6 +803,10 @@ module FlowVar_internal {
       def.getAnUltimateDefiningValue(iterator) = c and
       result = def.getAUse(iterator)
     )
+  }
+
+  class IteratorParameter extends Parameter {
+    IteratorParameter() { this.getUnspecifiedType() instanceof Iterator }
   }
 
   /**
