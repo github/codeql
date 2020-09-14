@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 symbol.ContainingType != null && ConstructedOrParentIsConstructed(symbol.ContainingType);
         }
 
-        static Kinds.TypeKind GetClassType(Context cx, ITypeSymbol t, bool getTupleAsTuple)
+        static Kinds.TypeKind GetClassType(Context cx, ITypeSymbol t, bool constructUnderlyingTupleType)
         {
             switch (t.SpecialType)
             {
@@ -72,7 +72,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     {
                         case TypeKind.Class: return Kinds.TypeKind.CLASS;
                         case TypeKind.Struct:
-                            return ((INamedTypeSymbol)t).IsTupleType && getTupleAsTuple
+                            return ((INamedTypeSymbol)t).IsTupleType && !constructUnderlyingTupleType
                                 ? Kinds.TypeKind.TUPLE
                                 : Kinds.TypeKind.STRUCT;
                         case TypeKind.Interface: return Kinds.TypeKind.INTERFACE;
@@ -87,7 +87,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        protected void PopulateType(TextWriter trapFile, bool getTupleAsTuple = true)
+        protected void PopulateType(TextWriter trapFile, bool constructUnderlyingTupleType = false)
         {
             PopulateMetadataHandle(trapFile);
             PopulateAttributes();
@@ -95,9 +95,9 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write("types(");
             trapFile.WriteColumn(this);
             trapFile.Write(',');
-            trapFile.WriteColumn((int)GetClassType(Context, symbol, getTupleAsTuple));
+            trapFile.WriteColumn((int)GetClassType(Context, symbol, constructUnderlyingTupleType));
             trapFile.Write(",\"");
-            symbol.BuildDisplayName(Context, trapFile, getTupleAsTuple);
+            symbol.BuildDisplayName(Context, trapFile, constructUnderlyingTupleType);
             trapFile.WriteLine("\")");
 
             // Visit base types

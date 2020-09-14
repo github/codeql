@@ -11,11 +11,11 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     class NamedType : Type<INamedTypeSymbol>
     {
-        NamedType(Context cx, INamedTypeSymbol init, bool fromTuple)
+        NamedType(Context cx, INamedTypeSymbol init, bool constructUnderlyingTupleType)
             : base(cx, init)
         {
             typeArgumentsLazy = new Lazy<Type[]>(() => symbol.TypeArguments.Select(t => Create(cx, t)).ToArray());
-            this.fromTuple = fromTuple;
+            this.constructUnderlyingTupleType = constructUnderlyingTupleType;
         }
 
         public static NamedType Create(Context cx, INamedTypeSymbol type) =>
@@ -23,6 +23,12 @@ namespace Semmle.Extraction.CSharp.Entities
             ? NamedTupleTypeFactory.Instance.CreateEntity(cx, (type, false), (type, false))
             : NamedTypeFactory.Instance.CreateEntityFromSymbol(cx, type);
 
+        /// <summary>
+        /// Creates a named type entity from a tuple type. Unlike `Create`, this
+        /// will create an entity for the underlying `System.ValueTuple` struct.
+        /// For example, `(int, string)` will result in an entity for
+        /// `System.ValueTuple<int, string>`.
+        /// </summary>
         public static NamedType CreateNamedTypeFromTupleType(Context cx, INamedTypeSymbol type) =>
             NamedTupleTypeFactory.Instance.CreateEntity(cx, (type, true), (type, true));
 
@@ -58,7 +64,9 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
                 else
                 {
-                    var unbound = fromTuple ? CreateNamedTypeFromTupleType(Context, symbol.ConstructedFrom) : Type.Create(Context, symbol.ConstructedFrom);
+                    var unbound = constructUnderlyingTupleType
+                        ? CreateNamedTypeFromTupleType(Context, symbol.ConstructedFrom)
+                        : Type.Create(Context, symbol.ConstructedFrom);
                     trapFile.constructed_generic(this, unbound.TypeRef);
 
                     for (int i = 0; i < symbol.TypeArguments.Length; ++i)
@@ -68,7 +76,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
             }
 
-            PopulateType(trapFile, getTupleAsTuple: !fromTuple);
+            PopulateType(trapFile, constructUnderlyingTupleType);
 
             if (symbol.EnumUnderlyingType != null)
             {
@@ -84,7 +92,7 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         readonly Lazy<Type[]> typeArgumentsLazy;
-        private readonly bool fromTuple;
+        private readonly bool constructUnderlyingTupleType;
 
         public Type[] TypeArguments => typeArgumentsLazy.Value;
 
@@ -125,7 +133,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.Write('*');
             else
             {
-                symbol.BuildTypeId(Context, trapFile, symbol, getTupleAsTuple: !fromTuple);
+                symbol.BuildTypeId(Context, trapFile, symbol, constructUnderlyingTupleType);
                 trapFile.Write(";type");
             }
         }
