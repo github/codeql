@@ -209,6 +209,17 @@
 | stringstream.cpp:157:7:157:8 | call to basic_string | stringstream.cpp:143:14:143:19 | call to source |
 | stringstream.cpp:158:7:158:8 | call to basic_string | stringstream.cpp:143:14:143:19 | call to source |
 | stringstream.cpp:159:7:159:8 | call to basic_string | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:162:11:162:14 | call to read | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:166:11:166:13 | call to get | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:168:7:168:8 | call to basic_string | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:170:7:170:8 | call to basic_string | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:172:7:172:9 | call to basic_string | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:175:7:175:20 | ... = ... | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:177:7:177:21 | ... = ... | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:179:11:179:13 | call to get | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:181:7:181:8 | c2 | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:183:7:183:8 | c4 | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:185:7:185:8 | c6 | stringstream.cpp:143:14:143:19 | call to source |
 | structlikeclass.cpp:35:8:35:9 | s1 | structlikeclass.cpp:29:22:29:27 | call to source |
 | structlikeclass.cpp:36:8:36:9 | s2 | structlikeclass.cpp:30:24:30:29 | call to source |
 | structlikeclass.cpp:37:8:37:9 | s3 | structlikeclass.cpp:29:22:29:27 | call to source |

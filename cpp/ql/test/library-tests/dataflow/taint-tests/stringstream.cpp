@@ -159,30 +159,30 @@ void test_stringstream_in()
 	sink(b4); // tainted
 
 	sink(ss1.read(b5, 100));
-	sink(ss2.read(b6, 100)); // tainted [NOT DETECTED]
+	sink(ss2.read(b6, 100)); // tainted
 	sink(ss1.readsome(b7, 100));
 	sink(ss2.readsome(b8, 100)); // (returns a length, not significantly tainted)
 	sink(ss1.get(b9, 100));
-	sink(ss2.get(b10, 100));
+	sink(ss2.get(b10, 100)); // tainted
 	sink(b5);
-	sink(b6); // tainted [NOT DETECTED]
+	sink(b6); // tainted
 	sink(b7);
-	sink(b8); // tainted [NOT DETECTED]
+	sink(b8); // tainted
 	sink(b9);
-	sink(b10); // tainted [NOT DETECTED]
+	sink(b10); // tainted
 
 	sink(c1 = ss1.get());
-	sink(c2 = ss2.get()); // tainted [NOT DETECTED]
+	sink(c2 = ss2.get()); // tainted
 	sink(c3 = ss1.peek());
-	sink(c4 = ss2.peek()); // tainted [NOT DETECTED]
+	sink(c4 = ss2.peek()); // tainted
 	sink(ss1.get(c5));
-	sink(ss2.get(c6)); // tainted [NOT DETECTED]
+	sink(ss2.get(c6)); // tainted
 	sink(c1);
-	sink(c2); // tainted [NOT DETECTED]
+	sink(c2); // tainted
 	sink(c3);
-	sink(c4); // tainted [NOT DETECTED]
+	sink(c4); // tainted
 	sink(c5);
-	sink(c6); // tainted [NOT DETECTED]
+	sink(c6); // tainted
 }
 
 void test_stringstream_putback()

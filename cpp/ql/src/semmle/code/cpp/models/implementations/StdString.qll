@@ -346,6 +346,61 @@ class StdIStreamInNonMember extends DataFlowFunction, TaintFunction {
 }
 
 /**
+ * The `std::istream` functions `get` (without parameters) and `peek`.
+ */
+class StdIStreamGet extends TaintFunction {
+  StdIStreamGet() {
+    this.hasQualifiedName("std", "basic_istream", ["get", "peek"]) and
+    this.getNumberOfParameters() = 0
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from qualifier to return value
+    input.isQualifierObject() and
+    output.isReturnValue()
+  }
+}
+
+/**
+ * The `std::istream` functions `get` (with parameters) and `read`.
+ */
+class StdIStreamRead extends DataFlowFunction, TaintFunction {
+  StdIStreamRead() {
+    this.hasQualifiedName("std", "basic_istream", ["get", "read"]) and
+    this.getNumberOfParameters() > 0
+  }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    // flow from qualifier to return value
+    input.isQualifierObject() and
+    output.isReturnValue()
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from qualifier to first parameter
+    input.isQualifierObject() and
+    output.isParameterDeref(0)
+    or
+    // reverse flow from returned reference to the qualifier
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
+  }
+}
+
+/**
+ * The `std::istream` function `readsome`.
+ */
+class StdIStreamReadSome extends TaintFunction {
+  StdIStreamReadSome() { this.hasQualifiedName("std", "basic_istream", "readsome") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from qualifier to first parameter
+    input.isQualifierObject() and
+    output.isParameterDeref(0)
+  }
+}
+
+/**
  * The `std::basic_ostream` template class.
  */
 class StdBasicOStream extends TemplateClass {
