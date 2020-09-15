@@ -155,7 +155,7 @@ class SignAnalysis
 
         if (y is -1)
         {
-            return y; // strictly negative [MISSING]
+            return y; // strictly negative
         }
 
         if (x < y)
@@ -289,7 +289,7 @@ class SignAnalysis
     void Assert(int i, bool b)
     {
         Debug.Assert(i > 0);
-        System.Console.WriteLine(i); // strictly positive
+        System.Console.WriteLine(i); // strictly positive [MISSING]
 
         if (b)
             System.Console.WriteLine(i); // strictly positive

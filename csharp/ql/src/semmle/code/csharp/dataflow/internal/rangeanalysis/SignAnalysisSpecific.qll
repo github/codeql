@@ -243,7 +243,7 @@ private module Impl {
    */
   predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
     exists(BooleanValue b | b.getValue() = testIsTrue |
-      guard.controlsNode(controlled.(SsaReadPositionBlock).getBlock().getANode(), _, b)
+      guard.controlsBasicBlock(controlled.(SsaReadPositionBlock).getBlock(), b)
     )
   }
 

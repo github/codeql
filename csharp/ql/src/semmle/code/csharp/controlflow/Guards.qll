@@ -33,29 +33,21 @@ class Guard extends Expr {
   }
 
   /**
-   * Holds if guard is an equality test between `e1` and `e2`. If the test is
+   * Holds if basic block `bb` is guarded by this expression having value `v`.
+   */
+  predicate controlsBasicBlock(BasicBlock bb, AbstractValue v) {
+    Internal::guardControls(this, bb, v)
+  }
+
+  /**
+   * Holds if this guard is an equality test between `e1` and `e2`. If the test is
    * negated, that is `!=`, then `polarity` is false, otherwise `polarity` is
    * true.
    */
   predicate isEquality(Expr e1, Expr e2, boolean polarity) {
-    exists(Expr exp1, Expr exp2 | equalityGuard(exp1, exp2, polarity) |
-      e1 = exp1 and e2 = exp2
-      or
-      e2 = exp1 and e1 = exp2
-    )
-  }
-
-  private predicate equalityGuard(Expr e1, Expr e2, boolean polarity) {
-    exists(ComparisonTest eqtest |
-      eqtest.getExpr() = this and
-      eqtest.getAnArgument() = e1 and
-      eqtest.getAnArgument() = e2 and
-      not e1 = e2 and
-      (
-        polarity = true and eqtest.getComparisonKind().isEquality()
-        or
-        polarity = false and eqtest.getComparisonKind().isInequality()
-      )
+    exists(BooleanValue v |
+      this = Internal::getAnEqualityCheck(e1, v, e2) and
+      polarity = v.getValue()
     )
   }
 }
@@ -970,13 +962,14 @@ module Internal {
     e = any(BinaryArithmeticOperation bao | result = bao.getAnOperand())
   }
 
-  /** Holds if basic block `bb` only is reached when guard `g` has abstract value `v`. */
-  private predicate guardControls(Guard g, BasicBlock bb, AbstractValue v) {
-    exists(ControlFlowElement cfe, ConditionalSuccessor s, AbstractValue v0, Guard g0 |
-      cfe.controlsBlock(bb, s)
-    |
-      v0.branch(cfe, s, g0) and
-      impliesSteps(g0, v0, g, v)
+  pragma[noinline]
+  private predicate assertionControlsNodeInSameBasicBlock0(
+    Guard g, AbstractValue v, BasicBlock bb, int i
+  ) {
+    exists(Assertion a, Guard g0, AbstractValue v0 |
+      asserts(a, g0, v0) and
+      impliesSteps(g0, v0, g, v) and
+      bb.getNode(i) = a.getAControlFlowNode()
     )
   }
 
@@ -984,17 +977,13 @@ module Internal {
    * Holds if control flow node `cfn` only is reached when guard `g` evaluates to `v`,
    * because of an assertion.
    */
-  private predicate guardAssertionControlsNode(Guard g, ControlFlow::Node cfn, AbstractValue v) {
-    exists(Assertion a, Guard g0, AbstractValue v0 |
-      asserts(a, g0, v0) and
-      impliesSteps(g0, v0, g, v)
-    |
-      a.strictlyDominates(cfn.getBasicBlock())
-      or
-      exists(BasicBlock bb, int i, int j | bb.getNode(i) = a.getAControlFlowNode() |
-        bb.getNode(j) = cfn and
-        j > i
-      )
+  private predicate assertionControlsNodeInSameBasicBlock(
+    Guard g, ControlFlow::Node cfn, AbstractValue v
+  ) {
+    exists(BasicBlock bb, int i, int j |
+      assertionControlsNodeInSameBasicBlock0(g, v, bb, i) and
+      bb.getNode(j) = cfn and
+      j > i
     )
   }
 
@@ -1004,7 +993,7 @@ module Internal {
    */
   private predicate guardAssertionControlsElement(Guard g, ControlFlowElement cfe, AbstractValue v) {
     forex(ControlFlow::Node cfn | cfn = cfe.getAControlFlowNode() |
-      guardAssertionControlsNode(g, cfn, v)
+      assertionControlsNodeInSameBasicBlock(g, cfn, v)
     )
   }
 
@@ -1318,24 +1307,6 @@ module Internal {
       )
     }
 
-    /**
-     * Gets an expression that tests whether expression `e1` is equal to
-     * expression `e2`.
-     *
-     * If the returned expression has abstract value `v`, then expression `e1` is
-     * guaranteed to be equal to `e2`, and if the returned expression has abstract
-     * value `v.getDualValue()`, then this expression is guaranteed to be
-     * non-equal to `e`.
-     *
-     * For example, if the expression `x != ""` evaluates to `false` then the
-     * expression `x` is guaranteed to be equal to `""`.
-     */
-    Expr getAnEqualityCheck(Expr e1, AbstractValue v, Expr e2) {
-      result = getABooleanEqualityCheck(e1, v, e2)
-      or
-      result = getAMatchingEqualityCheck(e1, v, e2)
-    }
-
     private Expr getAnEqualityCheckVal(Expr e, AbstractValue v, AbstractValue vExpr) {
       result = getAnEqualityCheck(e, v, vExpr.getAnExpr())
     }
@@ -1489,6 +1460,29 @@ module Internal {
         ) and
         not e = any(ExprStmt es).getExpr() and
         not e = any(LocalVariableDeclStmt s).getAVariableDeclExpr()
+      }
+
+      /**
+       * Gets an expression that tests whether expression `e1` is equal to
+       * expression `e2`.
+       *
+       * If the returned expression has abstract value `v`, then expression `e1` is
+       * guaranteed to be equal to `e2`, and if the returned expression has abstract
+       * value `v.getDualValue()`, then this expression is guaranteed to be
+       * non-equal to `e`.
+       *
+       * For example, if the expression `x != ""` evaluates to `false` then the
+       * expression `x` is guaranteed to be equal to `""`.
+       */
+      cached
+      Expr getAnEqualityCheck(Expr e1, AbstractValue v, Expr e2) {
+        result = getABooleanEqualityCheck(e1, v, e2)
+        or
+        result = getABooleanEqualityCheck(e2, v, e1)
+        or
+        result = getAMatchingEqualityCheck(e1, v, e2)
+        or
+        result = getAMatchingEqualityCheck(e2, v, e1)
       }
 
       cached
@@ -1776,7 +1770,7 @@ module Internal {
       exists(Guard g | e = getAChildExprStar(g) |
         guardControls(g, bb, _)
         or
-        guardAssertionControlsNode(g, bb.getANode(), _)
+        assertionControlsNodeInSameBasicBlock(g, bb.getANode(), _)
       )
     }
   }
@@ -1784,6 +1778,21 @@ module Internal {
   cached
   private module Cached {
     private import semmle.code.csharp.Caching
+
+    /** Holds if basic block `bb` only is reached when guard `g` has abstract value `v`. */
+    cached
+    predicate guardControls(Guard g, BasicBlock bb, AbstractValue v) {
+      exists(AbstractValue v0, Guard g0 | impliesSteps(g0, v0, g, v) |
+        exists(ControlFlowElement cfe, ConditionalSuccessor s |
+          v0.branch(cfe, s, g0) and cfe.controlsBlock(bb, s)
+        )
+        or
+        exists(Assertion a |
+          asserts(a, g0, v0) and
+          a.strictlyDominates(bb)
+        )
+      )
+    }
 
     pragma[noinline]
     private predicate isGuardedByNode0(
@@ -1840,7 +1849,7 @@ module Internal {
     ) {
       isGuardedByNode0(guarded, _, g, sub, v)
       or
-      guardAssertionControlsNode(g, guarded, v) and
+      assertionControlsNodeInSameBasicBlock(g, guarded, v) and
       exists(ConditionOnExprComparisonConfig c | c.same(sub, guarded.getElement()))
     }
 
