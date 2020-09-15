@@ -105,16 +105,23 @@ class Location extends @location {
 }
 
 /**
+ * DEPRECATED: Use `Location` instead.
  * A location of an element. Not used for expressions or statements, which
  * instead use LocationExpr and LocationStmt respectively.
  */
-library class LocationDefault extends Location, @location_default { }
+deprecated library class LocationDefault extends Location, @location_default { }
 
-/** A location of a statement. */
-library class LocationStmt extends Location, @location_stmt { }
+/**
+ * DEPRECATED: Use `Location` instead.
+ * A location of a statement.
+ */
+deprecated library class LocationStmt extends Location, @location_stmt { }
 
-/** A location of an expression. */
-library class LocationExpr extends Location, @location_expr { }
+/**
+ * DEPRECATED: Use `Location` instead.
+ * A location of an expression.
+ */
+deprecated library class LocationExpr extends Location, @location_expr { }
 
 /**
  * Gets the length of the longest line in file `f`.
