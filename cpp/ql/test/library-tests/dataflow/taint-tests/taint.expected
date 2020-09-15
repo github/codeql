@@ -170,8 +170,29 @@
 | stringstream.cpp:39:7:39:9 | ss3 | stringstream.cpp:33:23:33:28 | call to source |
 | stringstream.cpp:40:7:40:9 | ss4 | stringstream.cpp:34:14:34:19 | call to source |
 | stringstream.cpp:41:7:41:9 | ss5 | stringstream.cpp:29:16:29:21 | call to source |
+| stringstream.cpp:43:11:43:13 | call to str | stringstream.cpp:32:14:32:19 | call to source |
+| stringstream.cpp:44:11:44:13 | call to str | stringstream.cpp:33:23:33:28 | call to source |
+| stringstream.cpp:45:11:45:13 | call to str | stringstream.cpp:34:14:34:19 | call to source |
+| stringstream.cpp:46:11:46:13 | call to str | stringstream.cpp:29:16:29:21 | call to source |
+| stringstream.cpp:52:7:52:9 | ss6 | stringstream.cpp:49:10:49:15 | call to source |
+| stringstream.cpp:53:7:53:9 | ss7 | stringstream.cpp:50:10:50:15 | call to source |
+| stringstream.cpp:56:11:56:13 | call to put | stringstream.cpp:56:15:56:29 | call to source |
+| stringstream.cpp:57:44:57:46 | call to put | stringstream.cpp:57:25:57:39 | call to source |
+| stringstream.cpp:59:7:59:9 | ss9 | stringstream.cpp:56:15:56:29 | call to source |
+| stringstream.cpp:60:7:60:10 | ss10 | stringstream.cpp:57:25:57:39 | call to source |
+| stringstream.cpp:63:12:63:16 | call to write | stringstream.cpp:63:18:63:23 | call to source |
+| stringstream.cpp:64:54:64:58 | call to write | stringstream.cpp:64:36:64:41 | call to source |
+| stringstream.cpp:66:7:66:10 | ss12 | stringstream.cpp:63:18:63:23 | call to source |
+| stringstream.cpp:67:7:67:10 | ss13 | stringstream.cpp:64:36:64:41 | call to source |
 | stringstream.cpp:76:11:76:11 | call to operator<< | stringstream.cpp:70:32:70:37 | source |
 | stringstream.cpp:81:7:81:9 | ss2 | stringstream.cpp:70:32:70:37 | source |
+| stringstream.cpp:83:11:83:13 | call to str | stringstream.cpp:70:32:70:37 | source |
+| stringstream.cpp:100:11:100:11 | call to operator= | stringstream.cpp:100:31:100:36 | call to source |
+| stringstream.cpp:103:7:103:9 | ss2 | stringstream.cpp:91:19:91:24 | call to source |
+| stringstream.cpp:105:7:105:9 | ss4 | stringstream.cpp:95:44:95:49 | call to source |
+| stringstream.cpp:107:7:107:9 | ss6 | stringstream.cpp:100:31:100:36 | call to source |
+| stringstream.cpp:121:7:121:9 | ss2 | stringstream.cpp:113:24:113:29 | call to source |
+| stringstream.cpp:123:7:123:9 | ss4 | stringstream.cpp:115:24:115:29 | call to source |
 | stringstream.cpp:143:11:143:11 | call to operator<< | stringstream.cpp:143:14:143:19 | call to source |
 | structlikeclass.cpp:35:8:35:9 | s1 | structlikeclass.cpp:29:22:29:27 | call to source |
 | structlikeclass.cpp:36:8:36:9 | s2 | structlikeclass.cpp:30:24:30:29 | call to source |

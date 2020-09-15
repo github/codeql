@@ -40,31 +40,31 @@ void test_stringstream_string(int amount)
 	sink(ss4); // tainted
 	sink(ss5); // tainted
 	sink(ss1.str());
-	sink(ss2.str()); // tainted [NOT DETECTED]
-	sink(ss3.str()); // tainted [NOT DETECTED]
-	sink(ss4.str()); // tainted [NOT DETECTED]
-	sink(ss5.str()); // tainted [NOT DETECTED]
+	sink(ss2.str()); // tainted
+	sink(ss3.str()); // tainted
+	sink(ss4.str()); // tainted
+	sink(ss5.str()); // tainted
 
 	ss6.str("abc");
 	ss6.str(source()); // (overwrites)
 	ss7.str(source());
 	ss7.str("abc"); // (overwrites)
-	sink(ss6); // tainted [NOT DETECTED]
-	sink(ss7);
+	sink(ss6); // tainted
+	sink(ss7); // [FALSE POSITIVE]
 
 	sink(ss8.put('a'));
-	sink(ss9.put(ns_char::source())); // tainted [NOT DETECTED]
-	sink(ss10.put('a').put(ns_char::source()).put('z')); // tainted [NOT DETECTED]
+	sink(ss9.put(ns_char::source())); // tainted
+	sink(ss10.put('a').put(ns_char::source()).put('z')); // tainted
 	sink(ss8);
-	sink(ss9); // tainted [NOT DETECTED]
-	sink(ss10); // tainted [NOT DETECTED]
+	sink(ss9); // tainted
+	sink(ss10); // tainted
 
 	sink(ss11.write("begin", 5));
-	sink(ss12.write(source(), 5)); // tainted [NOT DETECTED]
-	sink(ss13.write("begin", 5).write(source(), amount).write("end", 3)); // tainted [NOT DETECTED]
+	sink(ss12.write(source(), 5)); // tainted
+	sink(ss13.write("begin", 5).write(source(), amount).write("end", 3)); // tainted
 	sink(ss11);
-	sink(ss12); // tainted [NOT DETECTED]
-	sink(ss13); // tainted [NOT DETECTED]
+	sink(ss12); // tainted
+	sink(ss13); // tainted
 }
 
 void test_stringstream_int(int source)
@@ -80,7 +80,7 @@ void test_stringstream_int(int source)
 	sink(ss1);
 	sink(ss2); // tainted
 	sink(ss1.str());
-	sink(ss2.str()); // tainted [NOT DETECTED]
+	sink(ss2.str()); // tainted
 	sink(v1);
 	sink(v2); // tainted [NOT DETECTED]
 }
@@ -97,14 +97,14 @@ void test_stringstream_constructors()
 	std::stringstream ss6;
 
 	sink(ss5 = std::stringstream("abc"));
-	sink(ss6 = std::stringstream(source())); // tainted [NOT DETECTED]
+	sink(ss6 = std::stringstream(source())); // tainted
 
 	sink(ss1);
-	sink(ss2); // tainted [NOT DETECTED]
+	sink(ss2); // tainted
 	sink(ss3);
-	sink(ss4); // tainted [NOT DETECTED]
+	sink(ss4); // tainted
 	sink(ss5);
-	sink(ss6); // tainted [NOT DETECTED]
+	sink(ss6); // tainted
 }
 
 void test_stringstream_swap()
@@ -118,9 +118,9 @@ void test_stringstream_swap()
 	ss4.swap(ss3);
 
 	sink(ss1); // tainted [NOT DETECTED]
-	sink(ss2);
+	sink(ss2); // [FALSE POSITIVE]
 	sink(ss3); // tainted [NOT DETECTED]
-	sink(ss4);
+	sink(ss4); // [FALSE POSITIVE]
 }
 
 void test_stringstream_in()

@@ -296,10 +296,11 @@ class StdBasicOStream extends TemplateClass {
 }
 
 /**
- * The `std::ostream` function `operator<<` (defined as a member function).
+ * The `std::ostream` functions `operator<<` (defined as a member function),
+ * `put` and `write`.
  */
 class StdOStreamOut extends DataFlowFunction, TaintFunction {
-  StdOStreamOut() { this.hasQualifiedName("std", "basic_ostream", "operator<<") }
+  StdOStreamOut() { this.hasQualifiedName("std", "basic_ostream", ["operator<<", "put", "write"]) }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to return value
@@ -308,12 +309,18 @@ class StdOStreamOut extends DataFlowFunction, TaintFunction {
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // flow from parameter to qualifier
+    // flow from first parameter (value or pointer) to qualifier
     input.isParameter(0) and
     output.isQualifierObject()
     or
-    // flow from parameter to return value
+    input.isParameterDeref(0) and
+    output.isQualifierObject()
+    or
+    // flow from first parameter (value or pointer) to return value
     input.isParameter(0) and
+    output.isReturnValueDeref()
+    or
+    input.isParameterDeref(0) and
     output.isReturnValueDeref()
     or
     // reverse flow from returned reference to the qualifier
@@ -350,5 +357,45 @@ class StdOStreamOutNonMember extends DataFlowFunction, TaintFunction {
     // reverse flow from returned reference to the first parameter
     input.isReturnValueDeref() and
     output.isParameterDeref(0)
+  }
+}
+
+/**
+ * Additional model for `std::stringstream` constructors that take a string
+ * input parameter.
+ */
+class StdStringStreamConstructor extends Constructor, TaintFunction {
+  StdStringStreamConstructor() {
+    this.getDeclaringType().hasQualifiedName("std", "basic_stringstream")
+  }
+
+  /**
+   * Gets the index of a parameter to this function that is a string.
+   */
+  int getAStringParameterIndex() {
+    getParameter(result).getType() instanceof ReferenceType // `const std::basic_string &`
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // taint flow from any parameter of string type to the returned object
+    input.isParameterDeref(getAStringParameterIndex()) and
+    output.isReturnValue() // TODO: this should be `isQualifierObject` by our current definitions, but that flow is not yet supported.
+  }
+}
+
+/**
+ * The `std::stringstream` function `str`.
+ */
+class StdStringStreamStr extends TaintFunction {
+  StdStringStreamStr() { this.hasQualifiedName("std", "basic_stringstream", "str") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from qualifier to return value (if any)
+    input.isQualifierObject() and
+    output.isReturnValue()
+    or
+    // flow from first parameter (if any) to qualifier
+    input.isParameterDeref(0) and
+    output.isQualifierObject()
   }
 }
