@@ -557,7 +557,7 @@ pragma[noinline]
 private predicate getFieldSizeOfClass(Class c, Type type, int size) {
   exists(Field f |
     f.getDeclaringType() = c and
-    f.getType() = type and
+    f.getUnderlyingType() = type and
     type.getSize() = size
   )
 }
@@ -601,7 +601,7 @@ private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {
   exists(LoadInstruction load |
     load.getSourceValueOperand() = opTo and
     opTo.getAnyDef() = iFrom and
-    isSingleFieldClass(iFrom.getResultType(), opTo.getType())
+    isSingleFieldClass(iFrom.getResultType(), opTo.getType().getUnderlyingType())
   )
 }
 
