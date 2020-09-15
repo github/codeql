@@ -321,6 +321,7 @@
 | simple.cpp:83:9:83:10 | this | AST only |
 | simple.cpp:83:12:83:13 | f1 | AST only |
 | simple.cpp:84:14:84:20 | this | AST only |
+| simple.cpp:92:7:92:7 | i | AST only |
 | struct_init.c:15:8:15:9 | ab | AST only |
 | struct_init.c:15:12:15:12 | a | AST only |
 | struct_init.c:16:8:16:9 | ab | AST only |

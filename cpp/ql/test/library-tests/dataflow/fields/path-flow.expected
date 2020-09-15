@@ -332,6 +332,10 @@ edges
 | simple.cpp:83:9:83:28 | ... = ... | simple.cpp:83:9:83:10 | f2 [post update] [f1] |
 | simple.cpp:83:17:83:26 | call to user_input | simple.cpp:83:9:83:28 | ... = ... |
 | simple.cpp:84:14:84:20 | this [f2, f1] | simple.cpp:84:14:84:20 | call to getf2f1 |
+| simple.cpp:92:5:92:5 | a [post update] [i] | simple.cpp:94:10:94:11 | a2 [i] |
+| simple.cpp:92:5:92:22 | ... = ... | simple.cpp:92:5:92:5 | a [post update] [i] |
+| simple.cpp:92:11:92:20 | call to user_input | simple.cpp:92:5:92:22 | ... = ... |
+| simple.cpp:94:10:94:11 | a2 [i] | simple.cpp:94:13:94:13 | i |
 | struct_init.c:14:24:14:25 | ab [a] | struct_init.c:15:8:15:9 | ab [a] |
 | struct_init.c:15:8:15:9 | ab [a] | struct_init.c:15:12:15:12 | a |
 | struct_init.c:20:17:20:36 | {...} [a] | struct_init.c:22:8:22:9 | ab [a] |
@@ -732,6 +736,11 @@ nodes
 | simple.cpp:83:17:83:26 | call to user_input | semmle.label | call to user_input |
 | simple.cpp:84:14:84:20 | call to getf2f1 | semmle.label | call to getf2f1 |
 | simple.cpp:84:14:84:20 | this [f2, f1] | semmle.label | this [f2, f1] |
+| simple.cpp:92:5:92:5 | a [post update] [i] | semmle.label | a [post update] [i] |
+| simple.cpp:92:5:92:22 | ... = ... | semmle.label | ... = ... |
+| simple.cpp:92:11:92:20 | call to user_input | semmle.label | call to user_input |
+| simple.cpp:94:10:94:11 | a2 [i] | semmle.label | a2 [i] |
+| simple.cpp:94:13:94:13 | i | semmle.label | i |
 | struct_init.c:14:24:14:25 | ab [a] | semmle.label | ab [a] |
 | struct_init.c:15:8:15:9 | ab [a] | semmle.label | ab [a] |
 | struct_init.c:15:12:15:12 | a | semmle.label | a |
@@ -830,6 +839,7 @@ nodes
 | simple.cpp:29:12:29:12 | call to b | simple.cpp:42:12:42:21 | call to user_input | simple.cpp:29:12:29:12 | call to b | call to b flows from $@ | simple.cpp:42:12:42:21 | call to user_input | call to user_input |
 | simple.cpp:67:13:67:13 | i | simple.cpp:65:11:65:20 | call to user_input | simple.cpp:67:13:67:13 | i | i flows from $@ | simple.cpp:65:11:65:20 | call to user_input | call to user_input |
 | simple.cpp:84:14:84:20 | call to getf2f1 | simple.cpp:83:17:83:26 | call to user_input | simple.cpp:84:14:84:20 | call to getf2f1 | call to getf2f1 flows from $@ | simple.cpp:83:17:83:26 | call to user_input | call to user_input |
+| simple.cpp:94:13:94:13 | i | simple.cpp:92:11:92:20 | call to user_input | simple.cpp:94:13:94:13 | i | i flows from $@ | simple.cpp:92:11:92:20 | call to user_input | call to user_input |
 | struct_init.c:15:12:15:12 | a | struct_init.c:20:20:20:29 | call to user_input | struct_init.c:15:12:15:12 | a | a flows from $@ | struct_init.c:20:20:20:29 | call to user_input | call to user_input |
 | struct_init.c:15:12:15:12 | a | struct_init.c:27:7:27:16 | call to user_input | struct_init.c:15:12:15:12 | a | a flows from $@ | struct_init.c:27:7:27:16 | call to user_input | call to user_input |
 | struct_init.c:15:12:15:12 | a | struct_init.c:40:20:40:29 | call to user_input | struct_init.c:15:12:15:12 | a | a flows from $@ | struct_init.c:40:20:40:29 | call to user_input | call to user_input |
