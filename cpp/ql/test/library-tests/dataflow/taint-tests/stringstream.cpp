@@ -10,18 +10,18 @@ namespace ns_char
 	char source();
 }
 
-void sink(int i) {};
+void sink(int i);
 
-void sink(const std::string &s) {};
-
-template<class charT>
-void sink(const std::basic_ostream<charT> &s) {};
+void sink(const std::string &s);
 
 template<class charT>
-void sink(const std::basic_istream<charT> &s) {};
+void sink(const std::basic_ostream<charT> &s);
 
 template<class charT>
-void sink(const std::basic_iostream<charT> &s) {};
+void sink(const std::basic_istream<charT> &s);
+
+template<class charT>
+void sink(const std::basic_iostream<charT> &s);
 
 void test_stringstream_string(int amount)
 {
