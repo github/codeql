@@ -1,11 +1,11 @@
 /**
- * Provides classes modeling security-relevant aspects of the `text/template` package.
+ * Provides classes modeling security-relevant aspects of the `html/template` package.
  */
 
 import go
 
-/** Provides models of commonly used functions in the `text/template` package. */
-module TextTemplate {
+/** Provides models of commonly used functions in the `html/template` package. */
+module HtmlTemplate {
   private class TemplateEscape extends EscapeFunction::Range {
     string kind;
 
@@ -17,30 +17,11 @@ module TextTemplate {
         or
         fn.matches("URLQueryEscape%") and kind = "url"
       |
-        this.hasQualifiedName("text/template", fn)
+        this.hasQualifiedName("html/template", fn)
       )
     }
 
     override string kind() { result = kind }
-  }
-
-  private class TextTemplateInstantiation extends TemplateInstantiation::Range,
-    DataFlow::MethodCallNode {
-    int dataArg;
-
-    TextTemplateInstantiation() {
-      exists(string m | getTarget().hasQualifiedName("text/template", "Template", m) |
-        m = "Execute" and
-        dataArg = 1
-        or
-        m = "ExecuteTemplate" and
-        dataArg = 2
-      )
-    }
-
-    override DataFlow::Node getTemplateArgument() { result = this.getReceiver() }
-
-    override DataFlow::Node getADataArgument() { result = this.getArgument(dataArg) }
   }
 
   private class FunctionModels extends TaintTracking::FunctionModel {
@@ -49,31 +30,31 @@ module TextTemplate {
 
     FunctionModels() {
       // signature: func HTMLEscape(w io.Writer, b []byte)
-      hasQualifiedName("text/template", "HTMLEscape") and
+      hasQualifiedName("html/template", "HTMLEscape") and
       (inp.isParameter(1) and outp.isParameter(0))
       or
       // signature: func HTMLEscapeString(s string) string
-      hasQualifiedName("text/template", "HTMLEscapeString") and
+      hasQualifiedName("html/template", "HTMLEscapeString") and
       (inp.isParameter(0) and outp.isResult())
       or
       // signature: func HTMLEscaper(args ...interface{}) string
-      hasQualifiedName("text/template", "HTMLEscaper") and
+      hasQualifiedName("html/template", "HTMLEscaper") and
       (inp.isParameter(_) and outp.isResult())
       or
       // signature: func JSEscape(w io.Writer, b []byte)
-      hasQualifiedName("text/template", "JSEscape") and
+      hasQualifiedName("html/template", "JSEscape") and
       (inp.isParameter(1) and outp.isParameter(0))
       or
       // signature: func JSEscapeString(s string) string
-      hasQualifiedName("text/template", "JSEscapeString") and
+      hasQualifiedName("html/template", "JSEscapeString") and
       (inp.isParameter(0) and outp.isResult())
       or
       // signature: func JSEscaper(args ...interface{}) string
-      hasQualifiedName("text/template", "JSEscaper") and
+      hasQualifiedName("html/template", "JSEscaper") and
       (inp.isParameter(_) and outp.isResult())
       or
       // signature: func URLQueryEscaper(args ...interface{}) string
-      hasQualifiedName("text/template", "URLQueryEscaper") and
+      hasQualifiedName("html/template", "URLQueryEscaper") and
       (inp.isParameter(_) and outp.isResult())
     }
 
@@ -88,11 +69,11 @@ module TextTemplate {
 
     MethodModels() {
       // signature: func (*Template).Execute(wr io.Writer, data interface{}) error
-      this.hasQualifiedName("text/template", "Template", "Execute") and
+      this.hasQualifiedName("html/template", "Template", "Execute") and
       (inp.isParameter(1) and outp.isParameter(0))
       or
       // signature: func (*Template).ExecuteTemplate(wr io.Writer, name string, data interface{}) error
-      this.hasQualifiedName("text/template", "Template", "ExecuteTemplate") and
+      this.hasQualifiedName("html/template", "Template", "ExecuteTemplate") and
       (inp.isParameter(2) and outp.isParameter(0))
     }
 
