@@ -389,6 +389,10 @@ private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNod
   }
 }
 
+/**
+ * The `PostUpdateNode` that is the target of a `arrayStoreStepChi` store step. The overriden
+ * `ChiInstruction` corresponds to the instruction represented by `node2` in `arrayStoreStepChi`.
+ */
 private class ArrayStoreNode extends PartialDefinitionNode {
   override ChiInstruction instr;
   PointerAddInstruction add;
@@ -406,6 +410,10 @@ private class ArrayStoreNode extends PartialDefinitionNode {
   override Expr getDefinedExpr() { result = add.getLeft().getUnconvertedResultExpression() }
 }
 
+/**
+ * The `PostUpdateNode` that is the target of a `arrayStoreStepChi` store step. The overriden
+ * `ChiInstruction` corresponds to the instruction represented by `node2` in `arrayStoreStepChi`.
+ */
 private class PointerStoreNode extends PostUpdateNode {
   override ChiInstruction instr;
 

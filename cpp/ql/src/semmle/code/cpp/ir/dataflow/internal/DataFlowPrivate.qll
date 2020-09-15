@@ -244,11 +244,15 @@ private predicate arrayStoreStepChi(Node node1, ArrayContent a, PostUpdateNode n
     node1.asInstruction() = store and
     (
       // `x[i] = taint()`
+      // This matches the characteristic predicate in `ArrayStoreNode`.
       store.getDestinationAddress() instanceof PointerAddInstruction
       or
       // `*p = taint()`
+      // This matches the characteristic predicate in `PointerStoreNode`.
       store.getDestinationAddress().(CopyValueInstruction).getUnary() instanceof LoadInstruction
     ) and
+    // This `ChiInstruction` will always have a non-conflated result because both `ArrayStoreNode`
+    // and `PointerStoreNode` require it in their characteristic predicates.
     node2.asInstruction().(ChiInstruction).getPartial() = store
   )
 }
