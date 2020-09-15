@@ -196,3 +196,73 @@ void test_stringstream_putback()
 	sink(ss.putback(ns_char::source())); // tainted
 	sink(ss.get()); // tainted
 }
+
+void test_getline()
+{
+	std::stringstream ss1("abc");
+	std::stringstream ss2(source());
+	char b1[1000] = {0};
+	char b2[1000] = {0};
+	char b3[1000] = {0};
+	char b4[1000] = {0};
+	char b5[1000] = {0};
+	char b6[1000] = {0};
+	char b7[1000] = {0};
+	char b8[1000] = {0};
+	std::string s1, s2, s3, s4, s5, s6, s7, s8;
+
+	sink(ss1.getline(b1, 1000));
+	sink(ss2.getline(b2, 1000)); // tainted [NOT DETECTED]
+	sink(ss2.getline(b3, 1000)); // tainted [NOT DETECTED]
+	sink(ss1.getline(b3, 1000));
+	sink(b1);
+	sink(b2); // tainted [NOT DETECTED]
+	sink(b3);
+
+	sink(ss1.getline(b4, 1000, ' '));
+	sink(ss2.getline(b5, 1000, ' ')); // tainted [NOT DETECTED]
+	sink(ss2.getline(b6, 1000, ' ')); // tainted [NOT DETECTED]
+	sink(ss1.getline(b6, 1000, ' '));
+	sink(b4);
+	sink(b5); // tainted [NOT DETECTED]
+	sink(b6);
+
+	sink(ss2.getline(b7, 1000).getline(b8, 1000)); // tainted [NOT DETECTED]
+	sink(b7); // tainted [NOT DETECTED]
+	sink(b8); // tainted [NOT DETECTED]
+
+	sink(getline(ss1, s1));
+	sink(getline(ss2, s2)); // tainted [NOT DETECTED]
+	sink(getline(ss2, s3)); // tainted [NOT DETECTED]
+	sink(getline(ss1, s3));
+	sink(s1);
+	sink(s2); // tainted [NOT DETECTED]
+	sink(s3);
+
+	sink(getline(ss1, s4, ' '));
+	sink(getline(ss2, s5, ' ')); // tainted [NOT DETECTED]
+	sink(getline(ss2, s6, ' ')); // tainted [NOT DETECTED]
+	sink(getline(ss1, s6, ' '));
+	sink(s4);
+	sink(s5); // tainted [NOT DETECTED]
+	sink(s6);
+
+	sink(getline(getline(ss2, s7), s8)); // tainted [NOT DETECTED]
+	sink(s7); // tainted [NOT DETECTED]
+	sink(s8); // tainted [NOT DETECTED]
+}
+
+void test_chaining()
+{
+	std::stringstream ss1(source());
+	std::stringstream ss2;
+	char b1[1000] = {0};
+	char b2[1000] = {0};
+
+	sink(ss1.get(b1, 100).unget().get(b2, 100)); // tainted [NOT DETECTED]
+	sink(b1); // tainted
+	sink(b2); // tainted [NOT DETECTED]
+
+	sink(ss2.write("abc", 3).flush().write(source(), 3).flush().write("xyz", 3)); // tainted [NOT DETECTED]
+	sink(ss2); // tainted [NOT DETECTED]
+}
