@@ -17,15 +17,17 @@ print(unreferenced_g)
 
 # Modification by reassignment
 
-g_mod = [10] # $writes=g_mod
-print(g_mod) # $reads=g_mod
+g_mod = []
+# Immediate reassignment -- no modification possible.
+g_mod = [10] # $f+:writes=g_mod
+print(g_mod) # Could potentially be redefined here.
 g_mod = [100] # $writes=g_mod
 
 # Modification by mutation
 
 g_ins = [50] # $writes=g_ins
-print(g_ins) # $reads=g_ins
-g_ins.insert(75) # $reads=g_ins
+print(g_ins)
+g_ins.insert(75)
 
 # A global with multiple potential definitions
 

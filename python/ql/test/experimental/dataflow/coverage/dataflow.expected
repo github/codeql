@@ -1,12 +1,4 @@
 edges
-| datamodel.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module datamodel | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE |
-| datamodel.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module datamodel | datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE |
-| datamodel.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module datamodel | datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE |
-| datamodel.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module datamodel | datamodel.py:73:18:73:23 | ControlFlowNode for SOURCE |
-| datamodel.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module datamodel | datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE |
-| datamodel.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module datamodel | datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE |
-| datamodel.py:13:1:13:6 | GSSA Variable SOURCE | datamodel.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module datamodel |
-| datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:13:1:13:6 | GSSA Variable SOURCE |
 | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE |
 | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:71:15:71:20 | ControlFlowNode for SOURCE |
 | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:72:18:72:23 | ControlFlowNode for SOURCE |
@@ -153,8 +145,6 @@ edges
 | test.py:504:9:504:14 | ControlFlowNode for SOURCE | test.py:506:10:506:10 | ControlFlowNode for a |
 | test.py:504:9:504:14 | ControlFlowNode for SOURCE | test.py:511:10:511:10 | ControlFlowNode for b |
 nodes
-| datamodel.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module datamodel | semmle.label | ModuleVariableNode for Global Variable SOURCE in Module datamodel |
-| datamodel.py:13:1:13:6 | GSSA Variable SOURCE | semmle.label | GSSA Variable SOURCE |
 | datamodel.py:13:10:13:17 | ControlFlowNode for Str | semmle.label | ControlFlowNode for Str |
 | datamodel.py:38:6:38:17 | ControlFlowNode for f() | semmle.label | ControlFlowNode for f() |
 | datamodel.py:38:8:38:13 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
