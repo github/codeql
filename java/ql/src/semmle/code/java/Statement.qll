@@ -77,7 +77,6 @@ class BlockStmt extends Stmt, @block {
   override string pp() { result = "{ ... }" }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
-
   override string getHalsteadID() { result = "BlockStmt" }
 
   override string getAPrimaryQlClass() { result = "BlockStmt" }
@@ -393,7 +392,6 @@ class CatchClause extends Stmt, @catchclause {
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   override string getHalsteadID() { result = "CatchClause" }
-
 
   override string getAPrimaryQlClass() { result = "CatchClause" }
 }

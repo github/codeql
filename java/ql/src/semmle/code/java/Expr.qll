@@ -500,7 +500,7 @@ class Assignment extends Expr, @assignment {
  *
  * For example, `x = 23`.
  */
-class AssignExpr extends Assignment, @assignexpr { 
+class AssignExpr extends Assignment, @assignexpr {
   override string getAPrimaryQlClass() { result = "AssignExpr" }
 }
 
@@ -640,22 +640,22 @@ class IntegerLiteral extends Literal, @integerliteral {
 }
 
 /** A long literal. For example, `23l`. */
-class LongLiteral extends Literal, @longliteral { 
+class LongLiteral extends Literal, @longliteral {
   override string getAPrimaryQlClass() { result = "LongLiteral" }
 }
 
 /** A floating point literal. For example, `4.2f`. */
-class FloatingPointLiteral extends Literal, @floatingpointliteral { 
+class FloatingPointLiteral extends Literal, @floatingpointliteral {
   override string getAPrimaryQlClass() { result = "FloatingPointLiteral" }
 }
 
 /** A double literal. For example, `4.2`. */
-class DoubleLiteral extends Literal, @doubleliteral { 
+class DoubleLiteral extends Literal, @doubleliteral {
   override string getAPrimaryQlClass() { result = "DoubleLiteral" }
 }
 
 /** A character literal. For example, `'\n'`. */
-class CharacterLiteral extends Literal, @characterliteral { 
+class CharacterLiteral extends Literal, @characterliteral {
   override string getAPrimaryQlClass() { result = "CharacterLiteral" }
 }
 
