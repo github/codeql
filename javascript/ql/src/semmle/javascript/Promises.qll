@@ -440,6 +440,18 @@ predicate promiseTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     pred.getEnclosingExpr() = await.getOperand() and
     succ.getEnclosingExpr() = await
   )
+  or
+  exists(DataFlow::CallNode mapSeries |
+    mapSeries = DataFlow::moduleMember("bluebird", "mapSeries").getACall()
+  |
+    // from `xs` to `x` in `require("bluebird").mapSeries(xs, (x) => {...})`.
+    pred = mapSeries.getArgument(0) and
+    succ = mapSeries.getABoundCallbackParameter(1, 0)
+    or
+    // from `y` to `require("bluebird").mapSeries(x, x => y)`.
+    pred = mapSeries.getCallback(1).getAReturn() and
+    succ = mapSeries
+  )
 }
 
 /**

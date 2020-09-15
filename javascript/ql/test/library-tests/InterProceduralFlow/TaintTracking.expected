@@ -86,3 +86,9 @@
 | tst.js:2:17:2:22 | "src1" | tst.js:61:16:61:18 | o.r |
 | tst.js:2:17:2:22 | "src1" | tst.js:68:16:68:22 | inner() |
 | tst.js:2:17:2:22 | "src1" | tst.js:80:16:80:22 | outer() |
+| underscore.js:2:17:2:22 | "src1" | underscore.js:3:15:3:28 | _.max(source1) |
+| underscore.js:5:17:5:22 | "src2" | underscore.js:6:15:6:34 | _.union([], source2) |
+| underscore.js:5:17:5:22 | "src2" | underscore.js:7:15:7:32 | _.zip(source2, []) |
+| underscore.js:9:17:9:22 | "src3" | underscore.js:11:17:11:17 | x |
+| underscore.js:14:17:14:22 | "src4" | underscore.js:16:17:16:17 | e |
+| underscore.js:19:17:19:22 | "src5" | underscore.js:20:15:20:44 | _.map([ ... ource5) |

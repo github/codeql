@@ -237,6 +237,8 @@ flow
 exclusiveTaintFlow
 | flow2.js:2:15:2:22 | "source" | flow2.js:20:7:20:14 | tainted3 |
 | flow.js:136:15:136:22 | "source" | flow.js:141:7:141:13 | async() |
+| flow.js:160:15:160:22 | "source" | flow.js:164:39:164:39 | x |
+| flow.js:160:15:160:22 | "source" | flow.js:167:7:167:9 | foo |
 | interflow.js:3:18:3:25 | "source" | interflow.js:18:10:18:14 | error |
 typetrack
 | flow2.js:4:2:4:31 | Promise ... lean"]) | flow2.js:4:14:4:30 | [source, "clean"] | copy $PromiseResolveField$ |
