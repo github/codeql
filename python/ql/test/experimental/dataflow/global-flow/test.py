@@ -96,3 +96,14 @@ from known import *
 
 def secretly_use_known():
     print(known_attr) # $reads=known_attr
+
+# Local import in function
+
+def imports_locally():
+    import mod1
+
+# Global import hidden in function
+
+def imports_stuff():
+    global mod2
+    import mod2 # $writes=mod2
