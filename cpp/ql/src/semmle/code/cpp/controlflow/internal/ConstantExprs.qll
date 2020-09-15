@@ -279,20 +279,62 @@ private predicate reachableRecursive(ControlFlowNode n) {
   reachableRecursive(n.getAPredecessor())
 }
 
+/** Holds if `e` is a compile time constant with integer value `val`. */
 private predicate compileTimeConstantInt(Expr e, int val) {
-  val = e.getFullyConverted().getValue().toInt() and
-  not e instanceof StringLiteral and
-  not exists(Expr e1 | e1.getConversion() = e) // only values for fully converted expressions
+  (
+    // If we have an integer value then we are done.
+    if exists(e.getValue().toInt())
+    then val = e.getValue().toInt()
+    else
+      // Otherwise, if we are a conversion of another expression with an
+      // integer value, and that value can be converted into our type,
+      // then we have that value.
+      exists(Expr x, int valx |
+        x.getConversion() = e and
+        compileTimeConstantInt(x, valx) and
+        val = convertIntToType(valx, e.getType().getUnspecifiedType())
+      )
+  ) and
+  // If our unconverted expression is a string literal `"123"`, then we
+  // do not have integer value `123`.
+  not e.getUnconverted() instanceof StringLiteral
 }
 
-library class CompileTimeConstantInt extends Expr {
-  CompileTimeConstantInt() { compileTimeConstantInt(this, _) }
+/**
+ * Get `val` represented as type `t`, if that is possible without
+ * overflow or underflows.
+ */
+bindingset[val, t]
+private int convertIntToType(int val, IntegralType t) {
+  if t instanceof BoolType
+  then if val = 0 then result = 0 else result = 1
+  else
+    if t.isUnsigned()
+    then if val >= 0 and val.bitShiftRight(t.getSize() * 8) = 0 then result = val else none()
+    else
+      if val >= 0 and val.bitShiftRight(t.getSize() * 8 - 1) = 0
+      then result = val
+      else
+        if (-(val + 1)).bitShiftRight(t.getSize() * 8 - 1) = 0
+        then result = val
+        else none()
+}
 
-  int getIntValue() { compileTimeConstantInt(this, result) }
+/**
+ * INTERNAL: Do not use.
+ * An expression that has been found to have an integer value at compile
+ * time.
+ */
+class CompileTimeConstantInt extends Expr {
+  int val;
+
+  CompileTimeConstantInt() { compileTimeConstantInt(this.getFullyConverted(), val) }
+
+  int getIntValue() { result = val }
 }
 
 library class CompileTimeVariableExpr extends Expr {
-  CompileTimeVariableExpr() { not compileTimeConstantInt(this, _) }
+  CompileTimeVariableExpr() { not this instanceof CompileTimeConstantInt }
 }
 
 /** A helper class for evaluation of expressions. */
