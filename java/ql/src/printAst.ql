@@ -7,11 +7,11 @@
  * @tags ide-contextual-queries/print-ast
  */
 
- import java
- import semmle.code.java.PrintAst
- import definitions
+import java
+import semmle.code.java.PrintAst
+import definitions
 
- /**
+/**
  * The source file to generate an AST from.
  */
 external string selectedSourceFile();

@@ -87,7 +87,7 @@ class Top extends @top {
   cached
   string toString() { hasName(this, result) }
 
- /**
+  /**
    * Gets the name of a primary CodeQL class to which this element belongs.
    *
    * For most elements, this is simply the most precise syntactic category to
