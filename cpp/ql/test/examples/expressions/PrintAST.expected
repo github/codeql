@@ -350,6 +350,8 @@ Conversion4.c:
 #    2|                 ValueCategory = prvalue
 #    3|     1: [ReturnStmt] return ...
 DestructorCall.cpp:
+#    1| [Constructor] void C::C()
+#    1|   params: 
 #    3| [Destructor] void C::~C()
 #    3|   params: 
 #    3|   body: [BlockStmt] { ... }
