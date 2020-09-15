@@ -91,7 +91,7 @@ void single_field_test_typedef(A_typedef a)
 {
     a.i = user_input();
     A_typedef a2 = a;
-    sink(a2.i); //$ast $f-:ir
+    sink(a2.i); //$ast,ir
 }
 
 } // namespace Simple

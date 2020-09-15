@@ -37,6 +37,5 @@
 | qualifiers.cpp:37:38:37:47 | call to user_input | qualifiers.cpp:38:23:38:23 | a | AST only |
 | qualifiers.cpp:42:29:42:38 | call to user_input | qualifiers.cpp:43:23:43:23 | a | AST only |
 | qualifiers.cpp:47:31:47:40 | call to user_input | qualifiers.cpp:48:23:48:23 | a | AST only |
-| simple.cpp:92:11:92:20 | call to user_input | simple.cpp:94:13:94:13 | i | AST only |
 | struct_init.c:20:20:20:29 | call to user_input | struct_init.c:33:25:33:25 | a | AST only |
 | struct_init.c:40:20:40:29 | call to user_input | struct_init.c:15:12:15:12 | a | AST only |
