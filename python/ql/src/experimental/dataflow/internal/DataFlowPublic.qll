@@ -177,6 +177,10 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
       result.asVar().getDefinition().(EssaNodeDefinition).definedBy(var, defn)
     )
   }
+
+  override DataFlowCallable getEnclosingCallable() { result.(DataFlowModuleScope).getScope() = mod }
+
+  override Location getLocation() { result = mod.getLocation() }
 }
 
 /**

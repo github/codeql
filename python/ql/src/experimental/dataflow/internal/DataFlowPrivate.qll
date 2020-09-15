@@ -185,7 +185,8 @@ private Node update(Node node) {
  */
 newtype TDataFlowCallable =
   TCallableValue(CallableValue callable) or
-  TClassValue(ClassValue c)
+  TClassValue(ClassValue c) or
+  TModule(Module m)
 
 /** Represents a callable */
 abstract class DataFlowCallable extends TDataFlowCallable {
@@ -237,6 +238,22 @@ class DataFlowClassValue extends DataFlowCallable, TClassValue {
   }
 
   override string getName() { result = c.getName() }
+}
+
+class DataFlowModuleScope extends DataFlowCallable, TModule {
+  Module mod;
+
+  DataFlowModuleScope() { this = TModule(mod) }
+
+  override string toString() { result = mod.toString() }
+
+  override CallNode getACall() { none() }
+
+  override Scope getScope() { result = mod }
+
+  override NameNode getParameter(int n) { none() }
+
+  override string getName() { result = mod.getName() }
 }
 
 newtype TDataFlowCall =
