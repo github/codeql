@@ -6,11 +6,11 @@ import go
 
 /** Provides classes for working with SQL-related APIs. */
 module SQL {
-  private class FunctionModels extends TaintTracking::FunctionModel {
+  private class SqlFunctionModels extends TaintTracking::FunctionModel {
     FunctionInput inp;
     FunctionOutput outp;
 
-    FunctionModels() {
+    SqlFunctionModels() {
       // signature: func Named(name string, value interface{}) NamedArg
       hasQualifiedName("database/sql", "Named") and
       (inp.isParameter(_) and outp.isResult())
@@ -21,11 +21,11 @@ module SQL {
     }
   }
 
-  private class MethodModels extends TaintTracking::FunctionModel, Method {
+  private class SqlMethodModels extends TaintTracking::FunctionModel, Method {
     FunctionInput inp;
     FunctionOutput outp;
 
-    MethodModels() {
+    SqlMethodModels() {
       // signature: func (*NullString).Scan(value interface{}) error
       this.hasQualifiedName("database/sql", "NullString", "Scan") and
       (inp.isParameter(0) and outp.isReceiver())
