@@ -46,7 +46,12 @@ private DataFlow::SourceNode getARouteUsingCookies(DataFlow::TypeTracker t) {
   t.start() and
   isRouteHandlerUsingCookies(result)
   or
-  exists(DataFlow::TypeTracker t2 | result = getARouteUsingCookies(t2).track(t2, t))
+  exists(DataFlow::TypeTracker t2, DataFlow::SourceNode pred | pred = getARouteUsingCookies(t2) |
+    result = pred.track(t2, t)
+    or
+    t = t2 and
+    Express::routeHandlerStep(pred, result)
+  )
 }
 
 /** Gets a data flow node referring to a route handler that uses cookies. */

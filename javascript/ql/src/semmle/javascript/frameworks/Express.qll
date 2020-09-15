@@ -73,6 +73,27 @@ module Express {
   }
 
   /**
+   * Holds if there exists a step from `pred` to `succ` for a RouteHandler - beyond the usual steps defined by TypeTracking.
+   */
+  predicate routeHandlerStep(DataFlow::SourceNode pred, DataFlow::SourceNode succ) {
+    // indirect route-handler `result` is given to function `outer`, which returns function `inner` which calls the function `pred`.
+    exists(int i, DataFlow::CallNode call, Function outer, Function inner | call = succ |
+      pred = call.getArgument(i).getALocalSource() and
+      outer = call.getACallee() and
+      inner = outer.getAReturnedExpr() and
+      exists(DataFlow::CallNode innerCall |
+        innerCall = DataFlow::parameterNode(outer.getParameter(i)).getACall() and
+        forall(int arg | arg = [0, 1] |
+          DataFlow::parameterNode(inner.getParameter(arg)).flowsTo(innerCall.getArgument(arg))
+        )
+      )
+    )
+    or
+    // a container containing route-handlers.
+    exists(HTTP::RouteHandlerCandidateContainer container | pred = container.getRouteHandler(succ))
+  }
+
+  /**
    * A call to an Express router method that sets up a route.
    */
   class RouteSetup extends HTTP::Servers::StandardRouteSetup, MethodCallExpr {
@@ -125,9 +146,7 @@ module Express {
       exists(DataFlow::TypeBackTracker t2, DataFlow::SourceNode succ | succ = getARouteHandler(t2) |
         result = succ.backtrack(t2, t)
         or
-        exists(HTTP::RouteHandlerCandidateContainer container |
-          result = container.getRouteHandler(succ)
-        ) and
+        routeHandlerStep(result, succ) and
         t = t2
       )
     }
