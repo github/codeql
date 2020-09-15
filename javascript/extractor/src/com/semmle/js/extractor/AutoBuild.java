@@ -60,6 +60,7 @@ import com.semmle.util.io.WholeIO;
 import com.semmle.util.io.csv.CSVReader;
 import com.semmle.util.language.LegacyLanguage;
 import com.semmle.util.process.Env;
+import com.semmle.util.process.Env.OS;
 import com.semmle.util.projectstructure.ProjectLayout;
 import com.semmle.util.trap.TrapWriter;
 
@@ -1239,11 +1240,29 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
   protected void extractXml() throws IOException {
     if (xmlExtensions.isEmpty()) return;
     List<String> cmd = new ArrayList<>();
-    cmd.add("odasa");
-    cmd.add("index");
-    cmd.add("--xml");
-    cmd.add("--extensions");
-    cmd.addAll(xmlExtensions);
+    if (EnvironmentVariables.getCodeQLDist() == null) {
+      // Use the legacy odasa XML extractor
+      cmd.add("odasa");
+      cmd.add("index");
+      cmd.add("--xml");
+      cmd.add("--extensions");
+      cmd.addAll(xmlExtensions);
+    } else {
+      String command = Env.getOS() == OS.WINDOWS ? "codeql.cmd" : "codeql";
+      cmd.add(EnvironmentVariables.getCodeQLDist() + "/" + command);
+      cmd.add("database");
+      cmd.add("index-files");
+      cmd.add("--language");
+      cmd.add("xml");
+      cmd.add("--size-limit");
+      cmd.add("10m");
+      for (String extension : xmlExtensions) {
+        cmd.add("--include-extension");
+        cmd.add(extension);
+      }
+      cmd.add("--");
+      cmd.add(EnvironmentVariables.getWipDatabase());
+    }
     ProcessBuilder pb = new ProcessBuilder(cmd);
     try {
       pb.redirectError(Redirect.INHERIT);
