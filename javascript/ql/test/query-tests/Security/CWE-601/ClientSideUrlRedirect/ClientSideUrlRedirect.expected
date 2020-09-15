@@ -117,6 +117,10 @@ nodes
 | tst13.js:49:32:49:32 | e |
 | tst13.js:50:23:50:23 | e |
 | tst13.js:50:23:50:23 | e |
+| tst13.js:52:34:52:34 | e |
+| tst13.js:52:34:52:34 | e |
+| tst13.js:53:28:53:28 | e |
+| tst13.js:53:28:53:28 | e |
 | tst.js:2:19:2:69 | /.*redi ... n.href) |
 | tst.js:2:19:2:72 | /.*redi ... ref)[1] |
 | tst.js:2:19:2:72 | /.*redi ... ref)[1] |
@@ -242,6 +246,10 @@ edges
 | tst13.js:49:32:49:32 | e | tst13.js:50:23:50:23 | e |
 | tst13.js:49:32:49:32 | e | tst13.js:50:23:50:23 | e |
 | tst13.js:49:32:49:32 | e | tst13.js:50:23:50:23 | e |
+| tst13.js:52:34:52:34 | e | tst13.js:53:28:53:28 | e |
+| tst13.js:52:34:52:34 | e | tst13.js:53:28:53:28 | e |
+| tst13.js:52:34:52:34 | e | tst13.js:53:28:53:28 | e |
+| tst13.js:52:34:52:34 | e | tst13.js:53:28:53:28 | e |
 | tst.js:2:19:2:69 | /.*redi ... n.href) | tst.js:2:19:2:72 | /.*redi ... ref)[1] |
 | tst.js:2:19:2:69 | /.*redi ... n.href) | tst.js:2:19:2:72 | /.*redi ... ref)[1] |
 | tst.js:2:47:2:63 | document.location | tst.js:2:47:2:68 | documen ... on.href |
@@ -285,5 +293,6 @@ edges
 | tst13.js:40:15:40:21 | payload | tst13.js:2:19:2:35 | document.location | tst13.js:40:15:40:21 | payload | Untrusted URL redirection due to $@. | tst13.js:2:19:2:35 | document.location | user-provided value |
 | tst13.js:44:14:44:20 | payload | tst13.js:2:19:2:35 | document.location | tst13.js:44:14:44:20 | payload | Untrusted URL redirection due to $@. | tst13.js:2:19:2:35 | document.location | user-provided value |
 | tst13.js:50:23:50:23 | e | tst13.js:49:32:49:32 | e | tst13.js:50:23:50:23 | e | Untrusted URL redirection due to $@. | tst13.js:49:32:49:32 | e | user-provided value |
+| tst13.js:53:28:53:28 | e | tst13.js:52:34:52:34 | e | tst13.js:53:28:53:28 | e | Untrusted URL redirection due to $@. | tst13.js:52:34:52:34 | e | user-provided value |
 | tst.js:2:19:2:72 | /.*redi ... ref)[1] | tst.js:2:47:2:63 | document.location | tst.js:2:19:2:72 | /.*redi ... ref)[1] | Untrusted URL redirection due to $@. | tst.js:2:47:2:63 | document.location | user-provided value |
 | tst.js:6:20:6:59 | indirec ... ref)[1] | tst.js:6:34:6:50 | document.location | tst.js:6:20:6:59 | indirec ... ref)[1] | Untrusted URL redirection due to $@. | tst.js:6:34:6:50 | document.location | user-provided value |

@@ -49,4 +49,7 @@ function foo() {
     self.onmessage = function (e) {
         importScripts(e); // NOT OK
     }
+    window.onmessage = function (e) {
+        self.importScripts(e); // NOT OK
+    }
 })();
