@@ -6,6 +6,48 @@ import go
 
 /** Provides classes for working with SQL-related APIs. */
 module SQL {
+  private class FunctionModels extends TaintTracking::FunctionModel {
+    FunctionInput inp;
+    FunctionOutput outp;
+
+    FunctionModels() {
+      // signature: func Named(name string, value interface{}) NamedArg
+      hasQualifiedName("database/sql", "Named") and
+      (inp.isParameter(_) and outp.isResult())
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input = inp and output = outp
+    }
+  }
+
+  private class MethodModels extends TaintTracking::FunctionModel, Method {
+    FunctionInput inp;
+    FunctionOutput outp;
+
+    MethodModels() {
+      // signature: func (*NullString).Scan(value interface{}) error
+      this.hasQualifiedName("database/sql", "NullString", "Scan") and
+      (inp.isParameter(0) and outp.isReceiver())
+      or
+      // signature: func (*Row).Scan(dest ...interface{}) error
+      this.hasQualifiedName("database/sql", "Row", "Scan") and
+      (inp.isReceiver() and outp.isParameter(_))
+      or
+      // signature: func (*Rows).Scan(dest ...interface{}) error
+      this.hasQualifiedName("database/sql", "Rows", "Scan") and
+      (inp.isReceiver() and outp.isParameter(_))
+      or
+      // signature: func (Scanner).Scan(src interface{}) error
+      this.implements("database/sql", "Scanner", "Scan") and
+      (inp.isParameter(0) and outp.isReceiver())
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input = inp and output = outp
+    }
+  }
+
   /**
    * A data-flow node whose string value is interpreted as (part of) a SQL query.
    *
