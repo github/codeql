@@ -385,6 +385,33 @@
 | qualifiers.cpp:48:10:48:14 | outer |
 | qualifiers.cpp:48:16:48:20 | inner |
 | qualifiers.cpp:48:23:48:23 | a |
+| realistic.cpp:26:5:26:10 | offset |
+| realistic.cpp:42:20:42:20 | o |
+| realistic.cpp:49:9:49:11 | foo |
+| realistic.cpp:49:9:49:18 | access to array |
+| realistic.cpp:49:20:49:22 | baz |
+| realistic.cpp:53:9:53:11 | foo |
+| realistic.cpp:53:9:53:18 | access to array |
+| realistic.cpp:53:20:53:22 | baz |
+| realistic.cpp:53:25:53:33 | userInput |
+| realistic.cpp:53:35:53:43 | bufferLen |
+| realistic.cpp:54:16:54:18 | foo |
+| realistic.cpp:54:16:54:25 | access to array |
+| realistic.cpp:54:27:54:29 | baz |
+| realistic.cpp:54:32:54:40 | userInput |
+| realistic.cpp:54:42:54:47 | buffer |
+| realistic.cpp:60:16:60:18 | dst |
+| realistic.cpp:61:21:61:23 | foo |
+| realistic.cpp:61:21:61:30 | access to array |
+| realistic.cpp:61:32:61:34 | baz |
+| realistic.cpp:61:37:61:45 | userInput |
+| realistic.cpp:61:47:61:55 | bufferLen |
+| realistic.cpp:65:21:65:23 | foo |
+| realistic.cpp:65:21:65:30 | access to array |
+| realistic.cpp:65:32:65:34 | baz |
+| realistic.cpp:65:37:65:45 | userInput |
+| realistic.cpp:65:47:65:52 | buffer |
+| realistic.cpp:66:21:66:23 | dst |
 | simple.cpp:20:24:20:25 | a_ |
 | simple.cpp:20:24:20:25 | this |
 | simple.cpp:21:24:21:25 | b_ |

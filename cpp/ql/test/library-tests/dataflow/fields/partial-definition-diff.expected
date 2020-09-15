@@ -344,6 +344,32 @@
 | qualifiers.cpp:48:10:48:14 | outer | AST only |
 | qualifiers.cpp:48:16:48:20 | inner | AST only |
 | qualifiers.cpp:48:23:48:23 | a | AST only |
+| realistic.cpp:26:5:26:10 | offset | AST only |
+| realistic.cpp:42:20:42:20 | o | AST only |
+| realistic.cpp:49:9:49:11 | foo | AST only |
+| realistic.cpp:49:20:49:22 | baz | AST only |
+| realistic.cpp:53:9:53:11 | foo | AST only |
+| realistic.cpp:53:9:53:18 | access to array | AST only |
+| realistic.cpp:53:20:53:22 | baz | AST only |
+| realistic.cpp:53:25:53:33 | userInput | AST only |
+| realistic.cpp:53:35:53:43 | bufferLen | AST only |
+| realistic.cpp:54:16:54:18 | foo | AST only |
+| realistic.cpp:54:16:54:25 | access to array | AST only |
+| realistic.cpp:54:27:54:29 | baz | AST only |
+| realistic.cpp:54:32:54:40 | userInput | AST only |
+| realistic.cpp:54:42:54:47 | buffer | AST only |
+| realistic.cpp:60:16:60:18 | dst | AST only |
+| realistic.cpp:61:21:61:23 | foo | AST only |
+| realistic.cpp:61:21:61:30 | access to array | AST only |
+| realistic.cpp:61:32:61:34 | baz | AST only |
+| realistic.cpp:61:37:61:45 | userInput | AST only |
+| realistic.cpp:61:47:61:55 | bufferLen | AST only |
+| realistic.cpp:65:21:65:23 | foo | AST only |
+| realistic.cpp:65:21:65:30 | access to array | AST only |
+| realistic.cpp:65:32:65:34 | baz | AST only |
+| realistic.cpp:65:37:65:45 | userInput | AST only |
+| realistic.cpp:65:47:65:52 | buffer | AST only |
+| realistic.cpp:66:21:66:23 | dst | AST only |
 | simple.cpp:20:24:20:25 | a_ | AST only |
 | simple.cpp:21:24:21:25 | b_ | AST only |
 | simple.cpp:28:10:28:10 | f | AST only |

@@ -354,6 +354,18 @@ edges
 | qualifiers.cpp:47:31:47:40 | call to user_input | qualifiers.cpp:47:5:47:42 | ... = ... |
 | qualifiers.cpp:48:10:48:14 | outer [inner, a] | qualifiers.cpp:48:16:48:20 | inner [a] |
 | qualifiers.cpp:48:16:48:20 | inner [a] | qualifiers.cpp:48:23:48:23 | a |
+| realistic.cpp:53:9:53:11 | foo [post update] [bar, baz, ... (4)] | realistic.cpp:61:21:61:23 | foo [bar, baz, ... (4)] |
+| realistic.cpp:53:9:53:18 | access to array [post update] [baz, userInput, ... (3)] | realistic.cpp:53:13:53:15 | bar [inner post update] [baz, userInput, ... (3)] |
+| realistic.cpp:53:9:53:66 | ... = ... | realistic.cpp:53:25:53:33 | userInput [post update] [bufferLen] |
+| realistic.cpp:53:13:53:15 | bar [inner post update] [baz, userInput, ... (3)] | realistic.cpp:53:9:53:11 | foo [post update] [bar, baz, ... (4)] |
+| realistic.cpp:53:20:53:22 | baz [post update] [userInput, bufferLen] | realistic.cpp:53:9:53:18 | access to array [post update] [baz, userInput, ... (3)] |
+| realistic.cpp:53:25:53:33 | userInput [post update] [bufferLen] | realistic.cpp:53:20:53:22 | baz [post update] [userInput, bufferLen] |
+| realistic.cpp:53:55:53:64 | call to user_input | realistic.cpp:53:9:53:66 | ... = ... |
+| realistic.cpp:61:21:61:23 | foo [bar, baz, ... (4)] | realistic.cpp:61:25:61:27 | bar [baz, userInput, ... (3)] |
+| realistic.cpp:61:21:61:30 | access to array [baz, userInput, ... (3)] | realistic.cpp:61:32:61:34 | baz [userInput, bufferLen] |
+| realistic.cpp:61:25:61:27 | bar [baz, userInput, ... (3)] | realistic.cpp:61:21:61:30 | access to array [baz, userInput, ... (3)] |
+| realistic.cpp:61:32:61:34 | baz [userInput, bufferLen] | realistic.cpp:61:37:61:45 | userInput [bufferLen] |
+| realistic.cpp:61:37:61:45 | userInput [bufferLen] | realistic.cpp:61:47:61:55 | bufferLen |
 | simple.cpp:26:15:26:15 | f [a_] | simple.cpp:28:10:28:10 | f [a_] |
 | simple.cpp:26:15:26:15 | f [b_] | simple.cpp:29:10:29:10 | f [b_] |
 | simple.cpp:28:10:28:10 | f [a_] | simple.cpp:28:12:28:12 | call to a |
@@ -802,6 +814,19 @@ nodes
 | qualifiers.cpp:48:10:48:14 | outer [inner, a] | semmle.label | outer [inner, a] |
 | qualifiers.cpp:48:16:48:20 | inner [a] | semmle.label | inner [a] |
 | qualifiers.cpp:48:23:48:23 | a | semmle.label | a |
+| realistic.cpp:53:9:53:11 | foo [post update] [bar, baz, ... (4)] | semmle.label | foo [post update] [bar, baz, ... (4)] |
+| realistic.cpp:53:9:53:18 | access to array [post update] [baz, userInput, ... (3)] | semmle.label | access to array [post update] [baz, userInput, ... (3)] |
+| realistic.cpp:53:9:53:66 | ... = ... | semmle.label | ... = ... |
+| realistic.cpp:53:13:53:15 | bar [inner post update] [baz, userInput, ... (3)] | semmle.label | bar [inner post update] [baz, userInput, ... (3)] |
+| realistic.cpp:53:20:53:22 | baz [post update] [userInput, bufferLen] | semmle.label | baz [post update] [userInput, bufferLen] |
+| realistic.cpp:53:25:53:33 | userInput [post update] [bufferLen] | semmle.label | userInput [post update] [bufferLen] |
+| realistic.cpp:53:55:53:64 | call to user_input | semmle.label | call to user_input |
+| realistic.cpp:61:21:61:23 | foo [bar, baz, ... (4)] | semmle.label | foo [bar, baz, ... (4)] |
+| realistic.cpp:61:21:61:30 | access to array [baz, userInput, ... (3)] | semmle.label | access to array [baz, userInput, ... (3)] |
+| realistic.cpp:61:25:61:27 | bar [baz, userInput, ... (3)] | semmle.label | bar [baz, userInput, ... (3)] |
+| realistic.cpp:61:32:61:34 | baz [userInput, bufferLen] | semmle.label | baz [userInput, bufferLen] |
+| realistic.cpp:61:37:61:45 | userInput [bufferLen] | semmle.label | userInput [bufferLen] |
+| realistic.cpp:61:47:61:55 | bufferLen | semmle.label | bufferLen |
 | simple.cpp:26:15:26:15 | f [a_] | semmle.label | f [a_] |
 | simple.cpp:26:15:26:15 | f [b_] | semmle.label | f [b_] |
 | simple.cpp:28:10:28:10 | f [a_] | semmle.label | f [a_] |
@@ -935,6 +960,7 @@ nodes
 | qualifiers.cpp:38:23:38:23 | a | qualifiers.cpp:37:38:37:47 | call to user_input | qualifiers.cpp:38:23:38:23 | a | a flows from $@ | qualifiers.cpp:37:38:37:47 | call to user_input | call to user_input |
 | qualifiers.cpp:43:23:43:23 | a | qualifiers.cpp:42:29:42:38 | call to user_input | qualifiers.cpp:43:23:43:23 | a | a flows from $@ | qualifiers.cpp:42:29:42:38 | call to user_input | call to user_input |
 | qualifiers.cpp:48:23:48:23 | a | qualifiers.cpp:47:31:47:40 | call to user_input | qualifiers.cpp:48:23:48:23 | a | a flows from $@ | qualifiers.cpp:47:31:47:40 | call to user_input | call to user_input |
+| realistic.cpp:61:47:61:55 | bufferLen | realistic.cpp:53:55:53:64 | call to user_input | realistic.cpp:61:47:61:55 | bufferLen | bufferLen flows from $@ | realistic.cpp:53:55:53:64 | call to user_input | call to user_input |
 | simple.cpp:28:12:28:12 | call to a | simple.cpp:39:12:39:21 | call to user_input | simple.cpp:28:12:28:12 | call to a | call to a flows from $@ | simple.cpp:39:12:39:21 | call to user_input | call to user_input |
 | simple.cpp:28:12:28:12 | call to a | simple.cpp:41:12:41:21 | call to user_input | simple.cpp:28:12:28:12 | call to a | call to a flows from $@ | simple.cpp:41:12:41:21 | call to user_input | call to user_input |
 | simple.cpp:29:12:29:12 | call to b | simple.cpp:40:12:40:21 | call to user_input | simple.cpp:29:12:29:12 | call to b | call to b flows from $@ | simple.cpp:40:12:40:21 | call to user_input | call to user_input |
