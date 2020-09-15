@@ -111,7 +111,8 @@ module SQL {
         exists(Method meth, string base, string m, int n |
           (
             meth.hasQualifiedName("database/sql", "DB", m) or
-            meth.hasQualifiedName("database/sql", "Tx", m)
+            meth.hasQualifiedName("database/sql", "Tx", m) or
+            meth.hasQualifiedName("database/sql", "Conn", m)
           ) and
           this = meth.getACall().getArgument(n)
         |
@@ -121,6 +122,29 @@ module SQL {
             or
             m = base + "Context" and n = 1
           )
+        )
+      }
+    }
+
+    /** A query string used in an API function of the standard `database/sql/driver` package. */
+    private class DriverQueryString extends Range {
+      DriverQueryString() {
+        exists(Method meth, int n |
+          (
+            meth.hasQualifiedName("database/sql/driver", "Execer", "Exec") and n = 0
+            or
+            meth.hasQualifiedName("database/sql/driver", "ExecerContext", "ExecContext") and n = 1
+            or
+            meth.hasQualifiedName("database/sql/driver", "Conn", "Prepare") and n = 0
+            or
+            meth.hasQualifiedName("database/sql/driver", "ConnPrepareContext", "PrepareContext") and
+            n = 1
+            or
+            meth.hasQualifiedName("database/sql/driver", "Queryer", "Query") and n = 0
+            or
+            meth.hasQualifiedName("database/sql/driver", "QueryerContext", "QueryContext") and n = 1
+          ) and
+          this = meth.getACall().getArgument(n)
         )
       }
     }
