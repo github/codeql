@@ -12,7 +12,7 @@ typedef struct _myStruct {
 void test2_sink(s64 v, MyStruct s, MyStruct &s_r, MyStruct *s_p)
 {
 	s64 v1 = v * 2; // bad
-	s64 v2 = s.val * 2; // bad [NOT DETECTED]
+	s64 v2 = s.val * 2; // bad
 	s64 v3 = s_r.val * 2; // bad
 	s64 v4 = s_p->val * 2; // bad
 }

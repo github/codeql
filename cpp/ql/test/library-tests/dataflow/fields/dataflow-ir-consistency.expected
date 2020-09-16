@@ -17,6 +17,7 @@ localCallNodes
 postIsNotPre
 postHasUniquePre
 | simple.cpp:65:5:65:22 | Store | PostUpdateNode should have one pre-update node but has 0. |
+| simple.cpp:92:5:92:22 | Store | PostUpdateNode should have one pre-update node but has 0. |
 uniquePostUpdate
 postIsInSameCallable
 reverseRead
