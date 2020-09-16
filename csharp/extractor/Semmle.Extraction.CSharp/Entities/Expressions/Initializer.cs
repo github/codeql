@@ -84,7 +84,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                     // If the target is null, then assume that this is an array initializer (of the form `[...] = ...`)
 
-                    Expression access = target.Symbol is null ?
+                    var access = target.Symbol is null ?
                         new Expression(new ExpressionNodeInfo(Cx, assignment.Left, assignmentEntity, 1).SetKind(ExprKind.ARRAY_ACCESS)) :
                         Access.Create(new ExpressionNodeInfo(Cx, assignment.Left, assignmentEntity, 1), target.Symbol, false, Cx.CreateEntity(target.Symbol));
 
@@ -92,7 +92,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     {
                         // An array/indexer initializer of the form `[...] = ...`
 
-                        int indexChild = 0;
+                        var indexChild = 0;
                         foreach (var arg in iea.ArgumentList.Arguments)
                         {
                             Expression.Create(Cx, arg.Expression, access, indexChild++);
@@ -137,7 +137,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                     var init = (InitializerExpressionSyntax)i;
 
-                    int addChild = 0;
+                    var addChild = 0;
                     foreach (var arg in init.Expressions)
                     {
                         Create(Cx, arg, invocation, addChild++);

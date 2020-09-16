@@ -28,7 +28,10 @@ namespace Semmle.Extraction.CIL.Entities
             get
             {
                 // On Posix, we could get a Windows directory of the form "C:"
-                bool windowsDriveLetter = path.Length == 2 && char.IsLetter(path[0]) && path[1] == ':';
+                var windowsDriveLetter =
+                    path.Length == 2 &&
+                    char.IsLetter(path[0]) &&
+                    path[1] == ':';
 
                 var parent = Path.GetDirectoryName(path);
                 if (parent != null && !windowsDriveLetter)

@@ -18,7 +18,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         protected override void PopulateExpression(TextWriter trapFile)
         {
             SwitchedExpr = Expression.Create(Cx, Syntax.GoverningExpression, this, -1);
-            int child = 0;
+            var child = 0;
             foreach (var arm in Syntax.Arms)
             {
                 new SwitchCase(Cx, arm, this, child++);

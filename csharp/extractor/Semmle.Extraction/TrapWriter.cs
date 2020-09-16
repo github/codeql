@@ -115,7 +115,7 @@ namespace Semmle.Extraction
             if (string.IsNullOrEmpty(archive)) return;
 
             // Calling GetFullPath makes this use the canonical capitalisation, if the file exists.
-            string fullInputPath = Path.GetFullPath(inputPath);
+            var fullInputPath = Path.GetFullPath(inputPath);
 
             ArchivePath(fullInputPath, inputEncoding);
         }
@@ -130,7 +130,7 @@ namespace Semmle.Extraction
             if (string.IsNullOrEmpty(archive)) return;
 
             // Calling GetFullPath makes this use the canonical capitalisation, if the file exists.
-            string fullInputPath = Path.GetFullPath(inputPath);
+            var fullInputPath = Path.GetFullPath(inputPath);
 
             ArchiveContents(fullInputPath, contents);
         }
@@ -216,14 +216,14 @@ namespace Semmle.Extraction
         /// exceed the system path limit of 260 characters.</exception>
         private void ArchivePath(string fullInputPath, Encoding inputEncoding)
         {
-            string contents = File.ReadAllText(fullInputPath, inputEncoding);
+            var contents = File.ReadAllText(fullInputPath, inputEncoding);
             ArchiveContents(fullInputPath, contents);
         }
 
         private void ArchiveContents(string fullInputPath, string contents)
         {
-            string dest = NestPaths(logger, archive, fullInputPath, InnerPathComputation.ABSOLUTE);
-            string tmpSrcFile = Path.GetTempFileName();
+            var dest = NestPaths(logger, archive, fullInputPath, InnerPathComputation.ABSOLUTE);
+            var tmpSrcFile = Path.GetTempFileName();
             File.WriteAllText(tmpSrcFile, contents, utf8Encoding);
             try
             {
@@ -239,7 +239,7 @@ namespace Semmle.Extraction
 
         public static string NestPaths(ILogger logger, string? outerpath, string innerpath, InnerPathComputation innerPathComputation)
         {
-            string nested = innerpath;
+            var nested = innerpath;
             if (!string.IsNullOrEmpty(outerpath))
             {
                 if (!Path.IsPathRooted(innerpath) && innerPathComputation == InnerPathComputation.ABSOLUTE)

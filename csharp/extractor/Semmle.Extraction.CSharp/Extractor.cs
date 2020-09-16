@@ -82,7 +82,7 @@ namespace Semmle.Extraction.CSharp
             {
                 var compilerVersion = new CompilerVersion(commandLineArguments);
 
-                bool preserveSymlinks = Environment.GetEnvironmentVariable("SEMMLE_PRESERVE_SYMLINKS") == "true";
+                var preserveSymlinks = Environment.GetEnvironmentVariable("SEMMLE_PRESERVE_SYMLINKS") == "true";
                 var canonicalPathCache = CanonicalPathCache.Create(logger, 1000, preserveSymlinks ? CanonicalPathCache.Symlinks.Preserve : CanonicalPathCache.Symlinks.Follow);
 
                 if (compilerVersion.SkipExtraction)
@@ -254,7 +254,7 @@ namespace Semmle.Extraction.CSharp
                 }
                 else
                 {
-                    bool referenceFound = false;
+                    var referenceFound = false;
                     {
                         foreach (var composed in referencePaths.Value.
                             Select(path => Path.Combine(path, clref.Reference)).

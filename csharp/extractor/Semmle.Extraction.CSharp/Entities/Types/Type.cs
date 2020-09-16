@@ -104,7 +104,7 @@ namespace Semmle.Extraction.CSharp.Entities
             var baseTypes = new List<Type>();
             if (Symbol.GetNonObjectBaseType(Context) is INamedTypeSymbol @base)
             {
-                Type baseKey = Create(Context, @base);
+                var baseKey = Create(Context, @base);
                 trapFile.extend(this, baseKey.TypeRef);
                 if (Symbol.TypeKind != TypeKind.Struct)
                     baseTypes.Add(baseKey);
@@ -122,7 +122,7 @@ namespace Semmle.Extraction.CSharp.Entities
             var containingType = ContainingType;
             if (containingType != null && Symbol.Kind != SymbolKind.TypeParameter)
             {
-                Type originalDefinition = Symbol.TypeKind == TypeKind.Error ? this : Create(Context, Symbol.OriginalDefinition);
+                var originalDefinition = Symbol.TypeKind == TypeKind.Error ? this : Create(Context, Symbol.OriginalDefinition);
                 trapFile.nested_types(this, containingType, originalDefinition);
             }
             else if (Symbol.ContainingNamespace != null)

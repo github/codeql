@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.Entities
             ContainingType.PopulateGenerics();
             PopulateNullability(trapFile, Symbol.GetAnnotatedType());
 
-            Field unboundFieldKey = Field.Create(Context, Symbol.OriginalDefinition);
+            var unboundFieldKey = Field.Create(Context, Symbol.OriginalDefinition);
             trapFile.fields(this, (Symbol.IsConst ? 2 : 1), Symbol.Name, ContainingType, Type.Type.TypeRef, unboundFieldKey);
 
             PopulateModifiers(trapFile);
@@ -58,7 +58,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             Context.BindComments(this, Location.Symbol);
 
-            int child = 0;
+            var child = 0;
             foreach (var initializer in
                 Symbol.DeclaringSyntaxReferences.
                 Select(n => n.GetSyntax()).

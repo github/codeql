@@ -34,7 +34,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 // omit the "this" parameter, so the parameters are
                 // actually numbered from 1.
                 // This is to be consistent from the original (unreduced) extension method.
-                bool isReducedExtension =
+                var isReducedExtension =
                     Symbol.ContainingSymbol is IMethodSymbol method &&
                     method.MethodKind == MethodKind.ReducedExtension;
                 return Symbol.Ordinal + (isReducedExtension ? 1 : 0);
@@ -91,7 +91,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 // Very rarely, two parameters have the same name according to the data model.
                 // This breaks our database constraints.
                 // Generate an impossible name to ensure that it doesn't conflict.
-                int conflictingCount = Symbol.ContainingSymbol.GetParameters().Count(p => p.Ordinal < Symbol.Ordinal && p.Name == Symbol.Name);
+                var conflictingCount = Symbol.ContainingSymbol.GetParameters().Count(p => p.Ordinal < Symbol.Ordinal && p.Name == Symbol.Name);
                 return conflictingCount > 0 ? Symbol.Name + "`" + conflictingCount : Symbol.Name;
             }
         }

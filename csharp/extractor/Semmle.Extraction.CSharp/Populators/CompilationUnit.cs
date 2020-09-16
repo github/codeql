@@ -101,7 +101,7 @@ namespace Semmle.Extraction.CSharp.Populators
             }
 
             // Gather comments:
-            foreach (SyntaxTrivia trivia in compilationUnit.DescendantTrivia(compilationUnit.Span))
+            foreach (var trivia in compilationUnit.DescendantTrivia(compilationUnit.Span))
             {
                 CommentLine.Extract(Cx, trivia);
             }

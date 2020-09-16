@@ -51,7 +51,7 @@ namespace Semmle.Util
         {
             var kv = new KeyValuePair<string, T>(k, v);
 
-            string root = StripDigits(k);
+            var root = StripDigits(k);
             index.AddAnother(root, kv);
         }
 
@@ -74,7 +74,7 @@ namespace Semmle.Util
         /// <returns>The best match, or null (default).</returns>
         public T? FindMatch(string query, out int distance)
         {
-            string root = StripDigits(query);
+            var root = StripDigits(query);
             if (!index.TryGetValue(root, out var list))
             {
                 distance = 0;
@@ -94,13 +94,13 @@ namespace Semmle.Util
         /// <returns>The stored value.</returns>
         static T? BestMatch(string query, IEnumerable<KeyValuePair<string, T>> candidates, Func<string, string, int> distance, out int bestDistance)
         {
-            T? bestMatch = default(T);
+            var bestMatch = default(T);
             bestDistance = 0;
-            bool first = true;
+            var first = true;
 
             foreach (var candidate in candidates)
             {
-                int d = distance(query, candidate.Key);
+                var d = distance(query, candidate.Key);
                 if (d == 0) return candidate.Value;
 
                 if (first || d < bestDistance)
@@ -121,8 +121,8 @@ namespace Semmle.Util
         /// <returns>String with digits removed.</returns>
         static string StripDigits(string input)
         {
-            StringBuilder result = new StringBuilder();
-            foreach (char c in input.Where(c => !char.IsDigit(c)))
+            var result = new StringBuilder();
+            foreach (var c in input.Where(c => !char.IsDigit(c)))
                 result.Append(c);
             return result.ToString();
         }
@@ -134,9 +134,9 @@ namespace Semmle.Util
         /// <returns>The sequence of integers.</returns>
         public static IEnumerable<int> ExtractIntegers(string input)
         {
-            bool inNumber = false;
-            int value = 0;
-            foreach (char c in input)
+            var inNumber = false;
+            var value = 0;
+            foreach (var c in input)
             {
                 if (char.IsDigit(c))
                 {

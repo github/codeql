@@ -78,7 +78,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             trapFile.expr_call(init, target);
 
-            int child = 0;
+            var child = 0;
             foreach (var arg in initializer.ArgumentList.Arguments)
             {
                 Expression.Create(Context, arg.Expression, init, child++);

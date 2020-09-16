@@ -241,7 +241,7 @@ namespace Semmle.Extraction.CSharp
         public static void BuildArraySuffix(this IArrayTypeSymbol array, TextWriter trapFile)
         {
             trapFile.Write('[');
-            for (int i = 0; i < array.Rank - 1; i++)
+            for (var i = 0; i < array.Rank - 1; i++)
                 trapFile.Write(',');
             trapFile.Write(']');
         }
@@ -349,8 +349,8 @@ namespace Semmle.Extraction.CSharp
 
         static void BuildAnonymousName(this INamedTypeSymbol type, Context cx, TextWriter trapFile)
         {
-            int memberCount = type.GetMembers().OfType<IPropertySymbol>().Count();
-            int hackTypeNumber = memberCount == 1 ? 1 : 0;
+            var memberCount = type.GetMembers().OfType<IPropertySymbol>().Count();
+            var hackTypeNumber = memberCount == 1 ? 1 : 0;
             trapFile.Write("<>__AnonType");
             trapFile.Write(hackTypeNumber);
             trapFile.Write('<');

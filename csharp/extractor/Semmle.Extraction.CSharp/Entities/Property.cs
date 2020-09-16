@@ -76,7 +76,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     Context.PopulateLater(() => Expression.Create(Context, expressionBody, this, 0));
                 }
 
-                int child = 1;
+                var child = 1;
                 foreach (var initializer in declSyntaxReferences.
                     Select(n => n.Initializer).
                     Where(i => i != null))
@@ -120,7 +120,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static Property Create(Context cx, IPropertySymbol prop)
         {
-            bool isIndexer = prop.IsIndexer || prop.Parameters.Any();
+            var isIndexer = prop.IsIndexer || prop.Parameters.Any();
 
             return isIndexer ? Indexer.Create(cx, prop) : PropertyFactory.Instance.CreateEntityFromSymbol(cx, prop);
         }

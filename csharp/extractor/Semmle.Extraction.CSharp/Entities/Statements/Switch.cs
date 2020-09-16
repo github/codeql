@@ -31,7 +31,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         protected override void PopulateStatement(TextWriter trapFile)
         {
             Expression.Create(Cx, Stmt.Expression, this, 0);
-            int childIndex = 0;
+            var childIndex = 0;
 
             foreach (var section in Stmt.Sections)
             {

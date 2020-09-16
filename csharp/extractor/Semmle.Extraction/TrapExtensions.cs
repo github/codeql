@@ -110,7 +110,7 @@ namespace Semmle.Extraction
         /// <returns>The truncated string.</returns>
         private static string TruncateString(string s, ref int bytesRemaining)
         {
-            int outputLen = encoding.GetByteCount(s);
+            var outputLen = encoding.GetByteCount(s);
             if (outputLen > bytesRemaining)
             {
                 outputLen = 0;
@@ -149,7 +149,7 @@ namespace Semmle.Extraction
             if (NeedsTruncation(s))
             {
                 // Slow path
-                int remaining = maxStringBytes;
+                var remaining = maxStringBytes;
                 WriteTruncatedString(trapFile, s, ref remaining);
             }
             else
@@ -169,7 +169,7 @@ namespace Semmle.Extraction
         {
             trapFile.Write(name);
             trapFile.Write('(');
-            int index = 0;
+            var index = 0;
             foreach (var p in @params)
             {
                 trapFile.WriteSeparator(",", ref index);
@@ -246,7 +246,7 @@ namespace Semmle.Extraction
         /// <returns>The original trap builder (fluent interface).</returns>
         public static TextWriter BuildList<T>(this TextWriter trapFile, string separator, IEnumerable<T> items, Action<T, TextWriter> action)
         {
-            bool first = true;
+            var first = true;
             foreach (var item in items)
             {
                 if (first) first = false; else trapFile.Write(separator);

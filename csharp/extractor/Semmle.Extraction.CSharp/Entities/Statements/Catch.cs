@@ -15,8 +15,8 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            bool isSpecificCatchClause = Stmt.Declaration != null;
-            bool hasVariableDeclaration = isSpecificCatchClause && Stmt.Declaration.Identifier.RawKind != 0;
+            var isSpecificCatchClause = Stmt.Declaration != null;
+            var hasVariableDeclaration = isSpecificCatchClause && Stmt.Declaration.Identifier.RawKind != 0;
 
             if (hasVariableDeclaration) // A catch clause of the form 'catch(Ex ex) { ... }'
             {

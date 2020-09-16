@@ -19,7 +19,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            int child = -1;
+            var child = -1;
 
             if (Stmt.Declaration != null)
                 VariableDeclarations.Populate(Cx, Stmt.Declaration, this, child, childIncrement: -1);

@@ -93,7 +93,7 @@ namespace Semmle.Util
         /// <returns>The hash code.</returns>
         public static int SequenceHash<T>(this IEnumerable<T> items) where T : notnull
         {
-            int h = 0;
+            var h = 0;
             foreach (var i in items)
                 h = h * 7 + i.GetHashCode();
             return h;

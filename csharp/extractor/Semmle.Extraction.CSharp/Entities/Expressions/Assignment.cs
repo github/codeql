@@ -83,7 +83,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         static ExprKind GetKind(Context cx, AssignmentExpressionSyntax syntax)
         {
             var leftSymbol = cx.GetSymbolInfo(syntax.Left);
-            bool assignEvent = leftSymbol.Symbol != null && leftSymbol.Symbol is IEventSymbol;
+            var assignEvent = leftSymbol.Symbol != null && leftSymbol.Symbol is IEventSymbol;
             var kind = GetAssignmentOperation(cx, syntax);
             var leftType = cx.GetType(syntax.Left);
 

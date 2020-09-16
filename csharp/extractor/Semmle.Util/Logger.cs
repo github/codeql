@@ -67,7 +67,7 @@ namespace Semmle.Util.Logging
 
             try
             {
-                string? dir = Path.GetDirectoryName(outputFile);
+                var dir = Path.GetDirectoryName(outputFile);
                 if (!string.IsNullOrEmpty(dir) && !System.IO.Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
                 writer = new PidStreamWriter(

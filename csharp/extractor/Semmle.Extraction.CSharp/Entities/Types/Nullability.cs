@@ -75,7 +75,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override int GetHashCode()
         {
-            int h = Annotation;
+            var h = Annotation;
 
             foreach (var t in NullableParameters)
                 h = h * 5 + t.GetHashCode();
@@ -116,7 +116,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             trapFile.nullability(this, Symbol.Annotation);
 
-            int i = 0;
+            var i = 0;
             foreach (var s in Symbol.NullableParameters)
             {
                 trapFile.nullability_parent(Create(Context, s), i, this);

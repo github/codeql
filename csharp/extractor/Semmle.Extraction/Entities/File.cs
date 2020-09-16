@@ -33,10 +33,10 @@ namespace Semmle.Extraction.Entities
             {
                 var fi = new FileInfo(Path);
 
-                string extension = fi.Extension ?? "";
-                string name = fi.Name;
+                var extension = fi.Extension ?? "";
+                var name = fi.Name;
                 name = name.Substring(0, name.Length - extension.Length);
-                int fromSource = extension.ToLowerInvariant().Equals(".cs") ? 1 : 2;
+                var fromSource = extension.ToLowerInvariant().Equals(".cs") ? 1 : 2;
 
                 // remove the dot from the extension
                 if (extension.Length > 0)

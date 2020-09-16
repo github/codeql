@@ -44,7 +44,7 @@ namespace Semmle.Extraction.CSharp.Entities
             else
             {
                 // A "using static"
-                Type m = Type.Create(Cx, (ITypeSymbol)info.Symbol);
+                var m = Type.Create(Cx, (ITypeSymbol)info.Symbol);
                 trapFile.using_static_directives(this, m.TypeRef);
                 trapFile.using_directive_location(this, Cx.Create(ReportingLocation));
             }

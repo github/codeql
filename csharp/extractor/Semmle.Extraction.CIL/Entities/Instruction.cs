@@ -279,7 +279,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                if (!OpPayload.TryGetValue(OpCode, out Payload result))
+                if (!OpPayload.TryGetValue(OpCode, out var result))
                     throw new InternalError("Unknown op code " + OpCode);
                 return result;
             }
@@ -362,7 +362,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                int offset = Offset;
+                var offset = Offset;
 
                 if (Method.Implementation is null)
                 {
@@ -460,11 +460,11 @@ namespace Semmle.Extraction.CIL.Entities
                     target = Offset + payloadValue + 5;
                     break;
                 case Payload.Switch:
-                    int end = Offset + Width;
+                    var end = Offset + Width;
 
-                    int offset = Offset + 5;
+                    var offset = Offset + 5;
 
-                    for (int b = 0; b < payloadValue; ++b, offset += 4)
+                    for (var b = 0; b < payloadValue; ++b, offset += 4)
                     {
                         target = BitConverter.ToInt32(data, offset) + end;
                         if (!jump_table.TryGetValue(target, out inst))

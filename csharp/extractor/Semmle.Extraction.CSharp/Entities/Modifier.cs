@@ -74,7 +74,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static void ExtractModifiers(Context cx, TextWriter trapFile, IEntity key, ISymbol symbol)
         {
-            bool interfaceDefinition = symbol.ContainingType != null
+            var interfaceDefinition = symbol.ContainingType != null
                 && symbol.ContainingType.Kind == SymbolKind.NamedType
                 && symbol.ContainingType.TypeKind == TypeKind.Interface;
 
@@ -88,7 +88,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (symbol.IsSealed)
                 HasModifier(cx, trapFile, key, "sealed");
 
-            bool fromSource = symbol.DeclaringSyntaxReferences.Length > 0;
+            var fromSource = symbol.DeclaringSyntaxReferences.Length > 0;
 
             if (symbol.IsStatic && !(symbol.Kind == SymbolKind.Field && ((IFieldSymbol)symbol).IsConst && !fromSource))
                 HasModifier(cx, trapFile, key, "static");
@@ -117,7 +117,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (symbol.Kind == SymbolKind.NamedType)
             {
-                INamedTypeSymbol nt = symbol as INamedTypeSymbol;
+                var nt = symbol as INamedTypeSymbol;
                 if (nt is null)
                     throw new InternalError(symbol, "Symbol kind is inconsistent with its type");
 

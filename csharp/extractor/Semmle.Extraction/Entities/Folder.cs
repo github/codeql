@@ -25,7 +25,7 @@ namespace Semmle.Extraction.Entities
             // Linux/Windows: java.io.File.getName() returns ""
             // On Linux: System.IO.DirectoryInfo.Name returns "/"
             // On Windows: System.IO.DirectoryInfo.Name returns "L:\"
-            string shortName = Symbol.Parent == null ? "" : Symbol.Name;
+            var shortName = Symbol.Parent == null ? "" : Symbol.Name;
 
             trapFile.folders(this, File.PathAsDatabaseString(Path), shortName);
             if (Symbol.Parent != null)

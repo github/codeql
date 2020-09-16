@@ -16,7 +16,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (Symbol.ContainingNamespace != null)
             {
-                Namespace parent = Create(Context, Symbol.ContainingNamespace);
+                var parent = Create(Context, Symbol.ContainingNamespace);
                 trapFile.parent_namespace(this, parent);
             }
         }

@@ -169,7 +169,7 @@ namespace Semmle.Extraction.CSharp.Entities
         protected static void AddParametersToId(Context cx, TextWriter trapFile, IMethodSymbol method)
         {
             trapFile.Write('(');
-            int index = 0;
+            var index = 0;
 
             var @params = method.MethodKind == MethodKind.ReducedExtension
                 ? method.ReducedFrom.Parameters
@@ -293,7 +293,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (IsGeneric)
             {
-                int child = 0;
+                var child = 0;
 
                 if (isFullyConstructed)
                 {

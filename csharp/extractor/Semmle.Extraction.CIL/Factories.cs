@@ -40,7 +40,7 @@ namespace Semmle.Extraction.CIL
                 e.WriteId(writer);
                 var id = writer.ToString();
 
-                if (debugLabels.TryGetValue(id, out IExtractedEntity? previousEntity))
+                if (debugLabels.TryGetValue(id, out var previousEntity))
                 {
                     Cx.Extractor.Message(new Message("Duplicate trap ID", id, null, severity: Util.Logging.Severity.Warning));
                 }
@@ -68,7 +68,7 @@ namespace Semmle.Extraction.CIL
 
         public PrimitiveType Create(PrimitiveTypeCode code)
         {
-            PrimitiveType e = primitiveTypes[(int)code];
+            var e = primitiveTypes[(int)code];
 
             if (e is null)
             {
@@ -194,7 +194,7 @@ namespace Semmle.Extraction.CIL
         Namespace CreateNamespace(NamespaceDefinitionHandle handle)
         {
             if (handle.IsNil) return GlobalNamespace;
-            NamespaceDefinition nd = MdReader.GetNamespaceDefinition(handle);
+            var nd = MdReader.GetNamespaceDefinition(handle);
             return Populate(new Namespace(this, GetString(nd.Name), Create(nd.Parent)));
         }
         #endregion
@@ -236,7 +236,7 @@ namespace Semmle.Extraction.CIL
         /// <returns>The short name.</returns>
         public string ShortName(StringHandle handle)
         {
-            string str = MdReader.GetString(handle);
+            var str = MdReader.GetString(handle);
             if (str.EndsWith(".ctor")) return ".ctor";
             if (str.EndsWith(".cctor")) return ".cctor";
             var dot = str.LastIndexOf('.');

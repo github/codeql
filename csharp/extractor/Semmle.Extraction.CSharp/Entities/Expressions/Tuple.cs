@@ -15,7 +15,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            int child = 0;
+            var child = 0;
             foreach (var argument in Syntax.Arguments.Select(a => a.Expression))
             {
                 Expression.Create(Cx, argument, this, child++);

@@ -50,11 +50,11 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             if (conversion.MethodSymbol != null)
             {
-                bool convertedToDelegate = Entities.Type.IsDelegate(convertedType.Symbol);
+                var convertedToDelegate = Entities.Type.IsDelegate(convertedType.Symbol);
 
                 if (convertedToDelegate)
                 {
-                    bool isExplicitConversion =
+                    var isExplicitConversion =
                         info.Parent is ExplicitObjectCreation objectCreation &&
                         objectCreation.Kind == ExprKind.EXPLICIT_DELEGATE_CREATION;
 
@@ -73,7 +73,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     return new ImplicitCast(info, conversion.MethodSymbol);
             }
 
-            bool implicitUpcast = conversion.IsImplicit &&
+            var implicitUpcast = conversion.IsImplicit &&
                 convertedType.Symbol != null &&
                 !conversion.IsBoxing &&
                 (

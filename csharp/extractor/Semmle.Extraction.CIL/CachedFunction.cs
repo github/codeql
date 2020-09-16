@@ -34,7 +34,7 @@ namespace Semmle.Extraction.CIL
         {
             get
             {
-                if (!cache.TryGetValue(src, out TTarget result))
+                if (!cache.TryGetValue(src, out var result))
                 {
                     result = generator(src);
                     cache[src] = result;

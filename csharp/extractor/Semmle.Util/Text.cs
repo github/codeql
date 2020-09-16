@@ -42,7 +42,7 @@ namespace Semmle.Util
         public string GetAll()
         {
             using var sw = new StringWriter();
-            foreach (string s in lines)
+            foreach (var s in lines)
             {
                 sw.WriteLine(s);
             }
@@ -71,7 +71,7 @@ namespace Semmle.Util
             using var sw = new StringWriter();
             string line;
 
-            for (int i = startRow; i <= endRow; ++i)
+            for (var i = startRow; i <= endRow; ++i)
             {
                 if (i == startRow && i == endRow)
                 {

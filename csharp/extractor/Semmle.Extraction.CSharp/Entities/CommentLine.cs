@@ -36,14 +36,14 @@ namespace Semmle.Extraction.CSharp.Entities
                     var split = text.Split('\n');
                     var currentLocation = trivia.GetLocation().SourceSpan.Start - 3;
 
-                    for (int line = 0; line < split.Length - 1; ++line)
+                    for (var line = 0; line < split.Length - 1; ++line)
                     {
-                        string fullLine = split[line];
+                        var fullLine = split[line];
                         var nextLineLocation = currentLocation + fullLine.Length + 1;
                         fullLine = fullLine.TrimEnd('\r');
-                        string trimmedLine = fullLine;
+                        var trimmedLine = fullLine;
 
-                        int leadingSpaces = trimmedLine.IndexOf('/');
+                        var leadingSpaces = trimmedLine.IndexOf('/');
                         if (leadingSpaces != -1)
                         {
                             fullLine = fullLine.Substring(leadingSpaces);
@@ -66,7 +66,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 case SyntaxKind.SingleLineCommentTrivia:
                     {
-                        string contents = trivia.ToString().Substring(2);
+                        var contents = trivia.ToString().Substring(2);
                         var commentType = CommentLineType.Singleline;
                         if (contents.Length > 0 && contents[0] == '/')
                         {
@@ -86,12 +86,12 @@ namespace Semmle.Extraction.CSharp.Entities
                     split = text.Split('\n');
                     currentLocation = trivia.GetLocation().SourceSpan.Start;
 
-                    for (int line = 0; line < split.Length; ++line)
+                    for (var line = 0; line < split.Length; ++line)
                     {
-                        string fullLine = split[line];
+                        var fullLine = split[line];
                         var nextLineLocation = currentLocation + fullLine.Length + 1;
                         fullLine = fullLine.TrimEnd('\r');
-                        string trimmedLine = fullLine;
+                        var trimmedLine = fullLine;
                         if (line == 0) trimmedLine = trimmedLine.Substring(2);
                         if (line == split.Length - 1) trimmedLine = trimmedLine.Substring(0, trimmedLine.Length - 2);
                         trimmedLine = trimmedLine.Trim();

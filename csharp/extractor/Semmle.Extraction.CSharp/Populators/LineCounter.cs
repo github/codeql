@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.Populators
         {
             public override LineCounts DefaultVisit(SyntaxNode node)
             {
-                string text = node.SyntaxTree.GetText().GetSubText(node.GetLocation().SourceSpan).ToString();
+                var text = node.SyntaxTree.GetText().GetSubText(node.GetLocation().SourceSpan).ToString();
                 return Semmle.Util.LineCounter.ComputeLineCounts(text);
             }
 
@@ -23,12 +23,12 @@ namespace Semmle.Extraction.CSharp.Populators
 
             public static LineCounts Visit(SyntaxToken identifier, SyntaxNode body)
             {
-                int start = identifier.GetLocation().SourceSpan.Start;
-                int end = body.GetLocation().SourceSpan.End - 1;
+                var start = identifier.GetLocation().SourceSpan.Start;
+                var end = body.GetLocation().SourceSpan.End - 1;
 
                 var textSpan = new Microsoft.CodeAnalysis.Text.TextSpan(start, end - start);
 
-                string text = body.SyntaxTree.GetText().GetSubText(textSpan) + "\r\n";
+                var text = body.SyntaxTree.GetText().GetSubText(textSpan) + "\r\n";
                 return Semmle.Util.LineCounter.ComputeLineCounts(text);
             }
 

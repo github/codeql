@@ -142,12 +142,12 @@ namespace Semmle.Extraction
             {
                 var lines = File.ReadAllLines(layout);
 
-                int i = 0;
+                var i = 0;
                 while (!lines[i].StartsWith("#"))
                     i++;
                 while (i < lines.Length)
                 {
-                    LayoutBlock block = new LayoutBlock(lines, ref i);
+                    var block = new LayoutBlock(lines, ref i);
                     blocks.Add(block);
                 }
 
@@ -199,7 +199,7 @@ namespace Semmle.Extraction
 
         static string? ReadVariable(string name, string line)
         {
-            string prefix = name + "=";
+            var prefix = name + "=";
             if (!line.StartsWith(prefix))
                 return null;
             return line.Substring(prefix.Length).Trim();
@@ -209,10 +209,10 @@ namespace Semmle.Extraction
         {
             // first line: #name
             i++;
-            string? trapFolder = ReadVariable("TRAP_FOLDER", lines[i++]);
+            var trapFolder = ReadVariable("TRAP_FOLDER", lines[i++]);
             // Don't care about ODASA_DB.
             ReadVariable("ODASA_DB", lines[i++]);
-            string? sourceArchive = ReadVariable("SOURCE_ARCHIVE", lines[i++]);
+            var sourceArchive = ReadVariable("SOURCE_ARCHIVE", lines[i++]);
 
             Directories = new Layout.SubProject(trapFolder, sourceArchive);
             // Don't care about ODASA_BUILD_ERROR_DIR.
@@ -225,9 +225,9 @@ namespace Semmle.Extraction
 
         public bool Matches(string path)
         {
-            bool matches = false;
+            var matches = false;
             path = Condition.Normalise(path);
-            foreach (Condition condition in conditions)
+            foreach (var condition in conditions)
             {
                 if (condition.Include)
                     matches |= path.StartsWith(condition.Prefix);
