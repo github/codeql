@@ -361,7 +361,7 @@ class DataFlowType extends TDataFlowType {
 }
 
 /** A node that performs a type cast. */
-class CastNode extends Node {
+class CastNode extends CfgNode {
   CastNode() { none() }
 }
 
@@ -423,6 +423,8 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   dictStoreStep(nodeFrom, c, nodeTo)
   or
   comprehensionStoreStep(nodeFrom, c, nodeTo)
+  or
+  attributeStoreStep(nodeFrom, c, nodeTo)
 }
 
 /** Data flows from an element of a list to the list. */
@@ -498,6 +500,30 @@ predicate comprehensionStoreStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
 }
 
 /**
+ * In
+ * ```python
+ * obj.foo = x
+ * ```
+ * data flows from `x` to (the post-update node for) `obj` via assignment to `foo`.
+ */
+predicate attributeStoreStep(CfgNode nodeFrom, Content c, PostUpdateNode nodeTo) {
+  exists(AssignStmt a, Attribute attr |
+    a.getValue().getAFlowNode() = nodeFrom.getNode() and
+    a.getATarget().(Attribute) = attr and
+    attr.getName() = c.(AttributeContent).getAttribute() and
+    attr.getObject().getAFlowNode() = nodeTo.getPreUpdateNode().(CfgNode).getNode() and
+    attr.getCtx() instanceof Store
+  )
+  or
+  exists(AssignExpr ae |
+    ae.getValue().getAFlowNode() = nodeFrom.getNode() and
+    ae.getTarget().(Attribute).getName() = c.(AttributeContent).getAttribute() and
+    ae.getTarget().(Attribute).getObject().getAFlowNode() =
+      nodeTo.getPreUpdateNode().(CfgNode).getNode()
+  )
+}
+
+/**
  * Holds if data can flow from `nodeFrom` to `nodeTo` via a read of content `c`.
  */
 predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
@@ -506,6 +532,8 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   popReadStep(nodeFrom, c, nodeTo)
   or
   comprehensionReadStep(nodeFrom, c, nodeTo)
+  or
+  attributeReadStep(nodeFrom, c, nodeTo)
 }
 
 /** Data flows from a sequence to a subscript of the sequence. */
@@ -589,6 +617,22 @@ predicate comprehensionReadStep(CfgNode nodeFrom, Content c, EssaNode nodeTo) {
     c instanceof ListElementContent
     or
     c instanceof SetElementContent
+  )
+}
+
+/**
+ * In
+ * ```python
+ * obj.foo
+ * ```
+ * data flows from `obj` to `obj.foo` via a read from `foo`.
+ */
+predicate attributeReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
+  exists(Attribute attr |
+    nodeTo.asCfgNode().(AttrNode).getNode() = attr and
+    nodeFrom.asCfgNode() = attr.getObject().getAFlowNode() and
+    attr.getName() = c.(AttributeContent).getAttribute() and
+    attr.getCtx() instanceof Load
   )
 }
 

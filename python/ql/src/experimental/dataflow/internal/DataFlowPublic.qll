@@ -202,7 +202,9 @@ newtype TContent =
     key = any(Keyword kw).getArg()
   } or
   /** An element of a dictionary at any key. */
-  TDictionaryElementAnyContent()
+  TDictionaryElementAnyContent() or
+  /** An object attribute. */
+  TAttributeContent(string attr) { attr = any(Attribute a).getName() }
 
 class Content extends TContent {
   /** Gets a textual representation of this element. */
@@ -210,12 +212,10 @@ class Content extends TContent {
 }
 
 class ListElementContent extends TListElementContent, Content {
-  /** Gets a textual representation of this element. */
   override string toString() { result = "List element" }
 }
 
 class SetElementContent extends TSetElementContent, Content {
-  /** Gets a textual representation of this element. */
   override string toString() { result = "Set element" }
 }
 
@@ -224,10 +224,9 @@ class TupleElementContent extends TTupleElementContent, Content {
 
   TupleElementContent() { this = TTupleElementContent(index) }
 
-  /** Gets the index for this tuple element */
+  /** Gets the index for this tuple element. */
   int getIndex() { result = index }
 
-  /** Gets a textual representation of this element. */
   override string toString() { result = "Tuple element at index " + index.toString() }
 }
 
@@ -236,14 +235,23 @@ class DictionaryElementContent extends TDictionaryElementContent, Content {
 
   DictionaryElementContent() { this = TDictionaryElementContent(key) }
 
-  /** Gets the index for this tuple element */
+  /** Gets the key for this dictionary element. */
   string getKey() { result = key }
 
-  /** Gets a textual representation of this element. */
   override string toString() { result = "Dictionary element at key " + key }
 }
 
 class DictionaryElementAnyContent extends TDictionaryElementAnyContent, Content {
-  /** Gets a textual representation of this element. */
   override string toString() { result = "Any dictionary element" }
+}
+
+class AttributeContent extends TAttributeContent, Content {
+  private string attr;
+
+  AttributeContent() { this = TAttributeContent(attr) }
+
+  /** Gets the name of the attribute under which this content is stored. */
+  string getAttribute() { result = attr }
+
+  override string toString() { result = "Attribute " + attr }
 }

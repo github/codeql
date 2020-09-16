@@ -1,3 +1,25 @@
 edges
+| test.py:29:12:29:16 | [post] ControlFlowNode for myobj [Attribute foo] | test.py:30:10:30:14 | ControlFlowNode for myobj [Attribute foo] |
+| test.py:29:19:29:24 | ControlFlowNode for SOURCE | test.py:29:12:29:16 | [post] ControlFlowNode for myobj [Attribute foo] |
+| test.py:30:10:30:14 | ControlFlowNode for myobj [Attribute foo] | test.py:30:10:30:18 | ControlFlowNode for Attribute |
+| test.py:34:9:34:14 | ControlFlowNode for SOURCE | test.py:38:17:38:17 | ControlFlowNode for x |
+| test.py:38:5:38:5 | [post] ControlFlowNode for a [Attribute obj, Attribute foo] | test.py:41:10:41:10 | ControlFlowNode for a [Attribute obj, Attribute foo] |
+| test.py:38:5:38:9 | [post] ControlFlowNode for Attribute [Attribute foo] | test.py:38:5:38:5 | [post] ControlFlowNode for a [Attribute obj, Attribute foo] |
+| test.py:38:17:38:17 | ControlFlowNode for x | test.py:38:5:38:9 | [post] ControlFlowNode for Attribute [Attribute foo] |
+| test.py:41:10:41:10 | ControlFlowNode for a [Attribute obj, Attribute foo] | test.py:41:10:41:14 | ControlFlowNode for Attribute [Attribute foo] |
+| test.py:41:10:41:14 | ControlFlowNode for Attribute [Attribute foo] | test.py:41:10:41:18 | ControlFlowNode for Attribute |
 nodes
+| test.py:29:12:29:16 | [post] ControlFlowNode for myobj [Attribute foo] | semmle.label | [post] ControlFlowNode for myobj [Attribute foo] |
+| test.py:29:19:29:24 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:30:10:30:14 | ControlFlowNode for myobj [Attribute foo] | semmle.label | ControlFlowNode for myobj [Attribute foo] |
+| test.py:30:10:30:18 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:34:9:34:14 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| test.py:38:5:38:5 | [post] ControlFlowNode for a [Attribute obj, Attribute foo] | semmle.label | [post] ControlFlowNode for a [Attribute obj, Attribute foo] |
+| test.py:38:5:38:9 | [post] ControlFlowNode for Attribute [Attribute foo] | semmle.label | [post] ControlFlowNode for Attribute [Attribute foo] |
+| test.py:38:17:38:17 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| test.py:41:10:41:10 | ControlFlowNode for a [Attribute obj, Attribute foo] | semmle.label | ControlFlowNode for a [Attribute obj, Attribute foo] |
+| test.py:41:10:41:14 | ControlFlowNode for Attribute [Attribute foo] | semmle.label | ControlFlowNode for Attribute [Attribute foo] |
+| test.py:41:10:41:18 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 #select
+| test.py:30:10:30:18 | ControlFlowNode for Attribute | test.py:29:19:29:24 | ControlFlowNode for SOURCE | test.py:30:10:30:18 | ControlFlowNode for Attribute | <message> |
+| test.py:41:10:41:18 | ControlFlowNode for Attribute | test.py:34:9:34:14 | ControlFlowNode for SOURCE | test.py:41:10:41:18 | ControlFlowNode for Attribute | <message> |
