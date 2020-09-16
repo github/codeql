@@ -74,8 +74,10 @@ namespace Semmle.Extraction.CIL
 
             if (e is null)
             {
-                e = new PrimitiveType(this, code);
-                e.Label = cx.GetNewLabel();
+                e = new PrimitiveType(this, code)
+                {
+                    Label = cx.GetNewLabel()
+                };
                 cx.DefineLabel(e, cx.TrapWriter.Writer, cx.Extractor);
                 primitiveTypes[(int)code] = e;
             }

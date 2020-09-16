@@ -29,10 +29,12 @@ namespace Semmle.Extraction.CIL.Entities
             cx.assembly = this;
             var def = cx.mdReader.GetAssemblyDefinition();
 
-            assemblyName = new AssemblyName();
-            assemblyName.Name = cx.mdReader.GetString(def.Name);
-            assemblyName.Version = def.Version;
-            assemblyName.CultureInfo = new CultureInfo(cx.mdReader.GetString(def.Culture));
+            assemblyName = new AssemblyName
+            {
+                Name = cx.mdReader.GetString(def.Name),
+                Version = def.Version,
+                CultureInfo = new CultureInfo(cx.mdReader.GetString(def.Culture))
+            };
 
             if (!def.PublicKey.IsNil)
                 assemblyName.SetPublicKey(cx.mdReader.GetBlobBytes(def.PublicKey));
