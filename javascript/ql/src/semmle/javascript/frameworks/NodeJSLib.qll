@@ -726,13 +726,8 @@ module NodeJSLib {
         astNode.getParameter(0).getName() = request and
         astNode.getParameter(1).getName() = response
       |
-        not (
-          // heuristic: not a class method (Node.js invokes this with a function call)
-          astNode = any(MethodDefinition def).getBody()
-          or
-          // heuristic: does not return anything (Node.js will not use the return value)
-          exists(astNode.getAReturnStmt().getExpr())
-        )
+        // heuristic: not a class method (Node.js invokes this with a function call)
+        not astNode = any(MethodDefinition def).getBody()
       )
     }
   }

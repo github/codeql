@@ -66,6 +66,10 @@ test_ResponseExpr
 | src/indirect2.js:15:3:15:5 | res | src/indirect2.js:13:1:16:1 | functio ... \\"");\\n} |
 | src/indirect.js:16:26:16:28 | res | src/indirect.js:16:12:20:5 | functio ... ;\\n    } |
 | src/indirect.js:19:38:19:40 | res | src/indirect.js:16:12:20:5 | functio ... ;\\n    } |
+| src/indirect.js:25:30:25:32 | res | src/indirect.js:25:24:27:3 | (req, r ... ");\\n  } |
+| src/indirect.js:26:5:26:7 | res | src/indirect.js:25:24:27:3 | (req, r ... ");\\n  } |
+| src/indirect.js:28:29:28:31 | res | src/indirect.js:28:15:30:3 | functio ... ");\\n  } |
+| src/indirect.js:29:5:29:7 | res | src/indirect.js:28:15:30:3 | functio ... ");\\n  } |
 test_HeaderDefinition
 | src/http.js:7:3:7:42 | res.wri ... rget }) | src/http.js:4:32:10:1 | functio ... .foo;\\n} |
 | src/http.js:13:3:13:44 | res.set ... /html') | src/http.js:12:19:16:1 | functio ... ar");\\n} |
@@ -151,6 +155,10 @@ test_RouteHandler_getAResponseExpr
 | src/indirect2.js:13:1:16:1 | functio ... \\"");\\n} | src/indirect2.js:15:3:15:5 | res |
 | src/indirect.js:16:12:20:5 | functio ... ;\\n    } | src/indirect.js:16:26:16:28 | res |
 | src/indirect.js:16:12:20:5 | functio ... ;\\n    } | src/indirect.js:19:38:19:40 | res |
+| src/indirect.js:25:24:27:3 | (req, r ... ");\\n  } | src/indirect.js:25:30:25:32 | res |
+| src/indirect.js:25:24:27:3 | (req, r ... ");\\n  } | src/indirect.js:26:5:26:7 | res |
+| src/indirect.js:28:15:30:3 | functio ... ");\\n  } | src/indirect.js:28:29:28:31 | res |
+| src/indirect.js:28:15:30:3 | functio ... ");\\n  } | src/indirect.js:29:5:29:7 | res |
 test_ServerDefinition_getARouteHandler
 | createServer.js:2:1:2:42 | https.c ... es) {}) | createServer.js:2:20:2:41 | functio ... res) {} |
 | createServer.js:3:1:3:45 | https.c ... es) {}) | createServer.js:3:23:3:44 | functio ... res) {} |
@@ -166,12 +174,16 @@ test_ServerDefinition_getARouteHandler
 | src/indirect2.js:18:14:18:35 | http.cr ... er(get) | src/indirect2.js:9:1:11:1 | functio ... res);\\n} |
 | src/indirect2.js:18:14:18:35 | http.cr ... er(get) | src/indirect2.js:13:1:16:1 | functio ... \\"");\\n} |
 | src/indirect.js:34:14:34:58 | http.cr ... dler()) | src/indirect.js:16:12:20:5 | functio ... ;\\n    } |
+| src/indirect.js:34:14:34:58 | http.cr ... dler()) | src/indirect.js:25:24:27:3 | (req, r ... ");\\n  } |
+| src/indirect.js:34:14:34:58 | http.cr ... dler()) | src/indirect.js:28:15:30:3 | functio ... ");\\n  } |
 test_ResponseSendArgument
 | src/http.js:14:13:14:17 | "foo" | src/http.js:12:19:16:1 | functio ... ar");\\n} |
 | src/http.js:15:11:15:15 | "bar" | src/http.js:12:19:16:1 | functio ... ar");\\n} |
 | src/http.js:64:11:64:16 | "bar2" | src/http.js:62:19:65:1 | functio ... r2");\\n} |
 | src/https.js:14:13:14:17 | "foo" | src/https.js:12:20:16:1 | functio ... ar");\\n} |
 | src/https.js:15:11:15:15 | "bar" | src/https.js:12:20:16:1 | functio ... ar");\\n} |
+| src/indirect.js:26:13:26:17 | "foo" | src/indirect.js:25:24:27:3 | (req, r ... ");\\n  } |
+| src/indirect.js:29:13:29:17 | "bar" | src/indirect.js:28:15:30:3 | functio ... ");\\n  } |
 test_RouteSetup_getARouteHandler
 | createServer.js:2:1:2:42 | https.c ... es) {}) | createServer.js:2:20:2:41 | functio ... res) {} |
 | createServer.js:3:1:3:45 | https.c ... es) {}) | createServer.js:3:23:3:44 | functio ... res) {} |
@@ -196,6 +208,8 @@ test_RouteSetup_getARouteHandler
 | src/indirect.js:34:14:34:58 | http.cr ... dler()) | src/indirect.js:16:12:20:16 | functio ... d(this) |
 | src/indirect.js:34:14:34:58 | http.cr ... dler()) | src/indirect.js:17:21:17:35 | routes[req.url] |
 | src/indirect.js:34:14:34:58 | http.cr ... dler()) | src/indirect.js:17:40:17:50 | routes['*'] |
+| src/indirect.js:34:14:34:58 | http.cr ... dler()) | src/indirect.js:25:24:27:3 | (req, r ... ");\\n  } |
+| src/indirect.js:34:14:34:58 | http.cr ... dler()) | src/indirect.js:28:15:30:3 | functio ... ");\\n  } |
 | src/indirect.js:34:14:34:58 | http.cr ... dler()) | src/indirect.js:34:32:34:57 | appServ ... ndler() |
 test_ClientRequest_getADataNode
 | src/http.js:27:16:27:73 | http.re ... POST'}) | src/http.js:50:16:50:22 | 'stuff' |
@@ -229,6 +243,8 @@ test_RouteHandler
 | src/indirect2.js:9:1:11:1 | functio ... res);\\n} | src/indirect2.js:18:14:18:35 | http.cr ... er(get) |
 | src/indirect2.js:13:1:16:1 | functio ... \\"");\\n} | src/indirect2.js:18:14:18:35 | http.cr ... er(get) |
 | src/indirect.js:16:12:20:5 | functio ... ;\\n    } | src/indirect.js:34:14:34:58 | http.cr ... dler()) |
+| src/indirect.js:25:24:27:3 | (req, r ... ");\\n  } | src/indirect.js:34:14:34:58 | http.cr ... dler()) |
+| src/indirect.js:28:15:30:3 | functio ... ");\\n  } | src/indirect.js:34:14:34:58 | http.cr ... dler()) |
 test_RequestExpr
 | createServer.js:2:30:2:32 | req | createServer.js:2:20:2:41 | functio ... res) {} |
 | createServer.js:3:33:3:35 | req | createServer.js:3:23:3:44 | functio ... res) {} |
@@ -255,6 +271,8 @@ test_RequestExpr
 | src/indirect.js:16:21:16:23 | req | src/indirect.js:16:12:20:5 | functio ... ;\\n    } |
 | src/indirect.js:17:28:17:30 | req | src/indirect.js:16:12:20:5 | functio ... ;\\n    } |
 | src/indirect.js:19:33:19:35 | req | src/indirect.js:16:12:20:5 | functio ... ;\\n    } |
+| src/indirect.js:25:25:25:27 | req | src/indirect.js:25:24:27:3 | (req, r ... ");\\n  } |
+| src/indirect.js:28:24:28:26 | req | src/indirect.js:28:15:30:3 | functio ... ");\\n  } |
 test_SystemCommandExecution_getAnArgumentForCommand
 | exec.js:3:1:3:38 | cp.exec ... "], cb) | exec.js:3:21:3:33 | ["--version"] |
 | exec.js:4:1:4:47 | cp.exec ... sion"]) | exec.js:4:23:4:46 | ["-c",  ... rsion"] |
@@ -290,3 +308,5 @@ test_RouteHandler_getARequestExpr
 | src/indirect.js:16:12:20:5 | functio ... ;\\n    } | src/indirect.js:16:21:16:23 | req |
 | src/indirect.js:16:12:20:5 | functio ... ;\\n    } | src/indirect.js:17:28:17:30 | req |
 | src/indirect.js:16:12:20:5 | functio ... ;\\n    } | src/indirect.js:19:33:19:35 | req |
+| src/indirect.js:25:24:27:3 | (req, r ... ");\\n  } | src/indirect.js:25:25:25:27 | req |
+| src/indirect.js:28:15:30:3 | functio ... ");\\n  } | src/indirect.js:28:24:28:26 | req |
