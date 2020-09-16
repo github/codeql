@@ -1,7 +1,6 @@
 using Microsoft.CodeAnalysis;
 using System;
 using System.IO;
-using System.Reflection;
 
 namespace Semmle.Extraction.CSharp.Entities
 {

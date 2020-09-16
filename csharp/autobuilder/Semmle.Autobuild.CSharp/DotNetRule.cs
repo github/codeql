@@ -7,7 +7,6 @@ using System.IO;
 using Semmle.Util;
 using System.Text.RegularExpressions;
 using Semmle.Autobuild.Shared;
-using System.Runtime.Intrinsics;
 
 namespace Semmle.Autobuild.CSharp
 {

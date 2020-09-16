@@ -1,9 +1,7 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Populators;
 using Semmle.Extraction.Kinds;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
-using Semmle.Extraction.Entities;
 using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions

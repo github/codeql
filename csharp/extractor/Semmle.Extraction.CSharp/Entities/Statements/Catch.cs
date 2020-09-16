@@ -1,6 +1,5 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
-using Semmle.Extraction.CSharp.Populators;
 using Semmle.Extraction.Entities;
 using System.IO;
 

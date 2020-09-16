@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using Semmle.Util;
 using System.IO;
-using System.Text;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Semmle.Extraction.CIL.Entities

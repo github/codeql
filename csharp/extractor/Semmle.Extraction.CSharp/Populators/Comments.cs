@@ -1,5 +1,4 @@
 using Semmle.Extraction.CommentProcessing;
-using System;
 
 namespace Semmle.Extraction.CSharp.Populators
 {
