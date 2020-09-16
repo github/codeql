@@ -133,6 +133,15 @@ module ClientSideUrlRedirect {
   }
 
   /**
+   * An argument to `importScripts(..)` - which is used inside `WebWorker`s to import new scripts - viewed as a `ScriptUrlSink`.
+   */
+  class ImportScriptsSink extends ScriptUrlSink {
+    ImportScriptsSink() {
+      this = DataFlow::globalVarRef("importScripts").getACall().getAnArgument()
+    }
+  }
+
+  /**
    * A script or iframe `src` attribute, viewed as a `ScriptUrlSink`.
    */
   class SrcAttributeUrlSink extends ScriptUrlSink, DataFlow::ValueNode {
