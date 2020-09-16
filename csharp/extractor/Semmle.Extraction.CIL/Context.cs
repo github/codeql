@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CIL
     /// Adds additional context that is specific for CIL extraction.
     /// One context = one DLL/EXE.
     /// </summary>
-    partial class Context : IDisposable
+    sealed partial class Context : IDisposable
     {
         readonly FileStream stream;
         Entities.Assembly? assemblyNull;
@@ -58,7 +58,7 @@ namespace Semmle.Extraction.CIL
             }
         }
 
-        void IDisposable.Dispose()
+        public void Dispose()
         {
             if (pdb != null)
                 pdb.Dispose();
@@ -125,7 +125,7 @@ namespace Semmle.Extraction.CIL
     {
         public Context cx { get; set; }
 
-        public GenericContext(Context cx)
+        protected GenericContext(Context cx)
         {
             this.cx = cx;
         }

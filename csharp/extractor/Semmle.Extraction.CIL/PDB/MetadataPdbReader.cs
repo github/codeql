@@ -13,7 +13,7 @@ namespace Semmle.Extraction.PDB
     ///
     /// PDB information can be in a separate PDB file, or embedded in the DLL.
     /// </summary>
-    class MetadataPdbReader : IPdb
+    sealed class MetadataPdbReader : IPdb
     {
         class SourceFile : ISourceFile
         {

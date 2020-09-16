@@ -9,7 +9,7 @@ namespace Semmle.Extraction
     /// <typeparam name="TSymbol">The type of the symbol.</typeparam>
     public abstract class CachedEntity<TSymbol> : ICachedEntity
     {
-        public CachedEntity(Context context, TSymbol init)
+        protected CachedEntity(Context context, TSymbol init)
         {
             Context = context;
             symbol = init;

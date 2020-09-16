@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     public abstract class Method : CachedSymbol<IMethodSymbol>, IExpressionParentEntity, IStatementParentEntity
     {
-        public Method(Context cx, IMethodSymbol init)
+        protected Method(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
         protected void PopulateParameters()

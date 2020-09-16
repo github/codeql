@@ -56,7 +56,7 @@ namespace Semmle.Util.Logging
     /// A logger that outputs to a <code>csharp.log</code>
     /// file.
     /// </summary>
-    public class FileLogger : ILogger
+    public sealed class FileLogger : ILogger
     {
         readonly StreamWriter writer;
         readonly Verbosity verbosity;
@@ -70,8 +70,8 @@ namespace Semmle.Util.Logging
                 string? dir = Path.GetDirectoryName(outputFile);
                 if (!string.IsNullOrEmpty(dir) && !System.IO.Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
-                writer = new PidStreamWriter(new FileStream(outputFile, FileMode.Append, FileAccess.Write,
-                    FileShare.ReadWrite, 8192));
+                writer = new PidStreamWriter(
+                    new FileStream(outputFile, FileMode.Append, FileAccess.Write, FileShare.ReadWrite, 8192));
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
@@ -101,7 +101,7 @@ namespace Semmle.Util.Logging
     /// <summary>
     /// A logger that outputs to stdout/stderr.
     /// </summary>
-    public class ConsoleLogger : ILogger
+    public sealed class ConsoleLogger : ILogger
     {
         readonly Verbosity verbosity;
 
@@ -144,7 +144,7 @@ namespace Semmle.Util.Logging
     /// <summary>
     /// A combined logger.
     /// </summary>
-    public class CombinedLogger : ILogger
+    public sealed class CombinedLogger : ILogger
     {
         readonly ILogger logger1;
         readonly ILogger logger2;

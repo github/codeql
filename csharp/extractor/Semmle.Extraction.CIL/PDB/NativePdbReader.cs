@@ -14,7 +14,7 @@ namespace Semmle.Extraction.PDB
     /// A PDB reader using Microsoft.DiaSymReader.Native.
     /// This is an unmanaged Windows DLL, which therefore only works on Windows.
     /// </summary>
-    class NativePdbReader : IPdb
+    sealed class NativePdbReader : IPdb
     {
         sealed class Document : ISourceFile
         {

@@ -964,7 +964,7 @@ namespace Semmle.Extraction.CIL.Entities
     {
         protected readonly GenericContext gc;
 
-        public TypeParameter(GenericContext gc) : base(gc.cx)
+        protected TypeParameter(GenericContext gc) : base(gc.cx)
         {
             this.gc = gc;
         }
