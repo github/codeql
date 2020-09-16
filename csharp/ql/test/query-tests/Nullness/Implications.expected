@@ -164,8 +164,10 @@
 | Assert.cs:42:24:42:32 | ... == ... | false | Assert.cs:42:24:42:24 | access to local variable s | non-null |
 | Assert.cs:42:24:42:32 | ... == ... | true | Assert.cs:41:13:41:13 | access to parameter b | true |
 | Assert.cs:42:24:42:32 | ... == ... | true | Assert.cs:42:24:42:24 | access to local variable s | null |
-| Assert.cs:42:24:42:37 | ... \|\| ... | false | Assert.cs:42:24:42:32 | ... == ... | false |
-| Assert.cs:42:24:42:37 | ... \|\| ... | false | Assert.cs:42:37:42:37 | access to parameter b | false |
+| Assert.cs:42:24:42:38 | ... \|\| ... | false | Assert.cs:42:24:42:32 | ... == ... | false |
+| Assert.cs:42:24:42:38 | ... \|\| ... | false | Assert.cs:42:37:42:38 | !... | false |
+| Assert.cs:42:37:42:38 | !... | false | Assert.cs:42:38:42:38 | access to parameter b | true |
+| Assert.cs:42:37:42:38 | !... | true | Assert.cs:42:38:42:38 | access to parameter b | false |
 | Assert.cs:43:27:43:27 | access to local variable s | non-null | Assert.cs:41:13:41:25 | ... ? ... : ... | non-null |
 | Assert.cs:43:27:43:27 | access to local variable s | null | Assert.cs:41:13:41:25 | ... ? ... : ... | null |
 | Assert.cs:45:13:45:25 | ... ? ... : ... | non-null | Assert.cs:45:13:45:13 | access to parameter b | false |
@@ -196,8 +198,10 @@
 | Assert.cs:50:24:50:32 | ... != ... | false | Assert.cs:50:24:50:24 | access to local variable s | null |
 | Assert.cs:50:24:50:32 | ... != ... | true | Assert.cs:49:13:49:13 | access to parameter b | false |
 | Assert.cs:50:24:50:32 | ... != ... | true | Assert.cs:50:24:50:24 | access to local variable s | non-null |
-| Assert.cs:50:24:50:37 | ... \|\| ... | false | Assert.cs:50:24:50:32 | ... != ... | false |
-| Assert.cs:50:24:50:37 | ... \|\| ... | false | Assert.cs:50:37:50:37 | access to parameter b | false |
+| Assert.cs:50:24:50:38 | ... \|\| ... | false | Assert.cs:50:24:50:32 | ... != ... | false |
+| Assert.cs:50:24:50:38 | ... \|\| ... | false | Assert.cs:50:37:50:38 | !... | false |
+| Assert.cs:50:37:50:38 | !... | false | Assert.cs:50:38:50:38 | access to parameter b | true |
+| Assert.cs:50:37:50:38 | !... | true | Assert.cs:50:38:50:38 | access to parameter b | false |
 | Assert.cs:51:27:51:27 | access to local variable s | non-null | Assert.cs:49:13:49:25 | ... ? ... : ... | non-null |
 | Assert.cs:51:27:51:27 | access to local variable s | null | Assert.cs:49:13:49:25 | ... ? ... : ... | null |
 | B.cs:12:13:12:24 | access to local variable eqCallAlways | non-null | B.cs:7:26:7:29 | null | non-null |

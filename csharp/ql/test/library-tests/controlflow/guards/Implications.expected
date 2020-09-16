@@ -416,6 +416,24 @@
 | Guards.cs:332:16:332:16 | access to local variable e | match access to constant B | Guards.cs:330:13:330:13 | access to parameter b | true |
 | Guards.cs:332:16:332:16 | access to local variable e | match access to constant B | Guards.cs:332:16:332:16 | access to local variable e | 1 |
 | Guards.cs:332:16:332:16 | access to local variable e | non-match access to constant B | Guards.cs:330:13:330:13 | access to parameter b | false |
+| Guards.cs:341:20:341:32 | ... ? ... : ... | non-null | Guards.cs:341:20:341:20 | access to parameter b | false |
+| Guards.cs:341:20:341:32 | ... ? ... : ... | non-null | Guards.cs:341:31:341:32 | "" | non-null |
+| Guards.cs:341:20:341:32 | ... ? ... : ... | null | Guards.cs:341:20:341:20 | access to parameter b | true |
+| Guards.cs:341:20:341:32 | ... ? ... : ... | null | Guards.cs:341:24:341:27 | null | null |
+| Guards.cs:342:13:342:13 | access to local variable s | empty | Guards.cs:341:20:341:32 | ... ? ... : ... | empty |
+| Guards.cs:342:13:342:13 | access to local variable s | non-empty | Guards.cs:341:20:341:32 | ... ? ... : ... | non-empty |
+| Guards.cs:342:13:342:13 | access to local variable s | non-null | Guards.cs:341:20:341:32 | ... ? ... : ... | non-null |
+| Guards.cs:342:13:342:13 | access to local variable s | null | Guards.cs:341:20:341:32 | ... ? ... : ... | null |
+| Guards.cs:342:13:342:21 | ... != ... | false | Guards.cs:341:20:341:20 | access to parameter b | true |
+| Guards.cs:342:13:342:21 | ... != ... | false | Guards.cs:342:13:342:13 | access to local variable s | null |
+| Guards.cs:342:13:342:21 | ... != ... | true | Guards.cs:341:20:341:20 | access to parameter b | false |
+| Guards.cs:342:13:342:21 | ... != ... | true | Guards.cs:342:13:342:13 | access to local variable s | non-null |
+| Guards.cs:342:13:342:27 | ... && ... | true | Guards.cs:342:13:342:21 | ... != ... | true |
+| Guards.cs:342:13:342:27 | ... && ... | true | Guards.cs:342:26:342:27 | !... | true |
+| Guards.cs:342:26:342:27 | !... | false | Guards.cs:342:27:342:27 | access to parameter b | true |
+| Guards.cs:342:26:342:27 | !... | true | Guards.cs:342:27:342:27 | access to parameter b | false |
+| Guards.cs:343:31:343:31 | access to local variable s | non-null | Guards.cs:341:20:341:32 | ... ? ... : ... | non-null |
+| Guards.cs:343:31:343:31 | access to local variable s | null | Guards.cs:341:20:341:32 | ... ? ... : ... | null |
 | Splitting.cs:12:17:12:25 | ... != ... | false | Splitting.cs:12:17:12:17 | access to parameter o | null |
 | Splitting.cs:12:17:12:25 | ... != ... | true | Splitting.cs:12:17:12:17 | access to parameter o | non-null |
 | Splitting.cs:22:17:22:25 | ... != ... | false | Splitting.cs:22:17:22:17 | access to parameter o | null |
@@ -438,7 +456,8 @@
 | Splitting.cs:105:22:105:30 | ... != ... | true | Splitting.cs:105:22:105:22 | access to parameter o | non-null |
 | Splitting.cs:116:22:116:30 | ... != ... | false | Splitting.cs:116:22:116:22 | access to parameter o | null |
 | Splitting.cs:116:22:116:30 | ... != ... | true | Splitting.cs:116:22:116:22 | access to parameter o | non-null |
-| Splitting.cs:128:17:128:25 | ... != ... | false | Splitting.cs:128:17:128:17 | access to local variable o | null |
-| Splitting.cs:128:17:128:25 | ... != ... | true | Splitting.cs:128:17:128:17 | access to local variable o | non-null |
-| Splitting.cs:133:17:133:17 | access to local variable o | non-null | Splitting.cs:132:21:132:29 | call to method M11 | non-null |
-| Splitting.cs:133:17:133:17 | access to local variable o | null | Splitting.cs:132:21:132:29 | call to method M11 | null |
+| Splitting.cs:129:17:129:25 | ... != ... | false | Splitting.cs:129:17:129:17 | access to local variable o | null |
+| Splitting.cs:129:17:129:25 | ... != ... | false | Splitting.cs:129:22:129:25 | null | non-null |
+| Splitting.cs:129:17:129:25 | ... != ... | true | Splitting.cs:129:17:129:17 | access to local variable o | non-null |
+| Splitting.cs:134:17:134:17 | access to local variable o | non-null | Splitting.cs:133:21:133:29 | call to method M11 | non-null |
+| Splitting.cs:134:17:134:17 | access to local variable o | null | Splitting.cs:133:21:133:29 | call to method M11 | null |
