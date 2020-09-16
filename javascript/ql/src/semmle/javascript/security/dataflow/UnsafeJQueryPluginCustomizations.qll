@@ -195,15 +195,25 @@ module UnsafeJQueryPlugin {
    */
   predicate isLikelyIntentionalHtmlSink(DataFlow::Node sink) {
     exists(
-      JQuery::JQueryPluginMethod plugin, DataFlow::PropWrite defaultDef, string default,
+      JQuery::JQueryPluginMethod plugin, DataFlow::PropWrite defaultDef,
       DataFlow::PropRead finalRead
     |
       hasDefaultOption(plugin, defaultDef) and
-      defaultDef.getPropertyName() = finalRead.getPropertyName() and
-      defaultDef.getRhs().mayHaveStringValue(default) and
-      default.regexpMatch("\\s*<.*") and
+      defaultDef = getALikelyHTMLWrite(finalRead.getPropertyName()) and
       finalRead.flowsTo(sink) and
       sink.getTopLevel() = plugin.getTopLevel()
+    )
+  }
+
+  /**
+   * Gets a property-write that writes a HTML-like constant string to `prop`.
+   */
+  pragma[noinline]
+  private DataFlow::PropWrite getALikelyHTMLWrite(string prop) {
+    exists(string default |
+      result.getRhs().mayHaveStringValue(default) and
+      default.regexpMatch("\\s*<.*") and
+      result.getPropertyName() = prop
     )
   }
 }

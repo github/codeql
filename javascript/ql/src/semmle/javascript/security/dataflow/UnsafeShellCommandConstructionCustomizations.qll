@@ -85,7 +85,7 @@ module UnsafeShellCommandConstruction {
       this = root.getALeaf() and
       root = isExecutedAsShellCommand(DataFlow::TypeBackTracker::end(), sys) and
       exists(string prev | prev = this.getPreviousLeaf().getStringValue() |
-        prev.regexpMatch(".* ('|\")?[0-9a-zA-Z/]*")
+        prev.regexpMatch(".* ('|\")?[0-9a-zA-Z/:_-]*")
       )
     }
 
@@ -132,7 +132,7 @@ module UnsafeShellCommandConstruction {
       this = call.getFormatArgument(_) and
       call = isExecutedAsShellCommand(DataFlow::TypeBackTracker::end(), sys) and
       exists(string formatString | call.getFormatString().mayHaveStringValue(formatString) |
-        formatString.regexpMatch(".* ('|\")?[0-9a-zA-Z/]*%.*")
+        formatString.regexpMatch(".* ('|\")?[0-9a-zA-Z/:_-]*%.*")
       )
     }
 

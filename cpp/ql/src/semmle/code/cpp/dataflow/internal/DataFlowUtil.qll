@@ -6,6 +6,7 @@ private import cpp
 private import semmle.code.cpp.dataflow.internal.FlowVar
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.controlflow.Guards
+private import semmle.code.cpp.dataflow.internal.AddressFlow
 
 cached
 private newtype TNode =
@@ -622,6 +623,15 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
   or
   toExpr.(AddressOfExpr).getOperand() = fromExpr
   or
+  // This rule enables flow from an array to its elements. Example: `a` to
+  // `a[i]` or `*a`, where `a` is an array type. It does not enable flow from a
+  // pointer to its indirection as in `p[i]` where `p` is a pointer type.
+  exists(Expr toConverted |
+    variablePartiallyAccessed(fromExpr, toConverted) and
+    toExpr = toConverted.getUnconverted() and
+    not toExpr = fromExpr
+  )
+  or
   toExpr.(BuiltInOperationBuiltInAddressOf).getOperand() = fromExpr
   or
   // The following case is needed to track the qualifier object for flow
@@ -641,14 +651,25 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
   // `ClassAggregateLiteral` (`{ capture1, ..., captureN }`).
   toExpr.(LambdaExpression).getInitializer() = fromExpr
   or
+  // Data flow through a function model.
   toExpr =
     any(Call call |
-      exists(DataFlowFunction f, FunctionInput inModel, FunctionOutput outModel, int iIn |
-        call.getTarget() = f and
+      exists(DataFlowFunction f, FunctionInput inModel, FunctionOutput outModel |
         f.hasDataFlow(inModel, outModel) and
-        outModel.isReturnValue() and
-        inModel.isParameter(iIn) and
-        fromExpr = call.getArgument(iIn)
+        (
+          exists(int iIn |
+            inModel.isParameter(iIn) and
+            fromExpr = call.getArgument(iIn)
+          )
+          or
+          inModel.isQualifierObject() and
+          fromExpr = call.getQualifier()
+          or
+          inModel.isQualifierAddress() and
+          fromExpr = call.getQualifier()
+        ) and
+        call.getTarget() = f and
+        outModel.isReturnValue()
       )
     )
 }

@@ -209,3 +209,16 @@ import {ClientRequest, net} from 'electron';
 
 	$.get("example.php").fail(function(xhr) {console.log(xhr.responseText)});
 });
+
+const net = require("net");
+(function () {
+    var data = {
+        socket: new net.Socket()
+    }
+
+    data.socket.connect({host: "myHost"});
+
+    data.socket.on("data", (data) => {});
+
+    data.socket.write("foobar");
+})();

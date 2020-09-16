@@ -17,14 +17,64 @@
 | arrayassignment.cpp:141:7:141:13 | access to array | arrayassignment.cpp:139:10:139:15 | call to source |
 | arrayassignment.cpp:145:7:145:13 | access to array | arrayassignment.cpp:144:12:144:17 | call to source |
 | arrayassignment.cpp:146:7:146:13 | access to array | arrayassignment.cpp:144:12:144:17 | call to source |
+| copyableclass.cpp:40:8:40:9 | s1 | copyableclass.cpp:34:22:34:27 | call to source |
+| copyableclass.cpp:41:8:41:9 | s2 | copyableclass.cpp:35:24:35:29 | call to source |
+| copyableclass.cpp:42:8:42:9 | s3 | copyableclass.cpp:34:22:34:27 | call to source |
+| copyableclass.cpp:43:8:43:9 | s4 | copyableclass.cpp:38:8:38:13 | call to source |
+| copyableclass.cpp:65:8:65:9 | s1 | copyableclass.cpp:60:40:60:45 | call to source |
+| copyableclass.cpp:66:8:66:9 | s2 | copyableclass.cpp:63:24:63:29 | call to source |
+| copyableclass.cpp:67:11:67:21 | (reference dereference) | copyableclass.cpp:67:13:67:18 | call to source |
 | format.cpp:157:7:157:22 | (int)... | format.cpp:147:12:147:25 | call to source |
 | format.cpp:157:7:157:22 | access to array | format.cpp:147:12:147:25 | call to source |
 | format.cpp:158:7:158:27 | ... + ... | format.cpp:148:16:148:30 | call to source |
+| movableclass.cpp:44:8:44:9 | s1 | movableclass.cpp:39:21:39:26 | call to source |
+| movableclass.cpp:45:8:45:9 | s2 | movableclass.cpp:40:23:40:28 | call to source |
+| movableclass.cpp:46:8:46:9 | s3 | movableclass.cpp:42:8:42:13 | call to source |
+| movableclass.cpp:54:8:54:9 | s1 | movableclass.cpp:50:38:50:43 | call to source |
+| movableclass.cpp:55:8:55:9 | s2 | movableclass.cpp:52:23:52:28 | call to source |
+| movableclass.cpp:64:8:64:9 | s2 | movableclass.cpp:23:55:23:60 | call to source |
+| movableclass.cpp:65:11:65:21 | (reference dereference) | movableclass.cpp:65:13:65:18 | call to source |
 | string.cpp:28:7:28:7 | (const char *)... | string.cpp:24:12:24:17 | call to source |
 | string.cpp:28:7:28:7 | a | string.cpp:24:12:24:17 | call to source |
 | string.cpp:55:7:55:8 | cs | string.cpp:50:19:50:24 | call to source |
 | string.cpp:55:7:55:8 | cs | string.cpp:50:19:50:26 | (const char *)... |
+| stringstream.cpp:32:11:32:11 | call to operator<< | stringstream.cpp:32:14:32:19 | call to source |
+| stringstream.cpp:32:11:32:11 | call to operator<< | stringstream.cpp:32:14:32:21 | (const char *)... |
+| stringstream.cpp:32:11:32:22 | (const basic_ostream<char, char_traits<char>>)... | stringstream.cpp:32:14:32:19 | call to source |
+| stringstream.cpp:32:11:32:22 | (const basic_ostream<char, char_traits<char>>)... | stringstream.cpp:32:14:32:21 | (const char *)... |
+| stringstream.cpp:32:11:32:22 | (reference dereference) | stringstream.cpp:32:14:32:19 | call to source |
+| stringstream.cpp:32:11:32:22 | (reference dereference) | stringstream.cpp:32:14:32:21 | (const char *)... |
+| stringstream.cpp:32:11:32:22 | (reference to) | stringstream.cpp:32:14:32:19 | call to source |
+| stringstream.cpp:32:11:32:22 | (reference to) | stringstream.cpp:32:14:32:21 | (const char *)... |
+| stringstream.cpp:33:20:33:20 | call to operator<< | stringstream.cpp:33:23:33:28 | call to source |
+| stringstream.cpp:33:20:33:20 | call to operator<< | stringstream.cpp:33:23:33:30 | (const char *)... |
+| stringstream.cpp:33:20:33:31 | (const basic_ostream<char, char_traits<char>>)... | stringstream.cpp:33:23:33:28 | call to source |
+| stringstream.cpp:33:20:33:31 | (const basic_ostream<char, char_traits<char>>)... | stringstream.cpp:33:23:33:30 | (const char *)... |
+| stringstream.cpp:33:20:33:31 | (reference dereference) | stringstream.cpp:33:23:33:28 | call to source |
+| stringstream.cpp:33:20:33:31 | (reference dereference) | stringstream.cpp:33:23:33:30 | (const char *)... |
+| stringstream.cpp:33:20:33:31 | (reference to) | stringstream.cpp:33:23:33:28 | call to source |
+| stringstream.cpp:33:20:33:31 | (reference to) | stringstream.cpp:33:23:33:30 | (const char *)... |
+| stringstream.cpp:34:23:34:23 | call to operator<< | stringstream.cpp:34:14:34:19 | call to source |
+| stringstream.cpp:34:23:34:23 | call to operator<< | stringstream.cpp:34:14:34:21 | (const char *)... |
+| stringstream.cpp:34:23:34:31 | (const basic_ostream<char, char_traits<char>>)... | stringstream.cpp:34:14:34:19 | call to source |
+| stringstream.cpp:34:23:34:31 | (const basic_ostream<char, char_traits<char>>)... | stringstream.cpp:34:14:34:21 | (const char *)... |
+| stringstream.cpp:34:23:34:31 | (reference dereference) | stringstream.cpp:34:14:34:19 | call to source |
+| stringstream.cpp:34:23:34:31 | (reference dereference) | stringstream.cpp:34:14:34:21 | (const char *)... |
+| stringstream.cpp:34:23:34:31 | (reference to) | stringstream.cpp:34:14:34:19 | call to source |
+| stringstream.cpp:34:23:34:31 | (reference to) | stringstream.cpp:34:14:34:21 | (const char *)... |
+| stringstream.cpp:143:11:143:11 | call to operator<< | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:143:11:143:11 | call to operator<< | stringstream.cpp:143:14:143:21 | (const char *)... |
+| stringstream.cpp:143:11:143:22 | (const basic_ostream<char, char_traits<char>>)... | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:143:11:143:22 | (const basic_ostream<char, char_traits<char>>)... | stringstream.cpp:143:14:143:21 | (const char *)... |
+| stringstream.cpp:143:11:143:22 | (reference dereference) | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:143:11:143:22 | (reference dereference) | stringstream.cpp:143:14:143:21 | (const char *)... |
+| stringstream.cpp:143:11:143:22 | (reference to) | stringstream.cpp:143:14:143:19 | call to source |
+| stringstream.cpp:143:11:143:22 | (reference to) | stringstream.cpp:143:14:143:21 | (const char *)... |
+| structlikeclass.cpp:35:8:35:9 | s1 | structlikeclass.cpp:29:22:29:27 | call to source |
+| structlikeclass.cpp:36:8:36:9 | s2 | structlikeclass.cpp:30:24:30:29 | call to source |
+| structlikeclass.cpp:37:8:37:9 | s3 | structlikeclass.cpp:29:22:29:27 | call to source |
 | structlikeclass.cpp:38:8:38:9 | s4 | structlikeclass.cpp:33:8:33:13 | call to source |
+| structlikeclass.cpp:60:8:60:9 | s1 | structlikeclass.cpp:55:40:55:45 | call to source |
 | structlikeclass.cpp:61:8:61:9 | s2 | structlikeclass.cpp:58:24:58:29 | call to source |
 | structlikeclass.cpp:62:8:62:20 | ... = ... | structlikeclass.cpp:62:13:62:18 | call to source |
 | swap1.cpp:73:12:73:16 | data1 | swap1.cpp:71:15:71:20 | call to source |

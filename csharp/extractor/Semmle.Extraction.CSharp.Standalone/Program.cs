@@ -25,51 +25,23 @@ namespace Semmle.Extraction.CSharp.Standalone
     /// </summary>
     class Analysis : IDisposable
     {
-        readonly ILogger logger;
-
-        public Analysis(ILogger logger)
+        public Analysis(ILogger logger, Options options)
         {
-            this.logger = logger;
+            var progressMonitor = new ProgressMonitor(logger);
+            buildAnalysis = new BuildAnalysis(options, progressMonitor);
+            References = buildAnalysis.ReferenceFiles;
+            Extraction = new Extraction(options.SrcDir);
+            Extraction.Sources.AddRange(options.SolutionFile == null ? buildAnalysis.AllSourceFiles : buildAnalysis.ProjectSourceFiles);
         }
 
-        // The extraction configuration for the entire project.
-        Extraction projectExtraction;
-
-        public IEnumerable<string> References
-        {
-            get; private set;
-        }
+        public IEnumerable<string> References { get; }
 
         /// <summary>
         /// The extraction configuration.
         /// </summary>
-        public Extraction Extraction => projectExtraction;
+        public Extraction Extraction { get; }
 
-        /// <summary>
-        /// Creates an extraction for the current directory
-        /// and adds it to the list of all extractions.
-        /// </summary>
-        /// <param name="dir">The directory of the extraction.</param>
-        /// <returns>The extraction.</returns>
-        void CreateExtraction(string dir)
-        {
-            projectExtraction = new Extraction(dir);
-        }
-
-        BuildAnalysis buildAnalysis;
-
-        /// <summary>
-        /// Analyse projects/solution and resolves references.
-        /// </summary>
-        /// <param name="options">The build analysis options.</param>
-        public void AnalyseProjects(Options options)
-        {
-            CreateExtraction(options.SrcDir);
-            var progressMonitor = new ProgressMonitor(logger);
-            buildAnalysis = new BuildAnalysis(options, progressMonitor);
-            References = buildAnalysis.ReferenceFiles;
-            projectExtraction.Sources.AddRange(options.SolutionFile == null ? buildAnalysis.AllSourceFiles : buildAnalysis.ProjectSourceFiles);
-        }
+        readonly BuildAnalysis buildAnalysis;
 
         public void Dispose()
         {
@@ -84,7 +56,6 @@ namespace Semmle.Extraction.CSharp.Standalone
             var options = Options.Create(args);
             // options.CIL = true;  // To do: Enable this
             var output = new ConsoleLogger(options.Verbosity);
-            using var a = new Analysis(output);
 
             if (options.Help)
             {
@@ -98,7 +69,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             var start = DateTime.Now;
 
             output.Log(Severity.Info, "Running C# standalone extractor");
-            a.AnalyseProjects(options);
+            using var a = new Analysis(output, options);
             int sourceFiles = a.Extraction.Sources.Count();
 
             if (sourceFiles == 0)
@@ -117,7 +88,7 @@ namespace Semmle.Extraction.CSharp.Standalone
                     new ExtractionProgress(output),
                     new FileLogger(options.Verbosity, Extractor.GetCSharpLogPath()),
                     options);
-                output.Log(Severity.Info, $"Extraction completed in {DateTime.Now-start}");
+                output.Log(Severity.Info, $"Extraction completed in {DateTime.Now - start}");
             }
 
             return 0;

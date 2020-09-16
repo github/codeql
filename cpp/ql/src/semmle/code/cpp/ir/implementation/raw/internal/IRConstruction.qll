@@ -182,6 +182,18 @@ Instruction getMemoryOperandDefinition(
   none()
 }
 
+/**
+ * Holds if the partial operand of this `ChiInstruction` updates the bit range
+ * `[startBitOffset, endBitOffset)` of the total operand.
+ */
+predicate getIntervalUpdatedByChi(ChiInstruction chi, int startBit, int endBit) { none() }
+
+/**
+ * Holds if the operand totally overlaps with its definition and consumes the
+ * bit range `[startBitOffset, endBitOffset)`.
+ */
+predicate getUsedInterval(Operand operand, int startBit, int endBit) { none() }
+
 /** Gets a non-phi instruction that defines an operand of `instr`. */
 private Instruction getNonPhiOperandDef(Instruction instr) {
   result = getRegisterOperandDefinition(instr, _)

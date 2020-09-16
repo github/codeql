@@ -26,6 +26,8 @@
 | aliasing.cpp:79:3:79:3 | s |
 | aliasing.cpp:86:3:86:3 | s |
 | aliasing.cpp:92:5:92:5 | s |
+| aliasing.cpp:98:3:98:3 | s |
+| arrays.cpp:36:3:36:17 | access to array |
 | by_reference.cpp:12:5:12:5 | s |
 | by_reference.cpp:16:5:16:8 | this |
 | by_reference.cpp:84:3:84:7 | inner |
@@ -37,7 +39,9 @@
 | qualifiers.cpp:9:30:9:33 | this |
 | qualifiers.cpp:12:49:12:53 | inner |
 | qualifiers.cpp:13:51:13:55 | inner |
+| realistic.cpp:49:9:49:18 | access to array |
 | simple.cpp:20:24:20:25 | this |
 | simple.cpp:21:24:21:25 | this |
 | simple.cpp:65:5:65:5 | a |
 | simple.cpp:83:9:83:10 | f2 |
+| simple.cpp:92:5:92:5 | a |

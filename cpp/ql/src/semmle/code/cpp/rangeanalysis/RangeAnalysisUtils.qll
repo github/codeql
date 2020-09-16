@@ -172,6 +172,65 @@ predicate eqOpWithSwapAndNegate(EqualityOperation cmp, Expr a, Expr b, boolean i
 }
 
 /**
+ * Holds if `cmp` is an unconverted conversion of `a` to a Boolean that
+ * evalutes to `isEQ` iff `a` is 0.
+ *
+ * Note that `a` can be `cmp` itself or a conversion thereof.
+ */
+private predicate eqZero(Expr cmp, Expr a, boolean isEQ) {
+  // The `!a` expression tests `a` equal to zero when `a` is a number converted
+  // to a Boolean.
+  isEQ = true and
+  exists(Expr notOperand | notOperand = cmp.(NotExpr).getOperand().getFullyConverted() |
+    // In C++ code there will be a BoolConversion in `!myInt`
+    a = notOperand.(BoolConversion).getExpr()
+    or
+    // In C code there is no conversion since there was no bool type before C99
+    a = notOperand and
+    not a instanceof BoolConversion // avoid overlap with the case above
+  )
+  or
+  // The `(bool)a` expression tests `a` NOT equal to zero when `a` is a number
+  // converted to a Boolean. To avoid overlap with the case above, this case
+  // excludes conversions that are right below a `!`.
+  isEQ = false and
+  linearAccess(cmp, _, _, _) and
+  // This test for `isCondition` implies that `cmp` is unconverted and that the
+  // parent of `cfg` is not a `NotExpr` -- the CFG doesn't do branching from
+  // inside `NotExpr`.
+  cmp.isCondition() and
+  // The GNU two-operand conditional expression is not supported for the
+  // purpose of guards, but the value of the conditional expression itself is
+  // modeled in the range analysis.
+  not exists(ConditionalExpr cond | cmp = cond.getCondition() and cond.isTwoOperand()) and
+  (
+    // In C++ code there will be a BoolConversion in `if (myInt)`
+    a = cmp.getFullyConverted().(BoolConversion).getExpr()
+    or
+    // In C code there is no conversion since there was no bool type before C99
+    a = cmp.getFullyConverted() and
+    not a instanceof BoolConversion // avoid overlap with the case above
+  )
+}
+
+/**
+ * Holds if `branch` of `cmp` is taken when `a` compares `isEQ` to zero.
+ *
+ * Note that `a` can be `cmp` itself or a conversion thereof.
+ */
+predicate eqZeroWithNegate(Expr cmp, Expr a, boolean isEQ, boolean branch) {
+  // The comparison for _equality_ to zero is on the `true` branch when `cmp`
+  // compares equal to zero and on the `false` branch when `cmp` compares not
+  // equal to zero.
+  eqZero(cmp, a, branch) and isEQ = true
+  or
+  // The comparison for _inequality_ to zero is on the `false` branch when
+  // `cmp` compares equal to zero and on the `true` branch when `cmp` compares
+  // not equal to zero.
+  eqZero(cmp, a, branch.booleanNot()) and isEQ = false
+}
+
+/**
  * Holds if `expr` is equivalent to `p*v + q`, where `p` is a non-zero
  * number. This takes into account the associativity, commutativity and
  * distributivity of arithmetic operations.

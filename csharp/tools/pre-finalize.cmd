@@ -1,5 +1,4 @@
 @echo off
-SETLOCAL EnableDelayedExpansion
 
 type NUL && "%CODEQL_DIST%\codeql" database index-files ^
     --include-extension=.config ^
@@ -10,5 +9,4 @@ type NUL && "%CODEQL_DIST%\codeql" database index-files ^
     --language xml ^
     -- ^
     "%CODEQL_EXTRACTOR_CSHARP_WIP_DATABASE%"
-
-ENDLOCAL
+exit /b %ERRORLEVEL%

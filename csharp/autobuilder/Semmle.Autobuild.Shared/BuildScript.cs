@@ -193,6 +193,26 @@ namespace Semmle.Autobuild.Shared
             new ReturnBuildCommand(func);
 
         /// <summary>
+        /// Creates a build script that downloads the specified file.
+        /// </summary>
+        public static BuildScript DownloadFile(string address, string fileName, Action<Exception> exceptionCallback) =>
+            Create(actions =>
+            {
+                if (actions.GetDirectoryName(fileName) is string dir && !string.IsNullOrWhiteSpace(dir))
+                    actions.CreateDirectory(dir);
+                try
+                {
+                    actions.DownloadFile(address, fileName);
+                    return 0;
+                }
+                catch (Exception e)
+                {
+                    exceptionCallback(e);
+                    return 1;
+                }
+            });
+
+        /// <summary>
         /// Creates a build script that runs <paramref name="s1"/>, followed by running the script
         /// produced by <paramref name="s2"/> on the exit code from <paramref name="s1"/>.
         /// </summary>

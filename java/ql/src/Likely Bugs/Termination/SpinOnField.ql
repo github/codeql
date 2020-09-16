@@ -25,7 +25,7 @@ class ComparisonOrEqTestExpr extends Expr {
 class Empty extends Stmt {
   Empty() {
     this instanceof EmptyStmt or
-    this.(Block).getNumStmt() = 0
+    this.(BlockStmt).getNumStmt() = 0
   }
 }
 

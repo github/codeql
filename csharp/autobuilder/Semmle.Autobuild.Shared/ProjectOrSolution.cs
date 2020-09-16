@@ -23,13 +23,14 @@ namespace Semmle.Autobuild.Shared
 
     public abstract class ProjectOrSolution : IProjectOrSolution
     {
-        public string FullPath { get; private set; }
+        public string FullPath { get; }
 
-        public string DirectoryName => Path.GetDirectoryName(FullPath) ?? "";
+        public string DirectoryName { get; }
 
         protected ProjectOrSolution(Autobuilder builder, string path)
         {
             FullPath = builder.Actions.GetFullPath(path);
+            DirectoryName = builder.Actions.GetDirectoryName(path) ?? "";
         }
 
         public abstract IEnumerable<IProjectOrSolution> IncludedProjects { get; }

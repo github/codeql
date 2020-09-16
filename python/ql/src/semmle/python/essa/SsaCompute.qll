@@ -194,7 +194,7 @@ private module SsaComputeImpl {
     defUseRank(v, b, rankix, i)
   }
 
-  /** A `VarAccess` `use` of `v` in `b` at index `i`. */
+  /** A variable access `use` of `v` in `b` at index `i`. */
   cached
   predicate variableUse(SsaSourceVariable v, ControlFlowNode use, BasicBlock b, int i) {
     (v.getAUse() = use or v.hasRefinement(use, _)) and
@@ -348,11 +348,177 @@ private module SsaComputeImpl {
       )
     }
   }
+
+  cached
+  module AdjacentUsesImpl {
+    /**
+     * Holds if `rankix` is the rank the index `i` at which there is an SSA definition or explicit use of
+     * `v` in the basic block `b`.
+     */
+    cached
+    predicate defSourceUseRank(SsaSourceVariable v, BasicBlock b, int rankix, int i) {
+      i = rank[rankix](int j | variableDefine(v, _, b, j) or variableSourceUse(v, _, b, j))
+    }
+
+    /** A variable access `use` of `v` in `b` at index `i`. */
+    cached
+    predicate variableSourceUse(SsaSourceVariable v, ControlFlowNode use, BasicBlock b, int i) {
+      v.getASourceUse() = use and
+      exists(int j |
+        b.getNode(j) = use and
+        i = 2 * j
+      )
+    }
+
+    /** Gets the maximum rank index for the given variable and basic block. */
+    private int lastSourceUseRank(SsaSourceVariable v, BasicBlock b) {
+      result = max(int rankix | defSourceUseRank(v, b, rankix, _))
+    }
+
+    /** Holds if `v` is defined or used in `b`. */
+    private predicate varOccursInBlock(SsaSourceVariable v, BasicBlock b) {
+      defSourceUseRank(v, b, _, _)
+    }
+
+    /** Holds if `v` occurs in `b` or one of `b`'s transitive successors. */
+    private predicate blockPrecedesVar(SsaSourceVariable v, BasicBlock b) {
+      varOccursInBlock(v, b.getASuccessor*())
+    }
+
+    /**
+     * Holds if `b2` is a transitive successor of `b1` and `v` occurs in `b1` and
+     * in `b2` or one of its transitive successors but not in any block on the path
+     * between `b1` and `b2`.
+     */
+    private predicate varBlockReaches(SsaSourceVariable v, BasicBlock b1, BasicBlock b2) {
+      varOccursInBlock(v, b1) and
+      b2 = b1.getASuccessor() and
+      blockPrecedesVar(v, b2)
+      or
+      exists(BasicBlock mid |
+        varBlockReaches(v, b1, mid) and
+        b2 = mid.getASuccessor() and
+        not varOccursInBlock(v, mid) and
+        blockPrecedesVar(v, b2)
+      )
+    }
+
+    /**
+     * Holds if `b2` is a transitive successor of `b1` and `v` occurs in `b1` and
+     * `b2` but not in any block on the path between `b1` and `b2`.
+     */
+    private predicate varBlockStep(SsaSourceVariable v, BasicBlock b1, BasicBlock b2) {
+      varBlockReaches(v, b1, b2) and
+      varOccursInBlock(v, b2)
+    }
+
+    /**
+     * Holds if `v` occurs at index `i1` in `b1` and at index `i2` in `b2` and
+     * there is a path between them without any occurrence of `v`.
+     */
+    cached
+    predicate adjacentVarRefs(SsaSourceVariable v, BasicBlock b1, int i1, BasicBlock b2, int i2) {
+      exists(int rankix |
+        b1 = b2 and
+        defSourceUseRank(v, b1, rankix, i1) and
+        defSourceUseRank(v, b2, rankix + 1, i2)
+      )
+      or
+      defSourceUseRank(v, b1, lastSourceUseRank(v, b1), i1) and
+      varBlockStep(v, b1, b2) and
+      defSourceUseRank(v, b2, 1, i2)
+    }
+
+    /**
+     * Holds if `use1` and `use2` form an adjacent use-use-pair of the same SSA
+     * variable, that is, the value read in `use1` can reach `use2` without passing
+     * through any other use or any SSA definition of the variable.
+     */
+    cached
+    predicate adjacentUseUseSameVar(ControlFlowNode use1, ControlFlowNode use2) {
+      exists(SsaSourceVariable v, BasicBlock b1, int i1, BasicBlock b2, int i2 |
+        adjacentVarRefs(v, b1, i1, b2, i2) and
+        variableSourceUse(v, use1, b1, i1) and
+        variableSourceUse(v, use2, b2, i2)
+      )
+    }
+
+    /**
+     * Holds if `use1` and `use2` form an adjacent use-use-pair of the same
+     * `SsaSourceVariable`, that is, the value read in `use1` can reach `use2`
+     * without passing through any other use or any SSA definition of the variable
+     * except for phi nodes.
+     */
+    cached
+    predicate adjacentUseUse(ControlFlowNode use1, ControlFlowNode use2) {
+      adjacentUseUseSameVar(use1, use2)
+      or
+      exists(SsaSourceVariable v, EssaDefinition def, BasicBlock b1, int i1, BasicBlock b2, int i2 |
+        adjacentVarRefs(v, b1, i1, b2, i2) and
+        variableUse(v, use1, b1, i1) and
+        definesAt(def, v, b2, i2) and
+        firstUse(def, use2) and
+        def instanceof PhiFunction
+      )
+    }
+
+    /**
+     * Holds if the value defined at `def` can reach `use` without passing through
+     * any other uses, but possibly through phi nodes.
+     */
+    cached
+    predicate firstUse(EssaDefinition def, ControlFlowNode use) {
+      exists(SsaSourceVariable v, BasicBlock b1, int i1, BasicBlock b2, int i2 |
+        adjacentVarRefs(v, b1, i1, b2, i2) and
+        definesAt(def, v, b1, i1) and
+        variableSourceUse(v, use, b2, i2)
+      )
+      or
+      exists(
+        SsaSourceVariable v, EssaDefinition redef, BasicBlock b1, int i1, BasicBlock b2, int i2
+      |
+        redef instanceof PhiFunction
+      |
+        adjacentVarRefs(v, b1, i1, b2, i2) and
+        definesAt(def, v, b1, i1) and
+        definesAt(redef, v, b2, i2) and
+        firstUse(redef, use)
+      )
+    }
+
+    /**
+     * Holds if `def` defines `v` at the specified position.
+     * Phi nodes are placed at index -1.
+     */
+    cached
+    predicate definesAt(EssaDefinition def, SsaSourceVariable v, BasicBlock b, int i) {
+      exists(ControlFlowNode defNode |
+        def.(EssaNodeDefinition).definedBy(v, defNode) and
+        variableDefine(v, defNode, b, i)
+      )
+      or
+      v = def.(PhiFunction).getSourceVariable() and
+      b = def.(PhiFunction).getBasicBlock() and
+      i = -1
+    }
+
+    /**
+     * Holds if the value defined at `def` can reach `use`, possibly through phi nodes.
+     */
+    cached
+    predicate useOfDef(EssaDefinition def, ControlFlowNode use) {
+      exists(ControlFlowNode firstUse |
+        firstUse(def, firstUse) and
+        adjacentUseUse*(firstUse, use)
+      )
+    }
+  }
 }
 
 import SsaComputeImpl::SsaDefinitionsImpl as SsaDefinitions
 import SsaComputeImpl::EssaDefinitionsImpl as EssaDefinitions
 import SsaComputeImpl::LivenessImpl as Liveness
+import SsaComputeImpl::AdjacentUsesImpl as AdjacentUses
 
 /* This is exported primarily for testing */
 /*

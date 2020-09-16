@@ -62,10 +62,27 @@ module UnsafeJQueryPlugin {
    * With this taint-step we regain that `foo.bar` is tainted, because `PropertyPresenceSanitizer` could remove it.
    */
   private predicate aliasPropertyPresenceStep(DataFlow::Node src, DataFlow::Node sink) {
-    exists(PropertyPresenceSanitizer sanitizer, DataFlow::PropRead read | read = src |
-      read = sanitizer.getPropRead() and
-      sink = AccessPath::getAnAliasedSourceNode(read) and
-      read.getBasicBlock().(ReachableBasicBlock).strictlyDominates(sink.getBasicBlock())
+    exists(ReachableBasicBlock srcBB, ReachableBasicBlock sinkBB |
+      aliasPropertyPresenceStepHelper(src, sink, srcBB, sinkBB) and
+      srcBB.strictlyDominates(sinkBB)
+    )
+  }
+
+  /**
+   * Holds if there is a taint-step from `src` to `sink`, and `srcBB` is the basicblock for `src` and `sinkBB` is the basicblock for `sink`.
+   *
+   * This predicate is outlined to get a better join-order.
+   */
+  pragma[noinline]
+  private predicate aliasPropertyPresenceStepHelper(
+    DataFlow::PropRead src, DataFlow::Node sink, ReachableBasicBlock srcBB,
+    ReachableBasicBlock sinkBB
+  ) {
+    exists(PropertyPresenceSanitizer sanitizer |
+      src = sanitizer.getPropRead() and
+      sink = AccessPath::getAnAliasedSourceNode(src) and
+      srcBB = src.getBasicBlock() and
+      sinkBB = sink.getBasicBlock()
     )
   }
 }

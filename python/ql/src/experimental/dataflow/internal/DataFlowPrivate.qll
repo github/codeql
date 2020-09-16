@@ -1,6 +1,7 @@
 private import python
 private import DataFlowPublic
 import semmle.python.SpecialMethods
+private import semmle.python.essa.SsaCompute
 
 //--------
 // Data flow graph
@@ -31,7 +32,7 @@ class StorePreUpdateNode extends PreUpdateNode, CfgNode {
   }
 }
 
-/** A node marking the state change of an object after a read */
+/** A node marking the state change of an object after a read. */
 class ReadPreUpdateNode extends PreUpdateNode, CfgNode {
   ReadPreUpdateNode() {
     exists(Attribute a |
@@ -97,12 +98,19 @@ module EssaFlow {
       contextManager.strictlyDominates(var)
     )
     or
-    // Use
+    // First use after definition
     //   `y = 42`
     //   `x = f(y)`
     //   nodeFrom is `y` on first line, essa var
     //   nodeTo is `y` on second line, cfg node
-    nodeFrom.(EssaNode).getVar().getASourceUse() = nodeTo.(CfgNode).getNode()
+    defToFirstUse(nodeFrom.asVar(), nodeTo.asCfgNode())
+    or
+    // Next use after use
+    //   `x = f(y)`
+    //   `z = y + 1`
+    //   nodeFrom is 'y' on first line, cfg node
+    //   nodeTo is `y` on second line, cfg node
+    useToNextUse(nodeFrom.asCfgNode(), nodeTo.asCfgNode())
     or
     // Refinements
     exists(EssaEdgeRefinement r |
@@ -120,6 +128,14 @@ module EssaFlow {
       nodeFrom.(EssaNode).getVar() = p.getAnInput()
     )
   }
+
+  predicate useToNextUse(NameNode nodeFrom, NameNode nodeTo) {
+    AdjacentUses::adjacentUseUse(nodeFrom, nodeTo)
+  }
+
+  predicate defToFirstUse(EssaVariable var, NameNode nodeTo) {
+    AdjacentUses::firstUse(var.getDefinition(), nodeTo)
+  }
 }
 
 //--------
@@ -131,18 +147,25 @@ module EssaFlow {
  * excludes SSA flow through instance fields.
  */
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  not nodeFrom.(EssaNode).getVar() instanceof GlobalSsaVariable and
-  not nodeTo.(EssaNode).getVar() instanceof GlobalSsaVariable and
-  EssaFlow::essaFlowStep(update(nodeFrom), nodeTo)
+  // If there is ESSA-flow out of a node `node`, we want flow
+  // both out of `node` and any post-update node of `node`.
+  exists(Node node |
+    not node.(EssaNode).getVar() instanceof GlobalSsaVariable and
+    not nodeTo.(EssaNode).getVar() instanceof GlobalSsaVariable and
+    EssaFlow::essaFlowStep(node, nodeTo) and
+    nodeFrom = update(node)
+  )
 }
 
+/**
+ * Holds if `result` is either `node`, or the post-update node for `node`.
+ */
 private Node update(Node node) {
   exists(PostUpdateNode pun |
     node = pun.getPreUpdateNode() and
     result = pun
   )
   or
-  not exists(PostUpdateNode pun | node = pun.getPreUpdateNode()) and
   result = node
 }
 
@@ -365,15 +388,22 @@ string ppReprType(DataFlowType t) { none() }
  * another. Additional steps specified by the configuration are *not*
  * taken into account.
  */
-predicate jumpStep(Node pred, Node succ) {
+predicate jumpStep(Node nodeFrom, Node nodeTo) {
   // As we have ESSA variables for global variables,
   // we include ESSA flow steps involving global variables.
   (
-    pred.(EssaNode).getVar() instanceof GlobalSsaVariable
+    nodeFrom.(EssaNode).getVar() instanceof GlobalSsaVariable
     or
-    succ.(EssaNode).getVar() instanceof GlobalSsaVariable
+    nodeTo.(EssaNode).getVar() instanceof GlobalSsaVariable
   ) and
-  EssaFlow::essaFlowStep(pred, succ)
+  (
+    EssaFlow::essaFlowStep(nodeFrom, nodeTo)
+    or
+    // As jump steps do not respect chronology,
+    // we add jump steps for each def-use pair.
+    nodeFrom.asVar() instanceof GlobalSsaVariable and
+    nodeTo.asCfgNode() = nodeFrom.asVar().getASourceUse()
+  )
 }
 
 //--------
@@ -461,6 +491,10 @@ predicate comprehensionStoreStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
   // Dictionary
   nodeTo.getNode().getNode().(DictComp).getElt() = nodeFrom.getNode().getNode() and
   c instanceof DictionaryElementAnyContent
+  or
+  // Generator
+  nodeTo.getNode().getNode().(GeneratorExp).getElt() = nodeFrom.getNode().getNode() and
+  c instanceof ListElementContent
 }
 
 /**
@@ -538,33 +572,23 @@ predicate comprehensionReadStep(CfgNode nodeFrom, Content c, EssaNode nodeTo) {
   //   nodeFrom is `l`, cfg node
   //   nodeTo is `x`, essa var
   //   c denotes element of list or set
-  exists(For f, Comp comp |
-    f = getCompFor(comp) and
-    nodeFrom.getNode().getNode() = getCompIter(comp) and
+  exists(Comp comp |
+    // outermost for
+    nodeFrom.getNode().getNode() = comp.getIterable() and
     nodeTo.getVar().getDefinition().(AssignmentDefinition).getDefiningNode().getNode() =
-      f.getTarget() and
-    (
-      c instanceof ListElementContent
-      or
-      c instanceof SetElementContent
+      comp.getIterationVariable(0).getAStore()
+    or
+    // an inner for
+    exists(int n | n > 0 |
+      nodeFrom.getNode().getNode() = comp.getNthInnerLoop(n).getIter() and
+      nodeTo.getVar().getDefinition().(AssignmentDefinition).getDefiningNode().getNode() =
+        comp.getNthInnerLoop(n).getTarget()
     )
-  )
-}
-
-/** This seems to compensate for extractor shortcomings */
-For getCompFor(Comp c) {
-  c.contains(result) and
-  c.getFunction() = result.getScope()
-}
-
-/** This seems to compensate for extractor shortcomings */
-AstNode getCompIter(Comp c) {
-  c.contains(result) and
-  c.getScope() = result.getScope() and
-  not result = c.getFunction() and
-  not exists(AstNode between |
-    c.contains(between) and
-    between.contains(result)
+  ) and
+  (
+    c instanceof ListElementContent
+    or
+    c instanceof SetElementContent
   )
 }
 

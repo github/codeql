@@ -159,7 +159,7 @@ void test_nested_vectors()
 
 		sink(aa[0][0]);
 		aa[0][0] = source();
-		sink(aa[0][0]); // tainted [IR ONLY]
+		sink(aa[0][0]); // tainted
 	}
 
 	{

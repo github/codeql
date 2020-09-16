@@ -16,7 +16,7 @@ namespace Semmle.BuildAnalyser
         void NugetInstall(string package);
         void ResolvedReference(string filename);
         void Summary(int existingSources, int usedSources, int missingSources, int references, int unresolvedReferences, int resolvedConflicts, int totalProjects, int failedProjects, TimeSpan analysisTime);
-        void Warning(string message);
+        void Log(Severity severity, string message);
         void ResolvedConflict(string asm1, string asm2);
         void MissingProject(string projectFile);
         void CommandFailed(string exe, string arguments, int exitCode);
@@ -93,9 +93,9 @@ namespace Semmle.BuildAnalyser
             logger.Log(Severity.Info, "Build analysis completed in {0}", analysisTime);
         }
 
-        public void Warning(string message)
+        public void Log(Severity severity, string message)
         {
-            logger.Log(Severity.Warning, message);
+            logger.Log(severity, message);
         }
 
         public void ResolvedConflict(string asm1, string asm2)
