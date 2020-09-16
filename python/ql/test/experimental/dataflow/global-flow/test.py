@@ -18,7 +18,10 @@ print(unreferenced_g)
 # Modification by reassignment
 
 g_mod = []
-# The following assignment should not be a `ModuleVariableNode`, but currently our analysis thinks `g_mod` might be used in the `print` call
+# This assignment does not produce any flow, since `g_mod` is immediately reassigned.
+
+# The following assignment should not be a `ModuleVariableNode`,
+# but currently our analysis thinks `g_mod` might be used in the `print` call
 g_mod = [10] # $f+:writes=g_mod
 print("foo")
 g_mod = [100] # $writes=g_mod
@@ -27,7 +30,7 @@ g_mod = [100] # $writes=g_mod
 
 g_ins = [50] # $writes=g_ins
 print(g_ins)
-g_ins.insert(75)
+g_ins.append(75)
 
 # A global with multiple potential definitions
 
@@ -37,11 +40,11 @@ if unknown_module.attr:
 else:
     g_mult = [300] # $writes=g_mult
 
-# A global with multiple potential definitions
+# A global variable that may be redefined depending on some unknown value
 
-g_mult2 = [400] # $writes=g_mult2
+g_redef = [400] # $writes=g_redef
 if unknown_module.attr:
-    g_mult2 = [500] # $writes=g_mult2
+    g_redef = [500] # $writes=g_redef
 
 def global_access():
     l = 5
@@ -51,7 +54,7 @@ def global_access():
     print(g_mod) # $reads=g_mod
     print(g_ins) # $reads=g_ins
     print(g_mult) # $reads=g_mult
-    print(g_mult2) # $reads=g_mult2
+    print(g_redef) # $reads=g_redef
 
 def print_g_mod(): # $writes=print_g_mod
     print(g_mod) # $reads=g_mod
