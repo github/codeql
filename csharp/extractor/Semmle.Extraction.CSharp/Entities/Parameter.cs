@@ -161,7 +161,7 @@ namespace Semmle.Extraction.CSharp.Entities
         static EqualsValueClauseSyntax GetParameterDefaultValue(IParameterSymbol parameter)
         {
             var syntax = parameter.DeclaringSyntaxReferences.Select(@ref => @ref.GetSyntax()).OfType<ParameterSyntax>().FirstOrDefault();
-            return syntax != null ? syntax.Default : null;
+            return syntax?.Default;
         }
 
         class ParameterFactory : ICachedEntityFactory<(IParameterSymbol, IEntity, Parameter), Parameter>

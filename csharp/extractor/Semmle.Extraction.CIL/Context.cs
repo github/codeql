@@ -113,7 +113,7 @@ namespace Semmle.Extraction.CIL
         /// <returns>The debugging information, or null if the information could not be located.</returns>
         public PDB.IMethod? GetMethodDebugInformation(MethodDefinitionHandle handle)
         {
-            return pdb == null ? null : pdb.GetMethod(handle.ToDebugInformationHandle());
+            return pdb?.GetMethod(handle.ToDebugInformationHandle());
         }
     }
 

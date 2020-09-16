@@ -37,7 +37,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (!IsSourceDeclaration) return;
 
             var syntax = Syntax;
-            var initializer = syntax == null ? null : syntax.Initializer;
+            var initializer = syntax?.Initializer;
 
             if (initializer == null) return;
 
