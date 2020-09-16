@@ -30,10 +30,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 foreach (var param in @params)
                     VisitParameter(param);
 
-                if (body is ExpressionSyntax)
-                    Create(cx, (ExpressionSyntax)body, this, 0);
-                else if (body is BlockSyntax)
-                    Statements.Block.Create(cx, (BlockSyntax)body, this, 0);
+                if (body is ExpressionSyntax expressionBody)
+                    Create(cx, expressionBody, this, 0);
+                else if (body is BlockSyntax blockBody)
+                    Statements.Block.Create(cx, blockBody, this, 0);
                 else
                     cx.ModelError(body, "Unhandled lambda body");
             });

@@ -78,7 +78,11 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <returns>The string representation.</returns>
         public static string ValueAsString(object value)
         {
-            return value == null ? "null" : value is bool ? ((bool)value ? "true" : "false") : value.ToString();
+            return value is null
+                ? "null"
+                : value is bool b
+                    ? (b ? "true" : "false")
+                    : value.ToString();
         }
 
         /// <summary>
@@ -212,9 +216,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             for (SyntaxNode n = node; n != null; n = n.Parent)
             {
-                var conditionalAccess = n.Parent as ConditionalAccessExpressionSyntax;
-
-                if (conditionalAccess != null && conditionalAccess.WhenNotNull == n)
+                if (n.Parent is ConditionalAccessExpressionSyntax conditionalAccess && conditionalAccess.WhenNotNull == n)
                     return conditionalAccess.Expression;
             }
 
@@ -434,8 +436,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 // Clearly a bug.
                 if (type.Symbol?.TypeKind == Microsoft.CodeAnalysis.TypeKind.Error)
                 {
-                    var arrayCreation = Node as ArrayCreationExpressionSyntax;
-                    if (arrayCreation != null)
+                    if (Node is ArrayCreationExpressionSyntax arrayCreation)
                     {
                         var elementType = Context.GetType(arrayCreation.Type.ElementType);
 

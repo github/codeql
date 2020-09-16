@@ -53,12 +53,11 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     if (target != null && !target.IsStatic)
                     {
                         // Implicit `this` qualifier; add explicitly
-                        var callingMethod = cx.GetModel(Syntax).GetEnclosingSymbol(Location.symbol.SourceSpan.Start) as IMethodSymbol;
 
-                        if (callingMethod == null)
-                            cx.ModelError(Syntax, "Couldn't determine implicit this type");
-                        else
+                        if (cx.GetModel(Syntax).GetEnclosingSymbol(Location.symbol.SourceSpan.Start) is IMethodSymbol callingMethod)
                             This.CreateImplicit(cx, Entities.Type.Create(cx, callingMethod.ContainingType), Location, this, child++);
+                        else
+                            cx.ModelError(Syntax, "Couldn't determine implicit this type");
                     }
                     else
                     {
@@ -156,8 +155,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         static bool IsLocalFunctionInvocation(ExpressionNodeInfo info)
         {
-            var target = info.SymbolInfo.Symbol as IMethodSymbol;
-            return target != null && target.MethodKind == MethodKind.LocalFunction;
+            return info.SymbolInfo.Symbol is IMethodSymbol target &&
+                target.MethodKind == MethodKind.LocalFunction;
         }
 
         static ExprKind GetKind(ExpressionNodeInfo info)
@@ -175,8 +174,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             // Odd that this is not a separate expression type.
             // Maybe it will be in the future.
-            var id = syntax.Expression as IdentifierNameSyntax;
-            return id != null && id.Identifier.Text == "nameof";
+            return syntax.Expression is IdentifierNameSyntax id &&
+                id.Identifier.Text == "nameof";
         }
     }
 }

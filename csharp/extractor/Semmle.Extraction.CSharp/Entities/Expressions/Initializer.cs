@@ -65,9 +65,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             foreach (var init in Syntax.Expressions)
             {
-                var assignment = init as AssignmentExpressionSyntax;
-
-                if (assignment != null)
+                if (init is AssignmentExpressionSyntax assignment)
                 {
                     var assignmentInfo = new ExpressionNodeInfo(cx, init, this, child++).SetKind(ExprKind.SIMPLE_ASSIGN);
                     var assignmentEntity = new Expression(assignmentInfo);

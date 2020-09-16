@@ -57,9 +57,7 @@ namespace Semmle.Extraction.PDB
 
         public override bool Equals(object? obj)
         {
-            var otherLocation = obj as Location;
-
-            return otherLocation != null &&
+            return obj is Location otherLocation &&
                 File.Equals(otherLocation.File) &&
                 StartLine == otherLocation.StartLine &&
                 StartColumn == otherLocation.StartColumn &&

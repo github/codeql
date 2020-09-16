@@ -130,19 +130,20 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.parent_namespace(this, Namespace.Create(Context, symbol.ContainingNamespace));
             }
 
-            if (symbol is IArrayTypeSymbol)
+            if (symbol is IArrayTypeSymbol array)
             {
                 // They are in the namespace of the original object
-                ITypeSymbol elementType = ((IArrayTypeSymbol)symbol).ElementType;
-                INamespaceSymbol ns = elementType.TypeKind == TypeKind.TypeParameter ? Context.Compilation.GlobalNamespace : elementType.ContainingNamespace;
+                var elementType = array.ElementType;
+                var ns = elementType.TypeKind == TypeKind.TypeParameter ? Context.Compilation.GlobalNamespace : elementType.ContainingNamespace;
+
                 if (ns != null)
                     trapFile.parent_namespace(this, Namespace.Create(Context, ns));
             }
 
-            if (symbol is IPointerTypeSymbol)
+            if (symbol is IPointerTypeSymbol pointer)
             {
-                ITypeSymbol elementType = ((IPointerTypeSymbol)symbol).PointedAtType;
-                INamespaceSymbol ns = elementType.TypeKind == TypeKind.TypeParameter ? Context.Compilation.GlobalNamespace : elementType.ContainingNamespace;
+                var elementType = pointer.PointedAtType;
+                var ns = elementType.TypeKind == TypeKind.TypeParameter ? Context.Compilation.GlobalNamespace : elementType.ContainingNamespace;
 
                 if (ns != null)
                     trapFile.parent_namespace(this, Namespace.Create(Context, ns));

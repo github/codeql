@@ -41,8 +41,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                 var symbolInfo = cx.GetSymbolInfo(base.Syntax);
 
-                var indexer = symbolInfo.Symbol as IPropertySymbol;
-                if (indexer != null)
+                if (symbolInfo.Symbol is IPropertySymbol indexer)
                 {
                     trapFile.expr_access(this, Indexer.Create(cx, indexer));
                 }

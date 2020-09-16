@@ -54,8 +54,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                 if (convertedToDelegate)
                 {
-                    var objectCreation = info.Parent as ExplicitObjectCreation;
-                    bool isExplicitConversion = objectCreation != null && objectCreation.Kind == ExprKind.EXPLICIT_DELEGATE_CREATION;
+                    bool isExplicitConversion =
+                        info.Parent is ExplicitObjectCreation objectCreation &&
+                        objectCreation.Kind == ExprKind.EXPLICIT_DELEGATE_CREATION;
 
                     if (!isExplicitConversion)
                     {

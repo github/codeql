@@ -48,8 +48,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         void DefineConstantValue(TextWriter trapFile)
         {
-            var local = symbol as ILocalSymbol;
-            if (local != null && local.HasConstantValue)
+            if (symbol is ILocalSymbol local && local.HasConstantValue)
             {
                 trapFile.constant_value(this, Expression.ValueAsString(local.ConstantValue));
             }

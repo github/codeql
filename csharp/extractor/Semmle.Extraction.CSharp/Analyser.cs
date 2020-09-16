@@ -282,9 +282,8 @@ namespace Semmle.Extraction.CSharp
                     // in c to be garbage collected.
                     Compilation c = compilation.Clone();
 
-                    var assembly = c.GetAssemblyOrModuleSymbol(r) as IAssemblySymbol;
 
-                    if (assembly != null)
+                    if (c.GetAssemblyOrModuleSymbol(r) is IAssemblySymbol assembly)
                     {
                         var cx = extractor.CreateContext(c, trapWriter, new AssemblyScope(assembly, assemblyPath, false), AddAssemblyTrapPrefix);
 

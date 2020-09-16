@@ -60,9 +60,9 @@ namespace Semmle.Extraction
             TrapBuilder = new StringWriter();
             foreach (var arg in args)
             {
-                if (arg is IEntity)
+                if (arg is IEntity entity)
                 {
-                    var key = ((IEntity)arg).Label;
+                    var key = entity.Label;
                     TrapBuilder.Write("{#");
                     TrapBuilder.Write(key.Value.ToString());
                     TrapBuilder.Write("}");

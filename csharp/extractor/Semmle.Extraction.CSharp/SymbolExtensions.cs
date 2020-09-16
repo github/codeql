@@ -46,11 +46,10 @@ namespace Semmle.Extraction.CSharp
              * The conservative option would be to resolve all error types as null.
              */
 
-            var errorType = type as IErrorTypeSymbol;
 
-            return errorType != null && errorType.CandidateSymbols.Any() ?
-                errorType.CandidateSymbols.First() as ITypeSymbol :
-                type;
+            return type is IErrorTypeSymbol errorType && errorType.CandidateSymbols.Any()
+                ? errorType.CandidateSymbols.First() as ITypeSymbol
+                : type;
         }
 
         /// <summary>
@@ -459,11 +458,11 @@ namespace Semmle.Extraction.CSharp
         /// <returns>The list of parameters, or an empty list.</returns>
         public static IEnumerable<IParameterSymbol> GetParameters(this ISymbol parameterizable)
         {
-            if (parameterizable is IMethodSymbol)
-                return ((IMethodSymbol)parameterizable).Parameters;
+            if (parameterizable is IMethodSymbol ms)
+                return ms.Parameters;
 
-            if (parameterizable is IPropertySymbol)
-                return ((IPropertySymbol)parameterizable).Parameters;
+            if (parameterizable is IPropertySymbol ps)
+                return ps.Parameters;
 
             return Enumerable.Empty<IParameterSymbol>();
         }
@@ -489,12 +488,12 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         public static bool IsSourceDeclaration(this IParameterSymbol parameter)
         {
-            var method = parameter.ContainingSymbol as IMethodSymbol;
-            if (method != null)
+            if (parameter.ContainingSymbol is IMethodSymbol method)
                 return method.IsSourceDeclaration();
-            var property = parameter.ContainingSymbol as IPropertySymbol;
-            if (property != null && property.IsIndexer)
+
+            if (parameter.ContainingSymbol is IPropertySymbol property && property.IsIndexer)
                 return property.IsSourceDeclaration();
+
             return true;
         }
 
