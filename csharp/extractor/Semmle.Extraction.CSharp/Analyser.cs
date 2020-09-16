@@ -168,16 +168,12 @@ namespace Semmle.Extraction.CSharp
                     var entryPointFile = compilation.SyntaxTrees.First().FilePath;
                     return Path.ChangeExtension(entryPointFile, ".exe");
                 }
-                else
-                {
-                    var entryPointFilename = entry.Locations.First().SourceTree.FilePath;
-                    return Path.ChangeExtension(entryPointFilename, ".exe");
-                }
+
+                var entryPointFilename = entry.Locations.First().SourceTree.FilePath;
+                return Path.ChangeExtension(entryPointFilename, ".exe");
             }
-            else
-            {
-                return Path.Combine(commandLineArguments.OutputDirectory, commandLineArguments.OutputFileName);
-            }
+
+            return Path.Combine(commandLineArguments.OutputDirectory, commandLineArguments.OutputFileName);
         }
 
         /// <summary>

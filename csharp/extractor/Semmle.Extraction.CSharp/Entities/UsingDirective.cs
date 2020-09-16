@@ -34,12 +34,10 @@ namespace Semmle.Extraction.CSharp.Entities
                     Cx.ModelError(node, "Namespace not found");
                     return;
                 }
-                else
-                {
-                    var ns = Namespace.Create(Cx, namespaceSymbol);
-                    trapFile.using_namespace_directives(this, ns);
-                    trapFile.using_directive_location(this, Cx.Create(ReportingLocation));
-                }
+
+                var ns = Namespace.Create(Cx, namespaceSymbol);
+                trapFile.using_namespace_directives(this, ns);
+                trapFile.using_directive_location(this, Cx.Create(ReportingLocation));
             }
             else
             {

@@ -422,6 +422,7 @@ namespace Semmle.Extraction.CSharp
                 namedType.BuildAnonymousName(cx, trapFile);
             else
                 trapFile.Write(namedType.Name);
+
             if (namedType.IsGenericType && namedType.TypeKind != TypeKind.Error && namedType.TypeArguments.Any())
             {
                 trapFile.Write('<');

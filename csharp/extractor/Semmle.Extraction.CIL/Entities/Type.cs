@@ -244,11 +244,9 @@ namespace Semmle.Extraction.CIL.Entities
                 t = Cx.Create(code);
                 return true;
             }
-            else
-            {
-                t = null;
-                return false;
-            }
+
+            t = null;
+            return false;
         }
 
         private bool TryGetPrimitiveTypeCode(out PrimitiveTypeCode code)

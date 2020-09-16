@@ -115,10 +115,12 @@ namespace Semmle.Autobuild.Shared
                         arguments.Append('\\', numBackslashes * 2);
                         break;
                     }
-                    else if (argument[it] == '\"')
+
+                    if (argument[it] == '\"')
                     {
                         arguments.Append('\\', numBackslashes * 2 + 1);
-                        if (cmd) arguments.Append('^');
+                        if (cmd)
+                            arguments.Append('^');
                         arguments.Append(arguments[it]);
                     }
                     else

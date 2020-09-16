@@ -94,7 +94,7 @@ namespace Semmle.Extraction
 
         private static bool NeedsTruncation(string s)
         {
-            // Optimization: only count the actual number of bytes if there is the possibility 
+            // Optimization: only count the actual number of bytes if there is the possibility
             // of the string exceeding maxStringBytes
             return encoding.GetMaxByteCount(s.Length) > maxStringBytes &&
                 encoding.GetByteCount(s) > maxStringBytes;
@@ -249,7 +249,11 @@ namespace Semmle.Extraction
             var first = true;
             foreach (var item in items)
             {
-                if (first) first = false; else trapFile.Write(separator);
+                if (first)
+                    first = false;
+                else
+                    trapFile.Write(separator);
+
                 action(item, trapFile);
             }
             return trapFile;

@@ -30,10 +30,10 @@ namespace Semmle.Extraction.PDB
                         var rawContents = document.GetEmbeddedSource().ToArray();
                         return System.Text.Encoding.Default.GetString(rawContents);
                     }
-                    else
-                    {
-                        return File.Exists(Path) ? File.ReadAllText(Path) : null;
-                    }
+
+                    return File.Exists(Path)
+                        ? File.ReadAllText(Path)
+                        : null;
                 });
             }
 

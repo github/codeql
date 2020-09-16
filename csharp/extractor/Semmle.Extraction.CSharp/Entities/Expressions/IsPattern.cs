@@ -50,10 +50,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                                 return VariableDeclaration.Create(cx, symbol, type, null, cx.Create(syntax.GetLocation()), true, parent, child);
                             }
-                            else
-                            {
-                                throw new InternalError(varPattern, "Unable to get the declared symbol of the var pattern designation.");
-                            }
+
+                            throw new InternalError(varPattern, "Unable to get the declared symbol of the var pattern designation.");
                         default:
                             throw new InternalError("var pattern designation is unhandled");
                     }

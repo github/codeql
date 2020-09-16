@@ -33,10 +33,13 @@ namespace Semmle.Autobuild.CSharp.Tests
         bool IBuildActions.FileExists(string file)
         {
             FileExistsIn.Add(file);
+
             if (FileExists.TryGetValue(file, out var ret))
                 return ret;
+
             if (FileExists.TryGetValue(Path.GetFileName(file), out ret))
                 return ret;
+
             throw new ArgumentException("Missing FileExists " + file);
         }
 
@@ -51,16 +54,20 @@ namespace Semmle.Autobuild.CSharp.Tests
         {
             var pattern = cmd + " " + args;
             RunProcessIn.Add(pattern);
-            if (RunProcessOut.TryGetValue(pattern, out var str))
-                stdOut = str.Split("\n");
-            else
+            if (!RunProcessOut.TryGetValue(pattern, out var str))
                 throw new ArgumentException("Missing RunProcessOut " + pattern);
+
+            stdOut = str.Split("\n");
+
             RunProcessWorkingDirectory.TryGetValue(pattern, out var wd);
+
             if (wd != workingDirectory)
                 throw new ArgumentException("Missing RunProcessWorkingDirectory " + pattern);
-            if (RunProcess.TryGetValue(pattern, out var ret))
-                return ret;
-            throw new ArgumentException("Missing RunProcess " + pattern);
+
+            if (!RunProcess.TryGetValue(pattern, out var ret))
+                throw new ArgumentException("Missing RunProcess " + pattern);
+
+            return ret;
         }
 
         int IBuildActions.RunProcess(string cmd, string args, string? workingDirectory, IDictionary<string, string>? env)
@@ -68,11 +75,14 @@ namespace Semmle.Autobuild.CSharp.Tests
             var pattern = cmd + " " + args;
             RunProcessIn.Add(pattern);
             RunProcessWorkingDirectory.TryGetValue(pattern, out var wd);
+
             if (wd != workingDirectory)
                 throw new ArgumentException("Missing RunProcessWorkingDirectory " + pattern);
-            if (RunProcess.TryGetValue(pattern, out var ret))
-                return ret;
-            throw new ArgumentException("Missing RunProcess " + pattern);
+
+            if (!RunProcess.TryGetValue(pattern, out var ret))
+                throw new ArgumentException("Missing RunProcess " + pattern);
+
+            return ret;
         }
 
         public readonly IList<string> DirectoryDeleteIn = new List<string>();
@@ -86,18 +96,20 @@ namespace Semmle.Autobuild.CSharp.Tests
 
         bool IBuildActions.DirectoryExists(string dir)
         {
-            if (DirectoryExists.TryGetValue(dir, out var ret))
-                return ret;
-            throw new ArgumentException("Missing DirectoryExists " + dir);
+            if (!DirectoryExists.TryGetValue(dir, out var ret))
+                throw new ArgumentException("Missing DirectoryExists " + dir);
+
+            return ret;
         }
 
         public readonly IDictionary<string, string?> GetEnvironmentVariable = new Dictionary<string, string?>();
 
         string? IBuildActions.GetEnvironmentVariable(string name)
         {
-            if (GetEnvironmentVariable.TryGetValue(name, out var ret))
-                return ret;
-            throw new ArgumentException("Missing GetEnvironmentVariable " + name);
+            if (!GetEnvironmentVariable.TryGetValue(name, out var ret))
+                throw new ArgumentException("Missing GetEnvironmentVariable " + name);
+
+            return ret;
         }
 
         public string GetCurrentDirectory = "";
@@ -111,18 +123,22 @@ namespace Semmle.Autobuild.CSharp.Tests
 
         IEnumerable<string> IBuildActions.EnumerateFiles(string dir)
         {
-            if (EnumerateFiles.TryGetValue(dir, out var str))
-                return str.Split("\n").Select(p => PathCombine(dir, p));
-            throw new ArgumentException("Missing EnumerateFiles " + dir);
+            if (!EnumerateFiles.TryGetValue(dir, out var str))
+                throw new ArgumentException("Missing EnumerateFiles " + dir);
+
+            return str.Split("\n").Select(p => PathCombine(dir, p));
         }
 
         public readonly IDictionary<string, string> EnumerateDirectories = new Dictionary<string, string>();
 
         IEnumerable<string> IBuildActions.EnumerateDirectories(string dir)
         {
-            if (EnumerateDirectories.TryGetValue(dir, out var str))
-                return string.IsNullOrEmpty(str) ? Enumerable.Empty<string>() : str.Split("\n").Select(p => PathCombine(dir, p));
-            throw new ArgumentException("Missing EnumerateDirectories " + dir);
+            if (!EnumerateDirectories.TryGetValue(dir, out var str))
+                throw new ArgumentException("Missing EnumerateDirectories " + dir);
+
+            return string.IsNullOrEmpty(str)
+                ? Enumerable.Empty<string>()
+                : str.Split("\n").Select(p => PathCombine(dir, p));
         }
 
         public bool IsWindows;
@@ -152,9 +168,10 @@ namespace Semmle.Autobuild.CSharp.Tests
 
         XmlDocument IBuildActions.LoadXml(string filename)
         {
-            if (LoadXml.TryGetValue(filename, out var xml))
-                return xml;
-            throw new ArgumentException("Missing LoadXml " + filename);
+            if (!LoadXml.TryGetValue(filename, out var xml))
+                throw new ArgumentException("Missing LoadXml " + filename);
+
+            return xml;
         }
 
         public string EnvironmentExpandEnvironmentVariables(string s)

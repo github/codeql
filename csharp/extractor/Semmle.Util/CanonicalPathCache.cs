@@ -84,32 +84,30 @@ namespace Semmle.Util
                 // File/directory does not exist.
                 return ConstructCanonicalPath(path, cache);
             }
-            else
+
+            var outPath = new StringBuilder(Win32.MAX_PATH);
+            var length = Win32.GetFinalPathNameByHandle(hFile, outPath, outPath.Capacity, 0);  // lgtm[cs/call-to-unmanaged-code]
+            if (length >= outPath.Capacity)
             {
-                var outPath = new StringBuilder(Win32.MAX_PATH);
-                var length = Win32.GetFinalPathNameByHandle(hFile, outPath, outPath.Capacity, 0);  // lgtm[cs/call-to-unmanaged-code]
-                if (length >= outPath.Capacity)
-                {
-                    // Path length exceeded MAX_PATH.
-                    // Possible if target has a long path.
-                    outPath = new StringBuilder(length + 1);
-                    length = Win32.GetFinalPathNameByHandle(hFile, outPath, outPath.Capacity, 0);  // lgtm[cs/call-to-unmanaged-code]
-                }
-
-                const int preamble = 4; // outPath always starts \\?\
-
-                if (length <= preamble)
-                {
-                    // Failed. GetFinalPathNameByHandle() failed somehow.
-                    return ConstructCanonicalPath(path, cache);
-                }
-
-                var result = outPath.ToString(preamble, length - preamble);  // Trim off leading \\?\
-
-                return result.StartsWith("UNC") ?
-                    @"\" + result.Substring(3) :
-                    result;
+                // Path length exceeded MAX_PATH.
+                // Possible if target has a long path.
+                outPath = new StringBuilder(length + 1);
+                length = Win32.GetFinalPathNameByHandle(hFile, outPath, outPath.Capacity, 0);  // lgtm[cs/call-to-unmanaged-code]
             }
+
+            const int preamble = 4; // outPath always starts \\?\
+
+            if (length <= preamble)
+            {
+                // Failed. GetFinalPathNameByHandle() failed somehow.
+                return ConstructCanonicalPath(path, cache);
+            }
+
+            var result = outPath.ToString(preamble, length - preamble);  // Trim off leading \\?\
+
+            return result.StartsWith("UNC") ?
+                @"\" + result.Substring(3) :
+                result;
         }
     }
 
@@ -140,13 +138,11 @@ namespace Semmle.Util
                     return Path.Combine(parentPath, name);
                 }
             }
-            else
-            {
-                // We are at a root of the filesystem.
-                // Convert drive letters, UNC paths etc. to uppercase.
-                // On UNIX, this should be "/" or "".
-                return path.ToUpperInvariant();
-            }
+
+            // We are at a root of the filesystem.
+            // Convert drive letters, UNC paths etc. to uppercase.
+            // On UNIX, this should be "/" or "".
+            return path.ToUpperInvariant();
         }
     }
 

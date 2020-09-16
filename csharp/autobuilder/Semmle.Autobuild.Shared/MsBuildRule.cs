@@ -61,7 +61,9 @@ namespace Semmle.Autobuild.Shared
                         QuoteArgument(projectOrSolution.FullPath);
 
                     if (nugetDownloaded)
+                    {
                         ret &= BuildScript.Try(nugetRestore | msbuildRestoreCommand.Script);
+                    }
                     else
                     {
                         // If `nuget restore` fails, and we have not already attempted to download `nuget.exe`,
@@ -97,9 +99,9 @@ namespace Semmle.Autobuild.Shared
 
                 command.Argument("/p:UseSharedCompilation=false");
 
-                string target = builder.Options.MsBuildTarget ?? "rebuild";
-                string? platform = builder.Options.MsBuildPlatform ?? (projectOrSolution is ISolution s1 ? s1.DefaultPlatformName : null);
-                string? configuration = builder.Options.MsBuildConfiguration ?? (projectOrSolution is ISolution s2 ? s2.DefaultConfigurationName : null);
+                var target = builder.Options.MsBuildTarget ?? "rebuild";
+                var platform = builder.Options.MsBuildPlatform ?? (projectOrSolution is ISolution s1 ? s1.DefaultPlatformName : null);
+                var configuration = builder.Options.MsBuildConfiguration ?? (projectOrSolution is ISolution s2 ? s2.DefaultConfigurationName : null);
 
                 command.Argument("/t:" + target);
                 if (platform != null)
