@@ -66,9 +66,7 @@ namespace Semmle.Extraction.PDB
 
             try
             {
-                MetadataReaderProvider provider;
-                string pdbPath;
-                if (peReader.TryOpenAssociatedPortablePdb(assemblyPath, s => new FileStream(s, FileMode.Open, FileAccess.Read, FileShare.Read), out provider, out pdbPath))
+                if (peReader.TryOpenAssociatedPortablePdb(assemblyPath, s => new FileStream(s, FileMode.Open, FileAccess.Read, FileShare.Read), out MetadataReaderProvider provider, out string pdbPath))
                 {
                     return new MetadataPdbReader(provider);
                 }

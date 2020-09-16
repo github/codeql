@@ -25,8 +25,7 @@ namespace Semmle.Extraction.PDB
                 document = doc;
                 contents = new Lazy<string?>(() =>
                 {
-                    bool isEmbedded;
-                    if (document.HasEmbeddedSource(out isEmbedded) == 0 && isEmbedded)
+                    if (document.HasEmbeddedSource(out bool isEmbedded) == 0 && isEmbedded)
                     {
                         var rawContents = document.GetEmbeddedSource().ToArray();
                         return System.Text.Encoding.Default.GetString(rawContents);
@@ -63,8 +62,7 @@ namespace Semmle.Extraction.PDB
             var method = reader.GetMethod(methodToken);
             if (method != null)
             {
-                int count;
-                if (method.GetSequencePointCount(out count) != 0 || count == 0)
+                if (method.GetSequencePointCount(out int count) != 0 || count == 0)
                     return null;
 
                 var s = method.GetSequencePoints().

@@ -279,8 +279,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                Payload result;
-                if (!opPayload.TryGetValue(OpCode, out result))
+                if (!opPayload.TryGetValue(OpCode, out Payload result))
                     throw new InternalError("Unknown op code " + OpCode);
                 return result;
             }

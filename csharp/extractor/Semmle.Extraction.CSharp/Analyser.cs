@@ -313,9 +313,7 @@ namespace Semmle.Extraction.CSharp
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            string trapFile;
-            bool extracted;
-            CIL.Entities.Assembly.ExtractCIL(layout, r.FilePath, Logger, !options.Cache, options.PDB, options.TrapCompression, out trapFile, out extracted);
+            CIL.Entities.Assembly.ExtractCIL(layout, r.FilePath, Logger, !options.Cache, options.PDB, options.TrapCompression, out string trapFile, out bool extracted);
             stopwatch.Stop();
             ReportProgress(r.FilePath, trapFile, stopwatch.Elapsed, extracted ? AnalysisAction.Extracted : AnalysisAction.UpToDate);
         }
