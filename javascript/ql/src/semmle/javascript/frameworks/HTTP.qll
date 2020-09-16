@@ -555,15 +555,16 @@ module HTTP {
             create.getArgument(0).asExpr() instanceof NullLiteral
           )
         ) and
-        exists(RouteHandlerCandidate candidate | candidate.flowsTo(getAPropertyWrite().getRhs()))
+        exists(RouteHandlerCandidate candidate |
+          getAPossiblyDecoratedHandler(candidate).flowsTo(getAPropertyWrite().getRhs())
+        )
       }
 
-      override DataFlow::SourceNode getRouteHandler(DataFlow::SourceNode access) {
-        result instanceof RouteHandlerCandidate and
+      override RouteHandlerCandidate getRouteHandler(DataFlow::SourceNode access) {
         exists(DataFlow::PropWrite write, DataFlow::PropRead read |
           access = read and
           ref(this).getAPropertyRead() = read and
-          result.flowsTo(write.getRhs()) and
+          getAPossiblyDecoratedHandler(result).flowsTo(write.getRhs()) and
           write = this.getAPropertyWrite()
         |
           write.getPropertyName() = read.getPropertyName()
@@ -571,8 +572,32 @@ module HTTP {
           exists(EnumeratedPropName prop | access = prop.getASourceProp())
           or
           read = DataFlow::lvalueNode(any(ForOfStmt stmt).getLValue())
+          or
+          // for forwarding calls to an element where the key is determined by the request.
+          getRequestParameterRead(read.getContainer().(Function).flow())
+              .flowsToExpr(read.getPropertyNameExpr())
         )
       }
+    }
+
+    /**
+     * Gets a (chained) property-read/method-call on the request parameter of the route-handler `f`.
+     */
+    private DataFlow::SourceNode getRequestParameterRead(RouteHandlerCandidate f) {
+      result = f.getParameter(0)
+      or
+      result = getRequestParameterRead(f).getAPropertyRead()
+      or
+      result = getRequestParameterRead(f).getAMethodCall()
+    }
+
+    /**
+     * Gets a node that is either `candidate`, or a call that decorates `candidate`.
+     */
+    DataFlow::SourceNode getAPossiblyDecoratedHandler(RouteHandlerCandidate candidate) {
+      result = candidate
+      or
+      Express::decoratedRouteHandler(candidate, result)
     }
 
     /**
@@ -591,14 +616,14 @@ module HTTP {
         )
       }
 
-      override DataFlow::SourceNode getRouteHandler(DataFlow::SourceNode access) {
+      override RouteHandlerCandidate getRouteHandler(DataFlow::SourceNode access) {
         exists(
           DataFlow::Node input, TypeTrackingPseudoProperty key, CollectionFlowStep store,
           CollectionFlowStep load, DataFlow::Node storeTo, DataFlow::Node loadFrom
         |
           this.flowsTo(storeTo) and
           store.store(input, storeTo, key) and
-          result.(RouteHandlerCandidate).flowsTo(input) and
+          getAPossiblyDecoratedHandler(result).flowsTo(input) and
           ref(this).flowsTo(loadFrom) and
           load.load(loadFrom, access, key)
         )
