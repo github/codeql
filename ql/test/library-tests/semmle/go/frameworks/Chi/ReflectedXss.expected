@@ -1,0 +1,29 @@
+edges
+| test.go:13:12:13:16 | implicit dereference : URL | test.go:13:12:13:16 | implicit dereference : URL |
+| test.go:13:12:13:16 | implicit dereference : URL | test.go:13:12:13:16 | selection of URL : pointer type |
+| test.go:13:12:13:16 | implicit dereference : URL | test.go:13:12:13:21 | selection of Path : string |
+| test.go:13:12:13:16 | selection of URL : pointer type | test.go:13:12:13:16 | implicit dereference : URL |
+| test.go:13:12:13:16 | selection of URL : pointer type | test.go:13:12:13:16 | selection of URL : pointer type |
+| test.go:13:12:13:16 | selection of URL : pointer type | test.go:13:12:13:21 | selection of Path : string |
+| test.go:13:12:13:21 | selection of Path : string | test.go:21:18:21:23 | hidden : string |
+| test.go:21:18:21:23 | hidden : string | test.go:21:11:21:24 | type conversion |
+| test.go:22:18:22:45 | call to URLParam : string | test.go:22:11:22:46 | type conversion |
+| test.go:23:18:23:60 | call to URLParamFromCtx : string | test.go:23:11:23:61 | type conversion |
+| test.go:24:18:24:71 | call to URLParam : string | test.go:24:11:24:72 | type conversion |
+nodes
+| test.go:13:12:13:16 | implicit dereference : URL | semmle.label | implicit dereference : URL |
+| test.go:13:12:13:16 | selection of URL : pointer type | semmle.label | selection of URL : pointer type |
+| test.go:13:12:13:21 | selection of Path : string | semmle.label | selection of Path : string |
+| test.go:21:11:21:24 | type conversion | semmle.label | type conversion |
+| test.go:21:18:21:23 | hidden : string | semmle.label | hidden : string |
+| test.go:22:11:22:46 | type conversion | semmle.label | type conversion |
+| test.go:22:18:22:45 | call to URLParam : string | semmle.label | call to URLParam : string |
+| test.go:23:11:23:61 | type conversion | semmle.label | type conversion |
+| test.go:23:18:23:60 | call to URLParamFromCtx : string | semmle.label | call to URLParamFromCtx : string |
+| test.go:24:11:24:72 | type conversion | semmle.label | type conversion |
+| test.go:24:18:24:71 | call to URLParam : string | semmle.label | call to URLParam : string |
+#select
+| test.go:21:11:21:24 | type conversion | test.go:13:12:13:16 | selection of URL : pointer type | test.go:21:11:21:24 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:13:12:13:16 | selection of URL | user-provided value |
+| test.go:22:11:22:46 | type conversion | test.go:22:18:22:45 | call to URLParam : string | test.go:22:11:22:46 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:22:18:22:45 | call to URLParam | user-provided value |
+| test.go:23:11:23:61 | type conversion | test.go:23:18:23:60 | call to URLParamFromCtx : string | test.go:23:11:23:61 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:23:18:23:60 | call to URLParamFromCtx | user-provided value |
+| test.go:24:11:24:72 | type conversion | test.go:24:18:24:71 | call to URLParam : string | test.go:24:11:24:72 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:24:18:24:71 | call to URLParam | user-provided value |
