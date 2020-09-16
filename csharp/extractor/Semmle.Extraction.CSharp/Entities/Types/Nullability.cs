@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,9 +8,10 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     public sealed class Nullability
     {
+        static readonly Nullability[] EmptyArray = Array.Empty<Nullability>();
+
         public int Annotation { get; }
 
-        static readonly Nullability[] EmptyArray = new Nullability[0];
         public Nullability[] NullableParameters { get; }
 
         public static Nullability Create(AnnotatedTypeSymbol ts)
@@ -55,7 +57,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private Nullability(AnnotatedTypeSymbol ts) : this(ts.Nullability)
         {
-            NullableParameters = ts.HasConsistentNullability() ? EmptyArray : ts.GetAnnotatedTypeArguments().Select(Create).ToArray();
+            NullableParameters = ts.HasConsistentNullability()
+                ? EmptyArray
+                : ts.GetAnnotatedTypeArguments().Select(Create).ToArray();
         }
 
         public Nullability(IMethodSymbol method)
