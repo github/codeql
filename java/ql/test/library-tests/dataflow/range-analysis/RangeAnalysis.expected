@@ -1,0 +1,181 @@
+| A.java:3:9:3:9 | x | SSA init(x) | 0 | lower | NoReason |
+| A.java:3:9:3:9 | x | SSA init(x) | 0 | upper | NoReason |
+| A.java:3:13:3:15 | 500 | 0 | 500 | lower | NoReason |
+| A.java:3:13:3:15 | 500 | 0 | 500 | upper | NoReason |
+| A.java:4:11:4:11 | x | 0 | 499 | upper | ... < ... |
+| A.java:4:11:4:11 | x | SSA init(x) | 0 | lower | NoReason |
+| A.java:4:11:4:11 | x | SSA init(x) | 0 | upper | NoReason |
+| A.java:4:15:4:17 | 400 | 0 | 400 | lower | NoReason |
+| A.java:4:15:4:17 | 400 | 0 | 400 | upper | NoReason |
+| A.java:5:16:5:16 | x | 0 | 401 | lower | ... > ... |
+| A.java:5:16:5:16 | x | 0 | 499 | upper | ... < ... |
+| A.java:5:16:5:16 | x | SSA init(x) | 0 | lower | NoReason |
+| A.java:5:16:5:16 | x | SSA init(x) | 0 | upper | NoReason |
+| A.java:8:11:8:11 | y | SSA init(y) | 0 | lower | NoReason |
+| A.java:8:11:8:11 | y | SSA init(y) | 0 | upper | NoReason |
+| A.java:8:11:8:15 | ... - ... | SSA init(y) | -2 | lower | NoReason |
+| A.java:8:11:8:15 | ... - ... | SSA init(y) | -2 | upper | NoReason |
+| A.java:8:15:8:15 | 2 | 0 | 2 | lower | NoReason |
+| A.java:8:15:8:15 | 2 | 0 | 2 | upper | NoReason |
+| A.java:8:20:8:20 | x | 0 | 400 | upper | ... > ... |
+| A.java:8:20:8:20 | x | SSA init(x) | 0 | lower | NoReason |
+| A.java:8:20:8:20 | x | SSA init(x) | 0 | upper | NoReason |
+| A.java:8:25:8:25 | y | 0 | 402 | upper | ... == ... |
+| A.java:8:25:8:25 | y | SSA init(x) | 2 | lower | ... == ... |
+| A.java:8:25:8:25 | y | SSA init(x) | 2 | upper | ... == ... |
+| A.java:8:25:8:25 | y | SSA init(y) | 0 | lower | NoReason |
+| A.java:8:25:8:25 | y | SSA init(y) | 0 | upper | NoReason |
+| A.java:8:29:8:31 | 300 | 0 | 300 | lower | NoReason |
+| A.java:8:29:8:31 | 300 | 0 | 300 | upper | NoReason |
+| A.java:9:16:9:16 | x | 0 | 299 | lower | ... > ... |
+| A.java:9:16:9:16 | x | 0 | 400 | upper | ... > ... |
+| A.java:9:16:9:16 | x | SSA init(x) | 0 | lower | NoReason |
+| A.java:9:16:9:16 | x | SSA init(x) | 0 | upper | NoReason |
+| A.java:9:16:9:16 | x | SSA init(y) | -2 | lower | ... == ... |
+| A.java:9:16:9:16 | x | SSA init(y) | -2 | upper | ... == ... |
+| A.java:9:16:9:20 | ... + ... | 0 | 300 | lower | ... > ... |
+| A.java:9:16:9:20 | ... + ... | SSA init(x) | 1 | lower | NoReason |
+| A.java:9:16:9:20 | ... + ... | SSA init(y) | -1 | lower | ... == ... |
+| A.java:9:20:9:20 | y | 0 | 301 | lower | ... > ... |
+| A.java:9:20:9:20 | y | 0 | 402 | upper | ... == ... |
+| A.java:9:20:9:20 | y | SSA init(x) | 2 | lower | ... == ... |
+| A.java:9:20:9:20 | y | SSA init(x) | 2 | upper | ... == ... |
+| A.java:9:20:9:20 | y | SSA init(y) | 0 | lower | NoReason |
+| A.java:9:20:9:20 | y | SSA init(y) | 0 | upper | NoReason |
+| A.java:12:11:12:11 | x | 0 | 400 | upper | ... > ... |
+| A.java:12:11:12:11 | x | SSA init(x) | 0 | lower | NoReason |
+| A.java:12:11:12:11 | x | SSA init(x) | 0 | upper | NoReason |
+| A.java:12:16:12:16 | y | SSA init(y) | 0 | lower | NoReason |
+| A.java:12:16:12:16 | y | SSA init(y) | 0 | upper | NoReason |
+| A.java:12:16:12:20 | ... + ... | SSA init(y) | 1 | lower | NoReason |
+| A.java:12:16:12:20 | ... + ... | SSA init(y) | 1 | upper | NoReason |
+| A.java:12:20:12:20 | 1 | 0 | 1 | lower | NoReason |
+| A.java:12:20:12:20 | 1 | 0 | 1 | upper | NoReason |
+| A.java:13:19:13:19 | x | 0 | 400 | upper | ... > ... |
+| A.java:13:19:13:19 | x | SSA init(x) | 0 | lower | NoReason |
+| A.java:13:19:13:19 | x | SSA init(x) | 0 | upper | NoReason |
+| A.java:13:23:13:23 | y | SSA init(y) | 0 | lower | NoReason |
+| A.java:13:23:13:23 | y | SSA init(y) | 0 | upper | NoReason |
+| A.java:15:13:15:13 | y | 0 | 399 | upper | ... != ... |
+| A.java:15:13:15:13 | y | SSA init(x) | -1 | lower | ... != ... |
+| A.java:15:13:15:13 | y | SSA init(x) | -1 | upper | ... != ... |
+| A.java:15:13:15:13 | y | SSA init(y) | 0 | lower | NoReason |
+| A.java:15:13:15:13 | y | SSA init(y) | 0 | upper | NoReason |
+| A.java:15:17:15:19 | 300 | 0 | 300 | lower | NoReason |
+| A.java:15:17:15:19 | 300 | 0 | 300 | upper | NoReason |
+| A.java:16:21:16:21 | x | 0 | 302 | lower | ... > ... |
+| A.java:16:21:16:21 | x | 0 | 400 | upper | ... > ... |
+| A.java:16:21:16:21 | x | SSA init(x) | 0 | lower | NoReason |
+| A.java:16:21:16:21 | x | SSA init(x) | 0 | upper | NoReason |
+| A.java:16:21:16:21 | x | SSA init(y) | 1 | lower | ... != ... |
+| A.java:16:21:16:21 | x | SSA init(y) | 1 | upper | ... != ... |
+| A.java:16:21:16:25 | ... + ... | 0 | 303 | lower | ... > ... |
+| A.java:16:21:16:25 | ... + ... | SSA init(x) | 1 | lower | NoReason |
+| A.java:16:21:16:25 | ... + ... | SSA init(y) | 2 | lower | ... != ... |
+| A.java:16:25:16:25 | y | 0 | 301 | lower | ... > ... |
+| A.java:16:25:16:25 | y | 0 | 399 | upper | ... != ... |
+| A.java:16:25:16:25 | y | SSA init(x) | -1 | lower | ... != ... |
+| A.java:16:25:16:25 | y | SSA init(x) | -1 | upper | ... != ... |
+| A.java:16:25:16:25 | y | SSA init(y) | 0 | lower | NoReason |
+| A.java:16:25:16:25 | y | SSA init(y) | 0 | upper | NoReason |
+| A.java:20:11:20:11 | x | 0 | 400 | upper | ... > ... |
+| A.java:20:11:20:11 | x | SSA init(x) | 0 | lower | NoReason |
+| A.java:20:11:20:11 | x | SSA init(x) | 0 | upper | NoReason |
+| A.java:20:15:20:17 | 500 | 0 | 500 | lower | NoReason |
+| A.java:20:15:20:17 | 500 | 0 | 500 | upper | NoReason |
+| A.java:21:16:21:16 | x | 0 | 400 | upper | ... > ... |
+| A.java:21:16:21:16 | x | 0 | 501 | lower | ... > ... |
+| A.java:21:16:21:16 | x | SSA init(x) | 0 | lower | NoReason |
+| A.java:21:16:21:16 | x | SSA init(x) | 0 | upper | NoReason |
+| A.java:25:12:25:12 | 0 | 0 | 0 | lower | NoReason |
+| A.java:25:12:25:12 | 0 | 0 | 0 | upper | NoReason |
+| A.java:29:9:29:9 | x | SSA init(x) | 0 | lower | NoReason |
+| A.java:29:9:29:9 | x | SSA init(x) | 0 | upper | NoReason |
+| A.java:29:13:29:15 | 500 | 0 | 500 | lower | NoReason |
+| A.java:29:13:29:15 | 500 | 0 | 500 | upper | NoReason |
+| A.java:30:11:30:11 | x | 0 | 499 | upper | ... < ... |
+| A.java:30:11:30:11 | x | SSA init(x) | 0 | lower | NoReason |
+| A.java:30:11:30:11 | x | SSA init(x) | 0 | upper | NoReason |
+| A.java:30:15:30:17 | 400 | 0 | 400 | lower | NoReason |
+| A.java:30:15:30:17 | 400 | 0 | 400 | upper | NoReason |
+| A.java:31:16:31:16 | x | 0 | 401 | lower | ... > ... |
+| A.java:31:16:31:16 | x | 0 | 499 | upper | ... < ... |
+| A.java:31:16:31:16 | x | SSA init(x) | 0 | lower | NoReason |
+| A.java:31:16:31:16 | x | SSA init(x) | 0 | upper | NoReason |
+| A.java:34:11:34:11 | y | SSA init(y) | 0 | lower | NoReason |
+| A.java:34:11:34:11 | y | SSA init(y) | 0 | upper | NoReason |
+| A.java:34:16:34:16 | x | 0 | 400 | upper | ... > ... |
+| A.java:34:16:34:16 | x | SSA init(x) | 0 | lower | NoReason |
+| A.java:34:16:34:16 | x | SSA init(x) | 0 | upper | NoReason |
+| A.java:34:16:34:20 | ... - ... | 0 | 399 | upper | ... > ... |
+| A.java:34:16:34:20 | ... - ... | SSA init(x) | -1 | lower | NoReason |
+| A.java:34:16:34:20 | ... - ... | SSA init(x) | -1 | upper | NoReason |
+| A.java:34:20:34:20 | 1 | 0 | 1 | lower | NoReason |
+| A.java:34:20:34:20 | 1 | 0 | 1 | upper | NoReason |
+| A.java:34:25:34:25 | y | 0 | 399 | upper | ... == ... |
+| A.java:34:25:34:25 | y | SSA init(x) | -1 | lower | ... == ... |
+| A.java:34:25:34:25 | y | SSA init(x) | -1 | upper | ... == ... |
+| A.java:34:25:34:25 | y | SSA init(y) | 0 | lower | NoReason |
+| A.java:34:25:34:25 | y | SSA init(y) | 0 | upper | NoReason |
+| A.java:34:29:34:31 | 300 | 0 | 300 | lower | NoReason |
+| A.java:34:29:34:31 | 300 | 0 | 300 | upper | NoReason |
+| A.java:34:36:34:36 | y | 0 | 301 | lower | ... > ... |
+| A.java:34:36:34:36 | y | 0 | 399 | upper | ... == ... |
+| A.java:34:36:34:36 | y | SSA init(x) | -1 | lower | ... == ... |
+| A.java:34:36:34:36 | y | SSA init(x) | -1 | upper | ... == ... |
+| A.java:34:36:34:36 | y | SSA init(y) | 0 | lower | NoReason |
+| A.java:34:36:34:36 | y | SSA init(y) | 0 | upper | NoReason |
+| A.java:34:36:34:40 | ... + ... | 0 | 303 | lower | ... > ... |
+| A.java:34:36:34:40 | ... + ... | 0 | 401 | upper | ... == ... |
+| A.java:34:36:34:40 | ... + ... | SSA init(x) | 1 | lower | ... == ... |
+| A.java:34:36:34:40 | ... + ... | SSA init(x) | 1 | upper | ... == ... |
+| A.java:34:36:34:40 | ... + ... | SSA init(y) | 2 | lower | NoReason |
+| A.java:34:36:34:40 | ... + ... | SSA init(y) | 2 | upper | NoReason |
+| A.java:34:40:34:40 | 2 | 0 | 2 | lower | NoReason |
+| A.java:34:40:34:40 | 2 | 0 | 2 | upper | NoReason |
+| A.java:34:45:34:45 | z | SSA init(z) | 0 | lower | NoReason |
+| A.java:34:45:34:45 | z | SSA init(z) | 0 | upper | NoReason |
+| A.java:34:50:34:50 | z | 0 | 303 | lower | ... == ... |
+| A.java:34:50:34:50 | z | 0 | 401 | upper | ... == ... |
+| A.java:34:50:34:50 | z | SSA init(x) | 1 | lower | ... == ... |
+| A.java:34:50:34:50 | z | SSA init(x) | 1 | upper | ... == ... |
+| A.java:34:50:34:50 | z | SSA init(y) | 2 | lower | ... == ... |
+| A.java:34:50:34:50 | z | SSA init(y) | 2 | upper | ... == ... |
+| A.java:34:50:34:50 | z | SSA init(z) | 0 | lower | NoReason |
+| A.java:34:50:34:50 | z | SSA init(z) | 0 | upper | NoReason |
+| A.java:34:55:34:57 | 350 | 0 | 350 | lower | NoReason |
+| A.java:34:55:34:57 | 350 | 0 | 350 | upper | NoReason |
+| A.java:35:16:35:16 | x | 0 | 349 | lower | ... == ... |
+| A.java:35:16:35:16 | x | 0 | 349 | upper | ... == ... |
+| A.java:35:16:35:16 | x | SSA init(x) | 0 | lower | NoReason |
+| A.java:35:16:35:16 | x | SSA init(x) | 0 | upper | NoReason |
+| A.java:35:16:35:16 | x | SSA init(y) | 1 | lower | ... == ... |
+| A.java:35:16:35:16 | x | SSA init(y) | 1 | upper | ... == ... |
+| A.java:35:16:35:16 | x | SSA init(z) | -1 | lower | ... == ... |
+| A.java:35:16:35:16 | x | SSA init(z) | -1 | upper | ... == ... |
+| A.java:35:16:35:20 | ... + ... | 0 | 350 | lower | ... == ... |
+| A.java:35:16:35:20 | ... + ... | SSA init(x) | 1 | lower | NoReason |
+| A.java:35:16:35:20 | ... + ... | SSA init(y) | 2 | lower | ... == ... |
+| A.java:35:16:35:20 | ... + ... | SSA init(z) | 0 | lower | ... == ... |
+| A.java:35:16:35:24 | ... + ... | 0 | 351 | lower | ... == ... |
+| A.java:35:16:35:24 | ... + ... | SSA init(x) | 2 | lower | NoReason |
+| A.java:35:16:35:24 | ... + ... | SSA init(y) | 3 | lower | ... == ... |
+| A.java:35:16:35:24 | ... + ... | SSA init(z) | 1 | lower | ... == ... |
+| A.java:35:20:35:20 | y | 0 | 348 | lower | ... == ... |
+| A.java:35:20:35:20 | y | 0 | 348 | upper | ... == ... |
+| A.java:35:20:35:20 | y | SSA init(x) | -1 | lower | ... == ... |
+| A.java:35:20:35:20 | y | SSA init(x) | -1 | upper | ... == ... |
+| A.java:35:20:35:20 | y | SSA init(y) | 0 | lower | NoReason |
+| A.java:35:20:35:20 | y | SSA init(y) | 0 | upper | NoReason |
+| A.java:35:20:35:20 | y | SSA init(z) | -2 | lower | ... == ... |
+| A.java:35:20:35:20 | y | SSA init(z) | -2 | upper | ... == ... |
+| A.java:35:24:35:24 | z | 0 | 350 | lower | ... == ... |
+| A.java:35:24:35:24 | z | 0 | 350 | upper | ... == ... |
+| A.java:35:24:35:24 | z | SSA init(x) | 1 | lower | ... == ... |
+| A.java:35:24:35:24 | z | SSA init(x) | 1 | upper | ... == ... |
+| A.java:35:24:35:24 | z | SSA init(y) | 2 | lower | ... == ... |
+| A.java:35:24:35:24 | z | SSA init(y) | 2 | upper | ... == ... |
+| A.java:35:24:35:24 | z | SSA init(z) | 0 | lower | NoReason |
+| A.java:35:24:35:24 | z | SSA init(z) | 0 | upper | NoReason |
+| A.java:39:12:39:12 | 0 | 0 | 0 | lower | NoReason |
+| A.java:39:12:39:12 | 0 | 0 | 0 | upper | NoReason |
