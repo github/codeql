@@ -137,7 +137,7 @@ namespace Semmle.Extraction.PDB
         IMethod? GetMethod(MethodDebugInformationHandle methodHandle);
     }
 
-    class PdbReader
+    static class PdbReader
     {
         /// <summary>
         /// Returns the PDB information associated with an assembly.
@@ -148,7 +148,7 @@ namespace Semmle.Extraction.PDB
         public static IPdb? Create(string assemblyPath, PEReader peReader)
         {
             return (IPdb?)MetadataPdbReader.CreateFromAssembly(assemblyPath, peReader) ??
-                NativePdbReader.CreateFromAssembly(assemblyPath, peReader);
+                NativePdbReader.CreateFromAssembly(peReader);
         }
     }
 }

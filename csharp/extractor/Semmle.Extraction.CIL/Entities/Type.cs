@@ -436,7 +436,7 @@ namespace Semmle.Extraction.CIL.Entities
             for (int i = 0; i < newTypeParams.Length; ++i)
                 newTypeParams[i] = cx.Populate(new TypeTypeParameter(this, this, i));
             for (int i = 0; i < newTypeParams.Length; ++i)
-                newTypeParams[i].PopulateHandle(this, genericParams[i + toSkip]);
+                newTypeParams[i].PopulateHandle(genericParams[i + toSkip]);
             return newTypeParams;
         }
 
@@ -981,7 +981,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override Type Construct(IEnumerable<Type> typeArguments) => throw new InternalError("Attempt to construct a type parameter");
 
-        public IEnumerable<IExtractionProduct> PopulateHandle(GenericContext gc, GenericParameterHandle parameterHandle)
+        public IEnumerable<IExtractionProduct> PopulateHandle(GenericParameterHandle parameterHandle)
         {
             if (!parameterHandle.IsNil)
             {

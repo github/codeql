@@ -84,7 +84,7 @@ namespace Semmle.Extraction.PDB
         readonly ISymUnmanagedReader5 reader;
         readonly FileStream pdbStream;
 
-        public static NativePdbReader? CreateFromAssembly(string assemblyPath, PEReader peReader)
+        public static NativePdbReader? CreateFromAssembly(PEReader peReader)
         {
             // The Native PDB reader uses an unmanaged Windows DLL
             // so only works on Windows.

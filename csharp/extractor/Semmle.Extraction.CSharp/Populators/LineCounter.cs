@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Populators
 {
-    public static class MethodExtensions
+    public static class LineCounter
     {
         class AstLineCounter : CSharpSyntaxVisitor<LineCounts>
         {
@@ -48,15 +48,15 @@ namespace Semmle.Extraction.CSharp.Populators
             }
         }
 
-        public static void NumberOfLines(this Context cx, TextWriter trapFile, ISymbol symbol, IEntity callable)
+        public static void NumberOfLines(TextWriter trapFile, ISymbol symbol, IEntity callable)
         {
             foreach (var decl in symbol.DeclaringSyntaxReferences)
             {
-                cx.NumberOfLines(trapFile, (CSharpSyntaxNode)decl.GetSyntax(), callable);
+                NumberOfLines(trapFile, (CSharpSyntaxNode)decl.GetSyntax(), callable);
             }
         }
 
-        public static void NumberOfLines(this Context cx, TextWriter trapFile, CSharpSyntaxNode node, IEntity callable)
+        private static void NumberOfLines(TextWriter trapFile, CSharpSyntaxNode node, IEntity callable)
         {
             var lineCounts = node.Accept(new AstLineCounter());
             trapFile.numlines(callable, lineCounts);

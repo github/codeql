@@ -23,12 +23,6 @@ namespace Semmle.Extraction.CSharp.Populators
             cx.ModelError(node, $"Unhandled syntax node {node.Kind()}");
         }
 
-        public override void VisitPropertyDeclaration(PropertyDeclarationSyntax node)
-        {
-            ((Property)parent).VisitDeclaration(cx, node);
-        }
-
-
         public override void VisitArgumentList(ArgumentListSyntax node)
         {
             int c = 0;

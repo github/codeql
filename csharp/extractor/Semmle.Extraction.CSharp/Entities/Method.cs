@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public Method(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
-        protected void PopulateParameters(TextWriter trapFile)
+        protected void PopulateParameters()
         {
             var originalMethod = OriginalDefinition;
             IEnumerable<IParameterSymbol> parameters = symbol.Parameters;
@@ -80,7 +80,7 @@ namespace Semmle.Extraction.CSharp.Entities
                         else
                             Expression.Create(Context, expr, this, 0);
 
-                        Context.NumberOfLines(trapFile, BodyDeclaringSymbol, this);
+                        LineCounter.NumberOfLines(trapFile, BodyDeclaringSymbol, this);
                     });
         }
 
@@ -332,7 +332,7 @@ namespace Semmle.Extraction.CSharp.Entities
             // Common population code for all callables
             BindComments();
             PopulateAttributes();
-            PopulateParameters(trapFile);
+            PopulateParameters();
             PopulateMethodBody(trapFile);
             PopulateGenerics(trapFile);
             PopulateMetadataHandle(trapFile);
