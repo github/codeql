@@ -112,11 +112,9 @@ namespace Semmle.Extraction.CIL.Entities
 
         static void ExtractCIL(Extraction.Context cx, string assemblyPath, bool extractPdbs)
         {
-            using (var cilContext = new Context(cx, assemblyPath, extractPdbs))
-            {
-                cilContext.Populate(new Assembly(cilContext));
-                cilContext.cx.PopulateAll();
-            }
+            using var cilContext = new Context(cx, assemblyPath, extractPdbs);
+            cilContext.Populate(new Assembly(cilContext));
+            cilContext.cx.PopulateAll();
         }
 
         /// <summary>
@@ -138,15 +136,13 @@ namespace Semmle.Extraction.CIL.Entities
             {
                 var extractor = new Extractor(false, assemblyPath, logger);
                 var project = layout.LookupProjectOrDefault(assemblyPath);
-                using (var trapWriter = project.CreateTrapWriter(logger, assemblyPath + ".cil", true, trapCompression))
+                using var trapWriter = project.CreateTrapWriter(logger, assemblyPath + ".cil", true, trapCompression);
+                trapFile = trapWriter.TrapFile;
+                if (nocache || !System.IO.File.Exists(trapFile))
                 {
-                    trapFile = trapWriter.TrapFile;
-                    if (nocache || !System.IO.File.Exists(trapFile))
-                    {
-                        var cx = extractor.CreateContext(null, trapWriter, null, false);
-                        ExtractCIL(cx, assemblyPath, extractPdbs);
-                        extracted = true;
-                    }
+                    var cx = extractor.CreateContext(null, trapWriter, null, false);
+                    ExtractCIL(cx, assemblyPath, extractPdbs);
+                    extracted = true;
                 }
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]

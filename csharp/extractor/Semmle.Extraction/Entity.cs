@@ -166,13 +166,11 @@ namespace Semmle.Extraction
         /// <returns>The debug string.</returns>
         public static string GetDebugLabel(this IEntity entity)
         {
-            using (var writer = new StringWriter())
-            {
-                writer.WriteLabel(entity.Label.Value);
-                writer.Write('=');
-                entity.WriteQuotedId(writer);
-                return writer.ToString();
-            }
+            using var writer = new StringWriter();
+            writer.WriteLabel(entity.Label.Value);
+            writer.Write('=');
+            entity.WriteQuotedId(writer);
+            return writer.ToString();
         }
 
     }

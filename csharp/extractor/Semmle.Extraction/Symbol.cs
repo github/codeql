@@ -30,11 +30,9 @@ namespace Semmle.Extraction
         {
             get
             {
-                using (var trap = new StringWriter())
-                {
-                    Populate(trap);
-                    return trap.ToString();
-                }
+                using var trap = new StringWriter();
+                Populate(trap);
+                return trap.ToString();
             }
         }
 

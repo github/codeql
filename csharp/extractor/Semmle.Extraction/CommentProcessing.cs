@@ -314,29 +314,27 @@ namespace Semmle.Extraction.CommentProcessing
 
             ElementStack elementStack = new ElementStack();
 
-            using (IEnumerator<KeyValuePair<Location, Label>> elementEnumerator = elements.GetEnumerator())
-            using (IEnumerator<KeyValuePair<Location, ICommentLine>> commentEnumerator = comments.GetEnumerator())
+            using IEnumerator<KeyValuePair<Location, Label>> elementEnumerator = elements.GetEnumerator();
+            using IEnumerator<KeyValuePair<Location, ICommentLine>> commentEnumerator = comments.GetEnumerator();
+            if (!commentEnumerator.MoveNext())
             {
-                if (!commentEnumerator.MoveNext())
+                // There are no comments to process.
+                return;
+            }
+
+            while (elementEnumerator.MoveNext())
+            {
+                if (!GenerateBindings(commentEnumerator, elementEnumerator.Current, elementStack, cb))
                 {
-                    // There are no comments to process.
+                    // No more comments to process.
                     return;
                 }
 
-                while (elementEnumerator.MoveNext())
-                {
-                    if (!GenerateBindings(commentEnumerator, elementEnumerator.Current, elementStack, cb))
-                    {
-                        // No more comments to process.
-                        return;
-                    }
-
-                    elementStack.Push(elementEnumerator.Current);
-                }
-
-                // Generate remaining comments at end of file
-                GenerateBindings(commentEnumerator, null, elementStack, cb);
+                elementStack.Push(elementEnumerator.Current);
             }
+
+            // Generate remaining comments at end of file
+            GenerateBindings(commentEnumerator, null, elementStack, cb);
         }
     }
 

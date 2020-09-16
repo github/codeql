@@ -110,11 +110,9 @@ namespace Semmle.Extraction.CIL
 
         public override string ToString()
         {
-            using (var writer = new StringWriter())
-            {
-                WriteQuotedId(writer);
-                return writer.ToString();
-            }
+            using var writer = new StringWriter();
+            WriteQuotedId(writer);
+            return writer.ToString();
         }
 
         TrapStackBehaviour IEntity.TrapStackBehaviour => TrapStackBehaviour.NoLabel;

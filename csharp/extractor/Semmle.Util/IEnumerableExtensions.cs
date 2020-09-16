@@ -33,30 +33,28 @@ namespace Semmle.Util
         /// </summary>
         public static IEnumerable<T> Interleave<T>(this IEnumerable<T> first, IEnumerable<T> second)
         {
-            using (IEnumerator<T> enumerator1 = first.GetEnumerator(), enumerator2 = second.GetEnumerator())
+            using IEnumerator<T> enumerator1 = first.GetEnumerator(), enumerator2 = second.GetEnumerator();
+            bool moveNext1;
+            while ((moveNext1 = enumerator1.MoveNext()) && enumerator2.MoveNext())
             {
-                bool moveNext1;
-                while ((moveNext1 = enumerator1.MoveNext()) && enumerator2.MoveNext())
+                yield return enumerator1.Current;
+                yield return enumerator2.Current;
+            }
+
+            if (moveNext1)
+            {
+                // `first` has more elements than `second`
+                yield return enumerator1.Current;
+                while (enumerator1.MoveNext())
                 {
                     yield return enumerator1.Current;
-                    yield return enumerator2.Current;
                 }
+            }
 
-                if (moveNext1)
-                {
-                    // `first` has more elements than `second`
-                    yield return enumerator1.Current;
-                    while (enumerator1.MoveNext())
-                    {
-                        yield return enumerator1.Current;
-                    }
-                }
-
-                while (enumerator2.MoveNext())
-                {
-                    // `second` has more elements than `first`
-                    yield return enumerator2.Current;
-                }
+            while (enumerator2.MoveNext())
+            {
+                // `second` has more elements than `first`
+                yield return enumerator2.Current;
             }
         }
 

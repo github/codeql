@@ -90,11 +90,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override string ToString()
         {
-            using (var w = new StringWriter())
-            {
-                WriteId(w);
-                return w.ToString();
-            }
+            using var w = new StringWriter();
+            WriteId(w);
+            return w.ToString();
         }
     }
 

@@ -93,18 +93,16 @@ namespace Semmle.Extraction.CSharp
                      *  System.Reflection.Assembly.ReflectionOnlyLoadFrom. It is also allows
                      *  loading the same assembly from different locations.
                      */
-                    using (var pereader = new System.Reflection.PortableExecutable.PEReader(new FileStream(refPath, FileMode.Open, FileAccess.Read, FileShare.Read)))
+                    using var pereader = new System.Reflection.PortableExecutable.PEReader(new FileStream(refPath, FileMode.Open, FileAccess.Read, FileShare.Read));
+                    var metadata = pereader.GetMetadata();
+                    string assemblyIdentity;
+                    unsafe
                     {
-                        var metadata = pereader.GetMetadata();
-                        string assemblyIdentity;
-                        unsafe
-                        {
-                            var reader = new System.Reflection.Metadata.MetadataReader(metadata.Pointer, metadata.Length);
-                            var def = reader.GetAssemblyDefinition();
-                            assemblyIdentity = reader.GetString(def.Name) + " " + def.Version;
-                        }
-                        extractor.SetAssemblyFile(assemblyIdentity, refPath);
+                        var reader = new System.Reflection.Metadata.MetadataReader(metadata.Pointer, metadata.Length);
+                        var def = reader.GetAssemblyDefinition();
+                        assemblyIdentity = reader.GetString(def.Name) + " " + def.Version;
                     }
+                    extractor.SetAssemblyFile(assemblyIdentity, refPath);
                 }
                 catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
                 {
@@ -261,47 +259,45 @@ namespace Semmle.Extraction.CSharp
 
                 var assemblyPath = r.FilePath;
                 var projectLayout = layout.LookupProjectOrDefault(assemblyPath);
-                using (var trapWriter = projectLayout.CreateTrapWriter(Logger, assemblyPath, true, options.TrapCompression))
+                using var trapWriter = projectLayout.CreateTrapWriter(Logger, assemblyPath, true, options.TrapCompression);
+                var skipExtraction = options.Cache && File.Exists(trapWriter.TrapFile);
+
+                if (!skipExtraction)
                 {
-                    var skipExtraction = options.Cache && File.Exists(trapWriter.TrapFile);
+                    /* Note on parallel builds:
+                     *
+                     * The trap writer and source archiver both perform atomic moves
+                     * of the file to the final destination.
+                     *
+                     * If the same source file or trap file are generated concurrently
+                     * (by different parallel invocations of the extractor), then
+                     * last one wins.
+                     *
+                     * Specifically, if two assemblies are analysed concurrently in a build,
+                     * then there is a small amount of duplicated work but the output should
+                     * still be correct.
+                     */
 
-                    if (!skipExtraction)
+                    // compilation.Clone() reduces memory footprint by allowing the symbols
+                    // in c to be garbage collected.
+                    Compilation c = compilation.Clone();
+
+                    var assembly = c.GetAssemblyOrModuleSymbol(r) as IAssemblySymbol;
+
+                    if (assembly != null)
                     {
-                        /* Note on parallel builds:
-                         *
-                         * The trap writer and source archiver both perform atomic moves
-                         * of the file to the final destination.
-                         *
-                         * If the same source file or trap file are generated concurrently
-                         * (by different parallel invocations of the extractor), then
-                         * last one wins.
-                         *
-                         * Specifically, if two assemblies are analysed concurrently in a build,
-                         * then there is a small amount of duplicated work but the output should
-                         * still be correct.
-                         */
+                        var cx = extractor.CreateContext(c, trapWriter, new AssemblyScope(assembly, assemblyPath, false), AddAssemblyTrapPrefix);
 
-                        // compilation.Clone() reduces memory footprint by allowing the symbols
-                        // in c to be garbage collected.
-                        Compilation c = compilation.Clone();
-
-                        var assembly = c.GetAssemblyOrModuleSymbol(r) as IAssemblySymbol;
-
-                        if (assembly != null)
+                        foreach (var module in assembly.Modules)
                         {
-                            var cx = extractor.CreateContext(c, trapWriter, new AssemblyScope(assembly, assemblyPath, false), AddAssemblyTrapPrefix);
-
-                            foreach (var module in assembly.Modules)
-                            {
-                                AnalyseNamespace(cx, module.GlobalNamespace);
-                            }
-
-                            cx.PopulateAll();
+                            AnalyseNamespace(cx, module.GlobalNamespace);
                         }
-                    }
 
-                    ReportProgress(assemblyPath, trapWriter.TrapFile, stopwatch.Elapsed, skipExtraction ? AnalysisAction.UpToDate : AnalysisAction.Extracted);
+                        cx.PopulateAll();
+                    }
                 }
+
+                ReportProgress(assemblyPath, trapWriter.TrapFile, stopwatch.Elapsed, skipExtraction ? AnalysisAction.UpToDate : AnalysisAction.Extracted);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
@@ -367,18 +363,16 @@ namespace Semmle.Extraction.CSharp
                 if (!excluded)
                 {
                     // compilation.Clone() is used to allow symbols to be garbage collected.
-                    using (var trapWriter = projectLayout.CreateTrapWriter(Logger, sourcePath, false, options.TrapCompression))
-                    {
-                        upToDate = options.Fast && FileIsUpToDate(sourcePath, trapWriter.TrapFile);
+                    using var trapWriter = projectLayout.CreateTrapWriter(Logger, sourcePath, false, options.TrapCompression);
+                    upToDate = options.Fast && FileIsUpToDate(sourcePath, trapWriter.TrapFile);
 
-                        if (!upToDate)
-                        {
-                            Context cx = extractor.CreateContext(compilation.Clone(), trapWriter, new SourceScope(tree), AddAssemblyTrapPrefix);
-                            Populators.CompilationUnit.Extract(cx, tree.GetRoot());
-                            cx.PopulateAll();
-                            cx.ExtractComments(cx.CommentGenerator);
-                            cx.PopulateAll();
-                        }
+                    if (!upToDate)
+                    {
+                        Context cx = extractor.CreateContext(compilation.Clone(), trapWriter, new SourceScope(tree), AddAssemblyTrapPrefix);
+                        Populators.CompilationUnit.Extract(cx, tree.GetRoot());
+                        cx.PopulateAll();
+                        cx.ExtractComments(cx.CommentGenerator);
+                        cx.PopulateAll();
                     }
                 }
 
