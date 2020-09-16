@@ -483,7 +483,6 @@ namespace Semmle.Extraction.CIL.Entities
         readonly MethodSpecification ms;
         readonly Method unboundMethod;
         readonly ImmutableArray<Type> typeParams;
-        readonly Type declaringType;
 
         public MethodSpecificationMethod(GenericContext gc, MethodSpecificationHandle handle) : base(gc)
         {
@@ -491,7 +490,6 @@ namespace Semmle.Extraction.CIL.Entities
             ms = cx.mdReader.GetMethodSpecification(handle);
             typeParams = ms.DecodeSignature(cx.TypeSignatureDecoder, gc);
             unboundMethod = (Method)cx.CreateGeneric(gc, ms.Method);
-            declaringType = unboundMethod.DeclaringType;
         }
 
         public override void WriteId(TextWriter trapFile)

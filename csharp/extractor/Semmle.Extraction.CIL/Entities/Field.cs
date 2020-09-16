@@ -82,12 +82,10 @@ namespace Semmle.Extraction.CIL.Entities
     {
         readonly Handle handle;
         readonly FieldDefinition fd;
-        readonly GenericContext gc;
 
         public DefinitionField(GenericContext gc, FieldDefinitionHandle handle) : base(gc.cx)
         {
             this.handle = handle;
-            this.gc = gc;
             fd = cx.mdReader.GetFieldDefinition(handle);
         }
 

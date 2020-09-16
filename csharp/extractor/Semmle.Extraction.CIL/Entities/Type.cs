@@ -1236,13 +1236,6 @@ namespace Semmle.Extraction.CIL.Entities
 
         struct FnPtr : ITypeSignature
         {
-            private readonly MethodSignature<ITypeSignature> signature;
-
-            public FnPtr(MethodSignature<ITypeSignature> signature)
-            {
-                this.signature = signature;
-            }
-
             public void WriteId(TextWriter trapFile, GenericContext gc)
             {
                 trapFile.Write("<method signature>");
@@ -1256,7 +1249,7 @@ namespace Semmle.Extraction.CIL.Entities
             new ByRef(elementType);
 
         ITypeSignature ISignatureTypeProvider<ITypeSignature, object>.GetFunctionPointerType(MethodSignature<ITypeSignature> signature) =>
-            new FnPtr(signature);
+            new FnPtr();
 
         class Instantiation : ITypeSignature
         {
@@ -1333,15 +1326,11 @@ namespace Semmle.Extraction.CIL.Entities
 
         class Modified : ITypeSignature
         {
-            private readonly ITypeSignature modifier;
             private readonly ITypeSignature unmodifiedType;
-            private readonly bool isRequired;
 
-            public Modified(ITypeSignature modifier, ITypeSignature unmodifiedType, bool isRequired)
+            public Modified(ITypeSignature unmodifiedType)
             {
-                this.modifier = modifier;
                 this.unmodifiedType = unmodifiedType;
-                this.isRequired = isRequired;
             }
 
             public void WriteId(TextWriter trapFile, GenericContext gc)
@@ -1352,7 +1341,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         ITypeSignature ISignatureTypeProvider<ITypeSignature, object>.GetModifiedType(ITypeSignature modifier, ITypeSignature unmodifiedType, bool isRequired)
         {
-            return new Modified(modifier, unmodifiedType, isRequired);
+            return new Modified(unmodifiedType);
         }
 
         class Pinned : ITypeSignature
@@ -1441,12 +1430,10 @@ namespace Semmle.Extraction.CIL.Entities
         class TypeDefinition : ITypeSignature
         {
             private readonly TypeDefinitionHandle handle;
-            private readonly byte rawTypeKind;
 
-            public TypeDefinition(TypeDefinitionHandle handle, byte rawTypeKind)
+            public TypeDefinition(TypeDefinitionHandle handle)
             {
                 this.handle = handle;
-                this.rawTypeKind = rawTypeKind;
             }
 
             public void WriteId(TextWriter trapFile, GenericContext gc)
@@ -1458,18 +1445,16 @@ namespace Semmle.Extraction.CIL.Entities
 
         ITypeSignature ISimpleTypeProvider<ITypeSignature>.GetTypeFromDefinition(MetadataReader reader, TypeDefinitionHandle handle, byte rawTypeKind)
         {
-            return new TypeDefinition(handle, rawTypeKind);
+            return new TypeDefinition(handle);
         }
 
         class TypeReference : ITypeSignature
         {
             private readonly TypeReferenceHandle handle;
-            private readonly byte rawTypeKind; // struct/class (not used)
 
-            public TypeReference(TypeReferenceHandle handle, byte rawTypeKind)
+            public TypeReference(TypeReferenceHandle handle)
             {
                 this.handle = handle;
-                this.rawTypeKind = rawTypeKind;
             }
 
             public void WriteId(TextWriter trapFile, GenericContext gc)
@@ -1481,7 +1466,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         ITypeSignature ISimpleTypeProvider<ITypeSignature>.GetTypeFromReference(MetadataReader reader, TypeReferenceHandle handle, byte rawTypeKind)
         {
-            return new TypeReference(handle, rawTypeKind);
+            return new TypeReference(handle);
         }
 
         ITypeSignature ISignatureTypeProvider<ITypeSignature, object>.GetTypeFromSpecification(MetadataReader reader, object genericContext, TypeSpecificationHandle handle, byte rawTypeKind)
