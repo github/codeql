@@ -1,5 +1,4 @@
 | arrayassignment.cpp:16:7:16:7 | arrayassignment.cpp:14:9:14:14 | IR only |
-| arrayassignment.cpp:17:7:17:10 | arrayassignment.cpp:14:9:14:14 | IR only |
 | arrayassignment.cpp:18:7:18:11 | arrayassignment.cpp:14:9:14:14 | IR only |
 | arrayassignment.cpp:19:7:19:9 | arrayassignment.cpp:14:9:14:14 | IR only |
 | arrayassignment.cpp:31:7:31:7 | arrayassignment.cpp:29:8:29:13 | IR only |
@@ -12,9 +11,7 @@
 | arrayassignment.cpp:67:10:67:12 | arrayassignment.cpp:64:13:64:18 | AST only |
 | arrayassignment.cpp:67:10:67:15 | arrayassignment.cpp:64:13:64:18 | IR only |
 | arrayassignment.cpp:136:7:136:13 | arrayassignment.cpp:134:9:134:14 | IR only |
-| arrayassignment.cpp:140:7:140:11 | arrayassignment.cpp:139:10:139:15 | IR only |
 | arrayassignment.cpp:141:7:141:13 | arrayassignment.cpp:139:10:139:15 | IR only |
-| arrayassignment.cpp:145:7:145:13 | arrayassignment.cpp:144:12:144:17 | IR only |
 | arrayassignment.cpp:146:7:146:13 | arrayassignment.cpp:144:12:144:17 | IR only |
 | copyableclass.cpp:67:11:67:11 | copyableclass.cpp:67:13:67:18 | AST only |
 | copyableclass.cpp:67:11:67:21 | copyableclass.cpp:67:13:67:18 | IR only |
@@ -218,11 +215,6 @@
 | taint.cpp:41:7:41:13 | taint.cpp:35:12:35:17 | AST only |
 | taint.cpp:42:7:42:13 | taint.cpp:35:12:35:17 | AST only |
 | taint.cpp:43:7:43:13 | taint.cpp:37:22:37:27 | AST only |
-| taint.cpp:109:7:109:13 | taint.cpp:105:12:105:17 | IR only |
-| taint.cpp:110:7:110:13 | taint.cpp:105:12:105:17 | IR only |
-| taint.cpp:111:7:111:13 | taint.cpp:106:12:106:17 | IR only |
-| taint.cpp:112:7:112:13 | taint.cpp:106:12:106:17 | IR only |
-| taint.cpp:130:7:130:9 | taint.cpp:127:8:127:13 | IR only |
 | taint.cpp:137:7:137:9 | taint.cpp:120:11:120:16 | AST only |
 | taint.cpp:173:8:173:13 | taint.cpp:164:19:164:24 | AST only |
 | taint.cpp:195:7:195:7 | taint.cpp:192:23:192:28 | AST only |
@@ -231,6 +223,8 @@
 | taint.cpp:261:7:261:7 | taint.cpp:258:7:258:12 | AST only |
 | taint.cpp:351:7:351:7 | taint.cpp:330:6:330:11 | AST only |
 | taint.cpp:352:7:352:7 | taint.cpp:330:6:330:11 | AST only |
+| taint.cpp:353:7:353:7 | taint.cpp:330:6:330:11 | AST only |
+| taint.cpp:354:7:354:7 | taint.cpp:330:6:330:11 | AST only |
 | taint.cpp:372:7:372:7 | taint.cpp:365:24:365:29 | AST only |
 | taint.cpp:374:7:374:7 | taint.cpp:365:24:365:29 | AST only |
 | taint.cpp:391:7:391:7 | taint.cpp:385:27:385:32 | AST only |
@@ -282,7 +276,6 @@
 | vector.cpp:139:7:139:8 | vector.cpp:126:15:126:20 | AST only |
 | vector.cpp:140:7:140:8 | vector.cpp:127:15:127:20 | AST only |
 | vector.cpp:141:7:141:8 | vector.cpp:128:15:128:20 | AST only |
-| vector.cpp:162:8:162:15 | vector.cpp:161:14:161:19 | IR only |
 | vector.cpp:171:13:171:13 | vector.cpp:170:14:170:19 | AST only |
 | vector.cpp:180:13:180:13 | vector.cpp:179:14:179:19 | AST only |
 | vector.cpp:201:13:201:13 | vector.cpp:200:14:200:19 | AST only |

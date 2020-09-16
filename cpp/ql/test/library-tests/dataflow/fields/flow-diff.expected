@@ -21,10 +21,17 @@
 | aliasing.cpp:79:11:79:20 | call to user_input | aliasing.cpp:80:12:80:13 | m1 | IR only |
 | aliasing.cpp:86:10:86:19 | call to user_input | aliasing.cpp:87:12:87:13 | m1 | IR only |
 | aliasing.cpp:98:10:98:19 | call to user_input | aliasing.cpp:102:8:102:10 | * ... | IR only |
+| arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:8:8:8:13 | access to array | AST only |
+| arrays.cpp:15:14:15:23 | call to user_input | arrays.cpp:17:8:17:13 | access to array | AST only |
+| arrays.cpp:36:26:36:35 | call to user_input | arrays.cpp:38:24:38:27 | data | AST only |
+| arrays.cpp:42:29:42:38 | call to user_input | arrays.cpp:43:27:43:30 | data | AST only |
+| arrays.cpp:42:29:42:38 | call to user_input | arrays.cpp:44:27:44:30 | data | AST only |
 | by_reference.cpp:84:14:84:23 | call to user_input | by_reference.cpp:111:25:111:25 | a | AST only |
 | by_reference.cpp:84:14:84:23 | call to user_input | by_reference.cpp:115:27:115:27 | a | AST only |
 | by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:131:25:131:25 | a | AST only |
 | by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:135:27:135:27 | a | AST only |
+| by_reference.cpp:92:9:92:18 | call to user_input | by_reference.cpp:112:14:112:14 | a | AST only |
+| by_reference.cpp:92:9:92:18 | call to user_input | by_reference.cpp:116:16:116:16 | a | AST only |
 | by_reference.cpp:96:8:96:17 | call to user_input | by_reference.cpp:132:14:132:14 | a | AST only |
 | by_reference.cpp:96:8:96:17 | call to user_input | by_reference.cpp:136:16:136:16 | a | AST only |
 | complex.cpp:62:19:62:28 | call to user_input | complex.cpp:52:18:52:18 | call to b | AST only |
@@ -37,5 +44,6 @@
 | qualifiers.cpp:37:38:37:47 | call to user_input | qualifiers.cpp:38:23:38:23 | a | AST only |
 | qualifiers.cpp:42:29:42:38 | call to user_input | qualifiers.cpp:43:23:43:23 | a | AST only |
 | qualifiers.cpp:47:31:47:40 | call to user_input | qualifiers.cpp:48:23:48:23 | a | AST only |
+| realistic.cpp:53:55:53:64 | call to user_input | realistic.cpp:61:47:61:55 | bufferLen | AST only |
 | struct_init.c:20:20:20:29 | call to user_input | struct_init.c:33:25:33:25 | a | AST only |
 | struct_init.c:40:20:40:29 | call to user_input | struct_init.c:15:12:15:12 | a | AST only |

@@ -1,8 +1,11 @@
+| arrayassignment.cpp:17:7:17:10 | * ... | arrayassignment.cpp:14:9:14:14 | call to source |
 | arrayassignment.cpp:33:7:33:9 | r_x | arrayassignment.cpp:29:8:29:13 | call to source |
 | arrayassignment.cpp:57:10:57:12 | call to get | arrayassignment.cpp:54:9:54:14 | call to source |
 | arrayassignment.cpp:67:10:67:12 | call to get | arrayassignment.cpp:64:13:64:18 | call to source |
 | arrayassignment.cpp:101:7:101:18 | access to array | arrayassignment.cpp:99:17:99:22 | call to source |
 | arrayassignment.cpp:135:7:135:10 | ref1 | arrayassignment.cpp:134:9:134:14 | call to source |
+| arrayassignment.cpp:140:7:140:11 | * ... | arrayassignment.cpp:139:10:139:15 | call to source |
+| arrayassignment.cpp:145:7:145:13 | access to array | arrayassignment.cpp:144:12:144:17 | call to source |
 | copyableclass.cpp:40:8:40:9 | s1 | copyableclass.cpp:34:22:34:27 | call to source |
 | copyableclass.cpp:41:8:41:9 | s2 | copyableclass.cpp:35:24:35:29 | call to source |
 | copyableclass.cpp:42:8:42:9 | s3 | copyableclass.cpp:34:22:34:27 | call to source |
@@ -257,7 +260,12 @@
 | taint.cpp:91:11:91:11 | d | taint.cpp:77:7:77:12 | call to source |
 | taint.cpp:93:11:93:11 | b | taint.cpp:71:22:71:27 | call to source |
 | taint.cpp:94:11:94:11 | c | taint.cpp:72:7:72:12 | call to source |
+| taint.cpp:109:7:109:13 | access to array | taint.cpp:105:12:105:17 | call to source |
+| taint.cpp:110:7:110:13 | access to array | taint.cpp:105:12:105:17 | call to source |
+| taint.cpp:111:7:111:13 | access to array | taint.cpp:106:12:106:17 | call to source |
+| taint.cpp:112:7:112:13 | access to array | taint.cpp:106:12:106:17 | call to source |
 | taint.cpp:129:7:129:9 | * ... | taint.cpp:120:11:120:16 | call to source |
+| taint.cpp:130:7:130:9 | * ... | taint.cpp:127:8:127:13 | call to source |
 | taint.cpp:134:7:134:9 | * ... | taint.cpp:120:11:120:16 | call to source |
 | taint.cpp:137:7:137:9 | * ... | taint.cpp:120:11:120:16 | call to source |
 | taint.cpp:151:7:151:12 | call to select | taint.cpp:151:20:151:25 | call to source |
@@ -285,6 +293,8 @@
 | taint.cpp:350:7:350:7 | t | taint.cpp:330:6:330:11 | call to source |
 | taint.cpp:351:7:351:7 | a | taint.cpp:330:6:330:11 | call to source |
 | taint.cpp:352:7:352:7 | b | taint.cpp:330:6:330:11 | call to source |
+| taint.cpp:353:7:353:7 | c | taint.cpp:330:6:330:11 | call to source |
+| taint.cpp:354:7:354:7 | d | taint.cpp:330:6:330:11 | call to source |
 | taint.cpp:372:7:372:7 | a | taint.cpp:365:24:365:29 | source |
 | taint.cpp:374:7:374:7 | c | taint.cpp:365:24:365:29 | source |
 | taint.cpp:382:7:382:7 | a | taint.cpp:377:23:377:28 | source |
@@ -340,6 +350,7 @@
 | vector.cpp:139:7:139:8 | v1 | vector.cpp:126:15:126:20 | call to source |
 | vector.cpp:140:7:140:8 | v2 | vector.cpp:127:15:127:20 | call to source |
 | vector.cpp:141:7:141:8 | v3 | vector.cpp:128:15:128:20 | call to source |
+| vector.cpp:162:8:162:15 | access to array | vector.cpp:161:14:161:19 | call to source |
 | vector.cpp:171:13:171:13 | call to operator[] | vector.cpp:170:14:170:19 | call to source |
 | vector.cpp:180:13:180:13 | call to operator[] | vector.cpp:179:14:179:19 | call to source |
 | vector.cpp:201:13:201:13 | call to operator[] | vector.cpp:200:14:200:19 | call to source |
