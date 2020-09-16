@@ -75,7 +75,7 @@ namespace Semmle.Extraction
 #if DEBUG_LABELS
         private void CheckEntityHasUniqueLabel(string id, ICachedEntity entity)
         {
-            if (idLabelCache.TryGetValue(id, out var originalEntity))
+            if (idLabelCache.ContainsKey(id))
             {
                 ExtractionError("Label collision for " + id, entity.Label.ToString(), Entities.Location.Create(this, entity.ReportingLocation), "", Severity.Warning);
             }
