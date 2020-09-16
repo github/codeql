@@ -58,6 +58,15 @@ private predicate localInstructionTaintStep(Instruction nodeFrom, Instruction no
     nodeFrom.getResultType() instanceof ArrayType or
     nodeFrom.getResultType() instanceof Union
   )
+  or
+  // Flow from an element to an array or union that contains it.
+  nodeTo.(ChiInstruction).getPartial() = nodeFrom and
+  not nodeTo.isResultConflated() and
+  exists(Type t | nodeTo.getResultLanguageType().hasType(t, false) |
+    t instanceof Union
+    or
+    t instanceof ArrayType
+  )
 }
 
 /**
