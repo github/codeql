@@ -37,6 +37,12 @@ if unknown_module.attr:
 else:
     g_mult = [300] # $writes=g_mult
 
+# Potential reassignment
+
+g_mult2 = [400] # $writes=g_mult2
+if unknown_module.attr:
+    g_mult2 = [500] # $writes=g_mult2
+
 def global_access():
     l = 5
     print(g) # $reads=g
@@ -45,6 +51,7 @@ def global_access():
     print(g_mod) # $reads=g_mod
     print(g_ins) # $reads=g_ins
     print(g_mult) # $reads=g_mult
+    print(g_mult2) # $reads=g_mult2
 
 def print_g_mod(): # $writes=print_g_mod
     print(g_mod) # $reads=g_mod

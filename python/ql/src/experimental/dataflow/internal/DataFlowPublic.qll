@@ -150,6 +150,7 @@ class ParameterNode extends EssaNode {
   override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
 }
 
+/** A data flow node corresponding to a module-level (global) variable that is accessed outside of the module scope. */
 class ModuleVariableNode extends Node, TModuleVariableNode {
   Module mod;
   GlobalVariable var;
@@ -176,10 +177,8 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
   }
 
   /** Gets an `EssaNode` that corresponds to an assignment of this global variable. */
-  Node getAWrite() {
-    exists(DefinitionNode defn |
-      result.asVar().getDefinition().(EssaNodeDefinition).definedBy(var, defn)
-    )
+  EssaNode getAWrite() {
+    result.asVar().getDefinition().(EssaNodeDefinition).definedBy(var, any(DefinitionNode defn))
   }
 
   override DataFlowCallable getEnclosingCallable() { result.(DataFlowModuleScope).getScope() = mod }

@@ -240,6 +240,7 @@ class DataFlowClassValue extends DataFlowCallable, TClassValue {
   override string getName() { result = c.getName() }
 }
 
+/** A class representing the scope in which a `ModuleVariableNode` appears. */
 class DataFlowModuleScope extends DataFlowCallable, TModule {
   Module mod;
 
