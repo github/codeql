@@ -7,6 +7,7 @@ using System.IO;
 using Semmle.Util;
 using System.Text.RegularExpressions;
 using Semmle.Autobuild.Shared;
+using System.Runtime.Intrinsics;
 
 namespace Semmle.Autobuild.CSharp
 {
@@ -59,7 +60,7 @@ namespace Semmle.Autobuild.CSharp
 
         static BuildScript WithDotNet(Autobuilder builder, Func<string?, IDictionary<string, string>?, bool, BuildScript> f)
         {
-            string? installDir = builder.Actions.PathCombine(builder.Options.RootDirectory, ".dotnet");
+            var installDir = builder.Actions.PathCombine(builder.Options.RootDirectory, ".dotnet");
             var installScript = DownloadDotNet(builder, installDir);
             return BuildScript.Bind(installScript, installed =>
             {
@@ -122,7 +123,7 @@ namespace Semmle.Autobuild.CSharp
         /// are needed).
         /// </summary>
         public static BuildScript WithDotNet(Autobuilder builder, Func<IDictionary<string, string>?, BuildScript> f)
-            => WithDotNet(builder, (_1, env, _2) => f(env));
+            => WithDotNet(builder, (v1, env, v2) => f(env));
 
         /// <summary>
         /// Returns a script for downloading relevant versions of the

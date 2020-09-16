@@ -31,12 +31,12 @@ namespace Semmle.Autobuild.Shared
                 yield break;
 
             // Attempt to use vswhere to find installations of Visual Studio
-            string vswhere = actions.PathCombine(programFilesx86, "Microsoft Visual Studio", "Installer", "vswhere.exe");
+            var vswhere = actions.PathCombine(programFilesx86, "Microsoft Visual Studio", "Installer", "vswhere.exe");
 
             if (actions.FileExists(vswhere))
             {
-                int exitCode1 = actions.RunProcess(vswhere, "-prerelease -legacy -property installationPath", null, null, out var installationList);
-                int exitCode2 = actions.RunProcess(vswhere, "-prerelease -legacy -property installationVersion", null, null, out var versionList);
+                var exitCode1 = actions.RunProcess(vswhere, "-prerelease -legacy -property installationPath", null, null, out var installationList);
+                var exitCode2 = actions.RunProcess(vswhere, "-prerelease -legacy -property installationVersion", null, null, out var versionList);
 
                 if (exitCode1 == 0 && exitCode2 == 0 && versionList.Count == installationList.Count)
                 {
@@ -45,7 +45,7 @@ namespace Semmle.Autobuild.Shared
                     {
                         var dot = vsInstallation.Version.IndexOf('.');
                         var majorVersionString = dot == -1 ? vsInstallation.Version : vsInstallation.Version.Substring(0, dot);
-                        if (int.TryParse(majorVersionString, out int majorVersion))
+                        if (int.TryParse(majorVersionString, out var majorVersion))
                         {
                             if (majorVersion < 15)
                             {

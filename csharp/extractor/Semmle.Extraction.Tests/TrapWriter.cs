@@ -11,10 +11,10 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void NestedPaths()
         {
-            string tempDir = System.IO.Path.GetTempPath();
+            var tempDir = System.IO.Path.GetTempPath();
             string root1, root2, root3;
 
-            if(Win32.IsWindows())
+            if (Win32.IsWindows())
             {
                 root1 = "E:";
                 root2 = "e:";
@@ -27,7 +27,7 @@ namespace Semmle.Extraction.Tests
                 root3 = "/";
             }
 
-            string formattedTempDir = tempDir.Replace('/', '\\').Replace(':', '_').Trim('\\');
+            var formattedTempDir = tempDir.Replace('/', '\\').Replace(':', '_').Trim('\\');
 
             var logger = new LoggerMock();
             System.IO.Directory.SetCurrentDirectory(tempDir);
@@ -40,7 +40,7 @@ namespace Semmle.Extraction.Tests
                 return;
             }
 
-            Assert.Equal($@"C:\Temp\source_archive\{formattedTempDir}\def.cs", TrapWriter.NestPaths(logger, @"C:\Temp\source_archive", "def.cs", TrapWriter.InnerPathComputation.ABSOLUTE).Replace('/','\\'));
+            Assert.Equal($@"C:\Temp\source_archive\{formattedTempDir}\def.cs", TrapWriter.NestPaths(logger, @"C:\Temp\source_archive", "def.cs", TrapWriter.InnerPathComputation.ABSOLUTE).Replace('/', '\\'));
 
             Assert.Equal(@"C:\Temp\source_archive\def.cs", TrapWriter.NestPaths(logger, @"C:\Temp\source_archive", "def.cs", TrapWriter.InnerPathComputation.RELATIVE).Replace('/', '\\'));
 
@@ -60,8 +60,6 @@ namespace Semmle.Extraction.Tests
             public void Dispose() { }
 
             public void Log(Severity s, string text) { }
-
-            public void Log(Severity s, string text, params object[] args) { }
         }
     }
 }

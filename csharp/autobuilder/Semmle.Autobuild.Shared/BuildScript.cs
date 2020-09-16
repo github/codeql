@@ -227,19 +227,19 @@ namespace Semmle.Autobuild.Shared
         public static BuildScript Bind(BuildScript s1, Func<IList<string>, int, BuildScript> s2) =>
             new BindBuildScript(s1, s2);
 
-        const int SuccessCode = 0;
+        const int successCode = 0;
         /// <summary>
         /// The empty build script that always returns exit code 0.
         /// </summary>
-        public static readonly BuildScript Success = Create(actions => SuccessCode);
+        public static readonly BuildScript Success = Create(actions => successCode);
 
-        const int FailureCode = 1;
+        const int failureCode = 1;
         /// <summary>
         /// The empty build script that always returns exit code 1.
         /// </summary>
-        public static readonly BuildScript Failure = Create(actions => FailureCode);
+        public static readonly BuildScript Failure = Create(actions => failureCode);
 
-        static bool Succeeded(int i) => i == SuccessCode;
+        static bool Succeeded(int i) => i == successCode;
 
         public static BuildScript operator &(BuildScript s1, BuildScript s2) =>
             new BindBuildScript(s1, ret1 => Succeeded(ret1) ? s2 : Create(actions => ret1));
@@ -266,7 +266,7 @@ namespace Semmle.Autobuild.Shared
             Create(actions =>
             {
                 if (string.IsNullOrEmpty(dir) || !actions.DirectoryExists(dir))
-                    return FailureCode;
+                    return failureCode;
 
                 try
                 {
@@ -274,9 +274,9 @@ namespace Semmle.Autobuild.Shared
                 }
                 catch  // lgtm[cs/catch-of-all-exceptions]
                 {
-                    return FailureCode;
+                    return failureCode;
                 }
-                return SuccessCode;
+                return successCode;
             });
 
         /// <summary>
@@ -286,7 +286,7 @@ namespace Semmle.Autobuild.Shared
             Create(actions =>
             {
                 if (string.IsNullOrEmpty(file) || !actions.FileExists(file))
-                    return FailureCode;
+                    return failureCode;
 
                 try
                 {
@@ -294,9 +294,9 @@ namespace Semmle.Autobuild.Shared
                 }
                 catch  // lgtm[cs/catch-of-all-exceptions]
                 {
-                    return FailureCode;
+                    return failureCode;
                 }
-                return SuccessCode;
+                return successCode;
             });
     }
 }

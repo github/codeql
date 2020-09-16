@@ -90,7 +90,7 @@ namespace Semmle.Autobuild.Shared
         /// </remarks>
         void ArgvQuote(string argument, bool force)
         {
-            bool cmd = escapingMode == EscapeMode.Cmd;
+            var cmd = escapingMode == EscapeMode.Cmd;
             if (!force &&
                 !string.IsNullOrEmpty(argument) &&
                 argument.IndexOfAny(specialChars) == -1)
@@ -101,7 +101,7 @@ namespace Semmle.Autobuild.Shared
             {
                 if (cmd) arguments.Append('^');
                 arguments.Append('\"');
-                for (int it = 0; ; ++it)
+                for (var it = 0; ; ++it)
                 {
                     var numBackslashes = 0;
                     while (it != argument.Length && argument[it] == '\\')

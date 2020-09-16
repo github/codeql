@@ -50,12 +50,14 @@ namespace Semmle.Autobuild.CSharp
                         BuildScript.Create(actions =>
                         {
                             foreach (var file in Extractor.GetCSharpArgsLogs())
+                            {
                                 try
                                 {
                                     actions.FileDelete(file);
                                 }
                                 catch // lgtm[cs/catch-of-all-exceptions] lgtm[cs/empty-catch-block]
                                 { }
+                            }
                             return 0;
                         });
                     var attemptExtractorCleanup =
@@ -107,7 +109,9 @@ namespace Semmle.Autobuild.CSharp
                 || Options.MsBuildConfiguration != null
                 || Options.MsBuildPlatform != null
                 || Options.MsBuildTarget != null)
+            {
                 return CSharpBuildStrategy.MSBuild;
+            }
 
             if (Options.DotNetArguments != null || Options.DotNetVersion != null)
                 return CSharpBuildStrategy.DotNet;
