@@ -286,3 +286,5 @@
 | vector.cpp:375:7:375:8 | vector.cpp:369:9:369:14 | AST only |
 | vector.cpp:379:7:379:8 | vector.cpp:378:8:378:13 | AST only |
 | vector.cpp:381:7:381:8 | vector.cpp:378:8:378:13 | AST only |
+| vector.cpp:388:7:388:8 | vector.cpp:330:10:330:15 | AST only |
+| vector.cpp:388:7:388:8 | vector.cpp:385:8:385:13 | AST only |
