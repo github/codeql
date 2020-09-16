@@ -99,7 +99,7 @@ namespace Semmle.Extraction
     /// A factory for creating cached entities.
     /// </summary>
     /// <typeparam name="TInitializer">The type of the initializer.</typeparam>
-    public interface ICachedEntityFactory<TInitializer, TEntity> where TEntity : ICachedEntity
+    public interface ICachedEntityFactory<in TInitializer, out TEntity> where TEntity : ICachedEntity
     {
         /// <summary>
         /// Initializes the entity, but does not generate any trap code.
