@@ -88,13 +88,13 @@ namespace Semmle.Extraction
 
         public Label GetNewLabel() => new Label(GetNewId());
 
-        public Entity CreateEntity<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, object cacheKey, Type init)
-            where Entity : ICachedEntity =>
+        public TEntity CreateEntity<TInitializer, TEntity>(ICachedEntityFactory<TInitializer, TEntity> factory, object cacheKey, TInitializer init)
+            where TEntity : ICachedEntity =>
             cacheKey is ISymbol s ? CreateEntity(factory, s, init, symbolEntityCache) : CreateEntity(factory, cacheKey, init, objectEntityCache);
 
-        public Entity CreateEntityFromSymbol<Type, Entity>(ICachedEntityFactory<Type, Entity> factory, Type init)
-            where Type : ISymbol
-            where Entity : ICachedEntity => CreateEntity(factory, init, init, symbolEntityCache);
+        public TEntity CreateEntityFromSymbol<TSymbol, TEntity>(ICachedEntityFactory<TSymbol, TEntity> factory, TSymbol init)
+            where TSymbol : ISymbol
+            where TEntity : ICachedEntity => CreateEntity(factory, init, init, symbolEntityCache);
 
         /// <summary>
         /// Creates and populates a new entity, or returns the existing one from the cache.
