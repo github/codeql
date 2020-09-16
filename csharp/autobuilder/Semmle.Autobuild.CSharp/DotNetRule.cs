@@ -170,7 +170,7 @@ namespace Semmle.Autobuild.CSharp
         {
             return BuildScript.Bind(GetInstalledSdksScript(builder.Actions), (sdks, sdksRet) =>
                 {
-                    if (sdksRet == 0 && sdks.Count() == 1 && sdks[0].StartsWith(version + " ", StringComparison.Ordinal))
+                    if (sdksRet == 0 && sdks.Count == 1 && sdks[0].StartsWith(version + " ", StringComparison.Ordinal))
                         // The requested SDK is already installed (and no other SDKs are installed), so
                         // no need to reinstall
                         return BuildScript.Failure;

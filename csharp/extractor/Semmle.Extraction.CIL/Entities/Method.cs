@@ -553,7 +553,7 @@ namespace Semmle.Extraction.CIL.Entities
                 yield return Tuples.cil_method(this, Name, DeclaringType, constructedTypeSignature.ReturnType);
                 yield return Tuples.cil_method_source_declaration(this, SourceDeclaration);
 
-                if (typeParams.Count() != unboundMethod.GenericParameterCount)
+                if (typeParams.Length != unboundMethod.GenericParameterCount)
                     throw new InternalError("Method type parameter mismatch");
 
                 for (int p = 0; p < typeParams.Length; ++p)

@@ -65,9 +65,12 @@ namespace Semmle.Extraction.CIL.Entities
 
         static Namespace? createParentNamespace(Context cx, string fqn)
         {
-            if (fqn == "") return null;
+            if (fqn.Length == 0)
+                return null;
             var i = fqn.LastIndexOf('.');
-            return i == -1 ? cx.GlobalNamespace : cx.Populate(new Namespace(cx, fqn.Substring(0, i)));
+            return i == -1
+                ? cx.GlobalNamespace
+                : cx.Populate(new Namespace(cx, fqn.Substring(0, i)));
         }
 
         public Namespace(Context cx, string fqn) : this(cx, parseNamespaceName(fqn), createParentNamespace(cx, fqn))
