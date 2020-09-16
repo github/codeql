@@ -10,6 +10,7 @@ test_isCreateServer
 | src/http.js:70:1:70:36 | http.cr ... dler()) |
 | src/https.js:4:14:10:2 | https.c ... foo;\\n}) |
 | src/https.js:12:1:16:2 | https.c ... r");\\n}) |
+| src/indirect.js:34:14:34:58 | http.cr ... dler()) |
 test_RequestInputAccess
 | src/http.js:6:26:6:32 | req.url | url | src/http.js:4:32:10:1 | functio ... .foo;\\n} |
 | src/http.js:8:3:8:20 | req.headers.cookie | cookie | src/http.js:4:32:10:1 | functio ... .foo;\\n} |
@@ -72,6 +73,7 @@ test_RouteSetup_getServer
 | src/http.js:70:1:70:36 | http.cr ... dler()) | src/http.js:70:1:70:36 | http.cr ... dler()) |
 | src/https.js:4:14:10:2 | https.c ... foo;\\n}) | src/https.js:4:14:10:2 | https.c ... foo;\\n}) |
 | src/https.js:12:1:16:2 | https.c ... r");\\n}) | src/https.js:12:1:16:2 | https.c ... r");\\n}) |
+| src/indirect.js:34:14:34:58 | http.cr ... dler()) | src/indirect.js:34:14:34:58 | http.cr ... dler()) |
 test_ClientRequest
 | src/http.js:18:1:18:30 | http.re ... uth" }) |
 | src/http.js:21:15:26:6 | http.re ... \\n    }) |
@@ -94,6 +96,7 @@ test_ServerDefinition
 | src/http.js:70:1:70:36 | http.cr ... dler()) |
 | src/https.js:4:14:10:2 | https.c ... foo;\\n}) |
 | src/https.js:12:1:16:2 | https.c ... r");\\n}) |
+| src/indirect.js:34:14:34:58 | http.cr ... dler()) |
 test_HeaderAccess
 | src/http.js:9:3:9:17 | req.headers.foo | foo |
 | src/https.js:9:3:9:17 | req.headers.foo | foo |
@@ -159,6 +162,9 @@ test_RouteSetup_getARouteHandler
 | src/http.js:70:1:70:36 | http.cr ... dler()) | src/http.js:70:19:70:35 | getArrowHandler() |
 | src/https.js:4:14:10:2 | https.c ... foo;\\n}) | src/https.js:4:33:10:1 | functio ... .foo;\\n} |
 | src/https.js:12:1:16:2 | https.c ... r");\\n}) | src/https.js:12:20:16:1 | functio ... ar");\\n} |
+| src/indirect.js:34:14:34:58 | http.cr ... dler()) | src/indirect.js:14:19:21:3 | return of method requestHandler |
+| src/indirect.js:34:14:34:58 | http.cr ... dler()) | src/indirect.js:16:12:20:16 | functio ... d(this) |
+| src/indirect.js:34:14:34:58 | http.cr ... dler()) | src/indirect.js:34:32:34:57 | appServ ... ndler() |
 test_ClientRequest_getADataNode
 | src/http.js:27:16:27:73 | http.re ... POST'}) | src/http.js:50:16:50:22 | 'stuff' |
 | src/http.js:27:16:27:73 | http.re ... POST'}) | src/http.js:51:14:51:25 | 'more stuff' |

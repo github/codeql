@@ -228,7 +228,12 @@ module NodeJSLib {
       t.start() and
       result = handler.flow().getALocalSource()
       or
-      exists(DataFlow::TypeBackTracker t2 | result = getARouteHandler(t2).backtrack(t2, t))
+      exists(DataFlow::TypeBackTracker t2, DataFlow::SourceNode succ | succ = getARouteHandler(t2) |
+        result = succ.backtrack(t2, t)
+        or
+        t = t2 and
+        Express::routeHandlerStep(result, succ)
+      )
     }
 
     override Expr getServer() { result = server }
@@ -727,9 +732,6 @@ module NodeJSLib {
           or
           // heuristic: does not return anything (Node.js will not use the return value)
           exists(astNode.getAReturnStmt().getExpr())
-          or
-          // heuristic: is not invoked (Node.js invokes this at a call site we cannot reason precisely about)
-          exists(DataFlow::InvokeNode cs | cs.getACallee() = astNode)
         )
       )
     }
