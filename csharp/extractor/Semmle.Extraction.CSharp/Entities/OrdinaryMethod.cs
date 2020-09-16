@@ -36,11 +36,13 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.methods(this, Name, ContainingType, returnType.TypeRef, OriginalDefinition);
 
             if (IsSourceDeclaration)
+            {
                 foreach (var declaration in Symbol.DeclaringSyntaxReferences.Select(s => s.GetSyntax()).OfType<MethodDeclarationSyntax>())
                 {
                     Context.BindComments(this, declaration.Identifier.GetLocation());
                     TypeMention.Create(Context, declaration.ReturnType, this, returnType);
                 }
+            }
 
             foreach (var l in Locations)
                 trapFile.method_location(this, l);

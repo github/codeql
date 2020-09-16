@@ -57,7 +57,9 @@ namespace Semmle.Extraction.CSharp.Entities
                 Select(d => d.Parent).
                 OfType<VariableDeclarationSyntax>().
                 Select(syntax => syntax.Type))
+            {
                 TypeMention.Create(Context, syntaxType, this, type);
+            }
         }
 
         public static Event Create(Context cx, IEventSymbol symbol) => EventFactory.Instance.CreateEntityFromSymbol(cx, symbol);

@@ -66,7 +66,9 @@ namespace Semmle.Extraction.Entities
         public override void WriteId(System.IO.TextWriter trapFile)
         {
             if (Path is null)
+            {
                 trapFile.Write("GENERATED;sourcefile");
+            }
             else
             {
                 trapFile.Write(DatabasePath);

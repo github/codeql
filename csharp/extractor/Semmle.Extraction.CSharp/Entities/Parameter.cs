@@ -117,11 +117,15 @@ namespace Semmle.Extraction.CSharp.Entities
             BindComments();
 
             if (IsSourceDeclaration)
+            {
                 foreach (var syntax in Symbol.DeclaringSyntaxReferences.
-                    Select(d => d.GetSyntax()).
-                    OfType<ParameterSyntax>().
-                    Where(s => s.Type != null))
+                   Select(d => d.GetSyntax()).
+                   OfType<ParameterSyntax>().
+                   Where(s => s.Type != null))
+                {
                     TypeMention.Create(Context, syntax.Type, this, type);
+                }
+            }
 
             if (Symbol.HasExplicitDefaultValue && Context.Defines(Symbol))
             {

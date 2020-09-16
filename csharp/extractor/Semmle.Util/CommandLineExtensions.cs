@@ -20,8 +20,10 @@ namespace Semmle.Util
             {
                 string? line;
                 using (var file = new StreamReader(arg))
+                {
                     while ((line = file.ReadLine()) != null)
                         textWriter.WriteLine(line);
+                }
                 found = true;
             }
             return found;

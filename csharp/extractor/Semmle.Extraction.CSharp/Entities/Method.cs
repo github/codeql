@@ -71,17 +71,19 @@ namespace Semmle.Extraction.CSharp.Entities
             var expr = ExpressionBody;
 
             if (block != null || expr != null)
+            {
                 Context.PopulateLater(
-                    () =>
-                    {
-                        ExtractInitializers(trapFile);
-                        if (block != null)
-                            Statements.Block.Create(Context, block, this, 0);
-                        else
-                            Expression.Create(Context, expr, this, 0);
+                   () =>
+                   {
+                       ExtractInitializers(trapFile);
+                       if (block != null)
+                           Statements.Block.Create(Context, block, this, 0);
+                       else
+                           Expression.Create(Context, expr, this, 0);
 
-                        LineCounter.NumberOfLines(trapFile, BodyDeclaringSymbol, this);
-                    });
+                       LineCounter.NumberOfLines(trapFile, BodyDeclaringSymbol, this);
+                   });
+            }
         }
 
         public void Overrides(TextWriter trapFile)
@@ -93,8 +95,10 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.explicitly_implements(this, explicitInterface.TypeRef);
 
                 if (IsSourceDeclaration)
+                {
                     foreach (var syntax in Symbol.DeclaringSyntaxReferences.Select(d => d.GetSyntax()).OfType<MethodDeclarationSyntax>())
                         TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier.Name, this, explicitInterface);
+                }
             }
 
             if (Symbol.OverriddenMethod != null)

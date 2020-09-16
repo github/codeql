@@ -138,7 +138,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             if (si.CandidateReason == CandidateReason.OverloadResolutionFailure &&
                 si.CandidateSymbols.OfType<IMethodSymbol>().All(s => s.MethodKind == MethodKind.DelegateInvoke))
+            {
                 return true;
+            }
 
             // Delegate variable is a dynamic
             var node = (InvocationExpressionSyntax)info.Node;
@@ -146,7 +148,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 node.Expression is IdentifierNameSyntax &&
                 IsDynamic(info.Context, node.Expression) &&
                 si.Symbol == null)
+            {
                 return true;
+            }
 
             return si.Symbol != null &&
                 si.Symbol.Kind == SymbolKind.Method &&

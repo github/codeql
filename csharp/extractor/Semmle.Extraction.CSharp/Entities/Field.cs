@@ -90,10 +90,14 @@ namespace Semmle.Extraction.CSharp.Entities
             }
 
             if (IsSourceDeclaration)
+            {
                 foreach (var syntax in Symbol.DeclaringSyntaxReferences.
-                    Select(d => d.GetSyntax()).OfType<VariableDeclaratorSyntax>().
-                    Select(d => d.Parent).OfType<VariableDeclarationSyntax>())
+                   Select(d => d.GetSyntax()).OfType<VariableDeclaratorSyntax>().
+                   Select(d => d.Parent).OfType<VariableDeclarationSyntax>())
+                {
                     TypeMention.Create(Context, syntax.Type, this, Type);
+                }
+            }
         }
 
         readonly Lazy<AnnotatedType> type;

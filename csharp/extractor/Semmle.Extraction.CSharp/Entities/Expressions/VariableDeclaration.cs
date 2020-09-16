@@ -71,6 +71,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 var child0 = 0;
                 foreach (var variable in designation.Variables)
+                {
                     switch (variable)
                     {
                         case ParenthesizedVariableDesignationSyntax paren:
@@ -94,6 +95,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         default:
                             throw new InternalError(variable, "Unhandled designation type");
                     }
+                }
             });
 
             return tuple;

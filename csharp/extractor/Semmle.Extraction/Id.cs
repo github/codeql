@@ -67,7 +67,9 @@ namespace Semmle.Extraction
                     trapBuilder.Write("}");
                 }
                 else
+                {
                     trapBuilder.Write(arg.ToString());
+                }
             }
         }
 
