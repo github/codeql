@@ -55,7 +55,7 @@ namespace Semmle.Extraction.CSharp.Standalone
         {
             var options = Options.Create(args);
             // options.CIL = true;  // To do: Enable this
-            var output = new ConsoleLogger(options.Verbosity);
+            using var output = new ConsoleLogger(options.Verbosity);
 
             if (options.Help)
             {
@@ -79,13 +79,15 @@ namespace Semmle.Extraction.CSharp.Standalone
 
             if (!options.SkipExtraction)
             {
+                using var fileLogger = new FileLogger(options.Verbosity, Extractor.GetCSharpLogPath());
+
                 output.Log(Severity.Info, "");
                 output.Log(Severity.Info, "Extracting...");
                 Extractor.ExtractStandalone(
                     a.Extraction.Sources,
                     a.References,
                     new ExtractionProgress(output),
-                    new FileLogger(options.Verbosity, Extractor.GetCSharpLogPath()),
+                    fileLogger,
                     options);
                 output.Log(Severity.Info, $"Extraction completed in {DateTime.Now - start}");
             }

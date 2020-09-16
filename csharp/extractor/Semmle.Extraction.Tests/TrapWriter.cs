@@ -29,7 +29,7 @@ namespace Semmle.Extraction.Tests
 
             var formattedTempDir = tempDir.Replace('/', '\\').Replace(':', '_').Trim('\\');
 
-            var logger = new LoggerMock();
+            using var logger = new LoggerMock();
             System.IO.Directory.SetCurrentDirectory(tempDir);
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
