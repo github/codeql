@@ -109,7 +109,7 @@ class FlowVar extends TFlowVar {
  * ```
  */
 private module PartialDefinitions {
-  abstract class PartialDefinition extends Expr {
+  class PartialDefinition extends Expr {
     ControlFlowNode node;
 
     PartialDefinition() {
@@ -216,8 +216,7 @@ private module PartialDefinitions {
     VariablePartialDefinition() {
       exists(Expr convertedInner |
         valueToUpdate(convertedInner, this.getFullyConverted(), node) and
-        innerDefinedExpr = convertedInner.getUnconverted() and
-        not this instanceof Conversion
+        innerDefinedExpr = convertedInner.getUnconverted()
       )
     }
 
@@ -249,9 +248,14 @@ private module PartialDefinitions {
   /**
    * A partial definition that's a definition by reference.
    */
-  class DefinitionByReference extends PartialDefinition {
+  class DefinitionByReference extends VariablePartialDefinition {
     DefinitionByReference() { exists(Call c | this = c.getAnArgument() or this = c.getQualifier()) }
   }
+}
+
+predicate quickTest(PartialDefinition pd) {
+  pd instanceof DefinitionByReference and
+  pd instanceof IteratorPartialDefinition
 }
 
 import PartialDefinitions

@@ -303,7 +303,7 @@ private class VariablePartialDefinitionNode extends PartialDefinitionNode {
   override Node getPreUpdateNode() { pd.definesExpressions(_, result.asExpr()) }
 }
 
-private class IteratorPartialDefinitionNode extends PartialDefinitionNode {
+class IteratorPartialDefinitionNode extends PartialDefinitionNode {
   override IteratorPartialDefinition pd;
 
   override Node getPreUpdateNode() { pd.definesExpressions(_, result.asExpr()) }
@@ -546,10 +546,10 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   or
   // In `f(&x->a)`, this step provides the flow from post-`&` to post-`x->a`,
   // from which there is field flow to `x` via reverse read.
-  exists(PartialDefinition def, Expr inner, Expr outer |
+  exists(VariablePartialDefinition def, Expr inner, Expr outer |
     def.definesExpressions(inner, outer) and
     inner = nodeTo.(InnerPartialDefinitionNode).getPreUpdateNode().asExpr() and
-    outer = nodeFrom.(PartialDefinitionNode).getPreUpdateNode().asExpr()
+    outer = nodeFrom.(VariablePartialDefinitionNode).getPreUpdateNode().asExpr()
   )
   or
   // Reverse flow: data that flows from the post-update node of a reference

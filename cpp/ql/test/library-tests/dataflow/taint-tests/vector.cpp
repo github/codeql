@@ -331,7 +331,7 @@ void taint_vector_output_iterator(std::vector<int>::iterator iter) {
 }
 
 void test_vector_output_iterator(int b) {
-	std::vector<int> v1(10), v2(10), v3(10), v4(10), v5(10), v6(10), v7(10), v8(10);
+	std::vector<int> v1(10), v2(10), v3(10), v4(10), v5(10), v6(10), v7(10), v8(10), v9(10);
 
 	std::vector<int>::iterator i1 = v1.begin();
 	*i1 = source();
@@ -379,4 +379,11 @@ void test_vector_output_iterator(int b) {
 	sink(v8); // tainted [NOT DETECTED by IR]
 	*i8 = 1;
 	sink(v8);
+
+	std::vector<int>::iterator i9 = v9.begin();
+
+	*i9 = source();
+	taint_vector_output_iterator(i9);
+
+	sink(v9);
 }
