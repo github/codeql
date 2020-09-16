@@ -18,9 +18,9 @@ print(unreferenced_g)
 # Modification by reassignment
 
 g_mod = []
-# Immediate reassignment -- no modification possible.
+# The following assignment should not be a `ModuleVariableNode`, but currently our analysis thinks `g_mod` might be used in the `print` call
 g_mod = [10] # $f+:writes=g_mod
-print(g_mod) # Could potentially be redefined here.
+print("foo")
 g_mod = [100] # $writes=g_mod
 
 # Modification by mutation
@@ -37,7 +37,7 @@ if unknown_module.attr:
 else:
     g_mult = [300] # $writes=g_mult
 
-# Potential reassignment
+# A global with multiple potential definitions
 
 g_mult2 = [400] # $writes=g_mult2
 if unknown_module.attr:
