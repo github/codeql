@@ -109,16 +109,16 @@ class FlowVar extends TFlowVar {
  * ```
  */
 private module PartialDefinitions {
-  class PartialDefinition extends Expr {
+  abstract class PartialDefinition extends Expr {
     ControlFlowNode node;
 
     PartialDefinition() {
       not this instanceof Conversion
     }
 
-    deprecated predicate partiallyDefines(Variable v) { none() }
+    deprecated abstract predicate partiallyDefines(Variable v);
 
-    deprecated predicate partiallyDefinesThis(ThisExpr e) { none() }
+    deprecated abstract predicate partiallyDefinesThis(ThisExpr e);
 
     /**
      * Gets the subBasicBlock where this `PartialDefinition` is defined.
@@ -131,7 +131,7 @@ private module PartialDefinitions {
      */
     // does this work with a dispred?
     pragma[noinline]
-    predicate partiallyDefinesVariableAt(Variable v, ControlFlowNode cfn) { none() }
+    abstract predicate partiallyDefinesVariableAt(Variable v, ControlFlowNode cfn);
 
     /**
      * Holds if this partial definition may modify `inner` (or what it points
@@ -141,7 +141,7 @@ private module PartialDefinitions {
      * - `inner` = `... .x`, `outer` = `&...`
      * - `inner` = `a`, `outer` = `*`
      */
-    predicate definesExpressions(Expr inner, Expr outer) { none() }
+    abstract predicate definesExpressions(Expr inner, Expr outer);
 
     /**
      * Gets the location of this element, adjusted to avoid unknown locations
