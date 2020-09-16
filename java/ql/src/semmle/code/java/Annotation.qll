@@ -72,6 +72,8 @@ class Annotation extends @annotation, Expr {
       if value instanceof ArrayInit then result = value.(ArrayInit).getAnInit() else result = value
     )
   }
+
+  override string getAPrimaryQlClass() { result = "Annotation" }
 }
 
 /** An `Annotation` that applies to a declaration. */
