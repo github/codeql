@@ -197,7 +197,7 @@ namespace Semmle.Extraction
 
         public readonly Layout.SubProject Directories;
 
-        string? ReadVariable(string name, string line)
+        static string? ReadVariable(string name, string line)
         {
             string prefix = name + "=";
             if (!line.StartsWith(prefix))

@@ -33,8 +33,6 @@ namespace Semmle.Extraction.CIL.Entities
         {
         }
 
-        public bool NeedsPopulation { get { return true; } }
-
         public Label Label { get; set; }
 
         public void WriteId(TextWriter trapFile)
@@ -48,11 +46,9 @@ namespace Semmle.Extraction.CIL.Entities
         {
             trapFile.Write("@\"");
             WriteId(trapFile);
-            trapFile.Write(IdSuffix);
+            trapFile.Write(";cil-field");
             trapFile.Write('\"');
         }
-
-        public string IdSuffix => ";cil-field";
 
         public abstract string Name { get; }
 

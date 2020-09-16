@@ -73,7 +73,7 @@ namespace Semmle.Extraction.CommentProcessing
 
         // Ensure that commentBlock and element refer to the same file
         // which can happen when processing multiple files.
-        void EnsureSameFile(ICommentBlock commentBlock, ref KeyValuePair<Location, Label>? element)
+        static void EnsureSameFile(ICommentBlock commentBlock, ref KeyValuePair<Location, Label>? element)
         {
             if (element != null && element.Value.Key.SourceTree != commentBlock.Location.SourceTree)
                 element = null;

@@ -161,7 +161,7 @@ namespace Semmle.Util
             GetRealPath(".");   // Test that it works
         }
 
-        string GetRealPath(string path)
+        static string GetRealPath(string path)
         {
             path = UnixPath.GetFullPath(path);
             return UnixPath.GetCompleteRealPath(path);

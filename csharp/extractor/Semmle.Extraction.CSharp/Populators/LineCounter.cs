@@ -21,7 +21,7 @@ namespace Semmle.Extraction.CSharp.Populators
                 return Visit(method.Identifier, method.Body ?? (SyntaxNode)method.ExpressionBody);
             }
 
-            public LineCounts Visit(SyntaxToken identifier, SyntaxNode body)
+            public static LineCounts Visit(SyntaxToken identifier, SyntaxNode body)
             {
                 int start = identifier.GetLocation().SourceSpan.Start;
                 int end = body.GetLocation().SourceSpan.End - 1;

@@ -59,7 +59,7 @@ namespace Semmle.Extraction.CSharp.Standalone
 
             if (options.Help)
             {
-                options.ShowHelp(System.Console.Out);
+                Options.ShowHelp(System.Console.Out);
                 return 0;
             }
 

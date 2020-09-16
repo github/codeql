@@ -155,7 +155,7 @@ namespace Semmle.Extraction.CSharp.Standalone
         /// <summary>
         /// Outputs the command line options to the console.
         /// </summary>
-        public void ShowHelp(System.IO.TextWriter output)
+        public static void ShowHelp(System.IO.TextWriter output)
         {
             output.WriteLine("C# standalone extractor\n\nExtracts a C# project in the current directory without performing a build.\n");
             output.WriteLine("Additional options:\n");
