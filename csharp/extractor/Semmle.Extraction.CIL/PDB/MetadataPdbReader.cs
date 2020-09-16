@@ -56,17 +56,21 @@ namespace Semmle.Extraction.PDB
 
         public static MetadataPdbReader? CreateFromAssembly(string assemblyPath, PEReader peReader)
         {
-            foreach (var provider in peReader.
-                ReadDebugDirectory().
-                Where(d => d.Type == DebugDirectoryEntryType.EmbeddedPortablePdb).
-                Select(dirEntry => peReader.ReadEmbeddedPortablePdbDebugDirectoryData(dirEntry)))
+            var provider = peReader
+                .ReadDebugDirectory()
+                .Where(d => d.Type == DebugDirectoryEntryType.EmbeddedPortablePdb)
+                .Select(dirEntry => peReader.ReadEmbeddedPortablePdbDebugDirectoryData(dirEntry))
+                .FirstOrDefault();
+
+            if (provider is object)
             {
                 return new MetadataPdbReader(provider);
             }
 
             try
             {
-                if (peReader.TryOpenAssociatedPortablePdb(assemblyPath, s => new FileStream(s, FileMode.Open, FileAccess.Read, FileShare.Read), out var provider, out var pdbPath))
+                if (peReader.TryOpenAssociatedPortablePdb(assemblyPath,
+                    s => new FileStream(s, FileMode.Open, FileAccess.Read, FileShare.Read), out provider, out var pdbPath))
                 {
                     return new MetadataPdbReader(provider);
                 }
