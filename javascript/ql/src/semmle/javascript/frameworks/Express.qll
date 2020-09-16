@@ -73,24 +73,51 @@ module Express {
   }
 
   /**
-   * Holds if there exists a step from `pred` to `succ` for a RouteHandler - beyond the usual steps defined by TypeTracking.
+   * Holds if `call` decorates the function `pred`.
+   * This means that `call` returns a function that forwards its arguments to `pred`.
    */
-  predicate routeHandlerStep(DataFlow::SourceNode pred, DataFlow::SourceNode succ) {
+  predicate decoratedRouteHandler(DataFlow::SourceNode pred, DataFlow::CallNode call) {
     // indirect route-handler `result` is given to function `outer`, which returns function `inner` which calls the function `pred`.
-    exists(int i, DataFlow::CallNode call, Function outer, Function inner | call = succ |
+    exists(int i, Function outer, Function inner |
       pred = call.getArgument(i).getALocalSource() and
       outer = call.getACallee() and
       inner = outer.getAReturnedExpr() and
-      exists(DataFlow::CallNode innerCall |
-        innerCall = DataFlow::parameterNode(outer.getParameter(i)).getACall() and
-        forall(int arg | arg = [0, 1] |
-          DataFlow::parameterNode(inner.getParameter(arg)).flowsTo(innerCall.getArgument(arg))
-        )
-      )
+      forwardingCall(DataFlow::parameterNode(outer.getParameter(i)), inner.flow())
     )
+  }
+
+  /**
+   * Holds if a call to `callee` inside `f` forwards all of the parameters from `f` to that call.
+   */
+  private predicate forwardingCall(DataFlow::SourceNode callee, DataFlow::FunctionNode f) {
+    exists(DataFlow::CallNode call | call = callee.getACall() |
+      f.getNumParameter() >= 2 and
+      forall(int arg | arg = [0 .. f.getNumParameter() - 1] |
+        f.getParameter(arg).flowsTo(call.getArgument(arg))
+      ) and
+      call.getContainer() = f.getFunction()
+    )
+  }
+
+  /**
+   * Holds if there exists a step from `pred` to `succ` for a RouteHandler - beyond the usual steps defined by TypeTracking.
+   */
+  predicate routeHandlerStep(DataFlow::SourceNode pred, DataFlow::SourceNode succ) {
+    decoratedRouteHandler(pred, succ)
+    or
+    // A forwarding call
+    forwardingCall(pred, succ)
     or
     // a container containing route-handlers.
     exists(HTTP::RouteHandlerCandidateContainer container | pred = container.getRouteHandler(succ))
+    or
+    // (function (req, res) {}).bind(this);
+    exists(DataFlow::MethodCallNode call |
+      call.getMethodName() = "bind" and call.getNumArgument() = 1
+    |
+      succ = call and
+      pred = call.getReceiver().getALocalSource()
+    )
   }
 
   /**
