@@ -50,25 +50,24 @@ namespace Semmle.Extraction
     /// </summary>
     public class Key : IId
     {
-        readonly StringWriter TrapBuilder = new StringWriter();
+        readonly StringWriter trapBuilder = new StringWriter();
 
         /// <summary>
         /// Creates a new key by concatenating the contents of the supplied arguments.
         /// </summary>
         public Key(params object[] args)
         {
-            TrapBuilder = new StringWriter();
             foreach (var arg in args)
             {
                 if (arg is IEntity entity)
                 {
                     var key = entity.Label;
-                    TrapBuilder.Write("{#");
-                    TrapBuilder.Write(key.Value.ToString());
-                    TrapBuilder.Write("}");
+                    trapBuilder.Write("{#");
+                    trapBuilder.Write(key.Value.ToString());
+                    trapBuilder.Write("}");
                 }
                 else
-                    TrapBuilder.Write(arg.ToString());
+                    trapBuilder.Write(arg.ToString());
             }
         }
 
@@ -78,12 +77,12 @@ namespace Semmle.Extraction
         /// </summary>
         public Key(Action<TextWriter> action)
         {
-            action(TrapBuilder);
+            action(trapBuilder);
         }
 
         public override string ToString()
         {
-            return TrapBuilder.ToString();
+            return trapBuilder.ToString();
         }
 
         public override bool Equals(object? obj)
@@ -91,15 +90,15 @@ namespace Semmle.Extraction
             if (obj is null || obj.GetType() != GetType())
                 return false;
             var id = (Key)obj;
-            return TrapBuilder.ToString() == id.TrapBuilder.ToString();
+            return trapBuilder.ToString() == id.trapBuilder.ToString();
         }
 
-        public override int GetHashCode() => TrapBuilder.ToString().GetHashCode();
+        public override int GetHashCode() => trapBuilder.ToString().GetHashCode();
 
         public void AppendTo(TextWriter trapFile)
         {
             trapFile.Write("@\"");
-            trapFile.Write(TrapBuilder.ToString());
+            trapFile.Write(trapBuilder.ToString());
             trapFile.Write("\"");
         }
     }

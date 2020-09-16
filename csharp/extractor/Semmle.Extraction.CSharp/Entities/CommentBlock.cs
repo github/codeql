@@ -13,8 +13,8 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             trapFile.commentblock(this);
             int child = 0;
-            trapFile.commentblock_location(this, Context.Create(symbol.Location));
-            foreach (var l in symbol.CommentLines)
+            trapFile.commentblock_location(this, Context.Create(Symbol.Location));
+            foreach (var l in Symbol.CommentLines)
             {
                 trapFile.commentblock_child(this, (CommentLine)l, child++);
             }
@@ -24,11 +24,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            trapFile.WriteSubId(Context.Create(symbol.Location));
+            trapFile.WriteSubId(Context.Create(Symbol.Location));
             trapFile.Write(";commentblock");
         }
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => symbol.Location;
+        public override Microsoft.CodeAnalysis.Location ReportingLocation => Symbol.Location;
 
         public void BindTo(Label entity, CommentBinding binding)
         {

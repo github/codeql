@@ -19,20 +19,20 @@ namespace Semmle.Extraction.CSharp.Entities
 
     class Expression : FreshEntity, IExpressionParentEntity
     {
-        private readonly IExpressionInfo Info;
-        public readonly AnnotatedType Type;
-        public readonly Extraction.Entities.Location Location;
-        public readonly ExprKind Kind;
+        private readonly IExpressionInfo info;
+        public AnnotatedType Type { get; }
+        public Extraction.Entities.Location Location { get; }
+        public ExprKind Kind { get; }
 
         internal Expression(IExpressionInfo info)
             : base(info.Context)
         {
-            Info = info;
+            this.info = info;
             Location = info.Location;
             Kind = info.Kind;
             Type = info.Type;
             if (Type.Type is null)
-                Type = NullType.Create(cx);
+                Type = NullType.Create(Cx);
 
             TryPopulate();
         }
@@ -40,34 +40,34 @@ namespace Semmle.Extraction.CSharp.Entities
         protected sealed override void Populate(TextWriter trapFile)
         {
             trapFile.expressions(this, Kind, Type.Type.TypeRef);
-            if (Info.Parent.IsTopLevelParent)
-                trapFile.expr_parent_top_level(this, Info.Child, Info.Parent);
+            if (info.Parent.IsTopLevelParent)
+                trapFile.expr_parent_top_level(this, info.Child, info.Parent);
             else
-                trapFile.expr_parent(this, Info.Child, Info.Parent);
+                trapFile.expr_parent(this, info.Child, info.Parent);
             trapFile.expr_location(this, Location);
 
             var annotatedType = Type.Symbol;
             if (!annotatedType.HasObliviousNullability())
             {
-                var n = NullabilityEntity.Create(cx, Nullability.Create(annotatedType));
+                var n = NullabilityEntity.Create(Cx, Nullability.Create(annotatedType));
                 trapFile.type_nullability(this, n);
             }
 
-            if (Info.FlowState != NullableFlowState.None)
+            if (info.FlowState != NullableFlowState.None)
             {
-                trapFile.expr_flowstate(this, (int)Info.FlowState);
+                trapFile.expr_flowstate(this, (int)info.FlowState);
             }
 
-            if (Info.IsCompilerGenerated)
+            if (info.IsCompilerGenerated)
                 trapFile.expr_compiler_generated(this);
 
-            if (Info.ExprValue is string value)
+            if (info.ExprValue is string value)
                 trapFile.expr_value(this, value);
 
             Type.Type.PopulateGenerics();
         }
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => Location.symbol;
+        public override Microsoft.CodeAnalysis.Location ReportingLocation => Location.Symbol;
 
         bool IExpressionParentEntity.IsTopLevelParent => false;
 
@@ -142,10 +142,10 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <param name="node">The expression.</param>
         public void OperatorCall(TextWriter trapFile, ExpressionSyntax node)
         {
-            var @operator = cx.GetSymbolInfo(node);
+            var @operator = Cx.GetSymbolInfo(node);
             if (@operator.Symbol is IMethodSymbol method)
             {
-                var callType = GetCallType(cx, node);
+                var callType = GetCallType(Cx, node);
                 if (callType == CallType.Dynamic)
                 {
                     UserOperator.OperatorSymbol(method.Name, out string operatorName);
@@ -153,7 +153,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     return;
                 }
 
-                trapFile.expr_call(this, Method.Create(cx, method));
+                trapFile.expr_call(this, Method.Create(Cx, method));
             }
         }
 
@@ -236,7 +236,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private void PopulateArgument(TextWriter trapFile, ArgumentSyntax arg, int child)
         {
-            var expr = Create(cx, arg.Expression, this, child);
+            var expr = Create(Cx, arg.Expression, this, child);
             int mode;
             switch (arg.RefOrOutKeyword.Kind())
             {
@@ -286,15 +286,15 @@ namespace Semmle.Extraction.CSharp.Entities
         }
     }
 
-    abstract class Expression<SyntaxNode> : Expression
-        where SyntaxNode : ExpressionSyntax
+    abstract class Expression<TSyntaxNode> : Expression
+        where TSyntaxNode : ExpressionSyntax
     {
-        public readonly SyntaxNode Syntax;
+        public readonly TSyntaxNode Syntax;
 
         protected Expression(ExpressionNodeInfo info)
             : base(info)
         {
-            Syntax = (SyntaxNode)info.Node;
+            Syntax = (TSyntaxNode)info.Node;
         }
 
         /// <summary>
@@ -309,7 +309,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected new Expression TryPopulate()
         {
-            cx.Try(Syntax, null, () => PopulateExpression(cx.TrapWriter.Writer));
+            Cx.Try(Syntax, null, () => PopulateExpression(Cx.TrapWriter.Writer));
             return this;
         }
     }

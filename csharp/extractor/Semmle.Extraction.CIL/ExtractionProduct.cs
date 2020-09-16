@@ -63,12 +63,12 @@ namespace Semmle.Extraction.CIL
             cx2.Extract(this);
         }
 
-        public Context cx { get; }
+        public Context Cx { get; }
 
         protected UnlabelledEntity(Context cx)
         {
-            this.cx = cx;
-            cx.cx.AddFreshLabel(this);
+            this.Cx = cx;
+            cx.Cx.AddFreshLabel(this);
         }
 
         TrapStackBehaviour IEntity.TrapStackBehaviour => TrapStackBehaviour.NoLabel;
@@ -101,11 +101,11 @@ namespace Semmle.Extraction.CIL
             cx2.Populate(this);
         }
 
-        public Context cx { get; }
+        public Context Cx { get; }
 
         protected LabelledEntity(Context cx)
         {
-            this.cx = cx;
+            this.Cx = cx;
         }
 
         public override string ToString()
@@ -132,7 +132,7 @@ namespace Semmle.Extraction.CIL
 
         public void Extract(Context cx)
         {
-            cx.cx.Emit(tuple);
+            cx.Cx.Emit(tuple);
         }
 
         public override string ToString() => tuple.ToString();

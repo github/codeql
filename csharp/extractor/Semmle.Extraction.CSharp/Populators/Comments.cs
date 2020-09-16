@@ -15,7 +15,7 @@ namespace Semmle.Extraction.CSharp.Populators
                 gen.GenerateBindings((entity, duplicationGuardKey, block, binding) =>
                 {
                     var commentBlock = Entities.CommentBlock.Create(cx, block);
-                    void a()
+                    void A()
                     {
                         commentBlock.BindTo(entity, binding);
                     }
@@ -23,9 +23,9 @@ namespace Semmle.Extraction.CSharp.Populators
                     // trap duplication (<see cref = "Context.BindComments(IEntity, Location)" />).
                     // We must therefore also guard comment construction.
                     if (duplicationGuardKey != null)
-                        cx.WithDuplicationGuard(duplicationGuardKey, a);
+                        cx.WithDuplicationGuard(duplicationGuardKey, A);
                     else
-                        a();
+                        A();
                 });
             });
         }

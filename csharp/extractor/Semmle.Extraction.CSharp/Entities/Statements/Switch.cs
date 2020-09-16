@@ -7,7 +7,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 {
     class Switch : Statement<SwitchStatementSyntax>
     {
-        static readonly object NullLabel = new object();
+        static readonly object nullLabel = new object();
         public static readonly object DefaultLabel = new object();
 
         // Sometimes, the literal "null" is used as a label.
@@ -15,7 +15,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         // This cannot be stored in a Dictionary<>, so substitute an object which can be.
         public static object LabelForValue(object label)
         {
-            return label ?? NullLabel;
+            return label ?? nullLabel;
         }
 
         Switch(Context cx, SwitchStatementSyntax node, IStatementParentEntity parent, int child)
@@ -30,17 +30,17 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            Expression.Create(cx, Stmt.Expression, this, 0);
+            Expression.Create(Cx, Stmt.Expression, this, 0);
             int childIndex = 0;
 
             foreach (var section in Stmt.Sections)
             {
-                foreach (var stmt in section.Labels.Select(label => Case<SwitchLabelSyntax>.Create(cx, label, this, childIndex)))
+                foreach (var stmt in section.Labels.Select(label => Case<SwitchLabelSyntax>.Create(Cx, label, this, childIndex)))
                 {
                     childIndex += stmt.NumberOfStatements;
                 }
 
-                foreach (var stmt in section.Statements.Select(s => Create(cx, s, this, childIndex)))
+                foreach (var stmt in section.Statements.Select(s => Create(Cx, s, this, childIndex)))
                 {
                     childIndex += stmt.NumberOfStatements;
                 }

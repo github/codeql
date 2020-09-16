@@ -12,7 +12,7 @@ namespace Semmle.Extraction
         protected CachedEntity(Context context, TSymbol init)
         {
             Context = context;
-            symbol = init;
+            Symbol = init;
         }
 
         public Label Label { get; set; }
@@ -41,14 +41,14 @@ namespace Semmle.Extraction
             get;
         }
 
-        public TSymbol symbol
+        public TSymbol Symbol
         {
             get;
         }
 
-        object? ICachedEntity.UnderlyingObject => symbol;
+        object? ICachedEntity.UnderlyingObject => Symbol;
 
-        public TSymbol UnderlyingObject => symbol;
+        public TSymbol UnderlyingObject => Symbol;
 
         public abstract void WriteId(System.IO.TextWriter trapFile);
 
@@ -64,12 +64,12 @@ namespace Semmle.Extraction
             get;
         }
 
-        public override int GetHashCode() => symbol is null ? 0 : symbol.GetHashCode();
+        public override int GetHashCode() => Symbol is null ? 0 : Symbol.GetHashCode();
 
         public override bool Equals(object? obj)
         {
             var other = obj as CachedEntity<TSymbol>;
-            return other?.GetType() == GetType() && Equals(other.symbol, symbol);
+            return other?.GetType() == GetType() && Equals(other.Symbol, Symbol);
         }
 
         public abstract TrapStackBehaviour TrapStackBehaviour { get; }

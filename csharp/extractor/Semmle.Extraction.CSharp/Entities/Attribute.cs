@@ -12,27 +12,27 @@ namespace Semmle.Extraction.CSharp.Entities
     {
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
-        private readonly AttributeData AttributeData;
-        private readonly IEntity Entity;
+        private readonly AttributeData attributeData;
+        private readonly IEntity entity;
 
         public Attribute(Context cx, AttributeData attribute, IEntity entity)
             : base(cx)
         {
-            AttributeData = attribute;
-            Entity = entity;
+            attributeData = attribute;
+            this.entity = entity;
             TryPopulate();
         }
 
         protected override void Populate(TextWriter trapFile)
         {
-            if (AttributeData.ApplicationSyntaxReference != null)
+            if (attributeData.ApplicationSyntaxReference != null)
             {
                 // !! Extract attributes from assemblies.
                 // This is harder because the "expression" entities presume the
                 // existence of a syntax tree. This is not the case for compiled
                 // attributes.
-                var syntax = AttributeData.ApplicationSyntaxReference.GetSyntax() as AttributeSyntax;
-                ExtractAttribute(cx.TrapWriter.Writer, syntax, AttributeData.AttributeClass, Entity);
+                var syntax = attributeData.ApplicationSyntaxReference.GetSyntax() as AttributeSyntax;
+                ExtractAttribute(Cx.TrapWriter.Writer, syntax, attributeData.AttributeClass, entity);
             }
         }
 
@@ -45,24 +45,24 @@ namespace Semmle.Extraction.CSharp.Entities
 
         void ExtractAttribute(System.IO.TextWriter trapFile, AttributeSyntax syntax, ITypeSymbol attributeClass, IEntity entity)
         {
-            var type = Type.Create(cx, attributeClass);
+            var type = Type.Create(Cx, attributeClass);
             trapFile.attributes(this, type.TypeRef, entity);
 
-            trapFile.attribute_location(this, cx.Create(syntax.Name.GetLocation()));
+            trapFile.attribute_location(this, Cx.Create(syntax.Name.GetLocation()));
 
-            if (cx.Extractor.OutputPath != null)
-                trapFile.attribute_location(this, Assembly.CreateOutputAssembly(cx));
+            if (Cx.Extractor.OutputPath != null)
+                trapFile.attribute_location(this, Assembly.CreateOutputAssembly(Cx));
 
-            TypeMention.Create(cx, syntax.Name, this, type);
+            TypeMention.Create(Cx, syntax.Name, this, type);
 
             if (syntax.ArgumentList != null)
             {
-                cx.PopulateLater(() =>
+                Cx.PopulateLater(() =>
                 {
                     int child = 0;
                     foreach (var arg in syntax.ArgumentList.Arguments)
                     {
-                        var expr = Expression.Create(cx, arg.Expression, this, child++);
+                        var expr = Expression.Create(Cx, arg.Expression, this, child++);
                         if (!(arg.NameEquals is null))
                         {
                             trapFile.expr_argument_name(expr, arg.NameEquals.Name.Identifier.Text);

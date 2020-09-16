@@ -10,15 +10,15 @@ namespace Semmle.Extraction.CSharp.Populators
 {
     public class TypeContainerVisitor : CSharpSyntaxVisitor
     {
-        protected Context cx { get; }
-        protected IEntity parent { get; }
-        protected TextWriter trapFile { get; }
+        protected Context Cx { get; }
+        protected IEntity Parent { get; }
+        protected TextWriter TrapFile { get; }
 
         public TypeContainerVisitor(Context cx, TextWriter trapFile, IEntity parent)
         {
-            this.cx = cx;
-            this.parent = parent;
-            this.trapFile = trapFile;
+            this.Cx = cx;
+            this.Parent = parent;
+            this.TrapFile = trapFile;
         }
 
         public override void DefaultVisit(SyntaxNode node)
@@ -28,38 +28,38 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public override void VisitDelegateDeclaration(DelegateDeclarationSyntax node)
         {
-            Entities.NamedType.Create(cx, cx.GetModel(node).GetDeclaredSymbol(node)).ExtractRecursive(trapFile, parent);
+            Entities.NamedType.Create(Cx, Cx.GetModel(node).GetDeclaredSymbol(node)).ExtractRecursive(TrapFile, Parent);
         }
 
         public override void VisitClassDeclaration(ClassDeclarationSyntax classDecl)
         {
-            Entities.Type.Create(cx, cx.GetModel(classDecl).GetDeclaredSymbol(classDecl)).ExtractRecursive(trapFile, parent);
+            Entities.Type.Create(Cx, Cx.GetModel(classDecl).GetDeclaredSymbol(classDecl)).ExtractRecursive(TrapFile, Parent);
         }
 
         public override void VisitStructDeclaration(StructDeclarationSyntax node)
         {
-            Entities.Type.Create(cx, cx.GetModel(node).GetDeclaredSymbol(node)).ExtractRecursive(trapFile, parent);
+            Entities.Type.Create(Cx, Cx.GetModel(node).GetDeclaredSymbol(node)).ExtractRecursive(TrapFile, Parent);
         }
 
         public override void VisitEnumDeclaration(EnumDeclarationSyntax node)
         {
-            Entities.Type.Create(cx, cx.GetModel(node).GetDeclaredSymbol(node)).ExtractRecursive(trapFile, parent);
+            Entities.Type.Create(Cx, Cx.GetModel(node).GetDeclaredSymbol(node)).ExtractRecursive(TrapFile, Parent);
         }
 
         public override void VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
         {
-            Entities.Type.Create(cx, cx.GetModel(node).GetDeclaredSymbol(node)).ExtractRecursive(trapFile, parent);
+            Entities.Type.Create(Cx, Cx.GetModel(node).GetDeclaredSymbol(node)).ExtractRecursive(TrapFile, Parent);
         }
 
         public override void VisitAttributeList(AttributeListSyntax node)
         {
-            if (cx.Extractor.Standalone) return;
+            if (Cx.Extractor.Standalone) return;
 
-            var outputAssembly = Assembly.CreateOutputAssembly(cx);
+            var outputAssembly = Assembly.CreateOutputAssembly(Cx);
             foreach (var attribute in node.Attributes)
             {
-                var ae = new Attribute(cx, attribute, outputAssembly);
-                cx.BindComments(ae, attribute.GetLocation());
+                var ae = new Attribute(Cx, attribute, outputAssembly);
+                Cx.BindComments(ae, attribute.GetLocation());
             }
         }
     }
@@ -73,12 +73,12 @@ namespace Semmle.Extraction.CSharp.Populators
         {
             // Only deal with "using namespace" not "using X = Y"
             if (usingDirective.Alias == null)
-                new UsingDirective(cx, usingDirective, (NamespaceDeclaration)parent);
+                new UsingDirective(Cx, usingDirective, (NamespaceDeclaration)Parent);
         }
 
         public override void VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
         {
-            NamespaceDeclaration.Create(cx, node, (NamespaceDeclaration)parent);
+            NamespaceDeclaration.Create(Cx, node, (NamespaceDeclaration)Parent);
         }
     }
 
@@ -90,30 +90,30 @@ namespace Semmle.Extraction.CSharp.Populators
         public override void VisitExternAliasDirective(ExternAliasDirectiveSyntax node)
         {
             // This information is not yet extracted.
-            cx.ExtractionError("Not implemented extern alias directive", node.ToFullString(), Extraction.Entities.Location.Create(cx, node.GetLocation()), "", Severity.Info);
+            Cx.ExtractionError("Not implemented extern alias directive", node.ToFullString(), Extraction.Entities.Location.Create(Cx, node.GetLocation()), "", Severity.Info);
         }
 
         public override void VisitCompilationUnit(CompilationUnitSyntax compilationUnit)
         {
             foreach (var m in compilationUnit.ChildNodes())
             {
-                cx.Try(m, null, () => ((CSharpSyntaxNode)m).Accept(this));
+                Cx.Try(m, null, () => ((CSharpSyntaxNode)m).Accept(this));
             }
 
             // Gather comments:
             foreach (SyntaxTrivia trivia in compilationUnit.DescendantTrivia(compilationUnit.Span))
             {
-                CommentLine.Extract(cx, trivia);
+                CommentLine.Extract(Cx, trivia);
             }
 
             foreach (var trivia in compilationUnit.GetLeadingTrivia())
             {
-                CommentLine.Extract(cx, trivia);
+                CommentLine.Extract(Cx, trivia);
             }
 
             foreach (var trivia in compilationUnit.GetTrailingTrivia())
             {
-                CommentLine.Extract(cx, trivia);
+                CommentLine.Extract(Cx, trivia);
             }
         }
     }

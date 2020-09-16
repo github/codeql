@@ -30,8 +30,8 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            VariableDeclarations.Populate(cx, Stmt.Declaration, this, 0);
-            cx.BindComments(this, Stmt.GetLocation());
+            VariableDeclarations.Populate(Cx, Stmt.Declaration, this, 0);
+            Cx.BindComments(this, Stmt.GetLocation());
         }
     }
 }

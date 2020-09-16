@@ -49,7 +49,7 @@ namespace Semmle.Extraction
         /// </summary>
         public TrapWriter.CompressionMode TrapCompression { get; set; } = TrapWriter.CompressionMode.Gzip;
 
-        public virtual bool handleOption(string key, string value)
+        public virtual bool HandleOption(string key, string value)
         {
             switch (key)
             {
@@ -64,9 +64,9 @@ namespace Semmle.Extraction
             }
         }
 
-        public abstract bool handleArgument(string argument);
+        public abstract bool HandleArgument(string argument);
 
-        public virtual bool handleFlag(string flag, bool value)
+        public virtual bool HandleFlag(string flag, bool value)
         {
             switch (flag)
             {
@@ -98,6 +98,6 @@ namespace Semmle.Extraction
             }
         }
 
-        public abstract void invalidArgument(string argument);
+        public abstract void InvalidArgument(string argument);
     }
 }

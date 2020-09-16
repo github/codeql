@@ -7,12 +7,12 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    abstract class ArrayCreation<SyntaxNode> : Expression<SyntaxNode> where SyntaxNode : ExpressionSyntax
+    abstract class ArrayCreation<TSyntaxNode> : Expression<TSyntaxNode> where TSyntaxNode : ExpressionSyntax
     {
         protected ArrayCreation(ExpressionNodeInfo info) : base(info) { }
     }
 
-    abstract class ExplicitArrayCreation<SyntaxNode> : ArrayCreation<SyntaxNode> where SyntaxNode : ExpressionSyntax
+    abstract class ExplicitArrayCreation<TSyntaxNode> : ArrayCreation<TSyntaxNode> where TSyntaxNode : ExpressionSyntax
     {
         protected ExplicitArrayCreation(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.ARRAY_CREATION)) { }
 
@@ -27,7 +27,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             if (TypeSyntax is null)
             {
-                cx.ModelError(Syntax, "Array has unexpected type syntax");
+                Cx.ModelError(Syntax, "Array has unexpected type syntax");
             }
 
             var firstLevelSizes = TypeSyntax.RankSpecifiers.First()?.Sizes ?? SyntaxFactory.SeparatedList<ExpressionSyntax>();
@@ -40,14 +40,14 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 for (var sizeIndex = 0; sizeIndex < firstLevelSizes.Count; sizeIndex++)
                 {
-                    Create(cx, firstLevelSizes[sizeIndex], this, sizeIndex);
+                    Create(Cx, firstLevelSizes[sizeIndex], this, sizeIndex);
                 }
                 explicitlySized = true;
             }
 
             if (!(Initializer is null))
             {
-                ArrayInitializer.Create(new ExpressionNodeInfo(cx, Initializer, this, -1));
+                ArrayInitializer.Create(new ExpressionNodeInfo(Cx, Initializer, this, -1));
             }
 
             if (explicitlySized)
@@ -64,8 +64,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 }
 
                 var info = new ExpressionInfo(
-                    cx,
-                    new AnnotatedType(Entities.Type.Create(cx, cx.Compilation.GetSpecialType(Microsoft.CodeAnalysis.SpecialType.System_Int32)), NullableAnnotation.None),
+                    Cx,
+                    new AnnotatedType(Entities.Type.Create(Cx, Cx.Compilation.GetSpecialType(Microsoft.CodeAnalysis.SpecialType.System_Int32)), NullableAnnotation.None),
                     Location,
                     ExprKind.INT_LITERAL,
                     this,
@@ -116,7 +116,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            ArrayInitializer.Create(new ExpressionNodeInfo(cx, Syntax.Initializer, this, -1));
+            ArrayInitializer.Create(new ExpressionNodeInfo(Cx, Syntax.Initializer, this, -1));
             trapFile.implicitly_typed_array_creation(this);
             trapFile.stackalloc_array_creation(this);
         }
@@ -132,7 +132,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             if (Syntax.Initializer != null)
             {
-                ArrayInitializer.Create(new ExpressionNodeInfo(cx, Syntax.Initializer, this, -1));
+                ArrayInitializer.Create(new ExpressionNodeInfo(Cx, Syntax.Initializer, this, -1));
             }
 
             trapFile.implicitly_typed_array_creation(this);

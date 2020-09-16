@@ -37,17 +37,17 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         /// </summary>
         abstract class Clause
         {
-            protected readonly IMethodSymbol method;
-            protected readonly List<ExpressionSyntax> arguments = new List<ExpressionSyntax>();
-            protected readonly SyntaxNode node;
+            protected readonly IMethodSymbol Method;
+            protected readonly List<ExpressionSyntax> Arguments = new List<ExpressionSyntax>();
+            protected readonly SyntaxNode Node;
 
             protected Clause(IMethodSymbol method, SyntaxNode node)
             {
-                this.method = method;
-                this.node = node;
+                this.Method = method;
+                this.Node = node;
             }
 
-            public ExpressionSyntax Expr => arguments.First();
+            public ExpressionSyntax Expr => Arguments.First();
 
             public CallClause WithCallClause(IMethodSymbol newMethod, SyntaxNode newNode) =>
                 new CallClause(this, newMethod, newNode);
@@ -58,7 +58,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             public Clause AddArgument(ExpressionSyntax arg)
             {
                 if (arg != null)
-                    arguments.Add(arg);
+                    Arguments.Add(arg);
                 return this;
             }
 
@@ -70,7 +70,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 TypeSyntax declTypeSyntax = null;
                 if (getElement)
                 {
-                    if (node is FromClauseSyntax from && from.Type != null)
+                    if (Node is FromClauseSyntax from && from.Type != null)
                     {
                         declTypeSyntax = from.Type;
                         declType = Type.Create(cx, cx.GetType(from.Type));
@@ -88,7 +88,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     variableSymbol,
                     declType,
                     declTypeSyntax,
-                    cx.Create(node.GetLocation()),
+                    cx.Create(Node.GetLocation()),
                     true,
                     parent,
                     child
@@ -105,7 +105,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             protected void PopulateArguments(Context cx, QueryCall callExpr, int child)
             {
-                foreach (var e in arguments)
+                foreach (var e in Arguments)
                 {
                     Expression.Create(cx, e, callExpr, child++);
                 }
@@ -157,14 +157,14 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             public override Expression Populate(Context cx, IExpressionParentEntity parent, int child)
             {
-                if (method == null)
-                    cx.ModelError(node, "Unable to determine target of query expression");
+                if (Method == null)
+                    cx.ModelError(Node, "Unable to determine target of query expression");
 
-                var callExpr = new QueryCall(cx, method, node, parent, child);
+                var callExpr = new QueryCall(cx, Method, Node, parent, child);
                 operand.Populate(cx, callExpr, 0);
                 DeclareRangeVariable(cx, callExpr, 1, false, declaration, name);
                 PopulateArguments(cx, callExpr, 2);
-                DeclareIntoVariable(cx, callExpr, 2 + arguments.Count, false);
+                DeclareIntoVariable(cx, callExpr, 2 + Arguments.Count, false);
                 return callExpr;
             }
         }
@@ -180,7 +180,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             public override Expression Populate(Context cx, IExpressionParentEntity parent, int child)
             {
-                var callExpr = new QueryCall(cx, method, node, parent, child);
+                var callExpr = new QueryCall(cx, Method, Node, parent, child);
                 operand.Populate(cx, callExpr, 0);
                 PopulateArguments(cx, callExpr, 1);
                 return callExpr;

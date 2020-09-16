@@ -19,7 +19,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         protected override void PopulateStatement(TextWriter trapFile)
         {
             if (Stmt.Expression != null)
-                Expression.Create(cx, Stmt.Expression, this, 0);
+                Expression.Create(Cx, Stmt.Expression, this, 0);
         }
     }
 }

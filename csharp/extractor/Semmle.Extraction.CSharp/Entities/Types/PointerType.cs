@@ -8,7 +8,7 @@ namespace Semmle.Extraction.CSharp.Entities
         PointerType(Context cx, IPointerTypeSymbol init)
             : base(cx, init)
         {
-            PointedAtType = Create(cx, symbol.PointedAtType);
+            PointedAtType = Create(cx, Symbol.PointedAtType);
         }
 
         public override void WriteId(TextWriter trapFile)

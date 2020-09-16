@@ -8,22 +8,22 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
     class MemberAccess : Expression
     {
-        readonly IEntity Target;
+        readonly IEntity target;
 
         private MemberAccess(ExpressionNodeInfo info, ExpressionSyntax qualifier, ISymbol target) : base(info)
         {
             var trapFile = info.Context.TrapWriter.Writer;
-            Qualifier = Create(cx, qualifier, this, -1);
+            Qualifier = Create(Cx, qualifier, this, -1);
 
             if (target == null)
             {
                 if (info.Kind != ExprKind.DYNAMIC_MEMBER_ACCESS)
-                    cx.ModelError(info.Node, "Could not determine target for member access");
+                    Cx.ModelError(info.Node, "Could not determine target for member access");
             }
             else
             {
-                Target = cx.CreateEntity(target);
-                trapFile.expr_access(this, Target);
+                this.target = Cx.CreateEntity(target);
+                trapFile.expr_access(this, this.target);
             }
         }
 

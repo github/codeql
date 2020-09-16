@@ -41,10 +41,10 @@ namespace Semmle.Extraction.CSharp.Entities
     abstract class Statement<TSyntax> : Statement where TSyntax : CSharpSyntaxNode
     {
         protected readonly TSyntax Stmt;
-        private readonly int Child;
-        private readonly Kinds.StmtKind Kind;
-        private readonly IStatementParentEntity Parent;
-        private readonly Location Location;
+        private readonly int child;
+        private readonly Kinds.StmtKind kind;
+        private readonly IStatementParentEntity parent;
+        private readonly Location location;
 
         protected override CSharpSyntaxNode GetStatementSyntax() => Stmt;
 
@@ -52,21 +52,21 @@ namespace Semmle.Extraction.CSharp.Entities
             : base(cx)
         {
             Stmt = stmt;
-            Parent = parent;
-            Child = child;
-            Location = location;
-            Kind = kind;
-            cx.BindComments(this, location.symbol);
+            this.parent = parent;
+            this.child = child;
+            this.location = location;
+            this.kind = kind;
+            cx.BindComments(this, location.Symbol);
         }
 
         protected sealed override void Populate(TextWriter trapFile)
         {
-            trapFile.statements(this, Kind);
-            if (Parent.IsTopLevelParent)
-                trapFile.stmt_parent_top_level(this, Child, Parent);
+            trapFile.statements(this, kind);
+            if (parent.IsTopLevelParent)
+                trapFile.stmt_parent_top_level(this, child, parent);
             else
-                trapFile.stmt_parent(this, Child, Parent);
-            trapFile.stmt_location(this, Location);
+                trapFile.stmt_parent(this, child, parent);
+            trapFile.stmt_location(this, location);
             PopulateStatement(trapFile);
         }
 

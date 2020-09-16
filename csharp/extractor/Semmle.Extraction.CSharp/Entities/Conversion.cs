@@ -17,12 +17,12 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             get
             {
-                return symbol.
+                return Symbol.
                     DeclaringSyntaxReferences.
                     Select(r => r.GetSyntax()).
                     OfType<ConversionOperatorDeclarationSyntax>().
                     Select(s => s.FixedLocation()).
-                    Concat(symbol.Locations).
+                    Concat(Symbol.Locations).
                     FirstOrDefault();
             }
         }

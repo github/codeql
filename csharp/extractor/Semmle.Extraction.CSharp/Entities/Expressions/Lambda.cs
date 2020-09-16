@@ -17,25 +17,25 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         void VisitParameter(ParameterSyntax p)
         {
-            var symbol = cx.GetModel(p).GetDeclaredSymbol(p);
-            Parameter.Create(cx, symbol, this);
+            var symbol = Cx.GetModel(p).GetDeclaredSymbol(p);
+            Parameter.Create(Cx, symbol, this);
         }
 
         Lambda(ExpressionNodeInfo info, CSharpSyntaxNode body, IEnumerable<ParameterSyntax> @params)
             : base(info)
         {
             // No need to use `Populate` as the population happens later
-            cx.PopulateLater(() =>
+            Cx.PopulateLater(() =>
             {
                 foreach (var param in @params)
                     VisitParameter(param);
 
                 if (body is ExpressionSyntax expressionBody)
-                    Create(cx, expressionBody, this, 0);
+                    Create(Cx, expressionBody, this, 0);
                 else if (body is BlockSyntax blockBody)
-                    Statements.Block.Create(cx, blockBody, this, 0);
+                    Statements.Block.Create(Cx, blockBody, this, 0);
                 else
-                    cx.ModelError(body, "Unhandled lambda body");
+                    Cx.ModelError(body, "Unhandled lambda body");
             });
         }
 

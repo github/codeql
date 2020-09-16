@@ -96,15 +96,15 @@ namespace Semmle.Util
                     length = Win32.GetFinalPathNameByHandle(hFile, outPath, outPath.Capacity, 0);  // lgtm[cs/call-to-unmanaged-code]
                 }
 
-                const int PREAMBLE = 4; // outPath always starts \\?\
+                const int preamble = 4; // outPath always starts \\?\
 
-                if (length <= PREAMBLE)
+                if (length <= preamble)
                 {
                     // Failed. GetFinalPathNameByHandle() failed somehow.
                     return ConstructCanonicalPath(path, cache);
                 }
 
-                string result = outPath.ToString(PREAMBLE, length - PREAMBLE);  // Trim off leading \\?\
+                string result = outPath.ToString(preamble, length - preamble);  // Trim off leading \\?\
 
                 return result.StartsWith("UNC") ?
                     @"\" + result.Substring(3) :

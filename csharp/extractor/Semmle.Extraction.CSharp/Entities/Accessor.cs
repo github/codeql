@@ -17,18 +17,18 @@ namespace Semmle.Extraction.CSharp.Entities
             get
             {
                 // Usually, the property/indexer can be fetched from the associated symbol
-                if (symbol.AssociatedSymbol is IPropertySymbol prop)
+                if (Symbol.AssociatedSymbol is IPropertySymbol prop)
                     return prop;
 
                 // But for properties/indexers that implement explicit interfaces, Roslyn
                 // does not properly populate `AssociatedSymbol`
-                var props = symbol.ContainingType.GetMembers().OfType<IPropertySymbol>();
-                props = props.Where(p => SymbolEqualityComparer.Default.Equals(symbol, p.GetMethod) || SymbolEqualityComparer.Default.Equals(symbol, p.SetMethod));
+                var props = Symbol.ContainingType.GetMembers().OfType<IPropertySymbol>();
+                props = props.Where(p => SymbolEqualityComparer.Default.Equals(Symbol, p.GetMethod) || SymbolEqualityComparer.Default.Equals(Symbol, p.SetMethod));
                 return props.SingleOrDefault();
             }
         }
 
-        public new Accessor OriginalDefinition => Create(Context, symbol.OriginalDefinition);
+        public new Accessor OriginalDefinition => Create(Context, Symbol.OriginalDefinition);
 
         public override void Populate(TextWriter trapFile)
         {
@@ -39,37 +39,37 @@ namespace Semmle.Extraction.CSharp.Entities
             var prop = PropertySymbol;
             if (prop == null)
             {
-                Context.ModelError(symbol, "Unhandled accessor associated symbol");
+                Context.ModelError(Symbol, "Unhandled accessor associated symbol");
                 return;
             }
 
             var parent = Property.Create(Context, prop);
             int kind;
             Accessor unboundAccessor;
-            if (SymbolEqualityComparer.Default.Equals(symbol, prop.GetMethod))
+            if (SymbolEqualityComparer.Default.Equals(Symbol, prop.GetMethod))
             {
                 kind = 1;
                 unboundAccessor = Create(Context, prop.OriginalDefinition.GetMethod);
             }
-            else if (SymbolEqualityComparer.Default.Equals(symbol, prop.SetMethod))
+            else if (SymbolEqualityComparer.Default.Equals(Symbol, prop.SetMethod))
             {
                 kind = 2;
                 unboundAccessor = Create(Context, prop.OriginalDefinition.SetMethod);
             }
             else
             {
-                Context.ModelError(symbol, "Unhandled accessor kind");
+                Context.ModelError(Symbol, "Unhandled accessor kind");
                 return;
             }
 
-            trapFile.accessors(this, kind, symbol.Name, parent, unboundAccessor);
+            trapFile.accessors(this, kind, Symbol.Name, parent, unboundAccessor);
 
             foreach (var l in Locations)
                 trapFile.accessor_location(this, l);
 
             Overrides(trapFile);
 
-            if (symbol.FromSource() && Block == null)
+            if (Symbol.FromSource() && Block == null)
             {
                 trapFile.compiler_generated(this);
             }

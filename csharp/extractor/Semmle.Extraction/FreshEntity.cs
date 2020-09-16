@@ -9,11 +9,11 @@ namespace Semmle.Extraction
     /// </summary>
     public abstract class FreshEntity : IEntity
     {
-        protected Context cx { get; }
+        protected Context Cx { get; }
 
         protected FreshEntity(Context cx)
         {
-            this.cx = cx;
+            this.Cx = cx;
             cx.AddFreshLabel(this);
         }
 
@@ -36,7 +36,7 @@ namespace Semmle.Extraction
 
         protected void TryPopulate()
         {
-            cx.Try(null, null, () => Populate(cx.TrapWriter.Writer));
+            Cx.Try(null, null, () => Populate(Cx.TrapWriter.Writer));
         }
 
         /// <summary>

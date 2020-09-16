@@ -48,12 +48,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             if (!(target is null))
             {
-                cx.TrapWriter.Writer.expr_access(this, target);
+                Cx.TrapWriter.Writer.expr_access(this, target);
             }
 
             if (implicitThis && !symbol.IsStatic)
             {
-                This.CreateImplicit(cx, Entities.Type.Create(cx, symbol.ContainingType), Location, this, -1);
+                This.CreateImplicit(Cx, Entities.Type.Create(Cx, symbol.ContainingType), Location, this, -1);
             }
         }
 

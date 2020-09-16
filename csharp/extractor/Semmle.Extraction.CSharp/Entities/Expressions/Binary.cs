@@ -17,8 +17,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         protected override void PopulateExpression(TextWriter trapFile)
         {
             OperatorCall(trapFile, Syntax);
-            CreateDeferred(cx, Syntax.Left, this, 0);
-            CreateDeferred(cx, Syntax.Right, this, 1);
+            CreateDeferred(Cx, Syntax.Left, this, 0);
+            CreateDeferred(Cx, Syntax.Right, this, 1);
         }
 
         static ExprKind GetKind(Context cx, BinaryExpressionSyntax node)

@@ -8,12 +8,12 @@ namespace Semmle.Extraction.CSharp.Entities
         ArrayType(Context cx, IArrayTypeSymbol init)
             : base(cx, init)
         {
-            element = Create(cx, symbol.GetAnnotatedElementType());
+            element = Create(cx, Symbol.GetAnnotatedElementType());
         }
 
         readonly AnnotatedType element;
 
-        public int Rank => symbol.Rank;
+        public int Rank => Symbol.Rank;
 
         public override AnnotatedType ElementType => element;
 
@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void WriteId(TextWriter trapFile)
         {
             trapFile.WriteSubId(element.Type);
-            symbol.BuildArraySuffix(trapFile);
+            Symbol.BuildArraySuffix(trapFile);
             trapFile.Write(";type");
         }
 

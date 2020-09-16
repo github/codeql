@@ -18,7 +18,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             int child = 0;
             foreach (var argument in Syntax.Arguments.Select(a => a.Expression))
             {
-                Expression.Create(cx, argument, this, child++);
+                Expression.Create(Cx, argument, this, child++);
             }
         }
     }

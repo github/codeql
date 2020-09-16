@@ -7,13 +7,13 @@ namespace Semmle.Extraction
     /// </summary>
     public struct Tuple : ITrapEmitter
     {
-        readonly string Name;
-        readonly object[] Args;
+        readonly string name;
+        readonly object[] args;
 
         public Tuple(string name, params object[] args)
         {
-            Name = name;
-            Args = args;
+            this.name = name;
+            this.args = args;
         }
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace Semmle.Extraction
         /// <param name="trapFile">The trap file to write to.</param>
         public void EmitTrap(TextWriter trapFile)
         {
-            trapFile.WriteTuple(Name, Args);
+            trapFile.WriteTuple(name, args);
         }
 
         public override string ToString()

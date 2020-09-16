@@ -36,15 +36,15 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     memberName = memberAccess.Name.Identifier.Text;
                     if (Syntax.Expression.Kind() == SyntaxKind.SimpleMemberAccessExpression)
                         // Qualified method call; `x.M()`
-                        Create(cx, memberAccess.Expression, this, child++);
+                        Create(Cx, memberAccess.Expression, this, child++);
                     else
                         // Pointer member access; `x->M()`
-                        Create(cx, Syntax.Expression, this, child++);
+                        Create(Cx, Syntax.Expression, this, child++);
                     break;
                 case MemberBindingExpressionSyntax memberBinding:
                     // Conditionally qualified method call; `x?.M()`
                     memberName = memberBinding.Name.Identifier.Text;
-                    Create(cx, FindConditionalQualifier(memberBinding), this, child++);
+                    Create(Cx, FindConditionalQualifier(memberBinding), this, child++);
                     MakeConditional(trapFile);
                     break;
                 case SimpleNameSyntax simpleName when (Kind == ExprKind.METHOD_INVOCATION):
@@ -54,10 +54,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     {
                         // Implicit `this` qualifier; add explicitly
 
-                        if (cx.GetModel(Syntax).GetEnclosingSymbol(Location.symbol.SourceSpan.Start) is IMethodSymbol callingMethod)
-                            This.CreateImplicit(cx, Entities.Type.Create(cx, callingMethod.ContainingType), Location, this, child++);
+                        if (Cx.GetModel(Syntax).GetEnclosingSymbol(Location.Symbol.SourceSpan.Start) is IMethodSymbol callingMethod)
+                            This.CreateImplicit(Cx, Entities.Type.Create(Cx, callingMethod.ContainingType), Location, this, child++);
                         else
-                            cx.ModelError(Syntax, "Couldn't determine implicit this type");
+                            Cx.ModelError(Syntax, "Couldn't determine implicit this type");
                     }
                     else
                     {
@@ -67,7 +67,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     break;
                 default:
                     // Delegate call; `d()`
-                    Create(cx, Syntax.Expression, this, child++);
+                    Create(Cx, Syntax.Expression, this, child++);
                     break;
             }
 
@@ -77,7 +77,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 if (memberName != null)
                     trapFile.dynamic_member_name(this, memberName);
                 else
-                    cx.ModelError(Syntax, "Unable to get name for dynamic call.");
+                    Cx.ModelError(Syntax, "Unable to get name for dynamic call.");
             }
 
             PopulateArguments(trapFile, Syntax.ArgumentList, child);
@@ -85,11 +85,11 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             if (target == null)
             {
                 if (!isDynamicCall && !IsDelegateCall(info))
-                    cx.ModelError(Syntax, "Unable to resolve target for call. (Compilation error?)");
+                    Cx.ModelError(Syntax, "Unable to resolve target for call. (Compilation error?)");
                 return;
             }
 
-            var targetKey = Method.Create(cx, target);
+            var targetKey = Method.Create(Cx, target);
             trapFile.expr_call(this, targetKey);
         }
 
@@ -123,7 +123,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         Where(method => method.Parameters.Length >= Syntax.ArgumentList.Arguments.Count).
                         Where(method => method.Parameters.Count(p => !p.HasExplicitDefaultValue) <= Syntax.ArgumentList.Arguments.Count);
 
-                    return cx.Extractor.Standalone ?
+                    return Cx.Extractor.Standalone ?
                         candidates.FirstOrDefault() :
                         candidates.SingleOrDefault();
                 }

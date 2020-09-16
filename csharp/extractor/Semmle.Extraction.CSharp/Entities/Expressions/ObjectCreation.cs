@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    abstract class ObjectCreation<SyntaxNode> : Expression<SyntaxNode> where SyntaxNode : ExpressionSyntax
+    abstract class ObjectCreation<TSyntaxNode> : Expression<TSyntaxNode> where TSyntaxNode : ExpressionSyntax
     {
         protected ObjectCreation(ExpressionNodeInfo info)
             : base(info) { }
@@ -41,21 +41,21 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 PopulateArguments(trapFile, Syntax.ArgumentList, 0);
             }
 
-            var target = cx.GetModel(Syntax).GetSymbolInfo(Syntax);
+            var target = Cx.GetModel(Syntax).GetSymbolInfo(Syntax);
             var method = (IMethodSymbol)target.Symbol;
 
             if (method != null)
             {
-                trapFile.expr_call(this, Method.Create(cx, method));
+                trapFile.expr_call(this, Method.Create(Cx, method));
             }
 
-            if (IsDynamicObjectCreation(cx, Syntax))
+            if (IsDynamicObjectCreation(Cx, Syntax))
             {
                 var name = GetDynamicName(Syntax.Type);
                 if (name.HasValue)
                     trapFile.dynamic_member_name(this, name.Value.Text);
                 else
-                    cx.ModelError(Syntax, "Unable to get name for dynamic object creation.");
+                    Cx.ModelError(Syntax, "Unable to get name for dynamic object creation.");
             }
 
             if (Syntax.Initializer != null)
@@ -63,18 +63,18 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 switch (Syntax.Initializer.Kind())
                 {
                     case SyntaxKind.CollectionInitializerExpression:
-                        CollectionInitializer.Create(new ExpressionNodeInfo(cx, Syntax.Initializer, this, -1) { Type = Type });
+                        CollectionInitializer.Create(new ExpressionNodeInfo(Cx, Syntax.Initializer, this, -1) { Type = Type });
                         break;
                     case SyntaxKind.ObjectInitializerExpression:
-                        ObjectInitializer.Create(new ExpressionNodeInfo(cx, Syntax.Initializer, this, -1) { Type = Type });
+                        ObjectInitializer.Create(new ExpressionNodeInfo(Cx, Syntax.Initializer, this, -1) { Type = Type });
                         break;
                     default:
-                        cx.ModelError("Unhandled initializer in object creation");
+                        Cx.ModelError("Unhandled initializer in object creation");
                         break;
                 }
             }
 
-            TypeMention.Create(cx, Syntax.Type, this, Type);
+            TypeMention.Create(Cx, Syntax.Type, this, Type);
         }
 
         static SyntaxToken? GetDynamicName(CSharpSyntaxNode name)
@@ -104,32 +104,32 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            var target = cx.GetSymbolInfo(Syntax);
+            var target = Cx.GetSymbolInfo(Syntax);
             var method = (IMethodSymbol)target.Symbol;
 
             if (method != null)
             {
-                trapFile.expr_call(this, Method.Create(cx, method));
+                trapFile.expr_call(this, Method.Create(Cx, method));
             }
             var child = 0;
 
             Expression objectInitializer = Syntax.Initializers.Any() ?
-                new Expression(new ExpressionInfo(cx, Type, Location, ExprKind.OBJECT_INIT, this, -1, false, null)) :
+                new Expression(new ExpressionInfo(Cx, Type, Location, ExprKind.OBJECT_INIT, this, -1, false, null)) :
                 null;
 
             foreach (var init in Syntax.Initializers)
             {
                 // Create an "assignment"
-                var property = cx.GetModel(init).GetDeclaredSymbol(init);
-                var propEntity = Property.Create(cx, property);
-                var type = Entities.Type.Create(cx, property.GetAnnotatedType());
-                var loc = cx.Create(init.GetLocation());
+                var property = Cx.GetModel(init).GetDeclaredSymbol(init);
+                var propEntity = Property.Create(Cx, property);
+                var type = Entities.Type.Create(Cx, property.GetAnnotatedType());
+                var loc = Cx.Create(init.GetLocation());
 
-                var assignment = new Expression(new ExpressionInfo(cx, type, loc, ExprKind.SIMPLE_ASSIGN, objectInitializer, child++, false, null));
-                Create(cx, init.Expression, assignment, 0);
-                Property.Create(cx, property);
+                var assignment = new Expression(new ExpressionInfo(Cx, type, loc, ExprKind.SIMPLE_ASSIGN, objectInitializer, child++, false, null));
+                Create(Cx, init.Expression, assignment, 0);
+                Property.Create(Cx, property);
 
-                var access = new Expression(new ExpressionInfo(cx, type, loc, ExprKind.PROPERTY_ACCESS, assignment, 1, false, null));
+                var access = new Expression(new ExpressionInfo(Cx, type, loc, ExprKind.PROPERTY_ACCESS, assignment, 1, false, null));
                 trapFile.expr_access(access, propEntity);
             }
         }

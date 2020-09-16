@@ -14,18 +14,18 @@ namespace Semmle.Extraction.CSharp.Entities
         public CachedSymbol(Context cx, T init)
             : base(cx, init) { }
 
-        public virtual Type ContainingType => symbol.ContainingType != null ? Type.Create(Context, symbol.ContainingType) : null;
+        public virtual Type ContainingType => Symbol.ContainingType != null ? Type.Create(Context, Symbol.ContainingType) : null;
 
         public void PopulateModifiers(TextWriter trapFile)
         {
-            Modifier.ExtractModifiers(Context, trapFile, this, symbol);
+            Modifier.ExtractModifiers(Context, trapFile, this, Symbol);
         }
 
         protected void PopulateAttributes()
         {
             // Only extract attributes for source declarations
-            if (ReferenceEquals(symbol, symbol.OriginalDefinition))
-                Attribute.ExtractAttributes(Context, symbol, this);
+            if (ReferenceEquals(Symbol, Symbol.OriginalDefinition))
+                Attribute.ExtractAttributes(Context, Symbol, this);
         }
 
         protected void PopulateNullability(TextWriter trapFile, AnnotatedTypeSymbol type)
@@ -55,7 +55,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected void ExtractCompilerGenerated(TextWriter trapFile)
         {
-            if (symbol.IsImplicitlyDeclared)
+            if (Symbol.IsImplicitlyDeclared)
                 trapFile.compiler_generated(this);
         }
 
@@ -63,12 +63,12 @@ namespace Semmle.Extraction.CSharp.Entities
         /// The location which is stored in the database and is used when highlighing source code.
         /// It's generally short, e.g. a method name.
         /// </summary>
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => symbol.Locations.FirstOrDefault();
+        public override Microsoft.CodeAnalysis.Location ReportingLocation => Symbol.Locations.FirstOrDefault();
 
         /// <summary>
         /// The full text span of the entity, e.g. for binding comments.
         /// </summary>
-        public virtual Microsoft.CodeAnalysis.Location FullLocation => symbol.Locations.FirstOrDefault();
+        public virtual Microsoft.CodeAnalysis.Location FullLocation => Symbol.Locations.FirstOrDefault();
 
         public virtual IEnumerable<Extraction.Entities.Location> Locations
         {
@@ -91,11 +91,11 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         protected void BindComments()
         {
-            if (!symbol.IsImplicitlyDeclared && IsSourceDeclaration && symbol.FromSource())
+            if (!Symbol.IsImplicitlyDeclared && IsSourceDeclaration && Symbol.FromSource())
                 Context.BindComments(this, FullLocation);
         }
 
-        protected virtual T BodyDeclaringSymbol => symbol;
+        protected virtual T BodyDeclaringSymbol => Symbol;
 
         public BlockSyntax Block
         {
@@ -122,9 +122,9 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public virtual bool IsSourceDeclaration => symbol.IsSourceDeclaration();
+        public virtual bool IsSourceDeclaration => Symbol.IsSourceDeclaration();
 
-        public override bool NeedsPopulation => Context.Defines(symbol);
+        public override bool NeedsPopulation => Context.Defines(Symbol);
 
         public Extraction.Entities.Location Location => Context.Create(ReportingLocation);
 
@@ -143,15 +143,15 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             get
             {
-                var handleProp = GetPropertyInfo(symbol, "Handle");
-                object handleObj = symbol;
+                var handleProp = GetPropertyInfo(Symbol, "Handle");
+                object handleObj = Symbol;
 
                 if (handleProp is null)
                 {
-                    var underlyingSymbolProp = GetPropertyInfo(symbol, "UnderlyingSymbol");
+                    var underlyingSymbolProp = GetPropertyInfo(Symbol, "UnderlyingSymbol");
                     if (underlyingSymbolProp is object)
                     {
-                        if (underlyingSymbolProp.GetValue(symbol) is object underlying)
+                        if (underlyingSymbolProp.GetValue(Symbol) is object underlying)
                         {
                             handleProp = GetPropertyInfo(underlying, "Handle");
                             handleObj = underlying;

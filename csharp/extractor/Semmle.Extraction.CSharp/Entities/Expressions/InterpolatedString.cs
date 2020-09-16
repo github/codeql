@@ -22,12 +22,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 {
                     case SyntaxKind.Interpolation:
                         var interpolation = (InterpolationSyntax)c;
-                        Create(cx, interpolation.Expression, this, child++);
+                        Create(Cx, interpolation.Expression, this, child++);
                         break;
                     case SyntaxKind.InterpolatedStringText:
                         // Create a string literal
                         var interpolatedText = (InterpolatedStringTextSyntax)c;
-                        new Expression(new ExpressionInfo(cx, Type, cx.Create(c.GetLocation()), ExprKind.STRING_LITERAL, this, child++, false, interpolatedText.TextToken.Text));
+                        new Expression(new ExpressionInfo(Cx, Type, Cx.Create(c.GetLocation()), ExprKind.STRING_LITERAL, this, child++, false, interpolatedText.TextToken.Text));
                         break;
                     default:
                         throw new InternalError(c, $"Unhandled interpolation kind {c.Kind()}");

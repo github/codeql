@@ -25,18 +25,18 @@ namespace Semmle.Extraction.CSharp
 
         class LogProgressMonitor : IProgressMonitor
         {
-            readonly ILogger Logger;
+            readonly ILogger logger;
 
             public LogProgressMonitor(ILogger logger)
             {
-                Logger = logger;
+                this.logger = logger;
             }
 
             public void Analysed(int item, int total, string source, string output, TimeSpan time, AnalysisAction action)
             {
                 if (action != AnalysisAction.UpToDate)
                 {
-                    Logger.Log(Severity.Info, "  {0} ({1})", source,
+                    logger.Log(Severity.Info, "  {0} ({1})", source,
                         action == AnalysisAction.Extracted ? time.ToString() : action == AnalysisAction.Excluded ? "excluded" : "up to date");
                 }
             }

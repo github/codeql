@@ -11,7 +11,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         /// Gets the event symbol associated with this accessor.
         /// </summary>
-        IEventSymbol EventSymbol => symbol.AssociatedSymbol as IEventSymbol;
+        IEventSymbol EventSymbol => Symbol.AssociatedSymbol as IEventSymbol;
 
         public override void Populate(TextWriter trapFile)
         {
@@ -21,30 +21,30 @@ namespace Semmle.Extraction.CSharp.Entities
             var @event = EventSymbol;
             if (@event == null)
             {
-                Context.ModelError(symbol, "Unhandled event accessor associated symbol");
+                Context.ModelError(Symbol, "Unhandled event accessor associated symbol");
                 return;
             }
 
             var parent = Event.Create(Context, @event);
             int kind;
             EventAccessor unboundAccessor;
-            if (SymbolEqualityComparer.Default.Equals(symbol, @event.AddMethod))
+            if (SymbolEqualityComparer.Default.Equals(Symbol, @event.AddMethod))
             {
                 kind = 1;
                 unboundAccessor = Create(Context, @event.OriginalDefinition.AddMethod);
             }
-            else if (SymbolEqualityComparer.Default.Equals(symbol, @event.RemoveMethod))
+            else if (SymbolEqualityComparer.Default.Equals(Symbol, @event.RemoveMethod))
             {
                 kind = 2;
                 unboundAccessor = Create(Context, @event.OriginalDefinition.RemoveMethod);
             }
             else
             {
-                Context.ModelError(symbol, "Undhandled event accessor kind");
+                Context.ModelError(Symbol, "Undhandled event accessor kind");
                 return;
             }
 
-            trapFile.event_accessors(this, kind, symbol.Name, parent, unboundAccessor);
+            trapFile.event_accessors(this, kind, Symbol.Name, parent, unboundAccessor);
 
             foreach (var l in Locations)
                 trapFile.event_accessor_location(this, l);

@@ -30,7 +30,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
                 // the right thing but it doesn't exist.
                 // So instead, we have to do the lookup via GetEnclosingSymbol.
 
-                var m = cx.GetModel(Stmt);
+                var m = Cx.GetModel(Stmt);
                 var body = Stmt.Body == null ? Stmt.ExpressionBody : (CSharpSyntaxNode)Stmt.Body;
                 return m.GetEnclosingSymbol(body.GetLocation().SourceSpan.Start) as IMethodSymbol;
             }
@@ -39,7 +39,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         /// <summary>
         /// Gets the function defined by this local statement.
         /// </summary>
-        Entities.LocalFunction Function => Entities.LocalFunction.Create(cx, Symbol);
+        Entities.LocalFunction Function => Entities.LocalFunction.Create(Cx, Symbol);
 
         protected override void PopulateStatement(TextWriter trapFile)
         {

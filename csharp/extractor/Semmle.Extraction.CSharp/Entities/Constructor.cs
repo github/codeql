@@ -20,10 +20,10 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateModifiers(trapFile);
             ContainingType.PopulateGenerics();
 
-            trapFile.constructors(this, symbol.ContainingType.Name, ContainingType, (Constructor)OriginalDefinition);
+            trapFile.constructors(this, Symbol.ContainingType.Name, ContainingType, (Constructor)OriginalDefinition);
             trapFile.constructor_location(this, Location);
 
-            if (symbol.IsImplicitlyDeclared)
+            if (Symbol.IsImplicitlyDeclared)
             {
                 var lineCounts = new LineCounts() { Total = 2, Code = 1, Comment = 0 };
                 trapFile.numlines(this, lineCounts);
@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CSharp.Entities
             switch (initializer.Kind())
             {
                 case SyntaxKind.BaseConstructorInitializer:
-                    initializerType = Type.Create(Context, symbol.ContainingType.BaseType);
+                    initializerType = Type.Create(Context, Symbol.ContainingType.BaseType);
                     break;
                 case SyntaxKind.ThisConstructorInitializer:
                     initializerType = ContainingType;
@@ -72,7 +72,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (target == null)
             {
-                Context.ModelError(symbol, "Unable to resolve call");
+                Context.ModelError(Symbol, "Unable to resolve call");
                 return;
             }
 
@@ -89,7 +89,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             get
             {
-                return symbol.DeclaringSyntaxReferences.
+                return Symbol.DeclaringSyntaxReferences.
                     Select(r => r.GetSyntax()).
                     OfType<ConstructorDeclarationSyntax>().
                     FirstOrDefault();
@@ -112,14 +112,14 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            if (symbol.IsStatic) trapFile.Write("static");
+            if (Symbol.IsStatic) trapFile.Write("static");
             trapFile.WriteSubId(ContainingType);
-            AddParametersToId(Context, trapFile, symbol);
+            AddParametersToId(Context, trapFile, Symbol);
             trapFile.Write(";constructor");
         }
 
         ConstructorDeclarationSyntax GetSyntax() =>
-            symbol.DeclaringSyntaxReferences.Select(r => r.GetSyntax()).OfType<ConstructorDeclarationSyntax>().FirstOrDefault();
+            Symbol.DeclaringSyntaxReferences.Select(r => r.GetSyntax()).OfType<ConstructorDeclarationSyntax>().FirstOrDefault();
 
         public override Microsoft.CodeAnalysis.Location FullLocation => ReportingLocation;
 
@@ -132,13 +132,13 @@ namespace Semmle.Extraction.CSharp.Entities
                 {
                     return syn.Identifier.GetLocation();
                 }
-                else if (symbol.IsImplicitlyDeclared)
+                else if (Symbol.IsImplicitlyDeclared)
                 {
                     return ContainingType.ReportingLocation;
                 }
                 else
                 {
-                    return symbol.ContainingType.Locations.FirstOrDefault();
+                    return Symbol.ContainingType.Locations.FirstOrDefault();
                 }
             }
         }

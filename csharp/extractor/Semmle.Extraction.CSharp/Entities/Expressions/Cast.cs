@@ -12,16 +12,16 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            Create(cx, Syntax.Expression, this, 0);
+            Create(Cx, Syntax.Expression, this, 0);
 
             if (Kind == ExprKind.CAST)
                 // Type cast
-                TypeAccess.Create(new ExpressionNodeInfo(cx, Syntax.Type, this, 1));
+                TypeAccess.Create(new ExpressionNodeInfo(Cx, Syntax.Type, this, 1));
             else
             {
                 // Type conversion
                 OperatorCall(trapFile, Syntax);
-                TypeMention.Create(cx, Syntax.Type, this, Type);
+                TypeMention.Create(Cx, Syntax.Type, this, Type);
             }
         }
 

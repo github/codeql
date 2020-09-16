@@ -25,12 +25,12 @@ namespace Semmle.Extraction.Entities
             // Linux/Windows: java.io.File.getName() returns ""
             // On Linux: System.IO.DirectoryInfo.Name returns "/"
             // On Windows: System.IO.DirectoryInfo.Name returns "L:\"
-            string shortName = symbol.Parent == null ? "" : symbol.Name;
+            string shortName = Symbol.Parent == null ? "" : Symbol.Name;
 
             trapFile.folders(this, File.PathAsDatabaseString(Path), shortName);
-            if (symbol.Parent != null)
+            if (Symbol.Parent != null)
             {
-                trapFile.containerparent(Create(Context, symbol.Parent), this);
+                trapFile.containerparent(Create(Context, Symbol.Parent), this);
             }
         }
 

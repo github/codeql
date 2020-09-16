@@ -38,7 +38,7 @@ namespace Semmle.Extraction.CSharp.Entities
             // There is a "bug" in Roslyn whereby the IMethodSymbol associated with the local function symbol
             // is always static, so we need to go to the syntax reference of the local function to see whether
             // the "static" modifier is present.
-            if (symbol.DeclaringSyntaxReferences.SingleOrDefault().GetSyntax() is LocalFunctionStatementSyntax fn)
+            if (Symbol.DeclaringSyntaxReferences.SingleOrDefault().GetSyntax() is LocalFunctionStatementSyntax fn)
             {
                 foreach (var modifier in fn.Modifiers)
                 {
@@ -46,9 +46,9 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
             }
 
-            var originalDefinition = IsSourceDeclaration ? this : Create(Context, symbol.OriginalDefinition);
-            var returnType = Type.Create(Context, symbol.ReturnType);
-            trapFile.local_functions(this, symbol.Name, returnType, originalDefinition);
+            var originalDefinition = IsSourceDeclaration ? this : Create(Context, Symbol.OriginalDefinition);
+            var returnType = Type.Create(Context, Symbol.ReturnType);
+            trapFile.local_functions(this, Symbol.Name, returnType, originalDefinition);
             ExtractRefReturn(trapFile);
         }
     }

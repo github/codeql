@@ -57,13 +57,13 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override IEnumerable<Type> MethodParameters => throw new NotImplementedException();
 
-        static string parseNamespaceName(string fqn)
+        static string ParseNamespaceName(string fqn)
         {
             var i = fqn.LastIndexOf('.');
             return i == -1 ? fqn : fqn.Substring(i + 1);
         }
 
-        static Namespace? createParentNamespace(Context cx, string fqn)
+        static Namespace? CreateParentNamespace(Context cx, string fqn)
         {
             if (fqn.Length == 0)
                 return null;
@@ -73,7 +73,7 @@ namespace Semmle.Extraction.CIL.Entities
                 : cx.Populate(new Namespace(cx, fqn.Substring(0, i)));
         }
 
-        public Namespace(Context cx, string fqn) : this(cx, parseNamespaceName(fqn), createParentNamespace(cx, fqn))
+        public Namespace(Context cx, string fqn) : this(cx, ParseNamespaceName(fqn), CreateParentNamespace(cx, fqn))
         {
         }
 

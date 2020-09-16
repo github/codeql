@@ -20,7 +20,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         protected override void PopulateStatement(TextWriter trapFile)
         {
             var child = 0;
-            foreach (var childStmt in Stmt.Statements.Select(c => Statement.Create(cx, c, this, child)))
+            foreach (var childStmt in Stmt.Statements.Select(c => Statement.Create(Cx, c, this, child)))
             {
                 child += childStmt.NumberOfStatements;
             }

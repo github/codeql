@@ -22,14 +22,14 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             var child = 1;
             foreach (var c in Stmt.Catches)
             {
-                Catch.Create(cx, c, this, child++);
+                Catch.Create(Cx, c, this, child++);
             }
 
-            Create(cx, Stmt.Block, this, 0);
+            Create(Cx, Stmt.Block, this, 0);
 
             if (Stmt.Finally != null)
             {
-                Create(cx, Stmt.Finally.Block, this, -1);
+                Create(Cx, Stmt.Finally.Block, this, -1);
             }
         }
 

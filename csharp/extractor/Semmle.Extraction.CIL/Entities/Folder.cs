@@ -33,7 +33,7 @@ namespace Semmle.Extraction.CIL.Entities
                 var parent = Path.GetDirectoryName(path);
                 if (parent != null && !windowsDriveLetter)
                 {
-                    var parentFolder = cx.CreateFolder(parent);
+                    var parentFolder = Cx.CreateFolder(parent);
                     yield return parentFolder;
                     yield return Tuples.containerparent(parentFolder, this);
                 }

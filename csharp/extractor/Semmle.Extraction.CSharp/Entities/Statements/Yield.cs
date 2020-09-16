@@ -20,7 +20,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         {
             if (Stmt.Expression != null)
             {
-                Expression.Create(cx, Stmt.Expression, this, 0);
+                Expression.Create(Cx, Stmt.Expression, this, 0);
             }
         }
     }

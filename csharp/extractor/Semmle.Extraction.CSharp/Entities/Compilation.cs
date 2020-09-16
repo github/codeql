@@ -20,7 +20,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected override void Populate(TextWriter trapFile)
         {
-            Extraction.Entities.Assembly.CreateOutputAssembly(cx);
+            Extraction.Entities.Assembly.CreateOutputAssembly(Cx);
 
             trapFile.compilations(this, Extraction.Entities.File.PathAsDatabaseString(cwd));
 
@@ -33,21 +33,21 @@ namespace Semmle.Extraction.CSharp.Entities
 
             // Files
             index = 0;
-            foreach (var file in cx.Compilation.SyntaxTrees.Select(tree => Extraction.Entities.File.Create(cx, tree.FilePath)))
+            foreach (var file in Cx.Compilation.SyntaxTrees.Select(tree => Extraction.Entities.File.Create(Cx, tree.FilePath)))
             {
                 trapFile.compilation_compiling_files(this, index++, file);
             }
 
             // References
             index = 0;
-            foreach (var file in cx.Compilation.References.OfType<PortableExecutableReference>().Select(r => Extraction.Entities.File.Create(cx, r.FilePath)))
+            foreach (var file in Cx.Compilation.References.OfType<PortableExecutableReference>().Select(r => Extraction.Entities.File.Create(Cx, r.FilePath)))
             {
                 trapFile.compilation_referencing_files(this, index++, file);
             }
 
             // Diagnostics
             index = 0;
-            foreach (var diag in cx.Compilation.GetDiagnostics().Select(d => new Diagnostic(cx, d)))
+            foreach (var diag in Cx.Compilation.GetDiagnostics().Select(d => new Diagnostic(Cx, d)))
             {
                 trapFile.diagnostic_for(diag, this, 0, index++);
             }
@@ -55,7 +55,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public void PopulatePerformance(PerformanceMetrics p)
         {
-            var trapFile = cx.TrapWriter.Writer;
+            var trapFile = Cx.TrapWriter.Writer;
             int index = 0;
             foreach (float metric in p.Metrics)
             {
@@ -82,7 +82,7 @@ namespace Semmle.Extraction.CSharp.Entities
         protected override void Populate(TextWriter trapFile)
         {
             trapFile.diagnostics(this, (int)diagnostic.Severity, diagnostic.Id, diagnostic.Descriptor.Title.ToString(),
-                diagnostic.GetMessage(), Extraction.Entities.Location.Create(cx, diagnostic.Location));
+                diagnostic.GetMessage(), Extraction.Entities.Location.Create(Cx, diagnostic.Location));
         }
     }
 

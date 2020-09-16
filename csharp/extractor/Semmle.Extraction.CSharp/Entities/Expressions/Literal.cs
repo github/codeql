@@ -26,7 +26,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     return ExprKind.NULL_LITERAL;
             }
 
-            var type = info.Type.Type.symbol;
+            var type = info.Type.Type.Symbol;
 
             switch (type.SpecialType)
             {

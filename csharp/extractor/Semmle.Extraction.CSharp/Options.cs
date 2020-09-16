@@ -46,19 +46,19 @@ namespace Semmle.Extraction.CSharp
             return options;
         }
 
-        public override bool handleArgument(string argument)
+        public override bool HandleArgument(string argument)
         {
             CompilerArguments.Add(argument);
             return true;
         }
 
-        public override void invalidArgument(string argument)
+        public override void InvalidArgument(string argument)
         {
             // Unrecognised arguments are passed to the compiler.
             CompilerArguments.Add(argument);
         }
 
-        public override bool handleOption(string key, string value)
+        public override bool HandleOption(string key, string value)
         {
             switch (key)
             {
@@ -69,11 +69,11 @@ namespace Semmle.Extraction.CSharp
                     Framework = value;
                     return true;
                 default:
-                    return base.handleOption(key, value);
+                    return base.HandleOption(key, value);
             }
         }
 
-        public override bool handleFlag(string flag, bool value)
+        public override bool HandleFlag(string flag, bool value)
         {
             switch (flag)
             {
@@ -84,7 +84,7 @@ namespace Semmle.Extraction.CSharp
                     AssemblySensitiveTrap = value;
                     return true;
                 default:
-                    return base.handleFlag(flag, value);
+                    return base.HandleFlag(flag, value);
             }
         }
 

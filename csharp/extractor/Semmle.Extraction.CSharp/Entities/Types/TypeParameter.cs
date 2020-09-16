@@ -24,22 +24,22 @@ namespace Semmle.Extraction.CSharp.Entities
             var constraints = new TypeParameterConstraints(Context);
             trapFile.type_parameter_constraints(constraints, this);
 
-            if (symbol.HasReferenceTypeConstraint)
+            if (Symbol.HasReferenceTypeConstraint)
                 trapFile.general_type_parameter_constraints(constraints, 1);
 
-            if (symbol.HasValueTypeConstraint)
+            if (Symbol.HasValueTypeConstraint)
                 trapFile.general_type_parameter_constraints(constraints, 2);
 
-            if (symbol.HasConstructorConstraint)
+            if (Symbol.HasConstructorConstraint)
                 trapFile.general_type_parameter_constraints(constraints, 3);
 
-            if (symbol.HasUnmanagedTypeConstraint)
+            if (Symbol.HasUnmanagedTypeConstraint)
                 trapFile.general_type_parameter_constraints(constraints, 4);
 
-            if (symbol.ReferenceTypeConstraintNullableAnnotation == NullableAnnotation.Annotated)
+            if (Symbol.ReferenceTypeConstraintNullableAnnotation == NullableAnnotation.Annotated)
                 trapFile.general_type_parameter_constraints(constraints, 5);
 
-            foreach (var abase in symbol.GetAnnotatedTypeConstraints())
+            foreach (var abase in Symbol.GetAnnotatedTypeConstraints())
             {
                 var t = Create(Context, abase.Symbol);
                 trapFile.specific_type_parameter_constraints(constraints, t.TypeRef);
@@ -47,25 +47,25 @@ namespace Semmle.Extraction.CSharp.Entities
                     trapFile.specific_type_parameter_nullability(constraints, t.TypeRef, NullabilityEntity.Create(Context, Nullability.Create(abase)));
             }
 
-            trapFile.types(this, Kinds.TypeKind.TYPE_PARAMETER, symbol.Name);
+            trapFile.types(this, Kinds.TypeKind.TYPE_PARAMETER, Symbol.Name);
 
-            Namespace parentNs = Namespace.Create(Context, symbol.TypeParameterKind == TypeParameterKind.Method ? Context.Compilation.GlobalNamespace : symbol.ContainingNamespace);
+            Namespace parentNs = Namespace.Create(Context, Symbol.TypeParameterKind == TypeParameterKind.Method ? Context.Compilation.GlobalNamespace : Symbol.ContainingNamespace);
             trapFile.parent_namespace(this, parentNs);
 
-            foreach (var l in symbol.Locations)
+            foreach (var l in Symbol.Locations)
             {
                 trapFile.type_location(this, Context.Create(l));
             }
 
             if (IsSourceDeclaration)
             {
-                var declSyntaxReferences = symbol.DeclaringSyntaxReferences.Select(d => d.GetSyntax()).
+                var declSyntaxReferences = Symbol.DeclaringSyntaxReferences.Select(d => d.GetSyntax()).
                     Select(s => s.Parent).Where(p => p != null).Select(p => p.Parent).ToArray();
                 var clauses = declSyntaxReferences.OfType<MethodDeclarationSyntax>().SelectMany(m => m.ConstraintClauses);
                 clauses = clauses.Concat(declSyntaxReferences.OfType<ClassDeclarationSyntax>().SelectMany(c => c.ConstraintClauses));
                 clauses = clauses.Concat(declSyntaxReferences.OfType<InterfaceDeclarationSyntax>().SelectMany(c => c.ConstraintClauses));
                 clauses = clauses.Concat(declSyntaxReferences.OfType<StructDeclarationSyntax>().SelectMany(c => c.ConstraintClauses));
-                foreach (var clause in clauses.Where(c => c.Name.Identifier.Text == symbol.Name))
+                foreach (var clause in clauses.Where(c => c.Name.Identifier.Text == Symbol.Name))
                 {
                     TypeMention.Create(Context, clause.Name, this, this);
                     foreach (var constraint in clause.Constraints.OfType<TypeConstraintSyntax>())
@@ -88,13 +88,13 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             get
             {
-                switch (symbol.Variance)
+                switch (Symbol.Variance)
                 {
                     case VarianceKind.None: return Variance.None;
                     case VarianceKind.Out: return Variance.Out;
                     case VarianceKind.In: return Variance.In;
                     default:
-                        throw new InternalError($"Unexpected VarianceKind {symbol.Variance}");
+                        throw new InternalError($"Unexpected VarianceKind {Symbol.Variance}");
                 }
             }
         }
@@ -103,22 +103,22 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             string kind;
             IEntity containingEntity;
-            switch (symbol.TypeParameterKind)
+            switch (Symbol.TypeParameterKind)
             {
                 case TypeParameterKind.Method:
                     kind = "methodtypeparameter";
-                    containingEntity = Method.Create(Context, (IMethodSymbol)symbol.ContainingSymbol);
+                    containingEntity = Method.Create(Context, (IMethodSymbol)Symbol.ContainingSymbol);
                     break;
                 case TypeParameterKind.Type:
                     kind = "typeparameter";
-                    containingEntity = Create(Context, symbol.ContainingType);
+                    containingEntity = Create(Context, Symbol.ContainingType);
                     break;
                 default:
-                    throw new InternalError(symbol, $"Unhandled type parameter kind {symbol.TypeParameterKind}");
+                    throw new InternalError(Symbol, $"Unhandled type parameter kind {Symbol.TypeParameterKind}");
             }
             trapFile.WriteSubId(containingEntity);
             trapFile.Write('_');
-            trapFile.Write(symbol.Ordinal);
+            trapFile.Write(Symbol.Ordinal);
             trapFile.Write(';');
             trapFile.Write(kind);
         }

@@ -140,8 +140,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            Create(cx, Syntax.Expression, this, 0);
-            cx.CreatePattern(Syntax.Pattern, this, 1);
+            Create(Cx, Syntax.Expression, this, 0);
+            Cx.CreatePattern(Syntax.Pattern, this, 1);
         }
 
         public static Expression Create(ExpressionNodeInfo info) => new IsPattern(info).TryPopulate();

@@ -8,54 +8,54 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     class UsingDirective : FreshEntity
     {
-        readonly UsingDirectiveSyntax Node;
-        readonly NamespaceDeclaration Parent;
+        readonly UsingDirectiveSyntax node;
+        readonly NamespaceDeclaration parent;
 
         public UsingDirective(Context cx, UsingDirectiveSyntax usingDirective, NamespaceDeclaration parent)
             : base(cx)
         {
-            Node = usingDirective;
-            Parent = parent;
+            node = usingDirective;
+            this.parent = parent;
             TryPopulate();
         }
 
         protected override void Populate(TextWriter trapFile)
         {
-            var info = cx.GetModel(Node).GetSymbolInfo(Node.Name);
+            var info = Cx.GetModel(node).GetSymbolInfo(node.Name);
 
-            if (Node.StaticKeyword.Kind() == SyntaxKind.None)
+            if (node.StaticKeyword.Kind() == SyntaxKind.None)
             {
                 // A normal using
                 var namespaceSymbol = info.Symbol as INamespaceSymbol;
 
                 if (namespaceSymbol == null)
                 {
-                    cx.Extractor.MissingNamespace(Node.Name.ToFullString(), cx.FromSource);
-                    cx.ModelError(Node, "Namespace not found");
+                    Cx.Extractor.MissingNamespace(node.Name.ToFullString(), Cx.FromSource);
+                    Cx.ModelError(node, "Namespace not found");
                     return;
                 }
                 else
                 {
-                    var ns = Namespace.Create(cx, namespaceSymbol);
+                    var ns = Namespace.Create(Cx, namespaceSymbol);
                     trapFile.using_namespace_directives(this, ns);
-                    trapFile.using_directive_location(this, cx.Create(ReportingLocation));
+                    trapFile.using_directive_location(this, Cx.Create(ReportingLocation));
                 }
             }
             else
             {
                 // A "using static"
-                Type m = Type.Create(cx, (ITypeSymbol)info.Symbol);
+                Type m = Type.Create(Cx, (ITypeSymbol)info.Symbol);
                 trapFile.using_static_directives(this, m.TypeRef);
-                trapFile.using_directive_location(this, cx.Create(ReportingLocation));
+                trapFile.using_directive_location(this, Cx.Create(ReportingLocation));
             }
 
-            if (Parent != null)
+            if (parent != null)
             {
-                trapFile.parent_namespace_declaration(this, Parent);
+                trapFile.parent_namespace_declaration(this, parent);
             }
         }
 
-        public sealed override Microsoft.CodeAnalysis.Location ReportingLocation => Node.GetLocation();
+        public sealed override Microsoft.CodeAnalysis.Location ReportingLocation => node.GetLocation();
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }

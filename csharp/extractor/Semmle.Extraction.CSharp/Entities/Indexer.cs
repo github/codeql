@@ -10,22 +10,22 @@ namespace Semmle.Extraction.CSharp.Entities
         protected Indexer(Context cx, IPropertySymbol init)
             : base(cx, init) { }
 
-        Indexer OriginalDefinition => IsSourceDeclaration ? this : Create(Context, symbol.OriginalDefinition);
+        Indexer OriginalDefinition => IsSourceDeclaration ? this : Create(Context, Symbol.OriginalDefinition);
 
         public override void Populate(TextWriter trapFile)
         {
-            PopulateNullability(trapFile, symbol.GetAnnotatedType());
+            PopulateNullability(trapFile, Symbol.GetAnnotatedType());
 
-            var type = Type.Create(Context, symbol.Type);
-            trapFile.indexers(this, symbol.GetName(useMetadataName: true), ContainingType, type.TypeRef, OriginalDefinition);
+            var type = Type.Create(Context, Symbol.Type);
+            trapFile.indexers(this, Symbol.GetName(useMetadataName: true), ContainingType, type.TypeRef, OriginalDefinition);
             foreach (var l in Locations)
                 trapFile.indexer_location(this, l);
 
-            var getter = symbol.GetMethod;
-            var setter = symbol.SetMethod;
+            var getter = Symbol.GetMethod;
+            var setter = Symbol.SetMethod;
 
             if (getter is null && setter is null)
-                Context.ModelError(symbol, "No indexer accessor defined");
+                Context.ModelError(Symbol, "No indexer accessor defined");
 
             if (!(getter is null))
                 Method.Create(Context, getter);
@@ -33,10 +33,10 @@ namespace Semmle.Extraction.CSharp.Entities
             if (!(setter is null))
                 Method.Create(Context, setter);
 
-            for (var i = 0; i < symbol.Parameters.Length; ++i)
+            for (var i = 0; i < Symbol.Parameters.Length; ++i)
             {
-                var original = Parameter.Create(Context, symbol.OriginalDefinition.Parameters[i], OriginalDefinition);
-                Parameter.Create(Context, symbol.Parameters[i], this, original);
+                var original = Parameter.Create(Context, Symbol.OriginalDefinition.Parameters[i], OriginalDefinition);
+                Parameter.Create(Context, Symbol.Parameters[i], this, original);
             }
 
             if (IsSourceDeclaration)
@@ -46,7 +46,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 {
                     // The expression may need to reference parameters in the getter.
                     // So we need to arrange that the expression is populated after the getter.
-                    Context.PopulateLater(() => Expression.CreateFromNode(new ExpressionNodeInfo(Context, expressionBody, this, 0) { Type = Type.Create(Context, symbol.GetAnnotatedType()) }));
+                    Context.PopulateLater(() => Expression.CreateFromNode(new ExpressionNodeInfo(Context, expressionBody, this, 0) { Type = Type.Create(Context, Symbol.GetAnnotatedType()) }));
                 }
             }
 
@@ -54,11 +54,11 @@ namespace Semmle.Extraction.CSharp.Entities
             BindComments();
 
             var declSyntaxReferences = IsSourceDeclaration
-                ? symbol.DeclaringSyntaxReferences.
+                ? Symbol.DeclaringSyntaxReferences.
                 Select(d => d.GetSyntax()).OfType<IndexerDeclarationSyntax>().ToArray()
                 : Enumerable.Empty<IndexerDeclarationSyntax>();
 
-            foreach (var explicitInterface in symbol.ExplicitInterfaceImplementations.Select(impl => Type.Create(Context, impl.ContainingType)))
+            foreach (var explicitInterface in Symbol.ExplicitInterfaceImplementations.Select(impl => Type.Create(Context, impl.ContainingType)))
             {
                 trapFile.explicitly_implements(this, explicitInterface.TypeRef);
 
@@ -77,9 +77,9 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             trapFile.WriteSubId(ContainingType);
             trapFile.Write('.');
-            trapFile.Write(symbol.MetadataName);
+            trapFile.Write(Symbol.MetadataName);
             trapFile.Write('(');
-            trapFile.BuildList(",", symbol.Parameters, (p, tb0) => tb0.WriteSubId(Type.Create(Context, p.Type)));
+            trapFile.BuildList(",", Symbol.Parameters, (p, tb0) => tb0.WriteSubId(Type.Create(Context, p.Type)));
             trapFile.Write(");indexer");
         }
 
@@ -88,12 +88,12 @@ namespace Semmle.Extraction.CSharp.Entities
             get
             {
                 return
-                    symbol.
+                    Symbol.
                     DeclaringSyntaxReferences.
                     Select(r => r.GetSyntax()).
                     OfType<IndexerDeclarationSyntax>().
                     Select(s => s.GetLocation()).
-                    Concat(symbol.Locations).
+                    Concat(Symbol.Locations).
                     First();
             }
         }

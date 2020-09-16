@@ -13,7 +13,6 @@ namespace Semmle.Extraction.CSharp
     /// </summary>
     public class CompilerVersion
     {
-        const string csc_rsp = "csc.rsp";
         readonly string specifiedFramework = null;
 
         /// <summary>
@@ -99,7 +98,7 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// The file csc.rsp.
         /// </summary>
-        string CscRsp => Path.Combine(FrameworkPath, csc_rsp);
+        string CscRsp => Path.Combine(FrameworkPath, "csc.rsp");
 
         /// <summary>
         /// Should we skip extraction?

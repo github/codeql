@@ -12,11 +12,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.namespaces(this, symbol.Name);
+            trapFile.namespaces(this, Symbol.Name);
 
-            if (symbol.ContainingNamespace != null)
+            if (Symbol.ContainingNamespace != null)
             {
-                Namespace parent = Create(Context, symbol.ContainingNamespace);
+                Namespace parent = Create(Context, Symbol.ContainingNamespace);
                 trapFile.parent_namespace(this, parent);
             }
         }
@@ -25,11 +25,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            if (!symbol.IsGlobalNamespace)
+            if (!Symbol.IsGlobalNamespace)
             {
-                trapFile.WriteSubId(Create(Context, symbol.ContainingNamespace));
+                trapFile.WriteSubId(Create(Context, Symbol.ContainingNamespace));
                 trapFile.Write('.');
-                trapFile.Write(symbol.Name);
+                trapFile.Write(Symbol.Name);
             }
             trapFile.Write(";namespace");
         }
@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override int GetHashCode() => QualifiedName.GetHashCode();
 
-        string QualifiedName => symbol.ToDisplayString();
+        string QualifiedName => Symbol.ToDisplayString();
 
         public override bool Equals(object obj)
         {

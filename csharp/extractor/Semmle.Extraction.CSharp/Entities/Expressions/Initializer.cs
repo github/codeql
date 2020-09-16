@@ -27,12 +27,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 if (e.Kind() == SyntaxKind.ArrayInitializerExpression)
                 {
                     // Recursively create another array initializer
-                    Create(new ExpressionNodeInfo(cx, (InitializerExpressionSyntax)e, this, child++));
+                    Create(new ExpressionNodeInfo(Cx, (InitializerExpressionSyntax)e, this, child++));
                 }
                 else
                 {
                     // Create the expression normally.
-                    Create(cx, e, this, child++);
+                    Create(Cx, e, this, child++);
                 }
             }
         }
@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            ArrayInitializer.Create(new ExpressionNodeInfo(cx, Syntax, this, -1));
+            ArrayInitializer.Create(new ExpressionNodeInfo(Cx, Syntax, this, -1));
             trapFile.implicitly_typed_array_creation(this);
         }
     }
@@ -67,9 +67,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 if (init is AssignmentExpressionSyntax assignment)
                 {
-                    var assignmentInfo = new ExpressionNodeInfo(cx, init, this, child++).SetKind(ExprKind.SIMPLE_ASSIGN);
+                    var assignmentInfo = new ExpressionNodeInfo(Cx, init, this, child++).SetKind(ExprKind.SIMPLE_ASSIGN);
                     var assignmentEntity = new Expression(assignmentInfo);
-                    var typeInfoRight = cx.GetTypeInfo(assignment.Right);
+                    var typeInfoRight = Cx.GetTypeInfo(assignment.Right);
                     if (typeInfoRight.Type is null)
                         // The type may be null for nested initializers such as
                         // ```csharp
@@ -78,15 +78,15 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         // In this case we take the type from the assignment
                         // `As = { [0] = a }` instead
                         typeInfoRight = assignmentInfo.TypeInfo;
-                    CreateFromNode(new ExpressionNodeInfo(cx, assignment.Right, assignmentEntity, 0, typeInfoRight));
+                    CreateFromNode(new ExpressionNodeInfo(Cx, assignment.Right, assignmentEntity, 0, typeInfoRight));
 
-                    var target = cx.GetSymbolInfo(assignment.Left);
+                    var target = Cx.GetSymbolInfo(assignment.Left);
 
                     // If the target is null, then assume that this is an array initializer (of the form `[...] = ...`)
 
                     Expression access = target.Symbol is null ?
-                        new Expression(new ExpressionNodeInfo(cx, assignment.Left, assignmentEntity, 1).SetKind(ExprKind.ARRAY_ACCESS)) :
-                        Access.Create(new ExpressionNodeInfo(cx, assignment.Left, assignmentEntity, 1), target.Symbol, false, cx.CreateEntity(target.Symbol));
+                        new Expression(new ExpressionNodeInfo(Cx, assignment.Left, assignmentEntity, 1).SetKind(ExprKind.ARRAY_ACCESS)) :
+                        Access.Create(new ExpressionNodeInfo(Cx, assignment.Left, assignmentEntity, 1), target.Symbol, false, Cx.CreateEntity(target.Symbol));
 
                     if (assignment.Left is ImplicitElementAccessSyntax iea)
                     {
@@ -95,14 +95,14 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         int indexChild = 0;
                         foreach (var arg in iea.ArgumentList.Arguments)
                         {
-                            Expression.Create(cx, arg.Expression, access, indexChild++);
+                            Expression.Create(Cx, arg.Expression, access, indexChild++);
                         }
                     }
                 }
                 else
                 {
-                    cx.ModelError(init, "Unexpected object initialization");
-                    Create(cx, init, this, child++);
+                    Cx.ModelError(init, "Unexpected object initialization");
+                    Create(Cx, init, this, child++);
                 }
             }
         }
@@ -119,16 +119,16 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             var child = 0;
             foreach (var i in Syntax.Expressions)
             {
-                var collectionInfo = cx.GetModel(Syntax).GetCollectionInitializerSymbolInfo(i);
-                var addMethod = Method.Create(cx, collectionInfo.Symbol as IMethodSymbol);
-                var voidType = Entities.Type.Create(cx, new AnnotatedTypeSymbol(cx.Compilation.GetSpecialType(SpecialType.System_Void), NullableAnnotation.None));
+                var collectionInfo = Cx.GetModel(Syntax).GetCollectionInitializerSymbolInfo(i);
+                var addMethod = Method.Create(Cx, collectionInfo.Symbol as IMethodSymbol);
+                var voidType = Entities.Type.Create(Cx, new AnnotatedTypeSymbol(Cx.Compilation.GetSpecialType(SpecialType.System_Void), NullableAnnotation.None));
 
-                var invocation = new Expression(new ExpressionInfo(cx, voidType, cx.Create(i.GetLocation()), ExprKind.METHOD_INVOCATION, this, child++, false, null));
+                var invocation = new Expression(new ExpressionInfo(Cx, voidType, Cx.Create(i.GetLocation()), ExprKind.METHOD_INVOCATION, this, child++, false, null));
 
                 if (addMethod != null)
                     trapFile.expr_call(invocation, addMethod);
                 else
-                    cx.ModelError(Syntax, "Unable to find an Add() method for collection initializer");
+                    Cx.ModelError(Syntax, "Unable to find an Add() method for collection initializer");
 
                 if (i.Kind() == SyntaxKind.ComplexElementInitializerExpression)
                 {
@@ -140,12 +140,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     int addChild = 0;
                     foreach (var arg in init.Expressions)
                     {
-                        Create(cx, arg, invocation, addChild++);
+                        Create(Cx, arg, invocation, addChild++);
                     }
                 }
                 else
                 {
-                    Create(cx, i, invocation, 0);
+                    Create(Cx, i, invocation, 0);
                 }
             }
         }

@@ -8,7 +8,7 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     public sealed class Nullability
     {
-        static readonly Nullability[] EmptyArray = Array.Empty<Nullability>();
+        static readonly Nullability[] emptyArray = Array.Empty<Nullability>();
 
         public int Annotation { get; }
 
@@ -52,13 +52,13 @@ namespace Semmle.Extraction.CSharp.Entities
                     Annotation = 0;
                     break;
             }
-            NullableParameters = EmptyArray;
+            NullableParameters = emptyArray;
         }
 
         private Nullability(AnnotatedTypeSymbol ts) : this(ts.Nullability)
         {
             NullableParameters = ts.HasConsistentNullability()
-                ? EmptyArray
+                ? emptyArray
                 : ts.GetAnnotatedTypeArguments().Select(Create).ToArray();
         }
 
@@ -114,10 +114,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.nullability(this, symbol.Annotation);
+            trapFile.nullability(this, Symbol.Annotation);
 
             int i = 0;
-            foreach (var s in symbol.NullableParameters)
+            foreach (var s in Symbol.NullableParameters)
             {
                 trapFile.nullability_parent(Create(Context, s), i, this);
                 i++;
@@ -126,7 +126,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            symbol.WriteId(trapFile);
+            Symbol.WriteId(trapFile);
         }
 
         public static NullabilityEntity Create(Context cx, Nullability init) => NullabilityFactory.Instance.CreateEntity(cx, init, init);

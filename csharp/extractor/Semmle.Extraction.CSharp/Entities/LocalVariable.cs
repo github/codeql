@@ -24,12 +24,12 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             var trapFile = Context.TrapWriter.Writer;
             var (kind, type) =
-                symbol is ILocalSymbol l ?
+                Symbol is ILocalSymbol l ?
                     (l.IsRef ? 3 : l.IsConst ? 2 : 1, Type.Create(Context, l.GetAnnotatedType())) :
                     (1, parent.Type);
-            trapFile.localvars(this, kind, symbol.Name, isVar ? 1 : 0, type.Type.TypeRef, parent);
+            trapFile.localvars(this, kind, Symbol.Name, isVar ? 1 : 0, type.Type.TypeRef, parent);
 
-            if (symbol is ILocalSymbol local)
+            if (Symbol is ILocalSymbol local)
             {
                 PopulateNullability(trapFile, local.GetAnnotatedType());
                 if (local.IsRef)
@@ -48,7 +48,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         void DefineConstantValue(TextWriter trapFile)
         {
-            if (symbol is ILocalSymbol local && local.HasConstantValue)
+            if (Symbol is ILocalSymbol local && local.HasConstantValue)
             {
                 trapFile.constant_value(this, Expression.ValueAsString(local.ConstantValue));
             }

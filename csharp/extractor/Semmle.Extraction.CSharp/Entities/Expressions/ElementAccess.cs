@@ -13,37 +13,37 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         protected ElementAccess(ExpressionNodeInfo info, ExpressionSyntax qualifier, BracketedArgumentListSyntax argumentList)
             : base(info.SetKind(GetKind(info.Context, qualifier)))
         {
-            Qualifier = qualifier;
-            ArgumentList = argumentList;
+            this.qualifier = qualifier;
+            this.argumentList = argumentList;
         }
 
-        readonly ExpressionSyntax Qualifier;
-        readonly BracketedArgumentListSyntax ArgumentList;
+        readonly ExpressionSyntax qualifier;
+        readonly BracketedArgumentListSyntax argumentList;
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
             if (Kind == ExprKind.POINTER_INDIRECTION)
             {
-                var qualifierInfo = new ExpressionNodeInfo(cx, Qualifier, this, 0);
-                var add = new Expression(new ExpressionInfo(cx, qualifierInfo.Type, Location, ExprKind.ADD, this, 0, false, null));
+                var qualifierInfo = new ExpressionNodeInfo(Cx, qualifier, this, 0);
+                var add = new Expression(new ExpressionInfo(Cx, qualifierInfo.Type, Location, ExprKind.ADD, this, 0, false, null));
                 qualifierInfo.SetParent(add, 0);
                 CreateFromNode(qualifierInfo);
-                PopulateArguments(trapFile, ArgumentList, 1);
+                PopulateArguments(trapFile, argumentList, 1);
             }
             else
             {
                 var child = -1;
-                Create(cx, Qualifier, this, child++);
-                foreach (var a in ArgumentList.Arguments)
+                Create(Cx, qualifier, this, child++);
+                foreach (var a in argumentList.Arguments)
                 {
-                    cx.Extract(a, this, child++);
+                    Cx.Extract(a, this, child++);
                 }
 
-                var symbolInfo = cx.GetSymbolInfo(base.Syntax);
+                var symbolInfo = Cx.GetSymbolInfo(base.Syntax);
 
                 if (symbolInfo.Symbol is IPropertySymbol indexer)
                 {
-                    trapFile.expr_access(this, Indexer.Create(cx, indexer));
+                    trapFile.expr_access(this, Indexer.Create(Cx, indexer));
                 }
             }
         }

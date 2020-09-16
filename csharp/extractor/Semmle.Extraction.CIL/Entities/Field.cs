@@ -79,10 +79,10 @@ namespace Semmle.Extraction.CIL.Entities
         readonly Handle handle;
         readonly FieldDefinition fd;
 
-        public DefinitionField(GenericContext gc, FieldDefinitionHandle handle) : base(gc.cx)
+        public DefinitionField(GenericContext gc, FieldDefinitionHandle handle) : base(gc.Cx)
         {
             this.handle = handle;
-            fd = cx.mdReader.GetFieldDefinition(handle);
+            fd = Cx.MdReader.GetFieldDefinition(handle);
         }
 
         public override bool Equals(object? obj)
@@ -96,7 +96,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                yield return Tuples.metadata_handle(this, cx.assembly, MetadataTokens.GetToken(handle));
+                yield return Tuples.metadata_handle(this, Cx.Assembly, MetadataTokens.GetToken(handle));
 
                 foreach (var c in base.Contents)
                     yield return c;
@@ -116,16 +116,16 @@ namespace Semmle.Extraction.CIL.Entities
                 if (fd.Attributes.HasFlag(FieldAttributes.Assembly))
                     yield return Tuples.cil_internal(this);
 
-                foreach (var c in Attribute.Populate(cx, this, fd.GetCustomAttributes()))
+                foreach (var c in Attribute.Populate(Cx, this, fd.GetCustomAttributes()))
                     yield return c;
             }
         }
 
-        public override string Name => cx.GetString(fd.Name);
+        public override string Name => Cx.GetString(fd.Name);
 
-        public override Type DeclaringType => (Type)cx.Create(fd.GetDeclaringType());
+        public override Type DeclaringType => (Type)Cx.Create(fd.GetDeclaringType());
 
-        public override Type Type => fd.DecodeSignature(cx.TypeSignatureDecoder, DeclaringType);
+        public override Type Type => fd.DecodeSignature(Cx.TypeSignatureDecoder, DeclaringType);
 
         public override IEnumerable<Type> TypeParameters => throw new NotImplementedException();
 
@@ -134,34 +134,34 @@ namespace Semmle.Extraction.CIL.Entities
 
     sealed class MemberReferenceField : Field
     {
-        readonly MemberReferenceHandle Handle;
+        readonly MemberReferenceHandle handle;
         readonly MemberReference mr;
         readonly GenericContext gc;
         readonly Type declType;
 
-        public MemberReferenceField(GenericContext gc, MemberReferenceHandle handle) : base(gc.cx)
+        public MemberReferenceField(GenericContext gc, MemberReferenceHandle handle) : base(gc.Cx)
         {
-            Handle = handle;
+            this.handle = handle;
             this.gc = gc;
-            mr = cx.mdReader.GetMemberReference(handle);
-            declType = (Type)cx.CreateGeneric(gc, mr.Parent);
+            mr = Cx.MdReader.GetMemberReference(handle);
+            declType = (Type)Cx.CreateGeneric(gc, mr.Parent);
         }
 
         public override bool Equals(object? obj)
         {
-            return obj is MemberReferenceField field && Handle.Equals(field.Handle);
+            return obj is MemberReferenceField field && handle.Equals(field.handle);
         }
 
         public override int GetHashCode()
         {
-            return Handle.GetHashCode();
+            return handle.GetHashCode();
         }
 
-        public override string Name => cx.GetString(mr.Name);
+        public override string Name => Cx.GetString(mr.Name);
 
         public override Type DeclaringType => declType;
 
-        public override Type Type => mr.DecodeFieldSignature(cx.TypeSignatureDecoder, this);
+        public override Type Type => mr.DecodeFieldSignature(Cx.TypeSignatureDecoder, this);
 
         public override IEnumerable<Type> TypeParameters => gc.TypeParameters.Concat(declType.TypeParameters);
 

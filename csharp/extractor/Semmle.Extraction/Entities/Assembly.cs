@@ -39,7 +39,7 @@ namespace Semmle.Extraction.Entities
             !SymbolEqualityComparer.Default.Equals(assembly, Context.Compilation.Assembly) || !Context.IsGlobalContext;
 
         public override int GetHashCode() =>
-            symbol == null ? 91187354 : symbol.GetHashCode();
+            Symbol == null ? 91187354 : Symbol.GetHashCode();
 
         public override bool Equals(object? obj)
         {
@@ -47,7 +47,7 @@ namespace Semmle.Extraction.Entities
             if (other == null || other.GetType() != typeof(Assembly))
                 return false;
 
-            return Equals(symbol, other.symbol);
+            return Equals(Symbol, other.Symbol);
         }
 
         public new static Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) => AssemblyConstructorFactory.Instance.CreateEntity(cx, loc, loc);

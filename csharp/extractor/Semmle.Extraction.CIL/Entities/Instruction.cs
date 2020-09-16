@@ -38,7 +38,7 @@ namespace Semmle.Extraction.CIL.Entities
         /// <summary>
         /// For each Payload, how many additional bytes in the bytestream need to be read.
         /// </summary>
-        internal static readonly int[] payloadSizes = {
+        internal static readonly int[] PayloadSizes = {
             0, 4, 4, 1, 4,
             4, 1, 1, 4, 1,
             2, 4, 8, 4, 8,
@@ -46,7 +46,7 @@ namespace Semmle.Extraction.CIL.Entities
             4, 2, 1, 4, 2, 4 };
 
         // Maps opcodes to payloads for each instruction.
-        public static readonly Dictionary<ILOpCode, Payload> opPayload = new Dictionary<ILOpCode, Payload>()
+        public static readonly Dictionary<ILOpCode, Payload> OpPayload = new Dictionary<ILOpCode, Payload>()
         {
             { ILOpCode.Nop, Payload.None },
             { ILOpCode.Break, Payload.None },
@@ -272,14 +272,14 @@ namespace Semmle.Extraction.CIL.Entities
         public readonly ILOpCode OpCode;
         public readonly int Offset;
         public readonly int Index;
-        readonly int PayloadValue;
-        readonly uint UnsignedPayloadValue;
+        readonly int payloadValue;
+        readonly uint unsignedPayloadValue;
 
         public Payload PayloadType
         {
             get
             {
-                if (!opPayload.TryGetValue(OpCode, out Payload result))
+                if (!OpPayload.TryGetValue(OpCode, out Payload result))
                     throw new InternalError("Unknown op code " + OpCode);
                 return result;
             }
@@ -295,7 +295,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                if (OpCode == ILOpCode.Switch) return 5 + 4 * PayloadValue;
+                if (OpCode == ILOpCode.Switch) return 5 + 4 * payloadValue;
 
                 return ((int)OpCode > 255 ? 2 : 1) + PayloadSize;
             }
@@ -309,7 +309,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         readonly byte[] data;
 
-        int PayloadSize => payloadSizes[(int)PayloadType];
+        int PayloadSize => PayloadSizes[(int)PayloadType];
 
         /// <summary>
         /// Reads the instruction from a byte stream.
@@ -337,19 +337,19 @@ namespace Semmle.Extraction.CIL.Entities
             switch (PayloadSize)
             {
                 case 0:
-                    PayloadValue = 0;
+                    payloadValue = 0;
                     break;
                 case 1:
-                    PayloadValue = (sbyte)data[offset];
-                    UnsignedPayloadValue = data[offset];
+                    payloadValue = (sbyte)data[offset];
+                    unsignedPayloadValue = data[offset];
                     break;
                 case 2:
-                    PayloadValue = BitConverter.ToInt16(data, offset);
-                    UnsignedPayloadValue = BitConverter.ToUInt16(data, offset);
+                    payloadValue = BitConverter.ToInt16(data, offset);
+                    unsignedPayloadValue = BitConverter.ToUInt16(data, offset);
                     break;
                 case -1:    // Switch
                 case 4:
-                    PayloadValue = BitConverter.ToInt32(data, offset);
+                    payloadValue = BitConverter.ToInt32(data, offset);
                     break;
                 case 8: // Not handled here.
                     break;
@@ -374,7 +374,7 @@ namespace Semmle.Extraction.CIL.Entities
                 switch (PayloadType)
                 {
                     case Payload.String:
-                        yield return Tuples.cil_value(this, cx.mdReader.GetUserString(MetadataTokens.UserStringHandle(PayloadValue)));
+                        yield return Tuples.cil_value(this, Cx.MdReader.GetUserString(MetadataTokens.UserStringHandle(payloadValue)));
                         break;
                     case Payload.Float32:
                         yield return Tuples.cil_value(this, BitConverter.ToSingle(data, offset).ToString());
@@ -404,8 +404,8 @@ namespace Semmle.Extraction.CIL.Entities
                     case Payload.Field:
                     case Payload.ValueType:
                         // A generic EntityHandle.
-                        var handle = MetadataTokens.EntityHandle(PayloadValue);
-                        var target = cx.CreateGeneric(Method, handle);
+                        var handle = MetadataTokens.EntityHandle(payloadValue);
+                        var target = Cx.CreateGeneric(Method, handle);
                         yield return target;
                         if (target != null)
                         {
@@ -420,14 +420,14 @@ namespace Semmle.Extraction.CIL.Entities
                     case Payload.Arg16:
                         if (Method.Parameters is object)
                         {
-                            yield return Tuples.cil_access(this, Method.Parameters[(int)UnsignedPayloadValue]);
+                            yield return Tuples.cil_access(this, Method.Parameters[(int)unsignedPayloadValue]);
                         }
                         break;
                     case Payload.Local8:
                     case Payload.Local16:
                         if (Method.LocalVariables is object)
                         {
-                            yield return Tuples.cil_access(this, Method.LocalVariables[(int)UnsignedPayloadValue]);
+                            yield return Tuples.cil_access(this, Method.LocalVariables[(int)unsignedPayloadValue]);
                         }
                         break;
                     case Payload.None:
@@ -454,17 +454,17 @@ namespace Semmle.Extraction.CIL.Entities
             switch (PayloadType)
             {
                 case Payload.Target8:
-                    target = Offset + PayloadValue + 2;
+                    target = Offset + payloadValue + 2;
                     break;
                 case Payload.Target32:
-                    target = Offset + PayloadValue + 5;
+                    target = Offset + payloadValue + 5;
                     break;
                 case Payload.Switch:
                     int end = Offset + Width;
 
                     int offset = Offset + 5;
 
-                    for (int b = 0; b < PayloadValue; ++b, offset += 4)
+                    for (int b = 0; b < payloadValue; ++b, offset += 4)
                     {
                         target = BitConverter.ToInt32(data, offset) + end;
                         if (!jump_table.TryGetValue(target, out inst))
@@ -489,7 +489,7 @@ namespace Semmle.Extraction.CIL.Entities
                 // TODO: Find a solution to this.
 
                 // For now, just log the error
-                cx.cx.ExtractionError("A CIL instruction jumps outside the current method", "", Extraction.Entities.GeneratedLocation.Create(cx.cx), "", Util.Logging.Severity.Warning);
+                Cx.Cx.ExtractionError("A CIL instruction jumps outside the current method", "", Extraction.Entities.GeneratedLocation.Create(Cx.Cx), "", Util.Logging.Severity.Warning);
             }
         }
     }

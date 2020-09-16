@@ -15,8 +15,8 @@ namespace Semmle.Extraction.CSharp.Entities
         protected void PopulateParameters()
         {
             var originalMethod = OriginalDefinition;
-            IEnumerable<IParameterSymbol> parameters = symbol.Parameters;
-            IEnumerable<IParameterSymbol> originalParameters = originalMethod.symbol.Parameters;
+            IEnumerable<IParameterSymbol> parameters = Symbol.Parameters;
+            IEnumerable<IParameterSymbol> originalParameters = originalMethod.Symbol.Parameters;
 
             if (IsReducedExtension)
             {
@@ -24,14 +24,14 @@ namespace Semmle.Extraction.CSharp.Entities
                 {
                     // Non-generic reduced extensions must be extracted exactly like the
                     // non-reduced counterparts
-                    parameters = symbol.ReducedFrom.Parameters;
+                    parameters = Symbol.ReducedFrom.Parameters;
                 }
                 else
                 {
                     // Constructed reduced extensions are special because their non-reduced
                     // counterparts are not constructed. Therefore, we need to manually add
                     // the `this` parameter based on the type of the receiver
-                    var originalThisParamSymbol = originalMethod.symbol.Parameters.First();
+                    var originalThisParamSymbol = originalMethod.Symbol.Parameters.First();
                     var originalThisParam = Parameter.Create(Context, originalThisParamSymbol, originalMethod);
                     ConstructedExtensionParameter.Create(Context, this, originalThisParam);
                     originalParameters = originalParameters.Skip(1);
@@ -44,7 +44,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 Parameter.Create(Context, p.paramSymbol, this, original);
             }
 
-            if (symbol.IsVararg)
+            if (Symbol.IsVararg)
             {
                 // Mono decided that "__arglist" should be an explicit parameter,
                 // so now we need to populate it.
@@ -86,20 +86,20 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public void Overrides(TextWriter trapFile)
         {
-            foreach (var explicitInterface in symbol.ExplicitInterfaceImplementations.
+            foreach (var explicitInterface in Symbol.ExplicitInterfaceImplementations.
                 Where(sym => sym.MethodKind == MethodKind.Ordinary).
                 Select(impl => Type.Create(Context, impl.ContainingType)))
             {
                 trapFile.explicitly_implements(this, explicitInterface.TypeRef);
 
                 if (IsSourceDeclaration)
-                    foreach (var syntax in symbol.DeclaringSyntaxReferences.Select(d => d.GetSyntax()).OfType<MethodDeclarationSyntax>())
+                    foreach (var syntax in Symbol.DeclaringSyntaxReferences.Select(d => d.GetSyntax()).OfType<MethodDeclarationSyntax>())
                         TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier.Name, this, explicitInterface);
             }
 
-            if (symbol.OverriddenMethod != null)
+            if (Symbol.OverriddenMethod != null)
             {
-                trapFile.overrides(this, Method.Create(Context, symbol.OverriddenMethod));
+                trapFile.overrides(this, Method.Create(Context, Symbol.OverriddenMethod));
             }
         }
 
@@ -108,22 +108,22 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         protected static void BuildMethodId(Method m, TextWriter trapFile)
         {
-            m.symbol.ReturnType.BuildOrWriteId(m.Context, trapFile, m.symbol);
+            m.Symbol.ReturnType.BuildOrWriteId(m.Context, trapFile, m.Symbol);
             trapFile.Write(" ");
 
             trapFile.WriteSubId(m.ContainingType);
 
-            AddExplicitInterfaceQualifierToId(m.Context, trapFile, m.symbol.ExplicitInterfaceImplementations);
+            AddExplicitInterfaceQualifierToId(m.Context, trapFile, m.Symbol.ExplicitInterfaceImplementations);
 
             trapFile.Write(".");
-            trapFile.Write(m.symbol.Name);
+            trapFile.Write(m.Symbol.Name);
 
-            if (m.symbol.IsGenericMethod)
+            if (m.Symbol.IsGenericMethod)
             {
-                if (SymbolEqualityComparer.Default.Equals(m.symbol, m.symbol.OriginalDefinition))
+                if (SymbolEqualityComparer.Default.Equals(m.Symbol, m.Symbol.OriginalDefinition))
                 {
                     trapFile.Write('`');
-                    trapFile.Write(m.symbol.TypeParameters.Length);
+                    trapFile.Write(m.Symbol.TypeParameters.Length);
                 }
                 else
                 {
@@ -132,13 +132,13 @@ namespace Semmle.Extraction.CSharp.Entities
                     // Type arguments with different nullability can result in
                     // a constructed method with different nullability of its parameters and return type,
                     // so we need to create a distinct database entity for it.
-                    trapFile.BuildList(",", m.symbol.GetAnnotatedTypeArguments(), (ta, tb0) => { ta.Symbol.BuildOrWriteId(m.Context, tb0, m.symbol); trapFile.Write((int)ta.Nullability); });
+                    trapFile.BuildList(",", m.Symbol.GetAnnotatedTypeArguments(), (ta, tb0) => { ta.Symbol.BuildOrWriteId(m.Context, tb0, m.Symbol); trapFile.Write((int)ta.Nullability); });
                     trapFile.Write('>');
                 }
             }
 
-            AddParametersToId(m.Context, trapFile, m.symbol);
-            switch (m.symbol.MethodKind)
+            AddParametersToId(m.Context, trapFile, m.Symbol);
+            switch (m.Symbol.MethodKind)
             {
                 case MethodKind.PropertyGet:
                     trapFile.Write(";getter");
@@ -207,7 +207,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.AppendList(",", explicitInterfaceImplementations.Select(impl => cx.CreateEntity(impl.ContainingType)));
         }
 
-        public virtual string Name => symbol.Name;
+        public virtual string Name => Symbol.Name;
 
         /// <summary>
         /// Creates a method of the appropriate subtype.
@@ -260,28 +260,28 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public Method OriginalDefinition =>
             IsReducedExtension
-                ? Create(Context, symbol.ReducedFrom)
-                : Create(Context, symbol.OriginalDefinition);
+                ? Create(Context, Symbol.ReducedFrom)
+                : Create(Context, Symbol.OriginalDefinition);
 
         public override Microsoft.CodeAnalysis.Location FullLocation => ReportingLocation;
 
-        public override bool IsSourceDeclaration => symbol.IsSourceDeclaration();
+        public override bool IsSourceDeclaration => Symbol.IsSourceDeclaration();
 
         /// <summary>
         /// Whether this method has type parameters.
         /// </summary>
-        public bool IsGeneric => symbol.IsGenericMethod;
+        public bool IsGeneric => Symbol.IsGenericMethod;
 
         /// <summary>
         /// Whether this method has unbound type parameters.
         /// </summary>
-        public bool IsUnboundGeneric => IsGeneric && SymbolEqualityComparer.Default.Equals(symbol.ConstructedFrom, symbol);
+        public bool IsUnboundGeneric => IsGeneric && SymbolEqualityComparer.Default.Equals(Symbol.ConstructedFrom, Symbol);
 
         public bool IsBoundGeneric => IsGeneric && !IsUnboundGeneric;
 
-        bool IsReducedExtension => symbol.MethodKind == MethodKind.ReducedExtension;
+        bool IsReducedExtension => Symbol.MethodKind == MethodKind.ReducedExtension;
 
-        protected IMethodSymbol ConstructedFromSymbol => symbol.ConstructedFrom.ReducedFrom ?? symbol.ConstructedFrom;
+        protected IMethodSymbol ConstructedFromSymbol => Symbol.ConstructedFrom.ReducedFrom ?? Symbol.ConstructedFrom;
 
         bool IExpressionParentEntity.IsTopLevelParent => true;
 
@@ -298,19 +298,19 @@ namespace Semmle.Extraction.CSharp.Entities
                 if (isFullyConstructed)
                 {
                     trapFile.constructed_generic(this, Method.Create(Context, ConstructedFromSymbol));
-                    foreach (var tp in symbol.GetAnnotatedTypeArguments())
+                    foreach (var tp in Symbol.GetAnnotatedTypeArguments())
                     {
                         trapFile.type_arguments(Type.Create(Context, tp.Symbol), child, this);
                         child++;
                     }
 
-                    var nullability = new Nullability(symbol);
+                    var nullability = new Nullability(Symbol);
                     if (!nullability.IsOblivious)
                         trapFile.type_nullability(this, NullabilityEntity.Create(Context, nullability));
                 }
                 else
                 {
-                    foreach (var typeParam in symbol.TypeParameters.Select(tp => TypeParameter.Create(Context, tp)))
+                    foreach (var typeParam in Symbol.TypeParameters.Select(tp => TypeParameter.Create(Context, tp)))
                     {
                         trapFile.type_parameters(typeParam, child, this);
                         child++;
@@ -321,9 +321,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected void ExtractRefReturn(TextWriter trapFile)
         {
-            if (symbol.ReturnsByRef)
+            if (Symbol.ReturnsByRef)
                 trapFile.type_annotation(this, Kinds.TypeAnnotation.Ref);
-            if (symbol.ReturnsByRefReadonly)
+            if (Symbol.ReturnsByRefReadonly)
                 trapFile.type_annotation(this, Kinds.TypeAnnotation.ReadonlyRef);
         }
 
@@ -336,7 +336,7 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateMethodBody(trapFile);
             PopulateGenerics(trapFile);
             PopulateMetadataHandle(trapFile);
-            PopulateNullability(trapFile, symbol.GetAnnotatedReturnType());
+            PopulateNullability(trapFile, Symbol.GetAnnotatedReturnType());
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.PushesLabel;

@@ -78,13 +78,13 @@ namespace Semmle.BuildAnalyser
                 ToArray();
 
             var dllDirNames = options.DllDirs.Select(Path.GetFullPath).ToList();
-            PackageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
+            packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
 
             if (options.UseNuGet)
             {
                 try
                 {
-                    var nuget = new NugetPackages(sourceDir.FullName, PackageDirectory);
+                    var nuget = new NugetPackages(sourceDir.FullName, packageDirectory);
                     nuget.InstallPackages(progressMonitor);
                 }
                 catch (FileNotFoundException)
@@ -110,7 +110,7 @@ namespace Semmle.BuildAnalyser
                         sourceDir.GetFiles("*.sln", SearchOption.AllDirectories).Select(d => d.FullName);
 
                 RestoreSolutions(solutions);
-                dllDirNames.Add(PackageDirectory.DirInfo.FullName);
+                dllDirNames.Add(packageDirectory.DirInfo.FullName);
                 assemblyCache = new BuildAnalyser.AssemblyCache(dllDirNames, progress);
                 AnalyseSolutions(solutions);
 
@@ -268,7 +268,7 @@ namespace Semmle.BuildAnalyser
             unresolvedReferences[id] = projectFile;
         }
 
-        readonly TemporaryDirectory PackageDirectory;
+        readonly TemporaryDirectory packageDirectory;
 
         /// <summary>
         /// Reads all the source files and references from the given list of projects.
@@ -325,7 +325,8 @@ namespace Semmle.BuildAnalyser
 
         void Restore(string projectOrSolution)
         {
-            int exit = DotNet.RestoreToDirectory(projectOrSolution, PackageDirectory.DirInfo.FullName);
+            var exit = DotNet.RestoreToDirectory(projectOrSolution, packageDirectory.DirInfo.FullName);
+
             switch (exit)
             {
                 case 0:
@@ -362,7 +363,7 @@ namespace Semmle.BuildAnalyser
 
         public void Dispose()
         {
-            PackageDirectory?.Dispose();
+            packageDirectory?.Dispose();
         }
     }
 }

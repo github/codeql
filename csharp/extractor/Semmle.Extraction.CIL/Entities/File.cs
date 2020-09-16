@@ -13,37 +13,37 @@ namespace Semmle.Extraction.CIL.Entities
 
     public class File : LabelledEntity, IFile
     {
-        protected string path { get; }
+        protected string Path { get; }
 
         public File(Context cx, string path) : base(cx)
         {
-            this.path = Semmle.Extraction.Entities.File.PathAsDatabaseString(path);
+            this.Path = Semmle.Extraction.Entities.File.PathAsDatabaseString(path);
         }
 
         public override void WriteId(TextWriter trapFile)
         {
-            trapFile.Write(Semmle.Extraction.Entities.File.PathAsDatabaseId(path));
+            trapFile.Write(Semmle.Extraction.Entities.File.PathAsDatabaseId(Path));
         }
 
         public override bool Equals(object? obj)
         {
-            return GetType() == obj?.GetType() && path == ((File)obj).path;
+            return GetType() == obj?.GetType() && Path == ((File)obj).Path;
         }
 
-        public override int GetHashCode() => 11 * path.GetHashCode();
+        public override int GetHashCode() => 11 * Path.GetHashCode();
 
         public override IEnumerable<IExtractionProduct> Contents
         {
             get
             {
-                var directoryName = System.IO.Path.GetDirectoryName(path);
+                var directoryName = System.IO.Path.GetDirectoryName(Path);
                 if (directoryName is null)
-                    throw new InternalError($"Directory name for path '{path}' is null.");
+                    throw new InternalError($"Directory name for path '{Path}' is null.");
 
-                var parent = cx.CreateFolder(directoryName);
+                var parent = Cx.CreateFolder(directoryName);
                 yield return parent;
                 yield return Tuples.containerparent(parent, this);
-                yield return Tuples.files(this, path, System.IO.Path.GetFileNameWithoutExtension(path), System.IO.Path.GetExtension(path).Substring(1));
+                yield return Tuples.files(this, Path, System.IO.Path.GetFileNameWithoutExtension(Path), System.IO.Path.GetExtension(Path).Substring(1));
             }
         }
 
@@ -69,9 +69,9 @@ namespace Semmle.Extraction.CIL.Entities
                 var text = file.Contents;
 
                 if (text == null)
-                    cx.cx.Extractor.Logger.Log(Util.Logging.Severity.Warning, string.Format("PDB source file {0} could not be found", path));
+                    Cx.Cx.Extractor.Logger.Log(Util.Logging.Severity.Warning, string.Format("PDB source file {0} could not be found", Path));
                 else
-                    cx.cx.TrapWriter.Archive(path, text);
+                    Cx.Cx.TrapWriter.Archive(Path, text);
 
                 yield return Tuples.file_extraction_mode(this, 2);
             }

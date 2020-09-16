@@ -15,10 +15,10 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateMethod(trapFile);
             PopulateModifiers(trapFile);
 
-            var returnType = Type.Create(Context, symbol.ReturnType);
+            var returnType = Type.Create(Context, Symbol.ReturnType);
             trapFile.operators(this,
-                symbol.Name,
-                OperatorSymbol(Context, symbol.Name),
+                Symbol.Name,
+                OperatorSymbol(Context, Symbol.Name),
                 ContainingType,
                 returnType.TypeRef,
                 (UserOperator)OriginalDefinition);
@@ -28,7 +28,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (IsSourceDeclaration)
             {
-                var declSyntaxReferences = symbol.DeclaringSyntaxReferences.Select(s => s.GetSyntax()).ToArray();
+                var declSyntaxReferences = Symbol.DeclaringSyntaxReferences.Select(s => s.GetSyntax()).ToArray();
                 foreach (var declaration in declSyntaxReferences.OfType<OperatorDeclarationSyntax>())
                     TypeMention.Create(Context, declaration.ReturnType, this, returnType);
                 foreach (var declaration in declSyntaxReferences.OfType<ConversionOperatorDeclarationSyntax>())
@@ -38,7 +38,7 @@ namespace Semmle.Extraction.CSharp.Entities
             ContainingType.PopulateGenerics();
         }
 
-        public override bool NeedsPopulation => Context.Defines(symbol) || IsImplicitOperator(out _);
+        public override bool NeedsPopulation => Context.Defines(Symbol) || IsImplicitOperator(out _);
 
         public override Type ContainingType
         {
@@ -57,21 +57,21 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <returns></returns>
         bool IsImplicitOperator(out ITypeSymbol containingType)
         {
-            containingType = symbol.ContainingType;
+            containingType = Symbol.ContainingType;
             if (containingType != null)
             {
                 var containingNamedType = containingType as INamedTypeSymbol;
-                return containingNamedType == null || !containingNamedType.GetMembers(symbol.Name).Contains(symbol);
+                return containingNamedType == null || !containingNamedType.GetMembers(Symbol.Name).Contains(Symbol);
             }
 
-            var pointerType = symbol.Parameters.Select(p => p.Type).OfType<IPointerTypeSymbol>().FirstOrDefault();
+            var pointerType = Symbol.Parameters.Select(p => p.Type).OfType<IPointerTypeSymbol>().FirstOrDefault();
             if (pointerType != null)
             {
                 containingType = pointerType;
                 return true;
             }
 
-            Context.ModelError(symbol, "Unexpected implicit operator");
+            Context.ModelError(Symbol, "Unexpected implicit operator");
             return true;
         }
 

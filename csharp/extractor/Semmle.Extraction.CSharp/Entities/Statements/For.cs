@@ -22,25 +22,25 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             int child = -1;
 
             if (Stmt.Declaration != null)
-                VariableDeclarations.Populate(cx, Stmt.Declaration, this, child, childIncrement: -1);
+                VariableDeclarations.Populate(Cx, Stmt.Declaration, this, child, childIncrement: -1);
 
             foreach (var init in Stmt.Initializers)
             {
-                Expression.Create(cx, init, this, child--);
+                Expression.Create(Cx, init, this, child--);
             }
 
             if (Stmt.Condition != null)
             {
-                Expression.Create(cx, Stmt.Condition, this, 0);
+                Expression.Create(Cx, Stmt.Condition, this, 0);
             }
 
             child = 1;
             foreach (var inc in Stmt.Incrementors)
             {
-                Expression.Create(cx, inc, this, child++);
+                Expression.Create(Cx, inc, this, child++);
             }
 
-            Statement.Create(cx, Stmt.Statement, this, 1 + Stmt.Incrementors.Count);
+            Statement.Create(Cx, Stmt.Statement, this, 1 + Stmt.Incrementors.Count);
         }
     }
 }

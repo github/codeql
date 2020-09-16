@@ -24,7 +24,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         TupleType(Context cx, INamedTypeSymbol init) : base(cx, init)
         {
-            tupleElementsLazy = new Lazy<Field[]>(() => symbol.TupleElements.Select(t => Field.Create(cx, t)).ToArray());
+            tupleElementsLazy = new Lazy<Field[]>(() => Symbol.TupleElements.Select(t => Field.Create(cx, t)).ToArray());
         }
 
         // All tuple types are "local types"
@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            symbol.BuildTypeId(Context, trapFile, symbol);
+            Symbol.BuildTypeId(Context, trapFile, Symbol);
             trapFile.Write(";tuple");
         }
 
@@ -41,7 +41,7 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateType(trapFile);
             PopulateGenerics();
 
-            var underlyingType = NamedType.CreateNamedTypeFromTupleType(Context, symbol.TupleUnderlyingType ?? symbol);
+            var underlyingType = NamedType.CreateNamedTypeFromTupleType(Context, Symbol.TupleUnderlyingType ?? Symbol);
 
             trapFile.tuple_underlying_type(this, underlyingType);
 
@@ -52,7 +52,7 @@ namespace Semmle.Extraction.CSharp.Entities
             // Note: symbol.Locations seems to be very inconsistent
             // about what locations are available for a tuple type.
             // Sometimes it's the source code, and sometimes it's empty.
-            foreach (var l in symbol.Locations)
+            foreach (var l in Symbol.Locations)
                 trapFile.type_location(this, Context.Create(l));
         }
 

@@ -20,16 +20,16 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
         protected override void PopulateStatement(TextWriter _)
         {
-            Expression.Create(cx, Stmt.Expression, this, 1);
+            Expression.Create(Cx, Stmt.Expression, this, 1);
 
-            var typeSymbol = cx.GetModel(Stmt).GetDeclaredSymbol(Stmt);
-            var type = Type.Create(cx, typeSymbol.GetAnnotatedType());
+            var typeSymbol = Cx.GetModel(Stmt).GetDeclaredSymbol(Stmt);
+            var type = Type.Create(Cx, typeSymbol.GetAnnotatedType());
 
-            var location = cx.Create(Stmt.Identifier.GetLocation());
+            var location = Cx.Create(Stmt.Identifier.GetLocation());
 
-            Expressions.VariableDeclaration.Create(cx, typeSymbol, type, Stmt.Type, location, Stmt.Type.IsVar, this, 0);
+            Expressions.VariableDeclaration.Create(Cx, typeSymbol, type, Stmt.Type, location, Stmt.Type.IsVar, this, 0);
 
-            Statement.Create(cx, Stmt.Statement, this, 2);
+            Statement.Create(Cx, Stmt.Statement, this, 2);
         }
     }
 
@@ -47,9 +47,9 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            Expression.Create(cx, Stmt.Variable, this, 0);
-            Expression.Create(cx, Stmt.Expression, this, 1);
-            Statement.Create(cx, Stmt.Statement, this, 2);
+            Expression.Create(Cx, Stmt.Variable, this, 0);
+            Expression.Create(Cx, Stmt.Expression, this, 1);
+            Statement.Create(Cx, Stmt.Statement, this, 2);
         }
     }
 }

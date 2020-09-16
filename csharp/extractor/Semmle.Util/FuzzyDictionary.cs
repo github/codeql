@@ -61,7 +61,7 @@ namespace Semmle.Util
         /// <param name="v1">Vector 1</param>
         /// <param name="v2">Vector 2</param>
         /// <returns>The Hamming Distance.</returns>
-        static int HammingDistance<U>(IEnumerable<U> v1, IEnumerable<U> v2) where U : notnull
+        static int HammingDistance<TT>(IEnumerable<TT> v1, IEnumerable<TT> v2) where TT : notnull
         {
             return v1.Zip(v2, (x, y) => x.Equals(y) ? 0 : 1).Sum();
         }

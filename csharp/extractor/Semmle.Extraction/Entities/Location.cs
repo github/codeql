@@ -11,7 +11,7 @@ namespace Semmle.Extraction.Entities
                     : loc.IsInSource ? NonGeneratedSourceLocation.Create(cx, loc)
                     : Assembly.Create(cx, loc);
 
-        public override Microsoft.CodeAnalysis.Location? ReportingLocation => symbol;
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => Symbol;
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
     }

@@ -51,7 +51,7 @@ namespace Semmle.Extraction.CIL.Entities
     {
         protected TypeContainer(Context cx) : base(cx)
         {
-            this.cx = cx;
+            this.Cx = cx;
         }
 
         public virtual Label Label { get; set; }
@@ -236,7 +236,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             if (TryGetPrimitiveTypeCode(out var code))
             {
-                t = cx.Create(code);
+                t = Cx.Create(code);
                 return true;
             }
             else
@@ -248,7 +248,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         private bool TryGetPrimitiveTypeCode(out PrimitiveTypeCode code)
         {
-            if (ContainingType == null && Namespace?.Name == cx.SystemNamespace.Name)
+            if (ContainingType == null && Namespace?.Name == Cx.SystemNamespace.Name)
             {
                 switch (Name)
                 {
@@ -316,7 +316,7 @@ namespace Semmle.Extraction.CIL.Entities
         protected bool IsPrimitiveType => TryGetPrimitiveTypeCode(out _);
 
         public static Type DecodeType(GenericContext gc, TypeSpecificationHandle handle) =>
-            gc.cx.mdReader.GetTypeSpecification(handle).DecodeSignature(gc.cx.TypeSignatureDecoder, gc);
+            gc.Cx.MdReader.GetTypeSpecification(handle).DecodeSignature(gc.Cx.TypeSignatureDecoder, gc);
     }
 
     /// <summary>
@@ -329,7 +329,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public TypeDefinitionType(Context cx, TypeDefinitionHandle handle) : base(cx)
         {
-            td = cx.mdReader.GetTypeDefinition(handle);
+            td = cx.MdReader.GetTypeDefinition(handle);
             this.handle = handle;
 
             declType =
@@ -355,7 +355,7 @@ namespace Semmle.Extraction.CIL.Entities
                 return;
             }
 
-            var name = cx.GetString(td.Name);
+            var name = Cx.GetString(td.Name);
 
             if (ContainingType != null)
             {
@@ -381,13 +381,13 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                var name = cx.GetString(td.Name);
+                var name = Cx.GetString(td.Name);
                 var tick = name.IndexOf('`');
                 return tick == -1 ? name : name.Substring(0, tick);
             }
         }
 
-        public override Namespace Namespace => cx.Create(td.NamespaceDefinition);
+        public override Namespace Namespace => Cx.Create(td.NamespaceDefinition);
 
         readonly Type? declType;
 
@@ -399,7 +399,7 @@ namespace Semmle.Extraction.CIL.Entities
             {
                 var containingType = td.GetDeclaringType();
                 var parentTypeParameters = containingType.IsNil ? 0 :
-                    cx.mdReader.GetTypeDefinition(containingType).GetGenericParameters().Count;
+                    Cx.MdReader.GetTypeDefinition(containingType).GetGenericParameters().Count;
 
                 return td.GetGenericParameters().Count - parentTypeParameters;
             }
@@ -409,14 +409,14 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override Type Construct(IEnumerable<Type> typeArguments)
         {
-            return cx.Populate(new ConstructedType(cx, this, typeArguments));
+            return Cx.Populate(new ConstructedType(Cx, this, typeArguments));
         }
 
         public override void WriteAssemblyPrefix(TextWriter trapFile)
         {
             var ct = ContainingType;
             if (ct is null)
-                cx.WriteAssemblyPrefix(trapFile);
+                Cx.WriteAssemblyPrefix(trapFile);
             else if (IsPrimitiveType)
                 trapFile.Write("builtin:");
             else
@@ -434,7 +434,7 @@ namespace Semmle.Extraction.CIL.Entities
 
             // Two-phase population because type parameters can be mutually dependent
             for (int i = 0; i < newTypeParams.Length; ++i)
-                newTypeParams[i] = cx.Populate(new TypeTypeParameter(this, this, i));
+                newTypeParams[i] = Cx.Populate(new TypeTypeParameter(this, this, i));
             for (int i = 0; i < newTypeParams.Length; ++i)
                 newTypeParams[i].PopulateHandle(genericParams[i + toSkip]);
             return newTypeParams;
@@ -463,7 +463,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                yield return Tuples.metadata_handle(this, cx.assembly, handle.GetHashCode());
+                yield return Tuples.metadata_handle(this, Cx.Assembly, handle.GetHashCode());
 
                 foreach (var c in base.Contents) yield return c;
 
@@ -472,7 +472,7 @@ namespace Semmle.Extraction.CIL.Entities
                 foreach (var f in td.GetFields())
                 {
                     // Populate field if needed
-                    yield return cx.CreateGeneric(this, f);
+                    yield return Cx.CreateGeneric(this, f);
                 }
 
                 foreach (var prop in td.GetProperties())
@@ -482,16 +482,16 @@ namespace Semmle.Extraction.CIL.Entities
 
                 foreach (var @event in td.GetEvents())
                 {
-                    yield return new Event(cx, this, @event);
+                    yield return new Event(Cx, this, @event);
                 }
 
-                foreach (var a in Attribute.Populate(cx, this, td.GetCustomAttributes()))
+                foreach (var a in Attribute.Populate(Cx, this, td.GetCustomAttributes()))
                     yield return a;
 
-                foreach (var impl in td.GetMethodImplementations().Select(i => cx.mdReader.GetMethodImplementation(i)))
+                foreach (var impl in td.GetMethodImplementations().Select(i => Cx.MdReader.GetMethodImplementation(i)))
                 {
-                    var m = (Method)cx.CreateGeneric(this, impl.MethodBody);
-                    var decl = (Method)cx.CreateGeneric(this, impl.MethodDeclaration);
+                    var m = (Method)Cx.CreateGeneric(this, impl.MethodBody);
+                    var decl = (Method)Cx.CreateGeneric(this, impl.MethodDeclaration);
 
                     yield return m;
                     yield return decl;
@@ -519,20 +519,20 @@ namespace Semmle.Extraction.CIL.Entities
 
                 if (!td.BaseType.IsNil)
                 {
-                    var @base = (Type)cx.CreateGeneric(this, td.BaseType);
+                    var @base = (Type)Cx.CreateGeneric(this, td.BaseType);
                     yield return @base;
                     yield return Tuples.cil_base_class(this, @base);
                 }
 
-                foreach (var @interface in td.GetInterfaceImplementations().Select(i => cx.mdReader.GetInterfaceImplementation(i)))
+                foreach (var @interface in td.GetInterfaceImplementations().Select(i => Cx.MdReader.GetInterfaceImplementation(i)))
                 {
-                    var t = (Type)cx.CreateGeneric(this, @interface.Interface);
+                    var t = (Type)Cx.CreateGeneric(this, @interface.Interface);
                     yield return t;
                     yield return Tuples.cil_base_interface(this, t);
                 }
 
                 // Only type definitions have locations.
-                yield return Tuples.cil_type_location(this, cx.assembly);
+                yield return Tuples.cil_type_location(this, Cx.Assembly);
             }
         }
 
@@ -540,11 +540,11 @@ namespace Semmle.Extraction.CIL.Entities
         {
             foreach (var h in td.GetMethods())
             {
-                var md = cx.mdReader.GetMethodDefinition(h);
+                var md = Cx.MdReader.GetMethodDefinition(h);
 
                 if (md.Name == name && md.Signature == signature)
                 {
-                    return (Method)cx.Create(h);
+                    return (Method)Cx.Create(h);
                 }
             }
 
@@ -565,7 +565,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             this.typeParams = new Lazy<TypeTypeParameter[]>(MakeTypeParameters);
             this.handle = handle;
-            this.tr = cx.mdReader.GetTypeReference(handle);
+            this.tr = cx.MdReader.GetTypeReference(handle);
         }
 
         public override bool Equals(object? obj)
@@ -604,20 +604,20 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                var name = cx.GetString(tr.Name);
+                var name = Cx.GetString(tr.Name);
                 var tick = name.IndexOf('`');
                 return tick == -1 ? name : name.Substring(0, tick);
             }
         }
 
-        public override Namespace Namespace => cx.CreateNamespace(tr.Namespace);
+        public override Namespace Namespace => Cx.CreateNamespace(tr.Namespace);
 
         public override int ThisTypeParameters
         {
             get
             {
                 // Parse the name
-                var name = cx.GetString(tr.Name);
+                var name = Cx.GetString(tr.Name);
                 var tick = name.IndexOf('`');
                 return tick == -1 ? 0 : int.Parse(name.Substring(tick + 1));
             }
@@ -637,7 +637,7 @@ namespace Semmle.Extraction.CIL.Entities
             get
             {
                 if (tr.ResolutionScope.Kind == HandleKind.TypeReference)
-                    return (Type)cx.Create((TypeReferenceHandle)tr.ResolutionScope);
+                    return (Type)Cx.Create((TypeReferenceHandle)tr.ResolutionScope);
                 return null;
             }
         }
@@ -652,14 +652,14 @@ namespace Semmle.Extraction.CIL.Entities
                     ContainingType!.WriteAssemblyPrefix(trapFile);
                     break;
                 case HandleKind.AssemblyReference:
-                    var assemblyDef = cx.mdReader.GetAssemblyReference((AssemblyReferenceHandle)tr.ResolutionScope);
-                    trapFile.Write(cx.GetString(assemblyDef.Name));
+                    var assemblyDef = Cx.MdReader.GetAssemblyReference((AssemblyReferenceHandle)tr.ResolutionScope);
+                    trapFile.Write(Cx.GetString(assemblyDef.Name));
                     trapFile.Write('_');
                     trapFile.Write(assemblyDef.Version.ToString());
                     trapFile.Write("::");
                     break;
                 default:
-                    cx.WriteAssemblyPrefix(trapFile);
+                    Cx.WriteAssemblyPrefix(trapFile);
                     break;
             }
         }
@@ -695,7 +695,7 @@ namespace Semmle.Extraction.CIL.Entities
             }
 
             trapFile.Write('.');
-            trapFile.Write(cx.GetString(tr.Name));
+            trapFile.Write(Cx.GetString(tr.Name));
         }
 
         public override Type Construct(IEnumerable<Type> typeArguments)
@@ -703,7 +703,7 @@ namespace Semmle.Extraction.CIL.Entities
             if (TotalTypeParametersCheck != typeArguments.Count())
                 throw new InternalError("Mismatched type arguments");
 
-            return cx.Populate(new ConstructedType(cx, this, typeArguments));
+            return Cx.Populate(new ConstructedType(Cx, this, typeArguments));
         }
     }
 
@@ -868,7 +868,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override string Name => typeCode.Id();
 
-        public override Namespace Namespace => cx.SystemNamespace;
+        public override Namespace Namespace => Cx.SystemNamespace;
 
         public override Type? ContainingType => null;
 
@@ -924,7 +924,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override string Name => elementType.Name + "[]";
 
-        public override Namespace Namespace => cx.SystemNamespace;
+        public override Namespace Namespace => Cx.SystemNamespace;
 
         public override Type? ContainingType => null;
 
@@ -932,9 +932,9 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override CilTypeKind Kind => CilTypeKind.Array;
 
-        public override Type Construct(IEnumerable<Type> typeArguments) => cx.Populate(new ArrayType(cx, elementType.Construct(typeArguments)));
+        public override Type Construct(IEnumerable<Type> typeArguments) => Cx.Populate(new ArrayType(Cx, elementType.Construct(typeArguments)));
 
-        public override Type SourceDeclaration => cx.Populate(new ArrayType(cx, elementType.SourceDeclaration));
+        public override Type SourceDeclaration => Cx.Populate(new ArrayType(Cx, elementType.SourceDeclaration));
 
         public override IEnumerable<IExtractionProduct> Contents
         {
@@ -962,11 +962,11 @@ namespace Semmle.Extraction.CIL.Entities
 
     abstract class TypeParameter : Type, ITypeParameter
     {
-        protected readonly GenericContext gc;
+        protected readonly GenericContext Gc;
 
-        protected TypeParameter(GenericContext gc) : base(gc.cx)
+        protected TypeParameter(GenericContext gc) : base(gc.Cx)
         {
-            this.gc = gc;
+            this.Gc = gc;
         }
 
         public override Namespace? Namespace => null;
@@ -985,7 +985,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             if (!parameterHandle.IsNil)
             {
-                var tp = cx.mdReader.GetGenericParameter(parameterHandle);
+                var tp = Cx.MdReader.GetGenericParameter(parameterHandle);
 
                 if (tp.Attributes.HasFlag(GenericParameterAttributes.Contravariant))
                     yield return Tuples.cil_typeparam_contravariant(this);
@@ -998,9 +998,9 @@ namespace Semmle.Extraction.CIL.Entities
                 if (tp.Attributes.HasFlag(GenericParameterAttributes.NotNullableValueTypeConstraint))
                     yield return Tuples.cil_typeparam_struct(this);
 
-                foreach (var constraint in tp.GetConstraints().Select(h => cx.mdReader.GetGenericParameterConstraint(h)))
+                foreach (var constraint in tp.GetConstraints().Select(h => Cx.MdReader.GetGenericParameterConstraint(h)))
                 {
-                    var t = (Type)cx.CreateGeneric(this.gc, constraint.Type);
+                    var t = (Type)Cx.CreateGeneric(this.Gc, constraint.Type);
                     yield return t;
                     yield return Tuples.cil_typeparam_constraint(this, t);
                 }
@@ -1015,7 +1015,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override void WriteId(TextWriter trapFile, bool inContext)
         {
-            if (!(inContext && method == gc))
+            if (!(inContext && method == Gc))
             {
                 trapFile.WriteSubId(method);
             }
@@ -1175,7 +1175,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override string Name => "!error";
 
-        public override Namespace Namespace => cx.GlobalNamespace;
+        public override Namespace Namespace => Cx.GlobalNamespace;
 
         public override Type? ContainingType => null;
 
@@ -1438,7 +1438,7 @@ namespace Semmle.Extraction.CIL.Entities
 
             public void WriteId(TextWriter trapFile, GenericContext gc)
             {
-                var type = (Type)gc.cx.Create(handle);
+                var type = (Type)gc.Cx.Create(handle);
                 type.WriteId(trapFile);
             }
         }
@@ -1459,7 +1459,7 @@ namespace Semmle.Extraction.CIL.Entities
 
             public void WriteId(TextWriter trapFile, GenericContext gc)
             {
-                var type = (Type)gc.cx.Create(handle);
+                var type = (Type)gc.Cx.Create(handle);
                 type.WriteId(trapFile);
             }
         }

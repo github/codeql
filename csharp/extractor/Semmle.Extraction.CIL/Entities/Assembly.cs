@@ -26,27 +26,27 @@ namespace Semmle.Extraction.CIL.Entities
 
         public Assembly(Context cx) : base(cx)
         {
-            cx.assembly = this;
-            var def = cx.mdReader.GetAssemblyDefinition();
+            cx.Assembly = this;
+            var def = cx.MdReader.GetAssemblyDefinition();
 
             assemblyName = new AssemblyName
             {
-                Name = cx.mdReader.GetString(def.Name),
+                Name = cx.MdReader.GetString(def.Name),
                 Version = def.Version,
-                CultureInfo = new CultureInfo(cx.mdReader.GetString(def.Culture))
+                CultureInfo = new CultureInfo(cx.MdReader.GetString(def.Culture))
             };
 
             if (!def.PublicKey.IsNil)
-                assemblyName.SetPublicKey(cx.mdReader.GetBlobBytes(def.PublicKey));
+                assemblyName.SetPublicKey(cx.MdReader.GetBlobBytes(def.PublicKey));
 
-            file = new File(cx, cx.assemblyPath);
+            file = new File(cx, cx.AssemblyPath);
         }
 
         public override void WriteId(TextWriter trapFile)
         {
             trapFile.Write(FullName);
             trapFile.Write("#file:///");
-            trapFile.Write(cx.assemblyPath.Replace("\\", "/"));
+            trapFile.Write(Cx.AssemblyPath.Replace("\\", "/"));
         }
 
         public override bool Equals(object? obj)
@@ -67,24 +67,24 @@ namespace Semmle.Extraction.CIL.Entities
                 yield return file;
                 yield return Tuples.assemblies(this, file, FullName, assemblyName.Name ?? string.Empty, assemblyName.Version?.ToString() ?? string.Empty);
 
-                if (cx.pdb != null)
+                if (Cx.Pdb != null)
                 {
-                    foreach (var f in cx.pdb.SourceFiles)
+                    foreach (var f in Cx.Pdb.SourceFiles)
                     {
-                        yield return cx.CreateSourceFile(f);
+                        yield return Cx.CreateSourceFile(f);
                     }
                 }
 
-                foreach (var handle in cx.mdReader.TypeDefinitions)
+                foreach (var handle in Cx.MdReader.TypeDefinitions)
                 {
                     IExtractionProduct? product = null;
                     try
                     {
-                        product = cx.Create(handle);
+                        product = Cx.Create(handle);
                     }
                     catch (InternalError e)
                     {
-                        cx.cx.ExtractionError("Error processing type definition", e.Message, GeneratedLocation.Create(cx.cx), e.StackTrace);
+                        Cx.Cx.ExtractionError("Error processing type definition", e.Message, GeneratedLocation.Create(Cx.Cx), e.StackTrace);
                     }
 
                     // Limitation of C#: Cannot yield return inside a try-catch.
@@ -92,16 +92,16 @@ namespace Semmle.Extraction.CIL.Entities
                         yield return product;
                 }
 
-                foreach (var handle in cx.mdReader.MethodDefinitions)
+                foreach (var handle in Cx.MdReader.MethodDefinitions)
                 {
                     IExtractionProduct? product = null;
                     try
                     {
-                        product = cx.Create(handle);
+                        product = Cx.Create(handle);
                     }
                     catch (InternalError e)
                     {
-                        cx.cx.ExtractionError("Error processing bytecode", e.Message, GeneratedLocation.Create(cx.cx), e.StackTrace);
+                        Cx.Cx.ExtractionError("Error processing bytecode", e.Message, GeneratedLocation.Create(Cx.Cx), e.StackTrace);
                     }
 
                     if (product != null)
@@ -114,7 +114,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             using var cilContext = new Context(cx, assemblyPath, extractPdbs);
             cilContext.Populate(new Assembly(cilContext));
-            cilContext.cx.PopulateAll();
+            cilContext.Cx.PopulateAll();
         }
 
         /// <summary>

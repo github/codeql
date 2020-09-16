@@ -27,10 +27,10 @@ namespace Semmle.Extraction.CIL
             }
             else
             {
-                e.Label = cx.GetNewLabel();
-                cx.DefineLabel(e, cx.TrapWriter.Writer, cx.Extractor);
+                e.Label = Cx.GetNewLabel();
+                Cx.DefineLabel(e, Cx.TrapWriter.Writer, Cx.Extractor);
                 ids.Add(e, e.Label);
-                cx.PopulateLater(() =>
+                Cx.PopulateLater(() =>
                 {
                     foreach (var c in e.Contents)
                         c.Extract(this);
@@ -42,7 +42,7 @@ namespace Semmle.Extraction.CIL
 
                 if (debugLabels.TryGetValue(id, out IExtractedEntity? previousEntity))
                 {
-                    cx.Extractor.Message(new Message("Duplicate trap ID", id, null, severity: Util.Logging.Severity.Warning));
+                    Cx.Extractor.Message(new Message("Duplicate trap ID", id, null, severity: Util.Logging.Severity.Warning));
                 }
                 else
                 {
@@ -74,9 +74,9 @@ namespace Semmle.Extraction.CIL
             {
                 e = new PrimitiveType(this, code)
                 {
-                    Label = cx.GetNewLabel()
+                    Label = Cx.GetNewLabel()
                 };
-                cx.DefineLabel(e, cx.TrapWriter.Writer, cx.Extractor);
+                Cx.DefineLabel(e, Cx.TrapWriter.Writer, Cx.Extractor);
                 primitiveTypes[(int)code] = e;
             }
 
@@ -138,7 +138,7 @@ namespace Semmle.Extraction.CIL
 
         IExtractedEntity Create(GenericContext gc, MemberReferenceHandle handle)
         {
-            var mr = mdReader.GetMemberReference(handle);
+            var mr = MdReader.GetMemberReference(handle);
             switch (mr.GetKind())
             {
                 case MemberReferenceKind.Method:
@@ -155,7 +155,7 @@ namespace Semmle.Extraction.CIL
         /// </summary>
         /// <param name="h">The string handle.</param>
         /// <returns>The string.</returns>
-        public string GetString(StringHandle h) => mdReader.GetString(h);
+        public string GetString(StringHandle h) => MdReader.GetString(h);
 
         #region Namespaces
 
@@ -194,7 +194,7 @@ namespace Semmle.Extraction.CIL
         Namespace CreateNamespace(NamespaceDefinitionHandle handle)
         {
             if (handle.IsNil) return GlobalNamespace;
-            NamespaceDefinition nd = mdReader.GetNamespaceDefinition(handle);
+            NamespaceDefinition nd = MdReader.GetNamespaceDefinition(handle);
             return Populate(new Namespace(this, GetString(nd.Name), Create(nd.Parent)));
         }
         #endregion
@@ -236,7 +236,7 @@ namespace Semmle.Extraction.CIL
         /// <returns>The short name.</returns>
         public string ShortName(StringHandle handle)
         {
-            string str = mdReader.GetString(handle);
+            string str = MdReader.GetString(handle);
             if (str.EndsWith(".ctor")) return ".ctor";
             if (str.EndsWith(".cctor")) return ".cctor";
             var dot = str.LastIndexOf('.');
