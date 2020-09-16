@@ -1068,8 +1068,10 @@ module NodeJSLib {
   /**
    * An instance of net.createServer(), which creates a new TCP/IPC server.
    */
-  private class NodeJSNetServer extends DataFlow::SourceNode {
-    NodeJSNetServer() { this = DataFlow::moduleMember("net", "createServer").getAnInvocation() }
+  class NodeJSNetServer extends DataFlow::InvokeNode {
+    NodeJSNetServer() {
+      this = DataFlow::moduleMember(["net", "tls"], "createServer").getAnInvocation()
+    }
 
     private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
       t.start() and result = this
@@ -1096,6 +1098,8 @@ module NodeJSLib {
       |
         this = call.getCallback(1).getParameter(0)
       )
+      or
+      this = server.getCallback([0, 1]).getParameter(0)
     }
 
     DataFlow::SourceNode ref() { result = EventEmitter::trackEventEmitter(this) }

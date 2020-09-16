@@ -30,6 +30,12 @@ argHasPostUpdate
 | D.cpp:43:24:43:40 | new | ArgumentNode is missing PostUpdateNode. |
 | D.cpp:50:24:50:40 | new | ArgumentNode is missing PostUpdateNode. |
 | D.cpp:57:25:57:41 | new | ArgumentNode is missing PostUpdateNode. |
+| arrays.cpp:7:8:7:13 | access to array | ArgumentNode is missing PostUpdateNode. |
+| arrays.cpp:8:8:8:13 | access to array | ArgumentNode is missing PostUpdateNode. |
+| arrays.cpp:9:8:9:11 | * ... | ArgumentNode is missing PostUpdateNode. |
+| arrays.cpp:10:8:10:15 | * ... | ArgumentNode is missing PostUpdateNode. |
+| arrays.cpp:16:8:16:13 | access to array | ArgumentNode is missing PostUpdateNode. |
+| arrays.cpp:17:8:17:13 | access to array | ArgumentNode is missing PostUpdateNode. |
 | by_reference.cpp:51:8:51:8 | s | ArgumentNode is missing PostUpdateNode. |
 | by_reference.cpp:57:8:57:8 | s | ArgumentNode is missing PostUpdateNode. |
 | by_reference.cpp:63:8:63:8 | s | ArgumentNode is missing PostUpdateNode. |

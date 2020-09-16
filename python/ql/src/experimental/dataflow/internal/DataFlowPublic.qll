@@ -5,6 +5,7 @@
 private import python
 private import DataFlowPrivate
 import experimental.dataflow.TypeTracker
+private import semmle.python.essa.SsaCompute
 
 /**
  * IPA type for data flow nodes.
@@ -149,6 +150,18 @@ class ParameterNode extends EssaNode {
 }
 
 /**
+ * A node that controls whether other nodes are evaluated.
+ */
+class GuardNode extends ControlFlowNode {
+  ConditionBlock conditionBlock;
+
+  GuardNode() { this = conditionBlock.getLastNode() }
+
+  /** Holds if this guard controls block `b` upon evaluating to `branch`. */
+  predicate controlsBlock(BasicBlock b, boolean branch) { conditionBlock.controls(b, branch) }
+}
+
+/**
  * A guard that validates some expression.
  *
  * To use this in a configuration, extend the class and provide a
@@ -157,16 +170,18 @@ class ParameterNode extends EssaNode {
  *
  * It is important that all extending classes in scope are disjoint.
  */
-class BarrierGuard extends Expr {
-  // /** Holds if this guard validates `e` upon evaluating to `v`. */
-  // abstract predicate checks(Expr e, AbstractValue v);
+class BarrierGuard extends GuardNode {
+  /** Holds if this guard validates `node` upon evaluating to `branch`. */
+  abstract predicate checks(ControlFlowNode node, boolean branch);
+
   /** Gets a node guarded by this guard. */
   final ExprNode getAGuardedNode() {
-    none()
-    // exists(Expr e, AbstractValue v |
-    //   this.checks(e, v) and
-    //   this.controlsNode(result.getControlFlowNode(), e, v)
-    // )
+    exists(EssaDefinition def, ControlFlowNode node, boolean branch |
+      AdjacentUses::useOfDef(def, node) and
+      this.checks(node, branch) and
+      AdjacentUses::useOfDef(def, result.asCfgNode()) and
+      this.controlsBlock(result.asCfgNode().getBasicBlock(), branch)
+    )
   }
 }
 
