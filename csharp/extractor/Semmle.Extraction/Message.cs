@@ -11,11 +11,11 @@ namespace Semmle.Extraction
     /// </summary>
     public class Message
     {
-        public readonly Severity Severity;
-        public readonly string Text;
-        public readonly string StackTrace;
-        public readonly string EntityText;
-        public readonly Entities.Location? Location;
+        public Severity Severity { get; }
+        public string Text { get; }
+        public string StackTrace { get; }
+        public string EntityText { get; }
+        public Entities.Location? Location { get; }
 
         public Message(string text, string entityText, Entities.Location? location, string? stackTrace = null, Severity severity = Severity.Error)
         {

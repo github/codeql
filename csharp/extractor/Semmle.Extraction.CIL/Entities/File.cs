@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CIL.Entities
 
     public class File : LabelledEntity, IFile
     {
-        protected readonly string path;
+        protected string path { get; }
 
         public File(Context cx, string path) : base(cx)
         {

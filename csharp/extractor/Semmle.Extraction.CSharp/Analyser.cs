@@ -23,9 +23,9 @@ namespace Semmle.Extraction.CSharp
 
         readonly IProgressMonitor progressMonitor;
 
-        public readonly ILogger Logger;
+        public ILogger Logger { get; }
 
-        public readonly bool AddAssemblyTrapPrefix;
+        public bool AddAssemblyTrapPrefix { get; }
 
         public Analyser(IProgressMonitor pm, ILogger logger, bool addAssemblyTrapPrefix)
         {

@@ -100,7 +100,8 @@ namespace Semmle.Extraction
         /// <summary>
         /// The output filename of the trap.
         /// </summary>
-        public readonly string TrapFile;
+        public string TrapFile { get; }
+
         string tmpFile = "";     // The temporary file which is moved to trapFile once written.
 
         /// <summary>

@@ -43,12 +43,12 @@ namespace Semmle.Extraction.PDB
         /// <summary>
         /// The file containing the code.
         /// </summary>
-        public readonly ISourceFile File;
+        public ISourceFile File { get; }
 
-        /// <summary>
-        /// The span of text within the text file.
-        /// </summary>
-        public readonly int StartLine, StartColumn, EndLine, EndColumn;
+        public int StartLine { get; }
+        public int StartColumn { get; }
+        public int EndLine { get; }
+        public int EndColumn { get; }
 
         public override string ToString()
         {

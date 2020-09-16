@@ -87,7 +87,7 @@ namespace Semmle.Extraction.CIL
             trapFile.Write("::");
         }
 
-        public readonly Entities.TypeSignatureDecoder TypeSignatureDecoder;
+        public Entities.TypeSignatureDecoder TypeSignatureDecoder { get; }
 
         /// <summary>
         /// A type used to signify something we can't handle yet.
@@ -123,7 +123,7 @@ namespace Semmle.Extraction.CIL
     /// </summary>
     public abstract class GenericContext
     {
-        public Context cx;
+        public Context cx { get; set; }
 
         public GenericContext(Context cx)
         {

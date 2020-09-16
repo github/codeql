@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public int Annotation { get; }
 
         static readonly Nullability[] EmptyArray = new Nullability[0];
-        public readonly Nullability[] NullableParameters;
+        public Nullability[] NullableParameters { get; }
 
         public static Nullability Create(AnnotatedTypeSymbol ts)
         {

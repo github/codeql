@@ -8,8 +8,8 @@
         public bool ProjectFileHasThisLanguage(string path) =>
             System.IO.Path.GetExtension(path) == ProjectExtension;
 
-        public readonly string ProjectExtension;
-        public readonly string UpperCaseName;
+        public string ProjectExtension { get; }
+        public string UpperCaseName { get; }
 
         private Language(string extension, string name)
         {

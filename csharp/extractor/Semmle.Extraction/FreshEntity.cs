@@ -9,7 +9,7 @@ namespace Semmle.Extraction
     /// </summary>
     public abstract class FreshEntity : IEntity
     {
-        protected readonly Context cx;
+        protected Context cx { get; }
 
         public FreshEntity(Context cx)
         {

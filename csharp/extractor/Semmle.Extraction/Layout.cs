@@ -36,12 +36,12 @@ namespace Semmle.Extraction
             /// <summary>
             /// The trap folder, or null for current directory.
             /// </summary>
-            public readonly string? TRAP_FOLDER;
+            public string? TRAP_FOLDER { get; }
 
             /// <summary>
             /// The source archive, or null to skip.
             /// </summary>
-            public readonly string? SOURCE_ARCHIVE;
+            public string? SOURCE_ARCHIVE { get; }
 
             public SubProject(string? traps, string? archive)
             {

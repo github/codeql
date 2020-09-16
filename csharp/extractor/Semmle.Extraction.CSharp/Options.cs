@@ -9,27 +9,27 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// The compiler exe, or null if unspecified.
         /// </summary>
-        public string CompilerName;
+        public string CompilerName { get; set; }
 
         /// <summary>
         /// Specified .Net Framework dir, or null if unspecified.
         /// </summary>
-        public string Framework;
+        public string Framework { get; set; }
 
         /// <summary>
         /// All other arguments passed to the compilation.
         /// </summary>
-        public IList<string> CompilerArguments = new List<string>();
+        public IList<string> CompilerArguments { get; } = new List<string>();
 
         /// <summary>
         /// Holds if the extractor was launched from the CLR tracer.
         /// </summary>
-        public bool ClrTracer = false;
+        public bool ClrTracer { get; set; } = false;
 
         /// <summary>
         /// Holds if assembly information should be prefixed to TRAP labels.
         /// </summary>
-        public bool AssemblySensitiveTrap = false;
+        public bool AssemblySensitiveTrap { get; set; } = false;
 
         public static Options CreateWithEnvironment(string[] arguments)
         {
