@@ -404,6 +404,39 @@ class StdIStreamReadSome extends TaintFunction {
 }
 
 /**
+ * The `std::istream` function `putback`.
+ */
+class StdIStreamPutBack extends DataFlowFunction, TaintFunction {
+  StdIStreamPutBack() { this.hasQualifiedName("std", "basic_istream", "putback") }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    // flow from qualifier to return value
+    input.isQualifierAddress() and
+    output.isReturnValue()
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from first parameter (value or pointer) to qualifier
+    input.isParameter(0) and
+    output.isQualifierObject()
+    or
+    input.isParameterDeref(0) and
+    output.isQualifierObject()
+    or
+    // flow from first parameter (value or pointer) to return value
+    input.isParameter(0) and
+    output.isReturnValueDeref()
+    or
+    input.isParameterDeref(0) and
+    output.isReturnValueDeref()
+    or
+    // reverse flow from returned reference to the qualifier
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
+  }
+}
+
+/**
  * The `std::basic_ostream` template class.
  */
 class StdBasicOStream extends TemplateClass {
@@ -412,13 +445,10 @@ class StdBasicOStream extends TemplateClass {
 
 /**
  * The `std::ostream` functions `operator<<` (defined as a member function),
- * `put` and `write` and `std::istream::putback`.
+ * `put` and `write`.
  */
 class StdOStreamOut extends DataFlowFunction, TaintFunction {
-  StdOStreamOut() {
-    this.hasQualifiedName("std", "basic_ostream", ["operator<<", "put", "write"]) or
-    this.hasQualifiedName("std", "basic_istream", "putback")
-  }
+  StdOStreamOut() { this.hasQualifiedName("std", "basic_ostream", ["operator<<", "put", "write"]) }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to return value
