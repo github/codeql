@@ -1969,6 +1969,8 @@
 | stringstream.cpp:214:7:214:9 | ref arg ss1 | stringstream.cpp:237:15:237:17 | ss1 |  |
 | stringstream.cpp:214:7:214:9 | ref arg ss1 | stringstream.cpp:242:15:242:17 | ss1 |  |
 | stringstream.cpp:214:7:214:9 | ref arg ss1 | stringstream.cpp:245:15:245:17 | ss1 |  |
+| stringstream.cpp:214:7:214:9 | ss1 | stringstream.cpp:214:11:214:17 | call to getline |  |
+| stringstream.cpp:214:7:214:9 | ss1 | stringstream.cpp:214:19:214:20 | ref arg b1 | TAINT |
 | stringstream.cpp:214:19:214:20 | ref arg b1 | stringstream.cpp:218:7:218:8 | b1 |  |
 | stringstream.cpp:215:7:215:9 | ref arg ss2 | stringstream.cpp:216:7:216:9 | ss2 |  |
 | stringstream.cpp:215:7:215:9 | ref arg ss2 | stringstream.cpp:223:7:223:9 | ss2 |  |
@@ -1979,6 +1981,8 @@
 | stringstream.cpp:215:7:215:9 | ref arg ss2 | stringstream.cpp:243:15:243:17 | ss2 |  |
 | stringstream.cpp:215:7:215:9 | ref arg ss2 | stringstream.cpp:244:15:244:17 | ss2 |  |
 | stringstream.cpp:215:7:215:9 | ref arg ss2 | stringstream.cpp:250:23:250:25 | ss2 |  |
+| stringstream.cpp:215:7:215:9 | ss2 | stringstream.cpp:215:11:215:17 | call to getline |  |
+| stringstream.cpp:215:7:215:9 | ss2 | stringstream.cpp:215:19:215:20 | ref arg b2 | TAINT |
 | stringstream.cpp:215:19:215:20 | ref arg b2 | stringstream.cpp:219:7:219:8 | b2 |  |
 | stringstream.cpp:216:7:216:9 | ref arg ss2 | stringstream.cpp:223:7:223:9 | ss2 |  |
 | stringstream.cpp:216:7:216:9 | ref arg ss2 | stringstream.cpp:224:7:224:9 | ss2 |  |
@@ -1988,6 +1992,8 @@
 | stringstream.cpp:216:7:216:9 | ref arg ss2 | stringstream.cpp:243:15:243:17 | ss2 |  |
 | stringstream.cpp:216:7:216:9 | ref arg ss2 | stringstream.cpp:244:15:244:17 | ss2 |  |
 | stringstream.cpp:216:7:216:9 | ref arg ss2 | stringstream.cpp:250:23:250:25 | ss2 |  |
+| stringstream.cpp:216:7:216:9 | ss2 | stringstream.cpp:216:11:216:17 | call to getline |  |
+| stringstream.cpp:216:7:216:9 | ss2 | stringstream.cpp:216:19:216:20 | ref arg b3 | TAINT |
 | stringstream.cpp:216:19:216:20 | ref arg b3 | stringstream.cpp:217:19:217:20 | b3 |  |
 | stringstream.cpp:216:19:216:20 | ref arg b3 | stringstream.cpp:220:7:220:8 | b3 |  |
 | stringstream.cpp:217:7:217:9 | ref arg ss1 | stringstream.cpp:222:7:222:9 | ss1 |  |
@@ -1996,6 +2002,8 @@
 | stringstream.cpp:217:7:217:9 | ref arg ss1 | stringstream.cpp:237:15:237:17 | ss1 |  |
 | stringstream.cpp:217:7:217:9 | ref arg ss1 | stringstream.cpp:242:15:242:17 | ss1 |  |
 | stringstream.cpp:217:7:217:9 | ref arg ss1 | stringstream.cpp:245:15:245:17 | ss1 |  |
+| stringstream.cpp:217:7:217:9 | ss1 | stringstream.cpp:217:11:217:17 | call to getline |  |
+| stringstream.cpp:217:7:217:9 | ss1 | stringstream.cpp:217:19:217:20 | ref arg b3 | TAINT |
 | stringstream.cpp:217:19:217:20 | ref arg b3 | stringstream.cpp:220:7:220:8 | b3 |  |
 | stringstream.cpp:218:7:218:8 | b1 | stringstream.cpp:218:7:218:8 | call to basic_string | TAINT |
 | stringstream.cpp:219:7:219:8 | b2 | stringstream.cpp:219:7:219:8 | call to basic_string | TAINT |
@@ -2005,6 +2013,8 @@
 | stringstream.cpp:222:7:222:9 | ref arg ss1 | stringstream.cpp:237:15:237:17 | ss1 |  |
 | stringstream.cpp:222:7:222:9 | ref arg ss1 | stringstream.cpp:242:15:242:17 | ss1 |  |
 | stringstream.cpp:222:7:222:9 | ref arg ss1 | stringstream.cpp:245:15:245:17 | ss1 |  |
+| stringstream.cpp:222:7:222:9 | ss1 | stringstream.cpp:222:11:222:17 | call to getline |  |
+| stringstream.cpp:222:7:222:9 | ss1 | stringstream.cpp:222:19:222:20 | ref arg b4 | TAINT |
 | stringstream.cpp:222:19:222:20 | ref arg b4 | stringstream.cpp:226:7:226:8 | b4 |  |
 | stringstream.cpp:223:7:223:9 | ref arg ss2 | stringstream.cpp:224:7:224:9 | ss2 |  |
 | stringstream.cpp:223:7:223:9 | ref arg ss2 | stringstream.cpp:230:7:230:9 | ss2 |  |
@@ -2013,6 +2023,8 @@
 | stringstream.cpp:223:7:223:9 | ref arg ss2 | stringstream.cpp:243:15:243:17 | ss2 |  |
 | stringstream.cpp:223:7:223:9 | ref arg ss2 | stringstream.cpp:244:15:244:17 | ss2 |  |
 | stringstream.cpp:223:7:223:9 | ref arg ss2 | stringstream.cpp:250:23:250:25 | ss2 |  |
+| stringstream.cpp:223:7:223:9 | ss2 | stringstream.cpp:223:11:223:17 | call to getline |  |
+| stringstream.cpp:223:7:223:9 | ss2 | stringstream.cpp:223:19:223:20 | ref arg b5 | TAINT |
 | stringstream.cpp:223:19:223:20 | ref arg b5 | stringstream.cpp:227:7:227:8 | b5 |  |
 | stringstream.cpp:224:7:224:9 | ref arg ss2 | stringstream.cpp:230:7:230:9 | ss2 |  |
 | stringstream.cpp:224:7:224:9 | ref arg ss2 | stringstream.cpp:235:15:235:17 | ss2 |  |
@@ -2020,12 +2032,16 @@
 | stringstream.cpp:224:7:224:9 | ref arg ss2 | stringstream.cpp:243:15:243:17 | ss2 |  |
 | stringstream.cpp:224:7:224:9 | ref arg ss2 | stringstream.cpp:244:15:244:17 | ss2 |  |
 | stringstream.cpp:224:7:224:9 | ref arg ss2 | stringstream.cpp:250:23:250:25 | ss2 |  |
+| stringstream.cpp:224:7:224:9 | ss2 | stringstream.cpp:224:11:224:17 | call to getline |  |
+| stringstream.cpp:224:7:224:9 | ss2 | stringstream.cpp:224:19:224:20 | ref arg b6 | TAINT |
 | stringstream.cpp:224:19:224:20 | ref arg b6 | stringstream.cpp:225:19:225:20 | b6 |  |
 | stringstream.cpp:224:19:224:20 | ref arg b6 | stringstream.cpp:228:7:228:8 | b6 |  |
 | stringstream.cpp:225:7:225:9 | ref arg ss1 | stringstream.cpp:234:15:234:17 | ss1 |  |
 | stringstream.cpp:225:7:225:9 | ref arg ss1 | stringstream.cpp:237:15:237:17 | ss1 |  |
 | stringstream.cpp:225:7:225:9 | ref arg ss1 | stringstream.cpp:242:15:242:17 | ss1 |  |
 | stringstream.cpp:225:7:225:9 | ref arg ss1 | stringstream.cpp:245:15:245:17 | ss1 |  |
+| stringstream.cpp:225:7:225:9 | ss1 | stringstream.cpp:225:11:225:17 | call to getline |  |
+| stringstream.cpp:225:7:225:9 | ss1 | stringstream.cpp:225:19:225:20 | ref arg b6 | TAINT |
 | stringstream.cpp:225:19:225:20 | ref arg b6 | stringstream.cpp:228:7:228:8 | b6 |  |
 | stringstream.cpp:226:7:226:8 | b4 | stringstream.cpp:226:7:226:8 | call to basic_string | TAINT |
 | stringstream.cpp:227:7:227:8 | b5 | stringstream.cpp:227:7:227:8 | call to basic_string | TAINT |
@@ -2035,6 +2051,11 @@
 | stringstream.cpp:230:7:230:9 | ref arg ss2 | stringstream.cpp:243:15:243:17 | ss2 |  |
 | stringstream.cpp:230:7:230:9 | ref arg ss2 | stringstream.cpp:244:15:244:17 | ss2 |  |
 | stringstream.cpp:230:7:230:9 | ref arg ss2 | stringstream.cpp:250:23:250:25 | ss2 |  |
+| stringstream.cpp:230:7:230:9 | ss2 | stringstream.cpp:230:11:230:17 | call to getline |  |
+| stringstream.cpp:230:7:230:9 | ss2 | stringstream.cpp:230:19:230:20 | ref arg b7 | TAINT |
+| stringstream.cpp:230:11:230:17 | call to getline | stringstream.cpp:230:29:230:35 | call to getline |  |
+| stringstream.cpp:230:11:230:17 | call to getline | stringstream.cpp:230:37:230:38 | ref arg b8 | TAINT |
+| stringstream.cpp:230:11:230:17 | ref arg call to getline | stringstream.cpp:230:7:230:9 | ref arg ss2 | TAINT |
 | stringstream.cpp:230:19:230:20 | ref arg b7 | stringstream.cpp:231:7:231:8 | b7 |  |
 | stringstream.cpp:230:37:230:38 | ref arg b8 | stringstream.cpp:232:7:232:8 | b8 |  |
 | stringstream.cpp:231:7:231:8 | b7 | stringstream.cpp:231:7:231:8 | call to basic_string | TAINT |
@@ -2042,29 +2063,50 @@
 | stringstream.cpp:234:15:234:17 | ref arg ss1 | stringstream.cpp:237:15:237:17 | ss1 |  |
 | stringstream.cpp:234:15:234:17 | ref arg ss1 | stringstream.cpp:242:15:242:17 | ss1 |  |
 | stringstream.cpp:234:15:234:17 | ref arg ss1 | stringstream.cpp:245:15:245:17 | ss1 |  |
+| stringstream.cpp:234:15:234:17 | ss1 | stringstream.cpp:234:7:234:13 | call to getline |  |
+| stringstream.cpp:234:15:234:17 | ss1 | stringstream.cpp:234:20:234:21 | ref arg s1 | TAINT |
 | stringstream.cpp:234:20:234:21 | ref arg s1 | stringstream.cpp:238:7:238:8 | s1 |  |
 | stringstream.cpp:235:15:235:17 | ref arg ss2 | stringstream.cpp:236:15:236:17 | ss2 |  |
 | stringstream.cpp:235:15:235:17 | ref arg ss2 | stringstream.cpp:243:15:243:17 | ss2 |  |
 | stringstream.cpp:235:15:235:17 | ref arg ss2 | stringstream.cpp:244:15:244:17 | ss2 |  |
 | stringstream.cpp:235:15:235:17 | ref arg ss2 | stringstream.cpp:250:23:250:25 | ss2 |  |
+| stringstream.cpp:235:15:235:17 | ss2 | stringstream.cpp:235:7:235:13 | call to getline |  |
+| stringstream.cpp:235:15:235:17 | ss2 | stringstream.cpp:235:20:235:21 | ref arg s2 | TAINT |
 | stringstream.cpp:235:20:235:21 | ref arg s2 | stringstream.cpp:239:7:239:8 | s2 |  |
 | stringstream.cpp:236:15:236:17 | ref arg ss2 | stringstream.cpp:243:15:243:17 | ss2 |  |
 | stringstream.cpp:236:15:236:17 | ref arg ss2 | stringstream.cpp:244:15:244:17 | ss2 |  |
 | stringstream.cpp:236:15:236:17 | ref arg ss2 | stringstream.cpp:250:23:250:25 | ss2 |  |
+| stringstream.cpp:236:15:236:17 | ss2 | stringstream.cpp:236:7:236:13 | call to getline |  |
+| stringstream.cpp:236:15:236:17 | ss2 | stringstream.cpp:236:20:236:21 | ref arg s3 | TAINT |
 | stringstream.cpp:236:20:236:21 | ref arg s3 | stringstream.cpp:237:20:237:21 | s3 |  |
 | stringstream.cpp:236:20:236:21 | ref arg s3 | stringstream.cpp:240:7:240:8 | s3 |  |
 | stringstream.cpp:237:15:237:17 | ref arg ss1 | stringstream.cpp:242:15:242:17 | ss1 |  |
 | stringstream.cpp:237:15:237:17 | ref arg ss1 | stringstream.cpp:245:15:245:17 | ss1 |  |
+| stringstream.cpp:237:15:237:17 | ss1 | stringstream.cpp:237:7:237:13 | call to getline |  |
+| stringstream.cpp:237:15:237:17 | ss1 | stringstream.cpp:237:20:237:21 | ref arg s3 | TAINT |
 | stringstream.cpp:237:20:237:21 | ref arg s3 | stringstream.cpp:240:7:240:8 | s3 |  |
 | stringstream.cpp:242:15:242:17 | ref arg ss1 | stringstream.cpp:245:15:245:17 | ss1 |  |
+| stringstream.cpp:242:15:242:17 | ss1 | stringstream.cpp:242:7:242:13 | call to getline |  |
+| stringstream.cpp:242:15:242:17 | ss1 | stringstream.cpp:242:20:242:21 | ref arg s4 | TAINT |
 | stringstream.cpp:242:20:242:21 | ref arg s4 | stringstream.cpp:246:7:246:8 | s4 |  |
 | stringstream.cpp:243:15:243:17 | ref arg ss2 | stringstream.cpp:244:15:244:17 | ss2 |  |
 | stringstream.cpp:243:15:243:17 | ref arg ss2 | stringstream.cpp:250:23:250:25 | ss2 |  |
+| stringstream.cpp:243:15:243:17 | ss2 | stringstream.cpp:243:7:243:13 | call to getline |  |
+| stringstream.cpp:243:15:243:17 | ss2 | stringstream.cpp:243:20:243:21 | ref arg s5 | TAINT |
 | stringstream.cpp:243:20:243:21 | ref arg s5 | stringstream.cpp:247:7:247:8 | s5 |  |
 | stringstream.cpp:244:15:244:17 | ref arg ss2 | stringstream.cpp:250:23:250:25 | ss2 |  |
+| stringstream.cpp:244:15:244:17 | ss2 | stringstream.cpp:244:7:244:13 | call to getline |  |
+| stringstream.cpp:244:15:244:17 | ss2 | stringstream.cpp:244:20:244:21 | ref arg s6 | TAINT |
 | stringstream.cpp:244:20:244:21 | ref arg s6 | stringstream.cpp:245:20:245:21 | s6 |  |
 | stringstream.cpp:244:20:244:21 | ref arg s6 | stringstream.cpp:248:7:248:8 | s6 |  |
+| stringstream.cpp:245:15:245:17 | ss1 | stringstream.cpp:245:7:245:13 | call to getline |  |
+| stringstream.cpp:245:15:245:17 | ss1 | stringstream.cpp:245:20:245:21 | ref arg s6 | TAINT |
 | stringstream.cpp:245:20:245:21 | ref arg s6 | stringstream.cpp:248:7:248:8 | s6 |  |
+| stringstream.cpp:250:15:250:21 | call to getline | stringstream.cpp:250:7:250:13 | call to getline |  |
+| stringstream.cpp:250:15:250:21 | call to getline | stringstream.cpp:250:33:250:34 | ref arg s8 | TAINT |
+| stringstream.cpp:250:15:250:21 | ref arg call to getline | stringstream.cpp:250:23:250:25 | ref arg ss2 | TAINT |
+| stringstream.cpp:250:23:250:25 | ss2 | stringstream.cpp:250:15:250:21 | call to getline |  |
+| stringstream.cpp:250:23:250:25 | ss2 | stringstream.cpp:250:28:250:29 | ref arg s7 | TAINT |
 | stringstream.cpp:250:28:250:29 | ref arg s7 | stringstream.cpp:251:7:251:8 | s7 |  |
 | stringstream.cpp:250:33:250:34 | ref arg s8 | stringstream.cpp:252:7:252:8 | s8 |  |
 | stringstream.cpp:257:24:257:29 | call to source | stringstream.cpp:257:24:257:31 | call to basic_string | TAINT |
