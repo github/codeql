@@ -1645,7 +1645,7 @@ private class AccessPathApproxOption extends TAccessPathApproxOption {
 }
 
 /**
- * Holds if `node` is reachable with approximate access path `ap` from a source
+ * Holds if `node` is reachable with approximate access path `apa` from a source
  * in the configuration `config`.
  *
  * The call context `cc` records whether the node is reached through an
@@ -1863,7 +1863,7 @@ private predicate flowFwdIsEntered(
 }
 
 /**
- * Holds if `node` with approximate access path `ap` is part of a path from a
+ * Holds if `node` with approximate access path `apa` is part of a path from a
  * source to a sink in the configuration `config`.
  *
  * The Boolean `toReturn` records whether the node must be returned from
