@@ -1,3 +1,6 @@
+/** 
+ * Definitions for reasoning about lists and arrays that are to be used as arguments to an external process.
+ */
 import java
 import semmle.code.java.dataflow.SSA
 import semmle.code.java.Collections
