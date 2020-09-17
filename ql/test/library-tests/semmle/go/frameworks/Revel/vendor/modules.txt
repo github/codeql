@@ -1,0 +1,42 @@
+# github.com/fsnotify/fsnotify v1.4.9
+## explicit
+github.com/fsnotify/fsnotify
+# github.com/github/depstubber v0.0.0-20200910105848-4f6b1e61222c
+## explicit
+github.com/github/depstubber
+# github.com/go-stack/stack v1.8.0
+## explicit
+github.com/go-stack/stack
+# github.com/inconshreveable/log15 v0.0.0-20200109203555-b30bc20e4fd1
+## explicit
+github.com/inconshreveable/log15
+# github.com/mattn/go-colorable v0.1.7
+## explicit
+github.com/mattn/go-colorable
+# github.com/revel/config v1.0.0
+## explicit
+github.com/revel/config
+# github.com/revel/log15 v2.11.20+incompatible
+## explicit
+github.com/revel/log15
+# github.com/revel/pathtree v0.0.0-20140121041023-41257a1839e9
+## explicit
+github.com/revel/pathtree
+# github.com/revel/revel v1.0.0
+## explicit
+github.com/revel/revel
+# github.com/twinj/uuid v1.0.0
+## explicit
+github.com/twinj/uuid
+# github.com/xeonx/timeago v1.0.0-rc4
+## explicit
+github.com/xeonx/timeago
+# golang.org/x/net v0.0.0-20200904194848-62affa334b73
+## explicit
+golang.org/x/net
+# gopkg.in/natefinch/lumberjack.v2 v2.0.0
+## explicit
+gopkg.in/natefinch/lumberjack.v2
+# gopkg.in/stack.v0 v0.0.0-20141108040640-9b43fcefddd0
+## explicit
+gopkg.in/stack.v0

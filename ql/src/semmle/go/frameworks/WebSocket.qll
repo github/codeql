@@ -271,4 +271,28 @@ module WebSocketReader {
 
     override FunctionOutput getAnOutput() { result.isResult(1) }
   }
+
+  /**
+   * The `ServerWebSocket.MessageReceive` method of the `github.com/revel/revel` package.
+   */
+  private class RevelServerWebSocketMessageReceive extends Range, Method {
+    RevelServerWebSocketMessageReceive() {
+      // func MessageReceive(v interface{}) error
+      this.hasQualifiedName(Revel::packagePath(), "ServerWebSocket", "MessageReceive")
+    }
+
+    override FunctionOutput getAnOutput() { result.isParameter(0) }
+  }
+
+  /**
+   * The `ServerWebSocket.MessageReceiveJSON` method of the `github.com/revel/revel` package.
+   */
+  private class RevelServerWebSocketMessageReceiveJSON extends Range, Method {
+    RevelServerWebSocketMessageReceiveJSON() {
+      // func MessageReceiveJSON(v interface{}) error
+      this.hasQualifiedName(Revel::packagePath(), "ServerWebSocket", "MessageReceiveJSON")
+    }
+
+    override FunctionOutput getAnOutput() { result.isParameter(0) }
+  }
 }
