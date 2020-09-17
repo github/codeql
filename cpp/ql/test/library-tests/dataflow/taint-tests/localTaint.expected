@@ -2122,23 +2122,29 @@
 | stringstream.cpp:260:19:260:19 | 0 | stringstream.cpp:260:17:260:20 | {...} | TAINT |
 | stringstream.cpp:262:7:262:9 | ss1 | stringstream.cpp:262:11:262:13 | call to get |  |
 | stringstream.cpp:262:7:262:9 | ss1 | stringstream.cpp:262:15:262:16 | ref arg b1 | TAINT |
+| stringstream.cpp:262:11:262:13 | call to get | stringstream.cpp:262:24:262:28 | call to unget |  |
 | stringstream.cpp:262:11:262:13 | ref arg call to get | stringstream.cpp:262:7:262:9 | ref arg ss1 | TAINT |
 | stringstream.cpp:262:15:262:16 | ref arg b1 | stringstream.cpp:263:7:263:8 | b1 |  |
 | stringstream.cpp:262:24:262:28 | call to unget | stringstream.cpp:262:32:262:34 | call to get |  |
 | stringstream.cpp:262:24:262:28 | call to unget | stringstream.cpp:262:36:262:37 | ref arg b2 | TAINT |
+| stringstream.cpp:262:24:262:28 | ref arg call to unget | stringstream.cpp:262:11:262:13 | ref arg call to get | TAINT |
 | stringstream.cpp:262:36:262:37 | ref arg b2 | stringstream.cpp:264:7:264:8 | b2 |  |
 | stringstream.cpp:263:7:263:8 | b1 | stringstream.cpp:263:7:263:8 | call to basic_string | TAINT |
 | stringstream.cpp:264:7:264:8 | b2 | stringstream.cpp:264:7:264:8 | call to basic_string | TAINT |
 | stringstream.cpp:266:7:266:9 | ref arg ss2 | stringstream.cpp:267:7:267:9 | ss2 |  |
 | stringstream.cpp:266:7:266:9 | ss2 | stringstream.cpp:266:11:266:15 | call to write |  |
+| stringstream.cpp:266:11:266:15 | call to write | stringstream.cpp:266:27:266:31 | call to flush |  |
 | stringstream.cpp:266:11:266:15 | ref arg call to write | stringstream.cpp:266:7:266:9 | ref arg ss2 | TAINT |
 | stringstream.cpp:266:17:266:21 | abc | stringstream.cpp:266:7:266:9 | ref arg ss2 | TAINT |
 | stringstream.cpp:266:17:266:21 | abc | stringstream.cpp:266:11:266:15 | call to write | TAINT |
 | stringstream.cpp:266:27:266:31 | call to flush | stringstream.cpp:266:35:266:39 | call to write |  |
+| stringstream.cpp:266:27:266:31 | ref arg call to flush | stringstream.cpp:266:11:266:15 | ref arg call to write | TAINT |
+| stringstream.cpp:266:35:266:39 | call to write | stringstream.cpp:266:54:266:58 | call to flush |  |
 | stringstream.cpp:266:35:266:39 | ref arg call to write | stringstream.cpp:266:27:266:31 | ref arg call to flush | TAINT |
 | stringstream.cpp:266:41:266:46 | call to source | stringstream.cpp:266:27:266:31 | ref arg call to flush | TAINT |
 | stringstream.cpp:266:41:266:46 | call to source | stringstream.cpp:266:35:266:39 | call to write | TAINT |
 | stringstream.cpp:266:54:266:58 | call to flush | stringstream.cpp:266:62:266:66 | call to write |  |
+| stringstream.cpp:266:54:266:58 | ref arg call to flush | stringstream.cpp:266:35:266:39 | ref arg call to write | TAINT |
 | stringstream.cpp:266:68:266:72 | xyz | stringstream.cpp:266:54:266:58 | ref arg call to flush | TAINT |
 | stringstream.cpp:266:68:266:72 | xyz | stringstream.cpp:266:62:266:66 | call to write | TAINT |
 | structlikeclass.cpp:5:7:5:7 | Unknown literal | structlikeclass.cpp:5:7:5:7 | constructor init of field v | TAINT |

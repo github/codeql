@@ -246,7 +246,11 @@
 | stringstream.cpp:250:7:250:13 | call to getline | stringstream.cpp:203:24:203:29 | call to source |
 | stringstream.cpp:251:7:251:8 | s7 | stringstream.cpp:203:24:203:29 | call to source |
 | stringstream.cpp:252:7:252:8 | s8 | stringstream.cpp:203:24:203:29 | call to source |
+| stringstream.cpp:262:32:262:34 | call to get | stringstream.cpp:257:24:257:29 | call to source |
 | stringstream.cpp:263:7:263:8 | call to basic_string | stringstream.cpp:257:24:257:29 | call to source |
+| stringstream.cpp:264:7:264:8 | call to basic_string | stringstream.cpp:257:24:257:29 | call to source |
+| stringstream.cpp:266:62:266:66 | call to write | stringstream.cpp:266:41:266:46 | call to source |
+| stringstream.cpp:267:7:267:9 | ss2 | stringstream.cpp:266:41:266:46 | call to source |
 | structlikeclass.cpp:35:8:35:9 | s1 | structlikeclass.cpp:29:22:29:27 | call to source |
 | structlikeclass.cpp:36:8:36:9 | s2 | structlikeclass.cpp:30:24:30:29 | call to source |
 | structlikeclass.cpp:37:8:37:9 | s3 | structlikeclass.cpp:29:22:29:27 | call to source |

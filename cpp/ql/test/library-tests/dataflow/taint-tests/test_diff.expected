@@ -248,7 +248,11 @@
 | stringstream.cpp:250:7:250:13 | stringstream.cpp:203:24:203:29 | AST only |
 | stringstream.cpp:251:7:251:8 | stringstream.cpp:203:24:203:29 | AST only |
 | stringstream.cpp:252:7:252:8 | stringstream.cpp:203:24:203:29 | AST only |
+| stringstream.cpp:262:32:262:34 | stringstream.cpp:257:24:257:29 | AST only |
 | stringstream.cpp:263:7:263:8 | stringstream.cpp:257:24:257:29 | AST only |
+| stringstream.cpp:264:7:264:8 | stringstream.cpp:257:24:257:29 | AST only |
+| stringstream.cpp:266:62:266:66 | stringstream.cpp:266:41:266:46 | AST only |
+| stringstream.cpp:267:7:267:9 | stringstream.cpp:266:41:266:46 | AST only |
 | swap1.cpp:78:12:78:16 | swap1.cpp:69:23:69:23 | AST only |
 | swap1.cpp:87:13:87:17 | swap1.cpp:82:16:82:21 | AST only |
 | swap1.cpp:88:13:88:17 | swap1.cpp:81:27:81:28 | AST only |

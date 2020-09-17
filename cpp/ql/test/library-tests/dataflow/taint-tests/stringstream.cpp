@@ -259,10 +259,10 @@ void test_chaining()
 	char b1[1000] = {0};
 	char b2[1000] = {0};
 
-	sink(ss1.get(b1, 100).unget().get(b2, 100)); // tainted [NOT DETECTED]
+	sink(ss1.get(b1, 100).unget().get(b2, 100)); // tainted
 	sink(b1); // tainted
-	sink(b2); // tainted [NOT DETECTED]
+	sink(b2); // tainted
 
-	sink(ss2.write("abc", 3).flush().write(source(), 3).flush().write("xyz", 3)); // tainted [NOT DETECTED]
-	sink(ss2); // tainted [NOT DETECTED]
+	sink(ss2.write("abc", 3).flush().write(source(), 3).flush().write("xyz", 3)); // tainted
+	sink(ss2); // tainted
 }

@@ -593,3 +593,27 @@ class StdStringStreamStr extends TaintFunction {
     output.isQualifierObject()
   }
 }
+
+/**
+ * A `std::` stream function that does not require a model, except that it
+ * returns a reference to `*this` and thus could be used in a chain.
+ */
+class StdStreamFunction extends DataFlowFunction, TaintFunction {
+  StdStreamFunction() {
+    this.hasQualifiedName("std", "basic_istream", ["ignore", "unget", "seekg"]) or
+    this.hasQualifiedName("std", "basic_ostream", ["seekp", "flush"]) or
+    this.hasQualifiedName("std", "basic_ios", "copyfmt")
+  }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    // returns reference to `*this`
+    input.isQualifierAddress() and
+    output.isReturnValue()
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // reverse flow from returned reference to the qualifier
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
+  }
+}
