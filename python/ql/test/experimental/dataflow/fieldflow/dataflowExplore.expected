@@ -1,0 +1,43 @@
+edges
+| examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:31:5:31:10 | ControlFlowNode for SOURCE |
+| examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:41:13:41:18 | ControlFlowNode for SOURCE |
+| examples.py:41:13:41:18 | ControlFlowNode for SOURCE | examples.py:50:29:50:34 | ControlFlowNode for SOURCE |
+| test.py:8:24:8:26 | SSA variable foo | test.py:9:20:9:22 | ControlFlowNode for foo |
+| test.py:9:20:9:22 | ControlFlowNode for foo | test.py:9:9:9:12 | [post store] ControlFlowNode for self [Attribute foo] |
+| test.py:21:17:21:17 | SSA variable x | test.py:23:15:23:15 | ControlFlowNode for x |
+| test.py:23:15:23:15 | ControlFlowNode for x | test.py:23:5:23:7 | [post store] ControlFlowNode for obj [Attribute foo] |
+| test.py:29:12:29:16 | [post arg] ControlFlowNode for myobj [Attribute foo] | test.py:30:10:30:14 | ControlFlowNode for myobj [Attribute foo] |
+| test.py:29:19:29:24 | ControlFlowNode for SOURCE | test.py:21:17:21:17 | SSA variable x |
+| test.py:29:19:29:24 | ControlFlowNode for SOURCE | test.py:29:12:29:16 | [post arg] ControlFlowNode for myobj [Attribute foo] |
+| test.py:30:10:30:14 | ControlFlowNode for myobj [Attribute foo] | test.py:30:10:30:18 | ControlFlowNode for Attribute |
+| test.py:34:5:34:5 | SSA variable x | test.py:38:17:38:17 | ControlFlowNode for x |
+| test.py:34:9:34:14 | ControlFlowNode for SOURCE | test.py:34:5:34:5 | SSA variable x |
+| test.py:38:5:38:5 | [post read] ControlFlowNode for a [Attribute obj, ... (2)] | test.py:39:5:39:5 | ControlFlowNode for a [Attribute obj, ... (2)] |
+| test.py:38:5:38:9 | [post store] ControlFlowNode for Attribute [Attribute foo] | test.py:38:5:38:5 | [post read] ControlFlowNode for a [Attribute obj, ... (2)] |
+| test.py:38:17:38:17 | ControlFlowNode for x | test.py:38:5:38:9 | [post store] ControlFlowNode for Attribute [Attribute foo] |
+| test.py:38:17:38:17 | ControlFlowNode for x | test.py:39:22:39:22 | ControlFlowNode for x |
+| test.py:39:5:39:5 | ControlFlowNode for a [Attribute obj, ... (2)] | test.py:41:10:41:10 | ControlFlowNode for a [Attribute obj, ... (2)] |
+| test.py:39:22:39:22 | ControlFlowNode for x | test.py:39:5:39:14 | [post store] ControlFlowNode for Attribute() [Attribute foo] |
+| test.py:41:10:41:10 | ControlFlowNode for a [Attribute obj, ... (2)] | test.py:41:10:41:14 | ControlFlowNode for Attribute [Attribute foo] |
+| test.py:41:10:41:14 | ControlFlowNode for Attribute [Attribute foo] | test.py:41:10:41:18 | ControlFlowNode for Attribute |
+| test.py:45:5:45:7 | SSA variable obj [Attribute foo] | test.py:46:10:46:12 | ControlFlowNode for obj [Attribute foo] |
+| test.py:45:11:45:23 | [post malloc] malloc MyObj() [Attribute foo] | test.py:45:5:45:7 | SSA variable obj [Attribute foo] |
+| test.py:45:17:45:22 | ControlFlowNode for SOURCE | test.py:8:24:8:26 | SSA variable foo |
+| test.py:45:17:45:22 | ControlFlowNode for SOURCE | test.py:45:11:45:23 | [post malloc] malloc MyObj() [Attribute foo] |
+| test.py:45:17:45:22 | ControlFlowNode for SOURCE | test.py:45:17:45:22 | [post arg] ControlFlowNode for SOURCE [Attribute foo] |
+| test.py:46:10:46:12 | ControlFlowNode for obj [Attribute foo] | test.py:46:10:46:16 | ControlFlowNode for Attribute |
+| test.py:49:28:49:28 | SSA variable x | test.py:50:11:50:18 | SSA variable x |
+| test.py:49:28:49:28 | SSA variable x | test.py:50:17:50:17 | ControlFlowNode for x |
+| test.py:50:5:50:7 | SSA variable obj [Attribute foo] | test.py:51:9:51:11 | ControlFlowNode for obj [Attribute foo] |
+| test.py:50:11:50:18 | [post malloc] malloc MyObj() [Attribute foo] | test.py:50:5:50:7 | SSA variable obj [Attribute foo] |
+| test.py:50:17:50:17 | ControlFlowNode for x | test.py:8:24:8:26 | SSA variable foo |
+| test.py:50:17:50:17 | ControlFlowNode for x | test.py:50:11:50:18 | [post malloc] malloc MyObj() [Attribute foo] |
+| test.py:50:17:50:17 | ControlFlowNode for x | test.py:50:17:50:17 | [post arg] ControlFlowNode for x [Attribute foo] |
+| test.py:51:5:51:5 | SSA variable a | test.py:52:12:52:12 | ControlFlowNode for a |
+| test.py:51:9:51:11 | ControlFlowNode for obj [Attribute foo] | test.py:51:9:51:15 | ControlFlowNode for Attribute |
+| test.py:51:9:51:15 | ControlFlowNode for Attribute | test.py:51:5:51:5 | SSA variable a |
+| test.py:56:33:56:38 | ControlFlowNode for SOURCE | test.py:49:28:49:28 | SSA variable x |
+| test.py:56:33:56:38 | ControlFlowNode for SOURCE | test.py:56:10:56:39 | ControlFlowNode for fields_with_local_flow() |
+| test.py:56:33:56:38 | ControlFlowNode for SOURCE | test.py:56:33:56:38 | [post arg] ControlFlowNode for SOURCE [Attribute foo] |
+#select
+| test.py:46:10:46:16 | ControlFlowNode for Attribute | test.py:45:17:45:22 | ControlFlowNode for SOURCE | test.py:46:10:46:16 | ControlFlowNode for Attribute | <message> |
