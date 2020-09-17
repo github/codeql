@@ -17,10 +17,14 @@ class DataFlowCfgNode extends ControlFlowNode {
 }
 
 /** A data flow node which should have an associated post-update node. */
-abstract class PreUpdateNode extends Node { }
+abstract class PreUpdateNode extends Node {
+  abstract string label();
+}
 
 /** An argument might have its value changed as a result of a call. */
-class ArgumentPreUpdateNode extends PreUpdateNode, ArgumentNode { }
+class ArgumentPreUpdateNode extends PreUpdateNode, ExplicitArgumentNode {
+  override string label() { result = "arg" }
+}
 
 /** An object might have its value changed after a store. */
 class StorePreUpdateNode extends PreUpdateNode, CfgNode {
@@ -30,6 +34,8 @@ class StorePreUpdateNode extends PreUpdateNode, CfgNode {
       a.getCtx() instanceof Store
     )
   }
+
+  override string label() { result = "store" }
 }
 
 /** A node marking the state change of an object after a read. */
@@ -40,6 +46,17 @@ class ReadPreUpdateNode extends PreUpdateNode, CfgNode {
       a.getCtx() instanceof Load
     )
   }
+
+  override string label() { result = "read" }
+}
+
+class MallocNode extends PreUpdateNode, ImplicitSelfArgumentNode {
+  // ObjectCreationNode() { exists(ClassValue c | this.asCfgNode() = c.getACall()) }
+  override string toString() {
+    result = "malloc " + this.asCfgNode().(CallNode).getNode().(Call).toString()
+  }
+
+  override string label() { result = "malloc" }
 }
 
 /**
@@ -61,7 +78,7 @@ class PostUpdateNode extends Node, TPostUpdateNode {
   /** Gets the node before the state update. */
   Node getPreUpdateNode() { result = pre }
 
-  override string toString() { result = "[post] " + pre.toString() }
+  override string toString() { result = "[post " + pre.label() + "] " + pre.toString() }
 
   override Scope getScope() { result = pre.getScope() }
 
@@ -297,14 +314,33 @@ class SpecialCall extends DataFlowCall, TSpecialCall {
 }
 
 /** A data flow node that represents a call argument. */
-class ArgumentNode extends CfgNode {
-  ArgumentNode() { exists(DataFlowCall call, int pos | node = call.getArg(pos)) }
-
+abstract class ArgumentNode extends CfgNode {
   /** Holds if this argument occurs at the given position in the given call. */
-  predicate argumentOf(DataFlowCall call, int pos) { node = call.getArg(pos) }
+  abstract predicate argumentOf(DataFlowCall call, int pos);
 
   /** Gets the call in which this node is an argument. */
-  final DataFlowCall getCall() { this.argumentOf(result, _) }
+  abstract DataFlowCall getCall();
+}
+
+/** A data flow node that represents a call argument. */
+class ExplicitArgumentNode extends ArgumentNode {
+  ExplicitArgumentNode() { exists(DataFlowCall call, int pos | node = call.getArg(pos)) }
+
+  /** Holds if this argument occurs at the given position in the given call. */
+  override predicate argumentOf(DataFlowCall call, int pos) { node = call.getArg(pos) }
+
+  /** Gets the call in which this node is an argument. */
+  final override DataFlowCall getCall() { this.argumentOf(result, _) }
+}
+
+class ImplicitSelfArgumentNode extends ArgumentNode {
+  ImplicitSelfArgumentNode() { exists(ClassValue cv | node = cv.getACall()) }
+
+  /** Holds if this argument occurs at the given position in the given call. */
+  override predicate argumentOf(DataFlowCall call, int pos) { call = TCallNode(node) and pos = -1 }
+
+  /** Gets the call in which this node is an argument. */
+  final override DataFlowCall getCall() { result = TCallNode(node) }
 }
 
 /** Gets a viable run-time target for the call `call`. */
