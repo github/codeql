@@ -194,5 +194,30 @@ func serveStdlib() {
 		http.Redirect(w, r, target.EscapedPath(), 301)
 	})
 
+	http.HandleFunc("/ex11", func(w http.ResponseWriter, r *http.Request) {
+		// GOOD: all these fields and methods are disregarded for OpenRedirect attacks:
+		buf := make([]byte, 100)
+		r.Body.Read(buf)
+		http.Redirect(w, r, string(buf), 301)
+		bodyReader, _ := r.GetBody()
+		bodyReader.Read(buf)
+		http.Redirect(w, r, string(buf), 301)
+		http.Redirect(w, r, r.PostForm["someField"][0], 301)
+		http.Redirect(w, r, r.MultipartForm.Value["someField"][0], 301)
+		http.Redirect(w, r, r.Header.Get("someField"), 301)
+		http.Redirect(w, r, r.Trailer.Get("someField"), 301)
+		http.Redirect(w, r, r.PostFormValue("someField"), 301)
+		cookie, _ := r.Cookie("key")
+		http.Redirect(w, r, cookie.Value, 301)
+		http.Redirect(w, r, r.Cookies()[0].Value, 301)
+		http.Redirect(w, r, r.Referer(), 301)
+		http.Redirect(w, r, r.UserAgent(), 301)
+		http.Redirect(w, r, r.PostFormValue("target"), 301)
+		reader, _ := r.MultipartReader()
+		part, _ := reader.NextPart()
+		part.Read(buf)
+		http.Redirect(w, r, string(buf), 301)
+	})
+
 	http.ListenAndServe(":80", nil)
 }
