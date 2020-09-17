@@ -574,8 +574,7 @@ module HTTP {
           read = DataFlow::lvalueNode(any(ForOfStmt stmt).getLValue())
           or
           // for forwarding calls to an element where the key is determined by the request.
-          getRequestParameterRead(read.getContainer().(Function).flow())
-              .flowsToExpr(read.getPropertyNameExpr())
+          getRequestParameterRead().flowsToExpr(read.getPropertyNameExpr())
         )
       }
     }
@@ -583,12 +582,12 @@ module HTTP {
     /**
      * Gets a (chained) property-read/method-call on the request parameter of the route-handler `f`.
      */
-    private DataFlow::SourceNode getRequestParameterRead(RouteHandlerCandidate f) {
-      result = f.getParameter(0)
+    private DataFlow::SourceNode getRequestParameterRead() {
+      result = any(RouteHandlerCandidate f).getParameter(0)
       or
-      result = getRequestParameterRead(f).getAPropertyRead()
+      result = getRequestParameterRead().getAPropertyRead()
       or
-      result = getRequestParameterRead(f).getAMethodCall()
+      result = getRequestParameterRead().getAMethodCall()
     }
 
     /**
