@@ -645,6 +645,9 @@ final class ImportsNode extends PrintAstNode, TImportsNode {
       )
   }
 
+  /**
+   * Gets the underlying CompilationUnit.
+   */
   CompilationUnit getCompilationUnit() { result = cu }
 }
 
