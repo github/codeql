@@ -137,11 +137,9 @@ private class CommandArgumentArray extends SsaExplicitUpdate {
   /** Gets an expression that is written to the given index of this array. */
   Expr getAWrite(int index) { result = getAWrite(index, _) }
 
-  predicate isNotShell() { 
-    exists(Expr e | e = this.(CommandArgArrayImmutableFirst).getFirstElement() |
-      not isShell(e)
-    )
-   }
+  predicate isNotShell() {
+    exists(Expr e | e = this.(CommandArgArrayImmutableFirst).getFirstElement() | not isShell(e))
+  }
 }
 
 /**
@@ -186,7 +184,8 @@ private class ImmutableFirstArrayExpr extends Expr {
         ma.getArgument(0) instanceof ImmutableFirstArrayExpr
       )
       or
-      exists(Field f | this = f.getAnAccess() and
+      exists(Field f |
+        this = f.getAnAccess() and
         f.isFinal() and
         f.getInitializer() instanceof ImmutableFirstArrayExpr
       )
