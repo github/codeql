@@ -2138,9 +2138,6 @@ private newtype TPathNode =
  * tracked object. The final type indicates the type of the tracked object.
  */
 abstract private class AccessPath extends TAccessPath {
-  /** Gets the type of this access path. */
-  abstract DataFlowType getType();
-
   /** Gets the head of this access path, if any. */
   abstract TypedContent getHead();
 
@@ -2174,7 +2171,7 @@ private class AccessPathNil extends AccessPath, TAccessPathNil {
 
   AccessPathNil() { this = TAccessPathNil(t) }
 
-  override DataFlowType getType() { result = t }
+  DataFlowType getType() { result = t }
 
   override TypedContent getHead() { none() }
 
@@ -2195,8 +2192,6 @@ private class AccessPathCons extends AccessPath, TAccessPathCons {
 
   AccessPathCons() { this = TAccessPathCons(head, tail) }
 
-  override DataFlowType getType() { result = tail.getType() }
-
   override TypedContent getHead() { result = head }
 
   override AccessPath getTail() { result = tail }
@@ -2212,14 +2207,16 @@ private class AccessPathCons extends AccessPath, TAccessPathCons {
   override int length() { result = 1 + tail.length() }
 
   private string toStringImpl() {
-    tail = TAccessPathNil(_) and
-    result = head.toString()
+    exists(DataFlowType t |
+      tail = TAccessPathNil(t) and
+      result = head.toString() + "]" + concat(" : " + ppReprType(t))
+    )
     or
     result = head + ", " + tail.(AccessPathCons).toStringImpl()
   }
 
   override string toString() {
-    result = "[" + this.toStringImpl() + "]" + concat(" : " + ppReprType(this.getType()))
+    result = "[" + this.toStringImpl()
   }
 }
 
