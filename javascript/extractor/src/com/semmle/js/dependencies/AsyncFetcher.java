@@ -1,8 +1,10 @@
 package com.semmle.js.dependencies;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -68,17 +70,51 @@ public class AsyncFetcher {
         });
     }
 
+    /** Result of a tarball extraction */
+    class ExtractionResult {
+        /** The directory into which the tarball was extracted. */
+        Path destDir;
+
+        /** Files created by the extraction, relative to <code>destDir</code>. */
+        List<Path> relativePaths;
+
+        ExtractionResult(Path destDir, List<Path> relativePaths) {
+            this.destDir = destDir;
+            this.relativePaths = relativePaths;
+        }
+    }
+
+    private CachedOperation<String, ExtractionResult> tarballExtractions = new CachedOperation<>();
+
     /**
      * Extracts the relevant contents of the given tarball URL in the given folder;
      * the returned future completes when done.
      */
     public CompletableFuture<Void> installFromTarballUrl(String tarballUrl, Path destDir) {
-        return CompletableFuture.runAsync(() -> {
+        return tarballExtractions.get(tarballUrl, () -> {
             try {
-                fetcher.extractFromTarballUrl(tarballUrl, destDir);
+                List<Path> relativePaths = fetcher.extractFromTarballUrl(tarballUrl, destDir);
+                return new ExtractionResult(destDir, relativePaths);
             } catch (IOException e) {
                 throw makeError("Could not install package from " + tarballUrl, e);
             }
-        }, executor);
+        }).thenAccept(extractionResult -> {
+            if (!extractionResult.destDir.equals(destDir)) {
+                // We've been asked to extract the same tarball into multiple directories (due to multiple package.json files).
+                // Symlink files from the original directory instead of extracting again.
+                // In principle we could symlink the whole directory, but directory symlinks are hard to create in a portable way.
+                System.out.println("Creating symlink farm from " + destDir + " to " + extractionResult.destDir);
+                for (Path relativePath : extractionResult.relativePaths) {
+                    Path originalFile = extractionResult.destDir.resolve(relativePath);
+                    Path newFile = destDir.resolve(relativePath);
+                    try {
+                        fetcher.mkdirp(newFile.getParent());
+                        Files.createSymbolicLink(newFile, originalFile);
+                    } catch (IOException e) {
+                        throw makeError("Failed to create symlink " + newFile + " -> " + originalFile, e);
+                    }
+                }
+            }
+        });
     }
 }

@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -45,13 +44,9 @@ public class DependencyResolver {
         }
     }
 
-    public DependencyResolver(ExecutorService threadPool, Set<String> packagesInRepo) {
-        this.fetcher = new AsyncFetcher(threadPool, this::reportError);
+    public DependencyResolver(AsyncFetcher fetcher, Set<String> packagesInRepo) {
+        this.fetcher = fetcher;
         this.packagesInRepo = packagesInRepo;
-    }
-
-    private void reportError(CompletionException ex) {
-        System.err.println(ex);
     }
 
     private void addConstraint(Constraint constraint) {
@@ -207,7 +202,7 @@ public class DependencyResolver {
     public static void main(String[] args) throws IOException {
         ExecutorService executors = Executors.newFixedThreadPool(50);
         try {
-            DependencyResolver resolver = new DependencyResolver(executors, Collections.emptySet());
+            DependencyResolver resolver = new DependencyResolver(new AsyncFetcher(executors, err -> { System.err.println(err); }), Collections.emptySet());
             for (String packageJsonPath : args) {
                 Path path = Paths.get(packageJsonPath).toAbsolutePath();
                 PackageJson packageJson = new Gson().fromJson(Files.newBufferedReader(path), PackageJson.class);

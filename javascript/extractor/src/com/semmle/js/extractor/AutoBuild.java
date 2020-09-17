@@ -32,10 +32,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
+import com.semmle.js.dependencies.AsyncFetcher;
 import com.semmle.js.dependencies.DependencyResolver;
 import com.semmle.js.dependencies.packument.PackageJson;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
@@ -791,12 +789,13 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       // Use more threads for dependency installation than for extraction, as this is mainly I/O bound and we want
       // many concurrent HTTP requests.
       ExecutorService installationThreadPool = Executors.newFixedThreadPool(50);
+      AsyncFetcher fetcher = new AsyncFetcher(installationThreadPool, err -> { System.err.println(err); });
       try {
         List<CompletableFuture<Void>> futures = new ArrayList<>();
         packageJsonFiles.forEach((file, packageJson) -> {
           Path virtualFile = virtualSourceRoot.toVirtualFile(file);
           Path nodeModulesDir = virtualFile.getParent().resolve("node_modules");
-          futures.add(new DependencyResolver(installationThreadPool, packagesInRepo.keySet()).installDependencies(packageJson, nodeModulesDir));
+          futures.add(new DependencyResolver(fetcher, packagesInRepo.keySet()).installDependencies(packageJson, nodeModulesDir));
         });
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
       } finally {

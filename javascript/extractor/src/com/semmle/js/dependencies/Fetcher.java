@@ -14,6 +14,8 @@ import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import com.google.gson.Gson;
@@ -35,7 +37,7 @@ public class Fetcher {
     private Object mkdirpLock = new Object();
 
     /** Creates the given directory and its parent directories. Only one thread is allowed to create directories at once. */
-    private void mkdirp(Path dir) throws IOException {
+    public void mkdirp(Path dir) throws IOException {
         synchronized (mkdirpLock) {
             Files.createDirectories(dir);
         }
@@ -88,14 +90,17 @@ public class Fetcher {
 
     /**
      * Extracts the package at the given tarball URL into the given directory.
-     *
+     * <p>
      * Only `package.json` and `.d.ts` files are extracted.
+     *
+     * @return paths of the files created by this call, relative to <code>destDir</code>
      */
-    public void extractFromTarballUrl(String tarballUrl, Path destDir) throws IOException {
+    public List<Path> extractFromTarballUrl(String tarballUrl, Path destDir) throws IOException {
         if  (!tarballUrl.startsWith("https://registry.npmjs.org/") || !tarballUrl.endsWith(".tgz")) { // Paranoid check
             throw new IOException("Tarball URL has unexpected format: " + tarballUrl);
         }
         System.out.println("Unpacking " + tarballUrl + " to " + destDir);
+        List<Path> relativePaths = new ArrayList<>();
         try (InputStream rawStream = new URL(tarballUrl).openStream()) {
             // Despite having the .tgz extension, the file is not always gzipped, sometimes it's just a raw tar archive,
             // regardless of what Accept-Encoding header we send.
@@ -129,6 +134,7 @@ public class Fetcher {
                 if (!filename.endsWith(".d.ts") && !filename.equals("package.json")) {
                     continue; // Only extract .d.ts files and package.json
                 }
+                relativePaths.add(entryPath);
                 Path outputFile = destDir.resolve(entryPath);
                 mkdirp(outputFile.getParent());
                 try (OutputStream output = new BufferedOutputStream(Files.newOutputStream(outputFile))) {
@@ -136,5 +142,6 @@ public class Fetcher {
                 }
             }
         }
+        return relativePaths;
     }
 }
