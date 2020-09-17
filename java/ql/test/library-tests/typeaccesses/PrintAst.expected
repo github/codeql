@@ -26,8 +26,9 @@ typeaccesses/Outer.java:
 #    7|             0: [IntegerLiteral] 1
 typeaccesses/TA.java:
 #    0| [CompilationUnit] TA
-#    3|   1: [ImportType] import ArrayList
-#    5|   2: [Class] TA
+#-----|   -1: (Imports)
+#    3|     1: [ImportType] import ArrayList
+#    5|   1: [Class] TA
 #-----|     -1: (Base Types)
 #    5|       -1: [TypeAccess] ArrayList<TA>
 #    5|         0: [TypeAccess] TA

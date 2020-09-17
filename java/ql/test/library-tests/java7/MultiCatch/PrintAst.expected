@@ -1,8 +1,9 @@
 MultiCatch.java:
 #    0| [CompilationUnit] MultiCatch
-#    3|   1: [ImportType] import IOException
-#    4|   2: [ImportType] import SQLException
-#    6|   3: [Class] MultiCatch
+#-----|   -1: (Imports)
+#    3|     1: [ImportType] import IOException
+#    4|     2: [ImportType] import SQLException
+#    6|   1: [Class] MultiCatch
 #    7|     2: [Method] multiCatch
 #    7|       3: [TypeAccess] void
 #-----|       4: (Parameters)
