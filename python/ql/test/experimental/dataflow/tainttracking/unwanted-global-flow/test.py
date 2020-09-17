@@ -40,7 +40,7 @@ initially_tainted2 = NOT_TAINTED
 ensure_not_tainted(initially_tainted2)
 
 
-# Flow via global assigment
+# Flow via global assignment
 
 def write_tainted():
     global g
