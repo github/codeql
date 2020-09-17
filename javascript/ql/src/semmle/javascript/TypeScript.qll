@@ -440,7 +440,11 @@ class LocalTypeName extends @local_type_name, LexicalName {
    * Gets the first declaration of this type name.
    */
   TypeDecl getFirstDeclaration() {
-    result = min(getADeclaration() as decl order by decl.getFirstToken().getIndex())
+    result =
+      min(getADeclaration() as decl
+        order by
+          decl.getLocation().getStartLine(), decl.getLocation().getStartColumn()
+      )
   }
 
   /** Gets a use of this type name in a type annotation. */
@@ -500,7 +504,11 @@ class LocalNamespaceName extends @local_namespace_name, LexicalName {
    * Gets the first declaration of this namespace name.
    */
   LocalNamespaceDecl getFirstDeclaration() {
-    result = min(getADeclaration() as decl order by decl.getFirstToken().getIndex())
+    result =
+      min(getADeclaration() as decl
+        order by
+          decl.getLocation().getStartLine(), decl.getLocation().getStartColumn()
+      )
   }
 
   /** Gets a use of this namespace name in a type annotation. */
