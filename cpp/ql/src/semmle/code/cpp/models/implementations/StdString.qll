@@ -305,8 +305,8 @@ class StdIStreamIn extends DataFlowFunction, TaintFunction {
   StdIStreamIn() { this.hasQualifiedName("std", "basic_istream", "operator>>") }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    // flow from qualifier to return value
-    input.isQualifierObject() and
+    // returns reference to `*this`
+    input.isQualifierAddress() and
     output.isReturnValue()
   }
 
@@ -374,8 +374,8 @@ class StdIStreamRead extends DataFlowFunction, TaintFunction {
   }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    // flow from qualifier to return value
-    input.isQualifierObject() and
+    // returns reference to `*this`
+    input.isQualifierAddress() and
     output.isReturnValue()
   }
 
@@ -410,7 +410,7 @@ class StdIStreamPutBack extends DataFlowFunction, TaintFunction {
   StdIStreamPutBack() { this.hasQualifiedName("std", "basic_istream", "putback") }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    // flow from qualifier to return value
+    // returns reference to `*this`
     input.isQualifierAddress() and
     output.isReturnValue()
   }
@@ -451,7 +451,7 @@ class StdOStreamOut extends DataFlowFunction, TaintFunction {
   StdOStreamOut() { this.hasQualifiedName("std", "basic_ostream", ["operator<<", "put", "write"]) }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    // flow from qualifier to return value
+    // returns reference to `*this`
     input.isQualifierAddress() and
     output.isReturnValue()
   }
