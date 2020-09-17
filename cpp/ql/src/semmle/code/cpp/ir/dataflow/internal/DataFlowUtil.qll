@@ -545,6 +545,7 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFr
  * This is the local flow predicate that's used as a building block in global
  * data flow. It may have less flow than the `localFlowStep` predicate.
  */
+cached
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Operand -> Instruction flow
   simpleInstructionLocalFlowStep(nodeFrom.asOperand(), nodeTo.asInstruction())
@@ -605,7 +606,6 @@ private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {
   )
 }
 
-cached
 private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo) {
   iTo.(CopyInstruction).getSourceValueOperand() = opFrom
   or
