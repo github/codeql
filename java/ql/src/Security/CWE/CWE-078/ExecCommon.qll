@@ -1,5 +1,6 @@
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.ExternalProcess
+import semmle.code.java.security.CommandArguments
 
 private class RemoteUserInputToArgumentToExecFlowConfig extends TaintTracking::Configuration {
   RemoteUserInputToArgumentToExecFlowConfig() {
@@ -11,7 +12,11 @@ private class RemoteUserInputToArgumentToExecFlowConfig extends TaintTracking::C
   override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof ArgumentToExec }
 
   override predicate isSanitizer(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
+    node.getType() instanceof PrimitiveType
+    or
+    node.getType() instanceof BoxedType
+    or
+    isSafeCommandArgument(node.asExpr())
   }
 }
 
