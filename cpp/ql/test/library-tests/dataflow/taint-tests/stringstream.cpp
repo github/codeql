@@ -75,14 +75,14 @@ void test_stringstream_int(int source)
 	sink(ss1 << 1234);
 	sink(ss2 << source); // tainted
 	sink(ss1 >> v1);
-	sink(ss2 >> v2); // tainted [NOT DETECTED]
+	sink(ss2 >> v2); // tainted
 
 	sink(ss1);
 	sink(ss2); // tainted
 	sink(ss1.str());
 	sink(ss2.str()); // tainted
 	sink(v1);
-	sink(v2); // tainted [NOT DETECTED]
+	sink(v2); // tainted
 }
 
 void test_stringstream_constructors()
@@ -117,9 +117,9 @@ void test_stringstream_swap()
 	ss1.swap(ss2);
 	ss4.swap(ss3);
 
-	sink(ss1); // tainted [NOT DETECTED]
+	sink(ss1); // tainted
 	sink(ss2); // [FALSE POSITIVE]
-	sink(ss3); // tainted [NOT DETECTED]
+	sink(ss3); // tainted
 	sink(ss4); // [FALSE POSITIVE]
 }
 
@@ -143,46 +143,46 @@ void test_stringstream_in()
 	sink(ss2 << source()); // tainted
 
 	sink(ss1 >> s1);
-	sink(ss2 >> s2); // tainted [NOT DETECTED]
-	sink(ss2 >> s3 >> s4); // tainted [NOT DETECTED]
+	sink(ss2 >> s2); // tainted
+	sink(ss2 >> s3 >> s4); // tainted
 	sink(s1);
-	sink(s2); // tainted [NOT DETECTED]
-	sink(s3); // tainted [NOT DETECTED]
-	sink(s4); // tainted [NOT DETECTED]
+	sink(s2); // tainted
+	sink(s3); // tainted
+	sink(s4); // tainted
 
 	sink(ss1 >> b1);
-	sink(ss2 >> b2);
-	sink(ss2 >> b3 >> b4);
+	sink(ss2 >> b2); // tainted
+	sink(ss2 >> b3 >> b4); // tainted
 	sink(b1);
-	sink(b2); // tainted [NOT DETECTED]
-	sink(b3); // tainted [NOT DETECTED]
-	sink(b4); // tainted [NOT DETECTED]
+	sink(b2); // tainted
+	sink(b3); // tainted
+	sink(b4); // tainted
 
 	sink(ss1.read(b5, 100));
-	sink(ss2.read(b6, 100)); // tainted [NOT DETECTED]
+	sink(ss2.read(b6, 100)); // tainted
 	sink(ss1.readsome(b7, 100));
 	sink(ss2.readsome(b8, 100)); // (returns a length, not significantly tainted)
 	sink(ss1.get(b9, 100));
-	sink(ss2.get(b10, 100));
+	sink(ss2.get(b10, 100)); // tainted
 	sink(b5);
-	sink(b6); // tainted [NOT DETECTED]
+	sink(b6); // tainted
 	sink(b7);
-	sink(b8); // tainted [NOT DETECTED]
+	sink(b8); // tainted
 	sink(b9);
-	sink(b10); // tainted [NOT DETECTED]
+	sink(b10); // tainted
 
 	sink(c1 = ss1.get());
-	sink(c2 = ss2.get()); // tainted [NOT DETECTED]
+	sink(c2 = ss2.get()); // tainted
 	sink(c3 = ss1.peek());
-	sink(c4 = ss2.peek()); // tainted [NOT DETECTED]
+	sink(c4 = ss2.peek()); // tainted
 	sink(ss1.get(c5));
-	sink(ss2.get(c6)); // tainted [NOT DETECTED]
+	sink(ss2.get(c6)); // tainted
 	sink(c1);
-	sink(c2); // tainted [NOT DETECTED]
+	sink(c2); // tainted
 	sink(c3);
-	sink(c4); // tainted [NOT DETECTED]
+	sink(c4); // tainted
 	sink(c5);
-	sink(c6); // tainted [NOT DETECTED]
+	sink(c6); // tainted
 }
 
 void test_stringstream_putback()
@@ -193,6 +193,6 @@ void test_stringstream_putback()
 	sink(ss.get());
 	sink(ss.putback('b'));
 	sink(ss.get());
-	sink(ss.putback(ns_char::source())); // tainted [NOT DETECTED]
-	sink(ss.get()); // tainted [NOT DETECTED]
+	sink(ss.putback(ns_char::source())); // tainted
+	sink(ss.get()); // tainted
 }
