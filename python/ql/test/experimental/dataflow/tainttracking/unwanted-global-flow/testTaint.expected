@@ -1,0 +1,3 @@
+| test.py:7 | ok   | test | tainted |
+| test.py:16 | ok   | test | tainted2 |
+| test.py:29 | ok   | sink_global | g |
