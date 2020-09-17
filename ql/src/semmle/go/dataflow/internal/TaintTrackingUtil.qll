@@ -167,8 +167,10 @@ predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   localAdditionalTaintStep(src, sink)
 }
 
+abstract class DefaultTaintSanitizer extends DataFlow::Node { }
+
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
  * but not in local taint.
  */
-predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
+predicate defaultTaintSanitizer(DataFlow::Node node) { node instanceof DefaultTaintSanitizer }
