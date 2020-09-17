@@ -45,5 +45,5 @@ app.use(function(req, res) {
 
 	tainted.match(/^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)+$/); // NOT OK - but not flagged
 	tainted.match(/^(?:\.?[a-zA-Z_][a-zA-Z_0-9]*)(?:\.[a-zA-Z_][a-zA-Z_0-9]*)*$/); // OK
-
+	tainted.replaceAll(/\s*\n\s*/g, ' '); // NOT OK
 });

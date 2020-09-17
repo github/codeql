@@ -218,12 +218,12 @@ module TaintedPath {
       output = this
       or
       // non-global replace or replace of something other than /\.\./g, /[/]/g, or /[\.]/g.
-      this.getCalleeName() = "replace" and
+      this instanceof StringReplaceCall and
       input = getReceiver() and
       output = this and
       not exists(RegExpLiteral literal, RegExpTerm term |
-        getArgument(0).getALocalSource().asExpr() = literal and
-        literal.isGlobal() and
+        this.(StringReplaceCall).getRegExp().asExpr() = literal and
+        this.(StringReplaceCall).isGlobal() and
         literal.getRoot() = term
       |
         term.getAMatchedString() = "/" or
@@ -247,16 +247,15 @@ module TaintedPath {
   /**
    * A call that removes all instances of "../" in the prefix of the string.
    */
-  class DotDotSlashPrefixRemovingReplace extends DataFlow::CallNode {
+  class DotDotSlashPrefixRemovingReplace extends StringReplaceCall {
     DataFlow::Node input;
     DataFlow::Node output;
 
     DotDotSlashPrefixRemovingReplace() {
-      this.getCalleeName() = "replace" and
       input = getReceiver() and
       output = this and
       exists(RegExpLiteral literal, RegExpTerm term |
-        getArgument(0).getALocalSource().asExpr() = literal and
+        getRegExp().asExpr() = literal and
         (term instanceof RegExpStar or term instanceof RegExpPlus) and
         term.getChild(0) = getADotDotSlashMatcher()
       |
@@ -298,17 +297,16 @@ module TaintedPath {
   /**
    * A call that removes all "." or ".." from a path, without also removing all forward slashes.
    */
-  class DotRemovingReplaceCall extends DataFlow::CallNode {
+  class DotRemovingReplaceCall extends StringReplaceCall {
     DataFlow::Node input;
     DataFlow::Node output;
 
     DotRemovingReplaceCall() {
-      this.getCalleeName() = "replace" and
       input = getReceiver() and
       output = this and
+      isGlobal() and
       exists(RegExpLiteral literal, RegExpTerm term |
-        getArgument(0).getALocalSource().asExpr() = literal and
-        literal.isGlobal() and
+        getRegExp().asExpr() = literal and
         literal.getRoot() = term and
         not term.getAMatchedString() = "/"
       |
