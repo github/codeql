@@ -562,10 +562,11 @@ private predicate getFieldSizeOfClass(Class c, Type type, int size) {
   )
 }
 
-private predicate isSingleFieldClass(Type type, Class cTo) {
-  exists(int size |
-    cTo.getSize() = size and
-    getFieldSizeOfClass(cTo, type, size)
+private predicate isSingleFieldClass(Type type, Operand op) {
+  exists(int size, Class c |
+    c = op.getType().getUnderlyingType() and
+    c.getSize() = size and
+    getFieldSizeOfClass(c, type, size)
   )
 }
 
@@ -601,7 +602,7 @@ private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {
   exists(LoadInstruction load |
     load.getSourceValueOperand() = opTo and
     opTo.getAnyDef() = iFrom and
-    isSingleFieldClass(iFrom.getResultType(), opTo.getType().getUnderlyingType())
+    isSingleFieldClass(iFrom.getResultType(), opTo)
   )
 }
 
