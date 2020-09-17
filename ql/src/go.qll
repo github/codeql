@@ -27,6 +27,7 @@ import semmle.go.dataflow.GlobalValueNumbering
 import semmle.go.dataflow.SSA
 import semmle.go.dataflow.TaintTracking
 import semmle.go.frameworks.Chi
+import semmle.go.frameworks.Echo
 import semmle.go.frameworks.Email
 import semmle.go.frameworks.Encoding
 import semmle.go.frameworks.Gin
