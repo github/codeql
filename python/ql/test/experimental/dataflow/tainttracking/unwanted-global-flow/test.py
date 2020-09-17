@@ -32,7 +32,7 @@ def use_of_initially_tainted():
 # value is actually used before it gets reassigned to an untainted value. 
 
 def use_of_initially_tainted2():
-    ensure_tainted(initially_tainted)
+    ensure_tainted(initially_tainted2)
 
 initially_tainted2 = TAINTED_STRING
 use_of_initially_tainted2()
