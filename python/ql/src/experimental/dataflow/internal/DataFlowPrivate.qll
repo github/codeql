@@ -127,12 +127,6 @@ module EssaFlow {
       nodeTo.(EssaNode).getVar() = p.getVariable() and
       nodeFrom.(EssaNode).getVar() = p.getAnInput()
     )
-    or
-    // Module variable read
-    nodeFrom.(ModuleVariableNode).getARead() = nodeTo
-    or
-    // Module variable write
-    nodeFrom = nodeTo.(ModuleVariableNode).getAWrite()
   }
 
   predicate useToNextUse(NameNode nodeFrom, NameNode nodeTo) {
@@ -153,13 +147,31 @@ module EssaFlow {
  * excludes SSA flow through instance fields.
  */
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  not nodeFrom instanceof ModuleVariableNode and
-  not nodeTo instanceof ModuleVariableNode and
   // If there is ESSA-flow out of a node `node`, we want flow
   // both out of `node` and any post-update node of `node`.
   exists(Node node |
     EssaFlow::essaFlowStep(node, nodeTo) and
-    nodeFrom = update(node)
+    nodeFrom = update(node) and
+    (
+      not node instanceof EssaNode or
+      not nodeTo instanceof EssaNode or
+      localEssaStep(node, nodeTo)
+    )
+  )
+}
+
+/**
+ * Holds if there is an Essa flow step from `nodeFrom` to `nodeTo` that does not switch between
+ * local and global SSA variables.
+ */
+private predicate localEssaStep(EssaNode nodeFrom, EssaNode nodeTo) {
+  EssaFlow::essaFlowStep(nodeFrom, nodeTo) and
+  (
+    nodeFrom.getVar() instanceof GlobalSsaVariable and
+    nodeTo.getVar() instanceof GlobalSsaVariable
+    or
+    not nodeFrom.getVar() instanceof GlobalSsaVariable and
+    not nodeTo.getVar() instanceof GlobalSsaVariable
   )
 }
 
@@ -413,12 +425,11 @@ string ppReprType(DataFlowType t) { none() }
  * taken into account.
  */
 predicate jumpStep(Node nodeFrom, Node nodeTo) {
-  EssaFlow::essaFlowStep(nodeFrom, nodeTo) and
-  (
-    nodeFrom instanceof ModuleVariableNode
-    or
-    nodeTo instanceof ModuleVariableNode
-  )
+  // Module variable read
+  nodeFrom.(ModuleVariableNode).getARead() = nodeTo
+  or
+  // Module variable write
+  nodeFrom = nodeTo.(ModuleVariableNode).getAWrite()
 }
 
 //--------
