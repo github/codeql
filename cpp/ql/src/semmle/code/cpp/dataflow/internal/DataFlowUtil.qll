@@ -284,12 +284,10 @@ abstract class PostUpdateNode extends Node {
   override Location getLocation() { result = getPreUpdateNode().getLocation() }
 }
 
-private abstract class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNode {
+abstract private class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNode {
   PartialDefinition pd;
 
-  PartialDefinitionNode() {
-    this = TPartialDefinitionNode(pd)
-  }
+  PartialDefinitionNode() { this = TPartialDefinitionNode(pd) }
 
   override Location getLocation() { result = pd.getActualLocation() }
 
@@ -306,7 +304,7 @@ private class VariablePartialDefinitionNode extends PartialDefinitionNode {
 
 /**
  * INTERNAL: do not use.
- * 
+ *
  * A synthetic data flow node used for flow into a collection when an iterator
  * write occurs in a callee.
  */

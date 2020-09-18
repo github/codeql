@@ -112,13 +112,11 @@ private module PartialDefinitions {
   abstract class PartialDefinition extends Expr {
     ControlFlowNode node;
 
-    PartialDefinition() {
-      not this instanceof Conversion
-    }
+    PartialDefinition() { not this instanceof Conversion }
 
-    deprecated abstract predicate partiallyDefines(Variable v);
+    abstract deprecated predicate partiallyDefines(Variable v);
 
-    deprecated abstract predicate partiallyDefinesThis(ThisExpr e);
+    abstract deprecated predicate partiallyDefinesThis(ThisExpr e);
 
     /**
      * Gets the subBasicBlock where this `PartialDefinition` is defined.
