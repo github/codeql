@@ -19,6 +19,7 @@ predicate localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
  * local data flow steps. That is, `nodeFrom` and `nodeTo` are likely to represent
  * different objects.
  */
+cached
 predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   localInstructionTaintStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
   or
