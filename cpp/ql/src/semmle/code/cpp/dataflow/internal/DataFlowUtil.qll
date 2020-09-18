@@ -304,6 +304,12 @@ private class VariablePartialDefinitionNode extends PartialDefinitionNode {
   override Node getPreUpdateNode() { pd.definesExpressions(_, result.asExpr()) }
 }
 
+/**
+ * INTERNAL: do not use.
+ * 
+ * A synthetic data flow node used for flow into a collection when an iterator
+ * write occurs in a callee.
+ */
 class IteratorPartialDefinitionNode extends PartialDefinitionNode {
   override IteratorPartialDefinition pd;
 
