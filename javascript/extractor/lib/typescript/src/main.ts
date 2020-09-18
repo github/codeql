@@ -139,7 +139,7 @@ function getPackageTypings(file: string): string | undefined {
 function getPackageTypingsRaw(packageJsonFile: string): string | undefined {
     let json = getPackageJson(packageJsonFile);
     if (json == null) return undefined;
-    let typings = json.types || json.typings;
+    let typings = json.types || json.typings; // "types" and "typings" are aliases
     if (typeof typings !== 'string') return undefined;
     let absolutePath = pathlib.join(pathlib.dirname(packageJsonFile), typings);
     if (ts.sys.directoryExists(absolutePath)) {

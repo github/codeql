@@ -14,10 +14,6 @@ public class VersionConstraint {
         this.version = version;
     }
 
-    public static VersionConstraint exact(String version) {
-        return new VersionConstraint("", SemVer.tryParse(version));
-    }
-
     public String getOperator() {
         return operator;
     }
@@ -42,7 +38,7 @@ public class VersionConstraint {
                 String operator = matcher.group(1);
                 String versionStr = matcher.group(2);
                 if (operator.isEmpty() && versionStr.contains("x")) {
-                    // Normalize "1.x" to ">= 1.0"
+                    // Treat "1.x" as ">= 1.0"
                     operator = ">=";
                     versionStr = versionStr.replaceAll("x", "0");
                 }
