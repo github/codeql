@@ -5,6 +5,10 @@
 | A.java:41:5:41:53 | getInputStream(...) | A.java:41:5:41:53 | getInputStream(...) |
 | A.java:42:5:42:45 | getInputStream(...) | A.java:42:5:42:45 | getInputStream(...) |
 | A.java:43:5:43:47 | getHostName(...) | A.java:43:5:43:47 | getHostName(...) |
+| PlayResource.java:10:30:10:44 | username | PlayResource.java:10:30:10:44 | username |
+| PlayResource.java:10:47:10:61 | password | PlayResource.java:10:47:10:61 | password |
+| PlayResource.java:10:47:10:61 | password | PlayResource.java:11:31:11:51 | ... + ... |
+| PlayResource.java:10:47:10:61 | password | PlayResource.java:11:44:11:51 | password |
 | RmiFlowImpl.java:4:30:4:40 | path | RmiFlowImpl.java:4:30:4:40 | path |
 | RmiFlowImpl.java:4:30:4:40 | path | RmiFlowImpl.java:5:20:5:31 | ... + ... |
 | RmiFlowImpl.java:4:30:4:40 | path | RmiFlowImpl.java:5:28:5:31 | path |

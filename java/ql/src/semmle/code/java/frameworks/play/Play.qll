@@ -1,0 +1,9 @@
+import java
+import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.frameworks.play.PlayController
+import semmle.code.java.frameworks.play.PlayAddCSRFToken
+import semmle.code.java.frameworks.play.PlayAsyncResult
+import semmle.code.java.frameworks.play.PlayBodyParser
+import semmle.code.java.frameworks.play.PlayHTTPRequestHeader
+import semmle.code.java.frameworks.play.PlayMVCResult
+import semmle.code.java.frameworks.play.PlayMVCResults
