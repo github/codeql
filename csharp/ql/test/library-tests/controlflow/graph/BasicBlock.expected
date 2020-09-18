@@ -16,75 +16,124 @@
 | ArrayCreation.cs:7:11:7:12 | enter M3 | ArrayCreation.cs:7:11:7:12 | exit M3 | 6 |
 | ArrayCreation.cs:9:12:9:13 | enter M4 | ArrayCreation.cs:9:12:9:13 | exit M4 | 10 |
 | Assert.cs:7:10:7:11 | enter M1 | Assert.cs:9:20:9:20 | access to parameter b | 5 |
-| Assert.cs:9:16:9:32 | String s = ... | Assert.cs:7:10:7:11 | exit M1 | 11 |
+| Assert.cs:7:10:7:11 | exit M1 | Assert.cs:7:10:7:11 | exit M1 | 1 |
+| Assert.cs:9:16:9:32 | String s = ... | Assert.cs:10:22:10:30 | ... != ... | 5 |
 | Assert.cs:9:24:9:27 | null | Assert.cs:9:24:9:27 | null | 1 |
 | Assert.cs:9:31:9:32 | "" | Assert.cs:9:31:9:32 | "" | 1 |
+| Assert.cs:10:9:10:31 | [assertion failure] call to method Assert | Assert.cs:10:9:10:31 | [assertion failure] call to method Assert | 1 |
+| Assert.cs:10:9:10:31 | [assertion success] call to method Assert | Assert.cs:11:9:11:35 | call to method WriteLine | 5 |
 | Assert.cs:14:10:14:11 | enter M2 | Assert.cs:16:20:16:20 | access to parameter b | 5 |
-| Assert.cs:16:16:16:32 | String s = ... | Assert.cs:14:10:14:11 | exit M2 | 9 |
+| Assert.cs:14:10:14:11 | exit M2 | Assert.cs:14:10:14:11 | exit M2 | 1 |
+| Assert.cs:16:16:16:32 | String s = ... | Assert.cs:17:23:17:23 | access to local variable s | 3 |
 | Assert.cs:16:24:16:27 | null | Assert.cs:16:24:16:27 | null | 1 |
 | Assert.cs:16:31:16:32 | "" | Assert.cs:16:31:16:32 | "" | 1 |
+| Assert.cs:17:9:17:24 | [assertion failure] call to method IsNull | Assert.cs:17:9:17:24 | [assertion failure] call to method IsNull | 1 |
+| Assert.cs:17:9:17:24 | [assertion success] call to method IsNull | Assert.cs:18:9:18:35 | call to method WriteLine | 5 |
 | Assert.cs:21:10:21:11 | enter M3 | Assert.cs:23:20:23:20 | access to parameter b | 5 |
-| Assert.cs:23:16:23:32 | String s = ... | Assert.cs:21:10:21:11 | exit M3 | 9 |
+| Assert.cs:21:10:21:11 | exit M3 | Assert.cs:21:10:21:11 | exit M3 | 1 |
+| Assert.cs:23:16:23:32 | String s = ... | Assert.cs:24:26:24:26 | access to local variable s | 3 |
 | Assert.cs:23:24:23:27 | null | Assert.cs:23:24:23:27 | null | 1 |
 | Assert.cs:23:31:23:32 | "" | Assert.cs:23:31:23:32 | "" | 1 |
+| Assert.cs:24:9:24:27 | [assertion failure] call to method IsNotNull | Assert.cs:24:9:24:27 | [assertion failure] call to method IsNotNull | 1 |
+| Assert.cs:24:9:24:27 | [assertion success] call to method IsNotNull | Assert.cs:25:9:25:35 | call to method WriteLine | 5 |
 | Assert.cs:28:10:28:11 | enter M4 | Assert.cs:30:20:30:20 | access to parameter b | 5 |
-| Assert.cs:30:16:30:32 | String s = ... | Assert.cs:28:10:28:11 | exit M4 | 11 |
+| Assert.cs:28:10:28:11 | exit M4 | Assert.cs:28:10:28:11 | exit M4 | 1 |
+| Assert.cs:30:16:30:32 | String s = ... | Assert.cs:31:23:31:31 | ... == ... | 5 |
 | Assert.cs:30:24:30:27 | null | Assert.cs:30:24:30:27 | null | 1 |
 | Assert.cs:30:31:30:32 | "" | Assert.cs:30:31:30:32 | "" | 1 |
+| Assert.cs:31:9:31:32 | [assertion failure] call to method IsTrue | Assert.cs:31:9:31:32 | [assertion failure] call to method IsTrue | 1 |
+| Assert.cs:31:9:31:32 | [assertion success] call to method IsTrue | Assert.cs:32:9:32:35 | call to method WriteLine | 5 |
 | Assert.cs:35:10:35:11 | enter M5 | Assert.cs:37:20:37:20 | access to parameter b | 5 |
-| Assert.cs:37:16:37:32 | String s = ... | Assert.cs:35:10:35:11 | exit M5 | 11 |
+| Assert.cs:35:10:35:11 | exit M5 | Assert.cs:35:10:35:11 | exit M5 | 1 |
+| Assert.cs:37:16:37:32 | String s = ... | Assert.cs:38:23:38:31 | ... != ... | 5 |
 | Assert.cs:37:24:37:27 | null | Assert.cs:37:24:37:27 | null | 1 |
 | Assert.cs:37:31:37:32 | "" | Assert.cs:37:31:37:32 | "" | 1 |
+| Assert.cs:38:9:38:32 | [assertion failure] call to method IsTrue | Assert.cs:38:9:38:32 | [assertion failure] call to method IsTrue | 1 |
+| Assert.cs:38:9:38:32 | [assertion success] call to method IsTrue | Assert.cs:39:9:39:35 | call to method WriteLine | 5 |
 | Assert.cs:42:10:42:11 | enter M6 | Assert.cs:44:20:44:20 | access to parameter b | 5 |
-| Assert.cs:44:16:44:32 | String s = ... | Assert.cs:42:10:42:11 | exit M6 | 11 |
+| Assert.cs:42:10:42:11 | exit M6 | Assert.cs:42:10:42:11 | exit M6 | 1 |
+| Assert.cs:44:16:44:32 | String s = ... | Assert.cs:45:24:45:32 | ... != ... | 5 |
 | Assert.cs:44:24:44:27 | null | Assert.cs:44:24:44:27 | null | 1 |
 | Assert.cs:44:31:44:32 | "" | Assert.cs:44:31:44:32 | "" | 1 |
+| Assert.cs:45:9:45:33 | [assertion failure] call to method IsFalse | Assert.cs:45:9:45:33 | [assertion failure] call to method IsFalse | 1 |
+| Assert.cs:45:9:45:33 | [assertion success] call to method IsFalse | Assert.cs:46:9:46:35 | call to method WriteLine | 5 |
 | Assert.cs:49:10:49:11 | enter M7 | Assert.cs:51:20:51:20 | access to parameter b | 5 |
-| Assert.cs:51:16:51:32 | String s = ... | Assert.cs:49:10:49:11 | exit M7 | 11 |
+| Assert.cs:49:10:49:11 | exit M7 | Assert.cs:49:10:49:11 | exit M7 | 1 |
+| Assert.cs:51:16:51:32 | String s = ... | Assert.cs:52:24:52:32 | ... == ... | 5 |
 | Assert.cs:51:24:51:27 | null | Assert.cs:51:24:51:27 | null | 1 |
 | Assert.cs:51:31:51:32 | "" | Assert.cs:51:31:51:32 | "" | 1 |
+| Assert.cs:52:9:52:33 | [assertion failure] call to method IsFalse | Assert.cs:52:9:52:33 | [assertion failure] call to method IsFalse | 1 |
+| Assert.cs:52:9:52:33 | [assertion success] call to method IsFalse | Assert.cs:53:9:53:35 | call to method WriteLine | 5 |
 | Assert.cs:56:10:56:11 | enter M8 | Assert.cs:58:20:58:20 | access to parameter b | 5 |
-| Assert.cs:58:16:58:32 | String s = ... | Assert.cs:59:23:59:31 | ... != ... | 6 |
-| Assert.cs:58:24:58:27 | null | Assert.cs:58:24:58:27 | null | 1 |
-| Assert.cs:58:31:58:32 | "" | Assert.cs:58:31:58:32 | "" | 1 |
-| Assert.cs:59:9:59:37 | call to method IsTrue | Assert.cs:56:10:56:11 | exit M8 | 6 |
-| Assert.cs:59:36:59:36 | access to parameter b | Assert.cs:59:36:59:36 | access to parameter b | 1 |
+| Assert.cs:56:10:56:11 | exit M8 | Assert.cs:56:10:56:11 | exit M8 | 1 |
+| Assert.cs:58:24:58:27 | [b (line 56): true] null | Assert.cs:59:23:59:31 | [b (line 56): true] ... != ... | 7 |
+| Assert.cs:58:31:58:32 | [b (line 56): false] "" | Assert.cs:59:23:59:31 | [b (line 56): false] ... != ... | 7 |
+| Assert.cs:59:9:59:37 | [assertion failure] call to method IsTrue | Assert.cs:59:9:59:37 | [assertion failure] call to method IsTrue | 1 |
+| Assert.cs:59:36:59:36 | [b (line 56): false] access to parameter b | Assert.cs:59:36:59:36 | [b (line 56): false] access to parameter b | 1 |
+| Assert.cs:59:36:59:36 | [b (line 56): true] access to parameter b | Assert.cs:60:9:60:35 | call to method WriteLine | 6 |
 | Assert.cs:63:10:63:11 | enter M9 | Assert.cs:65:20:65:20 | access to parameter b | 5 |
-| Assert.cs:65:16:65:32 | String s = ... | Assert.cs:66:24:66:32 | ... == ... | 6 |
-| Assert.cs:65:24:65:27 | null | Assert.cs:65:24:65:27 | null | 1 |
-| Assert.cs:65:31:65:32 | "" | Assert.cs:65:31:65:32 | "" | 1 |
-| Assert.cs:66:9:66:38 | call to method IsFalse | Assert.cs:63:10:63:11 | exit M9 | 6 |
-| Assert.cs:66:37:66:37 | access to parameter b | Assert.cs:66:37:66:37 | access to parameter b | 1 |
+| Assert.cs:63:10:63:11 | exit M9 | Assert.cs:63:10:63:11 | exit M9 | 1 |
+| Assert.cs:65:24:65:27 | [b (line 63): true] null | Assert.cs:66:24:66:32 | [b (line 63): true] ... == ... | 7 |
+| Assert.cs:65:31:65:32 | [b (line 63): false] "" | Assert.cs:66:24:66:32 | [b (line 63): false] ... == ... | 7 |
+| Assert.cs:66:9:66:38 | [assertion failure] call to method IsFalse | Assert.cs:66:9:66:38 | [assertion failure] call to method IsFalse | 1 |
+| Assert.cs:66:37:66:37 | [b (line 63): false] access to parameter b | Assert.cs:67:9:67:35 | call to method WriteLine | 6 |
+| Assert.cs:66:37:66:37 | [b (line 63): true] access to parameter b | Assert.cs:66:37:66:37 | [b (line 63): true] access to parameter b | 1 |
 | Assert.cs:70:10:70:12 | enter M10 | Assert.cs:72:20:72:20 | access to parameter b | 5 |
-| Assert.cs:72:16:72:32 | String s = ... | Assert.cs:73:23:73:31 | ... == ... | 6 |
-| Assert.cs:72:24:72:27 | null | Assert.cs:72:24:72:27 | null | 1 |
-| Assert.cs:72:31:72:32 | "" | Assert.cs:72:31:72:32 | "" | 1 |
-| Assert.cs:73:9:73:37 | call to method IsTrue | Assert.cs:70:10:70:12 | exit M10 | 6 |
-| Assert.cs:73:36:73:36 | access to parameter b | Assert.cs:73:36:73:36 | access to parameter b | 1 |
+| Assert.cs:70:10:70:12 | exit M10 | Assert.cs:70:10:70:12 | exit M10 | 1 |
+| Assert.cs:72:24:72:27 | [b (line 70): true] null | Assert.cs:73:23:73:31 | [b (line 70): true] ... == ... | 7 |
+| Assert.cs:72:31:72:32 | [b (line 70): false] "" | Assert.cs:73:23:73:31 | [b (line 70): false] ... == ... | 7 |
+| Assert.cs:73:9:73:37 | [assertion failure] call to method IsTrue | Assert.cs:73:9:73:37 | [assertion failure] call to method IsTrue | 1 |
+| Assert.cs:73:36:73:36 | [b (line 70): false] access to parameter b | Assert.cs:73:36:73:36 | [b (line 70): false] access to parameter b | 1 |
+| Assert.cs:73:36:73:36 | [b (line 70): true] access to parameter b | Assert.cs:74:9:74:35 | call to method WriteLine | 6 |
 | Assert.cs:77:10:77:12 | enter M11 | Assert.cs:79:20:79:20 | access to parameter b | 5 |
-| Assert.cs:79:16:79:32 | String s = ... | Assert.cs:80:24:80:32 | ... != ... | 6 |
-| Assert.cs:79:24:79:27 | null | Assert.cs:79:24:79:27 | null | 1 |
-| Assert.cs:79:31:79:32 | "" | Assert.cs:79:31:79:32 | "" | 1 |
-| Assert.cs:80:9:80:38 | call to method IsFalse | Assert.cs:77:10:77:12 | exit M11 | 6 |
-| Assert.cs:80:37:80:37 | access to parameter b | Assert.cs:80:37:80:37 | access to parameter b | 1 |
+| Assert.cs:77:10:77:12 | exit M11 | Assert.cs:77:10:77:12 | exit M11 | 1 |
+| Assert.cs:79:24:79:27 | [b (line 77): true] null | Assert.cs:80:24:80:32 | [b (line 77): true] ... != ... | 7 |
+| Assert.cs:79:31:79:32 | [b (line 77): false] "" | Assert.cs:80:24:80:32 | [b (line 77): false] ... != ... | 7 |
+| Assert.cs:80:9:80:38 | [assertion failure] call to method IsFalse | Assert.cs:80:9:80:38 | [assertion failure] call to method IsFalse | 1 |
+| Assert.cs:80:37:80:37 | [b (line 77): false] access to parameter b | Assert.cs:81:9:81:35 | call to method WriteLine | 6 |
+| Assert.cs:80:37:80:37 | [b (line 77): true] access to parameter b | Assert.cs:80:37:80:37 | [b (line 77): true] access to parameter b | 1 |
 | Assert.cs:84:10:84:12 | enter M12 | Assert.cs:86:20:86:20 | access to parameter b | 5 |
-| Assert.cs:86:24:86:27 | [b (line 84): true] null | Assert.cs:115:23:115:31 | [b (line 84): true] ... != ... | 101 |
-| Assert.cs:86:31:86:32 | [b (line 84): false] "" | Assert.cs:115:23:115:31 | [b (line 84): false] ... != ... | 101 |
-| Assert.cs:115:9:115:37 | [b (line 84): false] call to method IsTrue | Assert.cs:119:24:119:32 | [b (line 84): false] ... == ... | 15 |
-| Assert.cs:115:9:115:37 | [b (line 84): true] call to method IsTrue | Assert.cs:119:24:119:32 | [b (line 84): true] ... == ... | 15 |
+| Assert.cs:84:10:84:12 | exit M12 | Assert.cs:84:10:84:12 | exit M12 | 1 |
+| Assert.cs:86:24:86:27 | [b (line 84): true] null | Assert.cs:87:22:87:30 | [b (line 84): true] ... != ... | 6 |
+| Assert.cs:86:31:86:32 | [b (line 84): false] "" | Assert.cs:87:22:87:30 | [b (line 84): false] ... != ... | 6 |
+| Assert.cs:87:9:87:31 | [assertion failure, b (line 84): false] call to method Assert | Assert.cs:87:9:87:31 | [assertion failure, b (line 84): false] call to method Assert | 1 |
+| Assert.cs:87:9:87:31 | [assertion failure, b (line 84): true] call to method Assert | Assert.cs:87:9:87:31 | [assertion failure, b (line 84): true] call to method Assert | 1 |
+| Assert.cs:87:9:87:31 | [assertion success, b (line 84): false] call to method Assert | Assert.cs:91:23:91:23 | [b (line 84): false] access to local variable s | 12 |
+| Assert.cs:87:9:87:31 | [assertion success, b (line 84): true] call to method Assert | Assert.cs:91:23:91:23 | [b (line 84): true] access to local variable s | 12 |
+| Assert.cs:91:9:91:24 | [assertion failure, b (line 84): false] call to method IsNull | Assert.cs:91:9:91:24 | [assertion failure, b (line 84): false] call to method IsNull | 1 |
+| Assert.cs:91:9:91:24 | [assertion failure, b (line 84): true] call to method IsNull | Assert.cs:91:9:91:24 | [assertion failure, b (line 84): true] call to method IsNull | 1 |
+| Assert.cs:91:9:91:24 | [assertion success, b (line 84): false] call to method IsNull | Assert.cs:95:26:95:26 | [b (line 84): false] access to local variable s | 12 |
+| Assert.cs:91:9:91:24 | [assertion success, b (line 84): true] call to method IsNull | Assert.cs:95:26:95:26 | [b (line 84): true] access to local variable s | 12 |
+| Assert.cs:95:9:95:27 | [assertion failure, b (line 84): false] call to method IsNotNull | Assert.cs:95:9:95:27 | [assertion failure, b (line 84): false] call to method IsNotNull | 1 |
+| Assert.cs:95:9:95:27 | [assertion failure, b (line 84): true] call to method IsNotNull | Assert.cs:95:9:95:27 | [assertion failure, b (line 84): true] call to method IsNotNull | 1 |
+| Assert.cs:95:9:95:27 | [assertion success, b (line 84): false] call to method IsNotNull | Assert.cs:99:23:99:31 | [b (line 84): false] ... == ... | 14 |
+| Assert.cs:95:9:95:27 | [assertion success, b (line 84): true] call to method IsNotNull | Assert.cs:99:23:99:31 | [b (line 84): true] ... == ... | 14 |
+| Assert.cs:99:9:99:32 | [assertion failure, b (line 84): false] call to method IsTrue | Assert.cs:99:9:99:32 | [assertion failure, b (line 84): false] call to method IsTrue | 1 |
+| Assert.cs:99:9:99:32 | [assertion failure, b (line 84): true] call to method IsTrue | Assert.cs:99:9:99:32 | [assertion failure, b (line 84): true] call to method IsTrue | 1 |
+| Assert.cs:99:9:99:32 | [assertion success, b (line 84): false] call to method IsTrue | Assert.cs:103:23:103:31 | [b (line 84): false] ... != ... | 14 |
+| Assert.cs:99:9:99:32 | [assertion success, b (line 84): true] call to method IsTrue | Assert.cs:103:23:103:31 | [b (line 84): true] ... != ... | 14 |
+| Assert.cs:103:9:103:32 | [assertion failure, b (line 84): false] call to method IsTrue | Assert.cs:103:9:103:32 | [assertion failure, b (line 84): false] call to method IsTrue | 1 |
+| Assert.cs:103:9:103:32 | [assertion failure, b (line 84): true] call to method IsTrue | Assert.cs:103:9:103:32 | [assertion failure, b (line 84): true] call to method IsTrue | 1 |
+| Assert.cs:103:9:103:32 | [assertion success, b (line 84): false] call to method IsTrue | Assert.cs:107:24:107:32 | [b (line 84): false] ... != ... | 14 |
+| Assert.cs:103:9:103:32 | [assertion success, b (line 84): true] call to method IsTrue | Assert.cs:107:24:107:32 | [b (line 84): true] ... != ... | 14 |
+| Assert.cs:107:9:107:33 | [assertion failure, b (line 84): false] call to method IsFalse | Assert.cs:107:9:107:33 | [assertion failure, b (line 84): false] call to method IsFalse | 1 |
+| Assert.cs:107:9:107:33 | [assertion failure, b (line 84): true] call to method IsFalse | Assert.cs:107:9:107:33 | [assertion failure, b (line 84): true] call to method IsFalse | 1 |
+| Assert.cs:107:9:107:33 | [assertion success, b (line 84): false] call to method IsFalse | Assert.cs:111:24:111:32 | [b (line 84): false] ... == ... | 14 |
+| Assert.cs:107:9:107:33 | [assertion success, b (line 84): true] call to method IsFalse | Assert.cs:111:24:111:32 | [b (line 84): true] ... == ... | 14 |
+| Assert.cs:111:9:111:33 | [assertion failure, b (line 84): false] call to method IsFalse | Assert.cs:111:9:111:33 | [assertion failure, b (line 84): false] call to method IsFalse | 1 |
+| Assert.cs:111:9:111:33 | [assertion failure, b (line 84): true] call to method IsFalse | Assert.cs:111:9:111:33 | [assertion failure, b (line 84): true] call to method IsFalse | 1 |
+| Assert.cs:111:9:111:33 | [assertion success, b (line 84): false] call to method IsFalse | Assert.cs:115:23:115:31 | [b (line 84): false] ... != ... | 15 |
+| Assert.cs:111:9:111:33 | [assertion success, b (line 84): true] call to method IsFalse | Assert.cs:115:23:115:31 | [b (line 84): true] ... != ... | 15 |
+| Assert.cs:115:9:115:37 | [assertion failure, b (line 84): false] call to method IsTrue | Assert.cs:115:9:115:37 | [assertion failure, b (line 84): false] call to method IsTrue | 1 |
+| Assert.cs:115:9:115:37 | [assertion failure, b (line 84): true] call to method IsTrue | Assert.cs:115:9:115:37 | [assertion failure, b (line 84): true] call to method IsTrue | 1 |
 | Assert.cs:115:36:115:36 | [b (line 84): false] access to parameter b | Assert.cs:115:36:115:36 | [b (line 84): false] access to parameter b | 1 |
-| Assert.cs:115:36:115:36 | [b (line 84): true] access to parameter b | Assert.cs:115:36:115:36 | [b (line 84): true] access to parameter b | 1 |
-| Assert.cs:119:9:119:39 | [b (line 84): false] call to method IsFalse | Assert.cs:123:23:123:31 | [b (line 84): false] ... == ... | 15 |
-| Assert.cs:119:9:119:39 | [b (line 84): true] call to method IsFalse | Assert.cs:123:23:123:31 | [b (line 84): true] ... == ... | 15 |
-| Assert.cs:119:37:119:38 | [b (line 84): false] !... | Assert.cs:119:38:119:38 | [b (line 84): false] access to parameter b | 2 |
-| Assert.cs:119:37:119:38 | [b (line 84): true] !... | Assert.cs:119:38:119:38 | [b (line 84): true] access to parameter b | 2 |
-| Assert.cs:123:9:123:37 | [b (line 84): false] call to method IsTrue | Assert.cs:126:24:126:25 | "" | 9 |
-| Assert.cs:123:9:123:37 | [b (line 84): true] call to method IsTrue | Assert.cs:126:17:126:20 | null | 9 |
-| Assert.cs:123:36:123:36 | [b (line 84): false] access to parameter b | Assert.cs:123:36:123:36 | [b (line 84): false] access to parameter b | 1 |
-| Assert.cs:123:36:123:36 | [b (line 84): true] access to parameter b | Assert.cs:123:36:123:36 | [b (line 84): true] access to parameter b | 1 |
-| Assert.cs:126:9:126:25 | ... = ... | Assert.cs:127:24:127:32 | ... != ... | 6 |
-| Assert.cs:127:9:127:39 | call to method IsFalse | Assert.cs:84:10:84:12 | exit M12 | 6 |
-| Assert.cs:127:37:127:38 | !... | Assert.cs:127:38:127:38 | access to parameter b | 2 |
+| Assert.cs:115:36:115:36 | [b (line 84): true] access to parameter b | Assert.cs:119:24:119:32 | [b (line 84): true] ... == ... | 16 |
+| Assert.cs:119:9:119:39 | [assertion failure, b (line 84): true] call to method IsFalse | Assert.cs:119:9:119:39 | [assertion failure, b (line 84): true] call to method IsFalse | 1 |
+| Assert.cs:119:37:119:38 | [b (line 84): true] !... | Assert.cs:123:23:123:31 | [b (line 84): true] ... == ... | 17 |
+| Assert.cs:123:9:123:37 | [assertion failure, b (line 84): true] call to method IsTrue | Assert.cs:123:9:123:37 | [assertion failure, b (line 84): true] call to method IsTrue | 1 |
+| Assert.cs:123:36:123:36 | [b (line 84): true] access to parameter b | Assert.cs:127:24:127:32 | [b (line 84): true] ... != ... | 16 |
+| Assert.cs:127:9:127:39 | [assertion failure] call to method IsFalse | Assert.cs:127:9:127:39 | [assertion failure] call to method IsFalse | 1 |
+| Assert.cs:127:37:127:38 | [b (line 84): true] !... | Assert.cs:128:9:128:35 | call to method WriteLine | 7 |
 | Assignments.cs:3:10:3:10 | enter M | Assignments.cs:3:10:3:10 | exit M | 33 |
 | Assignments.cs:14:18:14:35 | enter (...) => ... | Assignments.cs:14:18:14:35 | exit (...) => ... | 3 |
 | Assignments.cs:17:40:17:40 | enter + | Assignments.cs:17:40:17:40 | exit + | 5 |
@@ -274,7 +323,10 @@
 | ExitMethods.cs:116:38:116:38 | 1 | ExitMethods.cs:116:38:116:38 | 1 | 1 |
 | ExitMethods.cs:119:17:119:32 | enter FailingAssertion | ExitMethods.cs:119:17:119:32 | exit FailingAssertion | 6 |
 | ExitMethods.cs:125:17:125:33 | enter FailingAssertion2 | ExitMethods.cs:125:17:125:33 | exit FailingAssertion2 | 6 |
-| ExitMethods.cs:131:10:131:20 | enter AssertFalse | ExitMethods.cs:131:10:131:20 | exit AssertFalse | 4 |
+| ExitMethods.cs:131:10:131:20 | enter AssertFalse | ExitMethods.cs:131:48:131:48 | access to parameter b | 2 |
+| ExitMethods.cs:131:10:131:20 | exit AssertFalse | ExitMethods.cs:131:10:131:20 | exit AssertFalse | 1 |
+| ExitMethods.cs:131:33:131:49 | [assertion failure] call to method IsFalse | ExitMethods.cs:131:33:131:49 | [assertion failure] call to method IsFalse | 1 |
+| ExitMethods.cs:131:33:131:49 | [assertion success] call to method IsFalse | ExitMethods.cs:131:33:131:49 | [assertion success] call to method IsFalse | 1 |
 | ExitMethods.cs:133:17:133:33 | enter FailingAssertion3 | ExitMethods.cs:133:17:133:33 | exit FailingAssertion3 | 7 |
 | Extensions.cs:5:23:5:29 | enter ToInt32 | Extensions.cs:5:23:5:29 | exit ToInt32 | 6 |
 | Extensions.cs:10:24:10:29 | enter ToBool | Extensions.cs:10:24:10:29 | exit ToBool | 7 |

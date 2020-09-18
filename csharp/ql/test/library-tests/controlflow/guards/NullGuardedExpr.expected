@@ -2,8 +2,6 @@
 | Assert.cs:25:27:25:27 | access to local variable s |
 | Assert.cs:39:27:39:27 | access to local variable s |
 | Assert.cs:53:27:53:27 | access to local variable s |
-| Assert.cs:60:27:60:27 | access to local variable s |
-| Assert.cs:67:27:67:27 | access to local variable s |
 | Guards.cs:12:13:12:13 | access to parameter s |
 | Guards.cs:14:31:14:31 | access to parameter s |
 | Guards.cs:26:31:26:31 | access to parameter s |

@@ -18,7 +18,9 @@
 | Assert.cs:16:20:16:32 | ... ? ... : ... | null | Assert.cs:16:24:16:27 | null | null |
 | Assert.cs:17:23:17:23 | access to local variable s | empty | Assert.cs:16:20:16:32 | ... ? ... : ... | empty |
 | Assert.cs:17:23:17:23 | access to local variable s | non-empty | Assert.cs:16:20:16:32 | ... ? ... : ... | non-empty |
+| Assert.cs:17:23:17:23 | access to local variable s | non-null | Assert.cs:16:20:16:20 | access to parameter b | false |
 | Assert.cs:17:23:17:23 | access to local variable s | non-null | Assert.cs:16:20:16:32 | ... ? ... : ... | non-null |
+| Assert.cs:17:23:17:23 | access to local variable s | null | Assert.cs:16:20:16:20 | access to parameter b | true |
 | Assert.cs:17:23:17:23 | access to local variable s | null | Assert.cs:16:20:16:32 | ... ? ... : ... | null |
 | Assert.cs:18:27:18:27 | access to local variable s | non-null | Assert.cs:16:20:16:32 | ... ? ... : ... | non-null |
 | Assert.cs:18:27:18:27 | access to local variable s | null | Assert.cs:16:20:16:32 | ... ? ... : ... | null |
@@ -28,7 +30,9 @@
 | Assert.cs:23:20:23:32 | ... ? ... : ... | null | Assert.cs:23:24:23:27 | null | null |
 | Assert.cs:24:26:24:26 | access to local variable s | empty | Assert.cs:23:20:23:32 | ... ? ... : ... | empty |
 | Assert.cs:24:26:24:26 | access to local variable s | non-empty | Assert.cs:23:20:23:32 | ... ? ... : ... | non-empty |
+| Assert.cs:24:26:24:26 | access to local variable s | non-null | Assert.cs:23:20:23:20 | access to parameter b | false |
 | Assert.cs:24:26:24:26 | access to local variable s | non-null | Assert.cs:23:20:23:32 | ... ? ... : ... | non-null |
+| Assert.cs:24:26:24:26 | access to local variable s | null | Assert.cs:23:20:23:20 | access to parameter b | true |
 | Assert.cs:24:26:24:26 | access to local variable s | null | Assert.cs:23:20:23:32 | ... ? ... : ... | null |
 | Assert.cs:25:27:25:27 | access to local variable s | non-null | Assert.cs:23:20:23:32 | ... ? ... : ... | non-null |
 | Assert.cs:25:27:25:27 | access to local variable s | null | Assert.cs:23:20:23:32 | ... ? ... : ... | null |

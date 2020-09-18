@@ -612,14 +612,11 @@ private Ssa::Definition getAnSsaQualifier(Expr e, ControlFlow::Node cfn) {
 }
 
 private AssignableAccess getATrackedAccess(Ssa::Definition def, ControlFlow::Node cfn) {
-  (
-    result = def.getAReadAtNode(cfn)
-    or
-    result = def.(Ssa::ExplicitDefinition).getADefinition().getTargetAccess() and
-    result.getAControlFlowNode() = cfn and
-    cfn.getBasicBlock() = def.getBasicBlock()
-  ) and
+  result = def.getAReadAtNode(cfn) and
   not def instanceof Ssa::ImplicitUntrackedDefinition
+  or
+  result = def.(Ssa::ExplicitDefinition).getADefinition().getTargetAccess() and
+  cfn = def.getControlFlowNode()
 }
 
 /**
@@ -962,66 +959,11 @@ module Internal {
     e = any(BinaryArithmeticOperation bao | result = bao.getAnOperand())
   }
 
-  pragma[noinline]
-  private predicate assertionControlsNodeInSameBasicBlock0(
-    Guard g, AbstractValue v, BasicBlock bb, int i
-  ) {
-    exists(Assertion a, Guard g0, AbstractValue v0 |
-      asserts(a, g0, v0) and
-      impliesSteps(g0, v0, g, v) and
-      bb.getNode(i) = a.getAControlFlowNode()
-    )
-  }
-
-  /**
-   * Holds if control flow node `cfn` only is reached when guard `g` evaluates to `v`,
-   * because of an assertion.
-   */
-  private predicate assertionControlsNodeInSameBasicBlock(
-    Guard g, ControlFlow::Node cfn, AbstractValue v
-  ) {
-    exists(BasicBlock bb, int i, int j |
-      assertionControlsNodeInSameBasicBlock0(g, v, bb, i) and
-      bb.getNode(j) = cfn and
-      j > i
-    )
-  }
-
-  /**
-   * Holds if control flow element `cfe` only is reached when guard `g` evaluates to `v`,
-   * because of an assertion.
-   */
-  private predicate guardAssertionControlsElement(Guard g, ControlFlowElement cfe, AbstractValue v) {
-    forex(ControlFlow::Node cfn | cfn = cfe.getAControlFlowNode() |
-      assertionControlsNodeInSameBasicBlock(g, cfn, v)
-    )
-  }
-
   /** Same as `this.getAChildExpr*()`, but avoids `fastTC`. */
   private Expr getAChildExprStar(Guard g) {
     result = g
     or
     result = getAChildExprStar(g).getAChildExpr()
-  }
-
-  /**
-   * Holds if assertion `a` directly asserts that expression `e` evaluates to value `v`.
-   */
-  predicate asserts(Assertion a, Expr e, AbstractValue v) {
-    e = a.getExpr() and
-    (
-      a.getAssertMethod() instanceof AssertTrueMethod and
-      v.(BooleanValue).getValue() = true
-      or
-      a.getAssertMethod() instanceof AssertFalseMethod and
-      v.(BooleanValue).getValue() = false
-      or
-      a.getAssertMethod() instanceof AssertNullMethod and
-      v.(NullValue).isNull()
-      or
-      a.getAssertMethod() instanceof AssertNonNullMethod and
-      v.(NullValue).isNonNull()
-    )
   }
 
   private Expr stripConditionalExpr(Expr e) {
@@ -1453,8 +1395,6 @@ module Internal {
           or
           val.branch(_, _, e)
           or
-          asserts(_, e, val)
-          or
           e instanceof CollectionExpr and
           val = TEmptyCollectionValue(_)
         ) and
@@ -1767,11 +1707,7 @@ module Internal {
     pragma[noinline]
     private predicate candidateAux(AccessOrCallExpr e, Declaration target, BasicBlock bb) {
       target = e.getTarget() and
-      exists(Guard g | e = getAChildExprStar(g) |
-        guardControls(g, bb, _)
-        or
-        assertionControlsNodeInSameBasicBlock(g, bb.getANode(), _)
-      )
+      exists(Guard g | e = getAChildExprStar(g) | guardControls(g, bb, _))
     }
   }
 
@@ -1785,11 +1721,6 @@ module Internal {
       exists(AbstractValue v0, Guard g0 | impliesSteps(g0, v0, g, v) |
         exists(ControlFlowElement cfe, ConditionalSuccessor s |
           v0.branch(cfe, s, g0) and cfe.controlsBlock(bb, s)
-        )
-        or
-        exists(Assertion a |
-          asserts(a, g0, v0) and
-          a.strictlyDominates(bb)
         )
       )
     }
@@ -1812,9 +1743,6 @@ module Internal {
       forex(ControlFlow::Node cfn | cfn = guarded.getAControlFlowNode() |
         isGuardedByNode0(cfn, guarded, g, sub, v)
       )
-      or
-      guardAssertionControlsElement(g, guarded, v) and
-      exists(ConditionOnExprComparisonConfig c | c.same(sub, guarded))
     }
 
     private predicate adjacentReadPairSameVarUniquePredecessor(
@@ -1848,9 +1776,6 @@ module Internal {
       ControlFlow::Nodes::ElementNode guarded, Guard g, AccessOrCallExpr sub, AbstractValue v
     ) {
       isGuardedByNode0(guarded, _, g, sub, v)
-      or
-      assertionControlsNodeInSameBasicBlock(g, guarded, v) and
-      exists(ConditionOnExprComparisonConfig c | c.same(sub, guarded.getElement()))
     }
 
     pragma[noinline]

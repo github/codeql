@@ -1,5 +1,9 @@
 | Assert.cs:10:22:10:30 | ... != ... | Assert.cs:10:22:10:22 | access to local variable s | false | true |
 | Assert.cs:10:22:10:30 | ... != ... | Assert.cs:10:22:10:22 | access to local variable s | true | false |
+| Assert.cs:14:23:14:23 | access to local variable s | Assert.cs:14:23:14:23 | access to local variable s | non-null | false |
+| Assert.cs:14:23:14:23 | access to local variable s | Assert.cs:14:23:14:23 | access to local variable s | null | true |
+| Assert.cs:18:26:18:26 | access to local variable s | Assert.cs:18:26:18:26 | access to local variable s | non-null | false |
+| Assert.cs:18:26:18:26 | access to local variable s | Assert.cs:18:26:18:26 | access to local variable s | null | true |
 | Assert.cs:22:23:22:31 | ... == ... | Assert.cs:22:23:22:23 | access to local variable s | false | false |
 | Assert.cs:22:23:22:31 | ... == ... | Assert.cs:22:23:22:23 | access to local variable s | true | true |
 | Assert.cs:26:23:26:31 | ... != ... | Assert.cs:26:23:26:23 | access to local variable s | false | true |
@@ -60,6 +64,10 @@
 | C.cs:41:22:41:30 | ... == ... | C.cs:41:22:41:22 | access to local variable s | true | true |
 | C.cs:45:22:45:30 | ... != ... | C.cs:45:22:45:22 | access to local variable s | false | true |
 | C.cs:45:22:45:30 | ... != ... | C.cs:45:22:45:22 | access to local variable s | true | false |
+| C.cs:56:23:56:24 | access to local variable o2 | C.cs:56:23:56:24 | access to local variable o2 | non-null | false |
+| C.cs:56:23:56:24 | access to local variable o2 | C.cs:56:23:56:24 | access to local variable o2 | null | true |
+| C.cs:71:26:71:27 | access to local variable o3 | C.cs:71:26:71:27 | access to local variable o3 | non-null | false |
+| C.cs:71:26:71:27 | access to local variable o3 | C.cs:71:26:71:27 | access to local variable o3 | null | true |
 | C.cs:78:13:78:24 | call to method IsNotNull | C.cs:78:23:78:23 | access to local variable o | false | true |
 | C.cs:78:13:78:24 | call to method IsNotNull | C.cs:78:23:78:23 | access to local variable o | true | false |
 | C.cs:82:14:82:22 | call to method IsNull | C.cs:82:21:82:21 | access to local variable o | false | false |

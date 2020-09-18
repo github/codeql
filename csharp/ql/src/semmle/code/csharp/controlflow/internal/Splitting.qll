@@ -27,6 +27,7 @@ private module Cached {
   cached
   newtype TSplitKind =
     TInitializerSplitKind() or
+    TAssertionSplitKind() or
     TFinallySplitKind(int nestLevel) { nestLevel = FinallySplitting::nestLevel(_) } or
     TExceptionHandlerSplitKind() or
     TBooleanSplitKind(BooleanSplitting::BooleanSplitSubKind kind) { kind.startsSplit(_) } or
@@ -35,6 +36,7 @@ private module Cached {
   cached
   newtype TSplit =
     TInitializerSplit(Constructor c) { InitializerSplitting::constructorInitializes(c, _) } or
+    TAssertionSplit(AssertionSplitting::Assertion a, boolean success) { success = [true, false] } or
     TFinallySplit(FinallySplitting::FinallySplitType type, int nestLevel) {
       nestLevel = FinallySplitting::nestLevel(_)
     } or
@@ -385,6 +387,135 @@ module InitializerSplitting {
   }
 }
 
+module AssertionSplitting {
+  import semmle.code.csharp.commons.Assertions
+  private import semmle.code.csharp.ExprOrStmtParent
+
+  private ControlFlowElement getAnAssertionDescendant(Assertion a) {
+    result = a
+    or
+    result = getAnAssertionDescendant(a).getAChild()
+  }
+
+  /**
+   * A split for assertions. For example, in
+   *
+   * ```csharp
+   * void M(int i)
+   * {
+   *     Debug.Assert(i >= 0);
+   *     System.Console.WriteLine("i is positive")
+   * }
+   * ```
+   *
+   * we record whether `i >= 0` evaluates to `true` or `false`, and restrict the
+   * edges out out of the assertion accordingly.
+   */
+  class AssertionSplitImpl extends SplitImpl, TAssertionSplit {
+    Assertion a;
+    boolean success;
+
+    AssertionSplitImpl() { this = TAssertionSplit(a, success) }
+
+    /** Gets the assertion. */
+    Assertion getAssertion() { result = a }
+
+    /** Holds if this split represents a successful assertion. */
+    predicate isSuccess() { success = true }
+
+    override string toString() {
+      success = true and result = "assertion success"
+      or
+      success = false and result = "assertion failure"
+    }
+  }
+
+  private class AssertionSplitKind extends SplitKind, TAssertionSplitKind {
+    override int getListOrder() { result = InitializerSplitting::getNextListOrder() }
+
+    override predicate isEnabled(ControlFlowElement cfe) { this.appliesTo(cfe) }
+
+    override string toString() { result = "Assertion" }
+  }
+
+  int getNextListOrder() { result = InitializerSplitting::getNextListOrder() + 1 }
+
+  private class AssertionSplitInternal extends SplitInternal, AssertionSplitImpl {
+    override AssertionSplitKind getKind() { any() }
+
+    override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      exists(AssertMethod m |
+        pred = last(a.getExpr(), c) and
+        succ = succ(pred, c) and
+        this.getAssertion() = a and
+        m = a.getAssertMethod()
+      |
+        m instanceof AssertTrueMethod and
+        (
+          c instanceof TrueCompletion and success = true
+          or
+          c instanceof FalseCompletion and success = false
+        )
+        or
+        m instanceof AssertFalseMethod and
+        (
+          c instanceof TrueCompletion and success = false
+          or
+          c instanceof FalseCompletion and success = true
+        )
+        or
+        m instanceof AssertNullMethod and
+        (
+          c.(NullnessCompletion).isNull() and success = true
+          or
+          c.(NullnessCompletion).isNonNull() and success = false
+        )
+        or
+        m instanceof AssertNonNullMethod and
+        (
+          c.(NullnessCompletion).isNull() and success = false
+          or
+          c.(NullnessCompletion).isNonNull() and success = true
+        )
+      )
+    }
+
+    override predicate hasEntry(Callable c, ControlFlowElement succ) { none() }
+
+    override predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      this.appliesTo(pred) and
+      pred = a and
+      succ = succ(pred, c) and
+      (
+        success = true and
+        c instanceof NormalCompletion
+        or
+        success = false and
+        not c instanceof NormalCompletion
+      )
+    }
+
+    override Callable hasExit(ControlFlowElement pred, Completion c) {
+      this.appliesTo(pred) and
+      pred = a and
+      result = succExit(pred, c) and
+      (
+        success = true and
+        c instanceof NormalCompletion
+        or
+        success = false and
+        not c instanceof NormalCompletion
+      )
+    }
+
+    override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      this.appliesTo(pred) and
+      succ = succ(pred, c) and
+      succ = getAnAssertionDescendant(a)
+    }
+  }
+}
+
 pragma[noinline]
 private ControlFlowElement getAChild(ControlFlowElement cfe, Callable c) {
   result = cfe.getAChild() and
@@ -509,11 +640,11 @@ module FinallySplitting {
   }
 
   private int getListOrder(FinallySplitKind kind) {
-    result = InitializerSplitting::getNextListOrder() + kind.getNestLevel()
+    result = AssertionSplitting::getNextListOrder() + kind.getNestLevel()
   }
 
   int getNextListOrder() {
-    result = max(int i | i = getListOrder(_) + 1 or i = InitializerSplitting::getNextListOrder())
+    result = max(int i | i = getListOrder(_) + 1 or i = AssertionSplitting::getNextListOrder())
   }
 
   private class FinallySplitKind extends SplitKind, TFinallySplitKind {

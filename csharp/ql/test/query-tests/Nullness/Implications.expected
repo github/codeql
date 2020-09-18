@@ -66,7 +66,9 @@
 | Assert.cs:13:13:13:25 | ... ? ... : ... | null | Assert.cs:13:17:13:20 | null | null |
 | Assert.cs:14:23:14:23 | access to local variable s | empty | Assert.cs:13:13:13:25 | ... ? ... : ... | empty |
 | Assert.cs:14:23:14:23 | access to local variable s | non-empty | Assert.cs:13:13:13:25 | ... ? ... : ... | non-empty |
+| Assert.cs:14:23:14:23 | access to local variable s | non-null | Assert.cs:13:13:13:13 | access to parameter b | false |
 | Assert.cs:14:23:14:23 | access to local variable s | non-null | Assert.cs:13:13:13:25 | ... ? ... : ... | non-null |
+| Assert.cs:14:23:14:23 | access to local variable s | null | Assert.cs:13:13:13:13 | access to parameter b | true |
 | Assert.cs:14:23:14:23 | access to local variable s | null | Assert.cs:13:13:13:25 | ... ? ... : ... | null |
 | Assert.cs:15:27:15:27 | access to local variable s | non-null | Assert.cs:13:13:13:25 | ... ? ... : ... | non-null |
 | Assert.cs:15:27:15:27 | access to local variable s | null | Assert.cs:13:13:13:25 | ... ? ... : ... | null |
@@ -76,7 +78,9 @@
 | Assert.cs:17:13:17:25 | ... ? ... : ... | null | Assert.cs:17:17:17:20 | null | null |
 | Assert.cs:18:26:18:26 | access to local variable s | empty | Assert.cs:17:13:17:25 | ... ? ... : ... | empty |
 | Assert.cs:18:26:18:26 | access to local variable s | non-empty | Assert.cs:17:13:17:25 | ... ? ... : ... | non-empty |
+| Assert.cs:18:26:18:26 | access to local variable s | non-null | Assert.cs:17:13:17:13 | access to parameter b | false |
 | Assert.cs:18:26:18:26 | access to local variable s | non-null | Assert.cs:17:13:17:25 | ... ? ... : ... | non-null |
+| Assert.cs:18:26:18:26 | access to local variable s | null | Assert.cs:17:13:17:13 | access to parameter b | true |
 | Assert.cs:18:26:18:26 | access to local variable s | null | Assert.cs:17:13:17:25 | ... ? ... : ... | null |
 | Assert.cs:19:27:19:27 | access to local variable s | non-null | Assert.cs:17:13:17:25 | ... ? ... : ... | non-null |
 | Assert.cs:19:27:19:27 | access to local variable s | null | Assert.cs:17:13:17:25 | ... ? ... : ... | null |
@@ -324,7 +328,9 @@
 | C.cs:55:18:55:36 | ... ? ... : ... | null | C.cs:55:28:55:31 | null | null |
 | C.cs:56:23:56:24 | access to local variable o2 | empty | C.cs:55:18:55:36 | ... ? ... : ... | empty |
 | C.cs:56:23:56:24 | access to local variable o2 | non-empty | C.cs:55:18:55:36 | ... ? ... : ... | non-empty |
+| C.cs:56:23:56:24 | access to local variable o2 | non-null | C.cs:55:18:55:24 | call to method Maybe | false |
 | C.cs:56:23:56:24 | access to local variable o2 | non-null | C.cs:55:18:55:36 | ... ? ... : ... | non-null |
+| C.cs:56:23:56:24 | access to local variable o2 | null | C.cs:55:18:55:24 | call to method Maybe | true |
 | C.cs:56:23:56:24 | access to local variable o2 | null | C.cs:55:18:55:36 | ... ? ... : ... | null |
 | C.cs:57:9:57:10 | access to local variable o2 | non-null | C.cs:55:18:55:36 | ... ? ... : ... | non-null |
 | C.cs:57:9:57:10 | access to local variable o2 | null | C.cs:55:18:55:36 | ... ? ... : ... | null |
@@ -348,7 +354,9 @@
 | C.cs:70:18:70:46 | ... ? ... : ... | non-null | C.cs:70:35:70:46 | object creation of type Object | non-null |
 | C.cs:70:18:70:46 | ... ? ... : ... | null | C.cs:70:18:70:24 | call to method Maybe | true |
 | C.cs:70:18:70:46 | ... ? ... : ... | null | C.cs:70:28:70:31 | null | null |
+| C.cs:71:26:71:27 | access to local variable o3 | non-null | C.cs:70:18:70:24 | call to method Maybe | false |
 | C.cs:71:26:71:27 | access to local variable o3 | non-null | C.cs:70:18:70:46 | ... ? ... : ... | non-null |
+| C.cs:71:26:71:27 | access to local variable o3 | null | C.cs:70:18:70:24 | call to method Maybe | true |
 | C.cs:71:26:71:27 | access to local variable o3 | null | C.cs:70:18:70:46 | ... ? ... : ... | null |
 | C.cs:72:9:72:10 | access to local variable o3 | non-null | C.cs:70:18:70:46 | ... ? ... : ... | non-null |
 | C.cs:72:9:72:10 | access to local variable o3 | null | C.cs:70:18:70:46 | ... ? ... : ... | null |

@@ -30,14 +30,9 @@ nodes
 | Assert.cs:29:9:29:25 | [b (line 7): true] SSA def(s) |
 | Assert.cs:31:27:31:27 | access to local variable s |
 | Assert.cs:31:27:31:27 | access to local variable s |
-| Assert.cs:45:9:45:25 | [b (line 7): false] SSA def(s) |
 | Assert.cs:45:9:45:25 | [b (line 7): true] SSA def(s) |
-| Assert.cs:46:36:46:36 | [b (line 7): false] access to parameter b |
-| Assert.cs:46:36:46:36 | [b (line 7): true] access to parameter b |
 | Assert.cs:47:27:47:27 | access to local variable s |
-| Assert.cs:47:27:47:27 | access to local variable s |
-| Assert.cs:49:9:49:25 | SSA def(s) |
-| Assert.cs:50:37:50:38 | !... |
+| Assert.cs:49:9:49:25 | [b (line 7): true] SSA def(s) |
 | Assert.cs:51:27:51:27 | access to local variable s |
 | B.cs:7:11:7:29 | SSA def(eqCallAlways) |
 | B.cs:10:11:10:30 | SSA def(neqCallAlways) |
@@ -423,12 +418,8 @@ edges
 | Assert.cs:21:9:21:25 | [b (line 7): true] SSA def(s) | Assert.cs:23:27:23:27 | access to local variable s |
 | Assert.cs:29:9:29:25 | [b (line 7): false] SSA def(s) | Assert.cs:31:27:31:27 | access to local variable s |
 | Assert.cs:29:9:29:25 | [b (line 7): true] SSA def(s) | Assert.cs:31:27:31:27 | access to local variable s |
-| Assert.cs:45:9:45:25 | [b (line 7): false] SSA def(s) | Assert.cs:46:36:46:36 | [b (line 7): false] access to parameter b |
-| Assert.cs:45:9:45:25 | [b (line 7): true] SSA def(s) | Assert.cs:46:36:46:36 | [b (line 7): true] access to parameter b |
-| Assert.cs:46:36:46:36 | [b (line 7): false] access to parameter b | Assert.cs:47:27:47:27 | access to local variable s |
-| Assert.cs:46:36:46:36 | [b (line 7): true] access to parameter b | Assert.cs:47:27:47:27 | access to local variable s |
-| Assert.cs:49:9:49:25 | SSA def(s) | Assert.cs:50:37:50:38 | !... |
-| Assert.cs:50:37:50:38 | !... | Assert.cs:51:27:51:27 | access to local variable s |
+| Assert.cs:45:9:45:25 | [b (line 7): true] SSA def(s) | Assert.cs:47:27:47:27 | access to local variable s |
+| Assert.cs:49:9:49:25 | [b (line 7): true] SSA def(s) | Assert.cs:51:27:51:27 | access to local variable s |
 | B.cs:7:11:7:29 | SSA def(eqCallAlways) | B.cs:13:13:13:24 | access to local variable eqCallAlways |
 | B.cs:10:11:10:30 | SSA def(neqCallAlways) | B.cs:13:13:13:36 | ...; |
 | B.cs:10:11:10:30 | SSA def(neqCallAlways) | B.cs:15:9:16:26 | if (...) ... |

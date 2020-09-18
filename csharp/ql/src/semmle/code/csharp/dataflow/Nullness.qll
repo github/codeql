@@ -137,30 +137,6 @@ private predicate exprImpliesSsaDef(
 }
 
 /**
- * Holds if the `i`th node of basic block `bb` ensures that SSA definition
- * `def` is not `null` in any subsequent uses.
- */
-private predicate ensureNotNullAt(BasicBlock bb, int i, Ssa::Definition def) {
-  exists(Expr e, G::AbstractValue v, NullValue nv |
-    G::Internal::asserts(bb.getNode(i).getElement(), e, v)
-  |
-    exprImpliesSsaDef(e, v, def, nv) and
-    nv.isNonNull()
-  )
-}
-
-/**
- * Holds if the `i`th node of basic block `bb` is a dereference `d` of SSA
- * definition `def`, and `def` may potentially be `null`.
- */
-private predicate potentialNullDereferenceAt(
-  BasicBlock bb, int i, Ssa::Definition def, Dereference d
-) {
-  dereferenceAt(bb, i, def, d) and
-  not exists(int j | ensureNotNullAt(bb, j, def) | j < i)
-}
-
-/**
  * Gets an element that tests whether a given SSA definition, `def`, is
  * `null` or not.
  *
@@ -269,7 +245,6 @@ private predicate defNullImpliesStep(
       bb2 = def.getBasicBlock()
     )
   ) and
-  not ensureNotNullAt(bb1, _, def1) and
   not exists(SuccessorTypes::ConditionalSuccessor s, NullValue nv |
     bb1.getLastNode() = getANullCheck(def1, s, nv).getAControlFlowNode()
   |
@@ -296,7 +271,7 @@ private predicate defMaybeNullInBlock(Ssa::Definition def, BasicBlock bb) {
  * dereference.
  */
 private predicate nullDerefCandidateVariable(Ssa::SourceVariable v) {
-  exists(Ssa::Definition def, BasicBlock bb | potentialNullDereferenceAt(bb, _, def, _) |
+  exists(Ssa::Definition def, BasicBlock bb | dereferenceAt(bb, _, def, _) |
     defMaybeNullInBlock(def, bb) and
     v = def.getSourceVariable()
   )
@@ -328,7 +303,7 @@ private newtype TPathNode =
     succNullArgument(_, def, bb)
   } or
   TSinkPathNode(Ssa::Definition def, BasicBlock bb, int i, Dereference d) {
-    potentialNullDereferenceAt(bb, i, def, d) and
+    dereferenceAt(bb, i, def, d) and
     (
       succStep(_, def, bb)
       or
