@@ -18,12 +18,12 @@ predicate isSafeCommandArgument(Expr ex) {
   )
   or
   exists(CommandArgumentList cal |
-    cal.isNotShell() and
+    not cal.isShell() and
     ex = cal.getASubsequentAdd().getArgument(0)
   )
   or
-  exists(CommandArgumentArray caa |
-    caa.isNotShell() and
+  exists(CommandArgArrayImmutableFirst caa |
+    not caa.isShell() and
     ex = caa.getAWrite(any(int i | i > 0))
   )
 }
@@ -101,9 +101,9 @@ private class CommandArgumentList extends SsaExplicitUpdate {
     not result = getAFirstAdd()
   }
 
-  /** Holds if the first element of this list isn't a shell command. */
-  predicate isNotShell() {
-    forex(MethodAccess ma | ma = getAFirstAdd() | not isShell(ma.getArgument(0)))
+  /** Holds if the first element of this list is a shell command. */
+  predicate isShell() {
+    exists(MethodAccess ma | ma = getAFirstAdd() and isShell(ma.getArgument(0)))
   }
 }
 
@@ -140,10 +140,6 @@ private class CommandArgumentArray extends SsaExplicitUpdate {
 
   /** Gets an expression that is written to the given index of this array. */
   Expr getAWrite(int index) { result = getAWrite(index, _) }
-
-  predicate isNotShell() {
-    exists(Expr e | e = this.(CommandArgArrayImmutableFirst).getFirstElement() | not isShell(e))
-  }
 }
 
 /**
@@ -151,7 +147,7 @@ private class CommandArgumentArray extends SsaExplicitUpdate {
  */
 private class CommandArgArrayImmutableFirst extends CommandArgumentArray {
   CommandArgArrayImmutableFirst() {
-    this.getDefiningExpr() instanceof ImmutableFirstArrayExpr and
+    (exists(getAWrite(0)) or exists(firstElementOf(this.getDefiningExpr()))) and
     forall(RValue use | exists(this.getAWrite(0, use)) | use = this.getAFirstUse())
   }
 
@@ -160,58 +156,38 @@ private class CommandArgArrayImmutableFirst extends CommandArgumentArray {
     result = getAWrite(0)
     or
     not exists(getAWrite(0)) and
-    result = getDefiningExpr().(ImmutableFirstArrayExpr).getFirstElement()
+    result = firstElementOf(getDefiningExpr())
   }
+
+  /** Holds if the first element of this array is a shell command. */
+  predicate isShell() { isShell(getFirstElement()) }
 }
 
-/**
- * An expression that evaluates to an array of strings whose first element is immutable.
- */
-private class ImmutableFirstArrayExpr extends Expr {
-  ImmutableFirstArrayExpr() {
-    this.getType() instanceof ArrayOfStringType and
-    (
-      this.(Assignment).getRhs() instanceof ImmutableFirstArrayExpr
-      or
-      this.(LocalVariableDeclExpr).getInit() instanceof ImmutableFirstArrayExpr
-      or
-      this instanceof ArrayInit
-      or
-      this instanceof ArrayCreationExpr
-      or
-      this.(RValue) = any(CommandArgArrayImmutableFirst caa).getAUse()
-      or
-      exists(MethodAccess ma, Method m |
-        ma.getMethod() = m and
-        m.getDeclaringType().hasQualifiedName("java.util", "Arrays") and
-        m.hasName("copyOf") and
-        ma.getArgument(0) instanceof ImmutableFirstArrayExpr
-      )
-      or
-      exists(Field f |
-        this = f.getAnAccess() and
-        f.isFinal() and
-        f.getInitializer() instanceof ImmutableFirstArrayExpr
-      )
-    )
-  }
-
-  /** Gets the first element of this array. */
-  Expr getFirstElement() {
-    result = this.(Assignment).getRhs().(ImmutableFirstArrayExpr).getFirstElement()
+/** Gets the first element of an imutable array of strings */
+private Expr firstElementOf(Expr arr) {
+  arr.getType() instanceof ArrayOfStringType and
+  (
+    result = firstElementOf(arr.(Assignment).getRhs())
     or
-    result = this.(LocalVariableDeclExpr).getInit().(ImmutableFirstArrayExpr).getFirstElement()
+    result = firstElementOf(arr.(LocalVariableDeclExpr).getInit())
     or
-    exists(CommandArgArrayImmutableFirst caa | this = caa.getAUse() |
-      result = caa.getFirstElement()
+    exists(CommandArgArrayImmutableFirst caa | arr = caa.getAUse() | result = caa.getFirstElement())
+    or
+    exists(MethodAccess ma, Method m |
+      ma.getMethod() = m and
+      m.getDeclaringType().hasQualifiedName("java.util", "Arrays") and
+      m.hasName("copyOf") and
+      result = firstElementOf(ma.getArgument(0))
     )
     or
-    result = this.(MethodAccess).getArgument(0).(ImmutableFirstArrayExpr).getFirstElement()
+    exists(Field f |
+      f.isStatic() and
+      arr.(FieldRead).getField() = f and
+      result = firstElementOf(f.getInitializer())
+    )
     or
-    result = this.(FieldAccess).getField().getInitializer()
+    result = arr.(ArrayInit).getInit(0)
     or
-    result = this.(ArrayInit).getInit(0)
-    or
-    result = this.(ArrayCreationExpr).getInit().getInit(0)
-  }
+    result = arr.(ArrayCreationExpr).getInit().getInit(0)
+  )
 }
