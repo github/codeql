@@ -50,15 +50,6 @@ class ReadPreUpdateNode extends PreUpdateNode, CfgNode {
   override string label() { result = "read" }
 }
 
-class MallocNode extends PreUpdateNode, ImplicitSelfArgumentNode {
-  // ObjectCreationNode() { exists(ClassValue c | this.asCfgNode() = c.getACall()) }
-  override string toString() {
-    result = "malloc " + this.asCfgNode().(CallNode).getNode().(Call).toString()
-  }
-
-  override string label() { result = "malloc" }
-}
-
 /**
  * A node associated with an object after an operation that might have
  * changed its state.
@@ -191,67 +182,13 @@ private Node update(Node node) {
 // Global flow
 //--------
 /**
- * IPA type for DataFlowCallable.
- * A callable is either a callable value or a class.
+ * A DataFlowCallable is any callable value.
  */
-newtype TDataFlowCallable =
-  TCallableValue(CallableValue callable) or
-  TClassValue(ClassValue c)
-
-/** Represents a callable */
-abstract class DataFlowCallable extends TDataFlowCallable {
-  /** Gets a textual representation of this element. */
-  abstract string toString();
-
-  /** Gets a call to this callable. */
-  abstract CallNode getACall();
-
-  /** Gets the scope of this callable */
-  abstract Scope getScope();
-
-  /** Gets the specified parameter of this callable */
-  abstract NameNode getParameter(int n);
-
-  /** Gets the name of this callable. */
-  abstract string getName();
-}
-
-class DataFlowCallableValue extends DataFlowCallable, TCallableValue {
-  CallableValue callable;
-
-  DataFlowCallableValue() { this = TCallableValue(callable) }
-
-  override string toString() { result = callable.toString() }
-
-  override CallNode getACall() { result = callable.getACall() }
-
-  override Scope getScope() { result = callable.getScope() }
-
-  override NameNode getParameter(int n) { result = callable.getParameter(n) }
-
-  override string getName() { result = callable.getName() }
-}
-
-class DataFlowClassValue extends DataFlowCallable, TClassValue {
-  ClassValue c;
-
-  DataFlowClassValue() { this = TClassValue(c) }
-
-  override string toString() { result = c.toString() }
-
-  override CallNode getACall() { result = c.getACall() }
-
-  override Scope getScope() { result = c.getScope() }
-
-  override NameNode getParameter(int n) {
-    result.getNode() = c.getScope().getInitMethod().getArg(n + 1).asName()
-  }
-
-  override string getName() { result = c.getName() }
-}
+class DataFlowCallable = CallableValue;
 
 newtype TDataFlowCall =
-  TCallNode(CallNode call) or
+  TCallNode(CallNode call) { call = any(CallableValue c).getACall() } or
+  TClassCall(CallNode call) { call = any(ClassValue c).getACall() } or
   TSpecialCall(SpecialMethodCallNode special)
 
 abstract class DataFlowCall extends TDataFlowCall {
@@ -292,6 +229,36 @@ class CallNodeCall extends DataFlowCall, TCallNode {
   override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getNode().getScope() }
 }
 
+/** Represents a call to a class. */
+class ClassCall extends DataFlowCall, TClassCall {
+  CallNode call;
+  ClassValue c;
+
+  ClassCall() {
+    this = TClassCall(call) and
+    call = c.getACall()
+  }
+
+  override string toString() { result = call.toString() }
+
+  override ControlFlowNode getArg(int n) {
+    result = call.getArg(n - 1)
+    or
+    n = 0 and result = call
+  }
+
+  override ControlFlowNode getNode() { result = call }
+
+  override DataFlowCallable getCallable() {
+    exists(CallableValue callable |
+      result = callable and
+      c.getScope().getInitMethod() = callable.getScope()
+    )
+  }
+
+  override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getNode().getScope() }
+}
+
 /** Represents a call to a special method. */
 class SpecialCall extends DataFlowCall, TSpecialCall {
   SpecialMethodCallNode special;
@@ -304,9 +271,7 @@ class SpecialCall extends DataFlowCall, TSpecialCall {
 
   override ControlFlowNode getNode() { result = special }
 
-  override DataFlowCallable getCallable() {
-    result = TCallableValue(special.getResolvedSpecialMethod())
-  }
+  override DataFlowCallable getCallable() { result = special.getResolvedSpecialMethod() }
 
   override DataFlowCallable getEnclosingCallable() {
     result.getScope() = special.getNode().getScope()
@@ -331,16 +296,6 @@ class ExplicitArgumentNode extends ArgumentNode {
 
   /** Gets the call in which this node is an argument. */
   final override DataFlowCall getCall() { this.argumentOf(result, _) }
-}
-
-class ImplicitSelfArgumentNode extends ArgumentNode {
-  ImplicitSelfArgumentNode() { exists(ClassValue cv | node = cv.getACall()) }
-
-  /** Holds if this argument occurs at the given position in the given call. */
-  override predicate argumentOf(DataFlowCall call, int pos) { call = TCallNode(node) and pos = -1 }
-
-  /** Gets the call in which this node is an argument. */
-  final override DataFlowCall getCall() { result = TCallNode(node) }
 }
 
 /** Gets a viable run-time target for the call `call`. */

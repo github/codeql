@@ -1,200 +1,200 @@
-| classes.py:41:16:41:22 | malloc super() | classes.py:41:16:41:22 | malloc super() |
+| classes.py:41:16:41:22 | ControlFlowNode for super() | classes.py:41:16:41:22 | ControlFlowNode for super() |
 | classes.py:41:16:41:35 | ControlFlowNode for Attribute() | classes.py:41:16:41:35 | ControlFlowNode for Attribute() |
-| classes.py:45:16:45:25 | malloc With_new() | classes.py:45:16:45:25 | malloc With_new() |
-| classes.py:58:17:58:27 | malloc With_init() | classes.py:52:18:52:21 | SSA variable self |
-| classes.py:58:17:58:27 | malloc With_init() | classes.py:58:17:58:27 | malloc With_init() |
-| classes.py:71:16:71:25 | malloc With_del() | classes.py:71:16:71:25 | malloc With_del() |
-| classes.py:86:17:86:27 | malloc With_repr() | classes.py:86:17:86:27 | malloc With_repr() |
-| classes.py:101:16:101:25 | malloc With_str() | classes.py:101:16:101:25 | malloc With_str() |
-| classes.py:102:5:102:17 | malloc str() | classes.py:102:5:102:17 | malloc str() |
-| classes.py:116:18:116:29 | malloc With_bytes() | classes.py:116:18:116:29 | malloc With_bytes() |
-| classes.py:117:5:117:21 | malloc bytes() | classes.py:117:5:117:21 | malloc bytes() |
-| classes.py:132:19:132:31 | malloc With_format() | classes.py:132:19:132:31 | malloc With_format() |
-| classes.py:138:19:138:31 | malloc With_format() | classes.py:138:19:138:31 | malloc With_format() |
-| classes.py:143:19:143:31 | malloc With_format() | classes.py:143:19:143:31 | malloc With_format() |
-| classes.py:159:15:159:23 | malloc With_lt() | classes.py:159:15:159:23 | malloc With_lt() |
-| classes.py:176:15:176:23 | malloc With_le() | classes.py:176:15:176:23 | malloc With_le() |
-| classes.py:193:15:193:23 | malloc With_eq() | classes.py:193:15:193:23 | malloc With_eq() |
-| classes.py:209:15:209:23 | malloc With_ne() | classes.py:209:15:209:23 | malloc With_ne() |
-| classes.py:225:15:225:23 | malloc With_gt() | classes.py:225:15:225:23 | malloc With_gt() |
-| classes.py:242:15:242:23 | malloc With_ge() | classes.py:242:15:242:23 | malloc With_ge() |
-| classes.py:258:17:258:27 | malloc With_hash() | classes.py:258:17:258:27 | malloc With_hash() |
-| classes.py:263:17:263:27 | malloc With_hash() | classes.py:263:17:263:27 | malloc With_hash() |
-| classes.py:264:9:264:24 | malloc set() | classes.py:264:9:264:24 | malloc set() |
-| classes.py:268:17:268:27 | malloc With_hash() | classes.py:268:17:268:27 | malloc With_hash() |
-| classes.py:269:9:269:30 | malloc frozenset() | classes.py:269:9:269:30 | malloc frozenset() |
-| classes.py:273:17:273:27 | malloc With_hash() | classes.py:273:17:273:27 | malloc With_hash() |
-| classes.py:274:9:274:28 | malloc dict() | classes.py:274:9:274:28 | malloc dict() |
-| classes.py:288:17:288:27 | malloc With_bool() | classes.py:288:17:288:27 | malloc With_bool() |
-| classes.py:289:5:289:19 | malloc bool() | classes.py:289:5:289:19 | malloc bool() |
-| classes.py:293:17:293:27 | malloc With_bool() | classes.py:293:17:293:27 | malloc With_bool() |
-| classes.py:311:20:311:33 | malloc With_getattr() | classes.py:311:20:311:33 | malloc With_getattr() |
-| classes.py:327:25:327:43 | malloc With_getattribute() | classes.py:327:25:327:43 | malloc With_getattribute() |
-| classes.py:343:20:343:33 | malloc With_setattr() | classes.py:343:20:343:33 | malloc With_setattr() |
-| classes.py:359:20:359:33 | malloc With_delattr() | classes.py:359:20:359:33 | malloc With_delattr() |
-| classes.py:374:16:374:25 | malloc With_dir() | classes.py:374:16:374:25 | malloc With_dir() |
-| classes.py:399:16:399:25 | malloc With_get() | classes.py:399:16:399:25 | malloc With_get() |
-| classes.py:401:12:401:17 | malloc arg3() | classes.py:401:12:401:17 | malloc arg3() |
-| classes.py:417:16:417:25 | malloc With_set() | classes.py:417:16:417:25 | malloc With_set() |
-| classes.py:419:12:419:18 | malloc Owner() | classes.py:419:12:419:18 | malloc Owner() |
-| classes.py:435:19:435:31 | malloc With_delete() | classes.py:435:19:435:31 | malloc With_delete() |
-| classes.py:437:12:437:18 | malloc Owner() | classes.py:437:12:437:18 | malloc Owner() |
-| classes.py:453:21:453:35 | malloc With_set_name() | classes.py:453:21:453:35 | malloc With_set_name() |
-| classes.py:454:5:454:53 | malloc type() | classes.py:454:5:454:53 | malloc type() |
-| classes.py:454:29:454:52 | malloc dict() | classes.py:454:29:454:52 | malloc dict() |
-| classes.py:473:5:473:47 | malloc type() | classes.py:473:5:473:47 | malloc type() |
-| classes.py:513:26:513:45 | malloc With_instancecheck() | classes.py:513:26:513:45 | malloc With_instancecheck() |
-| classes.py:530:26:530:45 | malloc With_subclasscheck() | classes.py:530:26:530:45 | malloc With_subclasscheck() |
-| classes.py:548:26:548:51 | malloc Subscript() | classes.py:548:26:548:51 | malloc Subscript() |
-| classes.py:561:17:561:27 | malloc With_call() | classes.py:561:17:561:27 | malloc With_call() |
-| classes.py:577:16:577:25 | malloc With_len() | classes.py:577:16:577:25 | malloc With_len() |
-| classes.py:582:16:582:25 | malloc With_len() | classes.py:582:16:582:25 | malloc With_len() |
-| classes.py:583:5:583:18 | malloc bool() | classes.py:583:5:583:18 | malloc bool() |
-| classes.py:587:16:587:25 | malloc With_len() | classes.py:587:16:587:25 | malloc With_len() |
-| classes.py:604:24:604:41 | malloc With_length_hint() | classes.py:604:24:604:41 | malloc With_length_hint() |
-| classes.py:620:20:620:33 | malloc With_getitem() | classes.py:612:21:612:24 | SSA variable self |
-| classes.py:620:20:620:33 | malloc With_getitem() | classes.py:620:20:620:33 | malloc With_getitem() |
+| classes.py:45:16:45:25 | ControlFlowNode for With_new() | classes.py:45:16:45:25 | ControlFlowNode for With_new() |
+| classes.py:58:17:58:27 | ControlFlowNode for With_init() | classes.py:52:18:52:21 | SSA variable self |
+| classes.py:58:17:58:27 | ControlFlowNode for With_init() | classes.py:58:17:58:27 | ControlFlowNode for With_init() |
+| classes.py:71:16:71:25 | ControlFlowNode for With_del() | classes.py:71:16:71:25 | ControlFlowNode for With_del() |
+| classes.py:86:17:86:27 | ControlFlowNode for With_repr() | classes.py:86:17:86:27 | ControlFlowNode for With_repr() |
+| classes.py:101:16:101:25 | ControlFlowNode for With_str() | classes.py:101:16:101:25 | ControlFlowNode for With_str() |
+| classes.py:102:5:102:17 | ControlFlowNode for str() | classes.py:102:5:102:17 | ControlFlowNode for str() |
+| classes.py:116:18:116:29 | ControlFlowNode for With_bytes() | classes.py:116:18:116:29 | ControlFlowNode for With_bytes() |
+| classes.py:117:5:117:21 | ControlFlowNode for bytes() | classes.py:117:5:117:21 | ControlFlowNode for bytes() |
+| classes.py:132:19:132:31 | ControlFlowNode for With_format() | classes.py:132:19:132:31 | ControlFlowNode for With_format() |
+| classes.py:138:19:138:31 | ControlFlowNode for With_format() | classes.py:138:19:138:31 | ControlFlowNode for With_format() |
+| classes.py:143:19:143:31 | ControlFlowNode for With_format() | classes.py:143:19:143:31 | ControlFlowNode for With_format() |
+| classes.py:159:15:159:23 | ControlFlowNode for With_lt() | classes.py:159:15:159:23 | ControlFlowNode for With_lt() |
+| classes.py:176:15:176:23 | ControlFlowNode for With_le() | classes.py:176:15:176:23 | ControlFlowNode for With_le() |
+| classes.py:193:15:193:23 | ControlFlowNode for With_eq() | classes.py:193:15:193:23 | ControlFlowNode for With_eq() |
+| classes.py:209:15:209:23 | ControlFlowNode for With_ne() | classes.py:209:15:209:23 | ControlFlowNode for With_ne() |
+| classes.py:225:15:225:23 | ControlFlowNode for With_gt() | classes.py:225:15:225:23 | ControlFlowNode for With_gt() |
+| classes.py:242:15:242:23 | ControlFlowNode for With_ge() | classes.py:242:15:242:23 | ControlFlowNode for With_ge() |
+| classes.py:258:17:258:27 | ControlFlowNode for With_hash() | classes.py:258:17:258:27 | ControlFlowNode for With_hash() |
+| classes.py:263:17:263:27 | ControlFlowNode for With_hash() | classes.py:263:17:263:27 | ControlFlowNode for With_hash() |
+| classes.py:264:9:264:24 | ControlFlowNode for set() | classes.py:264:9:264:24 | ControlFlowNode for set() |
+| classes.py:268:17:268:27 | ControlFlowNode for With_hash() | classes.py:268:17:268:27 | ControlFlowNode for With_hash() |
+| classes.py:269:9:269:30 | ControlFlowNode for frozenset() | classes.py:269:9:269:30 | ControlFlowNode for frozenset() |
+| classes.py:273:17:273:27 | ControlFlowNode for With_hash() | classes.py:273:17:273:27 | ControlFlowNode for With_hash() |
+| classes.py:274:9:274:28 | ControlFlowNode for dict() | classes.py:274:9:274:28 | ControlFlowNode for dict() |
+| classes.py:288:17:288:27 | ControlFlowNode for With_bool() | classes.py:288:17:288:27 | ControlFlowNode for With_bool() |
+| classes.py:289:5:289:19 | ControlFlowNode for bool() | classes.py:289:5:289:19 | ControlFlowNode for bool() |
+| classes.py:293:17:293:27 | ControlFlowNode for With_bool() | classes.py:293:17:293:27 | ControlFlowNode for With_bool() |
+| classes.py:311:20:311:33 | ControlFlowNode for With_getattr() | classes.py:311:20:311:33 | ControlFlowNode for With_getattr() |
+| classes.py:327:25:327:43 | ControlFlowNode for With_getattribute() | classes.py:327:25:327:43 | ControlFlowNode for With_getattribute() |
+| classes.py:343:20:343:33 | ControlFlowNode for With_setattr() | classes.py:343:20:343:33 | ControlFlowNode for With_setattr() |
+| classes.py:359:20:359:33 | ControlFlowNode for With_delattr() | classes.py:359:20:359:33 | ControlFlowNode for With_delattr() |
+| classes.py:374:16:374:25 | ControlFlowNode for With_dir() | classes.py:374:16:374:25 | ControlFlowNode for With_dir() |
+| classes.py:399:16:399:25 | ControlFlowNode for With_get() | classes.py:399:16:399:25 | ControlFlowNode for With_get() |
+| classes.py:401:12:401:17 | ControlFlowNode for arg3() | classes.py:401:12:401:17 | ControlFlowNode for arg3() |
+| classes.py:417:16:417:25 | ControlFlowNode for With_set() | classes.py:417:16:417:25 | ControlFlowNode for With_set() |
+| classes.py:419:12:419:18 | ControlFlowNode for Owner() | classes.py:419:12:419:18 | ControlFlowNode for Owner() |
+| classes.py:435:19:435:31 | ControlFlowNode for With_delete() | classes.py:435:19:435:31 | ControlFlowNode for With_delete() |
+| classes.py:437:12:437:18 | ControlFlowNode for Owner() | classes.py:437:12:437:18 | ControlFlowNode for Owner() |
+| classes.py:453:21:453:35 | ControlFlowNode for With_set_name() | classes.py:453:21:453:35 | ControlFlowNode for With_set_name() |
+| classes.py:454:5:454:53 | ControlFlowNode for type() | classes.py:454:5:454:53 | ControlFlowNode for type() |
+| classes.py:454:29:454:52 | ControlFlowNode for dict() | classes.py:454:29:454:52 | ControlFlowNode for dict() |
+| classes.py:473:5:473:47 | ControlFlowNode for type() | classes.py:473:5:473:47 | ControlFlowNode for type() |
+| classes.py:513:26:513:45 | ControlFlowNode for With_instancecheck() | classes.py:513:26:513:45 | ControlFlowNode for With_instancecheck() |
+| classes.py:530:26:530:45 | ControlFlowNode for With_subclasscheck() | classes.py:530:26:530:45 | ControlFlowNode for With_subclasscheck() |
+| classes.py:548:26:548:51 | ControlFlowNode for Subscript() | classes.py:548:26:548:51 | ControlFlowNode for Subscript() |
+| classes.py:561:17:561:27 | ControlFlowNode for With_call() | classes.py:561:17:561:27 | ControlFlowNode for With_call() |
+| classes.py:577:16:577:25 | ControlFlowNode for With_len() | classes.py:577:16:577:25 | ControlFlowNode for With_len() |
+| classes.py:582:16:582:25 | ControlFlowNode for With_len() | classes.py:582:16:582:25 | ControlFlowNode for With_len() |
+| classes.py:583:5:583:18 | ControlFlowNode for bool() | classes.py:583:5:583:18 | ControlFlowNode for bool() |
+| classes.py:587:16:587:25 | ControlFlowNode for With_len() | classes.py:587:16:587:25 | ControlFlowNode for With_len() |
+| classes.py:604:24:604:41 | ControlFlowNode for With_length_hint() | classes.py:604:24:604:41 | ControlFlowNode for With_length_hint() |
+| classes.py:620:20:620:33 | ControlFlowNode for With_getitem() | classes.py:612:21:612:24 | SSA variable self |
+| classes.py:620:20:620:33 | ControlFlowNode for With_getitem() | classes.py:620:20:620:33 | ControlFlowNode for With_getitem() |
 | classes.py:622:5:622:16 | ControlFlowNode for with_getitem | classes.py:612:21:612:24 | SSA variable self |
 | classes.py:622:18:622:21 | ControlFlowNode for arg2 | classes.py:612:27:612:29 | SSA variable key |
-| classes.py:637:20:637:33 | malloc With_setitem() | classes.py:629:21:629:24 | SSA variable self |
-| classes.py:637:20:637:33 | malloc With_setitem() | classes.py:637:20:637:33 | malloc With_setitem() |
+| classes.py:637:20:637:33 | ControlFlowNode for With_setitem() | classes.py:629:21:629:24 | SSA variable self |
+| classes.py:637:20:637:33 | ControlFlowNode for With_setitem() | classes.py:637:20:637:33 | ControlFlowNode for With_setitem() |
 | classes.py:640:5:640:16 | ControlFlowNode for with_setitem | classes.py:629:21:629:24 | SSA variable self |
 | classes.py:640:18:640:21 | ControlFlowNode for arg2 | classes.py:629:27:629:29 | SSA variable key |
 | classes.py:640:26:640:29 | ControlFlowNode for arg3 | classes.py:629:32:629:36 | SSA variable value |
-| classes.py:654:20:654:33 | malloc With_delitem() | classes.py:647:21:647:24 | SSA variable self |
-| classes.py:654:20:654:33 | malloc With_delitem() | classes.py:654:20:654:33 | malloc With_delitem() |
+| classes.py:654:20:654:33 | ControlFlowNode for With_delitem() | classes.py:647:21:647:24 | SSA variable self |
+| classes.py:654:20:654:33 | ControlFlowNode for With_delitem() | classes.py:654:20:654:33 | ControlFlowNode for With_delitem() |
 | classes.py:656:9:656:20 | ControlFlowNode for with_delitem | classes.py:647:21:647:24 | SSA variable self |
 | classes.py:656:22:656:25 | ControlFlowNode for arg2 | classes.py:647:27:647:29 | SSA variable key |
-| classes.py:671:20:671:33 | malloc With_missing() | classes.py:671:20:671:33 | malloc With_missing() |
+| classes.py:671:20:671:33 | ControlFlowNode for With_missing() | classes.py:671:20:671:33 | ControlFlowNode for With_missing() |
 | classes.py:683:16:683:28 | ControlFlowNode for Attribute() | classes.py:683:16:683:28 | ControlFlowNode for Attribute() |
-| classes.py:687:17:687:27 | malloc With_iter() | classes.py:687:17:687:27 | malloc With_iter() |
-| classes.py:702:21:702:35 | malloc With_reversed() | classes.py:702:21:702:35 | malloc With_reversed() |
-| classes.py:703:5:703:27 | malloc reversed() | classes.py:703:5:703:27 | malloc reversed() |
-| classes.py:718:21:718:35 | malloc With_contains() | classes.py:718:21:718:35 | malloc With_contains() |
-| classes.py:735:16:735:25 | malloc With_add() | classes.py:727:17:727:20 | SSA variable self |
-| classes.py:735:16:735:25 | malloc With_add() | classes.py:727:23:727:27 | SSA variable other |
-| classes.py:735:16:735:25 | malloc With_add() | classes.py:735:16:735:25 | malloc With_add() |
+| classes.py:687:17:687:27 | ControlFlowNode for With_iter() | classes.py:687:17:687:27 | ControlFlowNode for With_iter() |
+| classes.py:702:21:702:35 | ControlFlowNode for With_reversed() | classes.py:702:21:702:35 | ControlFlowNode for With_reversed() |
+| classes.py:703:5:703:27 | ControlFlowNode for reversed() | classes.py:703:5:703:27 | ControlFlowNode for reversed() |
+| classes.py:718:21:718:35 | ControlFlowNode for With_contains() | classes.py:718:21:718:35 | ControlFlowNode for With_contains() |
+| classes.py:735:16:735:25 | ControlFlowNode for With_add() | classes.py:727:17:727:20 | SSA variable self |
+| classes.py:735:16:735:25 | ControlFlowNode for With_add() | classes.py:727:23:727:27 | SSA variable other |
+| classes.py:735:16:735:25 | ControlFlowNode for With_add() | classes.py:735:16:735:25 | ControlFlowNode for With_add() |
 | classes.py:737:5:737:12 | ControlFlowNode for with_add | classes.py:727:17:727:20 | SSA variable self |
 | classes.py:737:16:737:19 | ControlFlowNode for arg2 | classes.py:727:23:727:27 | SSA variable other |
-| classes.py:752:16:752:25 | malloc With_sub() | classes.py:744:17:744:20 | SSA variable self |
-| classes.py:752:16:752:25 | malloc With_sub() | classes.py:744:23:744:27 | SSA variable other |
-| classes.py:752:16:752:25 | malloc With_sub() | classes.py:752:16:752:25 | malloc With_sub() |
+| classes.py:752:16:752:25 | ControlFlowNode for With_sub() | classes.py:744:17:744:20 | SSA variable self |
+| classes.py:752:16:752:25 | ControlFlowNode for With_sub() | classes.py:744:23:744:27 | SSA variable other |
+| classes.py:752:16:752:25 | ControlFlowNode for With_sub() | classes.py:752:16:752:25 | ControlFlowNode for With_sub() |
 | classes.py:754:5:754:12 | ControlFlowNode for with_sub | classes.py:744:17:744:20 | SSA variable self |
 | classes.py:754:16:754:19 | ControlFlowNode for arg2 | classes.py:744:23:744:27 | SSA variable other |
-| classes.py:769:16:769:25 | malloc With_mul() | classes.py:761:17:761:20 | SSA variable self |
-| classes.py:769:16:769:25 | malloc With_mul() | classes.py:761:23:761:27 | SSA variable other |
-| classes.py:769:16:769:25 | malloc With_mul() | classes.py:769:16:769:25 | malloc With_mul() |
+| classes.py:769:16:769:25 | ControlFlowNode for With_mul() | classes.py:761:17:761:20 | SSA variable self |
+| classes.py:769:16:769:25 | ControlFlowNode for With_mul() | classes.py:761:23:761:27 | SSA variable other |
+| classes.py:769:16:769:25 | ControlFlowNode for With_mul() | classes.py:769:16:769:25 | ControlFlowNode for With_mul() |
 | classes.py:771:5:771:12 | ControlFlowNode for with_mul | classes.py:761:17:761:20 | SSA variable self |
 | classes.py:771:16:771:19 | ControlFlowNode for arg2 | classes.py:761:23:761:27 | SSA variable other |
-| classes.py:786:19:786:31 | malloc With_matmul() | classes.py:778:20:778:23 | SSA variable self |
-| classes.py:786:19:786:31 | malloc With_matmul() | classes.py:778:26:778:30 | SSA variable other |
-| classes.py:786:19:786:31 | malloc With_matmul() | classes.py:786:19:786:31 | malloc With_matmul() |
+| classes.py:786:19:786:31 | ControlFlowNode for With_matmul() | classes.py:778:20:778:23 | SSA variable self |
+| classes.py:786:19:786:31 | ControlFlowNode for With_matmul() | classes.py:778:26:778:30 | SSA variable other |
+| classes.py:786:19:786:31 | ControlFlowNode for With_matmul() | classes.py:786:19:786:31 | ControlFlowNode for With_matmul() |
 | classes.py:788:5:788:15 | ControlFlowNode for with_matmul | classes.py:778:20:778:23 | SSA variable self |
 | classes.py:788:19:788:22 | ControlFlowNode for arg2 | classes.py:778:26:778:30 | SSA variable other |
-| classes.py:803:20:803:33 | malloc With_truediv() | classes.py:795:21:795:24 | SSA variable self |
-| classes.py:803:20:803:33 | malloc With_truediv() | classes.py:795:27:795:31 | SSA variable other |
-| classes.py:803:20:803:33 | malloc With_truediv() | classes.py:803:20:803:33 | malloc With_truediv() |
+| classes.py:803:20:803:33 | ControlFlowNode for With_truediv() | classes.py:795:21:795:24 | SSA variable self |
+| classes.py:803:20:803:33 | ControlFlowNode for With_truediv() | classes.py:795:27:795:31 | SSA variable other |
+| classes.py:803:20:803:33 | ControlFlowNode for With_truediv() | classes.py:803:20:803:33 | ControlFlowNode for With_truediv() |
 | classes.py:805:5:805:16 | ControlFlowNode for with_truediv | classes.py:795:21:795:24 | SSA variable self |
 | classes.py:805:20:805:23 | ControlFlowNode for arg2 | classes.py:795:27:795:31 | SSA variable other |
-| classes.py:820:21:820:35 | malloc With_floordiv() | classes.py:812:22:812:25 | SSA variable self |
-| classes.py:820:21:820:35 | malloc With_floordiv() | classes.py:812:28:812:32 | SSA variable other |
-| classes.py:820:21:820:35 | malloc With_floordiv() | classes.py:820:21:820:35 | malloc With_floordiv() |
+| classes.py:820:21:820:35 | ControlFlowNode for With_floordiv() | classes.py:812:22:812:25 | SSA variable self |
+| classes.py:820:21:820:35 | ControlFlowNode for With_floordiv() | classes.py:812:28:812:32 | SSA variable other |
+| classes.py:820:21:820:35 | ControlFlowNode for With_floordiv() | classes.py:820:21:820:35 | ControlFlowNode for With_floordiv() |
 | classes.py:822:5:822:17 | ControlFlowNode for with_floordiv | classes.py:812:22:812:25 | SSA variable self |
 | classes.py:822:22:822:25 | ControlFlowNode for arg2 | classes.py:812:28:812:32 | SSA variable other |
-| classes.py:837:16:837:25 | malloc With_mod() | classes.py:829:17:829:20 | SSA variable self |
-| classes.py:837:16:837:25 | malloc With_mod() | classes.py:829:23:829:27 | SSA variable other |
-| classes.py:837:16:837:25 | malloc With_mod() | classes.py:837:16:837:25 | malloc With_mod() |
+| classes.py:837:16:837:25 | ControlFlowNode for With_mod() | classes.py:829:17:829:20 | SSA variable self |
+| classes.py:837:16:837:25 | ControlFlowNode for With_mod() | classes.py:829:23:829:27 | SSA variable other |
+| classes.py:837:16:837:25 | ControlFlowNode for With_mod() | classes.py:837:16:837:25 | ControlFlowNode for With_mod() |
 | classes.py:839:5:839:12 | ControlFlowNode for with_mod | classes.py:829:17:829:20 | SSA variable self |
 | classes.py:839:16:839:19 | ControlFlowNode for arg2 | classes.py:829:23:829:27 | SSA variable other |
-| classes.py:854:19:854:31 | malloc With_divmod() | classes.py:854:19:854:31 | malloc With_divmod() |
-| classes.py:871:16:871:25 | malloc With_pow() | classes.py:871:16:871:25 | malloc With_pow() |
-| classes.py:877:16:877:25 | malloc With_pow() | classes.py:863:17:863:20 | SSA variable self |
-| classes.py:877:16:877:25 | malloc With_pow() | classes.py:863:23:863:27 | SSA variable other |
-| classes.py:877:16:877:25 | malloc With_pow() | classes.py:877:16:877:25 | malloc With_pow() |
+| classes.py:854:19:854:31 | ControlFlowNode for With_divmod() | classes.py:854:19:854:31 | ControlFlowNode for With_divmod() |
+| classes.py:871:16:871:25 | ControlFlowNode for With_pow() | classes.py:871:16:871:25 | ControlFlowNode for With_pow() |
+| classes.py:877:16:877:25 | ControlFlowNode for With_pow() | classes.py:863:17:863:20 | SSA variable self |
+| classes.py:877:16:877:25 | ControlFlowNode for With_pow() | classes.py:863:23:863:27 | SSA variable other |
+| classes.py:877:16:877:25 | ControlFlowNode for With_pow() | classes.py:877:16:877:25 | ControlFlowNode for With_pow() |
 | classes.py:879:5:879:12 | ControlFlowNode for with_pow | classes.py:863:17:863:20 | SSA variable self |
 | classes.py:879:17:879:20 | ControlFlowNode for arg2 | classes.py:863:23:863:27 | SSA variable other |
-| classes.py:894:19:894:31 | malloc With_lshift() | classes.py:886:20:886:23 | SSA variable self |
-| classes.py:894:19:894:31 | malloc With_lshift() | classes.py:886:26:886:30 | SSA variable other |
-| classes.py:894:19:894:31 | malloc With_lshift() | classes.py:894:19:894:31 | malloc With_lshift() |
+| classes.py:894:19:894:31 | ControlFlowNode for With_lshift() | classes.py:886:20:886:23 | SSA variable self |
+| classes.py:894:19:894:31 | ControlFlowNode for With_lshift() | classes.py:886:26:886:30 | SSA variable other |
+| classes.py:894:19:894:31 | ControlFlowNode for With_lshift() | classes.py:894:19:894:31 | ControlFlowNode for With_lshift() |
 | classes.py:896:5:896:15 | ControlFlowNode for with_lshift | classes.py:886:20:886:23 | SSA variable self |
 | classes.py:896:20:896:23 | ControlFlowNode for arg2 | classes.py:886:26:886:30 | SSA variable other |
-| classes.py:911:19:911:31 | malloc With_rshift() | classes.py:903:20:903:23 | SSA variable self |
-| classes.py:911:19:911:31 | malloc With_rshift() | classes.py:903:26:903:30 | SSA variable other |
-| classes.py:911:19:911:31 | malloc With_rshift() | classes.py:911:19:911:31 | malloc With_rshift() |
+| classes.py:911:19:911:31 | ControlFlowNode for With_rshift() | classes.py:903:20:903:23 | SSA variable self |
+| classes.py:911:19:911:31 | ControlFlowNode for With_rshift() | classes.py:903:26:903:30 | SSA variable other |
+| classes.py:911:19:911:31 | ControlFlowNode for With_rshift() | classes.py:911:19:911:31 | ControlFlowNode for With_rshift() |
 | classes.py:913:5:913:15 | ControlFlowNode for with_rshift | classes.py:903:20:903:23 | SSA variable self |
 | classes.py:913:20:913:23 | ControlFlowNode for arg2 | classes.py:903:26:903:30 | SSA variable other |
-| classes.py:928:16:928:25 | malloc With_and() | classes.py:920:17:920:20 | SSA variable self |
-| classes.py:928:16:928:25 | malloc With_and() | classes.py:920:23:920:27 | SSA variable other |
-| classes.py:928:16:928:25 | malloc With_and() | classes.py:928:16:928:25 | malloc With_and() |
+| classes.py:928:16:928:25 | ControlFlowNode for With_and() | classes.py:920:17:920:20 | SSA variable self |
+| classes.py:928:16:928:25 | ControlFlowNode for With_and() | classes.py:920:23:920:27 | SSA variable other |
+| classes.py:928:16:928:25 | ControlFlowNode for With_and() | classes.py:928:16:928:25 | ControlFlowNode for With_and() |
 | classes.py:930:5:930:12 | ControlFlowNode for with_and | classes.py:920:17:920:20 | SSA variable self |
 | classes.py:930:16:930:19 | ControlFlowNode for arg2 | classes.py:920:23:920:27 | SSA variable other |
-| classes.py:945:16:945:25 | malloc With_xor() | classes.py:937:17:937:20 | SSA variable self |
-| classes.py:945:16:945:25 | malloc With_xor() | classes.py:937:23:937:27 | SSA variable other |
-| classes.py:945:16:945:25 | malloc With_xor() | classes.py:945:16:945:25 | malloc With_xor() |
+| classes.py:945:16:945:25 | ControlFlowNode for With_xor() | classes.py:937:17:937:20 | SSA variable self |
+| classes.py:945:16:945:25 | ControlFlowNode for With_xor() | classes.py:937:23:937:27 | SSA variable other |
+| classes.py:945:16:945:25 | ControlFlowNode for With_xor() | classes.py:945:16:945:25 | ControlFlowNode for With_xor() |
 | classes.py:947:5:947:12 | ControlFlowNode for with_xor | classes.py:937:17:937:20 | SSA variable self |
 | classes.py:947:16:947:19 | ControlFlowNode for arg2 | classes.py:937:23:937:27 | SSA variable other |
-| classes.py:962:15:962:23 | malloc With_or() | classes.py:954:16:954:19 | SSA variable self |
-| classes.py:962:15:962:23 | malloc With_or() | classes.py:954:22:954:26 | SSA variable other |
-| classes.py:962:15:962:23 | malloc With_or() | classes.py:962:15:962:23 | malloc With_or() |
+| classes.py:962:15:962:23 | ControlFlowNode for With_or() | classes.py:954:16:954:19 | SSA variable self |
+| classes.py:962:15:962:23 | ControlFlowNode for With_or() | classes.py:954:22:954:26 | SSA variable other |
+| classes.py:962:15:962:23 | ControlFlowNode for With_or() | classes.py:962:15:962:23 | ControlFlowNode for With_or() |
 | classes.py:964:5:964:11 | ControlFlowNode for with_or | classes.py:954:16:954:19 | SSA variable self |
 | classes.py:964:15:964:18 | ControlFlowNode for arg2 | classes.py:954:22:954:26 | SSA variable other |
-| classes.py:979:17:979:27 | malloc With_radd() | classes.py:979:17:979:27 | malloc With_radd() |
-| classes.py:996:17:996:27 | malloc With_rsub() | classes.py:996:17:996:27 | malloc With_rsub() |
-| classes.py:1013:17:1013:27 | malloc With_rmul() | classes.py:1013:17:1013:27 | malloc With_rmul() |
-| classes.py:1030:20:1030:33 | malloc With_rmatmul() | classes.py:1030:20:1030:33 | malloc With_rmatmul() |
-| classes.py:1047:21:1047:35 | malloc With_rtruediv() | classes.py:1047:21:1047:35 | malloc With_rtruediv() |
-| classes.py:1064:22:1064:37 | malloc With_rfloordiv() | classes.py:1064:22:1064:37 | malloc With_rfloordiv() |
-| classes.py:1081:17:1081:27 | malloc With_rmod() | classes.py:1081:17:1081:27 | malloc With_rmod() |
-| classes.py:1098:20:1098:33 | malloc With_rdivmod() | classes.py:1098:20:1098:33 | malloc With_rdivmod() |
-| classes.py:1115:17:1115:27 | malloc With_rpow() | classes.py:1115:17:1115:27 | malloc With_rpow() |
-| classes.py:1121:17:1121:27 | malloc With_rpow() | classes.py:1121:17:1121:27 | malloc With_rpow() |
-| classes.py:1138:20:1138:33 | malloc With_rlshift() | classes.py:1138:20:1138:33 | malloc With_rlshift() |
-| classes.py:1155:20:1155:33 | malloc With_rrshift() | classes.py:1155:20:1155:33 | malloc With_rrshift() |
-| classes.py:1172:17:1172:27 | malloc With_rand() | classes.py:1172:17:1172:27 | malloc With_rand() |
-| classes.py:1189:17:1189:27 | malloc With_rxor() | classes.py:1189:17:1189:27 | malloc With_rxor() |
-| classes.py:1206:16:1206:25 | malloc With_ror() | classes.py:1206:16:1206:25 | malloc With_ror() |
-| classes.py:1223:17:1223:27 | malloc With_iadd() | classes.py:1223:17:1223:27 | malloc With_iadd() |
-| classes.py:1240:17:1240:27 | malloc With_isub() | classes.py:1240:17:1240:27 | malloc With_isub() |
-| classes.py:1257:17:1257:27 | malloc With_imul() | classes.py:1257:17:1257:27 | malloc With_imul() |
-| classes.py:1274:20:1274:33 | malloc With_imatmul() | classes.py:1274:20:1274:33 | malloc With_imatmul() |
-| classes.py:1291:21:1291:35 | malloc With_itruediv() | classes.py:1291:21:1291:35 | malloc With_itruediv() |
-| classes.py:1308:22:1308:37 | malloc With_ifloordiv() | classes.py:1308:22:1308:37 | malloc With_ifloordiv() |
-| classes.py:1325:17:1325:27 | malloc With_imod() | classes.py:1325:17:1325:27 | malloc With_imod() |
-| classes.py:1342:17:1342:27 | malloc With_ipow() | classes.py:1342:17:1342:27 | malloc With_ipow() |
-| classes.py:1359:20:1359:33 | malloc With_ilshift() | classes.py:1359:20:1359:33 | malloc With_ilshift() |
-| classes.py:1376:20:1376:33 | malloc With_irshift() | classes.py:1376:20:1376:33 | malloc With_irshift() |
-| classes.py:1393:17:1393:27 | malloc With_iand() | classes.py:1393:17:1393:27 | malloc With_iand() |
-| classes.py:1410:17:1410:27 | malloc With_ixor() | classes.py:1410:17:1410:27 | malloc With_ixor() |
-| classes.py:1427:16:1427:25 | malloc With_ior() | classes.py:1427:16:1427:25 | malloc With_ior() |
-| classes.py:1443:16:1443:25 | malloc With_neg() | classes.py:1443:16:1443:25 | malloc With_neg() |
-| classes.py:1458:16:1458:25 | malloc With_pos() | classes.py:1458:16:1458:25 | malloc With_pos() |
-| classes.py:1473:16:1473:25 | malloc With_abs() | classes.py:1473:16:1473:25 | malloc With_abs() |
-| classes.py:1488:19:1488:31 | malloc With_invert() | classes.py:1488:19:1488:31 | malloc With_invert() |
-| classes.py:1503:20:1503:33 | malloc With_complex() | classes.py:1503:20:1503:33 | malloc With_complex() |
-| classes.py:1504:5:1504:25 | malloc complex() | classes.py:1504:5:1504:25 | malloc complex() |
-| classes.py:1518:16:1518:25 | malloc With_int() | classes.py:1518:16:1518:25 | malloc With_int() |
-| classes.py:1519:5:1519:17 | malloc int() | classes.py:1519:5:1519:17 | malloc int() |
-| classes.py:1533:18:1533:29 | malloc With_float() | classes.py:1533:18:1533:29 | malloc With_float() |
-| classes.py:1534:5:1534:21 | malloc float() | classes.py:1534:5:1534:21 | malloc float() |
-| classes.py:1549:18:1549:29 | malloc With_index() | classes.py:1549:18:1549:29 | malloc With_index() |
-| classes.py:1554:18:1554:29 | malloc With_index() | classes.py:1554:18:1554:29 | malloc With_index() |
-| classes.py:1559:18:1559:29 | malloc With_index() | classes.py:1559:18:1559:29 | malloc With_index() |
-| classes.py:1564:18:1564:29 | malloc With_index() | classes.py:1564:18:1564:29 | malloc With_index() |
-| classes.py:1569:18:1569:29 | malloc With_index() | classes.py:1569:18:1569:29 | malloc With_index() |
-| classes.py:1574:18:1574:29 | malloc With_index() | classes.py:1574:18:1574:29 | malloc With_index() |
-| classes.py:1575:5:1575:19 | malloc int() | classes.py:1575:5:1575:19 | malloc int() |
-| classes.py:1579:18:1579:29 | malloc With_index() | classes.py:1579:18:1579:29 | malloc With_index() |
-| classes.py:1580:5:1580:21 | malloc float() | classes.py:1580:5:1580:21 | malloc float() |
-| classes.py:1584:18:1584:29 | malloc With_index() | classes.py:1584:18:1584:29 | malloc With_index() |
-| classes.py:1585:5:1585:23 | malloc complex() | classes.py:1585:5:1585:23 | malloc complex() |
-| classes.py:1599:18:1599:29 | malloc With_round() | classes.py:1599:18:1599:29 | malloc With_round() |
-| classes.py:1614:18:1614:29 | malloc With_trunc() | classes.py:1614:18:1614:29 | malloc With_trunc() |
-| classes.py:1630:18:1630:29 | malloc With_floor() | classes.py:1630:18:1630:29 | malloc With_floor() |
-| classes.py:1646:17:1646:27 | malloc With_ceil() | classes.py:1646:17:1646:27 | malloc With_ceil() |
-| classes.py:1665:10:1665:21 | malloc With_enter() | classes.py:1665:10:1665:21 | malloc With_enter() |
-| classes.py:1686:10:1686:20 | malloc With_exit() | classes.py:1686:10:1686:20 | malloc With_exit() |
-| classes.py:1703:18:1703:29 | malloc With_await() | classes.py:1703:18:1703:29 | malloc With_await() |
-| classes.py:1726:18:1726:29 | malloc With_aiter() | classes.py:1726:18:1726:29 | malloc With_aiter() |
-| classes.py:1745:18:1745:29 | malloc With_anext() | classes.py:1745:18:1745:29 | malloc With_anext() |
-| classes.py:1763:19:1763:31 | malloc With_aenter() | classes.py:1763:19:1763:31 | malloc With_aenter() |
-| classes.py:1784:18:1784:29 | malloc With_aexit() | classes.py:1784:18:1784:29 | malloc With_aexit() |
+| classes.py:979:17:979:27 | ControlFlowNode for With_radd() | classes.py:979:17:979:27 | ControlFlowNode for With_radd() |
+| classes.py:996:17:996:27 | ControlFlowNode for With_rsub() | classes.py:996:17:996:27 | ControlFlowNode for With_rsub() |
+| classes.py:1013:17:1013:27 | ControlFlowNode for With_rmul() | classes.py:1013:17:1013:27 | ControlFlowNode for With_rmul() |
+| classes.py:1030:20:1030:33 | ControlFlowNode for With_rmatmul() | classes.py:1030:20:1030:33 | ControlFlowNode for With_rmatmul() |
+| classes.py:1047:21:1047:35 | ControlFlowNode for With_rtruediv() | classes.py:1047:21:1047:35 | ControlFlowNode for With_rtruediv() |
+| classes.py:1064:22:1064:37 | ControlFlowNode for With_rfloordiv() | classes.py:1064:22:1064:37 | ControlFlowNode for With_rfloordiv() |
+| classes.py:1081:17:1081:27 | ControlFlowNode for With_rmod() | classes.py:1081:17:1081:27 | ControlFlowNode for With_rmod() |
+| classes.py:1098:20:1098:33 | ControlFlowNode for With_rdivmod() | classes.py:1098:20:1098:33 | ControlFlowNode for With_rdivmod() |
+| classes.py:1115:17:1115:27 | ControlFlowNode for With_rpow() | classes.py:1115:17:1115:27 | ControlFlowNode for With_rpow() |
+| classes.py:1121:17:1121:27 | ControlFlowNode for With_rpow() | classes.py:1121:17:1121:27 | ControlFlowNode for With_rpow() |
+| classes.py:1138:20:1138:33 | ControlFlowNode for With_rlshift() | classes.py:1138:20:1138:33 | ControlFlowNode for With_rlshift() |
+| classes.py:1155:20:1155:33 | ControlFlowNode for With_rrshift() | classes.py:1155:20:1155:33 | ControlFlowNode for With_rrshift() |
+| classes.py:1172:17:1172:27 | ControlFlowNode for With_rand() | classes.py:1172:17:1172:27 | ControlFlowNode for With_rand() |
+| classes.py:1189:17:1189:27 | ControlFlowNode for With_rxor() | classes.py:1189:17:1189:27 | ControlFlowNode for With_rxor() |
+| classes.py:1206:16:1206:25 | ControlFlowNode for With_ror() | classes.py:1206:16:1206:25 | ControlFlowNode for With_ror() |
+| classes.py:1223:17:1223:27 | ControlFlowNode for With_iadd() | classes.py:1223:17:1223:27 | ControlFlowNode for With_iadd() |
+| classes.py:1240:17:1240:27 | ControlFlowNode for With_isub() | classes.py:1240:17:1240:27 | ControlFlowNode for With_isub() |
+| classes.py:1257:17:1257:27 | ControlFlowNode for With_imul() | classes.py:1257:17:1257:27 | ControlFlowNode for With_imul() |
+| classes.py:1274:20:1274:33 | ControlFlowNode for With_imatmul() | classes.py:1274:20:1274:33 | ControlFlowNode for With_imatmul() |
+| classes.py:1291:21:1291:35 | ControlFlowNode for With_itruediv() | classes.py:1291:21:1291:35 | ControlFlowNode for With_itruediv() |
+| classes.py:1308:22:1308:37 | ControlFlowNode for With_ifloordiv() | classes.py:1308:22:1308:37 | ControlFlowNode for With_ifloordiv() |
+| classes.py:1325:17:1325:27 | ControlFlowNode for With_imod() | classes.py:1325:17:1325:27 | ControlFlowNode for With_imod() |
+| classes.py:1342:17:1342:27 | ControlFlowNode for With_ipow() | classes.py:1342:17:1342:27 | ControlFlowNode for With_ipow() |
+| classes.py:1359:20:1359:33 | ControlFlowNode for With_ilshift() | classes.py:1359:20:1359:33 | ControlFlowNode for With_ilshift() |
+| classes.py:1376:20:1376:33 | ControlFlowNode for With_irshift() | classes.py:1376:20:1376:33 | ControlFlowNode for With_irshift() |
+| classes.py:1393:17:1393:27 | ControlFlowNode for With_iand() | classes.py:1393:17:1393:27 | ControlFlowNode for With_iand() |
+| classes.py:1410:17:1410:27 | ControlFlowNode for With_ixor() | classes.py:1410:17:1410:27 | ControlFlowNode for With_ixor() |
+| classes.py:1427:16:1427:25 | ControlFlowNode for With_ior() | classes.py:1427:16:1427:25 | ControlFlowNode for With_ior() |
+| classes.py:1443:16:1443:25 | ControlFlowNode for With_neg() | classes.py:1443:16:1443:25 | ControlFlowNode for With_neg() |
+| classes.py:1458:16:1458:25 | ControlFlowNode for With_pos() | classes.py:1458:16:1458:25 | ControlFlowNode for With_pos() |
+| classes.py:1473:16:1473:25 | ControlFlowNode for With_abs() | classes.py:1473:16:1473:25 | ControlFlowNode for With_abs() |
+| classes.py:1488:19:1488:31 | ControlFlowNode for With_invert() | classes.py:1488:19:1488:31 | ControlFlowNode for With_invert() |
+| classes.py:1503:20:1503:33 | ControlFlowNode for With_complex() | classes.py:1503:20:1503:33 | ControlFlowNode for With_complex() |
+| classes.py:1504:5:1504:25 | ControlFlowNode for complex() | classes.py:1504:5:1504:25 | ControlFlowNode for complex() |
+| classes.py:1518:16:1518:25 | ControlFlowNode for With_int() | classes.py:1518:16:1518:25 | ControlFlowNode for With_int() |
+| classes.py:1519:5:1519:17 | ControlFlowNode for int() | classes.py:1519:5:1519:17 | ControlFlowNode for int() |
+| classes.py:1533:18:1533:29 | ControlFlowNode for With_float() | classes.py:1533:18:1533:29 | ControlFlowNode for With_float() |
+| classes.py:1534:5:1534:21 | ControlFlowNode for float() | classes.py:1534:5:1534:21 | ControlFlowNode for float() |
+| classes.py:1549:18:1549:29 | ControlFlowNode for With_index() | classes.py:1549:18:1549:29 | ControlFlowNode for With_index() |
+| classes.py:1554:18:1554:29 | ControlFlowNode for With_index() | classes.py:1554:18:1554:29 | ControlFlowNode for With_index() |
+| classes.py:1559:18:1559:29 | ControlFlowNode for With_index() | classes.py:1559:18:1559:29 | ControlFlowNode for With_index() |
+| classes.py:1564:18:1564:29 | ControlFlowNode for With_index() | classes.py:1564:18:1564:29 | ControlFlowNode for With_index() |
+| classes.py:1569:18:1569:29 | ControlFlowNode for With_index() | classes.py:1569:18:1569:29 | ControlFlowNode for With_index() |
+| classes.py:1574:18:1574:29 | ControlFlowNode for With_index() | classes.py:1574:18:1574:29 | ControlFlowNode for With_index() |
+| classes.py:1575:5:1575:19 | ControlFlowNode for int() | classes.py:1575:5:1575:19 | ControlFlowNode for int() |
+| classes.py:1579:18:1579:29 | ControlFlowNode for With_index() | classes.py:1579:18:1579:29 | ControlFlowNode for With_index() |
+| classes.py:1580:5:1580:21 | ControlFlowNode for float() | classes.py:1580:5:1580:21 | ControlFlowNode for float() |
+| classes.py:1584:18:1584:29 | ControlFlowNode for With_index() | classes.py:1584:18:1584:29 | ControlFlowNode for With_index() |
+| classes.py:1585:5:1585:23 | ControlFlowNode for complex() | classes.py:1585:5:1585:23 | ControlFlowNode for complex() |
+| classes.py:1599:18:1599:29 | ControlFlowNode for With_round() | classes.py:1599:18:1599:29 | ControlFlowNode for With_round() |
+| classes.py:1614:18:1614:29 | ControlFlowNode for With_trunc() | classes.py:1614:18:1614:29 | ControlFlowNode for With_trunc() |
+| classes.py:1630:18:1630:29 | ControlFlowNode for With_floor() | classes.py:1630:18:1630:29 | ControlFlowNode for With_floor() |
+| classes.py:1646:17:1646:27 | ControlFlowNode for With_ceil() | classes.py:1646:17:1646:27 | ControlFlowNode for With_ceil() |
+| classes.py:1665:10:1665:21 | ControlFlowNode for With_enter() | classes.py:1665:10:1665:21 | ControlFlowNode for With_enter() |
+| classes.py:1686:10:1686:20 | ControlFlowNode for With_exit() | classes.py:1686:10:1686:20 | ControlFlowNode for With_exit() |
+| classes.py:1703:18:1703:29 | ControlFlowNode for With_await() | classes.py:1703:18:1703:29 | ControlFlowNode for With_await() |
+| classes.py:1726:18:1726:29 | ControlFlowNode for With_aiter() | classes.py:1726:18:1726:29 | ControlFlowNode for With_aiter() |
+| classes.py:1745:18:1745:29 | ControlFlowNode for With_anext() | classes.py:1745:18:1745:29 | ControlFlowNode for With_anext() |
+| classes.py:1763:19:1763:31 | ControlFlowNode for With_aenter() | classes.py:1763:19:1763:31 | ControlFlowNode for With_aenter() |
+| classes.py:1784:18:1784:29 | ControlFlowNode for With_aexit() | classes.py:1784:18:1784:29 | ControlFlowNode for With_aexit() |

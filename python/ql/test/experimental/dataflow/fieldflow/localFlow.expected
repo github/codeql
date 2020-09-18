@@ -1,14 +1,14 @@
 | examples.py:45:28:45:28 | SSA variable x | examples.py:46:9:46:16 | SSA variable x |
 | examples.py:45:28:45:28 | SSA variable x | examples.py:46:15:46:15 | ControlFlowNode for x |
 | examples.py:46:3:46:5 | SSA variable obj | examples.py:47:7:47:9 | ControlFlowNode for obj |
-| examples.py:46:9:46:16 | [post malloc] malloc MyObj() | examples.py:46:3:46:5 | SSA variable obj |
-| examples.py:46:9:46:16 | malloc MyObj() | examples.py:46:3:46:5 | SSA variable obj |
+| examples.py:46:9:46:16 | ControlFlowNode for MyObj() | examples.py:46:3:46:5 | SSA variable obj |
+| examples.py:46:9:46:16 | [post arg] ControlFlowNode for MyObj() | examples.py:46:3:46:5 | SSA variable obj |
 | examples.py:47:3:47:3 | SSA variable a | examples.py:48:10:48:10 | ControlFlowNode for a |
 | examples.py:47:7:47:13 | ControlFlowNode for Attribute | examples.py:47:3:47:3 | SSA variable a |
 | test.py:49:28:49:28 | SSA variable x | test.py:50:11:50:18 | SSA variable x |
 | test.py:49:28:49:28 | SSA variable x | test.py:50:17:50:17 | ControlFlowNode for x |
 | test.py:50:5:50:7 | SSA variable obj | test.py:51:9:51:11 | ControlFlowNode for obj |
-| test.py:50:11:50:18 | [post malloc] malloc MyObj() | test.py:50:5:50:7 | SSA variable obj |
-| test.py:50:11:50:18 | malloc MyObj() | test.py:50:5:50:7 | SSA variable obj |
+| test.py:50:11:50:18 | ControlFlowNode for MyObj() | test.py:50:5:50:7 | SSA variable obj |
+| test.py:50:11:50:18 | [post arg] ControlFlowNode for MyObj() | test.py:50:5:50:7 | SSA variable obj |
 | test.py:51:5:51:5 | SSA variable a | test.py:52:12:52:12 | ControlFlowNode for a |
 | test.py:51:9:51:15 | ControlFlowNode for Attribute | test.py:51:5:51:5 | SSA variable a |

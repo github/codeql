@@ -11,7 +11,7 @@ class ArgumentRoutingConfig extends DataFlow::Configuration {
     exists(AssignmentDefinition def, DataFlow::DataFlowCall call |
       def.getVariable() = node.(DataFlow::EssaNode).getVar() and
       def.getValue() = call.getNode() and
-      call.getCallable().getName().matches("With\\_%")
+      call.getNode().(CallNode).getNode().(Call).toString().matches("With\\_%") // TODO: Do not rely on toString
     ) and
     node.(DataFlow::EssaNode).getVar().getName().matches("with\\_%")
   }
