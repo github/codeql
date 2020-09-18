@@ -306,3 +306,23 @@ namespace std {
 
 	template<typename T, class... Args> shared_ptr<T> make_shared(Args&&...);
 }
+
+// --- pair ---
+
+namespace std {
+	template <class T1, class T2>
+	struct pair {
+		typedef T1 first_type;
+		typedef T2 second_type;
+
+		T1 first;
+		T2 second;
+		pair();
+		pair(const T1& x, const T2& y);
+		template<class U, class V> pair(const pair<U, V> &p);
+
+		void swap(pair& p) /*noexcept(...)*/;
+	};
+
+	template <class T1, class T2> pair<T1,T2> make_pair(T1, T2);
+}

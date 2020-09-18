@@ -260,6 +260,7 @@
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
+| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
 | format.cpp:16:21:16:21 | s | format.cpp:22:22:22:22 | s |  |
 | format.cpp:16:31:16:31 | n | format.cpp:22:25:22:25 | n |  |
 | format.cpp:16:46:16:51 | format | format.cpp:22:28:22:33 | format |  |
@@ -390,6 +391,144 @@
 | format.cpp:158:13:158:18 | call to wcslen | format.cpp:158:13:158:26 | ... / ... | TAINT |
 | format.cpp:158:13:158:26 | ... / ... | format.cpp:158:7:158:27 | ... + ... | TAINT |
 | format.cpp:158:26:158:26 | 2 | format.cpp:158:13:158:26 | ... / ... | TAINT |
+| map.cpp:14:28:14:28 | call to pair | map.cpp:16:2:16:2 | a |  |
+| map.cpp:14:28:14:28 | call to pair | map.cpp:17:7:17:7 | a |  |
+| map.cpp:14:28:14:28 | call to pair | map.cpp:18:7:18:7 | a |  |
+| map.cpp:14:28:14:28 | call to pair | map.cpp:19:7:19:7 | a |  |
+| map.cpp:14:31:14:31 | call to pair | map.cpp:21:2:21:2 | b |  |
+| map.cpp:14:31:14:31 | call to pair | map.cpp:22:7:22:7 | b |  |
+| map.cpp:14:31:14:31 | call to pair | map.cpp:23:7:23:7 | b |  |
+| map.cpp:14:31:14:31 | call to pair | map.cpp:24:7:24:7 | b |  |
+| map.cpp:14:34:14:34 | call to pair | map.cpp:26:2:26:2 | c |  |
+| map.cpp:14:34:14:34 | call to pair | map.cpp:27:7:27:7 | c |  |
+| map.cpp:14:34:14:34 | call to pair | map.cpp:28:7:28:7 | c |  |
+| map.cpp:14:34:14:34 | call to pair | map.cpp:29:7:29:7 | c |  |
+| map.cpp:16:2:16:2 | a [post update] | map.cpp:17:7:17:7 | a |  |
+| map.cpp:16:2:16:2 | a [post update] | map.cpp:18:7:18:7 | a |  |
+| map.cpp:16:2:16:2 | a [post update] | map.cpp:19:7:19:7 | a |  |
+| map.cpp:16:2:16:16 | ... = ... | map.cpp:16:4:16:8 | first [post update] |  |
+| map.cpp:16:2:16:16 | ... = ... | map.cpp:17:9:17:13 | first |  |
+| map.cpp:16:12:16:16 | 123 | map.cpp:16:2:16:16 | ... = ... |  |
+| map.cpp:17:7:17:7 | a [post update] | map.cpp:18:7:18:7 | a |  |
+| map.cpp:17:7:17:7 | a [post update] | map.cpp:19:7:19:7 | a |  |
+| map.cpp:18:7:18:7 | a [post update] | map.cpp:19:7:19:7 | a |  |
+| map.cpp:21:2:21:2 | b [post update] | map.cpp:22:7:22:7 | b |  |
+| map.cpp:21:2:21:2 | b [post update] | map.cpp:23:7:23:7 | b |  |
+| map.cpp:21:2:21:2 | b [post update] | map.cpp:24:7:24:7 | b |  |
+| map.cpp:21:2:21:19 | ... = ... | map.cpp:21:4:21:8 | first [post update] |  |
+| map.cpp:21:2:21:19 | ... = ... | map.cpp:22:9:22:13 | first |  |
+| map.cpp:21:12:21:17 | call to source | map.cpp:21:2:21:19 | ... = ... |  |
+| map.cpp:22:7:22:7 | b [post update] | map.cpp:23:7:23:7 | b |  |
+| map.cpp:22:7:22:7 | b [post update] | map.cpp:24:7:24:7 | b |  |
+| map.cpp:23:7:23:7 | b [post update] | map.cpp:24:7:24:7 | b |  |
+| map.cpp:26:2:26:2 | c [post update] | map.cpp:27:7:27:7 | c |  |
+| map.cpp:26:2:26:2 | c [post update] | map.cpp:28:7:28:7 | c |  |
+| map.cpp:26:2:26:2 | c [post update] | map.cpp:29:7:29:7 | c |  |
+| map.cpp:26:2:26:20 | ... = ... | map.cpp:26:4:26:9 | second [post update] |  |
+| map.cpp:26:2:26:20 | ... = ... | map.cpp:28:9:28:14 | second |  |
+| map.cpp:26:13:26:18 | call to source | map.cpp:26:2:26:20 | ... = ... |  |
+| map.cpp:27:7:27:7 | c [post update] | map.cpp:28:7:28:7 | c |  |
+| map.cpp:27:7:27:7 | c [post update] | map.cpp:29:7:29:7 | c |  |
+| map.cpp:28:7:28:7 | c [post update] | map.cpp:29:7:29:7 | c |  |
+| map.cpp:31:30:31:42 | call to pair | map.cpp:32:7:32:7 | d |  |
+| map.cpp:31:30:31:42 | call to pair | map.cpp:33:7:33:7 | d |  |
+| map.cpp:31:30:31:42 | call to pair | map.cpp:34:7:34:7 | d |  |
+| map.cpp:32:7:32:7 | d [post update] | map.cpp:33:7:33:7 | d |  |
+| map.cpp:32:7:32:7 | d [post update] | map.cpp:34:7:34:7 | d |  |
+| map.cpp:33:7:33:7 | d [post update] | map.cpp:34:7:34:7 | d |  |
+| map.cpp:36:30:36:45 | call to pair | map.cpp:37:7:37:7 | e |  |
+| map.cpp:36:30:36:45 | call to pair | map.cpp:38:7:38:7 | e |  |
+| map.cpp:36:30:36:45 | call to pair | map.cpp:39:7:39:7 | e |  |
+| map.cpp:37:7:37:7 | e [post update] | map.cpp:38:7:38:7 | e |  |
+| map.cpp:37:7:37:7 | e [post update] | map.cpp:39:7:39:7 | e |  |
+| map.cpp:38:7:38:7 | e [post update] | map.cpp:39:7:39:7 | e |  |
+| map.cpp:41:30:41:45 | call to pair | map.cpp:42:7:42:7 | f |  |
+| map.cpp:41:30:41:45 | call to pair | map.cpp:43:7:43:7 | f |  |
+| map.cpp:41:30:41:45 | call to pair | map.cpp:44:7:44:7 | f |  |
+| map.cpp:41:30:41:45 | call to pair | map.cpp:46:30:46:30 | f |  |
+| map.cpp:41:30:41:45 | call to pair | map.cpp:47:7:47:7 | f |  |
+| map.cpp:41:30:41:45 | call to pair | map.cpp:48:7:48:7 | f |  |
+| map.cpp:41:30:41:45 | call to pair | map.cpp:49:7:49:7 | f |  |
+| map.cpp:41:30:41:45 | call to pair | map.cpp:52:6:52:6 | f |  |
+| map.cpp:42:7:42:7 | f [post update] | map.cpp:43:7:43:7 | f |  |
+| map.cpp:42:7:42:7 | f [post update] | map.cpp:44:7:44:7 | f |  |
+| map.cpp:42:7:42:7 | f [post update] | map.cpp:46:30:46:30 | f |  |
+| map.cpp:42:7:42:7 | f [post update] | map.cpp:47:7:47:7 | f |  |
+| map.cpp:42:7:42:7 | f [post update] | map.cpp:48:7:48:7 | f |  |
+| map.cpp:42:7:42:7 | f [post update] | map.cpp:49:7:49:7 | f |  |
+| map.cpp:42:7:42:7 | f [post update] | map.cpp:52:6:52:6 | f |  |
+| map.cpp:43:7:43:7 | f [post update] | map.cpp:44:7:44:7 | f |  |
+| map.cpp:43:7:43:7 | f [post update] | map.cpp:46:30:46:30 | f |  |
+| map.cpp:43:7:43:7 | f [post update] | map.cpp:47:7:47:7 | f |  |
+| map.cpp:43:7:43:7 | f [post update] | map.cpp:48:7:48:7 | f |  |
+| map.cpp:43:7:43:7 | f [post update] | map.cpp:49:7:49:7 | f |  |
+| map.cpp:43:7:43:7 | f [post update] | map.cpp:52:6:52:6 | f |  |
+| map.cpp:47:7:47:7 | f [post update] | map.cpp:48:7:48:7 | f |  |
+| map.cpp:47:7:47:7 | f [post update] | map.cpp:49:7:49:7 | f |  |
+| map.cpp:47:7:47:7 | f [post update] | map.cpp:52:6:52:6 | f |  |
+| map.cpp:48:7:48:7 | f [post update] | map.cpp:49:7:49:7 | f |  |
+| map.cpp:48:7:48:7 | f [post update] | map.cpp:52:6:52:6 | f |  |
+| map.cpp:52:6:52:6 | f | map.cpp:52:2:52:6 | ... = ... |  |
+| map.cpp:52:6:52:6 | f | map.cpp:53:7:53:7 | h |  |
+| map.cpp:52:6:52:6 | f | map.cpp:54:7:54:7 | h |  |
+| map.cpp:52:6:52:6 | f | map.cpp:55:7:55:7 | h |  |
+| map.cpp:53:7:53:7 | h [post update] | map.cpp:54:7:54:7 | h |  |
+| map.cpp:53:7:53:7 | h [post update] | map.cpp:55:7:55:7 | h |  |
+| map.cpp:54:7:54:7 | h [post update] | map.cpp:55:7:55:7 | h |  |
+| map.cpp:57:30:57:42 | call to pair | map.cpp:61:3:61:3 | i |  |
+| map.cpp:57:30:57:42 | call to pair | map.cpp:63:7:63:7 | i |  |
+| map.cpp:57:30:57:42 | call to pair | map.cpp:64:7:64:7 | i |  |
+| map.cpp:57:30:57:42 | call to pair | map.cpp:65:7:65:7 | i |  |
+| map.cpp:58:30:58:45 | call to pair | map.cpp:61:10:61:10 | j |  |
+| map.cpp:58:30:58:45 | call to pair | map.cpp:66:7:66:7 | j |  |
+| map.cpp:58:30:58:45 | call to pair | map.cpp:67:7:67:7 | j |  |
+| map.cpp:58:30:58:45 | call to pair | map.cpp:68:7:68:7 | j |  |
+| map.cpp:59:30:59:45 | call to pair | map.cpp:62:2:62:2 | k |  |
+| map.cpp:59:30:59:45 | call to pair | map.cpp:69:7:69:7 | k |  |
+| map.cpp:59:30:59:45 | call to pair | map.cpp:70:7:70:7 | k |  |
+| map.cpp:59:30:59:45 | call to pair | map.cpp:71:7:71:7 | k |  |
+| map.cpp:60:30:60:42 | call to pair | map.cpp:62:9:62:9 | l |  |
+| map.cpp:60:30:60:42 | call to pair | map.cpp:72:7:72:7 | l |  |
+| map.cpp:60:30:60:42 | call to pair | map.cpp:73:7:73:7 | l |  |
+| map.cpp:60:30:60:42 | call to pair | map.cpp:74:7:74:7 | l |  |
+| map.cpp:61:3:61:3 | ref arg i | map.cpp:63:7:63:7 | i |  |
+| map.cpp:61:3:61:3 | ref arg i | map.cpp:64:7:64:7 | i |  |
+| map.cpp:61:3:61:3 | ref arg i | map.cpp:65:7:65:7 | i |  |
+| map.cpp:61:10:61:10 | ref arg j | map.cpp:66:7:66:7 | j |  |
+| map.cpp:61:10:61:10 | ref arg j | map.cpp:67:7:67:7 | j |  |
+| map.cpp:61:10:61:10 | ref arg j | map.cpp:68:7:68:7 | j |  |
+| map.cpp:62:2:62:2 | ref arg k | map.cpp:69:7:69:7 | k |  |
+| map.cpp:62:2:62:2 | ref arg k | map.cpp:70:7:70:7 | k |  |
+| map.cpp:62:2:62:2 | ref arg k | map.cpp:71:7:71:7 | k |  |
+| map.cpp:62:9:62:9 | ref arg l | map.cpp:72:7:72:7 | l |  |
+| map.cpp:62:9:62:9 | ref arg l | map.cpp:73:7:73:7 | l |  |
+| map.cpp:62:9:62:9 | ref arg l | map.cpp:74:7:74:7 | l |  |
+| map.cpp:63:7:63:7 | i [post update] | map.cpp:64:7:64:7 | i |  |
+| map.cpp:63:7:63:7 | i [post update] | map.cpp:65:7:65:7 | i |  |
+| map.cpp:64:7:64:7 | i [post update] | map.cpp:65:7:65:7 | i |  |
+| map.cpp:66:7:66:7 | j [post update] | map.cpp:67:7:67:7 | j |  |
+| map.cpp:66:7:66:7 | j [post update] | map.cpp:68:7:68:7 | j |  |
+| map.cpp:67:7:67:7 | j [post update] | map.cpp:68:7:68:7 | j |  |
+| map.cpp:69:7:69:7 | k [post update] | map.cpp:70:7:70:7 | k |  |
+| map.cpp:69:7:69:7 | k [post update] | map.cpp:71:7:71:7 | k |  |
+| map.cpp:70:7:70:7 | k [post update] | map.cpp:71:7:71:7 | k |  |
+| map.cpp:72:7:72:7 | l [post update] | map.cpp:73:7:73:7 | l |  |
+| map.cpp:72:7:72:7 | l [post update] | map.cpp:74:7:74:7 | l |  |
+| map.cpp:73:7:73:7 | l [post update] | map.cpp:74:7:74:7 | l |  |
+| map.cpp:76:7:76:15 | call to make_pair | map.cpp:76:7:76:29 | call to pair | TAINT |
+| map.cpp:79:7:79:15 | call to make_pair | map.cpp:79:7:79:32 | call to pair | TAINT |
+| map.cpp:82:7:82:15 | call to make_pair | map.cpp:82:7:82:32 | call to pair | TAINT |
+| map.cpp:87:6:87:14 | call to make_pair | map.cpp:87:6:87:49 | call to pair | TAINT |
+| map.cpp:87:6:87:49 | call to pair | map.cpp:87:2:87:49 | ... = ... |  |
+| map.cpp:87:6:87:49 | call to pair | map.cpp:88:7:88:7 | m |  |
+| map.cpp:87:6:87:49 | call to pair | map.cpp:89:7:89:7 | m |  |
+| map.cpp:87:6:87:49 | call to pair | map.cpp:90:7:90:7 | m |  |
+| map.cpp:87:6:87:49 | call to pair | map.cpp:91:7:91:7 | m |  |
+| map.cpp:87:6:87:49 | call to pair | map.cpp:92:7:92:7 | m |  |
+| map.cpp:88:7:88:7 | m | map.cpp:88:7:88:7 | call to pair | TAINT |
+| map.cpp:90:7:90:7 | m [post update] | map.cpp:91:7:91:7 | m |  |
+| map.cpp:90:7:90:7 | m [post update] | map.cpp:92:7:92:7 | m |  |
+| map.cpp:91:7:91:7 | m [post update] | map.cpp:92:7:92:7 | m |  |
 | movableclass.cpp:8:2:8:15 | this | movableclass.cpp:8:27:8:31 | constructor init of field v [pre-this] |  |
 | movableclass.cpp:8:21:8:22 | _v | movableclass.cpp:8:29:8:30 | _v |  |
 | movableclass.cpp:8:29:8:30 | _v | movableclass.cpp:8:27:8:31 | constructor init of field v | TAINT |
@@ -514,12 +653,22 @@
 | standalone_iterators.cpp:51:37:51:43 | source1 | standalone_iterators.cpp:53:12:53:18 | source1 |  |
 | standalone_iterators.cpp:51:37:51:43 | source1 | standalone_iterators.cpp:54:14:54:20 | source1 |  |
 | standalone_iterators.cpp:53:12:53:18 | ref arg source1 | standalone_iterators.cpp:54:14:54:20 | source1 |  |
-| stl.h:216:30:216:40 | call to allocator | stl.h:216:21:216:41 | noexcept(...) | TAINT |
-| stl.h:216:30:216:40 | call to allocator | stl.h:216:21:216:41 | noexcept(...) | TAINT |
-| stl.h:216:30:216:40 | call to allocator | stl.h:216:21:216:41 | noexcept(...) | TAINT |
-| stl.h:216:30:216:40 | call to allocator | stl.h:216:21:216:41 | noexcept(...) | TAINT |
-| stl.h:216:30:216:40 | call to allocator | stl.h:216:21:216:41 | noexcept(...) | TAINT |
-| stl.h:216:53:216:63 | 0 | stl.h:216:46:216:64 | (no string representation) | TAINT |
+| stl.h:221:30:221:40 | call to allocator | stl.h:221:21:221:41 | noexcept(...) | TAINT |
+| stl.h:221:30:221:40 | call to allocator | stl.h:221:21:221:41 | noexcept(...) | TAINT |
+| stl.h:221:30:221:40 | call to allocator | stl.h:221:21:221:41 | noexcept(...) | TAINT |
+| stl.h:221:30:221:40 | call to allocator | stl.h:221:21:221:41 | noexcept(...) | TAINT |
+| stl.h:221:30:221:40 | call to allocator | stl.h:221:21:221:41 | noexcept(...) | TAINT |
+| stl.h:221:53:221:63 | 0 | stl.h:221:46:221:64 | (no string representation) | TAINT |
+| stl.h:314:9:314:9 | Unknown literal | stl.h:314:9:314:9 | constructor init of field first | TAINT |
+| stl.h:314:9:314:9 | Unknown literal | stl.h:314:9:314:9 | constructor init of field first | TAINT |
+| stl.h:314:9:314:9 | Unknown literal | stl.h:314:9:314:9 | constructor init of field second | TAINT |
+| stl.h:314:9:314:9 | Unknown literal | stl.h:314:9:314:9 | constructor init of field second | TAINT |
+| stl.h:314:9:314:9 | constructor init of field first [post-this] | stl.h:314:9:314:9 | constructor init of field second [pre-this] |  |
+| stl.h:314:9:314:9 | constructor init of field first [post-this] | stl.h:314:9:314:9 | constructor init of field second [pre-this] |  |
+| stl.h:314:9:314:9 | constructor init of field first [pre-this] | stl.h:314:9:314:9 | constructor init of field second [pre-this] |  |
+| stl.h:314:9:314:9 | constructor init of field first [pre-this] | stl.h:314:9:314:9 | constructor init of field second [pre-this] |  |
+| stl.h:314:9:314:9 | this | stl.h:314:9:314:9 | constructor init of field first [pre-this] |  |
+| stl.h:314:9:314:9 | this | stl.h:314:9:314:9 | constructor init of field first [pre-this] |  |
 | string.cpp:24:12:24:17 | call to source | string.cpp:28:7:28:7 | a |  |
 | string.cpp:25:16:25:20 | 123 | string.cpp:25:16:25:21 | call to basic_string | TAINT |
 | string.cpp:25:16:25:21 | call to basic_string | string.cpp:29:7:29:7 | b |  |
