@@ -124,6 +124,9 @@ private newtype TPrintAstNode =
   TJavadocNode(Javadoc jd) { exists(Documentable d | d.getJavadoc() = jd | shouldPrint(d, _)) } or
   TJavadocElementNode(JavadocElement jd) {
     exists(Documentable d | d.getJavadoc() = jd.getParent*() | shouldPrint(d, _))
+  } or
+  TImportsNode(CompilationUnit cu) {
+    shouldPrint(cu, _) and exists(Import i | i.getCompilationUnit() = cu)
   }
 
 /**
@@ -395,13 +398,12 @@ final class CompilationUnitNode extends ElementNode {
 
   CompilationUnitNode() { cu = element }
 
-  private Element getADeclaration() {
-    cu.hasChildElement(result)
-    or
-    result.(Import).getCompilationUnit() = cu
-  }
+  private Element getADeclaration() { cu.hasChildElement(result) }
 
   override PrintAstNode getChild(int childIndex) {
+    childIndex = -1 and
+    result.(ImportsNode).getCompilationUnit() = cu
+    or
     childIndex >= 0 and
     result.(ElementNode).getElement() =
       rank[childIndex](Element e, string file, int line, int column |
@@ -620,6 +622,32 @@ final class JavadocElementNode extends PrintAstNode, TJavadocElementNode {
    * Gets the `JavadocElement` represented by this node.
    */
   JavadocElement getJavadocElement() { result = jd }
+}
+
+/**
+ * A node representing the `Import`s of a `CompilationUnit`.
+ * Only rendered if there is at least one import.
+ */
+final class ImportsNode extends PrintAstNode, TImportsNode {
+  CompilationUnit cu;
+
+  ImportsNode() { this = TImportsNode(cu) }
+
+  override string toString() { result = "(Imports)" }
+
+  override ElementNode getChild(int childIndex) {
+    result.getElement() =
+      rank[childIndex](Import im, string file, int line, int column |
+        im.getCompilationUnit() = cu and locationSortKeys(im, file, line, column)
+      |
+        im order by file, line, column
+      )
+  }
+
+  /**
+   * Gets the underlying CompilationUnit.
+   */
+  CompilationUnit getCompilationUnit() { result = cu }
 }
 
 /** Holds if `node` belongs to the output tree, and its property `key` has the given `value`. */

@@ -64,6 +64,11 @@ edges
 | aliasing.cpp:98:3:98:21 | Store | aliasing.cpp:98:3:98:21 | Chi [m1] |
 | aliasing.cpp:98:10:98:19 | call to user_input | aliasing.cpp:98:3:98:21 | Store |
 | aliasing.cpp:100:14:100:14 | Store [m1] | aliasing.cpp:102:8:102:10 | * ... |
+| aliasing.cpp:106:3:106:20 | Chi [array content] | aliasing.cpp:111:15:111:19 | taint_a_ptr output argument [array content] |
+| aliasing.cpp:106:3:106:20 | Store | aliasing.cpp:106:3:106:20 | Chi [array content] |
+| aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:106:3:106:20 | Store |
+| aliasing.cpp:111:15:111:19 | Chi [array content] | aliasing.cpp:112:10:112:11 | m2 |
+| aliasing.cpp:111:15:111:19 | taint_a_ptr output argument [array content] | aliasing.cpp:111:15:111:19 | Chi [array content] |
 | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:7:8:7:13 | access to array |
 | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:9:8:9:11 | * ... |
 | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:10:8:10:15 | * ... |
@@ -89,14 +94,30 @@ edges
 | by_reference.cpp:88:3:88:24 | Chi [a] | by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [a] |
 | by_reference.cpp:88:3:88:24 | Store | by_reference.cpp:88:3:88:24 | Chi [a] |
 | by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:88:3:88:24 | Store |
+| by_reference.cpp:92:3:92:20 | Chi [array content] | by_reference.cpp:104:15:104:22 | taint_a_ptr output argument [array content] |
+| by_reference.cpp:92:3:92:20 | Chi [array content] | by_reference.cpp:108:15:108:24 | taint_a_ptr output argument [array content] |
+| by_reference.cpp:92:3:92:20 | Store | by_reference.cpp:92:3:92:20 | Chi [array content] |
+| by_reference.cpp:92:9:92:18 | call to user_input | by_reference.cpp:92:3:92:20 | Store |
+| by_reference.cpp:96:3:96:19 | Chi [array content] | by_reference.cpp:124:15:124:21 | taint_a_ref output argument [array content] |
+| by_reference.cpp:96:3:96:19 | Chi [array content] | by_reference.cpp:128:15:128:23 | taint_a_ref output argument [array content] |
+| by_reference.cpp:96:3:96:19 | Store | by_reference.cpp:96:3:96:19 | Chi [array content] |
+| by_reference.cpp:96:8:96:17 | call to user_input | by_reference.cpp:96:3:96:19 | Store |
 | by_reference.cpp:102:21:102:39 | Chi [a] | by_reference.cpp:110:27:110:27 | a |
 | by_reference.cpp:102:21:102:39 | taint_inner_a_ptr output argument [a] | by_reference.cpp:102:21:102:39 | Chi [a] |
+| by_reference.cpp:104:15:104:22 | Chi [array content] | by_reference.cpp:112:14:112:14 | a |
+| by_reference.cpp:104:15:104:22 | taint_a_ptr output argument [array content] | by_reference.cpp:104:15:104:22 | Chi [array content] |
 | by_reference.cpp:106:21:106:41 | Chi [a] | by_reference.cpp:114:29:114:29 | a |
 | by_reference.cpp:106:21:106:41 | taint_inner_a_ptr output argument [a] | by_reference.cpp:106:21:106:41 | Chi [a] |
+| by_reference.cpp:108:15:108:24 | Chi [array content] | by_reference.cpp:116:16:116:16 | a |
+| by_reference.cpp:108:15:108:24 | taint_a_ptr output argument [array content] | by_reference.cpp:108:15:108:24 | Chi [array content] |
 | by_reference.cpp:122:21:122:38 | Chi [a] | by_reference.cpp:130:27:130:27 | a |
 | by_reference.cpp:122:21:122:38 | taint_inner_a_ref output argument [a] | by_reference.cpp:122:21:122:38 | Chi [a] |
+| by_reference.cpp:124:15:124:21 | Chi [array content] | by_reference.cpp:132:14:132:14 | a |
+| by_reference.cpp:124:15:124:21 | taint_a_ref output argument [array content] | by_reference.cpp:124:15:124:21 | Chi [array content] |
 | by_reference.cpp:126:21:126:40 | Chi [a] | by_reference.cpp:134:29:134:29 | a |
 | by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [a] | by_reference.cpp:126:21:126:40 | Chi [a] |
+| by_reference.cpp:128:15:128:23 | Chi [array content] | by_reference.cpp:136:16:136:16 | a |
+| by_reference.cpp:128:15:128:23 | taint_a_ref output argument [array content] | by_reference.cpp:128:15:128:23 | Chi [array content] |
 | complex.cpp:40:17:40:17 | *b [a_] | complex.cpp:51:16:51:16 | Argument -1 indirection [a_] |
 | complex.cpp:40:17:40:17 | *b [b_] | complex.cpp:51:16:51:16 | Argument -1 indirection [b_] |
 | complex.cpp:40:17:40:17 | *b [b_] | complex.cpp:52:16:52:16 | Argument -1 indirection [b_] |
@@ -264,6 +285,12 @@ nodes
 | aliasing.cpp:98:10:98:19 | call to user_input | semmle.label | call to user_input |
 | aliasing.cpp:100:14:100:14 | Store [m1] | semmle.label | Store [m1] |
 | aliasing.cpp:102:8:102:10 | * ... | semmle.label | * ... |
+| aliasing.cpp:106:3:106:20 | Chi [array content] | semmle.label | Chi [array content] |
+| aliasing.cpp:106:3:106:20 | Store | semmle.label | Store |
+| aliasing.cpp:106:9:106:18 | call to user_input | semmle.label | call to user_input |
+| aliasing.cpp:111:15:111:19 | Chi [array content] | semmle.label | Chi [array content] |
+| aliasing.cpp:111:15:111:19 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
+| aliasing.cpp:112:10:112:11 | m2 | semmle.label | m2 |
 | arrays.cpp:6:12:6:21 | call to user_input | semmle.label | call to user_input |
 | arrays.cpp:7:8:7:13 | access to array | semmle.label | access to array |
 | arrays.cpp:9:8:9:11 | * ... | semmle.label | * ... |
@@ -294,18 +321,36 @@ nodes
 | by_reference.cpp:88:3:88:24 | Chi [a] | semmle.label | Chi [a] |
 | by_reference.cpp:88:3:88:24 | Store | semmle.label | Store |
 | by_reference.cpp:88:13:88:22 | call to user_input | semmle.label | call to user_input |
+| by_reference.cpp:92:3:92:20 | Chi [array content] | semmle.label | Chi [array content] |
+| by_reference.cpp:92:3:92:20 | Store | semmle.label | Store |
+| by_reference.cpp:92:9:92:18 | call to user_input | semmle.label | call to user_input |
+| by_reference.cpp:96:3:96:19 | Chi [array content] | semmle.label | Chi [array content] |
+| by_reference.cpp:96:3:96:19 | Store | semmle.label | Store |
+| by_reference.cpp:96:8:96:17 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:102:21:102:39 | Chi [a] | semmle.label | Chi [a] |
 | by_reference.cpp:102:21:102:39 | taint_inner_a_ptr output argument [a] | semmle.label | taint_inner_a_ptr output argument [a] |
+| by_reference.cpp:104:15:104:22 | Chi [array content] | semmle.label | Chi [array content] |
+| by_reference.cpp:104:15:104:22 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
 | by_reference.cpp:106:21:106:41 | Chi [a] | semmle.label | Chi [a] |
 | by_reference.cpp:106:21:106:41 | taint_inner_a_ptr output argument [a] | semmle.label | taint_inner_a_ptr output argument [a] |
+| by_reference.cpp:108:15:108:24 | Chi [array content] | semmle.label | Chi [array content] |
+| by_reference.cpp:108:15:108:24 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
 | by_reference.cpp:110:27:110:27 | a | semmle.label | a |
+| by_reference.cpp:112:14:112:14 | a | semmle.label | a |
 | by_reference.cpp:114:29:114:29 | a | semmle.label | a |
+| by_reference.cpp:116:16:116:16 | a | semmle.label | a |
 | by_reference.cpp:122:21:122:38 | Chi [a] | semmle.label | Chi [a] |
 | by_reference.cpp:122:21:122:38 | taint_inner_a_ref output argument [a] | semmle.label | taint_inner_a_ref output argument [a] |
+| by_reference.cpp:124:15:124:21 | Chi [array content] | semmle.label | Chi [array content] |
+| by_reference.cpp:124:15:124:21 | taint_a_ref output argument [array content] | semmle.label | taint_a_ref output argument [array content] |
 | by_reference.cpp:126:21:126:40 | Chi [a] | semmle.label | Chi [a] |
 | by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [a] | semmle.label | taint_inner_a_ref output argument [a] |
+| by_reference.cpp:128:15:128:23 | Chi [array content] | semmle.label | Chi [array content] |
+| by_reference.cpp:128:15:128:23 | taint_a_ref output argument [array content] | semmle.label | taint_a_ref output argument [array content] |
 | by_reference.cpp:130:27:130:27 | a | semmle.label | a |
+| by_reference.cpp:132:14:132:14 | a | semmle.label | a |
 | by_reference.cpp:134:29:134:29 | a | semmle.label | a |
+| by_reference.cpp:136:16:136:16 | a | semmle.label | a |
 | complex.cpp:40:17:40:17 | *b [a_] | semmle.label | *b [a_] |
 | complex.cpp:40:17:40:17 | *b [b_] | semmle.label | *b [b_] |
 | complex.cpp:51:16:51:16 | Argument -1 indirection [a_] | semmle.label | Argument -1 indirection [a_] |
@@ -415,6 +460,7 @@ nodes
 | aliasing.cpp:87:12:87:13 | m1 | aliasing.cpp:86:10:86:19 | call to user_input | aliasing.cpp:87:12:87:13 | m1 | m1 flows from $@ | aliasing.cpp:86:10:86:19 | call to user_input | call to user_input |
 | aliasing.cpp:93:12:93:13 | m1 | aliasing.cpp:92:12:92:21 | call to user_input | aliasing.cpp:93:12:93:13 | m1 | m1 flows from $@ | aliasing.cpp:92:12:92:21 | call to user_input | call to user_input |
 | aliasing.cpp:102:8:102:10 | * ... | aliasing.cpp:98:10:98:19 | call to user_input | aliasing.cpp:102:8:102:10 | * ... | * ... flows from $@ | aliasing.cpp:98:10:98:19 | call to user_input | call to user_input |
+| aliasing.cpp:112:10:112:11 | m2 | aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:112:10:112:11 | m2 | m2 flows from $@ | aliasing.cpp:106:9:106:18 | call to user_input | call to user_input |
 | arrays.cpp:7:8:7:13 | access to array | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:7:8:7:13 | access to array | access to array flows from $@ | arrays.cpp:6:12:6:21 | call to user_input | call to user_input |
 | arrays.cpp:9:8:9:11 | * ... | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:9:8:9:11 | * ... | * ... flows from $@ | arrays.cpp:6:12:6:21 | call to user_input | call to user_input |
 | arrays.cpp:10:8:10:15 | * ... | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:10:8:10:15 | * ... | * ... flows from $@ | arrays.cpp:6:12:6:21 | call to user_input | call to user_input |
@@ -425,9 +471,13 @@ nodes
 | by_reference.cpp:63:10:63:28 | call to getThroughNonMember | by_reference.cpp:62:25:62:34 | call to user_input | by_reference.cpp:63:10:63:28 | call to getThroughNonMember | call to getThroughNonMember flows from $@ | by_reference.cpp:62:25:62:34 | call to user_input | call to user_input |
 | by_reference.cpp:69:8:69:20 | call to nonMemberGetA | by_reference.cpp:68:21:68:30 | call to user_input | by_reference.cpp:69:8:69:20 | call to nonMemberGetA | call to nonMemberGetA flows from $@ | by_reference.cpp:68:21:68:30 | call to user_input | call to user_input |
 | by_reference.cpp:110:27:110:27 | a | by_reference.cpp:84:14:84:23 | call to user_input | by_reference.cpp:110:27:110:27 | a | a flows from $@ | by_reference.cpp:84:14:84:23 | call to user_input | call to user_input |
+| by_reference.cpp:112:14:112:14 | a | by_reference.cpp:92:9:92:18 | call to user_input | by_reference.cpp:112:14:112:14 | a | a flows from $@ | by_reference.cpp:92:9:92:18 | call to user_input | call to user_input |
 | by_reference.cpp:114:29:114:29 | a | by_reference.cpp:84:14:84:23 | call to user_input | by_reference.cpp:114:29:114:29 | a | a flows from $@ | by_reference.cpp:84:14:84:23 | call to user_input | call to user_input |
+| by_reference.cpp:116:16:116:16 | a | by_reference.cpp:92:9:92:18 | call to user_input | by_reference.cpp:116:16:116:16 | a | a flows from $@ | by_reference.cpp:92:9:92:18 | call to user_input | call to user_input |
 | by_reference.cpp:130:27:130:27 | a | by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:130:27:130:27 | a | a flows from $@ | by_reference.cpp:88:13:88:22 | call to user_input | call to user_input |
+| by_reference.cpp:132:14:132:14 | a | by_reference.cpp:96:8:96:17 | call to user_input | by_reference.cpp:132:14:132:14 | a | a flows from $@ | by_reference.cpp:96:8:96:17 | call to user_input | call to user_input |
 | by_reference.cpp:134:29:134:29 | a | by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:134:29:134:29 | a | a flows from $@ | by_reference.cpp:88:13:88:22 | call to user_input | call to user_input |
+| by_reference.cpp:136:16:136:16 | a | by_reference.cpp:96:8:96:17 | call to user_input | by_reference.cpp:136:16:136:16 | a | a flows from $@ | by_reference.cpp:96:8:96:17 | call to user_input | call to user_input |
 | complex.cpp:51:18:51:18 | call to a | complex.cpp:62:19:62:28 | call to user_input | complex.cpp:51:18:51:18 | call to a | call to a flows from $@ | complex.cpp:62:19:62:28 | call to user_input | call to user_input |
 | complex.cpp:51:18:51:18 | call to a | complex.cpp:64:19:64:28 | call to user_input | complex.cpp:51:18:51:18 | call to a | call to a flows from $@ | complex.cpp:64:19:64:28 | call to user_input | call to user_input |
 | complex.cpp:52:18:52:18 | call to b | complex.cpp:63:19:63:28 | call to user_input | complex.cpp:52:18:52:18 | call to b | call to b flows from $@ | complex.cpp:63:19:63:28 | call to user_input | call to user_input |

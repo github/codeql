@@ -390,6 +390,45 @@ private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNod
 }
 
 /**
+ * The `PostUpdateNode` that is the target of a `arrayStoreStepChi` store step. The overriden
+ * `ChiInstruction` corresponds to the instruction represented by `node2` in `arrayStoreStepChi`.
+ */
+private class ArrayStoreNode extends PartialDefinitionNode {
+  override ChiInstruction instr;
+  PointerAddInstruction add;
+
+  ArrayStoreNode() {
+    not instr.isResultConflated() and
+    exists(StoreInstruction store |
+      instr.getPartial() = store and
+      add = store.getDestinationAddress()
+    )
+  }
+
+  override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
+
+  override Expr getDefinedExpr() { result = add.getLeft().getUnconvertedResultExpression() }
+}
+
+/**
+ * The `PostUpdateNode` that is the target of a `arrayStoreStepChi` store step. The overriden
+ * `ChiInstruction` corresponds to the instruction represented by `node2` in `arrayStoreStepChi`.
+ */
+private class PointerStoreNode extends PostUpdateNode {
+  override ChiInstruction instr;
+
+  PointerStoreNode() {
+    not instr.isResultConflated() and
+    exists(StoreInstruction store |
+      instr.getPartial() = store and
+      store.getDestinationAddress().(CopyValueInstruction).getUnary() instanceof LoadInstruction
+    )
+  }
+
+  override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
+}
+
+/**
  * A node that represents the value of a variable after a function call that
  * may have changed the variable because it's passed by reference.
  *
@@ -545,6 +584,7 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFr
  * This is the local flow predicate that's used as a building block in global
  * data flow. It may have less flow than the `localFlowStep` predicate.
  */
+cached
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Operand -> Instruction flow
   simpleInstructionLocalFlowStep(nodeFrom.asOperand(), nodeTo.asInstruction())
@@ -562,10 +602,11 @@ private predicate getFieldSizeOfClass(Class c, Type type, int size) {
   )
 }
 
-private predicate isSingleFieldClass(Type type, Class cTo) {
-  exists(int size |
-    cTo.getSize() = size and
-    getFieldSizeOfClass(cTo, type, size)
+private predicate isSingleFieldClass(Type type, Operand op) {
+  exists(int size, Class c |
+    c = op.getType().getUnderlyingType() and
+    c.getSize() = size and
+    getFieldSizeOfClass(c, type, size)
   )
 }
 
@@ -601,11 +642,10 @@ private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {
   exists(LoadInstruction load |
     load.getSourceValueOperand() = opTo and
     opTo.getAnyDef() = iFrom and
-    isSingleFieldClass(iFrom.getResultType(), opTo.getType().getUnderlyingType())
+    isSingleFieldClass(iFrom.getResultType(), opTo)
   )
 }
 
-cached
 private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo) {
   iTo.(CopyInstruction).getSourceValueOperand() = opFrom
   or

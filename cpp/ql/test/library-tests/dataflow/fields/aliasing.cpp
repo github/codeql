@@ -101,3 +101,13 @@ void addressOfField() {
   int* px = &s_copy.m1;
   sink(*px); // $f-:ast $ir
 }
+
+void taint_a_ptr(int* pa) {
+  *pa = user_input();
+}
+
+void test_field_conflation_array_content() {
+  S s;
+  taint_a_ptr(&s.m1);
+  sink(s.m2); //$f+:ir
+}
