@@ -38,9 +38,11 @@ class StdSequenceContainerConstructor extends Constructor, TaintFunction {
       input.isParameterDeref(getAValueTypeParameterIndex()) or
       input.isParameter(getAnIteratorParameterIndex())
     ) and
-    output.isReturnValue()
-    or
-    output.isQualifierObject()
+    (
+      output.isReturnValue() // TODO: this is only needed for AST data flow, which treats constructors as returning the new object
+      or
+      output.isQualifierObject()
+    )
   }
 }
 
