@@ -258,7 +258,7 @@ void test_lambdas()
 		c = source();
 	};
 	e(t, u, w);
-	sink(w); // tainted [NOT DETECTED]
+	sink(w); // tainted
 }
 
 // --- taint through return value ---
@@ -348,10 +348,10 @@ void test_outparams()
 	myNotAssign(e, t);
 
 	sink(t); // tainted
-	sink(a); // tainted [NOT DETECTED by IR]
-	sink(b); // tainted [NOT DETECTED by IR]
-	sink(c); // tainted [NOT DETECTED by IR]
-	sink(d); // tainted [NOT DETECTED by IR]
+	sink(a); // tainted
+	sink(b); // tainted
+	sink(c); // tainted
+	sink(d); // tainted
 	sink(e);
 }
 
@@ -468,7 +468,7 @@ void test_swop() {
 	swop(x, y);
 
 	sink(x); // clean [FALSE POSITIVE]
-	sink(y); // tainted [NOT DETECTED by IR]
+	sink(y); // tainted
 }
 
 // --- getdelim ---

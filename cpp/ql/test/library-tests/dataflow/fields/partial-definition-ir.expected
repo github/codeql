@@ -27,6 +27,7 @@
 | aliasing.cpp:86:3:86:3 | s |
 | aliasing.cpp:92:5:92:5 | s |
 | aliasing.cpp:98:3:98:3 | s |
+| arrays.cpp:6:3:6:5 | arr |
 | arrays.cpp:36:3:36:17 | access to array |
 | by_reference.cpp:12:5:12:5 | s |
 | by_reference.cpp:16:5:16:8 | this |

@@ -159,6 +159,7 @@
 | aliasing.cpp:92:7:92:8 | m1 | AST only |
 | aliasing.cpp:98:5:98:6 | m1 | AST only |
 | arrays.cpp:6:3:6:8 | access to array | AST only |
+| arrays.cpp:6:3:6:23 | arr | IR only |
 | arrays.cpp:15:3:15:10 | * ... | AST only |
 | arrays.cpp:36:3:36:3 | o | AST only |
 | arrays.cpp:36:5:36:10 | nested | AST only |

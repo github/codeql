@@ -30,10 +30,6 @@
 | by_reference.cpp:84:14:84:23 | call to user_input | by_reference.cpp:115:27:115:27 | a | AST only |
 | by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:131:25:131:25 | a | AST only |
 | by_reference.cpp:88:13:88:22 | call to user_input | by_reference.cpp:135:27:135:27 | a | AST only |
-| by_reference.cpp:92:9:92:18 | call to user_input | by_reference.cpp:112:14:112:14 | a | AST only |
-| by_reference.cpp:92:9:92:18 | call to user_input | by_reference.cpp:116:16:116:16 | a | AST only |
-| by_reference.cpp:96:8:96:17 | call to user_input | by_reference.cpp:132:14:132:14 | a | AST only |
-| by_reference.cpp:96:8:96:17 | call to user_input | by_reference.cpp:136:16:136:16 | a | AST only |
 | complex.cpp:62:19:62:28 | call to user_input | complex.cpp:52:18:52:18 | call to b | AST only |
 | complex.cpp:63:19:63:28 | call to user_input | complex.cpp:51:18:51:18 | call to a | AST only |
 | complex.cpp:64:19:64:28 | call to user_input | complex.cpp:52:18:52:18 | call to b | AST only |
