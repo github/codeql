@@ -67,7 +67,7 @@ private class CommandArgumentList extends SsaExplicitUpdate {
     )
   }
 
-  /** Gets a use of the veriable for which the list could be empty. */
+  /** Gets a use of the variable for which the list could be empty. */
   private RValue getAUseBeforeFirstAdd() {
     result = getAFirstUse()
     or
@@ -127,7 +127,7 @@ private class CommandArgumentArray extends SsaExplicitUpdate {
     )
   }
 
-  /** Gets an expression that is written to the given index of this array at he given use. */
+  /** Gets an expression that is written to the given index of this array at the given use. */
   Expr getAWrite(int index, RValue use) {
     exists(Assignment a, ArrayAccess acc |
       acc.getArray() = use and
