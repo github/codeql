@@ -24,7 +24,10 @@
 | copyableclass.cpp:65:8:65:9 | s1 | copyableclass.cpp:60:40:60:45 | call to source |
 | copyableclass.cpp:66:8:66:9 | s2 | copyableclass.cpp:63:24:63:29 | call to source |
 | copyableclass.cpp:67:11:67:21 | (reference dereference) | copyableclass.cpp:67:13:67:18 | call to source |
+| copyableclass_declonly.cpp:40:8:40:9 | s1 | copyableclass_declonly.cpp:34:30:34:35 | call to source |
+| copyableclass_declonly.cpp:41:8:41:9 | s2 | copyableclass_declonly.cpp:35:32:35:37 | call to source |
 | copyableclass_declonly.cpp:43:8:43:9 | s4 | copyableclass_declonly.cpp:38:8:38:13 | call to source |
+| copyableclass_declonly.cpp:65:8:65:9 | s1 | copyableclass_declonly.cpp:60:56:60:61 | call to source |
 | copyableclass_declonly.cpp:66:8:66:9 | s2 | copyableclass_declonly.cpp:63:32:63:37 | call to source |
 | format.cpp:57:8:57:13 | Argument 0 indirection | format.cpp:56:36:56:49 | call to source |
 | format.cpp:62:8:62:13 | Argument 0 indirection | format.cpp:61:30:61:43 | call to source |
@@ -142,7 +145,11 @@
 | stringstream.cpp:66:7:66:10 | Argument 0 indirection | stringstream.cpp:63:18:63:23 | call to source |
 | stringstream.cpp:81:7:81:9 | Argument 0 indirection | stringstream.cpp:70:32:70:37 | source |
 | stringstream.cpp:83:11:83:13 | call to str | stringstream.cpp:70:32:70:37 | source |
+| stringstream.cpp:103:7:103:9 | Argument 0 indirection | stringstream.cpp:91:19:91:24 | call to source |
+| stringstream.cpp:105:7:105:9 | Argument 0 indirection | stringstream.cpp:95:44:95:49 | call to source |
 | stringstream.cpp:107:7:107:9 | Argument 0 indirection | stringstream.cpp:100:31:100:36 | call to source |
+| stringstream.cpp:121:7:121:9 | Argument 0 indirection | stringstream.cpp:113:24:113:29 | call to source |
+| stringstream.cpp:123:7:123:9 | Argument 0 indirection | stringstream.cpp:115:24:115:29 | call to source |
 | stringstream.cpp:143:11:143:11 | call to operator<< | stringstream.cpp:143:14:143:19 | call to source |
 | stringstream.cpp:143:11:143:22 | (reference dereference) | stringstream.cpp:143:14:143:19 | call to source |
 | structlikeclass.cpp:35:8:35:9 | s1 | structlikeclass.cpp:29:22:29:27 | call to source |
@@ -224,6 +231,13 @@
 | taint.cpp:465:7:465:7 | x | taint.cpp:462:6:462:11 | call to source |
 | taint.cpp:470:7:470:7 | x | taint.cpp:462:6:462:11 | call to source |
 | taint.cpp:485:7:485:10 | line | taint.cpp:480:26:480:32 | source1 |
+| vector.cpp:20:8:20:8 | x | vector.cpp:16:43:16:49 | source1 |
+| vector.cpp:24:8:24:8 | call to operator* | vector.cpp:16:43:16:49 | source1 |
+| vector.cpp:24:8:24:11 | (reference dereference) | vector.cpp:16:43:16:49 | source1 |
+| vector.cpp:28:8:28:8 | (reference dereference) | vector.cpp:16:43:16:49 | source1 |
+| vector.cpp:28:8:28:8 | x | vector.cpp:16:43:16:49 | source1 |
+| vector.cpp:33:8:33:8 | (reference dereference) | vector.cpp:16:43:16:49 | source1 |
+| vector.cpp:33:8:33:8 | x | vector.cpp:16:43:16:49 | source1 |
 | vector.cpp:70:7:70:8 | Argument 0 indirection | vector.cpp:69:15:69:20 | call to source |
 | vector.cpp:83:7:83:8 | Argument 0 indirection | vector.cpp:81:17:81:22 | call to source |
 | vector.cpp:109:7:109:8 | Argument 0 indirection | vector.cpp:106:15:106:20 | call to source |
@@ -251,3 +265,4 @@
 | vector.cpp:309:7:309:7 | Argument 0 indirection | vector.cpp:303:14:303:19 | call to source |
 | vector.cpp:312:7:312:7 | Argument 0 indirection | vector.cpp:303:14:303:19 | call to source |
 | vector.cpp:324:7:324:8 | Argument 0 indirection | vector.cpp:318:15:318:20 | call to source |
+| vector.cpp:326:7:326:8 | Argument 0 indirection | vector.cpp:318:15:318:20 | call to source |

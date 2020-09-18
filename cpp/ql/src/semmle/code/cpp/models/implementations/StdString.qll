@@ -48,7 +48,7 @@ class StdStringConstructor extends Constructor, TaintFunction {
       input.isParameter(getAnIteratorParameterIndex())
     ) and
     (
-      output.isReturnValue() // TODO: this should be `isQualifierObject` by our current definitions, but that flow is not yet supported.
+      output.isReturnValue()
       or
       output.isQualifierObject()
     )
@@ -383,7 +383,9 @@ class StdStringStreamConstructor extends Constructor, TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from any parameter of string type to the returned object
     input.isParameterDeref(getAStringParameterIndex()) and
-    output.isReturnValue() // TODO: this should be `isQualifierObject` by our current definitions, but that flow is not yet supported.
+    output.isReturnValue()
+    or
+    output.isQualifierObject()
   }
 }
 
