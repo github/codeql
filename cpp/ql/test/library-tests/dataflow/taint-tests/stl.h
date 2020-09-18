@@ -128,7 +128,12 @@ namespace std
 	template<class charT, class traits, class Allocator> basic_string<charT, traits, Allocator> operator+(const basic_string<charT, traits, Allocator>& lhs, const charT* rhs);
 
 	typedef basic_string<char> string;
+}
 
+// --- istring / ostream / stringstream ---
+
+namespace std
+{
 	template <class charT, class traits = char_traits<charT> >
 	class basic_istream /*: virtual public basic_ios<charT,traits> - not needed for this test */ {
 	public:
