@@ -128,37 +128,42 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
    * does not work.
    */
   pragma[nomagic]
-  private predicate immediatelyControlsBlockSplit(BasicBlock succ, ConditionalSuccessor s) {
-    exists(ConditionBlock cb | this.immediatelyControlsBlockSplit0(cb, succ, s) |
-      forall(BasicBlock pred, SuccessorType t |
-        this.immediatelyControlsBlockSplit1(cb, succ, s, pred, t)
-      |
-        this.immediatelyControlsBlockSplit2(cb, succ, s, pred, t)
-      )
+  private predicate immediatelyControlsBlockSplit(
+    BasicBlock succ, ConditionalSuccessor s, ConditionBlock cb
+  ) {
+    this.immediatelyControlsBlockSplit0(cb, succ, s) and
+    forall(BasicBlock pred, SuccessorType t |
+      this.immediatelyControlsBlockSplit1(cb, succ, s, pred, t)
+    |
+      this.immediatelyControlsBlockSplit2(cb, succ, s, pred, t)
     )
   }
 
   pragma[noinline]
-  private predicate controlsJoinBlockPredecessor(JoinBlock controlled, ConditionalSuccessor s, int i) {
-    this.controlsBlockSplit(controlled.getJoinBlockPredecessor(i), s)
+  private predicate controlsJoinBlockPredecessor(
+    JoinBlock controlled, ConditionalSuccessor s, int i, ConditionBlock cb
+  ) {
+    this.controlsBlockSplit(controlled.getJoinBlockPredecessor(i), s, cb)
   }
 
   private predicate controlsJoinBlockSplit(JoinBlock controlled, ConditionalSuccessor s, int i) {
     i = -1 and
-    this.controlsJoinBlockPredecessor(controlled, s, _)
+    this.controlsJoinBlockPredecessor(controlled, s, _, _)
     or
     this.controlsJoinBlockSplit(controlled, s, i - 1) and
     (
-      this.controlsJoinBlockPredecessor(controlled, s, i)
+      this.controlsJoinBlockPredecessor(controlled, s, i, _)
       or
       controlled.dominates(controlled.getJoinBlockPredecessor(i))
     )
   }
 
   cached
-  private predicate controlsBlockSplit(BasicBlock controlled, ConditionalSuccessor s) {
+  private predicate controlsBlockSplit(
+    BasicBlock controlled, ConditionalSuccessor s, ConditionBlock cb
+  ) {
     Stages::GuardsStage::forceCachingInSameStage() and
-    this.immediatelyControlsBlockSplit(controlled, s)
+    this.immediatelyControlsBlockSplit(controlled, s, cb)
     or
     // Equivalent with
     //
@@ -178,10 +183,11 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
       last = max(int i | exists(controlled.(JoinBlock).getJoinBlockPredecessor(i)))
     |
       this.controlsJoinBlockSplit(controlled, s, last)
-    )
+    ) and
+    this.controlsJoinBlockPredecessor(controlled, s, _, cb)
     or
     not controlled instanceof JoinBlock and
-    this.controlsBlockSplit(controlled.getAPredecessor(), s)
+    this.controlsBlockSplit(controlled.getAPredecessor(), s, cb)
   }
 
   /**
@@ -200,16 +206,25 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
    * ```
    *
    * as control flow splitting is taken into account.
+   *
+   * `cb` records all of the possible condition blocks for this control flow element
+   * that a path from the callable entry point to `controlled` may go through.
    */
-  predicate controlsBlock(BasicBlock controlled, ConditionalSuccessor s) {
-    this.controlsBlockSplit(controlled, s)
+  predicate controlsBlock(BasicBlock controlled, ConditionalSuccessor s, ConditionBlock cb) {
+    this.controlsBlockSplit(controlled, s, cb)
     or
-    exists(ConditionBlock cb | cb.getLastNode() = this.getAControlFlowNode() |
-      cb.controls(controlled, s)
-    )
+    cb.getLastNode() = this.getAControlFlowNode() and
+    cb.controls(controlled, s)
+  }
+
+  /** DEPRECATED: Use `controlsBlock/3` instead. */
+  deprecated predicate controlsBlock(BasicBlock controlled, ConditionalSuccessor s) {
+    this.controlsBlock(controlled, s, _)
   }
 
   /**
+   * DEPRECATED.
+   *
    * Holds if control flow element `controlled` is controlled by this control flow
    * element with conditional value `s`. That is, `controlled` can only be reached
    * from the callable entry point by going via the `s` edge out of this element.
@@ -227,7 +242,7 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
    */
   // potentially very large predicate, so must be inlined
   pragma[inline]
-  predicate controlsElement(ControlFlowElement controlled, ConditionalSuccessor s) {
+  deprecated predicate controlsElement(ControlFlowElement controlled, ConditionalSuccessor s) {
     forex(BasicBlock bb | bb = controlled.getAControlFlowNode().getBasicBlock() |
       this.controlsBlock(bb, s)
     )

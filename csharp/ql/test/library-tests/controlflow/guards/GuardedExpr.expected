@@ -12,12 +12,20 @@
 | Assert.cs:53:27:53:27 | access to local variable s | Assert.cs:52:24:52:32 | ... == ... | Assert.cs:52:24:52:24 | access to local variable s | false |
 | Assert.cs:59:36:59:36 | access to parameter b | Assert.cs:58:20:58:20 | access to parameter b | Assert.cs:58:20:58:20 | access to parameter b | false |
 | Assert.cs:59:36:59:36 | access to parameter b | Assert.cs:58:20:58:32 | ... ? ... : ... | Assert.cs:58:20:58:20 | access to parameter b | non-null |
+| Assert.cs:60:27:60:27 | access to local variable s | Assert.cs:59:23:59:23 | access to local variable s | Assert.cs:59:23:59:23 | access to local variable s | non-null |
+| Assert.cs:60:27:60:27 | access to local variable s | Assert.cs:59:23:59:31 | ... != ... | Assert.cs:59:23:59:23 | access to local variable s | true |
 | Assert.cs:66:37:66:37 | access to parameter b | Assert.cs:65:20:65:20 | access to parameter b | Assert.cs:65:20:65:20 | access to parameter b | false |
 | Assert.cs:66:37:66:37 | access to parameter b | Assert.cs:65:20:65:32 | ... ? ... : ... | Assert.cs:65:20:65:20 | access to parameter b | non-null |
+| Assert.cs:67:27:67:27 | access to local variable s | Assert.cs:66:24:66:24 | access to local variable s | Assert.cs:66:24:66:24 | access to local variable s | non-null |
+| Assert.cs:67:27:67:27 | access to local variable s | Assert.cs:66:24:66:32 | ... == ... | Assert.cs:66:24:66:24 | access to local variable s | false |
 | Assert.cs:73:36:73:36 | access to parameter b | Assert.cs:72:20:72:20 | access to parameter b | Assert.cs:72:20:72:20 | access to parameter b | true |
 | Assert.cs:73:36:73:36 | access to parameter b | Assert.cs:72:20:72:32 | ... ? ... : ... | Assert.cs:72:20:72:20 | access to parameter b | null |
+| Assert.cs:74:27:74:27 | access to local variable s | Assert.cs:73:23:73:23 | access to local variable s | Assert.cs:73:23:73:23 | access to local variable s | null |
+| Assert.cs:74:27:74:27 | access to local variable s | Assert.cs:73:23:73:31 | ... == ... | Assert.cs:73:23:73:23 | access to local variable s | true |
 | Assert.cs:80:37:80:37 | access to parameter b | Assert.cs:79:20:79:20 | access to parameter b | Assert.cs:79:20:79:20 | access to parameter b | true |
 | Assert.cs:80:37:80:37 | access to parameter b | Assert.cs:79:20:79:32 | ... ? ... : ... | Assert.cs:79:20:79:20 | access to parameter b | null |
+| Assert.cs:81:27:81:27 | access to local variable s | Assert.cs:80:24:80:24 | access to local variable s | Assert.cs:80:24:80:24 | access to local variable s | null |
+| Assert.cs:81:27:81:27 | access to local variable s | Assert.cs:80:24:80:32 | ... != ... | Assert.cs:80:24:80:24 | access to local variable s | false |
 | Collections.cs:52:17:52:20 | access to parameter args | Collections.cs:50:13:50:16 | access to parameter args | Collections.cs:50:13:50:16 | access to parameter args | non-empty |
 | Collections.cs:52:17:52:20 | access to parameter args | Collections.cs:50:13:50:27 | ... == ... | Collections.cs:50:13:50:16 | access to parameter args | false |
 | Collections.cs:53:9:53:12 | access to parameter args | Collections.cs:50:13:50:27 | ... == ... | Collections.cs:50:13:50:16 | access to parameter args | false |
@@ -182,6 +190,8 @@
 | Guards.cs:287:17:287:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | non-null |
 | Guards.cs:342:27:342:27 | access to parameter b | Guards.cs:341:20:341:20 | access to parameter b | Guards.cs:341:20:341:20 | access to parameter b | false |
 | Guards.cs:342:27:342:27 | access to parameter b | Guards.cs:341:20:341:32 | ... ? ... : ... | Guards.cs:341:20:341:20 | access to parameter b | non-null |
+| Guards.cs:343:31:343:31 | access to local variable s | Guards.cs:342:13:342:13 | access to local variable s | Guards.cs:342:13:342:13 | access to local variable s | non-null |
+| Guards.cs:343:31:343:31 | access to local variable s | Guards.cs:342:13:342:21 | ... != ... | Guards.cs:342:13:342:13 | access to local variable s | true |
 | Splitting.cs:13:17:13:17 | access to parameter o | Splitting.cs:12:17:12:17 | access to parameter o | Splitting.cs:12:17:12:17 | access to parameter o | non-null |
 | Splitting.cs:13:17:13:17 | access to parameter o | Splitting.cs:12:17:12:25 | ... != ... | Splitting.cs:12:17:12:17 | access to parameter o | true |
 | Splitting.cs:23:24:23:24 | access to parameter o | Splitting.cs:22:17:22:17 | access to parameter o | Splitting.cs:22:17:22:17 | access to parameter o | non-null |

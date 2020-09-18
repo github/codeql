@@ -340,7 +340,7 @@ public class Guards
     {
         string s = b ? null : "";
         if (s != null && !b)
-            Console.WriteLine(s.Length); // null guarded [MISSING]
+            Console.WriteLine(s.Length); // null guarded
     }
 }
 

@@ -36,7 +36,7 @@ class Guard extends Expr {
    * Holds if basic block `bb` is guarded by this expression having value `v`.
    */
   predicate controlsBasicBlock(BasicBlock bb, AbstractValue v) {
-    Internal::guardControls(this, bb, v)
+    Internal::guardControls(this, _, bb, v)
   }
 
   /**
@@ -1707,7 +1707,7 @@ module Internal {
     pragma[noinline]
     private predicate candidateAux(AccessOrCallExpr e, Declaration target, BasicBlock bb) {
       target = e.getTarget() and
-      exists(Guard g | e = getAChildExprStar(g) | guardControls(g, bb, _))
+      exists(Guard g | e = getAChildExprStar(g) | guardControls(g, _, bb, _))
     }
   }
 
@@ -1715,33 +1715,51 @@ module Internal {
   private module Cached {
     private import semmle.code.csharp.Caching
 
-    /** Holds if basic block `bb` only is reached when guard `g` has abstract value `v`. */
+    /**
+     * Holds if basic block `bb` only is reached when guard `g` has abstract value `v`.
+     *
+     * `cb` records all of the possible condition blocks for `g` that a path from the
+     * callable entry point to `bb` may go through.
+     */
     cached
-    predicate guardControls(Guard g, BasicBlock bb, AbstractValue v) {
-      exists(AbstractValue v0, Guard g0 | impliesSteps(g0, v0, g, v) |
-        exists(ControlFlowElement cfe, ConditionalSuccessor s |
-          v0.branch(cfe, s, g0) and cfe.controlsBlock(bb, s)
+    predicate guardControls(Guard g, ConditionBlock cb, BasicBlock bb, AbstractValue v) {
+      exists(AbstractValue v0, Guard g0 |
+        impliesSteps(g0, v0, g, v) and
+        exists(ControlFlowElement cfe, ConditionalSuccessor cs |
+          v0.branch(cfe, cs, g0) and cfe.controlsBlock(bb, cs, cb)
         )
       )
     }
 
     pragma[noinline]
-    private predicate isGuardedByNode0(
-      ControlFlow::Node cfn, AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub,
-      AbstractValue v
+    private predicate nodeIsGuardedBySameSubExpr0(
+      ControlFlow::Node guardedCfn, AccessOrCallExpr guarded, Guard g, ConditionBlock cb,
+      AccessOrCallExpr sub, AbstractValue v
     ) {
       Stages::GuardsStage::forceCachingInSameStage() and
-      cfn = guarded.getAControlFlowNode() and
-      guardControls(g, cfn.getBasicBlock(), v) and
+      guardedCfn = guarded.getAControlFlowNode() and
+      guardControls(g, cb, guardedCfn.getBasicBlock(), v) and
       exists(ConditionOnExprComparisonConfig c | c.same(sub, guarded))
     }
 
     pragma[noinline]
-    private predicate isGuardedByExpr1(
-      AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, AbstractValue v
+    private predicate nodeIsGuardedBySameSubExpr(
+      ControlFlow::Node guardedCfn, AccessOrCallExpr guarded, Guard g, ConditionBlock cb,
+      AccessOrCallExpr sub, AbstractValue v
     ) {
-      forex(ControlFlow::Node cfn | cfn = guarded.getAControlFlowNode() |
-        isGuardedByNode0(cfn, guarded, g, sub, v)
+      nodeIsGuardedBySameSubExpr0(guardedCfn, guarded, g, cb, sub, v) and
+      sub = getAChildExprStar(g)
+    }
+
+    pragma[noinline]
+    private predicate nodeIsGuardedBySameSubExprSsaDef(
+      ControlFlow::Node cfn, AccessOrCallExpr guarded, Guard g, ControlFlow::Node subCfn,
+      AccessOrCallExpr sub, AbstractValue v, Ssa::Definition def
+    ) {
+      exists(ConditionBlock cb |
+        nodeIsGuardedBySameSubExpr(cfn, guarded, g, cb, sub, v) and
+        subCfn.getBasicBlock().dominates(cb) and
+        def = sub.getAnSsaQualifier(subCfn)
       )
     }
 
@@ -1756,33 +1774,29 @@ module Internal {
       )
     }
 
+    pragma[noinline]
+    private predicate isGuardedByExpr0(
+      AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, AbstractValue v
+    ) {
+      forex(ControlFlow::Node cfn | cfn = guarded.getAControlFlowNode() |
+        nodeIsGuardedBySameSubExpr(cfn, guarded, g, _, sub, v)
+      )
+    }
+
     cached
     predicate isGuardedByExpr(
       AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, AbstractValue v
     ) {
-      isGuardedByExpr1(guarded, g, sub, v) and
-      sub = getAChildExprStar(g) and
-      forall(Ssa::Definition def, ControlFlow::Node subCfn | def = sub.getAnSsaQualifier(subCfn) |
-        exists(ControlFlow::Node defCfn | def = guarded.getAnSsaQualifier(defCfn) |
+      isGuardedByExpr0(guarded, g, sub, v) and
+      forall(ControlFlow::Node subCfn, Ssa::Definition def |
+        nodeIsGuardedBySameSubExprSsaDef(_, guarded, g, subCfn, sub, v, def)
+      |
+        exists(ControlFlow::Node guardedCfn |
+          def = guarded.getAnSsaQualifier(guardedCfn) and
           if v.isReferentialProperty()
-          then adjacentReadPairSameVarUniquePredecessor(def, subCfn, defCfn)
+          then adjacentReadPairSameVarUniquePredecessor(def, subCfn, guardedCfn)
           else any()
         )
-      )
-    }
-
-    pragma[noinline]
-    private predicate isGuardedByNode1(
-      ControlFlow::Nodes::ElementNode guarded, Guard g, AccessOrCallExpr sub, AbstractValue v
-    ) {
-      isGuardedByNode0(guarded, _, g, sub, v)
-    }
-
-    pragma[noinline]
-    private predicate isGuardedByNode2(ControlFlow::Nodes::ElementNode guarded, Ssa::Definition def) {
-      isGuardedByNode1(guarded, _, _, _) and
-      exists(BasicBlock bb | bb = guarded.getBasicBlock() |
-        def = guarded.getElement().(AccessOrCallExpr).getAnSsaQualifier(bb.getANode())
       )
     }
 
@@ -1790,10 +1804,15 @@ module Internal {
     predicate isGuardedByNode(
       ControlFlow::Nodes::ElementNode guarded, Guard g, AccessOrCallExpr sub, AbstractValue v
     ) {
-      isGuardedByNode1(guarded, g, sub, v) and
-      sub = getAChildExprStar(g) and
-      forall(Ssa::Definition def, ControlFlow::Node subCfn | def = sub.getAnSsaQualifier(subCfn) |
-        isGuardedByNode2(guarded, def) and
+      nodeIsGuardedBySameSubExpr(guarded, _, g, _, sub, v) and
+      forall(ControlFlow::Node subCfn, Ssa::Definition def |
+        nodeIsGuardedBySameSubExprSsaDef(guarded, _, g, subCfn, sub, v, def)
+      |
+        def =
+          guarded
+              .getElement()
+              .(AccessOrCallExpr)
+              .getAnSsaQualifier(guarded.getBasicBlock().getANode()) and
         if v.isReferentialProperty()
         then adjacentReadPairSameVarUniquePredecessor(def, subCfn, guarded)
         else any()

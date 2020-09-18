@@ -61,7 +61,9 @@ module UserControlledBypassOfSensitiveMethod {
   private predicate conditionControlsCall0(
     SensitiveExecutionMethodCall call, Expr e, ControlFlow::SuccessorTypes::BooleanSuccessor s
   ) {
-    forex(BasicBlock bb | bb = call.getAControlFlowNode().getBasicBlock() | e.controlsBlock(bb, s))
+    forex(BasicBlock bb | bb = call.getAControlFlowNode().getBasicBlock() |
+      e.controlsBlock(bb, s, _)
+    )
   }
 
   private predicate conditionControlsCall(
