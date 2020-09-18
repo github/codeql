@@ -389,6 +389,29 @@ private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNod
   }
 }
 
+private FieldAddressInstruction getFieldInstruction(Instruction instr) {
+  result = instr or
+  result = instr.(CopyValueInstruction).getUnary()
+}
+
+private class BufferMayWriteSideEffectFieldStoreQualifierNode extends PartialDefinitionNode {
+  override ChiInstruction instr;
+  BufferMayWriteSideEffectInstruction write;
+  FieldAddressInstruction field;
+
+  BufferMayWriteSideEffectFieldStoreQualifierNode() {
+    not instr.isResultConflated() and
+    instr.getPartial() = write and
+    field = getFieldInstruction(write.getDestinationAddress())
+  }
+
+  override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
+
+  override Expr getDefinedExpr() {
+    result = field.getObjectAddress().getUnconvertedResultExpression()
+  }
+}
+
 /**
  * The `PostUpdateNode` that is the target of a `arrayStoreStepChi` store step. The overriden
  * `ChiInstruction` corresponds to the instruction represented by `node2` in `arrayStoreStepChi`.
