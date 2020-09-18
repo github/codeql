@@ -174,6 +174,7 @@ private Expr firstElementOf(Expr arr) {
     exists(CommandArgArrayImmutableFirst caa | arr = caa.getAUse() | result = caa.getFirstElement())
     or
     exists(MethodAccess ma, Method m |
+      arr = ma and
       ma.getMethod() = m and
       m.getDeclaringType().hasQualifiedName("java.util", "Arrays") and
       m.hasName("copyOf") and
