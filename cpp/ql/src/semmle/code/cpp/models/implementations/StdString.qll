@@ -47,7 +47,11 @@ class StdStringConstructor extends Constructor, TaintFunction {
       input.isParameterDeref(getAStringParameterIndex()) or
       input.isParameter(getAnIteratorParameterIndex())
     ) and
-    output.isReturnValue() // TODO: this should be `isQualifierObject` by our current definitions, but that flow is not yet supported.
+    (
+      output.isReturnValue() // TODO: this should be `isQualifierObject` by our current definitions, but that flow is not yet supported.
+      or
+      output.isQualifierObject()
+    )
   }
 }
 
