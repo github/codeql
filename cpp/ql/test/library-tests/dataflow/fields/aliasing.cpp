@@ -109,5 +109,5 @@ void taint_a_ptr(int* pa) {
 void test_field_conflation_array_content() {
   S s;
   taint_a_ptr(&s.m1);
-  sink(s.m2); //$f+:ir
+  sink(s.m2);
 }

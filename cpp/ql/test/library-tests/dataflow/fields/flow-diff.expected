@@ -21,7 +21,6 @@
 | aliasing.cpp:79:11:79:20 | call to user_input | aliasing.cpp:80:12:80:13 | m1 | IR only |
 | aliasing.cpp:86:10:86:19 | call to user_input | aliasing.cpp:87:12:87:13 | m1 | IR only |
 | aliasing.cpp:98:10:98:19 | call to user_input | aliasing.cpp:102:8:102:10 | * ... | IR only |
-| aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:112:10:112:11 | m2 | IR only |
 | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:8:8:8:13 | access to array | AST only |
 | arrays.cpp:15:14:15:23 | call to user_input | arrays.cpp:17:8:17:13 | access to array | AST only |
 | arrays.cpp:36:26:36:35 | call to user_input | arrays.cpp:38:24:38:27 | data | AST only |
