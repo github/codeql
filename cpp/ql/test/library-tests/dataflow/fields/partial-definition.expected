@@ -187,6 +187,9 @@
 | aliasing.cpp:92:7:92:8 | m1 |
 | aliasing.cpp:98:3:98:3 | s |
 | aliasing.cpp:98:5:98:6 | m1 |
+| aliasing.cpp:106:3:106:5 | * ... |
+| aliasing.cpp:111:15:111:19 | & ... |
+| aliasing.cpp:111:16:111:16 | s |
 | arrays.cpp:6:3:6:8 | access to array |
 | arrays.cpp:15:3:15:10 | * ... |
 | arrays.cpp:36:3:36:3 | o |
