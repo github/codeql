@@ -21,6 +21,8 @@ predicate localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
  */
 predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   localInstructionTaintStep(nodeFrom.asInstruction(), nodeTo.asInstruction())
+  or
+  modeledTaintStep(nodeFrom, nodeTo)
 }
 
 /**
@@ -48,8 +50,6 @@ private predicate localInstructionTaintStep(Instruction nodeFrom, Instruction no
   )
   or
   nodeTo.(LoadInstruction).getSourceAddress() = nodeFrom
-  or
-  modeledInstructionTaintStep(nodeFrom, nodeTo)
   or
   // Flow through partial reads of arrays and unions
   nodeTo.(LoadInstruction).getSourceValueOperand().getAnyDef() = nodeFrom and
@@ -109,10 +109,17 @@ predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
  * Holds if taint can flow from `instrIn` to `instrOut` through a call to a
  * modeled function.
  */
-predicate modeledInstructionTaintStep(Instruction instrIn, Instruction instrOut) {
+predicate modeledTaintStep(DataFlow::Node nodeIn, DataFlow::Node nodeOut) {
   exists(CallInstruction call, TaintFunction func, FunctionInput modelIn, FunctionOutput modelOut |
-    instrIn = callInput(call, modelIn) and
-    instrOut = callOutput(call, modelOut) and
+    (
+      nodeIn = callInput(call, modelIn)
+      or
+      exists(int n |
+        modelIn.isParameterDeref(n) and
+        nodeIn = callInput(call, any(InParameter inParam | inParam.getIndex() = n))
+      )
+    ) and
+    nodeOut.asInstruction() = callOutput(call, modelOut) and
     call.getStaticCallTarget() = func and
     func.hasTaintFlow(modelIn, modelOut)
   )
@@ -126,8 +133,8 @@ predicate modeledInstructionTaintStep(Instruction instrIn, Instruction instrOut)
     CallInstruction call, Function func, FunctionInput modelIn, OutParameterDeref modelMidOut,
     int indexMid, InParameter modelMidIn, OutReturnValue modelOut
   |
-    instrIn = callInput(call, modelIn) and
-    instrOut = callOutput(call, modelOut) and
+    nodeIn = callInput(call, modelIn) and
+    nodeOut.asInstruction() = callOutput(call, modelOut) and
     call.getStaticCallTarget() = func and
     func.(TaintFunction).hasTaintFlow(modelIn, modelMidOut) and
     func.(DataFlowFunction).hasDataFlow(modelMidIn, modelOut) and
