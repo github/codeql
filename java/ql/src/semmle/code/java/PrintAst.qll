@@ -636,7 +636,6 @@ final class ImportsNode extends PrintAstNode, TImportsNode {
   override string toString() { result = "(Imports)" }
 
   override ElementNode getChild(int childIndex) {
-    childIndex >= 0 and
     result.getElement() =
       rank[childIndex](Import im, string file, int line, int column |
         im.getCompilationUnit() = cu and locationSortKeys(im, file, line, column)
