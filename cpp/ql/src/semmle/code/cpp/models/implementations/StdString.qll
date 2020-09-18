@@ -437,6 +437,52 @@ class StdIStreamPutBack extends DataFlowFunction, TaintFunction {
 }
 
 /**
+ * The `std::istream` function `getline`.
+ */
+class StdIStreamGetLine extends DataFlowFunction, TaintFunction {
+  StdIStreamGetLine() { this.hasQualifiedName("std", "basic_istream", "getline") }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    // returns reference to `*this`
+    input.isQualifierAddress() and
+    output.isReturnValue()
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from qualifier to first parameter
+    input.isQualifierObject() and
+    output.isParameterDeref(0)
+    or
+    // reverse flow from returned reference to the qualifier
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
+  }
+}
+
+/**
+ * The (non-member) function `std::getline`.
+ */
+class StdGetLine extends DataFlowFunction, TaintFunction {
+  StdGetLine() { this.hasQualifiedName("std", "getline") }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    // flow from first parameter to return value
+    input.isParameter(0) and
+    output.isReturnValue()
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from first parameter to second parameter
+    input.isParameterDeref(0) and
+    output.isParameterDeref(1)
+    or
+    // reverse flow from returned reference to first parameter
+    input.isReturnValueDeref() and
+    output.isParameterDeref(0)
+  }
+}
+
+/**
  * The `std::basic_ostream` template class.
  */
 class StdBasicOStream extends TemplateClass {
@@ -544,6 +590,30 @@ class StdStringStreamStr extends TaintFunction {
     or
     // flow from first parameter (if any) to qualifier
     input.isParameterDeref(0) and
+    output.isQualifierObject()
+  }
+}
+
+/**
+ * A `std::` stream function that does not require a model, except that it
+ * returns a reference to `*this` and thus could be used in a chain.
+ */
+class StdStreamFunction extends DataFlowFunction, TaintFunction {
+  StdStreamFunction() {
+    this.hasQualifiedName("std", "basic_istream", ["ignore", "unget", "seekg"]) or
+    this.hasQualifiedName("std", "basic_ostream", ["seekp", "flush"]) or
+    this.hasQualifiedName("std", "basic_ios", "copyfmt")
+  }
+
+  override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
+    // returns reference to `*this`
+    input.isQualifierAddress() and
+    output.isReturnValue()
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // reverse flow from returned reference to the qualifier
+    input.isReturnValueDeref() and
     output.isQualifierObject()
   }
 }

@@ -10,18 +10,18 @@ namespace ns_char
 	char source();
 }
 
-void sink(int i) {};
+void sink(int i);
 
-void sink(const std::string &s) {};
-
-template<class charT>
-void sink(const std::basic_ostream<charT> &s) {};
+void sink(const std::string &s);
 
 template<class charT>
-void sink(const std::basic_istream<charT> &s) {};
+void sink(const std::basic_ostream<charT> &s);
 
 template<class charT>
-void sink(const std::basic_iostream<charT> &s) {};
+void sink(const std::basic_istream<charT> &s);
+
+template<class charT>
+void sink(const std::basic_iostream<charT> &s);
 
 void test_stringstream_string(int amount)
 {
@@ -195,4 +195,74 @@ void test_stringstream_putback()
 	sink(ss.get());
 	sink(ss.putback(ns_char::source())); // tainted
 	sink(ss.get()); // tainted
+}
+
+void test_getline()
+{
+	std::stringstream ss1("abc");
+	std::stringstream ss2(source());
+	char b1[1000] = {0};
+	char b2[1000] = {0};
+	char b3[1000] = {0};
+	char b4[1000] = {0};
+	char b5[1000] = {0};
+	char b6[1000] = {0};
+	char b7[1000] = {0};
+	char b8[1000] = {0};
+	std::string s1, s2, s3, s4, s5, s6, s7, s8;
+
+	sink(ss1.getline(b1, 1000));
+	sink(ss2.getline(b2, 1000)); // tainted
+	sink(ss2.getline(b3, 1000)); // tainted
+	sink(ss1.getline(b3, 1000));
+	sink(b1);
+	sink(b2); // tainted
+	sink(b3); // [FALSE POSITIVE]
+
+	sink(ss1.getline(b4, 1000, ' '));
+	sink(ss2.getline(b5, 1000, ' ')); // tainted
+	sink(ss2.getline(b6, 1000, ' ')); // tainted
+	sink(ss1.getline(b6, 1000, ' '));
+	sink(b4);
+	sink(b5); // tainted
+	sink(b6); // [FALSE POSITIVE]
+
+	sink(ss2.getline(b7, 1000).getline(b8, 1000)); // tainted
+	sink(b7); // tainted
+	sink(b8); // tainted
+
+	sink(getline(ss1, s1));
+	sink(getline(ss2, s2)); // tainted
+	sink(getline(ss2, s3)); // tainted
+	sink(getline(ss1, s3));
+	sink(s1);
+	sink(s2); // tainted
+	sink(s3); // [FALSE POSITIVE]
+
+	sink(getline(ss1, s4, ' '));
+	sink(getline(ss2, s5, ' ')); // tainted
+	sink(getline(ss2, s6, ' ')); // tainted
+	sink(getline(ss1, s6, ' '));
+	sink(s4);
+	sink(s5); // tainted
+	sink(s6); // [FALSE POSITIVE]
+
+	sink(getline(getline(ss2, s7), s8)); // tainted
+	sink(s7); // tainted
+	sink(s8); // tainted
+}
+
+void test_chaining()
+{
+	std::stringstream ss1(source());
+	std::stringstream ss2;
+	char b1[1000] = {0};
+	char b2[1000] = {0};
+
+	sink(ss1.get(b1, 100).unget().get(b2, 100)); // tainted
+	sink(b1); // tainted
+	sink(b2); // tainted
+
+	sink(ss2.write("abc", 3).flush().write(source(), 3).flush().write("xyz", 3)); // tainted
+	sink(ss2); // tainted
 }
