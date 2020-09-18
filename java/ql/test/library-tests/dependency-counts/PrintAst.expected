@@ -1,8 +1,9 @@
 Example.java:
 #    0| [CompilationUnit] Example
-#    1|   1: [ImportType] import Set
-#    2|   2: [ImportType] import List
-#    4|   3: [Interface] Example
+#-----|   -1: (Imports)
+#    1|     1: [ImportType] import Set
+#    2|     2: [ImportType] import List
+#    4|   1: [Interface] Example
 #-----|     -2: (Generic Parameters)
 #    4|       0: [TypeVariable] A
 #-----|     -1: (Base Types)
