@@ -57,6 +57,22 @@ class SystemArrayClass extends SystemClass {
 
   /** Gets the `Length` property. */
   Property getLengthProperty() { result = this.getProperty("Length") }
+
+  UnboundGenericMethod getStaticEmptyMethod() {
+    result.isStatic() and
+    result.getDeclaringType() = this and
+    result.hasName("Empty<>") and
+    result.getNumberOfParameters() = 0
+  }
+}
+
+class EmptyArrayCreationCall extends MethodCall {
+  EmptyArrayCreationCall() {
+    exists(SystemArrayClass a |
+      a.getStaticEmptyMethod() = this.getTarget().(ConstructedMethod).getUnboundGeneric()
+    )
+  }
+  // todo: should also be an ArrayCreation
 }
 
 /** `System.Attribute` class. */
