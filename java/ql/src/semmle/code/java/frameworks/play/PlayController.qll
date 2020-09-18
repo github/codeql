@@ -35,7 +35,7 @@ class PlayControllerActionMethod extends Method {
       this = controller.getAMethod() and
       (
         this.getReturnType() instanceof PlayAsyncResultPromise or
-        this.getReturnType() instanceof PlayMVCResult or
+        this.getReturnType() instanceof PlayMVCResultClass or
         this.getReturnType() instanceof PlayAsyncResultCompletionStage
       )
     )

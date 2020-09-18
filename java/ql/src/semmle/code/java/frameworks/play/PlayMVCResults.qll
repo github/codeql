@@ -6,8 +6,8 @@ import java
  * @description Gets the play.mvc.Results class - Helper utilities to generate results
  * (https://www.playframework.com/documentation/2.8.x/JavaActions)
  */
-class PlayMVCResults extends Class {
-  PlayMVCResults() { this.hasQualifiedName("play.mvc", "Results") }
+class PlayMVCResultsClass extends Class {
+  PlayMVCResultsClass() { this.hasQualifiedName("play.mvc", "Results") }
 }
 
 /**
@@ -17,7 +17,7 @@ class PlayMVCResults extends Class {
  * (https://www.playframework.com/documentation/2.5.8/api/java/play/mvc/Results.html)
  */
 class PlayHTTPResultsMethods extends Method {
-  PlayHTTPResultsMethods() { this.getDeclaringType() instanceof PlayMVCResults }
+  PlayHTTPResultsMethods() { this.getDeclaringType() instanceof PlayMVCResultsClass }
 
   /**
    * Gets all references to play.mvc.Results ok method
