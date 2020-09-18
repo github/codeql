@@ -253,11 +253,6 @@ private module PartialDefinitions {
   }
 }
 
-predicate quickTest(PartialDefinition pd) {
-  pd instanceof DefinitionByReference and
-  pd instanceof IteratorPartialDefinition
-}
-
 import PartialDefinitions
 private import FlowVar_internal
 
