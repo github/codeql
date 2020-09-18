@@ -21,7 +21,7 @@ class TestAllocationConfig extends TaintTracking::Configuration {
       sink.(DataFlow::ExprNode).getConvertedExpr() = call.getAnArgument()
       or
       call.getTarget().getName() = "sink" and
-      sink.(DataFlow::ExprNode).asExpr() = call.getAnArgument() and
+      sink.asExpr() = call.getAnArgument() and
       sink.(DataFlow::ExprNode).getConvertedExpr() instanceof ReferenceDereferenceExpr
     )
     or
