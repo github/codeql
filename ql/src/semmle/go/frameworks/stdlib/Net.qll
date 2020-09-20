@@ -74,10 +74,6 @@ module Net {
       this.hasQualifiedName("net", "IP", "To4") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (*IP).UnmarshalText(text []byte) error
-      this.hasQualifiedName("net", "IP", "UnmarshalText") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
       // signature: func (*IPConn).ReadFrom(b []byte) (int, Addr, error)
       this.hasQualifiedName("net", "IPConn", "ReadFrom") and
       (inp.isReceiver() and outp.isParameter(0))
