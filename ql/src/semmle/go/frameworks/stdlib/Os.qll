@@ -110,10 +110,6 @@ module Os {
       this.hasQualifiedName("os", "File", "ReadAt") and
       (inp.isReceiver() and outp.isParameter(0))
       or
-      // signature: func (*File).ReadFrom(r io.Reader) (n int64, err error)
-      this.hasQualifiedName("os", "File", "ReadFrom") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
       // signature: func (*File).SyscallConn() (syscall.RawConn, error)
       this.hasQualifiedName("os", "File", "SyscallConn") and
       (

@@ -3,7 +3,6 @@
 package main
 
 import (
-	"io"
 	"os"
 	"syscall"
 )
@@ -53,46 +52,39 @@ func TaintStepTest_OsFileReadAt_B0I0O0(sourceCQL interface{}) interface{} {
 	return intoByte584
 }
 
-func TaintStepTest_OsFileReadFrom_B0I0O0(sourceCQL interface{}) interface{} {
-	fromReader991 := sourceCQL.(io.Reader)
-	var intoFile881 os.File
-	intoFile881.ReadFrom(fromReader991)
-	return intoFile881
-}
-
 func TaintStepTest_OsFileSyscallConn_B0I0O0(sourceCQL interface{}) interface{} {
-	fromFile186 := sourceCQL.(os.File)
-	intoRawConn284, _ := fromFile186.SyscallConn()
-	return intoRawConn284
+	fromFile991 := sourceCQL.(os.File)
+	intoRawConn881, _ := fromFile991.SyscallConn()
+	return intoRawConn881
 }
 
 func TaintStepTest_OsFileSyscallConn_B1I0O0(sourceCQL interface{}) interface{} {
-	fromRawConn908 := sourceCQL.(syscall.RawConn)
-	var intoFile137 os.File
-	intermediateCQL, _ := intoFile137.SyscallConn()
-	link(fromRawConn908, intermediateCQL)
-	return intoFile137
+	fromRawConn186 := sourceCQL.(syscall.RawConn)
+	var intoFile284 os.File
+	intermediateCQL, _ := intoFile284.SyscallConn()
+	link(fromRawConn186, intermediateCQL)
+	return intoFile284
 }
 
 func TaintStepTest_OsFileWrite_B0I0O0(sourceCQL interface{}) interface{} {
-	fromByte494 := sourceCQL.([]byte)
-	var intoFile873 os.File
-	intoFile873.Write(fromByte494)
-	return intoFile873
+	fromByte908 := sourceCQL.([]byte)
+	var intoFile137 os.File
+	intoFile137.Write(fromByte908)
+	return intoFile137
 }
 
 func TaintStepTest_OsFileWriteAt_B0I0O0(sourceCQL interface{}) interface{} {
-	fromByte599 := sourceCQL.([]byte)
-	var intoFile409 os.File
-	intoFile409.WriteAt(fromByte599, 0)
-	return intoFile409
+	fromByte494 := sourceCQL.([]byte)
+	var intoFile873 os.File
+	intoFile873.WriteAt(fromByte494, 0)
+	return intoFile873
 }
 
 func TaintStepTest_OsFileWriteString_B0I0O0(sourceCQL interface{}) interface{} {
-	fromString246 := sourceCQL.(string)
-	var intoFile898 os.File
-	intoFile898.WriteString(fromString246)
-	return intoFile898
+	fromString599 := sourceCQL.(string)
+	var intoFile409 os.File
+	intoFile409.WriteString(fromString599)
+	return intoFile409
 }
 
 func RunAllTaints_Os() {
@@ -133,32 +125,27 @@ func RunAllTaints_Os() {
 	}
 	{
 		source := newSource(7)
-		out := TaintStepTest_OsFileReadFrom_B0I0O0(source)
+		out := TaintStepTest_OsFileSyscallConn_B0I0O0(source)
 		sink(7, out)
 	}
 	{
 		source := newSource(8)
-		out := TaintStepTest_OsFileSyscallConn_B0I0O0(source)
+		out := TaintStepTest_OsFileSyscallConn_B1I0O0(source)
 		sink(8, out)
 	}
 	{
 		source := newSource(9)
-		out := TaintStepTest_OsFileSyscallConn_B1I0O0(source)
+		out := TaintStepTest_OsFileWrite_B0I0O0(source)
 		sink(9, out)
 	}
 	{
 		source := newSource(10)
-		out := TaintStepTest_OsFileWrite_B0I0O0(source)
+		out := TaintStepTest_OsFileWriteAt_B0I0O0(source)
 		sink(10, out)
 	}
 	{
 		source := newSource(11)
-		out := TaintStepTest_OsFileWriteAt_B0I0O0(source)
-		sink(11, out)
-	}
-	{
-		source := newSource(12)
 		out := TaintStepTest_OsFileWriteString_B0I0O0(source)
-		sink(12, out)
+		sink(11, out)
 	}
 }
