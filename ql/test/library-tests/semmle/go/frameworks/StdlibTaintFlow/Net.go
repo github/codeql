@@ -89,343 +89,325 @@ func TaintStepTest_NetBuffersWriteTo_B0I0O0(sourceCQL interface{}) interface{} {
 	return intoWriter409
 }
 
-func TaintStepTest_NetIPMarshalText_B0I0O0(sourceCQL interface{}) interface{} {
-	fromIP246 := sourceCQL.(net.IP)
-	intoByte898, _ := fromIP246.MarshalText()
+func TaintStepTest_NetIPConnReadFrom_B0I0O0(sourceCQL interface{}) interface{} {
+	fromIPConn246 := sourceCQL.(net.IPConn)
+	var intoByte898 []byte
+	fromIPConn246.ReadFrom(intoByte898)
 	return intoByte898
 }
 
-func TaintStepTest_NetIPTo16_B0I0O0(sourceCQL interface{}) interface{} {
-	fromIP598 := sourceCQL.(net.IP)
-	intoIP631 := fromIP598.To16()
-	return intoIP631
-}
-
-func TaintStepTest_NetIPTo4_B0I0O0(sourceCQL interface{}) interface{} {
-	fromIP165 := sourceCQL.(net.IP)
-	intoIP150 := fromIP165.To4()
-	return intoIP150
-}
-
-func TaintStepTest_NetIPConnReadFrom_B0I0O0(sourceCQL interface{}) interface{} {
-	fromIPConn340 := sourceCQL.(net.IPConn)
-	var intoByte471 []byte
-	fromIPConn340.ReadFrom(intoByte471)
-	return intoByte471
-}
-
 func TaintStepTest_NetIPConnReadFromIP_B0I0O0(sourceCQL interface{}) interface{} {
-	fromIPConn290 := sourceCQL.(net.IPConn)
-	var intoByte758 []byte
-	fromIPConn290.ReadFromIP(intoByte758)
-	return intoByte758
+	fromIPConn598 := sourceCQL.(net.IPConn)
+	var intoByte631 []byte
+	fromIPConn598.ReadFromIP(intoByte631)
+	return intoByte631
 }
 
 func TaintStepTest_NetIPConnReadMsgIP_B0I0O0(sourceCQL interface{}) interface{} {
-	fromIPConn396 := sourceCQL.(net.IPConn)
-	var intoByte707 []byte
-	fromIPConn396.ReadMsgIP(intoByte707, nil)
-	return intoByte707
+	fromIPConn165 := sourceCQL.(net.IPConn)
+	var intoByte150 []byte
+	fromIPConn165.ReadMsgIP(intoByte150, nil)
+	return intoByte150
 }
 
 func TaintStepTest_NetIPConnReadMsgIP_B0I0O1(sourceCQL interface{}) interface{} {
-	fromIPConn912 := sourceCQL.(net.IPConn)
-	var intoByte718 []byte
-	fromIPConn912.ReadMsgIP(nil, intoByte718)
-	return intoByte718
+	fromIPConn340 := sourceCQL.(net.IPConn)
+	var intoByte471 []byte
+	fromIPConn340.ReadMsgIP(nil, intoByte471)
+	return intoByte471
 }
 
 func TaintStepTest_NetIPConnSyscallConn_B0I0O0(sourceCQL interface{}) interface{} {
-	fromIPConn972 := sourceCQL.(net.IPConn)
-	intoRawConn633, _ := fromIPConn972.SyscallConn()
-	return intoRawConn633
+	fromIPConn290 := sourceCQL.(net.IPConn)
+	intoRawConn758, _ := fromIPConn290.SyscallConn()
+	return intoRawConn758
 }
 
 func TaintStepTest_NetIPConnSyscallConn_B1I0O0(sourceCQL interface{}) interface{} {
-	fromRawConn316 := sourceCQL.(syscall.RawConn)
-	var intoIPConn145 net.IPConn
-	intermediateCQL, _ := intoIPConn145.SyscallConn()
-	link(fromRawConn316, intermediateCQL)
-	return intoIPConn145
+	fromRawConn396 := sourceCQL.(syscall.RawConn)
+	var intoIPConn707 net.IPConn
+	intermediateCQL, _ := intoIPConn707.SyscallConn()
+	link(fromRawConn396, intermediateCQL)
+	return intoIPConn707
 }
 
 func TaintStepTest_NetIPConnWriteMsgIP_B0I0O0(sourceCQL interface{}) interface{} {
-	fromByte817 := sourceCQL.([]byte)
-	var intoIPConn474 net.IPConn
-	intoIPConn474.WriteMsgIP(fromByte817, nil, nil)
-	return intoIPConn474
+	fromByte912 := sourceCQL.([]byte)
+	var intoIPConn718 net.IPConn
+	intoIPConn718.WriteMsgIP(fromByte912, nil, nil)
+	return intoIPConn718
 }
 
 func TaintStepTest_NetIPConnWriteMsgIP_B0I1O0(sourceCQL interface{}) interface{} {
-	fromByte832 := sourceCQL.([]byte)
-	var intoIPConn378 net.IPConn
-	intoIPConn378.WriteMsgIP(nil, fromByte832, nil)
-	return intoIPConn378
+	fromByte972 := sourceCQL.([]byte)
+	var intoIPConn633 net.IPConn
+	intoIPConn633.WriteMsgIP(nil, fromByte972, nil)
+	return intoIPConn633
 }
 
 func TaintStepTest_NetIPConnWriteTo_B0I0O0(sourceCQL interface{}) interface{} {
-	fromByte541 := sourceCQL.([]byte)
-	var intoIPConn139 net.IPConn
-	intoIPConn139.WriteTo(fromByte541, nil)
-	return intoIPConn139
+	fromByte316 := sourceCQL.([]byte)
+	var intoIPConn145 net.IPConn
+	intoIPConn145.WriteTo(fromByte316, nil)
+	return intoIPConn145
 }
 
 func TaintStepTest_NetIPConnWriteToIP_B0I0O0(sourceCQL interface{}) interface{} {
-	fromByte814 := sourceCQL.([]byte)
-	var intoIPConn768 net.IPConn
-	intoIPConn768.WriteToIP(fromByte814, nil)
-	return intoIPConn768
+	fromByte817 := sourceCQL.([]byte)
+	var intoIPConn474 net.IPConn
+	intoIPConn474.WriteToIP(fromByte817, nil)
+	return intoIPConn474
 }
 
 func TaintStepTest_NetTCPConnReadFrom_B0I0O0(sourceCQL interface{}) interface{} {
-	fromReader468 := sourceCQL.(io.Reader)
-	var intoTCPConn736 net.TCPConn
-	intoTCPConn736.ReadFrom(fromReader468)
-	return intoTCPConn736
+	fromReader832 := sourceCQL.(io.Reader)
+	var intoTCPConn378 net.TCPConn
+	intoTCPConn378.ReadFrom(fromReader832)
+	return intoTCPConn378
 }
 
 func TaintStepTest_NetTCPConnSyscallConn_B0I0O0(sourceCQL interface{}) interface{} {
-	fromTCPConn516 := sourceCQL.(net.TCPConn)
-	intoRawConn246, _ := fromTCPConn516.SyscallConn()
-	return intoRawConn246
+	fromTCPConn541 := sourceCQL.(net.TCPConn)
+	intoRawConn139, _ := fromTCPConn541.SyscallConn()
+	return intoRawConn139
 }
 
 func TaintStepTest_NetTCPConnSyscallConn_B1I0O0(sourceCQL interface{}) interface{} {
-	fromRawConn679 := sourceCQL.(syscall.RawConn)
-	var intoTCPConn736 net.TCPConn
-	intermediateCQL, _ := intoTCPConn736.SyscallConn()
-	link(fromRawConn679, intermediateCQL)
-	return intoTCPConn736
+	fromRawConn814 := sourceCQL.(syscall.RawConn)
+	var intoTCPConn768 net.TCPConn
+	intermediateCQL, _ := intoTCPConn768.SyscallConn()
+	link(fromRawConn814, intermediateCQL)
+	return intoTCPConn768
 }
 
 func TaintStepTest_NetTCPListenerFile_B0I0O0(sourceCQL interface{}) interface{} {
-	fromTCPListener839 := sourceCQL.(net.TCPListener)
-	intoFile273, _ := fromTCPListener839.File()
-	return intoFile273
+	fromTCPListener468 := sourceCQL.(net.TCPListener)
+	intoFile736, _ := fromTCPListener468.File()
+	return intoFile736
 }
 
 func TaintStepTest_NetTCPListenerFile_B1I0O0(sourceCQL interface{}) interface{} {
-	fromFile982 := sourceCQL.(*os.File)
-	var intoTCPListener458 net.TCPListener
-	intermediateCQL, _ := intoTCPListener458.File()
-	link(fromFile982, intermediateCQL)
-	return intoTCPListener458
+	fromFile516 := sourceCQL.(*os.File)
+	var intoTCPListener246 net.TCPListener
+	intermediateCQL, _ := intoTCPListener246.File()
+	link(fromFile516, intermediateCQL)
+	return intoTCPListener246
 }
 
 func TaintStepTest_NetTCPListenerSyscallConn_B0I0O0(sourceCQL interface{}) interface{} {
-	fromTCPListener506 := sourceCQL.(net.TCPListener)
-	intoRawConn213, _ := fromTCPListener506.SyscallConn()
-	return intoRawConn213
+	fromTCPListener679 := sourceCQL.(net.TCPListener)
+	intoRawConn736, _ := fromTCPListener679.SyscallConn()
+	return intoRawConn736
 }
 
 func TaintStepTest_NetTCPListenerSyscallConn_B1I0O0(sourceCQL interface{}) interface{} {
-	fromRawConn468 := sourceCQL.(syscall.RawConn)
-	var intoTCPListener219 net.TCPListener
-	intermediateCQL, _ := intoTCPListener219.SyscallConn()
-	link(fromRawConn468, intermediateCQL)
-	return intoTCPListener219
+	fromRawConn839 := sourceCQL.(syscall.RawConn)
+	var intoTCPListener273 net.TCPListener
+	intermediateCQL, _ := intoTCPListener273.SyscallConn()
+	link(fromRawConn839, intermediateCQL)
+	return intoTCPListener273
 }
 
 func TaintStepTest_NetUDPConnReadFrom_B0I0O0(sourceCQL interface{}) interface{} {
-	fromUDPConn265 := sourceCQL.(net.UDPConn)
-	var intoByte971 []byte
-	fromUDPConn265.ReadFrom(intoByte971)
-	return intoByte971
+	fromUDPConn982 := sourceCQL.(net.UDPConn)
+	var intoByte458 []byte
+	fromUDPConn982.ReadFrom(intoByte458)
+	return intoByte458
 }
 
 func TaintStepTest_NetUDPConnReadFromUDP_B0I0O0(sourceCQL interface{}) interface{} {
-	fromUDPConn320 := sourceCQL.(net.UDPConn)
-	var intoByte545 []byte
-	fromUDPConn320.ReadFromUDP(intoByte545)
-	return intoByte545
+	fromUDPConn506 := sourceCQL.(net.UDPConn)
+	var intoByte213 []byte
+	fromUDPConn506.ReadFromUDP(intoByte213)
+	return intoByte213
 }
 
 func TaintStepTest_NetUDPConnReadMsgUDP_B0I0O0(sourceCQL interface{}) interface{} {
-	fromUDPConn566 := sourceCQL.(net.UDPConn)
-	var intoByte497 []byte
-	fromUDPConn566.ReadMsgUDP(intoByte497, nil)
-	return intoByte497
+	fromUDPConn468 := sourceCQL.(net.UDPConn)
+	var intoByte219 []byte
+	fromUDPConn468.ReadMsgUDP(intoByte219, nil)
+	return intoByte219
 }
 
 func TaintStepTest_NetUDPConnReadMsgUDP_B0I0O1(sourceCQL interface{}) interface{} {
-	fromUDPConn274 := sourceCQL.(net.UDPConn)
-	var intoByte783 []byte
-	fromUDPConn274.ReadMsgUDP(nil, intoByte783)
-	return intoByte783
+	fromUDPConn265 := sourceCQL.(net.UDPConn)
+	var intoByte971 []byte
+	fromUDPConn265.ReadMsgUDP(nil, intoByte971)
+	return intoByte971
 }
 
 func TaintStepTest_NetUDPConnSyscallConn_B0I0O0(sourceCQL interface{}) interface{} {
-	fromUDPConn905 := sourceCQL.(net.UDPConn)
-	intoRawConn389, _ := fromUDPConn905.SyscallConn()
-	return intoRawConn389
+	fromUDPConn320 := sourceCQL.(net.UDPConn)
+	intoRawConn545, _ := fromUDPConn320.SyscallConn()
+	return intoRawConn545
 }
 
 func TaintStepTest_NetUDPConnSyscallConn_B1I0O0(sourceCQL interface{}) interface{} {
-	fromRawConn198 := sourceCQL.(syscall.RawConn)
-	var intoUDPConn477 net.UDPConn
-	intermediateCQL, _ := intoUDPConn477.SyscallConn()
-	link(fromRawConn198, intermediateCQL)
-	return intoUDPConn477
+	fromRawConn566 := sourceCQL.(syscall.RawConn)
+	var intoUDPConn497 net.UDPConn
+	intermediateCQL, _ := intoUDPConn497.SyscallConn()
+	link(fromRawConn566, intermediateCQL)
+	return intoUDPConn497
 }
 
 func TaintStepTest_NetUDPConnWriteMsgUDP_B0I0O0(sourceCQL interface{}) interface{} {
-	fromByte544 := sourceCQL.([]byte)
-	var intoUDPConn382 net.UDPConn
-	intoUDPConn382.WriteMsgUDP(fromByte544, nil, nil)
-	return intoUDPConn382
+	fromByte274 := sourceCQL.([]byte)
+	var intoUDPConn783 net.UDPConn
+	intoUDPConn783.WriteMsgUDP(fromByte274, nil, nil)
+	return intoUDPConn783
 }
 
 func TaintStepTest_NetUDPConnWriteMsgUDP_B0I1O0(sourceCQL interface{}) interface{} {
-	fromByte715 := sourceCQL.([]byte)
-	var intoUDPConn179 net.UDPConn
-	intoUDPConn179.WriteMsgUDP(nil, fromByte715, nil)
-	return intoUDPConn179
+	fromByte905 := sourceCQL.([]byte)
+	var intoUDPConn389 net.UDPConn
+	intoUDPConn389.WriteMsgUDP(nil, fromByte905, nil)
+	return intoUDPConn389
 }
 
 func TaintStepTest_NetUDPConnWriteTo_B0I0O0(sourceCQL interface{}) interface{} {
-	fromByte366 := sourceCQL.([]byte)
-	var intoUDPConn648 net.UDPConn
-	intoUDPConn648.WriteTo(fromByte366, nil)
-	return intoUDPConn648
+	fromByte198 := sourceCQL.([]byte)
+	var intoUDPConn477 net.UDPConn
+	intoUDPConn477.WriteTo(fromByte198, nil)
+	return intoUDPConn477
 }
 
 func TaintStepTest_NetUDPConnWriteToUDP_B0I0O0(sourceCQL interface{}) interface{} {
 	fromByte544 := sourceCQL.([]byte)
-	var intoUDPConn484 net.UDPConn
-	intoUDPConn484.WriteToUDP(fromByte544, nil)
-	return intoUDPConn484
+	var intoUDPConn382 net.UDPConn
+	intoUDPConn382.WriteToUDP(fromByte544, nil)
+	return intoUDPConn382
 }
 
 func TaintStepTest_NetUnixConnReadFrom_B0I0O0(sourceCQL interface{}) interface{} {
-	fromUnixConn824 := sourceCQL.(net.UnixConn)
-	var intoByte754 []byte
-	fromUnixConn824.ReadFrom(intoByte754)
-	return intoByte754
+	fromUnixConn715 := sourceCQL.(net.UnixConn)
+	var intoByte179 []byte
+	fromUnixConn715.ReadFrom(intoByte179)
+	return intoByte179
 }
 
 func TaintStepTest_NetUnixConnReadFromUnix_B0I0O0(sourceCQL interface{}) interface{} {
-	fromUnixConn680 := sourceCQL.(net.UnixConn)
-	var intoByte722 []byte
-	fromUnixConn680.ReadFromUnix(intoByte722)
-	return intoByte722
+	fromUnixConn366 := sourceCQL.(net.UnixConn)
+	var intoByte648 []byte
+	fromUnixConn366.ReadFromUnix(intoByte648)
+	return intoByte648
 }
 
 func TaintStepTest_NetUnixConnReadMsgUnix_B0I0O0(sourceCQL interface{}) interface{} {
-	fromUnixConn506 := sourceCQL.(net.UnixConn)
-	var intoByte121 []byte
-	fromUnixConn506.ReadMsgUnix(intoByte121, nil)
-	return intoByte121
+	fromUnixConn544 := sourceCQL.(net.UnixConn)
+	var intoByte484 []byte
+	fromUnixConn544.ReadMsgUnix(intoByte484, nil)
+	return intoByte484
 }
 
 func TaintStepTest_NetUnixConnReadMsgUnix_B0I0O1(sourceCQL interface{}) interface{} {
-	fromUnixConn293 := sourceCQL.(net.UnixConn)
-	var intoByte151 []byte
-	fromUnixConn293.ReadMsgUnix(nil, intoByte151)
-	return intoByte151
+	fromUnixConn824 := sourceCQL.(net.UnixConn)
+	var intoByte754 []byte
+	fromUnixConn824.ReadMsgUnix(nil, intoByte754)
+	return intoByte754
 }
 
 func TaintStepTest_NetUnixConnSyscallConn_B0I0O0(sourceCQL interface{}) interface{} {
-	fromUnixConn849 := sourceCQL.(net.UnixConn)
-	intoRawConn322, _ := fromUnixConn849.SyscallConn()
-	return intoRawConn322
+	fromUnixConn680 := sourceCQL.(net.UnixConn)
+	intoRawConn722, _ := fromUnixConn680.SyscallConn()
+	return intoRawConn722
 }
 
 func TaintStepTest_NetUnixConnSyscallConn_B1I0O0(sourceCQL interface{}) interface{} {
-	fromRawConn339 := sourceCQL.(syscall.RawConn)
-	var intoUnixConn478 net.UnixConn
-	intermediateCQL, _ := intoUnixConn478.SyscallConn()
-	link(fromRawConn339, intermediateCQL)
-	return intoUnixConn478
+	fromRawConn506 := sourceCQL.(syscall.RawConn)
+	var intoUnixConn121 net.UnixConn
+	intermediateCQL, _ := intoUnixConn121.SyscallConn()
+	link(fromRawConn506, intermediateCQL)
+	return intoUnixConn121
 }
 
 func TaintStepTest_NetUnixConnWriteMsgUnix_B0I0O0(sourceCQL interface{}) interface{} {
-	fromByte399 := sourceCQL.([]byte)
-	var intoUnixConn426 net.UnixConn
-	intoUnixConn426.WriteMsgUnix(fromByte399, nil, nil)
-	return intoUnixConn426
+	fromByte293 := sourceCQL.([]byte)
+	var intoUnixConn151 net.UnixConn
+	intoUnixConn151.WriteMsgUnix(fromByte293, nil, nil)
+	return intoUnixConn151
 }
 
 func TaintStepTest_NetUnixConnWriteMsgUnix_B0I1O0(sourceCQL interface{}) interface{} {
-	fromByte628 := sourceCQL.([]byte)
-	var intoUnixConn197 net.UnixConn
-	intoUnixConn197.WriteMsgUnix(nil, fromByte628, nil)
-	return intoUnixConn197
+	fromByte849 := sourceCQL.([]byte)
+	var intoUnixConn322 net.UnixConn
+	intoUnixConn322.WriteMsgUnix(nil, fromByte849, nil)
+	return intoUnixConn322
 }
 
 func TaintStepTest_NetUnixConnWriteTo_B0I0O0(sourceCQL interface{}) interface{} {
-	fromByte216 := sourceCQL.([]byte)
-	var intoUnixConn742 net.UnixConn
-	intoUnixConn742.WriteTo(fromByte216, nil)
-	return intoUnixConn742
+	fromByte339 := sourceCQL.([]byte)
+	var intoUnixConn478 net.UnixConn
+	intoUnixConn478.WriteTo(fromByte339, nil)
+	return intoUnixConn478
 }
 
 func TaintStepTest_NetUnixConnWriteToUnix_B0I0O0(sourceCQL interface{}) interface{} {
-	fromByte906 := sourceCQL.([]byte)
-	var intoUnixConn620 net.UnixConn
-	intoUnixConn620.WriteToUnix(fromByte906, nil)
-	return intoUnixConn620
+	fromByte399 := sourceCQL.([]byte)
+	var intoUnixConn426 net.UnixConn
+	intoUnixConn426.WriteToUnix(fromByte399, nil)
+	return intoUnixConn426
 }
 
 func TaintStepTest_NetUnixListenerFile_B0I0O0(sourceCQL interface{}) interface{} {
-	fromUnixListener158 := sourceCQL.(net.UnixListener)
-	intoFile353, _ := fromUnixListener158.File()
-	return intoFile353
+	fromUnixListener628 := sourceCQL.(net.UnixListener)
+	intoFile197, _ := fromUnixListener628.File()
+	return intoFile197
 }
 
 func TaintStepTest_NetUnixListenerFile_B1I0O0(sourceCQL interface{}) interface{} {
-	fromFile625 := sourceCQL.(*os.File)
-	var intoUnixListener340 net.UnixListener
-	intermediateCQL, _ := intoUnixListener340.File()
-	link(fromFile625, intermediateCQL)
-	return intoUnixListener340
+	fromFile216 := sourceCQL.(*os.File)
+	var intoUnixListener742 net.UnixListener
+	intermediateCQL, _ := intoUnixListener742.File()
+	link(fromFile216, intermediateCQL)
+	return intoUnixListener742
 }
 
 func TaintStepTest_NetUnixListenerSyscallConn_B0I0O0(sourceCQL interface{}) interface{} {
-	fromUnixListener741 := sourceCQL.(net.UnixListener)
-	intoRawConn199, _ := fromUnixListener741.SyscallConn()
-	return intoRawConn199
+	fromUnixListener906 := sourceCQL.(net.UnixListener)
+	intoRawConn620, _ := fromUnixListener906.SyscallConn()
+	return intoRawConn620
 }
 
 func TaintStepTest_NetUnixListenerSyscallConn_B1I0O0(sourceCQL interface{}) interface{} {
-	fromRawConn873 := sourceCQL.(syscall.RawConn)
-	var intoUnixListener304 net.UnixListener
-	intermediateCQL, _ := intoUnixListener304.SyscallConn()
-	link(fromRawConn873, intermediateCQL)
-	return intoUnixListener304
+	fromRawConn158 := sourceCQL.(syscall.RawConn)
+	var intoUnixListener353 net.UnixListener
+	intermediateCQL, _ := intoUnixListener353.SyscallConn()
+	link(fromRawConn158, intermediateCQL)
+	return intoUnixListener353
 }
 
 func TaintStepTest_NetConnRead_B0I0O0(sourceCQL interface{}) interface{} {
-	fromConn262 := sourceCQL.(net.Conn)
-	var intoByte341 []byte
-	fromConn262.Read(intoByte341)
-	return intoByte341
+	fromConn625 := sourceCQL.(net.Conn)
+	var intoByte340 []byte
+	fromConn625.Read(intoByte340)
+	return intoByte340
 }
 
 func TaintStepTest_NetPacketConnReadFrom_B0I0O0(sourceCQL interface{}) interface{} {
-	fromPacketConn495 := sourceCQL.(net.PacketConn)
-	var intoByte976 []byte
-	fromPacketConn495.ReadFrom(intoByte976)
-	return intoByte976
+	fromPacketConn741 := sourceCQL.(net.PacketConn)
+	var intoByte199 []byte
+	fromPacketConn741.ReadFrom(intoByte199)
+	return intoByte199
 }
 
 func TaintStepTest_NetAddrString_B0I0O0(sourceCQL interface{}) interface{} {
-	fromAddr194 := sourceCQL.(net.Addr)
-	intoString736 := fromAddr194.String()
-	return intoString736
+	fromAddr873 := sourceCQL.(net.Addr)
+	intoString304 := fromAddr873.String()
+	return intoString304
 }
 
 func TaintStepTest_NetConnWrite_B0I0O0(sourceCQL interface{}) interface{} {
-	fromByte870 := sourceCQL.([]byte)
-	var intoConn741 net.Conn
-	intoConn741.Write(fromByte870)
-	return intoConn741
+	fromByte262 := sourceCQL.([]byte)
+	var intoConn341 net.Conn
+	intoConn341.Write(fromByte262)
+	return intoConn341
 }
 
 func TaintStepTest_NetPacketConnWriteTo_B0I0O0(sourceCQL interface{}) interface{} {
-	fromByte653 := sourceCQL.([]byte)
-	var intoPacketConn937 net.PacketConn
-	intoPacketConn937.WriteTo(fromByte653, nil)
-	return intoPacketConn937
+	fromByte495 := sourceCQL.([]byte)
+	var intoPacketConn976 net.PacketConn
+	intoPacketConn976.WriteTo(fromByte495, nil)
+	return intoPacketConn976
 }
 
 func RunAllTaints_Net() {
@@ -491,247 +473,232 @@ func RunAllTaints_Net() {
 	}
 	{
 		source := newSource(12)
-		out := TaintStepTest_NetIPMarshalText_B0I0O0(source)
+		out := TaintStepTest_NetIPConnReadFrom_B0I0O0(source)
 		sink(12, out)
 	}
 	{
 		source := newSource(13)
-		out := TaintStepTest_NetIPTo16_B0I0O0(source)
+		out := TaintStepTest_NetIPConnReadFromIP_B0I0O0(source)
 		sink(13, out)
 	}
 	{
 		source := newSource(14)
-		out := TaintStepTest_NetIPTo4_B0I0O0(source)
+		out := TaintStepTest_NetIPConnReadMsgIP_B0I0O0(source)
 		sink(14, out)
 	}
 	{
 		source := newSource(15)
-		out := TaintStepTest_NetIPConnReadFrom_B0I0O0(source)
+		out := TaintStepTest_NetIPConnReadMsgIP_B0I0O1(source)
 		sink(15, out)
 	}
 	{
 		source := newSource(16)
-		out := TaintStepTest_NetIPConnReadFromIP_B0I0O0(source)
+		out := TaintStepTest_NetIPConnSyscallConn_B0I0O0(source)
 		sink(16, out)
 	}
 	{
 		source := newSource(17)
-		out := TaintStepTest_NetIPConnReadMsgIP_B0I0O0(source)
+		out := TaintStepTest_NetIPConnSyscallConn_B1I0O0(source)
 		sink(17, out)
 	}
 	{
 		source := newSource(18)
-		out := TaintStepTest_NetIPConnReadMsgIP_B0I0O1(source)
+		out := TaintStepTest_NetIPConnWriteMsgIP_B0I0O0(source)
 		sink(18, out)
 	}
 	{
 		source := newSource(19)
-		out := TaintStepTest_NetIPConnSyscallConn_B0I0O0(source)
+		out := TaintStepTest_NetIPConnWriteMsgIP_B0I1O0(source)
 		sink(19, out)
 	}
 	{
 		source := newSource(20)
-		out := TaintStepTest_NetIPConnSyscallConn_B1I0O0(source)
+		out := TaintStepTest_NetIPConnWriteTo_B0I0O0(source)
 		sink(20, out)
 	}
 	{
 		source := newSource(21)
-		out := TaintStepTest_NetIPConnWriteMsgIP_B0I0O0(source)
+		out := TaintStepTest_NetIPConnWriteToIP_B0I0O0(source)
 		sink(21, out)
 	}
 	{
 		source := newSource(22)
-		out := TaintStepTest_NetIPConnWriteMsgIP_B0I1O0(source)
+		out := TaintStepTest_NetTCPConnReadFrom_B0I0O0(source)
 		sink(22, out)
 	}
 	{
 		source := newSource(23)
-		out := TaintStepTest_NetIPConnWriteTo_B0I0O0(source)
+		out := TaintStepTest_NetTCPConnSyscallConn_B0I0O0(source)
 		sink(23, out)
 	}
 	{
 		source := newSource(24)
-		out := TaintStepTest_NetIPConnWriteToIP_B0I0O0(source)
+		out := TaintStepTest_NetTCPConnSyscallConn_B1I0O0(source)
 		sink(24, out)
 	}
 	{
 		source := newSource(25)
-		out := TaintStepTest_NetTCPConnReadFrom_B0I0O0(source)
+		out := TaintStepTest_NetTCPListenerFile_B0I0O0(source)
 		sink(25, out)
 	}
 	{
 		source := newSource(26)
-		out := TaintStepTest_NetTCPConnSyscallConn_B0I0O0(source)
+		out := TaintStepTest_NetTCPListenerFile_B1I0O0(source)
 		sink(26, out)
 	}
 	{
 		source := newSource(27)
-		out := TaintStepTest_NetTCPConnSyscallConn_B1I0O0(source)
+		out := TaintStepTest_NetTCPListenerSyscallConn_B0I0O0(source)
 		sink(27, out)
 	}
 	{
 		source := newSource(28)
-		out := TaintStepTest_NetTCPListenerFile_B0I0O0(source)
+		out := TaintStepTest_NetTCPListenerSyscallConn_B1I0O0(source)
 		sink(28, out)
 	}
 	{
 		source := newSource(29)
-		out := TaintStepTest_NetTCPListenerFile_B1I0O0(source)
+		out := TaintStepTest_NetUDPConnReadFrom_B0I0O0(source)
 		sink(29, out)
 	}
 	{
 		source := newSource(30)
-		out := TaintStepTest_NetTCPListenerSyscallConn_B0I0O0(source)
+		out := TaintStepTest_NetUDPConnReadFromUDP_B0I0O0(source)
 		sink(30, out)
 	}
 	{
 		source := newSource(31)
-		out := TaintStepTest_NetTCPListenerSyscallConn_B1I0O0(source)
+		out := TaintStepTest_NetUDPConnReadMsgUDP_B0I0O0(source)
 		sink(31, out)
 	}
 	{
 		source := newSource(32)
-		out := TaintStepTest_NetUDPConnReadFrom_B0I0O0(source)
+		out := TaintStepTest_NetUDPConnReadMsgUDP_B0I0O1(source)
 		sink(32, out)
 	}
 	{
 		source := newSource(33)
-		out := TaintStepTest_NetUDPConnReadFromUDP_B0I0O0(source)
+		out := TaintStepTest_NetUDPConnSyscallConn_B0I0O0(source)
 		sink(33, out)
 	}
 	{
 		source := newSource(34)
-		out := TaintStepTest_NetUDPConnReadMsgUDP_B0I0O0(source)
+		out := TaintStepTest_NetUDPConnSyscallConn_B1I0O0(source)
 		sink(34, out)
 	}
 	{
 		source := newSource(35)
-		out := TaintStepTest_NetUDPConnReadMsgUDP_B0I0O1(source)
+		out := TaintStepTest_NetUDPConnWriteMsgUDP_B0I0O0(source)
 		sink(35, out)
 	}
 	{
 		source := newSource(36)
-		out := TaintStepTest_NetUDPConnSyscallConn_B0I0O0(source)
+		out := TaintStepTest_NetUDPConnWriteMsgUDP_B0I1O0(source)
 		sink(36, out)
 	}
 	{
 		source := newSource(37)
-		out := TaintStepTest_NetUDPConnSyscallConn_B1I0O0(source)
+		out := TaintStepTest_NetUDPConnWriteTo_B0I0O0(source)
 		sink(37, out)
 	}
 	{
 		source := newSource(38)
-		out := TaintStepTest_NetUDPConnWriteMsgUDP_B0I0O0(source)
+		out := TaintStepTest_NetUDPConnWriteToUDP_B0I0O0(source)
 		sink(38, out)
 	}
 	{
 		source := newSource(39)
-		out := TaintStepTest_NetUDPConnWriteMsgUDP_B0I1O0(source)
+		out := TaintStepTest_NetUnixConnReadFrom_B0I0O0(source)
 		sink(39, out)
 	}
 	{
 		source := newSource(40)
-		out := TaintStepTest_NetUDPConnWriteTo_B0I0O0(source)
+		out := TaintStepTest_NetUnixConnReadFromUnix_B0I0O0(source)
 		sink(40, out)
 	}
 	{
 		source := newSource(41)
-		out := TaintStepTest_NetUDPConnWriteToUDP_B0I0O0(source)
+		out := TaintStepTest_NetUnixConnReadMsgUnix_B0I0O0(source)
 		sink(41, out)
 	}
 	{
 		source := newSource(42)
-		out := TaintStepTest_NetUnixConnReadFrom_B0I0O0(source)
+		out := TaintStepTest_NetUnixConnReadMsgUnix_B0I0O1(source)
 		sink(42, out)
 	}
 	{
 		source := newSource(43)
-		out := TaintStepTest_NetUnixConnReadFromUnix_B0I0O0(source)
+		out := TaintStepTest_NetUnixConnSyscallConn_B0I0O0(source)
 		sink(43, out)
 	}
 	{
 		source := newSource(44)
-		out := TaintStepTest_NetUnixConnReadMsgUnix_B0I0O0(source)
+		out := TaintStepTest_NetUnixConnSyscallConn_B1I0O0(source)
 		sink(44, out)
 	}
 	{
 		source := newSource(45)
-		out := TaintStepTest_NetUnixConnReadMsgUnix_B0I0O1(source)
+		out := TaintStepTest_NetUnixConnWriteMsgUnix_B0I0O0(source)
 		sink(45, out)
 	}
 	{
 		source := newSource(46)
-		out := TaintStepTest_NetUnixConnSyscallConn_B0I0O0(source)
+		out := TaintStepTest_NetUnixConnWriteMsgUnix_B0I1O0(source)
 		sink(46, out)
 	}
 	{
 		source := newSource(47)
-		out := TaintStepTest_NetUnixConnSyscallConn_B1I0O0(source)
+		out := TaintStepTest_NetUnixConnWriteTo_B0I0O0(source)
 		sink(47, out)
 	}
 	{
 		source := newSource(48)
-		out := TaintStepTest_NetUnixConnWriteMsgUnix_B0I0O0(source)
+		out := TaintStepTest_NetUnixConnWriteToUnix_B0I0O0(source)
 		sink(48, out)
 	}
 	{
 		source := newSource(49)
-		out := TaintStepTest_NetUnixConnWriteMsgUnix_B0I1O0(source)
+		out := TaintStepTest_NetUnixListenerFile_B0I0O0(source)
 		sink(49, out)
 	}
 	{
 		source := newSource(50)
-		out := TaintStepTest_NetUnixConnWriteTo_B0I0O0(source)
+		out := TaintStepTest_NetUnixListenerFile_B1I0O0(source)
 		sink(50, out)
 	}
 	{
 		source := newSource(51)
-		out := TaintStepTest_NetUnixConnWriteToUnix_B0I0O0(source)
+		out := TaintStepTest_NetUnixListenerSyscallConn_B0I0O0(source)
 		sink(51, out)
 	}
 	{
 		source := newSource(52)
-		out := TaintStepTest_NetUnixListenerFile_B0I0O0(source)
+		out := TaintStepTest_NetUnixListenerSyscallConn_B1I0O0(source)
 		sink(52, out)
 	}
 	{
 		source := newSource(53)
-		out := TaintStepTest_NetUnixListenerFile_B1I0O0(source)
+		out := TaintStepTest_NetConnRead_B0I0O0(source)
 		sink(53, out)
 	}
 	{
 		source := newSource(54)
-		out := TaintStepTest_NetUnixListenerSyscallConn_B0I0O0(source)
+		out := TaintStepTest_NetPacketConnReadFrom_B0I0O0(source)
 		sink(54, out)
 	}
 	{
 		source := newSource(55)
-		out := TaintStepTest_NetUnixListenerSyscallConn_B1I0O0(source)
+		out := TaintStepTest_NetAddrString_B0I0O0(source)
 		sink(55, out)
 	}
 	{
 		source := newSource(56)
-		out := TaintStepTest_NetConnRead_B0I0O0(source)
+		out := TaintStepTest_NetConnWrite_B0I0O0(source)
 		sink(56, out)
 	}
 	{
 		source := newSource(57)
-		out := TaintStepTest_NetPacketConnReadFrom_B0I0O0(source)
-		sink(57, out)
-	}
-	{
-		source := newSource(58)
-		out := TaintStepTest_NetAddrString_B0I0O0(source)
-		sink(58, out)
-	}
-	{
-		source := newSource(59)
-		out := TaintStepTest_NetConnWrite_B0I0O0(source)
-		sink(59, out)
-	}
-	{
-		source := newSource(60)
 		out := TaintStepTest_NetPacketConnWriteTo_B0I0O0(source)
-		sink(60, out)
+		sink(57, out)
 	}
 }
