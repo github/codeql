@@ -73,26 +73,6 @@ module Io {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*LimitedReader).Read(p []byte) (n int, err error)
-      this.hasQualifiedName("io", "LimitedReader", "Read") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
-      // signature: func (*PipeReader).Read(data []byte) (n int, err error)
-      this.hasQualifiedName("io", "PipeReader", "Read") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
-      // signature: func (*PipeWriter).Write(data []byte) (n int, err error)
-      this.hasQualifiedName("io", "PipeWriter", "Write") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
-      // signature: func (*SectionReader).Read(p []byte) (n int, err error)
-      this.hasQualifiedName("io", "SectionReader", "Read") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
-      // signature: func (*SectionReader).ReadAt(p []byte, off int64) (n int, err error)
-      this.hasQualifiedName("io", "SectionReader", "ReadAt") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
       // signature: func (Reader).Read(p []byte) (n int, err error)
       this.implements("io", "Reader", "Read") and
       (inp.isReceiver() and outp.isParameter(0))
