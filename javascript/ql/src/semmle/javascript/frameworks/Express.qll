@@ -82,14 +82,14 @@ module Express {
       decoratee = call.getArgument(i).getALocalSource() and
       outer = call.getACallee() and
       inner = outer.getAReturnedExpr() and
-      forwardingCall(DataFlow::parameterNode(outer.getParameter(i)), inner.flow())
+      isAForwardingRouteHandlerCall(DataFlow::parameterNode(outer.getParameter(i)), inner.flow())
     )
   }
 
   /**
-   * Holds if a call to `callee` inside `f` forwards all of the parameters from `f` to that call.
+   * Holds if `f` looks like a route-handler and a call to `callee` inside `f` forwards all of the parameters from `f` to that call, 
    */
-  private predicate forwardingCall(DataFlow::SourceNode callee, HTTP::RouteHandlerCandidate f) {
+  private predicate isAForwardingRouteHandlerCall(DataFlow::SourceNode callee, HTTP::RouteHandlerCandidate f) {
     exists(DataFlow::CallNode call | call = callee.getACall() |
       forall(int arg | arg = [0 .. f.getNumParameter() - 1] |
         f.getParameter(arg).flowsTo(call.getArgument(arg))
@@ -105,7 +105,7 @@ module Express {
     isDecoratedCall(succ, pred)
     or
     // A forwarding call
-    forwardingCall(pred, succ)
+    isAForwardingRouteHandlerCall(pred, succ)
     or
     // a container containing route-handlers.
     exists(HTTP::RouteHandlerCandidateContainer container | pred = container.getRouteHandler(succ))
