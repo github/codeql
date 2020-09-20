@@ -111,11 +111,8 @@ module Express {
     exists(HTTP::RouteHandlerCandidateContainer container | pred = container.getRouteHandler(succ))
     or
     // (function (req, res) {}).bind(this);
-    exists(DataFlow::MethodCallNode call |
-      call.getMethodName() = "bind" and call.getNumArgument() = 1
-    |
-      succ = call and
-      pred = call.getReceiver().getALocalSource()
+    exists(DataFlow::PartialInvokeNode call |
+      succ = call.getBoundFunction(pred, 0)
     )
   }
 
