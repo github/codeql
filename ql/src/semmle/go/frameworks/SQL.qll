@@ -26,10 +26,6 @@ module SQL {
     FunctionOutput outp;
 
     SqlMethodModels() {
-      // signature: func (*NullString).Scan(value interface{}) error
-      this.hasQualifiedName("database/sql", "NullString", "Scan") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
       // signature: func (*Row).Scan(dest ...interface{}) error
       this.hasQualifiedName("database/sql", "Row", "Scan") and
       (inp.isReceiver() and outp.isParameter(_))
