@@ -76,10 +76,10 @@ module Express {
    * Holds if `call` decorates the function `pred`.
    * This means that `call` returns a function that forwards its arguments to `pred`.
    */
-  predicate decoratedRouteHandler(DataFlow::SourceNode pred, DataFlow::CallNode call) {
+  predicate isDecoratedCall(DataFlow::CallNode call, DataFlow::FunctionNode decoratee) {
     // indirect route-handler `result` is given to function `outer`, which returns function `inner` which calls the function `pred`.
     exists(int i, Function outer, Function inner |
-      pred = call.getArgument(i).getALocalSource() and
+      decoratee = call.getArgument(i).getALocalSource() and
       outer = call.getACallee() and
       inner = outer.getAReturnedExpr() and
       forwardingCall(DataFlow::parameterNode(outer.getParameter(i)), inner.flow())
@@ -103,7 +103,7 @@ module Express {
    * Holds if there exists a step from `pred` to `succ` for a RouteHandler - beyond the usual steps defined by TypeTracking.
    */
   predicate routeHandlerStep(DataFlow::SourceNode pred, DataFlow::SourceNode succ) {
-    decoratedRouteHandler(pred, succ)
+    isDecoratedCall(succ, pred)
     or
     // A forwarding call
     forwardingCall(pred, succ)

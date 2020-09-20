@@ -596,7 +596,7 @@ module HTTP {
     DataFlow::SourceNode getAPossiblyDecoratedHandler(RouteHandlerCandidate candidate) {
       result = candidate
       or
-      Express::decoratedRouteHandler(candidate, result)
+      Express::isDecoratedCall(result, candidate)
     }
 
     /**
