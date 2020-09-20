@@ -21,7 +21,7 @@
 | io.go:32:19:32:23 | &... | io.go:31:7:31:10 | definition of buf1 |
 | io.go:32:20:32:23 | buf1 | io.go:32:19:32:23 | &... |
 | io.go:34:16:34:21 | reader | io.go:32:3:32:4 | definition of w2 |
-| io.go:38:3:38:3 | definition of r | io.go:38:3:38:19 | ... := ...[1] |
+| io.go:38:6:38:6 | definition of w | io.go:38:3:38:19 | ... := ...[0] |
 | io.go:38:11:38:19 | call to Pipe | io.go:38:3:38:19 | ... := ...[0] |
 | io.go:38:11:38:19 | call to Pipe | io.go:38:3:38:19 | ... := ...[1] |
 | io.go:39:17:39:31 | "some string\\n" | io.go:38:6:38:6 | definition of w |
@@ -35,10 +35,8 @@
 | io.go:60:19:60:21 | buf | io.go:60:18:60:21 | &... |
 | io.go:61:21:61:26 | "test" | io.go:60:3:60:3 | definition of w |
 | io.go:65:31:65:43 | "some string" | io.go:65:13:65:44 | call to NewReader |
-| io.go:66:11:66:16 | reader | io.go:66:3:66:27 | ... := ...[0] |
 | io.go:66:11:66:27 | call to ReadByte | io.go:66:3:66:27 | ... := ...[0] |
 | io.go:66:11:66:27 | call to ReadByte | io.go:66:3:66:27 | ... := ...[1] |
-| io.go:68:21:68:21 | t | io.go:67:7:67:13 | definition of bwriter |
 | io.go:72:31:72:43 | "some string" | io.go:72:13:72:44 | call to NewReader |
 | io.go:74:3:74:8 | reader | io.go:73:3:73:5 | definition of buf |
 | io.go:77:31:77:43 | "some string" | io.go:77:13:77:44 | call to NewReader |
@@ -63,7 +61,6 @@
 | io.go:104:28:104:28 | r | io.go:104:8:104:36 | call to NewSectionReader |
 | io.go:105:22:105:22 | s | io.go:105:11:105:19 | selection of Stdout |
 | io.go:108:26:108:38 | "some string" | io.go:108:8:108:39 | call to NewReader |
-| io.go:109:16:109:16 | r | io.go:109:3:109:27 | ... := ...[0] |
 | io.go:109:16:109:27 | call to ReadRune | io.go:109:3:109:27 | ... := ...[0] |
 | io.go:109:16:109:27 | call to ReadRune | io.go:109:3:109:27 | ... := ...[1] |
 | io.go:109:16:109:27 | call to ReadRune | io.go:109:3:109:27 | ... := ...[2] |
