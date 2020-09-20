@@ -91,7 +91,6 @@ module Express {
    */
   private predicate forwardingCall(DataFlow::SourceNode callee, HTTP::RouteHandlerCandidate f) {
     exists(DataFlow::CallNode call | call = callee.getACall() |
-      f.getNumParameter() >= 2 and
       forall(int arg | arg = [0 .. f.getNumParameter() - 1] |
         f.getParameter(arg).flowsTo(call.getArgument(arg))
       ) and
