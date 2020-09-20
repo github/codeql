@@ -50,7 +50,7 @@ private DataFlow::SourceNode getARouteUsingCookies(DataFlow::TypeTracker t) {
     result = pred.track(t2, t)
     or
     t = t2 and
-    Express::routeHandlerStep(pred, result)
+    HTTP::routeHandlerStep(pred, result)
   )
 }
 

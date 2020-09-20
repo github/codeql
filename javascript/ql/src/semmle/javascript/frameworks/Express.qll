@@ -73,50 +73,6 @@ module Express {
   }
 
   /**
-   * Holds if `call` decorates the function `pred`.
-   * This means that `call` returns a function that forwards its arguments to `pred`.
-   */
-  predicate isDecoratedCall(DataFlow::CallNode call, DataFlow::FunctionNode decoratee) {
-    // indirect route-handler `result` is given to function `outer`, which returns function `inner` which calls the function `pred`.
-    exists(int i, Function outer, Function inner |
-      decoratee = call.getArgument(i).getALocalSource() and
-      outer = call.getACallee() and
-      inner = outer.getAReturnedExpr() and
-      isAForwardingRouteHandlerCall(DataFlow::parameterNode(outer.getParameter(i)), inner.flow())
-    )
-  }
-
-  /**
-   * Holds if `f` looks like a route-handler and a call to `callee` inside `f` forwards all of the parameters from `f` to that call, 
-   */
-  private predicate isAForwardingRouteHandlerCall(DataFlow::SourceNode callee, HTTP::RouteHandlerCandidate f) {
-    exists(DataFlow::CallNode call | call = callee.getACall() |
-      forall(int arg | arg = [0 .. f.getNumParameter() - 1] |
-        f.getParameter(arg).flowsTo(call.getArgument(arg))
-      ) and
-      call.getContainer() = f.getFunction()
-    )
-  }
-
-  /**
-   * Holds if there exists a step from `pred` to `succ` for a RouteHandler - beyond the usual steps defined by TypeTracking.
-   */
-  predicate routeHandlerStep(DataFlow::SourceNode pred, DataFlow::SourceNode succ) {
-    isDecoratedCall(succ, pred)
-    or
-    // A forwarding call
-    isAForwardingRouteHandlerCall(pred, succ)
-    or
-    // a container containing route-handlers.
-    exists(HTTP::RouteHandlerCandidateContainer container | pred = container.getRouteHandler(succ))
-    or
-    // (function (req, res) {}).bind(this);
-    exists(DataFlow::PartialInvokeNode call |
-      succ = call.getBoundFunction(pred, 0)
-    )
-  }
-
-  /**
    * A call to an Express router method that sets up a route.
    */
   class RouteSetup extends HTTP::Servers::StandardRouteSetup, MethodCallExpr {
@@ -169,7 +125,7 @@ module Express {
       exists(DataFlow::TypeBackTracker t2, DataFlow::SourceNode succ | succ = getARouteHandler(t2) |
         result = succ.backtrack(t2, t)
         or
-        routeHandlerStep(result, succ) and
+        HTTP::routeHandlerStep(result, succ) and
         t = t2
       )
     }

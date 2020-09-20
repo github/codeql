@@ -232,7 +232,7 @@ module NodeJSLib {
         result = succ.backtrack(t2, t)
         or
         t = t2 and
-        Express::routeHandlerStep(result, succ)
+        HTTP::routeHandlerStep(result, succ)
       )
     }
 
