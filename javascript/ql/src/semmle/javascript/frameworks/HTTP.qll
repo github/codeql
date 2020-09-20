@@ -235,7 +235,7 @@ module HTTP {
 
   /**
    * Holds if `call` decorates the function `pred`.
-   * This means that `call` returns a function that forwards its arguments to `pred`. 
+   * This means that `call` returns a function that forwards its arguments to `pred`.
    * Only holds when the decorator looks like it is decorating a route-handler.
    */
   private predicate isDecoratedCall(DataFlow::CallNode call, DataFlow::FunctionNode decoratee) {
@@ -605,7 +605,8 @@ module HTTP {
         )
       }
 
-      override RouteHandlerCandidate getRouteHandler(DataFlow::SourceNode access) {
+      override DataFlow::SourceNode getRouteHandler(DataFlow::SourceNode access) {
+        result instanceof RouteHandlerCandidate and
         exists(DataFlow::PropWrite write, DataFlow::PropRead read |
           access = read and
           ref(this).getAPropertyRead() = read and
