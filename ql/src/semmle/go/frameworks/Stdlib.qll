@@ -31,6 +31,11 @@ import semmle.go.frameworks.stdlib.Html
 import semmle.go.frameworks.stdlib.HtmlTemplate
 import semmle.go.frameworks.stdlib.Context
 import semmle.go.frameworks.stdlib.Os
+import semmle.go.frameworks.stdlib.Net
+import semmle.go.frameworks.stdlib.NetHttp
+import semmle.go.frameworks.stdlib.NetHttpHttputil
+import semmle.go.frameworks.stdlib.NetMail
+import semmle.go.frameworks.stdlib.NetTextproto
 import semmle.go.frameworks.stdlib.Path
 import semmle.go.frameworks.stdlib.PathFilepath
 import semmle.go.frameworks.stdlib.Reflect
