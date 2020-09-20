@@ -31,18 +31,6 @@ module Net {
       hasQualifiedName("net", "JoinHostPort") and
       (inp.isParameter(_) and outp.isResult())
       or
-      // signature: func ParseCIDR(s string) (IP, *IPNet, error)
-      hasQualifiedName("net", "ParseCIDR") and
-      (inp.isParameter(0) and outp.isResult([0, 1]))
-      or
-      // signature: func ParseIP(s string) IP
-      hasQualifiedName("net", "ParseIP") and
-      (inp.isParameter(0) and outp.isResult())
-      or
-      // signature: func ParseMAC(s string) (hw HardwareAddr, err error)
-      hasQualifiedName("net", "ParseMAC") and
-      (inp.isParameter(0) and outp.isResult(0))
-      or
       // signature: func Pipe() (Conn, Conn)
       hasQualifiedName("net", "Pipe") and
       (
