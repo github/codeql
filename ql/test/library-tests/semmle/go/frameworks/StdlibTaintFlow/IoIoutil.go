@@ -19,13 +19,6 @@ func TaintStepTest_IoIoutilReadAll_B0I0O0(sourceCQL interface{}) interface{} {
 	return intoByte650
 }
 
-func TaintStepTest_IoWriterWrite_B0I0O0(sourceCQL interface{}) interface{} {
-	fromByte784 := sourceCQL.([]byte)
-	var intoWriter957 io.Writer
-	intoWriter957.Write(fromByte784)
-	return intoWriter957
-}
-
 func RunAllTaints_IoIoutil() {
 	{
 		source := newSource(0)
@@ -36,10 +29,5 @@ func RunAllTaints_IoIoutil() {
 		source := newSource(1)
 		out := TaintStepTest_IoIoutilReadAll_B0I0O0(source)
 		sink(1, out)
-	}
-	{
-		source := newSource(2)
-		out := TaintStepTest_IoWriterWrite_B0I0O0(source)
-		sink(2, out)
 	}
 }

@@ -38,19 +38,4 @@ module IoIoutil {
       input = inp and output = outp
     }
   }
-
-  private class MethodModels extends TaintTracking::FunctionModel, Method {
-    FunctionInput inp;
-    FunctionOutput outp;
-
-    MethodModels() {
-      // signature: func (Writer).Write(p []byte) (n int, err error)
-      this.implements("io", "Writer", "Write") and
-      (inp.isParameter(0) and outp.isReceiver())
-    }
-
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      input = inp and output = outp
-    }
-  }
 }
