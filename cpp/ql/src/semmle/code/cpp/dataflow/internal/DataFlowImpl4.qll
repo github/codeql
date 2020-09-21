@@ -2215,9 +2215,7 @@ private class AccessPathCons extends AccessPath, TAccessPathCons {
     result = head + ", " + tail.(AccessPathCons).toStringImpl()
   }
 
-  override string toString() {
-    result = "[" + this.toStringImpl()
-  }
+  override string toString() { result = "[" + this.toStringImpl() }
 }
 
 /**
@@ -2399,13 +2397,31 @@ private class PathNodeSink extends PathNodeImpl, TPathNodeSink {
  * a callable is recorded by `cc`.
  */
 private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, SummaryCtx sc, AccessPath ap) {
-  pathStepSameAp(mid, node, cc, sc) and
+  exists(AccessPath ap0, Node midnode, Configuration conf, LocalCallContext localCC |
+    midnode = mid.getNode() and
+    conf = mid.getConfiguration() and
+    cc = mid.getCallContext() and
+    sc = mid.getSummaryCtx() and
+    localCC = getLocalCallContext(cc, midnode.getEnclosingCallable()) and
+    ap0 = mid.getAp()
+  |
+    localFlowBigStep(midnode, node, true, _, conf, localCC) and
+    ap = ap0
+    or
+    localFlowBigStep(midnode, node, false, ap.getFront(), conf, localCC) and
+    ap0 instanceof AccessPathNil
+  )
+  or
+  jumpStep(mid.getNode(), node, mid.getConfiguration()) and
+  cc instanceof CallContextAny and
+  sc instanceof SummaryCtxNone and
   ap = mid.getAp()
   or
-  exists(DataFlowType t |
-    pathStepEmptyAp(mid, node, cc, sc, t) and
-    ap = TAccessPathNil(t)
-  )
+  additionalJumpStep(mid.getNode(), node, mid.getConfiguration()) and
+  cc instanceof CallContextAny and
+  sc instanceof SummaryCtxNone and
+  mid.getAp() instanceof AccessPathNil and
+  ap = TAccessPathNil(getNodeType(node))
   or
   exists(TypedContent tc | pathStoreStep(mid, node, ap.pop(tc), tc, cc)) and
   sc = mid.getSummaryCtx()
@@ -2413,50 +2429,11 @@ private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, SummaryCt
   exists(TypedContent tc | pathReadStep(mid, node, ap.push(tc), tc, cc)) and
   sc = mid.getSummaryCtx()
   or
-  pathThroughCallable(mid, node, cc, ap) and
-  sc = mid.getSummaryCtx()
-}
-
-pragma[noinline]
-private predicate pathStepEmptyAp(
-  PathNodeMid mid, Node node, CallContext cc, SummaryCtx sc, DataFlowType t
-) {
-  exists(Node midnode, Configuration conf, LocalCallContext localCC, AccessPathFront apf |
-    midnode = mid.getNode() and
-    conf = mid.getConfiguration() and
-    cc = mid.getCallContext() and
-    sc = mid.getSummaryCtx() and
-    localCC = getLocalCallContext(cc, midnode.getEnclosingCallable()) and
-    mid.getAp() = TAccessPathNil(_) and
-    localFlowBigStep(midnode, node, false, apf, conf, localCC) and
-    apf.getType() = t
-  )
+  pathIntoCallable(mid, node, _, cc, sc, _) and ap = mid.getAp()
   or
-  additionalJumpStep(mid.getNode(), node, mid.getConfiguration()) and
-  cc instanceof CallContextAny and
-  sc instanceof SummaryCtxNone and
-  mid.getAp() = TAccessPathNil(_) and
-  t = getNodeType(node)
-}
-
-pragma[noinline]
-private predicate pathStepSameAp(PathNodeMid mid, Node node, CallContext cc, SummaryCtx sc) {
-  exists(Node midnode, Configuration conf, LocalCallContext localCC |
-    midnode = mid.getNode() and
-    conf = mid.getConfiguration() and
-    cc = mid.getCallContext() and
-    sc = mid.getSummaryCtx() and
-    localCC = getLocalCallContext(cc, midnode.getEnclosingCallable()) and
-    localFlowBigStep(midnode, node, true, _, conf, localCC)
-  )
+  pathOutOfCallable(mid, node, cc) and ap = mid.getAp() and sc instanceof SummaryCtxNone
   or
-  jumpStep(mid.getNode(), node, mid.getConfiguration()) and
-  cc instanceof CallContextAny and
-  sc instanceof SummaryCtxNone
-  or
-  pathIntoCallable(mid, node, _, cc, sc, _)
-  or
-  pathOutOfCallable(mid, node, cc) and sc instanceof SummaryCtxNone
+  pathThroughCallable(mid, node, cc, ap) and sc = mid.getSummaryCtx()
 }
 
 pragma[nomagic]
@@ -2564,35 +2541,12 @@ private predicate parameterCand(
 pragma[nomagic]
 private predicate pathIntoCallable0(
   PathNodeMid mid, DataFlowCallable callable, int i, CallContext outercc, DataFlowCall call,
-  AccessPath ap, AccessPathApprox apa
-) {
-  pathIntoArg(mid, i, outercc, call, ap, apa) and
-  callable = resolveCall(call, outercc) and
-  parameterCand(callable, any(int j | j <= i and j >= i), apa, mid.getConfiguration())
-}
-
-pragma[nomagic]
-private predicate pathIntoCallable1(
-  PathNodeMid mid, ParameterNode p, AccessPath ap, AccessPathApprox apa, CallContext outercc,
-  CallContextCall innercc, DataFlowCall call
-) {
-  exists(int i, DataFlowCallable callable |
-    pathIntoCallable0(mid, callable, i, outercc, call, ap, apa) and
-    p.isParameterOf(callable, i) and
-    if recordDataFlowCallSite(call, callable)
-    then innercc = TSpecificCall(call)
-    else innercc = TSomeCall()
-  )
-}
-
-pragma[nomagic]
-private predicate pathIntoCallable1MayFlowThrough(
-  PathNodeMid mid, ParameterNode p, AccessPath ap, CallContext outercc, CallContextCall innercc,
-  DataFlowCall call
+  AccessPath ap
 ) {
   exists(AccessPathApprox apa |
-    pathIntoCallable1(mid, p, ap, apa, outercc, innercc, call) and
-    parameterMayFlowThrough(p, apa)
+    pathIntoArg(mid, i, outercc, call, ap, apa) and
+    callable = resolveCall(call, outercc) and
+    parameterCand(callable, any(int j | j <= i and j >= i), apa, mid.getConfiguration())
   )
 }
 
@@ -2605,15 +2559,19 @@ private predicate pathIntoCallable(
   PathNodeMid mid, ParameterNode p, CallContext outercc, CallContextCall innercc, SummaryCtx sc,
   DataFlowCall call
 ) {
-  exists(AccessPath ap |
-    pathIntoCallable1MayFlowThrough(mid, p, ap, outercc, innercc, call) and
-    sc = TSummaryCtxSome(p, ap)
-  )
-  or
-  exists(AccessPathApprox apa |
-    pathIntoCallable1(mid, p, _, apa, outercc, innercc, call) and
-    not parameterMayFlowThrough(p, apa) and
-    sc = TSummaryCtxNone()
+  exists(int i, DataFlowCallable callable, AccessPath ap |
+    pathIntoCallable0(mid, callable, i, outercc, call, ap) and
+    p.isParameterOf(callable, i) and
+    (
+      sc = TSummaryCtxSome(p, ap)
+      or
+      not exists(TSummaryCtxSome(p, ap)) and
+      sc = TSummaryCtxNone()
+    )
+  |
+    if recordDataFlowCallSite(call, callable)
+    then innercc = TSpecificCall(call)
+    else innercc = TSomeCall()
   )
 }
 
