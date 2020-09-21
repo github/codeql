@@ -393,7 +393,7 @@ void test_vector_output_iterator(int b) {
 
 	std::vector<int>::iterator i10 = v10.begin();
 	vector_iterator_assign_wrapper(i10, 10);
-	sink(v10); // FALSE POSITIVE
+	sink(v10);
 
 	std::vector<int>::iterator i11 = v11.begin();
 	vector_iterator_assign_wrapper(i11, source());
