@@ -355,17 +355,28 @@ private class ArrayToPointerConvertInstruction extends ConvertInstruction {
   }
 }
 
+private Instruction skipOneCopyValueInstruction(Instruction instr) {
+  not instr instanceof CopyValueInstruction and result = instr
+  or
+  result = instr.(CopyValueInstruction).getUnary()
+}
+
+private Instruction skipCopyValueInstructions(Instruction instr) {
+  result = skipOneCopyValueInstruction*(instr) and not result instanceof CopyValueInstruction
+}
+
 private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
   a = TArrayContent() and
   // Explicit dereferences such as `*p` or `p[i]` where `p` is a pointer or array.
-  exists(LoadInstruction load |
+  exists(LoadInstruction load, Instruction address |
     load.getSourceValueOperand().isDefinitionInexact() and
     node1.asInstruction() = load.getSourceValueOperand().getAnyDef() and
     load = node2.asInstruction() and
+    address = skipCopyValueInstructions(load.getSourceAddress()) and
     (
-      load.getSourceAddress() instanceof LoadInstruction or
-      load.getSourceAddress() instanceof ArrayToPointerConvertInstruction or
-      load.getSourceAddress() instanceof PointerAddInstruction
+      address instanceof LoadInstruction or
+      address instanceof ArrayToPointerConvertInstruction or
+      address instanceof PointerOffsetInstruction
     )
   )
 }

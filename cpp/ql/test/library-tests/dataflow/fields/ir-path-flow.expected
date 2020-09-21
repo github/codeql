@@ -65,29 +65,38 @@ edges
 | aliasing.cpp:98:10:98:19 | call to user_input | aliasing.cpp:98:3:98:21 | Store |
 | aliasing.cpp:100:14:100:14 | Store [m1] | aliasing.cpp:102:8:102:10 | * ... |
 | aliasing.cpp:106:3:106:20 | Chi [array content] | aliasing.cpp:121:15:121:16 | taint_a_ptr output argument [array content] |
-| aliasing.cpp:106:3:106:20 | Chi [array content] | aliasing.cpp:143:15:143:20 | taint_a_ptr output argument [array content] |
-| aliasing.cpp:106:3:106:20 | Chi [array content] | aliasing.cpp:149:15:149:20 | taint_a_ptr output argument [array content] |
-| aliasing.cpp:106:3:106:20 | Chi [array content] | aliasing.cpp:160:15:160:22 | taint_a_ptr output argument [array content] |
-| aliasing.cpp:106:3:106:20 | Chi [array content] | aliasing.cpp:172:15:172:22 | taint_a_ptr output argument [array content] |
-| aliasing.cpp:106:3:106:20 | Chi [array content] | aliasing.cpp:185:15:185:24 | taint_a_ptr output argument [array content] |
+| aliasing.cpp:106:3:106:20 | Chi [array content] | aliasing.cpp:126:15:126:20 | taint_a_ptr output argument [array content] |
+| aliasing.cpp:106:3:106:20 | Chi [array content] | aliasing.cpp:131:15:131:16 | taint_a_ptr output argument [array content] |
+| aliasing.cpp:106:3:106:20 | Chi [array content] | aliasing.cpp:136:15:136:17 | taint_a_ptr output argument [array content] |
+| aliasing.cpp:106:3:106:20 | Chi [array content] | aliasing.cpp:158:15:158:20 | taint_a_ptr output argument [array content] |
+| aliasing.cpp:106:3:106:20 | Chi [array content] | aliasing.cpp:164:15:164:20 | taint_a_ptr output argument [array content] |
+| aliasing.cpp:106:3:106:20 | Chi [array content] | aliasing.cpp:175:15:175:22 | taint_a_ptr output argument [array content] |
+| aliasing.cpp:106:3:106:20 | Chi [array content] | aliasing.cpp:187:15:187:22 | taint_a_ptr output argument [array content] |
+| aliasing.cpp:106:3:106:20 | Chi [array content] | aliasing.cpp:200:15:200:24 | taint_a_ptr output argument [array content] |
 | aliasing.cpp:106:3:106:20 | Store | aliasing.cpp:106:3:106:20 | Chi [array content] |
 | aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:106:3:106:20 | Store |
 | aliasing.cpp:121:15:121:16 | Chi [array content] | aliasing.cpp:122:8:122:12 | access to array |
 | aliasing.cpp:121:15:121:16 | taint_a_ptr output argument [array content] | aliasing.cpp:121:15:121:16 | Chi [array content] |
-| aliasing.cpp:143:15:143:20 | Chi [array content] | aliasing.cpp:144:8:144:14 | * ... |
-| aliasing.cpp:143:15:143:20 | taint_a_ptr output argument [array content] | aliasing.cpp:143:15:143:20 | Chi [array content] |
-| aliasing.cpp:149:15:149:20 | Chi [array content] | aliasing.cpp:150:8:150:16 | access to array |
-| aliasing.cpp:149:15:149:20 | taint_a_ptr output argument [array content] | aliasing.cpp:149:15:149:20 | Chi [array content] |
-| aliasing.cpp:160:15:160:22 | Chi | aliasing.cpp:160:15:160:22 | Chi [m1] |
-| aliasing.cpp:160:15:160:22 | Chi [m1] | aliasing.cpp:161:13:161:14 | m1 |
-| aliasing.cpp:160:15:160:22 | taint_a_ptr output argument [array content] | aliasing.cpp:160:15:160:22 | Chi |
-| aliasing.cpp:172:15:172:22 | Chi | aliasing.cpp:172:15:172:22 | Chi [m1] |
-| aliasing.cpp:172:15:172:22 | Chi [m1] | aliasing.cpp:173:13:173:14 | Store [m1] |
-| aliasing.cpp:172:15:172:22 | taint_a_ptr output argument [array content] | aliasing.cpp:172:15:172:22 | Chi |
-| aliasing.cpp:173:13:173:14 | Store [m1] | aliasing.cpp:174:15:174:16 | m1 |
-| aliasing.cpp:185:15:185:24 | Chi | aliasing.cpp:185:15:185:24 | Chi [m1] |
-| aliasing.cpp:185:15:185:24 | Chi [m1] | aliasing.cpp:186:15:186:16 | m1 |
-| aliasing.cpp:185:15:185:24 | taint_a_ptr output argument [array content] | aliasing.cpp:185:15:185:24 | Chi |
+| aliasing.cpp:126:15:126:20 | Chi [array content] | aliasing.cpp:127:8:127:16 | * ... |
+| aliasing.cpp:126:15:126:20 | taint_a_ptr output argument [array content] | aliasing.cpp:126:15:126:20 | Chi [array content] |
+| aliasing.cpp:131:15:131:16 | Chi [array content] | aliasing.cpp:132:8:132:14 | * ... |
+| aliasing.cpp:131:15:131:16 | taint_a_ptr output argument [array content] | aliasing.cpp:131:15:131:16 | Chi [array content] |
+| aliasing.cpp:136:15:136:17 | Chi [array content] | aliasing.cpp:137:8:137:11 | * ... |
+| aliasing.cpp:136:15:136:17 | taint_a_ptr output argument [array content] | aliasing.cpp:136:15:136:17 | Chi [array content] |
+| aliasing.cpp:158:15:158:20 | Chi [array content] | aliasing.cpp:159:8:159:14 | * ... |
+| aliasing.cpp:158:15:158:20 | taint_a_ptr output argument [array content] | aliasing.cpp:158:15:158:20 | Chi [array content] |
+| aliasing.cpp:164:15:164:20 | Chi [array content] | aliasing.cpp:165:8:165:16 | access to array |
+| aliasing.cpp:164:15:164:20 | taint_a_ptr output argument [array content] | aliasing.cpp:164:15:164:20 | Chi [array content] |
+| aliasing.cpp:175:15:175:22 | Chi | aliasing.cpp:175:15:175:22 | Chi [m1] |
+| aliasing.cpp:175:15:175:22 | Chi [m1] | aliasing.cpp:176:13:176:14 | m1 |
+| aliasing.cpp:175:15:175:22 | taint_a_ptr output argument [array content] | aliasing.cpp:175:15:175:22 | Chi |
+| aliasing.cpp:187:15:187:22 | Chi | aliasing.cpp:187:15:187:22 | Chi [m1] |
+| aliasing.cpp:187:15:187:22 | Chi [m1] | aliasing.cpp:188:13:188:14 | Store [m1] |
+| aliasing.cpp:187:15:187:22 | taint_a_ptr output argument [array content] | aliasing.cpp:187:15:187:22 | Chi |
+| aliasing.cpp:188:13:188:14 | Store [m1] | aliasing.cpp:189:15:189:16 | m1 |
+| aliasing.cpp:200:15:200:24 | Chi | aliasing.cpp:200:15:200:24 | Chi [m1] |
+| aliasing.cpp:200:15:200:24 | Chi [m1] | aliasing.cpp:201:15:201:16 | m1 |
+| aliasing.cpp:200:15:200:24 | taint_a_ptr output argument [array content] | aliasing.cpp:200:15:200:24 | Chi |
 | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:7:8:7:13 | access to array |
 | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:9:8:9:11 | * ... |
 | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:10:8:10:15 | * ... |
@@ -314,25 +323,34 @@ nodes
 | aliasing.cpp:121:15:121:16 | Chi [array content] | semmle.label | Chi [array content] |
 | aliasing.cpp:121:15:121:16 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
 | aliasing.cpp:122:8:122:12 | access to array | semmle.label | access to array |
-| aliasing.cpp:143:15:143:20 | Chi [array content] | semmle.label | Chi [array content] |
-| aliasing.cpp:143:15:143:20 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
-| aliasing.cpp:144:8:144:14 | * ... | semmle.label | * ... |
-| aliasing.cpp:149:15:149:20 | Chi [array content] | semmle.label | Chi [array content] |
-| aliasing.cpp:149:15:149:20 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
-| aliasing.cpp:150:8:150:16 | access to array | semmle.label | access to array |
-| aliasing.cpp:160:15:160:22 | Chi | semmle.label | Chi |
-| aliasing.cpp:160:15:160:22 | Chi [m1] | semmle.label | Chi [m1] |
-| aliasing.cpp:160:15:160:22 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
-| aliasing.cpp:161:13:161:14 | m1 | semmle.label | m1 |
-| aliasing.cpp:172:15:172:22 | Chi | semmle.label | Chi |
-| aliasing.cpp:172:15:172:22 | Chi [m1] | semmle.label | Chi [m1] |
-| aliasing.cpp:172:15:172:22 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
-| aliasing.cpp:173:13:173:14 | Store [m1] | semmle.label | Store [m1] |
-| aliasing.cpp:174:15:174:16 | m1 | semmle.label | m1 |
-| aliasing.cpp:185:15:185:24 | Chi | semmle.label | Chi |
-| aliasing.cpp:185:15:185:24 | Chi [m1] | semmle.label | Chi [m1] |
-| aliasing.cpp:185:15:185:24 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
-| aliasing.cpp:186:15:186:16 | m1 | semmle.label | m1 |
+| aliasing.cpp:126:15:126:20 | Chi [array content] | semmle.label | Chi [array content] |
+| aliasing.cpp:126:15:126:20 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
+| aliasing.cpp:127:8:127:16 | * ... | semmle.label | * ... |
+| aliasing.cpp:131:15:131:16 | Chi [array content] | semmle.label | Chi [array content] |
+| aliasing.cpp:131:15:131:16 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
+| aliasing.cpp:132:8:132:14 | * ... | semmle.label | * ... |
+| aliasing.cpp:136:15:136:17 | Chi [array content] | semmle.label | Chi [array content] |
+| aliasing.cpp:136:15:136:17 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
+| aliasing.cpp:137:8:137:11 | * ... | semmle.label | * ... |
+| aliasing.cpp:158:15:158:20 | Chi [array content] | semmle.label | Chi [array content] |
+| aliasing.cpp:158:15:158:20 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
+| aliasing.cpp:159:8:159:14 | * ... | semmle.label | * ... |
+| aliasing.cpp:164:15:164:20 | Chi [array content] | semmle.label | Chi [array content] |
+| aliasing.cpp:164:15:164:20 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
+| aliasing.cpp:165:8:165:16 | access to array | semmle.label | access to array |
+| aliasing.cpp:175:15:175:22 | Chi | semmle.label | Chi |
+| aliasing.cpp:175:15:175:22 | Chi [m1] | semmle.label | Chi [m1] |
+| aliasing.cpp:175:15:175:22 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
+| aliasing.cpp:176:13:176:14 | m1 | semmle.label | m1 |
+| aliasing.cpp:187:15:187:22 | Chi | semmle.label | Chi |
+| aliasing.cpp:187:15:187:22 | Chi [m1] | semmle.label | Chi [m1] |
+| aliasing.cpp:187:15:187:22 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
+| aliasing.cpp:188:13:188:14 | Store [m1] | semmle.label | Store [m1] |
+| aliasing.cpp:189:15:189:16 | m1 | semmle.label | m1 |
+| aliasing.cpp:200:15:200:24 | Chi | semmle.label | Chi |
+| aliasing.cpp:200:15:200:24 | Chi [m1] | semmle.label | Chi [m1] |
+| aliasing.cpp:200:15:200:24 | taint_a_ptr output argument [array content] | semmle.label | taint_a_ptr output argument [array content] |
+| aliasing.cpp:201:15:201:16 | m1 | semmle.label | m1 |
 | arrays.cpp:6:12:6:21 | call to user_input | semmle.label | call to user_input |
 | arrays.cpp:7:8:7:13 | access to array | semmle.label | access to array |
 | arrays.cpp:9:8:9:11 | * ... | semmle.label | * ... |
@@ -507,11 +525,14 @@ nodes
 | aliasing.cpp:93:12:93:13 | m1 | aliasing.cpp:92:12:92:21 | call to user_input | aliasing.cpp:93:12:93:13 | m1 | m1 flows from $@ | aliasing.cpp:92:12:92:21 | call to user_input | call to user_input |
 | aliasing.cpp:102:8:102:10 | * ... | aliasing.cpp:98:10:98:19 | call to user_input | aliasing.cpp:102:8:102:10 | * ... | * ... flows from $@ | aliasing.cpp:98:10:98:19 | call to user_input | call to user_input |
 | aliasing.cpp:122:8:122:12 | access to array | aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:122:8:122:12 | access to array | access to array flows from $@ | aliasing.cpp:106:9:106:18 | call to user_input | call to user_input |
-| aliasing.cpp:144:8:144:14 | * ... | aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:144:8:144:14 | * ... | * ... flows from $@ | aliasing.cpp:106:9:106:18 | call to user_input | call to user_input |
-| aliasing.cpp:150:8:150:16 | access to array | aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:150:8:150:16 | access to array | access to array flows from $@ | aliasing.cpp:106:9:106:18 | call to user_input | call to user_input |
-| aliasing.cpp:161:13:161:14 | m1 | aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:161:13:161:14 | m1 | m1 flows from $@ | aliasing.cpp:106:9:106:18 | call to user_input | call to user_input |
-| aliasing.cpp:174:15:174:16 | m1 | aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:174:15:174:16 | m1 | m1 flows from $@ | aliasing.cpp:106:9:106:18 | call to user_input | call to user_input |
-| aliasing.cpp:186:15:186:16 | m1 | aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:186:15:186:16 | m1 | m1 flows from $@ | aliasing.cpp:106:9:106:18 | call to user_input | call to user_input |
+| aliasing.cpp:127:8:127:16 | * ... | aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:127:8:127:16 | * ... | * ... flows from $@ | aliasing.cpp:106:9:106:18 | call to user_input | call to user_input |
+| aliasing.cpp:132:8:132:14 | * ... | aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:132:8:132:14 | * ... | * ... flows from $@ | aliasing.cpp:106:9:106:18 | call to user_input | call to user_input |
+| aliasing.cpp:137:8:137:11 | * ... | aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:137:8:137:11 | * ... | * ... flows from $@ | aliasing.cpp:106:9:106:18 | call to user_input | call to user_input |
+| aliasing.cpp:159:8:159:14 | * ... | aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:159:8:159:14 | * ... | * ... flows from $@ | aliasing.cpp:106:9:106:18 | call to user_input | call to user_input |
+| aliasing.cpp:165:8:165:16 | access to array | aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:165:8:165:16 | access to array | access to array flows from $@ | aliasing.cpp:106:9:106:18 | call to user_input | call to user_input |
+| aliasing.cpp:176:13:176:14 | m1 | aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:176:13:176:14 | m1 | m1 flows from $@ | aliasing.cpp:106:9:106:18 | call to user_input | call to user_input |
+| aliasing.cpp:189:15:189:16 | m1 | aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:189:15:189:16 | m1 | m1 flows from $@ | aliasing.cpp:106:9:106:18 | call to user_input | call to user_input |
+| aliasing.cpp:201:15:201:16 | m1 | aliasing.cpp:106:9:106:18 | call to user_input | aliasing.cpp:201:15:201:16 | m1 | m1 flows from $@ | aliasing.cpp:106:9:106:18 | call to user_input | call to user_input |
 | arrays.cpp:7:8:7:13 | access to array | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:7:8:7:13 | access to array | access to array flows from $@ | arrays.cpp:6:12:6:21 | call to user_input | call to user_input |
 | arrays.cpp:9:8:9:11 | * ... | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:9:8:9:11 | * ... | * ... flows from $@ | arrays.cpp:6:12:6:21 | call to user_input | call to user_input |
 | arrays.cpp:10:8:10:15 | * ... | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:10:8:10:15 | * ... | * ... flows from $@ | arrays.cpp:6:12:6:21 | call to user_input | call to user_input |

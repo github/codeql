@@ -122,6 +122,21 @@ void pointer_deref(int* xs) {
   sink(xs[0]); // $f-:ast $ir
 }
 
+void pointer_deref_sub(int* xs) {
+  taint_a_ptr(xs - 2);
+  sink(*(xs - 2)); // $f-:ast $ir
+}
+
+void pointer_many_addrof_and_deref(int* xs) {
+  taint_a_ptr(xs);
+  sink(*&*&*xs); // $f-:ast $ir
+}
+
+void pointer_unary_plus(int* xs) {
+  taint_a_ptr(+xs);
+  sink(*+xs); // $f-:ast $ir
+}
+
 void pointer_member_index(S_with_pointer s) {
   taint_a_ptr(s.data);
   // `s.data` is points to all-aliased-memory
