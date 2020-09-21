@@ -17,6 +17,7 @@ import semmle.go.frameworks.stdlib.Crypto
 import semmle.go.frameworks.stdlib.CryptoCipher
 import semmle.go.frameworks.stdlib.CryptoRsa
 import semmle.go.frameworks.stdlib.CryptoTls
+import semmle.go.frameworks.stdlib.CryptoX509
 import semmle.go.frameworks.stdlib.Mime
 import semmle.go.frameworks.stdlib.MimeMultipart
 import semmle.go.frameworks.stdlib.MimeQuotedprintable
