@@ -14,6 +14,8 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.google.gson.Gson;
 import com.semmle.js.dependencies.packument.PackageJson;
@@ -55,6 +57,8 @@ public class DependencyResolver {
         }
     }
 
+    private static final Pattern semVerToken = Pattern.compile("[~^<>=|&-]+|\\d+(?:\\.[\\dx]+)+(?:-[\\w.-]*)?");
+
     /**
      * Returns the first version number mentioned in the given constraints, excluding upper bounds such as `< 2.0.0`,
      * or `null` if no such version number was found.
@@ -62,10 +66,25 @@ public class DependencyResolver {
      * To help ensure deterministic version resolution, we prefer the version mentioned in the constraint, rather than
      * the latest version satisfying the constraint (as the latter can change in time).
      */
-    private SemVer getPreferredVersionFromConstraints(List<VersionConstraint> constraints) {
-        for (VersionConstraint constraint : constraints) {
-            if (!constraint.getOperator().equals("<") && constraint.getVersion() != null) {
-                return constraint.getVersion();
+    public static SemVer getPreferredVersionFromVersionSpec(String versionSpec) {
+        versionSpec = versionSpec.trim();
+        boolean isFirst = true;
+        Matcher m = semVerToken.matcher(versionSpec);
+        while (m.find()) {
+            if (isFirst && m.start() != 0) {
+                return null; // Not a version range
+            }
+            isFirst = false;
+            String text = m.group();
+            if (text.equals("<")) {
+                // Skip next token to ignore upper bound constraints like `< 2.0.0`.
+                if (!m.find()) break;
+            }
+            if (text.charAt(0) >= '0' && text.charAt(0) <= '9') {
+                SemVer semVer = SemVer.tryParse(text.replace("x", "0"));
+                if (semVer != null) {
+                    return semVer;
+                }
             }
         }
         return null;
@@ -103,8 +122,8 @@ public class DependencyResolver {
                 if (packagesInRepo.contains(targetName)) {
                     return;
                 }
-                List<VersionConstraint> constraints = VersionConstraint.parseVersionConstraints(targetVersions);
-                SemVer preferredVersion = getPreferredVersionFromConstraints(constraints);
+                SemVer preferredVersion = getPreferredVersionFromVersionSpec(targetVersions);
+                System.out.println("Prefer " + preferredVersion + " from " + targetVersions);
                 if (preferredVersion == null) return;
                 futures.add(fetcher.getPackument(targetName).exceptionally(ex -> null).thenCompose(targetPackument -> {
                     if (targetPackument == null) {
@@ -198,7 +217,7 @@ public class DependencyResolver {
         });
     }
 
-    /** Entry point which installs dependencies from a given `package.json`, used for testing andbenchmarking. */
+    /** Entry point which installs dependencies from a given `package.json`, used for testing and benchmarking. */
     public static void main(String[] args) throws IOException {
         ExecutorService executors = Executors.newFixedThreadPool(50);
         try {
