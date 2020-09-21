@@ -70,6 +70,8 @@ def test_taint(name = "World!", number="0", foo="foo"):
         request.files['key'].filename,
         request.files['key'].stream,
         request.files.getlist('key'),
+        request.files.getlist('key')[0].filename,
+        request.files.getlist('key')[0].stream,
 
         # By default werkzeug.datastructures.ImmutableMultiDict -- although can be changed :\
         request.form,
@@ -159,6 +161,27 @@ def test_taint(name = "World!", number="0", foo="foo"):
         request.script_root,
     )
 
+    # Testing some more tricky data-flow still works
+    a = request.args
+    b = a
+    gl = b.getlist
+    ensure_tainted(
+        request.args,
+        a,
+        b,
+
+        request.args['key'],
+        a['key'],
+        b['key'],
+
+        request.args.getlist('key'),
+        a.getlist('key'),
+        b.getlist('key'),
+        gl('key'),
+    )
+
+
+
 
 @app.route('/debug/<foo>/<bar>', methods=['GET'])
 def debug(foo, bar):
@@ -216,6 +239,13 @@ def file_upload():
 
     return 'ok'
 
+@app.route('/args', methods=['GET'])
+def args():
+    print(request.path)
+    print("request.args", request.args)
+
+    return 'ok'
+
 # curl --header "My-Header: some-value" http://localhost:5000/debug/fooval/barval
 # curl --header "Pragma: foo, bar" --header "Pragma: stuff, foo" http://localhost:5000/debug/fooval/barval
 
@@ -228,6 +258,8 @@ def file_upload():
 # curl --header "Cache-Control: max-age=1, max-stale=2, min-fresh=3" http://localhost:5000/cache_control
 
 # curl -F myfile=@<some-file> localhost:5000/file_upload
+
+# curl http://localhost:5000/args?foo=42&bar=bar
 
 if __name__ == "__main__":
     app.run(debug=True)
