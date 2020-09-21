@@ -33,7 +33,8 @@ DataFlow::Node callInput(CallInstruction call, FunctionInput input) {
     read.getPrimaryInstruction() = call and
     read.getIndex() = -1 and
     input.isQualifierObject()
-  )}
+  )
+}
 
 /**
  * Gets the instruction that holds the `output` for `call`.
