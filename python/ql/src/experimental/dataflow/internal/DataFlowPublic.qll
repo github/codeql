@@ -150,7 +150,37 @@ class ParameterNode extends EssaNode {
   override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
 }
 
-/** A data flow node corresponding to a module-level (global) variable that is accessed outside of the module scope. */
+/**
+ * A data flow node corresponding to a module-level (global) variable that is accessed outside of the module scope.
+ *
+ * Global variables may appear twice in the data flow graph, as both `EssaNode`s and
+ * `ModuleVariableNode`s. The former is used to represent data flow between global variables as it
+ * occurs during module initialization, and the latter is used to represent data flow via global
+ * variable reads and writes during run-time.
+ *
+ * It is possible for data to flow from assignments made at module initialization time to reads made
+ * at run-time, but not vice versa. For example, there will be flow from `SOURCE` to `SINK` in the
+ * following snippet:
+ *
+ * ```python
+ * g = SOURCE
+ *
+ * def foo():
+ *     SINK(g)
+ * ```
+ * but not the other way round:
+ *
+ * ```python
+ * SINK(g)
+ *
+ * def bar()
+ *     global g
+ *     g = SOURCE
+ * ```
+ *
+ * Data flow through `ModuleVariableNode`s is represented as `jumpStep`s, and so any write of a
+ * global variable can flow to any read of the same variable.
+ */
 class ModuleVariableNode extends Node, TModuleVariableNode {
   Module mod;
   GlobalVariable var;
