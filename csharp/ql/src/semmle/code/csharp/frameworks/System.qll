@@ -66,13 +66,18 @@ class SystemArrayClass extends SystemClass {
   }
 }
 
-class EmptyArrayCreationCall extends MethodCall {
+class EmptyArrayCreationCall extends MethodCall, ArrayCreationBase {
   EmptyArrayCreationCall() {
     exists(SystemArrayClass a |
       a.getStaticEmptyMethod() = this.getTarget().(ConstructedMethod).getUnboundGeneric()
     )
   }
-  // todo: should also be an ArrayCreation
+
+  override string toString() { result = MethodCall.super.toString() }
+
+  override predicate hasKnownLength() { any() }
+
+  override int getKnownLength() { result = 0 }
 }
 
 /** `System.Attribute` class. */

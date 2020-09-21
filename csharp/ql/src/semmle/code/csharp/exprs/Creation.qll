@@ -344,10 +344,20 @@ class ArrayInitializer extends Expr, @array_init_expr {
   override string getAPrimaryQlClass() { result = "ArrayInitializer" }
 }
 
+private newtype TArrayCreation = MkArrayCreation()
+
+abstract class ArrayCreationBase extends TArrayCreation {
+  abstract string toString();
+
+  abstract predicate hasKnownLength();
+
+  abstract int getKnownLength();
+}
+
 /**
  * An array creation, for example `new int[,] { {0, 1}, {2, 3}, {4, 5} }`.
  */
-class ArrayCreation extends Expr, @array_creation_expr {
+class ArrayCreation extends Expr, ArrayCreationBase, @array_creation_expr {
   /** Gets the type of the created array. */
   ArrayType getArrayType() { result = this.getType() }
 
@@ -392,6 +402,10 @@ class ArrayCreation extends Expr, @array_creation_expr {
   override string toString() { result = "array creation of type " + this.getType().getName() }
 
   override string getAPrimaryQlClass() { result = "ArrayCreation" }
+
+  override predicate hasKnownLength() { any() } // todo
+
+  override int getKnownLength() { result = 0 } // todo
 }
 
 /**
