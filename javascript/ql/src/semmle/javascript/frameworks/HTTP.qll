@@ -240,12 +240,20 @@ module HTTP {
    */
   private predicate isDecoratedCall(DataFlow::CallNode call, DataFlow::FunctionNode decoratee) {
     // indirect route-handler `result` is given to function `outer`, which returns function `inner` which calls the function `pred`.
-    exists(int i, Function outer, Function inner |
+    exists(int i, DataFlow::FunctionNode outer, HTTP::RouteHandlerCandidate inner |
       decoratee = call.getArgument(i).getALocalSource() and
-      outer = call.getACallee() and
-      inner = outer.getAReturnedExpr() and
-      isAForwardingRouteHandlerCall(DataFlow::parameterNode(outer.getParameter(i)), inner.flow())
+      outer.getFunction() = call.getACallee() and
+      outer = returnsARouteHandler(inner) and
+      isAForwardingRouteHandlerCall(outer.getParameter(i), inner)
     )
+  }
+
+  /**
+   * Gets a function that returns the route-handler-candidate `routeHandler`.
+   */
+  pragma[noinline]
+  private DataFlow::FunctionNode returnsARouteHandler(HTTP::RouteHandlerCandidate routeHandler) {
+    routeHandler = result.getAReturn().getALocalSource()
   }
 
   /**
