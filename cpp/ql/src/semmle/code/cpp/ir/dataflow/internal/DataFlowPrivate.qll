@@ -357,34 +357,45 @@ private class ArrayToPointerConvertInstruction extends ConvertInstruction {
 
 private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
   a = TArrayContent() and
-  (
-    // In cases such as:
-    // ```cpp
-    // void f(int* pa) {
-    //   *pa = source();
-    // }
-    // ...
-    // int x;
-    // f(&x);
-    // use(x);
-    // ```
-    // the load on `x` in `use(x)` will exactly overlap with its definition (in this case the definition
-    // is a `BufferMayWriteSideEffect`).
-    exists(LoadInstruction load |
-      node1.asInstruction() = load.getSourceValue() and
-      load = node2.asInstruction()
+  // Explicit dereferences such as `*p` or `p[i]` where `p` is a pointer or array.
+  exists(LoadInstruction load |
+    load.getSourceValueOperand().isDefinitionInexact() and
+    node1.asInstruction() = load.getSourceValueOperand().getAnyDef() and
+    load = node2.asInstruction() and
+    (
+      load.getSourceAddress() instanceof LoadInstruction or
+      load.getSourceAddress() instanceof ArrayToPointerConvertInstruction or
+      load.getSourceAddress() instanceof PointerAddInstruction
     )
-    or
-    // Explicit dereferences such as `*p` or `p[i]` where `p` is a pointer or array.
-    exists(LoadInstruction load |
-      node1.asInstruction() = load.getSourceValueOperand().getAnyDef() and
-      load = node2.asInstruction() and
-      (
-        load.getSourceAddress() instanceof LoadInstruction or
-        load.getSourceAddress() instanceof ArrayToPointerConvertInstruction or
-        load.getSourceAddress() instanceof PointerAddInstruction
-      )
-    )
+  )
+}
+
+/**
+ * In cases such as:
+ * ```cpp
+ * void f(int* pa) {
+ *   *pa = source();
+ * }
+ * ...
+ * int x;
+ * f(&x);
+ * use(x);
+ * ```
+ * the load on `x` in `use(x)` will exactly overlap with its definition (in this case the definition
+ * is a `BufferMayWriteSideEffect`). This predicate pops the `ArrayContent` (pushed by the store in `f`)
+ * from the access path.
+ */
+private predicate exactReadStep(Node node1, ArrayContent a, Node node2) {
+  a = TArrayContent() and
+  exists(BufferMayWriteSideEffectInstruction write, ChiInstruction chi |
+    not chi.isResultConflated() and
+    chi.getPartial() = write and
+    node1.asInstruction() = write and
+    node2.asInstruction() = chi and
+    // To distinquish this case from the `arrayReadStep` case we require that the entire variable was
+    // overwritten by the `BufferMayWriteSideEffectInstruction` (i.e., there is a load that reads the
+    // entire variable).
+    exists(LoadInstruction load | load.getSourceValue() = chi)
   )
 }
 
@@ -396,6 +407,7 @@ private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
 predicate readStep(Node node1, Content f, Node node2) {
   fieldReadStep(node1, f, node2) or
   arrayReadStep(node1, f, node2) or
+  exactReadStep(node1, f, node2) or
   suppressArrayRead(node1, f, node2)
 }
 
