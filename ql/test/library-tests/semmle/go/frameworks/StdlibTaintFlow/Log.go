@@ -114,11 +114,9 @@ func TaintStepTest_LogLoggerSetPrefix_B0I0O0(sourceCQL interface{}) interface{} 
 }
 
 func TaintStepTest_LogLoggerWriter_B0I0O0(sourceCQL interface{}) interface{} {
-	fromWriter340 := sourceCQL.(io.Writer)
-	var intoLogger471 log.Logger
-	intermediateCQL := intoLogger471.Writer()
-	link(fromWriter340, intermediateCQL)
-	return intoLogger471
+	fromLogger340 := sourceCQL.(log.Logger)
+	intoWriter471 := fromLogger340.Writer()
+	return intoWriter471
 }
 
 func RunAllTaints_Log() {

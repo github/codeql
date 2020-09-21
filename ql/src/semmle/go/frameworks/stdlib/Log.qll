@@ -97,7 +97,7 @@ module Log {
       or
       // signature: func (*Logger).Writer() io.Writer
       this.hasQualifiedName("log", "Logger", "Writer") and
-      (inp.isResult() and outp.isReceiver())
+      (inp.isReceiver() and outp.isResult())
     }
 
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
