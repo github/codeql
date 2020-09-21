@@ -182,28 +182,22 @@ class ImplicitParameterNode extends ParameterNode, TInstanceParameterNode {
   override predicate isParameterOf(Function fun, int i) { f = fun and i = -1 }
 }
 
-/**
- * A node that represents the value of a variable after a function call that
- * may have changed the variable because it's passed by reference.
- *
- * A typical example would be a call `f(&x)`. Firstly, there will be flow into
- * `x` from previous definitions of `x`. Secondly, there will be a
- * `DefinitionByReferenceNode` to represent the value of `x` after the call has
- * returned. This node will have its `getArgument()` equal to `&x`.
- */
-class DefinitionByReferenceNode extends PartialDefinitionNode {
+class DefinitionByReferenceOrIteratorNode extends PartialDefinitionNode {
   Expr inner;
   Expr argument;
 
-  DefinitionByReferenceNode() {
-    this.getPartialDefinition().(DefinitionByReference).definesExpressions(inner, argument)
+  DefinitionByReferenceOrIteratorNode() {
+    this.getPartialDefinition().definesExpressions(inner, argument) and
+    (
+      this.getPartialDefinition() instanceof DefinitionByReference
+      or
+      this.getPartialDefinition() instanceof DefinitionByIterator
+    )
   }
 
   override Function getFunction() { result = inner.getEnclosingFunction() }
 
   override Type getType() { result = inner.getType() }
-
-  override string toString() { result = "ref arg " + argument.toString() }
 
   override Location getLocation() { result = argument.getLocation() }
 
@@ -219,6 +213,22 @@ class DefinitionByReferenceNode extends PartialDefinitionNode {
       result = call.getTarget().getParameter(i)
     )
   }
+}
+
+
+/**
+ * A node that represents the value of a variable after a function call that
+ * may have changed the variable because it's passed by reference.
+ *
+ * A typical example would be a call `f(&x)`. Firstly, there will be flow into
+ * `x` from previous definitions of `x`. Secondly, there will be a
+ * `DefinitionByReferenceNode` to represent the value of `x` after the call has
+ * returned. This node will have its `getArgument()` equal to `&x`.
+ */
+class DefinitionByReferenceNode extends DefinitionByReferenceOrIteratorNode {
+  override VariablePartialDefinition pd;
+
+  override string toString() { result = "ref arg " + argument.toString() }
 }
 
 /**
@@ -551,10 +561,10 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   or
   // In `f(&x->a)`, this step provides the flow from post-`&` to post-`x->a`,
   // from which there is field flow to `x` via reverse read.
-  exists(VariablePartialDefinition def, Expr inner, Expr outer |
+  exists(PartialDefinition def, Expr inner, Expr outer |
     def.definesExpressions(inner, outer) and
     inner = nodeTo.(InnerPartialDefinitionNode).getPreUpdateNode().asExpr() and
-    outer = nodeFrom.(VariablePartialDefinitionNode).getPreUpdateNode().asExpr()
+    outer = nodeFrom.(PartialDefinitionNode).getPreUpdateNode().asExpr()
   )
   or
   // Reverse flow: data that flows from the post-update node of a reference

@@ -246,6 +246,13 @@ private module PartialDefinitions {
   /**
    * A partial definition that's a definition by reference.
    */
+  class DefinitionByIterator extends IteratorPartialDefinition {
+    DefinitionByIterator() { exists(Call c | this = c.getAnArgument() or this = c.getQualifier()) }
+  }
+
+  /**
+   * A partial definition that's a definition by reference.
+   */
   class DefinitionByReference extends VariablePartialDefinition {
     DefinitionByReference() { exists(Call c | this = c.getAnArgument() or this = c.getQualifier()) }
   }

@@ -31,11 +31,6 @@ predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
  */
 predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   localAdditionalTaintStep(src, sink)
-  or
-  exists(FunctionCall call, int i |
-    sink.(DataFlow::IteratorPartialDefinitionNode).getPartialDefinition().definesExpressions(_, call.getArgument(i)) and
-    src.(DataFlow::RefParameterFinalValueNode).getParameter() = call.getTarget().getParameter(i)
-  )
 }
 
 /**
