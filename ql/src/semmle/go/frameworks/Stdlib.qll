@@ -14,6 +14,7 @@ import semmle.go.frameworks.stdlib.CompressLzw
 import semmle.go.frameworks.stdlib.CompressZlib
 import semmle.go.frameworks.stdlib.Fmt
 import semmle.go.frameworks.stdlib.Crypto
+import semmle.go.frameworks.stdlib.CryptoCipher
 import semmle.go.frameworks.stdlib.Mime
 import semmle.go.frameworks.stdlib.MimeMultipart
 import semmle.go.frameworks.stdlib.MimeQuotedprintable
@@ -507,17 +508,5 @@ module Log {
     FatalLogFunction() { exists(string fn | fn.matches("Fatal%") | hasQualifiedName("log", fn)) }
 
     override predicate mayReturnNormally() { none() }
-  }
-}
-
-/** Provides models of some functions in the `crypto/cipher` package. */
-module CryptoCipher {
-  private class AeadOpenFunction extends TaintTracking::FunctionModel, Method {
-    AeadOpenFunction() { this.hasQualifiedName("crypto/cipher", "AEAD", "Open") }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isParameter(2) and
-      outp.isResult(0)
-    }
   }
 }
