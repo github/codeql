@@ -18,6 +18,7 @@
   - [underscore](https://www.npmjs.com/package/underscore)
 
 * Analyzing files with the ".cjs" extension is now supported.
+* ES2021 features are now supported.
 
 ## New queries
 
