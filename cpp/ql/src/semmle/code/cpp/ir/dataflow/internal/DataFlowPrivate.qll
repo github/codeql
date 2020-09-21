@@ -325,6 +325,19 @@ private predicate fieldReadStep(Node node1, FieldContent f, Node node2) {
   )
 }
 
+/**
+ * When a store step happens in a function that looks like an array write such as:
+ * ```cpp
+ * void f(int* pa) {
+ *   pa = source();
+ * }
+ * ```
+ * it can be a write to an array, but it can also happen that `f` is called as `f(&a.x)`. If that is
+ * the case, the `ArrayContent` that was written by the call to `f` should be popped off the access
+ * path, and a `FieldContent` containing `x` should be pushed instead.
+ * So this case pops `ArrayContent` off the access path, and the `fieldStoreStepAfterArraySuppression`
+ * predicate in `storeStep` ensures that we push the right `FieldContent` onto the access path.
+ */
 predicate suppressArrayRead(Node node1, ArrayContent a, Node node2) {
   a = TArrayContent() and
   exists(BufferMayWriteSideEffectInstruction write, ChiInstruction chi |
@@ -383,17 +396,6 @@ private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
 predicate readStep(Node node1, Content f, Node node2) {
   fieldReadStep(node1, f, node2) or
   arrayReadStep(node1, f, node2) or
-  // When a store step happens in a function that looks like an array write such as:
-  // ```cpp
-  // void f(int* pa) {
-  //   *pa = source();
-  // }
-  // ```
-  // it can be a write to an array, but it can also happen that `f` is called as `f(&a.x)`. If that is
-  // the case, the `ArrayContent` that was written by the call to `f` should be popped off the access
-  // path, and a `FieldContent` containing `x` should be pushed instead.
-  // So this case pops `ArrayContent` off the access path, and the `fieldStoreStepAfterArraySuppression`
-  // predicate in `storeStep` ensures that we push the right `FieldContent` onto the access path.
   suppressArrayRead(node1, f, node2)
 }
 
