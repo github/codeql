@@ -13,6 +13,7 @@ import semmle.go.frameworks.stdlib.CompressGzip
 import semmle.go.frameworks.stdlib.CompressLzw
 import semmle.go.frameworks.stdlib.CompressZlib
 import semmle.go.frameworks.stdlib.Fmt
+import semmle.go.frameworks.stdlib.Crypto
 import semmle.go.frameworks.stdlib.Mime
 import semmle.go.frameworks.stdlib.MimeMultipart
 import semmle.go.frameworks.stdlib.MimeQuotedprintable
