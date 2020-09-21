@@ -28,6 +28,13 @@
 | aliasing.cpp:92:5:92:5 | s |
 | aliasing.cpp:98:3:98:3 | s |
 | aliasing.cpp:111:16:111:16 | s |
+| aliasing.cpp:132:16:132:19 | access to array |
+| aliasing.cpp:160:19:160:19 | s |
+| aliasing.cpp:166:19:166:19 | s |
+| aliasing.cpp:172:19:172:19 | s |
+| aliasing.cpp:179:19:179:19 | s |
+| aliasing.cpp:185:21:185:21 | s |
+| aliasing.cpp:190:21:190:21 | s |
 | arrays.cpp:6:3:6:5 | arr |
 | arrays.cpp:36:3:36:17 | access to array |
 | by_reference.cpp:12:5:12:5 | s |

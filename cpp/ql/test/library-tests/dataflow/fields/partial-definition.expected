@@ -190,6 +190,33 @@
 | aliasing.cpp:106:3:106:5 | * ... |
 | aliasing.cpp:111:15:111:19 | & ... |
 | aliasing.cpp:111:16:111:16 | s |
+| aliasing.cpp:121:15:121:16 | xs |
+| aliasing.cpp:126:15:126:15 | s |
+| aliasing.cpp:126:17:126:20 | data |
+| aliasing.cpp:132:15:132:22 | & ... |
+| aliasing.cpp:132:16:132:19 | access to array |
+| aliasing.cpp:143:15:143:15 | s |
+| aliasing.cpp:143:17:143:20 | data |
+| aliasing.cpp:149:15:149:15 | s |
+| aliasing.cpp:149:17:149:20 | data |
+| aliasing.cpp:160:15:160:22 | & ... |
+| aliasing.cpp:160:16:160:17 | s2 |
+| aliasing.cpp:160:19:160:19 | s |
+| aliasing.cpp:166:15:166:22 | & ... |
+| aliasing.cpp:166:16:166:17 | s2 |
+| aliasing.cpp:166:19:166:19 | s |
+| aliasing.cpp:172:15:172:22 | & ... |
+| aliasing.cpp:172:16:172:17 | s2 |
+| aliasing.cpp:172:19:172:19 | s |
+| aliasing.cpp:179:15:179:22 | & ... |
+| aliasing.cpp:179:16:179:17 | s2 |
+| aliasing.cpp:179:19:179:19 | s |
+| aliasing.cpp:185:15:185:24 | & ... |
+| aliasing.cpp:185:16:185:18 | ps2 |
+| aliasing.cpp:185:21:185:21 | s |
+| aliasing.cpp:190:15:190:24 | & ... |
+| aliasing.cpp:190:16:190:18 | ps2 |
+| aliasing.cpp:190:21:190:21 | s |
 | arrays.cpp:6:3:6:8 | access to array |
 | arrays.cpp:15:3:15:10 | * ... |
 | arrays.cpp:36:3:36:3 | o |

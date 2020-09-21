@@ -160,6 +160,26 @@
 | aliasing.cpp:98:5:98:6 | m1 | AST only |
 | aliasing.cpp:106:3:106:5 | * ... | AST only |
 | aliasing.cpp:111:15:111:19 | & ... | AST only |
+| aliasing.cpp:121:15:121:16 | xs | AST only |
+| aliasing.cpp:126:15:126:15 | s | AST only |
+| aliasing.cpp:126:17:126:20 | data | AST only |
+| aliasing.cpp:132:15:132:22 | & ... | AST only |
+| aliasing.cpp:143:15:143:15 | s | AST only |
+| aliasing.cpp:143:17:143:20 | data | AST only |
+| aliasing.cpp:149:15:149:15 | s | AST only |
+| aliasing.cpp:149:17:149:20 | data | AST only |
+| aliasing.cpp:160:15:160:22 | & ... | AST only |
+| aliasing.cpp:160:16:160:17 | s2 | AST only |
+| aliasing.cpp:166:15:166:22 | & ... | AST only |
+| aliasing.cpp:166:16:166:17 | s2 | AST only |
+| aliasing.cpp:172:15:172:22 | & ... | AST only |
+| aliasing.cpp:172:16:172:17 | s2 | AST only |
+| aliasing.cpp:179:15:179:22 | & ... | AST only |
+| aliasing.cpp:179:16:179:17 | s2 | AST only |
+| aliasing.cpp:185:15:185:24 | & ... | AST only |
+| aliasing.cpp:185:16:185:18 | ps2 | AST only |
+| aliasing.cpp:190:15:190:24 | & ... | AST only |
+| aliasing.cpp:190:16:190:18 | ps2 | AST only |
 | arrays.cpp:6:3:6:8 | access to array | AST only |
 | arrays.cpp:6:3:6:23 | arr | IR only |
 | arrays.cpp:15:3:15:10 | * ... | AST only |
