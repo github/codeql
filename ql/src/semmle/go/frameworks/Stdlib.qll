@@ -29,11 +29,23 @@ import semmle.go.frameworks.stdlib.EncodingPem
 import semmle.go.frameworks.stdlib.EncodingXml
 import semmle.go.frameworks.stdlib.Html
 import semmle.go.frameworks.stdlib.HtmlTemplate
+import semmle.go.frameworks.stdlib.Context
+import semmle.go.frameworks.stdlib.Os
+import semmle.go.frameworks.stdlib.Net
+import semmle.go.frameworks.stdlib.NetHttp
+import semmle.go.frameworks.stdlib.NetHttpHttputil
+import semmle.go.frameworks.stdlib.NetMail
+import semmle.go.frameworks.stdlib.NetTextproto
 import semmle.go.frameworks.stdlib.Path
 import semmle.go.frameworks.stdlib.PathFilepath
 import semmle.go.frameworks.stdlib.Reflect
 import semmle.go.frameworks.stdlib.Strconv
 import semmle.go.frameworks.stdlib.Strings
+import semmle.go.frameworks.stdlib.Sync
+import semmle.go.frameworks.stdlib.SyncAtomic
+import semmle.go.frameworks.stdlib.Syscall
+import semmle.go.frameworks.stdlib.Sort
+import semmle.go.frameworks.stdlib.Regexp
 import semmle.go.frameworks.stdlib.TextScanner
 import semmle.go.frameworks.stdlib.TextTabwriter
 import semmle.go.frameworks.stdlib.TextTemplate
@@ -394,87 +406,6 @@ module IoUtil {
   }
 }
 
-/** Provides models of commonly used functions in the `os` package. */
-module OS {
-  /**
-   * A call to a function in `os` that accesses the file system.
-   */
-  private class OsFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
-    int pathidx;
-
-    OsFileSystemAccess() {
-      exists(string fn | getTarget().hasQualifiedName("os", fn) |
-        fn = "Chdir" and pathidx = 0
-        or
-        fn = "Chmod" and pathidx = 0
-        or
-        fn = "Chown" and pathidx = 0
-        or
-        fn = "Chtimes" and pathidx = 0
-        or
-        fn = "Create" and pathidx = 0
-        or
-        fn = "Lchown" and pathidx = 0
-        or
-        fn = "Link" and pathidx in [0 .. 1]
-        or
-        fn = "Lstat" and pathidx = 0
-        or
-        fn = "Mkdir" and pathidx = 0
-        or
-        fn = "MkdirAll" and pathidx = 0
-        or
-        fn = "NewFile" and pathidx = 1
-        or
-        fn = "Open" and pathidx = 0
-        or
-        fn = "OpenFile" and pathidx = 0
-        or
-        fn = "Readlink" and pathidx = 0
-        or
-        fn = "Remove" and pathidx = 0
-        or
-        fn = "RemoveAll" and pathidx = 0
-        or
-        fn = "Rename" and pathidx in [0 .. 1]
-        or
-        fn = "Stat" and pathidx = 0
-        or
-        fn = "Symlink" and pathidx in [0 .. 1]
-        or
-        fn = "Truncate" and pathidx = 0
-      )
-    }
-
-    override DataFlow::Node getAPathArgument() { result = getArgument(pathidx) }
-  }
-
-  /** The `Expand` function. */
-  class Expand extends TaintTracking::FunctionModel {
-    Expand() { hasQualifiedName("os", "Expand") }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isParameter(0) and outp.isResult()
-    }
-  }
-
-  /** The `ExpandEnv` function. */
-  class ExpandEnv extends TaintTracking::FunctionModel {
-    ExpandEnv() { hasQualifiedName("os", "ExpandEnv") }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isParameter(0) and outp.isResult()
-    }
-  }
-
-  /** The `os.Exit` function, which ends the process. */
-  private class Exit extends Function {
-    Exit() { hasQualifiedName("os", "Exit") }
-
-    override predicate mayReturnNormally() { none() }
-  }
-}
-
 /** Provides a class for modeling functions which convert strings into integers. */
 module IntegerParser {
   /**
@@ -616,70 +547,6 @@ module URL {
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isReceiver() and outp.isResult()
     }
-  }
-}
-
-/** Provides models of commonly used APIs in the `regexp` package. */
-module Regexp {
-  private class Pattern extends RegexpPattern::Range, DataFlow::ArgumentNode {
-    string fnName;
-
-    Pattern() {
-      exists(Function fn | fnName.matches("Match%") or fnName.matches("%Compile%") |
-        fn.hasQualifiedName("regexp", fnName) and
-        this = fn.getACall().getArgument(0)
-      )
-    }
-
-    override DataFlow::Node getAParse() { result = this.getCall() }
-
-    override string getPattern() { result = this.asExpr().getStringValue() }
-
-    override DataFlow::Node getAUse() {
-      fnName.matches("MustCompile%") and
-      result = this.getCall().getASuccessor*()
-      or
-      fnName.matches("Compile%") and
-      result = this.getCall().getResult(0).getASuccessor*()
-      or
-      result = this
-    }
-  }
-
-  private class MatchFunction extends RegexpMatchFunction::Range, Function {
-    MatchFunction() {
-      exists(string fn | fn.matches("Match%") | this.hasQualifiedName("regexp", fn))
-    }
-
-    override FunctionInput getRegexpArg() { result.isParameter(0) }
-
-    override FunctionInput getValue() { result.isParameter(1) }
-
-    override FunctionOutput getResult() { result.isResult(0) }
-  }
-
-  private class MatchMethod extends RegexpMatchFunction::Range, Method {
-    MatchMethod() {
-      exists(string fn | fn.matches("Match%") | this.hasQualifiedName("regexp", "Regexp", fn))
-    }
-
-    override FunctionInput getRegexpArg() { result.isReceiver() }
-
-    override FunctionInput getValue() { result.isParameter(0) }
-
-    override FunctionOutput getResult() { result.isResult() }
-  }
-
-  private class ReplaceFunction extends RegexpReplaceFunction::Range, Method {
-    ReplaceFunction() {
-      exists(string fn | fn.matches("ReplaceAll%") | this.hasQualifiedName("regexp", "Regexp", fn))
-    }
-
-    override FunctionInput getRegexpArg() { result.isReceiver() }
-
-    override FunctionInput getSource() { result.isParameter(0) }
-
-    override FunctionOutput getResult() { result.isResult() }
   }
 }
 
