@@ -154,7 +154,7 @@ private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalAttributeN
  *   t.start() and
  *   result = < source of myType >
  *   or
- *   exists (TypeTracker t2 |
+ *   exists (DataFlow::TypeTracker t2 |
  *     result = myType(t2).track(t2, t)
  *   )
  * }
