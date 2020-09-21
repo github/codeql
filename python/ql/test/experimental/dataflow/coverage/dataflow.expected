@@ -13,6 +13,11 @@ edges
 | datamodel.py:80:6:80:26 | GSSA Variable SOURCE | datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE |
 | datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() |
 | datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() |
+| datamodel.py:152:5:152:8 | [post store] ControlFlowNode for self [Attribute b] | datamodel.py:155:14:155:25 | ControlFlowNode for Customized() [Attribute b] |
+| datamodel.py:152:14:152:19 | ControlFlowNode for SOURCE | datamodel.py:152:5:152:8 | [post store] ControlFlowNode for self [Attribute b] |
+| datamodel.py:155:1:155:10 | GSSA Variable customized [Attribute b] | datamodel.py:159:6:159:15 | ControlFlowNode for customized [Attribute b] |
+| datamodel.py:155:14:155:25 | ControlFlowNode for Customized() [Attribute b] | datamodel.py:155:1:155:10 | GSSA Variable customized [Attribute b] |
+| datamodel.py:159:6:159:15 | ControlFlowNode for customized [Attribute b] | datamodel.py:159:6:159:17 | ControlFlowNode for Attribute |
 | test.py:36:10:36:26 | ControlFlowNode for Tuple [Tuple element at index 1] | test.py:37:9:37:9 | ControlFlowNode for x [Tuple element at index 1] |
 | test.py:36:21:36:26 | ControlFlowNode for SOURCE | test.py:36:10:36:26 | ControlFlowNode for Tuple [Tuple element at index 1] |
 | test.py:37:9:37:9 | ControlFlowNode for x [Tuple element at index 1] | test.py:37:9:37:12 | ControlFlowNode for Subscript |
@@ -127,6 +132,12 @@ nodes
 | datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| datamodel.py:152:5:152:8 | [post store] ControlFlowNode for self [Attribute b] | semmle.label | [post store] ControlFlowNode for self [Attribute b] |
+| datamodel.py:152:14:152:19 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| datamodel.py:155:1:155:10 | GSSA Variable customized [Attribute b] | semmle.label | GSSA Variable customized [Attribute b] |
+| datamodel.py:155:14:155:25 | ControlFlowNode for Customized() [Attribute b] | semmle.label | ControlFlowNode for Customized() [Attribute b] |
+| datamodel.py:159:6:159:15 | ControlFlowNode for customized [Attribute b] | semmle.label | ControlFlowNode for customized [Attribute b] |
+| datamodel.py:159:6:159:17 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | test.py:36:10:36:26 | ControlFlowNode for Tuple [Tuple element at index 1] | semmle.label | ControlFlowNode for Tuple [Tuple element at index 1] |
 | test.py:36:21:36:26 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | test.py:37:9:37:9 | ControlFlowNode for x [Tuple element at index 1] | semmle.label | ControlFlowNode for x [Tuple element at index 1] |
@@ -263,6 +274,7 @@ nodes
 | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() | datamodel.py:80:20:80:25 | ControlFlowNode for SOURCE | datamodel.py:80:6:80:26 | ControlFlowNode for Attribute() | <message> |
 | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | datamodel.py:13:10:13:17 | ControlFlowNode for Str | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | <message> |
 | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | datamodel.py:81:20:81:25 | ControlFlowNode for SOURCE | datamodel.py:81:6:81:26 | ControlFlowNode for Attribute() | <message> |
+| datamodel.py:159:6:159:17 | ControlFlowNode for Attribute | datamodel.py:152:14:152:19 | ControlFlowNode for SOURCE | datamodel.py:159:6:159:17 | ControlFlowNode for Attribute | <message> |
 | test.py:38:10:38:10 | ControlFlowNode for y | test.py:36:21:36:26 | ControlFlowNode for SOURCE | test.py:38:10:38:10 | ControlFlowNode for y | <message> |
 | test.py:51:10:51:10 | ControlFlowNode for x | test.py:50:9:50:14 | ControlFlowNode for SOURCE | test.py:51:10:51:10 | ControlFlowNode for x | <message> |
 | test.py:58:10:58:10 | ControlFlowNode for x | test.py:57:9:57:16 | ControlFlowNode for Str | test.py:58:10:58:10 | ControlFlowNode for x | <message> |

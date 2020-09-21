@@ -23,8 +23,10 @@ newtype TNode =
   TEssaNode(EssaVariable var) or
   /** A node corresponding to a control flow node. */
   TCfgNode(DataFlowCfgNode node) or
-  /** A node representing the value of an object after a state change */
-  TPostUpdateNode(PreUpdateNode pre)
+  /** A synthetic node representing the value of an object before a state change */
+  TSyntheticPreUpdateNode(NeedsSyntheticPreUpdateNode post) or
+  /** A synthetic node representing the value of an object after a state change */
+  TSyntheticPostUpdateNode(NeedsSyntheticPostUpdateNode pre)
 
 /**
  * An element, viewed as a node in a data flow graph. Either an SSA variable

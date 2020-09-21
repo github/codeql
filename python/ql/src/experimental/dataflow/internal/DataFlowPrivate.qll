@@ -16,18 +16,42 @@ class DataFlowCfgNode extends ControlFlowNode {
   DataFlowCfgNode() { isExpressionNode(this) }
 }
 
-/** A data flow node which should have an associated post-update node. */
-abstract class PreUpdateNode extends Node {
+/** A data flow node for which we should synthesise an associated pre-update node. */
+abstract class NeedsSyntheticPreUpdateNode extends Node {
+  abstract string label();
+}
+
+class SyntheticPreUpdateNode extends Node, TSyntheticPreUpdateNode {
+  NeedsSyntheticPreUpdateNode post;
+
+  SyntheticPreUpdateNode() { this = TSyntheticPreUpdateNode(post) }
+
+  /** Gets the node for which this is a synthetic pre-update node. */
+  Node getPostUpdateNode() { result = post }
+
+  override string toString() { result = "[pre " + post.label() + "] " + post.toString() }
+
+  override Scope getScope() { result = post.getScope() }
+
+  override Location getLocation() { result = post.getLocation() }
+}
+
+/** A data flow node for which we should synthesise an associated post-update node. */
+abstract class NeedsSyntheticPostUpdateNode extends Node {
   abstract string label();
 }
 
 /** An argument might have its value changed as a result of a call. */
-class ArgumentPreUpdateNode extends PreUpdateNode, ExplicitArgumentNode {
+class ArgumentPreUpdateNode extends NeedsSyntheticPostUpdateNode, ArgumentNode {
+  // Certain arguments, such as implicit self arguments are already post-update nodes
+  // and should not have an extra node synthesised.
+  ArgumentPreUpdateNode() { this.isNotPostUpdate() }
+
   override string label() { result = "arg" }
 }
 
 /** An object might have its value changed after a store. */
-class StorePreUpdateNode extends PreUpdateNode, CfgNode {
+class StorePreUpdateNode extends NeedsSyntheticPostUpdateNode, CfgNode {
   StorePreUpdateNode() {
     exists(Attribute a |
       node = a.getObject().getAFlowNode() and
@@ -39,7 +63,7 @@ class StorePreUpdateNode extends PreUpdateNode, CfgNode {
 }
 
 /** A node marking the state change of an object after a read. */
-class ReadPreUpdateNode extends PreUpdateNode, CfgNode {
+class ReadPreUpdateNode extends NeedsSyntheticPostUpdateNode, CfgNode {
   ReadPreUpdateNode() {
     exists(Attribute a |
       node = a.getObject().getAFlowNode() and
@@ -58,22 +82,35 @@ class ReadPreUpdateNode extends PreUpdateNode, CfgNode {
  * (which might have mutated the argument), or the qualifier of a field after
  * an update to the field.
  *
- * Nodes corresponding to AST elements, for example `ExprNode`, usually refer
- * to the value before the update.
+ * Nodes corresponding to AST elements, for example `ExprNode`s, usually refer
+ * to the value before the update with the exception of `ObjectCreationNode`s,
+ * which represents the value after the constructor has run.
  */
-class PostUpdateNode extends Node, TPostUpdateNode {
-  PreUpdateNode pre;
-
-  PostUpdateNode() { this = TPostUpdateNode(pre) }
-
+abstract class PostUpdateNode extends Node {
   /** Gets the node before the state update. */
-  Node getPreUpdateNode() { result = pre }
+  abstract Node getPreUpdateNode();
+}
+
+class SyntheticPostUpdateNode extends PostUpdateNode, TSyntheticPostUpdateNode {
+  NeedsSyntheticPostUpdateNode pre;
+
+  SyntheticPostUpdateNode() { this = TSyntheticPostUpdateNode(pre) }
+
+  override Node getPreUpdateNode() { result = pre }
 
   override string toString() { result = "[post " + pre.label() + "] " + pre.toString() }
 
   override Scope getScope() { result = pre.getScope() }
 
   override Location getLocation() { result = pre.getLocation() }
+}
+
+class ObjectCreationNode extends PostUpdateNode, NeedsSyntheticPreUpdateNode, CfgNode {
+  ObjectCreationNode() { node.(CallNode) = any(ClassValue c).getACall() }
+
+  override Node getPreUpdateNode() { result.(SyntheticPreUpdateNode).getPostUpdateNode() = this }
+
+  override string label() { result = "objCreate" }
 }
 
 class DataFlowExpr = Expr;
@@ -199,7 +236,7 @@ abstract class DataFlowCall extends TDataFlowCall {
   abstract DataFlowCallable getCallable();
 
   /** Get the specified argument to this call. */
-  abstract ControlFlowNode getArg(int n);
+  abstract Node getArg(int n);
 
   /** Get the control flow node representing this call. */
   abstract ControlFlowNode getNode();
@@ -220,7 +257,7 @@ class CallNodeCall extends DataFlowCall, TCallNode {
 
   override string toString() { result = call.toString() }
 
-  override ControlFlowNode getArg(int n) { result = call.getArg(n) }
+  override Node getArg(int n) { result = TCfgNode(call.getArg(n)) }
 
   override ControlFlowNode getNode() { result = call }
 
@@ -241,10 +278,10 @@ class ClassCall extends DataFlowCall, TClassCall {
 
   override string toString() { result = call.toString() }
 
-  override ControlFlowNode getArg(int n) {
-    result = call.getArg(n - 1)
+  override Node getArg(int n) {
+    n > 0 and result = TCfgNode(call.getArg(n - 1))
     or
-    n = 0 and result = call
+    n = 0 and result = TSyntheticPreUpdateNode(TCfgNode(call))
   }
 
   override ControlFlowNode getNode() { result = call }
@@ -267,7 +304,7 @@ class SpecialCall extends DataFlowCall, TSpecialCall {
 
   override string toString() { result = special.toString() }
 
-  override ControlFlowNode getArg(int n) { result = special.(SpecialMethod::Potential).getArg(n) }
+  override Node getArg(int n) { result = TCfgNode(special.(SpecialMethod::Potential).getArg(n)) }
 
   override ControlFlowNode getNode() { result = special }
 
@@ -279,23 +316,23 @@ class SpecialCall extends DataFlowCall, TSpecialCall {
 }
 
 /** A data flow node that represents a call argument. */
-abstract class ArgumentNode extends CfgNode {
-  /** Holds if this argument occurs at the given position in the given call. */
-  abstract predicate argumentOf(DataFlowCall call, int pos);
-
-  /** Gets the call in which this node is an argument. */
-  abstract DataFlowCall getCall();
-}
-
-/** A data flow node that represents a call argument. */
-class ExplicitArgumentNode extends ArgumentNode {
-  ExplicitArgumentNode() { exists(DataFlowCall call, int pos | node = call.getArg(pos)) }
+class ArgumentNode extends Node {
+  ArgumentNode() { this = any(DataFlowCall c).getArg(_) }
 
   /** Holds if this argument occurs at the given position in the given call. */
-  override predicate argumentOf(DataFlowCall call, int pos) { node = call.getArg(pos) }
+  predicate argumentOf(DataFlowCall call, int pos) { this = call.getArg(pos) }
 
   /** Gets the call in which this node is an argument. */
-  final override DataFlowCall getCall() { this.argumentOf(result, _) }
+  final DataFlowCall getCall() { this.argumentOf(result, _) }
+
+  predicate isNotPostUpdate() {
+    // Avoid argument 0 of class calls as those have non-synthetic post-update nodes.
+    exists(CallNodeCall c | this = c.getArg(_))
+    or
+    exists(ClassCall c, int n | n > 0 | this = c.getArg(n))
+    or
+    exists(SpecialCall c | this = c.getArg(_))
+  }
 }
 
 /** Gets a viable run-time target for the call `call`. */
