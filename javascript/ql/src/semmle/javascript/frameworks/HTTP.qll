@@ -275,7 +275,9 @@ module HTTP {
     exists(HTTP::RouteHandlerCandidateContainer container | pred = container.getRouteHandler(succ))
     or
     // (function (req, res) {}).bind(this);
-    exists(DataFlow::PartialInvokeNode call | succ = call.getBoundFunction(pred, 0))
+    exists(DataFlow::PartialInvokeNode call |
+      succ = call.getBoundFunction(any(DataFlow::Node n | pred.flowsTo(n)), 0)
+    )
   }
 
   /**
