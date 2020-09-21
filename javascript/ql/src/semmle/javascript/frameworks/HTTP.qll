@@ -249,7 +249,7 @@ module HTTP {
   }
 
   /**
-   * Holds if `f` looks like a route-handler and a call to `callee` inside `f` forwards all of the parameters from `f` to that call,
+   * Holds if `f` looks like a route-handler and a call to `callee` inside `f` forwards all of the parameters from `f` to that call.
    */
   private predicate isAForwardingRouteHandlerCall(
     DataFlow::SourceNode callee, HTTP::RouteHandlerCandidate f
