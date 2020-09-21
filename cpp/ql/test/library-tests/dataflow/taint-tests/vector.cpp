@@ -330,8 +330,12 @@ void taint_vector_output_iterator(std::vector<int>::iterator iter) {
 	*iter = source();
 }
 
+void vector_iterator_assign_wrapper(std::vector<int>::iterator iter, int i) {
+	*iter = i;
+}
+
 void test_vector_output_iterator(int b) {
-	std::vector<int> v1(10), v2(10), v3(10), v4(10), v5(10), v6(10), v7(10), v8(10), v9(10);
+	std::vector<int> v1(10), v2(10), v3(10), v4(10), v5(10), v6(10), v7(10), v8(10), v9(10), v10(10), v11(10);
 
 	std::vector<int>::iterator i1 = v1.begin();
 	*i1 = source();
@@ -386,4 +390,12 @@ void test_vector_output_iterator(int b) {
 	taint_vector_output_iterator(i9);
 
 	sink(v9);
+
+	std::vector<int>::iterator i10 = v10.begin();
+	vector_iterator_assign_wrapper(i10, 10);
+	sink(v10); // FALSE POSITIVE
+
+	std::vector<int>::iterator i11 = v11.begin();
+	vector_iterator_assign_wrapper(i11, source());
+	sink(v11); // tainted [NOT DETECTED by IR]
 }
