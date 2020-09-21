@@ -51,6 +51,20 @@ class FunctionInput extends TFunctionInput {
   abstract string toString();
 }
 
+module FunctionInput {
+  /** Gets a `FunctionInput` representing the `i`th parameter. */
+  FunctionInput parameter(int i) { result.isParameter(i) }
+
+  /** Gets a `FunctionInput` representing the receiver. */
+  FunctionInput receiver() { result.isReceiver() }
+
+  /** Gets a `FunctionInput` representing the result of a single-result function. */
+  FunctionInput functionResult() { result.isResult() }
+
+  /** Gets a `FunctionInput` representing the `i`th result. */
+  FunctionInput functionResult(int i) { result.isParameter(i) }
+}
+
 /** A parameter position of a function, viewed as a source of input. */
 private class ParameterInput extends FunctionInput, TInParameter {
   int index;
@@ -170,6 +184,20 @@ class FunctionOutput extends TFunctionOutput {
 
   /** Gets a textual representation of this element. */
   abstract string toString();
+}
+
+module FunctionOutput {
+  /** Gets a `FunctionOutput` representing the result of a single-result function. */
+  FunctionOutput functionResult() { result.isResult() }
+
+  /** Gets a `FunctionOutput` representing the `i`th result. */
+  FunctionOutput functionResult(int i) { result.isParameter(i) }
+
+  /** Gets a `FunctionOutput` representing the receiver after a function returns. */
+  FunctionOutput receiver() { result.isReceiver() }
+
+  /** Gets a `FunctionOutput` representing the `i`th parameter after a function returns. */
+  FunctionOutput parameter(int i) { result.isParameter(i) }
 }
 
 /** A result position of a function, viewed as an output. */

@@ -68,7 +68,7 @@ private module Echo {
       exists(DataFlow::MethodCallNode call |
         call.getTarget().hasQualifiedName(packagePath(), "Context", "Bind")
       |
-        this = any(FunctionOutput output | output.isParameter(0)).getExitNode(call)
+        this = FunctionOutput::parameter(0).getExitNode(call)
       )
     }
   }
