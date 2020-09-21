@@ -86,20 +86,20 @@ module Fmt {
     }
   }
 
-  /** The `Scan` function or one of its variants, all of which read from os.Stdin */
+  /** The `Scan` function or one of its variants, all of which read from `os.Stdin`. */
   class Scanner extends Function {
     Scanner() { this.hasQualifiedName("fmt", ["Scan", "Scanf", "Scanln"]) }
   }
 
   /**
    * The `Fscan` function or one of its variants,
-   * all of which read from a specified io.Reader
+   * all of which read from a specified `io.Reader`.
    */
   class FScanner extends Function {
     FScanner() { this.hasQualifiedName("fmt", ["Fscan", "Fscanf", "Fscanln"]) }
 
     /**
-     * Returns the node corresponding to the io.Reader
+     * Gets the node corresponding to the `io.Reader`
      * argument provided in the call.
      */
     FunctionInput getReader() { result.isParameter(0) }
