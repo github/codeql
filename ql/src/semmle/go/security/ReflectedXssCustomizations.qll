@@ -47,9 +47,7 @@ module ReflectedXss {
    * Holds if `body` specifies the response's content type to be HTML.
    */
   private predicate htmlTypeSpecified(HTTP::ResponseBody body) {
-    exists(HTTP::HeaderWrite hw, string tp | hw = body.getResponseWriter().getAHeaderWrite() |
-      hw.definesHeader("content-type", tp) and tp.regexpMatch("(?i).*html.*")
-    )
+    body.getAContentType().regexpMatch("(?i).*html.*")
   }
 
   /**
@@ -58,9 +56,7 @@ module ReflectedXss {
   private predicate nonHtmlContentType(HTTP::ResponseBody body) {
     not htmlTypeSpecified(body) and
     (
-      exists(HTTP::HeaderWrite hw | hw = body.getResponseWriter().getAHeaderWrite() |
-        hw.getName().getStringValue().toLowerCase() = "content-type"
-      )
+      exists(body.getAContentTypeNode())
       or
       exists(DataFlow::CallNode call | call.getTarget().hasQualifiedName("fmt", "Fprintf") |
         body = call.getAnArgument() and
