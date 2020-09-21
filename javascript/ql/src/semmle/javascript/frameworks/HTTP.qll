@@ -661,7 +661,8 @@ module HTTP {
         )
       }
 
-      override RouteHandlerCandidate getRouteHandler(DataFlow::SourceNode access) {
+      override DataFlow::SourceNode getRouteHandler(DataFlow::SourceNode access) {
+        result instanceof RouteHandlerCandidate and
         exists(
           DataFlow::Node input, TypeTrackingPseudoProperty key, CollectionFlowStep store,
           CollectionFlowStep load, DataFlow::Node storeTo, DataFlow::Node loadFrom
