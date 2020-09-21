@@ -4,6 +4,9 @@
 
 import csharp
 
-from FieldAccess fa
-where fa.getParent().(Field).getDeclaringType() instanceof Enum
-select fa, fa.getValue()
+from Expr e
+where
+  exists(Assignment a | a.getRValue() = e |
+    a.getParent().(Field).getDeclaringType() instanceof Enum
+  )
+select e, e.getValue()
