@@ -1,4 +1,5 @@
 import experimental.dataflow.DataFlow
+private import experimental.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 
 /**
  * A configuration to find all "maximal" flows.
@@ -15,7 +16,7 @@ class MaximalFlowsConfig extends DataFlow::Configuration {
   }
 
   override predicate isSink(DataFlow::Node node) {
-    node instanceof DataFlow::ReturnNode
+    node instanceof DataFlowPrivate::ReturnNode
     or
     node instanceof DataFlow::EssaNode and
     not exists(node.(DataFlow::EssaNode).getVar().getASourceUse())
