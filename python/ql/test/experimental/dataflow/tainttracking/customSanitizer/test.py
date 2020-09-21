@@ -34,6 +34,8 @@ def test_custom_sanitizer_guard():
 
     if emulated_is_safe(s):
         ensure_not_tainted(s)
+        s = TAINTED_STRING
+        ensure_tainted(s)
     else:
         ensure_tainted(s)
 

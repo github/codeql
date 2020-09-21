@@ -107,9 +107,9 @@ void array_test(int i) {
 	arr3[5] = 0;
 
 	sink(arr1[5]); // tainted
-	sink(arr1[i]); // tainted [NOT DETECTED]
-	sink(arr2[5]); // tainted [NOT DETECTED]
-	sink(arr2[i]); // tainted [NOT DETECTED]
+	sink(arr1[i]); // tainted
+	sink(arr2[5]); // tainted
+	sink(arr2[i]); // tainted
 	sink(arr3[5]);
 	sink(arr3[i]);
 }
@@ -127,7 +127,7 @@ void pointer_test() {
 	*p2 = source();
 
 	sink(*p1); // tainted
-	sink(*p2); // tainted [NOT DETECTED]
+	sink(*p2); // tainted
 	sink(*p3);
 
 	p3 = &t1;
@@ -258,7 +258,7 @@ void test_lambdas()
 		c = source();
 	};
 	e(t, u, w);
-	sink(w); // tainted [NOT DETECTED]
+	sink(w); // tainted
 }
 
 // --- taint through return value ---
@@ -348,10 +348,10 @@ void test_outparams()
 	myNotAssign(e, t);
 
 	sink(t); // tainted
-	sink(a); // tainted [NOT DETECTED by IR]
-	sink(b); // tainted [NOT DETECTED by IR]
-	sink(c); // tainted [NOT DETECTED]
-	sink(d); // tainted [NOT DETECTED]
+	sink(a); // tainted
+	sink(b); // tainted
+	sink(c); // tainted
+	sink(d); // tainted
 	sink(e);
 }
 
@@ -468,7 +468,7 @@ void test_swop() {
 	swop(x, y);
 
 	sink(x); // clean [FALSE POSITIVE]
-	sink(y); // tainted [NOT DETECTED by IR]
+	sink(y); // tainted
 }
 
 // --- getdelim ---

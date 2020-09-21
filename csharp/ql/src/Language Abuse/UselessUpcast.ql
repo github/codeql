@@ -38,7 +38,7 @@ predicate hasInstanceCallable(ValueOrRefType t, InstanceCallable c, string name)
 }
 
 /** Holds if extension method `m` is a method on `t` with name `name`. */
-pragma[noinline]
+pragma[nomagic]
 predicate hasExtensionMethod(ValueOrRefType t, ExtensionMethod m, string name) {
   t.isImplicitlyConvertibleTo(m.getExtendedType()) and
   name = m.getName()

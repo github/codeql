@@ -1,0 +1,56 @@
+A.java:
+#    0| [CompilationUnit] A
+#    8|   1: [Class] A
+#-----|     -4: (Javadoc)
+#    1|       1: [Javadoc] /** Another javadoc */
+#    1|         0: [JavadocText] Another javadoc
+#    3|       2: [Javadoc] /** A class ... */
+#    4|         0: [JavadocText] A class
+#    6|         1: [JavadocTag] @author
+#    6|           0: [JavadocText] someone
+#    9|     3: [Interface] Ann1
+#   10|       1: [Method] value
+#   10|         3: [TypeAccess] String
+#   11|       2: [Method] nest
+#   11|         3: [ArrayTypeAccess] ...[]
+#   11|           0: [TypeAccess] Ann2
+#   14|     4: [Interface] Ann2
+#   15|       1: [Method] value
+#   15|         3: [TypeAccess] int
+#   20|     5: [Method] doSomething
+#-----|       0: (Javadoc)
+#   18|         1: [Javadoc] /** Does something */
+#   18|           0: [JavadocText] Does something
+#-----|       1: (Annotations)
+#   19|         1: [Annotation] Deprecated
+#   20|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#   20|         0: [Parameter] text
+#-----|           -1: (Annotations)
+#   20|             1: [Annotation] SuppressWarnings
+#   20|               1: [StringLiteral] "all"
+#   20|           0: [TypeAccess] String
+#   20|       5: [BlockStmt] stmt
+#   21|         0: [ReturnStmt] stmt
+#   21|           0: [IntegerLiteral] 0
+#   24|     6: [FieldDeclaration] int counter, ...;
+#   24|       -1: [TypeAccess] int
+#   24|       0: [IntegerLiteral] 1
+#   26|     7: [BlockStmt] stmt
+#   27|       0: [ExprStmt] stmt
+#   27|         0: [AssignExpr] ...=...
+#   27|           0: [VarAccess] counter
+#   27|           1: [MethodAccess] doSomething(...)
+#   27|             0: [StringLiteral] "hi"
+#   36|     8: [Method] doSomethingElse
+#-----|       1: (Annotations)
+#   30|         1: [Annotation] Ann1
+#   31|           1: [StringLiteral] "a"
+#   32|           2: [ArrayInit] {...}
+#   33|             1: [Annotation] Ann2
+#   34|             2: [Annotation] Ann2
+#   34|               1: [IntegerLiteral] 7
+#   36|       3: [TypeAccess] String
+#   36|       5: [BlockStmt] stmt
+#   36|         0: [ReturnStmt] stmt
+#   36|           0: [StringLiteral] "c"

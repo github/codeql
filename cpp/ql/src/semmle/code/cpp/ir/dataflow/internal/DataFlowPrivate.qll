@@ -197,15 +197,17 @@ private class CollectionContent extends Content, TCollectionContent {
 }
 
 private class ArrayContent extends Content, TArrayContent {
-  override string toString() { result = "array" }
+  ArrayContent() { this = TArrayContent() }
+
+  override string toString() { result = "array content" }
 }
 
-private predicate storeStepNoChi(Node node1, Content f, PostUpdateNode node2) {
+private predicate fieldStoreStepNoChi(Node node1, FieldContent f, PostUpdateNode node2) {
   exists(StoreInstruction store, Class c |
     store = node2.asInstruction() and
     store.getSourceValue() = node1.asInstruction() and
     getWrittenField(store, f.(FieldContent).getAField(), c) and
-    f.(FieldContent).hasOffset(c, _, _)
+    f.hasOffset(c, _, _)
   )
 }
 
@@ -218,7 +220,7 @@ private predicate getWrittenField(StoreInstruction store, Field f, Class c) {
   )
 }
 
-private predicate storeStepChi(Node node1, Content f, PostUpdateNode node2) {
+private predicate fieldStoreStepChi(Node node1, FieldContent f, PostUpdateNode node2) {
   exists(StoreInstruction store, ChiInstruction chi |
     node1.asInstruction() = store and
     node2.asInstruction() = chi and
@@ -227,12 +229,31 @@ private predicate storeStepChi(Node node1, Content f, PostUpdateNode node2) {
       c = chi.getResultType() and
       exists(int startBit, int endBit |
         chi.getUpdatedInterval(startBit, endBit) and
-        f.(FieldContent).hasOffset(c, startBit, endBit)
+        f.hasOffset(c, startBit, endBit)
       )
       or
-      getWrittenField(store, f.(FieldContent).getAField(), c) and
-      f.(FieldContent).hasOffset(c, _, _)
+      getWrittenField(store, f.getAField(), c) and
+      f.hasOffset(c, _, _)
     )
+  )
+}
+
+private predicate arrayStoreStepChi(Node node1, ArrayContent a, PostUpdateNode node2) {
+  a = TArrayContent() and
+  exists(StoreInstruction store |
+    node1.asInstruction() = store and
+    (
+      // `x[i] = taint()`
+      // This matches the characteristic predicate in `ArrayStoreNode`.
+      store.getDestinationAddress() instanceof PointerAddInstruction
+      or
+      // `*p = taint()`
+      // This matches the characteristic predicate in `PointerStoreNode`.
+      store.getDestinationAddress().(CopyValueInstruction).getUnary() instanceof LoadInstruction
+    ) and
+    // This `ChiInstruction` will always have a non-conflated result because both `ArrayStoreNode`
+    // and `PointerStoreNode` require it in their characteristic predicates.
+    node2.asInstruction().(ChiInstruction).getPartial() = store
   )
 }
 
@@ -242,8 +263,9 @@ private predicate storeStepChi(Node node1, Content f, PostUpdateNode node2) {
  * value of `node1`.
  */
 predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
-  storeStepNoChi(node1, f, node2) or
-  storeStepChi(node1, f, node2)
+  fieldStoreStepNoChi(node1, f, node2) or
+  fieldStoreStepChi(node1, f, node2) or
+  arrayStoreStepChi(node1, f, node2)
 }
 
 bindingset[result, i]
@@ -263,7 +285,7 @@ private predicate getLoadedField(LoadInstruction load, Field f, Class c) {
  * Thus, `node1` references an object with a field `f` whose value ends up in
  * `node2`.
  */
-predicate readStep(Node node1, Content f, Node node2) {
+private predicate fieldReadStep(Node node1, FieldContent f, Node node2) {
   exists(LoadInstruction load |
     node2.asInstruction() = load and
     node1.asInstruction() = load.getSourceValueOperand().getAnyDef() and
@@ -271,13 +293,31 @@ predicate readStep(Node node1, Content f, Node node2) {
       c = load.getSourceValueOperand().getAnyDef().getResultType() and
       exists(int startBit, int endBit |
         load.getSourceValueOperand().getUsedInterval(unbindInt(startBit), unbindInt(endBit)) and
-        f.(FieldContent).hasOffset(c, startBit, endBit)
+        f.hasOffset(c, startBit, endBit)
       )
       or
-      getLoadedField(load, f.(FieldContent).getAField(), c) and
-      f.(FieldContent).hasOffset(c, _, _)
+      getLoadedField(load, f.getAField(), c) and
+      f.hasOffset(c, _, _)
     )
   )
+}
+
+private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
+  a = TArrayContent() and
+  exists(LoadInstruction load |
+    node1.asInstruction() = load.getSourceValueOperand().getAnyDef() and
+    load = node2.asInstruction()
+  )
+}
+
+/**
+ * Holds if data can flow from `node1` to `node2` via a read of `f`.
+ * Thus, `node1` references an object with a field `f` whose value ends up in
+ * `node2`.
+ */
+predicate readStep(Node node1, Content f, Node node2) {
+  fieldReadStep(node1, f, node2) or
+  arrayReadStep(node1, f, node2)
 }
 
 /**
