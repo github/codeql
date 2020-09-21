@@ -6,6 +6,7 @@ private import python
 private import experimental.dataflow.DataFlow
 private import experimental.dataflow.RemoteFlowSources
 private import experimental.semmle.python.Concepts
+private import experimental.semmle.python.frameworks.Werkzeug
 
 private module Flask {
   /** Gets a reference to the `flask` module. */
@@ -42,42 +43,39 @@ private module Flask {
     override string getSourceType() { result = "flask.request" }
   }
 
-  // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.MultiDict
-  /** Gets a reference to the MultiDict attributes of `flask.request`. */
-  DataFlow::Node requestMultiDictAttribute(DataFlow::TypeTracker t) {
-    t.start() and
-    result.asCfgNode().(AttrNode).getObject(["args", "values", "form"]) =
-      flask::request().asCfgNode()
-    or
-    exists(DataFlow::TypeTracker t2 | result = requestMultiDictAttribute(t2).track(t2, t))
-  }
-
-  /** Gets a reference to the MultiDict attributes of `flask.request`. */
-  DataFlow::Node requestMultiDictAttribute() {
-    result = requestMultiDictAttribute(DataFlow::TypeTracker::end())
-  }
-
+  /**
+   * A source of remote flow from attributes from a flask request.
+   *
+   * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Request
+   */
   private class RequestInputAccess extends RemoteFlowSource::Range {
+    string attr_name;
+
     RequestInputAccess() {
       // attributes
-      exists(AttrNode attr, string name |
-        this.asCfgNode() = attr and attr.getObject(name) = flask::request().asCfgNode()
+      exists(AttrNode attr |
+        this.asCfgNode() = attr and attr.getObject(attr_name) = flask::request().asCfgNode()
       |
-        name in ["path",
-              // string
+        attr_name in ["path",
+              // str
               "full_path", "base_url", "url", "access_control_request_method", "content_encoding",
               "content_md5", "content_type", "data", "method", "mimetype", "origin", "query_string",
               "referrer", "remote_addr", "remote_user", "user_agent",
               // dict
               "environ", "cookies", "mimetype_params", "view_args",
-              //
-              "args", "values", "form",
               // json
               "json",
               // List[str]
               "access_route",
               // file-like
               "stream", "input_stream",
+              // MultiDict[str, str]
+              // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.MultiDict
+              "args", "values", "form",
+              // MultiDict[str, FileStorage]
+              // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage
+              // TODO: FileStorage needs extra taint steps
+              "files",
               // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.HeaderSet
               "access_control_request_headers", "pragma",
               // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Accept
@@ -89,33 +87,37 @@ private module Flask {
               // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.RequestCacheControl
               // TODO: has attributes like `no_cache`, and `to_header` method (actually, many of these models do)
               "cache_control",
-              // TODO: MultiDict[FileStorage]
-              // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage
-              "files",
               // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Headers
               // TODO: dict-like with wsgiref.headers.Header compatibility methods
               "headers"]
       )
       or
       // methods
-      exists(CallNode call, string name | this.asCfgNode() = call |
-        // NOTE: will not track bound method, `f = func; f()`
-        name in ["get_data", "get_json"] and
-        call.getFunction().(AttrNode).getObject(name) = flask::request().asCfgNode()
-      )
-      or
-      // multi dict special handling
-      (
-        this = requestMultiDictAttribute()
-        or
-        exists(CallNode call | this.asCfgNode() = call |
-          // NOTE: will not track bound method, `f = func; f()`
-          call.getFunction().(AttrNode).getObject("getlist") =
-            requestMultiDictAttribute().asCfgNode()
-        )
+      exists(CallNode call | this.asCfgNode() = call |
+        // NOTE: will not track bound method, `f = obj.func; f()`
+        attr_name in ["get_data", "get_json"] and
+        call.getFunction().(AttrNode).getObject(attr_name) = flask::request().asCfgNode()
       )
     }
 
     override string getSourceType() { result = "flask.request input" }
+  }
+
+  private class RequestInputMultiDict extends RequestInputAccess,
+    Werkzeug::Datastructures::MultiDict {
+    RequestInputMultiDict() { attr_name in ["args", "values", "form", "files"] }
+  }
+
+  private class RequestInputFiles extends RequestInputMultiDict {
+    RequestInputFiles() { attr_name = "files" }
+  }
+
+  private class RequestInputFileStorage extends Werkzeug::Datastructures::FileStorage {
+    RequestInputFileStorage() {
+      exists(RequestInputFiles files, Werkzeug::Datastructures::MultiDictTracked filesTracked |
+        filesTracked.getMultiDict() = files and
+        this = filesTracked.getElementAccess()
+      )
+    }
   }
 }

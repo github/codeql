@@ -35,11 +35,11 @@
 | test.py:65 | ok   | test_taint | request.data |
 | test.py:68 | ok   | test_taint | request.files |
 | test.py:69 | ok   | test_taint | request.files['key'] |
-| test.py:70 | fail | test_taint | request.files['key'].filename |
-| test.py:71 | fail | test_taint | request.files['key'].stream |
-| test.py:72 | fail | test_taint | request.files.getlist(..) |
-| test.py:73 | fail | test_taint | request.files.getlist(..)[0].filename |
-| test.py:74 | fail | test_taint | request.files.getlist(..)[0].stream |
+| test.py:70 | ok   | test_taint | request.files['key'].filename |
+| test.py:71 | ok   | test_taint | request.files['key'].stream |
+| test.py:72 | ok   | test_taint | request.files.getlist(..) |
+| test.py:73 | ok   | test_taint | request.files.getlist(..)[0].filename |
+| test.py:74 | ok   | test_taint | request.files.getlist(..)[0].stream |
 | test.py:77 | ok   | test_taint | request.form |
 | test.py:78 | ok   | test_taint | request.form['key'] |
 | test.py:79 | ok   | test_taint | request.form.getlist(..) |
@@ -93,4 +93,4 @@
 | test.py:177 | ok   | test_taint | request.args.getlist(..) |
 | test.py:178 | ok   | test_taint | a.getlist(..) |
 | test.py:179 | ok   | test_taint | b.getlist(..) |
-| test.py:180 | fail | test_taint | gl(..) |
+| test.py:180 | ok   | test_taint | gl(..) |
