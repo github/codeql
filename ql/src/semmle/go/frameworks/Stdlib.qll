@@ -12,6 +12,7 @@ import semmle.go.frameworks.stdlib.CompressFlate
 import semmle.go.frameworks.stdlib.CompressGzip
 import semmle.go.frameworks.stdlib.CompressLzw
 import semmle.go.frameworks.stdlib.CompressZlib
+import semmle.go.frameworks.stdlib.Fmt
 import semmle.go.frameworks.stdlib.Mime
 import semmle.go.frameworks.stdlib.MimeMultipart
 import semmle.go.frameworks.stdlib.MimeQuotedprintable
@@ -84,76 +85,6 @@ private class CopyFunction extends TaintTracking::FunctionModel {
 
   override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
     inp.isParameter(1) and outp.isParameter(0)
-  }
-}
-
-/** Provides models of commonly used functions in the `fmt` package. */
-module Fmt {
-  /** The `Sprint` function or one of its variants. */
-  class Sprinter extends TaintTracking::FunctionModel {
-    Sprinter() { this.hasQualifiedName("fmt", ["Sprint", "Sprintf", "Sprintln"]) }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isParameter(_) and outp.isResult()
-    }
-  }
-
-  /** The `Print` function or one of its variants. */
-  class Printer extends Function {
-    Printer() { this.hasQualifiedName("fmt", ["Print", "Printf", "Println"]) }
-  }
-
-  /** A call to `Print`, `Fprint`, or similar. */
-  private class PrintCall extends LoggerCall::Range, DataFlow::CallNode {
-    int firstPrintedArg;
-
-    PrintCall() {
-      this.getTarget() instanceof Printer and firstPrintedArg = 0
-      or
-      this.getTarget() instanceof Fprinter and firstPrintedArg = 1
-    }
-
-    override DataFlow::Node getAMessageComponent() {
-      result = this.getArgument(any(int i | i >= firstPrintedArg))
-    }
-  }
-
-  /** The `Fprint` function or one of its variants. */
-  private class Fprinter extends TaintTracking::FunctionModel {
-    Fprinter() { this.hasQualifiedName("fmt", ["Fprint", "Fprintf", "Fprintln"]) }
-
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      input.isParameter(any(int i | i > 0)) and output.isParameter(0)
-    }
-  }
-
-  /** The `Sscan` function or one of its variants. */
-  private class Sscanner extends TaintTracking::FunctionModel {
-    Sscanner() { this.hasQualifiedName("fmt", ["Sscan", "Sscanf", "Sscanln"]) }
-
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      input.isParameter(0) and
-      exists(int i | if getName() = "Sscanf" then i > 1 else i > 0 | output.isParameter(i))
-    }
-  }
-
-  /** The `Scan` function or one of its variants, all of which read from os.Stdin */
-  class Scanner extends Function {
-    Scanner() { this.hasQualifiedName("fmt", ["Scan", "Scanf", "Scanln"]) }
-  }
-
-  /**
-   * The `Fscan` function or one of its variants,
-   * all of which read from a specified io.Reader
-   */
-  class FScanner extends Function {
-    FScanner() { this.hasQualifiedName("fmt", ["Fscan", "Fscanf", "Fscanln"]) }
-
-    /**
-     * Returns the node corresponding to the io.Reader
-     * argument provided in the call.
-     */
-    FunctionInput getReader() { result.isParameter(0) }
   }
 }
 
