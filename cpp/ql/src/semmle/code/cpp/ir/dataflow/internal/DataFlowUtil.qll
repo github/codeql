@@ -717,7 +717,12 @@ private predicate modelFlow(Operand opFrom, Instruction iTo) {
         iTo = outNode and
         outNode = getSideEffectFor(call, index)
       )
-      // TODO: add write side effects for qualifiers
+      or
+      exists(WriteSideEffectInstruction outNode |
+        modelOut.isQualifierObject() and
+        iTo = outNode and
+        outNode = getSideEffectFor(call, -1)
+      )
     ) and
     (
       exists(int index |
@@ -733,7 +738,12 @@ private predicate modelFlow(Operand opFrom, Instruction iTo) {
       or
       modelIn.isQualifierAddress() and
       opFrom = call.getThisArgumentOperand()
-      // TODO: add read side effects for qualifiers
+      or
+      exists(ReadSideEffectInstruction read |
+        modelIn.isQualifierObject() and
+        read = getSideEffectFor(call, -1) and
+        opFrom = read.getSideEffectOperand()
+      )
     )
   )
 }
