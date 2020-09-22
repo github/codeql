@@ -14,8 +14,8 @@ typeaccesses/Outer.java:
 #    4|     3: [Class] Inner
 #    5|     4: [BlockStmt] stmt
 #    6|       0: [LocalVariableDeclStmt] stmt
-#    6|         0: [TypeAccess] Object
 #    6|         1: [LocalVariableDeclExpr] o
+#    6|           -1: [TypeAccess] Object
 #    6|           0: [ArrayCreationExpr] new Outer[]
 #    6|             -1: [TypeAccess] Outer
 #    6|             0: [IntegerLiteral] 1
@@ -52,9 +52,9 @@ typeaccesses/TA.java:
 #    9|       3: [TypeAccess] void
 #    9|       5: [BlockStmt] stmt
 #    9|         0: [LocalVariableDeclStmt] stmt
-#    9|           0: [TypeAccess] ArrayList<TA>
-#    9|             0: [TypeAccess] TA
 #    9|           1: [LocalVariableDeclExpr] local
+#    9|             -1: [TypeAccess] ArrayList<TA>
+#    9|               0: [TypeAccess] TA
 #   10|     6: [Method] method4
 #-----|       2: (Generic Parameters)
 #   10|         0: [TypeVariable] T

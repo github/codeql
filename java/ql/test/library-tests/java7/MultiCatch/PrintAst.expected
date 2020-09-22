@@ -21,10 +21,10 @@ MultiCatch.java:
 #   14|                 0: [ClassInstanceExpr] new SQLException(...)
 #   14|                   -3: [TypeAccess] SQLException
 #   15|           0: [CatchClause] stmt
-#   15|             -1: [UnionTypeAccess] ...|...
-#   15|               0: [TypeAccess] IOException
-#   15|               1: [TypeAccess] SQLException
 #   15|             0: [LocalVariableDeclExpr] e
+#   15|               -1: [UnionTypeAccess] ...|...
+#   15|                 0: [TypeAccess] IOException
+#   15|                 1: [TypeAccess] SQLException
 #   16|             1: [BlockStmt] stmt
 #   17|               0: [ExprStmt] stmt
 #   17|                 0: [MethodAccess] printStackTrace(...)
@@ -55,10 +55,10 @@ MultiCatch.java:
 #   30|               0: [ClassInstanceExpr] new Exception(...)
 #   30|                 -3: [TypeAccess] Exception
 #   31|           0: [CatchClause] stmt
-#   31|             -1: [UnionTypeAccess] ...|...
-#   31|               0: [TypeAccess] IOException
-#   31|               1: [TypeAccess] SQLException
 #   31|             0: [LocalVariableDeclExpr] e
+#   31|               -1: [UnionTypeAccess] ...|...
+#   31|                 0: [TypeAccess] IOException
+#   31|                 1: [TypeAccess] SQLException
 #   32|             1: [BlockStmt] stmt
 #   35|     4: [Method] ordinaryCatch
 #   35|       3: [TypeAccess] void
@@ -69,6 +69,6 @@ MultiCatch.java:
 #   39|               0: [ClassInstanceExpr] new IOException(...)
 #   39|                 -3: [TypeAccess] IOException
 #   40|           0: [CatchClause] stmt
-#   40|             -1: [TypeAccess] Exception
 #   40|             0: [LocalVariableDeclExpr] e
+#   40|               -1: [TypeAccess] Exception
 #   41|             1: [BlockStmt] stmt

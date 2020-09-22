@@ -239,6 +239,17 @@ private Expr getAnAnnotationChild(Expr e) {
   )
 }
 
+private Expr getTypeAccess(LocalVariableDeclExpr lvde) {
+  // Sometimes one type access is shared by multiple variable declarations,
+  // so we assign it to only the first such declaration to avoid making the tree a DAG
+  lvde =
+    min(LocalVariableDeclExpr par, string file, int line, int column |
+      result = par.getTypeAccess() and locationSortKeys(par, file, line, column)
+    |
+      par order by file, line, column
+    )
+}
+
 /**
  * An node representing an `Expr` or a `Stmt`.
  */
@@ -249,15 +260,15 @@ final class ExprStmtNode extends ElementNode {
     exists(Element el | result.(ElementNode).getElement() = el |
       el.(Expr).isNthChildOf(element, childIndex) and
       not partOfAnnotation(element) and
-      not exists(LocalVariableDeclExpr lvde | 
+      not exists(LocalVariableDeclExpr lvde |
         el = lvde.getTypeAccess() and
-        lvde != element  
+        lvde != element
       )
       or
       el.(Stmt).isNthChildOf(element, childIndex)
       or
       childIndex = -1 and
-      el = element.(LocalVariableDeclExpr).getTypeAccess()
+      el = getTypeAccess(element)
       or
       childIndex = -4 and
       el = element.(ClassInstanceExpr).getAnonymousClass()
