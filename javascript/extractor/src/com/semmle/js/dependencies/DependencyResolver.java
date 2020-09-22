@@ -57,7 +57,8 @@ public class DependencyResolver {
         }
     }
 
-    private static final Pattern semVerToken = Pattern.compile("[~^<>=|&-]+|\\d+(?:\\.[\\dx]+)+(?:-[\\w.-]*)?");
+    // Matches either a version ("2.1.x" / "3.0", etc..), or a version constraint operator ("<", "||", "~", etc...). 
+    private static final Pattern semVerToken = Pattern.compile("\\d+(?:\\.[\\dx]+)+(?:-[\\w.-]*)?|[~^<>=|&-]+");
 
     /**
      * Returns the first version number mentioned in the given constraints, excluding upper bounds such as `< 2.0.0`,
