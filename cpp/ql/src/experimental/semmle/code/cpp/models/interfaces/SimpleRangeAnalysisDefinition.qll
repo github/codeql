@@ -61,3 +61,5 @@ abstract class SimpleRangeAnalysisDefinition extends RangeSsaDefinition {
    */
   abstract float getUpperBounds(StackVariable v);
 }
+
+import SimpleRangeAnalysisInternal
