@@ -40,6 +40,8 @@ import semmle.go.frameworks.stdlib.NetTextproto
 import semmle.go.frameworks.stdlib.Log
 import semmle.go.frameworks.stdlib.Io
 import semmle.go.frameworks.stdlib.IoIoutil
+import semmle.go.frameworks.stdlib.Errors
+import semmle.go.frameworks.stdlib.Expvar
 import semmle.go.frameworks.stdlib.Path
 import semmle.go.frameworks.stdlib.PathFilepath
 import semmle.go.frameworks.stdlib.Reflect
