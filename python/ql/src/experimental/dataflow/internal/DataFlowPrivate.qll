@@ -225,8 +225,12 @@ private Node update(Node node) {
 //--------
 // Global flow
 //--------
+//
 /**
- * A DataFlowCallable is any callable value.
+ * IPA type for DataFlowCallable.
+ *
+ * A callable is either a callable value or a module (for enclosing `ModuleVariable`s).
+ * A module has no calls.
  */
 newtype TDataFlowCallable =
   TCallableValue(CallableValue callable) or
@@ -284,11 +288,24 @@ class DataFlowModuleScope extends DataFlowCallable, TModule {
   override string getName() { result = mod.getName() }
 }
 
+/**
+ * IPA type for DataFlowCall.
+ *
+ * Calls corresponding to `CallNode`s are either to callable values or to classes.
+ * The latter is directed to the callable corresponding to the calss' `__init__`-method.
+ *
+ * An `__init__`-method can also be called directly, so that callable can be targetted by
+ * different types of calls. In that case, the parameter mappings will be different,
+ * as the class call will synthesise an argument node to be mapped to the `self` parameter.
+ *
+ * A calls corresponding to a special method call is handled by the corresponding `SpecialMethodCallNode`.
+ */
 newtype TDataFlowCall =
   TCallNode(CallNode call) { call = any(CallableValue c).getACall() } or
   TClassCall(CallNode call) { call = any(ClassValue c).getACall() } or
   TSpecialCall(SpecialMethodCallNode special)
 
+/** Represents a call. */
 abstract class DataFlowCall extends TDataFlowCall {
   /** Gets a textual representation of this element. */
   abstract string toString();
@@ -306,7 +323,7 @@ abstract class DataFlowCall extends TDataFlowCall {
   abstract DataFlowCallable getEnclosingCallable();
 }
 
-/** Represents a call to a callable. */
+/** Represents a call to a callable (currently only callable values). */
 class CallNodeCall extends DataFlowCall, TCallNode {
   CallNode call;
   DataFlowCallable callable;
