@@ -1248,7 +1248,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       cmd.add("--extensions");
       cmd.addAll(xmlExtensions);
     } else {
-      String command = Env.getOS() == OS.WINDOWS ? "codeql.cmd" : "codeql";
+      String command = Env.getOS() == OS.WINDOWS ? "codeql.exe" : "codeql";
       cmd.add(Paths.get(EnvironmentVariables.getCodeQLDist(), command).toString());
       cmd.add("database");
       cmd.add("index-files");
