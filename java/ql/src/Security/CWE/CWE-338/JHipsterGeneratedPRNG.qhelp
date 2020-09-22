@@ -40,7 +40,7 @@ This allows an attacker to pick and choose what account they would like to takeo
   <a href="https://news.ycombinator.com/item?id=639976">
     How I Hacked Hacker News (with arc security advisory)
   </a>
-<li>
+</li>
 <li>
   Research (Hacking Apache Commons RandomStringUtils):
   <a href="https://web.archive.org/web/20191126104359/https://medium.com/@alex91ar/the-java-soothsayer-a-practical-application-for-insecure-randomness-c67b0cd148cd">
