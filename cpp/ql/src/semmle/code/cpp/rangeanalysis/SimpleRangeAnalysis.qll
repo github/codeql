@@ -840,7 +840,8 @@ private float getLowerBoundsImpl(Expr expr) {
       result = safeFloor(left / 2.pow(right))
     )
     // Not explicitly modeled by a SimpleRangeAnalysisExpr
-  ) and not expr instanceof SimpleRangeAnalysisExpr
+  ) and
+  not expr instanceof SimpleRangeAnalysisExpr
   or
   // A modeled expression for range analysis
   exists(SimpleRangeAnalysisExpr rangeAnalysisExpr |
@@ -1035,7 +1036,8 @@ private float getUpperBoundsImpl(Expr expr) {
       result = safeFloor(left / 2.pow(right))
     )
     // Not explicitly modeled by a SimpleRangeAnalysisExpr
-  ) and not expr instanceof SimpleRangeAnalysisExpr
+  ) and
+  not expr instanceof SimpleRangeAnalysisExpr
   or
   // A modeled expression for range analysis
   exists(SimpleRangeAnalysisExpr rangeAnalysisExpr |
