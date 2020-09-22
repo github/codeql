@@ -237,15 +237,37 @@ module HTTP {
    * Holds if `call` decorates the function `pred`.
    * This means that `call` returns a function that forwards its arguments to `pred`.
    * Only holds when the decorator looks like it is decorating a route-handler.
+   *
+   * Below is a code example relating `call`, `decoratee`, `outer`, `inner`.
+   * ```
+   * function outer(method) {
+   *    return function inner(req, res) {
+   *      return method.call(this, req, res);
+   *    };
+   *  }
+   *  var route = outer(function decoratee(req, res) { // <- call
+   *    res.end("foo");
+   *  });
+   * ```
    */
   private predicate isDecoratedCall(DataFlow::CallNode call, DataFlow::FunctionNode decoratee) {
     // indirect route-handler `result` is given to function `outer`, which returns function `inner` which calls the function `pred`.
-    exists(int i, Function outer, Function inner |
+    exists(int i, DataFlow::FunctionNode outer, HTTP::RouteHandlerCandidate inner |
       decoratee = call.getArgument(i).getALocalSource() and
-      outer = call.getACallee() and
-      inner = outer.getAReturnedExpr() and
-      isAForwardingRouteHandlerCall(DataFlow::parameterNode(outer.getParameter(i)), inner.flow())
+      outer.getFunction() = call.getACallee() and
+      returnsRouteHandler(outer, inner) and
+      isAForwardingRouteHandlerCall(outer.getParameter(i), inner)
     )
+  }
+
+  /**
+   * Holds if `fun` returns the route-handler-candidate `routeHandler`.
+   */
+  pragma[noinline]
+  private predicate returnsRouteHandler(
+    DataFlow::FunctionNode fun, HTTP::RouteHandlerCandidate routeHandler
+  ) {
+    routeHandler = fun.getAReturn().getALocalSource()
   }
 
   /**
