@@ -243,17 +243,19 @@ module HTTP {
     exists(int i, DataFlow::FunctionNode outer, HTTP::RouteHandlerCandidate inner |
       decoratee = call.getArgument(i).getALocalSource() and
       outer.getFunction() = call.getACallee() and
-      outer = returnsARouteHandler(inner) and
+      returnsRouteHandler(outer, inner) and
       isAForwardingRouteHandlerCall(outer.getParameter(i), inner)
     )
   }
 
   /**
-   * Gets a function that returns the route-handler-candidate `routeHandler`.
+   * Holds if `fun` returns the route-handler-candidate `routeHandler`.
    */
   pragma[noinline]
-  private DataFlow::FunctionNode returnsARouteHandler(HTTP::RouteHandlerCandidate routeHandler) {
-    routeHandler = result.getAReturn().getALocalSource()
+  private predicate returnsRouteHandler(
+    DataFlow::FunctionNode fun, HTTP::RouteHandlerCandidate routeHandler
+  ) {
+    routeHandler = fun.getAReturn().getALocalSource()
   }
 
   /**
