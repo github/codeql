@@ -16,6 +16,11 @@ import semmle.go.frameworks.stdlib.Fmt
 import semmle.go.frameworks.stdlib.ContainerHeap
 import semmle.go.frameworks.stdlib.ContainerList
 import semmle.go.frameworks.stdlib.ContainerRing
+import semmle.go.frameworks.stdlib.Crypto
+import semmle.go.frameworks.stdlib.CryptoCipher
+import semmle.go.frameworks.stdlib.CryptoRsa
+import semmle.go.frameworks.stdlib.CryptoTls
+import semmle.go.frameworks.stdlib.CryptoX509
 import semmle.go.frameworks.stdlib.Mime
 import semmle.go.frameworks.stdlib.MimeMultipart
 import semmle.go.frameworks.stdlib.MimeQuotedprintable
@@ -236,18 +241,6 @@ module URL {
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isReceiver() and outp.isResult()
-    }
-  }
-}
-
-/** Provides models of some functions in the `crypto/cipher` package. */
-module CryptoCipher {
-  private class AeadOpenFunction extends TaintTracking::FunctionModel, Method {
-    AeadOpenFunction() { this.hasQualifiedName("crypto/cipher", "AEAD", "Open") }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isParameter(2) and
-      outp.isResult(0)
     }
   }
 }
