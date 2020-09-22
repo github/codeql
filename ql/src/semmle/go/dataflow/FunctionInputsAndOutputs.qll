@@ -107,15 +107,20 @@ private class ResultInput extends FunctionInput, TInResult {
   }
 
   override DataFlow::Node getEntryNode(DataFlow::CallNode c) {
-    exists(DataFlow::PostUpdateNode pun, DataFlow::Node init |
-      pun = result and
-      init = pun.(DataFlow::SsaNode).getInit()
-    |
+    exists(DataFlow::Node pred |
       index = -1 and
-      init = c.getResult()
+      pred = c.getResult()
       or
       index >= 0 and
-      init = c.getResult(index)
+      pred = c.getResult(index)
+    |
+      // if the result is assigned to an SSA variable, we want to propagate mutations backwards
+      // through that variable
+      exists(DataFlow::SsaNode ssa | ssa.getInit() = pred | result = ssa.(DataFlow::PostUpdateNode))
+      or
+      // otherwise the entry node is simply the result
+      not exists(DataFlow::SsaNode ssa | ssa.getInit() = pred) and
+      result = pred
     )
   }
 
