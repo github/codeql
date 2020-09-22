@@ -1,4 +1,6 @@
 | main.go:51:2:51:14 | call to op | main.go:51:2:51:14 | call to op | result |
 | main.go:53:2:53:22 | call to op2 | main.go:53:2:53:22 | call to op2 | result |
 | main.go:53:14:53:21 | call to bump | main.go:53:14:53:21 | call to bump | result |
+| tst2.go:10:9:10:26 | call to NewEncoder | tst2.go:10:9:10:26 | call to NewEncoder | result |
+| tst2.go:10:9:10:39 | call to Encode | tst2.go:10:9:10:39 | call to Encode | result |
 | tst.go:9:17:9:33 | call to new | tst.go:9:17:9:33 | call to new | result |
