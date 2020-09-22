@@ -1,5 +1,5 @@
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
-import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils // for typeLowerBound
+import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 import experimental.semmle.code.cpp.models.interfaces.SimpleRangeAnalysisExpr
 import experimental.semmle.code.cpp.models.interfaces.SimpleRangeAnalysisDefinition
 
