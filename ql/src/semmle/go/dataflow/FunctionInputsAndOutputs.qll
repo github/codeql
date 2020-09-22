@@ -116,7 +116,7 @@ private class ResultInput extends FunctionInput, TInResult {
     |
       // if the result is assigned to an SSA variable, we want to propagate mutations backwards
       // through that variable
-      exists(DataFlow::SsaNode ssa | ssa.getInit() = pred | result = ssa.(DataFlow::PostUpdateNode))
+      exists(DataFlow::SsaNode ssa | ssa.getInit() = pred | result = ssa)
       or
       // otherwise the entry node is simply the result
       not exists(DataFlow::SsaNode ssa | ssa.getInit() = pred) and
