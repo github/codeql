@@ -2,9 +2,6 @@ edges
 | search.c:14:24:14:28 | query | search.c:17:8:17:12 | (const char *)... |
 | search.c:14:24:14:28 | query | search.c:17:8:17:12 | query |
 | search.c:14:24:14:28 | query | search.c:17:8:17:12 | query |
-| search.c:14:24:14:28 | query | search.c:17:8:17:12 | query |
-| search.c:17:8:17:12 | query | search.c:17:8:17:12 | (const char *)... |
-| search.c:17:8:17:12 | query | search.c:17:8:17:12 | query |
 | search.c:22:24:22:28 | query | search.c:23:39:23:43 | query |
 | search.c:22:24:22:28 | query | search.c:23:39:23:43 | query |
 | search.c:41:21:41:26 | call to getenv | search.c:45:17:45:25 | raw_query |

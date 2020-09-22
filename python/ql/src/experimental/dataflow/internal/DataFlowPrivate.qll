@@ -74,23 +74,7 @@ class ReadPreUpdateNode extends NeedsSyntheticPostUpdateNode, CfgNode {
   override string label() { result = "read" }
 }
 
-/**
- * A node associated with an object after an operation that might have
- * changed its state.
- *
- * This can be either the argument to a callable after the callable returns
- * (which might have mutated the argument), or the qualifier of a field after
- * an update to the field.
- *
- * Nodes corresponding to AST elements, for example `ExprNode`s, usually refer
- * to the value before the update with the exception of `ObjectCreationNode`s,
- * which represents the value after the constructor has run.
- */
-abstract class PostUpdateNode extends Node {
-  /** Gets the node before the state update. */
-  abstract Node getPreUpdateNode();
-}
-
+/** A post-update node is synthesised for all nodes which satisfy `NeedsSyntheticPostUpdateNode`. */
 class SyntheticPostUpdateNode extends PostUpdateNode, TSyntheticPostUpdateNode {
   NeedsSyntheticPostUpdateNode pre;
 
@@ -105,6 +89,11 @@ class SyntheticPostUpdateNode extends PostUpdateNode, TSyntheticPostUpdateNode {
   override Location getLocation() { result = pre.getLocation() }
 }
 
+/**
+ * Calls to constructors are treated as post-update nodes for the synthesised argument
+ * that is mapped to the `self` parameter. That way, constructor calls represent the value of the
+ * object after the constructor (currently only `__init__`) has run.
+ */
 class ObjectCreationNode extends PostUpdateNode, NeedsSyntheticPreUpdateNode, CfgNode {
   ObjectCreationNode() { node.(CallNode) = any(ClassValue c).getACall() }
 
@@ -195,10 +184,28 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // If there is ESSA-flow out of a node `node`, we want flow
   // both out of `node` and any post-update node of `node`.
   exists(Node node |
-    not node.(EssaNode).getVar() instanceof GlobalSsaVariable and
-    not nodeTo.(EssaNode).getVar() instanceof GlobalSsaVariable and
     EssaFlow::essaFlowStep(node, nodeTo) and
-    nodeFrom = update(node)
+    nodeFrom = update(node) and
+    (
+      not node instanceof EssaNode or
+      not nodeTo instanceof EssaNode or
+      localEssaStep(node, nodeTo)
+    )
+  )
+}
+
+/**
+ * Holds if there is an Essa flow step from `nodeFrom` to `nodeTo` that does not switch between
+ * local and global SSA variables.
+ */
+private predicate localEssaStep(EssaNode nodeFrom, EssaNode nodeTo) {
+  EssaFlow::essaFlowStep(nodeFrom, nodeTo) and
+  (
+    nodeFrom.getVar() instanceof GlobalSsaVariable and
+    nodeTo.getVar() instanceof GlobalSsaVariable
+    or
+    not nodeFrom.getVar() instanceof GlobalSsaVariable and
+    not nodeTo.getVar() instanceof GlobalSsaVariable
   )
 }
 
@@ -221,7 +228,61 @@ private Node update(Node node) {
 /**
  * A DataFlowCallable is any callable value.
  */
-class DataFlowCallable = CallableValue;
+newtype TDataFlowCallable =
+  TCallableValue(CallableValue callable) or
+  TModule(Module m)
+
+/** Represents a callable. */
+abstract class DataFlowCallable extends TDataFlowCallable {
+  /** Gets a textual representation of this element. */
+  abstract string toString();
+
+  /** Gets a call to this callable. */
+  abstract CallNode getACall();
+
+  /** Gets the scope of this callable */
+  abstract Scope getScope();
+
+  /** Gets the specified parameter of this callable */
+  abstract NameNode getParameter(int n);
+
+  /** Gets the name of this callable. */
+  abstract string getName();
+}
+
+/** A class representing a callable value. */
+class DataFlowCallableValue extends DataFlowCallable, TCallableValue {
+  CallableValue callable;
+
+  DataFlowCallableValue() { this = TCallableValue(callable) }
+
+  override string toString() { result = callable.toString() }
+
+  override CallNode getACall() { result = callable.getACall() }
+
+  override Scope getScope() { result = callable.getScope() }
+
+  override NameNode getParameter(int n) { result = callable.getParameter(n) }
+
+  override string getName() { result = callable.getName() }
+}
+
+/** A class representing the scope in which a `ModuleVariableNode` appears. */
+class DataFlowModuleScope extends DataFlowCallable, TModule {
+  Module mod;
+
+  DataFlowModuleScope() { this = TModule(mod) }
+
+  override string toString() { result = mod.toString() }
+
+  override CallNode getACall() { none() }
+
+  override Scope getScope() { result = mod }
+
+  override NameNode getParameter(int n) { none() }
+
+  override string getName() { result = mod.getName() }
+}
 
 newtype TDataFlowCall =
   TCallNode(CallNode call) { call = any(CallableValue c).getACall() } or
@@ -288,7 +349,7 @@ class ClassCall extends DataFlowCall, TClassCall {
 
   override DataFlowCallable getCallable() {
     exists(CallableValue callable |
-      result = callable and
+      result = TCallableValue(callable) and
       c.getScope().getInitMethod() = callable.getScope()
     )
   }
@@ -308,7 +369,9 @@ class SpecialCall extends DataFlowCall, TSpecialCall {
 
   override ControlFlowNode getNode() { result = special }
 
-  override DataFlowCallable getCallable() { result = special.getResolvedSpecialMethod() }
+  override DataFlowCallable getCallable() {
+    result = TCallableValue(special.getResolvedSpecialMethod())
+  }
 
   override DataFlowCallable getEnclosingCallable() {
     result.getScope() = special.getNode().getScope()
@@ -417,21 +480,11 @@ string ppReprType(DataFlowType t) { none() }
  * taken into account.
  */
 predicate jumpStep(Node nodeFrom, Node nodeTo) {
-  // As we have ESSA variables for global variables,
-  // we include ESSA flow steps involving global variables.
-  (
-    nodeFrom.(EssaNode).getVar() instanceof GlobalSsaVariable
-    or
-    nodeTo.(EssaNode).getVar() instanceof GlobalSsaVariable
-  ) and
-  (
-    EssaFlow::essaFlowStep(nodeFrom, nodeTo)
-    or
-    // As jump steps do not respect chronology,
-    // we add jump steps for each def-use pair.
-    nodeFrom.asVar() instanceof GlobalSsaVariable and
-    nodeTo.asCfgNode() = nodeFrom.asVar().getASourceUse()
-  )
+  // Module variable read
+  nodeFrom.(ModuleVariableNode).getARead() = nodeTo
+  or
+  // Module variable write
+  nodeFrom = nodeTo.(ModuleVariableNode).getAWrite()
 }
 
 //--------

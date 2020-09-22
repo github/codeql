@@ -211,10 +211,17 @@ private predicate fieldStoreStepNoChi(Node node1, FieldContent f, PostUpdateNode
   )
 }
 
+private FieldAddressInstruction getFieldInstruction(Instruction instr) {
+  result = instr or
+  result = instr.(CopyValueInstruction).getUnary()
+}
+
 pragma[noinline]
-private predicate getWrittenField(StoreInstruction store, Field f, Class c) {
+private predicate getWrittenField(Instruction instr, Field f, Class c) {
   exists(FieldAddressInstruction fa |
-    fa = store.getDestinationAddress() and
+    fa =
+      getFieldInstruction([instr.(StoreInstruction).getDestinationAddress(),
+            instr.(WriteSideEffectInstruction).getDestinationAddress()]) and
     f = fa.getField() and
     c = f.getDeclaringType()
   )
@@ -265,7 +272,23 @@ private predicate arrayStoreStepChi(Node node1, ArrayContent a, PostUpdateNode n
 predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
   fieldStoreStepNoChi(node1, f, node2) or
   fieldStoreStepChi(node1, f, node2) or
-  arrayStoreStepChi(node1, f, node2)
+  arrayStoreStepChi(node1, f, node2) or
+  fieldStoreStepAfterArraySuppression(node1, f, node2)
+}
+
+// This predicate pushes the correct `FieldContent` onto the access path when the
+// `suppressArrayRead` predicate has popped off an `ArrayContent`.
+private predicate fieldStoreStepAfterArraySuppression(
+  Node node1, FieldContent f, PostUpdateNode node2
+) {
+  exists(BufferMayWriteSideEffectInstruction write, ChiInstruction chi, Class c |
+    not chi.isResultConflated() and
+    node1.asInstruction() = chi and
+    node2.asInstruction() = chi and
+    chi.getPartial() = write and
+    getWrittenField(write, f.getAField(), c) and
+    f.hasOffset(c, _, _)
+  )
 }
 
 bindingset[result, i]
@@ -302,11 +325,88 @@ private predicate fieldReadStep(Node node1, FieldContent f, Node node2) {
   )
 }
 
+/**
+ * When a store step happens in a function that looks like an array write such as:
+ * ```cpp
+ * void f(int* pa) {
+ *   pa = source();
+ * }
+ * ```
+ * it can be a write to an array, but it can also happen that `f` is called as `f(&a.x)`. If that is
+ * the case, the `ArrayContent` that was written by the call to `f` should be popped off the access
+ * path, and a `FieldContent` containing `x` should be pushed instead.
+ * So this case pops `ArrayContent` off the access path, and the `fieldStoreStepAfterArraySuppression`
+ * predicate in `storeStep` ensures that we push the right `FieldContent` onto the access path.
+ */
+predicate suppressArrayRead(Node node1, ArrayContent a, Node node2) {
+  a = TArrayContent() and
+  exists(BufferMayWriteSideEffectInstruction write, ChiInstruction chi |
+    node1.asInstruction() = write and
+    node2.asInstruction() = chi and
+    chi.getPartial() = write and
+    getWrittenField(write, _, _)
+  )
+}
+
+private class ArrayToPointerConvertInstruction extends ConvertInstruction {
+  ArrayToPointerConvertInstruction() {
+    this.getUnary().getResultType() instanceof ArrayType and
+    this.getResultType() instanceof PointerType
+  }
+}
+
+private Instruction skipOneCopyValueInstruction(Instruction instr) {
+  not instr instanceof CopyValueInstruction and result = instr
+  or
+  result = instr.(CopyValueInstruction).getUnary()
+}
+
+private Instruction skipCopyValueInstructions(Instruction instr) {
+  result = skipOneCopyValueInstruction*(instr) and not result instanceof CopyValueInstruction
+}
+
 private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
   a = TArrayContent() and
-  exists(LoadInstruction load |
+  // Explicit dereferences such as `*p` or `p[i]` where `p` is a pointer or array.
+  exists(LoadInstruction load, Instruction address |
+    load.getSourceValueOperand().isDefinitionInexact() and
     node1.asInstruction() = load.getSourceValueOperand().getAnyDef() and
-    load = node2.asInstruction()
+    load = node2.asInstruction() and
+    address = skipCopyValueInstructions(load.getSourceAddress()) and
+    (
+      address instanceof LoadInstruction or
+      address instanceof ArrayToPointerConvertInstruction or
+      address instanceof PointerOffsetInstruction
+    )
+  )
+}
+
+/**
+ * In cases such as:
+ * ```cpp
+ * void f(int* pa) {
+ *   *pa = source();
+ * }
+ * ...
+ * int x;
+ * f(&x);
+ * use(x);
+ * ```
+ * the load on `x` in `use(x)` will exactly overlap with its definition (in this case the definition
+ * is a `BufferMayWriteSideEffect`). This predicate pops the `ArrayContent` (pushed by the store in `f`)
+ * from the access path.
+ */
+private predicate exactReadStep(Node node1, ArrayContent a, Node node2) {
+  a = TArrayContent() and
+  exists(BufferMayWriteSideEffectInstruction write, ChiInstruction chi |
+    not chi.isResultConflated() and
+    chi.getPartial() = write and
+    node1.asInstruction() = write and
+    node2.asInstruction() = chi and
+    // To distinquish this case from the `arrayReadStep` case we require that the entire variable was
+    // overwritten by the `BufferMayWriteSideEffectInstruction` (i.e., there is a load that reads the
+    // entire variable).
+    exists(LoadInstruction load | load.getSourceValue() = chi)
   )
 }
 
@@ -317,7 +417,9 @@ private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
  */
 predicate readStep(Node node1, Content f, Node node2) {
   fieldReadStep(node1, f, node2) or
-  arrayReadStep(node1, f, node2)
+  arrayReadStep(node1, f, node2) or
+  exactReadStep(node1, f, node2) or
+  suppressArrayRead(node1, f, node2)
 }
 
 /**

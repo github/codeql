@@ -21,7 +21,11 @@ class ConversionConstructorModel extends Constructor, TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from the first constructor argument to the returned object
     input.isParameter(0) and
-    output.isReturnValue() // TODO: this should be `isQualifierObject` by our current definitions, but that flow is not yet supported.
+    (
+      output.isReturnValue()
+      or
+      output.isQualifierObject()
+    )
   }
 }
 
@@ -32,7 +36,11 @@ class CopyConstructorModel extends CopyConstructor, DataFlowFunction {
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     // data flow from the first constructor argument to the returned object
     input.isParameter(0) and
-    output.isReturnValue() // TODO: this should be `isQualifierObject` by our current definitions, but that flow is not yet supported.
+    (
+      output.isReturnValue()
+      or
+      output.isQualifierObject()
+    )
   }
 }
 
@@ -43,7 +51,11 @@ class MoveConstructorModel extends MoveConstructor, DataFlowFunction {
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     // data flow from the first constructor argument to the returned object
     input.isParameter(0) and
-    output.isReturnValue() // TODO: this should be `isQualifierObject` by our current definitions, but that flow is not yet supported.
+    (
+      output.isReturnValue()
+      or
+      output.isQualifierObject()
+    )
   }
 }
 

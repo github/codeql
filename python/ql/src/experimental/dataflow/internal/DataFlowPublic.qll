@@ -26,7 +26,9 @@ newtype TNode =
   /** A synthetic node representing the value of an object before a state change */
   TSyntheticPreUpdateNode(NeedsSyntheticPreUpdateNode post) or
   /** A synthetic node representing the value of an object after a state change */
-  TSyntheticPostUpdateNode(NeedsSyntheticPostUpdateNode pre)
+  TSyntheticPostUpdateNode(NeedsSyntheticPostUpdateNode pre) or
+  /** A node representing a global (module-level) variable in a specific module */
+  TModuleVariableNode(Module m, GlobalVariable v) { v.getScope() = m and v.escapes() }
 
 /**
  * An element, viewed as a node in a data flow graph. Either an SSA variable
@@ -149,6 +151,89 @@ class ParameterNode extends EssaNode {
   }
 
   override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
+}
+
+/**
+ * A node associated with an object after an operation that might have
+ * changed its state.
+ *
+ * This can be either the argument to a callable after the callable returns
+ * (which might have mutated the argument), or the qualifier of a field after
+ * an update to the field.
+ *
+ * Nodes corresponding to AST elements, for example `ExprNode`s, usually refer
+ * to the value before the update with the exception of `ObjectCreationNode`s,
+ * which represents the value after the constructor has run.
+ */
+abstract class PostUpdateNode extends Node {
+  /** Gets the node before the state update. */
+  abstract Node getPreUpdateNode();
+}
+
+/**
+ * A data flow node corresponding to a module-level (global) variable that is accessed outside of the module scope.
+ *
+ * Global variables may appear twice in the data flow graph, as both `EssaNode`s and
+ * `ModuleVariableNode`s. The former is used to represent data flow between global variables as it
+ * occurs during module initialization, and the latter is used to represent data flow via global
+ * variable reads and writes during run-time.
+ *
+ * It is possible for data to flow from assignments made at module initialization time to reads made
+ * at run-time, but not vice versa. For example, there will be flow from `SOURCE` to `SINK` in the
+ * following snippet:
+ *
+ * ```python
+ * g = SOURCE
+ *
+ * def foo():
+ *     SINK(g)
+ * ```
+ * but not the other way round:
+ *
+ * ```python
+ * SINK(g)
+ *
+ * def bar()
+ *     global g
+ *     g = SOURCE
+ * ```
+ *
+ * Data flow through `ModuleVariableNode`s is represented as `jumpStep`s, and so any write of a
+ * global variable can flow to any read of the same variable.
+ */
+class ModuleVariableNode extends Node, TModuleVariableNode {
+  Module mod;
+  GlobalVariable var;
+
+  ModuleVariableNode() { this = TModuleVariableNode(mod, var) }
+
+  override Scope getScope() { result = mod }
+
+  override string toString() {
+    result = "ModuleVariableNode for " + var.toString() + " in " + mod.toString()
+  }
+
+  /** Gets the module in which this variable appears. */
+  Module getModule() { result = mod }
+
+  /** Gets the global variable corresponding to this node. */
+  GlobalVariable getVariable() { result = var }
+
+  /** Gets a node that reads this variable. */
+  Node getARead() {
+    result.asCfgNode() = var.getALoad().getAFlowNode() and
+    // Ignore reads that happen when the module is imported. These are only executed once.
+    not result.getScope() = mod
+  }
+
+  /** Gets an `EssaNode` that corresponds to an assignment of this global variable. */
+  EssaNode getAWrite() {
+    result.asVar().getDefinition().(EssaNodeDefinition).definedBy(var, any(DefinitionNode defn))
+  }
+
+  override DataFlowCallable getEnclosingCallable() { result.(DataFlowModuleScope).getScope() = mod }
+
+  override Location getLocation() { result = mod.getLocation() }
 }
 
 /**

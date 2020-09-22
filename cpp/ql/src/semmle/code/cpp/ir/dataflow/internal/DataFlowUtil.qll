@@ -389,6 +389,35 @@ private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNod
   }
 }
 
+private FieldAddressInstruction getFieldInstruction(Instruction instr) {
+  result = instr or
+  result = instr.(CopyValueInstruction).getUnary()
+}
+
+/**
+ * The target of a `fieldStoreStepAfterArraySuppression` store step, which is used to convert
+ * an `ArrayContent` to a `FieldContent` when the `BufferMayWriteSideEffect` instruction stores
+ * into a field. See the QLDoc for `suppressArrayRead` for an example of where such a conversion
+ * is inserted.
+ */
+private class BufferMayWriteSideEffectFieldStoreQualifierNode extends PartialDefinitionNode {
+  override ChiInstruction instr;
+  BufferMayWriteSideEffectInstruction write;
+  FieldAddressInstruction field;
+
+  BufferMayWriteSideEffectFieldStoreQualifierNode() {
+    not instr.isResultConflated() and
+    instr.getPartial() = write and
+    field = getFieldInstruction(write.getDestinationAddress())
+  }
+
+  override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
+
+  override Expr getDefinedExpr() {
+    result = field.getObjectAddress().getUnconvertedResultExpression()
+  }
+}
+
 /**
  * The `PostUpdateNode` that is the target of a `arrayStoreStepChi` store step. The overriden
  * `ChiInstruction` corresponds to the instruction represented by `node2` in `arrayStoreStepChi`.
@@ -717,7 +746,12 @@ private predicate modelFlow(Operand opFrom, Instruction iTo) {
         iTo = outNode and
         outNode = getSideEffectFor(call, index)
       )
-      // TODO: add write side effects for qualifiers
+      or
+      exists(WriteSideEffectInstruction outNode |
+        modelOut.isQualifierObject() and
+        iTo = outNode and
+        outNode = getSideEffectFor(call, -1)
+      )
     ) and
     (
       exists(int index |
@@ -733,7 +767,12 @@ private predicate modelFlow(Operand opFrom, Instruction iTo) {
       or
       modelIn.isQualifierAddress() and
       opFrom = call.getThisArgumentOperand()
-      // TODO: add read side effects for qualifiers
+      or
+      exists(ReadSideEffectInstruction read |
+        modelIn.isQualifierObject() and
+        read = getSideEffectFor(call, -1) and
+        opFrom = read.getSideEffectOperand()
+      )
     )
   )
 }

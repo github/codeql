@@ -4,8 +4,10 @@
 
 * Support for the following frameworks and libraries has been improved:
   - [bluebird](https://www.npmjs.com/package/bluebird)
+  - [express](https://www.npmjs.com/package/express)
   - [fast-json-stable-stringify](https://www.npmjs.com/package/fast-json-stable-stringify)
   - [fast-safe-stringify](https://www.npmjs.com/package/fast-safe-stringify)
+  - [http](https://nodejs.org/api/http.html)
   - [javascript-stringify](https://www.npmjs.com/package/javascript-stringify)
   - [js-stringify](https://www.npmjs.com/package/js-stringify)
   - [json-stable-stringify](https://www.npmjs.com/package/json-stable-stringify)

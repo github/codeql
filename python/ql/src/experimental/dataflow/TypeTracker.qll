@@ -47,11 +47,11 @@ class StepSummary extends TStepSummary {
 module StepSummary {
   cached
   predicate step(Node nodeFrom, Node nodeTo, StepSummary summary) {
-    exists(Node mid | EssaFlow::essaFlowStep*(nodeFrom, mid) and smallstep(mid, nodeTo, summary))
+    exists(Node mid | typePreservingStep*(nodeFrom, mid) and smallstep(mid, nodeTo, summary))
   }
 
   predicate smallstep(Node nodeFrom, Node nodeTo, StepSummary summary) {
-    EssaFlow::essaFlowStep(nodeFrom, nodeTo) and
+    typePreservingStep(nodeFrom, nodeTo) and
     summary = LevelStep()
     or
     callStep(nodeFrom, nodeTo) and summary = CallStep()
@@ -66,6 +66,12 @@ module StepSummary {
       basicLoadStep(nodeFrom, nodeTo, attr) and summary = LoadStep(attr)
     )
   }
+}
+
+/** Holds if it's reasonable to expect the data flow step from `nodeFrom` to `nodeTo` to preserve types. */
+private predicate typePreservingStep(Node nodeFrom, Node nodeTo) {
+  EssaFlow::essaFlowStep(nodeFrom, nodeTo) or
+  jumpStep(nodeFrom, nodeTo)
 }
 
 /** Holds if `nodeFrom` steps to `nodeTo` by being passed as a parameter in a call. */
@@ -111,7 +117,7 @@ predicate returnStep(ReturnNode nodeFrom, Node nodeTo) {
 predicate basicStoreStep(Node nodeFrom, Node nodeTo, string attr) {
   exists(AttributeAssignment a, Node var |
     a.getName() = attr and
-    EssaFlow::essaFlowStep*(nodeTo, var) and
+    simpleLocalFlowStep*(nodeTo, var) and
     var.asVar() = a.getInput() and
     nodeFrom.asCfgNode() = a.getValue()
   )
@@ -276,7 +282,7 @@ class TypeTracker extends TTypeTracker {
       result = this.append(summary)
     )
     or
-    EssaFlow::essaFlowStep(nodeFrom, nodeTo) and
+    typePreservingStep(nodeFrom, nodeTo) and
     result = this
   }
 }

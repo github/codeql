@@ -228,7 +228,12 @@ module NodeJSLib {
       t.start() and
       result = handler.flow().getALocalSource()
       or
-      exists(DataFlow::TypeBackTracker t2 | result = getARouteHandler(t2).backtrack(t2, t))
+      exists(DataFlow::TypeBackTracker t2, DataFlow::SourceNode succ | succ = getARouteHandler(t2) |
+        result = succ.backtrack(t2, t)
+        or
+        t = t2 and
+        HTTP::routeHandlerStep(result, succ)
+      )
     }
 
     override Expr getServer() { result = server }
@@ -721,16 +726,8 @@ module NodeJSLib {
         astNode.getParameter(0).getName() = request and
         astNode.getParameter(1).getName() = response
       |
-        not (
-          // heuristic: not a class method (Node.js invokes this with a function call)
-          astNode = any(MethodDefinition def).getBody()
-          or
-          // heuristic: does not return anything (Node.js will not use the return value)
-          exists(astNode.getAReturnStmt().getExpr())
-          or
-          // heuristic: is not invoked (Node.js invokes this at a call site we cannot reason precisely about)
-          exists(DataFlow::InvokeNode cs | cs.getACallee() = astNode)
-        )
+        // heuristic: not a class method (Node.js invokes this with a function call)
+        not astNode = any(MethodDefinition def).getBody()
       )
     }
   }
