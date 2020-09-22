@@ -223,6 +223,9 @@ module API {
       ) and
       length in [1 .. Impl::distanceFromRoot(this)]
     }
+
+    /** Gets the shortest distance from the root to this node in the API graph. */
+    int getDepth() { result = Impl::distanceFromRoot(this) }
   }
 
   /** The root node of an API graph. */
