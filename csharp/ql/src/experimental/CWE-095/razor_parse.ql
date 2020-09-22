@@ -9,6 +9,7 @@
  */
 
 import csharp
+import semmle.code.csharp.frameworks.microsoft.AspNetCore
 import semmle.code.csharp.dataflow.TaintTracking
 import DataFlow::PathGraph
 
@@ -26,11 +27,16 @@ class RazorEngineClass extends Class {
 }
 
 /*
- * We are only interested in ASP.NET MVC Controller classes
+ * We are only interested in ASP.NET MVC Controller or ControllerBase classes
  */
 
 class ControllerMVC extends Class {
-  ControllerMVC() { this.hasQualifiedName("System.Web.Mvc", "Controller") }
+  ControllerMVC() {
+    this.hasQualifiedName("System.Web.Mvc", "Controller") or
+    this.hasQualifiedName("Microsoft.AspNetCore.Mvc", "Controller") or
+    this instanceof MicrosoftAspNetCoreMvcController or
+    this instanceof MicrosoftAspNetCoreMvcControllerBaseClass
+  }
 }
 
 /*
@@ -59,7 +65,7 @@ class RazorEngineInjection extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     exists(RazorEngineClass rec, MethodCall mc |
-      mc.getQualifiedDeclaration() = rec.getIsValidMethod() and
+      mc.getQualifiedDeclaration() = rec.getParseMethod() and
       sink.asExpr() = mc.getArgument(0)
     )
   }
