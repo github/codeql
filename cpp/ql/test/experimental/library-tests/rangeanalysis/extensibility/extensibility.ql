@@ -25,6 +25,18 @@ class CustomAddFunctionCall extends SimpleRangeAnalysisExpr, FunctionCall {
   override predicate dependsOnChild(Expr child) { child = this.getAnArgument() }
 }
 
+class SelfSub extends SimpleRangeAnalysisExpr, SubExpr {
+  SelfSub() {
+    getLeftOperand().(VariableAccess).getTarget() = getRightOperand().(VariableAccess).getTarget()
+  }
+
+  override float getLowerBounds() { result = 0 }
+
+  override float getUpperBounds() { result = 0 }
+
+  override predicate dependsOnChild(Expr child) { child = this.getAnOperand() }
+}
+
 from VariableAccess expr, float lower, float upper
 where
   lower = lowerBound(expr) and
