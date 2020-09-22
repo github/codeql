@@ -229,7 +229,7 @@ private Node update(Node node) {
 /**
  * IPA type for DataFlowCallable.
  *
- * A callable is either a callable value or a module (for enclosing `ModuleVariable`s).
+ * A callable is either a callable value or a module (for enclosing `ModuleVariableNode`s).
  * A module has no calls.
  */
 newtype TDataFlowCallable =
@@ -292,13 +292,13 @@ class DataFlowModuleScope extends DataFlowCallable, TModule {
  * IPA type for DataFlowCall.
  *
  * Calls corresponding to `CallNode`s are either to callable values or to classes.
- * The latter is directed to the callable corresponding to the calss' `__init__`-method.
+ * The latter is directed to the callable corresponding to the `__init__` method of the class.
  *
- * An `__init__`-method can also be called directly, so that callable can be targetted by
+ * An `__init__` method can also be called directly, so that the callable can be targeted by
  * different types of calls. In that case, the parameter mappings will be different,
  * as the class call will synthesise an argument node to be mapped to the `self` parameter.
  *
- * A calls corresponding to a special method call is handled by the corresponding `SpecialMethodCallNode`.
+ * A call corresponding to a special method call is handled by the corresponding `SpecialMethodCallNode`.
  */
 newtype TDataFlowCall =
   TCallNode(CallNode call) { call = any(CallableValue c).getACall() } or
@@ -406,12 +406,12 @@ class ArgumentNode extends Node {
   final DataFlowCall getCall() { this.argumentOf(result, _) }
 
   predicate isNotPostUpdate() {
+    this = any(CallNodeCall c).getArg(_)
+    or
+    this = any(SpecialCall c).getArg(_)
+    or
     // Avoid argument 0 of class calls as those have non-synthetic post-update nodes.
-    exists(CallNodeCall c | this = c.getArg(_))
-    or
     exists(ClassCall c, int n | n > 0 | this = c.getArg(n))
-    or
-    exists(SpecialCall c | this = c.getArg(_))
   }
 }
 

@@ -163,7 +163,7 @@ class ParameterNode extends EssaNode {
  *
  * Nodes corresponding to AST elements, for example `ExprNode`s, usually refer
  * to the value before the update with the exception of `ObjectCreationNode`s,
- * which represents the value after the constructor has run.
+ * which represents the value _after_ the constructor has run.
  */
 abstract class PostUpdateNode extends Node {
   /** Gets the node before the state update. */
