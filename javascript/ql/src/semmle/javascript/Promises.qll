@@ -117,11 +117,11 @@ class ResolvedES2015PromiseDefinition extends ResolvedPromiseDefinition {
 }
 
 /**
- * An aggregated promise produced either by `Promise.all` or `Promise.race`.
+ * An aggregated promise produced either by `Promise.all`, `Promise.race`, or `Promise.any`.
  */
 class AggregateES2015PromiseDefinition extends PromiseCreationCall {
   AggregateES2015PromiseDefinition() {
-    exists(string m | m = "all" or m = "race" |
+    exists(string m | m = "all" or m = "race" or m = "any" |
       this = DataFlow::globalVarRef("Promise").getAMemberCall(m)
     )
   }

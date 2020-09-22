@@ -531,9 +531,14 @@ public class Parser {
     int next2 = charAt(this.pos + 2);
     if (this.options.esnext()) {
       if (next == '.' && !('0' <= next2 && next2 <= '9')) // '?.', but not '?.X' where X is a digit
-      return this.finishOp(TokenType.questiondot, 2);
-      if (next == '?') // '??'
-      return this.finishOp(TokenType.questionquestion, 2);
+        return this.finishOp(TokenType.questiondot, 2);
+      if (next == '?') { // '??'
+        if (next2 == '=') { // ??=
+          return this.finishOp(TokenType.assign, 3);
+        }
+        return this.finishOp(TokenType.questionquestion, 2);
+      }
+      
     }
     return this.finishOp(TokenType.question, 1);
   }
@@ -566,8 +571,11 @@ public class Parser {
 
   private Token readToken_pipe_amp(int code) { // '|&'
     int next = charAt(this.pos + 1);
-    if (next == code)
+    int next2 = charAt(this.pos + 2);
+    if (next == code) { // && ||
+      if (next2 == 61) return this.finishOp(TokenType.assign, 3); // &&= ||=
       return this.finishOp(code == 124 ? TokenType.logicalOR : TokenType.logicalAND, 2);
+    }
     if (next == 61) return this.finishOp(TokenType.assign, 2);
     return this.finishOp(code == 124 ? TokenType.bitwiseOR : TokenType.bitwiseAND, 1);
   }
@@ -709,8 +717,8 @@ public class Parser {
       case 42: // '%*'
         return this.readToken_mult_modulo_exp(code);
 
-      case 124:
-      case 38: // '|&'
+      case 124: // '|'
+      case 38: // '&'
         return this.readToken_pipe_amp(code);
 
       case 94: // '^'
