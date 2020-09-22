@@ -16,6 +16,7 @@
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:91:31:91:33 | ret | AST only |
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:92:5:92:8 | * ... | AST only |
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:92:6:92:8 | ret | AST only |
+| defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:96:11:96:12 | p2 | IR only |
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:98:10:98:11 | (const char *)... | IR only |
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | defaulttainttracking.cpp:98:10:98:11 | p2 | IR only |
 | defaulttainttracking.cpp:97:27:97:32 | call to getenv | shared.h:5:23:5:31 | sinkparam | IR only |
