@@ -2537,6 +2537,13 @@ module Ssa {
       )
     }
 
+    /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
+    predicate hasInputFromBlock(Definition inp, BasicBlock bb) {
+      this.getAnInput() = inp and
+      this.getBasicBlock().getAPredecessor() = bb and
+      inp.isLiveAtEndOfBlock(bb)
+    }
+
     override string toString() {
       result = getToStringPrefix(this) + "SSA phi(" + getSourceVariable() + ")"
     }
