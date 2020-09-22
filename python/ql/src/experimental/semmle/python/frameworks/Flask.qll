@@ -5,6 +5,7 @@
 private import python
 private import experimental.dataflow.DataFlow
 private import experimental.dataflow.RemoteFlowSources
+private import experimental.dataflow.TaintTracking
 private import experimental.semmle.python.Concepts
 private import experimental.semmle.python.frameworks.Werkzeug
 
@@ -48,6 +49,20 @@ private module Flask {
     RequestSource() { this = flask::request() }
 
     override string getSourceType() { result = "flask.request" }
+  }
+
+  private module FlaskRequestTracking {
+    private DataFlow::Node tainted_methods(string attr_name, DataFlow::TypeTracker t) {
+      attr_name in ["get_data", "get_json"] and
+      t.startInAttr(attr_name) and
+      result = flask::request()
+      or
+      exists(DataFlow::TypeTracker t2 | result = tainted_methods(attr_name, t2).track(t2, t))
+    }
+
+    DataFlow::Node tainted_methods(string attr_name) {
+      result = tainted_methods(attr_name, DataFlow::TypeTracker::end())
+    }
   }
 
   /**
@@ -99,15 +114,20 @@ private module Flask {
               "headers"]
       )
       or
-      // methods
-      exists(CallNode call | this.asCfgNode() = call |
-        // NOTE: will not track bound method, `f = obj.func; f()`
-        attr_name in ["get_data", "get_json"] and
-        call.getFunction().(AttrNode).getObject(attr_name) = flask::request().asCfgNode()
-      )
+      // methods (needs special handling to track bound-methods -- see `FlaskRequestMethodCallsAdditionalTaintStep` below)
+      this = FlaskRequestTracking::tainted_methods(attr_name)
     }
 
     override string getSourceType() { result = "flask.request input" }
+  }
+
+  private class FlaskRequestMethodCallsAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      // NOTE: `request -> request.tainted_method` part is handled as part of RequestInputAccess
+      // tainted_method -> tainted_method()
+      nodeFrom = FlaskRequestTracking::tainted_methods(_) and
+      nodeTo.asCfgNode().(CallNode).getFunction() = nodeFrom.asCfgNode()
+    }
   }
 
   private class RequestInputMultiDict extends RequestInputAccess,

@@ -95,4 +95,4 @@
 | test.py:179 | ok   | test_taint | b.getlist(..) |
 | test.py:180 | ok   | test_taint | gl(..) |
 | test.py:187 | ok   | test_taint | req.path |
-| test.py:188 | fail | test_taint | gd() |
+| test.py:188 | ok   | test_taint | gd() |
