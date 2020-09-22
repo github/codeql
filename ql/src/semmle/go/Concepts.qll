@@ -509,6 +509,17 @@ module HTTP {
     abstract class Range extends DataFlow::Node {
       /** Gets the response writer associated with this header write, if any. */
       abstract ResponseWriter getResponseWriter();
+
+      /** Gets a content-type associated with this body. */
+      string getAContentType() { result = getAContentTypeNode().getStringValue() }
+
+      /** Gets a dataflow node for a content-type associated with this body. */
+      DataFlow::Node getAContentTypeNode() {
+        exists(HTTP::HeaderWrite hw | hw = getResponseWriter().getAHeaderWrite() |
+          hw.getName().getStringValue().toLowerCase() = "content-type" and
+          result = hw.getValue()
+        )
+      }
     }
   }
 
@@ -525,6 +536,12 @@ module HTTP {
 
     /** Gets the response writer associated with this header write, if any. */
     ResponseWriter getResponseWriter() { result = self.getResponseWriter() }
+
+    /** Gets a content-type associated with this body. */
+    string getAContentType() { result = self.getAContentType() }
+
+    /** Gets a dataflow node for a content-type associated with this body. */
+    DataFlow::Node getAContentTypeNode() { result = self.getAContentTypeNode() }
   }
 
   /** Provides a class for modeling new HTTP client request APIs. */
@@ -576,7 +593,7 @@ module HTTP {
       /** Gets the data-flow node representing the URL being redirected to. */
       abstract DataFlow::Node getUrl();
 
-      /** Gets the response writer that this redirect is sent on. */
+      /** Gets the response writer that this redirect is sent on, if any. */
       abstract ResponseWriter getResponseWriter();
     }
 
@@ -591,6 +608,12 @@ module HTTP {
 
       override ResponseWriter getResponseWriter() { result = HeaderWrite.super.getResponseWriter() }
     }
+
+    /**
+     * An HTTP request attribute that is generally not attacker-controllable for
+     * open redirect exploits; for example, a form field submitted in a POST request.
+     */
+    abstract class UnexploitableSource extends DataFlow::Node { }
   }
 
   /**
@@ -607,7 +630,7 @@ module HTTP {
     /** Gets the data-flow node representing the URL being redirected to. */
     DataFlow::Node getUrl() { result = self.getUrl() }
 
-    /** Gets the response writer that this redirect is sent on. */
+    /** Gets the response writer that this redirect is sent on, if any. */
     ResponseWriter getResponseWriter() { result = self.getResponseWriter() }
   }
 }

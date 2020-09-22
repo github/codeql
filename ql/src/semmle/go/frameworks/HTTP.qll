@@ -37,7 +37,7 @@ private module GoRestfulHttp {
             .getTarget()
             .hasQualifiedName(package("github.com/emicklei/go-restful", ""), "Request", "ReadEntity")
       |
-        this = any(FunctionOutput output | output.isParameter(0)).getExitNode(call)
+        this = FunctionOutput::parameter(0).getExitNode(call)
       )
     }
   }

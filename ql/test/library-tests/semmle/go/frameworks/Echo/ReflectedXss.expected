@@ -1,0 +1,95 @@
+edges
+| test.go:13:11:13:32 | call to Param : string | test.go:14:16:14:20 | param |
+| test.go:19:11:19:27 | call to ParamValues : slice type | test.go:20:16:20:20 | param |
+| test.go:25:11:25:37 | call to QueryParam : string | test.go:26:16:26:20 | param |
+| test.go:31:11:31:27 | call to QueryParams : Values | test.go:32:16:32:20 | param |
+| test.go:37:10:37:26 | call to QueryString : string | test.go:38:16:38:19 | qstr |
+| test.go:43:9:43:34 | call to FormValue : string | test.go:44:16:44:18 | val |
+| test.go:49:2:49:30 | ... := ...[0] : Values | test.go:50:16:50:37 | index expression |
+| test.go:55:2:55:46 | ... := ...[0] : pointer type | test.go:59:20:59:25 | buffer |
+| test.go:64:2:64:31 | ... := ...[0] : pointer type | test.go:65:16:65:19 | implicit dereference : Form |
+| test.go:64:2:64:31 | ... := ...[0] : pointer type | test.go:65:16:65:41 | index expression |
+| test.go:65:16:65:19 | implicit dereference : Form | test.go:65:16:65:19 | implicit dereference : Form |
+| test.go:65:16:65:19 | implicit dereference : Form | test.go:65:16:65:41 | index expression |
+| test.go:70:2:70:31 | ... := ...[0] : pointer type | test.go:71:16:71:19 | implicit dereference : Form |
+| test.go:70:2:70:31 | ... := ...[0] : pointer type | test.go:75:20:75:25 | buffer |
+| test.go:71:16:71:19 | implicit dereference : Form | test.go:71:16:71:19 | implicit dereference : Form |
+| test.go:71:16:71:19 | implicit dereference : Form | test.go:75:20:75:25 | buffer |
+| test.go:80:2:80:32 | ... := ...[0] : pointer type | test.go:81:16:81:18 | implicit dereference : Cookie |
+| test.go:80:2:80:32 | ... := ...[0] : pointer type | test.go:81:16:81:24 | selection of Value |
+| test.go:81:16:81:18 | implicit dereference : Cookie | test.go:81:16:81:18 | implicit dereference : Cookie |
+| test.go:81:16:81:18 | implicit dereference : Cookie | test.go:81:16:81:24 | selection of Value |
+| test.go:86:13:86:25 | call to Cookies : slice type | test.go:87:16:87:25 | implicit dereference : Cookie |
+| test.go:86:13:86:25 | call to Cookies : slice type | test.go:87:16:87:31 | selection of Value |
+| test.go:87:16:87:25 | implicit dereference : Cookie | test.go:87:16:87:25 | implicit dereference : Cookie |
+| test.go:87:16:87:25 | implicit dereference : Cookie | test.go:87:16:87:31 | selection of Value |
+| test.go:97:11:97:15 | &... : pointer type | test.go:98:16:98:21 | selection of s |
+| test.go:111:21:111:42 | call to Param : string | test.go:112:16:112:42 | type assertion |
+| test.go:122:11:122:32 | call to Param : string | test.go:123:16:123:20 | param |
+| test.go:128:11:128:32 | call to Param : string | test.go:129:20:129:32 | type conversion |
+| test.go:134:11:134:32 | call to Param : string | test.go:135:29:135:41 | type conversion |
+| test.go:146:11:146:32 | call to Param : string | test.go:148:31:148:36 | reader |
+| test.go:162:11:162:32 | call to Param : string | test.go:163:23:163:35 | type conversion |
+nodes
+| test.go:13:11:13:32 | call to Param : string | semmle.label | call to Param : string |
+| test.go:14:16:14:20 | param | semmle.label | param |
+| test.go:19:11:19:27 | call to ParamValues : slice type | semmle.label | call to ParamValues : slice type |
+| test.go:20:16:20:20 | param | semmle.label | param |
+| test.go:25:11:25:37 | call to QueryParam : string | semmle.label | call to QueryParam : string |
+| test.go:26:16:26:20 | param | semmle.label | param |
+| test.go:31:11:31:27 | call to QueryParams : Values | semmle.label | call to QueryParams : Values |
+| test.go:32:16:32:20 | param | semmle.label | param |
+| test.go:37:10:37:26 | call to QueryString : string | semmle.label | call to QueryString : string |
+| test.go:38:16:38:19 | qstr | semmle.label | qstr |
+| test.go:43:9:43:34 | call to FormValue : string | semmle.label | call to FormValue : string |
+| test.go:44:16:44:18 | val | semmle.label | val |
+| test.go:49:2:49:30 | ... := ...[0] : Values | semmle.label | ... := ...[0] : Values |
+| test.go:50:16:50:37 | index expression | semmle.label | index expression |
+| test.go:55:2:55:46 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
+| test.go:59:20:59:25 | buffer | semmle.label | buffer |
+| test.go:64:2:64:31 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
+| test.go:65:16:65:19 | implicit dereference : Form | semmle.label | implicit dereference : Form |
+| test.go:65:16:65:41 | index expression | semmle.label | index expression |
+| test.go:70:2:70:31 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
+| test.go:71:16:71:19 | implicit dereference : Form | semmle.label | implicit dereference : Form |
+| test.go:75:20:75:25 | buffer | semmle.label | buffer |
+| test.go:80:2:80:32 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
+| test.go:81:16:81:18 | implicit dereference : Cookie | semmle.label | implicit dereference : Cookie |
+| test.go:81:16:81:24 | selection of Value | semmle.label | selection of Value |
+| test.go:86:13:86:25 | call to Cookies : slice type | semmle.label | call to Cookies : slice type |
+| test.go:87:16:87:25 | implicit dereference : Cookie | semmle.label | implicit dereference : Cookie |
+| test.go:87:16:87:31 | selection of Value | semmle.label | selection of Value |
+| test.go:97:11:97:15 | &... : pointer type | semmle.label | &... : pointer type |
+| test.go:98:16:98:21 | selection of s | semmle.label | selection of s |
+| test.go:111:21:111:42 | call to Param : string | semmle.label | call to Param : string |
+| test.go:112:16:112:42 | type assertion | semmle.label | type assertion |
+| test.go:122:11:122:32 | call to Param : string | semmle.label | call to Param : string |
+| test.go:123:16:123:20 | param | semmle.label | param |
+| test.go:128:11:128:32 | call to Param : string | semmle.label | call to Param : string |
+| test.go:129:20:129:32 | type conversion | semmle.label | type conversion |
+| test.go:134:11:134:32 | call to Param : string | semmle.label | call to Param : string |
+| test.go:135:29:135:41 | type conversion | semmle.label | type conversion |
+| test.go:146:11:146:32 | call to Param : string | semmle.label | call to Param : string |
+| test.go:148:31:148:36 | reader | semmle.label | reader |
+| test.go:162:11:162:32 | call to Param : string | semmle.label | call to Param : string |
+| test.go:163:23:163:35 | type conversion | semmle.label | type conversion |
+#select
+| test.go:14:16:14:20 | param | test.go:13:11:13:32 | call to Param : string | test.go:14:16:14:20 | param | Cross-site scripting vulnerability due to $@. | test.go:13:11:13:32 | call to Param | user-provided value |
+| test.go:20:16:20:20 | param | test.go:19:11:19:27 | call to ParamValues : slice type | test.go:20:16:20:20 | param | Cross-site scripting vulnerability due to $@. | test.go:19:11:19:27 | call to ParamValues | user-provided value |
+| test.go:26:16:26:20 | param | test.go:25:11:25:37 | call to QueryParam : string | test.go:26:16:26:20 | param | Cross-site scripting vulnerability due to $@. | test.go:25:11:25:37 | call to QueryParam | user-provided value |
+| test.go:32:16:32:20 | param | test.go:31:11:31:27 | call to QueryParams : Values | test.go:32:16:32:20 | param | Cross-site scripting vulnerability due to $@. | test.go:31:11:31:27 | call to QueryParams | user-provided value |
+| test.go:38:16:38:19 | qstr | test.go:37:10:37:26 | call to QueryString : string | test.go:38:16:38:19 | qstr | Cross-site scripting vulnerability due to $@. | test.go:37:10:37:26 | call to QueryString | user-provided value |
+| test.go:44:16:44:18 | val | test.go:43:9:43:34 | call to FormValue : string | test.go:44:16:44:18 | val | Cross-site scripting vulnerability due to $@. | test.go:43:9:43:34 | call to FormValue | user-provided value |
+| test.go:50:16:50:37 | index expression | test.go:49:2:49:30 | ... := ...[0] : Values | test.go:50:16:50:37 | index expression | Cross-site scripting vulnerability due to $@. | test.go:49:2:49:30 | ... := ...[0] | user-provided value |
+| test.go:59:20:59:25 | buffer | test.go:55:2:55:46 | ... := ...[0] : pointer type | test.go:59:20:59:25 | buffer | Cross-site scripting vulnerability due to $@. | test.go:55:2:55:46 | ... := ...[0] | user-provided value |
+| test.go:65:16:65:41 | index expression | test.go:64:2:64:31 | ... := ...[0] : pointer type | test.go:65:16:65:41 | index expression | Cross-site scripting vulnerability due to $@. | test.go:64:2:64:31 | ... := ...[0] | user-provided value |
+| test.go:75:20:75:25 | buffer | test.go:70:2:70:31 | ... := ...[0] : pointer type | test.go:75:20:75:25 | buffer | Cross-site scripting vulnerability due to $@. | test.go:70:2:70:31 | ... := ...[0] | user-provided value |
+| test.go:81:16:81:24 | selection of Value | test.go:80:2:80:32 | ... := ...[0] : pointer type | test.go:81:16:81:24 | selection of Value | Cross-site scripting vulnerability due to $@. | test.go:80:2:80:32 | ... := ...[0] | user-provided value |
+| test.go:87:16:87:31 | selection of Value | test.go:86:13:86:25 | call to Cookies : slice type | test.go:87:16:87:31 | selection of Value | Cross-site scripting vulnerability due to $@. | test.go:86:13:86:25 | call to Cookies | user-provided value |
+| test.go:98:16:98:21 | selection of s | test.go:97:11:97:15 | &... : pointer type | test.go:98:16:98:21 | selection of s | Cross-site scripting vulnerability due to $@. | test.go:97:11:97:15 | &... | user-provided value |
+| test.go:112:16:112:42 | type assertion | test.go:111:21:111:42 | call to Param : string | test.go:112:16:112:42 | type assertion | Cross-site scripting vulnerability due to $@. | test.go:111:21:111:42 | call to Param | user-provided value |
+| test.go:123:16:123:20 | param | test.go:122:11:122:32 | call to Param : string | test.go:123:16:123:20 | param | Cross-site scripting vulnerability due to $@. | test.go:122:11:122:32 | call to Param | user-provided value |
+| test.go:129:20:129:32 | type conversion | test.go:128:11:128:32 | call to Param : string | test.go:129:20:129:32 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:128:11:128:32 | call to Param | user-provided value |
+| test.go:135:29:135:41 | type conversion | test.go:134:11:134:32 | call to Param : string | test.go:135:29:135:41 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:134:11:134:32 | call to Param | user-provided value |
+| test.go:148:31:148:36 | reader | test.go:146:11:146:32 | call to Param : string | test.go:148:31:148:36 | reader | Cross-site scripting vulnerability due to $@. | test.go:146:11:146:32 | call to Param | user-provided value |
+| test.go:163:23:163:35 | type conversion | test.go:162:11:162:32 | call to Param : string | test.go:163:23:163:35 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:162:11:162:32 | call to Param | user-provided value |

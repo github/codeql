@@ -216,6 +216,25 @@ module NetHttp {
     }
   }
 
+  /** Fields and methods of `net/http.Request` that are not generally exploitable in an open-redirect attack. */
+  private class RedirectUnexploitableRequestFields extends HTTP::Redirect::UnexploitableSource {
+    RedirectUnexploitableRequestFields() {
+      exists(Field f, string fieldName |
+        f.hasQualifiedName("net/http", "Request", fieldName) and
+        this = f.getARead()
+      |
+        fieldName = ["Body", "GetBody", "PostForm", "MultipartForm", "Header", "Trailer"]
+      )
+      or
+      exists(Method m, string methName |
+        m.hasQualifiedName("net/http", "Request", methName) and
+        this = m.getACall()
+      |
+        methName = ["Cookie", "Cookies", "MultipartReader", "PostFormValue", "Referer", "UserAgent"]
+      )
+    }
+  }
+
   private class FunctionModels extends TaintTracking::FunctionModel {
     FunctionInput inp;
     FunctionOutput outp;
