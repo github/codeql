@@ -9,7 +9,7 @@ import { VirtualSourceRoot } from "./virtual_source_root";
 const packageNameRex = /^(?:@[\w.-]+[/\\]+)?\w[\w.-]*(?=[/\\]|$)/;
 const extensions = ['.ts', '.tsx', '.d.ts', '.js', '.jsx'];
 
-export function getPackageName(importString: string) {
+function getPackageName(importString: string) {
   let packageNameMatch = packageNameRex.exec(importString);
   if (packageNameMatch == null) return null;
   let packageName = packageNameMatch[0];
