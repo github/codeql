@@ -180,6 +180,14 @@ def test_taint(name = "World!", number="0", foo="foo"):
         gl('key'),
     )
 
+    # aliasing tests
+    req = request
+    gd = request.get_data
+    ensure_tainted(
+        req.path,
+        gd(),
+    )
+
 
 
 
