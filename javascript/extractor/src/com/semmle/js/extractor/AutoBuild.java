@@ -1249,7 +1249,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       cmd.addAll(xmlExtensions);
     } else {
       String command = Env.getOS() == OS.WINDOWS ? "codeql.cmd" : "codeql";
-      cmd.add(EnvironmentVariables.getCodeQLDist() + "/" + command);
+      cmd.add(Paths.get(EnvironmentVariables.getCodeQLDist(), command).toString());
       cmd.add("database");
       cmd.add("index-files");
       cmd.add("--language");
