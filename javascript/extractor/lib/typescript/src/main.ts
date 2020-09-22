@@ -103,7 +103,7 @@ class State {
     public packageTypings = new Map<string, string | undefined>();
 
     /** Map from file path to the enclosing `package.json` file, if any. Will not traverse outside node_modules. */
-    public enclosingPackageJson = new Map<string, string>();
+    public enclosingPackageJson = new Map<string, string | undefined>();
 }
 let state = new State();
 

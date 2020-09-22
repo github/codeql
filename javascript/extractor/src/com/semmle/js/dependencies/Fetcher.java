@@ -105,6 +105,8 @@ public class Fetcher {
             // Despite having the .tgz extension, the file is not always gzipped, sometimes it's just a raw tar archive,
             // regardless of what Accept-Encoding header we send.
             // Sniff the header to detect which is the case.
+            // Note that the compression format has nothing to do with the Accept-Encoding/Content-Encoding headers,
+            // so we can't reuse the code from fetch().
             PushbackInputStream pushback = new PushbackInputStream(rawStream, 2);
             int byte1 = pushback.read();
             int byte2 = pushback.read();

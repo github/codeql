@@ -71,7 +71,7 @@ public class AsyncFetcher {
     }
 
     /** Result of a tarball extraction */
-    class ExtractionResult {
+    private static class ExtractionResult {
         /** The directory into which the tarball was extracted. */
         Path destDir;
 
