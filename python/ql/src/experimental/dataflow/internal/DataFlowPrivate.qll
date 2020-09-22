@@ -18,6 +18,7 @@ class DataFlowCfgNode extends ControlFlowNode {
 
 /** A data flow node for which we should synthesise an associated pre-update node. */
 abstract class NeedsSyntheticPreUpdateNode extends Node {
+  /** This will figure in the texttual representation of the synthesised pre-update node. */
   abstract string label();
 }
 
@@ -38,6 +39,7 @@ class SyntheticPreUpdateNode extends Node, TSyntheticPreUpdateNode {
 
 /** A data flow node for which we should synthesise an associated post-update node. */
 abstract class NeedsSyntheticPostUpdateNode extends Node {
+  /** This will figure in the texttual representation of the synthesised post-update node. */
   abstract string label();
 }
 
@@ -45,7 +47,14 @@ abstract class NeedsSyntheticPostUpdateNode extends Node {
 class ArgumentPreUpdateNode extends NeedsSyntheticPostUpdateNode, ArgumentNode {
   // Certain arguments, such as implicit self arguments are already post-update nodes
   // and should not have an extra node synthesised.
-  ArgumentPreUpdateNode() { this.isNotPostUpdate() }
+  ArgumentPreUpdateNode() {
+    this = any(CallNodeCall c).getArg(_)
+    or
+    this = any(SpecialCall c).getArg(_)
+    or
+    // Avoid argument 0 of class calls as those have non-synthetic post-update nodes.
+    exists(ClassCall c, int n | n > 0 | this = c.getArg(n))
+  }
 
   override string label() { result = "arg" }
 }
@@ -95,7 +104,7 @@ class SyntheticPostUpdateNode extends PostUpdateNode, TSyntheticPostUpdateNode {
  * object after the constructor (currently only `__init__`) has run.
  */
 class ObjectCreationNode extends PostUpdateNode, NeedsSyntheticPreUpdateNode, CfgNode {
-  ObjectCreationNode() { node.(CallNode) = any(ClassValue c).getACall() }
+  ObjectCreationNode() { node.(CallNode) = any(ClassCall c).getNode() }
 
   override Node getPreUpdateNode() { result.(SyntheticPreUpdateNode).getPostUpdateNode() = this }
 
@@ -371,7 +380,7 @@ class ClassCall extends DataFlowCall, TClassCall {
     )
   }
 
-  override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getNode().getScope() }
+  override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getScope() }
 }
 
 /** Represents a call to a special method. */
@@ -404,15 +413,6 @@ class ArgumentNode extends Node {
 
   /** Gets the call in which this node is an argument. */
   final DataFlowCall getCall() { this.argumentOf(result, _) }
-
-  predicate isNotPostUpdate() {
-    this = any(CallNodeCall c).getArg(_)
-    or
-    this = any(SpecialCall c).getArg(_)
-    or
-    // Avoid argument 0 of class calls as those have non-synthetic post-update nodes.
-    exists(ClassCall c, int n | n > 0 | this = c.getArg(n))
-  }
 }
 
 /** Gets a viable run-time target for the call `call`. */
@@ -469,7 +469,7 @@ class DataFlowType extends TDataFlowType {
 }
 
 /** A node that performs a type cast. */
-class CastNode extends CfgNode {
+class CastNode extends Node {
   CastNode() { none() }
 }
 
@@ -605,19 +605,10 @@ predicate comprehensionStoreStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
  * data flows from `x` to (the post-update node for) `obj` via assignment to `foo`.
  */
 predicate attributeStoreStep(CfgNode nodeFrom, Content c, PostUpdateNode nodeTo) {
-  exists(AssignStmt a, Attribute attr |
-    a.getValue().getAFlowNode() = nodeFrom.getNode() and
-    a.getATarget().(Attribute) = attr and
+  exists(AttrNode attr |
+    nodeFrom.asCfgNode() = attr.(DefinitionNode).getValue() and
     attr.getName() = c.(AttributeContent).getAttribute() and
-    attr.getObject().getAFlowNode() = nodeTo.getPreUpdateNode().(CfgNode).getNode() and
-    attr.getCtx() instanceof Store
-  )
-  or
-  exists(AssignExpr ae |
-    ae.getValue().getAFlowNode() = nodeFrom.getNode() and
-    ae.getTarget().(Attribute).getName() = c.(AttributeContent).getAttribute() and
-    ae.getTarget().(Attribute).getObject().getAFlowNode() =
-      nodeTo.getPreUpdateNode().(CfgNode).getNode()
+    attr.getObject() = nodeTo.getPreUpdateNode().(CfgNode).getNode()
   )
 }
 
@@ -726,11 +717,11 @@ predicate comprehensionReadStep(CfgNode nodeFrom, Content c, EssaNode nodeTo) {
  * data flows from `obj` to `obj.foo` via a read from `foo`.
  */
 predicate attributeReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
-  exists(Attribute attr |
-    nodeTo.asCfgNode().(AttrNode).getNode() = attr and
-    nodeFrom.asCfgNode() = attr.getObject().getAFlowNode() and
+  exists(AttrNode attr |
+    nodeTo.asCfgNode() = attr and
+    nodeFrom.asCfgNode() = attr.getObject() and
     attr.getName() = c.(AttributeContent).getAttribute() and
-    attr.getCtx() instanceof Load
+    attr.isLoad()
   )
 }
 
