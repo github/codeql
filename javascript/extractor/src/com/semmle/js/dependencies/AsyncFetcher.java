@@ -40,7 +40,7 @@ public class AsyncFetcher {
         throw ex;
     }
 
-    class CachedOperation<K, V> {
+    private class CachedOperation<K, V> {
         private Map<K, CompletableFuture<V>> cache = new LinkedHashMap<>();
 
         public synchronized CompletableFuture<V> get(K key, Supplier<V> builder) {
