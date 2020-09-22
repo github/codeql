@@ -19,7 +19,7 @@ import DataFlow::PathGraph
 class RazorEngineClass extends Class {
   RazorEngineClass() { this.hasQualifiedName("RazorEngine.Razor") }
 
-  Method getIsValidMethod() {
+  Method getParseMethod() {
     result.getDeclaringType() = this and
     result.hasName("Parse")
   }
