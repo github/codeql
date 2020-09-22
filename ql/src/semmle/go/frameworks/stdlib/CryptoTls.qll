@@ -36,23 +36,4 @@ module CryptoTls {
       input = inp and output = outp
     }
   }
-
-  private class MethodModels extends TaintTracking::FunctionModel, Method {
-    FunctionInput inp;
-    FunctionOutput outp;
-
-    MethodModels() {
-      // signature: func (*Conn).Read(b []byte) (int, error)
-      this.hasQualifiedName("crypto/tls", "Conn", "Read") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
-      // signature: func (*Conn).Write(b []byte) (int, error)
-      this.hasQualifiedName("crypto/tls", "Conn", "Write") and
-      (inp.isParameter(0) and outp.isReceiver())
-    }
-
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      input = inp and output = outp
-    }
-  }
 }

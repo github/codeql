@@ -11,14 +11,6 @@ module CryptoCipher {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (StreamReader).Read(dst []byte) (n int, err error)
-      this.hasQualifiedName("crypto/cipher", "StreamReader", "Read") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
-      // signature: func (StreamWriter).Write(src []byte) (n int, err error)
-      this.hasQualifiedName("crypto/cipher", "StreamWriter", "Write") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
       // signature: func (Block).Decrypt(dst []byte, src []byte)
       this.implements("crypto/cipher", "Block", "Decrypt") and
       (inp.isParameter(1) and outp.isParameter(0))
