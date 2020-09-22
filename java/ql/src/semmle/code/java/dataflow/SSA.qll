@@ -770,7 +770,9 @@ private module SsaImpl {
 
     /** Holds if `v` occurs in `b` or one of `b`'s transitive successors. */
     private predicate blockPrecedesVar(TrackedVar v, BasicBlock b) {
-      varOccursInBlock(v, b.getABBSuccessor*())
+      varOccursInBlock(v, b)
+      or
+      ssaDefReachesEndOfBlock(v, _, b)
     }
 
     /**
