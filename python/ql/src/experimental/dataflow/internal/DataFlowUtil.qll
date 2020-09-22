@@ -65,28 +65,3 @@ EssaNode importMember(string moduleName, string memberName) {
     result.getVar().(AssignmentDefinition).getSourceVariable() = var
   )
 }
-
-abstract class ListLike extends Node {
-  /** Gets a Node that is an access of an element of this list-like object */
-  Node getElementAccess() {
-    // subscript
-    result.asCfgNode().(SubscriptNode).getObject() = this.asCfgNode()
-    or
-    // get
-    // NOTE: will not track bound method, `f = obj.func; f()`
-    result.asCfgNode().(CallNode).getFunction().(AttrNode).getObject("pop") = this.asCfgNode()
-  }
-}
-
-/** Class of dictionary-like objects */
-abstract class DictLike extends Node {
-  /** Gets a Node that is an access of an element of this dictionary-like object */
-  Node getElementAccess() {
-    // subscript
-    result.asCfgNode().(SubscriptNode).getObject() = this.asCfgNode()
-    or
-    // get
-    // NOTE: will not track bound method, `f = obj.func; f()`
-    result.asCfgNode().(CallNode).getFunction().(AttrNode).getObject("get") = this.asCfgNode()
-  }
-}

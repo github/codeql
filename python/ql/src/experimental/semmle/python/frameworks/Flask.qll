@@ -8,6 +8,8 @@ private import experimental.dataflow.RemoteFlowSources
 private import experimental.semmle.python.Concepts
 private import experimental.semmle.python.frameworks.Werkzeug
 
+// for old improved impl see
+// https://github.com/github/codeql/blob/9f95212e103c68d0c1dfa4b6f30fb5d53954ccef/python/ql/src/semmle/python/web/flask/Request.qll
 private module Flask {
   /** Gets a reference to the `flask` module. */
   DataFlow::Node flask(DataFlow::TypeTracker t) {
@@ -36,7 +38,12 @@ private module Flask {
     DataFlow::Node request() { result = flask::request(DataFlow::TypeTracker::end()) }
   }
 
-  // TODO: Do we even need this class then? :|
+  // TODO: Do we even need this class? :|
+  /**
+   * A source of remote flow from a flask request.
+   *
+   * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Request
+   */
   private class RequestSource extends RemoteFlowSource::Range {
     RequestSource() { this = flask::request() }
 
@@ -111,13 +118,8 @@ private module Flask {
   private class RequestInputFiles extends RequestInputMultiDict {
     RequestInputFiles() { attr_name = "files" }
   }
-
-  private class RequestInputFileStorage extends Werkzeug::Datastructures::FileStorage {
-    RequestInputFileStorage() {
-      exists(RequestInputFiles files, Werkzeug::Datastructures::MultiDictTracked filesTracked |
-        filesTracked.getMultiDict() = files and
-        this = filesTracked.getElementAccess()
-      )
-    }
-  }
+  // TODO: Somehow specify that elements of `RequestInputFiles` are
+  // Werkzeug::Datastructures::FileStorage and should have those additional taint steps
+  // AND that the 0-indexed argument to its' save method is a sink for path-injection.
+  // https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage.save
 }
