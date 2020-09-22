@@ -656,190 +656,192 @@ deprecated predicate positive_overflow(Expr expr) { exprMightOverflowPositively(
 
 /** Only to be called by `getTruncatedLowerBounds`. */
 private float getLowerBoundsImpl(Expr expr) {
-  exists(Expr operand, float operandLow, float positive |
-    effectivelyMultipliesByPositive(expr, operand, positive) and
-    operandLow = getFullyConvertedLowerBounds(operand) and
-    result = positive * operandLow
-  )
-  or
-  exists(Expr operand, float operandHigh, float negative |
-    effectivelyMultipliesByNegative(expr, operand, negative) and
-    operandHigh = getFullyConvertedUpperBounds(operand) and
-    result = negative * operandHigh
-  )
-  or
-  exists(MinExpr minExpr |
-    expr = minExpr and
-    // Return the union of the lower bounds from both children.
-    result = getFullyConvertedLowerBounds(minExpr.getAnOperand())
-  )
-  or
-  exists(MaxExpr maxExpr |
-    expr = maxExpr and
-    // Compute the cross product of the bounds from both children.  We are
-    // using this mathematical property:
-    //
-    //    max (minimum{X}, minimum{Y})
-    //  = minimum { max(x,y) | x in X, y in Y }
-    exists(float x, float y |
-      x = getFullyConvertedLowerBounds(maxExpr.getLeftOperand()) and
-      y = getFullyConvertedLowerBounds(maxExpr.getRightOperand()) and
-      if x >= y then result = x else result = y
+  (
+    exists(Expr operand, float operandLow, float positive |
+      effectivelyMultipliesByPositive(expr, operand, positive) and
+      operandLow = getFullyConvertedLowerBounds(operand) and
+      result = positive * operandLow
     )
-  )
-  or
-  // ConditionalExpr (true branch)
-  exists(ConditionalExpr condExpr |
-    expr = condExpr and
-    // Use `boolConversionUpperBound` to determine whether the condition
-    // might evaluate to `true`.
-    boolConversionUpperBound(condExpr.getCondition().getFullyConverted()) = 1 and
-    result = getFullyConvertedLowerBounds(condExpr.getThen())
-  )
-  or
-  // ConditionalExpr (false branch)
-  exists(ConditionalExpr condExpr |
-    expr = condExpr and
-    // Use `boolConversionLowerBound` to determine whether the condition
-    // might evaluate to `false`.
-    boolConversionLowerBound(condExpr.getCondition().getFullyConverted()) = 0 and
-    result = getFullyConvertedLowerBounds(condExpr.getElse())
-  )
-  or
-  exists(AddExpr addExpr, float xLow, float yLow |
-    expr = addExpr and
-    xLow = getFullyConvertedLowerBounds(addExpr.getLeftOperand()) and
-    yLow = getFullyConvertedLowerBounds(addExpr.getRightOperand()) and
-    result = addRoundingDown(xLow, yLow)
-  )
-  or
-  exists(SubExpr subExpr, float xLow, float yHigh |
-    expr = subExpr and
-    xLow = getFullyConvertedLowerBounds(subExpr.getLeftOperand()) and
-    yHigh = getFullyConvertedUpperBounds(subExpr.getRightOperand()) and
-    result = addRoundingDown(xLow, -yHigh)
-  )
-  or
-  exists(UnsignedMulExpr mulExpr, float xLow, float yLow |
-    expr = mulExpr and
-    xLow = getFullyConvertedLowerBounds(mulExpr.getLeftOperand()) and
-    yLow = getFullyConvertedLowerBounds(mulExpr.getRightOperand()) and
-    result = xLow * yLow
-  )
-  or
-  exists(AssignExpr assign |
-    expr = assign and
-    result = getFullyConvertedLowerBounds(assign.getRValue())
-  )
-  or
-  exists(AssignAddExpr addExpr, float xLow, float yLow |
-    expr = addExpr and
-    xLow = getFullyConvertedLowerBounds(addExpr.getLValue()) and
-    yLow = getFullyConvertedLowerBounds(addExpr.getRValue()) and
-    result = addRoundingDown(xLow, yLow)
-  )
-  or
-  exists(AssignSubExpr subExpr, float xLow, float yHigh |
-    expr = subExpr and
-    xLow = getFullyConvertedLowerBounds(subExpr.getLValue()) and
-    yHigh = getFullyConvertedUpperBounds(subExpr.getRValue()) and
-    result = addRoundingDown(xLow, -yHigh)
-  )
-  or
-  exists(UnsignedAssignMulExpr mulExpr, float xLow, float yLow |
-    expr = mulExpr and
-    xLow = getFullyConvertedLowerBounds(mulExpr.getLValue()) and
-    yLow = getFullyConvertedLowerBounds(mulExpr.getRValue()) and
-    result = xLow * yLow
-  )
-  or
-  exists(AssignMulByPositiveConstantExpr mulExpr, float xLow |
-    expr = mulExpr and
-    xLow = getFullyConvertedLowerBounds(mulExpr.getLValue()) and
-    result = xLow * mulExpr.getConstant()
-  )
-  or
-  exists(AssignMulByNegativeConstantExpr mulExpr, float xHigh |
-    expr = mulExpr and
-    xHigh = getFullyConvertedUpperBounds(mulExpr.getLValue()) and
-    result = xHigh * mulExpr.getConstant()
-  )
-  or
-  exists(PrefixIncrExpr incrExpr, float xLow |
-    expr = incrExpr and
-    xLow = getFullyConvertedLowerBounds(incrExpr.getOperand()) and
-    result = xLow + 1
-  )
-  or
-  exists(PrefixDecrExpr decrExpr, float xLow |
-    expr = decrExpr and
-    xLow = getFullyConvertedLowerBounds(decrExpr.getOperand()) and
-    result = addRoundingDownSmall(xLow, -1)
-  )
-  or
-  // `PostfixIncrExpr` and `PostfixDecrExpr` return the value of their
-  // operand. The incrementing/decrementing behavior is handled in
-  // `getDefLowerBoundsImpl`.
-  exists(PostfixIncrExpr incrExpr |
-    expr = incrExpr and
-    result = getFullyConvertedLowerBounds(incrExpr.getOperand())
-  )
-  or
-  exists(PostfixDecrExpr decrExpr |
-    expr = decrExpr and
-    result = getFullyConvertedLowerBounds(decrExpr.getOperand())
-  )
-  or
-  exists(RemExpr remExpr | expr = remExpr |
-    // If both inputs are positive then the lower bound is zero.
-    result = 0
     or
-    // If either input could be negative then the output could be
-    // negative. If so, the lower bound of `x%y` is `-abs(y)`, which is
-    // equal to `min(-y,y)`.
-    exists(float childLB |
-      childLB = getFullyConvertedLowerBounds(remExpr.getAnOperand()) and
-      not childLB >= 0
-    |
-      result = getFullyConvertedLowerBounds(remExpr.getRightOperand())
-      or
-      exists(float rhsUB | rhsUB = getFullyConvertedUpperBounds(remExpr.getRightOperand()) |
-        result = -rhsUB
+    exists(Expr operand, float operandHigh, float negative |
+      effectivelyMultipliesByNegative(expr, operand, negative) and
+      operandHigh = getFullyConvertedUpperBounds(operand) and
+      result = negative * operandHigh
+    )
+    or
+    exists(MinExpr minExpr |
+      expr = minExpr and
+      // Return the union of the lower bounds from both children.
+      result = getFullyConvertedLowerBounds(minExpr.getAnOperand())
+    )
+    or
+    exists(MaxExpr maxExpr |
+      expr = maxExpr and
+      // Compute the cross product of the bounds from both children.  We are
+      // using this mathematical property:
+      //
+      //    max (minimum{X}, minimum{Y})
+      //  = minimum { max(x,y) | x in X, y in Y }
+      exists(float x, float y |
+        x = getFullyConvertedLowerBounds(maxExpr.getLeftOperand()) and
+        y = getFullyConvertedLowerBounds(maxExpr.getRightOperand()) and
+        if x >= y then result = x else result = y
       )
     )
-  )
-  or
-  // If the conversion is to an arithmetic type then we just return the
-  // lower bound of the child. We do not need to handle truncation and
-  // overflow here, because that is done in `getTruncatedLowerBounds`.
-  // Conversions to `bool` need to be handled specially because they test
-  // whether the value of the expression is equal to 0.
-  exists(Conversion convExpr | expr = convExpr |
-    if convExpr.getUnspecifiedType() instanceof BoolType
-    then result = boolConversionLowerBound(convExpr.getExpr())
-    else result = getTruncatedLowerBounds(convExpr.getExpr())
-  )
-  or
-  // Use SSA to get the lower bounds for a variable use.
-  exists(RangeSsaDefinition def, StackVariable v | expr = def.getAUse(v) |
-    result = getDefLowerBounds(def, v) and
+    or
+    // ConditionalExpr (true branch)
+    exists(ConditionalExpr condExpr |
+      expr = condExpr and
+      // Use `boolConversionUpperBound` to determine whether the condition
+      // might evaluate to `true`.
+      boolConversionUpperBound(condExpr.getCondition().getFullyConverted()) = 1 and
+      result = getFullyConvertedLowerBounds(condExpr.getThen())
+    )
+    or
+    // ConditionalExpr (false branch)
+    exists(ConditionalExpr condExpr |
+      expr = condExpr and
+      // Use `boolConversionLowerBound` to determine whether the condition
+      // might evaluate to `false`.
+      boolConversionLowerBound(condExpr.getCondition().getFullyConverted()) = 0 and
+      result = getFullyConvertedLowerBounds(condExpr.getElse())
+    )
+    or
+    exists(AddExpr addExpr, float xLow, float yLow |
+      expr = addExpr and
+      xLow = getFullyConvertedLowerBounds(addExpr.getLeftOperand()) and
+      yLow = getFullyConvertedLowerBounds(addExpr.getRightOperand()) and
+      result = addRoundingDown(xLow, yLow)
+    )
+    or
+    exists(SubExpr subExpr, float xLow, float yHigh |
+      expr = subExpr and
+      xLow = getFullyConvertedLowerBounds(subExpr.getLeftOperand()) and
+      yHigh = getFullyConvertedUpperBounds(subExpr.getRightOperand()) and
+      result = addRoundingDown(xLow, -yHigh)
+    )
+    or
+    exists(UnsignedMulExpr mulExpr, float xLow, float yLow |
+      expr = mulExpr and
+      xLow = getFullyConvertedLowerBounds(mulExpr.getLeftOperand()) and
+      yLow = getFullyConvertedLowerBounds(mulExpr.getRightOperand()) and
+      result = xLow * yLow
+    )
+    or
+    exists(AssignExpr assign |
+      expr = assign and
+      result = getFullyConvertedLowerBounds(assign.getRValue())
+    )
+    or
+    exists(AssignAddExpr addExpr, float xLow, float yLow |
+      expr = addExpr and
+      xLow = getFullyConvertedLowerBounds(addExpr.getLValue()) and
+      yLow = getFullyConvertedLowerBounds(addExpr.getRValue()) and
+      result = addRoundingDown(xLow, yLow)
+    )
+    or
+    exists(AssignSubExpr subExpr, float xLow, float yHigh |
+      expr = subExpr and
+      xLow = getFullyConvertedLowerBounds(subExpr.getLValue()) and
+      yHigh = getFullyConvertedUpperBounds(subExpr.getRValue()) and
+      result = addRoundingDown(xLow, -yHigh)
+    )
+    or
+    exists(UnsignedAssignMulExpr mulExpr, float xLow, float yLow |
+      expr = mulExpr and
+      xLow = getFullyConvertedLowerBounds(mulExpr.getLValue()) and
+      yLow = getFullyConvertedLowerBounds(mulExpr.getRValue()) and
+      result = xLow * yLow
+    )
+    or
+    exists(AssignMulByPositiveConstantExpr mulExpr, float xLow |
+      expr = mulExpr and
+      xLow = getFullyConvertedLowerBounds(mulExpr.getLValue()) and
+      result = xLow * mulExpr.getConstant()
+    )
+    or
+    exists(AssignMulByNegativeConstantExpr mulExpr, float xHigh |
+      expr = mulExpr and
+      xHigh = getFullyConvertedUpperBounds(mulExpr.getLValue()) and
+      result = xHigh * mulExpr.getConstant()
+    )
+    or
+    exists(PrefixIncrExpr incrExpr, float xLow |
+      expr = incrExpr and
+      xLow = getFullyConvertedLowerBounds(incrExpr.getOperand()) and
+      result = xLow + 1
+    )
+    or
+    exists(PrefixDecrExpr decrExpr, float xLow |
+      expr = decrExpr and
+      xLow = getFullyConvertedLowerBounds(decrExpr.getOperand()) and
+      result = addRoundingDownSmall(xLow, -1)
+    )
+    or
+    // `PostfixIncrExpr` and `PostfixDecrExpr` return the value of their
+    // operand. The incrementing/decrementing behavior is handled in
+    // `getDefLowerBoundsImpl`.
+    exists(PostfixIncrExpr incrExpr |
+      expr = incrExpr and
+      result = getFullyConvertedLowerBounds(incrExpr.getOperand())
+    )
+    or
+    exists(PostfixDecrExpr decrExpr |
+      expr = decrExpr and
+      result = getFullyConvertedLowerBounds(decrExpr.getOperand())
+    )
+    or
+    exists(RemExpr remExpr | expr = remExpr |
+      // If both inputs are positive then the lower bound is zero.
+      result = 0
+      or
+      // If either input could be negative then the output could be
+      // negative. If so, the lower bound of `x%y` is `-abs(y)`, which is
+      // equal to `min(-y,y)`.
+      exists(float childLB |
+        childLB = getFullyConvertedLowerBounds(remExpr.getAnOperand()) and
+        not childLB >= 0
+      |
+        result = getFullyConvertedLowerBounds(remExpr.getRightOperand())
+        or
+        exists(float rhsUB | rhsUB = getFullyConvertedUpperBounds(remExpr.getRightOperand()) |
+          result = -rhsUB
+        )
+      )
+    )
+    or
+    // If the conversion is to an arithmetic type then we just return the
+    // lower bound of the child. We do not need to handle truncation and
+    // overflow here, because that is done in `getTruncatedLowerBounds`.
+    // Conversions to `bool` need to be handled specially because they test
+    // whether the value of the expression is equal to 0.
+    exists(Conversion convExpr | expr = convExpr |
+      if convExpr.getUnspecifiedType() instanceof BoolType
+      then result = boolConversionLowerBound(convExpr.getExpr())
+      else result = getTruncatedLowerBounds(convExpr.getExpr())
+    )
+    or
+    // Use SSA to get the lower bounds for a variable use.
+    exists(RangeSsaDefinition def, StackVariable v | expr = def.getAUse(v) |
+      result = getDefLowerBounds(def, v)
+    )
+    or
+    // unsigned `&` (tighter bounds may exist)
+    exists(UnsignedBitwiseAndExpr andExpr |
+      andExpr = expr and
+      result = 0.0
+    )
+    or
+    // `>>` by a constant
+    exists(RShiftExpr rsExpr, float left, int right |
+      rsExpr = expr and
+      left = getFullyConvertedLowerBounds(rsExpr.getLeftOperand()) and
+      right = getValue(rsExpr.getRightOperand().getFullyConverted()).toInt() and
+      result = safeFloor(left / 2.pow(right))
+    )
     // Not explicitly modeled by a SimpleRangeAnalysisExpr
-    not expr instanceof SimpleRangeAnalysisExpr
-  )
-  or
-  // unsigned `&` (tighter bounds may exist)
-  exists(UnsignedBitwiseAndExpr andExpr |
-    andExpr = expr and
-    result = 0.0
-  )
-  or
-  // `>>` by a constant
-  exists(RShiftExpr rsExpr, float left, int right |
-    rsExpr = expr and
-    left = getFullyConvertedLowerBounds(rsExpr.getLeftOperand()) and
-    right = getValue(rsExpr.getRightOperand().getFullyConverted()).toInt() and
-    result = safeFloor(left / 2.pow(right))
-  )
+  ) and
+  not expr instanceof SimpleRangeAnalysisExpr
   or
   // A modeled expression for range analysis
   exists(SimpleRangeAnalysisExpr rangeAnalysisExpr |
@@ -850,190 +852,192 @@ private float getLowerBoundsImpl(Expr expr) {
 
 /** Only to be called by `getTruncatedUpperBounds`. */
 private float getUpperBoundsImpl(Expr expr) {
-  exists(Expr operand, float operandHigh, float positive |
-    effectivelyMultipliesByPositive(expr, operand, positive) and
-    operandHigh = getFullyConvertedUpperBounds(operand) and
-    result = positive * operandHigh
-  )
-  or
-  exists(Expr operand, float operandLow, float negative |
-    effectivelyMultipliesByNegative(expr, operand, negative) and
-    operandLow = getFullyConvertedLowerBounds(operand) and
-    result = negative * operandLow
-  )
-  or
-  exists(MaxExpr maxExpr |
-    expr = maxExpr and
-    // Return the union of the upper bounds from both children.
-    result = getFullyConvertedUpperBounds(maxExpr.getAnOperand())
-  )
-  or
-  exists(MinExpr minExpr |
-    expr = minExpr and
-    // Compute the cross product of the bounds from both children.  We are
-    // using this mathematical property:
-    //
-    //    min (maximum{X}, maximum{Y})
-    //  = maximum { min(x,y) | x in X, y in Y }
-    exists(float x, float y |
-      x = getFullyConvertedUpperBounds(minExpr.getLeftOperand()) and
-      y = getFullyConvertedUpperBounds(minExpr.getRightOperand()) and
-      if x <= y then result = x else result = y
+  (
+    exists(Expr operand, float operandHigh, float positive |
+      effectivelyMultipliesByPositive(expr, operand, positive) and
+      operandHigh = getFullyConvertedUpperBounds(operand) and
+      result = positive * operandHigh
     )
-  )
-  or
-  // ConditionalExpr (true branch)
-  exists(ConditionalExpr condExpr |
-    expr = condExpr and
-    // Use `boolConversionUpperBound` to determine whether the condition
-    // might evaluate to `true`.
-    boolConversionUpperBound(condExpr.getCondition().getFullyConverted()) = 1 and
-    result = getFullyConvertedUpperBounds(condExpr.getThen())
-  )
-  or
-  // ConditionalExpr (false branch)
-  exists(ConditionalExpr condExpr |
-    expr = condExpr and
-    // Use `boolConversionLowerBound` to determine whether the condition
-    // might evaluate to `false`.
-    boolConversionLowerBound(condExpr.getCondition().getFullyConverted()) = 0 and
-    result = getFullyConvertedUpperBounds(condExpr.getElse())
-  )
-  or
-  exists(AddExpr addExpr, float xHigh, float yHigh |
-    expr = addExpr and
-    xHigh = getFullyConvertedUpperBounds(addExpr.getLeftOperand()) and
-    yHigh = getFullyConvertedUpperBounds(addExpr.getRightOperand()) and
-    result = addRoundingUp(xHigh, yHigh)
-  )
-  or
-  exists(SubExpr subExpr, float xHigh, float yLow |
-    expr = subExpr and
-    xHigh = getFullyConvertedUpperBounds(subExpr.getLeftOperand()) and
-    yLow = getFullyConvertedLowerBounds(subExpr.getRightOperand()) and
-    result = addRoundingUp(xHigh, -yLow)
-  )
-  or
-  exists(UnsignedMulExpr mulExpr, float xHigh, float yHigh |
-    expr = mulExpr and
-    xHigh = getFullyConvertedUpperBounds(mulExpr.getLeftOperand()) and
-    yHigh = getFullyConvertedUpperBounds(mulExpr.getRightOperand()) and
-    result = xHigh * yHigh
-  )
-  or
-  exists(AssignExpr assign |
-    expr = assign and
-    result = getFullyConvertedUpperBounds(assign.getRValue())
-  )
-  or
-  exists(AssignAddExpr addExpr, float xHigh, float yHigh |
-    expr = addExpr and
-    xHigh = getFullyConvertedUpperBounds(addExpr.getLValue()) and
-    yHigh = getFullyConvertedUpperBounds(addExpr.getRValue()) and
-    result = addRoundingUp(xHigh, yHigh)
-  )
-  or
-  exists(AssignSubExpr subExpr, float xHigh, float yLow |
-    expr = subExpr and
-    xHigh = getFullyConvertedUpperBounds(subExpr.getLValue()) and
-    yLow = getFullyConvertedLowerBounds(subExpr.getRValue()) and
-    result = addRoundingUp(xHigh, -yLow)
-  )
-  or
-  exists(UnsignedAssignMulExpr mulExpr, float xHigh, float yHigh |
-    expr = mulExpr and
-    xHigh = getFullyConvertedUpperBounds(mulExpr.getLValue()) and
-    yHigh = getFullyConvertedUpperBounds(mulExpr.getRValue()) and
-    result = xHigh * yHigh
-  )
-  or
-  exists(AssignMulByPositiveConstantExpr mulExpr, float xHigh |
-    expr = mulExpr and
-    xHigh = getFullyConvertedUpperBounds(mulExpr.getLValue()) and
-    result = xHigh * mulExpr.getConstant()
-  )
-  or
-  exists(AssignMulByNegativeConstantExpr mulExpr, float xLow |
-    expr = mulExpr and
-    xLow = getFullyConvertedLowerBounds(mulExpr.getLValue()) and
-    result = xLow * mulExpr.getConstant()
-  )
-  or
-  exists(PrefixIncrExpr incrExpr, float xHigh |
-    expr = incrExpr and
-    xHigh = getFullyConvertedUpperBounds(incrExpr.getOperand()) and
-    result = addRoundingUpSmall(xHigh, 1)
-  )
-  or
-  exists(PrefixDecrExpr decrExpr, float xHigh |
-    expr = decrExpr and
-    xHigh = getFullyConvertedUpperBounds(decrExpr.getOperand()) and
-    result = xHigh - 1
-  )
-  or
-  // `PostfixIncrExpr` and `PostfixDecrExpr` return the value of their operand.
-  // The incrementing/decrementing behavior is handled in
-  // `getDefUpperBoundsImpl`.
-  exists(PostfixIncrExpr incrExpr |
-    expr = incrExpr and
-    result = getFullyConvertedUpperBounds(incrExpr.getOperand())
-  )
-  or
-  exists(PostfixDecrExpr decrExpr |
-    expr = decrExpr and
-    result = getFullyConvertedUpperBounds(decrExpr.getOperand())
-  )
-  or
-  exists(RemExpr remExpr, float rhsUB |
-    expr = remExpr and
-    rhsUB = getFullyConvertedUpperBounds(remExpr.getRightOperand())
-  |
-    result = rhsUB
     or
-    // If the right hand side could be negative then we need to take its
-    // absolute value. Since `abs(x) = max(-x,x)` this is equivalent to
-    // adding `-rhsLB` to the set of upper bounds.
-    exists(float rhsLB |
-      rhsLB = getFullyConvertedLowerBounds(remExpr.getAnOperand()) and
-      not rhsLB >= 0
-    |
-      result = -rhsLB
+    exists(Expr operand, float operandLow, float negative |
+      effectivelyMultipliesByNegative(expr, operand, negative) and
+      operandLow = getFullyConvertedLowerBounds(operand) and
+      result = negative * operandLow
     )
-  )
-  or
-  // If the conversion is to an arithmetic type then we just return the
-  // upper bound of the child. We do not need to handle truncation and
-  // overflow here, because that is done in `getTruncatedUpperBounds`.
-  // Conversions to `bool` need to be handled specially because they test
-  // whether the value of the expression is equal to 0.
-  exists(Conversion convExpr | expr = convExpr |
-    if convExpr.getUnspecifiedType() instanceof BoolType
-    then result = boolConversionUpperBound(convExpr.getExpr())
-    else result = getTruncatedUpperBounds(convExpr.getExpr())
-  )
-  or
-  // Use SSA to get the upper bounds for a variable use.
-  exists(RangeSsaDefinition def, StackVariable v | expr = def.getAUse(v) |
-    result = getDefUpperBounds(def, v) and
+    or
+    exists(MaxExpr maxExpr |
+      expr = maxExpr and
+      // Return the union of the upper bounds from both children.
+      result = getFullyConvertedUpperBounds(maxExpr.getAnOperand())
+    )
+    or
+    exists(MinExpr minExpr |
+      expr = minExpr and
+      // Compute the cross product of the bounds from both children.  We are
+      // using this mathematical property:
+      //
+      //    min (maximum{X}, maximum{Y})
+      //  = maximum { min(x,y) | x in X, y in Y }
+      exists(float x, float y |
+        x = getFullyConvertedUpperBounds(minExpr.getLeftOperand()) and
+        y = getFullyConvertedUpperBounds(minExpr.getRightOperand()) and
+        if x <= y then result = x else result = y
+      )
+    )
+    or
+    // ConditionalExpr (true branch)
+    exists(ConditionalExpr condExpr |
+      expr = condExpr and
+      // Use `boolConversionUpperBound` to determine whether the condition
+      // might evaluate to `true`.
+      boolConversionUpperBound(condExpr.getCondition().getFullyConverted()) = 1 and
+      result = getFullyConvertedUpperBounds(condExpr.getThen())
+    )
+    or
+    // ConditionalExpr (false branch)
+    exists(ConditionalExpr condExpr |
+      expr = condExpr and
+      // Use `boolConversionLowerBound` to determine whether the condition
+      // might evaluate to `false`.
+      boolConversionLowerBound(condExpr.getCondition().getFullyConverted()) = 0 and
+      result = getFullyConvertedUpperBounds(condExpr.getElse())
+    )
+    or
+    exists(AddExpr addExpr, float xHigh, float yHigh |
+      expr = addExpr and
+      xHigh = getFullyConvertedUpperBounds(addExpr.getLeftOperand()) and
+      yHigh = getFullyConvertedUpperBounds(addExpr.getRightOperand()) and
+      result = addRoundingUp(xHigh, yHigh)
+    )
+    or
+    exists(SubExpr subExpr, float xHigh, float yLow |
+      expr = subExpr and
+      xHigh = getFullyConvertedUpperBounds(subExpr.getLeftOperand()) and
+      yLow = getFullyConvertedLowerBounds(subExpr.getRightOperand()) and
+      result = addRoundingUp(xHigh, -yLow)
+    )
+    or
+    exists(UnsignedMulExpr mulExpr, float xHigh, float yHigh |
+      expr = mulExpr and
+      xHigh = getFullyConvertedUpperBounds(mulExpr.getLeftOperand()) and
+      yHigh = getFullyConvertedUpperBounds(mulExpr.getRightOperand()) and
+      result = xHigh * yHigh
+    )
+    or
+    exists(AssignExpr assign |
+      expr = assign and
+      result = getFullyConvertedUpperBounds(assign.getRValue())
+    )
+    or
+    exists(AssignAddExpr addExpr, float xHigh, float yHigh |
+      expr = addExpr and
+      xHigh = getFullyConvertedUpperBounds(addExpr.getLValue()) and
+      yHigh = getFullyConvertedUpperBounds(addExpr.getRValue()) and
+      result = addRoundingUp(xHigh, yHigh)
+    )
+    or
+    exists(AssignSubExpr subExpr, float xHigh, float yLow |
+      expr = subExpr and
+      xHigh = getFullyConvertedUpperBounds(subExpr.getLValue()) and
+      yLow = getFullyConvertedLowerBounds(subExpr.getRValue()) and
+      result = addRoundingUp(xHigh, -yLow)
+    )
+    or
+    exists(UnsignedAssignMulExpr mulExpr, float xHigh, float yHigh |
+      expr = mulExpr and
+      xHigh = getFullyConvertedUpperBounds(mulExpr.getLValue()) and
+      yHigh = getFullyConvertedUpperBounds(mulExpr.getRValue()) and
+      result = xHigh * yHigh
+    )
+    or
+    exists(AssignMulByPositiveConstantExpr mulExpr, float xHigh |
+      expr = mulExpr and
+      xHigh = getFullyConvertedUpperBounds(mulExpr.getLValue()) and
+      result = xHigh * mulExpr.getConstant()
+    )
+    or
+    exists(AssignMulByNegativeConstantExpr mulExpr, float xLow |
+      expr = mulExpr and
+      xLow = getFullyConvertedLowerBounds(mulExpr.getLValue()) and
+      result = xLow * mulExpr.getConstant()
+    )
+    or
+    exists(PrefixIncrExpr incrExpr, float xHigh |
+      expr = incrExpr and
+      xHigh = getFullyConvertedUpperBounds(incrExpr.getOperand()) and
+      result = addRoundingUpSmall(xHigh, 1)
+    )
+    or
+    exists(PrefixDecrExpr decrExpr, float xHigh |
+      expr = decrExpr and
+      xHigh = getFullyConvertedUpperBounds(decrExpr.getOperand()) and
+      result = xHigh - 1
+    )
+    or
+    // `PostfixIncrExpr` and `PostfixDecrExpr` return the value of their operand.
+    // The incrementing/decrementing behavior is handled in
+    // `getDefUpperBoundsImpl`.
+    exists(PostfixIncrExpr incrExpr |
+      expr = incrExpr and
+      result = getFullyConvertedUpperBounds(incrExpr.getOperand())
+    )
+    or
+    exists(PostfixDecrExpr decrExpr |
+      expr = decrExpr and
+      result = getFullyConvertedUpperBounds(decrExpr.getOperand())
+    )
+    or
+    exists(RemExpr remExpr, float rhsUB |
+      expr = remExpr and
+      rhsUB = getFullyConvertedUpperBounds(remExpr.getRightOperand())
+    |
+      result = rhsUB
+      or
+      // If the right hand side could be negative then we need to take its
+      // absolute value. Since `abs(x) = max(-x,x)` this is equivalent to
+      // adding `-rhsLB` to the set of upper bounds.
+      exists(float rhsLB |
+        rhsLB = getFullyConvertedLowerBounds(remExpr.getAnOperand()) and
+        not rhsLB >= 0
+      |
+        result = -rhsLB
+      )
+    )
+    or
+    // If the conversion is to an arithmetic type then we just return the
+    // upper bound of the child. We do not need to handle truncation and
+    // overflow here, because that is done in `getTruncatedUpperBounds`.
+    // Conversions to `bool` need to be handled specially because they test
+    // whether the value of the expression is equal to 0.
+    exists(Conversion convExpr | expr = convExpr |
+      if convExpr.getUnspecifiedType() instanceof BoolType
+      then result = boolConversionUpperBound(convExpr.getExpr())
+      else result = getTruncatedUpperBounds(convExpr.getExpr())
+    )
+    or
+    // Use SSA to get the upper bounds for a variable use.
+    exists(RangeSsaDefinition def, StackVariable v | expr = def.getAUse(v) |
+      result = getDefUpperBounds(def, v)
+    )
+    or
+    // unsigned `&` (tighter bounds may exist)
+    exists(UnsignedBitwiseAndExpr andExpr, float left, float right |
+      andExpr = expr and
+      left = getFullyConvertedUpperBounds(andExpr.getLeftOperand()) and
+      right = getFullyConvertedUpperBounds(andExpr.getRightOperand()) and
+      result = left.minimum(right)
+    )
+    or
+    // `>>` by a constant
+    exists(RShiftExpr rsExpr, float left, int right |
+      rsExpr = expr and
+      left = getFullyConvertedUpperBounds(rsExpr.getLeftOperand()) and
+      right = getValue(rsExpr.getRightOperand().getFullyConverted()).toInt() and
+      result = safeFloor(left / 2.pow(right))
+    )
     // Not explicitly modeled by a SimpleRangeAnalysisExpr
-    not expr instanceof SimpleRangeAnalysisExpr
-  )
-  or
-  // unsigned `&` (tighter bounds may exist)
-  exists(UnsignedBitwiseAndExpr andExpr, float left, float right |
-    andExpr = expr and
-    left = getFullyConvertedUpperBounds(andExpr.getLeftOperand()) and
-    right = getFullyConvertedUpperBounds(andExpr.getRightOperand()) and
-    result = left.minimum(right)
-  )
-  or
-  // `>>` by a constant
-  exists(RShiftExpr rsExpr, float left, int right |
-    rsExpr = expr and
-    left = getFullyConvertedUpperBounds(rsExpr.getLeftOperand()) and
-    right = getValue(rsExpr.getRightOperand().getFullyConverted()).toInt() and
-    result = safeFloor(left / 2.pow(right))
-  )
+  ) and
+  not expr instanceof SimpleRangeAnalysisExpr
   or
   // A modeled expression for range analysis
   exists(SimpleRangeAnalysisExpr rangeAnalysisExpr |

@@ -1,7 +1,8 @@
 reflection/ReflectiveAccess.java:
 #    0| [CompilationUnit] ReflectiveAccess
-#    3|   1: [ImportType] import Annotation
-#    5|   2: [Class] ReflectiveAccess
+#-----|   -1: (Imports)
+#    3|     1: [ImportType] import Annotation
+#    5|   1: [Class] ReflectiveAccess
 #    6|     2: [Interface] TestAnnotation
 #   10|     3: [Class] TestClass
 #-----|       -3: (Annotations)

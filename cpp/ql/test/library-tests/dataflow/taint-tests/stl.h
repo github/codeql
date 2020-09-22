@@ -144,11 +144,17 @@ namespace std
 		basic_istream<charT, traits>& read (char_type* s, streamsize n);
 		streamsize readsome(char_type* s, streamsize n);
 		basic_istream<charT, traits>& putback(char_type c);
+		basic_istream<charT,traits>& unget();
 
-	};
+		basic_istream<charT,traits>& getline(char_type* s, streamsize n);
+		basic_istream<charT,traits>& getline(char_type* s, streamsize n, char_type delim);
+ 	};
 
 	template<class charT, class traits> basic_istream<charT, traits>& operator>>(basic_istream<charT, traits>&, charT*);
 	template<class charT, class traits, class Allocator> basic_istream<charT, traits>& operator>>(basic_istream<charT, traits>& is, basic_string<charT, traits, Allocator>& str); 
+
+	template<class charT, class traits, class Allocator> basic_istream<charT,traits>& getline(basic_istream<charT,traits>& is, basic_string<charT,traits,Allocator>& str, charT delim);
+	template<class charT, class traits, class Allocator> basic_istream<charT,traits>& getline(basic_istream<charT,traits>& is, basic_string<charT,traits,Allocator>& str);
 
 	template <class charT, class traits = char_traits<charT> >
 	class basic_ostream /*: virtual public basic_ios<charT,traits> - not needed for this test */ {
@@ -159,6 +165,7 @@ namespace std
 
 		basic_ostream<charT, traits>& put(char_type c);
 		basic_ostream<charT, traits>& write(const char_type* s, streamsize n);
+		basic_ostream<charT,traits>& flush();
 	};
 
 	template<class charT, class traits> basic_ostream<charT,traits>& operator<<(basic_ostream<charT,traits>&, const charT*);
@@ -184,6 +191,11 @@ namespace std
 		basic_string<charT, traits, Allocator> str() const;
 		void str(const basic_string<charT, traits, Allocator>& str);
 	};
+
+	typedef basic_istream<char> istream;
+	typedef basic_ostream<char> ostream;
+	extern istream cin;
+	extern ostream cout;
 
 	using stringstream = basic_stringstream<char>;
 }

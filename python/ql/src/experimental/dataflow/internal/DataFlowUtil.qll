@@ -2,7 +2,7 @@
  * Contains utility functions for writing data flow queries
  */
 
-import DataFlowPrivate
+private import DataFlowPrivate
 import DataFlowPublic
 
 /**

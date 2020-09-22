@@ -1,7 +1,8 @@
 collections/Test.java:
 #    0| [CompilationUnit] Test
-#    3|   1: [ImportOnDemandFromPackage] import java.util.*
-#    5|   2: [Class] Test
+#-----|   -1: (Imports)
+#    3|     1: [ImportOnDemandFromPackage] import java.util.*
+#    5|   1: [Class] Test
 #    6|     3: [FieldDeclaration] Map<String,Integer> m, ...;
 #    6|       -1: [TypeAccess] Map<String,Integer>
 #    6|         0: [TypeAccess] String

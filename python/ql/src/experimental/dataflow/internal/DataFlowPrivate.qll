@@ -150,10 +150,28 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // If there is ESSA-flow out of a node `node`, we want flow
   // both out of `node` and any post-update node of `node`.
   exists(Node node |
-    not node.(EssaNode).getVar() instanceof GlobalSsaVariable and
-    not nodeTo.(EssaNode).getVar() instanceof GlobalSsaVariable and
     EssaFlow::essaFlowStep(node, nodeTo) and
-    nodeFrom = update(node)
+    nodeFrom = update(node) and
+    (
+      not node instanceof EssaNode or
+      not nodeTo instanceof EssaNode or
+      localEssaStep(node, nodeTo)
+    )
+  )
+}
+
+/**
+ * Holds if there is an Essa flow step from `nodeFrom` to `nodeTo` that does not switch between
+ * local and global SSA variables.
+ */
+private predicate localEssaStep(EssaNode nodeFrom, EssaNode nodeTo) {
+  EssaFlow::essaFlowStep(nodeFrom, nodeTo) and
+  (
+    nodeFrom.getVar() instanceof GlobalSsaVariable and
+    nodeTo.getVar() instanceof GlobalSsaVariable
+    or
+    not nodeFrom.getVar() instanceof GlobalSsaVariable and
+    not nodeTo.getVar() instanceof GlobalSsaVariable
   )
 }
 
@@ -179,7 +197,8 @@ private Node update(Node node) {
  */
 newtype TDataFlowCallable =
   TCallableValue(CallableValue callable) or
-  TClassValue(ClassValue c)
+  TClassValue(ClassValue c) or
+  TModule(Module m)
 
 /** Represents a callable */
 abstract class DataFlowCallable extends TDataFlowCallable {
@@ -231,6 +250,23 @@ class DataFlowClassValue extends DataFlowCallable, TClassValue {
   }
 
   override string getName() { result = c.getName() }
+}
+
+/** A class representing the scope in which a `ModuleVariableNode` appears. */
+class DataFlowModuleScope extends DataFlowCallable, TModule {
+  Module mod;
+
+  DataFlowModuleScope() { this = TModule(mod) }
+
+  override string toString() { result = mod.toString() }
+
+  override CallNode getACall() { none() }
+
+  override Scope getScope() { result = mod }
+
+  override NameNode getParameter(int n) { none() }
+
+  override string getName() { result = mod.getName() }
 }
 
 newtype TDataFlowCall =
@@ -389,21 +425,11 @@ string ppReprType(DataFlowType t) { none() }
  * taken into account.
  */
 predicate jumpStep(Node nodeFrom, Node nodeTo) {
-  // As we have ESSA variables for global variables,
-  // we include ESSA flow steps involving global variables.
-  (
-    nodeFrom.(EssaNode).getVar() instanceof GlobalSsaVariable
-    or
-    nodeTo.(EssaNode).getVar() instanceof GlobalSsaVariable
-  ) and
-  (
-    EssaFlow::essaFlowStep(nodeFrom, nodeTo)
-    or
-    // As jump steps do not respect chronology,
-    // we add jump steps for each def-use pair.
-    nodeFrom.asVar() instanceof GlobalSsaVariable and
-    nodeTo.asCfgNode() = nodeFrom.asVar().getASourceUse()
-  )
+  // Module variable read
+  nodeFrom.(ModuleVariableNode).getARead() = nodeTo
+  or
+  // Module variable write
+  nodeFrom = nodeTo.(ModuleVariableNode).getAWrite()
 }
 
 //--------

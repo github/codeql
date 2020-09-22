@@ -1,5 +1,6 @@
 import python
 import experimental.dataflow.DataFlow
+private import experimental.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 
 /**
  * A configuration to check routing of arguments through magic methods.
@@ -8,7 +9,7 @@ class ArgumentRoutingConfig extends DataFlow::Configuration {
   ArgumentRoutingConfig() { this = "ArgumentRoutingConfig" }
 
   override predicate isSource(DataFlow::Node node) {
-    exists(AssignmentDefinition def, DataFlow::DataFlowCall call |
+    exists(AssignmentDefinition def, DataFlowPrivate::DataFlowCall call |
       def.getVariable() = node.(DataFlow::EssaNode).getVar() and
       def.getValue() = call.getNode() and
       call.getCallable().getName().matches("With\\_%")

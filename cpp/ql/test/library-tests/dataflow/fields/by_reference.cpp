@@ -109,11 +109,11 @@ void test_outer_with_ptr(Outer *pouter) {
 
   sink(outer.inner_nested.a); // $ast,ir
   sink(outer.inner_ptr->a); // $ast $f-:ir
-  sink(outer.a); // $ast $f-:ir
+  sink(outer.a); // $ast,ir
 
   sink(pouter->inner_nested.a); // $ast,ir
   sink(pouter->inner_ptr->a); // $ast $f-:ir
-  sink(pouter->a); // $ast $f-:ir
+  sink(pouter->a); // $ast,ir
 }
 
 void test_outer_with_ref(Outer *pouter) {
@@ -129,9 +129,9 @@ void test_outer_with_ref(Outer *pouter) {
 
   sink(outer.inner_nested.a); // $ast,ir
   sink(outer.inner_ptr->a); // $ast $f-:ir
-  sink(outer.a); // $ast $f-:ir
+  sink(outer.a); // $ast,ir
 
   sink(pouter->inner_nested.a); // $ast,ir
   sink(pouter->inner_ptr->a); // $ast $f-:ir
-  sink(pouter->a); // $ast $f-:ir
+  sink(pouter->a); // $ast,ir
 }

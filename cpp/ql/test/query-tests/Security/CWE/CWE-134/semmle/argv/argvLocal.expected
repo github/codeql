@@ -5,6 +5,10 @@ edges
 | argvLocal.c:95:9:95:12 | argv | argvLocal.c:95:9:95:15 | access to array |
 | argvLocal.c:95:9:95:12 | argv | argvLocal.c:95:9:95:15 | access to array |
 | argvLocal.c:95:9:95:12 | argv | argvLocal.c:95:9:95:15 | access to array |
+| argvLocal.c:95:9:95:12 | argv | argvLocal.c:95:9:95:15 | access to array |
+| argvLocal.c:95:9:95:12 | argv | argvLocal.c:95:9:95:15 | access to array |
+| argvLocal.c:95:9:95:15 | access to array | argvLocal.c:95:9:95:15 | (const char *)... |
+| argvLocal.c:95:9:95:15 | access to array | argvLocal.c:95:9:95:15 | access to array |
 | argvLocal.c:96:15:96:18 | argv | argvLocal.c:96:15:96:21 | access to array |
 | argvLocal.c:96:15:96:18 | argv | argvLocal.c:96:15:96:21 | access to array |
 | argvLocal.c:96:15:96:18 | argv | argvLocal.c:96:15:96:21 | access to array |
@@ -35,6 +39,8 @@ edges
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:106:9:106:13 | access to array |
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:106:9:106:13 | access to array |
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:106:9:106:13 | access to array |
+| argvLocal.c:105:14:105:17 | argv | argvLocal.c:106:9:106:13 | access to array |
+| argvLocal.c:105:14:105:17 | argv | argvLocal.c:106:9:106:13 | access to array |
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:107:15:107:19 | access to array |
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:107:15:107:19 | access to array |
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:107:15:107:19 | access to array |
@@ -45,10 +51,16 @@ edges
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:110:9:110:11 | * ... |
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:110:9:110:11 | * ... |
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:110:9:110:11 | * ... |
+| argvLocal.c:105:14:105:17 | argv | argvLocal.c:110:9:110:11 | * ... |
+| argvLocal.c:105:14:105:17 | argv | argvLocal.c:110:9:110:11 | * ... |
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:111:15:111:17 | * ... |
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:111:15:111:17 | * ... |
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:111:15:111:17 | * ... |
 | argvLocal.c:105:14:105:17 | argv | argvLocal.c:111:15:111:17 | * ... |
+| argvLocal.c:106:9:106:13 | access to array | argvLocal.c:106:9:106:13 | (const char *)... |
+| argvLocal.c:106:9:106:13 | access to array | argvLocal.c:106:9:106:13 | access to array |
+| argvLocal.c:110:9:110:11 | * ... | argvLocal.c:110:9:110:11 | (const char *)... |
+| argvLocal.c:110:9:110:11 | * ... | argvLocal.c:110:9:110:11 | * ... |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:116:9:116:10 | (const char *)... |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:116:9:116:10 | (const char *)... |
 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:116:9:116:10 | i3 |

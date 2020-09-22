@@ -7,3 +7,8 @@ int test_extensibility_add(int x) {
     return result; // 90 .. 110
   }
 }
+
+int test_overridability_sub(int x) {
+  int result = x - x; // Returns 0 due to custom modeling in QL
+  return result; // 0
+}
