@@ -33,8 +33,12 @@
 | format.cpp:115:8:115:13 | buffer | format.cpp:114:37:114:50 | call to source |
 | format.cpp:157:7:157:22 | access to array | format.cpp:147:12:147:25 | call to source |
 | format.cpp:158:7:158:27 | ... + ... | format.cpp:148:16:148:30 | call to source |
-| map.cpp:22:9:22:13 | first | map.cpp:21:12:21:17 | call to source |
-| map.cpp:28:9:28:14 | second | map.cpp:26:13:26:18 | call to source |
+| map.cpp:26:9:26:13 | first | map.cpp:25:12:25:17 | call to source |
+| map.cpp:32:9:32:14 | second | map.cpp:30:13:30:18 | call to source |
+| map.cpp:165:7:165:27 | ... = ... | map.cpp:165:20:165:25 | call to source |
+| map.cpp:167:7:167:30 | ... = ... | map.cpp:167:23:167:28 | call to source |
+| map.cpp:317:7:317:27 | ... = ... | map.cpp:317:20:317:25 | call to source |
+| map.cpp:319:7:319:30 | ... = ... | map.cpp:319:23:319:28 | call to source |
 | movableclass.cpp:44:8:44:9 | s1 | movableclass.cpp:39:21:39:26 | call to source |
 | movableclass.cpp:45:8:45:9 | s2 | movableclass.cpp:40:23:40:28 | call to source |
 | movableclass.cpp:46:8:46:9 | s3 | movableclass.cpp:42:8:42:13 | call to source |
