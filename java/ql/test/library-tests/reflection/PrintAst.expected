@@ -32,9 +32,9 @@ reflection/ReflectiveAccess.java:
 #   17|             0: [TypeAccess] String
 #   17|       5: [BlockStmt] stmt
 #   18|         0: [LocalVariableDeclStmt] stmt
-#   18|           0: [TypeAccess] Class<?>
-#   18|             0: [WildcardTypeAccess] ? ...
 #   18|           1: [LocalVariableDeclExpr] testClass
+#   18|             -1: [TypeAccess] Class<?>
+#   18|               0: [WildcardTypeAccess] ? ...
 #   18|             0: [MethodAccess] forName(...)
 #   18|               -1: [TypeAccess] Class<>
 #   18|               0: [StringLiteral] "reflection.ReflectiveAccess$TestClass"

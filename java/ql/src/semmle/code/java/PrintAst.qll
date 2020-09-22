@@ -248,9 +248,16 @@ final class ExprStmtNode extends ElementNode {
   override PrintAstNode getChild(int childIndex) {
     exists(Element el | result.(ElementNode).getElement() = el |
       el.(Expr).isNthChildOf(element, childIndex) and
-      not partOfAnnotation(element)
+      not partOfAnnotation(element) and
+      not exists(LocalVariableDeclExpr lvde | 
+        el = lvde.getTypeAccess() and
+        lvde != element  
+      )
       or
       el.(Stmt).isNthChildOf(element, childIndex)
+      or
+      childIndex = -1 and
+      el = element.(LocalVariableDeclExpr).getTypeAccess()
       or
       childIndex = -4 and
       el = element.(ClassInstanceExpr).getAnonymousClass()

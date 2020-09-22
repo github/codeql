@@ -8,8 +8,8 @@ Test.java:
 #    2|           0: [TypeAccess] String
 #    2|       5: [BlockStmt] stmt
 #    3|         0: [LocalVariableDeclStmt] stmt
-#    3|           0: [TypeAccess] int
 #    3|           1: [LocalVariableDeclExpr] x
+#    3|             -1: [TypeAccess] int
 #    3|             0: [SwitchExpr] switch (...)
 #    3|               -1: [VarAccess] s
 #    4|               0: [ConstCase] stmt
