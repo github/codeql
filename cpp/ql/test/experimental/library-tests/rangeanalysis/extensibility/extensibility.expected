@@ -5,3 +5,5 @@
 | extensibility.c:12:16:12:16 | x | -2.147483648E9 | 2.147483647E9 |
 | extensibility.c:12:20:12:20 | x | -2.147483648E9 | 2.147483647E9 |
 | extensibility.c:13:10:13:15 | result | 0.0 | 0.0 |
+| extensibility.c:17:3:17:23 | magic_name_at_most_10 | -2.147483648E9 | 2.147483647E9 |
+| extensibility.c:18:3:18:23 | magic_name_at_most_20 | -2.147483648E9 | 2.147483647E9 |
