@@ -21,7 +21,7 @@ For more information about how to write useful query help in a style that is con
 Overview
 ========
 
-Each query help file provides detailed information about the purpose and use of a query. When you write your own queries, we recommend that you also write query help files so that other users know what the queries do, and how they work.
+Each query help file provides detailed information about the purpose and use of a query. When you write your own queries, we recommend that you also write query help files so that other users know what the queries do, and how they work. When writing query help, you can test the files to make sure they are valid and render a preview of the content in markdown using the CodeQL CLI. For more information, see "`Testing query help files <https://help.semmle.com/codeql/codeql-cli/procedures/testing-query-help-files.html>`__."
 
 Structure
 =========
