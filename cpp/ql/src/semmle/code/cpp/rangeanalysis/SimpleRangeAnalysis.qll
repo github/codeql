@@ -45,7 +45,7 @@
 import cpp
 private import RangeAnalysisUtils
 private import experimental.semmle.code.cpp.models.interfaces.SimpleRangeAnalysisExpr
-private import experimental.semmle.code.cpp.models.interfaces.SimpleRangeAnalysisDef
+private import experimental.semmle.code.cpp.models.interfaces.SimpleRangeAnalysisDefinition
 import RangeSSA
 import SimpleRangeAnalysisCached
 private import NanAnalysis
