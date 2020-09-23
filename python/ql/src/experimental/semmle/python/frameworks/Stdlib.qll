@@ -38,7 +38,7 @@ private module Stdlib {
     /** Gets a reference to the `os.popen` function. */
     DataFlow::Node popen(DataFlow::TypeTracker t) {
       t.start() and
-      result = DataFlow::importMember("os", "system")
+      result = DataFlow::importMember("os", "popen")
       or
       t.startInAttr("popen") and
       result = os()
