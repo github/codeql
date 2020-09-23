@@ -9,4 +9,9 @@ public class A {
 
     return 0;
   }
+
+  void unsigned(int x) {
+    char c = (char)x;
+    System.out.println(c); // positive
+  }
 }
