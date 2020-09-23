@@ -86,6 +86,8 @@ module CodeInjection {
       |
         this = c.getArgument(index)
       )
+      or
+      this = DataFlow::moduleMember("node-serialize", "unserialize").getACall().getArgument(0)
     }
   }
 
