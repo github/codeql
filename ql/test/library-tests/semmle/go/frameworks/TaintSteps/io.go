@@ -60,14 +60,6 @@ func io2() {
 		w := io.Writer(&buf)
 		io.WriteString(w, "test")
 	}
-
-	{
-		reader := strings.NewReader("some string")
-		t, _ := reader.ReadByte()
-		var bwriter io.ByteWriter
-		bwriter.WriteByte(t)
-	}
-
 	{
 		reader := strings.NewReader("some string")
 		buf := make([]byte, 512)
@@ -103,11 +95,6 @@ func io2() {
 		r := strings.NewReader("some string")
 		s := io.NewSectionReader(r, 5, 17)
 		io.Copy(os.Stdout, s)
-	}
-	{
-		r := strings.NewReader("some string")
-		run, _, _ := r.ReadRune()
-		fmt.Println(run)
 	}
 	{
 		r := strings.NewReader("some string")
