@@ -1,4 +1,4 @@
-﻿using Semmle.Util.Logging;
+using Semmle.Util.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -190,20 +190,9 @@ namespace Semmle.Autobuild.Shared
             });
 
             CodeQLExtractorLangRoot = Actions.GetEnvironmentVariable($"CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_ROOT");
-            SemmleDist = Actions.GetEnvironmentVariable("SEMMLE_DIST");
             SemmlePlatformTools = Actions.GetEnvironmentVariable("SEMMLE_PLATFORM_TOOLS");
 
             CodeQlPlatform = Actions.GetEnvironmentVariable("CODEQL_PLATFORM");
-
-            JavaHome =
-                Actions.GetEnvironmentVariable("CODEQL_JAVA_HOME") ??
-                Actions.GetEnvironmentVariable("SEMMLE_JAVA_HOME") ??
-                throw new InvalidEnvironmentException("The environment variable CODEQL_JAVA_HOME or SEMMLE_JAVA_HOME has not been set.");
-
-            Distribution =
-                CodeQLExtractorLangRoot ??
-                SemmleDist ??
-                throw new InvalidEnvironmentException($"The environment variable CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_ROOT or SEMMLE_DIST has not been set.");
 
             TrapDir =
                 Actions.GetEnvironmentVariable($"CODEQL_EXTRACTOR_{this.Options.Language.UpperCaseName}_TRAP_DIR") ??
@@ -276,15 +265,6 @@ namespace Semmle.Autobuild.Shared
         public string? CodeQLExtractorLangRoot { get; }
 
         /// <summary>
-        /// Value of SEMMLE_DIST environment variable.
-        /// </summary>
-        private string? SemmleDist { get; }
-
-        public string Distribution { get; }
-
-        public string JavaHome { get; }
-
-        /// <summary>
         /// Value of SEMMLE_PLATFORM_TOOLS environment variable.
         /// </summary>
         public string? SemmlePlatformTools { get; }
@@ -298,13 +278,20 @@ namespace Semmle.Autobuild.Shared
         /// The absolute path of the odasa executable.
         /// null if we are running in CodeQL.
         /// </summary>
-        public string? Odasa => SemmleDist is null ? null : Actions.PathCombine(SemmleDist, "tools", "odasa");
+        public string? Odasa
+        {
+            get
+            {
+                var semmleDist = Actions.GetEnvironmentVariable("SEMMLE_DIST");
+                return semmleDist is null ? null : Actions.PathCombine(semmleDist, "tools", "odasa");
+            }
+        }
 
         /// <summary>
         /// Construct a command that executed the given <paramref name="cmd"/> wrapped in
         /// an <code>odasa --index</code>, unless indexing has been disabled, in which case
         /// <paramref name="cmd"/> is run directly.
         /// </summary>
-        public CommandBuilder MaybeIndex(CommandBuilder builder, string cmd) => Options.Indexing && !(Odasa is null) ? builder.IndexCommand(Odasa, cmd) : builder.RunCommand(cmd);
+        public CommandBuilder MaybeIndex(CommandBuilder builder, string cmd) => Odasa is null ? builder.RunCommand(cmd) : builder.IndexCommand(Odasa, cmd);
     }
 }
