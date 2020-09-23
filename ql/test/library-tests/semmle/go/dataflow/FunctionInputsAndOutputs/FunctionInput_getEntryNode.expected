@@ -3,6 +3,8 @@
 | parameter 0 | main.go:55:2:55:27 | call to Printf | main.go:55:13:55:20 | "%d, %d" |
 | parameter 0 | main.go:57:2:57:27 | call to Printf | main.go:57:13:57:20 | "%d, %d" |
 | parameter 0 | reset.go:12:2:12:21 | call to Reset | reset.go:12:15:12:20 | source |
+| parameter 0 | tst2.go:10:9:10:26 | call to NewEncoder | tst2.go:10:25:10:25 | w |
+| parameter 0 | tst2.go:10:9:10:39 | call to Encode | tst2.go:10:35:10:38 | data |
 | parameter 0 | tst.go:10:2:10:29 | call to ReadFrom | tst.go:10:23:10:28 | reader |
 | parameter 0 | tst.go:16:2:16:12 | call to test5 | tst.go:16:8:16:8 | x |
 | parameter 0 | tst.go:18:2:18:12 | call to test5 | tst.go:18:8:18:8 | s |
@@ -17,6 +19,21 @@
 | parameter 2 | main.go:57:2:57:27 | call to Printf | main.go:57:26:57:26 | y |
 | receiver | main.go:53:14:53:21 | call to bump | main.go:53:14:53:14 | c |
 | receiver | reset.go:12:2:12:21 | call to Reset | reset.go:12:2:12:7 | reader |
+| receiver | tst2.go:10:9:10:39 | call to Encode | tst2.go:10:9:10:26 | call to NewEncoder |
 | receiver | tst.go:10:2:10:29 | call to ReadFrom | tst.go:10:2:10:12 | bytesBuffer |
+| result | main.go:51:2:51:14 | call to op | main.go:51:2:51:14 | call to op |
+| result | main.go:53:2:53:22 | call to op2 | main.go:53:2:53:22 | call to op2 |
+| result | main.go:53:14:53:21 | call to bump | main.go:53:14:53:21 | call to bump |
+| result | tst2.go:10:9:10:26 | call to NewEncoder | tst2.go:10:9:10:26 | call to NewEncoder |
+| result | tst2.go:10:9:10:39 | call to Encode | tst2.go:10:2:10:4 | definition of err |
 | result | tst.go:9:17:9:33 | call to new | tst.go:9:2:9:12 | definition of bytesBuffer |
+| result 0 | main.go:51:2:51:14 | call to op | main.go:51:2:51:14 | call to op |
+| result 0 | main.go:53:2:53:22 | call to op2 | main.go:53:2:53:22 | call to op2 |
+| result 0 | main.go:53:14:53:21 | call to bump | main.go:53:14:53:21 | call to bump |
+| result 0 | main.go:54:10:54:15 | call to test | main.go:54:2:54:2 | definition of x |
+| result 0 | main.go:56:9:56:15 | call to test2 | main.go:56:2:56:2 | definition of x |
+| result 0 | tst2.go:10:9:10:26 | call to NewEncoder | tst2.go:10:9:10:26 | call to NewEncoder |
+| result 0 | tst2.go:10:9:10:39 | call to Encode | tst2.go:10:2:10:4 | definition of err |
 | result 0 | tst.go:9:17:9:33 | call to new | tst.go:9:2:9:12 | definition of bytesBuffer |
+| result 1 | main.go:54:10:54:15 | call to test | main.go:54:5:54:5 | definition of y |
+| result 1 | main.go:56:9:56:15 | call to test2 | main.go:56:5:56:5 | definition of y |

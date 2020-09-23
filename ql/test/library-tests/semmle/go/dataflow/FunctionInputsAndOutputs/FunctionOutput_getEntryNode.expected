@@ -11,6 +11,7 @@
 | result 0 | main.go:40:1:48:1 | function declaration | main.go:40:21:40:23 | zero value for int |
 | result 0 | main.go:40:1:48:1 | function declaration | main.go:45:10:45:10 | 0 |
 | result 0 | main.go:40:1:48:1 | function declaration | main.go:47:9:47:9 | 0 |
+| result 0 | tst2.go:8:1:12:1 | function declaration | tst2.go:11:9:11:9 | w |
 | result 1 | main.go:31:1:33:1 | function declaration | main.go:32:13:32:14 | 42 |
 | result 1 | main.go:35:1:38:1 | function declaration | main.go:35:22:35:22 | zero value for y |
 | result 1 | main.go:35:1:38:1 | function declaration | main.go:36:9:36:10 | 42 |
@@ -18,3 +19,4 @@
 | result 1 | main.go:40:1:48:1 | function declaration | main.go:42:3:42:5 | rhs of increment statement |
 | result 1 | main.go:40:1:48:1 | function declaration | main.go:45:13:45:13 | 1 |
 | result 1 | main.go:40:1:48:1 | function declaration | main.go:47:12:47:12 | 4 |
+| result 1 | tst2.go:8:1:12:1 | function declaration | tst2.go:11:12:11:14 | err |

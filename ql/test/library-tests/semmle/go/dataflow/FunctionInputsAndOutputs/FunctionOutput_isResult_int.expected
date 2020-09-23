@@ -8,5 +8,9 @@
 | main.go:54:10:54:15 | call to test | main.go:54:2:54:15 | ... := ...[1] | 1 | result 1 |
 | main.go:56:9:56:15 | call to test2 | main.go:56:2:56:15 | ... = ...[0] | 0 | result 0 |
 | main.go:56:9:56:15 | call to test2 | main.go:56:2:56:15 | ... = ...[1] | 1 | result 1 |
+| tst2.go:10:9:10:26 | call to NewEncoder | tst2.go:10:9:10:26 | call to NewEncoder | 0 | result |
+| tst2.go:10:9:10:26 | call to NewEncoder | tst2.go:10:9:10:26 | call to NewEncoder | 0 | result 0 |
+| tst2.go:10:9:10:39 | call to Encode | tst2.go:10:9:10:39 | call to Encode | 0 | result |
+| tst2.go:10:9:10:39 | call to Encode | tst2.go:10:9:10:39 | call to Encode | 0 | result 0 |
 | tst.go:9:17:9:33 | call to new | tst.go:9:17:9:33 | call to new | 0 | result |
 | tst.go:9:17:9:33 | call to new | tst.go:9:17:9:33 | call to new | 0 | result 0 |
