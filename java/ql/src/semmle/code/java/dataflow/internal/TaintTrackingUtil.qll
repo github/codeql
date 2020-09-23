@@ -387,6 +387,17 @@ private predicate taintPreservingQualifierToMethod(Method m) {
       stringlist.getTypeArgument(0) instanceof TypeString
     )
   )
+  or
+  m
+      .getDeclaringType()
+      .getASourceSupertype*()
+      .hasQualifiedName("android.database.sqlite", "SQLiteQueryBuilder") and
+  // buildQuery(String[] projectionIn, String selection, String groupBy, String having, String sortOrder, String limit)
+  // buildQuery(String[] projectionIn, String selection, String[] selectionArgs, String groupBy, String having, String sortOrder, String limit)
+  // buildUnionQuery(String[] subQueries, String sortOrder, String limit)
+  // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String[] selectionArgs, String groupBy, String having)
+  // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String groupBy, String having)
+  m.hasName(["buildQuery", "buildUnionQuery", "buildUnionSubQuery"])
 }
 
 private class StringReplaceMethod extends Method {
@@ -447,6 +458,20 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
 private predicate taintPreservingArgumentToMethod(Method method) {
   method.getDeclaringType() instanceof TypeString and
   (method.hasName("format") or method.hasName("formatted") or method.hasName("join"))
+  or
+  method.getDeclaringType().hasQualifiedName("android.database", "DatabaseUtils") and
+  // String[] appendSelectionArgs(String[] originalValues, String[] newValues)
+  // String concatenateWhere(String a, String b)
+  method.hasName(["appendSelectionArgs", "concatenateWhere"])
+  or
+  method
+      .getDeclaringType()
+      .getASourceSupertype*()
+      .hasQualifiedName("android.database.sqlite", "SQLiteQueryBuilder") and
+  // buildQuery(String[] projectionIn, String selection, String groupBy, String having, String sortOrder, String limit)
+  // buildQuery(String[] projectionIn, String selection, String[] selectionArgs, String groupBy, String having, String sortOrder, String limit)
+  // buildUnionQuery(String[] subQueries, String sortOrder, String limit)
+  method.hasName(["buildQuery", "buildUnionQuery"])
 }
 
 /**
@@ -560,6 +585,18 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
   method.getDeclaringType().hasQualifiedName("java.io", "StringWriter") and
   method.hasName("append") and
   arg = 0
+  or
+  method.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
+  (
+    // static buildQueryString(boolean distinct, String tables, String[] columns, String where, String groupBy, String having, String orderBy, String limit)
+    method.hasName("buildQueryString") and arg = [1 .. method.getNumberOfParameters()]
+    or
+    // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String[] selectionArgs, String groupBy, String having)
+    // buildUnionSubQuery(String typeDiscriminatorColumn, String[] unionColumns, Set<String> columnsPresentInTable, int computedColumnsOffset, String typeDiscriminatorValue, String selection, String groupBy, String having)
+    method.hasName("buildUnionSubQuery") and
+    arg = [0 .. method.getNumberOfParameters()] and
+    arg != 3
+  )
 }
 
 /**
@@ -612,6 +649,12 @@ private predicate taintPreservingArgToArg(Method method, int input, int output) 
   method.getNumberOfParameters() > 1 and
   input = method.getNumberOfParameters() - 1 and
   output = 0
+  or
+  method.getDeclaringType().hasQualifiedName("android.database.sqlite", "SQLiteQueryBuilder") and
+  // static appendColumns(StringBuilder s, String[] columns)
+  method.hasName("appendColumns") and
+  input = 1 and
+  output = 0
 }
 
 /**
@@ -649,6 +692,17 @@ private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
     arg = 0 and
     append.getDeclaringType().hasQualifiedName("java.io", "StringWriter")
   )
+  or
+  method
+      .getDeclaringType()
+      .getASourceSupertype*()
+      .hasQualifiedName("android.database.sqlite", "SQLiteQueryBuilder") and
+  // setProjectionMap(Map<String, String> columnMap)
+  // setTables(String inTables)
+  // appendWhere(CharSequence inWhere)
+  // appendWhereStandalone(CharSequence inWhere)
+  method.hasName(["setProjectionMap", "setTables", "appendWhere", "appendWhereStandalone"]) and
+  arg = 0
 }
 
 /** A comparison or equality test with a constant. */
