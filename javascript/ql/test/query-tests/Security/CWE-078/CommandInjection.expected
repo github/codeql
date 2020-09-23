@@ -55,6 +55,18 @@ nodes
 | child_process-test.js:83:19:83:36 | req.query.fileName |
 | child_process-test.js:85:37:85:54 | req.query.fileName |
 | child_process-test.js:85:37:85:54 | req.query.fileName |
+| exec-sh2.js:9:17:9:23 | command |
+| exec-sh2.js:10:33:10:47 | ["-c", command] |
+| exec-sh2.js:10:33:10:47 | ["-c", command] |
+| exec-sh2.js:10:40:10:46 | command |
+| exec-sh2.js:10:40:10:46 | command |
+| exec-sh2.js:14:9:14:49 | cmd |
+| exec-sh2.js:14:15:14:38 | url.par ... , true) |
+| exec-sh2.js:14:15:14:44 | url.par ... ).query |
+| exec-sh2.js:14:15:14:49 | url.par ... ry.path |
+| exec-sh2.js:14:25:14:31 | req.url |
+| exec-sh2.js:14:25:14:31 | req.url |
+| exec-sh2.js:15:12:15:14 | cmd |
 | execSeries.js:3:20:3:22 | arr |
 | execSeries.js:6:14:6:16 | arr |
 | execSeries.js:6:14:6:21 | arr[i++] |
@@ -174,6 +186,17 @@ edges
 | child_process-test.js:83:19:83:36 | req.query.fileName | child_process-test.js:83:19:83:36 | req.query.fileName |
 | child_process-test.js:85:37:85:54 | req.query.fileName | lib/subLib/index.js:7:32:7:35 | name |
 | child_process-test.js:85:37:85:54 | req.query.fileName | lib/subLib/index.js:7:32:7:35 | name |
+| exec-sh2.js:9:17:9:23 | command | exec-sh2.js:10:40:10:46 | command |
+| exec-sh2.js:9:17:9:23 | command | exec-sh2.js:10:40:10:46 | command |
+| exec-sh2.js:10:40:10:46 | command | exec-sh2.js:10:33:10:47 | ["-c", command] |
+| exec-sh2.js:10:40:10:46 | command | exec-sh2.js:10:33:10:47 | ["-c", command] |
+| exec-sh2.js:14:9:14:49 | cmd | exec-sh2.js:15:12:15:14 | cmd |
+| exec-sh2.js:14:15:14:38 | url.par ... , true) | exec-sh2.js:14:15:14:44 | url.par ... ).query |
+| exec-sh2.js:14:15:14:44 | url.par ... ).query | exec-sh2.js:14:15:14:49 | url.par ... ry.path |
+| exec-sh2.js:14:15:14:49 | url.par ... ry.path | exec-sh2.js:14:9:14:49 | cmd |
+| exec-sh2.js:14:25:14:31 | req.url | exec-sh2.js:14:15:14:38 | url.par ... , true) |
+| exec-sh2.js:14:25:14:31 | req.url | exec-sh2.js:14:15:14:38 | url.par ... , true) |
+| exec-sh2.js:15:12:15:14 | cmd | exec-sh2.js:9:17:9:23 | command |
 | execSeries.js:3:20:3:22 | arr | execSeries.js:6:14:6:16 | arr |
 | execSeries.js:6:14:6:16 | arr | execSeries.js:6:14:6:21 | arr[i++] |
 | execSeries.js:6:14:6:21 | arr[i++] | execSeries.js:14:24:14:30 | command |
@@ -260,6 +283,8 @@ edges
 | child_process-test.js:67:3:67:21 | cp.spawn(cmd, args) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:48:15:48:17 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
 | child_process-test.js:75:29:75:31 | cmd | child_process-test.js:73:25:73:31 | req.url | child_process-test.js:75:29:75:31 | cmd | This command depends on $@. | child_process-test.js:73:25:73:31 | req.url | a user-provided value |
 | child_process-test.js:83:19:83:36 | req.query.fileName | child_process-test.js:83:19:83:36 | req.query.fileName | child_process-test.js:83:19:83:36 | req.query.fileName | This command depends on $@. | child_process-test.js:83:19:83:36 | req.query.fileName | a user-provided value |
+| exec-sh2.js:10:12:10:57 | cp.spaw ... ptions) | exec-sh2.js:14:25:14:31 | req.url | exec-sh2.js:10:33:10:47 | ["-c", command] | This command depends on $@. | exec-sh2.js:14:25:14:31 | req.url | a user-provided value |
+| exec-sh2.js:10:12:10:57 | cp.spaw ... ptions) | exec-sh2.js:14:25:14:31 | req.url | exec-sh2.js:10:40:10:46 | command | This command depends on $@. | exec-sh2.js:14:25:14:31 | req.url | a user-provided value |
 | execSeries.js:14:41:14:47 | command | execSeries.js:18:34:18:40 | req.url | execSeries.js:14:41:14:47 | command | This command depends on $@. | execSeries.js:18:34:18:40 | req.url | a user-provided value |
 | lib/subLib/index.js:8:10:8:25 | "rm -rf " + name | child_process-test.js:85:37:85:54 | req.query.fileName | lib/subLib/index.js:8:10:8:25 | "rm -rf " + name | This command depends on $@. | child_process-test.js:85:37:85:54 | req.query.fileName | a user-provided value |
 | other.js:7:33:7:35 | cmd | other.js:5:25:5:31 | req.url | other.js:7:33:7:35 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |

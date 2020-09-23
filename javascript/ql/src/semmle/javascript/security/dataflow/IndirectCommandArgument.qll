@@ -30,7 +30,7 @@ private DataFlow::Node commandArgument(SystemCommandExecution sys, DataFlow::Typ
   t.start() and
   result = sys.getACommandArgument()
   or
-  exists(DataFlow::TypeBackTracker t2 | t = t2.smallstep(result, commandArgument(sys, t2)))
+  exists(DataFlow::TypeBackTracker t2 | t2 = t.smallstep(result, commandArgument(sys, t2)))
 }
 
 /**

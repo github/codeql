@@ -1,2 +1,1 @@
-| query-tests/Security/CWE-078/exec-sh2.js:10 | expected an alert, but found none | BAD | ComandInjection |
 | query-tests/Security/CWE-078/exec-sh.js:15 | expected an alert, but found none | BAD | ComandInjection |
