@@ -1,1 +1,0 @@
-| query-tests/Security/CWE-078/exec-sh.js:15 | expected an alert, but found none | BAD | ComandInjection |
