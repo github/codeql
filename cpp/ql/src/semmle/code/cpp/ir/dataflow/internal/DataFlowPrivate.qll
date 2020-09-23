@@ -355,14 +355,16 @@ private class ArrayToPointerConvertInstruction extends ConvertInstruction {
   }
 }
 
-private Instruction skipOneCopyValueInstruction(Instruction instr) {
-  not instr instanceof CopyValueInstruction and result = instr
+private Instruction skipOneCopyValueInstructionRec(CopyValueInstruction copy) {
+  copy.getUnary() = result and not result instanceof CopyValueInstruction
   or
-  result = instr.(CopyValueInstruction).getUnary()
+  result = skipOneCopyValueInstructionRec(copy.getUnary())
 }
 
 private Instruction skipCopyValueInstructions(Instruction instr) {
-  result = skipOneCopyValueInstruction*(instr) and not result instanceof CopyValueInstruction
+  not result instanceof CopyValueInstruction and result = instr
+  or
+  result = skipOneCopyValueInstructionRec(instr)
 }
 
 private predicate arrayReadStep(Node node1, ArrayContent a, Node node2) {
