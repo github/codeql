@@ -122,6 +122,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 			log.Fatalf("Unable to get a source directory for input package %s.", pkg.PkgPath)
 		}
 		wantedRoots[pkgRoots[pkg.PkgPath]] = true
+		wantedRoots[pkgDirs[pkg.PkgPath]] = true
 	}
 
 	log.Println("Done processing dependencies.")
