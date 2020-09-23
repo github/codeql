@@ -108,10 +108,10 @@ predicate isIndirectCommandArgument(DataFlow::Node source, SystemCommandExecutio
     shell = commandArgument(sys) and
     args = argumentList(sys) and
     argumentListElement(args).mayHaveStringValue(dashC) and
-    (
-      source = argumentList(sys)
-      or
-      source = argumentList(sys).getAPropertyWrite().getRhs()
+    exists(DataFlow::SourceNode argsSource | argsSource = argumentList(sys) |
+      if exists(argsSource.getAPropertyWrite())
+      then source = argsSource.getAPropertyWrite().getRhs()
+      else source = argsSource
     )
   )
 }
