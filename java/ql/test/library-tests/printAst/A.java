@@ -18,6 +18,12 @@ class A {
    /** Does something */
    @Deprecated
    static int doSomething(@SuppressWarnings("all") String text) {
+       int i=0, j=1;
+
+       for(i=0, j=1; i<3; i++) {}
+
+       for(int m=0, n=1; m<3; m++) {}
+
        return 0;
    }
 
