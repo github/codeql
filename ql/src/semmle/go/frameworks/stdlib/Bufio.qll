@@ -103,10 +103,6 @@ module Bufio {
       this.hasQualifiedName("bufio", "Reader", "Reset") and
       (inp.isParameter(0) and outp.isReceiver())
       or
-      // signature: func (*Reader).WriteTo(w io.Writer) (n int64, err error)
-      this.hasQualifiedName("bufio", "Reader", "WriteTo") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
       // signature: func (*Scanner).Bytes() []byte
       this.hasQualifiedName("bufio", "Scanner", "Bytes") and
       (inp.isReceiver() and outp.isResult())
@@ -115,21 +111,9 @@ module Bufio {
       this.hasQualifiedName("bufio", "Scanner", "Text") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (*Writer).ReadFrom(r io.Reader) (n int64, err error)
-      this.hasQualifiedName("bufio", "Writer", "ReadFrom") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
       // signature: func (*Writer).Reset(w io.Writer)
       this.hasQualifiedName("bufio", "Writer", "Reset") and
       (inp.isReceiver() and outp.isParameter(0))
-      or
-      // signature: func (*Writer).Write(p []byte) (nn int, err error)
-      this.hasQualifiedName("bufio", "Writer", "Write") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
-      // signature: func (*Writer).WriteString(s string) (int, error)
-      this.hasQualifiedName("bufio", "Writer", "WriteString") and
-      (inp.isParameter(0) and outp.isReceiver())
     }
 
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

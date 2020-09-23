@@ -23,17 +23,9 @@ module Expvar {
       this.hasQualifiedName("expvar", "Map", "Set") and
       (inp.isParameter(_) and outp.isReceiver())
       or
-      // signature: func (*Map).String() string
-      this.hasQualifiedName("expvar", "Map", "String") and
-      (inp.isReceiver() and outp.isResult())
-      or
       // signature: func (*String).Set(value string)
       this.hasQualifiedName("expvar", "String", "Set") and
       (inp.isParameter(0) and outp.isReceiver())
-      or
-      // signature: func (*String).String() string
-      this.hasQualifiedName("expvar", "String", "String") and
-      (inp.isReceiver() and outp.isResult())
       or
       // signature: func (*String).Value() string
       this.hasQualifiedName("expvar", "String", "Value") and

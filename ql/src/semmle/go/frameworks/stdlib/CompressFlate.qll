@@ -42,10 +42,6 @@ module CompressFlate {
       this.hasQualifiedName("compress/flate", "Writer", "Reset") and
       (inp.isReceiver() and outp.isParameter(0))
       or
-      // signature: func (*Writer).Write(data []byte) (n int, err error)
-      this.hasQualifiedName("compress/flate", "Writer", "Write") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
       // signature: func (Resetter).Reset(r io.Reader, dict []byte) error
       this.implements("compress/flate", "Resetter", "Reset") and
       (inp.isParameter(0) and outp.isReceiver())

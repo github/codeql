@@ -54,18 +54,6 @@ module Net {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*Buffers).Read(p []byte) (n int, err error)
-      this.hasQualifiedName("net", "Buffers", "Read") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
-      // signature: func (*Buffers).WriteTo(w io.Writer) (n int64, err error)
-      this.hasQualifiedName("net", "Buffers", "WriteTo") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
-      // signature: func (*IPConn).ReadFrom(b []byte) (int, Addr, error)
-      this.hasQualifiedName("net", "IPConn", "ReadFrom") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
       // signature: func (*IPConn).ReadFromIP(b []byte) (int, *IPAddr, error)
       this.hasQualifiedName("net", "IPConn", "ReadFromIP") and
       (inp.isReceiver() and outp.isParameter(0))
@@ -86,16 +74,8 @@ module Net {
       this.hasQualifiedName("net", "IPConn", "WriteMsgIP") and
       (inp.isParameter([0, 1]) and outp.isReceiver())
       or
-      // signature: func (*IPConn).WriteTo(b []byte, addr Addr) (int, error)
-      this.hasQualifiedName("net", "IPConn", "WriteTo") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
       // signature: func (*IPConn).WriteToIP(b []byte, addr *IPAddr) (int, error)
       this.hasQualifiedName("net", "IPConn", "WriteToIP") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
-      // signature: func (*TCPConn).ReadFrom(r io.Reader) (int64, error)
-      this.hasQualifiedName("net", "TCPConn", "ReadFrom") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (*TCPConn).SyscallConn() (syscall.RawConn, error)
@@ -122,10 +102,6 @@ module Net {
         inp.isResult(0) and outp.isReceiver()
       )
       or
-      // signature: func (*UDPConn).ReadFrom(b []byte) (int, Addr, error)
-      this.hasQualifiedName("net", "UDPConn", "ReadFrom") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
       // signature: func (*UDPConn).ReadFromUDP(b []byte) (int, *UDPAddr, error)
       this.hasQualifiedName("net", "UDPConn", "ReadFromUDP") and
       (inp.isReceiver() and outp.isParameter(0))
@@ -146,17 +122,9 @@ module Net {
       this.hasQualifiedName("net", "UDPConn", "WriteMsgUDP") and
       (inp.isParameter([0, 1]) and outp.isReceiver())
       or
-      // signature: func (*UDPConn).WriteTo(b []byte, addr Addr) (int, error)
-      this.hasQualifiedName("net", "UDPConn", "WriteTo") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
       // signature: func (*UDPConn).WriteToUDP(b []byte, addr *UDPAddr) (int, error)
       this.hasQualifiedName("net", "UDPConn", "WriteToUDP") and
       (inp.isParameter(0) and outp.isReceiver())
-      or
-      // signature: func (*UnixConn).ReadFrom(b []byte) (int, Addr, error)
-      this.hasQualifiedName("net", "UnixConn", "ReadFrom") and
-      (inp.isReceiver() and outp.isParameter(0))
       or
       // signature: func (*UnixConn).ReadFromUnix(b []byte) (int, *UnixAddr, error)
       this.hasQualifiedName("net", "UnixConn", "ReadFromUnix") and
@@ -177,10 +145,6 @@ module Net {
       // signature: func (*UnixConn).WriteMsgUnix(b []byte, oob []byte, addr *UnixAddr) (n int, oobn int, err error)
       this.hasQualifiedName("net", "UnixConn", "WriteMsgUnix") and
       (inp.isParameter([0, 1]) and outp.isReceiver())
-      or
-      // signature: func (*UnixConn).WriteTo(b []byte, addr Addr) (int, error)
-      this.hasQualifiedName("net", "UnixConn", "WriteTo") and
-      (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (*UnixConn).WriteToUnix(b []byte, addr *UnixAddr) (int, error)
       this.hasQualifiedName("net", "UnixConn", "WriteToUnix") and
