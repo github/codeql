@@ -3,7 +3,6 @@ private import DataFlowUtil
 private import DataFlowDispatch
 private import FlowVar
 
-
 /** Gets the instance argument of a non-static call. */
 private Node getInstanceArgument(Call call) {
   result.asExpr() = call.getQualifier()
