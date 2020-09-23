@@ -10,7 +10,7 @@
 
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.models.interfaces.Taint
-private import semmle.code.cpp.models.implementations.Iterator
+private import semmle.code.cpp.models.interfaces.Iterator
 
 private module DataFlow {
   import semmle.code.cpp.dataflow.internal.DataFlowUtil
@@ -264,10 +264,4 @@ private predicate exprToPartialDefinitionStep(Expr exprIn, Expr exprOut) {
   )
 }
 
-private predicate iteratorDereference(Call c) {
-  c.getTarget() instanceof IteratorArrayMemberOperator
-  or
-  c.getTarget() instanceof IteratorPointerDereferenceMemberOperator
-  or
-  c.getTarget() instanceof IteratorPointerDereferenceOperator
-}
+private predicate iteratorDereference(Call c) { c.getTarget() instanceof IteratorReferenceFunction }

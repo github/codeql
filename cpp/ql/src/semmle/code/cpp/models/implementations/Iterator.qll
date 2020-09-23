@@ -8,6 +8,7 @@
 import cpp
 import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.DataFlow
+import semmle.code.cpp.models.interfaces.Iterator
 
 /**
  * An instantiation of the `std::iterator_traits` template.
@@ -80,7 +81,7 @@ private FunctionInput getIteratorArgumentInput(Operator op, int index) {
 /**
  * A non-member prefix `operator*` function for an iterator type.
  */
-class IteratorPointerDereferenceOperator extends Operator, TaintFunction {
+class IteratorPointerDereferenceOperator extends Operator, TaintFunction, IteratorReferenceFunction {
   FunctionInput iteratorInput;
 
   IteratorPointerDereferenceOperator() {
@@ -92,6 +93,8 @@ class IteratorPointerDereferenceOperator extends Operator, TaintFunction {
     input = iteratorInput and
     output.isReturnValue()
   }
+
+  override FunctionInput getIteratorInput() { result = iteratorInput }
 }
 
 /**
@@ -169,11 +172,14 @@ class IteratorAssignArithmeticOperator extends Operator, DataFlowFunction, Taint
 /**
  * A prefix `operator*` member function for an iterator type.
  */
-class IteratorPointerDereferenceMemberOperator extends MemberFunction, TaintFunction {
+class IteratorPointerDereferenceMemberOperator extends MemberFunction, TaintFunction,
+  IteratorReferenceFunction {
   IteratorPointerDereferenceMemberOperator() {
     this.hasName("operator*") and
     this.getDeclaringType() instanceof Iterator
   }
+
+  override FunctionInput getIteratorInput() { result.isQualifierObject() }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and
@@ -260,7 +266,7 @@ class IteratorAssignArithmeticMemberOperator extends MemberFunction, DataFlowFun
 /**
  * An `operator[]` member function of an iterator class.
  */
-class IteratorArrayMemberOperator extends MemberFunction, TaintFunction {
+class IteratorArrayMemberOperator extends MemberFunction, TaintFunction, IteratorReferenceFunction {
   IteratorArrayMemberOperator() {
     this.hasName("operator[]") and
     this.getDeclaringType() instanceof Iterator
@@ -270,6 +276,8 @@ class IteratorArrayMemberOperator extends MemberFunction, TaintFunction {
     input.isQualifierObject() and
     output.isReturnValue()
   }
+
+  override FunctionInput getIteratorInput() { result.isQualifierObject() }
 }
 
 /**
