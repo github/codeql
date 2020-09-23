@@ -113,6 +113,7 @@ private predicate locationSortKeys(Element ast, string file, int line, int colum
  */
 private newtype TPrintAstNode =
   TElementNode(Element el) { shouldPrint(el, _) } or
+  TForInitNode(ForStmt fs) { shouldPrint(fs, _) and exists(fs.getAnInit()) } or
   TAnnotationsNode(Annotatable ann) {
     shouldPrint(ann, _) and ann.hasAnnotation() and not partOfAnnotation(ann)
   } or
@@ -248,7 +249,11 @@ final class ExprStmtNode extends ElementNode {
   override PrintAstNode getChild(int childIndex) {
     exists(Element el | result.(ElementNode).getElement() = el |
       el.(Expr).isNthChildOf(element, childIndex) and
-      not partOfAnnotation(element)
+      not partOfAnnotation(element) and
+      not (
+        element instanceof ForStmt and
+        childIndex <= 0
+      )
       or
       el.(Stmt).isNthChildOf(element, childIndex)
       or
@@ -271,6 +276,9 @@ final class ExprStmtNode extends ElementNode {
       childIndex = -2 and
       el = element.(LocalVariableDeclExpr).getVariable()
     )
+    or
+    childIndex = 0 and
+    result.(ForInitNode).getForStmt() = element
   }
 }
 
@@ -430,6 +438,27 @@ final class TypeVariableNode extends ElementNode {
   override ElementNode getChild(int childIndex) {
     result.getElement().(Expr).isNthChildOf(element, childIndex)
   }
+}
+
+/**
+ * A node representing the initializers of a `ForStmt`.
+ */
+final class ForInitNode extends PrintAstNode, TForInitNode {
+  ForStmt fs;
+
+  ForInitNode() { this = TForInitNode(fs) }
+
+  override string toString() { result = "(For Initializers) "}
+
+  override ElementNode getChild(int childIndex) {
+    childIndex >= 0 and
+    result.getElement().(Expr).isNthChildOf(fs, -childIndex)
+  }
+
+  /**
+   * Gets the underlying `ForStmt`.
+   */
+  ForStmt getForStmt() {result = fs}
 }
 
 /**
