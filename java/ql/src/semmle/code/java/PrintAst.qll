@@ -222,6 +222,24 @@ abstract class ElementNode extends PrintAstNode, TElementNode {
   final Element getElement() { result = element }
 }
 
+/**
+ * A node representing an `Expr` or a `Stmt`.
+ */
+class ExprStmtNode extends ElementNode {
+  ExprStmtNode() { element instanceof ExprOrStmt }
+
+  override PrintAstNode getChild(int childIndex) {
+    exists(Element el | result.(ElementNode).getElement() = el |
+      el.(Expr).isNthChildOf(element, childIndex)
+      or
+      el.(Stmt).isNthChildOf(element, childIndex)
+    )
+  }
+}
+
+/**
+ * Holds if the given expression is part of an annotation.
+ */
 private predicate partOfAnnotation(Expr e) {
   e instanceof Annotation
   or
@@ -229,53 +247,83 @@ private predicate partOfAnnotation(Expr e) {
   partOfAnnotation(e.getParent())
 }
 
-private Expr getAnAnnotationChild(Expr e) {
-  partOfAnnotation(e) and
-  (
-    result = e.(Annotation).getValue(_)
-    or
-    result = e.(ArrayInit).getAnInit()
-    or
-    result = e.(ArrayInit).(Annotatable).getAnAnnotation()
-  )
+/**
+ * A node representing an `Expr` that is part of an annotation.
+ */
+final class AnnotationPartNode extends ExprStmtNode {
+  AnnotationPartNode() { partOfAnnotation(element) }
+
+  override ElementNode getChild(int childIndex) {
+    result.getElement() =
+      rank[childIndex](Element ch, string file, int line, int column |
+        ch = getAnAnnotationChild() and locationSortKeys(ch, file, line, column)
+      |
+        ch order by file, line, column
+      )
+  }
+
+  private Expr getAnAnnotationChild() {
+    (
+      result = element.(Annotation).getValue(_)
+      or
+      result = element.(ArrayInit).getAnInit()
+      or
+      result = element.(ArrayInit).(Annotatable).getAnAnnotation()
+    )
+  }
 }
 
 /**
- * An node representing an `Expr` or a `Stmt`.
+ * A node representing a `LocalVariableDeclExpr`.
  */
-final class ExprStmtNode extends ElementNode {
-  ExprStmtNode() { element instanceof ExprOrStmt }
+final class LocalVarDeclExprNode extends ExprStmtNode {
+  LocalVarDeclExprNode() { element instanceof LocalVariableDeclExpr }
 
   override PrintAstNode getChild(int childIndex) {
-    exists(Element el | result.(ElementNode).getElement() = el |
-      el.(Expr).isNthChildOf(element, childIndex) and
-      not partOfAnnotation(element) and
-      not (
-        element instanceof ForStmt and
-        childIndex <= 0
-      )
-      or
-      el.(Stmt).isNthChildOf(element, childIndex)
-      or
-      childIndex = -4 and
-      el = element.(ClassInstanceExpr).getAnonymousClass()
-      or
-      childIndex = 0 and
-      el = element.(LocalClassDeclStmt).getLocalClass()
-      or
-      partOfAnnotation(element) and
-      el =
-        rank[childIndex](Element ch, string file, int line, int column |
-          ch = getAnAnnotationChild(element) and locationSortKeys(ch, file, line, column)
-        |
-          ch order by file, line, column
-        )
-    )
+    result = super.getChild(childIndex)
     or
-    exists(Element el | result.(AnnotationsNode).getAnnotated() = el |
-      childIndex = -2 and
-      el = element.(LocalVariableDeclExpr).getVariable()
-    )
+    childIndex = -2 and
+    result.(AnnotationsNode).getAnnotated() = element.(LocalVariableDeclExpr).getVariable()
+  }
+}
+
+/**
+ * A node representing a `ClassInstanceExpr`.
+ */
+final class ClassInstanceExprNode extends ExprStmtNode {
+  ClassInstanceExprNode() { element instanceof ClassInstanceExpr }
+
+  override ElementNode getChild(int childIndex) {
+    result = super.getChild(childIndex)
+    or
+    childIndex = -4 and
+    result.getElement() = element.(ClassInstanceExpr).getAnonymousClass()
+  }
+}
+
+/**
+ * A node representing a `LocalClassDeclStmt`.
+ */
+final class LocalClassDeclStmtNode extends ExprStmtNode {
+  LocalClassDeclStmtNode() { element instanceof LocalClassDeclStmt }
+
+  override ElementNode getChild(int childIndex) {
+    result = super.getChild(childIndex)
+    or
+    childIndex = 0 and
+    result.getElement() = element.(LocalClassDeclStmt).getLocalClass()
+  }
+}
+
+/**
+ * A node representing a `ForStmt`.
+ */
+final class ForStmtNode extends ExprStmtNode {
+  ForStmtNode() { element instanceof ForStmt }
+
+  override PrintAstNode getChild(int childIndex) {
+    childIndex >= 1 and
+    result = super.getChild(childIndex)
     or
     childIndex = 0 and
     result.(ForInitNode).getForStmt() = element
@@ -448,7 +496,7 @@ final class ForInitNode extends PrintAstNode, TForInitNode {
 
   ForInitNode() { this = TForInitNode(fs) }
 
-  override string toString() { result = "(For Initializers) "}
+  override string toString() { result = "(For Initializers) " }
 
   override ElementNode getChild(int childIndex) {
     childIndex >= 0 and
@@ -458,7 +506,7 @@ final class ForInitNode extends PrintAstNode, TForInitNode {
   /**
    * Gets the underlying `ForStmt`.
    */
-  ForStmt getForStmt() {result = fs}
+  ForStmt getForStmt() { result = fs }
 }
 
 /**
