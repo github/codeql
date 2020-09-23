@@ -31,27 +31,27 @@ module EncodingGob {
 
     MethodModels() {
       // signature: func (*Decoder).Decode(e interface{}) error
-      this.hasQualifiedName("encoding/gob", "Decoder", "Decode") and
+      hasQualifiedName("encoding/gob", "Decoder", "Decode") and
       (inp.isReceiver() and outp.isParameter(0))
       or
       // signature: func (*Decoder).DecodeValue(v reflect.Value) error
-      this.hasQualifiedName("encoding/gob", "Decoder", "DecodeValue") and
+      hasQualifiedName("encoding/gob", "Decoder", "DecodeValue") and
       (inp.isReceiver() and outp.isParameter(0))
       or
       // signature: func (*Encoder).Encode(e interface{}) error
-      this.hasQualifiedName("encoding/gob", "Encoder", "Encode") and
+      hasQualifiedName("encoding/gob", "Encoder", "Encode") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (*Encoder).EncodeValue(value reflect.Value) error
-      this.hasQualifiedName("encoding/gob", "Encoder", "EncodeValue") and
+      hasQualifiedName("encoding/gob", "Encoder", "EncodeValue") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (GobDecoder).GobDecode([]byte) error
-      this.implements("encoding/gob", "GobDecoder", "GobDecode") and
+      implements("encoding/gob", "GobDecoder", "GobDecode") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (GobEncoder).GobEncode() ([]byte, error)
-      this.implements("encoding/gob", "GobEncoder", "GobEncode") and
+      implements("encoding/gob", "GobEncoder", "GobEncode") and
       (inp.isReceiver() and outp.isResult(0))
     }
 

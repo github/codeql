@@ -85,39 +85,39 @@ module EncodingJson {
 
     MethodModels() {
       // signature: func (*Decoder).Buffered() io.Reader
-      this.hasQualifiedName("encoding/json", "Decoder", "Buffered") and
+      hasQualifiedName("encoding/json", "Decoder", "Buffered") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (*Decoder).Decode(v interface{}) error
-      this.hasQualifiedName("encoding/json", "Decoder", "Decode") and
+      hasQualifiedName("encoding/json", "Decoder", "Decode") and
       (inp.isReceiver() and outp.isParameter(0))
       or
       // signature: func (*Decoder).Token() (Token, error)
-      this.hasQualifiedName("encoding/json", "Decoder", "Token") and
+      hasQualifiedName("encoding/json", "Decoder", "Token") and
       (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (*Encoder).Encode(v interface{}) error
-      this.hasQualifiedName("encoding/json", "Encoder", "Encode") and
+      hasQualifiedName("encoding/json", "Encoder", "Encode") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (*Encoder).SetIndent(prefix string, indent string)
-      this.hasQualifiedName("encoding/json", "Encoder", "SetIndent") and
+      hasQualifiedName("encoding/json", "Encoder", "SetIndent") and
       (inp.isParameter(_) and outp.isReceiver())
       or
       // signature: func (RawMessage).MarshalJSON() ([]byte, error)
-      this.hasQualifiedName("encoding/json", "RawMessage", "MarshalJSON") and
+      hasQualifiedName("encoding/json", "RawMessage", "MarshalJSON") and
       (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (*RawMessage).UnmarshalJSON(data []byte) error
-      this.hasQualifiedName("encoding/json", "RawMessage", "UnmarshalJSON") and
+      hasQualifiedName("encoding/json", "RawMessage", "UnmarshalJSON") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (Marshaler).MarshalJSON() ([]byte, error)
-      this.implements("encoding/json", "Marshaler", "MarshalJSON") and
+      implements("encoding/json", "Marshaler", "MarshalJSON") and
       (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (Unmarshaler).UnmarshalJSON([]byte) error
-      this.implements("encoding/json", "Unmarshaler", "UnmarshalJSON") and
+      implements("encoding/json", "Unmarshaler", "UnmarshalJSON") and
       (inp.isParameter(0) and outp.isReceiver())
     }
 

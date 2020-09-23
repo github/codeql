@@ -31,7 +31,7 @@ module CryptoRsa {
 
     MethodModels() {
       // signature: func (*PrivateKey).Decrypt(rand io.Reader, ciphertext []byte, opts crypto.DecrypterOpts) (plaintext []byte, err error)
-      this.hasQualifiedName("crypto/rsa", "PrivateKey", "Decrypt") and
+      hasQualifiedName("crypto/rsa", "PrivateKey", "Decrypt") and
       (inp.isParameter(1) and outp.isResult(0))
     }
 

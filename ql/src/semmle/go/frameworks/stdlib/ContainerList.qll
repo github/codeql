@@ -12,79 +12,79 @@ module ContainerList {
 
     MethodModels() {
       // signature: func (*Element).Next() *Element
-      this.hasQualifiedName("container/list", "Element", "Next") and
+      hasQualifiedName("container/list", "Element", "Next") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (*Element).Prev() *Element
-      this.hasQualifiedName("container/list", "Element", "Prev") and
+      hasQualifiedName("container/list", "Element", "Prev") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (*List).Back() *Element
-      this.hasQualifiedName("container/list", "List", "Back") and
+      hasQualifiedName("container/list", "List", "Back") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (*List).Front() *Element
-      this.hasQualifiedName("container/list", "List", "Front") and
+      hasQualifiedName("container/list", "List", "Front") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (*List).Init() *List
-      this.hasQualifiedName("container/list", "List", "Init") and
+      hasQualifiedName("container/list", "List", "Init") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (*List).InsertAfter(v interface{}, mark *Element) *Element
-      this.hasQualifiedName("container/list", "List", "InsertAfter") and
+      hasQualifiedName("container/list", "List", "InsertAfter") and
       (
         inp.isParameter(0) and
         (outp.isReceiver() or outp.isResult())
       )
       or
       // signature: func (*List).InsertBefore(v interface{}, mark *Element) *Element
-      this.hasQualifiedName("container/list", "List", "InsertBefore") and
+      hasQualifiedName("container/list", "List", "InsertBefore") and
       (
         inp.isParameter(0) and
         (outp.isReceiver() or outp.isResult())
       )
       or
       // signature: func (*List).MoveAfter(e *Element, mark *Element)
-      this.hasQualifiedName("container/list", "List", "MoveAfter") and
+      hasQualifiedName("container/list", "List", "MoveAfter") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (*List).MoveBefore(e *Element, mark *Element)
-      this.hasQualifiedName("container/list", "List", "MoveBefore") and
+      hasQualifiedName("container/list", "List", "MoveBefore") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (*List).MoveToBack(e *Element)
-      this.hasQualifiedName("container/list", "List", "MoveToBack") and
+      hasQualifiedName("container/list", "List", "MoveToBack") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (*List).MoveToFront(e *Element)
-      this.hasQualifiedName("container/list", "List", "MoveToFront") and
+      hasQualifiedName("container/list", "List", "MoveToFront") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (*List).PushBack(v interface{}) *Element
-      this.hasQualifiedName("container/list", "List", "PushBack") and
+      hasQualifiedName("container/list", "List", "PushBack") and
       (
         inp.isParameter(0) and
         (outp.isReceiver() or outp.isResult())
       )
       or
       // signature: func (*List).PushBackList(other *List)
-      this.hasQualifiedName("container/list", "List", "PushBackList") and
+      hasQualifiedName("container/list", "List", "PushBackList") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (*List).PushFront(v interface{}) *Element
-      this.hasQualifiedName("container/list", "List", "PushFront") and
+      hasQualifiedName("container/list", "List", "PushFront") and
       (
         inp.isParameter(0) and
         (outp.isReceiver() or outp.isResult())
       )
       or
       // signature: func (*List).PushFrontList(other *List)
-      this.hasQualifiedName("container/list", "List", "PushFrontList") and
+      hasQualifiedName("container/list", "List", "PushFrontList") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (*List).Remove(e *Element) interface{}
-      this.hasQualifiedName("container/list", "List", "Remove") and
+      hasQualifiedName("container/list", "List", "Remove") and
       (inp.isParameter(0) and outp.isResult())
     }
 

@@ -12,14 +12,14 @@ module TextScanner {
 
     MethodModels() {
       // signature: func (*Scanner).Init(src io.Reader) *Scanner
-      this.hasQualifiedName("text/scanner", "Scanner", "Init") and
+      hasQualifiedName("text/scanner", "Scanner", "Init") and
       (
         inp.isParameter(0) and
         (outp.isReceiver() or outp.isResult())
       )
       or
       // signature: func (*Scanner).TokenText() string
-      this.hasQualifiedName("text/scanner", "Scanner", "TokenText") and
+      hasQualifiedName("text/scanner", "Scanner", "TokenText") and
       (inp.isReceiver() and outp.isResult())
     }
 

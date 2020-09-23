@@ -12,11 +12,11 @@ module CryptoCipher {
 
     MethodModels() {
       // signature: func (Block).Decrypt(dst []byte, src []byte)
-      this.implements("crypto/cipher", "Block", "Decrypt") and
+      implements("crypto/cipher", "Block", "Decrypt") and
       (inp.isParameter(1) and outp.isParameter(0))
       or
       // signature: func (AEAD).Open(dst []byte, nonce []byte, ciphertext []byte, additionalData []byte) ([]byte, error)
-      this.implements("crypto/cipher", "AEAD", "Open") and
+      implements("crypto/cipher", "AEAD", "Open") and
       (
         inp.isParameter(2) and
         (outp.isParameter(0) or outp.isResult(0))

@@ -17,7 +17,7 @@ module HtmlTemplate {
         or
         fn.matches("URLQueryEscape%") and kind = "url"
       |
-        this.hasQualifiedName("html/template", fn)
+        hasQualifiedName("html/template", fn)
       )
     }
 
@@ -69,11 +69,11 @@ module HtmlTemplate {
 
     MethodModels() {
       // signature: func (*Template).Execute(wr io.Writer, data interface{}) error
-      this.hasQualifiedName("html/template", "Template", "Execute") and
+      hasQualifiedName("html/template", "Template", "Execute") and
       (inp.isParameter(1) and outp.isParameter(0))
       or
       // signature: func (*Template).ExecuteTemplate(wr io.Writer, name string, data interface{}) error
-      this.hasQualifiedName("html/template", "Template", "ExecuteTemplate") and
+      hasQualifiedName("html/template", "Template", "ExecuteTemplate") and
       (inp.isParameter(2) and outp.isParameter(0))
     }
 

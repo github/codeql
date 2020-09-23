@@ -12,19 +12,19 @@ module Encoding {
 
     MethodModels() {
       // signature: func (BinaryMarshaler).MarshalBinary() (data []byte, err error)
-      this.implements("encoding", "BinaryMarshaler", "MarshalBinary") and
+      implements("encoding", "BinaryMarshaler", "MarshalBinary") and
       (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (TextMarshaler).MarshalText() (text []byte, err error)
-      this.implements("encoding", "TextMarshaler", "MarshalText") and
+      implements("encoding", "TextMarshaler", "MarshalText") and
       (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (BinaryUnmarshaler).UnmarshalBinary(data []byte) error
-      this.implements("encoding", "BinaryUnmarshaler", "UnmarshalBinary") and
+      implements("encoding", "BinaryUnmarshaler", "UnmarshalBinary") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (TextUnmarshaler).UnmarshalText(text []byte) error
-      this.implements("encoding", "TextUnmarshaler", "UnmarshalText") and
+      implements("encoding", "TextUnmarshaler", "UnmarshalText") and
       (inp.isParameter(0) and outp.isReceiver())
     }
 

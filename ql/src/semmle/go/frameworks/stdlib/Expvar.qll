@@ -12,27 +12,27 @@ module Expvar {
 
     MethodModels() {
       // signature: func (Func).Value() interface{}
-      this.hasQualifiedName("expvar", "Func", "Value") and
+      hasQualifiedName("expvar", "Func", "Value") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (*Map).Get(key string) Var
-      this.hasQualifiedName("expvar", "Map", "Get") and
+      hasQualifiedName("expvar", "Map", "Get") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (*Map).Set(key string, av Var)
-      this.hasQualifiedName("expvar", "Map", "Set") and
+      hasQualifiedName("expvar", "Map", "Set") and
       (inp.isParameter(_) and outp.isReceiver())
       or
       // signature: func (*String).Set(value string)
-      this.hasQualifiedName("expvar", "String", "Set") and
+      hasQualifiedName("expvar", "String", "Set") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (*String).Value() string
-      this.hasQualifiedName("expvar", "String", "Value") and
+      hasQualifiedName("expvar", "String", "Value") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (Var).String() string
-      this.implements("expvar", "Var", "String") and
+      implements("expvar", "Var", "String") and
       (inp.isReceiver() and outp.isResult())
     }
 

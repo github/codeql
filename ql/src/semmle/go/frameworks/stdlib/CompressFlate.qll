@@ -39,11 +39,11 @@ module CompressFlate {
 
     MethodModels() {
       // signature: func (*Writer).Reset(dst io.Writer)
-      this.hasQualifiedName("compress/flate", "Writer", "Reset") and
+      hasQualifiedName("compress/flate", "Writer", "Reset") and
       (inp.isReceiver() and outp.isParameter(0))
       or
       // signature: func (Resetter).Reset(r io.Reader, dict []byte) error
-      this.implements("compress/flate", "Resetter", "Reset") and
+      implements("compress/flate", "Resetter", "Reset") and
       (inp.isParameter(0) and outp.isReceiver())
     }
 

@@ -88,11 +88,11 @@ module TextTemplate {
 
     MethodModels() {
       // signature: func (*Template).Execute(wr io.Writer, data interface{}) error
-      this.hasQualifiedName("text/template", "Template", "Execute") and
+      hasQualifiedName("text/template", "Template", "Execute") and
       (inp.isParameter(1) and outp.isParameter(0))
       or
       // signature: func (*Template).ExecuteTemplate(wr io.Writer, name string, data interface{}) error
-      this.hasQualifiedName("text/template", "Template", "ExecuteTemplate") and
+      hasQualifiedName("text/template", "Template", "ExecuteTemplate") and
       (inp.isParameter(2) and outp.isParameter(0))
     }
 

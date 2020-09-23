@@ -39,7 +39,7 @@ module Context {
 
     MethodModels() {
       // signature: func (Context).Value(key interface{}) interface{}
-      this.implements("context", "Context", "Value") and
+      implements("context", "Context", "Value") and
       (inp.isReceiver() and outp.isResult())
     }
 

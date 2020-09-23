@@ -10,7 +10,7 @@ module Bufio {
    * The function `bufio.NewScanner`.
    */
   class NewScanner extends Function {
-    NewScanner() { this.hasQualifiedName("bufio", "NewScanner") }
+    NewScanner() { hasQualifiedName("bufio", "NewScanner") }
 
     /**
      * Gets the input corresponding to the `io.Reader`
@@ -80,39 +80,39 @@ module Bufio {
 
     MethodModels() {
       // signature: func (*Reader).Peek(n int) ([]byte, error)
-      this.hasQualifiedName("bufio", "Reader", "Peek") and
+      hasQualifiedName("bufio", "Reader", "Peek") and
       (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (*Reader).ReadBytes(delim byte) ([]byte, error)
-      this.hasQualifiedName("bufio", "Reader", "ReadBytes") and
+      hasQualifiedName("bufio", "Reader", "ReadBytes") and
       (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (*Reader).ReadLine() (line []byte, isPrefix bool, err error)
-      this.hasQualifiedName("bufio", "Reader", "ReadLine") and
+      hasQualifiedName("bufio", "Reader", "ReadLine") and
       (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (*Reader).ReadSlice(delim byte) (line []byte, err error)
-      this.hasQualifiedName("bufio", "Reader", "ReadSlice") and
+      hasQualifiedName("bufio", "Reader", "ReadSlice") and
       (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (*Reader).ReadString(delim byte) (string, error)
-      this.hasQualifiedName("bufio", "Reader", "ReadString") and
+      hasQualifiedName("bufio", "Reader", "ReadString") and
       (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (*Reader).Reset(r io.Reader)
-      this.hasQualifiedName("bufio", "Reader", "Reset") and
+      hasQualifiedName("bufio", "Reader", "Reset") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (*Scanner).Bytes() []byte
-      this.hasQualifiedName("bufio", "Scanner", "Bytes") and
+      hasQualifiedName("bufio", "Scanner", "Bytes") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (*Scanner).Text() string
-      this.hasQualifiedName("bufio", "Scanner", "Text") and
+      hasQualifiedName("bufio", "Scanner", "Text") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (*Writer).Reset(w io.Writer)
-      this.hasQualifiedName("bufio", "Writer", "Reset") and
+      hasQualifiedName("bufio", "Writer", "Reset") and
       (inp.isReceiver() and outp.isParameter(0))
     }
 

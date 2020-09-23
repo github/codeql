@@ -31,15 +31,15 @@ module Mime {
 
     MethodModels() {
       // signature: func (*WordDecoder).Decode(word string) (string, error)
-      this.hasQualifiedName("mime", "WordDecoder", "Decode") and
+      hasQualifiedName("mime", "WordDecoder", "Decode") and
       (inp.isParameter(0) and outp.isResult(0))
       or
       // signature: func (*WordDecoder).DecodeHeader(header string) (string, error)
-      this.hasQualifiedName("mime", "WordDecoder", "DecodeHeader") and
+      hasQualifiedName("mime", "WordDecoder", "DecodeHeader") and
       (inp.isParameter(0) and outp.isResult(0))
       or
       // signature: func (WordEncoder).Encode(charset string, s string) string
-      this.hasQualifiedName("mime", "WordEncoder", "Encode") and
+      hasQualifiedName("mime", "WordEncoder", "Encode") and
       (inp.isParameter(1) and outp.isResult())
     }
 
