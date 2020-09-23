@@ -239,12 +239,14 @@ private Expr getAnAnnotationChild(Expr e) {
   )
 }
 
-private Expr getTypeAccess(LocalVariableDeclExpr lvde) {
-  // Sometimes one type access is shared by multiple variable declarations,
-  // so we assign it to only the first such declaration to avoid making the tree a DAG
+/**
+ * Holds if `ta` is the type access that should be the child of `lvde` in the AST.
+ * Some type access can be shared by multiple variable declarations; in those cases then only the first such declaration will be the parent.
+ */
+private predicate hasTypeAccessChild(LocalVariableDeclExpr lvde, Expr ta) {
   lvde =
     min(LocalVariableDeclExpr par, string file, int line, int column |
-      result = par.getTypeAccess() and locationSortKeys(par, file, line, column)
+      ta = par.getTypeAccess() and locationSortKeys(par, file, line, column)
     |
       par order by file, line, column
     )
@@ -268,7 +270,7 @@ final class ExprStmtNode extends ElementNode {
       el.(Stmt).isNthChildOf(element, childIndex)
       or
       childIndex = -1 and
-      el = getTypeAccess(element)
+      hasTypeAccessChild(element, el)
       or
       childIndex = -4 and
       el = element.(ClassInstanceExpr).getAnonymousClass()
