@@ -94,6 +94,8 @@ options
 | child_process-test.js:56:5:56:59 | cp.spaw ...  cmd])) | child_process-test.js:56:25:56:58 | ['/C',  ... , cmd]) |
 | child_process-test.js:57:5:57:50 | cp.spaw ... t(cmd)) | child_process-test.js:57:25:57:49 | ['/C',  ... at(cmd) |
 | child_process-test.js:67:3:67:21 | cp.spawn(cmd, args) | child_process-test.js:67:17:67:20 | args |
+| exec-sh2.js:10:12:10:57 | cp.spaw ... ptions) | exec-sh2.js:10:50:10:56 | options |
+| exec-sh.js:15:12:15:61 | cp.spaw ... ptions) | exec-sh.js:15:54:15:60 | options |
 | lib/lib.js:152:2:152:23 | cp.spaw ... gs, cb) | lib/lib.js:152:21:152:22 | cb |
 | lib/lib.js:159:2:159:23 | cp.spaw ... gs, cb) | lib/lib.js:159:21:159:22 | cb |
 | lib/lib.js:163:2:167:2 | cp.spaw ... t' }\\n\\t) | lib/lib.js:166:3:166:22 | { stdio: 'inherit' } |
