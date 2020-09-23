@@ -20,7 +20,7 @@ In `NaiveModel.ql` we add an additional taint step from an instance of `MyClass`
 In `ProperModel.ql` we split the additional taint step in two:
 
 1. from tracked `obj` that is instance of `MyClass`, to `obj.get_value` **but only** exactly where the attribute is accessed (by an `AttrNode`). This is important, since if we allowed `<any tracked qualifier>.get_value` we would again be able to cross functions in one step.
-2. from tracked `get_value` bound method to calls of it, **but only** exactly where the call is (by an `CallNode`). for same reason as above.
+2. from tracked `get_value` bound method to calls of it, **but only** exactly where the call is (by a `CallNode`). for same reason as above.
 
 **Try running the queries in VS Code to see the difference**
 
