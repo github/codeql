@@ -37,6 +37,13 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		log.Println("Go module mode disabled.")
 	}
 
+	modFlags := make([]string, 0, 1)
+	for _, flag := range buildFlags {
+		if strings.HasPrefix(flag, "-mod=") {
+			modFlags = append(modFlags, flag)
+		}
+	}
+
 	log.Println("Running packages.Load.")
 	cfg := &packages.Config{
 		Mode: packages.NeedName | packages.NeedFiles |
@@ -47,14 +54,6 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		BuildFlags: buildFlags,
 	}
 	pkgs, err := packages.Load(cfg, patterns...)
-
-	modFlags := make([]string, 0, 1)
-	for _, flag := range buildFlags {
-		if strings.HasPrefix(flag, "-mod=") {
-			modFlags = append(modFlags, flag)
-		}
-	}
-
 	if err != nil {
 		return err
 	}
