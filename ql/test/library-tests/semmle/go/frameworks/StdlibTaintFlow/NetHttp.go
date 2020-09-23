@@ -27,6 +27,16 @@ func TaintStepTest_NetHttpMaxBytesReader_B0I0O0(sourceCQL interface{}) interface
 	return intoReadCloser957
 }
 
+func TaintStepTest_NetHttpNewRequest(taintedString string) interface{} {
+	result, _ := http.NewRequest("GET", taintedString, nil)
+	return result
+}
+
+func TaintStepTest_NetHttpNewRequestWithContext(taintedString string) interface{} {
+	result, _ := http.NewRequestWithContext(nil, "GET", taintedString, nil)
+	return result
+}
+
 func TaintStepTest_NetHttpReadRequest_B0I0O0(sourceCQL interface{}) interface{} {
 	fromReader520 := sourceCQL.(*bufio.Reader)
 	intoRequest443, _ := http.ReadRequest(fromReader520)
@@ -180,6 +190,16 @@ func RunAllTaints_NetHttp() {
 		source := newSource(2)
 		out := TaintStepTest_NetHttpMaxBytesReader_B0I0O0(source)
 		sink(2, out)
+	}
+	{
+		source := newSource(24)
+		out := TaintStepTest_NetHttpNewRequest(source.(string))
+		sink(24, out)
+	}
+	{
+		source := newSource(25)
+		out := TaintStepTest_NetHttpNewRequestWithContext(source.(string))
+		sink(25, out)
 	}
 	{
 		source := newSource(3)

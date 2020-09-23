@@ -252,6 +252,14 @@ module NetHttp {
       hasQualifiedName("net/http", "MaxBytesReader") and
       (inp.isParameter(1) and outp.isResult())
       or
+      // signature: func NewRequest(method, url string, body io.Reader) (*Request, error)
+      hasQualifiedName("net/http", "NewRequest") and
+      (inp.isParameter(1) and outp.isResult(0))
+      or
+      // signature: func NewRequestWithContext(ctx context.Context, method, url string, body io.Reader) (*Request, error)
+      hasQualifiedName("net/http", "NewRequestWithContext") and
+      (inp.isParameter(2) and outp.isResult(0))
+      or
       // signature: func ReadRequest(b *bufio.Reader) (*Request, error)
       hasQualifiedName("net/http", "ReadRequest") and
       (inp.isParameter(0) and outp.isResult(0))
