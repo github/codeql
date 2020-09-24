@@ -114,6 +114,9 @@ private predicate locationSortKeys(Element ast, string file, int line, int colum
 private newtype TPrintAstNode =
   TElementNode(Element el) { shouldPrint(el, _) } or
   TForInitNode(ForStmt fs) { shouldPrint(fs, _) and exists(fs.getAnInit()) } or
+  TLocalVarDeclNode(LocalVariableDeclExpr lvde) {
+    shouldPrint(lvde, _) and lvde.getParent() instanceof LocalVarDeclParent
+  } or
   TAnnotationsNode(Annotatable ann) {
     shouldPrint(ann, _) and ann.hasAnnotation() and not partOfAnnotation(ann)
   } or
@@ -331,6 +334,46 @@ final class ForStmtNode extends ExprStmtNode {
 }
 
 /**
+ * An element that can be the parent of a `LocalVariableDeclExpr` for which we want
+ * to use a synthetic node to hold the variable declaration and its `TypeAccess`.
+ */
+private class LocalVarDeclParent extends ExprOrStmt {
+  LocalVarDeclParent() {
+    this instanceof EnhancedForStmt or
+    this instanceof CatchClause or
+    this.(InstanceOfExpr).isPattern()
+  }
+
+  /** Gets the variable declaration that this element contains */
+  LocalVariableDeclExpr getVariable() { result.getParent() = this }
+
+  /** Gets the type access of the variable */
+  Expr getTypeAccess() { result = getVariable().getTypeAccess() }
+}
+
+/**
+ * A node representing an element that can be the parent of a `LocalVariableDeclExpr` for which we
+ * want to use a synthetic node to variable declaration and its type access.
+ *
+ * Excludes:
+ * - `LocalVariableDeclStmt` because a synthetic node isn't needed
+ * - `ForStmt` becasue a different synthetic node is already used
+ */
+final class LocalVarDeclParentNode extends ExprStmtNode {
+  LocalVarDeclParent lvdp;
+
+  LocalVarDeclParentNode() { lvdp = element }
+
+  override PrintAstNode getChild(int childIndex) {
+    result = super.getChild(childIndex) and
+    not result.(ElementNode).getElement() = [lvdp.getVariable(), lvdp.getTypeAccess()]
+    or
+    childIndex = lvdp.getVariable().getIndex() and
+    result.(LocalVarDeclSynthNode).getVariable() = lvdp.getVariable()
+  }
+}
+
+/**
  * A node representing a `Callable`, such as method declaration.
  */
 final class CallableNode extends ElementNode {
@@ -507,6 +550,30 @@ final class ForInitNode extends PrintAstNode, TForInitNode {
    * Gets the underlying `ForStmt`.
    */
   ForStmt getForStmt() { result = fs }
+}
+
+/**
+ * A synthetic node holding a `LocalVariableDeclExpr` and its type access.
+ */
+final class LocalVarDeclSynthNode extends PrintAstNode, TLocalVarDeclNode {
+  LocalVariableDeclExpr lvde;
+
+  LocalVarDeclSynthNode() { this = TLocalVarDeclNode(lvde) }
+
+  override string toString() { result = "(Local Variable Declaration)" }
+
+  override ElementNode getChild(int childIndex) {
+    childIndex = 0 and
+    result.getElement() = lvde.getTypeAccess()
+    or
+    childIndex = 1 and
+    result.getElement() = lvde
+  }
+
+  /**
+   * Gets the underlying `LocalVariableDeclExpr`
+   */
+  LocalVariableDeclExpr getVariable() { result = lvde }
 }
 
 /**
