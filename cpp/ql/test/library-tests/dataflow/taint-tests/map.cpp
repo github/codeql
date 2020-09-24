@@ -114,17 +114,17 @@ void test_map()
 	sink(m5); // tainted
 	sink(m6); // tainted
 	sink(m1.find("abc"));
-	sink(m2.find("abc")); // tainted [NOT DETECTED]
-	sink(m3.find("abc"));
-	sink(m4.find("abc")); // tainted [NOT DETECTED]
-	sink(m5.find("abc")); // tainted [NOT DETECTED]
-	sink(m6.find("abc")); // tainted [NOT DETECTED]
+	sink(m2.find("abc")); // tainted
+	sink(m3.find("abc")); // [FALSE POSITIVE]
+	sink(m4.find("abc")); // tainted
+	sink(m5.find("abc")); // tainted
+	sink(m6.find("abc")); // tainted
 	sink(m1.find("def"));
-	sink(m2.find("def"));
-	sink(m3.find("def"));
-	sink(m4.find("def"));
-	sink(m5.find("def"));
-	sink(m6.find("def"));
+	sink(m2.find("def")); // [FALSE POSITIVE]
+	sink(m3.find("def")); // [FALSE POSITIVE]
+	sink(m4.find("def")); // [FALSE POSITIVE]
+	sink(m5.find("def")); // [FALSE POSITIVE]
+	sink(m6.find("def")); // [FALSE POSITIVE]
 
 	// copy constructors and assignment
 	std::map<char *, char *> m7(m2);
@@ -134,9 +134,9 @@ void test_map()
 	sink(m7); // tainted
 	sink(m8); // tainted
 	sink(m9); // tainted
-	sink(m7.find("abc")); // tainted [NOT DETECTED]
-	sink(m8.find("abc")); // tainted [NOT DETECTED]
-	sink(m9.find("abc")); // tainted [NOT DETECTED]
+	sink(m7.find("abc")); // tainted
+	sink(m8.find("abc")); // tainted
+	sink(m9.find("abc")); // tainted
 
 	// iterators
 	std::map<char *, char *>::iterator i1, i2, i3;
@@ -266,17 +266,17 @@ void test_unordered_map()
 	sink(m5); // tainted
 	sink(m6); // tainted
 	sink(m1.find("abc"));
-	sink(m2.find("abc")); // tainted [NOT DETECTED]
-	sink(m3.find("abc"));
-	sink(m4.find("abc")); // tainted [NOT DETECTED]
-	sink(m5.find("abc")); // tainted [NOT DETECTED]
-	sink(m6.find("abc")); // tainted [NOT DETECTED]
+	sink(m2.find("abc")); // tainted
+	sink(m3.find("abc")); // [FALSE POSITIVE]
+	sink(m4.find("abc")); // tainted
+	sink(m5.find("abc")); // tainted
+	sink(m6.find("abc")); // tainted
 	sink(m1.find("def"));
-	sink(m2.find("def"));
-	sink(m3.find("def"));
-	sink(m4.find("def"));
-	sink(m5.find("def"));
-	sink(m6.find("def"));
+	sink(m2.find("def")); // [FALSE POSITIVE]
+	sink(m3.find("def")); // [FALSE POSITIVE]
+	sink(m4.find("def")); // [FALSE POSITIVE]
+	sink(m5.find("def")); // [FALSE POSITIVE]
+	sink(m6.find("def")); // [FALSE POSITIVE]
 
 	// copy constructors and assignment
 	std::unordered_map<char *, char *> m7(m2);
@@ -286,9 +286,9 @@ void test_unordered_map()
 	sink(m7); // tainted
 	sink(m8); // tainted
 	sink(m9); // tainted
-	sink(m7.find("abc")); // tainted [NOT DETECTED]
-	sink(m8.find("abc")); // tainted [NOT DETECTED]
-	sink(m9.find("abc")); // tainted [NOT DETECTED]
+	sink(m7.find("abc")); // tainted
+	sink(m8.find("abc")); // tainted
+	sink(m9.find("abc")); // tainted
 
 	// iterators
 	std::unordered_map<char *, char *>::iterator i1, i2, i3;

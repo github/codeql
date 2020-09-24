@@ -695,10 +695,12 @@
 | map.cpp:113:7:113:8 | m4 | map.cpp:113:7:113:8 | call to map |  |
 | map.cpp:114:7:114:8 | m5 | map.cpp:114:7:114:8 | call to map |  |
 | map.cpp:115:7:115:8 | m6 | map.cpp:115:7:115:8 | call to map |  |
+| map.cpp:116:7:116:8 | m1 | map.cpp:116:10:116:13 | call to find | TAINT |
 | map.cpp:116:7:116:8 | ref arg m1 | map.cpp:122:7:122:8 | m1 |  |
 | map.cpp:116:7:116:8 | ref arg m1 | map.cpp:143:12:143:13 | m1 |  |
 | map.cpp:116:7:116:8 | ref arg m1 | map.cpp:143:30:143:31 | m1 |  |
 | map.cpp:116:7:116:8 | ref arg m1 | map.cpp:249:1:249:1 | m1 |  |
+| map.cpp:117:7:117:8 | m2 | map.cpp:117:10:117:13 | call to find | TAINT |
 | map.cpp:117:7:117:8 | ref arg m2 | map.cpp:123:7:123:8 | m2 |  |
 | map.cpp:117:7:117:8 | ref arg m2 | map.cpp:130:30:130:31 | m2 |  |
 | map.cpp:117:7:117:8 | ref arg m2 | map.cpp:131:32:131:33 | m2 |  |
@@ -712,19 +714,25 @@
 | map.cpp:117:7:117:8 | ref arg m2 | map.cpp:183:7:183:8 | m2 |  |
 | map.cpp:117:7:117:8 | ref arg m2 | map.cpp:184:7:184:8 | m2 |  |
 | map.cpp:117:7:117:8 | ref arg m2 | map.cpp:249:1:249:1 | m2 |  |
+| map.cpp:118:7:118:8 | m3 | map.cpp:118:10:118:13 | call to find | TAINT |
 | map.cpp:118:7:118:8 | ref arg m3 | map.cpp:124:7:124:8 | m3 |  |
 | map.cpp:118:7:118:8 | ref arg m3 | map.cpp:155:12:155:13 | m3 |  |
 | map.cpp:118:7:118:8 | ref arg m3 | map.cpp:155:30:155:31 | m3 |  |
 | map.cpp:118:7:118:8 | ref arg m3 | map.cpp:249:1:249:1 | m3 |  |
+| map.cpp:119:7:119:8 | m4 | map.cpp:119:10:119:13 | call to find | TAINT |
 | map.cpp:119:7:119:8 | ref arg m4 | map.cpp:125:7:125:8 | m4 |  |
 | map.cpp:119:7:119:8 | ref arg m4 | map.cpp:249:1:249:1 | m4 |  |
+| map.cpp:120:7:120:8 | m5 | map.cpp:120:10:120:13 | call to find | TAINT |
 | map.cpp:120:7:120:8 | ref arg m5 | map.cpp:126:7:126:8 | m5 |  |
 | map.cpp:120:7:120:8 | ref arg m5 | map.cpp:249:1:249:1 | m5 |  |
+| map.cpp:121:7:121:8 | m6 | map.cpp:121:10:121:13 | call to find | TAINT |
 | map.cpp:121:7:121:8 | ref arg m6 | map.cpp:127:7:127:8 | m6 |  |
 | map.cpp:121:7:121:8 | ref arg m6 | map.cpp:249:1:249:1 | m6 |  |
+| map.cpp:122:7:122:8 | m1 | map.cpp:122:10:122:13 | call to find | TAINT |
 | map.cpp:122:7:122:8 | ref arg m1 | map.cpp:143:12:143:13 | m1 |  |
 | map.cpp:122:7:122:8 | ref arg m1 | map.cpp:143:30:143:31 | m1 |  |
 | map.cpp:122:7:122:8 | ref arg m1 | map.cpp:249:1:249:1 | m1 |  |
+| map.cpp:123:7:123:8 | m2 | map.cpp:123:10:123:13 | call to find | TAINT |
 | map.cpp:123:7:123:8 | ref arg m2 | map.cpp:130:30:130:31 | m2 |  |
 | map.cpp:123:7:123:8 | ref arg m2 | map.cpp:131:32:131:33 | m2 |  |
 | map.cpp:123:7:123:8 | ref arg m2 | map.cpp:133:7:133:8 | m2 |  |
@@ -737,11 +745,15 @@
 | map.cpp:123:7:123:8 | ref arg m2 | map.cpp:183:7:183:8 | m2 |  |
 | map.cpp:123:7:123:8 | ref arg m2 | map.cpp:184:7:184:8 | m2 |  |
 | map.cpp:123:7:123:8 | ref arg m2 | map.cpp:249:1:249:1 | m2 |  |
+| map.cpp:124:7:124:8 | m3 | map.cpp:124:10:124:13 | call to find | TAINT |
 | map.cpp:124:7:124:8 | ref arg m3 | map.cpp:155:12:155:13 | m3 |  |
 | map.cpp:124:7:124:8 | ref arg m3 | map.cpp:155:30:155:31 | m3 |  |
 | map.cpp:124:7:124:8 | ref arg m3 | map.cpp:249:1:249:1 | m3 |  |
+| map.cpp:125:7:125:8 | m4 | map.cpp:125:10:125:13 | call to find | TAINT |
 | map.cpp:125:7:125:8 | ref arg m4 | map.cpp:249:1:249:1 | m4 |  |
+| map.cpp:126:7:126:8 | m5 | map.cpp:126:10:126:13 | call to find | TAINT |
 | map.cpp:126:7:126:8 | ref arg m5 | map.cpp:249:1:249:1 | m5 |  |
+| map.cpp:127:7:127:8 | m6 | map.cpp:127:10:127:13 | call to find | TAINT |
 | map.cpp:127:7:127:8 | ref arg m6 | map.cpp:249:1:249:1 | m6 |  |
 | map.cpp:130:30:130:31 | m2 | map.cpp:130:30:130:32 | call to map |  |
 | map.cpp:130:30:130:32 | call to map | map.cpp:134:7:134:8 | m7 |  |
@@ -763,8 +775,11 @@
 | map.cpp:134:7:134:8 | m7 | map.cpp:134:7:134:8 | call to map |  |
 | map.cpp:135:7:135:8 | m8 | map.cpp:135:7:135:8 | call to map |  |
 | map.cpp:136:7:136:8 | m9 | map.cpp:136:7:136:8 | call to map |  |
+| map.cpp:137:7:137:8 | m7 | map.cpp:137:10:137:13 | call to find | TAINT |
 | map.cpp:137:7:137:8 | ref arg m7 | map.cpp:249:1:249:1 | m7 |  |
+| map.cpp:138:7:138:8 | m8 | map.cpp:138:10:138:13 | call to find | TAINT |
 | map.cpp:138:7:138:8 | ref arg m8 | map.cpp:249:1:249:1 | m8 |  |
+| map.cpp:139:7:139:8 | m9 | map.cpp:139:10:139:13 | call to find | TAINT |
 | map.cpp:139:7:139:8 | ref arg m9 | map.cpp:249:1:249:1 | m9 |  |
 | map.cpp:143:12:143:13 | m1 | map.cpp:143:15:143:19 | call to begin | TAINT |
 | map.cpp:143:12:143:13 | ref arg m1 | map.cpp:143:30:143:31 | m1 |  |
@@ -1338,10 +1353,12 @@
 | map.cpp:265:7:265:8 | m4 | map.cpp:265:7:265:8 | call to unordered_map |  |
 | map.cpp:266:7:266:8 | m5 | map.cpp:266:7:266:8 | call to unordered_map |  |
 | map.cpp:267:7:267:8 | m6 | map.cpp:267:7:267:8 | call to unordered_map |  |
+| map.cpp:268:7:268:8 | m1 | map.cpp:268:10:268:13 | call to find | TAINT |
 | map.cpp:268:7:268:8 | ref arg m1 | map.cpp:274:7:274:8 | m1 |  |
 | map.cpp:268:7:268:8 | ref arg m1 | map.cpp:295:12:295:13 | m1 |  |
 | map.cpp:268:7:268:8 | ref arg m1 | map.cpp:295:30:295:31 | m1 |  |
 | map.cpp:268:7:268:8 | ref arg m1 | map.cpp:398:1:398:1 | m1 |  |
+| map.cpp:269:7:269:8 | m2 | map.cpp:269:10:269:13 | call to find | TAINT |
 | map.cpp:269:7:269:8 | ref arg m2 | map.cpp:275:7:275:8 | m2 |  |
 | map.cpp:269:7:269:8 | ref arg m2 | map.cpp:282:40:282:41 | m2 |  |
 | map.cpp:269:7:269:8 | ref arg m2 | map.cpp:283:42:283:43 | m2 |  |
@@ -1352,19 +1369,25 @@
 | map.cpp:269:7:269:8 | ref arg m2 | map.cpp:332:7:332:8 | m2 |  |
 | map.cpp:269:7:269:8 | ref arg m2 | map.cpp:333:7:333:8 | m2 |  |
 | map.cpp:269:7:269:8 | ref arg m2 | map.cpp:398:1:398:1 | m2 |  |
+| map.cpp:270:7:270:8 | m3 | map.cpp:270:10:270:13 | call to find | TAINT |
 | map.cpp:270:7:270:8 | ref arg m3 | map.cpp:276:7:276:8 | m3 |  |
 | map.cpp:270:7:270:8 | ref arg m3 | map.cpp:307:12:307:13 | m3 |  |
 | map.cpp:270:7:270:8 | ref arg m3 | map.cpp:307:30:307:31 | m3 |  |
 | map.cpp:270:7:270:8 | ref arg m3 | map.cpp:398:1:398:1 | m3 |  |
+| map.cpp:271:7:271:8 | m4 | map.cpp:271:10:271:13 | call to find | TAINT |
 | map.cpp:271:7:271:8 | ref arg m4 | map.cpp:277:7:277:8 | m4 |  |
 | map.cpp:271:7:271:8 | ref arg m4 | map.cpp:398:1:398:1 | m4 |  |
+| map.cpp:272:7:272:8 | m5 | map.cpp:272:10:272:13 | call to find | TAINT |
 | map.cpp:272:7:272:8 | ref arg m5 | map.cpp:278:7:278:8 | m5 |  |
 | map.cpp:272:7:272:8 | ref arg m5 | map.cpp:398:1:398:1 | m5 |  |
+| map.cpp:273:7:273:8 | m6 | map.cpp:273:10:273:13 | call to find | TAINT |
 | map.cpp:273:7:273:8 | ref arg m6 | map.cpp:279:7:279:8 | m6 |  |
 | map.cpp:273:7:273:8 | ref arg m6 | map.cpp:398:1:398:1 | m6 |  |
+| map.cpp:274:7:274:8 | m1 | map.cpp:274:10:274:13 | call to find | TAINT |
 | map.cpp:274:7:274:8 | ref arg m1 | map.cpp:295:12:295:13 | m1 |  |
 | map.cpp:274:7:274:8 | ref arg m1 | map.cpp:295:30:295:31 | m1 |  |
 | map.cpp:274:7:274:8 | ref arg m1 | map.cpp:398:1:398:1 | m1 |  |
+| map.cpp:275:7:275:8 | m2 | map.cpp:275:10:275:13 | call to find | TAINT |
 | map.cpp:275:7:275:8 | ref arg m2 | map.cpp:282:40:282:41 | m2 |  |
 | map.cpp:275:7:275:8 | ref arg m2 | map.cpp:283:42:283:43 | m2 |  |
 | map.cpp:275:7:275:8 | ref arg m2 | map.cpp:285:7:285:8 | m2 |  |
@@ -1374,11 +1397,15 @@
 | map.cpp:275:7:275:8 | ref arg m2 | map.cpp:332:7:332:8 | m2 |  |
 | map.cpp:275:7:275:8 | ref arg m2 | map.cpp:333:7:333:8 | m2 |  |
 | map.cpp:275:7:275:8 | ref arg m2 | map.cpp:398:1:398:1 | m2 |  |
+| map.cpp:276:7:276:8 | m3 | map.cpp:276:10:276:13 | call to find | TAINT |
 | map.cpp:276:7:276:8 | ref arg m3 | map.cpp:307:12:307:13 | m3 |  |
 | map.cpp:276:7:276:8 | ref arg m3 | map.cpp:307:30:307:31 | m3 |  |
 | map.cpp:276:7:276:8 | ref arg m3 | map.cpp:398:1:398:1 | m3 |  |
+| map.cpp:277:7:277:8 | m4 | map.cpp:277:10:277:13 | call to find | TAINT |
 | map.cpp:277:7:277:8 | ref arg m4 | map.cpp:398:1:398:1 | m4 |  |
+| map.cpp:278:7:278:8 | m5 | map.cpp:278:10:278:13 | call to find | TAINT |
 | map.cpp:278:7:278:8 | ref arg m5 | map.cpp:398:1:398:1 | m5 |  |
+| map.cpp:279:7:279:8 | m6 | map.cpp:279:10:279:13 | call to find | TAINT |
 | map.cpp:279:7:279:8 | ref arg m6 | map.cpp:398:1:398:1 | m6 |  |
 | map.cpp:282:40:282:41 | m2 | map.cpp:282:40:282:42 | call to unordered_map |  |
 | map.cpp:282:40:282:42 | call to unordered_map | map.cpp:286:7:286:8 | m7 |  |
@@ -1400,8 +1427,11 @@
 | map.cpp:286:7:286:8 | m7 | map.cpp:286:7:286:8 | call to unordered_map |  |
 | map.cpp:287:7:287:8 | m8 | map.cpp:287:7:287:8 | call to unordered_map |  |
 | map.cpp:288:7:288:8 | m9 | map.cpp:288:7:288:8 | call to unordered_map |  |
+| map.cpp:289:7:289:8 | m7 | map.cpp:289:10:289:13 | call to find | TAINT |
 | map.cpp:289:7:289:8 | ref arg m7 | map.cpp:398:1:398:1 | m7 |  |
+| map.cpp:290:7:290:8 | m8 | map.cpp:290:10:290:13 | call to find | TAINT |
 | map.cpp:290:7:290:8 | ref arg m8 | map.cpp:398:1:398:1 | m8 |  |
+| map.cpp:291:7:291:8 | m9 | map.cpp:291:10:291:13 | call to find | TAINT |
 | map.cpp:291:7:291:8 | ref arg m9 | map.cpp:398:1:398:1 | m9 |  |
 | map.cpp:295:12:295:13 | m1 | map.cpp:295:15:295:19 | call to begin | TAINT |
 | map.cpp:295:12:295:13 | ref arg m1 | map.cpp:295:30:295:31 | m1 |  |

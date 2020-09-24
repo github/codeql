@@ -73,3 +73,17 @@ class StdMapAt extends TaintFunction {
     output.isQualifierObject()
   }
 }
+
+/**
+ * The standard map `find` function.
+ */
+class StdMapFind extends TaintFunction {
+  StdMapFind() {
+    this.hasQualifiedName("std", ["map", "unordered_map"], "find")
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isQualifierObject() and
+    output.isReturnValue()
+  }
+}
