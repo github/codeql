@@ -2,10 +2,10 @@ import csharp
 import Ssa
 import Bound
 import SignAnalysis
-import SsaReadPosition::Internal
+import semmle.code.csharp.dataflow.internal.rangeanalysis.SsaReadPositionCommon
 import semmle.code.csharp.dataflow.internal.rangeanalysis.ConstantUtils
-import semmle.code.csharp.dataflow.internal.rangeanalysis.RangeUtils
 import semmle.code.csharp.dataflow.internal.rangeanalysis.SsaUtils
+import semmle.code.csharp.dataflow.internal.rangeanalysis.SignAnalysisSpecific::Private as SignPrivate
 import semmle.code.csharp.controlflow.Guards as G
 import semmle.code.csharp.commons.ComparisonTest
 
@@ -149,7 +149,7 @@ private predicate boundFlowStepSsa(
   exists(G::Guard guard, boolean testIsTrue |
     pos.hasReadOfVar(v) and
     guard = boundFlowCond(v, e, delta, upper, testIsTrue) and
-    guardControlsSsaRead(guard, pos, testIsTrue)
+    SignPrivate::guardControlsSsaRead(guard, pos, testIsTrue)
   )
 }
 
@@ -465,7 +465,7 @@ private predicate unequalFlowStepIntegralSsa(Definition v, SsaReadPosition pos, 
   exists(G::Guard guard, boolean testIsTrue |
     pos.hasReadOfVar(v) and
     guard = eqFlowCond(v, e, delta, false, testIsTrue) and
-    guardControlsSsaRead(guard, pos, testIsTrue)
+    SignPrivate::guardControlsSsaRead(guard, pos, testIsTrue)
   )
 }
 
