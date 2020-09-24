@@ -182,6 +182,13 @@ class ImplicitParameterNode extends ParameterNode, TInstanceParameterNode {
   override predicate isParameterOf(Function fun, int i) { f = fun and i = -1 }
 }
 
+/**
+ * INTERNAL: do not use.
+ * 
+ * A node that represents the value of a variable after a function call that
+ * may have changed the variable because it's passed by reference or because an
+ * iterator for it was passed by value or by reference.
+ */
 class DefinitionByReferenceOrIteratorNode extends PartialDefinitionNode {
   Expr inner;
   Expr argument;
@@ -214,7 +221,6 @@ class DefinitionByReferenceOrIteratorNode extends PartialDefinitionNode {
     )
   }
 }
-
 
 /**
  * A node that represents the value of a variable after a function call that
