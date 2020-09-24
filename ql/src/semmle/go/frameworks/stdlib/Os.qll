@@ -99,36 +99,16 @@ module Os {
 
     MethodModels() {
       // signature: func (*File).Fd() uintptr
-      this.hasQualifiedName("os", "File", "Fd") and
+      hasQualifiedName("os", "File", "Fd") and
       (inp.isReceiver() and outp.isResult())
       or
-      // signature: func (*File).Read(b []byte) (n int, err error)
-      this.hasQualifiedName("os", "File", "Read") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
-      // signature: func (*File).ReadAt(b []byte, off int64) (n int, err error)
-      this.hasQualifiedName("os", "File", "ReadAt") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
       // signature: func (*File).SyscallConn() (syscall.RawConn, error)
-      this.hasQualifiedName("os", "File", "SyscallConn") and
+      hasQualifiedName("os", "File", "SyscallConn") and
       (
         inp.isReceiver() and outp.isResult(0)
         or
         inp.isResult(0) and outp.isReceiver()
       )
-      or
-      // signature: func (*File).Write(b []byte) (n int, err error)
-      this.hasQualifiedName("os", "File", "Write") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
-      // signature: func (*File).WriteAt(b []byte, off int64) (n int, err error)
-      this.hasQualifiedName("os", "File", "WriteAt") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
-      // signature: func (*File).WriteString(s string) (n int, err error)
-      this.hasQualifiedName("os", "File", "WriteString") and
-      (inp.isParameter(0) and outp.isReceiver())
     }
 
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

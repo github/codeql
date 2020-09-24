@@ -12,11 +12,11 @@ module Sync {
 
     MethodModels() {
       // signature: func (*Map).Load(key interface{}) (value interface{}, ok bool)
-      this.hasQualifiedName("sync", "Map", "Load") and
+      hasQualifiedName("sync", "Map", "Load") and
       (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (*Map).LoadOrStore(key interface{}, value interface{}) (actual interface{}, loaded bool)
-      this.hasQualifiedName("sync", "Map", "LoadOrStore") and
+      hasQualifiedName("sync", "Map", "LoadOrStore") and
       (
         inp.isReceiver() and outp.isResult(0)
         or
@@ -25,15 +25,15 @@ module Sync {
       )
       or
       // signature: func (*Map).Store(key interface{}, value interface{})
-      this.hasQualifiedName("sync", "Map", "Store") and
+      hasQualifiedName("sync", "Map", "Store") and
       (inp.isParameter(_) and outp.isReceiver())
       or
       // signature: func (*Pool).Get() interface{}
-      this.hasQualifiedName("sync", "Pool", "Get") and
+      hasQualifiedName("sync", "Pool", "Get") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (*Pool).Put(x interface{})
-      this.hasQualifiedName("sync", "Pool", "Put") and
+      hasQualifiedName("sync", "Pool", "Put") and
       (inp.isParameter(0) and outp.isReceiver())
     }
 

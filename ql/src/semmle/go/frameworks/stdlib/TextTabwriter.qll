@@ -27,15 +27,11 @@ module TextTabwriter {
 
     MethodModels() {
       // signature: func (*Writer).Init(output io.Writer, minwidth int, tabwidth int, padding int, padchar byte, flags uint) *Writer
-      this.hasQualifiedName("text/tabwriter", "Writer", "Init") and
+      hasQualifiedName("text/tabwriter", "Writer", "Init") and
       (
         (inp.isReceiver() or inp.isResult()) and
         outp.isParameter(0)
       )
-      or
-      // signature: func (*Writer).Write(buf []byte) (n int, err error)
-      this.hasQualifiedName("text/tabwriter", "Writer", "Write") and
-      (inp.isParameter(0) and outp.isReceiver())
     }
 
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

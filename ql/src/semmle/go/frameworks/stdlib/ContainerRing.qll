@@ -12,23 +12,23 @@ module ContainerRing {
 
     MethodModels() {
       // signature: func (*Ring).Link(s *Ring) *Ring
-      this.hasQualifiedName("container/ring", "Ring", "Link") and
+      hasQualifiedName("container/ring", "Ring", "Link") and
       (inp.isParameter(0) and outp.isResult())
       or
       // signature: func (*Ring).Move(n int) *Ring
-      this.hasQualifiedName("container/ring", "Ring", "Move") and
+      hasQualifiedName("container/ring", "Ring", "Move") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (*Ring).Next() *Ring
-      this.hasQualifiedName("container/ring", "Ring", "Next") and
+      hasQualifiedName("container/ring", "Ring", "Next") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (*Ring).Prev() *Ring
-      this.hasQualifiedName("container/ring", "Ring", "Prev") and
+      hasQualifiedName("container/ring", "Ring", "Prev") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (*Ring).Unlink(n int) *Ring
-      this.hasQualifiedName("container/ring", "Ring", "Unlink") and
+      hasQualifiedName("container/ring", "Ring", "Unlink") and
       (inp.isReceiver() and outp.isResult())
     }
 

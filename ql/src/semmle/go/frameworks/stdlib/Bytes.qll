@@ -151,52 +151,24 @@ module Bytes {
 
     MethodModels() {
       // signature: func (*Buffer).Bytes() []byte
-      this.hasQualifiedName("bytes", "Buffer", "Bytes") and
+      hasQualifiedName("bytes", "Buffer", "Bytes") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (*Buffer).Next(n int) []byte
-      this.hasQualifiedName("bytes", "Buffer", "Next") and
+      hasQualifiedName("bytes", "Buffer", "Next") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (*Buffer).ReadBytes(delim byte) (line []byte, err error)
-      this.hasQualifiedName("bytes", "Buffer", "ReadBytes") and
+      hasQualifiedName("bytes", "Buffer", "ReadBytes") and
       (inp.isReceiver() and outp.isResult(0))
-      or
-      // signature: func (*Buffer).ReadFrom(r io.Reader) (n int64, err error)
-      this.hasQualifiedName("bytes", "Buffer", "ReadFrom") and
-      (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (*Buffer).ReadString(delim byte) (line string, err error)
-      this.hasQualifiedName("bytes", "Buffer", "ReadString") and
+      hasQualifiedName("bytes", "Buffer", "ReadString") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Buffer).String() string
-      this.hasQualifiedName("bytes", "Buffer", "String") and
-      (inp.isReceiver() and outp.isResult())
-      or
-      // signature: func (*Buffer).Write(p []byte) (n int, err error)
-      this.hasQualifiedName("bytes", "Buffer", "Write") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
-      // signature: func (*Buffer).WriteString(s string) (n int, err error)
-      this.hasQualifiedName("bytes", "Buffer", "WriteString") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
-      // signature: func (*Buffer).WriteTo(w io.Writer) (n int64, err error)
-      this.hasQualifiedName("bytes", "Buffer", "WriteTo") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
-      // signature: func (*Reader).ReadAt(b []byte, off int64) (n int, err error)
-      this.hasQualifiedName("bytes", "Reader", "ReadAt") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
       // signature: func (*Reader).Reset(b []byte)
-      this.hasQualifiedName("bytes", "Reader", "Reset") and
+      hasQualifiedName("bytes", "Reader", "Reset") and
       (inp.isParameter(0) and outp.isReceiver())
-      or
-      // signature: func (*Reader).WriteTo(w io.Writer) (n int64, err error)
-      this.hasQualifiedName("bytes", "Reader", "WriteTo") and
-      (inp.isReceiver() and outp.isParameter(0))
     }
 
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

@@ -35,16 +35,12 @@ module CompressGzip {
 
     MethodModels() {
       // signature: func (*Reader).Reset(r io.Reader) error
-      this.hasQualifiedName("compress/gzip", "Reader", "Reset") and
+      hasQualifiedName("compress/gzip", "Reader", "Reset") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (*Writer).Reset(w io.Writer)
-      this.hasQualifiedName("compress/gzip", "Writer", "Reset") and
+      hasQualifiedName("compress/gzip", "Writer", "Reset") and
       (inp.isReceiver() and outp.isParameter(0))
-      or
-      // signature: func (*Writer).Write(p []byte) (int, error)
-      this.hasQualifiedName("compress/gzip", "Writer", "Write") and
-      (inp.isParameter(0) and outp.isReceiver())
     }
 
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

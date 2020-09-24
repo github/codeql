@@ -43,15 +43,11 @@ module CompressZlib {
 
     MethodModels() {
       // signature: func (*Writer).Reset(w io.Writer)
-      this.hasQualifiedName("compress/zlib", "Writer", "Reset") and
+      hasQualifiedName("compress/zlib", "Writer", "Reset") and
       (inp.isReceiver() and outp.isParameter(0))
       or
-      // signature: func (*Writer).Write(p []byte) (n int, err error)
-      this.hasQualifiedName("compress/zlib", "Writer", "Write") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
       // signature: func (Resetter).Reset(r io.Reader, dict []byte) error
-      this.implements("compress/zlib", "Resetter", "Reset") and
+      implements("compress/zlib", "Resetter", "Reset") and
       (inp.isParameter(0) and outp.isReceiver())
     }
 

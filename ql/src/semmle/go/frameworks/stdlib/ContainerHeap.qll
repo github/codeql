@@ -35,11 +35,11 @@ module ContainerHeap {
 
     MethodModels() {
       // signature: func (Interface).Pop() interface{}
-      this.implements("container/heap", "Interface", "Pop") and
+      implements("container/heap", "Interface", "Pop") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (Interface).Push(x interface{})
-      this.implements("container/heap", "Interface", "Push") and
+      implements("container/heap", "Interface", "Push") and
       (inp.isParameter(0) and outp.isReceiver())
     }
 

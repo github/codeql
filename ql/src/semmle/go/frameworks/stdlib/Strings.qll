@@ -142,40 +142,16 @@ module Strings {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*Builder).String() string
-      this.hasQualifiedName("strings", "Builder", "String") and
-      (inp.isReceiver() and outp.isResult())
-      or
-      // signature: func (*Builder).Write(p []byte) (int, error)
-      this.hasQualifiedName("strings", "Builder", "Write") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
-      // signature: func (*Builder).WriteString(s string) (int, error)
-      this.hasQualifiedName("strings", "Builder", "WriteString") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
-      // signature: func (*Reader).Read(b []byte) (n int, err error)
-      this.hasQualifiedName("strings", "Reader", "Read") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
-      // signature: func (*Reader).ReadAt(b []byte, off int64) (n int, err error)
-      this.hasQualifiedName("strings", "Reader", "ReadAt") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
       // signature: func (*Reader).Reset(s string)
-      this.hasQualifiedName("strings", "Reader", "Reset") and
+      hasQualifiedName("strings", "Reader", "Reset") and
       (inp.isParameter(0) and outp.isReceiver())
-      or
-      // signature: func (*Reader).WriteTo(w io.Writer) (n int64, err error)
-      this.hasQualifiedName("strings", "Reader", "WriteTo") and
-      (inp.isReceiver() and outp.isParameter(0))
       or
       // signature: func (*Replacer).Replace(s string) string
-      this.hasQualifiedName("strings", "Replacer", "Replace") and
+      hasQualifiedName("strings", "Replacer", "Replace") and
       (inp.isParameter(0) and outp.isResult())
       or
       // signature: func (*Replacer).WriteString(w io.Writer, s string) (n int, err error)
-      this.hasQualifiedName("strings", "Replacer", "WriteString") and
+      hasQualifiedName("strings", "Replacer", "WriteString") and
       (inp.isParameter(1) and outp.isParameter(0))
     }
 

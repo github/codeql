@@ -74,31 +74,31 @@ module Io {
 
     MethodModels() {
       // signature: func (Reader).Read(p []byte) (n int, err error)
-      this.implements("io", "Reader", "Read") and
+      implements("io", "Reader", "Read") and
       (inp.isReceiver() and outp.isParameter(0))
       or
       // signature: func (ReaderAt).ReadAt(p []byte, off int64) (n int, err error)
-      this.implements("io", "ReaderAt", "ReadAt") and
+      implements("io", "ReaderAt", "ReadAt") and
       (inp.isReceiver() and outp.isParameter(0))
       or
       // signature: func (ReaderFrom).ReadFrom(r Reader) (n int64, err error)
-      this.implements("io", "ReaderFrom", "ReadFrom") and
+      implements("io", "ReaderFrom", "ReadFrom") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (Writer).Write(p []byte) (n int, err error)
-      this.implements("io", "Writer", "Write") and
+      implements("io", "Writer", "Write") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (WriterAt).WriteAt(p []byte, off int64) (n int, err error)
-      this.implements("io", "WriterAt", "WriteAt") and
+      implements("io", "WriterAt", "WriteAt") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (StringWriter).WriteString(s string) (n int, err error)
-      this.implements("io", "StringWriter", "WriteString") and
+      implements("io", "StringWriter", "WriteString") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (WriterTo).WriteTo(w Writer) (n int64, err error)
-      this.implements("io", "WriterTo", "WriteTo") and
+      implements("io", "WriterTo", "WriteTo") and
       (inp.isReceiver() and outp.isParameter(0))
     }
 

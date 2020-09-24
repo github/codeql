@@ -36,23 +36,15 @@ module ArchiveTar {
     MethodModels() {
       // Methods:
       // signature: func (*Header).FileInfo() os.FileInfo
-      this.(Method).hasQualifiedName("archive/tar", "Header", "FileInfo") and
+      hasQualifiedName("archive/tar", "Header", "FileInfo") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (*Reader).Next() (*Header, error)
-      this.(Method).hasQualifiedName("archive/tar", "Reader", "Next") and
+      hasQualifiedName("archive/tar", "Reader", "Next") and
       (inp.isReceiver() and outp.isResult(0))
       or
-      // signature: func (*Reader).Read(b []byte) (int, error)
-      this.(Method).hasQualifiedName("archive/tar", "Reader", "Read") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
-      // signature: func (*Writer).Write(b []byte) (int, error)
-      this.(Method).hasQualifiedName("archive/tar", "Writer", "Write") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
       // signature: func (*Writer).WriteHeader(hdr *Header) error
-      this.(Method).hasQualifiedName("archive/tar", "Writer", "WriteHeader") and
+      hasQualifiedName("archive/tar", "Writer", "WriteHeader") and
       (inp.isParameter(0) and outp.isReceiver())
     }
 

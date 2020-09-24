@@ -9,8 +9,8 @@ module EncodingXml {
   /** The `Marshal` or `MarshalIndent` function in the `encoding/xml` package. */
   private class MarshalFunction extends MarshalingFunction::Range {
     MarshalFunction() {
-      this.hasQualifiedName("encoding/xml", "Marshal") or
-      this.hasQualifiedName("encoding/xml", "MarshalIndent")
+      hasQualifiedName("encoding/xml", "Marshal") or
+      hasQualifiedName("encoding/xml", "MarshalIndent")
     }
 
     override FunctionInput getAnInput() { result.isParameter(0) }
@@ -21,7 +21,7 @@ module EncodingXml {
   }
 
   private class UnmarshalFunction extends UnmarshalingFunction::Range {
-    UnmarshalFunction() { this.hasQualifiedName("encoding/xml", "Unmarshal") }
+    UnmarshalFunction() { hasQualifiedName("encoding/xml", "Unmarshal") }
 
     override FunctionInput getAnInput() { result.isParameter(0) }
 
@@ -83,55 +83,55 @@ module EncodingXml {
 
     MethodModels() {
       // signature: func (CharData).Copy() CharData
-      this.hasQualifiedName("encoding/xml", "CharData", "Copy") and
+      hasQualifiedName("encoding/xml", "CharData", "Copy") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (Comment).Copy() Comment
-      this.hasQualifiedName("encoding/xml", "Comment", "Copy") and
+      hasQualifiedName("encoding/xml", "Comment", "Copy") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (*Decoder).Decode(v interface{}) error
-      this.hasQualifiedName("encoding/xml", "Decoder", "Decode") and
+      hasQualifiedName("encoding/xml", "Decoder", "Decode") and
       (inp.isReceiver() and outp.isParameter(0))
       or
       // signature: func (*Decoder).DecodeElement(v interface{}, start *StartElement) error
-      this.hasQualifiedName("encoding/xml", "Decoder", "DecodeElement") and
+      hasQualifiedName("encoding/xml", "Decoder", "DecodeElement") and
       (inp.isReceiver() and outp.isParameter(0))
       or
       // signature: func (*Decoder).RawToken() (Token, error)
-      this.hasQualifiedName("encoding/xml", "Decoder", "RawToken") and
+      hasQualifiedName("encoding/xml", "Decoder", "RawToken") and
       (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (*Decoder).Token() (Token, error)
-      this.hasQualifiedName("encoding/xml", "Decoder", "Token") and
+      hasQualifiedName("encoding/xml", "Decoder", "Token") and
       (inp.isReceiver() and outp.isResult(0))
       or
       // signature: func (Directive).Copy() Directive
-      this.hasQualifiedName("encoding/xml", "Directive", "Copy") and
+      hasQualifiedName("encoding/xml", "Directive", "Copy") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (*Encoder).Encode(v interface{}) error
-      this.hasQualifiedName("encoding/xml", "Encoder", "Encode") and
+      hasQualifiedName("encoding/xml", "Encoder", "Encode") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (*Encoder).EncodeElement(v interface{}, start StartElement) error
-      this.hasQualifiedName("encoding/xml", "Encoder", "EncodeElement") and
+      hasQualifiedName("encoding/xml", "Encoder", "EncodeElement") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (*Encoder).EncodeToken(t Token) error
-      this.hasQualifiedName("encoding/xml", "Encoder", "EncodeToken") and
+      hasQualifiedName("encoding/xml", "Encoder", "EncodeToken") and
       (inp.isParameter(0) and outp.isReceiver())
       or
       // signature: func (*Encoder).Indent(prefix string, indent string)
-      this.hasQualifiedName("encoding/xml", "Encoder", "Indent") and
+      hasQualifiedName("encoding/xml", "Encoder", "Indent") and
       (inp.isParameter(_) and outp.isReceiver())
       or
       // signature: func (ProcInst).Copy() ProcInst
-      this.hasQualifiedName("encoding/xml", "ProcInst", "Copy") and
+      hasQualifiedName("encoding/xml", "ProcInst", "Copy") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (StartElement).Copy() StartElement
-      this.hasQualifiedName("encoding/xml", "StartElement", "Copy") and
+      hasQualifiedName("encoding/xml", "StartElement", "Copy") and
       (inp.isReceiver() and outp.isResult())
       or
       // signature: func (Marshaler).MarshalXML(e *Encoder, start StartElement) error

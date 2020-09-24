@@ -12,7 +12,7 @@ module Crypto {
 
     MethodModels() {
       // signature: func (Decrypter).Decrypt(rand io.Reader, msg []byte, opts DecrypterOpts) (plaintext []byte, err error)
-      this.implements("crypto", "Decrypter", "Decrypt") and
+      implements("crypto", "Decrypter", "Decrypt") and
       (inp.isParameter(1) and outp.isResult(0))
     }
 
