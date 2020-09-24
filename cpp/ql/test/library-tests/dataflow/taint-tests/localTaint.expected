@@ -852,25 +852,37 @@
 | map.cpp:163:42:163:44 | call to map | map.cpp:167:7:167:9 | m13 |  |
 | map.cpp:163:42:163:44 | call to map | map.cpp:171:7:171:9 | m13 |  |
 | map.cpp:163:42:163:44 | call to map | map.cpp:249:1:249:1 | m13 |  |
+| map.cpp:164:7:164:9 | m10 | map.cpp:164:10:164:10 | call to operator[] | TAINT |
 | map.cpp:164:7:164:9 | ref arg m10 | map.cpp:168:7:168:9 | m10 |  |
 | map.cpp:164:7:164:9 | ref arg m10 | map.cpp:249:1:249:1 | m10 |  |
 | map.cpp:164:7:164:24 | ... = ... | map.cpp:164:10:164:10 | call to operator[] [post update] |  |
+| map.cpp:164:10:164:10 | call to operator[] [post update] | map.cpp:164:7:164:9 | ref arg m10 | TAINT |
 | map.cpp:164:20:164:24 | def | map.cpp:164:7:164:24 | ... = ... |  |
+| map.cpp:165:7:165:9 | m11 | map.cpp:165:10:165:10 | call to operator[] | TAINT |
 | map.cpp:165:7:165:9 | ref arg m11 | map.cpp:169:7:169:9 | m11 |  |
 | map.cpp:165:7:165:9 | ref arg m11 | map.cpp:249:1:249:1 | m11 |  |
 | map.cpp:165:7:165:27 | ... = ... | map.cpp:165:10:165:10 | call to operator[] [post update] |  |
+| map.cpp:165:10:165:10 | call to operator[] [post update] | map.cpp:165:7:165:9 | ref arg m11 | TAINT |
 | map.cpp:165:20:165:25 | call to source | map.cpp:165:7:165:27 | ... = ... |  |
+| map.cpp:166:7:166:9 | m12 | map.cpp:166:11:166:12 | call to at | TAINT |
 | map.cpp:166:7:166:9 | ref arg m12 | map.cpp:170:7:170:9 | m12 |  |
 | map.cpp:166:7:166:9 | ref arg m12 | map.cpp:249:1:249:1 | m12 |  |
 | map.cpp:166:7:166:27 | ... = ... | map.cpp:166:11:166:12 | call to at [post update] |  |
+| map.cpp:166:11:166:12 | call to at [post update] | map.cpp:166:7:166:9 | ref arg m12 | TAINT |
 | map.cpp:166:23:166:27 | def | map.cpp:166:7:166:27 | ... = ... |  |
+| map.cpp:167:7:167:9 | m13 | map.cpp:167:11:167:12 | call to at | TAINT |
 | map.cpp:167:7:167:9 | ref arg m13 | map.cpp:171:7:171:9 | m13 |  |
 | map.cpp:167:7:167:9 | ref arg m13 | map.cpp:249:1:249:1 | m13 |  |
 | map.cpp:167:7:167:30 | ... = ... | map.cpp:167:11:167:12 | call to at [post update] |  |
+| map.cpp:167:11:167:12 | call to at [post update] | map.cpp:167:7:167:9 | ref arg m13 | TAINT |
 | map.cpp:167:23:167:28 | call to source | map.cpp:167:7:167:30 | ... = ... |  |
+| map.cpp:168:7:168:9 | m10 | map.cpp:168:10:168:10 | call to operator[] | TAINT |
 | map.cpp:168:7:168:9 | ref arg m10 | map.cpp:249:1:249:1 | m10 |  |
+| map.cpp:169:7:169:9 | m11 | map.cpp:169:10:169:10 | call to operator[] | TAINT |
 | map.cpp:169:7:169:9 | ref arg m11 | map.cpp:249:1:249:1 | m11 |  |
+| map.cpp:170:7:170:9 | m12 | map.cpp:170:10:170:10 | call to operator[] | TAINT |
 | map.cpp:170:7:170:9 | ref arg m12 | map.cpp:249:1:249:1 | m12 |  |
+| map.cpp:171:7:171:9 | m13 | map.cpp:171:10:171:10 | call to operator[] | TAINT |
 | map.cpp:171:7:171:9 | ref arg m13 | map.cpp:249:1:249:1 | m13 |  |
 | map.cpp:174:27:174:29 | call to map | map.cpp:175:2:175:4 | m14 |  |
 | map.cpp:174:27:174:29 | call to map | map.cpp:176:2:176:4 | m14 |  |
@@ -1467,25 +1479,37 @@
 | map.cpp:315:52:315:54 | call to unordered_map | map.cpp:319:7:319:9 | m13 |  |
 | map.cpp:315:52:315:54 | call to unordered_map | map.cpp:323:7:323:9 | m13 |  |
 | map.cpp:315:52:315:54 | call to unordered_map | map.cpp:398:1:398:1 | m13 |  |
+| map.cpp:316:7:316:9 | m10 | map.cpp:316:10:316:10 | call to operator[] | TAINT |
 | map.cpp:316:7:316:9 | ref arg m10 | map.cpp:320:7:320:9 | m10 |  |
 | map.cpp:316:7:316:9 | ref arg m10 | map.cpp:398:1:398:1 | m10 |  |
 | map.cpp:316:7:316:24 | ... = ... | map.cpp:316:10:316:10 | call to operator[] [post update] |  |
+| map.cpp:316:10:316:10 | call to operator[] [post update] | map.cpp:316:7:316:9 | ref arg m10 | TAINT |
 | map.cpp:316:20:316:24 | def | map.cpp:316:7:316:24 | ... = ... |  |
+| map.cpp:317:7:317:9 | m11 | map.cpp:317:10:317:10 | call to operator[] | TAINT |
 | map.cpp:317:7:317:9 | ref arg m11 | map.cpp:321:7:321:9 | m11 |  |
 | map.cpp:317:7:317:9 | ref arg m11 | map.cpp:398:1:398:1 | m11 |  |
 | map.cpp:317:7:317:27 | ... = ... | map.cpp:317:10:317:10 | call to operator[] [post update] |  |
+| map.cpp:317:10:317:10 | call to operator[] [post update] | map.cpp:317:7:317:9 | ref arg m11 | TAINT |
 | map.cpp:317:20:317:25 | call to source | map.cpp:317:7:317:27 | ... = ... |  |
+| map.cpp:318:7:318:9 | m12 | map.cpp:318:11:318:12 | call to at | TAINT |
 | map.cpp:318:7:318:9 | ref arg m12 | map.cpp:322:7:322:9 | m12 |  |
 | map.cpp:318:7:318:9 | ref arg m12 | map.cpp:398:1:398:1 | m12 |  |
 | map.cpp:318:7:318:27 | ... = ... | map.cpp:318:11:318:12 | call to at [post update] |  |
+| map.cpp:318:11:318:12 | call to at [post update] | map.cpp:318:7:318:9 | ref arg m12 | TAINT |
 | map.cpp:318:23:318:27 | def | map.cpp:318:7:318:27 | ... = ... |  |
+| map.cpp:319:7:319:9 | m13 | map.cpp:319:11:319:12 | call to at | TAINT |
 | map.cpp:319:7:319:9 | ref arg m13 | map.cpp:323:7:323:9 | m13 |  |
 | map.cpp:319:7:319:9 | ref arg m13 | map.cpp:398:1:398:1 | m13 |  |
 | map.cpp:319:7:319:30 | ... = ... | map.cpp:319:11:319:12 | call to at [post update] |  |
+| map.cpp:319:11:319:12 | call to at [post update] | map.cpp:319:7:319:9 | ref arg m13 | TAINT |
 | map.cpp:319:23:319:28 | call to source | map.cpp:319:7:319:30 | ... = ... |  |
+| map.cpp:320:7:320:9 | m10 | map.cpp:320:10:320:10 | call to operator[] | TAINT |
 | map.cpp:320:7:320:9 | ref arg m10 | map.cpp:398:1:398:1 | m10 |  |
+| map.cpp:321:7:321:9 | m11 | map.cpp:321:10:321:10 | call to operator[] | TAINT |
 | map.cpp:321:7:321:9 | ref arg m11 | map.cpp:398:1:398:1 | m11 |  |
+| map.cpp:322:7:322:9 | m12 | map.cpp:322:10:322:10 | call to operator[] | TAINT |
 | map.cpp:322:7:322:9 | ref arg m12 | map.cpp:398:1:398:1 | m12 |  |
+| map.cpp:323:7:323:9 | m13 | map.cpp:323:10:323:10 | call to operator[] | TAINT |
 | map.cpp:323:7:323:9 | ref arg m13 | map.cpp:398:1:398:1 | m13 |  |
 | map.cpp:326:37:326:39 | call to unordered_map | map.cpp:327:2:327:4 | m14 |  |
 | map.cpp:326:37:326:39 | call to unordered_map | map.cpp:328:2:328:4 | m14 |  |

@@ -56,3 +56,20 @@ class StdMapSwap extends TaintFunction {
     output.isQualifierObject()
   }
 }
+
+/**
+ * The standard map functions `at` and `operator[]`.
+ */
+class StdMapAt extends TaintFunction {
+  StdMapAt() { this.hasQualifiedName("std", ["map", "unordered_map"], ["at", "operator[]"]) }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    // flow from qualifier to referenced return value
+    input.isQualifierObject() and
+    output.isReturnValueDeref()
+    or
+    // reverse flow from returned reference to the qualifier
+    input.isReturnValueDeref() and
+    output.isQualifierObject()
+  }
+}

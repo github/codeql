@@ -57,6 +57,8 @@
 | map.cpp:157:8:157:10 | call to pair | map.cpp:106:32:106:37 | call to source |
 | map.cpp:165:7:165:27 | ... = ... | map.cpp:165:20:165:25 | call to source |
 | map.cpp:167:7:167:30 | ... = ... | map.cpp:167:23:167:28 | call to source |
+| map.cpp:169:10:169:10 | call to operator[] | map.cpp:165:20:165:25 | call to source |
+| map.cpp:171:10:171:10 | call to operator[] | map.cpp:167:23:167:28 | call to source |
 | map.cpp:190:7:190:9 | call to map | map.cpp:188:39:188:44 | call to source |
 | map.cpp:190:7:190:9 | call to map | map.cpp:188:49:188:54 | call to source |
 | map.cpp:193:7:193:9 | call to map | map.cpp:189:39:189:44 | call to source |
@@ -100,6 +102,8 @@
 | map.cpp:309:8:309:10 | call to pair | map.cpp:258:32:258:37 | call to source |
 | map.cpp:317:7:317:27 | ... = ... | map.cpp:317:20:317:25 | call to source |
 | map.cpp:319:7:319:30 | ... = ... | map.cpp:319:23:319:28 | call to source |
+| map.cpp:321:10:321:10 | call to operator[] | map.cpp:317:20:317:25 | call to source |
+| map.cpp:323:10:323:10 | call to operator[] | map.cpp:319:23:319:28 | call to source |
 | map.cpp:339:7:339:9 | call to unordered_map | map.cpp:337:39:337:44 | call to source |
 | map.cpp:339:7:339:9 | call to unordered_map | map.cpp:337:49:337:54 | call to source |
 | map.cpp:342:7:342:9 | call to unordered_map | map.cpp:338:39:338:44 | call to source |

@@ -166,9 +166,9 @@ void test_map()
 	sink(m12.at("abc") = "def");
 	sink(m13.at("abc") = source()); // tainted
 	sink(m10["abc"]);
-	sink(m11["abc"]); // tainted [NOT DETECTED]
+	sink(m11["abc"]); // tainted
 	sink(m12["abc"]);
-	sink(m13["abc"]); // tainted [NOT DETECTED]
+	sink(m13["abc"]); // tainted
 
 	// ranges
 	std::map<char *, char *> m14;
@@ -318,9 +318,9 @@ void test_unordered_map()
 	sink(m12.at("abc") = "def");
 	sink(m13.at("abc") = source()); // tainted
 	sink(m10["abc"]);
-	sink(m11["abc"]); // tainted [NOT DETECTED]
+	sink(m11["abc"]); // tainted
 	sink(m12["abc"]);
-	sink(m13["abc"]); // tainted [NOT DETECTED]
+	sink(m13["abc"]); // tainted
 
 	// ranges
 	std::unordered_map<char *, char *> m14;
