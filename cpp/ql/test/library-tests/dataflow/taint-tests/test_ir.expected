@@ -98,6 +98,10 @@
 | map.cpp:159:12:159:17 | second | map.cpp:105:39:105:44 | call to source |
 | map.cpp:165:7:165:27 | ... = ... | map.cpp:165:20:165:25 | call to source |
 | map.cpp:167:7:167:30 | ... = ... | map.cpp:167:23:167:28 | call to source |
+| map.cpp:223:11:223:15 | call to erase | map.cpp:220:39:220:44 | call to source |
+| map.cpp:223:11:223:15 | call to erase | map.cpp:220:49:220:54 | call to source |
+| map.cpp:223:11:223:15 | call to erase | map.cpp:221:39:221:44 | call to source |
+| map.cpp:223:11:223:15 | call to erase | map.cpp:221:49:221:54 | call to source |
 | map.cpp:257:7:257:54 | call to iterator | map.cpp:257:39:257:44 | call to source |
 | map.cpp:258:7:258:54 | call to iterator | map.cpp:258:32:258:37 | call to source |
 | map.cpp:259:10:259:15 | call to insert | map.cpp:259:62:259:67 | call to source |
@@ -118,6 +122,10 @@
 | map.cpp:311:12:311:17 | second | map.cpp:257:39:257:44 | call to source |
 | map.cpp:317:7:317:27 | ... = ... | map.cpp:317:20:317:25 | call to source |
 | map.cpp:319:7:319:30 | ... = ... | map.cpp:319:23:319:28 | call to source |
+| map.cpp:372:11:372:15 | call to erase | map.cpp:369:39:369:44 | call to source |
+| map.cpp:372:11:372:15 | call to erase | map.cpp:369:49:369:54 | call to source |
+| map.cpp:372:11:372:15 | call to erase | map.cpp:370:39:370:44 | call to source |
+| map.cpp:372:11:372:15 | call to erase | map.cpp:370:49:370:54 | call to source |
 | movableclass.cpp:44:8:44:9 | s1 | movableclass.cpp:39:21:39:26 | call to source |
 | movableclass.cpp:45:8:45:9 | s2 | movableclass.cpp:40:23:40:28 | call to source |
 | movableclass.cpp:46:8:46:9 | s3 | movableclass.cpp:42:8:42:13 | call to source |

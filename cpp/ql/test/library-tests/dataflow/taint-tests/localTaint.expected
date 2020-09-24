@@ -1123,6 +1123,7 @@
 | map.cpp:221:39:221:44 | call to source | map.cpp:221:13:221:57 | call to pair | TAINT |
 | map.cpp:221:49:221:54 | call to source | map.cpp:221:13:221:57 | call to pair | TAINT |
 | map.cpp:222:7:222:9 | m23 | map.cpp:222:7:222:9 | call to map |  |
+| map.cpp:223:7:223:9 | m23 | map.cpp:223:11:223:15 | call to erase | TAINT |
 | map.cpp:223:7:223:9 | ref arg m23 | map.cpp:224:7:224:9 | m23 |  |
 | map.cpp:223:7:223:9 | ref arg m23 | map.cpp:225:2:225:4 | m23 |  |
 | map.cpp:223:7:223:9 | ref arg m23 | map.cpp:226:7:226:9 | m23 |  |
@@ -1754,6 +1755,7 @@
 | map.cpp:370:39:370:44 | call to source | map.cpp:370:13:370:57 | call to pair | TAINT |
 | map.cpp:370:49:370:54 | call to source | map.cpp:370:13:370:57 | call to pair | TAINT |
 | map.cpp:371:7:371:9 | m23 | map.cpp:371:7:371:9 | call to unordered_map |  |
+| map.cpp:372:7:372:9 | m23 | map.cpp:372:11:372:15 | call to erase | TAINT |
 | map.cpp:372:7:372:9 | ref arg m23 | map.cpp:373:7:373:9 | m23 |  |
 | map.cpp:372:7:372:9 | ref arg m23 | map.cpp:374:2:374:4 | m23 |  |
 | map.cpp:372:7:372:9 | ref arg m23 | map.cpp:375:7:375:9 | m23 |  |

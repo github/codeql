@@ -220,7 +220,7 @@ void test_map()
 	m23.insert(std::pair<char *, char *>(source(), source()));
 	m23.insert(std::pair<char *, char *>(source(), source()));
 	sink(m23); // tainted
-	sink(m23.erase(m23.begin())); // tainted [NOT DETECTED]
+	sink(m23.erase(m23.begin())); // tainted
 	sink(m23); // tainted
 	m23.clear();
 	sink(m23); // [FALSE POSITIVE]
@@ -369,7 +369,7 @@ void test_unordered_map()
 	m23.insert(std::pair<char *, char *>(source(), source()));
 	m23.insert(std::pair<char *, char *>(source(), source()));
 	sink(m23); // tainted
-	sink(m23.erase(m23.begin())); // tainted [NOT DETECTED]
+	sink(m23.erase(m23.begin())); // tainted
 	sink(m23); // tainted
 	m23.clear();
 	sink(m23); // [FALSE POSITIVE]
