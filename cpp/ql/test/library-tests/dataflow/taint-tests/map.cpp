@@ -194,8 +194,8 @@ void test_map()
 	m15.swap(m16);
 	m17.swap(m18);
 	sink(m15); // [FALSE POSITIVE]
-	sink(m16); // tainted [NOT DETECTED]
-	sink(m17); // tainted [NOT DETECTED]
+	sink(m16); // tainted
+	sink(m17); // tainted
 	sink(m18); // [FALSE POSITIVE]
 
 	// merge
@@ -343,8 +343,8 @@ void test_unordered_map()
 	m15.swap(m16);
 	m17.swap(m18);
 	sink(m15); // [FALSE POSITIVE]
-	sink(m16); // tainted [NOT DETECTED]
-	sink(m17); // tainted [NOT DETECTED]
+	sink(m16); // tainted
+	sink(m17); // tainted
 	sink(m18); // [FALSE POSITIVE]
 
 	// merge

@@ -60,6 +60,10 @@
 | map.cpp:193:7:193:9 | map.cpp:189:49:189:54 | AST only |
 | map.cpp:196:7:196:9 | map.cpp:188:39:188:44 | AST only |
 | map.cpp:196:7:196:9 | map.cpp:188:49:188:54 | AST only |
+| map.cpp:197:7:197:9 | map.cpp:188:39:188:44 | AST only |
+| map.cpp:197:7:197:9 | map.cpp:188:49:188:54 | AST only |
+| map.cpp:198:7:198:9 | map.cpp:189:39:189:44 | AST only |
+| map.cpp:198:7:198:9 | map.cpp:189:49:189:54 | AST only |
 | map.cpp:199:7:199:9 | map.cpp:189:39:189:44 | AST only |
 | map.cpp:199:7:199:9 | map.cpp:189:49:189:54 | AST only |
 | map.cpp:207:7:207:9 | map.cpp:203:39:203:44 | AST only |
@@ -100,6 +104,10 @@
 | map.cpp:342:7:342:9 | map.cpp:338:49:338:54 | AST only |
 | map.cpp:345:7:345:9 | map.cpp:337:39:337:44 | AST only |
 | map.cpp:345:7:345:9 | map.cpp:337:49:337:54 | AST only |
+| map.cpp:346:7:346:9 | map.cpp:337:39:337:44 | AST only |
+| map.cpp:346:7:346:9 | map.cpp:337:49:337:54 | AST only |
+| map.cpp:347:7:347:9 | map.cpp:338:39:338:44 | AST only |
+| map.cpp:347:7:347:9 | map.cpp:338:49:338:54 | AST only |
 | map.cpp:348:7:348:9 | map.cpp:338:39:338:44 | AST only |
 | map.cpp:348:7:348:9 | map.cpp:338:49:338:54 | AST only |
 | map.cpp:356:7:356:9 | map.cpp:352:39:352:44 | AST only |

@@ -977,15 +977,19 @@
 | map.cpp:191:7:191:9 | m16 | map.cpp:191:7:191:9 | call to map |  |
 | map.cpp:192:7:192:9 | m17 | map.cpp:192:7:192:9 | call to map |  |
 | map.cpp:193:7:193:9 | m18 | map.cpp:193:7:193:9 | call to map |  |
+| map.cpp:194:2:194:4 | m15 | map.cpp:194:11:194:13 | ref arg m16 | TAINT |
 | map.cpp:194:2:194:4 | ref arg m15 | map.cpp:196:7:196:9 | m15 |  |
 | map.cpp:194:2:194:4 | ref arg m15 | map.cpp:211:2:211:4 | m15 |  |
 | map.cpp:194:2:194:4 | ref arg m15 | map.cpp:249:1:249:1 | m15 |  |
+| map.cpp:194:11:194:13 | m16 | map.cpp:194:2:194:4 | ref arg m15 | TAINT |
 | map.cpp:194:11:194:13 | ref arg m16 | map.cpp:197:7:197:9 | m16 |  |
 | map.cpp:194:11:194:13 | ref arg m16 | map.cpp:211:12:211:14 | m16 |  |
 | map.cpp:194:11:194:13 | ref arg m16 | map.cpp:249:1:249:1 | m16 |  |
+| map.cpp:195:2:195:4 | m17 | map.cpp:195:11:195:13 | ref arg m18 | TAINT |
 | map.cpp:195:2:195:4 | ref arg m17 | map.cpp:198:7:198:9 | m17 |  |
 | map.cpp:195:2:195:4 | ref arg m17 | map.cpp:212:2:212:4 | m17 |  |
 | map.cpp:195:2:195:4 | ref arg m17 | map.cpp:249:1:249:1 | m17 |  |
+| map.cpp:195:11:195:13 | m18 | map.cpp:195:2:195:4 | ref arg m17 | TAINT |
 | map.cpp:195:11:195:13 | ref arg m18 | map.cpp:199:7:199:9 | m18 |  |
 | map.cpp:195:11:195:13 | ref arg m18 | map.cpp:212:12:212:14 | m18 |  |
 | map.cpp:195:11:195:13 | ref arg m18 | map.cpp:249:1:249:1 | m18 |  |
@@ -1573,15 +1577,19 @@
 | map.cpp:340:7:340:9 | m16 | map.cpp:340:7:340:9 | call to unordered_map |  |
 | map.cpp:341:7:341:9 | m17 | map.cpp:341:7:341:9 | call to unordered_map |  |
 | map.cpp:342:7:342:9 | m18 | map.cpp:342:7:342:9 | call to unordered_map |  |
+| map.cpp:343:2:343:4 | m15 | map.cpp:343:11:343:13 | ref arg m16 | TAINT |
 | map.cpp:343:2:343:4 | ref arg m15 | map.cpp:345:7:345:9 | m15 |  |
 | map.cpp:343:2:343:4 | ref arg m15 | map.cpp:360:2:360:4 | m15 |  |
 | map.cpp:343:2:343:4 | ref arg m15 | map.cpp:398:1:398:1 | m15 |  |
+| map.cpp:343:11:343:13 | m16 | map.cpp:343:2:343:4 | ref arg m15 | TAINT |
 | map.cpp:343:11:343:13 | ref arg m16 | map.cpp:346:7:346:9 | m16 |  |
 | map.cpp:343:11:343:13 | ref arg m16 | map.cpp:360:12:360:14 | m16 |  |
 | map.cpp:343:11:343:13 | ref arg m16 | map.cpp:398:1:398:1 | m16 |  |
+| map.cpp:344:2:344:4 | m17 | map.cpp:344:11:344:13 | ref arg m18 | TAINT |
 | map.cpp:344:2:344:4 | ref arg m17 | map.cpp:347:7:347:9 | m17 |  |
 | map.cpp:344:2:344:4 | ref arg m17 | map.cpp:361:2:361:4 | m17 |  |
 | map.cpp:344:2:344:4 | ref arg m17 | map.cpp:398:1:398:1 | m17 |  |
+| map.cpp:344:11:344:13 | m18 | map.cpp:344:2:344:4 | ref arg m17 | TAINT |
 | map.cpp:344:11:344:13 | ref arg m18 | map.cpp:348:7:348:9 | m18 |  |
 | map.cpp:344:11:344:13 | ref arg m18 | map.cpp:361:12:361:14 | m18 |  |
 | map.cpp:344:11:344:13 | ref arg m18 | map.cpp:398:1:398:1 | m18 |  |
