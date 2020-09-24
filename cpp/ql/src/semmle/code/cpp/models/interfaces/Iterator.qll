@@ -14,5 +14,4 @@ import semmle.code.cpp.models.Models
  * A function which takes an iterator argument and returns a reference that
  * can be used to write to the iterator's underlying collection.
  */
-abstract class IteratorReferenceFunction extends Function {
-}
+abstract class IteratorReferenceFunction extends Function { }
