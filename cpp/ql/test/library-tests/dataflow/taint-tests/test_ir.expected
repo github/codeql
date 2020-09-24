@@ -81,6 +81,8 @@
 | map.cpp:105:7:105:54 | call to iterator | map.cpp:105:39:105:44 | call to source |
 | map.cpp:106:7:106:54 | call to iterator | map.cpp:106:32:106:37 | call to source |
 | map.cpp:107:10:107:15 | call to insert | map.cpp:107:62:107:67 | call to source |
+| map.cpp:108:7:108:48 | call to iterator | map.cpp:108:34:108:39 | call to source |
+| map.cpp:109:10:109:25 | call to insert_or_assign | map.cpp:109:46:109:51 | call to source |
 | map.cpp:151:8:151:10 | call to pair | map.cpp:105:39:105:44 | call to source |
 | map.cpp:152:12:152:16 | first | map.cpp:105:39:105:44 | call to source |
 | map.cpp:153:12:153:17 | second | map.cpp:105:39:105:44 | call to source |
@@ -92,6 +94,8 @@
 | map.cpp:257:7:257:54 | call to iterator | map.cpp:257:39:257:44 | call to source |
 | map.cpp:258:7:258:54 | call to iterator | map.cpp:258:32:258:37 | call to source |
 | map.cpp:259:10:259:15 | call to insert | map.cpp:259:62:259:67 | call to source |
+| map.cpp:260:7:260:48 | call to iterator | map.cpp:260:34:260:39 | call to source |
+| map.cpp:261:10:261:25 | call to insert_or_assign | map.cpp:261:46:261:51 | call to source |
 | map.cpp:303:8:303:10 | call to pair | map.cpp:257:39:257:44 | call to source |
 | map.cpp:304:12:304:16 | first | map.cpp:257:39:257:44 | call to source |
 | map.cpp:305:12:305:17 | second | map.cpp:257:39:257:44 | call to source |

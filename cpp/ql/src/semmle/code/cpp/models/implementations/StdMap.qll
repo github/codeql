@@ -6,11 +6,11 @@ import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.implementations.Iterator
 
 /**
- * The standard map `insert` function.
+ * The standard map `insert` and `insert_or_assign` functions.
  */
 class StdMapInsert extends TaintFunction {
   StdMapInsert() {
-    this.hasQualifiedName("std", ["map", "unordered_map"], "insert")
+    this.hasQualifiedName("std", ["map", "unordered_map"], ["insert", "insert_or_assign"])
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

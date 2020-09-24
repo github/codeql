@@ -47,9 +47,12 @@
 | map.cpp:86:7:86:32 | call to pair | map.cpp:86:24:86:29 | call to source |
 | map.cpp:92:7:92:7 | call to pair | map.cpp:91:33:91:38 | call to source |
 | map.cpp:107:10:107:15 | call to insert | map.cpp:107:62:107:67 | call to source |
+| map.cpp:109:10:109:25 | call to insert_or_assign | map.cpp:109:46:109:51 | call to source |
 | map.cpp:111:7:111:8 | call to map | map.cpp:105:39:105:44 | call to source |
 | map.cpp:112:7:112:8 | call to map | map.cpp:106:32:106:37 | call to source |
 | map.cpp:113:7:113:8 | call to map | map.cpp:107:62:107:67 | call to source |
+| map.cpp:114:7:114:8 | call to map | map.cpp:108:34:108:39 | call to source |
+| map.cpp:115:7:115:8 | call to map | map.cpp:109:46:109:51 | call to source |
 | map.cpp:134:7:134:8 | call to map | map.cpp:105:39:105:44 | call to source |
 | map.cpp:135:7:135:8 | call to map | map.cpp:105:39:105:44 | call to source |
 | map.cpp:136:7:136:8 | call to map | map.cpp:105:39:105:44 | call to source |
@@ -92,9 +95,12 @@
 | map.cpp:226:7:226:9 | call to map | map.cpp:221:39:221:44 | call to source |
 | map.cpp:226:7:226:9 | call to map | map.cpp:221:49:221:54 | call to source |
 | map.cpp:259:10:259:15 | call to insert | map.cpp:259:62:259:67 | call to source |
+| map.cpp:261:10:261:25 | call to insert_or_assign | map.cpp:261:46:261:51 | call to source |
 | map.cpp:263:7:263:8 | call to unordered_map | map.cpp:257:39:257:44 | call to source |
 | map.cpp:264:7:264:8 | call to unordered_map | map.cpp:258:32:258:37 | call to source |
 | map.cpp:265:7:265:8 | call to unordered_map | map.cpp:259:62:259:67 | call to source |
+| map.cpp:266:7:266:8 | call to unordered_map | map.cpp:260:34:260:39 | call to source |
+| map.cpp:267:7:267:8 | call to unordered_map | map.cpp:261:46:261:51 | call to source |
 | map.cpp:286:7:286:8 | call to unordered_map | map.cpp:257:39:257:44 | call to source |
 | map.cpp:287:7:287:8 | call to unordered_map | map.cpp:257:39:257:44 | call to source |
 | map.cpp:288:7:288:8 | call to unordered_map | map.cpp:257:39:257:44 | call to source |

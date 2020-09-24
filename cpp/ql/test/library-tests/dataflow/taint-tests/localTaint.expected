@@ -673,6 +673,8 @@
 | map.cpp:108:7:108:8 | ref arg m5 | map.cpp:120:7:120:8 | m5 |  |
 | map.cpp:108:7:108:8 | ref arg m5 | map.cpp:126:7:126:8 | m5 |  |
 | map.cpp:108:7:108:8 | ref arg m5 | map.cpp:249:1:249:1 | m5 |  |
+| map.cpp:108:34:108:39 | call to source | map.cpp:108:7:108:8 | ref arg m5 | TAINT |
+| map.cpp:108:34:108:39 | call to source | map.cpp:108:10:108:25 | call to insert_or_assign | TAINT |
 | map.cpp:108:44:108:48 | first | map.cpp:108:7:108:48 | call to iterator |  |
 | map.cpp:109:7:109:8 | ref arg m6 | map.cpp:115:7:115:8 | m6 |  |
 | map.cpp:109:7:109:8 | ref arg m6 | map.cpp:121:7:121:8 | m6 |  |
@@ -685,6 +687,8 @@
 | map.cpp:109:27:109:28 | ref arg m6 | map.cpp:127:7:127:8 | m6 |  |
 | map.cpp:109:27:109:28 | ref arg m6 | map.cpp:249:1:249:1 | m6 |  |
 | map.cpp:109:30:109:34 | call to begin | map.cpp:109:27:109:36 | call to iterator | TAINT |
+| map.cpp:109:46:109:51 | call to source | map.cpp:109:7:109:8 | ref arg m6 | TAINT |
+| map.cpp:109:46:109:51 | call to source | map.cpp:109:10:109:25 | call to insert_or_assign | TAINT |
 | map.cpp:110:7:110:8 | m1 | map.cpp:110:7:110:8 | call to map |  |
 | map.cpp:111:7:111:8 | m2 | map.cpp:111:7:111:8 | call to map |  |
 | map.cpp:112:7:112:8 | m3 | map.cpp:112:7:112:8 | call to map |  |
@@ -1312,6 +1316,8 @@
 | map.cpp:260:7:260:8 | ref arg m5 | map.cpp:272:7:272:8 | m5 |  |
 | map.cpp:260:7:260:8 | ref arg m5 | map.cpp:278:7:278:8 | m5 |  |
 | map.cpp:260:7:260:8 | ref arg m5 | map.cpp:398:1:398:1 | m5 |  |
+| map.cpp:260:34:260:39 | call to source | map.cpp:260:7:260:8 | ref arg m5 | TAINT |
+| map.cpp:260:34:260:39 | call to source | map.cpp:260:10:260:25 | call to insert_or_assign | TAINT |
 | map.cpp:260:44:260:48 | first | map.cpp:260:7:260:48 | call to iterator |  |
 | map.cpp:261:7:261:8 | ref arg m6 | map.cpp:267:7:267:8 | m6 |  |
 | map.cpp:261:7:261:8 | ref arg m6 | map.cpp:273:7:273:8 | m6 |  |
@@ -1324,6 +1330,8 @@
 | map.cpp:261:27:261:28 | ref arg m6 | map.cpp:279:7:279:8 | m6 |  |
 | map.cpp:261:27:261:28 | ref arg m6 | map.cpp:398:1:398:1 | m6 |  |
 | map.cpp:261:30:261:34 | call to begin | map.cpp:261:27:261:36 | call to iterator | TAINT |
+| map.cpp:261:46:261:51 | call to source | map.cpp:261:7:261:8 | ref arg m6 | TAINT |
+| map.cpp:261:46:261:51 | call to source | map.cpp:261:10:261:25 | call to insert_or_assign | TAINT |
 | map.cpp:262:7:262:8 | m1 | map.cpp:262:7:262:8 | call to unordered_map |  |
 | map.cpp:263:7:263:8 | m2 | map.cpp:263:7:263:8 | call to unordered_map |  |
 | map.cpp:264:7:264:8 | m3 | map.cpp:264:7:264:8 | call to unordered_map |  |
