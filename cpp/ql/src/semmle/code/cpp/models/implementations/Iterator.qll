@@ -93,8 +93,6 @@ class IteratorPointerDereferenceOperator extends Operator, TaintFunction, Iterat
     input = iteratorInput and
     output.isReturnValue()
   }
-
-  override FunctionInput getIteratorInput() { result = iteratorInput }
 }
 
 /**
@@ -178,8 +176,6 @@ class IteratorPointerDereferenceMemberOperator extends MemberFunction, TaintFunc
     this.hasName("operator*") and
     this.getDeclaringType() instanceof Iterator
   }
-
-  override FunctionInput getIteratorInput() { result.isQualifierObject() }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and
@@ -276,8 +272,6 @@ class IteratorArrayMemberOperator extends MemberFunction, TaintFunction, Iterato
     input.isQualifierObject() and
     output.isReturnValue()
   }
-
-  override FunctionInput getIteratorInput() { result.isQualifierObject() }
 }
 
 /**

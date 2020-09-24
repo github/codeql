@@ -15,5 +15,4 @@ import semmle.code.cpp.models.Models
  * can be used to write to the iterator's underlying collection.
  */
 abstract class IteratorReferenceFunction extends Function {
-  abstract FunctionInput getIteratorInput();
 }
