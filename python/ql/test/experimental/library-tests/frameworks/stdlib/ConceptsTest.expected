@@ -1,4 +1,0 @@
-| SystemCommandExecution.py:16:10:16:21 | ControlFlowNode for Str | Fixed false negative:SystemCommandExecution_getCommand="cmd1; cmd2" |
-| SystemCommandExecution.py:17:11:17:22 | ControlFlowNode for Str | Fixed false negative:SystemCommandExecution_getCommand="cmd1; cmd2" |
-| SystemCommandExecution.py:27:11:27:22 | ControlFlowNode for Str | Fixed false negative:SystemCommandExecution_getCommand="cmd1; cmd2" |
-| SystemCommandExecution.py:28:12:28:23 | ControlFlowNode for Str | Fixed false negative:SystemCommandExecution_getCommand="cmd1; cmd2" |

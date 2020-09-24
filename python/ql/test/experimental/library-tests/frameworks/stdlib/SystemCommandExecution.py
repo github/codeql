@@ -13,8 +13,8 @@ import os
 
 # can't use a string literal with spaces in the tags of an InlineExpectationsTest, so using variables :|
 
-os.popen("cmd1; cmd2")  # $f-:SystemCommandExecution_getCommand="cmd1; cmd2"
-os.system("cmd1; cmd2")  # $f-:SystemCommandExecution_getCommand="cmd1; cmd2"
+os.popen("cmd1; cmd2")  # $SystemCommandExecution_getCommand="cmd1; cmd2"
+os.system("cmd1; cmd2")  # $SystemCommandExecution_getCommand="cmd1; cmd2"
 
 
 def os_members():
@@ -24,8 +24,8 @@ def os_members():
     # :|
     from os import popen, system
 
-    popen("cmd1; cmd2")  # $f-:SystemCommandExecution_getCommand="cmd1; cmd2"
-    system("cmd1; cmd2")  # $f-:SystemCommandExecution_getCommand="cmd1; cmd2"
+    popen("cmd1; cmd2")  # $SystemCommandExecution_getCommand="cmd1; cmd2"
+    system("cmd1; cmd2")  # $SystemCommandExecution_getCommand="cmd1; cmd2"
 
 
 ########################################
