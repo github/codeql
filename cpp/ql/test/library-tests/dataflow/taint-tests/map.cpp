@@ -38,25 +38,25 @@ void test_pair()
 	sink(d);
 
 	std::pair<char *, char *> e(source(), "456");
-	sink(e.first); // tainted [NOT DETECTED]
-	sink(e.second);
-	sink(e); // tainted [NOT DETECTED]
+	sink(e.first); // tainted
+	sink(e.second); // [FALSE POSITIVE]
+	sink(e); // tainted
 
 	std::pair<char *, char *> f("123", source());
-	sink(f.first);
-	sink(f.second); // tainted [NOT DETECTED]
-	sink(f); // tainted [NOT DETECTED]
+	sink(f.first); // [FALSE POSITIVE]
+	sink(f.second); // tainted
+	sink(f); // tainted
 
 	std::pair<char *, char *> g(f);
-	sink(g.first);
-	sink(g.second); // tainted [NOT DETECTED]
-	sink(g); // tainted [NOT DETECTED]
-	
+	sink(g.first); // [FALSE POSITIVE]
+	sink(g.second); // tainted
+	sink(g); // tainted
+
 	std::pair<char *, char *> h;
 	h = f;
-	sink(h.first);
-	sink(h.second); // tainted [NOT DETECTED]
-	sink(h); // tainted [NOT DETECTED]
+	sink(h.first); // [FALSE POSITIVE]
+	sink(h.second); // tainted
+	sink(h); // tainted
 
 	std::pair<char *, char *> i("123", "456");
 	std::pair<char *, char *> j("123", source());
@@ -64,35 +64,35 @@ void test_pair()
 	std::pair<char *, char *> l("123", "456");
  	i.swap(j);
 	k.swap(l);
-	sink(i.first);
-	sink(i.second); // tainted [NOT DETECTED]
-	sink(i); // tainted [NOT DETECTED]
-	sink(j.first);
-	sink(j.second);
-	sink(j);
-	sink(k.first);
-	sink(k.second);
-	sink(k);
-	sink(l.first);
-	sink(l.second); // tainted [NOT DETECTED]
-	sink(l); // tainted [NOT DETECTED]
+	sink(i.first); // [FALSE POSITIVE]
+	sink(i.second); // tainted
+	sink(i); // tainted
+	sink(j.first); // [FALSE POSITIVE]
+	sink(j.second); // [FALSE POSITIVE]
+	sink(j); // [FALSE POSITIVE]
+	sink(k.first); // [FALSE POSITIVE]
+	sink(k.second); // [FALSE POSITIVE]
+	sink(k); // [FALSE POSITIVE]
+	sink(l.first); // [FALSE POSITIVE]
+	sink(l.second); // tainted
+	sink(l); // tainted
 
 	sink(make_pair("123", "456"));
 	sink(make_pair("123", "456").first);
 	sink(make_pair("123", "456").second);
-	sink(make_pair(source(), "456")); // tainted [NOT DETECTED]
-	sink(make_pair(source(), "456").first); // tainted [NOT DETECTED]
-	sink(make_pair(source(), "456").second);
-	sink(make_pair("123", source())); // tainted [NOT DETECTED]
-	sink(make_pair("123", source()).first);
-	sink(make_pair("123", source()).second); // tainted [NOT DETECTED]
+	sink(make_pair(source(), "456")); // tainted
+	sink(make_pair(source(), "456").first); // tainted
+	sink(make_pair(source(), "456").second); // [FALSE POSITIVE]
+	sink(make_pair("123", source())); // tainted
+	sink(make_pair("123", source()).first); // [FALSE POSITIVE]
+	sink(make_pair("123", source()).second); // tainted
 
 	std::pair<std::pair<char *, char *>, char *> m;
 	m = make_pair(make_pair("123", source()), "789");
-	sink(m); // tainted [NOT DETECTED]
-	sink(m.first); // tainted [NOT DETECTED]
-	sink(m.first.first);
-	sink(m.first.second); // tainted [NOT DETECTED]
+	sink(m); // tainted
+	sink(m.first); // tainted
+	sink(m.first.first); // [FALSE POSITIVE]
+	sink(m.first.second); // tainted
 	sink(m.second);
 }
 
