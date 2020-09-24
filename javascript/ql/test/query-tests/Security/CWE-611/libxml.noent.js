@@ -11,7 +11,10 @@ express().post('/some/path', function(req, res) {
   libxmljs.parseXml(req.param("some-xml"), { noent: true });
 
   // NOT OK: unguarded entity expansion
-  libxmljs.parseXmlString(req.param("some-xml"), {noent:true,noblanks:true})
+  libxmljs.parseXmlString(req.param("some-xml"), {noent:true})
   // NOT OK: unguarded entity expansion
-	libxmljs.parseXmlString(req.files.products.data.toString('utf8'), {noent:true,noblanks:true})
+  libxmljs.parseXmlString(req.files.products.data.toString('utf8'), {noent:true})
+  
+  // OK - no entity expansion
+  libxmljs.parseXmlString(req.files.products.data.toString('utf8'), {noent:false})
 });
