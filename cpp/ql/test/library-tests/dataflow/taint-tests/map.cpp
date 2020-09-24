@@ -148,15 +148,15 @@ void test_map()
 	}
 	for (i2 = m2.begin(); i2 != m2.end(); i2++)
 	{
-		sink(*i2); // tainted [NOT DETECTED]
-		sink(i2->first);
-		sink(i2->second); // tainted [NOT DETECTED]
+		sink(*i2); // tainted
+		sink(i2->first); // [FALSE POSITIVE]
+		sink(i2->second); // tainted
 	}
 	for (i3 = m3.begin(); i3 != m3.end(); i3++)
 	{
-		sink(*i3); // tainted [NOT DETECTED]
-		sink(i2->first); // tainted [NOT DETECTED]
-		sink(i2->second);
+		sink(*i3); // tainted
+		sink(i2->first); // tainted
+		sink(i2->second); // [FALSE POSITIVE]
 	}
 
 	// array-like access
@@ -300,15 +300,15 @@ void test_unordered_map()
 	}
 	for (i2 = m2.begin(); i2 != m2.end(); i2++)
 	{
-		sink(*i2); // tainted [NOT DETECTED]
-		sink(i2->first);
-		sink(i2->second); // tainted [NOT DETECTED]
+		sink(*i2); // tainted
+		sink(i2->first); // [FALSE POSITIVE]
+		sink(i2->second); // tainted
 	}
 	for (i3 = m3.begin(); i3 != m3.end(); i3++)
 	{
-		sink(*i3); // tainted [NOT DETECTED]
-		sink(i2->first); // tainted [NOT DETECTED]
-		sink(i2->second);
+		sink(*i3); // tainted
+		sink(i2->first); // tainted
+		sink(i2->second); // [FALSE POSITIVE]
 	}
 
 	// array-like access
