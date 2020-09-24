@@ -157,7 +157,7 @@ public class RegExpExtractor {
     @Override
     public void visit(NamedBackReference nd) {
       Label lbl = extractTerm(nd, parent, idx);
-      trapwriter.addTuple("namedBackref", lbl, nd.getName());
+      trapwriter.addTuple("named_backref", lbl, nd.getName());
     }
 
     @Override
@@ -183,8 +183,8 @@ public class RegExpExtractor {
     @Override
     public void visit(Group nd) {
       Label lbl = extractTerm(nd, parent, idx);
-      if (nd.isCapture()) trapwriter.addTuple("isCapture", lbl, nd.getNumber());
-      if (nd.isNamed()) trapwriter.addTuple("isNamedCapture", lbl, nd.getName());
+      if (nd.isCapture()) trapwriter.addTuple("is_capture", lbl, nd.getNumber());
+      if (nd.isNamed()) trapwriter.addTuple("is_named_capture", lbl, nd.getName());
       visit(nd.getOperand(), lbl, 0);
     }
 
@@ -219,7 +219,7 @@ public class RegExpExtractor {
 
     private void visit(Quantifier nd) {
       Label lbl = extractTerm(nd, parent, idx);
-      if (nd.isGreedy()) trapwriter.addTuple("isGreedy", lbl);
+      if (nd.isGreedy()) trapwriter.addTuple("is_greedy", lbl);
       visit(nd.getOperand(), lbl, 0);
     }
 
@@ -240,14 +240,14 @@ public class RegExpExtractor {
     @Override
     public void visit(Range nd) {
       Label lbl = extractTerm(nd, parent, idx);
-      if (nd.isGreedy()) trapwriter.addTuple("isGreedy", lbl);
+      if (nd.isGreedy()) trapwriter.addTuple("is_greedy", lbl);
 
       long lo = nd.getLowerBound();
-      if (inRange(lo)) trapwriter.addTuple("rangeQuantifierLowerBound", lbl, lo);
+      if (inRange(lo)) trapwriter.addTuple("range_quantifier_lower_bound", lbl, lo);
 
       if (nd.hasUpperBound()) {
         long hi = nd.getUpperBound();
-        if (inRange(hi)) trapwriter.addTuple("rangeQuantifierUpperBound", lbl, hi);
+        if (inRange(hi)) trapwriter.addTuple("range_quantifier_upper_bound", lbl, hi);
       }
 
       this.visit(nd.getOperand(), lbl, 0);
@@ -280,14 +280,14 @@ public class RegExpExtractor {
     @Override
     public void visit(CharacterClassEscape nd) {
       Label lbl = extractTerm(nd, parent, idx);
-      trapwriter.addTuple("charClassEscape", lbl, nd.getClassIdentifier());
+      trapwriter.addTuple("char_class_escape", lbl, nd.getClassIdentifier());
     }
 
     @Override
     public void visit(UnicodePropertyEscape nd) {
       Label lbl = extractTerm(nd, parent, idx);
-      trapwriter.addTuple("unicodePropertyEscapeName", lbl, nd.getName());
-      if (nd.hasValue()) trapwriter.addTuple("unicodePropertyEscapeValue", lbl, nd.getValue());
+      trapwriter.addTuple("unicode_property_escapename", lbl, nd.getName());
+      if (nd.hasValue()) trapwriter.addTuple("unicode_property_escapevalue", lbl, nd.getValue());
     }
 
     @Override
@@ -297,7 +297,7 @@ public class RegExpExtractor {
 
     private void visit(Literal nd) {
       Label lbl = extractTerm(nd, parent, idx);
-      trapwriter.addTuple("regexpConstValue", lbl, nd.getValue());
+      trapwriter.addTuple("regexp_const_value", lbl, nd.getValue());
     }
 
     @Override
@@ -333,7 +333,7 @@ public class RegExpExtractor {
     @Override
     public void visit(CharacterClass nd) {
       Label lbl = extractTerm(nd, parent, idx);
-      if (nd.isInverted()) trapwriter.addTuple("isInverted", lbl);
+      if (nd.isInverted()) trapwriter.addTuple("is_inverted", lbl);
       int i = 0;
       for (RegExpTerm element : nd.getElements()) visit(element, lbl, i++);
     }
@@ -363,7 +363,7 @@ public class RegExpExtractor {
     for (Error err : res.getErrors()) {
       Label lbl = this.trapwriter.freshLabel();
       String msg = errmsgs[err.getCode()];
-      this.trapwriter.addTuple("regexpParseErrors", lbl, rootLbl, msg);
+      this.trapwriter.addTuple("regexp_parse_errors", lbl, rootLbl, msg);
       this.emitLocation(err, lbl);
     }
   }

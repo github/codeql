@@ -50,7 +50,7 @@ namespace Semmle.Extraction.Entities
             return Equals(symbol, other.symbol);
         }
 
-        public new static Location Create(Context cx, Microsoft.CodeAnalysis.Location? loc) => AssemblyConstructorFactory.Instance.CreateNullableEntity(cx, loc);
+        public new static Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) => AssemblyConstructorFactory.Instance.CreateEntity(cx, loc, loc);
 
         class AssemblyConstructorFactory : ICachedEntityFactory<Microsoft.CodeAnalysis.Location?, Assembly>
         {
@@ -59,11 +59,12 @@ namespace Semmle.Extraction.Entities
             public Assembly Create(Context cx, Microsoft.CodeAnalysis.Location? init) => new Assembly(cx, init);
         }
 
+        static readonly object outputAssemblyCacheKey = new object();
         public static Location CreateOutputAssembly(Context cx)
         {
             if (cx.Extractor.OutputPath == null)
                 throw new InternalError("Attempting to create the output assembly in standalone extraction mode");
-            return AssemblyConstructorFactory.Instance.CreateNullableEntity(cx, null);
+            return AssemblyConstructorFactory.Instance.CreateEntity(cx, outputAssemblyCacheKey, null);
         }
 
         public override void WriteId(System.IO.TextWriter trapFile)

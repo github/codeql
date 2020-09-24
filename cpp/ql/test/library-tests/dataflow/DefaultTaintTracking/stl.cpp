@@ -88,14 +88,14 @@ void test_stringstream()
 	ss5 << t;
 
 	sink(ss1);
-	sink(ss2); // tainted [NOT DETECTED]
+	sink(ss2); // tainted
 	sink(ss3); // tainted [NOT DETECTED]
-	sink(ss4); // tainted [NOT DETECTED]
+	sink(ss4); // tainted
 	sink(ss5); // tainted [NOT DETECTED]
 	sink(ss1.str());
-	sink(ss2.str()); // tainted [NOT DETECTED]
+	sink(ss2.str()); // tainted
 	sink(ss3.str()); // tainted [NOT DETECTED]
-	sink(ss4.str()); // tainted [NOT DETECTED]
+	sink(ss4.str()); // tainted
 	sink(ss5.str()); // tainted [NOT DETECTED]
 }
 

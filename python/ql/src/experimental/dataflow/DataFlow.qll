@@ -15,7 +15,7 @@
  * `DataFlow::localFlowStep` with arguments of type `DataFlow::Node`.
  */
 
-import python
+private import python
 
 /**
  * Provides classes for performing local (intra-procedural) and

@@ -3,12 +3,13 @@
  * constants.
  */
 
-import Element
-import Callable
-import Type
 import Assignable
+import Callable
+import Element
+import Type
 private import dotnet
 private import semmle.code.csharp.ExprOrStmtParent
+private import TypeRef
 
 /**
  * A variable. Either a variable with local scope (`LocalScopeVariable`) or a field (`Field`).
@@ -193,6 +194,8 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
   override Location getALocation() { param_location(this, result) }
 
   override string toString() { result = this.getName() }
+
+  override string getAPrimaryQlClass() { result = "Parameter" }
 
   /**
    * Gets the default value of this parameter, if any. For example, the
@@ -407,6 +410,8 @@ class Field extends Variable, AssignableMember, Attributable, TopLevelExprParent
   override Location getALocation() { field_location(this, result) }
 
   override string toString() { result = Variable.super.toString() }
+
+  override string getAPrimaryQlClass() { result = "Field" }
 }
 
 /**

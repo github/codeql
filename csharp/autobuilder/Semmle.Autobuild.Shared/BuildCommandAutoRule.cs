@@ -48,7 +48,7 @@ namespace Semmle.Autobuild.Shared
             chmod.RunCommand("/bin/chmod", $"u+x {scriptPath}");
             var chmodScript = builder.Actions.IsWindows() ? BuildScript.Success : BuildScript.Try(chmod.Script);
 
-            string? dir = Path.GetDirectoryName(scriptPath);
+            string? dir = builder.Actions.GetDirectoryName(scriptPath);
 
             // A specific .NET Core version may be required
             return chmodScript & withDotNet(builder, environment =>

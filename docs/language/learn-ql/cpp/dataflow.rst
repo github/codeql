@@ -6,7 +6,7 @@ You can use data flow analysis to track the flow of potentially malicious or ins
 About data flow
 ---------------
 
-Data flow analysis computes the possible values that a variable can hold at various points in a program, determining how those values propagate through the program, and where they are used. In CodeQL, you can model both local data flow and global data flow. For a more general introduction to modeling data flow, see :doc:`About data flow analysis <../intro-to-data-flow>`.
+Data flow analysis computes the possible values that a variable can hold at various points in a program, determining how those values propagate through the program, and where they are used. In CodeQL, you can model both local data flow and global data flow. For a more general introduction to modeling data flow, see ":doc:`About data flow analysis <../intro-to-data-flow>`."
 
 Local data flow
 ---------------
@@ -390,7 +390,8 @@ Exercise 4
 Further reading
 ---------------
 
-- `Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-paths.html>`__
+- "`Exploring data flow with path queries <https://help.semmle.com/codeql/codeql-for-vscode/procedures/exploring-paths.html>`__"
+
 
 .. include:: ../../reusables/cpp-further-reading.rst
 .. include:: ../../reusables/codeql-ref-tools-further-reading.rst

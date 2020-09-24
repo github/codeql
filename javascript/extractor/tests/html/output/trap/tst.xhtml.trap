@@ -58,12 +58,12 @@ stmts(#20017,2,#20001,0,"42;")
 #20018=@"loc,{#10000},9,5,9,7"
 locations_default(#20018,#10000,9,5,9,7)
 hasLocation(#20017,#20018)
-stmtContainers(#20017,#20001)
+stmt_containers(#20017,#20001)
 #20019=*
 exprs(#20019,3,#20017,0,"42")
 hasLocation(#20019,#20011)
-enclosingStmt(#20019,#20017)
-exprContainers(#20019,#20001)
+enclosing_stmt(#20019,#20017)
+expr_containers(#20019,#20001)
 literals("42","42",#20019)
 #20020=*
 entry_cfg_node(#20020,#20001)

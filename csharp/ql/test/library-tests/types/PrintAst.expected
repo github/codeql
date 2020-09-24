@@ -1,0 +1,48 @@
+types.cs:
+#    1| [NamespaceDeclaration] namespace ... { ... }
+#    3|   1: [Class] Class
+#    5|     5: [Method] BoolType
+#    6|     6: [Method] CharType
+#    7|     7: [Method] DecimalType
+#    8|     8: [Method] SByteType
+#    9|     9: [Method] ShortType
+#   10|     10: [Method] IntType
+#   11|     11: [Method] LongType
+#   12|     12: [Method] ByteType
+#   13|     13: [Method] UShortType
+#   14|     14: [Method] UIntType
+#   15|     15: [Method] ULongType
+#   16|     16: [Method] FloatType
+#   17|     17: [Method] DoubleType
+#   18|     18: [Method] NullableType
+#   19|     19: [Method] VoidType
+#   20|     20: [Method] ArrayType
+#   21|     21: [Method] ArrayArrayType
+#   22|     22: [Method] ConstructedClassType
+#   23|     23: [Method] ConstructedInterfaceType
+#   24|     24: [Method] ConstructedStructType
+#   25|     25: [Method] DelegateType
+#   26|     26: [Method] PointerType
+#   27|     27: [Method] PointerPointerType
+#   28|     28: [Method] Map
+#   29|     29: [Method] Null
+#   30|       4: [BlockStmt] {...}
+#   31|         0: [ReturnStmt] return ...;
+#   31|           0: [NullLiteral] null
+#   34|   2: [Enum] Enum
+#   37|   3: [Struct] Struct
+#   40|   4: [Interface] Interface
+#   43|   5: [DelegateType] Delegate
+#   44|   6: [Class] GenericClass<>
+#-----|     1: (Type parameters)
+#   44|       0: [TypeParameter] T
+#   45|   7: [Interface] GenericInterface<>
+#-----|     1: (Type parameters)
+#   45|       0: [TypeParameter] T
+#   46|   8: [Struct] GenericStruct<>
+#-----|     1: (Type parameters)
+#   46|       0: [TypeParameter] T
+#   47|   9: [Class] Map<,>
+#-----|     1: (Type parameters)
+#   47|       0: [TypeParameter] U
+#   47|       1: [TypeParameter] V

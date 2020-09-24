@@ -103,7 +103,7 @@ generates html slide shows in the ``<slides-output>`` directory when run from
 the ``ql-training`` source directory.
 
 For more information about creating slides for QL training and variant analysis 
-examples, see the `template slide deck <https://github.com/github/codeql/blob/master/docs/language/ql-training/template.rst>`__.
+examples, see the `template slide deck <https://github.com/github/codeql/blob/main/docs/language/ql-training/template.rst>`__.
 
 Viewing the current version of the CodeQL documentation
 *******************************************************

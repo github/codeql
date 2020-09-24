@@ -18,6 +18,7 @@ import com.semmle.js.ast.Literal;
 import com.semmle.js.ast.LogicalExpression;
 import com.semmle.js.ast.MemberExpression;
 import com.semmle.js.ast.MetaProperty;
+import com.semmle.js.ast.ThisExpression;
 import com.semmle.js.ast.UnaryExpression;
 import com.semmle.js.ast.UpdateExpression;
 import com.semmle.js.ast.XMLAnyName;
@@ -28,6 +29,7 @@ import com.semmle.js.ast.XMLQualifiedIdentifier;
 import com.semmle.js.ast.jsx.JSXIdentifier;
 import com.semmle.js.ast.jsx.JSXMemberExpression;
 import com.semmle.js.ast.jsx.JSXSpreadAttribute;
+import com.semmle.js.ast.jsx.JSXThisExpr;
 import com.semmle.js.extractor.ASTExtractor.IdContext;
 import com.semmle.ts.ast.DecoratorList;
 import com.semmle.ts.ast.ExpressionWithTypeArguments;
@@ -77,6 +79,9 @@ public class ExprKinds {
     binOpKinds.put("**", 87);
     binOpKinds.put("**=", 88);
     binOpKinds.put("??", 107);
+    binOpKinds.put("&&=", 116);
+    binOpKinds.put("||=", 117);
+    binOpKinds.put("??=", 118);
   }
 
   private static final Map<String, Integer> unOpKinds = new LinkedHashMap<String, Integer>();
@@ -192,6 +197,11 @@ public class ExprKinds {
               }
 
               @Override
+              public Integer visit(JSXThisExpr nd, Void c) {
+                return visit((ThisExpression) nd, c);
+              }
+
+              @Override
               public Integer visit(LogicalExpression nd, Void q) {
                 return binOpKinds.get(nd.getOperator());
               }
@@ -251,9 +261,9 @@ public class ExprKinds {
 
               @Override
               public Integer visit(MetaProperty nd, Void c) {
-                if (nd.getMeta().getName().equals("new")) return 82; // @newtargetexpr
-                if (nd.getMeta().getName().equals("import")) return 115; // @importmetaexpr
-                return 93; // @functionsentexpr
+                if (nd.getMeta().getName().equals("new")) return 82; // @newtarget_expr
+                if (nd.getMeta().getName().equals("import")) return 115; // @import_meta_expr
+                return 93; // @function_sent_expr
               }
 
               @Override

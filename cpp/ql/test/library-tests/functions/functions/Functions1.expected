@@ -1,3 +1,4 @@
+| ODASA-5186.cpp:4:8:4:8 | MyClass | MyClass |  | declaration:ODASA-5186.cpp:4:8:4:8, definition:ODASA-5186.cpp:4:8:4:8 |
 | ODASA-5186.cpp:4:8:4:8 | operator= | operator= | MyClass<int> && p#0 | declaration:ODASA-5186.cpp:4:8:4:8 |
 | ODASA-5186.cpp:4:8:4:8 | operator= | operator= | const MyClass<int> & p#0 | declaration:ODASA-5186.cpp:4:8:4:8 |
 | ODASA-5186.cpp:5:8:5:8 | operator== | operator== | const MyClass<int> & other | declaration:ODASA-5186.cpp:5:8:5:8, definition:ODASA-5186.cpp:5:8:5:8 |
@@ -13,6 +14,7 @@
 | functions.cpp:8:7:8:8 | af | af |  | declaration:functions.cpp:8:7:8:8, definition:functions.cpp:8:7:8:8 |
 | functions.cpp:11:7:11:8 | ag | ag |  | declaration:functions.cpp:11:7:11:8 |
 | functions.cpp:14:6:14:6 | g | g |  | TopLevelFunction, declaration:functions.cpp:14:6:14:6, declaration:functions.cpp:5:6:5:6, definition:functions.cpp:14:6:14:6, isTopLevel |
+| functions.cpp:19:7:19:7 | Name | Name |  | declaration:functions.cpp:19:7:19:7 |
 | functions.cpp:19:7:19:7 | operator= | operator= | Name && p#0 | declaration:functions.cpp:19:7:19:7 |
 | functions.cpp:19:7:19:7 | operator= | operator= | const Name & p#0 | declaration:functions.cpp:19:7:19:7 |
 | functions.cpp:23:7:23:7 | Table | Table | const Table & p#0 | declaration:functions.cpp:23:7:23:7 |

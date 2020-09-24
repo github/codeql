@@ -176,6 +176,10 @@ nodes
 | lib/lib.js:315:22:315:25 | name |
 | lib/lib.js:320:23:320:26 | name |
 | lib/lib.js:320:23:320:26 | name |
+| lib/lib.js:324:40:324:42 | arg |
+| lib/lib.js:324:40:324:42 | arg |
+| lib/lib.js:325:49:325:51 | arg |
+| lib/lib.js:325:49:325:51 | arg |
 edges
 | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name |
 | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name |
@@ -388,6 +392,10 @@ edges
 | lib/lib.js:314:40:314:43 | name | lib/lib.js:320:23:320:26 | name |
 | lib/lib.js:314:40:314:43 | name | lib/lib.js:320:23:320:26 | name |
 | lib/lib.js:314:40:314:43 | name | lib/lib.js:320:23:320:26 | name |
+| lib/lib.js:324:40:324:42 | arg | lib/lib.js:325:49:325:51 | arg |
+| lib/lib.js:324:40:324:42 | arg | lib/lib.js:325:49:325:51 | arg |
+| lib/lib.js:324:40:324:42 | arg | lib/lib.js:325:49:325:51 | arg |
+| lib/lib.js:324:40:324:42 | arg | lib/lib.js:325:49:325:51 | arg |
 #select
 | lib/lib2.js:4:10:4:25 | "rm -rf " + name | lib/lib2.js:3:28:3:31 | name | lib/lib2.js:4:22:4:25 | name | $@ based on library input is later used in $@. | lib/lib2.js:4:10:4:25 | "rm -rf " + name | String concatenation | lib/lib2.js:4:2:4:26 | cp.exec ... + name) | shell command |
 | lib/lib2.js:8:10:8:25 | "rm -rf " + name | lib/lib2.js:7:32:7:35 | name | lib/lib2.js:8:22:8:25 | name | $@ based on library input is later used in $@. | lib/lib2.js:8:10:8:25 | "rm -rf " + name | String concatenation | lib/lib2.js:8:2:8:26 | cp.exec ... + name) | shell command |
@@ -441,3 +449,4 @@ edges
 | lib/lib.js:308:11:308:26 | "rm -rf " + name | lib/lib.js:307:39:307:42 | name | lib/lib.js:308:23:308:26 | name | $@ based on library input is later used in $@. | lib/lib.js:308:11:308:26 | "rm -rf " + name | String concatenation | lib/lib.js:308:3:308:27 | cp.exec ... + name) | shell command |
 | lib/lib.js:315:10:315:25 | "rm -rf " + name | lib/lib.js:314:40:314:43 | name | lib/lib.js:315:22:315:25 | name | $@ based on library input is later used in $@. | lib/lib.js:315:10:315:25 | "rm -rf " + name | String concatenation | lib/lib.js:315:2:315:26 | cp.exec ... + name) | shell command |
 | lib/lib.js:320:11:320:26 | "rm -rf " + name | lib/lib.js:314:40:314:43 | name | lib/lib.js:320:23:320:26 | name | $@ based on library input is later used in $@. | lib/lib.js:320:11:320:26 | "rm -rf " + name | String concatenation | lib/lib.js:320:3:320:27 | cp.exec ... + name) | shell command |
+| lib/lib.js:325:12:325:51 | "MyWind ... " + arg | lib/lib.js:324:40:324:42 | arg | lib/lib.js:325:49:325:51 | arg | $@ based on library input is later used in $@. | lib/lib.js:325:12:325:51 | "MyWind ... " + arg | String concatenation | lib/lib.js:326:2:326:13 | cp.exec(cmd) | shell command |

@@ -1,77 +1,4 @@
 uniqueEnclosingCallable
-| test.py:0:0:0:0 | Exit node for Module test | Node should have one enclosing callable but has 0. |
-| test.py:0:0:0:0 | GSSA Variable __name__ | Node should have one enclosing callable but has 0. |
-| test.py:0:0:0:0 | GSSA Variable __package__ | Node should have one enclosing callable but has 0. |
-| test.py:0:0:0:0 | GSSA Variable test23 | Node should have one enclosing callable but has 0. |
-| test.py:0:0:0:0 | GSSA Variable test24 | Node should have one enclosing callable but has 0. |
-| test.py:0:0:0:0 | GSSA Variable test_truth | Node should have one enclosing callable but has 0. |
-| test.py:0:0:0:0 | GSSA Variable test_update_extend | Node should have one enclosing callable but has 0. |
-| test.py:0:0:0:0 | SSA variable $ | Node should have one enclosing callable but has 0. |
-| test.py:6:1:6:12 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:6:5:6:9 | GSSA Variable test1 | Node should have one enclosing callable but has 0. |
-| test.py:9:1:9:12 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:9:5:9:9 | GSSA Variable test2 | Node should have one enclosing callable but has 0. |
-| test.py:13:1:13:13 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:13:5:13:10 | GSSA Variable source | Node should have one enclosing callable but has 0. |
-| test.py:16:1:16:14 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:16:5:16:8 | GSSA Variable sink | Node should have one enclosing callable but has 0. |
-| test.py:19:1:19:12 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:19:5:19:9 | GSSA Variable test3 | Node should have one enclosing callable but has 0. |
-| test.py:23:1:23:12 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:23:5:23:9 | GSSA Variable test4 | Node should have one enclosing callable but has 0. |
-| test.py:27:1:27:12 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:27:5:27:9 | GSSA Variable test5 | Node should have one enclosing callable but has 0. |
-| test.py:31:1:31:16 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:31:5:31:9 | GSSA Variable test6 | Node should have one enclosing callable but has 0. |
-| test.py:39:1:39:16 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:39:5:39:9 | GSSA Variable test7 | Node should have one enclosing callable but has 0. |
-| test.py:47:1:47:17 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:47:5:47:11 | GSSA Variable source2 | Node should have one enclosing callable but has 0. |
-| test.py:50:1:50:15 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:50:5:50:9 | GSSA Variable sink2 | Node should have one enclosing callable but has 0. |
-| test.py:53:1:53:21 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:53:5:53:9 | GSSA Variable sink3 | Node should have one enclosing callable but has 0. |
-| test.py:57:1:57:16 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:57:5:57:9 | GSSA Variable test8 | Node should have one enclosing callable but has 0. |
-| test.py:62:1:62:16 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:62:5:62:9 | GSSA Variable test9 | Node should have one enclosing callable but has 0. |
-| test.py:69:1:69:17 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:69:5:69:10 | GSSA Variable test10 | Node should have one enclosing callable but has 0. |
-| test.py:76:1:76:13 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:76:5:76:7 | GSSA Variable hub | Node should have one enclosing callable but has 0. |
-| test.py:79:1:79:13 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:79:5:79:10 | GSSA Variable test11 | Node should have one enclosing callable but has 0. |
-| test.py:84:1:84:13 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:84:5:84:10 | GSSA Variable test12 | Node should have one enclosing callable but has 0. |
-| test.py:89:8:89:13 | ControlFlowNode for ImportExpr | Node should have one enclosing callable but has 0. |
-| test.py:89:8:89:13 | GSSA Variable module | Node should have one enclosing callable but has 0. |
-| test.py:91:1:91:13 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:91:5:91:10 | GSSA Variable test13 | Node should have one enclosing callable but has 0. |
-| test.py:95:1:95:13 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:95:5:95:10 | GSSA Variable test14 | Node should have one enclosing callable but has 0. |
-| test.py:99:1:99:13 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:99:5:99:10 | GSSA Variable test15 | Node should have one enclosing callable but has 0. |
-| test.py:103:1:103:13 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:103:5:103:10 | GSSA Variable test16 | Node should have one enclosing callable but has 0. |
-| test.py:108:1:108:17 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:108:5:108:10 | GSSA Variable test20 | Node should have one enclosing callable but has 0. |
-| test.py:118:1:118:17 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:118:5:118:10 | GSSA Variable test21 | Node should have one enclosing callable but has 0. |
-| test.py:128:1:128:17 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:128:5:128:10 | GSSA Variable test22 | Node should have one enclosing callable but has 0. |
-| test.py:139:20:139:38 | ControlFlowNode for ImportMember | Node should have one enclosing callable but has 0. |
-| test.py:139:33:139:38 | GSSA Variable unsafe | Node should have one enclosing callable but has 0. |
-| test.py:140:1:140:12 | ControlFlowNode for SINK() | Node should have one enclosing callable but has 0. |
-| test.py:140:1:140:12 | GSSA Variable unsafe | Node should have one enclosing callable but has 0. |
-| test.py:140:6:140:11 | ControlFlowNode for unsafe | Node should have one enclosing callable but has 0. |
-| test.py:142:1:142:13 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:142:5:142:10 | GSSA Variable test23 | Node should have one enclosing callable but has 0. |
-| test.py:146:1:146:13 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:146:5:146:10 | GSSA Variable test24 | Node should have one enclosing callable but has 0. |
-| test.py:151:1:151:29 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:151:5:151:22 | GSSA Variable test_update_extend | Node should have one enclosing callable but has 0. |
-| test.py:161:1:161:17 | ControlFlowNode for FunctionExpr | Node should have one enclosing callable but has 0. |
-| test.py:161:5:161:14 | GSSA Variable test_truth | Node should have one enclosing callable but has 0. |
 uniqueType
 uniqueNodeLocation
 missingLocation
@@ -87,17 +14,4 @@ postHasUniquePre
 uniquePostUpdate
 postIsInSameCallable
 reverseRead
-storeIsPostUpdate
 argHasPostUpdate
-| test.py:25:10:25:10 | ControlFlowNode for t | ArgumentNode is missing PostUpdateNode. |
-| test.py:29:10:29:10 | ControlFlowNode for t | ArgumentNode is missing PostUpdateNode. |
-| test.py:48:19:48:21 | ControlFlowNode for arg | ArgumentNode is missing PostUpdateNode. |
-| test.py:51:10:51:12 | ControlFlowNode for arg | ArgumentNode is missing PostUpdateNode. |
-| test.py:55:14:55:16 | ControlFlowNode for arg | ArgumentNode is missing PostUpdateNode. |
-| test.py:59:11:59:11 | ControlFlowNode for t | ArgumentNode is missing PostUpdateNode. |
-| test.py:67:11:67:14 | ControlFlowNode for cond | ArgumentNode is missing PostUpdateNode. |
-| test.py:67:17:67:17 | ControlFlowNode for t | ArgumentNode is missing PostUpdateNode. |
-| test.py:74:11:74:14 | ControlFlowNode for cond | ArgumentNode is missing PostUpdateNode. |
-| test.py:74:17:74:17 | ControlFlowNode for t | ArgumentNode is missing PostUpdateNode. |
-| test.py:81:13:81:13 | ControlFlowNode for t | ArgumentNode is missing PostUpdateNode. |
-| test.py:86:13:86:13 | ControlFlowNode for t | ArgumentNode is missing PostUpdateNode. |

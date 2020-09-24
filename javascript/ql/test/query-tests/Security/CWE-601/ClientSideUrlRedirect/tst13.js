@@ -44,3 +44,12 @@ function foo() {
     el.src = payload;
     document.body.appendChild(el); // NOT OK
 }
+
+(function () {
+    self.onmessage = function (e) {
+        importScripts(e); // NOT OK
+    }
+    window.onmessage = function (e) {
+        self.importScripts(e); // NOT OK
+    }
+})();

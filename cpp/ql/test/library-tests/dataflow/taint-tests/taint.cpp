@@ -107,9 +107,9 @@ void array_test(int i) {
 	arr3[5] = 0;
 
 	sink(arr1[5]); // tainted
-	sink(arr1[i]); // tainted [NOT DETECTED]
-	sink(arr2[5]); // tainted [NOT DETECTED]
-	sink(arr2[i]); // tainted [NOT DETECTED]
+	sink(arr1[i]); // tainted
+	sink(arr2[5]); // tainted
+	sink(arr2[i]); // tainted
 	sink(arr3[5]);
 	sink(arr3[i]);
 }
@@ -127,7 +127,7 @@ void pointer_test() {
 	*p2 = source();
 
 	sink(*p1); // tainted
-	sink(*p2); // tainted [NOT DETECTED]
+	sink(*p2); // tainted
 	sink(*p3);
 
 	p3 = &t1;
@@ -350,8 +350,8 @@ void test_outparams()
 	sink(t); // tainted
 	sink(a); // tainted
 	sink(b); // tainted
-	sink(c); // tainted [NOT DETECTED]
-	sink(d); // tainted [NOT DETECTED]
+	sink(c); // tainted
+	sink(d); // tainted
 	sink(e);
 }
 

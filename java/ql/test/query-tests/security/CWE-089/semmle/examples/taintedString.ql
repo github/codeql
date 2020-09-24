@@ -9,5 +9,8 @@ class Conf extends TaintTracking::Configuration {
 }
 
 from Conf conf, Expr tainted, Method method
-where conf.hasFlowToExpr(tainted) and tainted.getEnclosingCallable() = method
+where
+  conf.hasFlowToExpr(tainted) and
+  tainted.getEnclosingCallable() = method and
+  tainted.getFile().getStem() = ["Test", "Validation"]
 select method, tainted.getLocation().getStartLine() - method.getLocation().getStartLine(), tainted

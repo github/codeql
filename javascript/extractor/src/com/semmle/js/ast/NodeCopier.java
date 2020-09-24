@@ -10,6 +10,7 @@ import com.semmle.js.ast.jsx.JSXMemberExpression;
 import com.semmle.js.ast.jsx.JSXNamespacedName;
 import com.semmle.js.ast.jsx.JSXOpeningElement;
 import com.semmle.js.ast.jsx.JSXSpreadAttribute;
+import com.semmle.js.ast.jsx.JSXThisExpr;
 import com.semmle.ts.ast.ArrayTypeExpr;
 import com.semmle.ts.ast.ConditionalTypeExpr;
 import com.semmle.ts.ast.DecoratorList;
@@ -568,6 +569,11 @@ public class NodeCopier implements Visitor<Void, INode> {
   }
 
   @Override
+  public INode visit(JSXThisExpr nd, Void c) {
+    return new JSXThisExpr(visit(nd.getLoc()));
+  }
+
+  @Override
   public INode visit(JSXMemberExpression nd, Void c) {
     return new JSXMemberExpression(visit(nd.getLoc()), copy(nd.getObject()), copy(nd.getName()));
   }
@@ -705,7 +711,7 @@ public class NodeCopier implements Visitor<Void, INode> {
 
   @Override
   public INode visit(TupleTypeExpr nd, Void c) {
-    return new TupleTypeExpr(visit(nd.getLoc()), copy(nd.getElementTypes()));
+    return new TupleTypeExpr(visit(nd.getLoc()), copy(nd.getElementTypes()), copy(nd.getElementNames()));
   }
 
   @Override

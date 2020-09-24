@@ -27,7 +27,7 @@ predicate oneLineStatement(Stmt s, File f, int line, int col) {
     col = l.getStartColumn()
   ) and
   // Exclude blocks: `{break;}` is not really a violation.
-  not s instanceof Block and
+  not s instanceof BlockStmt and
   // Exclude implicit super constructor invocations.
   not s instanceof SuperConstructorInvocationStmt and
   // Java enums are desugared to a whole bunch of generated statements.

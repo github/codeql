@@ -1,4 +1,5 @@
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
 using System.IO;
@@ -17,11 +18,11 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected abstract ArrayTypeSyntax TypeSyntax { get; }
 
-        public abstract InitializerExpressionSyntax  Initializer { get;  }
+        public abstract InitializerExpressionSyntax Initializer { get; }
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            var child = 0;
+
             var explicitlySized = false;
 
             if (TypeSyntax is null)
@@ -29,38 +30,21 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 cx.ModelError(Syntax, "Array has unexpected type syntax");
             }
 
-            foreach (var rank in TypeSyntax.RankSpecifiers.SelectMany(rs => rs.Sizes))
+            var firstLevelSizes = TypeSyntax.RankSpecifiers.First()?.Sizes ?? SyntaxFactory.SeparatedList<ExpressionSyntax>();
+
+            if (firstLevelSizes.OfType<ExpressionSyntax>().Any(s => s is OmittedArraySizeExpressionSyntax))
             {
-                if (rank is OmittedArraySizeExpressionSyntax)
-                {
-                    // Create an expression which simulates the explicit size of the array
-
-                    if (!(Initializer is null))
-                    {
-                        // An implicitly-sized array must have an initializer.
-                        // Guard it just in case.
-                        var size = Initializer.Expressions.Count;
-
-                        var info = new ExpressionInfo(
-                            cx,
-                            new AnnotatedType(Entities.Type.Create(cx, cx.Compilation.GetSpecialType(Microsoft.CodeAnalysis.SpecialType.System_Int32)), NullableAnnotation.None),
-                            Location,
-                            ExprKind.INT_LITERAL,
-                            this,
-                            child,
-                            false,
-                            size.ToString());
-
-                        new Expression(info);
-                    }
-                }
-                else
-                {
-                    Create(cx, rank, this, child);
-                    explicitlySized = true;
-                }
-                child++;
+                SetArraySizes(Initializer, firstLevelSizes.Count);
             }
+            else
+            {
+                for (var sizeIndex = 0; sizeIndex < firstLevelSizes.Count; sizeIndex++)
+                {
+                    Create(cx, firstLevelSizes[sizeIndex], this, sizeIndex);
+                }
+                explicitlySized = true;
+            }
+
             if (!(Initializer is null))
             {
                 ArrayInitializer.Create(new ExpressionNodeInfo(cx, Initializer, this, -1));
@@ -68,6 +52,31 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             if (explicitlySized)
                 trapFile.explicitly_sized_array_creation(this);
+        }
+
+        private void SetArraySizes(InitializerExpressionSyntax initializer, int rank)
+        {
+            for (var level = 0; level < rank; level++)
+            {
+                if (initializer is null)
+                {
+                    return;
+                }
+
+                var info = new ExpressionInfo(
+                    cx,
+                    new AnnotatedType(Entities.Type.Create(cx, cx.Compilation.GetSpecialType(Microsoft.CodeAnalysis.SpecialType.System_Int32)), NullableAnnotation.None),
+                    Location,
+                    ExprKind.INT_LITERAL,
+                    this,
+                    level,
+                    true,
+                    initializer.Expressions.Count.ToString());
+
+                new Expression(info);
+
+                initializer = initializer.Expressions.FirstOrDefault() as InitializerExpressionSyntax;
+            }
         }
     }
 

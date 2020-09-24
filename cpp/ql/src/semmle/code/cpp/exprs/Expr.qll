@@ -27,7 +27,7 @@ class Expr extends StmtParent, @expr {
   Function getEnclosingFunction() { result = exprEnclosingElement(this) }
 
   /** Gets the nearest enclosing set of curly braces around this expression in the source, if any. */
-  Block getEnclosingBlock() { result = getEnclosingStmt().getEnclosingBlock() }
+  BlockStmt getEnclosingBlock() { result = getEnclosingStmt().getEnclosingBlock() }
 
   override Stmt getEnclosingStmt() {
     result = this.getParent().(Expr).getEnclosingStmt()
@@ -402,7 +402,7 @@ class Expr extends StmtParent, @expr {
    */
   predicate hasImplicitConversion() {
     exists(Expr e |
-      exprconv(underlyingElement(this), unresolveElement(e)) and e.(Cast).isImplicit()
+      exprconv(underlyingElement(this), unresolveElement(e)) and e.(Conversion).isImplicit()
     )
   }
 
@@ -414,7 +414,7 @@ class Expr extends StmtParent, @expr {
    */
   predicate hasExplicitConversion() {
     exists(Expr e |
-      exprconv(underlyingElement(this), unresolveElement(e)) and not e.(Cast).isImplicit()
+      exprconv(underlyingElement(this), unresolveElement(e)) and not e.(Conversion).isImplicit()
     )
   }
 
@@ -453,12 +453,14 @@ class Expr extends StmtParent, @expr {
    * cast from B to C. Only (1) and (2) would be included.
    */
   Expr getExplicitlyConverted() {
-    // result is this or one of its conversions
-    result = this.getConversion*() and
-    // result is not an implicit conversion - it's either the expr or an explicit cast
-    (result = this or not result.(Cast).isImplicit()) and
-    // there is no further explicit conversion after result
-    not exists(Cast other | other = result.getConversion+() and not other.isImplicit())
+    // For performance, we avoid a full transitive closure over `getConversion`.
+    // Since there can be several implicit conversions before and after an
+    // explicit conversion, use `getImplicitlyConverted` to step over them
+    // cheaply. Then, if there is an explicit conversion following the implict
+    // conversion sequence, recurse to handle multiple explicit conversions.
+    if this.getImplicitlyConverted().hasExplicitConversion()
+    then result = this.getImplicitlyConverted().getConversion().getExplicitlyConverted()
+    else result = this
   }
 
   /**
@@ -538,6 +540,17 @@ class BinaryOperation extends Operation, @bin_op_expr {
 
   /** Gets the right operand of this binary operation. */
   Expr getRightOperand() { this.hasChild(result, 1) }
+
+  /**
+   * Holds if `e1` and `e2` (in either order) are the two operands of this
+   * binary operation.
+   */
+  predicate hasOperands(Expr e1, Expr e2) {
+    exists(int i | i in [0, 1] |
+      this.hasChild(e1, i) and
+      this.hasChild(e2, 1 - i)
+    )
+  }
 
   override string toString() { result = "... " + this.getOperator() + " ..." }
 
@@ -1098,7 +1111,7 @@ class StmtExpr extends Expr, @expr_stmt {
 /** Get the result expression of a statement. (Helper function for StmtExpr.) */
 private Expr getStmtResultExpr(Stmt stmt) {
   result = stmt.(ExprStmt).getExpr() or
-  result = getStmtResultExpr(stmt.(Block).getLastStmt())
+  result = getStmtResultExpr(stmt.(BlockStmt).getLastStmt())
 }
 
 /**
@@ -1256,4 +1269,32 @@ class SpaceshipExpr extends BinaryOperation, @spaceshipexpr {
   override int getPrecedence() { result = 11 }
 
   override string getOperator() { result = "<=>" }
+}
+
+/**
+ * A C/C++ `co_await` expression.
+ * ```
+ * co_await foo();
+ * ```
+ */
+class CoAwaitExpr extends UnaryOperation, @co_await {
+  override string getAPrimaryQlClass() { result = "CoAwaitExpr" }
+
+  override string getOperator() { result = "co_await" }
+
+  override int getPrecedence() { result = 16 }
+}
+
+/**
+ * A C/C++ `co_yield` expression.
+ * ```
+ * co_yield 1;
+ * ```
+ */
+class CoYieldExpr extends UnaryOperation, @co_yield {
+  override string getAPrimaryQlClass() { result = "CoYieldExpr" }
+
+  override string getOperator() { result = "co_yield" }
+
+  override int getPrecedence() { result = 2 }
 }

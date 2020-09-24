@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -22,32 +23,32 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             Extraction.Entities.Assembly.CreateOutputAssembly(cx);
 
-            trapFile.compilations(this, Extraction.Entities.File.PathAsDatabaseString(cwd));
+            trapFile.compilations(this, FileUtils.ConvertToUnix(cwd));
 
             // Arguments
             int index = 0;
-            foreach(var arg in args)
+            foreach (var arg in args)
             {
                 trapFile.compilation_args(this, index++, arg);
             }
 
             // Files
             index = 0;
-            foreach(var file in cx.Compilation.SyntaxTrees.Select(tree => Extraction.Entities.File.Create(cx, tree.FilePath)))
+            foreach (var file in cx.Compilation.SyntaxTrees.Select(tree => Extraction.Entities.File.Create(cx, tree.FilePath)))
             {
                 trapFile.compilation_compiling_files(this, index++, file);
             }
 
             // References
             index = 0;
-            foreach(var file in cx.Compilation.References.OfType<PortableExecutableReference>().Select(r => Extraction.Entities.File.Create(cx, r.FilePath)))
+            foreach (var file in cx.Compilation.References.OfType<PortableExecutableReference>().Select(r => Extraction.Entities.File.Create(cx, r.FilePath)))
             {
                 trapFile.compilation_referencing_files(this, index++, file);
             }
 
             // Diagnostics
             index = 0;
-            foreach(var diag in cx.Compilation.GetDiagnostics().Select(d => new Diagnostic(cx, d)))
+            foreach (var diag in cx.Compilation.GetDiagnostics().Select(d => new Diagnostic(cx, d)))
             {
                 trapFile.diagnostic_for(diag, this, 0, index++);
             }
@@ -57,7 +58,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             var trapFile = cx.TrapWriter.Writer;
             int index = 0;
-            foreach(float metric in p.Metrics)
+            foreach (float metric in p.Metrics)
             {
                 trapFile.compilation_time(this, -1, index++, metric);
             }

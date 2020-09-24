@@ -4,6 +4,7 @@
 
 import Type
 private import semmle.code.csharp.ExprOrStmtParent
+private import TypeRef
 
 /**
  * An element that can have attributes. Either an assembly (`Assembly`), a field (`Field`),
@@ -93,4 +94,6 @@ class Attribute extends TopLevelExprParent, @attribute {
       result = "[" + name + "(...)]"
     )
   }
+
+  override string getAPrimaryQlClass() { result = "Attribute" }
 }

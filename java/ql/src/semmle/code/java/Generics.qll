@@ -180,6 +180,8 @@ class TypeVariable extends BoundedType, @typevariable {
     or
     result = getASuppliedType().(TypeVariable).getAnUltimatelySuppliedType()
   }
+
+  override string getAPrimaryQlClass() { result = "TypeVariable" }
 }
 
 /**
@@ -248,6 +250,8 @@ class Wildcard extends BoundedType, @wildcard {
     not hasLowerBound() and
     wildcards(this, "?", _)
   }
+
+  override string getAPrimaryQlClass() { result = "Wildcard" }
 }
 
 /**

@@ -86,17 +86,17 @@ stmts(#20026,2,#20001,0,"a /* b */ + c")
 #20027=@"loc,{#10000},2,1,2,13"
 locations_default(#20027,#10000,2,1,2,13)
 hasLocation(#20026,#20027)
-stmtContainers(#20026,#20001)
+stmt_containers(#20026,#20001)
 #20028=*
 exprs(#20028,34,#20026,0,"a /* b */ + c")
 hasLocation(#20028,#20027)
-enclosingStmt(#20028,#20026)
-exprContainers(#20028,#20001)
+enclosing_stmt(#20028,#20026)
+expr_containers(#20028,#20001)
 #20029=*
 exprs(#20029,79,#20028,0,"a")
 hasLocation(#20029,#20018)
-enclosingStmt(#20029,#20026)
-exprContainers(#20029,#20001)
+enclosing_stmt(#20029,#20026)
+expr_containers(#20029,#20001)
 literals("a","a",#20029)
 #20030=@"var;{a};{#20000}"
 variables(#20030,"a",#20000)
@@ -104,8 +104,8 @@ bind(#20029,#20030)
 #20031=*
 exprs(#20031,79,#20028,1,"c")
 hasLocation(#20031,#20022)
-enclosingStmt(#20031,#20026)
-exprContainers(#20031,#20001)
+enclosing_stmt(#20031,#20026)
+expr_containers(#20031,#20001)
 literals("c","c",#20031)
 #20032=@"var;{c};{#20000}"
 variables(#20032,"c",#20000)

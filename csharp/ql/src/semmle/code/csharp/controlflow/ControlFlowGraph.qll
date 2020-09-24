@@ -318,7 +318,7 @@ module ControlFlow {
 
     class BooleanSplit = BooleanSplitting::BooleanSplitImpl;
 
-    class LoopUnrollingSplit = LoopUnrollingSplitting::LoopUnrollingSplitImpl;
+    class LoopSplit = LoopSplitting::LoopSplitImpl;
   }
 
   class BasicBlock = BBs::BasicBlock;

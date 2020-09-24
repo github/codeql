@@ -1,0 +1,15 @@
+| A.java:40:16:40:23 | source(...) | A.java:36:12:36:13 | c2 |
+| A.java:49:16:49:23 | source(...) | A.java:23:12:23:13 | c1 |
+| A.java:49:16:49:23 | source(...) | A.java:36:12:36:13 | c2 |
+| A.java:50:16:50:23 | source(...) | A.java:23:12:23:13 | c1 |
+| A.java:50:16:50:23 | source(...) | A.java:36:12:36:13 | c2 |
+| A.java:51:17:51:24 | source(...) | A.java:23:12:23:13 | c1 |
+| A.java:51:17:51:24 | source(...) | A.java:36:12:36:13 | c2 |
+| A.java:53:12:53:19 | source(...) | A.java:23:12:23:13 | c1 |
+| A.java:54:23:54:30 | source(...) | A.java:23:12:23:13 | c1 |
+| A.java:55:23:55:30 | source(...) | A.java:23:12:23:13 | c1 |
+| A.java:56:24:56:31 | source(...) | A.java:23:12:23:13 | c1 |
+| A.java:58:12:58:19 | source(...) | A.java:36:12:36:13 | c2 |
+| A.java:59:23:59:30 | source(...) | A.java:36:12:36:13 | c2 |
+| A.java:60:23:60:30 | source(...) | A.java:36:12:36:13 | c2 |
+| A.java:61:24:61:31 | source(...) | A.java:36:12:36:13 | c2 |

@@ -390,6 +390,53 @@ module ClientRequest {
   }
 
   /**
+   * Gets an instantiation `socket` of `require("net").Socket` type tracked using `t`.
+   */
+  private DataFlow::SourceNode netSocketInstantiation(
+    DataFlow::TypeTracker t, DataFlow::NewNode socket
+  ) {
+    t.start() and
+    socket = DataFlow::moduleMember("net", "Socket").getAnInstantiation() and
+    result = socket
+    or
+    exists(DataFlow::TypeTracker t2 | result = netSocketInstantiation(t2, socket).track(t2, t))
+  }
+
+  /**
+   * A model of a request made using `(new require("net").Socket()).connect(args);`.
+   */
+  class NetSocketRequest extends ClientRequest::Range {
+    DataFlow::NewNode socket;
+
+    NetSocketRequest() {
+      this = netSocketInstantiation(DataFlow::TypeTracker::end(), socket).getAMethodCall("connect")
+    }
+
+    override DataFlow::Node getUrl() {
+      result = getArgument([0, 1]) // there are multiple overrides of `connect`, and the URL can be in the first or second argument.
+    }
+
+    override DataFlow::Node getHost() { result = getOptionArgument(0, "host") }
+
+    override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+      responseType = "text" and
+      promise = false and
+      exists(DataFlow::CallNode call |
+        call = netSocketInstantiation(DataFlow::TypeTracker::end(), socket).getAMemberCall("on") and
+        call.getArgument(0).mayHaveStringValue("data") and
+        result = call.getABoundCallbackParameter(1, 0)
+      )
+    }
+
+    override DataFlow::Node getADataNode() {
+      exists(DataFlow::CallNode call |
+        call = netSocketInstantiation(DataFlow::TypeTracker::end(), socket).getAMemberCall("write") and
+        result = call.getArgument(0)
+      )
+    }
+  }
+
+  /**
    * A model of a URL request made using the `superagent` library.
    */
   class SuperAgentUrlRequest extends ClientRequest::Range {

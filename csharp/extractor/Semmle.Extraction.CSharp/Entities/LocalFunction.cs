@@ -22,7 +22,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write('*');
         }
 
-        public static new LocalFunction Create(Context cx, IMethodSymbol field) => LocalFunctionFactory.Instance.CreateEntity(cx, field);
+        public static new LocalFunction Create(Context cx, IMethodSymbol field) => LocalFunctionFactory.Instance.CreateEntityFromSymbol(cx, field);
 
         class LocalFunctionFactory : ICachedEntityFactory<IMethodSymbol, LocalFunction>
         {
@@ -51,5 +51,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.local_functions(this, symbol.Name, returnType, originalDefinition);
             ExtractRefReturn(trapFile);
         }
+
+        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NeedsLabel;
     }
 }

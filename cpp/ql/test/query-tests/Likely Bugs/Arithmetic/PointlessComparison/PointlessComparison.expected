@@ -31,7 +31,7 @@
 | PointlessComparison.c:126:12:126:18 | ... >= ... | Comparison is always true because a >= 20. |
 | PointlessComparison.c:129:12:129:16 | ... > ... | Comparison is always false because a <= 3. |
 | PointlessComparison.c:197:7:197:11 | ... < ... | Comparison is always false because x >= 0. |
-| PointlessComparison.c:264:12:264:22 | ... >= ... | Comparison is always true because dbl >= 0 and -0 >= - .... |
+| PointlessComparison.c:264:12:264:22 | ... >= ... | Comparison is always true because dbl >= 0 and 0 >= - .... |
 | PointlessComparison.c:273:9:273:18 | ... > ... | Comparison is always false because c <= 0. |
 | PointlessComparison.c:283:13:283:19 | ... >= ... | Comparison is always true because c >= 11. |
 | PointlessComparison.c:294:9:294:16 | ... >= ... | Comparison is always false because ui1 <= 0. |
@@ -41,7 +41,10 @@
 | PointlessComparison.c:372:6:372:16 | ... >= ... | Comparison is always true because ... >> ... >= 1. |
 | PointlessComparison.c:373:6:373:16 | ... >= ... | Comparison is always false because ... >> ... <= 1. |
 | PointlessComparison.c:383:6:383:17 | ... >= ... | Comparison is always false because ... & ... <= 2. |
-| PointlessComparison.cpp:36:6:36:33 | ... >= ... | Comparison is always false because ... >> ... <= 9223372036854776000. |
+| PointlessComparison.c:388:10:388:21 | ... > ... | Comparison is always false because ... * ... <= 408. |
+| PointlessComparison.c:391:12:391:20 | ... < ... | Comparison is always false because ... * ... >= 6. |
+| PointlessComparison.c:414:7:414:16 | ... == ... | Comparison is always false because ... * ... >= 18446744073709551616. |
+| PointlessComparison.cpp:36:6:36:33 | ... >= ... | Comparison is always false because ... >> ... <= 9223372036854775808. |
 | PointlessComparison.cpp:41:6:41:29 | ... >= ... | Comparison is always false because ... >> ... <= 140737488355327.5. |
 | PointlessComparison.cpp:42:6:42:29 | ... >= ... | Comparison is always false because ... >> ... <= 140737488355327.5. |
 | PointlessComparison.cpp:43:6:43:29 | ... >= ... | Comparison is always true because ... >> ... >= 140737488355327.5. |

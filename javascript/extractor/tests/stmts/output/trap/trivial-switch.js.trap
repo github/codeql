@@ -58,12 +58,12 @@ hasLocation(#20001,#20018)
 #20019=*
 stmts(#20019,8,#20001,0,"switch(x){}")
 hasLocation(#20019,#20003)
-stmtContainers(#20019,#20001)
+stmt_containers(#20019,#20001)
 #20020=*
 exprs(#20020,79,#20019,-1,"x")
 hasLocation(#20020,#20009)
-enclosingStmt(#20020,#20019)
-exprContainers(#20020,#20001)
+enclosing_stmt(#20020,#20019)
+expr_containers(#20020,#20001)
 literals("x","x",#20020)
 #20021=@"var;{x};{#20000}"
 variables(#20021,"x",#20000)

@@ -14,13 +14,19 @@ namespace Semmle.Extraction.CIL
     /// </summary>
     partial class Context : IDisposable
     {
-        public Extraction.Context cx;
         readonly FileStream stream;
-        public readonly MetadataReader mdReader;
-        public readonly PEReader peReader;
-        public readonly string assemblyPath;
-        public Entities.Assembly assembly;
-        public PDB.IPdb pdb;
+        Entities.Assembly? assemblyNull;
+
+        public Extraction.Context cx { get; }
+        public MetadataReader mdReader { get; }
+        public PEReader peReader { get; }
+        public string assemblyPath { get; }
+        public Entities.Assembly assembly
+        {
+            get { return assemblyNull!; }
+            set { assemblyNull = value; }
+        }
+        public PDB.IPdb? pdb { get; }
 
         public Context(Extraction.Context cx, string assemblyPath, bool extractPdbs)
         {
@@ -37,7 +43,7 @@ namespace Semmle.Extraction.CIL
             namespaceFactory = new CachedFunction<StringHandle, Entities.Namespace>(n => CreateNamespace(mdReader.GetString(n)));
             namespaceDefinitionFactory = new CachedFunction<NamespaceDefinitionHandle, Entities.Namespace>(CreateNamespace);
             sourceFiles = new CachedFunction<PDB.ISourceFile, Entities.PdbSourceFile>(path => new Entities.PdbSourceFile(this, path));
-            folders = new CachedFunction<string, Entities.Folder>(path => new Entities.Folder(this, path));
+            folders = new CachedFunction<PathTransformer.ITransformedPath, Entities.Folder>(path => new Entities.Folder(this, path));
             sourceLocations = new CachedFunction<PDB.Location, Entities.PdbSourceLocation>(location => new Entities.PdbSourceLocation(this, location));
 
             defaultGenericContext = new EmptyContext(this);
@@ -105,7 +111,7 @@ namespace Semmle.Extraction.CIL
         /// </summary>
         /// <param name="handle">The handle of the method.</param>
         /// <returns>The debugging information, or null if the information could not be located.</returns>
-        public PDB.IMethod GetMethodDebugInformation(MethodDefinitionHandle handle)
+        public PDB.IMethod? GetMethodDebugInformation(MethodDefinitionHandle handle)
         {
             return pdb == null ? null : pdb.GetMethod(handle.ToDebugInformationHandle());
         }
@@ -125,7 +131,8 @@ namespace Semmle.Extraction.CIL
         }
 
         /// <summary>
-        /// The list of generic type parameters.
+        /// The list of generic type parameters, including type parameters of
+        /// containing types.
         /// </summary>
         public abstract IEnumerable<Entities.Type> TypeParameters { get; }
 

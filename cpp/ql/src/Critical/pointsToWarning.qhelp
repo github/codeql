@@ -1,0 +1,11 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<fragment>
+<warning>
+This check is an approximation, so some results may not be actual defects in the program. It is not possible 
+in general to compute the values of pointers without running the program with all input data.
+</warning>
+</fragment>
+</qhelp>

@@ -26,6 +26,11 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         public bool ClrTracer = false;
 
+        /// <summary>
+        /// Holds if assembly information should be prefixed to TRAP labels.
+        /// </summary>
+        public bool AssemblySensitiveTrap = false;
+
         public static Options CreateWithEnvironment(string[] arguments)
         {
             var options = new Options();
@@ -74,6 +79,9 @@ namespace Semmle.Extraction.CSharp
             {
                 case "clrtracer":
                     ClrTracer = value;
+                    return true;
+                case "assemblysensitivetrap":
+                    AssemblySensitiveTrap = value;
                     return true;
                 default:
                     return base.handleFlag(flag, value);

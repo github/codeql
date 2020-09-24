@@ -92,3 +92,116 @@ void nestedAssign() {
   w.s.m1 = user_input();
   sink(w.s.m1); // $ast,ir
 }
+
+void addressOfField() {
+  S s;
+  s.m1 = user_input();
+
+  S s_copy = s;
+  int* px = &s_copy.m1;
+  sink(*px); // $f-:ast $ir
+}
+
+void taint_a_ptr(int* pa) {
+  *pa = user_input();
+}
+
+void test_field_conflation_array_content() {
+  S s;
+  taint_a_ptr(&s.m1);
+  sink(s.m2);
+}
+
+struct S_with_pointer {
+  int m1, m2;
+  int* data;
+};
+
+void pointer_deref(int* xs) {
+  taint_a_ptr(xs);
+  sink(xs[0]); // $f-:ast $ir
+}
+
+void pointer_deref_sub(int* xs) {
+  taint_a_ptr(xs - 2);
+  sink(*(xs - 2)); // $f-:ast $ir
+}
+
+void pointer_many_addrof_and_deref(int* xs) {
+  taint_a_ptr(xs);
+  sink(*&*&*xs); // $f-:ast $ir
+}
+
+void pointer_unary_plus(int* xs) {
+  taint_a_ptr(+xs);
+  sink(*+xs); // $f-:ast $ir
+}
+
+void pointer_member_index(S_with_pointer s) {
+  taint_a_ptr(s.data);
+  // `s.data` is points to all-aliased-memory
+  sink(s.data[0]); // $f-:ast,ir
+}
+
+void member_array_different_field(S_with_pointer* s) {
+  taint_a_ptr(&s[0].m1);
+  sink(s[0].m2);
+}
+
+struct S_with_array {
+  int m1, m2;
+  int data[10];
+};
+
+void pointer_member_deref() {
+  S_with_array s;
+  taint_a_ptr(s.data);
+  sink(*s.data); // $ir,ast
+}
+
+void array_member_deref() {
+  S_with_array s;
+  taint_a_ptr(s.data);
+  sink(s.data[0]); // $ir,ast
+}
+
+struct S2 {
+  S s;
+  int m3;
+};
+
+void deep_member_field_dot() {
+  S2 s2;
+  taint_a_ptr(&s2.s.m1);
+  sink(s2.s.m1); // $ir,ast
+}
+
+void deep_member_field_dot_different_fields() {
+  S2 s2;
+  taint_a_ptr(&s2.s.m1);
+  sink(s2.s.m2);
+}
+
+void deep_member_field_dot_2() {
+  S2 s2;
+  taint_a_ptr(&s2.s.m1);
+  S2 s2_2 = s2;
+  sink(s2_2.s.m1); // $ir,ast
+}
+
+void deep_member_field_dot_different_fields_2() {
+  S2 s2;
+  taint_a_ptr(&s2.s.m1);
+  S2 s2_2 = s2;
+  sink(s2_2.s.m2);
+}
+
+void deep_member_field_arrow(S2 *ps2) {
+  taint_a_ptr(&ps2->s.m1);
+  sink(ps2->s.m1); // $ir,ast
+}
+
+void deep_member_field_arrow_different_fields(S2 *ps2) {
+  taint_a_ptr(&ps2->s.m1);
+  sink(ps2->s.m2);
+}

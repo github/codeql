@@ -70,7 +70,7 @@ private DataFlow::Node getNodeForSource(Expr source) {
     //
     // This case goes together with the similar (but not identical) rule in
     // `nodeIsBarrierIn`.
-    result = DataFlow::definitionByReferenceNode(source) and
+    result = DataFlow::definitionByReferenceNodeFromArgument(source) and
     not argv(source.(VariableAccess).getTarget())
   )
 }
@@ -210,7 +210,7 @@ private predicate nodeIsBarrierIn(DataFlow::Node node) {
     or
     // This case goes together with the similar (but not identical) rule in
     // `getNodeForSource`.
-    node = DataFlow::definitionByReferenceNode(source)
+    node = DataFlow::definitionByReferenceNodeFromArgument(source)
   )
 }
 
@@ -264,9 +264,6 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
     t instanceof Union
     or
     t instanceof ArrayType
-    or
-    // Buffers of unknown size
-    t instanceof UnknownType
   )
   or
   exists(BinaryInstruction bin |

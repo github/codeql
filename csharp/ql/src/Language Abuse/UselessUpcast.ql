@@ -31,14 +31,14 @@ class StaticCall extends Call {
 }
 
 /** Holds `t` has instance callable `c` as a member, with name `name`. */
-pragma[noinline]
+pragma[nomagic]
 predicate hasInstanceCallable(ValueOrRefType t, InstanceCallable c, string name) {
   t.hasMember(c) and
   name = c.getName()
 }
 
 /** Holds if extension method `m` is a method on `t` with name `name`. */
-pragma[noinline]
+pragma[nomagic]
 predicate hasExtensionMethod(ValueOrRefType t, ExtensionMethod m, string name) {
   t.isImplicitlyConvertibleTo(m.getExtendedType()) and
   name = m.getName()

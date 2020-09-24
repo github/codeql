@@ -320,3 +320,8 @@ module.exports.typeofcheck = function (name) {
 		cp.exec("rm -rf " + name); // NOT OK
 	}
 }
+
+module.exports.typeofcheck = function (arg) {
+	var cmd = "MyWindowCommand | findstr /i /c:" + arg; // NOT OK
+	cp.exec(cmd); 
+}

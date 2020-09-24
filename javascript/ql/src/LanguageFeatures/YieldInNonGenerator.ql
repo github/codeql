@@ -15,6 +15,6 @@ import javascript
 from YieldExpr yield, Function f
 where
   f = yield.getEnclosingFunction() and
-  not isGenerator(f)
+  not is_generator(f)
 select yield, "This yield expression is contained in $@ which is not marked as a generator.",
   f.getFirstToken(), f.describe()

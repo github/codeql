@@ -5,37 +5,16 @@ using System.Reflection;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    /// <summary>
-    /// Provide a "Key" object to allow modifiers to exist as entities in the extractor
-    /// hash map. (Raw strings would work as keys but might clash with other types).
-    /// </summary>
-    class ModifierKey : Object
+    class Modifier : Extraction.CachedEntity<string>
     {
-        public readonly string name;
-
-        public ModifierKey(string m)
-        {
-            name = m;
-        }
-
-        public override bool Equals(Object obj)
-        {
-            return obj.GetType() == GetType() && name == ((ModifierKey)obj).name;
-        }
-
-        public override int GetHashCode() => 13 * name.GetHashCode();
-    }
-
-    class Modifier : Extraction.CachedEntity<ModifierKey>
-    {
-        Modifier(Context cx, ModifierKey init)
+        Modifier(Context cx, string init)
             : base(cx, init) { }
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => null;
 
         public override void WriteId(TextWriter trapFile)
         {
-            trapFile.Write(symbol.name);
+            trapFile.Write(symbol);
             trapFile.Write(";modifier");
         }
 
@@ -43,7 +22,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.modifiers(Label, symbol.name);
+            trapFile.modifiers(Label, symbol);
         }
 
         public static string AccessbilityModifier(Accessibility access)
@@ -152,17 +131,22 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public static Modifier Create(Context cx, string modifier) =>
-            ModifierFactory.Instance.CreateEntity(cx, new ModifierKey(modifier));
+        public static Modifier Create(Context cx, string modifier)
+        {
+            return ModifierFactory.Instance.CreateEntity(cx, (typeof(Modifier), modifier), modifier);
+        }
 
-        public static Modifier Create(Context cx, Accessibility access) =>
-            ModifierFactory.Instance.CreateEntity(cx, new ModifierKey(AccessbilityModifier(access)));
+        public static Modifier Create(Context cx, Accessibility access)
+        {
+            var modifier = AccessbilityModifier(access);
+            return ModifierFactory.Instance.CreateEntity(cx, (typeof(Modifier), modifier), modifier);
+        }
 
-        class ModifierFactory : ICachedEntityFactory<ModifierKey, Modifier>
+        class ModifierFactory : ICachedEntityFactory<string, Modifier>
         {
             public static readonly ModifierFactory Instance = new ModifierFactory();
 
-            public Modifier Create(Context cx, ModifierKey init) => new Modifier(cx, init);
+            public Modifier Create(Context cx, string init) => new Modifier(cx, init);
         }
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
     }

@@ -8,6 +8,6 @@
 
 import java
 
-from Block b
+from BlockStmt b
 where b.getNumStmt() = 1
 select b

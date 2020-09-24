@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Entities
     /// </summary>
     class TupleType : Type<INamedTypeSymbol>
     {
-        public static TupleType Create(Context cx, INamedTypeSymbol type) => TupleTypeFactory.Instance.CreateEntity(cx, type);
+        public static TupleType Create(Context cx, INamedTypeSymbol type) => TupleTypeFactory.Instance.CreateEntityFromSymbol(cx, type);
 
         class TupleTypeFactory : ICachedEntityFactory<INamedTypeSymbol, TupleType>
         {
@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            symbol.BuildTypeId(Context, trapFile, (cx0, tb0, sub) => tb0.WriteSubId(Create(cx0, sub)));
+            symbol.BuildTypeId(Context, trapFile, symbol);
             trapFile.Write(";tuple");
         }
 
@@ -41,7 +41,8 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateType(trapFile);
             PopulateGenerics();
 
-            var underlyingType = NamedType.Create(Context, symbol.TupleUnderlyingType);
+            var underlyingType = NamedType.CreateNamedTypeFromTupleType(Context, symbol.TupleUnderlyingType ?? symbol);
+
             trapFile.tuple_underlying_type(this, underlyingType);
 
             int index = 0;
