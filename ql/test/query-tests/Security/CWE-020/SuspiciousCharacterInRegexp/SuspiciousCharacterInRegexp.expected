@@ -1,0 +1,11 @@
+edges
+nodes
+| test.go:8:21:8:34 | "hello\\aworld" | semmle.label | "hello\\aworld" |
+| test.go:9:21:9:36 | "hello\\\\\\aworld" | semmle.label | "hello\\\\\\aworld" |
+| test.go:10:21:10:34 | "hello\\bworld" | semmle.label | "hello\\bworld" |
+| test.go:11:21:11:36 | "hello\\\\\\bworld" | semmle.label | "hello\\\\\\bworld" |
+#select
+| test.go:8:21:8:34 | "hello\\aworld" | test.go:8:21:8:34 | "hello\\aworld" | test.go:8:21:8:34 | "hello\\aworld" | $@ used $@ contains the bell character \\a; did you mean \\\\a, the Vim alphabetic character class (use [[:alpha:]] instead) or \\\\A, the beginning of text? | test.go:8:21:8:34 | "hello\\aworld" | A regular expression | test.go:8:21:8:34 | "hello\\aworld" | here |
+| test.go:9:21:9:36 | "hello\\\\\\aworld" | test.go:9:21:9:36 | "hello\\\\\\aworld" | test.go:9:21:9:36 | "hello\\\\\\aworld" | $@ used $@ contains the bell character \\a; did you mean \\\\a, the Vim alphabetic character class (use [[:alpha:]] instead) or \\\\A, the beginning of text? | test.go:9:21:9:36 | "hello\\\\\\aworld" | A regular expression | test.go:9:21:9:36 | "hello\\\\\\aworld" | here |
+| test.go:10:21:10:34 | "hello\\bworld" | test.go:10:21:10:34 | "hello\\bworld" | test.go:10:21:10:34 | "hello\\bworld" | $@ used $@ contains a literal backspace \\b; did you mean \\\\b, a word boundary? | test.go:10:21:10:34 | "hello\\bworld" | A regular expression | test.go:10:21:10:34 | "hello\\bworld" | here |
+| test.go:11:21:11:36 | "hello\\\\\\bworld" | test.go:11:21:11:36 | "hello\\\\\\bworld" | test.go:11:21:11:36 | "hello\\\\\\bworld" | $@ used $@ contains a literal backspace \\b; did you mean \\\\b, a word boundary? | test.go:11:21:11:36 | "hello\\\\\\bworld" | A regular expression | test.go:11:21:11:36 | "hello\\\\\\bworld" | here |
