@@ -567,7 +567,7 @@ private predicate boundedPhiInp(
     or
     boundedPhi(inp, b, d, upper, fromBackEdge0, origdelta)
     or
-    b.(DefinitionBound).getDefinition() = inp and
+    b.(SsaBound).getSsa() = inp and
     d = 0 and
     (upper = true or upper = false) and
     fromBackEdge0 = false and
@@ -651,8 +651,8 @@ private predicate bbSucc(BasicBlock pre, BasicBlock post) { post = pre.getASucce
 private predicate selfBoundedPhiInp(
   PhiNode phi, Definition inp, SsaReadPositionPhiInputEdge edge, boolean upper
 ) {
-  exists(int d, DefinitionBound phibound |
-    phibound.getDefinition() = phi and
+  exists(int d, SsaBound phibound |
+    phibound.getSsa() = phi and
     boundedPhiInp(phi, inp, edge, phibound, d, upper, _, _) and
     (
       upper = true and d <= 0

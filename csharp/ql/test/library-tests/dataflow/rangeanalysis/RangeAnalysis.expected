@@ -1,41 +1,41 @@
-| RangeAnalysis.cs:7:9:7:9 | access to parameter x | DefinitionBound | 0 | lower |
-| RangeAnalysis.cs:7:9:7:9 | access to parameter x | DefinitionBound | 0 | upper |
+| RangeAnalysis.cs:7:9:7:9 | access to parameter x | SsaBound | 0 | lower |
+| RangeAnalysis.cs:7:9:7:9 | access to parameter x | SsaBound | 0 | upper |
 | RangeAnalysis.cs:7:13:7:15 | 500 | ZeroBound | 500 | lower |
 | RangeAnalysis.cs:7:13:7:15 | 500 | ZeroBound | 500 | upper |
-| RangeAnalysis.cs:9:11:9:11 | access to parameter x | DefinitionBound | 0 | lower |
-| RangeAnalysis.cs:9:11:9:11 | access to parameter x | DefinitionBound | 0 | upper |
+| RangeAnalysis.cs:9:11:9:11 | access to parameter x | SsaBound | 0 | lower |
+| RangeAnalysis.cs:9:11:9:11 | access to parameter x | SsaBound | 0 | upper |
 | RangeAnalysis.cs:9:11:9:11 | access to parameter x | ZeroBound | 499 | upper |
 | RangeAnalysis.cs:9:15:9:17 | 400 | ZeroBound | 400 | lower |
 | RangeAnalysis.cs:9:15:9:17 | 400 | ZeroBound | 400 | upper |
-| RangeAnalysis.cs:11:16:11:16 | access to parameter x | DefinitionBound | 0 | lower |
-| RangeAnalysis.cs:11:16:11:16 | access to parameter x | DefinitionBound | 0 | upper |
+| RangeAnalysis.cs:11:16:11:16 | access to parameter x | SsaBound | 0 | lower |
+| RangeAnalysis.cs:11:16:11:16 | access to parameter x | SsaBound | 0 | upper |
 | RangeAnalysis.cs:11:16:11:16 | access to parameter x | ZeroBound | 401 | lower |
 | RangeAnalysis.cs:11:16:11:16 | access to parameter x | ZeroBound | 499 | upper |
-| RangeAnalysis.cs:14:11:14:11 | access to parameter y | DefinitionBound | 0 | lower |
-| RangeAnalysis.cs:14:11:14:11 | access to parameter y | DefinitionBound | 0 | upper |
-| RangeAnalysis.cs:14:16:14:16 | access to parameter x | DefinitionBound | 0 | lower |
-| RangeAnalysis.cs:14:16:14:16 | access to parameter x | DefinitionBound | 0 | upper |
+| RangeAnalysis.cs:14:11:14:11 | access to parameter y | SsaBound | 0 | lower |
+| RangeAnalysis.cs:14:11:14:11 | access to parameter y | SsaBound | 0 | upper |
+| RangeAnalysis.cs:14:16:14:16 | access to parameter x | SsaBound | 0 | lower |
+| RangeAnalysis.cs:14:16:14:16 | access to parameter x | SsaBound | 0 | upper |
 | RangeAnalysis.cs:14:16:14:16 | access to parameter x | ZeroBound | 400 | upper |
-| RangeAnalysis.cs:14:21:14:21 | access to parameter y | DefinitionBound | 0 | lower |
-| RangeAnalysis.cs:14:21:14:21 | access to parameter y | DefinitionBound | 0 | upper |
+| RangeAnalysis.cs:14:21:14:21 | access to parameter y | SsaBound | 0 | lower |
+| RangeAnalysis.cs:14:21:14:21 | access to parameter y | SsaBound | 0 | upper |
 | RangeAnalysis.cs:14:21:14:21 | access to parameter y | ZeroBound | 400 | upper |
 | RangeAnalysis.cs:14:25:14:27 | 300 | ZeroBound | 300 | lower |
 | RangeAnalysis.cs:14:25:14:27 | 300 | ZeroBound | 300 | upper |
-| RangeAnalysis.cs:16:16:16:16 | access to parameter x | DefinitionBound | 0 | lower |
-| RangeAnalysis.cs:16:16:16:16 | access to parameter x | DefinitionBound | 0 | upper |
+| RangeAnalysis.cs:16:16:16:16 | access to parameter x | SsaBound | 0 | lower |
+| RangeAnalysis.cs:16:16:16:16 | access to parameter x | SsaBound | 0 | upper |
 | RangeAnalysis.cs:16:16:16:16 | access to parameter x | ZeroBound | 400 | upper |
-| RangeAnalysis.cs:16:16:16:20 | ... + ... | DefinitionBound | 1 | lower |
-| RangeAnalysis.cs:16:20:16:20 | access to parameter y | DefinitionBound | 0 | lower |
-| RangeAnalysis.cs:16:20:16:20 | access to parameter y | DefinitionBound | 0 | upper |
+| RangeAnalysis.cs:16:16:16:20 | ... + ... | SsaBound | 1 | lower |
+| RangeAnalysis.cs:16:20:16:20 | access to parameter y | SsaBound | 0 | lower |
+| RangeAnalysis.cs:16:20:16:20 | access to parameter y | SsaBound | 0 | upper |
 | RangeAnalysis.cs:16:20:16:20 | access to parameter y | ZeroBound | 301 | lower |
 | RangeAnalysis.cs:16:20:16:20 | access to parameter y | ZeroBound | 400 | upper |
-| RangeAnalysis.cs:19:11:19:11 | access to parameter x | DefinitionBound | 0 | lower |
-| RangeAnalysis.cs:19:11:19:11 | access to parameter x | DefinitionBound | 0 | upper |
+| RangeAnalysis.cs:19:11:19:11 | access to parameter x | SsaBound | 0 | lower |
+| RangeAnalysis.cs:19:11:19:11 | access to parameter x | SsaBound | 0 | upper |
 | RangeAnalysis.cs:19:11:19:11 | access to parameter x | ZeroBound | 400 | upper |
 | RangeAnalysis.cs:19:15:19:17 | 500 | ZeroBound | 500 | lower |
 | RangeAnalysis.cs:19:15:19:17 | 500 | ZeroBound | 500 | upper |
-| RangeAnalysis.cs:21:16:21:16 | access to parameter x | DefinitionBound | 0 | lower |
-| RangeAnalysis.cs:21:16:21:16 | access to parameter x | DefinitionBound | 0 | upper |
+| RangeAnalysis.cs:21:16:21:16 | access to parameter x | SsaBound | 0 | lower |
+| RangeAnalysis.cs:21:16:21:16 | access to parameter x | SsaBound | 0 | upper |
 | RangeAnalysis.cs:21:16:21:16 | access to parameter x | ZeroBound | 400 | upper |
 | RangeAnalysis.cs:21:16:21:16 | access to parameter x | ZeroBound | 501 | lower |
 | RangeAnalysis.cs:25:12:25:12 | 0 | ZeroBound | 0 | lower |
