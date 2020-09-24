@@ -16,6 +16,7 @@ private import implementations.Strdup
 private import implementations.Strftime
 private import implementations.StdContainer
 private import implementations.StdPair
+private import implementations.StdMap
 private import implementations.StdString
 private import implementations.Swap
 private import implementations.GetDelim

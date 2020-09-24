@@ -104,13 +104,13 @@ void test_map()
 	sink(m1.insert(std::make_pair("abc", "def")).first);
 	sink(m2.insert(std::make_pair("abc", source())).first); // tainted [NOT DETECTED]
 	sink(m3.insert(std::make_pair(source(), "def")).first); // tainted [NOT DETECTED]
-	sink(m4.insert(m4.begin(), std::pair<char *, char *>("abc", source()))); // tainted [NOT DETECTED]
+	sink(m4.insert(m4.begin(), std::pair<char *, char *>("abc", source()))); // tainted
 	sink(m5.insert_or_assign("abc", source()).first); // tainted [NOT DETECTED]
 	sink(m6.insert_or_assign(m6.begin(), "abc", source())); // tainted [NOT DETECTED]
 	sink(m1);
-	sink(m2); // tainted [NOT DETECTED]
-	sink(m3); // tainted [NOT DETECTED]
-	sink(m4); // tainted [NOT DETECTED]
+	sink(m2); // tainted
+	sink(m3); // tainted
+	sink(m4); // tainted
 	sink(m5); // tainted [NOT DETECTED]
 	sink(m6); // tainted [NOT DETECTED]
 	sink(m1.find("abc"));
@@ -131,9 +131,9 @@ void test_map()
 	std::map<char *, char *> m8 = m2;
 	std::map<char *, char *> m9;
 	m9 = m2;
-	sink(m7); // tainted [NOT DETECTED]
-	sink(m8); // tainted [NOT DETECTED]
-	sink(m9); // tainted [NOT DETECTED]
+	sink(m7); // tainted
+	sink(m8); // tainted
+	sink(m9); // tainted
 	sink(m7.find("abc")); // tainted [NOT DETECTED]
 	sink(m8.find("abc")); // tainted [NOT DETECTED]
 	sink(m9.find("abc")); // tainted [NOT DETECTED]
@@ -187,16 +187,16 @@ void test_map()
 	std::map<char *, char *> m15, m16, m17, m18;
 	m15.insert(std::pair<char *, char *>(source(), source()));
 	m18.insert(std::pair<char *, char *>(source(), source()));
-	sink(m15); // tainted [NOT DETECTED]
+	sink(m15); // tainted
 	sink(m16);
 	sink(m17);
-	sink(m18); // tainted [NOT DETECTED]
+	sink(m18); // tainted
 	m15.swap(m16);
 	m17.swap(m18);
-	sink(m15);
+	sink(m15); // [FALSE POSITIVE]
 	sink(m16); // tainted [NOT DETECTED]
 	sink(m17); // tainted [NOT DETECTED]
-	sink(m18);
+	sink(m18); // [FALSE POSITIVE]
 
 	// merge
 	std::map<char *, char *> m19, m20, m21, m22;
@@ -204,26 +204,26 @@ void test_map()
 	m20.insert(std::pair<char *, char *>("abc", "def"));
 	m21.insert(std::pair<char *, char *>("abc", "def"));
 	m22.insert(std::pair<char *, char *>(source(), source()));
-	sink(m19); // tainted [NOT DETECTED]
+	sink(m19); // tainted
 	sink(m20);
 	sink(m21);
-	sink(m22); // tainted [NOT DETECTED]
+	sink(m22); // tainted
 	m15.merge(m16);
 	m17.merge(m18);
-	sink(m19); // tainted [NOT DETECTED]
+	sink(m19); // tainted
 	sink(m20); // tainted [NOT DETECTED]
 	sink(m21); // tainted [NOT DETECTED]
-	sink(m22); // tainted [NOT DETECTED]
+	sink(m22); // tainted
 
 	// erase, clear
 	std::map<char *, char *> m23;
 	m23.insert(std::pair<char *, char *>(source(), source()));
 	m23.insert(std::pair<char *, char *>(source(), source()));
-	sink(m23); // tainted [NOT DETECTED]
+	sink(m23); // tainted
 	sink(m23.erase(m23.begin())); // tainted [NOT DETECTED]
-	sink(m23); // tainted [NOT DETECTED]
+	sink(m23); // tainted
 	m23.clear();
-	sink(m23);
+	sink(m23); // [FALSE POSITIVE]
 
 	// emplace, emplace_hint
 	std::map<char *, char *> m24, m25;
@@ -256,13 +256,13 @@ void test_unordered_map()
 	sink(m1.insert(std::make_pair("abc", "def")).first);
 	sink(m2.insert(std::make_pair("abc", source())).first); // tainted [NOT DETECTED]
 	sink(m3.insert(std::make_pair(source(), "def")).first); // tainted [NOT DETECTED]
-	sink(m4.insert(m4.begin(), std::pair<char *, char *>("abc", source()))); // tainted [NOT DETECTED]
+	sink(m4.insert(m4.begin(), std::pair<char *, char *>("abc", source()))); // tainted
 	sink(m5.insert_or_assign("abc", source()).first); // tainted [NOT DETECTED]
 	sink(m6.insert_or_assign(m6.begin(), "abc", source())); // tainted [NOT DETECTED]
 	sink(m1);
-	sink(m2); // tainted [NOT DETECTED]
-	sink(m3); // tainted [NOT DETECTED]
-	sink(m4); // tainted [NOT DETECTED]
+	sink(m2); // tainted
+	sink(m3); // tainted
+	sink(m4); // tainted
 	sink(m5); // tainted [NOT DETECTED]
 	sink(m6); // tainted [NOT DETECTED]
 	sink(m1.find("abc"));
@@ -283,9 +283,9 @@ void test_unordered_map()
 	std::unordered_map<char *, char *> m8 = m2;
 	std::unordered_map<char *, char *> m9;
 	m9 = m2;
-	sink(m7); // tainted [NOT DETECTED]
-	sink(m8); // tainted [NOT DETECTED]
-	sink(m9); // tainted [NOT DETECTED]
+	sink(m7); // tainted
+	sink(m8); // tainted
+	sink(m9); // tainted
 	sink(m7.find("abc")); // tainted [NOT DETECTED]
 	sink(m8.find("abc")); // tainted [NOT DETECTED]
 	sink(m9.find("abc")); // tainted [NOT DETECTED]
@@ -336,16 +336,16 @@ void test_unordered_map()
 	std::unordered_map<char *, char *> m15, m16, m17, m18;
 	m15.insert(std::pair<char *, char *>(source(), source()));
 	m18.insert(std::pair<char *, char *>(source(), source()));
-	sink(m15); // tainted [NOT DETECTED]
+	sink(m15); // tainted
 	sink(m16);
 	sink(m17);
-	sink(m18); // tainted [NOT DETECTED]
+	sink(m18); // tainted
 	m15.swap(m16);
 	m17.swap(m18);
-	sink(m15);
+	sink(m15); // [FALSE POSITIVE]
 	sink(m16); // tainted [NOT DETECTED]
 	sink(m17); // tainted [NOT DETECTED]
-	sink(m18);
+	sink(m18); // [FALSE POSITIVE]
 
 	// merge
 	std::unordered_map<char *, char *> m19, m20, m21, m22;
@@ -353,26 +353,26 @@ void test_unordered_map()
 	m20.insert(std::pair<char *, char *>("abc", "def"));
 	m21.insert(std::pair<char *, char *>("abc", "def"));
 	m22.insert(std::pair<char *, char *>(source(), source()));
-	sink(m19); // tainted [NOT DETECTED]
+	sink(m19); // tainted
 	sink(m20);
 	sink(m21);
-	sink(m22); // tainted [NOT DETECTED]
+	sink(m22); // tainted
 	m15.merge(m16);
 	m17.merge(m18);
-	sink(m19); // tainted [NOT DETECTED]
+	sink(m19); // tainted
 	sink(m20); // tainted [NOT DETECTED]
 	sink(m21); // tainted [NOT DETECTED]
-	sink(m22); // tainted [NOT DETECTED]
+	sink(m22); // tainted
 
 	// erase, clear
 	std::unordered_map<char *, char *> m23;
 	m23.insert(std::pair<char *, char *>(source(), source()));
 	m23.insert(std::pair<char *, char *>(source(), source()));
-	sink(m23); // tainted [NOT DETECTED]
+	sink(m23); // tainted
 	sink(m23.erase(m23.begin())); // tainted [NOT DETECTED]
-	sink(m23); // tainted [NOT DETECTED]
+	sink(m23); // tainted
 	m23.clear();
-	sink(m23);
+	sink(m23); // [FALSE POSITIVE]
 
 	// emplace, emplace_hint
 	std::unordered_map<char *, char *> m24, m25;
