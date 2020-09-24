@@ -29,38 +29,38 @@ def os_members():
 
 
 ########################################
-# https://docs.python.org/3.8/library/os.html#os.execv
+# https://docs.python.org/3.8/library/os.html#os.execl
 #
 # VS Code extension will ignore rest of program if encountering one of these, which we
 # don't want. We could use `if False`, but just to be 100% sure we don't do anything too
 # clever in our analysis that discards that code, I used `if UNKNOWN` instead
 if UNKNOWN:
     env = {"FOO": "foo"}
-    os.execl("executable", "<progname>", "arg0")  # $f-:SystemCommandExecution_getCommand="executable"
-    os.execle("executable", "<progname>", "arg0", env)  # $f-:SystemCommandExecution_getCommand="executable"
-    os.execlp("executable", "<progname>", "arg0")  # $f-:SystemCommandExecution_getCommand="executable"
-    os.execlpe("executable", "<progname>", "arg0", env)  # $f-:SystemCommandExecution_getCommand="executable"
-    os.execv("executable", ["<progname>", "arg0"])  # $f-:SystemCommandExecution_getCommand="executable"
-    os.execve("executable", ["<progname>", "arg0"], env)  # $f-:SystemCommandExecution_getCommand="executable"
-    os.execvp("executable", ["<progname>", "arg0"])  # $f-:SystemCommandExecution_getCommand="executable"
-    os.execvpe("executable", ["<progname>", "arg0"], env)  # $f-:SystemCommandExecution_getCommand="executable"
+    os.execl("executable", "<progname>", "arg0")  # $SystemCommandExecution_getCommand="executable"
+    os.execle("executable", "<progname>", "arg0", env)  # $SystemCommandExecution_getCommand="executable"
+    os.execlp("executable", "<progname>", "arg0")  # $SystemCommandExecution_getCommand="executable"
+    os.execlpe("executable", "<progname>", "arg0", env)  # $SystemCommandExecution_getCommand="executable"
+    os.execv("executable", ["<progname>", "arg0"])  # $SystemCommandExecution_getCommand="executable"
+    os.execve("executable", ["<progname>", "arg0"], env)  # $SystemCommandExecution_getCommand="executable"
+    os.execvp("executable", ["<progname>", "arg0"])  # $SystemCommandExecution_getCommand="executable"
+    os.execvpe("executable", ["<progname>", "arg0"], env)  # $SystemCommandExecution_getCommand="executable"
 
 
 ########################################
 # https://docs.python.org/3.8/library/os.html#os.spawnl
 env = {"FOO": "foo"}
-os.spawnl(os.P_WAIT, "executable", "<progname>", "arg0")  # $f-:SystemCommandExecution_getCommand="executable"
-os.spawnle(os.P_WAIT, "executable", "<progname>", "arg0", env)  # $f-:SystemCommandExecution_getCommand="executable"
-os.spawnlp(os.P_WAIT, "executable", "<progname>", "arg0")  # $f-:SystemCommandExecution_getCommand="executable"
-os.spawnlpe(os.P_WAIT, "executable", "<progname>", "arg0", env)  # $f-:SystemCommandExecution_getCommand="executable"
-os.spawnv(os.P_WAIT, "executable", ["<progname>", "arg0"])  # $f-:SystemCommandExecution_getCommand="executable"
-os.spawnve(os.P_WAIT, "executable", ["<progname>", "arg0"], env)  # $f-:SystemCommandExecution_getCommand="executable"
-os.spawnvp(os.P_WAIT, "executable", ["<progname>", "arg0"])  # $f-:SystemCommandExecution_getCommand="executable"
-os.spawnvpe(os.P_WAIT, "executable", ["<progname>", "arg0"], env)  # $f-:SystemCommandExecution_getCommand="executable"
+os.spawnl(os.P_WAIT, "executable", "<progname>", "arg0")  # $SystemCommandExecution_getCommand="executable"
+os.spawnle(os.P_WAIT, "executable", "<progname>", "arg0", env)  # $SystemCommandExecution_getCommand="executable"
+os.spawnlp(os.P_WAIT, "executable", "<progname>", "arg0")  # $SystemCommandExecution_getCommand="executable"
+os.spawnlpe(os.P_WAIT, "executable", "<progname>", "arg0", env)  # $SystemCommandExecution_getCommand="executable"
+os.spawnv(os.P_WAIT, "executable", ["<progname>", "arg0"])  # $SystemCommandExecution_getCommand="executable"
+os.spawnve(os.P_WAIT, "executable", ["<progname>", "arg0"], env)  # $SystemCommandExecution_getCommand="executable"
+os.spawnvp(os.P_WAIT, "executable", ["<progname>", "arg0"])  # $SystemCommandExecution_getCommand="executable"
+os.spawnvpe(os.P_WAIT, "executable", ["<progname>", "arg0"], env)  # $SystemCommandExecution_getCommand="executable"
 
 # Added in Python 3.8
-os.posix_spawn("executable", ["<progname>", "arg0"], env)  # $f-:SystemCommandExecution_getCommand="executable"
-os.posix_spawnp("executable", ["<progname>", "arg0"], env)  # $f-:SystemCommandExecution_getCommand="executable"
+os.posix_spawn("executable", ["<progname>", "arg0"], env)  # $SystemCommandExecution_getCommand="executable"
+os.posix_spawnp("executable", ["<progname>", "arg0"], env)  # $SystemCommandExecution_getCommand="executable"
 
 ########################################
 
