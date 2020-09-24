@@ -66,6 +66,10 @@
     "java/ql/src/semmle/code/java/dataflow/internal/rangeanalysis/BoundCommon.qll",
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/rangeanalysis/BoundCommon.qll"
   ],
+  "ModulusAnalysis Java/C#": [
+    "java/ql/src/semmle/code/java/dataflow/internal/rangeanalysis/ModulusAnalysisCommon.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/rangeanalysis/ModulusAnalysisCommon.qll"
+  ],
   "C++ SubBasicBlocks": [
     "cpp/ql/src/semmle/code/cpp/controlflow/SubBasicBlocks.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/SubBasicBlocks.qll"

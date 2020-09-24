@@ -18,4 +18,7 @@ class IntegralType = CS::IntegralType;
 class ConstantIntegerExpr = CU::ConstantIntegerExpr;
 
 /** Holds if `e` is a bound expression and it is not an SSA variable read. */
-predicate nonSsaVariableBoundedExpr(Expr e) { CU::systemArrayLengthAccess(e.(CS::PropertyRead)) }
+predicate nonSsaVariableBoundedExpr(Expr e) {
+  CU::systemArrayLengthAccess(e.(CS::PropertyRead)) and
+  not exists(SsaVariable v | e = v.getAUse())
+}

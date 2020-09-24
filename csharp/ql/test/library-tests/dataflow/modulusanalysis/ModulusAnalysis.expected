@@ -1,0 +1,71 @@
+| ModulusAnalysis.cs:6:15:6:21 | ... = ... | 0 | 42 | 0 |
+| ModulusAnalysis.cs:6:20:6:21 | 42 | 0 | 42 | 0 |
+| ModulusAnalysis.cs:7:15:7:21 | ... = ... | 0 | 43 | 0 |
+| ModulusAnalysis.cs:7:20:7:21 | 43 | 0 | 43 | 0 |
+| ModulusAnalysis.cs:11:18:11:18 | access to parameter i | SSA param(i) | 0 | 0 |
+| ModulusAnalysis.cs:11:18:11:22 | ... + ... | SSA param(i) | 3 | 0 |
+| ModulusAnalysis.cs:11:22:11:22 | 3 | 0 | 3 | 0 |
+| ModulusAnalysis.cs:13:19:13:20 | access to local variable eq | SSA def(eq) | 0 | 0 |
+| ModulusAnalysis.cs:13:19:13:20 | access to local variable eq | SSA param(i) | 3 | 0 |
+| ModulusAnalysis.cs:13:19:13:25 | ... * ... | 0 | 0 | 42 |
+| ModulusAnalysis.cs:13:19:13:29 | ... + ... | 0 | 3 | 42 |
+| ModulusAnalysis.cs:13:24:13:25 | access to constant c1 | 0 | 42 | 0 |
+| ModulusAnalysis.cs:13:24:13:25 | access to constant c1 | SSA entry def(ModulusAnalysis.c1) | 0 | 0 |
+| ModulusAnalysis.cs:13:29:13:29 | 3 | 0 | 3 | 0 |
+| ModulusAnalysis.cs:15:13:15:15 | access to local variable mul | 0 | 3 | 42 |
+| ModulusAnalysis.cs:15:13:15:15 | access to local variable mul | SSA def(mul) | 0 | 0 |
+| ModulusAnalysis.cs:15:19:15:20 | access to constant c2 | 0 | 43 | 0 |
+| ModulusAnalysis.cs:15:19:15:20 | access to constant c2 | SSA untracked def(ModulusAnalysis.c2) | 0 | 0 |
+| ModulusAnalysis.cs:15:25:15:25 | 7 | 0 | 7 | 0 |
+| ModulusAnalysis.cs:17:38:17:40 | access to local variable mul | 0 | 3 | 42 |
+| ModulusAnalysis.cs:17:38:17:40 | access to local variable mul | 0 | 7 | 43 |
+| ModulusAnalysis.cs:17:38:17:40 | access to local variable mul | SSA def(mul) | 0 | 0 |
+| ModulusAnalysis.cs:20:17:22:23 | ... ? ... : ... | 0 | 3 | 4 |
+| ModulusAnalysis.cs:21:15:21:15 | access to parameter i | SSA param(i) | 0 | 0 |
+| ModulusAnalysis.cs:21:15:21:19 | ... * ... | 0 | 0 | 4 |
+| ModulusAnalysis.cs:21:15:21:23 | ... + ... | 0 | 3 | 4 |
+| ModulusAnalysis.cs:21:19:21:19 | 4 | 0 | 4 | 0 |
+| ModulusAnalysis.cs:21:23:21:23 | 3 | 0 | 3 | 0 |
+| ModulusAnalysis.cs:22:15:22:15 | access to parameter i | SSA param(i) | 0 | 0 |
+| ModulusAnalysis.cs:22:15:22:19 | ... * ... | 0 | 0 | 8 |
+| ModulusAnalysis.cs:22:15:22:23 | ... + ... | 0 | 7 | 8 |
+| ModulusAnalysis.cs:22:19:22:19 | 8 | 0 | 8 | 0 |
+| ModulusAnalysis.cs:22:23:22:23 | 7 | 0 | 7 | 0 |
+| ModulusAnalysis.cs:23:34:23:34 | access to local variable j | 0 | 3 | 4 |
+| ModulusAnalysis.cs:23:34:23:34 | access to local variable j | SSA def(j) | 0 | 0 |
+| ModulusAnalysis.cs:25:13:25:13 | access to parameter x | SSA param(x) | 0 | 0 |
+| ModulusAnalysis.cs:25:17:25:18 | access to constant c1 | 0 | 42 | 0 |
+| ModulusAnalysis.cs:25:17:25:18 | access to constant c1 | SSA entry def(ModulusAnalysis.c1) | 0 | 0 |
+| ModulusAnalysis.cs:25:23:25:23 | 3 | 0 | 3 | 0 |
+| ModulusAnalysis.cs:25:28:25:28 | access to parameter y | SSA param(y) | 0 | 0 |
+| ModulusAnalysis.cs:25:32:25:33 | access to constant c1 | 0 | 42 | 0 |
+| ModulusAnalysis.cs:25:32:25:33 | access to constant c1 | SSA entry def(ModulusAnalysis.c1) | 0 | 0 |
+| ModulusAnalysis.cs:25:38:25:38 | 7 | 0 | 7 | 0 |
+| ModulusAnalysis.cs:27:38:27:38 | access to parameter x | 0 | 3 | 42 |
+| ModulusAnalysis.cs:27:38:27:38 | access to parameter x | SSA param(x) | 0 | 0 |
+| ModulusAnalysis.cs:27:38:27:42 | ... + ... | 0 | 10 | 42 |
+| ModulusAnalysis.cs:27:38:27:42 | ... + ... | SSA param(x) | 7 | 42 |
+| ModulusAnalysis.cs:27:38:27:42 | ... + ... | SSA param(y) | 3 | 42 |
+| ModulusAnalysis.cs:27:42:27:42 | access to parameter y | 0 | 7 | 42 |
+| ModulusAnalysis.cs:27:42:27:42 | access to parameter y | SSA param(y) | 0 | 0 |
+| ModulusAnalysis.cs:30:13:30:13 | access to parameter x | SSA param(x) | 0 | 0 |
+| ModulusAnalysis.cs:30:17:30:18 | access to constant c1 | 0 | 42 | 0 |
+| ModulusAnalysis.cs:30:17:30:18 | access to constant c1 | SSA entry def(ModulusAnalysis.c1) | 0 | 0 |
+| ModulusAnalysis.cs:30:23:30:23 | 3 | 0 | 3 | 0 |
+| ModulusAnalysis.cs:30:28:30:28 | access to parameter y | SSA param(y) | 0 | 0 |
+| ModulusAnalysis.cs:30:32:30:33 | access to constant c1 | 0 | 42 | 0 |
+| ModulusAnalysis.cs:30:32:30:33 | access to constant c1 | SSA entry def(ModulusAnalysis.c1) | 0 | 0 |
+| ModulusAnalysis.cs:30:38:30:38 | 7 | 0 | 7 | 0 |
+| ModulusAnalysis.cs:32:38:32:38 | access to parameter x | 0 | 3 | 42 |
+| ModulusAnalysis.cs:32:38:32:38 | access to parameter x | SSA param(x) | 0 | 0 |
+| ModulusAnalysis.cs:32:38:32:42 | ... - ... | 0 | 38 | 42 |
+| ModulusAnalysis.cs:32:38:32:42 | ... - ... | SSA param(x) | 35 | 42 |
+| ModulusAnalysis.cs:32:42:32:42 | access to parameter y | 0 | 7 | 42 |
+| ModulusAnalysis.cs:32:42:32:42 | access to parameter y | SSA param(y) | 0 | 0 |
+| ModulusAnalysis.cs:35:17:35:26 | access to property Length | SSA untracked def(arr.Length) | 0 | 0 |
+| ModulusAnalysis.cs:35:17:35:30 | ... * ... | 0 | 0 | 4 |
+| ModulusAnalysis.cs:35:17:35:35 | ... - ... | 0 | 1 | 4 |
+| ModulusAnalysis.cs:35:30:35:30 | 4 | 0 | 4 | 0 |
+| ModulusAnalysis.cs:35:34:35:35 | 11 | 0 | 11 | 0 |
+| ModulusAnalysis.cs:36:34:36:34 | access to local variable l | 0 | 1 | 4 |
+| ModulusAnalysis.cs:36:34:36:34 | access to local variable l | SSA def(l) | 0 | 0 |
