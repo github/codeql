@@ -11,8 +11,8 @@ class StdPairConstructor extends Constructor, TaintFunction {
   StdPairConstructor() { this.getDeclaringType().hasQualifiedName("std", "pair") }
 
   /**
-   * Gets the index of a parameter to this function that is a reference to the
-   * value type of the container.
+   * Gets the index of a parameter to this function that is a reference to
+   * either value type of the pair.
    */
   int getAValueTypeParameterIndex() {
     getParameter(result).getUnspecifiedType().(ReferenceType).getBaseType() =
@@ -20,7 +20,7 @@ class StdPairConstructor extends Constructor, TaintFunction {
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // taint flow from any parameter of the value type to the returned object
+    // taint flow from any parameter of a value type to the qualifier
     input.isParameterDeref(getAValueTypeParameterIndex()) and
     (
       output.isReturnValue() // TODO: this is only needed for AST data flow, which treats constructors as returning the new object
