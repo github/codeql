@@ -474,3 +474,108 @@ namespace std {
 		pair<const_iterator, const_iterator> equal_range(const key_type& k) const;
 	};
 };
+
+// --- set ---
+
+namespace std {
+	template<class Key, class Compare = less<Key>, class Allocator = allocator<Key>>
+	class set {
+	public:
+		using key_type = Key;
+		using value_type = Key;
+		using size_type = size_t;
+		using allocator_type = Allocator;
+		using iterator = std::iterator<random_access_iterator_tag, value_type >;
+		using const_iterator = std::iterator<random_access_iterator_tag, const value_type >;
+
+		set() /*: set(Compare())*/ { }
+		set(const set& x);
+		set(set&& x);
+		template<class InputIterator> set(InputIterator first, InputIterator last/*, const Compare& comp = Compare(), const Allocator& = Allocator()*/);
+		~set();
+		
+		set& operator=(const set& x);
+		set& operator=(set&& x) noexcept/*(allocator_traits<Allocator>::is_always_equal::value && is_nothrow_move_assignable_v<Compare>)*/;
+
+		iterator begin() noexcept;
+		const_iterator begin() const noexcept;
+		iterator end() noexcept;
+		const_iterator end() const noexcept;
+
+		template<class... Args> pair<iterator, bool> emplace(Args&&... args);
+		template<class... Args> iterator emplace_hint(const_iterator position, Args&&... args);
+		pair<iterator,bool> insert(const value_type& x);
+		pair<iterator,bool> insert(value_type&& x);
+		iterator insert(const_iterator position, const value_type& x);
+		iterator insert(const_iterator position, value_type&& x);
+		template<class InputIterator> void insert(InputIterator first, InputIterator last); 
+		
+		iterator erase(iterator position);
+		iterator erase(const_iterator position);
+		iterator erase(const_iterator first, const_iterator last); 
+		void swap(set&) noexcept/*(allocator_traits<Allocator>::is_always_equal::value && is_nothrow_swappable_v<Compare>)*/;
+		void clear() noexcept;
+
+		template<class C2> void merge(set<Key, C2, Allocator>& source);
+		template<class C2> void merge(set<Key, C2, Allocator>&& source);
+
+		iterator find(const key_type& x);
+		const_iterator find(const key_type& x) const;
+		
+		iterator lower_bound(const key_type& x);
+		const_iterator lower_bound(const key_type& x) const;
+		iterator upper_bound(const key_type& x);
+		const_iterator upper_bound(const key_type& x) const;
+		pair<iterator, iterator> equal_range(const key_type& x);
+		pair<const_iterator, const_iterator> equal_range(const key_type& x) const;
+	};
+
+	template<class Key, class Hash = hash<Key>, class Pred = equal_to<Key>, class Allocator = allocator<Key>>
+	class unordered_set { 
+	public:
+		using key_type = Key;
+		using value_type = Key;
+		using hasher = Hash;
+		using key_equal = Pred;
+		using allocator_type = Allocator;
+		using size_type = size_t;
+		using iterator = std::iterator<random_access_iterator_tag, value_type >;
+		using const_iterator = std::iterator<random_access_iterator_tag, const value_type >;
+
+		unordered_set();
+		unordered_set(const unordered_set&);
+		unordered_set(unordered_set&&);
+		template<class InputIterator> unordered_set(InputIterator f, InputIterator l, size_type n = 0/*, const hasher& hf = hasher(), const key_equal& eql = key_equal(), const allocator_type& a = allocator_type()*/);
+		~unordered_set();
+
+		unordered_set& operator=(const unordered_set&);
+		unordered_set& operator=(unordered_set&&) noexcept/*(allocator_traits<Allocator>::is_always_equal::value && is_nothrow_move_assignable_v<Hash> && is_nothrow_move_assignable_v<Pred>)*/;
+		
+		iterator begin() noexcept;
+		const_iterator begin() const noexcept;
+		iterator end() noexcept;
+		const_iterator end() const noexcept;
+
+		template<class... Args> pair<iterator, bool> emplace(Args&&... args);
+		template<class... Args> iterator emplace_hint(const_iterator position, Args&&... args);
+		pair<iterator, bool> insert(const value_type& obj);
+		pair<iterator, bool> insert(value_type&& obj);
+		iterator insert(const_iterator hint, const value_type& obj);
+		iterator insert(const_iterator hint, value_type&& obj);
+		template<class InputIterator> void insert(InputIterator first, InputIterator last); 
+
+		iterator erase(iterator position);
+		iterator erase(const_iterator position);
+		iterator erase(const_iterator first, const_iterator last);
+		void swap(unordered_set&) noexcept/*(allocator_traits<Allocator>::is_always_equal::value && is_nothrow_swappable_v<Hash> && is_nothrow_swappable_v<Pred>)*/;
+		void clear() noexcept;
+
+		template<class H2, class P2> void merge(unordered_set<Key, H2, P2, Allocator>& source);
+		template<class H2, class P2> void merge(unordered_set<Key, H2, P2, Allocator>&& source);
+
+		iterator find(const key_type& k);
+		const_iterator find(const key_type& k) const;
+		pair<iterator, iterator> equal_range(const key_type& k);
+		pair<const_iterator, const_iterator> equal_range(const key_type& k) const;
+	};
+}
