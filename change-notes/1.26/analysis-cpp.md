@@ -25,5 +25,6 @@ The following changes in version 1.26 affect C/C++ analysis in all applications.
 * The models library now models many more taint flows through `std::string`.
 * The models library now models many taint flows through `std::istream` and `std::ostream`.
 * The models library now models some taint flows through `std::shared_ptr`, `std::unique_ptr`, `std::make_shared` and `std::make_unique`.
+* The models library now models some taint flows through `std::pair`, `std::map` and `std::unordered_map`.
 * The `SimpleRangeAnalysis` library now supports multiplications of the form
   `e1 * e2` and `x *= e2` when `e1` and `e2` are unsigned or constant.
