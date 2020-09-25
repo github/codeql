@@ -18,7 +18,7 @@ class DataFlowCfgNode extends ControlFlowNode {
 
 /** A data flow node for which we should synthesise an associated pre-update node. */
 abstract class NeedsSyntheticPreUpdateNode extends Node {
-  /** This will figure in the texttual representation of the synthesised pre-update node. */
+  /** A label for this kind of node. This will figure in the textual representation of the synthesized pre-update node. */
   abstract string label();
 }
 
@@ -39,7 +39,7 @@ class SyntheticPreUpdateNode extends Node, TSyntheticPreUpdateNode {
 
 /** A data flow node for which we should synthesise an associated post-update node. */
 abstract class NeedsSyntheticPostUpdateNode extends Node {
-  /** This will figure in the texttual representation of the synthesised post-update node. */
+  /** A label for this kind of node. This will figure in the textual representation of the synthesized post-update node. */
   abstract string label();
 }
 
@@ -83,7 +83,7 @@ class ReadPreUpdateNode extends NeedsSyntheticPostUpdateNode, CfgNode {
   override string label() { result = "read" }
 }
 
-/** A post-update node is synthesised for all nodes which satisfy `NeedsSyntheticPostUpdateNode`. */
+/** A post-update node is synthesized for all nodes which satisfy `NeedsSyntheticPostUpdateNode`. */
 class SyntheticPostUpdateNode extends PostUpdateNode, TSyntheticPostUpdateNode {
   NeedsSyntheticPostUpdateNode pre;
 
@@ -99,7 +99,7 @@ class SyntheticPostUpdateNode extends PostUpdateNode, TSyntheticPostUpdateNode {
 }
 
 /**
- * Calls to constructors are treated as post-update nodes for the synthesised argument
+ * Calls to constructors are treated as post-update nodes for the synthesized argument
  * that is mapped to the `self` parameter. That way, constructor calls represent the value of the
  * object after the constructor (currently only `__init__`) has run.
  */
@@ -305,7 +305,7 @@ class DataFlowModuleScope extends DataFlowCallable, TModule {
  *
  * An `__init__` method can also be called directly, so that the callable can be targeted by
  * different types of calls. In that case, the parameter mappings will be different,
- * as the class call will synthesise an argument node to be mapped to the `self` parameter.
+ * as the class call will synthesize an argument node to be mapped to the `self` parameter.
  *
  * A call corresponding to a special method call is handled by the corresponding `SpecialMethodCallNode`.
  */
@@ -598,16 +598,18 @@ predicate comprehensionStoreStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
 }
 
 /**
- * In
+ * Holds if `nodeFrom` flows into an attribute (corresponding to `c`) of `nodeTo` via an attribute assignment.
+ *
+ * For example, in
  * ```python
  * obj.foo = x
  * ```
  * data flows from `x` to (the post-update node for) `obj` via assignment to `foo`.
  */
-predicate attributeStoreStep(CfgNode nodeFrom, Content c, PostUpdateNode nodeTo) {
+predicate attributeStoreStep(CfgNode nodeFrom, AttributeContent c, PostUpdateNode nodeTo) {
   exists(AttrNode attr |
     nodeFrom.asCfgNode() = attr.(DefinitionNode).getValue() and
-    attr.getName() = c.(AttributeContent).getAttribute() and
+    attr.getName() = c.getAttribute() and
     attr.getObject() = nodeTo.getPreUpdateNode().(CfgNode).getNode()
   )
 }
@@ -710,17 +712,19 @@ predicate comprehensionReadStep(CfgNode nodeFrom, Content c, EssaNode nodeTo) {
 }
 
 /**
- * In
+ * Holds if `nodeTo` is a read of an attribute (corresponding to `c`) of the object in `nodeFrom`.
+ *
+ * For example, in
  * ```python
  * obj.foo
  * ```
  * data flows from `obj` to `obj.foo` via a read from `foo`.
  */
-predicate attributeReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
+predicate attributeReadStep(CfgNode nodeFrom, AttributeContent c, CfgNode nodeTo) {
   exists(AttrNode attr |
-    nodeTo.asCfgNode() = attr and
     nodeFrom.asCfgNode() = attr.getObject() and
-    attr.getName() = c.(AttributeContent).getAttribute() and
+    nodeTo.asCfgNode() = attr and
+    attr.getName() = c.getAttribute() and
     attr.isLoad()
   )
 }
