@@ -94,4 +94,16 @@ void single_field_test_typedef(A_typedef a)
     sink(a2.i); //$ast,ir
 }
 
+struct B {
+    A a;
+};
+
+void single_field_test_depth_2()
+{
+    B b;
+    b.a.i = user_input();
+    B b2 = b;
+    sink(b2.a.i); //$ast $f-:ir
+}
+
 } // namespace Simple
