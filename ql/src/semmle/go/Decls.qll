@@ -112,14 +112,7 @@ class FuncDef extends @funcdef, StmtParent, ExprParent {
   DeferStmt getADeferStmt() { result.getEnclosingFunction() = this }
 
   /** Gets the `i`th result variable of this function. */
-  ResultVariable getResultVar(int i) {
-    result =
-      rank[i + 1](ResultVariable res, int j, int k |
-        res.getDeclaration() = getTypeExpr().getResultDecl(j).getNameExpr(k)
-      |
-        res order by j, k
-      )
-  }
+  ResultVariable getResultVar(int i) { result.isResultOf(this, i) }
 
   /** Gets a result variable of this function. */
   ResultVariable getAResultVar() { result.getFunction() = this }

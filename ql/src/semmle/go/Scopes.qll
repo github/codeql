@@ -274,12 +274,28 @@ class ReceiverVariable extends Parameter {
 
 /** A (named) function result variable. */
 class ResultVariable extends DeclaredVariable {
-  FuncDef fn;
+  FuncDef f;
+  int index;
 
-  ResultVariable() { fn.getTypeExpr().getAResultDecl().getNameExpr(_) = this.getDeclaration() }
+  ResultVariable() {
+    exists(FuncTypeExpr tp | tp = f.getTypeExpr() |
+      this =
+        rank[index + 1](DeclaredVariable parm, int j, int k |
+          parm.getDeclaration() = tp.getResultDecl(j).getNameExpr(k)
+        |
+          parm order by j, k
+        )
+    )
+  }
 
   /** Gets the function to which this result variable belongs. */
-  FuncDef getFunction() { result = fn }
+  FuncDef getFunction() { result = f }
+
+  /** Gets the index of this result among all results of the function. */
+  int getIndex() { result = index }
+
+  /** Holds if this is the `i`th result of function `fd`. */
+  predicate isResultOf(FuncDef fd, int i) { fd = f and i = index }
 }
 
 /**

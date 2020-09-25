@@ -236,9 +236,15 @@ abstract class FunctionNode extends Node {
   abstract ReceiverNode getReceiver();
 
   /**
-   * Gets a value returned by the given function via a return statement or an assignment to a result variable.
+   * Gets a value returned by the given function via a return statement or an assignment to a
+   * result variable.
    */
   abstract ResultNode getAResult();
+
+  /**
+   * Gets the data-flow node corresponding to the `i`th result of this function.
+   */
+  ResultNode getResult(int i) { result = getAResult() and result.getIndex() = i }
 }
 
 /** A representation of a function that is declared in the module scope. */
@@ -533,6 +539,9 @@ class ResultNode extends InstructionNode {
     or
     insn.(IR::ReadResultInstruction).reads(fd.getResultVar(i))
   }
+
+  /** Gets the index of this result among all results of the function. */
+  int getIndex() { result = i }
 }
 
 /**
