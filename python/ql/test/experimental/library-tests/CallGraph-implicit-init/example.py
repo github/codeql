@@ -13,6 +13,10 @@ Since PEP 420 was accepted in Python 3, this test is Python 3 only.
 """
 
 from foo.bar.a import afunc
+from foo_explicit.bar.a import explicit_afunc
 
 # calls:afunc
 afunc()
+
+# calls:explicit_afunc
+explicit_afunc()
