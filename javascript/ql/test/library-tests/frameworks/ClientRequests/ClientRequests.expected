@@ -68,6 +68,8 @@ test_ClientRequest
 | tst.js:210:2:210:21 | $.get("example.php") |
 | tst.js:219:5:219:41 | data.so ... Host"}) |
 | tst.js:229:5:229:67 | needle( ... ptions) |
+| tst.js:231:5:233:6 | needle. ... \\n    }) |
+| tst.js:235:5:237:6 | needle. ... \\n    }) |
 test_getADataNode
 | tst.js:53:5:53:23 | axios({data: data}) | tst.js:53:18:53:21 | data |
 | tst.js:57:5:57:39 | axios.p ... data2}) | tst.js:57:19:57:23 | data1 |
@@ -100,6 +102,8 @@ test_getADataNode
 | tst.js:219:5:219:41 | data.so ... Host"}) | tst.js:223:23:223:30 | "foobar" |
 | tst.js:229:5:229:67 | needle( ... ptions) | tst.js:228:32:228:70 | { 'X-Cu ... tuna' } |
 | tst.js:229:5:229:67 | needle( ... ptions) | tst.js:229:50:229:57 | "MyData" |
+| tst.js:235:5:237:6 | needle. ... \\n    }) | tst.js:228:32:228:70 | { 'X-Cu ... tuna' } |
+| tst.js:235:5:237:6 | needle. ... \\n    }) | tst.js:235:44:235:49 | "data" |
 test_getHost
 | tst.js:87:5:87:39 | http.ge ...  host}) | tst.js:87:34:87:37 | host |
 | tst.js:89:5:89:23 | axios({host: host}) | tst.js:89:18:89:21 | host |
@@ -181,6 +185,8 @@ test_getUrl
 | tst.js:210:2:210:21 | $.get("example.php") | tst.js:210:8:210:20 | "example.php" |
 | tst.js:219:5:219:41 | data.so ... Host"}) | tst.js:219:25:219:40 | {host: "myHost"} |
 | tst.js:229:5:229:67 | needle( ... ptions) | tst.js:229:20:229:47 | "http:/ ... oo/bar" |
+| tst.js:231:5:233:6 | needle. ... \\n    }) | tst.js:231:16:231:35 | "http://example.org" |
+| tst.js:235:5:237:6 | needle. ... \\n    }) | tst.js:235:17:235:41 | "http:/ ... g/post" |
 test_getAResponseDataNode
 | tst.js:19:5:19:23 | requestPromise(url) | tst.js:19:5:19:23 | requestPromise(url) | text | true |
 | tst.js:21:5:21:23 | superagent.get(url) | tst.js:21:5:21:23 | superagent.get(url) | stream | true |
@@ -243,3 +249,7 @@ test_getAResponseDataNode
 | tst.js:210:2:210:21 | $.get("example.php") | tst.js:210:55:210:70 | xhr.responseText |  | false |
 | tst.js:219:5:219:41 | data.so ... Host"}) | tst.js:221:29:221:32 | data | text | false |
 | tst.js:229:5:229:67 | needle( ... ptions) | tst.js:229:5:229:67 | needle( ... ptions) | fetch.response | true |
+| tst.js:231:5:233:6 | needle. ... \\n    }) | tst.js:231:44:231:47 | resp | fetch.response | false |
+| tst.js:231:5:233:6 | needle. ... \\n    }) | tst.js:231:50:231:53 | body | json | false |
+| tst.js:235:5:237:6 | needle. ... \\n    }) | tst.js:235:67:235:70 | resp | fetch.response | false |
+| tst.js:235:5:237:6 | needle. ... \\n    }) | tst.js:235:73:235:76 | body | json | false |
