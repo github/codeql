@@ -649,6 +649,36 @@ Node uninitializedNode(LocalVariable v) { none() }
  */
 predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
 
+private predicate simpleFieldNodeLocalFlowStep(Node nodeFrom, Node nodeTo) {
+  // flow from the "innermost" field to the load of that field.
+  exists(FieldNode fieldNode, LoadInstruction load |
+    nodeFrom = fieldNode and
+    nodeTo.asInstruction() = load and
+    not exists(fieldNode.getNextNode()) and
+    fieldNode = getFieldNodeForFieldInstruction(load.getSourceAddress())
+  )
+  or
+  // flow from the "outermost" field to the `ChiInstruction`, or `StoreInstruction`
+  // if no `ChiInstruction` exists.
+  exists(FieldNode fieldNode, AddressOperand addressOperand |
+    nodeFrom = fieldNode and
+    not exists(fieldNode.getObjectNode()) and
+    fieldNode.getNextNode*() = getFieldNodeForFieldInstruction(addressOperand.getDef()) and
+    (
+      exists(ChiInstruction chi |
+        nodeTo.asInstruction() = chi and
+        chi.getPartial().getAnOperand() = addressOperand
+      )
+      or
+      exists(StoreInstruction store |
+        not exists(ChiInstruction chi | chi.getPartial() = store) and
+        nodeTo.asInstruction() = store and
+        store.getDestinationAddressOperand() = addressOperand
+      )
+    )
+  )
+}
+
 /**
  * INTERNAL: do not use.
  *
@@ -662,6 +692,9 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   or
   // Instruction -> Operand flow
   simpleOperandLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asOperand())
+  or
+  // Flow in and out of `FieldNode`s.
+  simpleFieldNodeLocalFlowStep(nodeFrom, nodeTo)
 }
 
 pragma[noinline]
