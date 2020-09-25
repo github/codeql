@@ -32,6 +32,19 @@ func Extract(patterns []string) error {
 
 // ExtractWithFlags extracts the packages specified by the given patterns and build flags
 func ExtractWithFlags(buildFlags []string, patterns []string) error {
+	modEnabled := os.Getenv("GO111MODULE") != "off"
+	if !modEnabled {
+		log.Println("Go module mode disabled.")
+	}
+
+	modFlags := make([]string, 0, 1)
+	for _, flag := range buildFlags {
+		if strings.HasPrefix(flag, "-mod=") {
+			modFlags = append(modFlags, flag)
+		}
+	}
+
+	log.Println("Running packages.Load.")
 	cfg := &packages.Config{
 		Mode: packages.NeedName | packages.NeedFiles |
 			packages.NeedCompiledGoFiles |
@@ -41,23 +54,18 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		BuildFlags: buildFlags,
 	}
 	pkgs, err := packages.Load(cfg, patterns...)
-
-	modFlags := make([]string, 0, 1)
-	for _, flag := range buildFlags {
-		if strings.HasPrefix(flag, "-mod=") {
-			modFlags = append(modFlags, flag)
-		}
-	}
-
 	if err != nil {
 		return err
 	}
+	log.Println("Done running packages.Load.")
 
 	if len(pkgs) == 0 {
-		log.Printf("No packages found.")
+		log.Println("No packages found.")
 	}
 
+	log.Println("Extracting universe scope.")
 	extractUniverseScope()
+	log.Println("Done extracting universe scope.")
 
 	// a map of package path to package root directory (currently the module root or the source directory)
 	pkgRoots := make(map[string]string)
@@ -72,6 +80,8 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	packages.Visit(pkgs, func(pkg *packages.Package) bool {
 		return true
 	}, func(pkg *packages.Package) {
+		log.Printf("Processing package %s.", pkg.PkgPath)
+
 		if _, ok := pkgRoots[pkg.PkgPath]; !ok {
 			mdir := util.GetModDir(pkg.PkgPath, modFlags...)
 			pdir := util.GetPkgDir(pkg.PkgPath, modFlags...)
@@ -83,6 +93,8 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 			pkgRoots[pkg.PkgPath] = mdir
 			pkgDirs[pkg.PkgPath] = pdir
 		}
+
+		log.Printf("Extracting types for package %s.", pkg.PkgPath)
 
 		tw, err := trap.NewWriter(pkg.PkgPath, pkg)
 		if err != nil {
@@ -102,6 +114,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 				extractError(tw, err, lbl, i)
 			}
 		}
+		log.Printf("Done extracting types for package %s.", pkg.PkgPath)
 	})
 
 	for _, pkg := range pkgs {
@@ -110,6 +123,10 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		}
 		wantedRoots[pkgRoots[pkg.PkgPath]] = true
 	}
+
+	log.Println("Done processing dependencies.")
+
+	log.Println("Starting to extract packages.")
 
 	// this sets the number of threads that the Go runtime will spawn; this is separate
 	// from the number of goroutines that the program spawns, which are scheduled into
@@ -163,9 +180,14 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 			extractPackage(pkg, &wg, goroutineSem, fdSem)
 			return
 		}
+
+		log.Printf("Skipping dependency package %s.", pkg.PkgPath)
 	})
 
 	wg.Wait()
+
+	log.Println("Done extracting packages.")
+	log.Println("Starting to extract go.mod files.")
 
 	cwd, err := os.Getwd()
 	if err != nil {
@@ -203,6 +225,8 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		end := time.Since(start)
 		log.Printf("Done extracting %s (%dms)", path, end.Nanoseconds()/1000000)
 	}
+
+	log.Println("Done extracting go.mod files.")
 
 	return nil
 }
