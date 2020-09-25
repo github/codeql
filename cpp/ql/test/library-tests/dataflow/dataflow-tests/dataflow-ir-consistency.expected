@@ -26,6 +26,48 @@ unreachableNodeCCtx
 localCallNodes
 postIsNotPre
 postHasUniquePre
+| BarrierGuard.cpp:50:18:50:18 | x | PostUpdateNode should have one pre-update node but has 0. |
+| BarrierGuard.cpp:51:13:51:13 | x | PostUpdateNode should have one pre-update node but has 0. |
+| BarrierGuard.cpp:52:25:52:25 | y | PostUpdateNode should have one pre-update node but has 0. |
+| BarrierGuard.cpp:53:13:53:13 | x | PostUpdateNode should have one pre-update node but has 0. |
+| BarrierGuard.cpp:54:25:54:25 | y | PostUpdateNode should have one pre-update node but has 0. |
+| BarrierGuard.cpp:55:13:55:13 | x | PostUpdateNode should have one pre-update node but has 0. |
+| BarrierGuard.cpp:61:19:61:19 | x | PostUpdateNode should have one pre-update node but has 0. |
+| BarrierGuard.cpp:62:14:62:14 | x | PostUpdateNode should have one pre-update node but has 0. |
+| BarrierGuard.cpp:63:26:63:26 | y | PostUpdateNode should have one pre-update node but has 0. |
+| BarrierGuard.cpp:64:14:64:14 | x | PostUpdateNode should have one pre-update node but has 0. |
+| BarrierGuard.cpp:65:26:65:26 | x | PostUpdateNode should have one pre-update node but has 0. |
+| BarrierGuard.cpp:66:14:66:14 | x | PostUpdateNode should have one pre-update node but has 0. |
+| clang.cpp:8:27:8:28 | m1 | PostUpdateNode should have one pre-update node but has 0. |
+| clang.cpp:24:22:24:23 | m1 | PostUpdateNode should have one pre-update node but has 0. |
+| clang.cpp:25:27:25:28 | m1 | PostUpdateNode should have one pre-update node but has 0. |
+| clang.cpp:29:27:29:28 | m1 | PostUpdateNode should have one pre-update node but has 0. |
+| clang.cpp:31:27:31:28 | m2 | PostUpdateNode should have one pre-update node but has 0. |
+| clang.cpp:32:22:32:23 | m1 | PostUpdateNode should have one pre-update node but has 0. |
+| clang.cpp:37:10:37:11 | m2 | PostUpdateNode should have one pre-update node but has 0. |
+| clang.cpp:41:18:41:19 | m2 | PostUpdateNode should have one pre-update node but has 0. |
+| clang.cpp:45:17:45:18 | m2 | PostUpdateNode should have one pre-update node but has 0. |
+| dispatch.cpp:153:37:153:37 | f | PostUpdateNode should have one pre-update node but has 0. |
+| dispatch.cpp:154:37:154:37 | g | PostUpdateNode should have one pre-update node but has 0. |
+| dispatch.cpp:173:40:173:40 | u | PostUpdateNode should have one pre-update node but has 0. |
+| dispatch.cpp:174:40:174:40 | u | PostUpdateNode should have one pre-update node but has 0. |
+| example.c:19:9:19:14 | isTrue | PostUpdateNode should have one pre-update node but has 0. |
+| file://:0:0:0:0 | t | PostUpdateNode should have one pre-update node but has 0. |
+| lambdas.cpp:14:3:14:6 | t | PostUpdateNode should have one pre-update node but has 0. |
+| lambdas.cpp:15:3:15:6 | u | PostUpdateNode should have one pre-update node but has 0. |
+| lambdas.cpp:21:3:21:6 | t | PostUpdateNode should have one pre-update node but has 0. |
+| lambdas.cpp:22:3:22:6 | u | PostUpdateNode should have one pre-update node but has 0. |
+| lambdas.cpp:23:3:23:14 | v | PostUpdateNode should have one pre-update node but has 0. |
+| lambdas.cpp:29:3:29:6 | t | PostUpdateNode should have one pre-update node but has 0. |
+| lambdas.cpp:30:3:30:6 | u | PostUpdateNode should have one pre-update node but has 0. |
+| ref.cpp:123:13:123:15 | val | PostUpdateNode should have one pre-update node but has 0. |
+| ref.cpp:126:13:126:15 | val | PostUpdateNode should have one pre-update node but has 0. |
+| ref.cpp:129:13:129:15 | val | PostUpdateNode should have one pre-update node but has 0. |
+| ref.cpp:132:13:132:15 | val | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:363:10:363:14 | field | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:365:10:365:14 | field | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:369:10:369:14 | field | PostUpdateNode should have one pre-update node but has 0. |
+| test.cpp:375:10:375:14 | field | PostUpdateNode should have one pre-update node but has 0. |
 uniquePostUpdate
 postIsInSameCallable
 reverseRead

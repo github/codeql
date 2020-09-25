@@ -467,6 +467,9 @@
 | simple.cpp:84:14:84:20 | this |
 | simple.cpp:92:5:92:5 | a |
 | simple.cpp:92:7:92:7 | i |
+| simple.cpp:104:5:104:5 | b |
+| simple.cpp:104:7:104:7 | a |
+| simple.cpp:104:9:104:9 | i |
 | struct_init.c:15:8:15:9 | ab |
 | struct_init.c:15:12:15:12 | a |
 | struct_init.c:16:8:16:9 | ab |

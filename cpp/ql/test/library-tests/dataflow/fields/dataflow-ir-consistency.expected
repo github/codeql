@@ -16,9 +16,223 @@ unreachableNodeCCtx
 localCallNodes
 postIsNotPre
 postHasUniquePre
+| A.cpp:28:29:28:29 | c | PostUpdateNode should have one pre-update node but has 0. |
+| A.cpp:49:13:49:13 | c | PostUpdateNode should have one pre-update node but has 0. |
+| A.cpp:65:14:65:14 | c | PostUpdateNode should have one pre-update node but has 0. |
+| A.cpp:66:14:66:14 | c | PostUpdateNode should have one pre-update node but has 0. |
+| A.cpp:74:14:74:14 | c | PostUpdateNode should have one pre-update node but has 0. |
+| A.cpp:75:14:75:14 | c | PostUpdateNode should have one pre-update node but has 0. |
+| A.cpp:107:16:107:16 | a | PostUpdateNode should have one pre-update node but has 0. |
+| A.cpp:120:16:120:16 | a | PostUpdateNode should have one pre-update node but has 0. |
+| A.cpp:132:13:132:13 | c | PostUpdateNode should have one pre-update node but has 0. |
+| A.cpp:152:13:152:13 | b | PostUpdateNode should have one pre-update node but has 0. |
+| A.cpp:153:13:153:13 | b | PostUpdateNode should have one pre-update node but has 0. |
+| A.cpp:153:16:153:16 | c | PostUpdateNode should have one pre-update node but has 0. |
+| A.cpp:154:13:154:13 | c | PostUpdateNode should have one pre-update node but has 0. |
+| A.cpp:163:14:163:17 | head | PostUpdateNode should have one pre-update node but has 0. |
+| A.cpp:164:14:164:17 | next | PostUpdateNode should have one pre-update node but has 0. |
+| A.cpp:164:20:164:23 | head | PostUpdateNode should have one pre-update node but has 0. |
+| A.cpp:165:14:165:17 | next | PostUpdateNode should have one pre-update node but has 0. |
+| A.cpp:165:20:165:23 | next | PostUpdateNode should have one pre-update node but has 0. |
+| A.cpp:165:26:165:29 | head | PostUpdateNode should have one pre-update node but has 0. |
+| A.cpp:166:14:166:17 | next | PostUpdateNode should have one pre-update node but has 0. |
+| A.cpp:166:20:166:23 | next | PostUpdateNode should have one pre-update node but has 0. |
+| A.cpp:166:26:166:29 | next | PostUpdateNode should have one pre-update node but has 0. |
+| A.cpp:166:32:166:35 | head | PostUpdateNode should have one pre-update node but has 0. |
+| A.cpp:167:47:167:50 | next | PostUpdateNode should have one pre-update node but has 0. |
+| A.cpp:169:15:169:18 | head | PostUpdateNode should have one pre-update node but has 0. |
+| B.cpp:9:14:9:17 | box1 | PostUpdateNode should have one pre-update node but has 0. |
+| B.cpp:9:20:9:24 | elem1 | PostUpdateNode should have one pre-update node but has 0. |
+| B.cpp:10:14:10:17 | box1 | PostUpdateNode should have one pre-update node but has 0. |
+| B.cpp:10:20:10:24 | elem2 | PostUpdateNode should have one pre-update node but has 0. |
+| B.cpp:18:14:18:17 | box1 | PostUpdateNode should have one pre-update node but has 0. |
+| B.cpp:18:20:18:24 | elem1 | PostUpdateNode should have one pre-update node but has 0. |
+| B.cpp:19:14:19:17 | box1 | PostUpdateNode should have one pre-update node but has 0. |
+| B.cpp:19:20:19:24 | elem2 | PostUpdateNode should have one pre-update node but has 0. |
+| C.cpp:29:10:29:11 | s1 | PostUpdateNode should have one pre-update node but has 0. |
+| C.cpp:30:10:30:11 | s2 | PostUpdateNode should have one pre-update node but has 0. |
+| C.cpp:31:10:31:11 | s3 | PostUpdateNode should have one pre-update node but has 0. |
+| D.cpp:10:30:10:33 | elem | PostUpdateNode should have one pre-update node but has 0. |
+| D.cpp:17:30:17:32 | box | PostUpdateNode should have one pre-update node but has 0. |
+| D.cpp:30:8:30:10 | box | PostUpdateNode should have one pre-update node but has 0. |
+| D.cpp:37:8:37:10 | box | PostUpdateNode should have one pre-update node but has 0. |
+| D.cpp:58:5:58:12 | boxfield | PostUpdateNode should have one pre-update node but has 0. |
+| D.cpp:58:15:58:17 | box | PostUpdateNode should have one pre-update node but has 0. |
+| D.cpp:64:10:64:17 | boxfield | PostUpdateNode should have one pre-update node but has 0. |
+| D.cpp:64:20:64:22 | box | PostUpdateNode should have one pre-update node but has 0. |
+| D.cpp:64:25:64:28 | elem | PostUpdateNode should have one pre-update node but has 0. |
+| E.cpp:21:13:21:16 | data | PostUpdateNode should have one pre-update node but has 0. |
+| E.cpp:29:24:29:29 | buffer | PostUpdateNode should have one pre-update node but has 0. |
+| E.cpp:30:23:30:26 | data | PostUpdateNode should have one pre-update node but has 0. |
+| E.cpp:32:13:32:18 | buffer | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:29:11:29:12 | m1 | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:30:11:30:12 | m1 | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:31:11:31:12 | m1 | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:38:11:38:12 | m1 | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:43:13:43:14 | m1 | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:50:11:50:12 | m1 | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:55:14:55:15 | m1 | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:62:14:62:15 | m1 | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:70:14:70:26 | s | PostUpdateNode should have one pre-update node but has 2. |
+| aliasing.cpp:71:11:71:11 | s | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:73:10:73:10 | s | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:77:14:77:26 | s | PostUpdateNode should have one pre-update node but has 2. |
+| aliasing.cpp:80:10:80:10 | s | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:84:14:84:26 | s | PostUpdateNode should have one pre-update node but has 2. |
+| aliasing.cpp:87:10:87:10 | s | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:91:14:91:26 | s | PostUpdateNode should have one pre-update node but has 2. |
+| aliasing.cpp:93:10:93:10 | s | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:101:21:101:22 | m1 | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:112:10:112:11 | m2 | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:141:17:141:20 | data | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:143:10:143:13 | data | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:148:13:148:14 | m2 | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:158:17:158:20 | data | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:159:11:159:14 | data | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:164:17:164:20 | data | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:165:10:165:13 | data | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:176:11:176:11 | s | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:182:11:182:11 | s | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:189:13:189:13 | s | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:196:13:196:13 | s | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:201:13:201:13 | s | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:206:13:206:13 | s | PostUpdateNode should have one pre-update node but has 0. |
+| arrays.cpp:36:5:36:10 | nested | PostUpdateNode should have one pre-update node but has 0. |
+| arrays.cpp:37:10:37:15 | nested | PostUpdateNode should have one pre-update node but has 0. |
+| arrays.cpp:37:24:37:27 | data | PostUpdateNode should have one pre-update node but has 0. |
+| arrays.cpp:38:10:38:15 | nested | PostUpdateNode should have one pre-update node but has 0. |
+| arrays.cpp:38:24:38:27 | data | PostUpdateNode should have one pre-update node but has 0. |
+| arrays.cpp:42:5:42:12 | indirect | PostUpdateNode should have one pre-update node but has 0. |
+| arrays.cpp:42:15:42:17 | arr | PostUpdateNode should have one pre-update node but has 0. |
+| arrays.cpp:43:10:43:17 | indirect | PostUpdateNode should have one pre-update node but has 0. |
+| arrays.cpp:43:20:43:22 | arr | PostUpdateNode should have one pre-update node but has 0. |
+| arrays.cpp:43:27:43:30 | data | PostUpdateNode should have one pre-update node but has 0. |
+| arrays.cpp:44:10:44:17 | indirect | PostUpdateNode should have one pre-update node but has 0. |
+| arrays.cpp:44:20:44:22 | arr | PostUpdateNode should have one pre-update node but has 0. |
+| arrays.cpp:44:27:44:30 | data | PostUpdateNode should have one pre-update node but has 0. |
+| arrays.cpp:48:5:48:12 | indirect | PostUpdateNode should have one pre-update node but has 0. |
+| arrays.cpp:48:15:48:17 | ptr | PostUpdateNode should have one pre-update node but has 0. |
+| arrays.cpp:49:10:49:17 | indirect | PostUpdateNode should have one pre-update node but has 0. |
+| arrays.cpp:49:20:49:22 | ptr | PostUpdateNode should have one pre-update node but has 0. |
+| arrays.cpp:49:27:49:30 | data | PostUpdateNode should have one pre-update node but has 0. |
+| arrays.cpp:50:10:50:17 | indirect | PostUpdateNode should have one pre-update node but has 0. |
+| arrays.cpp:50:20:50:22 | ptr | PostUpdateNode should have one pre-update node but has 0. |
+| arrays.cpp:50:27:50:30 | data | PostUpdateNode should have one pre-update node but has 0. |
+| by_reference.cpp:32:15:32:15 | a | PostUpdateNode should have one pre-update node but has 0. |
+| by_reference.cpp:36:18:36:18 | a | PostUpdateNode should have one pre-update node but has 0. |
+| by_reference.cpp:103:27:103:35 | inner_ptr | PostUpdateNode should have one pre-update node but has 0. |
+| by_reference.cpp:107:29:107:37 | inner_ptr | PostUpdateNode should have one pre-update node but has 0. |
+| by_reference.cpp:110:14:110:25 | inner_nested | PostUpdateNode should have one pre-update node but has 0. |
+| by_reference.cpp:111:14:111:22 | inner_ptr | PostUpdateNode should have one pre-update node but has 0. |
+| by_reference.cpp:111:25:111:25 | a | PostUpdateNode should have one pre-update node but has 0. |
+| by_reference.cpp:112:14:112:14 | a | PostUpdateNode should have one pre-update node but has 0. |
+| by_reference.cpp:114:16:114:27 | inner_nested | PostUpdateNode should have one pre-update node but has 0. |
+| by_reference.cpp:115:16:115:24 | inner_ptr | PostUpdateNode should have one pre-update node but has 0. |
+| by_reference.cpp:115:27:115:27 | a | PostUpdateNode should have one pre-update node but has 0. |
+| by_reference.cpp:116:16:116:16 | a | PostUpdateNode should have one pre-update node but has 0. |
+| by_reference.cpp:123:28:123:36 | inner_ptr | PostUpdateNode should have one pre-update node but has 0. |
+| by_reference.cpp:127:30:127:38 | inner_ptr | PostUpdateNode should have one pre-update node but has 0. |
+| by_reference.cpp:130:14:130:25 | inner_nested | PostUpdateNode should have one pre-update node but has 0. |
+| by_reference.cpp:131:14:131:22 | inner_ptr | PostUpdateNode should have one pre-update node but has 0. |
+| by_reference.cpp:131:25:131:25 | a | PostUpdateNode should have one pre-update node but has 0. |
+| by_reference.cpp:132:14:132:14 | a | PostUpdateNode should have one pre-update node but has 0. |
+| by_reference.cpp:134:16:134:27 | inner_nested | PostUpdateNode should have one pre-update node but has 0. |
+| by_reference.cpp:135:16:135:24 | inner_ptr | PostUpdateNode should have one pre-update node but has 0. |
+| by_reference.cpp:135:27:135:27 | a | PostUpdateNode should have one pre-update node but has 0. |
+| by_reference.cpp:136:16:136:16 | a | PostUpdateNode should have one pre-update node but has 0. |
+| complex.cpp:9:20:9:21 | a_ | PostUpdateNode should have one pre-update node but has 0. |
+| complex.cpp:10:20:10:21 | b_ | PostUpdateNode should have one pre-update node but has 0. |
+| constructors.cpp:18:22:18:23 | a_ | PostUpdateNode should have one pre-update node but has 0. |
+| constructors.cpp:19:22:19:23 | b_ | PostUpdateNode should have one pre-update node but has 0. |
+| qualifiers.cpp:18:32:18:36 | inner | PostUpdateNode should have one pre-update node but has 0. |
+| qualifiers.cpp:23:16:23:20 | inner | PostUpdateNode should have one pre-update node but has 0. |
+| qualifiers.cpp:23:23:23:23 | a | PostUpdateNode should have one pre-update node but has 0. |
+| qualifiers.cpp:28:16:28:20 | inner | PostUpdateNode should have one pre-update node but has 0. |
+| qualifiers.cpp:28:23:28:23 | a | PostUpdateNode should have one pre-update node but has 0. |
+| qualifiers.cpp:33:16:33:20 | inner | PostUpdateNode should have one pre-update node but has 0. |
+| qualifiers.cpp:33:23:33:23 | a | PostUpdateNode should have one pre-update node but has 0. |
+| qualifiers.cpp:38:16:38:20 | inner | PostUpdateNode should have one pre-update node but has 0. |
+| qualifiers.cpp:38:23:38:23 | a | PostUpdateNode should have one pre-update node but has 0. |
+| qualifiers.cpp:43:16:43:20 | inner | PostUpdateNode should have one pre-update node but has 0. |
+| qualifiers.cpp:43:23:43:23 | a | PostUpdateNode should have one pre-update node but has 0. |
+| qualifiers.cpp:48:16:48:20 | inner | PostUpdateNode should have one pre-update node but has 0. |
+| qualifiers.cpp:48:23:48:23 | a | PostUpdateNode should have one pre-update node but has 0. |
+| realistic.cpp:49:13:49:15 | bar | PostUpdateNode should have one pre-update node but has 0. |
+| realistic.cpp:53:13:53:15 | bar | PostUpdateNode should have one pre-update node but has 0. |
+| realistic.cpp:53:20:53:22 | baz | PostUpdateNode should have one pre-update node but has 0. |
+| realistic.cpp:54:20:54:22 | bar | PostUpdateNode should have one pre-update node but has 0. |
+| realistic.cpp:54:27:54:29 | baz | PostUpdateNode should have one pre-update node but has 0. |
+| realistic.cpp:54:32:54:40 | userInput | PostUpdateNode should have one pre-update node but has 0. |
+| realistic.cpp:55:16:55:18 | bar | PostUpdateNode should have one pre-update node but has 0. |
+| realistic.cpp:55:23:55:25 | baz | PostUpdateNode should have one pre-update node but has 0. |
+| realistic.cpp:55:28:55:36 | userInput | PostUpdateNode should have one pre-update node but has 0. |
+| realistic.cpp:57:92:57:94 | bar | PostUpdateNode should have one pre-update node but has 0. |
+| realistic.cpp:57:99:57:101 | baz | PostUpdateNode should have one pre-update node but has 0. |
+| realistic.cpp:57:104:57:112 | userInput | PostUpdateNode should have one pre-update node but has 0. |
+| realistic.cpp:60:25:60:27 | bar | PostUpdateNode should have one pre-update node but has 0. |
+| realistic.cpp:60:32:60:34 | baz | PostUpdateNode should have one pre-update node but has 0. |
+| realistic.cpp:60:37:60:45 | userInput | PostUpdateNode should have one pre-update node but has 0. |
+| realistic.cpp:60:59:60:61 | bar | PostUpdateNode should have one pre-update node but has 0. |
+| realistic.cpp:60:66:60:68 | baz | PostUpdateNode should have one pre-update node but has 0. |
+| realistic.cpp:60:71:60:79 | userInput | PostUpdateNode should have one pre-update node but has 0. |
+| realistic.cpp:61:25:61:27 | bar | PostUpdateNode should have one pre-update node but has 0. |
+| realistic.cpp:61:32:61:34 | baz | PostUpdateNode should have one pre-update node but has 0. |
+| realistic.cpp:61:37:61:45 | userInput | PostUpdateNode should have one pre-update node but has 0. |
+| realistic.cpp:65:25:65:27 | bar | PostUpdateNode should have one pre-update node but has 0. |
+| realistic.cpp:65:32:65:34 | baz | PostUpdateNode should have one pre-update node but has 0. |
+| realistic.cpp:65:37:65:45 | userInput | PostUpdateNode should have one pre-update node but has 0. |
+| simple.cpp:18:22:18:23 | a_ | PostUpdateNode should have one pre-update node but has 0. |
+| simple.cpp:19:22:19:23 | b_ | PostUpdateNode should have one pre-update node but has 0. |
 | simple.cpp:65:5:65:22 | Store | PostUpdateNode should have one pre-update node but has 0. |
+| simple.cpp:65:7:65:7 | i | PostUpdateNode should have one pre-update node but has 0. |
+| simple.cpp:67:13:67:13 | i | PostUpdateNode should have one pre-update node but has 0. |
+| simple.cpp:79:16:79:17 | f2 | PostUpdateNode should have one pre-update node but has 0. |
 | simple.cpp:92:5:92:22 | Store | PostUpdateNode should have one pre-update node but has 0. |
+| simple.cpp:92:7:92:7 | i | PostUpdateNode should have one pre-update node but has 0. |
+| simple.cpp:94:13:94:13 | i | PostUpdateNode should have one pre-update node but has 0. |
+| simple.cpp:104:5:104:24 | Store | PostUpdateNode should have one pre-update node but has 0. |
+| simple.cpp:104:7:104:7 | a | PostUpdateNode should have one pre-update node but has 0. |
+| simple.cpp:106:13:106:13 | a | PostUpdateNode should have one pre-update node but has 0. |
+| struct_init.c:15:12:15:12 | a | PostUpdateNode should have one pre-update node but has 0. |
+| struct_init.c:16:12:16:12 | b | PostUpdateNode should have one pre-update node but has 0. |
+| struct_init.c:22:11:22:11 | a | PostUpdateNode should have one pre-update node but has 0. |
+| struct_init.c:23:11:23:11 | b | PostUpdateNode should have one pre-update node but has 0. |
+| struct_init.c:26:23:29:3 | nestedAB | PostUpdateNode should have one pre-update node but has 2. |
+| struct_init.c:31:14:31:21 | nestedAB | PostUpdateNode should have one pre-update node but has 0. |
+| struct_init.c:32:14:32:21 | nestedAB | PostUpdateNode should have one pre-update node but has 0. |
+| struct_init.c:33:14:33:22 | pointerAB | PostUpdateNode should have one pre-update node but has 0. |
+| struct_init.c:33:25:33:25 | a | PostUpdateNode should have one pre-update node but has 0. |
+| struct_init.c:34:14:34:22 | pointerAB | PostUpdateNode should have one pre-update node but has 0. |
+| struct_init.c:34:25:34:25 | b | PostUpdateNode should have one pre-update node but has 0. |
+| struct_init.c:41:23:44:3 | nestedAB | PostUpdateNode should have one pre-update node but has 2. |
+| struct_init.c:46:16:46:24 | pointerAB | PostUpdateNode should have one pre-update node but has 0. |
 uniquePostUpdate
+| aliasing.cpp:70:14:70:26 | s | Node has multiple PostUpdateNodes. |
+| aliasing.cpp:77:14:77:26 | s | Node has multiple PostUpdateNodes. |
+| aliasing.cpp:84:14:84:26 | s | Node has multiple PostUpdateNodes. |
+| aliasing.cpp:91:14:91:26 | s | Node has multiple PostUpdateNodes. |
+| struct_init.c:26:23:29:3 | nestedAB | Node has multiple PostUpdateNodes. |
+| struct_init.c:41:23:44:3 | nestedAB | Node has multiple PostUpdateNodes. |
 postIsInSameCallable
 reverseRead
+| E.cpp:19:27:19:27 | *p | Origin of readStep is missing a PostUpdateNode. |
+| E.cpp:27:12:27:12 | Uninitialized | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:70:19:70:19 | Store | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:79:3:79:22 | Store | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:86:3:86:21 | Store | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:92:3:92:23 | Store | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:175:15:175:22 | Chi | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:181:15:181:22 | Chi | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:188:13:188:14 | Store | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:195:13:195:14 | Store | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:200:15:200:24 | Chi | Origin of readStep is missing a PostUpdateNode. |
+| aliasing.cpp:205:15:205:24 | Chi | Origin of readStep is missing a PostUpdateNode. |
+| by_reference.cpp:102:21:102:39 | Chi | Origin of readStep is missing a PostUpdateNode. |
+| by_reference.cpp:106:21:106:41 | Chi | Origin of readStep is missing a PostUpdateNode. |
+| by_reference.cpp:122:21:122:38 | Chi | Origin of readStep is missing a PostUpdateNode. |
+| by_reference.cpp:126:21:126:40 | Chi | Origin of readStep is missing a PostUpdateNode. |
+| simple.cpp:78:9:78:15 | *#this | Origin of readStep is missing a PostUpdateNode. |
+| simple.cpp:105:12:105:12 | Store | Origin of readStep is missing a PostUpdateNode. |
+| struct_init.c:27:7:27:16 | Store | Origin of readStep is missing a PostUpdateNode. |
+| struct_init.c:27:21:27:21 | Store | Origin of readStep is missing a PostUpdateNode. |
 argHasPostUpdate
