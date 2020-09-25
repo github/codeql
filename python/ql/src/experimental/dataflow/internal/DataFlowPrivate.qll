@@ -411,7 +411,11 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
 /**
  * Gets the type of `node`.
  */
-DataFlowType getNodeType(Node node) { result = TAnyFlow() }
+DataFlowType getNodeType(Node node) {
+  result = TAnyFlow() and
+  // Suppress unused variable warning
+  node = node
+}
 
 /** Gets a string representation of a type returned by `getErasedRepr`. */
 string ppReprType(DataFlowType t) { none() }
@@ -458,7 +462,9 @@ predicate listStoreStep(CfgNode nodeFrom, ListElementContent c, CfgNode nodeTo) 
   //   nodeFrom is `42`, cfg node
   //   nodeTo is the list, `[..., 42, ...]`, cfg node
   //   c denotes element of list
-  nodeTo.getNode().(ListNode).getAnElement() = nodeFrom.getNode()
+  nodeTo.getNode().(ListNode).getAnElement() = nodeFrom.getNode() and
+  // Suppress unused variable warning
+  c = c
 }
 
 /** Data flows from an element of a set to the set. */
@@ -468,7 +474,9 @@ predicate setStoreStep(CfgNode nodeFrom, ListElementContent c, CfgNode nodeTo) {
   //   nodeFrom is `42`, cfg node
   //   nodeTo is the set, `{..., 42, ...}`, cfg node
   //   c denotes element of list
-  nodeTo.getNode().(SetNode).getAnElement() = nodeFrom.getNode()
+  nodeTo.getNode().(SetNode).getAnElement() = nodeFrom.getNode() and
+  // Suppress unused variable warning
+  c = c
 }
 
 /** Data flows from an element of a tuple to the tuple at a specific index. */
