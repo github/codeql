@@ -68,11 +68,11 @@ private Expr modExpr(Expr arg, int mod) {
   exists(RemExpr rem |
     result = rem and
     arg = rem.getLeftOperand() and
-    rem.getRightOperand().(CompileTimeConstantExpr).getIntValue() = mod and
+    rem.getRightOperand().(ConstantIntegerExpr).getIntValue() = mod and
     mod >= 2
   )
   or
-  exists(CompileTimeConstantExpr c |
+  exists(ConstantIntegerExpr c |
     mod = 2.pow([1 .. 30]) and
     c.getIntValue() = mod - 1 and
     result.(AndBitwiseExpr).hasOperands(arg, c)
@@ -84,7 +84,7 @@ private Expr modExpr(Expr arg, int mod) {
  * its `testIsTrue` branch.
  */
 private Guard moduloCheck(SsaVariable v, int val, int mod, boolean testIsTrue) {
-  exists(Expr rem, CompileTimeConstantExpr c, int r, boolean polarity |
+  exists(Expr rem, ConstantIntegerExpr c, int r, boolean polarity |
     result.isEquality(rem, c, polarity) and
     c.getIntValue() = r and
     rem = modExpr(v.getAUse(), mod) and

@@ -22,6 +22,7 @@
 | ModulusAnalysis.java:12:25:12:29 | seven | 0 | 7 | 0 |
 | ModulusAnalysis.java:12:25:12:29 | seven | SSA def(seven) | 0 | 0 |
 | ModulusAnalysis.java:13:32:13:34 | mul | 0 | 3 | 42 |
+| ModulusAnalysis.java:13:32:13:34 | mul | 0 | 7 | 43 |
 | ModulusAnalysis.java:13:32:13:34 | mul | SSA def(mul) | 0 | 0 |
 | ModulusAnalysis.java:16:17:18:23 | ...?...:... | 0 | 3 | 4 |
 | ModulusAnalysis.java:17:15:17:15 | i | SSA init(i) | 0 | 0 |

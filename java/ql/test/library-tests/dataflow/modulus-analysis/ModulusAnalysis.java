@@ -10,7 +10,7 @@ class ModulusAnalysis
 
         int seven = 7;
         if (mul % c2 == seven) {
-            System.out.println(mul); // congruent 3 mod 42
+            System.out.println(mul); // congruent 3 mod 42, 7 mod 43
         }
 
         int j = cond
