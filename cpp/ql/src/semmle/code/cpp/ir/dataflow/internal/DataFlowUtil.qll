@@ -15,7 +15,16 @@ cached
 private newtype TIRDataFlowNode =
   TInstructionNode(Instruction i) or
   TOperandNode(Operand op) or
-  TVariableNode(Variable var)
+  TVariableNode(Variable var) or
+  // `FieldNodes` are used as targets of certain `storeStep`s to implement handling of stores to
+  // nested structs.
+  TFieldNode(FieldAddressInstruction field) or
+  // We insert a synthetic `PostArraySuppressionNode` to replace `ArrayContent` with `FieldContent` in
+  // certain cases. This nodes exists so that we can target it in `suppressArrayRead`, and immediately
+  // transition to `fieldStoreStepAfterArraySuppression`.
+  TPostArraySuppressionNode(WriteSideEffectInstruction write) {
+    exists(getFieldNodeForFieldInstruction(write.getDestinationAddress()))
+  }
 
 /**
  * A node in a data flow graph.
@@ -168,6 +177,97 @@ class OperandNode extends Node, TOperandNode {
   override Location getLocation() { result = op.getLocation() }
 
   override string toString() { result = this.getOperand().toString() }
+}
+
+private Instruction skipOneCopyInstructionRec(CopyInstruction copy) {
+  copy.getSourceValue() = result and not result instanceof CopyInstruction
+  or
+  result = skipOneCopyInstructionRec(copy.getSourceValue())
+}
+
+private Instruction skipCopyInstructions(Instruction instr) {
+  not result instanceof CopyInstruction and result = instr
+  or
+  result = skipOneCopyInstructionRec(instr)
+}
+
+/**
+ * INTERNAL: do not use. Gets the `FieldNode` belonging to the `FieldAddressInstruction` instr
+ * (skipping past `CopyInstruction`s).
+ */
+FieldNode getFieldNodeForFieldInstruction(Instruction instr) {
+  result.getFieldInstruction() = skipCopyInstructions(instr)
+}
+
+/**
+ * INTERNAL: do not use. A `FieldNode` represents the state of an object after modifying one
+ * of its fields.
+ */
+class FieldNode extends Node, TFieldNode, PartialDefinitionNode {
+  FieldAddressInstruction field;
+
+  FieldNode() { this = TFieldNode(field) }
+
+  Field getField() { result = getFieldInstruction().getField() }
+
+  FieldAddressInstruction getFieldInstruction() { result = field }
+
+  FieldNode getObjectNode() {
+    exists(FieldAddressInstruction parent |
+      parent = skipCopyInstructions(field.getObjectAddress()) and
+      result = TFieldNode(parent)
+    )
+  }
+
+  FieldNode getNextNode() { result.getObjectNode() = this }
+
+  Class getDeclaringType() { result = getField().getDeclaringType() }
+
+  override Node getPreUpdateNode() {
+    result = this.getObjectNode()
+    or
+    not exists(this.getObjectNode()) and
+    exists(ChiInstruction chi, AddressOperand addressOperand |
+      getFieldNodeForFieldInstruction(addressOperand.getDef()) = this.getNextNode*() and
+      chi.getPartial().getAnOperand() = addressOperand and
+      result.asOperand() = chi.getTotalOperand()
+    )
+  }
+
+  override Expr getDefinedExpr() {
+    result = field.getObjectAddress().getUnconvertedResultExpression()
+  }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override Function getFunction() { result = field.getEnclosingFunction() }
+
+  override IRType getType() { result = field.getResultIRType() }
+
+  override Location getLocation() { result = field.getLocation() }
+
+  override string toString() { result = this.getField().toString() }
+}
+
+/**
+ * INTERNAL: do not use. A node which is used during conversion from `ArrayContent` to `FieldContent`.
+ */
+class PostArraySuppressionNode extends Node, TPostArraySuppressionNode {
+  WriteSideEffectInstruction write;
+
+  PostArraySuppressionNode() { this = TPostArraySuppressionNode(write) }
+
+  WriteSideEffectInstruction getWriteSideEffect() { result = write }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override Function getFunction() { result = write.getEnclosingFunction() }
+
+  override IRType getType() { result = write.getResultIRType() }
+
+  override Location getLocation() { result = write.getLocation() }
+
+  override string toString() { result = write.toString() }
 }
 
 /**
@@ -333,35 +433,6 @@ abstract private class PartialDefinitionNode extends PostUpdateNode {
   abstract Expr getDefinedExpr();
 }
 
-private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
-  override ChiInstruction instr;
-  StoreInstruction store;
-
-  ExplicitFieldStoreQualifierNode() {
-    not instr.isResultConflated() and
-    instr.getPartial() = store and
-    (
-      instr.getUpdatedInterval(_, _) or
-      store.getDestinationAddress() instanceof FieldAddressInstruction
-    )
-  }
-
-  // By using an operand as the result of this predicate we avoid the dataflow inconsistency errors
-  // caused by having multiple nodes sharing the same pre update node. This inconsistency error can cause
-  // a tuple explosion in the big step dataflow relation since it can make many nodes be the entry node
-  // into a big step.
-  override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
-
-  override Expr getDefinedExpr() {
-    result =
-      store
-          .getDestinationAddress()
-          .(FieldAddressInstruction)
-          .getObjectAddress()
-          .getUnconvertedResultExpression()
-  }
-}
-
 /**
  * Not every store instruction generates a chi instruction that we can attach a PostUpdateNode to.
  * For instance, an update to a field of a struct containing only one field. For these cases we
@@ -386,35 +457,6 @@ private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNod
           .(FieldAddressInstruction)
           .getObjectAddress()
           .getUnconvertedResultExpression()
-  }
-}
-
-private FieldAddressInstruction getFieldInstruction(Instruction instr) {
-  result = instr or
-  result = instr.(CopyValueInstruction).getUnary()
-}
-
-/**
- * The target of a `fieldStoreStepAfterArraySuppression` store step, which is used to convert
- * an `ArrayContent` to a `FieldContent` when the `BufferMayWriteSideEffect` instruction stores
- * into a field. See the QLDoc for `suppressArrayRead` for an example of where such a conversion
- * is inserted.
- */
-private class BufferMayWriteSideEffectFieldStoreQualifierNode extends PartialDefinitionNode {
-  override ChiInstruction instr;
-  BufferMayWriteSideEffectInstruction write;
-  FieldAddressInstruction field;
-
-  BufferMayWriteSideEffectFieldStoreQualifierNode() {
-    not instr.isResultConflated() and
-    instr.getPartial() = write and
-    field = getFieldInstruction(write.getDestinationAddress())
-  }
-
-  override Node getPreUpdateNode() { result.asOperand() = instr.getTotalOperand() }
-
-  override Expr getDefinedExpr() {
-    result = field.getObjectAddress().getUnconvertedResultExpression()
   }
 }
 
