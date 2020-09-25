@@ -124,9 +124,7 @@ class FuncDef extends @funcdef, StmtParent, ExprParent {
    */
   Parameter getParameter(int i) { result.isParameterOf(this, i) }
 
-  /**
-   * Gets a parameter of this function.
-   */
+  /** Gets a parameter of this function. */
   Parameter getAParameter() { result.getFunction() = this }
 
   /**
