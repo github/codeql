@@ -309,7 +309,7 @@ deprecated class UninitializedNode extends Node {
  * This class exists to match the interface used by Java. There are currently no non-abstract
  * classes that extend it. When we implement field flow, we can revisit this.
  */
-abstract class PostUpdateNode extends InstructionNode {
+abstract class PostUpdateNode extends Node {
   /**
    * Gets the node before the state update.
    */
@@ -368,7 +368,7 @@ private class ExplicitFieldStoreQualifierNode extends PartialDefinitionNode {
  * attach the PostUpdateNode to the store instruction. There's no obvious pre update node for this case
  * (as the entire memory is updated), so `getPreUpdateNode` is implemented as `none()`.
  */
-private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNode {
+private class ExplicitSingleFieldStoreQualifierNode extends PartialDefinitionNode, InstructionNode {
   override StoreInstruction instr;
 
   ExplicitSingleFieldStoreQualifierNode() {
@@ -422,7 +422,7 @@ private class BufferMayWriteSideEffectFieldStoreQualifierNode extends PartialDef
  * The `PostUpdateNode` that is the target of a `arrayStoreStepChi` store step. The overriden
  * `ChiInstruction` corresponds to the instruction represented by `node2` in `arrayStoreStepChi`.
  */
-private class ArrayStoreNode extends PartialDefinitionNode {
+private class ArrayStoreNode extends PartialDefinitionNode, InstructionNode {
   override ChiInstruction instr;
   PointerAddInstruction add;
 
@@ -443,7 +443,7 @@ private class ArrayStoreNode extends PartialDefinitionNode {
  * The `PostUpdateNode` that is the target of a `arrayStoreStepChi` store step. The overriden
  * `ChiInstruction` corresponds to the instruction represented by `node2` in `arrayStoreStepChi`.
  */
-private class PointerStoreNode extends PostUpdateNode {
+private class PointerStoreNode extends PostUpdateNode, InstructionNode {
   override ChiInstruction instr;
 
   PointerStoreNode() {
