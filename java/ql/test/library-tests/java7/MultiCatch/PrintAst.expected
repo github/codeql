@@ -21,7 +21,7 @@ MultiCatch.java:
 #   14|                 0: [ClassInstanceExpr] new SQLException(...)
 #   14|                   -3: [TypeAccess] SQLException
 #   15|           0: [CatchClause] stmt
-#-----|             0: (Local Variable Declaration)
+#-----|             0: (Single Local Variable Declaration)
 #   15|               0: [UnionTypeAccess] ...|...
 #   15|                 0: [TypeAccess] IOException
 #   15|                 1: [TypeAccess] SQLException
@@ -56,7 +56,7 @@ MultiCatch.java:
 #   30|               0: [ClassInstanceExpr] new Exception(...)
 #   30|                 -3: [TypeAccess] Exception
 #   31|           0: [CatchClause] stmt
-#-----|             0: (Local Variable Declaration)
+#-----|             0: (Single Local Variable Declaration)
 #   31|               0: [UnionTypeAccess] ...|...
 #   31|                 0: [TypeAccess] IOException
 #   31|                 1: [TypeAccess] SQLException
@@ -71,7 +71,7 @@ MultiCatch.java:
 #   39|               0: [ClassInstanceExpr] new IOException(...)
 #   39|                 -3: [TypeAccess] IOException
 #   40|           0: [CatchClause] stmt
-#-----|             0: (Local Variable Declaration)
+#-----|             0: (Single Local Variable Declaration)
 #   40|               0: [TypeAccess] Exception
 #   40|               1: [LocalVariableDeclExpr] e
 #   41|             1: [BlockStmt] stmt

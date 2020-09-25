@@ -87,3 +87,41 @@ A.java:
 #   42|       5: [BlockStmt] stmt
 #   42|         0: [ReturnStmt] stmt
 #   42|           0: [StringLiteral] "c"
+#   44|     9: [Method] varDecls
+#   44|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#   44|         0: [Parameter] things
+#   44|           0: [ArrayTypeAccess] ...[]
+#   44|             0: [TypeAccess] Object
+#   44|       5: [BlockStmt] stmt
+#   45|         0: [TryStmt] stmt
+#   45|           -1: [BlockStmt] stmt
+#   46|             0: [EnhancedForStmt] stmt
+#-----|               0: (Single Local Variable Declaration)
+#   46|                 0: [TypeAccess] Object
+#   46|                 1: [LocalVariableDeclExpr] thing
+#   46|               1: [VarAccess] things
+#   46|               2: [BlockStmt] stmt
+#   47|                 0: [IfStmt] stmt
+#   47|                   0: [InstanceOfExpr] ...instanceof...
+#   47|                     0: [VarAccess] thing
+#   47|                     1: [TypeAccess] Integer
+#   47|                   1: [BlockStmt] stmt
+#   48|                     0: [ReturnStmt] stmt
+#   50|                 1: [IfStmt] stmt
+#   50|                   0: [InstanceOfExpr] ...instanceof...
+#-----|                     0: (Single Local Variable Declaration)
+#   50|                       0: [TypeAccess] String
+#   50|                       1: [LocalVariableDeclExpr] s
+#   50|                         0: [VarAccess] thing
+#   50|                   1: [BlockStmt] stmt
+#   51|                     0: [ThrowStmt] stmt
+#   51|                       0: [ClassInstanceExpr] new RuntimeException(...)
+#   51|                         -3: [TypeAccess] RuntimeException
+#   51|                         0: [VarAccess] s
+#   55|           0: [CatchClause] stmt
+#-----|             0: (Single Local Variable Declaration)
+#   55|               0: [TypeAccess] RuntimeException
+#   55|               1: [LocalVariableDeclExpr] rte
+#   55|             1: [BlockStmt] stmt
+#   56|               0: [ReturnStmt] stmt

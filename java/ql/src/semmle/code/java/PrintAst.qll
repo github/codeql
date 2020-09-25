@@ -115,7 +115,7 @@ private newtype TPrintAstNode =
   TElementNode(Element el) { shouldPrint(el, _) } or
   TForInitNode(ForStmt fs) { shouldPrint(fs, _) and exists(fs.getAnInit()) } or
   TLocalVarDeclNode(LocalVariableDeclExpr lvde) {
-    shouldPrint(lvde, _) and lvde.getParent() instanceof LocalVarDeclParent
+    shouldPrint(lvde, _) and lvde.getParent() instanceof SingleLocalVarDeclParent
   } or
   TAnnotationsNode(Annotatable ann) {
     shouldPrint(ann, _) and ann.hasAnnotation() and not partOfAnnotation(ann)
@@ -266,13 +266,11 @@ final class AnnotationPartNode extends ExprStmtNode {
   }
 
   private Expr getAnAnnotationChild() {
-    (
-      result = element.(Annotation).getValue(_)
-      or
-      result = element.(ArrayInit).getAnInit()
-      or
-      result = element.(ArrayInit).(Annotatable).getAnAnnotation()
-    )
+    result = element.(Annotation).getValue(_)
+    or
+    result = element.(ArrayInit).getAnInit()
+    or
+    result = element.(ArrayInit).(Annotatable).getAnAnnotation()
   }
 }
 
@@ -334,11 +332,11 @@ final class ForStmtNode extends ExprStmtNode {
 }
 
 /**
- * An element that can be the parent of a `LocalVariableDeclExpr` for which we want
+ * An element that can be the parent of up to one `LocalVariableDeclExpr` for which we want
  * to use a synthetic node to hold the variable declaration and its `TypeAccess`.
  */
-private class LocalVarDeclParent extends ExprOrStmt {
-  LocalVarDeclParent() {
+private class SingleLocalVarDeclParent extends ExprOrStmt {
+  SingleLocalVarDeclParent() {
     this instanceof EnhancedForStmt or
     this instanceof CatchClause or
     this.(InstanceOfExpr).isPattern()
@@ -352,17 +350,16 @@ private class LocalVarDeclParent extends ExprOrStmt {
 }
 
 /**
- * A node representing an element that can be the parent of a `LocalVariableDeclExpr` for which we
+ * A node representing an element that can be the parent of up to one `LocalVariableDeclExpr` for which we
  * want to use a synthetic node to variable declaration and its type access.
  *
- * Excludes:
- * - `LocalVariableDeclStmt` because a synthetic node isn't needed
- * - `ForStmt` becasue a different synthetic node is already used
+ * Excludes `LocalVariableDeclStmt` and `ForStmt`, as they can hold multiple declarations.
+ * For these cases, either a synthetic node is not necassary or a different synthetic node is used.
  */
-final class LocalVarDeclParentNode extends ExprStmtNode {
-  LocalVarDeclParent lvdp;
+final class SingleLocalVarDeclParentNode extends ExprStmtNode {
+  SingleLocalVarDeclParent lvdp;
 
-  LocalVarDeclParentNode() { lvdp = element }
+  SingleLocalVarDeclParentNode() { lvdp = element }
 
   override PrintAstNode getChild(int childIndex) {
     result = super.getChild(childIndex) and
@@ -560,7 +557,7 @@ final class LocalVarDeclSynthNode extends PrintAstNode, TLocalVarDeclNode {
 
   LocalVarDeclSynthNode() { this = TLocalVarDeclNode(lvde) }
 
-  override string toString() { result = "(Local Variable Declaration)" }
+  override string toString() { result = "(Single Local Variable Declaration)" }
 
   override ElementNode getChild(int childIndex) {
     childIndex = 0 and

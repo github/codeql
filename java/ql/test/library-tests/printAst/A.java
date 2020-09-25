@@ -40,4 +40,20 @@ class A {
          @Ann2(7)
        })
    String doSomethingElse() { return "c"; }
+
+   void varDecls(Object[] things) {
+       try {
+           for(Object thing : things) {
+               if (thing instanceof Integer) {
+                   return;
+               }
+               if (thing instanceof String s) {
+                   throw new RuntimeException(s);
+               }
+           }
+       }
+       catch (RuntimeException rte) {
+           return;
+       }
+   }
 }
