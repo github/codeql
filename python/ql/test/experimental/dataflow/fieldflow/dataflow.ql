@@ -2,7 +2,6 @@
  * @kind path-problem
  */
 
-import python
 import experimental.dataflow.testConfig
 import DataFlow::PathGraph
 
