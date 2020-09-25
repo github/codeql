@@ -328,6 +328,36 @@ module ClientRequest {
   }
 
   /**
+   * Classes for modelling the url request library `needle`.
+   */
+  private module Needle {
+    /**
+     * A model of a URL request made using `require("needle")(...)`.
+     */
+    class PromisedNeedleRequest extends ClientRequest::Range {
+      DataFlow::Node url;
+
+      PromisedNeedleRequest() { this = DataFlow::moduleImport("needle").getACall() }
+
+      override DataFlow::Node getUrl() { result = getArgument(1) }
+
+      override DataFlow::Node getHost() { none() }
+
+      override DataFlow::Node getADataNode() {
+        result = getOptionArgument([2, 3], "headers")
+        or
+        result = getArgument(2)
+      }
+
+      override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
+        responseType = "fetch.response" and
+        promise = true and
+        result = this
+      }
+    }
+  }
+
+  /**
    * A model of a URL request made using the `got` library.
    */
   class GotUrlRequest extends ClientRequest::Range {

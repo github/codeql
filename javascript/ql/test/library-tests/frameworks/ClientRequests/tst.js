@@ -222,3 +222,9 @@ const net = require("net");
 
     data.socket.write("foobar");
 })();
+
+const needle = require("needle");
+(function () {
+    const options = { headers: { 'X-Custom-Header': 'Bumbaway atuna' } };
+    needle("POST", "http://example.org/foo/bar", "MyData", options).then(function(resp) { console.log(resp.body) });
+})();
