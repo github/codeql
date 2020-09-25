@@ -67,17 +67,17 @@ nodes
 | test.py:56:10:56:39 | ControlFlowNode for fields_with_local_flow() | semmle.label | ControlFlowNode for fields_with_local_flow() |
 | test.py:56:33:56:38 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 #select
-| examples.py:28:6:28:14 | ControlFlowNode for Attribute | examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:28:6:28:14 | ControlFlowNode for Attribute | <message> |
-| examples.py:38:6:38:14 | ControlFlowNode for Attribute | examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:38:6:38:14 | ControlFlowNode for Attribute | <message> |
-| examples.py:38:6:38:14 | ControlFlowNode for Attribute | examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:38:6:38:14 | ControlFlowNode for Attribute | <message> |
-| examples.py:42:6:42:12 | ControlFlowNode for Attribute | examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:42:6:42:12 | ControlFlowNode for Attribute | <message> |
-| examples.py:42:6:42:12 | ControlFlowNode for Attribute | examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:42:6:42:12 | ControlFlowNode for Attribute | <message> |
-| examples.py:42:6:42:12 | ControlFlowNode for Attribute | examples.py:41:13:41:18 | ControlFlowNode for SOURCE | examples.py:42:6:42:12 | ControlFlowNode for Attribute | <message> |
-| examples.py:50:6:50:35 | ControlFlowNode for fields_with_local_flow() | examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:50:6:50:35 | ControlFlowNode for fields_with_local_flow() | <message> |
-| examples.py:50:6:50:35 | ControlFlowNode for fields_with_local_flow() | examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:50:6:50:35 | ControlFlowNode for fields_with_local_flow() | <message> |
-| examples.py:50:6:50:35 | ControlFlowNode for fields_with_local_flow() | examples.py:41:13:41:18 | ControlFlowNode for SOURCE | examples.py:50:6:50:35 | ControlFlowNode for fields_with_local_flow() | <message> |
-| examples.py:50:6:50:35 | ControlFlowNode for fields_with_local_flow() | examples.py:50:29:50:34 | ControlFlowNode for SOURCE | examples.py:50:6:50:35 | ControlFlowNode for fields_with_local_flow() | <message> |
-| test.py:30:10:30:18 | ControlFlowNode for Attribute | test.py:29:19:29:24 | ControlFlowNode for SOURCE | test.py:30:10:30:18 | ControlFlowNode for Attribute | <message> |
-| test.py:41:10:41:18 | ControlFlowNode for Attribute | test.py:34:9:34:14 | ControlFlowNode for SOURCE | test.py:41:10:41:18 | ControlFlowNode for Attribute | <message> |
-| test.py:46:10:46:16 | ControlFlowNode for Attribute | test.py:45:17:45:22 | ControlFlowNode for SOURCE | test.py:46:10:46:16 | ControlFlowNode for Attribute | <message> |
-| test.py:56:10:56:39 | ControlFlowNode for fields_with_local_flow() | test.py:56:33:56:38 | ControlFlowNode for SOURCE | test.py:56:10:56:39 | ControlFlowNode for fields_with_local_flow() | <message> |
+| examples.py:28:6:28:14 | ControlFlowNode for Attribute | examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:28:6:28:14 | ControlFlowNode for Attribute | Flow found |
+| examples.py:38:6:38:14 | ControlFlowNode for Attribute | examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:38:6:38:14 | ControlFlowNode for Attribute | Flow found |
+| examples.py:38:6:38:14 | ControlFlowNode for Attribute | examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:38:6:38:14 | ControlFlowNode for Attribute | Flow found |
+| examples.py:42:6:42:12 | ControlFlowNode for Attribute | examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:42:6:42:12 | ControlFlowNode for Attribute | Flow found |
+| examples.py:42:6:42:12 | ControlFlowNode for Attribute | examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:42:6:42:12 | ControlFlowNode for Attribute | Flow found |
+| examples.py:42:6:42:12 | ControlFlowNode for Attribute | examples.py:41:13:41:18 | ControlFlowNode for SOURCE | examples.py:42:6:42:12 | ControlFlowNode for Attribute | Flow found |
+| examples.py:50:6:50:35 | ControlFlowNode for fields_with_local_flow() | examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:50:6:50:35 | ControlFlowNode for fields_with_local_flow() | Flow found |
+| examples.py:50:6:50:35 | ControlFlowNode for fields_with_local_flow() | examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:50:6:50:35 | ControlFlowNode for fields_with_local_flow() | Flow found |
+| examples.py:50:6:50:35 | ControlFlowNode for fields_with_local_flow() | examples.py:41:13:41:18 | ControlFlowNode for SOURCE | examples.py:50:6:50:35 | ControlFlowNode for fields_with_local_flow() | Flow found |
+| examples.py:50:6:50:35 | ControlFlowNode for fields_with_local_flow() | examples.py:50:29:50:34 | ControlFlowNode for SOURCE | examples.py:50:6:50:35 | ControlFlowNode for fields_with_local_flow() | Flow found |
+| test.py:30:10:30:18 | ControlFlowNode for Attribute | test.py:29:19:29:24 | ControlFlowNode for SOURCE | test.py:30:10:30:18 | ControlFlowNode for Attribute | Flow found |
+| test.py:41:10:41:18 | ControlFlowNode for Attribute | test.py:34:9:34:14 | ControlFlowNode for SOURCE | test.py:41:10:41:18 | ControlFlowNode for Attribute | Flow found |
+| test.py:46:10:46:16 | ControlFlowNode for Attribute | test.py:45:17:45:22 | ControlFlowNode for SOURCE | test.py:46:10:46:16 | ControlFlowNode for Attribute | Flow found |
+| test.py:56:10:56:39 | ControlFlowNode for fields_with_local_flow() | test.py:56:33:56:38 | ControlFlowNode for SOURCE | test.py:56:10:56:39 | ControlFlowNode for fields_with_local_flow() | Flow found |
