@@ -112,8 +112,6 @@ private module PartialDefinitions {
   abstract class PartialDefinition extends Expr {
     ControlFlowNode node;
 
-    PartialDefinition() { not this instanceof Conversion }
-
     abstract deprecated predicate partiallyDefines(Variable v);
 
     abstract deprecated predicate partiallyDefinesThis(ThisExpr e);
@@ -161,6 +159,7 @@ private module PartialDefinitions {
 
     IteratorPartialDefinition() {
       exists(Expr convertedInner |
+        not this instanceof Conversion and
         valueToUpdate(convertedInner, this.getFullyConverted(), node) and
         innerDefinedExpr = convertedInner.getUnconverted() and
         (
@@ -212,6 +211,7 @@ private module PartialDefinitions {
     Expr innerDefinedExpr;
 
     VariablePartialDefinition() {
+      not this instanceof Conversion and
       exists(Expr convertedInner |
         valueToUpdate(convertedInner, this.getFullyConverted(), node) and
         innerDefinedExpr = convertedInner.getUnconverted()
