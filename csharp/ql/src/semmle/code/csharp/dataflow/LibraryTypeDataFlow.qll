@@ -34,6 +34,8 @@ private newtype TAccessPath =
     or
     tail = AccessPath::singleton(_) and
     head instanceof ElementContent
+    or
+    tail = AccessPath::element()
   }
 
 /** An access path. */
@@ -1658,7 +1660,6 @@ class SystemThreadingTasksTaskFlow extends LibraryTypeDataFlow, SystemThreadingT
     (
       m.hasName("ContinueWith") and
       sourceAp = AccessPath::empty() and
-      sinkAp = AccessPath::empty() and
       (
         // flow from supplied state to supplied delegate
         exists(ConstructedDelegateType delegate, int i, int j, int k |
@@ -1670,7 +1671,8 @@ class SystemThreadingTasksTaskFlow extends LibraryTypeDataFlow, SystemThreadingT
           ) and
           delegate.getTypeArgument(k) instanceof ObjectType and
           source = TCallableFlowSourceArg(i) and
-          sink = getDelegateFlowSinkArg(m, j, k)
+          sink = getDelegateFlowSinkArg(m, j, k) and
+          sinkAp = AccessPath::empty()
         )
         or
         // flow out of supplied function
@@ -1678,36 +1680,35 @@ class SystemThreadingTasksTaskFlow extends LibraryTypeDataFlow, SystemThreadingT
           m.getParameter(i).getType() = func and
           func.getUnboundGeneric() instanceof SystemFuncDelegateType and
           source = getDelegateFlowSourceArg(m, i) and
-          sink = TCallableFlowSinkReturn()
+          sink = TCallableFlowSinkReturn() and
+          sinkAp = AccessPath::property(any(SystemThreadingTasksTaskTClass c).getResultProperty())
         )
       )
       or
       m.hasName("FromResult") and
+      source = TCallableFlowSourceArg(0) and
       sourceAp = AccessPath::empty() and
-      sinkAp = AccessPath::empty() and
-      (
-        source = TCallableFlowSourceArg(0) and
-        sink = TCallableFlowSinkReturn()
-      )
+      sink = TCallableFlowSinkReturn() and
+      sinkAp = AccessPath::property(any(SystemThreadingTasksTaskTClass c).getResultProperty())
       or
       m.hasName("Run") and
+      m.getReturnType() = any(SystemThreadingTasksTaskTClass c).getAConstructedGeneric() and
+      m.(UnboundGenericMethod).getNumberOfTypeParameters() = 1 and
+      source = TCallableFlowSourceDelegateArg(0) and
       sourceAp = AccessPath::empty() and
-      sinkAp = AccessPath::empty() and
-      (
-        m.getReturnType() = any(SystemThreadingTasksTaskTClass c).getAConstructedGeneric() and
-        m.(UnboundGenericMethod).getNumberOfTypeParameters() = 1 and
-        source = TCallableFlowSourceDelegateArg(0) and
-        sink = TCallableFlowSinkReturn()
-      )
+      sink = TCallableFlowSinkReturn() and
+      sinkAp = AccessPath::property(any(SystemThreadingTasksTaskTClass c).getResultProperty())
       or
       m.getName().regexpMatch("WhenAll|WhenAny") and
-      sinkAp = AccessPath::empty() and
-      (
-        m.getReturnType() = any(SystemThreadingTasksTaskTClass c).getAConstructedGeneric() and
-        m.(UnboundGenericMethod).getNumberOfTypeParameters() = 1 and
-        source = getFlowSourceArg(m, _, sourceAp) and
-        sink = TCallableFlowSinkReturn()
-      )
+      m.getReturnType() = any(SystemThreadingTasksTaskTClass c).getAConstructedGeneric() and
+      m.(UnboundGenericMethod).getNumberOfTypeParameters() = 1 and
+      source = getFlowSourceArg(m, _, _) and
+      sourceAp = AccessPath::properties(any(SystemThreadingTasksTaskTClass c).getResultProperty()) and
+      sink = TCallableFlowSinkReturn() and
+      sinkAp =
+        AccessPath::cons(any(PropertyContent c |
+            c.getProperty() = any(SystemThreadingTasksTaskTClass tc).getResultProperty()
+          ), AccessPath::element())
     )
   }
 }
@@ -1717,32 +1718,38 @@ class SystemThreadingTasksTaskTFlow extends LibraryTypeDataFlow {
   SystemThreadingTasksTaskTFlow() { this instanceof SystemThreadingTasksTaskTClass }
 
   override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationCallable c, boolean preservesValue
   ) {
     (
-      constructorFlow(source, sink, c)
+      constructorFlow(source, sourceAp, sink, sinkAp, c)
       or
-      methodFlow(source, sink, c)
-      or
-      exists(Property p |
-        propertyFlow(p) and
-        source = TCallableFlowSourceQualifier() and
-        sink = TCallableFlowSinkReturn() and
-        c = p.getGetter()
-      )
+      methodFlow(source, sourceAp, sink, sinkAp, c)
     ) and
     preservesValue = true
+    or
+    exists(Property p |
+      p = this.(SystemThreadingTasksTaskTClass).getResultProperty() and
+      source = TCallableFlowSourceQualifier() and
+      sourceAp = AccessPath::empty() and
+      sink = TCallableFlowSinkReturn() and
+      sinkAp = AccessPath::empty() and
+      c = p.getGetter() and
+      preservesValue = false
+    )
   }
 
-  private predicate constructorFlow(CallableFlowSource source, CallableFlowSink sink, Constructor c) {
+  private predicate constructorFlow(
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    Constructor c
+  ) {
     // flow from supplied function into constructed Task
     c.getDeclaringType() = this and
-    (
-      c.getParameter(0).getType() = any(SystemFuncDelegateType t).getAConstructedGeneric() and
-      source = TCallableFlowSourceDelegateArg(0) and
-      sink = TCallableFlowSinkReturn()
-    )
+    c.getParameter(0).getType() = any(SystemFuncDelegateType t).getAConstructedGeneric() and
+    source = TCallableFlowSourceDelegateArg(0) and
+    sourceAp = AccessPath::empty() and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp = AccessPath::property(this.(SystemThreadingTasksTaskTClass).getResultProperty())
     or
     // flow from supplied state to supplied delegate
     c.getDeclaringType() = this and
@@ -1752,12 +1759,15 @@ class SystemThreadingTasksTaskTFlow extends LibraryTypeDataFlow {
       func.getUnboundGeneric().(SystemFuncDelegateType).getNumberOfTypeParameters() = 2 and
       func.getTypeArgument(0) instanceof ObjectType and
       source = TCallableFlowSourceArg(1) and
-      sink = getDelegateFlowSinkArg(c, 0, 0)
+      sourceAp = AccessPath::empty() and
+      sink = getDelegateFlowSinkArg(c, 0, 0) and
+      sinkAp = AccessPath::empty()
     )
   }
 
   private predicate methodFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationMethod m
   ) {
     m.getDeclaringType() = this and
     m.hasName("ContinueWith") and
@@ -1774,13 +1784,17 @@ class SystemThreadingTasksTaskTFlow extends LibraryTypeDataFlow {
           delegate.getTypeArgument(j) instanceof ObjectType and
           m.getParameter(k).getType() instanceof ObjectType and
           source = TCallableFlowSourceArg(k) and
-          sink = getDelegateFlowSinkArg(m, i, j)
+          sourceAp = AccessPath::empty() and
+          sink = getDelegateFlowSinkArg(m, i, j) and
+          sinkAp = AccessPath::empty()
         )
         or
         // flow from this task to supplied delegate
         delegate.getTypeArgument(j) = this and
         source = TCallableFlowSourceQualifier() and
-        sink = getDelegateFlowSinkArg(m, i, j)
+        sourceAp = AccessPath::empty() and
+        sink = getDelegateFlowSinkArg(m, i, j) and
+        sinkAp = AccessPath::empty()
       )
       or
       // flow out of supplied function
@@ -1788,13 +1802,11 @@ class SystemThreadingTasksTaskTFlow extends LibraryTypeDataFlow {
         m.getParameter(i).getType() = func and
         func.getUnboundGeneric() instanceof SystemFuncDelegateType and
         source = getDelegateFlowSourceArg(m, i) and
-        sink = TCallableFlowSinkReturn()
+        sourceAp = AccessPath::empty() and
+        sink = TCallableFlowSinkReturn() and
+        sinkAp = AccessPath::property(this.(SystemThreadingTasksTaskTClass).getResultProperty())
       )
     )
-  }
-
-  private predicate propertyFlow(Property p) {
-    p = this.(SystemThreadingTasksTaskTClass).getResultProperty()
   }
 }
 
@@ -1806,15 +1818,16 @@ class SystemThreadingTasksFactoryFlow extends LibraryTypeDataFlow {
   }
 
   override predicate callableFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationCallable c,
-    boolean preservesValue
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationCallable c, boolean preservesValue
   ) {
-    methodFlow(source, sink, c) and
+    methodFlow(source, sourceAp, sink, sinkAp, c) and
     preservesValue = true
   }
 
   private predicate methodFlow(
-    CallableFlowSource source, CallableFlowSink sink, SourceDeclarationMethod m
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationMethod m
   ) {
     m.getDeclaringType() = this and
     (
@@ -1831,7 +1844,9 @@ class SystemThreadingTasksFactoryFlow extends LibraryTypeDataFlow {
             delegate.getUnboundGeneric() instanceof SystemFuncDelegateType
           ) and
           source = TCallableFlowSourceArg(i) and
-          sink = getDelegateFlowSinkArg(m, j, k)
+          sourceAp = AccessPath::empty() and
+          sink = getDelegateFlowSinkArg(m, j, k) and
+          sinkAp = AccessPath::empty()
         )
         or
         // flow out of supplied function
@@ -1839,7 +1854,9 @@ class SystemThreadingTasksFactoryFlow extends LibraryTypeDataFlow {
           m.getParameter(i).getType() = func and
           func.getUnboundGeneric() instanceof SystemFuncDelegateType and
           source = getDelegateFlowSourceArg(m, i) and
-          sink = TCallableFlowSinkReturn()
+          sourceAp = AccessPath::empty() and
+          sink = TCallableFlowSinkReturn() and
+          sinkAp = AccessPath::property(any(SystemThreadingTasksTaskTClass c).getResultProperty())
         )
       )
       or
@@ -1855,7 +1872,9 @@ class SystemThreadingTasksFactoryFlow extends LibraryTypeDataFlow {
           ) and
           delegate.getTypeArgument(k) instanceof ObjectType and
           source = TCallableFlowSourceArg(i) and
-          sink = getDelegateFlowSinkArg(m, j, k)
+          sourceAp = AccessPath::empty() and
+          sink = getDelegateFlowSinkArg(m, j, k) and
+          sinkAp = AccessPath::empty()
         )
         or
         // flow out of supplied function
@@ -1863,7 +1882,9 @@ class SystemThreadingTasksFactoryFlow extends LibraryTypeDataFlow {
           m.getParameter(i).getType() = func and
           func.getUnboundGeneric() instanceof SystemFuncDelegateType and
           source = getDelegateFlowSourceArg(m, i) and
-          sink = TCallableFlowSinkReturn()
+          sourceAp = AccessPath::empty() and
+          sink = TCallableFlowSinkReturn() and
+          sinkAp = AccessPath::property(any(SystemThreadingTasksTaskTClass c).getResultProperty())
         )
       )
     )

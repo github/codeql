@@ -180,8 +180,13 @@ edges
 | GlobalDataFlow.cs:217:22:217:28 | access to local variable tainted [[]] : String | GlobalDataFlow.cs:324:32:324:42 | sinkParam11 : String |
 | GlobalDataFlow.cs:217:22:217:49 | call to method Select [[]] : String | GlobalDataFlow.cs:217:22:217:57 | call to method First : String |
 | GlobalDataFlow.cs:217:22:217:57 | call to method First : String | GlobalDataFlow.cs:218:15:218:20 | access to local variable sink26 |
-| GlobalDataFlow.cs:238:35:238:48 | "taint source" : String | GlobalDataFlow.cs:240:15:240:20 | access to local variable sink41 |
-| GlobalDataFlow.cs:238:35:238:48 | "taint source" : String | GlobalDataFlow.cs:242:15:242:20 | access to local variable sink42 |
+| GlobalDataFlow.cs:238:20:238:49 | call to method Run [Result] : String | GlobalDataFlow.cs:239:22:239:25 | access to local variable task [Result] : String |
+| GlobalDataFlow.cs:238:20:238:49 | call to method Run [Result] : String | GlobalDataFlow.cs:241:28:241:31 | access to local variable task [Result] : String |
+| GlobalDataFlow.cs:238:35:238:48 | "taint source" : String | GlobalDataFlow.cs:238:20:238:49 | call to method Run [Result] : String |
+| GlobalDataFlow.cs:239:22:239:25 | access to local variable task [Result] : String | GlobalDataFlow.cs:239:22:239:32 | access to property Result : String |
+| GlobalDataFlow.cs:239:22:239:32 | access to property Result : String | GlobalDataFlow.cs:240:15:240:20 | access to local variable sink41 |
+| GlobalDataFlow.cs:241:22:241:31 | await ... : String | GlobalDataFlow.cs:242:15:242:20 | access to local variable sink42 |
+| GlobalDataFlow.cs:241:28:241:31 | access to local variable task [Result] : String | GlobalDataFlow.cs:241:22:241:31 | await ... : String |
 | GlobalDataFlow.cs:254:26:254:35 | sinkParam0 : String | GlobalDataFlow.cs:256:16:256:25 | access to parameter sinkParam0 : String |
 | GlobalDataFlow.cs:254:26:254:35 | sinkParam0 : String | GlobalDataFlow.cs:257:15:257:24 | access to parameter sinkParam0 |
 | GlobalDataFlow.cs:256:16:256:25 | access to parameter sinkParam0 : String | GlobalDataFlow.cs:254:26:254:35 | sinkParam0 : String |
@@ -367,8 +372,13 @@ nodes
 | GlobalDataFlow.cs:217:22:217:49 | call to method Select [[]] : String | semmle.label | call to method Select [[]] : String |
 | GlobalDataFlow.cs:217:22:217:57 | call to method First : String | semmle.label | call to method First : String |
 | GlobalDataFlow.cs:218:15:218:20 | access to local variable sink26 | semmle.label | access to local variable sink26 |
+| GlobalDataFlow.cs:238:20:238:49 | call to method Run [Result] : String | semmle.label | call to method Run [Result] : String |
 | GlobalDataFlow.cs:238:35:238:48 | "taint source" : String | semmle.label | "taint source" : String |
+| GlobalDataFlow.cs:239:22:239:25 | access to local variable task [Result] : String | semmle.label | access to local variable task [Result] : String |
+| GlobalDataFlow.cs:239:22:239:32 | access to property Result : String | semmle.label | access to property Result : String |
 | GlobalDataFlow.cs:240:15:240:20 | access to local variable sink41 | semmle.label | access to local variable sink41 |
+| GlobalDataFlow.cs:241:22:241:31 | await ... : String | semmle.label | await ... : String |
+| GlobalDataFlow.cs:241:28:241:31 | access to local variable task [Result] : String | semmle.label | access to local variable task [Result] : String |
 | GlobalDataFlow.cs:242:15:242:20 | access to local variable sink42 | semmle.label | access to local variable sink42 |
 | GlobalDataFlow.cs:254:26:254:35 | sinkParam0 : String | semmle.label | sinkParam0 : String |
 | GlobalDataFlow.cs:256:16:256:25 | access to parameter sinkParam0 : String | semmle.label | access to parameter sinkParam0 : String |
