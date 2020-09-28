@@ -211,6 +211,9 @@
 | SignAnalysis.cs:414:13:414:13 | access to local variable i | strictlyPositive |
 | SignAnalysis.cs:415:31:415:31 | access to local variable i | strictlyPositive |
 | SignAnalysis.cs:424:31:424:31 | access to local variable x | strictlyNegative |
+| SignAnalysis.cs:428:19:428:19 | access to constant A | strictlyPositive |
+| SignAnalysis.cs:428:19:428:24 | ... = ... | strictlyPositive |
+| SignAnalysis.cs:428:23:428:24 | 12 | strictlyPositive |
 | SignAnalysis.cs:434:38:434:38 | access to local variable i | strictlyNegative |
 | SignAnalysis.cs:443:38:443:38 | access to local variable x | strictlyNegative |
 | SignAnalysis.cs:446:31:446:32 | 10 | strictlyPositive |
