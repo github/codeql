@@ -1,0 +1,24 @@
+| A.java:8:22:8:28 | taint(...) | A.java:8:22:8:28 | taint(...) |
+| A.java:8:22:8:28 | taint(...) | A.java:11:9:11:11 | bad |
+| A.java:8:22:8:28 | taint(...) | A.java:11:9:11:27 | formatted(...) |
+| A.java:8:22:8:28 | taint(...) | A.java:12:9:12:43 | formatted(...) |
+| A.java:8:22:8:28 | taint(...) | A.java:12:9:12:43 | new ..[] { .. } |
+| A.java:8:22:8:28 | taint(...) | A.java:12:29:12:31 | bad |
+| A.java:8:22:8:28 | taint(...) | A.java:13:9:13:40 | format(...) |
+| A.java:8:22:8:28 | taint(...) | A.java:13:9:13:40 | new ..[] { .. } |
+| A.java:8:22:8:28 | taint(...) | A.java:13:31:13:33 | bad |
+| A.java:17:22:17:28 | taint(...) | A.java:17:22:17:28 | taint(...) |
+| A.java:17:22:17:28 | taint(...) | A.java:21:9:21:9 | f [post update] |
+| A.java:17:22:17:28 | taint(...) | A.java:21:9:21:27 | format(...) |
+| A.java:17:22:17:28 | taint(...) | A.java:21:9:21:27 | new ..[] { .. } |
+| A.java:17:22:17:28 | taint(...) | A.java:21:24:21:26 | bad |
+| A.java:17:22:17:28 | taint(...) | A.java:22:9:22:9 | f |
+| A.java:26:22:26:28 | taint(...) | A.java:26:22:26:28 | taint(...) |
+| A.java:26:22:26:28 | taint(...) | A.java:30:9:30:10 | sb |
+| A.java:26:22:26:28 | taint(...) | A.java:30:9:30:21 | toString(...) |
+| A.java:26:22:26:28 | taint(...) | A.java:31:9:31:9 | f [post update] |
+| A.java:26:22:26:28 | taint(...) | A.java:31:9:31:27 | format(...) |
+| A.java:26:22:26:28 | taint(...) | A.java:31:9:31:27 | new ..[] { .. } |
+| A.java:26:22:26:28 | taint(...) | A.java:31:24:31:26 | bad |
+| A.java:26:22:26:28 | taint(...) | A.java:32:9:32:10 | sb |
+| A.java:26:22:26:28 | taint(...) | A.java:32:9:32:21 | toString(...) |

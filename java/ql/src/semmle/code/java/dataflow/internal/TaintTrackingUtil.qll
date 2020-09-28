@@ -13,6 +13,7 @@ private import semmle.code.java.frameworks.spring.SpringHttp
 private import semmle.code.java.Maps
 private import semmle.code.java.dataflow.internal.ContainerFlow
 private import semmle.code.java.frameworks.jackson.JacksonSerializability
+private import semmle.code.java.StringFormat
 
 /**
  * Holds if taint can flow from `src` to `sink` in zero or more
@@ -124,6 +125,8 @@ private predicate localAdditionalTaintExprStep(Expr src, Expr sink) {
   stringBuilderStep(src, sink)
   or
   serializationStep(src, sink)
+  or
+  formatStep(src, sink)
 }
 
 /**
@@ -387,6 +390,11 @@ private predicate taintPreservingQualifierToMethod(Method m) {
       stringlist.getTypeArgument(0) instanceof TypeString
     )
   )
+  or
+  m instanceof StringFormatMethod
+  or
+  m.getDeclaringType() instanceof TypeFormatter and
+  m.hasName("out")
 }
 
 private class StringReplaceMethod extends Method {
@@ -446,7 +454,9 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
  */
 private predicate taintPreservingArgumentToMethod(Method method) {
   method.getDeclaringType() instanceof TypeString and
-  (method.hasName("format") or method.hasName("formatted") or method.hasName("join"))
+  method.hasName("join")
+  or
+  method instanceof StringFormatMethod
 }
 
 /**
@@ -625,6 +635,21 @@ private predicate argToQualifierStep(Expr tracked, Expr sink) {
     tracked = ma.getArgument(i) and
     sink = ma.getQualifier()
   )
+  or
+  exists(Method m, MethodAccess ma |
+    taintPreservingArgumentToQualifier(m) and
+    ma.getMethod() = m and
+    tracked = ma.getAnArgument() and
+    sink = ma.getQualifier()
+  )
+}
+
+/**
+ * Holds if `method` is a method that transfers taint from any of its arguments to its qualifier.
+ */
+private predicate taintPreservingArgumentToQualifier(Method method) {
+  method instanceof StringFormatMethod and
+  not method.getDeclaringType() instanceof TypeString
 }
 
 /**
@@ -720,6 +745,56 @@ class ObjectOutputStreamVar extends LocalVariableDecl {
     result.getQualifier() = getAnAccess() and
     result.getMethod().hasName("writeObject")
   }
+}
+
+/** Flow through string formatting. */
+private predicate formatStep(Expr tracked, Expr sink) {
+  exists(FormatterVar v, VariableAssign def |
+    def = v.getADef() and
+    exists(MethodAccess ma, RValue use |
+      ma.getAnArgument() = tracked and
+      ma = v.getAFormatMethodAccess() and
+      use = ma.getQualifier() and
+      defUsePair(def, use)
+    ) and
+    exists(RValue output, ClassInstanceExpr cie |
+      cie = def.getSource() and
+      output = cie.getArgument(0) and
+      adjacentUseUse(output, sink) and
+      exists(RefType t | output.getType().(RefType).getASourceSupertype*() = t |
+        t.hasQualifiedName("java.io", "OutputStream") or
+        t.hasQualifiedName("java.lang", "Appendable")
+      )
+    )
+  )
+}
+
+/**
+ * A local variable that is assigned a `Formatter`.
+ * Writing tainted data to such a formatter causes the underlying
+ * `OutputStream` or `Appenable` to be tainted.
+ */
+private class FormatterVar extends LocalVariableDecl {
+  FormatterVar() {
+    exists(ClassInstanceExpr cie | cie = this.getAnAssignedValue() |
+      cie.getType() instanceof TypeFormatter
+    )
+  }
+
+  VariableAssign getADef() {
+    result.getSource().(ClassInstanceExpr).getType() instanceof TypeFormatter and
+    result.getDestVar() = this
+  }
+
+  MethodAccess getAFormatMethodAccess() {
+    result.getQualifier() = getAnAccess() and
+    result.getMethod().hasName("format")
+  }
+}
+
+/** The class `java.util.Formatter`. */
+private class TypeFormatter extends Class {
+  TypeFormatter() { this.hasQualifiedName("java.util", "Formatter") }
 }
 
 private import StringBuilderVarModule
