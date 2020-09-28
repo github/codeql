@@ -104,6 +104,13 @@ subprocess.Popen(["cmd.exe", "/C", "vuln"])  # $SystemCommandExecution_getComman
 subprocess.Popen(["cmd", "/c", "vuln"])  # $SystemCommandExecution_getCommand="cmd" $f-:SystemCommandExecution_getCommand="vuln"
 subprocess.Popen(["cmd", "/C", "vuln"])  # $SystemCommandExecution_getCommand="cmd" $f-:SystemCommandExecution_getCommand="vuln"
 
+subprocess.Popen(["<progname>", "-c", "vuln"], executable="/bin/bash")  # $SystemCommandExecution_getCommand="/bin/bash" $f-:SystemCommandExecution_getCommand="vuln"
+
+if UNKNOWN:
+    os.execl("/bin/sh", "<progname>", "-c", "vuln")  # $SystemCommandExecution_getCommand="/bin/sh" $f-:SystemCommandExecution_getCommand="vuln"
+
+os.spawnl(os.P_WAIT, "/bin/sh", "<progname>", "-c", "vuln")  # $SystemCommandExecution_getCommand="/bin/sh" $f-:SystemCommandExecution_getCommand="vuln"
+
 ################################################################################
 # Taint related
 
