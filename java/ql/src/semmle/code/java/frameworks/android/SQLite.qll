@@ -26,7 +26,7 @@ abstract class SQLiteRunner extends Method {
   abstract int sqlIndex();
 }
 
-class ExecSqlMethod extends SQLiteRunner {
+private class ExecSqlMethod extends SQLiteRunner {
   ExecSqlMethod() {
     this.getDeclaringType() instanceof TypeSQLiteDatabase and
     // execPerConnectionSQL(String sql, Object[] bindArgs)
@@ -38,7 +38,7 @@ class ExecSqlMethod extends SQLiteRunner {
   override int sqlIndex() { result = 0 }
 }
 
-class QueryMethod extends SQLiteRunner {
+private class QueryMethod extends SQLiteRunner {
   QueryMethod() {
     this.getDeclaringType() instanceof TypeSQLiteDatabase and
     this.hasName(["query", "queryWithFactory"])
@@ -62,7 +62,7 @@ class QueryMethod extends SQLiteRunner {
   }
 }
 
-class RawQueryMethod extends SQLiteRunner {
+private class RawQueryMethod extends SQLiteRunner {
   RawQueryMethod() {
     this.getDeclaringType() instanceof TypeSQLiteDatabase and
     this.hasName(["rawQuery", "rawQueryWithFactory"])
@@ -79,7 +79,7 @@ class RawQueryMethod extends SQLiteRunner {
   }
 }
 
-class CompileStatementMethod extends SQLiteRunner {
+private class CompileStatementMethod extends SQLiteRunner {
   CompileStatementMethod() {
     this.getDeclaringType() instanceof TypeSQLiteDatabase and
     // compileStatement(String sql)
@@ -89,7 +89,7 @@ class CompileStatementMethod extends SQLiteRunner {
   override int sqlIndex() { result = 0 }
 }
 
-class DeleteMethod extends SQLiteRunner {
+private class DeleteMethod extends SQLiteRunner {
   DeleteMethod() {
     this.getDeclaringType() instanceof TypeSQLiteDatabase and
     // delete(String table, String whereClause, String[] whereArgs)
@@ -99,7 +99,7 @@ class DeleteMethod extends SQLiteRunner {
   override int sqlIndex() { result = 1 }
 }
 
-class UpdateMethod extends SQLiteRunner {
+private class UpdateMethod extends SQLiteRunner {
   UpdateMethod() {
     this.getDeclaringType() instanceof TypeSQLiteDatabase and
     // update(String table, ContentValues values, String whereClause, String[] whereArgs)
@@ -110,7 +110,7 @@ class UpdateMethod extends SQLiteRunner {
   override int sqlIndex() { result = 2 }
 }
 
-class ForQueryMethod extends SQLiteRunner {
+private class ForQueryMethod extends SQLiteRunner {
   ForQueryMethod() {
     // (blobFileDescriptor|long|string)ForQuery(SQLiteDatabase db, String query, String[] selectionArgs)
     this.getDeclaringType() instanceof TypeDatabaseUtils and
@@ -121,7 +121,7 @@ class ForQueryMethod extends SQLiteRunner {
   override int sqlIndex() { result = 1 }
 }
 
-class CreateDbFromSqlStatementsMethod extends SQLiteRunner {
+private class CreateDbFromSqlStatementsMethod extends SQLiteRunner {
   CreateDbFromSqlStatementsMethod() {
     // createDbFromSqlStatements(Context context, String dbName, int dbVersion, String sqlStatements)
     this.getDeclaringType() instanceof TypeDatabaseUtils and
@@ -131,7 +131,7 @@ class CreateDbFromSqlStatementsMethod extends SQLiteRunner {
   override int sqlIndex() { result = 3 }
 }
 
-class QueryNumEntriesMethod extends SQLiteRunner {
+private class QueryNumEntriesMethod extends SQLiteRunner {
   QueryNumEntriesMethod() {
     // queryNumEntries(SQLiteDatabase db, String table, String selection)
     // queryNumEntries(SQLiteDatabase db, String table, String selection, String[] selectionArgs)
@@ -142,7 +142,7 @@ class QueryNumEntriesMethod extends SQLiteRunner {
   override int sqlIndex() { result = 2 }
 }
 
-class QueryBuilderDeleteMethod extends SQLiteRunner {
+private class QueryBuilderDeleteMethod extends SQLiteRunner {
   QueryBuilderDeleteMethod() {
     // delete(SQLiteDatabase db, String selection, String[] selectionArgs)
     this.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
@@ -152,7 +152,7 @@ class QueryBuilderDeleteMethod extends SQLiteRunner {
   override int sqlIndex() { result = [-1, 1] }
 }
 
-class QueryBuilderInsertMethod extends SQLiteRunner {
+private class QueryBuilderInsertMethod extends SQLiteRunner {
   QueryBuilderInsertMethod() {
     // insert(SQLiteDatabase db, ContentValues values)
     this.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
@@ -162,7 +162,7 @@ class QueryBuilderInsertMethod extends SQLiteRunner {
   override int sqlIndex() { result = -1 }
 }
 
-class QueryBuilderQueryMethod extends SQLiteRunner {
+private class QueryBuilderQueryMethod extends SQLiteRunner {
   QueryBuilderQueryMethod() {
     // query(SQLiteDatabase db, String[] projectionIn, String selection, String[] selectionArgs, String groupBy, String having, String sortOrder)
     // query(SQLiteDatabase db, String[] projectionIn, String selection, String[] selectionArgs, String groupBy, String having, String sortOrder, String limit)
@@ -174,7 +174,7 @@ class QueryBuilderQueryMethod extends SQLiteRunner {
   override int sqlIndex() { result = [-1, 3, 5, 6, 7, 8] }
 }
 
-class QueryBuilderUpdateMethod extends SQLiteRunner {
+private class QueryBuilderUpdateMethod extends SQLiteRunner {
   QueryBuilderUpdateMethod() {
     // update(SQLiteDatabase db, ContentValues values, String selection, String[] selectionArgs)
     this.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
@@ -184,7 +184,7 @@ class QueryBuilderUpdateMethod extends SQLiteRunner {
   override int sqlIndex() { result = [-1, 2] }
 }
 
-class ContentProviderDeleteMethod extends SQLiteRunner {
+private class ContentProviderDeleteMethod extends SQLiteRunner {
   ContentProviderDeleteMethod() {
     // delete(Uri uri, String selection, String[] selectionArgs)
     this.getDeclaringType() instanceof AndroidContentProvider and
@@ -195,7 +195,7 @@ class ContentProviderDeleteMethod extends SQLiteRunner {
   override int sqlIndex() { result = 1 }
 }
 
-class ContentProviderQueryMethod extends SQLiteRunner {
+private class ContentProviderQueryMethod extends SQLiteRunner {
   ContentProviderQueryMethod() {
     // query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder, CancellationSignal cancellationSignal)
     // query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
@@ -207,7 +207,7 @@ class ContentProviderQueryMethod extends SQLiteRunner {
   override int sqlIndex() { result = 2 }
 }
 
-class ContentProviderUpdateMethod extends SQLiteRunner {
+private class ContentProviderUpdateMethod extends SQLiteRunner {
   ContentProviderUpdateMethod() {
     // update(Uri uri, ContentValues values, String selection, String[] selectionArgs)
     this.getDeclaringType() instanceof AndroidContentProvider and
