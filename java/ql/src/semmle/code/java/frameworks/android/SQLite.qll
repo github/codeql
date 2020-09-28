@@ -1,7 +1,24 @@
 import java
 
+/**
+ * The class `android.database.sqlite.SQLiteDatabase`.
+ */
 class TypeSQLiteDatabase extends Class {
   TypeSQLiteDatabase() { hasQualifiedName("android.database.sqlite", "SQLiteDatabase") }
+}
+
+/**
+ * The class `android.database.sqlite.SQLiteQueryBuilder`.
+ */
+class TypeSQLiteQueryBuilder extends Class {
+  TypeSQLiteQueryBuilder() { hasQualifiedName("android.database.sqlite", "SQLiteQueryBuilder") }
+}
+
+/**
+ * The class `android.database.DatabaseUtils`.
+ */
+class TypeDatabaseUtils extends Class {
+  TypeDatabaseUtils() { hasQualifiedName("android.database", "DatabaseUtils") }
 }
 
 abstract class SQLiteRunner extends Method {

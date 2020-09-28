@@ -6,6 +6,7 @@ private import semmle.code.java.dataflow.DefUse
 private import semmle.code.java.security.SecurityTests
 private import semmle.code.java.security.Validation
 private import semmle.code.java.frameworks.android.Intent
+private import semmle.code.java.frameworks.android.SQLite
 private import semmle.code.java.frameworks.Guice
 private import semmle.code.java.frameworks.Protobuf
 private import semmle.code.java.frameworks.spring.SpringController
@@ -388,10 +389,7 @@ private predicate taintPreservingQualifierToMethod(Method m) {
     )
   )
   or
-  m
-      .getDeclaringType()
-      .getASourceSupertype*()
-      .hasQualifiedName("android.database.sqlite", "SQLiteQueryBuilder") and
+  m.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
   // buildQuery(String[] projectionIn, String selection, String groupBy, String having, String sortOrder, String limit)
   // buildQuery(String[] projectionIn, String selection, String[] selectionArgs, String groupBy, String having, String sortOrder, String limit)
   // buildUnionQuery(String[] subQueries, String sortOrder, String limit)
@@ -459,15 +457,12 @@ private predicate taintPreservingArgumentToMethod(Method method) {
   method.getDeclaringType() instanceof TypeString and
   (method.hasName("format") or method.hasName("formatted") or method.hasName("join"))
   or
-  method.getDeclaringType().hasQualifiedName("android.database", "DatabaseUtils") and
+  method.getDeclaringType() instanceof TypeDatabaseUtils and
   // String[] appendSelectionArgs(String[] originalValues, String[] newValues)
   // String concatenateWhere(String a, String b)
   method.hasName(["appendSelectionArgs", "concatenateWhere"])
   or
-  method
-      .getDeclaringType()
-      .getASourceSupertype*()
-      .hasQualifiedName("android.database.sqlite", "SQLiteQueryBuilder") and
+  method.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
   // buildQuery(String[] projectionIn, String selection, String groupBy, String having, String sortOrder, String limit)
   // buildQuery(String[] projectionIn, String selection, String[] selectionArgs, String groupBy, String having, String sortOrder, String limit)
   // buildUnionQuery(String[] subQueries, String sortOrder, String limit)
@@ -650,7 +645,7 @@ private predicate taintPreservingArgToArg(Method method, int input, int output) 
   input = method.getNumberOfParameters() - 1 and
   output = 0
   or
-  method.getDeclaringType().hasQualifiedName("android.database.sqlite", "SQLiteQueryBuilder") and
+  method.getDeclaringType() instanceof TypeSQLiteQueryBuilder and
   // static appendColumns(StringBuilder s, String[] columns)
   method.hasName("appendColumns") and
   input = 1 and
@@ -693,10 +688,7 @@ private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
     append.getDeclaringType().hasQualifiedName("java.io", "StringWriter")
   )
   or
-  method
-      .getDeclaringType()
-      .getASourceSupertype*()
-      .hasQualifiedName("android.database.sqlite", "SQLiteQueryBuilder") and
+  method.getDeclaringType().getASourceSupertype*() instanceof TypeSQLiteQueryBuilder and
   // setProjectionMap(Map<String, String> columnMap)
   // setTables(String inTables)
   // appendWhere(CharSequence inWhere)
