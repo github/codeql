@@ -8,7 +8,7 @@ import semmle.code.cpp.models.interfaces.Taint
  * Additional model for `std::pair` constructors.
  */
 class StdPairConstructor extends Constructor, TaintFunction {
-  StdPairConstructor() { this.getDeclaringType().hasQualifiedName("std", "pair") }
+  StdPairConstructor() { this.hasQualifiedName("std", "pair", "pair") }
 
   /**
    * Gets the index of a parameter to this function that is a reference to
