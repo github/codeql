@@ -319,7 +319,7 @@ namespace std {
 		T1 first;
 		T2 second;
 		pair();
-		pair(const T1& x, const T2& y);
+		pair(const T1& x, const T2& y) : first(x), second(y) {};
 		template<class U, class V> pair(const pair<U, V> &p);
 
 		void swap(pair& p) /*noexcept(...)*/;

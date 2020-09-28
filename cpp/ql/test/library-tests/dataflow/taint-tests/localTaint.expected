@@ -1992,6 +1992,20 @@
 | stl.h:315:9:315:9 | constructor init of field first [post-this] | stl.h:315:9:315:9 | constructor init of field second [pre-this] |  |
 | stl.h:315:9:315:9 | constructor init of field first [pre-this] | stl.h:315:9:315:9 | constructor init of field second [pre-this] |  |
 | stl.h:315:9:315:9 | this | stl.h:315:9:315:9 | constructor init of field first [pre-this] |  |
+| stl.h:322:3:322:3 | this | stl.h:322:36:322:43 | constructor init of field first [pre-this] |  |
+| stl.h:322:3:322:6 | this | stl.h:322:36:322:43 | constructor init of field first [pre-this] |  |
+| stl.h:322:18:322:18 | x | stl.h:322:42:322:42 | x |  |
+| stl.h:322:18:322:18 | x | stl.h:322:42:322:42 | x |  |
+| stl.h:322:31:322:31 | y | stl.h:322:53:322:53 | y |  |
+| stl.h:322:31:322:31 | y | stl.h:322:53:322:53 | y |  |
+| stl.h:322:36:322:43 | call to unknown function | stl.h:322:36:322:43 | constructor init of field first | TAINT |
+| stl.h:322:36:322:43 | constructor init of field first [post-this] | stl.h:322:46:322:54 | constructor init of field second [pre-this] |  |
+| stl.h:322:36:322:43 | constructor init of field first [post-this] | stl.h:322:46:322:54 | constructor init of field second [pre-this] |  |
+| stl.h:322:36:322:43 | constructor init of field first [pre-this] | stl.h:322:46:322:54 | constructor init of field second [pre-this] |  |
+| stl.h:322:36:322:43 | constructor init of field first [pre-this] | stl.h:322:46:322:54 | constructor init of field second [pre-this] |  |
+| stl.h:322:42:322:42 | x | stl.h:322:36:322:43 | constructor init of field first | TAINT |
+| stl.h:322:46:322:54 | call to unknown function | stl.h:322:46:322:54 | constructor init of field second | TAINT |
+| stl.h:322:53:322:53 | y | stl.h:322:46:322:54 | constructor init of field second | TAINT |
 | string.cpp:24:12:24:17 | call to source | string.cpp:28:7:28:7 | a |  |
 | string.cpp:25:16:25:20 | 123 | string.cpp:25:16:25:21 | call to basic_string | TAINT |
 | string.cpp:25:16:25:21 | call to basic_string | string.cpp:29:7:29:7 | b |  |
