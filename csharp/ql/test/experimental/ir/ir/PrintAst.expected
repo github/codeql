@@ -762,7 +762,8 @@ pointers.cs:
 #    5|           1: [LocalVariableAccess] access to local variable length
 #    6|       1: [FixedStmt] fixed(...) { ... }
 #    6|         -1: [LocalVariableDeclAndInitExpr] Int32* b = ...
-#    6|           0: [ParameterAccess] access to parameter arr
+#    6|           0: [CastExpr] (...) ...
+#    6|             0: [ParameterAccess] access to parameter arr
 #    6|           1: [LocalVariableAccess] access to local variable b
 #    7|         0: [BlockStmt] {...}
 #    8|           0: [LocalVariableDeclStmt] ... ...;
