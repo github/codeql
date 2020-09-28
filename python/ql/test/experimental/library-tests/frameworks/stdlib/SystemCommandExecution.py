@@ -66,44 +66,43 @@ os.posix_spawnp("executable", ["<progname>", "arg0"], env)  # $SystemCommandExec
 
 import subprocess
 
-subprocess.Popen("cmd1; cmd2", shell=True)  # $f-:SystemCommandExecution_getCommand="cmd1; cmd2"
-subprocess.Popen("cmd1; cmd2", shell="truthy string")  # $f-:SystemCommandExecution_getCommand="cmd1; cmd2"
-subprocess.Popen(["cmd1; cmd2", "shell-arg"], shell=True)  # $f-:SystemCommandExecution_getCommand="cmd1; cmd2"
-subprocess.Popen("cmd1; cmd2", shell=True, executable="/bin/bash")  # $f-:SystemCommandExecution_getCommand="cmd1; cmd2"
+subprocess.Popen("cmd1; cmd2", shell=True)  # $SystemCommandExecution_getCommand="cmd1; cmd2"
+subprocess.Popen("cmd1; cmd2", shell="truthy string")  # $SystemCommandExecution_getCommand="cmd1; cmd2"
+subprocess.Popen(["cmd1; cmd2", "shell-arg"], shell=True)  # $SystemCommandExecution_getCommand="cmd1; cmd2"
+subprocess.Popen("cmd1; cmd2", shell=True, executable="/bin/bash")  # $SystemCommandExecution_getCommand="cmd1; cmd2" $SystemCommandExecution_getCommand="/bin/bash"
 
-subprocess.Popen("executable")  # $f-:SystemCommandExecution_getCommand="executable"
-subprocess.Popen(["executable", "arg0"])  # $f-:SystemCommandExecution_getCommand="executable"
-subprocess.Popen("<progname>", executable="executable")  # $f-:SystemCommandExecution_getCommand="executable"
-subprocess.Popen(["<progname>", "arg0"], executable="executable")  # $f-:SystemCommandExecution_getCommand="executable"
+subprocess.Popen("executable")  # $SystemCommandExecution_getCommand="executable"
+subprocess.Popen(["executable", "arg0"])  # $SystemCommandExecution_getCommand="executable"
+subprocess.Popen("<progname>", executable="executable")  # $SystemCommandExecution_getCommand="executable"
+subprocess.Popen(["<progname>", "arg0"], executable="executable")  # $SystemCommandExecution_getCommand="executable"
 
 # call/check_call/check_output/run all work like Popen from a command execution point of view
-subprocess.call(["executable", "arg0"])  # $f-:SystemCommandExecution_getCommand="executable"
-subprocess.check_call(["executable", "arg0"])  # $f-:SystemCommandExecution_getCommand="executable"
-subprocess.check_output(["executable", "arg0"])  # $f-:SystemCommandExecution_getCommand="executable"
-subprocess.run(["executable", "arg0"])  # $f-:SystemCommandExecution_getCommand="executable"
+subprocess.call(["executable", "arg0"])  # $SystemCommandExecution_getCommand="executable"
+subprocess.check_call(["executable", "arg0"])  # $SystemCommandExecution_getCommand="executable"
+subprocess.check_output(["executable", "arg0"])  # $SystemCommandExecution_getCommand="executable"
+subprocess.run(["executable", "arg0"])  # $SystemCommandExecution_getCommand="executable"
 
 
 ########################################
 # actively using known shell as the executable
 
-subprocess.Popen(["/bin/sh", "-c", "vuln"])  # $f-:SystemCommandExecution_getCommand="/bin/sh",$f-:SystemCommandExecution_getCommand="vuln"
-subprocess.Popen(["/bin/bash", "-c", "vuln"])  # $f-:SystemCommandExecution_getCommand="/bin/bash",$f-:SystemCommandExecution_getCommand="vuln"
-subprocess.Popen(["/bin/dash", "-c", "vuln"])  # $f-:SystemCommandExecution_getCommand="/bin/dash",$f-:SystemCommandExecution_getCommand="vuln"
-subprocess.Popen(["/bin/zsh", "-c", "vuln"])  # $f-:SystemCommandExecution_getCommand="/bin/zsh",$f-:SystemCommandExecution_getCommand="vuln"
+subprocess.Popen(["/bin/sh", "-c", "vuln"])  # $SystemCommandExecution_getCommand="/bin/sh" $f-:SystemCommandExecution_getCommand="vuln"
+subprocess.Popen(["/bin/bash", "-c", "vuln"])  # $SystemCommandExecution_getCommand="/bin/bash" $f-:SystemCommandExecution_getCommand="vuln"
+subprocess.Popen(["/bin/dash", "-c", "vuln"])  # $SystemCommandExecution_getCommand="/bin/dash" $f-:SystemCommandExecution_getCommand="vuln"
+subprocess.Popen(["/bin/zsh", "-c", "vuln"])  # $SystemCommandExecution_getCommand="/bin/zsh" $f-:SystemCommandExecution_getCommand="vuln"
 
-subprocess.Popen(["sh", "-c", "vuln"])  # $f-:SystemCommandExecution_getCommand="sh",$f-:SystemCommandExecution_getCommand="vuln"
-subprocess.Popen(["bash", "-c", "vuln"])  # $f-:SystemCommandExecution_getCommand="bash",$f-:SystemCommandExecution_getCommand="vuln"
-subprocess.Popen(["dash", "-c", "vuln"])  # $f-:SystemCommandExecution_getCommand="dash",$f-:SystemCommandExecution_getCommand="vuln"
-subprocess.Popen(["zsh", "-c", "vuln"])  # $f-:SystemCommandExecution_getCommand="zsh",$f-:SystemCommandExecution_getCommand="vuln"
+subprocess.Popen(["sh", "-c", "vuln"])  # $SystemCommandExecution_getCommand="sh" $f-:SystemCommandExecution_getCommand="vuln"
+subprocess.Popen(["bash", "-c", "vuln"])  # $SystemCommandExecution_getCommand="bash" $f-:SystemCommandExecution_getCommand="vuln"
+subprocess.Popen(["dash", "-c", "vuln"])  # $SystemCommandExecution_getCommand="dash" $f-:SystemCommandExecution_getCommand="vuln"
+subprocess.Popen(["zsh", "-c", "vuln"])  # $SystemCommandExecution_getCommand="zsh" $f-:SystemCommandExecution_getCommand="vuln"
 
 # Check that we don't consider ANY argument a command injection sink
-subprocess.Popen(["sh", "/bin/python"])  # $f-:SystemCommandExecution_getCommand="sh"
+subprocess.Popen(["sh", "/bin/python"])  # $SystemCommandExecution_getCommand="sh"
 
-subprocess.Popen(["cmd.exe", "/c", "vuln"])  # $f-:SystemCommandExecution_getCommand="cmd.exe",$f-:SystemCommandExecution_getCommand="vuln"
-subprocess.Popen(["cmd.exe", "/C", "vuln"])  # $f-:SystemCommandExecution_getCommand="cmd.exe",$f-:SystemCommandExecution_getCommand="vuln"
-subprocess.Popen(["cmd", "/c", "vuln"])  # $f-:SystemCommandExecution_getCommand="cmd",$f-:SystemCommandExecution_getCommand="vuln"
-subprocess.Popen(["cmd", "/C", "vuln"])  # $f-:SystemCommandExecution_getCommand="cmd",$f-:SystemCommandExecution_getCommand="vuln"
-
+subprocess.Popen(["cmd.exe", "/c", "vuln"])  # $SystemCommandExecution_getCommand="cmd.exe" $f-:SystemCommandExecution_getCommand="vuln"
+subprocess.Popen(["cmd.exe", "/C", "vuln"])  # $SystemCommandExecution_getCommand="cmd.exe" $f-:SystemCommandExecution_getCommand="vuln"
+subprocess.Popen(["cmd", "/c", "vuln"])  # $SystemCommandExecution_getCommand="cmd" $f-:SystemCommandExecution_getCommand="vuln"
+subprocess.Popen(["cmd", "/C", "vuln"])  # $SystemCommandExecution_getCommand="cmd" $f-:SystemCommandExecution_getCommand="vuln"
 
 ################################################################################
 # Taint related
