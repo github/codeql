@@ -38,7 +38,7 @@ class StdMakePair extends TaintFunction {
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from any parameter to the returned object
-    input.isParameterDeref(_) and
+    input.isParameterDeref([0, 1]) and
     output.isReturnValue()
   }
 }
