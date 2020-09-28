@@ -260,7 +260,6 @@
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
 | file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
-| file://:0:0:0:0 | p#0 | file://:0:0:0:0 | p#0 |  |
 | format.cpp:16:21:16:21 | s | format.cpp:22:22:22:22 | s |  |
 | format.cpp:16:31:16:31 | n | format.cpp:22:25:22:25 | n |  |
 | format.cpp:16:46:16:51 | format | format.cpp:22:28:22:33 | format |  |
@@ -1989,14 +1988,9 @@
 | stl.h:222:30:222:40 | call to allocator | stl.h:222:21:222:41 | noexcept(...) | TAINT |
 | stl.h:222:53:222:63 | 0 | stl.h:222:46:222:64 | (no string representation) | TAINT |
 | stl.h:315:9:315:9 | Unknown literal | stl.h:315:9:315:9 | constructor init of field first | TAINT |
-| stl.h:315:9:315:9 | Unknown literal | stl.h:315:9:315:9 | constructor init of field first | TAINT |
-| stl.h:315:9:315:9 | Unknown literal | stl.h:315:9:315:9 | constructor init of field second | TAINT |
 | stl.h:315:9:315:9 | Unknown literal | stl.h:315:9:315:9 | constructor init of field second | TAINT |
 | stl.h:315:9:315:9 | constructor init of field first [post-this] | stl.h:315:9:315:9 | constructor init of field second [pre-this] |  |
-| stl.h:315:9:315:9 | constructor init of field first [post-this] | stl.h:315:9:315:9 | constructor init of field second [pre-this] |  |
 | stl.h:315:9:315:9 | constructor init of field first [pre-this] | stl.h:315:9:315:9 | constructor init of field second [pre-this] |  |
-| stl.h:315:9:315:9 | constructor init of field first [pre-this] | stl.h:315:9:315:9 | constructor init of field second [pre-this] |  |
-| stl.h:315:9:315:9 | this | stl.h:315:9:315:9 | constructor init of field first [pre-this] |  |
 | stl.h:315:9:315:9 | this | stl.h:315:9:315:9 | constructor init of field first [pre-this] |  |
 | string.cpp:24:12:24:17 | call to source | string.cpp:28:7:28:7 | a |  |
 | string.cpp:25:16:25:20 | 123 | string.cpp:25:16:25:21 | call to basic_string | TAINT |

@@ -34,7 +34,9 @@
 | map.cpp:76:9:76:13 | map.cpp:63:37:63:42 | IR only |
 | map.cpp:77:9:77:14 | map.cpp:63:37:63:42 | IR only |
 | map.cpp:84:34:84:38 | map.cpp:84:17:84:22 | IR only |
+| map.cpp:85:7:85:39 | map.cpp:85:17:85:22 | IR only |
 | map.cpp:85:34:85:39 | map.cpp:85:17:85:22 | IR only |
+| map.cpp:87:7:87:38 | map.cpp:87:24:87:29 | IR only |
 | map.cpp:87:34:87:38 | map.cpp:87:24:87:29 | IR only |
 | map.cpp:88:34:88:39 | map.cpp:88:24:88:29 | IR only |
 | map.cpp:92:7:92:7 | map.cpp:91:33:91:38 | AST only |
