@@ -111,6 +111,19 @@ if UNKNOWN:
 
 os.spawnl(os.P_WAIT, "/bin/sh", "<progname>", "-c", "vuln")  # $SystemCommandExecution_getCommand="/bin/sh" $f-:SystemCommandExecution_getCommand="vuln"
 
+
+########################################
+# Passing arguments by reference
+
+args = ["/bin/sh", "-c", "vuln"]
+subprocess.Popen(args)  # $SystemCommandExecution_getCommand=args
+
+args = "<progname>"
+use_shell = False
+exe = "executable"
+subprocess.Popen(args, shell=use_shell, executable=exe)  # $f+:SystemCommandExecution_getCommand=args $SystemCommandExecution_getCommand=exe
+
+
 ################################################################################
 # Taint related
 
