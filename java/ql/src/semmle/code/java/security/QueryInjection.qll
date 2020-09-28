@@ -34,7 +34,9 @@ private class SqlInjectionSink extends QueryInjectionSink {
     or
     exists(MethodAccess ma, Method m, int index |
       ma.getMethod() = m and
-      ma.getArgument(index) = this.asExpr()
+      if index = -1
+      then this.asExpr() = ma.getQualifier()
+      else ma.getArgument(index) = this.asExpr()
     |
       index = m.(SQLiteRunner).sqlIndex()
       or
@@ -87,130 +89,6 @@ private class MongoJsonStep extends AdditionalQueryInjectionTaintStep {
       ma.getMethod().hasName("parse") and
       ma.getArgument(0) = node1.asExpr() and
       ma = node2.asExpr()
-    )
-  }
-}
-
-/** A sink for Android database injection vulnerabilities. */
-private class AndroidDatabaseUtils extends QueryInjectionSink {
-  AndroidDatabaseUtils() {
-    exists(MethodAccess call, Method method |
-      method = call.getMethod() and
-      method.getDeclaringType().hasQualifiedName("android.database", "DatabaseUtils") and
-      (
-        // (blobFileDescriptor|long|string)ForQuery(SQLiteDatabase db, String query, String[] selectionArgs)
-        method.hasName(["blobFileDescriptorForQuery", "longForQuery", "stringForQuery"]) and
-        method.getNumberOfParameters() = 3 and
-        this.asExpr() = call.getArgument(1)
-        or
-        // createDbFromSqlStatements(Context context, String dbName, int dbVersion, String sqlStatements)
-        method.hasName("createDbFromSqlStatements") and
-        this.asExpr() = call.getArgument(3)
-        or
-        // queryNumEntries(SQLiteDatabase db, String table, String selection)
-        // queryNumEntries(SQLiteDatabase db, String table, String selection, String[] selectionArgs)
-        method.hasName("queryNumEntries") and
-        this.asExpr() = call.getArgument(2)
-      )
-      or
-      method
-          .getDeclaringType()
-          .getASourceSupertype*()
-          .hasQualifiedName("android.database.sqlite", "SQLiteDatabase") and
-      (
-        // compileStatement(String sql)
-        method.hasName("compileStatement") and
-        this.asExpr() = call.getArgument(0)
-        or
-        // delete(String table, String whereClause, String[] whereArgs)
-        method.hasName("delete") and
-        this.asExpr() = call.getArgument(1)
-        or
-        // execPerConnectionSQL(String sql, Object[] bindArgs)
-        // execSQL(String sql)
-        // execSQL(String sql, Object[] bindArgs)
-        method.hasName(["execPerConnectionSQL", "execSQL"]) and
-        this.asExpr() = call.getArgument(0)
-        or
-        // query(boolean distinct, String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy, String limit)
-        // query(boolean distinct, String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy, String limit, CancellationSignal cancellationSignal)
-        // query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy, String limit)
-        // query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy)
-        method.hasName("query") and
-        (
-          this.asExpr() = call.getArgument([3, 5, 6, 7, 8]) and
-          method.getNumberOfParameters() = [9, 10]
-          or
-          this.asExpr() = call.getArgument([2, 4, 5, 6, 7]) and
-          method.getNumberOfParameters() = [7, 8]
-        )
-        or
-        // queryWithFactory(SQLiteDatabase.CursorFactory cursorFactory, boolean distinct, String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy, String limit, CancellationSignal cancellationSignal)
-        // queryWithFactory(SQLiteDatabase.CursorFactory cursorFactory, boolean distinct, String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy, String limit)
-        method.hasName("queryWithFactory") and
-        this.asExpr() = call.getArgument([4, 6, 7, 8, 9])
-        or
-        // rawQuery(String sql, String[] selectionArgs, CancellationSignal cancellationSignal)
-        // rawQuery(String sql, String[] selectionArgs)
-        method.hasName("rawQuery") and
-        this.asExpr() = call.getArgument(0)
-        or
-        // rawQueryWithFactory(SQLiteDatabase.CursorFactory cursorFactory, String sql, String[] selectionArgs, String editTable, CancellationSignal cancellationSignal)
-        // rawQueryWithFactory(SQLiteDatabase.CursorFactory cursorFactory, String sql, String[] selectionArgs, String editTable)
-        method.hasName("rawQueryWithFactory") and
-        this.asExpr() = call.getArgument(1)
-        or
-        // update(String table, ContentValues values, String whereClause, String[] whereArgs)
-        // updateWithOnConflict(String table, ContentValues values, String whereClause, String[] whereArgs, int conflictAlgorithm)
-        method.hasName(["update", "updateWithOnConflict"]) and
-        this.asExpr() = call.getArgument(2)
-      )
-      or
-      method
-          .getDeclaringType()
-          .getASourceSupertype*()
-          .hasQualifiedName("android.content", "ContentProvider") and
-      (
-        // delete(Uri uri, String selection, String[] selectionArgs)
-        method.hasName("delete") and
-        this.asExpr() = call.getArgument(1) and
-        method.getNumberOfParameters() = 3
-        or
-        // query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder, CancellationSignal cancellationSignal)
-        // query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
-        method.hasName("query") and
-        method.getNumberOfParameters() = [5, 6] and
-        this.asExpr() = call.getArgument(2)
-        or
-        // update(Uri uri, ContentValues values, String selection, String[] selectionArgs)
-        method.hasName("update") and
-        this.asExpr() = call.getArgument(2) and
-        method.getNumberOfParameters() = 4
-      )
-      or
-      method
-          .getDeclaringType()
-          .getASourceSupertype*()
-          .hasQualifiedName("android.database.sqlite", "SQLiteQueryBuilder") and
-      (
-        // delete(SQLiteDatabase db, String selection, String[] selectionArgs)
-        method.hasName("delete") and
-        (this.asExpr() = call.getArgument(1) or this.asExpr() = call.getQualifier())
-        or
-        // insert(SQLiteDatabase db, ContentValues values)
-        method.hasName("update") and
-        this.asExpr() = call.getQualifier()
-        or
-        // query(SQLiteDatabase db, String[] projectionIn, String selection, String[] selectionArgs, String groupBy, String having, String sortOrder)
-        // query(SQLiteDatabase db, String[] projectionIn, String selection, String[] selectionArgs, String groupBy, String having, String sortOrder, String limit)
-        // query(SQLiteDatabase db, String[] projectionIn, String selection, String[] selectionArgs, String groupBy, String having, String sortOrder, String limit, CancellationSignal cancellationSignal)
-        method.hasName("query") and
-        (this.asExpr() = call.getArgument([3, 5, 6, 7, 8]) or this.asExpr() = call.getQualifier())
-        or
-        // update(SQLiteDatabase db, ContentValues values, String selection, String[] selectionArgs)
-        method.hasName("update") and
-        (this.asExpr() = call.getArgument(2) or this.asExpr() = call.getQualifier())
-      )
     )
   }
 }
