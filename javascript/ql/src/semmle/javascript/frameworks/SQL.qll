@@ -54,7 +54,7 @@ private module MySql {
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     QueryCall() {
       exists(API::Node recv | recv = createPool() or recv = connection() |
-        this = recv.getMember("query").getASourceUse().getACall()
+        this = recv.getMember("query").getAReference().getACall()
       )
     }
 
@@ -72,7 +72,7 @@ private module MySql {
       this =
         [mysql(), createPool(), connection()]
             .getMember(["escape", "escapeId"])
-            .getASourceUse()
+            .getAReference()
             .getACall()
             .asExpr() and
       input = this.getArgument(0) and
@@ -132,7 +132,7 @@ private module Postgres {
 
   /** A call to the Postgres `query` method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
-    QueryCall() { this = [client(), newPool()].getMember("query").getASourceUse().getACall() }
+    QueryCall() { this = [client(), newPool()].getMember("query").getAReference().getACall() }
 
     override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
   }
@@ -190,7 +190,7 @@ private module Sqlite {
         meth = "prepare" or
         meth = "run"
       |
-        this = newDb().getMember(meth).getASourceUse().getACall()
+        this = newDb().getMember(meth).getAReference().getACall()
       )
     }
 
@@ -234,7 +234,7 @@ private module MsSql {
 
   /** A call to a MsSql query method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
-    QueryCall() { this = request().getMember(["query", "batch"]).getASourceUse().getACall() }
+    QueryCall() { this = request().getMember(["query", "batch"]).getAReference().getACall() }
 
     override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
   }
@@ -293,7 +293,7 @@ private module Sequelize {
 
   /** A call to `Sequelize.query`. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
-    QueryCall() { this = newSequelize().getMember("query").getASourceUse().getACall() }
+    QueryCall() { this = newSequelize().getMember("query").getAReference().getACall() }
 
     override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
   }
@@ -312,7 +312,7 @@ private module Sequelize {
 
     Credentials() {
       exists(NewExpr ne, string prop |
-        ne = sequelize().getASourceUse().getAnInstantiation().asExpr() and
+        ne = sequelize().getAReference().getAnInstantiation().asExpr() and
         (
           this = ne.getArgument(1) and prop = "username"
           or
@@ -393,7 +393,7 @@ private module Spanner {
       this =
         database()
             .getMember(["run", "runPartitionedUpdate", "runStream"])
-            .getASourceUse()
+            .getAReference()
             .getACall()
     }
   }
@@ -403,7 +403,7 @@ private module Spanner {
    */
   class TransactionRunCall extends SqlExecution {
     TransactionRunCall() {
-      this = transaction().getMember(["run", "runStream", "runUpdate"]).getASourceUse().getACall()
+      this = transaction().getMember(["run", "runStream", "runUpdate"]).getAReference().getACall()
     }
   }
 
@@ -415,7 +415,7 @@ private module Spanner {
       this =
         v1SpannerClient()
             .getMember(["executeSql", "executeStreamingSql"])
-            .getASourceUse()
+            .getAReference()
             .getACall()
     }
 

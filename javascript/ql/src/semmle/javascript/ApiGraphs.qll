@@ -21,30 +21,29 @@ module API {
    */
   class Node extends Impl::TApiNode {
     /**
-     * Gets a data-flow node corresponding to a use of the API component represented by this node.
+     * Gets a `SourceNode` corresponding to a use of the API component represented by this node.
      *
      * For example, `require('fs').readFileSync` is a use of the function `readFileSync` from the
      * `fs` module, and `require('fs').readFileSync(file)` is a use of the result of that function.
      *
      * As another example, in the assignment `exports.plusOne = (x) => x+1` the two references to
      * `x` are uses of the first parameter of `plusOne`.
+     *
+     * Note: The result from this predicate is always a `DataFlow::SourceǸode`, use `getAUse()` if
+     * you want to follow purely local data-flow and get all `DataFlow::Node`s that corrospond to a
+     * use of this API node.
      */
-    DataFlow::Node getAUse() {
-      exists(DataFlow::SourceNode src | Impl::use(this, src) |
-        Impl::trackUseNode(src).flowsTo(result)
-      )
+    DataFlow::SourceNode getAReference() {
+      exists(DataFlow::SourceNode src | Impl::use(this, src) | result = Impl::trackUseNode(src))
     }
 
     /**
-     * Gets a source-node corresponding to a use of the API component represented by this node.
+     * Gets a data-flow node corresponding to a use of the API component represented by this node.
      *
-     * For example, `require('fs').readFileSync` is a use of the function `readFileSync` from the
-     * `fs` module, and `require('fs').readFileSync(file)` is a use of the result of that function.
-     *
-     * As another example, in the assignment `exports.plusOne = (x) => x+1` the two references to
-     * `x` are uses of the first parameter of `plusOne`.
+     * This predicate is similar to `getAReference`, except this prediate also follows purely local
+     * data-flow.
      */
-    DataFlow::SourceNode getASourceUse() { Impl::use(this, result) }
+    DataFlow::Node getAUse() { getAReference().flowsTo(result) }
 
     /**
      * Gets a data-flow node corresponding to the right-hand side of a definition of the API
