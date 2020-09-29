@@ -36,6 +36,17 @@ module API {
     }
 
     /**
+     * Gets a source-node corresponding to a use of the API component represented by this node.
+     *
+     * For example, `require('fs').readFileSync` is a use of the function `readFileSync` from the
+     * `fs` module, and `require('fs').readFileSync(file)` is a use of the result of that function.
+     *
+     * As another example, in the assignment `exports.plusOne = (x) => x+1` the two references to
+     * `x` are uses of the first parameter of `plusOne`.
+     */
+    DataFlow::SourceNode getASourceUse() { Impl::use(this, result) }
+
+    /**
      * Gets a data-flow node corresponding to the right-hand side of a definition of the API
      * component represented by this node.
      *
