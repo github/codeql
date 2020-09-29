@@ -456,7 +456,8 @@ private predicate taintPreservingArgumentToMethod(Method method) {
   method.getDeclaringType() instanceof TypeString and
   method.hasName("join")
   or
-  method instanceof StringFormatMethod
+  method instanceof StringFormatMethod and
+  not method.getDeclaringType().hasQualifiedName("java.io", "Console")
 }
 
 /**
@@ -649,7 +650,8 @@ private predicate argToQualifierStep(Expr tracked, Expr sink) {
  */
 private predicate taintPreservingArgumentToQualifier(Method method) {
   method instanceof StringFormatMethod and
-  not method.getDeclaringType() instanceof TypeString
+  not method.getDeclaringType() instanceof TypeString and
+  not method.getDeclaringType().hasQualifiedName("java.io", "Console")
 }
 
 /**
