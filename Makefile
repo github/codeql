@@ -37,6 +37,14 @@ check-formatting:
 	find ql/src -name "*.ql" -or -name "*.qll" | xargs codeql query format --check-only
 	test -z "$$(git ls-files | grep \\.go$ | grep -v ^vendor/ | xargs grep -L "//\s*autoformat-ignore" | xargs gofmt -l)"
 
+ifeq ($(QHELP_OUT_DIR),)
+# If not otherwise specified, compile qhelp to markdown in place
+QHELP_OUT_DIR := ql/src
+endif
+
+qhelp-to-markdown:
+	scripts/qhelp-to-markdown.sh ql/src "$(QHELP_OUT_DIR)"
+
 tools: $(addsuffix $(EXE),$(addprefix tools/bin/,$(BINARIES))) tools/tokenizer.jar
 
 .PHONY: $(addsuffix $(EXE),$(addprefix tools/bin/,$(BINARIES)))

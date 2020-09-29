@@ -20,7 +20,7 @@ jobs:
         echo "Done"
         cd $HOME
         echo "Downloading CodeQL CLI..."
-        curl https://github.com/github/codeql-cli-binaries/releases/download/v2.2.5/codeql.zip -L -o codeql.zip
+        curl https://github.com/github/codeql-cli-binaries/releases/download/v2.3.0/codeql.zip -L -o codeql.zip
         echo "Done"
         echo "Unpacking CodeQL CLI..."
         unzip -q codeql.zip
@@ -35,6 +35,15 @@ jobs:
 
     - name: Check that all QL and Go code is autoformatted
       run: env PATH=$PATH:$HOME/codeql make check-formatting
+
+    - name: Compile qhelp files to markdown
+      run: env PATH=$PATH:$HOME/codeql QHELP_OUT_DIR=qhelp-out make qhelp-to-markdown
+
+    - name: Upload qhelp markdown
+      uses: actions/upload-artifact@v2
+      with:
+        name: qhelp-markdown
+        path: qhelp-out/**/*.md
 
     - name: Test
       run: env PATH=$PATH:$HOME/codeql make test
