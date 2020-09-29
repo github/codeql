@@ -76,3 +76,5 @@ If you only had an `abstract class EscapeFunction { ... }`, then `JsEscapeFuncti
 ## Importing all subclasses of abstract base class
 
 When providing an abstract class, you should ensure that all subclasses are included when the abstract class is (unless you have good reason not to). Otherwise you risk having different meanings of the abstract class depending on what you happen to import.
+
+One example where this _does not_ apply: `DataFlow::Configuration` and its variants are abstract, but we generally do not want to import all configurations into the same scope at once.
