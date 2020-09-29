@@ -36,6 +36,8 @@ module Private {
 
   class NumericOrCharType = J::NumericOrCharType;
 
+  class VariableUpdate = J::VariableUpdate;
+
   predicate ssaRead = RU::ssaRead/2;
 
   predicate guardControlsSsaRead = RU::guardControlsSsaRead/3;
@@ -96,23 +98,31 @@ private module Impl {
     e instanceof ClassInstanceExpr and e.getType() instanceof NumericOrCharType
   }
 
-  /** Returns the sign of explicit SSA definition `v`. */
-  Sign explicitSsaDefSign(SsaVariable v) {
-    exists(VariableUpdate def | def = v.(SsaExplicitUpdate).getDefiningExpr() |
-      result = exprSign(def.(VariableAssign).getSource())
-      or
-      exists(EnhancedForStmt for | def = for.getVariable())
-      or
-      result = exprSign(def.(PostIncExpr).getExpr()).inc()
-      or
-      result = exprSign(def.(PreIncExpr).getExpr()).inc()
-      or
-      result = exprSign(def.(PostDecExpr).getExpr()).dec()
-      or
-      result = exprSign(def.(PreDecExpr).getExpr()).dec()
-      or
-      exists(AssignOp a | a = def and result = exprSign(a))
-    )
+  /** Returns the underlying variable update of the explicit SSA variable `v`. */
+  VariableUpdate getExplicitSsaAssignment(SsaVariable v) {
+    result = v.(SsaExplicitUpdate).getDefiningExpr()
+  }
+
+  /** Returns the assignment of the variable update `def`. */
+  Expr getExprFromSsaAssignment(VariableUpdate def) {
+    result = def.(VariableAssign).getSource()
+    or
+    exists(AssignOp a | a = def and result = a)
+  }
+
+  /** Holds if `def` can have any sign. */
+  predicate explicitSsaDefWithAnySign(VariableUpdate def) {
+    exists(EnhancedForStmt for | def = for.getVariable())
+  }
+
+  /** Returns the operand of the operation if `def` is a decrement. */
+  Expr getDecrementOperand(Element e) {
+    result = e.(PostDecExpr).getExpr() or result = e.(PreDecExpr).getExpr()
+  }
+
+  /** Returns the operand of the operation if `def` is an increment. */
+  Expr getIncrementOperand(Element e) {
+    result = e.(PostIncExpr).getExpr() or result = e.(PreIncExpr).getExpr()
   }
 
   /** Gets the variable underlying the implicit SSA variable `v`. */

@@ -245,6 +245,19 @@ private Sign ssaDefSign(SsaVariable v) {
   )
 }
 
+/** Returns the sign of explicit SSA definition `v`. */
+Sign explicitSsaDefSign(SsaVariable v) {
+  exists(VariableUpdate def | def = getExplicitSsaAssignment(v) |
+    result = exprSign(getExprFromSsaAssignment(def))
+    or
+    anySign(result) and explicitSsaDefWithAnySign(def)
+    or
+    result = exprSign(getIncrementOperand(def)).inc()
+    or
+    result = exprSign(getDecrementOperand(def)).dec()
+  )
+}
+
 /** Returns the sign of implicit SSA definition `v`. */
 private Sign implicitSsaDefSign(SsaVariable v) {
   result = fieldSign(getImplicitSsaDeclaration(v))

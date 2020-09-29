@@ -32,6 +32,8 @@ module Private {
 
   class Expr = CS::Expr;
 
+  class VariableUpdate = CS::AssignableDefinition;
+
   predicate ssaRead = SU::ssaRead/2;
 }
 
@@ -107,19 +109,28 @@ private module Impl {
     }
   }
 
-  /** Returns the sign of explicit SSA definition `v`. */
-  Sign explicitSsaDefSign(Ssa::ExplicitDefinition v) {
-    exists(AssignableDefinition def | def = v.getADefinition() |
-      result = exprSign(def.getSource())
-      or
-      anySign(result) and
-      not exists(def.getSource()) and
-      not def.getElement() instanceof MutatorOperation
-      or
-      result = exprSign(def.getElement().(IncrementOperation).getOperand()).inc()
-      or
-      result = exprSign(def.getElement().(DecrementOperation).getOperand()).dec()
-    )
+  /** Returns the underlying variable update of the explicit SSA variable `v`. */
+  AssignableDefinition getExplicitSsaAssignment(Ssa::ExplicitDefinition v) {
+    result = v.getADefinition()
+  }
+
+  /** Returns the assignment of the variable update `def`. */
+  Expr getExprFromSsaAssignment(AssignableDefinition def) { result = def.getSource() }
+
+  /** Holds if `def` can have any sign. */
+  predicate explicitSsaDefWithAnySign(AssignableDefinition def) {
+    not exists(def.getSource()) and
+    not def.getElement() instanceof MutatorOperation
+  }
+
+  /** Returns the operand of the operation if `def` is a decrement. */
+  Expr getDecrementOperand(AssignableDefinition def) {
+    result = def.getElement().(DecrementOperation).getOperand()
+  }
+
+  /** Returns the operand of the operation if `def` is an increment. */
+  Expr getIncrementOperand(AssignableDefinition def) {
+    result = def.getElement().(IncrementOperation).getOperand()
   }
 
   /** Gets the variable underlying the implicit SSA variable `v`. */
