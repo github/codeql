@@ -645,6 +645,16 @@ module API {
       rhs(_, nd) and
       result = nd.getALocalSource()
       or
+      // additional backwards step from `require('m')` to `exports` or `module.exports` in m
+      exists(Import imp | imp.getImportedModuleNode() = trackDefNode(nd, t.continue()) |
+        result.(ExportsAsSourceNode).getModule() = imp.getImportedModule()
+        or
+        exists(ModuleAsSourceNode mod |
+          mod.getModule() = imp.getImportedModule() and
+          result = mod.(DataFlow::SourceNode).getAPropertyRead("exports")
+        )
+      )
+      or
       exists(DataFlow::TypeBackTracker t2 | result = trackDefNode(nd, t2).backtrack(t2, t))
     }
 
