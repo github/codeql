@@ -261,6 +261,9 @@ abstract class DataFlowCallable extends TDataFlowCallable {
 
   /** Gets the name of this callable. */
   abstract string getName();
+
+  /** Gets a callable value for this callable, if one exists. */
+  abstract CallableValue getCallableValue();
 }
 
 /** A class representing a callable value. */
@@ -278,6 +281,8 @@ class DataFlowCallableValue extends DataFlowCallable, TCallableValue {
   override NameNode getParameter(int n) { result = callable.getParameter(n) }
 
   override string getName() { result = callable.getName() }
+
+  override CallableValue getCallableValue() { result = callable }
 }
 
 /** A class representing the scope in which a `ModuleVariableNode` appears. */
@@ -295,6 +300,8 @@ class DataFlowModuleScope extends DataFlowCallable, TModule {
   override NameNode getParameter(int n) { none() }
 
   override string getName() { result = mod.getName() }
+
+  override CallableValue getCallableValue() { none() }
 }
 
 /**
@@ -322,7 +329,10 @@ abstract class DataFlowCall extends TDataFlowCall {
   /** Get the callable to which this call goes. */
   abstract DataFlowCallable getCallable();
 
-  /** Get the specified argument to this call. */
+  /**
+   * Gets the argument to this call that will be sent
+   * to the `n`th parameter of the callable.
+   */
   abstract Node getArg(int n);
 
   /** Get the control flow node representing this call. */
@@ -330,6 +340,22 @@ abstract class DataFlowCall extends TDataFlowCall {
 
   /** Gets the enclosing callable of this call. */
   abstract DataFlowCallable getEnclosingCallable();
+
+  /** Gets the location of this dataflow call. */
+  Location getLocation() { result = this.getNode().getLocation() }
+}
+
+ControlFlowNode getArg(CallNode call, CallableValue callable, int n) {
+  call = callable.getACall() and
+  (
+    result = call.getArg(n)
+    or
+    exists(Function f, string argName |
+      f = callable.getScope() and
+      f.getArgName(n) = argName and
+      result = call.getArgByName(argName)
+    )
+  )
 }
 
 /** Represents a call to a callable (currently only callable values). */
@@ -344,7 +370,7 @@ class CallNodeCall extends DataFlowCall, TCallNode {
 
   override string toString() { result = call.toString() }
 
-  override Node getArg(int n) { result = TCfgNode(call.getArg(n)) }
+  override Node getArg(int n) { result = TCfgNode(getArg(call, callable.getCallableValue(), n)) }
 
   override ControlFlowNode getNode() { result = call }
 
@@ -363,22 +389,19 @@ class ClassCall extends DataFlowCall, TClassCall {
     call = c.getACall()
   }
 
+  private CallableValue getCallableValue() { c.getScope().getInitMethod() = result.getScope() }
+
   override string toString() { result = call.toString() }
 
   override Node getArg(int n) {
-    n > 0 and result = TCfgNode(call.getArg(n - 1))
+    n > 0 and result = TCfgNode(getArg(call, this.getCallableValue(), n - 1))
     or
     n = 0 and result = TSyntheticPreUpdateNode(TCfgNode(call))
   }
 
   override ControlFlowNode getNode() { result = call }
 
-  override DataFlowCallable getCallable() {
-    exists(CallableValue callable |
-      result = TCallableValue(callable) and
-      c.getScope().getInitMethod() = callable.getScope()
-    )
-  }
+  override DataFlowCallable getCallable() { result = TCallableValue(this.getCallableValue()) }
 
   override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getScope() }
 }

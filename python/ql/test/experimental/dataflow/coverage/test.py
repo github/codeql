@@ -370,7 +370,7 @@ def test_call_positional_negative():
 
 
 def test_call_keyword():
-    SINK(second(NONSOURCE, b=SOURCE))  # Flow missing
+    SINK(second(NONSOURCE, b=SOURCE))
 
 
 def test_call_unpack_iterable():
@@ -460,7 +460,7 @@ def test_lambda_keyword():
     def second(a, b):
         return b
 
-    SINK(second(NONSOURCE, b=SOURCE))  # Flow missing
+    SINK(second(NONSOURCE, b=SOURCE))
 
 
 def test_lambda_unpack_iterable():

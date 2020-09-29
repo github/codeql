@@ -8,6 +8,10 @@ arg = "source"
 arg1 = "source1"
 arg2 = "source2"
 arg3 = "source3"
+arg4 = "source4"
+arg5 = "source5"
+arg6 = "source6"
+arg7 = "source7"
 
 
 def SINK(x, expected=arg):
@@ -29,6 +33,22 @@ def SINK3(x):
     SINK(x, expected=arg3)
 
 
+def SINK4(x):
+    SINK(x, expected=arg4)
+
+
+def SINK5(x):
+    SINK(x, expected=arg5)
+
+
+def SINK6(x):
+    SINK(x, expected=arg6)
+
+
+def SINK7(x):
+    SINK(x, expected=arg7)
+
+
 def argument_passing(
     a,
     b,
@@ -43,12 +63,15 @@ def argument_passing(
     SINK1(a)
     SINK2(b)
     SINK3(c)
-    SINK(f)
+    SINK4(d)
+    SINK5(e)
+    SINK6(f)
+    SINK7(g["g"])
 
 
-@expects(4)
+@expects(7)
 def test_argument_passing():
-    argument_passing(arg1, arg2, arg3, f=arg)
+    argument_passing(arg1, *(arg2, arg3, arg4), e=arg5, **{"f": arg6, "g": arg7})
 
 
 def with_pos_only(a, /, b):
