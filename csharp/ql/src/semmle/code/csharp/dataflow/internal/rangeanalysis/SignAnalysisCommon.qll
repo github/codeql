@@ -245,6 +245,13 @@ private Sign ssaDefSign(SsaVariable v) {
   )
 }
 
+/** Returns the sign of implicit SSA definition `v`. */
+private Sign implicitSsaDefSign(SsaVariable v) {
+  result = fieldSign(getImplicitSsaDeclaration(v))
+  or
+  anySign(result) and nonFieldImplicitSsaDefinition(v)
+}
+
 /** Gets a possible sign for `e`. */
 cached
 Sign exprSign(Expr e) {

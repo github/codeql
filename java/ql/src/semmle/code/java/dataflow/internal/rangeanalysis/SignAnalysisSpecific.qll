@@ -115,13 +115,15 @@ private module Impl {
     )
   }
 
-  /** Returns the sign of implicit SSA definition `v`. */
-  Sign implicitSsaDefSign(SsaVariable v) {
-    result = fieldSign(v.(SsaImplicitUpdate).getSourceVariable().getVariable())
-    or
-    result = fieldSign(v.(SsaImplicitInit).getSourceVariable().getVariable())
-    or
-    anySign(result) and exists(Parameter p | v.(SsaImplicitInit).isParameterDefinition(p))
+  /** Gets the variable underlying the implicit SSA variable `v`. */
+  Variable getImplicitSsaDeclaration(SsaVariable v) {
+    result = v.(SsaImplicitUpdate).getSourceVariable().getVariable() or
+    result = v.(SsaImplicitInit).getSourceVariable().getVariable()
+  }
+
+  /** Holds if the variable underlying the implicit SSA variable `v` is not a field. */
+  predicate nonFieldImplicitSsaDefinition(SsaImplicitInit v) {
+    exists(Parameter p | v.isParameterDefinition(p))
   }
 
   /** Gets a possible sign for `f`. */
