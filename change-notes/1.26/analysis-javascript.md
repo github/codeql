@@ -14,6 +14,7 @@
   - [json-stringify-safe](https://www.npmjs.com/package/json-stringify-safe)
   - [json3](https://www.npmjs.com/package/json3)
   - [lodash](https://www.npmjs.com/package/lodash)
+  - [needle](https://www.npmjs.com/package/needle)
   - [object-inspect](https://www.npmjs.com/package/object-inspect)
   - [pretty-format](https://www.npmjs.com/package/pretty-format)
   - [stringify-object](https://www.npmjs.com/package/stringify-object)
