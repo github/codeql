@@ -32,28 +32,25 @@ private module MySql {
   API::Node mysql() { result = API::moduleImport(["mysql", "mysql2"]) }
 
   /** Gets a reference to `mysql.createConnection`. */
-  API::Node createConnectionCallee() { result = mysql().getMember("createConnection") }
-
-  /** Gets a call to `mysql.createConnection`. */
-  API::Node createConnection() { result = createConnectionCallee().getReturn() }
+  API::Node createConnection() { result = mysql().getMember("createConnection") }
 
   /** Gets a reference to `mysql.createPool`. */
-  API::Node createPoolCallee() { result = mysql().getMember("createPool") }
+  API::Node createPool() { result = mysql().getMember("createPool") }
 
-  /** Gets a call to `mysql.createPool`. */
-  API::Node createPool() { result = createPoolCallee().getReturn() }
+  /** Gets a node that contains a MySQL pool created using `mysql.createPool()`. */
+  API::Node pool() { result = createPool().getReturn() }
 
   /** Gets a data flow node that contains a freshly created MySQL connection instance. */
   API::Node connection() {
-    result = createConnection()
+    result = createConnection().getReturn()
     or
-    result = createPool().getMember("getConnection").getParameter(0).getParameter(1)
+    result = pool().getMember("getConnection").getParameter(0).getParameter(1)
   }
 
   /** A call to the MySql `query` method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     QueryCall() {
-      exists(API::Node recv | recv = createPool() or recv = connection() |
+      exists(API::Node recv | recv = pool() or recv = connection() |
         this = recv.getMember("query").getAReference().getACall()
       )
     }
@@ -70,7 +67,7 @@ private module MySql {
   class EscapingSanitizer extends SQL::SqlSanitizer, MethodCallExpr {
     EscapingSanitizer() {
       this =
-        [mysql(), createPool(), connection()]
+        [mysql(), pool(), connection()]
             .getMember(["escape", "escapeId"])
             .getAReference()
             .getACall()
@@ -86,7 +83,7 @@ private module MySql {
 
     Credentials() {
       exists(API::Node callee, string prop |
-        callee in [createConnectionCallee(), createPoolCallee()] and
+        callee in [createConnection(), createPool()] and
         this = callee.getParameter(0).getMember(prop).getARhs().asExpr() and
         (
           prop = "user" and kind = "user name"
