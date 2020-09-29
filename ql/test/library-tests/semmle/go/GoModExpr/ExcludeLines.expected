@@ -1,2 +1,0 @@
-| go.mod:10:1:10:44 | go.mod exclude line | codeql-go-tests/gomod | github.com/github/codeql-go | v1.23.1 |
-| go.mod:23:1:23:42 | go.mod exclude line | codeql-go-tests/gomod | github.com/sirupsen/logrus | v1.4.2 |

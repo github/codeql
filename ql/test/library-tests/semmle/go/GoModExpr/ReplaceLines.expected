@@ -1,2 +1,0 @@
-| go.mod:12:1:12:54 | go.mod replace line | codeql-go-tests/gomod | github.com/Masterminds/squirrel | no version | ./squirrel | no version |
-| go.mod:14:1:14:79 | go.mod replace line | codeql-go-tests/gomod | github.com/Sirupsen/logrus | v1.4.1 | github.com/sirupsen/logrus | v1.4.1 |
