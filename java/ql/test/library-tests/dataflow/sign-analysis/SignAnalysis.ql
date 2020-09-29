@@ -18,4 +18,5 @@ string getASignString(Expr e) {
 }
 
 from Expr e
+where not e instanceof Element or e.(Element).fromSource()
 select e, strictconcat(string s | s = getASignString(e) | s, " ")

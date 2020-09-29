@@ -38,6 +38,8 @@ module Private {
 
   class VariableUpdate = J::VariableUpdate;
 
+  class ExprWithPossibleValue = J::Literal;
+
   predicate ssaRead = RU::ssaRead/2;
 
   predicate guardControlsSsaRead = RU::guardControlsSsaRead/3;
@@ -56,15 +58,6 @@ private module Impl {
   private import SsaReadPositionCommon
 
   class UnsignedNumericType = CharacterType;
-
-  /**
-   * Gets the `float` value of expression `e` where `e` has no `int` value.
-   */
-  float getNonIntegerValue(Expr e) {
-    result = e.(LongLiteral).getValue().toFloat() or
-    result = e.(FloatingPointLiteral).getValue().toFloat() or
-    result = e.(DoubleLiteral).getValue().toFloat()
-  }
 
   /** Gets the character value of expression `e`. */
   string getCharValue(Expr e) { result = e.(CharacterLiteral).getValue() }
@@ -86,11 +79,10 @@ private module Impl {
 
   /**
    * Holds if `e` has type `NumericOrCharType`, but the sign of `e` is unknown.
-   *
-   * The expression types handled in the predicate complements the expression
-   * types handled in `specificSubExprSign`.
    */
-  predicate unknownIntegerAccess(Expr e) {
+  predicate numericExprWithUnknownSign(Expr e) {
+    // The expression types handled in the predicate complements the expression
+    // types handled in `specificSubExprSign`.
     e instanceof ArrayAccess and e.getType() instanceof NumericOrCharType
     or
     e instanceof MethodAccess and e.getType() instanceof NumericOrCharType

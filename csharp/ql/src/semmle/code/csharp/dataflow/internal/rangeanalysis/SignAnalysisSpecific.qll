@@ -34,6 +34,8 @@ module Private {
 
   class VariableUpdate = CS::AssignableDefinition;
 
+  class ExprWithPossibleValue = CS::Expr;
+
   predicate ssaRead = SU::ssaRead/2;
 }
 
@@ -49,18 +51,6 @@ private module Impl {
   private import semmle.code.csharp.commons.ComparisonTest
 
   private class BooleanValue = AbstractValues::BooleanValue;
-
-  /**
-   * Gets the value of the expression if it can't be converted to integer, but
-   * can be converted to float.
-   */
-  float getNonIntegerValue(Expr e) {
-    exists(string s |
-      s = e.getValue() and
-      result = s.toFloat() and
-      not exists(s.toInt())
-    )
-  }
 
   /** Gets the character value of expression `e`. */
   string getCharValue(Expr e) { result = e.getValue() and e.getType() instanceof CharType }
@@ -162,7 +152,7 @@ private module Impl {
   /**
    * Holds if `e` has type `NumericOrCharType`, but the sign of `e` is unknown.
    */
-  predicate unknownIntegerAccess(Expr e) {
+  predicate numericExprWithUnknownSign(Expr e) {
     e.getType() instanceof NumericOrCharType and
     not e = getARead(_) and
     not e instanceof FieldAccess and

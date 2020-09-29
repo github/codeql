@@ -41,6 +41,18 @@ private Sign certainExprSign(Expr e) {
   )
 }
 
+/**
+ * Gets the value of the expression if it can't be converted to integer, but
+ * can be converted to float.
+ */
+float getNonIntegerValue(ExprWithPossibleValue e) {
+  exists(string s |
+    s = e.getValue() and
+    result = s.toFloat() and
+    not exists(s.toInt())
+  )
+}
+
 /** Holds if the sign of `e` is too complicated to determine. */
 predicate unknownSign(Expr e) {
   not exists(certainExprSign(e)) and
@@ -55,7 +67,7 @@ predicate unknownSign(Expr e) {
       not fromtyp instanceof NumericOrCharType
     )
     or
-    unknownIntegerAccess(e)
+    numericExprWithUnknownSign(e)
   )
 }
 
@@ -246,7 +258,7 @@ private Sign ssaDefSign(SsaVariable v) {
 }
 
 /** Returns the sign of explicit SSA definition `v`. */
-Sign explicitSsaDefSign(SsaVariable v) {
+private Sign explicitSsaDefSign(SsaVariable v) {
   exists(VariableUpdate def | def = getExplicitSsaAssignment(v) |
     result = exprSign(getExprFromSsaAssignment(def))
     or
