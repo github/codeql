@@ -235,6 +235,61 @@ private Node update(Node node) {
 // Global flow
 //--------
 //
+/** Computes routing of arguments to parameters */
+module ArgumentPassing {
+  NameNode getParameter(CallableValue callable, int n) {
+    // positional parameter
+    result = callable.getParameter(n)
+    or
+    // vararg
+    exists(Function f |
+      f = callable.getScope() and
+      n = f.getPositionalParameterCount() and
+      result = f.getVararg().getAFlowNode()
+    )
+  }
+
+  /**
+   * Gets the argument to `call` then is passed to the `n`th parameter of `callable`.
+   */
+  Node getArg(CallNode call, CallableValue callable, int n) {
+    call = callable.getACall() and
+    (
+      // positional argument
+      result = TCfgNode(call.getArg(n))
+      or
+      // keyword argument
+      exists(Function f, string argName |
+        f = callable.getScope() and
+        f.getArgName(n) = argName and
+        result = TCfgNode(call.getArgByName(argName))
+      )
+      or
+      // vararg
+      exists(Function f |
+        f = callable.getScope() and
+        f.hasVarArg() and
+        n = f.getPositionalParameterCount() and
+        result = TPosOverflowNode(call, callable)
+      )
+    )
+  }
+
+  ControlFlowNode getPositionalOverflowArg(CallNode call, CallableValue callable, int n) {
+    call = callable.getACall() and
+    exists(Function f, int posCount, int argNr |
+      f = callable.getScope() and
+      f.hasVarArg() and
+      posCount = f.getPositionalParameterCount() and
+      result = call.getArg(argNr) and
+      argNr >= posCount and
+      argNr = posCount + n
+    )
+  }
+}
+
+import ArgumentPassing
+
 /**
  * IPA type for DataFlowCallable.
  *
@@ -278,7 +333,7 @@ class DataFlowCallableValue extends DataFlowCallable, TCallableValue {
 
   override Scope getScope() { result = callable.getScope() }
 
-  override NameNode getParameter(int n) { result = callable.getParameter(n) }
+  override NameNode getParameter(int n) { result = getParameter(callable, n) }
 
   override string getName() { result = callable.getName() }
 
@@ -345,19 +400,6 @@ abstract class DataFlowCall extends TDataFlowCall {
   Location getLocation() { result = this.getNode().getLocation() }
 }
 
-ControlFlowNode getArg(CallNode call, CallableValue callable, int n) {
-  call = callable.getACall() and
-  (
-    result = call.getArg(n)
-    or
-    exists(Function f, string argName |
-      f = callable.getScope() and
-      f.getArgName(n) = argName and
-      result = call.getArgByName(argName)
-    )
-  )
-}
-
 /** Represents a call to a callable (currently only callable values). */
 class CallNodeCall extends DataFlowCall, TCallNode {
   CallNode call;
@@ -370,7 +412,7 @@ class CallNodeCall extends DataFlowCall, TCallNode {
 
   override string toString() { result = call.toString() }
 
-  override Node getArg(int n) { result = TCfgNode(getArg(call, callable.getCallableValue(), n)) }
+  override Node getArg(int n) { result = getArg(call, callable.getCallableValue(), n) }
 
   override ControlFlowNode getNode() { result = call }
 
@@ -394,7 +436,7 @@ class ClassCall extends DataFlowCall, TClassCall {
   override string toString() { result = call.toString() }
 
   override Node getArg(int n) {
-    n > 0 and result = TCfgNode(getArg(call, this.getCallableValue(), n - 1))
+    n > 0 and result = getArg(call, this.getCallableValue(), n - 1)
     or
     n = 0 and result = TSyntheticPreUpdateNode(TCfgNode(call))
   }
@@ -550,6 +592,8 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   comprehensionStoreStep(nodeFrom, c, nodeTo)
   or
   attributeStoreStep(nodeFrom, c, nodeTo)
+  or
+  posOverflowStoreStep(nodeFrom, c, nodeTo)
 }
 
 /** Data flows from an element of a list to the list. */
@@ -642,6 +686,14 @@ predicate attributeStoreStep(CfgNode nodeFrom, AttributeContent c, PostUpdateNod
     nodeFrom.asCfgNode() = attr.(DefinitionNode).getValue() and
     attr.getName() = c.getAttribute() and
     attr.getObject() = nodeTo.getPreUpdateNode().(CfgNode).getNode()
+  )
+}
+
+predicate posOverflowStoreStep(CfgNode nodeFrom, TupleElementContent c, Node nodeTo) {
+  exists(CallNode call, CallableValue callable, int n |
+    nodeFrom.asCfgNode() = getPositionalOverflowArg(call, callable, n) and
+    nodeTo = TPosOverflowNode(call, callable) and
+    c.getIndex() = n
   )
 }
 

@@ -386,7 +386,7 @@ def f_extra_pos(a, *b):
 
 
 def test_call_extra_pos():
-    SINK(f_extra_pos(NONSOURCE, SOURCE))  # Flow missing
+    SINK(f_extra_pos(NONSOURCE, SOURCE))
 
 
 def f_extra_keyword(a, **b):
@@ -479,7 +479,7 @@ def test_lambda_unpack_mapping():
 
 def test_lambda_extra_pos():
     f_extra_pos = lambda a, *b: b[0]
-    SINK(f_extra_pos(NONSOURCE, SOURCE))  # Flow missing
+    SINK(f_extra_pos(NONSOURCE, SOURCE))
 
 
 def test_lambda_extra_keyword():

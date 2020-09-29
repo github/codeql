@@ -23,12 +23,16 @@ newtype TNode =
   TEssaNode(EssaVariable var) or
   /** A node corresponding to a control flow node. */
   TCfgNode(DataFlowCfgNode node) or
-  /** A synthetic node representing the value of an object before a state change */
+  /** A synthetic node representing the value of an object before a state change. */
   TSyntheticPreUpdateNode(NeedsSyntheticPreUpdateNode post) or
-  /** A synthetic node representing the value of an object after a state change */
+  /** A synthetic node representing the value of an object after a state change. */
   TSyntheticPostUpdateNode(NeedsSyntheticPostUpdateNode pre) or
-  /** A node representing a global (module-level) variable in a specific module */
-  TModuleVariableNode(Module m, GlobalVariable v) { v.getScope() = m and v.escapes() }
+  /** A node representing a global (module-level) variable in a specific module. */
+  TModuleVariableNode(Module m, GlobalVariable v) { v.getScope() = m and v.escapes() } or
+  /** A node representing the overflow positional arguments to a call. */
+  TPosOverflowNode(CallNode call, CallableValue callable) {
+    exists(getPositionalOverflowArg(call, callable, _))
+  }
 
 /**
  * An element, viewed as a node in a data flow graph. Either an SSA variable

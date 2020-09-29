@@ -9,6 +9,7 @@
 | argumentPassing.py:133:46:133:49 | ControlFlowNode for arg1 | argumentPassing.py:118:11:118:13 | ControlFlowNode for foo |
 | argumentPassing.py:141:14:141:17 | ControlFlowNode for arg1 | argumentPassing.py:139:15:139:15 | ControlFlowNode for a |
 | argumentPassing.py:148:19:148:22 | ControlFlowNode for arg1 | argumentPassing.py:146:15:146:15 | ControlFlowNode for a |
+| argumentPassing.py:156:15:156:18 | ControlFlowNode for arg1 | argumentPassing.py:154:19:154:22 | ControlFlowNode for Subscript |
 | argumentPassing.py:163:13:163:16 | ControlFlowNode for arg1 | argumentPassing.py:161:15:161:15 | ControlFlowNode for a |
 | argumentPassing.py:170:16:170:19 | ControlFlowNode for arg1 | argumentPassing.py:168:15:168:15 | ControlFlowNode for a |
 | argumentPassing.py:177:15:177:18 | ControlFlowNode for arg1 | argumentPassing.py:175:15:175:15 | ControlFlowNode for a |
