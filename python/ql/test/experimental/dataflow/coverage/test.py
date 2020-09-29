@@ -378,7 +378,7 @@ def test_call_unpack_iterable():
 
 
 def test_call_unpack_mapping():
-    SINK(second(NONSOURCE, **{"b": SOURCE}))  # Flow missing
+    SINK(second(NONSOURCE, **{"b": SOURCE}))
 
 
 def f_extra_pos(a, *b):
@@ -474,7 +474,7 @@ def test_lambda_unpack_mapping():
     def second(a, b):
         return b
 
-    SINK(second(NONSOURCE, **{"b": SOURCE}))  # Flow missing
+    SINK(second(NONSOURCE, **{"b": SOURCE}))
 
 
 def test_lambda_extra_pos():

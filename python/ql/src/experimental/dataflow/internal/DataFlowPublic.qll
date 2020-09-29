@@ -36,6 +36,10 @@ newtype TNode =
   /** A node representing the overflow keyword arguments to a call. */
   TKwOverflowNode(CallNode call, CallableValue callable) {
     exists(getKeywordOverflowArg(call, callable, _))
+  } or
+  /** A node representing an unpacked element of a dictionary argument. */
+  TKwUnpacked(CallNode call, CallableValue callable, string name) {
+    call_unpacks(call, callable, name, _)
   }
 
 /**
