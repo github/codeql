@@ -347,7 +347,11 @@ module DOM {
   }
 
   /** Gets a data flow node that may refer to a value from the DOM. */
-  DataFlow::SourceNode domValueRef() { result = domValueRef(DataFlow::TypeTracker::end()) }
+  DataFlow::SourceNode domValueRef() {
+    result = domValueRef(DataFlow::TypeTracker::end())
+    or
+    result.hasUnderlyingType("Element")
+  }
 
   module LocationSource {
     /**
@@ -419,5 +423,9 @@ module DOM {
   /**
    * Gets a reference to the 'document' object.
    */
-  DataFlow::SourceNode documentRef() { result = documentRef(DataFlow::TypeTracker::end()) }
+  DataFlow::SourceNode documentRef() {
+    result = documentRef(DataFlow::TypeTracker::end())
+    or
+    result.hasUnderlyingType("Document")
+  }
 }
