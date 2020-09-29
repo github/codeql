@@ -48,6 +48,10 @@ private module Impl {
 
   private class BooleanValue = AbstractValues::BooleanValue;
 
+  /**
+   * Gets the value of the expression if it can't be converted to integer, but
+   * can be converted to float.
+   */
   float getNonIntegerValue(Expr e) {
     exists(string s |
       s = e.getValue() and
@@ -56,8 +60,13 @@ private module Impl {
     )
   }
 
+  /** Gets the character value of expression `e`. */
   string getCharValue(Expr e) { result = e.getValue() and e.getType() instanceof CharType }
 
+  /**
+   * Holds if `e` is an access to the size of a container (`string`, `Array`,
+   * `IEnumerable`, or `ICollection`).
+   */
   predicate containerSizeAccess(Expr e) {
     exists(Property p | p = e.(PropertyAccess).getTarget() |
       propertyOverrides(p, "System.Collections.Generic.IEnumerable<>", "Count") or
@@ -69,6 +78,7 @@ private module Impl {
     e instanceof CountCall
   }
 
+  /** Holds if `e` is by definition strictly positive. */
   predicate positiveExpression(Expr e) { e instanceof SizeofExpr }
 
   abstract class NumericOrCharType extends Type { }
@@ -97,10 +107,12 @@ private module Impl {
     }
   }
 
+  /** Returns the sign of explicit SSA definition `v`. */
   Sign explicitSsaDefSign(Ssa::ExplicitDefinition v) {
     exists(AssignableDefinition def | def = v.getADefinition() |
       result = exprSign(def.getSource())
       or
+      anySign(result) and
       not exists(def.getSource()) and
       not def.getElement() instanceof MutatorOperation
       or
@@ -110,14 +122,11 @@ private module Impl {
     )
   }
 
+  /** Returns the sign of implicit SSA definition `v`. */
   Sign implicitSsaDefSign(Ssa::ImplicitDefinition v) {
-    result = fieldSign(v.getSourceVariable().getAssignable()) or
-    not v.getSourceVariable().getAssignable() instanceof Field
-  }
-
-  pragma[inline]
-  Sign ssaVariableSign(Ssa::Definition v, Expr e) {
-    result = ssaSign(v, any(SsaReadPositionBlock bb | getAnExpression(bb) = e))
+    result = fieldSign(v.getSourceVariable().getAssignable())
+    or
+    anySign(result) and not v.getSourceVariable().getAssignable() instanceof Field
   }
 
   /** Gets a possible sign for `f`. */
@@ -133,9 +142,12 @@ private module Impl {
       exists(AssignOperation a | a.getLValue() = f.getAnAccess() | result = exprSign(a))
       or
       not exists(f.getInitializer()) and result = TZero()
-    else any()
+    else anySign(result)
   }
 
+  /**
+   * Holds if `e` has type `NumericOrCharType`, but the sign of `e` is unknown.
+   */
   predicate unknownIntegerAccess(Expr e) {
     e.getType() instanceof NumericOrCharType and
     not e = getARead(_) and
@@ -171,6 +183,7 @@ private module Impl {
     not e instanceof NullCoalescingExpr
   }
 
+  /** Gets a possible sign for `e` from the signs of its child nodes. */
   Sign specificSubExprSign(Expr e) {
     // The expression types that are handled here should be excluded in `unknownIntegerAccess`.
     // Keep them in sync.

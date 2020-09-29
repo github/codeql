@@ -11,7 +11,7 @@ private import SsaReadPositionCommon
 private import Sign
 
 /** Gets the sign of `e` if this can be directly determined. */
-Sign certainExprSign(Expr e) {
+private Sign certainExprSign(Expr e) {
   exists(int i | e.(ConstantIntegerExpr).getIntValue() = i |
     i < 0 and result = TNeg()
     or
@@ -185,29 +185,32 @@ private predicate hasGuard(SsaVariable v, SsaReadPosition pos, Sign s) {
   s = TZero() and zeroBound(_, v, pos)
 }
 
+/**
+ * Gets a possible sign of `v` at `pos` based on its definition, where the sign
+ * might be ruled out by a guard.
+ */
 pragma[noinline]
 private Sign guardedSsaSign(SsaVariable v, SsaReadPosition pos) {
-  // SSA variable can have sign `result`
   result = ssaDefSign(v) and
   pos.hasReadOfVar(v) and
-  // there are guards at this position on `v` that might restrict it to be sign `result`.
-  // (So we need to check if they are satisfied)
   hasGuard(v, pos, result)
 }
 
+/**
+ * Gets a possible sign of `v` at `pos` based on its definition, where no guard
+ * can rule it out.
+ */
 pragma[noinline]
 private Sign unguardedSsaSign(SsaVariable v, SsaReadPosition pos) {
-  // SSA variable can have sign `result`
   result = ssaDefSign(v) and
   pos.hasReadOfVar(v) and
-  // there's no guard at this position on `v` that might restrict it to be sign `result`.
   not hasGuard(v, pos, result)
 }
 
 /**
- * Gets the sign of `v` at read position `pos`, when there's at least one guard
- * on `v` at position `pos`. Each bound corresponding to a given sign must be met
- * in order for `v` to be of that sign.
+ * Gets a possible sign of `v` at read position `pos`, where a guard could have
+ * ruled out the sign but does not.
+ * This does not check that the definition of `v` also allows the sign.
  */
 private Sign guardedSsaSignOk(SsaVariable v, SsaReadPosition pos) {
   result = TPos() and
@@ -221,7 +224,7 @@ private Sign guardedSsaSignOk(SsaVariable v, SsaReadPosition pos) {
 }
 
 /** Gets a possible sign for `v` at `pos`. */
-Sign ssaSign(SsaVariable v, SsaReadPosition pos) {
+private Sign ssaSign(SsaVariable v, SsaReadPosition pos) {
   result = unguardedSsaSign(v, pos)
   or
   result = guardedSsaSign(v, pos) and
@@ -230,7 +233,7 @@ Sign ssaSign(SsaVariable v, SsaReadPosition pos) {
 
 /** Gets a possible sign for `v`. */
 pragma[nomagic]
-Sign ssaDefSign(SsaVariable v) {
+private Sign ssaDefSign(SsaVariable v) {
   result = explicitSsaDefSign(v)
   or
   result = implicitSsaDefSign(v)
@@ -250,18 +253,23 @@ Sign exprSign(Expr e) {
     or
     not exists(certainExprSign(e)) and
     (
-      unknownSign(e)
+      anySign(s) and unknownSign(e)
       or
-      exists(SsaVariable v | getARead(v) = e | s = ssaVariableSign(v, e))
+      exists(SsaVariable v | getARead(v) = e |
+        s = ssaSign(v, any(SsaReadPositionBlock bb | getAnExpression(bb) = e))
+        or
+        not exists(SsaReadPositionBlock bb | getAnExpression(bb) = e) and
+        s = ssaDefSign(v)
+      )
       or
-      e =
-        any(VarAccess access |
-          not exists(SsaVariable v | getARead(v) = access) and
-          (
-            s = fieldSign(getField(access.(FieldAccess))) or
-            not access instanceof FieldAccess
-          )
+      exists(VarAccess access | access = e |
+        not exists(SsaVariable v | getARead(v) = access) and
+        (
+          s = fieldSign(getField(access.(FieldAccess)))
+          or
+          anySign(s) and not access instanceof FieldAccess
         )
+      )
       or
       s = specificSubExprSign(e)
     )
@@ -271,6 +279,12 @@ Sign exprSign(Expr e) {
     else result = s
   )
 }
+
+/**
+ * Dummy predicate that holds for any sign. This is added to improve readability
+ * of cases where the sign is unrestricted.
+ */
+predicate anySign(Sign s) { any() }
 
 /** Holds if `e` can be positive and cannot be negative. */
 predicate positive(Expr e) {

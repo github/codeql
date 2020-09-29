@@ -55,14 +55,22 @@ private module Impl {
 
   class UnsignedNumericType = CharacterType;
 
+  /**
+   * Gets the `float` value of expression `e` where `e` has no `int` value.
+   */
   float getNonIntegerValue(Expr e) {
     result = e.(LongLiteral).getValue().toFloat() or
     result = e.(FloatingPointLiteral).getValue().toFloat() or
     result = e.(DoubleLiteral).getValue().toFloat()
   }
 
+  /** Gets the character value of expression `e`. */
   string getCharValue(Expr e) { result = e.(CharacterLiteral).getValue() }
 
+  /**
+   * Holds if `e` is an access to the size of a container (`string`, `Map`, or
+   * `Collection`).
+   */
   predicate containerSizeAccess(Expr e) {
     e.(MethodAccess).getMethod() instanceof StringLengthMethod
     or
@@ -71,8 +79,15 @@ private module Impl {
     e.(MethodAccess).getMethod() instanceof MapSizeMethod
   }
 
+  /** Holds if `e` is by definition strictly positive. */
   predicate positiveExpression(Expr e) { none() }
 
+  /**
+   * Holds if `e` has type `NumericOrCharType`, but the sign of `e` is unknown.
+   *
+   * The expression types handled in the predicate complements the expression
+   * types handled in `specificSubExprSign`.
+   */
   predicate unknownIntegerAccess(Expr e) {
     e instanceof ArrayAccess and e.getType() instanceof NumericOrCharType
     or
@@ -81,6 +96,7 @@ private module Impl {
     e instanceof ClassInstanceExpr and e.getType() instanceof NumericOrCharType
   }
 
+  /** Returns the sign of explicit SSA definition `v`. */
   Sign explicitSsaDefSign(SsaVariable v) {
     exists(VariableUpdate def | def = v.(SsaExplicitUpdate).getDefiningExpr() |
       result = exprSign(def.(VariableAssign).getSource())
@@ -99,20 +115,13 @@ private module Impl {
     )
   }
 
+  /** Returns the sign of implicit SSA definition `v`. */
   Sign implicitSsaDefSign(SsaVariable v) {
     result = fieldSign(v.(SsaImplicitUpdate).getSourceVariable().getVariable())
     or
     result = fieldSign(v.(SsaImplicitInit).getSourceVariable().getVariable())
     or
-    exists(Parameter p | v.(SsaImplicitInit).isParameterDefinition(p))
-  }
-
-  pragma[inline]
-  Sign ssaVariableSign(SsaVariable v, Expr e) {
-    result = ssaSign(v, any(SsaReadPositionBlock bb | getAnExpression(bb) = e))
-    or
-    not exists(SsaReadPositionBlock bb | getAnExpression(bb) = e) and
-    result = ssaDefSign(v)
+    anySign(result) and exists(Parameter p | v.(SsaImplicitInit).isParameterDefinition(p))
   }
 
   /** Gets a possible sign for `f`. */
@@ -129,7 +138,7 @@ private module Impl {
     or
     exists(AssignOp a | a.getDest() = f.getAnAccess() | result = exprSign(a))
     or
-    exists(ReflectiveFieldAccess rfa | rfa.inferAccessedField() = f)
+    anySign(result) and exists(ReflectiveFieldAccess rfa | rfa.inferAccessedField() = f)
     or
     if f.fromSource()
     then not exists(f.getInitializer()) and result = TZero()
@@ -142,9 +151,10 @@ private module Impl {
         else
           if f.hasName("MIN_VALUE")
           then result = TNeg()
-          else any()
+          else anySign(result)
   }
 
+  /** Gets a possible sign for `e` from the signs of its child nodes. */
   Sign specificSubExprSign(Expr e) {
     result = exprSign(e.(AssignExpr).getSource())
     or
