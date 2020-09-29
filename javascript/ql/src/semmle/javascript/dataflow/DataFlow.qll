@@ -228,7 +228,7 @@ module DataFlow {
      *
      * Doesn't take field types and function return types into account.
      */
-    private JSDocTypeExpr getFallbackTypeAnnotation() {
+    private TypeAnnotation getFallbackTypeAnnotation() {
       exists(BindingPattern pattern |
         this = valueNode(pattern) and
         not ast_node_type(pattern, _) and
@@ -236,6 +236,11 @@ module DataFlow {
       )
       or
       result = getAPredecessor().getFallbackTypeAnnotation()
+      or
+      exists(DataFlow::ClassNode cls, string fieldName |
+        this = cls.getAReceiverNode().getAPropertyRead(fieldName) and
+        result = cls.getFieldTypeAnnotation(fieldName)
+      )
     }
 
     /**

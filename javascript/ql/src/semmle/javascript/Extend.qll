@@ -34,6 +34,13 @@ abstract class ExtendCall extends DataFlow::CallNode {
   }
 }
 
+/** A version of `JQuery::dollarSource()` with fewer dependencies. */
+private DataFlow::SourceNode localDollar() {
+  result.accessesGlobal(["$", "jQuery"])
+  or
+  result = DataFlow::moduleImport("jquery")
+}
+
 /**
  * An extend call of form `extend(true/false, dst, src1, src2, ...)`, where the true/false
  * argument is possibly omitted.
@@ -47,9 +54,7 @@ private class ExtendCallWithFlag extends ExtendCall {
       name = "node.extend"
     )
     or
-    // Match $.extend using the source of `$` only, as ExtendCall should not
-    // depend on type tracking.
-    this = JQuery::dollarSource().getAMemberCall("extend")
+    this = localDollar().getAMemberCall("extend")
   }
 
   /**
