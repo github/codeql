@@ -66,11 +66,7 @@ private module MySql {
   /** A call to the `escape` or `escapeId` method that performs SQL sanitization. */
   class EscapingSanitizer extends SQL::SqlSanitizer, MethodCallExpr {
     EscapingSanitizer() {
-      this =
-        [mysql(), pool(), connection()]
-            .getMember(["escape", "escapeId"])
-            .getACall()
-            .asExpr() and
+      this = [mysql(), pool(), connection()].getMember(["escape", "escapeId"]).getACall().asExpr() and
       input = this.getArgument(0) and
       output = this
     }
@@ -100,22 +96,19 @@ private module MySql {
  * Provides classes modelling the `pg` package.
  */
 private module Postgres {
-  /** Gets an expression of the form `require('pg').Client`. */
-  API::Node newClientCallee() { result = API::moduleImport("pg").getMember("Client") }
+  /** Gets a reference to the `Client` constructor in the `pg` package. E.g: `require('pg').Client`. */
+  API::Node newClient() { result = API::moduleImport("pg").getMember("Client") }
 
-  /** Gets an expression of the form `new require('pg').Client()`. */
-  API::Node newClient() { result = newClientCallee().getInstance() }
-
-  /** Gets a data flow node that holds a freshly created Postgres client instance. */
+  /** Gets a freshly created Postgres client instance. */
   API::Node client() {
-    result = newClient()
+    result = newClient().getInstance()
     or
     // pool.connect(function(err, client) { ... })
-    result = newPool().getMember("connect").getParameter(0).getParameter(1)
+    result = pool().getMember("connect").getParameter(0).getParameter(1)
   }
 
   /** Gets a constructor that when invoked constructs a new connection pool. */
-  API::Node newPoolCallee() {
+  API::Node newPool() {
     // new require('pg').Pool()
     result = API::moduleImport("pg").getMember("Pool")
     or
@@ -124,11 +117,11 @@ private module Postgres {
   }
 
   /** Gets an expression that constructs a new connection pool. */
-  API::Node newPool() { result = newPoolCallee().getInstance() }
+  API::Node pool() { result = newPool().getInstance() }
 
   /** A call to the Postgres `query` method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
-    QueryCall() { this = [client(), newPool()].getMember("query").getACall() }
+    QueryCall() { this = [client(), pool()].getMember("query").getACall() }
 
     override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
   }
@@ -144,8 +137,7 @@ private module Postgres {
 
     Credentials() {
       exists(string prop |
-        this =
-          [newClientCallee(), newPoolCallee()].getParameter(0).getMember(prop).getARhs().asExpr() and
+        this = [newClient(), newPool()].getParameter(0).getMember(prop).getARhs().asExpr() and
         (
           prop = "user" and kind = "user name"
           or
@@ -386,10 +378,7 @@ private module Spanner {
    */
   class DatabaseRunCall extends SqlExecution {
     DatabaseRunCall() {
-      this =
-        database()
-            .getMember(["run", "runPartitionedUpdate", "runStream"])
-            .getACall()
+      this = database().getMember(["run", "runPartitionedUpdate", "runStream"]).getACall()
     }
   }
 
@@ -407,10 +396,7 @@ private module Spanner {
    */
   class ExecuteSqlCall extends SqlExecution {
     ExecuteSqlCall() {
-      this =
-        v1SpannerClient()
-            .getMember(["executeSql", "executeStreamingSql"])
-            .getACall()
+      this = v1SpannerClient().getMember(["executeSql", "executeStreamingSql"]).getACall()
     }
 
     override DataFlow::Node getAQueryArgument() {
