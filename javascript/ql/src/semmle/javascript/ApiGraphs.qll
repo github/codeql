@@ -561,15 +561,11 @@ module API {
     cached
     predicate use(TApiNode nd, DataFlow::Node ref) {
       exists(string m, Module mod | nd = MkModuleDef(m) and mod = importableModule(m) |
-        ref = DataFlow::ssaDefinitionNode(SSA::implicitInit(mod.(NodeModule).getModuleVariable()))
-        or
-        ref = DataFlow::parameterNode(mod.(AmdModule).getDefine().getModuleParameter())
+        ref.(ModuleAsSourceNode).getModule() = mod
       )
       or
       exists(string m, Module mod | nd = MkModuleExport(m) and mod = importableModule(m) |
-        ref = DataFlow::ssaDefinitionNode(SSA::implicitInit(mod.(NodeModule).getExportsVariable()))
-        or
-        ref = DataFlow::parameterNode(mod.(AmdModule).getDefine().getExportsParameter())
+        ref.(ExportsAsSourceNode).getModule() = mod
         or
         exists(DataFlow::Node base | use(MkModuleDef(m), base) |
           ref = trackUseNode(base).getAPropertyRead("exports")
@@ -796,13 +792,31 @@ private module Label {
 }
 
 /**
- * A CommonJS `module` or `exports` variable, considered as a source node.
+ * A CommonJS/AMD `module` variable, considered as a source node.
  */
-private class AdditionalSourceNode extends DataFlow::SourceNode::Range {
-  AdditionalSourceNode() {
-    exists(NodeModule m, Variable v |
-      v in [m.getModuleVariable(), m.getExportsVariable()] and
-      this = DataFlow::ssaDefinitionNode(SSA::implicitInit(v))
-    )
+private class ModuleAsSourceNode extends DataFlow::SourceNode::Range {
+  Module m;
+
+  ModuleAsSourceNode() {
+    this = DataFlow::ssaDefinitionNode(SSA::implicitInit(m.(NodeModule).getModuleVariable()))
+    or
+    this = DataFlow::parameterNode(m.(AmdModule).getDefine().getModuleParameter())
   }
+
+  Module getModule() { result = m }
+}
+
+/**
+ * A CommonJS/AMD `exports` variable, considered as a source node.
+ */
+private class ExportsAsSourceNode extends DataFlow::SourceNode::Range {
+  Module m;
+
+  ExportsAsSourceNode() {
+    this = DataFlow::ssaDefinitionNode(SSA::implicitInit(m.(NodeModule).getExportsVariable()))
+    or
+    this = DataFlow::parameterNode(m.(AmdModule).getDefine().getExportsParameter())
+  }
+
+  Module getModule() { result = m }
 }
