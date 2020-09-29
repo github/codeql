@@ -592,6 +592,15 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
     arg = [0 .. method.getNumberOfParameters()] and
     arg != 3
   )
+  or
+  (
+    method.getDeclaringType() instanceof AndroidContentProvider or
+    method.getDeclaringType() instanceof AndroidContentResolver
+  ) and
+  // Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder, CancellationSignal cancellationSignal)
+  // Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
+  method.hasName("query") and
+  arg = 0
 }
 
 /**

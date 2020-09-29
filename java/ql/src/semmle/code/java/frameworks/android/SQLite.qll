@@ -187,7 +187,10 @@ private class QueryBuilderUpdateMethod extends SQLiteRunner {
 private class ContentProviderDeleteMethod extends SQLiteRunner {
   ContentProviderDeleteMethod() {
     // delete(Uri uri, String selection, String[] selectionArgs)
-    this.getDeclaringType() instanceof AndroidContentProvider and
+    (
+      this.getDeclaringType() instanceof AndroidContentProvider or
+      this.getDeclaringType() instanceof AndroidContentResolver
+    ) and
     this.hasName("delete") and
     this.getNumberOfParameters() = 3
   }
@@ -199,7 +202,10 @@ private class ContentProviderQueryMethod extends SQLiteRunner {
   ContentProviderQueryMethod() {
     // query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder, CancellationSignal cancellationSignal)
     // query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
-    this.getDeclaringType() instanceof AndroidContentProvider and
+    (
+      this.getDeclaringType() instanceof AndroidContentProvider or
+      this.getDeclaringType() instanceof AndroidContentResolver
+    ) and
     this.hasName("query") and
     this.getNumberOfParameters() = [5, 6]
   }
@@ -210,7 +216,10 @@ private class ContentProviderQueryMethod extends SQLiteRunner {
 private class ContentProviderUpdateMethod extends SQLiteRunner {
   ContentProviderUpdateMethod() {
     // update(Uri uri, ContentValues values, String selection, String[] selectionArgs)
-    this.getDeclaringType() instanceof AndroidContentProvider and
+    (
+      this.getDeclaringType() instanceof AndroidContentProvider or
+      this.getDeclaringType() instanceof AndroidContentResolver
+    ) and
     this.hasName("update") and
     this.getNumberOfParameters() = 4
   }
