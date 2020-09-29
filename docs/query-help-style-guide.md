@@ -10,6 +10,8 @@ When you contribute a new [supported query](supported-queries.md) to this reposi
 *   [JavaScript queries](https://help.semmle.com/wiki/display/JS/)
 *   [Python queries](https://help.semmle.com/wiki/display/PYTHON/)
 
+When writing query help, you can test the files to make sure they are valid and render a preview of the content in markdown using the CodeQL CLI. For more information, see "`Testing query help files <https://help.semmle.com/codeql/codeql-cli/procedures/testing-query-help-files.html>`__."
+
 ### Location and file name
 
 Query help files must have the same base name as the query they describe and must be located in the same directory.  
