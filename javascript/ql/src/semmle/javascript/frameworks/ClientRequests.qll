@@ -396,11 +396,11 @@ module ClientRequest {
 
       override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
         promise = false and
-        result = this.getCallback(this.getNumArgument() - 1).getParameter(1) and
+        result = this.getABoundCallbackParameter(this.getNumArgument() - 1, 1) and
         responseType = "fetch.response"
         or
         promise = false and
-        result = this.getCallback(this.getNumArgument() - 1).getParameter(2) and
+        result = this.getABoundCallbackParameter(this.getNumArgument() - 1, 2) and
         responseType = "json"
       }
     }
