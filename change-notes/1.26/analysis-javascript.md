@@ -39,6 +39,7 @@
 | Unsafe shell command constructed from library input (`js/shell-command-constructed-from-input`) | More results | This query now recognizes more commands where colon, dash, and underscore are used. |
 | Unsafe jQuery plugin (`js/unsafe-jquery-plugin`) | More results | This query now detects more unsafe uses of nested option properties. |
 | Client-side URL redirect (`js/client-side-unvalidated-url-redirection`) | More results | This query now recognizes some unsafe uses of `importScripts()` inside WebWorkers. |
+| Missing CSRF middleware (`js/missing-token-validation`) | More results | This query now recognizes writes to cookie and session variables as potentially vulnerable to CSRF attacks. |
 
 
 ## Changes to libraries
