@@ -51,7 +51,7 @@ private module MySql {
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
     QueryCall() {
       exists(API::Node recv | recv = pool() or recv = connection() |
-        this = recv.getMember("query").getAReference().getACall()
+        this = recv.getMember("query").getACall()
       )
     }
 
@@ -69,7 +69,6 @@ private module MySql {
       this =
         [mysql(), pool(), connection()]
             .getMember(["escape", "escapeId"])
-            .getAReference()
             .getACall()
             .asExpr() and
       input = this.getArgument(0) and
@@ -129,7 +128,7 @@ private module Postgres {
 
   /** A call to the Postgres `query` method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
-    QueryCall() { this = [client(), newPool()].getMember("query").getAReference().getACall() }
+    QueryCall() { this = [client(), newPool()].getMember("query").getACall() }
 
     override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
   }
@@ -187,7 +186,7 @@ private module Sqlite {
         meth = "prepare" or
         meth = "run"
       |
-        this = newDb().getMember(meth).getAReference().getACall()
+        this = newDb().getMember(meth).getACall()
       )
     }
 
@@ -231,7 +230,7 @@ private module MsSql {
 
   /** A call to a MsSql query method. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
-    QueryCall() { this = request().getMember(["query", "batch"]).getAReference().getACall() }
+    QueryCall() { this = request().getMember(["query", "batch"]).getACall() }
 
     override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
   }
@@ -290,7 +289,7 @@ private module Sequelize {
 
   /** A call to `Sequelize.query`. */
   private class QueryCall extends DatabaseAccess, DataFlow::MethodCallNode {
-    QueryCall() { this = newSequelize().getMember("query").getAReference().getACall() }
+    QueryCall() { this = newSequelize().getMember("query").getACall() }
 
     override DataFlow::Node getAQueryArgument() { result = getArgument(0) }
   }
@@ -390,7 +389,6 @@ private module Spanner {
       this =
         database()
             .getMember(["run", "runPartitionedUpdate", "runStream"])
-            .getAReference()
             .getACall()
     }
   }
@@ -400,7 +398,7 @@ private module Spanner {
    */
   class TransactionRunCall extends SqlExecution {
     TransactionRunCall() {
-      this = transaction().getMember(["run", "runStream", "runUpdate"]).getAReference().getACall()
+      this = transaction().getMember(["run", "runStream", "runUpdate"]).getACall()
     }
   }
 
@@ -412,7 +410,6 @@ private module Spanner {
       this =
         v1SpannerClient()
             .getMember(["executeSql", "executeStreamingSql"])
-            .getAReference()
             .getACall()
     }
 

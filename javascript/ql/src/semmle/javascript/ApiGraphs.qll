@@ -46,6 +46,11 @@ module API {
     DataFlow::Node getAUse() { getAReference().flowsTo(result) }
 
     /**
+     * Gets a call to a use of the API component represented by this node.
+     */
+    DataFlow::CallNode getACall() { result = getAReference().getACall() }
+
+    /**
      * Gets a data-flow node corresponding to the right-hand side of a definition of the API
      * component represented by this node.
      *
