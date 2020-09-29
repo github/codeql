@@ -31,4 +31,4 @@ var obj = {
         })
     }
 }
-obj.foo("foo", "bar", "baz"); // A API-graphs gotcha.
+obj.foo("foo", "bar", "baz"); // An API-graphs gotcha: "baz" should not be considered a `SqlString`
