@@ -32,6 +32,10 @@ newtype TNode =
   /** A node representing the overflow positional arguments to a call. */
   TPosOverflowNode(CallNode call, CallableValue callable) {
     exists(getPositionalOverflowArg(call, callable, _))
+  } or
+  /** A node representing the overflow keyword arguments to a call. */
+  TKwOverflowNode(CallNode call, CallableValue callable) {
+    exists(getKeywordOverflowArg(call, callable, _))
   }
 
 /**

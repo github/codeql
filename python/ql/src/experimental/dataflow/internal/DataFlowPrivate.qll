@@ -237,20 +237,34 @@ private Node update(Node node) {
 //
 /** Computes routing of arguments to parameters */
 module ArgumentPassing {
+  /**
+   * Gets the `n`th parameter of `callable`.
+   * If the callable has a starred parameter, say `*tuple`, that is matched with `n=-1`.
+   * If the callable has a doubly starred parameter, say `**dict`, that is matched with `n=-2`.
+   * Note that, unlike other languages, we do _not_ use -1 for the position of `self` in Python,
+   * as it is an explicit parameter at position 0.
+   */
   NameNode getParameter(CallableValue callable, int n) {
     // positional parameter
     result = callable.getParameter(n)
     or
-    // vararg
+    // starred parameter, `*tuple`
     exists(Function f |
       f = callable.getScope() and
-      n = f.getPositionalParameterCount() and
+      n = -1 and
       result = f.getVararg().getAFlowNode()
+    )
+    or
+    // doubly starred parameter, `**dict`
+    exists(Function f |
+      f = callable.getScope() and
+      n = -2 and
+      result = f.getKwarg().getAFlowNode()
     )
   }
 
   /**
-   * Gets the argument to `call` then is passed to the `n`th parameter of `callable`.
+   * Gets the argument to `call` that is passed to the `n`th parameter of `callable`.
    */
   Node getArg(CallNode call, CallableValue callable, int n) {
     call = callable.getACall() and
@@ -265,16 +279,25 @@ module ArgumentPassing {
         result = TCfgNode(call.getArgByName(argName))
       )
       or
-      // vararg
+      // argument -1 is a synthezised argument passed to the starred parameter
       exists(Function f |
         f = callable.getScope() and
         f.hasVarArg() and
-        n = f.getPositionalParameterCount() and
+        n = -1 and
         result = TPosOverflowNode(call, callable)
+      )
+      or
+      // argument -2 is a synthezised argument passed to the doubly starred parameter
+      exists(Function f |
+        f = callable.getScope() and
+        f.hasKwArg() and
+        n = -2 and
+        result = TKwOverflowNode(call, callable)
       )
     )
   }
 
+  /** Gets the control flow node that is passed as the `n`th overflow positional argument. */
   ControlFlowNode getPositionalOverflowArg(CallNode call, CallableValue callable, int n) {
     call = callable.getACall() and
     exists(Function f, int posCount, int argNr |
@@ -284,6 +307,17 @@ module ArgumentPassing {
       result = call.getArg(argNr) and
       argNr >= posCount and
       argNr = posCount + n
+    )
+  }
+
+  /** Gets the control flow node that is passed as the overflow keyword argument with key `key`. */
+  ControlFlowNode getKeywordOverflowArg(CallNode call, CallableValue callable, string key) {
+    call = callable.getACall() and
+    exists(Function f |
+      f = callable.getScope() and
+      f.hasKwArg() and
+      not exists(f.getArgByName(key)) and
+      result = call.getArgByName(key)
     )
   }
 }
@@ -594,6 +628,8 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   attributeStoreStep(nodeFrom, c, nodeTo)
   or
   posOverflowStoreStep(nodeFrom, c, nodeTo)
+  or
+  kwOverflowStoreStep(nodeFrom, c, nodeTo)
 }
 
 /** Data flows from an element of a list to the list. */
@@ -689,11 +725,27 @@ predicate attributeStoreStep(CfgNode nodeFrom, AttributeContent c, PostUpdateNod
   )
 }
 
+/**
+ * Holds if `nodeFrom` flows into the synthezised positional overflow argument (`nodeTo`)
+ * at the position indicated by `c`.
+ */
 predicate posOverflowStoreStep(CfgNode nodeFrom, TupleElementContent c, Node nodeTo) {
   exists(CallNode call, CallableValue callable, int n |
     nodeFrom.asCfgNode() = getPositionalOverflowArg(call, callable, n) and
     nodeTo = TPosOverflowNode(call, callable) and
     c.getIndex() = n
+  )
+}
+
+/**
+ * Holds if `nodeFrom` flows into the synthezised keyword overflow argument (`nodeTo`)
+ * at the key indicated by `c`.
+ */
+predicate kwOverflowStoreStep(CfgNode nodeFrom, DictionaryElementContent c, Node nodeTo) {
+  exists(CallNode call, CallableValue callable, string key |
+    nodeFrom.asCfgNode() = getKeywordOverflowArg(call, callable, key) and
+    nodeTo = TKwOverflowNode(call, callable) and
+    c.getKey() = key
   )
 }
 
