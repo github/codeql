@@ -419,9 +419,18 @@ module API {
         exists(DataFlow::Node def, DataFlow::SourceNode pred |
           rhs(base, def) and pred = trackDefNode(def)
         |
+          // from `x` to a definition of `x.prop`
           exists(DataFlow::PropWrite pw | pw = pred.getAPropertyWrite() |
             lbl = Label::memberFromRef(pw) and
             rhs = pw.getRhs()
+          )
+          or
+          // special case: from `require('m')` to an export of `prop` in `m`
+          exists(Import imp, Module m, string prop |
+            pred = imp.getImportedModuleNode() and
+            m = imp.getImportedModule() and
+            lbl = Label::member(prop) and
+            rhs = m.getAnExportedValue(prop)
           )
           or
           exists(DataFlow::FunctionNode fn | fn = pred |
