@@ -274,12 +274,28 @@ class ReceiverVariable extends Parameter {
 
 /** A (named) function result variable. */
 class ResultVariable extends DeclaredVariable {
-  FuncDef fn;
+  FuncDef f;
+  int index;
 
-  ResultVariable() { fn.getTypeExpr().getAResultDecl().getNameExpr(_) = this.getDeclaration() }
+  ResultVariable() {
+    exists(FuncTypeExpr tp | tp = f.getTypeExpr() |
+      this =
+        rank[index + 1](DeclaredVariable parm, int j, int k |
+          parm.getDeclaration() = tp.getResultDecl(j).getNameExpr(k)
+        |
+          parm order by j, k
+        )
+    )
+  }
 
   /** Gets the function to which this result variable belongs. */
-  FuncDef getFunction() { result = fn }
+  FuncDef getFunction() { result = f }
+
+  /** Gets the index of this result among all results of the function. */
+  int getIndex() { result = index }
+
+  /** Holds if this is the `i`th result of function `fd`. */
+  predicate isResultOf(FuncDef fd, int i) { fd = f and i = index }
 }
 
 /**
@@ -396,13 +412,19 @@ class Function extends ValueEntity, @functionobject {
   Type getResultType(int i) { result = getType().(SignatureType).getResultType(i) }
 
   /** Gets the body of this function, if any. */
-  BlockStmt getBody() { none() }
+  BlockStmt getBody() { result = getFuncDecl().getBody() }
 
   /** Gets the `i`th parameter of this function. */
-  Parameter getParameter(int i) { none() }
+  Parameter getParameter(int i) { result.isParameterOf(getFuncDecl(), i) }
 
   /** Gets a parameter of this function. */
   Parameter getAParameter() { result = getParameter(_) }
+
+  /** Gets the `i`th reslt variable of this function. */
+  ResultVariable getResult(int i) { result.isResultOf(getFuncDecl(), i) }
+
+  /** Gets a result variable of this function. */
+  ResultVariable getAResult() { result = getResult(_) }
 }
 
 /**
@@ -511,10 +533,6 @@ class Method extends Function {
 /** A declared function. */
 class DeclaredFunction extends Function, DeclaredEntity, @declfunctionobject {
   override FuncDecl getFuncDecl() { result.getNameExpr() = this.getDeclaration() }
-
-  override BlockStmt getBody() { result = getFuncDecl().getBody() }
-
-  override Parameter getParameter(int i) { result = getFuncDecl().getParameter(i) }
 
   override predicate mayHaveSideEffects() {
     not exists(getBody())

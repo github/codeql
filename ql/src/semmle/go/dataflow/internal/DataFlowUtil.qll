@@ -236,9 +236,22 @@ abstract class FunctionNode extends Node {
   abstract ReceiverNode getReceiver();
 
   /**
-   * Gets a value returned by the given function via a return statement or an assignment to a result variable.
+   * Gets a value returned by the given function via a return statement or an assignment to a
+   * result variable.
    */
   abstract ResultNode getAResult();
+
+  /**
+   * Gets the data-flow node corresponding to the `i`th result of this function.
+   */
+  ResultNode getResult(int i) { result = getAResult() and result.getIndex() = i }
+
+  /**
+   * Gets the function entity this node corresponds to.
+   *
+   * Note that this predicate has no result for function literals.
+   */
+  Function getFunction() { none() }
 }
 
 /** A representation of a function that is declared in the module scope. */
@@ -251,8 +264,7 @@ class GlobalFunctionNode extends FunctionNode, MkGlobalFunctionNode {
 
   override string getName() { result = func.getName() }
 
-  /** Gets the function this node corresponds to. */
-  Function getFunction() { result = func }
+  override Function getFunction() { result = func }
 
   override ReceiverNode getReceiver() { result = receiverNode(func.(Method).getReceiver()) }
 
@@ -533,6 +545,9 @@ class ResultNode extends InstructionNode {
     or
     insn.(IR::ReadResultInstruction).reads(fd.getResultVar(i))
   }
+
+  /** Gets the index of this result among all results of the function. */
+  int getIndex() { result = i }
 }
 
 /**
