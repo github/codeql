@@ -40,6 +40,8 @@ module Private {
 
   class ExprWithPossibleValue = J::Literal;
 
+  class Field = J::Field;
+
   predicate ssaRead = RU::ssaRead/2;
 
   predicate guardControlsSsaRead = RU::guardControlsSsaRead/3;
@@ -128,22 +130,31 @@ private module Impl {
     exists(Parameter p | v.isParameterDefinition(p))
   }
 
-  /** Gets a possible sign for `f`. */
-  Sign fieldSign(Field f) {
-    result = exprSign(f.getAnAssignedValue())
-    or
-    exists(PostIncExpr inc | inc.getExpr() = f.getAnAccess() and result = fieldSign(f).inc())
-    or
-    exists(PreIncExpr inc | inc.getExpr() = f.getAnAccess() and result = fieldSign(f).inc())
-    or
-    exists(PostDecExpr inc | inc.getExpr() = f.getAnAccess() and result = fieldSign(f).dec())
-    or
-    exists(PreDecExpr inc | inc.getExpr() = f.getAnAccess() and result = fieldSign(f).dec())
-    or
-    exists(AssignOp a | a.getDest() = f.getAnAccess() | result = exprSign(a))
-    or
-    anySign(result) and exists(ReflectiveFieldAccess rfa | rfa.inferAccessedField() = f)
-    or
+  /** Returned an expression that is assigned to `f`. */
+  Expr getAssignedValueToField(Field f) {
+    result = f.getAnAssignedValue() or
+    result = any(AssignOp a | a.getDest() = f.getAnAccess())
+  }
+
+  /** Holds if `f` can have any sign. */
+  predicate fieldWithUnknownSign(Field f) {
+    exists(ReflectiveFieldAccess rfa | rfa.inferAccessedField() = f)
+  }
+
+  /** Holds if `f` is accessed in an increment operation. */
+  predicate fieldIncrementOperationOperand(Field f) {
+    any(PostIncExpr inc).getExpr() = f.getAnAccess() or
+    any(PreIncExpr inc).getExpr() = f.getAnAccess()
+  }
+
+  /** Holds if `f` is accessed in a decrement operation. */
+  predicate fieldDecrementOperationOperand(Field f) {
+    any(PostDecExpr dec).getExpr() = f.getAnAccess() or
+    any(PreDecExpr dec).getExpr() = f.getAnAccess()
+  }
+
+  /** Returns possible signs of `f` based on the declaration. */
+  Sign specificFieldSign(Field f) {
     if f.fromSource()
     then not exists(f.getInitializer()) and result = TZero()
     else

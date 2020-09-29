@@ -277,6 +277,20 @@ private Sign implicitSsaDefSign(SsaVariable v) {
   anySign(result) and nonFieldImplicitSsaDefinition(v)
 }
 
+/** Gets a possible sign for `f`. */
+Sign fieldSign(Field f) {
+  if not fieldWithUnknownSign(f)
+  then
+    result = exprSign(getAssignedValueToField(f))
+    or
+    fieldIncrementOperationOperand(f) and result = fieldSign(f).inc()
+    or
+    fieldDecrementOperationOperand(f) and result = fieldSign(f).dec()
+    or
+    result = specificFieldSign(f)
+  else anySign(result)
+}
+
 /** Gets a possible sign for `e`. */
 cached
 Sign exprSign(Expr e) {

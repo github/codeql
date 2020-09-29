@@ -36,6 +36,8 @@ module Private {
 
   class ExprWithPossibleValue = CS::Expr;
 
+  class Field = CS::Field;
+
   predicate ssaRead = SU::ssaRead/2;
 }
 
@@ -133,21 +135,28 @@ private module Impl {
     not getImplicitSsaDeclaration(v) instanceof Field
   }
 
-  /** Gets a possible sign for `f`. */
-  Sign fieldSign(Field f) {
-    if f.fromSource() and f.isEffectivelyPrivate()
-    then
-      result = exprSign(f.getAnAssignedValue())
-      or
-      any(IncrementOperation inc).getOperand() = f.getAnAccess() and result = fieldSign(f).inc()
-      or
-      any(DecrementOperation dec).getOperand() = f.getAnAccess() and result = fieldSign(f).dec()
-      or
-      exists(AssignOperation a | a.getLValue() = f.getAnAccess() | result = exprSign(a))
-      or
-      not exists(f.getInitializer()) and result = TZero()
-    else anySign(result)
+  /** Returned an expression that is assigned to `f`. */
+  Expr getAssignedValueToField(Field f) {
+    result = f.getAnAssignedValue() or
+    result = any(AssignOperation a | a.getLValue() = f.getAnAccess())
   }
+
+  /** Holds if `f` can have any sign. */
+  predicate fieldWithUnknownSign(Field f) { not f.fromSource() or not f.isEffectivelyPrivate() }
+
+  /** Holds if `f` is accessed in an increment operation. */
+  predicate fieldIncrementOperationOperand(Field f) {
+    any(IncrementOperation inc).getOperand() = f.getAnAccess()
+  }
+
+  /** Holds if `f` is accessed in a decrement operation. */
+  predicate fieldDecrementOperationOperand(Field f) {
+    any(DecrementOperation dec).getOperand() = f.getAnAccess()
+  }
+
+  /** Returns possible signs of `f` based on the declaration. */
+  pragma[inline]
+  Sign specificFieldSign(Field f) { not exists(f.getInitializer()) and result = TZero() }
 
   /**
    * Holds if `e` has type `NumericOrCharType`, but the sign of `e` is unknown.
