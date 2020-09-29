@@ -326,6 +326,36 @@ Sign exprSign(Expr e) {
   )
 }
 
+/** Gets a possible sign for `e` from the signs of its child nodes. */
+Sign specificSubExprSign(Expr e) {
+  result = exprSign(getASubExpr(e))
+  or
+  e =
+    any(DivExpr div |
+      result = exprSign(div.getLeftOperand()) and
+      result != TZero() and
+      div.getRightOperand().(RealLiteral).getValue().toFloat() = 0
+    )
+  or
+  exists(UnaryExpr unary | unary = e |
+    result = exprSign(unary.getOperand()).applyUnaryOp(unary.getOp())
+  )
+  or
+  exists(Sign s1, Sign s2 | binaryOpSigns(e, s1, s2) |
+    result = s1.applyBinaryOp(s2, e.(BinaryExpr).getOp())
+  )
+}
+
+pragma[noinline]
+private predicate binaryOpSigns(Expr e, Sign lhs, Sign rhs) {
+  lhs = binaryOpLhsSign(e) and
+  rhs = binaryOpRhsSign(e)
+}
+
+Sign binaryOpLhsSign(BinaryOperation e) { result = exprSign(e.getLeftOperand()) }
+
+Sign binaryOpRhsSign(BinaryOperation e) { result = exprSign(e.getRightOperand()) }
+
 /**
  * Dummy predicate that holds for any sign. This is added to improve readability
  * of cases where the sign is unrestricted.

@@ -38,6 +38,12 @@ module Private {
 
   class Field = CS::Field;
 
+  class RealLiteral = CS::RealLiteral;
+
+  class DivExpr = CS::DivExpr;
+
+  class BinaryOperation = CS::BinaryOperation;
+
   predicate ssaRead = SU::ssaRead/2;
 }
 
@@ -196,80 +202,88 @@ private module Impl {
     not e instanceof NullCoalescingExpr
   }
 
-  /** Gets a possible sign for `e` from the signs of its child nodes. */
-  Sign specificSubExprSign(Expr e) {
-    // The expression types that are handled here should be excluded in `unknownIntegerAccess`.
-    // Keep them in sync.
-    result = exprSign(e.(AssignExpr).getRValue())
-    or
-    result = exprSign(e.(AssignOperation).getExpandedAssignment())
-    or
-    result = exprSign(e.(UnaryPlusExpr).getOperand())
-    or
-    result = exprSign(e.(PostIncrExpr).getOperand())
-    or
-    result = exprSign(e.(PostDecrExpr).getOperand())
-    or
-    result = exprSign(e.(PreIncrExpr).getOperand()).inc()
-    or
-    result = exprSign(e.(PreDecrExpr).getOperand()).dec()
-    or
-    result = exprSign(e.(UnaryMinusExpr).getOperand()).neg()
-    or
-    result = exprSign(e.(ComplementExpr).getOperand()).bitnot()
-    or
-    e =
-      any(DivExpr div |
-        result = exprSign(div.getLeftOperand()) and
-        result != TZero() and
-        div.getRightOperand().(RealLiteral).getValue().toFloat() = 0
-      )
-    or
-    exists(Sign s1, Sign s2 | binaryOpSigns(e, s1, s2) |
-      e instanceof AddExpr and result = s1.add(s2)
-      or
-      e instanceof SubExpr and result = s1.add(s2.neg())
-      or
-      e instanceof MulExpr and result = s1.mul(s2)
-      or
-      e instanceof DivExpr and result = s1.div(s2)
-      or
-      e instanceof RemExpr and result = s1.rem(s2)
-      or
-      e instanceof BitwiseAndExpr and result = s1.bitand(s2)
-      or
-      e instanceof BitwiseOrExpr and result = s1.bitor(s2)
-      or
-      e instanceof BitwiseXorExpr and result = s1.bitxor(s2)
-      or
-      e instanceof LShiftExpr and result = s1.lshift(s2)
-      or
-      e instanceof RShiftExpr and result = s1.rshift(s2)
-    )
-    or
-    result = exprSign(e.(ConditionalExpr).getAChild())
-    or
-    result = exprSign(e.(NullCoalescingExpr).getAChild())
-    or
-    result = exprSign(e.(SwitchExpr).getACase().getBody())
-    or
-    result = exprSign(e.(CastExpr).getExpr())
-    or
-    result = exprSign(e.(SwitchCaseExpr).getBody())
-    or
-    result = exprSign(e.(LocalVariableDeclAndInitExpr).getInitializer())
-    or
-    result = exprSign(e.(RefExpr).getExpr())
+  /** Returns a sub expression of `e` for expression types where the sign depends on the child. */
+  Expr getASubExpr(Expr e) {
+    result = e.(AssignExpr).getRValue() or
+    result = e.(AssignOperation).getExpandedAssignment() or
+    result = e.(UnaryPlusExpr).getOperand() or
+    result = e.(PostIncrExpr).getOperand() or
+    result = e.(PostDecrExpr).getOperand() or
+    result = e.(ConditionalExpr).getAChild() or
+    result = e.(NullCoalescingExpr).getAChild() or
+    result = e.(SwitchExpr).getACase().getBody() or
+    result = e.(SwitchCaseExpr).getBody() or
+    result = e.(LocalVariableDeclAndInitExpr).getInitializer() or
+    result = e.(RefExpr).getExpr() or
+    result = e.(CastExpr).getExpr()
   }
 
-  private Sign binaryOpLhsSign(BinaryOperation e) { result = exprSign(e.getLeftOperand()) }
+  /** Class to represent unary expressions. */
+  class UnaryExpr extends Expr {
+    UnaryExpr() {
+      this instanceof PreIncrExpr or
+      this instanceof PreDecrExpr or
+      this instanceof UnaryMinusExpr or
+      this instanceof ComplementExpr
+    }
 
-  private Sign binaryOpRhsSign(BinaryOperation e) { result = exprSign(e.getRightOperand()) }
+    /** Returns the operand of this expression. */
+    Expr getOperand() {
+      result = this.(PreIncrExpr).getOperand() or
+      result = this.(PreDecrExpr).getOperand() or
+      result = this.(UnaryMinusExpr).getOperand() or
+      result = this.(ComplementExpr).getOperand()
+    }
 
-  pragma[noinline]
-  private predicate binaryOpSigns(Expr e, Sign lhs, Sign rhs) {
-    lhs = binaryOpLhsSign(e) and
-    rhs = binaryOpRhsSign(e)
+    /** Returns the operation representing this expression. */
+    TUnarySignOperation getOp() {
+      this instanceof PreIncrExpr and result = TIncOp()
+      or
+      this instanceof PreDecrExpr and result = TDecOp()
+      or
+      this instanceof UnaryMinusExpr and result = TNegOp()
+      or
+      this instanceof ComplementExpr and result = TBitNotOp()
+    }
+  }
+
+  /** Class to represent binary expressions. */
+  class BinaryExpr extends Expr {
+    BinaryExpr() {
+      this instanceof AddExpr or
+      this instanceof SubExpr or
+      this instanceof MulExpr or
+      this instanceof DivExpr or
+      this instanceof RemExpr or
+      this instanceof BitwiseAndExpr or
+      this instanceof BitwiseOrExpr or
+      this instanceof BitwiseXorExpr or
+      this instanceof LShiftExpr or
+      this instanceof RShiftExpr
+    }
+
+    /** Returns the operation representing this expression. */
+    TBinarySignOperation getOp() {
+      this instanceof AddExpr and result = TAddOp()
+      or
+      this instanceof SubExpr and result = TSubOp()
+      or
+      this instanceof MulExpr and result = TMulOp()
+      or
+      this instanceof DivExpr and result = TDivOp()
+      or
+      this instanceof RemExpr and result = TRemOp()
+      or
+      this instanceof BitwiseAndExpr and result = TBitAndOp()
+      or
+      this instanceof BitwiseOrExpr and result = TBitOrOp()
+      or
+      this instanceof BitwiseXorExpr and result = TBitXorOp()
+      or
+      this instanceof LShiftExpr and result = TLShiftOp()
+      or
+      this instanceof RShiftExpr and result = TRShiftOp()
+    }
   }
 
   Expr getARead(Ssa::Definition v) { result = v.getARead() }
