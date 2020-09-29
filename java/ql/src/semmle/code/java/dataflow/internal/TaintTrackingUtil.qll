@@ -772,7 +772,7 @@ private predicate formatStep(Expr tracked, Expr sink) {
 /**
  * A local variable that is assigned a `Formatter`.
  * Writing tainted data to such a formatter causes the underlying
- * `OutputStream` or `Appenable` to be tainted.
+ * `OutputStream` or `Appendable` to be tainted.
  */
 private class FormatterVar extends LocalVariableDecl {
   FormatterVar() {
