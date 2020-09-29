@@ -1,5 +1,7 @@
 import java.util.Formatter;
 import java.lang.StringBuilder;
+import java.lang.System;
+import java.io.Console;
 
 class A {
     public static String taint() { return "tainted"; }
@@ -11,6 +13,7 @@ class A {
         bad.formatted(good);
         good.formatted("a", bad, "b", good);
         String.format("%s%s", bad, good);
+        String.format("%s", good);
     }
 
     public static void test2() {
@@ -30,5 +33,13 @@ class A {
         sb.toString(); // false positive
         f.format("%s", bad);
         sb.toString();
+    }
+
+    public static void test4() {
+        String bad = taint();
+        Console c = System.console();
+
+        c.format(bad);
+        c.readLine("Enter something: %s", bad);
     }
 }
