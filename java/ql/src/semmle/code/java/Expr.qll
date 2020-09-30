@@ -1912,14 +1912,10 @@ private module Qualifier {
 }
 
 /** An expression that assigns a value to a field. */
-class FieldWrite extends FieldAccess {
-  FieldWrite() { exists(Field f | f = getVariable() and isLValue()) }
-}
+class FieldWrite extends FieldAccess, LValue { }
 
 /** An expression that reads a field. */
-class FieldRead extends FieldAccess {
-  FieldRead() { exists(Field f | f = getVariable() and isRValue()) }
-}
+class FieldRead extends FieldAccess, RValue { }
 
 private predicate hasInstantiation(RefType t) {
   t instanceof TypeVariable or
