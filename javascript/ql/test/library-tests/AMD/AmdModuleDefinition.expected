@@ -1,3 +1,15 @@
+getDependencyParameter
+| tst2.js:1:1:3:2 | define( ...  42;\\n}) | exports | tst2.js:1:30:1:36 | exports |
+| tst4.js:1:1:11:2 | define( ...   };\\n}) | a.js | tst4.js:6:20:6:20 | a |
+| tst4.js:1:1:11:2 | define( ...   };\\n}) | foo | tst4.js:6:23:6:23 | b |
+| tst4.js:1:1:11:2 | define( ...   };\\n}) | nested/a | tst4.js:6:26:6:32 | exports |
+| tst5.js:1:1:6:2 | define( ...   };\\n}) | ./a | tst5.js:1:37:1:37 | a |
+| tst5.js:1:1:6:2 | define( ...   };\\n}) | ./dir/b | tst5.js:1:40:1:44 | {bar} |
+| tst.js:1:1:6:2 | define( ...   };\\n}) | ./a | tst.js:1:37:1:37 | a |
+| tst.js:1:1:6:2 | define( ...   };\\n}) | ./dir/b | tst.js:1:40:1:40 | b |
+| umd.js:4:9:4:43 | define( ... actory) | ./a | umd.js:9:19:9:19 | a |
+| umd.js:4:9:4:43 | define( ... actory) | ./dir/b | umd.js:9:22:9:22 | b |
+#select
 | a.js:1:1:3:2 | define( ... 2 };\\n}) | a.js:1:8:3:1 | functio ... 42 };\\n} |
 | dir/b.js:1:1:3:2 | define( ... : 42\\n}) | dir/b.js:1:8:3:1 | {\\n    bar: 42\\n} |
 | lib/a.js:1:1:3:2 | define( ... 2 };\\n}) | lib/a.js:1:8:3:1 | functio ... 42 };\\n} |
@@ -6,6 +18,7 @@
 | tst2.js:1:1:3:2 | define( ...  42;\\n}) | tst2.js:1:21:3:1 | functio ... = 42;\\n} |
 | tst3.js:1:1:3:2 | define( ...  42;\\n}) | tst3.js:1:8:3:1 | functio ... = 42;\\n} |
 | tst4.js:1:1:11:2 | define( ...   };\\n}) | tst4.js:6:11:11:1 | functio ...    };\\n} |
+| tst5.js:1:1:6:2 | define( ...   };\\n}) | tst5.js:1:28:6:1 | functio ...    };\\n} |
 | tst.js:1:1:6:2 | define( ...   };\\n}) | tst.js:1:28:6:1 | functio ...    };\\n} |
 | umd.js:4:9:4:43 | define( ... actory) | umd.js:1:18:1:24 | factory |
 | umd.js:4:9:4:43 | define( ... actory) | umd.js:9:9:14:1 | functio ...    };\\n} |

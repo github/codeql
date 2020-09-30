@@ -7,6 +7,8 @@
 | tst3.js:1:1:3:3 | <toplevel> | foo |
 | tst4.js:1:1:11:3 | <toplevel> | bar |
 | tst4.js:1:1:11:3 | <toplevel> | foo |
+| tst5.js:1:1:6:3 | <toplevel> | bar |
+| tst5.js:1:1:6:3 | <toplevel> | foo |
 | tst.js:1:1:6:3 | <toplevel> | bar |
 | tst.js:1:1:6:3 | <toplevel> | foo |
 | umd.js:1:1:14:4 | <toplevel> | bar |

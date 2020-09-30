@@ -4,6 +4,8 @@
 | tst4.js:1:1:11:2 | define( ...   };\\n}) | tst4.js:3:9:3:13 | 'foo' |
 | tst4.js:1:1:11:2 | define( ...   };\\n}) | tst4.js:4:9:4:18 | 'nested/a' |
 | tst4.js:1:1:11:2 | define( ...   };\\n}) | tst4.js:5:9:5:20 | 'lib/foo.js' |
+| tst5.js:1:1:6:2 | define( ...   };\\n}) | tst5.js:1:9:1:13 | './a' |
+| tst5.js:1:1:6:2 | define( ...   };\\n}) | tst5.js:1:16:1:24 | './dir/b' |
 | tst.js:1:1:6:2 | define( ...   };\\n}) | tst.js:1:9:1:13 | './a' |
 | tst.js:1:1:6:2 | define( ...   };\\n}) | tst.js:1:16:1:24 | './dir/b' |
 | umd.js:4:9:4:43 | define( ... actory) | umd.js:4:17:4:21 | './a' |
