@@ -39,27 +39,27 @@ module API {
     }
 
     /**
-     * Gets a reference to the API component represented by this node.
+     * Gets an immediate use of the API component represented by this node.
      *
-     * For example, `require('fs').readFileSync` is a reference to the `readFileSync` member from the
-     * `fs` module.
+     * For example, `require('fs').readFileSync` is a an immediate use of the `readFileSync` member
+     * from the `fs` module.
      *
      * Unlike `getAUse()`, this predicate only gets the immediate references, not the indirect uses
      * found via data flow. This means that in `const x = fs.readFile` only `fs.readFile` is a reference
      * to the `readFile` member of `fs`, neither `x` nor any node that `x` flows to is a reference to
      * this API component.
      */
-    DataFlow::SourceNode getAReference() { Impl::use(this, result) }
+    DataFlow::SourceNode getAnImmediateUse() { Impl::use(this, result) }
 
     /**
      * Gets a call to the function represented by this API component.
      */
-    DataFlow::CallNode getACall() { result = getReturn().getAReference() }
+    DataFlow::CallNode getACall() { result = getReturn().getAnImmediateUse() }
 
     /**
      * Gets a `new` call to the function represented by this API component.
      */
-    DataFlow::NewNode getAnInstantiation() { result = getInstance().getAReference() }
+    DataFlow::NewNode getAnInstantiation() { result = getInstance().getAnImmediateUse() }
 
     /**
      * Gets an invocation (with our without `new`) to the function represented by this API component.
