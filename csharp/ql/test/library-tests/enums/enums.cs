@@ -37,7 +37,7 @@ namespace Enums
         Red,
         Green = 10,
         Blue,
-        AnotherBlue = Blue
+        AnotherBlue = Blue + Red
 
     }
 
