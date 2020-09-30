@@ -1,4 +1,4 @@
-from Crypto.Cipher import DES, Blowfish
+from Crypto.Cipher import DES, AES
 
 cipher = DES.new(SECRET_KEY)
 
