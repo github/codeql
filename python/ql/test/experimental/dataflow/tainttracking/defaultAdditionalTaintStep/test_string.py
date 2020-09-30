@@ -107,7 +107,7 @@ def non_syntactic():
 
 
 def percent_fmt():
-    print("\n#percent_fmt")
+    print("\n# percent_fmt")
     ts = TAINTED_STRING
     tainted_fmt = ts + " %s %s"
     ensure_tainted(
@@ -118,7 +118,7 @@ def percent_fmt():
 
 
 def binary_decode_encode():
-    print("\n#percent_fmt")
+    print("\n# binary_decode_encode")
     tb = TAINTED_BYTES
     import base64
 
