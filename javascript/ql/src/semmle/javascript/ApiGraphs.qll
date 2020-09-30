@@ -21,34 +21,44 @@ module API {
    */
   class Node extends Impl::TApiNode {
     /**
-     * Gets a `SourceNode` corresponding to a use of the API component represented by this node.
+     * Gets a data-flow corresponding to a use of the API component represented by this node.
      *
      * For example, `require('fs').readFileSync` is a use of the function `readFileSync` from the
-     * `fs` module, and `require('fs').readFileSync(file)` is a use of the result of that function.
+     * `fs` module, and `require('fs').readFileSync(file)` is a use of the return of that function.
+     *
+     * The use is type-tracked, meaning that in `f(obj.foo); function f(x) {};` both `obj.foo` and
+     * `x` are uses of the `foo` member from `obj`.
      *
      * As another example, in the assignment `exports.plusOne = (x) => x+1` the two references to
      * `x` are uses of the first parameter of `plusOne`.
-     *
-     * Note: The result from this predicate is always a `DataFlow::SourceǸode`, use `getAUse()` if
-     * you want to follow purely local data-flow and get all `DataFlow::Node`s that corrospond to a
-     * use of this API node.
      */
-    DataFlow::SourceNode getAReference() {
-      exists(DataFlow::SourceNode src | Impl::use(this, src) | result = Impl::trackUseNode(src))
+    DataFlow::Node getAUse() {
+      exists(DataFlow::SourceNode src | Impl::use(this, src) |
+        Impl::trackUseNode(src).flowsTo(result)
+      )
     }
 
     /**
-     * Gets a data-flow node corresponding to a use of the API component represented by this node.
+     * Gets a reference to the API component represented by this node.
      *
-     * This predicate is similar to `getAReference`, except this prediate also follows purely local
-     * data-flow.
+     * For example, `require('fs').readFileSync` is a reference to the `readFileSync` member from the
+     * `fs` module.
+     *
+     * No local data-flow or type-tracking happens on the result, which means that in
+     * `const x = fs.readFile` only `fs.readFile` is a reference to the `readFile` member of `fs`,
+     * neither `x` nor any node that `x` flows to is a reference to this API component.
      */
-    DataFlow::Node getAUse() { getAReference().flowsTo(result) }
+    DataFlow::SourceNode getAReference() { Impl::use(this, result) }
 
     /**
-     * Gets a call to a use of the API component represented by this node.
+     * Gets a call to the function represented by this API component.
      */
-    DataFlow::CallNode getACall() { result = getAReference().getACall() }
+    DataFlow::CallNode getACall() { result = getReturn().getAReference() }
+
+    /**
+     * Gets an instantiation of the function represented by this API component.
+     */
+    DataFlow::NewNode getAnInstantiation() { result = getInstance().getAReference() }
 
     /**
      * Gets a data-flow node corresponding to the right-hand side of a definition of the API

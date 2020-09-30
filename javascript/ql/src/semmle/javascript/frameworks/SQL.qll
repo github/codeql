@@ -300,7 +300,7 @@ private module Sequelize {
 
     Credentials() {
       exists(NewExpr ne, string prop |
-        ne = sequelize().getAReference().getAnInstantiation().asExpr() and
+        ne = sequelize().getAnInstantiation().asExpr() and
         (
           this = ne.getArgument(1) and prop = "username"
           or
