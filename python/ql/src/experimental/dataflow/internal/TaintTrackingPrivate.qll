@@ -130,7 +130,6 @@ predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeT
   // f-strings
   nodeTo.asExpr().(Fstring).getAValue() = nodeFrom.asExpr()
   // TODO: Handle encode/decode from base64/quopri
-  // TODO: Handle os.path.join
   // TODO: Handle functions in https://docs.python.org/3/library/binascii.html
 }
 
