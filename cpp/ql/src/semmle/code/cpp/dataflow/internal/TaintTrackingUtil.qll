@@ -10,6 +10,7 @@
 
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.models.interfaces.Taint
+private import semmle.code.cpp.models.interfaces.Iterator
 
 private module DataFlow {
   import semmle.code.cpp.dataflow.internal.DataFlowUtil
@@ -255,4 +256,12 @@ private predicate exprToPartialDefinitionStep(Expr exprIn, Expr exprOut) {
       exprIn = call.getArgument(argInIndex)
     )
   )
+  or
+  exists(Assignment a |
+    iteratorDereference(exprOut) and
+    a.getLValue() = exprOut and
+    a.getRValue() = exprIn
+  )
 }
+
+private predicate iteratorDereference(Call c) { c.getTarget() instanceof IteratorReferenceFunction }

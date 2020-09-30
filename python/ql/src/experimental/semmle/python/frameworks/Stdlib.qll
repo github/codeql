@@ -5,9 +5,11 @@
 
 private import python
 private import experimental.dataflow.DataFlow
+private import experimental.dataflow.TaintTracking
 private import experimental.dataflow.RemoteFlowSources
 private import experimental.semmle.python.Concepts
 
+/** Provides models for the Python standard library. */
 private module Stdlib {
   // ---------------------------------------------------------------------------
   // os
@@ -35,7 +37,9 @@ private module Stdlib {
           "execl", "execle", "execlp", "execlpe", "execv", "execve", "execvp", "execvpe",
           // spawn
           "spawnl", "spawnle", "spawnlp", "spawnlpe", "spawnv", "spawnve", "spawnvp", "spawnvpe",
-          "posix_spawn", "posix_spawnp"] and
+          "posix_spawn", "posix_spawnp",
+          // modules
+          "path"] and
     (
       t.start() and
       result = DataFlow::importMember("os", attr_name)
@@ -69,6 +73,29 @@ private module Stdlib {
    */
   private DataFlow::Node os_attr(string attr_name) {
     result = os_attr(DataFlow::TypeTracker::end(), attr_name)
+  }
+
+  /** Provides models for the `os` module. */
+  module os {
+    /** Gets a reference to the `os.path` module. */
+    DataFlow::Node path() { result = os_attr("path") }
+
+    /** Provides models for the `os.path` module */
+    module path {
+      /** Gets a reference to the `os.path.join` function. */
+      private DataFlow::Node join(DataFlow::TypeTracker t) {
+        t.start() and
+        result = DataFlow::importMember("os.path", "join")
+        or
+        t.startInAttr("join") and
+        result = os::path()
+        or
+        exists(DataFlow::TypeTracker t2 | result = join(t2).track(t2, t))
+      }
+
+      /** Gets a reference to the `os.path.join` function. */
+      DataFlow::Node join() { result = join(DataFlow::TypeTracker::end()) }
+    }
   }
 
   /**
@@ -139,6 +166,18 @@ private module Stdlib {
 
     override DataFlow::Node getCommand() {
       result.asCfgNode() = this.asCfgNode().(CallNode).getArg(0)
+    }
+  }
+
+  /** An additional taint step for calls to `os.path.join` */
+  private class OsPathJoinCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      exists(CallNode call |
+        nodeTo.asCfgNode() = call and
+        call.getFunction() = os::path::join().asCfgNode() and
+        call.getAnArg() = nodeFrom.asCfgNode()
+      )
+      // TODO: Handle pathlib (like we do for os.path.join)
     }
   }
 
