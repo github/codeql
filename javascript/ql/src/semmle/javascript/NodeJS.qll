@@ -48,7 +48,7 @@ class NodeModule extends Module {
    * So if using this predicate - consider expanding the list of relevant expressions.
    */
   pragma[noinline]
-  private DataFlow::Node getAModuleExportsNode() {
+  DataFlow::Node getAModuleExportsNode() {
     (
       // A bit of manual magic
       result = any(DataFlow::PropWrite w | exists(w.getPropertyName())).getBase()
@@ -62,35 +62,43 @@ class NodeModule extends Module {
 
   /** Gets a symbol exported by this module. */
   override string getAnExportedSymbol() {
-    result = super.getAnExportedSymbol() or
+    result = super.getAnExportedSymbol()
+    or
     result = getAnImplicitlyExportedSymbol()
+    or
+    // getters and the like.
+    exists(DataFlow::PropWrite pwn |
+      pwn.getBase() = this.getAModuleExportsNode() and
+      result = pwn.getPropertyName()
+    )
   }
 
-  override predicate exports(string name, ASTNode export) {
+  override DataFlow::Node getAnExportedValue(string name) {
     // a property write whose base is `exports` or `module.exports`
-    exists(DataFlow::PropWrite pwn | export = pwn.getAstNode() |
+    exists(DataFlow::PropWrite pwn | result = pwn.getRhs() |
       pwn.getBase() = getAModuleExportsNode() and
       name = pwn.getPropertyName()
     )
     or
     // a re-export using spread-operator. E.g. `const foo = require("./foo"); module.exports = {bar: bar, ...foo};`
     exists(ObjectExpr obj | obj = getAModuleExportsNode().asExpr() |
-      obj
-          .getAProperty()
-          .(SpreadProperty)
-          .getInit()
-          .(SpreadElement)
-          .getOperand()
-          .flow()
-          .getALocalSource()
-          .asExpr()
-          .(Import)
-          .getImportedModule()
-          .exports(name, export)
+      result =
+        obj
+            .getAProperty()
+            .(SpreadProperty)
+            .getInit()
+            .(SpreadElement)
+            .getOperand()
+            .flow()
+            .getALocalSource()
+            .asExpr()
+            .(Import)
+            .getImportedModule()
+            .getAnExportedValue(name)
     )
     or
     // an externs definition (where appropriate)
-    exists(PropAccess pacc | export = pacc |
+    exists(PropAccess pacc | result = DataFlow::valueNode(pacc) |
       pacc.getBase() = getAModuleExportsNode().asExpr() and
       name = pacc.getPropertyName() and
       isExterns() and

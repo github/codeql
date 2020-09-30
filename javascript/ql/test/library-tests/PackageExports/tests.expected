@@ -46,15 +46,3 @@ getAnExportedValue
 | lib1/reexport/a.js:1:1:3:1 | <toplevel> | reexported | lib1/reexport/a.js:2:17:2:40 | functio ... ed() {} |
 | lib1/reexport/b.js:1:1:6:1 | <toplevel> | base | lib1/reexport/b.js:4:11:4:28 | function base() {} |
 | lib1/reexport/b.js:1:1:6:1 | <toplevel> | reexported | lib1/reexport/a.js:2:17:2:40 | functio ... ed() {} |
-exports
-| Baz | lib1/main.js:17:1:17:18 | module.exports.Baz | lib1/main.js:1:1:17:30 | <toplevel> |
-| bar | lib1/baz.js:4:5:4:26 | bar: fu ... ar() {} | lib1/baz.js:1:1:5:1 | <toplevel> |
-| bar | lib1/main.js:5:1:5:18 | module.exports.bar | lib1/main.js:1:1:17:30 | <toplevel> |
-| base | lib1/reexport/b.js:4:5:4:28 | base: f ... se() {} | lib1/reexport/b.js:1:1:6:1 | <toplevel> |
-| exported | esmodules/main.js:1:1:1:29 | export  ... ed() {} | esmodules/main.js:1:1:4:0 | <toplevel> |
-| foo | absent_main/index.js:1:1:1:18 | module.exports.foo | absent_main/index.js:1:1:2:0 | <toplevel> |
-| foo | lib1/baz.js:3:5:3:26 | foo: fu ... oo() {} | lib1/baz.js:1:1:5:1 | <toplevel> |
-| foo | lib1/foo.js:3:1:3:18 | module.exports.foo | lib1/foo.js:1:1:3:47 | <toplevel> |
-| foo | lib1/main.js:3:1:3:18 | module.exports.foo | lib1/main.js:1:1:17:30 | <toplevel> |
-| reexported | lib1/reexport/a.js:2:5:2:40 | reexpor ... ed() {} | lib1/reexport/a.js:1:1:3:1 | <toplevel> |
-| reexported | lib1/reexport/a.js:2:5:2:40 | reexpor ... ed() {} | lib1/reexport/b.js:1:1:6:1 | <toplevel> |

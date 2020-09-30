@@ -68,22 +68,5 @@ DataFlow::Node getAValueExportedBy(PackageJSON packageJSON) {
 private DataFlow::Node getAnExportFromModule(Module mod) {
   result.analyze().getAValue() = mod.(NodeModule).getAModuleExportsValue()
   or
-  result = getAnExportedValue(mod, _)
-}
-
-/**
- * Gets a value exported from `mod` under `name`.
- */
-DataFlow::Node getAnExportedValue(Module mod, string name) {
-  exists(Property export | result.asExpr() = export.getInit() | mod.exports(name, export))
-  or
-  result =
-    DataFlow::valueNode(any(ASTNode export | mod.exports(name, export)))
-        .(DataFlow::PropWrite)
-        .getRhs()
-  or
-  exists(ExportDeclaration export |
-    result = export.getSourceNode(name) and
-    mod = export.getEnclosingModule()
-  )
+  result = mod.getAnExportedValue(_)
 }

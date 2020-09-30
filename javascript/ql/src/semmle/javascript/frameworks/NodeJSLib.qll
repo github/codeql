@@ -647,7 +647,7 @@ module NodeJSLib {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(Import imp, string name |
         succ = DataFlow::valueNode(imp).(DataFlow::SourceNode).getAPropertyRead(name) and
-        pred = Exports::getAnExportedValue(imp.getImportedModule(), name)
+        pred = imp.getImportedModule().getAnExportedValue(name)
       )
     }
   }

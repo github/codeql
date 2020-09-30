@@ -20,9 +20,9 @@ predicate definedInModule(GlobalVariable v, NodeModule m) {
   )
 }
 
-from NodeModule m, GlobalVariable f, InvokeExpr invk, ASTNode export, GlobalVarAccess acc
+from NodeModule m, GlobalVariable f, InvokeExpr invk, DataFlow::Node export, GlobalVarAccess acc
 where
-  m.exports(f.getName(), export) and
+  export = m.getAnExportedValue(f.getName()) and
   acc = f.getAnAccess() and
   invk.getCallee() = acc and
   invk.getTopLevel() = m and

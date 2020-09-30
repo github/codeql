@@ -27,8 +27,8 @@ class ES2015Module extends Module {
   /** Gets an export declaration in this module. */
   ExportDeclaration getAnExport() { result.getTopLevel() = this }
 
-  override predicate exports(string name, ASTNode export) {
-    exists(ExportDeclaration ed | ed = getAnExport() and ed = export | ed.exportsAs(_, name))
+  override DataFlow::Node getAnExportedValue(string name) {
+    exists(ExportDeclaration ed | ed = getAnExport() and result = ed.getSourceNode(name))
   }
 
   /** Holds if this module exports variable `v` under the name `name`. */
@@ -235,7 +235,7 @@ abstract class ExportDeclaration extends Stmt, @export_declaration {
   ES2015Module getEnclosingModule() { this = result.getAnExport() }
 
   /** Holds if this export declaration exports variable `v` under the name `name`. */
-  abstract predicate exportsAs(LexicalName v, string name);
+  abstract predicate exportsAs(LexicalName v, string name); // TODO: Can I deprecate this?
 
   /**
    * Gets the data flow node corresponding to the value this declaration exports
