@@ -2095,11 +2095,13 @@
 | set.cpp:41:22:41:42 | call to set | set.cpp:46:7:46:8 | s9 |  |
 | set.cpp:41:22:41:42 | call to set | set.cpp:50:7:50:8 | s9 |  |
 | set.cpp:41:22:41:42 | call to set | set.cpp:126:1:126:1 | s9 |  |
+| set.cpp:41:25:41:29 | call to begin | set.cpp:41:22:41:42 | call to set | TAINT |
 | set.cpp:41:34:41:35 | ref arg s2 | set.cpp:43:8:43:9 | s2 |  |
 | set.cpp:41:34:41:35 | ref arg s2 | set.cpp:59:12:59:13 | s2 |  |
 | set.cpp:41:34:41:35 | ref arg s2 | set.cpp:59:30:59:31 | s2 |  |
 | set.cpp:41:34:41:35 | ref arg s2 | set.cpp:126:1:126:1 | s2 |  |
 | set.cpp:41:34:41:35 | s2 | set.cpp:41:37:41:39 | call to end | TAINT |
+| set.cpp:41:37:41:39 | call to end | set.cpp:41:22:41:42 | call to set | TAINT |
 | set.cpp:42:19:42:21 | call to set | set.cpp:43:2:43:4 | s10 |  |
 | set.cpp:42:19:42:21 | call to set | set.cpp:47:7:47:9 | s10 |  |
 | set.cpp:42:19:42:21 | call to set | set.cpp:51:7:51:9 | s10 |  |
@@ -2569,11 +2571,13 @@
 | set.cpp:155:32:155:52 | call to unordered_set | set.cpp:160:7:160:8 | s9 |  |
 | set.cpp:155:32:155:52 | call to unordered_set | set.cpp:164:7:164:8 | s9 |  |
 | set.cpp:155:32:155:52 | call to unordered_set | set.cpp:238:1:238:1 | s9 |  |
+| set.cpp:155:35:155:39 | call to begin | set.cpp:155:32:155:52 | call to unordered_set | TAINT |
 | set.cpp:155:44:155:45 | ref arg s2 | set.cpp:157:8:157:9 | s2 |  |
 | set.cpp:155:44:155:45 | ref arg s2 | set.cpp:173:12:173:13 | s2 |  |
 | set.cpp:155:44:155:45 | ref arg s2 | set.cpp:173:30:173:31 | s2 |  |
 | set.cpp:155:44:155:45 | ref arg s2 | set.cpp:238:1:238:1 | s2 |  |
 | set.cpp:155:44:155:45 | s2 | set.cpp:155:47:155:49 | call to end | TAINT |
+| set.cpp:155:47:155:49 | call to end | set.cpp:155:32:155:52 | call to unordered_set | TAINT |
 | set.cpp:156:29:156:31 | call to unordered_set | set.cpp:157:2:157:4 | s10 |  |
 | set.cpp:156:29:156:31 | call to unordered_set | set.cpp:161:7:161:9 | s10 |  |
 | set.cpp:156:29:156:31 | call to unordered_set | set.cpp:165:7:165:9 | s10 |  |

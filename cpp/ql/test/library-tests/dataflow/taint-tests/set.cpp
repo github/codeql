@@ -43,11 +43,11 @@ void test_set()
 	s10 = s2;
 	sink(s7); // tainted
 	sink(s8); // tainted
-	sink(s9); // tainted [NOT DETECTED]
+	sink(s9); // tainted
 	sink(s10); // tainted
 	sink(s7.find("abc")); // tainted
 	sink(s8.find("abc")); // tainted
-	sink(s9.find("abc")); // tainted [NOT DETECTED]
+	sink(s9.find("abc")); // tainted
 	sink(s10.find("abc")); // tainted
 
 	// iterators
@@ -157,11 +157,11 @@ void test_unordered_set()
 	s10 = s2;
 	sink(s7); // tainted
 	sink(s8); // tainted
-	sink(s9); // tainted [NOT DETECTED]
+	sink(s9); // tainted
 	sink(s10); // tainted
 	sink(s7.find("abc")); // tainted
 	sink(s8.find("abc")); // tainted
-	sink(s9.find("abc")); // tainted [NOT DETECTED]
+	sink(s9.find("abc")); // tainted
 	sink(s10.find("abc")); // tainted
 
 	// iterators
