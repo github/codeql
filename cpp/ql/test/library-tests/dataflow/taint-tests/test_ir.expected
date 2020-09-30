@@ -70,10 +70,8 @@
 | map.cpp:78:7:78:7 | l | map.cpp:63:37:63:42 | call to source |
 | map.cpp:83:7:83:32 | call to pair | map.cpp:83:17:83:22 | call to source |
 | map.cpp:84:34:84:38 | first | map.cpp:84:17:84:22 | call to source |
-| map.cpp:85:7:85:39 | (reference dereference) | map.cpp:85:17:85:22 | call to source |
 | map.cpp:85:34:85:39 | second | map.cpp:85:17:85:22 | call to source |
 | map.cpp:86:7:86:32 | call to pair | map.cpp:86:24:86:29 | call to source |
-| map.cpp:87:7:87:38 | (reference dereference) | map.cpp:87:24:87:29 | call to source |
 | map.cpp:87:34:87:38 | first | map.cpp:87:24:87:29 | call to source |
 | map.cpp:88:34:88:39 | second | map.cpp:88:24:88:29 | call to source |
 | map.cpp:93:9:93:13 | first | map.cpp:91:33:91:38 | call to source |

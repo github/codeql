@@ -324,8 +324,7 @@ namespace std {
 
 		void swap(pair& p) /*noexcept(...)*/;
 	};
-
-	template<class T1, class T2> constexpr pair<T1, T2> make_pair(T1&&, T2&&);
+	template< class T1, class T2 > std::pair<T1,T2> make_pair(const T1& t, const T2& u );
 }
 
 // --- map ---
