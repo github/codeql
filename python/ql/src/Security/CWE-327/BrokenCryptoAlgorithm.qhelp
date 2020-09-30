@@ -33,7 +33,7 @@
                <code>pycrypto</code> you must specify the encryption
                algorithm to use. The first example uses DES, which is an
                older algorithm that is now considered weak. The second
-               example uses Blowfish, which is a stronger more modern algorithm.
+               example uses AES, which is a stronger modern algorithm.
           </p>
 
           <sample src="examples/broken_crypto.py" />
