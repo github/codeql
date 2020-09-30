@@ -133,6 +133,26 @@
 | movableclass.cpp:55:8:55:9 | s2 | movableclass.cpp:52:23:52:28 | call to source |
 | movableclass.cpp:64:8:64:9 | s2 | movableclass.cpp:23:55:23:60 | call to source |
 | movableclass.cpp:65:11:65:21 | (reference dereference) | movableclass.cpp:65:13:65:18 | call to source |
+| set.cpp:20:7:20:31 | call to iterator | set.cpp:20:17:20:22 | call to source |
+| set.cpp:22:10:22:15 | call to insert | set.cpp:22:29:22:34 | call to source |
+| set.cpp:32:10:32:13 | call to find | set.cpp:20:17:20:22 | call to source |
+| set.cpp:34:10:34:13 | call to find | set.cpp:22:29:22:34 | call to source |
+| set.cpp:36:10:36:13 | call to find | set.cpp:20:17:20:22 | call to source |
+| set.cpp:51:11:51:14 | call to find | set.cpp:20:17:20:22 | call to source |
+| set.cpp:61:8:61:8 | call to operator* | set.cpp:20:17:20:22 | call to source |
+| set.cpp:61:8:61:11 | (reference dereference) | set.cpp:20:17:20:22 | call to source |
+| set.cpp:111:11:111:15 | call to erase | set.cpp:108:13:108:18 | call to source |
+| set.cpp:111:11:111:15 | call to erase | set.cpp:109:13:109:18 | call to source |
+| set.cpp:134:7:134:31 | call to iterator | set.cpp:134:17:134:22 | call to source |
+| set.cpp:136:10:136:15 | call to insert | set.cpp:136:29:136:34 | call to source |
+| set.cpp:146:10:146:13 | call to find | set.cpp:134:17:134:22 | call to source |
+| set.cpp:148:10:148:13 | call to find | set.cpp:136:29:136:34 | call to source |
+| set.cpp:150:10:150:13 | call to find | set.cpp:134:17:134:22 | call to source |
+| set.cpp:165:11:165:14 | call to find | set.cpp:134:17:134:22 | call to source |
+| set.cpp:175:8:175:8 | call to operator* | set.cpp:134:17:134:22 | call to source |
+| set.cpp:175:8:175:11 | (reference dereference) | set.cpp:134:17:134:22 | call to source |
+| set.cpp:223:11:223:15 | call to erase | set.cpp:220:13:220:18 | call to source |
+| set.cpp:223:11:223:15 | call to erase | set.cpp:221:13:221:18 | call to source |
 | smart_pointer.cpp:13:10:13:10 | Argument 0 indirection | smart_pointer.cpp:11:52:11:57 | call to source |
 | smart_pointer.cpp:25:10:25:10 | Argument 0 indirection | smart_pointer.cpp:23:52:23:57 | call to source |
 | smart_pointer.cpp:52:12:52:14 | call to get | smart_pointer.cpp:51:52:51:57 | call to source |
