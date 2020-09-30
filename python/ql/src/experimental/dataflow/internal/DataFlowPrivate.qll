@@ -170,6 +170,13 @@ module EssaFlow {
       nodeTo.(EssaNode).getVar() = p.getVariable() and
       nodeFrom.(EssaNode).getVar() = p.getAnInput()
     )
+    or
+    // Overflow keyword argument
+    exists(CallNode call, CallableValue callable |
+      call = callable.getACall() and
+      nodeTo = TKwOverflowNode(call, callable) and
+      nodeFrom.asCfgNode() = call.getNode().getKwargs().getAFlowNode()
+    )
   }
 
   predicate useToNextUse(NameNode nodeFrom, NameNode nodeTo) {
@@ -300,11 +307,6 @@ module ArgumentPassing {
         call_unpacks(call, callable, name, n) and
         result = TKwUnpacked(call, callable, name)
       )
-      or
-      // Dict argument is passed to the doubly starred parameter (at position -2).
-      // This is an overaaproximation, not removing unpacked arguments.
-      n = -2 and
-      result = TCfgNode(call.getNode().getKwargs().getAFlowNode())
     )
   }
 
@@ -342,7 +344,8 @@ module ArgumentPassing {
       f = callable.getScope() and
       not exists(call.getArg(n)) and // no positional arguement available
       name = f.getArgName(n) and
-      not exists(call.getArgByName(name)) and // no keyword argument available
+      // not exists(call.getArgByName(name)) and // only matches keyword arguments not preceded by **
+      not call.getNode().getANamedArg().(Keyword).getArg() = name and // no keyword argument available
       n >= 0 and
       n < f.getPositionalParameterCount() + f.getKeywordOnlyParameterCount() and
       exists(call.getNode().getKwargs()) // dict argument available
@@ -912,7 +915,13 @@ predicate kwUnpackReadStep(CfgNode nodeFrom, DictionaryElementContent c, Node no
  * in `x.f = newValue`.
  */
 cached
-predicate clearsContent(Node n, Content c) { none() }
+predicate clearsContent(Node n, Content c) {
+  exists(CallNode call, CallableValue callable, string name |
+    call_unpacks(call, callable, name, _) and
+    n = TKwOverflowNode(call, callable) and
+    c.(DictionaryElementContent).getKey() = name
+  )
+}
 
 //--------
 // Fancy context-sensitive guards

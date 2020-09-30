@@ -36,6 +36,9 @@ newtype TNode =
   /** A node representing the overflow keyword arguments to a call. */
   TKwOverflowNode(CallNode call, CallableValue callable) {
     exists(getKeywordOverflowArg(call, callable, _))
+    or
+    exists(call.getNode().getKwargs()) and
+    callable.getScope().hasKwArg()
   } or
   /**
    * A node representing an unpacked element of a dictionary argument.
@@ -250,6 +253,26 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
   override DataFlowCallable getEnclosingCallable() { result.(DataFlowModuleScope).getScope() = mod }
 
   override Location getLocation() { result = mod.getLocation() }
+}
+
+class PosOverflowNode extends Node, TPosOverflowNode {
+  CallNode call;
+
+  PosOverflowNode() { this = TPosOverflowNode(call, _) }
+
+  override string toString() { result = "PosOverflowNode for " + call.getNode().toString() }
+
+  override Location getLocation() { result = call.getLocation() }
+}
+
+class KwOverflowNode extends Node, TKwOverflowNode {
+  CallNode call;
+
+  KwOverflowNode() { this = TKwOverflowNode(call, _) }
+
+  override string toString() { result = "KwOverflowNode for " + call.getNode().toString() }
+
+  override Location getLocation() { result = call.getLocation() }
 }
 
 /**
