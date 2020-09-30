@@ -32,12 +32,12 @@ use
  * extend `MySpecialExpr::Range` instead.
  */
 class MySpecialExpr extends Expr {
-  MySpecialExpr::Range self;
+  MySpecialExpr::Range range;
 
-  MySpecialExpr() { this = self }
+  MySpecialExpr() { this = range }
 
   /** <QLDoc...> */
-  int memberPredicate() { result = self.memberPredicate() }
+  int memberPredicate() { result = range.memberPredicate() }
 }
 
 /** Provides a class for modeling new <...> APIs. */
@@ -60,6 +60,8 @@ class ConcreteSubclass extends MySpecialExpr::Range { ... }
 ```
 
 </details>
+
+Note, previously we used to write `MySpecialExpr() { this = self }`, but we now recommend using `MySpecialExpr() { this = range }` instead to avoid anyone mistakenly thinking that `self` and `this` are synonyms in general.
 
 ### Rationale
 
