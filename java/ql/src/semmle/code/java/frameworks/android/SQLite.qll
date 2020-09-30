@@ -52,13 +52,13 @@ private class QueryMethod extends SQLiteRunner {
     this.getName() = "query" and
     (
       if this.getParameter(0).getType() instanceof TypeString
-      then result = [2, 4, 5, 6, 7]
-      else result = [3, 5, 6, 7, 8]
+      then result = [0, 1, 2, 4, 5, 6, 7]
+      else result = [1, 2, 3, 5, 6, 7, 8]
     )
     or
     // queryWithFactory(SQLiteDatabase.CursorFactory cursorFactory, boolean distinct, String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy, String limit, CancellationSignal cancellationSignal)
     // queryWithFactory(SQLiteDatabase.CursorFactory cursorFactory, boolean distinct, String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy, String limit)
-    this.getName() = "queryWithFactory" and result = [4, 6, 7, 8, 9]
+    this.getName() = "queryWithFactory" and result = [2, 3, 4, 6, 7, 8, 9]
   }
 }
 
@@ -171,7 +171,7 @@ private class QueryBuilderQueryMethod extends SQLiteRunner {
     this.hasName("query")
   }
 
-  override int sqlIndex() { result = [-1, 3, 5, 6, 7, 8] }
+  override int sqlIndex() { result = [-1, 2, 4, 5, 6, 7] }
 }
 
 private class QueryBuilderUpdateMethod extends SQLiteRunner {
