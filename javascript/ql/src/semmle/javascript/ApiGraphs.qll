@@ -21,13 +21,13 @@ module API {
    */
   class Node extends Impl::TApiNode {
     /**
-     * Gets a data-flow corresponding to a use of the API component represented by this node.
+     * Gets a data-flow node corresponding to a use of the API component represented by this node.
      *
      * For example, `require('fs').readFileSync` is a use of the function `readFileSync` from the
      * `fs` module, and `require('fs').readFileSync(file)` is a use of the return of that function.
      *
-     * The use is type-tracked, meaning that in `f(obj.foo); function f(x) {};` both `obj.foo` and
-     * `x` are uses of the `foo` member from `obj`.
+     * This includes indirect uses found via data flow, meaning that in
+     * `f(obj.foo); function f(x) {};` both `obj.foo` and `x` are uses of the `foo` member from `obj`.
      *
      * As another example, in the assignment `exports.plusOne = (x) => x+1` the two references to
      * `x` are uses of the first parameter of `plusOne`.
@@ -44,9 +44,10 @@ module API {
      * For example, `require('fs').readFileSync` is a reference to the `readFileSync` member from the
      * `fs` module.
      *
-     * No local data-flow or type-tracking happens on the result, which means that in
-     * `const x = fs.readFile` only `fs.readFile` is a reference to the `readFile` member of `fs`,
-     * neither `x` nor any node that `x` flows to is a reference to this API component.
+     * Unlike `getAUse()`, this predicate only gets the immediate references, not the indirect uses
+     * found via data flow. This means that in `const x = fs.readFile` only `fs.readFile` is a reference
+     * to the `readFile` member of `fs`, neither `x` nor any node that `x` flows to is a reference to
+     * this API component.
      */
     DataFlow::SourceNode getAReference() { Impl::use(this, result) }
 
@@ -56,7 +57,7 @@ module API {
     DataFlow::CallNode getACall() { result = getReturn().getAReference() }
 
     /**
-     * Gets an instantiation of the function represented by this API component.
+     * Gets a `new` call to the function represented by this API component.
      */
     DataFlow::NewNode getAnInstantiation() { result = getInstance().getAReference() }
 
