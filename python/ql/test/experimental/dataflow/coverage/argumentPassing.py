@@ -121,6 +121,10 @@ def grab_foo_bar_baz(foo, **kwargs):
 
 def grab_bar_baz(bar, **kwargs):
     SINK2(bar)
+    try:
+        SINK2(kwargs["bar"])
+    except:
+        print("OK")
     grab_baz(**kwargs)
 
 
@@ -128,7 +132,7 @@ def grab_baz(baz):
     SINK3(baz)
 
 
-@expects(3)
+@expects(4)
 def test_grab():
     grab_foo_bar_baz(baz=arg3, bar=arg2, foo=arg1)
 
