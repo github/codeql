@@ -7,9 +7,14 @@ private import semmle.code.java.security.SecurityTests
 private import semmle.code.java.security.Validation
 private import semmle.code.java.Maps
 private import semmle.code.java.dataflow.internal.ContainerFlow
+<<<<<<< HEAD
 private import semmle.code.java.frameworks.spring.SpringController
 private import semmle.code.java.frameworks.spring.SpringHttp
 import semmle.code.java.dataflow.FlowSteps
+=======
+private import semmle.code.java.frameworks.jackson.JacksonSerializability
+private import semmle.code.java.frameworks.guava.Guava
+>>>>>>> 61c00e344... Java: Add modelling for Guava `Strings`, `Splitter`, and `Joiner`
 
 /**
  * Holds if taint can flow from `src` to `sink` in zero or more
@@ -285,7 +290,11 @@ private predicate taintPreservingQualifierToArgument(Method m, int arg) {
   m.hasName("read") and
   arg = 0
   or
+<<<<<<< HEAD
   m.(TaintPreservingCallable).transfersTaint(-1, arg)
+=======
+  m.(GuavaTaintPropagationMethod).propagatesTaint(-1, arg)
+>>>>>>> 61c00e344... Java: Add modelling for Guava `Strings`, `Splitter`, and `Joiner`
 }
 
 /** Access to a method that passes taint from the qualifier. */
@@ -359,7 +368,11 @@ private predicate taintPreservingQualifierToMethod(Method m) {
     )
   )
   or
+<<<<<<< HEAD
   m.(TaintPreservingCallable).returnsTaintFrom(-1)
+=======
+  m.(GuavaTaintPropagationMethod).propagatesTaint(-1, -2)
+>>>>>>> 61c00e344... Java: Add modelling for Guava `Strings`, `Splitter`, and `Joiner`
 }
 
 private class StringReplaceMethod extends TaintPreservingCallable {
@@ -477,7 +490,26 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg) {
   method.hasName("sourceToInputSource") and
   arg = 0
   or
+<<<<<<< HEAD
   method.(TaintPreservingCallable).returnsTaintFrom(arg)
+=======
+  exists(ProtobufParser p | method = p.getAParseFromMethod()) and
+  arg = 0
+  or
+  exists(ProtobufMessageLite m | method = m.getAParseFromMethod()) and
+  arg = 0
+  or
+  // Jackson serialization methods that return the serialized data
+  method instanceof JacksonWriteValueMethod and
+  method.getNumberOfParameters() = 1 and
+  arg = 0
+  or
+  method.getDeclaringType().hasQualifiedName("java.io", "StringWriter") and
+  method.hasName("append") and
+  arg = 0
+  or
+  method.(GuavaTaintPropagationMethod).propagatesTaint(arg, -2)
+>>>>>>> 61c00e344... Java: Add modelling for Guava `Strings`, `Splitter`, and `Joiner`
 }
 
 /**
@@ -525,7 +557,17 @@ private predicate taintPreservingArgToArg(Method method, int input, int output) 
   input = 0 and
   output = 2
   or
+<<<<<<< HEAD
   method.(TaintPreservingCallable).transfersTaint(input, output)
+=======
+  // Jackson serialization methods that write data to the first argument
+  method instanceof JacksonWriteValueMethod and
+  method.getNumberOfParameters() > 1 and
+  input = method.getNumberOfParameters() - 1 and
+  output = 0
+  or
+  method.(GuavaTaintPropagationMethod).propagatesTaint(input, output)
+>>>>>>> 61c00e344... Java: Add modelling for Guava `Strings`, `Splitter`, and `Joiner`
 }
 
 /**
@@ -553,7 +595,18 @@ private predicate taintPreservingArgumentToQualifier(Method method, int arg) {
     write.getDeclaringType().hasQualifiedName("java.io", "OutputStream")
   )
   or
+<<<<<<< HEAD
   method.(TaintPreservingCallable).transfersTaint(arg, -1)
+=======
+  exists(Method append |
+    method.overrides*(append) and
+    append.hasName("append") and
+    arg = 0 and
+    append.getDeclaringType().hasQualifiedName("java.io", "StringWriter")
+  )
+  or
+  method.(GuavaTaintPropagationMethod).propagatesTaint(arg, -1)
+>>>>>>> 61c00e344... Java: Add modelling for Guava `Strings`, `Splitter`, and `Joiner`
 }
 
 /** A comparison or equality test with a constant. */
