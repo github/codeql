@@ -223,7 +223,7 @@ module Firebase {
 
       RouteHandler() { this = any(RouteSetup setup).getARouteHandler() }
 
-      override SimpleParameter getRouteHandlerParameter(string kind) {
+      override Parameter getRouteHandlerParameter(string kind) {
         kind = "request" and result = astNode.getParameter(0)
         or
         kind = "response" and result = astNode.getParameter(1)

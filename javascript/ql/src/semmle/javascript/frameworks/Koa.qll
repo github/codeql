@@ -47,7 +47,7 @@ module Koa {
     /**
      * Gets the parameter of the route handler that contains the context object.
      */
-    SimpleParameter getContextParameter() { result = function.getParameter(0) }
+    Parameter getContextParameter() { result = function.getParameter(0) }
 
     /**
      * Gets an expression that contains the "context" object of

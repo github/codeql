@@ -30,7 +30,7 @@ module Hapi {
     /**
      * Gets the parameter of the route handler that contains the request object.
      */
-    SimpleParameter getRequestParameter() { result = function.getParameter(0) }
+    Parameter getRequestParameter() { result = function.getParameter(0) }
   }
 
   /**

@@ -30,12 +30,12 @@ module Restify {
     /**
      * Gets the parameter of the route handler that contains the request object.
      */
-    SimpleParameter getRequestParameter() { result = function.getParameter(0) }
+    Parameter getRequestParameter() { result = function.getParameter(0) }
 
     /**
      * Gets the parameter of the route handler that contains the response object.
      */
-    SimpleParameter getResponseParameter() { result = function.getParameter(1) }
+    Parameter getResponseParameter() { result = function.getParameter(1) }
   }
 
   /**
