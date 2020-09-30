@@ -184,7 +184,7 @@ class ImplicitParameterNode extends ParameterNode, TInstanceParameterNode {
 
 /**
  * INTERNAL: do not use.
- * 
+ *
  * A node that represents the value of a variable after a function call that
  * may have changed the variable because it's passed by reference or because an
  * iterator for it was passed by value or by reference.
