@@ -29,7 +29,7 @@ private module Stdlib {
    *
    * For example, using `attr_name = "system"` will get all uses of `os.system`.
    */
-  private DataFlow::Node os_attr(string attr_name, DataFlow::TypeTracker t) {
+  private DataFlow::Node os_attr(DataFlow::TypeTracker t, string attr_name) {
     attr_name in ["system", "popen",
           // exec
           "execl", "execle", "execlp", "execlpe", "execv", "execve", "execvp", "execvpe",
@@ -41,10 +41,24 @@ private module Stdlib {
       result = DataFlow::importMember("os", attr_name)
       or
       t.startInAttr(attr_name) and
-      result = os()
-      or
-      exists(DataFlow::TypeTracker t2 | result = os_attr(attr_name, t2).track(t2, t))
+      result = DataFlow::importModule("os")
     )
+    or
+    // Due to bad performance when using normal setup with `os_attr(t2, attr_name).track(t2, t)`
+    // we have inlined that code and forced a join
+    exists(DataFlow::TypeTracker t2 |
+      exists(DataFlow::StepSummary summary |
+        os_attr_first_join(t2, attr_name, result, summary) and
+        t = t2.append(summary)
+      )
+    )
+  }
+
+  pragma[nomagic]
+  private predicate os_attr_first_join(
+    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
+  ) {
+    DataFlow::StepSummary::step(os_attr(t2, attr_name), res, summary)
   }
 
   /**
@@ -54,7 +68,7 @@ private module Stdlib {
    * For example, using `"system"` will get all uses of `os.system`.
    */
   private DataFlow::Node os_attr(string attr_name) {
-    result = os_attr(attr_name, DataFlow::TypeTracker::end())
+    result = os_attr(DataFlow::TypeTracker::end(), attr_name)
   }
 
   /**
@@ -148,17 +162,31 @@ private module Stdlib {
    *
    * For example, using `attr_name = "Popen"` will get all uses of `subprocess.Popen`.
    */
-  private DataFlow::Node subprocess_attr(string attr_name, DataFlow::TypeTracker t) {
+  private DataFlow::Node subprocess_attr(DataFlow::TypeTracker t, string attr_name) {
     attr_name in ["Popen", "call", "check_call", "check_output", "run"] and
     (
       t.start() and
       result = DataFlow::importMember("subprocess", attr_name)
       or
       t.startInAttr(attr_name) and
-      result = subprocess()
-      or
-      exists(DataFlow::TypeTracker t2 | result = subprocess_attr(attr_name, t2).track(t2, t))
+      result = DataFlow::importModule("subprocess")
     )
+    or
+    // Due to bad performance when using normal setup with `subprocess_attr(t2, attr_name).track(t2, t)`
+    // we have inlined that code and forced a join
+    exists(DataFlow::TypeTracker t2 |
+      exists(DataFlow::StepSummary summary |
+        subprocess_attr_first_join(t2, attr_name, result, summary) and
+        t = t2.append(summary)
+      )
+    )
+  }
+
+  pragma[nomagic]
+  private predicate subprocess_attr_first_join(
+    DataFlow::TypeTracker t2, string attr_name, DataFlow::Node res, DataFlow::StepSummary summary
+  ) {
+    DataFlow::StepSummary::step(subprocess_attr(t2, attr_name), res, summary)
   }
 
   /**
@@ -168,7 +196,7 @@ private module Stdlib {
    * For example, using `attr_name = "Popen"` will get all uses of `subprocess.Popen`.
    */
   private DataFlow::Node subprocess_attr(string attr_name) {
-    result = subprocess_attr(attr_name, DataFlow::TypeTracker::end())
+    result = subprocess_attr(DataFlow::TypeTracker::end(), attr_name)
   }
 
   /**
