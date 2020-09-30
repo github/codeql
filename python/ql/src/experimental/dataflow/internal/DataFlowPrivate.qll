@@ -279,7 +279,7 @@ module ArgumentPassing {
         result = TCfgNode(call.getArgByName(argName))
       )
       or
-      // argument -1 is a synthezised argument passed to the starred parameter
+      // a synthezised argument passed to the starred parameter (at position -1)
       exists(Function f |
         f = callable.getScope() and
         f.hasVarArg() and
@@ -287,7 +287,7 @@ module ArgumentPassing {
         result = TPosOverflowNode(call, callable)
       )
       or
-      // argument -2 is a synthezised argument passed to the doubly starred parameter
+      // a synthezised argument passed to the doubly starred parameter (at position -2)
       exists(Function f |
         f = callable.getScope() and
         f.hasKwArg() and
@@ -300,6 +300,11 @@ module ArgumentPassing {
         call_unpacks(call, callable, name, n) and
         result = TKwUnpacked(call, callable, name)
       )
+      or
+      // Dict argument is passed to the doubly starred parameter (at position -2).
+      // This is an overaaproximation, not removing unpacked arguments.
+      n = -2 and
+      result = TCfgNode(call.getNode().getKwargs().getAFlowNode())
     )
   }
 
@@ -332,6 +337,7 @@ module ArgumentPassing {
    * It will then be passed to the `n`th parameter of `callable`.
    */
   predicate call_unpacks(CallNode call, CallableValue callable, string name, int n) {
+    call = callable.getACall() and
     exists(Function f |
       f = callable.getScope() and
       not exists(call.getArg(n)) and // no positional arguement available
@@ -893,8 +899,7 @@ predicate attributeReadStep(CfgNode nodeFrom, AttributeContent c, CfgNode nodeTo
  * synthezised unpacked argument with the name indicated by `c`.
  */
 predicate kwUnpackReadStep(CfgNode nodeFrom, DictionaryElementContent c, Node nodeTo) {
-  exists(CallNode call, CallableValue callable, string name, int n |
-    call_unpacks(call, callable, name, n) and
+  exists(CallNode call, CallableValue callable, string name |
     nodeFrom.asCfgNode() = call.getNode().getKwargs().getAFlowNode() and
     nodeTo = TKwUnpacked(call, callable, name) and
     name = c.getKey()

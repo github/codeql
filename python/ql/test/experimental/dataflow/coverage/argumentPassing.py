@@ -122,7 +122,7 @@ def grab_foo_bar_baz(foo, **kwargs):
 def grab_bar_baz(bar, **kwargs):
     SINK2(bar)
     try:
-        SINK2(kwargs["bar"])
+        SINK2(kwargs["bar"])  # FP
     except:
         print("OK")
     grab_baz(**kwargs)
