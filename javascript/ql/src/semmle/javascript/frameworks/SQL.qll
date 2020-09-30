@@ -96,7 +96,7 @@ private module MySql {
  * Provides classes modelling the `pg` package.
  */
 private module Postgres {
-  /** Gets a reference to the `Client` constructor in the `pg` package. E.g: `require('pg').Client`. */
+  /** Gets a reference to the `Client` constructor in the `pg` package, for example `require('pg').Client`. */
   API::Node newClient() { result = API::moduleImport("pg").getMember("Client") }
 
   /** Gets a freshly created Postgres client instance. */
