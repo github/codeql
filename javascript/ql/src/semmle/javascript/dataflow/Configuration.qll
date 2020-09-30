@@ -421,6 +421,22 @@ private predicate barrierGuardBlocksSsaRefinement(
 }
 
 /**
+ * Holds if the result of `guard` is used in the branching condition `cond`.
+ *
+ * `outcome` is bound to the outcome of `cond` for join-ordering purposes.
+ */
+pragma[noinline]
+private predicate barrierGuardUsedInCondition(BarrierGuardNode guard, ConditionGuardNode cond, boolean outcome) {
+  barrierGuardIsRelevant(guard) and
+  outcome = cond.getOutcome() and
+  (
+    cond.getTest() = guard.getEnclosingExpr()
+    or
+    cond.getTest().flow().getImmediatePredecessor+() = guard
+  )
+}
+
+/**
  * Holds if data flow node `nd` acts as a barrier for data flow, possibly due to aliasing
  * through an access path.
  *
@@ -435,14 +451,9 @@ private predicate barrierGuardBlocksNode(BarrierGuardNode guard, DataFlow::Node 
   )
   or
   // 2) `nd` is an instance of an access path `p`, and dominated by a barrier for `p`
-  barrierGuardIsRelevant(guard) and
   exists(AccessPath p, BasicBlock bb, ConditionGuardNode cond, boolean outcome |
     nd = DataFlow::valueNode(p.getAnInstanceIn(bb)) and
-    (
-      guard.getEnclosingExpr() = cond.getTest() or
-      guard = cond.getTest().flow().getImmediatePredecessor+()
-    ) and
-    outcome = cond.getOutcome() and
+    barrierGuardUsedInCondition(guard, cond, outcome) and
     barrierGuardBlocksAccessPath(guard, outcome, p, label) and
     cond.dominates(bb)
   )
