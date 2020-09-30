@@ -29,6 +29,17 @@ class CommandInjectionConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     sink = any(SystemCommandExecution e).getCommand()
   }
+
+  // Since the implementation of os.popen looks like
+  // ```py
+  // def popen(cmd, mode="r", buffering=-1):
+  //     ...
+  //     proc = subprocess.Popen(cmd, ...)
+  // ```
+  // any time we would report flow to the `os.popen` sink, we can ALSO report the flow
+  // from the `cmd` parameter to the `subprocess.Popen` sink -- obviously we don't want
+  // that, so to prevent that we remove any taint edges out of a sink.
+  override predicate isSanitizerOut(DataFlow::Node node) { isSink(node) }
 }
 
 from CommandInjectionConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
