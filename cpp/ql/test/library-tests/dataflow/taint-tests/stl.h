@@ -11,6 +11,19 @@ struct remove_const<const T> { typedef T type; };
 template<class T>
 using remove_const_t = typename remove_const<T>::type;
 
+template<class T>
+struct remove_reference { typedef T type; };
+
+template<class T>
+struct remove_reference<T &> { typedef T type; };
+
+template<class T>
+struct remove_reference<T &&> { typedef T type; };
+
+// `remove_reference_t<T>` removes any `&` from `T`
+template<class T>
+using remove_reference_t = typename remove_reference<T>::type;
+
 // --- iterator ---
 
 namespace std {
@@ -324,7 +337,8 @@ namespace std {
 
 		void swap(pair& p) /*noexcept(...)*/;
 	};
-	template< class T1, class T2 > std::pair<T1,T2> make_pair(const T1& t, const T2& u );
+
+	template<class T1, class T2> constexpr pair<remove_reference_t<T1>, remove_reference_t<T2>> make_pair(T1&& x, T2&& y);
 }
 
 // --- map ---
