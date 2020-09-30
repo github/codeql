@@ -45,7 +45,7 @@ private Sign certainExprSign(Expr e) {
  * Gets the value of the expression if it can't be converted to integer, but
  * can be converted to float.
  */
-float getNonIntegerValue(ExprWithPossibleValue e) {
+private float getNonIntegerValue(ExprWithPossibleValue e) {
   exists(string s |
     s = e.getValue() and
     result = s.toFloat() and
@@ -54,7 +54,7 @@ float getNonIntegerValue(ExprWithPossibleValue e) {
 }
 
 /** Holds if the sign of `e` is too complicated to determine. */
-predicate unknownSign(Expr e) {
+private predicate unknownSign(Expr e) {
   not exists(certainExprSign(e)) and
   (
     exists(IntegerLiteral lit | lit = e and not exists(lit.getValue().toInt()))
@@ -278,7 +278,7 @@ private Sign implicitSsaDefSign(SsaVariable v) {
 }
 
 /** Gets a possible sign for `f`. */
-Sign fieldSign(Field f) {
+private Sign fieldSign(Field f) {
   if not fieldWithUnknownSign(f)
   then
     result = exprSign(getAssignedValueToField(f))
@@ -327,7 +327,7 @@ Sign exprSign(Expr e) {
 }
 
 /** Gets a possible sign for `e` from the signs of its child nodes. */
-Sign specificSubExprSign(Expr e) {
+private Sign specificSubExprSign(Expr e) {
   result = exprSign(getASubExpr(e))
   or
   e =
@@ -352,9 +352,9 @@ private predicate binaryOpSigns(Expr e, Sign lhs, Sign rhs) {
   rhs = binaryOpRhsSign(e)
 }
 
-Sign binaryOpLhsSign(BinaryOperation e) { result = exprSign(e.getLeftOperand()) }
+private Sign binaryOpLhsSign(BinaryOperation e) { result = exprSign(e.getLeftOperand()) }
 
-Sign binaryOpRhsSign(BinaryOperation e) { result = exprSign(e.getRightOperand()) }
+private Sign binaryOpRhsSign(BinaryOperation e) { result = exprSign(e.getRightOperand()) }
 
 /**
  * Dummy predicate that holds for any sign. This is added to improve readability
