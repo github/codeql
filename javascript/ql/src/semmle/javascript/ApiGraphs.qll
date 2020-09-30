@@ -62,6 +62,11 @@ module API {
     DataFlow::NewNode getAnInstantiation() { result = getInstance().getAReference() }
 
     /**
+     * Gets an invocation (with our without `new`) to the function represented by this API component.
+     */
+    DataFlow::InvokeNode getAnInvocation() { result = getACall() or result = getAnInstantiation() }
+
+    /**
      * Gets a data-flow node corresponding to the right-hand side of a definition of the API
      * component represented by this node.
      *
