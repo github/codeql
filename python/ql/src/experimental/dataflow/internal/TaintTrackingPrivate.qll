@@ -101,7 +101,7 @@ predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeT
     nodeFrom.getNode() = object and
     method_name in ["partition", "rpartition", "rsplit", "split", "splitlines"]
     or
-    // List[str] -> str
+    // Iterable[str] -> str
     // TODO: check if these should be handled differently in regards to content
     method_name = "join" and
     nodeFrom.getNode() = call.getArg(0)

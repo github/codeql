@@ -150,6 +150,17 @@ def binary_decode_encode():
     )
 
 
+def test_os_path_join():
+    import os
+    print("\n# test_os_path_join")
+    ts = TAINTED_STRING
+    ensure_tainted(
+        os.path.join(ts, "foo", "bar"),
+        os.path.join(ts),
+        os.path.join("foo", "bar", ts),
+    )
+
+
 # Make tests runable
 
 str_operations()
@@ -157,3 +168,4 @@ str_methods()
 non_syntactic()
 percent_fmt()
 binary_decode_encode()
+test_os_path_join()

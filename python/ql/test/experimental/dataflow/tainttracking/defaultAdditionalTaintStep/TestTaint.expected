@@ -137,6 +137,9 @@
 | test_string.py:143 | fail | binary_decode_encode | base64.decodestring(..) |
 | test_string.py:148 | fail | binary_decode_encode | quopri.encodestring(..) |
 | test_string.py:149 | fail | binary_decode_encode | quopri.decodestring(..) |
+| test_string.py:158 | ok   | test_os_path_join | os.path.join(..) |
+| test_string.py:159 | ok   | test_os_path_join | os.path.join(..) |
+| test_string.py:160 | fail | test_os_path_join | os.path.join(..) |
 | test_unpacking.py:16 | ok   | unpacking | a |
 | test_unpacking.py:16 | ok   | unpacking | b |
 | test_unpacking.py:16 | ok   | unpacking | c |
