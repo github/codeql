@@ -1,0 +1,75 @@
+| Test.java:13:20:13:26 | taint(...) | ../../../stubs/guava-29.0/com/google/common/base/Strings.java:18:36:18:48 | string |
+| Test.java:13:20:13:26 | taint(...) | ../../../stubs/guava-29.0/com/google/common/base/Strings.java:22:36:22:48 | string |
+| Test.java:13:20:13:26 | taint(...) | ../../../stubs/guava-29.0/com/google/common/base/Strings.java:30:33:30:45 | string |
+| Test.java:13:20:13:26 | taint(...) | ../../../stubs/guava-29.0/com/google/common/base/Strings.java:34:31:34:43 | string |
+| Test.java:13:20:13:26 | taint(...) | ../../../stubs/guava-29.0/com/google/common/base/Strings.java:38:31:38:43 | string |
+| Test.java:13:20:13:26 | taint(...) | ../../../stubs/guava-29.0/com/google/common/base/Strings.java:42:37:42:50 | a |
+| Test.java:13:20:13:26 | taint(...) | ../../../stubs/guava-29.0/com/google/common/base/Strings.java:46:37:46:50 | a |
+| Test.java:13:20:13:26 | taint(...) | ../../../stubs/guava-29.0/com/google/common/base/Strings.java:50:38:50:52 | template |
+| Test.java:13:20:13:26 | taint(...) | ../../../stubs/guava-29.0/com/google/common/base/Strings.java:50:55:50:69 | args |
+| Test.java:13:20:13:26 | taint(...) | Test.java:13:20:13:26 | taint(...) |
+| Test.java:13:20:13:26 | taint(...) | Test.java:15:9:15:36 | padStart(...) |
+| Test.java:13:20:13:26 | taint(...) | Test.java:15:26:15:26 | x |
+| Test.java:13:20:13:26 | taint(...) | Test.java:16:9:16:34 | padEnd(...) |
+| Test.java:13:20:13:26 | taint(...) | Test.java:16:24:16:24 | x |
+| Test.java:13:20:13:26 | taint(...) | Test.java:17:9:17:28 | repeat(...) |
+| Test.java:13:20:13:26 | taint(...) | Test.java:17:24:17:24 | x |
+| Test.java:13:20:13:26 | taint(...) | Test.java:18:9:18:51 | emptyToNull(...) |
+| Test.java:13:20:13:26 | taint(...) | Test.java:18:29:18:50 | nullToEmpty(...) |
+| Test.java:13:20:13:26 | taint(...) | Test.java:18:49:18:49 | x |
+| Test.java:13:20:13:26 | taint(...) | Test.java:19:9:19:35 | lenientFormat(...) |
+| Test.java:13:20:13:26 | taint(...) | Test.java:19:31:19:31 | x |
+| Test.java:13:20:13:26 | taint(...) | Test.java:20:30:20:30 | x |
+| Test.java:13:20:13:26 | taint(...) | Test.java:21:30:21:30 | x |
+| Test.java:13:20:13:26 | taint(...) | Test.java:22:9:22:46 | lenientFormat(...) |
+| Test.java:13:20:13:26 | taint(...) | Test.java:22:9:22:46 | new ..[] { .. } |
+| Test.java:13:20:13:26 | taint(...) | Test.java:22:42:22:42 | x |
+| Test.java:26:20:26:26 | taint(...) | ../../../stubs/guava-29.0/com/google/common/base/Splitter.java:23:29:23:50 | separator |
+| Test.java:26:20:26:26 | taint(...) | ../../../stubs/guava-29.0/com/google/common/base/Splitter.java:31:33:31:59 | sequence |
+| Test.java:26:20:26:26 | taint(...) | ../../../stubs/guava-29.0/com/google/common/base/Splitter.java:35:35:35:55 | sequence |
+| Test.java:26:20:26:26 | taint(...) | ../../../stubs/guava-29.0/com/google/common/base/Splitter.java:44:38:44:58 | sequence |
+| Test.java:26:20:26:26 | taint(...) | Test.java:26:20:26:26 | taint(...) |
+| Test.java:26:20:26:26 | taint(...) | Test.java:27:34:27:34 | x |
+| Test.java:26:20:26:26 | taint(...) | Test.java:30:9:30:18 | split(...) |
+| Test.java:26:20:26:26 | taint(...) | Test.java:30:17:30:17 | x |
+| Test.java:26:20:26:26 | taint(...) | Test.java:31:9:31:24 | splitToList(...) |
+| Test.java:26:20:26:26 | taint(...) | Test.java:31:23:31:23 | x |
+| Test.java:26:20:26:26 | taint(...) | Test.java:33:9:33:45 | split(...) |
+| Test.java:26:20:26:26 | taint(...) | Test.java:33:44:33:44 | x |
+| Test.java:37:20:37:26 | taint(...) | ../../../stubs/guava-29.0/com/google/common/base/Joiner.java:21:27:21:42 | separator |
+| Test.java:37:20:37:26 | taint(...) | ../../../stubs/guava-29.0/com/google/common/base/Joiner.java:25:30:25:37 | parameter this |
+| Test.java:37:20:37:26 | taint(...) | ../../../stubs/guava-29.0/com/google/common/base/Joiner.java:25:39:25:59 | builder |
+| Test.java:37:20:37:26 | taint(...) | ../../../stubs/guava-29.0/com/google/common/base/Joiner.java:25:62:25:73 | first |
+| Test.java:37:20:37:26 | taint(...) | ../../../stubs/guava-29.0/com/google/common/base/Joiner.java:25:76:25:88 | second |
+| Test.java:37:20:37:26 | taint(...) | ../../../stubs/guava-29.0/com/google/common/base/Joiner.java:33:17:33:26 | parameter this |
+| Test.java:37:20:37:26 | taint(...) | ../../../stubs/guava-29.0/com/google/common/base/Joiner.java:41:20:41:40 | parameter this |
+| Test.java:37:20:37:26 | taint(...) | ../../../stubs/guava-29.0/com/google/common/base/Joiner.java:41:42:41:65 | keyValueSeparator |
+| Test.java:37:20:37:26 | taint(...) | ../../../stubs/guava-29.0/com/google/common/base/Joiner.java:50:19:50:22 | parameter this |
+| Test.java:37:20:37:26 | taint(...) | ../../../stubs/guava-29.0/com/google/common/base/Joiner.java:50:24:50:36 | map |
+| Test.java:37:20:37:26 | taint(...) | Test.java:37:20:37:26 | taint(...) |
+| Test.java:37:20:37:26 | taint(...) | Test.java:38:21:38:32 | on(...) |
+| Test.java:37:20:37:26 | taint(...) | Test.java:38:31:38:31 | x |
+| Test.java:37:20:37:26 | taint(...) | Test.java:44:9:44:10 | j1 |
+| Test.java:37:20:37:26 | taint(...) | Test.java:44:9:44:38 | appendTo(...) |
+| Test.java:37:20:37:26 | taint(...) | Test.java:44:21:44:22 | sb [post update] |
+| Test.java:37:20:37:26 | taint(...) | Test.java:45:9:45:10 | sb |
+| Test.java:37:20:37:26 | taint(...) | Test.java:45:9:45:21 | toString(...) |
+| Test.java:37:20:37:26 | taint(...) | Test.java:46:9:46:38 | appendTo(...) |
+| Test.java:37:20:37:26 | taint(...) | Test.java:46:21:46:22 | sb |
+| Test.java:37:20:37:26 | taint(...) | Test.java:47:9:47:10 | sb |
+| Test.java:37:20:37:26 | taint(...) | Test.java:47:9:47:21 | toString(...) |
+| Test.java:37:20:37:26 | taint(...) | Test.java:50:9:50:29 | appendTo(...) |
+| Test.java:37:20:37:26 | taint(...) | Test.java:50:21:50:22 | sb [post update] |
+| Test.java:37:20:37:26 | taint(...) | Test.java:50:25:50:25 | x |
+| Test.java:37:20:37:26 | taint(...) | Test.java:50:28:50:28 | x |
+| Test.java:37:20:37:26 | taint(...) | Test.java:55:9:55:35 | withKeyValueSeparator(...) |
+| Test.java:37:20:37:26 | taint(...) | Test.java:55:9:55:43 | join(...) |
+| Test.java:37:20:37:26 | taint(...) | Test.java:55:34:55:34 | x |
+| Test.java:37:20:37:26 | taint(...) | Test.java:56:9:56:10 | j1 |
+| Test.java:37:20:37:26 | taint(...) | Test.java:56:9:56:31 | useForNull(...) |
+| Test.java:37:20:37:26 | taint(...) | Test.java:56:9:56:58 | withKeyValueSeparator(...) |
+| Test.java:37:20:37:26 | taint(...) | Test.java:56:9:56:66 | join(...) |
+| Test.java:37:20:37:26 | taint(...) | Test.java:57:9:57:9 | m [post update] |
+| Test.java:37:20:37:26 | taint(...) | Test.java:57:21:57:21 | x |
+| Test.java:37:20:37:26 | taint(...) | Test.java:58:9:58:45 | join(...) |
+| Test.java:37:20:37:26 | taint(...) | Test.java:58:44:58:44 | m |
