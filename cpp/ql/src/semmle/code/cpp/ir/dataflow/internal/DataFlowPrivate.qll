@@ -190,6 +190,13 @@ private class FieldContent extends Content, TFieldContent {
   predicate hasOffset(Class cl, int start, int end) { cl = c and start = startBit and end = endBit }
 
   Field getAField() { result = getAField(c, startBit, endBit) }
+
+  pragma[noinline]
+  Field getADirectField() {
+    c = result.getDeclaringType() and
+    this.getAField() = result and
+    this.hasOffset(c, _, _)
+  }
 }
 
 private class CollectionContent extends Content, TCollectionContent {
@@ -208,7 +215,7 @@ private predicate instrToFieldNodeStoreStepNoChi(Node node1, FieldContent f, Fie
     not exists(ChiInstruction chi | chi.getPartial() = store) and
     node2 = getFieldNodeForFieldInstruction(store.getDestinationAddress()) and
     store.getSourceValue() = node1.asInstruction() and
-    getField(f, node2.getField())
+    f.getADirectField() = node2.getField()
   )
 }
 
@@ -226,7 +233,7 @@ private predicate instrToFieldNodeStoreStepChi(Node node1, FieldContent f, Field
       node2 =
         getFieldNodeForFieldInstruction([store.(StoreInstruction).getDestinationAddress(),
               store.(WriteSideEffectInstruction).getDestinationAddress()]) and
-      getField(f, node2.getField())
+      f.getADirectField() = node2.getField()
     )
   )
 }
@@ -276,7 +283,7 @@ private predicate fieldStoreStepAfterArraySuppression(
   exists(BufferMayWriteSideEffectInstruction write |
     node1.getWriteSideEffect() = write and
     node2 = getFieldNodeForFieldInstruction(write.getDestinationAddress()) and
-    getField(f, node2.getField())
+    f.getADirectField() = node2.getField()
   )
 }
 
@@ -365,15 +372,6 @@ private predicate exactReadStep(Node node1, ArrayContent a, Node node2) {
   )
 }
 
-pragma[noinline]
-private predicate getField(FieldContent fc, Field field) {
-  exists(Class c |
-    c = field.getDeclaringType() and
-    fc.getAField() = field and
-    fc.hasOffset(c, _, _)
-  )
-}
-
 /**
  * Given two nodes `node1` and `node2`, the shared dataflow library infers a store step
  * from `node1` to `node2` if there is a read step from the the pre update node of `node2` to the
@@ -387,7 +385,7 @@ private predicate getField(FieldContent fc, Field field) {
  */
 private predicate reverseReadStep(Node node1, FieldContent f, FieldNode node2) {
   node1 = node2.getPreUpdateNode() and
-  getField(f, node2.getField())
+  f.getADirectField() = node2.getField()
 }
 
 /** Step from the value loaded by a `LoadInstruction` to the "outermost" loaded field. */
@@ -397,7 +395,7 @@ private predicate instrToFieldNodeReadStep(Node node1, FieldContent f, FieldNode
     not node1.asInstruction().isResultConflated() and
     not exists(node2.getObjectNode()) and
     node2.getNextNode*() = getFieldNodeForFieldInstruction(load.getSourceAddress()) and
-    getField(f, node2.getFieldInstruction().getField())
+    f.getADirectField() = node2.getField()
   )
 }
 
