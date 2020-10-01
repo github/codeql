@@ -53,9 +53,18 @@ def test_example2():
     a = NestedObj()
 
     a.obj.foo = x
-    a.getObj().foo = x
 
     SINK(a.obj.foo)
+
+
+def test_example2_method():
+    x = SOURCE
+
+    a = NestedObj()
+
+    a.getObj().foo = x
+
+    SINK(a.obj.foo)  # Flow missing
 
 
 def test_example3():

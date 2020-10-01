@@ -2,12 +2,14 @@
 | examples.py:0:0:0:0 | GSSA Variable SINK | examples.py:1:1:1:66 | GSSA Variable SINK |
 | examples.py:0:0:0:0 | GSSA Variable SINK | examples.py:28:1:28:4 | ControlFlowNode for SINK |
 | examples.py:0:0:0:0 | GSSA Variable SINK | examples.py:28:1:28:4 | ControlFlowNode for SINK |
-| examples.py:0:0:0:0 | GSSA Variable SINK | examples.py:38:1:38:4 | ControlFlowNode for SINK |
-| examples.py:0:0:0:0 | GSSA Variable SINK | examples.py:38:1:38:4 | ControlFlowNode for SINK |
-| examples.py:0:0:0:0 | GSSA Variable SINK | examples.py:42:1:42:4 | ControlFlowNode for SINK |
-| examples.py:0:0:0:0 | GSSA Variable SINK | examples.py:42:1:42:4 | ControlFlowNode for SINK |
+| examples.py:0:0:0:0 | GSSA Variable SINK | examples.py:37:1:37:4 | ControlFlowNode for SINK |
+| examples.py:0:0:0:0 | GSSA Variable SINK | examples.py:37:1:37:4 | ControlFlowNode for SINK |
+| examples.py:0:0:0:0 | GSSA Variable SINK | examples.py:46:1:46:4 | ControlFlowNode for SINK |
+| examples.py:0:0:0:0 | GSSA Variable SINK | examples.py:46:1:46:4 | ControlFlowNode for SINK |
 | examples.py:0:0:0:0 | GSSA Variable SINK | examples.py:50:1:50:4 | ControlFlowNode for SINK |
 | examples.py:0:0:0:0 | GSSA Variable SINK | examples.py:50:1:50:4 | ControlFlowNode for SINK |
+| examples.py:0:0:0:0 | GSSA Variable SINK | examples.py:59:1:59:4 | ControlFlowNode for SINK |
+| examples.py:0:0:0:0 | GSSA Variable SINK | examples.py:59:1:59:4 | ControlFlowNode for SINK |
 | examples.py:0:0:0:0 | GSSA Variable SINK_F | examples.py:1:1:1:66 | GSSA Variable SINK_F |
 | examples.py:0:0:0:0 | GSSA Variable SINK_F | examples.py:1:1:1:66 | GSSA Variable SINK_F |
 | examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:1:1:1:66 | GSSA Variable SOURCE |
@@ -20,16 +22,20 @@
 | examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:31:5:31:10 | ControlFlowNode for SOURCE |
 | examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:35:13:35:13 | ControlFlowNode for x |
 | examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:35:13:35:13 | ControlFlowNode for x |
-| examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:36:18:36:18 | ControlFlowNode for x |
-| examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:36:18:36:18 | ControlFlowNode for x |
-| examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:41:7:41:19 | GSSA Variable SOURCE |
-| examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:41:7:41:19 | GSSA Variable SOURCE |
-| examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:41:13:41:18 | ControlFlowNode for SOURCE |
-| examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:41:13:41:18 | ControlFlowNode for SOURCE |
-| examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:50:6:50:35 | GSSA Variable SOURCE |
-| examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:50:6:50:35 | GSSA Variable SOURCE |
-| examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:50:29:50:34 | ControlFlowNode for SOURCE |
-| examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:50:29:50:34 | ControlFlowNode for SOURCE |
+| examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:40:1:40:1 | GSSA Variable x |
+| examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:40:1:40:1 | GSSA Variable x |
+| examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:40:5:40:10 | ControlFlowNode for SOURCE |
+| examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:40:5:40:10 | ControlFlowNode for SOURCE |
+| examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:44:18:44:18 | ControlFlowNode for x |
+| examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:44:18:44:18 | ControlFlowNode for x |
+| examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:49:7:49:19 | GSSA Variable SOURCE |
+| examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:49:7:49:19 | GSSA Variable SOURCE |
+| examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:49:13:49:18 | ControlFlowNode for SOURCE |
+| examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:49:13:49:18 | ControlFlowNode for SOURCE |
+| examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:59:6:59:35 | GSSA Variable SOURCE |
+| examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:59:6:59:35 | GSSA Variable SOURCE |
+| examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:59:29:59:34 | ControlFlowNode for SOURCE |
+| examples.py:0:0:0:0 | GSSA Variable SOURCE | examples.py:59:29:59:34 | ControlFlowNode for SOURCE |
 | examples.py:0:0:0:0 | GSSA Variable __name__ | examples.py:1:1:1:66 | GSSA Variable __name__ |
 | examples.py:0:0:0:0 | GSSA Variable __name__ | examples.py:1:1:1:66 | GSSA Variable __name__ |
 | examples.py:0:0:0:0 | GSSA Variable __package__ | examples.py:1:1:1:66 | GSSA Variable __package__ |
@@ -44,40 +50,40 @@
 | examples.py:0:0:0:0 | GSSA Variable obj | examples.py:1:1:1:66 | GSSA Variable obj |
 | examples.py:0:0:0:0 | GSSA Variable object | examples.py:1:1:1:66 | GSSA Variable object |
 | examples.py:0:0:0:0 | GSSA Variable object | examples.py:1:1:1:66 | GSSA Variable object |
-| examples.py:0:0:0:0 | GSSA Variable object | examples.py:5:13:5:18 | ControlFlowNode for object |
-| examples.py:0:0:0:0 | GSSA Variable object | examples.py:5:13:5:18 | ControlFlowNode for object |
+| examples.py:0:0:0:0 | GSSA Variable object | examples.py:6:13:6:18 | ControlFlowNode for object |
+| examples.py:0:0:0:0 | GSSA Variable object | examples.py:6:13:6:18 | ControlFlowNode for object |
 | examples.py:0:0:0:0 | GSSA Variable object | examples.py:11:17:11:22 | ControlFlowNode for object |
 | examples.py:0:0:0:0 | GSSA Variable object | examples.py:11:17:11:22 | ControlFlowNode for object |
 | examples.py:0:0:0:0 | GSSA Variable x | examples.py:1:1:1:66 | GSSA Variable x |
 | examples.py:0:0:0:0 | GSSA Variable x | examples.py:1:1:1:66 | GSSA Variable x |
-| examples.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module examples | examples.py:14:20:14:24 | ControlFlowNode for MyObj |
-| examples.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module examples | examples.py:14:20:14:24 | ControlFlowNode for MyObj |
-| examples.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module examples | examples.py:46:9:46:13 | ControlFlowNode for MyObj |
-| examples.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module examples | examples.py:46:9:46:13 | ControlFlowNode for MyObj |
-| examples.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK_F in Module examples | examples.py:22:5:22:10 | ControlFlowNode for SINK_F |
-| examples.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK_F in Module examples | examples.py:22:5:22:10 | ControlFlowNode for SINK_F |
+| examples.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module examples | examples.py:13:20:13:24 | ControlFlowNode for MyObj |
+| examples.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module examples | examples.py:13:20:13:24 | ControlFlowNode for MyObj |
+| examples.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module examples | examples.py:54:11:54:15 | ControlFlowNode for MyObj |
+| examples.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module examples | examples.py:54:11:54:15 | ControlFlowNode for MyObj |
+| examples.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK_F in Module examples | examples.py:21:5:21:10 | ControlFlowNode for SINK_F |
+| examples.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK_F in Module examples | examples.py:21:5:21:10 | ControlFlowNode for SINK_F |
 | examples.py:0:0:0:0 | SSA variable $ | examples.py:1:1:1:66 | SSA variable $ |
 | examples.py:0:0:0:0 | SSA variable $ | examples.py:1:1:1:66 | SSA variable $ |
 | examples.py:0:0:0:0 | SSA variable * | examples.py:1:1:1:66 | SSA variable * |
 | examples.py:0:0:0:0 | SSA variable * | examples.py:1:1:1:66 | SSA variable * |
-| examples.py:1:1:1:66 | GSSA Variable SOURCE | examples.py:41:7:41:19 | GSSA Variable SOURCE |
-| examples.py:1:1:1:66 | GSSA Variable SOURCE | examples.py:41:7:41:19 | GSSA Variable SOURCE |
-| examples.py:1:1:1:66 | GSSA Variable SOURCE | examples.py:50:6:50:35 | GSSA Variable SOURCE |
-| examples.py:1:1:1:66 | GSSA Variable SOURCE | examples.py:50:6:50:35 | GSSA Variable SOURCE |
-| examples.py:5:1:5:20 | ControlFlowNode for ClassExpr | examples.py:5:7:5:11 | GSSA Variable MyObj |
-| examples.py:5:1:5:20 | ControlFlowNode for ClassExpr | examples.py:5:7:5:11 | GSSA Variable MyObj |
-| examples.py:5:1:5:20 | ControlFlowNode for ClassExpr | examples.py:25:9:25:13 | ControlFlowNode for MyObj |
-| examples.py:5:1:5:20 | ControlFlowNode for ClassExpr | examples.py:25:9:25:13 | ControlFlowNode for MyObj |
-| examples.py:5:1:5:20 | ControlFlowNode for ClassExpr | examples.py:41:7:41:11 | ControlFlowNode for MyObj |
-| examples.py:5:1:5:20 | ControlFlowNode for ClassExpr | examples.py:41:7:41:11 | ControlFlowNode for MyObj |
-| examples.py:5:7:5:11 | GSSA Variable MyObj | examples.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module examples |
-| examples.py:5:7:5:11 | GSSA Variable MyObj | examples.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module examples |
-| examples.py:5:7:5:11 | GSSA Variable MyObj | examples.py:25:9:25:13 | ControlFlowNode for MyObj |
-| examples.py:5:7:5:11 | GSSA Variable MyObj | examples.py:25:9:25:13 | ControlFlowNode for MyObj |
-| examples.py:5:7:5:11 | GSSA Variable MyObj | examples.py:41:7:41:11 | ControlFlowNode for MyObj |
-| examples.py:5:7:5:11 | GSSA Variable MyObj | examples.py:41:7:41:11 | ControlFlowNode for MyObj |
-| examples.py:5:13:5:18 | ControlFlowNode for object | examples.py:11:17:11:22 | ControlFlowNode for object |
-| examples.py:5:13:5:18 | ControlFlowNode for object | examples.py:11:17:11:22 | ControlFlowNode for object |
+| examples.py:1:1:1:66 | GSSA Variable SOURCE | examples.py:49:7:49:19 | GSSA Variable SOURCE |
+| examples.py:1:1:1:66 | GSSA Variable SOURCE | examples.py:49:7:49:19 | GSSA Variable SOURCE |
+| examples.py:1:1:1:66 | GSSA Variable SOURCE | examples.py:59:6:59:35 | GSSA Variable SOURCE |
+| examples.py:1:1:1:66 | GSSA Variable SOURCE | examples.py:59:6:59:35 | GSSA Variable SOURCE |
+| examples.py:6:1:6:20 | ControlFlowNode for ClassExpr | examples.py:6:7:6:11 | GSSA Variable MyObj |
+| examples.py:6:1:6:20 | ControlFlowNode for ClassExpr | examples.py:6:7:6:11 | GSSA Variable MyObj |
+| examples.py:6:1:6:20 | ControlFlowNode for ClassExpr | examples.py:25:9:25:13 | ControlFlowNode for MyObj |
+| examples.py:6:1:6:20 | ControlFlowNode for ClassExpr | examples.py:25:9:25:13 | ControlFlowNode for MyObj |
+| examples.py:6:1:6:20 | ControlFlowNode for ClassExpr | examples.py:49:7:49:11 | ControlFlowNode for MyObj |
+| examples.py:6:1:6:20 | ControlFlowNode for ClassExpr | examples.py:49:7:49:11 | ControlFlowNode for MyObj |
+| examples.py:6:7:6:11 | GSSA Variable MyObj | examples.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module examples |
+| examples.py:6:7:6:11 | GSSA Variable MyObj | examples.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module examples |
+| examples.py:6:7:6:11 | GSSA Variable MyObj | examples.py:25:9:25:13 | ControlFlowNode for MyObj |
+| examples.py:6:7:6:11 | GSSA Variable MyObj | examples.py:25:9:25:13 | ControlFlowNode for MyObj |
+| examples.py:6:7:6:11 | GSSA Variable MyObj | examples.py:49:7:49:11 | ControlFlowNode for MyObj |
+| examples.py:6:7:6:11 | GSSA Variable MyObj | examples.py:49:7:49:11 | ControlFlowNode for MyObj |
+| examples.py:6:13:6:18 | ControlFlowNode for object | examples.py:11:17:11:22 | ControlFlowNode for object |
+| examples.py:6:13:6:18 | ControlFlowNode for object | examples.py:11:17:11:22 | ControlFlowNode for object |
 | examples.py:7:5:7:28 | ControlFlowNode for FunctionExpr | examples.py:7:9:7:16 | SSA variable __init__ |
 | examples.py:7:5:7:28 | ControlFlowNode for FunctionExpr | examples.py:7:9:7:16 | SSA variable __init__ |
 | examples.py:7:18:7:21 | SSA variable self | examples.py:8:9:8:12 | ControlFlowNode for self |
@@ -92,93 +98,101 @@
 | examples.py:7:24:7:26 | SSA variable foo | examples.py:8:20:8:22 | ControlFlowNode for foo |
 | examples.py:7:24:7:26 | SSA variable foo | examples.py:8:20:8:22 | ControlFlowNode for foo |
 | examples.py:7:24:7:26 | SSA variable foo | examples.py:8:20:8:22 | ControlFlowNode for foo |
-| examples.py:8:9:8:12 | [post store] ControlFlowNode for self | examples.py:14:20:14:30 | ControlFlowNode for MyObj() |
-| examples.py:8:9:8:12 | [post store] ControlFlowNode for self | examples.py:14:20:14:30 | ControlFlowNode for MyObj() |
+| examples.py:8:9:8:12 | [post store] ControlFlowNode for self | examples.py:13:20:13:30 | ControlFlowNode for MyObj() |
+| examples.py:8:9:8:12 | [post store] ControlFlowNode for self | examples.py:13:20:13:30 | ControlFlowNode for MyObj() |
 | examples.py:8:9:8:12 | [post store] ControlFlowNode for self | examples.py:25:9:25:19 | ControlFlowNode for MyObj() |
 | examples.py:8:9:8:12 | [post store] ControlFlowNode for self | examples.py:25:9:25:19 | ControlFlowNode for MyObj() |
-| examples.py:8:9:8:12 | [post store] ControlFlowNode for self | examples.py:41:7:41:19 | ControlFlowNode for MyObj() |
-| examples.py:8:9:8:12 | [post store] ControlFlowNode for self | examples.py:41:7:41:19 | ControlFlowNode for MyObj() |
-| examples.py:8:9:8:12 | [post store] ControlFlowNode for self | examples.py:46:9:46:16 | ControlFlowNode for MyObj() |
-| examples.py:8:9:8:12 | [post store] ControlFlowNode for self | examples.py:46:9:46:16 | ControlFlowNode for MyObj() |
-| examples.py:8:9:8:12 | [post store] ControlFlowNode for self [Attribute foo] | examples.py:14:20:14:30 | ControlFlowNode for MyObj() [Attribute foo] |
+| examples.py:8:9:8:12 | [post store] ControlFlowNode for self | examples.py:49:7:49:19 | ControlFlowNode for MyObj() |
+| examples.py:8:9:8:12 | [post store] ControlFlowNode for self | examples.py:49:7:49:19 | ControlFlowNode for MyObj() |
+| examples.py:8:9:8:12 | [post store] ControlFlowNode for self | examples.py:54:11:54:18 | ControlFlowNode for MyObj() |
+| examples.py:8:9:8:12 | [post store] ControlFlowNode for self | examples.py:54:11:54:18 | ControlFlowNode for MyObj() |
+| examples.py:8:9:8:12 | [post store] ControlFlowNode for self [Attribute foo] | examples.py:13:20:13:30 | ControlFlowNode for MyObj() [Attribute foo] |
 | examples.py:8:9:8:12 | [post store] ControlFlowNode for self [Attribute foo] | examples.py:25:9:25:19 | ControlFlowNode for MyObj() [Attribute foo] |
-| examples.py:8:9:8:12 | [post store] ControlFlowNode for self [Attribute foo] | examples.py:41:7:41:19 | ControlFlowNode for MyObj() [Attribute foo] |
-| examples.py:8:9:8:12 | [post store] ControlFlowNode for self [Attribute foo] | examples.py:46:9:46:16 | ControlFlowNode for MyObj() [Attribute foo] |
+| examples.py:8:9:8:12 | [post store] ControlFlowNode for self [Attribute foo] | examples.py:49:7:49:19 | ControlFlowNode for MyObj() [Attribute foo] |
+| examples.py:8:9:8:12 | [post store] ControlFlowNode for self [Attribute foo] | examples.py:54:11:54:18 | ControlFlowNode for MyObj() [Attribute foo] |
 | examples.py:8:20:8:22 | ControlFlowNode for foo | examples.py:8:9:8:12 | [post store] ControlFlowNode for self [Attribute foo] |
 | examples.py:8:20:8:22 | ControlFlowNode for foo | examples.py:8:9:8:12 | [post store] ControlFlowNode for self [Attribute foo] |
 | examples.py:11:1:11:24 | ControlFlowNode for ClassExpr | examples.py:11:7:11:15 | GSSA Variable NestedObj |
 | examples.py:11:1:11:24 | ControlFlowNode for ClassExpr | examples.py:11:7:11:15 | GSSA Variable NestedObj |
 | examples.py:11:1:11:24 | ControlFlowNode for ClassExpr | examples.py:33:5:33:13 | ControlFlowNode for NestedObj |
 | examples.py:11:1:11:24 | ControlFlowNode for ClassExpr | examples.py:33:5:33:13 | ControlFlowNode for NestedObj |
+| examples.py:11:1:11:24 | ControlFlowNode for ClassExpr | examples.py:42:5:42:13 | ControlFlowNode for NestedObj |
+| examples.py:11:1:11:24 | ControlFlowNode for ClassExpr | examples.py:42:5:42:13 | ControlFlowNode for NestedObj |
 | examples.py:11:7:11:15 | GSSA Variable NestedObj | examples.py:33:5:33:13 | ControlFlowNode for NestedObj |
 | examples.py:11:7:11:15 | GSSA Variable NestedObj | examples.py:33:5:33:13 | ControlFlowNode for NestedObj |
-| examples.py:13:5:13:23 | ControlFlowNode for FunctionExpr | examples.py:13:9:13:16 | SSA variable __init__ |
-| examples.py:13:5:13:23 | ControlFlowNode for FunctionExpr | examples.py:13:9:13:16 | SSA variable __init__ |
-| examples.py:13:5:13:23 | GSSA Variable MyObj | examples.py:14:20:14:24 | ControlFlowNode for MyObj |
-| examples.py:13:5:13:23 | GSSA Variable MyObj | examples.py:14:20:14:24 | ControlFlowNode for MyObj |
-| examples.py:13:18:13:21 | SSA variable self | examples.py:14:9:14:12 | ControlFlowNode for self |
-| examples.py:13:18:13:21 | SSA variable self | examples.py:14:9:14:12 | ControlFlowNode for self |
-| examples.py:13:18:13:21 | SSA variable self | examples.py:14:9:14:12 | ControlFlowNode for self |
-| examples.py:13:18:13:21 | SSA variable self | examples.py:14:9:14:12 | ControlFlowNode for self |
-| examples.py:13:18:13:21 | SSA variable self | examples.py:14:9:14:16 | SSA variable self |
-| examples.py:13:18:13:21 | SSA variable self | examples.py:14:9:14:16 | SSA variable self |
-| examples.py:13:18:13:21 | SSA variable self | examples.py:14:9:14:16 | SSA variable self |
-| examples.py:13:18:13:21 | SSA variable self | examples.py:14:9:14:16 | SSA variable self |
-| examples.py:14:9:14:12 | [post store] ControlFlowNode for self | examples.py:33:5:33:15 | ControlFlowNode for NestedObj() |
-| examples.py:14:9:14:12 | [post store] ControlFlowNode for self | examples.py:33:5:33:15 | ControlFlowNode for NestedObj() |
-| examples.py:14:9:14:12 | [post store] ControlFlowNode for self [Attribute obj, Attribute foo] | examples.py:33:5:33:15 | ControlFlowNode for NestedObj() [Attribute obj, Attribute foo] |
-| examples.py:14:9:14:12 | [post store] ControlFlowNode for self [Attribute obj] | examples.py:33:5:33:15 | ControlFlowNode for NestedObj() [Attribute obj] |
-| examples.py:14:20:14:30 | ControlFlowNode for MyObj() | examples.py:14:9:14:12 | [post store] ControlFlowNode for self [Attribute obj] |
-| examples.py:14:20:14:30 | ControlFlowNode for MyObj() [Attribute foo] | examples.py:14:9:14:12 | [post store] ControlFlowNode for self [Attribute obj, Attribute foo] |
-| examples.py:14:20:14:30 | [pre objCreate] ControlFlowNode for MyObj() | examples.py:7:18:7:21 | SSA variable self |
-| examples.py:14:20:14:30 | [pre objCreate] ControlFlowNode for MyObj() | examples.py:7:18:7:21 | SSA variable self |
-| examples.py:14:26:14:29 | ControlFlowNode for Str | examples.py:7:24:7:26 | SSA variable foo |
-| examples.py:14:26:14:29 | ControlFlowNode for Str | examples.py:7:24:7:26 | SSA variable foo |
-| examples.py:14:26:14:29 | ControlFlowNode for Str | examples.py:14:20:14:30 | ControlFlowNode for MyObj() [Attribute foo] |
-| examples.py:16:5:16:21 | ControlFlowNode for FunctionExpr | examples.py:16:9:16:14 | SSA variable getObj |
-| examples.py:16:5:16:21 | ControlFlowNode for FunctionExpr | examples.py:16:9:16:14 | SSA variable getObj |
-| examples.py:16:16:16:19 | SSA variable self | examples.py:17:16:17:19 | ControlFlowNode for self |
-| examples.py:16:16:16:19 | SSA variable self | examples.py:17:16:17:19 | ControlFlowNode for self |
-| examples.py:21:1:21:19 | ControlFlowNode for FunctionExpr | examples.py:21:5:21:10 | GSSA Variable setFoo |
-| examples.py:21:1:21:19 | ControlFlowNode for FunctionExpr | examples.py:21:5:21:10 | GSSA Variable setFoo |
-| examples.py:21:1:21:19 | ControlFlowNode for FunctionExpr | examples.py:27:1:27:6 | ControlFlowNode for setFoo |
-| examples.py:21:1:21:19 | ControlFlowNode for FunctionExpr | examples.py:27:1:27:6 | ControlFlowNode for setFoo |
-| examples.py:21:1:21:19 | GSSA Variable SINK_F | examples.py:22:5:22:10 | ControlFlowNode for SINK_F |
-| examples.py:21:1:21:19 | GSSA Variable SINK_F | examples.py:22:5:22:10 | ControlFlowNode for SINK_F |
-| examples.py:21:5:21:10 | GSSA Variable setFoo | examples.py:27:1:27:6 | ControlFlowNode for setFoo |
-| examples.py:21:5:21:10 | GSSA Variable setFoo | examples.py:27:1:27:6 | ControlFlowNode for setFoo |
-| examples.py:21:12:21:14 | SSA variable obj | examples.py:22:12:22:14 | ControlFlowNode for obj |
-| examples.py:21:12:21:14 | SSA variable obj | examples.py:22:12:22:14 | ControlFlowNode for obj |
-| examples.py:21:12:21:14 | SSA variable obj | examples.py:22:12:22:14 | ControlFlowNode for obj |
-| examples.py:21:12:21:14 | SSA variable obj | examples.py:22:12:22:14 | ControlFlowNode for obj |
-| examples.py:21:12:21:14 | SSA variable obj | examples.py:23:5:23:7 | ControlFlowNode for obj |
-| examples.py:21:12:21:14 | SSA variable obj | examples.py:23:5:23:7 | ControlFlowNode for obj |
-| examples.py:21:12:21:14 | SSA variable obj | examples.py:23:5:23:7 | ControlFlowNode for obj |
-| examples.py:21:12:21:14 | SSA variable obj | examples.py:23:5:23:7 | ControlFlowNode for obj |
-| examples.py:21:12:21:14 | SSA variable obj | examples.py:23:5:23:11 | SSA variable obj |
-| examples.py:21:12:21:14 | SSA variable obj | examples.py:23:5:23:11 | SSA variable obj |
-| examples.py:21:12:21:14 | SSA variable obj | examples.py:23:5:23:11 | SSA variable obj |
-| examples.py:21:12:21:14 | SSA variable obj | examples.py:23:5:23:11 | SSA variable obj |
-| examples.py:21:12:21:14 | SSA variable obj [Attribute foo] | examples.py:22:12:22:14 | ControlFlowNode for obj [Attribute foo] |
-| examples.py:21:17:21:17 | SSA variable x | examples.py:23:15:23:15 | ControlFlowNode for x |
-| examples.py:21:17:21:17 | SSA variable x | examples.py:23:15:23:15 | ControlFlowNode for x |
-| examples.py:21:17:21:17 | SSA variable x | examples.py:23:15:23:15 | ControlFlowNode for x |
-| examples.py:21:17:21:17 | SSA variable x | examples.py:23:15:23:15 | ControlFlowNode for x |
-| examples.py:22:12:22:14 | ControlFlowNode for obj | examples.py:23:5:23:7 | ControlFlowNode for obj |
-| examples.py:22:12:22:14 | ControlFlowNode for obj | examples.py:23:5:23:7 | ControlFlowNode for obj |
-| examples.py:22:12:22:14 | ControlFlowNode for obj | examples.py:23:5:23:7 | ControlFlowNode for obj |
-| examples.py:22:12:22:14 | ControlFlowNode for obj | examples.py:23:5:23:7 | ControlFlowNode for obj |
-| examples.py:22:12:22:14 | ControlFlowNode for obj [Attribute foo] | examples.py:22:12:22:18 | ControlFlowNode for Attribute |
-| examples.py:22:12:22:14 | ControlFlowNode for obj [Attribute foo] | examples.py:22:12:22:18 | ControlFlowNode for Attribute |
-| examples.py:22:12:22:14 | [post read] ControlFlowNode for obj | examples.py:23:5:23:7 | ControlFlowNode for obj |
-| examples.py:22:12:22:14 | [post read] ControlFlowNode for obj | examples.py:23:5:23:7 | ControlFlowNode for obj |
-| examples.py:22:12:22:14 | [post read] ControlFlowNode for obj | examples.py:27:8:27:12 | [post arg] ControlFlowNode for myobj |
-| examples.py:22:12:22:14 | [post read] ControlFlowNode for obj | examples.py:27:8:27:12 | [post arg] ControlFlowNode for myobj |
-| examples.py:23:5:23:7 | [post store] ControlFlowNode for obj | examples.py:27:8:27:12 | [post arg] ControlFlowNode for myobj |
-| examples.py:23:5:23:7 | [post store] ControlFlowNode for obj | examples.py:27:8:27:12 | [post arg] ControlFlowNode for myobj |
-| examples.py:23:5:23:7 | [post store] ControlFlowNode for obj [Attribute foo] | examples.py:27:8:27:12 | [post arg] ControlFlowNode for myobj [Attribute foo] |
-| examples.py:23:15:23:15 | ControlFlowNode for x | examples.py:23:5:23:7 | [post store] ControlFlowNode for obj [Attribute foo] |
-| examples.py:23:15:23:15 | ControlFlowNode for x | examples.py:23:5:23:7 | [post store] ControlFlowNode for obj [Attribute foo] |
+| examples.py:11:7:11:15 | GSSA Variable NestedObj | examples.py:42:5:42:13 | ControlFlowNode for NestedObj |
+| examples.py:11:7:11:15 | GSSA Variable NestedObj | examples.py:42:5:42:13 | ControlFlowNode for NestedObj |
+| examples.py:12:5:12:23 | ControlFlowNode for FunctionExpr | examples.py:12:9:12:16 | SSA variable __init__ |
+| examples.py:12:5:12:23 | ControlFlowNode for FunctionExpr | examples.py:12:9:12:16 | SSA variable __init__ |
+| examples.py:12:5:12:23 | GSSA Variable MyObj | examples.py:13:20:13:24 | ControlFlowNode for MyObj |
+| examples.py:12:5:12:23 | GSSA Variable MyObj | examples.py:13:20:13:24 | ControlFlowNode for MyObj |
+| examples.py:12:18:12:21 | SSA variable self | examples.py:13:9:13:12 | ControlFlowNode for self |
+| examples.py:12:18:12:21 | SSA variable self | examples.py:13:9:13:12 | ControlFlowNode for self |
+| examples.py:12:18:12:21 | SSA variable self | examples.py:13:9:13:12 | ControlFlowNode for self |
+| examples.py:12:18:12:21 | SSA variable self | examples.py:13:9:13:12 | ControlFlowNode for self |
+| examples.py:12:18:12:21 | SSA variable self | examples.py:13:9:13:16 | SSA variable self |
+| examples.py:12:18:12:21 | SSA variable self | examples.py:13:9:13:16 | SSA variable self |
+| examples.py:12:18:12:21 | SSA variable self | examples.py:13:9:13:16 | SSA variable self |
+| examples.py:12:18:12:21 | SSA variable self | examples.py:13:9:13:16 | SSA variable self |
+| examples.py:13:9:13:12 | [post store] ControlFlowNode for self | examples.py:33:5:33:15 | ControlFlowNode for NestedObj() |
+| examples.py:13:9:13:12 | [post store] ControlFlowNode for self | examples.py:33:5:33:15 | ControlFlowNode for NestedObj() |
+| examples.py:13:9:13:12 | [post store] ControlFlowNode for self | examples.py:42:5:42:15 | ControlFlowNode for NestedObj() |
+| examples.py:13:9:13:12 | [post store] ControlFlowNode for self | examples.py:42:5:42:15 | ControlFlowNode for NestedObj() |
+| examples.py:13:9:13:12 | [post store] ControlFlowNode for self [Attribute obj, Attribute foo] | examples.py:33:5:33:15 | ControlFlowNode for NestedObj() [Attribute obj, Attribute foo] |
+| examples.py:13:9:13:12 | [post store] ControlFlowNode for self [Attribute obj, Attribute foo] | examples.py:42:5:42:15 | ControlFlowNode for NestedObj() [Attribute obj, Attribute foo] |
+| examples.py:13:9:13:12 | [post store] ControlFlowNode for self [Attribute obj] | examples.py:33:5:33:15 | ControlFlowNode for NestedObj() [Attribute obj] |
+| examples.py:13:9:13:12 | [post store] ControlFlowNode for self [Attribute obj] | examples.py:42:5:42:15 | ControlFlowNode for NestedObj() [Attribute obj] |
+| examples.py:13:20:13:30 | ControlFlowNode for MyObj() | examples.py:13:9:13:12 | [post store] ControlFlowNode for self [Attribute obj] |
+| examples.py:13:20:13:30 | ControlFlowNode for MyObj() [Attribute foo] | examples.py:13:9:13:12 | [post store] ControlFlowNode for self [Attribute obj, Attribute foo] |
+| examples.py:13:20:13:30 | [pre objCreate] ControlFlowNode for MyObj() | examples.py:7:18:7:21 | SSA variable self |
+| examples.py:13:20:13:30 | [pre objCreate] ControlFlowNode for MyObj() | examples.py:7:18:7:21 | SSA variable self |
+| examples.py:13:26:13:29 | ControlFlowNode for Str | examples.py:7:24:7:26 | SSA variable foo |
+| examples.py:13:26:13:29 | ControlFlowNode for Str | examples.py:7:24:7:26 | SSA variable foo |
+| examples.py:13:26:13:29 | ControlFlowNode for Str | examples.py:13:20:13:30 | ControlFlowNode for MyObj() [Attribute foo] |
+| examples.py:15:5:15:21 | ControlFlowNode for FunctionExpr | examples.py:15:9:15:14 | SSA variable getObj |
+| examples.py:15:5:15:21 | ControlFlowNode for FunctionExpr | examples.py:15:9:15:14 | SSA variable getObj |
+| examples.py:15:16:15:19 | SSA variable self | examples.py:16:16:16:19 | ControlFlowNode for self |
+| examples.py:15:16:15:19 | SSA variable self | examples.py:16:16:16:19 | ControlFlowNode for self |
+| examples.py:20:1:20:19 | ControlFlowNode for FunctionExpr | examples.py:20:5:20:10 | GSSA Variable setFoo |
+| examples.py:20:1:20:19 | ControlFlowNode for FunctionExpr | examples.py:20:5:20:10 | GSSA Variable setFoo |
+| examples.py:20:1:20:19 | ControlFlowNode for FunctionExpr | examples.py:27:1:27:6 | ControlFlowNode for setFoo |
+| examples.py:20:1:20:19 | ControlFlowNode for FunctionExpr | examples.py:27:1:27:6 | ControlFlowNode for setFoo |
+| examples.py:20:1:20:19 | GSSA Variable SINK_F | examples.py:21:5:21:10 | ControlFlowNode for SINK_F |
+| examples.py:20:1:20:19 | GSSA Variable SINK_F | examples.py:21:5:21:10 | ControlFlowNode for SINK_F |
+| examples.py:20:5:20:10 | GSSA Variable setFoo | examples.py:27:1:27:6 | ControlFlowNode for setFoo |
+| examples.py:20:5:20:10 | GSSA Variable setFoo | examples.py:27:1:27:6 | ControlFlowNode for setFoo |
+| examples.py:20:12:20:14 | SSA variable obj | examples.py:21:12:21:14 | ControlFlowNode for obj |
+| examples.py:20:12:20:14 | SSA variable obj | examples.py:21:12:21:14 | ControlFlowNode for obj |
+| examples.py:20:12:20:14 | SSA variable obj | examples.py:21:12:21:14 | ControlFlowNode for obj |
+| examples.py:20:12:20:14 | SSA variable obj | examples.py:21:12:21:14 | ControlFlowNode for obj |
+| examples.py:20:12:20:14 | SSA variable obj | examples.py:22:5:22:7 | ControlFlowNode for obj |
+| examples.py:20:12:20:14 | SSA variable obj | examples.py:22:5:22:7 | ControlFlowNode for obj |
+| examples.py:20:12:20:14 | SSA variable obj | examples.py:22:5:22:7 | ControlFlowNode for obj |
+| examples.py:20:12:20:14 | SSA variable obj | examples.py:22:5:22:7 | ControlFlowNode for obj |
+| examples.py:20:12:20:14 | SSA variable obj | examples.py:22:5:22:11 | SSA variable obj |
+| examples.py:20:12:20:14 | SSA variable obj | examples.py:22:5:22:11 | SSA variable obj |
+| examples.py:20:12:20:14 | SSA variable obj | examples.py:22:5:22:11 | SSA variable obj |
+| examples.py:20:12:20:14 | SSA variable obj | examples.py:22:5:22:11 | SSA variable obj |
+| examples.py:20:12:20:14 | SSA variable obj [Attribute foo] | examples.py:21:12:21:14 | ControlFlowNode for obj [Attribute foo] |
+| examples.py:20:17:20:17 | SSA variable x | examples.py:22:15:22:15 | ControlFlowNode for x |
+| examples.py:20:17:20:17 | SSA variable x | examples.py:22:15:22:15 | ControlFlowNode for x |
+| examples.py:20:17:20:17 | SSA variable x | examples.py:22:15:22:15 | ControlFlowNode for x |
+| examples.py:20:17:20:17 | SSA variable x | examples.py:22:15:22:15 | ControlFlowNode for x |
+| examples.py:21:12:21:14 | ControlFlowNode for obj | examples.py:22:5:22:7 | ControlFlowNode for obj |
+| examples.py:21:12:21:14 | ControlFlowNode for obj | examples.py:22:5:22:7 | ControlFlowNode for obj |
+| examples.py:21:12:21:14 | ControlFlowNode for obj | examples.py:22:5:22:7 | ControlFlowNode for obj |
+| examples.py:21:12:21:14 | ControlFlowNode for obj | examples.py:22:5:22:7 | ControlFlowNode for obj |
+| examples.py:21:12:21:14 | ControlFlowNode for obj [Attribute foo] | examples.py:21:12:21:18 | ControlFlowNode for Attribute |
+| examples.py:21:12:21:14 | ControlFlowNode for obj [Attribute foo] | examples.py:21:12:21:18 | ControlFlowNode for Attribute |
+| examples.py:21:12:21:14 | [post read] ControlFlowNode for obj | examples.py:22:5:22:7 | ControlFlowNode for obj |
+| examples.py:21:12:21:14 | [post read] ControlFlowNode for obj | examples.py:22:5:22:7 | ControlFlowNode for obj |
+| examples.py:21:12:21:14 | [post read] ControlFlowNode for obj | examples.py:27:8:27:12 | [post arg] ControlFlowNode for myobj |
+| examples.py:21:12:21:14 | [post read] ControlFlowNode for obj | examples.py:27:8:27:12 | [post arg] ControlFlowNode for myobj |
+| examples.py:22:5:22:7 | [post store] ControlFlowNode for obj | examples.py:27:8:27:12 | [post arg] ControlFlowNode for myobj |
+| examples.py:22:5:22:7 | [post store] ControlFlowNode for obj | examples.py:27:8:27:12 | [post arg] ControlFlowNode for myobj |
+| examples.py:22:5:22:7 | [post store] ControlFlowNode for obj [Attribute foo] | examples.py:27:8:27:12 | [post arg] ControlFlowNode for myobj [Attribute foo] |
+| examples.py:22:15:22:15 | ControlFlowNode for x | examples.py:22:5:22:7 | [post store] ControlFlowNode for obj [Attribute foo] |
+| examples.py:22:15:22:15 | ControlFlowNode for x | examples.py:22:5:22:7 | [post store] ControlFlowNode for obj [Attribute foo] |
 | examples.py:25:1:25:5 | GSSA Variable myobj | examples.py:27:1:27:21 | GSSA Variable myobj |
 | examples.py:25:1:25:5 | GSSA Variable myobj | examples.py:27:1:27:21 | GSSA Variable myobj |
 | examples.py:25:1:25:5 | GSSA Variable myobj | examples.py:27:8:27:12 | ControlFlowNode for myobj |
@@ -187,8 +201,8 @@
 | examples.py:25:1:25:5 | GSSA Variable myobj | examples.py:28:6:28:10 | ControlFlowNode for myobj |
 | examples.py:25:1:25:5 | GSSA Variable myobj [Attribute foo] | examples.py:27:8:27:12 | ControlFlowNode for myobj [Attribute foo] |
 | examples.py:25:1:25:5 | GSSA Variable myobj [Attribute foo] | examples.py:28:6:28:10 | ControlFlowNode for myobj [Attribute foo] |
-| examples.py:25:9:25:13 | ControlFlowNode for MyObj | examples.py:41:7:41:11 | ControlFlowNode for MyObj |
-| examples.py:25:9:25:13 | ControlFlowNode for MyObj | examples.py:41:7:41:11 | ControlFlowNode for MyObj |
+| examples.py:25:9:25:13 | ControlFlowNode for MyObj | examples.py:49:7:49:11 | ControlFlowNode for MyObj |
+| examples.py:25:9:25:13 | ControlFlowNode for MyObj | examples.py:49:7:49:11 | ControlFlowNode for MyObj |
 | examples.py:25:9:25:19 | ControlFlowNode for MyObj() | examples.py:25:1:25:5 | GSSA Variable myobj |
 | examples.py:25:9:25:19 | ControlFlowNode for MyObj() | examples.py:25:1:25:5 | GSSA Variable myobj |
 | examples.py:25:9:25:19 | ControlFlowNode for MyObj() | examples.py:27:1:27:21 | GSSA Variable myobj |
@@ -205,17 +219,17 @@
 | examples.py:25:15:25:18 | ControlFlowNode for Str | examples.py:7:24:7:26 | SSA variable foo |
 | examples.py:25:15:25:18 | ControlFlowNode for Str | examples.py:7:24:7:26 | SSA variable foo |
 | examples.py:25:15:25:18 | ControlFlowNode for Str | examples.py:25:9:25:19 | ControlFlowNode for MyObj() [Attribute foo] |
-| examples.py:27:8:27:12 | ControlFlowNode for myobj | examples.py:21:12:21:14 | SSA variable obj |
-| examples.py:27:8:27:12 | ControlFlowNode for myobj | examples.py:21:12:21:14 | SSA variable obj |
+| examples.py:27:8:27:12 | ControlFlowNode for myobj | examples.py:20:12:20:14 | SSA variable obj |
+| examples.py:27:8:27:12 | ControlFlowNode for myobj | examples.py:20:12:20:14 | SSA variable obj |
 | examples.py:27:8:27:12 | ControlFlowNode for myobj | examples.py:28:6:28:10 | ControlFlowNode for myobj |
 | examples.py:27:8:27:12 | ControlFlowNode for myobj | examples.py:28:6:28:10 | ControlFlowNode for myobj |
-| examples.py:27:8:27:12 | ControlFlowNode for myobj [Attribute foo] | examples.py:21:12:21:14 | SSA variable obj [Attribute foo] |
+| examples.py:27:8:27:12 | ControlFlowNode for myobj [Attribute foo] | examples.py:20:12:20:14 | SSA variable obj [Attribute foo] |
 | examples.py:27:8:27:12 | ControlFlowNode for myobj [Attribute foo] | examples.py:28:6:28:10 | ControlFlowNode for myobj [Attribute foo] |
 | examples.py:27:8:27:12 | [post arg] ControlFlowNode for myobj | examples.py:28:6:28:10 | ControlFlowNode for myobj |
 | examples.py:27:8:27:12 | [post arg] ControlFlowNode for myobj | examples.py:28:6:28:10 | ControlFlowNode for myobj |
 | examples.py:27:8:27:12 | [post arg] ControlFlowNode for myobj [Attribute foo] | examples.py:28:6:28:10 | ControlFlowNode for myobj [Attribute foo] |
-| examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:21:17:21:17 | SSA variable x |
-| examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:21:17:21:17 | SSA variable x |
+| examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:20:17:20:17 | SSA variable x |
+| examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:20:17:20:17 | SSA variable x |
 | examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:27:8:27:12 | [post arg] ControlFlowNode for myobj [Attribute foo] |
 | examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:31:1:31:1 | GSSA Variable x |
 | examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:31:1:31:1 | GSSA Variable x |
@@ -223,238 +237,283 @@
 | examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:31:5:31:10 | ControlFlowNode for SOURCE |
 | examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:35:13:35:13 | ControlFlowNode for x |
 | examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:35:13:35:13 | ControlFlowNode for x |
-| examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:36:18:36:18 | ControlFlowNode for x |
-| examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:36:18:36:18 | ControlFlowNode for x |
-| examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:41:13:41:18 | ControlFlowNode for SOURCE |
-| examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:41:13:41:18 | ControlFlowNode for SOURCE |
-| examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:50:29:50:34 | ControlFlowNode for SOURCE |
-| examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:50:29:50:34 | ControlFlowNode for SOURCE |
+| examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:40:1:40:1 | GSSA Variable x |
+| examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:40:1:40:1 | GSSA Variable x |
+| examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:40:5:40:10 | ControlFlowNode for SOURCE |
+| examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:40:5:40:10 | ControlFlowNode for SOURCE |
+| examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:44:18:44:18 | ControlFlowNode for x |
+| examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:44:18:44:18 | ControlFlowNode for x |
+| examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:49:13:49:18 | ControlFlowNode for SOURCE |
+| examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:49:13:49:18 | ControlFlowNode for SOURCE |
+| examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:59:29:59:34 | ControlFlowNode for SOURCE |
+| examples.py:27:15:27:20 | ControlFlowNode for SOURCE | examples.py:59:29:59:34 | ControlFlowNode for SOURCE |
 | examples.py:27:15:27:20 | [post arg] ControlFlowNode for SOURCE | examples.py:31:1:31:1 | GSSA Variable x |
 | examples.py:27:15:27:20 | [post arg] ControlFlowNode for SOURCE | examples.py:31:1:31:1 | GSSA Variable x |
 | examples.py:27:15:27:20 | [post arg] ControlFlowNode for SOURCE | examples.py:31:5:31:10 | ControlFlowNode for SOURCE |
 | examples.py:27:15:27:20 | [post arg] ControlFlowNode for SOURCE | examples.py:31:5:31:10 | ControlFlowNode for SOURCE |
 | examples.py:27:15:27:20 | [post arg] ControlFlowNode for SOURCE | examples.py:35:13:35:13 | ControlFlowNode for x |
 | examples.py:27:15:27:20 | [post arg] ControlFlowNode for SOURCE | examples.py:35:13:35:13 | ControlFlowNode for x |
-| examples.py:27:15:27:20 | [post arg] ControlFlowNode for SOURCE | examples.py:36:18:36:18 | ControlFlowNode for x |
-| examples.py:27:15:27:20 | [post arg] ControlFlowNode for SOURCE | examples.py:36:18:36:18 | ControlFlowNode for x |
-| examples.py:27:15:27:20 | [post arg] ControlFlowNode for SOURCE | examples.py:41:13:41:18 | ControlFlowNode for SOURCE |
-| examples.py:27:15:27:20 | [post arg] ControlFlowNode for SOURCE | examples.py:41:13:41:18 | ControlFlowNode for SOURCE |
-| examples.py:27:15:27:20 | [post arg] ControlFlowNode for SOURCE | examples.py:50:29:50:34 | ControlFlowNode for SOURCE |
-| examples.py:27:15:27:20 | [post arg] ControlFlowNode for SOURCE | examples.py:50:29:50:34 | ControlFlowNode for SOURCE |
-| examples.py:28:1:28:4 | ControlFlowNode for SINK | examples.py:38:1:38:4 | ControlFlowNode for SINK |
-| examples.py:28:1:28:4 | ControlFlowNode for SINK | examples.py:38:1:38:4 | ControlFlowNode for SINK |
-| examples.py:28:1:28:4 | ControlFlowNode for SINK | examples.py:42:1:42:4 | ControlFlowNode for SINK |
-| examples.py:28:1:28:4 | ControlFlowNode for SINK | examples.py:42:1:42:4 | ControlFlowNode for SINK |
+| examples.py:27:15:27:20 | [post arg] ControlFlowNode for SOURCE | examples.py:40:1:40:1 | GSSA Variable x |
+| examples.py:27:15:27:20 | [post arg] ControlFlowNode for SOURCE | examples.py:40:1:40:1 | GSSA Variable x |
+| examples.py:27:15:27:20 | [post arg] ControlFlowNode for SOURCE | examples.py:40:5:40:10 | ControlFlowNode for SOURCE |
+| examples.py:27:15:27:20 | [post arg] ControlFlowNode for SOURCE | examples.py:40:5:40:10 | ControlFlowNode for SOURCE |
+| examples.py:27:15:27:20 | [post arg] ControlFlowNode for SOURCE | examples.py:44:18:44:18 | ControlFlowNode for x |
+| examples.py:27:15:27:20 | [post arg] ControlFlowNode for SOURCE | examples.py:44:18:44:18 | ControlFlowNode for x |
+| examples.py:27:15:27:20 | [post arg] ControlFlowNode for SOURCE | examples.py:49:13:49:18 | ControlFlowNode for SOURCE |
+| examples.py:27:15:27:20 | [post arg] ControlFlowNode for SOURCE | examples.py:49:13:49:18 | ControlFlowNode for SOURCE |
+| examples.py:27:15:27:20 | [post arg] ControlFlowNode for SOURCE | examples.py:59:29:59:34 | ControlFlowNode for SOURCE |
+| examples.py:27:15:27:20 | [post arg] ControlFlowNode for SOURCE | examples.py:59:29:59:34 | ControlFlowNode for SOURCE |
+| examples.py:28:1:28:4 | ControlFlowNode for SINK | examples.py:37:1:37:4 | ControlFlowNode for SINK |
+| examples.py:28:1:28:4 | ControlFlowNode for SINK | examples.py:37:1:37:4 | ControlFlowNode for SINK |
+| examples.py:28:1:28:4 | ControlFlowNode for SINK | examples.py:46:1:46:4 | ControlFlowNode for SINK |
+| examples.py:28:1:28:4 | ControlFlowNode for SINK | examples.py:46:1:46:4 | ControlFlowNode for SINK |
 | examples.py:28:1:28:4 | ControlFlowNode for SINK | examples.py:50:1:50:4 | ControlFlowNode for SINK |
 | examples.py:28:1:28:4 | ControlFlowNode for SINK | examples.py:50:1:50:4 | ControlFlowNode for SINK |
+| examples.py:28:1:28:4 | ControlFlowNode for SINK | examples.py:59:1:59:4 | ControlFlowNode for SINK |
+| examples.py:28:1:28:4 | ControlFlowNode for SINK | examples.py:59:1:59:4 | ControlFlowNode for SINK |
 | examples.py:28:6:28:10 | ControlFlowNode for myobj [Attribute foo] | examples.py:28:6:28:14 | ControlFlowNode for Attribute |
 | examples.py:28:6:28:10 | ControlFlowNode for myobj [Attribute foo] | examples.py:28:6:28:14 | ControlFlowNode for Attribute |
 | examples.py:31:1:31:1 | GSSA Variable x | examples.py:35:13:35:13 | ControlFlowNode for x |
 | examples.py:31:1:31:1 | GSSA Variable x | examples.py:35:13:35:13 | ControlFlowNode for x |
-| examples.py:31:1:31:1 | GSSA Variable x | examples.py:36:18:36:18 | ControlFlowNode for x |
-| examples.py:31:1:31:1 | GSSA Variable x | examples.py:36:18:36:18 | ControlFlowNode for x |
 | examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:31:1:31:1 | GSSA Variable x |
 | examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:31:1:31:1 | GSSA Variable x |
 | examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:35:13:35:13 | ControlFlowNode for x |
 | examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:35:13:35:13 | ControlFlowNode for x |
-| examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:36:18:36:18 | ControlFlowNode for x |
-| examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:36:18:36:18 | ControlFlowNode for x |
-| examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:41:13:41:18 | ControlFlowNode for SOURCE |
-| examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:41:13:41:18 | ControlFlowNode for SOURCE |
-| examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:50:29:50:34 | ControlFlowNode for SOURCE |
-| examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:50:29:50:34 | ControlFlowNode for SOURCE |
+| examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:40:1:40:1 | GSSA Variable x |
+| examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:40:1:40:1 | GSSA Variable x |
+| examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:40:5:40:10 | ControlFlowNode for SOURCE |
+| examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:40:5:40:10 | ControlFlowNode for SOURCE |
+| examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:44:18:44:18 | ControlFlowNode for x |
+| examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:44:18:44:18 | ControlFlowNode for x |
+| examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:49:13:49:18 | ControlFlowNode for SOURCE |
+| examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:49:13:49:18 | ControlFlowNode for SOURCE |
+| examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:59:29:59:34 | ControlFlowNode for SOURCE |
+| examples.py:31:5:31:10 | ControlFlowNode for SOURCE | examples.py:59:29:59:34 | ControlFlowNode for SOURCE |
 | examples.py:33:1:33:1 | GSSA Variable a | examples.py:35:1:35:1 | ControlFlowNode for a |
 | examples.py:33:1:33:1 | GSSA Variable a | examples.py:35:1:35:1 | ControlFlowNode for a |
-| examples.py:33:1:33:1 | GSSA Variable a | examples.py:36:1:36:1 | ControlFlowNode for a |
-| examples.py:33:1:33:1 | GSSA Variable a | examples.py:36:1:36:1 | ControlFlowNode for a |
-| examples.py:33:1:33:1 | GSSA Variable a | examples.py:36:1:36:10 | GSSA Variable a |
-| examples.py:33:1:33:1 | GSSA Variable a | examples.py:36:1:36:10 | GSSA Variable a |
-| examples.py:33:1:33:1 | GSSA Variable a | examples.py:38:6:38:6 | ControlFlowNode for a |
-| examples.py:33:1:33:1 | GSSA Variable a | examples.py:38:6:38:6 | ControlFlowNode for a |
+| examples.py:33:1:33:1 | GSSA Variable a | examples.py:37:6:37:6 | ControlFlowNode for a |
+| examples.py:33:1:33:1 | GSSA Variable a | examples.py:37:6:37:6 | ControlFlowNode for a |
 | examples.py:33:1:33:1 | GSSA Variable a [Attribute obj, Attribute foo] | examples.py:35:1:35:1 | ControlFlowNode for a [Attribute obj, Attribute foo] |
-| examples.py:33:1:33:1 | GSSA Variable a [Attribute obj, Attribute foo] | examples.py:36:1:36:1 | ControlFlowNode for a [Attribute obj, Attribute foo] |
-| examples.py:33:1:33:1 | GSSA Variable a [Attribute obj, Attribute foo] | examples.py:38:6:38:6 | ControlFlowNode for a [Attribute obj, Attribute foo] |
+| examples.py:33:1:33:1 | GSSA Variable a [Attribute obj, Attribute foo] | examples.py:37:6:37:6 | ControlFlowNode for a [Attribute obj, Attribute foo] |
 | examples.py:33:1:33:1 | GSSA Variable a [Attribute obj] | examples.py:35:1:35:1 | ControlFlowNode for a [Attribute obj] |
-| examples.py:33:1:33:1 | GSSA Variable a [Attribute obj] | examples.py:36:1:36:1 | ControlFlowNode for a [Attribute obj] |
-| examples.py:33:1:33:1 | GSSA Variable a [Attribute obj] | examples.py:38:6:38:6 | ControlFlowNode for a [Attribute obj] |
+| examples.py:33:1:33:1 | GSSA Variable a [Attribute obj] | examples.py:37:6:37:6 | ControlFlowNode for a [Attribute obj] |
+| examples.py:33:5:33:13 | ControlFlowNode for NestedObj | examples.py:42:5:42:13 | ControlFlowNode for NestedObj |
+| examples.py:33:5:33:13 | ControlFlowNode for NestedObj | examples.py:42:5:42:13 | ControlFlowNode for NestedObj |
 | examples.py:33:5:33:15 | ControlFlowNode for NestedObj() | examples.py:33:1:33:1 | GSSA Variable a |
 | examples.py:33:5:33:15 | ControlFlowNode for NestedObj() | examples.py:33:1:33:1 | GSSA Variable a |
 | examples.py:33:5:33:15 | ControlFlowNode for NestedObj() | examples.py:35:1:35:1 | ControlFlowNode for a |
 | examples.py:33:5:33:15 | ControlFlowNode for NestedObj() | examples.py:35:1:35:1 | ControlFlowNode for a |
-| examples.py:33:5:33:15 | ControlFlowNode for NestedObj() | examples.py:36:1:36:1 | ControlFlowNode for a |
-| examples.py:33:5:33:15 | ControlFlowNode for NestedObj() | examples.py:36:1:36:1 | ControlFlowNode for a |
-| examples.py:33:5:33:15 | ControlFlowNode for NestedObj() | examples.py:36:1:36:10 | GSSA Variable a |
-| examples.py:33:5:33:15 | ControlFlowNode for NestedObj() | examples.py:36:1:36:10 | GSSA Variable a |
-| examples.py:33:5:33:15 | ControlFlowNode for NestedObj() | examples.py:38:6:38:6 | ControlFlowNode for a |
-| examples.py:33:5:33:15 | ControlFlowNode for NestedObj() | examples.py:38:6:38:6 | ControlFlowNode for a |
+| examples.py:33:5:33:15 | ControlFlowNode for NestedObj() | examples.py:37:6:37:6 | ControlFlowNode for a |
+| examples.py:33:5:33:15 | ControlFlowNode for NestedObj() | examples.py:37:6:37:6 | ControlFlowNode for a |
 | examples.py:33:5:33:15 | ControlFlowNode for NestedObj() [Attribute obj, Attribute foo] | examples.py:33:1:33:1 | GSSA Variable a [Attribute obj, Attribute foo] |
 | examples.py:33:5:33:15 | ControlFlowNode for NestedObj() [Attribute obj, Attribute foo] | examples.py:35:1:35:1 | ControlFlowNode for a [Attribute obj, Attribute foo] |
-| examples.py:33:5:33:15 | ControlFlowNode for NestedObj() [Attribute obj, Attribute foo] | examples.py:36:1:36:1 | ControlFlowNode for a [Attribute obj, Attribute foo] |
-| examples.py:33:5:33:15 | ControlFlowNode for NestedObj() [Attribute obj, Attribute foo] | examples.py:38:6:38:6 | ControlFlowNode for a [Attribute obj, Attribute foo] |
+| examples.py:33:5:33:15 | ControlFlowNode for NestedObj() [Attribute obj, Attribute foo] | examples.py:37:6:37:6 | ControlFlowNode for a [Attribute obj, Attribute foo] |
 | examples.py:33:5:33:15 | ControlFlowNode for NestedObj() [Attribute obj] | examples.py:33:1:33:1 | GSSA Variable a [Attribute obj] |
 | examples.py:33:5:33:15 | ControlFlowNode for NestedObj() [Attribute obj] | examples.py:35:1:35:1 | ControlFlowNode for a [Attribute obj] |
-| examples.py:33:5:33:15 | ControlFlowNode for NestedObj() [Attribute obj] | examples.py:36:1:36:1 | ControlFlowNode for a [Attribute obj] |
-| examples.py:33:5:33:15 | ControlFlowNode for NestedObj() [Attribute obj] | examples.py:38:6:38:6 | ControlFlowNode for a [Attribute obj] |
-| examples.py:33:5:33:15 | [pre objCreate] ControlFlowNode for NestedObj() | examples.py:13:18:13:21 | SSA variable self |
-| examples.py:33:5:33:15 | [pre objCreate] ControlFlowNode for NestedObj() | examples.py:13:18:13:21 | SSA variable self |
-| examples.py:35:1:35:1 | ControlFlowNode for a | examples.py:36:1:36:1 | ControlFlowNode for a |
-| examples.py:35:1:35:1 | ControlFlowNode for a | examples.py:36:1:36:1 | ControlFlowNode for a |
-| examples.py:35:1:35:1 | ControlFlowNode for a | examples.py:38:6:38:6 | ControlFlowNode for a |
-| examples.py:35:1:35:1 | ControlFlowNode for a | examples.py:38:6:38:6 | ControlFlowNode for a |
-| examples.py:35:1:35:1 | ControlFlowNode for a [Attribute obj, Attribute foo] | examples.py:36:1:36:1 | ControlFlowNode for a [Attribute obj, Attribute foo] |
-| examples.py:35:1:35:1 | ControlFlowNode for a [Attribute obj, Attribute foo] | examples.py:38:6:38:6 | ControlFlowNode for a [Attribute obj, Attribute foo] |
+| examples.py:33:5:33:15 | ControlFlowNode for NestedObj() [Attribute obj] | examples.py:37:6:37:6 | ControlFlowNode for a [Attribute obj] |
+| examples.py:33:5:33:15 | [pre objCreate] ControlFlowNode for NestedObj() | examples.py:12:18:12:21 | SSA variable self |
+| examples.py:33:5:33:15 | [pre objCreate] ControlFlowNode for NestedObj() | examples.py:12:18:12:21 | SSA variable self |
+| examples.py:35:1:35:1 | ControlFlowNode for a | examples.py:37:6:37:6 | ControlFlowNode for a |
+| examples.py:35:1:35:1 | ControlFlowNode for a | examples.py:37:6:37:6 | ControlFlowNode for a |
+| examples.py:35:1:35:1 | ControlFlowNode for a [Attribute obj, Attribute foo] | examples.py:37:6:37:6 | ControlFlowNode for a [Attribute obj, Attribute foo] |
 | examples.py:35:1:35:1 | ControlFlowNode for a [Attribute obj] | examples.py:35:1:35:5 | ControlFlowNode for Attribute |
 | examples.py:35:1:35:1 | ControlFlowNode for a [Attribute obj] | examples.py:35:1:35:5 | ControlFlowNode for Attribute |
-| examples.py:35:1:35:1 | ControlFlowNode for a [Attribute obj] | examples.py:36:1:36:1 | ControlFlowNode for a [Attribute obj] |
-| examples.py:35:1:35:1 | ControlFlowNode for a [Attribute obj] | examples.py:38:6:38:6 | ControlFlowNode for a [Attribute obj] |
-| examples.py:35:1:35:1 | [post read] ControlFlowNode for a | examples.py:36:1:36:1 | ControlFlowNode for a |
-| examples.py:35:1:35:1 | [post read] ControlFlowNode for a | examples.py:36:1:36:1 | ControlFlowNode for a |
-| examples.py:35:1:35:1 | [post read] ControlFlowNode for a | examples.py:38:6:38:6 | ControlFlowNode for a |
-| examples.py:35:1:35:1 | [post read] ControlFlowNode for a | examples.py:38:6:38:6 | ControlFlowNode for a |
-| examples.py:35:1:35:1 | [post read] ControlFlowNode for a [Attribute obj, Attribute foo] | examples.py:36:1:36:1 | ControlFlowNode for a [Attribute obj, Attribute foo] |
-| examples.py:35:1:35:1 | [post read] ControlFlowNode for a [Attribute obj, Attribute foo] | examples.py:38:6:38:6 | ControlFlowNode for a [Attribute obj, Attribute foo] |
-| examples.py:35:1:35:1 | [post read] ControlFlowNode for a [Attribute obj] | examples.py:36:1:36:1 | ControlFlowNode for a [Attribute obj] |
-| examples.py:35:1:35:1 | [post read] ControlFlowNode for a [Attribute obj] | examples.py:38:6:38:6 | ControlFlowNode for a [Attribute obj] |
+| examples.py:35:1:35:1 | ControlFlowNode for a [Attribute obj] | examples.py:37:6:37:6 | ControlFlowNode for a [Attribute obj] |
+| examples.py:35:1:35:1 | [post read] ControlFlowNode for a | examples.py:37:6:37:6 | ControlFlowNode for a |
+| examples.py:35:1:35:1 | [post read] ControlFlowNode for a | examples.py:37:6:37:6 | ControlFlowNode for a |
+| examples.py:35:1:35:1 | [post read] ControlFlowNode for a [Attribute obj, Attribute foo] | examples.py:37:6:37:6 | ControlFlowNode for a [Attribute obj, Attribute foo] |
+| examples.py:35:1:35:1 | [post read] ControlFlowNode for a [Attribute obj] | examples.py:37:6:37:6 | ControlFlowNode for a [Attribute obj] |
 | examples.py:35:1:35:5 | [post store] ControlFlowNode for Attribute | examples.py:35:1:35:1 | [post read] ControlFlowNode for a [Attribute obj] |
 | examples.py:35:1:35:5 | [post store] ControlFlowNode for Attribute [Attribute foo] | examples.py:35:1:35:1 | [post read] ControlFlowNode for a [Attribute obj, Attribute foo] |
 | examples.py:35:13:35:13 | ControlFlowNode for x | examples.py:35:1:35:5 | [post store] ControlFlowNode for Attribute [Attribute foo] |
-| examples.py:35:13:35:13 | ControlFlowNode for x | examples.py:36:18:36:18 | ControlFlowNode for x |
-| examples.py:35:13:35:13 | ControlFlowNode for x | examples.py:36:18:36:18 | ControlFlowNode for x |
-| examples.py:36:1:36:1 | ControlFlowNode for a | examples.py:38:6:38:6 | ControlFlowNode for a |
-| examples.py:36:1:36:1 | ControlFlowNode for a | examples.py:38:6:38:6 | ControlFlowNode for a |
-| examples.py:36:1:36:1 | ControlFlowNode for a [Attribute obj, Attribute foo] | examples.py:38:6:38:6 | ControlFlowNode for a [Attribute obj, Attribute foo] |
-| examples.py:36:1:36:1 | ControlFlowNode for a [Attribute obj] | examples.py:38:6:38:6 | ControlFlowNode for a [Attribute obj] |
-| examples.py:36:1:36:1 | [post read] ControlFlowNode for a | examples.py:38:6:38:6 | ControlFlowNode for a |
-| examples.py:36:1:36:1 | [post read] ControlFlowNode for a | examples.py:38:6:38:6 | ControlFlowNode for a |
-| examples.py:38:1:38:4 | ControlFlowNode for SINK | examples.py:42:1:42:4 | ControlFlowNode for SINK |
-| examples.py:38:1:38:4 | ControlFlowNode for SINK | examples.py:42:1:42:4 | ControlFlowNode for SINK |
-| examples.py:38:1:38:4 | ControlFlowNode for SINK | examples.py:50:1:50:4 | ControlFlowNode for SINK |
-| examples.py:38:1:38:4 | ControlFlowNode for SINK | examples.py:50:1:50:4 | ControlFlowNode for SINK |
-| examples.py:38:6:38:6 | ControlFlowNode for a [Attribute obj, Attribute foo] | examples.py:38:6:38:10 | ControlFlowNode for Attribute [Attribute foo] |
-| examples.py:38:6:38:6 | ControlFlowNode for a [Attribute obj] | examples.py:38:6:38:10 | ControlFlowNode for Attribute |
-| examples.py:38:6:38:6 | ControlFlowNode for a [Attribute obj] | examples.py:38:6:38:10 | ControlFlowNode for Attribute |
-| examples.py:38:6:38:10 | ControlFlowNode for Attribute [Attribute foo] | examples.py:38:6:38:14 | ControlFlowNode for Attribute |
-| examples.py:38:6:38:10 | ControlFlowNode for Attribute [Attribute foo] | examples.py:38:6:38:14 | ControlFlowNode for Attribute |
-| examples.py:41:1:41:3 | GSSA Variable obj | examples.py:42:6:42:8 | ControlFlowNode for obj |
-| examples.py:41:1:41:3 | GSSA Variable obj | examples.py:42:6:42:8 | ControlFlowNode for obj |
-| examples.py:41:1:41:3 | GSSA Variable obj [Attribute foo] | examples.py:42:6:42:8 | ControlFlowNode for obj [Attribute foo] |
-| examples.py:41:7:41:19 | ControlFlowNode for MyObj() | examples.py:41:1:41:3 | GSSA Variable obj |
-| examples.py:41:7:41:19 | ControlFlowNode for MyObj() | examples.py:41:1:41:3 | GSSA Variable obj |
-| examples.py:41:7:41:19 | ControlFlowNode for MyObj() | examples.py:42:6:42:8 | ControlFlowNode for obj |
-| examples.py:41:7:41:19 | ControlFlowNode for MyObj() | examples.py:42:6:42:8 | ControlFlowNode for obj |
-| examples.py:41:7:41:19 | ControlFlowNode for MyObj() [Attribute foo] | examples.py:41:1:41:3 | GSSA Variable obj [Attribute foo] |
-| examples.py:41:7:41:19 | ControlFlowNode for MyObj() [Attribute foo] | examples.py:42:6:42:8 | ControlFlowNode for obj [Attribute foo] |
-| examples.py:41:7:41:19 | GSSA Variable SOURCE | examples.py:50:6:50:35 | GSSA Variable SOURCE |
-| examples.py:41:7:41:19 | GSSA Variable SOURCE | examples.py:50:6:50:35 | GSSA Variable SOURCE |
-| examples.py:41:7:41:19 | [pre objCreate] ControlFlowNode for MyObj() | examples.py:7:18:7:21 | SSA variable self |
-| examples.py:41:7:41:19 | [pre objCreate] ControlFlowNode for MyObj() | examples.py:7:18:7:21 | SSA variable self |
-| examples.py:41:13:41:18 | ControlFlowNode for SOURCE | examples.py:7:24:7:26 | SSA variable foo |
-| examples.py:41:13:41:18 | ControlFlowNode for SOURCE | examples.py:7:24:7:26 | SSA variable foo |
-| examples.py:41:13:41:18 | ControlFlowNode for SOURCE | examples.py:41:7:41:19 | ControlFlowNode for MyObj() [Attribute foo] |
-| examples.py:41:13:41:18 | ControlFlowNode for SOURCE | examples.py:50:29:50:34 | ControlFlowNode for SOURCE |
-| examples.py:41:13:41:18 | ControlFlowNode for SOURCE | examples.py:50:29:50:34 | ControlFlowNode for SOURCE |
-| examples.py:41:13:41:18 | [post arg] ControlFlowNode for SOURCE | examples.py:50:29:50:34 | ControlFlowNode for SOURCE |
-| examples.py:41:13:41:18 | [post arg] ControlFlowNode for SOURCE | examples.py:50:29:50:34 | ControlFlowNode for SOURCE |
-| examples.py:42:1:42:4 | ControlFlowNode for SINK | examples.py:50:1:50:4 | ControlFlowNode for SINK |
-| examples.py:42:1:42:4 | ControlFlowNode for SINK | examples.py:50:1:50:4 | ControlFlowNode for SINK |
-| examples.py:42:6:42:8 | ControlFlowNode for obj [Attribute foo] | examples.py:42:6:42:12 | ControlFlowNode for Attribute |
-| examples.py:42:6:42:8 | ControlFlowNode for obj [Attribute foo] | examples.py:42:6:42:12 | ControlFlowNode for Attribute |
-| examples.py:45:1:45:30 | ControlFlowNode for FunctionExpr | examples.py:45:5:45:26 | GSSA Variable fields_with_local_flow |
-| examples.py:45:1:45:30 | ControlFlowNode for FunctionExpr | examples.py:45:5:45:26 | GSSA Variable fields_with_local_flow |
-| examples.py:45:1:45:30 | ControlFlowNode for FunctionExpr | examples.py:50:6:50:27 | ControlFlowNode for fields_with_local_flow |
-| examples.py:45:1:45:30 | ControlFlowNode for FunctionExpr | examples.py:50:6:50:27 | ControlFlowNode for fields_with_local_flow |
-| examples.py:45:1:45:30 | GSSA Variable MyObj | examples.py:46:9:46:13 | ControlFlowNode for MyObj |
-| examples.py:45:1:45:30 | GSSA Variable MyObj | examples.py:46:9:46:13 | ControlFlowNode for MyObj |
-| examples.py:45:5:45:26 | GSSA Variable fields_with_local_flow | examples.py:50:6:50:27 | ControlFlowNode for fields_with_local_flow |
-| examples.py:45:5:45:26 | GSSA Variable fields_with_local_flow | examples.py:50:6:50:27 | ControlFlowNode for fields_with_local_flow |
-| examples.py:45:28:45:28 | SSA variable x | examples.py:46:9:46:16 | SSA variable x |
-| examples.py:45:28:45:28 | SSA variable x | examples.py:46:9:46:16 | SSA variable x |
-| examples.py:45:28:45:28 | SSA variable x | examples.py:46:9:46:16 | SSA variable x |
-| examples.py:45:28:45:28 | SSA variable x | examples.py:46:9:46:16 | SSA variable x |
-| examples.py:45:28:45:28 | SSA variable x | examples.py:46:15:46:15 | ControlFlowNode for x |
-| examples.py:45:28:45:28 | SSA variable x | examples.py:46:15:46:15 | ControlFlowNode for x |
-| examples.py:45:28:45:28 | SSA variable x | examples.py:46:15:46:15 | ControlFlowNode for x |
-| examples.py:45:28:45:28 | SSA variable x | examples.py:46:15:46:15 | ControlFlowNode for x |
-| examples.py:46:3:46:5 | SSA variable obj | examples.py:47:7:47:9 | ControlFlowNode for obj |
-| examples.py:46:3:46:5 | SSA variable obj | examples.py:47:7:47:9 | ControlFlowNode for obj |
-| examples.py:46:3:46:5 | SSA variable obj [Attribute foo] | examples.py:47:7:47:9 | ControlFlowNode for obj [Attribute foo] |
-| examples.py:46:3:46:5 | SSA variable obj [Attribute foo] | examples.py:47:7:47:9 | ControlFlowNode for obj [Attribute foo] |
-| examples.py:46:9:46:16 | ControlFlowNode for MyObj() | examples.py:46:3:46:5 | SSA variable obj |
-| examples.py:46:9:46:16 | ControlFlowNode for MyObj() | examples.py:46:3:46:5 | SSA variable obj |
-| examples.py:46:9:46:16 | ControlFlowNode for MyObj() | examples.py:47:7:47:9 | ControlFlowNode for obj |
-| examples.py:46:9:46:16 | ControlFlowNode for MyObj() | examples.py:47:7:47:9 | ControlFlowNode for obj |
-| examples.py:46:9:46:16 | ControlFlowNode for MyObj() [Attribute foo] | examples.py:46:3:46:5 | SSA variable obj [Attribute foo] |
-| examples.py:46:9:46:16 | ControlFlowNode for MyObj() [Attribute foo] | examples.py:46:3:46:5 | SSA variable obj [Attribute foo] |
-| examples.py:46:9:46:16 | ControlFlowNode for MyObj() [Attribute foo] | examples.py:47:7:47:9 | ControlFlowNode for obj [Attribute foo] |
-| examples.py:46:9:46:16 | ControlFlowNode for MyObj() [Attribute foo] | examples.py:47:7:47:9 | ControlFlowNode for obj [Attribute foo] |
-| examples.py:46:9:46:16 | [pre objCreate] ControlFlowNode for MyObj() | examples.py:7:18:7:21 | SSA variable self |
-| examples.py:46:9:46:16 | [pre objCreate] ControlFlowNode for MyObj() | examples.py:7:18:7:21 | SSA variable self |
-| examples.py:46:15:46:15 | ControlFlowNode for x | examples.py:7:24:7:26 | SSA variable foo |
-| examples.py:46:15:46:15 | ControlFlowNode for x | examples.py:7:24:7:26 | SSA variable foo |
-| examples.py:46:15:46:15 | ControlFlowNode for x | examples.py:7:24:7:26 | SSA variable foo |
-| examples.py:46:15:46:15 | ControlFlowNode for x | examples.py:7:24:7:26 | SSA variable foo |
-| examples.py:46:15:46:15 | ControlFlowNode for x | examples.py:46:9:46:16 | ControlFlowNode for MyObj() [Attribute foo] |
-| examples.py:46:15:46:15 | ControlFlowNode for x | examples.py:46:9:46:16 | ControlFlowNode for MyObj() [Attribute foo] |
-| examples.py:46:15:46:15 | [post arg] ControlFlowNode for x | examples.py:50:29:50:34 | [post arg] ControlFlowNode for SOURCE |
-| examples.py:46:15:46:15 | [post arg] ControlFlowNode for x | examples.py:50:29:50:34 | [post arg] ControlFlowNode for SOURCE |
-| examples.py:47:3:47:3 | SSA variable a | examples.py:48:10:48:10 | ControlFlowNode for a |
-| examples.py:47:3:47:3 | SSA variable a | examples.py:48:10:48:10 | ControlFlowNode for a |
-| examples.py:47:3:47:3 | SSA variable a | examples.py:48:10:48:10 | ControlFlowNode for a |
-| examples.py:47:3:47:3 | SSA variable a | examples.py:48:10:48:10 | ControlFlowNode for a |
-| examples.py:47:7:47:9 | ControlFlowNode for obj [Attribute foo] | examples.py:47:7:47:13 | ControlFlowNode for Attribute |
-| examples.py:47:7:47:9 | ControlFlowNode for obj [Attribute foo] | examples.py:47:7:47:13 | ControlFlowNode for Attribute |
-| examples.py:47:7:47:9 | ControlFlowNode for obj [Attribute foo] | examples.py:47:7:47:13 | ControlFlowNode for Attribute |
-| examples.py:47:7:47:9 | ControlFlowNode for obj [Attribute foo] | examples.py:47:7:47:13 | ControlFlowNode for Attribute |
-| examples.py:47:7:47:13 | ControlFlowNode for Attribute | examples.py:47:3:47:3 | SSA variable a |
-| examples.py:47:7:47:13 | ControlFlowNode for Attribute | examples.py:47:3:47:3 | SSA variable a |
-| examples.py:47:7:47:13 | ControlFlowNode for Attribute | examples.py:47:3:47:3 | SSA variable a |
-| examples.py:47:7:47:13 | ControlFlowNode for Attribute | examples.py:47:3:47:3 | SSA variable a |
-| examples.py:47:7:47:13 | ControlFlowNode for Attribute | examples.py:48:10:48:10 | ControlFlowNode for a |
-| examples.py:47:7:47:13 | ControlFlowNode for Attribute | examples.py:48:10:48:10 | ControlFlowNode for a |
-| examples.py:47:7:47:13 | ControlFlowNode for Attribute | examples.py:48:10:48:10 | ControlFlowNode for a |
-| examples.py:47:7:47:13 | ControlFlowNode for Attribute | examples.py:48:10:48:10 | ControlFlowNode for a |
-| examples.py:48:10:48:10 | ControlFlowNode for a | examples.py:50:6:50:35 | ControlFlowNode for fields_with_local_flow() |
-| examples.py:48:10:48:10 | ControlFlowNode for a | examples.py:50:6:50:35 | ControlFlowNode for fields_with_local_flow() |
-| examples.py:50:29:50:34 | ControlFlowNode for SOURCE | examples.py:45:28:45:28 | SSA variable x |
-| examples.py:50:29:50:34 | ControlFlowNode for SOURCE | examples.py:45:28:45:28 | SSA variable x |
-| examples.py:50:29:50:34 | ControlFlowNode for SOURCE | examples.py:50:6:50:35 | ControlFlowNode for fields_with_local_flow() |
-| examples.py:50:29:50:34 | ControlFlowNode for SOURCE | examples.py:50:6:50:35 | ControlFlowNode for fields_with_local_flow() |
+| examples.py:37:1:37:4 | ControlFlowNode for SINK | examples.py:46:1:46:4 | ControlFlowNode for SINK |
+| examples.py:37:1:37:4 | ControlFlowNode for SINK | examples.py:46:1:46:4 | ControlFlowNode for SINK |
+| examples.py:37:1:37:4 | ControlFlowNode for SINK | examples.py:50:1:50:4 | ControlFlowNode for SINK |
+| examples.py:37:1:37:4 | ControlFlowNode for SINK | examples.py:50:1:50:4 | ControlFlowNode for SINK |
+| examples.py:37:1:37:4 | ControlFlowNode for SINK | examples.py:59:1:59:4 | ControlFlowNode for SINK |
+| examples.py:37:1:37:4 | ControlFlowNode for SINK | examples.py:59:1:59:4 | ControlFlowNode for SINK |
+| examples.py:37:6:37:6 | ControlFlowNode for a [Attribute obj, Attribute foo] | examples.py:37:6:37:10 | ControlFlowNode for Attribute [Attribute foo] |
+| examples.py:37:6:37:6 | ControlFlowNode for a [Attribute obj] | examples.py:37:6:37:10 | ControlFlowNode for Attribute |
+| examples.py:37:6:37:6 | ControlFlowNode for a [Attribute obj] | examples.py:37:6:37:10 | ControlFlowNode for Attribute |
+| examples.py:37:6:37:10 | ControlFlowNode for Attribute [Attribute foo] | examples.py:37:6:37:14 | ControlFlowNode for Attribute |
+| examples.py:37:6:37:10 | ControlFlowNode for Attribute [Attribute foo] | examples.py:37:6:37:14 | ControlFlowNode for Attribute |
+| examples.py:40:1:40:1 | GSSA Variable x | examples.py:44:18:44:18 | ControlFlowNode for x |
+| examples.py:40:1:40:1 | GSSA Variable x | examples.py:44:18:44:18 | ControlFlowNode for x |
+| examples.py:40:5:40:10 | ControlFlowNode for SOURCE | examples.py:40:1:40:1 | GSSA Variable x |
+| examples.py:40:5:40:10 | ControlFlowNode for SOURCE | examples.py:40:1:40:1 | GSSA Variable x |
+| examples.py:40:5:40:10 | ControlFlowNode for SOURCE | examples.py:44:18:44:18 | ControlFlowNode for x |
+| examples.py:40:5:40:10 | ControlFlowNode for SOURCE | examples.py:44:18:44:18 | ControlFlowNode for x |
+| examples.py:40:5:40:10 | ControlFlowNode for SOURCE | examples.py:49:13:49:18 | ControlFlowNode for SOURCE |
+| examples.py:40:5:40:10 | ControlFlowNode for SOURCE | examples.py:49:13:49:18 | ControlFlowNode for SOURCE |
+| examples.py:40:5:40:10 | ControlFlowNode for SOURCE | examples.py:59:29:59:34 | ControlFlowNode for SOURCE |
+| examples.py:40:5:40:10 | ControlFlowNode for SOURCE | examples.py:59:29:59:34 | ControlFlowNode for SOURCE |
+| examples.py:42:1:42:1 | GSSA Variable a | examples.py:44:1:44:1 | ControlFlowNode for a |
+| examples.py:42:1:42:1 | GSSA Variable a | examples.py:44:1:44:1 | ControlFlowNode for a |
+| examples.py:42:1:42:1 | GSSA Variable a | examples.py:44:1:44:10 | GSSA Variable a |
+| examples.py:42:1:42:1 | GSSA Variable a | examples.py:44:1:44:10 | GSSA Variable a |
+| examples.py:42:1:42:1 | GSSA Variable a | examples.py:46:6:46:6 | ControlFlowNode for a |
+| examples.py:42:1:42:1 | GSSA Variable a | examples.py:46:6:46:6 | ControlFlowNode for a |
+| examples.py:42:1:42:1 | GSSA Variable a [Attribute obj, Attribute foo] | examples.py:44:1:44:1 | ControlFlowNode for a [Attribute obj, Attribute foo] |
+| examples.py:42:1:42:1 | GSSA Variable a [Attribute obj, Attribute foo] | examples.py:46:6:46:6 | ControlFlowNode for a [Attribute obj, Attribute foo] |
+| examples.py:42:1:42:1 | GSSA Variable a [Attribute obj] | examples.py:44:1:44:1 | ControlFlowNode for a [Attribute obj] |
+| examples.py:42:1:42:1 | GSSA Variable a [Attribute obj] | examples.py:46:6:46:6 | ControlFlowNode for a [Attribute obj] |
+| examples.py:42:5:42:15 | ControlFlowNode for NestedObj() | examples.py:42:1:42:1 | GSSA Variable a |
+| examples.py:42:5:42:15 | ControlFlowNode for NestedObj() | examples.py:42:1:42:1 | GSSA Variable a |
+| examples.py:42:5:42:15 | ControlFlowNode for NestedObj() | examples.py:44:1:44:1 | ControlFlowNode for a |
+| examples.py:42:5:42:15 | ControlFlowNode for NestedObj() | examples.py:44:1:44:1 | ControlFlowNode for a |
+| examples.py:42:5:42:15 | ControlFlowNode for NestedObj() | examples.py:44:1:44:10 | GSSA Variable a |
+| examples.py:42:5:42:15 | ControlFlowNode for NestedObj() | examples.py:44:1:44:10 | GSSA Variable a |
+| examples.py:42:5:42:15 | ControlFlowNode for NestedObj() | examples.py:46:6:46:6 | ControlFlowNode for a |
+| examples.py:42:5:42:15 | ControlFlowNode for NestedObj() | examples.py:46:6:46:6 | ControlFlowNode for a |
+| examples.py:42:5:42:15 | ControlFlowNode for NestedObj() [Attribute obj, Attribute foo] | examples.py:42:1:42:1 | GSSA Variable a [Attribute obj, Attribute foo] |
+| examples.py:42:5:42:15 | ControlFlowNode for NestedObj() [Attribute obj, Attribute foo] | examples.py:44:1:44:1 | ControlFlowNode for a [Attribute obj, Attribute foo] |
+| examples.py:42:5:42:15 | ControlFlowNode for NestedObj() [Attribute obj, Attribute foo] | examples.py:46:6:46:6 | ControlFlowNode for a [Attribute obj, Attribute foo] |
+| examples.py:42:5:42:15 | ControlFlowNode for NestedObj() [Attribute obj] | examples.py:42:1:42:1 | GSSA Variable a [Attribute obj] |
+| examples.py:42:5:42:15 | ControlFlowNode for NestedObj() [Attribute obj] | examples.py:44:1:44:1 | ControlFlowNode for a [Attribute obj] |
+| examples.py:42:5:42:15 | ControlFlowNode for NestedObj() [Attribute obj] | examples.py:46:6:46:6 | ControlFlowNode for a [Attribute obj] |
+| examples.py:42:5:42:15 | [pre objCreate] ControlFlowNode for NestedObj() | examples.py:12:18:12:21 | SSA variable self |
+| examples.py:42:5:42:15 | [pre objCreate] ControlFlowNode for NestedObj() | examples.py:12:18:12:21 | SSA variable self |
+| examples.py:44:1:44:1 | ControlFlowNode for a | examples.py:46:6:46:6 | ControlFlowNode for a |
+| examples.py:44:1:44:1 | ControlFlowNode for a | examples.py:46:6:46:6 | ControlFlowNode for a |
+| examples.py:44:1:44:1 | ControlFlowNode for a [Attribute obj, Attribute foo] | examples.py:46:6:46:6 | ControlFlowNode for a [Attribute obj, Attribute foo] |
+| examples.py:44:1:44:1 | ControlFlowNode for a [Attribute obj] | examples.py:46:6:46:6 | ControlFlowNode for a [Attribute obj] |
+| examples.py:44:1:44:1 | [post read] ControlFlowNode for a | examples.py:46:6:46:6 | ControlFlowNode for a |
+| examples.py:44:1:44:1 | [post read] ControlFlowNode for a | examples.py:46:6:46:6 | ControlFlowNode for a |
+| examples.py:46:1:46:4 | ControlFlowNode for SINK | examples.py:50:1:50:4 | ControlFlowNode for SINK |
+| examples.py:46:1:46:4 | ControlFlowNode for SINK | examples.py:50:1:50:4 | ControlFlowNode for SINK |
+| examples.py:46:1:46:4 | ControlFlowNode for SINK | examples.py:59:1:59:4 | ControlFlowNode for SINK |
+| examples.py:46:1:46:4 | ControlFlowNode for SINK | examples.py:59:1:59:4 | ControlFlowNode for SINK |
+| examples.py:46:6:46:6 | ControlFlowNode for a [Attribute obj, Attribute foo] | examples.py:46:6:46:10 | ControlFlowNode for Attribute [Attribute foo] |
+| examples.py:46:6:46:6 | ControlFlowNode for a [Attribute obj] | examples.py:46:6:46:10 | ControlFlowNode for Attribute |
+| examples.py:46:6:46:6 | ControlFlowNode for a [Attribute obj] | examples.py:46:6:46:10 | ControlFlowNode for Attribute |
+| examples.py:46:6:46:10 | ControlFlowNode for Attribute [Attribute foo] | examples.py:46:6:46:14 | ControlFlowNode for Attribute |
+| examples.py:46:6:46:10 | ControlFlowNode for Attribute [Attribute foo] | examples.py:46:6:46:14 | ControlFlowNode for Attribute |
+| examples.py:49:1:49:3 | GSSA Variable obj | examples.py:50:6:50:8 | ControlFlowNode for obj |
+| examples.py:49:1:49:3 | GSSA Variable obj | examples.py:50:6:50:8 | ControlFlowNode for obj |
+| examples.py:49:1:49:3 | GSSA Variable obj [Attribute foo] | examples.py:50:6:50:8 | ControlFlowNode for obj [Attribute foo] |
+| examples.py:49:7:49:19 | ControlFlowNode for MyObj() | examples.py:49:1:49:3 | GSSA Variable obj |
+| examples.py:49:7:49:19 | ControlFlowNode for MyObj() | examples.py:49:1:49:3 | GSSA Variable obj |
+| examples.py:49:7:49:19 | ControlFlowNode for MyObj() | examples.py:50:6:50:8 | ControlFlowNode for obj |
+| examples.py:49:7:49:19 | ControlFlowNode for MyObj() | examples.py:50:6:50:8 | ControlFlowNode for obj |
+| examples.py:49:7:49:19 | ControlFlowNode for MyObj() [Attribute foo] | examples.py:49:1:49:3 | GSSA Variable obj [Attribute foo] |
+| examples.py:49:7:49:19 | ControlFlowNode for MyObj() [Attribute foo] | examples.py:50:6:50:8 | ControlFlowNode for obj [Attribute foo] |
+| examples.py:49:7:49:19 | GSSA Variable SOURCE | examples.py:59:6:59:35 | GSSA Variable SOURCE |
+| examples.py:49:7:49:19 | GSSA Variable SOURCE | examples.py:59:6:59:35 | GSSA Variable SOURCE |
+| examples.py:49:7:49:19 | [pre objCreate] ControlFlowNode for MyObj() | examples.py:7:18:7:21 | SSA variable self |
+| examples.py:49:7:49:19 | [pre objCreate] ControlFlowNode for MyObj() | examples.py:7:18:7:21 | SSA variable self |
+| examples.py:49:13:49:18 | ControlFlowNode for SOURCE | examples.py:7:24:7:26 | SSA variable foo |
+| examples.py:49:13:49:18 | ControlFlowNode for SOURCE | examples.py:7:24:7:26 | SSA variable foo |
+| examples.py:49:13:49:18 | ControlFlowNode for SOURCE | examples.py:49:7:49:19 | ControlFlowNode for MyObj() [Attribute foo] |
+| examples.py:49:13:49:18 | ControlFlowNode for SOURCE | examples.py:59:29:59:34 | ControlFlowNode for SOURCE |
+| examples.py:49:13:49:18 | ControlFlowNode for SOURCE | examples.py:59:29:59:34 | ControlFlowNode for SOURCE |
+| examples.py:49:13:49:18 | [post arg] ControlFlowNode for SOURCE | examples.py:59:29:59:34 | ControlFlowNode for SOURCE |
+| examples.py:49:13:49:18 | [post arg] ControlFlowNode for SOURCE | examples.py:59:29:59:34 | ControlFlowNode for SOURCE |
+| examples.py:50:1:50:4 | ControlFlowNode for SINK | examples.py:59:1:59:4 | ControlFlowNode for SINK |
+| examples.py:50:1:50:4 | ControlFlowNode for SINK | examples.py:59:1:59:4 | ControlFlowNode for SINK |
+| examples.py:50:6:50:8 | ControlFlowNode for obj [Attribute foo] | examples.py:50:6:50:12 | ControlFlowNode for Attribute |
+| examples.py:50:6:50:8 | ControlFlowNode for obj [Attribute foo] | examples.py:50:6:50:12 | ControlFlowNode for Attribute |
+| examples.py:53:1:53:30 | ControlFlowNode for FunctionExpr | examples.py:53:5:53:26 | GSSA Variable fields_with_local_flow |
+| examples.py:53:1:53:30 | ControlFlowNode for FunctionExpr | examples.py:53:5:53:26 | GSSA Variable fields_with_local_flow |
+| examples.py:53:1:53:30 | ControlFlowNode for FunctionExpr | examples.py:59:6:59:27 | ControlFlowNode for fields_with_local_flow |
+| examples.py:53:1:53:30 | ControlFlowNode for FunctionExpr | examples.py:59:6:59:27 | ControlFlowNode for fields_with_local_flow |
+| examples.py:53:1:53:30 | GSSA Variable MyObj | examples.py:54:11:54:15 | ControlFlowNode for MyObj |
+| examples.py:53:1:53:30 | GSSA Variable MyObj | examples.py:54:11:54:15 | ControlFlowNode for MyObj |
+| examples.py:53:5:53:26 | GSSA Variable fields_with_local_flow | examples.py:59:6:59:27 | ControlFlowNode for fields_with_local_flow |
+| examples.py:53:5:53:26 | GSSA Variable fields_with_local_flow | examples.py:59:6:59:27 | ControlFlowNode for fields_with_local_flow |
+| examples.py:53:28:53:28 | SSA variable x | examples.py:54:11:54:18 | SSA variable x |
+| examples.py:53:28:53:28 | SSA variable x | examples.py:54:11:54:18 | SSA variable x |
+| examples.py:53:28:53:28 | SSA variable x | examples.py:54:11:54:18 | SSA variable x |
+| examples.py:53:28:53:28 | SSA variable x | examples.py:54:11:54:18 | SSA variable x |
+| examples.py:53:28:53:28 | SSA variable x | examples.py:54:17:54:17 | ControlFlowNode for x |
+| examples.py:53:28:53:28 | SSA variable x | examples.py:54:17:54:17 | ControlFlowNode for x |
+| examples.py:53:28:53:28 | SSA variable x | examples.py:54:17:54:17 | ControlFlowNode for x |
+| examples.py:53:28:53:28 | SSA variable x | examples.py:54:17:54:17 | ControlFlowNode for x |
+| examples.py:54:5:54:7 | SSA variable obj | examples.py:55:9:55:11 | ControlFlowNode for obj |
+| examples.py:54:5:54:7 | SSA variable obj | examples.py:55:9:55:11 | ControlFlowNode for obj |
+| examples.py:54:5:54:7 | SSA variable obj [Attribute foo] | examples.py:55:9:55:11 | ControlFlowNode for obj [Attribute foo] |
+| examples.py:54:5:54:7 | SSA variable obj [Attribute foo] | examples.py:55:9:55:11 | ControlFlowNode for obj [Attribute foo] |
+| examples.py:54:11:54:18 | ControlFlowNode for MyObj() | examples.py:54:5:54:7 | SSA variable obj |
+| examples.py:54:11:54:18 | ControlFlowNode for MyObj() | examples.py:54:5:54:7 | SSA variable obj |
+| examples.py:54:11:54:18 | ControlFlowNode for MyObj() | examples.py:55:9:55:11 | ControlFlowNode for obj |
+| examples.py:54:11:54:18 | ControlFlowNode for MyObj() | examples.py:55:9:55:11 | ControlFlowNode for obj |
+| examples.py:54:11:54:18 | ControlFlowNode for MyObj() [Attribute foo] | examples.py:54:5:54:7 | SSA variable obj [Attribute foo] |
+| examples.py:54:11:54:18 | ControlFlowNode for MyObj() [Attribute foo] | examples.py:54:5:54:7 | SSA variable obj [Attribute foo] |
+| examples.py:54:11:54:18 | ControlFlowNode for MyObj() [Attribute foo] | examples.py:55:9:55:11 | ControlFlowNode for obj [Attribute foo] |
+| examples.py:54:11:54:18 | ControlFlowNode for MyObj() [Attribute foo] | examples.py:55:9:55:11 | ControlFlowNode for obj [Attribute foo] |
+| examples.py:54:11:54:18 | [pre objCreate] ControlFlowNode for MyObj() | examples.py:7:18:7:21 | SSA variable self |
+| examples.py:54:11:54:18 | [pre objCreate] ControlFlowNode for MyObj() | examples.py:7:18:7:21 | SSA variable self |
+| examples.py:54:17:54:17 | ControlFlowNode for x | examples.py:7:24:7:26 | SSA variable foo |
+| examples.py:54:17:54:17 | ControlFlowNode for x | examples.py:7:24:7:26 | SSA variable foo |
+| examples.py:54:17:54:17 | ControlFlowNode for x | examples.py:7:24:7:26 | SSA variable foo |
+| examples.py:54:17:54:17 | ControlFlowNode for x | examples.py:7:24:7:26 | SSA variable foo |
+| examples.py:54:17:54:17 | ControlFlowNode for x | examples.py:54:11:54:18 | ControlFlowNode for MyObj() [Attribute foo] |
+| examples.py:54:17:54:17 | ControlFlowNode for x | examples.py:54:11:54:18 | ControlFlowNode for MyObj() [Attribute foo] |
+| examples.py:54:17:54:17 | [post arg] ControlFlowNode for x | examples.py:59:29:59:34 | [post arg] ControlFlowNode for SOURCE |
+| examples.py:54:17:54:17 | [post arg] ControlFlowNode for x | examples.py:59:29:59:34 | [post arg] ControlFlowNode for SOURCE |
+| examples.py:55:5:55:5 | SSA variable a | examples.py:56:12:56:12 | ControlFlowNode for a |
+| examples.py:55:5:55:5 | SSA variable a | examples.py:56:12:56:12 | ControlFlowNode for a |
+| examples.py:55:5:55:5 | SSA variable a | examples.py:56:12:56:12 | ControlFlowNode for a |
+| examples.py:55:5:55:5 | SSA variable a | examples.py:56:12:56:12 | ControlFlowNode for a |
+| examples.py:55:9:55:11 | ControlFlowNode for obj [Attribute foo] | examples.py:55:9:55:15 | ControlFlowNode for Attribute |
+| examples.py:55:9:55:11 | ControlFlowNode for obj [Attribute foo] | examples.py:55:9:55:15 | ControlFlowNode for Attribute |
+| examples.py:55:9:55:11 | ControlFlowNode for obj [Attribute foo] | examples.py:55:9:55:15 | ControlFlowNode for Attribute |
+| examples.py:55:9:55:11 | ControlFlowNode for obj [Attribute foo] | examples.py:55:9:55:15 | ControlFlowNode for Attribute |
+| examples.py:55:9:55:15 | ControlFlowNode for Attribute | examples.py:55:5:55:5 | SSA variable a |
+| examples.py:55:9:55:15 | ControlFlowNode for Attribute | examples.py:55:5:55:5 | SSA variable a |
+| examples.py:55:9:55:15 | ControlFlowNode for Attribute | examples.py:55:5:55:5 | SSA variable a |
+| examples.py:55:9:55:15 | ControlFlowNode for Attribute | examples.py:55:5:55:5 | SSA variable a |
+| examples.py:55:9:55:15 | ControlFlowNode for Attribute | examples.py:56:12:56:12 | ControlFlowNode for a |
+| examples.py:55:9:55:15 | ControlFlowNode for Attribute | examples.py:56:12:56:12 | ControlFlowNode for a |
+| examples.py:55:9:55:15 | ControlFlowNode for Attribute | examples.py:56:12:56:12 | ControlFlowNode for a |
+| examples.py:55:9:55:15 | ControlFlowNode for Attribute | examples.py:56:12:56:12 | ControlFlowNode for a |
+| examples.py:56:12:56:12 | ControlFlowNode for a | examples.py:59:6:59:35 | ControlFlowNode for fields_with_local_flow() |
+| examples.py:56:12:56:12 | ControlFlowNode for a | examples.py:59:6:59:35 | ControlFlowNode for fields_with_local_flow() |
+| examples.py:59:29:59:34 | ControlFlowNode for SOURCE | examples.py:53:28:53:28 | SSA variable x |
+| examples.py:59:29:59:34 | ControlFlowNode for SOURCE | examples.py:53:28:53:28 | SSA variable x |
+| examples.py:59:29:59:34 | ControlFlowNode for SOURCE | examples.py:59:6:59:35 | ControlFlowNode for fields_with_local_flow() |
+| examples.py:59:29:59:34 | ControlFlowNode for SOURCE | examples.py:59:6:59:35 | ControlFlowNode for fields_with_local_flow() |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module test | test.py:32:20:32:24 | ControlFlowNode for MyObj |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module test | test.py:32:20:32:24 | ControlFlowNode for MyObj |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module test | test.py:44:13:44:17 | ControlFlowNode for MyObj |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module test | test.py:44:13:44:17 | ControlFlowNode for MyObj |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module test | test.py:62:11:62:15 | ControlFlowNode for MyObj |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module test | test.py:62:11:62:15 | ControlFlowNode for MyObj |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module test | test.py:67:11:67:15 | ControlFlowNode for MyObj |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module test | test.py:67:11:67:15 | ControlFlowNode for MyObj |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module test | test.py:72:11:72:15 | ControlFlowNode for MyObj |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module test | test.py:72:11:72:15 | ControlFlowNode for MyObj |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module test | test.py:71:11:71:15 | ControlFlowNode for MyObj |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module test | test.py:71:11:71:15 | ControlFlowNode for MyObj |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module test | test.py:76:11:76:15 | ControlFlowNode for MyObj |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module test | test.py:76:11:76:15 | ControlFlowNode for MyObj |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module test | test.py:81:11:81:15 | ControlFlowNode for MyObj |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable MyObj in Module test | test.py:81:11:81:15 | ControlFlowNode for MyObj |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable NestedObj in Module test | test.py:53:9:53:17 | ControlFlowNode for NestedObj |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable NestedObj in Module test | test.py:53:9:53:17 | ControlFlowNode for NestedObj |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable NestedObj in Module test | test.py:63:9:63:17 | ControlFlowNode for NestedObj |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable NestedObj in Module test | test.py:63:9:63:17 | ControlFlowNode for NestedObj |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test | test.py:47:5:47:8 | ControlFlowNode for SINK |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test | test.py:47:5:47:8 | ControlFlowNode for SINK |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test | test.py:58:5:58:8 | ControlFlowNode for SINK |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test | test.py:58:5:58:8 | ControlFlowNode for SINK |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test | test.py:63:5:63:8 | ControlFlowNode for SINK |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test | test.py:63:5:63:8 | ControlFlowNode for SINK |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test | test.py:68:5:68:8 | ControlFlowNode for SINK |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test | test.py:68:5:68:8 | ControlFlowNode for SINK |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test | test.py:78:5:78:8 | ControlFlowNode for SINK |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test | test.py:78:5:78:8 | ControlFlowNode for SINK |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test | test.py:57:5:57:8 | ControlFlowNode for SINK |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test | test.py:57:5:57:8 | ControlFlowNode for SINK |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test | test.py:67:5:67:8 | ControlFlowNode for SINK |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test | test.py:67:5:67:8 | ControlFlowNode for SINK |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test | test.py:72:5:72:8 | ControlFlowNode for SINK |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test | test.py:72:5:72:8 | ControlFlowNode for SINK |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test | test.py:77:5:77:8 | ControlFlowNode for SINK |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test | test.py:77:5:77:8 | ControlFlowNode for SINK |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test | test.py:87:5:87:8 | ControlFlowNode for SINK |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK in Module test | test.py:87:5:87:8 | ControlFlowNode for SINK |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK_F in Module test | test.py:39:5:39:10 | ControlFlowNode for SINK_F |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SINK_F in Module test | test.py:39:5:39:10 | ControlFlowNode for SINK_F |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:46:19:46:24 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:46:19:46:24 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:51:9:51:14 | ControlFlowNode for SOURCE |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:51:9:51:14 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:62:17:62:22 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:62:17:62:22 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:67:21:67:26 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:67:21:67:26 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:78:33:78:38 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:78:33:78:38 | ControlFlowNode for SOURCE |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable fields_with_local_flow in Module test | test.py:78:10:78:31 | ControlFlowNode for fields_with_local_flow |
-| test.py:0:0:0:0 | ModuleVariableNode for Global Variable fields_with_local_flow in Module test | test.py:78:10:78:31 | ControlFlowNode for fields_with_local_flow |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:61:9:61:14 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:61:9:61:14 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:71:17:71:22 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:71:17:71:22 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:76:21:76:26 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:76:21:76:26 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:87:33:87:38 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable SOURCE in Module test | test.py:87:33:87:38 | ControlFlowNode for SOURCE |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable fields_with_local_flow in Module test | test.py:87:10:87:31 | ControlFlowNode for fields_with_local_flow |
+| test.py:0:0:0:0 | ModuleVariableNode for Global Variable fields_with_local_flow in Module test | test.py:87:10:87:31 | ControlFlowNode for fields_with_local_flow |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable is_source in Module test | test.py:11:8:11:16 | ControlFlowNode for is_source |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable is_source in Module test | test.py:11:8:11:16 | ControlFlowNode for is_source |
 | test.py:0:0:0:0 | ModuleVariableNode for Global Variable is_source in Module test | test.py:18:8:18:16 | ControlFlowNode for is_source |
@@ -697,14 +756,16 @@
 | test.py:11:18:11:18 | [post arg] ControlFlowNode for x | test.py:14:34:14:34 | ControlFlowNode for x |
 | test.py:11:18:11:18 | [post arg] ControlFlowNode for x | test.py:47:10:47:18 | [post arg] ControlFlowNode for Attribute |
 | test.py:11:18:11:18 | [post arg] ControlFlowNode for x | test.py:47:10:47:18 | [post arg] ControlFlowNode for Attribute |
-| test.py:11:18:11:18 | [post arg] ControlFlowNode for x | test.py:58:10:58:18 | [post arg] ControlFlowNode for Attribute |
-| test.py:11:18:11:18 | [post arg] ControlFlowNode for x | test.py:58:10:58:18 | [post arg] ControlFlowNode for Attribute |
-| test.py:11:18:11:18 | [post arg] ControlFlowNode for x | test.py:63:10:63:16 | [post arg] ControlFlowNode for Attribute |
-| test.py:11:18:11:18 | [post arg] ControlFlowNode for x | test.py:63:10:63:16 | [post arg] ControlFlowNode for Attribute |
-| test.py:11:18:11:18 | [post arg] ControlFlowNode for x | test.py:68:10:68:16 | [post arg] ControlFlowNode for Attribute |
-| test.py:11:18:11:18 | [post arg] ControlFlowNode for x | test.py:68:10:68:16 | [post arg] ControlFlowNode for Attribute |
-| test.py:11:18:11:18 | [post arg] ControlFlowNode for x | test.py:78:10:78:39 | [post arg] ControlFlowNode for fields_with_local_flow() |
-| test.py:11:18:11:18 | [post arg] ControlFlowNode for x | test.py:78:10:78:39 | [post arg] ControlFlowNode for fields_with_local_flow() |
+| test.py:11:18:11:18 | [post arg] ControlFlowNode for x | test.py:57:10:57:18 | [post arg] ControlFlowNode for Attribute |
+| test.py:11:18:11:18 | [post arg] ControlFlowNode for x | test.py:57:10:57:18 | [post arg] ControlFlowNode for Attribute |
+| test.py:11:18:11:18 | [post arg] ControlFlowNode for x | test.py:67:10:67:18 | [post arg] ControlFlowNode for Attribute |
+| test.py:11:18:11:18 | [post arg] ControlFlowNode for x | test.py:67:10:67:18 | [post arg] ControlFlowNode for Attribute |
+| test.py:11:18:11:18 | [post arg] ControlFlowNode for x | test.py:72:10:72:16 | [post arg] ControlFlowNode for Attribute |
+| test.py:11:18:11:18 | [post arg] ControlFlowNode for x | test.py:72:10:72:16 | [post arg] ControlFlowNode for Attribute |
+| test.py:11:18:11:18 | [post arg] ControlFlowNode for x | test.py:77:10:77:16 | [post arg] ControlFlowNode for Attribute |
+| test.py:11:18:11:18 | [post arg] ControlFlowNode for x | test.py:77:10:77:16 | [post arg] ControlFlowNode for Attribute |
+| test.py:11:18:11:18 | [post arg] ControlFlowNode for x | test.py:87:10:87:39 | [post arg] ControlFlowNode for fields_with_local_flow() |
+| test.py:11:18:11:18 | [post arg] ControlFlowNode for x | test.py:87:10:87:39 | [post arg] ControlFlowNode for fields_with_local_flow() |
 | test.py:12:9:12:13 | SSA variable x | test.py:10:1:10:12 | SSA variable x |
 | test.py:12:9:12:13 | SSA variable x | test.py:10:1:10:12 | SSA variable x |
 | test.py:12:9:12:13 | SSA variable x | test.py:10:1:10:12 | SSA variable x |
@@ -785,17 +846,17 @@
 | test.py:27:9:27:12 | [post store] ControlFlowNode for self | test.py:32:20:32:30 | ControlFlowNode for MyObj() |
 | test.py:27:9:27:12 | [post store] ControlFlowNode for self | test.py:44:13:44:23 | ControlFlowNode for MyObj() |
 | test.py:27:9:27:12 | [post store] ControlFlowNode for self | test.py:44:13:44:23 | ControlFlowNode for MyObj() |
-| test.py:27:9:27:12 | [post store] ControlFlowNode for self | test.py:62:11:62:23 | ControlFlowNode for MyObj() |
-| test.py:27:9:27:12 | [post store] ControlFlowNode for self | test.py:62:11:62:23 | ControlFlowNode for MyObj() |
-| test.py:27:9:27:12 | [post store] ControlFlowNode for self | test.py:67:11:67:27 | ControlFlowNode for MyObj() |
-| test.py:27:9:27:12 | [post store] ControlFlowNode for self | test.py:67:11:67:27 | ControlFlowNode for MyObj() |
-| test.py:27:9:27:12 | [post store] ControlFlowNode for self | test.py:72:11:72:18 | ControlFlowNode for MyObj() |
-| test.py:27:9:27:12 | [post store] ControlFlowNode for self | test.py:72:11:72:18 | ControlFlowNode for MyObj() |
+| test.py:27:9:27:12 | [post store] ControlFlowNode for self | test.py:71:11:71:23 | ControlFlowNode for MyObj() |
+| test.py:27:9:27:12 | [post store] ControlFlowNode for self | test.py:71:11:71:23 | ControlFlowNode for MyObj() |
+| test.py:27:9:27:12 | [post store] ControlFlowNode for self | test.py:76:11:76:27 | ControlFlowNode for MyObj() |
+| test.py:27:9:27:12 | [post store] ControlFlowNode for self | test.py:76:11:76:27 | ControlFlowNode for MyObj() |
+| test.py:27:9:27:12 | [post store] ControlFlowNode for self | test.py:81:11:81:18 | ControlFlowNode for MyObj() |
+| test.py:27:9:27:12 | [post store] ControlFlowNode for self | test.py:81:11:81:18 | ControlFlowNode for MyObj() |
 | test.py:27:9:27:12 | [post store] ControlFlowNode for self [Attribute foo] | test.py:32:20:32:30 | ControlFlowNode for MyObj() [Attribute foo] |
 | test.py:27:9:27:12 | [post store] ControlFlowNode for self [Attribute foo] | test.py:44:13:44:23 | ControlFlowNode for MyObj() [Attribute foo] |
-| test.py:27:9:27:12 | [post store] ControlFlowNode for self [Attribute foo] | test.py:62:11:62:23 | ControlFlowNode for MyObj() [Attribute foo] |
-| test.py:27:9:27:12 | [post store] ControlFlowNode for self [Attribute foo] | test.py:67:11:67:27 | ControlFlowNode for MyObj() [Attribute foo] |
-| test.py:27:9:27:12 | [post store] ControlFlowNode for self [Attribute foo] | test.py:72:11:72:18 | ControlFlowNode for MyObj() [Attribute foo] |
+| test.py:27:9:27:12 | [post store] ControlFlowNode for self [Attribute foo] | test.py:71:11:71:23 | ControlFlowNode for MyObj() [Attribute foo] |
+| test.py:27:9:27:12 | [post store] ControlFlowNode for self [Attribute foo] | test.py:76:11:76:27 | ControlFlowNode for MyObj() [Attribute foo] |
+| test.py:27:9:27:12 | [post store] ControlFlowNode for self [Attribute foo] | test.py:81:11:81:18 | ControlFlowNode for MyObj() [Attribute foo] |
 | test.py:27:20:27:22 | ControlFlowNode for foo | test.py:27:9:27:12 | [post store] ControlFlowNode for self [Attribute foo] |
 | test.py:27:20:27:22 | ControlFlowNode for foo | test.py:27:9:27:12 | [post store] ControlFlowNode for self [Attribute foo] |
 | test.py:30:1:30:24 | ControlFlowNode for ClassExpr | test.py:30:7:30:15 | GSSA Variable NestedObj |
@@ -816,8 +877,12 @@
 | test.py:31:18:31:21 | SSA variable self | test.py:32:9:32:16 | SSA variable self |
 | test.py:32:9:32:12 | [post store] ControlFlowNode for self | test.py:53:9:53:19 | ControlFlowNode for NestedObj() |
 | test.py:32:9:32:12 | [post store] ControlFlowNode for self | test.py:53:9:53:19 | ControlFlowNode for NestedObj() |
+| test.py:32:9:32:12 | [post store] ControlFlowNode for self | test.py:63:9:63:19 | ControlFlowNode for NestedObj() |
+| test.py:32:9:32:12 | [post store] ControlFlowNode for self | test.py:63:9:63:19 | ControlFlowNode for NestedObj() |
 | test.py:32:9:32:12 | [post store] ControlFlowNode for self [Attribute obj, Attribute foo] | test.py:53:9:53:19 | ControlFlowNode for NestedObj() [Attribute obj, Attribute foo] |
+| test.py:32:9:32:12 | [post store] ControlFlowNode for self [Attribute obj, Attribute foo] | test.py:63:9:63:19 | ControlFlowNode for NestedObj() [Attribute obj, Attribute foo] |
 | test.py:32:9:32:12 | [post store] ControlFlowNode for self [Attribute obj] | test.py:53:9:53:19 | ControlFlowNode for NestedObj() [Attribute obj] |
+| test.py:32:9:32:12 | [post store] ControlFlowNode for self [Attribute obj] | test.py:63:9:63:19 | ControlFlowNode for NestedObj() [Attribute obj] |
 | test.py:32:20:32:30 | ControlFlowNode for MyObj() | test.py:32:9:32:12 | [post store] ControlFlowNode for self [Attribute obj] |
 | test.py:32:20:32:30 | ControlFlowNode for MyObj() [Attribute foo] | test.py:32:9:32:12 | [post store] ControlFlowNode for self [Attribute obj, Attribute foo] |
 | test.py:32:20:32:30 | [pre objCreate] ControlFlowNode for MyObj() | test.py:26:18:26:21 | SSA variable self |
@@ -829,8 +894,8 @@
 | test.py:34:5:34:21 | ControlFlowNode for FunctionExpr | test.py:34:9:34:14 | SSA variable getObj |
 | test.py:34:16:34:19 | SSA variable self | test.py:35:16:35:19 | ControlFlowNode for self |
 | test.py:34:16:34:19 | SSA variable self | test.py:35:16:35:19 | ControlFlowNode for self |
-| test.py:35:16:35:23 | ControlFlowNode for Attribute | test.py:56:5:56:14 | ControlFlowNode for Attribute() |
-| test.py:35:16:35:23 | ControlFlowNode for Attribute | test.py:56:5:56:14 | ControlFlowNode for Attribute() |
+| test.py:35:16:35:23 | ControlFlowNode for Attribute | test.py:65:5:65:14 | ControlFlowNode for Attribute() |
+| test.py:35:16:35:23 | ControlFlowNode for Attribute | test.py:65:5:65:14 | ControlFlowNode for Attribute() |
 | test.py:38:1:38:19 | ControlFlowNode for FunctionExpr | test.py:38:5:38:10 | GSSA Variable setFoo |
 | test.py:38:1:38:19 | ControlFlowNode for FunctionExpr | test.py:38:5:38:10 | GSSA Variable setFoo |
 | test.py:38:1:38:19 | GSSA Variable SINK_F | test.py:39:5:39:10 | ControlFlowNode for SINK_F |
@@ -929,213 +994,236 @@
 | test.py:50:1:50:20 | ControlFlowNode for FunctionExpr | test.py:50:5:50:17 | GSSA Variable test_example2 |
 | test.py:50:1:50:20 | GSSA Variable NestedObj | test.py:53:9:53:17 | ControlFlowNode for NestedObj |
 | test.py:50:1:50:20 | GSSA Variable NestedObj | test.py:53:9:53:17 | ControlFlowNode for NestedObj |
-| test.py:50:1:50:20 | GSSA Variable SINK | test.py:58:5:58:8 | ControlFlowNode for SINK |
-| test.py:50:1:50:20 | GSSA Variable SINK | test.py:58:5:58:8 | ControlFlowNode for SINK |
+| test.py:50:1:50:20 | GSSA Variable SINK | test.py:57:5:57:8 | ControlFlowNode for SINK |
+| test.py:50:1:50:20 | GSSA Variable SINK | test.py:57:5:57:8 | ControlFlowNode for SINK |
 | test.py:50:1:50:20 | GSSA Variable SOURCE | test.py:51:5:51:5 | SSA variable x |
 | test.py:50:1:50:20 | GSSA Variable SOURCE | test.py:51:5:51:5 | SSA variable x |
 | test.py:50:1:50:20 | GSSA Variable SOURCE | test.py:51:9:51:14 | ControlFlowNode for SOURCE |
 | test.py:50:1:50:20 | GSSA Variable SOURCE | test.py:51:9:51:14 | ControlFlowNode for SOURCE |
 | test.py:50:1:50:20 | GSSA Variable SOURCE | test.py:55:17:55:17 | ControlFlowNode for x |
 | test.py:50:1:50:20 | GSSA Variable SOURCE | test.py:55:17:55:17 | ControlFlowNode for x |
-| test.py:50:1:50:20 | GSSA Variable SOURCE | test.py:56:22:56:22 | ControlFlowNode for x |
-| test.py:50:1:50:20 | GSSA Variable SOURCE | test.py:56:22:56:22 | ControlFlowNode for x |
 | test.py:51:5:51:5 | SSA variable x | test.py:55:17:55:17 | ControlFlowNode for x |
 | test.py:51:5:51:5 | SSA variable x | test.py:55:17:55:17 | ControlFlowNode for x |
-| test.py:51:5:51:5 | SSA variable x | test.py:56:22:56:22 | ControlFlowNode for x |
-| test.py:51:5:51:5 | SSA variable x | test.py:56:22:56:22 | ControlFlowNode for x |
 | test.py:51:9:51:14 | ControlFlowNode for SOURCE | test.py:51:5:51:5 | SSA variable x |
 | test.py:51:9:51:14 | ControlFlowNode for SOURCE | test.py:51:5:51:5 | SSA variable x |
 | test.py:51:9:51:14 | ControlFlowNode for SOURCE | test.py:55:17:55:17 | ControlFlowNode for x |
 | test.py:51:9:51:14 | ControlFlowNode for SOURCE | test.py:55:17:55:17 | ControlFlowNode for x |
-| test.py:51:9:51:14 | ControlFlowNode for SOURCE | test.py:56:22:56:22 | ControlFlowNode for x |
-| test.py:51:9:51:14 | ControlFlowNode for SOURCE | test.py:56:22:56:22 | ControlFlowNode for x |
 | test.py:53:5:53:5 | SSA variable a | test.py:55:5:55:5 | ControlFlowNode for a |
 | test.py:53:5:53:5 | SSA variable a | test.py:55:5:55:5 | ControlFlowNode for a |
-| test.py:53:5:53:5 | SSA variable a | test.py:56:5:56:5 | ControlFlowNode for a |
-| test.py:53:5:53:5 | SSA variable a | test.py:56:5:56:5 | ControlFlowNode for a |
-| test.py:53:5:53:5 | SSA variable a | test.py:56:5:56:14 | SSA variable a |
-| test.py:53:5:53:5 | SSA variable a | test.py:56:5:56:14 | SSA variable a |
-| test.py:53:5:53:5 | SSA variable a | test.py:58:10:58:10 | ControlFlowNode for a |
-| test.py:53:5:53:5 | SSA variable a | test.py:58:10:58:10 | ControlFlowNode for a |
+| test.py:53:5:53:5 | SSA variable a | test.py:57:10:57:10 | ControlFlowNode for a |
+| test.py:53:5:53:5 | SSA variable a | test.py:57:10:57:10 | ControlFlowNode for a |
 | test.py:53:5:53:5 | SSA variable a [Attribute obj, Attribute foo] | test.py:55:5:55:5 | ControlFlowNode for a [Attribute obj, Attribute foo] |
-| test.py:53:5:53:5 | SSA variable a [Attribute obj, Attribute foo] | test.py:56:5:56:5 | ControlFlowNode for a [Attribute obj, Attribute foo] |
-| test.py:53:5:53:5 | SSA variable a [Attribute obj, Attribute foo] | test.py:58:10:58:10 | ControlFlowNode for a [Attribute obj, Attribute foo] |
+| test.py:53:5:53:5 | SSA variable a [Attribute obj, Attribute foo] | test.py:57:10:57:10 | ControlFlowNode for a [Attribute obj, Attribute foo] |
 | test.py:53:5:53:5 | SSA variable a [Attribute obj] | test.py:55:5:55:5 | ControlFlowNode for a [Attribute obj] |
-| test.py:53:5:53:5 | SSA variable a [Attribute obj] | test.py:56:5:56:5 | ControlFlowNode for a [Attribute obj] |
-| test.py:53:5:53:5 | SSA variable a [Attribute obj] | test.py:58:10:58:10 | ControlFlowNode for a [Attribute obj] |
+| test.py:53:5:53:5 | SSA variable a [Attribute obj] | test.py:57:10:57:10 | ControlFlowNode for a [Attribute obj] |
 | test.py:53:9:53:19 | ControlFlowNode for NestedObj() | test.py:53:5:53:5 | SSA variable a |
 | test.py:53:9:53:19 | ControlFlowNode for NestedObj() | test.py:53:5:53:5 | SSA variable a |
 | test.py:53:9:53:19 | ControlFlowNode for NestedObj() | test.py:55:5:55:5 | ControlFlowNode for a |
 | test.py:53:9:53:19 | ControlFlowNode for NestedObj() | test.py:55:5:55:5 | ControlFlowNode for a |
-| test.py:53:9:53:19 | ControlFlowNode for NestedObj() | test.py:56:5:56:5 | ControlFlowNode for a |
-| test.py:53:9:53:19 | ControlFlowNode for NestedObj() | test.py:56:5:56:5 | ControlFlowNode for a |
-| test.py:53:9:53:19 | ControlFlowNode for NestedObj() | test.py:56:5:56:14 | SSA variable a |
-| test.py:53:9:53:19 | ControlFlowNode for NestedObj() | test.py:56:5:56:14 | SSA variable a |
-| test.py:53:9:53:19 | ControlFlowNode for NestedObj() | test.py:58:10:58:10 | ControlFlowNode for a |
-| test.py:53:9:53:19 | ControlFlowNode for NestedObj() | test.py:58:10:58:10 | ControlFlowNode for a |
+| test.py:53:9:53:19 | ControlFlowNode for NestedObj() | test.py:57:10:57:10 | ControlFlowNode for a |
+| test.py:53:9:53:19 | ControlFlowNode for NestedObj() | test.py:57:10:57:10 | ControlFlowNode for a |
 | test.py:53:9:53:19 | ControlFlowNode for NestedObj() [Attribute obj, Attribute foo] | test.py:53:5:53:5 | SSA variable a [Attribute obj, Attribute foo] |
 | test.py:53:9:53:19 | ControlFlowNode for NestedObj() [Attribute obj, Attribute foo] | test.py:55:5:55:5 | ControlFlowNode for a [Attribute obj, Attribute foo] |
-| test.py:53:9:53:19 | ControlFlowNode for NestedObj() [Attribute obj, Attribute foo] | test.py:56:5:56:5 | ControlFlowNode for a [Attribute obj, Attribute foo] |
-| test.py:53:9:53:19 | ControlFlowNode for NestedObj() [Attribute obj, Attribute foo] | test.py:58:10:58:10 | ControlFlowNode for a [Attribute obj, Attribute foo] |
+| test.py:53:9:53:19 | ControlFlowNode for NestedObj() [Attribute obj, Attribute foo] | test.py:57:10:57:10 | ControlFlowNode for a [Attribute obj, Attribute foo] |
 | test.py:53:9:53:19 | ControlFlowNode for NestedObj() [Attribute obj] | test.py:53:5:53:5 | SSA variable a [Attribute obj] |
 | test.py:53:9:53:19 | ControlFlowNode for NestedObj() [Attribute obj] | test.py:55:5:55:5 | ControlFlowNode for a [Attribute obj] |
-| test.py:53:9:53:19 | ControlFlowNode for NestedObj() [Attribute obj] | test.py:56:5:56:5 | ControlFlowNode for a [Attribute obj] |
-| test.py:53:9:53:19 | ControlFlowNode for NestedObj() [Attribute obj] | test.py:58:10:58:10 | ControlFlowNode for a [Attribute obj] |
+| test.py:53:9:53:19 | ControlFlowNode for NestedObj() [Attribute obj] | test.py:57:10:57:10 | ControlFlowNode for a [Attribute obj] |
 | test.py:53:9:53:19 | [pre objCreate] ControlFlowNode for NestedObj() | test.py:31:18:31:21 | SSA variable self |
 | test.py:53:9:53:19 | [pre objCreate] ControlFlowNode for NestedObj() | test.py:31:18:31:21 | SSA variable self |
-| test.py:55:5:55:5 | ControlFlowNode for a | test.py:56:5:56:5 | ControlFlowNode for a |
-| test.py:55:5:55:5 | ControlFlowNode for a | test.py:56:5:56:5 | ControlFlowNode for a |
-| test.py:55:5:55:5 | ControlFlowNode for a | test.py:58:10:58:10 | ControlFlowNode for a |
-| test.py:55:5:55:5 | ControlFlowNode for a | test.py:58:10:58:10 | ControlFlowNode for a |
-| test.py:55:5:55:5 | ControlFlowNode for a [Attribute obj, Attribute foo] | test.py:56:5:56:5 | ControlFlowNode for a [Attribute obj, Attribute foo] |
-| test.py:55:5:55:5 | ControlFlowNode for a [Attribute obj, Attribute foo] | test.py:58:10:58:10 | ControlFlowNode for a [Attribute obj, Attribute foo] |
+| test.py:55:5:55:5 | ControlFlowNode for a | test.py:57:10:57:10 | ControlFlowNode for a |
+| test.py:55:5:55:5 | ControlFlowNode for a | test.py:57:10:57:10 | ControlFlowNode for a |
+| test.py:55:5:55:5 | ControlFlowNode for a [Attribute obj, Attribute foo] | test.py:57:10:57:10 | ControlFlowNode for a [Attribute obj, Attribute foo] |
 | test.py:55:5:55:5 | ControlFlowNode for a [Attribute obj] | test.py:55:5:55:9 | ControlFlowNode for Attribute |
 | test.py:55:5:55:5 | ControlFlowNode for a [Attribute obj] | test.py:55:5:55:9 | ControlFlowNode for Attribute |
-| test.py:55:5:55:5 | ControlFlowNode for a [Attribute obj] | test.py:56:5:56:5 | ControlFlowNode for a [Attribute obj] |
-| test.py:55:5:55:5 | ControlFlowNode for a [Attribute obj] | test.py:58:10:58:10 | ControlFlowNode for a [Attribute obj] |
-| test.py:55:5:55:5 | [post read] ControlFlowNode for a | test.py:56:5:56:5 | ControlFlowNode for a |
-| test.py:55:5:55:5 | [post read] ControlFlowNode for a | test.py:56:5:56:5 | ControlFlowNode for a |
-| test.py:55:5:55:5 | [post read] ControlFlowNode for a | test.py:58:10:58:10 | ControlFlowNode for a |
-| test.py:55:5:55:5 | [post read] ControlFlowNode for a | test.py:58:10:58:10 | ControlFlowNode for a |
-| test.py:55:5:55:5 | [post read] ControlFlowNode for a [Attribute obj, Attribute foo] | test.py:56:5:56:5 | ControlFlowNode for a [Attribute obj, Attribute foo] |
-| test.py:55:5:55:5 | [post read] ControlFlowNode for a [Attribute obj, Attribute foo] | test.py:58:10:58:10 | ControlFlowNode for a [Attribute obj, Attribute foo] |
-| test.py:55:5:55:5 | [post read] ControlFlowNode for a [Attribute obj] | test.py:56:5:56:5 | ControlFlowNode for a [Attribute obj] |
-| test.py:55:5:55:5 | [post read] ControlFlowNode for a [Attribute obj] | test.py:58:10:58:10 | ControlFlowNode for a [Attribute obj] |
+| test.py:55:5:55:5 | ControlFlowNode for a [Attribute obj] | test.py:57:10:57:10 | ControlFlowNode for a [Attribute obj] |
+| test.py:55:5:55:5 | [post read] ControlFlowNode for a | test.py:57:10:57:10 | ControlFlowNode for a |
+| test.py:55:5:55:5 | [post read] ControlFlowNode for a | test.py:57:10:57:10 | ControlFlowNode for a |
+| test.py:55:5:55:5 | [post read] ControlFlowNode for a [Attribute obj, Attribute foo] | test.py:57:10:57:10 | ControlFlowNode for a [Attribute obj, Attribute foo] |
+| test.py:55:5:55:5 | [post read] ControlFlowNode for a [Attribute obj] | test.py:57:10:57:10 | ControlFlowNode for a [Attribute obj] |
 | test.py:55:5:55:9 | [post store] ControlFlowNode for Attribute | test.py:55:5:55:5 | [post read] ControlFlowNode for a [Attribute obj] |
 | test.py:55:5:55:9 | [post store] ControlFlowNode for Attribute [Attribute foo] | test.py:55:5:55:5 | [post read] ControlFlowNode for a [Attribute obj, Attribute foo] |
 | test.py:55:17:55:17 | ControlFlowNode for x | test.py:55:5:55:9 | [post store] ControlFlowNode for Attribute [Attribute foo] |
-| test.py:55:17:55:17 | ControlFlowNode for x | test.py:56:22:56:22 | ControlFlowNode for x |
-| test.py:55:17:55:17 | ControlFlowNode for x | test.py:56:22:56:22 | ControlFlowNode for x |
-| test.py:56:5:56:5 | ControlFlowNode for a | test.py:58:10:58:10 | ControlFlowNode for a |
-| test.py:56:5:56:5 | ControlFlowNode for a | test.py:58:10:58:10 | ControlFlowNode for a |
-| test.py:56:5:56:5 | ControlFlowNode for a [Attribute obj, Attribute foo] | test.py:58:10:58:10 | ControlFlowNode for a [Attribute obj, Attribute foo] |
-| test.py:56:5:56:5 | ControlFlowNode for a [Attribute obj] | test.py:58:10:58:10 | ControlFlowNode for a [Attribute obj] |
-| test.py:56:5:56:5 | [post read] ControlFlowNode for a | test.py:58:10:58:10 | ControlFlowNode for a |
-| test.py:56:5:56:5 | [post read] ControlFlowNode for a | test.py:58:10:58:10 | ControlFlowNode for a |
-| test.py:58:10:58:10 | ControlFlowNode for a [Attribute obj, Attribute foo] | test.py:58:10:58:14 | ControlFlowNode for Attribute [Attribute foo] |
-| test.py:58:10:58:10 | ControlFlowNode for a [Attribute obj] | test.py:58:10:58:14 | ControlFlowNode for Attribute |
-| test.py:58:10:58:10 | ControlFlowNode for a [Attribute obj] | test.py:58:10:58:14 | ControlFlowNode for Attribute |
-| test.py:58:10:58:14 | ControlFlowNode for Attribute [Attribute foo] | test.py:58:10:58:18 | ControlFlowNode for Attribute |
-| test.py:58:10:58:14 | ControlFlowNode for Attribute [Attribute foo] | test.py:58:10:58:18 | ControlFlowNode for Attribute |
-| test.py:58:10:58:18 | ControlFlowNode for Attribute | test.py:10:10:10:10 | SSA variable x |
-| test.py:58:10:58:18 | ControlFlowNode for Attribute | test.py:10:10:10:10 | SSA variable x |
-| test.py:61:1:61:20 | ControlFlowNode for FunctionExpr | test.py:61:5:61:17 | GSSA Variable test_example3 |
-| test.py:61:1:61:20 | ControlFlowNode for FunctionExpr | test.py:61:5:61:17 | GSSA Variable test_example3 |
-| test.py:61:1:61:20 | GSSA Variable MyObj | test.py:62:11:62:15 | ControlFlowNode for MyObj |
-| test.py:61:1:61:20 | GSSA Variable MyObj | test.py:62:11:62:15 | ControlFlowNode for MyObj |
-| test.py:61:1:61:20 | GSSA Variable SINK | test.py:63:5:63:8 | ControlFlowNode for SINK |
-| test.py:61:1:61:20 | GSSA Variable SINK | test.py:63:5:63:8 | ControlFlowNode for SINK |
-| test.py:61:1:61:20 | GSSA Variable SOURCE | test.py:62:17:62:22 | ControlFlowNode for SOURCE |
-| test.py:61:1:61:20 | GSSA Variable SOURCE | test.py:62:17:62:22 | ControlFlowNode for SOURCE |
-| test.py:62:5:62:7 | SSA variable obj | test.py:63:10:63:12 | ControlFlowNode for obj |
-| test.py:62:5:62:7 | SSA variable obj | test.py:63:10:63:12 | ControlFlowNode for obj |
-| test.py:62:5:62:7 | SSA variable obj [Attribute foo] | test.py:63:10:63:12 | ControlFlowNode for obj [Attribute foo] |
-| test.py:62:11:62:23 | ControlFlowNode for MyObj() | test.py:62:5:62:7 | SSA variable obj |
-| test.py:62:11:62:23 | ControlFlowNode for MyObj() | test.py:62:5:62:7 | SSA variable obj |
-| test.py:62:11:62:23 | ControlFlowNode for MyObj() | test.py:63:10:63:12 | ControlFlowNode for obj |
-| test.py:62:11:62:23 | ControlFlowNode for MyObj() | test.py:63:10:63:12 | ControlFlowNode for obj |
-| test.py:62:11:62:23 | ControlFlowNode for MyObj() [Attribute foo] | test.py:62:5:62:7 | SSA variable obj [Attribute foo] |
-| test.py:62:11:62:23 | ControlFlowNode for MyObj() [Attribute foo] | test.py:63:10:63:12 | ControlFlowNode for obj [Attribute foo] |
-| test.py:62:11:62:23 | [pre objCreate] ControlFlowNode for MyObj() | test.py:26:18:26:21 | SSA variable self |
-| test.py:62:11:62:23 | [pre objCreate] ControlFlowNode for MyObj() | test.py:26:18:26:21 | SSA variable self |
-| test.py:62:17:62:22 | ControlFlowNode for SOURCE | test.py:26:24:26:26 | SSA variable foo |
-| test.py:62:17:62:22 | ControlFlowNode for SOURCE | test.py:26:24:26:26 | SSA variable foo |
-| test.py:62:17:62:22 | ControlFlowNode for SOURCE | test.py:62:11:62:23 | ControlFlowNode for MyObj() [Attribute foo] |
-| test.py:63:10:63:12 | ControlFlowNode for obj [Attribute foo] | test.py:63:10:63:16 | ControlFlowNode for Attribute |
-| test.py:63:10:63:12 | ControlFlowNode for obj [Attribute foo] | test.py:63:10:63:16 | ControlFlowNode for Attribute |
-| test.py:63:10:63:16 | ControlFlowNode for Attribute | test.py:10:10:10:10 | SSA variable x |
-| test.py:63:10:63:16 | ControlFlowNode for Attribute | test.py:10:10:10:10 | SSA variable x |
-| test.py:66:1:66:23 | ControlFlowNode for FunctionExpr | test.py:66:5:66:20 | GSSA Variable test_example3_kw |
-| test.py:66:1:66:23 | ControlFlowNode for FunctionExpr | test.py:66:5:66:20 | GSSA Variable test_example3_kw |
-| test.py:66:1:66:23 | GSSA Variable MyObj | test.py:67:11:67:15 | ControlFlowNode for MyObj |
-| test.py:66:1:66:23 | GSSA Variable MyObj | test.py:67:11:67:15 | ControlFlowNode for MyObj |
-| test.py:66:1:66:23 | GSSA Variable SINK | test.py:68:5:68:8 | ControlFlowNode for SINK |
-| test.py:66:1:66:23 | GSSA Variable SINK | test.py:68:5:68:8 | ControlFlowNode for SINK |
-| test.py:66:1:66:23 | GSSA Variable SOURCE | test.py:67:21:67:26 | ControlFlowNode for SOURCE |
-| test.py:66:1:66:23 | GSSA Variable SOURCE | test.py:67:21:67:26 | ControlFlowNode for SOURCE |
-| test.py:67:5:67:7 | SSA variable obj | test.py:68:10:68:12 | ControlFlowNode for obj |
-| test.py:67:5:67:7 | SSA variable obj | test.py:68:10:68:12 | ControlFlowNode for obj |
-| test.py:67:5:67:7 | SSA variable obj [Attribute foo] | test.py:68:10:68:12 | ControlFlowNode for obj [Attribute foo] |
-| test.py:67:11:67:27 | ControlFlowNode for MyObj() | test.py:67:5:67:7 | SSA variable obj |
-| test.py:67:11:67:27 | ControlFlowNode for MyObj() | test.py:67:5:67:7 | SSA variable obj |
-| test.py:67:11:67:27 | ControlFlowNode for MyObj() | test.py:68:10:68:12 | ControlFlowNode for obj |
-| test.py:67:11:67:27 | ControlFlowNode for MyObj() | test.py:68:10:68:12 | ControlFlowNode for obj |
-| test.py:67:11:67:27 | ControlFlowNode for MyObj() [Attribute foo] | test.py:67:5:67:7 | SSA variable obj [Attribute foo] |
-| test.py:67:11:67:27 | ControlFlowNode for MyObj() [Attribute foo] | test.py:68:10:68:12 | ControlFlowNode for obj [Attribute foo] |
-| test.py:67:11:67:27 | [pre objCreate] ControlFlowNode for MyObj() | test.py:26:18:26:21 | SSA variable self |
-| test.py:67:11:67:27 | [pre objCreate] ControlFlowNode for MyObj() | test.py:26:18:26:21 | SSA variable self |
-| test.py:67:21:67:26 | ControlFlowNode for SOURCE | test.py:26:24:26:26 | SSA variable foo |
-| test.py:67:21:67:26 | ControlFlowNode for SOURCE | test.py:26:24:26:26 | SSA variable foo |
-| test.py:67:21:67:26 | ControlFlowNode for SOURCE | test.py:67:11:67:27 | ControlFlowNode for MyObj() [Attribute foo] |
-| test.py:68:10:68:12 | ControlFlowNode for obj [Attribute foo] | test.py:68:10:68:16 | ControlFlowNode for Attribute |
-| test.py:68:10:68:12 | ControlFlowNode for obj [Attribute foo] | test.py:68:10:68:16 | ControlFlowNode for Attribute |
-| test.py:68:10:68:16 | ControlFlowNode for Attribute | test.py:10:10:10:10 | SSA variable x |
-| test.py:68:10:68:16 | ControlFlowNode for Attribute | test.py:10:10:10:10 | SSA variable x |
-| test.py:71:1:71:30 | ControlFlowNode for FunctionExpr | test.py:71:5:71:26 | GSSA Variable fields_with_local_flow |
-| test.py:71:1:71:30 | ControlFlowNode for FunctionExpr | test.py:71:5:71:26 | GSSA Variable fields_with_local_flow |
-| test.py:71:1:71:30 | GSSA Variable MyObj | test.py:72:11:72:15 | ControlFlowNode for MyObj |
-| test.py:71:1:71:30 | GSSA Variable MyObj | test.py:72:11:72:15 | ControlFlowNode for MyObj |
-| test.py:71:5:71:26 | GSSA Variable fields_with_local_flow | test.py:0:0:0:0 | ModuleVariableNode for Global Variable fields_with_local_flow in Module test |
-| test.py:71:5:71:26 | GSSA Variable fields_with_local_flow | test.py:0:0:0:0 | ModuleVariableNode for Global Variable fields_with_local_flow in Module test |
-| test.py:71:28:71:28 | SSA variable x | test.py:72:11:72:18 | SSA variable x |
-| test.py:71:28:71:28 | SSA variable x | test.py:72:11:72:18 | SSA variable x |
-| test.py:71:28:71:28 | SSA variable x | test.py:72:11:72:18 | SSA variable x |
-| test.py:71:28:71:28 | SSA variable x | test.py:72:11:72:18 | SSA variable x |
-| test.py:71:28:71:28 | SSA variable x | test.py:72:17:72:17 | ControlFlowNode for x |
-| test.py:71:28:71:28 | SSA variable x | test.py:72:17:72:17 | ControlFlowNode for x |
-| test.py:71:28:71:28 | SSA variable x | test.py:72:17:72:17 | ControlFlowNode for x |
-| test.py:71:28:71:28 | SSA variable x | test.py:72:17:72:17 | ControlFlowNode for x |
-| test.py:72:5:72:7 | SSA variable obj | test.py:73:9:73:11 | ControlFlowNode for obj |
-| test.py:72:5:72:7 | SSA variable obj | test.py:73:9:73:11 | ControlFlowNode for obj |
-| test.py:72:5:72:7 | SSA variable obj [Attribute foo] | test.py:73:9:73:11 | ControlFlowNode for obj [Attribute foo] |
-| test.py:72:5:72:7 | SSA variable obj [Attribute foo] | test.py:73:9:73:11 | ControlFlowNode for obj [Attribute foo] |
-| test.py:72:11:72:18 | ControlFlowNode for MyObj() | test.py:72:5:72:7 | SSA variable obj |
-| test.py:72:11:72:18 | ControlFlowNode for MyObj() | test.py:72:5:72:7 | SSA variable obj |
-| test.py:72:11:72:18 | ControlFlowNode for MyObj() | test.py:73:9:73:11 | ControlFlowNode for obj |
-| test.py:72:11:72:18 | ControlFlowNode for MyObj() | test.py:73:9:73:11 | ControlFlowNode for obj |
-| test.py:72:11:72:18 | ControlFlowNode for MyObj() [Attribute foo] | test.py:72:5:72:7 | SSA variable obj [Attribute foo] |
-| test.py:72:11:72:18 | ControlFlowNode for MyObj() [Attribute foo] | test.py:72:5:72:7 | SSA variable obj [Attribute foo] |
-| test.py:72:11:72:18 | ControlFlowNode for MyObj() [Attribute foo] | test.py:73:9:73:11 | ControlFlowNode for obj [Attribute foo] |
-| test.py:72:11:72:18 | ControlFlowNode for MyObj() [Attribute foo] | test.py:73:9:73:11 | ControlFlowNode for obj [Attribute foo] |
-| test.py:72:11:72:18 | [pre objCreate] ControlFlowNode for MyObj() | test.py:26:18:26:21 | SSA variable self |
-| test.py:72:11:72:18 | [pre objCreate] ControlFlowNode for MyObj() | test.py:26:18:26:21 | SSA variable self |
-| test.py:72:17:72:17 | ControlFlowNode for x | test.py:26:24:26:26 | SSA variable foo |
-| test.py:72:17:72:17 | ControlFlowNode for x | test.py:26:24:26:26 | SSA variable foo |
-| test.py:72:17:72:17 | ControlFlowNode for x | test.py:26:24:26:26 | SSA variable foo |
-| test.py:72:17:72:17 | ControlFlowNode for x | test.py:26:24:26:26 | SSA variable foo |
-| test.py:72:17:72:17 | ControlFlowNode for x | test.py:72:11:72:18 | ControlFlowNode for MyObj() [Attribute foo] |
-| test.py:72:17:72:17 | ControlFlowNode for x | test.py:72:11:72:18 | ControlFlowNode for MyObj() [Attribute foo] |
-| test.py:72:17:72:17 | [post arg] ControlFlowNode for x | test.py:78:33:78:38 | [post arg] ControlFlowNode for SOURCE |
-| test.py:72:17:72:17 | [post arg] ControlFlowNode for x | test.py:78:33:78:38 | [post arg] ControlFlowNode for SOURCE |
-| test.py:73:5:73:5 | SSA variable a | test.py:74:12:74:12 | ControlFlowNode for a |
-| test.py:73:5:73:5 | SSA variable a | test.py:74:12:74:12 | ControlFlowNode for a |
-| test.py:73:5:73:5 | SSA variable a | test.py:74:12:74:12 | ControlFlowNode for a |
-| test.py:73:5:73:5 | SSA variable a | test.py:74:12:74:12 | ControlFlowNode for a |
-| test.py:73:9:73:11 | ControlFlowNode for obj [Attribute foo] | test.py:73:9:73:15 | ControlFlowNode for Attribute |
-| test.py:73:9:73:11 | ControlFlowNode for obj [Attribute foo] | test.py:73:9:73:15 | ControlFlowNode for Attribute |
-| test.py:73:9:73:11 | ControlFlowNode for obj [Attribute foo] | test.py:73:9:73:15 | ControlFlowNode for Attribute |
-| test.py:73:9:73:11 | ControlFlowNode for obj [Attribute foo] | test.py:73:9:73:15 | ControlFlowNode for Attribute |
-| test.py:73:9:73:15 | ControlFlowNode for Attribute | test.py:73:5:73:5 | SSA variable a |
-| test.py:73:9:73:15 | ControlFlowNode for Attribute | test.py:73:5:73:5 | SSA variable a |
-| test.py:73:9:73:15 | ControlFlowNode for Attribute | test.py:73:5:73:5 | SSA variable a |
-| test.py:73:9:73:15 | ControlFlowNode for Attribute | test.py:73:5:73:5 | SSA variable a |
-| test.py:73:9:73:15 | ControlFlowNode for Attribute | test.py:74:12:74:12 | ControlFlowNode for a |
-| test.py:73:9:73:15 | ControlFlowNode for Attribute | test.py:74:12:74:12 | ControlFlowNode for a |
-| test.py:73:9:73:15 | ControlFlowNode for Attribute | test.py:74:12:74:12 | ControlFlowNode for a |
-| test.py:73:9:73:15 | ControlFlowNode for Attribute | test.py:74:12:74:12 | ControlFlowNode for a |
-| test.py:74:12:74:12 | ControlFlowNode for a | test.py:78:10:78:39 | ControlFlowNode for fields_with_local_flow() |
-| test.py:74:12:74:12 | ControlFlowNode for a | test.py:78:10:78:39 | ControlFlowNode for fields_with_local_flow() |
-| test.py:77:1:77:18 | ControlFlowNode for FunctionExpr | test.py:77:5:77:15 | GSSA Variable test_fields |
-| test.py:77:1:77:18 | ControlFlowNode for FunctionExpr | test.py:77:5:77:15 | GSSA Variable test_fields |
-| test.py:77:1:77:18 | GSSA Variable SINK | test.py:78:5:78:8 | ControlFlowNode for SINK |
-| test.py:77:1:77:18 | GSSA Variable SINK | test.py:78:5:78:8 | ControlFlowNode for SINK |
-| test.py:77:1:77:18 | GSSA Variable SOURCE | test.py:78:33:78:38 | ControlFlowNode for SOURCE |
-| test.py:77:1:77:18 | GSSA Variable SOURCE | test.py:78:33:78:38 | ControlFlowNode for SOURCE |
-| test.py:77:1:77:18 | GSSA Variable fields_with_local_flow | test.py:78:10:78:31 | ControlFlowNode for fields_with_local_flow |
-| test.py:77:1:77:18 | GSSA Variable fields_with_local_flow | test.py:78:10:78:31 | ControlFlowNode for fields_with_local_flow |
-| test.py:78:10:78:39 | ControlFlowNode for fields_with_local_flow() | test.py:10:10:10:10 | SSA variable x |
-| test.py:78:10:78:39 | ControlFlowNode for fields_with_local_flow() | test.py:10:10:10:10 | SSA variable x |
-| test.py:78:33:78:38 | ControlFlowNode for SOURCE | test.py:71:28:71:28 | SSA variable x |
-| test.py:78:33:78:38 | ControlFlowNode for SOURCE | test.py:71:28:71:28 | SSA variable x |
-| test.py:78:33:78:38 | ControlFlowNode for SOURCE | test.py:78:10:78:39 | ControlFlowNode for fields_with_local_flow() |
-| test.py:78:33:78:38 | ControlFlowNode for SOURCE | test.py:78:10:78:39 | ControlFlowNode for fields_with_local_flow() |
+| test.py:57:10:57:10 | ControlFlowNode for a [Attribute obj, Attribute foo] | test.py:57:10:57:14 | ControlFlowNode for Attribute [Attribute foo] |
+| test.py:57:10:57:10 | ControlFlowNode for a [Attribute obj] | test.py:57:10:57:14 | ControlFlowNode for Attribute |
+| test.py:57:10:57:10 | ControlFlowNode for a [Attribute obj] | test.py:57:10:57:14 | ControlFlowNode for Attribute |
+| test.py:57:10:57:14 | ControlFlowNode for Attribute [Attribute foo] | test.py:57:10:57:18 | ControlFlowNode for Attribute |
+| test.py:57:10:57:14 | ControlFlowNode for Attribute [Attribute foo] | test.py:57:10:57:18 | ControlFlowNode for Attribute |
+| test.py:57:10:57:18 | ControlFlowNode for Attribute | test.py:10:10:10:10 | SSA variable x |
+| test.py:57:10:57:18 | ControlFlowNode for Attribute | test.py:10:10:10:10 | SSA variable x |
+| test.py:60:1:60:27 | ControlFlowNode for FunctionExpr | test.py:60:5:60:24 | GSSA Variable test_example2_method |
+| test.py:60:1:60:27 | ControlFlowNode for FunctionExpr | test.py:60:5:60:24 | GSSA Variable test_example2_method |
+| test.py:60:1:60:27 | GSSA Variable NestedObj | test.py:63:9:63:17 | ControlFlowNode for NestedObj |
+| test.py:60:1:60:27 | GSSA Variable NestedObj | test.py:63:9:63:17 | ControlFlowNode for NestedObj |
+| test.py:60:1:60:27 | GSSA Variable SINK | test.py:67:5:67:8 | ControlFlowNode for SINK |
+| test.py:60:1:60:27 | GSSA Variable SINK | test.py:67:5:67:8 | ControlFlowNode for SINK |
+| test.py:60:1:60:27 | GSSA Variable SOURCE | test.py:61:5:61:5 | SSA variable x |
+| test.py:60:1:60:27 | GSSA Variable SOURCE | test.py:61:5:61:5 | SSA variable x |
+| test.py:60:1:60:27 | GSSA Variable SOURCE | test.py:61:9:61:14 | ControlFlowNode for SOURCE |
+| test.py:60:1:60:27 | GSSA Variable SOURCE | test.py:61:9:61:14 | ControlFlowNode for SOURCE |
+| test.py:60:1:60:27 | GSSA Variable SOURCE | test.py:65:22:65:22 | ControlFlowNode for x |
+| test.py:60:1:60:27 | GSSA Variable SOURCE | test.py:65:22:65:22 | ControlFlowNode for x |
+| test.py:61:5:61:5 | SSA variable x | test.py:65:22:65:22 | ControlFlowNode for x |
+| test.py:61:5:61:5 | SSA variable x | test.py:65:22:65:22 | ControlFlowNode for x |
+| test.py:61:9:61:14 | ControlFlowNode for SOURCE | test.py:61:5:61:5 | SSA variable x |
+| test.py:61:9:61:14 | ControlFlowNode for SOURCE | test.py:61:5:61:5 | SSA variable x |
+| test.py:61:9:61:14 | ControlFlowNode for SOURCE | test.py:65:22:65:22 | ControlFlowNode for x |
+| test.py:61:9:61:14 | ControlFlowNode for SOURCE | test.py:65:22:65:22 | ControlFlowNode for x |
+| test.py:63:5:63:5 | SSA variable a | test.py:65:5:65:5 | ControlFlowNode for a |
+| test.py:63:5:63:5 | SSA variable a | test.py:65:5:65:5 | ControlFlowNode for a |
+| test.py:63:5:63:5 | SSA variable a | test.py:65:5:65:14 | SSA variable a |
+| test.py:63:5:63:5 | SSA variable a | test.py:65:5:65:14 | SSA variable a |
+| test.py:63:5:63:5 | SSA variable a | test.py:67:10:67:10 | ControlFlowNode for a |
+| test.py:63:5:63:5 | SSA variable a | test.py:67:10:67:10 | ControlFlowNode for a |
+| test.py:63:5:63:5 | SSA variable a [Attribute obj, Attribute foo] | test.py:65:5:65:5 | ControlFlowNode for a [Attribute obj, Attribute foo] |
+| test.py:63:5:63:5 | SSA variable a [Attribute obj, Attribute foo] | test.py:67:10:67:10 | ControlFlowNode for a [Attribute obj, Attribute foo] |
+| test.py:63:5:63:5 | SSA variable a [Attribute obj] | test.py:65:5:65:5 | ControlFlowNode for a [Attribute obj] |
+| test.py:63:5:63:5 | SSA variable a [Attribute obj] | test.py:67:10:67:10 | ControlFlowNode for a [Attribute obj] |
+| test.py:63:9:63:19 | ControlFlowNode for NestedObj() | test.py:63:5:63:5 | SSA variable a |
+| test.py:63:9:63:19 | ControlFlowNode for NestedObj() | test.py:63:5:63:5 | SSA variable a |
+| test.py:63:9:63:19 | ControlFlowNode for NestedObj() | test.py:65:5:65:5 | ControlFlowNode for a |
+| test.py:63:9:63:19 | ControlFlowNode for NestedObj() | test.py:65:5:65:5 | ControlFlowNode for a |
+| test.py:63:9:63:19 | ControlFlowNode for NestedObj() | test.py:65:5:65:14 | SSA variable a |
+| test.py:63:9:63:19 | ControlFlowNode for NestedObj() | test.py:65:5:65:14 | SSA variable a |
+| test.py:63:9:63:19 | ControlFlowNode for NestedObj() | test.py:67:10:67:10 | ControlFlowNode for a |
+| test.py:63:9:63:19 | ControlFlowNode for NestedObj() | test.py:67:10:67:10 | ControlFlowNode for a |
+| test.py:63:9:63:19 | ControlFlowNode for NestedObj() [Attribute obj, Attribute foo] | test.py:63:5:63:5 | SSA variable a [Attribute obj, Attribute foo] |
+| test.py:63:9:63:19 | ControlFlowNode for NestedObj() [Attribute obj, Attribute foo] | test.py:65:5:65:5 | ControlFlowNode for a [Attribute obj, Attribute foo] |
+| test.py:63:9:63:19 | ControlFlowNode for NestedObj() [Attribute obj, Attribute foo] | test.py:67:10:67:10 | ControlFlowNode for a [Attribute obj, Attribute foo] |
+| test.py:63:9:63:19 | ControlFlowNode for NestedObj() [Attribute obj] | test.py:63:5:63:5 | SSA variable a [Attribute obj] |
+| test.py:63:9:63:19 | ControlFlowNode for NestedObj() [Attribute obj] | test.py:65:5:65:5 | ControlFlowNode for a [Attribute obj] |
+| test.py:63:9:63:19 | ControlFlowNode for NestedObj() [Attribute obj] | test.py:67:10:67:10 | ControlFlowNode for a [Attribute obj] |
+| test.py:63:9:63:19 | [pre objCreate] ControlFlowNode for NestedObj() | test.py:31:18:31:21 | SSA variable self |
+| test.py:63:9:63:19 | [pre objCreate] ControlFlowNode for NestedObj() | test.py:31:18:31:21 | SSA variable self |
+| test.py:65:5:65:5 | ControlFlowNode for a | test.py:67:10:67:10 | ControlFlowNode for a |
+| test.py:65:5:65:5 | ControlFlowNode for a | test.py:67:10:67:10 | ControlFlowNode for a |
+| test.py:65:5:65:5 | ControlFlowNode for a [Attribute obj, Attribute foo] | test.py:67:10:67:10 | ControlFlowNode for a [Attribute obj, Attribute foo] |
+| test.py:65:5:65:5 | ControlFlowNode for a [Attribute obj] | test.py:67:10:67:10 | ControlFlowNode for a [Attribute obj] |
+| test.py:65:5:65:5 | [post read] ControlFlowNode for a | test.py:67:10:67:10 | ControlFlowNode for a |
+| test.py:65:5:65:5 | [post read] ControlFlowNode for a | test.py:67:10:67:10 | ControlFlowNode for a |
+| test.py:67:10:67:10 | ControlFlowNode for a [Attribute obj, Attribute foo] | test.py:67:10:67:14 | ControlFlowNode for Attribute [Attribute foo] |
+| test.py:67:10:67:10 | ControlFlowNode for a [Attribute obj] | test.py:67:10:67:14 | ControlFlowNode for Attribute |
+| test.py:67:10:67:10 | ControlFlowNode for a [Attribute obj] | test.py:67:10:67:14 | ControlFlowNode for Attribute |
+| test.py:67:10:67:14 | ControlFlowNode for Attribute [Attribute foo] | test.py:67:10:67:18 | ControlFlowNode for Attribute |
+| test.py:67:10:67:14 | ControlFlowNode for Attribute [Attribute foo] | test.py:67:10:67:18 | ControlFlowNode for Attribute |
+| test.py:67:10:67:18 | ControlFlowNode for Attribute | test.py:10:10:10:10 | SSA variable x |
+| test.py:67:10:67:18 | ControlFlowNode for Attribute | test.py:10:10:10:10 | SSA variable x |
+| test.py:70:1:70:20 | ControlFlowNode for FunctionExpr | test.py:70:5:70:17 | GSSA Variable test_example3 |
+| test.py:70:1:70:20 | ControlFlowNode for FunctionExpr | test.py:70:5:70:17 | GSSA Variable test_example3 |
+| test.py:70:1:70:20 | GSSA Variable MyObj | test.py:71:11:71:15 | ControlFlowNode for MyObj |
+| test.py:70:1:70:20 | GSSA Variable MyObj | test.py:71:11:71:15 | ControlFlowNode for MyObj |
+| test.py:70:1:70:20 | GSSA Variable SINK | test.py:72:5:72:8 | ControlFlowNode for SINK |
+| test.py:70:1:70:20 | GSSA Variable SINK | test.py:72:5:72:8 | ControlFlowNode for SINK |
+| test.py:70:1:70:20 | GSSA Variable SOURCE | test.py:71:17:71:22 | ControlFlowNode for SOURCE |
+| test.py:70:1:70:20 | GSSA Variable SOURCE | test.py:71:17:71:22 | ControlFlowNode for SOURCE |
+| test.py:71:5:71:7 | SSA variable obj | test.py:72:10:72:12 | ControlFlowNode for obj |
+| test.py:71:5:71:7 | SSA variable obj | test.py:72:10:72:12 | ControlFlowNode for obj |
+| test.py:71:5:71:7 | SSA variable obj [Attribute foo] | test.py:72:10:72:12 | ControlFlowNode for obj [Attribute foo] |
+| test.py:71:11:71:23 | ControlFlowNode for MyObj() | test.py:71:5:71:7 | SSA variable obj |
+| test.py:71:11:71:23 | ControlFlowNode for MyObj() | test.py:71:5:71:7 | SSA variable obj |
+| test.py:71:11:71:23 | ControlFlowNode for MyObj() | test.py:72:10:72:12 | ControlFlowNode for obj |
+| test.py:71:11:71:23 | ControlFlowNode for MyObj() | test.py:72:10:72:12 | ControlFlowNode for obj |
+| test.py:71:11:71:23 | ControlFlowNode for MyObj() [Attribute foo] | test.py:71:5:71:7 | SSA variable obj [Attribute foo] |
+| test.py:71:11:71:23 | ControlFlowNode for MyObj() [Attribute foo] | test.py:72:10:72:12 | ControlFlowNode for obj [Attribute foo] |
+| test.py:71:11:71:23 | [pre objCreate] ControlFlowNode for MyObj() | test.py:26:18:26:21 | SSA variable self |
+| test.py:71:11:71:23 | [pre objCreate] ControlFlowNode for MyObj() | test.py:26:18:26:21 | SSA variable self |
+| test.py:71:17:71:22 | ControlFlowNode for SOURCE | test.py:26:24:26:26 | SSA variable foo |
+| test.py:71:17:71:22 | ControlFlowNode for SOURCE | test.py:26:24:26:26 | SSA variable foo |
+| test.py:71:17:71:22 | ControlFlowNode for SOURCE | test.py:71:11:71:23 | ControlFlowNode for MyObj() [Attribute foo] |
+| test.py:72:10:72:12 | ControlFlowNode for obj [Attribute foo] | test.py:72:10:72:16 | ControlFlowNode for Attribute |
+| test.py:72:10:72:12 | ControlFlowNode for obj [Attribute foo] | test.py:72:10:72:16 | ControlFlowNode for Attribute |
+| test.py:72:10:72:16 | ControlFlowNode for Attribute | test.py:10:10:10:10 | SSA variable x |
+| test.py:72:10:72:16 | ControlFlowNode for Attribute | test.py:10:10:10:10 | SSA variable x |
+| test.py:75:1:75:23 | ControlFlowNode for FunctionExpr | test.py:75:5:75:20 | GSSA Variable test_example3_kw |
+| test.py:75:1:75:23 | ControlFlowNode for FunctionExpr | test.py:75:5:75:20 | GSSA Variable test_example3_kw |
+| test.py:75:1:75:23 | GSSA Variable MyObj | test.py:76:11:76:15 | ControlFlowNode for MyObj |
+| test.py:75:1:75:23 | GSSA Variable MyObj | test.py:76:11:76:15 | ControlFlowNode for MyObj |
+| test.py:75:1:75:23 | GSSA Variable SINK | test.py:77:5:77:8 | ControlFlowNode for SINK |
+| test.py:75:1:75:23 | GSSA Variable SINK | test.py:77:5:77:8 | ControlFlowNode for SINK |
+| test.py:75:1:75:23 | GSSA Variable SOURCE | test.py:76:21:76:26 | ControlFlowNode for SOURCE |
+| test.py:75:1:75:23 | GSSA Variable SOURCE | test.py:76:21:76:26 | ControlFlowNode for SOURCE |
+| test.py:76:5:76:7 | SSA variable obj | test.py:77:10:77:12 | ControlFlowNode for obj |
+| test.py:76:5:76:7 | SSA variable obj | test.py:77:10:77:12 | ControlFlowNode for obj |
+| test.py:76:5:76:7 | SSA variable obj [Attribute foo] | test.py:77:10:77:12 | ControlFlowNode for obj [Attribute foo] |
+| test.py:76:11:76:27 | ControlFlowNode for MyObj() | test.py:76:5:76:7 | SSA variable obj |
+| test.py:76:11:76:27 | ControlFlowNode for MyObj() | test.py:76:5:76:7 | SSA variable obj |
+| test.py:76:11:76:27 | ControlFlowNode for MyObj() | test.py:77:10:77:12 | ControlFlowNode for obj |
+| test.py:76:11:76:27 | ControlFlowNode for MyObj() | test.py:77:10:77:12 | ControlFlowNode for obj |
+| test.py:76:11:76:27 | ControlFlowNode for MyObj() [Attribute foo] | test.py:76:5:76:7 | SSA variable obj [Attribute foo] |
+| test.py:76:11:76:27 | ControlFlowNode for MyObj() [Attribute foo] | test.py:77:10:77:12 | ControlFlowNode for obj [Attribute foo] |
+| test.py:76:11:76:27 | [pre objCreate] ControlFlowNode for MyObj() | test.py:26:18:26:21 | SSA variable self |
+| test.py:76:11:76:27 | [pre objCreate] ControlFlowNode for MyObj() | test.py:26:18:26:21 | SSA variable self |
+| test.py:76:21:76:26 | ControlFlowNode for SOURCE | test.py:26:24:26:26 | SSA variable foo |
+| test.py:76:21:76:26 | ControlFlowNode for SOURCE | test.py:26:24:26:26 | SSA variable foo |
+| test.py:76:21:76:26 | ControlFlowNode for SOURCE | test.py:76:11:76:27 | ControlFlowNode for MyObj() [Attribute foo] |
+| test.py:77:10:77:12 | ControlFlowNode for obj [Attribute foo] | test.py:77:10:77:16 | ControlFlowNode for Attribute |
+| test.py:77:10:77:12 | ControlFlowNode for obj [Attribute foo] | test.py:77:10:77:16 | ControlFlowNode for Attribute |
+| test.py:77:10:77:16 | ControlFlowNode for Attribute | test.py:10:10:10:10 | SSA variable x |
+| test.py:77:10:77:16 | ControlFlowNode for Attribute | test.py:10:10:10:10 | SSA variable x |
+| test.py:80:1:80:30 | ControlFlowNode for FunctionExpr | test.py:80:5:80:26 | GSSA Variable fields_with_local_flow |
+| test.py:80:1:80:30 | ControlFlowNode for FunctionExpr | test.py:80:5:80:26 | GSSA Variable fields_with_local_flow |
+| test.py:80:1:80:30 | GSSA Variable MyObj | test.py:81:11:81:15 | ControlFlowNode for MyObj |
+| test.py:80:1:80:30 | GSSA Variable MyObj | test.py:81:11:81:15 | ControlFlowNode for MyObj |
+| test.py:80:5:80:26 | GSSA Variable fields_with_local_flow | test.py:0:0:0:0 | ModuleVariableNode for Global Variable fields_with_local_flow in Module test |
+| test.py:80:5:80:26 | GSSA Variable fields_with_local_flow | test.py:0:0:0:0 | ModuleVariableNode for Global Variable fields_with_local_flow in Module test |
+| test.py:80:28:80:28 | SSA variable x | test.py:81:11:81:18 | SSA variable x |
+| test.py:80:28:80:28 | SSA variable x | test.py:81:11:81:18 | SSA variable x |
+| test.py:80:28:80:28 | SSA variable x | test.py:81:11:81:18 | SSA variable x |
+| test.py:80:28:80:28 | SSA variable x | test.py:81:11:81:18 | SSA variable x |
+| test.py:80:28:80:28 | SSA variable x | test.py:81:17:81:17 | ControlFlowNode for x |
+| test.py:80:28:80:28 | SSA variable x | test.py:81:17:81:17 | ControlFlowNode for x |
+| test.py:80:28:80:28 | SSA variable x | test.py:81:17:81:17 | ControlFlowNode for x |
+| test.py:80:28:80:28 | SSA variable x | test.py:81:17:81:17 | ControlFlowNode for x |
+| test.py:81:5:81:7 | SSA variable obj | test.py:82:9:82:11 | ControlFlowNode for obj |
+| test.py:81:5:81:7 | SSA variable obj | test.py:82:9:82:11 | ControlFlowNode for obj |
+| test.py:81:5:81:7 | SSA variable obj [Attribute foo] | test.py:82:9:82:11 | ControlFlowNode for obj [Attribute foo] |
+| test.py:81:5:81:7 | SSA variable obj [Attribute foo] | test.py:82:9:82:11 | ControlFlowNode for obj [Attribute foo] |
+| test.py:81:11:81:18 | ControlFlowNode for MyObj() | test.py:81:5:81:7 | SSA variable obj |
+| test.py:81:11:81:18 | ControlFlowNode for MyObj() | test.py:81:5:81:7 | SSA variable obj |
+| test.py:81:11:81:18 | ControlFlowNode for MyObj() | test.py:82:9:82:11 | ControlFlowNode for obj |
+| test.py:81:11:81:18 | ControlFlowNode for MyObj() | test.py:82:9:82:11 | ControlFlowNode for obj |
+| test.py:81:11:81:18 | ControlFlowNode for MyObj() [Attribute foo] | test.py:81:5:81:7 | SSA variable obj [Attribute foo] |
+| test.py:81:11:81:18 | ControlFlowNode for MyObj() [Attribute foo] | test.py:81:5:81:7 | SSA variable obj [Attribute foo] |
+| test.py:81:11:81:18 | ControlFlowNode for MyObj() [Attribute foo] | test.py:82:9:82:11 | ControlFlowNode for obj [Attribute foo] |
+| test.py:81:11:81:18 | ControlFlowNode for MyObj() [Attribute foo] | test.py:82:9:82:11 | ControlFlowNode for obj [Attribute foo] |
+| test.py:81:11:81:18 | [pre objCreate] ControlFlowNode for MyObj() | test.py:26:18:26:21 | SSA variable self |
+| test.py:81:11:81:18 | [pre objCreate] ControlFlowNode for MyObj() | test.py:26:18:26:21 | SSA variable self |
+| test.py:81:17:81:17 | ControlFlowNode for x | test.py:26:24:26:26 | SSA variable foo |
+| test.py:81:17:81:17 | ControlFlowNode for x | test.py:26:24:26:26 | SSA variable foo |
+| test.py:81:17:81:17 | ControlFlowNode for x | test.py:26:24:26:26 | SSA variable foo |
+| test.py:81:17:81:17 | ControlFlowNode for x | test.py:26:24:26:26 | SSA variable foo |
+| test.py:81:17:81:17 | ControlFlowNode for x | test.py:81:11:81:18 | ControlFlowNode for MyObj() [Attribute foo] |
+| test.py:81:17:81:17 | ControlFlowNode for x | test.py:81:11:81:18 | ControlFlowNode for MyObj() [Attribute foo] |
+| test.py:81:17:81:17 | [post arg] ControlFlowNode for x | test.py:87:33:87:38 | [post arg] ControlFlowNode for SOURCE |
+| test.py:81:17:81:17 | [post arg] ControlFlowNode for x | test.py:87:33:87:38 | [post arg] ControlFlowNode for SOURCE |
+| test.py:82:5:82:5 | SSA variable a | test.py:83:12:83:12 | ControlFlowNode for a |
+| test.py:82:5:82:5 | SSA variable a | test.py:83:12:83:12 | ControlFlowNode for a |
+| test.py:82:5:82:5 | SSA variable a | test.py:83:12:83:12 | ControlFlowNode for a |
+| test.py:82:5:82:5 | SSA variable a | test.py:83:12:83:12 | ControlFlowNode for a |
+| test.py:82:9:82:11 | ControlFlowNode for obj [Attribute foo] | test.py:82:9:82:15 | ControlFlowNode for Attribute |
+| test.py:82:9:82:11 | ControlFlowNode for obj [Attribute foo] | test.py:82:9:82:15 | ControlFlowNode for Attribute |
+| test.py:82:9:82:11 | ControlFlowNode for obj [Attribute foo] | test.py:82:9:82:15 | ControlFlowNode for Attribute |
+| test.py:82:9:82:11 | ControlFlowNode for obj [Attribute foo] | test.py:82:9:82:15 | ControlFlowNode for Attribute |
+| test.py:82:9:82:15 | ControlFlowNode for Attribute | test.py:82:5:82:5 | SSA variable a |
+| test.py:82:9:82:15 | ControlFlowNode for Attribute | test.py:82:5:82:5 | SSA variable a |
+| test.py:82:9:82:15 | ControlFlowNode for Attribute | test.py:82:5:82:5 | SSA variable a |
+| test.py:82:9:82:15 | ControlFlowNode for Attribute | test.py:82:5:82:5 | SSA variable a |
+| test.py:82:9:82:15 | ControlFlowNode for Attribute | test.py:83:12:83:12 | ControlFlowNode for a |
+| test.py:82:9:82:15 | ControlFlowNode for Attribute | test.py:83:12:83:12 | ControlFlowNode for a |
+| test.py:82:9:82:15 | ControlFlowNode for Attribute | test.py:83:12:83:12 | ControlFlowNode for a |
+| test.py:82:9:82:15 | ControlFlowNode for Attribute | test.py:83:12:83:12 | ControlFlowNode for a |
+| test.py:83:12:83:12 | ControlFlowNode for a | test.py:87:10:87:39 | ControlFlowNode for fields_with_local_flow() |
+| test.py:83:12:83:12 | ControlFlowNode for a | test.py:87:10:87:39 | ControlFlowNode for fields_with_local_flow() |
+| test.py:86:1:86:18 | ControlFlowNode for FunctionExpr | test.py:86:5:86:15 | GSSA Variable test_fields |
+| test.py:86:1:86:18 | ControlFlowNode for FunctionExpr | test.py:86:5:86:15 | GSSA Variable test_fields |
+| test.py:86:1:86:18 | GSSA Variable SINK | test.py:87:5:87:8 | ControlFlowNode for SINK |
+| test.py:86:1:86:18 | GSSA Variable SINK | test.py:87:5:87:8 | ControlFlowNode for SINK |
+| test.py:86:1:86:18 | GSSA Variable SOURCE | test.py:87:33:87:38 | ControlFlowNode for SOURCE |
+| test.py:86:1:86:18 | GSSA Variable SOURCE | test.py:87:33:87:38 | ControlFlowNode for SOURCE |
+| test.py:86:1:86:18 | GSSA Variable fields_with_local_flow | test.py:87:10:87:31 | ControlFlowNode for fields_with_local_flow |
+| test.py:86:1:86:18 | GSSA Variable fields_with_local_flow | test.py:87:10:87:31 | ControlFlowNode for fields_with_local_flow |
+| test.py:87:10:87:39 | ControlFlowNode for fields_with_local_flow() | test.py:10:10:10:10 | SSA variable x |
+| test.py:87:10:87:39 | ControlFlowNode for fields_with_local_flow() | test.py:10:10:10:10 | SSA variable x |
+| test.py:87:33:87:38 | ControlFlowNode for SOURCE | test.py:80:28:80:28 | SSA variable x |
+| test.py:87:33:87:38 | ControlFlowNode for SOURCE | test.py:80:28:80:28 | SSA variable x |
+| test.py:87:33:87:38 | ControlFlowNode for SOURCE | test.py:87:10:87:39 | ControlFlowNode for fields_with_local_flow() |
+| test.py:87:33:87:38 | ControlFlowNode for SOURCE | test.py:87:10:87:39 | ControlFlowNode for fields_with_local_flow() |
