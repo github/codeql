@@ -1,16 +1,33 @@
-from python.ql.test.experimental.dataflow.testDefinitions import *
+# These are defined so that we can evaluate the test code.
+NONSOURCE = "not a source"
+SOURCE = "source"
+
+
+def is_source(x):
+    return x == "source" or x == b"source" or x == 42 or x == 42.0 or x == 42j
+
+
+def SINK(x):
+    if is_source(x):
+        print("OK")
+    else:
+        print("Unexpected flow", x)
+
+
+def SINK_F(x):
+    if is_source(x):
+        print("Unexpected flow", x)
+    else:
+        print("OK")
+
 
 # Preamble
-
-
 class MyObj(object):
-
     def __init__(self, foo):
         self.foo = foo
 
 
 class NestedObj(object):
-
     def __init__(self):
         self.obj = MyObj("OK")
 
@@ -44,6 +61,11 @@ def test_example2():
 def test_example3():
     obj = MyObj(SOURCE)
     SINK(obj.foo)
+
+
+def test_example3_kw():
+    obj = MyObj(foo=SOURCE)
+    SINK(obj.foo)  # Flow not found
 
 
 def fields_with_local_flow(x):
