@@ -4,6 +4,7 @@ import semmle.code.csharp.dataflow.SignAnalysis
 from Expr e
 where
   not exists(exprSign(e)) and
+  not e instanceof TypeAccess and
   (
     e.getType() instanceof CharType or
     e.getType() instanceof IntegralType or
