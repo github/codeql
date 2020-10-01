@@ -13,7 +13,7 @@ import semmle.code.cpp.models.interfaces.Taint
  * The standard functions `memcpy` and `memmove`, and the gcc variant
  * `__builtin___memcpy_chk`
  */
-class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffectFunction, TaintFunction {
+class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffectFunction {
   MemcpyFunction() {
     // memcpy(dest, src, num)
     this.hasName("memcpy")
@@ -57,14 +57,6 @@ class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffectFunction
     or
     input.isParameter(getParamDest()) and
     output.isReturnValue()
-  }
-
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameter(getParamSize()) and
-    output.isParameterDeref(getParamDest())
-    or
-    input.isParameter(getParamSize()) and
-    output.isReturnValueDeref()
   }
 
   override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
