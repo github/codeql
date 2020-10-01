@@ -41,7 +41,7 @@ abstract class DependencyInjection extends DataFlow::ValueNode {
  */
 abstract class InjectableFunction extends DataFlow::ValueNode {
   /** Gets the parameter corresponding to dependency `name`. */
-  abstract SimpleParameter getDependencyParameter(string name);
+  abstract Parameter getDependencyParameter(string name);
 
   /**
    * Gets the `i`th dependency declaration, which is also named `name`.
@@ -67,7 +67,7 @@ abstract class InjectableFunction extends DataFlow::ValueNode {
   /**
    * Gets a service corresponding to the dependency-injected `parameter`.
    */
-  ServiceReference getAResolvedDependency(SimpleParameter parameter) {
+  ServiceReference getAResolvedDependency(Parameter parameter) {
     exists(string name, InjectableFunctionServiceRequest request |
       this = request.getAnInjectedFunction() and
       parameter = getDependencyParameter(name) and
@@ -79,7 +79,7 @@ abstract class InjectableFunction extends DataFlow::ValueNode {
    * Gets a Custom service corresponding to the dependency-injected `parameter`.
    * (this is a convenience variant of `getAResolvedDependency`)
    */
-  DataFlow::Node getCustomServiceDependency(SimpleParameter parameter) {
+  DataFlow::Node getCustomServiceDependency(Parameter parameter) {
     exists(CustomServiceDefinition custom |
       custom.getServiceReference() = getAResolvedDependency(parameter) and
       result = custom.getAService()
@@ -99,11 +99,11 @@ private class FunctionWithImplicitDependencyAnnotation extends InjectableFunctio
     not exists(getAPropertyDependencyInjection(astNode))
   }
 
-  override SimpleParameter getDependencyParameter(string name) {
+  override Parameter getDependencyParameter(string name) {
     result = astNode.getParameterByName(name)
   }
 
-  override SimpleParameter getDependencyDeclaration(int i, string name) {
+  override Parameter getDependencyDeclaration(int i, string name) {
     result.getName() = name and
     result = astNode.getParameter(i)
   }
@@ -139,7 +139,7 @@ private class FunctionWithInjectProperty extends InjectableFunction {
     )
   }
 
-  override SimpleParameter getDependencyParameter(string name) {
+  override Parameter getDependencyParameter(string name) {
     exists(int i | exists(getDependencyDeclaration(i, name)) | result = astNode.getParameter(i))
   }
 
@@ -170,7 +170,7 @@ private class FunctionWithExplicitDependencyAnnotation extends InjectableFunctio
     function.flowsToExpr(astNode.getElement(astNode.getSize() - 1))
   }
 
-  override SimpleParameter getDependencyParameter(string name) {
+  override Parameter getDependencyParameter(string name) {
     exists(int i | astNode.getElement(i).mayHaveStringValue(name) |
       result = asFunction().getParameter(i)
     )

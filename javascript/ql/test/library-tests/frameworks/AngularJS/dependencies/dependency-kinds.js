@@ -117,4 +117,8 @@
         })
     ;
 
+    angular.module('myModule', [])
+        .run(['moduleRunService', function({foo, bar}) {
+            // ...
+        }])
 })();
