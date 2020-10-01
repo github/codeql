@@ -46,6 +46,6 @@ information.
 </example>
 
 <references>
-<li>OWASP: <a href="https://www.owasp.org/index.php/Path_traversal">Path Traversal</a>.</li>
+<li>OWASP: <a href="https://owasp.org/www-community/attacks/Path_Traversal">Path Traversal</a>.</li>
 </references>
 </qhelp>
