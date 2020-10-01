@@ -1,3 +1,7 @@
+/**
+ * Definitions for tracking taint steps throught the Guava framework.
+ */
+
 import java
 private import Strings
 private import Splitter
@@ -10,7 +14,7 @@ abstract class GuavaTaintPropagationMethod extends Method {
   /**
    * Holds if this method propagates taint between the given source and sink.
    * `src` and `sink` are indicies of arguments to this method, or -1 to represent the qualifier.
-   * `sink` ca also be -2 to represent the return value.
+   * `sink` can also be -2 to represent the return value.
    */
   abstract predicate propagatesTaint(int src, int sink);
 }

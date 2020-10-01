@@ -1,3 +1,7 @@
+/**
+ * Definitions for tracking taint steps through the methods of `com.google.common.base.Strings`.
+ */
+
 import java
 import Guava
 
