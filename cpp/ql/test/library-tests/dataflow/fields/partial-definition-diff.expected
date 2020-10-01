@@ -170,6 +170,18 @@
 | aliasing.cpp:205:15:205:24 | & ... | AST only |
 | aliasing.cpp:206:13:206:13 | ps2 | IR only |
 | aliasing.cpp:206:15:206:16 | s | IR only |
+| aliasing.cpp:211:8:211:9 | m1 | AST only |
+| aliasing.cpp:212:12:212:12 | s2 | IR only |
+| aliasing.cpp:213:10:213:11 | s | IR only |
+| aliasing.cpp:218:8:218:9 | m1 | AST only |
+| aliasing.cpp:219:12:219:12 | s2 | IR only |
+| aliasing.cpp:220:10:220:11 | s | IR only |
+| aliasing.cpp:225:15:225:22 | & ... | AST only |
+| aliasing.cpp:226:12:226:12 | s2 | IR only |
+| aliasing.cpp:227:10:227:11 | s | IR only |
+| aliasing.cpp:232:15:232:22 | & ... | AST only |
+| aliasing.cpp:233:12:233:12 | s2 | IR only |
+| aliasing.cpp:234:10:234:11 | s | IR only |
 | arrays.cpp:6:3:6:8 | access to array | AST only |
 | arrays.cpp:6:3:6:23 | arr | IR only |
 | arrays.cpp:15:3:15:10 | * ... | AST only |

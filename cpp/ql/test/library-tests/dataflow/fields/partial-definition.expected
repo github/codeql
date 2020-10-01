@@ -220,6 +220,18 @@
 | aliasing.cpp:205:15:205:24 | & ... |
 | aliasing.cpp:205:16:205:18 | ps2 |
 | aliasing.cpp:205:21:205:21 | s |
+| aliasing.cpp:211:3:211:4 | s2 |
+| aliasing.cpp:211:6:211:6 | s |
+| aliasing.cpp:211:8:211:9 | m1 |
+| aliasing.cpp:218:3:218:4 | s2 |
+| aliasing.cpp:218:6:218:6 | s |
+| aliasing.cpp:218:8:218:9 | m1 |
+| aliasing.cpp:225:15:225:22 | & ... |
+| aliasing.cpp:225:16:225:17 | s2 |
+| aliasing.cpp:225:19:225:19 | s |
+| aliasing.cpp:232:15:232:22 | & ... |
+| aliasing.cpp:232:16:232:17 | s2 |
+| aliasing.cpp:232:19:232:19 | s |
 | arrays.cpp:6:3:6:8 | access to array |
 | arrays.cpp:15:3:15:10 | * ... |
 | arrays.cpp:36:3:36:3 | o |

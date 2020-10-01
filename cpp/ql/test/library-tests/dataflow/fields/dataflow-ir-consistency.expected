@@ -97,6 +97,14 @@ postHasUniquePre
 | aliasing.cpp:196:13:196:13 | s | PostUpdateNode should have one pre-update node but has 0. |
 | aliasing.cpp:201:13:201:13 | s | PostUpdateNode should have one pre-update node but has 0. |
 | aliasing.cpp:206:13:206:13 | s | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:212:12:212:12 | s | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:213:10:213:11 | m1 | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:219:12:219:12 | s | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:220:10:220:11 | m2 | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:226:12:226:12 | s | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:227:10:227:11 | m1 | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:233:12:233:12 | s | PostUpdateNode should have one pre-update node but has 0. |
+| aliasing.cpp:234:10:234:11 | m2 | PostUpdateNode should have one pre-update node but has 0. |
 | arrays.cpp:36:5:36:10 | nested | PostUpdateNode should have one pre-update node but has 0. |
 | arrays.cpp:37:10:37:15 | nested | PostUpdateNode should have one pre-update node but has 0. |
 | arrays.cpp:37:24:37:27 | data | PostUpdateNode should have one pre-update node but has 0. |

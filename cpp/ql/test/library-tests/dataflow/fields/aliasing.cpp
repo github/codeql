@@ -205,3 +205,31 @@ void deep_member_field_arrow_different_fields(S2 *ps2) {
   taint_a_ptr(&ps2->s.m1);
   sink(ps2->s.m2);
 }
+
+void test_deep_struct_fields() {
+  S2 s2;
+  s2.s.m1 = user_input();
+  S s = s2.s;
+  sink(s.m1); // $ir,ast
+}
+
+void test_deep_struct_fields_no_flow() {
+  S2 s2;
+  s2.s.m1 = user_input();
+  S s = s2.s;
+  sink(s.m2);
+}
+
+void test_deep_struct_fields_taint_through_call() {
+  S2 s2;
+  taint_a_ptr(&s2.s.m1);
+  S s = s2.s;
+  sink(s.m1); // $ir,ast
+}
+
+void test_deep_struct_fields_taint_through_call_no_flow() {
+  S2 s2;
+  taint_a_ptr(&s2.s.m1);
+  S s = s2.s;
+  sink(s.m2);
+}
