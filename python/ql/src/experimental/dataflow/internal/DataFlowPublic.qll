@@ -275,6 +275,17 @@ class KwOverflowNode extends Node, TKwOverflowNode {
   override Location getLocation() { result = call.getLocation() }
 }
 
+class KwUnpacked extends Node, TKwUnpacked {
+  CallNode call;
+  string name;
+
+  KwUnpacked() { this = TKwUnpacked(call, _, name) }
+
+  override string toString() { result = "KwUnpacked " + name }
+
+  override Location getLocation() { result = call.getLocation() }
+}
+
 /**
  * A node that controls whether other nodes are evaluated.
  */
