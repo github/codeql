@@ -339,7 +339,7 @@ abstract class LibraryTypeDataFlow extends Type {
    * Holds if data may flow from `source` to `sink` when calling callable `c`.
    *
    * `sourceAp` describes the contents of `source` that flows to `sink`
-   * (if any), and `sinkContent` describes the contents of `sink` that it
+   * (if any), and `sinkAp` describes the contents of `sink` that it
    * flows to (if any).
    */
   pragma[nomagic]
@@ -718,6 +718,49 @@ class SystemLazyFlow extends LibraryTypeDataFlow, SystemLazyClass {
       sink = TCallableFlowSinkReturn() and
       sinkAp = AccessPath::property(this.getValueProperty())
     )
+    or
+    preservesValue = false and
+    c = this.getValueProperty().getGetter() and
+    source = TCallableFlowSourceQualifier() and
+    sourceAp = AccessPath::empty() and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp = AccessPath::empty()
+  }
+}
+
+/** Data flow for `System.Nullable<>`. */
+class SystemNullableFlow extends LibraryTypeDataFlow, SystemNullableStruct {
+  override predicate callableFlow(
+    CallableFlowSource source, AccessPath sourceAp, CallableFlowSink sink, AccessPath sinkAp,
+    SourceDeclarationCallable c, boolean preservesValue
+  ) {
+    preservesValue = true and
+    c.(Constructor).getDeclaringType() = this and
+    source = getFlowSourceArg(c, 0, sourceAp) and
+    sourceAp = AccessPath::empty() and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp = AccessPath::property(this.getValueProperty())
+    or
+    preservesValue = true and
+    c = this.getAGetValueOrDefaultMethod() and
+    source = TCallableFlowSourceQualifier() and
+    sourceAp = AccessPath::property(this.getValueProperty()) and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp = AccessPath::empty()
+    or
+    preservesValue = false and
+    c = this.getHasValueProperty().getGetter() and
+    source = TCallableFlowSourceQualifier() and
+    sourceAp = AccessPath::property(this.getValueProperty()) and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp = AccessPath::empty()
+    or
+    preservesValue = true and
+    c = this.getAGetValueOrDefaultMethod() and
+    source = getFlowSourceArg(c, 0, _) and
+    sourceAp = AccessPath::empty() and
+    sink = TCallableFlowSinkReturn() and
+    sinkAp = AccessPath::empty()
     or
     preservesValue = false and
     c = this.getValueProperty().getGetter() and

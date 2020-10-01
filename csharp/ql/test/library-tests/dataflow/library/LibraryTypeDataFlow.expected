@@ -494,6 +494,8 @@ callableFlow
 | System.Net.WebUtility.HtmlEncode(string) | argument 0 -> return | false |
 | System.Net.WebUtility.HtmlEncode(string, TextWriter) | argument 0 -> return | false |
 | System.Net.WebUtility.UrlEncode(string) | argument 0 -> return | false |
+| System.Nullable<>.GetValueOrDefault(T) | argument 0 -> return | true |
+| System.Nullable<>.get_Value() | qualifier -> return | false |
 | System.Security.Cryptography.CryptoStream.BeginRead(Byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
 | System.Security.Cryptography.CryptoStream.BeginWrite(Byte[], int, int, AsyncCallback, object) | argument 0 -> qualifier | false |
 | System.Security.Cryptography.CryptoStream.Read(Byte[], int, int) | qualifier -> argument 0 | false |
@@ -1848,6 +1850,10 @@ callableFlowAccessPath
 | System.Net.NetworkInformation.IPAddressCollection.Add(IPAddress) | argument 0 [<empty>] -> qualifier [[]] | true |
 | System.Net.NetworkInformation.IPAddressCollection.CopyTo(IPAddress[], int) | qualifier [[]] -> argument 0 [[]] | true |
 | System.Net.NetworkInformation.IPAddressCollection.GetEnumerator() | qualifier [[]] -> return [Current] | true |
+| System.Nullable<>.GetValueOrDefault() | qualifier [Value] -> return [<empty>] | true |
+| System.Nullable<>.GetValueOrDefault(T) | qualifier [Value] -> return [<empty>] | true |
+| System.Nullable<>.Nullable(T) | argument 0 [<empty>] -> return [Value] | true |
+| System.Nullable<>.get_HasValue() | qualifier [Value] -> return [<empty>] | false |
 | System.Resources.ResourceReader.GetEnumerator() | qualifier [[]] -> return [Current] | true |
 | System.Resources.ResourceSet.GetEnumerator() | qualifier [[]] -> return [Current] | true |
 | System.Runtime.CompilerServices.ConditionalWeakTable<,>.GetEnumerator() | qualifier [[]] -> return [Current] | true |
