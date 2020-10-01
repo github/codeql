@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name External dependency source links
  * @kind source-link
  * @metricType externalDependency

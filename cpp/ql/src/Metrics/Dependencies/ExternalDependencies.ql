@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name External dependencies
  * @description Count the number of dependencies a C/C++ source file has on external libraries.
  * @kind treemap
