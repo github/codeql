@@ -376,7 +376,7 @@ private predicate getField(FieldContent fc, Field field) {
 
 /**
  * Given two nodes `node1` and `node2`, the shared dataflow library infers a store step
- * from `node1` to `node2` is there is a read step from the the pre update node of `node2` to the
+ * from `node1` to `node2` if there is a read step from the the pre update node of `node2` to the
  * the pre update node of `node1`. This ensures that a field assignment such as
  * ```cpp
  * x.y.z = source();
