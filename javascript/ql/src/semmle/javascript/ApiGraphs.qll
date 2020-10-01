@@ -24,7 +24,10 @@ module API {
      * Gets a data-flow node corresponding to a use of the API component represented by this node.
      *
      * For example, `require('fs').readFileSync` is a use of the function `readFileSync` from the
-     * `fs` module, and `require('fs').readFileSync(file)` is a use of the result of that function.
+     * `fs` module, and `require('fs').readFileSync(file)` is a use of the return of that function.
+     *
+     * This includes indirect uses found via data flow, meaning that in
+     * `f(obj.foo); function f(x) {};` both `obj.foo` and `x` are uses of the `foo` member from `obj`.
      *
      * As another example, in the assignment `exports.plusOne = (x) => x+1` the two references to
      * `x` are uses of the first parameter of `plusOne`.
@@ -34,6 +37,34 @@ module API {
         Impl::trackUseNode(src).flowsTo(result)
       )
     }
+
+    /**
+     * Gets an immediate use of the API component represented by this node.
+     *
+     * For example, `require('fs').readFileSync` is a an immediate use of the `readFileSync` member
+     * from the `fs` module.
+     *
+     * Unlike `getAUse()`, this predicate only gets the immediate references, not the indirect uses
+     * found via data flow. This means that in `const x = fs.readFile` only `fs.readFile` is a reference
+     * to the `readFile` member of `fs`, neither `x` nor any node that `x` flows to is a reference to
+     * this API component.
+     */
+    DataFlow::SourceNode getAnImmediateUse() { Impl::use(this, result) }
+
+    /**
+     * Gets a call to the function represented by this API component.
+     */
+    DataFlow::CallNode getACall() { result = getReturn().getAnImmediateUse() }
+
+    /**
+     * Gets a `new` call to the function represented by this API component.
+     */
+    DataFlow::NewNode getAnInstantiation() { result = getInstance().getAnImmediateUse() }
+
+    /**
+     * Gets an invocation (with our without `new`) to the function represented by this API component.
+     */
+    DataFlow::InvokeNode getAnInvocation() { result = getACall() or result = getAnInstantiation() }
 
     /**
      * Gets a data-flow node corresponding to the right-hand side of a definition of the API
