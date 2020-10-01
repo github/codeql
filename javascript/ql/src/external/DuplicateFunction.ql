@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Duplicate function
  * @description There is another function that shares a lot of code with this function.
  *              Extract the common parts to a shared utility function to improve maintainability.
