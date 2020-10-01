@@ -443,22 +443,39 @@ module API {
           rhs = f.getAReturn()
         )
         or
-        exists(DataFlow::SourceNode src, DataFlow::InvokeNode invk |
-          use(base, src) and invk = trackUseNode(src).getAnInvocation()
-        |
-          exists(int i |
-            lbl = Label::parameter(i) and
-            rhs = invk.getArgument(i)
-          )
-          or
-          lbl = Label::receiver() and
-          rhs = invk.(DataFlow::CallNode).getReceiver()
+        exists(int i |
+          lbl = Label::parameter(i) and
+          argumentPassing(base, i, rhs)
         )
         or
         exists(DataFlow::SourceNode src, DataFlow::PropWrite pw |
           use(base, src) and pw = trackUseNode(src).getAPropertyWrite() and rhs = pw.getRhs()
         |
           lbl = Label::memberFromRef(pw)
+        )
+      )
+    }
+
+    /**
+     * Holds if `arg` is passed as the `i`th argument to a use of `base`, either by means of a
+     * full invocation, or in a partial function application.
+     *
+     * The receiver is considered to be argument -1.
+     */
+    private predicate argumentPassing(TApiNode base, int i, DataFlow::Node arg) {
+      exists(DataFlow::SourceNode use, DataFlow::SourceNode pred |
+        use(base, use) and pred = trackUseNode(use)
+      |
+        arg = pred.getAnInvocation().getArgument(i)
+        or
+        arg = pred.getACall().getReceiver() and
+        i = -1
+        or
+        exists(DataFlow::PartialInvokeNode pin, DataFlow::Node callback | pred.flowsTo(callback) |
+          pin.isPartialArgument(callback, arg, i)
+          or
+          arg = pin.getBoundReceiver(callback) and
+          i = -1
         )
       )
     }
@@ -750,10 +767,14 @@ private module Label {
   bindingset[s]
   string parameterByStringIndex(string s) {
     result = "parameter " + s and
-    s.toInt() >= 0
+    s.toInt() >= -1
   }
 
-  /** Gets the `parameter` edge label for the `i`th parameter. */
+  /**
+   * Gets the `parameter` edge label for the `i`th parameter.
+   *
+   * The receiver is considered to be parameter -1.
+   */
   bindingset[i]
   string parameter(int i) { result = parameterByStringIndex(i.toString()) }
 
