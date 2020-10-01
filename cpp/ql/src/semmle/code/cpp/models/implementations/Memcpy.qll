@@ -16,13 +16,9 @@ import semmle.code.cpp.models.interfaces.Taint
 class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffectFunction {
   MemcpyFunction() {
     // memcpy(dest, src, num)
-    this.hasName("memcpy")
-    or
     // memmove(dest, src, num)
-    this.hasName("memmove")
-    or
     // memmove(dest, src, num, remaining)
-    this.hasName("__builtin___memcpy_chk")
+    this.hasName(["memcpy", "memmove", "__builtin___memcpy_chk"])
     or
     // bcopy(src, dest, num)
     this.hasGlobalOrStdName("bcopy")
