@@ -279,12 +279,16 @@ module ArgumentPassing {
 
   /**
    * Gets the argument to `call` that is passed to the `n`th parameter of `callable`.
+   * If it is a positional argument, it must appear at position `argNr`.
+   * `argNr` will differ from `n` for method- or class calls, where the first parameter
+   * is `self` and the first positional arguemnt is passed to the second positional parameter.
    */
-  Node getArg(CallNode call, CallableValue callable, int n) {
+  Node getArg(CallNode call, int argNr, CallableValue callable, int n) {
     connects(call, callable) and
+    n - argNr in [0, 1] and // constrain for now to limit the size of the predicate; we only use it to insert one argument (self).
     (
       // positional argument
-      result = TCfgNode(call.getArg(n))
+      result = TCfgNode(call.getArg(argNr))
       or
       // keyword argument
       exists(Function f, string argName |
@@ -305,7 +309,7 @@ module ArgumentPassing {
       or
       // argument unpacked from dict
       exists(string name |
-        call_unpacks(call, callable, name, n) and
+        call_unpacks(call, argNr, callable, name, n) and
         result = TKwUnpacked(call, callable, name)
       )
     )
@@ -339,11 +343,12 @@ module ArgumentPassing {
    * Holds if `call` unpacks a dictionary argument in order to pass it via `name`.
    * It will then be passed to the `n`th parameter of `callable`.
    */
-  predicate call_unpacks(CallNode call, CallableValue callable, string name, int n) {
+  predicate call_unpacks(CallNode call, int argNr, CallableValue callable, string name, int n) {
     connects(call, callable) and
+    n - argNr in [0, 1] and
     exists(Function f |
       f = callable.getScope() and
-      not exists(call.getArg(n)) and // no positional arguement available
+      not exists(call.getArg(argNr)) and // no positional arguement available
       name = f.getArgName(n) and
       // not exists(call.getArgByName(name)) and // only matches keyword arguments not preceded by **
       not call.getNode().getANamedArg().(Keyword).getArg() = name and // no keyword argument available
@@ -478,7 +483,7 @@ class CallNodeCall extends DataFlowCall, TCallNode {
 
   override string toString() { result = call.toString() }
 
-  override Node getArg(int n) { result = getArg(call, callable.getCallableValue(), n) }
+  override Node getArg(int n) { result = getArg(call, n, callable.getCallableValue(), n) }
 
   override ControlFlowNode getNode() { result = call }
 
@@ -502,7 +507,7 @@ class ClassCall extends DataFlowCall, TClassCall {
   override string toString() { result = call.toString() }
 
   override Node getArg(int n) {
-    n > 0 and result = getArg(call, this.getCallableValue(), n - 1)
+    n > 0 and result = getArg(call, n - 1, this.getCallableValue(), n)
     or
     n = 0 and result = TSyntheticPreUpdateNode(TCfgNode(call))
   }
@@ -918,7 +923,7 @@ predicate kwUnpackReadStep(CfgNode nodeFrom, DictionaryElementContent c, Node no
 cached
 predicate clearsContent(Node n, Content c) {
   exists(CallNode call, CallableValue callable, string name |
-    call_unpacks(call, callable, name, _) and
+    call_unpacks(call, _, callable, name, _) and
     n = TKwOverflowNode(call, callable) and
     c.(DictionaryElementContent).getKey() = name
   )

@@ -65,7 +65,7 @@ def test_example3():
 
 def test_example3_kw():
     obj = MyObj(foo=SOURCE)
-    SINK(obj.foo)  # Flow not found
+    SINK(obj.foo)
 
 
 def fields_with_local_flow(x):

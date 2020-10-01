@@ -46,7 +46,7 @@ newtype TNode =
    * to parameter `foo` of `callable.
    */
   TKwUnpacked(CallNode call, CallableValue callable, string name) {
-    call_unpacks(call, callable, name, _)
+    call_unpacks(call, _, callable, name, _)
   }
 
 /**
