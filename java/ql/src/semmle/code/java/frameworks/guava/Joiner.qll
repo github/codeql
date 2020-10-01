@@ -31,7 +31,8 @@ private class GuavaJoinerMethod extends Method {
 /**
  * A method that builds a `Joiner` or `MapJoiner`.
  */
-class GuavaJoinerBuilderMethod extends GuavaJoinerMethod, GuavaTaintPropagationMethodToReturn {
+private class GuavaJoinerBuilderMethod extends GuavaJoinerMethod,
+  GuavaTaintPropagationMethodToReturn {
   GuavaJoinerBuilderMethod() {
     // static Joiner on(char separator)
     // static Joiner on(String separator)
@@ -48,7 +49,7 @@ class GuavaJoinerBuilderMethod extends GuavaJoinerMethod, GuavaTaintPropagationM
 /**
  * An `appendTo` method on `Joiner` or `MapJoiner`
  */
-class GuavaJoinerAppendToMethod extends GuavaJoinerMethod, GuavaTaintPropagationMethod {
+private class GuavaJoinerAppendToMethod extends GuavaJoinerMethod, GuavaTaintPropagationMethod {
   GuavaJoinerAppendToMethod() {
     // <A extends Appendable> A appendTo(A appendable, Iterable<?> parts)
     // <A extends Appendable> A appendTo(A appendable, Iterator<?> parts)
@@ -77,7 +78,7 @@ class GuavaJoinerAppendToMethod extends GuavaJoinerMethod, GuavaTaintPropagation
 /**
  * A `join` method on `Joiner` or `MapJoiner`
  */
-class GuavaJoinMethod extends GuavaJoinerMethod, GuavaTaintPropagationMethodToReturn {
+private class GuavaJoinMethod extends GuavaJoinerMethod, GuavaTaintPropagationMethodToReturn {
   GuavaJoinMethod() {
     // String join(Iterable<?> parts)
     // String join(Iterator<?> parts)

@@ -1,7 +1,7 @@
 import java
-import Strings
-import Splitter
-import Joiner
+private import Strings
+private import Splitter
+private import Joiner
 
 /**
  * A method in the guava framework that propegates taint.

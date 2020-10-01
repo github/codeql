@@ -11,7 +11,7 @@ class TypeGuavaStrings extends Class {
 /**
  * A Guava string utility method that preserves taint from its first argument.
  */
-class GuavaStringsTaintPropagationMethod extends GuavaTaintPropagationMethodToReturn {
+private class GuavaStringsTaintPropagationMethod extends GuavaTaintPropagationMethodToReturn {
   GuavaStringsTaintPropagationMethod() {
     this.getDeclaringType() instanceof TypeGuavaStrings and
     // static String emptyToNull(String string)
@@ -28,7 +28,7 @@ class GuavaStringsTaintPropagationMethod extends GuavaTaintPropagationMethodToRe
 /**
  * The method `Strings.lenientFormat`.
  */
-class GuavaStringsFormatMethod extends GuavaTaintPropagationMethodToReturn {
+private class GuavaStringsFormatMethod extends GuavaTaintPropagationMethodToReturn {
   GuavaStringsFormatMethod() {
     this.getDeclaringType() instanceof TypeGuavaStrings and
     // static String lenientFormat(String template, Object ... args)

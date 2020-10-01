@@ -21,7 +21,7 @@ class TypeGuavaMapSplitter extends NestedClass {
 /**
  * A method of `Splitter` or `MapSplitter` that splits its input string.
  */
-class GuavaSplitMethod extends GuavaTaintPropagationMethodToReturn {
+private class GuavaSplitMethod extends GuavaTaintPropagationMethodToReturn {
   GuavaSplitMethod() {
     (
       this.getDeclaringType() instanceof TypeGuavaSplitter
