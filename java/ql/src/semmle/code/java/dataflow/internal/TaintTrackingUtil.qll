@@ -13,7 +13,6 @@ private import semmle.code.java.frameworks.spring.SpringHttp
 private import semmle.code.java.Maps
 private import semmle.code.java.dataflow.internal.ContainerFlow
 private import semmle.code.java.frameworks.jackson.JacksonSerializability
-private import semmle.code.java.StringFormat
 
 /**
  * Holds if taint can flow from `src` to `sink` in zero or more
@@ -391,10 +390,8 @@ private predicate taintPreservingQualifierToMethod(Method m) {
     )
   )
   or
-  m instanceof StringFormatMethod
-  or
   m.getDeclaringType() instanceof TypeFormatter and
-  m.hasName("out")
+  m.hasName(["format", "out"])
 }
 
 private class StringReplaceMethod extends Method {
@@ -454,10 +451,10 @@ private predicate argToMethodStep(Expr tracked, MethodAccess sink) {
  */
 private predicate taintPreservingArgumentToMethod(Method method) {
   method.getDeclaringType() instanceof TypeString and
-  method.hasName("join")
+  (method.hasName("format") or method.hasName("formatted") or method.hasName("join"))
   or
-  method instanceof StringFormatMethod and
-  not method.getDeclaringType().hasQualifiedName("java.io", "Console")
+  method.getDeclaringType() instanceof TypeFormatter and
+  method.hasName("format")
 }
 
 /**
@@ -637,9 +634,8 @@ private predicate argToQualifierStep(Expr tracked, Expr sink) {
     sink = ma.getQualifier()
   )
   or
-  exists(Method m, MethodAccess ma |
-    taintPreservingArgumentToQualifier(m) and
-    ma.getMethod() = m and
+  exists(MethodAccess ma |
+    taintPreservingArgumentToQualifier(ma.getMethod()) and
     tracked = ma.getAnArgument() and
     sink = ma.getQualifier()
   )
@@ -649,9 +645,8 @@ private predicate argToQualifierStep(Expr tracked, Expr sink) {
  * Holds if `method` is a method that transfers taint from any of its arguments to its qualifier.
  */
 private predicate taintPreservingArgumentToQualifier(Method method) {
-  method instanceof StringFormatMethod and
-  not method.getDeclaringType() instanceof TypeString and
-  not method.getDeclaringType().hasQualifiedName("java.io", "Console")
+  method.getDeclaringType() instanceof TypeFormatter and
+  method.hasName("format")
 }
 
 /**
