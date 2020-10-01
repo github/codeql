@@ -328,21 +328,20 @@ Sign exprSign(Expr e) {
 
 /** Gets a possible sign for `e` from the signs of its child nodes. */
 private Sign specificSubExprSign(Expr e) {
-  result = exprSign(getASubExpr(e))
+  result = exprSign(getASubExprWithSameSign(e))
   or
-  e =
-    any(DivExpr div |
-      result = exprSign(div.getLeftOperand()) and
-      result != TZero() and
-      div.getRightOperand().(RealLiteral).getValue().toFloat() = 0
-    )
+  exists(DivExpr div | div = e |
+    result = exprSign(div.getLeftOperand()) and
+    result != TZero() and
+    div.getRightOperand().(RealLiteral).getValue().toFloat() = 0
+  )
   or
-  exists(UnaryExpr unary | unary = e |
+  exists(UnaryOperation unary | unary = e |
     result = exprSign(unary.getOperand()).applyUnaryOp(unary.getOp())
   )
   or
   exists(Sign s1, Sign s2 | binaryOpSigns(e, s1, s2) |
-    result = s1.applyBinaryOp(s2, e.(BinaryExpr).getOp())
+    result = s1.applyBinaryOp(s2, e.(BinaryOperation).getOp())
   )
 }
 

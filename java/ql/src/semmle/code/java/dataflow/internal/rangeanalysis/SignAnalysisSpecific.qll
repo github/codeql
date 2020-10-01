@@ -45,21 +45,6 @@ module Private {
 
   class DivExpr = J::DivExpr;
 
-  class BinaryOperation extends J::Expr {
-    BinaryOperation() {
-      this instanceof J::BinaryExpr or
-      this instanceof J::AssignOp
-    }
-
-    Expr getLeftOperand() {
-      result = this.(J::BinaryExpr).getLeftOperand() or result = this.(J::AssignOp).getDest()
-    }
-
-    Expr getRightOperand() {
-      result = this.(J::BinaryExpr).getRightOperand() or result = this.(J::AssignOp).getRhs()
-    }
-  }
-
   /** Class to represent float and double literals. */
   class RealLiteral extends J::Literal {
     RealLiteral() {
@@ -68,9 +53,9 @@ module Private {
     }
   }
 
-  /** Class to represent unary expressions. */
-  class UnaryExpr extends J::Expr {
-    UnaryExpr() {
+  /** Class to represent unary operation. */
+  class UnaryOperation extends J::Expr {
+    UnaryOperation() {
       this instanceof J::PreIncExpr or
       this instanceof J::PreDecExpr or
       this instanceof J::MinusExpr or
@@ -97,9 +82,9 @@ module Private {
     }
   }
 
-  /** Class to represent binary expressions. */
-  class BinaryExpr extends J::Expr {
-    BinaryExpr() {
+  /** Class to represent binary operation. */
+  class BinaryOperation extends J::Expr {
+    BinaryOperation() {
       this instanceof J::AddExpr or
       this instanceof J::AssignAddExpr or
       this instanceof J::SubExpr or
@@ -169,6 +154,14 @@ module Private {
       this instanceof J::URShiftExpr and result = TURShiftOp()
       or
       this instanceof J::AssignURShiftExpr and result = TURShiftOp()
+    }
+
+    Expr getLeftOperand() {
+      result = this.(J::BinaryExpr).getLeftOperand() or result = this.(J::AssignOp).getDest()
+    }
+
+    Expr getRightOperand() {
+      result = this.(J::BinaryExpr).getRightOperand() or result = this.(J::AssignOp).getRhs()
     }
   }
 
@@ -300,7 +293,7 @@ private module Impl {
   }
 
   /** Returns a sub expression of `e` for expression types where the sign depends on the child. */
-  Expr getASubExpr(Expr e) {
+  Expr getASubExprWithSameSign(Expr e) {
     result = e.(AssignExpr).getSource() or
     result = e.(PlusExpr).getExpr() or
     result = e.(PostIncExpr).getExpr() or

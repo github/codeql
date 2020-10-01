@@ -6,6 +6,7 @@ module Private {
   private import csharp as CS
   private import ConstantUtils as CU
   private import semmle.code.csharp.controlflow.Guards as G
+  private import Sign
   import Impl
 
   class Guard = G::Guard;
@@ -42,7 +43,73 @@ module Private {
 
   class DivExpr = CS::DivExpr;
 
-  class BinaryOperation = CS::BinaryOperation;
+  /** Class to represent unary operation. */
+  class UnaryOperation extends Expr {
+    UnaryOperation() {
+      this instanceof CS::PreIncrExpr or
+      this instanceof CS::PreDecrExpr or
+      this instanceof CS::UnaryMinusExpr or
+      this instanceof CS::ComplementExpr
+    }
+
+    /** Returns the operand of this expression. */
+    Expr getOperand() {
+      result = this.(CS::PreIncrExpr).getOperand() or
+      result = this.(CS::PreDecrExpr).getOperand() or
+      result = this.(CS::UnaryMinusExpr).getOperand() or
+      result = this.(CS::ComplementExpr).getOperand()
+    }
+
+    /** Returns the operation representing this expression. */
+    TUnarySignOperation getOp() {
+      this instanceof CS::PreIncrExpr and result = TIncOp()
+      or
+      this instanceof CS::PreDecrExpr and result = TDecOp()
+      or
+      this instanceof CS::UnaryMinusExpr and result = TNegOp()
+      or
+      this instanceof CS::ComplementExpr and result = TBitNotOp()
+    }
+  }
+
+  /** Class to represent binary operation. */
+  class BinaryOperation extends CS::BinaryOperation {
+    BinaryOperation() {
+      this instanceof CS::AddExpr or
+      this instanceof CS::SubExpr or
+      this instanceof CS::MulExpr or
+      this instanceof CS::DivExpr or
+      this instanceof CS::RemExpr or
+      this instanceof CS::BitwiseAndExpr or
+      this instanceof CS::BitwiseOrExpr or
+      this instanceof CS::BitwiseXorExpr or
+      this instanceof CS::LShiftExpr or
+      this instanceof CS::RShiftExpr
+    }
+
+    /** Returns the operation representing this expression. */
+    TBinarySignOperation getOp() {
+      this instanceof CS::AddExpr and result = TAddOp()
+      or
+      this instanceof CS::SubExpr and result = TSubOp()
+      or
+      this instanceof CS::MulExpr and result = TMulOp()
+      or
+      this instanceof CS::DivExpr and result = TDivOp()
+      or
+      this instanceof CS::RemExpr and result = TRemOp()
+      or
+      this instanceof CS::BitwiseAndExpr and result = TBitAndOp()
+      or
+      this instanceof CS::BitwiseOrExpr and result = TBitOrOp()
+      or
+      this instanceof CS::BitwiseXorExpr and result = TBitXorOp()
+      or
+      this instanceof CS::LShiftExpr and result = TLShiftOp()
+      or
+      this instanceof CS::RShiftExpr and result = TRShiftOp()
+    }
+  }
 
   predicate ssaRead = SU::ssaRead/2;
 }
@@ -203,7 +270,7 @@ private module Impl {
   }
 
   /** Returns a sub expression of `e` for expression types where the sign depends on the child. */
-  Expr getASubExpr(Expr e) {
+  Expr getASubExprWithSameSign(Expr e) {
     result = e.(AssignExpr).getRValue() or
     result = e.(AssignOperation).getExpandedAssignment() or
     result = e.(UnaryPlusExpr).getOperand() or
@@ -216,74 +283,6 @@ private module Impl {
     result = e.(LocalVariableDeclAndInitExpr).getInitializer() or
     result = e.(RefExpr).getExpr() or
     result = e.(CastExpr).getExpr()
-  }
-
-  /** Class to represent unary expressions. */
-  class UnaryExpr extends Expr {
-    UnaryExpr() {
-      this instanceof PreIncrExpr or
-      this instanceof PreDecrExpr or
-      this instanceof UnaryMinusExpr or
-      this instanceof ComplementExpr
-    }
-
-    /** Returns the operand of this expression. */
-    Expr getOperand() {
-      result = this.(PreIncrExpr).getOperand() or
-      result = this.(PreDecrExpr).getOperand() or
-      result = this.(UnaryMinusExpr).getOperand() or
-      result = this.(ComplementExpr).getOperand()
-    }
-
-    /** Returns the operation representing this expression. */
-    TUnarySignOperation getOp() {
-      this instanceof PreIncrExpr and result = TIncOp()
-      or
-      this instanceof PreDecrExpr and result = TDecOp()
-      or
-      this instanceof UnaryMinusExpr and result = TNegOp()
-      or
-      this instanceof ComplementExpr and result = TBitNotOp()
-    }
-  }
-
-  /** Class to represent binary expressions. */
-  class BinaryExpr extends Expr {
-    BinaryExpr() {
-      this instanceof AddExpr or
-      this instanceof SubExpr or
-      this instanceof MulExpr or
-      this instanceof DivExpr or
-      this instanceof RemExpr or
-      this instanceof BitwiseAndExpr or
-      this instanceof BitwiseOrExpr or
-      this instanceof BitwiseXorExpr or
-      this instanceof LShiftExpr or
-      this instanceof RShiftExpr
-    }
-
-    /** Returns the operation representing this expression. */
-    TBinarySignOperation getOp() {
-      this instanceof AddExpr and result = TAddOp()
-      or
-      this instanceof SubExpr and result = TSubOp()
-      or
-      this instanceof MulExpr and result = TMulOp()
-      or
-      this instanceof DivExpr and result = TDivOp()
-      or
-      this instanceof RemExpr and result = TRemOp()
-      or
-      this instanceof BitwiseAndExpr and result = TBitAndOp()
-      or
-      this instanceof BitwiseOrExpr and result = TBitOrOp()
-      or
-      this instanceof BitwiseXorExpr and result = TBitXorOp()
-      or
-      this instanceof LShiftExpr and result = TLShiftOp()
-      or
-      this instanceof RShiftExpr and result = TRShiftOp()
-    }
   }
 
   Expr getARead(Ssa::Definition v) { result = v.getARead() }
