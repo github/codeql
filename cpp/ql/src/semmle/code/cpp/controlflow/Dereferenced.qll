@@ -17,6 +17,12 @@ predicate callDereferences(FunctionCall fc, int i) {
       af.hasArrayOutput(i)
     )
   )
+  or
+  exists(FormattingFunction ff |
+    fc.getTarget() = ff and
+    i >= ff.getFirstFormatArgumentIndex() and
+    fc.getArgument(i).getType() instanceof PointerType
+  )
 }
 
 /**
